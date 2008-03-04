@@ -1,0 +1,63 @@
+﻿//user moods translation
+
+afraid	Испуганный
+amazed	Изумленный
+angry	Злой
+annoyed	Раздраженный
+anxious	Озабоченный
+aroused	Проснувшийся
+ashamed	Пристыженный
+bored	Скучающий
+brave	Смелый
+calm	Спокойный
+cold	Равнодушный
+confused	Смущенный
+contented	Удовлетворенный
+cranky	Причудливый
+curious	Любопытный
+depressed	Унылый
+disappointed	Разочарованный
+disgusted	Противный
+distracted	Растерянный
+embarrassed	В замешательстве
+excited	Взволнованный
+flirtatious	Кокетливый
+frustrated	Расстроенный
+grumpy	Ворчливый
+guilty	Виноватый
+happy	Счастливый
+hot	Вспыльчивый
+humbled	Униженный
+humiliated	Оскорбленный
+hungry	Голодный
+hurt	Вредный
+impressed	Под впечатлением
+in_awe	В страхе
+in_love	Влюбленный
+indignant	Возмущенный
+interested	Заинтересованный
+intoxicated	Опьяненный
+invincible	Неукротимый
+jealous	Ревнующий
+lonely	Одинокий
+mean	Посредственный
+moody	Капризный
+nervous	Нервный
+neutral	Беспристрастный
+offended	Обиженный
+playful	Шаловливый
+proud	Гордый
+relieved	Угасающий
+remorseful	Раскаивающийся
+restless	Беспокойный
+sad	Печальный
+sarcastic	Язвительный
+serious	Серьезный
+shocked	Потрясенный
+shy	Застенчивый
+sick	Больной
+sleepy	Сонный
+stressed	Напряженный
+surprised	Удивленный
+thirsty	Жаждущий
+worried	Обеспокоенный

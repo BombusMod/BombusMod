@@ -1,0 +1,568 @@
+﻿// Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
+// All rights reserved.
+
+// ask server to send us localized messages
+xmlLang	uk
+//463
+langfile	Ukraine
+Jid	Jid
+Loading	Завантаженя
+Privacy Lists	Списки приватностi
+Existing groups	Наявнi групи
+Message font	Шрифт повiдомлення
+Roster font	Шрифт ростеру
+Paste Body	Встав. тiло повiдомлення
+Configure Room	Налаштувати кімнату
+Paste Subject	Встав. тему повiдомлення
+Service Discovery	Огляд сервiсiв
+User JID	JID користувача
+New list	Новий список
+Select (no login)	Без підключення
+Privacy rule	Правило приватностi
+use SSL	використ. SSL
+Modify	Змiнити
+Update	Оновити
+Account name	Iм'я облікового запису
+GMT offset	Часовой пояс (GMT+)
+Time settings (hours)	Налашт. часу
+Connected	З'єднано
+Connect to 	З'єднання з 
+Alert Profile	Сигнали
+Move Up	Перемістити вище
+Move Down	Перемістити нижче
+Owners	Власники
+Ok	ОК
+Minimize	Згорнути
+Room	Кiмната
+Messages	Повiдомлення
+Refresh	Оновити
+Resolve Nicknames	Перетворити в НIК
+Action	Дiя
+Ban	Бан (ban)
+Leave Room	Покинути кiмнату
+Password	Пароль
+Actions >	Дiї >
+Activate	Активувати
+Affiliation	Членство
+Accounts	Облікові записи
+Delete list	Видалити список
+Account >	Обліковий запис >
+Show Offlines	Показати вiдключених
+Select	Обрати
+Subject	Тема
+Group menu	Меню групп
+Quit	Вихiд
+Add to roster	Додати в ростер
+Edit list	Редагувати список
+Registering	Реєстрацiя
+Done	Виконано
+Error:	 Помилка: 
+Browse	Огляд
+Save list	Зберегти список
+Keep-Alive period	Перiод підтримання з'єдання
+<New Group>	<Нова группа>
+Send	Надіслати
+Priority	Пріоритет
+Failed	Помилка з'єднання
+Set Priority	Встановити пріоритет
+Delete rule	Видалити правило
+Roster request	Отримання ростеру
+Type	Тип
+Name	Iм'я
+Username	Iм'я користувача
+fullscreen	повноекранний
+All Priorities	У всiх статусах
+Add bookmark	Додат. закладку
+conferences only	тiльки конференцiї
+Client Version	Версiя клiенту
+Discard Search	Скинути результати
+Search Results	Результати пошуку
+Members	Члени
+// offline	Вiдключенi
+Add Contact	Новий контакт
+Subscription	Пiдписка
+Status >	Статус >
+Join	Приєднатися
+Startup actions	Дiї пiд час запуску
+Server	Сервер
+Admins	Адмiнiстратори
+Make Ignore-List	Створити Список інгнорованих
+Options	Параметри
+Delete	Видалити
+Delete contact?	Видалити контакт?
+Authorize	Авторизувати
+Nicknames	НIКи
+Entering setup	Вхiд в настройки аккаунту
+to Archive	В архiв
+Back	Назад
+heap monitor	монiтор пам'яті
+Hide Splash	Приховати картинку завантаження
+Message	Повiдомленя
+<Other>	<Iнший>
+Append	Додати
+Active Contacts	Актив. контакти
+Select nickname	Обрати НIК
+Group	Группа
+Join conference	Приєднатися до конференцiї
+No	Нi
+Yes	Так
+Re-Enter Room	Перезайти в кiмнату
+New Message	Нове повiдомленя
+Add	Додати
+Logon	Пiдключити
+Logoff	Вiдключити
+Login in progress	Перевiрка паролю
+at Host	Сервер
+join conferences	автовхiд в конференцiї
+Status	Статус
+Smiles	Вкл/викл смайлики
+Contact >	Контакт >
+Order	Порядок
+offline contacts	показати вiдключених
+Transport	Транспорт
+composing events	Повідомлення про набір
+Add Smile	Встав. смайлик
+Nickname	НIК
+Revoke Voice	Позбавити права голосу
+Commands	Команди
+- (Sign)	- (знак)
+Set default	Встан. як основний
+Outcasts (Ban)	Iiзгої (Ban)
+Set affiliation to	Змінити членство на
+Hide Offlines	Сховати вiдключених
+Register Account	Зареєструвати обілковий запис
+autologin	автоз'єднання
+Publish	Публiкувати
+Remove subscription	Видалити пiдписку
+Set	Встановити
+Application	Програма
+Bookmarks	Закладки
+Test sound	Тест звуку
+Startup	Запуск
+Edit rule	Редагувати правило
+Cancel	Відмінити
+Close	Закрити
+Archive	Архiв
+free	 вiльно  
+Conference	Конференцiя
+Sound	Звук
+Login failed	Помилка авторизацiї
+New Jid	Новий Jid
+plain-text password	пароль Вiдкр. текстом
+Paste Nickname	Вставити НIК
+Kick	Вигнати (kick)
+Remove readed	Видалити прочитані повiдомлення
+Grant Voice	надати право голосу
+Quote	Цитувати
+Roster elements	Елементи ростеру
+popup from background	випливати з фону
+smiles	смайлики
+About	Про программу
+Resource	Ресурс
+Disconnected	З'єднання розiрвано
+Edit	Редагувати
+Host name/IP (optional)	Iм'я хоста/IP (необов'язково)
+Add rule	Додати правило
+for all status types	для всiх статусiв
+Paste Jid	Вставити Jid
+Goto URL	Перейти до URL
+Clock -	Годинник -
+Login	Вiдкриття сокету
+Clock offset	Зсув часу (годин)
+flash backlight	Сповіщати підсвіткою
+Suspend	Вiдкласти
+Resume Message	Чорновик
+Alert Profile >	Сигнали >
+My vCard	Моя візитна картка (vCard)
+transports	транспорти
+New Account	Новий аккаунт
+self-contact	свої контакти
+vCard	Візитна картка (vCard)
+Set Subject	Встановити тему
+Tools	Iнструменти
+Jabber Tools	Iнструменти серверу
+Port	Порт
+
+//473
+Proxy name/IP	Назва проксi-серверу/IP
+Proxy port	Порт проксi-серверу
+Autofocus	автофокус
+
+Connect	З'єднатися
+history -	Iсторiя
+Are You sure want to discard	 Ви дiйсно хочете понизити у 
+ from OWNER to	  з власника (OWNER) до 
+Modify affiliation	Змiна членства
+
+// DO NOT TRANSLATE THIS LINES!!!
+Ignore-List	Ignore-List
+General	General
+Stanzas	Stanzas
+Not-in-list	Not-in-list
+proxy CONNECT	proxy CONNECT
+
+//476
+Clear	Очистити
+
+//494
+Ask subscription	Запросити пiдписку
+Grant subscription	Дозволити пiдписку
+
+//502
+Invite to conference	Запросити в конференцiю
+Reason	Причина
+You have been invited to	 Ви були запрошенi до 
+ is inviting You to	  запрошує Вас в 
+Visitors are not allowed to send messages to all occupants	Гостi не можуть вiдсилати повiдомлення в загальний чат
+Unaffiliate	Позбавити членства
+Grant Moderator	Надати право модератора
+Revoke Moderator	Позбавиит прав модератора
+Grant Admin	Надати право адмiнiстратора
+Grant Ownership	Надати право власника
+
+room presences	статуси в конференцiї
+
+ is now known as	  змінив НIК на 
+ was banned	  заборонили входити в кiмнату 
+ was kicked	  вигнали iз кiмнати 
+ has been kicked because room became members-only	 вигнали, т.як. кiмната закрилася
+ has left the channel	 вийшов з кiмнати
+ has joined the channel as	  зайшов як 
+ and	  i 
+ is now	  тепер 
+
+Participants	Учасники
+Abc	Абв
+
+error	помилка
+chat	хочу побалакати
+away	вiдсутнiй
+xa	давно вiдсутнiй
+dnd	зайнятий
+invisible	невидимий
+offline	не в мережi
+unavailable	недоступний
+
+Clear Photo	Очистити фото
+Camera	Камера
+
+Hide finished	Приховати закiнченi
+Transfer tasks	Задачi передачi данних 
+
+Color tune	Настройка кольорiв
+Load Skin	Завантажити тему
+
+Select history folder	Вибiр папки історiї
+Classic chat	Класичний чат
+Digital heap monitor	Цифровий монiтор пам'яті
+Sound volume	Гучнiсть звуку
+Language	Мова
+Save history	Зберiгати iсторiю
+Save presences	Зберiгати статуси
+Save conference history	Зберiгати iсторiю конференцiї
+Save conference presences	Зберiгати статуси конференцiї
+1251 correction	Корекцiя кодування 1251
+History folder	Папка iсторiї
+AutoStatus	Автостатус
+AutoStatus time	Час автостатусу
+
+Copy	Копiювати
+Paste	Вставити
+
+Save template	Зберегти шаблон
+Template	Шаблон
+
+has set topic to	змiнив топiк на
+
+Seen	Бачили
+Idle	Бездiяльнiсть
+
+Main menu	Головне меню
+
+Root	Менеджер файлiв
+
+File transfers	Передача файлiв
+
+Choose status	Вибiр статусу
+Add status	Додати статус
+Remove status	Видалити статус
+
+User	Користувач
+Reason	Причина
+Address	Адреса
+Export to file	Експорт в файл
+
+View	Огляд
+Stop	Зупинити
+
+Path	Шлях
+Accept file	Приняти файл
+File	Файл
+Save To	Зберегти як
+Sender	Вiдправник
+Size	Розмiр
+Description	Опис
+Rejected	Вiдмiнено
+Send file	Надіслати файл
+To	Кому
+Can't open file	Файл не вiдкриваєтся
+
+New	Новий
+New Template	Новий шаблон
+
+Save photo	Зберегти фото
+
+User has removed autorization	Користувач видалив авторизацiю
+You are now autorized	Ви авторизированi
+User request autorization	Запит авторизацiї
+
+Grant Membership	Надати членство
+Reply	Вiдповiсти
+Save template	Зберегти шаблон
+
+balloon ink	Шрифт балону
+balloon background	Фон балону
+messagelist & roster background	Колiр фону, загальний
+messagelist & roster even lines	Колiр фону, подій
+messagelist & roster & common font	Загальний шрифт
+message subject	Тема повiдомлення
+message highlight	Пiдсвiчене повiдомлення
+service discovery commands	Команди дiско
+Header & Bottom background	Колiр верхньої i нижньої панелi
+Header font	Колiр шрифту верхньої панелi
+contact default	Звичайний контакт
+contact chat	Чат контакт
+contact away	Вiдсутнiй контакт
+contact extended away	Розширене вiдсутнiй контакт
+contact do not disturb	Не хвилювати контакт
+group color	Колiр групп
+keylock font	Шрифт при блоку
+keylock background	Фон в блоку
+message incoming	Вхiдне повiдомлення
+message outgoing	Вихiдне повiдомлення
+message presence	Статусне повiдомлення
+message auth	Повiдомлення авторизацiї
+message history	iсторiя повiдомлень в конференцiї
+progress bar remained	Залишилося індикатора прогресу
+progress bar complete	Зроблено індикатора прогресу
+progress border	Рамка індикатора прогресу
+progress bar background	Фон індикатора прогресу
+Heap mon total	Всього пам'ятi
+Heap mon free	Вiльно пам'ятi
+Cursor background	Фон курсору
+Cursor ink & outline	Колiр шрифта курсору i ободу
+Scroll border	Колiр ободу скролу
+Scroll bar	Колiр бiгунка скролу
+Scroll back	Колiр фону скролу
+
+Send status	Вiдправити статус
+Sounds options	Настройки звукiв
+
+participant	участник
+moderator	модератор
+visitor	гiсть
+none	нiхто
+Sat	Сб
+admin	адмiнiстратор
+owner	власник
+
+Opening stream	Пiдключення
+Using compression	Включення компресiї
+Authenticating	Авторизацiя
+Resource binding	Прив'язка до ресурсу
+Initiating session	Створення сесiї
+
+second	секунда
+seconds	секунди
+seconds_	секунд
+
+minute	хвилина
+minutes	хвилини
+minutes_	хвилин
+
+hour	година
+hours	години
+hours_	годин
+
+day	день
+days	дня
+days_	днiв
+
+Auto xa since %t	Автостатус "недоступний" починючи з %t
+Auto away since %t	Автостатус "Вiдсутнiй" починаючи з %t
+
+Grant Membership	Надати членство
+
+SASL login	SASL-з'єднання
+Features	Можливостi
+Show password	Показати пароль
+No client version available	Версiя клiєнту недоступна
+Message limit	Лiмiт повiдомлень
+
+Text wrapping	Переноси тексту
+by chars	по буквах
+by words	по словам
+Info	Інфо
+Reply	Вiдповiсти
+Send status	Надіслати статус
+No reason	Без причини
+Recent	Iсторiя вводу
+
+Select file	Обрати файл
+Load Photo	Завантажити фото
+Clear Photo	Очистити фото
+Camera	Камера
+Hide finished	Приховати завершеннi
+Transfer tasks	Менеджер передачi файлiв
+Are you sure want to delete this message?	Видалити дане повідомлення?
+New conference	Нова конференцiя
+Root	Корiнь диску
+Decline	Вiдхилити
+authorize new contacts	автоматична авторизацiя
+[auto-subscribe]	[автопiдписка]
+Keep-Alive	Тип підтримання з'єдання
+
+Minutes before away	Таймер автостатусу (хвилини)
+Automatic Away	Автозмiна статусу
+disabled	вимкнено
+keyblock / flip	блок / флiп
+
+Save options to server	Зберегти на серверi
+Restore options from server	Завантажити настройки iз серверу
+Make BackUp	Зберегти копiю на диск
+Import from Back	Завантажити з диску
+Delete All	Очистити архiв
+Use this Color scheme	Використати схему
+
+Send Buffer	Надіслати текст iз буферу
+Send Current color scheme	Надіслати кольор. схему
+Copy JID	Копiювати JID
+autofocus	Автофокус
+Show Resources	Показувати ресурси
+AutoScroll	Автопрокрутка
+Antispam Conference	Антиспам в конференцiї
+PopUps	Випливаючi вiкна
+Last messages	Останнi повiдомлення
+Shared platform info	Показувати інформацію про платформу
+Show new menu	Показувати нове меню
+Save conference history	Зберiгати iсторiю конференцiї
+AutoStatus Message	Повiдомлення Автостатусу
+
+online	В мережi
+Load Scheme	Завантажити схему
+show new menu	Графiчне меню
+convert to cp1251	Зберiгати в Win-1251
+AutoStatus time (min)	Автостатус через(хвил.)
+Address	Адреса
+Import from BackUp	Вiдновити iз файла
+Accept file	Приняти файл
+Save To	Зберегти в
+Description	Опис
+Can't open file	Неможливо вiдкрити файл
+New	Новий
+Time	Час
+Are You sure want to clear messagelist?	Стерти всi повiдомлення?
+Are you sure want to BAN this person?	Заборонити входити в кiмнату?
+Shot	Знiмок
+ has been unaffiliated and kicked from members-only room	 вигнали, так як кiмната закрита для гостей
+keyblock	блок кнопок
+Rename	Переіменувати
+Move	Перемiстити
+Save	Зберегти
+Allow private	Дозволити приват
+Block private	Заборонити приват
+Contact request chat, Allow or Block?	З вами хочуть поспiлкуватися, Дозволити чи Заборонити?
+shared platform info	показувати iнформацiю про платформу
+Send in translit	Вiправити транслiтом
+Check Updates	Пошук нових версій
+Collapsed groups	Згорнуті групи
+Change nickname	Змiнити НiК
+Message collapse limit	Згортати якщо повiдомленнь бiльше
+No client info	Неможливо отримати iнформацiю
+Delete all messages	Стерти всi повiдомлення
+Statistics	Статистика
+Last Messages	Останнi повiдомлення
+Edit/join	Редагувати/Пiдключити
+Save chat	Зберегти повiдомлення
+show statuses	показувати статуси
+Google token request	Аутентифікація в Google
+by message	за повiдомленням
+Join marked (auto)	Автоматичне з'єднання
+History options	Настройка iсторiї
+Filenames transliterate	Iмена файлiв транслiтом
+User mood	Настрiй
+delivery events	подiї доставки
+drop all	вiдкидати всi
+receive messages	отримувати повiдомлення
+messages & presences	повiдомлення i статуси
+normal	середнiй
+small	дрібний
+large	великий
+Auto	Авто
+All signals	Всi сигнали
+Vibra	Вiбрацiя
+No signals	Без сигналiв
+ (default)	 (як основний)
+Quit?	Вийти?
+Are you sure want to Quit?	Ви дійсно бажаєте вийти?
+exit confirmation	пiдтвердження виходу
+show last appeared contacts	показувати тих, що недавно пiдключилися
+custom keys	сполучення кнопок
+Add custom key	Додати сполучення кнопок
+keys action	дiї
+enabled	ввімкнено
+key	кнопка
+reconnect	повторне з'єднання
+Sort list	Сортирувати список
+Turn on light	Ввімкнути підсвітку
+
+Sun	Нд
+Mon	Пн
+Tue	Вт
+Wed	Ср
+Thu	Чт
+Fri	Пт
+member	постiйний учасник
+Blink	Блимати
+Notices options	Сповіщення
+Message sound	Звук повідомлення
+Online sound	Звук входу в мережу
+Offline sound	Звук виходу з мережі
+"Message for me" sound	Звук повідомлення для мене
+Composing sound	Звук при наборі
+Conference sound	Звук в конференції
+StartUP sound	Звук при запуску
+Outgoing sound	Звук вихідного повідомлення
+Vip sound	Звук для VIP
+Copy JID	Копіювати JID
+Ping request	Запит ping
+Online time	Час в мережі
+free 	вільно 
+Heap mon total	Пам'яті загалом
+Heap mon free	Пам'яті вільно
+Ignore-List	Списко ігнорованих
+Ask me	Запитувати вмене
+Automatic subscription	Автоматична підписка
+Drop subscription	Ігнорувати підписку
+Deny subscription	Відмовіляти у підписці
+Not-in-list	Не-в-списку
+Clear popups	Видалити спривалючі повідомлення
+Last Messages	Останні повідомлення
+Sound volume	Гучність
+Break connection	Розірвати з'єднання
+autoScroll	автоматична прокрутка
+emulateTabs	емулювати вкладки
+antispam conference	антиспам в конференціях
+popUps	спливаючі повідомлення
+Started: 	Запущена: 
+Traffic stats: 	Статистика трафіку: 
+All: 	Загалом: 
+Previous: 	Попередній: 
+Current: 	Поточний: 
+Memory:	Пам'ять:
+Free: 	Вільно: 
+Total: 	Загалом: 
+in: 	вх: 
+out: 	вих: 
+Stream: 	Потік: 
+conn., 	з'єдн., 

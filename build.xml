@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- You may freely edit this file. See commented blocks below for -->
+<!-- some examples of how to customize the build. -->
+<!-- (If you delete it and reopen the project it will be recreated.) -->
+<project name="" default="jar" basedir=".">
+    <description>Builds, tests, and runs the project .</description>
+    <import file="nbproject/build-impl.xml"/>
+
+
+    <!-- release tasks -->
+    <target name="for-release-configs">
+        <antcall inheritrefs="false" inheritall="false" target="${target.to.call}">
+            <param name="config.active" value="M55_Release"/>
+        </antcall>
+        <antcall inheritrefs="false" inheritall="false" target="${target.to.call}">
+            <param name="config.active" value="Release"/>
+        </antcall>
+        <antcall inheritrefs="false" inheritall="false" target="${target.to.call}">
+            <param name="config.active" value="ReleaseJZLIB"/>
+        </antcall>
+    </target>
+
+    <target name="rebuild-release">
+        <antcall target="for-release-configs">
+            <param value="rebuild" name="target.to.call"/>
+        </antcall>
+    </target>
+	
+    <target name="rebuild-smallver">
+	    <antcall inheritrefs="false" inheritall="false" target="rebuild">
+		    <param name="config.active" value="small_ver"/>
+	    </antcall>
+    </target>
+
+    <target name="rebuild-fullver">
+	    <antcall inheritrefs="false" inheritall="false" target="rebuild">
+		    <param name="config.active" value="full_ver"/>
+	    </antcall>
+    </target>
+
+    <target name="rebuild-adsky">
+	    <antcall inheritrefs="false" inheritall="false" target="rebuild">
+		    <param name="config.active" value="adsky"/>
+	    </antcall>
+    </target>
+ 
+    <!-- prepare version patch -->
+    <target name="post-init">
+	<exec executable="svnversion" output="resources/.svnrev" />
+	<loadfile srcFile="resources/.svnrev" property="bombus.svnrev"/>
+	<copy file="resources/version.properties" tofile="resources/.version" overwrite="true" />
+	<replace 
+	    file="resources/.version" 
+	    token="$WCREV$"
+	    value="${bombus.svnrev}"/>
+    </target>
+    <!-- old version patcher 
+    <target name="post-init-tsvn">
+        <property name="versionPatcher" location="C:/Program Files/TortoiseSVN/bin/SubWCRev.exe" />
+        <property name="file_in" location="resources\version.properties "/>
+        <property name="file_out" location="resources\.version "/>
+        <exec executable="${versionPatcher}" > 
+            <arg value="."/>
+            <arg value="${file_in}"/>
+            <arg value="${file_out}"/>
+        </exec>
+        
+    </target>
+    -->
+
+    <!-- version patch in Sources -->
+    <target name="post-preprocess">
+	<property file="resources/.version" />
+	<replace 
+	    file="${preprocessed.dir}\Info\Version.java"  
+	    token="$BOMBUSVERSION$"
+	    value="${bombus.version}"/>
+    </target>
+
+    <!-- version patch in manifest -->
+    <target name="pre-jar">
+	<property file="resources/.version" />
+	<replace file="${build.dir}/manifest.mf"  
+	    token="$BOMBUSVERSION$"
+	    value="${bombus.version}"/>
+	<replace file="${build.dir}/manifest.mf"  
+	    token="$MIDLETVERSION$"
+	    value="${bombus.midlet}"/>
+    </target>
+
+
+    <target name="post-jar">
+        <!-- version patch in jad -->
+	<property file="resources/.version" />
+	<replace file="${dist.dir}/Bombus.jad"
+	    token="$BOMBUSVERSION$"
+	    value="${bombus.version}"/>
+	<replace file="${dist.dir}/Bombus.jad"
+	    token="$MIDLETVERSION$"
+	    value="${bombus.midlet}"/>
+    </target>
+
+    <!-- overrided to change bootclasspath -->
+    <target depends="pre-load-properties,exists.config.active,exists.netbeans.user,exists.user.properties.file" name="load-properties">
+
+        <loadproperties srcfile="nbproject/project.properties">
+            <filterchain>
+                <containsregex replace="\1" pattern="^configs\.${config.active}\.(.*)"/>
+                <concatfilter prepend="nbproject/project.properties"/>
+                <containsregex pattern="^platform.active=|^deployment.method=|^bombus.bootclasspath="/>
+            </filterchain>
+        </loadproperties>
+	<property name="bombus.bootclasspath" value=""/>
+	<echo message="${bombus.bootclasspath}"/>
+
+        <loadproperties srcfile="${user.properties.file}">
+            <filterchain>
+                <replaceregex replace="platform." pattern="^platforms\.${platform.active}\."/>
+                <replaceregex replace="deployment.scriptfile=" pattern="^deployment\.${deployment.method}\.scriptfile="/>
+            </filterchain>
+        </loadproperties>
+
+	<!-- patching bootclasspath -->
+        <loadproperties srcfile="nbproject/project.properties">
+            <filterchain>
+                <containsregex replace="platform.bootclasspath=\1${bombus.bootclasspath}" pattern="^configs\.${config.active}\.platform\.bootclasspath=(.*)"/>
+            </filterchain>
+        </loadproperties>
+        <loadproperties srcfile="nbproject/project.properties">
+            <filterchain>
+                <containsregex replace="platform.bootclasspath=\1${bombus.bootclasspath}" pattern="^platform\.bootclasspath=(.*)"/>
+            </filterchain>
+        </loadproperties>
+
+
+        <loadproperties srcfile="nbproject/project.properties">
+            <filterchain>
+                <containsregex replace="\1" pattern="^configs\.${config.active}\.(.*)"/>
+                <concatfilter prepend="nbproject/project.properties"/>
+            </filterchain>
+        </loadproperties>
+
+
+	<echo message="Modified bootclasspath=${platform.bootclasspath}" />
+    </target>
+
+
+    <!--
+
+    There exist several targets which are by default empty and which can be
+    used for execution of your tasks. These targets are usually executed
+    before and after some main targets. They are:
+
+      pre-init:                 called before initialization of project properties
+      post-init:                called after initialization of project properties
+      pre-preprocess:           called before text preprocessing of sources
+      post-preprocess:          called after text preprocessing of sources
+      pre-compile:              called before source compilation
+      post-compile:             called after source compilation
+      pre-obfuscate:            called before obfuscation 
+      post-obfuscate:           called after obfuscation
+      pre-preverify:            called before preverification
+      post-preverify:           called after preverification
+      pre-jar:                  called before jar building
+      post-jar:                 called after jar building
+      pre-clean:                called before cleaning build products
+      post-clean:               called after cleaning build products
+
+    Example of pluging a my-special-task after the compilation could look like
+
+        <target name="post-compile">
+            <my-special-task>
+                <fileset dir="${build.classes.dir}"/>
+            </my-special-task>
+        </target>
+
+    For list of available properties check the imported
+    nbproject/build-impl.xml file.
+
+    Other way how to customize the build is by overriding existing main targets.
+    The target of interest are:
+
+      preprocess:               preprocessing
+      extract-libs:             extraction of libraries and resources
+      compile:                  compilation
+      create-jad:               construction of jad and jar manifest source
+      obfuscate:                obfuscation
+      preverify:                preverification
+      jar:                      jar archive building
+      run:                      execution
+      debug:                    execution in debug mode
+      javadoc:                  javadoc generation
+
+    Example of overriding the target for project execution could look like
+
+        <target name="run" depends="init,jar">
+            <my-special-exec jadfile="${dist.dir}/${dist.jad}"/>
+        </target>
+
+    Be careful about correct dependencies when overriding original target. 
+    Again, for list of available properties which you can use check the target 
+    you are overriding in nbproject/build-impl.xml file.
+
+    A special target for-all-configs can be used to run some specific targets for
+    all project configurations in a sequence. File nbproject/build-impl.xml 
+    already contains some "for-all" targets:
+    
+      jar-all
+      javadoc-all
+      clean-all
+      
+    Example of definition of target iterating over all project configurations:
+    
+        <target name="jar-all">
+            <property name="target.to.call" value="jar"/>
+            <antcall target="for-all-configs"/>
+        </target>
+
+    -->
+</project>

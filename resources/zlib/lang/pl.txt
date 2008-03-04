@@ -1,0 +1,391 @@
+﻿// All rights reserved.
+// (c) 2007 Eugene Stahov (evgs), http://bombus.jrudevels.org
+// (c) Alexey V.Lubimov <avl@l14.ru>, 2006.
+// (c) Vladimir N. Shelukhin, 2006.
+xmlLang	
+//463
+langfile	Polski 
+Jid	JID 
+Loading	Ładowanie
+Privacy Lists	Listy prywatności 
+Existing groups	Istniejące Grupy 
+Message font	Czcionka wiadomości 
+Roster font	Czcionka kontaktów 
+Paste Body	Wklej Tekst 
+Configure Room	Konfiguracja 
+Paste Subject	Wklej Temat 
+Service Discovery	Przeglądarka serwera 
+User JID	JID użytkownika 
+New list	Nowa Lista 
+Select (no login)	Wybierz 
+Privacy rule	Zasada prywatności 
+use SSL	Szyfrowane połączenie 
+Modify	Modyfikuj 
+Update	Odśwież 
+Account name	Nazwa konta 
+GMT offset	Różnica w stosunku do (GMT+) 
+Time settings (hours)	Ustawienia zegara (godziny) 
+Connected	Uwierzytelniono 
+Connect to 	Łączę z 
+Alert Profile	Profil dźwięku 
+Move Up	Przenieś w Górę 
+Move Down	Przenieś w Dół 
+New conference	Nowy Czat 
+Owners	Właściciele 
+Ok	Оk 
+Minimize	Minimalizuj 
+Room	Pokój 
+Messages	Wiadomości 
+Refresh	Odśwież 
+Resolve Nicknames	Ustal pseudonimy 
+Action	Opcje 
+Ban	Zablokuj 
+Leave Room	Opuść pokój 
+Password	Hasło 
+Actions >	Opcje > 
+Activate	Aktywuj 
+Affiliation	Przynależność 
+Accounts	Konta 
+Delete list	Usuń listę 
+Account >	Konta > 
+Show Offlines	Pokaż Rozłączone kontakty 
+Select	Wybierz 
+Subject	Temat 
+Group menu	Menu Grup 
+Quit	Zakończ 
+Add to roster	Dodaj do kontaktów 
+Edit list	Edytuj Listę 
+Registering	Rejestruję 
+Done	Wykonano 
+Error: 	Błąd: 
+Browse	Przeglądaj 
+Save list	Zapisz Listę 
+Keep-Alive period	Czas podtrzymania połączenia 
+<New Group>	<Nowa Grupa>
+Send	Wyślij 
+Priority	Priorytet 
+Failed	Brak Uwierzytelnienia 
+Set Priority	Ustaw Priorytet 
+Delete rule	Usuń zasadę 
+Roster request	Pobieranie kontaktów 
+Type	Typ 
+Name	Nazwa 
+Username	Użytkownik 
+fullscreen	Pełny ekran 
+All Priorities	Wszystkie priorytety 
+Add bookmark	Dodaj Zakładkę 
+conferences only	Tylko Czat 
+Client Version	Wersja klienta 
+Discard Search	Odrzuć Wyszukiwanie 
+Search Results	Rezultaty Wyszukiwania
+Members	Klubowicze 
+// offline	Rozłączony 
+Add Contact	Dodaj kontakt 
+Subscription	Autoryzacja 
+Status >	Status > 
+Join	Wejdź 
+Startup actions	Akcje początkowe 
+Server	Serwer 
+Admins	Administratorzy 
+Make Ignore-List	Utwórz Listę Ignorowania 
+Options	Ustawienia ogólne 
+Delete	Usuń 
+Delete contact?	Usunąć kontakt? 
+Authorize	Akceptuj 
+Nicknames	Pseudonimy 
+Decline	Odrzuć 
+Entering setup	Wprowadzam ustawienia 
+to Archive	Do Archiwum 
+Back	Wróć 
+heap monitor	Monitor pamięci 
+Message	Wiadomość 
+<Other>	<inny>
+Append	Dokończ 
+Active Contacts	Aktywne kontakty 
+Select nickname	Wybierz pseudonim 
+Group	Grupa 
+Join conference	Dołącz do Czata 
+No	Nie 
+Yes	Tak 
+Re-Enter Room	Wejdź ponownie 
+New Message	Napisz 
+Add	Dodaj 
+Logon	Włącz 
+Logoff	Wyłącz 
+Login in progress	Logowanie w trakcie 
+at Host	na Serwerze 
+join conferences	Automatyczne wejście w Czat 
+Status	Status 
+Smiles	Emotikony 
+Contact >	Kontakt > 
+Order	Zamów 
+offline contacts	Rozłączone kontakty 
+Recent	Poprzednie 
+Transport	Transport 
+composing events	Informacja komponowania 
+Add Smile	Dodaj Emotikonę 
+Nickname	Pseudonim 
+Revoke Voice	Odbierz głos 
+Commands	Komendy 
+- (Sign)	- (znak)
+Set default	Ustaw domyślnie 
+Outcasts (Ban)	Zablokowani 
+Set affiliation to	Zmień przynależność na
+Hide Offlines	Ukryj Rozłączonych 
+Register Account	Zarejestruj Konto 
+autologin	Autologowanie 
+Publish	Publikuj 
+Remove subscription	Odbierz autoryzację 
+Set	Ustaw 
+Application	Aplikacja 
+Bookmarks	Zakładki 
+Test sound	Test Dźwięku 
+Startup	Początek 
+Edit rule	Edytuj Zasadę 
+Cancel	Anuluj 
+Close	Zamknij 
+Archive	Archiwum 
+free 	Wolne: 
+Conference	Czat 
+Sound	Dźwięk 
+Login failed	Nie Uwierzytelniono 
+New Jid	Nowy JID 
+plain-text password	Nieszyfrowane hasło 
+Paste Nickname	Wklej Pseudonim 
+Kick	Wyrzuć 
+Clear List	Wyczyść Listę 
+Grant Voice	Daj Głos 
+Quote	Edytuj 
+Roster elements	Elementy rostera 
+popup from background	Maksymalizuj gdy nowa wiadomość 
+smiles	Emotikony 
+About	O programie 
+Resource	Zasób 
+Disconnected	Błąd Serwera 
+Edit	Edytuj 
+Host name/IP (optional)	Nazwa hostu/IP 
+Add rule	Dodaj zasadę 
+for all status types	Dla wszystkich typów statusu 
+Paste Jid	Wklej JID 
+Goto URL	Idź do URL'a 
+Clock -	Zegar-
+Login	Zaloguj się 
+Clock offset	Różnica Zegara 
+Authorize new contacts	Autoryzuj nowe kontakty 
+Show new menu	Pokaż nowe Menu 
+flash backlight	Efekty Podświetlania 
+Suspend	Przerwij 
+Resume Message	Dokończ 
+Alert Profile >	Profil dźwięku > 
+My vCard	Moja wizytówka 
+transports	Transporty
+New Account	Nowe konto 
+self-contact	Własny kontakt
+vCard	Dane publiczne 
+Set Subject	Ustaw Temat 
+Tools	Narzędzia 
+Jabber Tools	Narzędzia Jabber'a 
+Port	Port 
+//473
+Proxy name/IP	Nazwa Proxy/IP 
+Proxy port	Port proxy 
+autofocus	Autopodświetlanie nowej wiadomości
+Connect	Połącz 
+history -	Historia -
+Are You sure want to discard 	Jesteś pewny, że chcesz zmienić 
+ from OWNER to 	 z Właściciela na 
+Modify affiliation	Modyfikuj przynależność 
+// DO NOT TRANSLATE THIS LINES!!!
+Ignore-List	Lista Ignorowania
+General	Generalna
+Stanzas	Szczegół 
+Not-in-list	Spoza Listy
+proxy CONNECT	Połączenie Proxy 
+//476
+Clear	Wyczyść 
+//494
+Ask subscription	Zapytaj o Autoryzację 
+Grant subscription	Daj Autoryzację 
+//502
+Invite to conference	Zaproś do Czata 
+Reason	Powód 
+You have been invited to 	Zostałeś zaproszony do: 
+ is inviting You to 	 zaprasza Cię na: 
+Visitors are not allowed to send messages to all occupants	Nowoprzybyli Wizytorzy nie posiadają zezwolenia na wysyłanie wiadomości do wszystkich uczestników czata. 
+Unaffiliate	Odbierz przynależność 
+Grant Moderator	Daj Moderatora 
+Revoke Moderator	Odbierz Moderatora 
+Grant Admin	Daj Administratora 
+Grant Ownership	Daj Właściciela 
+room presences	Uczestnicy pokoju 
+ is now known as 	 zmienił pseudonim i nazywa się teraz: 
+ was banned 	 został zablokowany 
+ was kicked 	 został wyrzucony 
+ has been kicked because room became members-only	 został wyrzucony, ponieważ pokój jest tylko dla klubowiczów 
+ has left the channel	 opuścił czat
+ has joined the channel as 	 wszedł na czat i jest w tym pokoju: 
+ and 	 i 
+ is now 	 jest teraz: 
+Participants	Uczestnicy 
+Abc	Аbc 
+online	Dostępny 
+error	Błąd 
+chat	Czat 
+away	Nieobecny 
+xa	Zaraz wracam 
+dnd	Nie przeszkadzać 
+invisible	Niewidoczny 
+offline	Rozłączony 
+Clear Photo	Usuń Zdjęcie 
+Camera	Kamera 
+Load Photo	Wybierz Zdjęcie 
+Hide finished	Ukryj przesłane 
+Transfer tasks	Przesłane pliki 
+Color tune	Ustawienia kolorów 
+Load Scheme	Załaduj skórkę 
+Select history folder	Wybierz folder Historii 
+Classic chat	Klasyczny Czat 
+Sound volume	Głośność dźwięku 
+Language	Język 
+Save history	Zapisuj historię 
+Save presences	Zapisz obecność 
+Save conference history	Zapisz czat 
+Save conference presences	Zapisz obecność czata 
+1251 correction	Korekcja Windows 1251 
+History folder	Folder Historii 
+Copy	Kopiuj 
+Paste	Wklej 
+Save template	Do Notatek 
+Template	Notatki 
+has set topic to	ustawił temat na:
+Seen	Aktywny 
+Time	Czas użytkownika 
+Main menu	Menu 
+Root	Przegląd dysku 
+File transfers	Transfer plików 
+Choose status	Wybierz Status 
+Add status	Dodaj Status 
+Remove status	Usuń Status 
+User	Użytkownik 
+Reason	Powód 
+Address	Adres serwera: 
+Export to file	Eksportuj do pliku 
+View	Podgląd 
+Stop	Zatrzymaj 
+Path	Przeglądaj 
+Select file	Wybierz plik 
+Accept file	Akceptuj plik 
+File	Plik: 
+Save To	Zapisz do 
+Sender	Nadawca: 
+Size	Rozmiar: 
+Description	Szczegóły: 
+Rejected	Odrzucono 
+Send file	Wyślij plik 
+To	Do 
+Can't open file	Nie można otworzyć pliku 
+New	Nowa 
+New Template	Nowa Notatka 
+Save photo	Zapisz zdjęcie 
+User has removed autorization	[Użytkownik odebrał Autoryzację] 
+You are now autorized	[Jesteś teraz Autoryzowany] 
+User request autorization	[Użytkownik pyta o Autoryzację] 
+Grant Membership	Daj Klubowicza 
+Reply	Odpisz 
+Save template	Zapisz Notatkę 
+balloon ink	Czcionka dymku 
+balloon background	Tło dymku 
+messagelist & roster background	Lista, Roster, Tło 
+messagelist & roster even lines	Kolejna Wiadomość 
+messagelist & roster & common font	Czcionka Kolumny 
+message subject	Czcionka Tematu 
+message highlight	Czcionka Wiadomości Systemu 
+service discovery commands	Czcionka Serwera 
+Header & Bottom background	Góra i Dół Panelu 
+Header font	Czcionka Panela 
+contact default	Kontakt Dostępny 
+contact chat	Kontakt Czat 
+contact away	Kontakt Nieobecny 
+contact extended away	Kontakt Zaraz Wracam 
+contact do not disturb	Kontakt Nie Przeszkadzać 
+group color	Kolor Grupy 
+keylock font	Kolor Czcionki Blokady Klawiatury 
+keylock background	Tło Blokady Klawiatury 
+message incoming	Wiadomość Przychodząca 
+message outgoing	Wiadomość Wychodząca 
+message presence	Wiadomość Obecności 
+message auth	Wiadomość Autoryzacji 
+message history	Wiadomość Historii 
+progress bar remained	W trakcie Początek 
+progress bar complete	W trakcie Koniec 
+progress border	W trakcie Wygląd 
+progress bar background	W trakcie Tło 
+Heap mon total	Monitor Pamięci Pełny 
+Heap mon free	Monitor Pamięci Wolny 
+Cursor background	Tło Kursora 
+Cursor ink & outline	Czcionka i obramowanie Kursora 
+Scroll border	Pasek Obraz 
+Scroll bar	Pasek Baneru 
+Scroll back	Pasek Powrót 
+Send status	Pokaż status 
+Sounds options	Ustawienia dźwięku 
+participant	uczestnikiem
+moderator	moderatorem
+visitor	wizytorem
+none	osobą bez przynależności
+member	klubowiczem
+admin	administratorem
+owner	właścicielem
+Opening stream	Otwieranie strumienia
+Using compression	Użycie kompresji danych
+Authenticating	Identyfikowanie użytkownika
+Resource binding	Uwierzytelnienie z serwera
+Initiating session	Inicjowanie sesji
+second	sekunda
+seconds	sekundy
+seconds_	sekund
+minute	minuta
+minutes	minuty
+minutes_	minut
+hour	godzina
+hours	godziny
+hours_	godzin
+week	tydzień
+weeks	tygodnie
+weeks_	tygodni
+day	dzień
+days	dni
+days_	dni
+month	miesiąc
+months	miesiące
+months_	miesięcy
+year	rok
+years	lata
+years_	lat
+Auto xa since %t	Automatyczny status (Zaraz wracam) z powodu bezczynności od: %t
+Auto away since %t	Automatyczny status (Nieobecny) z powodu braku aktywności od: %t
+Auto Status on KeyLock since %t	Automatyczny ststus (Nieibecny) z powodu blokady klawiatury od: %t
+Grant Membership	Daj Klubowicza
+SASL login	SASL Strumień
+Features	Szczegóły
+Show password	Pokaż hasło
+No client version available	[Funkcja wersji klienta i oprogramowania nie jest w tej chwili dostępna]
+Message limit	Limit wiadomości
+Text wrapping	Zawijanie tekstu
+by chars	przez znaki
+by words	przez słowa
+Info	Info
+No reason	Bez powodu
+Recent	Poprzednie
+Are you sure want to delete this message?	Czy jesteś pewien, aby usunąć tą wiadomość
+New conference	Nowy czat
+authorize new contacts	Automatyczne Autoryzowanie
+[auto-subscribe]	[Automatyczne Autoryzowanie]
+Keep-Alive	Typ podtrzymania połączenia
+Minutes before away	Czas włączenia automatycznego statusu (min)
+Automatic Away	Аuto odejście
+disabled	Wyłączone
+keyblock / flip	Blokada klawiatury / Przycisk
+Idle	Bezczynny
+Remove readed	Wyczyść okienko
+Rename	Zmień nazwę

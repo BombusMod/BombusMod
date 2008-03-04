@@ -1,0 +1,534 @@
+Index: resources/adsky/images/font.png
+===================================================================
+Cannot display: file marked as a binary type.
+svn:mime-type = application/octet-stream
+
+Property changes on: resources\adsky\images\font.png
+___________________________________________________________________
+Name: svn:mime-type
+   + application/octet-stream
+
+Index: src/ui/controls/Balloon.java
+===================================================================
+--- src/ui/controls/Balloon.java	(revision 602)
++++ src/ui/controls/Balloon.java	(working copy)
+@@ -24,24 +24,20 @@
+  * along with this library; if not, write to the Free Software
+  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+  */
+-
+ package ui.controls;
+ 
+-import javax.microedition.lcdui.Font;
++import ui.font.myFont;
+ import javax.microedition.lcdui.Graphics;
+ import ui.ColorScheme;
+-import ui.FontCache;
+ 
+ public class Balloon {
+-    private static Font f;
++    private static myFont f=new myFont();;
+     
+     public static int getHeight(){
+-        f=FontCache.getBalloonFont();
+-        return f.getHeight()+3;
++        return f.font_height+3;
+     }
+     
+     public static void draw(Graphics g, String text) {
+-        g.setFont(f);
+         int height=getHeight();
+         int width=f.stringWidth(text)+6;
+         
+@@ -56,6 +52,8 @@
+         
+         g.setColor(ColorScheme.BALLOON_INK);
+         g.drawRect(2, 0, width-1, height-1);
+-        g.drawString(text, 5, 2, Graphics.TOP | Graphics.LEFT);
++        
++        f.DrawStr( g, text, 5, 2, 0xff4866ad, 0x00000000);
++        //g.drawString(text, 5, 2, Graphics.TOP | Graphics.LEFT);
+     }
+ }
+Index: src/ui/controls/PopUp.java
+===================================================================
+--- src/ui/controls/PopUp.java	(revision 602)
++++ src/ui/controls/PopUp.java	(working copy)
+@@ -28,17 +28,16 @@
+ package ui.controls;
+ 
+ import java.util.Vector;
+-import javax.microedition.lcdui.Font;
+ import javax.microedition.lcdui.Graphics;
+ import ui.ColorScheme;
+-import ui.FontCache;
++import ui.font.myFont;
+ 
+ public class PopUp {
+     private int popUpHeight, popUpWidth, widthBorder, heightBorder;
+     private int border=8;
+     private int padding=4;
+     
+-    private Font font;
++    private static myFont font=new myFont();
+     
+     private static String wrapSeparators=" .,-=/\\;:+*()[]<>~!@#%^_&";
+     private boolean wordsWrap;
+@@ -50,16 +49,15 @@
+     private Vector messages = new Vector(); 
+ 
+     synchronized public void setMessage(String message){
++        //System.out.println("added message to array = "+message);
+         if (message!=null)
+             messages.addElement(parseMessage(message, width-border-padding));
+ //#ifdef DEBUG
+-//# //	System.out.println("added message to array = "+message);
++//# 	System.out.println("added message to array = "+message);
+ //#endif
+     }
+ 
+-    public PopUp() {
+-        font=FontCache.getBalloonFont();
+-    }
++    public PopUp() { }
+     
+     public void next() {
+         if(messages.size()>0){
+@@ -72,10 +70,9 @@
+             messages.removeAllElements();
+     }
+ 
+-    private Vector parseMessage(String str, int stringWidth) {
++    private Vector parseMessage(String txt, int stringWidth) {
+         Vector lines=new Vector();
+         int state=0;
+-        String txt=str;
+         
+         while (state<1) {
+             int w=0;
+@@ -94,7 +91,7 @@
+ 
+                 int cw=font.charWidth(c);
+                 if (c!=0x20) {
+-                    boolean newline= ( c==0x0d || c==0x0a /*|| c==0xa0*/ );
++                    boolean newline= ( c==0x0d || c==0x0a);
+                     if (wordWidth+cw>stringWidth || newline) {
+                         s.append(txt.substring(wordStartPos,pos));
+                         w+=wordWidth;
+@@ -104,6 +101,9 @@
+                     }
+                     if (w+wordWidth+cw>stringWidth || newline) {
+                         lines.addElement(s.toString()); //lastest string in l
++//#ifdef DEBUG
++//#                         System.out.println("added lastest line to array = "+s.toString());
++//#endif
+                         s.setLength(0); w=0;
+                     }
+                 }
+@@ -126,9 +126,13 @@
+ 		s.append(txt.substring(wordStartPos,pos));
+             if (s.length()>0) {
+                 lines.addElement(s.toString());
++//#ifdef DEBUG
++//#                  System.out.println("added line to array = "+s.toString());
++//#endif
+             }
+             
+-            if (lines.isEmpty()) lines.removeElementAt(lines.size()-1);  //lastest string
++            if (lines.isEmpty())
++                lines.removeElementAt(lines.size()-1);  //lastest string
+             state++;
+             
+             s=null;
+@@ -144,14 +148,14 @@
+ 
+ 	for (int line=0; line<lines.size(); ) 
+ 	{
+-            g.drawString((String) lines.elementAt(line), x, y, Graphics.TOP|Graphics.LEFT);
++            //font.DrawStr( g, (String)lines.elementAt(line), x, y, 0xff4866ad, 0x00000000);
+             line=line+1;
+             y += fh;
+ 	}
+     }
+     
+     private int getFontHeight() {
+-        return font.getHeight();
++        return font.font_height;
+     }
+ 
+     private int getHeight() {
+@@ -219,7 +223,7 @@
+         g.fillRect(1,1,popUpWidth-2,popUpHeight-2);                 //fill
+         
+         g.setColor(ColorScheme.BALLOON_INK);
+-        g.setFont(font);
++        //g.setFont(font);
+         
+         drawAllStrings(g, 2,3);
+     }
+Index: src/ui/font/myFont.java
+===================================================================
+--- src/ui/font/myFont.java	(revision 0)
++++ src/ui/font/myFont.java	(revision 0)
+@@ -0,0 +1,178 @@
++//import javax.microedition.midlet.*;
++//import javax.microedition.io.*;
++//import javax.microedition.lcdui.game.Sprite;
++package ui.font;
++
++import javax.microedition.lcdui.*;
++
++
++public class myFont {
++    public  int[] obr_f;            // образ шрифта
++    public  int w_font;             // ширина 
++    public  int h_font;             // высота
++    protected  int[] w_sym;         // ширина символа в фонте
++    protected  int[] of_sym;        // смещение символа в фонте    
++    public  int n_sym;              // число символов в шрифте
++    public  int font_height;        // высота символа
++    public boolean f_load = false;  // загрузка шрифта закончена
++    private int blanc;              // пустой пиксел
++
++    public myFont() 
++    {  
++        Image im_font = null;
++        try { im_font = Image.createImage("/images/font.png");     // загруз шрифта
++        w_font = im_font.getWidth();								
++        h_font = im_font.getHeight();} 
++	catch( Exception eio){  };
++        font_height = h_font - 2;				// реально высота шрифт меньше
++        obr_f = new int[w_font * h_font];
++        im_font.getRGB( obr_f, 0, w_font, 0, 0, w_font, h_font);// в массив
++        im_font = null;                                         // кирдык  image
++	// определяем число символов в шрифте								
++        int adr = w_font * (h_font - 1);                        // начало меток
++        blanc = obr_f[0];					// прозрачный пиксел
++        n_sym = 0;
++        for ( int i=0; i<w_font; i++)                           
++            if ( obr_f [adr+i] != blanc)                        // ? метка конца символа 
++                n_sym++;
++        w_sym  = new int[n_sym + 1];
++        of_sym = new int[n_sym + 1];         
++        int k = adr - 1;
++        int m;
++        int ni = 0;
++        int ni_adr = 1;
++        of_sym[0] = 0; 
++	// запись параметров каждого символа в массив параметров шрифта
++        for ( int j=0; j<w_font; j++)              
++            if (  obr_f[adr+j] != blanc)
++            {
++                m = adr+j;
++                w_sym[ni] = m - k;                  // запись ширины символа
++                if ( ni_adr < n_sym)
++                    of_sym[ni_adr] = j + 1;         // запись адреса начала отображения символа
++                k = m;
++                ni++;
++                ni_adr++;
++            }
++        f_load = true;	// шрифт загружен					
++     }
++    // простая отрисовка строки
++    public void DrawStr( Graphics g, String str, int x, int y)
++    {
++        if ( f_load)
++        {
++            int key;
++            int l = str.length();
++            for (int i=0; i<l; i++)
++            { 
++                key = (int)str.charAt(i);
++                if ( key >= 1000) 
++                    key -= 880;
++                else 
++                    key -= 32;
++                g.drawRGB( obr_f, of_sym[key], w_font, x, y, w_sym[key], font_height,  true);
++                x += w_sym[key]; 
++            }
++        }
++    }
++    
++    // вычисление ширины строки
++    public int stringWidth(String str)
++    {
++        int x=0;
++        if ( f_load)
++        {
++            int key;
++            int l = str.length();
++            for (int i=0; i<l; i++)
++            { 
++                key = (int)str.charAt(i);
++                if ( key >= 1000) 
++                    key -= 880;
++                else 
++                    key -= 32;
++                
++                x += w_sym[key]; 
++            }
++        }
++        return x;
++    }
++    
++    // вычисление ширины символа
++    public int charWidth(char c)
++    {
++        int x=0;
++        int key = (int)c;
++        if ( f_load)
++        {
++            if ( key >= 1000) 
++                key -= 880;
++            else 
++                key -= 32;
++                
++             x= w_sym[key]; 
++        }
++        return x;
++    }
++    
++    
++    // отрисовка строки цветом - f_acolor на фоне - b_acolor с учетом прозрачности, формат AARRGGBB
++    public void DrawStr( Graphics g, String str, int x, int y, int f_acolor, int b_acolor )
++    {
++        if ( f_load)
++        {
++            int key;
++            int l = str.length();
++            int z = w_font * font_height;
++            int[] color_f = new int[z];
++            java.lang.System.arraycopy( obr_f, 0, color_f, 0, z);
++            for ( int i=0; i<z; i++)
++                if ( color_f[i] != blanc)
++                    color_f[i] = f_acolor;
++                else
++                    color_f[i] = b_acolor;                
++            for (int i=0; i<l; i++)
++            { 
++                key = (int)str.charAt(i);
++                if ( key >= 1000) 
++                    key -= 880;
++                else 
++                    key -= 32;
++                g.drawRGB( color_f, of_sym[key], w_font, x, y, w_sym[key], font_height,  true);
++                x += w_sym[key]; 
++            }
++        }
++    }
++    
++    // lf - промежуток между строками
++     public void DrawText( Graphics g, String str, int x, int y, int lf)
++    {
++        int x0 = x;
++        if ( f_load)
++        {
++            int key;
++            int l = str.length();
++            for (int i=0; i<l; i++)
++            { 
++                key = (int)str.charAt(i);
++                if ( key == (int) '\n')
++                {
++                    x = x0;
++                    y += (font_height + lf);
++                    continue;
++                }
++                if ( key == (int) '\t')
++                {
++                    x += w_sym[key]*4;
++                    continue;
++                }                
++                if ( key >= 1000) 
++                    key -= 880;
++                else 
++                    key -= 32;
++                g.drawRGB( obr_f, of_sym[key], w_font, x, y, w_sym[key], font_height,  true);
++                x += w_sym[key]; 
++            }
++        }
++    }
++}
+Index: src/ui/font/myFont.java
+===================================================================
+--- src/ui/font/myFont.java	(revision 0)
++++ src/ui/font/myFont.java	(revision 0)
+@@ -0,0 +1,178 @@
++//import javax.microedition.midlet.*;
++//import javax.microedition.io.*;
++//import javax.microedition.lcdui.game.Sprite;
++package ui.font;
++
++import javax.microedition.lcdui.*;
++
++
++public class myFont {
++    public  int[] obr_f;            // образ шрифта
++    public  int w_font;             // ширина 
++    public  int h_font;             // высота
++    protected  int[] w_sym;         // ширина символа в фонте
++    protected  int[] of_sym;        // смещение символа в фонте    
++    public  int n_sym;              // число символов в шрифте
++    public  int font_height;        // высота символа
++    public boolean f_load = false;  // загрузка шрифта закончена
++    private int blanc;              // пустой пиксел
++
++    public myFont() 
++    {  
++        Image im_font = null;
++        try { im_font = Image.createImage("/images/font.png");     // загруз шрифта
++        w_font = im_font.getWidth();								
++        h_font = im_font.getHeight();} 
++	catch( Exception eio){  };
++        font_height = h_font - 2;				// реально высота шрифт меньше
++        obr_f = new int[w_font * h_font];
++        im_font.getRGB( obr_f, 0, w_font, 0, 0, w_font, h_font);// в массив
++        im_font = null;                                         // кирдык  image
++	// определяем число символов в шрифте								
++        int adr = w_font * (h_font - 1);                        // начало меток
++        blanc = obr_f[0];					// прозрачный пиксел
++        n_sym = 0;
++        for ( int i=0; i<w_font; i++)                           
++            if ( obr_f [adr+i] != blanc)                        // ? метка конца символа 
++                n_sym++;
++        w_sym  = new int[n_sym + 1];
++        of_sym = new int[n_sym + 1];         
++        int k = adr - 1;
++        int m;
++        int ni = 0;
++        int ni_adr = 1;
++        of_sym[0] = 0; 
++	// запись параметров каждого символа в массив параметров шрифта
++        for ( int j=0; j<w_font; j++)              
++            if (  obr_f[adr+j] != blanc)
++            {
++                m = adr+j;
++                w_sym[ni] = m - k;                  // запись ширины символа
++                if ( ni_adr < n_sym)
++                    of_sym[ni_adr] = j + 1;         // запись адреса начала отображения символа
++                k = m;
++                ni++;
++                ni_adr++;
++            }
++        f_load = true;	// шрифт загружен					
++     }
++    // простая отрисовка строки
++    public void DrawStr( Graphics g, String str, int x, int y)
++    {
++        if ( f_load)
++        {
++            int key;
++            int l = str.length();
++            for (int i=0; i<l; i++)
++            { 
++                key = (int)str.charAt(i);
++                if ( key >= 1000) 
++                    key -= 880;
++                else 
++                    key -= 32;
++                g.drawRGB( obr_f, of_sym[key], w_font, x, y, w_sym[key], font_height,  true);
++                x += w_sym[key]; 
++            }
++        }
++    }
++    
++    // вычисление ширины строки
++    public int stringWidth(String str)
++    {
++        int x=0;
++        if ( f_load)
++        {
++            int key;
++            int l = str.length();
++            for (int i=0; i<l; i++)
++            { 
++                key = (int)str.charAt(i);
++                if ( key >= 1000) 
++                    key -= 880;
++                else 
++                    key -= 32;
++                
++                x += w_sym[key]; 
++            }
++        }
++        return x;
++    }
++    
++    // вычисление ширины символа
++    public int charWidth(char c)
++    {
++        int x=0;
++        int key = (int)c;
++        if ( f_load)
++        {
++            if ( key >= 1000) 
++                key -= 880;
++            else 
++                key -= 32;
++                
++             x= w_sym[key]; 
++        }
++        return x;
++    }
++    
++    
++    // отрисовка строки цветом - f_acolor на фоне - b_acolor с учетом прозрачности, формат AARRGGBB
++    public void DrawStr( Graphics g, String str, int x, int y, int f_acolor, int b_acolor )
++    {
++        if ( f_load)
++        {
++            int key;
++            int l = str.length();
++            int z = w_font * font_height;
++            int[] color_f = new int[z];
++            java.lang.System.arraycopy( obr_f, 0, color_f, 0, z);
++            for ( int i=0; i<z; i++)
++                if ( color_f[i] != blanc)
++                    color_f[i] = f_acolor;
++                else
++                    color_f[i] = b_acolor;                
++            for (int i=0; i<l; i++)
++            { 
++                key = (int)str.charAt(i);
++                if ( key >= 1000) 
++                    key -= 880;
++                else 
++                    key -= 32;
++                g.drawRGB( color_f, of_sym[key], w_font, x, y, w_sym[key], font_height,  true);
++                x += w_sym[key]; 
++            }
++        }
++    }
++    
++    // lf - промежуток между строками
++     public void DrawText( Graphics g, String str, int x, int y, int lf)
++    {
++        int x0 = x;
++        if ( f_load)
++        {
++            int key;
++            int l = str.length();
++            for (int i=0; i<l; i++)
++            { 
++                key = (int)str.charAt(i);
++                if ( key == (int) '\n')
++                {
++                    x = x0;
++                    y += (font_height + lf);
++                    continue;
++                }
++                if ( key == (int) '\t')
++                {
++                    x += w_sym[key]*4;
++                    continue;
++                }                
++                if ( key >= 1000) 
++                    key -= 880;
++                else 
++                    key -= 32;
++                g.drawRGB( obr_f, of_sym[key], w_font, x, y, w_sym[key], font_height,  true);
++                x += w_sym[key]; 
++            }
++        }
++    }
++}
