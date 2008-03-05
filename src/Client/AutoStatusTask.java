@@ -75,9 +75,6 @@ public class AutoStatusTask implements Runnable {
 //#                 StaticData.getInstance().roster.setAutoXa();
 //#endif
             }
-
-            //if (timeAwayRemained<0) continue;
-            //if (timeXaRemained<0) continue;
         }
     }
 

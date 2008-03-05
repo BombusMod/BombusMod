@@ -30,11 +30,7 @@ package Info;
 import locale.SR;
 
 public class Version {
-//#if (!ZLIB)
-//#     public final static String version="$BOMBUSVERSION$";
-//#else
-    public final static String version="$BOMBUSVERSION$-dev";
-//#endif
+    public final static String version="$BOMBUSVERSION$";
     
     public final static String NAME="BombusMod";
     

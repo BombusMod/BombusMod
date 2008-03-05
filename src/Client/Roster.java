@@ -77,7 +77,7 @@ public class Roster
     private Command cmdStatus=new Command(SR.MS_STATUS_MENU, Command.SCREEN, 2);
     private Command cmdActiveContacts;//=new Command(SR.MS_ACTIVE_CONTACTS, Command.SCREEN, 3);
 //#ifdef MOOD
-//#     private Command cmdUserMood=new Command(SR.MS_USER_MOOD, Command.SCREEN, 7);
+//#     //private Command cmdUserMood=new Command(SR.MS_USER_MOOD, Command.SCREEN, 7);
 //#endif
     private Command cmdAlert=new Command(SR.MS_ALERT_PROFILE_CMD, Command.SCREEN, 8);
 //#ifndef WMUC
@@ -225,15 +225,6 @@ public class Roster
 //#          }
 //#endif
     }
-    
-//#ifdef MOOD
-//#     public void addMoodCommand(){
-//#ifdef NEW_MENU
-//#         if (!cf.newMenu)
-//#endif
-//#             addCommand(cmdUserMood);
-//#     }
-//#endif
     
     public void addMenuCommands(){
 //#ifdef NEW_MENU
@@ -2419,9 +2410,7 @@ public class Roster
 //#         setWobbler(null);
 //#         redraw();
 //#     }
-//#endif
-    
-//#ifdef POPUPS
+//# 
 //#     public void setWobbler(String info) {
 //#         StringBuffer mess=new StringBuffer();
 //#         
@@ -2478,7 +2467,7 @@ public class Roster
 //#                 mess.append("\n");
 //#                 mess.append(SR.MS_USER_MOOD);
 //#                 mess.append(": ");
-//#                 mess.append(contact.getUserMood());
+//#                 mess.append(contact.getUserMoodLocale());
 //#                 if (contact.getUserMoodText()!="") {
 //#                     mess.append(" (");
 //#                     mess.append(contact.getUserMoodText());
@@ -2504,7 +2493,7 @@ public class Roster
         try {
              Stats.getInstance().save();
         } catch (Exception e) { }
-    };
+    }
 
     public void quit() {
 //#ifdef AUTOSTATUS
@@ -2515,9 +2504,6 @@ public class Roster
 //#         if (cf.phoneManufacturer==Config.SONYE)
 //#             selight.destroyTask();
 //#endif
-        //cf.isbottom=VirtualList.isbottom; //save panels state on exit       
-        //cf.saveToStorage();
-
         destroyView();
         logoff();
 
@@ -2528,13 +2514,9 @@ public class Roster
 //#ifdef AUTOSTATUS
 //#         userActivity();
 //#endif
-        if (c==cmdQuit) { cmdQuit(); }
+        if (c==cmdActions) { cmdActions(); }
         else if (c==cmdMinimize) { cmdMinimize();  }
-        
-        else if (c==cmdActiveContacts) {
-            cmdActiveContacts();
-        }
-        
+        else if (c==cmdActiveContacts) { cmdActiveContacts(); }
         else if (c==cmdAccount){ cmdAccount(); }
         else if (c==cmdStatus) { cmdStatus(); }
         else if (c==cmdAlert) { cmdAlert(); }
@@ -2542,26 +2524,13 @@ public class Roster
 //# 	else if (c==cmdArchive) { cmdArchive(); }
 //#endif
         else if (c==cmdInfo) { cmdInfo(); }
-
         else if (c==cmdTools) { cmdTools(); }
-        
-        else if (c==cmdCleanAllMessages) { cmdCleanAllMessages(); }    
-        
-//#ifdef MOOD
-//#         else if (c==cmdUserMood) { cmdUserMood(); }
-//#endif  
+        else if (c==cmdCleanAllMessages) { cmdCleanAllMessages(); }     
 //#ifndef WMUC
-        else if (c==cmdConference) { 
-            cmdConference();
-        }
+        else if (c==cmdConference) { cmdConference(); }
 //#endif
-        else if (c==cmdActions) {
-            cmdActions();
-        }
-        
-        else if (c==cmdAdd) {
-            cmdAdd();
-        }
+        else if (c==cmdQuit) { cmdQuit(); }
+        else if (c==cmdAdd) { cmdAdd(); }
     }
     
 //menu actions
@@ -2604,7 +2573,7 @@ public class Roster
                 if (cn.getGroupType()!=Groups.TYPE_NOT_IN_LIST && cn.getGroupType()!=Groups.TYPE_SEARCH_RESULT) cn=null;
             }
 //#ifndef WMUC
-            if (o instanceof MucContact) { cn=(Contact)o; }
+            if (o instanceof MucContact) cn=(Contact)o;
 //#endif
             new ContactEdit(display, cn);
        }

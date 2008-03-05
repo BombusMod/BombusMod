@@ -42,15 +42,14 @@ public class MoodSelect extends VirtualList implements CommandListener, Runnable
     private Command cmdEdit=new Command(SR.MS_EDIT,Command.SCREEN,2);
     private Command cmdCancel=new Command(SR.MS_CANCEL,Command.BACK,99);
 
-//    private Contact to;
-    
     private Config cf=Config.getInstance();
-     
-    public MoodSelect(Display d/*, Contact to*/) {
+    
+    private static Vector moodList=new Vector();
+            
+    public MoodSelect(Display d) {
         super();
-        fillList();
-//        this.to=to;
-        
+        moodList = MoodList.getInstance().moodList;
+
         setMainBarItem(new MainBar(SR.MS_STATUS));
 
         addCommand(cmdOk);
@@ -90,34 +89,6 @@ public class MoodSelect extends VirtualList implements CommandListener, Runnable
         return moodList.size();
     }
 
-    public Vector moodList=new Vector();
-    
-    public static final String initMoods = "afraid.amazed.angry.annoyed.anxious.aroused.ashamed.bored.brave.calm.cold.confused.contented.cranky.curious.depressed.disappointed.disgusted.distracted.embarrassed.excited.flirtatious.frustrated.grumpy.guilty.happy.hot.humbled.humiliated.hungry.hurt.impressed.in_awe.in_love.indignant.interested.intoxicated.invincible.jealous.lonely.mean.moody.nervous.neutral.offended.playful.proud.relieved.remorseful.restless.sad.sarcastic.serious.shocked.shy.sick.sleepy.stressed.surprised.thirsty.worried.";
-   
-    private void fillList() {
-        try {
-            int p=0; int pos=0;
-            while (pos<initMoods.length()) {
-               p=initMoods.indexOf('.', pos);
-               String mood=initMoods.substring(pos, p);
-               moodList.addElement(new Mood(mood, loadString(mood)));
-               pos=p+1;
-            }
-        } catch (Exception ex) { }
-        localeMood=null;
-    }
-
-    private static Hashtable localeMood;
-    
-    private static String loadString(String key) {
-        if (localeMood==null) {
-            localeMood=new StringLoader().hashtableLoader("/moods/moods.txt");
-        }
-        String value=(String)localeMood.get(key);
-        return (value==null)?key:value;
-    }
-
-
     class MoodForm implements CommandListener{
         private Display display;
         public Displayable parentView;
@@ -150,9 +121,7 @@ public class MoodSelect extends VirtualList implements CommandListener, Runnable
         
         public void commandAction(Command c, Displayable d){
             if (c==cmdOk) {
-                //System.out.println(mood.getName()+" "+mood.getMessage());
                 StaticData.getInstance().roster.theStream.send(new IqMood(null,"publish1",mood.getName(),tfMessage.getString()));
-                
                 goToRoster();
             } else {
                 destroyView();

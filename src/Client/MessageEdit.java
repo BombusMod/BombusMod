@@ -103,9 +103,13 @@ public class MessageEdit
         this.display=display;
         parentView=display.getCurrent();
 
-        t=new TextBox(null, "", 500, TextField.ANY);
-        setTicker(to.toString());
-
+        if (cf.notifyWhenMessageType) {
+            t=new TextBox(null, "", 500, TextField.ANY);
+            setTicker(to.toString());
+        } else {
+            t=new TextBox(to.toString(), "", 500, TextField.ANY);
+        }
+        
         this.subject=to.toString();
 		
         try {

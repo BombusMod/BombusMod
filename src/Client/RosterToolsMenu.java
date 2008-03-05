@@ -34,6 +34,7 @@ package Client;
 //#endif
 //#if (FILE_IO && HISTORY)
 //# import History.HistoryConfig;
+//# import UserMood.MoodSelect;
 //#endif
 import javax.microedition.lcdui.Display;
 import locale.SR;
@@ -60,44 +61,48 @@ public class RosterToolsMenu
 //#ifdef PRIVACY
 //#         addItem(SR.MS_PRIVACY_LISTS, 1, 0x46);
 //#endif
-        addItem(SR.MS_MY_VCARD, 2, 0x0f16);
-        addItem(SR.MS_OPTIONS, 3, 0x0f03);
+//#ifdef MOOD
+//#         if (StaticData.getInstance().roster.useUserMood)
+//#             addItem(SR.MS_USER_MOOD, 2, 0x0f16);
+//#endif
+        addItem(SR.MS_MY_VCARD, 3, 0x0f16);
+        addItem(SR.MS_OPTIONS, 4, 0x0f03);
 //#if (FILE_IO && HISTORY)
-//#         addItem(SR.MS_HISTORY_OPTIONS, 4, 0x0f01);
+//#         addItem(SR.MS_HISTORY_OPTIONS, 5, 0x0f01);
 //#endif
         
 //#if (FILE_IO)
-        addItem(SR.MS_ROOT,5, 0x0f10);
+        addItem(SR.MS_ROOT,6, 0x0f10);
 //#endif
 //#if (FILE_IO && FILE_TRANSFER)
-//#         addItem(SR.MS_FILE_TRANSFERS, 6, 0x0f34);
+//#         addItem(SR.MS_FILE_TRANSFERS, 7, 0x0f34);
 //#endif
 //#ifdef COLORS
-//#         addItem(SR.MS_COLOR_TUNE, 7, 0x0f25);
+//#         addItem(SR.MS_COLOR_TUNE, 8, 0x0f25);
 //#endif
 //#if IMPORT_EXPORT
-//#         addItem(SR.MS_IMPORT_EXPORT, 8, 0x0f03);
+//#         addItem(SR.MS_IMPORT_EXPORT, 9, 0x0f03);
 //#endif
-        addItem(SR.MS_NOTICES_OPTIONS, 9, 0x0f17);
+        addItem(SR.MS_NOTICES_OPTIONS, 10, 0x0f17);
 //#ifdef POPUPS
-//#         addItem(SR.MS_STATS, 10, 0x0f30);
+//#         addItem(SR.MS_STATS, 11, 0x0f30);
 //#endif
 //#ifdef CHECK_VERSION
-//#         addItem(SR.MS_CHECK_UPDATE, 11, 0x46);
+//#         addItem(SR.MS_CHECK_UPDATE, 12, 0x46);
 //#endif
 //#ifdef USER_KEYS
 //#         if (Config.getInstance().userKeys)
-//#             addItem(SR.MS_CUSTOM_KEYS, 12, 0x0f03);
+//#             addItem(SR.MS_CUSTOM_KEYS, 13, 0x0f03);
 //#endif
 //#if SASL_XGOOGLETOKEN
         if (StaticData.getInstance().account.isGmail())
-            addItem(SR.MS_CHECK_GOOGLE_MAIL, 13,0x46);
+            addItem(SR.MS_CHECK_GOOGLE_MAIL, 14,0x46);
 //#endif        
 /*		
         addItem("ArchiveDump", 10);
 */        
         
-        addItem(SR.MS_BREAK_CONECTION, 14, 0x13);
+        addItem(SR.MS_BREAK_CONECTION, 15, 0x13);
         attachDisplay(display);
     }
     public void eventOk(){
@@ -117,7 +122,11 @@ public class RosterToolsMenu
 //#                 if (connected) new PrivacySelect(display);
 //#                 break;
 //#endif
-            case 2: {
+            case 2:
+                if (! connected) break;
+                new MoodSelect(display);
+                return;
+            case 3: {
                 if (! connected) break;
                 Contact c=StaticData.getInstance().roster.selfContact();
                 if (c.vcard!=null) {
@@ -127,55 +136,55 @@ public class RosterToolsMenu
                 VCard.request(c.getBareJid(), c.getJid());
                 return;
             }
-            case 3:
+            case 4:
                 new ConfigForm(display);
                 return;
 //#if (HISTORY)
-//#             case 4: //history
+//#             case 5: //history
 //#                 new HistoryConfig(display);
 //#                 return;
 //#endif 
 //#if (FILE_IO)
-            case 5:
+            case 6:
                 new io.file.browse.Browser(null, display, null, false);
                 return;
 //#endif
 //#if (FILE_TRANSFER)
-//#             case 6:
+//#             case 7:
 //#                 new io.file.transfer.TransferManager(display);
 //#                 return;
 //#endif
 //#ifdef COLORS
-//#             case 7:
+//#             case 8:
 //#                 new ColorForm(display);
 //#                 return;
 //#endif
 //#if IMPORT_EXPORT
-//#             case 8:
+//#             case 9:
 //#                 new IE.IEMenu(display);
 //#                 return; 
 //#endif
-            case 9:
+            case 10:
                 new AlertCustomizeForm(display);
                 return;
 //#ifdef POPUPS
-//#             case 10: //traffic stats
+//#             case 11: //traffic stats
 //#                 StaticData.getInstance().roster.showStats();
 //#                 return;
 //#endif
 //#ifdef CHECK_VERSION
-//#             case 11:
+//#             case 12:
 //#                 if (! connected) break;
 //#                 new util.LastVersion(display);
 //#                 return;
 //#endif
 //#ifdef USER_KEYS
-//#             case 12:
+//#             case 13:
 //#                 new userKeysList(display);
 //#                 return;
 //#endif
 //#if SASL_XGOOGLETOKEN
-            case 13: //mail check
+            case 14: //mail check
                 StaticData.getInstance().roster.sendGmailReq();;
 		return; 
 //#endif
@@ -184,7 +193,7 @@ public class RosterToolsMenu
                 new archive.DebugDumpArchive(display);
                 return;
 */
-            case 14:
+            case 15:
                 StaticData.getInstance().roster.connectionTerminated(new Exception("Simulated break"));
                 return;
         }

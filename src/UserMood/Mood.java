@@ -25,7 +25,7 @@
 
 package UserMood;
 
-import images.SmilesIcons;
+import images.MoodIcons;
 import locale.SR;
 import ui.ColorScheme;
 import ui.IconTextElement;
@@ -35,10 +35,13 @@ public class Mood extends IconTextElement {
     private String name;
     private String locale;
 
-    public Mood(String name, String locale) {
-        super(SmilesIcons.getInstance());
+    private int id;
+
+    public Mood(int id, String name, String locale) {
+        super(MoodIcons.getInstance());
         this.name=name;
         this.locale=locale;
+        this.id=id;
     }
     
     public String toString(){
@@ -57,5 +60,5 @@ public class Mood extends IconTextElement {
 //#         }
 //#endif
 
-    public int getImageIndex(){ return -1;}
+    public int getImageIndex(){ return id;}
 }

@@ -37,6 +37,7 @@ import Conference.MucContact;
 
 //#if (FILE_IO && HISTORY)
 //# import History.HistoryAppend;
+//# import UserMood.MoodList;
 //#endif
 
 import images.RosterIcons;
@@ -609,6 +610,11 @@ public class Contact extends IconTextElement{
     public String getUserMood() {
         return mood;
     }
+    
+    public String getUserMoodLocale() {
+        return MoodList.getInstance().loadString(mood);
+    }
+    
     public void setUserMood (String mood, String moodText) {
         this.mood=mood;
         this.moodText=moodText;
