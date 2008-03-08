@@ -918,9 +918,11 @@ public class Roster
 //#                     mc.setPrivateState(MucContact.PRIVATE_ACCEPT);
 //#             }
 //#endif
+            
 //#else 
 //#           boolean groupchat=false;  
 //#endif
+            
 //#ifdef AUTOSTATUS
 //#             if (autoAway) {
 //#                     ExtendedStatus es=StatusList.getInstance().getStatus(oldStatus);
@@ -1423,7 +1425,7 @@ public class Roster
 //#endif
                             c.setUserMood(userMood, userMoodText);
                             
-                            Msg m=new Msg(Msg.MESSAGE_TYPE_HISTORY, from, SR.MS_USER_MOOD, userMood+"\n"+userMoodText);
+                            Msg m=new Msg(Msg.MESSAGE_TYPE_HISTORY, from, SR.MS_USER_MOOD, c.getUserMoodLocale()+"\n"+userMoodText);
                             messageStore(getContact(from, false), m);
                         }
                     }
@@ -1630,7 +1632,7 @@ public class Roster
 //#                             //Contact c=getContact(from, true);
 //#                             MucContact mc=(MucContact) c;
 //# 
-//#                             if (mc.roleCode==MucContact.ROLE_MODERATOR) {
+//#                             if (mc.roleCode==MucContact.ROLE_MODERATOR || mc.affiliationCode==MucContact.AFFILIATION_MEMBER) {
 //#                                 //System.out.println("MucContact.ROLE_MODERATOR "+mc.realJid);
 //#                                 messageStore(c, m);
 //#                             } else {

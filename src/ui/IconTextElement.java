@@ -26,6 +26,7 @@
  */
 
 package ui;
+import images.MoodIcons;
 import javax.microedition.lcdui.*;
 import java.util.*;
 
@@ -38,10 +39,15 @@ abstract public class IconTextElement implements VirtualElement
     int imgWidth;
     
     ImageList il;
+    MoodIcons mi;
     
     int heightFirstLine=0;
     
     abstract protected int getImageIndex();
+    
+    public int getSecImageIndex() {
+        return -1;
+    }
 
     public int getFontIndex() { return 0;}
     
@@ -54,7 +60,7 @@ abstract public class IconTextElement implements VirtualElement
         return FontCache.getBalloonFont();
     }
     
-    public void drawItem(Graphics g,int ofs, boolean sel, boolean drawsec){
+    public void drawItem(Graphics g, int ofs, boolean sel, boolean drawsec){
        g.setFont(getFont());
        
        String str=toString();
@@ -70,10 +76,16 @@ abstract public class IconTextElement implements VirtualElement
        
        if (il!=null) 
            il.drawImage(g, getImageIndex(), 2, imageYOfs);
-
+           
+       if (getSecImageIndex()>-1) {
+           il.drawImage(g, getSecImageIndex(), offset, imageYOfs);
+           offset=offset+imgWidth;
+       }
+           
        g.clipRect(offset, 0, g.getClipWidth(), itemHeight);
        
        g.drawString(str,offset-ofs, fontYOfs, Graphics.TOP|Graphics.LEFT);
+       
 //#ifdef SECONDSTRING
 //#        if (sel && drawsec && secstr!=null) {
 //#            g.setFont(getSmallFont());

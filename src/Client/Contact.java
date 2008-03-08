@@ -37,8 +37,9 @@ import Conference.MucContact;
 
 //#if (FILE_IO && HISTORY)
 //# import History.HistoryAppend;
-//# import UserMood.MoodList;
 //#endif
+
+import UserMood.MoodList;
 
 import images.RosterIcons;
 import ui.ColorScheme;
@@ -207,6 +208,11 @@ public class Contact extends IconTextElement{
         return clone;
     }
 
+    public int getSecImageIndex() {
+        return (mood!=null)?0x0f16:-1;
+    }
+    
+    
     public int getImageIndex() {
 //#ifdef ANTISPAM
 //#         if (!tempMsgs.isEmpty())
@@ -301,7 +307,7 @@ public class Contact extends IconTextElement{
         }
 //#if AUTODELETE
 //#             else { redraw=deleteOldMessages(); }
-//#endif     
+//#endif
 //#if FILE_IO && HISTORY
 //# 
 //#         if (cf.msgLog && cf.msgPath==null) {

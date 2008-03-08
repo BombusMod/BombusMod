@@ -104,9 +104,9 @@ public class ContactMessageList extends MessageList
         cursor=0;//activate
 //#ifndef WMUC     
 //#ifdef ANTISPAM
-//#         if (contact instanceof MucContact && contact.origin!=Contact.ORIGIN_GROUPCHAT) {
+//#         if (contact instanceof MucContact && contact.origin!=Contact.ORIGIN_GROUPCHAT && cf.antispam) {
 //#             MucContact mc=(MucContact) contact;
-//#             if (mc.roleCode!=MucContact.GROUP_MODERATOR) {
+//#             if (mc.roleCode!=MucContact.GROUP_MODERATOR && mc.affiliationCode!=MucContact.AFFILIATION_MEMBER) {
 //#                 switch (mc.getPrivateState()) {
 //#                     case MucContact.PRIVATE_DECLINE:
 //#                         addCommand(cmdUnlock);
