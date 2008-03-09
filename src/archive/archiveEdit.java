@@ -104,7 +104,7 @@ public class archiveEdit implements CommandListener
 		
         if (body.length()==0) body=null;
 
-        if (c==cmdPasteText) { insertText(clipboard.getClipBoard(), getCaretPos()); return; }
+        if (c==cmdPasteText) { insertText(clipboard.getClipBoard(), caretPos/*getCaretPos()*/); return; }
 
         Msg newmsg=null;
         if (c==cmdCancel) { 
@@ -132,8 +132,7 @@ public class archiveEdit implements CommandListener
         this.parentView=parentView;
     }
     
-
-    public int getCaretPos() {     
+    /*public int getCaretPos() {     
         int caretPos=t.getCaretPosition();
         // +MOTOROLA STUB
         if (cf.phoneManufacturer==Config.MOTO)
@@ -142,7 +141,7 @@ public class archiveEdit implements CommandListener
         if (caretPos<0) caretPos=t.getString().length();
         
         return caretPos;
-    }    
+    }*/   
     
     public void insertText(String s, int caretPos) {
         String src=t.getString();
