@@ -1418,7 +1418,7 @@ public class Roster
                             String userMoodText="";
                             try {
                                 userMoodText=mood.getChildBlock("text").getText();
-                                userMoodText=(userMoodText!="")?userMoodText:"";
+                                //userMoodText=(userMoodText!="")?userMoodText:"";
                             } catch (Exception e) { /*System.out.println("no userMoodText");*/ }
 //#if DEBUG 
 //#                             System.out.println(from+": "+userMood+userMoodText);

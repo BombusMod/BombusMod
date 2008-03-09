@@ -78,7 +78,7 @@ abstract public class IconTextElement implements VirtualElement
            il.drawImage(g, getImageIndex(), 2, imageYOfs);
            
        if (getSecImageIndex()>-1) {
-           il.drawImage(g, getSecImageIndex(), offset, imageYOfs);
+           mi.getInstance().drawImage(g, getSecImageIndex(), offset, imageYOfs);
            offset=offset+imgWidth;
        }
            

@@ -37,6 +37,7 @@ import Conference.MucContact;
 
 //#if (FILE_IO && HISTORY)
 //# import History.HistoryAppend;
+//# import UserMood.Mood;
 //#endif
 
 import UserMood.MoodList;
@@ -85,7 +86,9 @@ public class Contact extends IconTextElement{
             case Presence.PRESENCE_DND: return ColorScheme.CONTACT_DND;
         }
         return ColorScheme.CONTACT_DEFAULT;
-    };
+    }
+    
+    public Mood mood;
 
     public final static short ORIGIN_ROSTER=0;
     public final static short ORIGIN_ROSTERRES=1;
@@ -153,9 +156,6 @@ public class Contact extends IconTextElement{
 //#     public boolean redraw=false;
 //#endif
     
-    public String mood=null;
-    public String moodText=null;
-    
     private Config cf=Config.getInstance();
     private RosterIcons ri = RosterIcons.getInstance();
 
@@ -208,11 +208,6 @@ public class Contact extends IconTextElement{
         return clone;
     }
 
-    public int getSecImageIndex() {
-        return (mood!=null)?0x0f16:-1;
-    }
-    
-    
     public int getImageIndex() {
 //#ifdef ANTISPAM
 //#         if (!tempMsgs.isEmpty())
@@ -614,20 +609,25 @@ public class Contact extends IconTextElement{
 //#endif
     
     public String getUserMood() {
-        return mood;
+        return mood.getName();
     }
     
     public String getUserMoodLocale() {
-        return MoodList.getInstance().loadString(mood);
+        return mood.getLocale();
     }
     
-    public void setUserMood (String mood, String moodText) {
-        this.mood=mood;
-        this.moodText=moodText;
+    public void setUserMood (String mood, String text) {
+        MoodList mi=MoodList.getInstance();
+        this.mood=mi.getMood(mood, text);
     }
     
     public String getUserMoodText() {
-        return moodText;
+        return mood.getText();
+    }
+    public int getSecImageIndex() {
+        if (mood!=null)
+            return mood.getImageIndex();
+        return -1;
     }
     
     

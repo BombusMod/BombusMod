@@ -31,6 +31,7 @@ public class MoodList {
     }
 
     public static Vector moodList=new Vector();
+    public static Vector moodNames=new Vector();
     
     public static final String initMoods = "afraid.amazed.angry.annoyed.anxious.aroused.ashamed.bored.brave.calm.cold.confused.contented.cranky.curious.depressed.disappointed.disgusted.distracted.embarrassed.excited.flirtatious.frustrated.grumpy.guilty.happy.hot.humbled.humiliated.hungry.hurt.impressed.in_awe.in_love.indignant.interested.intoxicated.invincible.jealous.lonely.mean.moody.nervous.neutral.offended.playful.proud.relieved.remorseful.restless.sad.sarcastic.serious.shocked.shy.sick.sleepy.stressed.surprised.thirsty.worried.";
    
@@ -40,7 +41,8 @@ public class MoodList {
             while (pos<initMoods.length()) {
                p=initMoods.indexOf('.', pos);
                String mood=initMoods.substring(pos, p);
-               moodList.addElement(new Mood(id, mood, loadString(mood)));
+               moodNames.addElement((String)mood);
+               moodList.addElement(new Mood(id, mood, loadString(mood), null));
                pos=p+1;
                id++;
             }
@@ -58,4 +60,12 @@ public class MoodList {
         return (value==null)?key:value;
     }
     
+    public static int getId(String mood) {
+        return moodNames.indexOf(mood);
+    }
+    
+    public static Mood getMood(String mood, String text) {
+        return new Mood(getId(mood), mood, loadString(mood), text);
+        
+    }
 }

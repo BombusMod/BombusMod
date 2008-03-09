@@ -31,17 +31,19 @@ import ui.ColorScheme;
 import ui.IconTextElement;
 
 public class Mood extends IconTextElement {
-    
-    private String name;
-    private String locale;
 
     private int id;
+    
+    private String name;
+    private String text;
+    private String locale;
 
-    public Mood(int id, String name, String locale) {
+    public Mood(int id, String name, String locale, String text) {
         super(MoodIcons.getInstance());
         this.name=name;
         this.locale=locale;
         this.id=id;
+        this.text=text;
     }
     
     public String toString(){
@@ -52,8 +54,11 @@ public class Mood extends IconTextElement {
     
     public int getColor(){ return ColorScheme.LIST_INK;}
 
+   //public int getID() { return id; }
     public String getName() { return name; }
-
+    public String getText() { return text; }
+    public String getLocale() { return locale; }
+    
 //#ifdef SECONDSTRING
 //#         public String getSecondString() { 
 //#             return null;
