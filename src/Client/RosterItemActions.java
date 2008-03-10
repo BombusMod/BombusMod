@@ -406,7 +406,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 //#if CHANGE_TRANSPORT
 //#                 case 915: // change transport
 //#                 {
-//#                     new ChangeTransport(display, c.transport);
+//#                     new ChangeTransport(display, c.getBareJid());
 //#                     return;
 //#                 }
 //#endif

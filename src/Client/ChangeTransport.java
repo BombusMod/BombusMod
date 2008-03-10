@@ -25,6 +25,7 @@
 
 package Client;
 
+import com.alsutton.jabber.datablocks.Presence;
 import java.util.Enumeration;
 import javax.microedition.lcdui.ChoiceGroup;
 import javax.microedition.lcdui.Command;
@@ -39,30 +40,32 @@ public class ChangeTransport implements CommandListener{
     private Display display;
     private Form f;
     private ChoiceGroup tTranspList;
-    private int transportIndex;
+    private String srcTransport;
     
     private Command cmdOk=new Command(SR.MS_OK, Command.SCREEN, 1);
     private Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 99);
-
+    
     Roster roster=StaticData.getInstance().roster;
-
-    public ChangeTransport(Display display, int transportIndex) {
-        this.transportIndex=transportIndex;
+    
+    public ChangeTransport(Display display, String srcTransport) {
+        this.srcTransport=srcTransport;
         this.display=display;
         
         StaticData sd=StaticData.getInstance();
         roster=sd.roster;
         
-        f=new Form(SR.MS_NEWGROUP);
-
-        tTranspList=new ChoiceGroup(SR.MS_TRANSPORT, ChoiceGroup.POPUP);
+        f=new Form(SR.MS_TRANSPORT);
         
-        tTranspList.append(sd.account.getServer(), null);
+        f.append("Warning!\nGateway "+srcTransport+" will be replaced by one from the list of online gateways for all JIDs in your roster (please logoff old gateway to avoid damaging contact list of your guest IM account)");
+        
+        tTranspList=new ChoiceGroup(SR.MS_TRANSPORT, ChoiceGroup.POPUP);
         for (Enumeration e=sd.roster.getHContacts().elements(); e.hasMoreElements(); ){
             Contact ct=(Contact)e.nextElement();
-            Jid transpJid=ct.jid;
-            if (transpJid.isTransport()) 
-                tTranspList.append(transpJid.getBareJid(),null);
+            if (ct.jid.isTransport() && ct.getStatus()<Presence.PRESENCE_OFFLINE) //New transport must be online! If old transport is online and new transport is offline, contact list of guest IM account may be damaged
+                tTranspList.append(ct.getBareJid(), null);
+        }
+        if (tTranspList.size()==0) {
+            tTranspList.append(srcTransport, null); //for avoiding exceptions and for resubscribing to all users of the transport ;)
         }
         f.append(tTranspList);
         
@@ -73,11 +76,12 @@ public class ChangeTransport implements CommandListener{
         
         display.setCurrent(f);
     }
-
+    
     public void commandAction(Command command, Displayable displayable) {
         if (command==cmdOk) {
 //#if CHANGE_TRANSPORT            
-//#             roster.contactChangeTransport(transportIndex, tTranspList.getString(tTranspList.getSelectedIndex()));
+//#             roster.contactChangeTransport(srcTransport, tTranspList.getString(tTranspList.getSelectedIndex()));
+//#             //System.out.println(srcTransport+"->"+tTranspList.getString(tTranspList.getSelectedIndex()));
 //#endif
         }
         display.setCurrent(StaticData.getInstance().roster);

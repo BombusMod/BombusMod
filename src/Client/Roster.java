@@ -1031,24 +1031,25 @@ public class Roster
         }
         updateMainBar();
     }
+    
 //#if CHANGE_TRANSPORT
-//#     public void contactChangeTransport(int srcTransportIndex, String dstTransport){
+//#     public void contactChangeTransport(String srcTransport, String dstTransport){
 //# 	setQuerySign(true);
-//# 	for (Enumeration e=hContacts.elements(); e.hasMoreElements();){
+//#         for (Enumeration e=hContacts.elements(); e.hasMoreElements(); ) {
 //# 	    Contact k=(Contact) e.nextElement();
 //# 	    if (k.jid.isTransport()) continue;
-//# 	    if (k.transport==srcTransportIndex && k.getGroupType()>=Groups.TYPE_COMMON) { // works for contact in "General"
-//#                 Jid kJid= new Jid(k.getBareJid());
-//#                 String kFirst=kJid.getFirst();
-//#                 String kName=k.getName();
-//#                 
-//#                 deleteContact(k); // contact deletion
-//#                 storeContact(kFirst+"@"+dstTransport, kName, "", cf.autoSubscribe); // contact addition
+//#             int grpType=k.getGroupType();
+//#             if (k.jid.getServer().equals(srcTransport) &&
+//#                     (grpType==Groups.TYPE_COMMON || grpType==Groups.TYPE_NO_GROUP || 
+//#                     grpType==Groups.TYPE_VISIBLE || grpType==Groups.TYPE_IGNORE)) {
+//#                 storeContact(k.jid.getFirst()+"@"+dstTransport, k.nick, "", true); //new contact addition
+//#                 deleteContact(k); //old contact deletion
 //# 	    }
 //# 	}
 //# 	setQuerySign(false);
 //#     }
 //#endif
+    
     public void loginFailed(String error){
         myStatus=Presence.PRESENCE_OFFLINE;
         setProgress(SR.MS_LOGIN_FAILED, 0);
@@ -2353,9 +2354,6 @@ public class Roster
             reEnumRoster();
             return;
         } 
-//#ifndef WMUC
-        else if (keyCode==KEY_NUM1) new Bookmarks(display, null);
-//#endif
        	else if (keyCode==KEY_NUM3) new ActiveContacts(display, null);
        	else if (keyCode==KEY_NUM4) new ConfigForm(display);
         else if (keyCode==KEY_NUM6) {
@@ -2378,6 +2376,11 @@ public class Roster
                     BombusMod.getInstance().platformRequest("native:NAT_MAIN_MENU");
                  } catch (Exception e) { }   
         }
+//#ifndef WMUC
+        if (!isLoggedIn()) return;
+        else if (keyCode==KEY_NUM1) new Bookmarks(display, null);
+//#endif
+
     }
     
     
