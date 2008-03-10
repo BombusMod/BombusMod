@@ -148,9 +148,9 @@ public class Contact extends IconTextElement{
     
     public VCard vcard;
     
-    public boolean hasEntity;
-    public String entityNode;
-    public String entityVer;
+    public boolean hasCaps;
+    public String capsNode;
+    public String capsVer;
     
 //#if AUTODELETE
 //#     public boolean redraw=false;

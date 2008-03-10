@@ -218,7 +218,7 @@ public class Roster
 				Light.setLightOff();  
 			}
 		} catch( Exception e ) { }
-         } 
+         }
 //#ifdef SE_LIGHT
 //#         else if (cf.phoneManufacturer==Config.SONYE) {
 //#             selight.setLight(state);
@@ -1700,13 +1700,13 @@ public class Roster
                         MucContact c = mucContact(from);
 
                         if (pr.hasEntityCaps()) {
-                            c.hasEntity=true;                             
+                            c.hasCaps=true;                             
                             if (pr.getEntityNode()!=null) {
-                                c.entityNode = strconv.replaceCaps(pr.getEntityNode());
-                                if (c.entityNode.indexOf("#")<0)
-                                    c.entityVer=pr.getEntityVer();
+                                c.capsNode = strconv.replaceCaps(pr.getEntityNode());
+                                if (c.capsNode.indexOf("#")<0)
+                                    c.capsVer=pr.getEntityVer();
                             } else {
-                                c.entityNode=strconv.replaceCaps(pr.getEntityNode());
+                                c.capsNode=strconv.replaceCaps(pr.getEntityNode());
                             }
                         }
                         JabberDataBlock j2j=pr.findNamespace("x", "j2j:history");
@@ -1774,13 +1774,13 @@ public class Roster
                         
                         if (pr.getTypeIndex()!=Presence.PRESENCE_ERROR) {
                             if (pr.hasEntityCaps()) {
-                                c.hasEntity=true;
+                                c.hasCaps=true;
                                 if (pr.getEntityNode()!=null) {
-                                    c.entityNode = strconv.replaceCaps(pr.getEntityNode());
-                                    if (c.entityNode.indexOf("#")<0)
-                                        c.entityVer=pr.getEntityVer();
+                                    c.capsNode = strconv.replaceCaps(pr.getEntityNode());
+                                    if (c.capsNode.indexOf("#")<0)
+                                        c.capsVer=pr.getEntityVer();
                                 } else {
-                                    c.entityNode=strconv.replaceCaps(pr.getEntityNode());
+                                    c.capsNode=strconv.replaceCaps(pr.getEntityNode());
                                 }
                             }
 
@@ -2455,8 +2455,8 @@ public class Roster
 //#             }
 //#endif
 //#             mess.append((contact.getJ2J()!=null)?"\nJ2J: "+contact.getJ2J():"");
-//#             mess.append((contact.hasEntity)?"\nUse: "+contact.entityNode:"");
-//#             mess.append((contact.entityVer!=null)?"#"+contact.entityVer:"");
+//#             mess.append((contact.hasCaps)?"\nUse: "+contact.capsNode:"");
+//#             mess.append((contact.capsVer!=null)?"#"+contact.capsVer:"");
 //# 
 //#             if (contact.statusString!=null) {
 //#                 mess.append("\n");
@@ -2465,7 +2465,6 @@ public class Roster
 //#                 mess.append(contact.statusString);
 //#             }
 //#             if (contact.mood!=null) {
-//#                 //s.append(MoodLocale.loadString(getUserMood()));
 //#                 mess.append("\n");
 //#                 mess.append(SR.MS_USER_MOOD);
 //#                 mess.append(": ");
