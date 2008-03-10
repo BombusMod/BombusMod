@@ -39,9 +39,12 @@ abstract public class IconTextElement implements VirtualElement
     int imgWidth;
     
     ImageList il;
-    MoodIcons mi;
+    MoodIcons mi=(MoodIcons) MoodIcons.getInstance();
     
     int heightFirstLine=0;
+
+    int miHeightImage;
+    int miImgWidth;
     
     abstract protected int getImageIndex();
     
@@ -79,7 +82,7 @@ abstract public class IconTextElement implements VirtualElement
            
        if (getSecImageIndex()>-1) {
            mi.getInstance().drawImage(g, getSecImageIndex(), offset, imageYOfs);
-           offset=offset+imgWidth;
+           offset=offset+miImgWidth+2;
        }
            
        g.clipRect(offset, 0, g.getClipWidth(), itemHeight);
@@ -129,6 +132,10 @@ abstract public class IconTextElement implements VirtualElement
 	if (il!=null){
 	    heightImage=il.getHeight();
             imgWidth=il.getWidth();
+	}
+	if (mi!=null){
+	    miHeightImage=mi.getHeight();
+            miImgWidth=mi.getWidth();
 	}
         itemHeight=heightFirstLine=(heightImage>heightFont)?heightImage:heightFont;
         imageYOfs=(itemHeight-heightImage)/2;

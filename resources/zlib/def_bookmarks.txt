@@ -1,4 +1,5 @@
 bombusmod@conference.jabber.ru			
+newbie@conference.jabber.ru			
 bombus-talks@conference.jabber.ru			
 bombus@conference.jabber.ru			
 bombus-english@conference.jabber.ru			
