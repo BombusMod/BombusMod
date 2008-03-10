@@ -2464,7 +2464,7 @@ public class Roster
 //#                 mess.append(": ");
 //#                 mess.append(contact.statusString);
 //#             }
-//#             if (contact.getUserMood()!=null) {
+//#             if (contact.mood!=null) {
 //#                 //s.append(MoodLocale.loadString(getUserMood()));
 //#                 mess.append("\n");
 //#                 mess.append(SR.MS_USER_MOOD);
