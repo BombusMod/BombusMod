@@ -99,10 +99,10 @@ public class Presence extends JabberDataBlock
           }
           if (type.equals("subscribe")) {
               presenceCode=PRESENCE_AUTH_ASK;
-              text.append(SR.MS_USER_REQUEST_AUTORIZATION);
+              text.append(SR.MS_SUBSCRIPTION_REQUEST_FROM_USER);
           } 
-          if (type.equals("subscribed")) text.append(SR.MS_YOU_ARE_NOW_AUTHORIZED);
-          if (type.equals("unsubscribed")) text.append(SR.MS_USER_REMOVED_AUTORIZATION);
+          if (type.equals("subscribed")) text.append(SR.MS_SUBSCRIPTION_RECEIVED);
+          if (type.equals("unsubscribed")) text.append(SR.MS_SUBSCRIPTION_DELETED);
           
           if (type.equals(PRS_ERROR)) {
               presenceCode=PRESENCE_ERROR;

@@ -278,18 +278,18 @@ Accept file	Akceptuj plik
 File	Plik: 
 Save To	Zapisz do 
 Sender	Nadawca: 
-Size	Rozmiar: 
+size:	Rozmiar:
 Description	Szczegóły: 
 Rejected	Odrzucono 
 Send file	Wyślij plik 
-To	Do 
+To: 	Do: 
 Can't open file	Nie można otworzyć pliku 
 New	Nowa 
 New Template	Nowa Notatka 
 Save photo	Zapisz zdjęcie 
-User has removed autorization	[Użytkownik odebrał Autoryzację] 
-You are now autorized	[Jesteś teraz Autoryzowany] 
-User request autorization	[Użytkownik pyta o Autoryzację] 
+This user wants to subscribe to your presence	[Użytkownik pyta o Autoryzację]
+You are now authorized	[Jesteś teraz Autoryzowany]
+Your authorization has been removed!	[Użytkownik odebrał Autoryzację]
 Grant Membership	Daj Klubowicza 
 Reply	Odpisz 
 Save template	Zapisz Notatkę 

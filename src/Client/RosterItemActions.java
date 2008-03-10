@@ -43,7 +43,6 @@ import Conference.affiliation.Affiliations;
 //#endif
 //#ifdef SERVICE_DISCOVERY
 //# import ServiceDiscovery.ServiceDiscovery;
-//# import com.alsutton.jabber.datablocks.Iq;
 //#endif
 import com.alsutton.jabber.datablocks.IqLast;
 import com.alsutton.jabber.datablocks.IqPing;
@@ -132,9 +131,6 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 //#ifdef SERVICE_DISCOVERY
 //# 	    addItem(SR.MS_COMMANDS,30, 0x0f24);
 //#endif
-            if (contact.status<Presence.PRESENCE_OFFLINE)
-                addItem(SR.MS_PING,893);
-
 	    addItem(SR.MS_SEND_BUFFER,914, 0x0f22);
             
             if (contact.getGroupType()!=Groups.TYPE_SELF) {
@@ -143,16 +139,15 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                     addItem(SR.MS_TIME,891);
                     addItem(SR.MS_IDLE,889);
                 }
-
             }
-//#ifdef COLORS
-//# 	    addItem("Send current color scheme",912, 0x0f22);
-//#endif
+            
+            if (contact.status<Presence.PRESENCE_OFFLINE)
+                addItem(SR.MS_PING,893);
+            
                 //if (contact.status>4) //not only for offline&invisible status
                 //    addItem(SR.MS_ONLINE,894); 
             //}
-            
-                            
+                                        
             //if (from.indexOf("/")>-1) lastType="idle";
 	    
 	    if (contact.getGroupType()!=Groups.TYPE_SELF && contact.getGroupType()!=Groups.TYPE_SEARCH_RESULT && contact.origin<Contact.ORIGIN_GROUPCHAT) {
@@ -161,14 +156,17 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                 } else {
                     addItem(SR.MS_SEEN,890); 
                 }
-                if (contact.getGroupType()!=Groups.TYPE_TRANSP)
+                if (contact.getGroupType()!=Groups.TYPE_TRANSP) {
                     addItem(SR.MS_EDIT,2, 0x0f13);
+                }
 		addItem(SR.MS_SUBSCRIPTION,3, 0x47);
 		addItem(SR.MS_MOVE,1003);
 		addItem(SR.MS_DELETE, DELETE_CONTACT, 0x12);
 		addItem(SR.MS_DIRECT_PRESENCE,45, 0x01);
 	    }
-
+//#ifdef COLORS
+//# 	    addItem("Send current color scheme",912, 0x0f22);
+//#endif
 	    if (contact.origin==Contact.ORIGIN_GROUPCHAT) 
                 return;
 //#ifndef WMUC

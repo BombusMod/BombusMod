@@ -2353,7 +2353,10 @@ public class Roster
             cf.showOfflineContacts=!cf.showOfflineContacts;
             reEnumRoster();
             return;
-        } 
+        }
+//#ifndef WMUC
+        else if (keyCode==KEY_NUM1 && isLoggedIn()) new Bookmarks(display, null);
+//#endif
        	else if (keyCode==KEY_NUM3) new ActiveContacts(display, null);
        	else if (keyCode==KEY_NUM4) new ConfigForm(display);
         else if (keyCode==KEY_NUM6) {
@@ -2376,11 +2379,6 @@ public class Roster
                     BombusMod.getInstance().platformRequest("native:NAT_MAIN_MENU");
                  } catch (Exception e) { }   
         }
-//#ifndef WMUC
-        if (!isLoggedIn()) return;
-        else if (keyCode==KEY_NUM1) new Bookmarks(display, null);
-//#endif
-
     }
     
     

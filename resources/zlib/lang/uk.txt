@@ -300,11 +300,11 @@ Accept file	Приняти файл
 File	Файл
 Save To	Зберегти як
 Sender	Вiдправник
-Size	Розмiр
+size:	Розмiр
 Description	Опис
 Rejected	Вiдмiнено
 Send file	Надіслати файл
-To	Кому
+To: 	Кому
 Can't open file	Файл не вiдкриваєтся
 
 New	Новий
@@ -312,9 +312,9 @@ New Template	Новий шаблон
 
 Save photo	Зберегти фото
 
-User has removed autorization	Користувач видалив авторизацiю
-You are now autorized	Ви авторизированi
-User request autorization	Запит авторизацiї
+This user wants to subscribe to your presence	Запит авторизацiї
+You are now authorized	Ви авторизированi
+Your authorization has been removed!	Користувач видалив авторизацiю
 
 Grant Membership	Надати членство
 Reply	Вiдповiсти

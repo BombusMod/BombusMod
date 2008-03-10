@@ -313,11 +313,11 @@ public class SR {
 //#     public static String MS_FILE=loadString("File");
 //#     public static String MS_SAVE_TO=loadString("Save To");
 //#     public static String MS_SENDER=loadString("Sender");
-//#     public static String MS_SIZE=loadString("Size");
+//#     //public static String MS_SIZE=loadString("Size");
 //#     public static String MS_DESCRIPTION=loadString("Description");
 //#     public static String MS_REJECTED=loadString("Rejected");
 //#     public static String MS_SEND_FILE=loadString("Send file");
-//#     public static String MS_TO=loadString("To");
+//#     //public static String MS_TO=loadString("To");
 //#     public static String MS_CANT_OPEN_FILE=loadString("Can't open file");
 //#endif
     public static String MS_NEW=loadString("New");
@@ -325,9 +325,9 @@ public class SR {
 
     public static String MS_SAVE_PHOTO=loadString("Save photo");
 
-    public static String MS_USER_REMOVED_AUTORIZATION=loadString("User has removed autorization");
-    public static String MS_YOU_ARE_NOW_AUTHORIZED=loadString("You are now autorized");
-    public static String MS_USER_REQUEST_AUTORIZATION=loadString("User request autorization");
+    //public static String MS_USER_REMOVED_AUTORIZATION=loadString("User has removed autorization");
+    //public static String MS_YOU_ARE_NOW_AUTHORIZED=loadString("You are now autorized");
+    //public static String MS_USER_REQUEST_AUTORIZATION=loadString("User request autorization");
 
     public static String MS_MESSAGE_FOR_ME="Message for me";
 
@@ -546,7 +546,7 @@ public class SR {
     public static String MS_SUBSCRIPTION_REQUEST_FROM_USER = loadString ( "This user wants to subscribe to your presence" );
     public static String MS_SUBSCRIPTION_RECEIVED = loadString ( "You are now authorized" );
     public static String MS_SUBSCRIPTION_DELETED = loadString ( "Your authorization has been removed!" );
-    public static String MS_HAS_CHANGED_SUBJECT_TO = loadString( " has changed subject to: " );
+    //public static String MS_HAS_CHANGED_SUBJECT_TO = loadString( " has changed subject to: " );
     public static String MS_SEND_FILE_TO = loadString ( "To: " );
     public static String MS_FILE_SIZE = loadString( "size:" );  
 

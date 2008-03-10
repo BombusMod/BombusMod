@@ -4,11 +4,8 @@
 // ask server to send us localized messages
 xmlLang	ru
 //463
-langfile	Russian
 Jid	Jid
-Loading	Загрузка
 Privacy Lists	Списки приватности
-Existing groups	Существующие группы
 Message font	Шрифт сообщения
 Roster font	Шрифт ростера
 Paste Body	Встав. тело сообщения
@@ -47,7 +44,6 @@ Affiliation	Членство
 Accounts	Аккаунты
 Delete list	Удалить список
 Account >	Аккаунт >
-Show Offlines	Показать отключенных
 Select	Выбрать
 Subject	Тема
 Group menu	Меню групп
@@ -71,14 +67,12 @@ Type	Тип
 Name	Имя
 Username	Имя пользователя
 fullscreen	полноэкранный
-All Priorities	Во всех статусах
 Add bookmark	Добав. закладку
 conferences only	только конференции
 Client Version	Версия клиента
 Discard Search	Сбросить результаты
 Search Results	Результаты поиска
 Members	Члены
-// offline	Отключенные
 Add Contact	Новый контакт
 Subscription	Подписка
 Status >	Статус >
@@ -92,11 +86,9 @@ Delete	Удалить
 Delete contact?	Удалить контакт?
 Authorize	Авторизовать
 Nicknames	Ники
-Entering setup	Вход в настройки аккаунта
 to Archive	В архив
 Back	Назад
 heap monitor	монитор heap
-Hide Splash	Ростер
 Message	Сообщение
 <Other>	<Другой>
 Append	Добавить
@@ -111,13 +103,11 @@ New Message	Новое сообщение
 Add	Добавить
 Logon	Подключить
 Logoff	Отключить
-Login in progress	Проверка пароля
 at Host	Сервер
 join conferences	автовход в конференции
 Status	Статус
 Smiles	Вкл/выкл смайлики
 Contact >	Контакт >
-Order	Порядок
 offline contacts	показать отключенных
 Transport	Транспорт
 composing events	"composing" события
@@ -129,7 +119,6 @@ Commands	Команды
 Set default	Уст. по умолчанию
 Outcasts (Ban)	Изгои (Ban)
 Set affiliation to	Изменить членство на
-Hide Offlines	Скрыть отключенных
 Register Account	Зарегистрировать аккаунт
 autologin	автосоединение
 Publish	Опубликовать
@@ -166,8 +155,6 @@ Add rule	Добавить правило
 for all status types	для всех статусов
 Paste Jid	Вставить Jid
 Goto URL	Перейти к URL
-Clock -	Часы -
-Login	Открытие сокета
 Clock offset	Смещение часов
 flash backlight	мигать подсветкой
 Suspend	Отложить
@@ -180,14 +167,10 @@ self-contact	свои контакты
 vCard	vCard
 Set Subject	Установить тему
 Tools	Инструменты
-Jabber Tools	Инструменты сервера
 Port	Порт
 
 //473
-Proxy name/IP	Имя прокси-сервера/IP
-Proxy port	Порт прокси-сервера
 Autofocus	автофокус
-
 Connect	Подключиться
 history -	история -
 Are You sure want to discard 	Вы действительно собираетесь понизить у 
@@ -199,7 +182,6 @@ Ignore-List	Ignore-List
 General	General
 Stanzas	Stanzas
 Not-in-list	Not-in-list
-proxy CONNECT	proxy CONNECT
 
 //476
 Clear	Очистить
@@ -295,26 +277,22 @@ Export to file	Экспорт в файл
 View	Просмотр
 Stop	Остановить
 
+To: 	Кому: 
+size:	размер:
 Path	Путь
 Accept file Принять файл
 File	Файл
 Save To Сохранить как
 Sender	Отправитель
-Size	Размер
 Description Описание
 Rejected	Отменено
 Send file	Послать файл
-To	Кому
 Can't open file Файл не открывается
 
 New Новый
 New Template	Новый шаблон
 
 Save photo	Сохранить фото
-
-User has removed autorization	Пользователь удалил авторизацию
-You are now autorized	Вы авторизированны
-User request autorization	Запрос авторизации
 
 Grant Membership	Дать мембера
 Reply	Ответить
@@ -394,7 +372,6 @@ Auto away since %t	Автостатус "Отсутствую" сработал 
 
 Grant Membership	Дать членство
 
-SASL login	SASL-соединение
 Features	Возможности
 Show password	Показать пароль
 No client version available	Версия клиента недоступна
@@ -419,7 +396,7 @@ Are you sure want to delete this message?	Вы уверены, что хотит
 New conference	Новая конференция
 Root	Корень диска
 Decline	Отклонить
-authorize new contacts	автоматическая авторизация
+Authorize new contacts	автоматическая авторизация
 [auto-subscribe]	[автоподписка]
 Keep-Alive	Тип Keep-Alive
 
@@ -545,7 +522,7 @@ Online time	Время в сети
 
 Break connection	Переподключение
 autoScroll	автопрокрутка сообщений
-emulateTabs	эмулировать вкладки
+emulate tabs	эмулировать вкладки
 antispam conference	антиспам в конференциях
 popUps	всплывающие окна
 Started: 	Запуск: 
@@ -560,3 +537,13 @@ in: 	вх:
 out: 	исх: 
 Stream: 	Поток: 
 conn., 	соед., 
+
+This user wants to subscribe to your presence	Запрос подписки на присутствие
+You are now authorized	Вы получили подписку
+Your authorization has been removed!	Ваша подписка была удалена!
+Automatic subscription	автоподписка
+Ask me	спросить меня
+Drop subscription	отклонять
+Deny subscription	запрещать
+Search	Поиск
+Register	Регистрация

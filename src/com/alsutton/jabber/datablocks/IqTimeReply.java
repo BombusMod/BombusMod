@@ -62,7 +62,7 @@ public class IqTimeReply extends Iq{
         if (!data.isJabberNameSpace("jabber:iq:time")) return "unknown time namespace";
         StringBuffer tm=new StringBuffer();
         String field=data.getChildBlockText("display");
-        System.out.println(field);
+        //System.out.println(field);
         if (field.length()>0) {
                 tm.append(field);
         }
