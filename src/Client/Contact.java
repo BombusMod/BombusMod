@@ -37,9 +37,9 @@ import Conference.MucContact;
 
 //#if (FILE_IO && HISTORY)
 //# import History.HistoryAppend;
-//# import UserMood.Mood;
 //#endif
 
+import UserMood.Mood;
 import UserMood.MoodList;
 
 import images.RosterIcons;
@@ -70,12 +70,12 @@ public class Contact extends IconTextElement{
 //#endif
     
     public int getColor() {
-        if (isnew>0){
-            isnew--;
-//#if USE_ROTATOR
+//#if USE_ROTATOR        
+//#     if (isnew>0){
+//#         isnew--;
 //#             return (isnew%2==0)?0xFF0000:0x0000FF;
+//#     }
 //#endif
-        }
         if (j2j!=null)
             return ColorScheme.CONTACT_J2J;
         

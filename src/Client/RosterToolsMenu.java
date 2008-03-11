@@ -34,8 +34,8 @@ package Client;
 //#endif
 //#if (FILE_IO && HISTORY)
 //# import History.HistoryConfig;
-//# import UserMood.MoodSelect;
 //#endif
+import UserMood.MoodSelect;
 import javax.microedition.lcdui.Display;
 import locale.SR;
 //#ifdef COLORS
