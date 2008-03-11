@@ -837,7 +837,7 @@ public class Roster
 //#ifndef WMUC
     public void multicastConferencePresence(String message) {
          if (myStatus==Presence.PRESENCE_INVISIBLE) return; //block multicasting presence invisible
-         
+         boolean ircLike=cf.ircLikeStatus;
          ExtendedStatus es= StatusList.getInstance().getStatus(myStatus);
          for (Enumeration e=hContacts.elements(); e.hasMoreElements();) {
             Contact c=(Contact) e.nextElement();
@@ -846,14 +846,34 @@ public class Roster
 
             ConferenceGroup confGroup=(ConferenceGroup)c.getGroup();
             Contact myself=confGroup.getSelfContact();
-            
-            if (c.status==Presence.PRESENCE_OFFLINE) {
+
+
+            if (c.status==Presence.PRESENCE_OFFLINE){
                 ConferenceForm.join(myself.getJid(), confGroup.password, 20);
                 continue;
             }
+            if (ircLike) {
+                if (myself.origNick==null)
+                    myself.origNick=myself.nick;
 
+                String addStatus = "";
+                switch (myStatus) {
+                    case Presence.PRESENCE_CHAT:
+                        addStatus="|chat"; break;
+                    case Presence.PRESENCE_AWAY:
+                        addStatus="|away"; break;
+                    case Presence.PRESENCE_XA:
+                        addStatus="|x.away"; break;
+                    case Presence.PRESENCE_DND:
+                        addStatus="|busy"; break;
+                }
+                if(myself.addStatus!=addStatus) {
+                    myself.addStatus=addStatus;
+                    myself.nick=(addStatus==null)?myself.origNick:myself.origNick+addStatus;
+                }
+            }
             Presence presence = new Presence(myStatus, es.getPriority(), strconv.toExtendedString((message==null)?es.getMessage():message), null);
-            presence.setTo(myself.getJid());
+            presence.setTo(myself.bareJid.substring(0, myself.bareJid.indexOf("/")+1)+myself.nick);
             theStream.send(presence);
          }
     }
@@ -1424,6 +1444,7 @@ public class Roster
 //#if DEBUG 
 //#                             System.out.println(from+": "+userMood+userMoodText);
 //#endif
+                            
                             c.setUserMood(userMood, userMoodText);
                             
                             Msg m=new Msg(Msg.MESSAGE_TYPE_HISTORY, from, SR.MS_USER_MOOD, c.getUserMoodLocale()+"\n"+userMoodText);

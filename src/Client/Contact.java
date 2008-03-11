@@ -100,6 +100,8 @@ public class Contact extends IconTextElement{
     public final static short ORIGIN_GC_MYSELF=6;
 //#endif
     public String nick;
+    public String addStatus;
+    public String origNick;
     public Jid jid;
     public String bareJid;    // for roster/subscription manipulating
     protected int status;

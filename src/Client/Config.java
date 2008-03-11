@@ -207,6 +207,8 @@ public class Config {
     
     public boolean notifyWhenMessageType = false;
     
+    public boolean ircLikeStatus = false;
+    
     public static Config getInstance(){
 	if (instance==null) {
 	    instance=new Config();
@@ -376,6 +378,7 @@ public class Config {
             useBoldFont=inputStream.readBoolean();
             
             notifyWhenMessageType = inputStream.readBoolean();
+            ircLikeStatus = inputStream.readBoolean();
                     
 	    inputStream.close();
 	} catch (Exception e) {
@@ -522,6 +525,7 @@ public class Config {
             outputStream.writeBoolean(useBoldFont);
             
             outputStream.writeBoolean(notifyWhenMessageType);
+            outputStream.writeBoolean(ircLikeStatus);
             
 	} catch (Exception e) { }
 	

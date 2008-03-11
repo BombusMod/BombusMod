@@ -49,6 +49,7 @@ public class Jid {
         resource=s.substring(resourcePos);
         bareJid=strconv.toLowerCase(s.substring(0,resourcePos));
     }
+    
     /** Compares two Jids */
     public boolean equals(Jid j, boolean compareResource) {
         if (j==null) return false;
@@ -80,16 +81,7 @@ public class Jid {
             return "-";
         }
     }
-/*
-    public String getTransport(){
-        try {
-            bareJid=bareJid.substring(bareJid.indexOf('@')+1);
-            return bareJid.substring(0, bareJid.indexOf('.'));
-        } catch (Exception e) {
-            return "-";
-        }
-    }
-*/
+
     public String getFirst(){
         try {
             int endIndex=bareJid.indexOf('@');
@@ -98,22 +90,14 @@ public class Jid {
             return null;
         }
     }
-    
-    /** выделение ресурса со слэшем */
+
     public String getResource(){ return resource; }
-    
-    /** выделение username */
-    /*public String getUser(){
-        return substr(this,(char)0,'@');
-    }*/
-    
-    /** выделение имени без ресурса */
+
     public String getBareJid(){ return bareJid; }
-    
-    /** выделение jid/resource */
+
     public String getJid(){
         if (resource.length()==0) return bareJid;
-        return bareJid /** +'/' **/ +resource;
+        return bareJid+resource;
     }
     
     public static String toBareJid(String jid) { return new Jid(jid).getBareJid(); }

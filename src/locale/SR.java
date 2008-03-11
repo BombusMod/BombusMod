@@ -623,14 +623,13 @@ public class SR {
     
 //2008-02-03
     public static String MS_BOLD_FONT=loadString("bold font for contacts");
-
     public static String MS_RUNNING_MESSAGE=loadString("running message");
-
     public static String MS_COMPOSING_NOTIFY=loadString("Composing message to you");
-    
     public static String MS_NO_COMPRESSION = loadString( "No compression" );
-    
     public static String MS_NEW_ROOM_CREATED = loadString( "New room created" );
+
+    
+    public static String MS_IRCLIKESTATUS = loadString( "IRC-like conference nick-status" );
     
     private SR() { }
     

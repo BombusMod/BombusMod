@@ -105,6 +105,8 @@ public class iConfigData {
         cf.useBoldFont=cf.getBooleanProperty(getValue("useBoldFont"),false);
         
         cf.notifyWhenMessageType=cf.getBooleanProperty(getValue("notifyWhenMessageType"),false);
+        
+        cf.ircLikeStatus=cf.getBooleanProperty(getValue("ircLikeStatus"),false);
              
         cf.lastProfile=cf.profile=cf.def_profile;
         if (cf.lastProfile==AlertProfile.VIBRA) 

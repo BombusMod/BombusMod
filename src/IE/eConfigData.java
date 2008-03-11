@@ -84,6 +84,7 @@ public class eConfigData {
         array.addElement(new keyValue("useBoldFont", (cf.useBoldFont)?"1":"0"));
         
         array.addElement(new keyValue("notifyWhenMessageType", (cf.notifyWhenMessageType)?"1":"0"));
+        array.addElement(new keyValue("ircLikeStatus", (cf.ircLikeStatus)?"1":"0"));
         
         new eData(array, path+"config.txt");
         array = null;
