@@ -1356,7 +1356,7 @@ public class Roster
 //#                         }
 //#endif
                     }
-                    // проверяем на запрос локального времени клиента XEP-0202
+                    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ XEP-0202
                     if (data.findNamespace("time", "urn:xmpp:time")!=null) {
                         theStream.send(new IqTimeReply(data));
                         return JabberBlockListener.BLOCK_PROCESSED;
@@ -1436,7 +1436,6 @@ public class Roster
 //#if DEBUG 
 //#                             System.out.println(from+": mood");
 //#endif
-                            Contact c=findContact(new Jid(from), false);
                             JabberDataBlock mood=items.getChildBlock("item").getChildBlock("mood");
 
                             String userMood="";
@@ -1447,19 +1446,24 @@ public class Roster
                             String userMoodText="";
                             try {
                                 userMoodText=mood.getChildBlock("text").getText();
-                                //userMoodText=(userMoodText!="")?userMoodText:"";
                             } catch (Exception e) { /*System.out.println("no userMoodText");*/ }
 //#if DEBUG 
 //#                             System.out.println(from+": "+userMood+userMoodText);
 //#endif
-                            
-                            c.setUserMood(userMood, userMoodText);
-                            
-                            Msg m=new Msg(Msg.MESSAGE_TYPE_HISTORY, from, SR.MS_USER_MOOD, c.getUserMoodLocale()+"\n"+userMoodText);
-                            messageStore(getContact(from, false), m);
+
+                            synchronized (hContacts) {
+                                for (Enumeration e=hContacts.elements();e.hasMoreElements();){
+                                    Contact c=(Contact)e.nextElement();
+                                    if (c.jid.equals(new Jid(from),false)) {
+                	                    c.setUserMood(userMood, userMoodText);
+                	                    Msg m=new Msg(Msg.MESSAGE_TYPE_HISTORY, from, SR.MS_USER_MOOD, c.getUserMoodLocale()+"\n"+userMoodText);
+                	                    messageStore(c, m);
+                                    }
+                                }
+                            }
                         }
                     }
-                } catch (Exception e) { /*System.out.println("not mood");*/ }                
+                } catch (Exception e) { /*System.out.println("not mood");*/ }                 
                 
                 String body=message.getBody().trim();    
                 String oob=message.getOOB();
