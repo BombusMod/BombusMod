@@ -1233,8 +1233,8 @@ public class Roster
                             String lastType=SR.MS_ONLINE_TIME;
                             if (from.indexOf("/")>-1)
                                 lastType=SR.MS_IDLE;
-                            String status=data.getChildBlockText("query");
-                            Msg m=new Msg(Msg.MESSAGE_TYPE_IN, from, lastType, body+" ("+status+")"); //TODO: remove " ()" if status=="" 
+                            String status=(data.getChildBlockText("query").length()!=0)?" ("+data.getChildBlockText("query")+")":"";
+                            Msg m=new Msg(Msg.MESSAGE_TYPE_IN, from, lastType, body+status);
                             messageStore( getContact(from, false), m);
                             redraw();
                             return JabberBlockListener.BLOCK_PROCESSED;
