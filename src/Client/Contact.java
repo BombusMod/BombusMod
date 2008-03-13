@@ -258,13 +258,24 @@ public class Contact extends IconTextElement{
         }
         return nm;
     }
-    
-    //public boolean needsCount(){ return (newMsgCnt<0); }
-    
+
     public boolean active(){
-	if (msgs.size()>1) return true;
-	if (msgs.size()==0) return false;
-	return (((Msg)msgs.elementAt(0)).messageType!=Msg.MESSAGE_TYPE_PRESENCE && ((Msg)msgs.elementAt(0)).messageType!=Msg.MESSAGE_TYPE_HISTORY);
+        if (msgs.size()==0) 
+            return false;
+        
+        if (msgs.size()>1) {
+            if (((Msg)msgs.elementAt(0)).messageType==Msg.MESSAGE_TYPE_PRESENCE && ((Msg)msgs.elementAt(1)).messageType==Msg.MESSAGE_TYPE_HISTORY) {
+                return (msgs.size()>2);
+            } else if (((Msg)msgs.elementAt(0)).messageType==Msg.MESSAGE_TYPE_PRESENCE && ((Msg)msgs.elementAt(1)).messageType!=Msg.MESSAGE_TYPE_HISTORY) {
+                return true;
+            }
+        }
+        
+        if (msgs.size()>0)
+            if (((Msg)msgs.elementAt(0)).messageType!=Msg.MESSAGE_TYPE_PRESENCE)
+                return true;
+        
+        return false;
     }
     
     public void resetNewMsgCnt() { newMsgCnt=-1;}
@@ -295,7 +306,7 @@ public class Contact extends IconTextElement{
     public void addMessage(Msg m) {
         
         boolean first_replace=false;
-        if (m.isPresence()) { 
+        if (m.isPresence()) {
             presence=m.getBody();
             if (msgs.size()==1) 
                 if ( ((Msg)msgs.firstElement()).isPresence())
