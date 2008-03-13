@@ -89,6 +89,17 @@ public class MoodSelect extends VirtualList implements CommandListener, Runnable
         return moodList.size();
     }
 
+    public void userKeyPressed(int keyCode) {
+        switch (keyCode) {
+            case KEY_NUM4:
+                super.pageLeft();
+                break;
+            case KEY_NUM6:
+                super.pageRight();
+                break;
+        }
+    }
+
     class MoodForm implements CommandListener{
         private Display display;
         public Displayable parentView;
