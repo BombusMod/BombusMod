@@ -28,21 +28,25 @@ package com.alsutton.jabber.datablocks;
 import com.alsutton.jabber.JabberDataBlock;
 
 public class IqMood extends Iq{
-    public IqMood(String to, String id, String moodString, String text) {
-        super(to, Iq.TYPE_SET, id);
+    public IqMood(String moodString, String text) {
+        super(null, Iq.TYPE_SET, "publish1");
         
         JabberDataBlock pubsub=addChildNs("pubsub", "http://jabber.org/protocol/pubsub");
-        
-        JabberDataBlock publish=pubsub.addChild("publish", null);
-        publish.setAttribute("node","http://jabber.org/protocol/mood");
-        
-        JabberDataBlock item=publish.addChild("item", null);
 
-        JabberDataBlock moodItem=item.addChildNs("mood", "http://jabber.org/protocol/mood");
-        
-        moodItem.addChild(moodString, null);
-        
-        if (text!=null && text.length()>0)
-            moodItem.addChild("text", text);
+        if (moodString==null) {
+            JabberDataBlock retract=pubsub.addChild("retract", null);
+            retract.setAttribute("node", "http://jabber.org/protocol/mood");
+            retract.setAttribute("notify", "1");
+            retract.addChild("item", null).setAttribute("id","current");
+        } else {
+            JabberDataBlock publish=pubsub.addChild("publish", null);
+            publish.setAttribute("node","http://jabber.org/protocol/mood");
+            JabberDataBlock item=publish.addChild("item", null);
+            item.setAttribute("id","current");
+            JabberDataBlock moodItem=item.addChildNs("mood", "http://jabber.org/protocol/mood");
+            moodItem.addChild(moodString, null);
+            if (text!=null && text.length()>0)
+                moodItem.addChild("text", text);
+        }
     }
 }

@@ -630,9 +630,8 @@ public class Contact extends IconTextElement{
         return mood.getLocale();
     }
     
-    public void setUserMood (String mood, String text) {
-        MoodList mi=MoodList.getInstance();
-        this.mood=mi.getMood(mood, text);
+    public void setUserMood (Mood mood) {
+        this.mood=mood;
     }
     
     public String getUserMoodText() {

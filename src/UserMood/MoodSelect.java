@@ -36,10 +36,11 @@ import ui.MainBar;
 import ui.controls.TextFieldCombo;
 import util.StringLoader;
 
-public class MoodSelect extends VirtualList implements CommandListener, Runnable{
+public class MoodSelect extends VirtualList implements CommandListener {
     
     private Command cmdOk=new Command(SR.MS_SELECT,Command.OK,1);
     private Command cmdEdit=new Command(SR.MS_EDIT,Command.SCREEN,2);
+    private Command cmdClear=new Command(SR.MS_CLEAR,Command.SCREEN,3);
     private Command cmdCancel=new Command(SR.MS_CANCEL,Command.BACK,99);
 
     private Config cf=Config.getInstance();
@@ -50,10 +51,11 @@ public class MoodSelect extends VirtualList implements CommandListener, Runnable
         super();
         moodList = MoodList.getInstance().moodList;
 
-        setMainBarItem(new MainBar(SR.MS_STATUS));
+        setMainBarItem(new MainBar(SR.MS_USER_MOOD));
 
         addCommand(cmdOk);
         addCommand(cmdEdit);
+        addCommand(cmdClear);
 
         addCommand(cmdCancel);
         setCommandListener(this);
@@ -68,21 +70,19 @@ public class MoodSelect extends VirtualList implements CommandListener, Runnable
     
     public void commandAction(Command c, Displayable d){
         if (c==cmdOk) eventOk(); 
-        if (c==cmdEdit) {
-            new MoodForm( display, getSel() );
-        }
+        if (c==cmdEdit) new MoodForm( display, getSel() );
+        if (c==cmdClear) clearMood();
         if (c==cmdCancel) destroyView();
     }
     
     public void eventOk(){
         destroyView();
-        new Thread(this).start();
+        StaticData.getInstance().roster.theStream.send(new IqMood(getSel().getName(),null));
     }
-    
-    public void run(){
-        try {
-            StaticData.getInstance().roster.theStream.send(new IqMood(null,"publish1",getSel().getName(),null));
-        } catch (Exception e) { }
+
+    private void clearMood() {
+        destroyView();
+        StaticData.getInstance().roster.theStream.send(new IqMood(null,null));
     }
     
     public int getItemCount(){
@@ -132,7 +132,7 @@ public class MoodSelect extends VirtualList implements CommandListener, Runnable
         
         public void commandAction(Command c, Displayable d){
             if (c==cmdOk) {
-                StaticData.getInstance().roster.theStream.send(new IqMood(null,"publish1",mood.getName(),tfMessage.getString()));
+                StaticData.getInstance().roster.theStream.send(new IqMood(mood.getName(),tfMessage.getString()));
                 goToRoster();
             } else {
                 destroyView();
