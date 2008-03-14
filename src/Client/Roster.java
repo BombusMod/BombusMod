@@ -1454,7 +1454,7 @@ public class Roster
                             synchronized (hContacts) {
                                 for (Enumeration e=hContacts.elements();e.hasMoreElements();){
                                     Contact c=(Contact)e.nextElement();
-                                    if (c.jid.equals(new Jid(from),false)) {
+                                    if (c.jid.equals(new Jid(from),false) && c.status<Presence.PRESENCE_OFFLINE) {
                 	                    c.setUserMood(userMood, userMoodText);
                 	                    Msg m=new Msg(Msg.MESSAGE_TYPE_HISTORY, from, SR.MS_USER_MOOD, c.getUserMoodLocale()+"\n"+userMoodText);
                 	                    messageStore(c, m);
