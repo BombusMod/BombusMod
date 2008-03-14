@@ -38,7 +38,7 @@ import ui.*;
  */
 public class BookmarkItem extends IconTextElement{
     
-    String name;
+    String desc;
     String jid;
     String nick;
     String password;
@@ -52,7 +52,13 @@ public class BookmarkItem extends IconTextElement{
         return (autojoin)? RosterIcons.ICON_GCJOIN_INDEX : RosterIcons.ICON_GROUPCHAT_INDEX;
     }
 
-    public String toString(){ return (nick==null)? jid: jid+'/'+nick; }
+    public String toString(){
+        if (desc!=null)
+            return desc;
+        
+        return (nick==null)? jid: jid+'/'+nick;
+    }
+    public String getJidNick() { return jid+'/'+nick; }
     public String getJid() { return jid; }
 
     public int getColor(){ return ColorScheme.LIST_INK;}
@@ -65,11 +71,11 @@ public class BookmarkItem extends IconTextElement{
     public BookmarkItem(JabberDataBlock data) {
         this();
         isUrl=!data.getTagName().equals("conference");
-        name=data.getAttribute("name");
-         try {
+        desc=data.getAttribute("name");
+        try {
             String ajoin=data.getAttribute("autojoin").trim();
             autojoin=ajoin.equals("true") || ajoin.equals("1");
-         } catch (Exception e) {}
+        } catch (Exception e) {}
         jid=data.getAttribute((isUrl)?"url":"jid");
         nick=data.getChildBlockText("nick");
         password=data.getChildBlockText("password");
@@ -80,14 +86,15 @@ public class BookmarkItem extends IconTextElement{
             gchat.append(jid);
             gchat.append('/');
             gchat.append(nick);
-            join(gchat.toString(),password,cf.confMessageCount);
+            join(desc, gchat.toString(),password,cf.confMessageCount);
             gchat=null; //for nokia
         }
     }
     
-    public BookmarkItem(String jid, String nick, String password, boolean autojoin){
+    public BookmarkItem(String desc, String jid, String nick, String password, boolean autojoin){
         this();
-        this.name=this.jid=jid;
+        this.desc=desc;
+        this.jid=jid;
         this.nick=nick;
         this.password=password;
         this.autojoin=autojoin;
@@ -95,7 +102,7 @@ public class BookmarkItem extends IconTextElement{
     
     public JabberDataBlock constructBlock() {
         JabberDataBlock data=new JabberDataBlock((isUrl)?"url":"conference", null, null);
-        data.setAttribute("name", name);
+        data.setAttribute("name", desc);
         data.setAttribute((isUrl)?"url":"jid", jid);
         data.setAttribute("autojoin", (autojoin)?"true":"false");
         if (nick!=null) if (nick.length()>0) data.addChild("nick",nick);
@@ -104,11 +111,11 @@ public class BookmarkItem extends IconTextElement{
         return data;
     }
     
-    public static void join(String name, String pass, int maxStanzas) {
+    public static void join(String name, String jid, String pass, int maxStanzas) {
         StaticData sd=StaticData.getInstance();
         
-        ConferenceGroup grp=sd.roster.initMuc(name, pass);
-
+        ConferenceGroup grp=sd.roster.initMuc(jid, pass);
+        grp.desc=name;
         JabberDataBlock x=new JabberDataBlock("x", null, null);
         x.setNameSpace("http://jabber.org/protocol/muc");
         if (pass.length()!=0) {
@@ -124,7 +131,7 @@ public class BookmarkItem extends IconTextElement{
             if (last!=0) history.setAttribute("seconds",String.valueOf(delay)); // todo: change to since
         } catch (Exception e) {}
 
-        sd.roster.sendPresence(name, null, x, false);
+        sd.roster.sendPresence(jid, null, x, false);
         sd.roster.reEnumRoster();
     }
 
@@ -135,7 +142,8 @@ public class BookmarkItem extends IconTextElement{
 //#endif
     
     public int compare(IconTextElement right) {
-        return this.toString().compareTo(right.toString());
+        String th=(nick==null)? jid: jid+'/'+nick;
+        return th.compareTo(right.toString());
     }
             
 }

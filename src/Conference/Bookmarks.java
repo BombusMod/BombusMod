@@ -81,12 +81,11 @@ public class Bookmarks
             new ConferenceForm(display);
             return;
         }
-        //setMainBarItem(new MainBar(2, null, SR.MS_BOOKMARKS));
-        //setTitleItem(new Title(2, null, SR.MS_BOOKMARKS+" ("+getItemCount()+") "));
-        
+
         this.toAdd=toAdd;
 
-        if (toAdd!=null) addBookmark();
+        if (toAdd!=null) 
+            addBookmark();
         
         setMainBarItem(new MainBar(2, null, SR.MS_BOOKMARKS+" ("+getItemCount()+") "));//for title updating after "add bookmark"
         
@@ -135,13 +134,17 @@ public class Bookmarks
     }
     
     public void eventOk(){
-        if (getItemCount()==0) return;
+        if (getItemCount()==0) 
+            return;
         
         BookmarkItem join=(BookmarkItem)getFocusedObject();
-        if (join==null) return;
-        if (join.isUrl) return;
+        if (join==null) 
+            return;
+        if (join.isUrl) 
+            return;
 
-        ConferenceGroup grp=roster.initMuc(join.toString(), join.password);
+        ConferenceGroup grp=roster.initMuc(join.getJidNick(), join.password);
+        grp.desc=join.desc;
         JabberDataBlock x=new JabberDataBlock("x", null, null);
         x.setNameSpace("http://jabber.org/protocol/muc");
         
@@ -154,7 +157,8 @@ public class Bookmarks
             if (last!=0) history.setAttribute("seconds",String.valueOf(delay)); // todo: change to since
         } catch (Exception e) {}
         
-        roster.sendPresence(join.toString(), null, x, false);
+        roster.sendPresence(join.getJidNick(), null, x, false);
+        
         roster.reEnumRoster();
         display.setCurrent(roster);
     }
@@ -169,8 +173,7 @@ public class Bookmarks
 	if (getItemCount()==0) return;
         String roomJid=((BookmarkItem)getFocusedObject()).getJid();
 
-        if (c==cmdJoin) 
-            eventOk();
+        if (c==cmdJoin) eventOk();
         else if (c==cmdAdvJoin) {
             BookmarkItem join=(BookmarkItem)getFocusedObject();
             new ConferenceForm(display, join, cursor);
@@ -185,33 +188,20 @@ public class Bookmarks
 //#         else if (c==cmdDisco) new ServiceDiscovery(display, roomJid, null);
 //#endif
         else if (c==cmdConfigure) new QueryConfigForm(display, roomJid);
-
         else if (c==cmdRoomOwners) new Affiliations(display, roomJid, (short)1);  
-
         else if (c==cmdRoomAdmins) new Affiliations(display, roomJid, (short)2);  
-
         else if (c==cmdRoomMembers) new Affiliations(display, roomJid, (short)3);  
-
         else if (c==cmdRoomBanned) new Affiliations(display, roomJid, (short)4);  
-        
-        else if (c==cmdSort) {
-            sort(roster.bookmarks);
-        }
-        
+        else if (c==cmdSort) sort(roster.bookmarks);
         else if (c==cmdDoAutoJoin) {
             for (Enumeration e=roster.bookmarks.elements(); e.hasMoreElements();) {
                 BookmarkItem bm=(BookmarkItem) e.nextElement();
                 if (bm.autojoin) 
-                    ConferenceForm.join(bm.jid+'/'+bm.nick, bm.password, cf.confMessageCount);
+                    ConferenceForm.join(bm.desc, bm.jid+'/'+bm.nick, bm.password, cf.confMessageCount);
             }
-            //exitBookmarks();
         }
         
-        else if (c==cmdSave) {
-            saveBookmarks();
-            //exitBookmarks();
-        }
-        
+        else if (c==cmdSave) saveBookmarks();
         else if (c==cmdUp) { move(-1); keyUp(); }
         else if (c==cmdDwn) { move(+1); keyDwn(); }
         redraw();

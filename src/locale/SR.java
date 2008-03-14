@@ -314,7 +314,6 @@ public class SR {
 //#     public static String MS_SAVE_TO=loadString("Save To");
 //#     public static String MS_SENDER=loadString("Sender");
 //#     //public static String MS_SIZE=loadString("Size");
-//#     public static String MS_DESCRIPTION=loadString("Description");
 //#     public static String MS_REJECTED=loadString("Rejected");
 //#     public static String MS_SEND_FILE=loadString("Send file");
 //#     //public static String MS_TO=loadString("To");
@@ -630,6 +629,8 @@ public class SR {
 
     
     public static String MS_IRCLIKESTATUS = loadString( "IRC-like conference nick-status" );
+    
+    public static String MS_DESCRIPTION=loadString("Description");
     
     private SR() { }
     

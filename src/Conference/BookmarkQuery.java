@@ -70,19 +70,18 @@ public class BookmarkQuery implements JabberBlockListener{
     
     public int blockArrived(JabberDataBlock data) {
         try {
-            if (!(data instanceof Iq)) return JabberBlockListener.BLOCK_REJECTED;
+            if (!(data instanceof Iq)) 
+                return JabberBlockListener.BLOCK_REJECTED;
             if (data.getAttribute("id").equals("getbookmarks")) {
-                JabberDataBlock storage=data.findNamespace("query", "jabber:iq:private").
-                        findNamespace("storage", "storage:bookmarks");
+                JabberDataBlock storage=data.findNamespace("query", "jabber:iq:private"). findNamespace("storage", "storage:bookmarks");
                 Vector bookmarks=new Vector();
-				boolean autojoin=cf.autoJoinConferences 
-                        && roster.myStatus!=Presence.PRESENCE_INVISIBLE;
+		boolean autojoin=cf.autoJoinConferences && roster.myStatus!=Presence.PRESENCE_INVISIBLE;
                 try {
                     for (Enumeration e=storage.getChildBlocks().elements(); e.hasMoreElements(); ){
                         BookmarkItem bm=new BookmarkItem((JabberDataBlock)e.nextElement());
                         bookmarks.addElement(bm);
                         if (bm.autojoin && autojoin) {
-                            ConferenceForm.join(bm.jid+'/'+bm.nick, bm.password, cf.confMessageCount);
+                            ConferenceForm.join(bm.desc, bm.jid+'/'+bm.nick, bm.password, cf.confMessageCount);
                         }
                     }
                 } catch (Exception e) { /* no any bookmarks */}
@@ -100,14 +99,16 @@ public class BookmarkQuery implements JabberBlockListener{
     }
 
     private void loadDefaults(Vector bookmarks) {
-	Vector defs[]=new StringLoader().stringLoader("/def_bookmarks.txt", 3);
+	Vector defs[]=new StringLoader().stringLoader("/def_bookmarks.txt", 4);
         for (int i=0; i<defs[0].size(); i++) {
-            String roomJid=(String) defs[0].elementAt(i);
-            String nick=(String) defs[1].elementAt(i);
-            String pass=(String) defs[2].elementAt(i);
+            String jid      =(String) defs[0].elementAt(i);
+            String nick     =(String) defs[1].elementAt(i);
+            String pass     =(String) defs[2].elementAt(i);
+            String desc     =(String) defs[3].elementAt(i);
+            if (desc==null) desc=jid;
             if (pass==null) pass="";
             if (nick==null) nick=StaticData.getInstance().account.getNickName();
-            BookmarkItem bm=new BookmarkItem(roomJid, nick, pass, false);
+            BookmarkItem bm=new BookmarkItem(desc, jid, nick, pass, false);
             bookmarks.addElement(bm);
         }
     }

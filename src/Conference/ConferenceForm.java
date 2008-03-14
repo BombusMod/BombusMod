@@ -53,6 +53,7 @@ public class ConferenceForm implements CommandListener{
     TextField roomField;
     TextField hostField;
     TextField nickField;
+    TextField nameField;
     TextField passField;
     NumberField msgLimitField;
     
@@ -68,7 +69,7 @@ public class ConferenceForm implements CommandListener{
     private int cursor;
     
     /** Creates a new instance of GroupChatForm */
-    public ConferenceForm(Display display, String confJid, String password, boolean autojoin) {
+    public ConferenceForm(Display display, String name, String confJid, String password, boolean autojoin) {
         int roomEnd=confJid.indexOf('@');
         String room="";
         if (roomEnd>0) room=confJid.substring(0, roomEnd);
@@ -81,7 +82,7 @@ public class ConferenceForm implements CommandListener{
         } else {
             server=confJid.substring(roomEnd+1);
         }
-        createForm(display, room, server, nick, password, autojoin);
+        createForm(display, name, room, server, nick, password, autojoin);
         room=null;
         server=null;
         nick=null;
@@ -95,7 +96,7 @@ public class ConferenceForm implements CommandListener{
         this.editConf=join;
         this.cursor=cursor;
 
-        String confJid=join.toString();
+        String confJid=join.jid;
         int roomEnd=confJid.indexOf('@');
         String room="";
         if (roomEnd>0) room=confJid.substring(0, roomEnd);
@@ -108,7 +109,7 @@ public class ConferenceForm implements CommandListener{
         } else {
             server=confJid.substring(roomEnd+1);
         }
-        createForm(display, room, server, nick, join.password, join.autojoin);
+        createForm(display, join.desc, room, server, nick, join.password, join.autojoin);
         confJid=null;
         room=null;
         server=null;
@@ -127,16 +128,17 @@ public class ConferenceForm implements CommandListener{
         }
         // default server
         if (server==null) server="conference."+sd.account.getServer();
-        createForm(display, room, server, null, null, false); 
+        createForm(display, null, room, server, null, null, false); 
         room=null;
         server=null;
     }
 	
     /** Creates a new instance of GroupChatForm */
-    public ConferenceForm(Display display, String room, String server, String nick, String password, boolean autojoin) {
-        createForm(display, room, server, nick, password, autojoin);
+    public ConferenceForm(Display display, String name, String room, String server, String nick, String password, boolean autojoin) {
+        createForm(display, name, room, server, nick, password, autojoin);
     }
-     private void createForm(final Display display, String room, String server, String nick, final String password, boolean autojoin) {
+    
+     private void createForm(final Display display, String name, String room, String server, String nick, final String password, boolean autojoin) {
         this.display=display;
         parentView=display.getCurrent();
         
@@ -156,11 +158,14 @@ public class ConferenceForm implements CommandListener{
         msgLimitField=new NumberField(SR.MS_MSG_LIMIT, cf.confMessageCount, 0, 100);
         formJoin.append(msgLimitField);
         
+        nameField=new TextField(SR.MS_DESCRIPTION, name, 128, TextField.ANY);
+        formJoin.append(nameField);
+        
         passField=new TextField(SR.MS_PASSWORD, password, 32, TextField.ANY | TextField.SENSITIVE );
         formJoin.append(passField);
 
         AutoJoin=new ChoiceGroup(SR.MS_SET, Choice.MULTIPLE);
-        AutoJoin.append("AutoJoin", null);
+        AutoJoin.append(SR.MS_AUTOLOGIN, null);
         
         boolean aa[]={
             autojoin,
@@ -184,6 +189,7 @@ public class ConferenceForm implements CommandListener{
         sndprs=true;
         
         String nick=nickField.getString();
+        String name=nameField.getString();
         String host=hostField.getString();
         String room=roomField.getString();
         String pass=passField.getString();
@@ -203,23 +209,24 @@ public class ConferenceForm implements CommandListener{
             
         if (c==cmdEdit) {
             StaticData.getInstance().roster.bookmarks.removeElement(editConf);
-            StaticData.getInstance().roster.bookmarks.insertElementAt(new BookmarkItem(gchat.toString(), nick, pass, autojoin), cursor);
+            StaticData.getInstance().roster.bookmarks.insertElementAt(new BookmarkItem(name, gchat.toString(), nick, pass, autojoin), cursor);
             new BookmarkQuery(BookmarkQuery.SAVE);
             display.setCurrent(sd.roster);
         } else if (c==cmdAdd) {
-            new Bookmarks(display, new BookmarkItem(gchat.toString(), nick, pass, autojoin));
+            new Bookmarks(display, new BookmarkItem(name, gchat.toString(), nick, pass, autojoin));
         } else if (c==cmdJoin) {
             try {
                 cf.defGcRoom=room+"@"+host;
                 cf.saveToStorage();
                 gchat.append('/');
                 gchat.append(nick);
-                join(gchat.toString(),pass, msgLimit);
+                join(name, gchat.toString(),pass, msgLimit);
                 display.setCurrent(sd.roster);
             } catch (Exception e) { }
         }
         gchat=null;
         nick=null;
+        name=null;
         host=null;
         room=null;
         pass=null;
@@ -232,10 +239,11 @@ public class ConferenceForm implements CommandListener{
         }
     }
     
-    public static void join(String name, String pass, int maxStanzas) {
+    public static void join(String name, String jid, String pass, int maxStanzas) {
         StaticData sd=StaticData.getInstance();
         
-        ConferenceGroup grp=sd.roster.initMuc(name, pass);
+        ConferenceGroup grp=sd.roster.initMuc(jid, pass);
+        grp.desc=name;
 
         JabberDataBlock x=new JabberDataBlock("x", null, null);
         x.setNameSpace("http://jabber.org/protocol/muc");
@@ -249,19 +257,22 @@ public class ConferenceForm implements CommandListener{
         try {
             long last=grp.getConference().lastMessageTime;
             long delay= ( grp.conferenceJoinTime - last ) /1000 ;
-            if (last!=0) history.setAttribute("seconds",String.valueOf(delay)); // todo: change to since
+            if (last!=0) 
+                history.setAttribute("seconds",String.valueOf(delay)); // todo: change to since
         } catch (Exception e) {}
         
         if (sndprs) {
             //sd.roster.sendPresence(name, null, x, false);
             int status=StaticData.getInstance().roster.myStatus;
-            if (status==Presence.PRESENCE_INVISIBLE) status=Presence.PRESENCE_ONLINE;
-            sd.roster.sendDirectPresence(status, name, x);
+            if (status==Presence.PRESENCE_INVISIBLE) 
+                status=Presence.PRESENCE_ONLINE;
+            sd.roster.sendDirectPresence(status, jid, x);
             sndprs=false;
         }
         
         sd.roster.reEnumRoster();
     }
+    
     public void destroyView(){
         if (parentView!=null) 
             display.setCurrent(parentView);

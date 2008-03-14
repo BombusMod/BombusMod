@@ -213,7 +213,7 @@ public class ServiceDiscovery
         if (!id.startsWith("disco")) return JabberBlockListener.BLOCK_REJECTED;
         
         if (data.getTypeAttribute().equals("error")) {
-            System.out.println(data.toString());
+            //System.out.println(data.toString());
             discoIcon=RosterIcons.ICON_ERROR_INDEX;
             mainbarUpdate();
             //redraw();
@@ -420,7 +420,7 @@ public class ServiceDiscovery
                         room=service.substring(0,rp);
                         server=service.substring(rp+1);
                     }
-                    new ConferenceForm(display, service, null, false);
+                    new ConferenceForm(display, room, service, null, false);
                     break;
                 }
 //#endif

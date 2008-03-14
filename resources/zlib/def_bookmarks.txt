@@ -1,6 +1,6 @@
-bombusmod@conference.jabber.ru			
-newbie@conference.jabber.ru			
-bombus-talks@conference.jabber.ru			
-bombus@conference.jabber.ru			
-bombus-english@conference.jabber.ru			
-talks@conference.jabber.ru			
+﻿bombusmod@conference.jabber.ru			Комната тех. поддержки BombusMod
+newbie@conference.jabber.ru			Помощь новичкам!
+bombus-talks@conference.jabber.ru			Поболтать о bombus здесь :)
+bombus@conference.jabber.ru			Комната тех. поддержки Bombus
+bombus-english@conference.jabber.ru			English support for Bombus
+talks@conference.jabber.ru			Поболтать здесь :)

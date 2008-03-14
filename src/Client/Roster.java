@@ -851,7 +851,7 @@ public class Roster
 
 
             if (c.status==Presence.PRESENCE_OFFLINE){
-                ConferenceForm.join(myself.getJid(), confGroup.password, 20);
+                ConferenceForm.join(confGroup.desc, myself.getJid(), confGroup.password, 20);
                 continue;
             }
             if (ircLike) {
@@ -1302,7 +1302,7 @@ public class Roster
     //#ifndef WMUC
                             //loading bookmarks
                             //query bookmarks
-                            theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
+                            //theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
     //#endif
                             return JabberBlockListener.BLOCK_PROCESSED;
                         }
@@ -2631,7 +2631,8 @@ public class Roster
     public void reEnterRoom(Group group) {
 	ConferenceGroup confGroup=(ConferenceGroup)group;
         String confJid=confGroup.getSelfContact().getJid();
-	new ConferenceForm(display, confJid, confGroup.password, false);
+        String name=confGroup.desc;
+	new ConferenceForm(display, name, confJid, confGroup.password, false);
     }
     
     public void leaveRoom(Group group){
