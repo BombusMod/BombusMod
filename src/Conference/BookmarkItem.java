@@ -53,7 +53,7 @@ public class BookmarkItem extends IconTextElement{
     }
 
     public String toString(){
-        if (desc!=null)
+        if (desc.length()>0)
             return desc;
         
         return (nick==null)? jid: jid+'/'+nick;

@@ -139,6 +139,7 @@ public class Contact extends IconTextElement{
     public boolean ask_subscribe;
     
     public Vector msgs;
+    public int activeMessage=-1;
 
 //#ifdef ANTISPAM
 //#     public Vector tempMsgs=new Vector();
@@ -264,6 +265,9 @@ public class Contact extends IconTextElement{
         if (msgs.size()==0) 
             return false;
         
+        if (activeMessage>-1)
+            return true;
+        /*
         if (msgs.size()>1) {
             if (((Msg)msgs.elementAt(0)).messageType==Msg.MESSAGE_TYPE_PRESENCE && ((Msg)msgs.elementAt(1)).messageType==Msg.MESSAGE_TYPE_HISTORY) {
                 return (msgs.size()>2);
@@ -275,7 +279,7 @@ public class Contact extends IconTextElement{
         if (msgs.size()>0)
             if (((Msg)msgs.elementAt(0)).messageType!=Msg.MESSAGE_TYPE_PRESENCE)
                 return true;
-        
+        */
         return false;
     }
     
@@ -305,7 +309,6 @@ public class Contact extends IconTextElement{
     }
     
     public void addMessage(Msg m) {
-        
         boolean first_replace=false;
         if (m.isPresence()) {
             presence=m.getBody();
@@ -356,6 +359,9 @@ public class Contact extends IconTextElement{
         if (cf.autoScroll)
             moveToLatest=true;
         
+        if (m.messageType!=Msg.MESSAGE_TYPE_HISTORY && m.messageType!=Msg.MESSAGE_TYPE_PRESENCE)
+            activeMessage=msgs.size()+1;
+                    
         if (first_replace) {
             msgs.setElementAt(m,0);
             return;
@@ -463,6 +469,8 @@ public class Contact extends IconTextElement{
 //#endif
         msgs=new Vector();
         
+        activeMessage=-1; //drop activeMessage num
+        
         resetNewMsgCnt();
         
         try {
@@ -488,11 +496,17 @@ public class Contact extends IconTextElement{
  
     public final void smartPurge(int cursor) {
         try {
-            if (cursor==msgs.size() && msgs.size()>0)
+            if (cursor==msgs.size() && msgs.size()>0) {
                 msgs=new Vector();
-            else
-                for (int i=0; i<cursor; i++)
+                activeMessage=-1; //drop activeMessage num
+            } else {
+                int cp=-1;
+                for (int i=0; i<cursor; i++) {
+                    cp++;
                     msgs.removeElementAt(0);
+                }
+                activeMessage=activeMessage-cp; //drop activeMessage count
+            }
         } catch (Exception e) { }
         try {
             if (vcard!=null) {
