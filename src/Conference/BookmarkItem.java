@@ -102,7 +102,7 @@ public class BookmarkItem extends IconTextElement{
     
     public JabberDataBlock constructBlock() {
         JabberDataBlock data=new JabberDataBlock((isUrl)?"url":"conference", null, null);
-        data.setAttribute("name", desc);
+        data.setAttribute("name", (desc=="")?jid:desc);
         data.setAttribute((isUrl)?"url":"jid", jid);
         data.setAttribute("autojoin", (autojoin)?"true":"false");
         if (nick!=null) if (nick.length()>0) data.addChild("nick",nick);

@@ -201,9 +201,12 @@ public class ConferenceForm implements CommandListener{
         if (nick.length()==0) return;
         if (room.length()==0) return;
         if (host.length()==0) return;
+        
         StringBuffer gchat=new StringBuffer(room.trim());
         gchat.append('@');
         gchat.append(host.trim());
+        
+        if (name.length()==0) name=gchat.toString();
         
         saveMsgCount(msgLimit);
             

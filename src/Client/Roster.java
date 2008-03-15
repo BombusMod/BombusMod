@@ -1264,18 +1264,18 @@ public class Roster
                         }
                     }
                     
-                    if (id.startsWith("_ping")) {
-                            Contact c=getContact(from, true);
-                            querysign=false;
-                            c.setIncoming(Contact.INC_NONE);
-                            from=data.getAttribute("from");
-                            String pong=c.getPing();
-                            if (pong!=null) {
-                                Msg m=new Msg(Msg.MESSAGE_TYPE_IN, from, SR.MS_PING, pong);
-                                messageStore(getContact(from, false), m);
-                                redraw();
-                            }
+                    if (id.startsWith("_ping") && type.equals("result")) {
+                        Contact c=getContact(from, true);
+                        querysign=false;
+                        c.setIncoming(Contact.INC_NONE);
+                        from=data.getAttribute("from");
+                        String pong=c.getPing();
+                        if (pong!="") {
+                            Msg m=new Msg(Msg.MESSAGE_TYPE_IN, from, SR.MS_PING, pong);
+                            messageStore(getContact(from, false), m);
+                            redraw();
                         }
+                    }
                     
                     if (id.equals("getros")) if (type.equals("result")) {
 
@@ -1378,9 +1378,9 @@ public class Roster
                     return JabberBlockListener.BLOCK_PROCESSED;
                 } else if (type.equals("error")) {
                     querysign=false;
-                    
+
                     JabberDataBlock ping=data.getChildBlock("ping");
-                    if (ping!=null){
+                    if (ping!=null){//notify about ping
                         Contact c=getContact(from, true);
                         if (ping.isJabberNameSpace("urn:xmpp:ping")) { //ping
                             from=data.getAttribute("from");
