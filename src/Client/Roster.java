@@ -1426,58 +1426,58 @@ public class Roster
                 if (myJid.equals(new Jid(from), false)) {
                     from=message.getXFrom();
                 }
-
-                try {
-                    JabberDataBlock event=data.getChildBlock("event");
-                    if (event.getAttribute("xmlns").equals("http://jabber.org/protocol/pubsub#event")) {
+//#if MOOD
+//#                 try {
+//#                     JabberDataBlock event=data.getChildBlock("event");
+//#                     if (event.getAttribute("xmlns").equals("http://jabber.org/protocol/pubsub#event")) {
 //#if DEBUG 
 //#                         System.out.println(from+": pubsub#event");
 //#endif
-                        JabberDataBlock items=event.getChildBlock("items");
-                        if (items.getAttribute("node").equals("http://jabber.org/protocol/mood")) {
-                            Mood mood=null;
-                            if (items.getChildBlock("retract")!=null) {
+//#                         JabberDataBlock items=event.getChildBlock("items");
+//#                         if (items.getAttribute("node").equals("http://jabber.org/protocol/mood")) {
+//#                             Mood mood=null;
+//#                             if (items.getChildBlock("retract")!=null) {
 //#if DEBUG 
 //#                                  System.out.println(from+": unset mood");
 //#endif                                
-                            } else {
+//#                             } else {
 //#if DEBUG 
 //#                                 System.out.println(from+": mood");
 //#endif
-                                JabberDataBlock moods=items.getChildBlock("item").getChildBlock("mood");
-
-                                String userMood="";
-                                try {
-                                    userMood=((JabberDataBlock)moods.getChildBlocks().firstElement()).getTagName();
-                                } catch (Exception e) { /*System.out.println("no usermood");*/ }
-
-                                String userMoodText="";
-                                try {
-                                    userMoodText=moods.getChildBlock("text").getText();
-                                } catch (Exception e) { /*System.out.println("no userMoodText");*/ }
+//#                                 JabberDataBlock moods=items.getChildBlock("item").getChildBlock("mood");
+//# 
+//#                                 String userMood="";
+//#                                 try {
+//#                                     userMood=((JabberDataBlock)moods.getChildBlocks().firstElement()).getTagName();
+//#                                 } catch (Exception e) { /*System.out.println("no usermood");*/ }
+//# 
+//#                                 String userMoodText="";
+//#                                 try {
+//#                                     userMoodText=moods.getChildBlock("text").getText();
+//#                                 } catch (Exception e) { /*System.out.println("no userMoodText");*/ }
 //#if DEBUG 
 //#                                 System.out.println(from+": "+userMood+userMoodText);
 //#endif
-                                MoodList mi=MoodList.getInstance();
-                                mood=mi.getMood(userMood, userMoodText);
-                            }
-
-                            synchronized (hContacts) {
-                                for (Enumeration e=hContacts.elements();e.hasMoreElements();){
-                                    Contact c=(Contact)e.nextElement();
-                                    if (c.jid.equals(new Jid(from),false) && c.status<Presence.PRESENCE_OFFLINE) {
-                	                    c.setUserMood(mood);
-                	                    if (mood!=null) {
-                                                Msg m=new Msg(Msg.MESSAGE_TYPE_HISTORY, from, SR.MS_USER_MOOD, c.getUserMoodLocale()+"\n"+c.getUserMoodText());
-                                                messageStore(c, m);
-                                            }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                } catch (Exception e) { /*System.out.println("not mood");*/ }                 
-                
+//#                                 MoodList mi=MoodList.getInstance();
+//#                                 mood=mi.getMood(userMood, userMoodText);
+//#                             }
+//# 
+//#                             synchronized (hContacts) {
+//#                                 for (Enumeration e=hContacts.elements();e.hasMoreElements();){
+//#                                     Contact c=(Contact)e.nextElement();
+//#                                     if (c.jid.equals(new Jid(from),false) && c.status<Presence.PRESENCE_OFFLINE) {
+//#                 	                    c.setUserMood(mood);
+//#                 	                    if (mood!=null) {
+//#                                                 Msg m=new Msg(Msg.MESSAGE_TYPE_HISTORY, from, SR.MS_USER_MOOD, c.getUserMoodLocale()+"\n"+c.getUserMoodText());
+//#                                                 messageStore(c, m);
+//#                                             }
+//#                                     }
+//#                                 }
+//#                             }
+//#                         }
+//#                     }
+//#                 } catch (Exception e) { /*System.out.println("not mood");*/ }                 
+//#endif
                 String body=message.getBody().trim();    
                 String oob=message.getOOB();
                 if (oob!=null) body+=oob;
