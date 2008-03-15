@@ -34,7 +34,6 @@ import locale.SR;
 import ui.*;
 import ui.MainBar;
 import ui.controls.TextFieldCombo;
-import util.StringLoader;
 
 public class MoodSelect extends VirtualList implements CommandListener {
     

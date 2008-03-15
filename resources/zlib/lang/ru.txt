@@ -407,7 +407,7 @@ keyblock / flip	блок / флип
 
 Save options to server	Сохранить настройки на сервере
 Restore options from server	Загрузить настройки с сервера
-Make BackUp	Сохранить копию на диск	
+Make BackUp	Сохранить копию на диск
 Import from Back	Загрузить с диска
 Delete All	Очистить архив
 Use this Color scheme	Использовать схему

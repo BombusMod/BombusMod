@@ -79,6 +79,42 @@ public class StringLoader {
         buf=null;
 	return table;
     }
+    
+    public Vector[] stringLoader(final InputStream in, final int columns) {
+
+        StringBuffer buf = new StringBuffer();
+        Vector table[] = new Vector[columns];
+        for (int i = 0; i<columns; i++) {
+            table[i]=new Vector();
+        }
+        
+        afterEol=0;
+        try {
+            while (true) {
+        	String line=readLine(in);
+        	if (line==null)  break;
+        	
+        	if (line.startsWith("//")) continue; // skip all remarks
+
+        	int indexFrom=0;
+        	
+        	for (int i = 0; i<columns; i++) {
+        	    String cell=null;
+        	    try {
+        		int indexTo=line.indexOf(0x09, indexFrom);
+        		
+        		if (indexTo<0) indexTo=line.length();
+        		if (indexFrom<indexTo) cell=line.substring(indexFrom, indexTo);
+        		indexFrom=indexTo+1;
+        	    } catch (Exception e) { e.printStackTrace(); }
+        	    
+        	    table[i].addElement( cell );
+        	}
+            }
+            in.close();
+        } catch (Exception e)	{ e.printStackTrace();}
+        return table;
+    }
 
     public Hashtable hashtableLoader(String resource) {
 	Hashtable hash = new Hashtable();

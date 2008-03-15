@@ -48,7 +48,9 @@ import ui.MenuItem;
 //#endif
 import vcard.VCard;
 import vcard.vCardForm;
-
+//#ifdef CHECK_VERSION
+//# import Info.Upgrade;
+//#endif
 public class RosterToolsMenu
         extends Menu {
     
@@ -89,20 +91,22 @@ public class RosterToolsMenu
 //#endif
 //#ifdef CHECK_VERSION
 //#         addItem(SR.MS_CHECK_UPDATE, 12, 0x46);
+//#         if (Client.Config.getInstance().getStringProperty("Bombus-Upgrade", "123")!="123")
+//#             addItem("Build new version on constructor", 13, 0x46);
 //#endif
 //#ifdef USER_KEYS
 //#         if (Config.getInstance().userKeys)
-//#             addItem(SR.MS_CUSTOM_KEYS, 13, 0x0f03);
+//#             addItem(SR.MS_CUSTOM_KEYS, 14, 0x0f03);
 //#endif
 //#if SASL_XGOOGLETOKEN
         if (StaticData.getInstance().account.isGmail())
-            addItem(SR.MS_CHECK_GOOGLE_MAIL, 14,0x46);
+            addItem(SR.MS_CHECK_GOOGLE_MAIL, 15,0x46);
 //#endif        
 /*		
         addItem("ArchiveDump", 10);
 */        
         
-        addItem(SR.MS_BREAK_CONECTION, 15, 0x13);
+        addItem(SR.MS_BREAK_CONECTION, 16, 0x13);
         attachDisplay(display);
     }
     public void eventOk(){
@@ -174,17 +178,19 @@ public class RosterToolsMenu
 //#endif
 //#ifdef CHECK_VERSION
 //#             case 12:
-//#                 if (! connected) break;
-//#                 new util.LastVersion(display);
+//#                 new Upgrade(display, false);
+//#                 return;
+//#             case 13:
+//#                 new Upgrade(display, true);
 //#                 return;
 //#endif
 //#ifdef USER_KEYS
-//#             case 13:
+//#             case 14:
 //#                 new userKeysList(display);
 //#                 return;
 //#endif
 //#if SASL_XGOOGLETOKEN
-            case 14: //mail check
+            case 15: //mail check
                 StaticData.getInstance().roster.sendGmailReq();;
 		return; 
 //#endif
@@ -193,7 +199,7 @@ public class RosterToolsMenu
                 new archive.DebugDumpArchive(display);
                 return;
 */
-            case 15:
+            case 16:
                 StaticData.getInstance().roster.connectionTerminated(new Exception("Simulated break"));
                 return;
         }

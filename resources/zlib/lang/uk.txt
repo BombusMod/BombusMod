@@ -52,7 +52,6 @@ Select	Обрати
 Subject	Тема
 Group menu	Меню групп
 Quit	Вихiд
-Add to roster	Додати в ростер
 Edit list	Редагувати список
 Registering	Реєстрацiя
 Done	Виконано
@@ -71,7 +70,6 @@ Type	Тип
 Name	Iм'я
 Username	Iм'я користувача
 fullscreen	повноекранний
-All Priorities	У всiх статусах
 Add bookmark	Додат. закладку
 conferences only	тiльки конференцiї
 Client Version	Версiя клiенту
@@ -92,11 +90,9 @@ Delete	Видалити
 Delete contact?	Видалити контакт?
 Authorize	Авторизувати
 Nicknames	НIКи
-Entering setup	Вхiд в настройки аккаунту
 to Archive	В архiв
 Back	Назад
 heap monitor	монiтор пам'яті
-Hide Splash	Приховати картинку завантаження
 Message	Повiдомленя
 <Other>	<Iнший>
 Append	Додати
@@ -111,16 +107,14 @@ New Message	Нове повiдомленя
 Add	Додати
 Logon	Пiдключити
 Logoff	Вiдключити
-Login in progress	Перевiрка паролю
 at Host	Сервер
-join conferences	автовхiд в конференцiї
+join conferences	автовхiд до конференцiй
 Status	Статус
-Smiles	Вкл/викл смайлики
+Smiles	Ввімк/вимк смайлики
 Contact >	Контакт >
-Order	Порядок
 offline contacts	показати вiдключених
 Transport	Транспорт
-composing events	Повідомлення про набір
+composing events	повідомлення про набір
 Add Smile	Встав. смайлик
 Nickname	НIК
 Revoke Voice	Позбавити права голосу
@@ -129,7 +123,6 @@ Commands	Команди
 Set default	Встан. як основний
 Outcasts (Ban)	Iiзгої (Ban)
 Set affiliation to	Змінити членство на
-Hide Offlines	Сховати вiдключених
 Register Account	Зареєструвати обілковий запис
 autologin	автоз'єднання
 Publish	Публiкувати
@@ -137,18 +130,16 @@ Remove subscription	Видалити пiдписку
 Set	Встановити
 Application	Програма
 Bookmarks	Закладки
-Test sound	Тест звуку
+Test sound	Відтворити
 Startup	Запуск
 Edit rule	Редагувати правило
 Cancel	Відмінити
 Close	Закрити
 Archive	Архiв
-free	 вiльно  
 Conference	Конференцiя
-Sound	Звук
 Login failed	Помилка авторизацiї
 New Jid	Новий Jid
-plain-text password	пароль Вiдкр. текстом
+plain-text password	пароль вiдкр. текстом
 Paste Nickname	Вставити НIК
 Kick	Вигнати (kick)
 Remove readed	Видалити прочитані повiдомлення
@@ -166,27 +157,19 @@ Add rule	Додати правило
 for all status types	для всiх статусiв
 Paste Jid	Вставити Jid
 Goto URL	Перейти до URL
-Clock -	Годинник -
-Login	Вiдкриття сокету
 Clock offset	Зсув часу (годин)
-flash backlight	Сповіщати підсвіткою
 Suspend	Вiдкласти
-Resume Message	Чорновик
+Resume Message	Чернетка
 Alert Profile >	Сигнали >
 My vCard	Моя візитна картка (vCard)
 transports	транспорти
-New Account	Новий аккаунт
+New Account	Нов. аккаунт
 self-contact	свої контакти
 vCard	Візитна картка (vCard)
 Set Subject	Встановити тему
 Tools	Iнструменти
-Jabber Tools	Iнструменти серверу
 Port	Порт
 
-//473
-Proxy name/IP	Назва проксi-серверу/IP
-Proxy port	Порт проксi-серверу
-Autofocus	автофокус
 
 Connect	З'єднатися
 history -	Iсторiя
@@ -199,7 +182,6 @@ Ignore-List	Ignore-List
 General	General
 Stanzas	Stanzas
 Not-in-list	Not-in-list
-proxy CONNECT	proxy CONNECT
 
 //476
 Clear	Очистити
@@ -250,12 +232,9 @@ Hide finished	Приховати закiнченi
 Transfer tasks	Задачi передачi данних 
 
 Color tune	Настройка кольорiв
-Load Skin	Завантажити тему
 
 Select history folder	Вибiр папки історiї
 Classic chat	Класичний чат
-Digital heap monitor	Цифровий монiтор пам'яті
-Sound volume	Гучнiсть звуку
 Language	Мова
 Save history	Зберiгати iсторiю
 Save presences	Зберiгати статуси
@@ -328,16 +307,16 @@ messagelist & roster & common font	Загальний шрифт
 message subject	Тема повiдомлення
 message highlight	Пiдсвiчене повiдомлення
 service discovery commands	Команди дiско
-Header & Bottom background	Колiр верхньої i нижньої панелi
-Header font	Колiр шрифту верхньої панелi
+Header & Bottom background	Фон верхньої i нижньої панелi
+Header font	Шрифт верхньої панелi
 contact default	Звичайний контакт
 contact chat	Чат контакт
 contact away	Вiдсутнiй контакт
-contact extended away	Розширене вiдсутнiй контакт
-contact do not disturb	Не хвилювати контакт
+contact extended away	Давно вiдсутнiй контакт
+contact do not disturb	Не турбувати контакт
 group color	Колiр групп
-keylock font	Шрифт при блоку
-keylock background	Фон в блоку
+keylock font	Шрифт при блокуванні
+keylock background	Фон при блокуванні
 message incoming	Вхiдне повiдомлення
 message outgoing	Вихiдне повiдомлення
 message presence	Статусне повiдомлення
@@ -350,12 +329,11 @@ progress bar background	Фон індикатора прогресу
 Heap mon total	Всього пам'ятi
 Heap mon free	Вiльно пам'ятi
 Cursor background	Фон курсору
-Cursor ink & outline	Колiр шрифта курсору i ободу
-Scroll border	Колiр ободу скролу
-Scroll bar	Колiр бiгунка скролу
-Scroll back	Колiр фону скролу
+Cursor ink & outline	Шрифт курсору i ободу
+Scroll border	Обод скролу
+Scroll bar	Бігунок скролу
+Scroll back	Фон скролу
 
-Send status	Вiдправити статус
 Sounds options	Настройки звукiв
 
 participant	участник
@@ -393,7 +371,6 @@ Auto away since %t	Автостатус "Вiдсутнiй" починаючи з
 
 Grant Membership	Надати членство
 
-SASL login	SASL-з'єднання
 Features	Можливостi
 Show password	Показати пароль
 No client version available	Версiя клiєнту недоступна
@@ -430,17 +407,14 @@ keyblock / flip	блок / флiп
 Save options to server	Зберегти на серверi
 Restore options from server	Завантажити настройки iз серверу
 Make BackUp	Зберегти копiю на диск
-Import from Back	Завантажити з диску
 Delete All	Очистити архiв
 Use this Color scheme	Використати схему
 
 Send Buffer	Надіслати текст iз буферу
 Send Current color scheme	Надіслати кольор. схему
 Copy JID	Копiювати JID
-autofocus	Автофокус
+autofocus	автофокус
 Show Resources	Показувати ресурси
-AutoScroll	Автопрокрутка
-Antispam Conference	Антиспам в конференцiї
 PopUps	Випливаючi вiкна
 Last messages	Останнi повiдомлення
 Shared platform info	Показувати інформацію про платформу
@@ -448,12 +422,11 @@ Show new menu	Показувати нове меню
 Save conference history	Зберiгати iсторiю конференцiї
 AutoStatus Message	Повiдомлення Автостатусу
 
-online	В мережi
-Load Scheme	Завантажити схему
-show new menu	Графiчне меню
-convert to cp1251	Зберiгати в Win-1251
+online	в мережi
+Load Scheme	Завантаж. схему
+show new menu	графiчне меню
+convert to cp1251	зберiгати в Win-1251
 AutoStatus time (min)	Автостатус через(хвил.)
-Address	Адреса
 Import from BackUp	Вiдновити iз файла
 Accept file	Приняти файл
 Save To	Зберегти в
@@ -475,7 +448,6 @@ Contact request chat, Allow or Block?	З вами хочуть поспiлкув
 shared platform info	показувати iнформацiю про платформу
 Send in translit	Вiправити транслiтом
 Check Updates	Пошук нових версій
-Collapsed groups	Згорнуті групи
 Change nickname	Змiнити НiК
 Message collapse limit	Згортати якщо повiдомленнь бiльше
 No client info	Неможливо отримати iнформацiю
@@ -514,7 +486,6 @@ enabled	ввімкнено
 key	кнопка
 reconnect	повторне з'єднання
 Sort list	Сортирувати список
-Turn on light	Ввімкнути підсвітку
 
 Sun	Нд
 Mon	Пн
@@ -540,8 +511,8 @@ Online time	Час в мережі
 free 	вільно 
 Heap mon total	Пам'яті загалом
 Heap mon free	Пам'яті вільно
-Ignore-List	Списко ігнорованих
-Ask me	Запитувати вмене
+Ignore-List	список ігнорованих
+Ask me	Запитувати в мене
 Automatic subscription	Автоматична підписка
 Drop subscription	Ігнорувати підписку
 Deny subscription	Відмовіляти у підписці
@@ -550,8 +521,7 @@ Clear popups	Видалити спривалючі повідомлення
 Last Messages	Останні повідомлення
 Sound volume	Гучність
 Break connection	Розірвати з'єднання
-autoScroll	автоматична прокрутка
-emulateTabs	емулювати вкладки
+autoScroll	автопрокрутка
 antispam conference	антиспам в конференціях
 popUps	спливаючі повідомлення
 Started: 	Запущена: 
@@ -562,7 +532,19 @@ Current: 	Поточний:
 Memory:	Пам'ять:
 Free: 	Вільно: 
 Total: 	Загалом: 
-in: 	вх: 
-out: 	вих: 
-Stream: 	Потік: 
 conn., 	з'єдн., 
+bold font for contacts	товстий шрифт контактів
+running message	показ. повідомл. при наборі
+Composing message to you	Повід. про набір пові. для Вас
+No compression	Вимкнути компресию
+New room created	Створена нова кімната
+Import/Export	Зберегти/Відновити парам.
+Authorize new contacts	Авторизувати нових користувачів
+emulate tabs	вдавати вкладки
+collapsed groups	згорнуті групи
+show resources	показувати ресурси
+Sound volume	Гучність
+show balloons	показувати балони
+turn on light	ввімкнути підсвітку
+IRC-like conference nick-status	IRC-подібні статуси
+Description	Опис

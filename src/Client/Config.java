@@ -640,12 +640,14 @@ public class Config {
     }
 
     public static String getOs() {
-        return "MIDP2 Platform=" +getPlatformName();
+        return getPlatformName();
     }
     
-    
     public final String getStringProperty(final String key, final String defvalue) {
-	try { return (key==null)?defvalue:key; } catch (Exception e) {	}
+	try {
+	    String s=BombusMod.getInstance().getAppProperty(key);
+	    return (s==null)?defvalue:s;
+	} catch (Exception e) {	}
         return defvalue;
     }
     
