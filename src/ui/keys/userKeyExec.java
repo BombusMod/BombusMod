@@ -110,7 +110,7 @@ public class userKeyExec {
                 roster.cleanupAllHistories();
                 break;
             case 3: 
-                roster.connectionTerminated(new Exception("reconnect by user"));
+                roster.connectionTerminated(new Exception(SR.MS_SIMULATED_BREAK));
                 break;
             case 4: 
                 roster.showStats();
@@ -157,11 +157,7 @@ public class userKeyExec {
             case 14:
                 if (cf.allowMinimize)
                     BombusMod.getInstance().hideApp(true);
-                break;
-            case 15:
-                roster.connectionTerminated(new Exception("Simulated break"));
-                break;
-                
+                break;                
         }
     } 
 
@@ -189,8 +185,7 @@ public class userKeyExec {
             SR.MS_CLEAR_POPUPS,
             SR.MS_FLASHLIGHT,
             SR.MS_ABOUT,
-            SR.MS_APP_MINIMIZE,
-            SR.MS_BREAK_CONECTION
+            SR.MS_APP_MINIMIZE
     };
     
     public static final String[] KEYS_NAME = {

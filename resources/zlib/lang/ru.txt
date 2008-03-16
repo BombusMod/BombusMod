@@ -547,3 +547,13 @@ Drop subscription	отклонять
 Deny subscription	запрещать
 Search	Поиск
 Register	Регистрация
+
+bold font for contacts	жирный шрифт для контактов ростера
+running message	бегущая строка в заголовке
+Composing message to you	Пишет сообщение
+No compression	без сжатия
+New room created	Создана новая комната, не забудьте настроить её в конфигураторе!
+IRC-like conference nick-status	смена ника при смене статуса в конференции как в IRC
+user moods send/receive	получение и отправка настроений
+Simulated break	Ручное переподключение
+Build new version on constructor	Собрать новую версию на конструкторе

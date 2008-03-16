@@ -209,6 +209,8 @@ public class Config {
     
     public boolean ircLikeStatus = false;
     
+    public boolean sndrcvmood = true;
+    
     public static Config getInstance(){
 	if (instance==null) {
 	    instance=new Config();
@@ -379,6 +381,8 @@ public class Config {
             
             notifyWhenMessageType = inputStream.readBoolean();
             ircLikeStatus = inputStream.readBoolean();
+            
+            sndrcvmood = inputStream.readBoolean();
                     
 	    inputStream.close();
 	} catch (Exception e) {
@@ -526,6 +530,8 @@ public class Config {
             
             outputStream.writeBoolean(notifyWhenMessageType);
             outputStream.writeBoolean(ircLikeStatus);
+            
+            outputStream.writeBoolean(sndrcvmood);
             
 	} catch (Exception e) { }
 	

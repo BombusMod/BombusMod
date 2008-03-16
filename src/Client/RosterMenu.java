@@ -52,7 +52,7 @@ public class RosterMenu
 //#         addItem(SR.MS_STATUS_MENU, 1, 0x0f16);
 //#         addItem(SR.MS_ACTIVE_CONTACTS, 2, 0x0f21);
 //#ifdef MOOD
-//#         if (roster.useUserMood)
+//#         if (roster.useUserMood && cf.sndrcvmood)
 //#             addItem(SR.MS_USER_MOOD, 3, 0x0f16);
 //#endif
 //#         addItem(SR.MS_ALERT_PROFILE_CMD, 4, 0x0f17);

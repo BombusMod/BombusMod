@@ -54,6 +54,8 @@ import vcard.vCardForm;
 public class RosterToolsMenu
         extends Menu {
     
+    Config cf=Config.getInstance();
+    Roster roster=StaticData.getInstance().roster;
     /** Creates a new instance of RosterToolsMenu */
     public RosterToolsMenu(Display display) {
         super(SR.MS_TOOLS);
@@ -64,7 +66,7 @@ public class RosterToolsMenu
 //#         addItem(SR.MS_PRIVACY_LISTS, 1, 0x46);
 //#endif
 //#ifdef MOOD
-//#         if (StaticData.getInstance().roster.useUserMood)
+//#         if (roster.useUserMood && cf.sndrcvmood)
 //#             addItem(SR.MS_USER_MOOD, 2, 0x0f16);
 //#endif
         addItem(SR.MS_MY_VCARD, 3, 0x0f16);
@@ -91,11 +93,11 @@ public class RosterToolsMenu
 //#endif
 //#ifdef CHECK_VERSION
 //#         addItem(SR.MS_CHECK_UPDATE, 12, 0x46);
-//#         if (Client.Config.getInstance().getStringProperty("Bombus-Upgrade", "123")!="123")
-//#             addItem("Build new version on constructor", 13, 0x46);
+//#         if (cf.getStringProperty("Bombus-Upgrade", "123")!="123")
+//#             addItem(SR.MS_BUILD_NEW, 13, 0x46);
 //#endif
 //#ifdef USER_KEYS
-//#         if (Config.getInstance().userKeys)
+//#         if (cf.userKeys)
 //#             addItem(SR.MS_CUSTOM_KEYS, 14, 0x0f03);
 //#endif
 //#if SASL_XGOOGLETOKEN
@@ -111,7 +113,7 @@ public class RosterToolsMenu
     }
     public void eventOk(){
         destroyView();
-        boolean connected= ( StaticData.getInstance().roster.isLoggedIn() );
+        boolean connected= ( roster.isLoggedIn() );
         MenuItem me=(MenuItem) getFocusedObject();
         if (me==null)  return;
         int index=me.index;
@@ -132,7 +134,7 @@ public class RosterToolsMenu
                 return;
             case 3: {
                 if (! connected) break;
-                Contact c=StaticData.getInstance().roster.selfContact();
+                Contact c=roster.selfContact();
                 if (c.vcard!=null) {
                     new vCardForm(display, c.vcard, true);
                     return;
@@ -173,7 +175,7 @@ public class RosterToolsMenu
                 return;
 //#ifdef POPUPS
 //#             case 11: //traffic stats
-//#                 StaticData.getInstance().roster.showStats();
+//#                 roster.showStats();
 //#                 return;
 //#endif
 //#ifdef CHECK_VERSION
@@ -191,7 +193,7 @@ public class RosterToolsMenu
 //#endif
 //#if SASL_XGOOGLETOKEN
             case 15: //mail check
-                StaticData.getInstance().roster.sendGmailReq();;
+                roster.sendGmailReq();;
 		return; 
 //#endif
 /*
@@ -200,7 +202,7 @@ public class RosterToolsMenu
                 return;
 */
             case 16:
-                StaticData.getInstance().roster.connectionTerminated(new Exception("Simulated break"));
+                roster.connectionTerminated(new Exception(SR.MS_SIMULATED_BREAK));
                 return;
         }
     }

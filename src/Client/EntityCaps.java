@@ -14,6 +14,7 @@ import com.alsutton.jabber.JabberBlockListener;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
 import com.ssttr.crypto.SHA1;
+import java.util.Vector;
 
 /**
  *
@@ -22,30 +23,33 @@ import com.ssttr.crypto.SHA1;
 public class EntityCaps implements JabberBlockListener{
     
     /** Creates a new instance of EntityCaps */
-    public EntityCaps() {}
+    public EntityCaps() {
+        init();
+        if (Config.getInstance().sndrcvmood)
+            features.addElement("http://jabber.org/protocol/mood+notify");         
+    }
     public int blockArrived(JabberDataBlock data) {
-            if (!(data instanceof Iq)) return BLOCK_REJECTED;
-            if (!data.getTypeAttribute().equals("get")) return BLOCK_REJECTED;
+        if (!(data instanceof Iq)) return BLOCK_REJECTED;
+        if (!data.getTypeAttribute().equals("get")) return BLOCK_REJECTED;
 
-            JabberDataBlock query=data.findNamespace("query", "http://jabber.org/protocol/disco#info");
-            if (query==null) return BLOCK_REJECTED;
-            String node=query.getAttribute("node");
+        JabberDataBlock query=data.findNamespace("query", "http://jabber.org/protocol/disco#info");
+        if (query==null) return BLOCK_REJECTED;
+        String node=query.getAttribute("node");
 
         if (node!=null)
             if (!node.equals(BOMBUS_NAMESPACE+"#"+calcVerHash()))
                 return BLOCK_REJECTED;
 
+        JabberDataBlock result=new Iq(data.getAttribute("from"), Iq.TYPE_RESULT, data.getAttribute("id"));
+        result.addChild(query);
 
-            JabberDataBlock result=new Iq(data.getAttribute("from"), Iq.TYPE_RESULT, data.getAttribute("id"));
-            result.addChild(query);
-
-            JabberDataBlock identity=query.addChild("identity", null);
+        JabberDataBlock identity=query.addChild("identity", null);
         identity.setAttribute("category", BOMBUS_ID_CATEGORY);
         identity.setAttribute("type", BOMBUS_ID_TYPE);
         identity.setAttribute("name", Version.NAME);
 
-        for (int i=0; i<features.length; i++) {
-            query.addChild("feature", null).setAttribute("var",features[i]);
+        for (int i=0; i<features.size(); i++) {
+            query.addChild("feature", null).setAttribute("var",(String)features.elementAt(i));
         }
         
         StaticData.getInstance().roster.theStream.send(result);
@@ -66,8 +70,8 @@ public class EntityCaps implements JabberBlockListener{
         sha1.update(Version.NAME);
         sha1.update("<");
         
-        for (int i=0; i<features.length; i++) {
-            sha1.update(features[i]);
+        for (int i=0; i<features.size(); i++) {
+            sha1.update((String)features.elementAt(i));
             sha1.update("<");
         }
         
@@ -91,22 +95,25 @@ public class EntityCaps implements JabberBlockListener{
     private final static String BOMBUS_ID_CATEGORY="client";
     private final static String BOMBUS_ID_TYPE="mobile";
     
-//features MUST be sorted
-    private final static String features[]={
-        "http://jabber.org/protocol/chatstates", //xep-0085
-        "http://jabber.org/protocol/disco#info",
-	"http://jabber.org/protocol/ibb",
-        "http://www.xmpp.org/extensions/xep-0199.html#ns",
-        "http://jabber.org/protocol/muc",
-        "http://jabber.org/protocol/si",
-        "http://jabber.org/protocol/si/profile/file-transfer",
-        "http://jabber.org/protocol/mood+notify",
-        "jabber:iq:time", //DEPRECATED
-        "jabber:iq:version",
-        "jabber:x:data",
-        //"jabber:x:event", //DEPRECATED
-        "urn:xmpp:ping",
-        "urn:xmpp:receipts", //xep-0184
-        "urn:xmpp:time"
-    };
+    
+    private static final String initFeatures = "http://jabber.org/protocol/chatstates,http://jabber.org/protocol/disco#info,http://jabber.org/protocol/ibb,http://www.xmpp.org/extensions/xep-0199.html#ns,http://jabber.org/protocol/muc,http://jabber.org/protocol/si,http://jabber.org/protocol/si/profile/file-transfer,jabber:iq:time,jabber:iq:version,jabber:x:data,urn:xmpp:ping,urn:xmpp:receipts,urn:xmpp:time,";
+    
+    private static Vector features=new Vector();
+    
+    private static void init() {
+        if (features.size()<1)
+            fillFeatures();
+    }
+    
+    private static void fillFeatures() {
+        try {
+            int p=0; int pos=0;
+            while (pos<initFeatures.length()) {
+               p=initFeatures.indexOf(',', pos);
+               String feature=initFeatures.substring(pos, p);
+               features.addElement((String)feature);
+               pos=p+1;
+            }
+        } catch (Exception ex) { }
+    }
 }

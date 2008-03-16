@@ -107,6 +107,8 @@ public class iConfigData {
         cf.notifyWhenMessageType=cf.getBooleanProperty(getValue("notifyWhenMessageType"),false);
         
         cf.ircLikeStatus=cf.getBooleanProperty(getValue("ircLikeStatus"),false);
+        
+        cf.sndrcvmood=cf.getBooleanProperty(getValue("sndrcvmood"),true);
              
         cf.lastProfile=cf.profile=cf.def_profile;
         if (cf.lastProfile==AlertProfile.VIBRA) 

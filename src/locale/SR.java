@@ -608,11 +608,9 @@ public class SR {
     public static String MS_MEMORY=loadString("Memory:");
     public static String MS_FREE = loadString("Free: ");
     public static String MS_TOTAL=loadString("Total: ");
-    // static String MS_IN=loadString("in: ");
-    //public static String MS_OUT=loadString("out: ");
-    //public static String MS_STREAM=loadString("Stream: ");
 
     public static String MS_CONN=loadString("conn., ");
+    public static String MS_DESCRIPTION=loadString("Description");
     
 //2008-01-24
     public static String MS_USER = loadString( "User" );
@@ -627,10 +625,10 @@ public class SR {
     public static String MS_NO_COMPRESSION = loadString( "No compression" );
     public static String MS_NEW_ROOM_CREATED = loadString( "New room created" );
 
-    
     public static String MS_IRCLIKESTATUS = loadString( "IRC-like conference nick-status" );
-    
-    public static String MS_DESCRIPTION=loadString("Description");
+    public static String MS_SEND_RECEIVE_USERMOODS=loadString("user moods send/receive");
+    public static String MS_SIMULATED_BREAK=loadString("Simulated break");
+    public static String MS_BUILD_NEW=loadString("Build new version on constructor");
     
     private SR() { }
     
