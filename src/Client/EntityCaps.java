@@ -58,6 +58,8 @@ public class EntityCaps implements JabberBlockListener{
     }
 	
     public static String ver=null;
+
+    private static boolean useMoods;
     
     public static String calcVerHash() {
         if (ver!=null) return ver;
@@ -87,7 +89,8 @@ public class EntityCaps implements JabberBlockListener{
         c.setAttribute("node", BOMBUS_NAMESPACE+'#'+Version.getVersionNumber());
         c.setAttribute("ver", calcVerHash());
         c.setAttribute("hash", "sha-1");
-        c.setAttribute("ext", "ep-notify");
+        if (useMoods)
+            c.setAttribute("ext", "ep-notify");
         return c;
     }
     
@@ -101,6 +104,8 @@ public class EntityCaps implements JabberBlockListener{
     private static Vector features=new Vector();
     
     private static void init() {
+        if (Config.getInstance().sndrcvmood)
+            useMoods=true;
         if (features.size()<1)
             fillFeatures();
     }
