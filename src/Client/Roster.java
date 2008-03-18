@@ -99,6 +99,7 @@ public class Roster
     private Config cf=Config.getInstance();
     private StaticData sd=StaticData.getInstance();
     
+    public Contact activeContact = null;
     
     private Jid myJid;
 
@@ -1937,8 +1938,15 @@ public class Roster
             me.setTicker(message);
     }
     
+    boolean showWobbler(Contact c) {
+        if (activeContact==null)
+            return true;
+        return(!c.equals(activeContact));
+    }
+    
     void messageStore(Contact c, Msg message) {
         if (c==null) return;
+
         c.addMessage(message);
         
         if (me!=null)
@@ -1951,9 +1959,8 @@ public class Roster
             System.gc(); 
 //#endif
 //#ifdef POPUPS
-//#         if (message.messageType==Msg.MESSAGE_TYPE_AUTH && cf.popUps) {
-//#             setWobbler(message.from+"\n"+message.getBody());
-//#         }
+//#             if (message.messageType==Msg.MESSAGE_TYPE_AUTH && showWobbler(c))
+//#                 setWobbler(message.from+"\n"+message.getBody());
 //#endif
         if (countNewMsgs())
             reEnumRoster();
@@ -1974,7 +1981,7 @@ public class Roster
         if (message.isHighlited()) {
             playNotify(SOUND_FOR_ME);
 //#ifdef POPUPS
-//#             if (cf.popUps)
+//#             if (showWobbler(c))
 //#                 setWobbler(message.getBody());
 //#endif
             return;
@@ -1994,13 +2001,12 @@ public class Roster
 //#endif
         else {
 //#ifdef POPUPS
-//#             if (message.messageType==Msg.MESSAGE_TYPE_IN && 
+//#             if (message.messageType==Msg.MESSAGE_TYPE_IN)
 //#ifndef WMUC
-//#                 !(c instanceof MucContact) &&  
+//#                 if (!(c instanceof MucContact))
 //#endif
-//#                 cf.popUps) {
-//#                     setWobbler(c.toString()+": "+message.getBody());
-//#             }
+//#                     if (showWobbler(c))
+//#                         setWobbler(c.toString()+": "+message.getBody());
 //#endif
             if (c.getName().endsWith("!")) {
                 playNotify(SOUND_FOR_VIP);
@@ -2461,6 +2467,9 @@ public class Roster
 //#     }
 //# 
 //#     public void setWobbler(String info) {
+//#         if (!cf.popUps)
+//#             return;
+//#         
 //#         StringBuffer mess=new StringBuffer();
 //#         
 //#         if (info==null) {

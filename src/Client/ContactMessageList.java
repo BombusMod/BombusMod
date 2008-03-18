@@ -93,6 +93,7 @@ public class ContactMessageList extends MessageList
     public ContactMessageList(Contact contact, Display display) {
         super(display);
         this.contact=contact;
+        sd.roster.activeContact=contact;
         
         MainBar mainbar=new MainBar(contact);
         setMainBarItem(mainbar);
@@ -599,7 +600,6 @@ public class ContactMessageList extends MessageList
             msg=null;
         } catch (Exception e) {/*no messages*/}
     }
-    
     
 //#ifdef ALT_INPUT
 //#     private void sendMessage(){

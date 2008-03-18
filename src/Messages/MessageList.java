@@ -29,6 +29,7 @@ package Messages;
 
 import Client.Config;
 import Client.Msg;
+import Client.StaticData;
 import java.util.Vector;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
@@ -106,7 +107,10 @@ public abstract class MessageList
     protected boolean smiles;
 
     public void commandAction(Command c, Displayable d) {
-        if (c==cmdBack) destroyView();
+        if (c==cmdBack) {
+            StaticData.getInstance().roster.activeContact=null;
+            destroyView();
+        }
         if (c==cmdUrl) {
             try {
                 Vector urls=((MessageItem) getFocusedObject()).getUrlList();
