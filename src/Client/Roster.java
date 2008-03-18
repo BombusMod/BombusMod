@@ -1939,6 +1939,8 @@ public class Roster
     }
     
     boolean showWobbler(Contact c) {
+        if (!cf.popUps)
+            return false;
         if (activeContact==null)
             return true;
         return(!c.equals(activeContact));
@@ -2467,9 +2469,6 @@ public class Roster
 //#     }
 //# 
 //#     public void setWobbler(String info) {
-//#         if (!cf.popUps)
-//#             return;
-//#         
 //#         StringBuffer mess=new StringBuffer();
 //#         
 //#         if (info==null) {
