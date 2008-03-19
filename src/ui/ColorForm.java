@@ -44,7 +44,7 @@ public class ColorForm implements CommandListener
     private Display display;
     private Displayable parentView;
       
-    private static ColorScheme cl=ColorScheme.getInstance();
+    private static ColorScheme cs=ColorScheme.getInstance();
       
     private final static int w=16;
     private final static int h=16;
@@ -101,49 +101,49 @@ public class ColorForm implements CommandListener
         };
         
         public static int[] COLORS = {            
-            cl.BALLOON_INK,
-            cl.BALLOON_BGND,
-            cl.LIST_BGND,
-            cl.LIST_BGND_EVEN,
-            cl.LIST_INK,
+            cs.BALLOON_INK,
+            cs.BALLOON_BGND,
+            cs.LIST_BGND,
+            cs.LIST_BGND_EVEN,
+            cs.LIST_INK,
             
-            cl.MSG_SUBJ,
-            cl.MSG_HIGHLIGHT,
-            cl.DISCO_CMD,
-            cl.BAR_BGND,
-            cl.BAR_BGND_BOTTOM,
-            cl.BAR_INK,
+            cs.MSG_SUBJ,
+            cs.MSG_HIGHLIGHT,
+            cs.DISCO_CMD,
+            cs.BAR_BGND,
+            cs.BAR_BGND_BOTTOM,
+            cs.BAR_INK,
             
-            cl.CONTACT_DEFAULT,
-            cl.CONTACT_CHAT,
-            cl.CONTACT_AWAY,
-            cl.CONTACT_XA,
-            cl.CONTACT_DND,
+            cs.CONTACT_DEFAULT,
+            cs.CONTACT_CHAT,
+            cs.CONTACT_AWAY,
+            cs.CONTACT_XA,
+            cs.CONTACT_DND,
             
-            cl.GROUP_INK,
-            cl.BLK_INK,
-            cl.BLK_BGND,
-            cl.MESSAGE_IN,
-            cl.MESSAGE_OUT,
-            cl.MESSAGE_PRESENCE,
+            cs.GROUP_INK,
+            cs.BLK_INK,
+            cs.BLK_BGND,
+            cs.MESSAGE_IN,
+            cs.MESSAGE_OUT,
+            cs.MESSAGE_PRESENCE,
             
-            cl.MESSAGE_AUTH,
-            cl.MESSAGE_HISTORY,
-            cl.PGS_REMAINED,
-            cl.PGS_COMPLETE,
+            cs.MESSAGE_AUTH,
+            cs.MESSAGE_HISTORY,
+            cs.PGS_REMAINED,
+            cs.PGS_COMPLETE,
             
-            cl.PGS_BORDER,
-            cl.PGS_BGND,
-            cl.HEAP_TOTAL,
-            cl.HEAP_FREE,
-            cl.CURSOR_BGND,
+            cs.PGS_BORDER,
+            cs.PGS_BGND,
+            cs.HEAP_TOTAL,
+            cs.HEAP_FREE,
+            cs.CURSOR_BGND,
             
-            cl.CURSOR_OUTLINE,
-            cl.SCROLL_BRD,
-            cl.SCROLL_BAR,
-            cl.SCROLL_BGND,
+            cs.CURSOR_OUTLINE,
+            cs.SCROLL_BRD,
+            cs.SCROLL_BAR,
+            cs.SCROLL_BGND,
             
-            cl.CONTACT_J2J
+            cs.CONTACT_J2J
 //#if NICK_COLORS
 //#             ,cl.MESSAGE_IN_S,
 //#             cl.MESSAGE_OUT_S,
@@ -154,48 +154,48 @@ public class ColorForm implements CommandListener
         
       
     public static Image[] IMAGES= {
-            imageData(cl.BALLOON_INK),
-            imageData(cl.BALLOON_BGND),
-            imageData(cl.LIST_BGND),
-            imageData(cl.LIST_BGND_EVEN),
-            imageData(cl.LIST_INK),
+            imageData(cs.BALLOON_INK),
+            imageData(cs.BALLOON_BGND),
+            imageData(cs.LIST_BGND),
+            imageData(cs.LIST_BGND_EVEN),
+            imageData(cs.LIST_INK),
 
-            imageData(cl.MSG_SUBJ),
-            imageData(cl.MSG_HIGHLIGHT),
-            imageData(cl.DISCO_CMD),
-            imageData(cl.BAR_BGND),
-            imageData(cl.BAR_BGND_BOTTOM),
-            imageData(cl.BAR_INK),
+            imageData(cs.MSG_SUBJ),
+            imageData(cs.MSG_HIGHLIGHT),
+            imageData(cs.DISCO_CMD),
+            imageData(cs.BAR_BGND),
+            imageData(cs.BAR_BGND_BOTTOM),
+            imageData(cs.BAR_INK),
 
-            imageData(cl.CONTACT_DEFAULT),
-            imageData(cl.CONTACT_CHAT),
-            imageData(cl.CONTACT_AWAY),
-            imageData(cl.CONTACT_XA),
-            imageData(cl.CONTACT_DND),
+            imageData(cs.CONTACT_DEFAULT),
+            imageData(cs.CONTACT_CHAT),
+            imageData(cs.CONTACT_AWAY),
+            imageData(cs.CONTACT_XA),
+            imageData(cs.CONTACT_DND),
                     
-            imageData(cl.GROUP_INK),
-            imageData(cl.BLK_INK),
-            imageData(cl.BLK_BGND),
-            imageData(cl.MESSAGE_IN),
-            imageData(cl.MESSAGE_OUT),
-            imageData(cl.MESSAGE_PRESENCE),
+            imageData(cs.GROUP_INK),
+            imageData(cs.BLK_INK),
+            imageData(cs.BLK_BGND),
+            imageData(cs.MESSAGE_IN),
+            imageData(cs.MESSAGE_OUT),
+            imageData(cs.MESSAGE_PRESENCE),
             
-            imageData(cl.MESSAGE_AUTH),
-            imageData(cl.MESSAGE_HISTORY),
-            imageData(cl.PGS_REMAINED),
-            imageData(cl.PGS_COMPLETE),
+            imageData(cs.MESSAGE_AUTH),
+            imageData(cs.MESSAGE_HISTORY),
+            imageData(cs.PGS_REMAINED),
+            imageData(cs.PGS_COMPLETE),
 
-            imageData(cl.PGS_BORDER),
-            imageData(cl.PGS_BGND),
-            imageData(cl.HEAP_TOTAL),
-            imageData(cl.HEAP_FREE),
-            imageData(cl.CURSOR_BGND),
+            imageData(cs.PGS_BORDER),
+            imageData(cs.PGS_BGND),
+            imageData(cs.HEAP_TOTAL),
+            imageData(cs.HEAP_FREE),
+            imageData(cs.CURSOR_BGND),
 
-            imageData(cl.CURSOR_OUTLINE),
-            imageData(cl.SCROLL_BRD),
-            imageData(cl.SCROLL_BAR),
-            imageData(cl.SCROLL_BGND),
-            imageData(cl.CONTACT_J2J)
+            imageData(cs.CURSOR_OUTLINE),
+            imageData(cs.SCROLL_BRD),
+            imageData(cs.SCROLL_BAR),
+            imageData(cs.SCROLL_BGND),
+            imageData(cs.CONTACT_J2J)
 //#if NICK_COLORS
 //#             ,imageData(cl.MESSAGE_IN_S),
 //#             imageData(cl.MESSAGE_OUT_S),
@@ -209,6 +209,7 @@ public class ColorForm implements CommandListener
 
 //#if (FILE_IO)
     Command cmdSaveSkin=new Command(SR.MS_SAVE, Command.ITEM,3); 
+    Command cmdLoadSkinFS=new Command(SR.MS_LOAD_SKIN+"FS", Command.ITEM,4);
     int fileSize;
     private int filePos;
     String filePath;
@@ -219,6 +220,8 @@ public class ColorForm implements CommandListener
     private Command cmdCancel=new Command(SR.MS_CLOSE, Command.BACK, 99);
 
     private Command selectCommand = new Command(SR.MS_EDIT, Command.ITEM, 1);
+
+    private int loadType=0;
     
     public ColorForm(Display display) {
         super();
@@ -231,6 +234,7 @@ public class ColorForm implements CommandListener
 
 //#if (FILE_IO)
         selectionList.addCommand(cmdSaveSkin);
+        selectionList.addCommand(cmdLoadSkinFS);
 //#endif
         selectionList.addCommand(cmdCancel);
         display.setCurrent(selectionList);
@@ -246,7 +250,14 @@ public class ColorForm implements CommandListener
         }
         
 //#if (FILE_IO && COLORS)
-//#         if (c==cmdSaveSkin) new Browser(null,display, this, true);
+//#         if (c==cmdSaveSkin) {
+//#             loadType=0;
+//#             new Browser(null,display, this, true);
+//#         }
+//#         if (c==cmdLoadSkinFS) {
+//#             loadType=1;
+//#             new Browser(null, display, this, false);
+//#         }
 //#endif
         
         if (c==selectCommand) {
@@ -272,22 +283,25 @@ public class ColorForm implements CommandListener
 //#     }
 //# 
 //#     public void BrowserFilePathNotify(String pathSelected) {
+//#         if (loadType==0) {
+//#             byte[] bodyMessage=ColorScheme.getSkin().getBytes();
 //# 
-//#         byte[] bodyMessage=ColorScheme.getSkin().getBytes();
-//#                 
-//#         file=FileIO.createConnection(pathSelected+"skin.txt");
-//#         try {
-//#             os=file.openOutputStream();
-//#             writeFile(bodyMessage);
-//#             os.close();
-//#             file.close();
-//#         } catch (IOException ex) {
+//#             file=FileIO.createConnection(pathSelected+"skin.txt");
 //#             try {
+//#                 os=file.openOutputStream();
+//#                 writeFile(bodyMessage);
+//#                 os.close();
 //#                 file.close();
-//#             } catch (IOException ex2) {
-//#                 //ex2.printStackTrace();
+//#             } catch (IOException ex) {
+//#                 try {
+//#                     file.close();
+//#                 } catch (IOException ex2) {
+//#                     //ex2.printStackTrace();
+//#                 }
+//#                 //ex.printStackTrace();
 //#             }
-//#             //ex.printStackTrace();
+//#         } else {
+//#             cs.loadSkin(pathSelected, 0);
 //#         }
 //#     }
 //#endif 

@@ -759,8 +759,7 @@ public abstract class VirtualList
                 case KEY_STAR:
                     System.gc();
 //#ifdef POPUPS
-//#                     if (cf.popUps)
-//#                         setWobble("Free: "+(Runtime.getRuntime().freeMemory()/1000)+" kb");
+//#                     setWobble("Free: "+(Runtime.getRuntime().freeMemory()/1000)+" kb");
 //#endif
                     break;
 //#ifdef POPUPS
@@ -975,6 +974,7 @@ public abstract class VirtualList
     }
 
     public void destroyView(){
+        sd.roster.activeContact=null;
         if (display!=null && parentView!=null /*prevents potential app hiding*/ )   
             display.setCurrent(parentView);
     }

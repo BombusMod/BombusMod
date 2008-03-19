@@ -183,8 +183,6 @@ public class Roster
         
         setLight(cf.lightState);
 
-        playNotify(SOUND_START_UP);
-        
         MainBar mainbar=new MainBar(4, null, null);
         setMainBarItem(mainbar);
         mainbar.addRAlign();
@@ -223,7 +221,7 @@ public class Roster
 		} catch( Exception e ) { }
          }
 //#ifdef SE_LIGHT
-//#         else if (cf.phoneManufacturer==Config.SONYE) {
+//#         else if (cf.phoneManufacturer==Config.SONYE || cf.phoneManufacturer==Config.NOKIA) {
 //#             selight.setLight(state);
 //#          }
 //#endif
@@ -763,7 +761,7 @@ public class Roster
                 groups.queryGroupState(false);
             
             if (!sd.account.isMucOnly() )
-				theStream.send( presence );
+		theStream.send( presence );
 //#ifndef WMUC
             multicastConferencePresence(myMessage); //null
 //#endif
@@ -1096,12 +1094,10 @@ public class Roster
     public void loginSuccess() {
         //enable keep-alive packets
         theStream.startKeepAliveTask();
-		
 	theStream.loggedIn=true;
-		
 	reconnectCount=0;
-        
-        //
+
+        playNotify(SOUND_START_UP);
         if (reconnect) {
             querysign=reconnect=false;
             sendPresence(myStatus, null);
@@ -1114,8 +1110,7 @@ public class Roster
         //
         theStream.enableRosterNotify(true);
         rpercent=60;
-        //AutoAway=new TimerTaskAutoAway();
-        //if (cf.autoAwayType==cf.AWAY_IDLE) TimerTaskAutoAway.startRotate(5,this);
+
         if (sd.account.isMucOnly()) {
             setProgress(SR.MS_CONNECTED,100);
             try {
@@ -2359,14 +2354,6 @@ public class Roster
                     } catch (Exception e) { /* NullPointerException */ }
                 }
                 break;
-            default:
-                    try {
-                        switch (getGameAction(keyCode)){
-                            case LEFT:
-                                super.pageLeft();
-                                return;
-                        }
-                    } catch (Exception e) {/* IllegalArgumentException @ getGameAction */}
         }
 //#ifdef AUTOSTATUS
 //#         userActivity();

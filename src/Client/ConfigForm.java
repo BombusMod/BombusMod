@@ -26,10 +26,6 @@
  */
 
 package Client;
-//#if FILE_IO
-import io.file.browse.Browser;
-import io.file.browse.BrowserListener;
-//#endif
 //#ifdef COLORS 
 //# import java.util.Enumeration;
 //#endif
@@ -41,11 +37,7 @@ import util.StringLoader;
 import ui.*;
 
 public class ConfigForm implements
-	CommandListener 
-//#if  FILE_IO && COLORS 
-//# 	,ItemCommandListener
-//#         , BrowserListener
-//#endif
+	CommandListener
 {
     private Display display;
     private Displayable parentView;
@@ -87,13 +79,10 @@ public class ConfigForm implements
 //#     ChoiceGroup SkinFile;
 //#     private Vector[] Skinfiles;
 //#     Command cmdLoadSkin=new Command(SR.MS_LOAD_SKIN, Command.ITEM,15);
-//#if FILE_IO
-//#     Command cmdLoadSkinFS=new Command(SR.MS_LOAD_SKIN+"FS", Command.ITEM,16);
-//#endif
 //#endif
     Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK,99);
     
-    Config cf;
+    Config cf=Config.getInstance();;
     boolean ra[];
     boolean mv[];
     boolean ap[];
@@ -110,8 +99,6 @@ public class ConfigForm implements
     public ConfigForm(Display display) {
         this.display=display;
         parentView=display.getCurrent();
-
-        cf=Config.getInstance();
 
         f=new Form(SR.MS_OPTIONS);
         roster=new ChoiceGroup(SR.MS_ROSTER_ELEMENTS, Choice.MULTIPLE);
@@ -348,10 +335,6 @@ public class ConfigForm implements
 //#                 SkinFile.setSelectedIndex(0, true);
 //#                 f.append(SkinFile);
 //#                 SkinFile.addCommand(cmdLoadSkin);
-//#if FILE_IO
-//#                 SkinFile.addCommand(cmdLoadSkinFS);
-//#endif
-//#                 SkinFile.setItemCommandListener(this);
 //#             }
 //#         } catch (Exception e) {}
 //#endif 
@@ -479,12 +462,6 @@ public class ConfigForm implements
 //# 
 //#             cs.loadSkin(skinFile, 1);
 //# 	}
-//#        
-//#if FILE_IO
-//#         if (command==cmdLoadSkinFS) {
-//#             new Browser(null, display, this, false);
-//#         }
-//#endif
 //#endif
     }
     
@@ -493,10 +470,4 @@ public class ConfigForm implements
             display.setCurrent(StaticData.getInstance().roster);
         ((Canvas)parentView).setFullScreenMode(cf.fullscreen);
     }
-
-//#if FILE_IO && COLORS
-//#     public void BrowserFilePathNotify(String pathSelected) {
-//#         cs.loadSkin(pathSelected, 0);
-//#     }
-//#endif
 }
