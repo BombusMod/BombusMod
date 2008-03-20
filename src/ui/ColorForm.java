@@ -145,9 +145,9 @@ public class ColorForm implements CommandListener
             
             cs.CONTACT_J2J
 //#if NICK_COLORS
-//#             ,cl.MESSAGE_IN_S,
-//#             cl.MESSAGE_OUT_S,
-//#             cl.MESSAGE_PRESENCE_S
+//#             ,cs.MESSAGE_IN_S,
+//#             cs.MESSAGE_OUT_S,
+//#             cs.MESSAGE_PRESENCE_S
 //#endif
             
       };
@@ -197,9 +197,9 @@ public class ColorForm implements CommandListener
             imageData(cs.SCROLL_BGND),
             imageData(cs.CONTACT_J2J)
 //#if NICK_COLORS
-//#             ,imageData(cl.MESSAGE_IN_S),
-//#             imageData(cl.MESSAGE_OUT_S),
-//#             imageData(cl.MESSAGE_PRESENCE_S)
+//#             ,imageData(cs.MESSAGE_IN_S),
+//#             imageData(cs.MESSAGE_OUT_S),
+//#             imageData(cs.MESSAGE_PRESENCE_S)
 //#endif
             
       };

@@ -29,6 +29,9 @@ package Client;
 //#ifdef PRIVACY
 //# import PrivacyLists.PrivacySelect;
 //#endif
+//#if AUTOTASK
+//# import AutoTasks.AutoTaskForm;
+//#endif
 //#ifdef SERVICE_DISCOVERY
 //# import ServiceDiscovery.ServiceDiscovery;
 //#endif
@@ -103,12 +106,15 @@ public class RosterToolsMenu
 //#if SASL_XGOOGLETOKEN
         if (StaticData.getInstance().account.isGmail())
             addItem(SR.MS_CHECK_GOOGLE_MAIL, 15,0x46);
-//#endif        
+//#endif 
+//#if AUTOTASK
+//#         addItem(SR.MS_AUTOTASKS, 16, 0x0f03);
+//#endif
 /*		
         addItem("ArchiveDump", 10);
 */        
         
-        addItem(SR.MS_BREAK_CONECTION, 16, 0x13);
+        addItem(SR.MS_BREAK_CONECTION, 17, 0x13);
         attachDisplay(display);
     }
     public void eventOk(){
@@ -201,7 +207,12 @@ public class RosterToolsMenu
                 new archive.DebugDumpArchive(display);
                 return;
 */
-            case 16:
+//#if AUTOTASK
+//#             case 16:
+//#                 new AutoTaskForm(display);
+//#                 return;
+//#endif
+            case 17:
                 roster.connectionTerminated(new Exception(SR.MS_SIMULATED_BREAK));
                 return;
         }
