@@ -92,14 +92,12 @@ public class Upgrade implements Runnable, CommandListener{
                 }
                 list.addCommand(cmdInstall);
             } else {
-                int ch;
-                while ((ch = is.read()) != -1) {
-                    b.append((char) ch);
-                }
-                result = b.toString();
-                if (result.length()>0) {
-                    list.deleteAll();
-                    list.append(strconv.convCp1251ToUnicode(result), null);
+                list.deleteAll();
+				versions=new util.StringLoader().stringLoader(is, 1);
+                for (int i=0; i<versions[0].size(); i++) {
+                    if (versions[0].elementAt(i)==null) continue;
+                    String name=(String)versions[0].elementAt(i);
+                    list.append(name, null); 
                 }
             }
 
