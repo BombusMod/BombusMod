@@ -138,6 +138,16 @@ public class Time {
         return timeLocalString(utcDate);
      }
      
+     public static int getHour(){
+        Calendar c=calDate(utcTimeMillis());
+        return c.get(Calendar.HOUR_OF_DAY);
+     }
+     
+     public static int getMin(){
+        Calendar c=calDate(utcTimeMillis());
+        return c.get(Calendar.MINUTE);
+     }
+     
     
     private final static int[] calFields=
     {Calendar.YEAR,         Calendar.MONTH,     Calendar.DATE, 

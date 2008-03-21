@@ -30,7 +30,9 @@
  * @author Eugene Stahov
  */
 package midlet;
-
+//#ifdef AUTOTASK
+//# import AutoTasks.AutoTask;
+//#endif
 import Client.Stats;
 import javax.microedition.midlet.*;
 import javax.microedition.lcdui.*;
@@ -107,7 +109,12 @@ public class BombusMod extends MIDlet implements Runnable{
 
 	Config cf=Config.getInstance();
         s.setProgress(12);
-
+        
+//#ifdef AUTOTASK
+//#         sd.autoTask=new AutoTask(display);
+//#         s.setProgress(15);
+//#endif
+        
         ColorScheme cl=ColorScheme.getInstance();
         s.setProgress(20);
 

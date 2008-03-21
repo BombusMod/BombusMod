@@ -26,6 +26,9 @@
  */
 
 package Client;
+//#ifdef AUTOTASK
+//# import AutoTasks.AutoTask;
+//#endif
 /**
  *
  * @author Eugene Stahov
@@ -39,7 +42,9 @@ public class StaticData {
     public Account account;
     
     public int account_index;
-    
+//#ifdef AUTOTASK
+//#     public AutoTask autoTask;
+//#endif
     /** Creates a new instance of StaticData */
     private StaticData() { }
     

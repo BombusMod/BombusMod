@@ -43,7 +43,7 @@ public class AutoTaskForm implements
     private NumberField autoTaskMin;
     private NumberField autoTaskHour;
     
-    private AutoTask at=AutoTask.getInstance();
+    private AutoTask at=StaticData.getInstance().autoTask;
     
     private Command cmdOk=new Command(SR.MS_OK, Command.OK, 1);
     private Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 2);
@@ -70,7 +70,7 @@ public class AutoTaskForm implements
         f.append(actionType);
         
         f.append("\n");
-        autoTaskDelay=new NumberField(SR.MS_AUTOTASK_DELAY, at.waitTime, 1, 600);
+        autoTaskDelay=new NumberField(SR.MS_AUTOTASK_DELAY, at.waitTime/60000, 1, 600);
         f.append(autoTaskDelay);
         
         f.append("\n"+SR.MS_AUTOTASK_TIME);
@@ -90,9 +90,12 @@ public class AutoTaskForm implements
             at.taskType=taskType.getSelectedIndex();
             at.taskAction=actionType.getSelectedIndex();
             at.initTime=Time.utcTimeMillis();
-            at.waitTime=autoTaskDelay.getValue();
+            at.waitTime=autoTaskDelay.getValue()*1000*60;
             at.startHour=autoTaskHour.getValue();
             at.startMin=autoTaskMin.getValue();
+            at.initTime=System.currentTimeMillis();
+            at.startTask();
+            //at.sleepTime=autoTaskDelay.getValue()*1000;
             destroyView();
         } else if (command==cmdCancel) {
             destroyView();

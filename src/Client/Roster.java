@@ -27,6 +27,10 @@
 
 package Client;
 
+//#ifdef AUTOTASK
+//# import AutoTasks.AutoTask;
+//#endif
+
 //#ifndef WMUC
 import Conference.BookmarkQuery;
 import Conference.Bookmarks;
@@ -159,6 +163,10 @@ public class Roster
 //#     private SELightTask selight=SELightTask.getInstance();
 //#endif
     
+//#ifdef AUTOTASK
+//#     private AutoTask at=StaticData.getInstance().autoTask;
+//#endif
+    
     private final static int SOUND_FOR_ME=500;
     private final static int SOUND_FOR_CONFERENCE=800;
     private final static int SOUND_MESSAGE=1000;
@@ -182,6 +190,7 @@ public class Roster
         this.display=display;
         
         setLight(cf.lightState);
+        at.startTask();
 
         MainBar mainbar=new MainBar(4, null, null);
         setMainBarItem(mainbar);
@@ -763,7 +772,7 @@ public class Roster
             if (!sd.account.isMucOnly() )
 		theStream.send( presence );
 //#ifndef WMUC
-            multicastConferencePresence(myMessage); //null
+            multicastConferencePresence(myMessage, myStatus); //null
 //#endif
             // disconnect
             if (status==Presence.PRESENCE_OFFLINE) {
@@ -836,10 +845,10 @@ public class Roster
 	return getContact(myJid.getJid(), false);
     }
 //#ifndef WMUC
-    public void multicastConferencePresence(String message) {
-         if (myStatus==Presence.PRESENCE_INVISIBLE) return; //block multicasting presence invisible
+    public void multicastConferencePresence(String message, int mcstatus) {
+         if (mcstatus==Presence.PRESENCE_INVISIBLE) return; //block multicasting presence invisible
          boolean ircLike=cf.ircLikeStatus;
-         ExtendedStatus es= StatusList.getInstance().getStatus(myStatus);
+         ExtendedStatus es= StatusList.getInstance().getStatus(mcstatus);
          for (Enumeration e=hContacts.elements(); e.hasMoreElements();) {
             Contact c=(Contact) e.nextElement();
             if (c.origin!=Contact.ORIGIN_GROUPCHAT) continue;
@@ -873,7 +882,7 @@ public class Roster
                     myself.nick=(addStatus==null)?myself.origNick:myself.origNick+addStatus;
                 }
             }
-            Presence presence = new Presence(myStatus, es.getPriority(), strconv.toExtendedString((message==null)?es.getMessage():message), null);
+            Presence presence = new Presence(mcstatus, es.getPriority(), strconv.toExtendedString((message==null)?es.getMessage():message), null);
             presence.setTo(myself.bareJid.substring(0, myself.bareJid.indexOf("/")+1)+myself.nick);
             theStream.send(presence);
          }
