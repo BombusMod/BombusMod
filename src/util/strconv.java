@@ -277,7 +277,7 @@ public class strconv {
         StringBuffer suffix = new StringBuffer();
         
         try {
-            if ( number > 1000000 )
+            if ( number > 1024000 )
             {
                 String ratio=Long.toString(number/100000);
 
@@ -289,7 +289,7 @@ public class strconv {
 
                 suffix.append("mb");
             }
-            else if ( number > 1000 )
+            else if ( number > 1024 )
             {
                 String ratio=Long.toString(number/100);
 

@@ -759,7 +759,7 @@ public abstract class VirtualList
                 case KEY_STAR:
                     System.gc();
 //#ifdef POPUPS
-//#                     setWobble("Free: "+(Runtime.getRuntime().freeMemory()/1000)+" kb");
+//#                     setWobble("Free: "+(Runtime.getRuntime().freeMemory()>>10)+" kb");
 //#endif
                     break;
 //#ifdef POPUPS
