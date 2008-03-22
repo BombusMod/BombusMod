@@ -71,7 +71,7 @@ public class Account extends IconTextElement{
 	Account a=sd.account=Account.createFromStorage(Config.getInstance().accountIndex);
 	if (a!=null) {
             if (sd.roster.isLoggedIn())
-                sd.roster.logoff();
+                sd.roster.logoff(null);
 	    sd.roster.resetRoster();
             if (launch) {
                 if (Config.getInstance().loginstatus==Presence.PRESENCE_OFFLINE) {

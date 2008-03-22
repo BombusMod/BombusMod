@@ -42,9 +42,9 @@ public class AutoTaskForm implements
 
     private NumberField autoTaskMin;
     private NumberField autoTaskHour;
-    
-    private AutoTask at=StaticData.getInstance().autoTask;
-    
+//#if AUTOTASK
+//#     private AutoTask at=StaticData.getInstance().autoTask;
+//#endif
     private Command cmdOk=new Command(SR.MS_OK, Command.OK, 1);
     private Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 2);
 
@@ -53,32 +53,33 @@ public class AutoTaskForm implements
     public AutoTaskForm(Display display) {
         this.display=display;
         parentView=display.getCurrent();
+
         f=new Form(SR.MS_AUTOTASKS);
-        
-        taskType=new ChoiceGroup(SR.MS_AUTOTASK_TYPE, Choice.POPUP);
-        taskType.append(SR.MS_DISABLED, null);
-        taskType.append(SR.MS_BY_TIME_, null);
-        taskType.append(SR.MS_BY_TIMER_, null);
-        taskType.setSelectedIndex(at.taskType, true);
-        f.append(taskType);
-        
-        actionType=new ChoiceGroup(SR.MS_AUTOTASK_ACTION_TYPE, Choice.POPUP);
-        actionType.append(SR.MS_QUIT_BOMBUSMOD, null);
-        actionType.append(SR.MS_QUIT_CONFERENCES, null);
-        actionType.append(SR.MS_LOGOFF, null);
-        actionType.setSelectedIndex(at.taskAction, true);
-        f.append(actionType);
-        
-        f.append("\n");
-        autoTaskDelay=new NumberField(SR.MS_AUTOTASK_DELAY, at.waitTime/60000, 1, 600);
-        f.append(autoTaskDelay);
-        
-        f.append("\n"+SR.MS_AUTOTASK_TIME);
-        autoTaskHour=new NumberField(SR.MS_AUTOTASK_HOUR, at.startHour, 0, 23);
-        f.append(autoTaskHour);
-        autoTaskMin=new NumberField(SR.MS_AUTOTASK_MIN, at.startMin, 0, 59);
-        f.append(autoTaskMin);
-        
+//#if AUTOTASK
+//#         taskType=new ChoiceGroup(SR.MS_AUTOTASK_TYPE, Choice.POPUP);
+//#         taskType.append(SR.MS_DISABLED, null);
+//#         taskType.append(SR.MS_BY_TIME_, null);
+//#         taskType.append(SR.MS_BY_TIMER_, null);
+//#         taskType.setSelectedIndex(at.taskType, true);
+//#         f.append(taskType);
+//#         
+//#         actionType=new ChoiceGroup(SR.MS_AUTOTASK_ACTION_TYPE, Choice.POPUP);
+//#         actionType.append(SR.MS_AUTOTASK_QUIT_BOMBUSMOD, null);
+//#         actionType.append(SR.MS_AUTOTASK_QUIT_CONFERENCES, null);
+//#         actionType.append(SR.MS_AUTOTASK_LOGOFF, null);
+//#         actionType.setSelectedIndex(at.taskAction, true);
+//#         f.append(actionType);
+//#         
+//#         f.append("\n");
+//#         autoTaskDelay=new NumberField(SR.MS_AUTOTASK_DELAY, at.waitTime/60000, 1, 600);
+//#         f.append(autoTaskDelay);
+//#         
+//#         f.append("\n"+SR.MS_AUTOTASK_TIME);
+//#         autoTaskHour=new NumberField(SR.MS_AUTOTASK_HOUR, at.startHour, 0, 23);
+//#         f.append(autoTaskHour);
+//#         autoTaskMin=new NumberField(SR.MS_AUTOTASK_MIN, at.startMin, 0, 59);
+//#         f.append(autoTaskMin);
+//#endif
         f.addCommand(cmdOk);
         f.addCommand(cmdCancel);
         f.setCommandListener(this);    
@@ -87,15 +88,17 @@ public class AutoTaskForm implements
 
     public void commandAction(Command command, Displayable displayable) {
         if (command==cmdOk) {
-            at.taskType=taskType.getSelectedIndex();
-            at.taskAction=actionType.getSelectedIndex();
-            at.initTime=Time.utcTimeMillis();
-            at.waitTime=autoTaskDelay.getValue()*1000*60;
-            at.startHour=autoTaskHour.getValue();
-            at.startMin=autoTaskMin.getValue();
-            at.initTime=System.currentTimeMillis();
-            at.startTask();
-            //at.sleepTime=autoTaskDelay.getValue()*1000;
+//#if AUTOTASK
+//#             at.taskType=taskType.getSelectedIndex();
+//#             at.taskAction=actionType.getSelectedIndex();
+//#             at.initTime=Time.utcTimeMillis();
+//#             at.waitTime=autoTaskDelay.getValue()*1000*60;
+//#             at.startHour=autoTaskHour.getValue();
+//#             at.startMin=autoTaskMin.getValue();
+//#             at.initTime=System.currentTimeMillis();
+//#             at.startTask();
+//#             //at.sleepTime=autoTaskDelay.getValue()*1000;
+//#endif
             destroyView();
         } else if (command==cmdCancel) {
             destroyView();

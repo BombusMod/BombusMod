@@ -557,3 +557,17 @@ IRC-like conference nick-status	смена ника при смене стату
 user moods send/receive	получение и отправка настроений
 Simulated break	Ручное переподключение
 Build new version on constructor	Собрать новую версию на конструкторе
+
+Auto tasks	Планировщик
+Auto task type	Тип срабатывания
+by timer 	По таймеру
+by time 	По часам
+Auto task action type	Действие
+Quit BombusMod	Выход из BombusMod
+Quit conferences	Выход из конференций
+Disconnection	Отключений
+disabled	Выключено
+Delay (min.)	Выролнить через (в мин.)
+Start time	Выполнить в
+Hour	Часов
+Min	Минут

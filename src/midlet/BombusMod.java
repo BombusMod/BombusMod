@@ -52,9 +52,9 @@ public class BombusMod extends MIDlet implements Runnable{
     private Display display;    // The display for this MIDlet
     private boolean isRunning;
     private boolean isMinimized;
-    StaticData sd;
-    
-    //public static Image programIcon;
+    StaticData sd=StaticData.getInstance();
+    SplashScreen s= SplashScreen.getInstance();
+
     public static Image splash;
     
     private static BombusMod instance; 
@@ -62,10 +62,9 @@ public class BombusMod extends MIDlet implements Runnable{
     public BombusMod() {
 	instance=this; 
         display = Display.getDisplay(this);
-        SplashScreen s= SplashScreen.getInstance();
+
         display.setCurrent(s);
         s.setProgress("Loading",3); // this message will not be localized
-        sd=StaticData.getInstance();
     }
     
     /** Entry point  */
@@ -89,10 +88,6 @@ public class BombusMod extends MIDlet implements Runnable{
     public void pauseApp() { }
 
     public void run(){
-        
-        SplashScreen s= SplashScreen.getInstance();
-        s.setProgress(1);
-        
         try {
             Stats.getInstance();
         } catch (Exception e) { }
@@ -111,7 +106,7 @@ public class BombusMod extends MIDlet implements Runnable{
         s.setProgress(12);
         
 //#ifdef AUTOTASK
-//#         sd.autoTask=new AutoTask(display);
+//#         sd.autoTask=new AutoTask(/*"", "", */display);
 //#         s.setProgress(15);
 //#endif
         

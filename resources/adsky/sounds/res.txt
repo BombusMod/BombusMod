@@ -1,4 +1,4 @@
 //type	path	desc
 tone		tone sequence
 none		none
-audio/midi	/sounds/tuk.mid	tuk.mid
+audio/midi	/sounds/chat.mid	chat.mid

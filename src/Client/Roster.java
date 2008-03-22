@@ -190,7 +190,6 @@ public class Roster
         this.display=display;
         
         setLight(cf.lightState);
-        at.startTask();
 
         MainBar mainbar=new MainBar(4, null, null);
         setMainBarItem(mainbar);
@@ -2535,11 +2534,13 @@ public class Roster
 //#     }
 //#endif
     
-    public void logoff(){
+    public void logoff(String mess){
         if (isLoggedIn()) {
             try {
-                 ExtendedStatus es=StatusList.getInstance().getStatus(Presence.PRESENCE_OFFLINE);
-                 sendPresence(Presence.PRESENCE_OFFLINE, es.getMessage());
+                ExtendedStatus es=StatusList.getInstance().getStatus(Presence.PRESENCE_OFFLINE);
+                if (mess==null)
+                    mess=es.getMessage();
+                sendPresence(Presence.PRESENCE_OFFLINE, mess);
             } catch (Exception e) { }
         }
         try {
@@ -2557,7 +2558,7 @@ public class Roster
 //#             selight.destroyTask();
 //#endif
         destroyView();
-        logoff();
+        logoff(null);
 
         BombusMod.getInstance().notifyDestroyed();
     }
