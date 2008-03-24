@@ -154,7 +154,8 @@ public class TransferDispatcher implements JabberBlockListener{
 
     boolean  checkIbbSize(TransferTask task, String id, String size) {
         try {
-            if (Integer.parseInt(size)<com.alsutton.xmlparser.XMLParser.MAX_BLOCK_SIZE) return true;
+            //if (Integer.parseInt(size)<com.alsutton.xmlparser.XMLParser.MAX_BLOCK_SIZE) 
+                return true;
         } catch (Exception ex) {}
         
         JabberDataBlock reject=new Iq(task.jid, Iq.TYPE_ERROR, id);

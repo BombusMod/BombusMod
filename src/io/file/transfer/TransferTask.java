@@ -136,7 +136,7 @@ public class TransferTask
         g.fillRect(xpgs, 3, filled, getVHeight()-6);
         g.setColor(oldColor);
         
-        super.drawItem(g, ofs, sel, false);
+        super.drawItem(g, ofs, sel);
         showEvent=false;
     }
     

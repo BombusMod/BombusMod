@@ -197,7 +197,9 @@ public class MucContact extends Contact{
                     }
                     b.append((statusCode==301)? SR.MS_WAS_BANNED : SR.MS_WAS_KICKED );
 //#ifdef POPUPS
-//#                     setWobble(nick+((statusCode==301)? SR.MS_WAS_BANNED : SR.MS_WAS_KICKED)+"\n"+reason);
+//#                     if (((ConferenceGroup)getGroup()).getSelfContact() == this ) {
+//#                         VirtualList.setWobble(3, (Contact) null, nick+((statusCode==301)? SR.MS_WAS_BANNED : SR.MS_WAS_KICKED)+"\n"+reason);
+//#                     }
 //#endif
                     b.append("(");
                     b.append(reason);
@@ -364,15 +366,6 @@ public class MucContact extends Contact{
          if ( group.getSelfContact() == this ) 
             StaticData.getInstance().roster.roomOffline(group);
     }
-
-//#ifdef POPUPS
-//#     public void setWobble(String reason) {
-//#         ConferenceGroup group=(ConferenceGroup)getGroup();
-//#         if ( group.getSelfContact() == this ) {
-//#             VirtualList.setWobble("!"+reason);
-//#         }
-//#     }
-//#endif
 
     public void addMessage(Msg m) {
         super.addMessage(m);

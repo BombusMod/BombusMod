@@ -252,7 +252,8 @@ public class ServiceDiscovery
 			showResults(items);
         } else if (id.equals(discoId("disco"))) {
             Vector cmds=new Vector();
-            boolean gateway=false;
+            boolean showPartialResults=false;
+            boolean loadItems=true;
             boolean client=false;
             if (childs!=null) {
                 JabberDataBlock identity=query.getChildBlock("identity");
@@ -262,7 +263,14 @@ public class ServiceDiscovery
                     if (category.equals("automation") && type.equals("command-node"))  {
                         cmds.addElement(new DiscoCommand(RosterIcons.ICON_AD_HOC, strCmds));
                     }
-                    if (category.equals("conference")) cmds.addElement(new DiscoCommand(RosterIcons.ICON_GCJOIN_INDEX, SR.MS_JOIN_CONFERENCE));
+                    if (category.equals("conference")) {
+                        cmds.addElement(new DiscoCommand(RosterIcons.ICON_GCJOIN_INDEX, SR.MS_JOIN_CONFERENCE));
+                        if (service.indexOf('@')<=0) {
+                            loadItems=false;
+                            showPartialResults=true;
+                            cmds.addElement(new DiscoCommand(RosterIcons.ICON_ROOMLIST, SR.MS_LOAD_ROOMLIST));
+                        }
+                    }
                  }
                 for (Enumeration e=childs.elements(); e.hasMoreElements();) {
                     JabberDataBlock i=(JabberDataBlock)e.nextElement();
@@ -272,15 +280,15 @@ public class ServiceDiscovery
                         //if (var.equals(NS_MUC)) { cmds.addElement(new DiscoCommand(RosterIcons.ICON_GCJOIN_INDEX, strJoin)); }
                         if (var.equals(NS_SRCH)) { cmds.addElement(new DiscoCommand(RosterIcons.ICON_SEARCH_INDEX, SR.MS_SEARCH)); }
                         if (var.equals(NS_REGS)) { cmds.addElement(new DiscoCommand(RosterIcons.ICON_REGISTER_INDEX, SR.MS_REGISTER)); }
-                        if (var.equals(NS_GATE)) { gateway=true; }
+                        if (var.equals(NS_GATE)) { showPartialResults=true; }
                         //if (var.equals(NODE_CMDS)) { cmds.addElement(new DiscoCommand(AD_HOC_INDEX,strCmds)); }
                     }
                 }
              }
             /*if (data.getAttribute("from").equals(service)) */ { //FIXME!!!
                 this.cmds=cmds;
-                requestQuery(NS_ITEMS, "disco2");
-                if (gateway) showResults(new Vector());
+                if (loadItems) requestQuery(NS_ITEMS, "disco2");
+                if (showPartialResults) showResults(new Vector());
             }
         } else if (id.startsWith ("discoreg")) {
             discoIcon=0;
@@ -430,7 +438,9 @@ public class ServiceDiscovery
                 case RosterIcons.ICON_REGISTER_INDEX:
                     requestQuery(NS_REGS, "discoreg");
                     break;
-                    
+                case RosterIcons.ICON_ROOMLIST:
+                    requestQuery(NS_ITEMS, "disco2");
+                    break;
                 case RosterIcons.ICON_AD_HOC:
                     requestCommand(NODE_CMDS, "discocmd");
                 default:

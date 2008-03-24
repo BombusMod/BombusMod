@@ -33,7 +33,8 @@ import java.io.*;
 import java.util.*;
 import javax.microedition.io.*;
 import com.alsutton.jabber.datablocks.*;
-import com.alsutton.xmlparser.*;
+//import com.alsutton.xmlparser.*;
+import xml.*;
 import locale.SR;
 
 
@@ -130,7 +131,7 @@ public class JabberStream implements XMLEventListener, Runnable {
     public void run() {
         try {
              XMLParser parser = new XMLParser( this );
-             parser.parse( iostream );
+             parser.parseStream( iostream );
              //dispatcher.broadcastTerminatedConnection( null );
         } catch( Exception e ) {
              System.out.println("Exception in parser:");
@@ -249,7 +250,7 @@ public class JabberStream implements XMLEventListener, Runnable {
      * @param attributes The tags attributes.
      */
     
-    public boolean tagStarted( String name, Vector attributes ) {
+    public boolean tagStart( String name, Vector attributes ) {
         if (currentBlock!=null){
             
             currentBlock = new JabberDataBlock( name, currentBlock, attributes );
@@ -269,6 +270,7 @@ public class JabberStream implements XMLEventListener, Runnable {
             currentBlock = new Iq( currentBlock, attributes );
         else if ( name.equals("presence") )
             currentBlock = new Presence( currentBlock, attributes );
+        else if ( name.equals("xml")) return false;
         else currentBlock = new JabberDataBlock(name, null, attributes);
         return false;
     }
@@ -280,7 +282,7 @@ public class JabberStream implements XMLEventListener, Runnable {
      * @param text The plain text in question
      */
     
-    public void plaintextEncountered( String text ) {
+    public void plainTextEncountered( String text ) {
         if( currentBlock != null ) {
             currentBlock.setText( text );
         }
@@ -300,12 +302,12 @@ public class JabberStream implements XMLEventListener, Runnable {
      * @param name The name of the tag that has just ended.
      */
     
-    public void tagEnded( String name ) throws EndOfXMLException {
+    public void tagEnd( String name ) throws XMLException {
         if( currentBlock == null ) {
             if ( name.equals( "stream:stream" ) ) {
                 dispatcher.halt();
                 iostream.close();
-                throw new JabberStreamShutdownException("Normal stream shutdown");
+                throw new XMLException("Normal stream shutdown");
             }
             return;
         }
@@ -319,7 +321,7 @@ public class JabberStream implements XMLEventListener, Runnable {
                 
                 dispatcher.halt();
                 iostream.close();
-                throw new JabberStreamShutdownException("Stream error: "+xe.toString());
+                throw new XMLException("Stream error: "+xe.toString());
                 
             }
             dispatcher.broadcastJabberDataBlock( currentBlock );
@@ -415,4 +417,6 @@ public class JabberStream implements XMLEventListener, Runnable {
         }
     }
 }
+
+
 

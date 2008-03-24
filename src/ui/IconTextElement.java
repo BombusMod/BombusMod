@@ -27,6 +27,7 @@
 
 package ui;
 import images.MoodIcons;
+import images.RosterIcons;
 import javax.microedition.lcdui.*;
 import java.util.*;
 
@@ -63,34 +64,56 @@ abstract public class IconTextElement implements VirtualElement
         return FontCache.getBalloonFont();
     }
     
-    public void drawItem(Graphics g, int ofs, boolean sel, boolean drawsec){
+    public void drawItem(Graphics g, int ofs, boolean sel){
        g.setFont(getFont());
        
        String str=toString();
        int offset=4+imgWidth;
 //#ifdef SECONDSTRING
 //#        String secstr=getSecondString();
-//# 
-//#        if (sel && drawsec && secstr!=null)
-//#            itemHeight=heightFirstLine+getSmallFont().getHeight()-1;
-//#        else
 //#endif
-           itemHeight=heightFirstLine;
        
        if (il!=null) 
            il.drawImage(g, getImageIndex(), 2, imageYOfs);
-           
-       if (getSecImageIndex()>-1) {
-           mi.getInstance().drawImage(g, getSecImageIndex(), offset, imageYOfs);
-           offset=offset+miImgWidth+2;
-       }
+       
+       int heightSecondImg=il.getHeight();
+        if (getSecImageIndex()>-1) {
+            int secImgY = imageYOfs;
+//#ifdef SECONDSTRING
+//#             if (secstr!=null && secstr!="") {
+//#                 offset=2;
+//#                 secImgY = imageYOfs+il.getHeight();
+//#             }
+//#endif
+            if (getSecImageIndex()==1001) {
+                il.drawImage(g, RosterIcons.ICON_COMPOSING_INDEX, offset, secImgY);
+                offset=offset+imgWidth+2;
+            } else if (getSecImageIndex()==2001) {
+                il.drawImage(g, RosterIcons.ICON_APPEARING_INDEX, offset, secImgY);
+                offset=offset+imgWidth+2;
+            }  else if (getSecImageIndex()==2002) {
+                il.drawImage(g, RosterIcons.ICON_VIEWING_INDEX, offset, secImgY);
+                offset=offset+imgWidth+2;
+            } else {
+                mi.getInstance().drawImage(g, getSecImageIndex(), offset, secImgY);
+                offset=offset+miImgWidth+2;
+                heightSecondImg=mi.getHeight();
+            }
+        }
+//#ifdef SECONDSTRING
+//#        int heightSecondString = heightSecondImg;
+//#        if (secstr!=null && secstr!="") {
+//#            itemHeight=heightFirstLine+((getSmallFont().getHeight()>heightSecondImg)?getSmallFont().getHeight()-3:heightSecondImg);
+//#        } else
+//#endif
+           itemHeight=heightFirstLine;
            
        g.clipRect(offset, 0, g.getClipWidth(), itemHeight);
        
        g.drawString(str,offset-ofs, fontYOfs, Graphics.TOP|Graphics.LEFT);
        
 //#ifdef SECONDSTRING
-//#        if (sel && drawsec && secstr!=null) {
+//#        if (secstr!=null && secstr!="") {
 //#            g.setFont(getSmallFont());
 //#            g.drawString(secstr, offset-ofs, fontYOfs+getFont().getHeight(), Graphics.TOP|Graphics.LEFT);
 //#        }

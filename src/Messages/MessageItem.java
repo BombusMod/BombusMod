@@ -77,7 +77,7 @@ public class MessageItem implements
     
     public int getColor() { return msg.getColor(); }
     
-    public void drawItem(Graphics g, int ofs, boolean selected, boolean drawsec) {
+    public void drawItem(Graphics g, int ofs, boolean selected) {
         int xorg=g.getTranslateX();
         int yorg=g.getTranslateY();
         g.translate(1,0);
@@ -97,7 +97,7 @@ public class MessageItem implements
                     RosterIcons.getInstance().drawImage(g, RosterIcons.ICON_MSGCOLLAPSED_INDEX, 0,0);
                     g.translate(8,0);
                 }
-                line.drawItem(g, 0, selected, false);
+                line.drawItem(g, 0, selected);
             }
             g.translate(0, h);
             if (msg.itemCollapsed) break;

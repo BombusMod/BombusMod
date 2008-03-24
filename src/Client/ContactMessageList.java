@@ -647,7 +647,7 @@ public class ContactMessageList extends MessageList
 //#     private void saveMessages() {
 //#         if (cf.msgPath==null) {
 //#ifdef POPUPS
-//#            StaticData.getInstance().roster.setWobbler("Please enter valid path to store log");
+//#            StaticData.getInstance().roster.setWobbler(3, (Contact) null, "Please enter valid path to store log");
 //#endif
 //#            return;
 //#         }

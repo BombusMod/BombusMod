@@ -224,10 +224,7 @@ public class Contact extends IconTextElement{
                 default: return RosterIcons.ICON_MESSAGE_INDEX;
             }
         }
-        
-        if (showComposing==true) return RosterIcons.ICON_COMPOSING_INDEX;
-        
-        if (incomingState>0) return incomingState;
+
         int st=(status==Presence.PRESENCE_OFFLINE)?offline_type:status;
         if (st<8) st+=transport; 
         return st;
@@ -267,19 +264,6 @@ public class Contact extends IconTextElement{
         
         if (activeMessage>-1)
             return true;
-        /*
-        if (msgs.size()>1) {
-            if (((Msg)msgs.elementAt(0)).messageType==Msg.MESSAGE_TYPE_PRESENCE && ((Msg)msgs.elementAt(1)).messageType==Msg.MESSAGE_TYPE_HISTORY) {
-                return (msgs.size()>2);
-            } else if (((Msg)msgs.elementAt(0)).messageType==Msg.MESSAGE_TYPE_PRESENCE && ((Msg)msgs.elementAt(1)).messageType!=Msg.MESSAGE_TYPE_HISTORY) {
-                return true;
-            }
-        }
-        
-        if (msgs.size()>0)
-            if (((Msg)msgs.elementAt(0)).messageType!=Msg.MESSAGE_TYPE_PRESENCE)
-                return true;
-        */
         return false;
     }
     
@@ -289,13 +273,14 @@ public class Contact extends IconTextElement{
         short i=0;
         switch (state){
             case INC_APPEARING:
-                i=RosterIcons.ICON_APPEARING_INDEX;
+                i=2001;//ICON_APPEARING_INDEX;
                 break;
             case INC_VIEWING:
-                i=RosterIcons.ICON_VIEWING_INDEX;
+                i=2002;//ICON_VIEWING_INDEX;
                 break;
         }
         incomingState=i;
+        
     }
     
     public int compare(IconTextElement right){
@@ -324,7 +309,7 @@ public class Contact extends IconTextElement{
 //# 
 //#         if (cf.msgLog && cf.msgPath==null) {
 //#ifdef POPUPS
-//#             StaticData.getInstance().roster.setWobbler("Please enter valid path to store log");
+//#             StaticData.getInstance().roster.setWobbler(3, (Contact) null, "Please enter valid path to store log");
 //#endif
 //#         } else 
 //#             if (cf.msgLog && group.type!=Groups.TYPE_TRANSP && group.type!=Groups.TYPE_SEARCH_RESULT)
@@ -618,10 +603,9 @@ public class Contact extends IconTextElement{
 //#     public String getSecondString() {
 //#         StringBuffer s=new StringBuffer();
 //#         if (cf.rosterStatus) {
-//#             if (getUserMood()!=null) {
-//#                 //s.append(MoodLocale.loadString(getUserMood()));
-//#                 s.append(getUserMood());
-//#                 if (getUserMoodText()!=null) {
+//#             if (mood!=null) {
+//#                 s.append(getUserMoodLocale());
+//#                 if (getUserMoodText()!="") {
 //#                     s.append(" (");
 //#                     s.append(getUserMoodText());
 //#                     s.append(")");
@@ -652,6 +636,12 @@ public class Contact extends IconTextElement{
         return mood.getText();
     }
     public int getSecImageIndex() {
+        if (showComposing==true) 
+            return 1001;
+
+        if (incomingState>0) 
+            return incomingState;
+        
         if (mood!=null)
             return mood.getImageIndex();
         return -1;

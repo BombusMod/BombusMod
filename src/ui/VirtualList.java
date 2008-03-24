@@ -75,8 +75,8 @@ public abstract class VirtualList
 //#ifdef POPUPS
 //#     public static PopUp popup = new PopUp();
 //# 
-//#     public static void setWobble(String txt){
-//#         popup.setMessage(txt);
+//#     public static void setWobble(int type, Contact contact, String txt){
+//#         popup.addPopup(type, contact, txt);
 //#     }
 //#endif
     protected int getMainBarRGB() {return ColorScheme.BAR_INK;} 
@@ -429,7 +429,7 @@ public abstract class VirtualList
                 g.setColor(el.getColor());
                 
                 g.clipRect(0, 0, itemMaxWidth, lh);
-                el.drawItem(g, (sel)?offset:0, sel, (showBalloon)?true:false);
+                el.drawItem(g, (sel)?offset:0, sel);
                 
                 itemIndex++;
 		displayedBottom=itemBorder[++displayedIndex]=itemBorder[0]+itemYpos+lh;
@@ -543,7 +543,7 @@ public abstract class VirtualList
             //g.setFont(bottomFont);
 
             //g.drawString(s.toString(), width/2, 1, Graphics.TOP|Graphics.HCENTER);
-            getInfoBarItem().drawItem(g,0,false, false);
+            getInfoBarItem().drawItem(g,0,false);
         }
     }
 
@@ -558,7 +558,7 @@ public abstract class VirtualList
             g.fillRect(0, h/2, width, h); //5 10
             
             g.setColor(getMainBarRGB());
-            mainbar.drawItem(g,(cf.phoneManufacturer==Config.NOKIA)?17:0,false, false);
+            mainbar.drawItem(g,(cf.phoneManufacturer==Config.NOKIA)?17:0,false);
         }
     }
 
@@ -700,6 +700,13 @@ public abstract class VirtualList
 //#         System.out.println(keyCode);
 //#endif
 //#ifdef POPUPS
+//#         if (keyCode==greenKeyCode) {
+//#             if (popup.getContact()!=null) {
+//#                 new ContactMessageList(popup.getContact(),display);
+//#                 popup.next();
+//#                 return;
+//#             }
+//#         }
 //#         popup.next();
 //#endif
         if (keyCode==Config.SOFT_RIGHT || keyCode==Config.KEY_BACK) {
@@ -759,7 +766,7 @@ public abstract class VirtualList
                 case KEY_STAR:
                     System.gc();
 //#ifdef POPUPS
-//#                     setWobble("Free: "+(Runtime.getRuntime().freeMemory()>>10)+" kb");
+//#                     setWobble(1, null, "Free: "+(Runtime.getRuntime().freeMemory()>>10)+" kb");
 //#endif
                     break;
 //#ifdef POPUPS
@@ -768,7 +775,7 @@ public abstract class VirtualList
 //#                         try {
 //#                             String text=((VirtualElement)getFocusedObject()).getTipString();
 //#                             if (text!=null) {
-//#                                 setWobble(text);
+//#                                 setWobble(1, null, text);
 //#                                 //break;
 //#                             }
 //#                         } catch (Exception e) { }
@@ -1053,7 +1060,7 @@ public abstract class VirtualList
 //#         return "";
 //#     }
 //#endif 
-    
+   
 }
 
 //#if (USE_ROTATOR)    

@@ -72,7 +72,7 @@ public class ComplexStringList extends VirtualList
     }        
 
     protected void drawItem(int index, Graphics g, int ofs, boolean selected){
-        getLine(index).drawItem(g, ofs, false, false);
+        getLine(index).drawItem(g, ofs, false);
     }
 
     private ComplexString getLine(int index){

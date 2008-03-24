@@ -646,6 +646,7 @@ public class SR {
     public static String MS_AUTOTASK_HOUR=loadString("Hour");
     public static String MS_AUTOTASK_MIN=loadString("Min");
 
+    public static String MS_LOAD_ROOMLIST = loadString( "Browse rooms");
     
     private SR() { }
     

@@ -33,10 +33,9 @@ import ui.ColorScheme;
 import ui.FontCache;
 
 public class Balloon {
-    private static Font f;
+    private static Font f=FontCache.getBalloonFont();
     
     public static int getHeight(){
-        f=FontCache.getBalloonFont();
         return f.getHeight()+3;
     }
     

@@ -1965,7 +1965,7 @@ public class Roster
 //#endif
 //#ifdef POPUPS
 //#             if (message.messageType==Msg.MESSAGE_TYPE_AUTH && showWobbler(c))
-//#                 setWobbler(message.from+"\n"+message.getBody());
+//#                 setWobbler(2, c, message.from+"\n"+message.getBody());
 //#endif
         if (countNewMsgs())
             reEnumRoster();
@@ -1987,7 +1987,7 @@ public class Roster
             playNotify(SOUND_FOR_ME);
 //#ifdef POPUPS
 //#             if (showWobbler(c))
-//#                 setWobbler(message.getBody());
+//#                 setWobbler(2, c, message.getBody());
 //#endif
             return;
         }
@@ -2011,7 +2011,7 @@ public class Roster
 //#                 if (!(c instanceof MucContact))
 //#endif
 //#                     if (showWobbler(c))
-//#                         setWobbler(c.toString()+": "+message.getBody());
+//#                         setWobbler(2, c, c.toString()+": "+message.getBody());
 //#endif
             if (c.getName().endsWith("!")) {
                 playNotify(SOUND_FOR_VIP);
@@ -2184,7 +2184,7 @@ public class Roster
         } catch (Exception e2) { }
 
         if (e instanceof SecurityException) { errorLog(error); return; }
-        if (e instanceof JabberStreamShutdownException) { errorLog(error); return; }
+        //if (e instanceof JabberStreamShutdownException) { errorLog(error); return; }
         if (reconnectCount>=maxReconnect) { errorLog(error); return; }
         
         reconnectCount++;
@@ -2459,36 +2459,34 @@ public class Roster
 //#ifdef POPUPS
 //#     public void showInfo() {
 //#         VirtualList.popup.next();
-//#         setWobbler(null);
-//#         redraw();
+//#         if (getFocusedObject() instanceof Group || getFocusedObject() instanceof ConferenceGroup)
+//#             return;
+//#         
+//#         setWobbler(1, (Contact) null, null);
 //#     }
 //# 
-//#     public void setWobbler(String info) {
-//#         StringBuffer mess=new StringBuffer();
-//#         
+//#     public void setWobbler(int type, Contact contact, String info) {
 //#         if (info==null) {
+//#             StringBuffer mess=new StringBuffer();
 //#             boolean isContact=(getFocusedObject() instanceof Contact);
-//#             
+//#             Contact cntact=(Contact)getFocusedObject();
 //#ifndef WMUC
 //#             boolean isMucContact=(getFocusedObject() instanceof MucContact);
-//#endif
-//#             if (getFocusedObject() instanceof Group)
-//#                 return;
-//#                 
-//#             Contact contact=(Contact)getFocusedObject();
-//# 
-//#ifndef WMUC
 //#             if (isMucContact) {
-//#                 MucContact mucContact=(MucContact)contact;
+//#                 MucContact mucContact=(MucContact)getFocusedObject();
+//#                 
+//#                 if (mucContact.origin==Contact.ORIGIN_GROUPCHAT) // dont show info for confContact
+//#                     return;
+//#                 
 //#                 String jid=(mucContact.realJid==null)?"":"jid: "+mucContact.realJid+"\n";
 //#                 String aff=mucContact.affiliation;
 //#                 String role=mucContact.role;
 //#                 mess.append(jid);
-//#                 if (aff!=null)
+//#                 if (aff!=null || aff!="none")
 //#                     mess.append(aff);
 //# 
 //#                 if (role!=null)
-//#                     if (aff!=null)
+//#                     if (aff!=null || aff!="none")
 //#                         mess.append("/"+role);
 //#                     else 
 //#                         mess.append(role);
@@ -2498,38 +2496,40 @@ public class Roster
 //#                 role=null;
 //#             } else {
 //#endif
-//#                 mess.append("jid: "+contact.bareJid);
-//#                 mess.append(contact.jid.getResource());
-//#                 mess.append("\nsubscription: "+contact.subscr);
+//#                 mess.append("jid: "+cntact.bareJid);
+//#                 mess.append(cntact.jid.getResource());
+//#                 mess.append("\n"+SR.MS_SUBSCRIPTION+": "+cntact.subscr);
+//#                 
+//#                 if (cntact.mood!=null) {
+//#                     mess.append("\n");
+//#                     mess.append(SR.MS_USER_MOOD);
+//#                     mess.append(": ");
+//#                     mess.append(cntact.getUserMoodLocale());
+//#                     if (cntact.getUserMoodText()!="") {
+//#                         mess.append(" (");
+//#                         mess.append(cntact.getUserMoodText());
+//#                         mess.append(")");
+//#                     }
+//#                 }
 //#ifndef WMUC
 //#             }
 //#endif
-//#             mess.append((contact.getJ2J()!=null)?"\nJ2J: "+contact.getJ2J():"");
-//#             mess.append((contact.hasCaps)?"\nUse: "+contact.capsNode:"");
-//#             mess.append((contact.capsVer!=null)?"#"+contact.capsVer:"");
-//# 
-//#             if (contact.statusString!=null) {
+//#             mess.append((cntact.getJ2J()!=null)?"\nJ2J: "+cntact.getJ2J():"");
+//#             mess.append((cntact.hasCaps)?"\nUse: "+cntact.capsNode:"");
+//#             mess.append((cntact.capsVer!=null)?"#"+cntact.capsVer:"");
+//#             if (cntact.statusString!=null) {
 //#                 mess.append("\n");
 //#                 mess.append(SR.MS_STATUS);
 //#                 mess.append(": ");
-//#                 mess.append(contact.statusString);
+//#                 mess.append(cntact.statusString);
 //#             }
-//#             if (contact.mood!=null) {
-//#                 mess.append("\n");
-//#                 mess.append(SR.MS_USER_MOOD);
-//#                 mess.append(": ");
-//#                 mess.append(contact.getUserMoodLocale());
-//#                 if (contact.getUserMoodText()!="") {
-//#                     mess.append(" (");
-//#                     mess.append(contact.getUserMoodText());
-//#                     mess.append(")");
-//#                 }
-//#             }
+//#             
+//#             VirtualList.setWobble(1, (Contact) null, mess.toString());
+//#             mess=null;
 //#         } else {
-//#             mess.append(info);
+//#             VirtualList.setWobble(type, contact, info);
 //#         }
-//#         VirtualList.setWobble(mess.toString());
-//#         mess=null;
+//# 
 //#         redraw();
 //#     }
 //#endif
@@ -3041,7 +3041,7 @@ public class Roster
 //#         if (isLoggedIn())
 //#             str.append(theStream.getStreamStats());
 //# 
-//#         VirtualList.setWobble(str.toString());
+//#         VirtualList.setWobble(1, (Contact) null, str.toString());
 //#         str=null;
 //#     }
 //#endif
@@ -3054,4 +3054,6 @@ public class Roster
     }
 //#endif
 }
+
+
 

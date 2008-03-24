@@ -27,18 +27,32 @@
 
 package ui.controls;
 
+import Client.Contact;
+import Client.StaticData;
 import java.util.Vector;
 import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
-import ui.ColorScheme;
 import ui.FontCache;
 
 public class PopUp {
+    private final static int TYPE_SYSTEM = 1;
+    private final static int TYPE_MESSAGE = 2;
+    private final static int TYPE_ALERT = 3;
+    
+    private final static int COLOR_MESSAGE_INK = 0x4866ad;
+    private final static int COLOR_MESSAGE_BGND = 0xffffe0;
+    
+    private final static int COLOR_SYSTEM_INK = 0x009900;
+    private final static int COLOR_SYSTEM_BGND = 0xffffe0;
+    
+    private final static int COLOR_ALERT_INK = 0xffffff;
+    private final static int COLOR_ALERT_BGND = 0xff0000;
+    
     private int popUpHeight, popUpWidth, widthBorder, heightBorder;
     private int border=8;
     private int padding=4;
     
-    private Font font;
+    private Font font=FontCache.getBalloonFont();
     
     private static String wrapSeparators=" .,-=/\\;:+*()[]<>~!@#%^_&";
     private boolean wordsWrap;
@@ -46,30 +60,33 @@ public class PopUp {
     private int width=100;
 
     private int height;
-    
-    private Vector messages = new Vector(); 
+    private Vector popUps = new Vector(); 
 
-    synchronized public void setMessage(String message){
+    synchronized public void addPopup(int type, Contact contact, String message){
         if (message!=null)
-            messages.addElement(parseMessage(message, width-border-padding));
+            popUps.addElement(new PopUpElement(type, contact, parseMessage(message, width-border-padding)));
 //#ifdef DEBUG
 //# //	System.out.println("added message to array = "+message);
 //#endif
     }
 
-    public PopUp() {
-        font=FontCache.getBalloonFont();
+    public PopUp() { }
+    
+    public Contact getContact() {
+        if(popUps.size()>0)
+            return ((PopUpElement)popUps.elementAt(0)).getContact();
+        return null;
     }
     
     public void next() {
-        if(messages.size()>0){
-            messages.removeElementAt(0);
+        if(popUps.size()>0){
+            popUps.removeElementAt(0);
         }
     }
     
     public void clear() {
-        if(messages.size()>0)
-            messages.removeAllElements();
+        if(popUps.size()>0)
+            popUps.removeAllElements();
     }
 
     private Vector parseMessage(String str, int stringWidth) {
@@ -137,7 +154,7 @@ public class PopUp {
     }
     
     private void drawAllStrings(Graphics g, int x, int y) {
-        Vector lines=(Vector) messages.elementAt(0);
+        Vector lines=((PopUpElement)popUps.elementAt(0)).getMessage();
         if (lines.size()<1) return;
         
         int fh=getFontHeight();
@@ -155,7 +172,7 @@ public class PopUp {
     }
 
     private int getHeight() {
-        Vector message= (Vector)messages.elementAt(0);
+        Vector message=((PopUpElement)popUps.elementAt(0)).getMessage();
         
         return getFontHeight()*message.size();
     }
@@ -165,7 +182,7 @@ public class PopUp {
     }
     
     private int getMaxWidth() {
-        Vector lines=(Vector) messages.elementAt(0);
+        Vector lines=((PopUpElement)popUps.elementAt(0)).getMessage();
 
         int length=0;
         
@@ -180,12 +197,38 @@ public class PopUp {
         return length;
     }
     
+    private int getColorInk() {
+        int type=((PopUpElement)popUps.elementAt(0)).getType();
+        switch (type) {
+            case TYPE_SYSTEM:
+                return COLOR_SYSTEM_INK;
+            case TYPE_MESSAGE:
+                return COLOR_MESSAGE_INK;
+            case TYPE_ALERT:
+                return COLOR_ALERT_INK;
+        }
+        return 0x000000;
+    }
+    
+    private int getColorBgnd() {
+        int type=((PopUpElement)popUps.elementAt(0)).getType();
+        switch (type) {
+            case TYPE_SYSTEM:
+                return COLOR_SYSTEM_BGND;
+            case TYPE_MESSAGE:
+                return COLOR_MESSAGE_BGND;
+            case TYPE_ALERT:
+                return COLOR_ALERT_BGND;
+        }
+        return 0x000000;
+    }
+    
 //paint
     public void paintCustom(Graphics g) {
         this.height=g.getClipHeight();
         this.width=g.getClipWidth();
 
-	if(messages.size()<1)
+	if(popUps.size()<1)
 	    return;
         
         int strWdth=getMaxWidth();
@@ -209,20 +252,35 @@ public class PopUp {
 
         g.setClip(0,0,popUpWidth+1,popUpHeight+1);
 
-        g.setColor(ColorScheme.BALLOON_INK);
+        g.setColor(getColorInk());
         
         g.fillRect(1,1,popUpWidth,popUpHeight);                 //shadow
-
-        g.fillRect(0,0,popUpWidth,popUpHeight);                     //border
+        g.fillRect(0,0,popUpWidth,popUpHeight);                 //border
         
-        g.setColor(ColorScheme.BALLOON_BGND);
-        g.fillRect(1,1,popUpWidth-2,popUpHeight-2);                 //fill
+        g.setColor(getColorBgnd());
+        g.fillRect(1,1,popUpWidth-2,popUpHeight-2);             //fill
         
-        g.setColor(ColorScheme.BALLOON_INK);
+        g.setColor(getColorInk());
         g.setFont(font);
         
         drawAllStrings(g, 2,3);
     }
 //paint
+    
+    class PopUpElement {
+        private int type;
+        private Contact from;
+        private Vector message;
+
+        public PopUpElement(int type, Contact from, Vector message) {
+            this.from=from;
+            this.type=type;
+            this.message=message;
+        }
+
+        public int getType() { return type; }
+        public Vector getMessage() { return message; }
+        public Contact getContact() { return from; }
+    }
 }
  
