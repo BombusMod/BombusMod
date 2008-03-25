@@ -45,9 +45,10 @@ public class Msg //implements MessageList.Element
     // with signaling
     public final static int MESSAGE_TYPE_IN=10;
     public final static int MESSAGE_TYPE_HEADLINE=11;
-    public final static int MESSAGE_TYPE_ERROR=11;
-    public final static int MESSAGE_TYPE_SUBJ=12;
-    public final static int MESSAGE_TYPE_AUTH=15;
+    public final static int MESSAGE_TYPE_ERROR=12;
+    public final static int MESSAGE_TYPE_SUBJ=13;
+    public final static int MESSAGE_TYPE_AUTH=14;
+    public final static int MESSAGE_TYPE_SYSTEM=15;
 
     public final static int MESSAGE_MARKER_OUT=1;
     public final static int MESSAGE_MARKER_PRESENCE=2;
@@ -58,6 +59,8 @@ public class Msg //implements MessageList.Element
     private boolean highlite;
     
     private boolean history;
+
+
     
     /** Creates a new instance of msg */
     public Msg(int messageType, String from, String subj, String body) {
