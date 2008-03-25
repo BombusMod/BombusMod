@@ -118,7 +118,7 @@ public class Roster
     boolean reconnect=false;
     boolean querysign=false;
     
-    public int myStatus=cf.loginstatus;
+    //public int myStatus=cf.loginstatus;
     private String myMessage;
 
     public Vector hContacts;
@@ -134,6 +134,13 @@ public class Roster
     public MessageEdit me=null;
     
     public boolean useUserMood=false;
+    
+    public StatusList sl=StatusList.getInstance();
+    
+    public ExtendedStatus myStatus=sl.getStatus(cf.loginstatus);
+    //public ExtendedStatus lastOnlineStatus=sl.getStatus(cf.loginstatus);
+    public ExtendedStatus oldStatus=sl.getStatus(0);
+    
 //#ifdef MOOD
 //#     public Vector serverFeatures;
 //#endif
@@ -143,7 +150,7 @@ public class Roster
 //#     public static boolean autoAway=false;
 //#     public static boolean autoXa=false;
 //#endif
-    public static int oldStatus=0;
+
 
     private String token;
     
@@ -213,7 +220,7 @@ public class Roster
 //#         if (cf.autoAwayType!=Config.AWAY_OFF)
 //#             autostatus=new AutoStatusTask();
 //#         
-//#         if (myStatus<2)
+//#         if (myStatus.getImageIndex()<2)
 //#             messageActivity();
 //#endif
     }
@@ -334,7 +341,7 @@ public class Roster
         } catch( Exception e ) {
             setProgress(SR.MS_FAILED, 100);
             reconnect=false;
-            myStatus=Presence.PRESENCE_OFFLINE;
+            myStatus=StatusList.getInstance().getStatus(Presence.PRESENCE_OFFLINE);
             //e.printStackTrace();
             setQuerySign(false);
             redraw();
@@ -388,7 +395,7 @@ public class Roster
     }
   
     private void updateMainBar(){
-        int s=querysign?RosterIcons.ICON_PROGRESS_INDEX:myStatus;
+        int s=querysign?RosterIcons.ICON_PROGRESS_INDEX:myStatus.getImageIndex();
         int profile=cf.profile;//StaticData.getInstance().config.profile;
         Object en=(profile>1)? new Integer(profile+RosterIcons.ICON_PROFILE_INDEX):null;
         MainBar mainbar=(MainBar) getMainBarItem();
@@ -583,9 +590,7 @@ public class Roster
     public final ConferenceGroup initMuc(String from, String joinPassword){
 //#ifdef AUTOSTATUS
 //#         if (autoAway) {
-//#             ExtendedStatus es=StatusList.getInstance().getStatus(oldStatus);
-//#             String ms=es.getMessage();
-//#             sendPresence(oldStatus, ms);
+//#             sendPresence(oldStatus.getImageIndex(), oldStatus.getMessage());
 //#             autoAway=false;
 //#             autoXa=false;
 //#             myStatus=oldStatus;
@@ -732,7 +737,7 @@ public class Roster
     }
     
     public void sendPresence(int status, String message) {
-        myStatus=status;
+        myStatus=sl.getStatus(status);
 //#ifdef AUTOSTATUS
 //#         messageActivity();
 //#endif
@@ -741,11 +746,11 @@ public class Roster
         
         setQuerySign(false);
 		
-        if (myStatus!=Presence.PRESENCE_OFFLINE) {
-            lastOnlineStatus=myStatus;
+        if (myStatus.getImageIndex()!=Presence.PRESENCE_OFFLINE) {
+            oldStatus=myStatus;
         }
         
-        if (myStatus!=Presence.PRESENCE_OFFLINE && theStream==null ) {
+        if (myStatus.getImageIndex()!=Presence.PRESENCE_OFFLINE && theStream==null ) {
             reconnect=(hContacts.size()>1);
             redraw();
 
@@ -756,13 +761,12 @@ public class Roster
         blockNotify(-111,13000);
         
         // send presence
-        ExtendedStatus es= StatusList.getInstance().getStatus(myStatus);
         if (message==null)
-            myMessage=es.getMessage();
+            myMessage=myStatus.getMessage();
 
         myMessage=strconv.toExtendedString(myMessage);
         
-        Presence presence = new Presence(myStatus, es.getPriority(), myMessage, sd.account.getNick());
+        Presence presence = new Presence(myStatus.getImageIndex(), myStatus.getPriority(), myMessage, sd.account.getNick());
 		
         if (isLoggedIn()) {
             if (status==Presence.PRESENCE_OFFLINE  && !cf.collapsedGroups)
@@ -771,7 +775,7 @@ public class Roster
             if (!sd.account.isMucOnly() )
 		theStream.send( presence );
 //#ifndef WMUC
-            multicastConferencePresence(myMessage, myStatus); //null
+            multicastConferencePresence(myMessage, myStatus.getImageIndex()); //null
 //#endif
             // disconnect
             if (status==Presence.PRESENCE_OFFLINE) {
@@ -799,7 +803,7 @@ public class Roster
             }
         }
         Contact c=selfContact();
-        c.setStatus(myStatus);
+        c.setStatus(myStatus.getImageIndex());
         sort(hContacts);
         
         reEnumRoster();
@@ -866,7 +870,7 @@ public class Roster
                     myself.origNick=myself.nick;
 
                 String addStatus = "";
-                switch (myStatus) {
+                switch (myStatus.getImageIndex()) {
                     case Presence.PRESENCE_CHAT:
                         addStatus="|chat"; break;
                     case Presence.PRESENCE_AWAY:
@@ -892,18 +896,17 @@ public class Roster
        
         if (child!=null) {
             presence.addChild(child);
-            
-            ExtendedStatus es= StatusList.getInstance().getStatus(myStatus);
-            switch (myStatus){
+
+            switch (myStatus.getImageIndex()){
                 case Presence.PRESENCE_CHAT: presence.addChild("show", Presence.PRS_CHAT);break;
                 case Presence.PRESENCE_AWAY: presence.addChild("show", Presence.PRS_AWAY);break;
                 case Presence.PRESENCE_XA: presence.addChild("show", Presence.PRS_XA);break;
                 case Presence.PRESENCE_DND: presence.addChild("show", Presence.PRS_DND);break;
             }
-            if (es.getPriority()!=0) 
-                presence.addChild("priority",Integer.toString(es.getPriority()));
-            if (es.getMessage()!=null) 
-                presence.addChild("status", strconv.toExtendedString(es.getMessage()));
+            if (myStatus.getPriority()!=0) 
+                presence.addChild("priority",Integer.toString(myStatus.getPriority()));
+            if (myStatus.getMessage()!=null) 
+                presence.addChild("status", strconv.toExtendedString(myStatus.getMessage()));
         } else if (conference) {
             ExtendedStatus es= StatusList.getInstance().getStatus(Presence.PRESENCE_OFFLINE);            
             if (es.getMessage()!=null) 
@@ -954,9 +957,7 @@ public class Roster
             
 //#ifdef AUTOSTATUS
 //#             if (autoAway) {
-//#                     ExtendedStatus es=StatusList.getInstance().getStatus(oldStatus);
-//#                     String ms=es.getMessage();
-//#                     sendPresence(oldStatus, ms);
+//#                     sendPresence(oldStatus.getImageIndex(), oldStatus.getMessage());
 //#                     autoAway=false;
 //#                     autoXa=false;
 //#                     myStatus=oldStatus;
@@ -990,7 +991,7 @@ public class Roster
     
     private void sendDeliveryMessage(Contact c, String id) {
         if (!cf.eventDelivery) return;
-        if (myStatus==Presence.PRESENCE_INVISIBLE) return;
+        if (myStatus.getImageIndex()==Presence.PRESENCE_INVISIBLE) return;
         Message message=new Message(c.jid.getJid());
 
         //xep-0184
@@ -1057,7 +1058,7 @@ public class Roster
 //#endif
     
     public void loginFailed(String error){
-        myStatus=Presence.PRESENCE_OFFLINE;
+        myStatus=sl.getStatus(Presence.PRESENCE_OFFLINE);
         setProgress(SR.MS_LOGIN_FAILED, 0);
         
         errorLog(error);
@@ -1085,7 +1086,7 @@ public class Roster
         playNotify(SOUND_START_UP);
         if (reconnect) {
             querysign=reconnect=false;
-            sendPresence(myStatus, null);
+            sendPresence(myStatus.getImageIndex(), null);
 //#ifndef WMUC
             if (cf.autoJoinConferences)
                     mucReconnect();
@@ -1603,14 +1604,14 @@ public class Roster
                             if (me.to==c)
                                 setTicker(SR.MS_COMPOSING_NOTIFY);
                     }
-                    autorespond=true;                    
+                    autorespond=(subj==null);
                 }
      
                 redraw();
 
                 if (body==null) 
                     return JabberBlockListener.BLOCK_REJECTED;
-
+                
                 Msg m=new Msg(mType, from, subj, body);
                 if (tStamp!=0) 
                     m.dateGmt=tStamp;
@@ -1702,17 +1703,16 @@ public class Roster
                         messageStore(c, m);
                         
                         if (!c.autoresponded && autorespond) {
-                            ExtendedStatus es=StatusList.getInstance().getStatus(myStatus);
-                            if (es.getAutoRespond()) {
+                            if (myStatus.getAutoRespond()) {
                                 //System.out.println(SR.MS_AUTORESPOND+" "+c.getJid());
                                 Message autoMessage = new Message( 
                                         c.getJid(),
-                                        es.getAutoRespondMessage(), 
+                                        myStatus.getAutoRespondMessage(), 
                                         SR.MS_AUTORESPOND, 
                                         false 
                                 );
                                 theStream.send( autoMessage );
-                                c.autoresponded=true;
+                                //c.autoresponded=true;
                             }
                         }
 
@@ -1721,7 +1721,7 @@ public class Roster
             }
             else if( data instanceof Presence ) {
                 //System.out.println("presence");
-                if (myStatus==Presence.PRESENCE_OFFLINE) 
+                if (myStatus.getImageIndex()==Presence.PRESENCE_OFFLINE) 
                     return JabberBlockListener.BLOCK_REJECTED;
                 Presence pr= (Presence) data;
                 
@@ -2171,8 +2171,6 @@ public class Roster
 //#if DEBUG
 //#         e.printStackTrace();
 //#endif
-
-        //lastOnlineStatus=myStatus;
          try {
              sendPresence(Presence.PRESENCE_OFFLINE, null);
         } catch (Exception e2) { }
@@ -2189,10 +2187,8 @@ public class Roster
         new Reconnect(topBar, error, display);
 
      }
-    
-     private int lastOnlineStatus;
      public void doReconnect() {
-        sendPresence(lastOnlineStatus, null);
+        sendPresence(oldStatus.getImageIndex(), null);
      }
     
     public void eventOk(){
@@ -2441,7 +2437,7 @@ public class Roster
 //#     
 //#     public void messageActivity() {
 //#         if (cf.autoAwayType==Config.AWAY_MESSAGE) {
-//#              if (myStatus<2)
+//#              if (myStatus.getImageIndex()<2)
 //#                 autostatus.setTimeEvent(cf.autoAwayDelay* 60*1000);
 //#              else if (!autoAway) 
 //#                 autostatus.setTimeEvent(0);
@@ -2845,7 +2841,7 @@ public class Roster
 //#     public void setAutoAway() {
 //#         if (!autoAway) {
 //#             oldStatus=myStatus;
-//#             if (myStatus==0 || myStatus==1) {
+//#             if (myStatus.getImageIndex()==0 || myStatus.getImageIndex()==1) {
 //#                 autoAway=true;
 //#                 if (cf.setAutoStatusMessage) {
 //#                     sendPresence(Presence.PRESENCE_AWAY, SR.MS_AUTO_AWAY);
@@ -2874,7 +2870,7 @@ public class Roster
 //#             sendPresence(Presence.PRESENCE_ONLINE, null);
 //#             return;
 //#         }
-//#         if (status!=Presence.PRESENCE_ONLINE && myStatus==Presence.PRESENCE_ONLINE && !autoAway) {
+//#         if (status!=Presence.PRESENCE_ONLINE && myStatus.getImageIndex()==Presence.PRESENCE_ONLINE && !autoAway) {
 //#             autoAway=true;
 //#             if (cf.setAutoStatusMessage) {
 //#                 sendPresence(Presence.PRESENCE_AWAY, "Auto Status on KeyLock since %t");

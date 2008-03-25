@@ -229,8 +229,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
             t.cancel();
         }
     }
-    
-    
+
     public void keyPressed(int keyCode) { 
         if (pos>24)
             close();
@@ -253,12 +252,9 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
 //#ifdef AUTOSTATUS
 //#         Roster roster=StaticData.getInstance().roster;
 //#         if (roster.autoAway && cf.autoAwayType==Config.AWAY_LOCK) {
-//#             int newStatus=roster.oldStatus;
-//#             ExtendedStatus es=StatusList.getInstance().getStatus(newStatus);
-//#             String ms=es.getMessage();
 //#             roster.autoAway=false;
 //#             roster.autoXa=false;
-//#             roster.sendPresence(newStatus, ms);
+//#             roster.sendPresence(roster.oldStatus.getImageIndex(), roster.oldStatus.getMessage());
 //#         }
 //#endif
         System.gc();
