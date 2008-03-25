@@ -1399,6 +1399,7 @@ public class Roster
                 //System.out.println(data.toString());
                 querysign=false;
                 boolean highlite=false;
+                boolean autorespond=false;
                
                 Message message = (Message) data;
                 
@@ -1459,7 +1460,7 @@ public class Roster
 //#                     }
 //#                 } catch (Exception e) { /*System.out.println("not mood");*/ }                 
 //#endif
-                String body=message.getBody().trim();    
+                String body=message.getBody().trim();
                 String oob=message.getOOB();
                 if (oob!=null) body+=oob;
                 if (body.length()==0) 
@@ -1602,6 +1603,7 @@ public class Roster
                             if (me.to==c)
                                 setTicker(SR.MS_COMPOSING_NOTIFY);
                     }
+                    autorespond=true;                    
                 }
      
                 redraw();
@@ -1698,17 +1700,20 @@ public class Roster
 //#endif
 //#endif
                         messageStore(c, m);
-                        ExtendedStatus es=StatusList.getInstance().getStatus(myStatus);
-                        if (es.getAutoRespond() && !c.autoresponded) {
-                            //System.out.println(SR.MS_AUTORESPOND+" "+c.getJid());
-                            Message autoMessage = new Message( 
-                                    c.getJid(),
-                                    es.getAutoRespondMessage(), 
-                                    SR.MS_AUTORESPOND, 
-                                    false 
-                            );
-                            theStream.send( autoMessage );
-                            c.autoresponded=true;
+                        
+                        if (!c.autoresponded && autorespond) {
+                            ExtendedStatus es=StatusList.getInstance().getStatus(myStatus);
+                            if (es.getAutoRespond()) {
+                                //System.out.println(SR.MS_AUTORESPOND+" "+c.getJid());
+                                Message autoMessage = new Message( 
+                                        c.getJid(),
+                                        es.getAutoRespondMessage(), 
+                                        SR.MS_AUTORESPOND, 
+                                        false 
+                                );
+                                theStream.send( autoMessage );
+                                c.autoresponded=true;
+                            }
                         }
 
                 //}
