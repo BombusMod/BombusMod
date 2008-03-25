@@ -565,7 +565,7 @@ by time 	По часам
 Auto task action type	Действие
 Quit BombusMod	Выход из BombusMod
 Quit conferences	Выход из конференций
-Disconnection	Отключений
+Disconnection	Отключениe
 disabled	Выключено
 Delay (min.)	Выролнить через (в мин.)
 Start time	Выполнить в

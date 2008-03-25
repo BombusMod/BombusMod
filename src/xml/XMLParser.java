@@ -245,35 +245,11 @@ public class XMLParser {
         
     };
     
-    public void parseStream(Utf8IOStream iostream) throws IOException, XMLException {
-        byte cbuf[]=new byte[512];
-        
-        while (true) {
-            int avail=iostream.inpStream.available();
-        
-//#if ZLIB
-            if (iostream.inpStream instanceof ZInputStream) avail=512;
-//#endif            
-            
-            if (avail==0) {
-                try { Thread.sleep(100); } catch (Exception e) {};
-                continue;
-            }
-            
-            if (avail>512) avail=512;
-            int length= iostream.inpStream.read(cbuf, 0, avail);
-            
-            parse(cbuf, length);
-        }
-        
-    }
-    
     private String parsePlainText(StringBuffer sb) throws XMLException {
         //1. output text length will be not greather than source
         //2. sb may be destroyed - all calls to parsePlainText succeeds flushing of sb
         int ipos=0;
         int opos=0;
-        try {
         while (ipos<sb.length()) {
             char c=sb.charAt(ipos++);
             if (c=='&') { 
@@ -327,11 +303,6 @@ public class XMLParser {
             sb.setCharAt(opos++, '?'); // java char type contains only 16-bit symbols
             continue;
             
-        }
-        
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println(sb.toString());
         }
 
         sb.setLength(opos);

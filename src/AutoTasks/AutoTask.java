@@ -43,6 +43,7 @@ public class AutoTask
     public final static int TASK_ACTION_QUIT=0;
     public final static int TASK_ACTION_CONFERENCE_QUIT=1;
     public final static int TASK_ACTION_LOGOFF=2;
+    public final static int TASK_ACTION_RECONNECT=3;
     
     public int taskType=TASK_TYPE_DISABLED;
     public int taskAction=TASK_ACTION_QUIT;
@@ -145,6 +146,13 @@ public class AutoTask
                 caption+=SR.MS_AUTOTASK_LOGOFF;
                 StaticData.getInstance().roster.logoff(caption);
                 break;
+           case TASK_ACTION_RECONNECT:
+                caption+=SR.MS_RECONNECT;
+                taskType=TASK_TYPE_TIMER;
+                initTime=System.currentTimeMillis();
+                startTask();
+                StaticData.getInstance().roster.connectionTerminated(new Exception(caption));
+                break;
         }
     }
     
@@ -160,6 +168,7 @@ public class AutoTask
     }
     
     public void commandAction(Command command, Displayable displayable) {
+        destroyView();
         if (command==cmdOk) {
             if (isShowing) {
                 isShowing=false;
@@ -167,7 +176,6 @@ public class AutoTask
             }
         }
         isShowing=false;
-        destroyView();
     }
 
     protected void paint(Graphics g) {
@@ -183,6 +191,9 @@ public class AutoTask
                     break;
                 case TASK_ACTION_LOGOFF:
                     caption=SR.MS_AUTOTASK_LOGOFF;
+                    break;
+                case TASK_ACTION_RECONNECT:
+                    caption=SR.MS_RECONNECT;
                     break;
             }
             caption+=" - "+(WAITTIME-value);
@@ -223,7 +234,7 @@ public class AutoTask
         this.removeCommand(cmdCancel);
         if (parentView!=null)
             display.setCurrent(parentView);
-        parentView=null;
+        //parentView=null;
         repaint();
     }
 }

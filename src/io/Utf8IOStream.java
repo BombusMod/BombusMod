@@ -46,7 +46,7 @@ import util.strconv;
 public class Utf8IOStream implements Runnable{
     
     private StreamConnection connection;
-    public InputStream inpStream;
+    private InputStream inpStream;
     private OutputStream outStream;
 
     private boolean iStreamWaiting;
@@ -106,87 +106,24 @@ public class Utf8IOStream implements Runnable{
     int length;
     int pbyte;
     
-    private int chRead() throws IOException{
-        bytesRecv++;
-        if (length>pbyte) {
-            return cbuf[pbyte++];
-        }
-
+    
+    public int read(byte buf[]) throws IOException {
         int avail=inpStream.available();
-        
-//#if ZLIB
-        if (inpStream instanceof ZInputStream) avail=512;
-//#endif
-        
-        while (avail==0) {
+
+        if (avail==0)
 //#if !ZLIB
 //#             //trying to fix phillips 9@9
-//#             if (!Config.getInstance().istreamWaiting) break;
-//#endif    
-            try { Thread.sleep(100); } catch (Exception e) {}
-            avail=inpStream.available();
-        }
-        
-//#if !(XML_STREAM_DEBUG)
-	if (avail<2) {
-            return inpStream.read() &0xff;
-	}
-//#else
-//#         if (avail<2) {
-//# 	  System.out.println(" single-byte");
-//#           int ch=inpStream.read();
-//# 	  System.out.println("<< "+(char)ch);
-//# 	  return ch;
-//#         }
-//#           
-//#           System.out.println(" prebuffering "+avail);
-//#endif
+//#             if (!Config.getInstance().istreamWaiting) avail=1;
+//#             else
+//#endif           
+            return 0;
 
-	length= inpStream.read(cbuf, 0, (avail<512)?avail:512 );
-	pbyte=1;
-	
-//#if (XML_STREAM_DEBUG)
-//# 	System.out.println("<< "+new String(cbuf, 0, length));
-//#endif
-	return cbuf[0];
-    }
-    
-    public int getNextCharacter()
-    throws IOException {
-	int chr = chRead() &0xff;
-	if( chr == 0xff ) return -1; // end of stream
-	
-	if (chr<0x80) return chr;
-	if (chr<0xc0) throw new IOException("Bad UTF-8 Encoding encountered");
-	
-        int chr2= chRead() &0xff;
-        if (chr2==0xff) return -1;
-        if (chr2<0x80) throw new IOException("Bad UTF-8 Encoding encountered");
-	
-	if (chr<0xe0) {
-	    // cx, dx 
-	    return ((chr & 0x1f)<<6) | (chr2 &0x3f);
-	}
+        if (avail>buf.length) avail=buf.length;
 
-        int chr3= chRead() &0xff;
-        if (chr3==0xff) return -1;
-        if (chr3<0x80) throw new IOException("Bad UTF-8 Encoding encountered");
-        
-	if (chr<0xf0) {
-	    // cx, dx 
-	    return ((chr & 0x0f)<<12) | ((chr2 &0x3f) <<6) | (chr3 &0x3f);
-	}
-	
-	//System.out.print((char)j);
-	//return -1;
-        
-	// chr>=0xf0
-        int chr4= chRead() &0xff;
-        if (chr3==0xff) return -1;
-        if (chr3<0x80) throw new IOException("Bad UTF-8 Encoding encountered");
-        
-        //return ((chr & 0x07)<<18) | ((chr2 &0x3f) <<12) |((chr3 &0x3f) <<6) | (chr4 &0x3f);
-        return '?'; // java char type contains only 16-bit symbols
+        avail=inpStream.read(buf, 0, avail);
+
+        bytesRecv+=avail;
+        return avail;
     }
     
     public void close() {

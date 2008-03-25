@@ -158,14 +158,14 @@ final public class ZStream{
     if(len>avail_out) len=avail_out;
     if(len==0) return;
 
-    if(dstate.pending_buf.length<=dstate.pending_out ||
+    /*if(dstate.pending_buf.length<=dstate.pending_out ||
        next_out.length<=next_out_index ||
        dstate.pending_buf.length<(dstate.pending_out+len) ||
        next_out.length<(next_out_index+len)){
       System.out.println(dstate.pending_buf.length+", "+dstate.pending_out+
 			 ", "+next_out.length+", "+next_out_index+", "+len);
       System.out.println("avail_out="+avail_out);
-    }
+    }*/
 
     System.arraycopy(dstate.pending_buf, dstate.pending_out,
 		     next_out, next_out_index, len);

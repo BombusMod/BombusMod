@@ -67,6 +67,7 @@ public class AutoTaskForm implements
 //#         actionType.append(SR.MS_AUTOTASK_QUIT_BOMBUSMOD, null);
 //#         actionType.append(SR.MS_AUTOTASK_QUIT_CONFERENCES, null);
 //#         actionType.append(SR.MS_AUTOTASK_LOGOFF, null);
+//#         actionType.append(SR.MS_BREAK_CONECTION, null);
 //#         actionType.setSelectedIndex(at.taskAction, true);
 //#         f.append(actionType);
 //#         
@@ -91,7 +92,7 @@ public class AutoTaskForm implements
 //#if AUTOTASK
 //#             at.taskType=taskType.getSelectedIndex();
 //#             at.taskAction=actionType.getSelectedIndex();
-//#             at.initTime=Time.utcTimeMillis();
+//#             //at.initTime=Time.utcTimeMillis();
 //#             at.waitTime=autoTaskDelay.getValue()*1000*60;
 //#             at.startHour=autoTaskHour.getValue();
 //#             at.startMin=autoTaskMin.getValue();

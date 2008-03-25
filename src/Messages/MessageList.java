@@ -136,11 +136,13 @@ public abstract class MessageList
     }
 //#ifdef SMILES
 //#     protected void keyPressed(int keyCode) { // overriding this method to avoid autorepeat
-//#         super.keyPressed(keyCode);
-//#         if (keyCode=='*') 
+//#         if (keyCode=='*') {
 //#             try {
 //#                 ((MessageItem)getFocusedObject()).toggleSmiles();
 //#             } catch (Exception e){}
+//#             return;
+//#         }
+//#         super.keyPressed(keyCode);
 //#     }
 //#endif
     public void keyGreen() { eventOk(); }
