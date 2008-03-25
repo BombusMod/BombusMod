@@ -59,9 +59,7 @@ public class Contact extends IconTextElement{
 //#ifdef CHECKERS
 //#     private int checkers = -4; //END_GAME_FLAG
 //#endif
-    
-    
-    
+
 //#if USE_ROTATOR
 //#     private int isnew=0;    
 //#     public void setNewContact() {
@@ -108,6 +106,8 @@ public class Contact extends IconTextElement{
     public int priority;
     private Group group;
     public int transport;
+    
+    public boolean autoresponded=false;
     
     public long ping=-1;
     

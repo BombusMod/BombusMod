@@ -77,6 +77,8 @@ public class StatusList {
         try {
 	    status.setPriority(dataInputStream.readInt());
             status.setMessage(dataInputStream.readUTF());
+            status.setAutoRespond(dataInputStream.readBoolean());
+            status.setAutoRespondMessage(dataInputStream.readUTF());
         } catch (Exception e) { /*on stream errors*/ }
 	statusList.addElement(status);
     }
@@ -89,6 +91,8 @@ public class StatusList {
                 ExtendedStatus e=(ExtendedStatus)statusList.elementAt(i);
                 outputStream.writeInt(e.getPriority());
                 outputStream.writeUTF(e.getMessage());
+                outputStream.writeBoolean(e.getAutoRespond());
+                outputStream.writeUTF(e.getAutoRespondMessage());
             }
             NvStorage.writeFileRecord(outputStream, "status", 0, true);            
         } catch (Exception e) { 

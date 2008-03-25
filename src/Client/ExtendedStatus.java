@@ -42,6 +42,8 @@ public class ExtendedStatus extends IconTextElement{
     private int priority;
     int index;
     private String screenName;
+    private boolean autoRespond;
+    private String autoRespondMessage = "";
     
     /** Creates a new instance of ExtendedStatus */
     public ExtendedStatus(int index, String name, String showName) {
@@ -75,6 +77,13 @@ public class ExtendedStatus extends IconTextElement{
 
     public int getPriority() { return priority; }
     public void setPriority(int p) { priority=p; }
+    
+    public boolean getAutoRespond() { return autoRespond; }
+    public void setAutoRespond(boolean state) { autoRespond=state; }
+    
+    public String getAutoRespondMessage() { return autoRespondMessage; }
+    public void setAutoRespondMessage(String s) { autoRespondMessage=s; }
+    
     
 //#ifdef SECONDSTRING
 //#         public String getSecondString() { 

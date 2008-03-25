@@ -567,7 +567,10 @@ Quit BombusMod	Выход из BombusMod
 Quit conferences	Выход из конференций
 Disconnection	Отключениe
 disabled	Выключено
-Delay (min.)	Выролнить через (в мин.)
+Delay (min.)	Выполнить через (мин.)
 Start time	Выполнить в
 Hour	Часов
 Min	Минут
+
+Browse rooms	Обзор комнат
+Autorespond	Автоответчик

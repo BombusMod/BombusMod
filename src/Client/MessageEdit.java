@@ -228,7 +228,7 @@ public class MessageEdit
     public void run(){
         Roster r=StaticData.getInstance().roster;
         String comp=null; // composing event off
-
+        to.autoresponded=false;
         String id=String.valueOf((int) System.currentTimeMillis());
         
         if (body!=null)

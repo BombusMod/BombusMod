@@ -647,6 +647,7 @@ public class SR {
     public static String MS_AUTOTASK_MIN=loadString("Min");
 
     public static String MS_LOAD_ROOMLIST = loadString( "Browse rooms");
+    public static String MS_AUTORESPOND = loadString( "Autorespond");
     
     private SR() { }
     

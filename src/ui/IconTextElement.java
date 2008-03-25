@@ -106,7 +106,7 @@ abstract public class IconTextElement implements VirtualElement
 //#            itemHeight=heightFirstLine+((getSmallFont().getHeight()>heightSecondImg)?getSmallFont().getHeight()-3:heightSecondImg);
 //#        } else
 //#endif
-           itemHeight=heightFirstLine;
+           itemHeight=(heightFirstLine>heightSecondImg)?heightFirstLine:heightSecondImg;
            
        g.clipRect(offset, 0, g.getClipWidth(), itemHeight);
        

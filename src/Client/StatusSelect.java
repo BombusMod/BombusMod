@@ -32,6 +32,7 @@ import locale.SR;
 import ui.*;
 import ui.MainBar;
 import ui.controls.NumberField;
+import ui.controls.TextFieldCombo;
 import ui.controls.TextFieldEx;
 
 //import ui.controls.TextFieldCombo;
@@ -129,17 +130,14 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
         private Form f;
         private NumberField tfPriority;
         private TextField tfMessage;
+        private TextField tfAutoRespondMessage;
         
         private ExtendedStatus status;
         
         private Command cmdOk=new Command(SR.MS_OK,Command.OK,1);
         private Command cmdCancel=new Command(SR.MS_CANCEL,Command.BACK,99);
 
-        private ChoiceGroup selStatus;
-        
-        ExtendedStatusList statuslist=new ExtendedStatusList();
-
-        private ChoiceGroup addNewStatusText;
+        private ChoiceGroup autoRespond;
         
         public StatusForm(Display display, ExtendedStatus status){
             this.display=display;
@@ -148,25 +146,19 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
             
             f=new Form(status.getScreenName());
             
-            tfMessage=new TextFieldEx(SR.MS_MESSAGE, status.getMessage(), 100, 0);
+            tfMessage=new TextFieldCombo(SR.MS_MESSAGE, status.getMessage(), 100, 0, "ex_status_list", display);
             f.append(tfMessage);
             
             tfPriority=new NumberField(SR.MS_PRIORITY, status.getPriority(), -128, 128);
             f.append(tfPriority);
             
-            selStatus=new ChoiceGroup(SR.MS_CHOOSE_STATUS, ChoiceGroup.POPUP);
-            selStatus.append(status.getMessage(), null );
-            for (int i=0;i<statuslist.size();i++) {
-                selStatus.append((String)statuslist.msg(i), null );
-            }
-            selStatus.setSelectedIndex(0, true);
-            f.append(selStatus);
+            tfAutoRespondMessage=new TextFieldEx(SR.MS_AUTORESPOND, status.getAutoRespondMessage(), 100, 0);
+            f.append(tfAutoRespondMessage);
             
-            addNewStatusText=new ChoiceGroup(null, ChoiceGroup.MULTIPLE);
-            addNewStatusText.append(SR.MS_ALL_STATUSES, null);
-            addNewStatusText.append(SR.MS_ADD_STATUS, null);
-            addNewStatusText.append(SR.MS_REMOVE_STATUS, null);
-            f.append(addNewStatusText);
+            autoRespond=new ChoiceGroup(null, ChoiceGroup.MULTIPLE);
+            autoRespond.append(SR.MS_AUTORESPOND, null);
+            autoRespond.setSelectedIndex(0, status.getAutoRespond());
+            f.append(autoRespond);
             
             f.addCommand(cmdOk);
             f.addCommand(cmdCancel);
@@ -179,32 +171,16 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
             if (c==cmdOk) {
                 boolean flags[]=new boolean[3];
                 
-                addNewStatusText.getSelectedFlags(flags);
+                autoRespond.getSelectedFlags(flags);
                 
-                if (selStatus.getSelectedIndex()>0) {
-                    if (flags[2]) {
-                        status.setMessage(tfMessage.getString());
-                    } else {
-                        status.setMessage(selStatus.getString(selStatus.getSelectedIndex()));   
-                    }
-                } else {
-                    status.setMessage(tfMessage.getString());                    
-                }
+                status.setMessage(tfMessage.getString());                    
                
 		int priority=tfPriority.getValue();
                 status.setPriority(priority);
                 
-                if (flags[0]) {
-                    for (Enumeration e=StatusList.getInstance().statusList.elements(); e.hasMoreElements();) {
-                        ((ExtendedStatus)e.nextElement()).setPriority(priority);
-                    }
-                }
-                if (flags[1]) {
-                    statuslist.store(tfMessage.getString());
-                }
-                if (flags[2]) {
-                    statuslist.delete(selStatus.getSelectedIndex()-1);
-                }
+                status.setAutoRespondMessage(tfAutoRespondMessage.getString());
+                status.setAutoRespond(flags[0]);
+
                 save();
             }
             

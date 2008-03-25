@@ -979,29 +979,6 @@ public class Roster
                 if (body!=null) if (cf.eventDelivery) 
                     message.addChildNs("request", "urn:xmpp:receipts");
 
-            /* xep-0022: deprecated
-            
-            JabberDataBlock event=new JabberDataBlock("x", null,null);
-			event.setNameSpace("jabber:x:event");
-
-            if (composingState!=null) {
-                event.setNameSpace("jabber:x:event");
-                if (body==null) event.addChild(new JabberDataBlock("id",null, null));
-                if (composingState==1) {
-                    event.addChild("composing", null);
-                }
-            }
-
-            if (!groupchat) {
-                if (body!=null) {
-                    if (cf.eventDelivery) {
-                            event.addChild("delivered", null);
-                    }
-                }
-            }
-
-            if (event.getChildBlocks()!=null) message.addChild(event);
-            */
             theStream.send( message );
             lastMessageTime=Time.utcTimeMillis();
             playNotify(SOUND_OUTGOING);
@@ -1721,6 +1698,18 @@ public class Roster
 //#endif
 //#endif
                         messageStore(c, m);
+                        ExtendedStatus es=StatusList.getInstance().getStatus(myStatus);
+                        if (es.getAutoRespond() && !c.autoresponded) {
+                            //System.out.println(SR.MS_AUTORESPOND+" "+c.getJid());
+                            Message autoMessage = new Message( 
+                                    c.getJid(),
+                                    es.getAutoRespondMessage(), 
+                                    SR.MS_AUTORESPOND, 
+                                    false 
+                            );
+                            theStream.send( autoMessage );
+                            c.autoresponded=true;
+                        }
 
                 //}
                 return JabberBlockListener.BLOCK_PROCESSED;   
