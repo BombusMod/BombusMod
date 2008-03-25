@@ -2006,7 +2006,9 @@ public class Roster
         
         if (!c.autoresponded && autorespond) {
             if (myStatus.getAutoRespond()) {
-                System.out.println(SR.MS_AUTORESPOND+" "+c.getJid());
+//#if DEBUG
+//#                 System.out.println(SR.MS_AUTORESPOND+" "+c.getJid());
+//#endif
                 Message autoMessage = new Message( 
                         c.getJid(),
                         myStatus.getAutoRespondMessage(), 

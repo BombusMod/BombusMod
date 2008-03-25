@@ -145,7 +145,9 @@ public class AutoTaskForm implements
             actionType.append(SR.MS_AUTOTASK_QUIT_CONFERENCES, null);
             actionType.append(SR.MS_AUTOTASK_LOGOFF, null);
             actionType.append(SR.MS_BREAK_CONECTION, null);
-            actionType.setSelectedIndex(at.taskAction, true);
+//#if AUTOTASK
+//#             actionType.setSelectedIndex(at.taskAction, true);
+//#endif
             f.append(actionType);
             
             if (index==0) {
