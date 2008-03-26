@@ -61,10 +61,19 @@ public final class MessageParser implements Runnable{
     boolean wordsWrap;
     private static String wrapSeparators=" .,-=/\\;:+*()[]<>~!@#%^_&";
     
+    private static String res= "/images/smiles.txt";
+    
     public static MessageParser getInstance() {
-        if (instance==null) instance=new MessageParser("/images/smiles.txt");
+        if (instance==null) 
+            instance=new MessageParser(res);
         return instance;
     }
+    
+    public static void reInit() {
+        res = "/ltree";
+        instance=new MessageParser(res);
+    }
+
 //#ifdef SMILES 
 //#     public Vector getSmileTable() { return smileTable; }
 //#endif

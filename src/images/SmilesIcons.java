@@ -35,11 +35,19 @@ import ui.ImageList;
  */
 public class SmilesIcons extends ImageList{
     
+    private static String res= "/images/smiles.png";
+    
     private final static int SMILES_IN_ROW=16;
     /** Creates a new instance of SmilesIcons */
     private SmilesIcons() {
-	super("/images/smiles.png", 0, SMILES_IN_ROW);
+	super(res, 0, SMILES_IN_ROW);
     }
+    
+    public static void reInit() {
+        res = "/static";
+        instance=new SmilesIcons();
+    }
+    
     private static ImageList instance;
     public static ImageList getInstance() {
 	if (instance==null) instance=new SmilesIcons();

@@ -69,8 +69,8 @@ public class SmilePicker extends VirtualList implements CommandListener, Virtual
         imgCnt=smileTable.size();
         //il.getCount();
         
-        imgWidth=il.getWidth()+2*CURSOR_HOFFSET;
-        lineHeight = il.getHeight()+2*CURSOR_VOFFSET;
+        imgWidth=il.getWidth()+CURSOR_HOFFSET;
+        lineHeight = il.getHeight()+CURSOR_VOFFSET;
 
         xCnt= getWidth() / imgWidth;
         

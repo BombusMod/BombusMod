@@ -140,6 +140,7 @@ public abstract class MessageList
 //#             try {
 //#                 ((MessageItem)getFocusedObject()).toggleSmiles();
 //#             } catch (Exception e){}
+//#             System.gc();
 //#             return;
 //#         }
 //#         super.keyPressed(keyCode);
