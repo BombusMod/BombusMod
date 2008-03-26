@@ -3,7 +3,6 @@
 
 // ask server to send us localized messages
 xmlLang	uk
-//463
 langfile	Ukraine
 Jid	Jid
 Loading	Завантаженя
@@ -170,7 +169,6 @@ Set Subject	Встановити тему
 Tools	Iнструменти
 Port	Порт
 
-
 Connect	З'єднатися
 history -	Iсторiя
 Are You sure want to discard	 Ви дiйсно хочете понизити у 
@@ -183,14 +181,10 @@ General	General
 Stanzas	Stanzas
 Not-in-list	Not-in-list
 
-//476
 Clear	Очистити
-
-//494
 Ask subscription	Запросити пiдписку
 Grant subscription	Дозволити пiдписку
 
-//502
 Invite to conference	Запросити в конференцiю
 Reason	Причина
 You have been invited to	 Ви були запрошенi до 
@@ -548,3 +542,20 @@ show balloons	показувати балони
 turn on light	ввімкнути підсвітку
 IRC-like conference nick-status	IRC-подібні статуси
 Description	Опис
+user moods send/receive	настрої
+Build new version on constructor	Зібрати нову версію в конструкторі
+
+Auto tasks	Автоматизовані дії
+Auto task type	Тип планування
+by timer 	за таймером
+by time 	певний час
+Auto task action type	Тип дії
+Quit BombusMod	Вийти з програми
+Quit conferences	Вийти з конференцій
+Disconnection	Роз'єднатися
+Delay (min.)	Виконати через (хв.)
+Start time	Розпочати о
+Hour	Годин
+Min	Хвилин
+Browse rooms	Перегляд кімнат
+Autorespond	Автовідповідач
