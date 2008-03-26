@@ -1924,6 +1924,9 @@ public class Roster
     
     void messageStore(Contact c, Msg message) {
         if (c==null) return;
+
+        c.addMessage(message);
+        
         boolean autorespond = false;
         
         if (me!=null)
@@ -2001,8 +2004,6 @@ public class Roster
         
         if (message.messageType!=Msg.MESSAGE_TYPE_IN)
             autorespond=false;
-        
-        c.addMessage(message);
         
         if (!c.autoresponded && autorespond) {
             if (myStatus.getAutoRespond()) {
