@@ -710,7 +710,7 @@ public abstract class VirtualList
 //#         popup.next();
 //#endif
         if (keyCode==Config.SOFT_RIGHT || keyCode==Config.KEY_BACK) {
-            if (cf.phoneManufacturer!=Config.SONYE || cf.phoneManufacturer==Config.SIEMENS || cf.phoneManufacturer==Config.SIEMENS2) {
+            if (cf.phoneManufacturer!=Config.SONYE || cf.phoneManufacturer==Config.SIEMENS || cf.phoneManufacturer==Config.SIEMENS2 || cf.phoneManufacturer==Config.MOTO) {
                 if (canBack==true)
                     destroyView();
                 return;
