@@ -30,6 +30,7 @@ import images.MoodIcons;
 import images.RosterIcons;
 import javax.microedition.lcdui.*;
 import java.util.*;
+import midlet.Colors;
 
 abstract public class IconTextElement implements VirtualElement 
 {
@@ -143,7 +144,7 @@ abstract public class IconTextElement implements VirtualElement
     public int getVHeight(){ 
         return itemHeight;
     }
-    public int getColorBGnd(){ return ColorScheme.LIST_BGND;}
+    public int getColorBGnd(){ return Colors.LIST_BGND;}
 
     public void onSelect(){ };
     

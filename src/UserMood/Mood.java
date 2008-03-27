@@ -27,7 +27,7 @@ package UserMood;
 
 import images.MoodIcons;
 import locale.SR;
-import ui.ColorScheme;
+import midlet.Colors;
 import ui.IconTextElement;
 
 public class Mood extends IconTextElement {
@@ -52,7 +52,7 @@ public class Mood extends IconTextElement {
         return locale;
     }
     
-    public int getColor(){ return ColorScheme.LIST_INK;}
+    public int getColor(){ return Colors.LIST_INK;}
 
    //public int getID() { return id; }
     public String getName() { return name; }

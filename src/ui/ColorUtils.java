@@ -18,6 +18,8 @@ package ui;
 //# import java.io.DataInputStream;
 //# import java.io.DataOutputStream;
 //# import java.io.IOException;
+//# import ui.ColorScheme;
+//# import midlet.Colors;
 //# import util.StringLoader;
 //# import util.Translit;
 //#endif
@@ -36,7 +38,7 @@ public class ColorUtils {
 //#     private static String skinFile;
 //#     private static int resourceType=1;
 //# 
-//#     private static ColorScheme cs=ColorScheme.getInstance();
+//#     private static Colors cs=Colors.getInstance();
 //# 
 //#     public static void loadSkin(String skinF, int resourceT){
 //#         skinF=skinFile;
@@ -83,7 +85,7 @@ public class ColorUtils {
 //#             cs.SCROLL_BAR=loadInt("SCROLL_BAR", cs.SCROLL_BAR);
 //#             cs.SCROLL_BGND=loadInt("SCROLL_BGND", cs.SCROLL_BGND);
 //#             cs.CONTACT_J2J=loadInt("CONTACT_J2J", cs.CONTACT_J2J);
-//#             cs.saveToStorage();
+//#             ColorScheme.saveToStorage();
 //#         } catch (Exception e) { }
 //#         skin=null;
 //#         skinFile=null;

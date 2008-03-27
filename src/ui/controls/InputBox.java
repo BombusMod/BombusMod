@@ -28,16 +28,13 @@
 package ui.controls;
 
 import Client.Config;
-//import Info.Phone;
 import java.util.Vector;
 import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
-import ui.ColorScheme;
-//import ui.FontCache;
 
 import java.util.Timer;
 import java.util.TimerTask;
-//import ui.VirtualList;
+import midlet.Colors;
 
 /**
  *
@@ -108,13 +105,13 @@ public class InputBox {
         g.setClip(0, height-boxHeight, width, boxHeight);
         g.translate(0, height-boxHeight);
         
-        g.setColor(ColorScheme.BALLOON_INK);
+        g.setColor(Colors.BALLOON_INK);
         g.fillRect(0,0,width,boxHeight);
         
-        g.setColor(ColorScheme.BALLOON_BGND);
+        g.setColor(Colors.BALLOON_BGND);
         g.fillRect(1,1,width-2,boxHeight-2);
         
-        g.setColor(ColorScheme.BALLOON_INK);
+        g.setColor(Colors.BALLOON_INK);
         g.setFont(font);
         drawStrings(g);
     }

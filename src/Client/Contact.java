@@ -43,7 +43,7 @@ import UserMood.Mood;
 import UserMood.MoodList;
 
 import images.RosterIcons;
-import ui.ColorScheme;
+import midlet.Colors;
 import ui.Time;
 import vcard.VCard;
 import java.util.*;
@@ -75,15 +75,15 @@ public class Contact extends IconTextElement{
 //#     }
 //#endif
         if (j2j!=null)
-            return ColorScheme.CONTACT_J2J;
+            return Colors.CONTACT_J2J;
         
         switch (status) {
-            case Presence.PRESENCE_CHAT: return ColorScheme.CONTACT_CHAT;
-            case Presence.PRESENCE_AWAY: return ColorScheme.CONTACT_AWAY;
-            case Presence.PRESENCE_XA: return ColorScheme.CONTACT_XA;
-            case Presence.PRESENCE_DND: return ColorScheme.CONTACT_DND;
+            case Presence.PRESENCE_CHAT: return Colors.CONTACT_CHAT;
+            case Presence.PRESENCE_AWAY: return Colors.CONTACT_AWAY;
+            case Presence.PRESENCE_XA: return Colors.CONTACT_XA;
+            case Presence.PRESENCE_DND: return Colors.CONTACT_DND;
         }
-        return ColorScheme.CONTACT_DEFAULT;
+        return Colors.CONTACT_DEFAULT;
     }
     
     public Mood mood;

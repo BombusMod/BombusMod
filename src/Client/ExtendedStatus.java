@@ -28,7 +28,7 @@
 package Client;
 
 import images.RosterIcons;
-import ui.ColorScheme;
+import midlet.Colors;
 import ui.IconTextElement;
 
 /**
@@ -68,7 +68,7 @@ public class ExtendedStatus extends IconTextElement{
     }
     public String getScreenName() { return screenName; }
     
-    public int getColor(){ return ColorScheme.LIST_INK;}
+    public int getColor(){ return Colors.LIST_INK;}
     public int getImageIndex(){ return index;}
 
     public String getName() { return name; }

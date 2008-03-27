@@ -33,6 +33,7 @@ package Messages;
 import java.io.*;
 import java.util.Vector;
 import javax.microedition.lcdui.Font;
+import midlet.Colors;
 
 import ui.*;
 import Client.Msg;
@@ -240,8 +241,8 @@ public final class MessageParser implements Runnable{
             String txt=(state==0)? task.msg.subject: task.msg.toString();
             
             int color=(state==0)?
-                ColorScheme.MSG_SUBJ:
-                ColorScheme.LIST_INK;
+                Colors.MSG_SUBJ:
+                Colors.LIST_INK;
             l.setColor(color);
            
             if (txt==null) {
@@ -350,7 +351,7 @@ public final class MessageParser implements Runnable{
                             l.addElement(s.toString());
                             s.setLength(0); w=0;
 
-                            if (c==0xa0) l.setColor(ColorScheme.MSG_HIGHLIGHT);
+                            if (c==0xa0) l.setColor(Colors.MSG_HIGHLIGHT);
 //#ifdef SMILES
 //#                             l=new ComplexString(il);
 //#else

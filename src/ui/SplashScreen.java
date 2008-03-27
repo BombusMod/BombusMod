@@ -39,6 +39,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import javax.microedition.lcdui.*;
 import midlet.BombusMod;
+import midlet.Colors;
 
 /**
  *
@@ -113,7 +114,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         width=getWidth();
         height=getHeight();
         
-        g.setColor(ColorScheme.BLK_BGND);
+        g.setColor(Colors.BLK_BGND);
         g.fillRect(0,0, width, height);
 
         if (img!=null) 
@@ -127,7 +128,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
 
             int y=0;
 
-            g.setColor(ColorScheme.BLK_INK);
+            g.setColor(Colors.BLK_INK);
             g.translate(0, y);
             status.drawItem(g, 0, false);
 
@@ -136,8 +137,8 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
 
             g.translate(width/2, height);
 
-            if (ColorScheme.BLK_INK!=0x010101) {
-                g.setColor(ColorScheme.BLK_INK);
+            if (Colors.BLK_INK!=0x010101) {
+                g.setColor(Colors.BLK_INK);
                 g.drawString(time, 0, 0, Graphics.BOTTOM | Graphics.HCENTER);
             }
         } else {
@@ -147,13 +148,13 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
             int y=height-h-2;
             int yt=y-f.getHeight();
             
-            g.setColor(ColorScheme.BLK_INK);
+            g.setColor(Colors.BLK_INK);
             g.drawString(capt, xt, yt, Graphics.TOP|Graphics.HCENTER);
             
-            g.setColor(ColorScheme.PGS_REMAINED);
+            g.setColor(Colors.PGS_REMAINED);
             g.fillRect(1, y, width, h);
 
-            g.setColor(ColorScheme.PGS_COMPLETE);
+            g.setColor(Colors.PGS_COMPLETE);
             g.setClip(1, y+1, xp, h-2);
             g.fillRect(1, y+1, width-2,h-2);
         }

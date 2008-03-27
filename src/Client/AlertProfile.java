@@ -29,6 +29,7 @@ package Client;
 
 import images.RosterIcons;
 import locale.SR;
+import midlet.Colors;
 import ui.*;
 import javax.microedition.lcdui.*;
 import ui.MainBar;
@@ -88,7 +89,7 @@ public class AlertProfile extends VirtualList implements CommandListener {
             super(RosterIcons.getInstance());
         }
         //public void onSelect(){}
-        public int getColor(){ return ColorScheme.LIST_INK; }
+        public int getColor(){ return Colors.LIST_INK; }
         public int getImageIndex(){return index+RosterIcons.ICON_PROFILE_INDEX;}
         public String toString(){ 
             StringBuffer s=new StringBuffer();

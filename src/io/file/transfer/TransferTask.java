@@ -38,7 +38,7 @@ import java.io.OutputStream;
 import java.util.Vector;
 import javax.microedition.lcdui.Graphics;
 import locale.SR;
-import ui.ColorScheme;
+import midlet.Colors;
 import ui.IconTextElement;
 import util.strconv;
 import com.alsutton.jabber.XmppError;
@@ -120,7 +120,7 @@ public class TransferTask
 
     protected int getImageIndex() { return state; }
 
-    public int getColor() { return (sending)? ColorScheme.MESSAGE_OUT : ColorScheme.MESSAGE_IN; }
+    public int getColor() { return (sending)? Colors.MESSAGE_OUT : Colors.MESSAGE_IN; }
 
     public void drawItem(Graphics g, int ofs, boolean sel, boolean drawsec) {
         int xpgs=(g.getClipWidth()/3)*2;

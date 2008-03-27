@@ -30,6 +30,7 @@ import Client.Config;
 import Client.StaticData;
 import com.alsutton.jabber.JabberDataBlock;
 import images.RosterIcons;
+import midlet.Colors;
 import ui.*;
 
 /**
@@ -61,7 +62,7 @@ public class BookmarkItem extends IconTextElement{
     public String getJidNick() { return jid+'/'+nick; }
     public String getJid() { return jid; }
 
-    public int getColor(){ return ColorScheme.LIST_INK;}
+    public int getColor(){ return Colors.LIST_INK;}
     
     /** Creates a new instance of BookmarkItem */
     public BookmarkItem() {

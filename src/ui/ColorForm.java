@@ -34,6 +34,7 @@ import java.io.OutputStream;
 //#endif
 import javax.microedition.lcdui.*;
 import locale.SR;
+import midlet.Colors;
 
 public class ColorForm implements CommandListener
 //#if (FILE_IO && COLORS)
@@ -44,7 +45,7 @@ public class ColorForm implements CommandListener
     private Display display;
     private Displayable parentView;
       
-    private static ColorScheme cs=ColorScheme.getInstance();
+    private static Colors cs=Colors.getInstance();
       
     private final static int w=18;
     private final static int h=18;

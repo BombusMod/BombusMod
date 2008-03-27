@@ -74,7 +74,7 @@ public class ConfigForm implements
     Command cmdOk=new Command(SR.MS_OK,Command.OK,1);
     
 //#ifdef COLORS
-//#     private ColorScheme cs=ColorScheme.getInstance();
+//#     //private ColorScheme cs=ColorScheme.getInstance();
 //#     
 //#     ChoiceGroup SkinFile;
 //#     private Vector[] Skinfiles;

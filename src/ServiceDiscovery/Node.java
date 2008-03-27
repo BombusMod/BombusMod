@@ -28,7 +28,7 @@
 package ServiceDiscovery;
 
 import images.RosterIcons;
-import ui.ColorScheme;
+import midlet.Colors;
 import ui.IconTextElement;
 
 /**
@@ -41,7 +41,7 @@ public class Node extends IconTextElement{
     private String name;
     
     public int getImageIndex() { return RosterIcons.ICON_COLLAPSED_INDEX; }
-    public int getColor() { return ColorScheme.LIST_INK; }
+    public int getColor() { return Colors.LIST_INK; }
     /** Creates a new instance of Item */
     public Node(String name, String node) {
         super(RosterIcons.getInstance());

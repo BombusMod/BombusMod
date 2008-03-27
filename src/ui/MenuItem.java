@@ -28,6 +28,7 @@
 package ui;
 
 import images.RosterIcons;
+import midlet.Colors;
 
 /**
  *
@@ -50,7 +51,7 @@ public class MenuItem extends IconTextElement
     }
 
     protected int getImageIndex() { return iconIndex;  }
-    public int getColor() { return ColorScheme.LIST_INK; }
+    public int getColor() { return Colors.LIST_INK; }
     public String toString(){ return name; }
     
 //#ifdef SECONDSTRING

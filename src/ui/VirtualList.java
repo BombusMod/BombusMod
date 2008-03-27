@@ -30,6 +30,7 @@ package ui;
 import javax.microedition.lcdui.*;
 import java.util.*;
 import Client.*;
+import midlet.Colors;
 //import locale.SR;
 //#ifdef POPUPS
 //# import ui.controls.PopUp;
@@ -54,8 +55,8 @@ public abstract class VirtualList
 
     abstract protected VirtualElement getItemRef(int index);
 
-    protected int getMainBarBGnd() {return ColorScheme.BAR_BGND;} 
-    protected int getMainBarBGndBottom() {return ColorScheme.BAR_BGND_BOTTOM;} 
+    protected int getMainBarBGnd() {return Colors.BAR_BGND;} 
+    protected int getMainBarBGndBottom() {return Colors.BAR_BGND_BOTTOM;} 
     
     private StaticData sd=StaticData.getInstance();
 
@@ -80,7 +81,7 @@ public abstract class VirtualList
 //#         popup.addPopup(type, contact, txt);
 //#     }
 //#endif
-    protected int getMainBarRGB() {return ColorScheme.BAR_INK;} 
+    protected int getMainBarRGB() {return Colors.BAR_INK;} 
     
     private Config cf=Config.getInstance();
 
@@ -441,7 +442,7 @@ public abstract class VirtualList
         if (clrH>0) {
             setAbsOrg(g, 0,displayedBottom);
             g.setClip(0, 0, itemMaxWidth, clrH);
-            g.setColor(ColorScheme.LIST_BGND);
+            g.setColor(Colors.LIST_BGND);
             g.fillRect(0, 0, itemMaxWidth, clrH);
         }
 
@@ -524,8 +525,8 @@ public abstract class VirtualList
     private void drawHeapMonitor(final Graphics g, int y) {
         if (memMonitor) {
             int ram=(int)(((int)Runtime.getRuntime().freeMemory()*width)/(int)Runtime.getRuntime().totalMemory());
-            g.setColor(ColorScheme.HEAP_TOTAL);  g.fillRect(0,y,width,1);
-            g.setColor(ColorScheme.HEAP_FREE);  g.fillRect(0,y,ram,1);
+            g.setColor(Colors.HEAP_TOTAL);  g.fillRect(0,y,width,1);
+            g.setColor(Colors.HEAP_FREE);  g.fillRect(0,y,ram,1);
         }
     }
 
@@ -970,8 +971,8 @@ public abstract class VirtualList
     }
     
     protected void drawCursor (Graphics g, int width, int height){
-            g.setColor(ColorScheme.CURSOR_BGND);    g.fillRect(1, 1, width-1, height-1);
-            g.setColor(ColorScheme.CURSOR_OUTLINE); g.drawRect(0, 0, width-1, height-1);
+            g.setColor(Colors.CURSOR_BGND);    g.fillRect(1, 1, width-1, height-1);
+            g.setColor(Colors.CURSOR_OUTLINE); g.drawRect(0, 0, width-1, height-1);
     }
 
     public void setParentView(Displayable parentView){

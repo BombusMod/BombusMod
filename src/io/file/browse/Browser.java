@@ -38,7 +38,7 @@ import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
-import ui.ColorScheme;
+import midlet.Colors;
 import ui.IconTextElement;
 import ui.VirtualElement;
 import ui.VirtualList;
@@ -256,7 +256,7 @@ public class Browser extends VirtualList implements CommandListener{
         }
         protected int getImageIndex() { return iconIndex; }
         
-        public int getColor() { return ColorScheme.LIST_INK; }
+        public int getColor() { return Colors.LIST_INK; }
         
         public String toString() { return name; }
         

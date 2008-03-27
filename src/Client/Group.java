@@ -29,6 +29,7 @@ package Client;
 import com.alsutton.jabber.datablocks.Presence;
 import images.RosterIcons;
 import java.util.*;
+import midlet.Colors;
 import ui.*;
 
 
@@ -63,7 +64,7 @@ public class Group extends IconTextElement {
         /*this.label=label;*/
         
     }
-    public int getColor(){ return ColorScheme.GROUP_INK; }
+    public int getColor(){ return Colors.GROUP_INK; }
     
     public int getImageIndex() {
         return collapsed?

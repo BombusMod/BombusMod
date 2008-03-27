@@ -29,6 +29,8 @@ import io.NvStorage;
 import java.io.DataOutputStream;
 import javax.microedition.lcdui.*;
 import locale.SR;
+import midlet.Colors;
+import ui.ColorScheme;
 
 public class ColorSelector extends Canvas implements Runnable, CommandListener {
 
@@ -38,7 +40,7 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
         private Display display;
 	Displayable parentView;
 	Graphics G;
-        private ColorScheme cl;
+        private Colors cl;
 
 	int cpos;
         String nowcolor;
@@ -249,7 +251,7 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
         
 	public void setValue(int vall) {
             this.value=vall;
-            cl=ColorScheme.getInstance();
+            cl=Colors.getInstance();
             switch(paramName) {
                 case 0:
                     cl.BALLOON_INK=value;
@@ -368,7 +370,7 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
 //#endif
             }
 //#if (COLORS)
-//#             cl.saveToStorage();
+//#             ColorScheme.saveToStorage();
 //#endif
 	}
 

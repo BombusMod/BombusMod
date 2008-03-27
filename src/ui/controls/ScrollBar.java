@@ -28,7 +28,7 @@
 package ui.controls;
 
 import javax.microedition.lcdui.Graphics;
-import ui.ColorScheme;
+import midlet.Colors;
 import ui.VirtualList;
 
 /**
@@ -135,7 +135,7 @@ public class ScrollBar {
 	scrollerX=drawWidth-scrollWidth;
  
  	g.translate(scrollerX, 0);
-        g.setColor(ColorScheme.SCROLL_BGND);
+        g.setColor(Colors.SCROLL_BGND);
 	g.fillRect(0, 0, scrollWidth, drawHeight);                
          
  	drawHeight-=minimumHeight;
@@ -144,10 +144,10 @@ public class ScrollBar {
  	
  	scrollerPos=(drawHeight*position)/size;
 
-        g.setColor(ColorScheme.SCROLL_BAR);
+        g.setColor(Colors.SCROLL_BAR);
 	g.fillRect(1, scrollerPos, scrollWidth, scrollerSize);                
 
-        g.setColor(ColorScheme.SCROLL_BRD);
+        g.setColor(Colors.SCROLL_BRD);
 
 	g.drawRect(0, scrollerPos, scrollWidth, scrollerSize);
     }

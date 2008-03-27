@@ -100,7 +100,7 @@ public class BombusMod extends MIDlet implements Runnable{
             s.img=null;
         }
         
-        ColorScheme cl=ColorScheme.getInstance();
+        Colors cl=Colors.getInstance();
         s.setProgress(5);
         
         s.setProgress(Version.getVersionNumber(),7);
