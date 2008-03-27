@@ -36,6 +36,7 @@ import Client.*;
 //#endif
 import ui.controls.Balloon;
 import ui.controls.ScrollBar;
+import ui.controls.activeRegions;
 //#ifdef USER_KEYS
 //# import ui.keys.userKeyExec;
 //#endif

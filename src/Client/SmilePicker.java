@@ -36,8 +36,8 @@ import ui.controls.Balloon;
 
 public class SmilePicker extends VirtualList implements CommandListener, VirtualElement{
 
-    private final static int CURSOR_HOFFSET=2;
-    private final static int CURSOR_VOFFSET=22;
+    private final static int CURSOR_HOFFSET=1;
+    private final static int CURSOR_VOFFSET=1;
    
     private int imgCnt;
     private int xCnt;
