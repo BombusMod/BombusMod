@@ -51,9 +51,7 @@ public class ColorScheme {
 
 //#ifdef COLORS
 //#     private static Hashtable skin;
-//#     
 //#     private static String skinFile;
-//# 
 //#     private static int resourceType=1;
 //#endif
     
@@ -79,48 +77,7 @@ public class ColorScheme {
 //#         return color;
 //#     }
 //#endif
-    
-//#ifdef NEW_YEAR
-//#     public static int BALLOON_INK=0x4866ad;
-//#     public static int BALLOON_BGND=0xc4dcff;
-//#     public static int LIST_BGND=0xf1f9ff;
-//#     public static int LIST_BGND_EVEN=0xdfefff;
-//#     public static int LIST_INK=0x2144d3;
-//#     public static int MSG_SUBJ=0xf20000;
-//#     public static int MSG_HIGHLIGHT=0xee28f9;
-//#     public static int DISCO_CMD=0x0a0098;
-//#     public static int BAR_BGND=0x2b47e8;
-//#     public static int BAR_BGND_BOTTOM=0x1f37da;
-//#     public static int BAR_INK=0xffffff;
-//#     public static int CONTACT_DEFAULT=0x6073ca;
-//#     public static int CONTACT_CHAT=0x34a500;
-//#     public static int CONTACT_AWAY=0x858d8e;
-//#     public static int CONTACT_XA=0x7279a8;
-//#     public static int CONTACT_DND=0xb50200;
-//#     public static int GROUP_INK=0x243969;
-//#     public static int BLK_INK=0x3368df;
-//#     public static int BLK_BGND=0xc2d5e6;
-//#     public static int MESSAGE_IN=0x5a6360;
-//#     public static int MESSAGE_OUT=0x400040;
-//#     public static int MESSAGE_PRESENCE=0x94a2ee;
-//#     public static int MESSAGE_IN_S=0x5a6360;
-//#     public static int MESSAGE_OUT_S=0x400040;
-//#     public static int MESSAGE_PRESENCE_S=0x94a2ee;
-//#     public static int MESSAGE_AUTH=0x1abe29;
-//#     public static int MESSAGE_HISTORY=0x456b85;
-//#     public static int PGS_REMAINED=0x39448d;
-//#     public static int PGS_COMPLETE=0xffffff;
-//#     public static int PGS_BORDER=0x132776;
-//#     public static int PGS_BGND=0x254583;
-//#     public static int HEAP_TOTAL=0xffffff;
-//#     public static int HEAP_FREE=0x2643d7;
-//#     public static int CURSOR_BGND=0xc0deff;
-//#     public static int CURSOR_OUTLINE=0xbad3f3;
-//#     public static int SCROLL_BRD=0x0589b8;
-//#     public static int SCROLL_BAR=0xbbbbbb;
-//#     public static int SCROLL_BGND=0xdddddd;
-//#     public static int CONTACT_J2J=0xff0000;
-//#else
+
     public static int BALLOON_INK	=0x4866ad;
     public static int BALLOON_BGND	=0xffffe0;
     public static int LIST_BGND         =0xffffff;
@@ -164,7 +121,6 @@ public class ColorScheme {
 //#     public static int MESSAGE_PRESENCE_S =0x00c040;
 //#endif
     public static int CONTACT_J2J        =0xff0000;
-//#endif
     
 //#ifdef COLORS
 //#     protected void loadFromStorage(){

@@ -37,7 +37,7 @@ import util.StringLoader;
 import ui.*;
 
 public class ConfigForm implements
-	CommandListener
+	CommandListener, ItemCommandListener
 {
     private Display display;
     private Displayable parentView;
@@ -334,6 +334,7 @@ public class ConfigForm implements
 //#             if (Skinfiles.length>0) {
 //#                 SkinFile.setSelectedIndex(0, true);
 //#                 f.append(SkinFile);
+//#                 SkinFile.setItemCommandListener(this);
 //#                 SkinFile.addCommand(cmdLoadSkin);
 //#             }
 //#         } catch (Exception e) {}
@@ -459,7 +460,6 @@ public class ConfigForm implements
 //# 	if (command==cmdLoadSkin) {
 //#             int skinfl=SkinFile.getSelectedIndex();
 //#             String skinFile=(String)Skinfiles[0].elementAt(skinfl);
-//# 
 //#             cs.loadSkin(skinFile, 1);
 //# 	}
 //#endif
