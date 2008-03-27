@@ -36,8 +36,8 @@ import ui.controls.Balloon;
 
 public class SmilePicker extends VirtualList implements CommandListener, VirtualElement{
 
-    private final static int CURSOR_HOFFSET=1;
-    private final static int CURSOR_VOFFSET=1;
+    private final static int CURSOR_HOFFSET=2;
+    private final static int CURSOR_VOFFSET=22;
    
     private int imgCnt;
     private int xCnt;
@@ -51,11 +51,14 @@ public class SmilePicker extends VirtualList implements CommandListener, Virtual
     private ImageList il;
 
     private int caretPos;
+    
+    private int realWidth=0;
+    private int xBorder = 0;
+    
+    Command cmdBack=new Command(SR.MS_CANCEL,Command.BACK,99);
+    Command cmdOK=new Command(SR.MS_SELECT,Command.OK,1);
      
-     Command cmdBack=new Command(SR.MS_CANCEL,Command.BACK,99);
-     Command cmdOK=new Command(SR.MS_SELECT,Command.OK,1);
-     
-     private Vector smileTable;
+    private Vector smileTable;
  
      /** Creates a new instance of SmilePicker */
     public SmilePicker(Display display, int caretPos) {
@@ -69,14 +72,18 @@ public class SmilePicker extends VirtualList implements CommandListener, Virtual
         imgCnt=smileTable.size();
         //il.getCount();
         
+        realWidth=getWidth()-scrollbar.getScrollWidth();
+        
         imgWidth=il.getWidth()+CURSOR_HOFFSET;
         lineHeight = il.getHeight()+CURSOR_VOFFSET;
 
-        xCnt= getWidth() / imgWidth;
+        xCnt= realWidth / imgWidth;
         
         lines=imgCnt/xCnt;
         xLastCnt=imgCnt-lines*xCnt;
         if (xLastCnt>0) lines++; else xLastCnt=xCnt;
+
+        xBorder=(realWidth-(xCnt*imgWidth))/2;
         
         addCommand(cmdOK);
         addCommand(cmdBack);
@@ -84,12 +91,10 @@ public class SmilePicker extends VirtualList implements CommandListener, Virtual
     }
     
     int lineIndex;
-    //SmileItem si=new SmileItem();
     
     public int getItemCount(){ return lines; }
     public VirtualElement getItemRef(int index){ lineIndex=index; return this;}
-    
-    //private class SmileItem implements VirtualElement {
+
     public int getVWidth(){ return 0; }
     public int getVHeight() { return lineHeight; }
     public int getColor(){ return ColorScheme.LIST_INK; }
@@ -99,37 +104,41 @@ public class SmilePicker extends VirtualList implements CommandListener, Virtual
             StaticData.getInstance().roster.me.insertText( getTipString() , caretPos);
         } catch (Exception e) { /*e.printStackTrace();*/  }
         destroyView();
-    };
+    }
     
         
     public void drawItem(Graphics g, int ofs, boolean selected){
         int max=(lineIndex==lines-1)? xLastCnt:xCnt;
         for (int i=0;i<max;i++) {
-            il.drawImage(g, lineIndex*xCnt + i, i*imgWidth+CURSOR_HOFFSET, CURSOR_VOFFSET);
+            il.drawImage(g, lineIndex*xCnt + i, xBorder+(i*imgWidth+CURSOR_HOFFSET), CURSOR_VOFFSET);
         }
-    };
-    
-    //}
+    }
+
     public void drawCursor (Graphics g, int width, int height){
-        int x=xCursor*imgWidth;
+        int x=xBorder+(xCursor*imgWidth);
         g.setColor(ColorScheme.LIST_BGND);
         g.fillRect(0,0,width, height);
         g.translate(x,0);
         super.drawCursor(g, imgWidth, lineHeight);
         g.translate(-x,0);
     } 
+
+    protected void drawBalloon(final Graphics g, int balloon, final String text) {
+        if (cursor==0) balloon+=lineHeight+Balloon.getHeight();
+        int x=xBorder+(xCursor*imgWidth);
+        g.translate(x, balloon);
+        Balloon.draw(g, text);
+    }
     
     public void pageLeft(){ 
-        if (xCursor>0) xCursor--; 
+        if (xCursor>0) 
+            xCursor--; 
         else {
-            //if (cursor==0) return;
-            //
             if (cursor==0) {
                 keyDwn();
                 pageLeft();
                 return;
             }
-            //
             xCursor=xCnt-1;
             keyUp();
             setRotator();
@@ -139,8 +148,7 @@ public class SmilePicker extends VirtualList implements CommandListener, Virtual
         if ( xCursor < ( (cursor<lines-1)?(xCnt-1):(xLastCnt-1) ) ) {
             xCursor++;
             setRotator();
-        }
-        else {
+        } else {
             if (cursor==lines-1) return;
             xCursor=0;
             keyDwn();
@@ -148,8 +156,10 @@ public class SmilePicker extends VirtualList implements CommandListener, Virtual
     }
     public void keyDwn(){
         super.keyDwn();
-        if (cursor!=lines-1) return;
-        if (xCursor >= xLastCnt) xCursor=xLastCnt-1;
+        if (cursor!=lines-1)
+            return;
+        if (xCursor >= xLastCnt)
+            xCursor=xLastCnt-1;
     }
     
     public void commandAction(Command c, Displayable d){
@@ -172,13 +182,6 @@ public class SmilePicker extends VirtualList implements CommandListener, Virtual
 
     public String getTipString() {
         return (String) smileTable.elementAt(cursor*xCnt+xCursor);
-    }
-
-    protected void drawBalloon(final Graphics g, int balloon, final String text) {
-        if (cursor==0) balloon+=lineHeight+Balloon.getHeight();
-        int x=xCursor*imgWidth;
-        g.translate(x, balloon);
-        Balloon.draw(g, text);
     }
 
     protected void pointerPressed(int x, int y) { 

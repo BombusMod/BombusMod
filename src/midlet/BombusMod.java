@@ -99,7 +99,10 @@ public class BombusMod extends MIDlet implements Runnable{
         } catch (Exception e) {
             s.img=null;
         }
-
+        
+        ColorScheme cl=ColorScheme.getInstance();
+        s.setProgress(5);
+        
         s.setProgress(Version.getVersionNumber(),7);
 
 	Config cf=Config.getInstance();
@@ -109,9 +112,6 @@ public class BombusMod extends MIDlet implements Runnable{
 //#         sd.autoTask=new AutoTask(/*"", "", */display);
 //#         s.setProgress(15);
 //#endif
-        
-        ColorScheme cl=ColorScheme.getInstance();
-        s.setProgress(20);
 
         boolean selAccount=( (cf.accountIndex<0) || s.keypressed!=0);
         if (selAccount) 

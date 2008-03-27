@@ -231,7 +231,7 @@ public abstract class VirtualList
     protected Display display;
     protected Displayable parentView;
 
-    ScrollBar scrollbar;
+    protected ScrollBar scrollbar;
     
     activeRegions ar=new activeRegions();
     
@@ -540,9 +540,6 @@ public abstract class VirtualList
             g.fillRect(0, h/2, width, h/2);
 
             g.setColor(getMainBarRGB());
-            //g.setFont(bottomFont);
-
-            //g.drawString(s.toString(), width/2, 1, Graphics.TOP|Graphics.HCENTER);
             getInfoBarItem().drawItem(g,0,false);
         }
     }

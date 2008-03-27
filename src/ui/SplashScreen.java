@@ -70,6 +70,8 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
     private static SplashScreen instance;
 
     public int keypressed=0;
+
+    private Font f;
     
     public static SplashScreen getInstance(){
         if (instance==null) 
@@ -117,9 +119,10 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         if (img!=null) 
             g.drawImage(img, width/2, height/2, Graphics.VCENTER|Graphics.HCENTER);
         
+        f = (pos==-1)?FontCache.getClockFont():FontCache.getBalloonFont();
+        g.setFont(f);
+        
         if (pos==-1) {
-            Font f=FontCache.getClockFont();
-
             int h=f.getHeight()+1;
 
             int y=0;
@@ -135,28 +138,24 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
 
             if (ColorScheme.BLK_INK!=0x010101) {
                 g.setColor(ColorScheme.BLK_INK);
-                g.setFont(f);
                 g.drawString(time, 0, 0, Graphics.BOTTOM | Graphics.HCENTER);
             }
         } else {
-            Font f=FontCache.getBalloonFont();
-
             int h=4;
             int xp=pos*width/100;
             int xt=(width/2);
             int y=height-h-2;
             int yt=y-f.getHeight();
-
+            
+            g.setColor(ColorScheme.BLK_INK);
+            g.drawString(capt, xt, yt, Graphics.TOP|Graphics.HCENTER);
+            
             g.setColor(ColorScheme.PGS_REMAINED);
             g.fillRect(1, y, width, h);
 
             g.setColor(ColorScheme.PGS_COMPLETE);
             g.setClip(1, y+1, xp, h-2);
             g.fillRect(1, y+1, width-2,h-2);
-            
-            g.setColor(ColorScheme.BLK_INK);
-            g.setFont(f);
-            g.drawString(capt, xt, yt, Graphics.TOP|Graphics.HCENTER);
         }
     }
     
