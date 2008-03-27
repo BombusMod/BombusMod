@@ -47,15 +47,14 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
     private Command cmdEdit=new Command(SR.MS_EDIT,Command.SCREEN,2);
     private Command cmdDef=new Command(SR.MS_SETDEFAULT,Command.OK,3);
     private Command cmdCancel=new Command(SR.MS_CANCEL,Command.BACK,99);
-    /** Creates a new instance of SelectStatus */
+
     private Vector statusList;
-
     private int defp;
-
     private Contact to;
-    
+
     private Config cf=Config.getInstance();
-     
+    private Roster roster = StaticData.getInstance().roster;
+    
     public StatusSelect(Display d, Contact to) {
         super();
         statusList=StatusList.getInstance().statusList;
@@ -108,12 +107,16 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
     public void run(){
         int status=getSel().getImageIndex();
 //#ifdef AUTOSTATUS
-//#         Roster.autoAway=false;
-//#         Roster.autoXa=false;
-//#         StaticData.getInstance().roster.messageActivity();
+//#         roster.autoAway=false;
+//#         roster.autoXa=false;
+//#         roster.messageActivity();
 //#endif
         try {
-            StaticData.getInstance().roster.sendDirectPresence(status, to, null);
+            if (roster.isLoggedIn()) {
+                roster.sendDirectPresence(status, to, null);
+            } else {
+                roster.sendPresence(status, null);
+            }
         } catch (Exception e) { }
     }
     
