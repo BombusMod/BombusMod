@@ -251,7 +251,7 @@ public abstract class VirtualList
 	scrollbar=new ScrollBar();
 	scrollbar.setHasPointerEvents(hasPointerEvents());
         
-        InfoBar secondBar=new InfoBar(" ");
+        MainBar secondBar=new MainBar(" ");
         secondBar.addElement(null); //1
         secondBar.addRAlign();
         secondBar.addElement(null); //3

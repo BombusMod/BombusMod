@@ -46,8 +46,8 @@ public class ColorForm implements CommandListener
       
     private static ColorScheme cs=ColorScheme.getInstance();
       
-    private final static int w=16;
-    private final static int h=16;
+    private final static int w=18;
+    private final static int h=18;
 
     public static final String[] NAMES = {
             SR.MS_BALLOON_INK,
@@ -81,8 +81,8 @@ public class ColorForm implements CommandListener
             SR.MS_PGS_REMAINED,
             SR.MS_PGS_COMPLETE,
 
-            SR.MS_PGS_BORDER,
-            SR.MS_PGS_BGND,
+            //SR.MS_PGS_BORDER,
+            //SR.MS_PGS_BGND,
             SR.MS_HEAP_TOTAL,
             SR.MS_HEAP_FREE,
             SR.MS_CURSOR_BGND,
@@ -132,8 +132,8 @@ public class ColorForm implements CommandListener
             cs.PGS_REMAINED,
             cs.PGS_COMPLETE,
             
-            cs.PGS_BORDER,
-            cs.PGS_BGND,
+            //cs.PGS_BORDER,
+            //cs.PGS_BGND,
             cs.HEAP_TOTAL,
             cs.HEAP_FREE,
             cs.CURSOR_BGND,
@@ -185,8 +185,8 @@ public class ColorForm implements CommandListener
             imageData(cs.PGS_REMAINED),
             imageData(cs.PGS_COMPLETE),
 
-            imageData(cs.PGS_BORDER),
-            imageData(cs.PGS_BGND),
+            //imageData(cs.PGS_BORDER),
+            //imageData(cs.PGS_BGND),
             imageData(cs.HEAP_TOTAL),
             imageData(cs.HEAP_FREE),
             imageData(cs.CURSOR_BGND),
@@ -218,7 +218,6 @@ public class ColorForm implements CommandListener
 //#endif
     
     private Command cmdCancel=new Command(SR.MS_CLOSE, Command.BACK, 99);
-
     private Command selectCommand = new Command(SR.MS_EDIT, Command.ITEM, 1);
 
     private int loadType=0;
@@ -284,7 +283,7 @@ public class ColorForm implements CommandListener
 //# 
 //#     public void BrowserFilePathNotify(String pathSelected) {
 //#         if (loadType==0) {
-//#             byte[] bodyMessage=ColorScheme.getSkin().getBytes();
+//#             byte[] bodyMessage=ColorUtils.getSkin().getBytes();
 //# 
 //#             file=FileIO.createConnection(pathSelected+"skin.txt");
 //#             try {
@@ -301,7 +300,7 @@ public class ColorForm implements CommandListener
 //#                 //ex.printStackTrace();
 //#             }
 //#         } else {
-//#             cs.loadSkin(pathSelected, 0);
+//#             ColorUtils.loadSkin(pathSelected, 0);
 //#         }
 //#     }
 //#endif 

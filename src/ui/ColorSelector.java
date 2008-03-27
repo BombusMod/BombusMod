@@ -74,9 +74,9 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
                 
                 //System.out.println(color+" "+cl.getColorString(color));
 //#if (COLORS)
-//#                 red=cl.getColorInt(color,0);
-//#                 green=cl.getColorInt(color,1);
-//#                 blue=cl.getColorInt(color,2);
+//#                 red=ColorUtils.getColorInt(color,0);
+//#                 green=ColorUtils.getColorInt(color,1);
+//#                 blue=ColorUtils.getColorInt(color,2);
 //#                 
 //#             	//String s = cl.ColorToString(red, green, blue);
 //#endif
@@ -99,7 +99,7 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
 		g.fillRect(0, 0, w, h);
 		g.setFont(mfont);
 //#if (COLORS)
-//#             	String s = cl.ColorToString(red, green, blue);
+//#             	String s = ColorUtils.ColorToString(red, green, blue);
 //#                 //System.out.println(s);
 //#else
                 String s = " ";
@@ -329,44 +329,40 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
                 case 25:
                     cl.PGS_COMPLETE=value; 
                     break;
+                //case 26: cl.PGS_BORDER=value; break;
+                //case 27: cl.PGS_BGND=value; break;
                 case 26:
-                    cl.PGS_BORDER=value; 
-                    break;
-                case 27:
-                    cl.PGS_BGND=value; 
-                    break;
-                case 28:
                     cl.HEAP_TOTAL=value; 
                     break;
-                case 29:
+                case 27:
                     cl.HEAP_FREE=value; 
                     break;
-                case 30:
+                case 38:
                     cl.CURSOR_BGND=value; 
                     break;
-                case 31:
+                case 29:
                     cl.CURSOR_OUTLINE=value; 
                     break;                    
-                case 32:
+                case 30:
                     cl.SCROLL_BRD=value; 
                     break;
-                case 33:
+                case 31:
                     cl.SCROLL_BAR=value; 
                     break;
-                case 34:
+                case 32:
                     cl.SCROLL_BGND=value; 
                     break;
-                case 35:
+                case 33:
                     cl.CONTACT_J2J=value; 
                     break;
 //#if NICK_COLORS
-//#                 case 36:
+//#                 case 34:
 //#                     cl.MESSAGE_IN_S=value; 
 //#                     break;
-//#                 case 37:
+//#                 case 35:
 //#                     cl.MESSAGE_OUT_S=value; 
 //#                     break;
-//#                 case 38:
+//#                 case 36:
 //#                     cl.MESSAGE_PRESENCE_S=value; 
 //#                     break;
 //#endif
@@ -413,9 +409,9 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
     
     private void eventOk () {
 //#if (COLORS)
-//#         String val = cl.ColorToString(red, green, blue);
+//#         String val = ColorUtils.ColorToString(red, green, blue);
 //#         
-//#         int finalColor=cl.getColorInt(val);
+//#         int finalColor=ColorUtils.getColorInt(val);
 //#         //System.out.println(val);
 //#         
 //#         setValue(finalColor);

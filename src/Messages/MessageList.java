@@ -37,7 +37,7 @@ import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
 //#ifdef COLORS
-//# import ui.ColorScheme;
+//# import ui.ColorUtils;
 //#endif
 import ui.VirtualElement;
 import ui.VirtualList;
@@ -128,7 +128,7 @@ public abstract class MessageList
 //#         if (c==cmdxmlSkin) {
 //#             try {
 //#                 if (((MessageItem)getFocusedObject()).msg.getBody().startsWith("xmlSkin")) {
-//#                    ColorScheme.getInstance().loadSkin(((MessageItem)getFocusedObject()).msg.getBody(),2);
+//#                    ColorUtils.loadSkin(((MessageItem)getFocusedObject()).msg.getBody(),2);
 //#                 }
 //#             } catch (Exception e){}
 //#         }

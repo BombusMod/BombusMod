@@ -150,12 +150,13 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
             g.setColor(ColorScheme.PGS_REMAINED);
             g.fillRect(1, y, width, h);
 
-            g.setFont(f);
-            g.drawString(capt, xt, yt, Graphics.TOP|Graphics.HCENTER);
-
             g.setColor(ColorScheme.PGS_COMPLETE);
             g.setClip(1, y+1, xp, h-2);
             g.fillRect(1, y+1, width-2,h-2);
+            
+            g.setColor(ColorScheme.BLK_INK);
+            g.setFont(f);
+            g.drawString(capt, xt, yt, Graphics.TOP|Graphics.HCENTER);
         }
     }
     

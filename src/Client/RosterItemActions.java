@@ -56,7 +56,7 @@ import java.util.Enumeration;
 import javax.microedition.lcdui.Display;
 import locale.SR;
 //#ifdef COLORS
-//# import ui.ColorScheme;
+//# import ui.ColorUtils;
 //#endif
 import ui.Menu;
 import ui.MenuItem;
@@ -479,7 +479,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 //#                 case 912: //send color scheme
 //#                 {
 //#                     String from=StaticData.getInstance().account.toString();
-//#                     String body=ColorScheme.getSkin();
+//#                     String body=ColorUtils.getSkin();
 //#                     String subj="";
 //#                     
 //#                     String id=String.valueOf((int) System.currentTimeMillis());
