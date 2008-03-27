@@ -90,7 +90,64 @@ public class ColorUtils {
 //#         skin=null;
 //#         skinFile=null;
 //#     }
-//#     
+//# /*
+//#      public static void saveSkin(String skinF) {
+//#         skinFile=skinF;
+//#         
+//#         StringBuffer body=new StringBuffer();
+//#         
+//#         body.append("package midlet;\n//#ifdef COLORS\nimport ui.ColorScheme;\n//#endif\npublic class Colors {\n    private static Colors instance;\n    \n    public static Colors getInstance(){\n	if (instance==null) {\n	    instance=new Colors();\n//#ifdef COLORS\n	    ColorScheme.loadFromStorage();\n//#endif\n	}\n	return instance;\n    }\n");
+//#         
+//#         body.append("public static int BALLOON_INK="+loadString("BALLOON_INK")+";\n");
+//#         body.append("public static int BALLOON_BGND="+loadString("BALLOON_BGND")+";\n");
+//#         body.append("public static int LIST_BGND="+loadString("LIST_BGND")+";\n");
+//#         body.append("public static int LIST_BGND_EVEN="+loadString("LIST_BGND_EVEN")+";\n");
+//#         body.append("public static int LIST_INK="+loadString("LIST_INK")+";\n");
+//#         body.append("public static int MSG_SUBJ="+loadString("MSG_SUBJ")+";\n");
+//#         body.append("public static int MSG_HIGHLIGHT="+loadString("MSG_HIGHLIGHT")+";\n");
+//#         body.append("public static int DISCO_CMD="+loadString("DISCO_CMD")+";\n");
+//#         body.append("public static int BAR_BGND="+loadString("BAR_BGND")+";\n");
+//#         body.append("public static int BAR_BGND_BOTTOM="+loadString("BAR_BGND_BOTTOM")+";\n");
+//#         body.append("public static int BAR_INK="+loadString("BAR_INK")+";\n");
+//#         body.append("public static int CONTACT_DEFAULT="+loadString("CONTACT_DEFAULT")+";\n");
+//#         body.append("public static int CONTACT_CHAT="+loadString("CONTACT_CHAT")+";\n");
+//#         body.append("public static int CONTACT_AWAY="+loadString("CONTACT_AWAY")+";\n");
+//#         body.append("public static int CONTACT_XA="+loadString("CONTACT_XA")+";\n");
+//#         body.append("public static int CONTACT_DND="+loadString("CONTACT_DND")+";\n");
+//#         body.append("public static int GROUP_INK="+loadString("GROUP_INK")+";\n");
+//#         body.append("public static int BLK_INK="+loadString("BLK_INK")+";\n");
+//#         body.append("public static int BLK_BGND="+loadString("BLK_BGND")+";\n");
+//#         body.append("public static int MESSAGE_IN="+loadString("MESSAGE_IN")+";\n");
+//#         body.append("public static int MESSAGE_OUT="+loadString("MESSAGE_OUT")+";\n");
+//#         body.append("public static int MESSAGE_PRESENCE="+loadString("MESSAGE_PRESENCE")+";\n");
+//#         body.append("public static int MESSAGE_AUTH="+loadString("MESSAGE_AUTH")+";\n");
+//#         body.append("public static int MESSAGE_HISTORY="+loadString("MESSAGE_HISTORY")+";\n");
+//#         body.append("public static int PGS_REMAINED="+loadString("PGS_REMAINED")+";\n");
+//#         body.append("public static int PGS_COMPLETE="+loadString("PGS_COMPLETE")+";\n");
+//#         body.append("public static int HEAP_TOTAL="+loadString("HEAP_TOTAL")+";\n");
+//#         body.append("public static int HEAP_FREE="+loadString("HEAP_FREE")+";\n");
+//#         body.append("public static int CURSOR_BGND="+loadString("CURSOR_BGND")+";\n");
+//#         body.append("public static int CURSOR_OUTLINE="+loadString("CURSOR_OUTLINE")+";\n");
+//#         body.append("public static int SCROLL_BRD="+loadString("SCROLL_BRD")+";\n");
+//#         body.append("public static int SCROLL_BAR="+loadString("SCROLL_BAR")+";\n");
+//#         body.append("public static int SCROLL_BGND="+loadString("SCROLL_BGND")+";\n");
+//#         body.append("public static int CONTACT_J2J="+loadString("CONTACT_J2J")+";\n");
+//#         
+//#         body.append("}\n");
+//#         
+//#         System.out.println(body.toString());
+//# 
+//#         skin=null;
+//#         skinFile=null;
+//#     }
+//#      
+//#     private static String loadString(String key) {
+//#         if (skin==null) {
+//#             skin=new StringLoader().hashtableLoader(skinFile);
+//#         }
+//#         return (String)skin.get(key);
+//#     }
+//# */
 //#     private static int loadInt(String key, int defaultColor) {
 //#         if (skin==null) {
 //#             //System.out.println(skinFile);
