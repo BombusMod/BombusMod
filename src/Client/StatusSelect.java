@@ -154,15 +154,15 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
             
             tfPriority=new NumberField(SR.MS_PRIORITY, status.getPriority(), -128, 128);
             f.append(tfPriority);
-            
-            tfAutoRespondMessage=new TextFieldEx(SR.MS_AUTORESPOND, status.getAutoRespondMessage(), 100, 0);
-            f.append(tfAutoRespondMessage);
-            
-            autoRespond=new ChoiceGroup(null, ChoiceGroup.MULTIPLE);
-            autoRespond.append(SR.MS_AUTORESPOND, null);
-            autoRespond.setSelectedIndex(0, status.getAutoRespond());
-            f.append(autoRespond);
-            
+            if (status.getImageIndex()<5) {
+                tfAutoRespondMessage=new TextFieldEx(SR.MS_AUTORESPOND, status.getAutoRespondMessage(), 100, 0);
+                f.append(tfAutoRespondMessage);
+
+                autoRespond=new ChoiceGroup(null, ChoiceGroup.MULTIPLE);
+                autoRespond.append(SR.MS_AUTORESPOND, null);
+                autoRespond.setSelectedIndex(0, status.getAutoRespond());
+                f.append(autoRespond);
+            }
             f.addCommand(cmdOk);
             f.addCommand(cmdCancel);
             
@@ -172,17 +172,18 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
         
         public void commandAction(Command c, Displayable d){
             if (c==cmdOk) {
-                boolean flags[]=new boolean[3];
-                
-                autoRespond.getSelectedFlags(flags);
-                
+                if (status.getImageIndex()<5) {
+                    boolean flags[]=new boolean[3];
+
+                    autoRespond.getSelectedFlags(flags);
+                    status.setAutoRespondMessage(tfAutoRespondMessage.getString());
+                    status.setAutoRespond(flags[0]);
+                }
                 status.setMessage(tfMessage.getString());                    
                
 		int priority=tfPriority.getValue();
                 status.setPriority(priority);
                 
-                status.setAutoRespondMessage(tfAutoRespondMessage.getString());
-                status.setAutoRespond(flags[0]);
 
                 save();
             }

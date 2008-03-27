@@ -745,9 +745,16 @@ public class Roster
 //#ifdef AUTOSTATUS
 //#         messageActivity();
 //#endif
+        synchronized(hContacts) {
+            for (Enumeration e=hContacts.elements(); e.hasMoreElements();){
+                Contact c=(Contact)e.nextElement();
+                c.autoresponded=false;
+            }
+        }
         
         setQuerySign(false);
-		
+        
+	
         if (myStatus.getImageIndex()!=Presence.PRESENCE_OFFLINE) {
             oldStatus=myStatus;
         }
