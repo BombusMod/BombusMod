@@ -118,7 +118,7 @@ public abstract class VirtualList
     
     public static final short SE_FLIPOPEN_JP6=-30;
     public static final short SE_FLIPCLOSE_JP6=-31;
-    public static final short SE_GREEN=-5;
+    public static final short SE_GREEN=-10;
     
     public static final short SIEMENS_FLIPOPEN=-24;
     public static final short SIEMENS_FLIPCLOSE=-22;
