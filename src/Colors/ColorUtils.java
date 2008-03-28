@@ -53,7 +53,7 @@ public class ColorUtils {
     
     public static void loadSkin(String skinF, int resourceT){
         skinFile=skinF;
-        resourceT=resourceType;
+        resourceType=resourceT;
         
         try {
             cs.BALLOON_INK=loadInt("BALLOON_INK", cs.BALLOON_INK);
