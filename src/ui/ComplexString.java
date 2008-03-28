@@ -26,10 +26,12 @@
  */
 
 package ui;
+//#if NICK_COLORS || COLORS
+//# import Colors.ColorScheme;
+//#endif
 import java.util.*;
 import javax.microedition.lcdui.*;
 import Colors.Colors;
-//import ui.VirtualElement;
 
 /**
  *
@@ -121,7 +123,8 @@ public class ComplexString extends Vector implements VirtualElement{
 //#                                 if ( (c1&0xff00) != (c2 &0xff00) ) break;
 //#                                 p2++;
 //#                             }
-//#                             g.setColor( (c1>255) ? ColorScheme.strong(color) : color);
+//#                             int vColor=ColorScheme.strong(color);
+//#                             g.setColor( (c1>255) ? vColor : color);
 //#                             dw=font.substringWidth(s, p1, p2-p1);
 //#                             if (ralign) w-=dw;
 //#                             g.drawSubstring( s, p1, p2-p1, 

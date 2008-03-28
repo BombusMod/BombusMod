@@ -35,9 +35,12 @@ package Colors;
 //#endif
 
 public class ColorScheme {
+//#if NICK_COLORS || COLORS
+//#     static Colors instance=Colors.getInstance();
+//#endif
     
 //#if NICK_COLORS
-//#     static int strong(int color) {
+//#     public static int strong(int color) {
 //#         if (color==instance.MESSAGE_IN) {
 //#             return instance.MESSAGE_IN_S;
 //#         } else if (color==instance.MESSAGE_OUT) {
@@ -50,7 +53,7 @@ public class ColorScheme {
 //#endif
 
 //#ifdef COLORS
-//#     static Colors instance=Colors.getInstance();
+//#     
 //#     
 //#     public static void loadFromStorage(){
 //# 	try {
@@ -158,5 +161,6 @@ public class ColorScheme {
 //# 	NvStorage.writeFileRecord(outputStream, "ColorDB", 0, true);
 //#     }
 //#endif
+
 }
 
