@@ -28,7 +28,7 @@
 package ui.controls;
 
 import javax.microedition.lcdui.Graphics;
-import midlet.Colors;
+import Colors.Colors;
 import ui.VirtualList;
 
 /**

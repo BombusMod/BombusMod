@@ -29,7 +29,7 @@ package Client;
 import Messages.MessageParser;
 import images.SmilesIcons;
 import locale.SR;
-import midlet.Colors;
+import Colors.Colors;
 import ui.*;
 import javax.microedition.lcdui.*;
 import java.util.Vector;

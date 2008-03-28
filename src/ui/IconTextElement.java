@@ -30,7 +30,7 @@ import images.MoodIcons;
 import images.RosterIcons;
 import javax.microedition.lcdui.*;
 import java.util.*;
-import midlet.Colors;
+import Colors.Colors;
 
 abstract public class IconTextElement implements VirtualElement 
 {

@@ -38,7 +38,7 @@ import java.io.OutputStream;
 import java.util.Vector;
 import javax.microedition.lcdui.Graphics;
 import locale.SR;
-import midlet.Colors;
+import Colors.Colors;
 import ui.IconTextElement;
 import util.strconv;
 import com.alsutton.jabber.XmppError;

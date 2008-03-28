@@ -34,7 +34,7 @@ import javax.microedition.lcdui.Graphics;
 
 import java.util.Timer;
 import java.util.TimerTask;
-import midlet.Colors;
+import Colors.Colors;
 
 /**
  *

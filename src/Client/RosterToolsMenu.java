@@ -42,7 +42,7 @@ import UserMood.MoodSelect;
 import javax.microedition.lcdui.Display;
 import locale.SR;
 //#ifdef COLORS
-//# import ui.ColorForm;
+//# import Colors.ColorForm;
 //#endif
 import ui.Menu;
 import ui.MenuItem;

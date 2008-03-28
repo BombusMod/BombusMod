@@ -30,7 +30,7 @@ import Client.Config;
 import Client.StaticData;
 import com.alsutton.jabber.JabberDataBlock;
 import images.RosterIcons;
-import midlet.Colors;
+import Colors.Colors;
 import ui.*;
 
 /**

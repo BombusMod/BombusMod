@@ -30,7 +30,7 @@ package ui;
 import javax.microedition.lcdui.*;
 import java.util.*;
 import Client.*;
-import midlet.Colors;
+import Colors.Colors;
 //import locale.SR;
 //#ifdef POPUPS
 //# import ui.controls.PopUp;

@@ -82,11 +82,10 @@ public class eConfigData {
         array.addElement(new keyValue("autoSubscribe", Integer.toString(cf.autoSubscribe)));
         array.addElement(new keyValue("notInListDropLevel", Integer.toString(cf.notInListDropLevel)));
         array.addElement(new keyValue("useBoldFont", (cf.useBoldFont)?"1":"0"));
-        
         array.addElement(new keyValue("notifyWhenMessageType", (cf.notifyWhenMessageType)?"1":"0"));
         array.addElement(new keyValue("ircLikeStatus", (cf.ircLikeStatus)?"1":"0"));
-        
         array.addElement(new keyValue("sndrcvmood", (cf.sndrcvmood)?"1":"0"));
+        array.addElement(new keyValue("scheme", cf.scheme));
         
         new eData(array, path+"config.txt");
         array = null;

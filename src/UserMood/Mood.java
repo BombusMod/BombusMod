@@ -27,7 +27,7 @@ package UserMood;
 
 import images.MoodIcons;
 import locale.SR;
-import midlet.Colors;
+import Colors.Colors;
 import ui.IconTextElement;
 
 public class Mood extends IconTextElement {

@@ -33,7 +33,7 @@ import images.RosterIcons;
 import java.util.*;
 import javax.microedition.lcdui.*;
 import locale.SR;
-import midlet.Colors;
+import Colors.Colors;
 import ui.*;
 import com.alsutton.jabber.*;
 import com.alsutton.jabber.datablocks.*;

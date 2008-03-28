@@ -29,7 +29,7 @@ package Client;
 import com.alsutton.jabber.datablocks.Presence;
 import images.RosterIcons;
 import java.util.*;
-import midlet.Colors;
+import Colors.Colors;
 import ui.*;
 
 

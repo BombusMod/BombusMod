@@ -25,7 +25,7 @@
  *
  */
 
-package ui;
+package Colors;
 //#ifdef COLORS
 //# import io.NvStorage;
 //# import java.io.DataInputStream;

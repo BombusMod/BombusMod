@@ -43,7 +43,7 @@ import UserMood.Mood;
 import UserMood.MoodList;
 
 import images.RosterIcons;
-import midlet.Colors;
+import Colors.Colors;
 import ui.Time;
 import vcard.VCard;
 import java.util.*;

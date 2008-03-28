@@ -29,7 +29,7 @@ package Conference.affiliation;
 
 import com.alsutton.jabber.JabberDataBlock;
 import images.RosterIcons;
-import midlet.Colors;
+import Colors.Colors;
 import ui.IconTextElement;
 
 /**

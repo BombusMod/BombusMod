@@ -28,7 +28,7 @@
 package ui;
 
 import images.RosterIcons;
-import midlet.Colors;
+import Colors.Colors;
 
 /**
  *

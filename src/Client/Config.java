@@ -211,6 +211,8 @@ public class Config {
     
     public boolean sndrcvmood = true;
     
+    public String scheme;
+    
     public static Config getInstance(){
 	if (instance==null) {
 	    instance=new Config();
@@ -383,6 +385,8 @@ public class Config {
             ircLikeStatus = inputStream.readBoolean();
             
             sndrcvmood = inputStream.readBoolean();
+            
+            scheme=inputStream.readUTF();
                     
 	    inputStream.close();
 	} catch (Exception e) {
@@ -419,6 +423,17 @@ public class Config {
         	return (String) files[1].elementAt(i);
         }
         return null; //unknown language ->en
+    }
+    
+    public String schemeFileName(){
+        if (scheme.equals("default")) return null;  //default
+	Vector files[]=new StringLoader().stringLoader("/skins/res.txt", 2);
+        for (int i=0; i<files[0].size(); i++) {
+            String schemeName=(String) files[1].elementAt(i);
+            if (scheme.equals(schemeName))
+        	return (String) files[0].elementAt(i);
+        }
+        return null;
     }
     
     public void saveToStorage(){
@@ -532,6 +547,8 @@ public class Config {
             outputStream.writeBoolean(ircLikeStatus);
             
             outputStream.writeBoolean(sndrcvmood);
+            
+            outputStream.writeUTF(scheme);
             
 	} catch (Exception e) { }
 	

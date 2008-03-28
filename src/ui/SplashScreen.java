@@ -39,7 +39,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import javax.microedition.lcdui.*;
 import midlet.BombusMod;
-import midlet.Colors;
+import Colors.Colors;
 
 /**
  *

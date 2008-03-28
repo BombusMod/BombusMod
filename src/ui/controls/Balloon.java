@@ -29,7 +29,7 @@ package ui.controls;
 
 import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
-import midlet.Colors;
+import Colors.Colors;
 import ui.FontCache;
 
 public class Balloon {

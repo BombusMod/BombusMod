@@ -33,7 +33,7 @@ package Messages;
 import java.io.*;
 import java.util.Vector;
 import javax.microedition.lcdui.Font;
-import midlet.Colors;
+import Colors.Colors;
 
 import ui.*;
 import Client.Msg;

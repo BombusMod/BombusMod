@@ -28,7 +28,7 @@
 package PrivacyLists;
 import images.RosterIcons;
 import locale.SR;
-import midlet.Colors;
+import Colors.Colors;
 import ui.*;
 import com.alsutton.jabber.*;
 import Client.*;

@@ -26,9 +26,8 @@
  */
 
 package Client;
-//#ifdef COLORS 
-//# import java.util.Enumeration;
-//#endif
+import Colors.ColorUtils;
+import java.util.Enumeration;
 import java.util.Vector;
 import javax.microedition.lcdui.*;
 import locale.SR;
@@ -72,12 +71,11 @@ public class ConfigForm implements
 //#     ChoiceGroup autoAwayType;
 //#endif
     Command cmdOk=new Command(SR.MS_OK,Command.OK,1);
+
+    ChoiceGroup SkinFile;
+    private Vector[] Skinfiles;
     
 //#ifdef COLORS
-//#     //private ColorScheme cs=ColorScheme.getInstance();
-//#     
-//#     ChoiceGroup SkinFile;
-//#     private Vector[] Skinfiles;
 //#     Command cmdLoadSkin=new Command(SR.MS_LOAD_SKIN, Command.ITEM,15);
 //#endif
     Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK,99);
@@ -251,6 +249,29 @@ public class ConfigForm implements
         font2.setSelectedIndex(cf.font2/8, true);
 
         f.append(roster);
+        
+        try {
+            String tempScheme=(cf.scheme=="")?"default":cf.scheme;
+           
+            SkinFile=new ChoiceGroup(SR.MS_LOAD_SKIN, ChoiceGroup.POPUP);
+            Skinfiles=new StringLoader().stringLoader("/skins/res.txt",2);
+            for (int i=0; i<Skinfiles[0].size(); i++) {
+                String schemeName = (String)Skinfiles[1].elementAt(i);
+                SkinFile.append(schemeName, null);
+//#ifndef COLORS
+                if (tempScheme.equals(schemeName))
+                    SkinFile.setSelectedIndex(i, true);
+//#endif
+            }
+//#ifdef COLORS
+//#             if (Skinfiles.length>0) {
+//#                 SkinFile.setItemCommandListener(this);
+//#                 SkinFile.addCommand(cmdLoadSkin);
+//#             }
+//#endif 
+            f.append(SkinFile);
+        } catch (Exception e) {}
+        
         f.append(subscr);
         
         f.append(nil);
@@ -324,21 +345,7 @@ public class ConfigForm implements
 //#         f.append(autoAwayType);
 //#         f.append(fieldAwatDelay);
 //#endif
-//#ifdef COLORS
-//#         try {
-//#             SkinFile=new ChoiceGroup(SR.MS_LOAD_SKIN, ChoiceGroup.POPUP);
-//#             Skinfiles=new StringLoader().stringLoader("/skins/res.txt",2);
-//#             for (Enumeration f=Skinfiles[1].elements(); f.hasMoreElements(); ) {
-//#                 SkinFile.append((String)f.nextElement(), null);
-//#             }
-//#             if (Skinfiles.length>0) {
-//#                 SkinFile.setSelectedIndex(0, true);
-//#                 f.append(SkinFile);
-//#                 SkinFile.setItemCommandListener(this);
-//#                 SkinFile.addCommand(cmdLoadSkin);
-//#             }
-//#         } catch (Exception e) {}
-//#endif 
+
         f.addCommand(cmdOk);
         f.addCommand(cmdCancel);       
         f.setCommandListener(this);    
@@ -439,7 +446,15 @@ public class ConfigForm implements
 //#if AUTODELETE
 //#             cf.msglistLimit=MessageCountLimit.getValue();
 //#endif
-            
+
+//#ifndef COLORS
+            String tempScheme=(String) Skinfiles[1].elementAt( SkinFile.getSelectedIndex() );
+            if (!tempScheme.equals(cf.scheme)) {
+                cf.scheme=(String) Skinfiles[1].elementAt( SkinFile.getSelectedIndex() );
+                ColorUtils.loadSkin((String)Skinfiles[0].elementAt(SkinFile.getSelectedIndex()), 1);
+            }            
+//#endif
+
             StaticData.getInstance().roster.setLight(cf.lightState);   
             
             StaticData.getInstance().roster.setFullScreenMode(cf.fullscreen);

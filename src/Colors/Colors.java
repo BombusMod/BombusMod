@@ -1,6 +1,5 @@
-package midlet;
+package Colors;
 //#ifdef COLORS
-//# import ui.ColorScheme;
 //#endif
 public class Colors {
     private static Colors instance;

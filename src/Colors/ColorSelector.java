@@ -23,14 +23,14 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-package ui;
+package Colors;
 
 import io.NvStorage;
 import java.io.DataOutputStream;
 import javax.microedition.lcdui.*;
 import locale.SR;
-import midlet.Colors;
-import ui.ColorScheme;
+import Colors.Colors;
+import ui.*;
 
 public class ColorSelector extends Canvas implements Runnable, CommandListener {
 

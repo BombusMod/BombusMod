@@ -34,6 +34,12 @@ package midlet;
 //# import AutoTasks.AutoTask;
 //#endif
 import Client.Stats;
+//#ifndef COLORS
+import Colors.ColorUtils;
+//#endif
+//#ifdef COLORS
+//# import Colors.Colors;
+//#endif
 import javax.microedition.midlet.*;
 import javax.microedition.lcdui.*;
 
@@ -88,28 +94,36 @@ public class BombusMod extends MIDlet implements Runnable{
     public void pauseApp() { }
 
     public void run(){
+//#ifndef COLORS
+        ColorUtils.loadScheme();
+//#endif
         try {
             Stats.getInstance();
         } catch (Exception e) { }
         
-        s.setProgress(3);
+        s.setProgress(Version.getVersionNumber(),3);
+        
+        try {
+            Stats.getInstance();
+        } catch (Exception e) { }
+        
+        s.setProgress(7);
         
         try {
             s.img=Image.createImage("/images/splash.png");
         } catch (Exception e) {
             s.img=null;
         }
-        
-        Colors cl=Colors.getInstance();
-        s.setProgress(5);
-        
-        s.setProgress(Version.getVersionNumber(),7);
+//#ifdef COLORS
+//#         Colors cl=Colors.getInstance();
+//#         s.setProgress(5);
+//#endif
 
 	Config cf=Config.getInstance();
         s.setProgress(12);
         
 //#ifdef AUTOTASK
-//#         sd.autoTask=new AutoTask(/*"", "", */display);
+//#         sd.autoTask=new AutoTask(display);
 //#         s.setProgress(15);
 //#endif
 

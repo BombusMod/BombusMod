@@ -32,7 +32,7 @@ import images.RosterIcons;
 import java.util.Enumeration;
 import java.util.Vector;
 import javax.microedition.lcdui.Graphics;
-import midlet.Colors;
+import Colors.Colors;
 import ui.ComplexString;
 import ui.FontCache;
 import ui.Time;

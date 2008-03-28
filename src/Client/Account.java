@@ -32,7 +32,7 @@ import images.RosterIcons;
 import java.io.*;
 import javax.microedition.midlet.MIDlet;
 import midlet.BombusMod;
-import midlet.Colors;
+import Colors.Colors;
 import ui.IconTextElement;
 import com.alsutton.jabber.*;
 import io.NvStorage;

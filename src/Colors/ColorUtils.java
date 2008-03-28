@@ -7,22 +7,26 @@
  * and open the template in the editor.
  */
 
-package ui;
+package Colors;
 
 //#ifdef COLORS
 //# import Client.StaticData;
 //# import io.file.FileIO;
 //# import java.io.InputStream;
-//# import java.util.Hashtable;
 //# import io.NvStorage;
 //# import java.io.DataInputStream;
 //# import java.io.DataOutputStream;
 //# import java.io.IOException;
-//# import ui.ColorScheme;
-//# import midlet.Colors;
-//# import util.StringLoader;
+//# import Colors.Colors;
 //# import util.Translit;
 //#endif
+
+//#ifndef COLORS
+import Client.Config;
+//#endif
+
+import util.StringLoader;
+import java.util.Hashtable;
 /**
  *
  * @author ad
@@ -32,64 +36,121 @@ public class ColorUtils {
     /** Creates a new instance of ColorUtils */
     public ColorUtils() { }
     
-//#ifdef COLORS
-//# 
-//#     private static Hashtable skin;
-//#     private static String skinFile;
-//#     private static int resourceType=1;
-//# 
-//#     private static Colors cs=Colors.getInstance();
-//# 
-//#     public static void loadSkin(String skinF, int resourceT){
-//#         skinF=skinFile;
-//#         resourceT=resourceType;
-//#         try {
-//#             cs.BALLOON_INK=loadInt("BALLOON_INK", cs.BALLOON_INK);
-//#             cs.BALLOON_BGND=loadInt("BALLOON_BGND", cs.BALLOON_BGND);
-//#             cs.LIST_BGND=loadInt("LIST_BGND", cs.LIST_BGND);
-//#             cs.LIST_BGND_EVEN=loadInt("LIST_BGND_EVEN", cs.LIST_BGND_EVEN);
-//#             cs.LIST_INK=loadInt("LIST_INK", cs.LIST_INK);
-//#             cs.MSG_SUBJ=loadInt("MSG_SUBJ", cs.MSG_SUBJ);
-//#             cs.MSG_HIGHLIGHT=loadInt("MSG_HIGHLIGHT", cs.MSG_HIGHLIGHT);
-//#             cs.DISCO_CMD=loadInt("DISCO_CMD", cs.DISCO_CMD);
-//#             cs.BAR_BGND=loadInt("BAR_BGND", cs.BAR_BGND);
-//#             cs.BAR_BGND_BOTTOM=loadInt("BAR_BGND_BOTTOM", cs.BAR_BGND_BOTTOM);
-//#             cs.BAR_INK=loadInt("BAR_INK", cs.BAR_INK);
-//#             cs.CONTACT_DEFAULT=loadInt("CONTACT_DEFAULT", cs.CONTACT_DEFAULT);
-//#             cs.CONTACT_CHAT=loadInt("CONTACT_CHAT", cs.CONTACT_CHAT);
-//#             cs.CONTACT_AWAY=loadInt("CONTACT_AWAY", cs.CONTACT_AWAY);
-//#             cs.CONTACT_XA=loadInt("CONTACT_XA", cs.CONTACT_XA);
-//#             cs.CONTACT_DND=loadInt("CONTACT_DND", cs.CONTACT_DND);
-//#             cs.GROUP_INK=loadInt("GROUP_INK", cs.GROUP_INK);
-//#             cs.BLK_INK=loadInt("BLK_INK", cs.BLK_INK);
-//#             cs.BLK_BGND=loadInt("BLK_BGND", cs.BLK_BGND);
-//#             cs.MESSAGE_IN=loadInt("MESSAGE_IN", cs.MESSAGE_IN);
-//#             cs.MESSAGE_OUT=loadInt("MESSAGE_OUT", cs.MESSAGE_OUT);
-//#             cs.MESSAGE_PRESENCE=loadInt("MESSAGE_PRESENCE", cs.MESSAGE_PRESENCE);
+    private static Hashtable skin;
+    private static String skinFile;
+    private static int resourceType=1;
+
+    private static Colors cs=Colors.getInstance();
+//#ifndef COLORS
+    public static void loadScheme() {
+        skinFile = Config.getInstance().schemeFileName();
+        if (skinFile==null)
+            return;
+        
+        loadSkin(skinFile, 1);
+    }
+//#endif
+    
+    public static void loadSkin(String skinF, int resourceT){
+        skinFile=skinF;
+        resourceT=resourceType;
+        
+        try {
+            cs.BALLOON_INK=loadInt("BALLOON_INK", cs.BALLOON_INK);
+            cs.BALLOON_BGND=loadInt("BALLOON_BGND", cs.BALLOON_BGND);
+            cs.LIST_BGND=loadInt("LIST_BGND", cs.LIST_BGND);
+            cs.LIST_BGND_EVEN=loadInt("LIST_BGND_EVEN", cs.LIST_BGND_EVEN);
+            cs.LIST_INK=loadInt("LIST_INK", cs.LIST_INK);
+            cs.MSG_SUBJ=loadInt("MSG_SUBJ", cs.MSG_SUBJ);
+            cs.MSG_HIGHLIGHT=loadInt("MSG_HIGHLIGHT", cs.MSG_HIGHLIGHT);
+            cs.DISCO_CMD=loadInt("DISCO_CMD", cs.DISCO_CMD);
+            cs.BAR_BGND=loadInt("BAR_BGND", cs.BAR_BGND);
+            cs.BAR_BGND_BOTTOM=loadInt("BAR_BGND_BOTTOM", cs.BAR_BGND_BOTTOM);
+            cs.BAR_INK=loadInt("BAR_INK", cs.BAR_INK);
+            cs.CONTACT_DEFAULT=loadInt("CONTACT_DEFAULT", cs.CONTACT_DEFAULT);
+            cs.CONTACT_CHAT=loadInt("CONTACT_CHAT", cs.CONTACT_CHAT);
+            cs.CONTACT_AWAY=loadInt("CONTACT_AWAY", cs.CONTACT_AWAY);
+            cs.CONTACT_XA=loadInt("CONTACT_XA", cs.CONTACT_XA);
+            cs.CONTACT_DND=loadInt("CONTACT_DND", cs.CONTACT_DND);
+            cs.GROUP_INK=loadInt("GROUP_INK", cs.GROUP_INK);
+            cs.BLK_INK=loadInt("BLK_INK", cs.BLK_INK);
+            cs.BLK_BGND=loadInt("BLK_BGND", cs.BLK_BGND);
+            cs.MESSAGE_IN=loadInt("MESSAGE_IN", cs.MESSAGE_IN);
+            cs.MESSAGE_OUT=loadInt("MESSAGE_OUT", cs.MESSAGE_OUT);
+            cs.MESSAGE_PRESENCE=loadInt("MESSAGE_PRESENCE", cs.MESSAGE_PRESENCE);
 //#if NICK_COLORS
 //#             cs.MESSAGE_IN_S=loadInt("MESSAGE_IN_S", cs.MESSAGE_IN_S);
 //#             cs.MESSAGE_OUT_S=loadInt("MESSAGE_OUT_S", cs.MESSAGE_OUT_S);
 //#             cs.MESSAGE_PRESENCE_S=loadInt("MESSAGE_PRESENCE_S", cs.MESSAGE_PRESENCE_S);
 //#endif
-//#             cs.MESSAGE_AUTH=loadInt("MESSAGE_AUTH", cs.MESSAGE_AUTH);
-//#             cs.MESSAGE_HISTORY=loadInt("MESSAGE_HISTORY", cs.MESSAGE_HISTORY);
-//#             cs.PGS_REMAINED=loadInt("PGS_REMAINED", cs.PGS_REMAINED);
-//#             cs.PGS_COMPLETE=loadInt("PGS_COMPLETE", cs.PGS_COMPLETE);
-//#             //cs.PGS_BORDER=loadInt("PGS_BORDER", cs.PGS_BORDER);
-//#             //cs.PGS_BGND=loadInt("PGS_BGND", cs.PGS_BGND);
-//#             cs.HEAP_TOTAL=loadInt("HEAP_TOTAL", cs.HEAP_TOTAL);
-//#             cs.HEAP_FREE=loadInt("HEAP_FREE", cs.HEAP_FREE);
-//#             cs.CURSOR_BGND=loadInt("CURSOR_BGND", cs.CURSOR_BGND);
-//#             cs.CURSOR_OUTLINE=loadInt("CURSOR_OUTLINE", cs.CURSOR_OUTLINE);
-//#             cs.SCROLL_BRD=loadInt("SCROLL_BRD", cs.SCROLL_BRD);
-//#             cs.SCROLL_BAR=loadInt("SCROLL_BAR", cs.SCROLL_BAR);
-//#             cs.SCROLL_BGND=loadInt("SCROLL_BGND", cs.SCROLL_BGND);
-//#             cs.CONTACT_J2J=loadInt("CONTACT_J2J", cs.CONTACT_J2J);
+            cs.MESSAGE_AUTH=loadInt("MESSAGE_AUTH", cs.MESSAGE_AUTH);
+            cs.MESSAGE_HISTORY=loadInt("MESSAGE_HISTORY", cs.MESSAGE_HISTORY);
+            cs.PGS_REMAINED=loadInt("PGS_REMAINED", cs.PGS_REMAINED);
+            cs.PGS_COMPLETE=loadInt("PGS_COMPLETE", cs.PGS_COMPLETE);
+            //cs.PGS_BORDER=loadInt("PGS_BORDER", cs.PGS_BORDER);
+            //cs.PGS_BGND=loadInt("PGS_BGND", cs.PGS_BGND);
+            cs.HEAP_TOTAL=loadInt("HEAP_TOTAL", cs.HEAP_TOTAL);
+            cs.HEAP_FREE=loadInt("HEAP_FREE", cs.HEAP_FREE);
+            cs.CURSOR_BGND=loadInt("CURSOR_BGND", cs.CURSOR_BGND);
+            cs.CURSOR_OUTLINE=loadInt("CURSOR_OUTLINE", cs.CURSOR_OUTLINE);
+            cs.SCROLL_BRD=loadInt("SCROLL_BRD", cs.SCROLL_BRD);
+            cs.SCROLL_BAR=loadInt("SCROLL_BAR", cs.SCROLL_BAR);
+            cs.SCROLL_BGND=loadInt("SCROLL_BGND", cs.SCROLL_BGND);
+            cs.CONTACT_J2J=loadInt("CONTACT_J2J", cs.CONTACT_J2J);
+//#ifdef COLORS
 //#             ColorScheme.saveToStorage();
-//#         } catch (Exception e) { }
-//#         skin=null;
-//#         skinFile=null;
-//#     }
+//#endif
+        } catch (Exception e) { }
+        skin=null;
+        skinFile=null;
+    }
+    
+    private static int loadInt(String key, int defaultColor) {
+        if (skin==null) {
+            switch (resourceType) {
+//#if FILE_IO && COLORS
+//#                 case 0:
+//#                     byte[] b = null;
+//#                     int len=0;
+//#                     try {
+//#                         FileIO f=FileIO.createConnection(skinFile);
+//#                         InputStream is=f.openInputStream();
+//#                         len=(int)f.fileSize();
+//#                         b=new byte[len];
+//# 
+//#                         is.read(b);
+//#                         is.close();
+//#                         f.close();
+//#                     } catch (Exception e) {}
+//#                     if (b!=null) {
+//#                         String str=new String(b, 0, len).toString().trim();
+//#                         skin=new StringLoader().hashtableLoaderFromString(str);
+//#                     } else
+//#                     return defaultColor;
+//#                     break;
+//#endif
+                case 1:
+                    skin=new StringLoader().hashtableLoader(skinFile);
+                    break;
+//#if COLORS
+//#                 case 2:
+//#                     skin=new StringLoader().hashtableLoaderFromString(skinFile);
+//#endif
+            }
+        }
+        try {
+            String value=(String)skin.get(key);
+            return getColorInt(value);
+        } catch (Exception e) {
+            //StaticData.getInstance().roster.errorLog(e.toString());
+            return defaultColor;
+        }
+    }
+    
+    
+//#ifdef COLORS
+//# 
+//# 
 //# /*
 //#      public static void saveSkin(String skinF) {
 //#         skinFile=skinF;
@@ -148,49 +209,6 @@ public class ColorUtils {
 //#         return (String)skin.get(key);
 //#     }
 //# */
-//#     private static int loadInt(String key, int defaultColor) {
-//#         if (skin==null) {
-//#             //System.out.println(skinFile);
-//# 
-//#             switch (resourceType) {
-//#if FILE_IO
-//#                 case 0:
-//#                     byte[] b = null;
-//#                     int len=0;
-//#                     try {
-//#                         FileIO f=FileIO.createConnection(skinFile);
-//#                         InputStream is=f.openInputStream();
-//#                         len=(int)f.fileSize();
-//#                         b=new byte[len];
-//# 
-//#                         is.read(b);
-//#                         is.close();
-//#                         f.close();
-//#                     } catch (Exception e) {}
-//#                     if (b!=null) {
-//#                         String str=new String(b, 0, len).toString().trim();
-//#                         skin=new StringLoader().hashtableLoaderFromString(str);
-//#                     } else
-//#                     return defaultColor;
-//#                     break;
-//#endif
-//#                 case 1:
-//#                     skin=new StringLoader().hashtableLoader(skinFile);
-//#                     break;
-//#                     
-//#                 case 2:
-//#                     skin=new StringLoader().hashtableLoaderFromString(skinFile);
-//#             }
-//#         }
-//#         try {
-//#             String value=(String)skin.get(key);
-//#             return getColorInt(value);
-//#         } catch (Exception e) {
-//#             //StaticData.getInstance().roster.errorLog(e.toString());
-//#             return defaultColor;
-//#         }
-//#     }
-//#     
 //#     public static String getSkin(){
 //#         StringBuffer body=new StringBuffer();
 //#ifdef TRANSLIT
@@ -260,38 +278,37 @@ public class ColorUtils {
 //#       
 //#         return rVal;
 //#     }
-//#     
-//#     public static int getColorInt(int color, int pos) {
-//#         String ncolor = getColorString(color);
-//# 
-//#         switch (pos) {
-//#             case 0:
-//#                 return Integer.parseInt(ncolor.substring(2,4),16);
-//#             case 1:
-//#                 return Integer.parseInt(ncolor.substring(4,6),16);
-//#             case 2:
-//#                 return Integer.parseInt(ncolor.substring(6,8),16);
-//#         }
-//#         return -1;
-//#     }
-//#     
-//#     public static String getColorString(int color) {
-//#         StringBuffer ncolor=new StringBuffer();
-//#         
-//#         ncolor.append("0x");
-//#         
-//#         String col=Integer.toHexString(color);
-//#         
-//#         for (int i=0; i<6-col.length(); i++)
-//#             ncolor.append("0");
-//#         
-//#         ncolor.append(col);
-//# 
-//#         return ncolor.toString();
-//#     }
-//#     
-//#     public static int getColorInt(String color) { // 0x010000 -> 1
-//#         return Integer.parseInt(color.substring(2),16);
-//#     }
 //#endif
+    public static int getColorInt(int color, int pos) {
+        String ncolor = getColorString(color);
+
+        switch (pos) {
+            case 0:
+                return Integer.parseInt(ncolor.substring(2,4),16);
+            case 1:
+                return Integer.parseInt(ncolor.substring(4,6),16);
+            case 2:
+                return Integer.parseInt(ncolor.substring(6,8),16);
+        }
+        return -1;
+    }
+    
+    public static String getColorString(int color) {
+        StringBuffer ncolor=new StringBuffer();
+        
+        ncolor.append("0x");
+        
+        String col=Integer.toHexString(color);
+        
+        for (int i=0; i<6-col.length(); i++)
+            ncolor.append("0");
+        
+        ncolor.append(col);
+
+        return ncolor.toString();
+    }
+    
+    public static int getColorInt(String color) { // 0x010000 -> 1
+        return Integer.parseInt(color.substring(2),16);
+    }
 }

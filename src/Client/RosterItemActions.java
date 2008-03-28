@@ -56,7 +56,7 @@ import java.util.Enumeration;
 import javax.microedition.lcdui.Display;
 import locale.SR;
 //#ifdef COLORS
-//# import ui.ColorUtils;
+//# import Colors.ColorUtils;
 //#endif
 import ui.Menu;
 import ui.MenuItem;

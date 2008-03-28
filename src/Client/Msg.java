@@ -29,7 +29,7 @@ package Client;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import midlet.Colors;
+import Colors.Colors;
 import ui.Time;
 
 /**

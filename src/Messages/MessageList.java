@@ -37,7 +37,7 @@ import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
 //#ifdef COLORS
-//# import ui.ColorUtils;
+//# import Colors.ColorUtils;
 //#endif
 import ui.VirtualElement;
 import ui.VirtualList;

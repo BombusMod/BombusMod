@@ -29,7 +29,7 @@ package Client;
 
 import images.RosterIcons;
 import locale.SR;
-import midlet.Colors;
+import Colors.Colors;
 import ui.*;
 import javax.microedition.lcdui.*;
 import ui.MainBar;

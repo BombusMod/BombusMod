@@ -38,7 +38,7 @@ import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
-import midlet.Colors;
+import Colors.Colors;
 import ui.IconTextElement;
 import ui.VirtualElement;
 import ui.VirtualList;

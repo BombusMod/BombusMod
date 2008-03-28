@@ -28,7 +28,7 @@
 package ui;
 import java.util.*;
 import javax.microedition.lcdui.*;
-import midlet.Colors;
+import Colors.Colors;
 //import ui.VirtualElement;
 
 /**

@@ -109,7 +109,9 @@ public class iConfigData {
         cf.ircLikeStatus=cf.getBooleanProperty(getValue("ircLikeStatus"),false);
         
         cf.sndrcvmood=cf.getBooleanProperty(getValue("sndrcvmood"),true);
-             
+        
+        cf.scheme=cf.getStringProperty(getValue("scheme"),"");
+
         cf.lastProfile=cf.profile=cf.def_profile;
         if (cf.lastProfile==AlertProfile.VIBRA) 
             cf.lastProfile=0;
