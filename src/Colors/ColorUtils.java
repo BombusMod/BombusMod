@@ -46,7 +46,7 @@ public class ColorUtils {
         skinFile = Config.getInstance().schemeFileName();
         if (skinFile==null)
             return;
-        
+
         loadSkin(skinFile, 1);
     }
 //#endif

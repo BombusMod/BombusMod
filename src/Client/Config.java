@@ -211,7 +211,7 @@ public class Config {
     
     public boolean sndrcvmood = true;
     
-    public String scheme;
+    public String scheme = "";
     
     public static Config getInstance(){
 	if (instance==null) {
@@ -426,7 +426,10 @@ public class Config {
     }
     
     public String schemeFileName(){
-        if (scheme.equals("default")) return null;  //default
+        if (scheme=="")
+            return null;
+        if (scheme.equals("default")) 
+            return null;  //default
 	Vector files[]=new StringLoader().stringLoader("/skins/res.txt", 2);
         for (int i=0; i<files[0].size(); i++) {
             String schemeName=(String) files[1].elementAt(i);
