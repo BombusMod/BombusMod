@@ -75,7 +75,8 @@ public class StatusList {
     private void createFromStream(int presenceIndex, String presenceName, DataInputStream dataInputStream) {
 	ExtendedStatus status=new ExtendedStatus(presenceIndex, presenceName, (String) SR.getPresence(presenceName));
         try {
-	    status.setPriority(dataInputStream.readInt());
+            int priority=dataInputStream.readInt();
+	    status.setPriority((priority>128)?128:priority);
             status.setMessage(dataInputStream.readUTF());
             status.setAutoRespond(dataInputStream.readBoolean());
             status.setAutoRespondMessage(dataInputStream.readUTF());
