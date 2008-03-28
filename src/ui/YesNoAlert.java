@@ -33,7 +33,7 @@ import locale.SR;
  *
  * @author Evg_S
  */
-public class YesNoAlert extends Form implements CommandListener{
+public class YesNoAlert implements CommandListener{
     
     public interface YesNoListener {
         public void ActionConfirmed();
@@ -43,25 +43,27 @@ public class YesNoAlert extends Form implements CommandListener{
      private Displayable parentView;
     
     private YesNoListener listener;
+    
+    Form f;
 
     Command cmdYes=new Command(SR.MS_YES, Command.OK, 1);
     Command cmdNo=new Command(SR.MS_NO, Command.BACK, 99);
 	
     /** Creates a new instance of YesNoAlert */
     public YesNoAlert(Display display, String mainbar, String alertText, YesNoListener listener) {
-        super(mainbar);
-        addCommand(cmdYes);
-        addCommand(cmdNo);
-        setCommandListener(this);
+        f=new Form(mainbar);
+        f.addCommand(cmdYes);
+        f.addCommand(cmdNo);
+        f.setCommandListener(this);
 		
-		this.listener=listener;
+	this.listener=listener;
 
-        append("\n");
-        append(alertText);
+        f.append("\n");
+        f.append(alertText);
         
         this.display=display;
         this.parentView=display.getCurrent();
-        display.setCurrent(this);
+        display.setCurrent(f);
         
     }
     public void commandAction(Command c, Displayable d ){
