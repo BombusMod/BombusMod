@@ -159,9 +159,6 @@ public class ConfigForm implements
 //#         message.append(SR.MS_POPUPS, null);
 //#endif
         message.append(SR.MS_SHOW_BALLONS, null);
-//#if ALT_INPUT
-//#         message.append(SR.CLASSIC_CHAT, null);
-//#endif    
         message.append(SR.MS_DELIVERY, null);
 
         boolean messageV[]={
@@ -182,9 +179,6 @@ public class ConfigForm implements
 //#             ,cf.popUps
 //#endif
             ,cf.showBalloons       
-//#if ALT_INPUT
-//#             ,cf.altInput
-//#endif
             ,cf.eventDelivery
         };
         this.mv=messageV;
@@ -398,10 +392,7 @@ public class ConfigForm implements
 //#             cf.popUps=mv[mvctr++];
 //#endif
             VirtualList.showBalloons=cf.showBalloons=mv[mvctr++];
- 
-//#if ALT_INPUT
-//#             cf.altInput=mv[mvctr++];
-//#endif
+
             cf.eventDelivery=mv[mvctr++];
             
 	    cf.autoLogin=su[0];

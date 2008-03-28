@@ -73,7 +73,6 @@ public class iConfigData {
 
         cf.autoAwayDelay=cf.getIntProperty(getValue("autoAwayDelay"),5);
         cf.defGcRoom=cf.getStringProperty(getValue("defGcRoom"),"bombusmod@conference.jabber.ru");
-        cf.altInput=cf.getBooleanProperty(getValue("altInput"),false);
         cf.isbottom=cf.getIntProperty(getValue("isbottom"),2);
         cf.confMessageCount=cf.getIntProperty(getValue("confMessageCount"),20);
         cf.newMenu=cf.getBooleanProperty(getValue("newMenu"),false);

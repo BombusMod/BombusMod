@@ -44,10 +44,6 @@ import util.ClipBoard;
 //# import archive.MessageArchive;
 //#endif
 
-//#ifdef ALT_INPUT
-//# import ui.controls.InputBox;
-//#endif
-
 public class ContactMessageList extends MessageList
 {
     Contact contact;
@@ -81,11 +77,6 @@ public class ContactMessageList extends MessageList
     StaticData sd=StaticData.getInstance();
     
     private Config cf=Config.getInstance();
-    
-//#ifdef ALT_INPUT
-//#     private boolean startMessage=false;
-//#     private String text="";
-//#endif
     
     private boolean composing=true;
 
@@ -398,26 +389,9 @@ public class ContactMessageList extends MessageList
     public void keyGreen(){
         if (!sd.roster.isLoggedIn()) 
             return;
-//#if ALT_INPUT   
-//#         if (cf.altInput) {
-//#             if (!startMessage) {
-//#                     startMessage=true;
-//#                     updateBottom(1);
-//#             } else {
-//#                 text=inputbox.getText();
-//#                 //System.out.println(text);
-//#                 sendMessage();
-//#                 startMessage=false;
-//#                 updateBottom(-10000);
-//#                 redraw();
-//#             }
-//#         } else {
-//#endif
-            (sd.roster.me=new MessageEdit(display,contact,contact.msgSuspended)).setParentView(this);
-            contact.msgSuspended=null;
-//#if ALT_INPUT
-//#         }
-//#endif
+        
+        (sd.roster.me=new MessageEdit(display,contact,contact.msgSuspended)).setParentView(this);
+        contact.msgSuspended=null;
     }
     
     public void keyRepeated(int keyCode) {
@@ -428,67 +402,20 @@ public class ContactMessageList extends MessageList
     }  
     
     public void keyPressed(int keyCode) {
-        if (keyCode==KEY_POUND) {
+        if (keyCode==KEY_POUND || keyCode==-5) {
 //#ifndef WMUC
             if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT) {
                 Reply();
                 return;
             }
 //#endif
-                keyGreen();
+            keyGreen();
             return;
         } else
             super.keyPressed(keyCode);
     }
 
     public void userKeyPressed(int keyCode) {
-//#if ALT_INPUT  
-//#         if (cf.altInput) {
-//#             if (!startMessage) {
-//#                 if (keyCode==KEY_NUM3) new ActiveContacts(display, contact);
-//#                 if (keyCode==keyClear) {
-//#                     if (messages.isEmpty()) return;
-//#                     clearReadedMessageList();
-//#                 }
-//#             } else {
-//#                 switch (keyCode) {
-//#                     case KEY_NUM1:
-//#                         updateBottom(1);
-//#                         break;
-//#                     case KEY_NUM2:
-//#                         updateBottom(2);
-//#                         break;
-//#                     case KEY_NUM3:
-//#                         updateBottom(3);
-//#                         break;
-//#                     case KEY_NUM4:
-//#                         updateBottom(4);
-//#                         break;
-//#                     case KEY_NUM5:
-//#                         updateBottom(5);
-//#                         break;
-//#                     case KEY_NUM6:
-//#                         updateBottom(6);
-//#                         break;
-//#                     case KEY_NUM7:
-//#                         updateBottom(7);
-//#                         break;
-//#                     case KEY_NUM8:
-//#                         updateBottom(8);
-//#                         break;
-//#                     case KEY_NUM9:
-//#                         updateBottom(9);
-//#                         break;
-//#                     case KEY_NUM0:
-//#                         updateBottom(0);
-//#                         break;
-//#                     case KEY_POUND:
-//#                         updateBottom(-1);
-//#                         break;
-//#                 }
-//#             }
-//#         } else {
-//#endif
         switch (keyCode) {
             case KEY_NUM4:
                 if (cf.useTabs)
@@ -540,10 +467,7 @@ public class ContactMessageList extends MessageList
                     clearReadedMessageList();
                 }
                 break;
-            }
-//#if ALT_INPUT  
-//#         }
-//#endif
+        }
     }
     
     public void touchLeftPressed(){
@@ -600,48 +524,6 @@ public class ContactMessageList extends MessageList
             msg=null;
         } catch (Exception e) {/*no messages*/}
     }
-    
-//#ifdef ALT_INPUT
-//#     private void sendMessage(){
-//#         try {
-//#                 String comp=null; // composing event off
-//#                 Roster r=StaticData.getInstance().roster;
-//#                 String id=String.valueOf((int) System.currentTimeMillis());
-//#                 if (text!=null) {
-//#                     String from=StaticData.getInstance().account.toString();
-//#                     
-//#                     if (contact.origin!=Contact.ORIGIN_GROUPCHAT) {
-//#                         Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,null,text);
-//#                         msg.id=id;
-//#                         contact.addMessage(msg);
-//#                         comp="active"; // composing event in message
-//#                     }
-//# 
-//#                 } else if (contact.acceptComposing) comp=(composing)? "composing":"paused";
-//# 
-//#                 if (!cf.eventComposing) comp=null;
-//# 
-//#                 try {
-//#                     if (text!=null || comp!=null)
-//#                     r.sendMessage(contact, id, text, null, comp);
-//#                 } catch (Exception e) { }
-//#         } catch (Exception e) { }
-//#     } 
-//# 
-//#     private void updateBottom(int key){
-//#         if (startMessage) {
-//#              if (inputbox!=null) {
-//#                  inputbox.sendKey(key);
-//#              } else {
-//#                  InputBox inputbox=new InputBox();
-//#                  setInputBoxItem(inputbox);
-//#                  getInputBoxItem().sendKey(key);
-//#              }
-//#         } else {
-//#             setInputBoxItem(null);
-//#         }
-//#     } 
-//#endif
 
 //#if (FILE_IO && HISTORY)
 //#     private void saveMessages() {

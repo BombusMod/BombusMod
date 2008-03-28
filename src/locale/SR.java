@@ -268,7 +268,6 @@ public class SR {
     public static String MS_LOAD_SKIN=loadString("Load Scheme");
     
     public static String MS_SELECT_HISTORY_FOLDER=loadString("Select history folder");
-    public static String CLASSIC_CHAT=loadString("Classic chat");
     public static String MS_NEW_MENU=loadString("show new menu");
     public static String MS_SOUND_VOLUME=loadString("Sound volume");
     public static String MS_LANGUAGE=loadString("Language");

@@ -55,7 +55,6 @@ public class eConfigData {
         array.addElement(new keyValue("cp1251", (cf.cp1251)?"1":"0"));
         array.addElement(new keyValue("autoAwayDelay", Integer.toString(cf.autoAwayDelay)));
         array.addElement(new keyValue("defGcRoom", cf.defGcRoom));
-        array.addElement(new keyValue("altInput", (cf.altInput)?"1":"0"));
         array.addElement(new keyValue("isbottom", Integer.toString(cf.isbottom)));
         array.addElement(new keyValue("confMessageCount", Integer.toString(cf.confMessageCount)));
         array.addElement(new keyValue("newMenu", (cf.newMenu)?"1":"0"));

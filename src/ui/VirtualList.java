@@ -31,7 +31,6 @@ import javax.microedition.lcdui.*;
 import java.util.*;
 import Client.*;
 import Colors.Colors;
-//import locale.SR;
 //#ifdef POPUPS
 //# import ui.controls.PopUp;
 //#endif
@@ -42,9 +41,6 @@ import ui.controls.activeRegions;
 //# import ui.keys.userKeyExec;
 //#endif
 import util.strconv;
-//#if ALT_INPUT
-//# import ui.controls.InputBox;
-//#endif
 
 public abstract class VirtualList         
         extends Canvas 
@@ -190,12 +186,6 @@ public abstract class VirtualList
     
     protected VirtualElement mainbar;
     protected VirtualElement infobar;
-    
- //#if ALT_INPUT   
-//#     protected InputBox inputbox;
-//#     public InputBox getInputBoxItem() { return (InputBox)inputbox; }
-//#     public void setInputBoxItem(InputBox ib) { this.inputbox=ib; }
- //#endif
     
     private boolean wrapping = true;
     
@@ -365,23 +355,14 @@ public abstract class VirtualList
                 }
             }
         }
-
-//#if ALT_INPUT 
-//#         if (inputbox!=null) {
-//#                 list_bottom=inputbox.getHeight();
-//#         } else {
-//#endif
-                if (paintBottom) {
-                    if (reverse) {
-                        if (mainbar!=null) 
-                            list_bottom=mHeight;
-                    } else {
-                        list_bottom=iHeight; 
-                    }
-                }
-//#if ALT_INPUT
-//#         }
-//#endif
+        if (paintBottom) {
+            if (reverse) {
+                if (mainbar!=null) 
+                    list_bottom=mHeight;
+            } else {
+                list_bottom=iHeight; 
+            }
+        }
        
         winHeight=height-itemBorder[0]-list_bottom;
 
@@ -473,28 +454,18 @@ public abstract class VirtualList
                     drawBalloon(g, baloon, text);
             }
         }
-//#if ALT_INPUT
-//#         if (inputbox!=null) {
-//#             if (list_bottom>0)
-//#                 setAbsOrg(g, 0, 0);
-//#                 inputbox.draw(g, width, height);
-//#         } else {
-//#endif
-                if (paintBottom) {
-                    if (reverse) {
-                        setAbsOrg(g, 0, height-mHeight);
-                        drawMainPanel(g);
-                        ar.init(width, height, mHeight);
-                    } else {
-                        setAbsOrg(g, 0, height-iHeight);
-                        drawInfoPanel(g);
-                        ar.init(width, height, iHeight);
-                    }
-                }
-//#if ALT_INPUT
-//#         }
-//#endif
-        
+        if (paintBottom) {
+            if (reverse) {
+                setAbsOrg(g, 0, height-mHeight);
+                drawMainPanel(g);
+                ar.init(width, height, mHeight);
+            } else {
+                setAbsOrg(g, 0, height-iHeight);
+                drawInfoPanel(g);
+                ar.init(width, height, iHeight);
+            }
+        }
+
         setAbsOrg(g, 0, 0);
         g.setClip(0,0, width, height);
 
@@ -730,93 +701,82 @@ public abstract class VirtualList
 //#         }
 //#endif
         
-//#if ALT_INPUT
-//#     if (inputbox==null) {
-//#endif
-            switch (keyCode) {
-                case 0: 
-                    break;
-                case NOKIA_PEN:
-                    if (canBack==true)
-                        destroyView(); 
-                    break;
-                case KEY_NUM1:
-                    moveCursorHome();    
-                    break;
-                case KEY_NUM2:
-                    keyUp();    
-                    break; 
-                case KEY_NUM4:
-                    userKeyPressed(keyCode);
-                    break; 
-                case KEY_NUM6:
-                    userKeyPressed(keyCode);
-                    break;
-                case KEY_NUM7:
-                    moveCursorEnd();     
-                    break;
-                case KEY_NUM8:
-                    keyDwn();    
-                    break; 
-                case NOKIA_GREEN:
-                    if (cf.phoneManufacturer==Config.NOKIA || cf.phoneManufacturer==Config.WTK)
-                        keyGreen();
-                    break;
-                case KEY_STAR:
-                    System.gc();
+    switch (keyCode) {
+        case 0: 
+            break;
+        case NOKIA_PEN:
+            if (canBack==true)
+                destroyView(); 
+            break;
+        case KEY_NUM1:
+            moveCursorHome();    
+            break;
+        case KEY_NUM2:
+            keyUp();    
+            break; 
+        case KEY_NUM4:
+            userKeyPressed(keyCode);
+            break; 
+        case KEY_NUM6:
+            userKeyPressed(keyCode);
+            break;
+        case KEY_NUM7:
+            moveCursorEnd();     
+            break;
+        case KEY_NUM8:
+            keyDwn();    
+            break; 
+        case NOKIA_GREEN:
+            if (cf.phoneManufacturer==Config.NOKIA || cf.phoneManufacturer==Config.WTK)
+                keyGreen();
+            break;
+        case KEY_STAR:
+            System.gc();
 //#ifdef POPUPS
-//#                     setWobble(1, null, "Free: "+(Runtime.getRuntime().freeMemory()>>10)+" kb");
+//#             setWobble(1, null, "Free: "+(Runtime.getRuntime().freeMemory()>>10)+" kb");
 //#endif
-                    break;
+            break;
 //#ifdef POPUPS
-//#                 case KEY_POUND:
-//#                     if (cf.popUps) {
-//#                         try {
-//#                             String text=((VirtualElement)getFocusedObject()).getTipString();
-//#                             if (text!=null) {
-//#                                 setWobble(1, null, text);
-//#                                 //break;
-//#                             }
-//#                         } catch (Exception e) { }
+//#         case KEY_POUND:
+//#             if (cf.popUps) {
+//#                 try {
+//#                     String text=((VirtualElement)getFocusedObject()).getTipString();
+//#                     if (text!=null) {
+//#                         setWobble(1, null, text);
+//#                         //break;
 //#                     }
-//#                     break;
+//#                 } catch (Exception e) { }
+//#             }
+//#             break;
 //#endif
 
+        default:
+            try {
+                switch (getGameAction(keyCode)){
+                    case UP:
+                        keyUp();
+                        break;
+                    case DOWN:
+                        keyDwn();
+                        break;
+                    case LEFT:
+                        pageLeft();
+                        break;
+                    case RIGHT:
+                        pageRight();
+                        break;
+                    case FIRE:
+                        eventOk();
+                        break;
                 default:
-                    try {
-                        switch (getGameAction(keyCode)){
-                            case UP:
-                                keyUp();
-                                break;
-                            case DOWN:
-                                keyDwn();
-                                break;
-                            case LEFT:
-                                pageLeft();
-                                break;
-                            case RIGHT:
-                                pageRight();
-                                break;
-                            case FIRE:
-                                eventOk();
-                                break;
-                        default:
-                            if (keyCode==greenKeyCode) { keyGreen(); break; }
-                            if (keyCode==keyVolDown) { moveCursorEnd(); break; }
-                            if (keyCode=='5') {  eventOk(); break; }
+                    if (keyCode==greenKeyCode) { keyGreen(); break; }
+                    if (keyCode==keyVolDown) { moveCursorEnd(); break; }
+                    if (keyCode=='5') {  eventOk(); break; }
 
-                            userKeyPressed(keyCode);
-                        }
-                    } catch (Exception e) {/* IllegalArgumentException @ getGameAction */}
+                    userKeyPressed(keyCode);
                 }
-//#if ALT_INPUT
-//#         } else {
-//#             if (keyCode==greenKeyCode)
-//#                 keyGreen();
-//#             
-//#             userKeyPressed(keyCode);
-//#         }
-//#endif
+            } catch (Exception e) {/* IllegalArgumentException @ getGameAction */}
+        }
         repaint();
     }
 

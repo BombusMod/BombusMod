@@ -153,8 +153,6 @@ public class Config {
     
     public int confMessageCount=20;
 
-    public boolean altInput=false;
-
     public int isbottom=2; //default state both panels show, reverse disabled
    
     public boolean lightState=false;
@@ -327,7 +325,7 @@ public class Config {
         
             defGcRoom=inputStream.readUTF();
             
-            altInput=inputStream.readBoolean();
+            inputStream.readBoolean();
             
             isbottom=inputStream.readInt();
             
@@ -493,7 +491,7 @@ public class Config {
             
             outputStream.writeUTF(defGcRoom);
             
-            outputStream.writeBoolean(altInput);
+            outputStream.writeBoolean(false);
             
             outputStream.writeInt(isbottom);
             
