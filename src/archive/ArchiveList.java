@@ -195,7 +195,7 @@ public class ArchiveList
 //#endif
         if (c==cmdEdit) {
             try {
-                new archiveEdit(display,getMessage(cursor), where).setParentView(StaticData.getInstance().roster);
+                new archiveEdit(display,getMessage(cursor), where).setParentView(sd.roster);
                 deleteMessage();
             } catch (Exception e) {/*no messages*/}
         }

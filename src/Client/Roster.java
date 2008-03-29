@@ -1065,7 +1065,7 @@ public class Roster
 //#             if (k.jid.getServer().equals(srcTransport) &&
 //#                     (grpType==Groups.TYPE_COMMON || grpType==Groups.TYPE_NO_GROUP || 
 //#                     grpType==Groups.TYPE_VISIBLE || grpType==Groups.TYPE_IGNORE)) {
-//#                 storeContact(k.jid.getFirst()+"@"+dstTransport, k.nick, "", true); //new contact addition
+//#                 storeContact(k.jid.getFirst()+"@"+dstTransport, k.nick, (k.getGroup().getName()!=SR.MS_GENERAL)?(k.getGroup().getName()):"", true); //new contact addition
 //#                 deleteContact(k); //old contact deletion
 //# 	    }
 //# 	}
