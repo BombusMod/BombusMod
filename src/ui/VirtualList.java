@@ -107,8 +107,6 @@ public abstract class VirtualList
     public static final short MOTOE680_VOL_DOWN=-8;
     public static final short MOTOE680_REALPLAYER=-6;
     public static final short MOTOE680_FMRADIO=-7;
-
-    // static final short SE_CLEAR=-8;
     
     public static final short MOTOROLA_FLIP=-200;
     
@@ -134,8 +132,9 @@ public abstract class VirtualList
     public static boolean fullscreen=true;
     public static boolean memMonitor;
     public static boolean showBalloons;
-    public static boolean userKeys;
-
+//#ifdef USER_KEYS
+//#     public static boolean userKeys;
+//#endif
     public static boolean canBack=true;
 
     int width;

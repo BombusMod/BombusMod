@@ -70,12 +70,7 @@ public class iData {
 
    private String loadFile() {
         FileIO f=FileIO.createConnection(file);
-        byte[] b = null;
-        try {
-            InputStream is=f.openInputStream(); 
-            b = new byte[(int) f.fileSize()];
-            is.read(b); is.close(); f.close();
-        } catch (IOException e) { try { f.close(); } catch (IOException ex2) { } }
+        byte[] b = f.fileRead();
         return new String(b, 0, b.length);
     }
 }

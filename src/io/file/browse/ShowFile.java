@@ -69,13 +69,7 @@ public class ShowFile implements CommandListener{
 	private void load(String file) {
             try {
                 FileIO f=FileIO.createConnection(file);
-                InputStream is=f.openInputStream();
-                len=(int)f.fileSize();
-                b=new byte[len];
-
-                is.read(b);
-                is.close();
-                f.close();
+                b = f.fileRead();
             } catch (Exception e) {}
         }
         

@@ -85,6 +85,26 @@ public abstract class FileIO {
         return dir;
     }
     
+    public byte[] fileRead() {
+        InputStream is=null;
+        try { is=openInputStream(); } catch (IOException e) {}
+        int fileSize = 0;
+        try { fileSize =(int)fileSize(); } catch (IOException e) {}
+        byte[] b=new byte[fileSize];
+        try { is.read(b); is.close(); } catch (IOException e) {}
+        try { close(); } catch (IOException e) {}
+        return b;
+    }
+    
+    public void fileWrite(byte[] bytes) {
+        try { delete(); } catch (IOException ex) { }
+        OutputStream os = null;
+        try { os = openOutputStream(0); } catch (IOException ex) { }
+        try { os.write(bytes); } catch (IOException ex) { }
+        try { os.close(); os.flush(); } catch (IOException ex) { }
+        try { close(); } catch (IOException ex) { }
+    }
+    
     public abstract OutputStream openOutputStream() throws IOException;
    
     public abstract InputStream openInputStream() throws IOException;

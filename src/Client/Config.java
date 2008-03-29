@@ -402,7 +402,9 @@ public class Config {
 	VirtualList.isbottom=isbottom;
 	VirtualList.memMonitor=memMonitor;
         VirtualList.showBalloons=showBalloons;
-        VirtualList.userKeys=userKeys;
+//#ifdef USER_KEYS
+//#         VirtualList.userKeys=userKeys;
+//#endif
     }
     
     public String langFileName(){

@@ -35,9 +35,6 @@ import Client.StaticData;
 import io.file.FileIO;
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 //#endif
 
 import images.camera.*;
@@ -86,13 +83,6 @@ public class vCardForm
     private String photoType=null;
     private int st=-1;
 
-//#if FILE_IO    
-    //int fileSize;
-    private int filePos;
-    //String filePath;
-    private FileIO file;
-    private OutputStream os;
-//#endif
     /** Creates a new instance of vCardForm */
     public vCardForm(Display display, VCard vcard, boolean editable) {
         this.display=display;
@@ -217,13 +207,7 @@ public class vCardForm
             if (st==1) {
                 try {
                     FileIO f=FileIO.createConnection(pathSelected);
-                    InputStream is=f.openInputStream();
-                    byte[] b=new byte[(int)f.fileSize()];
-                    //System.out.println(f.fileSize());
-                    is.read(b);
-                    is.close();
-                    f.close();
-                    photo=b;
+                    photo=f.fileRead();
                     vcard.setPhotoType(getPhotoMIMEType());
                     setPhoto();
                 } catch (Exception e) {
@@ -233,26 +217,10 @@ public class vCardForm
             if (st==2 & photo!=null) {
                 //System.out.println(photoType+"->"+getFileType(photoType));
                 String filename = strconv.replaceBadChars(getNickDate());
-                file=FileIO.createConnection(pathSelected+filename+getFileType(getPhotoMIMEType()));
-                try {
-                    os=file.openOutputStream();
-                    writeFile(photo);
-                    os.close();
-                    file.close();
-                } catch (IOException ex) {
-                    try {
-                        file.close();
-                    } catch (IOException ex2) { }
-                }
+                FileIO file=FileIO.createConnection(pathSelected+filename+getFileType(getPhotoMIMEType()));
+                file.fileWrite(photo);
             }
         }
-    }
-    
-    void writeFile(byte b[]){
-        try {
-            os.write(b);
-            filePos+=b.length;
-        } catch (IOException ex) { }
     }
 //#endif
     

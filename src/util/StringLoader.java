@@ -28,7 +28,6 @@ package util;
 //#if FILE_IO
 import Client.Roster;
 import Client.StaticData;
-import io.file.FileIO;
 //#endif
 import java.io.IOException;
 import java.io.InputStream;

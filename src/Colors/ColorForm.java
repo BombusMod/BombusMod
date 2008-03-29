@@ -29,8 +29,6 @@ package Colors;
 import io.file.FileIO;
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
-import java.io.IOException;
-import java.io.OutputStream;
 //#endif
 import javax.microedition.lcdui.*;
 import locale.SR;
@@ -212,11 +210,7 @@ public class ColorForm implements CommandListener
 //#if (FILE_IO)
     Command cmdSaveSkin=new Command(SR.MS_SAVE, Command.ITEM,3); 
     Command cmdLoadSkinFS=new Command(SR.MS_LOAD_SKIN+"FS", Command.ITEM,4);
-    int fileSize;
-    private int filePos;
     String filePath;
-    private FileIO file;
-    private OutputStream os;
 //#endif
     
     private Command cmdCancel=new Command(SR.MS_CLOSE, Command.BACK, 99);
@@ -274,33 +268,10 @@ public class ColorForm implements CommandListener
 
 
 //#if (FILE_IO && COLORS)
-//#     void writeFile(byte b[]){
-//#         try {
-//#             os.write(b);
-//#             filePos+=b.length;
-//#         } catch (IOException ex) {
-//#             //ex.printStackTrace();
-//#         }
-//#     }
-//# 
 //#     public void BrowserFilePathNotify(String pathSelected) {
 //#         if (loadType==0) {
-//#             byte[] bodyMessage=ColorUtils.getSkin().getBytes();
-//# 
-//#             file=FileIO.createConnection(pathSelected+"skin.txt");
-//#             try {
-//#                 os=file.openOutputStream();
-//#                 writeFile(bodyMessage);
-//#                 os.close();
-//#                 file.close();
-//#             } catch (IOException ex) {
-//#                 try {
-//#                     file.close();
-//#                 } catch (IOException ex2) {
-//#                     //ex2.printStackTrace();
-//#                 }
-//#                 //ex.printStackTrace();
-//#             }
+//#             FileIO file=FileIO.createConnection(pathSelected+"skin.txt");
+//#             file.fileWrite(ColorUtils.getSkin().getBytes());
 //#         } else {
 //#             ColorUtils.loadSkin(pathSelected, 0);
 //#         }

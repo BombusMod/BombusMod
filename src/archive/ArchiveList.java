@@ -42,9 +42,6 @@ import io.file.FileIO;
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
 import Client.Config;
-import java.io.InputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import util.strconv;
 //#endif
 import ui.Time;
@@ -86,11 +83,7 @@ public class ArchiveList
     
     private StaticData sd=StaticData.getInstance();
 //#if FILE_IO    
-    int fileSize;
-    private int filePos;
     String filePath;
-    private FileIO file;
-    private OutputStream os;
     
     private int EXPORT=0;
     private int IMPORT=1;
@@ -269,8 +262,9 @@ public class ArchiveList
         Vector vector=new Vector();
         byte[] bodyMessage;
         String archive="";
-        bodyMessage=readFile(arhPath);
-
+        
+        FileIO f=FileIO.createConnection(arhPath);
+        bodyMessage = f.fileRead();
 
         if (bodyMessage!=null) {
             if (cf.cp1251) {
@@ -327,79 +321,42 @@ public class ArchiveList
     
     
     public void exportData(String arhPath) {
-            byte[] bodyMessage;
-            int items=getItemCount();
-            StringBuffer body=new StringBuffer();
+        byte[] bodyMessage;
+        int items=getItemCount();
+        StringBuffer body=new StringBuffer();
 
-            for(int i=0; i<items; i++){
-                Msg m=getMessage(i);
-                body.append(start_item+"\r\n");
-                body.append(start_date);
-                body.append(m.getDayTime());
-                body.append(end_date+"\r\n");
-                body.append(start_from);
-                body.append(m.from);
-                body.append(end_from+"\r\n");
-                body.append(start_subj);
-                if (m.subject!=null) {
-                    body.append(m.subject);
-                }
-                body.append(end_subj+"\r\n");
-                body.append(start_body);
-                body.append(m.getBody());
-                body.append(end_body+"\r\n");
-                body.append(end_item+"\r\n\r\n");
+        for(int i=0; i<items; i++){
+            Msg m=getMessage(i);
+            body.append(start_item+"\r\n");
+            body.append(start_date);
+            body.append(m.getDayTime());
+            body.append(end_date+"\r\n");
+            body.append(start_from);
+            body.append(m.from);
+            body.append(end_from+"\r\n");
+            body.append(start_subj);
+            if (m.subject!=null) {
+                body.append(m.subject);
             }
-            
-            if (cf.cp1251) {
-                bodyMessage=strconv.convUnicodeToCp1251(body.toString()).getBytes();
-            } else {
-                bodyMessage=body.toString().getBytes();
-            }
+            body.append(end_subj+"\r\n");
+            body.append(start_body);
+            body.append(m.getBody());
+            body.append(end_body+"\r\n");
+            body.append(end_item+"\r\n\r\n");
+        }
 
-            file=FileIO.createConnection(arhPath+((where==1)?"archive_":"template_")+getDate()+".txt");
-            try {
-                os=file.openOutputStream();
-                writeFile(bodyMessage);
-                os.close();
-                file.close();
-            } catch (IOException ex) {
-                try {
-                    file.close();
-                } catch (IOException ex2) { }
-            }
-            body=null;
-            arhPath=null;
+        if (cf.cp1251) {
+            bodyMessage=strconv.convUnicodeToCp1251(body.toString()).getBytes();
+        } else {
+            bodyMessage=body.toString().getBytes();
+        }
+
+        FileIO file=FileIO.createConnection(arhPath+((where==1)?"archive_":"template_")+getDate()+".txt");
+        file.fileWrite(bodyMessage);
+
+        body=null;
+        arhPath=null;
 	destroyView();
-    }
-    
-    public byte[] readFile(String arhPath){
-        byte[] b = null;
-        FileIO f=FileIO.createConnection(arhPath);
-        try {
-            InputStream is=f.openInputStream();
-            b=new byte[(int)f.fileSize()];
-
-            is.read(b);
-            is.close();
-            f.close();
-        } catch (Exception e) {
-            try {
-                f.close();
-            } catch (IOException ex2) { }
-        }
-        
-        if (b!=null) {
-            return b;
-        }
-        return null;
-    }
-    
-    void writeFile(byte b[]){
-        try {
-            os.write(b);
-            filePos+=b.length;
-        } catch (IOException ex) { }
     }
     
     public void BrowserFilePathNotify(String pathSelected) {

@@ -110,20 +110,10 @@ public class ColorUtils {
             switch (resourceType) {
 //#if FILE_IO && COLORS
 //#                 case 0:
-//#                     byte[] b = null;
-//#                     int len=0;
-//#                     try {
-//#                         FileIO f=FileIO.createConnection(skinFile);
-//#                         InputStream is=f.openInputStream();
-//#                         len=(int)f.fileSize();
-//#                         b=new byte[len];
-//# 
-//#                         is.read(b);
-//#                         is.close();
-//#                         f.close();
-//#                     } catch (Exception e) {}
+//#                     FileIO f=FileIO.createConnection(skinFile);
+//#                     byte[] b=f.fileRead();
 //#                     if (b!=null) {
-//#                         String str=new String(b, 0, len).toString().trim();
+//#                         String str=new String(b, 0, b.length).toString().trim();
 //#                         skin=new StringLoader().hashtableLoaderFromString(str);
 //#                     } else
 //#                     return defaultColor;

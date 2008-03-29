@@ -11,6 +11,7 @@ package IE;
 
 import Client.AlertProfile;
 import Client.Config;
+import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Vector;
 import ui.VirtualList;
@@ -121,7 +122,9 @@ public class iConfigData {
         VirtualList.fullscreen=cf.fullscreen;
         VirtualList.isbottom=cf.isbottom;
         VirtualList.memMonitor=cf.memMonitor;
-        VirtualList.userKeys=cf.userKeys;
+//#ifdef USER_KEYS
+//#         VirtualList.userKeys=cf.userKeys;
+//#endif
     }
     
     private String getValue(String key) {
