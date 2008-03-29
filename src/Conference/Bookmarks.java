@@ -248,10 +248,11 @@ public class Bookmarks
                 pageLeft(); break;
             case KEY_NUM6:
                 pageRight(); break;
-            case keyClear:
-                new YesNoAlert(display, SR.MS_DELETE_ASK, ((BookmarkItem)getFocusedObject()).getJid(), this);
-                break;
         }
+    }
+    
+    protected void keyClear(){
+        new YesNoAlert(display, SR.MS_DELETE_ASK, ((BookmarkItem)getFocusedObject()).getJid(), this);
     }
     
     public void ActionConfirmed() {

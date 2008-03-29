@@ -2245,6 +2245,32 @@ public class Roster
         //reEnumRoster();
     }
     
+    protected void keyClear(){
+        if (isLoggedIn()) {
+            Contact c=(Contact) getFocusedObject();
+            try { 
+                boolean isContact=( getFocusedObject() instanceof Contact );
+//#ifndef WMUC
+                boolean isMucContact=( getFocusedObject() instanceof MucContact );
+//#else
+//#                 boolean isMucContact=false;
+//#endif
+                if (isContact && !isMucContact) {
+                   yesnoAction=ACTION_DELETE; 
+                   new YesNoAlert(display, SR.MS_DELETE_ASK, c.getNickJid(), this);
+                }
+//#ifndef WMUC
+                else if (isContact && isMucContact) {
+                    ConferenceGroup mucGrp=(ConferenceGroup)c.getGroup();
+                    String myNick=mucGrp.getSelfContact().getName();
+                    MucContact mc=(MucContact) c;
+                    new ConferenceQuickPrivelegeModify(display, mc, ConferenceQuickPrivelegeModify.KICK,myNick);
+                }
+//#endif 
+            } catch (Exception e) { /* NullPointerException */ }
+        }
+    }
+    
     public void touchLeftPressed(){
         new RosterMenu(display, getFocusedObject());
     }
@@ -2350,32 +2376,6 @@ public class Roster
                     // backlight management
                     blState=(blState==1)? Integer.MAX_VALUE : 1;
                     display.flashBacklight(blState);
-                }
-                break;
-            case keyClear:
-                if (isLoggedIn()) {
-                    try { 
-                        boolean isContact=( getFocusedObject() instanceof Contact );
-//#ifndef WMUC
-                        boolean isMucContact=( getFocusedObject() instanceof MucContact );
-//#else
-//#                         boolean isMucContact=false;
-//#endif
-                        if (isContact && !isMucContact) {
-                           c=(Contact) getFocusedObject();
-                           yesnoAction=ACTION_DELETE; 
-                           new YesNoAlert(display, SR.MS_DELETE_ASK, c.getNickJid(), this);
-                        }
-//#ifndef WMUC
-                        else if (isContact && isMucContact) {
-                           c=(Contact) getFocusedObject();
-                           ConferenceGroup mucGrp=(ConferenceGroup)c.getGroup();
-                           String myNick=mucGrp.getSelfContact().getName();
-                           MucContact mc=(MucContact) c;
-                           new ConferenceQuickPrivelegeModify(display, mc, ConferenceQuickPrivelegeModify.KICK,myNick);
-                        }
-//#endif 
-                    } catch (Exception e) { /* NullPointerException */ }
                 }
                 break;
         }

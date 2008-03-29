@@ -394,6 +394,11 @@ public class ContactMessageList extends MessageList
         contact.msgSuspended=null;
     }
     
+    protected void keyClear(){
+        if (!messages.isEmpty())
+            clearReadedMessageList();
+    }
+    
     public void keyRepeated(int keyCode) {
         if (keyCode==KEY_NUM0) 
             clearReadedMessageList();
@@ -402,7 +407,7 @@ public class ContactMessageList extends MessageList
     }  
     
     public void keyPressed(int keyCode) {
-        if (keyCode==KEY_POUND || keyCode==-5) {
+        if (keyCode==KEY_POUND) {
 //#ifndef WMUC
             if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT) {
                 Reply();
@@ -460,11 +465,6 @@ public class ContactMessageList extends MessageList
             case SIEMENS_MPLAYER:
                 if (cf.allowLightControl) { //clear clipboard
                     clipboard.setClipBoard("");
-                }
-                break;
-            case keyClear:
-                if (!messages.isEmpty()) {
-                    clearReadedMessageList();
                 }
                 break;
         }

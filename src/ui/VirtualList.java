@@ -108,7 +108,7 @@ public abstract class VirtualList
     public static final short MOTOE680_REALPLAYER=-6;
     public static final short MOTOE680_FMRADIO=-7;
 
-    public static final short SE_CLEAR=-8;
+    // static final short SE_CLEAR=-8;
     
     public static final short MOTOROLA_FLIP=-200;
     
@@ -127,7 +127,7 @@ public abstract class VirtualList
     
     public int stringHeight=15;
 
-    public static final short keyClear=-8;
+    public static short keyClear=-8;
     public static short keyVolDown=0x1000;
     public static short keyBack=-11;
     public static short greenKeyCode=SIEMENS_GREEN;
@@ -769,6 +769,7 @@ public abstract class VirtualList
                         eventOk();
                         break;
                 default:
+                    if (keyCode==keyClear) { keyClear(); break; }
                     if (keyCode==greenKeyCode) { keyGreen(); break; }
                     if (keyCode==keyVolDown) { moveCursorEnd(); break; }
                     if (keyCode=='5') {  eventOk(); break; }
@@ -909,7 +910,8 @@ public abstract class VirtualList
         } catch (Exception e) { }
         return false;
     }
-
+    
+    protected void keyClear() {}
     protected void keyGreen() { eventOk(); }
     
     protected  void setRotator(){

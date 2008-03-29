@@ -238,7 +238,7 @@ public class Config {
             RosterIcons.getInstance();
             SmilesIcons.getInstance();
             
-			allowMinimize=true;
+	    allowMinimize=true;
             greenKeyCode=VirtualList.SE_GREEN;
             if (phoneManufacturer==SONYE_M600) {
                 KEY_BACK=-11;
@@ -247,7 +247,6 @@ public class Config {
 	    //blFlash=false;
 	    greenKeyCode=VirtualList.NOKIA_GREEN;
 	} else if (phoneManufacturer==MOTOEZX) {
-	    //VirtualList.keyClear=0x1000;
 	    VirtualList.keyVolDown=VirtualList.MOTOE680_VOL_DOWN;
 	    KEY_BACK=VirtualList.MOTOE680_REALPLAYER;
 	} else if (phoneManufacturer==MOTO) {
@@ -255,7 +254,6 @@ public class Config {
 	    //blFlash=false;
             istreamWaiting=true;
 	    greenKeyCode=VirtualList.MOTOROLA_GREEN;
-	    //VirtualList.keyClear=0x1000;
 	} else if (phoneManufacturer==SIEMENS || phoneManufacturer==SIEMENS2) {
             keyLock='#';
             keyVibra='*';
@@ -265,7 +263,10 @@ public class Config {
             greenKeyCode=VirtualList.SIEMENS_GREEN;
         } else if (phoneManufacturer==WTK) {
 	    greenKeyCode=VirtualList.NOKIA_GREEN;
-	}
+	} else if (phoneManufacturer==WINDOWS) {
+            greenKeyCode=-5;
+            VirtualList.keyClear=8;
+        }
         
 	VirtualList.greenKeyCode=greenKeyCode;
        
