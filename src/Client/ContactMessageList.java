@@ -444,7 +444,7 @@ public class ContactMessageList extends MessageList
         
             case SIEMENS_VOLUP:
             case SIEMENS_CAMERA:
-                 if (cf.allowLightControl) { //copy&copy+
+                 if (cf.phoneManufacturer==Config.SIEMENS || cf.phoneManufacturer==Config.SIEMENS2) { //copy&copy+
                     if (messages.isEmpty()) 
                         return;
                     try {
@@ -463,7 +463,7 @@ public class ContactMessageList extends MessageList
                  break;
             case SIEMENS_VOLDOWN:
             case SIEMENS_MPLAYER:
-                if (cf.allowLightControl) { //clear clipboard
+                if (cf.phoneManufacturer==Config.SIEMENS || cf.phoneManufacturer==Config.SIEMENS2) { //clear clipboard
                     clipboard.setClipBoard("");
                 }
                 break;

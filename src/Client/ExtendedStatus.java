@@ -41,7 +41,7 @@ public class ExtendedStatus extends IconTextElement{
     private String status="";
     private int priority;
     int index;
-    private String screenName;
+    private String screenName="";
     private boolean autoRespond;
     private String autoRespondMessage = "";
     
@@ -86,8 +86,8 @@ public class ExtendedStatus extends IconTextElement{
     
     
 //#ifdef SECONDSTRING
-//#         public String getSecondString() { 
-//#         return status;
+//#     public String getSecondString() { 
+//#         return status.trim();
 //#     }
 //#endif
 

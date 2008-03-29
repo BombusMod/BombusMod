@@ -52,16 +52,13 @@ public class AutoStatusTask implements Runnable {
         while (!stop) {
             try {
                 Thread.sleep(5000);
-            } catch (InterruptedException ex) {
-                stop=true;
-            }
-       
+            } catch (InterruptedException ex) { stop=true; }
             if (timeAwayEvent==0 && timeXaEvent==0)
                 continue;
             
             long timeAwayRemained=(timeAwayEvent!=0)?System.currentTimeMillis()-timeAwayEvent:0;
             long timeXaRemained=(timeXaEvent!=0)?System.currentTimeMillis()-timeXaEvent:0;
-            
+
             if (timeAwayRemained>0 && timeAwayEvent!=0) {
                 timeAwayEvent=0;
 //#ifdef AUTOSTATUS

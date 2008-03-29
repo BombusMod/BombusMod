@@ -137,7 +137,6 @@ public class Config {
 	
     // runtime values
     public boolean allowMinimize=false;
-    public boolean allowLightControl=false;
     
     public int profile=0;
     public int lastProfile=0;
@@ -244,21 +243,17 @@ public class Config {
                 KEY_BACK=-11;
             }
 	} else if (phoneManufacturer==NOKIA) {
-	    //blFlash=false;
 	    greenKeyCode=VirtualList.NOKIA_GREEN;
 	} else if (phoneManufacturer==MOTOEZX) {
 	    VirtualList.keyVolDown=VirtualList.MOTOE680_VOL_DOWN;
 	    KEY_BACK=VirtualList.MOTOE680_REALPLAYER;
 	} else if (phoneManufacturer==MOTO) {
 	    ghostMotor=true;
-	    //blFlash=false;
             istreamWaiting=true;
 	    greenKeyCode=VirtualList.MOTOROLA_GREEN;
 	} else if (phoneManufacturer==SIEMENS || phoneManufacturer==SIEMENS2) {
             keyLock='#';
             keyVibra='*';
-            allowLightControl=true;
-            //blFlash=true;
             KEY_BACK=-4; //keyCode==702
             greenKeyCode=VirtualList.SIEMENS_GREEN;
         } else if (phoneManufacturer==WTK) {
