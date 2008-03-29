@@ -76,7 +76,9 @@ public class eConfigData {
         array.addElement(new keyValue("showBalloons", (cf.showBalloons)?"1":"0"));
         array.addElement(new keyValue("notifyPicture", (cf.notifyPicture)?"1":"0"));
         array.addElement(new keyValue("userKeys", (cf.userKeys)?"1":"0"));
-        array.addElement(new keyValue("msglistLimit", Integer.toString(cf.msglistLimit)));
+//#if AUTODELETE
+//#         array.addElement(new keyValue("msglistLimit", Integer.toString(cf.msglistLimit)));
+//#endif
         array.addElement(new keyValue("useTabs", (cf.useTabs)?"1":"0"));  
         array.addElement(new keyValue("autoSubscribe", Integer.toString(cf.autoSubscribe)));
         array.addElement(new keyValue("notInListDropLevel", Integer.toString(cf.notInListDropLevel)));

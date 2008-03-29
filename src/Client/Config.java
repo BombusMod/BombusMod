@@ -106,108 +106,69 @@ public class Config {
     public boolean showOfflineContacts=false;
     public boolean showTransports=true;
     public boolean selfContact=false;
-    //public boolean notInList=true;
     public boolean ignore=false;
     public boolean eventComposing=true;
-    
     public boolean storeConfPresence=true;      
-    
     public boolean autoLogin=true;
     public boolean autoJoinConferences=true;
-    
     public boolean autoFocus=false;
-    
     public int loginstatus=0;//loginstatus
-    
     public int gmtOffset;
     public int locOffset;
-    
     public boolean popupFromMinimized=true;
     public boolean memMonitor=true;
     public boolean newMenu=false;
-    
     public int font1=0;
     public int font2=0;
     public int font3=0;
-
     public String lang;  //not detected (en)
     public boolean capsState=false;
     public int textWrap=0;
     public int autoSubscribe=SUBSCR_ASK;
-	
+
     // runtime values
     public boolean allowMinimize=false;
-    
     public int profile=0;
     public int lastProfile=0;
-    
     public boolean istreamWaiting;
+    public int phoneManufacturer=NOT_DETECTED;
 
     // Singleton
     private static Config instance;
 
     public int autoAwayType=0;
     public int autoAwayDelay=5; //5 minutes
-    public boolean setAutoStatusMessage=false;
-    
+    public boolean setAutoStatusMessage=true;
     public int confMessageCount=20;
-
     public int isbottom=2; //default state both panels show, reverse disabled
-   
     public boolean lightState=false;
-    
     public boolean lastMessages=false;
-
     public boolean autoScroll=true;
-
     public boolean popUps=true;
-
     public boolean showResources=true;
-    
     public boolean antispam=false;
-    
     public boolean enableVersionOs=true;
-    
     public boolean collapsedGroups=true;
-    
     public int messageLimit=512;
-    
     public boolean eventDelivery=false;
-    
     public boolean transliterateFilenames=false;
-    
-    public boolean rosterStatus=true;
-    
+    public boolean rosterStatus=false;
     public boolean userMoods=true;
-
     public boolean queryExit = false;
-    
     public int notInListDropLevel=NotInListFilter.ALLOW_ALL; //enable all
-    
     public boolean showBalloons = true;
-    
     public boolean userKeys = false;
-
-    public int msglistLimit=100;
-    
+//#if AUTODELETE
+//#     public int msglistLimit=100;
+//#endif
     public boolean useTabs=true;
-    
-    public int phoneManufacturer=NOT_DETECTED;
-
     public boolean notifyBlink=true;
-
     public boolean notifySound=false;
-
     public boolean notifyPicture=false;
-
     public boolean useBoldFont=false;
-    
     public boolean notifyWhenMessageType = false;
-    
     public boolean ircLikeStatus = false;
-    
     public boolean sndrcvmood = true;
-    
     public String scheme = "";
     
     public static Config getInstance(){
@@ -338,7 +299,11 @@ public class Config {
             notifyPicture=inputStream.readBoolean();
             showBalloons=inputStream.readBoolean();
             userKeys=inputStream.readBoolean();
-            msglistLimit=inputStream.readInt();
+//#if AUTODELETE
+//#             msglistLimit=inputStream.readInt();
+//#else
+            inputStream.readInt();
+//#endif
             useTabs=inputStream.readBoolean();
             autoSubscribe=inputStream.readInt();
             useBoldFont=inputStream.readBoolean();
@@ -359,7 +324,6 @@ public class Config {
         if (lastProfile==AlertProfile.VIBRA) lastProfile=0;
 	updateTime();
 	VirtualList.fullscreen=fullscreen;
-	VirtualList.isbottom=isbottom;
 	VirtualList.memMonitor=memMonitor;
         VirtualList.showBalloons=showBalloons;
 //#ifdef USER_KEYS
@@ -463,7 +427,11 @@ public class Config {
             outputStream.writeBoolean(notifyPicture);
             outputStream.writeBoolean(showBalloons);
             outputStream.writeBoolean(userKeys);
-            outputStream.writeInt(msglistLimit);
+//#if AUTODELETE
+//#             outputStream.writeInt(msglistLimit);
+//#else
+            outputStream.writeInt(0);
+//#endif
             outputStream.writeBoolean(useTabs);
             outputStream.writeInt(autoSubscribe);
             outputStream.writeBoolean(useBoldFont);

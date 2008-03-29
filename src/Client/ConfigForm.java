@@ -348,8 +348,6 @@ public class ConfigForm implements
     
     public void commandAction(Command c, Displayable d) {
         if (c==cmdOk) {
-            VirtualList.isbottom=cf.isbottom;
-            
             roster.getSelectedFlags(ra);
             message.getSelectedFlags(mv);
             application.getSelectedFlags(ap);

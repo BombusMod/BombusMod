@@ -35,43 +35,29 @@ public class iConfigData {
         cf.smiles=cf.getBooleanProperty(getValue("smiles"),true);
         cf.showTransports=cf.getBooleanProperty(getValue("showTransports"),true);
         cf.selfContact=cf.getBooleanProperty(getValue("selfContact"),false);
-
         cf.ignore=cf.getBooleanProperty(getValue("ignore"),false);
         cf.collapsedGroups=cf.getBooleanProperty(getValue("collapsedGroups"),false);
         cf.eventComposing=cf.getBooleanProperty(getValue("eventComposing"),true);
-
         cf.gmtOffset=cf.getIntProperty(getValue("gmtOffset"),0);
         cf.locOffset=cf.getIntProperty(getValue("locOffset"),0);
-
         cf.autoLogin=cf.getBooleanProperty(getValue("autoLogin"),true);
         cf.autoJoinConferences=cf.getBooleanProperty(getValue("autoJoinConferences"),true);
-
         cf.popupFromMinimized=cf.getBooleanProperty(getValue("popupFromMinimized"),true);
-
         cf.memMonitor=cf.getBooleanProperty(getValue("memMonitor"),true);
-
         cf.font1=cf.getIntProperty(getValue("font1"),0);
         cf.font2=cf.getIntProperty(getValue("font2"),0);
-
         cf.autoFocus=cf.getBooleanProperty(getValue("autoFocus"),false);
-
         cf.lang=cf.getStringProperty(getValue("lang"),"en");
-
         cf.storeConfPresence=cf.getBooleanProperty(getValue("storeConfPresence"),true);
-
         cf.capsState=cf.getBooleanProperty(getValue("capsState"),true);
-
         cf.textWrap=cf.getIntProperty(getValue("textWrap"),0);
-
         cf.loginstatus=cf.getIntProperty(getValue("loginstatus"),0);
-
         cf.msgPath=cf.getStringProperty(getValue("msgPath"),"");
         cf.msgLog=cf.getBooleanProperty(getValue("msgLog"),false);
         cf.msgLogPresence=cf.getBooleanProperty(getValue("msgLogPresence"),false);
         cf.msgLogConfPresence=cf.getBooleanProperty(getValue("msgLogConfPresence"),false);
         cf.msgLogConf=cf.getBooleanProperty(getValue("msgLogConf"),false);
         cf.cp1251=cf.getBooleanProperty(getValue("cp1251"),true);
-
         cf.autoAwayDelay=cf.getIntProperty(getValue("autoAwayDelay"),5);
         cf.defGcRoom=cf.getStringProperty(getValue("defGcRoom"),"bombusmod@conference.jabber.ru");
         cf.isbottom=cf.getIntProperty(getValue("isbottom"),2);
@@ -91,27 +77,19 @@ public class iConfigData {
         cf.transliterateFilenames=cf.getBooleanProperty(getValue("transliterateFilenames"),false);
         cf.rosterStatus=cf.getBooleanProperty(getValue("rosterStatus"),true);
         cf.queryExit=cf.getBooleanProperty(getValue("queryExit"),false);
-
         VirtualList.showBalloons=cf.showBalloons=cf.getBooleanProperty(getValue("showBalloons"),false);
-
         cf.userKeys=cf.getBooleanProperty(getValue("userKeys"),false);
-        cf.msglistLimit=cf.getIntProperty(getValue("msglistLimit"),100);
-
+//#if AUTODELETE
+//#         cf.msglistLimit=cf.getIntProperty(getValue("msglistLimit"),100);
+//#endif
         cf.useTabs=cf.getBooleanProperty(getValue("useTabs"),true);
-
         cf.autoSubscribe=cf.getIntProperty(getValue("autoSubscribe"), cf.SUBSCR_ASK);
         cf.notInListDropLevel=cf.getIntProperty(getValue("notInListDropLevel"), cf.SUBSCR_ASK);
-           
         cf.useBoldFont=cf.getBooleanProperty(getValue("useBoldFont"),false);
-        
         cf.notifyWhenMessageType=cf.getBooleanProperty(getValue("notifyWhenMessageType"),false);
-        
         cf.ircLikeStatus=cf.getBooleanProperty(getValue("ircLikeStatus"),false);
-        
         cf.sndrcvmood=cf.getBooleanProperty(getValue("sndrcvmood"),true);
-        
         cf.scheme=cf.getStringProperty(getValue("scheme"),"");
-
         cf.lastProfile=cf.profile=cf.def_profile;
         if (cf.lastProfile==AlertProfile.VIBRA) 
             cf.lastProfile=0;
@@ -120,7 +98,6 @@ public class iConfigData {
         cf.saveToStorage();
 
         VirtualList.fullscreen=cf.fullscreen;
-        VirtualList.isbottom=cf.isbottom;
         VirtualList.memMonitor=cf.memMonitor;
 //#ifdef USER_KEYS
 //#         VirtualList.userKeys=cf.userKeys;

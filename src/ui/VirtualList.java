@@ -57,8 +57,20 @@ public abstract class VirtualList
     private StaticData sd=StaticData.getInstance();
 
     private boolean reverse=false;
-
-    public static int isbottom=2; //default state both panels show, reverse disabled
+    private boolean paintTop=true;
+    private boolean paintBottom=true;
+    
+    public void changeOrient() {
+        switch (cf.isbottom) {
+            case 0: paintTop=false; paintBottom=false; reverse=false; break;
+            case 1: paintTop=true;  paintBottom=false; reverse=false; break;
+            case 2: paintTop=true;  paintBottom=true;  reverse=false; break;
+            case 3: paintTop=false; paintBottom=true;  reverse=false; break;
+            case 4: paintTop=true;  paintBottom=false; reverse=true;  break;
+            case 5: paintTop=true;  paintBottom=true;  reverse=true;  break;
+            case 6: paintTop=false; paintBottom=true;  reverse=true;  break;
+        }
+    }
     
 //#ifdef USER_KEYS
 //#     private static final int USER_OTHER_KEY_PRESSED = 1;
@@ -127,6 +139,7 @@ public abstract class VirtualList
     public static short keyVolDown=0x1000;
     public static short keyBack=-11;
     public static short greenKeyCode=SIEMENS_GREEN;
+    
     public static boolean fullscreen=true;
     public static boolean memMonitor;
     public static boolean showBalloons;
@@ -186,7 +199,7 @@ public abstract class VirtualList
     
     private boolean wrapping = true;
     
-    public static int fullMode; 
+    //public static int fullMode; 
 
     public static int startGPRS=-1;
     public static int offGPRS=0;
@@ -228,10 +241,12 @@ public abstract class VirtualList
     public VirtualList() {
         width=getWidth();
         height=getHeight();
-        
+ 
         if (cf.phoneManufacturer==Config.WINDOWS) {
             setTitle("Bombus CE");
         }
+        
+        changeOrient();
 
         setFullScreenMode(fullscreen);
 
@@ -251,7 +266,6 @@ public abstract class VirtualList
     public VirtualList(Display display) {
         this();
         attachDisplay(display);
-
     }
 
     public void attachDisplay (Display display) {
@@ -264,9 +278,7 @@ public abstract class VirtualList
 
     public void redraw(){
         Displayable d=display.getCurrent();
-        //System.out.println(d.toString());
         if (d instanceof Canvas) {
-            //((Canvas)d).serviceRepaints();
             ((Canvas)d).repaint();
         }
     }
@@ -300,9 +312,6 @@ public abstract class VirtualList
         width=getWidth();	// patch for SE
         height=getHeight();
         
-        boolean paintTop=true;
-        boolean paintBottom=true;
-        
         int mHeight=0, iHeight=0; // nokia fix
         
         Graphics g = graphics;       
@@ -310,17 +319,6 @@ public abstract class VirtualList
         if (offscreen != null)
             graphics = offscreen.getGraphics();
 //#endif
-        
-        switch (isbottom) {
-            case 0: paintTop=false; paintBottom=false; reverse=false; break;
-            case 1: paintTop=true;  paintBottom=false; reverse=false; break;
-            case 2: paintTop=true;  paintBottom=true;  reverse=false; break;
-            case 3: paintTop=false; paintBottom=true;  reverse=false; break;
-            case 4: paintTop=true;  paintBottom=false; reverse=true;  break;
-            case 5: paintTop=true;  paintBottom=true;  reverse=true;  break;
-            case 6: paintTop=false; paintBottom=true;  reverse=true;  break;
-        }
-        //paintTop=true;  paintBottom=true;  reverse=true;
 
         beginPaint();
 
@@ -339,7 +337,6 @@ public abstract class VirtualList
         
         if (paintTop) {
             if (reverse) {
-                //setInfoBar();
                 if (infobar!=null) {
                     iHeight=infobar.getVHeight();
                     itemBorder[0]=iHeight;
@@ -474,9 +471,6 @@ public abstract class VirtualList
         if (g != graphics)
             g.drawImage(offscreen, 0, 0, Graphics.LEFT | Graphics.TOP);
 //#endif
-	//if (offscreen!=null) graphics.drawImage(offscreen, 0,0, Graphics.TOP | Graphics.LEFT );
-
-        //g.drawRGB(RotateImage.img(g.),0,0,0,0,width,height,true);
     }
     
 //#ifdef POPUPS
@@ -510,7 +504,7 @@ public abstract class VirtualList
             g.fillRect(0, h/2, width, h/2);
 
             g.setColor(getMainBarRGB());
-            getInfoBarItem().drawItem(g,0,false);
+            infobar.drawItem(g,0,false);
         }
     }
 
@@ -677,11 +671,9 @@ public abstract class VirtualList
 //#         popup.next();
 //#endif
         if (keyCode==Config.SOFT_RIGHT || keyCode==Config.KEY_BACK) {
-            if (cf.phoneManufacturer!=Config.SONYE || cf.phoneManufacturer==Config.SIEMENS || cf.phoneManufacturer==Config.SIEMENS2 || cf.phoneManufacturer==Config.MOTO) {
-                if (canBack==true)
-                    destroyView();
-                return;
-            }
+            if (canBack==true)
+                destroyView();
+            return;
          }
 //#ifdef USER_KEYS
 //#         if (userKeys) {
@@ -711,6 +703,7 @@ public abstract class VirtualList
             userKeyPressed(keyCode);
             break; 
         case KEY_NUM6:
+            changeOrient();
             userKeyPressed(keyCode);
             break;
         case KEY_NUM7:
@@ -1009,7 +1002,6 @@ public abstract class VirtualList
 //#         return "";
 //#     }
 //#endif 
-   
 }
 
 //#if (USE_ROTATOR)    

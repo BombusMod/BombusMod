@@ -2421,8 +2421,7 @@ public class Roster
        	else if (keyCode==KEY_NUM3) new ActiveContacts(display, null);
        	else if (keyCode==KEY_NUM4) new ConfigForm(display);
         else if (keyCode==KEY_NUM6) {
-            fullMode=VirtualList.isbottom;
-            cf.isbottom=VirtualList.isbottom=(fullMode+1)%7;
+            cf.isbottom=(cf.isbottom+1)%7;
             cf.saveToStorage();
         } else if (keyCode==KEY_NUM7){
             new RosterToolsMenu(display);
@@ -2470,11 +2469,12 @@ public class Roster
     
 //#ifdef POPUPS
 //#     public void showInfo() {
-//#         VirtualList.popup.next();
-//#         if (getFocusedObject() instanceof Group || getFocusedObject() instanceof ConferenceGroup)
-//#             return;
-//#         
-//#         setWobbler(1, (Contact) null, null);
+//#         try {
+//#             VirtualList.popup.next();
+//#             if (getFocusedObject() instanceof Group || getFocusedObject() instanceof ConferenceGroup)
+//#                 return;
+//#             setWobbler(1, (Contact) null, null);
+//#         } catch (Exception e) { }
 //#     }
 //# 
 //#     public void setWobbler(int type, Contact contact, String info) {
