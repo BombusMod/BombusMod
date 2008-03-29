@@ -231,43 +231,50 @@ public class Config {
 	gmtOffset=gmtloc;
 	
 	short greenKeyCode=-1000;
-                
-	if (phoneManufacturer==SONYE) {
-            //prefetch images
-            RosterIcons.getInstance();
-            SmilesIcons.getInstance();
-            
-	    allowMinimize=true;
-            greenKeyCode=VirtualList.SE_GREEN;
-            if (phoneManufacturer==SONYE_M600) {
-                KEY_BACK=-11;
-            }
-	} else if (phoneManufacturer==NOKIA) {
-	    greenKeyCode=VirtualList.NOKIA_GREEN;
-	} else if (phoneManufacturer==MOTOEZX) {
-	    VirtualList.keyVolDown=VirtualList.MOTOE680_VOL_DOWN;
-	    KEY_BACK=VirtualList.MOTOE680_REALPLAYER;
-	} else if (phoneManufacturer==MOTO) {
-	    ghostMotor=true;
-            istreamWaiting=true;
-	    greenKeyCode=VirtualList.MOTOROLA_GREEN;
-	} else if (phoneManufacturer==SIEMENS || phoneManufacturer==SIEMENS2) {
-            keyLock='#';
-            keyVibra='*';
-            KEY_BACK=-4; //keyCode==702
-            greenKeyCode=VirtualList.SIEMENS_GREEN;
-        } else if (phoneManufacturer==WTK) {
-	    greenKeyCode=VirtualList.NOKIA_GREEN;
-	} else if (phoneManufacturer==WINDOWS) {
-            greenKeyCode=-5;
-            VirtualList.keyClear=8;
-        }
         
-	VirtualList.greenKeyCode=greenKeyCode;
-       
-        if (phoneManufacturer==XENIUM99) {
-            istreamWaiting=false; //is it critical for phillips xenium?
+        switch (phoneManufacturer) {
+            case SONYE:
+                //prefetch images
+                RosterIcons.getInstance();
+                SmilesIcons.getInstance();
+
+                allowMinimize=true;
+                greenKeyCode=-10;
+                KEY_BACK=-25;
+                break;
+            case SONYE_M600:
+                KEY_BACK=-11;
+                break;
+            case WTK:
+            case NOKIA:
+                KEY_BACK=VirtualList.NOKIA_PEN;
+                greenKeyCode=-10;
+                break;
+            case SIEMENS:
+            case SIEMENS2:
+                keyLock='#';
+                keyVibra='*';
+                KEY_BACK=-4;
+                greenKeyCode=VirtualList.SIEMENS_GREEN;
+                break;
+            case WINDOWS:
+                greenKeyCode=-5;
+                VirtualList.keyClear=8;
+                break;
+            case MOTO:
+                ghostMotor=true;
+                istreamWaiting=true;
+                greenKeyCode=-10;
+                break;
+            case MOTOEZX:
+                VirtualList.keyVolDown=VirtualList.MOTOE680_VOL_DOWN;
+                KEY_BACK=VirtualList.MOTOE680_REALPLAYER;
+                break;  
+            case XENIUM99:
+                istreamWaiting=false; //is it critical for phillips xenium?
+                break;
         }
+	VirtualList.greenKeyCode=greenKeyCode;
     }
     
     protected void loadFromStorage(){
@@ -283,103 +290,61 @@ public class Config {
 	    collapsedGroups=inputStream.readBoolean();
 	    ignore=inputStream.readBoolean();
 	    eventComposing=inputStream.readBoolean();
-	    
 	    gmtOffset=inputStream.readInt();
 	    locOffset=inputStream.readInt();
-	    
 	    autoLogin=inputStream.readBoolean();
 	    autoJoinConferences=inputStream.readBoolean();
-	    
 	    popupFromMinimized=inputStream.readBoolean();
-	    
 	    notifyBlink=inputStream.readBoolean();
 	    memMonitor=inputStream.readBoolean();
-            
             font1=inputStream.readInt();
             font2=inputStream.readInt();
-            
             autoFocus=inputStream.readBoolean();
-            
             notInListDropLevel=inputStream.readInt();
-            
             storeConfPresence=inputStream.readBoolean();
-            
             capsState=inputStream.readBoolean();
-	    
 	    textWrap=inputStream.readInt();
-            
             loginstatus=inputStream.readInt();
-
             msgPath=inputStream.readUTF();
             msgLog=inputStream.readBoolean();
             msgLogPresence=inputStream.readBoolean();
             msgLogConfPresence=inputStream.readBoolean();
             msgLogConf=inputStream.readBoolean();
             cp1251=inputStream.readBoolean();
-            
             autoAwayDelay=inputStream.readInt();
-        
             defGcRoom=inputStream.readUTF();
             
             inputStream.readBoolean();
             
             isbottom=inputStream.readInt();
-            
             confMessageCount=inputStream.readInt();
-            
             newMenu=inputStream.readBoolean();
-            
             lightState=inputStream.readBoolean();
-			
             notifySound=inputStream.readBoolean();
-            
             lastMessages=inputStream.readBoolean();
-
             setAutoStatusMessage=inputStream.readBoolean();
-            
             autoAwayType=inputStream.readInt();
-            
             autoScroll=inputStream.readBoolean();
-            
             popUps=inputStream.readBoolean();
-            
             showResources=inputStream.readBoolean();
-            
             antispam=inputStream.readBoolean();
-            
             enableVersionOs=inputStream.readBoolean();
-            
             messageLimit=inputStream.readInt();
-            
             lang=inputStream.readUTF();
-            
             eventDelivery=inputStream.readBoolean();
-            
             transliterateFilenames=inputStream.readBoolean();
-            
             rosterStatus=inputStream.readBoolean();
-            
             queryExit=inputStream.readBoolean();
-            
             notifyPicture=inputStream.readBoolean();
-            
             showBalloons=inputStream.readBoolean();
-            
             userKeys=inputStream.readBoolean();
-            
             msglistLimit=inputStream.readInt();
-            
             useTabs=inputStream.readBoolean();
-            
             autoSubscribe=inputStream.readInt();
-            
             useBoldFont=inputStream.readBoolean();
-            
             notifyWhenMessageType = inputStream.readBoolean();
             ircLikeStatus = inputStream.readBoolean();
-            
             sndrcvmood = inputStream.readBoolean();
-            
             scheme=inputStream.readUTF();
                     
 	    inputStream.close();
@@ -450,103 +415,61 @@ public class Config {
 	    outputStream.writeBoolean(collapsedGroups);
 	    outputStream.writeBoolean(ignore);
 	    outputStream.writeBoolean(eventComposing);
-	    
 	    outputStream.writeInt(gmtOffset);
 	    outputStream.writeInt(locOffset);
-	    
 	    outputStream.writeBoolean(autoLogin);
 	    outputStream.writeBoolean(autoJoinConferences);
-
             outputStream.writeBoolean(popupFromMinimized);
-	    
 	    outputStream.writeBoolean(notifyBlink);
 	    outputStream.writeBoolean(memMonitor);
-            
             outputStream.writeInt(font1);
             outputStream.writeInt(font2);
-            
             outputStream.writeBoolean(autoFocus);
-            
-            outputStream.writeInt(notInListDropLevel /*keepAlive*/);
-            
+            outputStream.writeInt(notInListDropLevel);
             outputStream.writeBoolean(storeConfPresence); 
-
             outputStream.writeBoolean(capsState); 
-	    
 	    outputStream.writeInt(textWrap);
-            
             outputStream.writeInt(loginstatus);
-
             outputStream.writeUTF(msgPath);
             outputStream.writeBoolean(msgLog);
             outputStream.writeBoolean(msgLogPresence);
             outputStream.writeBoolean(msgLogConfPresence);
             outputStream.writeBoolean(msgLogConf);
             outputStream.writeBoolean(cp1251);
-
-            
             outputStream.writeInt(autoAwayDelay);
-            
             outputStream.writeUTF(defGcRoom);
-            
+
             outputStream.writeBoolean(false);
-            
+
             outputStream.writeInt(isbottom);
-            
             outputStream.writeInt(confMessageCount);
-            
             outputStream.writeBoolean(newMenu);
-            
             outputStream.writeBoolean(lightState);
-			
             outputStream.writeBoolean(notifySound);
-            
             outputStream.writeBoolean(lastMessages);
-            
             outputStream.writeBoolean(setAutoStatusMessage);
-            
             outputStream.writeInt(autoAwayType);
-            
             outputStream.writeBoolean(autoScroll);
-            
             outputStream.writeBoolean(popUps);
-            
             outputStream.writeBoolean(showResources);
-            
             outputStream.writeBoolean(antispam);
-            
             outputStream.writeBoolean(enableVersionOs);
-            
             outputStream.writeInt(messageLimit);
-            
             outputStream.writeUTF(lang);      
-            
             outputStream.writeBoolean(eventDelivery);
-            
             outputStream.writeBoolean(transliterateFilenames);
-            
             outputStream.writeBoolean(rosterStatus);
-            
             outputStream.writeBoolean(queryExit);
-           
             outputStream.writeBoolean(notifyPicture);
             outputStream.writeBoolean(showBalloons);
-            
             outputStream.writeBoolean(userKeys);
-            
             outputStream.writeInt(msglistLimit);
-            
             outputStream.writeBoolean(useTabs);
-            
             outputStream.writeInt(autoSubscribe);
-            
             outputStream.writeBoolean(useBoldFont);
-            
             outputStream.writeBoolean(notifyWhenMessageType);
             outputStream.writeBoolean(ircLikeStatus);
-            
             outputStream.writeBoolean(sndrcvmood);
-            
             outputStream.writeUTF(scheme);
             
 	} catch (Exception e) { }

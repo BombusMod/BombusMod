@@ -99,9 +99,7 @@ public abstract class VirtualList
     }
 
     public static final short SIEMENS_GREEN=-11;
-    public static final short NOKIA_GREEN=-10;
     public static final short NOKIA_PEN=-50;
-    public static final short MOTOROLA_GREEN=-10;
 
     public static final short MOTOE680_VOL_UP=-9;
     public static final short MOTOE680_VOL_DOWN=-8;
@@ -703,10 +701,6 @@ public abstract class VirtualList
     switch (keyCode) {
         case 0: 
             break;
-        case NOKIA_PEN:
-            if (canBack==true)
-                destroyView(); 
-            break;
         case KEY_NUM1:
             moveCursorHome();    
             break;
@@ -725,10 +719,6 @@ public abstract class VirtualList
         case KEY_NUM8:
             keyDwn();    
             break; 
-        case NOKIA_GREEN:
-            if (cf.phoneManufacturer==Config.NOKIA || cf.phoneManufacturer==Config.WTK)
-                keyGreen();
-            break;
         case KEY_STAR:
             System.gc();
 //#ifdef POPUPS
@@ -742,7 +732,6 @@ public abstract class VirtualList
 //#                     String text=((VirtualElement)getFocusedObject()).getTipString();
 //#                     if (text!=null) {
 //#                         setWobble(1, null, text);
-//#                         //break;
 //#                     }
 //#                 } catch (Exception e) { }
 //#             }

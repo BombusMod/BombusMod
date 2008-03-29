@@ -1,4 +1,12 @@
 //type	path	desc
-tone		tone sequence
 none		none
-audio/midi	/sounds/chat.mid	chat.mid
+audio/x-wav	/sounds/CLOSES.wav	CLOSES.wav
+audio/x-wav	/sounds/CRITICLS.wav	CRITICLS.wav
+audio/x-wav	/sounds/DEFAULTS.wav	DEFAULTS.wav
+audio/x-wav	/sounds/EXCLAMS.wav	EXCLAMS.wav
+audio/x-wav	/sounds/MENUPOPS.wav	MENUPOPS.wav
+audio/x-wav	/sounds/MENUSELS.wav	MENUSELS.wav
+audio/x-wav	/sounds/START.wav	START.wav
+audio/x-wav	/sounds/STARTUPS.wav	STARTUPS.wav
+audio/x-wav	/sounds/WINDMAXS.wav	WINDMAXS.wav
+audio/x-wav	/sounds/WINDMINS.wav	WINDMINS.wav
