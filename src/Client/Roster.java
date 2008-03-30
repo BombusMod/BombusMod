@@ -1363,12 +1363,11 @@ public class Roster
                         return JabberBlockListener.BLOCK_PROCESSED;
                     }
                 } else if (type.equals("set")) {
-                    //todo: verify xmlns==jabber:iq:roster
-                    processRoster(data);
-                    
-                    theStream.send(new Iq(from, Iq.TYPE_RESULT, id));
-                    reEnumRoster();
-                    return JabberBlockListener.BLOCK_PROCESSED;
+                    if (processRoster(data)) { 
+                        theStream.send(new Iq(from, Iq.TYPE_RESULT, id));
+                        reEnumRoster();
+                        return JabberBlockListener.BLOCK_PROCESSED;
+                    }
                 } else if (type.equals("error")) {
                     querysign=false;
 
@@ -1888,9 +1887,9 @@ public class Roster
         return JabberBlockListener.BLOCK_REJECTED;
     }
 
-    void processRoster(JabberDataBlock data){
+    boolean  processRoster(JabberDataBlock data){
         JabberDataBlock q=data.findNamespace("query", "jabber:iq:roster");
-        if (q==null) return;
+        if (q==null) return false;
         int type=0;
 		
         //verifying from attribute as in RFC3921/7.2
@@ -1898,7 +1897,7 @@ public class Roster
         if (from!=null) {
             Jid fromJid=new Jid(from);
             if (fromJid.hasResource())
-                if (!myJid.equals(fromJid, true)) return;
+                if (!myJid.equals(fromJid, true)) return false;
          }
         
         Vector cont=(q!=null)?q.getChildBlocks():null;
@@ -1921,6 +1920,7 @@ public class Roster
             
             }
 	sort(hContacts);
+        return true;
     }
     
     void setTicker(String message) {
