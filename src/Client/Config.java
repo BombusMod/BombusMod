@@ -74,6 +74,8 @@ public class Config {
     public final static int NOKIA_9XXX=10;
     public final static int SONYE_M600=11;
     public final static int XENIUM99=12;
+    public final static int SAMSUNG=14;
+    public final static int LG=15;
     public final static int WTK=50;
     public final static int OTHER=99;
     
@@ -197,8 +199,9 @@ public class Config {
             case SONYE:
                 //prefetch images
                 RosterIcons.getInstance();
-                SmilesIcons.getInstance();
-
+//#ifdef SMILES
+//#                 SmilesIcons.getInstance();
+//#endif
                 allowMinimize=true;
                 greenKeyCode=-10;
                 KEY_BACK=-11;
@@ -498,7 +501,13 @@ public class Config {
             } else if (platform.startsWith("j2me")) {
                 phoneManufacturer=J2ME;
                 return;
-            } else {
+            } else if (platform.startsWith("Samsung")) {
+                phoneManufacturer=SAMSUNG;
+                return;
+            } else if (platform.startsWith("LG")) {
+                phoneManufacturer=LG;
+                return;
+            }else {
                 phoneManufacturer=OTHER;
             }
         }
@@ -516,11 +525,9 @@ public class Config {
              if (platformName.startsWith("j2me")) {
                 if (device!=null) if (device.startsWith("wtk-emulator")) {
                      platformName=device;
-                     return platformName;
                 }
                 if (device!=null && firmware!=null)
                     platformName="Motorola"; // buggy v360
-
 		else {
 		    // Motorola EZX phones
 		    String hostname=System.getProperty("microedition.hostname");
@@ -533,7 +540,6 @@ public class Config {
                      
                         if (hostname.indexOf("(none)")<0)
                          platformName+="/"+hostname;
-						 return platformName;
                     }
 		}
              }
@@ -547,6 +553,31 @@ public class Config {
                 platformName=System.getProperty("microedition.platform")+" (NSG)";
             } else if (System.getProperty("com.siemens.OSVersion")!=null) {
                 platformName="SIE-"+System.getProperty("microedition.platform")+"/"+System.getProperty("com.siemens.OSVersion");
+            }
+            
+            try {
+                Class.forName("com.samsung.util.Vibration");
+                platformName="Samsung";
+            } catch (Throwable ex) { }
+            
+            try {
+                Class.forName("mmpp.media.MediaPlayer");
+                platformName="LG";
+            } catch (Throwable ex) {
+                try {
+                    Class.forName("mmpp.phone.Phone");
+                    platformName="LG";
+                } catch (Throwable ex1) {
+                    try {
+                        Class.forName("mmpp.lang.MathFP");
+                        platformName="LG";
+                    } catch (Throwable ex2) {
+                        try {
+                            Class.forName("mmpp.media.BackLight");
+                            platformName="LG";
+                        } catch (Throwable ex3) { }
+                    }
+                }
             }
         }
         return platformName;

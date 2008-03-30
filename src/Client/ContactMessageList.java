@@ -405,7 +405,7 @@ public class ContactMessageList extends MessageList
 	else 
             super.keyRepeated(keyCode);
     }  
-    
+
     public void keyPressed(int keyCode) {
         if (keyCode==Config.SOFT_LEFT && cf.phoneManufacturer==Config.SONYE) {
             keyGreen();
