@@ -670,10 +670,12 @@ public abstract class VirtualList
 //#         }
 //#         popup.next();
 //#endif
-        if (keyCode==Config.SOFT_RIGHT || keyCode==Config.KEY_BACK) {
-            if (canBack==true)
-                destroyView();
-            return;
+         if (keyCode==Config.SOFT_RIGHT || keyCode==Config.KEY_BACK) {
+            if (cf.phoneManufacturer!=Config.SONYE || cf.phoneManufacturer==Config.SIEMENS || cf.phoneManufacturer==Config.SIEMENS2 || cf.phoneManufacturer==Config.MOTO) {
+               if (canBack==true)
+                    destroyView();
+                return;
+            }
          }
 //#ifdef USER_KEYS
 //#         if (userKeys) {
@@ -703,7 +705,6 @@ public abstract class VirtualList
             userKeyPressed(keyCode);
             break; 
         case KEY_NUM6:
-            changeOrient();
             userKeyPressed(keyCode);
             break;
         case KEY_NUM7:
@@ -754,6 +755,7 @@ public abstract class VirtualList
                     if (keyCode==greenKeyCode) { keyGreen(); break; }
                     if (keyCode==keyVolDown) { moveCursorEnd(); break; }
                     if (keyCode=='5') {  eventOk(); break; }
+                    if (keyCode==Config.KEY_BACK && canBack==true) { destroyView(); }
 
                     userKeyPressed(keyCode);
                 }

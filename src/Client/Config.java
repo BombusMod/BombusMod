@@ -201,7 +201,7 @@ public class Config {
 
                 allowMinimize=true;
                 greenKeyCode=-10;
-                KEY_BACK=-25;
+                KEY_BACK=-11;
                 break;
             case SONYE_M600:
                 KEY_BACK=-11;

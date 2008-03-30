@@ -2312,6 +2312,7 @@ public class Roster
                 return;
             case KEY_NUM6:
                 super.pageRight();
+                changeOrient();
                 return;
 //#ifdef AUTOSTATUS
 //#             case SE_FLIPCLOSE_JP6:
@@ -3064,6 +3065,7 @@ public class Roster
     }
 //#endif
 }
+
 
 
 

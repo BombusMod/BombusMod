@@ -407,6 +407,10 @@ public class ContactMessageList extends MessageList
     }  
     
     public void keyPressed(int keyCode) {
+        if (keyCode==Config.SOFT_LEFT && cf.phoneManufacturer==Config.SONYE) {
+            keyGreen();
+            return;
+        }
         if (keyCode==KEY_POUND) {
 //#ifndef WMUC
             if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT) {
