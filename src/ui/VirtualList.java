@@ -37,6 +37,9 @@ import Colors.Colors;
 import ui.controls.Balloon;
 import ui.controls.ScrollBar;
 import ui.controls.activeRegions;
+//#ifdef TEST
+//# import ui.controls.test;
+//#endif
 //#ifdef USER_KEYS
 //# import ui.keys.userKeyExec;
 //#endif
@@ -59,7 +62,9 @@ public abstract class VirtualList
     private boolean reverse=false;
     private boolean paintTop=true;
     private boolean paintBottom=true;
-    
+//#ifdef TEST
+//#     private boolean drawTest;
+//#endif
     public void changeOrient() {
         switch (cf.isbottom) {
             case 0: paintTop=false; paintBottom=false; reverse=false; break;
@@ -99,6 +104,12 @@ public abstract class VirtualList
             updateLayout();
             fitCursorByTop();
         } catch (Exception e) {} 
+    }
+    
+    public void eventLongOk(){
+//#ifdef TEST
+//#         drawTest = true;
+//#endif
     }
 
     public void userKeyPressed(int keyCode){}
@@ -206,6 +217,7 @@ public abstract class VirtualList
 
     private int itemBorder[];
 
+    private int lastClickX;
     private int lastClickY;
     private int lastClickItem;
     private long lastClickTime;
@@ -467,6 +479,12 @@ public abstract class VirtualList
 //#         drawPopUp(g);
 //#endif
         
+//#ifdef TEST
+//#         if (drawTest) {
+//#             test.draw(g, 100, 100, lastClickX, lastClickY, lastClickX+"/"+lastClickY);
+//#         }
+//#endif
+        
 //#ifndef WOFFSCREEN
         if (g != graphics)
             g.drawImage(offscreen, 0, 0, Graphics.LEFT | Graphics.TOP);
@@ -586,6 +604,10 @@ public abstract class VirtualList
     protected void keyPressed(int keyCode) { kHold=0; key(keyCode); }
     
     protected void pointerPressed(int x, int y) {
+        //System.out.println("pointerPressed("+x+", "+y+")");
+//#ifdef TEST
+//#         drawTest=false;
+//#endif
 //#ifdef POPUPS
 //#         popup.next();
 //#endif        
@@ -615,13 +637,17 @@ public abstract class VirtualList
         }
 	
 	long clickTime=System.currentTimeMillis();
-	if (cursor==lastClickItem)
-	    if (lastClickY-y<5 && y-lastClickY<5) 
-		if (clickTime-lastClickTime<500){
+	if (cursor==lastClickItem) {
+	    if (lastClickY-y<5 && y-lastClickY<5) {
+                if (clickTime-lastClickTime<500){
+                    //System.out.println("short");
 		    y=0;    // ������ "�������� �����"
 		    eventOk();
-		}
+                }
+            }
+        }
 	lastClickTime=clickTime;
+        lastClickX=x;
 	lastClickY=y;
 	lastClickItem=cursor;
         
@@ -636,7 +662,17 @@ public abstract class VirtualList
     protected void pointerDragged(int x, int y) { 
         if (scrollbar.pointerDragged(x, y, this)) stickyWindow=false; 
     }
-    protected void pointerReleased(int x, int y) { scrollbar.pointerReleased(x, y, this); }
+    protected void pointerReleased(int x, int y) { 
+        scrollbar.pointerReleased(x, y, this); 
+        
+	long clickTime=System.currentTimeMillis();
+        if (lastClickY-y<5 && y-lastClickY<5) {
+            if (clickTime-lastClickTime>1000){
+                y=0;    // ������ "�������� �����"
+                eventLongOk();
+            }
+        }
+    }
     
 //#ifdef USER_KEYS
 //#     private void additionKeyPressed(int keyCode) {

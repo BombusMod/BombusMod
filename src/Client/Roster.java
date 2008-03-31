@@ -2221,7 +2221,11 @@ public class Roster
         }
     }
     
-    
+    public void eventLongOk(){
+        super.eventLongOk();
+        showInfo();
+    }
+
     private Displayable createMsgList(){
         Object e=getFocusedObject();
         if (e instanceof Contact) {
@@ -2272,7 +2276,8 @@ public class Roster
     }
     
     public void touchRightPressed(){
-        new RosterItemActions(display, getFocusedObject(), -1);
+        if (isLoggedIn()) 
+            new RosterItemActions(display, getFocusedObject(), -1);
     }
 
     public void keyPressed(int keyCode){

@@ -386,6 +386,17 @@ public class ContactMessageList extends MessageList
         redraw();
     }
     
+    public void eventLongOk(){
+        super.eventLongOk();
+//#ifndef WMUC
+        if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT) {
+            Reply();
+            return;
+        }
+//#endif
+        keyGreen();
+    }
+    
     public void keyGreen(){
         if (!sd.roster.isLoggedIn()) 
             return;
