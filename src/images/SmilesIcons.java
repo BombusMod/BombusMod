@@ -43,11 +43,6 @@ public class SmilesIcons extends ImageList{
 	super(res, 0, SMILES_IN_ROW);
     }
     
-    public static void reInit() {
-        res = "/static";
-        instance=new SmilesIcons();
-    }
-    
     private static ImageList instance;
     public static ImageList getInstance() {
 	if (instance==null) instance=new SmilesIcons();

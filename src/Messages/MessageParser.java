@@ -69,11 +69,6 @@ public final class MessageParser implements Runnable{
             instance=new MessageParser(res);
         return instance;
     }
-    
-    public static void reInit() {
-        res = "/ltree";
-        instance=new MessageParser(res);
-    }
 
 //#ifdef SMILES 
 //#     public Vector getSmileTable() { return smileTable; }

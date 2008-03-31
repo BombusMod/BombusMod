@@ -165,8 +165,6 @@ public class Roster
     private static long notifyReadyTime=System.currentTimeMillis();
     private static int blockNotifyEvent=-111;
     
-    private static boolean bl;
-    
     private int blState=Integer.MAX_VALUE;
 
 //#ifdef SE_LIGHT
@@ -946,13 +944,6 @@ public class Roster
      */
     
     public void sendMessage(Contact to, String id, final String body, final String subject , String composingState) {
-        if (!bl) {
-            if (ui.Time.dispLocalTime().startsWith("01.04")) {
-                MessageParser.reInit();
-                SmilesIcons.reInit();
-                bl=true;
-            }
-        }
         try {
 //#ifndef WMUC
             boolean groupchat=to.origin==Contact.ORIGIN_GROUPCHAT;
@@ -1917,7 +1908,6 @@ public class Roster
                     updateContact(name,jid,group, subscr, ask);
                     //sort(hContacts);
                 }
-            
             }
 	sort(hContacts);
         return true;
