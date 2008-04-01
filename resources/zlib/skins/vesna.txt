@@ -1,4 +1,4 @@
-xmlSkin	known
+xmlSkin	vesna(default)
 BALLOON_INK	0x4866ad
 BALLOON_BGND	0xffffe0
 LIST_BGND	0xffffff

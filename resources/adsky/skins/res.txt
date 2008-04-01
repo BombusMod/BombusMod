@@ -1,1 +1,1 @@
-/skins/vesna.txt	vesna
+/skins/vesna.txt	vesna(default)

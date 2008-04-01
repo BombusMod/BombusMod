@@ -141,7 +141,6 @@ public class ColorUtils {
 //#ifdef COLORS
 //# 
 //# 
-//# /*
 //#      public static void saveSkin(String skinF) {
 //#         skinFile=skinF;
 //#         
@@ -198,7 +197,7 @@ public class ColorUtils {
 //#         }
 //#         return (String)skin.get(key);
 //#     }
-//# */
+//#     
 //#     public static String getSkin(){
 //#         StringBuffer body=new StringBuffer();
 //#ifdef TRANSLIT
