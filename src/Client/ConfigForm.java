@@ -464,8 +464,8 @@ public class ConfigForm implements
 //# 	if (command==cmdLoadSkin) {
 //#             int skinfl=SkinFile.getSelectedIndex();
 //#             String skinFile=(String)Skinfiles[0].elementAt(skinfl);
-//#             ColorUtils.saveSkin(skinFile);
-//#             //ColorUtils.loadSkin(skinFile, 1);
+//#             //ColorUtils.saveSkin(skinFile);
+//#             ColorUtils.loadSkin(skinFile, 1);
 //# 	}
 //#endif
     }

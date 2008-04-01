@@ -41,20 +41,20 @@ public class strconv {
     private strconv() {
     }
     
-    private static String BOMBUSMOD_REP=Version.getUrl();
-    private static String BOMBUS_NG_REP="http://bombus-im.org/ng";
-    private static String PSI_REP="http://psi-im.org/caps";
-    private static String GOOGLE_REP="http://www.google.com/xmpp/client/caps";
-    private static String MIRANDA_REP="http://miranda-im.org/caps";
-    private static String GAJIM_REP="http://gajim.org/caps";
-    private static String GAIM_REP="http://gaim.sf.net/caps";
-    private static String BOMBUS_REP="http://bombus-im.org/java";
-    private static String KOPETE_REP="http://kopete.kde.org/jabber/caps";
-    private static String PIDGIN_REP="http://pidgin.im/caps";
-    private static String QIP_REP="http://qip.ru/caps";
-    private static String TKABBER_REP="http://tkabber.jabber.ru/";
+    private final static String BOMBUSMOD_REP=Version.getUrl();
+    private final static String BOMBUS_NG_REP="http://bombus-im.org/ng";
+    private final static String PSI_REP="http://psi-im.org/caps";
+    private final static String GOOGLE_REP="http://www.google.com/xmpp/client/caps";
+    private final static String MIRANDA_REP="http://miranda-im.org/caps";
+    private final static String GAJIM_REP="http://gajim.org/caps";
+    private final static String GAIM_REP="http://gaim.sf.net/caps";
+    private final static String BOMBUS_REP="http://bombus-im.org/java";
+    private final static String KOPETE_REP="http://kopete.kde.org/jabber/caps";
+    private final static String PIDGIN_REP="http://pidgin.im/caps";
+    private final static String QIP_REP="http://qip.ru/caps";
+    private final static String TKABBER_REP="http://tkabber.jabber.ru/";
     
-    private static String[] chars= { "?", "\\", "/", "*", ".", "\"", ":", "%", "@", "|", "<", ">", "COM", "LPT", "NULL", "PRINT"};
+    private final static String[] badChars= { "?", "\\", "/", "*", ".", "\"", ":", "%", "@", "|", "<", ">", "COM", "LPT", "NULL", "PRINT"};
    
     public static final String convCp1251ToUnicode(final String s){
         if (s==null) return null;
@@ -222,7 +222,7 @@ public class strconv {
     
     public static String replaceCaps(String src){
         if (src==null)
-            return "tkabber?";
+            return "Unknown";
         
         //if (src.indexOf("#")>0)
         //    src = src.substring(0, src.indexOf("#"));        
@@ -314,8 +314,8 @@ public class strconv {
     }
     
     public static String replaceBadChars (String src) {
-        for (int i=0; i<chars.length;i++) {
-            src=stringReplace(src,chars[i],"_");
+        for (int i=0; i<badChars.length;i++) {
+            src=stringReplace(src,badChars[i],"_");
         }
         return src;
     }

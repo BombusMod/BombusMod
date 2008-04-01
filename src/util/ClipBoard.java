@@ -51,6 +51,6 @@ public class ClipBoard
     }
 
     public boolean isEmpty() {
-      return (clipBoard==null )?true:false;
+      return (clipBoard==null && clipBoard.length()>0)?true:false;
     }
 }

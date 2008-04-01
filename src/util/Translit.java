@@ -31,10 +31,10 @@ public class Translit {
 
     static char TranslitChars[][] = new char[106][6];
     static int TranslitCount[] = new int[106];
-    static boolean full=false;
+    static boolean filled=false;
 
     public static final String initTrans = "A.B.V.G.D.E.ZH.Z.I.J.K.L.M.N.O.P.R.S.T.U.F.H.C.CH.SH.SCH.\".Y.'.E.YU.YA.a.b.v.g.d.e.zh.z.i.j.k.l.m.n.o.p.r.s.t.u.f.h.c.ch.sh.sch.\".y.'.e.yu.ya.";
-
+    
     static void fillarrays()
     {
         TranslitChars[25]="YO".toCharArray(); //YO
@@ -57,7 +57,7 @@ public class Translit {
     
     public static String translit(String s)
     {
-        if (!full) 
+        if (!filled) 
             fillarrays();
         
         char ac[] = new char[s.length() * 3];

@@ -179,8 +179,6 @@ public class ContactMessageList extends MessageList
             addCommand(cmdCopyPlus);
             addCommand(cmdSendBuffer);
         }
-        //getMainBarItem().setElementAt(sd.roster.getEventIcon(), 3);
-        //getMainBarItem().setElementAt((contact.vcard==null)?null:RosterIcons.iconHasVcard, 4);
     }
     
     protected void beginPaint(){
