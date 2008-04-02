@@ -647,6 +647,8 @@ public class SR {
 
     public static String MS_LOAD_ROOMLIST = loadString( "Browse rooms");
     public static String MS_AUTORESPOND = loadString( "Autorespond");
+
+    public static String MS_INVERT = loadString("Invert colors");
     
     private SR() { }
     

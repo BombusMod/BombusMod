@@ -249,25 +249,26 @@ public class ColorUtils {
 //#         body.append("CONTACT_J2J\t"+getColorString(cs.CONTACT_J2J)+"\r\n");
 //#         return body.toString();
 //#     }
-//# 
-//#     public static String ColorToString(int cRed, int cGreen, int cBlue) {
-//#         StringBuffer color=new StringBuffer(8);
-//#         
-//#         color.append("0x");
-//#         color.append(expandHex(cRed));
-//#         color.append(expandHex(cGreen));
-//#         color.append(expandHex(cBlue));
-//#         
-//#         return color.toString();
-//#     }
-//#     
-//#     public static String expandHex(int eVal) {
-//#         String rVal=Integer.toHexString(eVal);
-//#         if (rVal.length()==1) rVal="0"+rVal;
-//#       
-//#         return rVal;
-//#     }
 //#endif
+    
+    public static String ColorToString(int cRed, int cGreen, int cBlue) {
+        StringBuffer color=new StringBuffer(8);
+        
+        color.append("0x");
+        color.append(expandHex(cRed));
+        color.append(expandHex(cGreen));
+        color.append(expandHex(cBlue));
+        
+        return color.toString();
+    }
+    
+    public static String expandHex(int eVal) {
+        String rVal=Integer.toHexString(eVal);
+        if (rVal.length()==1) rVal="0"+rVal;
+      
+        return rVal;
+    }
+    
     public static int getColorInt(int color, int pos) {
         String ncolor = getColorString(color);
 
@@ -299,5 +300,13 @@ public class ColorUtils {
     
     public static int getColorInt(String color) { // 0x010000 -> 1
         return Integer.parseInt(color.substring(2),16);
+    }
+    
+    public static int invertColor(int color){
+        int red=255-getColorInt(color,0);
+        int green=255-getColorInt(color,1);
+        int blue=255-getColorInt(color,2);
+        
+        return getColorInt(ColorToString(red, green, blue));
     }
 }

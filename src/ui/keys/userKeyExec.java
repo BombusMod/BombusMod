@@ -41,6 +41,7 @@ import java.util.Vector;
 import javax.microedition.lcdui.Display;
 import locale.SR;
 import midlet.BombusMod;
+import Colors.ColorScheme;
 
 public class userKeyExec {
     
@@ -157,7 +158,10 @@ public class userKeyExec {
             case 14:
                 if (cf.allowMinimize)
                     BombusMod.getInstance().hideApp(true);
-                break;                
+                break;
+            case 15:
+                ColorScheme.invertSkin();
+                break;
         }
     } 
 
@@ -185,7 +189,8 @@ public class userKeyExec {
             SR.MS_CLEAR_POPUPS,
             SR.MS_FLASHLIGHT,
             SR.MS_ABOUT,
-            SR.MS_APP_MINIMIZE
+            SR.MS_APP_MINIMIZE,
+            SR.MS_INVERT
     };
     
     public static final String[] KEYS_NAME = {

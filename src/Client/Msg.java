@@ -107,8 +107,6 @@ public class Msg //implements MessageList.Element
             case MESSAGE_TYPE_AUTH: return Colors.MESSAGE_AUTH;
             case MESSAGE_TYPE_HISTORY: return Colors.MESSAGE_HISTORY;
             case MESSAGE_TYPE_SUBJ:return Colors.MSG_SUBJ;
-            //default: return ColorScheme.MESSAGE_HISTORY;
-            //case MESSAGE_TYPE_ERROR: return ColorScheme.MESSAGE_OUT;
         }
         return Colors.LIST_INK;
     }
