@@ -163,46 +163,50 @@ public class ColorScheme {
 
     public static void invertSkin(){
         try {
-            instance.BALLOON_INK=ColorUtils.invertColor(instance.BALLOON_INK);
-            instance.BALLOON_BGND=ColorUtils.invertColor(instance.BALLOON_BGND);
-            instance.LIST_BGND=ColorUtils.invertColor(instance.LIST_BGND);
-            instance.LIST_BGND_EVEN=ColorUtils.invertColor(instance.LIST_BGND_EVEN);
-            instance.LIST_INK=ColorUtils.invertColor(instance.LIST_INK);
-            instance.MSG_SUBJ=ColorUtils.invertColor(instance.MSG_SUBJ);
-            instance.MSG_HIGHLIGHT=ColorUtils.invertColor(instance.MSG_HIGHLIGHT);
-            instance.DISCO_CMD=ColorUtils.invertColor(instance.DISCO_CMD);
-            instance.BAR_BGND=ColorUtils.invertColor(instance.BAR_BGND);
-            instance.BAR_BGND_BOTTOM=ColorUtils.invertColor(instance.BAR_BGND_BOTTOM);
-            instance.BAR_INK=ColorUtils.invertColor(instance.BAR_INK);
-            instance.CONTACT_DEFAULT=ColorUtils.invertColor(instance.CONTACT_DEFAULT);
-            instance.CONTACT_CHAT=ColorUtils.invertColor(instance.CONTACT_CHAT);
-            instance.CONTACT_AWAY=ColorUtils.invertColor(instance.CONTACT_AWAY);
-            instance.CONTACT_XA=ColorUtils.invertColor(instance.CONTACT_XA);
-            instance.CONTACT_DND=ColorUtils.invertColor(instance.CONTACT_DND);
-            instance.GROUP_INK=ColorUtils.invertColor(instance.GROUP_INK);
-            instance.BLK_INK=ColorUtils.invertColor(instance.BLK_INK);
-            instance.BLK_BGND=ColorUtils.invertColor(instance.BLK_BGND);
-            instance.MESSAGE_IN=ColorUtils.invertColor(instance.MESSAGE_IN);
-            instance.MESSAGE_OUT=ColorUtils.invertColor(instance.MESSAGE_OUT);
-            instance.MESSAGE_PRESENCE=ColorUtils.invertColor(instance.MESSAGE_PRESENCE);
+            instance.BALLOON_INK=invertColor(instance.BALLOON_INK);
+            instance.BALLOON_BGND=invertColor(instance.BALLOON_BGND);
+            instance.LIST_BGND=invertColor(instance.LIST_BGND);
+            instance.LIST_BGND_EVEN=invertColor(instance.LIST_BGND_EVEN);
+            instance.LIST_INK=invertColor(instance.LIST_INK);
+            instance.MSG_SUBJ=invertColor(instance.MSG_SUBJ);
+            instance.MSG_HIGHLIGHT=invertColor(instance.MSG_HIGHLIGHT);
+            instance.DISCO_CMD=invertColor(instance.DISCO_CMD);
+            instance.BAR_BGND=invertColor(instance.BAR_BGND);
+            instance.BAR_BGND_BOTTOM=invertColor(instance.BAR_BGND_BOTTOM);
+            instance.BAR_INK=invertColor(instance.BAR_INK);
+            instance.CONTACT_DEFAULT=invertColor(instance.CONTACT_DEFAULT);
+            instance.CONTACT_CHAT=invertColor(instance.CONTACT_CHAT);
+            instance.CONTACT_AWAY=invertColor(instance.CONTACT_AWAY);
+            instance.CONTACT_XA=invertColor(instance.CONTACT_XA);
+            instance.CONTACT_DND=invertColor(instance.CONTACT_DND);
+            instance.GROUP_INK=invertColor(instance.GROUP_INK);
+            instance.BLK_INK=invertColor(instance.BLK_INK);
+            instance.BLK_BGND=invertColor(instance.BLK_BGND);
+            instance.MESSAGE_IN=invertColor(instance.MESSAGE_IN);
+            instance.MESSAGE_OUT=invertColor(instance.MESSAGE_OUT);
+            instance.MESSAGE_PRESENCE=invertColor(instance.MESSAGE_PRESENCE);
 //#if NICK_COLORS
-//#             instance.MESSAGE_IN_S=ColorUtils.invertColor(instance.MESSAGE_IN_S);
-//#             instance.MESSAGE_OUT_S=ColorUtils.invertColor(instance.MESSAGE_OUT_S);
-//#             instance.MESSAGE_PRESENCE_S=ColorUtils.invertColor(instance.MESSAGE_PRESENCE_S);
+//#             instance.MESSAGE_IN_S=invertColor(instance.MESSAGE_IN_S);
+//#             instance.MESSAGE_OUT_S=invertColor(instance.MESSAGE_OUT_S);
+//#             instance.MESSAGE_PRESENCE_S=invertColor(instance.MESSAGE_PRESENCE_S);
 //#endif
-            instance.MESSAGE_AUTH=ColorUtils.invertColor(instance.MESSAGE_AUTH);
-            instance.MESSAGE_HISTORY=ColorUtils.invertColor(instance.MESSAGE_HISTORY);
-            instance.PGS_REMAINED=ColorUtils.invertColor(instance.PGS_REMAINED);
-            instance.PGS_COMPLETE=ColorUtils.invertColor(instance.PGS_COMPLETE);
-            instance.HEAP_TOTAL=ColorUtils.invertColor(instance.HEAP_TOTAL);
-            instance.HEAP_FREE=ColorUtils.invertColor(instance.HEAP_FREE);
-            instance.CURSOR_BGND=ColorUtils.invertColor(instance.CURSOR_BGND);
-            instance.CURSOR_OUTLINE=ColorUtils.invertColor(instance.CURSOR_OUTLINE);
-            instance.SCROLL_BRD=ColorUtils.invertColor(instance.SCROLL_BRD);
-            instance.SCROLL_BAR=ColorUtils.invertColor(instance.SCROLL_BAR);
-            instance.SCROLL_BGND=ColorUtils.invertColor(instance.SCROLL_BGND);
-            instance.CONTACT_J2J=ColorUtils.invertColor(instance.CONTACT_J2J);
+            instance.MESSAGE_AUTH=invertColor(instance.MESSAGE_AUTH);
+            instance.MESSAGE_HISTORY=invertColor(instance.MESSAGE_HISTORY);
+            instance.PGS_REMAINED=invertColor(instance.PGS_REMAINED);
+            instance.PGS_COMPLETE=invertColor(instance.PGS_COMPLETE);
+            instance.HEAP_TOTAL=invertColor(instance.HEAP_TOTAL);
+            instance.HEAP_FREE=invertColor(instance.HEAP_FREE);
+            instance.CURSOR_BGND=invertColor(instance.CURSOR_BGND);
+            instance.CURSOR_OUTLINE=invertColor(instance.CURSOR_OUTLINE);
+            instance.SCROLL_BRD=invertColor(instance.SCROLL_BRD);
+            instance.SCROLL_BAR=invertColor(instance.SCROLL_BAR);
+            instance.SCROLL_BGND=invertColor(instance.SCROLL_BGND);
+            instance.CONTACT_J2J=invertColor(instance.CONTACT_J2J);
         } catch (Exception e) { }
+    }
+    
+    public static int invertColor(int color){
+        return 0xFFFFFF-color;
     }
 }
 

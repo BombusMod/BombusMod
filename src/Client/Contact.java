@@ -31,9 +31,7 @@ package Client;
 import Conference.MucContact;
 //#endif
 
-//#if LAST_MESSAGES
-//# import History.HistoryStorage;
-//#endif
+import History.HistoryStorage;
 
 //#if (FILE_IO && HISTORY)
 //# import History.HistoryAppend;
@@ -164,9 +162,7 @@ public class Contact extends IconTextElement{
 
     private String j2j;
     
-//#if LAST_MESSAGES 
-//#     private boolean loaded=false;
-//#endif
+    private boolean loaded=false;
 
     protected Contact (){
         super(RosterIcons.getInstance());
@@ -333,11 +329,11 @@ public class Contact extends IconTextElement{
 //#endif
 //#             if (allowLog)
 //#             {
-//#                 StringBuffer body = createBody(m);
+//#                 //StringBuffer body = createBody(m);
 //#                 
 //#                 String histRecord=(nick==null)?getBareJid():nick;
 //#                 
-//#                 new HistoryAppend(body, histRecord);
+//#                 new HistoryAppend(m, cf.lastMessages, histRecord);
 //#             }
 //#        }
 //#endif
@@ -358,57 +354,6 @@ public class Contact extends IconTextElement{
             if (m.messageType>unreadType) unreadType=m.messageType;
             if (newMsgCnt>=0) newMsgCnt++;
         }
-    }
-    
-    private StringBuffer createBody(Msg m) {
-            String fromName=StaticData.getInstance().account.getUserName();
-            if (m.messageType!=Msg.MESSAGE_TYPE_OUT)
-                fromName=toString();
-            
-            int marker=Msg.MESSAGE_MARKER_OTHER;
-            switch (m.messageType){
-                case Msg.MESSAGE_TYPE_IN:
-                    marker=Msg.MESSAGE_MARKER_IN;
-                    break;
-                case Msg.MESSAGE_TYPE_PRESENCE:
-                    marker=Msg.MESSAGE_MARKER_PRESENCE;
-                    break;
-               case Msg.MESSAGE_MARKER_OUT:
-                    marker=Msg.MESSAGE_MARKER_OUT;
-            }
-            
-            StringBuffer body=new StringBuffer();
-            if (cf.lastMessages) {
-                body.append("<m><t>");
-                body.append(marker);
-                body.append("</t><d>");
-                body.append(m.getDayTime());
-                body.append("</d><f>");
-                body.append(fromName);
-                body.append("</f>");
-                if (m.subject!=null) {
-                    body.append("<s>");
-                    body.append(m.subject);
-                    body.append("</s>");
-                }
-                body.append("<b>");
-                body.append(m.quoteString());
-                body.append("</b></m>\r\n");
-            } else {
-                body.append("[");
-                body.append(m.getDayTime());
-                body.append("] ");
-                body.append(fromName);
-                body.append(":\r\n");
-                if (m.subject!=null) {
-                    body.append(m.subject);
-                    body.append("\r\n");
-                }
-                body.append(m.getBody());
-                body.append("\r\n\r\n");
-            }
-
-            return body;
     }
 
     public int getFontIndex(){
@@ -465,6 +410,7 @@ public class Contact extends IconTextElement{
             }
         } catch (Exception e) { }
     }
+    
 //#if AUTODELETE
 //#     public final boolean deleteOldMessages() {
 //#         int limit=cf.msglistLimit;
@@ -620,10 +566,6 @@ public class Contact extends IconTextElement{
 //#     }
 //#endif
     
-    public String getUserMood() {
-        return mood.getName();
-    }
-    
     public String getUserMoodLocale() {
         return mood.getLocale();
     }
@@ -635,6 +577,7 @@ public class Contact extends IconTextElement{
     public String getUserMoodText() {
         return mood.getText();
     }
+    
     public int getSecImageIndex() {
         if (showComposing==true) 
             return 1001;
@@ -647,36 +590,33 @@ public class Contact extends IconTextElement{
         return -1;
     }
     
+    public boolean isHistoryLoaded () {
+        return loaded;
+    }
     
-//#if LAST_MESSAGES 
-//#     public boolean isHistoryLoaded () {
-//#         return loaded;
-//#     }
-//#     
-//#     public void loadRecentList() {
-//#         loaded=true;
-//#         HistoryStorage hs = new HistoryStorage((nick==null)?getBareJid():nick);
-//#         Vector history=hs.importData();
-//#         
-//#         for (Enumeration messages=history.elements(); messages.hasMoreElements(); )  {
-//#             Msg message=(Msg) messages.nextElement();
-//#             if (!isMsgExists(message)) {
-//#                 message.setHistory(true);
-//#                 msgs.insertElementAt(message, 0);
-//#             }
-//#         }
-//#     }
-//#     
-//#     private boolean isMsgExists(Msg msg) {
-//#          for (Enumeration messages=msgs.elements(); messages.hasMoreElements(); )  {
-//#             Msg message=(Msg) messages.nextElement();
-//#             if (message.getBody().equals(msg.getBody())) {
-//#                 return true;
-//#             }
-//#          }
-//#         return false;
-//#     }
-//#endif
+    public void loadRecentList() {
+        loaded=true;
+        HistoryStorage hs = new HistoryStorage((nick==null)?getBareJid():nick);
+        Vector history=hs.importData();
+        
+        for (Enumeration messages=history.elements(); messages.hasMoreElements(); )  {
+            Msg message=(Msg) messages.nextElement();
+            if (!isMsgExists(message)) {
+                message.setHistory(true);
+                msgs.insertElementAt(message, 0);
+            }
+        }
+    }
+    
+    private boolean isMsgExists(Msg msg) {
+         for (Enumeration messages=msgs.elements(); messages.hasMoreElements(); )  {
+            Msg message=(Msg) messages.nextElement();
+            if (message.getBody().equals(msg.getBody())) {
+                return true;
+            }
+         }
+        return false;
+    }
 
 //#ifdef CHECKERS
 //#     public void setCheckers(int checkers) {

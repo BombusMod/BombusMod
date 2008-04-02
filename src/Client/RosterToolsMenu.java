@@ -54,6 +54,8 @@ import vcard.vCardForm;
 //#ifdef CHECK_VERSION
 //# import Info.Upgrade;
 //#endif
+import Colors.ColorScheme;
+
 public class RosterToolsMenu
         extends Menu {
     
@@ -110,11 +112,10 @@ public class RosterToolsMenu
 //#if AUTOTASK
 //#         addItem(SR.MS_AUTOTASKS, 16, 0x0f03);
 //#endif
-/*		
-        addItem("ArchiveDump", 10);
-*/        
+      
+        addItem(SR.MS_INVERT, 17, 0x0f06);
         
-        addItem(SR.MS_BREAK_CONECTION, 17, 0x13);
+        addItem(SR.MS_BREAK_CONECTION, 18, 0x13);
         attachDisplay(display);
     }
     public void eventOk(){
@@ -129,6 +130,7 @@ public class RosterToolsMenu
 //#                 if (connected) new ServiceDiscovery(display, null, null);
 //#                 break;
 //#endif
+
 //#ifdef PRIVACY
 //#             case 1: // Privacy Lists
 //#                 if (connected) new PrivacySelect(display);
@@ -155,22 +157,26 @@ public class RosterToolsMenu
 //#             case 5: //history
 //#                 new HistoryConfig(display);
 //#                 return;
-//#endif 
+//#endif
+
 //#if (FILE_IO)
             case 6:
                 new io.file.browse.Browser(null, display, null, false);
                 return;
 //#endif
+
 //#if (FILE_TRANSFER)
 //#             case 7:
 //#                 new io.file.transfer.TransferManager(display);
 //#                 return;
 //#endif
+                
 //#ifdef COLORS
 //#             case 8:
 //#                 new ColorForm(display);
 //#                 return;
 //#endif
+                
 //#if IMPORT_EXPORT
 //#             case 9:
 //#                 new IE.IEMenu(display);
@@ -184,6 +190,7 @@ public class RosterToolsMenu
 //#                 roster.showStats();
 //#                 return;
 //#endif
+                
 //#ifdef CHECK_VERSION
 //#             case 12:
 //#                 new Upgrade(display, false);
@@ -192,27 +199,28 @@ public class RosterToolsMenu
 //#                 new Upgrade(display, true);
 //#                 return;
 //#endif
+                
 //#ifdef USER_KEYS
 //#             case 14:
 //#                 new userKeysList(display);
 //#                 return;
 //#endif
+                
 //#if SASL_XGOOGLETOKEN
             case 15: //mail check
                 roster.sendGmailReq();;
 		return; 
 //#endif
-/*
-            case 10:
-                new archive.DebugDumpArchive(display);
-                return;
-*/
+                
 //#if AUTOTASK
 //#             case 16:
 //#                 new AutoTaskForm(display);
 //#                 return;
 //#endif
             case 17:
+                ColorScheme.invertSkin();
+                return;
+            case 18:
                 roster.connectionTerminated(new Exception(SR.MS_SIMULATED_BREAK));
                 return;
         }

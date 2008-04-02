@@ -84,14 +84,10 @@ public class HistoryConfig implements
         f=new Form(SR.MS_HISTORY_OPTIONS);
         
         message=new ChoiceGroup(SR.MS_MESSAGES, Choice.MULTIPLE);
-//#if LAST_MESSAGES
-//#         message.append("Last messages", null);
-//#endif
+        message.append("Last messages", null);
 
         boolean mv[]={
-//#if LAST_MESSAGES
-//#             cf.lastMessages
-//#endif
+            cf.lastMessages
         };
         this.mv=mv;
         message.setSelectedFlags(mv);
@@ -146,9 +142,7 @@ public class HistoryConfig implements
 //#endif
 
             int mvctr=0;
-//#if LAST_MESSAGES
-//#             cf.lastMessages=mv[mvctr++];
-//#endif
+            cf.lastMessages=mv[mvctr++];
 	    
 //#if FILE_IO
             cf.msgLog=his[0];

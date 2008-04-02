@@ -27,6 +27,8 @@
 package History;
 
 import Client.Config;
+import Client.Msg;
+import Client.StaticData;
 import io.file.FileIO;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -44,7 +46,8 @@ public class HistoryAppend {
     private OutputStream os;
 //#endif
     
-    public HistoryAppend(StringBuffer body, String filename) {        
+    public HistoryAppend(Msg m, boolean formatted, String filename) {
+       StringBuffer body=createBody(m, formatted);
        byte[] bodyMessage=(cf.cp1251)?strconv.convUnicodeToCp1251(body.toString()).getBytes():body.toString().getBytes();
 
 //#ifdef TRANSLIT
@@ -70,5 +73,56 @@ public class HistoryAppend {
         filename=null;
         body=null;
         bodyMessage=null;
+    }
+    
+    
+    private StringBuffer createBody(Msg m, boolean formatted) {
+        String fromName=StaticData.getInstance().account.getUserName();
+        if (m.messageType!=Msg.MESSAGE_TYPE_OUT)
+            fromName=toString();
+
+        StringBuffer body=new StringBuffer();
+        
+        int marker=Msg.MESSAGE_MARKER_OTHER;
+        switch (m.messageType){
+            case Msg.MESSAGE_TYPE_IN:
+                marker=Msg.MESSAGE_MARKER_IN;
+                break;
+            case Msg.MESSAGE_TYPE_PRESENCE:
+                marker=Msg.MESSAGE_MARKER_PRESENCE;
+                break;
+           case Msg.MESSAGE_MARKER_OUT:
+                marker=Msg.MESSAGE_MARKER_OUT;
+        }
+        if (!formatted) {
+            body.append("[");
+            body.append(m.getDayTime());
+            body.append("] ");
+            body.append(fromName);
+            body.append(":\r\n");
+            if (m.subject!=null) {
+                body.append(m.subject);
+                body.append("\r\n");
+            }
+            body.append(m.getBody());
+            body.append("\r\n\r\n");
+        } else {
+            body.append("<m><t>");
+            body.append(marker);
+            body.append("</t><d>");
+            body.append(m.getDayTime());
+            body.append("</d><f>");
+            body.append(fromName);
+            body.append("</f>");
+            if (m.subject!=null) {
+                body.append("<s>");
+                body.append(m.subject);
+                body.append("</s>");
+            }
+            body.append("<b>");
+            body.append(m.quoteString());
+            body.append("</b></m>\r\n");
+        }
+        return body;
     }
 }

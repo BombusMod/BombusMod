@@ -144,10 +144,8 @@ public class ContactMessageList extends MessageList
         
         contact.setIncoming(0);
 
-//#if LAST_MESSAGES 
-//#         if (cf.lastMessages && !contact.isHistoryLoaded())
-//#             contact.loadRecentList();
-//#endif
+        if (cf.lastMessages && !contact.isHistoryLoaded())
+            contact.loadRecentList();
         
         moveCursorTo(contact.firstUnread());
     }
@@ -366,9 +364,9 @@ public class ContactMessageList extends MessageList
             try {
                 if (body!=null)
                     sd.roster.sendMessage(contact, id, body, subj, null);
-                contact.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"message sended from clipboard("+body.length()+"chars)"));
+                contact.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"clipboard sended ("+body.length()+"chars)"));
             } catch (Exception e) {
-                contact.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"message NOT sended"));
+                contact.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"clipboard NOT sended"));
             }
             redraw();
         }
@@ -546,31 +544,13 @@ public class ContactMessageList extends MessageList
 //#endif
 //#            return;
 //#         }
-//#          String fromName=StaticData.getInstance().account.getUserName();
-//#          StringBuffer body=new StringBuffer();
+//#         
+//#         String histRecord="log_"+((contact.nick==null)?contact.getBareJid():contact.nick);
 //#          
-//#          for (Enumeration messages=contact.msgs.elements(); messages.hasMoreElements(); ) 
-//#          {
+//#         for (Enumeration messages=contact.msgs.elements(); messages.hasMoreElements(); ) {
 //#             Msg message=(Msg) messages.nextElement();
-//#              
-//#             if (message.messageType!=Msg.MESSAGE_TYPE_OUT) fromName=contact.toString();
-//# 
-//#             body.append(message.getDayTime());
-//#             body.append(" <");
-//#             body.append(fromName);
-//#             body.append("> ");
-//#             if (message.subject!=null) {
-//#                 body.append(message.subject);
-//#                 body.append("\r\n");
-//#             }
-//#             body.append(message.getBody());
-//#             body.append("\r\n");
-//#          }
-//# 
-//#          //save
-//#          
-//#            String histRecord="log_"+((contact.nick==null)?contact.getBareJid():contact.nick);
-//#            new HistoryAppend(body, histRecord);
+//#             new HistoryAppend(message, false, histRecord);
+//#         }
 //#     }
 //#endif
 

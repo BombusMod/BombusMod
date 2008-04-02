@@ -298,15 +298,11 @@ public class ColorUtils {
         return ncolor.toString();
     }
     
-    public static int getColorInt(String color) { // 0x010000 -> 1
+    public static int getColorInt(String color) {
         return Integer.parseInt(color.substring(2),16);
     }
     
     public static int invertColor(int color){
-        int red=255-getColorInt(color,0);
-        int green=255-getColorInt(color,1);
-        int blue=255-getColorInt(color,2);
-        
-        return getColorInt(ColorToString(red, green, blue));
+        return 0xFFFFFF-color;
     }
 }
