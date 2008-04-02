@@ -36,12 +36,17 @@ public class AutoStatusTask implements Runnable {
     }
     
     public void setTimeEvent(long delay){
-        timeAwayEvent=(delay==0)? 0:delay+System.currentTimeMillis();
-        timeXaEvent=(delay==0)? 0:(delay*2)+timeAwayEvent;
+        if (delay!=0) {
+            timeAwayEvent=delay+System.currentTimeMillis();
+            timeXaEvent=(delay*2)+timeAwayEvent;
+        } else {
+            timeAwayEvent=0;
+            timeXaEvent=0;
+        }
     }
 
     boolean isAwayTimerSet() { 
-        return (timeAwayEvent!=0);
+        return (timeAwayEvent!=0 && timeXaEvent!=0);
     }
 
     public void destroyTask(){
@@ -56,8 +61,8 @@ public class AutoStatusTask implements Runnable {
             if (timeAwayEvent==0 && timeXaEvent==0)
                 continue;
             
-            long timeAwayRemained=(timeAwayEvent!=0)?System.currentTimeMillis()-timeAwayEvent:0;
-            long timeXaRemained=(timeXaEvent!=0)?System.currentTimeMillis()-timeXaEvent:0;
+            long timeAwayRemained=System.currentTimeMillis()-timeAwayEvent;
+            long timeXaRemained=System.currentTimeMillis()-timeXaEvent;
 
             if (timeAwayRemained>0 && timeAwayEvent!=0) {
                 timeAwayEvent=0;
