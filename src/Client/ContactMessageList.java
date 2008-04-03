@@ -414,11 +414,7 @@ public class ContactMessageList extends MessageList
     }  
 
     public void keyPressed(int keyCode) {
-        if (keyCode==Config.SOFT_LEFT && cf.phoneManufacturer==Config.SONYE) {
-            keyGreen();
-            return;
-        }
-        if (keyCode==KEY_POUND) {
+        if (keyCode==KEY_POUND || keyCode==super.greenKeyCode) {
 //#ifndef WMUC
             if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT) {
                 Reply();
@@ -427,8 +423,7 @@ public class ContactMessageList extends MessageList
 //#endif
             keyGreen();
             return;
-        } else
-            super.keyPressed(keyCode);
+        } else super.keyPressed(keyCode);
     }
 
     public void userKeyPressed(int keyCode) {
@@ -438,21 +433,19 @@ public class ContactMessageList extends MessageList
                     nextContact(-1); //previous contact with messages
                 else
                     super.pageLeft();
-                break;
+                return;
             case KEY_NUM6:
                 if (cf.useTabs)
                     nextContact(1); //next contact with messages
                 else
                     super.pageRight();
-                break;
+                return;
             case KEY_NUM3:
                 new ActiveContacts(display, contact);
-                break;
-        
+                return;        
             case KEY_NUM9:
                 Quote();
-                break;
-        
+                return;        
             case SIEMENS_VOLUP:
             case SIEMENS_CAMERA:
                  if (cf.phoneManufacturer==Config.SIEMENS || cf.phoneManufacturer==Config.SIEMENS2) { //copy&copy+
@@ -470,12 +463,14 @@ public class ContactMessageList extends MessageList
                         clipboard.setClipBoard(clipstr.toString());
                         clipstr=null;
                     } catch (Exception e) {/*no messages*/}
+                    return;
                  }
                  break;
             case SIEMENS_VOLDOWN:
             case SIEMENS_MPLAYER:
                 if (cf.phoneManufacturer==Config.SIEMENS || cf.phoneManufacturer==Config.SIEMENS2) { //clear clipboard
                     clipboard.setClipBoard("");
+                    return;
                 }
                 break;
         }
