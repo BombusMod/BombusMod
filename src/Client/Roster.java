@@ -2441,7 +2441,7 @@ public class Roster
 //#ifdef AUTOSTATUS
 //#     private void userActivity() {
 //#         if (cf.autoAwayType==Config.AWAY_IDLE) {
-//#             if (!autoAway) {
+//#             if (!autoAway && myStatus.getImageIndex()<2) {
 //#                 autostatus.setTimeEvent(cf.autoAwayDelay* 60*1000);
 //#                 return;
 //#             }
@@ -2454,6 +2454,7 @@ public class Roster
 //#     
 //#     public void messageActivity() {
 //#         if (cf.autoAwayType==Config.AWAY_MESSAGE) {
+//#              //System.out.println("messageActivity "+myStatus.getImageIndex());
 //#              if (myStatus.getImageIndex()<2)
 //#                 autostatus.setTimeEvent(cf.autoAwayDelay* 60*1000);
 //#              else if (!autoAway) 
@@ -2674,8 +2675,8 @@ public class Roster
         countNewMsgs(); 
 //#ifdef AUTOSTATUS
 //#         if (cf.autoAwayType==Config.AWAY_IDLE) {
-//#             if (!autostatus.isAwayTimerSet()) {
-//#                 if (!autoAway) autostatus.setTimeEvent(cf.autoAwayDelay* 60*1000);
+//#             if (!autostatus.isAwayTimerSet() && myStatus.getImageIndex()<2) {
+//#                 autostatus.setTimeEvent(cf.autoAwayDelay* 60*1000);
 //#             }
 //#         }
 //#endif

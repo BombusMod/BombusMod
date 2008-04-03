@@ -436,12 +436,12 @@ public abstract class VirtualList
                 if (sel) {
                     drawCursor(g, itemMaxWidth, lh); 
                     baloon=g.getTranslateY();
-                } else
+                } else {
 //#ifdef BACK_IMAGE
 //#                     if (img==null)
 //#endif
-                    g.fillRect(0,0, itemMaxWidth, lh); //clear field
-
+                        g.fillRect(0,0, itemMaxWidth, lh); //clear field
+                }
                 g.setColor(el.getColor());
                 
                 g.clipRect(0, 0, itemMaxWidth, lh);
