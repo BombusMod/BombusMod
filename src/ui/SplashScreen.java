@@ -255,7 +255,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
 //#         if (roster.autoAway && cf.autoAwayType==Config.AWAY_LOCK) {
 //#             roster.autoAway=false;
 //#             roster.autoXa=false;
-//#             roster.sendPresence(roster.oldStatus.getImageIndex(), roster.oldStatus.getMessage());
+//#             roster.sendPresence(roster.lastOnlineStatus.getImageIndex(), roster.lastOnlineStatus.getMessage());
 //#         }
 //#endif
         System.gc();

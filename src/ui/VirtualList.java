@@ -285,7 +285,7 @@ public abstract class VirtualList
 //#             if (img==null)
 //#                 img=Image.createImage("/images/bg.png");
 //#         } catch (Exception e) {
-//#             System.out.println("can't load backGroundImage");
+//#             //System.out.println("can't load backGroundImage");
 //#         }
 //#endif
     }

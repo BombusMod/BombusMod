@@ -115,20 +115,16 @@ public class Roster
     int highliteMessageCount;
     
     private Object messageIcon;
+
     public Object transferIcon;
    
     boolean reconnect=false;
     boolean querysign=false;
     
-    //public int myStatus=cf.loginstatus;
-    //private String myMessage;
-
     public Vector hContacts;
-    
     private Vector vContacts;
-    
     private Vector paintVContacts;
-    
+
     public Groups groups;
     
     public Vector bookmarks;
@@ -140,7 +136,7 @@ public class Roster
     public StatusList sl=StatusList.getInstance();
     
     public ExtendedStatus myStatus=sl.getStatus(cf.loginstatus);
-    public ExtendedStatus oldStatus=myStatus;
+    public ExtendedStatus lastOnlineStatus=myStatus;
     
 //#ifdef MOOD
 //#     public Vector serverFeatures;
@@ -285,6 +281,7 @@ public class Roster
         if (cf.allowMinimize) 
             addCommand(cmdMinimize);
     }
+    
     public void setProgress(String pgs,int percent){
         SplashScreen.getInstance().setProgress(pgs, percent);
         setRosterMainBar(pgs);
@@ -348,7 +345,6 @@ public class Roster
             redraw();
             askReconnect(e);
         }
-        //l.setCallback(this);
     }
 
     public void resetRoster() {
@@ -382,7 +378,7 @@ public class Roster
     
     public int getItemCount(){
         return paintVContacts.size();
-    };
+    }
     
     public void setEventIcon(Object icon){
         transferIcon=icon;
@@ -590,11 +586,10 @@ public class Roster
     
     public final ConferenceGroup initMuc(String from, String joinPassword){
 //#ifdef AUTOSTATUS
-//#         if (autoAway) {
-//#             sendPresence(oldStatus.getImageIndex(), null);
+//#         if (autoAway || autoXa) {
+//#             sendPresence(lastOnlineStatus.getImageIndex(), null);
 //#             autoAway=false;
 //#             autoXa=false;
-//#             messageActivity();
 //#         }
 //#endif
         // muc message
@@ -723,7 +718,6 @@ public class Roster
     public void addContact(Contact c) {
         synchronized (hContacts) { hContacts.addElement(c); }
     }
-    
 
     public final Contact findContact(final Jid j, final boolean compareResources) {
         synchronized (hContacts) {
@@ -746,14 +740,13 @@ public class Roster
             }
         }
         
+        if (myStatus.getImageIndex()<2) {
+            lastOnlineStatus=myStatus;
+        }
+        
         myStatus=sl.getStatus(status);
         
         setQuerySign(false);
-
-        if (status<Presence.PRESENCE_AWAY) {
-            oldStatus=myStatus;
-        }
-
         
         if (status!=Presence.PRESENCE_OFFLINE && theStream==null ) {
             reconnect=(hContacts.size()>1);
@@ -869,26 +862,28 @@ public class Roster
                 ConferenceForm.join(confGroup.desc, myself.getJid(), confGroup.password, 20);
                 continue;
             }
-            if (ircLike) {
-                if (myself.origNick==null)
-                    myself.origNick=myself.nick;
-
-                String addStatus = "";
-                switch (myStatus.getImageIndex()) {
-                    case Presence.PRESENCE_CHAT:
-                        addStatus="|chat"; break;
-                    case Presence.PRESENCE_AWAY:
-                        addStatus="|away"; break;
-                    case Presence.PRESENCE_XA:
-                        addStatus="|x.away"; break;
-                    case Presence.PRESENCE_DND:
-                        addStatus="|busy"; break;
-                }
-                if(myself.addStatus!=addStatus) {
-                    myself.addStatus=addStatus;
-                    myself.nick=(addStatus==null)?myself.origNick:myself.origNick+addStatus;
-                }
-            }
+//#ifdef IRC_LIKE
+//#             if (ircLike) {
+//#                 if (myself.origNick==null)
+//#                     myself.origNick=myself.nick;
+//# 
+//#                 String addStatus = "";
+//#                 switch (myStatus.getImageIndex()) {
+//#                     case Presence.PRESENCE_CHAT:
+//#                         addStatus="|chat"; break;
+//#                     case Presence.PRESENCE_AWAY:
+//#                         addStatus="|away"; break;
+//#                     case Presence.PRESENCE_XA:
+//#                         addStatus="|x.away"; break;
+//#                     case Presence.PRESENCE_DND:
+//#                         addStatus="|busy"; break;
+//#                 }
+//#                 if(myself.addStatus!=addStatus) {
+//#                     myself.addStatus=addStatus;
+//#                     myself.nick=(addStatus==null)?myself.origNick:myself.origNick+addStatus;
+//#                 }
+//#             }
+//#endif
             Presence presence = new Presence(mcstatus, es.getPriority(), strconv.toExtendedString((message==null)?es.getMessage():message), null);
             presence.setTo(myself.bareJid.substring(0, myself.bareJid.indexOf("/")+1)+myself.nick);
             theStream.send(presence);
@@ -938,11 +933,6 @@ public class Roster
         if (subscribe) sendPresence(to,"subscribe", null, false);
     }
     
-  
-  /**
-     * Method to send a message to the specified recipient
-     */
-    
     public void sendMessage(Contact to, String id, final String body, final String subject , String composingState) {
         try {
 //#ifndef WMUC
@@ -960,10 +950,10 @@ public class Roster
 //#endif
             
 //#ifdef AUTOSTATUS
-//#             if (autoAway) {
-//#                     sendPresence(oldStatus.getImageIndex(), null);
+//#             if (autoAway || autoXa) {
 //#                     autoAway=false;
 //#                     autoXa=false;
+//#                     sendPresence(lastOnlineStatus.getImageIndex(), null);
 //#             }
 //#endif
             Message message = new Message( 
@@ -1001,14 +991,6 @@ public class Roster
         message.setAttribute("id", id);
         message.addChildNs("received", "urn:xmpp:receipts");
         theStream.send( message );
-        
-            
-        /* xep-0022: deprecated
-            JabberDataBlock x=message.addChildNs("x", "jabber:x:event");
-            x.addChild("id", id);
-            x.addChild("delivered", null);
-            theStream.send( message );
-        */
     }    
 
     private Vector vCardQueue;
@@ -2139,14 +2121,11 @@ public class Roster
     }
 
     private void focusToContact(final Contact c, boolean force) {
-	
 	Group g=c.getGroup();
 	if (g.collapsed) {
 	    g.collapsed=false;
 	    reEnumerator.queueEnum(c, force);
-	    //reEnumRoster();
 	} else {
-	    
 	    int index=vContacts.indexOf(c);
 	    if (index>=0) moveCursorTo(index);
 	}
@@ -2200,7 +2179,7 @@ public class Roster
 
      }
      public void doReconnect() {
-        sendPresence(oldStatus.getImageIndex(), null);
+        sendPresence(lastOnlineStatus.getImageIndex(), null);
      }
     
     public void eventOk(){
@@ -2232,7 +2211,6 @@ public class Roster
             ( me = new MessageEdit(display, c, c.msgSuspended) ).setParentView(pview);
             c.msgSuspended=null;
         }
-        //reEnumRoster();
     }
     
     protected void keyClear(){
@@ -2385,7 +2363,6 @@ public class Roster
 //#ifdef AUTOSTATUS
 //#             if (cf.autoAwayType==Config.AWAY_LOCK) {
 //#                 if (!autoAway) {
-//#                     //keyLockState=true;
 //#                     autoAway=true;
 //#                     if (cf.setAutoStatusMessage) {
 //#                         sendPresence(Presence.PRESENCE_AWAY, "Auto Status on KeyLock since %t");
@@ -2685,7 +2662,9 @@ public class Roster
     protected void hideNotify() {
         super.hideNotify();
 //#ifdef AUTOSTATUS
-//#         if (cf.autoAwayType==Config.AWAY_IDLE) if (kHold==0) autostatus.setTimeEvent(0);
+//#         if (cf.autoAwayType==Config.AWAY_IDLE) 
+//#             if (kHold==0) 
+//#                 autostatus.setTimeEvent(0);
 //#endif
     }
     
@@ -2881,13 +2860,14 @@ public class Roster
 //#     }
 //#   
 //#     public void setAutoStatus(int status) {
-//#         if (!isLoggedIn()) return;
+//#         if (!isLoggedIn()) 
+//#             return;
 //#         if (status==Presence.PRESENCE_ONLINE && autoAway) {
 //#             autoAway=false;
-//#             sendPresence(Presence.PRESENCE_ONLINE, null);
+//#             autoXa=false;
+//#             sendPresence(lastOnlineStatus.getImageIndex(), null);
 //#             return;
-//#         }
-//#         if (status!=Presence.PRESENCE_ONLINE && myStatus.getImageIndex()==Presence.PRESENCE_ONLINE && !autoAway) {
+//#         } else if ((myStatus.getImageIndex()==Presence.PRESENCE_ONLINE || myStatus.getImageIndex()==Presence.PRESENCE_CHAT) && !autoAway) {
 //#             autoAway=true;
 //#             if (cf.setAutoStatusMessage) {
 //#                 sendPresence(Presence.PRESENCE_AWAY, "Auto Status on KeyLock since %t");
@@ -2946,6 +2926,7 @@ public class Roster
         reEnumRoster();
     } 
 //#endif
+    
     public void cleanMarks() {
       synchronized(hContacts) {
         for (Enumeration e=hContacts.elements(); e.hasMoreElements();){
