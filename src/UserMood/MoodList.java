@@ -67,7 +67,7 @@ public class MoodList {
     
     public static String loadString(String key) {
         if (localeMood==null) {
-            localeMood=new StringLoader().hashtableLoader("/moods/moods.txt");
+            localeMood=new StringLoader().hashtableLoader("/images/moods.txt");
         }
         String value=(String)localeMood.get(key);
         return (value==null)?key:value;

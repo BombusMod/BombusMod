@@ -122,7 +122,9 @@ public abstract class VirtualList
     }
 
     public static final short SIEMENS_GREEN=-11;
+    
     public static final short NOKIA_PEN=-50;
+    public static final short NOKIA_GREEN=-10;
 
     public static final short MOTOE680_VOL_UP=-9;
     public static final short MOTOE680_VOL_DOWN=-8;
@@ -170,6 +172,11 @@ public abstract class VirtualList
     
     private int itemLayoutY[]=new int[1];
     private int listHeight;
+    
+//#ifdef BACK_IMAGE
+//#     public Image img;
+//#endif
+    
     
     protected synchronized void updateLayout(){
         int size=getItemCount();
@@ -272,6 +279,15 @@ public abstract class VirtualList
         secondBar.addRAlign();
         secondBar.addElement(null); //3
         setInfoBarItem(secondBar);
+        
+//#ifdef BACK_IMAGE
+//#         try {
+//#             if (img==null)
+//#                 img=Image.createImage("/images/bg.png");
+//#         } catch (Exception e) {
+//#             System.out.println("can't load backGroundImage");
+//#         }
+//#endif
     }
 
     /** Creates a new instance of VirtualList */
@@ -341,7 +357,15 @@ public abstract class VirtualList
         updateLayout();
         
         setAbsOrg(g, 0,0);
-       
+        
+//#ifdef BACK_IMAGE
+//#         if (img!=null) {
+//#             g.setColor(Colors.LIST_BGND);
+//#             g.fillRect(0,0, width, height);
+//#             g.drawImage(img, width/2, height/2, Graphics.VCENTER|Graphics.HCENTER);
+//#         }
+//#endif
+        
         if (mainbar!=null)
             mHeight=mainbar.getVHeight(); // nokia fix
 
@@ -413,7 +437,10 @@ public abstract class VirtualList
                     drawCursor(g, itemMaxWidth, lh); 
                     baloon=g.getTranslateY();
                 } else
-                    g.fillRect(0,0, itemMaxWidth, lh);
+//#ifdef BACK_IMAGE
+//#                     if (img==null)
+//#endif
+                    g.fillRect(0,0, itemMaxWidth, lh); //clear field
 
                 g.setColor(el.getColor());
                 
@@ -426,7 +453,12 @@ public abstract class VirtualList
         } catch (Exception e) { }
 
         int clrH=height-displayedBottom;
-        if (clrH>0) {
+
+        if (clrH>0
+//#ifdef BACK_IMAGE
+//#                 && img==null
+//#endif
+                ) {
             setAbsOrg(g, 0,displayedBottom);
             g.setClip(0, 0, itemMaxWidth, clrH);
             g.setColor(Colors.LIST_BGND);
@@ -474,7 +506,7 @@ public abstract class VirtualList
 
         setAbsOrg(g, 0, 0);
         g.setClip(0,0, width, height);
-
+        
 //#ifdef POPUPS
 //#         drawPopUp(g);
 //#endif

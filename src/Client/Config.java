@@ -210,9 +210,11 @@ public class Config {
                 KEY_BACK=-11;
                 break;
             case WTK:
+                greenKeyCode=-10;
+                break;
             case NOKIA:
                 KEY_BACK=VirtualList.NOKIA_PEN;
-                greenKeyCode=-10;
+                greenKeyCode=VirtualList.NOKIA_GREEN;
                 break;
             case SIEMENS:
             case SIEMENS2:
@@ -498,16 +500,16 @@ public class Config {
             } else if (platform.startsWith("wtk") || platform.endsWith("wtk")) {
                 phoneManufacturer=WTK;
                 return;
-            } else if (platform.startsWith("j2me")) {
-                phoneManufacturer=J2ME;
-                return;
             } else if (platform.startsWith("Samsung")) {
                 phoneManufacturer=SAMSUNG;
                 return;
             } else if (platform.startsWith("LG")) {
                 phoneManufacturer=LG;
                 return;
-            }else {
+            } else if (platform.startsWith("j2me")) {
+                phoneManufacturer=J2ME;
+                return;
+            } else {
                 phoneManufacturer=OTHER;
             }
         }
