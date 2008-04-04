@@ -209,7 +209,9 @@ public class ConfigForm implements
 //#         application.append(SR.MS_NEW_MENU,null);
 //#endif
         application.append(SR.MS_FLASHLIGHT,null);
-        application.append(SR.MS_IRCLIKESTATUS,null);
+//#ifdef IRC_LIKE
+//#         application.append(SR.MS_IRCLIKESTATUS,null);
+//#endif
 	if (cf.allowMinimize)
             application.append(SR.MS_ENABLE_POPUP,null);
        
@@ -225,7 +227,9 @@ public class ConfigForm implements
 //#             cf.newMenu,
 //#endif
             cf.lightState,
-            cf.ircLikeStatus,
+//#ifdef IRC_LIKE
+//#             cf.ircLikeStatus,
+//#endif
             cf.popupFromMinimized
         };
 
@@ -409,7 +413,9 @@ public class ConfigForm implements
 //#             cf.newMenu=ap[apctr++];
 //#endif
             cf.lightState=ap[apctr++];
-            cf.ircLikeStatus=ap[apctr++];
+//#ifdef IRC_LIKE
+//#             cf.ircLikeStatus=ap[apctr++];
+//#endif
             //cf.blFlash=ap[apctr++];
             if (cf.allowMinimize)
                 cf.popupFromMinimized=ap[apctr++];

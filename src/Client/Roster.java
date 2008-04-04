@@ -847,7 +847,8 @@ public class Roster
 //#ifndef WMUC
     public void multicastConferencePresence(String message, int mcstatus) {
          if (mcstatus==Presence.PRESENCE_INVISIBLE) return; //block multicasting presence invisible
-         boolean ircLike=cf.ircLikeStatus;
+         
+         
          ExtendedStatus es= StatusList.getInstance().getStatus(mcstatus);
          for (Enumeration e=hContacts.elements(); e.hasMoreElements();) {
             Contact c=(Contact) e.nextElement();
@@ -863,6 +864,7 @@ public class Roster
                 continue;
             }
 //#ifdef IRC_LIKE
+//#             boolean ircLike=cf.ircLikeStatus;
 //#             if (ircLike) {
 //#                 if (myself.origNick==null)
 //#                     myself.origNick=myself.nick;
@@ -2159,6 +2161,8 @@ public class Roster
     private void askReconnect(final Exception e) {
         String error;
         error=e.getClass().getName()+"\n"+e.getMessage();
+        int status = myStatus.getImageIndex();
+        String message=myStatus.getMessage();
 //#if DEBUG
 //#         e.printStackTrace();
 //#endif
@@ -2167,7 +2171,6 @@ public class Roster
         } catch (Exception e2) { }
 
         if (e instanceof SecurityException) { errorLog(error); return; }
-        //if (e instanceof JabberStreamShutdownException) { errorLog(error); return; }
         if (reconnectCount>=maxReconnect) { errorLog(error); return; }
         
         reconnectCount++;
@@ -2175,11 +2178,11 @@ public class Roster
         Msg m=new Msg(Msg.MESSAGE_TYPE_OUT, "local", topBar, error);
         messageStore(selfContact(), m);
         Stats.getInstance().save();
-        new Reconnect(topBar, error, display);
+        new Reconnect(topBar, error, display, status, message);
 
      }
-     public void doReconnect() {
-        sendPresence(lastOnlineStatus.getImageIndex(), null);
+     public void doReconnect(int status, String message) {
+        sendPresence(status, message);
      }
     
     public void eventOk(){

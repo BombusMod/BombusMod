@@ -42,19 +42,26 @@ import ui.AlertBox;
 public class Reconnect extends AlertBox implements Runnable{
 
     private Gauge timer;
-    boolean isRunning;
+    private boolean isRunning;
+    
+    private int status=0;
+    private String message="";
+    
     private final static int WAITTIME=15;
-    /** Creates a new instance of Reconnect */
+
     private Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 2);
-    public Reconnect(String mainbar, String body, Display display) {
-        super(mainbar, body, null, display, null /*current*/);
-        alert.setTimeout(Alert.FOREVER);
+
+
+    public Reconnect(String mainbar, String body, Display display, int status, String message) {
+        super(mainbar, body, null, display, null);
         
+        alert.setTimeout(Alert.FOREVER);
         timer=new Gauge(null, false, WAITTIME, 1);
-
         alert.setIndicator(timer);
-
         alert.addCommand(cmdCancel);
+        
+        this.status=status;
+        this.message=message;
         
         new Thread(this).start();
     }
@@ -63,7 +70,7 @@ public class Reconnect extends AlertBox implements Runnable{
         if (command==cmdOk) {
             if (isRunning) {
                 isRunning=false;
-                StaticData.getInstance().roster.doReconnect();
+                StaticData.getInstance().roster.doReconnect(status, message);
             }
         }
         isRunning=false;
