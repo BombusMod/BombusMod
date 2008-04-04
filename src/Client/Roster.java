@@ -137,6 +137,7 @@ public class Roster
     
     public ExtendedStatus myStatus=sl.getStatus(cf.loginstatus);
     public ExtendedStatus lastOnlineStatus=myStatus;
+    public ExtendedStatus prevStatus=myStatus;
     
 //#ifdef MOOD
 //#     public Vector serverFeatures;
@@ -2161,8 +2162,8 @@ public class Roster
     private void askReconnect(final Exception e) {
         String error;
         error=e.getClass().getName()+"\n"+e.getMessage();
-        int status = myStatus.getImageIndex();
-        String message=myStatus.getMessage();
+        if (myStatus.getImageIndex()<Presence.PRESENCE_INVISIBLE)
+            prevStatus=myStatus;
 //#if DEBUG
 //#         e.printStackTrace();
 //#endif
@@ -2178,11 +2179,11 @@ public class Roster
         Msg m=new Msg(Msg.MESSAGE_TYPE_OUT, "local", topBar, error);
         messageStore(selfContact(), m);
         Stats.getInstance().save();
-        new Reconnect(topBar, error, display, status, message);
+        new Reconnect(topBar, error, display);
 
      }
-     public void doReconnect(int status, String message) {
-        sendPresence(status, message);
+     public void doReconnect() {
+        sendPresence(prevStatus.getImageIndex(), prevStatus.getMessage());
      }
     
     public void eventOk(){
