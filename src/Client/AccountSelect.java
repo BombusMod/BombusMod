@@ -100,6 +100,10 @@ public class AccountSelect
         if (enableQuit) 
             addCommand(cmdQuit);
         
+        if (accountList.isEmpty()) {
+            VirtualList.setWobble(1, (Contact) null, SR.MS_ENTER_ACCOUNT_SETTINGS);
+        }
+        
         commandState();
         setCommandListener(this);
     }

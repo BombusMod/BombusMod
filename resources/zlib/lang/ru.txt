@@ -408,7 +408,7 @@ keyblock / flip	блок / флип
 Save options to server	Сохранить настройки на сервере
 Restore options from server	Загрузить настройки с сервера
 Make BackUp	Сохранить копию на диск
-Import from BackUp	Восстановить из файла
+Import from Back	Загрузить с диска
 Delete All	Очистить архив
 Use this Color scheme	Использовать схему
 
@@ -432,6 +432,7 @@ show new menu	Графическое меню
 convert to cp1251	Сохранять в windows-1251
 AutoStatus time (min)	Автостатус через(мин)
 Address	Адрес
+Import from BackUp	Восстановить из файла
 Accept file	Принять файл
 Save To	Сохранить в
 Description	Описание
@@ -573,3 +574,7 @@ Min	Минут
 
 Browse rooms	Обзор комнат
 Autorespond	Автоответчик
+
+Invert colors	Инверсия цвета
+Please create account or enter account(s) settings\n\nMenu, New Account	Пожалуйста создайте новый аккаунт или введи настройки существующего\n\nМеню, Новый аккаунт
+Please enter settings\n\nMenu, Tools, Options	Пожалуйста введите настройки\n\nМеню, Инструменты, Настройки

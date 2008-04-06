@@ -57,7 +57,7 @@ public class PopUp {
     private static String wrapSeparators=" .,-=/\\;:+*()[]<>~!@#%^_&";
     private boolean wordsWrap;
 
-    private int width=100;
+    private int width=120;
 
     private int height;
     private Vector popUps = new Vector(); 

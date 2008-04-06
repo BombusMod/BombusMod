@@ -80,6 +80,8 @@ public class ConfigForm implements
 //#endif
     Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK,99);
     
+    StaticData sd=StaticData.getInstance();
+    
     Config cf=Config.getInstance();;
     boolean ra[];
     boolean mv[];
@@ -327,19 +329,20 @@ public class ConfigForm implements
 //#         autoAwayType.append(SR.MS_MESSAGE_LOCK, null);
 //#         autoAwayType.append(SR.MS_IDLE, null);
 //#         autoAwayType.setSelectedIndex(cf.autoAwayType, true);
-//#         
+//# 
 //#         fieldAwatDelay=new NumberField(SR.MS_AWAY_PERIOD, cf.autoAwayDelay, 1, 60);
 //# 
 //#         awayStatus=new ChoiceGroup(SR.MS_SET, Choice.MULTIPLE);
 //#         awayStatus.append(SR.MS_AUTOSTATUS_MESSAGE, null);
-//#         
+//# 
 //#         boolean autoAway[]={
 //#             cf.setAutoStatusMessage
 //#         };
+//# 
 //#         this.aa=autoAway;
 //#         awayStatus.setSelectedFlags(autoAway);
 //#         f.append(awayStatus);
-//#     
+//# 
 //#         f.append(autoAwayType);
 //#         f.append(fieldAwatDelay);
 //#endif
@@ -432,8 +435,6 @@ public class ConfigForm implements
             cf.lang=(String) langs[0].elementAt( lang.getSelectedIndex() );
 //#ifdef AUTOSTATUS
 //#             cf.setAutoStatusMessage=aa[0];
-//# 
-//#             
 //#             cf.autoAwayDelay=fieldAwatDelay.getValue();
 //#             cf.autoAwayType=autoAwayType.getSelectedIndex();
 //#endif
@@ -450,15 +451,17 @@ public class ConfigForm implements
             }            
 //#endif
 
-            StaticData.getInstance().roster.setLight(cf.lightState);   
+            sd.roster.setLight(cf.lightState);   
             
-            StaticData.getInstance().roster.setFullScreenMode(cf.fullscreen);
+            sd.roster.setFullScreenMode(cf.fullscreen);
+            
+            cf.firstRun=false;
             
             cf.updateTime();
             
             cf.saveToStorage();
 
-            StaticData.getInstance().roster.reEnumRoster();
+            sd.roster.reEnumRoster();
             destroyView();
         }
         if (c==cmdCancel)
@@ -478,7 +481,7 @@ public class ConfigForm implements
     
     public void destroyView(){
         if (display!=null)  
-            display.setCurrent(StaticData.getInstance().roster);
+            display.setCurrent(sd.roster);
         ((Canvas)parentView).setFullScreenMode(cf.fullscreen);
     }
 }

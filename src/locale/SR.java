@@ -649,6 +649,9 @@ public class SR {
     public static String MS_AUTORESPOND = loadString( "Autorespond");
 
     public static String MS_INVERT = loadString("Invert colors");
+
+    public static String MS_ENTER_ACCOUNT_SETTINGS = loadString("Please create account or enter account(s) settings.\n\nMenu, New Account");
+    public static String MS_ENTER_SETTINGS = loadString("Please enter settings.\n\nMenu, Tools, Options");
     
     private SR() { }
     

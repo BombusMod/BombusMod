@@ -213,7 +213,7 @@ public class Roster
         addMenuCommands();
         SplashScreen.getInstance().setExit(display, this);
 //#ifdef AUTOSTATUS
-//#         if (cf.autoAwayType!=Config.AWAY_OFF)
+//#         if (cf.autoAwayType==Config.AWAY_IDLE || cf.autoAwayType==Config.AWAY_MESSAGE)
 //#             autostatus=new AutoStatusTask();
 //#         
 //#         if (myStatus<2)
@@ -310,7 +310,10 @@ public class Roster
     // establishing connection process
     public void run(){
         //Iq.setXmlLang(SR.MS_XMLLANG);
-
+        
+        if (cf.firstRun)
+            setWobbler(1, (Contact) null, SR.MS_ENTER_SETTINGS);
+        
         setQuerySign(true);
         setProgress(25);
 	if (!reconnect) {

@@ -173,6 +173,8 @@ public class Config {
     public boolean sndrcvmood = true;
     public String scheme = "";
     
+    public boolean firstRun = true;
+    
     public static Config getInstance(){
 	if (instance==null) {
 	    instance=new Config();
@@ -279,9 +281,7 @@ public class Config {
             cp1251=inputStream.readBoolean();
             autoAwayDelay=inputStream.readInt();
             defGcRoom=inputStream.readUTF();
-            
-            inputStream.readBoolean();
-            
+            firstRun=inputStream.readBoolean();
             isbottom=inputStream.readInt();
             confMessageCount=inputStream.readInt();
             newMenu=inputStream.readBoolean();
@@ -407,9 +407,7 @@ public class Config {
             outputStream.writeBoolean(cp1251);
             outputStream.writeInt(autoAwayDelay);
             outputStream.writeUTF(defGcRoom);
-
-            outputStream.writeBoolean(false);
-
+            outputStream.writeBoolean(firstRun);
             outputStream.writeInt(isbottom);
             outputStream.writeInt(confMessageCount);
             outputStream.writeBoolean(newMenu);

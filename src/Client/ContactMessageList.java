@@ -414,7 +414,7 @@ public class ContactMessageList extends MessageList
     }  
 
     public void keyPressed(int keyCode) {
-        if (keyCode==KEY_POUND || keyCode==super.greenKeyCode) {
+        if (keyCode==KEY_POUND) {
 //#ifndef WMUC
             if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT) {
                 Reply();
