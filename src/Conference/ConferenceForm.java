@@ -64,7 +64,7 @@ public class ConferenceForm implements CommandListener{
     
     private static boolean sndprs=false;
     
-    StaticData sd=StaticData.getInstance();
+    private static StaticData sd=StaticData.getInstance();
 
     private int cursor;
     
@@ -211,8 +211,8 @@ public class ConferenceForm implements CommandListener{
         saveMsgCount(msgLimit);
             
         if (c==cmdEdit) {
-            StaticData.getInstance().roster.bookmarks.removeElement(editConf);
-            StaticData.getInstance().roster.bookmarks.insertElementAt(new BookmarkItem(name, gchat.toString(), nick, pass, autojoin), cursor);
+            sd.roster.bookmarks.removeElement(editConf);
+            sd.roster.bookmarks.insertElementAt(new BookmarkItem(name, gchat.toString(), nick, pass, autojoin), cursor);
             new BookmarkQuery(BookmarkQuery.SAVE);
             display.setCurrent(sd.roster);
         } else if (c==cmdAdd) {
@@ -243,8 +243,6 @@ public class ConferenceForm implements CommandListener{
     }
     
     public static void join(String name, String jid, String pass, int maxStanzas) {
-        StaticData sd=StaticData.getInstance();
-        
         ConferenceGroup grp=sd.roster.initMuc(jid, pass);
         grp.desc=name;
 
@@ -266,7 +264,7 @@ public class ConferenceForm implements CommandListener{
         
         if (sndprs) {
             //sd.roster.sendPresence(name, null, x, false);
-            int status=StaticData.getInstance().roster.myStatus.getImageIndex();
+            int status=sd.roster.myStatus;
             if (status==Presence.PRESENCE_INVISIBLE) 
                 status=Presence.PRESENCE_ONLINE;
             sd.roster.sendDirectPresence(status, jid, x);

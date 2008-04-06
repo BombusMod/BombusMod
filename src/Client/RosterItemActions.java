@@ -387,7 +387,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                 {
                     roster.blockNotify(-111,10000); //block sounds to 10 sec
                     //querysign=true; displayStatus();
-                    Presence presence = new Presence(roster.myStatus.getImageIndex(), 0, "", null);
+                    Presence presence = new Presence(roster.myStatus, 0, "", null);
                     presence.setTo(c.getJid());
                     roster.theStream.send( presence );
                     break;
