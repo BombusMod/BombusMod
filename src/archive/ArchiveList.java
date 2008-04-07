@@ -89,8 +89,7 @@ public class ArchiveList
     private int IMPORT=1;
 
     private int returnVal=0;
-    
-            
+
     private String start_item="<START_ITEM>";
     private String end_item="<END_ITEM>";
 
@@ -321,9 +320,7 @@ public class ArchiveList
         
         return source.substring(start+_start.length(), end);
     }
-    
-    
-    
+
     public void exportData(String arhPath) {
         byte[] bodyMessage;
         int items=getItemCount();

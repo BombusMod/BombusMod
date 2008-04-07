@@ -59,11 +59,12 @@ public class ExtendedStatus extends IconTextElement{
         s.append(" (");
         s.append(priority);
         s.append(") ");
-        if (status.length()>0) {
-            s.append('"');
-            s.append(status);
-            s.append('"');
-        }
+        if (status!=null)
+            if (status.length()>0) {
+                s.append('"');
+                s.append(status);
+                s.append('"');
+            }
         return s.toString();
     }
     public String getScreenName() { return screenName; }

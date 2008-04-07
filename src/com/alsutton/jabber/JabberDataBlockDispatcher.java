@@ -25,6 +25,9 @@
 */
 
 package com.alsutton.jabber;
+//#ifdef CONSOLE
+//# import Console.StanzasList;
+//#endif
 import java.util.*;
 
 /**
@@ -41,7 +44,9 @@ public class JabberDataBlockDispatcher extends Thread
 
   private JabberListener listener = null;
   private JabberStream stream;
-  
+//#ifdef CONSOLE
+//#   private StanzasList sl = StanzasList.getInstance();
+//#endif
   boolean isActive() { return dispatcherActive; }
   
   private Vector blockListeners=new Vector();
@@ -148,6 +153,9 @@ public class JabberDataBlockDispatcher extends Thread
                   i++;
               }
           }
+//#ifdef CONSOLE
+//#           sl.add(dataBlock.toString());
+//#endif
           if (processResult==JabberBlockListener.BLOCK_REJECTED)
               if( listener != null )
                   processResult=listener.blockArrived( dataBlock );

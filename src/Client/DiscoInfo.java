@@ -45,8 +45,9 @@ public class DiscoInfo implements JabberBlockListener{
                     
                     if (feature.getTagName().equals("feature")) {
                         String feat=feature.getAttribute("var");
-                        if (feat!=null && feat.length()>0)
-                            serverFeatures.addElement(feature.getAttribute("var"));
+                        if (feat!=null)
+                            if (feat.length()>0)
+                                serverFeatures.addElement(feature.getAttribute("var"));
                     }
 //#ifdef MOOD
 //#                     else if (feature.getTagName().equals("identity")) {

@@ -1524,7 +1524,8 @@ public class Roster
                             } else {
                                 String inviteFrom=invite.getAttribute("from");
                                 String inviteReason=invite.getChildBlockText("reason");
-                                inviteReason=(inviteReason.length()>0)?" ("+inviteReason+")":"";
+                                if (inviteReason!=null)
+                                    inviteReason=(inviteReason.length()>0)?" ("+inviteReason+")":"";
                                 String room=from+'/'+sd.account.getNickName();
                                 String password=xmlns.getChildBlockText("password");
                                 ConferenceGroup invConf=initMuc(room, password);

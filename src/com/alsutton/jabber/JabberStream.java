@@ -28,6 +28,9 @@ package com.alsutton.jabber;
 import Client.Account;
 import Client.Config;
 import Client.StaticData;
+//#ifdef CONSOLE
+//# import Console.StanzasList;
+//#endif
 import io.Utf8IOStream;
 import java.io.*;
 import java.util.*;
@@ -46,7 +49,9 @@ import locale.SR;
 public class JabberStream implements XMLEventListener, Runnable {
     
     private Utf8IOStream iostream;
-    
+//#ifdef CONSOLE
+//#     private StanzasList sl = StanzasList.getInstance();
+//#endif
     /**
      * The dispatcher thread.
      */
@@ -211,10 +216,16 @@ public class JabberStream implements XMLEventListener, Runnable {
      }
     
     public void send( String data ) throws IOException {
+//#ifdef CONSOLE
+//#         addLog(data);
+//#endif
 	iostream.send(new StringBuffer(data));
     }
     
     public void sendBuf( StringBuffer data ) throws IOException {
+//#ifdef CONSOLE
+//#         addLog(data.toString());
+//#endif
 	iostream.send(data);
     }
     
@@ -225,9 +236,16 @@ public class JabberStream implements XMLEventListener, Runnable {
      */
     
     public void send( JabberDataBlock block )  {
+//#ifdef CONSOLE
+//#         addLog(block.toString());
+//#endif
         new SendJabberDataBlock(block);
     }
-    
+//#ifdef CONSOLE
+//#     private void addLog (String data) {
+//#         sl.add(data);
+//#     }
+//#endif
     /**
      * Set the listener to this stream.
      */

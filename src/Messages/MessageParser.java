@@ -210,7 +210,6 @@ public final class MessageParser implements Runnable{
     }
     
     private void parseMessage(final MessageItem task) {
-        
         Vector lines=task.msgLines;
         boolean singleLine=task.msg.itemCollapsed;
         
@@ -354,9 +353,7 @@ public final class MessageParser implements Runnable{
                             lines.addElement(l);
                             task.notifyRepaint(lines, task.msg, false);
 
-                            if (singleLine) {
-                                    return;
-                            }
+                            if (singleLine) return;
 
                             l.setColor(color);
                             l.setFont(f);

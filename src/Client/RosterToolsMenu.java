@@ -26,6 +26,9 @@
  */
 
 package Client;
+//#ifdef CONSOLE
+//# import Console.XMLList;
+//#endif
 //#ifdef PRIVACY
 //# import PrivacyLists.PrivacySelect;
 //#endif
@@ -116,6 +119,9 @@ public class RosterToolsMenu
         addItem(SR.MS_INVERT, 17, 0x0f06);
         
         addItem(SR.MS_BREAK_CONECTION, 18, 0x13);
+//#ifdef CONSOLE
+//#         addItem("XML_CONSOLE", 19, 0x13);
+//#endif
         attachDisplay(display);
     }
     public void eventOk(){
@@ -223,6 +229,11 @@ public class RosterToolsMenu
             case 18:
                 roster.connectionTerminated(new Exception(SR.MS_SIMULATED_BREAK));
                 return;
+//#ifdef CONSOLE
+//#             case 19:
+//#                 new XMLList(display);
+//#                 return;
+//#endif
         }
     }
 }
