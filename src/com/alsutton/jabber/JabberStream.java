@@ -236,14 +236,11 @@ public class JabberStream implements XMLEventListener, Runnable {
      */
     
     public void send( JabberDataBlock block )  {
-//#ifdef CONSOLE
-//#         addLog(block.toString());
-//#endif
         new SendJabberDataBlock(block);
     }
 //#ifdef CONSOLE
 //#     private void addLog (String data) {
-//#         sl.add(data);
+//#         sl.add(data, 1);
 //#     }
 //#endif
     /**

@@ -26,14 +26,14 @@ import ui.YesNoAlert;
  */
 public class XMLList 
     extends MessageList
-    implements YesNoAlert.YesNoListener
 {
     
     StanzasList stanzas;
     private StaticData sd=StaticData.getInstance();
-    Command cmdDeleteAll=new Command(SR.MS_CLEAR_LIST, Command.SCREEN, 10);
-    Command cmdNew=new Command(SR.MS_NEW, Command.SCREEN, 5);
     
+    private Command cmdNew=new Command(SR.MS_NEW, Command.SCREEN, 5);
+    private Command cmdEnableDisable=new Command("Enable/Disable", Command.SCREEN, 6);
+    private Command cmdDeleteAll=new Command(SR.MS_CLEAR_LIST, Command.SCREEN, 10);    
     /** Creates a new instance of XMLList */
     public XMLList(Display display) {
         super ();
@@ -44,8 +44,9 @@ public class XMLList
         
 	addCommand(cmdBack);
         addCommand(cmdNew);
+        addCommand(cmdEnableDisable);
         addCommand(cmdDeleteAll);
-        
+
         attachDisplay(display);
         
         try {
@@ -57,7 +58,14 @@ public class XMLList
     }
     
     protected void beginPaint() {
-        getMainBarItem().setElementAt(" ("+getItemCount()+")",1);
+        StringBuffer str = new StringBuffer();
+        if (!stanzas.enabled)
+            str.append(" - Disabled");
+        str.append(" (");
+        str.append(getItemCount());
+        str.append(")");
+        
+        getMainBarItem().setElementAt(str.toString(),1);
     }
     
 
@@ -75,32 +83,33 @@ public class XMLList
         
 	Msg m=getMessage(cursor);
         if (c==cmdNew) { 
-            //new NewTemplate(display, where); 
+            new StanzaEdit(display, getMessage(cursor).toString()).setParentView(this);
+        }
+        if (c==cmdEnableDisable) {
+            stanzas.enabled=!stanzas.enabled;
+            redraw();
         }
 	if (m==null) return;
 
         if (c==cmdDeleteAll) { 
-            new YesNoAlert(display, SR.MS_DELETE, SR.MS_SURE_DELETE, this);
-            redraw(); 
+            deleteAllMessages();
         }
     }
     
     private void deleteAllMessages() {
-        stanzas.deleteAll();
-        messages=new Vector();
+        if (getItemCount()>0) {
+            stanzas.deleteAll();
+            messages=new Vector();
+        }
+        redraw(); 
     }
     
     
     public void keyClear() { 
-        if (getItemCount()>0) 
-            new YesNoAlert(display, SR.MS_DELETE, SR.MS_SURE_DELETE, this);
+        deleteAllMessages();
     }
     
     public void destroyView(){
 	super.destroyView();
-    }
-    
-    public void ActionConfirmed() {
-        deleteAllMessages();
     }
 }

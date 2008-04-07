@@ -123,60 +123,52 @@ public class JabberDataBlockDispatcher extends Thread
    * The thread loop that handles dispatching any waiting datablocks
    */
 
-  public void run()
-  {
-    dispatcherActive = true;
-    while( dispatcherActive )
-    {
-      while( waitingQueue.size() == 0 )
-      {
-        try
-        {
-          Thread.sleep( 100L );
-        }
-        catch( InterruptedException e )
-        { }
-      }
+    public void run(){
+        dispatcherActive = true;
+        while( dispatcherActive ) {
+            while( waitingQueue.size() == 0 ) {
+                try {
+                    Thread.sleep( 100L );
+                } catch( InterruptedException e ) { }
+            }
 
-      JabberDataBlock dataBlock = (JabberDataBlock) waitingQueue.elementAt(0);
-      waitingQueue.removeElementAt( 0 );
-      int i=0;
-      try {
-          int processResult=JabberBlockListener.BLOCK_REJECTED;
-          synchronized (blockListeners) {
-              while (i<blockListeners.size()) {
-                  processResult=((JabberBlockListener)blockListeners.elementAt(i)).blockArrived(dataBlock);
-                  if (processResult==JabberBlockListener.BLOCK_PROCESSED) break;
-                  if (processResult==JabberBlockListener.NO_MORE_BLOCKS) {
-                      blockListeners.removeElementAt(i); break;
-                  }
-                  i++;
-              }
-          }
+            JabberDataBlock dataBlock = (JabberDataBlock) waitingQueue.elementAt(0);
+            waitingQueue.removeElementAt( 0 );
+            int i=0;
+            try {
 //#ifdef CONSOLE
-//#           sl.add(dataBlock.toString());
+//#                 sl.add(dataBlock.toString(), 10);
 //#endif
-          if (processResult==JabberBlockListener.BLOCK_REJECTED)
-              if( listener != null )
-                  processResult=listener.blockArrived( dataBlock );
+                int processResult=JabberBlockListener.BLOCK_REJECTED;
+                synchronized (blockListeners) {
+                    while (i<blockListeners.size()) {
+                        processResult=((JabberBlockListener)blockListeners.elementAt(i)).blockArrived(dataBlock);
+                        if (processResult==JabberBlockListener.BLOCK_PROCESSED) break;
+                        if (processResult==JabberBlockListener.NO_MORE_BLOCKS) {
+                            blockListeners.removeElementAt(i); break;
+                        }
+                        i++;
+                    }
+                }
+                if (processResult==JabberBlockListener.BLOCK_REJECTED) {
+                    if( listener != null )
+                        processResult=listener.blockArrived( dataBlock );
 
-          if (processResult==JabberBlockListener.BLOCK_REJECTED) {
-              String type=dataBlock.getTypeAttribute();
-              if (type.equals("get") || type.equals("set")) {
-                  dataBlock.setAttribute("to", dataBlock.getAttribute("from"));
-                  dataBlock.setAttribute("from", null);
-                  dataBlock.setTypeAttribute("error");
-                  dataBlock.addChild(new XmppError(XmppError.FEATURE_NOT_IMPLEMENTED, null).construct());
-                  stream.send(dataBlock);
-              }
-              //TODO: reject iq stansas where type =="get" | "set"
-          }
-          
-      } catch (Exception e) {
-          //e.printStackTrace(); //error here
-      }
+                    String type=dataBlock.getTypeAttribute();
+                    if (type.equals("get") || type.equals("set")) {
+                        dataBlock.setAttribute("to", dataBlock.getAttribute("from"));
+                        dataBlock.setAttribute("from", null);
+                        dataBlock.setTypeAttribute("error");
+                        dataBlock.addChild(new XmppError(XmppError.FEATURE_NOT_IMPLEMENTED, null).construct());
+                        stream.send(dataBlock);
+                    }
+                    //TODO: reject iq stansas where type =="get" | "set"
+                }
+            } catch (Exception e) {
+            //e.printStackTrace(); //error here
+            }
+        }
     }
-  }
 
   public void rosterNotify(){
     listener.rosterItemNotify();

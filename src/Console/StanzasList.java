@@ -20,6 +20,8 @@ public class StanzasList {
     
     Vector stanzas=new Vector();
     
+    boolean enabled = false;
+    
     private static StanzasList instance;
     
     public static StanzasList getInstance(){
@@ -36,16 +38,14 @@ public class StanzasList {
 	} catch (Exception e) {}
 	return null;
     }
-    /*
-    public void add(Msg msg) {
+
+    public void add(String msg, int type) {
 	try {
-	    stanzas.insertElementAt(msg,0);
-	} catch (Exception e) {}
-    }
-    */
-    public void add(String msg) {
-	try {
-	    stanzas.insertElementAt(new Msg(Msg.MESSAGE_TYPE_IN, "local", null, msg.toString()),0);
+            if (enabled) {
+                Msg stanza=new Msg(type, "local", null, msg.toString());
+                stanza.itemCollapsed=true;
+                stanzas.addElement(stanza);
+            }
 	} catch (Exception e) {}
     }
 
