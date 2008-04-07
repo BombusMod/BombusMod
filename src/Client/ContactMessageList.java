@@ -548,5 +548,9 @@ public class ContactMessageList extends MessageList
 //#         }
 //#     }
 //#endif
-
+    public void destroyView(){
+        sd.roster.reEnumRoster(); //to reset unread messages icon for this conference in roster
+        if (display!=null)
+            display.setCurrent(parentView);
+    }
 }

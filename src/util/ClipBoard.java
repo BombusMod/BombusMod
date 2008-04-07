@@ -52,10 +52,9 @@ public class ClipBoard
 
     public boolean isEmpty() {
         boolean empty = true;
-        if (clipBoard==null)
+        if (clipBoard!=null)
             if (clipBoard.length()>0)
                 empty = false;
-        
         return empty;
     }
 }
