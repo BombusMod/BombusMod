@@ -150,10 +150,11 @@ public class JabberDataBlockDispatcher extends Thread
                         i++;
                     }
                 }
-                if (processResult==JabberBlockListener.BLOCK_REJECTED) {
+                if (processResult==JabberBlockListener.BLOCK_REJECTED)
                     if( listener != null )
                         processResult=listener.blockArrived( dataBlock );
-
+                
+                if (processResult==JabberBlockListener.BLOCK_REJECTED) {
                     String type=dataBlock.getTypeAttribute();
                     if (type.equals("get") || type.equals("set")) {
                         dataBlock.setAttribute("to", dataBlock.getAttribute("from"));

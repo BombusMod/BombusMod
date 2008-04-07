@@ -51,7 +51,10 @@ public class IEMenu
         }
         choice = index;
         
-        if (choice>-1)
+        if (choice==0)
+            new Browser(null, display, this, false);
+        
+        if (choice==1)
             new Browser(null, display, this, true);
         
         

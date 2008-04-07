@@ -1309,24 +1309,29 @@ public class Roster
                 } else 
                 if (type.equals("get")){
                     JabberDataBlock query=data.getChildBlock("query");
+                    
+                    Contact c=getContact(from, true);
+                    boolean reply = true;
+                    if (myStatus==Presence.PRESENCE_INVISIBLE) reply = false;
+                    if (c instanceof MucContact) reply = true;
+                    
                     if (query!=null){
-                        Contact c=getContact(from, true);
                         if (query.isJabberNameSpace("jabber:iq:version")) {
                             c.setIncoming(Contact.INC_VIEWING);
-                            if (myStatus!=Presence.PRESENCE_INVISIBLE)
+                            if (reply)
                                 theStream.send(new IqVersionReply(data));
                             return JabberBlockListener.BLOCK_PROCESSED;                            
                         }
                         //DEPRECATED
                         if (query.isJabberNameSpace("jabber:iq:time")) {
                             c.setIncoming(Contact.INC_VIEWING);
-                            if (myStatus!=Presence.PRESENCE_INVISIBLE)
+                            if (reply)
                                 theStream.send(new IqTimeReply(data));
                             return JabberBlockListener.BLOCK_PROCESSED;
                         }
                         if (query.isJabberNameSpace("jabber:iq:last")) {
                             c.setIncoming(Contact.INC_VIEWING);
-                            if (myStatus!=Presence.PRESENCE_INVISIBLE)
+                            if (reply)
                                 theStream.send(new IqLast(data, lastMessageTime));
                             return JabberBlockListener.BLOCK_PROCESSED;
                         }
@@ -1340,13 +1345,13 @@ public class Roster
                     }
                     // ��������� �� ������ ���������� ������� ������� XEP-0202
                     if (data.findNamespace("time", "urn:xmpp:time")!=null) {
-                        if (myStatus!=Presence.PRESENCE_INVISIBLE)
+                        if (reply)
                             theStream.send(new IqTimeReply(data));
                         return JabberBlockListener.BLOCK_PROCESSED;
                     }
                     // xep-0199 ping
                     if (data.findNamespace("ping", "urn:xmpp:ping")!=null) {
-                        if (myStatus!=Presence.PRESENCE_INVISIBLE)
+                        if (reply)
                             theStream.send(new Iq(from, Iq.TYPE_RESULT, data.getAttribute("id")));
                         return JabberBlockListener.BLOCK_PROCESSED;
                     }
@@ -1372,6 +1377,7 @@ public class Roster
                             }
                         }
                     }
+                    /*
                     // error on request version
                     JabberDataBlock query=data.getChildBlock("query");
                     if (query!=null){
@@ -1388,7 +1394,7 @@ public class Roster
                                 }
                             }
                         }
-                    }
+                    }*/
                 }
             }
             

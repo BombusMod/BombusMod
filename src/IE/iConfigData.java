@@ -25,7 +25,7 @@ public class iConfigData {
 
     public iConfigData(String path) {
         Config cf=Config.getInstance();
-        iData idata = new iData(path+"config.txt");
+        iData idata = new iData(path);
         array = idata.iData();
         
         cf.accountIndex=cf.getIntProperty(getValue("accountIndex"),-1);
