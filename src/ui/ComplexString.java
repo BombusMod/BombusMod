@@ -37,7 +37,7 @@ import Colors.Colors;
  *
  * @author Eugene Stahov
  */
-public class ComplexString extends Vector implements VirtualElement{
+public class ComplexString extends Vector implements VirtualElement {
 
     //private Vector v;
     public final static int IMAGE     = 0x00000000;
@@ -183,9 +183,7 @@ public class ComplexString extends Vector implements VirtualElement{
                     int cliph=g.getClipHeight();
                     ((VirtualElement)ob).drawItem(g,0,false);
                     g.setClip(g.getTranslateX(), g.getTranslateY(), clipw, cliph);
-                    //TODO: рисование не с нулевой позиции и вычисление ширины
                 }
-
             } // if ob!=null
         } // for
         

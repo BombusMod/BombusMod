@@ -39,6 +39,14 @@ public class ColorScheme {
     static Colors instance=Colors.getInstance();
     
 //#if NICK_COLORS
+//#     /*
+//# purple 0x800080
+//# red 0xff0000
+//# orange 0xffa500
+//# green 0x008000
+//# blue 0x0000ff
+//#      */
+//#     
 //#     public static int strong(int color) {
 //#         if (color==instance.MESSAGE_IN) {
 //#             return instance.MESSAGE_IN_S;

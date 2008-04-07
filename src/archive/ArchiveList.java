@@ -238,13 +238,17 @@ public class ArchiveList
 	    break;
 	default:
 	    data=m.quoteString();
-            //data=m.getBody();
 	}
 	sd.roster.me.insertText(data, caretPos);
 	destroyView();
     }
     
     public void keyGreen() { pasteData(0); }
+    
+    public void keyClear() { 
+        if (getItemCount()>0) 
+            new YesNoAlert(display, SR.MS_DELETE, SR.MS_SURE_DELETE, this);
+    }
     
     public void focusedItem(int index) {
 	if (sd.roster.me==null) return;
@@ -389,13 +393,6 @@ public class ArchiveList
     public void destroyView(){
 	super.destroyView();
 	archive.close();
-    }
-	
-    public void userKeyPressed(int keyCode) {
-       super.userKeyPressed(keyCode);
-        if (keyCode==keyClear) {
-            if (getItemCount()>0) new YesNoAlert(display, SR.MS_DELETE, SR.MS_SURE_DELETE, this);
-        }
     }
 	
     public void ActionConfirmed() {

@@ -99,15 +99,14 @@ public class ActiveContacts
 	if (c==cmdSelect) eventOk();
     }
     
+    
+    
     public void keyPressed(int keyCode) {
 //#ifdef POPUPS
 //#         VirtualList.popup.next();
 //#endif
 	if (keyCode==KEY_NUM3) {
             destroyView();
-        } else if (keyCode==keyClear) {
-            Contact c=(Contact)getFocusedObject();
-            c.purge();
         } else if (keyCode==KEY_NUM0) {
             if (getItemCount()<1)
                 return;
@@ -142,6 +141,11 @@ public class ActiveContacts
     
     protected void keyGreen(){
         eventOk();
+    }
+    
+    protected void keyClear () {
+        Contact c=(Contact)getFocusedObject();
+        c.purge();
     }
     
     public void destroyView(){

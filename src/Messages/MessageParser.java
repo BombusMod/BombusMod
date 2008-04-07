@@ -1,5 +1,5 @@
 /*
- * SmileTree.java
+ * MessageParser.java
  *
  * Created on 6.02.2005, 19:38
  * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
@@ -299,33 +299,32 @@ public final class MessageParser implements Runnable{
 //**************************
 //#ifdef SMILES
 //#                 if (smileIndex>=0 && task.smilesEnabled()) {
-//# 					if (wordStartPos!=smileStartPos) {
-//# 						s.append(txt.substring(wordStartPos, smileStartPos));
-//# 	                    w+=wordWidth;
-//# 	                    wordWidth=0;
-//# 					}
-//#                      if (s.length()>0) {
-//#                          if (underline) l.addUnderline();
-//#                          l.addElement(s.toString());
-//#                      }
-//#                      s.setLength(0);
-//#                      int iw=(smileIndex<0x01000000)? il.getWidth() : 0;
-//#                      if (w+iw>width) {
-//#                          task.notifyRepaint(lines, task.msg, false);
-//#                          l=new ComplexString(il);
-//#                          lines.addElement(l);
-//#                          
-//#                          if (singleLine) {
-//#                              return;
-//#                          }
-//#                          
-//#                          l.setColor(color);
-//#                          l.setFont(f);
-//#                          w=0;
-//#                      }
-//#                      l.addImage(smileIndex); w+=iw;
-//#                      pos=smileEndPos;
-//# 					 wordStartPos=pos+1;
+//#                     if (wordStartPos!=smileStartPos) {
+//#                         s.append(txt.substring(wordStartPos, smileStartPos));
+//#                         w+=wordWidth;
+//#                         wordWidth=0;
+//#                     }
+//#                     if (s.length()>0) {
+//#                         if (underline)
+//#                             l.addUnderline();
+//#                         l.addElement(s.toString());
+//#                     }
+//#                     s.setLength(0);
+//#                     int iw=(smileIndex<0x01000000)? il.getWidth() : 0;
+//#                     if (w+iw>width) {
+//#                         task.notifyRepaint(lines, task.msg, false);
+//#                         l=new ComplexString(il);
+//#                         lines.addElement(l);
+//# 
+//#                         if (singleLine) return;
+//# 
+//#                         l.setColor(color);
+//#                         l.setFont(f);
+//#                         w=0;
+//#                     }
+//#                     l.addImage(smileIndex); w+=iw;
+//#                     pos=smileEndPos;
+//#                     wordStartPos=pos+1;
 //#                  } else {
 //#endif
                     pos=smileStartPos;
@@ -385,10 +384,8 @@ public final class MessageParser implements Runnable{
  	    if (wordStartPos!=pos)
                 s.append(txt.substring(wordStartPos,pos));
             if (s.length()>0) {
-                    if (underline) {
-                            l.addUnderline();
-                    }
-                    l.addElement(s.toString());
+                if (underline) l.addUnderline();
+                l.addElement(s.toString());
             }
              
             if (l.isEmpty())
@@ -398,7 +395,7 @@ public final class MessageParser implements Runnable{
             state++;
             s.setLength(0);
         }
-}
+    }
     
 
     public interface MessageParserNotify {
