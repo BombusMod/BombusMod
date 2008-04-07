@@ -1140,7 +1140,6 @@ public class Roster
                         theStream.pingSent=false; //incomplete, test on jabber:iq:version
                     
                     if (id.startsWith("nickvc")) {
-                        
                         if (type.equals("get") || type.equals("set")) return JabberBlockListener.BLOCK_REJECTED;
                         
                         VCard vc=new VCard(data);//.getNickName();
@@ -1314,18 +1313,21 @@ public class Roster
                         Contact c=getContact(from, true);
                         if (query.isJabberNameSpace("jabber:iq:version")) {
                             c.setIncoming(Contact.INC_VIEWING);
-                            theStream.send(new IqVersionReply(data));
+                            if (myStatus!=Presence.PRESENCE_INVISIBLE)
+                                theStream.send(new IqVersionReply(data));
                             return JabberBlockListener.BLOCK_PROCESSED;                            
                         }
                         //DEPRECATED
                         if (query.isJabberNameSpace("jabber:iq:time")) {
                             c.setIncoming(Contact.INC_VIEWING);
-                            theStream.send(new IqTimeReply(data));
+                            if (myStatus!=Presence.PRESENCE_INVISIBLE)
+                                theStream.send(new IqTimeReply(data));
                             return JabberBlockListener.BLOCK_PROCESSED;
                         }
                         if (query.isJabberNameSpace("jabber:iq:last")) {
                             c.setIncoming(Contact.INC_VIEWING);
-                            theStream.send(new IqLast(data, lastMessageTime));
+                            if (myStatus!=Presence.PRESENCE_INVISIBLE)
+                                theStream.send(new IqLast(data, lastMessageTime));
                             return JabberBlockListener.BLOCK_PROCESSED;
                         }
 //#ifdef CHECKERS
@@ -1338,13 +1340,14 @@ public class Roster
                     }
                     // ��������� �� ������ ���������� ������� ������� XEP-0202
                     if (data.findNamespace("time", "urn:xmpp:time")!=null) {
-                        theStream.send(new IqTimeReply(data));
+                        if (myStatus!=Presence.PRESENCE_INVISIBLE)
+                            theStream.send(new IqTimeReply(data));
                         return JabberBlockListener.BLOCK_PROCESSED;
                     }
                     // xep-0199 ping
                     if (data.findNamespace("ping", "urn:xmpp:ping")!=null) {
-                        Iq pong=new Iq(from, Iq.TYPE_RESULT, data.getAttribute("id"));
-                        theStream.send(pong);
+                        if (myStatus!=Presence.PRESENCE_INVISIBLE)
+                            theStream.send(new Iq(from, Iq.TYPE_RESULT, data.getAttribute("id")));
                         return JabberBlockListener.BLOCK_PROCESSED;
                     }
                 } else if (type.equals("set")) {
@@ -1565,7 +1568,7 @@ public class Roster
                 }
                 
                 //boolean compose=false;
-                if (type.equals("chat")) {
+                if (type.equals("chat") && myStatus!=Presence.PRESENCE_INVISIBLE) {
                     if (message.findNamespace("request", "urn:xmpp:receipts")!=null) {
                         sendDeliveryMessage(c, data.getAttribute("id"));
                     }
@@ -1621,27 +1624,24 @@ public class Roster
                         // highliting messages with myNick substring
 	                String myNick=mucGrp.getSelfContact().getName();
 			if (body.indexOf(myNick)>-1) {
-                                //highlite |= body.indexOf(myNick)>-1;
-	                        if (body.indexOf("> "+myNick+": ")>-1)
-	                            highlite=true;
-	                        else if (body.indexOf(" "+myNick+">")>-1)
-	                            highlite=true;
-	                        else if (body.indexOf(" "+myNick+",")>-1)
-	                            highlite=true;
-	                        else if (body.indexOf(": "+myNick+": ")>-1)
-	                            highlite=true;
-	                        else if (body.indexOf(" "+myNick+" ")>-1)
-	                            highlite=true;
-	                        else if (body.indexOf(", "+myNick)>-1)
-	                            highlite=true;
-	                        else if (body.endsWith(" "+myNick))
-	                            highlite=true;
-	                        else if (body.indexOf(" "+myNick+"?")>-1)
-	                            highlite=true;
-	                        else if (body.indexOf(" "+myNick+"!")>-1)
-	                            highlite=true;
-	                        else if (body.indexOf(" "+myNick+".")>-1) 
-                                    highlite=true;
+                            if (body.indexOf("> "+myNick+": ")>-1)
+                                highlite=true;
+                            else if (body.indexOf(" "+myNick+",")>-1)
+                                highlite=true;
+                            else if (body.indexOf(": "+myNick+": ")>-1)
+                                highlite=true;
+                            else if (body.indexOf(" "+myNick+" ")>-1)
+                                highlite=true;
+                            else if (body.indexOf(", "+myNick)>-1)
+                                highlite=true;
+                            else if (body.endsWith(" "+myNick))
+                                highlite=true;
+                            else if (body.indexOf(" "+myNick+"?")>-1)
+                                highlite=true;
+                            else if (body.indexOf(" "+myNick+"!")>-1)
+                                highlite=true;
+                            else if (body.indexOf(" "+myNick+".")>-1) 
+                                highlite=true;
 			}
                         //TODO: custom highliting dictionary
                         m.setHighlite(highlite); 
