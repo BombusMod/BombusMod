@@ -39,7 +39,7 @@ public class Mood extends IconTextElement {
     private String locale;
 
     public Mood(int id, String name, String locale, String text) {
-        super(MoodIcons.getInstance());
+        super(MoodIcons.getInstance(), null);
         this.name=name;
         this.locale=locale;
         this.id=id;

@@ -44,7 +44,7 @@ public class MenuItem extends IconTextElement
     private int iconIndex;
     
     public MenuItem(String name, int index, int iconIndex) {
-        super(RosterIcons.getInstance());
+        super(RosterIcons.getInstance(), null);
         this.index=index;
 	this.name=name;
         this.iconIndex=iconIndex;

@@ -48,13 +48,14 @@ public final class MessageParser implements Runnable{
     private Vector smileTable;
 
     private Leaf root;
-
+    private Leaf emptyRoot;
+    
     // Singleton
     private static MessageParser instance=null;
     
     private int width; // window width
 //#ifdef SMILES 
-//#     private ImageList il;
+//#     private ImageList smileImages;
 //#endif
     private Vector tasks=new Vector();
     
@@ -94,8 +95,8 @@ public final class MessageParser implements Runnable{
         }
     }
   
-    private void addSmile(String smile, int index) {
-	Leaf p=root;
+    private void addSmile(Leaf rootSmile, String smile, int index) {
+	Leaf p=rootSmile;
 	Leaf p1;
 	
 	int len=smile.length();
@@ -117,7 +118,7 @@ public final class MessageParser implements Runnable{
             wordsWrap=Config.getInstance().textWrap==1;
             messageItem.msgLines=new Vector();
 //#ifdef SMILES
-//#             this.il=(messageItem.smilesEnabled())? SmilesIcons.getInstance() : null;
+//#             this.smileImages=SmilesIcons.getInstance();
 //#endif
             this.width=width;
 
@@ -176,7 +177,7 @@ public final class MessageParser implements Runnable{
 //#                         String smile=strconv.convCp1251ToUnicode(s.toString());
 //#                         if (firstSmile) smileTable.addElement(smile);
 //# 
-//#                         addSmile(smile,strnumber);
+//#                         addSmile(root, smile, strnumber);
 //# 
 //#                         s.setLength(0);
 //#                         firstSmile=false;
@@ -198,15 +199,30 @@ public final class MessageParser implements Runnable{
 //#             s.setLength(0);
 //#         }
 //#endif
- 	addSmile("http://",URL);
+        
+        
+        
+        
+ 	addSmile(root, "http://", URL);
+        addSmile(root, "tel://",URL);
+        addSmile(root, "ftp://",URL);
+        addSmile(root, "https://",URL);
+        addSmile(root, "native:",URL);
 //#if NICK_COLORS
-//#         addSmile("\01", ComplexString.NICK_ON);
-//#         addSmile("\02", ComplexString.NICK_OFF);
+//#         addSmile(root, "\01", ComplexString.NICK_ON);
+//#         addSmile(root, "\02", ComplexString.NICK_OFF);
 //#endif
-        addSmile("tel://",URL);
-        addSmile("ftp://",URL);
-        addSmile("https://",URL);
-        addSmile("native:",URL);
+        
+        emptyRoot=new Leaf();
+	addSmile(emptyRoot, "http://", URL);
+        addSmile(emptyRoot, "tel://",URL);
+        addSmile(emptyRoot, "ftp://",URL);
+        addSmile(emptyRoot, "https://",URL);
+        addSmile(emptyRoot, "native:",URL);
+//#if NICK_COLORS
+//#         addSmile(emptyRoot, "\01", ComplexString.NICK_ON);
+//#         addSmile(emptyRoot, "\02", ComplexString.NICK_OFF);
+//#endif
     }
     
     private void parseMessage(final MessageItem task) {
@@ -214,6 +230,8 @@ public final class MessageParser implements Runnable{
         boolean singleLine=task.msg.itemCollapsed;
         
         boolean underline=false;
+        
+        Leaf smileRoot=(task.smilesEnabled())? root: emptyRoot;
         
         int state=0;
         if (task.msg.subject==null) state=1;
@@ -223,7 +241,7 @@ public final class MessageParser implements Runnable{
 	    int wordWidth=0;
 	    int wordStartPos=0;
 //#ifdef SMILES
-//#             ComplexString l=new ComplexString(il);
+//#             ComplexString l=new ComplexString(smileImages);
 //#else
             ComplexString l=new ComplexString();
 //#endif
@@ -246,7 +264,7 @@ public final class MessageParser implements Runnable{
             
             int pos=0;
             while (pos<txt.length()) {
-                Leaf smileLeaf=root;
+                Leaf smileLeaf=smileRoot;
                 int smileIndex=-1;
                 int smileStartPos=pos;
                 int smileEndPos=pos;
@@ -297,7 +315,7 @@ public final class MessageParser implements Runnable{
                 }
 //**************************
 //#ifdef SMILES
-//#                 if (smileIndex>=0 && task.smilesEnabled()) {
+//#                 if (smileIndex>=0) {
 //#                     if (wordStartPos!=smileStartPos) {
 //#                         s.append(txt.substring(wordStartPos, smileStartPos));
 //#                         w+=wordWidth;
@@ -309,10 +327,10 @@ public final class MessageParser implements Runnable{
 //#                         l.addElement(s.toString());
 //#                     }
 //#                     s.setLength(0);
-//#                     int iw=(smileIndex<0x01000000)? il.getWidth() : 0;
+//#                     int iw=(smileIndex<0x01000000)? smileImages.getWidth() : 0;
 //#                     if (w+iw>width) {
 //#                         task.notifyRepaint(lines, task.msg, false);
-//#                         l=new ComplexString(il);
+//#                         l=new ComplexString(smileImages);
 //#                         lines.addElement(l);
 //# 
 //#                         if (singleLine) return;
@@ -346,7 +364,7 @@ public final class MessageParser implements Runnable{
 
                             if (c==0xa0) l.setColor(Colors.MSG_HIGHLIGHT);
 //#ifdef SMILES
-//#                             l=new ComplexString(il);
+//#                             l=new ComplexString(smileImages);
 //#else
                             l=new ComplexString();
 //#endif

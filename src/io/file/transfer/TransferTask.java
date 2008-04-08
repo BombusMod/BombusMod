@@ -79,7 +79,7 @@ public class TransferTask
     
     /** Creates TransferTask for incoming file */
     public TransferTask(String jid, String id, String sid, String name, String description, int size, Vector methods) {
-        super(RosterIcons.getInstance());
+        super(RosterIcons.getInstance(), null);
         state=IN_ASK;
         showEvent=true;
         this.jid=jid;
@@ -95,7 +95,7 @@ public class TransferTask
      * Sending constructor
      */
     public TransferTask(String jid, String sid, String fileName, String description) {
-        super(RosterIcons.getInstance());
+        super(RosterIcons.getInstance(), null);
         state=HANDSHAKE;
         sending=true;
         //showEvent=true;

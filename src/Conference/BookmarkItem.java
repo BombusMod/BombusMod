@@ -66,7 +66,7 @@ public class BookmarkItem extends IconTextElement{
     
     /** Creates a new instance of BookmarkItem */
     public BookmarkItem() {
-        super(RosterIcons.getInstance());
+        super(RosterIcons.getInstance(), null);
     }
     
     public BookmarkItem(JabberDataBlock data) {

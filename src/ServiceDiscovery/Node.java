@@ -44,7 +44,7 @@ public class Node extends IconTextElement{
     public int getColor() { return Colors.LIST_INK; }
     /** Creates a new instance of Item */
     public Node(String name, String node) {
-        super(RosterIcons.getInstance());
+        super(RosterIcons.getInstance(), null);
         this.name=name;
         this.node=node;
     }

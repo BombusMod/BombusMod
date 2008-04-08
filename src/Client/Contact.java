@@ -39,6 +39,7 @@ import History.HistoryStorage;
 
 import UserMood.Mood;
 import UserMood.MoodList;
+import images.MoodIcons;
 
 import images.RosterIcons;
 import Colors.Colors;
@@ -165,7 +166,7 @@ public class Contact extends IconTextElement{
     private boolean loaded=false;
 
     protected Contact (){
-        super(RosterIcons.getInstance());
+        super(RosterIcons.getInstance(), MoodIcons.getInstance());
         msgs=new Vector();
         key1="";
     }
@@ -209,18 +210,6 @@ public class Contact extends IconTextElement{
     }
 
     public int getImageIndex() {
-//#ifdef ANTISPAM
-//#         if (!tempMsgs.isEmpty())
-//#             return RosterIcons.ICON_AUTHRQ_INDEX;
-//#endif
-       
-        if (getNewMsgsCount()>0)  {
-            switch (unreadType) {
-                case Msg.MESSAGE_TYPE_AUTH: return RosterIcons.ICON_AUTHRQ_INDEX;
-                default: return RosterIcons.ICON_MESSAGE_INDEX;
-            }
-        }
-
         int st=(status==Presence.PRESENCE_OFFLINE)?offline_type:status;
         if (st<8) st+=transport; 
         return st;
@@ -579,6 +568,16 @@ public class Contact extends IconTextElement{
     }
     
     public int getSecImageIndex() {
+//#ifdef ANTISPAM
+//#         if (!tempMsgs.isEmpty())
+//#             return 2003;
+//#endif
+        if (getNewMsgsCount()>0)  {
+            switch (unreadType) {
+                case Msg.MESSAGE_TYPE_AUTH: return 2003;
+                default: return 2004;
+            }
+        }
         if (showComposing==true) 
             return 1001;
 

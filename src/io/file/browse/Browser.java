@@ -231,7 +231,7 @@ public class Browser extends VirtualList implements CommandListener{
         private int iconIndex;
         
         public FileItem(String name) {
-            super(RosterIcons.getInstance());
+            super(RosterIcons.getInstance(), null);
             this.name=name;
             //TODO: file icons
             iconIndex=name.endsWith("/")? RosterIcons.ICON_COLLAPSED_INDEX: RosterIcons.ICON_PRIVACY_ACTIVE;

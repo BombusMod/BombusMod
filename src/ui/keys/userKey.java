@@ -47,7 +47,7 @@ public class userKey extends IconTextElement {
     public boolean active    = false;
 
     public userKey() {
-        super(RosterIcons.getInstance());
+        super(RosterIcons.getInstance(), null);
     }
     
     public static userKey loadUserKey(int index){

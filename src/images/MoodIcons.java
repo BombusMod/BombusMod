@@ -15,7 +15,7 @@ import ui.ImageList;
  *
  * @author ad
  */
-public class MoodIcons extends ImageList{
+public class MoodIcons extends ImageList {
     
     private final static int MOODS_IN_ROW=16;
 

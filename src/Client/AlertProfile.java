@@ -86,7 +86,7 @@ public class AlertProfile extends VirtualList implements CommandListener {
     
     private class Profile extends IconTextElement {
         public Profile(){
-            super(RosterIcons.getInstance());
+            super(RosterIcons.getInstance(), null);
         }
         //public void onSelect(){}
         public int getColor(){ return Colors.LIST_INK; }

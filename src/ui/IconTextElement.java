@@ -38,15 +38,17 @@ abstract public class IconTextElement implements VirtualElement
     int itemHeight;
     int imageYOfs;
     int fontYOfs;
-    int imgWidth;
     
     ImageList il;
-    MoodIcons mi=(MoodIcons) MoodIcons.getInstance();
+    ImageList mi;
     
     int heightFirstLine=0;
 
-    int miHeightImage;
-    int miImgWidth;
+    private int miImageSize;
+    private int ilImageSize;
+
+    private int fontHeight;
+    //private int heightSecondFont;
     
     abstract protected int getImageIndex();
     
@@ -61,15 +63,16 @@ abstract public class IconTextElement implements VirtualElement
             FontCache.getRosterNormalFont():
             FontCache.getRosterBoldFont();
     }
+/*
     private Font getSmallFont() {
         return FontCache.getBalloonFont();
     }
-    
+*/
     public void drawItem(Graphics g, int ofs, boolean sel){
        g.setFont(getFont());
        
        String str=toString();
-       int offset=4+imgWidth;
+       int offset=4+ilImageSize;
 //#ifdef SECONDSTRING
 //#        String secstr="";
 //#        if (hasSecondString()) {
@@ -77,10 +80,9 @@ abstract public class IconTextElement implements VirtualElement
 //#        }
 //#endif
        
-       if (il!=null) 
-           il.drawImage(g, getImageIndex(), 2, imageYOfs);
-       
-       int heightSecondImg=il.getHeight();
+       if (il!=null)
+           drawPic(g, il, getImageIndex(), 2, imageYOfs);
+
         if (getSecImageIndex()>-1) {
             int secImgY = imageYOfs;
 //#ifdef SECONDSTRING
@@ -89,28 +91,41 @@ abstract public class IconTextElement implements VirtualElement
 //#                 secImgY = imageYOfs+il.getHeight();
 //#             }
 //#endif
-            if (getSecImageIndex()==1001) {
-                il.drawImage(g, RosterIcons.ICON_COMPOSING_INDEX, offset, secImgY);
-                offset=offset+imgWidth+2;
-            } else if (getSecImageIndex()==2001) {
-                il.drawImage(g, RosterIcons.ICON_APPEARING_INDEX, offset, secImgY);
-                offset=offset+imgWidth+2;
-            }  else if (getSecImageIndex()==2002) {
-                il.drawImage(g, RosterIcons.ICON_VIEWING_INDEX, offset, secImgY);
-                offset=offset+imgWidth+2;
-            } else {
-                mi.getInstance().drawImage(g, getSecImageIndex(), offset, secImgY);
-                offset=offset+miImgWidth+2;
-                heightSecondImg=mi.getHeight();
+            switch (getSecImageIndex()) {
+                case 1001:
+                    drawPic(g, il, RosterIcons.ICON_COMPOSING_INDEX, offset, secImgY);
+                    offset=offset+ilImageSize+2;
+                    break;
+                case 2001:
+                    drawPic(g, il, RosterIcons.ICON_APPEARING_INDEX, offset, secImgY);
+                    offset=offset+ilImageSize+2;
+                    break;
+                case 2002:
+                    drawPic(g, il, RosterIcons.ICON_VIEWING_INDEX, offset, secImgY);
+                    offset=offset+ilImageSize+2;
+                    break;
+                case 2003:
+                    drawPic(g, il, RosterIcons.ICON_AUTHRQ_INDEX, offset, secImgY);
+                    offset=offset+ilImageSize+2;
+                    break;
+                case 2004:
+                    drawPic(g, il, RosterIcons.ICON_MESSAGE_INDEX, offset, secImgY);
+                    offset=offset+ilImageSize+2;
+                    break;
+                default:
+                    drawPic(g, mi, getSecImageIndex(), offset, secImgY);
+                    offset=offset+miImageSize+2;
             }
+            miImageSize=mi.getHeight();
+        } else {
+            miImageSize=0;
         }
 //#ifdef SECONDSTRING
-//#        int heightSecondString = heightSecondImg;
 //#        if (hasSecondString()) {
-//#            itemHeight=heightFirstLine+((getSmallFont().getHeight()>heightSecondImg)?getSmallFont().getHeight()-3:heightSecondImg);
+//#            itemHeight=heightFirstLine+((fontHeight>miImageSize)?fontHeight-3:miImageSize);
 //#        } else
 //#endif
-           itemHeight=(heightFirstLine>heightSecondImg)?heightFirstLine:heightSecondImg;
+           itemHeight=(heightFirstLine>miImageSize)?heightFirstLine:miImageSize;
            
        g.clipRect(offset, 0, g.getClipWidth(), itemHeight);
        
@@ -118,27 +133,26 @@ abstract public class IconTextElement implements VirtualElement
        
 //#ifdef SECONDSTRING
 //#        if (hasSecondString()) {
-//#            g.setFont(getSmallFont());
-//#            g.drawString(secstr, offset-ofs, fontYOfs+getFont().getHeight(), Graphics.TOP|Graphics.LEFT);
+//#            //g.setFont(getSmallFont());
+//#            g.drawString(secstr, offset-ofs, fontYOfs+fontHeight-3, Graphics.TOP|Graphics.LEFT);
 //#        }
 //#endif
     }
+    
+    private void drawPic(Graphics g, ImageList i, int iconNum, int x, int y) {
+        i.drawImage(g, iconNum, x, y);
+    }
 
     public int getVWidth(){ 
-        try {
-            int wft=getFont().stringWidth(toString());
+        int wft=getFont().stringWidth(toString());
 //#ifdef SECONDSTRING
-//#             int wst=0;
-//#             String secstr=getSecondString();
-//#             if (hasSecondString())
-//#                 wst=getSmallFont().stringWidth(secstr)+imgWidth+2;
-//#             return ((wft>wst)?wft:wst)+imgWidth+4;   
+//#         int wst=0;
+//#         if (hasSecondString())
+//#             wst=getFont().stringWidth(getSecondString());
+//#         return ((wft>wst)?wft:wst)+ilImageSize+4;   
 //#else
-            return wft+imgWidth+4;
+            return wft+ilImageSize+4;
 //#endif
-        } catch (Exception e) {
-            return 0;
-        }
     }
     
     public int getVHeight(){ 
@@ -148,22 +162,21 @@ abstract public class IconTextElement implements VirtualElement
 
     public void onSelect(){ };
     
-    public IconTextElement(ImageList il) {
+    public IconTextElement(ImageList il, ImageList mi) {
         super();
         this.il=il;
-        int heightFont=FontCache.getRosterNormalFont().getHeight();
-        int heightImage=0;
+        this.mi=mi;
+        fontHeight=FontCache.getRosterNormalFont().getHeight();
+        //heightSecondFont=FontCache.getBalloonFont().getHeight();
 	if (il!=null){
-	    heightImage=il.getHeight();
-            imgWidth=il.getWidth();
+	    ilImageSize=il.getHeight();
 	}
 	if (mi!=null){
-	    miHeightImage=mi.getHeight();
-            miImgWidth=mi.getWidth();
+	    miImageSize=mi.getHeight();
 	}
-        itemHeight=heightFirstLine=(heightImage>heightFont)?heightImage:heightFont;
-        imageYOfs=(itemHeight-heightImage)/2;
-        fontYOfs=(itemHeight-heightFont+2)/2;
+        itemHeight=heightFirstLine=(ilImageSize>fontHeight)?ilImageSize:fontHeight;
+        imageYOfs=(itemHeight-ilImageSize)/2;
+        fontYOfs=(itemHeight-fontHeight+2)/2;
     }
 
     public String getTipString() {

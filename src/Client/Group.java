@@ -59,7 +59,7 @@ public class Group extends IconTextElement {
     protected boolean collapsed;
 
     public Group(String name /*, String label*/) {
-        super(RosterIcons.getInstance());
+        super(RosterIcons.getInstance(), null);
         this.name=name;
         /*this.label=label;*/
         
