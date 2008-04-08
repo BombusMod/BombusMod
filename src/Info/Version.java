@@ -40,6 +40,8 @@ public class Version {
     
     public static String getVersionNumber() { return version; }
     
+    public static String getNameVersion() { return NAME+" "+version; }
+    
     public static String getUrl() { return BOMBUS_SITE_URL; }
 
 }

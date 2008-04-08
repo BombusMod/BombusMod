@@ -46,7 +46,7 @@ public class EntityCaps implements JabberBlockListener{
         JabberDataBlock identity=query.addChild("identity", null);
         identity.setAttribute("category", BOMBUS_ID_CATEGORY);
         identity.setAttribute("type", BOMBUS_ID_TYPE);
-        identity.setAttribute("name", Version.NAME);
+        identity.setAttribute("name", Version.getNameVersion());
 
         for (int i=0; i<features.size(); i++) {
             query.addChild("feature", null).setAttribute("var",(String)features.elementAt(i));
@@ -69,7 +69,7 @@ public class EntityCaps implements JabberBlockListener{
         
         //indentity
         sha1.update(BOMBUS_ID_CATEGORY+"/"+BOMBUS_ID_TYPE+"//");
-        sha1.update(Version.NAME);
+        sha1.update(Version.getNameVersion());
         sha1.update("<");
         
         for (int i=0; i<features.size(); i++) {

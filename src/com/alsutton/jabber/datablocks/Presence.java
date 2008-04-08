@@ -197,35 +197,31 @@ public class Presence extends JabberDataBlock
       return (status.length()==0)? null: getChildBlockText("status");
   }
   
-  public boolean hasEntityCaps()
-  {
+  public boolean hasEntityCaps() {
     JabberDataBlock cc=getChildBlock("c");
     if (cc==null) return false;
-    
     return cc.isJabberNameSpace("http://jabber.org/protocol/caps");
   }
   
-    public String getEntityNode()
-    {
+    public String getEntityNode() {
         JabberDataBlock cc=getChildBlock("c");
         if (cc!=null){
             if (cc.isJabberNameSpace("http://jabber.org/protocol/caps")) {
                 return cc.getAttribute("node");
             }
         }
-    
         return null;
     }
   
-    public String getEntityVer()
-    {
+    public String getEntityVer() {
         JabberDataBlock cc=getChildBlock("c");
         if (cc!=null){
             if (cc.isJabberNameSpace("http://jabber.org/protocol/caps")) {
-                return cc.getAttribute("ver");
+                String ver = cc.getAttribute("ver");
+                
+                return (ver.endsWith("=")?null:ver);
             }
         }
-    
         return null;
     }
   

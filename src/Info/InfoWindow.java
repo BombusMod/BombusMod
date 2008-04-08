@@ -50,7 +50,7 @@ public class InfoWindow implements CommandListener{
         form=new Form(SR.MS_ABOUT);
         form.addCommand(new Command(SR.MS_CLOSE, Command.BACK, 99));
 
-        form.append(Version.NAME+" v"+Version.version+"\nMobile Jabber client\n");
+        form.append(Version.getNameVersion()+"\nMobile Jabber client\n");
         form.append(Config.getOs());
         form.append("\nCopyright (c) 2005-2008, Eugene Stahov (evgs), ad(modification)\n");
         
