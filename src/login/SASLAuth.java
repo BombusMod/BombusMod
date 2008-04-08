@@ -154,6 +154,8 @@ public class SASLAuth implements JabberBlockListener{
                 
                 return JabberBlockListener.BLOCK_PROCESSED;
             }
+            listener.loginFailed("Server does not support SASL"); 
+            return JabberBlockListener.NO_MORE_BLOCKS; 
         } else if (data.getTagName().equals("challenge")) {
             // first stream - step 2,3. reaction to challenges
             

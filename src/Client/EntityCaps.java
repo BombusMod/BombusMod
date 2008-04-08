@@ -24,10 +24,10 @@ public class EntityCaps implements JabberBlockListener{
     
     /** Creates a new instance of EntityCaps */
     public EntityCaps() {
-        init();
-        if (Config.getInstance().sndrcvmood)
-            features.addElement("http://jabber.org/protocol/mood+notify");         
+        if (features.size()<1)
+            fillFeatures();
     }
+    
     public int blockArrived(JabberDataBlock data) {
         if (!(data instanceof Iq)) return BLOCK_REJECTED;
         if (!data.getTypeAttribute().equals("get")) return BLOCK_REJECTED;
@@ -59,7 +59,7 @@ public class EntityCaps implements JabberBlockListener{
 	
     public static String ver=null;
 
-    private static boolean useMoods;
+    //private static boolean useMoods;
     
     public static String calcVerHash() {
         if (ver!=null) return ver;
@@ -86,10 +86,10 @@ public class EntityCaps implements JabberBlockListener{
     public static JabberDataBlock presenceEntityCaps() {
         JabberDataBlock c=new JabberDataBlock("c", null, null);
         c.setAttribute("xmlns", "http://jabber.org/protocol/caps");
-        c.setAttribute("node", BOMBUS_NAMESPACE+'#'+Version.getVersionNumber());
+        c.setAttribute("node", BOMBUS_NAMESPACE);//+'#'+Version.getVersionNumber());
         c.setAttribute("ver", calcVerHash());
         c.setAttribute("hash", "sha-1");
-        if (useMoods)
+        if (Config.getInstance().sndrcvmood)
             c.setAttribute("ext", "ep-notify");
         return c;
     }
@@ -103,13 +103,6 @@ public class EntityCaps implements JabberBlockListener{
     
     private static Vector features=new Vector();
     
-    private static void init() {
-        if (Config.getInstance().sndrcvmood)
-            useMoods=true;
-        if (features.size()<1)
-            fillFeatures();
-    }
-    
     private static void fillFeatures() {
         try {
             int p=0; int pos=0;
@@ -118,6 +111,12 @@ public class EntityCaps implements JabberBlockListener{
                String feature=initFeatures.substring(pos, p);
                features.addElement((String)feature);
                pos=p+1;
+            }
+            if (Config.getInstance().sndrcvmood) {
+                if (features.indexOf("http://jabber.org/protocol/mood")<0) {
+                    features.addElement("http://jabber.org/protocol/mood");
+                    features.addElement("http://jabber.org/protocol/mood+notify");
+                }        
             }
         } catch (Exception ex) { }
     }

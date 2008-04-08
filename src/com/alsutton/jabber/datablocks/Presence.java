@@ -202,7 +202,7 @@ public class Presence extends JabberDataBlock
     JabberDataBlock cc=getChildBlock("c");
     if (cc==null) return false;
     
-    return (cc.isJabberNameSpace("http://jabber.org/protocol/caps"))?true:false;
+    return cc.isJabberNameSpace("http://jabber.org/protocol/caps");
   }
   
     public String getEntityNode()
