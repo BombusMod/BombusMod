@@ -27,25 +27,39 @@
 
 package images;
 
+import java.util.Vector;
 import ui.ImageList;
+import util.StringLoader;
 
 /**
  *
  * @author EvgS
  */
-public class SmilesIcons extends ImageList{
+public class SmilesIcons extends ImageList {
     
     private static String res= "/images/smiles.png";
+    private static String restxt= "/images/smiles.txt";
     
     private final static int SMILES_IN_ROW=16;
+    private static int cols;
     /** Creates a new instance of SmilesIcons */
     private SmilesIcons() {
-	super(res, 0, SMILES_IN_ROW);
+	super(res, cols, SMILES_IN_ROW);
     }
     
     private static ImageList instance;
     public static ImageList getInstance() {
-	if (instance==null) instance=new SmilesIcons();
+	if (instance==null){
+            try {
+                Vector[] smiles=new StringLoader().stringLoader(restxt,1);
+                cols=(smiles[0].size()/SMILES_IN_ROW);
+                cols++;
+            } catch (Exception e) { 
+                System.out.print("Can't load ");
+                System.out.println(restxt);
+            }
+            instance=new SmilesIcons();
+        }
 	return instance;
     }
 }

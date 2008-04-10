@@ -77,7 +77,7 @@ public abstract class MessageList
 //#ifdef COLORS
 //#         addCommand(cmdxmlSkin);
 //#endif
-        stringHeight=FontCache.getMsgFont().getHeight();
+        //stringHeight=FontCache.getMsgFont().getHeight();
     }
 
     public MessageList(Display display) {

@@ -123,7 +123,7 @@ public class userKeyExec {
                 roster.cmdStatus();
                 break;
             case 6: 
-//#if (FILE_TRANSFER)
+//#if FILE_TRANSFER
 //#                 new io.file.transfer.TransferManager(display);
 //#endif
                 break;
@@ -189,12 +189,22 @@ public class userKeyExec {
             SR.MS_RECONNECT,
             SR.MS_STATS,
             SR.MS_STATUS_MENU,
-            SR.MS_FILE_TRANSFERS,
-            SR.MS_ARCHIVE,
-            SR.MS_DISCO,
-            SR.MS_PRIVACY_LISTS,
+//#if FILE_TRANSFER
+//#             SR.MS_FILE_TRANSFERS,
+//#endif
+//#ifdef ARCHIVE
+//#             SR.MS_ARCHIVE,
+//#endif
+//#ifdef SERVICE_DISCOVERY
+//#             SR.MS_DISCO,
+//#endif
+//#ifdef PRIVACY
+//#             SR.MS_PRIVACY_LISTS,
+//#endif
             SR.MS_CUSTOM_KEYS,
-            SR.MS_CLEAR_POPUPS,
+//#ifdef POPUPS
+//#             SR.MS_CLEAR_POPUPS,
+//#endif
             SR.MS_FLASHLIGHT,
             SR.MS_ABOUT,
             SR.MS_APP_MINIMIZE,

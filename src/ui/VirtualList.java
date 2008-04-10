@@ -146,7 +146,7 @@ public abstract class VirtualList
     public static final short SIEMENS_CAMERA=-20;
     public static final short SIEMENS_MPLAYER=-21;
     
-    public int stringHeight=15;
+    //public int stringHeight=105;
 
     public static short keyClear=-8;
     public static short keyVolDown=0x1000;
@@ -883,7 +883,7 @@ public abstract class VirtualList
                 win_top=remainder-winHeight+win_top+8;
                 return true;
             }
-            win_top+=winHeight-stringHeight;
+            win_top+=winHeight;//-stringHeight;
             return true;
         } catch (Exception e) {}
         return false;
@@ -905,7 +905,7 @@ public abstract class VirtualList
                 win_top=itemLayoutY[cursor];
                 return true;
             }
-            win_top-=winHeight-stringHeight;
+            win_top-=winHeight;//-stringHeight;
             return true;
         } catch (Exception e) {}
         return false;

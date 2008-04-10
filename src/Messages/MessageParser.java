@@ -200,9 +200,6 @@ public final class MessageParser implements Runnable{
 //#         }
 //#endif
         
-        
-        
-        
  	addSmile(root, "http://", URL);
         addSmile(root, "tel://",URL);
         addSmile(root, "ftp://",URL);

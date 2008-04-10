@@ -40,9 +40,8 @@ public class ImageList {
     
     protected Image resImage;
     protected int height;
-
     protected int width;
-    //int count,total;
+
     /** Creates a new instance of ImageListC */
     public ImageList(String resource, int rows, int columns) {
         try {
