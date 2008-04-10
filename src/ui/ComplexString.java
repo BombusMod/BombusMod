@@ -258,7 +258,8 @@ public class ComplexString extends Vector implements VirtualElement {
     }
 
     public void addElement(Object obj) {
-        height=width=0; // discarding cached values
+        height=0;
+        width=0; // discarding cached values
         super.addElement(obj);
     }
 

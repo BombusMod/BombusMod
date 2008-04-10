@@ -165,11 +165,12 @@ public class userKeyExec {
             case 15:
                 ColorScheme.invertSkin();
                 break;
+            case 16:
 //#ifdef CONSOLE
-//#             case 16:
+//# 
 //#                 new XMLList(display);
-//#                 break;
 //#endif
+                break;
         }
     } 
 
@@ -189,29 +190,17 @@ public class userKeyExec {
             SR.MS_RECONNECT,
             SR.MS_STATS,
             SR.MS_STATUS_MENU,
-//#if FILE_TRANSFER
-//#             SR.MS_FILE_TRANSFERS,
-//#endif
-//#ifdef ARCHIVE
-//#             SR.MS_ARCHIVE,
-//#endif
-//#ifdef SERVICE_DISCOVERY
-//#             SR.MS_DISCO,
-//#endif
-//#ifdef PRIVACY
-//#             SR.MS_PRIVACY_LISTS,
-//#endif
+            SR.MS_FILE_TRANSFERS,
+            SR.MS_ARCHIVE,
+            SR.MS_DISCO,
+            SR.MS_PRIVACY_LISTS,
             SR.MS_CUSTOM_KEYS,
-//#ifdef POPUPS
-//#             SR.MS_CLEAR_POPUPS,
-//#endif
+            SR.MS_CLEAR_POPUPS,
             SR.MS_FLASHLIGHT,
             SR.MS_ABOUT,
             SR.MS_APP_MINIMIZE,
-            SR.MS_INVERT
-//#ifdef CONSOLE
-//#             , SR.MS_XML_CONSOLE
-//#endif
+            SR.MS_INVERT,
+            SR.MS_XML_CONSOLE
     };
     
     public static final String[] KEYS_NAME = {
