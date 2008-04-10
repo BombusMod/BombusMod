@@ -30,6 +30,9 @@ import Client.Config;
 import Client.ConfigForm;
 import Client.Roster;
 import Client.StaticData;
+//#ifdef CONSOLE
+//# import Console.XMLList;
+//#endif
 //#ifdef PRIVACY
 //# import PrivacyLists.PrivacySelect;
 //#endif
@@ -162,6 +165,11 @@ public class userKeyExec {
             case 15:
                 ColorScheme.invertSkin();
                 break;
+//#ifdef CONSOLE
+//#             case 16:
+//#                 new XMLList(display);
+//#                 break;
+//#endif
         }
     } 
 
@@ -191,6 +199,9 @@ public class userKeyExec {
             SR.MS_ABOUT,
             SR.MS_APP_MINIMIZE,
             SR.MS_INVERT
+//#ifdef CONSOLE
+//#             , SR.MS_XML_CONSOLE
+//#endif
     };
     
     public static final String[] KEYS_NAME = {

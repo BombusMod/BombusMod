@@ -53,17 +53,18 @@ public class XMLList
             focusedItem(0);
         } catch (Exception e) {}
         
-	MainBar mainbar=new MainBar("XML_CONSOLE");
+	MainBar mainbar=new MainBar(SR.MS_XML_CONSOLE);
         setMainBarItem(mainbar);
     }
     
     protected void beginPaint() {
         StringBuffer str = new StringBuffer();
-        if (!stanzas.enabled)
-            str.append(" - Disabled");
         str.append(" (");
         str.append(getItemCount());
         str.append(")");
+        
+        if (!stanzas.enabled)
+            str.append(" - Disabled");
         
         getMainBarItem().setElementAt(str.toString(),1);
     }

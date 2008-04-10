@@ -652,6 +652,8 @@ public class SR {
 
     public static String MS_ENTER_ACCOUNT_SETTINGS = loadString("Please create account or enter account(s) settings.\n\nMenu, New Account");
     public static String MS_ENTER_SETTINGS = loadString("Please enter settings.\n\nMenu, Tools, Options");
+
+    public static String MS_XML_CONSOLE = loadString("XML console");
     
     private SR() { }
     

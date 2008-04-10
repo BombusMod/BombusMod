@@ -120,7 +120,7 @@ public class RosterToolsMenu
         
         addItem(SR.MS_BREAK_CONECTION, 18, 0x13);
 //#ifdef CONSOLE
-//#         addItem("XML_CONSOLE", 19, 0x13);
+//#         addItem(SR.MS_XML_CONSOLE, 19, 0x46);
 //#endif
         attachDisplay(display);
     }

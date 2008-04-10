@@ -36,9 +36,27 @@ public class EntityCaps implements JabberBlockListener{
         if (query==null) return BLOCK_REJECTED;
         String node=query.getAttribute("node");
 
-        if (node!=null)
-            if (!node.equals(BOMBUS_NAMESPACE+"#"+calcVerHash()))
+        boolean answerMood = false;
+        if (node!=null) {
+            if (node.equals(BOMBUS_NAMESPACE+"#mood")) {
+                if (Config.getInstance().sndrcvmood)
+                    answerMood=true;
+                else return BLOCK_REJECTED;
+/*
+<iq type="get" to="jabber@vke.ru/Notebook" id="aac9a" >
+<query xmlns="http://jabber.org/protocol/disco#info" node="http://miranda-im.org/caps#mood"/>
+</iq>
+
+<iq from="jabber@vke.ru/Notebook" type="result" xml:lang="en" to="ad@xmpp.ru/PsiWork" id="aac9a" >
+<query xmlns="http://jabber.org/protocol/disco#info" node="http://miranda-im.org/caps#mood" >
+<identity category="client" type="pc" name="Miranda" />
+<feature var="http://jabber.org/protocol/mood+notify" />
+</query>
+</iq>
+ */
+            } else if (!node.equals(BOMBUS_NAMESPACE+"#"+calcVerHash()))
                 return BLOCK_REJECTED;
+        }
 
         JabberDataBlock result=new Iq(data.getAttribute("from"), Iq.TYPE_RESULT, data.getAttribute("id"));
         result.addChild(query);
@@ -48,8 +66,12 @@ public class EntityCaps implements JabberBlockListener{
         identity.setAttribute("type", BOMBUS_ID_TYPE);
         identity.setAttribute("name", Version.getNameVersion());
 
-        for (int i=0; i<features.size(); i++) {
-            query.addChild("feature", null).setAttribute("var",(String)features.elementAt(i));
+        if (answerMood) {
+            query.addChild("feature", null).setAttribute("var","http://jabber.org/protocol/mood+notify");
+        } else {
+            for (int i=0; i<features.size(); i++) {
+                query.addChild("feature", null).setAttribute("var",(String)features.elementAt(i));
+            }
         }
         
         StaticData.getInstance().roster.theStream.send(result);
@@ -90,11 +112,11 @@ public class EntityCaps implements JabberBlockListener{
         c.setAttribute("ver", calcVerHash());
         c.setAttribute("hash", "sha-1");
         if (Config.getInstance().sndrcvmood)
-            c.setAttribute("ext", "ep-notify");
+            c.setAttribute("ext", "mood");
         return c;
     }
     
-    private final static String BOMBUS_NAMESPACE=Version.getUrl();
+    private final static String BOMBUS_NAMESPACE=Version.getUrl()+"/caps";
     private final static String BOMBUS_ID_CATEGORY="client";
     private final static String BOMBUS_ID_TYPE="mobile";
     
@@ -102,7 +124,7 @@ public class EntityCaps implements JabberBlockListener{
     private static final String initFeatures = "http://jabber.org/protocol/chatstates,http://jabber.org/protocol/disco#info,http://jabber.org/protocol/ibb,http://www.xmpp.org/extensions/xep-0199.html#ns,http://jabber.org/protocol/muc,http://jabber.org/protocol/si,http://jabber.org/protocol/si/profile/file-transfer,jabber:iq:time,jabber:iq:version,jabber:x:data,urn:xmpp:ping,urn:xmpp:receipts,urn:xmpp:time,";
     
     private static Vector features=new Vector();
-    
+
     private static void fillFeatures() {
         try {
             int p=0; int pos=0;

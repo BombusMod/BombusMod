@@ -41,7 +41,7 @@ public class strconv {
     private strconv() {
     }
     
-    private final static String BOMBUSMOD_REP=Version.getUrl();
+    private final static String BOMBUSMOD_REP=Version.getUrl()+"/caps";
     private final static String BOMBUS_NG_REP="http://bombus-im.org/ng";
     private final static String PSI_REP="http://psi-im.org/caps";
     private final static String GOOGLE_REP="http://www.google.com/xmpp/client/caps";
