@@ -49,7 +49,7 @@ public class ActiveContacts
     
     Vector activeContacts;
     
-    StaticData sd;
+    StaticData sd = StaticData.getInstance();
     
     private Command cmdCancel=new Command(SR.MS_BACK, Command.BACK, 99);
     private Command cmdSelect=new Command(SR.MS_SELECT, Command.SCREEN, 1);
@@ -57,7 +57,7 @@ public class ActiveContacts
     public ActiveContacts(Display display, Contact current) {
 	super();
 	activeContacts=new Vector();
-	for (Enumeration r=StaticData.getInstance().roster.getHContacts().elements(); 
+	for (Enumeration r=sd.roster.getHContacts().elements(); 
 	    r.hasMoreElements(); ) 
 	{
 	    Contact c=(Contact)r.nextElement();
@@ -90,7 +90,7 @@ public class ActiveContacts
 
     public void eventOk() {
 	Contact c=(Contact)getFocusedObject();
-	new ContactMessageList((Contact)c,display).setParentView(StaticData.getInstance().roster);
+	new ContactMessageList((Contact)c,display).setParentView(sd.roster);
         //c.msgSuspended=null; // clear suspended message for selected contact
     }
     
@@ -149,7 +149,7 @@ public class ActiveContacts
     }
     
     public void destroyView(){
-        StaticData.getInstance().roster.reEnumRoster();
+        sd.roster.reEnumRoster();
         if (display!=null)
             display.setCurrent(parentView);
     }

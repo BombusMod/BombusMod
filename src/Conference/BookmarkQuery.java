@@ -48,7 +48,7 @@ public class BookmarkQuery implements JabberBlockListener{
     public final static boolean SAVE=true;
     public final static boolean LOAD=false;
     
-    private Roster roster = StaticData.getInstance().roster;
+    private StaticData sd = StaticData.getInstance();
     
     private Config cf=Config.getInstance();
     
@@ -60,11 +60,11 @@ public class BookmarkQuery implements JabberBlockListener{
 
         JabberDataBlock storage=query.addChildNs("storage", "storage:bookmarks");
         if (saveBookmarks) {
-            for (Enumeration e=roster.bookmarks.elements(); e.hasMoreElements(); ) {
+            for (Enumeration e=sd.roster.bookmarks.elements(); e.hasMoreElements(); ) {
                 storage.addChild( ((BookmarkItem)e.nextElement()).constructBlock() );
             }
         }
-        roster.theStream.send(request);
+        sd.roster.theStream.send(request);
     }
     
     
@@ -75,7 +75,7 @@ public class BookmarkQuery implements JabberBlockListener{
             if (data.getAttribute("id").equals("getbookmarks")) {
                 JabberDataBlock storage=data.findNamespace("query", "jabber:iq:private"). findNamespace("storage", "storage:bookmarks");
                 Vector bookmarks=new Vector();
-		boolean autojoin=cf.autoJoinConferences && roster.myStatus!=Presence.PRESENCE_INVISIBLE;
+		boolean autojoin=cf.autoJoinConferences && sd.roster.myStatus!=Presence.PRESENCE_INVISIBLE;
                 try {
                     for (Enumeration e=storage.getChildBlocks().elements(); e.hasMoreElements(); ){
                         BookmarkItem bm=new BookmarkItem((JabberDataBlock)e.nextElement());
@@ -89,8 +89,8 @@ public class BookmarkQuery implements JabberBlockListener{
                 if (bookmarks.isEmpty()) 
                     loadDefaults(bookmarks);
 					
-                roster.bookmarks=bookmarks;
-                roster.redraw();
+                sd.roster.bookmarks=bookmarks;
+                sd.roster.redraw();
                 
                 return JabberBlockListener.NO_MORE_BLOCKS;
             }
@@ -107,7 +107,7 @@ public class BookmarkQuery implements JabberBlockListener{
             String desc     =(String) defs[3].elementAt(i);
             if (desc==null) desc=jid;
             if (pass==null) pass="";
-            if (nick==null) nick=StaticData.getInstance().account.getNickName();
+            if (nick==null) nick=sd.account.getNickName();
             BookmarkItem bm=new BookmarkItem(desc, jid, nick, pass, false);
             bookmarks.addElement(bm);
         }

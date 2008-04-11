@@ -64,21 +64,16 @@ public final class ContactEdit
     Command cmdCancel=new Command(SR.MS_CANCEL,Command.BACK,99);
     
     boolean newContact=true;
-    Config cf;
-    Roster roster;
+    Config cf=Config.getInstance();
 
-    
+    StaticData sd=StaticData.getInstance();
     //StoreContact sC;
     
     public ContactEdit(Display display, Contact c) {
         this.display=display;
         parentView=display.getCurrent();
         
-        StaticData sd=StaticData.getInstance();
-        roster=sd.roster;
-        
         Vector groups=sd.roster.groups.getRosterGroupNames();
-        cf=Config.getInstance();
         
         f=new Form(SR.MS_ADD_CONTACT);
         
@@ -214,7 +209,7 @@ public final class ContactEdit
                 // СЃРѕС…СЂР°РЅРµРЅРёРµ РєРѕРЅС‚Р°РєС‚Р°
                 boolean ask[]=new boolean[1];
                 tAskSubscrCheckBox.getSelectedFlags(ask);
-                roster.storeContact(jid,name,group, ask[0]);
+                sd.roster.storeContact(jid,name,group, ask[0]);
                 destroyView();
                 return;
             }

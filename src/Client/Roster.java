@@ -115,7 +115,6 @@ public class Roster
     int highliteMessageCount;
     
     private Object messageIcon;
-
     public Object transferIcon;
    
     boolean reconnect=false;
@@ -131,22 +130,17 @@ public class Roster
     
     public MessageEdit me=null;
     
-    public boolean useUserMood=false;
+    public boolean useUserMood;
 
     public int myStatus=cf.loginstatus;
     private String myMessage;
     public static int oldStatus=0;
-    
-//#ifdef MOOD
-//#     public Vector serverFeatures;
-//#endif
     
 //#ifdef AUTOSTATUS
 //#     private AutoStatusTask autostatus;
 //#     public static boolean autoAway=false;
 //#     public static boolean autoXa=false;
 //#endif
-
 
     private String token;
     
@@ -288,7 +282,6 @@ public class Roster
     }
     public void setProgress(int percent){
         SplashScreen.getInstance().setProgress(percent);
-        //redraw();
     }
     
     private void setRosterMainBar(String s){
@@ -309,8 +302,6 @@ public class Roster
     
     // establishing connection process
     public void run(){
-        //Iq.setXmlLang(SR.MS_XMLLANG);
-        
         if (cf.firstRun)
             setWobbler(1, (Contact) null, SR.MS_ENTER_SETTINGS);
         

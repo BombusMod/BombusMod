@@ -86,7 +86,7 @@ public class MessageEdit
     private Command cmdPasteText=new Command(SR.MS_PASTE, Command.SCREEN, 10);  
 
     private boolean composing=true;
-    
+    StaticData sd = StaticData.getInstance();
     private Config cf=Config.getInstance();
 //#ifdef TRANSLIT
 //#     private boolean sendInTranslit=false;
@@ -226,7 +226,6 @@ public class MessageEdit
     }
     
     public void run(){
-        Roster r=StaticData.getInstance().roster;
         String comp=null; // composing event off
         //to.autoresponded=false;
         String id=String.valueOf((int) System.currentTimeMillis());
@@ -242,7 +241,7 @@ public class MessageEdit
 //#         }
 //#endif
         if (body!=null || subj!=null ) {
-            String from=StaticData.getInstance().account.toString();
+            String from=sd.account.toString();
             Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,body);
             msg.id=id;
 
@@ -262,7 +261,7 @@ public class MessageEdit
 //#                     sendKill2Message(to, body);
 //#                 else
 //#endif
-                    r.sendMessage(to, id, body, subj, comp);
+                    sd.roster.sendMessage(to, id, body, subj, comp);
             }
         } catch (Exception e) { }
 
@@ -295,7 +294,7 @@ public class MessageEdit
 //#             JabberDataBlock a=bodyNS.addChild("a", body);
 //#             a.setAttribute("href", "http://");
 //#             
-//#             StaticData.getInstance().roster.theStream.send( message );
+//#             sd.roster.theStream.send( message );
 //#         } catch (Exception e) { e.printStackTrace(); }
 //#     }
 //#endif

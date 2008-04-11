@@ -63,7 +63,7 @@ public class RosterToolsMenu
         extends Menu {
     
     Config cf=Config.getInstance();
-    Roster roster=StaticData.getInstance().roster;
+    StaticData sd=StaticData.getInstance();
     /** Creates a new instance of RosterToolsMenu */
     public RosterToolsMenu(Display display) {
         super(SR.MS_TOOLS);
@@ -74,7 +74,7 @@ public class RosterToolsMenu
 //#         addItem(SR.MS_PRIVACY_LISTS, 1, 0x46);
 //#endif
 //#ifdef MOOD
-//#         if (roster.useUserMood && cf.sndrcvmood)
+//#         if (sd.roster.useUserMood && cf.sndrcvmood)
 //#             addItem(SR.MS_USER_MOOD, 2, 0x0f16);
 //#endif
         addItem(SR.MS_MY_VCARD, 3, 0x0f16);
@@ -109,7 +109,7 @@ public class RosterToolsMenu
 //#             addItem(SR.MS_CUSTOM_KEYS, 14, 0x0f03);
 //#endif
 //#if SASL_XGOOGLETOKEN
-        if (StaticData.getInstance().account.isGmail())
+        if (sd.account.isGmail())
             addItem(SR.MS_CHECK_GOOGLE_MAIL, 15,0x46);
 //#endif 
 //#if AUTOTASK
@@ -126,7 +126,7 @@ public class RosterToolsMenu
     }
     public void eventOk(){
         destroyView();
-        boolean connected= ( roster.isLoggedIn() );
+        boolean connected= ( sd.roster.isLoggedIn() );
         MenuItem me=(MenuItem) getFocusedObject();
         if (me==null)  return;
         int index=me.index;
@@ -148,7 +148,7 @@ public class RosterToolsMenu
                 return;
             case 3: {
                 if (! connected) break;
-                Contact c=roster.selfContact();
+                Contact c=sd.roster.selfContact();
                 if (c.vcard!=null) {
                     new vCardForm(display, c.vcard, true);
                     return;
@@ -193,7 +193,7 @@ public class RosterToolsMenu
                 return;
 //#ifdef POPUPS
 //#             case 11: //traffic stats
-//#                 roster.showStats();
+//#                 sd.roster.showStats();
 //#                 return;
 //#endif
                 
@@ -214,7 +214,7 @@ public class RosterToolsMenu
                 
 //#if SASL_XGOOGLETOKEN
             case 15: //mail check
-                roster.sendGmailReq();;
+                sd.roster.sendGmailReq();;
 		return; 
 //#endif
                 
@@ -227,7 +227,7 @@ public class RosterToolsMenu
                 ColorScheme.invertSkin();
                 return;
             case 18:
-                roster.connectionTerminated(new Exception(SR.MS_SIMULATED_BREAK));
+                sd.roster.connectionTerminated(new Exception(SR.MS_SIMULATED_BREAK));
                 return;
 //#ifdef CONSOLE
 //#             case 19:

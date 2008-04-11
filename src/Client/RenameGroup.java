@@ -49,7 +49,7 @@ public class RenameGroup implements CommandListener{
     private Command cmdOk=new Command(SR.MS_OK, Command.SCREEN, 1);
     private Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 99);
 
-    Roster roster=StaticData.getInstance().roster;
+    StaticData sd=StaticData.getInstance();
 
     public RenameGroup(Display display, Group group, Contact contact) {
         this.contact=contact;
@@ -72,23 +72,20 @@ public class RenameGroup implements CommandListener{
     public void commandAction(Command command, Displayable displayable) {
         if (command==cmdOk) {
             if (contact==null)
-                roster.theStream.send(new IqQueryRenameGroup (group.getName(), groupName.getString()));
+                sd.roster.theStream.send(new IqQueryRenameGroup (group.getName(), groupName.getString()));
             else
-                roster.theStream.send(new IqQueryRoster(contact.getBareJid(), contact.nick, groupName.getString(), null));        
+                sd.roster.theStream.send(new IqQueryRoster(contact.getBareJid(), contact.nick, groupName.getString(), null));        
         }
         display.setCurrent(StaticData.getInstance().roster);
     }
     
     class IqQueryRenameGroup extends Iq {
-        
-        Roster roster=StaticData.getInstance().roster;
-        
         public IqQueryRenameGroup(String sourceGroup, String destGroup){
             super(null, Iq.TYPE_SET, "addros");
 
             JabberDataBlock qB = addChildNs("query", "jabber:iq:roster" );
 
-            for (Enumeration e=roster.hContacts.elements(); e.hasMoreElements();){
+            for (Enumeration e=sd.roster.hContacts.elements(); e.hasMoreElements();){
                 Contact cr=(Contact)e.nextElement();
                 if (cr.getGroup().getName()==sourceGroup) {
                     JabberDataBlock item= qB.addChild("item",null);

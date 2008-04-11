@@ -80,21 +80,19 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
     public final static int DELETE_GROUP=1004;
     
     Object item;
-	
-    Roster roster;
     
     private ClipBoard clipboard=ClipBoard.getInstance();
     private int action;
+    
+    StaticData sd=StaticData.getInstance();
     
     /** Creates a new instance of RosterItemActions */
     public RosterItemActions(Display display, Object item, int action) {
 	super(item.toString());
 	this.item=item;
         this.action=action;
-	
-        roster=StaticData.getInstance().roster;
         
-        if (!roster.isLoggedIn()) return;
+        if (!sd.roster.isLoggedIn()) return;
 	
         if (item==null) return;
         boolean isContact=( item instanceof Contact );
@@ -167,7 +165,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                 return;
 //#ifndef WMUC
             boolean onlineConferences=false;
-            for (Enumeration cI=StaticData.getInstance().roster.getHContacts().elements(); cI.hasMoreElements(); ) {
+            for (Enumeration cI=sd.roster.getHContacts().elements(); cI.hasMoreElements(); ) {
                 try {
                     MucContact mcI=(MucContact)cI.nextElement();
                     if (mcI.origin==Contact.ORIGIN_GROUPCHAT && mcI.status==Presence.PRESENCE_ONLINE)
@@ -250,7 +248,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 //#endif
 //#if (FILE_IO && FILE_TRANSFER)
 //#             if (contact.getGroupType()!=Groups.TYPE_TRANSP) 
-//#                 if (contact!=StaticData.getInstance().roster.selfContact())
+//#                 if (contact!=sd.roster.selfContact())
 //#                     addItem(SR.MS_SEND_FILE, 50, 0x0f34);
 //#             
 //#endif
@@ -308,16 +306,12 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
      
      public void eventOk(){
          try {
-             //final Roster roster=StaticData.getInstance().roster;
              MenuItem me=(MenuItem) getFocusedObject();
             destroyView();
             if (me==null) return;
             int index=action=me.index;
             doAction(index);
-            //destroyView();
-        } catch (Exception e) { 
-            //e.printStackTrace();  
-        }
+        } catch (Exception e) { }
     }
 
     private void doAction(final int index) {
@@ -350,11 +344,11 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 //#                     break;
 //#endif
                 case 0: // info
-                    roster.setQuerySign(true);
-                    roster.theStream.send(new IqVersionReply(to));
+                    sd.roster.setQuerySign(true);
+                    sd.roster.theStream.send(new IqVersionReply(to));
                     break;
                 case 86: // info
-                    roster.showInfo();
+                    sd.roster.showInfo();
                     break;
                 case 1: // vCard
                     if (c.vcard!=null) {
@@ -364,7 +358,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                     VCard.request(c.getBareJid(), c.getJid());
                     break;
                 case 2:
-                    (new ContactEdit(display, c )).parentView=roster;
+                    (new ContactEdit(display, c )).parentView=sd.roster;
                     return; //break;
                     
                 case 3: //subscription
@@ -375,26 +369,26 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                     return;
                 case 6: // logoff
                 {
-                    roster.blockNotify(-111,10000); //block sounds to 10 sec
+                    sd.roster.blockNotify(-111,10000); //block sounds to 10 sec
                     //querysign=true; displayStatus();
                     Presence presence = new Presence(
                             Presence.PRESENCE_OFFLINE, -1, "", null);
                     presence.setTo(c.getJid());
-                    roster.theStream.send( presence );
+                    sd.roster.theStream.send( presence );
                     break;
                 }
                 case 5: // logon
                 {
-                    roster.blockNotify(-111,10000); //block sounds to 10 sec
+                    sd.roster.blockNotify(-111,10000); //block sounds to 10 sec
                     //querysign=true; displayStatus();
-                    Presence presence = new Presence(roster.myStatus, 0, "", null);
+                    Presence presence = new Presence(sd.roster.myStatus, 0, "", null);
                     presence.setTo(c.getJid());
-                    roster.theStream.send( presence );
+                    sd.roster.theStream.send( presence );
                     break;
                 }
                 case 7: // Nick resolver
                 {
-                    roster.resolveNicknames(c.getBareJid());
+                    sd.roster.resolveNicknames(c.getBareJid());
                     break;
                 }
 //#if CHANGE_TRANSPORT
@@ -406,7 +400,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 //#endif
                 case 21:
                 {
-                    roster.cleanupSearch();
+                    sd.roster.cleanupSearch();
                     break;
                 }
 //#ifdef SERVICE_DISCOVERY
@@ -423,21 +417,21 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                 }
                 case 889: //idle
                 {
-                    roster.setQuerySign(true);
-                    roster.theStream.send(new IqLast(c.getJid()));
+                    sd.roster.setQuerySign(true);
+                    sd.roster.theStream.send(new IqLast(c.getJid()));
                     break;
                 }
                 case 890: //seen & online
                 {
-                    roster.setQuerySign(true);
-                    roster.theStream.send(new IqLast(c.getBareJid()));
+                    sd.roster.setQuerySign(true);
+                    sd.roster.theStream.send(new IqLast(c.getBareJid()));
                     break;
                 }
                 
                 case 891: //time
                 {
-                    roster.setQuerySign(true);
-                    roster.theStream.send(new IqTimeReply(c.getJid()));
+                    sd.roster.setQuerySign(true);
+                    sd.roster.theStream.send(new IqTimeReply(c.getJid()));
                     break;
                 }
                 
@@ -459,9 +453,9 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                 case 893: //ping
                 {
                     try {
-                        roster.setQuerySign(true);
+                        sd.roster.setQuerySign(true);
                         c.setPing();
-                        roster.theStream.send(new IqPing(c.getJid(), "_ping"));
+                        sd.roster.theStream.send(new IqPing(c.getJid(), "_ping"));
                     } catch (Exception e) {/*no messages*/}
                     break;
                 }
@@ -474,7 +468,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 //#ifdef COLORS
 //#                 case 912: //send color scheme
 //#                 {
-//#                     String from=StaticData.getInstance().account.toString();
+//#                     String from=sd.account.toString();
 //#                     String body=ColorUtils.getSkin();
 //#                     String subj="";
 //#                     
@@ -484,7 +478,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 //#                     msg.id=id;
 //#                     
 //#                     try {
-//#                         roster.sendMessage(c, id, body, subj, null);
+//#                         sd.roster.sendMessage(c, id, body, subj, null);
 //#                         c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"scheme sended"));
 //#                     } catch (Exception e) {
 //#                         c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"scheme NOT sended"));
@@ -499,7 +493,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                     if (body.length()==0)
                         return;
                     
-                    String from=StaticData.getInstance().account.toString();
+                    String from=sd.account.toString();
                     String subj="";
                     
                     String id=String.valueOf((int) System.currentTimeMillis());
@@ -507,7 +501,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                     Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,body);
                     msg.id=id;
                     try {
-                        roster.sendMessage(c, id, body, subj, null);
+                        sd.roster.sendMessage(c, id, body, subj, null);
                         c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"message sended from clipboard("+body.length()+"chars)"));
                     } catch (Exception e) {
                         c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"message NOT sended"));
@@ -526,7 +520,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 
                         if (mcJ.realJid!=null) {
                             boolean onlineConferences=false;
-                            for (Enumeration cJ=StaticData.getInstance().roster.getHContacts().elements(); cJ.hasMoreElements(); ) {
+                            for (Enumeration cJ=sd.roster.getHContacts().elements(); cJ.hasMoreElements(); ) {
                                 try {
                                     MucContact mcN=(MucContact)cJ.nextElement();
                                     if (mcN.origin==Contact.ORIGIN_GROUPCHAT && mcN.status==Presence.PRESENCE_ONLINE)
@@ -541,7 +535,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 //#endif
                 case 45: //direct presence
                 {
-                    (new StatusSelect(display, c)).setParentView(roster);
+                    (new StatusSelect(display, c)).setParentView(sd.roster);
                     return;
                 }
                 
@@ -577,17 +571,17 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 
                     case 22:
                     {
-                        roster.leaveRoom( g );
+                        sd.roster.leaveRoom( g );
                         break;
                     }
                     case 23:
                     {
-                        roster.reEnterRoom( g );
+                        sd.roster.reEnterRoom( g );
                         return; //break;
                     }
                     case 46: //conference presence
                     {
-                        new StatusSelect(display, ((ConferenceGroup)g).getConference()).setParentView(roster);
+                        new StatusSelect(display, ((ConferenceGroup)g).getConference()).setParentView(sd.roster);
                         return;
                     }
                     
@@ -693,15 +687,15 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
         switch (action) {
             case DELETE_CONTACT:
             {
-                roster.deleteContact((Contact)item);
+                sd.roster.deleteContact((Contact)item);
                 break;
             }
             case DELETE_GROUP:
             {
-                roster.deleteGroup((Group)item);
+                sd.roster.deleteGroup((Group)item);
                 break;
             }
         }
-        display.setCurrent(roster);
+        display.setCurrent(sd.roster);
     }
 }

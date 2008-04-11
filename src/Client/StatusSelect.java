@@ -53,7 +53,7 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
     private Contact to;
 
     private Config cf=Config.getInstance();
-    private Roster roster = StaticData.getInstance().roster;
+    private StaticData sd = StaticData.getInstance();
     
     public StatusSelect(Display d, Contact to) {
         super();
@@ -107,15 +107,15 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
     public void run(){
         int status=getSel().getImageIndex();
 //#ifdef AUTOSTATUS
-//#         roster.autoAway=false;
-//#         roster.autoXa=false;
-//#         roster.messageActivity();
+//#         sd.roster.autoAway=false;
+//#         sd.roster.autoXa=false;
+//#         sd.roster.messageActivity();
 //#endif
         try {
-            if (roster.isLoggedIn()) {
-                roster.sendDirectPresence(status, to, null);
+            if (sd.roster.isLoggedIn()) {
+                sd.roster.sendDirectPresence(status, to, null);
             } else {
-                roster.sendPresence(status, null);
+                sd.roster.sendPresence(status, null);
             }
         } catch (Exception e) { }
     }

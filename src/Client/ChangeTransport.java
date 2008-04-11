@@ -45,14 +45,11 @@ public class ChangeTransport implements CommandListener{
     private Command cmdOk=new Command(SR.MS_OK, Command.SCREEN, 1);
     private Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 99);
     
-    Roster roster=StaticData.getInstance().roster;
+    StaticData sd=StaticData.getInstance();
     
     public ChangeTransport(Display display, String srcTransport) {
         this.srcTransport=srcTransport;
         this.display=display;
-        
-        StaticData sd=StaticData.getInstance();
-        roster=sd.roster;
         
         f=new Form(SR.MS_TRANSPORT);
         
@@ -84,6 +81,6 @@ public class ChangeTransport implements CommandListener{
 //#             //System.out.println(srcTransport+"->"+tTranspList.getString(tTranspList.getSelectedIndex()));
 //#endif
         }
-        display.setCurrent(StaticData.getInstance().roster);
+        display.setCurrent(sd.roster);
     }
 }

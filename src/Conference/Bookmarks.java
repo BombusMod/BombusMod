@@ -48,7 +48,7 @@ public class Bookmarks
 {   
     private BookmarkItem toAdd;
     
-    private Roster roster = StaticData.getInstance().roster;
+    private StaticData sd = StaticData.getInstance();
     
     private Config cf=Config.getInstance();
     
@@ -73,7 +73,7 @@ public class Bookmarks
     
     private Command cmdDel=new Command (SR.MS_DELETE, Command.SCREEN, 15);
 
-    JabberStream stream=roster.theStream;
+    JabberStream stream=sd.roster.theStream;
     /** Creates a new instance of Bookmarks */
     public Bookmarks(Display display, BookmarkItem toAdd) {
         super ();
@@ -113,12 +113,12 @@ public class Bookmarks
     }
 
     protected int getItemCount() { 
-        Vector bookmarks=roster.bookmarks;
+        Vector bookmarks=sd.roster.bookmarks;
         return (bookmarks==null)?0: bookmarks.size(); 
     }
     
     protected VirtualElement getItemRef(int index) { 
-        return (VirtualElement) roster.bookmarks.elementAt(index); 
+        return (VirtualElement) sd.roster.bookmarks.elementAt(index); 
     }
     
     public void loadBookmarks() {
@@ -126,7 +126,7 @@ public class Bookmarks
 
     private void addBookmark() {
         if (toAdd!=null) {
-            Vector bm=roster.bookmarks;
+            Vector bm=sd.roster.bookmarks;
             bm.addElement(toAdd);
             //sort(bm);
             saveBookmarks();
@@ -143,7 +143,7 @@ public class Bookmarks
         if (join.isUrl) 
             return;
 
-        ConferenceGroup grp=roster.initMuc(join.getJidNick(), join.password);
+        ConferenceGroup grp=sd.roster.initMuc(join.getJidNick(), join.password);
         grp.desc=join.desc;
         JabberDataBlock x=new JabberDataBlock("x", null, null);
         x.setNameSpace("http://jabber.org/protocol/muc");
@@ -157,10 +157,10 @@ public class Bookmarks
             if (last!=0) history.setAttribute("seconds",String.valueOf(delay)); // todo: change to since
         } catch (Exception e) {}
         
-        roster.sendPresence(join.getJidNick(), null, x, false);
+        sd.roster.sendPresence(join.getJidNick(), null, x, false);
         
-        roster.reEnumRoster();
-        display.setCurrent(roster);
+        sd.roster.reEnumRoster();
+        display.setCurrent(sd.roster);
     }
     
     public void commandAction(Command c, Displayable d){
@@ -192,9 +192,9 @@ public class Bookmarks
         else if (c==cmdRoomAdmins) new Affiliations(display, roomJid, (short)2);  
         else if (c==cmdRoomMembers) new Affiliations(display, roomJid, (short)3);  
         else if (c==cmdRoomBanned) new Affiliations(display, roomJid, (short)4);  
-        else if (c==cmdSort) sort(roster.bookmarks);
+        else if (c==cmdSort) sort(sd.roster.bookmarks);
         else if (c==cmdDoAutoJoin) {
-            for (Enumeration e=roster.bookmarks.elements(); e.hasMoreElements();) {
+            for (Enumeration e=sd.roster.bookmarks.elements(); e.hasMoreElements();) {
                 BookmarkItem bm=(BookmarkItem) e.nextElement();
                 if (bm.autojoin) 
                     ConferenceForm.join(bm.desc, bm.jid+'/'+bm.nick, bm.password, cf.confMessageCount);
@@ -214,7 +214,7 @@ public class Bookmarks
         if (del.isUrl) 
             return;
 
-        roster.bookmarks.removeElement(del);
+        sd.roster.bookmarks.removeElement(del);
         if (getItemCount()<=cursor) 
             moveCursorEnd();
         saveBookmarks();
@@ -226,7 +226,7 @@ public class Bookmarks
     }
 
     private void exitBookmarks(){
-        display.setCurrent(roster);
+        display.setCurrent(sd.roster);
     }
     
     public void move(int offset){
@@ -235,8 +235,8 @@ public class Bookmarks
             BookmarkItem p1=(BookmarkItem)getItemRef(index);
             BookmarkItem p2=(BookmarkItem)getItemRef(index+offset);
             
-            roster.bookmarks.setElementAt(p1, index+offset);
-            roster.bookmarks.setElementAt(p2, index);
+            sd.roster.bookmarks.setElementAt(p1, index+offset);
+            sd.roster.bookmarks.setElementAt(p2, index);
         } catch (Exception e) {/* IndexOutOfBounds */}
     }
 

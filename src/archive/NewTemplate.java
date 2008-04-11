@@ -61,7 +61,7 @@ public class NewTemplate implements CommandListener
     public void commandAction(Command c, Displayable d){
         if (c==cmdCancel) display.setCurrent(StaticData.getInstance().roster);
 	if (c==cmdOk) {
-            final Roster roster=StaticData.getInstance().roster;
+            //final Roster roster=StaticData.getInstance().roster;
 	    String reason = templatebox.getString();
             Msg m=new Msg(Msg.MESSAGE_TYPE_OUT, "0", "", reason);
             MessageArchive.store(m, where);

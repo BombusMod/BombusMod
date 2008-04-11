@@ -137,8 +137,6 @@ public class AccountSelect
         VirtualList.canBack=true;
         if (c==cmdCancel) {
             destroyView();
-            //Account.launchAccount();
-            //StaticData.getInstance().account_index=0;
         }
         if (c==cmdLogin) switchAccount(true);
         if (c==cmdSelect) switchAccount(false);

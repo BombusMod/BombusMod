@@ -42,8 +42,6 @@ public class RosterMenu
 //#     
 //#     private Config cf=Config.getInstance();
 //#     private StaticData sd=StaticData.getInstance();
-//#     
-//#     private Roster roster=StaticData.getInstance().roster;
 //# 
 //#     public RosterMenu(Display display, Object o) {
 //#         super(SR.MS_MAIN_MENU);
@@ -52,7 +50,7 @@ public class RosterMenu
 //#         addItem(SR.MS_STATUS_MENU, 1, 0x0f16);
 //#         addItem(SR.MS_ACTIVE_CONTACTS, 2, 0x0f21);
 //#ifdef MOOD
-//#         if (roster.useUserMood && cf.sndrcvmood)
+//#         if (sd.roster.useUserMood && cf.sndrcvmood)
 //#             addItem(SR.MS_USER_MOOD, 3, 0x0f16);
 //#endif
 //#         addItem(SR.MS_ALERT_PROFILE_CMD, 4, 0x0f17);
@@ -80,50 +78,50 @@ public class RosterMenu
 //# 	int index=me.index;
 //# 	switch (index) {
 //# 	    case 0: //actions
-//#                 roster.cmdActions();
+//#                 sd.roster.cmdActions();
 //#                 break;
 //# 	    case 1: //status
-//#                 roster.cmdStatus();
+//#                 sd.roster.cmdStatus();
 //# 		break;
 //#             case 2: //active
-//#                 roster.cmdActiveContacts();
+//#                 sd.roster.cmdActiveContacts();
 //# 		break;
 //#ifdef MOOD
 //#             case 3: //user mood
-//#                 roster.cmdUserMood();
+//#                 sd.roster.cmdUserMood();
 //#                 break;
 //#endif
 //#             case 4: //alert
-//#                 roster.cmdAlert();
+//#                 sd.roster.cmdAlert();
 //# 		break;
 //#ifndef WMUC
 //#             case 5: //conference
-//#                 roster.cmdConference();
+//#                 sd.roster.cmdConference();
 //#                 break;
 //#endif
 //#ifdef ARCHIVE
 //#             case 6: //archive
-//#                 roster.cmdArchive();
+//#                 sd.roster.cmdArchive();
 //# 		break;
 //#endif
 //#             case 7: {//add contact
-//#                 roster.cmdAdd();
+//#                 sd.roster.cmdAdd();
 //#                 break;
 //#             }
 //#             case 8: //tools
-//#                 roster.cmdTools();
+//#                 sd.roster.cmdTools();
 //# 		break;
 //#             case 9: //account
-//#                 roster.cmdAccount();
+//#                 sd.roster.cmdAccount();
 //# 		break; 
 //#             case 10: //about
-//#                 roster.cmdInfo();
+//#                 sd.roster.cmdInfo();
 //# 		break; 
 //#             case 11: //cleanup All Histories
-//#                 roster.cmdCleanAllMessages();
+//#                 sd.roster.cmdCleanAllMessages();
 //# 		break; 
 //# 	    case 12: {//quit
-//#                 roster.cmdQuit();
+//#                 sd.roster.cmdQuit();
 //#                 return;
 //# 	    }
 //# 	}

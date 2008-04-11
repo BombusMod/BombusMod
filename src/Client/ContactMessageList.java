@@ -353,7 +353,7 @@ public class ContactMessageList extends MessageList
 //#endif
 //#endif
         if (c==cmdSendBuffer) {
-            String from=StaticData.getInstance().account.toString();
+            String from=sd.account.toString();
             String body=clipboard.getClipBoard();
             String subj=null;
             
@@ -483,7 +483,7 @@ public class ContactMessageList extends MessageList
     private void nextContact(int direction){
 	Vector activeContacts=new Vector();
         int nowContact = -1, contacts=-1;
-	for (Enumeration r=StaticData.getInstance().roster.getHContacts().elements(); r.hasMoreElements(); ) 
+	for (Enumeration r=sd.roster.getHContacts().elements(); r.hasMoreElements(); ) 
 	{
 	    Contact c=(Contact)r.nextElement();
 	    if (c.active()) {
@@ -502,7 +502,7 @@ public class ContactMessageList extends MessageList
             if (nowContact>=size) nowContact=0;
             
             Contact c=(Contact)activeContacts.elementAt(nowContact);
-            new ContactMessageList((Contact)c,display).setParentView(StaticData.getInstance().roster);
+            new ContactMessageList((Contact)c,display).setParentView(sd.roster);
         } catch (Exception e) { }
     }
 
@@ -535,7 +535,7 @@ public class ContactMessageList extends MessageList
 //#     private void saveMessages() {
 //#         if (cf.msgPath==null) {
 //#ifdef POPUPS
-//#            StaticData.getInstance().roster.setWobbler(3, (Contact) null, "Please enter valid path to store log");
+//#            sd.roster.setWobbler(3, (Contact) null, "Please enter valid path to store log");
 //#endif
 //#            return;
 //#         }

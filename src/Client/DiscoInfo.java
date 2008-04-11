@@ -32,7 +32,7 @@ import java.util.Enumeration;
 import java.util.Vector;
 
 public class DiscoInfo implements JabberBlockListener{
-    Roster roster = StaticData.getInstance().roster;
+    StaticData sd = StaticData.getInstance();
     public int blockArrived(JabberDataBlock data) {
         try {
             if (!(data instanceof Iq)) return JabberBlockListener.BLOCK_REJECTED;
@@ -53,7 +53,7 @@ public class DiscoInfo implements JabberBlockListener{
 //#                     else if (feature.getTagName().equals("identity")) {
 //#                         if (feature.getAttribute("category").equals("pubsub"))
 //#                             if (feature.getAttribute("type").equals("pep")) {
-//#                                 roster.useUserMood=true;
+//#                                 sd.roster.useUserMood=true;
 //#if DEBUG
 //#                                 System.out.println("useUserMood=true");
 //#endif
@@ -61,19 +61,15 @@ public class DiscoInfo implements JabberBlockListener{
 //#                     }
 //#endif
                 }
-//#ifdef MOOD
-//#                 roster.serverFeatures=serverFeatures;
-//#endif
-                roster.redraw();
-                return JabberBlockListener.NO_MORE_BLOCKS;
+                return JabberBlockListener.BLOCK_PROCESSED;
             }
         } catch (Exception e) { }
         return JabberBlockListener.BLOCK_REJECTED;
     }
     
     public DiscoInfo() {
-        JabberDataBlock request=new Iq(StaticData.getInstance().account.getServer(), Iq.TYPE_GET, "getServerFeatures");
+        JabberDataBlock request=new Iq(sd.account.getServer(), Iq.TYPE_GET, "getServerFeatures");
         JabberDataBlock query=request.addChildNs("query", "http://jabber.org/protocol/disco#info");
-        roster.theStream.send(request);
+        sd.roster.theStream.send(request);
     }
 }

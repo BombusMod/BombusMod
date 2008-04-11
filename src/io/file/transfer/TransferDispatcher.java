@@ -51,6 +51,7 @@ public class TransferDispatcher implements JabberBlockListener{
         return instance;
     }
    
+    StaticData sd = StaticData.getInstance();
     
     private Vector taskList;
     public Vector getTaskList() { return taskList;  }
@@ -86,7 +87,7 @@ public class TransferDispatcher implements JabberBlockListener{
                     synchronized (taskList){ taskList.addElement(task); }
                     
                     eventNotify();
-                    StaticData.getInstance().roster.playNotify(1000);
+                    sd.roster.playNotify(1000);
                     return BLOCK_PROCESSED;
                 }
                 if (type.equals("result")) {
@@ -143,7 +144,9 @@ public class TransferDispatcher implements JabberBlockListener{
             TransferTask task=getTransferBySid(sid);
             
             byte b[]=strconv.fromBase64(bdata.getText());
-            System.out.println("data chunk received");
+//#ifdef DEBUG
+//#             System.out.println("data chunk received");
+//#endif
             repaintNotify();
             task.writeFile(b);
             
@@ -176,7 +179,7 @@ public class TransferDispatcher implements JabberBlockListener{
         try {
             StringBuffer sb=new StringBuffer();
             data.constructXML(sb);
-            StaticData.getInstance().roster.theStream.sendBuf( sb );
+            sd.roster.theStream.sendBuf( sb );
             sb=null;
         } catch (Exception e) {
             //e.printStackTrace();
@@ -203,11 +206,11 @@ public class TransferDispatcher implements JabberBlockListener{
             }
         }
         Integer icon=(event<0)? null:new Integer(event);
-        StaticData.getInstance().roster.setEventIcon(icon);
+        sd.roster.setEventIcon(icon);
     }
 
     void repaintNotify() {
-        StaticData.getInstance().roster.redraw();
+        sd.roster.redraw();
     }
 
     void sendFile(TransferTask task) {

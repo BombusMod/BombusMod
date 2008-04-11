@@ -43,6 +43,8 @@ import ui.VirtualList;
 public class Groups implements JabberBlockListener{
     
     Vector groups;
+    
+    StaticData sd = StaticData.getInstance();
 
     public final static int TYPE_SELF=1;
     public final static int TYPE_NO_GROUP=2;
@@ -166,7 +168,7 @@ public class Groups implements JabberBlockListener{
                         continue;
                     grp.collapsed=collapsed;
                 }
-                StaticData.getInstance().roster.reEnumRoster();
+                sd.roster.reEnumRoster();
                 return NO_MORE_BLOCKS;
             }
         }
@@ -174,8 +176,7 @@ public class Groups implements JabberBlockListener{
     }
 
     public void queryGroupState(boolean get) {
-        Roster roster=StaticData.getInstance().roster;
-        if (!roster.isLoggedIn()) 
+        if (!sd.roster.isLoggedIn()) 
             return;
         
         JabberDataBlock iq=new Iq(null, (get)? Iq.TYPE_GET : Iq.TYPE_SET, (get)? "queryGS" : "setGS");
@@ -183,7 +184,7 @@ public class Groups implements JabberBlockListener{
         JabberDataBlock gs=query.addChildNs("gs", GROUPSTATE_NS);
         
         if (get) {
-            roster.theStream.addBlockListener(this);
+            sd.roster.theStream.addBlockListener(this);
         } else {
             for (Enumeration e=groups.elements(); e.hasMoreElements();) {
                 Group grp=(Group)e.nextElement();
@@ -193,6 +194,6 @@ public class Groups implements JabberBlockListener{
             }
         }
         //System.out.println(iq.toString());
-        roster.theStream.send(iq);
+        sd.roster.theStream.send(iq);
     }
  }

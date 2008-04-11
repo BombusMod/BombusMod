@@ -25,7 +25,6 @@
 
 package Checkers;
 import Client.Contact;
-import Client.Roster;
 import Client.StaticData;
 import com.alsutton.jabber.JabberBlockListener;
 import com.alsutton.jabber.JabberDataBlock;
@@ -73,7 +72,7 @@ public class Checkers extends Canvas implements CommandListener, JabberBlockList
     public boolean isEndGame = false;
     private boolean myTurnIsDone = true;
             
-    Roster roster=StaticData.getInstance().roster;
+    StaticData sd=StaticData.getInstance();
     
     private Command myEndCommand = new Command("End", Command.SCREEN, 97);
     private Command myExitCommand = new Command("Exit", Command.EXIT, 99);
@@ -88,7 +87,7 @@ public class Checkers extends Canvas implements CommandListener, JabberBlockList
         this.contact = contact;
         parentView=display.getCurrent();
         
-        roster.theStream.addBlockListener(this);
+        sd.roster.theStream.addBlockListener(this);
         
         //create the canvas and set up the commands:
         addCommand(myEndCommand);
@@ -301,9 +300,9 @@ public class Checkers extends Canvas implements CommandListener, JabberBlockList
         
         //System.out.println(iq.toString());
 
-        if (!roster.isLoggedIn()) 
+        if (!sd.roster.isLoggedIn()) 
             return;
-        roster.theStream.send(iq);
+        sd.roster.theStream.send(iq);
     }
 
     public int blockArrived(JabberDataBlock data) {

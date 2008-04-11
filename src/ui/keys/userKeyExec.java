@@ -28,7 +28,6 @@ package ui.keys;
 
 import Client.Config;
 import Client.ConfigForm;
-import Client.Roster;
 import Client.StaticData;
 //#ifdef CONSOLE
 //# import Console.XMLList;
@@ -50,6 +49,7 @@ public class userKeyExec {
     
     private static userKeyExec instance;
     static Config cf=Config.getInstance();
+    StaticData sd=StaticData.getInstance();
     
     public static userKeyExec getInstance(){
 	if (instance==null) {
@@ -98,9 +98,8 @@ public class userKeyExec {
 
         int commandId=getCommandByKey(command);
         
-        boolean connected= ( StaticData.getInstance().roster.isLoggedIn() );
+        boolean connected= ( sd.roster.isLoggedIn() );
 
-        Roster roster=StaticData.getInstance().roster;
         switch (commandId) {
             case -1: // ky-ky?
                 break;
@@ -111,16 +110,16 @@ public class userKeyExec {
                 new ConfigForm(display);
                 break;
             case 2: 
-                roster.cleanupAllHistories();
+                sd.roster.cleanupAllHistories();
                 break;
             case 3: 
-                roster.connectionTerminated(new Exception(SR.MS_SIMULATED_BREAK));
+                sd.roster.connectionTerminated(new Exception(SR.MS_SIMULATED_BREAK));
                 break;
             case 4: 
-                roster.showStats();
+                sd.roster.showStats();
                 break;
             case 5:
-                roster.cmdStatus();
+                sd.roster.cmdStatus();
                 break;
             case 6: 
 //#if FILE_TRANSFER
@@ -129,7 +128,7 @@ public class userKeyExec {
                 break;
             case 7: 
 //#ifdef ARCHIVE
-//#                 roster.cmdArchive();
+//#                 sd.roster.cmdArchive();
 //#endif
                 break;
             case 8: 
@@ -147,12 +146,12 @@ public class userKeyExec {
                 break;
             case 11:
 //#ifdef POPUPS
-//#                 roster.cmdClearPopups();
+//#                 sd.roster.cmdClearPopups();
 //#endif
                 break;
             case 12:
                 cf.lightState=!cf.lightState;
-                roster.setLight(cf.lightState);
+                sd.roster.setLight(cf.lightState);
                 cf.saveToStorage();
                 break;
             case 13:

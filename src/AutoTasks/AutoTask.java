@@ -58,9 +58,11 @@ public class AutoTask
     boolean isRunning;
     
     boolean vibrate;
+    
+    StaticData sd = StaticData.getInstance();
 
     private Display display;
-    private Displayable parentView=StaticData.getInstance().roster;
+    private Displayable parentView=sd.roster;
     
     private final static int WAITTIME=60;
 
@@ -81,7 +83,7 @@ public class AutoTask
     public void startTask() {
         isRunning=true;
         if (parentView==null)
-            parentView=StaticData.getInstance().roster;
+            parentView=sd.roster;
         new Thread(this).start();
     }
     
@@ -140,18 +142,18 @@ public class AutoTask
                 break;
             case TASK_ACTION_CONFERENCE_QUIT:
                 caption+=SR.MS_AUTOTASK_QUIT_CONFERENCES;
-                StaticData.getInstance().roster.multicastConferencePresence(caption, Presence.PRESENCE_OFFLINE);
+                sd.roster.multicastConferencePresence(caption, Presence.PRESENCE_OFFLINE);
                 break;
             case TASK_ACTION_LOGOFF:
                 caption+=SR.MS_AUTOTASK_LOGOFF;
-                StaticData.getInstance().roster.logoff(caption);
+                sd.roster.logoff(caption);
                 break;
            case TASK_ACTION_RECONNECT:
                 caption+=SR.MS_RECONNECT;
                 taskType=TASK_TYPE_TIMER;
                 initTime=System.currentTimeMillis();
                 startTask();
-                StaticData.getInstance().roster.connectionTerminated(new Exception(caption));
+                sd.roster.connectionTerminated(new Exception(caption));
                 break;
         }
     }

@@ -104,8 +104,7 @@ public class XMLList
         }
         redraw(); 
     }
-    
-    
+
     public void keyClear() { 
         deleteAllMessages();
     }

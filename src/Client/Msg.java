@@ -54,13 +54,22 @@ public class Msg //implements MessageList.Element
     public final static int MESSAGE_MARKER_PRESENCE=2;
     public final static int MESSAGE_MARKER_IN=3;
     public final static int MESSAGE_MARKER_OTHER=0;
-    
 
     private boolean highlite;
-    
     private boolean history;
+    
+    public int messageType;
+    public String from;
+    public String subject;
+    private String body;
+    public long dateGmt;
+    public boolean delivered;
+    public String id;
+    
+    public boolean unread = false;
 
-
+    public boolean itemCollapsed;
+    public int itemHeight=-1;
     
     /** Creates a new instance of msg */
     public Msg(int messageType, String from, String subj, String body) {
@@ -75,22 +84,17 @@ public class Msg //implements MessageList.Element
         else if (body!=null && messageType!=MESSAGE_TYPE_SUBJ)
             if (body.length()>Config.getInstance().messageLimit)
                 itemCollapsed=true;
-        //if (subj!=null && subject!=null)
-        //    itemCollapsed=true;
     }
     
     public void onSelect(){}
-    /*public String getMsgHeader(){
-        return getTime()+from; 
-	}*/
+
     public String getTime(){
         return Time.timeLocalString(dateGmt); 
     }
     public String getDayTime(){
         return Time.dayLocalString(dateGmt)+Time.timeLocalString(dateGmt); 
     }
-    //private TimeZone tz(){ return StaticData.getInstance().config.tz;}
-    
+
     public void setDayTime(String date){
         this.dateGmt=Time.dateStringToLong(date);
     }
@@ -121,24 +125,6 @@ public class Msg //implements MessageList.Element
     
     public boolean isPresence() { return messageType==MESSAGE_TYPE_PRESENCE; }
     
-    public int messageType;
-    
-    public String from;
-    
-    public String subject;
-
-    private String body;
-
-    public long dateGmt;
-    
-    public boolean unread = false;
-    
-    public boolean itemCollapsed;
-    public int  itemHeight=-1;
-    
-    public boolean delivered;
-    public String id;
-    
     public void serialize(DataOutputStream os) throws IOException {
 	os.writeUTF(from);
 	os.writeUTF(body);
@@ -157,7 +143,6 @@ public class Msg //implements MessageList.Element
     public String getSubject() { return subject; }
 
     void setHighlite(boolean state) { highlite=state; }
-
     public boolean isHighlited() { return highlite; }
     
     public boolean isHistory() { return history; }
