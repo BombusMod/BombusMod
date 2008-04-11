@@ -10,26 +10,11 @@
     <!-- release tasks -->
     <target name="for-release-configs">
         <antcall inheritrefs="false" inheritall="false" target="${target.to.call}">
-            <param name="config.active" value="M55_Release"/>
+            <param name="config.active" value="full_ver"/>
         </antcall>
         <antcall inheritrefs="false" inheritall="false" target="${target.to.call}">
-            <param name="config.active" value="Release"/>
+            <param name="config.active" value="adsky"/>
         </antcall>
-        <antcall inheritrefs="false" inheritall="false" target="${target.to.call}">
-            <param name="config.active" value="ReleaseJZLIB"/>
-        </antcall>
-    </target>
-
-    <target name="rebuild-release">
-        <antcall target="for-release-configs">
-            <param value="rebuild" name="target.to.call"/>
-        </antcall>
-    </target>
-	
-    <target name="rebuild-smallver">
-	    <antcall inheritrefs="false" inheritall="false" target="rebuild">
-		    <param name="config.active" value="small_ver"/>
-	    </antcall>
     </target>
 
     <target name="rebuild-fullver">

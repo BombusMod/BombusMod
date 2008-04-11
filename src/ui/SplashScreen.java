@@ -169,11 +169,13 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
     public void setFailed(){
         setProgress("Failed", 0);
     }
+    
     public void setProgress(String caption, int progress){
         capt=caption;
-        System.out.println(capt);
+        //System.out.println(capt);
 	setProgress(progress);
     }
+    
     public int getProgress(){
         return pos;
     }

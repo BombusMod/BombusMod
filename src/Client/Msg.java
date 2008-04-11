@@ -116,7 +116,7 @@ public class Msg //implements MessageList.Element
     }
     public String toString(){
         StringBuffer time=new StringBuffer();
-        if (messageType==MESSAGE_TYPE_PRESENCE) {
+        if (messageType==MESSAGE_TYPE_PRESENCE || !Config.getInstance().showBalloons) {
             time.append("[").append(getTime()).append("] ");
         }
         time.append(body);
