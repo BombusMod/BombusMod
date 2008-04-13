@@ -2134,13 +2134,12 @@ public class Roster
 
     private void focusToContact(final Contact c, boolean force) {
 	Group g=c.getGroup();
-	if (g.collapsed) {
-	    g.collapsed=false;
-	    reEnumerator.queueEnum(c, force);
-	} else {
-	    int index=vContacts.indexOf(c);
-	    if (index>=0) moveCursorTo(index);
-	}
+        if (g.collapsed) {
+            g.collapsed=false;
+            reEnumerator.queueEnum(c, force);
+        }
+        int index=vContacts.indexOf(c);
+        if (index>=0) moveCursorTo(index);
     }
 
     public void beginConversation(String SessionId) { //todo: verify xmpp version

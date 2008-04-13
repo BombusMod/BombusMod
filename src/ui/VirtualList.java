@@ -466,7 +466,6 @@ public abstract class VirtualList
         }
 
         if (scroll) {
-	    
             setAbsOrg(g, 0, itemBorder[0]);
             g.setClip(0, 0, width, winHeight);
 
@@ -477,8 +476,7 @@ public abstract class VirtualList
 	    scrollbar.draw(g);
         } else scrollbar.setSize(0);
 
-        setAbsOrg(g, 0, 0);
-        g.setClip(0,0, width, height);
+        setAbsClip(g, width, height);
         
         drawHeapMonitor(g, itemBorder[0]); //heap monitor
         
@@ -503,9 +501,7 @@ public abstract class VirtualList
                 ar.init(width, height, iHeight);
             }
         }
-
-        setAbsOrg(g, 0, 0);
-        g.setClip(0,0, width, height);
+        setAbsClip(g, width, height);
         
 //#ifdef POPUPS
 //#         drawPopUp(g);
@@ -529,6 +525,11 @@ public abstract class VirtualList
 //#     }
 //#endif
     
+    private void setAbsClip(final Graphics g, int w, int h) {
+        setAbsOrg(g, 0, 0);
+        g.setClip(0,0, w, h);
+    }
+    
     protected void drawBalloon(final Graphics g, int balloon, final String text) {
         setAbsOrg(g,0,balloon);
         Balloon.draw(g, text);
@@ -545,9 +546,7 @@ public abstract class VirtualList
     private void drawInfoPanel (final Graphics g) {
         if (infobar!=null) {
             int h=infobar.getVHeight()+1;
-
             g.setClip(0,0, width, h);
-
             g.setColor(getMainBarBGnd());
             g.fillRect(0, 0, width, h/2);
             g.setColor(getMainBarBGndBottom());
@@ -562,7 +561,6 @@ public abstract class VirtualList
         if (mainbar!=null) {
             int h=mainbar.getVHeight()+1;
             g.setClip(0,0, width, h);
-            
             g.setColor(getMainBarBGnd()); //10
             g.fillRect(0, 0, width, h/2); //5
             g.setColor(getMainBarBGndBottom());
