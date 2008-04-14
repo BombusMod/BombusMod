@@ -129,7 +129,10 @@ public class Roster
     public Vector bookmarks;
     
     public MessageEdit me=null;
-    
+
+//#if MOOD
+//#     private MoodList mi=MoodList.getInstance();
+//#endif
     public boolean useUserMood;
 
     public int myStatus=cf.loginstatus;
@@ -1435,25 +1438,25 @@ public class Roster
 //#if DEBUG 
 //#                                 System.out.println(from+": "+userMood+userMoodText);
 //#endif
-//#                                 MoodList mi=MoodList.getInstance();
 //#                                 mood=mi.getMood(userMood, userMoodText);
 //#                             }
-//# 
-//#                             synchronized (hContacts) {
-//#                                 for (Enumeration e=hContacts.elements();e.hasMoreElements();){
-//#                                     Contact c=(Contact)e.nextElement();
-//#                                     if (c.jid.equals(new Jid(from),false) && c.status<Presence.PRESENCE_OFFLINE) {
-//#                 	                    c.setUserMood(mood);
-//#                 	                    if (mood!=null) {
+//#                             if (mood!=null) {
+//#                                 synchronized (hContacts) {
+//#                                     for (Enumeration e=hContacts.elements();e.hasMoreElements();){
+//#                                         Contact c=(Contact)e.nextElement();
+//#                                         if (c.jid.equals(new Jid(from),false)) {
+//#                                             if (c.jid.hasResource()) {
+//#                                                 c.setUserMood(mood);
 //#                                                 Msg m=new Msg(Msg.MESSAGE_TYPE_HISTORY, from, SR.MS_USER_MOOD, c.getUserMoodLocale()+"\n"+c.getUserMoodText());
 //#                                                 messageStore(c, m);
-//#                                             }
+//#                                            }
+//#                                         }
 //#                                     }
 //#                                 }
 //#                             }
 //#                         }
 //#                     }
-//#                 } catch (Exception e) { /*System.out.println("not mood");*/ }                 
+//#                 } catch (Exception e) { }    
 //#endif
                 String body=message.getBody().trim();
                 String oob=message.getOOB();
