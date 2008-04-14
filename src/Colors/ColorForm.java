@@ -46,8 +46,8 @@ public class ColorForm implements CommandListener
       
     private static Colors cs=Colors.getInstance();
       
-    private final static int w=18;
-    private final static int h=18;
+    private final static int w=6;
+    private final static int h=16;
 
     public static final String[] NAMES = {
             SR.MS_BALLOON_INK,
@@ -81,8 +81,6 @@ public class ColorForm implements CommandListener
             SR.MS_PGS_REMAINED,
             SR.MS_PGS_COMPLETE,
 
-            //SR.MS_PGS_BORDER,
-            //SR.MS_PGS_BGND,
             SR.MS_HEAP_TOTAL,
             SR.MS_HEAP_FREE,
             SR.MS_CURSOR_BGND,
@@ -92,12 +90,12 @@ public class ColorForm implements CommandListener
             SR.MS_SCROLL_BAR,
             SR.MS_SCROLL_BGND,
             
-            SR.MS_CONTACT+"J2J"
-//#if NICK_COLORS   
-//#             ,SR.MS_MESSAGE_IN_S,
-//#             SR.MS_MESSAGE_OUT_S,
-//#             SR.MS_MESSAGE_PRESENCE_S
-//#endif
+            SR.MS_CONTACT+"J2J",
+            
+            SR.MS_MESSAGE_IN_S,
+            SR.MS_MESSAGE_OUT_S,
+            SR.MS_MESSAGE_PRESENCE_S
+
         };
         
         public static int[] COLORS = {            
@@ -131,9 +129,7 @@ public class ColorForm implements CommandListener
             cs.MESSAGE_HISTORY,
             cs.PGS_REMAINED,
             cs.PGS_COMPLETE,
-            
-            //cs.PGS_BORDER,
-            //cs.PGS_BGND,
+
             cs.HEAP_TOTAL,
             cs.HEAP_FREE,
             cs.CURSOR_BGND,
@@ -143,13 +139,11 @@ public class ColorForm implements CommandListener
             cs.SCROLL_BAR,
             cs.SCROLL_BGND,
             
-            cs.CONTACT_J2J
-//#if NICK_COLORS
-//#             ,cs.MESSAGE_IN_S,
-//#             cs.MESSAGE_OUT_S,
-//#             cs.MESSAGE_PRESENCE_S
-//#endif
+            cs.CONTACT_J2J,
             
+            cs.MESSAGE_IN_S,
+            cs.MESSAGE_OUT_S,
+            cs.MESSAGE_PRESENCE_S
       };
         
       
@@ -185,8 +179,6 @@ public class ColorForm implements CommandListener
             imageData(cs.PGS_REMAINED),
             imageData(cs.PGS_COMPLETE),
 
-            //imageData(cs.PGS_BORDER),
-            //imageData(cs.PGS_BGND),
             imageData(cs.HEAP_TOTAL),
             imageData(cs.HEAP_FREE),
             imageData(cs.CURSOR_BGND),
@@ -195,13 +187,11 @@ public class ColorForm implements CommandListener
             imageData(cs.SCROLL_BRD),
             imageData(cs.SCROLL_BAR),
             imageData(cs.SCROLL_BGND),
-            imageData(cs.CONTACT_J2J)
-//#if NICK_COLORS
-//#             ,imageData(cs.MESSAGE_IN_S),
-//#             imageData(cs.MESSAGE_OUT_S),
-//#             imageData(cs.MESSAGE_PRESENCE_S)
-//#endif
+            imageData(cs.CONTACT_J2J),
             
+            imageData(cs.MESSAGE_IN_S),
+            imageData(cs.MESSAGE_OUT_S),
+            imageData(cs.MESSAGE_PRESENCE_S)
       };
 
 
@@ -234,6 +224,8 @@ public class ColorForm implements CommandListener
         selectionList.addCommand(cmdCancel);
         display.setCurrent(selectionList);
         selectionList.setCommandListener(this);
+        
+        
     }
       
     public void commandAction(Command c, Displayable d) {
@@ -296,9 +288,7 @@ public class ColorForm implements CommandListener
                 arrayInt[i]=color;
             }
             return Image.createRGBImage(arrayInt,w,h,false);
-        } catch (Exception ex) { 
-            //ex.printStackTrace(); 
-        }
+        } catch (Exception ex) { }
         
         return null;
     }

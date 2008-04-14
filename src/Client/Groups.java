@@ -57,7 +57,7 @@ public class Groups implements JabberBlockListener{
     public final static int TYPE_TRANSP=9;
     public final static String COMMON_GROUP=SR.MS_GENERAL;
     
-    private final static String GROUPSTATE_NS="http://bombus-im.org/groups";
+    private final static String GROUPSTATE_NS="http://bombusmod.net.ru/groups";
     
     public Groups(){
         groups=new Vector();
