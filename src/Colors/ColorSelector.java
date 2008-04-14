@@ -58,7 +58,7 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
     int paramName;
     int ncolor;
 
-    Command cmdOk = new Command(SR.MS_OK /*"OK"*/, Command.OK, 1);
+    Command cmdOk = new Command(SR.MS_OK, Command.OK, 1);
 
     private int color;
 
@@ -99,7 +99,7 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
 
     protected void paint(Graphics g) {
         py = h - 20;
-        ph = h - 52;
+        ph = h - 50;
         g.setColor(0xffffff);
         g.fillRect(0, 0, w, h);
         g.setFont(mfont);
@@ -163,7 +163,7 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
             g.drawRect(pxblue-7, py-ph-5, 15, ph+20);
         }
     }
-
+/*
     protected void pointerPressed(int x, int y) {
         int r=checkPressed((w/3)-12, x, y);
         int g=checkPressed(w/2-2, x, y);
@@ -179,10 +179,11 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
         if (x>=w && x<(w+5))
             if (y<=py && y>=py-ph) {
                 int val=py*(py-y)/255;
-                return (val==250)?255:val;
+                return val;
             }
         return -1;
     }
+*/
     protected void keyPressed(int key) {
         switch (key) {
             case KEY_NUM2:
@@ -344,8 +345,6 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
             case 25:
                 cl.PGS_COMPLETE=value; 
                 break;
-            //case 26: cl.PGS_BORDER=value; break;
-            //case 27: cl.PGS_BGND=value; break;
             case 26:
                 cl.HEAP_TOTAL=value; 
                 break;
@@ -370,17 +369,15 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
             case 33:
                 cl.CONTACT_J2J=value; 
                 break;
-//#if NICK_COLORS
-//#             case 34:
-//#                 cl.MESSAGE_IN_S=value; 
-//#                 break;
-//#             case 35:
-//#                 cl.MESSAGE_OUT_S=value; 
-//#                 break;
-//#             case 36:
-//#                 cl.MESSAGE_PRESENCE_S=value; 
-//#                 break;
-//#endif
+            case 34:
+                cl.MESSAGE_IN_S=value; 
+                break;
+            case 35:
+                cl.MESSAGE_OUT_S=value; 
+                break;
+            case 36:
+                cl.MESSAGE_PRESENCE_S=value; 
+                break;
         }
 //#if (COLORS)
 //#         ColorScheme.saveToStorage();
