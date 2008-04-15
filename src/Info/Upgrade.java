@@ -104,7 +104,7 @@ public class Upgrade
         if (!build) {
             SHA1 sha=new SHA1();
             sha.init();
-            sha.updateASCII(strconv.unicodeToUTF(StaticData.getInstance().account.getJid()) );
+            sha.updateASCII(strconv.unicodeToUTF(StaticData.getInstance().account.getBareJid()) );
             sha.finish();
             
             vUrl+="?name="+Version.NAME;

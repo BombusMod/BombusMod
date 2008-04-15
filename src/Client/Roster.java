@@ -1442,21 +1442,27 @@ public class Roster
 //#                             }
 //#                             if (mood!=null) {
 //#                                 synchronized (hContacts) {
+//#                                     //int ii=0;
 //#                                     for (Enumeration e=hContacts.elements();e.hasMoreElements();){
 //#                                         Contact c=(Contact)e.nextElement();
 //#                                         if (c.jid.equals(new Jid(from),false)) {
-//#                                             if (c.jid.hasResource() && c.getStatus()<Presence.PRESENCE_INVISIBLE) {
-//#                                                 System.out.println(c.toString());
+//#                                             if (c.jid.hasResource()) {
 //#                                                 c.setUserMood(mood);
 //#                                                 Msg m=new Msg(Msg.MESSAGE_TYPE_HISTORY, from, SR.MS_USER_MOOD, c.getUserMoodLocale()+"\n"+c.getUserMoodText());
 //#                                                 messageStore(c, m);
+//#                                                 //if (c.origin>Contact.ORIGIN_ROSTERRES && c.status>=Presence.PRESENCE_OFFLINE && c.getNewMsgsCount()==0) {
+//#                                                     //hContacts.removeElementAt(ii);
+//#                                                     //ii--;
+//#                                                 //}
 //#                                            }
 //#                                         }
+//#                                         //ii++;
 //#                                     }
 //#                                 }
 //#                             }
 //#                         }
 //#                     }
+//#                     
 //#                 } catch (Exception e) { }    
 //#endif
                 String body=message.getBody().trim();

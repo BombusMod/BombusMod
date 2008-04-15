@@ -97,8 +97,10 @@ public class Contact extends IconTextElement{
     public final static short ORIGIN_GC_MYSELF=6;
 //#endif
     public String nick;
-    public String addStatus;
-    public String origNick;
+//#ifdef IRC_LIKE
+//#     public String addStatus;
+//#     public String origNick;
+//#endif
     public Jid jid;
     public String bareJid;    // for roster/subscription manipulating
     protected int status;
@@ -202,7 +204,7 @@ public class Contact extends IconTextElement{
         clone.offline_type=offline_type;
         clone.origin=ORIGIN_CLONE; 
         clone.status=status; 
-        clone.mood=mood;
+        //clone.mood=mood;
         clone.transport=ri.getTransportIndex(newjid.getTransport()); //<<<<
 
         clone.bareJid=bareJid;
