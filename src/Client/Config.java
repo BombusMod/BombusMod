@@ -155,7 +155,9 @@ public class Config {
     public boolean eventDelivery=false;
     public boolean transliterateFilenames=false;
     public boolean rosterStatus=false;
-    public boolean userMoods=true;
+//#ifdef MOOD
+//#     public boolean userMoods=true;
+//#endif
     public boolean queryExit = false;
     public int notInListDropLevel=NotInListFilter.ALLOW_ALL; //enable all
     public boolean showBalloons = true;
@@ -170,7 +172,7 @@ public class Config {
     public boolean useBoldFont=false;
     public boolean notifyWhenMessageType = false;
     public boolean ircLikeStatus = false;
-    public boolean sndrcvmood = true;
+    public boolean sndrcvmood = false;
     public String scheme = "";
     
     public boolean firstRun = true;

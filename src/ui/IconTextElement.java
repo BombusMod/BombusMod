@@ -26,7 +26,6 @@
  */
 
 package ui;
-import images.MoodIcons;
 import images.RosterIcons;
 import javax.microedition.lcdui.*;
 import java.util.*;

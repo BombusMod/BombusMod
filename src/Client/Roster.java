@@ -2503,7 +2503,7 @@ public class Roster
 //#                 mess.append("jid: "+cntact.bareJid);
 //#                 mess.append(cntact.jid.getResource());
 //#                 mess.append("\n"+SR.MS_SUBSCRIPTION+": "+cntact.subscr);
-//#                 
+//#ifdef MOOD
 //#                 if (cntact.mood!=null) {
 //#                     mess.append("\n");
 //#                     mess.append(SR.MS_USER_MOOD);
@@ -2515,6 +2515,7 @@ public class Roster
 //#                         mess.append(")");
 //#                     }
 //#                 }
+//#endif
 //#ifndef WMUC
 //#             }
 //#endif

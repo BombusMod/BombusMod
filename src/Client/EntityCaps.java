@@ -36,11 +36,9 @@ public class EntityCaps implements JabberBlockListener{
         if (query==null) return BLOCK_REJECTED;
         String node=query.getAttribute("node");
 
-        boolean answerMood = false;
-        if (node!=null) {
+        if (node!=null)
             if (!node.equals(BOMBUS_NAMESPACE+"#"+calcVerHash()))
                 return BLOCK_REJECTED;
-        }
 
         JabberDataBlock result=new Iq(data.getAttribute("from"), Iq.TYPE_RESULT, data.getAttribute("id"));
         result.addChild(query);
@@ -51,7 +49,7 @@ public class EntityCaps implements JabberBlockListener{
         identity.setAttribute("name", Version.getNameVersion());
 
         for (int i=0; i<features.size(); i++) {
-        query.addChild("feature", null).setAttribute("var",(String)features.elementAt(i));
+            query.addChild("feature", null).setAttribute("var",(String)features.elementAt(i));
         }
         
         StaticData.getInstance().roster.theStream.send(result);
@@ -119,12 +117,14 @@ public class EntityCaps implements JabberBlockListener{
                features.addElement((String)feature);
                pos=p+1;
             }
-            if (Config.getInstance().sndrcvmood) {
-                if (features.indexOf("http://jabber.org/protocol/mood")<0) {
-                    features.addElement("http://jabber.org/protocol/mood");
-                    features.addElement("http://jabber.org/protocol/mood+notify");
-                }        
-            }
+//#ifdef MOOD
+//#             if (Config.getInstance().sndrcvmood) {
+//#                 if (features.indexOf("http://jabber.org/protocol/mood")<0) {
+//#                     features.addElement("http://jabber.org/protocol/mood");
+//#                     features.addElement("http://jabber.org/protocol/mood+notify");
+//#                 }        
+//#             }
+//#endif
             sort(features);
         } catch (Exception ex) { }
     }

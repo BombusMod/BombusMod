@@ -152,7 +152,9 @@ public class ConfigForm implements
         message.append(SR.MS_STORE_PRESENCE,null);
         message.append(SR.MS_AUTOSCROLL, null);
         message.append(SR.MS_EMULATE_TABS, null);
-        message.append(SR.MS_SEND_RECEIVE_USERMOODS, null);
+//#ifdef MOOD
+//#         message.append(SR.MS_SEND_RECEIVE_USERMOODS, null);
+//#endif
         message.append(SR.MS_RUNNING_MESSAGE, null);
 //#ifdef ANTISPAM
 //#         message.append(SR.MS_ANTISPAM_CONFERENCE, null);
@@ -172,7 +174,9 @@ public class ConfigForm implements
             cf.storeConfPresence,
             cf.autoScroll,
             cf.useTabs,
-            cf.sndrcvmood,
+//#ifdef MOOD
+//#             cf.sndrcvmood,
+//#endif
             cf.notifyWhenMessageType
 //#ifdef ANTISPAM
 //#             ,cf.antispam
@@ -388,7 +392,9 @@ public class ConfigForm implements
             cf.storeConfPresence=mv[mvctr++];
             cf.autoScroll=mv[mvctr++];
             cf.useTabs=mv[mvctr++];
-            cf.sndrcvmood=mv[mvctr++];
+//#ifdef MOOD
+//#             cf.sndrcvmood=mv[mvctr++];
+//#endif
             cf.notifyWhenMessageType=mv[mvctr++];
 //#ifdef ANTISPAM
 //#             cf.antispam=mv[mvctr++];

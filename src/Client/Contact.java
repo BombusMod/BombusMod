@@ -37,9 +37,11 @@ import History.HistoryStorage;
 //# import History.HistoryAppend;
 //#endif
 
-import UserMood.Mood;
-import UserMood.MoodList;
-import images.MoodIcons;
+//#ifdef MOOD
+//# import UserMood.Mood;
+//# import UserMood.MoodList;
+//# import images.MoodIcons;
+//#endif
 
 import images.RosterIcons;
 import Colors.Colors;
@@ -84,9 +86,9 @@ public class Contact extends IconTextElement{
         }
         return Colors.CONTACT_DEFAULT;
     }
-    
-    public Mood mood;
-
+//#ifdef MOOD
+//#     public Mood mood;
+//#endif
     public final static short ORIGIN_ROSTER=0;
     public final static short ORIGIN_ROSTERRES=1;
     public final static short ORIGIN_CLONE=2;
@@ -168,7 +170,13 @@ public class Contact extends IconTextElement{
     private boolean loaded=false;
 
     protected Contact (){
-        super(RosterIcons.getInstance(), MoodIcons.getInstance());
+        super(RosterIcons.getInstance(), 
+//#ifdef MOOD
+//#                 MoodIcons.getInstance()
+//#else
+                null
+//#endif
+                );
         msgs=new Vector();
         key1="";
     }
@@ -556,19 +564,19 @@ public class Contact extends IconTextElement{
 //#         return null;
 //#     }
 //#endif
-    
-    public String getUserMoodLocale() {
-        return mood.getLocale();
-    }
-    
-    public void setUserMood (Mood mood) {
-        this.mood=mood;
-    }
-    
-    public String getUserMoodText() {
-        return mood.getText();
-    }
-    
+//#ifdef MOOD
+//#     public String getUserMoodLocale() {
+//#         return mood.getLocale();
+//#     }
+//#     
+//#     public void setUserMood (Mood mood) {
+//#         this.mood=mood;
+//#     }
+//#     
+//#     public String getUserMoodText() {
+//#         return mood.getText();
+//#     }
+//#endif
     public int getSecImageIndex() {
 //#ifdef ANTISPAM
 //#         if (!tempMsgs.isEmpty())
@@ -585,9 +593,10 @@ public class Contact extends IconTextElement{
 
         if (incomingState>0) 
             return incomingState;
-        
-        if (mood!=null)
-            return mood.getImageIndex();
+//#ifdef MOOD
+//#         if (mood!=null)
+//#             return mood.getImageIndex();
+//#endif
         return -1;
     }
     
