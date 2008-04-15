@@ -1202,9 +1202,9 @@ public class Roster
                             querysign=false;
                         }
                         if (body!=null) {
-                            String lastType=SR.MS_ONLINE_TIME;
+                            String lastType=SR.MS_SEEN;
                             if (getContact(from, false).status<Presence.PRESENCE_OFFLINE)
-                                lastType=SR.MS_SEEN;
+                                lastType=SR.MS_ONLINE_TIME;
                             String status=(data.getChildBlockText("query").length()!=0)?" ("+data.getChildBlockText("query")+")":"";
                             Msg m=new Msg(Msg.MESSAGE_TYPE_SYSTEM, from, lastType, body+status);
                             messageStore( getContact(from, false), m);
@@ -2195,6 +2195,7 @@ public class Roster
         new Reconnect(topBar, error, display);
 
      }
+    
      public void doReconnect() {
         sendPresence(lastOnlineStatus, null);
      }

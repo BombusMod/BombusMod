@@ -38,11 +38,7 @@ public class EntityCaps implements JabberBlockListener{
 
         boolean answerMood = false;
         if (node!=null) {
-            if (node.equals(BOMBUS_NAMESPACE+"#ep-notify")) {
-                if (Config.getInstance().sndrcvmood)
-                    answerMood=true;
-                else return BLOCK_REJECTED;
-            } else if (!node.equals(BOMBUS_NAMESPACE+"#"+calcVerHash()))
+            if (!node.equals(BOMBUS_NAMESPACE+"#"+calcVerHash()))
                 return BLOCK_REJECTED;
         }
 
@@ -54,12 +50,8 @@ public class EntityCaps implements JabberBlockListener{
         identity.setAttribute("type", BOMBUS_ID_TYPE);
         identity.setAttribute("name", Version.getNameVersion());
 
-        if (answerMood) {
-            query.addChild("feature", null).setAttribute("var","http://jabber.org/protocol/mood+notify");
-        } else {
-            for (int i=0; i<features.size(); i++) {
-                query.addChild("feature", null).setAttribute("var",(String)features.elementAt(i));
-            }
+        for (int i=0; i<features.size(); i++) {
+        query.addChild("feature", null).setAttribute("var",(String)features.elementAt(i));
         }
         
         StaticData.getInstance().roster.theStream.send(result);
@@ -99,8 +91,9 @@ public class EntityCaps implements JabberBlockListener{
         c.setAttribute("node", BOMBUS_NAMESPACE);//+'#'+Version.getVersionNumber());
         c.setAttribute("ver", calcVerHash());
         c.setAttribute("hash", "sha-1");
-        if (Config.getInstance().sndrcvmood)
-            c.setAttribute("ext", "ep-notify");
+        
+        //ext  	A set of nametokens specifying additional feature bundles; this attribute is deprecated (see the Legacy Format section of this document).  	DEPRECATED
+        //if (Config.getInstance().sndrcvmood) c.setAttribute("ext", "ep-notify");
         return c;
     }
     
@@ -109,9 +102,9 @@ public class EntityCaps implements JabberBlockListener{
     private final static String BOMBUS_ID_TYPE="mobile";
     
     
-    private static final String initFeatures = "http://jabber.org/protocol/chatstates,http://jabber.org/protocol/disco#info,http://jabber.org/protocol/ibb,http://www.xmpp.org/extensions/xep-0199.html#ns,http://jabber.org/protocol/muc,"
+    private static final String initFeatures = "http://jabber.org/protocol/chatstates,http://jabber.org/protocol/disco#info,http://jabber.org/protocol/muc,"
 //#ifdef FILE_TRANSFER
-//#             +"http://jabber.org/protocol/si,http://jabber.org/protocol/si/profile/file-transfer,"
+//#             +"http://jabber.org/protocol/ibb,http://jabber.org/protocol/si,http://jabber.org/protocol/si/profile/file-transfer,"
 //#endif
             +"jabber:iq:time,jabber:iq:version,jabber:x:data,urn:xmpp:ping,urn:xmpp:receipts,urn:xmpp:time,";
     
@@ -132,6 +125,30 @@ public class EntityCaps implements JabberBlockListener{
                     features.addElement("http://jabber.org/protocol/mood+notify");
                 }        
             }
+            sort(features);
         } catch (Exception ex) { }
+    }
+    
+    public final static void sort(Vector sortVector){
+        try {
+            synchronized (sortVector) {
+                int f, i;
+                String left, right;
+                
+                for (f = 1; f < sortVector.size(); f++) {
+                    left=(String)sortVector.elementAt(f);
+                    right=(String)sortVector.elementAt(f-1);
+                    if ( left.compareTo(right) >=0 ) continue;
+                    i = f-1;
+                    while (i>=0){
+                        right=(String)sortVector.elementAt(i);
+                        if (right.compareTo(left) <0) break;
+                        sortVector.setElementAt(right,i+1);
+                        i--;
+                    }
+                    sortVector.setElementAt(left,i+1);
+                }
+            }
+        } catch (Exception e) { }
     }
 }

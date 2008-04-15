@@ -55,7 +55,7 @@ public class Bookmarks
     private Command cmdCancel=new Command (SR.MS_CANCEL, Command.BACK, 99);
     private Command cmdJoin=new Command (SR.MS_SELECT, Command.OK, 1);
     private Command cmdAdvJoin=new Command (SR.MS_EDIT_JOIN, Command.SCREEN, 2);
-    private Command cmdDoAutoJoin=new Command(SR.MS_DO_AUTOJOIN, Command.SCREEN, 3);
+    //private Command cmdDoAutoJoin=new Command(SR.MS_DO_AUTOJOIN, Command.SCREEN, 3);
     private Command cmdNew=new Command (SR.MS_NEW_BOOKMARK, Command.SCREEN, 4);
     private Command cmdConfigure=new Command (SR.MS_CONFIG_ROOM, Command.SCREEN, 5);
 //#ifdef SERVICE_DISCOVERY
@@ -91,7 +91,7 @@ public class Bookmarks
         
         addCommand(cmdCancel);
         addCommand(cmdJoin);
-        addCommand(cmdDoAutoJoin);
+        //addCommand(cmdDoAutoJoin);
         addCommand(cmdAdvJoin);
 	addCommand(cmdNew);
         
@@ -193,13 +193,13 @@ public class Bookmarks
         else if (c==cmdRoomMembers) new Affiliations(display, roomJid, (short)3);  
         else if (c==cmdRoomBanned) new Affiliations(display, roomJid, (short)4);  
         else if (c==cmdSort) sort(sd.roster.bookmarks);
-        else if (c==cmdDoAutoJoin) {
+        /*else if (c==cmdDoAutoJoin) {
             for (Enumeration e=sd.roster.bookmarks.elements(); e.hasMoreElements();) {
                 BookmarkItem bm=(BookmarkItem) e.nextElement();
                 if (bm.autojoin) 
                     ConferenceForm.join(bm.desc, bm.jid+'/'+bm.nick, bm.password, cf.confMessageCount);
             }
-        }
+        }*/
         
         else if (c==cmdSave) saveBookmarks();
         else if (c==cmdUp) { move(-1); keyUp(); }
