@@ -311,6 +311,15 @@ public class MessageEdit
     }
 
     public void setTicker(String msg) {
+        if (msg!=null) {
+            StringBuffer out=new StringBuffer(msg);
+            int i=0;
+            while (i<out.length()) {
+                if (out.charAt(i)<0x03) out.deleteCharAt(i);
+                else i++;
+            }
+            msg=out.toString();
+        }
         String em=t.getString();
         if (notifyTicker==null) {
             notifyTicker= new Ticker(msg);
@@ -319,8 +328,9 @@ public class MessageEdit
             if (msg=="") {
                 notifyTicker=null;
                 t.setTicker(null);
-            } else
+            } else {
                 notifyTicker.setString(msg);
+            }
         }
         if (t==null)
             t.setString(em);

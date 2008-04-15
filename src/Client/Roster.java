@@ -1445,7 +1445,8 @@ public class Roster
 //#                                     for (Enumeration e=hContacts.elements();e.hasMoreElements();){
 //#                                         Contact c=(Contact)e.nextElement();
 //#                                         if (c.jid.equals(new Jid(from),false)) {
-//#                                             if (c.jid.hasResource()) {
+//#                                             if (c.jid.hasResource() && c.getStatus()<Presence.PRESENCE_INVISIBLE) {
+//#                                                 System.out.println(c.toString());
 //#                                                 c.setUserMood(mood);
 //#                                                 Msg m=new Msg(Msg.MESSAGE_TYPE_HISTORY, from, SR.MS_USER_MOOD, c.getUserMoodLocale()+"\n"+c.getUserMoodText());
 //#                                                 messageStore(c, m);
@@ -1909,8 +1910,9 @@ public class Roster
     }
     
     void setTicker(String message) {
-        if (cf.notifyWhenMessageType)
+        if (cf.notifyWhenMessageType) {
             me.setTicker(message);
+        }
     }
     
     boolean showWobbler(Contact c) {
