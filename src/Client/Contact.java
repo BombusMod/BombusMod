@@ -62,18 +62,18 @@ public class Contact extends IconTextElement{
 //#endif
 
 //#if USE_ROTATOR
-//#     private int isnew=0;    
-//#     public void setNewContact() {
-//#         this.isnew = 10;        
-//#     }
+    private int isnew=0;    
+    public void setNewContact() {
+        this.isnew = 10;        
+    }
 //#endif
     
     public int getColor() {
 //#if USE_ROTATOR        
-//#     if (isnew>0){
-//#         isnew--;
-//#             return (isnew%2==0)?0xFF0000:0x0000FF;
-//#     }
+    if (isnew>0){
+        isnew--;
+            return (isnew%2==0)?0xFF0000:0x0000FF;
+    }
 //#endif
         if (j2j!=null)
             return Colors.CONTACT_J2J;
@@ -548,6 +548,7 @@ public class Contact extends IconTextElement{
 //#     public String getSecondString() {
 //#         StringBuffer s=new StringBuffer();
 //#         if (cf.rosterStatus) {
+//#ifdef MOOD
 //#             if (mood!=null) {
 //#                 s.append(getUserMoodLocale());
 //#                 if (getUserMoodText()!="") {
@@ -555,8 +556,10 @@ public class Contact extends IconTextElement{
 //#                     s.append(getUserMoodText());
 //#                     s.append(")");
 //#                 }
-//#             } else if (statusString!=null)
-//#                 s.append(statusString);
+//#             } else 
+//#endif
+//#                 if (statusString!=null)
+//#                     s.append(statusString);
 //#             
 //#             return (s.toString().length()<1)?null:s.toString();
 //#         }

@@ -62,11 +62,7 @@ abstract public class IconTextElement implements VirtualElement
             FontCache.getRosterNormalFont():
             FontCache.getRosterBoldFont();
     }
-/*
-    private Font getSmallFont() {
-        return FontCache.getBalloonFont();
-    }
-*/
+
     public void drawItem(Graphics g, int ofs, boolean sel){
        g.setFont(getFont());
        
