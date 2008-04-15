@@ -27,6 +27,11 @@
 
 package Info;
 
+import Client.Config;
+import Client.Msg;
+import Client.StaticData;
+import Messages.MessageList;
+import com.ssttr.crypto.SHA1;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Hashtable;
@@ -40,18 +45,22 @@ import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.List;
 import midlet.BombusMod;
 import locale.SR;
+import ui.MainBar;
+import ui.VirtualElement;
 import util.strconv;
 
 /**
  *
  * @author evgs
  */
-public class Upgrade implements Runnable, CommandListener{
+public class Upgrade 
+        extends MessageList 
+        implements Runnable, CommandListener{
    
-    private Command cmdBack=new Command(SR.MS_BACK, Command.BACK, 99);
-    private Command cmdInstall=new Command(SR.MS_GOTO_URL, Command.ITEM, 1);
-    private final static String VERSION_URL="http://bombusmod.net.ru/news/lastest.php";
-    List list;
+    //private Command cmdBack=new Command(SR.MS_BACK, Command.BACK, 99);
+    private final static String VERSION_URL="http://bombusmod.net.ru/checkupdate/check.php";
+
+    upgradeItems items;
     Vector versions[];
     boolean build;
     
@@ -60,67 +69,103 @@ public class Upgrade implements Runnable, CommandListener{
             
     private Display display;
     private Displayable parentView;
+
+    private boolean wait=true;
     
     /** Creates a new instance of Upgrade */
     public Upgrade(Display display, boolean build) {
+        super ();
         this.display=display;
         this.build=build;
-        parentView=display.getCurrent();
-        list=new List(SR.MS_CHECK_UPDATE, List.IMPLICIT);
-        list.setCommandListener(this);
-        list.addCommand(cmdBack);
-        display.setCurrent(list);
+        
+        items=upgradeItems.getInstance();
+        
+        setCommandListener(this);
+	addCommand(cmdBack);
+        attachDisplay(display);
+        
+        try {
+            focusedItem(0);
+        } catch (Exception e) {}
+        
+	MainBar mainbar=new MainBar(SR.MS_CHECK_UPDATE);
+        setMainBarItem(mainbar);
+        
         new Thread(this).start();
+        
     }
 
     public void run() {
-        list.append("Wait!", null);
+        wait=true;
+        clearList();
         String result="";
         StringBuffer b = new StringBuffer();
         String vUrl=(build)?Client.Config.getInstance().getStringProperty("Bombus-Upgrade", VERSION_URL):VERSION_URL;
+        if (!build) {
+            SHA1 sha=new SHA1();
+            sha.init();
+            sha.updateASCII(strconv.unicodeToUTF(StaticData.getInstance().account.getJid()) );
+            sha.finish();
+            
+            vUrl+="?name="+Version.NAME;
+            vUrl+="&version="+Version.getVersionNumber();
+            vUrl+="&lang="+SR.MS_IFACELANG;
+            vUrl+="&os="+Config.getOs();
+            vUrl+="&hash="+sha.getDigestHex();
+        } else {
+            vUrl+="&vers=new";
+        }
         try {
             c = (HttpConnection) Connector.open(vUrl);
             is = c.openInputStream();
             
-            if (build) {
-                versions=new util.StringLoader().stringLoader(is, 3);
-                list.deleteAll();
-                for (int i=0; i<versions[0].size(); i++) {
-                    if (versions[0].elementAt(i)==null) continue;
-                    String name=(String)versions[0].elementAt(i)+" "+(String)versions[1].elementAt(i);
-                    list.append(name, null);
-                }
-                list.addCommand(cmdInstall);
-            } else {
-                list.deleteAll();
-				versions=new util.StringLoader().stringLoader(is, 1);
-                for (int i=0; i<versions[0].size(); i++) {
-                    if (versions[0].elementAt(i)==null) continue;
-                    String name=(String)versions[0].elementAt(i);
-                    list.append(name, null); 
-                }
+            versions=new util.StringLoader().stringLoader(is, 1);
+            for (int i=0; i<versions[0].size(); i++) {
+                if (versions[0].elementAt(i)==null) continue;
+                String name=(String)versions[0].elementAt(i);
+                items.add(new Msg(Msg.MESSAGE_TYPE_IN, "local", null, name)); 
             }
 
             if(is!= null) is.close();
             if(c != null) c.close();
         } catch (Exception e) {
-            list.append("Error on request!", null);
+            items.add(new Msg(Msg.MESSAGE_TYPE_IN, "local", null, "Error on request!"));
         }
+        wait=false;
     }
 
-    public void commandAction(Command command, Displayable displayable) {
-        if (command==cmdBack) destroyView();
-        if (command==cmdInstall) {
-            int index=list.getSelectedIndex();
-            
-            try {
-                if (BombusMod.getInstance().platformRequest((String) versions[2].elementAt(index))) System.exit(0);
-            } catch (Exception e) { e.printStackTrace(); }
-            
-        }
+    public void commandAction(Command c, Displayable d) {
+        super.commandAction(c,d);
+        /*try {
+            if (BombusMod.getInstance().platformRequest((String) versions[2].elementAt(index))) System.exit(0);
+        } catch (Exception e) { e.printStackTrace(); }*/
+    }
+    
+    protected void beginPaint() {
+        StringBuffer str = new StringBuffer();
+        if (wait)
+            str.append(" - loading");
+        
+        getMainBarItem().setElementAt(str.toString(),1);
     }
 
-    private void destroyView() {
-        display.setCurrent(parentView);
+    public void destroyView() {
+        super.destroyView();
+    }
+
+    public int getItemCount() {
+        return items.size();
+    }
+
+    public Msg getMessage(int index) {
+	return items.msg(index);
+    }
+    
+    private void clearList() {
+        if (getItemCount()>0) {
+            items.clearAll();
+            messages=new Vector();
+        }
+        redraw(); 
     }
 }
