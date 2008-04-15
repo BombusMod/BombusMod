@@ -136,16 +136,11 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 //#ifdef COLORS
 //#                 addItem("Send current color scheme",912, 0x0f22);
 //#endif
-            if (contact.status<Presence.PRESENCE_OFFLINE)
+            if (contact.status<Presence.PRESENCE_OFFLINE) {
                 addItem(SR.MS_TIME,891);
                 addItem(SR.MS_IDLE,889);
                 addItem(SR.MS_PING,893);
-            
-                //if (contact.status>4) //not only for offline&invisible status
-                //    addItem(SR.MS_ONLINE,894); 
-            //}
-                                        
-            //if (from.indexOf("/")>-1) lastType="idle";
+            }
 	    
 	    if (contact.getGroupType()!=Groups.TYPE_SELF && contact.getGroupType()!=Groups.TYPE_SEARCH_RESULT && contact.origin<Contact.ORIGIN_GROUPCHAT) {
 		if (contact.status<Presence.PRESENCE_OFFLINE) {
