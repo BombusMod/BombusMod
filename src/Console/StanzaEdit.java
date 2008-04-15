@@ -36,7 +36,7 @@ public class StanzaEdit implements CommandListener, Runnable {
     private Command cmdPasteText=new Command(SR.MS_PASTE, Command.BACK,10);
     private Command cmdCancel=new Command(SR.MS_CANCEL, Command.SCREEN,99);
     private Command cmdSend=new Command(SR.MS_SEND, Command.OK,1);
-    
+
     private ClipBoard clipboard=ClipBoard.getInstance();
     private Config cf=Config.getInstance();
     

@@ -68,16 +68,19 @@ public class RosterToolsMenu
     public RosterToolsMenu(Display display) {
         super(SR.MS_TOOLS);
 //#ifdef SERVICE_DISCOVERY
-//#         addItem(SR.MS_DISCO, 0, 0x13);
+//#         if (sd.roster.isLoggedIn())
+//#             addItem(SR.MS_DISCO, 0, 0x13);
 //#endif
 //#ifdef PRIVACY
-//#         addItem(SR.MS_PRIVACY_LISTS, 1, 0x46);
+//#         if (sd.roster.isLoggedIn())
+//#             addItem(SR.MS_PRIVACY_LISTS, 1, 0x46);
 //#endif
 //#ifdef MOOD
-//#         if (sd.roster.useUserMood && cf.sndrcvmood)
+//#         if (sd.roster.useUserMood && cf.sndrcvmood && sd.roster.isLoggedIn())
 //#             addItem(SR.MS_USER_MOOD, 2, 0x0f16);
 //#endif
-        addItem(SR.MS_MY_VCARD, 3, 0x0f16);
+        if (sd.roster.isLoggedIn())
+            addItem(SR.MS_MY_VCARD, 3, 0x0f16);
         addItem(SR.MS_OPTIONS, 4, 0x0f03);
 //#if (FILE_IO && HISTORY)
 //#         addItem(SR.MS_HISTORY_OPTIONS, 5, 0x0f01);
@@ -87,7 +90,8 @@ public class RosterToolsMenu
         addItem(SR.MS_ROOT,6, 0x0f10);
 //#endif
 //#if (FILE_IO && FILE_TRANSFER)
-//#         addItem(SR.MS_FILE_TRANSFERS, 7, 0x0f34);
+//#         if (sd.roster.isLoggedIn())
+//#             addItem(SR.MS_FILE_TRANSFERS, 7, 0x0f34);
 //#endif
 //#ifdef COLORS
 //#         addItem(SR.MS_COLOR_TUNE, 8, 0x0f25);
@@ -109,7 +113,7 @@ public class RosterToolsMenu
 //#             addItem(SR.MS_CUSTOM_KEYS, 14, 0x0f03);
 //#endif
 //#if SASL_XGOOGLETOKEN
-        if (sd.account.isGmail())
+        if (sd.account.isGmail() && sd.roster.isLoggedIn())
             addItem(SR.MS_CHECK_GOOGLE_MAIL, 15,0x46);
 //#endif 
 //#if AUTOTASK
@@ -120,7 +124,8 @@ public class RosterToolsMenu
         
         addItem(SR.MS_BREAK_CONECTION, 18, 0x13);
 //#ifdef CONSOLE
-//#         addItem(SR.MS_XML_CONSOLE, 19, 0x46);
+//#         if (sd.roster.isLoggedIn())
+//#                addItem(SR.MS_XML_CONSOLE, 19, 0x46);
 //#endif
         attachDisplay(display);
     }

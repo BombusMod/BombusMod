@@ -59,8 +59,6 @@ public class ContactMessageList extends MessageList
     Command cmdPurge=new Command(SR.MS_CLEAR_LIST, Command.SCREEN, 7);
     Command cmdActions=new Command(SR.MS_CONTACT,Command.SCREEN,8);
     Command cmdActive=new Command(SR.MS_ACTIVE_CONTACTS,Command.SCREEN,11);
-    Command cmdCopy = new Command(SR.MS_COPY, Command.SCREEN, 12);
-    Command cmdCopyPlus = new Command("+ "+SR.MS_COPY, Command.SCREEN, 13);
 //#if TEMPLATES
 //#     Command cmdTemplate=new Command(SR.MS_SAVE_TEMPLATE,Command.SCREEN,14);
 //#endif
@@ -136,7 +134,6 @@ public class ContactMessageList extends MessageList
 //#if TEMPLATES
 //#         addCommand(cmdTemplate);
 //#endif
-        addCommand(cmdCopy);
 //#ifdef FILE_IO
         addCommand(cmdSaveChat);
 //#endif
@@ -174,7 +171,6 @@ public class ContactMessageList extends MessageList
         } catch (Exception e) {}
         
         if (!clipboard.isEmpty()) {
-            addCommand(cmdCopyPlus);
             addCommand(cmdSendBuffer);
         }
     }
@@ -281,30 +277,6 @@ public class ContactMessageList extends MessageList
         
         if (c==cmdReply) {
             Reply();
-        }
-        
-        if (c == cmdCopy)
-        {
-            try {
-                StringBuffer clipstr=new StringBuffer();
-                clipstr.append((getMessage(cursor).getSubject()==null)?"":getMessage(cursor).getSubject()+"\n");
-                clipstr.append(getMessage(cursor).quoteString());
-                clipboard.setClipBoard(clipstr.toString());
-                clipstr=null;
-            } catch (Exception e) {/*no messages*/}
-        }
-        
-        if (c==cmdCopyPlus) {
-            try {
-                StringBuffer clipstr=new StringBuffer();
-                clipstr.append(clipboard.getClipBoard());
-                clipstr.append("\n\n");
-                clipstr.append((getMessage(cursor).getSubject()==null)?"":getMessage(cursor).getSubject()+"\n");
-                clipstr.append(getMessage(cursor).quoteString());
-                
-                clipboard.setClipBoard(clipstr.toString());
-                clipstr=null;
-            } catch (Exception e) {/*no messages*/}
         }
 //#if (FILE_IO && HISTORY)
 //#         if (c==cmdSaveChat) {

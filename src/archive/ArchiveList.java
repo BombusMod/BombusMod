@@ -66,8 +66,8 @@ public class ArchiveList
     Command cmdSubj=new Command(SR.MS_PASTE_SUBJECT, Command.SCREEN, 3);
     Command cmdEdit=new Command(SR.MS_EDIT, Command.SCREEN, 4);
     Command cmdNew=new Command(SR.MS_NEW, Command.SCREEN, 5);
-    Command cmdCopy = new Command(SR.MS_COPY, Command.SCREEN, 6);
-    Command cmdCopyPlus = new Command("+ "+SR.MS_COPY, Command.SCREEN, 6);
+    //Command cmdCopy = new Command(SR.MS_COPY, Command.SCREEN, 6);
+    //Command cmdCopyPlus = new Command("+ "+SR.MS_COPY, Command.SCREEN, 6);
 //#if (FILE_IO)
     Command cmdExport=new Command(SR.MS_EXPORT_TO_FILE, Command.SCREEN, 7);
     Command cmdImport=new Command(SR.MS_IMPORT_TO_FILE, Command.SCREEN, 8);
@@ -117,10 +117,10 @@ public class ArchiveList
 	setCommandListener(this);
 	addCommand(cmdBack);
 	addCommand(cmdDelete);
-        addCommand(cmdCopy);
-        if (!clipboard.isEmpty()) {
-            addCommand(cmdCopyPlus);
-        }
+        //addCommand(cmdCopy);
+        //if (!clipboard.isEmpty()) {
+        //    addCommand(cmdCopyPlus);
+        //}
 //#if (FILE_IO)	
         addCommand(cmdExport);
         addCommand(cmdImport);
@@ -189,25 +189,6 @@ public class ArchiveList
             try {
                 new archiveEdit(display,getMessage(cursor), where).setParentView(sd.roster);
                 deleteMessage();
-            } catch (Exception e) {/*no messages*/}
-        }
-        
-        if (c == cmdCopy)
-        {
-            try {
-                clipboard.setClipBoard(getMessage(cursor).quoteString());
-            } catch (Exception e) {/*no messages*/}
-        }
-        
-        if (c==cmdCopyPlus) {
-            try {
-                StringBuffer clipstr=new StringBuffer();
-                clipstr.append(clipboard.getClipBoard());
-                clipstr.append("\n\n");
-                clipstr.append(getMessage(cursor).quoteString());
-                
-                clipboard.setClipBoard(clipstr.toString());
-                clipstr=null;
             } catch (Exception e) {/*no messages*/}
         }
     }
