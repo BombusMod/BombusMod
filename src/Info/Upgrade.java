@@ -32,6 +32,7 @@ import Client.Msg;
 import Client.StaticData;
 import Messages.MessageList;
 import com.ssttr.crypto.SHA1;
+import images.RosterIcons;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Hashtable;
@@ -71,6 +72,7 @@ public class Upgrade
     private Displayable parentView;
 
     private boolean wait=true;
+    private boolean error=false;
     
     /** Creates a new instance of Upgrade */
     public Upgrade(Display display, boolean build) {
@@ -90,6 +92,9 @@ public class Upgrade
         
 	MainBar mainbar=new MainBar(SR.MS_CHECK_UPDATE);
         setMainBarItem(mainbar);
+        mainbar.addElement(null);
+        mainbar.addRAlign();
+        mainbar.addElement(null);
         
         new Thread(this).start();
         
@@ -143,10 +148,18 @@ public class Upgrade
     
     protected void beginPaint() {
         StringBuffer str = new StringBuffer();
-        if (wait)
+        Object pic = null;
+        if (wait) {
             str.append(" - loading");
+            pic = new Integer(RosterIcons.ICON_PROGRESS_INDEX);
+        } else if (error) {
+            pic = new Integer(RosterIcons.ICON_PRIVACY_BLOCK);
+        } else {
+            pic = new Integer(RosterIcons.ICON_PRIVACY_ALLOW);
+        }
         
         getMainBarItem().setElementAt(str.toString(),1);
+        getMainBarItem().setElementAt(pic, 3);
     }
 
     public void destroyView() {

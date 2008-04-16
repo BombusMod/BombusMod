@@ -35,6 +35,7 @@ import java.util.Vector;
 import javax.microedition.lcdui.*;
 import locale.SR;
 import java.io.EOFException;
+import util.ClipBoard;
 
 /**
  *
@@ -49,6 +50,7 @@ public class TextFieldCombo
     private Command cmdBack;
     private Command cmdSelect;
     private Command cmdClear;
+    private Command cmdPaste;
     
     private Display display;
     private Displayable parentView;
@@ -76,8 +78,9 @@ public class TextFieldCombo
         } catch (Exception e) {/* no history available */}
         
         cmdRecent=new Command(SR.MS_RECENT, Command.ITEM, 2);
-
+        cmdPaste=new Command(SR.MS_PASTE, Command.SCREEN,3);
         addCommand(cmdRecent);
+        addCommand(cmdPaste);
         setItemCommandListener(this);
     }
 
@@ -95,6 +98,12 @@ public class TextFieldCombo
     }
 
     public void commandAction(Command command, Item item) {
+        if (command==cmdPaste) {
+            if (!ClipBoard.getInstance().isEmpty()) {
+                this.setString(this.getString()+ClipBoard.getInstance().getClipBoard());
+            }
+            return;
+        }
         if (recentList.isEmpty()) return;
         parentView=display.getCurrent();
         
@@ -104,7 +113,7 @@ public class TextFieldCombo
         
         list=new List(label, List.IMPLICIT);
         list.addCommand(cmdBack);
-		list.addCommand(cmdClear);
+	list.addCommand(cmdClear);
         list.setSelectCommand(cmdSelect);
         
         for (Enumeration e=recentList.elements(); e.hasMoreElements();)
