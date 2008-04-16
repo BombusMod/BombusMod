@@ -47,7 +47,6 @@ abstract public class IconTextElement implements VirtualElement
     private int ilImageSize;
 
     private int fontHeight;
-    //private int heightSecondFont;
     
     abstract protected int getImageIndex();
     
@@ -162,7 +161,6 @@ abstract public class IconTextElement implements VirtualElement
         this.il=il;
         this.mi=mi;
         fontHeight=FontCache.getRosterNormalFont().getHeight();
-        //heightSecondFont=FontCache.getBalloonFont().getHeight();
 	if (il!=null){
 	    ilImageSize=il.getHeight();
 	}

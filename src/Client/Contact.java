@@ -40,8 +40,9 @@ import History.HistoryStorage;
 //#ifdef MOOD
 //# import UserMood.Mood;
 //# import UserMood.MoodList;
-//# import images.MoodIcons;
+//# 
 //#endif
+import images.MoodIcons;
 
 import images.RosterIcons;
 import Colors.Colors;
@@ -171,11 +172,7 @@ public class Contact extends IconTextElement{
 
     protected Contact (){
         super(RosterIcons.getInstance(), 
-//#ifdef MOOD
-//#                 MoodIcons.getInstance()
-//#else
-                null
-//#endif
+                 MoodIcons.getInstance()
                 );
         msgs=new Vector();
         key1="";
