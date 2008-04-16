@@ -209,7 +209,7 @@ public class Contact extends IconTextElement{
         clone.offline_type=offline_type;
         clone.origin=ORIGIN_CLONE; 
         clone.status=status; 
-        //clone.mood=mood;
+        clone.mood=mood;
         clone.transport=ri.getTransportIndex(newjid.getTransport()); //<<<<
 
         clone.bareJid=bareJid;

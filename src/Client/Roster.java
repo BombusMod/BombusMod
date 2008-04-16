@@ -41,7 +41,7 @@ import Conference.ConferenceForm;
 //#endif
 
 //#ifdef ARCHIVE
-//# import archive.ArchiveList;
+import archive.ArchiveList;
 //#endif
 import images.RosterIcons;
 import images.SmilesIcons;
@@ -68,7 +68,7 @@ import com.siemens.mp.game.Light;
 //#endif
 
 //#if FILE_TRANSFER
-//# import io.file.transfer.TransferDispatcher;
+import io.file.transfer.TransferDispatcher;
 //#endif
 
 public class Roster
@@ -92,7 +92,7 @@ public class Roster
     private Command cmdConference=new Command(SR.MS_CONFERENCE, Command.SCREEN, 10);
 //#endif
 //#ifdef ARCHIVE
-//#     private Command cmdArchive=new Command(SR.MS_ARCHIVE, Command.SCREEN, 10);
+    private Command cmdArchive=new Command(SR.MS_ARCHIVE, Command.SCREEN, 10);
 //#endif
     private Command cmdAdd=new Command(SR.MS_ADD_CONTACT, Command.SCREEN, 12);
     private Command cmdTools=new Command(SR.MS_TOOLS, Command.SCREEN, 14);    
@@ -237,7 +237,7 @@ public class Roster
     
     public void addMenuCommands(){
 //#ifdef NEW_MENU
-//#         if (!cf.newMenu) {
+        if (!cf.newMenu) {
 //#endif
                 int activeType=Command.SCREEN;
                 if (cf.phoneManufacturer==Config.NOKIA) activeType=Command.BACK;
@@ -257,7 +257,7 @@ public class Roster
 //#endif
                 addCommand(cmdTools);
 //#ifdef ARCHIVE
-//#                 addCommand(cmdArchive);
+                addCommand(cmdArchive);
 //#endif
                 addCommand(cmdInfo);
                 addCommand(cmdAccount);
@@ -269,7 +269,7 @@ public class Roster
                 addOptionCommands();
                 setCommandListener(this);
 //#ifdef NEW_MENU
-//#         }
+        }
 //#endif
     }
     
@@ -318,12 +318,12 @@ public class Roster
         try {
             Account a=sd.account;
 //#if SASL_XGOOGLETOKEN
-            if (a.useGoogleToken()) {
-                setProgress(SR.MS_TOKEN, 30);
-                token=new SASLAuth(a, null, this, null).responseXGoogleToken();
-                if (token==null) 
-                    throw new SecurityException("Can't get Google token");
-            }
+//#             if (a.useGoogleToken()) {
+//#                 setProgress(SR.MS_TOKEN, 30);
+//#                 token=new SASLAuth(a, null, this, null).responseXGoogleToken();
+//#                 if (token==null) 
+//#                     throw new SecurityException("Can't get Google token");
+//#             }
 //#endif
             setProgress(SR.MS_CONNECT_TO+a.getServer(), 30);
             SR.loaded();
@@ -1103,8 +1103,8 @@ public class Roster
         }
         
 //#if FILE_TRANSFER
-//#      // enable File transfers
-//#      theStream.addBlockListener(TransferDispatcher.getInstance());
+     // enable File transfers
+     theStream.addBlockListener(TransferDispatcher.getInstance());
 //#endif
 //#ifndef WMUC
         //query bookmarks
@@ -1278,24 +1278,24 @@ public class Roster
                             return JabberBlockListener.BLOCK_PROCESSED;
                         }
     //#if SASL_XGOOGLETOKEN
-                    if (id.equals("mail-request")) {
-                            if (type.equals("result")) {
-                                JabberDataBlock mailbox=data.findNamespace("mailbox", "google:mail:notify");
-
-                                for (Enumeration e=mailbox.getChildBlocks().elements(); e.hasMoreElements();) {
-                                    JabberDataBlock mail=(JabberDataBlock)e.nextElement();
-
-                                    String subject=mail.getChildBlock("subject").getText();
-                                    String body=mail.getChildBlock("snippet").getText();
-                                    String name=mail.getChildBlock("senders").getChildBlock("sender").getAttribute("name");
-                                    String address=mail.getChildBlock("senders").getChildBlock("sender").getAttribute("address");
-
-                                    Msg m=new Msg(Msg.MESSAGE_TYPE_IN, "local", name+"("+address+")\n"+subject, body);
-                                    messageStore(selfContact(), m);
-                                }
-                                return JabberBlockListener.BLOCK_PROCESSED;
-                            }
-                        }
+//#                     if (id.equals("mail-request")) {
+//#                             if (type.equals("result")) {
+//#                                 JabberDataBlock mailbox=data.findNamespace("mailbox", "google:mail:notify");
+//# 
+//#                                 for (Enumeration e=mailbox.getChildBlocks().elements(); e.hasMoreElements();) {
+//#                                     JabberDataBlock mail=(JabberDataBlock)e.nextElement();
+//# 
+//#                                     String subject=mail.getChildBlock("subject").getText();
+//#                                     String body=mail.getChildBlock("snippet").getText();
+//#                                     String name=mail.getChildBlock("senders").getChildBlock("sender").getAttribute("name");
+//#                                     String address=mail.getChildBlock("senders").getChildBlock("sender").getAttribute("address");
+//# 
+//#                                     Msg m=new Msg(Msg.MESSAGE_TYPE_IN, "local", name+"("+address+")\n"+subject, body);
+//#                                     messageStore(selfContact(), m);
+//#                                 }
+//#                                 return JabberBlockListener.BLOCK_PROCESSED;
+//#                             }
+//#                         }
     //#endif
                 } // id!=null
                 if ( type.equals( "result" ) ) {
@@ -1441,23 +1441,26 @@ public class Roster
 //#                                 mood=mi.getMood(userMood, userMoodText);
 //#                             }
 //#                             if (mood!=null) {
+//#                                 int index=0;
 //#                                 synchronized (hContacts) {
-//#                                     for (Enumeration e=hContacts.elements();e.hasMoreElements();){
-//#                                         Contact c=(Contact)e.nextElement();
-//#                                         if (c.jid.equals(new Jid(from),false)) {
-//#                                             if (c.origin<=Contact.ORIGIN_ROSTERRES && c.status<Presence.PRESENCE_OFFLINE) {
+//#                                     while (index<hContacts.size()) {
+//#                                         Contact c=(Contact)hContacts.elementAt(index);
+//#                                         if ( c.origin>Contact.ORIGIN_ROSTERRES && c.getStatus()>=Presence.PRESENCE_OFFLINE && c.getNewMsgsCount()==0 )
+//#                                             hContacts.removeElementAt(index);
+//#                                         else {
+//#                                             index++;
+//#                                             if (c.getBareJid().equals(from) && c.getStatus()<Presence.PRESENCE_OFFLINE) {
 //#                                                 c.setUserMood(mood);
 //#                                                 Msg m=new Msg(Msg.MESSAGE_TYPE_HISTORY, from, SR.MS_USER_MOOD, c.getUserMoodLocale()+"\n"+c.getUserMoodText());
 //#                                                 messageStore(c, m);
 //#                                             }
 //#                                         }
 //#                                     }
-//#                                 }
+//#                                  }
 //#                             }
 //#                         }
 //#                     }
-//#                     
-//#                 } catch (Exception e) { }    
+//#                 } catch (Exception e) { }
 //#endif
                 String body=message.getBody().trim();
                 String oob=message.getOOB();
@@ -1553,11 +1556,11 @@ public class Roster
                     if (start_me>=0) {
                         StringBuffer b=new StringBuffer();
 //#if NICK_COLORS
-//#                         b.append("\01");
+                        b.append("\01");
 //#endif
                         b.append(name);
 //#if NICK_COLORS
-//#                         b.append("\02");
+                        b.append("\02");
 //#endif
                         if (start_me==0) 
                             b.append("> ");
@@ -1834,8 +1837,8 @@ public class Roster
 
                     if ((ti==Presence.PRESENCE_ONLINE || ti==Presence.PRESENCE_CHAT) && notifyReady(-111)) {
 //#if USE_ROTATOR
-//#                         if (cf.notifyBlink)
-//#                             c.setNewContact();
+                        if (cf.notifyBlink)
+                            c.setNewContact();
 //#endif
                         if (cf.notifyPicture) {
                             if (c.getGroupType()!=Groups.TYPE_TRANSP)
@@ -1940,8 +1943,8 @@ public class Roster
             System.gc(); 
 //#endif
 //#ifdef POPUPS
-//#             if (message.messageType==Msg.MESSAGE_TYPE_AUTH && showWobbler(c))
-//#                 setWobbler(2, c, message.from+"\n"+message.getBody());
+            if (message.messageType==Msg.MESSAGE_TYPE_AUTH && showWobbler(c))
+                setWobbler(2, c, message.from+"\n"+message.getBody());
 //#endif
         if (countNewMsgs())
             reEnumRoster();
@@ -1962,8 +1965,8 @@ public class Roster
         if (message.isHighlited()) {
             playNotify(SOUND_FOR_ME);
 //#ifdef POPUPS
-//#             if (showWobbler(c))
-//#                 setWobbler(2, c, message.getBody());
+            if (showWobbler(c))
+                setWobbler(2, c, message.getBody());
 //#endif
             autorespond = true;
         }
@@ -1981,14 +1984,14 @@ public class Roster
 //#endif
         else {
 //#ifdef POPUPS
-//#             if (message.messageType==Msg.MESSAGE_TYPE_IN) {
+            if (message.messageType==Msg.MESSAGE_TYPE_IN) {
 //#ifndef WMUC
-//#                 if (!(c instanceof MucContact))
+                if (!(c instanceof MucContact))
 //#endif
-//#                     if (showWobbler(c)) {
-//#                         setWobbler(2, c, c.toString()+": "+message.getBody());
-//#                         autorespond = true;
-//#                     }
+                    if (showWobbler(c)) {
+                        setWobbler(2, c, c.toString()+": "+message.getBody());
+                        autorespond = true;
+                    }
 //#endif
                 if (c.getName().endsWith("!")) {
                     playNotify(SOUND_FOR_VIP);
@@ -2150,7 +2153,7 @@ public class Roster
     public void beginConversation(String SessionId) { //todo: verify xmpp version
             new SASLAuth(sd.account, SessionId, this, theStream)
   //#if SASL_XGOOGLETOKEN
-            .setToken(token)
+//#             .setToken(token)
   //#endif
             ;
     }
@@ -2268,10 +2271,10 @@ public class Roster
 
     public void keyPressed(int keyCode){
 //#ifdef NEW_MENU
-//#         if (keyCode==Config.SOFT_LEFT) {
-//#             new RosterMenu(display, getFocusedObject());
-//#             return;
-//#         }
+        if (keyCode==Config.SOFT_LEFT) {
+            new RosterMenu(display, getFocusedObject());
+            return;
+        }
 //#endif
        
         if (keyCode==Config.SOFT_RIGHT) {
@@ -2285,9 +2288,9 @@ public class Roster
         
         switch (keyCode) {
 //#ifdef POPUPS
-//#             case KEY_POUND:
-//#                 showInfo();
-//#                 return;
+            case KEY_POUND:
+                showInfo();
+                return;
 //#endif
             case KEY_NUM1:
                 if (cf.collapsedGroups) { //collapse all groups
@@ -2460,49 +2463,49 @@ public class Roster
     
     
 //#ifdef POPUPS
-//#     public void showInfo() {
-//#         try {
-//#             VirtualList.popup.next();
-//#             if (getFocusedObject() instanceof Group || getFocusedObject() instanceof ConferenceGroup)
-//#                 return;
-//#             setWobbler(1, (Contact) null, null);
-//#         } catch (Exception e) { }
-//#     }
-//# 
-//#     public void setWobbler(int type, Contact contact, String info) {
-//#         if (info==null) {
-//#             StringBuffer mess=new StringBuffer();
-//#             boolean isContact=(getFocusedObject() instanceof Contact);
-//#             Contact cntact=(Contact)getFocusedObject();
+    public void showInfo() {
+        try {
+            VirtualList.popup.next();
+            if (getFocusedObject() instanceof Group || getFocusedObject() instanceof ConferenceGroup)
+                return;
+            setWobbler(1, (Contact) null, null);
+        } catch (Exception e) { }
+    }
+
+    public void setWobbler(int type, Contact contact, String info) {
+        if (info==null) {
+            StringBuffer mess=new StringBuffer();
+            boolean isContact=(getFocusedObject() instanceof Contact);
+            Contact cntact=(Contact)getFocusedObject();
 //#ifndef WMUC
-//#             boolean isMucContact=(getFocusedObject() instanceof MucContact);
-//#             if (isMucContact) {
-//#                 MucContact mucContact=(MucContact)getFocusedObject();
-//#                 
-//#                 if (mucContact.origin==Contact.ORIGIN_GROUPCHAT) // dont show info for confContact
-//#                     return;
-//#                 
-//#                 String jid=(mucContact.realJid==null)?"":"jid: "+mucContact.realJid+"\n";
-//#                 String aff=mucContact.affiliation;
-//#                 String role=mucContact.role;
-//#                 mess.append(jid);
-//#                 if (aff!=null || aff!="none")
-//#                     mess.append(aff);
-//# 
-//#                 if (role!=null)
-//#                     if (aff!=null || aff!="none")
-//#                         mess.append("/"+role);
-//#                     else 
-//#                         mess.append(role);
-//#                 
-//#                 jid=null;
-//#                 aff=null;
-//#                 role=null;
-//#             } else {
+            boolean isMucContact=(getFocusedObject() instanceof MucContact);
+            if (isMucContact) {
+                MucContact mucContact=(MucContact)getFocusedObject();
+                
+                if (mucContact.origin==Contact.ORIGIN_GROUPCHAT) // dont show info for confContact
+                    return;
+                
+                String jid=(mucContact.realJid==null)?"":"jid: "+mucContact.realJid+"\n";
+                String aff=mucContact.affiliation;
+                String role=mucContact.role;
+                mess.append(jid);
+                if (aff!=null || aff!="none")
+                    mess.append(aff);
+
+                if (role!=null)
+                    if (aff!=null || aff!="none")
+                        mess.append("/"+role);
+                    else 
+                        mess.append(role);
+                
+                jid=null;
+                aff=null;
+                role=null;
+            } else {
 //#endif
-//#                 mess.append("jid: "+cntact.bareJid);
-//#                 mess.append(cntact.jid.getResource());
-//#                 mess.append("\n"+SR.MS_SUBSCRIPTION+": "+cntact.subscr);
+                mess.append("jid: "+cntact.bareJid);
+                mess.append(cntact.jid.getResource());
+                mess.append("\n"+SR.MS_SUBSCRIPTION+": "+cntact.subscr);
 //#ifdef MOOD
 //#                 if (cntact.mood!=null) {
 //#                     mess.append("\n");
@@ -2517,26 +2520,26 @@ public class Roster
 //#                 }
 //#endif
 //#ifndef WMUC
-//#             }
+            }
 //#endif
-//#             mess.append((cntact.getJ2J()!=null)?"\nJ2J: "+cntact.getJ2J():"");
-//#             mess.append((cntact.hasCaps)?"\nUse: "+cntact.capsNode:"");
-//#             mess.append((cntact.capsVer!=null)?"#"+cntact.capsVer:"");
-//#             if (cntact.statusString!=null) {
-//#                 mess.append("\n");
-//#                 mess.append(SR.MS_STATUS);
-//#                 mess.append(": ");
-//#                 mess.append(cntact.statusString);
-//#             }
-//#             
-//#             VirtualList.setWobble(1, (Contact) null, mess.toString());
-//#             mess=null;
-//#         } else {
-//#             VirtualList.setWobble(type, contact, info);
-//#         }
-//# 
-//#         redraw();
-//#     }
+            mess.append((cntact.getJ2J()!=null)?"\nJ2J: "+cntact.getJ2J():"");
+            mess.append((cntact.hasCaps)?"\nUse: "+cntact.capsNode:"");
+            mess.append((cntact.capsVer!=null)?"#"+cntact.capsVer:"");
+            if (cntact.statusString!=null) {
+                mess.append("\n");
+                mess.append(SR.MS_STATUS);
+                mess.append(": ");
+                mess.append(cntact.statusString);
+            }
+            
+            VirtualList.setWobble(1, (Contact) null, mess.toString());
+            mess=null;
+        } else {
+            VirtualList.setWobble(type, contact, info);
+        }
+
+        redraw();
+    }
 //#endif
     
     public void logoff(String mess){
@@ -2579,7 +2582,7 @@ public class Roster
         else if (c==cmdStatus) { cmdStatus(); }
         else if (c==cmdAlert) { cmdAlert(); }
 //#ifdef ARCHIVE
-//# 	else if (c==cmdArchive) { cmdArchive(); }
+	else if (c==cmdArchive) { cmdArchive(); }
 //#endif
         else if (c==cmdInfo) { cmdInfo(); }
         else if (c==cmdTools) { cmdTools(); }
@@ -2606,13 +2609,13 @@ public class Roster
     public void cmdStatus() { reconnectCount=0; new StatusSelect(display, null); }
     public void cmdAlert() { new AlertProfile(display); }
 //#ifdef ARCHIVE
-//#     public void cmdArchive() { new ArchiveList(display, -1, 1); }
+    public void cmdArchive() { new ArchiveList(display, -1, 1); }
 //#endif
     public void cmdInfo() { new Info.InfoWindow(display); }
     public void cmdTools() { new RosterToolsMenu(display); }
     public void cmdCleanAllMessages() { cleanupAllHistories(); }    
 //#ifdef POPUPS
-//#     public void cmdClearPopups() { VirtualList.popup.clear(); }
+    public void cmdClearPopups() { VirtualList.popup.clear(); }
 //#endif
 //#ifdef MOOD
 //#    public void cmdUserMood() { if (isLoggedIn()) new MoodSelect(display); }
@@ -3028,40 +3031,40 @@ public class Roster
     }
     
 //#ifdef POPUPS
-//#     public void showStats() {
-//#         StringBuffer str= new StringBuffer(SR.MS_STARTED+startTime);
-//#         Stats stats=Stats.getInstance();
-//#         str.append("\n");
-//#         str.append(SR.MS_TRAFFIC_STATS);
-//#         str.append("\n");
-//#         str.append(SR.MS_ALL);
-//#         str.append(stats.getSessionsCount());
-//#         str.append(SR.MS_CONN);
-//# 
-//#         str.append(strconv.getSizeString(stats.getAllTraffic()));
-//# 
-//#         str.append("\n");
-//#         str.append(SR.MS_PREVIOUS);
-//#         str.append(strconv.getSizeString(stats.getLatest()));
-//# 
-//#         str.append("\n");
-//#         str.append(SR.MS_CURRENT);
-//#         str.append(strconv.getSizeString(Stats.getGPRS()));
-//# 
-//#         if (isLoggedIn())
-//#             str.append(theStream.getStreamStats());
-//# 
-//#         VirtualList.setWobble(1, (Contact) null, str.toString());
-//#         str=null;
-//#     }
+    public void showStats() {
+        StringBuffer str= new StringBuffer(SR.MS_STARTED+startTime);
+        Stats stats=Stats.getInstance();
+        str.append("\n");
+        str.append(SR.MS_TRAFFIC_STATS);
+        str.append("\n");
+        str.append(SR.MS_ALL);
+        str.append(stats.getSessionsCount());
+        str.append(SR.MS_CONN);
+
+        str.append(strconv.getSizeString(stats.getAllTraffic()));
+
+        str.append("\n");
+        str.append(SR.MS_PREVIOUS);
+        str.append(strconv.getSizeString(stats.getLatest()));
+
+        str.append("\n");
+        str.append(SR.MS_CURRENT);
+        str.append(strconv.getSizeString(Stats.getGPRS()));
+
+        if (isLoggedIn())
+            str.append(theStream.getStreamStats());
+
+        VirtualList.setWobble(1, (Contact) null, str.toString());
+        str=null;
+    }
 //#endif
     
 //#if SASL_XGOOGLETOKEN
-    public void sendGmailReq() {
-        JabberDataBlock iq=new Iq(null, Iq.TYPE_GET, "mail-request");
-        JabberDataBlock query=iq.addChildNs("query", "google:mail:notify");
-        theStream.send(iq);
-    }
+//#     public void sendGmailReq() {
+//#         JabberDataBlock iq=new Iq(null, Iq.TYPE_GET, "mail-request");
+//#         JabberDataBlock query=iq.addChildNs("query", "google:mail:notify");
+//#         theStream.send(iq);
+//#     }
 //#endif
 }
 
