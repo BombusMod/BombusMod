@@ -70,11 +70,11 @@ public class ContactMessageList extends MessageList
 //#ifdef FILE_IO
     Command cmdSaveChat=new Command(SR.MS_SAVE_CHAT, Command.SCREEN, 16);
 //#endif
-    private ClipBoard clipboard=ClipBoard.getInstance();
+    private ClipBoard clipboard;
 
     StaticData sd=StaticData.getInstance();
     
-    private Config cf=Config.getInstance();
+    private Config cf;
     
     private boolean composing=true;
 
@@ -83,6 +83,9 @@ public class ContactMessageList extends MessageList
         super(display);
         this.contact=contact;
         sd.roster.activeContact=contact;
+        
+        clipboard=ClipBoard.getInstance();
+        cf=Config.getInstance();
         
         MainBar mainbar=new MainBar(contact);
         setMainBarItem(mainbar);
@@ -402,13 +405,13 @@ public class ContactMessageList extends MessageList
         switch (keyCode) {
             case KEY_NUM4:
                 if (cf.useTabs)
-                    sd.roster.openNextActiveContact(-1); //previous contact with messages
+                    sd.roster.searchActiveContact(-1); //previous contact with messages
                 else
                     super.pageLeft();
                 return;
             case KEY_NUM6:
                 if (cf.useTabs)
-                    sd.roster.openNextActiveContact(1); //next contact with messages
+                    sd.roster.searchActiveContact(1); //next contact with messages
                 else
                     super.pageRight();
                 return;
@@ -449,7 +452,7 @@ public class ContactMessageList extends MessageList
     }
     
     public void touchLeftPressed(){
-        sd.roster.openNextActiveContact(1);
+        sd.roster.searchActiveContact(1);
     }
 
     private void Reply() {
@@ -498,6 +501,6 @@ public class ContactMessageList extends MessageList
         sd.roster.activeContact=null;
         sd.roster.reEnumRoster(); //to reset unread messages icon for this conference in roster
         if (display!=null)
-            display.setCurrent(parentView);
+            display.setCurrent(sd.roster);
     }
 }

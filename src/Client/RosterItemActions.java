@@ -42,7 +42,7 @@ import Conference.affiliation.ConferenceQuickPrivelegeModify;
 import Conference.affiliation.Affiliations;
 //#endif
 //#ifdef SERVICE_DISCOVERY
-//# import ServiceDiscovery.ServiceDiscovery;
+import ServiceDiscovery.ServiceDiscovery;
 //#endif
 import com.alsutton.jabber.datablocks.IqLast;
 import com.alsutton.jabber.datablocks.IqPing;
@@ -50,16 +50,17 @@ import com.alsutton.jabber.datablocks.IqTimeReply;
 import com.alsutton.jabber.datablocks.IqVersionReply;
 import com.alsutton.jabber.datablocks.Presence;
 //#if FILE_TRANSFER
-//# import io.file.transfer.TransferSendFile;
+import io.file.transfer.TransferSendFile;
 //#endif
 import java.util.Enumeration;
 import javax.microedition.lcdui.Display;
 import locale.SR;
 //#ifdef COLORS
-//# import Colors.ColorUtils;
+import Colors.ColorUtils;
 //#endif
 import ui.Menu;
 import ui.MenuItem;
+import ui.Time;
 import ui.YesNoAlert;
 import util.ClipBoard;
 import vcard.VCard;
@@ -127,14 +128,14 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
             addItem(SR.MS_INFO,86, 0x0f04);
             addItem(SR.MS_CLIENT_INFO,0, 0x0f04);
 //#ifdef SERVICE_DISCOVERY
-//# 	    addItem(SR.MS_COMMANDS,30, 0x0f24);
+	    addItem(SR.MS_COMMANDS,30, 0x0f24);
 //#endif
 	    addItem(SR.MS_SEND_BUFFER,914, 0x0f22);
             if (contact.getGroupType()!=Groups.TYPE_SELF) {
                 addItem(SR.MS_COPY_JID,892, 0x0f22);
             }
 //#ifdef COLORS
-//#                 addItem("Send current color scheme",912, 0x0f22);
+                addItem("Send current color scheme",912, 0x0f22);
 //#endif
             if (contact.status<Presence.PRESENCE_OFFLINE) {
                 addItem(SR.MS_TIME,891);
@@ -242,10 +243,10 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
             }
 //#endif
 //#if (FILE_IO && FILE_TRANSFER)
-//#             if (contact.getGroupType()!=Groups.TYPE_TRANSP) 
-//#                 if (contact!=sd.roster.selfContact())
-//#                     addItem(SR.MS_SEND_FILE, 50, 0x0f34);
-//#             
+            if (contact.getGroupType()!=Groups.TYPE_TRANSP) 
+                if (contact!=sd.roster.selfContact())
+                    addItem(SR.MS_SEND_FILE, 50, 0x0f34);
+            
 //#endif
         } else {
 	    Group group=(Group)item;
@@ -399,11 +400,11 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                     break;
                 }
 //#ifdef SERVICE_DISCOVERY
-//#                 case 30:
-//#                 {
-//#                     new ServiceDiscovery(display, c.getJid(), "http://jabber.org/protocol/commands");
-//#                     return;
-//#                 }
+                case 30:
+                {
+                    new ServiceDiscovery(display, c.getJid(), "http://jabber.org/protocol/commands");
+                    return;
+                }
 //#endif
                 case 1003: 
                 {
@@ -449,38 +450,32 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                 {
                     try {
                         sd.roster.setQuerySign(true);
-                        c.setPing();
-                        sd.roster.theStream.send(new IqPing(c.getJid(), "_ping"));
+                        //c.setPing();
+                        sd.roster.theStream.send(new IqPing(c.getJid(), "_ping_"+Time.utcTimeMillis()));
                     } catch (Exception e) {/*no messages*/}
                     break;
                 }
-                //case 894: //seen & online when online
-                //{
-                //    roster.setQuerySign(true);
-                //    roster.theStream.send(new IqLast(c.getJid()));
-                //    break;
-                //}
 //#ifdef COLORS
-//#                 case 912: //send color scheme
-//#                 {
-//#                     String from=sd.account.toString();
-//#                     String body=ColorUtils.getSkin();
-//#                     String subj="";
-//#                     
-//#                     String id=String.valueOf((int) System.currentTimeMillis());
-//#                     
-//#                     Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,body);
-//#                     msg.id=id;
-//#                     
-//#                     try {
-//#                         sd.roster.sendMessage(c, id, body, subj, null);
-//#                         c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"scheme sended"));
-//#                     } catch (Exception e) {
-//#                         c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"scheme NOT sended"));
-//#                         //e.printStackTrace();
-//#                     }
-//#                     break;
-//#                 }
+                case 912: //send color scheme
+                {
+                    String from=sd.account.toString();
+                    String body=ColorUtils.getSkin();
+                    String subj="";
+                    
+                    String id=String.valueOf((int) System.currentTimeMillis());
+                    
+                    Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,body);
+                    msg.id=id;
+                    
+                    try {
+                        sd.roster.sendMessage(c, id, body, subj, null);
+                        c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"scheme sended"));
+                    } catch (Exception e) {
+                        c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"scheme NOT sended"));
+                        //e.printStackTrace();
+                    }
+                    break;
+                }
 //#endif               
                 case 914: //send message from buffer
                 {
@@ -535,11 +530,11 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                 }
                 
 //#if (FILE_IO && FILE_TRANSFER)
-//#                 case 50: //send file
-//#                 {
-//#                     new TransferSendFile(display, c.getJid());
-//#                     return;
-//#                 }   
+                case 50: //send file
+                {
+                    new TransferSendFile(display, c.getJid());
+                    return;
+                }   
 //#endif
             }
 //#ifndef WMUC

@@ -30,16 +30,16 @@ package Client;
 import Conference.AppendNick;
 //#endif
 //#ifdef ARCHIVE
-//# import archive.ArchiveList;
-//# import com.alsutton.jabber.JabberDataBlock;
-//# import com.alsutton.jabber.datablocks.Message;
+import archive.ArchiveList;
+import com.alsutton.jabber.JabberDataBlock;
+import com.alsutton.jabber.datablocks.Message;
 //#endif
 import javax.microedition.lcdui.*;
 import locale.SR;
 import ui.VirtualList;
 import util.ClipBoard;
 //#ifdef TRANSLIT
-//# import util.Translit;
+import util.Translit;
 //#endif
 
 /**
@@ -63,12 +63,12 @@ public class MessageEdit
     private Command cmdCancel=new Command(SR.MS_CANCEL, Command.SCREEN,99);
     private Command cmdSend=new Command(SR.MS_SEND, Command.OK,1);
 //#ifdef SMILES
-//#     private Command cmdSmile=new Command(SR.MS_ADD_SMILE, Command.SCREEN,2);
+    private Command cmdSmile=new Command(SR.MS_ADD_SMILE, Command.SCREEN,2);
 //#endif
     private Command cmdInsNick=new Command(SR.MS_NICKNAMES,Command.SCREEN,3);
     private Command cmdInsMe=new Command(SR.MS_SLASHME, Command.SCREEN, 4); ; // /me
 //#ifdef TRANSLIT
-//#     private Command cmdSendInTranslit=new Command(SR.MS_SEND_IN_TRANSLIT, Command.SCREEN, 5);
+    private Command cmdSendInTranslit=new Command(SR.MS_SEND_IN_TRANSLIT, Command.SCREEN, 5);
 //#endif
     private Command cmdPaste=new Command(SR.MS_ARCHIVE, Command.SCREEN, 6);    
     private Command cmdSubj=new Command(SR.MS_SET_SUBJECT, Command.SCREEN, 7);
@@ -77,7 +77,7 @@ public class MessageEdit
 //#     private boolean sendKill2=false;
 //#endif
 //#if TEMPLATES
-//#     private Command cmdTemplate=new Command(SR.MS_TEMPLATE, Command.SCREEN, 9); 
+    private Command cmdTemplate=new Command(SR.MS_TEMPLATE, Command.SCREEN, 9); 
 //#endif  
     
     //private Command cmdABC=new Command("Abc", Command.SCREEN, 9);
@@ -89,7 +89,7 @@ public class MessageEdit
     StaticData sd = StaticData.getInstance();
     private Config cf=Config.getInstance();
 //#ifdef TRANSLIT
-//#     private boolean sendInTranslit=false;
+    private boolean sendInTranslit=false;
 //#endif
     private TextBox t;
 
@@ -127,15 +127,15 @@ public class MessageEdit
         t.addCommand(cmdSend);
         t.addCommand(cmdInsMe);
 //#ifdef SMILES
-//#         t.addCommand(cmdSmile);
+        t.addCommand(cmdSmile);
 //#endif
         if (to.origin>=Contact.ORIGIN_GROUPCHAT)
             t.addCommand(cmdInsNick);
 //#ifdef TRANSLIT
-//#         t.addCommand(cmdSendInTranslit);
+        t.addCommand(cmdSendInTranslit);
 //#endif
 //#ifdef ARCHIVE
-//#         t.addCommand(cmdPaste);
+        t.addCommand(cmdPaste);
 //#endif
         if (!clipboard.isEmpty())
             t.addCommand(cmdPasteText);
@@ -148,7 +148,7 @@ public class MessageEdit
         
         t.addCommand(cmdSuspend);
 //#if TEMPLATES
-//#         t.addCommand(cmdTemplate);
+        t.addCommand(cmdTemplate);
 //#endif
         t.addCommand(cmdCancel);
         t.setCommandListener(this);
@@ -176,13 +176,13 @@ public class MessageEdit
         
         if (c==cmdInsMe) { t.insert("/me ", 0); return; }
 //#ifdef SMILES
-//#         if (c==cmdSmile) { new SmilePicker(display, caretPos); return; }
+        if (c==cmdSmile) { new SmilePicker(display, caretPos); return; }
 //#endif
 //#ifndef WMUC
         if (c==cmdInsNick) { new AppendNick(display, to, caretPos); return; }
 //#endif
 //#ifdef ARCHIVE
-//# 	if (c==cmdPaste) { new ArchiveList(display, caretPos, 1); return; }
+	if (c==cmdPaste) { new ArchiveList(display, caretPos, 1); return; }
 //#endif
         
 //        if (c==cmdAbc) {setInitialCaps(false); return; }
@@ -192,7 +192,7 @@ public class MessageEdit
         if (c==cmdPasteText) { insertText(clipboard.getClipBoard(), getCaretPos()); return; }
                 
 //#if TEMPLATES
-//#         if (c==cmdTemplate) { new ArchiveList(display, caretPos, 2); return; }
+        if (c==cmdTemplate) { new ArchiveList(display, caretPos, 2); return; }
 //#endif
         if (c==cmdCancel) { 
             composing=false;
@@ -205,9 +205,9 @@ public class MessageEdit
         }
         if (c==cmdSend && body==null) return;
 //#ifdef TRANSLIT
-//#         if (c==cmdSendInTranslit) {
-//#             sendInTranslit=true;
-//#         }
+        if (c==cmdSendInTranslit) {
+            sendInTranslit=true;
+        }
 //#endif
         if (c==cmdSubj) {
             if (body==null) return;
@@ -227,18 +227,18 @@ public class MessageEdit
     
     public void run(){
         String comp=null; // composing event off
-        //to.autoresponded=false;
+
         String id=String.valueOf((int) System.currentTimeMillis());
         
         if (body!=null)
             body=body.trim();
 //#ifdef TRANSLIT
-//#         if (sendInTranslit==true) {
-//#             if (body!=null)
-//#                body=Translit.translit(body);
-//#             if (subj!=null )
-//#                subj=Translit.translit(subj);
-//#         }
+        if (sendInTranslit==true) {
+            if (body!=null)
+               body=Translit.translit(body);
+            if (subj!=null )
+               subj=Translit.translit(subj);
+        }
 //#endif
         if (body!=null || subj!=null ) {
             String from=sd.account.toString();
@@ -266,12 +266,13 @@ public class MessageEdit
         } catch (Exception e) { }
 
         ((VirtualList)parentView).redraw();
-        ((VirtualList)parentView).repaint();
+        //((VirtualList)parentView).repaint();
     }
     
     public void destroyView(){
         if (display!=null)   display.setCurrent(parentView);
     }
+    
 //#ifdef KILLALL
 //#     public void sendKill2Message(Contact to, final String body) {
 //#         try {

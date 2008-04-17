@@ -113,8 +113,6 @@ public class Contact extends IconTextElement{
     
     public boolean autoresponded=false;
     
-    public long ping=-1;
-    
     public boolean moveToLatest=false;
 
     public String presence;
@@ -163,7 +161,7 @@ public class Contact extends IconTextElement{
 //#     public boolean redraw=false;
 //#endif
     
-    private Config cf=Config.getInstance();
+    private Config cf;
     private RosterIcons ri = RosterIcons.getInstance();
 
     private String j2j;
@@ -174,6 +172,7 @@ public class Contact extends IconTextElement{
         super(RosterIcons.getInstance(), 
                  MoodIcons.getInstance()
                 );
+        cf=Config.getInstance();
         msgs=new Vector();
         key1="";
     }
@@ -496,33 +495,10 @@ public class Contact extends IconTextElement{
         return status;
     }
     
-    public void setPing() {
-        this.ping = Time.utcTimeMillis();
-    }
-    
     public void setComposing (boolean state) {
         showComposing=state;
     }
-
-    public String getPing() {
-        if (ping==-1) 
-            return "";
-        
-        String timePing=Long.toString((Time.utcTimeMillis()-ping)/10);
-        int dotpos=timePing.length()-2;
-        String first = (dotpos==0)? "0":timePing.substring(0, dotpos);
-        String second = timePing.substring(dotpos);
-        
-        StringBuffer s=new StringBuffer(first);
-        s.append('.');
-        s.append(second);
-        s.append(' ');
-        s.append(Time.goodWordForm (Integer.parseInt(second), 0));
-
-        this.ping=-1;
-        return String.valueOf(s);
-    }
-    
+   
     void markDelivered(String id) {
         if (id==null) return;
         for (Enumeration e=msgs.elements(); e.hasMoreElements();) {

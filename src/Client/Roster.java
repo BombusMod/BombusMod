@@ -1238,12 +1238,14 @@ public class Roster
                         }
                     }
                     
-                    if (id.startsWith("_ping") && type.equals("result")) {
+                    if (id.startsWith("_ping_") && type.equals("result")) {
+                        String pong = pingToString(id.substring(6));
+
                         Contact c=getContact(from, true);
                         querysign=false;
                         c.setIncoming(Contact.INC_NONE);
                         from=data.getAttribute("from");
-                        String pong=c.getPing();
+
                         if (pong!="") {
                             Msg m=new Msg(Msg.MESSAGE_TYPE_SYSTEM, from, SR.MS_PING, pong);
                             messageStore(getContact(from, false), m);
@@ -1367,8 +1369,8 @@ public class Roster
                         Contact c=getContact(from, true);
                         if (ping.isJabberNameSpace("urn:xmpp:ping")) { //ping
                             from=data.getAttribute("from");
-                            String pong=c.getPing();
-                            if (pong!=null) {
+                            String pong=pingToString(id.substring(6));
+                            if (pong!="") {
                                 Msg m=new Msg(Msg.MESSAGE_TYPE_SYSTEM, from, SR.MS_PING, pong);
                                 messageStore(getContact(from, false), m);
                                 redraw();
@@ -2708,11 +2710,12 @@ public class Roster
 		    if (vContacts.elementAt(pos) instanceof Group) break;
 		}
 	    } catch (Exception e) { }
+            newpos=pos;
 	}
         return newpos;
     }
     
-    public void openNextActiveContact(int direction){
+    public void searchActiveContact(int direction){
 	Vector activeContacts=new Vector();
         int nowContact = -1, contacts=-1;
 	for (Enumeration r=hContacts.elements(); r.hasMoreElements(); ){
@@ -3091,6 +3094,21 @@ public class Roster
 //#         theStream.send(iq);
 //#     }
 //#endif
+
+    private String pingToString(String time) {
+        String timePing=Long.toString((Time.utcTimeMillis()-Long.parseLong(time))/10);
+        int dotpos=timePing.length()-2;
+        String first = (dotpos==0)? "0":timePing.substring(0, dotpos);
+        String second = timePing.substring(dotpos);
+
+        StringBuffer s=new StringBuffer(first);
+        s.append('.');
+        s.append(second);
+        s.append(' ');
+        s.append(Time.goodWordForm (Integer.parseInt(second), 0));
+
+        return s.toString();
+    }
 }
 
 
