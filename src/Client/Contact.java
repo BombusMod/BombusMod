@@ -31,8 +31,6 @@ package Client;
 import Conference.MucContact;
 //#endif
 
-import History.HistoryStorage;
-
 //#if (FILE_IO && HISTORY)
 //# import History.HistoryAppend;
 //#endif
@@ -40,7 +38,6 @@ import History.HistoryStorage;
 //#ifdef MOOD
 //# import UserMood.Mood;
 //# import UserMood.MoodList;
-//# 
 //#endif
 import images.MoodIcons;
 
@@ -542,6 +539,7 @@ public class Contact extends IconTextElement{
 //#         return null;
 //#     }
 //#endif
+
 //#ifdef MOOD
 //#     public String getUserMoodLocale() {
 //#         return mood.getLocale();
@@ -555,6 +553,7 @@ public class Contact extends IconTextElement{
 //#         return mood.getText();
 //#     }
 //#endif
+
     public int getSecImageIndex() {
 //#ifdef ANTISPAM
 //#         if (!tempMsgs.isEmpty())
@@ -582,28 +581,8 @@ public class Contact extends IconTextElement{
         return loaded;
     }
     
-    public void loadRecentList() {
-        loaded=true;
-        HistoryStorage hs = new HistoryStorage((nick==null)?getBareJid():nick);
-        Vector history=hs.importData();
-        
-        for (Enumeration messages=history.elements(); messages.hasMoreElements(); )  {
-            Msg message=(Msg) messages.nextElement();
-            if (!isMsgExists(message)) {
-                message.setHistory(true);
-                msgs.insertElementAt(message, 0);
-            }
-        }
-    }
-    
-    private boolean isMsgExists(Msg msg) {
-         for (Enumeration messages=msgs.elements(); messages.hasMoreElements(); )  {
-            Msg message=(Msg) messages.nextElement();
-            if (message.getBody().equals(msg.getBody())) {
-                return true;
-            }
-         }
-        return false;
+    public void setHistoryLoaded (boolean state) {
+        loaded=state;
     }
 
 //#ifdef CHECKERS
