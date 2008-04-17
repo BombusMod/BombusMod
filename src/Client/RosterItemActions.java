@@ -125,7 +125,9 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 //#             
 //#endif
 	    addItem(SR.MS_VCARD,1, 0x0f16);
+//#ifdef POPUPS
             addItem(SR.MS_INFO,86, 0x0f04);
+//#endif
             addItem(SR.MS_CLIENT_INFO,0, 0x0f04);
 //#ifdef SERVICE_DISCOVERY
 	    addItem(SR.MS_COMMANDS,30, 0x0f24);
@@ -344,7 +346,9 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                     sd.roster.theStream.send(new IqVersionReply(to));
                     break;
                 case 86: // info
+//#ifdef POPUPS
                     sd.roster.showInfo();
+//#endif
                     break;
                 case 1: // vCard
                     if (c.vcard!=null) {

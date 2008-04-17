@@ -309,9 +309,10 @@ public class Roster
 
     // establishing connection process
     public void run(){
+//#ifdef POPUPS
         if (cf.firstRun)
             setWobbler(1, (Contact) null, SR.MS_ENTER_SETTINGS);
-        
+//#endif
         setQuerySign(true);
         setProgress(25);
 	if (!reconnect) {
@@ -1313,8 +1314,9 @@ public class Roster
                     Contact c=getContact(from, true);
                     boolean reply = true;
                     if (myStatus==Presence.PRESENCE_INVISIBLE) reply = false;
+//#ifndef WMUC
                     if (c instanceof MucContact) reply = true;
-                    
+//#endif
                     if (query!=null){
                         if (query.isJabberNameSpace("jabber:iq:version")) {
                             c.setIncoming(Contact.INC_VIEWING);
@@ -1989,11 +1991,11 @@ public class Roster
         } 
 //#endif
         else {
-//#ifdef POPUPS
-            if (message.messageType==Msg.MESSAGE_TYPE_IN) {
+             if (message.messageType==Msg.MESSAGE_TYPE_IN) {
 //#ifndef WMUC
                 if (!(c instanceof MucContact))
 //#endif
+//#ifdef POPUPS
                     if (showWobbler(c)) {
                         setWobbler(2, c, c.toString()+": "+message.getBody());
                         autorespond = true;
@@ -2217,7 +2219,9 @@ public class Roster
     
     public void eventLongOk(){
         super.eventLongOk();
+//#ifndef WMUC
         showInfo();
+//#endif
     }
 
     private Displayable createMsgList(){
@@ -2265,7 +2269,9 @@ public class Roster
     }
     
     public void touchLeftPressed(){
+//#ifdef NEW_MENU
         new RosterMenu(display, getFocusedObject());
+//#endif
     }
     
     public void touchRightPressed(){

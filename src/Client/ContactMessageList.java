@@ -144,10 +144,10 @@ public class ContactMessageList extends MessageList
         setCommandListener(this);
         
         contact.setIncoming(0);
-
-        if (cf.lastMessages && !contact.isHistoryLoaded())
-            loadRecentList();
-        
+//#ifdef HISTORY
+//#         if (cf.lastMessages && !contact.isHistoryLoaded())
+//#             loadRecentList();
+//#endif
         moveCursorTo(contact.firstUnread());
     }
 
@@ -178,32 +178,32 @@ public class ContactMessageList extends MessageList
             addCommand(cmdSendBuffer);
         }
     }
-    
-    public void loadRecentList() {
-        contact.setHistoryLoaded(true);
-        HistoryStorage hs = new HistoryStorage((contact.nick==null)?contact.getBareJid():contact.nick);
-        Vector history=hs.importData();
-        
-        for (Enumeration messages=history.elements(); messages.hasMoreElements(); )  {
-            Msg message=(Msg) messages.nextElement();
-            if (!isMsgExists(message)) {
-                message.setHistory(true);
-                contact.msgs.insertElementAt(message, 0);
-            }
-        }
-    }
-    
-
-    private boolean isMsgExists(Msg msg) {
-         for (Enumeration messages=contact.msgs.elements(); messages.hasMoreElements(); )  {
-            Msg message=(Msg) messages.nextElement();
-            if (message.getBody().equals(msg.getBody())) {
-                return true;
-            }
-         }
-        return false;
-    }
-    
+//#ifdef HISTORY
+//#     public void loadRecentList() {
+//#         contact.setHistoryLoaded(true);
+//#         HistoryStorage hs = new HistoryStorage((contact.nick==null)?contact.getBareJid():contact.nick);
+//#         Vector history=hs.importData();
+//#         
+//#         for (Enumeration messages=history.elements(); messages.hasMoreElements(); )  {
+//#             Msg message=(Msg) messages.nextElement();
+//#             if (!isMsgExists(message)) {
+//#                 message.setHistory(true);
+//#                 contact.msgs.insertElementAt(message, 0);
+//#             }
+//#         }
+//#     }
+//#     
+//# 
+//#     private boolean isMsgExists(Msg msg) {
+//#          for (Enumeration messages=contact.msgs.elements(); messages.hasMoreElements(); )  {
+//#             Msg message=(Msg) messages.nextElement();
+//#             if (message.getBody().equals(msg.getBody())) {
+//#                 return true;
+//#             }
+//#          }
+//#         return false;
+//#     }
+//#endif
     protected void beginPaint(){
         markRead(cursor);
         if (cursor==(messages.size()-1)) {

@@ -140,10 +140,12 @@ public class AutoTask
             case TASK_ACTION_QUIT:
                 BombusMod.getInstance().notifyDestroyed();
                 break;
+//#ifndef WMUC
             case TASK_ACTION_CONFERENCE_QUIT:
                 caption+=SR.MS_AUTOTASK_QUIT_CONFERENCES;
                 sd.roster.multicastConferencePresence(caption, Presence.PRESENCE_OFFLINE);
                 break;
+//#endif
             case TASK_ACTION_LOGOFF:
                 caption+=SR.MS_AUTOTASK_LOGOFF;
                 sd.roster.logoff(caption);
