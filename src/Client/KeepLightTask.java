@@ -28,13 +28,13 @@ package Client;
 
 import com.nokia.mid.ui.DeviceControl;
 
-public class SELightTask implements Runnable {    
+public class KeepLightTask implements Runnable {    
     
-    private static SELightTask instance;
+    private static KeepLightTask instance;
     
-    public static SELightTask getInstance(){
+    public static KeepLightTask getInstance(){
 	if (instance==null) {
-	    instance=new SELightTask();
+	    instance=new KeepLightTask();
 	}
 	return instance;
     }
@@ -42,7 +42,7 @@ public class SELightTask implements Runnable {
     private boolean stop;
     private boolean setLight;
     
-    public SELightTask() {
+    public KeepLightTask() {
         new Thread(this).start();
     }
     

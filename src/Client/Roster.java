@@ -116,9 +116,6 @@ public class Roster
     
     private Object messageIcon;
     public Object transferIcon;
-   
-    boolean reconnect=false;
-    boolean querysign=false;
     
     public Vector hContacts;
     private Vector vContacts;
@@ -131,27 +128,34 @@ public class Roster
     public MessageEdit me=null;
 
 //#if MOOD
-//#     private MoodList mi=MoodList.getInstance();
+//#     private MoodList mi;
+//#     public boolean useUserMood;
 //#endif
-    public boolean useUserMood;
 
+    private StatusList sl;
     public int myStatus=cf.loginstatus;
-    private String myMessage;
+    private static String myMessage;
     public static int oldStatus=0;
+    private static int lastOnlineStatus;
+	
+    private final static int maxReconnect=10;
+    public int reconnectCount;
+    boolean reconnect=false;
+    
+    boolean querysign=false;
     
 //#ifdef AUTOSTATUS
 //#     private AutoStatusTask autostatus;
 //#     public static boolean autoAway=false;
 //#     public static boolean autoXa=false;
 //#endif
-
-    private String token;
+    
+//#if SASL_XGOOGLETOKEN
+//#     private String token;
+//#endif
     
     private long lastMessageTime=Time.utcTimeMillis();
-	
-    private final static int maxReconnect=10;
-    public int reconnectCount;
-    
+
     public static String startTime=Time.dispLocalTime();
 	
     private static long notifyReadyTime=System.currentTimeMillis();
@@ -160,17 +164,17 @@ public class Roster
     private int blState=Integer.MAX_VALUE;
 
 //#ifdef SE_LIGHT
-//#     private SELightTask selight=SELightTask.getInstance();
+//#     private KeepLightTask selight;
 //#endif
     
 //#ifdef AUTOTASK
-//#     private AutoTask at=StaticData.getInstance().autoTask;
+//#     private AutoTask at=sd.getInstance().autoTask;
 //#endif
     
     private final static int SOUND_FOR_ME=500;
     private final static int SOUND_FOR_CONFERENCE=800;
     private final static int SOUND_MESSAGE=1000;
-    private final static int SOUND_START_UP=777;
+    private final static int SOUND_CONNECTED=777;
     private final static int SOUND_FOR_VIP=100;
     private final static int SOUND_COMPOSING=888;
     private final static int SOUND_OUTGOING=999;
@@ -180,17 +184,20 @@ public class Roster
 
     private int yesnoAction=0;
             
-    
-    /**
-     * Creates a new instance of Roster
-     * Sets up the stream to the server and adds this class as a listener
-     */
-    public Roster(Display display /*, boolean selAccount*/) {
+    public Roster(Display display) {
         super();
         this.display=display;
-        
-        setLight(cf.lightState);
 
+        sl=StatusList.getInstance();
+//#ifdef SE_LIGHT
+//#         selight=KeepLightTask.getInstance();
+//#endif
+        setLight(cf.lightState);
+//#if MOOD
+//#         mi=MoodList.getInstance();
+//#endif
+        setLight(cf.lightState);
+        
         MainBar mainbar=new MainBar(4, null, null);
         setMainBarItem(mainbar);
         mainbar.addRAlign();
@@ -220,14 +227,11 @@ public class Roster
     
     public void setLight(boolean state) {
         if (cf.phoneManufacturer==Config.SIEMENS || cf.phoneManufacturer==Config.SIEMENS2) {
-		try {
-			if (state) {
-				Light.setLightOn();
-			} else {
-				Light.setLightOff();  
-			}
-		} catch( Exception e ) { }
-         }
+            try {
+                if (state) Light.setLightOn();
+                else Light.setLightOff();  
+            } catch( Exception e ) { }
+        }
 //#ifdef SE_LIGHT
 //#         else if (cf.phoneManufacturer==Config.SONYE || cf.phoneManufacturer==Config.NOKIA) {
 //#             selight.setLight(state);
@@ -302,7 +306,7 @@ public class Roster
         //if (rpercent==100) rpercent=60;
         SplashScreen.getInstance().setProgress(rpercent);
     }
-    
+
     // establishing connection process
     public void run(){
         if (cf.firstRun)
@@ -583,7 +587,7 @@ public class Roster
     public final ConferenceGroup initMuc(String from, String joinPassword){
 //#ifdef AUTOSTATUS
 //#         if (autoAway) {
-//#             ExtendedStatus es=StatusList.getInstance().getStatus(oldStatus);
+//#             ExtendedStatus es=sl.getStatus(oldStatus);
 //#             String ms=es.getMessage();
 //#             sendPresence(oldStatus, ms);
 //#             autoAway=false;
@@ -756,7 +760,7 @@ public class Roster
         blockNotify(-111,13000);
         
         // send presence
-        ExtendedStatus es= StatusList.getInstance().getStatus(myStatus);
+        ExtendedStatus es= sl.getStatus(myStatus);
         if (message==null)
             myMessage=es.getMessage();
 
@@ -810,7 +814,7 @@ public class Roster
             return;
         }
 
-        ExtendedStatus es= StatusList.getInstance().getStatus(status);
+        ExtendedStatus es= sl.getStatus(status);
         myMessage=es.getMessage();
  
         myMessage=strconv.toExtendedString(myMessage);
@@ -847,7 +851,7 @@ public class Roster
          if (mcstatus==Presence.PRESENCE_INVISIBLE) return; //block multicasting presence invisible
          
          
-         ExtendedStatus es= StatusList.getInstance().getStatus(mcstatus);
+         ExtendedStatus es= sl.getStatus(mcstatus);
          for (Enumeration e=hContacts.elements(); e.hasMoreElements();) {
             Contact c=(Contact) e.nextElement();
             if (c.origin!=Contact.ORIGIN_GROUPCHAT) continue;
@@ -896,7 +900,7 @@ public class Roster
         if (child!=null) {
             presence.addChild(child);
 
-            ExtendedStatus es= StatusList.getInstance().getStatus(myStatus);
+            ExtendedStatus es= sl.getStatus(myStatus);
             switch (myStatus){
                 case Presence.PRESENCE_CHAT: presence.addChild("show", Presence.PRS_CHAT);break;
                 case Presence.PRESENCE_AWAY: presence.addChild("show", Presence.PRS_AWAY);break;
@@ -908,7 +912,7 @@ public class Roster
             if (es.getMessage()!=null) 
                 presence.addChild("status", strconv.toExtendedString(es.getMessage()));
         } else if (conference) {
-            ExtendedStatus es= StatusList.getInstance().getStatus(Presence.PRESENCE_OFFLINE);            
+            ExtendedStatus es= sl.getStatus(Presence.PRESENCE_OFFLINE);            
             if (es.getMessage()!=null) 
                 presence.addChild("status", strconv.toExtendedString(es.getMessage()));
         }
@@ -952,7 +956,7 @@ public class Roster
             
 //#ifdef AUTOSTATUS
 //#             if (autoAway) {
-//#                     ExtendedStatus es=StatusList.getInstance().getStatus(oldStatus);
+//#                     ExtendedStatus es=sl.getStatus(oldStatus);
 //#                     String ms=es.getMessage();
 //#                     sendPresence(oldStatus, ms);
 //#                     autoAway=false;
@@ -1072,7 +1076,7 @@ public class Roster
 	theStream.loggedIn=true;
 	reconnectCount=0;
 
-        playNotify(SOUND_START_UP);
+        playNotify(SOUND_CONNECTED);
         if (reconnect) {
             querysign=false;
             reconnect=false;
@@ -2010,7 +2014,7 @@ public class Roster
             autorespond=false;
         
         if (!c.autoresponded && autorespond) {
-            ExtendedStatus es=StatusList.getInstance().getStatus(myStatus);
+            ExtendedStatus es=sl.getStatus(myStatus);
             if (es.getAutoRespond()) {
 //#if DEBUG
 //#                 System.out.println(SR.MS_AUTORESPOND+" "+c.getJid());
@@ -2101,7 +2105,7 @@ public class Roster
                 message=ac.soundForYou;
                 type=ac.soundForYouType;
                 break;
-            case SOUND_START_UP: //startup
+            case SOUND_CONNECTED: //startup
                 message=ac.soundStartUp;
                 type=ac.soundStartUpType;
                 vibraLen=0;
@@ -2152,9 +2156,9 @@ public class Roster
 
     public void beginConversation(String SessionId) { //todo: verify xmpp version
             new SASLAuth(sd.account, SessionId, this, theStream)
-  //#if SASL_XGOOGLETOKEN
+//#if SASL_XGOOGLETOKEN
 //#             .setToken(token)
-  //#endif
+//#endif
             ;
     }
 
@@ -2175,8 +2179,6 @@ public class Roster
         redraw();
     }
     
-    private int lastOnlineStatus;
-
     private void askReconnect(final Exception e) {
         String error;
         error=e.getClass().getName()+"\n"+e.getMessage();
@@ -2355,12 +2357,18 @@ public class Roster
                 }
                 break;
             case KEY_NUM3:
-                searchGroup(-1);
-                setRotator();
+                int newpos=searchGroup(-1);
+                if (newpos>-1) {
+                    moveCursorTo(newpos);
+                    setRotator();
+                }
                 break;
             case KEY_NUM9:
-                searchGroup(1);
-                setRotator();
+                int newpos2=searchGroup(1);
+                if (newpos2>-1) {
+                    moveCursorTo(newpos2);
+                    setRotator();
+                }
                 break;
             case KEY_STAR:
                 if (cf.ghostMotor) {
@@ -2434,8 +2442,7 @@ public class Roster
                  } catch (Exception e) { }   
         }
     }
-    
-    
+
 //#ifdef AUTOSTATUS
 //#     private void userActivity() {
 //#         if (cf.autoAwayType==Config.AWAY_IDLE) {
@@ -2460,8 +2467,7 @@ public class Roster
 //#         }
 //#     }
 //#endif
-    
-    
+
 //#ifdef POPUPS
     public void showInfo() {
         try {
@@ -2545,7 +2551,7 @@ public class Roster
     public void logoff(String mess){
         if (isLoggedIn()) {
             try {
-                ExtendedStatus es=StatusList.getInstance().getStatus(Presence.PRESENCE_OFFLINE);
+                ExtendedStatus es=sl.getStatus(Presence.PRESENCE_OFFLINE);
                 if (mess==null)
                     mess=es.getMessage();
                 sendPresence(Presence.PRESENCE_OFFLINE, mess);
@@ -2639,7 +2645,7 @@ public class Roster
             new ContactEdit(display, cn);
        }
    }
-//menu actions
+
 //#ifndef WMUC
     public void reEnterRoom(Group group) {
 	ConferenceGroup confGroup=(ConferenceGroup)group;
@@ -2653,7 +2659,6 @@ public class Roster
 	ConferenceGroup confGroup=(ConferenceGroup)group;
 	Contact myself=confGroup.getSelfContact();
 	confGroup.getConference().commonPresence=false; //disable reenter after reconnect
-        
          sendPresence(myself.getJid(), "unavailable", null, true);
 	//roomOffline(group);
         for (Enumeration e=hContacts.elements(); e.hasMoreElements();) {
@@ -2689,7 +2694,8 @@ public class Roster
 //#endif
     }
     
-    private void searchGroup(int direction){
+    private int searchGroup(int direction){
+        int newpos=-1;
 	synchronized (vContacts) {
 	    int size=vContacts.size();
 	    int pos=cursor;
@@ -2701,9 +2707,35 @@ public class Roster
 		    if (pos>=size) pos=0;
 		    if (vContacts.elementAt(pos) instanceof Group) break;
 		}
-		moveCursorTo(pos);
 	    } catch (Exception e) { }
 	}
+        return newpos;
+    }
+    
+    public void openNextActiveContact(int direction){
+	Vector activeContacts=new Vector();
+        int nowContact = -1, contacts=-1;
+	for (Enumeration r=hContacts.elements(); r.hasMoreElements(); ){
+	    Contact c=(Contact)r.nextElement();
+	    if (c.active()) {
+                activeContacts.addElement(c);
+                contacts=contacts+1;
+                if (c==activeContact) 
+                    nowContact=contacts;
+            }
+	}
+        int size=activeContacts.size();
+        
+	if (size==0) return;
+
+        try {
+            nowContact+=direction;
+            if (nowContact<0) nowContact=size-1;
+            if (nowContact>=size) nowContact=0;
+            
+            Contact c=(Contact)activeContacts.elementAt(nowContact);
+            new ContactMessageList((Contact)c,display);
+        } catch (Exception e) { }
     }
     
     public void ActionConfirmed() {
@@ -2741,16 +2773,12 @@ public class Roster
             theStream.send(removeIq);
         }
     }
-   
-    
+
     public void setQuerySign(boolean requestState) {
         querysign=requestState;
         updateMainBar();
     }
-    
-    /**
-     * store cotnact on server
-     */
+
     public void storeContact(String jid, String name, String group, boolean askSubscribe){
         theStream.send(new IqQueryRoster(jid, name, group, null));
         if (askSubscribe) theStream.send(new Presence(jid,"subscribe"));
@@ -2946,7 +2974,6 @@ public class Roster
             long delay= ( grp.conferenceJoinTime - last ) /1000 ;
             if (last!=0) history.setAttribute("seconds",String.valueOf(delay)); // todo: change to since
         } catch (Exception e) {}
-
         sendPresence(conference, null, x, false);
         reEnumRoster();
     } 
@@ -2960,10 +2987,8 @@ public class Roster
         }
       }
     }
-    
-    
-    private void getKeys()
-    {
+
+    private void getKeys() {
         int pm=cf.phoneManufacturer;
         if (pm==Config.SIEMENS || pm==Config.SIEMENS2) {
              Config.SOFT_LEFT=-1;

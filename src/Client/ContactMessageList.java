@@ -41,7 +41,7 @@ import javax.microedition.lcdui.*;
 import util.ClipBoard;
 
 //#ifdef ARCHIVE
-//# import archive.MessageArchive;
+import archive.MessageArchive;
 //#endif
 
 public class ContactMessageList extends MessageList
@@ -54,13 +54,13 @@ public class ContactMessageList extends MessageList
     Command cmdReply=new Command(SR.MS_REPLY,Command.SCREEN,4);
     Command cmdQuote=new Command(SR.MS_QUOTE,Command.SCREEN,5);
 //#ifdef ARCHIVE
-//#     Command cmdArch=new Command(SR.MS_ADD_ARCHIVE,Command.SCREEN,6);
+    Command cmdArch=new Command(SR.MS_ADD_ARCHIVE,Command.SCREEN,6);
 //#endif
     Command cmdPurge=new Command(SR.MS_CLEAR_LIST, Command.SCREEN, 7);
     Command cmdActions=new Command(SR.MS_CONTACT,Command.SCREEN,8);
     Command cmdActive=new Command(SR.MS_ACTIVE_CONTACTS,Command.SCREEN,11);
 //#if TEMPLATES
-//#     Command cmdTemplate=new Command(SR.MS_SAVE_TEMPLATE,Command.SCREEN,14);
+    Command cmdTemplate=new Command(SR.MS_SAVE_TEMPLATE,Command.SCREEN,14);
 //#endif
 //#ifdef ANTISPAM
 //#     Command cmdBlock = new Command(SR.MS_BLOCK_PRIVATE, Command.SCREEN, 22);
@@ -129,10 +129,10 @@ public class ContactMessageList extends MessageList
 	addCommand(cmdActive);
         addCommand(cmdQuote);
 //#ifdef ARCHIVE
-//#         addCommand(cmdArch);
+        addCommand(cmdArch);
 //#endif
 //#if TEMPLATES
-//#         addCommand(cmdTemplate);
+        addCommand(cmdTemplate);
 //#endif
 //#ifdef FILE_IO
         addCommand(cmdSaveChat);
@@ -236,11 +236,11 @@ public class ContactMessageList extends MessageList
 		
         /** login-insensitive commands */
 //#ifdef ARCHIVE
-//#         if (c==cmdArch) {
-//#             try {
-//#                 MessageArchive.store(getMessage(cursor),1);
-//#             } catch (Exception e) {/*no messages*/}
-//#         }
+        if (c==cmdArch) {
+            try {
+                MessageArchive.store(getMessage(cursor),1);
+            } catch (Exception e) {/*no messages*/}
+        }
 //#endif
         if (c==cmdPurge) {
             if (messages.isEmpty()) return;
@@ -284,11 +284,11 @@ public class ContactMessageList extends MessageList
 //#         }
 //#endif        
 //#if TEMPLATES
-//#         if (c==cmdTemplate) {
-//#             try {
-//#                 MessageArchive.store(getMessage(cursor),2);
-//#             } catch (Exception e) {/*no messages*/}
-//#         }
+        if (c==cmdTemplate) {
+            try {
+                MessageArchive.store(getMessage(cursor),2);
+            } catch (Exception e) {/*no messages*/}
+        }
 //#endif
         if (c==cmdSubscribe) {
             sd.roster.doSubscribe(contact);
@@ -402,13 +402,13 @@ public class ContactMessageList extends MessageList
         switch (keyCode) {
             case KEY_NUM4:
                 if (cf.useTabs)
-                    nextContact(-1); //previous contact with messages
+                    sd.roster.openNextActiveContact(-1); //previous contact with messages
                 else
                     super.pageLeft();
                 return;
             case KEY_NUM6:
                 if (cf.useTabs)
-                    nextContact(1); //next contact with messages
+                    sd.roster.openNextActiveContact(1); //next contact with messages
                 else
                     super.pageRight();
                 return;
@@ -449,33 +449,7 @@ public class ContactMessageList extends MessageList
     }
     
     public void touchLeftPressed(){
-        nextContact(1);
-    }
-
-    private void nextContact(int direction){
-	Vector activeContacts=new Vector();
-        int nowContact = -1, contacts=-1;
-	for (Enumeration r=sd.roster.getHContacts().elements(); r.hasMoreElements(); ) 
-	{
-	    Contact c=(Contact)r.nextElement();
-	    if (c.active()) {
-                contacts=contacts+1;
-                if (c==contact) nowContact=contacts;
-                activeContacts.addElement(c);
-            }
-	}
-        int size=activeContacts.size();
-        
-	if (size==0) return;
-
-        try {
-            nowContact+=direction;
-            if (nowContact<0) nowContact=size-1;
-            if (nowContact>=size) nowContact=0;
-            
-            Contact c=(Contact)activeContacts.elementAt(nowContact);
-            new ContactMessageList((Contact)c,display).setParentView(sd.roster);
-        } catch (Exception e) { }
+        sd.roster.openNextActiveContact(1);
     }
 
     private void Reply() {
@@ -521,6 +495,7 @@ public class ContactMessageList extends MessageList
 //#     }
 //#endif
     public void destroyView(){
+        sd.roster.activeContact=null;
         sd.roster.reEnumRoster(); //to reset unread messages icon for this conference in roster
         if (display!=null)
             display.setCurrent(parentView);
