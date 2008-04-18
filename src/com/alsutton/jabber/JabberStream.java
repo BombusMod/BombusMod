@@ -49,9 +49,7 @@ import locale.SR;
 public class JabberStream implements XMLEventListener, Runnable {
     
     private Utf8IOStream iostream;
-//#ifdef CONSOLE
-//#     private StanzasList sl = StanzasList.getInstance();
-//#endif
+
     /**
      * The dispatcher thread.
      */
@@ -216,17 +214,17 @@ public class JabberStream implements XMLEventListener, Runnable {
      }
     
     public void send( String data ) throws IOException {
+	iostream.send(new StringBuffer(data));
 //#ifdef CONSOLE
 //#         addLog(data);
 //#endif
-	iostream.send(new StringBuffer(data));
     }
     
     public void sendBuf( StringBuffer data ) throws IOException {
+	iostream.send(data);
 //#ifdef CONSOLE
 //#         addLog(data.toString());
 //#endif
-	iostream.send(data);
     }
     
     /**
@@ -240,7 +238,7 @@ public class JabberStream implements XMLEventListener, Runnable {
     }
 //#ifdef CONSOLE
 //#     private void addLog (String data) {
-//#         sl.add(data, 1);
+//#         StanzasList.getInstance().add(data, 1);
 //#     }
 //#endif
     /**

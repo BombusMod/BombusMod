@@ -44,9 +44,7 @@ public class JabberDataBlockDispatcher extends Thread
 
   private JabberListener listener = null;
   private JabberStream stream;
-//#ifdef CONSOLE
-//#   private StanzasList sl = StanzasList.getInstance();
-//#endif
+
   boolean isActive() { return dispatcherActive; }
   
   private Vector blockListeners=new Vector();
@@ -136,9 +134,6 @@ public class JabberDataBlockDispatcher extends Thread
             waitingQueue.removeElementAt( 0 );
             int i=0;
             try {
-//#ifdef CONSOLE
-//#                 sl.add(dataBlock.toString(), 10);
-//#endif
                 int processResult=JabberBlockListener.BLOCK_REJECTED;
                 synchronized (blockListeners) {
                     while (i<blockListeners.size()) {
@@ -165,6 +160,9 @@ public class JabberDataBlockDispatcher extends Thread
                     }
                     //TODO: reject iq stansas where type =="get" | "set"
                 }
+//#ifdef CONSOLE
+//#                 StanzasList.getInstance().add(dataBlock.toString(), 10);
+//#endif
             } catch (Exception e) {
             //e.printStackTrace(); //error here
             }
