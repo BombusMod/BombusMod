@@ -68,7 +68,7 @@ public class Reconnect extends AlertBox implements Runnable{
             }
         }
         isRunning=false;
-        display.setCurrent(StaticData.getInstance().roster);
+        display.setCurrent(next);
     }
 
     public void run() {
