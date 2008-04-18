@@ -37,7 +37,7 @@ import ui.*;
 
 public class ColorForm implements CommandListener
 //#if (FILE_IO && COLORS)
-//#         , BrowserListener
+        , BrowserListener
 //#endif
 {
     private Displayable currentChoice = null;
@@ -139,11 +139,12 @@ public class ColorForm implements CommandListener
             cs.SCROLL_BAR,
             cs.SCROLL_BGND,
             
-            cs.CONTACT_J2J,
-            
-            cs.MESSAGE_IN_S,
+            cs.CONTACT_J2J
+//#ifdef NICK_COLORS
+            ,cs.MESSAGE_IN_S,
             cs.MESSAGE_OUT_S,
             cs.MESSAGE_PRESENCE_S
+//#endif
       };
         
       
@@ -187,11 +188,12 @@ public class ColorForm implements CommandListener
             imageData(cs.SCROLL_BRD),
             imageData(cs.SCROLL_BAR),
             imageData(cs.SCROLL_BGND),
-            imageData(cs.CONTACT_J2J),
-            
-            imageData(cs.MESSAGE_IN_S),
+            imageData(cs.CONTACT_J2J)
+//#ifdef NICK_COLORS
+            , imageData(cs.MESSAGE_IN_S),
             imageData(cs.MESSAGE_OUT_S),
             imageData(cs.MESSAGE_PRESENCE_S)
+//#endif
       };
 
 
@@ -237,21 +239,21 @@ public class ColorForm implements CommandListener
         }
         
 //#if (FILE_IO && COLORS)
-//#         if (c==cmdSaveSkin) {
-//#             loadType=0;
-//#             new Browser(null,display, this, true);
-//#         }
-//#         if (c==cmdLoadSkinFS) {
-//#             loadType=1;
-//#             new Browser(null, display, this, false);
-//#         }
+        if (c==cmdSaveSkin) {
+            loadType=0;
+            new Browser(null,display, this, true);
+        }
+        if (c==cmdLoadSkinFS) {
+            loadType=1;
+            new Browser(null, display, this, false);
+        }
 //#endif
         
         if (c==selectCommand) {
           try {
               if (!NAMES[pos].startsWith("(n/a)") && pos != NAMES.length) {
 //#if (COLORS)
-//#                 new ColorSelector(display, pos);
+                new ColorSelector(display, pos);
 //#endif
               }
           } catch(Exception err) {}
@@ -260,14 +262,14 @@ public class ColorForm implements CommandListener
 
 
 //#if (FILE_IO && COLORS)
-//#     public void BrowserFilePathNotify(String pathSelected) {
-//#         if (loadType==0) {
-//#             FileIO file=FileIO.createConnection(pathSelected+"skin.txt");
-//#             file.fileWrite(ColorUtils.getSkin().getBytes());
-//#         } else {
-//#             ColorUtils.loadSkin(pathSelected, 0);
-//#         }
-//#     }
+    public void BrowserFilePathNotify(String pathSelected) {
+        if (loadType==0) {
+            FileIO file=FileIO.createConnection(pathSelected+"skin.txt");
+            file.fileWrite(ColorUtils.getSkin().getBytes());
+        } else {
+            ColorUtils.loadSkin(pathSelected, 0);
+        }
+    }
 //#endif 
 
 
