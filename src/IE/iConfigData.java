@@ -79,9 +79,7 @@ public class iConfigData {
         cf.queryExit=cf.getBooleanProperty(getValue("queryExit"),false);
         VirtualList.showBalloons=cf.showBalloons=cf.getBooleanProperty(getValue("showBalloons"),false);
         cf.userKeys=cf.getBooleanProperty(getValue("userKeys"),false);
-//#if AUTODELETE
-//#         cf.msglistLimit=cf.getIntProperty(getValue("msglistLimit"),100);
-//#endif
+        cf.msglistLimit=cf.getIntProperty(getValue("msglistLimit"),100);
         cf.useTabs=cf.getBooleanProperty(getValue("useTabs"),true);
         cf.autoSubscribe=cf.getIntProperty(getValue("autoSubscribe"), cf.SUBSCR_ASK);
         cf.notInListDropLevel=cf.getIntProperty(getValue("notInListDropLevel"), cf.SUBSCR_ASK);
@@ -90,6 +88,7 @@ public class iConfigData {
         cf.ircLikeStatus=cf.getBooleanProperty(getValue("ircLikeStatus"),false);
         cf.sndrcvmood=cf.getBooleanProperty(getValue("sndrcvmood"),true);
         cf.scheme=cf.getStringProperty(getValue("scheme"),"");
+        cf.useClipBoard=cf.getBooleanProperty(getValue("useClipBoard"),true);
         cf.lastProfile=cf.profile=cf.def_profile;
         if (cf.lastProfile==AlertProfile.VIBRA) 
             cf.lastProfile=0;

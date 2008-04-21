@@ -76,7 +76,7 @@ public class ConfigForm implements
     private Vector[] Skinfiles;
     
 //#ifdef COLORS
-//#     Command cmdLoadSkin=new Command(SR.MS_LOAD_SKIN, Command.ITEM,15);
+    Command cmdLoadSkin=new Command(SR.MS_LOAD_SKIN, Command.ITEM,15);
 //#endif
     Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK,99);
     
@@ -145,7 +145,7 @@ public class ConfigForm implements
 
         message=new ChoiceGroup(SR.MS_MESSAGES, Choice.MULTIPLE);
 //#ifdef SMILES
-//#         message.append(SR.MS_SMILES, null);
+        message.append(SR.MS_SMILES, null);
 //#endif
         message.append(SR.MS_COMPOSING_EVENTS, null);
         message.append(SR.MS_CAPS_STATE, null);
@@ -160,14 +160,16 @@ public class ConfigForm implements
 //#         message.append(SR.MS_ANTISPAM_CONFERENCE, null);
 //#endif
 //#ifdef POPUPS
-//#         message.append(SR.MS_POPUPS, null);
+        message.append(SR.MS_POPUPS, null);
 //#endif
         message.append(SR.MS_SHOW_BALLONS, null);
         message.append(SR.MS_DELIVERY, null);
-
+//#ifdef CLIPBOARD
+//#         message.append(SR.MS_CLIPBOARD, null);
+//#endif
         boolean messageV[]={
 //#ifdef SMILES
-//#             cf.smiles,
+            cf.smiles,
 //#endif
             cf.eventComposing,
             cf.capsState,
@@ -182,10 +184,13 @@ public class ConfigForm implements
 //#             ,cf.antispam
 //#endif
 //#ifdef POPUPS
-//#             ,cf.popUps
+            ,cf.popUps
 //#endif
             ,cf.showBalloons       
             ,cf.eventDelivery
+//#ifdef CLIPBOARD
+//#             ,cf.useClipBoard
+//#endif
         };
         this.mv=messageV;
 
@@ -212,7 +217,7 @@ public class ConfigForm implements
 //#         application.append(SR.MS_CUSTOM_KEYS,null);
 //#endif
 //#ifdef NEW_MENU
-//#         application.append(SR.MS_NEW_MENU,null);
+        application.append(SR.MS_NEW_MENU,null);
 //#endif
         application.append(SR.MS_FLASHLIGHT,null);
 //#ifdef IRC_LIKE
@@ -230,7 +235,7 @@ public class ConfigForm implements
 //#             cf.userKeys,
 //#endif
 //#ifdef NEW_MENU
-//#             cf.newMenu,
+            cf.newMenu,
 //#endif
             cf.lightState,
 //#ifdef IRC_LIKE
@@ -263,15 +268,15 @@ public class ConfigForm implements
                 String schemeName = (String)Skinfiles[1].elementAt(i);
                 SkinFile.append(schemeName, null);
 //#ifndef COLORS
-                if (tempScheme.equals(schemeName))
-                    SkinFile.setSelectedIndex(i, true);
+//#                 if (tempScheme.equals(schemeName))
+//#                     SkinFile.setSelectedIndex(i, true);
 //#endif
             }
 //#ifdef COLORS
-//#             if (Skinfiles.length>0) {
-//#                 SkinFile.setItemCommandListener(this);
-//#                 SkinFile.addCommand(cmdLoadSkin);
-//#             }
+            if (Skinfiles.length>0) {
+                SkinFile.setItemCommandListener(this);
+                SkinFile.addCommand(cmdLoadSkin);
+            }
 //#endif 
             f.append(SkinFile);
         } catch (Exception e) {}
@@ -385,7 +390,7 @@ public class ConfigForm implements
             
             int mvctr=0;
 //#ifdef SMILES
-//#             cf.smiles=mv[mvctr++];
+            cf.smiles=mv[mvctr++];
 //#endif
             cf.eventComposing=mv[mvctr++];
             cf.capsState=mv[mvctr++];
@@ -400,12 +405,14 @@ public class ConfigForm implements
 //#             cf.antispam=mv[mvctr++];
 //#endif
 //#ifdef POPUPS
-//#             cf.popUps=mv[mvctr++];
+            cf.popUps=mv[mvctr++];
 //#endif
             VirtualList.showBalloons=cf.showBalloons=mv[mvctr++];
 
             cf.eventDelivery=mv[mvctr++];
-            
+//#ifdef CLIPBOARD
+//#             cf.useClipBoard=mv[mvctr++];
+//#endif
 	    cf.autoLogin=su[0];
 	    cf.autoJoinConferences=su[1];
             
@@ -419,7 +426,7 @@ public class ConfigForm implements
 //#             VirtualList.userKeys=cf.userKeys=ap[apctr++];
 //#endif
 //#ifdef NEW_MENU
-//#             cf.newMenu=ap[apctr++];
+            cf.newMenu=ap[apctr++];
 //#endif
             cf.lightState=ap[apctr++];
 //#ifdef IRC_LIKE
@@ -450,11 +457,11 @@ public class ConfigForm implements
 //#endif
 
 //#ifndef COLORS
-            String tempScheme=(String) Skinfiles[1].elementAt( SkinFile.getSelectedIndex() );
-            if (!tempScheme.equals(cf.scheme)) {
-                cf.scheme=(String) Skinfiles[1].elementAt( SkinFile.getSelectedIndex() );
-                ColorUtils.loadSkin((String)Skinfiles[0].elementAt(SkinFile.getSelectedIndex()), 1);
-            }            
+//#             String tempScheme=(String) Skinfiles[1].elementAt( SkinFile.getSelectedIndex() );
+//#             if (!tempScheme.equals(cf.scheme)) {
+//#                 cf.scheme=(String) Skinfiles[1].elementAt( SkinFile.getSelectedIndex() );
+//#                 ColorUtils.loadSkin((String)Skinfiles[0].elementAt(SkinFile.getSelectedIndex()), 1);
+//#             }            
 //#endif
 
             sd.roster.setLight(cf.lightState);   
@@ -476,12 +483,12 @@ public class ConfigForm implements
 
     public void commandAction(Command command, Item item) {
 //#ifdef COLORS
-//# 	if (command==cmdLoadSkin) {
-//#             int skinfl=SkinFile.getSelectedIndex();
-//#             String skinFile=(String)Skinfiles[0].elementAt(skinfl);
-//#             //ColorUtils.saveSkin(skinFile);
-//#             ColorUtils.loadSkin(skinFile, 1);
-//# 	}
+	if (command==cmdLoadSkin) {
+            int skinfl=SkinFile.getSelectedIndex();
+            String skinFile=(String)Skinfiles[0].elementAt(skinfl);
+            //ColorUtils.saveSkin(skinFile);
+            ColorUtils.loadSkin(skinFile, 1);
+	}
 //#endif
     }
     

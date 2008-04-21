@@ -162,9 +162,7 @@ public class Config {
     public int notInListDropLevel=NotInListFilter.ALLOW_ALL; //enable all
     public boolean showBalloons = true;
     public boolean userKeys = false;
-//#if AUTODELETE
-//#     public int msglistLimit=100;
-//#endif
+    public int msglistLimit=100;
     public boolean useTabs=true;
     public boolean notifyBlink=true;
     public boolean notifySound=false;
@@ -174,6 +172,8 @@ public class Config {
     public boolean ircLikeStatus = false;
     public boolean sndrcvmood = false;
     public String scheme = "";
+    
+    public boolean useClipBoard = true;
     
     public boolean firstRun = true;
     
@@ -204,7 +204,7 @@ public class Config {
                 //prefetch images
                 RosterIcons.getInstance();
 //#ifdef SMILES
-//#                 SmilesIcons.getInstance();
+                SmilesIcons.getInstance();
 //#endif
                 allowMinimize=true;
                 greenKeyCode=-10;
@@ -305,11 +305,7 @@ public class Config {
             notifyPicture=inputStream.readBoolean();
             showBalloons=inputStream.readBoolean();
             userKeys=inputStream.readBoolean();
-//#if AUTODELETE
-//#             msglistLimit=inputStream.readInt();
-//#else
-            inputStream.readInt();
-//#endif
+            msglistLimit=inputStream.readInt();
             useTabs=inputStream.readBoolean();
             autoSubscribe=inputStream.readInt();
             useBoldFont=inputStream.readBoolean();
@@ -317,6 +313,8 @@ public class Config {
             ircLikeStatus = inputStream.readBoolean();
             sndrcvmood = inputStream.readBoolean();
             scheme=inputStream.readUTF();
+                    
+            useClipBoard = inputStream.readBoolean();
                     
 	    inputStream.close();
 	} catch (Exception e) {
@@ -431,11 +429,7 @@ public class Config {
             outputStream.writeBoolean(notifyPicture);
             outputStream.writeBoolean(showBalloons);
             outputStream.writeBoolean(userKeys);
-//#if AUTODELETE
-//#             outputStream.writeInt(msglistLimit);
-//#else
-            outputStream.writeInt(0);
-//#endif
+            outputStream.writeInt(msglistLimit);
             outputStream.writeBoolean(useTabs);
             outputStream.writeInt(autoSubscribe);
             outputStream.writeBoolean(useBoldFont);
@@ -443,6 +437,8 @@ public class Config {
             outputStream.writeBoolean(ircLikeStatus);
             outputStream.writeBoolean(sndrcvmood);
             outputStream.writeUTF(scheme);
+            
+            outputStream.writeBoolean(useClipBoard);
             
 	} catch (Exception e) { }
 	

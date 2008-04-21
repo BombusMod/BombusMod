@@ -39,8 +39,9 @@ import locale.SR;
 import ui.MainBar;
 import java.util.*;
 import javax.microedition.lcdui.*;
-import util.ClipBoard;
-
+//#ifdef CLIPBOARD
+//# import util.ClipBoard;
+//#endif
 //#ifdef ARCHIVE
 import archive.MessageArchive;
 //#endif
@@ -67,12 +68,15 @@ public class ContactMessageList extends MessageList
 //#     Command cmdBlock = new Command(SR.MS_BLOCK_PRIVATE, Command.SCREEN, 22);
 //#     Command cmdUnlock = new Command(SR.MS_UNLOCK_PRIVATE, Command.SCREEN, 23);
 //#endif
-    Command cmdSendBuffer=new Command(SR.MS_SEND_BUFFER, Command.SCREEN, 15);
+//#ifdef CLIPBOARD    
+//#     Command cmdSendBuffer=new Command(SR.MS_SEND_BUFFER, Command.SCREEN, 15);
+//#endif
 //#ifdef FILE_IO
     Command cmdSaveChat=new Command(SR.MS_SAVE_CHAT, Command.SCREEN, 16);
 //#endif
-    private ClipBoard clipboard;
-
+//#ifdef CLIPBOARD
+//#     private ClipBoard clipboard;
+//#endif
     StaticData sd=StaticData.getInstance();
     
     private Config cf;
@@ -84,9 +88,12 @@ public class ContactMessageList extends MessageList
         super(display);
         this.contact=contact;
         sd.roster.activeContact=contact;
-        
-        clipboard=ClipBoard.getInstance();
+
         cf=Config.getInstance();
+//#ifdef CLIPBOARD
+//#         if (cf.useClipBoard)
+//#             clipboard=ClipBoard.getInstance();
+//#endif
         
         MainBar mainbar=new MainBar(contact);
         setMainBarItem(mainbar);
@@ -173,10 +180,11 @@ public class ContactMessageList extends MessageList
                 removeCommand(cmdUnsubscribed);
             }
         } catch (Exception e) {}
-        
-        if (!clipboard.isEmpty()) {
-            addCommand(cmdSendBuffer);
-        }
+//#ifdef CLIPBOARD
+//#         if (!clipboard.isEmpty() && cf.useClipBoard) {
+//#             addCommand(cmdSendBuffer);
+//#         }
+//#endif
     }
 //#ifdef HISTORY
 //#     public void loadRecentList() {
@@ -353,24 +361,26 @@ public class ContactMessageList extends MessageList
 //#         }
 //#endif
 //#endif
-        if (c==cmdSendBuffer) {
-            String from=sd.account.toString();
-            String body=clipboard.getClipBoard();
-            String subj=null;
-            
-            String id=String.valueOf((int) System.currentTimeMillis());
-            Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,body);
-            msg.id=id;
-            
-            try {
-                if (body!=null)
-                    sd.roster.sendMessage(contact, id, body, subj, null);
-                contact.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"clipboard sended ("+body.length()+"chars)"));
-            } catch (Exception e) {
-                contact.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"clipboard NOT sended"));
-            }
-            redraw();
-        }
+//#ifdef CLIPBOARD
+//#         if (c==cmdSendBuffer) {
+//#             String from=sd.account.toString();
+//#             String body=clipboard.getClipBoard();
+//#             String subj=null;
+//#             
+//#             String id=String.valueOf((int) System.currentTimeMillis());
+//#             Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,body);
+//#             msg.id=id;
+//#             
+//#             try {
+//#                 if (body!=null)
+//#                     sd.roster.sendMessage(contact, id, body, subj, null);
+//#                 contact.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"clipboard sended ("+body.length()+"chars)"));
+//#             } catch (Exception e) {
+//#                 contact.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"clipboard NOT sended"));
+//#             }
+//#             redraw();
+//#         }
+//#endif
     }
 
     private void clearReadedMessageList() {
@@ -446,34 +456,36 @@ public class ContactMessageList extends MessageList
                 return;        
             case KEY_NUM9:
                 Quote();
-                return;        
-            case SIEMENS_VOLUP:
-            case SIEMENS_CAMERA:
-                 if (cf.phoneManufacturer==Config.SIEMENS || cf.phoneManufacturer==Config.SIEMENS2) { //copy&copy+
-                    if (messages.isEmpty()) 
-                        return;
-                    try {
-                        StringBuffer clipstr=new StringBuffer();
-                        clipstr.append(clipboard.getClipBoard());
-                        if (clipstr.length()>0)
-                            clipstr.append("\n\n");
-
-                        clipstr.append((getMessage(cursor).getSubject()==null)?"":getMessage(cursor).getSubject()+"\n");
-                        clipstr.append(getMessage(cursor).quoteString());
-
-                        clipboard.setClipBoard(clipstr.toString());
-                        clipstr=null;
-                    } catch (Exception e) {/*no messages*/}
-                    return;
-                 }
-                 break;
-            case SIEMENS_VOLDOWN:
-            case SIEMENS_MPLAYER:
-                if (cf.phoneManufacturer==Config.SIEMENS || cf.phoneManufacturer==Config.SIEMENS2) { //clear clipboard
-                    clipboard.setClipBoard("");
-                    return;
-                }
-                break;
+                return;  
+//#ifdef CLIPBOARD
+//#             case SIEMENS_VOLUP:
+//#             case SIEMENS_CAMERA:
+//#                  if (cf.phoneManufacturer==Config.SIEMENS || cf.phoneManufacturer==Config.SIEMENS2) { //copy&copy+
+//#                     if (messages.isEmpty()) 
+//#                         return;
+//#                     try {
+//#                         StringBuffer clipstr=new StringBuffer();
+//#                         clipstr.append(clipboard.getClipBoard());
+//#                         if (clipstr.length()>0)
+//#                             clipstr.append("\n\n");
+//# 
+//#                         clipstr.append((getMessage(cursor).getSubject()==null)?"":getMessage(cursor).getSubject()+"\n");
+//#                         clipstr.append(getMessage(cursor).quoteString());
+//# 
+//#                         clipboard.setClipBoard(clipstr.toString());
+//#                         clipstr=null;
+//#                     } catch (Exception e) {/*no messages*/}
+//#                     return;
+//#                  }
+//#                  break;
+//#             case SIEMENS_VOLDOWN:
+//#             case SIEMENS_MPLAYER:
+//#                 if (cf.phoneManufacturer==Config.SIEMENS || cf.phoneManufacturer==Config.SIEMENS2) { //clear clipboard
+//#                     clipboard.setClipBoard("");
+//#                     return;
+//#                 }
+//#                 break;
+//#endif
         }
     }
     

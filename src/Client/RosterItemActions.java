@@ -62,7 +62,9 @@ import ui.Menu;
 import ui.MenuItem;
 import ui.Time;
 import ui.YesNoAlert;
-import util.ClipBoard;
+//#ifdef CLIPBOARD
+//# import util.ClipBoard;
+//#endif
 import vcard.VCard;
 import vcard.vCardForm;
 
@@ -81,8 +83,9 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
     public final static int DELETE_GROUP=1004;
     
     Object item;
-    
-    private ClipBoard clipboard=ClipBoard.getInstance();
+//#ifdef CLIPBOARD
+//#     private ClipBoard clipboard;
+//#endif
     private int action;
     
     StaticData sd=StaticData.getInstance();
@@ -97,7 +100,10 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 	
         if (item==null) return;
         boolean isContact=( item instanceof Contact );
-
+//#ifdef CLIPBOARD
+//#         if (Config.getInstance().useClipBoard)
+//#             clipboard=ClipBoard.getInstance();
+//#endif
 	if (isContact) {
 	    Contact contact=(Contact)item;
 	    if (contact.getGroupType()==Groups.TYPE_TRANSP) {
@@ -132,10 +138,14 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 //#ifdef SERVICE_DISCOVERY
 	    addItem(SR.MS_COMMANDS,30, 0x0f24);
 //#endif
-	    addItem(SR.MS_SEND_BUFFER,914, 0x0f22);
-            if (contact.getGroupType()!=Groups.TYPE_SELF) {
-                addItem(SR.MS_COPY_JID,892, 0x0f22);
-            }
+//#ifdef CLIPBOARD
+//#             if (Config.getInstance().useClipBoard) {
+//#                 addItem(SR.MS_SEND_BUFFER,914, 0x0f22);
+//#                 if (contact.getGroupType()!=Groups.TYPE_SELF) {
+//#                     addItem(SR.MS_COPY_JID,892, 0x0f22);
+//#                 }
+//#             }
+//#endif
 //#ifdef COLORS
                 addItem("Send current color scheme",912, 0x0f22);
 //#endif
@@ -434,22 +444,23 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                     sd.roster.theStream.send(new IqTimeReply(c.getJid()));
                     break;
                 }
-                
-                case 892: //Copy JID
-                {
+//#ifdef CLIPBOARD
+//#                 case 892: //Copy JID
+//#                 {
 //#ifndef WMUC
-                    if (!(c instanceof MucContact)) {
-                        //System.out.println("1 c "+c.bareJid);
+//#                     if (!(c instanceof MucContact)) {
+//#                         //System.out.println("1 c "+c.bareJid);
 //#endif
-                        try {
-                            if (c.bareJid!=null)
-                                clipboard.setClipBoard(c.bareJid);
-                        } catch (Exception e) {/*no messages*/}
+//#                         try {
+//#                             if (c.bareJid!=null)
+//#                                 clipboard.setClipBoard(c.bareJid);
+//#                         } catch (Exception e) {/*no messages*/}
 //#ifndef WMUC
-                    }
+//#                     }
 //#endif
-                    break;
-                }
+//#                     break;
+//#                 }
+//#endif
                 case 893: //ping
                 {
                     try {
@@ -480,29 +491,31 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                     }
                     break;
                 }
-//#endif               
-                case 914: //send message from buffer
-                {
-                    String body=clipboard.getClipBoard();
-                    if (body.length()==0)
-                        return;
-                    
-                    String from=sd.account.toString();
-                    String subj="";
-                    
-                    String id=String.valueOf((int) System.currentTimeMillis());
-                    
-                    Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,body);
-                    msg.id=id;
-                    try {
-                        sd.roster.sendMessage(c, id, body, subj, null);
-                        c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"message sended from clipboard("+body.length()+"chars)"));
-                    } catch (Exception e) {
-                        c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"message NOT sended"));
-                        //e.printStackTrace();
-                    }
-                    break;
-                }
+//#endif
+//#ifdef CLIPBOARD
+//#                 case 914: //send message from buffer
+//#                 {
+//#                     String body=clipboard.getClipBoard();
+//#                     if (body.length()==0)
+//#                         return;
+//#                     
+//#                     String from=sd.account.toString();
+//#                     String subj="";
+//#                     
+//#                     String id=String.valueOf((int) System.currentTimeMillis());
+//#                     
+//#                     Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,body);
+//#                     msg.id=id;
+//#                     try {
+//#                         sd.roster.sendMessage(c, id, body, subj, null);
+//#                         c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"message sended from clipboard("+body.length()+"chars)"));
+//#                     } catch (Exception e) {
+//#                         c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"message NOT sended"));
+//#                         //e.printStackTrace();
+//#                     }
+//#                     break;
+//#                 }
+//#endif
 //#ifndef WMUC
                 case 40: //invite
                 {
@@ -640,14 +653,16 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 //#                     return;
 //#                  }
 //#endif
-                case 892: //Copy JID
-                {
-                    try {
-                        if (mc.realJid!=null)
-                            clipboard.setClipBoard(mc.realJid);
-                    } catch (Exception e) {}
-                    break;
-                 }
+//#ifdef CLIPBOARD
+//#                 case 892: //Copy JID
+//#                 {
+//#                     try {
+//#                         if (mc.realJid!=null)
+//#                             clipboard.setClipBoard(mc.realJid);
+//#                     } catch (Exception e) {}
+//#                     break;
+//#                  }
+//#endif
              }
         } else {
 //#endif

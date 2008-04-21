@@ -76,9 +76,7 @@ public class eConfigData {
         array.addElement(new keyValue("showBalloons", (cf.showBalloons)?"1":"0"));
         array.addElement(new keyValue("notifyPicture", (cf.notifyPicture)?"1":"0"));
         array.addElement(new keyValue("userKeys", (cf.userKeys)?"1":"0"));
-//#if AUTODELETE
-//#         array.addElement(new keyValue("msglistLimit", Integer.toString(cf.msglistLimit)));
-//#endif
+        array.addElement(new keyValue("msglistLimit", Integer.toString(cf.msglistLimit)));
         array.addElement(new keyValue("useTabs", (cf.useTabs)?"1":"0"));  
         array.addElement(new keyValue("autoSubscribe", Integer.toString(cf.autoSubscribe)));
         array.addElement(new keyValue("notInListDropLevel", Integer.toString(cf.notInListDropLevel)));
@@ -87,6 +85,8 @@ public class eConfigData {
         array.addElement(new keyValue("ircLikeStatus", (cf.ircLikeStatus)?"1":"0"));
         array.addElement(new keyValue("sndrcvmood", (cf.sndrcvmood)?"1":"0"));
         array.addElement(new keyValue("scheme", cf.scheme));
+        
+        array.addElement(new keyValue("useClipBoard", (cf.useClipBoard)?"1":"0"));
         
         new eData(array, path+"config.txt");
         array = null;

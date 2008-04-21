@@ -40,7 +40,9 @@ import locale.SR;
 import ui.MainBar;
 import ui.VirtualElement;
 import ui.VirtualList;
-import util.ClipBoard;
+//#ifdef CLIPBOARD
+//# import util.ClipBoard;
+//#endif
 
 /**
  *
@@ -62,19 +64,20 @@ public class Affiliations
     private Command cmdCancel = new Command (SR.MS_BACK, Command.BACK, 99);
     private Command cmdModify = new Command (SR.MS_MODIFY, Command.SCREEN, 1);
     private Command cmdNew    = new Command (SR.MS_NEW_JID, Command.SCREEN, 2);
-    private Command cmdCopy   = new Command(SR.MS_COPY, Command.SCREEN, 3);
- 
+//#ifdef CLIPBOARD
+//#     private Command cmdCopy   = new Command(SR.MS_COPY, Command.SCREEN, 3);
+//#     private ClipBoard clipboard; 
+//#endif
     
     protected VirtualElement getItemRef(int index) { return (VirtualElement) items.elementAt(index); }
     protected int getItemCount() { return items.size(); }
     
-    private ClipBoard clipboard=ClipBoard.getInstance(); 
     
     /** Creates a new instance of AffiliationList */
     public Affiliations(Display display, String room, short affiliationIndex) {
         super ();
         this.room=room;
-	
+        
 	//fix for old muc
 	switch (affiliationIndex) {
 	    case AffiliationItem.AFFILIATION_OWNER:
@@ -91,7 +94,12 @@ public class Affiliations
         addCommand(cmdCancel);
         addCommand(cmdModify);
         addCommand(cmdNew);
-        addCommand(cmdCopy);
+//#ifdef CLIPBOARD
+//#         if (Config.getInstance().useClipBoard) {
+//#             clipboard=ClipBoard.getInstance(); 
+//#             addCommand(cmdCopy);
+//#         }
+//#endif
         
         setCommandListener(this);
         attachDisplay(display);
@@ -107,13 +115,15 @@ public class Affiliations
     public void commandAction(Command c, Displayable d){
         if (c==cmdNew) new AffiliationModify(display, room, null, "none", "");
         if (c==cmdModify) eventOk();
-        if (c==cmdCopy) {
-            try {
-                AffiliationItem item=(AffiliationItem)getFocusedObject();
-                if (item.jid!=null)
-                    clipboard.setClipBoard(item.jid);
-            } catch (Exception e) {/*no messages*/}
-        }
+//#ifdef CLIPBOARD
+//#         if (c==cmdCopy) {
+//#             try {
+//#                 AffiliationItem item=(AffiliationItem)getFocusedObject();
+//#                 if (item.jid!=null)
+//#                     clipboard.setClipBoard(item.jid);
+//#             } catch (Exception e) {/*no messages*/}
+//#         }
+//#endif
         if (c!=cmdCancel) 
             return;
         

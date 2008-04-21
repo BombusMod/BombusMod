@@ -20,7 +20,9 @@ import javax.microedition.lcdui.TextBox;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
 import ui.VirtualList;
-import util.ClipBoard;
+//#ifdef CLIPBOARD
+//# import util.ClipBoard;
+//#endif
 
 /**
  *
@@ -32,13 +34,15 @@ public class StanzaEdit implements CommandListener, Runnable {
     private Displayable parentView;
 
     private String stanza;
-
-    private Command cmdPasteText=new Command(SR.MS_PASTE, Command.BACK,10);
+//#ifdef CLIPBOARD
+//#     private Command cmdPasteText=new Command(SR.MS_PASTE, Command.BACK,10);
+//#endif
     private Command cmdCancel=new Command(SR.MS_CANCEL, Command.SCREEN,99);
     private Command cmdSend=new Command(SR.MS_SEND, Command.OK,1);
-
-    private ClipBoard clipboard=ClipBoard.getInstance();
-    private Config cf=Config.getInstance();
+//#ifdef CLIPBOARD
+//#     private ClipBoard clipboard;
+//#endif
+    private Config cf;
     
     private TextBox t;
     
@@ -48,6 +52,8 @@ public class StanzaEdit implements CommandListener, Runnable {
         parentView=display.getCurrent();
 
         t=new TextBox("", "", 500, TextField.ANY);
+
+        cf=Config.getInstance();
         
         try {
             //expanding buffer as much as possible
@@ -62,9 +68,14 @@ public class StanzaEdit implements CommandListener, Runnable {
 
         
         t.addCommand(cmdSend);
-
-        if (!clipboard.isEmpty())
-            t.addCommand(cmdPasteText);
+        
+//#ifdef CLIPBOARD
+//#         if (cf.useClipBoard) {
+//#             clipboard=ClipBoard.getInstance();
+//#             if (!clipboard.isEmpty())
+//#                 t.addCommand(cmdPasteText);
+//#         }
+//#endif
 
         t.addCommand(cmdCancel);
         t.setCommandListener(this);
@@ -81,12 +92,11 @@ public class StanzaEdit implements CommandListener, Runnable {
     public void commandAction(Command c, Displayable d){
         stanza=t.getString();
         
-        int caretPos=getCaretPos();
-		
         if (stanza.length()==0) stanza=null;
-
-        if (c==cmdPasteText) { insertText(clipboard.getClipBoard(), getCaretPos()); return; }
-
+//#ifdef CLIPBOARD
+//#         int caretPos=getCaretPos();
+//#         if (c==cmdPasteText) { insertText(clipboard.getClipBoard(), getCaretPos()); return; }
+//#endif
         if (c==cmdCancel) { 
             stanza=null;
         }
@@ -115,39 +125,40 @@ public class StanzaEdit implements CommandListener, Runnable {
     public void destroyView(){
         if (display!=null)   display.setCurrent(parentView);
     }
-
-    public int getCaretPos() {     
-        int caretPos=t.getCaretPosition();
-        // +MOTOROLA STUB
-        if (cf.phoneManufacturer==Config.MOTO)
-            caretPos=-1;
-        
-        if (caretPos<0) caretPos=t.getString().length();
-        
-        return caretPos;
-    }
-
-    public void insertText(String s, int caretPos) {
-        String src=t.getString();
-
-        StringBuffer sb=new StringBuffer(s);
-        
-        if (caretPos>0) 
-            if (src.charAt(caretPos-1)!=' ')   
-                sb.insert(0, ' ');
-        
-        if (caretPos<src.length())
-            if (src.charAt(caretPos)!=' ')
-                sb.append(' ');
-        
-        if (caretPos==src.length()) sb.append(' ');
-        
-        try {
-            int freeSz=t.getMaxSize()-t.size();
-            if (freeSz<sb.length()) sb.delete(freeSz, sb.length());
-        } catch (Exception e) {}
-       
-        t.insert(sb.toString(), caretPos);
-        sb=null;
-    }
+//#ifdef CLIPBOARD
+//#     public int getCaretPos() {     
+//#         int caretPos=t.getCaretPosition();
+//#         // +MOTOROLA STUB
+//#         if (cf.phoneManufacturer==Config.MOTO)
+//#             caretPos=-1;
+//#         
+//#         if (caretPos<0) caretPos=t.getString().length();
+//#         
+//#         return caretPos;
+//#     }
+//# 
+//#     public void insertText(String s, int caretPos) {
+//#         String src=t.getString();
+//# 
+//#         StringBuffer sb=new StringBuffer(s);
+//#         
+//#         if (caretPos>0) 
+//#             if (src.charAt(caretPos-1)!=' ')   
+//#                 sb.insert(0, ' ');
+//#         
+//#         if (caretPos<src.length())
+//#             if (src.charAt(caretPos)!=' ')
+//#                 sb.append(' ');
+//#         
+//#         if (caretPos==src.length()) sb.append(' ');
+//#         
+//#         try {
+//#             int freeSz=t.getMaxSize()-t.size();
+//#             if (freeSz<sb.length()) sb.delete(freeSz, sb.length());
+//#         } catch (Exception e) {}
+//#        
+//#         t.insert(sb.toString(), caretPos);
+//#         sb=null;
+//#     }
+//#endif
 }

@@ -37,12 +37,14 @@ import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
 //#ifdef COLORS
-//# import Colors.ColorUtils;
+import Colors.ColorUtils;
 //#endif
 import ui.VirtualElement;
 import ui.VirtualList;
 import ui.FontCache;
-import util.ClipBoard;
+//#ifdef CLIPBOARD
+//# import util.ClipBoard;
+//#endif
 
 public abstract class MessageList 
     extends VirtualList
@@ -50,16 +52,17 @@ public abstract class MessageList
 {
     
     protected Vector messages;
-    
-    private ClipBoard clipboard=ClipBoard.getInstance();
-    
-    protected Command cmdCopy = new Command(SR.MS_COPY, Command.SCREEN, 20);
-    protected Command cmdCopyPlus = new Command("+ "+SR.MS_COPY, Command.SCREEN, 30);
+//#ifdef CLIPBOARD
+//#     private ClipBoard clipboard;
+//#     
+//#     protected Command cmdCopy = new Command(SR.MS_COPY, Command.SCREEN, 20);
+//#     protected Command cmdCopyPlus = new Command("+ "+SR.MS_COPY, Command.SCREEN, 30);
+//#endif
 //#ifdef COLORS
-//#     protected Command cmdxmlSkin = new Command(SR.MS_USE_COLOR_SCHEME, Command.SCREEN, 40);
+    protected Command cmdxmlSkin = new Command(SR.MS_USE_COLOR_SCHEME, Command.SCREEN, 40);
 //#endif
 //#ifdef SMILES
-//#     protected Command cmdSmiles = new Command(SR.MS_SMILES_TOGGLE, Command.SCREEN, 50);
+    protected Command cmdSmiles = new Command(SR.MS_SMILES_TOGGLE, Command.SCREEN, 50);
 //#endif
     protected Command cmdUrl = new Command(SR.MS_GOTO_URL, Command.SCREEN, 80);
     protected Command cmdBack = new Command(SR.MS_BACK, Command.BACK, 99);
@@ -70,17 +73,22 @@ public abstract class MessageList
         super();
 	messages=new Vector();
         smiles=Config.getInstance().smiles;
-    
+//#ifdef CLIPBOARD
+//#         if (Config.getInstance().useClipBoard) {
+//#             clipboard=ClipBoard.getInstance();
+//#             addCommand(cmdCopy);
+//#             addCommand(cmdCopyPlus);
+//#         }
+//#endif
         enableListWrapping(false);
 	
         cursor=0;//activate
-        addCommand(cmdCopy);
-        addCommand(cmdCopyPlus);
+
 //#ifdef COLORS
-//#         addCommand(cmdxmlSkin);
+        addCommand(cmdxmlSkin);
 //#endif
 //#ifdef SMILES
-//#         addCommand(cmdSmiles);
+        addCommand(cmdSmiles);
 //#endif
         addCommand(cmdUrl);
         addCommand(cmdBack);
@@ -124,56 +132,58 @@ public abstract class MessageList
             } catch (Exception e) {/* no urls found */}
         }
 //#ifdef SMILES
-//#         if (c==cmdSmiles) {
-//#             try {
-//#                 ((MessageItem)getFocusedObject()).toggleSmiles();
-//#             } catch (Exception e){}
-//#         }
+        if (c==cmdSmiles) {
+            try {
+                ((MessageItem)getFocusedObject()).toggleSmiles();
+            } catch (Exception e){}
+        }
 //#endif
 //#ifdef COLORS
-//#         if (c==cmdxmlSkin) {
+        if (c==cmdxmlSkin) {
+            try {
+                if (((MessageItem)getFocusedObject()).msg.getBody().startsWith("xmlSkin")) {
+                   ColorUtils.loadSkin(((MessageItem)getFocusedObject()).msg.getBody(),2);
+                }
+            } catch (Exception e){}
+        }
+//#endif
+//#ifdef CLIPBOARD
+//#         if (c == cmdCopy)
+//#         {
 //#             try {
-//#                 if (((MessageItem)getFocusedObject()).msg.getBody().startsWith("xmlSkin")) {
-//#                    ColorUtils.loadSkin(((MessageItem)getFocusedObject()).msg.getBody(),2);
-//#                 }
-//#             } catch (Exception e){}
+//#                 StringBuffer clipstr=new StringBuffer();
+//#                 clipstr.append((((MessageItem)getFocusedObject()).msg.getSubject()==null)?"":((MessageItem)getFocusedObject()).msg.getSubject()+"\n");
+//#                 clipstr.append(((MessageItem)getFocusedObject()).msg.quoteString());
+//#                 clipboard.setClipBoard(clipstr.toString());
+//#                 clipstr=null;
+//#             } catch (Exception e) {/*no messages*/}
+//#         }
+//#         
+//#         if (c==cmdCopyPlus) {
+//#             try {
+//#                 StringBuffer clipstr=new StringBuffer();
+//#                 clipstr.append(clipboard.getClipBoard());
+//#                 clipstr.append("\n\n");
+//#                 clipstr.append((((MessageItem)getFocusedObject()).msg.getSubject()==null)?"":((MessageItem)getFocusedObject()).msg.getSubject()+"\n");
+//#                 clipstr.append(((MessageItem)getFocusedObject()).msg.quoteString());
+//#                 
+//#                 clipboard.setClipBoard(clipstr.toString());
+//#                 clipstr=null;
+//#             } catch (Exception e) {/*no messages*/}
 //#         }
 //#endif
-        if (c == cmdCopy)
-        {
-            try {
-                StringBuffer clipstr=new StringBuffer();
-                clipstr.append((((MessageItem)getFocusedObject()).msg.getSubject()==null)?"":((MessageItem)getFocusedObject()).msg.getSubject()+"\n");
-                clipstr.append(((MessageItem)getFocusedObject()).msg.quoteString());
-                clipboard.setClipBoard(clipstr.toString());
-                clipstr=null;
-            } catch (Exception e) {/*no messages*/}
-        }
-        
-        if (c==cmdCopyPlus) {
-            try {
-                StringBuffer clipstr=new StringBuffer();
-                clipstr.append(clipboard.getClipBoard());
-                clipstr.append("\n\n");
-                clipstr.append((((MessageItem)getFocusedObject()).msg.getSubject()==null)?"":((MessageItem)getFocusedObject()).msg.getSubject()+"\n");
-                clipstr.append(((MessageItem)getFocusedObject()).msg.quoteString());
-                
-                clipboard.setClipBoard(clipstr.toString());
-                clipstr=null;
-            } catch (Exception e) {/*no messages*/}
-        }
     }
 //#ifdef SMILES
-//#     protected void keyPressed(int keyCode) { // overriding this method to avoid autorepeat
-//#         if (keyCode=='*') {
-//#             try {
-//#                 ((MessageItem)getFocusedObject()).toggleSmiles();
-//#             } catch (Exception e){}
-//#             System.gc();
-//#             return;
-//#         }
-//#         super.keyPressed(keyCode);
-//#     }
+    protected void keyPressed(int keyCode) { // overriding this method to avoid autorepeat
+        if (keyCode=='*') {
+            try {
+                ((MessageItem)getFocusedObject()).toggleSmiles();
+            } catch (Exception e){}
+            System.gc();
+            return;
+        }
+        super.keyPressed(keyCode);
+    }
 //#endif
     public void keyGreen() { eventOk(); }
    

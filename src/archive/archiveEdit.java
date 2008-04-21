@@ -32,8 +32,9 @@ import Client.Msg;
 import Client.StaticData;
 import javax.microedition.lcdui.*;
 import locale.SR;
-import util.ClipBoard;
-
+//#ifdef CLIPBOARD
+//# import util.ClipBoard;
+//#endif
 /**
  *
  * @author Eugene Stahov
@@ -54,9 +55,10 @@ public class archiveEdit implements CommandListener
     private Msg msg;
     
     MessageArchive archive;
-    
-    private ClipBoard clipboard=ClipBoard.getInstance();
-    private Config cf=Config.getInstance();
+//#ifdef CLIPBOARD
+//#     private ClipBoard clipboard;
+//#endif
+    private Config cf;
 
     private int where=1;
     
@@ -66,6 +68,8 @@ public class archiveEdit implements CommandListener
         this.display=display;
         parentView=display.getCurrent();
         this.body=msg.getBody();
+        
+        cf=Config.getInstance();
         
 	t=new TextBox(SR.MS_EDIT, "", 500, TextField.ANY);
 	
@@ -81,10 +85,13 @@ public class archiveEdit implements CommandListener
             }
          } catch (Exception e) {}
 
-        
-        if (!clipboard.isEmpty())
-            t.addCommand(cmdPasteText);
-        
+//#ifdef CLIPBOARD
+//#         if (Config.getInstance().useClipBoard) {
+//#             clipboard=ClipBoard.getInstance();
+//#             if (!clipboard.isEmpty())
+//#                 t.addCommand(cmdPasteText);
+//#         }
+//#endif
         
         t.addCommand(cmdOk);
 
@@ -103,9 +110,9 @@ public class archiveEdit implements CommandListener
         if (caretPos<0) caretPos=body.length();
 		
         if (body.length()==0) body=null;
-
-        if (c==cmdPasteText) { insertText(clipboard.getClipBoard(), caretPos/*getCaretPos()*/); return; }
-
+//#ifdef CLIPBOARD
+//#         if (c==cmdPasteText) { insertText(clipboard.getClipBoard(), caretPos/*getCaretPos()*/); return; }
+//#endif
         Msg newmsg=null;
         if (c==cmdCancel) { 
             newmsg=new Msg(msg.messageType, msg.from, msg.subject, msg.getBody());
@@ -131,39 +138,29 @@ public class archiveEdit implements CommandListener
     public void setParentView(Displayable parentView){
         this.parentView=parentView;
     }
-    
-    /*public int getCaretPos() {     
-        int caretPos=t.getCaretPosition();
-        // +MOTOROLA STUB
-        if (cf.phoneManufacturer==Config.MOTO)
-            caretPos=-1;
-        
-        if (caretPos<0) caretPos=t.getString().length();
-        
-        return caretPos;
-    }*/   
-    
-    public void insertText(String s, int caretPos) {
-        String src=t.getString();
-
-        StringBuffer sb=new StringBuffer(s);
-        
-        if (caretPos>0) 
-            if (src.charAt(caretPos-1)!=' ')   
-                sb.insert(0, ' ');
-        
-        if (caretPos<src.length())
-            if (src.charAt(caretPos)!=' ')
-                sb.append(' ');
-        
-        if (caretPos==src.length()) sb.append(' ');
-        
-        try {
-            int freeSz=t.getMaxSize()-t.size();
-            if (freeSz<sb.length()) sb.delete(freeSz, sb.length());
-        } catch (Exception e) {}
-       
-        t.insert(sb.toString(), caretPos);
-        sb=null;
-    }
+//#ifdef CLIPBOARD
+//#     public void insertText(String s, int caretPos) {
+//#         String src=t.getString();
+//# 
+//#         StringBuffer sb=new StringBuffer(s);
+//#         
+//#         if (caretPos>0) 
+//#             if (src.charAt(caretPos-1)!=' ')   
+//#                 sb.insert(0, ' ');
+//#         
+//#         if (caretPos<src.length())
+//#             if (src.charAt(caretPos)!=' ')
+//#                 sb.append(' ');
+//#         
+//#         if (caretPos==src.length()) sb.append(' ');
+//#         
+//#         try {
+//#             int freeSz=t.getMaxSize()-t.size();
+//#             if (freeSz<sb.length()) sb.delete(freeSz, sb.length());
+//#         } catch (Exception e) {}
+//#        
+//#         t.insert(sb.toString(), caretPos);
+//#         sb=null;
+//#     }
+//#endif
 }

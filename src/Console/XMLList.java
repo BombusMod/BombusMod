@@ -75,16 +75,28 @@ public class XMLList
     }
     
     public Msg getMessage(int index) {
-	return stanzas.msg(index);
+        Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,"local",null,null);
+        try {
+            msg=stanzas.msg(index);
+        } catch (Exception e) {}
+	return msg;
     }
 
+    public void keyGreen(){
+	Msg m=getMessage(cursor);
+        String stanza = "";
+        try {
+            stanza =  m.toString();
+        } catch (Exception e) {}
+        new StanzaEdit(display, stanza).setParentView(this);
+    }
     
     public void commandAction(Command c, Displayable d) {
         super.commandAction(c,d);
         
 	Msg m=getMessage(cursor);
-        if (c==cmdNew) { 
-            new StanzaEdit(display, getMessage(cursor).toString()).setParentView(this);
+        if (c==cmdNew) {
+            keyGreen();
         }
         if (c==cmdEnableDisable) {
             stanzas.enabled=!stanzas.enabled;

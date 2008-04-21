@@ -45,8 +45,6 @@ import Client.Config;
 import util.strconv;
 //#endif
 import ui.Time;
-import util.ClipBoard;
-
 import ui.YesNoAlert;
 
 /**
@@ -78,9 +76,7 @@ public class ArchiveList
     MessageArchive archive;
    
     private int caretPos;
-    
-    private ClipBoard clipboard=ClipBoard.getInstance();
-    
+
     private StaticData sd=StaticData.getInstance();
 //#if FILE_IO    
     String filePath;

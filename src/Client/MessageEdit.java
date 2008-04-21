@@ -37,7 +37,9 @@ import com.alsutton.jabber.datablocks.Message;
 import javax.microedition.lcdui.*;
 import locale.SR;
 import ui.VirtualList;
-import util.ClipBoard;
+//#ifdef CLIPBOARD
+//# import util.ClipBoard;
+//#endif
 //#ifdef TRANSLIT
 import util.Translit;
 //#endif
@@ -83,8 +85,9 @@ public class MessageEdit
     //private Command cmdABC=new Command("Abc", Command.SCREEN, 9);
     //private Command cmdAbc=new Command("abc", Command.SCREEN, 9);
     //private Command cmdClearTitle=new Command("clear title", Command.SCREEN, 10);
-    private Command cmdPasteText=new Command(SR.MS_PASTE, Command.SCREEN, 10);  
-
+//#ifdef CLIPBOARD
+//#     private Command cmdPasteText=new Command(SR.MS_PASTE, Command.SCREEN, 10);  
+//#endif
     private boolean composing=true;
     StaticData sd = StaticData.getInstance();
     private Config cf=Config.getInstance();
@@ -95,7 +98,9 @@ public class MessageEdit
 
     private String subject;
     
-    private ClipBoard clipboard=ClipBoard.getInstance();
+//#ifdef CLIPBOARD
+//#     private ClipBoard clipboard;
+//#endif
     
     /** Creates a new instance of MessageEdit */
     public MessageEdit(Display display, Contact to, String body) {
@@ -137,8 +142,13 @@ public class MessageEdit
 //#ifdef ARCHIVE
         t.addCommand(cmdPaste);
 //#endif
-        if (!clipboard.isEmpty())
-            t.addCommand(cmdPasteText);
+//#ifdef CLIPBOARD
+//#         if (cf.useClipBoard) {
+//#             clipboard=ClipBoard.getInstance();
+//#             if (!clipboard.isEmpty())
+//#                 t.addCommand(cmdPasteText);
+//#         }
+//#endif
 //#ifdef KILLALL
 //#         t.addCommand(cmdKill2);
 //#endif
@@ -189,8 +199,9 @@ public class MessageEdit
 //        if (c==cmdABC) {setInitialCaps(true); return; }
         
 //        if (c==cmdClearTitle) { t.setTitle(t.getTitle()==null?subject:null); return; }
-        if (c==cmdPasteText) { insertText(clipboard.getClipBoard(), getCaretPos()); return; }
-                
+//#ifdef CLIPBOARD
+//#         if (c==cmdPasteText) { insertText(clipboard.getClipBoard(), getCaretPos()); return; }
+//#endif
 //#if TEMPLATES
         if (c==cmdTemplate) { new ArchiveList(display, caretPos, 2); return; }
 //#endif

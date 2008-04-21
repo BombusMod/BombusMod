@@ -307,16 +307,16 @@ public class SR {
     public static String MS_VIEW=loadString("View");
     public static String MS_STOP=loadString("Stop");
 //#ifdef FILE_TRANSFER
-//#     public static String MS_PATH=loadString("Path");
-//#     public static String MS_ACCEPT_FILE=loadString("Accept file");
-//#     public static String MS_FILE=loadString("File");
-//#     public static String MS_SAVE_TO=loadString("Save To");
-//#     public static String MS_SENDER=loadString("Sender");
-//#     //public static String MS_SIZE=loadString("Size");
-//#     public static String MS_REJECTED=loadString("Rejected");
-//#     public static String MS_SEND_FILE=loadString("Send file");
-//#     //public static String MS_TO=loadString("To");
-//#     public static String MS_CANT_OPEN_FILE=loadString("Can't open file");
+    public static String MS_PATH=loadString("Path");
+    public static String MS_ACCEPT_FILE=loadString("Accept file");
+    public static String MS_FILE=loadString("File");
+    public static String MS_SAVE_TO=loadString("Save To");
+    public static String MS_SENDER=loadString("Sender");
+    //public static String MS_SIZE=loadString("Size");
+    public static String MS_REJECTED=loadString("Rejected");
+    public static String MS_SEND_FILE=loadString("Send file");
+    //public static String MS_TO=loadString("To");
+    public static String MS_CANT_OPEN_FILE=loadString("Can't open file");
 //#endif
     public static String MS_NEW=loadString("New");
     public static String MS_NEW_TEMPLATE=loadString("New Template");
@@ -330,43 +330,43 @@ public class SR {
     public static String MS_MESSAGE_FOR_ME="Message for me";
 
 //#ifdef COLORS
-//#     public static String MS_BALLOON_INK=loadString("balloon ink");
-//#     public static String MS_BALLOON_BGND=loadString("balloon background");
-//#     public static String MS_LIST_BGND=loadString("messagelist & roster background");
-//#     public static String MS_LIST_BGND_EVEN=loadString("messagelist & roster even lines");
-//#     public static String MS_LIST_INK=loadString("messagelist & roster & common font");
-//#     public static String MS_MSG_SUBJ=loadString("message subject");
-//#     public static String MS_MSG_HIGHLIGHT=loadString("message highlight");
-//#     public static String MS_DISCO_CMD=loadString("service discovery commands");
-//#     public static String MS_BAR_BGND=loadString("Header & Bottom background");
-//#     public static String MS_BAR_INK=loadString("Header font");
-//#     public static String MS_CONTACT_DEFAULT=loadString("contact default");
-//#     public static String MS_CONTACT_CHAT=loadString("contact chat");
-//#     public static String MS_CONTACT_AWAY=loadString("contact away");
-//#     public static String MS_CONTACT_XA=loadString("contact extended away");
-//#     public static String MS_CONTACT_DND=loadString("contact do not disturb");
-//#     public static String MS_GROUP_INK=loadString("group color");
-//#     public static String MS_BLK_INK=loadString("keylock font");
-//#     public static String MS_BLK_BGND=loadString("keylock background");
-//#     public static String MS_MESSAGE_IN=loadString("message incoming");
-//#     public static String MS_MESSAGE_OUT=loadString("message outgoing");
-//#     public static String MS_MESSAGE_PRESENCE=loadString("message presence");
-//#     public static String MS_MESSAGE_AUTH=loadString("message auth");
-//#     public static String MS_MESSAGE_HISTORY=loadString("message history");
-//#     public static String MS_PGS_REMAINED=loadString("progress bar remained");
-//#     public static String MS_PGS_COMPLETE=loadString("progress bar complete");
-//#     //public static String MS_PGS_BORDER=loadString("progress border");
-//#     //public static String MS_PGS_BGND=loadString("progress bar background");
-//#     public static String MS_HEAP_TOTAL=loadString("Heap mon total");
-//#     public static String MS_HEAP_FREE=loadString("Heap mon free");
-//#     public static String MS_CURSOR_BGND=loadString("Cursor background");
-//#     public static String MS_CURSOR_OUTLINE=loadString("Cursor ink & outline");
-//#     public static String MS_SCROLL_BRD=loadString("Scroll border");
-//#     public static String MS_SCROLL_BAR=loadString("Scroll bar");
-//#     public static String MS_SCROLL_BGND=loadString("Scroll back");    
-//#     public static String MS_MESSAGE_IN_S=loadString("S message incoming"); 
-//#     public static String MS_MESSAGE_OUT_S=loadString("S message outgoing"); 
-//#     public static String MS_MESSAGE_PRESENCE_S=loadString("S message presence"); 
+    public static String MS_BALLOON_INK=loadString("balloon ink");
+    public static String MS_BALLOON_BGND=loadString("balloon background");
+    public static String MS_LIST_BGND=loadString("messagelist & roster background");
+    public static String MS_LIST_BGND_EVEN=loadString("messagelist & roster even lines");
+    public static String MS_LIST_INK=loadString("messagelist & roster & common font");
+    public static String MS_MSG_SUBJ=loadString("message subject");
+    public static String MS_MSG_HIGHLIGHT=loadString("message highlight");
+    public static String MS_DISCO_CMD=loadString("service discovery commands");
+    public static String MS_BAR_BGND=loadString("Header & Bottom background");
+    public static String MS_BAR_INK=loadString("Header font");
+    public static String MS_CONTACT_DEFAULT=loadString("contact default");
+    public static String MS_CONTACT_CHAT=loadString("contact chat");
+    public static String MS_CONTACT_AWAY=loadString("contact away");
+    public static String MS_CONTACT_XA=loadString("contact extended away");
+    public static String MS_CONTACT_DND=loadString("contact do not disturb");
+    public static String MS_GROUP_INK=loadString("group color");
+    public static String MS_BLK_INK=loadString("keylock font");
+    public static String MS_BLK_BGND=loadString("keylock background");
+    public static String MS_MESSAGE_IN=loadString("message incoming");
+    public static String MS_MESSAGE_OUT=loadString("message outgoing");
+    public static String MS_MESSAGE_PRESENCE=loadString("message presence");
+    public static String MS_MESSAGE_AUTH=loadString("message auth");
+    public static String MS_MESSAGE_HISTORY=loadString("message history");
+    public static String MS_PGS_REMAINED=loadString("progress bar remained");
+    public static String MS_PGS_COMPLETE=loadString("progress bar complete");
+    //public static String MS_PGS_BORDER=loadString("progress border");
+    //public static String MS_PGS_BGND=loadString("progress bar background");
+    public static String MS_HEAP_TOTAL=loadString("Heap mon total");
+    public static String MS_HEAP_FREE=loadString("Heap mon free");
+    public static String MS_CURSOR_BGND=loadString("Cursor background");
+    public static String MS_CURSOR_OUTLINE=loadString("Cursor ink & outline");
+    public static String MS_SCROLL_BRD=loadString("Scroll border");
+    public static String MS_SCROLL_BAR=loadString("Scroll bar");
+    public static String MS_SCROLL_BGND=loadString("Scroll back");    
+    public static String MS_MESSAGE_IN_S=loadString("S message incoming"); 
+    public static String MS_MESSAGE_OUT_S=loadString("S message outgoing"); 
+    public static String MS_MESSAGE_PRESENCE_S=loadString("S message presence"); 
 //#endif
 
     public static String MS_SOUNDS_OPTIONS=loadString("Sounds options");
@@ -463,7 +463,7 @@ public class SR {
 //#endif
     
 //#ifdef TRANSLIT
-//#     public static String MS_SEND_IN_TRANSLIT = loadString( "Send in translit" );
+    public static String MS_SEND_IN_TRANSLIT = loadString( "Send in translit" );
 //#endif
     public static String MS_CHECK_UPDATE = loadString( "Check Updates" );
     public static String MS_SHOW_RESOURCES = loadString( "Show Resources" );
@@ -487,7 +487,7 @@ public class SR {
 //#ifdef FILE_IO
     public static String MS_HISTORY_OPTIONS = loadString( "History options" );
 //#ifdef TRANSLIT
-//#     public static String MS_1251_TRANSLITERATE_FILENAMES = loadString( "Filenames transliterate" );
+    public static String MS_1251_TRANSLITERATE_FILENAMES = loadString( "Filenames transliterate" );
 //#endif
     public static String MS_SAVE_CHAT = loadString( "Save chat" );
 //#endif
@@ -654,6 +654,8 @@ public class SR {
     public static String MS_ENTER_SETTINGS = loadString("Please enter settings.\n\nMenu, Tools, Options");
 
     public static String MS_XML_CONSOLE = loadString("XML console");
+
+    public static String MS_CLIPBOARD = loadString("Clipboard");
     
     private SR() { }
     
@@ -681,13 +683,13 @@ public class SR {
         }
         String value=(String)lang.get(key);
 //#if LOCALE_DEBUG
-        if (value==null) {
-            if (!lang.isEmpty()) {
-                System.out.print("Can't find local string for <");
-                System.out.println(key);
-                System.out.println('>');
-            }
-        }
+//#         if (value==null) {
+//#             if (!lang.isEmpty()) {
+//#                 System.out.print("Can't find local string for <");
+//#                 System.out.println(key);
+//#                 System.out.println('>');
+//#             }
+//#         }
 //#endif
         return (value==null)?key:value;
     }

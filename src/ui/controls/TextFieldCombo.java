@@ -27,6 +27,7 @@
 
 package ui.controls;
 
+import Client.Config;
 import io.NvStorage;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -35,8 +36,9 @@ import java.util.Vector;
 import javax.microedition.lcdui.*;
 import locale.SR;
 import java.io.EOFException;
-import util.ClipBoard;
-
+//#ifdef CLIPBOARD
+//# import util.ClipBoard;
+//#endif
 /**
  *
  * @author Evg_S
@@ -50,8 +52,9 @@ public class TextFieldCombo
     private Command cmdBack;
     private Command cmdSelect;
     private Command cmdClear;
-    private Command cmdPaste;
-    
+//#ifdef CLIPBOARD
+//#     private Command cmdPaste;
+//#endif
     private Display display;
     private Displayable parentView;
     private List list;
@@ -78,9 +81,13 @@ public class TextFieldCombo
         } catch (Exception e) {/* no history available */}
         
         cmdRecent=new Command(SR.MS_RECENT, Command.ITEM, 2);
-        cmdPaste=new Command(SR.MS_PASTE, Command.SCREEN,3);
         addCommand(cmdRecent);
-        addCommand(cmdPaste);
+//#ifdef CLIPBOARD
+//#         if (Config.getInstance().useClipBoard) {
+//#             cmdPaste=new Command(SR.MS_PASTE, Command.SCREEN,3);
+//#             addCommand(cmdPaste);
+//#         }
+//#endif
         setItemCommandListener(this);
     }
 
@@ -98,12 +105,14 @@ public class TextFieldCombo
     }
 
     public void commandAction(Command command, Item item) {
-        if (command==cmdPaste) {
-            if (!ClipBoard.getInstance().isEmpty()) {
-                this.setString(this.getString()+ClipBoard.getInstance().getClipBoard());
-            }
-            return;
-        }
+//#ifdef CLIPBOARD
+//#         if (command==cmdPaste) {
+//#             if (!ClipBoard.getInstance().isEmpty()) {
+//#                 this.setString(this.getString()+ClipBoard.getInstance().getClipBoard());
+//#             }
+//#             return;
+//#         }
+//#endif
         if (recentList.isEmpty()) return;
         parentView=display.getCurrent();
         
