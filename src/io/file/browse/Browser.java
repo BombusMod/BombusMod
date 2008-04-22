@@ -139,21 +139,9 @@ public class Browser extends VirtualList implements CommandListener{
         }
 
         if (command==cmdView) {
-            String f=((FileItem)getFocusedObject()).name;
-            String fl=((FileItem)getFocusedObject()).name.toLowerCase();
-            
-            String ext=f.substring(f.lastIndexOf('.')+1).toLowerCase();
-            String snds="wav.mid.amr.wav.mp3.aac";
-            String imgs="png.bmp.jpg.jpeg.gif";
-            String txts="txt.log";
-            
-            if (snds.indexOf(ext)>=0) {
-                new ShowFile(display, path+f, 1);
-            } else if (imgs.indexOf(ext)>=0) {
-                new ShowFile(display, path+f, 2);
-            } else if (txts.indexOf(ext)>=0) {
-                new ShowFile(display, path+f, 3);
-            }
+            FileItem fi=(FileItem)getFocusedObject();
+            if (fi.getType()<4 && fi.getType()>0)
+                new ShowFile(display, path+fi.name, fi.getType());
         }
         if (command==cmdCancel) { destroyView(); }
     }
@@ -229,12 +217,13 @@ public class Browser extends VirtualList implements CommandListener{
         
         public String name;
         private int iconIndex;
+        private int type;
         
         public FileItem(String name) {
             super(RosterIcons.getInstance(), null);
             this.name=name;
             //TODO: file icons
-            iconIndex=name.endsWith("/")? RosterIcons.ICON_COLLAPSED_INDEX: RosterIcons.ICON_PRIVACY_ACTIVE;
+            iconIndex=name.endsWith("/")? RosterIcons.ICON_COLLAPSED_INDEX: RosterIcons.ICON_PROFILE_INDEX;
             
             String ext=name.substring(name.lastIndexOf('.')+1).toLowerCase();
             String imgs="png.bmp.jpg.jpeg.gif";
@@ -243,18 +232,24 @@ public class Browser extends VirtualList implements CommandListener{
             
             if (txts.indexOf(ext)>=0) {
                 iconIndex=RosterIcons.ICON_PRIVACY_ACTIVE;
+                type=3;
                 return;
             }
             if (imgs.indexOf(ext)>=0) {
                 iconIndex=0x57;
+                type=2;
                 return;
             }
             if (snds.indexOf(ext)>=0) {
                 iconIndex=0x33;
+                type=1;
                 return;
             }
         }
-        protected int getImageIndex() { return iconIndex; }
+        
+        protected int getImageIndex() { 
+            return iconIndex; 
+        }
         
         public int getColor() { return Colors.LIST_INK; }
         
@@ -266,6 +261,10 @@ public class Browser extends VirtualList implements CommandListener{
             int cpi=iconIndex-fileItem.iconIndex;
             if (cpi==0) cpi=name.compareTo(fileItem.name);
             return cpi;
+        }
+        
+        public int getType() {
+            return type;
         }
 
 //#ifdef SECONDSTRING

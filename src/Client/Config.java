@@ -79,6 +79,69 @@ public class Config {
     public final static int WTK=50;
     public final static int OTHER=99;
     
+/*
+ PbICb [2277] 
+16  Апр, 19 :34 
+Вот коды известные мне (кусок паинткада) 
+static void SetToMoto() { 
+MainForm.KEY_JOYSTICK = -20; 
+MainForm.KEY_UP = -1; 
+MainForm.KEY_DOWN = -6; 
+MainForm.KEY_LEFT = -2; 
+MainForm.KEY_RIGHT = -5; 
+MainForm.KEY_GREEN = -10; 
+MainForm.KEY_LSOFT = -21; 
+MainForm.KEY_RSOFT = -22; 
+type = \"-=Motorola=-\"; 
+} static void SetToNokia() { 
+MainForm.KEY_JOYSTICK = -5; 
+MainForm.KEY_UP = -1; 
+MainForm.KEY_DOWN = -2; 
+MainForm.KEY_LEFT = -3; 
+MainForm.KEY_RIGHT = -4; 
+MainForm.KEY_RED = -11; 
+MainForm.KEY_GREEN = -10; 
+MainForm.KEY_LSOFT = -6; 
+MainForm.KEY_RSOFT = -7; 
+type = \"-=Nokia=-\"; 
+} static void SetToSamsung() { 
+MainForm.KEY_JOYSTICK = -5; 
+MainForm.KEY_UP = -1; 
+MainForm.KEY_DOWN = -2; 
+MainForm.KEY_LEFT = -3; 
+MainForm.KEY_RIGHT = -4; 
+MainForm.KEY_RED = -23; 
+MainForm.KEY_LSOFT = -6; 
+MainForm.KEY_RSOFT = -7; 
+type = \"-=Samsung=-\"; 
+} static void SetToSonyEric() { 
+MainForm.KEY_JOYSTICK = -5; 
+MainForm.KEY_UP = -1; 
+MainForm.KEY_DOWN = -2; 
+MainForm.KEY_LEFT = -3; 
+MainForm.KEY_RIGHT = -4; 
+MainForm.KEY_RED = -8; 
+MainForm.KEY_GREEN = -11; 
+MainForm.KEY_LSOFT = -6; 
+MainForm.KEY_RSOFT = -7; 
+type = \"-=Sony Ericsson=-\"; 
+} static void SetToSiemens() { 
+MainForm.KEY_JOYSTICK = -26; 
+MainForm.KEY_UP = -59; 
+MainForm.KEY_DOWN = -60; 
+MainForm.KEY_LEFT = -61; 
+MainForm.KEY_RIGHT = -62; 
+MainForm.KEY_RED = -12; 
+MainForm.KEY_GREEN = -11; 
+MainForm.KEY_LSOFT = -1; 
+MainForm.KEY_RSOFT = -4; 
+MainForm.KEY_FOTO = -20; 
+MainForm.KEY_PLUS = -13; 
+MainForm.KEY_MINUS = -14; 
+type = \"-=Siemens=-\"; 
+}
+ */
+    
     private static String platformName;
     
     public boolean ghostMotor=false;

@@ -56,93 +56,96 @@ public class ShowFile implements CommandListener{
 
     private Player pl;
     
-    private Config cf=Config.getInstance();
+    private Config cf;
     
     public ShowFile(Display display, String fileName, int type) {
         this.display=display;
         parentView=display.getCurrent();
+        cf=Config.getInstance();
+        
+        load(fileName);
         
         if (type==1) play(fileName);
         if (type==2) view(fileName);
         if (type==3) read(fileName);
     }
-	private void load(String file) {
-            try {
-                FileIO f=FileIO.createConnection(file);
-                b = f.fileRead();
-            } catch (Exception e) {}
-        }
+    
+    private void load(String file) {
+        try {
+            FileIO f=FileIO.createConnection(file);
+            b = f.fileRead();
+            len = b.length;
+            f.close();
+        } catch (Exception e) {}
+    }
         
-	private void view(String file) {
-            load(file);
-            Image img = Image.createImage(b, 0, len);
+    private void view(String file) {
+        Image img = Image.createImage(b, 0, len);
 
-            Form form = new Form(file);
-            form.append(new Spacer(10, 10));
-            form.append(new ImageItem(null, img, ImageItem.LAYOUT_CENTER | ImageItem.LAYOUT_NEWLINE_BEFORE, "[image]"));
+        Form form = new Form(file);
+        form.append(new Spacer(10, 10));
+        form.append(new ImageItem(null, img, ImageItem.LAYOUT_CENTER | ImageItem.LAYOUT_NEWLINE_BEFORE, "[image]"));
 
-            form.addCommand(back);
-            form.setCommandListener(this);
-            display.setCurrent(form);
-	}    
+        form.addCommand(back);
+        form.setCommandListener(this);
+        display.setCurrent(form);
+    }
     
-	private void read(String file) {
-           load(file);
-           TextBox tb = new TextBox(file+"("+len+" bytes)", null, len, TextField.ANY | TextField.UNEDITABLE);
+    private void read(String file) {
+       TextBox tb = new TextBox(file+"("+len+" bytes)", null, len, TextField.ANY | TextField.UNEDITABLE);
 
-           tb.addCommand(back);
-           tb.setCommandListener(this);
-            
+       tb.addCommand(back);
+       tb.setCommandListener(this);
 
-            if (len > 0) {
-               String s=new String();
-                try {
-                    int maxSize=tb.getMaxSize();
-                    
-                    if (maxSize>len){
-                        s=new String(b, 0, len);
-                    } else {
-                        s=new String(b, 0, maxSize);
-                    }
-                } catch (Exception e) {}
-               
-                   if (cf.cp1251) {
-                        tb.setString(strconv.convCp1251ToUnicode(s));
-                   } else {
-                        tb.setString(s);
-                   }
-            }
 
-           tb.setCommandListener(this);
-           display.setCurrent(tb);
-	}    
-    
-	private void play(String file) {
+        if (len > 0) {
+           String s=new String();
             try {
+                int maxSize=tb.getMaxSize();
 
-                pl = Manager.createPlayer("file://" + file);
-                pl.realize();
-                pl.start();
-            } catch (IOException ex) {
-                //ex.printStackTrace();
-            } catch (MediaException ex) {
-                //ex.printStackTrace();
-            }
+                if (maxSize>len){
+                    s=new String(b, 0, len);
+                } else {
+                    s=new String(b, 0, maxSize);
+                }
+            } catch (Exception e) {}
 
-		Alert a = new Alert("Play", "Playing" + " " + file, null, null);
-		a.addCommand(stop);
-                a.addCommand(back);
-		a.setCommandListener(this);
-		display.setCurrent(a);
-	}
+               if (cf.cp1251) {
+                    tb.setString(strconv.convCp1251ToUnicode(s));
+               } else {
+                    tb.setString(s);
+               }
+        }
+
+       tb.setCommandListener(this);
+       display.setCurrent(tb);
+    }
+    
+    private void play(String file) {
+        try {
+            pl = Manager.createPlayer("file://" + file);
+            pl.realize();
+            pl.start();
+        } catch (IOException ex) {
+            //ex.printStackTrace();
+        } catch (MediaException ex) {
+            //ex.printStackTrace();
+        }
+
+        Alert a = new Alert("Play", "Playing" + " " + file, null, null);
+        a.addCommand(stop);
+        a.addCommand(back);
+        a.setCommandListener(this);
+        display.setCurrent(a);
+    }
     
     public void commandAction(Command c, Displayable d) {
         if (c==back) display.setCurrent(parentView);
         if (c==stop) {
-		try {
-                    pl.stop();
-                    pl.close();
-		} catch (Exception e) { }
+            try {
+                pl.stop();
+                pl.close();
+            } catch (Exception e) { }
         }
     }
 }
