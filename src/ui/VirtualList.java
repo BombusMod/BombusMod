@@ -32,7 +32,7 @@ import java.util.*;
 import Client.*;
 import Colors.Colors;
 //#ifdef POPUPS
-//# import ui.controls.PopUp;
+import ui.controls.PopUp;
 //#endif
 import ui.controls.Balloon;
 import ui.controls.ScrollBar;
@@ -88,11 +88,11 @@ public abstract class VirtualList
 //#endif
 
 //#ifdef POPUPS
-//#     public static PopUp popup = new PopUp();
-//# 
-//#     public static void setWobble(int type, Contact contact, String txt){
-//#         popup.addPopup(type, contact, txt);
-//#     }
+    public static PopUp popup = new PopUp();
+
+    public static void setWobble(int type, Contact contact, String txt){
+        popup.addPopup(type, contact, txt);
+    }
 //#endif
     protected int getMainBarRGB() {return Colors.BAR_INK;} 
     
@@ -322,7 +322,7 @@ public abstract class VirtualList
 	if (!isDoubleBuffered()) offscreen=Image.createImage(width, height);
 //#endif
 //#if (USE_ROTATOR)
-//#         TimerTaskRotate.startRotate(-1, this);
+        TimerTaskRotate.startRotate(-1, this);
 //#endif
     }
 
@@ -504,7 +504,7 @@ public abstract class VirtualList
         setAbsClip(g, width, height);
         
 //#ifdef POPUPS
-//#         drawPopUp(g);
+        drawPopUp(g);
 //#endif
         
 //#ifdef TEST
@@ -520,9 +520,9 @@ public abstract class VirtualList
     }
     
 //#ifdef POPUPS
-//#     protected void drawPopUp(final Graphics g) {
-//#         popup.paintCustom(g);
-//#     }
+    protected void drawPopUp(final Graphics g) {
+        popup.paintCustom(g);
+    }
 //#endif
     
     private void setAbsClip(final Graphics g, int w, int h) {
@@ -546,13 +546,20 @@ public abstract class VirtualList
     private void drawInfoPanel (final Graphics g) {
         if (infobar!=null) {
             int h=infobar.getVHeight()+1;
+
             g.setClip(0,0, width, h);
+//#ifdef GRADIENT
+//# /*   red:ad1010*730000   green:4c7300*78ad10   gold:8a6b10*c1971b   */
+//#             Gradient gr=new Gradient(0, 0, width, h, 0xad1010, 0x730000, false);
+//#             gr.paint(g);
+//#else
             g.setColor(getMainBarBGnd());
             g.fillRect(0, 0, width, h/2);
             g.setColor(getMainBarBGndBottom());
             g.fillRect(0, h/2, width, h/2);
-
+//#endif
             g.setColor(getMainBarRGB());
+
             infobar.drawItem(g,0,false);
         }
     }
@@ -561,11 +568,17 @@ public abstract class VirtualList
         if (mainbar!=null) {
             int h=mainbar.getVHeight()+1;
             g.setClip(0,0, width, h);
-            g.setColor(getMainBarBGnd()); //10
-            g.fillRect(0, 0, width, h/2); //5
+//#ifdef GRADIENT
+//# /*   red:ad1010*730000   green:4c7300*78ad10   gold:8a6b10*c1971b   */
+//#             Gradient gr=new Gradient(0, 0, width, h, 0xad1010, 0x730000, false);
+//#             gr.paint(g);
+//#else
+            g.setColor(getMainBarBGnd());
+            g.fillRect(0, 0, width, h/2);
             g.setColor(getMainBarBGndBottom());
-            g.fillRect(0, h/2, width, h); //5 10
-            
+            g.fillRect(0, h/2, width, h);
+//#endif
+           
             g.setColor(getMainBarRGB());
             mainbar.drawItem(g,(cf.phoneManufacturer==Config.NOKIA)?17:0,false);
         }
@@ -639,7 +652,7 @@ public abstract class VirtualList
 //#         drawTest=false;
 //#endif
 //#ifdef POPUPS
-//#         popup.next();
+        popup.next();
 //#endif        
         int act=ar.pointerPressed(x, y, this);
         if (act==1) {
@@ -727,14 +740,14 @@ public abstract class VirtualList
 //#         System.out.println(keyCode);
 //#endif
 //#ifdef POPUPS
-//#         if (keyCode==greenKeyCode) {
-//#             if (popup.getContact()!=null) {
-//#                 new ContactMessageList(popup.getContact(),display);
-//#                 popup.next();
-//#                 return;
-//#             }
-//#         }
-//#         popup.next();
+        if (keyCode==greenKeyCode) {
+            if (popup.getContact()!=null) {
+                new ContactMessageList(popup.getContact(),display);
+                popup.next();
+                return;
+            }
+        }
+        popup.next();
 //#endif
          if (keyCode==Config.SOFT_RIGHT) {
             if (cf.phoneManufacturer!=Config.SONYE || cf.phoneManufacturer==Config.SIEMENS || cf.phoneManufacturer==Config.SIEMENS2 || cf.phoneManufacturer==Config.MOTO) {
@@ -782,20 +795,20 @@ public abstract class VirtualList
         case KEY_STAR:
             System.gc();
 //#ifdef POPUPS
-//#             setWobble(1, null, "Free: "+(Runtime.getRuntime().freeMemory()>>10)+" kb");
+            setWobble(1, null, "Free: "+(Runtime.getRuntime().freeMemory()>>10)+" kb");
 //#endif
             break;
 //#ifdef POPUPS
-//#         case KEY_POUND:
-//#             if (cf.popUps) {
-//#                 try {
-//#                     String text=((VirtualElement)getFocusedObject()).getTipString();
-//#                     if (text!=null) {
-//#                         setWobble(1, null, text);
-//#                     }
-//#                 } catch (Exception e) { }
-//#             }
-//#             break;
+        case KEY_POUND:
+            if (cf.popUps) {
+                try {
+                    String text=((VirtualElement)getFocusedObject()).getTipString();
+                    if (text!=null) {
+                        setWobble(1, null, text);
+                    }
+                } catch (Exception e) { }
+            }
+            break;
 //#endif
 
         default:
@@ -965,19 +978,19 @@ public abstract class VirtualList
     
     protected  void setRotator(){
 //#if (USE_ROTATOR)
-//#         try {
-//#             if (getItemCount()<1) return;
-//#             focusedItem(cursor);
-//#         } catch (Exception e) { return; }
-//#         
-//#         if (cursor>=0) {
-//#             int itemWidth=getItemRef(cursor).getVWidth();
-//#             if (itemWidth>=width-scrollbar.getScrollWidth()) 
-//#                 itemWidth-=width/2; 
-//#             else 
-//#                 itemWidth=0;
-//#             TimerTaskRotate.startRotate(itemWidth, this);
-//#         }
+        try {
+            if (getItemCount()<1) return;
+            focusedItem(cursor);
+        } catch (Exception e) { return; }
+        
+        if (cursor>=0) {
+            int itemWidth=getItemRef(cursor).getVWidth();
+            if (itemWidth>=width-scrollbar.getScrollWidth()) 
+                itemWidth-=width/2; 
+            else 
+                itemWidth=0;
+            TimerTaskRotate.startRotate(itemWidth, this);
+        }
  //#endif
     }
     
@@ -1073,90 +1086,90 @@ public abstract class VirtualList
 }
 
 //#if (USE_ROTATOR)    
-//# class TimerTaskRotate extends Thread{
-//#     private int scrollLen;
-//#     private int scroll; //wait before scroll * sleep
-//#     private int balloon; // show balloon time
-//# 
-//#     private boolean scrollline;
-//#     
-//#     private VirtualList attachedList;
-//#     
-//#     private static TimerTaskRotate instance;
-//#     
-//#     private TimerTaskRotate() {
-//#         start();
-//#     }
-//#     
-//#     public static void startRotate(int max, VirtualList list){
-//#         //Windows mobile J9 hanging test
-//#         if (Config.getInstance().phoneManufacturer==Config.WINDOWS) {
-//#             list.showBalloon=true;
-//#             list.offset=0;
-//#             return;
-//#         }
-//#         if (instance==null) 
-//#             instance=new TimerTaskRotate();
-//# 
-//#         if (max<0) {
-//#             instance.destroyTask();
-//#             list.offset=0;
-//#             return;
-//#         }
-//#         
-//#         synchronized (instance) {
-//#             list.offset=0;
-//#             instance.scrollLen=max;
-//#             instance.scrollline=(max>0);
-//#             instance.attachedList=list;
-//#             instance.balloon= 14;
-//#             instance.scroll= 5;
-//#         }
-//#     }
-//#     
-//#     public void run() {
-//#         while (true) {
-//#             try {  sleep(200);  } catch (Exception e) {}
-//# 
-//#             synchronized (this) {
-//#                 if (scroll==0) {
-//#                     if (instance.scroll() || instance.balloon())
-//#                         attachedList.redraw();
-//#                 } else {
-//#                     scroll --;                    
-//#                 }
-//#             }
-//#         }
-//#     }
-//# 
-//#     public boolean scroll() {
-//#         synchronized (this) {
-//#             if (scrollline==false || attachedList==null || scrollLen<0)
-//#                 return false;
-//#             if (attachedList.offset>=scrollLen) {
-//#                 scrollLen=-1; attachedList.offset=0; scrollline = false;
-//#             } else 
-//#                 attachedList.offset+=14;
-//# 
-//#             return true;
-//#         }
-//#     }
-//#     
-//#     public boolean balloon() {
-//#         synchronized (this) {
-//#             if (attachedList==null || balloon<0)
-//#                 return false;
-//#             balloon--;
-//#             attachedList.showBalloon=(balloon<15 && balloon>0);
-//#             return true;
-//#         }
-//#     }
-//#     
-//#     public void destroyTask(){
-//#         synchronized (this) { 
-//#             if (attachedList!=null) 
-//#                 attachedList.offset=0;
-//#         }
-//#     }
-//# }
+class TimerTaskRotate extends Thread{
+    private int scrollLen;
+    private int scroll; //wait before scroll * sleep
+    private int balloon; // show balloon time
+
+    private boolean scrollline;
+    
+    private VirtualList attachedList;
+    
+    private static TimerTaskRotate instance;
+    
+    private TimerTaskRotate() {
+        start();
+    }
+    
+    public static void startRotate(int max, VirtualList list){
+        //Windows mobile J9 hanging test
+        if (Config.getInstance().phoneManufacturer==Config.WINDOWS) {
+            list.showBalloon=true;
+            list.offset=0;
+            return;
+        }
+        if (instance==null) 
+            instance=new TimerTaskRotate();
+
+        if (max<0) {
+            instance.destroyTask();
+            list.offset=0;
+            return;
+        }
+        
+        synchronized (instance) {
+            list.offset=0;
+            instance.scrollLen=max;
+            instance.scrollline=(max>0);
+            instance.attachedList=list;
+            instance.balloon= 14;
+            instance.scroll= 5;
+        }
+    }
+    
+    public void run() {
+        while (true) {
+            try {  sleep(200);  } catch (Exception e) {}
+
+            synchronized (this) {
+                if (scroll==0) {
+                    if (instance.scroll() || instance.balloon())
+                        attachedList.redraw();
+                } else {
+                    scroll --;                    
+                }
+            }
+        }
+    }
+
+    public boolean scroll() {
+        synchronized (this) {
+            if (scrollline==false || attachedList==null || scrollLen<0)
+                return false;
+            if (attachedList.offset>=scrollLen) {
+                scrollLen=-1; attachedList.offset=0; scrollline = false;
+            } else 
+                attachedList.offset+=14;
+
+            return true;
+        }
+    }
+    
+    public boolean balloon() {
+        synchronized (this) {
+            if (attachedList==null || balloon<0)
+                return false;
+            balloon--;
+            attachedList.showBalloon=(balloon<15 && balloon>0);
+            return true;
+        }
+    }
+    
+    public void destroyTask(){
+        synchronized (this) { 
+            if (attachedList!=null) 
+                attachedList.offset=0;
+        }
+    }
+}
 //#endif

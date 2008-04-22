@@ -136,7 +136,7 @@ public class ScrollBar {
  
  	g.translate(scrollerX, 0);
         g.setColor(Colors.SCROLL_BGND);
-	g.fillRect(0, 0, scrollWidth, drawHeight);                
+	g.fillRect(0, 0, scrollWidth, drawHeight);
          
  	drawHeight-=minimumHeight;
          
@@ -145,7 +145,7 @@ public class ScrollBar {
  	scrollerPos=(drawHeight*position)/size;
 
         g.setColor(Colors.SCROLL_BAR);
-	g.fillRect(1, scrollerPos, scrollWidth, scrollerSize);                
+	g.fillRect(1, scrollerPos, scrollWidth, scrollerSize);
 
         g.setColor(Colors.SCROLL_BRD);
 
