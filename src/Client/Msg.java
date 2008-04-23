@@ -149,7 +149,7 @@ public class Msg //implements MessageList.Element
     void setHistory(boolean state) { history=state; }
     
     public String quoteString(){
-        StringBuffer out=new StringBuffer(toString());
+        StringBuffer out=new StringBuffer(body);
         int i=0;
         while (i<out.length()) {
             if (out.charAt(i)<0x03) out.deleteCharAt(i);

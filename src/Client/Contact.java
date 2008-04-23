@@ -323,11 +323,9 @@ public class Contact extends IconTextElement{
 //#endif
 //#             if (allowLog)
 //#             {
-//#                 //StringBuffer body = createBody(m);
-//#                 
-//#                 String histRecord=(nick==null)?getBareJid():nick;
-//#                 
-//#                 new HistoryAppend(m, cf.lastMessages, histRecord);
+//#                 //String histRecord=(nick==null)?getBareJid():nick;
+//#                 //new HistoryAppend(m, cf.lastMessages, histRecord);
+//#                 new HistoryAppend(m, cf.lastMessages, getBareJid());
 //#             }
 //#        }
 //#endif
