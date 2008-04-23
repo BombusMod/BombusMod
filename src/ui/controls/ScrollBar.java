@@ -27,8 +27,12 @@
 
 package ui.controls;
 
+import Colors.ColorScheme;
 import javax.microedition.lcdui.Graphics;
 import Colors.Colors;
+//#ifdef GRADIENT
+//# import ui.Gradient;
+//#endif
 import ui.VirtualList;
 
 /**
@@ -37,8 +41,8 @@ import ui.VirtualList;
  */
 public class ScrollBar {
     
-    private static final int WIDTH_SCROLL_1      =2;
-    private static final int WIDTH_SCROLL_2      =10;
+    private static final int WIDTH_SCROLL_1      =3;
+    private static final int WIDTH_SCROLL_2      =12;
     
     private int yTranslate;
     
@@ -49,6 +53,10 @@ public class ScrollBar {
     private int scrollerX;
     
     private int drawHeight;
+//#ifdef GRADIENT
+//#     private Gradient gr;
+//#     private int prevDrawHeight;
+//#endif
     
     private int point_y;    // точка, за которую "держится" указатель
     
@@ -135,8 +143,17 @@ public class ScrollBar {
 	scrollerX=drawWidth-scrollWidth;
  
  	g.translate(scrollerX, 0);
+
+//#ifdef GRADIENT
+//#         if (drawHeight!=prevDrawHeight) {
+//#             gr=new Gradient(0, 0, scrollWidth, drawHeight, 0xFFFFFF-Colors.LIST_BGND, Colors.LIST_BGND, true);
+//#             prevDrawHeight=drawHeight;
+//#         }
+//#         gr.paint(g);
+//#else
         g.setColor(Colors.SCROLL_BGND);
 	g.fillRect(0, 0, scrollWidth, drawHeight);
+//#endif
          
  	drawHeight-=minimumHeight;
          
@@ -148,7 +165,6 @@ public class ScrollBar {
 	g.fillRect(1, scrollerPos, scrollWidth, scrollerSize);
 
         g.setColor(Colors.SCROLL_BRD);
-
-	g.drawRect(0, scrollerPos, scrollWidth, scrollerSize);
+	g.drawRect(0, scrollerPos, scrollWidth-1, scrollerSize);
     }
 }

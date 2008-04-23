@@ -466,7 +466,7 @@ public abstract class VirtualList
         }
 
         if (scroll) {
-            setAbsOrg(g, 0, itemBorder[0]);
+            setAbsOrg(g, 0, itemBorder[0]+((memMonitor)?1:0));
             g.setClip(0, 0, width, winHeight);
 
 	    scrollbar.setPostion(win_top);
@@ -549,9 +549,15 @@ public abstract class VirtualList
 
             g.setClip(0,0, width, h);
 //#ifdef GRADIENT
-//# /*   red:ad1010*730000   green:4c7300*78ad10   gold:8a6b10*c1971b   */
-//#             Gradient gr=new Gradient(0, 0, width, h, 0xad1010, 0x730000, false);
-//#             gr.paint(g);
+//#             /*   red:ad1010*730000   green:4c7300*78ad10   gold:8a6b10*c1971b   */
+//#             if (getMainBarBGnd()!=getMainBarBGndBottom()) {
+//#                 // TODO: caching gradient if size not changed
+//#                 Gradient gr=new Gradient(0, 0, width, h, getMainBarBGnd(), getMainBarBGndBottom(), false);
+//#                 gr.paint(g);
+//#             } else {
+//#                 g.setColor(getMainBarBGnd());
+//#                 g.fillRect(0, 0, width, h);
+//#             }
 //#else
             g.setColor(getMainBarBGnd());
             g.fillRect(0, 0, width, h/2);
@@ -569,9 +575,14 @@ public abstract class VirtualList
             int h=mainbar.getVHeight()+1;
             g.setClip(0,0, width, h);
 //#ifdef GRADIENT
-//# /*   red:ad1010*730000   green:4c7300*78ad10   gold:8a6b10*c1971b   */
-//#             Gradient gr=new Gradient(0, 0, width, h, 0xad1010, 0x730000, false);
-//#             gr.paint(g);
+//#             /*   red:ad1010*730000   green:4c7300*78ad10   gold:8a6b10*c1971b   */
+//#             if (getMainBarBGnd()!=getMainBarBGndBottom()) {
+//#                 Gradient gr=new Gradient(0, 0, width, h, getMainBarBGnd(), getMainBarBGndBottom(), false);
+//#                 gr.paint(g);
+//#             } else {
+//#                 g.setColor(getMainBarBGnd());
+//#                 g.fillRect(0, 0, width, h);
+//#             }
 //#else
             g.setColor(getMainBarBGnd());
             g.fillRect(0, 0, width, h/2);
