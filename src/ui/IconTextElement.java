@@ -43,8 +43,8 @@ abstract public class IconTextElement implements VirtualElement
     
     int heightFirstLine=0;
 
-    private int miImageSize;
-    private int ilImageSize;
+    private int miImageSize=0;
+    private int ilImageSize=0;
 
     private int fontHeight;
     
@@ -89,28 +89,33 @@ abstract public class IconTextElement implements VirtualElement
                 case 1001:
                     drawPic(g, il, RosterIcons.ICON_COMPOSING_INDEX, offset, secImgY);
                     offset=offset+ilImageSize+2;
+                    miImageSize=il.getHeight();
                     break;
                 case 2001:
                     drawPic(g, il, RosterIcons.ICON_APPEARING_INDEX, offset, secImgY);
                     offset=offset+ilImageSize+2;
+                    miImageSize=il.getHeight();
                     break;
                 case 2002:
                     drawPic(g, il, RosterIcons.ICON_VIEWING_INDEX, offset, secImgY);
                     offset=offset+ilImageSize+2;
+                    miImageSize=il.getHeight();
                     break;
                 case 2003:
                     drawPic(g, il, RosterIcons.ICON_AUTHRQ_INDEX, offset, secImgY);
                     offset=offset+ilImageSize+2;
+                    miImageSize=il.getHeight();
                     break;
                 case 2004:
                     drawPic(g, il, RosterIcons.ICON_MESSAGE_INDEX, offset, secImgY);
                     offset=offset+ilImageSize+2;
+                    miImageSize=il.getHeight();
                     break;
                 default:
                     drawPic(g, mi, getSecImageIndex(), offset, secImgY);
                     offset=offset+miImageSize+2;
+                    miImageSize=mi.getHeight();
             }
-            miImageSize=mi.getHeight();
         } else {
             miImageSize=0;
         }

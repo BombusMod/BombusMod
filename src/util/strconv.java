@@ -320,111 +320,31 @@ public class strconv {
         return src;
     }
     
-/* 
-    
-    public final String URLEncode(String message)
-    {
-        String s1 = "";
-        for(int j = 0; j < message.length(); j++)
-        {
-            int i;
-            if((i = message.charAt(j)) > '\177' || i < 48)
-            {
-                if(message.charAt(j) == ' ')
-                {
-                    s1 = s1 + '+';
-                    continue;
-                }
-                if(i > 1000)
-                    i -= 848;
-                String s2;
-                if((s2 = Integer.toString(i, 16)).length() == 1)
-                    s2 = '0' + s2;
-                s1 = s1 + '%' + s2.toUpperCase();
-            } else
-            {
-                s1 = s1 + message.charAt(j);
-            }
+    public static String urlPrep(String src){
+        String mask=" #$%&/:;<=>?@[\\]^'{|}";
+        StringBuffer out=new StringBuffer();
+        
+        for (int i=0; i<src.length(); i++) {
+            char s=src.charAt(i);
+            
+            if (mask.indexOf(s)<0) {  out.append(s); continue;  }
+            
+            out.append('%');
+            
+            char c = (char) ((s >> 4) & 0xf);
+            if (c > 9)   c = (char) ((c - 10) + 'a');
+            else  c = (char) (c + '0');
+            out.append(c);
+            
+            c = (char) (s & 0xf);
+            if (c > 9)
+                c = (char)((c-10) + 'a');
+            else
+                c = (char)(c + '0');
+            out.append(c);
+            
         }
-        return s1;
+        
+        return out.toString();
     }
- *  
-    public static String URLEncode(String url)
-    {
-        StringBuffer buffer = new StringBuffer();
-
-        for (int i = 0; i < url.length(); i++)
-        {
-            switch (url.charAt(i))
-            {
-                case ' ':
-                    buffer.append("%20");
-                    break;
-                case '+':
-                    buffer.append("%2b");
-                    break;
-                case '\'':
-                    buffer.append("%27");
-                    break;
-                case '<':
-                    buffer.append("%3c");
-                    break;
-                case '>':
-                    buffer.append("%3e");
-                    break;
-                case '#':
-                    buffer.append("%23");
-                    break;
-                case '%':
-                    buffer.append("%25");
-                    break;
-                case '{':
-                    buffer.append("%7b");
-                    break;
-                case '}':
-                    buffer.append("%7d");
-                    break;
-                case '\\':
-                    buffer.append("%5c");
-                    break;
-                case '^':
-                    buffer.append("%5e");
-                    break;
-                case '~':
-                    buffer.append("%73");
-                    break;
-                case '[':
-                    buffer.append("%5b");
-                    break;
-                case ']':
-                    buffer.append("%5d");
-                    break;
-                case '-':
-                    buffer.append("%2D");
-                    break;
-                case '/':
-                    buffer.append("%2F");
-                    break;
-                case ':':
-                    buffer.append("%3A");
-                    break;
-                case '=':
-                    buffer.append("%3D");
-                    break;
-                case '?':
-                    buffer.append("%3F");
-                    break;
-                case '\r':
-                    buffer.append("%0D");
-                    break;
-                case '\n':
-                    buffer.append("%0A");
-                    break;
-                default:
-                    buffer.append(url.charAt(i));
-                    break;
-            }
-        }
-        return buffer.toString();
-    }*/
 }

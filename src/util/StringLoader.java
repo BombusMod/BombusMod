@@ -288,4 +288,34 @@ public class StringLoader {
 	} catch (Exception e)	{  }
 	return -1;            
     }
+    
+
+    public Hashtable hashtableLoader(final InputStream in) {
+        Hashtable hash = new Hashtable();
+        
+        afterEol=0;
+        try {
+            while (true) {
+        	String line=readLine(in);
+                String key, value;
+        	if (line==null)  break;
+        	
+        	if (line.startsWith("//")) continue; // skip all remarks
+
+                String cell=null;
+                try {
+                    int indexTab=line.indexOf(0x09);
+                    
+                    if (indexTab<=0) continue; // process next line
+                    
+                    key=line.substring(0, indexTab);
+                    value=line.substring(indexTab+1, line.length() );
+                    hash.put(key, value);
+                } catch (Exception e) { e.printStackTrace(); }
+            }
+            in.close();
+        } catch (Exception e)	{ /* Empty file or not found */}
+        return hash;
+    }
+    
 }

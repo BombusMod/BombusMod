@@ -249,13 +249,23 @@ public class Account extends IconTextElement{
 
     public JabberStream openJabberStream() throws java.io.IOException{
         String proxy=null;
-	StringBuffer url=new StringBuffer();
+        
+        String host=this.server;
+        int port=this.port;
+        
         if (hostAddr!=null) if (hostAddr.length()>0)
-            url.append(hostAddr);
-        else
-            url.append(server);
-        url.append(':');
-        url.append(port);
+            host=hostAddr;
+          
+        else {
+            io.DnsSrvResolver dns=new io.DnsSrvResolver();
+            if (dns.getSrv(server)) {
+                host=dns.getHost();
+                port=dns.getPort();
+            } 
+        }
+
+	StringBuffer url=new StringBuffer();
+        url.append(host).append(':').append(port);
         if (!isEnableProxy()) {
 	    url.insert(0, (useSSL)?"ssl://":"socket://");
         } else {

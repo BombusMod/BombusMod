@@ -66,8 +66,9 @@ public class Group extends IconTextElement {
     public int getImageIndex() {
         return collapsed?imageCollapsedIndex:imageExpandedIndex;
     }
+    
     public int getSecImageIndex() {
-        return (unreadMessages>0)?RosterIcons.ICON_MESSAGE_INDEX:-1;
+        return (unreadMessages>0)?2004:-1;
     }
     
     public String getName() { return name; }
