@@ -41,8 +41,8 @@ import ui.VirtualList;
  */
 public class ScrollBar {
     
-    private static final int WIDTH_SCROLL_1      =3;
-    private static final int WIDTH_SCROLL_2      =12;
+    private static final int WIDTH_SCROLL_1      =5;
+    private static final int WIDTH_SCROLL_2      =10;
     
     private int yTranslate;
     
@@ -151,8 +151,8 @@ public class ScrollBar {
 //#         }
 //#         gr.paint(g);
 //#else
-        g.setColor(Colors.SCROLL_BGND);
-	g.fillRect(0, 0, scrollWidth, drawHeight);
+     g.setColor(Colors.SCROLL_BGND);
+	 g.fillRect(0, 0, scrollWidth, drawHeight);
 //#endif
          
  	drawHeight-=minimumHeight;
@@ -162,7 +162,7 @@ public class ScrollBar {
  	scrollerPos=(drawHeight*position)/size;
 
         g.setColor(Colors.SCROLL_BAR);
-	g.fillRect(1, scrollerPos, scrollWidth, scrollerSize);
+	g.fillRect(1, scrollerPos+1, scrollWidth-2, scrollerSize-1);
 
         g.setColor(Colors.SCROLL_BRD);
 	g.drawRect(0, scrollerPos, scrollWidth-1, scrollerSize);

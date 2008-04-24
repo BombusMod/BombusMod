@@ -376,7 +376,6 @@ type = \"-=Siemens=-\";
             ircLikeStatus = inputStream.readBoolean();
             sndrcvmood = inputStream.readBoolean();
             scheme=inputStream.readUTF();
-                    
             useClipBoard = inputStream.readBoolean();
                     
 	    inputStream.close();
@@ -500,7 +499,6 @@ type = \"-=Siemens=-\";
             outputStream.writeBoolean(ircLikeStatus);
             outputStream.writeBoolean(sndrcvmood);
             outputStream.writeUTF(scheme);
-            
             outputStream.writeBoolean(useClipBoard);
             
 	} catch (Exception e) { }

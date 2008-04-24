@@ -387,7 +387,7 @@ public class ConfigForm implements
 //#endif
             
             cf.autoSubscribe=subscr.getSelectedIndex();
-            
+
             int mvctr=0;
 //#ifdef SMILES
             cf.smiles=mv[mvctr++];
@@ -407,17 +407,17 @@ public class ConfigForm implements
 //#ifdef POPUPS
             cf.popUps=mv[mvctr++];
 //#endif
-            VirtualList.showBalloons=cf.showBalloons=mv[mvctr++];
-
+            cf.showBalloons=mv[mvctr++];
+            VirtualList.showBalloons=cf.showBalloons;
             cf.eventDelivery=mv[mvctr++];
 //#ifdef CLIPBOARD
 //#             cf.useClipBoard=mv[mvctr++];
 //#endif
+            
 	    cf.autoLogin=su[0];
 	    cf.autoJoinConferences=su[1];
             
 	    int apctr=0;
-
             VirtualList.fullscreen=cf.fullscreen=ap[apctr++];
 	    VirtualList.memMonitor=cf.memMonitor=ap[apctr++];
             cf.enableVersionOs=ap[apctr++];
@@ -457,11 +457,13 @@ public class ConfigForm implements
 //#endif
 
 //#ifndef COLORS
-//#             String tempScheme=(String) Skinfiles[1].elementAt( SkinFile.getSelectedIndex() );
-//#             if (!tempScheme.equals(cf.scheme)) {
-//#                 cf.scheme=(String) Skinfiles[1].elementAt( SkinFile.getSelectedIndex() );
-//#                 ColorUtils.loadSkin((String)Skinfiles[0].elementAt(SkinFile.getSelectedIndex()), 1);
-//#             }            
+//#             if (SkinFile.getSelectedIndex()>-1) {
+//#                 String tempScheme=(String) Skinfiles[1].elementAt( SkinFile.getSelectedIndex() );
+//#                 if (!tempScheme.equals(cf.scheme)) {
+//#                     cf.scheme=(String) Skinfiles[1].elementAt( SkinFile.getSelectedIndex() );
+//#                     ColorUtils.loadSkin((String)Skinfiles[0].elementAt(SkinFile.getSelectedIndex()), 1);
+//#                 }
+//#             }
 //#endif
 
             sd.roster.setLight(cf.lightState);   
@@ -471,14 +473,11 @@ public class ConfigForm implements
             cf.firstRun=false;
             
             cf.updateTime();
-            
             cf.saveToStorage();
 
             sd.roster.reEnumRoster();
-            destroyView();
         }
-        if (c==cmdCancel)
-            destroyView();
+        destroyView();
     }
 
     public void commandAction(Command command, Item item) {

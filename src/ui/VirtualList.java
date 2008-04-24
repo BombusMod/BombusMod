@@ -466,12 +466,13 @@ public abstract class VirtualList
         }
 
         if (scroll) {
-            setAbsOrg(g, 0, itemBorder[0]+((memMonitor)?1:0));
+            int correct=(memMonitor)?1:0;
+            setAbsOrg(g, 0, itemBorder[0]+correct);
             g.setClip(0, 0, width, winHeight);
 
-	    scrollbar.setPostion(win_top);
-	    scrollbar.setSize(listHeight);
-	    scrollbar.setWindowSize(winHeight);
+	    scrollbar.setPostion(win_top-correct);
+	    scrollbar.setSize(listHeight-correct);
+	    scrollbar.setWindowSize(winHeight-correct);
 	    
 	    scrollbar.draw(g);
         } else scrollbar.setSize(0);
