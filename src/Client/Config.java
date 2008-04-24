@@ -43,14 +43,11 @@ import io.NvStorage;
  * @author Eugene Stahov
  */
 public class Config {
+    // Singleton
+    private static Config instance;
     
     public final int vibraLen=500;
 
-    public final static int AWAY_OFF=0;
-    public final static int AWAY_LOCK=1;
-    public final static int AWAY_MESSAGE=2;
-    public final static int AWAY_IDLE=3;
-    
     public static int KEY_BACK = -11;
     public static int SOFT_LEFT = -1000;
     public static int SOFT_RIGHT = -1000;
@@ -153,36 +150,54 @@ type = \"-=Siemens=-\";
     public char keyLock='*';
     public char keyVibra='#';
     
-
-     public String msgPath="";
-     public boolean msgLog=false;
-     public boolean msgLogPresence=false;
-     public boolean msgLogConf=false;
-     public boolean msgLogConfPresence=false;
-     public boolean cp1251=true;
+//#ifdef AUTOSTATUS
+//#     public final static int AWAY_OFF=0;
+//#     public final static int AWAY_LOCK=1;
+//#     public final static int AWAY_MESSAGE=2;
+//#     public final static int AWAY_IDLE=3;
+//#     
+//#     public int autoAwayType=0;
+//#     public int autoAwayDelay=5; //5 minutes
+//#     public boolean setAutoStatusMessage=true;
+//#endif
     
+//#ifdef HISTORY
+//#      public String msgPath="";
+//#      public boolean msgLog=false;
+//#      public boolean msgLogPresence=false;
+//#      public boolean msgLogConf=false;
+//#      public boolean msgLogConfPresence=false;
+//#     public boolean lastMessages=false;
+//#endif
+    public boolean cp1251=true;     
+//#ifndef WMUC
     public String defGcRoom="bombusmod@conference.jabber.ru";
-    
+    public boolean storeConfPresence=true;   
+    public boolean autoJoinConferences=true;
+    public int confMessageCount=20;
+//#endif
     // non-volatile values
     public int accountIndex=-1;
     public boolean fullscreen=false;
     public int def_profile=0;
-    public boolean smiles=true;
+//#ifdef SMILES
+//#     public boolean smiles=true;
+//#endif
     public boolean showOfflineContacts=false;
     public boolean showTransports=true;
     public boolean selfContact=false;
     public boolean ignore=false;
-    public boolean eventComposing=true;
-    public boolean storeConfPresence=true;      
+    public boolean eventComposing=true;   
     public boolean autoLogin=true;
-    public boolean autoJoinConferences=true;
     public boolean autoFocus=false;
     public int loginstatus=0;//loginstatus
     public int gmtOffset;
     public int locOffset;
     public boolean popupFromMinimized=true;
     public boolean memMonitor=true;
-    public boolean newMenu=false;
+//#ifdef NEW_MENU
+//#     public boolean newMenu=false;
+//#endif
     public int font1=0;
     public int font2=0;
     public int font3=0;
@@ -198,46 +213,52 @@ type = \"-=Siemens=-\";
     public boolean istreamWaiting;
     public int phoneManufacturer=NOT_DETECTED;
 
-    // Singleton
-    private static Config instance;
-
-    public int autoAwayType=0;
-    public int autoAwayDelay=5; //5 minutes
-    public boolean setAutoStatusMessage=true;
-    public int confMessageCount=20;
     public int isbottom=2; //default state both panels show, reverse disabled
     public boolean lightState=false;
-    public boolean lastMessages=false;
     public boolean autoScroll=true;
-    public boolean popUps=true;
+//#ifdef POPUPS
+//#     public boolean popUps=true;
+//#endif
     public boolean showResources=true;
-    public boolean antispam=false;
+//#ifdef ANTISPAM
+//#     public boolean antispam=false;
+//#endif
     public boolean enableVersionOs=true;
     public boolean collapsedGroups=true;
     public int messageLimit=512;
     public boolean eventDelivery=false;
-    public boolean transliterateFilenames=false;
-    public boolean rosterStatus=false;
+//#ifdef TRANSLIT
+//#     public boolean transliterateFilenames=false;
+//#endif
+//#ifdef SECONDSTRING
+//#     public boolean rosterStatus=false;
+//#endif
 //#ifdef MOOD
 //#     public boolean userMoods=true;
+//#     public boolean sndrcvmood = false;
 //#endif
     public boolean queryExit = false;
     public int notInListDropLevel=NotInListFilter.ALLOW_ALL; //enable all
     public boolean showBalloons = true;
-    public boolean userKeys = false;
-    public int msglistLimit=100;
+//#ifdef USER_KEYS
+//#     public boolean userKeys = false;
+//#endif
+//#ifdef AUTODELETE
+//#     public int msglistLimit=100;
+//#endif
     public boolean useTabs=true;
     public boolean notifyBlink=true;
     public boolean notifySound=false;
     public boolean notifyPicture=false;
     public boolean useBoldFont=false;
     public boolean notifyWhenMessageType = false;
-    public boolean ircLikeStatus = false;
-    public boolean sndrcvmood = false;
+//#ifdef IRC_LIKE
+//#     public boolean ircLikeStatus = false;
+//#endif
     public String scheme = "";
-    
-    public boolean useClipBoard = true;
-    
+//#ifdef CLIPBOARD
+//#     public boolean useClipBoard = true;
+//#endif
     public boolean firstRun = true;
     
     public static Config getInstance(){
@@ -267,7 +288,7 @@ type = \"-=Siemens=-\";
                 //prefetch images
                 RosterIcons.getInstance();
 //#ifdef SMILES
-                SmilesIcons.getInstance();
+//#                 SmilesIcons.getInstance();
 //#endif
                 allowMinimize=true;
                 greenKeyCode=-10;
@@ -316,7 +337,11 @@ type = \"-=Siemens=-\";
 	    showOfflineContacts=inputStream.readBoolean();
 	    fullscreen=inputStream.readBoolean();
 	    def_profile = inputStream.readInt();
-	    smiles=inputStream.readBoolean();
+//#ifdef SMILES
+//# 	    smiles=inputStream.readBoolean();
+//#else
+            inputStream.readBoolean();
+//#endif
 	    showTransports=inputStream.readBoolean();
 	    selfContact=inputStream.readBoolean();
 	    collapsedGroups=inputStream.readBoolean();
@@ -337,47 +362,111 @@ type = \"-=Siemens=-\";
             capsState=inputStream.readBoolean();
 	    textWrap=inputStream.readInt();
             loginstatus=inputStream.readInt();
-            msgPath=inputStream.readUTF();
-            msgLog=inputStream.readBoolean();
-            msgLogPresence=inputStream.readBoolean();
-            msgLogConfPresence=inputStream.readBoolean();
-            msgLogConf=inputStream.readBoolean();
+//#ifdef HISTORY
+//#             msgPath=inputStream.readUTF();
+//#             msgLog=inputStream.readBoolean();
+//#             msgLogPresence=inputStream.readBoolean();
+//#             msgLogConfPresence=inputStream.readBoolean();
+//#             msgLogConf=inputStream.readBoolean();
+//#else
+            inputStream.readUTF();
+            inputStream.readBoolean();
+            inputStream.readBoolean();
+            inputStream.readBoolean();
+            inputStream.readBoolean();
+//#endif
             cp1251=inputStream.readBoolean();
-            autoAwayDelay=inputStream.readInt();
+//#ifdef AUTOSTATUS
+//#             autoAwayDelay=inputStream.readInt();
+//#else
+            inputStream.readInt();
+//#endif
             defGcRoom=inputStream.readUTF();
             firstRun=inputStream.readBoolean();
             isbottom=inputStream.readInt();
             confMessageCount=inputStream.readInt();
-            newMenu=inputStream.readBoolean();
+//#ifdef NEW_MENU
+//#             newMenu=inputStream.readBoolean();
+//#else
+            inputStream.readBoolean();
+//#endif
             lightState=inputStream.readBoolean();
             notifySound=inputStream.readBoolean();
-            lastMessages=inputStream.readBoolean();
-            setAutoStatusMessage=inputStream.readBoolean();
-            autoAwayType=inputStream.readInt();
+//#ifdef HISTORY
+//#             lastMessages=inputStream.readBoolean();
+//#else
+            inputStream.readBoolean();
+//#endif
+//#ifdef AUTOSTATUS
+//#             setAutoStatusMessage=inputStream.readBoolean();
+//#             autoAwayType=inputStream.readInt();
+//#else
+            inputStream.readBoolean();
+            inputStream.readInt();
+//#endif
             autoScroll=inputStream.readBoolean();
-            popUps=inputStream.readBoolean();
+//#ifdef POPUPS
+//#             popUps=inputStream.readBoolean();
+//#else
+            inputStream.readBoolean();
+//#endif
             showResources=inputStream.readBoolean();
-            antispam=inputStream.readBoolean();
+//#ifdef ANTISPAM
+//#             antispam=inputStream.readBoolean();
+//#else
+            inputStream.readBoolean();
+//#endif
             enableVersionOs=inputStream.readBoolean();
             messageLimit=inputStream.readInt();
             lang=inputStream.readUTF();
             eventDelivery=inputStream.readBoolean();
-            transliterateFilenames=inputStream.readBoolean();
-            rosterStatus=inputStream.readBoolean();
+//#ifdef TRANSLIT
+//#             transliterateFilenames=inputStream.readBoolean();
+//#else
+            inputStream.readBoolean();
+//#endif
+//#ifdef SECONDSTRING
+//#             rosterStatus=inputStream.readBoolean();
+//#else
+            inputStream.readBoolean();
+//#endif
             queryExit=inputStream.readBoolean();
             notifyPicture=inputStream.readBoolean();
             showBalloons=inputStream.readBoolean();
-            userKeys=inputStream.readBoolean();
-            msglistLimit=inputStream.readInt();
+//#ifdef USER_KEYS
+//#             userKeys=inputStream.readBoolean();
+//#else
+            inputStream.readBoolean();
+//#endif
+//#ifdef AUTODELETE
+//#             msglistLimit=inputStream.readInt();
+//#else
+            inputStream.readInt();
+//#endif
             useTabs=inputStream.readBoolean();
             autoSubscribe=inputStream.readInt();
             useBoldFont=inputStream.readBoolean();
             notifyWhenMessageType = inputStream.readBoolean();
-            ircLikeStatus = inputStream.readBoolean();
-            sndrcvmood = inputStream.readBoolean();
+//#ifdef IRC_LIKE
+//#             ircLikeStatus = inputStream.readBoolean();
+//#else
+            inputStream.readBoolean();
+//#endif
+//#ifdef MOOD
+//#             sndrcvmood = inputStream.readBoolean();
+//#else
+            inputStream.readBoolean();
+//#endif
             scheme=inputStream.readUTF();
-            useClipBoard = inputStream.readBoolean();
+<<<<<<< .mine
+//#ifdef CLIPBOARD
+//#             useClipBoard = inputStream.readBoolean();
+//#else
+            inputStream.readBoolean();
+//#endif
                     
+=======
+>>>>>>> .r136
 	    inputStream.close();
 	} catch (Exception e) {
             try {
@@ -439,7 +528,11 @@ type = \"-=Siemens=-\";
 	    outputStream.writeBoolean(showOfflineContacts);
 	    outputStream.writeBoolean(fullscreen);
 	    outputStream.writeInt(def_profile);
-	    outputStream.writeBoolean(smiles);
+//#ifdef SMILES
+//# 	    outputStream.writeBoolean(smiles);
+//#else
+            outputStream.writeBoolean(false);
+//#endif
 	    outputStream.writeBoolean(showTransports);
 	    outputStream.writeBoolean(selfContact);
 	    outputStream.writeBoolean(collapsedGroups);
@@ -460,47 +553,111 @@ type = \"-=Siemens=-\";
             outputStream.writeBoolean(capsState); 
 	    outputStream.writeInt(textWrap);
             outputStream.writeInt(loginstatus);
-            outputStream.writeUTF(msgPath);
-            outputStream.writeBoolean(msgLog);
-            outputStream.writeBoolean(msgLogPresence);
-            outputStream.writeBoolean(msgLogConfPresence);
-            outputStream.writeBoolean(msgLogConf);
+//#ifdef HISTORY
+//#             outputStream.writeUTF(msgPath);
+//#             outputStream.writeBoolean(msgLog);
+//#             outputStream.writeBoolean(msgLogPresence);
+//#             outputStream.writeBoolean(msgLogConfPresence);
+//#             outputStream.writeBoolean(msgLogConf);
+//#else
+            outputStream.writeUTF("");
+            outputStream.writeBoolean(false);
+            outputStream.writeBoolean(false);
+            outputStream.writeBoolean(false);
+            outputStream.writeBoolean(false);
+//#endif
             outputStream.writeBoolean(cp1251);
-            outputStream.writeInt(autoAwayDelay);
+//#ifdef AUTOSTATUS
+//#             outputStream.writeInt(autoAwayDelay);
+//#else
+            outputStream.writeInt(5);
+//#endif
             outputStream.writeUTF(defGcRoom);
             outputStream.writeBoolean(firstRun);
             outputStream.writeInt(isbottom);
             outputStream.writeInt(confMessageCount);
-            outputStream.writeBoolean(newMenu);
+//#ifdef NEW_MENU
+//#             outputStream.writeBoolean(newMenu);
+//#else
+            outputStream.writeBoolean(false);
+//#endif
             outputStream.writeBoolean(lightState);
             outputStream.writeBoolean(notifySound);
-            outputStream.writeBoolean(lastMessages);
-            outputStream.writeBoolean(setAutoStatusMessage);
-            outputStream.writeInt(autoAwayType);
+//#ifdef HISTORY
+//#             outputStream.writeBoolean(lastMessages);
+//#else
+            outputStream.writeBoolean(false);
+//#endif
+//#ifdef AUTOSTATUS
+//#             outputStream.writeBoolean(setAutoStatusMessage);
+//#             outputStream.writeInt(autoAwayType);
+//#else
+            outputStream.writeBoolean(false);
+            outputStream.writeInt(0);
+//#endif
             outputStream.writeBoolean(autoScroll);
-            outputStream.writeBoolean(popUps);
+//#ifdef POPUPS
+//#             outputStream.writeBoolean(popUps);
+//#else
+            outputStream.writeBoolean(false);
+//#endif
             outputStream.writeBoolean(showResources);
-            outputStream.writeBoolean(antispam);
+//#ifdef ANTISPAM
+//#             outputStream.writeBoolean(antispam);
+//#else
+            outputStream.writeBoolean(false);
+//#endif
             outputStream.writeBoolean(enableVersionOs);
             outputStream.writeInt(messageLimit);
             outputStream.writeUTF(lang);      
             outputStream.writeBoolean(eventDelivery);
-            outputStream.writeBoolean(transliterateFilenames);
-            outputStream.writeBoolean(rosterStatus);
+//#ifdef TRANSLIT
+//#             outputStream.writeBoolean(transliterateFilenames);
+//#else
+            outputStream.writeBoolean(false);
+//#endif
+//#ifdef SECONDSTRING
+//#             outputStream.writeBoolean(rosterStatus);
+//#else
+            outputStream.writeBoolean(false);
+//#endif
             outputStream.writeBoolean(queryExit);
             outputStream.writeBoolean(notifyPicture);
             outputStream.writeBoolean(showBalloons);
-            outputStream.writeBoolean(userKeys);
-            outputStream.writeInt(msglistLimit);
+//#ifdef USER_KEYS
+//#             outputStream.writeBoolean(userKeys);
+//#else
+            outputStream.writeBoolean(false);
+//#endif
+//#ifdef AUTODELETE
+//#             outputStream.writeInt(msglistLimit);
+//#else
+            outputStream.writeInt(512);
+//#endif
             outputStream.writeBoolean(useTabs);
             outputStream.writeInt(autoSubscribe);
             outputStream.writeBoolean(useBoldFont);
             outputStream.writeBoolean(notifyWhenMessageType);
-            outputStream.writeBoolean(ircLikeStatus);
-            outputStream.writeBoolean(sndrcvmood);
+//#ifdef IRC_LIKE
+//#             outputStream.writeBoolean(ircLikeStatus);
+//#else
+            outputStream.writeBoolean(false);
+//#endif
+//#ifdef MOOD
+//#             outputStream.writeBoolean(sndrcvmood);
+//#else
+            outputStream.writeBoolean(false);
+//#endif
             outputStream.writeUTF(scheme);
-            outputStream.writeBoolean(useClipBoard);
+<<<<<<< .mine
+//#ifdef CLIPBOARD
+//#             outputStream.writeBoolean(useClipBoard);
+//#else
+            outputStream.writeBoolean(false);
+//#endif
             
+=======
+>>>>>>> .r136
 	} catch (Exception e) { }
 	
 	NvStorage.writeFileRecord(outputStream, "config", 0, true);

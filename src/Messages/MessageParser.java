@@ -228,7 +228,13 @@ public final class MessageParser implements Runnable{
         
         boolean underline=false;
         
-        Leaf smileRoot=(task.smilesEnabled())? root: emptyRoot;
+        Leaf smileRoot=(
+//#ifdef SMILES
+//#                 task.smilesEnabled()
+//#else
+                false
+//#endif
+                )? root: emptyRoot;
         
         int state=0;
         if (task.msg.subject==null) state=1;

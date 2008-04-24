@@ -193,7 +193,6 @@ public class Groups implements JabberBlockListener{
                 }
             }
         }
-        //System.out.println(iq.toString());
         sd.roster.theStream.send(iq);
     }
  }

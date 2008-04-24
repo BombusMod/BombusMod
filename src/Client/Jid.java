@@ -60,18 +60,15 @@ public class Jid {
         
         return (resource.equals(j.resource));
     }
-    
-    
-    /** проверка jid на "транспорт" */
+
     public boolean isTransport(){
         return bareJid.indexOf('@')==-1;
     }
-    /** проверка наличия ресурса */
+
     public boolean hasResource(){
         return (resource.length()!=0) ;
     }
     
-    /** выделение транспорта */
     public String getTransport(){
         try {
             int beginIndex=bareJid.indexOf('@')+1;
@@ -79,15 +76,6 @@ public class Jid {
             return bareJid.substring(beginIndex, endIndex);
         } catch (Exception e) {
             return "-";
-        }
-    }
-
-    public String getFirst(){
-        try {
-            int endIndex=bareJid.indexOf('@');
-            return bareJid.substring(0, endIndex);
-        } catch (Exception e) {
-            return null;
         }
     }
 

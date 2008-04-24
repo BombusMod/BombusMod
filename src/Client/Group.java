@@ -46,30 +46,28 @@ public class Group extends IconTextElement {
     
     public int imageExpandedIndex=RosterIcons.ICON_EXPANDED_INDEX;
     public int imageCollapsedIndex=RosterIcons.ICON_COLLAPSED_INDEX;
-    public int imageHasMessageIndex=RosterIcons.ICON_COLLAPSED_INDEX;
-    
     
     public Vector contacts;
-    
     private Vector tcontacts;
+    
     public int tonlines;
     private int tncontacts;
     public int unreadMessages=0;
     
     protected boolean collapsed;
 
-    public Group(String name /*, String label*/) {
+    public Group(String name) {
         super(RosterIcons.getInstance(), null);
-        this.name=name;
-        /*this.label=label;*/
-        
+        this.name=name;        
     }
+    
     public int getColor(){ return Colors.GROUP_INK; }
     
     public int getImageIndex() {
-        return collapsed?
-            (unreadMessages>0)?imageHasMessageIndex:imageCollapsedIndex
-            :imageExpandedIndex;
+        return collapsed?imageCollapsedIndex:imageExpandedIndex;
+    }
+    public int getSecImageIndex() {
+        return (unreadMessages>0)?RosterIcons.ICON_MESSAGE_INDEX:-1;
     }
     
     public String getName() { return name; }
@@ -93,9 +91,9 @@ public class Group extends IconTextElement {
     }
 
     public void startCount(){
-	//int size=(contacts==null)?10:contacts.size();
-	tonlines=tncontacts=unreadMessages=0;
-	//tcontacts=new Vector(size);
+	tonlines=0;
+        tncontacts=0;
+        unreadMessages=0;
 	contacts=new Vector();
     }
 
@@ -105,23 +103,11 @@ public class Group extends IconTextElement {
 	if (online) {
 	    tonlines++;
 	}
-	//int gindex=c.getGroupIndex();
 	// hide offlines whithout new messages
         unreadMessages+=c.getNewMsgsCount();
         
-	if (
-	online
-	|| Config.getInstance().showOfflineContacts
-	|| c.getNewMsgsCount()>0
-	//|| gindex==Groups.NIL_INDEX
-	//|| gindex==Groups.TRANSP_INDEX
-	|| type==Groups.TYPE_NOT_IN_LIST
-	|| type==Groups.TYPE_TRANSP
-	|| type==Groups.TYPE_VISIBLE
-	|| c.origin==Contact.ORIGIN_GROUPCHAT
-	)
-	    contacts.addElement(c);
-	//grp.addContact(c);
+	if ( online || Config.getInstance().showOfflineContacts || c.getNewMsgsCount()>0 || type==Groups.TYPE_NOT_IN_LIST || type==Groups.TYPE_TRANSP || type==Groups.TYPE_VISIBLE || c.origin==Contact.ORIGIN_GROUPCHAT )
+            contacts.addElement(c);
     }
     void finishCount() {
 	//contacts=tcontacts;

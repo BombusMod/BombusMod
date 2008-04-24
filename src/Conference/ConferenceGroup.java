@@ -43,7 +43,6 @@ public class ConferenceGroup extends Group{
 	this.label=label;
 	imageExpandedIndex=RosterIcons.ICON_GCJOIN_INDEX;
         imageCollapsedIndex=RosterIcons.ICON_GCCOLLAPSED_INDEX; 
-        imageHasMessageIndex=RosterIcons.ICON_MESSAGE_INDEX;
         this.type=Groups.TYPE_MUC;
     }
 
