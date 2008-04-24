@@ -458,15 +458,12 @@ type = \"-=Siemens=-\";
             inputStream.readBoolean();
 //#endif
             scheme=inputStream.readUTF();
-<<<<<<< .mine
+
 //#ifdef CLIPBOARD
 //#             useClipBoard = inputStream.readBoolean();
 //#else
             inputStream.readBoolean();
 //#endif
-                    
-=======
->>>>>>> .r136
 	    inputStream.close();
 	} catch (Exception e) {
             try {
@@ -649,15 +646,11 @@ type = \"-=Siemens=-\";
             outputStream.writeBoolean(false);
 //#endif
             outputStream.writeUTF(scheme);
-<<<<<<< .mine
 //#ifdef CLIPBOARD
 //#             outputStream.writeBoolean(useClipBoard);
 //#else
             outputStream.writeBoolean(false);
 //#endif
-            
-=======
->>>>>>> .r136
 	} catch (Exception e) { }
 	
 	NvStorage.writeFileRecord(outputStream, "config", 0, true);
