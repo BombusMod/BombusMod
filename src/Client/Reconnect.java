@@ -36,6 +36,9 @@ public class Reconnect extends vGauge {
     }
 
     public void doAction() {
+        try {
+             StaticData.getInstance().roster.sendPresence(5, null); //Presence.PRESENCE_OFFLINE
+        } catch (Exception e2) { }
         StaticData.getInstance().roster.doReconnect();
     }
 }

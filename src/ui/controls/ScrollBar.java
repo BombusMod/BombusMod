@@ -41,7 +41,7 @@ import ui.VirtualList;
  */
 public class ScrollBar {
     
-    private static final int WIDTH_SCROLL_1      =5;
+    private static final int WIDTH_SCROLL_1      =4;
     private static final int WIDTH_SCROLL_2      =10;
     
     private int yTranslate;

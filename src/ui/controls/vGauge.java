@@ -26,6 +26,7 @@
 
 package ui.controls;
 
+import Client.StaticData;
 import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
@@ -35,7 +36,9 @@ import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
 import locale.SR;
 import ui.FontCache;
-
+//#ifdef GRADIENT
+//# import ui.Gradient;
+//#endif
 /**
  *
  * @author ad
@@ -60,6 +63,10 @@ public abstract class vGauge
 
     private String text;
     private String mainbar;
+    
+//#ifdef GRADIENT
+//#     private Gradient gr=null;
+//#endif
         
     public vGauge(String mainbar, String text, int timeout, Display display, Displayable nextDisplayable) {
         this.display=display;
@@ -69,6 +76,8 @@ public abstract class vGauge
         this.mainbar=mainbar;
         this.text=text;
         this.timeout=timeout;
+
+        isShowing=true;
         
         addCommand(cmdOk);
         addCommand(cmdCancel);
@@ -76,11 +85,9 @@ public abstract class vGauge
         setCommandListener(this);
         display.setCurrent(this);
         
-        isShowing=true;
-        
-        new Thread(this).start();
+        if (timeout>0)
+            new Thread(this).start();
     }
-    
     
     public void commandAction(Command command, Displayable displayable) {
         if (command==cmdOk) {
@@ -94,7 +101,6 @@ public abstract class vGauge
         removeCommand(cmdOk);
         removeCommand(cmdCancel);
         display.setCurrent(next);
-        //repaint();
     }
     
     public void run() {
@@ -127,25 +133,38 @@ public abstract class vGauge
             int border=10;
             int y=height/2;
             int xt=(width/2);
-            
-            int itemWidth=width-(border*2);
-            int itemHeight=5;
-            
-            int filled=(itemWidth*value)/timeout;
 
             int oldColor=g.getColor();
             g.setColor(0xffffff);
-            
             g.fillRect(0,0, width, height); //fill back
-            
-            g.fillRect(border, y, itemWidth, itemHeight);
-            g.setColor(0x668866);
-            g.drawRect(border, y, itemWidth, itemHeight);
-            g.fillRect(border, y, filled, itemHeight);
-            
-            int yt=y-f.getHeight();
-            g.setColor(0x668866);
+
             g.setFont(f);
+            int fh=f.getHeight();
+            g.setClip(0,0, width, fh);
+//#ifdef GRADIENT
+//#             if (gr==null) {
+//#                 gr=new Gradient(0, 0, width, fh, 0x4c7300, 0x78ad10, false);
+//#             }
+//#             gr.paint(g);
+//#else
+         g.setColor(0x4c7300);
+         g.fillRect(0, 0, width, fh);
+//#endif
+            g.setColor(0xffffff);
+            g.drawString(mainbar, xt, 0, Graphics.TOP|Graphics.HCENTER);
+            g.setClip(0,0, width, height);
+            
+            if (timeout>0) {
+                int itemWidth=width-(border*2);
+                int itemHeight=5;
+                int filled=(itemWidth*value)/timeout;
+                g.fillRect(border, y, itemWidth, itemHeight);
+                g.setColor(0x668866);
+                g.drawRect(border, y, itemWidth, itemHeight);
+                g.fillRect(border, y, filled, itemHeight);
+            }
+            g.setColor(0x668866);
+            int yt=y-f.getHeight();
             g.drawString(caption, xt, yt, Graphics.TOP|Graphics.HCENTER);
             
             g.setColor(oldColor);

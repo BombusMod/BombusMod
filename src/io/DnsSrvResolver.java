@@ -67,7 +67,7 @@ public class DnsSrvResolver {
         
         MD5 md5sum=new MD5();
         md5sum.init();
-        md5sum.updateASCII(StaticData.getInstance().account.getBareJid());
+        md5sum.update(StaticData.getInstance().account.getBareJid());
         md5sum.finish();
         
         url.append(md5sum.getDigestHex());

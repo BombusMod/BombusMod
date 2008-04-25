@@ -2189,15 +2189,10 @@ public class Roster
     }
     
     private void askReconnect(final Exception e) {
-        String error;
-        error=e.getClass().getName()+"\n"+e.getMessage();
+        String error=/*e.getClass().getName()+"\n"+*/e.getMessage();
 //#if DEBUG
 //#         e.printStackTrace();
 //#endif
-         try {
-             sendPresence(Presence.PRESENCE_OFFLINE, null);
-        } catch (Exception e2) { }
-
         if (e instanceof SecurityException) { errorLog(error); return; }
         if (reconnectCount>=maxReconnect) { errorLog(error); return; }
         
