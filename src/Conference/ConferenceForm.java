@@ -74,7 +74,7 @@ public class ConferenceForm implements CommandListener{
         String room="";
         if (roomEnd>0) room=confJid.substring(0, roomEnd);
         String server;
-        String nick=null;
+        String nick = null;
         int serverEnd=confJid.indexOf('/');
         if (serverEnd>0) {
             server=confJid.substring(roomEnd+1,serverEnd);
@@ -96,7 +96,7 @@ public class ConferenceForm implements CommandListener{
         this.editConf=join;
         this.cursor=cursor;
 
-        String confJid=join.jid;
+        String confJid=join.getJidNick();
         int roomEnd=confJid.indexOf('@');
         String room="";
         if (roomEnd>0) room=confJid.substring(0, roomEnd);

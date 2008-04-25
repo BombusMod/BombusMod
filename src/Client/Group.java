@@ -68,6 +68,8 @@ public class Group extends IconTextElement {
     }
     
     public int getSecImageIndex() {
+        if (!collapsed)
+            return -1;
         return (unreadMessages>0)?2004:-1;
     }
     

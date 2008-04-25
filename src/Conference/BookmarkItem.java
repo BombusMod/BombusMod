@@ -46,7 +46,7 @@ public class BookmarkItem extends IconTextElement{
     boolean autojoin=false;
     boolean isUrl;
     
-    private Config cf=Config.getInstance();
+    private Config cf;
     
     public int getImageIndex(){ 
         if (isUrl) return RosterIcons.ICON_PRIVACY_ACTIVE;
@@ -67,6 +67,7 @@ public class BookmarkItem extends IconTextElement{
     /** Creates a new instance of BookmarkItem */
     public BookmarkItem() {
         super(RosterIcons.getInstance(), null);
+        cf=Config.getInstance();
     }
     
     public BookmarkItem(JabberDataBlock data) {
