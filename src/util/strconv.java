@@ -32,6 +32,8 @@
 package util;
 import Info.Version;
 import java.io.ByteArrayOutputStream;
+import java.util.Vector;
+import javax.microedition.lcdui.Font;
 //import java.lang.*;
 import ui.Time;
 
@@ -346,5 +348,79 @@ public class strconv {
         }
         
         return out.toString();
+    }
+    
+    private static String wrapSeparators=" .,-=/\\;:+*()[]<>~!@#%^_&";
+    
+    public static Vector parseMessage(String str, int availWidth, int availHeight, boolean wordsWrap, Font font) {
+        Vector lines=new Vector();
+        int state=0;
+        String txt=str;
+        int fontHeight=font.getHeight()+1;
+        
+        while (state<1) {
+            int w=0;
+            StringBuffer s=new StringBuffer();
+	    int wordWidth=0;
+	    int wordStartPos=0;
+
+            if (txt==null) {
+                state++;
+                continue;
+            }
+            
+            int pos=0;
+            while (pos<txt.length()) {
+                char c=txt.charAt(pos);
+
+                int cw=font.charWidth(c);
+                if (c!=0x20) {
+                    boolean newline= ( c==0x0d || c==0x0a /*|| c==0xa0*/ );
+                    if (wordWidth+cw>availWidth || newline) {
+                        s.append(txt.substring(wordStartPos,pos));
+                        w+=wordWidth;
+                        wordWidth=0;
+                        wordStartPos=pos;
+                        if (newline) 
+                            wordStartPos++;
+                    }
+                    if (w+wordWidth+cw>availWidth || newline) {
+                        lines.addElement(s.toString()); //lastest string in l
+                        s.setLength(0); w=0;
+                        if (fontHeight*lines.size()>availHeight){
+                            return lines; //stop when linesHeight>height
+                        }
+                    }
+                }
+                if (c==0x09) 
+                    c=0x20;
+
+                if (c>0x1f) 
+                    wordWidth+=cw;
+
+                if (wrapSeparators.indexOf(c)>=0 || !wordsWrap) {
+                    if (pos>wordStartPos) 
+                        s.append(txt.substring(wordStartPos,pos));
+                    if (c>0x1f) s.append(c);
+                    w+=wordWidth;
+                    wordStartPos=pos+1;
+                    wordWidth=0;
+                }
+                
+                pos++;
+            }
+	    if (wordStartPos!=pos)
+		s.append(txt.substring(wordStartPos,pos));
+            if (s.length()>0) {
+                lines.addElement(s.toString());
+            }
+            
+            if (lines.isEmpty()) 
+                lines.removeElementAt(lines.size()-1);  //lastest string
+            
+            state++;
+            s=null;
+        }
+        return lines;
     }
 }

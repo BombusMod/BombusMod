@@ -2189,7 +2189,7 @@ public class Roster
     }
     
     private void askReconnect(final Exception e) {
-        String error=/*e.getClass().getName()+"\n"+*/e.getMessage();
+        String error=e.getClass().getName()+"\n"+e.getMessage();
 //#if DEBUG
 //#         e.printStackTrace();
 //#endif
@@ -2197,12 +2197,11 @@ public class Roster
         if (reconnectCount>=maxReconnect) { errorLog(error); return; }
         
         reconnectCount++;
-        String topBar="("+reconnectCount+"/"+maxReconnect+") Reconnecting";
-        Msg m=new Msg(Msg.MESSAGE_TYPE_OUT, "local", topBar, error);
+        String topBar="("+reconnectCount+"/"+maxReconnect+") "+SR.MS_RECONNECT;
+        Msg m=new Msg(Msg.MESSAGE_TYPE_HISTORY, "local", topBar, error);
         messageStore(selfContact(), m);
         Stats.getInstance().save();
         new Reconnect(topBar, error, display);
-
      }
     
      public void doReconnect() {

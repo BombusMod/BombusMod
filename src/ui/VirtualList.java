@@ -88,7 +88,7 @@ public abstract class VirtualList
 //#endif
 
 //#ifdef POPUPS
-    public static PopUp popup = new PopUp();
+    public static PopUp popup;
 
     public static void setWobble(int type, Contact contact, String txt){
         popup.addPopup(type, contact, txt);
@@ -260,6 +260,10 @@ public abstract class VirtualList
     public VirtualList() {
         width=getWidth();
         height=getHeight();
+        
+//#ifdef POPUPS
+        popup = new PopUp();
+//#endif
  
         if (cf.phoneManufacturer==Config.WINDOWS) {
             setTitle("Bombus CE");
@@ -339,10 +343,14 @@ public abstract class VirtualList
     public void paint(Graphics graphics) {
         width=getWidth();	// patch for SE
         height=getHeight();
-        
+
         int mHeight=0, iHeight=0; // nokia fix
         
-        Graphics g = graphics;       
+        Graphics g = graphics;      
+//#ifdef POPUPS
+        popup.init(g);
+//#endif
+
 //#ifndef WOFFSCREEN
         if (offscreen != null)
             graphics = offscreen.getGraphics();

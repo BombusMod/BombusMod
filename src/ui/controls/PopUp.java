@@ -33,6 +33,7 @@ import java.util.Vector;
 import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
 import ui.FontCache;
+import util.strconv;
 
 public class PopUp {
     private final static int TYPE_SYSTEM = 1;
@@ -52,25 +53,30 @@ public class PopUp {
     private int border=8;
     private int padding=4;
     
-    private Font font=FontCache.getBalloonFont();
+    private Font font;
     
-    private static String wrapSeparators=" .,-=/\\;:+*()[]<>~!@#%^_&";
-    private boolean wordsWrap;
-
-    private int width=120;
-
+    private int width;
     private int height;
-    private Vector popUps = new Vector(); 
+    
+    private Vector popUps;
 
     synchronized public void addPopup(int type, Contact contact, String message){
         if (message!=null)
-            popUps.addElement(new PopUpElement(type, contact, parseMessage(message, width-border-padding)));
+            popUps.addElement(new PopUpElement(type, contact, strconv.parseMessage(message, width-border-padding, height-border-padding, false, font)));
 //#ifdef DEBUG
 //# //	System.out.println("added message to array = "+message);
 //#endif
     }
 
-    public PopUp() { }
+    public PopUp() {
+         font=FontCache.getBalloonFont();
+         popUps = new Vector();
+    }
+    
+    public void init(Graphics g) {
+        height=g.getClipHeight();
+        width=g.getClipWidth();
+    }
     
     public Contact getContact() {
         if(popUps.size()>0)
@@ -89,69 +95,7 @@ public class PopUp {
             popUps.removeAllElements();
     }
 
-    private Vector parseMessage(String str, int stringWidth) {
-        Vector lines=new Vector();
-        int state=0;
-        String txt=str;
-        
-        while (state<1) {
-            int w=0;
-            StringBuffer s=new StringBuffer();
-	    int wordWidth=0;
-	    int wordStartPos=0;
 
-            if (txt==null) {
-                state++;
-                continue;
-            }
-            
-            int pos=0;
-            while (pos<txt.length()) {
-                char c=txt.charAt(pos);
-
-                int cw=font.charWidth(c);
-                if (c!=0x20) {
-                    boolean newline= ( c==0x0d || c==0x0a /*|| c==0xa0*/ );
-                    if (wordWidth+cw>stringWidth || newline) {
-                        s.append(txt.substring(wordStartPos,pos));
-                        w+=wordWidth;
-                        wordWidth=0;
-                        wordStartPos=pos;
-                        if (newline) wordStartPos++;
-                    }
-                    if (w+wordWidth+cw>stringWidth || newline) {
-                        lines.addElement(s.toString()); //lastest string in l
-                        s.setLength(0); w=0;
-                    }
-                }
-                if (c==0x09) c=0x20;
-
-                if (c>0x1f) wordWidth+=cw;
-
-                if (wrapSeparators.indexOf(c)>=0 || !wordsWrap) {
-                    if (pos>wordStartPos) 
-                        s.append(txt.substring(wordStartPos,pos));
-                    if (c>0x1f) s.append(c);
-                    w+=wordWidth;
-                    wordStartPos=pos+1;
-                    wordWidth=0;
-                }
-                
-                pos++;
-            }
-	    if (wordStartPos!=pos)
-		s.append(txt.substring(wordStartPos,pos));
-            if (s.length()>0) {
-                lines.addElement(s.toString());
-            }
-            
-            if (lines.isEmpty()) lines.removeElementAt(lines.size()-1);  //lastest string
-            state++;
-            
-            s=null;
-        }
-        return lines;
-    }
     
     private void drawAllStrings(Graphics g, int x, int y) {
         Vector lines=((PopUpElement)popUps.elementAt(0)).getMessage();
@@ -225,9 +169,6 @@ public class PopUp {
     
 //paint
     public void paintCustom(Graphics g) {
-        this.height=g.getClipHeight();
-        this.width=g.getClipWidth();
-
 	if(popUps.size()<1)
 	    return;
         

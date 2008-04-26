@@ -39,7 +39,6 @@ import javax.microedition.lcdui.Gauge;
 import javax.microedition.lcdui.Graphics;
 import locale.SR;
 import midlet.BombusMod;
-import ui.AlertBox;
 import ui.FontCache;
 import ui.Time;
 
@@ -48,7 +47,6 @@ import ui.Time;
  * @author ad
  */
 public class AutoTask 
-        /*extends AlertBox*/
         extends Canvas
         implements Runnable, CommandListener
 {

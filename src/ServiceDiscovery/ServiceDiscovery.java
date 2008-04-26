@@ -42,6 +42,7 @@ import ui.MainBar;
 import io.NvStorage;
 import java.io.DataInputStream;
 import java.io.EOFException;
+import ui.controls.vGauge;
 
 /**
  *
@@ -221,7 +222,9 @@ public class ServiceDiscovery
             
             XmppError xe=XmppError.findInStanza(data);
             
-            new AlertBox(data.getAttribute("from"), xe.toString(), null, display, this);
+            new vGauge(data.getAttribute("from"), xe.toString(), 0, display, this) {
+                public void doAction() { }
+            };
 
             return JabberBlockListener.BLOCK_PROCESSED;
         }
@@ -308,7 +311,9 @@ public class ServiceDiscovery
             }
             if (text==SR.MS_DONE && id.endsWith("Search") ) {
                 new SearchResult(display, data);
-            } else new AlertBox(mainbar, text, null, display, null);
+            } else new vGauge(mainbar, text, 0, display, null) {
+                                        public void doAction() { }
+                                    };
         }
         redraw();
         return JabberBlockListener.BLOCK_PROCESSED;

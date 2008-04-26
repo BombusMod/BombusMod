@@ -27,6 +27,7 @@
 package ui.controls;
 
 import Client.StaticData;
+import java.util.Vector;
 import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
@@ -38,6 +39,7 @@ import locale.SR;
 import ui.FontCache;
 //#ifdef GRADIENT
 //# import ui.Gradient;
+//# import util.strconv;
 //#endif
 /**
  *
@@ -64,6 +66,9 @@ public abstract class vGauge
     private String text;
     private String mainbar;
     
+    private Vector lines;
+    private boolean parsed;
+    
 //#ifdef GRADIENT
 //#     private Gradient gr=null;
 //#endif
@@ -76,6 +81,8 @@ public abstract class vGauge
         this.mainbar=mainbar;
         this.text=text;
         this.timeout=timeout;
+
+        lines=new Vector();
 
         isShowing=true;
         
@@ -123,15 +130,11 @@ public abstract class vGauge
 
     protected void paint(Graphics g) {
         if (isShowing) {
-            String caption=text;
-
-            caption+=" - "+(timeout-value);
-            
             int width=getWidth();
             int height=getHeight();
 
             int border=10;
-            int y=height/2;
+            int y=height-8;
             int xt=(width/2);
 
             int oldColor=g.getColor();
@@ -140,6 +143,10 @@ public abstract class vGauge
 
             g.setFont(f);
             int fh=f.getHeight();
+            if (!parsed) {
+                lines=strconv.parseMessage(text, width-4, height-fh-10, false, f);
+                parsed=true;
+            }
             g.setClip(0,0, width, fh);
 //#ifdef GRADIENT
 //#             if (gr==null) {
@@ -151,7 +158,7 @@ public abstract class vGauge
          g.fillRect(0, 0, width, fh);
 //#endif
             g.setColor(0xffffff);
-            g.drawString(mainbar, xt, 0, Graphics.TOP|Graphics.HCENTER);
+            g.drawString(mainbar+" - "+(timeout-value), xt, 0, Graphics.TOP|Graphics.HCENTER);
             g.setClip(0,0, width, height);
             
             if (timeout>0) {
@@ -163,12 +170,26 @@ public abstract class vGauge
                 g.drawRect(border, y, itemWidth, itemHeight);
                 g.fillRect(border, y, filled, itemHeight);
             }
-            g.setColor(0x668866);
-            int yt=y-f.getHeight();
-            g.drawString(caption, xt, yt, Graphics.TOP|Graphics.HCENTER);
-            
+            drawAllStrings(g, 2, fh);
             g.setColor(oldColor);
         }
+    }
+    
+    private void drawAllStrings(Graphics g, int x, int y) {
+        if (lines.size()<1) return;
+        int fh=getFontHeight();
+        
+        g.setColor(0x668866);
+
+	for (int line=0; line<lines.size(); ){
+            g.drawString((String) lines.elementAt(line), x, y, Graphics.TOP|Graphics.LEFT);
+            line=line+1;
+            y += fh;
+	}
+    }
+    
+    private int getFontHeight() {
+        return f.getHeight();
     }
     
     public abstract void doAction();
