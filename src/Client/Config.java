@@ -2,7 +2,7 @@
  * Config.java
  *
  * Created on 19.03.2005, 18:37
- * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
+ * Copyright (c) 2005-2008, Eugene Stahov (evgs), http://bombus-im.org
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -181,7 +181,7 @@ type = \"-=Siemens=-\";
     public boolean fullscreen=false;
     public int def_profile=0;
 //#ifdef SMILES
-//#     public boolean smiles=true;
+    public boolean smiles=true;
 //#endif
     public boolean showOfflineContacts=false;
     public boolean showTransports=true;
@@ -196,7 +196,7 @@ type = \"-=Siemens=-\";
     public boolean popupFromMinimized=true;
     public boolean memMonitor=true;
 //#ifdef NEW_MENU
-//#     public boolean newMenu=false;
+    public boolean newMenu=false;
 //#endif
     public int font1=0;
     public int font2=0;
@@ -217,7 +217,7 @@ type = \"-=Siemens=-\";
     public boolean lightState=false;
     public boolean autoScroll=true;
 //#ifdef POPUPS
-//#     public boolean popUps=true;
+    public boolean popUps=true;
 //#endif
     public boolean showResources=true;
 //#ifdef ANTISPAM
@@ -228,13 +228,13 @@ type = \"-=Siemens=-\";
     public int messageLimit=512;
     public boolean eventDelivery=false;
 //#ifdef TRANSLIT
-//#     public boolean transliterateFilenames=false;
+    public boolean transliterateFilenames=false;
 //#endif
 //#ifdef SECONDSTRING
 //#     public boolean rosterStatus=false;
 //#endif
 //#ifdef MOOD
-//#     public boolean userMoods=true;
+//#     //public boolean userMoods=true;
 //#     public boolean sndrcvmood = false;
 //#endif
     public boolean queryExit = false;
@@ -288,7 +288,7 @@ type = \"-=Siemens=-\";
                 //prefetch images
                 RosterIcons.getInstance();
 //#ifdef SMILES
-//#                 SmilesIcons.getInstance();
+                SmilesIcons.getInstance();
 //#endif
                 allowMinimize=true;
                 greenKeyCode=-10;
@@ -338,9 +338,9 @@ type = \"-=Siemens=-\";
 	    fullscreen=inputStream.readBoolean();
 	    def_profile = inputStream.readInt();
 //#ifdef SMILES
-//# 	    smiles=inputStream.readBoolean();
+	    smiles=inputStream.readBoolean();
 //#else
-            inputStream.readBoolean();
+//#             inputStream.readBoolean();
 //#endif
 	    showTransports=inputStream.readBoolean();
 	    selfContact=inputStream.readBoolean();
@@ -386,9 +386,9 @@ type = \"-=Siemens=-\";
             isbottom=inputStream.readInt();
             confMessageCount=inputStream.readInt();
 //#ifdef NEW_MENU
-//#             newMenu=inputStream.readBoolean();
+            newMenu=inputStream.readBoolean();
 //#else
-            inputStream.readBoolean();
+//#             inputStream.readBoolean();
 //#endif
             lightState=inputStream.readBoolean();
             notifySound=inputStream.readBoolean();
@@ -406,9 +406,9 @@ type = \"-=Siemens=-\";
 //#endif
             autoScroll=inputStream.readBoolean();
 //#ifdef POPUPS
-//#             popUps=inputStream.readBoolean();
+            popUps=inputStream.readBoolean();
 //#else
-            inputStream.readBoolean();
+//#             inputStream.readBoolean();
 //#endif
             showResources=inputStream.readBoolean();
 //#ifdef ANTISPAM
@@ -421,9 +421,9 @@ type = \"-=Siemens=-\";
             lang=inputStream.readUTF();
             eventDelivery=inputStream.readBoolean();
 //#ifdef TRANSLIT
-//#             transliterateFilenames=inputStream.readBoolean();
+            transliterateFilenames=inputStream.readBoolean();
 //#else
-            inputStream.readBoolean();
+//#             inputStream.readBoolean();
 //#endif
 //#ifdef SECONDSTRING
 //#             rosterStatus=inputStream.readBoolean();
@@ -526,9 +526,9 @@ type = \"-=Siemens=-\";
 	    outputStream.writeBoolean(fullscreen);
 	    outputStream.writeInt(def_profile);
 //#ifdef SMILES
-//# 	    outputStream.writeBoolean(smiles);
+	    outputStream.writeBoolean(smiles);
 //#else
-            outputStream.writeBoolean(false);
+//#             outputStream.writeBoolean(false);
 //#endif
 	    outputStream.writeBoolean(showTransports);
 	    outputStream.writeBoolean(selfContact);
@@ -574,9 +574,9 @@ type = \"-=Siemens=-\";
             outputStream.writeInt(isbottom);
             outputStream.writeInt(confMessageCount);
 //#ifdef NEW_MENU
-//#             outputStream.writeBoolean(newMenu);
+            outputStream.writeBoolean(newMenu);
 //#else
-            outputStream.writeBoolean(false);
+//#             outputStream.writeBoolean(false);
 //#endif
             outputStream.writeBoolean(lightState);
             outputStream.writeBoolean(notifySound);
@@ -594,9 +594,9 @@ type = \"-=Siemens=-\";
 //#endif
             outputStream.writeBoolean(autoScroll);
 //#ifdef POPUPS
-//#             outputStream.writeBoolean(popUps);
+            outputStream.writeBoolean(popUps);
 //#else
-            outputStream.writeBoolean(false);
+//#             outputStream.writeBoolean(false);
 //#endif
             outputStream.writeBoolean(showResources);
 //#ifdef ANTISPAM
@@ -609,9 +609,9 @@ type = \"-=Siemens=-\";
             outputStream.writeUTF(lang);      
             outputStream.writeBoolean(eventDelivery);
 //#ifdef TRANSLIT
-//#             outputStream.writeBoolean(transliterateFilenames);
+            outputStream.writeBoolean(transliterateFilenames);
 //#else
-            outputStream.writeBoolean(false);
+//#             outputStream.writeBoolean(false);
 //#endif
 //#ifdef SECONDSTRING
 //#             outputStream.writeBoolean(rosterStatus);

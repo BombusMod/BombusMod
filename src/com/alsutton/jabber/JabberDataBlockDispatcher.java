@@ -29,6 +29,7 @@ package com.alsutton.jabber;
 //# import Console.StanzasList;
 //#endif
 import java.util.*;
+import xmpp.XmppError;
 
 /**
  * The dispatcher for blocks that have arrived. Adds new blocks to the

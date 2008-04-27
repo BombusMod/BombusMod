@@ -2,7 +2,7 @@
  * AccountForm.java
  *
  * Created on 20.03.2005, 21:20
- * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
+ * Copyright (c) 2005-2008, Eugene Stahov (evgs), http://bombus-im.org
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -121,7 +121,6 @@ class AccountForm implements CommandListener, ItemStateListener {
         keepAliveType.append("1 byte", null);
         keepAliveType.append("<iq/>", null);
         keepAliveType.append("ping", null);
-        keepAliveType.append("version-ping", null);
         keepAliveType.setSelectedIndex(account.keepAliveType, true);
         f.append(keepAliveType);
 		

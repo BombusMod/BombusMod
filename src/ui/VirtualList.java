@@ -3,7 +3,7 @@
  *
  * Created on 30.01.2005, 14:46
 *
- * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
+ * Copyright (c) 2005-2008, Eugene Stahov (evgs), http://bombus-im.org
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -62,6 +62,12 @@ public abstract class VirtualList
     private boolean reverse=false;
     private boolean paintTop=true;
     private boolean paintBottom=true;
+//#ifdef GRADIENT
+//#     private int ibHeight;
+//#     Gradient grIB;
+//#     private int mbHeight;
+//#     Gradient grMB;
+//#endif
 //#ifdef TEST
 //#     private boolean drawTest;
 //#endif
@@ -558,11 +564,12 @@ public abstract class VirtualList
 
             g.setClip(0,0, width, h);
 //#ifdef GRADIENT
-//#             /*   red:ad1010*730000   green:4c7300*78ad10   gold:8a6b10*c1971b   */
+//# 
 //#             if (getMainBarBGnd()!=getMainBarBGndBottom()) {
-//#                 // TODO: caching gradient if size not changed
-//#                 Gradient gr=new Gradient(0, 0, width, h, getMainBarBGnd(), getMainBarBGndBottom(), false);
-//#                 gr.paint(g);
+//#                 if (ibHeight!=h) {
+//#                     grIB=new Gradient(0, 0, width, h, getMainBarBGnd(), getMainBarBGndBottom(), false);
+//#                 }
+//#                 grIB.paint(g);
 //#             } else {
 //#                 g.setColor(getMainBarBGnd());
 //#                 g.fillRect(0, 0, width, h);
@@ -586,8 +593,10 @@ public abstract class VirtualList
 //#ifdef GRADIENT
 //#             /*   red:ad1010*730000   green:4c7300*78ad10   gold:8a6b10*c1971b   */
 //#             if (getMainBarBGnd()!=getMainBarBGndBottom()) {
-//#                 Gradient gr=new Gradient(0, 0, width, h, getMainBarBGnd(), getMainBarBGndBottom(), false);
-//#                 gr.paint(g);
+//#                 if (mbHeight!=h) {
+//#                     grMB=new Gradient(0, 0, width, h, getMainBarBGnd(), getMainBarBGndBottom(), false);
+//#                 }
+//#                 grMB.paint(g);
 //#             } else {
 //#                 g.setColor(getMainBarBGnd());
 //#                 g.fillRect(0, 0, width, h);

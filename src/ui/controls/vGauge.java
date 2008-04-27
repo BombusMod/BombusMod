@@ -2,7 +2,7 @@
  * vGauge.java
  *
  * Created on 21 јпрель 2008 г., 13:16
- * Copyright (c) 2006-2007, Daniel Apatin (ad), http://apatin.net.ru
+ * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -37,9 +37,9 @@ import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
 import locale.SR;
 import ui.FontCache;
+import util.strconv;
 //#ifdef GRADIENT
 //# import ui.Gradient;
-//# import util.strconv;
 //#endif
 /**
  *

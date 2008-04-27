@@ -1,7 +1,7 @@
 /*
  * RenameGroup.java
  *
- * Copyright (c) 2006-2007, Daniel Apatin (ad), http://apatin.net.ru
+ * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -27,7 +27,7 @@ package Client;
 
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
-import com.alsutton.jabber.datablocks.IqQueryRoster;
+import xmpp.extensions.IqQueryRoster;
 import java.util.Enumeration;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;

@@ -3,7 +3,7 @@
  *
  * Created on 17.07.2007, 0:57
  *
- * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
+ * Copyright (c) 2005-2008, Eugene Stahov (evgs), http://bombus-im.org
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -107,18 +107,18 @@ public class Upgrade
         StringBuffer b = new StringBuffer();
         String vUrl=(build)?Client.Config.getInstance().getStringProperty("Bombus-Upgrade", VERSION_URL):VERSION_URL;
         if (!build) {
-            SHA1 sha=new SHA1();
+            /*SHA1 sha=new SHA1();
             sha.init();
-            sha.updateASCII(strconv.unicodeToUTF(StaticData.getInstance().account.getBareJid()) );
+            sha.update(strconv.unicodeToUTF(StaticData.getInstance().account.getBareJid()) );
             sha.finish();
             
             vUrl+="?name="+Version.NAME;
             vUrl+="&version="+Version.getVersionNumber();
             vUrl+="&lang="+SR.MS_IFACELANG;
             vUrl+="&os="+Config.getOs();
-            vUrl+="&hash="+sha.getDigestHex();
+            vUrl+="&hash="+sha.getDigestHex();*/
         } else {
-            vUrl+="&vers=new";
+            vUrl+="?vers=new";
         }
         try {
             c = (HttpConnection) Connector.open(vUrl);

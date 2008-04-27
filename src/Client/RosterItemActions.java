@@ -2,7 +2,7 @@
  * RosterItemActions.java
  *
  * Created on 11.12.2005, 19:05
- * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
+ * Copyright (c) 2005-2008, Eugene Stahov (evgs), http://bombus-im.org
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -44,10 +44,12 @@ import Conference.affiliation.Affiliations;
 //#ifdef SERVICE_DISCOVERY
 import ServiceDiscovery.ServiceDiscovery;
 //#endif
-import com.alsutton.jabber.datablocks.IqLast;
-import com.alsutton.jabber.datablocks.IqPing;
-import com.alsutton.jabber.datablocks.IqTimeReply;
-import com.alsutton.jabber.datablocks.IqVersionReply;
+
+import xmpp.extensions.IqLast;
+import xmpp.extensions.IqPing;
+import xmpp.extensions.IqTimeReply;
+import xmpp.extensions.IqVersionReply;
+
 import com.alsutton.jabber.datablocks.Presence;
 //#if FILE_TRANSFER
 import io.file.transfer.TransferSendFile;
@@ -330,7 +332,6 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
         
         String to=null;
         if (isContact) to=(index<3)? c.getJid() : c.getBareJid();
-
             switch (index) {
 //#ifdef CHECKERS
 //#                 case 777: // checkers
@@ -353,7 +354,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
 //#endif
                 case 0: // info
                     sd.roster.setQuerySign(true);
-                    sd.roster.theStream.send(new IqVersionReply(to));
+                    sd.roster.theStream.send(IqVersionReply.query(to));
                     break;
                 case 86: // info
 //#ifdef POPUPS
@@ -382,7 +383,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                     sd.roster.blockNotify(-111,10000); //block sounds to 10 sec
                     //querysign=true; displayStatus();
                     Presence presence = new Presence(
-                            Presence.PRESENCE_OFFLINE, -1, "", null);
+                    Presence.PRESENCE_OFFLINE, -1, "", null);
                     presence.setTo(c.getJid());
                     sd.roster.theStream.send( presence );
                     break;
@@ -428,20 +429,20 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                 case 889: //idle
                 {
                     sd.roster.setQuerySign(true);
-                    sd.roster.theStream.send(new IqLast(c.getJid()));
+                    sd.roster.theStream.send(IqLast.query(c.getJid()));
                     break;
                 }
                 case 890: //seen & online
                 {
                     sd.roster.setQuerySign(true);
-                    sd.roster.theStream.send(new IqLast(c.getBareJid()));
+                    sd.roster.theStream.send(IqLast.query(c.getBareJid()));
                     break;
                 }
                 
                 case 891: //time
                 {
                     sd.roster.setQuerySign(true);
-                    sd.roster.theStream.send(new IqTimeReply(c.getJid()));
+                    sd.roster.theStream.send(IqTimeReply.query(c.getJid()));
                     break;
                 }
 //#ifdef CLIPBOARD
@@ -466,7 +467,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                     try {
                         sd.roster.setQuerySign(true);
                         //c.setPing();
-                        sd.roster.theStream.send(new IqPing(c.getJid(), "_ping_"+Time.utcTimeMillis()));
+                        sd.roster.theStream.send(IqPing.query(c.getJid(), "_ping_"+Time.utcTimeMillis()));
                     } catch (Exception e) {/*no messages*/}
                     break;
                 }

@@ -28,7 +28,7 @@ package com.alsutton.jabber.datablocks;
 import Client.EntityCaps;
 import com.alsutton.jabber.*;
 import images.RosterIcons;
-
+import xmpp.XmppError;
 import java.util.*;
 import locale.SR;
 

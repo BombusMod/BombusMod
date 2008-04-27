@@ -1,9 +1,9 @@
 /*
- * IqRegister.java
+ * IqGetVCard.java
  *
- * Created on 24.04.2005, 3:00
+ * Created on 4.05.2005, 22:48
  *
- * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
+ * Copyright (c) 2005-2008, Eugene Stahov (evgs), http://bombus-im.org
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -25,24 +25,18 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-package com.alsutton.jabber.datablocks;
+package xmpp.extensions;
 
-import com.alsutton.jabber.*;
+import com.alsutton.jabber.datablocks.*;
 
 /**
- *
- * @author Evg_S
+ * Class representing the iq message block
  */
-public class IqRegister extends Iq
+
+public class IqGetVCard extends Iq
 {
-    
-    /** Creates a new instance of IqRegister */
-    public IqRegister(String username, String password, String id) {
-        super(null, Iq.TYPE_SET, id );
-        
-        JabberDataBlock qB = addChildNs("query", "jabber:iq:register" );
-        qB.addChild("username",username);
-        qB.addChild("password",password);
-        
+    public IqGetVCard(String to, String id ) {
+        super(to, Iq.TYPE_GET, id );
+        addChildNs("vCard", "vcard-temp" );
     }
 }

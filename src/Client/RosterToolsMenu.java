@@ -2,7 +2,7 @@
  * RosterToolsMenu.java
  *
  * Created on 11.12.2005, 20:43
- * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
+ * Copyright (c) 2005-2008, Eugene Stahov (evgs), http://bombus-im.org
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -30,13 +30,13 @@ package Client;
 //# import Console.XMLList;
 //#endif
 //#ifdef PRIVACY
-//# import PrivacyLists.PrivacySelect;
+import PrivacyLists.PrivacySelect;
 //#endif
 //#if AUTOTASK
 //# import AutoTasks.AutoTaskForm;
 //#endif
 //#ifdef SERVICE_DISCOVERY
-//# import ServiceDiscovery.ServiceDiscovery;
+import ServiceDiscovery.ServiceDiscovery;
 //#endif
 //#if (FILE_IO && HISTORY)
 //# import History.HistoryConfig;
@@ -45,7 +45,7 @@ import UserMood.MoodSelect;
 import javax.microedition.lcdui.Display;
 import locale.SR;
 //#ifdef COLORS
-//# import Colors.ColorForm;
+import Colors.ColorForm;
 //#endif
 import ui.Menu;
 import ui.MenuItem;
@@ -58,6 +58,7 @@ import vcard.vCardForm;
 //# import Info.Upgrade;
 //#endif
 import Colors.ColorScheme;
+import xmpp.extensions.IqGmail;
 
 public class RosterToolsMenu
         extends Menu {
@@ -68,12 +69,12 @@ public class RosterToolsMenu
     public RosterToolsMenu(Display display) {
         super(SR.MS_TOOLS);
 //#ifdef SERVICE_DISCOVERY
-//#         if (sd.roster.isLoggedIn())
-//#             addItem(SR.MS_DISCO, 0, 0x13);
+        if (sd.roster.isLoggedIn())
+            addItem(SR.MS_DISCO, 0, 0x13);
 //#endif
 //#ifdef PRIVACY
-//#         if (sd.roster.isLoggedIn())
-//#             addItem(SR.MS_PRIVACY_LISTS, 1, 0x46);
+        if (sd.roster.isLoggedIn())
+            addItem(SR.MS_PRIVACY_LISTS, 1, 0x46);
 //#endif
 //#ifdef MOOD
 //#         if (sd.roster.useUserMood && cf.sndrcvmood && sd.roster.isLoggedIn())
@@ -90,18 +91,18 @@ public class RosterToolsMenu
         addItem(SR.MS_ROOT,6, 0x0f10);
 //#endif
 //#if (FILE_IO && FILE_TRANSFER)
-//#         if (sd.roster.isLoggedIn())
-//#             addItem(SR.MS_FILE_TRANSFERS, 7, 0x0f34);
+        if (sd.roster.isLoggedIn())
+            addItem(SR.MS_FILE_TRANSFERS, 7, 0x0f34);
 //#endif
 //#ifdef COLORS
-//#         addItem(SR.MS_COLOR_TUNE, 8, 0x0f25);
+        addItem(SR.MS_COLOR_TUNE, 8, 0x0f25);
 //#endif
 //#if IMPORT_EXPORT
 //#         addItem(SR.MS_IMPORT_EXPORT, 9, 0x0f03);
 //#endif
         addItem(SR.MS_NOTICES_OPTIONS, 10, 0x0f17);
 //#ifdef POPUPS
-//#         addItem(SR.MS_STATS, 11, 0x0f30);
+        addItem(SR.MS_STATS, 11, 0x0f30);
 //#endif
 //#ifdef CHECK_VERSION
 //#         addItem(SR.MS_CHECK_UPDATE, 12, 0x46);
@@ -113,8 +114,8 @@ public class RosterToolsMenu
 //#             addItem(SR.MS_CUSTOM_KEYS, 14, 0x0f03);
 //#endif
 //#if SASL_XGOOGLETOKEN
-        if (sd.account.isGmail() && sd.roster.isLoggedIn())
-            addItem(SR.MS_CHECK_GOOGLE_MAIL, 15,0x46);
+//#         if (sd.account.isGmail() && sd.roster.isLoggedIn())
+//#             addItem(SR.MS_CHECK_GOOGLE_MAIL, 15,0x46);
 //#endif 
 //#if AUTOTASK
 //#         addItem(SR.MS_AUTOTASKS, 16, 0x0f03);
@@ -136,15 +137,15 @@ public class RosterToolsMenu
         int index=me.index;
         switch (index) {
 //#ifdef SERVICE_DISCOVERY
-//#             case 0: // Service Discovery
-//#                 if (connected) new ServiceDiscovery(display, null, null);
-//#                 break;
+            case 0: // Service Discovery
+                if (connected) new ServiceDiscovery(display, null, null);
+                break;
 //#endif
 
 //#ifdef PRIVACY
-//#             case 1: // Privacy Lists
-//#                 if (connected) new PrivacySelect(display);
-//#                 break;
+            case 1: // Privacy Lists
+                if (connected) new PrivacySelect(display);
+                break;
 //#endif
             case 2:
                 if (! connected) break;
@@ -176,15 +177,15 @@ public class RosterToolsMenu
 //#endif
 
 //#if (FILE_TRANSFER)
-//#             case 7:
-//#                 new io.file.transfer.TransferManager(display);
-//#                 return;
+            case 7:
+                new io.file.transfer.TransferManager(display);
+                return;
 //#endif
                 
 //#ifdef COLORS
-//#             case 8:
-//#                 new ColorForm(display);
-//#                 return;
+            case 8:
+                new ColorForm(display);
+                return;
 //#endif
                 
 //#if IMPORT_EXPORT
@@ -196,9 +197,9 @@ public class RosterToolsMenu
                 new AlertCustomizeForm(display);
                 return;
 //#ifdef POPUPS
-//#             case 11: //traffic stats
-//#                 sd.roster.showStats();
-//#                 return;
+            case 11: //traffic stats
+                sd.roster.showStats();
+                return;
 //#endif
                 
 //#ifdef CHECK_VERSION
@@ -217,9 +218,9 @@ public class RosterToolsMenu
 //#endif
                 
 //#if SASL_XGOOGLETOKEN
-            case 15: //mail check
-                sd.roster.sendGmailReq();;
-		return; 
+//#             case 15: //mail check
+//#                 sd.roster.theStream.send(IqGmail.query());
+//# 		return; 
 //#endif
                 
 //#if AUTOTASK

@@ -2,7 +2,7 @@
  * MucContact.java
  *
  * Created on 2.05.2006, 14:05
- * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
+ * Copyright (c) 2005-2008, Eugene Stahov (evgs), http://bombus-im.org
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -35,7 +35,7 @@ import images.RosterIcons;
 import locale.SR;
 import Client.Msg;
 import ui.VirtualList;
-import com.alsutton.jabber.XmppError;
+import xmpp.XmppError;
 
 /**
  *
@@ -197,9 +197,9 @@ public class MucContact extends Contact{
                     }
                     b.append((statusCode==301)? SR.MS_WAS_BANNED : SR.MS_WAS_KICKED );
 //#ifdef POPUPS
-//#                     if (((ConferenceGroup)getGroup()).getSelfContact() == this ) {
-//#                         VirtualList.setWobble(3, (Contact) null, nick+((statusCode==301)? SR.MS_WAS_BANNED : SR.MS_WAS_KICKED)+"\n"+reason);
-//#                     }
+                    if (((ConferenceGroup)getGroup()).getSelfContact() == this ) {
+                        VirtualList.setWobble(3, (Contact) null, nick+((statusCode==301)? SR.MS_WAS_BANNED : SR.MS_WAS_KICKED)+"\n"+reason);
+                    }
 //#endif
                     b.append("(");
                     b.append(reason);
@@ -331,11 +331,11 @@ public class MucContact extends Contact{
     
     private void appendL(StringBuffer sb, String append){
 //#if NICK_COLORS
-//#         sb.append((char)1);
+        sb.append((char)1);
 //#endif
         sb.append(append);
 //#if NICK_COLORS
-//#         sb.append((char)2);
+        sb.append((char)2);
 //#endif
     }
     

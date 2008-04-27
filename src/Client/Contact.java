@@ -2,7 +2,7 @@
  * Contact.java
  *
  * Created on 6.01.2005, 19:16
- * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
+ * Copyright (c) 2005-2008, Eugene Stahov (evgs), http://bombus-im.org
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -103,7 +103,7 @@ public class Contact extends IconTextElement{
 //#endif
     public Jid jid;
     public String bareJid;    // for roster/subscription manipulating
-    protected int status;
+    public int status;
     public int priority;
     private Group group;
     public int transport;

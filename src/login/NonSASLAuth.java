@@ -3,7 +3,7 @@
  *
  * Created on 8.07.2006, 22:16
  *
- * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
+ * Copyright (c) 2005-2008, Eugene Stahov (evgs), http://bombus-im.org
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -35,7 +35,7 @@ import com.alsutton.jabber.datablocks.Iq;
 import com.ssttr.crypto.SHA1;
 import locale.SR;
 import util.strconv;
-import com.alsutton.jabber.XmppError;
+import xmpp.XmppError;
 
 /**
  *

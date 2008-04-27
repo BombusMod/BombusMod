@@ -2,7 +2,7 @@
  * AccountRegister.java
  *
  * Created on 24.04.2005, 2:36
- * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
+ * Copyright (c) 2005-2008, Eugene Stahov (evgs), http://bombus-im.org
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -31,6 +31,7 @@ import com.alsutton.jabber.datablocks.*;
 import javax.microedition.lcdui.*;
 import locale.SR;
 import ui.*;
+import xmpp.XmppError;
 
 /**
  *
@@ -56,8 +57,7 @@ public class AccountRegister
     public AccountRegister(Account account, Display display, Displayable parentView) {
         this.display=display;
         this.parentView=parentView;//display.getCurrent();
-        
-        
+
         raccount=account;
         spl.setProgress(SR.MS_STARTUP,5);
         display.setCurrent(spl);
@@ -89,12 +89,13 @@ public class AccountRegister
 
     public void beginConversation(String SessionId) {
         spl.setProgress(SR.MS_REGISTERING,60);
-        IqRegister iq=new IqRegister(raccount.getUserName(),raccount.getPassword(), "regac");
-        try {
-            theStream.send(iq);
-        } catch (Exception e) {
-            //e.printStackTrace();
-        }
+        Iq iqreg=new Iq(null, Iq.TYPE_SET, "regac" );
+        
+        JabberDataBlock qB = iqreg.addChildNs("query", "jabber:iq:register" );
+        qB.addChild("username", raccount.getUserName());
+        qB.addChild("password", raccount.getPassword());
+        
+        theStream.send(iqreg);
     }
     public int blockArrived( JabberDataBlock data ) {
         //destroyView();

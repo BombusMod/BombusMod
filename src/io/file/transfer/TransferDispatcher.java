@@ -3,7 +3,7 @@
  *
  * Created on 28.10.2006, 19:44
  *
- * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
+ * Copyright (c) 2005-2008, Eugene Stahov (evgs), http://bombus-im.org
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -35,7 +35,7 @@ import com.alsutton.jabber.datablocks.Message;
 import java.util.Enumeration;
 import java.util.Vector;
 import util.strconv;
-import com.alsutton.jabber.XmppError;
+import xmpp.XmppError;
 
 /**
  *

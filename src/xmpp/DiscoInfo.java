@@ -1,6 +1,6 @@
 /*
  * DiscoInfo.java
- * Copyright (c) 2006-2007, Daniel Apatin (ad), http://apatin.net.ru
+ * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,40 +23,36 @@
  *
  */
 
-package Client;
+package xmpp;
 
+import Client.*;
 import com.alsutton.jabber.JabberBlockListener;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
 import java.util.Enumeration;
 import java.util.Vector;
+import xmpp.extensions.IqMood;
 
 public class DiscoInfo implements JabberBlockListener{
     StaticData sd = StaticData.getInstance();
+    //Vector serverFeatures=new Vector();
     public int blockArrived(JabberDataBlock data) {
         try {
             if (!(data instanceof Iq)) return JabberBlockListener.BLOCK_REJECTED;
-            if (data.getAttribute("id").equals("getServerFeatures")) {
-               
-                Vector serverFeatures=new Vector();
+            if (data.getAttribute("id").equals("getServerFeatures") && data.getAttribute("type").equals("result")) {
                 //System.out.println(data.toString());
                 for (Enumeration e=data.findNamespace("query", "http://jabber.org/protocol/disco#info").getChildBlocks().elements(); e.hasMoreElements(); ){
                     JabberDataBlock feature=(JabberDataBlock) e.nextElement();
-                    
-                    if (feature.getTagName().equals("feature")) {
-                        String feat=feature.getAttribute("var");
-                        if (feat!=null)
-                            if (feat.length()>0)
-                                serverFeatures.addElement(feature.getAttribute("var"));
-                    }
 //#ifdef MOOD
-//#                     else if (feature.getTagName().equals("identity")) {
+//#                         if (feature.getTagName().equals("identity")) {
 //#                         if (feature.getAttribute("category").equals("pubsub"))
 //#                             if (feature.getAttribute("type").equals("pep")) {
 //#                                 sd.roster.useUserMood=true;
+//#                                 sd.roster.theStream.addBlockListener(new IqMood());
 //#if DEBUG
 //#                                 System.out.println("useUserMood=true");
 //#endif
+//#                                 break;
 //#                             }
 //#                     }
 //#endif

@@ -2,7 +2,7 @@
  * ContactEdit.java
  *
  * Created on 7.05.2005, 2:15
- * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
+ * Copyright (c) 2005-2008, Eugene Stahov (evgs), http://bombus-im.org
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -64,7 +64,7 @@ public final class ContactEdit
     Command cmdCancel=new Command(SR.MS_CANCEL,Command.BACK,99);
     
     boolean newContact=true;
-    Config cf=Config.getInstance();
+    Config cf;
 
     StaticData sd=StaticData.getInstance();
     //StoreContact sC;
@@ -72,7 +72,7 @@ public final class ContactEdit
     public ContactEdit(Display display, Contact c) {
         this.display=display;
         parentView=display.getCurrent();
-        
+        cf=Config.getInstance();
         Vector groups=sd.roster.groups.getRosterGroupNames();
         
         f=new Form(SR.MS_ADD_CONTACT);
@@ -162,7 +162,7 @@ public final class ContactEdit
             f.append(tJid);
             f.append(tTranspList);
         }
-        updateChoise(tJid.getString(),tTranspList);
+        updateChoice(tJid.getString(),tTranspList);
         f.append(tNick);
         
         
@@ -186,10 +186,6 @@ public final class ContactEdit
         
         display.setCurrent(f);
     }
-    
-    //public interface StoreContact {
-    //    public void storeContact(String jid, String name, String group, boolean newContact);
-    //}
 
     public void commandAction(Command c, Displayable d) {
         if (c==cmdOk) {
@@ -205,11 +201,10 @@ public final class ContactEdit
                         group=(gSel>0)? tGrpList.getString(gSel) : null; // nokia fix
                     }
                 } catch (Exception e) {} // nokia fix
-                
-                // СЃРѕС…СЂР°РЅРµРЅРёРµ РєРѕРЅС‚Р°РєС‚Р°
+
                 boolean ask[]=new boolean[1];
                 tAskSubscrCheckBox.getSelectedFlags(ask);
-                sd.roster.storeContact(jid,name,group, ask[0]);
+                sd.roster.storeContact(jid, name, group, ask[0]);
                 destroyView();
                 return;
             }
@@ -237,7 +232,7 @@ public final class ContactEdit
         return tGrpList.getString(index);
     }
     
-    private void updateChoise(String str, ChoiceGroup grp) {
+    private void updateChoice(String str, ChoiceGroup grp) {
         int sz=grp.size();
         int set=sz-1;
         for (int i=0; i<sz; i++) {
@@ -285,7 +280,7 @@ public final class ContactEdit
             String s1=tJid.getString();
             int at=tJid.getString().indexOf('@');
             try {
-                updateChoise(s1.substring(at+1), tTranspList);
+                updateChoice(s1.substring(at+1), tTranspList);
             } catch (Exception e) {}
         }
     }

@@ -1,6 +1,6 @@
 /*
  * MoodSelect.java
- * Copyright (c) 2006-2007, Daniel Apatin (ad), http://apatin.net.ru
+ * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -26,7 +26,7 @@
 package UserMood;
 import Client.Config;
 import Client.StaticData;
-import com.alsutton.jabber.datablocks.IqMood;
+import xmpp.extensions.IqMood;
 import java.util.*;
 import javax.microedition.lcdui.*;
 import javax.microedition.pim.Contact;
@@ -76,12 +76,12 @@ public class MoodSelect extends VirtualList implements CommandListener {
     
     public void eventOk(){
         destroyView();
-        StaticData.getInstance().roster.theStream.send(new IqMood(getSel().getName(),null));
+        StaticData.getInstance().roster.theStream.send(IqMood.query(getSel().getName(),null));
     }
 
     private void clearMood() {
         destroyView();
-        StaticData.getInstance().roster.theStream.send(new IqMood(null,null));
+        StaticData.getInstance().roster.theStream.send(IqMood.query(null,null));
     }
     
     public int getItemCount(){
@@ -131,7 +131,7 @@ public class MoodSelect extends VirtualList implements CommandListener {
         
         public void commandAction(Command c, Displayable d){
             if (c==cmdOk) {
-                StaticData.getInstance().roster.theStream.send(new IqMood(mood.getName(),tfMessage.getString()));
+                StaticData.getInstance().roster.theStream.send(IqMood.query(mood.getName(),tfMessage.getString()));
                 goToRoster();
             } else {
                 destroyView();

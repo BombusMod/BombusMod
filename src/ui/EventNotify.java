@@ -3,7 +3,7 @@
  *
  * Created on 3.03.2005, 23:37
  *
- * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
+ * Copyright (c) 2005-2008, Eugene Stahov (evgs), http://bombus-im.org
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,8 +28,8 @@
 package ui;
 import javax.microedition.lcdui.*;
 import java.io.InputStream;
-
-import javax.microedition.media.*;
+import javax.microedition.media.Manager;
+import javax.microedition.media.Player;
 import javax.microedition.media.PlayerListener;
 import javax.microedition.media.control.VolumeControl;
 

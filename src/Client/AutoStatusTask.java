@@ -2,7 +2,7 @@
  * AutoStatusTask.java
  *
  * Created on 12.06.2007, 3:12
- * Copyright (c) 2006-2007, Daniel Apatin (ad), http://apatin.net.ru
+ * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License

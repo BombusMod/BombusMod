@@ -7,8 +7,9 @@
  * and open the template in the editor.
  */
 
-package com.alsutton.jabber;
+package xmpp;
 
+import com.alsutton.jabber.*;
 import java.util.Enumeration;
 
 /**
@@ -164,8 +165,7 @@ public class XmppError {
     }
     
     public static XmppError decodeStanzaError(JabberDataBlock error) {
-        if (!error.getTagName().equals("error"))
-            throw new IllegalArgumentException();
+        if (!error.getTagName().equals("error")) throw new IllegalArgumentException();
         return decodeError(error, "urn:ietf:params:xml:ns:xmpp-stanzas");
     }
     
@@ -173,7 +173,7 @@ public class XmppError {
         if (!error.getTagName().equals("stream:error")) throw new IllegalArgumentException();
         return decodeError(error, "urn:ietf:params:xml:ns:xmpp-streams");
     }
-         
+        
     private static XmppError decodeError(JabberDataBlock error, String ns) {
         int errCond=NONE;
         String text=null;
@@ -229,7 +229,7 @@ public class XmppError {
                     case 504: errCond=REMOTE_SERVER_TIMEOUT; break;
                     default: errCond=UNDEFINED_CONDITION;
                 }
-            } catch (Exception e) { errCond=UNDEFINED_CONDITION; }
+            } catch (Exception e) { errCond=UNDEFINED_CONDITION; };
         }
         
         XmppError xe=new XmppError(errCond, text);

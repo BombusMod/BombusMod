@@ -29,10 +29,13 @@ package io;
 
 import Client.Config;
 import Client.StaticData;
+import Info.Version;
 import com.ssttr.crypto.MD5;
+import com.ssttr.crypto.SHA1;
 import java.util.Hashtable;
 import javax.microedition.io.Connector;
 import javax.microedition.io.HttpConnection;
+import locale.SR;
 import util.strconv;
 
 /**
@@ -57,20 +60,16 @@ public class DnsSrvResolver {
         
         StringBuffer url=new StringBuffer(resolverUrl);
         url.append("?host=").append(server);
-        url.append("&client=").append(strconv.urlPrep(Info.Version.getNameVersion()));
+        SHA1 sha=new SHA1();
+        sha.init();
+        sha.update(strconv.unicodeToUTF(StaticData.getInstance().account.getBareJid()) );
+        sha.finish();
         
-        url.append("%2F");
-        if (Client.Config.getInstance().enableVersionOs) {
-            url.append(strconv.urlPrep(Config.getOs()));
-        }
-        url.append("%2F");
-        
-        MD5 md5sum=new MD5();
-        md5sum.init();
-        md5sum.update(StaticData.getInstance().account.getBareJid());
-        md5sum.finish();
-        
-        url.append(md5sum.getDigestHex());
+        url.append("&name=").append(strconv.urlPrep(Version.NAME));
+        url.append("&version=").append(strconv.urlPrep(Version.getVersionNumber()));
+        url.append("&lang=").append(strconv.urlPrep(SR.MS_IFACELANG));
+        url.append("&os=").append(strconv.urlPrep(Config.getOs()));
+        url.append("&hash=").append(sha.getDigestHex());
 
         //System.out.println(url.toString());
         

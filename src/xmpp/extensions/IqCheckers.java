@@ -7,9 +7,10 @@
  * and open the template in the editor.
  */
 
-package com.alsutton.jabber.datablocks;
+package xmpp.extensions;
 
 import com.alsutton.jabber.JabberDataBlock;
+import com.alsutton.jabber.datablocks.*;
 
 /**
  *

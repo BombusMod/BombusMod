@@ -39,12 +39,10 @@ import com.alsutton.jabber.datablocks.*;
 //import com.alsutton.xmlparser.*;
 import xml.*;
 import locale.SR;
+import xmpp.XmppError;
 
-
-
-/**
- * The stream to a jabber server.
- */
+import xmpp.extensions.IqPing;
+import xmpp.extensions.IqPing;
 
 public class JabberStream implements XMLEventListener, Runnable {
     
@@ -189,14 +187,6 @@ public class JabberStream implements XMLEventListener, Runnable {
      */
     public void sendKeepAlive(int type) throws IOException {
         switch (type){
-            case 4:
-                if (pingSent) {
-                    dispatcher.broadcastTerminatedConnection(new Exception("Version Ping Timeout"));
-                } else {
-                    //System.out.println("Version Ping myself");
-                    versionPing();
-                }
-                break;
             case 3:
                 if (pingSent) {
                     dispatcher.broadcastTerminatedConnection(new Exception("Ping Timeout"));
@@ -354,17 +344,10 @@ public class JabberStream implements XMLEventListener, Runnable {
             parent.addChild( currentBlock );
         currentBlock = parent;
     }
-    private void versionPing() {
-        JabberDataBlock ping=new Iq(null, Iq.TYPE_GET, "ping");
-        ping.addChildNs("query", "jabber:iq:version");
-        pingSent=true;
-        send(ping);
-    }
 
     private void ping() {
-        JabberDataBlock ping=new IqPing(null, "ping");
         pingSent=true;
-        send(ping);
+        send(IqPing.query(StaticData.getInstance().account.getJid(), "ping"));
     }
 
 //#if ZLIB

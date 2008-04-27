@@ -2,7 +2,7 @@
  * Roster.java
  *
  * Created on 6.01.2005, 19:16
- * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
+ * Copyright (c) 2005-2008, Eugene Stahov (evgs), http://bombus-im.org
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -60,8 +60,18 @@ import java.util.*;
 import javax.microedition.lcdui.*;
 import ui.*;
 import com.siemens.mp.game.Light;
+import xmpp.DiscoInfo;
+
+import xmpp.XmppError;
+import xmpp.extensions.IqQueryRoster;
+import xmpp.extensions.IqGmail;
+import xmpp.extensions.IqLast;
+import xmpp.extensions.IqPing;
+import xmpp.extensions.IqVersionReply;
+import xmpp.extensions.IqTimeReply;
 
 //#if MOOD
+//# import xmpp.extensions.IqMood;
 //# import UserMood.MoodSelect;
 //# import UserMood.MoodList;
 //# import UserMood.Mood;
@@ -128,7 +138,7 @@ public class Roster
     public MessageEdit me=null;
 
 //#if MOOD
-//#     private MoodList mi;
+//#     //private MoodList mi;
 //#     public boolean useUserMood;
 //#endif
 
@@ -142,7 +152,7 @@ public class Roster
     public int reconnectCount;
     boolean reconnect=false;
     
-    boolean querysign=false;
+    public boolean querysign=false;
     
 //#ifdef AUTOSTATUS
 //#     private AutoStatusTask autostatus;
@@ -154,7 +164,7 @@ public class Roster
 //#     private String token;
 //#endif
     
-    private long lastMessageTime=Time.utcTimeMillis();
+    public long lastMessageTime=Time.utcTimeMillis();
 
     public static String startTime=Time.dispLocalTime();
 	
@@ -194,7 +204,7 @@ public class Roster
 //#endif
         setLight(cf.lightState);
 //#if MOOD
-//#         mi=MoodList.getInstance();
+//#         //mi=MoodList.getInstance();
 //#endif
         setLight(cf.lightState);
         
@@ -228,7 +238,8 @@ public class Roster
     public void setLight(boolean state) {
         if (cf.phoneManufacturer==Config.SIEMENS || cf.phoneManufacturer==Config.SIEMENS2) {
             try {
-                if (state) Light.setLightOn();
+                if (state) 
+                    Light.setLightOn();
                 else Light.setLightOff();  
             } catch( Exception e ) { }
         }
@@ -1116,13 +1127,22 @@ public class Roster
      // enable File transfers
      theStream.addBlockListener(TransferDispatcher.getInstance());
 //#endif
+        theStream.addBlockListener(new IqPing());
+        theStream.addBlockListener(new IqLast());
+        theStream.addBlockListener(new IqVersionReply());
+        theStream.addBlockListener(new IqTimeReply());
+//#if SASL_XGOOGLETOKEN
+//#         if (StaticData.getInstance().account.isGmail())
+//#             theStream.addBlockListener(new IqGmail());
+//#endif
 //#ifndef WMUC
         //query bookmarks
         theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
 //#endif
         
 //#ifdef MOOD
-//#         theStream.addBlockListener(new DiscoInfo());
+//#         if (cf.sndrcvmood)
+//#             theStream.addBlockListener(new DiscoInfo());
 //#endif
     }
 
@@ -1133,16 +1153,12 @@ public class Roster
 
     public int blockArrived( JabberDataBlock data ) {
         try {
-            
             if( data instanceof Iq ) {
                 String from=data.getAttribute("from");
                 String type = (String) data.getTypeAttribute();
                 String id=(String) data.getAttribute("id");
                 
                 if (id!=null) {
-                    if (id.startsWith("ping")) 
-                        theStream.pingSent=false; //incomplete, test on jabber:iq:version
-                    
                     if (id.startsWith("nickvc")) {
                         if (type.equals("get") || type.equals("set")) return JabberBlockListener.BLOCK_REJECTED;
                         
@@ -1178,89 +1194,10 @@ public class Roster
                     //???TODO: handlers for type='error'
                     //}
                     
-                    if (id.equals("getver")) {
-                        String body=null;
-                        if (type.equals("error")) {
-                            body=SR.MS_NO_VERSION_AVAILABLE;
-                            querysign=false;
-                        } else if (type.equals("result")) {
-                            JabberDataBlock vc=data.getChildBlock("query");
-                            if (vc!=null) {
-                                body=IqVersionReply.dispatchVersion(vc);
-                            }
-                            querysign=false;
-                        }
-                        if (body!=null) { 
-                            Msg m=new Msg(Msg.MESSAGE_TYPE_SYSTEM, "ver", SR.MS_CLIENT_INFO, body);
-                            messageStore( getContact(from, false), m); 
-                            redraw();
-                            return JabberBlockListener.BLOCK_PROCESSED;
-                        } 
-                    }
-                    
-                    if (id.equals("last")) {
-                        from=data.getAttribute("from");
-                        String body=null;
-                        if (type.equals("error")) {
-                            body="error";
-                            querysign=false;
-                        } else if (type.equals("result")) {
-                            JabberDataBlock tm=data.getChildBlock("query");
-                            if (tm!=null) {
-                                body=IqLast.dispatchLast(tm);
-                            }
-                            querysign=false;
-                        }
-                        if (body!=null) {
-                            String lastType=SR.MS_SEEN;
-                            if (getContact(from, false).status<Presence.PRESENCE_OFFLINE)
-                                lastType=SR.MS_ONLINE_TIME;
-                            String status=(data.getChildBlockText("query").length()!=0)?" ("+data.getChildBlockText("query")+")":"";
-                            Msg m=new Msg(Msg.MESSAGE_TYPE_SYSTEM, from, lastType, body+status);
-                            messageStore( getContact(from, false), m);
-                            redraw();
-                            return JabberBlockListener.BLOCK_PROCESSED;
-                        }
-                    }
-                    
-                    if (id.equals("time")) {
-                        from=data.getAttribute("from");
-                        String body=null;
-                        if (type.equals("error")) {
-                            body="error";
-                            querysign=false;
-                        } else if (type.equals("result")) {
-                            JabberDataBlock tm=data.getChildBlock("query");
-                            if (tm!=null) {
-                                body=IqTimeReply.dispatchTime(tm);
-                            }
-                            querysign=false;
-                        }
-                        if (body!=null) {
-                            Msg m=new Msg(Msg.MESSAGE_TYPE_SYSTEM, from, SR.MS_TIME, body);
-                            messageStore( getContact(from, false), m);
-                            redraw();
-                            return JabberBlockListener.BLOCK_PROCESSED;
-                        }
-                    }
-                    
-                    if (id.startsWith("_ping_") && type.equals("result")) {
-                        String pong = pingToString(id.substring(6));
 
-                        Contact c=getContact(from, true);
-                        querysign=false;
-                        c.setIncoming(Contact.INC_NONE);
-                        from=data.getAttribute("from");
-
-                        if (pong!="") {
-                            Msg m=new Msg(Msg.MESSAGE_TYPE_SYSTEM, from, SR.MS_PING, pong);
-                            messageStore(getContact(from, false), m);
-                            redraw();
-                        }
-                    }
-                    
-                    if (id.equals("getros")) if (type.equals("result")) {
-
+                } // id!=null
+                if ( type.equals( "result" ) ) {
+                    if (id.equals("getros")){
                             theStream.enableRosterNotify(false);
 
                             processRoster(data);
@@ -1280,128 +1217,30 @@ public class Roster
                                 sendPresence(cf.loginstatus, null);
                             }
 
-                            SplashScreen.getInstance().close(); // display.setCurrent(this);
+                            SplashScreen.getInstance().close();
 
-    //#ifndef WMUC
-                            //loading bookmarks
-                            //query bookmarks
-                            //theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
-    //#endif
                             return JabberBlockListener.BLOCK_PROCESSED;
                         }
-    //#if SASL_XGOOGLETOKEN
-//#                     if (id.equals("mail-request")) {
-//#                             if (type.equals("result")) {
-//#                                 JabberDataBlock mailbox=data.findNamespace("mailbox", "google:mail:notify");
-//# 
-//#                                 for (Enumeration e=mailbox.getChildBlocks().elements(); e.hasMoreElements();) {
-//#                                     JabberDataBlock mail=(JabberDataBlock)e.nextElement();
-//# 
-//#                                     String subject=mail.getChildBlock("subject").getText();
-//#                                     String body=mail.getChildBlock("snippet").getText();
-//#                                     String name=mail.getChildBlock("senders").getChildBlock("sender").getAttribute("name");
-//#                                     String address=mail.getChildBlock("senders").getChildBlock("sender").getAttribute("address");
-//# 
-//#                                     Msg m=new Msg(Msg.MESSAGE_TYPE_IN, "local", name+"("+address+")\n"+subject, body);
-//#                                     messageStore(selfContact(), m);
-//#                                 }
-//#                                 return JabberBlockListener.BLOCK_PROCESSED;
-//#                             }
-//#                         }
-    //#endif
-                } // id!=null
-                if ( type.equals( "result" ) ) {
-                    /*no handlers now*/
-                } else 
-                if (type.equals("get")){
-                    JabberDataBlock query=data.getChildBlock("query");
-                    
-                    Contact c=getContact(from, true);
-                    boolean reply = true;
-                    if (myStatus==Presence.PRESENCE_INVISIBLE) reply = false;
-//#ifndef WMUC
-                    if (c instanceof MucContact) reply = true;
-//#endif
-                    if (query!=null){
-                        if (query.isJabberNameSpace("jabber:iq:version")) {
-                            c.setIncoming(Contact.INC_VIEWING);
-                            if (reply)
-                                theStream.send(new IqVersionReply(data));
-                            return JabberBlockListener.BLOCK_PROCESSED;                            
-                        }
-                        //DEPRECATED
-                        if (query.isJabberNameSpace("jabber:iq:time")) {
-                            c.setIncoming(Contact.INC_VIEWING);
-                            if (reply)
-                                theStream.send(new IqTimeReply(data));
-                            return JabberBlockListener.BLOCK_PROCESSED;
-                        }
-                        if (query.isJabberNameSpace("jabber:iq:last")) {
-                            c.setIncoming(Contact.INC_VIEWING);
-                            if (reply)
-                                theStream.send(new IqLast(data, lastMessageTime));
-                            return JabberBlockListener.BLOCK_PROCESSED;
-                        }
+                } else if (type.equals("get")){
+                    //JabberDataBlock query=data.getChildBlock("query");
+
+                    //if (query!=null){
 //#ifdef CHECKERS
 //#                         if (query.isJabberNameSpace("checkers")) {
+//#                             Contact c=getContact(from, true);
 //#                             c.setCheckers(-6);
 //#                             theStream.send(new IqCheckers(data, true));
 //#                             return JabberBlockListener.BLOCK_PROCESSED;
 //#                         }
 //#endif
-                    }
+                    //}
                     // ��������� �� ������ ���������� ������� ������� XEP-0202
-                    if (data.findNamespace("time", "urn:xmpp:time")!=null) {
-                        if (reply)
-                            theStream.send(new IqTimeReply(data));
-                        return JabberBlockListener.BLOCK_PROCESSED;
-                    }
-                    // xep-0199 ping
-                    if (data.findNamespace("ping", "urn:xmpp:ping")!=null) {
-                        if (reply)
-                            theStream.send(new Iq(from, Iq.TYPE_RESULT, data.getAttribute("id")));
-                        return JabberBlockListener.BLOCK_PROCESSED;
-                    }
                 } else if (type.equals("set")) {
                     if (processRoster(data)) { 
                         theStream.send(new Iq(from, Iq.TYPE_RESULT, id));
                         reEnumRoster();
                         return JabberBlockListener.BLOCK_PROCESSED;
                     }
-                } else if (type.equals("error")) {
-                    querysign=false;
-
-                    JabberDataBlock ping=data.getChildBlock("ping");
-                    if (ping!=null){//notify about ping
-                        Contact c=getContact(from, true);
-                        if (ping.isJabberNameSpace("urn:xmpp:ping")) { //ping
-                            from=data.getAttribute("from");
-                            String pong=pingToString(id.substring(6));
-                            if (pong!="") {
-                                Msg m=new Msg(Msg.MESSAGE_TYPE_SYSTEM, from, SR.MS_PING, pong);
-                                messageStore(getContact(from, false), m);
-                                redraw();
-                            }
-                        }
-                    }
-                    /*
-                    // error on request version
-                    JabberDataBlock query=data.getChildBlock("query");
-                    if (query!=null){
-                        if (query.getAttribute("xmlns").equals("jabber:iq:version")) {
-                            JabberDataBlock error=data.getChildBlock("error");
-                            if (error!=null){
-                                if (error.getAttribute("code").equals("501")) {
-                                    //System.out.println("501");
-                                    from=data.getAttribute("from");
-
-                                    Msg m=new Msg(Msg.MESSAGE_TYPE_SYSTEM, from, null, SR.MS_NO_CLIENT_INFO);
-                                    messageStore( getContact(from, false), m); 
-                                    redraw();
-                                }
-                            }
-                        }
-                    }*/
                 }
             }
             
@@ -1419,62 +1258,6 @@ public class Roster
                 if (myJid.equals(new Jid(from), false)) {
                     from=message.getXFrom();
                 }
-//#if MOOD
-//#                 try {
-//#                     JabberDataBlock event=data.getChildBlock("event");
-//#                     if (event.getAttribute("xmlns").equals("http://jabber.org/protocol/pubsub#event")) {
-//#if DEBUG 
-//#                         System.out.println(from+": pubsub#event");
-//#endif
-//#                         JabberDataBlock items=event.getChildBlock("items");
-//#                         if (items.getAttribute("node").equals("http://jabber.org/protocol/mood")) {
-//#                             Mood mood=null;
-//#                             if (items.getChildBlock("retract")!=null) {
-//#if DEBUG 
-//#                                  System.out.println(from+": unset mood");
-//#endif                                
-//#                             } else {
-//#if DEBUG 
-//#                                 System.out.println(from+": mood");
-//#endif
-//#                                 JabberDataBlock moods=items.getChildBlock("item").getChildBlock("mood");
-//# 
-//#                                 String userMood="";
-//#                                 try {
-//#                                     userMood=((JabberDataBlock)moods.getChildBlocks().firstElement()).getTagName();
-//#                                 } catch (Exception e) { /*System.out.println("no usermood");*/ }
-//# 
-//#                                 String userMoodText="";
-//#                                 try {
-//#                                     userMoodText=moods.getChildBlock("text").getText();
-//#                                 } catch (Exception e) { /*System.out.println("no userMoodText");*/ }
-//#if DEBUG 
-//#                                 System.out.println(from+": "+userMood+userMoodText);
-//#endif
-//#                                 mood=mi.getMood(userMood, userMoodText);
-//#                             }
-//#                             if (mood!=null) {
-//#                                 int index=0;
-//#                                 synchronized (hContacts) {
-//#                                     while (index<hContacts.size()) {
-//#                                         Contact c=(Contact)hContacts.elementAt(index);
-//#                                         if ( c.origin>Contact.ORIGIN_ROSTERRES && c.getStatus()>=Presence.PRESENCE_OFFLINE && c.getNewMsgsCount()==0 )
-//#                                             hContacts.removeElementAt(index);
-//#                                         else {
-//#                                             index++;
-//#                                             if (c.getBareJid().equals(from) && c.getStatus()<Presence.PRESENCE_OFFLINE) {
-//#                                                 c.setUserMood(mood);
-//#                                                 Msg m=new Msg(Msg.MESSAGE_TYPE_HISTORY, from, SR.MS_USER_MOOD, c.getUserMoodLocale()+"\n"+c.getUserMoodText());
-//#                                                 messageStore(c, m);
-//#                                             }
-//#                                         }
-//#                                     }
-//#                                  }
-//#                             }
-//#                         }
-//#                     }
-//#                 } catch (Exception e) { }
-//#endif
                 String body=message.getBody().trim();
                 String oob=message.getOOB();
                 if (oob!=null) body+=oob;
@@ -1939,7 +1722,7 @@ public class Roster
         return(!c.equals(activeContact));
     }
 //#endif
-    void messageStore(Contact c, Msg message) {
+    public void messageStore(Contact c, Msg message) {
         if (c==null) return;
 
         c.addMessage(message);
@@ -3093,29 +2876,6 @@ public class Roster
         str=null;
     }
 //#endif
-    
-//#if SASL_XGOOGLETOKEN
-//#     public void sendGmailReq() {
-//#         JabberDataBlock iq=new Iq(null, Iq.TYPE_GET, "mail-request");
-//#         JabberDataBlock query=iq.addChildNs("query", "google:mail:notify");
-//#         theStream.send(iq);
-//#     }
-//#endif
-
-    private String pingToString(String time) {
-        String timePing=Long.toString((Time.utcTimeMillis()-Long.parseLong(time))/10);
-        int dotpos=timePing.length()-2;
-        String first = (dotpos==0)? "0":timePing.substring(0, dotpos);
-        String second = timePing.substring(dotpos);
-
-        StringBuffer s=new StringBuffer(first);
-        s.append('.');
-        s.append(second);
-        s.append(' ');
-        s.append(Time.goodWordForm (Integer.parseInt(second), 0));
-
-        return s.toString();
-    }
 }
 
 
