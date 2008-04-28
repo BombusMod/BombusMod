@@ -52,8 +52,14 @@ public class MessageUrl extends Menu{
     
     public void eventOk() {
 	String url=(String)urlList.elementAt(cursor);
+        boolean quit=(url.endsWith(".jad") || url.endsWith(".jar"));
 	try {
-	    BombusMod.getInstance().platformRequest(url);
+            if (quit) {
+                if (BombusMod.getInstance().platformRequest(url)) 
+                    System.exit(0);
+            } else {
+                BombusMod.getInstance().platformRequest(url);
+            }
 	} catch (Exception e) { 
             //e.printStackTrace(); 
         }
