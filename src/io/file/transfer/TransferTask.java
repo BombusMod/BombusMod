@@ -122,7 +122,7 @@ public class TransferTask
 
     public int getColor() { return (sending)? Colors.MESSAGE_OUT : Colors.MESSAGE_IN; }
 
-    public void drawItem(Graphics g, int ofs, boolean sel, boolean drawsec) {
+    public void drawItem(Graphics g, int ofs, boolean sel) {
         int xpgs=(g.getClipWidth()/3)*2;
         int pgsz=g.getClipWidth()-xpgs-4;
         int filled=(fileSize==0)? 0 : (pgsz*filePos)/fileSize; 
