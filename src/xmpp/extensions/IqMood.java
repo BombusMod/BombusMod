@@ -83,7 +83,7 @@ public class IqMood implements JabberBlockListener {
 //#                                 String userMood="";
 //#                                 try {
 //#                                     userMood=((JabberDataBlock)moods.getChildBlocks().firstElement()).getTagName();
-//#                                     System.out.println("usermood "+userMood);
+//#                                     //System.out.println("usermood "+userMood);
 //#                                 } catch (Exception e) { /*System.out.println("no usermood");*/ }
 //# 
 //#                                 String userMoodText="";

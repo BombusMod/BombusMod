@@ -1101,11 +1101,6 @@ public class Roster
 //#         if (StaticData.getInstance().account.isGmail())
 //#             theStream.addBlockListener(new IqGmail());
 //#endif
-//#ifndef WMUC
-        //query bookmarks
-        theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
-//#endif
-        
 //#ifdef MOOD
 //#         if (cf.sndrcvmood)
 //#             theStream.addBlockListener(new DiscoInfo());
@@ -1144,6 +1139,10 @@ public class Roster
             setProgress(SR.MS_ROSTER_REQUEST, 60);
             theStream.send( qr );
         }
+//#ifndef WMUC
+        //query bookmarks
+        theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
+//#endif
     }
 
     public void bindResource(String myJid) {
