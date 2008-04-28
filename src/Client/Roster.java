@@ -1092,6 +1092,28 @@ public class Roster
         theStream.startKeepAliveTask();
 	theStream.loggedIn=true;
 	reconnectCount=0;
+        
+        theStream.addBlockListener(new IqPing());
+        theStream.addBlockListener(new IqLast());
+        theStream.addBlockListener(new IqVersionReply());
+        theStream.addBlockListener(new IqTimeReply());
+//#if SASL_XGOOGLETOKEN
+//#         if (StaticData.getInstance().account.isGmail())
+//#             theStream.addBlockListener(new IqGmail());
+//#endif
+//#ifndef WMUC
+        //query bookmarks
+        theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
+//#endif
+        
+//#ifdef MOOD
+//#         if (cf.sndrcvmood)
+//#             theStream.addBlockListener(new DiscoInfo());
+//#endif
+//#if FILE_TRANSFER
+     // enable File transfers
+     theStream.addBlockListener(TransferDispatcher.getInstance());
+//#endif
 
         playNotify(SOUND_CONNECTED);
         if (reconnect) {
@@ -1122,28 +1144,6 @@ public class Roster
             setProgress(SR.MS_ROSTER_REQUEST, 60);
             theStream.send( qr );
         }
-        
-//#if FILE_TRANSFER
-     // enable File transfers
-     theStream.addBlockListener(TransferDispatcher.getInstance());
-//#endif
-        theStream.addBlockListener(new IqPing());
-        theStream.addBlockListener(new IqLast());
-        theStream.addBlockListener(new IqVersionReply());
-        theStream.addBlockListener(new IqTimeReply());
-//#if SASL_XGOOGLETOKEN
-//#         if (StaticData.getInstance().account.isGmail())
-//#             theStream.addBlockListener(new IqGmail());
-//#endif
-//#ifndef WMUC
-        //query bookmarks
-        theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
-//#endif
-        
-//#ifdef MOOD
-//#         if (cf.sndrcvmood)
-//#             theStream.addBlockListener(new DiscoInfo());
-//#endif
     }
 
     public void bindResource(String myJid) {
