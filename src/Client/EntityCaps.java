@@ -24,8 +24,7 @@ public class EntityCaps implements JabberBlockListener{
     
     /** Creates a new instance of EntityCaps */
     public EntityCaps() {
-        if (features.size()<1)
-            fillFeatures();
+        initCaps();
     }
     
     public int blockArrived(JabberDataBlock data) {
@@ -49,7 +48,7 @@ public class EntityCaps implements JabberBlockListener{
         identity.setAttribute("name", Version.getName());
 
         for (int i=0; i<features.size(); i++) {
-            query.addChild("feature", null).setAttribute("var",(String)features.elementAt(i));
+            query.addChild("feature", null).setAttribute("var", (String) features.elementAt(i));
         }
         
         StaticData.getInstance().roster.theStream.send(result);
@@ -73,7 +72,7 @@ public class EntityCaps implements JabberBlockListener{
         sha1.update("<");
         
         for (int i=0; i<features.size(); i++) {
-            sha1.update((String)features.elementAt(i));
+            sha1.update((String) features.elementAt(i));
             sha1.update("<");
         }
         
@@ -99,38 +98,42 @@ public class EntityCaps implements JabberBlockListener{
     private final static String BOMBUS_ID_CATEGORY="client";
     private final static String BOMBUS_ID_TYPE="mobile";
     
-    
-    private static final String initFeatures = "http://jabber.org/protocol/chatstates,http://jabber.org/protocol/disco#info," +
+    public static void initCaps() {
+        ver=null;
+        features=new Vector();
+        
+        //features MUST be sorted        
+        if (Config.getInstance().eventComposing)
+            features.addElement("http://jabber.org/protocol/chatstates"); //xep-0085
+        features.addElement("http://jabber.org/protocol/disco#info");
+ //#ifdef FILE_TRANSFER        
+        features.addElement("http://jabber.org/protocol/ibb");
+ //#endif
 //#ifndef WMUC
-            "http://jabber.org/protocol/muc,"
+        features.addElement("http://jabber.org/protocol/muc");
 //#endif
-//#ifdef FILE_TRANSFER
-            +"http://jabber.org/protocol/ibb,http://jabber.org/protocol/si,http://jabber.org/protocol/si/profile/file-transfer,"
-//#endif
-            +"jabber:iq:time,jabber:iq:version,jabber:x:data,urn:xmpp:ping,urn:xmpp:receipts,urn:xmpp:time,";
-    
-    private static Vector features=new Vector();
-
-    private static void fillFeatures() {
-        try {
-            int p=0; int pos=0;
-            while (pos<initFeatures.length()) {
-               p=initFeatures.indexOf(',', pos);
-               String feature=initFeatures.substring(pos, p);
-               features.addElement((String)feature);
-               pos=p+1;
-            }
+ //#ifdef FILE_TRANSFER        
+        features.addElement("http://jabber.org/protocol/si");
+        features.addElement("http://jabber.org/protocol/si/profile/file-transfer");
+ //#endif        
+        features.addElement("jabber:iq:time"); //DEPRECATED
+        features.addElement("jabber:iq:version");
+        features.addElement("jabber:x:data");
+         //"jabber:x:event", //DEPRECATED
+        features.addElement("urn:xmpp:ping");
+        if (Config.getInstance().eventDelivery)
+            features.addElement("urn:xmpp:receipts"); //xep-0184
+        features.addElement("urn:xmpp:time");
 //#ifdef MOOD
-//#             if (Config.getInstance().sndrcvmood) {
-//#                 if (features.indexOf("http://jabber.org/protocol/mood")<0) {
-//#                     features.addElement("http://jabber.org/protocol/mood");
-//#                     features.addElement("http://jabber.org/protocol/mood+notify");
-//#                 }        
-//#             }
+//#         if (Config.getInstance().sndrcvmood) {
+//#                 features.addElement("http://jabber.org/protocol/mood");
+//#                 features.addElement("http://jabber.org/protocol/mood+notify");
+//#         }
 //#endif
-            sort(features);
-        } catch (Exception ex) { }
+        sort(features);
     }
+
+    private static Vector features=new Vector();
     
     public final static void sort(Vector sortVector){
         try {

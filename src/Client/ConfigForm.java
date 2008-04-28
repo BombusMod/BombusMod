@@ -34,6 +34,7 @@ import locale.SR;
 import ui.controls.NumberField;
 import util.StringLoader;
 import ui.*;
+import com.alsutton.jabber.datablocks.Presence;
 
 public class ConfigForm implements
 	CommandListener, ItemCommandListener
@@ -474,7 +475,8 @@ public class ConfigForm implements
             
             cf.updateTime();
             cf.saveToStorage();
-
+            EntityCaps.initCaps();
+            sd.roster.sendPresence(Presence.PRESENCE_SAME, null);
             sd.roster.reEnumRoster();
         }
         destroyView();

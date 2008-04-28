@@ -238,6 +238,7 @@ public class Presence extends JabberDataBlock
   public final static int PRESENCE_TRASH=RosterIcons.ICON_TRASHCAN_INDEX;
   public final static int PRESENCE_AUTH=-1;
   public final static int PRESENCE_AUTH_ASK=-2;
+  public final static int PRESENCE_SAME=-100;
   
   public final static String PRS_OFFLINE="unavailable";
   public final static String PRS_ERROR="error";

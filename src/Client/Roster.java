@@ -346,7 +346,6 @@ public class Roster
             theStream= a.openJabberStream();
             setProgress(SR.MS_OPENING_STREAM, 40);
             theStream.setJabberListener( this );
-            theStream.addBlockListener(new EntityCaps());
             theStream.initiateStream();
         } catch( Exception e ) {
             setProgress(SR.MS_FAILED, 100);
@@ -749,8 +748,9 @@ public class Roster
         return null;
     }
 
-    public void sendPresence(int status, String message) {
-        myStatus=status;
+    public void sendPresence(int newStatus, String message) {
+        if (newStatus!=Presence.PRESENCE_SAME) 
+            myStatus=newStatus;
 //#ifdef AUTOSTATUS
 //#         messageActivity();
 //#endif
@@ -783,7 +783,7 @@ public class Roster
         Presence presence = new Presence(myStatus, es.getPriority(), myMessage, sd.account.getNick());
 		
         if (isLoggedIn()) {
-            if (status==Presence.PRESENCE_OFFLINE  && !cf.collapsedGroups)
+            if (myStatus==Presence.PRESENCE_OFFLINE  && !cf.collapsedGroups)
                 groups.queryGroupState(false);
             
             if (!sd.account.isMucOnly() )
@@ -792,7 +792,7 @@ public class Roster
             multicastConferencePresence(myMessage, myStatus); //null
 //#endif
             // disconnect
-            if (status==Presence.PRESENCE_OFFLINE) {
+            if (myStatus==Presence.PRESENCE_OFFLINE) {
                 try {
                     theStream.close();
                 } catch (Exception e) {
@@ -1088,15 +1088,12 @@ public class Roster
     }
     
     public void loginSuccess() {
-        //enable keep-alive packets
-        theStream.startKeepAliveTask();
-	theStream.loggedIn=true;
-	reconnectCount=0;
         
         theStream.addBlockListener(new IqPing());
         theStream.addBlockListener(new IqLast());
         theStream.addBlockListener(new IqVersionReply());
         theStream.addBlockListener(new IqTimeReply());
+        theStream.addBlockListener(new EntityCaps());
 //#if SASL_XGOOGLETOKEN
 //#         if (StaticData.getInstance().account.isGmail())
 //#             theStream.addBlockListener(new IqGmail());
@@ -1106,10 +1103,15 @@ public class Roster
 //#             theStream.addBlockListener(new DiscoInfo());
 //#endif
 //#if FILE_TRANSFER
-     // enable File transfers
-     theStream.addBlockListener(TransferDispatcher.getInstance());
+        // enable File transfers
+        theStream.addBlockListener(TransferDispatcher.getInstance());
 //#endif
-
+     
+        //enable keep-alive packets
+        theStream.startKeepAliveTask();
+	theStream.loggedIn=true;
+	reconnectCount=0;
+        
         playNotify(SOUND_CONNECTED);
         if (reconnect) {
             querysign=false;
