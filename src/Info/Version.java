@@ -39,7 +39,7 @@ public class Version {
     public static String getVersionLang() { return version+" ("+SR.MS_IFACELANG+")"; }
     
     public static String getVersionNumber() { return version; }
-    
+    public static String getName() { return NAME; }
     public static String getNameVersion() { return NAME+" "+version; }
     
     public static String getUrl() { return BOMBUS_SITE_URL; }

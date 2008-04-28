@@ -46,7 +46,7 @@ public class EntityCaps implements JabberBlockListener{
         JabberDataBlock identity=query.addChild("identity", null);
         identity.setAttribute("category", BOMBUS_ID_CATEGORY);
         identity.setAttribute("type", BOMBUS_ID_TYPE);
-        identity.setAttribute("name", Version.getNameVersion());
+        identity.setAttribute("name", Version.getName());
 
         for (int i=0; i<features.size(); i++) {
             query.addChild("feature", null).setAttribute("var",(String)features.elementAt(i));
@@ -69,7 +69,7 @@ public class EntityCaps implements JabberBlockListener{
         
         //indentity
         sha1.update(BOMBUS_ID_CATEGORY+"/"+BOMBUS_ID_TYPE+"//");
-        sha1.update(Version.getNameVersion());
+        sha1.update(Version.getName());
         sha1.update("<");
         
         for (int i=0; i<features.size(); i++) {
@@ -100,9 +100,12 @@ public class EntityCaps implements JabberBlockListener{
     private final static String BOMBUS_ID_TYPE="mobile";
     
     
-    private static final String initFeatures = "http://jabber.org/protocol/chatstates,http://jabber.org/protocol/disco#info,http://jabber.org/protocol/muc,"
+    private static final String initFeatures = "http://jabber.org/protocol/chatstates,http://jabber.org/protocol/disco#info," +
+//#ifndef WMUC
+            "http://jabber.org/protocol/muc,"
+//#endif
 //#ifdef FILE_TRANSFER
-//#             +"http://jabber.org/protocol/ibb,http://jabber.org/protocol/si,http://jabber.org/protocol/si/profile/file-transfer,"
+            +"http://jabber.org/protocol/ibb,http://jabber.org/protocol/si,http://jabber.org/protocol/si/profile/file-transfer,"
 //#endif
             +"jabber:iq:time,jabber:iq:version,jabber:x:data,urn:xmpp:ping,urn:xmpp:receipts,urn:xmpp:time,";
     

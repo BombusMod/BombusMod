@@ -60,19 +60,20 @@ public class DnsSrvResolver {
         
         StringBuffer url=new StringBuffer(resolverUrl);
         url.append("?host=").append(server);
+        
         SHA1 sha=new SHA1();
         sha.init();
-        sha.update(strconv.unicodeToUTF(StaticData.getInstance().account.getBareJid()) );
+        sha.updateASCII(StaticData.getInstance().account.getBareJid());
         sha.finish();
         
         url.append("&name=").append(strconv.urlPrep(Version.NAME));
         url.append("&version=").append(strconv.urlPrep(Version.getVersionNumber()));
         url.append("&lang=").append(strconv.urlPrep(SR.MS_IFACELANG));
-        url.append("&os=").append(strconv.urlPrep(Config.getOs()));
+        url.append("&os=");
+        if (Config.getInstance().enableVersionOs)
+            url.append(strconv.urlPrep(Config.getOs()));
         url.append("&hash=").append(sha.getDigestHex());
 
-        //System.out.println(url.toString());
-        
         try {
             HttpConnection c = (HttpConnection) Connector.open(url.toString());
             

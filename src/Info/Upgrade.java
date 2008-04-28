@@ -27,15 +27,10 @@
 
 package Info;
 
-import Client.Config;
 import Client.Msg;
-import Client.StaticData;
 import Messages.MessageList;
-import com.ssttr.crypto.SHA1;
 import images.RosterIcons;
-import java.io.IOException;
 import java.io.InputStream;
-import java.util.Hashtable;
 import java.util.Vector;
 import javax.microedition.io.Connector;
 import javax.microedition.io.HttpConnection;
@@ -43,12 +38,8 @@ import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
-import javax.microedition.lcdui.List;
-import midlet.BombusMod;
 import locale.SR;
 import ui.MainBar;
-import ui.VirtualElement;
-import util.strconv;
 
 /**
  *
@@ -106,8 +97,10 @@ public class Upgrade
         String result="";
         StringBuffer b = new StringBuffer();
         String vUrl=(build)?Client.Config.getInstance().getStringProperty("Bombus-Upgrade", VERSION_URL):VERSION_URL;
-        if (!build) {
-            /*SHA1 sha=new SHA1();
+        if (build) {
+            vUrl+="?vers=new";
+        } /*else {
+            SHA1 sha=new SHA1();
             sha.init();
             sha.update(strconv.unicodeToUTF(StaticData.getInstance().account.getBareJid()) );
             sha.finish();
@@ -116,10 +109,8 @@ public class Upgrade
             vUrl+="&version="+Version.getVersionNumber();
             vUrl+="&lang="+SR.MS_IFACELANG;
             vUrl+="&os="+Config.getOs();
-            vUrl+="&hash="+sha.getDigestHex();*/
-        } else {
-            vUrl+="?vers=new";
-        }
+            vUrl+="&hash="+sha.getDigestHex();
+        }*/
         try {
             c = (HttpConnection) Connector.open(vUrl);
             is = c.openInputStream();
