@@ -42,10 +42,10 @@ import io.file.FileIO;
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
 import Client.Config;
+import ui.controls.vGauge;
 import util.strconv;
 //#endif
 import ui.Time;
-import ui.YesNoAlert;
 
 /**
  *
@@ -53,9 +53,8 @@ import ui.YesNoAlert;
  */
 public class ArchiveList 
     extends MessageList
-	implements YesNoAlert.YesNoListener
 //#if (FILE_IO)
-    , BrowserListener
+    implements BrowserListener
 //#endif
 {
 
@@ -64,8 +63,6 @@ public class ArchiveList
     Command cmdSubj=new Command(SR.MS_PASTE_SUBJECT, Command.SCREEN, 3);
     Command cmdEdit=new Command(SR.MS_EDIT, Command.SCREEN, 4);
     Command cmdNew=new Command(SR.MS_NEW, Command.SCREEN, 5);
-    //Command cmdCopy = new Command(SR.MS_COPY, Command.SCREEN, 6);
-    //Command cmdCopyPlus = new Command("+ "+SR.MS_COPY, Command.SCREEN, 6);
 //#if (FILE_IO)
     Command cmdExport=new Command(SR.MS_EXPORT_TO_FILE, Command.SCREEN, 7);
     Command cmdImport=new Command(SR.MS_IMPORT_TO_FILE, Command.SCREEN, 8);
@@ -113,10 +110,6 @@ public class ArchiveList
 	setCommandListener(this);
 	addCommand(cmdBack);
 	addCommand(cmdDelete);
-        //addCommand(cmdCopy);
-        //if (!clipboard.isEmpty()) {
-        //    addCommand(cmdCopyPlus);
-        //}
 //#if (FILE_IO)	
         addCommand(cmdExport);
         addCommand(cmdImport);
@@ -183,7 +176,7 @@ public class ArchiveList
 //#endif
         if (c==cmdEdit) {
             try {
-                new archiveEdit(display,getMessage(cursor), where).setParentView(sd.roster);
+                new archiveEdit(display, getMessage(cursor), where);
                 deleteMessage();
             } catch (Exception e) {/*no messages*/}
         }
@@ -223,7 +216,12 @@ public class ArchiveList
     
     public void keyClear() { 
         if (getItemCount()>0) 
-            new YesNoAlert(display, SR.MS_DELETE, SR.MS_SURE_DELETE, this);
+            new vGauge(SR.MS_DELETE, SR.MS_SURE_DELETE, 0, display, this) {
+                public void yes() {
+                    deleteMessage();
+                }
+                public void no() { }
+            };
     }
     
     public void focusedItem(int index) {
@@ -367,10 +365,6 @@ public class ArchiveList
     public void destroyView(){
 	super.destroyView();
 	archive.close();
-    }
-	
-    public void ActionConfirmed() {
-        deleteMessage();
     }
 
     private int getFreeSpace() {

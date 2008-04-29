@@ -29,16 +29,20 @@ import javax.microedition.lcdui.Display;
 import ui.controls.vGauge;
 
 public class Reconnect extends vGauge {
+    
     private final static int WAITTIME=15;
 
     public Reconnect(String mainbar, String body, Display display) {
         super(mainbar, body, WAITTIME, display, null);
     }
 
-    public void doAction() {
+    public void yes() {
         try {
              StaticData.getInstance().roster.sendPresence(5, null); //Presence.PRESENCE_OFFLINE
         } catch (Exception e2) { }
         StaticData.getInstance().roster.doReconnect();
+    }
+
+    public void no() {
     }
 }

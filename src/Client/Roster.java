@@ -51,6 +51,7 @@ import login.LoginListener;
 import login.SASLAuth;
 import midlet.BombusMod;
 import ui.MainBar;
+import ui.controls.vGauge;
 import util.strconv;
 import vcard.VCard;
 import vcard.vCardForm;
@@ -61,6 +62,7 @@ import javax.microedition.lcdui.*;
 import ui.*;
 import com.siemens.mp.game.Light;
 import xmpp.DiscoInfo;
+import xmpp.EntityCaps;
 
 import xmpp.XmppError;
 import xmpp.extensions.IqQueryRoster;
@@ -87,8 +89,7 @@ public class Roster
         JabberListener,
         CommandListener,
         Runnable,
-        LoginListener,
-        YesNoAlert.YesNoListener
+        LoginListener
 {
     
     private Command cmdActions=new Command(SR.MS_ITEM_ACTIONS, Command.SCREEN, 1);
@@ -188,12 +189,7 @@ public class Roster
     private final static int SOUND_FOR_VIP=100;
     private final static int SOUND_COMPOSING=888;
     private final static int SOUND_OUTGOING=999;
-    
-    private final static int ACTION_DELETE=4;
-    private final static int ACTION_QUIT=99;
-
-    private int yesnoAction=0;
-            
+   
     public Roster(Display display) {
         super();
         this.display=display;
@@ -2038,8 +2034,12 @@ public class Roster
 //#                 boolean isMucContact=false;
 //#endif
                 if (isContact && !isMucContact) {
-                   yesnoAction=ACTION_DELETE; 
-                   new YesNoAlert(display, SR.MS_DELETE_ASK, c.getNickJid(), this);
+                   new vGauge(c.getNickJid(), SR.MS_DELETE_ASK, 0, display, this) {
+                        public void yes() {
+                            deleteContact((Contact)getFocusedObject());
+                        }
+                        public void no() {}
+                    };
                 }
 //#ifndef WMUC
                 else if (isContact && isMucContact) {
@@ -2396,8 +2396,10 @@ public class Roster
 //menu actions
     public void cmdQuit() { 
         if (cf.queryExit) {
-            yesnoAction=ACTION_QUIT; 
-            new YesNoAlert(display, SR.MS_QUIT_ASK, SR.MS_SURE_QUIT, this); 
+            new vGauge(SR.MS_QUIT_ASK, SR.MS_SURE_QUIT, 0, display, null) {
+                public void yes() {quit(); }
+                public void no() { }
+            };
         } else {
             quit();
         }
@@ -2530,17 +2532,6 @@ public class Roster
             Contact c=(Contact)activeContacts.elementAt(nowContact);
             new ContactMessageList((Contact)c,display);
         } catch (Exception e) { }
-    }
-    
-    public void ActionConfirmed() {
-        switch (yesnoAction) {
-            case ACTION_DELETE:
-                deleteContact((Contact)getFocusedObject());
-                break;
-            case ACTION_QUIT:
-                quit();
-        }
-
     }
 
     public void deleteContact(Contact c) {

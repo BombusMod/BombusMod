@@ -27,6 +27,7 @@
 
 package ui;
 
+import images.MenuIcons;
 import images.RosterIcons;
 import Colors.Colors;
 
@@ -44,7 +45,7 @@ public class MenuItem extends IconTextElement
     private int iconIndex;
     
     public MenuItem(String name, int index, int iconIndex) {
-        super(RosterIcons.getInstance(), null);
+        super(MenuIcons.getInstance(), null);
         this.index=index;
 	this.name=name;
         this.iconIndex=iconIndex;

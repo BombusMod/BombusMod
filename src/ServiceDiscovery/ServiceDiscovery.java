@@ -224,7 +224,8 @@ public class ServiceDiscovery
             XmppError xe=XmppError.findInStanza(data);
             
             new vGauge(data.getAttribute("from"), xe.toString(), 0, display, this) {
-                public void doAction() { }
+                public void yes() { };
+                public void no() { };
             };
 
             return JabberBlockListener.BLOCK_PROCESSED;
@@ -312,9 +313,12 @@ public class ServiceDiscovery
             }
             if (text==SR.MS_DONE && id.endsWith("Search") ) {
                 new SearchResult(display, data);
-            } else new vGauge(mainbar, text, 0, display, null) {
-                                        public void doAction() { }
-                                    };
+            } else {
+                new vGauge(mainbar, text, 0, display, null) {
+                    public void yes() { }
+                    public void no() { }
+                };
+            }
         }
         redraw();
         return JabberBlockListener.BLOCK_PROCESSED;

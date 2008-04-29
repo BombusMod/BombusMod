@@ -7,8 +7,9 @@
  * and open the template in the editor.
  */
 
-package Client;
+package xmpp;
 
+import Client.*;
 import Info.Version;
 import com.alsutton.jabber.JabberBlockListener;
 import com.alsutton.jabber.JabberDataBlock;

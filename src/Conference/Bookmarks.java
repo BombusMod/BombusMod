@@ -29,7 +29,7 @@ package Conference;
 import Client.*;
 import Conference.affiliation.Affiliations;
 //#ifdef SERVICE_DISCOVERY
-//# import ServiceDiscovery.ServiceDiscovery;
+import ServiceDiscovery.ServiceDiscovery;
 //#endif
 import javax.microedition.lcdui.*;
 import locale.SR;
@@ -37,6 +37,7 @@ import ui.*;
 import java.util.*;
 import com.alsutton.jabber.*;
 import ui.MainBar;
+import ui.controls.vGauge;
 
 /**
  *
@@ -44,7 +45,7 @@ import ui.MainBar;
  */
 public class Bookmarks 
         extends VirtualList 
-        implements CommandListener, YesNoAlert.YesNoListener
+        implements CommandListener
 {   
     private BookmarkItem toAdd;
     
@@ -59,7 +60,7 @@ public class Bookmarks
     private Command cmdNew=new Command (SR.MS_NEW_BOOKMARK, Command.SCREEN, 4);
     private Command cmdConfigure=new Command (SR.MS_CONFIG_ROOM, Command.SCREEN, 5);
 //#ifdef SERVICE_DISCOVERY
-//#     private Command cmdDisco=new Command (SR.MS_DISCO_ROOM, Command.SCREEN, 6);
+    private Command cmdDisco=new Command (SR.MS_DISCO_ROOM, Command.SCREEN, 6);
 //#endif
     private Command cmdUp=new Command (SR.MS_MOVE_UP, Command.SCREEN, 7);
     private Command cmdDwn=new Command (SR.MS_MOVE_DOWN, Command.SCREEN, 8);
@@ -100,7 +101,7 @@ public class Bookmarks
         addCommand(cmdSort);
         addCommand(cmdSave);
 //#ifdef SERVICE_DISCOVERY
-//#         addCommand(cmdDisco);
+        addCommand(cmdDisco);
 //#endif
         addCommand(cmdConfigure);
         addCommand(cmdRoomOwners);
@@ -185,7 +186,7 @@ public class Bookmarks
             return;
         }
 //#ifdef SERVICE_DISCOVERY
-//#         else if (c==cmdDisco) new ServiceDiscovery(display, roomJid, null);
+        else if (c==cmdDisco) new ServiceDiscovery(display, roomJid, null);
 //#endif
         else if (c==cmdConfigure) new QueryConfigForm(display, roomJid);
         else if (c==cmdRoomOwners) new Affiliations(display, roomJid, (short)1);  
@@ -252,10 +253,11 @@ public class Bookmarks
     }
     
     protected void keyClear(){
-        new YesNoAlert(display, SR.MS_DELETE_ASK, ((BookmarkItem)getFocusedObject()).getJid(), this);
-    }
-    
-    public void ActionConfirmed() {
-        deleteBookmark();
+        new vGauge(SR.MS_DELETE_ASK, ((BookmarkItem)getFocusedObject()).getJid(), 0, display, this) {
+            public void yes() {
+                deleteBookmark();
+            }
+            public void no() {}
+        };
     }
 }

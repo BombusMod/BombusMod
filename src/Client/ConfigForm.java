@@ -35,6 +35,7 @@ import ui.controls.NumberField;
 import util.StringLoader;
 import ui.*;
 import com.alsutton.jabber.datablocks.Presence;
+import xmpp.EntityCaps;
 
 public class ConfigForm implements
 	CommandListener, ItemCommandListener

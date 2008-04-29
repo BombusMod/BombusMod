@@ -52,11 +52,12 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
     private int defp;
     private Contact to;
 
-    private Config cf=Config.getInstance();
+    private Config cf;
     private StaticData sd = StaticData.getInstance();
     
     public StatusSelect(Display d, Contact to) {
         super();
+        cf=Config.getInstance();
         statusList=StatusList.getInstance().statusList;
         this.to=to;
         if (to==null) { 

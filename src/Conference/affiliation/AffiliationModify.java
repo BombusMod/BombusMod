@@ -33,15 +33,15 @@ import com.alsutton.jabber.JabberStream;
 import com.alsutton.jabber.datablocks.Iq;
 import javax.microedition.lcdui.*;
 import locale.SR;
-import ui.YesNoAlert;
 import ui.controls.TextFieldCombo;
 import ui.controls.TextFieldEx;
+import ui.controls.vGauge;
 
 /**
  *
  * @author EvgS
  */
-public class AffiliationModify implements CommandListener, YesNoAlert.YesNoListener{
+public class AffiliationModify implements CommandListener {
     
     Display display;
     Displayable parentView;
@@ -122,7 +122,13 @@ public class AffiliationModify implements CommandListener, YesNoAlert.YesNoListe
                 warn.append(jid.getString());
                 warn.append(SR.MS_FROM_OWNER_TO/*" from OWNER to "*/);
                 warn.append(AffiliationItem.getAffiliationName((short)affiliation.getSelectedIndex()));
-                new YesNoAlert(display, SR.MS_MODIFY_AFFILIATION/*"Modify affiliation"*/, warn.toString(), this);
+                new vGauge(SR.MS_MODIFY_AFFILIATION, warn.toString(), 0, display, null) {
+                        public void yes() {
+                            modify();
+                            destroyView();
+                        }
+                        public void no() {}
+                };
                 warn=null;
             } else modify();
         }

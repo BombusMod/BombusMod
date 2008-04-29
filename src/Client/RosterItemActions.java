@@ -43,6 +43,7 @@ import Conference.affiliation.Affiliations;
 //#endif
 //#ifdef SERVICE_DISCOVERY
 import ServiceDiscovery.ServiceDiscovery;
+import ui.controls.vGauge;
 //#endif
 
 import xmpp.extensions.IqLast;
@@ -63,7 +64,6 @@ import Colors.ColorUtils;
 import ui.Menu;
 import ui.MenuItem;
 import ui.Time;
-import ui.YesNoAlert;
 //#ifdef CLIPBOARD
 //# import util.ClipBoard;
 //#endif
@@ -79,11 +79,8 @@ import vcard.vCardForm;
  *
  * @author EvgS
  */
-public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
-    
-    public final static int DELETE_CONTACT=4;
-    public final static int DELETE_GROUP=1004;
-    
+public class RosterItemActions extends Menu {
+
     Object item;
 //#ifdef CLIPBOARD
 //#     private ClipBoard clipboard;
@@ -168,7 +165,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                 }
 		addItem(SR.MS_SUBSCRIPTION,3, 0x47);
 		addItem(SR.MS_MOVE,1003);
-		addItem(SR.MS_DELETE, DELETE_CONTACT, 0x12);
+		addItem(SR.MS_DELETE, 4, 0x12);
 		addItem(SR.MS_DIRECT_PRESENCE,45, 0x01);
 	    }
 	    if (contact.origin==Contact.ORIGIN_GROUPCHAT) 
@@ -296,7 +293,7 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                         && group.type!=Groups.TYPE_TRANSP)
                 {
                     addItem(SR.MS_RENAME,1001);
-                    addItem(SR.MS_DELETE, DELETE_GROUP);
+                    addItem(SR.MS_DELETE, 1004);
                 }
 //#ifndef WMUC
             }
@@ -375,8 +372,14 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                 case 3: //subscription
                     new SubscriptionEdit(display, c);
                     return; //break;
-                case DELETE_CONTACT:
-                    new YesNoAlert(display, SR.MS_DELETE_ASK, c.getNickJid(), this);
+                case 4:
+                    new vGauge(SR.MS_DELETE_ASK, c.getNickJid(), 0, display, this) {
+                        public void yes() {
+                            sd.roster.deleteContact((Contact)item);
+                        }
+                        public void no() { }
+                    };
+                    display.setCurrent(sd.roster);
                     return;
                 case 6: // logoff
                 {
@@ -681,9 +684,17 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
                         new RenameGroup(display, sg, null);
                         return;
                     }
-                    case DELETE_GROUP: //delete
+                    case 1004: //delete
                     {
-                        new YesNoAlert(display, SR.MS_DELETE_ASK, sg.getName(), this);
+                        new vGauge(SR.MS_DELETE_ASK, sg.getName(), 0, display, this) {
+                            public void yes() {
+                                sd.roster.deleteGroup((Group)item);
+                            }
+
+                            public void no() {
+                            }
+                        };
+                        display.setCurrent(sd.roster);
                         return;
                     }    
                 }
@@ -692,20 +703,4 @@ public class RosterItemActions extends Menu implements YesNoAlert.YesNoListener{
          }
 //#endif
      }
-    
-    public void ActionConfirmed() {
-        switch (action) {
-            case DELETE_CONTACT:
-            {
-                sd.roster.deleteContact((Contact)item);
-                break;
-            }
-            case DELETE_GROUP:
-            {
-                sd.roster.deleteGroup((Group)item);
-                break;
-            }
-        }
-        display.setCurrent(sd.roster);
-    }
 }

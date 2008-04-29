@@ -25,7 +25,7 @@
 */
 
 package com.alsutton.jabber.datablocks;
-import Client.EntityCaps;
+import xmpp.EntityCaps;
 import com.alsutton.jabber.*;
 import images.RosterIcons;
 import xmpp.XmppError;

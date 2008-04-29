@@ -29,6 +29,7 @@ import Client.Roster;
 import Client.StaticData;
 import javax.microedition.lcdui.*;
 import locale.SR;
+import ui.VirtualList;
 import ui.controls.TextFieldEx;
 
 public class NewTemplate implements CommandListener
@@ -45,9 +46,9 @@ public class NewTemplate implements CommandListener
     private int where;
 
     public NewTemplate(Display display, int where) {
-        this.display=display;
         this.where=where;
-        parentView=display.getCurrent();         
+        parentView=display.getCurrent();
+        this.display=display;
         form=new Form(SR.MS_NEW);
         templatebox=new TextFieldEx(SR.MS_NEW, null, 1024, TextField.ANY);
         
@@ -59,13 +60,11 @@ public class NewTemplate implements CommandListener
     }
     
     public void commandAction(Command c, Displayable d){
-        if (c==cmdCancel) display.setCurrent(StaticData.getInstance().roster);
-	if (c==cmdOk) {
-            //final Roster roster=StaticData.getInstance().roster;
+        if (c==cmdOk) {
 	    String reason = templatebox.getString();
             Msg m=new Msg(Msg.MESSAGE_TYPE_OUT, "0", "", reason);
             MessageArchive.store(m, where);
-            display.setCurrent(parentView);
 	}
+        new ArchiveList(display, -1, where).setParentView(parentView);
     }
 }

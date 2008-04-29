@@ -65,8 +65,8 @@ public class archiveEdit implements CommandListener
     public archiveEdit(Display display, Msg msg, int where) {
         this.msg=msg;
         this.where=where;
-        this.display=display;
         parentView=display.getCurrent();
+        this.display=display;
         this.body=msg.getBody();
         
         cf=Config.getInstance();
@@ -125,19 +125,9 @@ public class archiveEdit implements CommandListener
         
         body=null;
         
-        new ArchiveList(display, -1, where);
-
-        destroyView();
-        return; 
-    }
-    
-    public void destroyView(){
-        display.setCurrent(StaticData.getInstance().roster);
+        new ArchiveList(display, -1, where).setParentView(parentView);
     }
 
-    public void setParentView(Displayable parentView){
-        this.parentView=parentView;
-    }
 //#ifdef CLIPBOARD
 //#     public void insertText(String s, int caretPos) {
 //#         String src=t.getString();

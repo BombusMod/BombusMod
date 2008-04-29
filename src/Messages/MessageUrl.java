@@ -27,10 +27,14 @@
 
 package Messages;
 
+import images.MenuIcons;
 import java.util.Vector;
+import javax.microedition.io.ConnectionNotFoundException;
 import javax.microedition.lcdui.Display;
+import locale.SR;
 import midlet.BombusMod;
 import ui.Menu;
+import ui.controls.vGauge;
 
 /**
  *
@@ -39,29 +43,23 @@ import ui.Menu;
 public class MessageUrl extends Menu{
     
     private Vector urlList;
+    
     /** Creates a new instance of MessageUrl */
     public MessageUrl(Display display, Vector urlList) {
 	super("URLs");
 	this.urlList=urlList;
 	
 	for (int i=0; i<urlList.size(); i++) { // throws exception
-	    addItem((String)urlList.elementAt(i), i);
+	    addItem((String)urlList.elementAt(i), i, MenuIcons.ICON_URL);
 	}
 	attachDisplay(display);
     }
     
     public void eventOk() {
-	String url=(String)urlList.elementAt(cursor);
-        boolean quit=(url.endsWith(".jad") || url.endsWith(".jar"));
-	try {
-            if (quit) {
-                if (BombusMod.getInstance().platformRequest(url)) 
-                    System.exit(0);
-            } else {
-                BombusMod.getInstance().platformRequest(url);
-            }
-	} catch (Exception e) { 
-            //e.printStackTrace(); 
+        try {
+            BombusMod.getInstance().platformRequest((String)urlList.elementAt(cursor));
+        } catch (ConnectionNotFoundException ex) {
+            ex.printStackTrace();
         }
 	destroyView();
     }

@@ -83,7 +83,7 @@ public abstract class vGauge
         this.timeout=timeout;
 
         lines=new Vector();
-
+        
         isShowing=true;
         
         addCommand(cmdOk);
@@ -98,7 +98,9 @@ public abstract class vGauge
     
     public void commandAction(Command command, Displayable displayable) {
         if (command==cmdOk) {
-            doAction();
+            yes();
+        } else {
+            no();
         }
         destroyView();
     }
@@ -107,7 +109,11 @@ public abstract class vGauge
         isShowing=false;
         removeCommand(cmdOk);
         removeCommand(cmdCancel);
-        display.setCurrent(next);
+        if (display==null) {
+            display.setCurrent(StaticData.getInstance().roster);
+        } else {
+            display.setCurrent(next);
+        }
     }
     
     public void run() {
@@ -119,7 +125,7 @@ public abstract class vGauge
             if (value>=timeout) {
                 if (vibrate) display.vibrate(1000);
                 //System.out.println("execute");
-                doAction();
+                yes();
                 destroyView();
                 break;
             }
@@ -158,7 +164,8 @@ public abstract class vGauge
          g.fillRect(0, 0, width, fh);
 //#endif
             g.setColor(0xffffff);
-            g.drawString(mainbar+" - "+(timeout-value), xt, 0, Graphics.TOP|Graphics.HCENTER);
+            String timeoutString=(timeout>0)?" - "+(timeout-value):"";
+            g.drawString(mainbar+timeoutString, xt, 0, Graphics.TOP|Graphics.HCENTER);
             g.setClip(0,0, width, height);
             
             if (timeout>0) {
@@ -192,6 +199,7 @@ public abstract class vGauge
         return f.getHeight();
     }
     
-    public abstract void doAction();
-    
+    public abstract void yes();
+
+    public abstract void no();    
 }

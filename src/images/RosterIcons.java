@@ -51,9 +51,6 @@ public class RosterIcons extends ImageList{
     
     private Hashtable transports;
     private Vector transpSkins;
-//#ifdef NEW_MENU
-//#     private Vector menuIcons;
-//#endif
     /** Creates a new instance of RosterIcons */
     private RosterIcons() {
 	super("/images/skin.png", ICONS_IN_COL, ICONS_IN_ROW);
@@ -62,11 +59,6 @@ public class RosterIcons extends ImageList{
         transpSkins=new Vector(transports.size());
         
         transports.put("conference", new Integer(ICON_GROUPCHAT_INDEX));
-//#ifdef NEW_MENU
-//#         ImageList menuIcon=new ImageList("/images/menu.png", 4, ICONS_IN_ROW);
-//#         menuIcons=new Vector(30);
-//#         menuIcons.addElement(menuIcon);
-//#endif
     }
     
     public int getTransportIndex(String name){
@@ -91,13 +83,7 @@ public class RosterIcons extends ImageList{
     public void drawImage(Graphics g, int index, int x, int y) {
         if (index>66000) { //draw transport icons
             ((ImageList)transpSkins.elementAt( (index>>24) -1 )).drawImage(g, index & 0xff, x, y);
-        }
-//#ifdef NEW_MENU
-//#         else if(index<66000 && index>1000) { //draw menu icons
-//#             ((ImageList)menuIcons.elementAt(0)).drawImage(g, index & 0xff, x, y);
-//#         }
-//#endif
-        else super.drawImage(g, index, x, y);
+        } else super.drawImage(g, index, x, y);
     }
 
     public static final int ICON_INVISIBLE_INDEX = 0x10;
