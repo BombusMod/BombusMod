@@ -61,7 +61,6 @@ import java.util.*;
 import javax.microedition.lcdui.*;
 import ui.*;
 import com.siemens.mp.game.Light;
-import xmpp.DiscoInfo;
 import xmpp.EntityCaps;
 
 import xmpp.XmppError;
@@ -77,6 +76,10 @@ import xmpp.extensions.IqTimeReply;
 //# import UserMood.MoodSelect;
 //# import UserMood.MoodList;
 //# import UserMood.Mood;
+//# import xmpp.DiscoInfo;
+//#endif
+//#ifdef PEP
+//# import xmpp.extensions.pep.PepListener;
 //#endif
 
 //#if FILE_TRANSFER
@@ -139,10 +142,11 @@ public class Roster
     public MessageEdit me=null;
 
 //#if MOOD
-//#     //private MoodList mi;
 //#     public boolean useUserMood;
 //#endif
-
+//#if PEP
+//#     public boolean useUserMood=true;
+//#endif
     private StatusList sl;
     public int myStatus=cf.loginstatus;
     private static String myMessage;
@@ -1090,6 +1094,10 @@ public class Roster
         theStream.addBlockListener(new IqVersionReply());
         theStream.addBlockListener(new IqTimeReply());
         theStream.addBlockListener(new EntityCaps());
+//#ifdef PEP
+//#         if (cf.sndrcvmood)
+//#             theStream.addBlockListener(new PepListener()); //TODO: dynamic enabling/disabling
+//#endif
 //#if SASL_XGOOGLETOKEN
 //#         if (StaticData.getInstance().account.isGmail())
 //#             theStream.addBlockListener(new IqGmail());

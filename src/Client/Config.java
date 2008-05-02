@@ -234,7 +234,9 @@ type = \"-=Siemens=-\";
 //#     public boolean rosterStatus=false;
 //#endif
 //#ifdef MOOD
-//#     //public boolean userMoods=true;
+//#     public boolean sndrcvmood = false;
+//#endif
+//#ifdef PEP
 //#     public boolean sndrcvmood = false;
 //#endif
     public boolean queryExit = false;
@@ -457,6 +459,11 @@ type = \"-=Siemens=-\";
 //#else
             inputStream.readBoolean();
 //#endif
+//#ifdef PEP
+//#             sndrcvmood = inputStream.readBoolean();
+//#else
+            inputStream.readBoolean();
+//#endif
             scheme=inputStream.readUTF();
 
 //#ifdef CLIPBOARD
@@ -641,6 +648,11 @@ type = \"-=Siemens=-\";
             outputStream.writeBoolean(false);
 //#endif
 //#ifdef MOOD
+//#             outputStream.writeBoolean(sndrcvmood);
+//#else
+            outputStream.writeBoolean(false);
+//#endif
+//#ifdef PEP
 //#             outputStream.writeBoolean(sndrcvmood);
 //#else
             outputStream.writeBoolean(false);

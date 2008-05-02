@@ -404,22 +404,6 @@ public class JabberDataBlock
       }
    }
 
-  /**
-   * Method to return the start of tag string as a string
-   *
-   * @return The start tag string
-   */
-
-  public StringBuffer getTagStart()
-  {
-    StringBuffer tagStart = new StringBuffer( "<" );
-    tagStart.append( getTagName() );
-    if( attributes != null )
-      addAttributeToStringBuffer( tagStart );
-    tagStart.append( '>' );
-
-    return tagStart;
-  }
 
   /**
    * Method to return the tag name

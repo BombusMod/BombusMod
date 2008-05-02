@@ -48,7 +48,7 @@ public class PrivacyList extends IconTextElement{
     
     /** Creates a new instance of PrivacyList */
     public PrivacyList(String name) {
-        super(RosterIcons.getInstance(), null);
+        super(RosterIcons.getInstance());
         this.name=name;
     }
     

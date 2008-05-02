@@ -47,7 +47,7 @@ public class ExtendedStatus extends IconTextElement{
     
     /** Creates a new instance of ExtendedStatus */
     public ExtendedStatus(int index, String name, String showName) {
-        super(RosterIcons.getInstance(), null);
+        super(RosterIcons.getInstance());
         this.index=index;
         this.name=name;
         this.screenName=showName;

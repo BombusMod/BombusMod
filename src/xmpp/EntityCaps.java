@@ -131,6 +131,12 @@ public class EntityCaps implements JabberBlockListener{
 //#                 features.addElement("http://jabber.org/protocol/mood+notify");
 //#         }
 //#endif
+//#ifdef PEP
+//#          if (Config.getInstance().sndrcvmood) {
+//#                 features.addElement("http://jabber.org/protocol/mood");
+//#                  features.addElement("http://jabber.org/protocol/mood+notify");
+//#          }
+//#endif
         sort(features);
     }
 

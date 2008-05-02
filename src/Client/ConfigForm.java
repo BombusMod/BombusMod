@@ -157,6 +157,9 @@ public class ConfigForm implements
 //#ifdef MOOD
 //#         message.append(SR.MS_SEND_RECEIVE_USERMOODS, null);
 //#endif
+//#ifdef PEP
+//#         message.append(SR.MS_SEND_RECEIVE_USERMOODS, null);
+//#endif
         message.append(SR.MS_RUNNING_MESSAGE, null);
 //#ifdef ANTISPAM
 //#         message.append(SR.MS_ANTISPAM_CONFERENCE, null);
@@ -179,6 +182,9 @@ public class ConfigForm implements
             cf.autoScroll,
             cf.useTabs,
 //#ifdef MOOD
+//#             cf.sndrcvmood,
+//#endif
+//#ifdef PEP
 //#             cf.sndrcvmood,
 //#endif
             cf.notifyWhenMessageType
@@ -400,6 +406,9 @@ public class ConfigForm implements
             cf.autoScroll=mv[mvctr++];
             cf.useTabs=mv[mvctr++];
 //#ifdef MOOD
+//#             cf.sndrcvmood=mv[mvctr++];
+//#endif
+//#ifdef PEP
 //#             cf.sndrcvmood=mv[mvctr++];
 //#endif
             cf.notifyWhenMessageType=mv[mvctr++];

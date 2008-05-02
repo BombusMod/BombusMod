@@ -69,7 +69,7 @@ public class AffiliationItem extends IconTextElement{
         
     /** Creates a new instance of AffiliationItem */
     public AffiliationItem(String jid, String affiliation) {
-        super(RosterIcons.getInstance(), null);
+        super(RosterIcons.getInstance());
         this.jid=jid;
         for (short index=1; index<5; index++) {
             if (affiliation.equals(getAffiliationName(index))) 

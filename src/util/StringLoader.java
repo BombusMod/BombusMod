@@ -54,6 +54,8 @@ public class StringLoader {
 		
 		if (line.startsWith("//")) continue; // skip all remarks
 
+                if (line.length()==0) continue;
+                
 		int indexFrom=0;
 		
 		for (int i = 0; i<columns; i++) {
@@ -186,6 +188,7 @@ public class StringLoader {
                     if (buf.length()==0) return null;
                     break;
                 }
+                if (c==0xfeff) continue; //skip bom
                 if (c==0x0d || c==0x0a) {
                     eol=true;
                     if (c==0x0a) break;

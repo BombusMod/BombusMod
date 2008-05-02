@@ -73,7 +73,7 @@ public class PrivacyItem extends IconTextElement{
     
     /** Creates a new instance of PrivacyItem */
     public PrivacyItem() {
-        super(RosterIcons.getInstance(), null);
+        super(RosterIcons.getInstance());
     }
     
     public PrivacyItem(JabberDataBlock item) {

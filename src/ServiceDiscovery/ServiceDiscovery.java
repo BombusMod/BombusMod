@@ -422,7 +422,7 @@ public class ServiceDiscovery
         int icon;
         
         public DiscoCommand(int icon, String name) {
-            super(RosterIcons.getInstance(), null);
+            super(RosterIcons.getInstance());
             this.icon=icon; this.name=name;
         }
         public int getColor(){ return Colors.DISCO_CMD; }

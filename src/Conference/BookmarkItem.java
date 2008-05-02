@@ -66,7 +66,7 @@ public class BookmarkItem extends IconTextElement{
     
     /** Creates a new instance of BookmarkItem */
     public BookmarkItem() {
-        super(RosterIcons.getInstance(), null);
+        super(RosterIcons.getInstance());
         cf=Config.getInstance();
     }
     

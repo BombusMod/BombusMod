@@ -30,6 +30,7 @@ import com.alsutton.jabber.datablocks.Presence;
 import images.RosterIcons;
 import java.util.*;
 import Colors.Colors;
+import javax.microedition.lcdui.Graphics;
 import ui.*;
 
 
@@ -57,7 +58,7 @@ public class Group extends IconTextElement {
     protected boolean collapsed;
 
     public Group(String name) {
-        super(RosterIcons.getInstance(), null);
+        super(RosterIcons.getInstance());
         this.name=name;        
     }
     
@@ -66,13 +67,22 @@ public class Group extends IconTextElement {
     public int getImageIndex() {
         return collapsed?imageCollapsedIndex:imageExpandedIndex;
     }
-    
-    public int getSecImageIndex() {
-        if (!collapsed)
-            return -1;
-        return (unreadMessages>0)?2004:-1;
+ 
+    public void drawItem(Graphics g, int ofs, boolean sel) {
+        int w=g.getClipWidth();
+        int h=g.getClipHeight();
+        int xo=g.getClipX();
+        int yo=g.getClipY();
+        
+        if (collapsed && unreadMessages>0) {
+            w-=il.getWidth();
+            il.drawImage(g, RosterIcons.ICON_MESSAGE_INDEX, w,0);
+        }
+        g.setClip(xo, yo, w, h);
+        
+        super.drawItem(g, ofs, sel);
     }
-    
+
     public String getName() { return name; }
     
     protected String mainbar(String mainbarStart) {

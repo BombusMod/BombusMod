@@ -31,7 +31,9 @@ import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
 import java.util.Enumeration;
 import java.util.Vector;
-import xmpp.extensions.IqMood;
+//#ifdef MOOD
+//# import xmpp.extensions.IqMood;
+//#endif
 
 public class DiscoInfo implements JabberBlockListener{
     StaticData sd = StaticData.getInstance();

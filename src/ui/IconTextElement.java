@@ -38,21 +38,15 @@ abstract public class IconTextElement implements VirtualElement
     int imageYOfs;
     int fontYOfs;
     
-    ImageList il;
-    ImageList mi;
-    
+    protected ImageList il;
+
     int heightFirstLine=0;
 
-    private int miImageSize=0;
     private int ilImageSize=0;
 
     private int fontHeight;
     
     abstract protected int getImageIndex();
-    
-    public int getSecImageIndex() {
-        return -1;
-    }
 
     public int getFontIndex() { return 0;}
     
@@ -75,56 +69,7 @@ abstract public class IconTextElement implements VirtualElement
 //#endif
        
        if (il!=null)
-           drawPic(g, il, getImageIndex(), 2, imageYOfs);
-
-        if (getSecImageIndex()>-1) {
-            int secImgY = imageYOfs;
-//#ifdef SECONDSTRING
-//#             if (hasSecondString()) {
-//#                 offset=2;
-//#                 secImgY = imageYOfs+il.getHeight();
-//#             }
-//#endif
-            switch (getSecImageIndex()) {
-                case 1001:
-                    drawPic(g, il, RosterIcons.ICON_COMPOSING_INDEX, offset, secImgY);
-                    offset=offset+ilImageSize+2;
-                    miImageSize=il.getHeight();
-                    break;
-                case 2001:
-                    drawPic(g, il, RosterIcons.ICON_APPEARING_INDEX, offset, secImgY);
-                    offset=offset+ilImageSize+2;
-                    miImageSize=il.getHeight();
-                    break;
-                case 2002:
-                    drawPic(g, il, RosterIcons.ICON_VIEWING_INDEX, offset, secImgY);
-                    offset=offset+ilImageSize+2;
-                    miImageSize=il.getHeight();
-                    break;
-                case 2003:
-                    drawPic(g, il, RosterIcons.ICON_AUTHRQ_INDEX, offset, secImgY);
-                    offset=offset+ilImageSize+2;
-                    miImageSize=il.getHeight();
-                    break;
-                case 2004:
-                    drawPic(g, il, RosterIcons.ICON_MESSAGE_INDEX, offset, secImgY);
-                    offset=offset+ilImageSize+2;
-                    miImageSize=il.getHeight();
-                    break;
-                default:
-                    drawPic(g, mi, getSecImageIndex(), offset, secImgY);
-                    offset=offset+miImageSize+2;
-                    miImageSize=mi.getHeight();
-            }
-        } else {
-            miImageSize=0;
-        }
-//#ifdef SECONDSTRING
-//#        if (hasSecondString()) {
-//#            itemHeight=heightFirstLine+((fontHeight>miImageSize)?fontHeight-3:miImageSize);
-//#        } else
-//#endif
-           itemHeight=(heightFirstLine>miImageSize)?heightFirstLine:miImageSize;
+           il.drawImage(g, getImageIndex(), 2, imageYOfs);
            
        g.clipRect(offset, 0, g.getClipWidth(), itemHeight);
        
@@ -136,10 +81,6 @@ abstract public class IconTextElement implements VirtualElement
 //#            g.drawString(secstr, offset-ofs, fontYOfs+fontHeight-3, Graphics.TOP|Graphics.LEFT);
 //#        }
 //#endif
-    }
-    
-    private void drawPic(Graphics g, ImageList i, int iconNum, int x, int y) {
-        i.drawImage(g, iconNum, x, y);
     }
 
     public int getVWidth(){ 
@@ -161,16 +102,12 @@ abstract public class IconTextElement implements VirtualElement
 
     public void onSelect(){ };
     
-    public IconTextElement(ImageList il, ImageList mi) {
+    public IconTextElement(ImageList il) {
         super();
         this.il=il;
-        this.mi=mi;
         fontHeight=FontCache.getRosterNormalFont().getHeight();
 	if (il!=null){
 	    ilImageSize=il.getHeight();
-	}
-	if (mi!=null){
-	    miImageSize=mi.getHeight();
 	}
         itemHeight=heightFirstLine=(ilImageSize>fontHeight)?ilImageSize:fontHeight;
         imageYOfs=(itemHeight-ilImageSize)/2;

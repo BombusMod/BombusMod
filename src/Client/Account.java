@@ -63,7 +63,7 @@ public class Account extends IconTextElement{
     public int keepAliveType=1;
 
     public Account() {
-        super(RosterIcons.getInstance(), null);
+        super(RosterIcons.getInstance());
     }
     
     public static Account loadAccount(boolean launch){

@@ -38,9 +38,13 @@ import Conference.MucContact;
 //#ifdef MOOD
 //# import UserMood.Mood;
 //# import UserMood.MoodList;
+//# import images.MoodIcons;
 //#endif
-import images.MoodIcons;
-
+//#ifdef PEP
+//# import images.MoodIcons;
+//# import javax.microedition.lcdui.Graphics;
+//# import ui.ImageList;
+//#endif
 import images.RosterIcons;
 import Colors.Colors;
 import ui.Time;
@@ -84,6 +88,10 @@ public class Contact extends IconTextElement{
         }
         return Colors.CONTACT_DEFAULT;
     }
+//#ifdef PEP    
+//#     public int pepMood=-1;
+//#     public boolean pepTune;
+//#endif
 //#ifdef MOOD
 //#     public Mood mood;
 //#endif
@@ -166,9 +174,7 @@ public class Contact extends IconTextElement{
     private boolean loaded=false;
 
     protected Contact (){
-        super(RosterIcons.getInstance(), 
-                 MoodIcons.getInstance()
-                );
+        super(RosterIcons.getInstance());
         cf=Config.getInstance();
         msgs=new Vector();
         key1="";
@@ -209,7 +215,10 @@ public class Contact extends IconTextElement{
 //#         clone.mood=mood;
 //#endif
         clone.transport=ri.getTransportIndex(newjid.getTransport()); //<<<<
-
+//#ifdef PEP
+//#         clone.pepMood=pepMood;
+//#         clone.pepTune=pepTune;
+//#endif
         clone.bareJid=bareJid;
         return clone;
     }
@@ -263,14 +272,13 @@ public class Contact extends IconTextElement{
         short i=0;
         switch (state){
             case INC_APPEARING:
-                i=2001;//ICON_APPEARING_INDEX;
+                i=RosterIcons.ICON_APPEARING_INDEX;
                 break;
             case INC_VIEWING:
-                i=2002;//ICON_VIEWING_INDEX;
+                i=RosterIcons.ICON_VIEWING_INDEX;
                 break;
         }
         incomingState=i;
-        
     }
     
     public int compare(IconTextElement right){
@@ -555,23 +563,21 @@ public class Contact extends IconTextElement{
     public int getSecImageIndex() {
 //#ifdef ANTISPAM
 //#         if (!tempMsgs.isEmpty())
-//#             return 2003;
+//#             return RosterIcons.ICON_AUTHRQ_INDEX;
 //#endif
         if (getNewMsgsCount()>0)  {
             switch (unreadType) {
-                case Msg.MESSAGE_TYPE_AUTH: return 2003;
-                default: return 2004;
+                case Msg.MESSAGE_TYPE_AUTH: return RosterIcons.ICON_AUTHRQ_INDEX;
+                default: return RosterIcons.ICON_MESSAGE_INDEX;
             }
         }
         if (showComposing==true) 
-            return 1001;
+            return RosterIcons.ICON_COMPOSING_INDEX;
 
         if (incomingState>0) 
             return incomingState;
-//#ifdef MOOD
-//#         if (mood!=null)
-//#             return mood.getImageIndex();
-//#endif
+        
+        
         return -1;
     }
     
@@ -582,6 +588,32 @@ public class Contact extends IconTextElement{
     public void setHistoryLoaded (boolean state) {
         loaded=state;
     }
+    
+//#ifdef PEP    
+//#     public void drawItem(Graphics g, int ofs, boolean sel) {
+//#         int w=g.getClipWidth();
+//#         int h=g.getClipHeight();
+//#         int xo=g.getClipX();
+//#         int yo=g.getClipY();
+//#         
+//#         
+//#         if (getSecImageIndex()>-1) {
+//#             w-=il.getWidth();
+//#             il.drawImage(g, getSecImageIndex(), w,0);
+//#         } else if (pepTune) {
+//#             w-=il.getWidth();
+//#             il.drawImage(g, RosterIcons.ICON_PROFILE_INDEX+3, w,0);
+//#         } else if (pepMood>=0) {
+//#             ImageList moods=MoodIcons.getInstance();
+//#             w-=moods.getWidth();
+//#             moods.drawImage(g, pepMood, w,0);
+//#         }
+//# 
+//#         g.setClip(xo, yo, w, h);
+//#         
+//#         super.drawItem(g, ofs, sel);
+//#     }
+//#endif
 
 //#ifdef CHECKERS
 //#     public void setCheckers(int checkers) {

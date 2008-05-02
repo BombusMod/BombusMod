@@ -41,7 +41,12 @@ import ServiceDiscovery.ServiceDiscovery;
 //#if (FILE_IO && HISTORY)
 //# import History.HistoryConfig;
 //#endif
-import UserMood.MoodSelect;
+//#ifdef MOOD
+//# import UserMood.MoodSelect;
+//#endif
+//#ifdef PEP
+//# import Mood.MoodList;
+//#endif
 import javax.microedition.lcdui.Display;
 import locale.SR;
 //#ifdef COLORS
@@ -77,6 +82,10 @@ public class RosterToolsMenu
             addItem(SR.MS_PRIVACY_LISTS, 1, 0x46);
 //#endif
 //#ifdef MOOD
+//#         if (sd.roster.useUserMood && cf.sndrcvmood && sd.roster.isLoggedIn())
+//#             addItem(SR.MS_USER_MOOD, 2, 0x0f16);
+//#endif
+//#ifdef PEP
 //#         if (sd.roster.useUserMood && cf.sndrcvmood && sd.roster.isLoggedIn())
 //#             addItem(SR.MS_USER_MOOD, 2, 0x0f16);
 //#endif
@@ -147,10 +156,17 @@ public class RosterToolsMenu
                 if (connected) new PrivacySelect(display);
                 break;
 //#endif
-            case 2:
-                if (! connected) break;
-                new MoodSelect(display);
-                return;
+//#ifdef MOOD
+//#             case 2:
+//#                 if (! connected) break;
+//#                 new MoodSelect(display);
+//#                 return;
+//#endif
+//#ifdef PEP
+//#             case 2:
+//#                 new MoodList(display);
+//#                 return;
+//#endif   
             case 3: {
                 if (! connected) break;
                 Contact c=sd.roster.selfContact();

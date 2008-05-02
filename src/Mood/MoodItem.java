@@ -1,7 +1,8 @@
 /*
- * Item.java
+ * MoodItem.java
  *
- * Created on 19.10.2005, 22:27
+ * Created on 1.05.2008, 19:43
+ *
  * Copyright (c) 2005-2008, Eugene Stahov (evgs), http://bombus-im.org
  *
  * This program is free software; you can redistribute it and/or
@@ -22,42 +23,43 @@
  * You should have received a copy of the GNU General Public License
  * along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
  */
 
-package ServiceDiscovery;
+package Mood;
 
-import images.RosterIcons;
 import Colors.Colors;
+import images.MoodIcons;
 import ui.IconTextElement;
 
 /**
  *
- * @author EvgS
+ * @author evgs
  */
-public class Node extends IconTextElement{
-
-    private String node;
-    private String name;
+public class MoodItem extends IconTextElement {
     
-    public int getImageIndex() { return RosterIcons.ICON_COLLAPSED_INDEX; }
-    public int getColor() { return Colors.LIST_INK; }
-    /** Creates a new instance of Item */
-    public Node(String name, String node) {
-        super(RosterIcons.getInstance());
-        this.name=name;
-        this.node=node;
+    private int iconIndex;
+    private String name;
+    private String label;
+    
+    /** Creates a new instance of MoodItem */
+    public MoodItem(int index) {
+        super(MoodIcons.getInstance());
+        
+        label=Moods.getInstance().getMoodLabel(index);
+        name=Moods.getInstance().getMoodName(index);
+        iconIndex=index;
+    }
+
+    protected int getImageIndex() { return iconIndex; }
+    public int getColor() { return Colors.CONTACT_DEFAULT; }
+    public String toString() { return label; }
+    public String getTipString() { return name; }
+
+    public int compare(IconTextElement right) {
+        return label.compareTo( ((MoodItem)right).label );
     }
     
-    public String getName() { return name; }
-    public String getNode() { return node; }
-
-    public String toString() { return (name!=null)? name:node; }
-
 //#ifdef SECONDSTRING
-//#         public String getSecondString() { 
-//#             return null;
-//#         }
+//#         public String getSecondString() { return null; }
 //#endif
-    
 }
