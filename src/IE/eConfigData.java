@@ -27,7 +27,7 @@ public class eConfigData {
         array.addElement(new keyValue("fullscreen", (cf.fullscreen)?"1":"0"));
         array.addElement(new keyValue("def_profile", Integer.toString(cf.def_profile)));
 //#ifdef SMILES
-//#         array.addElement(new keyValue("smiles", (cf.smiles)?"1":"0"));
+        array.addElement(new keyValue("smiles", (cf.smiles)?"1":"0"));
 //#endif
         array.addElement(new keyValue("showTransports", (cf.showTransports)?"1":"0"));
         array.addElement(new keyValue("selfContact", (cf.selfContact)?"1":"0"));
@@ -64,7 +64,7 @@ public class eConfigData {
         array.addElement(new keyValue("cp1251", (cf.cp1251)?"1":"0"));
         array.addElement(new keyValue("isbottom", Integer.toString(cf.isbottom)));
 //#ifdef NEW_MENU
-//#         array.addElement(new keyValue("newMenu", (cf.newMenu)?"1":"0"));
+        array.addElement(new keyValue("newMenu", (cf.newMenu)?"1":"0"));
 //#endif
         array.addElement(new keyValue("lightState", (cf.lightState)?"1":"0"));
         array.addElement(new keyValue("notifySound", (cf.notifySound)?"1":"0"));
@@ -75,7 +75,7 @@ public class eConfigData {
 //#endif
         array.addElement(new keyValue("autoScroll", (cf.autoScroll)?"1":"0"));
 //#ifdef POPUPS
-//#         array.addElement(new keyValue("popUps", (cf.popUps)?"1":"0"));
+        array.addElement(new keyValue("popUps", (cf.popUps)?"1":"0"));
 //#endif
         array.addElement(new keyValue("showResources", (cf.showResources)?"1":"0"));
 //#ifdef ANTISPAM
@@ -85,7 +85,7 @@ public class eConfigData {
         array.addElement(new keyValue("messageLimit", Integer.toString(cf.messageLimit)));
         array.addElement(new keyValue("eventDelivery", (cf.eventDelivery)?"1":"0"));
 //#ifdef TRANSLIT
-//#         array.addElement(new keyValue("transliterateFilenames", (cf.transliterateFilenames)?"1":"0")); 
+        array.addElement(new keyValue("transliterateFilenames", (cf.transliterateFilenames)?"1":"0")); 
 //#endif
 //#ifdef SECONDSTRING
 //#         array.addElement(new keyValue("rosterStatus", (cf.rosterStatus)?"1":"0"));
@@ -107,7 +107,7 @@ public class eConfigData {
 //#ifdef IRC_LIKE
 //#         array.addElement(new keyValue("ircLikeStatus", (cf.ircLikeStatus)?"1":"0"));
 //#endif
-//#ifdef MOOD
+//#ifdef PEP
 //#         array.addElement(new keyValue("sndrcvmood", (cf.sndrcvmood)?"1":"0"));
 //#endif
         array.addElement(new keyValue("scheme", cf.scheme));

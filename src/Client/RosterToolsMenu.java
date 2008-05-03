@@ -41,9 +41,6 @@ import ServiceDiscovery.ServiceDiscovery;
 //#if (FILE_IO && HISTORY)
 //# import History.HistoryConfig;
 //#endif
-//#ifdef MOOD
-//# import UserMood.MoodSelect;
-//#endif
 //#ifdef PEP
 //# import Mood.MoodList;
 //#endif
@@ -80,10 +77,6 @@ public class RosterToolsMenu
 //#ifdef PRIVACY
         if (sd.roster.isLoggedIn())
             addItem(SR.MS_PRIVACY_LISTS, 1, 0x46);
-//#endif
-//#ifdef MOOD
-//#         if (sd.roster.useUserMood && cf.sndrcvmood && sd.roster.isLoggedIn())
-//#             addItem(SR.MS_USER_MOOD, 2, 0x0f16);
 //#endif
 //#ifdef PEP
 //#         if (sd.roster.useUserMood && cf.sndrcvmood && sd.roster.isLoggedIn())
@@ -156,15 +149,10 @@ public class RosterToolsMenu
                 if (connected) new PrivacySelect(display);
                 break;
 //#endif
-//#ifdef MOOD
-//#             case 2:
-//#                 if (! connected) break;
-//#                 new MoodSelect(display);
-//#                 return;
-//#endif
 //#ifdef PEP
 //#             case 2:
-//#                 new MoodList(display);
+//#                 if (connected)
+//#                     new MoodList(display);
 //#                 return;
 //#endif   
             case 3: {

@@ -39,9 +39,17 @@ public class Moods {
 
     /** Creates a new instance of Moods */
     private Moods() {
-        Vector vMood[]=new StringLoader().stringLoader("/lang/ru.moods.txt", 2);
-        moodKey=(Vector)vMood[0];
-        moodValue=(Vector)vMood[1];
+       String moodFile="/lang/"+Client.Config.getInstance().lang+".moods.txt";
+       Vector vMood[]=new StringLoader().stringLoader(moodFile, 2);
+       
+       if (vMood==null) vMood=new StringLoader().stringLoader("/lang/en.moods.txt", 2);
+       if (vMood==null) {
+           System.out.println("Cant't load mood names");
+           moodKey=moodValue=new Vector();
+       } else {
+           moodKey=(Vector)vMood[0];
+           moodValue=(Vector)vMood[1];
+       }
 
         moodKey.trimToSize();
         moodValue.trimToSize();
@@ -49,6 +57,9 @@ public class Moods {
     
     Vector moodKey;
     Vector moodValue;
+    public String myMoodName="";
+    public String myMoodText="";
+    public String myMoodId="bmood";
     
     private static Moods instance;
 

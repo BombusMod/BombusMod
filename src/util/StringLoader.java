@@ -47,6 +47,7 @@ public class StringLoader {
 	
 	afterEol=0;
 	InputStream in = this.getClass().getResourceAsStream(resource);
+        if (in==null) return null;
 	try {
 	    while (true) {
 		String line=readLine(in);
@@ -122,6 +123,7 @@ public class StringLoader {
 	
 	afterEol=0;
 	InputStream in = this.getClass().getResourceAsStream(resource);
+        if (in==null) return null;
 	try {
 	    while (true) {
 		String line=readLine(in);
@@ -291,7 +293,6 @@ public class StringLoader {
 	} catch (Exception e)	{  }
 	return -1;            
     }
-    
 
     public Hashtable hashtableLoader(final InputStream in) {
         Hashtable hash = new Hashtable();

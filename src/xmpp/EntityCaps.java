@@ -125,17 +125,17 @@ public class EntityCaps implements JabberBlockListener{
         if (Config.getInstance().eventDelivery)
             features.addElement("urn:xmpp:receipts"); //xep-0184
         features.addElement("urn:xmpp:time");
-//#ifdef MOOD
-//#         if (Config.getInstance().sndrcvmood) {
-//#                 features.addElement("http://jabber.org/protocol/mood");
-//#                 features.addElement("http://jabber.org/protocol/mood+notify");
-//#         }
-//#endif
 //#ifdef PEP
 //#          if (Config.getInstance().sndrcvmood) {
 //#                 features.addElement("http://jabber.org/protocol/mood");
 //#                  features.addElement("http://jabber.org/protocol/mood+notify");
 //#          }
+//#         /*
+//#          if (Config.getInstance().sndrcvmood) {
+//#                 features.addElement("http://jabber.org/protocol/tune");
+//#                  features.addElement("http://jabber.org/protocol/tune+notify");
+//#          }
+//#          */
 //#endif
         sort(features);
     }

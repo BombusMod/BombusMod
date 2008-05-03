@@ -154,9 +154,6 @@ public class ConfigForm implements
         message.append(SR.MS_STORE_PRESENCE,null);
         message.append(SR.MS_AUTOSCROLL, null);
         message.append(SR.MS_EMULATE_TABS, null);
-//#ifdef MOOD
-//#         message.append(SR.MS_SEND_RECEIVE_USERMOODS, null);
-//#endif
 //#ifdef PEP
 //#         message.append(SR.MS_SEND_RECEIVE_USERMOODS, null);
 //#endif
@@ -181,9 +178,6 @@ public class ConfigForm implements
             cf.storeConfPresence,
             cf.autoScroll,
             cf.useTabs,
-//#ifdef MOOD
-//#             cf.sndrcvmood,
-//#endif
 //#ifdef PEP
 //#             cf.sndrcvmood,
 //#endif
@@ -405,9 +399,6 @@ public class ConfigForm implements
             cf.storeConfPresence=mv[mvctr++];
             cf.autoScroll=mv[mvctr++];
             cf.useTabs=mv[mvctr++];
-//#ifdef MOOD
-//#             cf.sndrcvmood=mv[mvctr++];
-//#endif
 //#ifdef PEP
 //#             cf.sndrcvmood=mv[mvctr++];
 //#endif

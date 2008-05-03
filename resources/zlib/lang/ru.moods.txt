@@ -1,6 +1,4 @@
-﻿//user moods translation
-
-afraid	испуганное
+﻿afraid	испуганное
 amazed	изумленное
 angry	рассерженное
 annoyed	раздраженное
@@ -61,3 +59,4 @@ stressed	напряженное
 surprised	удивленное
 thirsty	хочу пить
 worried	взволнованное
+-	<нет настроения>

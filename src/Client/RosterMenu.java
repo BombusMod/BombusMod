@@ -45,10 +45,6 @@ public class RosterMenu extends Menu {
         addItem(SR.MS_ITEM_ACTIONS, 0, 0x27);
         addItem(SR.MS_STATUS_MENU, 1, 0x16);
         addItem(SR.MS_ACTIVE_CONTACTS, 2, 0x21);
-//#ifdef MOOD
-//#         if (sd.roster.useUserMood && cf.sndrcvmood)
-//#             addItem(SR.MS_USER_MOOD, 3, 0x16);
-//#endif
         addItem(SR.MS_ALERT_PROFILE_CMD, 4, 0x17);
 //#ifndef WMUC
         addItem(SR.MS_CONFERENCE, 5, 0x00);
@@ -82,11 +78,6 @@ public class RosterMenu extends Menu {
             case 2: //active
                 sd.roster.cmdActiveContacts();
 		break;
-//#ifdef MOOD
-//#             case 3: //user mood
-//#                 sd.roster.cmdUserMood();
-//#                 break;
-//#endif
             case 4: //alert
                 sd.roster.cmdAlert();
 		break;

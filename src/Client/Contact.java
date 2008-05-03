@@ -35,11 +35,6 @@ import Conference.MucContact;
 //# import History.HistoryAppend;
 //#endif
 
-//#ifdef MOOD
-//# import UserMood.Mood;
-//# import UserMood.MoodList;
-//# import images.MoodIcons;
-//#endif
 //#ifdef PEP
 //# import images.MoodIcons;
 //# import javax.microedition.lcdui.Graphics;
@@ -90,10 +85,12 @@ public class Contact extends IconTextElement{
     }
 //#ifdef PEP    
 //#     public int pepMood=-1;
+//#ifdef PEP_TUNE
 //#     public boolean pepTune;
+//#     public String pepTuneText;
 //#endif
-//#ifdef MOOD
-//#     public Mood mood;
+//#     public String pepMoodName;
+//#     public String pepMoodText;
 //#endif
     public final static short ORIGIN_ROSTER=0;
     public final static short ORIGIN_ROSTERRES=1;
@@ -211,13 +208,15 @@ public class Contact extends IconTextElement{
         clone.offline_type=offline_type;
         clone.origin=ORIGIN_CLONE; 
         clone.status=status; 
-//#ifdef MOOD
-//#         clone.mood=mood;
-//#endif
         clone.transport=ri.getTransportIndex(newjid.getTransport()); //<<<<
 //#ifdef PEP
 //#         clone.pepMood=pepMood;
+//#         clone.pepMoodName=pepMoodName;
+//#         clone.pepMoodText=pepMoodText;
+//#ifdef PEP_TUNE
 //#         clone.pepTune=pepTune;
+//#         clone.pepTuneText=pepTuneText;
+//#endif
 //#endif
         clone.bareJid=bareJid;
         return clone;
@@ -258,9 +257,6 @@ public class Contact extends IconTextElement{
     }
 
     public boolean active(){
-        if (msgs.size()==0) 
-            return false;
-        
         if (activeMessage>-1)
             return true;
         return false;
@@ -303,7 +299,7 @@ public class Contact extends IconTextElement{
 //#if AUTODELETE
 //#             else { redraw=deleteOldMessages(); }
 //#endif
-//#if FILE_IO && HISTORY
+//#if HISTORY
 //# 
 //#         if (cf.msgLog && cf.msgPath==null) {
 //#ifdef POPUPS
@@ -526,37 +522,12 @@ public class Contact extends IconTextElement{
 //#     public String getSecondString() {
 //#         StringBuffer s=new StringBuffer();
 //#         if (cf.rosterStatus) {
-//#ifdef MOOD
-//#             if (mood!=null) {
-//#                 s.append(getUserMoodLocale());
-//#                 if (getUserMoodText()!="") {
-//#                     s.append(" (");
-//#                     s.append(getUserMoodText());
-//#                     s.append(")");
-//#                 }
-//#             } else 
-//#endif
-//#                 if (statusString!=null)
-//#                     s.append(statusString);
-//#             
+//#             if (statusString!=null)
+//#                 s.append(statusString);
 //#             return (s.toString().length()<1)?null:s.toString();
 //#         }
 //#         s=null;
 //#         return null;
-//#     }
-//#endif
-
-//#ifdef MOOD
-//#     public String getUserMoodLocale() {
-//#         return mood.getLocale();
-//#     }
-//#     
-//#     public void setUserMood (Mood mood) {
-//#         this.mood=mood;
-//#     }
-//#     
-//#     public String getUserMoodText() {
-//#         return mood.getText();
 //#     }
 //#endif
 
@@ -580,40 +551,69 @@ public class Contact extends IconTextElement{
         
         return -1;
     }
+//#if HISTORY
+//#     public boolean isHistoryLoaded () {
+//#         return loaded;
+//#     }
+//#     
+//#     public void setHistoryLoaded (boolean state) {
+//#         loaded=state;
+//#     }
+//#endif
     
-    public boolean isHistoryLoaded () {
-        return loaded;
-    }
-    
-    public void setHistoryLoaded (boolean state) {
-        loaded=state;
-    }
-    
-//#ifdef PEP    
-//#     public void drawItem(Graphics g, int ofs, boolean sel) {
-//#         int w=g.getClipWidth();
-//#         int h=g.getClipHeight();
-//#         int xo=g.getClipX();
-//#         int yo=g.getClipY();
-//#         
-//#         
-//#         if (getSecImageIndex()>-1) {
-//#             w-=il.getWidth();
-//#             il.drawImage(g, getSecImageIndex(), w,0);
-//#         } else if (pepTune) {
-//#             w-=il.getWidth();
-//#             il.drawImage(g, RosterIcons.ICON_PROFILE_INDEX+3, w,0);
-//#         } else if (pepMood>=0) {
+//#ifdef PEP
+//#ifdef PEP_TUNE
+//#     public void setUserTune (String tune) {
+//#         pepTuneText=tune;
+//#     }
+//#     
+//#     public String getUserTune() {
+//#         return pepTuneText;
+//#     }
+//#endif
+//#     public void setUserMood (String mood) {
+//#         pepMoodName=mood;
+//#     }
+//#     public void setUserMoodText (String mood) {
+//#         pepMoodText=mood;
+//#     }
+//#     
+//#     public String getUserMood() {
+//#         return pepMoodName;
+//#     }
+//#     
+//#     public String getUserMoodText() {
+//#         return pepMoodText;
+//#     }
+//#endif
+
+    public void drawItem(Graphics g, int ofs, boolean sel) {
+        int w=g.getClipWidth();
+        int h=g.getClipHeight();
+        int xo=g.getClipX();
+        int yo=g.getClipY();
+        
+//#ifdef PEP
+//#         if (pepMood>-1) {
 //#             ImageList moods=MoodIcons.getInstance();
 //#             w-=moods.getWidth();
 //#             moods.drawImage(g, pepMood, w,0);
 //#         }
-//# 
-//#         g.setClip(xo, yo, w, h);
-//#         
-//#         super.drawItem(g, ofs, sel);
-//#     }
+//#ifdef PEP_TUNE
+//#         else if (pepTune) {
+//#             w-=il.getWidth();
+//#             il.drawImage(g, RosterIcons.ICON_PROFILE_INDEX+3, w,0);
+//#         }
 //#endif
+//#endif
+        if (getSecImageIndex()>-1) {
+            w-=il.getWidth();
+            il.drawImage(g, getSecImageIndex(), w,0);
+        }
+        g.setClip(xo, yo, w, h);
+        
+        super.drawItem(g, ofs, sel);
+    }
 
 //#ifdef CHECKERS
 //#     public void setCheckers(int checkers) {

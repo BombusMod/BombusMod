@@ -71,13 +71,6 @@ import xmpp.extensions.IqPing;
 import xmpp.extensions.IqVersionReply;
 import xmpp.extensions.IqTimeReply;
 
-//#if MOOD
-//# import xmpp.extensions.IqMood;
-//# import UserMood.MoodSelect;
-//# import UserMood.MoodList;
-//# import UserMood.Mood;
-//# import xmpp.DiscoInfo;
-//#endif
 //#ifdef PEP
 //# import xmpp.extensions.pep.PepListener;
 //#endif
@@ -98,9 +91,6 @@ public class Roster
     private Command cmdActions=new Command(SR.MS_ITEM_ACTIONS, Command.SCREEN, 1);
     private Command cmdStatus=new Command(SR.MS_STATUS_MENU, Command.SCREEN, 2);
     private Command cmdActiveContacts;//=new Command(SR.MS_ACTIVE_CONTACTS, Command.SCREEN, 3);
-//#ifdef MOOD
-//#     //private Command cmdUserMood=new Command(SR.MS_USER_MOOD, Command.SCREEN, 7);
-//#endif
     private Command cmdAlert=new Command(SR.MS_ALERT_PROFILE_CMD, Command.SCREEN, 8);
 //#ifndef WMUC
     private Command cmdConference=new Command(SR.MS_CONFERENCE, Command.SCREEN, 10);
@@ -141,9 +131,6 @@ public class Roster
     
     public MessageEdit me=null;
 
-//#if MOOD
-//#     public boolean useUserMood;
-//#endif
 //#if PEP
 //#     public boolean useUserMood=true;
 //#endif
@@ -201,10 +188,6 @@ public class Roster
         sl=StatusList.getInstance();
 //#ifdef SE_LIGHT
 //#         selight=KeepLightTask.getInstance();
-//#endif
-        setLight(cf.lightState);
-//#if MOOD
-//#         //mi=MoodList.getInstance();
 //#endif
         setLight(cf.lightState);
         
@@ -1101,10 +1084,6 @@ public class Roster
 //#if SASL_XGOOGLETOKEN
 //#         if (StaticData.getInstance().account.isGmail())
 //#             theStream.addBlockListener(new IqGmail());
-//#endif
-//#ifdef MOOD
-//#         if (cf.sndrcvmood)
-//#             theStream.addBlockListener(new DiscoInfo());
 //#endif
 //#if FILE_TRANSFER
         // enable File transfers
@@ -2313,18 +2292,28 @@ public class Roster
                 mess.append("jid: "+cntact.bareJid);
                 mess.append(cntact.jid.getResource());
                 mess.append("\n"+SR.MS_SUBSCRIPTION+": "+cntact.subscr);
-//#ifdef MOOD
-//#                 if (cntact.mood!=null) {
+//#ifdef PEP
+//#                 if (cntact.pepMood>-1) {
 //#                     mess.append("\n");
 //#                     mess.append(SR.MS_USER_MOOD);
 //#                     mess.append(": ");
-//#                     mess.append(cntact.getUserMoodLocale());
+//#                     mess.append(cntact.getUserMood());
 //#                     if (cntact.getUserMoodText()!="") {
 //#                         mess.append(" (");
 //#                         mess.append(cntact.getUserMoodText());
 //#                         mess.append(")");
 //#                     }
 //#                 }
+//#ifdef PEP_TUNE
+//#                 if (cntact.pepTune) {
+//#                     mess.append("\n");
+//#                     mess.append(SR.MS_USER_TUNE);
+//#                     if (cntact.getUserTune()!="") {
+//#                         mess.append(": ");
+//#                         mess.append(cntact.getUserTune());
+//#                     }
+//#                 }
+//#endif
 //#endif
 //#ifndef WMUC
             }
@@ -2426,9 +2415,6 @@ public class Roster
 //#ifdef POPUPS
     public void cmdClearPopups() { VirtualList.popup.clear(); }
 //#endif
-//#ifdef MOOD
-//#    public void cmdUserMood() { if (isLoggedIn()) new MoodSelect(display); }
-//#endif 
 //#ifndef WMUC
    public void cmdConference() { if (isLoggedIn()) new Bookmarks(display, null); }
 //#endif

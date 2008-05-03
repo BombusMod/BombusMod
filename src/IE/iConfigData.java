@@ -33,7 +33,7 @@ public class iConfigData {
         cf.fullscreen=cf.getBooleanProperty(getValue("fullscreen"),true);
         cf.def_profile = cf.getIntProperty(getValue("def_profile"),0);
 //#ifdef SMILES
-//#         cf.smiles=cf.getBooleanProperty(getValue("smiles"),true);
+        cf.smiles=cf.getBooleanProperty(getValue("smiles"),true);
 //#endif
         cf.showTransports=cf.getBooleanProperty(getValue("showTransports"),true);
         cf.selfContact=cf.getBooleanProperty(getValue("selfContact"),false);
@@ -69,7 +69,7 @@ public class iConfigData {
         cf.cp1251=cf.getBooleanProperty(getValue("cp1251"),true);
         cf.isbottom=cf.getIntProperty(getValue("isbottom"),2);
 //#ifdef NEW_MENU
-//#         cf.newMenu=cf.getBooleanProperty(getValue("newMenu"),false);
+        cf.newMenu=cf.getBooleanProperty(getValue("newMenu"),false);
 //#endif
         cf.lightState=cf.getBooleanProperty(getValue("lightState"),true);
 //#ifdef AUTOSTATUS
@@ -79,7 +79,7 @@ public class iConfigData {
 //#endif
         cf.autoScroll=cf.getBooleanProperty(getValue("autoScroll"),true);
 //#ifdef POPUPS
-//#         cf.popUps=cf.getBooleanProperty(getValue("popUps"),true);
+        cf.popUps=cf.getBooleanProperty(getValue("popUps"),true);
 //#endif
         cf.showResources=cf.getBooleanProperty(getValue("showResources"),true);
 //#ifdef ANTISPAM
@@ -89,7 +89,7 @@ public class iConfigData {
         cf.messageLimit=cf.getIntProperty(getValue("messageLimit"),300);
         cf.eventDelivery=cf.getBooleanProperty(getValue("eventDelivery"),true);
 //#ifdef TRANSLIT
-//#         cf.transliterateFilenames=cf.getBooleanProperty(getValue("transliterateFilenames"),false);
+        cf.transliterateFilenames=cf.getBooleanProperty(getValue("transliterateFilenames"),false);
 //#endif
 //#ifdef SECONDSTRING
 //#         cf.rosterStatus=cf.getBooleanProperty(getValue("rosterStatus"),true);
@@ -110,7 +110,7 @@ public class iConfigData {
 //#ifdef IRC_LIKE
 //#         cf.ircLikeStatus=cf.getBooleanProperty(getValue("ircLikeStatus"),false);
 //#endif
-//#ifdef MOOD
+//#ifdef PEP
 //#         cf.sndrcvmood=cf.getBooleanProperty(getValue("sndrcvmood"),true);
 //#endif
         cf.scheme=cf.getStringProperty(getValue("scheme"),"");

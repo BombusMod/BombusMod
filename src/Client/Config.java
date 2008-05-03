@@ -233,9 +233,6 @@ type = \"-=Siemens=-\";
 //#ifdef SECONDSTRING
 //#     public boolean rosterStatus=false;
 //#endif
-//#ifdef MOOD
-//#     public boolean sndrcvmood = false;
-//#endif
 //#ifdef PEP
 //#     public boolean sndrcvmood = false;
 //#endif
@@ -454,11 +451,6 @@ type = \"-=Siemens=-\";
 //#else
             inputStream.readBoolean();
 //#endif
-//#ifdef MOOD
-//#             sndrcvmood = inputStream.readBoolean();
-//#else
-            inputStream.readBoolean();
-//#endif
 //#ifdef PEP
 //#             sndrcvmood = inputStream.readBoolean();
 //#else
@@ -644,11 +636,6 @@ type = \"-=Siemens=-\";
             outputStream.writeBoolean(notifyWhenMessageType);
 //#ifdef IRC_LIKE
 //#             outputStream.writeBoolean(ircLikeStatus);
-//#else
-            outputStream.writeBoolean(false);
-//#endif
-//#ifdef MOOD
-//#             outputStream.writeBoolean(sndrcvmood);
 //#else
             outputStream.writeBoolean(false);
 //#endif

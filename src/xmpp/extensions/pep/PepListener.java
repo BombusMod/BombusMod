@@ -32,6 +32,7 @@ import Mood.Moods;
 import com.alsutton.jabber.*;
 import com.alsutton.jabber.datablocks.*;
 import java.util.*;
+import locale.SR;
 
 public class PepListener implements JabberBlockListener{
     
@@ -47,55 +48,67 @@ public class PepListener implements JabberBlockListener{
         
         String from=data.getAttribute("from");
 
-        JabberDataBlock item=event.getChildBlock("items").getChildBlock("item");
+        String id=null;
         
         StringBuffer result=new StringBuffer();
-
-        boolean  tuneVaule=false;
-        JabberDataBlock tune=item.findNamespace("tune", "http://jabber.org/protocol/tune");
-        if (tune!=null) {
-            result.append((char)0x266a);
-            result.append(' ');
-            if (tune.getChildBlocks()==null) result.append("(silence)");
-            else {
-                String src=tune.getChildBlockText("source");
-                
-                result.append(tune.getChildBlockText("title"));
-                result.append(" - ");
-                result.append(tune.getChildBlockText("artist"));
-                if (src.length()>0) {
-                    result.append(" (");
-                    result.append(src);
-                    result.append(')');
-                }
-                
-                tuneVaule=true;
-            }
-            
-            System.out.println(from+": "+result.toString());
-        }
-
+//#ifdef PEP_TUNE
+//#         boolean  tuneValue=false;
+//#         JabberDataBlock tune=extractEvent(event, "tune", "http://jabber.org/protocol/tune");
+//#         if (tune!=null) {
+//#             result.append((char)0x266a);
+//#             result.append(' ');
+//#             if (tune.getChildBlocks()==null) result.append("(silence)");
+//#             else {
+//#                 String src=tune.getChildBlockText("source");
+//#                 
+//#                 result.append(tune.getChildBlockText("title"));
+//#                 result.append(" - ");
+//#                 result.append(tune.getChildBlockText("artist"));
+//#                 if (src.length()>0) {
+//#                     result.append(" (");
+//#                     result.append(src);
+//#                     result.append(')');
+//#                 }
+//#                 
+//#                 tuneValue=true;
+//#             }
+//#ifdef DEBUG
+//#             System.out.println(from+": "+result.toString());
+//#endif
+//#         }
+//#endif
         int moodIndex=-1;
-        JabberDataBlock mood=item.findNamespace("mood", "http://jabber.org/protocol/mood");
+        JabberDataBlock mood=extractEvent(event, "mood", "http://jabber.org/protocol/mood");
+        
+        String tag=null;
+        String moodText = "";
+
         if (mood!=null) {
-            result.append(":) ");
-            
-            for (Enumeration e=mood.getChildBlocks().elements(); e.hasMoreElements();) {
-                JabberDataBlock child=(JabberDataBlock)e.nextElement();
-                String tag=child.getTagName();
-                if (tag.equals("text")) continue;
-                
-                moodIndex=Moods.getInstance().getMoodIngex(tag);
+            try {
+                for (Enumeration e=mood.getChildBlocks().elements(); e.hasMoreElements();) {
+                    JabberDataBlock child=(JabberDataBlock)e.nextElement();
+                    tag=child.getTagName();
+                    if (tag.equals("text")) continue;
+                    
+                    moodIndex=Moods.getInstance().getMoodIngex(tag);
+                    
+                    id=mood.getParent().getAttribute("id");
+                }
+            } catch (Exception ex) {
+                moodIndex=Moods.getInstance().getMoodIngex("-");
             }
             
             result.append(Moods.getInstance().getMoodLabel(moodIndex));
             result.append(" - ");
-            result.append(mood.getChildBlockText("text"));
-           
-            System.out.println(from+": "+result.toString());
+            
+            moodText=mood.getChildBlockText("text");
+            result.append(moodText);
+//#ifdef DEBUG
+//#             System.out.println(from+": "+result.toString());
+//#endif
         }
 
-        Msg m=new Msg(Msg.MESSAGE_TYPE_HISTORY, from, null, result.toString());
+        Msg m=new Msg(Msg.MESSAGE_TYPE_HISTORY, from, SR.MS_USER_MOOD, result.toString());
         
         Vector hContacts=StaticData.getInstance().roster.getHContacts();
         synchronized (hContacts) {
@@ -103,8 +116,23 @@ public class PepListener implements JabberBlockListener{
             for (Enumeration e=hContacts.elements();e.hasMoreElements();){
                 Contact c=(Contact)e.nextElement();
                 if (c.jid.equals(j, false)) {
-                    if (mood!=null) c.pepMood=moodIndex;
-                    if (tune!=null) c.pepTune=tuneVaule;
+                    if (mood!=null) {
+                        c.pepMood=moodIndex;
+                        c.setUserMood(Moods.getInstance().getMoodLabel(moodIndex));
+                        c.setUserMoodText(moodText);
+                        
+                        if (c.getGroupType()==Groups.TYPE_SELF) {
+                            if (id!=null) Moods.getInstance().myMoodId=id;
+                            Moods.getInstance().myMoodName=tag;
+                            Moods.getInstance().myMoodName=moodText;
+                        }
+                    }
+//#ifdef PEP_TUNE
+//#                     if (tune!=null) {
+//#                         c.pepTune=tuneValue;
+//#                         c.setUserTune(result.toString());
+//#                     }
+//#endif
                     c.addMessage(m);
                 }
             }
@@ -115,4 +143,12 @@ public class PepListener implements JabberBlockListener{
         return BLOCK_PROCESSED;
     }
     
+    JabberDataBlock extractEvent(JabberDataBlock data, String tagName, String xmlns) {
+        JabberDataBlock items=data.getChildBlock("items");
+        if (items==null) return null;
+        if (!xmlns.equals(items.getAttribute("node"))) return null;
+        JabberDataBlock item=items.getChildBlock("item");
+        if (item==null) return new JabberDataBlock();
+        return item.findNamespace(tagName, xmlns);
+    }
 }

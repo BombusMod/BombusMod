@@ -493,8 +493,6 @@ public class SR {
 //#endif
     public static String MS_SHOW_STATUSES = loadString( "show statuses" );
 
-    public static String MS_USER_MOOD = loadString( "User mood" );
-
     public static String MS_SHOW_HARDWARE = loadString( "shared platform info" );
     public static String MS_DELIVERY = loadString( "delivery events" );
     public static String MS_NIL_DROP_MP = loadString( "drop all" );
@@ -656,6 +654,10 @@ public class SR {
     public static String MS_XML_CONSOLE = loadString("XML console");
 
     public static String MS_CLIPBOARD = loadString("Clipboard");
+
+    public static Object MS_USER_TUNE = loadString("User tune");
+    public static String MS_USER_MOOD = loadString( "User mood" );
+    public static String MS_PEP_NOT_SUPPORTED = loadString("Personal events not supported");
     
     private SR() { }
     
