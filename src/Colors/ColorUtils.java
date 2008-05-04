@@ -10,19 +10,19 @@
 package Colors;
 
 //#ifdef COLORS
-//# import Client.StaticData;
-//# import io.file.FileIO;
-//# import java.io.InputStream;
-//# import io.NvStorage;
-//# import java.io.DataInputStream;
-//# import java.io.DataOutputStream;
-//# import java.io.IOException;
-//# import Colors.Colors;
-//# import util.Translit;
+import Client.StaticData;
+import io.file.FileIO;
+import java.io.InputStream;
+import io.NvStorage;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import Colors.Colors;
+import util.Translit;
 //#endif
 
 //#ifndef COLORS
-import Client.Config;
+//# import Client.Config;
 //#endif
 
 import util.StringLoader;
@@ -42,13 +42,13 @@ public class ColorUtils {
 
     private static Colors cs=Colors.getInstance();
 //#ifndef COLORS
-    public static void loadScheme() {
-        skinFile = Config.getInstance().schemeFileName();
-        if (skinFile==null)
-            return;
-
-        loadSkin(skinFile, 1);
-    }
+//#     public static void loadScheme() {
+//#         skinFile = Config.getInstance().schemeFileName();
+//#         if (skinFile==null)
+//#             return;
+//# 
+//#         loadSkin(skinFile, 1);
+//#     }
 //#endif
     
     public static void loadSkin(String skinF, int resourceT){
@@ -78,17 +78,13 @@ public class ColorUtils {
             cs.MESSAGE_IN=loadInt("MESSAGE_IN", cs.MESSAGE_IN);
             cs.MESSAGE_OUT=loadInt("MESSAGE_OUT", cs.MESSAGE_OUT);
             cs.MESSAGE_PRESENCE=loadInt("MESSAGE_PRESENCE", cs.MESSAGE_PRESENCE);
-//#if NICK_COLORS
-//#             cs.MESSAGE_IN_S=loadInt("MESSAGE_IN_S", cs.MESSAGE_IN_S);
-//#             cs.MESSAGE_OUT_S=loadInt("MESSAGE_OUT_S", cs.MESSAGE_OUT_S);
-//#             cs.MESSAGE_PRESENCE_S=loadInt("MESSAGE_PRESENCE_S", cs.MESSAGE_PRESENCE_S);
-//#endif
+            cs.MESSAGE_IN_S=loadInt("MESSAGE_IN_S", cs.MESSAGE_IN_S);
+            cs.MESSAGE_OUT_S=loadInt("MESSAGE_OUT_S", cs.MESSAGE_OUT_S);
+            cs.MESSAGE_PRESENCE_S=loadInt("MESSAGE_PRESENCE_S", cs.MESSAGE_PRESENCE_S);
             cs.MESSAGE_AUTH=loadInt("MESSAGE_AUTH", cs.MESSAGE_AUTH);
             cs.MESSAGE_HISTORY=loadInt("MESSAGE_HISTORY", cs.MESSAGE_HISTORY);
             cs.PGS_REMAINED=loadInt("PGS_REMAINED", cs.PGS_REMAINED);
             cs.PGS_COMPLETE=loadInt("PGS_COMPLETE", cs.PGS_COMPLETE);
-            //cs.PGS_BORDER=loadInt("PGS_BORDER", cs.PGS_BORDER);
-            //cs.PGS_BGND=loadInt("PGS_BGND", cs.PGS_BGND);
             cs.HEAP_TOTAL=loadInt("HEAP_TOTAL", cs.HEAP_TOTAL);
             cs.HEAP_FREE=loadInt("HEAP_FREE", cs.HEAP_FREE);
             cs.CURSOR_BGND=loadInt("CURSOR_BGND", cs.CURSOR_BGND);
@@ -97,8 +93,12 @@ public class ColorUtils {
             cs.SCROLL_BAR=loadInt("SCROLL_BAR", cs.SCROLL_BAR);
             cs.SCROLL_BGND=loadInt("SCROLL_BGND", cs.SCROLL_BGND);
             cs.CONTACT_J2J=loadInt("CONTACT_J2J", cs.CONTACT_J2J);
+            cs.POPUP_MESSAGE_INK=loadInt("POPUP_MESSAGE_INK", cs.POPUP_MESSAGE_INK);
+            cs.POPUP_MESSAGE_BGND=loadInt("POPUP_MESSAGE_BGND", cs.POPUP_MESSAGE_BGND);
+            cs.POPUP_SYSTEM_INK=loadInt("POPUP_SYSTEM_INK", cs.POPUP_SYSTEM_INK);
+            cs.POPUP_SYSTEM_BGND=loadInt("POPUP_SYSTEM_BGND", cs.POPUP_SYSTEM_BGND);
 //#ifdef COLORS
-//#             ColorScheme.saveToStorage();
+            ColorScheme.saveToStorage();
 //#endif
         } catch (Exception e) { }
         skin=null;
@@ -109,22 +109,22 @@ public class ColorUtils {
         if (skin==null) {
             switch (resourceType) {
 //#if FILE_IO && COLORS
-//#                 case 0:
-//#                     FileIO f=FileIO.createConnection(skinFile);
-//#                     byte[] b=f.fileRead();
-//#                     if (b!=null) {
-//#                         String str=new String(b, 0, b.length).toString().trim();
-//#                         skin=new StringLoader().hashtableLoaderFromString(str);
-//#                     } else
-//#                     return defaultColor;
-//#                     break;
+                case 0:
+                    FileIO f=FileIO.createConnection(skinFile);
+                    byte[] b=f.fileRead();
+                    if (b!=null) {
+                        String str=new String(b, 0, b.length).toString().trim();
+                        skin=new StringLoader().hashtableLoaderFromString(str);
+                    } else
+                    return defaultColor;
+                    break;
 //#endif
                 case 1:
                     skin=new StringLoader().hashtableLoader(skinFile);
                     break;
 //#if COLORS
-//#                 case 2:
-//#                     skin=new StringLoader().hashtableLoaderFromString(skinFile);
+                case 2:
+                    skin=new StringLoader().hashtableLoaderFromString(skinFile);
 //#endif
             }
         }
@@ -139,116 +139,119 @@ public class ColorUtils {
     
     
 //#ifdef COLORS
-//# 
-//# /*
-//#      public static void saveSkin(String skinF) {
-//#         skinFile=skinF;
-//#         
-//#         StringBuffer body=new StringBuffer();
-//#         
-//#         body.append("package midlet;\n//#ifdef COLORS\nimport ui.ColorScheme;\n//#endif\npublic class Colors {\n    private static Colors instance;\n    \n    public static Colors getInstance(){\n	if (instance==null) {\n	    instance=new Colors();\n//#ifdef COLORS\n	    ColorScheme.loadFromStorage();\n//#endif\n	}\n	return instance;\n    }\n");
-//#         
-//#         body.append("public static int BALLOON_INK="+loadString("BALLOON_INK")+";\n");
-//#         body.append("public static int BALLOON_BGND="+loadString("BALLOON_BGND")+";\n");
-//#         body.append("public static int LIST_BGND="+loadString("LIST_BGND")+";\n");
-//#         body.append("public static int LIST_BGND_EVEN="+loadString("LIST_BGND_EVEN")+";\n");
-//#         body.append("public static int LIST_INK="+loadString("LIST_INK")+";\n");
-//#         body.append("public static int MSG_SUBJ="+loadString("MSG_SUBJ")+";\n");
-//#         body.append("public static int MSG_HIGHLIGHT="+loadString("MSG_HIGHLIGHT")+";\n");
-//#         body.append("public static int DISCO_CMD="+loadString("DISCO_CMD")+";\n");
-//#         body.append("public static int BAR_BGND="+loadString("BAR_BGND")+";\n");
-//#         body.append("public static int BAR_BGND_BOTTOM="+loadString("BAR_BGND_BOTTOM")+";\n");
-//#         body.append("public static int BAR_INK="+loadString("BAR_INK")+";\n");
-//#         body.append("public static int CONTACT_DEFAULT="+loadString("CONTACT_DEFAULT")+";\n");
-//#         body.append("public static int CONTACT_CHAT="+loadString("CONTACT_CHAT")+";\n");
-//#         body.append("public static int CONTACT_AWAY="+loadString("CONTACT_AWAY")+";\n");
-//#         body.append("public static int CONTACT_XA="+loadString("CONTACT_XA")+";\n");
-//#         body.append("public static int CONTACT_DND="+loadString("CONTACT_DND")+";\n");
-//#         body.append("public static int GROUP_INK="+loadString("GROUP_INK")+";\n");
-//#         body.append("public static int BLK_INK="+loadString("BLK_INK")+";\n");
-//#         body.append("public static int BLK_BGND="+loadString("BLK_BGND")+";\n");
-//#         body.append("public static int MESSAGE_IN="+loadString("MESSAGE_IN")+";\n");
-//#         body.append("public static int MESSAGE_OUT="+loadString("MESSAGE_OUT")+";\n");
-//#         body.append("public static int MESSAGE_PRESENCE="+loadString("MESSAGE_PRESENCE")+";\n");
-//#         body.append("public static int MESSAGE_AUTH="+loadString("MESSAGE_AUTH")+";\n");
-//#         body.append("public static int MESSAGE_HISTORY="+loadString("MESSAGE_HISTORY")+";\n");
-//#         body.append("public static int PGS_REMAINED="+loadString("PGS_REMAINED")+";\n");
-//#         body.append("public static int PGS_COMPLETE="+loadString("PGS_COMPLETE")+";\n");
-//#         body.append("public static int HEAP_TOTAL="+loadString("HEAP_TOTAL")+";\n");
-//#         body.append("public static int HEAP_FREE="+loadString("HEAP_FREE")+";\n");
-//#         body.append("public static int CURSOR_BGND="+loadString("CURSOR_BGND")+";\n");
-//#         body.append("public static int CURSOR_OUTLINE="+loadString("CURSOR_OUTLINE")+";\n");
-//#         body.append("public static int SCROLL_BRD="+loadString("SCROLL_BRD")+";\n");
-//#         body.append("public static int SCROLL_BAR="+loadString("SCROLL_BAR")+";\n");
-//#         body.append("public static int SCROLL_BGND="+loadString("SCROLL_BGND")+";\n");
-//#         body.append("public static int CONTACT_J2J="+loadString("CONTACT_J2J")+";\n");
-//#         
-//#         body.append("}\n");
-//#         
-//#         System.out.println(body.toString());
-//# 
-//#         skin=null;
-//#         skinFile=null;
-//#     }
-//#      */
-//#     private static String loadString(String key) {
-//#         if (skin==null) {
-//#             skin=new StringLoader().hashtableLoader(skinFile);
-//#         }
-//#         return (String)skin.get(key);
-//#     }
-//#     
-//#     public static String getSkin(){
-//#         StringBuffer body=new StringBuffer();
+
+/*
+     public static void saveSkin(String skinF) {
+        skinFile=skinF;
+        
+        StringBuffer body=new StringBuffer();
+        
+        body.append("package midlet;\n//#ifdef COLORS\nimport ui.ColorScheme;\n//#endif\npublic class Colors {\n    private static Colors instance;\n    \n    public static Colors getInstance(){\n	if (instance==null) {\n	    instance=new Colors();\n//#ifdef COLORS\n	    ColorScheme.loadFromStorage();\n//#endif\n	}\n	return instance;\n    }\n");
+        
+        body.append("public static int BALLOON_INK="+loadString("BALLOON_INK")+";\n");
+        body.append("public static int BALLOON_BGND="+loadString("BALLOON_BGND")+";\n");
+        body.append("public static int LIST_BGND="+loadString("LIST_BGND")+";\n");
+        body.append("public static int LIST_BGND_EVEN="+loadString("LIST_BGND_EVEN")+";\n");
+        body.append("public static int LIST_INK="+loadString("LIST_INK")+";\n");
+        body.append("public static int MSG_SUBJ="+loadString("MSG_SUBJ")+";\n");
+        body.append("public static int MSG_HIGHLIGHT="+loadString("MSG_HIGHLIGHT")+";\n");
+        body.append("public static int DISCO_CMD="+loadString("DISCO_CMD")+";\n");
+        body.append("public static int BAR_BGND="+loadString("BAR_BGND")+";\n");
+        body.append("public static int BAR_BGND_BOTTOM="+loadString("BAR_BGND_BOTTOM")+";\n");
+        body.append("public static int BAR_INK="+loadString("BAR_INK")+";\n");
+        body.append("public static int CONTACT_DEFAULT="+loadString("CONTACT_DEFAULT")+";\n");
+        body.append("public static int CONTACT_CHAT="+loadString("CONTACT_CHAT")+";\n");
+        body.append("public static int CONTACT_AWAY="+loadString("CONTACT_AWAY")+";\n");
+        body.append("public static int CONTACT_XA="+loadString("CONTACT_XA")+";\n");
+        body.append("public static int CONTACT_DND="+loadString("CONTACT_DND")+";\n");
+        body.append("public static int GROUP_INK="+loadString("GROUP_INK")+";\n");
+        body.append("public static int BLK_INK="+loadString("BLK_INK")+";\n");
+        body.append("public static int BLK_BGND="+loadString("BLK_BGND")+";\n");
+        body.append("public static int MESSAGE_IN="+loadString("MESSAGE_IN")+";\n");
+        body.append("public static int MESSAGE_OUT="+loadString("MESSAGE_OUT")+";\n");
+        body.append("public static int MESSAGE_PRESENCE="+loadString("MESSAGE_PRESENCE")+";\n");
+        body.append("public static int MESSAGE_AUTH="+loadString("MESSAGE_AUTH")+";\n");
+        body.append("public static int MESSAGE_HISTORY="+loadString("MESSAGE_HISTORY")+";\n");
+        body.append("public static int PGS_REMAINED="+loadString("PGS_REMAINED")+";\n");
+        body.append("public static int PGS_COMPLETE="+loadString("PGS_COMPLETE")+";\n");
+        body.append("public static int HEAP_TOTAL="+loadString("HEAP_TOTAL")+";\n");
+        body.append("public static int HEAP_FREE="+loadString("HEAP_FREE")+";\n");
+        body.append("public static int CURSOR_BGND="+loadString("CURSOR_BGND")+";\n");
+        body.append("public static int CURSOR_OUTLINE="+loadString("CURSOR_OUTLINE")+";\n");
+        body.append("public static int SCROLL_BRD="+loadString("SCROLL_BRD")+";\n");
+        body.append("public static int SCROLL_BAR="+loadString("SCROLL_BAR")+";\n");
+        body.append("public static int SCROLL_BGND="+loadString("SCROLL_BGND")+";\n");
+        body.append("public static int CONTACT_J2J="+loadString("CONTACT_J2J")+";\n");
+        body.append("public static int POPUP_MESSAGE_INK="+loadString("POPUP_MESSAGE_INK")+";\n");
+        body.append("public static int POPUP_MESSAGE_BGND="+loadString("POPUP_MESSAGE_BGND")+";\n");
+        body.append("public static int POPUP_SYSTEM_INK="+loadString("POPUP_SYSTEM_INK")+";\n");
+        body.append("public static int POPUP_SYSTEM_BGND="+loadString("POPUP_SYSTEM_BGND")+";\n");
+        body.append("}\n");
+        
+        System.out.println(body.toString());
+
+        skin=null;
+        skinFile=null;
+    }
+     */
+    private static String loadString(String key) {
+        if (skin==null) {
+            skin=new StringLoader().hashtableLoader(skinFile);
+        }
+        return (String)skin.get(key);
+    }
+    
+    public static String getSkin(){
+        StringBuffer body=new StringBuffer();
 //#ifdef TRANSLIT
-//#         body.append("xmlSkin\t"+Translit.translit(StaticData.getInstance().account.getNickName()));
+        body.append("xmlSkin\t"+Translit.translit(StaticData.getInstance().account.getNickName()));
 //#else
 //#         body.append("xmlSkin\t"+StaticData.getInstance().account.getNickName());
 //#endif
-//#         body.append("\r\n");
-//#         body.append("BALLOON_INK\t"+getColorString(cs.BALLOON_INK)+"\r\n");
-//#         body.append("BALLOON_BGND\t"+getColorString(cs.BALLOON_BGND)+"\r\n");
-//#         body.append("LIST_BGND\t"+getColorString(cs.LIST_BGND)+"\r\n");
-//#         body.append("LIST_BGND_EVEN\t"+getColorString(cs.LIST_BGND_EVEN)+"\r\n");
-//#         body.append("LIST_INK\t"+getColorString(cs.LIST_INK)+"\r\n");
-//#         body.append("MSG_SUBJ\t"+getColorString(cs.MSG_SUBJ)+"\r\n");
-//#         body.append("MSG_HIGHLIGHT\t"+getColorString(cs.MSG_HIGHLIGHT)+"\r\n");
-//#         body.append("DISCO_CMD\t"+getColorString(cs.DISCO_CMD)+"\r\n");
-//#         body.append("BAR_BGND\t"+getColorString(cs.BAR_BGND)+"\r\n");
-//#         body.append("BAR_BGND_BOTTOM\t"+getColorString(cs.BAR_BGND_BOTTOM)+"\r\n");
-//#         body.append("BAR_INK\t"+getColorString(cs.BAR_INK)+"\r\n");
-//#         body.append("CONTACT_DEFAULT\t"+getColorString(cs.CONTACT_DEFAULT)+"\r\n");
-//#         body.append("CONTACT_CHAT\t"+getColorString(cs.CONTACT_CHAT)+"\r\n");
-//#         body.append("CONTACT_AWAY\t"+getColorString(cs.CONTACT_AWAY)+"\r\n");
-//#         body.append("CONTACT_XA\t"+getColorString(cs.CONTACT_XA)+"\r\n");
-//#         body.append("CONTACT_DND\t"+getColorString(cs.CONTACT_DND)+"\r\n");
-//#         body.append("GROUP_INK\t"+getColorString(cs.GROUP_INK)+"\r\n");
-//#         body.append("BLK_INK\t"+getColorString(cs.BLK_INK)+"\r\n");
-//#         body.append("BLK_BGND\t"+getColorString(cs.BLK_BGND)+"\r\n");
-//#         body.append("MESSAGE_IN\t"+getColorString(cs.MESSAGE_IN)+"\r\n");
-//#         body.append("MESSAGE_OUT\t"+getColorString(cs.MESSAGE_OUT)+"\r\n");
-//#         body.append("MESSAGE_PRESENCE\t"+getColorString(cs.MESSAGE_PRESENCE)+"\r\n");
-//#if NICK_COLORS
-//#         body.append("MESSAGE_IN_S\t"+getColorString(cs.MESSAGE_IN_S)+"\r\n");
-//#         body.append("MESSAGE_OUT_S\t"+getColorString(cs.MESSAGE_OUT_S)+"\r\n");
-//#         body.append("MESSAGE_PRESENCE_S\t"+getColorString(cs.MESSAGE_PRESENCE_S)+"\r\n");
-//#endif
-//#         body.append("MESSAGE_AUTH\t"+getColorString(cs.MESSAGE_AUTH)+"\r\n");
-//#         body.append("MESSAGE_HISTORY\t"+getColorString(cs.MESSAGE_HISTORY)+"\r\n");
-//#         body.append("PGS_REMAINED\t"+getColorString(cs.PGS_REMAINED)+"\r\n");
-//#         body.append("PGS_COMPLETE\t"+getColorString(cs.PGS_COMPLETE)+"\r\n");
-//#         //body.append("PGS_BORDER\t"+getColorString(cs.PGS_BORDER)+"\r\n");
-//#         //body.append("PGS_BGND\t"+getColorString(cs.PGS_BGND)+"\r\n");
-//#         body.append("HEAP_TOTAL\t"+getColorString(cs.HEAP_TOTAL)+"\r\n");
-//#         body.append("HEAP_FREE\t"+getColorString(cs.HEAP_FREE)+"\r\n");
-//#         body.append("CURSOR_BGND\t"+getColorString(cs.CURSOR_BGND)+"\r\n");
-//#         body.append("CURSOR_OUTLINE\t"+getColorString(cs.CURSOR_OUTLINE)+"\r\n");
-//#         body.append("SCROLL_BRD\t"+getColorString(cs.SCROLL_BRD)+"\r\n");
-//#         body.append("SCROLL_BAR\t"+getColorString(cs.SCROLL_BAR)+"\r\n");
-//#         body.append("SCROLL_BGND\t"+getColorString(cs.SCROLL_BGND)+"\r\n");
-//#         body.append("CONTACT_J2J\t"+getColorString(cs.CONTACT_J2J)+"\r\n");
-//#         return body.toString();
-//#     }
+        body.append("\r\n");
+        body.append("BALLOON_INK\t"+getColorString(cs.BALLOON_INK)+"\r\n");
+        body.append("BALLOON_BGND\t"+getColorString(cs.BALLOON_BGND)+"\r\n");
+        body.append("LIST_BGND\t"+getColorString(cs.LIST_BGND)+"\r\n");
+        body.append("LIST_BGND_EVEN\t"+getColorString(cs.LIST_BGND_EVEN)+"\r\n");
+        body.append("LIST_INK\t"+getColorString(cs.LIST_INK)+"\r\n");
+        body.append("MSG_SUBJ\t"+getColorString(cs.MSG_SUBJ)+"\r\n");
+        body.append("MSG_HIGHLIGHT\t"+getColorString(cs.MSG_HIGHLIGHT)+"\r\n");
+        body.append("DISCO_CMD\t"+getColorString(cs.DISCO_CMD)+"\r\n");
+        body.append("BAR_BGND\t"+getColorString(cs.BAR_BGND)+"\r\n");
+        body.append("BAR_BGND_BOTTOM\t"+getColorString(cs.BAR_BGND_BOTTOM)+"\r\n");
+        body.append("BAR_INK\t"+getColorString(cs.BAR_INK)+"\r\n");
+        body.append("CONTACT_DEFAULT\t"+getColorString(cs.CONTACT_DEFAULT)+"\r\n");
+        body.append("CONTACT_CHAT\t"+getColorString(cs.CONTACT_CHAT)+"\r\n");
+        body.append("CONTACT_AWAY\t"+getColorString(cs.CONTACT_AWAY)+"\r\n");
+        body.append("CONTACT_XA\t"+getColorString(cs.CONTACT_XA)+"\r\n");
+        body.append("CONTACT_DND\t"+getColorString(cs.CONTACT_DND)+"\r\n");
+        body.append("GROUP_INK\t"+getColorString(cs.GROUP_INK)+"\r\n");
+        body.append("BLK_INK\t"+getColorString(cs.BLK_INK)+"\r\n");
+        body.append("BLK_BGND\t"+getColorString(cs.BLK_BGND)+"\r\n");
+        body.append("MESSAGE_IN\t"+getColorString(cs.MESSAGE_IN)+"\r\n");
+        body.append("MESSAGE_OUT\t"+getColorString(cs.MESSAGE_OUT)+"\r\n");
+        body.append("MESSAGE_PRESENCE\t"+getColorString(cs.MESSAGE_PRESENCE)+"\r\n");
+        body.append("MESSAGE_IN_S\t"+getColorString(cs.MESSAGE_IN_S)+"\r\n");
+        body.append("MESSAGE_OUT_S\t"+getColorString(cs.MESSAGE_OUT_S)+"\r\n");
+        body.append("MESSAGE_PRESENCE_S\t"+getColorString(cs.MESSAGE_PRESENCE_S)+"\r\n");
+        body.append("MESSAGE_AUTH\t"+getColorString(cs.MESSAGE_AUTH)+"\r\n");
+        body.append("MESSAGE_HISTORY\t"+getColorString(cs.MESSAGE_HISTORY)+"\r\n");
+        body.append("PGS_REMAINED\t"+getColorString(cs.PGS_REMAINED)+"\r\n");
+        body.append("PGS_COMPLETE\t"+getColorString(cs.PGS_COMPLETE)+"\r\n");
+        body.append("HEAP_TOTAL\t"+getColorString(cs.HEAP_TOTAL)+"\r\n");
+        body.append("HEAP_FREE\t"+getColorString(cs.HEAP_FREE)+"\r\n");
+        body.append("CURSOR_BGND\t"+getColorString(cs.CURSOR_BGND)+"\r\n");
+        body.append("CURSOR_OUTLINE\t"+getColorString(cs.CURSOR_OUTLINE)+"\r\n");
+        body.append("SCROLL_BRD\t"+getColorString(cs.SCROLL_BRD)+"\r\n");
+        body.append("SCROLL_BAR\t"+getColorString(cs.SCROLL_BAR)+"\r\n");
+        body.append("SCROLL_BGND\t"+getColorString(cs.SCROLL_BGND)+"\r\n");
+        body.append("CONTACT_J2J\t"+getColorString(cs.CONTACT_J2J)+"\r\n");
+        body.append("POPUP_MESSAGE_INK\t"+getColorString(cs.POPUP_MESSAGE_INK)+"\r\n");
+        body.append("POPUP_MESSAGE_BGND\t"+getColorString(cs.POPUP_MESSAGE_BGND)+"\r\n");
+        body.append("POPUP_SYSTEM_INK\t"+getColorString(cs.POPUP_SYSTEM_INK)+"\r\n");
+        body.append("POPUP_SYSTEM_BGND\t"+getColorString(cs.POPUP_SYSTEM_BGND)+"\r\n");
+        return body.toString();
+    }
 //#endif
     
     public static String ColorToString(int cRed, int cGreen, int cBlue) {

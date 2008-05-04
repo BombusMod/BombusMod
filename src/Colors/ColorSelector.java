@@ -351,7 +351,7 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
             case 27:
                 cl.HEAP_FREE=value; 
                 break;
-            case 38:
+            case 28:
                 cl.CURSOR_BGND=value; 
                 break;
             case 29:
@@ -369,7 +369,6 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
             case 33:
                 cl.CONTACT_J2J=value; 
                 break;
-//#ifdef NICK_COLORS
             case 34:
                 cl.MESSAGE_IN_S=value; 
                 break;
@@ -379,7 +378,18 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
             case 36:
                 cl.MESSAGE_PRESENCE_S=value; 
                 break;
-//#endif
+            case 37:
+                cl.POPUP_MESSAGE_INK=value; 
+                break;
+            case 38:
+                cl.POPUP_MESSAGE_BGND=value; 
+                break;
+            case 39:
+                cl.POPUP_SYSTEM_INK=value; 
+                break;
+            case 40:
+                cl.POPUP_SYSTEM_BGND=value; 
+                break;
         }
 //#if (COLORS)
         ColorScheme.saveToStorage();

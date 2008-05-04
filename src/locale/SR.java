@@ -355,8 +355,6 @@ public class SR {
     public static String MS_MESSAGE_HISTORY=loadString("message history");
     public static String MS_PGS_REMAINED=loadString("progress bar remained");
     public static String MS_PGS_COMPLETE=loadString("progress bar complete");
-    //public static String MS_PGS_BORDER=loadString("progress border");
-    //public static String MS_PGS_BGND=loadString("progress bar background");
     public static String MS_HEAP_TOTAL=loadString("Heap mon total");
     public static String MS_HEAP_FREE=loadString("Heap mon free");
     public static String MS_CURSOR_BGND=loadString("Cursor background");
@@ -366,7 +364,11 @@ public class SR {
     public static String MS_SCROLL_BGND=loadString("Scroll back");    
     public static String MS_MESSAGE_IN_S=loadString("S message incoming"); 
     public static String MS_MESSAGE_OUT_S=loadString("S message outgoing"); 
-    public static String MS_MESSAGE_PRESENCE_S=loadString("S message presence"); 
+    public static String MS_MESSAGE_PRESENCE_S=loadString("S message presence");
+    public static String MS_POPUP_MESSAGE=loadString("Popup message");
+    public static String MS_POPUP_MESSAGE_BGND=loadString("Popup message background");
+    public static String MS_POPUP_SYSTEM=loadString("Popup system");
+    public static String MS_POPUP_SYSTEM_BGND=loadString("Popup system background");
 //#endif
 
     public static String MS_SOUNDS_OPTIONS=loadString("Sounds options");

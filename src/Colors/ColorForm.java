@@ -44,7 +44,7 @@ public class ColorForm implements CommandListener
     private Display display;
     private Displayable parentView;
       
-    private static Colors cs=Colors.getInstance();
+    private static Colors cs;
       
     private final static int w=6;
     private final static int h=16;
@@ -94,8 +94,12 @@ public class ColorForm implements CommandListener
             
             SR.MS_MESSAGE_IN_S,
             SR.MS_MESSAGE_OUT_S,
-            SR.MS_MESSAGE_PRESENCE_S
-
+            SR.MS_MESSAGE_PRESENCE_S,
+            
+            SR.MS_POPUP_MESSAGE,
+            SR.MS_POPUP_MESSAGE_BGND,
+            SR.MS_POPUP_SYSTEM,
+            SR.MS_POPUP_SYSTEM_BGND
         };
         
         public static int[] COLORS = {            
@@ -139,12 +143,16 @@ public class ColorForm implements CommandListener
             cs.SCROLL_BAR,
             cs.SCROLL_BGND,
             
-            cs.CONTACT_J2J
-//#ifdef NICK_COLORS
-            ,cs.MESSAGE_IN_S,
+            cs.CONTACT_J2J,
+            
+            cs.MESSAGE_IN_S,
             cs.MESSAGE_OUT_S,
-            cs.MESSAGE_PRESENCE_S
-//#endif
+            cs.MESSAGE_PRESENCE_S,
+    
+            cs.POPUP_MESSAGE_INK,
+            cs.POPUP_MESSAGE_BGND,
+            cs.POPUP_SYSTEM_INK,
+            cs.POPUP_SYSTEM_BGND
       };
         
       
@@ -188,12 +196,16 @@ public class ColorForm implements CommandListener
             imageData(cs.SCROLL_BRD),
             imageData(cs.SCROLL_BAR),
             imageData(cs.SCROLL_BGND),
-            imageData(cs.CONTACT_J2J)
-//#ifdef NICK_COLORS
-            , imageData(cs.MESSAGE_IN_S),
+            imageData(cs.CONTACT_J2J),
+            
+            imageData(cs.MESSAGE_IN_S),
             imageData(cs.MESSAGE_OUT_S),
-            imageData(cs.MESSAGE_PRESENCE_S)
-//#endif
+            imageData(cs.MESSAGE_PRESENCE_S),
+
+            imageData(cs.POPUP_MESSAGE_INK),
+            imageData(cs.POPUP_MESSAGE_BGND),
+            imageData(cs.POPUP_SYSTEM_INK),
+            imageData(cs.POPUP_SYSTEM_BGND)
       };
 
 
@@ -214,7 +226,7 @@ public class ColorForm implements CommandListener
         super();
         this.display=display;
         parentView=display.getCurrent();
-
+        cs=Colors.getInstance();
         selectionList = new List(SR.MS_COLOR_TUNE, List.IMPLICIT, NAMES, IMAGES);
 
         selectionList.setSelectCommand(selectCommand);

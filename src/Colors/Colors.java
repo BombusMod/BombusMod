@@ -45,11 +45,10 @@ public class Colors {
     public static int MESSAGE_PRESENCE=0x006000;
     public static int MESSAGE_AUTH=0x400040;
     public static int MESSAGE_HISTORY=0x535353;
-//#if NICK_COLORS
+
     public static int MESSAGE_IN_S       =0x0060ff;
     public static int MESSAGE_OUT_S      =0xff4000;
     public static int MESSAGE_PRESENCE_S =0x00c040;
-//#endif 
     
     public static int PGS_REMAINED=0xeeeeee;
     public static int PGS_COMPLETE=0xad1010;
@@ -62,5 +61,10 @@ public class Colors {
     
     public static int SCROLL_BRD=0xbbbbbb;
     public static int SCROLL_BAR=0x950d04;
-    public static int SCROLL_BGND=0xffffff;   
+    public static int SCROLL_BGND=0xffffff;
+    
+    public static int POPUP_MESSAGE_INK = 0x4866ad;
+    public static int POPUP_MESSAGE_BGND = 0xffffe0;
+    public static int POPUP_SYSTEM_INK = 0x009900;
+    public static int POPUP_SYSTEM_BGND = 0xffffe0;
 }

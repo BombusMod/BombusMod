@@ -29,6 +29,7 @@ package ui.controls;
 
 import Client.Contact;
 import Client.StaticData;
+import Colors.Colors;
 import java.util.Vector;
 import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
@@ -39,13 +40,7 @@ public class PopUp {
     private final static int TYPE_SYSTEM = 1;
     private final static int TYPE_MESSAGE = 2;
     private final static int TYPE_ALERT = 3;
-    
-    private final static int COLOR_MESSAGE_INK = 0x4866ad;
-    private final static int COLOR_MESSAGE_BGND = 0xffffe0;
-    
-    private final static int COLOR_SYSTEM_INK = 0x009900;
-    private final static int COLOR_SYSTEM_BGND = 0xffffe0;
-    
+
     private final static int COLOR_ALERT_INK = 0xffffff;
     private final static int COLOR_ALERT_BGND = 0xff0000;
     
@@ -145,9 +140,9 @@ public class PopUp {
         int type=((PopUpElement)popUps.elementAt(0)).getType();
         switch (type) {
             case TYPE_SYSTEM:
-                return COLOR_SYSTEM_INK;
+                return Colors.POPUP_SYSTEM_INK;
             case TYPE_MESSAGE:
-                return COLOR_MESSAGE_INK;
+                return Colors.POPUP_MESSAGE_INK;
             case TYPE_ALERT:
                 return COLOR_ALERT_INK;
         }
@@ -158,9 +153,9 @@ public class PopUp {
         int type=((PopUpElement)popUps.elementAt(0)).getType();
         switch (type) {
             case TYPE_SYSTEM:
-                return COLOR_SYSTEM_BGND;
+                return Colors.POPUP_SYSTEM_BGND;
             case TYPE_MESSAGE:
-                return COLOR_MESSAGE_BGND;
+                return Colors.POPUP_MESSAGE_BGND;
             case TYPE_ALERT:
                 return COLOR_ALERT_BGND;
         }

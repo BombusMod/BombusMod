@@ -465,7 +465,7 @@ public class ContactMessageList extends MessageList
     }
     
     public void touchLeftPressed(){
-        sd.roster.searchActiveContact(1);
+        sd.roster.searchActiveContact(-1);
     }
 
     private void Reply() {
