@@ -53,10 +53,6 @@ import com.alsutton.jabber.datablocks.Presence;
  * @author Eugene Stahov
  */
 public class Contact extends IconTextElement{
-    
-//#ifdef CHECKERS
-//#     private int checkers = -4; //END_GAME_FLAG
-//#endif
 
 //#if USE_ROTATOR
     private int isnew=0;    
@@ -614,14 +610,4 @@ public class Contact extends IconTextElement{
         
         super.drawItem(g, ofs, sel);
     }
-
-//#ifdef CHECKERS
-//#     public void setCheckers(int checkers) {
-//#         this.checkers=checkers;
-//#     }
-//# 
-//#     public int getCheckers() {
-//#         return checkers;
-//#     }
-//#endif
 }

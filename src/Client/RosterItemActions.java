@@ -26,10 +26,6 @@
  */
 
 package Client;
-//#ifdef CHECKERS
-//# import Checkers.Checkers;
-//#endif
-
 //#ifndef WMUC
 import Conference.ConferenceGroup;
 import Conference.InviteForm;
@@ -70,11 +66,6 @@ import ui.Time;
 import vcard.VCard;
 import vcard.vCardForm;
 
-//#ifdef CHECKERS
-//# import com.alsutton.jabber.datablocks.IqCheckers;
-//#endif
-
-
 /**
  *
  * @author EvgS
@@ -113,22 +104,6 @@ public class RosterItemActions extends Menu {
 //#                 addItem("Change transport", 915);
 //#endif
 	    }
-//#ifdef CHECKERS
-//#             switch (contact.getCheckers()) {
-//#                 case -4: //END_GAME_FLAG:
-//#                     addItem("new game",777, 0x0f04);
-//#                     break;
-//#                 case -6: //START_GAME_REQUEST_FLAG:
-//#                     addItem("start game",777, 0x0f04);
-//#                     addItem("end game",778, 0x0f04);
-//#                     break;
-//#                 default:
-//#                     addItem("resume game",777, 0x0f04);
-//#                     addItem("end game",778, 0x0f04);
-//#                     break;
-//#             }
-//#             
-//#endif
 	    addItem(SR.MS_VCARD,1, 0x0f16);
 //#ifdef POPUPS
             addItem(SR.MS_INFO,86, 0x0f04);
@@ -330,25 +305,6 @@ public class RosterItemActions extends Menu {
         String to=null;
         if (isContact) to=(index<3)? c.getJid() : c.getBareJid();
             switch (index) {
-//#ifdef CHECKERS
-//#                 case 777: // checkers
-//#                     switch (c.getCheckers()) {
-//#                         case -4: //END_GAME_FLAG:
-//#                             c.setCheckers(-6);
-//#                             roster.theStream.send(new IqCheckers(c.getJid()));
-//#                             break;
-//#                         case -6: //START_GAME_REQUEST_FLAG:
-//#                             c.setCheckers(-5);
-//#                             roster.theStream.send(new IqCheckers(c.getJid(), true));
-//#                             new Checkers(display, c);
-//#                             return;
-//#                     }
-//#                     break;
-//#                 case 778: // end checkers
-//#                     c.setCheckers(-4);
-//#                     roster.theStream.send(new IqCheckers(c.getJid(), false));
-//#                     break;
-//#endif
                 case 0: // info
                     sd.roster.setQuerySign(true);
                     sd.roster.theStream.send(IqVersionReply.query(to));

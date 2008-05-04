@@ -1205,20 +1205,6 @@ public class Roster
 
                             return JabberBlockListener.BLOCK_PROCESSED;
                         }
-                } else if (type.equals("get")){
-                    //JabberDataBlock query=data.getChildBlock("query");
-
-                    //if (query!=null){
-//#ifdef CHECKERS
-//#                         if (query.isJabberNameSpace("checkers")) {
-//#                             Contact c=getContact(from, true);
-//#                             c.setCheckers(-6);
-//#                             theStream.send(new IqCheckers(data, true));
-//#                             return JabberBlockListener.BLOCK_PROCESSED;
-//#                         }
-//#endif
-                    //}
-                    // ��������� �� ������ ���������� ������� ������� XEP-0202
                 } else if (type.equals("set")) {
                     if (processRoster(data)) { 
                         theStream.send(new Iq(from, Iq.TYPE_RESULT, id));
