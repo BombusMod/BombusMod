@@ -235,6 +235,9 @@ type = \"-=Siemens=-\";
 //#endif
 //#ifdef PEP
 //#     public boolean sndrcvmood = false;
+//#ifdef PEP_TUNE
+//#     public boolean rcvtune = false;
+//#endif
 //#endif
     public boolean queryExit = false;
     public int notInListDropLevel=NotInListFilter.ALLOW_ALL; //enable all
@@ -463,6 +466,11 @@ type = \"-=Siemens=-\";
 //#else
             inputStream.readBoolean();
 //#endif
+//#ifdef PEP_TUNE
+//#             rcvtune = inputStream.readBoolean();
+//#else
+            inputStream.readBoolean();
+//#endif
 	    inputStream.close();
 	} catch (Exception e) {
             try {
@@ -647,6 +655,11 @@ type = \"-=Siemens=-\";
             outputStream.writeUTF(scheme);
 //#ifdef CLIPBOARD
 //#             outputStream.writeBoolean(useClipBoard);
+//#else
+            outputStream.writeBoolean(false);
+//#endif
+//#ifdef PEP_TUNE
+//#             outputStream.writeBoolean(rcvtune);
 //#else
             outputStream.writeBoolean(false);
 //#endif

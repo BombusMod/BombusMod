@@ -156,6 +156,9 @@ public class ConfigForm implements
         message.append(SR.MS_EMULATE_TABS, null);
 //#ifdef PEP
 //#         message.append(SR.MS_SEND_RECEIVE_USERMOODS, null);
+//#ifdef PEP_TUNE
+//#         message.append(SR.MS_RECEIVE_USERTUNE, null);
+//#endif
 //#endif
         message.append(SR.MS_RUNNING_MESSAGE, null);
 //#ifdef ANTISPAM
@@ -180,6 +183,9 @@ public class ConfigForm implements
             cf.useTabs,
 //#ifdef PEP
 //#             cf.sndrcvmood,
+//#ifdef PEP_TUNE
+//#             cf.rcvtune,
+//#endif
 //#endif
             cf.notifyWhenMessageType
 //#ifdef ANTISPAM
@@ -401,6 +407,9 @@ public class ConfigForm implements
             cf.useTabs=mv[mvctr++];
 //#ifdef PEP
 //#             cf.sndrcvmood=mv[mvctr++];
+//#ifdef PEP_TUNE
+//#             cf.rcvtune=mv[mvctr++];
+//#endif
 //#endif
             cf.notifyWhenMessageType=mv[mvctr++];
 //#ifdef ANTISPAM

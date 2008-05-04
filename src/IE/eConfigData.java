@@ -114,6 +114,9 @@ public class eConfigData {
 //#ifdef CLIPBOARD
 //#         array.addElement(new keyValue("useClipBoard", (cf.useClipBoard)?"1":"0"));
 //#endif
+//#ifdef PEP_TUNE
+//#         array.addElement(new keyValue("sndrcvtune", (cf.rcvtune)?"1":"0"));
+//#endif
         
         new eData(array, path+"config.txt");
         array = null;

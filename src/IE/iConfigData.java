@@ -117,6 +117,9 @@ public class iConfigData {
 //#ifdef CLIPBOARD
 //#         cf.useClipBoard=cf.getBooleanProperty(getValue("useClipBoard"),true);
 //#endif
+//#ifdef PEP_TUNE
+//#         cf.rcvtune=cf.getBooleanProperty(getValue("sndrcvtune"),true);
+//#endif
         cf.lastProfile=cf.profile=cf.def_profile;
         if (cf.lastProfile==AlertProfile.VIBRA) 
             cf.lastProfile=0;
