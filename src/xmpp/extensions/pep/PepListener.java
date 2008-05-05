@@ -49,15 +49,14 @@ public class PepListener implements JabberBlockListener{
         String from=data.getAttribute("from");
 
         String id=null;
-        
+        String type="";
         StringBuffer result=new StringBuffer();
 //#ifdef PEP_TUNE
 //#         boolean  tuneValue=false;
 //#         JabberDataBlock tune=extractEvent(event, "tune", "http://jabber.org/protocol/tune");
 //#         if (tune!=null) {
-//#             result.append((char)0x266a);
-//#             result.append(' ');
-//#             if (tune.getChildBlocks()==null) result.append("(silence)");
+//#             if (tune.getChildBlocks()==null) 
+//#                 result.append("(silence)");
 //#             else {
 //#                 String src=tune.getChildBlockText("source");
 //#                 
@@ -75,6 +74,7 @@ public class PepListener implements JabberBlockListener{
 //#ifdef DEBUG
 //#             System.out.println(from+": "+result.toString());
 //#endif
+//#             type=SR.MS_USER_TUNE;
 //#         }
 //#endif
         int moodIndex=-1;
@@ -82,7 +82,6 @@ public class PepListener implements JabberBlockListener{
         
         String tag=null;
         String moodText = "";
-
         if (mood!=null) {
             try {
                 for (Enumeration e=mood.getChildBlocks().elements(); e.hasMoreElements();) {
@@ -99,16 +98,18 @@ public class PepListener implements JabberBlockListener{
             }
             
             result.append(Moods.getInstance().getMoodLabel(moodIndex));
-            result.append(" - ");
-            
             moodText=mood.getChildBlockText("text");
-            result.append(moodText);
+            if (moodText!=""){
+                result.append(" - ");
+                result.append(moodText);
+            }
 //#ifdef DEBUG
 //#             System.out.println(from+": "+result.toString());
 //#endif
+            type=SR.MS_USER_MOOD;
         }
 
-        Msg m=new Msg(Msg.MESSAGE_TYPE_HISTORY, from, SR.MS_USER_MOOD, result.toString());
+        Msg m=new Msg(Msg.MESSAGE_TYPE_HISTORY, from, type, result.toString());
         
         Vector hContacts=StaticData.getInstance().roster.getHContacts();
         synchronized (hContacts) {

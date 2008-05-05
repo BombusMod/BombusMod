@@ -462,6 +462,10 @@ public class Roster
 //#ifndef WMUC
         if (g instanceof ConferenceGroup) {
             ConferenceGroup cg= (ConferenceGroup) g;
+
+            if (!cg.inRoom)
+                groups.removeGroup(g);
+
             if (cg.getSelfContact().status>=Presence.PRESENCE_OFFLINE
                 && cg.getConference().getStatus()==Presence.PRESENCE_ONLINE) {
                 return;
@@ -2434,7 +2438,9 @@ public class Roster
 	ConferenceGroup confGroup=(ConferenceGroup)group;
 	Contact myself=confGroup.getSelfContact();
 	confGroup.getConference().commonPresence=false; //disable reenter after reconnect
-         sendPresence(myself.getJid(), "unavailable", null, true);
+        sendPresence(myself.getJid(), "unavailable", null, true);
+        
+        confGroup.inRoom=false;
 	//roomOffline(group);
         for (Enumeration e=hContacts.elements(); e.hasMoreElements();) {
             Contact contact=(Contact)e.nextElement();

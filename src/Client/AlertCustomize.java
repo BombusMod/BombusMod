@@ -40,11 +40,11 @@ public class AlertCustomize {
     
     public int soundOnlineIndex=0;
     public String soundOnline="";
-    public String soundOnlineType="tone sequence";    
+    public String soundOnlineType="none";    
 
     public int soundOfflineIndex=0;
     public String soundOffline="";
-    public String soundOfflineType="tone sequence";
+    public String soundOfflineType="none";
     
     public int soundForYouIndex=0;
     public String soundForYou="";
@@ -52,7 +52,7 @@ public class AlertCustomize {
     
     public int soundComposingIndex=0;
     public String soundComposing="";
-    public String soundComposingType="tone sequence";
+    public String soundComposingType="none";
     
     public int soundConferenceIndex=0;
     public String soundConference="";
@@ -64,7 +64,7 @@ public class AlertCustomize {
     
     public int soundOutgoingIndex=0;
     public String soundOutgoing="";
-    public String soundOutgoingType="tone sequence";
+    public String soundOutgoingType="none";
     
     public int soundVIPIndex=0;
     public String soundVIP="";

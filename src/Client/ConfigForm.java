@@ -485,8 +485,11 @@ public class ConfigForm implements
             
             cf.updateTime();
             cf.saveToStorage();
+            String oldVerHash=EntityCaps.calcVerHash();
             EntityCaps.initCaps();
-            sd.roster.sendPresence(Presence.PRESENCE_SAME, null);
+            String newVerHash=EntityCaps.calcVerHash();
+            if (oldVerHash!=newVerHash)
+                sd.roster.sendPresence(Presence.PRESENCE_SAME, null);
             sd.roster.reEnumRoster();
         }
         destroyView();

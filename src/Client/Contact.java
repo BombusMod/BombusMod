@@ -596,9 +596,9 @@ public class Contact extends IconTextElement{
 //#             moods.drawImage(g, pepMood, w,0);
 //#         }
 //#ifdef PEP_TUNE
-//#         else if (pepTune) {
+//#         if (pepTune) {
 //#             w-=il.getWidth();
-//#             il.drawImage(g, RosterIcons.ICON_PROFILE_INDEX+3, w,0);
+//#             il.drawImage(g, RosterIcons.ICON_PROFILE_INDEX+1, w,0);
 //#         }
 //#endif
 //#endif

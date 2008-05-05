@@ -270,7 +270,7 @@ public class ConferenceForm implements CommandListener{
             sd.roster.sendDirectPresence(status, jid, x);
             sndprs=false;
         }
-        
+        grp.inRoom=true;
         sd.roster.reEnumRoster();
     }
     

@@ -607,7 +607,7 @@ public class SR {
 
     public static String MS_CLIPBOARD = loadString("Clipboard");
 
-    public static Object MS_USER_TUNE = loadString("User tune");
+    public static String MS_USER_TUNE = loadString("User tune");
     public static String MS_USER_MOOD = loadString( "User mood" );
     public static String MS_PEP_NOT_SUPPORTED = loadString("Personal events not supported");
 

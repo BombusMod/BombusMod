@@ -48,6 +48,8 @@ public class ConferenceGroup extends Group{
 
     String label;
     
+    public boolean inRoom=true;
+    
     private MucContact selfContact;
     public String password;
     public String desc;
