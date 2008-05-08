@@ -360,12 +360,12 @@ public class JabberStream implements XMLEventListener, Runnable {
          return iostream.getStreamStats();
      }
     
-    public int getBytesIn() {
+    /*public int getBytesIn() {
         return iostream.getBytesR();
     }
     public int getBytesOut() {
         return iostream.getBytesS();
-    }
+    }*/
 
     public long getBytes() {
         return iostream.getBytes();
