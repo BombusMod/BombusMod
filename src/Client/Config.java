@@ -820,10 +820,10 @@ type = \"-=Siemens=-\";
 	return defvalue;
     }
     
-    public final char getCharProperty(final String key, final char defvalue) {
+    /*public final char getCharProperty(final String key, final char defvalue) {
 	try { return key.charAt(0); } catch (Exception e) {	}
         return defvalue;
-    }
+    }*/
     
     public final boolean getBooleanProperty(final String key, final boolean defvalue) {
 	try {

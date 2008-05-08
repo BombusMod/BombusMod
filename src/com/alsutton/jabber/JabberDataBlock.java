@@ -204,7 +204,7 @@ public class JabberDataBlock
    }
   
   public String getTypeAttribute(){
-      return getAttribute("type");
+      return getTypeAttribute();
   }
   
   public boolean isJabberNameSpace(String xmlns){

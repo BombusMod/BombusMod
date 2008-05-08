@@ -54,7 +54,7 @@ public class FormField {
         String body=field.getText();
         if (name.equals("field")) {
             // x:data
-            type=field.getAttribute("type");
+            type=field.getTypeAttribute();
             name=field.getAttribute("var");
             label=field.getAttribute("label");
             if (label==null) label=name;

@@ -265,7 +265,7 @@ public class ServiceDiscovery
                 JabberDataBlock identity=query.getChildBlock("identity");
                 if (identity!=null) {
                     String category=identity.getAttribute("category");
-                    String type=identity.getAttribute("type");
+                    String type=identity.getTypeAttribute();
                     if (category.equals("automation") && type.equals("command-node"))  {
                         cmds.addElement(new DiscoCommand(RosterIcons.ICON_AD_HOC, strCmds));
                     }
@@ -307,7 +307,7 @@ public class ServiceDiscovery
             new DiscoForm(display, data, stream, "discoRSearch", "query");
         } else if (id.startsWith("discoR")) {
             String text=SR.MS_DONE;
-            String mainbar=data.getAttribute("type");
+            String mainbar=data.getTypeAttribute();
             if (mainbar.equals("error")) {
                 text=XmppError.findInStanza(data).toString();
             }

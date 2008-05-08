@@ -53,7 +53,7 @@ public class IqLast implements JabberBlockListener {
 
     public int blockArrived(JabberDataBlock data) {
         if (!(data instanceof Iq)) return BLOCK_REJECTED;
-        String type=data.getAttribute("type");
+        String type=data.getTypeAttribute();
         if (type.equals("get")) {
             JabberDataBlock query=data.findNamespace("query", "jabber:iq:last");
             if (query==null) return BLOCK_REJECTED;

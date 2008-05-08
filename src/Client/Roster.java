@@ -1043,7 +1043,7 @@ public class Roster
 //#             int grpType=k.getGroupType();
 //#             if (k.jid.getServer().equals(srcTransport) &&
 //#                     (grpType==Groups.TYPE_COMMON || grpType==Groups.TYPE_NO_GROUP || 
-//#                     /*grpType==Groups.TYPE_VISIBLE ||*/ grpType==Groups.TYPE_IGNORE)) {
+//#                     grpType==Groups.TYPE_VISIBLE || grpType==Groups.TYPE_IGNORE)) {
 //#                 String jid=k.getJid();
 //#                 jid=strconv.stringReplace(jid, srcTransport, dstTransport);
 //#                 storeContact(jid, k.nick, (k.getGroup().getName()!=SR.MS_GENERAL)?(k.getGroup().getName()):"", true); //new contact addition
@@ -1178,11 +1178,6 @@ public class Roster
                         return JabberBlockListener.BLOCK_PROCESSED;
                     }
                     
-                    //if ( type.equals( "error" ) ) {
-                    //???TODO: handlers for type='error'
-                    //}
-                    
-
                 } // id!=null
                 if ( type.equals( "result" ) ) {
                     if (id.equals("getros")){

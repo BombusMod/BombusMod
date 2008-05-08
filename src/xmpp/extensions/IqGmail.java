@@ -48,7 +48,7 @@ public class IqGmail implements JabberBlockListener {
 
     public int blockArrived(JabberDataBlock data) {
         if (!(data instanceof Iq)) return BLOCK_REJECTED;
-        String type=data.getAttribute("type");
+        String type=data.getTypeAttribute();
 
         if (type.equals("result")) {
             if (data.getAttribute("id").equals("mail-request")) {
