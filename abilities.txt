@@ -35,3 +35,5 @@ CLIPBOARD - Буфер обмена
 GRADIENT - градиенты
 PEP - pubsub(user mood, user tune)
 PEP_TUNE - получение инфо о музыке играющей у контактов
+CAPTCHA - капча
+STATS - статистика

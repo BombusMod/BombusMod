@@ -225,12 +225,9 @@ public class strconv {
     public static String replaceCaps(String src){
         if (src==null)
             return "Unknown";
-        
-        //if (src.indexOf("#")>0)
-        //    src = src.substring(0, src.indexOf("#"));        
 
         if (src.indexOf(BOMBUSMOD_REP)>-1)
-            return stringReplace(src,BOMBUSMOD_REP,"Bombusmod");
+            return stringReplace(src,BOMBUSMOD_REP,"BombusMod");
         else if (src.indexOf(BOMBUS_REP)>-1)
             return stringReplace(src,BOMBUS_REP,"Bombus");  
         else if (src.indexOf(BOMBUS_NG_REP)>-1)
@@ -274,8 +271,7 @@ public class strconv {
         return result;
     }
 
-    public static String getSizeString(long number)
-    {
+    public static String getSizeString(long number) {
         StringBuffer suffix = new StringBuffer();
         
         try {

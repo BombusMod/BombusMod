@@ -436,7 +436,15 @@ public class SR {
     public static String MS_NO_CLIENT_INFO = loadString( "No client info" );
     public static String MS_CLEAN_ALL_MESSAGES = loadString( "Delete all messages" );
     public static String MS_DO_AUTOJOIN = loadString( "Join marked (auto)" ); //temporary
+    
     public static String MS_STATS = loadString( "Statistics" );
+//#ifdef STATS
+//#     public static String MS_STARTED=loadString("Started: ");
+//#     public static String MS_TRAFFIC_STATS=loadString("Traffic stats: ");
+//#     public static String MS_ALL=loadString("All: ");
+//#     public static String MS_PREVIOUS=loadString("Previous: ");
+//#     public static String MS_CURRENT=loadString("Current: ");
+//#endif
     public static String MS_LAST_MESSAGES = loadString( "Last Messages" );
     public static String MS_EDIT_JOIN = loadString( "Edit/join" );
     public static String MS_USE_COLOR_SCHEME = loadString( "Use this Color scheme" );
@@ -547,12 +555,6 @@ public class SR {
     public static String MS_POPUPS=loadString("popUps");
     public static String MS_ANTISPAM_CONFERENCE=loadString("antispam conference");
     public static String MS_AUTOSTATUS_MESSAGE=loadString("AutoStatus Message");
-
-    public static String MS_STARTED=loadString("Started: ");
-    public static String MS_TRAFFIC_STATS=loadString("Traffic stats: ");
-    public static String MS_ALL=loadString("All: ");
-    public static String MS_PREVIOUS=loadString("Previous: ");
-    public static String MS_CURRENT=loadString("Current: ");
 
     public static String MS_MEMORY=loadString("Memory:");
     public static String MS_FREE = loadString("Free: ");

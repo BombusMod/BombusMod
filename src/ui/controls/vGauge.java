@@ -109,7 +109,7 @@ public abstract class vGauge
         isShowing=false;
         removeCommand(cmdOk);
         removeCommand(cmdCancel);
-        if (display==null) {
+        if (next==null) {
             display.setCurrent(StaticData.getInstance().roster);
         } else {
             display.setCurrent(next);

@@ -33,10 +33,10 @@ import Client.StaticData;
 //# import Console.XMLList;
 //#endif
 //#ifdef PRIVACY
-//# import PrivacyLists.PrivacySelect;
+import PrivacyLists.PrivacySelect;
 //#endif
 //#ifdef SERVICE_DISCOVERY
-//# import ServiceDiscovery.ServiceDiscovery;
+import ServiceDiscovery.ServiceDiscovery;
 //#endif
 import java.util.Enumeration;
 import java.util.Vector;
@@ -115,30 +115,32 @@ public class userKeyExec {
             case 3: 
                 sd.roster.connectionTerminated(new Exception(SR.MS_SIMULATED_BREAK));
                 break;
-            case 4: 
-                sd.roster.showStats();
-                break;
+//#ifdef STATS
+//#             case 4: 
+//#                 sd.roster.showStats();
+//#                 break;
+//#endif
             case 5:
                 sd.roster.cmdStatus();
                 break;
             case 6: 
 //#if FILE_TRANSFER
-//#                 new io.file.transfer.TransferManager(display);
+                new io.file.transfer.TransferManager(display);
 //#endif
                 break;
             case 7: 
 //#ifdef ARCHIVE
-//#                 sd.roster.cmdArchive();
+                sd.roster.cmdArchive();
 //#endif
                 break;
             case 8: 
 //#ifdef SERVICE_DISCOVERY
-//#                 if (connected) new ServiceDiscovery(display, null, null);
+                if (connected) new ServiceDiscovery(display, null, null);
 //#endif
                 break;
             case 9: 
 //#ifdef PRIVACY
-//#                 if (connected) new PrivacySelect(display);
+                if (connected) new PrivacySelect(display);
 //#endif
                 break;
             case 10: //key pound
@@ -146,7 +148,7 @@ public class userKeyExec {
                 break;
             case 11:
 //#ifdef POPUPS
-//#                 sd.roster.cmdClearPopups();
+                sd.roster.cmdClearPopups();
 //#endif
                 break;
             case 12:

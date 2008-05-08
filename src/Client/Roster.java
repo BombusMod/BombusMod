@@ -44,7 +44,7 @@ import Conference.ConferenceForm;
 import archive.ArchiveList;
 //#endif
 import images.RosterIcons;
-import images.SmilesIcons;
+//import images.SmilesIcons;
 import Messages.MessageParser;
 import locale.SR;
 import login.LoginListener;
@@ -64,8 +64,13 @@ import com.siemens.mp.game.Light;
 import xmpp.EntityCaps;
 
 import xmpp.XmppError;
+//#ifdef CAPTCHA
+//# import xmpp.extensions.Captcha;
+//#endif
 import xmpp.extensions.IqQueryRoster;
-import xmpp.extensions.IqGmail;
+//#if SASL_XGOOGLETOKEN
+//# import xmpp.extensions.IqGmail;
+//#endif
 import xmpp.extensions.IqLast;
 import xmpp.extensions.IqPing;
 import xmpp.extensions.IqVersionReply;
@@ -325,7 +330,6 @@ public class Roster
 //#             }
 //#endif
             setProgress(SR.MS_CONNECT_TO+a.getServer(), 30);
-            SR.loaded();
             theStream= a.openJabberStream();
             setProgress(SR.MS_OPENING_STREAM, 40);
             theStream.setJabberListener( this );
@@ -1075,7 +1079,9 @@ public class Roster
     }
     
     public void loginSuccess() {
-        
+//#ifdef CAPTCHA
+//#         theStream.addBlockListener(new Captcha(display));
+//#endif
         theStream.addBlockListener(new IqPing());
         theStream.addBlockListener(new IqLast());
         theStream.addBlockListener(new IqVersionReply());
@@ -1952,7 +1958,9 @@ public class Roster
         String topBar="("+reconnectCount+"/"+maxReconnect+") "+SR.MS_RECONNECT;
         Msg m=new Msg(Msg.MESSAGE_TYPE_HISTORY, "local", topBar, error);
         messageStore(selfContact(), m);
-        Stats.getInstance().save();
+//#ifdef STATS
+//#         Stats.getInstance().save();
+//#endif
         new Reconnect(topBar, error, display);
      }
     
@@ -2332,9 +2340,11 @@ public class Roster
                 sendPresence(Presence.PRESENCE_OFFLINE, mess);
             } catch (Exception e) { }
         }
-        try {
-             Stats.getInstance().save();
-        } catch (Exception e) { }
+//#ifdef STATS
+//#         try {
+//#              Stats.getInstance().save();
+//#         } catch (Exception e) { }
+//#endif
     }
 
     public void quit() {
@@ -2822,36 +2832,33 @@ public class Roster
     }
     
 //#ifdef POPUPS
-    public void showStats() {
-        StringBuffer str= new StringBuffer(SR.MS_STARTED+startTime);
-        Stats stats=Stats.getInstance();
-        str.append("\n");
-        str.append(SR.MS_TRAFFIC_STATS);
-        str.append("\n");
-        str.append(SR.MS_ALL);
-        str.append(stats.getSessionsCount());
-        str.append(SR.MS_CONN);
-
-        str.append(strconv.getSizeString(stats.getAllTraffic()));
-
-        str.append("\n");
-        str.append(SR.MS_PREVIOUS);
-        str.append(strconv.getSizeString(stats.getLatest()));
-
-        str.append("\n");
-        str.append(SR.MS_CURRENT);
-        str.append(strconv.getSizeString(Stats.getGPRS()));
-
-        if (isLoggedIn())
-            str.append(theStream.getStreamStats());
-
-        VirtualList.setWobble(1, (Contact) null, str.toString());
-        str=null;
-    }
+//#ifdef STATS
+//#     public void showStats() {
+//#         StringBuffer str= new StringBuffer(SR.MS_STARTED+startTime);
+//#         Stats stats=Stats.getInstance();
+//#         str.append("\n");
+//#         str.append(SR.MS_TRAFFIC_STATS);
+//#         str.append("\n");
+//#         str.append(SR.MS_ALL);
+//#         str.append(stats.getSessionsCount());
+//#         str.append(SR.MS_CONN);
+//# 
+//#         str.append(strconv.getSizeString(stats.getAllTraffic()));
+//# 
+//#         str.append("\n");
+//#         str.append(SR.MS_PREVIOUS);
+//#         str.append(strconv.getSizeString(stats.getLatest()));
+//# 
+//#         str.append("\n");
+//#         str.append(SR.MS_CURRENT);
+//#         str.append(strconv.getSizeString(Stats.getGPRS()));
+//# 
+//#         if (isLoggedIn())
+//#             str.append(theStream.getStreamStats());
+//# 
+//#         VirtualList.setWobble(1, (Contact) null, str.toString());
+//#         str=null;
+//#     }
+//#endif
 //#endif
 }
-
-
-
-
-

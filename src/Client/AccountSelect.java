@@ -56,14 +56,16 @@ public class AccountSelect
     Command cmdCancel=new Command(SR.MS_BACK,Command.BACK,99);
     Command cmdQuit=new Command(SR.MS_APP_QUIT,Command.SCREEN,10);
     
-    private Config cf=Config.getInstance();
+    private Config cf;
     
     /** Creates a new instance of AccountPicker */
     public AccountSelect(Display display, boolean enableQuit) {
         super();
         this.enableQuit=enableQuit;
         //this.display=display;
-
+        
+        cf=Config.getInstance();
+        
         setMainBarItem(new MainBar(SR.MS_ACCOUNTS));
         
         if (enableQuit) {

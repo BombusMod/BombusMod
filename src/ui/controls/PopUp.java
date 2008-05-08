@@ -90,8 +90,6 @@ public class PopUp {
             popUps.removeAllElements();
     }
 
-
-    
     private void drawAllStrings(Graphics g, int x, int y) {
         Vector lines=((PopUpElement)popUps.elementAt(0)).getMessage();
         if (lines.size()<1) return;

@@ -33,15 +33,18 @@ package midlet;
 //#ifdef AUTOTASK
 //# import AutoTasks.AutoTask;
 //#endif
-import Client.Stats;
+//#ifdef STATS
+//# import Client.Stats;
+//#endif
 //#ifndef COLORS
-import Colors.ColorUtils;
+//# import Colors.ColorUtils;
 //#endif
 //#ifdef COLORS
-//# import Colors.Colors;
+import Colors.Colors;
 //#endif
 import javax.microedition.midlet.*;
 import javax.microedition.lcdui.*;
+import locale.SR;
 
 import ui.*;
 
@@ -59,7 +62,7 @@ public class BombusMod extends MIDlet implements Runnable{
     private boolean isRunning;
     private boolean isMinimized;
     StaticData sd=StaticData.getInstance();
-    SplashScreen s= SplashScreen.getInstance();
+    SplashScreen s=SplashScreen.getInstance();
 
     public static Image splash;
     
@@ -94,37 +97,32 @@ public class BombusMod extends MIDlet implements Runnable{
     public void pauseApp() { }
 
     public void run(){
-//#ifndef COLORS
-        ColorUtils.loadScheme();
-//#endif
-        try {
-            Stats.getInstance();
-        } catch (Exception e) { }
-        
-        s.setProgress(Version.getVersionNumber(),3);
-        
-        try {
-            Stats.getInstance();
-        } catch (Exception e) { }
-        
-        s.setProgress(7);
-        
         try {
             s.img=Image.createImage("/images/splash.png");
         } catch (Exception e) {
             s.img=null;
         }
+        s.setProgress(5);
 //#ifdef COLORS
-//#         Colors cl=Colors.getInstance();
-//#         s.setProgress(5);
+        Colors cl=Colors.getInstance();
+//#else
+//#         ColorUtils.loadScheme();
 //#endif
+        s.setProgress(7);
+        
+        s.setProgress(Version.getVersionNumber(),10);
+        
+        SR.loaded();
+        
+        s.setProgress(12);
+
 
 	Config cf=Config.getInstance();
-        s.setProgress(12);
+        s.setProgress(15);
         
 //#ifdef AUTOTASK
 //#         sd.autoTask=new AutoTask(display);
-//#         s.setProgress(15);
+//#         s.setProgress(17);
 //#endif
 
         boolean selAccount=( (cf.accountIndex<0) || s.keypressed!=0);
@@ -132,6 +130,10 @@ public class BombusMod extends MIDlet implements Runnable{
             s.setProgress("Entering setup",20);
 	s.setProgress(23);
 
+//#ifdef STATS
+//#         Stats.getInstance();
+//#endif
+        
         sd.roster=new Roster(display);
         s.setProgress(25);
 
@@ -144,11 +146,7 @@ public class BombusMod extends MIDlet implements Runnable{
             new AccountSelect(display, true);
         }
     }
-    
-    /**
-     * Destroy must cleanup everything not handled by the garbage collector.
-     * In this case there is nothing to cleanup.
-     */
+
     public void destroyApp(boolean unconditional) { }
 
     public void hideApp(boolean hide) {

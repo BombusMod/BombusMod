@@ -104,7 +104,9 @@ public class RosterToolsMenu
 //#endif
         addItem(SR.MS_NOTICES_OPTIONS, 10, 0x0f17);
 //#ifdef POPUPS
-        addItem(SR.MS_STATS, 11, 0x0f30);
+//#ifdef STATS
+//#         addItem(SR.MS_STATS, 11, 0x0f30);
+//#endif
 //#endif
 //#ifdef CHECK_VERSION
 //#         addItem(SR.MS_CHECK_UPDATE, 12, 0x46);
@@ -201,9 +203,11 @@ public class RosterToolsMenu
                 new AlertCustomizeForm(display);
                 return;
 //#ifdef POPUPS
-            case 11: //traffic stats
-                sd.roster.showStats();
-                return;
+//#ifdef STATS
+//#             case 11: //traffic stats
+//#                 sd.roster.showStats();
+//#                 return;
+//#endif
 //#endif
                 
 //#ifdef CHECK_VERSION
