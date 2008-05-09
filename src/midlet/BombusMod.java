@@ -33,11 +33,10 @@ package midlet;
 //#ifdef AUTOTASK
 //# import AutoTasks.AutoTask;
 //#endif
-//#ifndef COLORS
-//# import Colors.ColorUtils;
-//#endif
 //#ifdef COLORS
 import Colors.Colors;
+//#else
+//# import Colors.ColorUtils;
 //#endif
 import javax.microedition.midlet.*;
 import javax.microedition.lcdui.*;

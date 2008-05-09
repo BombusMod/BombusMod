@@ -75,6 +75,7 @@ public class XDataForm implements CommandListener {
         if (command==cmdOk) {
             JabberDataBlock resultForm=new JabberDataBlock("x", null, null);
             resultForm.setNameSpace("jabber:x:data");
+            resultForm.setTypeAttribute("submit");
             
             for (Enumeration e=items.elements(); e.hasMoreElements(); ) {
                 JabberDataBlock ch=((XDataField)e.nextElement()).constructJabberDataBlock();
