@@ -33,9 +33,6 @@ package midlet;
 //#ifdef AUTOTASK
 //# import AutoTasks.AutoTask;
 //#endif
-//#ifdef STATS
-//# import Client.Stats;
-//#endif
 //#ifndef COLORS
 //# import Colors.ColorUtils;
 //#endif
@@ -129,10 +126,6 @@ public class BombusMod extends MIDlet implements Runnable{
         if (selAccount) 
             s.setProgress("Entering setup",20);
 	s.setProgress(23);
-
-//#ifdef STATS
-//#         Stats.getInstance();
-//#endif
         
         sd.roster=new Roster(display);
         s.setProgress(25);
