@@ -184,13 +184,23 @@ public class ArchiveList
 	
 
     private void deleteMessage() {
-        archive.delete(cursor);
-        messages=new Vector();
+        new vGauge(SR.MS_DELETE, SR.MS_SURE_DELETE, 0, display, this) {
+            public void yes() {
+                archive.delete(cursor);
+                messages=new Vector();
+            }
+            public void no() { }
+        };
     }
     
     private void deleteAllMessages() {
-        archive.deleteAll();
-        messages=new Vector();
+        new vGauge(SR.MS_DELETE, SR.MS_SURE_DELETE, 0, display, this) {
+            public void yes() {
+                archive.deleteAll();
+                messages=new Vector();
+            }
+            public void no() { }
+        };
     }
     
     private void pasteData(int field) {
@@ -216,12 +226,7 @@ public class ArchiveList
     
     public void keyClear() { 
         if (getItemCount()>0) 
-            new vGauge(SR.MS_DELETE, SR.MS_SURE_DELETE, 0, display, this) {
-                public void yes() {
-                    deleteMessage();
-                }
-                public void no() { }
-            };
+            deleteMessage();
     }
     
     public void focusedItem(int index) {

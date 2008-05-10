@@ -34,6 +34,7 @@ import java.util.*;
 import javax.microedition.lcdui.*;
 import ui.MainBar;
 import io.NvStorage;
+import ui.controls.vGauge;
 
 
 /**
@@ -147,16 +148,24 @@ public class AccountSelect
             new AccountForm(this, display, null);
         }
         if (c==cmdDel) {
-            if (cf.accountIndex>cursor) cf.accountIndex--;
-            cf.saveToStorage();
-           
-            accountList.removeElement(getFocusedObject());
-            rmsUpdate();
-            moveCursorHome();
-            commandState();
-            redraw();
+            new vGauge(SR.MS_DELETE, getFocusedObject().toString(), 0, display, this) {
+                public void yes() {
+                    delAccount();
+                }
+                public void no() { }
+            };
         }
-        
+    }
+    
+    private void delAccount(){
+        if (cf.accountIndex>cursor) cf.accountIndex--;
+        cf.saveToStorage();
+
+        accountList.removeElement(getFocusedObject());
+        rmsUpdate();
+        moveCursorHome();
+        commandState();
+        redraw();
     }
     
     private void switchAccount(boolean login){
