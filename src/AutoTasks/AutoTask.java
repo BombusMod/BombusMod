@@ -39,7 +39,7 @@ import javax.microedition.lcdui.Gauge;
 import javax.microedition.lcdui.Graphics;
 import locale.SR;
 import midlet.BombusMod;
-import ui.FontCache;
+import Fonts.FontCache;
 import ui.Time;
 
 /**

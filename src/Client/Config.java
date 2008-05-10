@@ -31,7 +31,7 @@ import images.SmilesIcons;
 import java.io.*;
 import java.util.*;
 import midlet.BombusMod;
-import ui.FontCache;
+import Fonts.FontCache;
 import util.StringLoader;
 import ui.Time;
 import ui.VirtualList;
@@ -201,6 +201,7 @@ type = \"-=Siemens=-\";
     public int font1=0;
     public int font2=0;
     public int font3=0;
+    public int font4=0;
     public String lang;  //not detected (en)
     public boolean capsState=false;
     public int textWrap=0;
@@ -270,6 +271,9 @@ type = \"-=Siemens=-\";
 
             FontCache.rosterFontSize=instance.font1;
             FontCache.msgFontSize=instance.font2;
+            
+            FontCache.barFontSize=instance.font3;
+            FontCache.balloonFontSize=instance.font4;
             FontCache.resetCache();
 	}
 	return instance;
@@ -471,6 +475,9 @@ type = \"-=Siemens=-\";
 //#else
             inputStream.readBoolean();
 //#endif
+            font3=inputStream.readInt();
+            font4=inputStream.readInt();
+            
 	    inputStream.close();
 	} catch (Exception e) {
             try {
@@ -663,6 +670,8 @@ type = \"-=Siemens=-\";
 //#else
             outputStream.writeBoolean(false);
 //#endif
+            outputStream.writeInt(font3);
+            outputStream.writeInt(font4);
 	} catch (Exception e) { }
 	
 	NvStorage.writeFileRecord(outputStream, "config", 0, true);

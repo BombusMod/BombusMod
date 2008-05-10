@@ -34,7 +34,7 @@ import java.util.Vector;
 import javax.microedition.lcdui.Graphics;
 import Colors.Colors;
 import ui.ComplexString;
-import ui.FontCache;
+import Fonts.FontCache;
 import ui.Time;
 import ui.VirtualElement;
 import ui.VirtualList;
@@ -182,12 +182,12 @@ public class MessageItem implements
         return msg.getTime();
     }
 //#ifdef SMILES
-//#     void toggleSmiles() {
-//#         smiles=!smiles;
-//#         MessageParser.getInstance().parseMsg(this, view.getListWidth());  
-//#     }
-//#     
-//#     boolean smilesEnabled() {return smiles; }
+    void toggleSmiles() {
+        smiles=!smiles;
+        MessageParser.getInstance().parseMsg(this, view.getListWidth());  
+    }
+    
+    boolean smilesEnabled() {return smiles; }
 //#endif
 
 //#ifdef SECONDSTRING

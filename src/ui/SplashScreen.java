@@ -28,6 +28,7 @@
 package ui;
 
 import Client.Config;
+import Fonts.FontCache;
 //#ifdef AUTOSTATUS
 //# import Client.ExtendedStatus;
 //# import Client.Roster;

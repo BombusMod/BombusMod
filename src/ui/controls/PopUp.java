@@ -33,7 +33,7 @@ import Colors.Colors;
 import java.util.Vector;
 import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
-import ui.FontCache;
+import Fonts.FontCache;
 import util.strconv;
 
 public class PopUp {

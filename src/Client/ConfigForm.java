@@ -58,12 +58,8 @@ public class ConfigForm implements
 
     ChoiceGroup lang;
     
-    ChoiceGroup font1;
-    ChoiceGroup font2;
-    
     ChoiceGroup textWrap;
-    
-    //NumberField keepAlive;
+
     NumberField fieldLoc;
     NumberField fieldGmt;
 //#ifdef AUTOSTATUS
@@ -84,7 +80,7 @@ public class ConfigForm implements
     
     StaticData sd=StaticData.getInstance();
     
-    Config cf=Config.getInstance();;
+    Config cf;
     boolean ra[];
     boolean mv[];
     boolean ap[];
@@ -102,6 +98,8 @@ public class ConfigForm implements
         this.display=display;
         parentView=display.getCurrent();
 
+        cf=Config.getInstance();
+        
         f=new Form(SR.MS_OPTIONS);
         roster=new ChoiceGroup(SR.MS_ROSTER_ELEMENTS, Choice.MULTIPLE);
         roster.append(SR.MS_OFFLINE_CONTACTS, null);
@@ -259,12 +257,6 @@ public class ConfigForm implements
 	fieldGmt=new NumberField(SR.MS_GMT_OFFSET, cf.gmtOffset, -12, 12); 
         fieldLoc=new NumberField(SR.MS_CLOCK_OFFSET, cf.locOffset, -12, 12 );
 
-        String fnts[]={SR.MS_FONTSIZE_NORMAL, SR.MS_FONTSIZE_SMALL, SR.MS_FONTSIZE_LARGE};
-        font1=new ChoiceGroup(SR.MS_ROSTER_FONT, ChoiceGroup.POPUP, fnts, null);
-        font2=new ChoiceGroup(SR.MS_MESSAGE_FONT, ChoiceGroup.POPUP, fnts, null);
-        font1.setSelectedIndex(cf.font1/8, true);
-        font2.setSelectedIndex(cf.font2/8, true);
-
         f.append(roster);
         
         try {
@@ -292,15 +284,12 @@ public class ConfigForm implements
         f.append(subscr);
         
         f.append(nil);
-        
-        f.append(font1);
 
         f.append(message);
         f.append(MessageLimit);
 //#if AUTODELETE
 //#         f.append(MessageCountLimit);
 //#endif
-        f.append(font2);
         
 	String textWraps[]={SR.MS_TEXTWRAP_CHARACTER, SR.MS_TEXTWRAP_WORD};
 	textWrap=new ChoiceGroup(SR.MS_TEXTWRAP, ChoiceGroup.POPUP, textWraps,null);
@@ -449,10 +438,6 @@ public class ConfigForm implements
             
 	    cf.gmtOffset=fieldGmt.getValue();
 	    cf.locOffset=fieldLoc.getValue();
-            
-            FontCache.rosterFontSize=cf.font1=font1.getSelectedIndex()*8;
-            FontCache.msgFontSize=cf.font2=font2.getSelectedIndex()*8;
-            FontCache.resetCache();
 	    
 	    cf.textWrap=textWrap.getSelectedIndex();
 

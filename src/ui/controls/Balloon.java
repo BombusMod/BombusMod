@@ -30,7 +30,7 @@ package ui.controls;
 import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
 import Colors.Colors;
-import ui.FontCache;
+import Fonts.FontCache;
 
 public class Balloon {
     private static Font f=FontCache.getBalloonFont();

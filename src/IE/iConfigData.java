@@ -53,6 +53,8 @@ public class iConfigData {
         cf.memMonitor=cf.getBooleanProperty(getValue("memMonitor"),true);
         cf.font1=cf.getIntProperty(getValue("font1"),0);
         cf.font2=cf.getIntProperty(getValue("font2"),0);
+        cf.font3=cf.getIntProperty(getValue("font3"),0);
+        cf.font4=cf.getIntProperty(getValue("font4"),0);
         cf.autoFocus=cf.getBooleanProperty(getValue("autoFocus"),false);
         cf.lang=cf.getStringProperty(getValue("lang"),"en");
         cf.capsState=cf.getBooleanProperty(getValue("capsState"),true);

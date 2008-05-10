@@ -25,7 +25,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-package ui;
+package Fonts;
 
 import javax.microedition.lcdui.Font;
 
@@ -41,11 +41,16 @@ public class FontCache {
     private static Font msgFontBold;
     private static Font balloonFont;
     private static Font clockFont;
+    private static Font barFont;
     
     public static int rosterFontSize=Font.SIZE_MEDIUM;
     public static int msgFontSize=Font.SIZE_MEDIUM;
-    public final static int balloonFontSize=Font.SIZE_SMALL;
+    public static int barFontSize=Font.SIZE_SMALL;
+    public static int balloonFontSize=Font.SIZE_SMALL;
+    
     public final static int clockFontSize=Font.SIZE_LARGE;
+
+
 
     public final static Font getRosterNormalFont() {
         if (normal==null) {
@@ -75,6 +80,13 @@ public class FontCache {
         return msgFontBold;
     }
 
+    public final static Font getBarFont() {
+        if (barFont==null) {
+            barFont=Font.getFont(Font.FACE_PROPORTIONAL, Font.STYLE_PLAIN, barFontSize);
+        }
+        return barFont;
+    }
+    
     public final static Font getBalloonFont() {
         if (balloonFont==null) {
             balloonFont=Font.getFont(Font.FACE_PROPORTIONAL, Font.STYLE_PLAIN, balloonFontSize);
@@ -91,6 +103,6 @@ public class FontCache {
 
 
     public final static void resetCache() {
-        normal=bold=msgFont=msgFontBold=balloonFont=null;
+        normal=bold=msgFont=msgFontBold=balloonFont=barFont=null;
     }
 }

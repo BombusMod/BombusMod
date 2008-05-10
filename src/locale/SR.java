@@ -614,6 +614,11 @@ public class SR {
     public static String MS_PEP_NOT_SUPPORTED = loadString("Personal events not supported");
 
     public static String MS_RECEIVE_USERTUNE=loadString("user tune receive");
+
+    public static String MS_BAR_FONT=loadString("Bar font");
+    public static String MS_POPUP_FONT=loadString("Popup & ballon font");
+
+    public static String MS_FONTS_OPTIONS=loadString("Fonts options");
     
     private SR() { }
     

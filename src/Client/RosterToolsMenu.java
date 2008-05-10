@@ -35,6 +35,7 @@ import PrivacyLists.PrivacySelect;
 //#if AUTOTASK
 //# import AutoTasks.AutoTaskForm;
 //#endif
+import Fonts.ConfigFonts;
 //#ifdef SERVICE_DISCOVERY
 import ServiceDiscovery.ServiceDiscovery;
 //#endif
@@ -88,48 +89,48 @@ public class RosterToolsMenu
 //#if (FILE_IO && HISTORY)
 //#         addItem(SR.MS_HISTORY_OPTIONS, 5, 0x0f01);
 //#endif
-        
+       addItem(SR.MS_FONTS_OPTIONS, 6, 0x0f01);
 //#if (FILE_IO)
-        addItem(SR.MS_ROOT,6, 0x0f10);
+        addItem(SR.MS_ROOT, 7, 0x0f10);
 //#endif
 //#if (FILE_IO && FILE_TRANSFER)
         if (sd.roster.isLoggedIn())
-            addItem(SR.MS_FILE_TRANSFERS, 7, 0x0f34);
+            addItem(SR.MS_FILE_TRANSFERS, 8, 0x0f34);
 //#endif
 //#ifdef COLORS
-        addItem(SR.MS_COLOR_TUNE, 8, 0x0f25);
+        addItem(SR.MS_COLOR_TUNE, 9, 0x0f25);
 //#endif
 //#if IMPORT_EXPORT
-//#         addItem(SR.MS_IMPORT_EXPORT, 9, 0x0f03);
+//#         addItem(SR.MS_IMPORT_EXPORT, 10, 0x0f03);
 //#endif
-        addItem(SR.MS_NOTICES_OPTIONS, 10, 0x0f17);
+        addItem(SR.MS_NOTICES_OPTIONS, 11, 0x0f17);
 //#ifdef POPUPS
 //#ifdef STATS
-//#         addItem(SR.MS_STATS, 11, 0x0f30);
+//#         addItem(SR.MS_STATS, 12, 0x0f30);
 //#endif
 //#endif
 //#ifdef CHECK_VERSION
-//#         addItem(SR.MS_CHECK_UPDATE, 12, 0x46);
+//#         addItem(SR.MS_CHECK_UPDATE, 13, 0x46);
 //#         if (cf.getStringProperty("Bombus-Upgrade", "123")!="123")
-//#             addItem(SR.MS_BUILD_NEW, 13, 0x46);
+//#             addItem(SR.MS_BUILD_NEW, 14, 0x46);
 //#endif
 //#ifdef USER_KEYS
 //#         if (cf.userKeys)
-//#             addItem(SR.MS_CUSTOM_KEYS, 14, 0x0f03);
+//#             addItem(SR.MS_CUSTOM_KEYS, 15, 0x0f03);
 //#endif
 //#if SASL_XGOOGLETOKEN
 //#         if (sd.account.isGmail() && sd.roster.isLoggedIn())
-//#             addItem(SR.MS_CHECK_GOOGLE_MAIL, 15,0x46);
+//#             addItem(SR.MS_CHECK_GOOGLE_MAIL, 16,0x46);
 //#endif 
 //#if AUTOTASK
-//#         addItem(SR.MS_AUTOTASKS, 16, 0x0f03);
+//#         addItem(SR.MS_AUTOTASKS, 17, 0x0f03);
 //#endif
       
-        addItem(SR.MS_INVERT, 17, 0x0f06);
+        addItem(SR.MS_INVERT, 18, 0x0f06);
         
-        addItem(SR.MS_BREAK_CONECTION, 18, 0x13);
+        addItem(SR.MS_BREAK_CONECTION, 19, 0x13);
 //#ifdef CONSOLE
-//#         addItem(SR.MS_XML_CONSOLE, 19, 0x46);
+//#         addItem(SR.MS_XML_CONSOLE, 20, 0x46);
 //#endif
         attachDisplay(display);
     }
@@ -175,75 +176,78 @@ public class RosterToolsMenu
 //#                 new HistoryConfig(display);
 //#                 return;
 //#endif
-
-//#if (FILE_IO)
             case 6:
+                new ConfigFonts(display);
+                return;
+                
+//#if (FILE_IO)
+            case 7:
                 new io.file.browse.Browser(null, display, null, false);
                 return;
 //#endif
 
 //#if (FILE_TRANSFER)
-            case 7:
+            case 8:
                 new io.file.transfer.TransferManager(display);
                 return;
 //#endif
                 
 //#ifdef COLORS
-            case 8:
+            case 9:
                 new ColorForm(display);
                 return;
 //#endif
                 
 //#if IMPORT_EXPORT
-//#             case 9:
+//#             case 10:
 //#                 new IE.IEMenu(display);
 //#                 return; 
 //#endif
-            case 10:
+            case 11:
                 new AlertCustomizeForm(display);
                 return;
 //#ifdef POPUPS
 //#ifdef STATS
-//#             case 11: //traffic stats
+//#             case 12: //traffic stats
 //#                 sd.roster.showStats();
 //#                 return;
 //#endif
 //#endif
                 
 //#ifdef CHECK_VERSION
-//#             case 12:
+//#             case 13:
 //#                 new Upgrade(display, false);
 //#                 return;
-//#             case 13:
+//#             case 14:
 //#                 new Upgrade(display, true);
 //#                 return;
 //#endif
                 
 //#ifdef USER_KEYS
-//#             case 14:
+//#             case 15:
 //#                 new userKeysList(display);
 //#                 return;
 //#endif
                 
 //#if SASL_XGOOGLETOKEN
-//#             case 15: //mail check
+//#             case 16: //mail check
 //#                 sd.roster.theStream.send(IqGmail.query());
 //# 		return; 
 //#endif
                 
 //#if AUTOTASK
-//#             case 16:
+//#             case 17:
 //#                 new AutoTaskForm(display);
 //#                 return;
 //#endif
-            case 17:
+            case 18:
                 ColorScheme.invertSkin();
                 return;
-            case 18:
+            case 19:
                 sd.roster.connectionTerminated(new Exception(SR.MS_SIMULATED_BREAK));
                 return;
 //#ifdef CONSOLE
-//#             case 19:
+//#             case 20:
 //#                 new XMLList(display);
 //#                 return;
 //#endif

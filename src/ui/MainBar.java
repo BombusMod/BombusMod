@@ -24,13 +24,14 @@
 
 package ui;
 
+import Fonts.FontCache;
 import images.RosterIcons;
 
 public class MainBar extends ComplexString{
 
     public MainBar(int size, Object first, Object second) {
         this (size);
-        font=FontCache.getBalloonFont();
+        super.setFont(FontCache.getBarFont());
         if (first!=null) setElementAt(first,0);
         if (second!=null) setElementAt(second,1);
     }

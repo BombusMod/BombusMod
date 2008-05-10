@@ -48,6 +48,8 @@ public class eConfigData {
         array.addElement(new keyValue("memMonitor", (cf.memMonitor)?"1":"0"));
         array.addElement(new keyValue("font1", Integer.toString(cf.font1)));
         array.addElement(new keyValue("font2", Integer.toString(cf.font2)));
+        array.addElement(new keyValue("font3", Integer.toString(cf.font3)));
+        array.addElement(new keyValue("font4", Integer.toString(cf.font4)));
         array.addElement(new keyValue("autoFocus", (cf.autoFocus)?"1":"0"));
         array.addElement(new keyValue("lang", cf.lang));
         array.addElement(new keyValue("capsState", (cf.capsState)?"1":"0"));

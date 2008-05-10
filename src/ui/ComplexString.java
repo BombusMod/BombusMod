@@ -27,7 +27,8 @@
 
 package ui;
 //#if NICK_COLORS || COLORS
-//# import Colors.ColorScheme;
+import Colors.ColorScheme;
+import Fonts.FontCache;
 //#endif
 import java.util.*;
 import javax.microedition.lcdui.*;
@@ -45,11 +46,11 @@ public class ComplexString extends Vector implements VirtualElement {
     public final static int RALIGN    = 0x02000000;
     public final static int UNDERLINE = 0x03000000;
 //#if NICK_COLORS
-//#     public final static int NICK_ON   = 0x04000000;
-//#     public final static int NICK_OFF  = 0x05000000;
+    public final static int NICK_ON   = 0x04000000;
+    public final static int NICK_OFF  = 0x05000000;
 //#endif
 
-    protected Font font=FontCache.getMsgFont();
+    protected Font font;
     private int height;
     private int width;
     private ImageList imageList;
@@ -83,12 +84,11 @@ public class ComplexString extends Vector implements VirtualElement {
     public void onSelect(){};
     
     public void drawItem(Graphics g, int offset, boolean selected){
-        //g.setColor(0);
         boolean ralign=false;
 	boolean underline=false;
         
 //#if NICK_COLORS
-//# 	boolean nick=false;
+	boolean nick=false;
 //#endif
         
         int w=offset;
@@ -110,31 +110,31 @@ public class ComplexString extends Vector implements VirtualElement {
                     // string element
                     String s=(String) ob;
 //#if NICK_COLORS
-//#                     if (nick) {
-//#                         int color=g.getColor();
-//#                         dw=0;
-//#                         int p1=0; 
-//#                         while (p1<s.length()) {
-//#                             int p2=p1;
-//#                             char c1=s.charAt(p1);
-//#                             //processing the same cp
-//#                             while (p2<s.length()) {
-//#                                 char c2=s.charAt(p2);
-//#                                 if ( (c1&0xff00) != (c2 &0xff00) ) break;
-//#                                 p2++;
-//#                             }
-//#                             int vColor=ColorScheme.strong(color);
-//#                             g.setColor( (c1>255) ? vColor : color);
-//#                             dw=font.substringWidth(s, p1, p2-p1);
-//#                             if (ralign) w-=dw;
-//#                             g.drawSubstring( s, p1, p2-p1, 
-//#                                     w,fontYOfs,Graphics.LEFT|Graphics.TOP);
-//#                             if (!ralign) w+=dw;
-//#                             p1=p2;
-//#                         }
-//#                         
-//#                         g.setColor(color);
-//#                     } else {
+                    if (nick) {
+                        int color=g.getColor();
+                        dw=0;
+                        int p1=0; 
+                        while (p1<s.length()) {
+                            int p2=p1;
+                            char c1=s.charAt(p1);
+                            //processing the same cp
+                            while (p2<s.length()) {
+                                char c2=s.charAt(p2);
+                                if ( (c1&0xff00) != (c2 &0xff00) ) break;
+                                p2++;
+                            }
+                            int vColor=ColorScheme.strong(color);
+                            g.setColor( (c1>255) ? vColor : color);
+                            dw=font.substringWidth(s, p1, p2-p1);
+                            if (ralign) w-=dw;
+                            g.drawSubstring( s, p1, p2-p1, 
+                                    w,fontYOfs,Graphics.LEFT|Graphics.TOP);
+                            if (!ralign) w+=dw;
+                            p1=p2;
+                        }
+                        
+                        g.setColor(color);
+                    } else {
 //#endif
                         dw=font.stringWidth(s);
                         if (ralign) w-=dw;
@@ -146,7 +146,7 @@ public class ComplexString extends Vector implements VirtualElement {
                         }
                         if (!ralign) w+=dw;
 //#if NICK_COLORS
-//#                     }
+                    }
 //#endif
 
                 } else if ((ob instanceof Integer)) {
@@ -170,12 +170,12 @@ public class ComplexString extends Vector implements VirtualElement {
 			    underline=true;
 			    break;
 //#if NICK_COLORS
-//#                         case NICK_ON:
-//#                             nick=true; 
-//#                             break;
-//#                         case NICK_OFF:
-//#                             nick=false;
-//#                             break;
+                        case NICK_ON:
+                            nick=true; 
+                            break;
+                        case NICK_OFF:
+                            nick=false;
+                            break;
 //#endif
                     }
                 } /* Integer*/ else if (ob instanceof VirtualElement) { 
@@ -217,23 +217,6 @@ public class ComplexString extends Vector implements VirtualElement {
         return width=w;
     }
 
-
-    /*public Object elementAt(int index) {
-        if (index<elementCount) return super.elementAt(index);
-        return null;
-    }*/
-
-    
-    /**
-     * Safe version of setElementAt
-     * Sets the component at the specified index of this vector to be the 
-     * specified object. The previous component at that position is discarded.
-     * If index is greater or equal to the current size of the vector, 
-     * size will be automatically enlarged
-     * 
-     * @param obj 
-     * @param index 
-     */
     public void setElementAt(Object obj, int index) {
         height=width=0; // discarding cached values
         if (index>=elementCount) this.setSize(index+1);

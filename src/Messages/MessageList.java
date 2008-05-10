@@ -37,11 +37,11 @@ import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
 //#ifdef COLORS
-//# import Colors.ColorUtils;
+import Colors.ColorUtils;
 //#endif
 import ui.VirtualElement;
 import ui.VirtualList;
-import ui.FontCache;
+import Fonts.FontCache;
 //#ifdef CLIPBOARD
 //# import util.ClipBoard;
 //#endif
@@ -59,10 +59,10 @@ public abstract class MessageList
 //#     protected Command cmdCopyPlus = new Command("+ "+SR.MS_COPY, Command.SCREEN, 30);
 //#endif
 //#ifdef COLORS
-//#     protected Command cmdxmlSkin = new Command(SR.MS_USE_COLOR_SCHEME, Command.SCREEN, 40);
+    protected Command cmdxmlSkin = new Command(SR.MS_USE_COLOR_SCHEME, Command.SCREEN, 40);
 //#endif
 //#ifdef SMILES
-//#     protected Command cmdSmiles = new Command(SR.MS_SMILES_TOGGLE, Command.SCREEN, 50);
+    protected Command cmdSmiles = new Command(SR.MS_SMILES_TOGGLE, Command.SCREEN, 50);
 //#endif
     protected Command cmdUrl = new Command(SR.MS_GOTO_URL, Command.SCREEN, 80);
     protected Command cmdBack = new Command(SR.MS_BACK, Command.BACK, 99);
@@ -73,9 +73,9 @@ public abstract class MessageList
         super();
 	messages=new Vector();
 //#ifdef SMILES
-//#         smiles=Config.getInstance().smiles;
+        smiles=Config.getInstance().smiles;
 //#else
-        smiles=false;
+//#         smiles=false;
 //#endif
 //#ifdef CLIPBOARD
 //#         if (Config.getInstance().useClipBoard) {
@@ -89,10 +89,10 @@ public abstract class MessageList
         cursor=0;//activate
 
 //#ifdef COLORS
-//#         addCommand(cmdxmlSkin);
+        addCommand(cmdxmlSkin);
 //#endif
 //#ifdef SMILES
-//#         addCommand(cmdSmiles);
+        addCommand(cmdSmiles);
 //#endif
         addCommand(cmdUrl);
         addCommand(cmdBack);
@@ -136,20 +136,20 @@ public abstract class MessageList
             } catch (Exception e) {/* no urls found */}
         }
 //#ifdef SMILES
-//#         if (c==cmdSmiles) {
-//#             try {
-//#                 ((MessageItem)getFocusedObject()).toggleSmiles();
-//#             } catch (Exception e){}
-//#         }
+        if (c==cmdSmiles) {
+            try {
+                ((MessageItem)getFocusedObject()).toggleSmiles();
+            } catch (Exception e){}
+        }
 //#endif
 //#ifdef COLORS
-//#         if (c==cmdxmlSkin) {
-//#             try {
-//#                 if (((MessageItem)getFocusedObject()).msg.getBody().startsWith("xmlSkin")) {
-//#                    ColorUtils.loadSkin(((MessageItem)getFocusedObject()).msg.getBody(),2);
-//#                 }
-//#             } catch (Exception e){}
-//#         }
+        if (c==cmdxmlSkin) {
+            try {
+                if (((MessageItem)getFocusedObject()).msg.getBody().startsWith("xmlSkin")) {
+                   ColorUtils.loadSkin(((MessageItem)getFocusedObject()).msg.getBody(),2);
+                }
+            } catch (Exception e){}
+        }
 //#endif
 //#ifdef CLIPBOARD
 //#         if (c == cmdCopy)
@@ -178,16 +178,16 @@ public abstract class MessageList
 //#endif
     }
 //#ifdef SMILES
-//#     protected void keyPressed(int keyCode) { // overriding this method to avoid autorepeat
-//#         if (keyCode=='*') {
-//#             try {
-//#                 ((MessageItem)getFocusedObject()).toggleSmiles();
-//#             } catch (Exception e){}
-//#             System.gc();
-//#             return;
-//#         }
-//#         super.keyPressed(keyCode);
-//#     }
+    protected void keyPressed(int keyCode) { // overriding this method to avoid autorepeat
+        if (keyCode=='*') {
+            try {
+                ((MessageItem)getFocusedObject()).toggleSmiles();
+            } catch (Exception e){}
+            System.gc();
+            return;
+        }
+        super.keyPressed(keyCode);
+    }
 //#endif
     public void keyGreen() { eventOk(); }
    

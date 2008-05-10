@@ -36,7 +36,7 @@ import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
 import locale.SR;
-import ui.FontCache;
+import Fonts.FontCache;
 import util.strconv;
 //#ifdef GRADIENT
 //# import ui.Gradient;
@@ -61,8 +61,9 @@ public abstract class vGauge
 
     private int value;
     
-    Font f;
-
+    //Font barFont; //TODO
+    Font messageFont;
+    
     private String text;
     private String mainbar;
     
@@ -75,7 +76,10 @@ public abstract class vGauge
         
     public vGauge(String mainbar, String text, int timeout, Display display, Displayable nextDisplayable) {
         this.display=display;
-        f=FontCache.getBalloonFont();
+        
+        //barFont=FontCache.getBarFont(); //TODO
+        messageFont=FontCache.getMsgFont();
+        
         next=(nextDisplayable==null)? display.getCurrent() : nextDisplayable;
         
         this.mainbar=mainbar;
@@ -147,10 +151,10 @@ public abstract class vGauge
             g.setColor(0xffffff);
             g.fillRect(0,0, width, height); //fill back
 
-            g.setFont(f);
-            int fh=f.getHeight();
+            g.setFont(messageFont);
+            int fh=messageFont.getHeight();
             if (!parsed) {
-                lines=strconv.parseMessage(text, width-4, height-fh-10, false, f);
+                lines=strconv.parseMessage(text, width-4, height-fh-10, false, messageFont);
                 parsed=true;
             }
             g.setClip(0,0, width, fh);
@@ -163,6 +167,7 @@ public abstract class vGauge
          g.setColor(0x4c7300);
          g.fillRect(0, 0, width, fh);
 //#endif
+            //TODO
             g.setColor(0xffffff);
             String timeoutString=(timeout>0)?" - "+(timeout-value):"";
             g.drawString(mainbar+timeoutString, xt, 0, Graphics.TOP|Graphics.HCENTER);
@@ -196,7 +201,7 @@ public abstract class vGauge
     }
     
     private int getFontHeight() {
-        return f.getHeight();
+        return messageFont.getHeight();
     }
     
     public abstract void yes();

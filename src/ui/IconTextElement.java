@@ -26,6 +26,7 @@
  */
 
 package ui;
+import Fonts.FontCache;
 import images.RosterIcons;
 import javax.microedition.lcdui.*;
 import java.util.*;
