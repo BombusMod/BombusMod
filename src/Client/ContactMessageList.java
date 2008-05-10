@@ -101,7 +101,13 @@ public class ContactMessageList extends MessageList
         mainbar.addRAlign();
         mainbar.addElement(null);
         mainbar.addElement(null);
-
+//#ifdef PEP
+//#         mainbar.addElement(null);
+//#ifdef PEP_TUNE
+//#         mainbar.addElement(null);
+//#endif
+//#endif
+        
         cursor=0;//activate
 //#ifndef WMUC     
 //#ifdef ANTISPAM
@@ -195,9 +201,36 @@ public class ContactMessageList extends MessageList
                 moveCursorEnd();
             }
         }
-        getMainBarItem().setElementAt(sd.roster.getEventIcon(), 2);
-        getMainBarItem().setElementAt((contact.vcard==null)?null:RosterIcons.iconHasVcard, 3);
-    }    
+        int num=1;
+//#ifdef PEP
+//#         if (contact.hasMood()) {
+//#             num++;
+//#             getMainBarItem().setElementAt(RosterIcons.iconTransparent, num);
+//#         }
+//#ifdef PEP_TUNE
+//#         if (contact.pepTune) {
+//#             num++;
+//#             getMainBarItem().setElementAt(RosterIcons.iconTransparent, num);
+//#         }
+//#endif
+//#endif
+        num++;
+        getMainBarItem().setElementAt((contact.vcard==null)?null:RosterIcons.iconHasVcard, num);
+        num++;
+        getMainBarItem().setElementAt(sd.roster.getEventIcon(), num);
+//#ifdef PEP
+//#         if (!contact.hasMood()) {
+//#             num++;
+//#             getMainBarItem().setElementAt(RosterIcons.iconTransparent, num);
+//#         }
+//#ifdef PEP_TUNE
+//#         if (!contact.pepTune) {
+//#             num++;
+//#             getMainBarItem().setElementAt(RosterIcons.iconTransparent, num);
+//#         }
+//#endif
+//#endif
+    }   
     
     public void markRead(int msgIndex) {
 	if (msgIndex>=getItemCount()) return;

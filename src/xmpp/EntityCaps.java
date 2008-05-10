@@ -59,10 +59,10 @@ public class EntityCaps implements JabberBlockListener{
 	
     public static String ver=null;
 
-    //private static boolean useMoods;
-    
     public static String calcVerHash() {
         if (ver!=null) return ver;
+        if (features.size()<1)
+            initCaps();
         
         SHA1 sha1=new SHA1();
         sha1.init();
@@ -89,9 +89,7 @@ public class EntityCaps implements JabberBlockListener{
         c.setAttribute("node", BOMBUS_NAMESPACE);//+'#'+Version.getVersionNumber());
         c.setAttribute("ver", calcVerHash());
         c.setAttribute("hash", "sha-1");
-        
-        //ext  	A set of nametokens specifying additional feature bundles; this attribute is deprecated (see the Legacy Format section of this document).  	DEPRECATED
-        //if (Config.getInstance().sndrcvmood) c.setAttribute("ext", "ep-notify");
+
         return c;
     }
     

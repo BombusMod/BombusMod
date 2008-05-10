@@ -590,7 +590,7 @@ public class Contact extends IconTextElement{
         int yo=g.getClipY();
         
 //#ifdef PEP
-//#         if (pepMood>-1) {
+//#         if (hasMood()) {
 //#             ImageList moods=MoodIcons.getInstance();
 //#             w-=moods.getWidth();
 //#             moods.drawImage(g, pepMood, w,0);
@@ -610,4 +610,9 @@ public class Contact extends IconTextElement{
         
         super.drawItem(g, ofs, sel);
     }
+//#ifdef PEP
+//#     boolean hasMood() {
+//#         return (pepMood>-1 && pepMood<61);
+//#     }
+//#endif
 }
