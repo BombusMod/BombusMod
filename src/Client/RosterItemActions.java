@@ -329,18 +329,16 @@ public class RosterItemActions extends Menu {
                     new SubscriptionEdit(display, c);
                     return; //break;
                 case 4:
-                    new vGauge(SR.MS_DELETE_ASK, c.getNickJid(), 0, display, this) {
+                    new vGauge(SR.MS_DELETE_ASK, c.getNickJid(), 0, display,  sd.roster) {
                         public void yes() {
                             sd.roster.deleteContact((Contact)item);
                         }
                         public void no() { }
                     };
-                    display.setCurrent(sd.roster);
                     return;
                 case 6: // logoff
                 {
                     sd.roster.blockNotify(-111,10000); //block sounds to 10 sec
-                    //querysign=true; displayStatus();
                     Presence presence = new Presence(
                     Presence.PRESENCE_OFFLINE, -1, "", null);
                     presence.setTo(c.getJid());
@@ -642,15 +640,13 @@ public class RosterItemActions extends Menu {
                     }
                     case 1004: //delete
                     {
-                        new vGauge(SR.MS_DELETE_ASK, sg.getName(), 0, display, this) {
+                        new vGauge(SR.MS_DELETE_ASK, sg.getName(), 0, display, sd.roster) {
                             public void yes() {
                                 sd.roster.deleteGroup((Group)item);
                             }
-
                             public void no() {
                             }
                         };
-                        display.setCurrent(sd.roster);
                         return;
                     }    
                 }

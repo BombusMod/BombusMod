@@ -201,32 +201,26 @@ public class ContactMessageList extends MessageList
                 moveCursorEnd();
             }
         }
-        int num=1;
+        int num=2;
 //#ifdef PEP
 //#         if (contact.hasMood()) {
-//#             num++;
-//#             getMainBarItem().setElementAt(RosterIcons.iconTransparent, num);
+//#             getMainBarItem().setElementAt(RosterIcons.iconTransparent, num++);
 //#         }
 //#ifdef PEP_TUNE
 //#         if (contact.pepTune) {
-//#             num++;
-//#             getMainBarItem().setElementAt(RosterIcons.iconTransparent, num);
+//#             getMainBarItem().setElementAt(RosterIcons.iconTransparent, num++);
 //#         }
 //#endif
 //#endif
-        num++;
-        getMainBarItem().setElementAt((contact.vcard==null)?null:RosterIcons.iconHasVcard, num);
-        num++;
-        getMainBarItem().setElementAt(sd.roster.getEventIcon(), num);
+        getMainBarItem().setElementAt((contact.vcard==null)?null:RosterIcons.iconHasVcard, num++);
+        getMainBarItem().setElementAt(sd.roster.getEventIcon(), num++);
 //#ifdef PEP
 //#         if (!contact.hasMood()) {
-//#             num++;
-//#             getMainBarItem().setElementAt(RosterIcons.iconTransparent, num);
+//#             getMainBarItem().setElementAt(RosterIcons.iconTransparent, num++);
 //#         }
 //#ifdef PEP_TUNE
 //#         if (!contact.pepTune) {
-//#             num++;
-//#             getMainBarItem().setElementAt(RosterIcons.iconTransparent, num);
+//#             getMainBarItem().setElementAt(RosterIcons.iconTransparent, num++);
 //#         }
 //#endif
 //#endif

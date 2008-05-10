@@ -854,17 +854,17 @@ public class Roster
 //#ifndef WMUC
     public void multicastConferencePresence(String message, int mcstatus) {
          if (mcstatus==Presence.PRESENCE_INVISIBLE) return; //block multicasting presence invisible
-         
-         
+
          ExtendedStatus es= sl.getStatus(mcstatus);
          for (Enumeration e=hContacts.elements(); e.hasMoreElements();) {
             Contact c=(Contact) e.nextElement();
             if (c.origin!=Contact.ORIGIN_GROUPCHAT) continue;
             if (!((MucContact)c).commonPresence) continue; // stop if room left manually
-
             ConferenceGroup confGroup=(ConferenceGroup)c.getGroup();
+            
+            if (!confGroup.inRoom) continue; // don`t reenter to leaved rooms
+            
             Contact myself=confGroup.getSelfContact();
-
 
             if (c.status==Presence.PRESENCE_OFFLINE){
                 ConferenceForm.join(confGroup.desc, myself.getJid(), confGroup.password, 20);
