@@ -2,11 +2,11 @@ package ui;
 import javax.microedition.lcdui.Graphics;
 
 public class Gradient {
-	private int x;
 	private int x1;
+	private int x2;
 
-	private int y;
 	private int y1;
+	private int y2;
 
 	private int redS;
 	private int redE;
@@ -19,11 +19,11 @@ public class Gradient {
 
 	private boolean vertical;
 
-	public Gradient(int x, int y, int x1, int y1, int STARTRGB, int ENDRGB, boolean vertical) {
-		this.x = x;
+	public Gradient(int x1, int y1, int x2, int y2, int STARTRGB, int ENDRGB, boolean vertical) {
 		this.x1 = x1;
-		this.y = y;
+		this.x2 = x2;
 		this.y1 = y1;
+		this.y2 = y2;
 		this.redS = STARTRGB >> 16 & 0xff;
 		this.redE = ENDRGB >> 16 & 0xff;
 		this.greenS = STARTRGB >> 8 & 0xff;
@@ -42,18 +42,18 @@ public class Gradient {
 	}
 	
 	private void paintV(Graphics g) {
-		for(int i2 = x; i2 <= x1 - 1; i2++) {
-			int gCol[] = GradBackgr(redS, greenS, blueS, redE, greenE, blueE, i2, x, x1 - 1);
+		for(int i2 = x1; i2 <= x2 - 1; i2++) {
+			int gCol[] = GradBackgr(redS, greenS, blueS, redE, greenE, blueE, i2, x1, x2 - 1);
 			g.setColor(gCol[0], gCol[1], gCol[2]);
-			g.drawLine(i2, y, i2, y1);
+			g.drawLine(i2, y1, i2, y2);
 		}
 	}
     
 	private void paintH(Graphics g) {
-		for(int i2 = y; i2 <= y1 - 1; i2++) {
-			int ai[] = GradBackgr(redS, greenS, blueS, redE, greenE, blueE, i2, y, y1 - 1);
+		for(int i2 = y1; i2 <= y2 - 1; i2++) {
+			int ai[] = GradBackgr(redS, greenS, blueS, redE, greenE, blueE, i2, y1, y2 - 1);
 			g.setColor(ai[0], ai[1], ai[2]);
-			g.drawLine(x, i2, x1 - 1, i2);
+			g.drawLine(x1, i2, x2 - 1, i2);
 		}
 	}
 	

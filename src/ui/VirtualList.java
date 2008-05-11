@@ -565,10 +565,10 @@ public abstract class VirtualList
 
             g.setClip(0,0, width, h);
 //#ifdef GRADIENT
-//# 
 //#             if (getMainBarBGnd()!=getMainBarBGndBottom()) {
 //#                 if (ibHeight!=h) {
 //#                     grIB=new Gradient(0, 0, width, h, getMainBarBGnd(), getMainBarBGndBottom(), false);
+//#                     ibHeight=h;
 //#                 }
 //#                 grIB.paint(g);
 //#             } else {
@@ -577,9 +577,7 @@ public abstract class VirtualList
 //#             }
 //#else
             g.setColor(getMainBarBGnd());
-            g.fillRect(0, 0, width, h/2);
-            g.setColor(getMainBarBGndBottom());
-            g.fillRect(0, h/2, width, h/2);
+            g.fillRect(0, 0, width, h);
 //#endif
             g.setColor(getMainBarRGB());
 
@@ -596,6 +594,7 @@ public abstract class VirtualList
 //#             if (getMainBarBGnd()!=getMainBarBGndBottom()) {
 //#                 if (mbHeight!=h) {
 //#                     grMB=new Gradient(0, 0, width, h, getMainBarBGnd(), getMainBarBGndBottom(), false);
+//#                     mbHeight=h;
 //#                 }
 //#                 grMB.paint(g);
 //#             } else {
@@ -604,9 +603,7 @@ public abstract class VirtualList
 //#             }
 //#else
             g.setColor(getMainBarBGnd());
-            g.fillRect(0, 0, width, h/2);
-            g.setColor(getMainBarBGndBottom());
-            g.fillRect(0, h/2, width, h);
+            g.fillRect(0, 0, width, h);
 //#endif
            
             g.setColor(getMainBarRGB());

@@ -34,17 +34,27 @@ public class StanzaEdit implements CommandListener, Runnable {
     private Displayable parentView;
 
     private String stanza;
-//#ifdef CLIPBOARD
-//#     private Command cmdPasteText=new Command(SR.MS_PASTE, Command.BACK,10);
-//#endif
-    private Command cmdCancel=new Command(SR.MS_CANCEL, Command.SCREEN,99);
+
+    private Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK,99);
     private Command cmdSend=new Command(SR.MS_SEND, Command.OK,1);
+//#ifdef CLIPBOARD
+//#     private Command cmdPasteText=new Command(SR.MS_PASTE, Command.SCREEN,10);
+//#endif
+    private Command cmdPasteIQDisco=new Command("disco#info", Command.SCREEN,11);
+    private Command cmdPasteIQVersion=new Command("jabber:iq:version", Command.SCREEN,12);
+    private Command cmdPastePresence=new Command("presence", Command.SCREEN,13);
+    private Command cmdPasteMessage=new Command("message", Command.SCREEN,14);
 //#ifdef CLIPBOARD
 //#     private ClipBoard clipboard;
 //#endif
     private Config cf;
     
     private TextBox t;
+    
+    private static final String TEMPLATE_IQ_DISCO="<iq to='???' type='get'>\n<query xmlns='http://jabber.org/protocol/disco#info'/>\n</iq>";
+    private static final String TEMPLATE_IQ_VERSION="<iq to='???' type='get'>\n<query xmlns='jabber:iq:version'/>\n</iq>";
+    private static final String TEMPLATE_PRESENCE="<presence to='???'>\n<show>???</show>\n<status>???</status>\n</presence>";
+    private static final String TEMPLATE_MESSAGE="<message to='???' type='???'>\n<body>???</body>\n</message>";
     
     /** Creates a new instance of MessageEdit */
     public StanzaEdit(Display display, String stanza) {
@@ -77,6 +87,11 @@ public class StanzaEdit implements CommandListener, Runnable {
 //#         }
 //#endif
 
+        t.addCommand(cmdPasteIQDisco);
+        t.addCommand(cmdPasteIQVersion);
+        t.addCommand(cmdPastePresence);
+        t.addCommand(cmdPasteMessage);
+        
         t.addCommand(cmdCancel);
         t.setCommandListener(this);
 
@@ -93,10 +108,15 @@ public class StanzaEdit implements CommandListener, Runnable {
         stanza=t.getString();
         
         if (stanza.length()==0) stanza=null;
+        int caretPos=getCaretPos();
 //#ifdef CLIPBOARD
-//#         int caretPos=getCaretPos();
 //#         if (c==cmdPasteText) { insertText(clipboard.getClipBoard(), getCaretPos()); return; }
 //#endif
+        if (c==cmdPasteIQDisco) { insertText(TEMPLATE_IQ_DISCO, getCaretPos()); return; }
+        if (c==cmdPasteIQVersion) { insertText(TEMPLATE_IQ_VERSION, getCaretPos()); return; }
+        if (c==cmdPastePresence) { insertText(TEMPLATE_PRESENCE, getCaretPos()); return; }
+        if (c==cmdPasteMessage) { insertText(TEMPLATE_MESSAGE, getCaretPos()); return; }
+
         if (c==cmdCancel) { 
             stanza=null;
         }

@@ -347,7 +347,7 @@ public class JabberStream implements XMLEventListener, Runnable {
 
     private void ping() {
         pingSent=true;
-        send(IqPing.query(StaticData.getInstance().account.getJid(), "ping"));
+        send(IqPing.query(StaticData.getInstance().account.getServer(), "ping"));
     }
 
 //#if ZLIB

@@ -48,22 +48,22 @@ public class IqPing implements JabberBlockListener {
     public int blockArrived(JabberDataBlock data) {
         if (!(data instanceof Iq)) return BLOCK_REJECTED;
         String type=data.getTypeAttribute();
-        if (type.equals("get")) {
-            JabberDataBlock query=data.findNamespace("ping", "urn:xmpp:ping");
-            if (query==null) return BLOCK_REJECTED;
-            if (data.getAttribute("id").equals("ping"))
-                StaticData.getInstance().roster.theStream.pingSent=false;
+        String from=data.getAttribute("from");
+        String id=data.getAttribute("id");
+        
+        if (type.equals("get") || type.equals("error")) {
+            if (!id.equals("ping")) return BLOCK_REJECTED;
             
-            Iq reply=new Iq(data.getAttribute("from"), Iq.TYPE_RESULT, data.getAttribute("id"));
-            StaticData.getInstance().roster.theStream.send(reply);
+            StaticData.getInstance().roster.theStream.pingSent=false;
+            
             return BLOCK_PROCESSED;
         }
         if (type.equals("result")) {
-            if (data.getAttribute("id").startsWith("_ping_")) {
+            if (id.startsWith("_ping_")) {
                 Roster roster=StaticData.getInstance().roster;
-                Contact c=roster.getContact( data.getAttribute("from"), false);
+                Contact c=roster.getContact(from, false);
 
-                String pong = pingToString(data.getAttribute("id").substring(6));
+                String pong = pingToString(id.substring(6));
 
                 roster.querysign=false;
 
