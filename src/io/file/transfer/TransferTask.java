@@ -321,10 +321,10 @@ public class TransferTask
     }
 
     boolean isStopped() {
-        return ((state==COMPLETE) || (state==ERROR));
+        return (state==COMPLETE || state==ERROR);
     }
 
-    void cancel() {
+    public void cancel() {
         if (isStopped()) return;
         state=ERROR;
         errMsg="Canceled";

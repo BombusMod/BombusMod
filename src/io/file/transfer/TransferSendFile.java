@@ -53,7 +53,6 @@ public class TransferSendFile
     
     Form f;
     TextField fileName;
-    /*TextField size;*/
     TextField description;
 
     private String to;

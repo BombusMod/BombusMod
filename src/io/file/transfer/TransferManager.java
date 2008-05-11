@@ -27,6 +27,7 @@
 
 package io.file.transfer;
 
+import Client.StaticData;
 import ui.MainBar;
 import java.util.Vector;
 import javax.microedition.lcdui.Command;
@@ -46,13 +47,15 @@ public class TransferManager extends VirtualList implements CommandListener{
     private Vector taskList;
     
     Command cmdBack=new Command(SR.MS_BACK, Command.BACK, 99);
-    Command cmdClrF=new Command(SR.MS_HIDE_FINISHED, Command.SCREEN, 10);
+    Command cmdDel=new Command(SR.MS_DECLINE, Command.SCREEN, 10);
+    Command cmdClrF=new Command(SR.MS_HIDE_FINISHED, Command.SCREEN, 11);
     
     /** Creates a new instance of TransferManager */
     public TransferManager(Display display) {
         super(display);
         
         addCommand(cmdBack);
+        addCommand(cmdDel);
         addCommand(cmdClrF);
         setCommandListener(this);
         setMainBarItem(new MainBar(2, null, SR.MS_TRANSFERS));
@@ -76,11 +79,24 @@ public class TransferManager extends VirtualList implements CommandListener{
                 int i=0;
                 while (i<taskList.size()) {
                     TransferTask task=(TransferTask) taskList.elementAt(i);
-                    if (task.isStopped()) taskList.removeElementAt(i);
-                    else i++;
+                    if (task.isStopped()) 
+                        taskList.removeElementAt(i);
+                    else 
+                        i++;
                 }
             }
+            if (getItemCount()<1)
+                StaticData.getInstance().roster.setEventIcon(null);
             redraw();
+        }
+        if (c==cmdDel) {
+            if (getItemCount()>0) {
+                synchronized (taskList) {
+                    TransferTask task=(TransferTask) taskList.elementAt(cursor);
+                    task.cancel();
+                    taskList.removeElementAt(cursor);
+                }
+            }
         }
         if (c==cmdBack) {
             TransferDispatcher.getInstance().eventNotify();
