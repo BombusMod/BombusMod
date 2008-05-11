@@ -35,9 +35,10 @@ import Conference.MucContact;
 //# import History.HistoryAppend;
 //#endif
 
+import javax.microedition.lcdui.Graphics;
+
 //#ifdef PEP
 //# import images.MoodIcons;
-//# import javax.microedition.lcdui.Graphics;
 //# import ui.ImageList;
 //#endif
 import images.RosterIcons;
