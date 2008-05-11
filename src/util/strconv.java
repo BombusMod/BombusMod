@@ -149,25 +149,36 @@ public class strconv {
     public static StringBuffer toUTFSb(StringBuffer str) {
         int srcLen = str.length();
         StringBuffer outbuf=new StringBuffer( srcLen );
-        for(int i=0; i < srcLen; i++) {
+         for(int i=0; i < srcLen; i++) {
             int c = (int)str.charAt(i);
-            //TODO: ескэйпить коды <0x20
-            if ((c >= 1) && (c <= 0x7f)) {
+
+            if ((c >= 0x20) && (c <= 0x7f)) {
                 outbuf.append( (char) c);
-                
-            }
+                continue;
+            } 
             if (((c >= 0x80) && (c <= 0x7ff)) || (c==0)) {
                 outbuf.append((char)(0xc0 | (0x1f & (c >> 6))));
                 outbuf.append((char)(0x80 | (0x3f & c)));
-            }
+                continue;
+            } 
             if ((c >= 0x800) && (c <= 0xffff)) {
                 outbuf.append(((char)(0xe0 | (0x0f & (c >> 12)))));
                 outbuf.append((char)(0x80 | (0x3f & (c >>  6))));
                 outbuf.append(((char)(0x80 | (0x3f & c))));
+                continue;
+            } 
+            if ((c==0x0d) || (c==0x0a) || (c==0x09)) {
+                outbuf.append( (char) c);
+                continue;
             }
-        }
-        return outbuf;
-    }
+            if ((c > 0)  && (c < 0x1f)) {
+                outbuf.append("&#");
+                outbuf.append( (int) c);
+                outbuf.append(";");
+            }
+         }
+         return outbuf;
+     }
     
     public static byte[] fromBase64(String s) {
         int padding=0;
