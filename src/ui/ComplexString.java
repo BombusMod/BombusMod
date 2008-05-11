@@ -50,7 +50,7 @@ public class ComplexString extends Vector implements VirtualElement {
     public final static int NICK_OFF  = 0x05000000;
 //#endif
 
-    protected Font font;
+    protected Font font=FontCache.getMsgFont();
     private int height;
     private int width;
     private ImageList imageList;

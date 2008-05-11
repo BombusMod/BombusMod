@@ -163,7 +163,7 @@ public class ArchiveList
         if (c==cmdNew) { new NewTemplate(display, where); }
 	if (m==null) return;
         
-	if (c==cmdDelete) { deleteMessage(); redraw(); }
+	if (c==cmdDelete) { keyClear(); }
         if (c==cmdDeleteAll) { deleteAllMessages(); redraw(); }
 	if (c==cmdPaste) { pasteData(0); }
 	if (c==cmdSubj) { pasteData(1); }
@@ -184,13 +184,8 @@ public class ArchiveList
 	
 
     private void deleteMessage() {
-        new vGauge(SR.MS_DELETE, SR.MS_SURE_DELETE, 0, display, this) {
-            public void yes() {
-                archive.delete(cursor);
-                messages=new Vector();
-            }
-            public void no() { }
-        };
+        archive.delete(cursor);
+        messages=new Vector();
     }
     
     private void deleteAllMessages() {
@@ -225,8 +220,15 @@ public class ArchiveList
     public void keyGreen() { pasteData(0); }
     
     public void keyClear() { 
-        if (getItemCount()>0) 
-            deleteMessage();
+        if (getItemCount()>0) {
+            new vGauge(SR.MS_DELETE, SR.MS_SURE_DELETE, 0, display, this) {
+                public void yes() {
+                    deleteMessage();
+                }
+                public void no() { }
+            };
+            redraw();
+        }
     }
     
     public void focusedItem(int index) {
