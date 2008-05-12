@@ -122,9 +122,9 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
             g.drawImage(img, width/2, height/2, Graphics.VCENTER|Graphics.HCENTER);
         
         f = (pos==-1)?FontCache.getClockFont():FontCache.getBalloonFont();
-        g.setFont(f);
         
         if (pos==-1) {
+            System.out.println("clock");
             int h=f.getHeight()+1;
 
             int y=0;
@@ -139,6 +139,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
             g.translate(width/2, height);
 
             if (Colors.BLK_INK!=0x010101) {
+                g.setFont(f);
                 g.setColor(Colors.BLK_INK);
                 g.drawString(time, 0, 0, Graphics.BOTTOM | Graphics.HCENTER);
             }
@@ -149,6 +150,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
             int y=height-h-2;
             int yt=y-f.getHeight();
             
+            g.setFont(f);
             g.setColor(Colors.BLK_INK);
             g.drawString(capt, xt, yt, Graphics.TOP|Graphics.HCENTER);
             

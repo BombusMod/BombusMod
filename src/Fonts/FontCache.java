@@ -50,8 +50,6 @@ public class FontCache {
     
     public final static int clockFontSize=Font.SIZE_LARGE;
 
-
-
     public final static Font getRosterNormalFont() {
         if (normal==null) {
             normal=Font.getFont(Font.FACE_PROPORTIONAL, Font.STYLE_PLAIN, rosterFontSize);
