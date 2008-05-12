@@ -189,10 +189,10 @@ public class MessageItem implements
     
     boolean smilesEnabled() {return smiles; }
 //#endif
-
+    
 //#ifdef SECONDSTRING
-//#         public String getSecondString() { 
-//#             return null;
-//#         }
+//#     public String getSecondString() {
+//#         return null;
+//#     }
 //#endif
 }

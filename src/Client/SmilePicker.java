@@ -68,7 +68,7 @@ public class SmilePicker extends VirtualList implements CommandListener, Virtual
          
          il = SmilesIcons.getInstance();
 //#ifdef SMILES 
-//#         smileTable=MessageParser.getInstance().getSmileTable();
+        smileTable=MessageParser.getInstance().getSmileTable();
 //#endif
         imgCnt=smileTable.size();
         //il.getCount();
@@ -193,12 +193,6 @@ public class SmilePicker extends VirtualList implements CommandListener, Virtual
         if (cursor!=lines-1) return;
         if (xCursor >= xLastCnt) xCursor=xLastCnt-1;
     }
-
-//#ifdef SECONDSTRING
-//#         public String getSecondString() { 
-//#             return null;
-//#         }
-//#endif
     
     public void userKeyPressed(int keyCode) {
         super.userKeyPressed(keyCode);
@@ -214,4 +208,10 @@ public class SmilePicker extends VirtualList implements CommandListener, Virtual
                 pageRight(); break;
         }
     }
+    
+//#ifdef SECONDSTRING
+//#     public String getSecondString() {
+//#         return null;
+//#     }
+//#endif
 }

@@ -457,12 +457,6 @@ public class ServiceDiscovery
                 default:
             }
         }
-        
-//#ifdef SECONDSTRING
-//#         public String getSecondString() { 
-//#             return null;
-//#         }
-//#endif
     }
 }
 class State{

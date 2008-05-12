@@ -58,8 +58,4 @@ public class MoodItem extends IconTextElement {
     public int compare(IconTextElement right) {
         return label.compareTo( ((MoodItem)right).label );
     }
-    
-//#ifdef SECONDSTRING
-//#         public String getSecondString() { return null; }
-//#endif
 }

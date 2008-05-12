@@ -316,7 +316,7 @@ public class Account extends IconTextElement{
     }
 //#ifdef SECONDSTRING
 //#     public String getSecondString() {
-//#          return getJid();
+//#          return server;
 //#     }
 //#endif
     public void setUseCompression(boolean value) {

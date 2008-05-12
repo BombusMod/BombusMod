@@ -39,13 +39,13 @@ import ui.MainBar;
  * @author Eugene Stahov
  */
 public class AlertProfile extends VirtualList implements CommandListener {
-    private final static int ALERT_COUNT=5;
+    private final static int ALERT_COUNT=4;
     
-    public final static int AUTO=0;
-    public final static int ALL=1;
-    public final static int VIBRA=2;
-    public final static int SOUND=3;
-    public final static int NONE=4;
+    //public final static int AUTO=0;
+    public final static int ALL=0;
+    public final static int VIBRA=1;
+    public final static int SOUND=2;
+    public final static int NONE=3;
     
     private Profile profile=new Profile();
     int defp;
@@ -90,11 +90,11 @@ public class AlertProfile extends VirtualList implements CommandListener {
         }
         //public void onSelect(){}
         public int getColor(){ return Colors.LIST_INK; }
-        public int getImageIndex(){return index+RosterIcons.ICON_PROFILE_INDEX;}
+        public int getImageIndex(){return index+RosterIcons.ICON_PROFILE_INDEX+1;}
         public String toString(){ 
             StringBuffer s=new StringBuffer();
             switch (index) {
-                case AUTO: s.append(SR.MS_ALERT_PROFILE_AUTO); break;
+                //case AUTO: s.append(SR.MS_ALERT_PROFILE_AUTO); break;
                 case ALL: s.append(SR.MS_ALERT_PROFILE_ALLSIGNALS); break;
                 case VIBRA: s.append(SR.MS_ALERT_PROFILE_VIBRA); break;
                 case SOUND: s.append(SR.MS_SOUND); break;
@@ -103,11 +103,6 @@ public class AlertProfile extends VirtualList implements CommandListener {
             if (index==defp) s.append(SR.MS_IS_DEFAULT);
             return s.toString();
         }
-//#ifdef SECONDSTRING
-//#         public String getSecondString() { 
-//#             return null;
-//#         }
-//#endif
     }
     
     public void commandAction(Command c, Displayable d){

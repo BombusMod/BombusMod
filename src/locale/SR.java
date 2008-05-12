@@ -471,7 +471,7 @@ public class SR {
     public static String MS_FONTSIZE_NORMAL = loadString( "normal" );
     public static String MS_FONTSIZE_SMALL = loadString( "small" );
     public static String MS_FONTSIZE_LARGE = loadString( "large" );
-    public static String MS_ALERT_PROFILE_AUTO = loadString( "Auto" );
+    //public static String MS_ALERT_PROFILE_AUTO = loadString( "Auto" );
     public static String MS_ALERT_PROFILE_ALLSIGNALS = loadString( "All signals" );
     public static String MS_ALERT_PROFILE_VIBRA = loadString( "Vibra" );
     public static String MS_ALERT_PROFILE_NOSIGNALS = loadString( "No signals" );

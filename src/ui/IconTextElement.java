@@ -32,21 +32,22 @@ import javax.microedition.lcdui.*;
 import java.util.*;
 import Colors.Colors;
 
-abstract public class IconTextElement implements VirtualElement 
-{
-    
+abstract public class IconTextElement implements VirtualElement {
     int itemHeight;
     int imageYOfs;
     int fontYOfs;
     
     protected ImageList il;
 
-    int heightFirstLine=0;
+    private int heightFirstLine=0;
 
     private int ilImageSize=0;
 
     private int fontHeight;
-    
+//#ifdef SECONDSTRING
+//#     private int secondFontHeight;
+//#     private Font secondFont;
+//#endif
     abstract protected int getImageIndex();
 
     public int getFontIndex() { return 0;}
@@ -78,7 +79,7 @@ abstract public class IconTextElement implements VirtualElement
        
 //#ifdef SECONDSTRING
 //#        if (hasSecondString()) {
-//#            //g.setFont(getSmallFont());
+//#            g.setFont(secondFont);
 //#            g.drawString(secstr, offset-ofs, fontYOfs+fontHeight-3, Graphics.TOP|Graphics.LEFT);
 //#        }
 //#endif
@@ -89,7 +90,7 @@ abstract public class IconTextElement implements VirtualElement
 //#ifdef SECONDSTRING
 //#         int wst=0;
 //#         if (hasSecondString())
-//#             wst=getFont().stringWidth(getSecondString());
+//#             wst=secondFont.stringWidth(getSecondString());
 //#         return ((wft>wst)?wft:wst)+ilImageSize+4;   
 //#else
             return wft+ilImageSize+4;
@@ -97,6 +98,15 @@ abstract public class IconTextElement implements VirtualElement
     }
     
     public int getVHeight(){ 
+        itemHeight=heightFirstLine;
+
+        fontYOfs=(itemHeight-fontHeight)/2;
+//#ifdef SECONDSTRING
+//#         if (hasSecondString()){
+//#             itemHeight+=secondFontHeight;
+//#         }
+//#endif
+        imageYOfs=(itemHeight-ilImageSize)/2;
         return itemHeight;
     }
     public int getColorBGnd(){ return Colors.LIST_BGND;}
@@ -107,12 +117,14 @@ abstract public class IconTextElement implements VirtualElement
         super();
         this.il=il;
         fontHeight=FontCache.getRosterNormalFont().getHeight();
+//#ifdef SECONDSTRING
+//#         secondFont = FontCache.getBalloonFont();
+//#         secondFontHeight=secondFont.getHeight()-2;
+//#endif
 	if (il!=null){
 	    ilImageSize=il.getHeight();
 	}
-        itemHeight=heightFirstLine=(ilImageSize>fontHeight)?ilImageSize:fontHeight;
-        imageYOfs=(itemHeight-ilImageSize)/2;
-        fontYOfs=(itemHeight-fontHeight+2)/2;
+        heightFirstLine=(ilImageSize>fontHeight)?ilImageSize:fontHeight;
     }
 
     public String getTipString() {
@@ -120,13 +132,19 @@ abstract public class IconTextElement implements VirtualElement
     }
     
 //#ifdef SECONDSTRING
-//#     public boolean hasSecondString() {
-//#         String secstr=getSecondString();
-//#         if (secstr==null)
-//#             return false;
-//#         return (secstr.length()>0);
+//#     private boolean hasSecondString() {
+//#         try {
+//#             String secstr=getSecondString();
+//#             if (secstr!=null)
+//#                 if (secstr.length()>0)
+//#                     return true;
+//#         } catch (Exception ex) {}
+//#         return false;
+//#     }
+//# 
+//#     public String getSecondString() { 
+//#         return null;
 //#     }
 //#endif
-    
     public int compare(IconTextElement right) { return 0; }
 }

@@ -126,11 +126,5 @@ public class userKey extends IconTextElement {
     public void onSelect(){};
     
     public String getTipString() { return null; }
-
-//#ifdef SECONDSTRING
-//#         public String getSecondString() { 
-//#             return null;
-//#         }
-//#endif
 }
 

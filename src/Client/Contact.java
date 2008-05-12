@@ -517,13 +517,13 @@ public class Contact extends IconTextElement{
     
 //#ifdef SECONDSTRING
 //#     public String getSecondString() {
-//#         StringBuffer s=new StringBuffer();
-//#         if (cf.rosterStatus) {
+//#         if (cf.rosterStatus){
 //#             if (statusString!=null)
-//#                 s.append(statusString);
-//#             return (s.toString().length()<1)?null:s.toString();
+//#                 if (statusString.length()>0)
+//#                     return statusString;
+//#             if (hasMood())
+//#                 return pepMoodName+" - "+pepMoodText;
 //#         }
-//#         s=null;
 //#         return null;
 //#     }
 //#endif
@@ -590,22 +590,25 @@ public class Contact extends IconTextElement{
         int xo=g.getClipX();
         int yo=g.getClipY();
         
+        int imgH=(h-il.getHeight())/2;
+        
 //#ifdef PEP
 //#         if (hasMood()) {
 //#             ImageList moods=MoodIcons.getInstance();
+//#             imgH=(h-moods.getHeight())/2;
 //#             w-=moods.getWidth();
-//#             moods.drawImage(g, pepMood, w,0);
+//#             moods.drawImage(g, pepMood, w, imgH);
 //#         }
 //#ifdef PEP_TUNE
 //#         if (pepTune) {
 //#             w-=il.getWidth();
-//#             il.drawImage(g, RosterIcons.ICON_PROFILE_INDEX+1, w,0);
+//#             il.drawImage(g, RosterIcons.ICON_PROFILE_INDEX+1, w,imgH);
 //#         }
 //#endif
 //#endif
         if (getSecImageIndex()>-1) {
             w-=il.getWidth();
-            il.drawImage(g, getSecImageIndex(), w,0);
+            il.drawImage(g, getSecImageIndex(), w,imgH);
         }
         g.setClip(xo, yo, w, h);
         

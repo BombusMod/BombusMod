@@ -136,12 +136,6 @@ public class BookmarkItem extends IconTextElement{
         sd.roster.sendPresence(jid, null, x, false);
         sd.roster.reEnumRoster();
     }
-
-//#ifdef SECONDSTRING
-//#         public String getSecondString() { 
-//#             return null;
-//#         }
-//#endif
     
     public int compare(IconTextElement right) {
         String th=(nick==null)? jid: jid+'/'+nick;

@@ -139,10 +139,4 @@ public class PrivacyItem extends IconTextElement{
         }
         return tip.toString();
     }
-
-//#ifdef SECONDSTRING
-//#         public String getSecondString() { 
-//#             return null;
-//#         }
-//#endif
 }

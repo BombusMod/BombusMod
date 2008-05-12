@@ -142,10 +142,4 @@ public class Group extends IconTextElement {
         if (type>((Group)right).type) return 1;
         return name.toLowerCase().compareTo(((Group)right).name.toLowerCase());
     }
-
-//#ifdef SECONDSTRING
-//#         public String getSecondString() { 
-//#             return null;
-//#         }
-//#endif
 }

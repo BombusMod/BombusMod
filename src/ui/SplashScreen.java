@@ -124,7 +124,6 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         f = (pos==-1)?FontCache.getClockFont():FontCache.getBalloonFont();
         
         if (pos==-1) {
-            System.out.println("clock");
             int h=f.getHeight()+1;
 
             int y=0;

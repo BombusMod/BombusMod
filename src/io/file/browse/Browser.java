@@ -266,11 +266,5 @@ public class Browser extends VirtualList implements CommandListener{
         public int getType() {
             return type;
         }
-
-//#ifdef SECONDSTRING
-//#         public String getSecondString() { 
-//#             return null;
-//#         }
-//#endif
     }
 }

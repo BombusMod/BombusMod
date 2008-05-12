@@ -113,10 +113,4 @@ public class PrivacyList extends IconTextElement{
         //System.out.println(pl);
         StaticData.getInstance().roster.theStream.send(pl);
     }
-
-//#ifdef SECONDSTRING
-//#         public String getSecondString() { 
-//#             return null;
-//#         }
-//#endif
 }

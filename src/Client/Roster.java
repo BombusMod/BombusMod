@@ -392,7 +392,7 @@ public class Roster
     private void updateMainBar(){
         int s=querysign?RosterIcons.ICON_PROGRESS_INDEX:myStatus;
         int profile=cf.profile;
-        Object en=(profile>1)? new Integer(profile+RosterIcons.ICON_PROFILE_INDEX):null;
+        Object en=(profile>1)? new Integer(profile+RosterIcons.ICON_PROFILE_INDEX+1):null;
         MainBar mainbar=(MainBar) getMainBarItem();
         mainbar.setElementAt(new Integer(s), 2);
         mainbar.setElementAt(en, 5);
@@ -1829,27 +1829,17 @@ public class Roster
         int volume=ac.soundVol;
         int vibraLen=cf.vibraLen;
         String type, message;
-                
-        //boolean blFlashEn=cf.blFlash;   // motorola e398 backlight bug
-        
+
         switch (event) {
             case 0: //online
-                if (cf.notifySound) {
-                    message=ac.soundOnline;
-                    type=ac.soundOnlineType;
-                    vibraLen=0;
-                } else {
-                    message=null; type=null; vibraLen=0;
-                }
-                break;
             case 1: //chat
                 if (cf.notifySound) {
                     message=ac.soundOnline;
                     type=ac.soundOnlineType;
-                    vibraLen=0;
                 } else {
-                    message=null; type=null; vibraLen=0;
+                    message=null; type=null;
                 }
+                vibraLen=0;
                 break;
             case 5: //offline
                 message=ac.soundOffline;
@@ -1887,7 +1877,7 @@ public class Roster
                 type=ac.soundOutgoingType;
                 vibraLen=0;
                 break;
-            default :
+            default:
                 message="";
                 type="none";
                 vibraLen=0;
@@ -1895,16 +1885,16 @@ public class Roster
         }
        
         int profile=cf.profile;
-        if (profile==AlertProfile.AUTO) 
-            profile=AlertProfile.ALL;
+        /*if (profile==AlertProfile.AUTO) 
+            profile=AlertProfile.ALL;*/
 
         EventNotify notify=null;
         
         switch (profile) {
-            case AlertProfile.ALL:   notify=new EventNotify(display,    type,   message,    volume,     vibraLen/*,       blFlashEn*/); break;
-            case AlertProfile.NONE:  notify=new EventNotify(display,    null,   null,       volume,     0/*,              false    */); break;
-            case AlertProfile.VIBRA: notify=new EventNotify(display,    null,   null,       volume,     vibraLen/*,       blFlashEn*/); break;
-            case AlertProfile.SOUND: notify=new EventNotify(display,    type,   message,    volume,     0/*,              blFlashEn*/); break;
+            case AlertProfile.ALL:   notify=new EventNotify(display,    type,   message,    volume,     vibraLen); break;
+            case AlertProfile.NONE:  notify=new EventNotify(display,    null,   null,       volume,     0); break;
+            case AlertProfile.VIBRA: notify=new EventNotify(display,    null,   null,       volume,     vibraLen); break;
+            case AlertProfile.SOUND: notify=new EventNotify(display,    type,   message,    volume,     0); break;
         }
         if (notify!=null) 
             notify.startNotify();
@@ -2055,11 +2045,9 @@ public class Roster
         if (keyCode==Config.SOFT_RIGHT) {
             if (isLoggedIn()) 
                 new RosterItemActions(display, getFocusedObject(), -1);
-                return;
+            return;
         }
         super.keyPressed(keyCode);
-        
-        Contact c=null;
         
         switch (keyCode) {
 //#ifdef POPUPS
@@ -2110,10 +2098,8 @@ public class Roster
 //#endif
                 if (messageCount==0) return;
                 Object atcursor=getFocusedObject();
-                if (atcursor instanceof Contact) 
-                    c=(Contact)atcursor;
-                else 
-                    c=(Contact)hContacts.firstElement();
+                
+                Contact c=(atcursor instanceof Contact)?(Contact)atcursor:(Contact)hContacts.firstElement();
 
                 Enumeration i=hContacts.elements();
 

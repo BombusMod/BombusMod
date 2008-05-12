@@ -342,7 +342,7 @@ type = \"-=Siemens=-\";
 	    accountIndex = inputStream.readInt();
 	    showOfflineContacts=inputStream.readBoolean();
 	    fullscreen=inputStream.readBoolean();
-	    def_profile = inputStream.readInt();
+	    def_profile = inputStream.readInt()%4;
 //#ifdef SMILES
 	    smiles=inputStream.readBoolean();
 //#else
