@@ -27,6 +27,7 @@
 package ui.controls;
 
 import Client.StaticData;
+import Colors.Colors;
 import java.util.Vector;
 import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Command;
@@ -45,16 +46,14 @@ import util.strconv;
  *
  * @author ad
  */
-public abstract class vGauge
-        extends Canvas
-        implements Runnable, CommandListener {
+public abstract class vGauge extends Canvas implements Runnable, CommandListener {
     
     protected Display display;
     protected Displayable next;
     protected Command cmdOk=new Command(SR.MS_OK, Command.OK, 1);
     protected Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 2);
     
-    boolean vibrate;
+    boolean vibrate=false;
     
     private boolean isShowing;
     private int timeout;
@@ -148,7 +147,7 @@ public abstract class vGauge
             int xt=(width/2);
 
             int oldColor=g.getColor();
-            g.setColor(0xffffff);
+            g.setColor(Colors.LIST_BGND);
             g.fillRect(0,0, width, height); //fill back
 
             g.setFont(messageFont);
@@ -160,15 +159,15 @@ public abstract class vGauge
             g.setClip(0,0, width, fh);
 //#ifdef GRADIENT
 //#             if (gr==null) {
-//#                 gr=new Gradient(0, 0, width, fh, 0x4c7300, 0x78ad10, false);
+//#                 gr=new Gradient(0, 0, width, fh, Colors.BAR_BGND, Colors.BAR_BGND_BOTTOM, false);
 //#             }
 //#             gr.paint(g);
 //#else
-         g.setColor(0x4c7300);
+         g.setColor(Colors.BAR_BGND);
          g.fillRect(0, 0, width, fh);
 //#endif
-            //TODO
-            g.setColor(0xffffff);
+
+            g.setColor(Colors.BAR_INK);
             String timeoutString=(timeout>0)?" - "+(timeout-value):"";
             g.drawString(mainbar+timeoutString, xt, 0, Graphics.TOP|Graphics.HCENTER);
             g.setClip(0,0, width, height);
@@ -178,7 +177,7 @@ public abstract class vGauge
                 int itemHeight=5;
                 int filled=(itemWidth*value)/timeout;
                 g.fillRect(border, y, itemWidth, itemHeight);
-                g.setColor(0x668866);
+                g.setColor(Colors.BAR_BGND);
                 g.drawRect(border, y, itemWidth, itemHeight);
                 g.fillRect(border, y, filled, itemHeight);
             }
@@ -191,7 +190,7 @@ public abstract class vGauge
         if (lines.size()<1) return;
         int fh=getFontHeight();
         
-        g.setColor(0x668866);
+        g.setColor(Colors.LIST_INK);
 
 	for (int line=0; line<lines.size(); ){
             g.drawString((String) lines.elementAt(line), x, y, Graphics.TOP|Graphics.LEFT);

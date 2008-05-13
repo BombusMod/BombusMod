@@ -390,6 +390,9 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
             case 40:
                 cl.POPUP_SYSTEM_BGND=value; 
                 break;
+            case 41:
+                cl.SECOND_LINE=value; 
+                break;
         }
 //#if (COLORS)
         ColorScheme.saveToStorage();

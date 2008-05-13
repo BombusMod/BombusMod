@@ -61,16 +61,17 @@ import vcard.vCardForm;
 //# import Info.Upgrade;
 //#endif
 import Colors.ColorScheme;
-import xmpp.extensions.IqGmail;
+//#if SASL_XGOOGLETOKEN
+//# import xmpp.extensions.IqGmail;
+//#endif
 
-public class RosterToolsMenu
-        extends Menu {
-    
-    Config cf=Config.getInstance();
+public class RosterToolsMenu extends Menu {
+    Config cf;
     StaticData sd=StaticData.getInstance();
-    /** Creates a new instance of RosterToolsMenu */
+
     public RosterToolsMenu(Display display) {
         super(SR.MS_TOOLS);
+        cf=Config.getInstance();
 //#ifdef SERVICE_DISCOVERY
         if (sd.roster.isLoggedIn())
             addItem(SR.MS_DISCO, 0, 0x13);
@@ -80,7 +81,7 @@ public class RosterToolsMenu
             addItem(SR.MS_PRIVACY_LISTS, 1, 0x46);
 //#endif
 //#ifdef PEP
-//#         if (sd.roster.useUserMood && cf.sndrcvmood && sd.roster.isLoggedIn())
+//#         if (cf.sndrcvmood && sd.roster.isLoggedIn())
 //#             addItem(SR.MS_USER_MOOD, 2, 0x0f16);
 //#endif
         if (sd.roster.isLoggedIn())
@@ -125,9 +126,7 @@ public class RosterToolsMenu
 //#if AUTOTASK
 //#         addItem(SR.MS_AUTOTASKS, 17, 0x0f03);
 //#endif
-      
         addItem(SR.MS_INVERT, 18, 0x0f06);
-        
         addItem(SR.MS_BREAK_CONECTION, 19, 0x13);
 //#ifdef CONSOLE
 //#         addItem(SR.MS_XML_CONSOLE, 20, 0x46);
@@ -146,7 +145,6 @@ public class RosterToolsMenu
                 if (connected) new ServiceDiscovery(display, null, null);
                 break;
 //#endif
-
 //#ifdef PRIVACY
             case 1: // Privacy Lists
                 if (connected) new PrivacySelect(display);
@@ -179,19 +177,16 @@ public class RosterToolsMenu
             case 6:
                 new ConfigFonts(display);
                 return;
-                
 //#if (FILE_IO)
             case 7:
                 new io.file.browse.Browser(null, display, null, false);
                 return;
 //#endif
-
 //#if (FILE_TRANSFER)
             case 8:
                 new io.file.transfer.TransferManager(display);
                 return;
 //#endif
-                
 //#ifdef COLORS
             case 9:
                 new ColorForm(display);
@@ -213,7 +208,6 @@ public class RosterToolsMenu
 //#                 return;
 //#endif
 //#endif
-                
 //#ifdef CHECK_VERSION
 //#             case 13:
 //#                 new Upgrade(display, false);
@@ -222,19 +216,16 @@ public class RosterToolsMenu
 //#                 new Upgrade(display, true);
 //#                 return;
 //#endif
-                
 //#ifdef USER_KEYS
 //#             case 15:
 //#                 new userKeysList(display);
 //#                 return;
 //#endif
-                
 //#if SASL_XGOOGLETOKEN
 //#             case 16: //mail check
 //#                 sd.roster.theStream.send(IqGmail.query());
 //# 		return; 
 //#endif
-                
 //#if AUTOTASK
 //#             case 17:
 //#                 new AutoTaskForm(display);

@@ -99,7 +99,9 @@ public class ColorForm implements CommandListener
             SR.MS_POPUP_MESSAGE,
             SR.MS_POPUP_MESSAGE_BGND,
             SR.MS_POPUP_SYSTEM,
-            SR.MS_POPUP_SYSTEM_BGND
+            SR.MS_POPUP_SYSTEM_BGND,
+            
+            SR.MS_SECOND_LINE
         };
         
         public static int[] COLORS = {            
@@ -152,7 +154,9 @@ public class ColorForm implements CommandListener
             cs.POPUP_MESSAGE_INK,
             cs.POPUP_MESSAGE_BGND,
             cs.POPUP_SYSTEM_INK,
-            cs.POPUP_SYSTEM_BGND
+            cs.POPUP_SYSTEM_BGND,
+            
+            cs.SECOND_LINE
       };
         
       
@@ -205,7 +209,9 @@ public class ColorForm implements CommandListener
             imageData(cs.POPUP_MESSAGE_INK),
             imageData(cs.POPUP_MESSAGE_BGND),
             imageData(cs.POPUP_SYSTEM_INK),
-            imageData(cs.POPUP_SYSTEM_BGND)
+            imageData(cs.POPUP_SYSTEM_BGND),
+            
+            imageData(cs.SECOND_LINE)
       };
 
 

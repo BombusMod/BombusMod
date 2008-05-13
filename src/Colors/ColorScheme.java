@@ -108,7 +108,7 @@ blue 0x0000ff
             instance.POPUP_MESSAGE_BGND=inputStream.readInt();
             instance.POPUP_SYSTEM_INK=inputStream.readInt();
             instance.POPUP_SYSTEM_BGND=inputStream.readInt();
-
+            instance.SECOND_LINE=inputStream.readInt();
 	    inputStream.close();
 	} catch (Exception e) { }
     }
@@ -159,6 +159,7 @@ blue 0x0000ff
 	    outputStream.writeInt(instance.POPUP_MESSAGE_BGND);
 	    outputStream.writeInt(instance.POPUP_SYSTEM_INK);
 	    outputStream.writeInt(instance.POPUP_SYSTEM_BGND);
+	    outputStream.writeInt(instance.SECOND_LINE);
         } catch (IOException e) { }
 	NvStorage.writeFileRecord(outputStream, "ColorDB", 0, true);
     }
@@ -207,6 +208,7 @@ blue 0x0000ff
             instance.POPUP_MESSAGE_BGND=invertColor(instance.POPUP_MESSAGE_BGND);
             instance.POPUP_SYSTEM_INK=invertColor(instance.POPUP_SYSTEM_INK);
             instance.POPUP_SYSTEM_BGND=invertColor(instance.POPUP_SYSTEM_BGND);
+            instance.SECOND_LINE=invertColor(instance.SECOND_LINE);
         } catch (Exception e) { }
     }
     

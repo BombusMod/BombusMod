@@ -57,7 +57,7 @@ public class Colors {
     public static int HEAP_FREE=0x00007f;
     
     public static int CURSOR_BGND=0xbabaff;
-    public static int CURSOR_OUTLINE=0x858585;
+    public static int CURSOR_OUTLINE=0xa5a5a5;
     
     public static int SCROLL_BRD=0xbbbbbb;
     public static int SCROLL_BAR=0x950d04;
@@ -67,4 +67,6 @@ public class Colors {
     public static int POPUP_MESSAGE_BGND = 0xffffe0;
     public static int POPUP_SYSTEM_INK = 0x009900;
     public static int POPUP_SYSTEM_BGND = 0xffffe0;
+    
+    public static int SECOND_LINE=0xa0a0a0;
 }

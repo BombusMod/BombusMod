@@ -519,10 +519,10 @@ public class Contact extends IconTextElement{
 //#     public String getSecondString() {
 //#         if (cf.rosterStatus){
 //#             if (statusString!=null)
-//#                 if (statusString.length()>0)
-//#                     return statusString;
-//#             if (hasMood())
-//#                 return pepMoodName+" - "+pepMoodText;
+//#                 return statusString;
+//#if PEP
+//#             return getMoodString();
+//#endif
 //#         }
 //#         return null;
 //#     }
@@ -581,6 +581,18 @@ public class Contact extends IconTextElement{
 //#     
 //#     public String getUserMoodText() {
 //#         return pepMoodText;
+//#     }
+//#     public String getMoodString() {
+//#         StringBuffer mood=null;
+//#         if (hasMood()) {
+//#              mood=new StringBuffer(pepMoodName);
+//#              if (pepMoodText!=null) {
+//#                  mood.append("(");
+//#                  mood.append(pepMoodText);
+//#                  mood.append(")");
+//#              }
+//#         }
+//#         return mood.toString();
 //#     }
 //#endif
 

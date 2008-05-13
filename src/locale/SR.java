@@ -619,6 +619,8 @@ public class SR {
     public static String MS_POPUP_FONT=loadString("Popup & ballon font");
 
     public static String MS_FONTS_OPTIONS=loadString("Fonts options");
+
+    public static String MS_SECOND_LINE=loadString("Second line");
     
     private SR() { }
     

@@ -97,6 +97,7 @@ public class ColorUtils {
             cs.POPUP_MESSAGE_BGND=loadInt("POPUP_MESSAGE_BGND", cs.POPUP_MESSAGE_BGND);
             cs.POPUP_SYSTEM_INK=loadInt("POPUP_SYSTEM_INK", cs.POPUP_SYSTEM_INK);
             cs.POPUP_SYSTEM_BGND=loadInt("POPUP_SYSTEM_BGND", cs.POPUP_SYSTEM_BGND);
+            cs.SECOND_LINE=loadInt("SECOND_LINE", cs.SECOND_LINE);
 //#ifdef COLORS
             ColorScheme.saveToStorage();
 //#endif
@@ -186,6 +187,7 @@ public class ColorUtils {
         body.append("public static int POPUP_MESSAGE_BGND="+loadString("POPUP_MESSAGE_BGND")+";\n");
         body.append("public static int POPUP_SYSTEM_INK="+loadString("POPUP_SYSTEM_INK")+";\n");
         body.append("public static int POPUP_SYSTEM_BGND="+loadString("POPUP_SYSTEM_BGND")+";\n");
+        body.append("public static int SECOND_LINE="+loadString("SECOND_LINE")+";\n");
         body.append("}\n");
         
         System.out.println(body.toString());
@@ -250,6 +252,7 @@ public class ColorUtils {
         body.append("POPUP_MESSAGE_BGND\t"+getColorString(cs.POPUP_MESSAGE_BGND)+"\r\n");
         body.append("POPUP_SYSTEM_INK\t"+getColorString(cs.POPUP_SYSTEM_INK)+"\r\n");
         body.append("POPUP_SYSTEM_BGND\t"+getColorString(cs.POPUP_SYSTEM_BGND)+"\r\n");
+        body.append("SECOND_LINE\t"+getColorString(cs.SECOND_LINE)+"\r\n");
         return body.toString();
     }
 //#endif

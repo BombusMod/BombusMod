@@ -136,9 +136,6 @@ public class Roster
     
     public MessageEdit me=null;
 
-//#if PEP
-//#     public boolean useUserMood=true;
-//#endif
     private StatusList sl;
     public int myStatus=cf.loginstatus;
     private static String myMessage;
@@ -2272,16 +2269,11 @@ public class Roster
                 mess.append(cntact.jid.getResource());
                 mess.append("\n"+SR.MS_SUBSCRIPTION+": "+cntact.subscr);
 //#ifdef PEP
-//#                 if (cntact.pepMood>-1) {
+//#                 if (cntact.hasMood()) {
 //#                     mess.append("\n");
 //#                     mess.append(SR.MS_USER_MOOD);
 //#                     mess.append(": ");
-//#                     mess.append(cntact.getUserMood());
-//#                     if (cntact.getUserMoodText()!="") {
-//#                         mess.append(" (");
-//#                         mess.append(cntact.getUserMoodText());
-//#                         mess.append(")");
-//#                     }
+//#                     mess.append(contact.getMoodString());
 //#                 }
 //#ifdef PEP_TUNE
 //#                 if (cntact.pepTune) {

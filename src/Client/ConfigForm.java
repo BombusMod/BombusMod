@@ -111,7 +111,7 @@ public class ConfigForm implements
         roster.append(SR.MS_SHOW_RESOURCES,null);
         roster.append(SR.MS_BOLD_FONT,null);
 //#ifdef SECONDSTRING
-//#         roster.append(SR.MS_SHOW_STATUSES,null);
+//#         roster.append(SR.MS_SECOND_LINE,null);
 //#endif
 
         boolean rosterA[]={

@@ -26,6 +26,7 @@
  */
 
 package ui;
+import Colors.ColorScheme;
 import Fonts.FontCache;
 import images.RosterIcons;
 import javax.microedition.lcdui.*;
@@ -80,7 +81,8 @@ abstract public class IconTextElement implements VirtualElement {
 //#ifdef SECONDSTRING
 //#        if (hasSecondString()) {
 //#            g.setFont(secondFont);
-//#            g.drawString(secstr, offset-ofs, fontYOfs+fontHeight-3, Graphics.TOP|Graphics.LEFT);
+//#            g.setColor(Colors.SECOND_LINE);
+//#            g.drawString(secstr, offset-ofs, fontYOfs+fontHeight-2, Graphics.TOP|Graphics.LEFT);
 //#        }
 //#endif
     }
