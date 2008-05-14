@@ -252,14 +252,13 @@ public class MucContact extends Contact {
                 b.append(SR.MS_HAS_JOINED_THE_CHANNEL_AS);
                 if (affiliationCode!=AFFILIATION_MEMBER) {
                     b.append(getRoleLocale(roleCode));
-                } else {
-                    getRoleLocale(roleCode);
                 }
 
                  if (!affiliation.equals("none")) {
-                    if (roleCode!=ROLE_PARTICIPANT)
+                    if (roleCode!=ROLE_PARTICIPANT) {
                         b.append(SR.MS_AND);
-                   getAffiliationLocale(affiliationCode);
+                    }
+                    b.append(getAffiliationLocale(affiliationCode));
                 }
                 
                 if (statusText.length()>0) {
@@ -270,7 +269,7 @@ public class MucContact extends Contact {
             } else {
                 b.append(SR.MS_IS_NOW);
                 if ( roleChanged ) {
-                    getRoleLocale(roleCode);
+                    b.append(getRoleLocale(roleCode));
                 }
                  if (affiliationChanged) {
                     if (roleChanged)
@@ -356,7 +355,6 @@ public class MucContact extends Contact {
     
     void testMeOffline(){
          ConferenceGroup group=(ConferenceGroup)getGroup();
-         group.inRoom=false;
          if ( group.getSelfContact() == this ) 
             StaticData.getInstance().roster.roomOffline(group);
     }
