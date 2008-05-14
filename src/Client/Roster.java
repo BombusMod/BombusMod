@@ -1284,13 +1284,13 @@ public class Roster
                  try {
                     JabberDataBlock xmlns=message.findNamespace("x", "http://jabber.org/protocol/muc#user");
                     if (xmlns!=null) {
-                        JabberDataBlock error=xmlns.getChildBlock("error");
+                        //JabberDataBlock error=xmlns.getChildBlock("error");
                         JabberDataBlock invite=xmlns.getChildBlock("invite");
                          // FS#657
                         if (invite !=null) {
-                            if (error!=null ) {
+                            if (message.getTypeAttribute().equals("error")) {
                                 ConferenceGroup invConf=(ConferenceGroup)groups.getGroup(from);
-                                body=XmppError.decodeStanzaError(error).toString(); /*"error: invites are forbidden"*/
+                                body=XmppError.decodeStanzaError(message).toString(); /*"error: invites are forbidden"*/
                             } else {
                                 String inviteFrom=invite.getAttribute("from");
                                 String inviteReason=invite.getChildBlockText("reason");
