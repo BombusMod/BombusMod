@@ -172,7 +172,7 @@ public class Roster
 //#endif
     
 //#ifdef AUTOTASK
-//#     private AutoTask at=sd.getInstance().autoTask;
+//#     private AutoTask at=sd.autoTask;
 //#endif
     
     private final static int SOUND_FOR_ME=500;
@@ -204,8 +204,6 @@ public class Roster
         groups=new Groups();
         
         vContacts=new Vector(); // just for displaying
-        
-        getKeys();
         
 	updateMainBar();
 
@@ -283,6 +281,7 @@ public class Roster
         setRosterMainBar(pgs);
         redraw();
     }
+    
     public void setProgress(int percent){
         SplashScreen.getInstance().setProgress(percent);
     }
@@ -299,7 +298,6 @@ public class Roster
         if (rscaler<4) return;
         rscaler=0;
         if (rpercent<100) rpercent++;
-        //if (rpercent==100) rpercent=60;
         SplashScreen.getInstance().setProgress(rpercent);
     }
 
@@ -443,7 +441,7 @@ public class Roster
         reEnumRoster();
     }
     
-    public void cleanupAllHistories(){
+    public void cmdCleanAllMessages(){
         int index=0;
         synchronized (hContacts) {
             while (index<hContacts.size()) {
@@ -452,6 +450,7 @@ public class Roster
                 index++;
             }
         }
+        countNewMsgs();
         reEnumRoster();
         redraw();
     }
@@ -893,7 +892,6 @@ public class Roster
             Presence presence = new Presence(mcstatus, es.getPriority(), strconv.toExtendedString((message==null)?es.getMessage():message), null);
             presence.setTo(myself.bareJid.substring(0, myself.bareJid.indexOf("/")+1)+myself.nick);
             theStream.send(presence);
-            //c.setStatus(Presence.PRESENCE_ONLINE); //JUST FOR TEST!
          }
     }
 //#endif
@@ -1109,7 +1107,7 @@ public class Roster
             sendPresence(myStatus, null);
 //#ifndef WMUC
             if (cf.autoJoinConferences)
-                    mucReconnect();
+                mucReconnect();
 //#endif
             return;
         }
@@ -2088,7 +2086,12 @@ public class Roster
 //#                 break;
 //#endif
             case KEY_NUM0:
-                cleanMarks();
+                synchronized(hContacts) {
+                    for (Enumeration e=hContacts.elements(); e.hasMoreElements();){
+                        Contact c=(Contact)e.nextElement();
+                        c.setIncoming(Contact.INC_NONE);
+                    }
+                }
                 redraw();
 //#ifndef WSYSTEMGC
                 System.gc();
@@ -2246,23 +2249,16 @@ public class Roster
                 
                 if (mucContact.origin==Contact.ORIGIN_GROUPCHAT) // dont show info for confContact
                     return;
-                
-                String jid=(mucContact.realJid==null)?"":"jid: "+mucContact.realJid+"\n";
-                String aff=mucContact.affiliation;
-                String role=mucContact.role;
-                mess.append(jid);
-                if (aff!=null || aff!="none")
-                    mess.append(aff);
 
-                if (role!=null)
-                    if (aff!=null || aff!="none")
-                        mess.append("/"+role);
-                    else 
-                        mess.append(role);
-                
-                jid=null;
-                aff=null;
-                role=null;
+                mess.append((mucContact.realJid==null)?"":"jid: "+mucContact.realJid+"\n");
+
+                if (mucContact.affiliationCode>0) {
+                    mess.append(MucContact.getAffiliationLocale(mucContact.affiliationCode));
+                    if (mucContact.affiliationCode!=MucContact.AFFILIATION_MEMBER)
+                        mess.append("/");
+                }
+                if (mucContact.affiliationCode!=MucContact.AFFILIATION_MEMBER)
+                    mess.append(MucContact.getRoleLocale(mucContact.roleCode));
             } else {
 //#endif
                 mess.append("jid: "+cntact.bareJid);
@@ -2273,7 +2269,7 @@ public class Roster
 //#                     mess.append("\n");
 //#                     mess.append(SR.MS_USER_MOOD);
 //#                     mess.append(": ");
-//#                     mess.append(contact.getMoodString());
+//#                     mess.append(cntact.getMoodString());
 //#                 }
 //#ifdef PEP_TUNE
 //#                 if (cntact.pepTune) {
@@ -2331,7 +2327,7 @@ public class Roster
 //#             autostatus.destroyTask();
 //#endif
 //#ifdef SE_LIGHT
-//#         if (cf.phoneManufacturer==Config.SONYE)
+//#         if (cf.phoneManufacturer==Config.SONYE || cf.phoneManufacturer==Config.NOKIA)
 //#             selight.destroyTask();
 //#endif
         destroyView();
@@ -2384,14 +2380,16 @@ public class Roster
 //#endif
     public void cmdInfo() { new Info.InfoWindow(display); }
     public void cmdTools() { new RosterToolsMenu(display); }
-    public void cmdCleanAllMessages() { cleanupAllHistories(); }    
 //#ifdef POPUPS
     public void cmdClearPopups() { VirtualList.popup.clear(); }
 //#endif
 //#ifndef WMUC
    public void cmdConference() { if (isLoggedIn()) new Bookmarks(display, null); }
 //#endif
-   public void cmdActions() { if (isLoggedIn()) try { new RosterItemActions(display, getFocusedObject(), -1); } catch (Exception e) { /* NullPointerException */ }}
+   public void cmdActions() {
+       if (isLoggedIn())
+           new RosterItemActions(display, getFocusedObject(), -1);
+   }
    
    public void cmdAdd() {
        if (isLoggedIn()) {
@@ -2399,10 +2397,12 @@ public class Roster
             Contact cn=null;
             if (o instanceof Contact) {
                 cn=(Contact)o;
-                if (cn.getGroupType()!=Groups.TYPE_NOT_IN_LIST && cn.getGroupType()!=Groups.TYPE_SEARCH_RESULT) cn=null;
+                if (cn.getGroupType()!=Groups.TYPE_NOT_IN_LIST && cn.getGroupType()!=Groups.TYPE_SEARCH_RESULT)
+                    cn=null;
             }
 //#ifndef WMUC
-            if (o instanceof MucContact) cn=(Contact)o;
+            if (o instanceof MucContact)
+                cn=(Contact)o;
 //#endif
             new ContactEdit(display, cn);
        }
@@ -2417,24 +2417,21 @@ public class Roster
     }
     
     public void leaveRoom(Group group){
-	//Group group=groups.getGroup(index);
 	ConferenceGroup confGroup=(ConferenceGroup)group;
 	Contact myself=confGroup.getSelfContact();
 	confGroup.getConference().commonPresence=false; //disable reenter after reconnect
         sendPresence(myself.getJid(), "unavailable", null, true);
         
         confGroup.inRoom=false;
-	//roomOffline(group);
-        for (Enumeration e=hContacts.elements(); e.hasMoreElements();) {
-            Contact contact=(Contact)e.nextElement();
-            if (contact.inGroup(group)) contact.setStatus(Presence.PRESENCE_OFFLINE);
-        }
+	roomOffline(group);
     }
     
     public void roomOffline(final Group group) {
          for (Enumeration e=hContacts.elements(); e.hasMoreElements();) {
-             Contact contact=(Contact)e.nextElement();
-            if (contact.inGroup(group)) contact.setStatus(Presence.PRESENCE_OFFLINE);
+            Contact contact=(Contact)e.nextElement();
+            if (contact.inGroup(group)) {
+                contact.setStatus(Presence.PRESENCE_OFFLINE);
+            }
          }
     }
 //#endif
@@ -2543,7 +2540,6 @@ public class Roster
     }
 
     private class ReEnumerator implements Runnable{
-
         Thread thread;
         int pendingRepaints=0;
 	boolean force;
@@ -2695,6 +2691,8 @@ public class Roster
                 if (c.origin==Contact.ORIGIN_GROUPCHAT) {
                     if (c.getGroup() instanceof ConferenceGroup) {
                         ConferenceGroup mucGrp=(ConferenceGroup)c.getGroup();
+                        if (!mucGrp.inRoom)
+                            continue;
                         MucContact self=mucGrp.getSelfContact();
                         if (self.status>=Presence.PRESENCE_OFFLINE) {
                             confJoin(mucGrp.getConference().bareJid);
@@ -2704,7 +2702,6 @@ public class Roster
                         }
                     }
                 }
-                
             }
         }
     }
@@ -2732,75 +2729,7 @@ public class Roster
         reEnumRoster();
     } 
 //#endif
-    
-    public void cleanMarks() {
-      synchronized(hContacts) {
-        for (Enumeration e=hContacts.elements(); e.hasMoreElements();){
-          Contact c=(Contact)e.nextElement();
-          c.setIncoming(Contact.INC_NONE);
-        }
-      }
-    }
 
-    private void getKeys() {
-        int pm=cf.phoneManufacturer;
-        if (pm==Config.SIEMENS || pm==Config.SIEMENS2) {
-             Config.SOFT_LEFT=-1;
-             Config.SOFT_RIGHT=-4;
-             return;
-        }
-
-        if (pm==Config.WINDOWS) {
-             Config.SOFT_LEFT=40;
-             Config.SOFT_RIGHT=41;
-             return;     
-        }
-        if (pm==Config.NOKIA || pm==Config.SONYE) {
-            Config.SOFT_LEFT=-6;
-            Config.SOFT_RIGHT=-7;
-            return;
-        } 
-        
-        if (pm==Config.MOTOEZX) {
-            Config.SOFT_LEFT=-21;
-            Config.SOFT_RIGHT=-22;
-            return;
-        } 
-        
-        try {
-            // Set Motorola specific keycodes
-            Class.forName("com.motorola.phonebook.PhoneBookRecord");
-            if (getKeyName(-21).toUpperCase().indexOf("SOFT")>=0) {
-                Config.SOFT_LEFT=-21;
-                Config.SOFT_RIGHT=-22;
-            } else {
-                Config.SOFT_LEFT=21;
-                Config.SOFT_RIGHT=22;
-            }
-        } catch (ClassNotFoundException ignore2) {
-            try {   
-                if (getKeyName(21).toUpperCase().indexOf("SOFT")>=0) {
-                    Config.SOFT_LEFT=21;
-                    Config.SOFT_RIGHT=22;
-                }
-                if (getKeyName(-6).toUpperCase().indexOf("SOFT")>=0) {
-                    Config.SOFT_LEFT=-6;
-                    Config.SOFT_RIGHT=-7;
-                }
-            } catch(Exception e) {}
-
-            for (int i=-127;i<127;i++) {
-            // run thru all the keys
-                try {
-                   if (getKeyName(i).toUpperCase().indexOf("SOFT")>=0) {         // Check for "SOFT" in name description
-                      if (getKeyName(i).indexOf("1")>=0) Config.SOFT_LEFT=i;         // check for the 1st softkey
-                      if (getKeyName(i).indexOf("2")>=0) Config.SOFT_RIGHT=i;         // check for 2nd softkey
-                   }
-                } catch(Exception e){ }
-            }
-        }
-    }
-     
     public void deleteGroup(Group deleteGroup) {
         for (Enumeration e=hContacts.elements(); e.hasMoreElements();){
             Contact cr=(Contact)e.nextElement();

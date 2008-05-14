@@ -110,15 +110,17 @@ public class userKeyExec {
                 new ConfigForm(display);
                 break;
             case 2: 
-                sd.roster.cleanupAllHistories();
+                sd.roster.cmdCleanAllMessages();
                 break;
             case 3: 
                 sd.roster.connectionTerminated(new Exception(SR.MS_SIMULATED_BREAK));
                 break;
+//#ifdef POPUPS
 //#ifdef STATS
 //#             case 4: 
 //#                 sd.roster.showStats();
 //#                 break;
+//#endif
 //#endif
             case 5:
                 sd.roster.cmdStatus();

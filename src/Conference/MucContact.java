@@ -41,7 +41,7 @@ import xmpp.XmppError;
  *
  * @author root
  */
-public class MucContact extends Contact{
+public class MucContact extends Contact {
     
     public final static short AFFILIATION_OUTCAST=-1;
     public final static short AFFILIATION_NONE=0;
@@ -250,36 +250,16 @@ public class MucContact extends Contact{
                     b.append(')');
                 }
                 b.append(SR.MS_HAS_JOINED_THE_CHANNEL_AS);
-                switch (roleCode) {
-                    case ROLE_PARTICIPANT:
-                        if (affiliationCode!=AFFILIATION_MEMBER)
-                            b.append(SR.MS_ROLE_PARTICIPANT);
-                        break;
-                    case ROLE_MODERATOR:
-                        b.append(SR.MS_ROLE_MODERATOR);
-                        break;
-                    case ROLE_VISITOR:
-                        b.append(SR.MS_ROLE_VISITOR);
-                        break;
+                if (affiliationCode!=AFFILIATION_MEMBER) {
+                    b.append(getRoleLocale(roleCode));
+                } else {
+                    getRoleLocale(roleCode);
                 }
 
                  if (!affiliation.equals("none")) {
                     if (roleCode!=ROLE_PARTICIPANT)
                         b.append(SR.MS_AND);
-                    switch (affiliationCode) {
-                        case AFFILIATION_NONE:
-                            b.append(SR.MS_AFFILIATION_NONE);
-                            break;
-                        case AFFILIATION_MEMBER:
-                            b.append(SR.MS_AFFILIATION_MEMBER);
-                            break;
-                        case AFFILIATION_ADMIN:
-                            b.append(SR.MS_AFFILIATION_ADMIN);
-                            break;
-                        case AFFILIATION_OWNER:
-                            b.append(SR.MS_AFFILIATION_OWNER);
-                            break;
-                    }
+                   getAffiliationLocale(affiliationCode);
                 }
                 
                 if (statusText.length()>0) {
@@ -290,34 +270,12 @@ public class MucContact extends Contact{
             } else {
                 b.append(SR.MS_IS_NOW);
                 if ( roleChanged ) {
-                    switch (roleCode) {
-                        case ROLE_PARTICIPANT:
-                            b.append(SR.MS_ROLE_PARTICIPANT);
-                            break;
-                        case ROLE_MODERATOR:
-                            b.append(SR.MS_ROLE_MODERATOR);
-                            break;
-                        case ROLE_VISITOR:
-                            b.append(SR.MS_ROLE_VISITOR);
-                            break;
-                    }
+                    getRoleLocale(roleCode);
                 }
                  if (affiliationChanged) {
-                    if (roleChanged) b.append(SR.MS_AND);
-                        switch (affiliationCode) {
-                            case AFFILIATION_NONE:
-                                b.append(SR.MS_AFFILIATION_NONE);
-                                break;
-                            case AFFILIATION_MEMBER:
-                                b.append(SR.MS_AFFILIATION_MEMBER);
-                                break;
-                            case AFFILIATION_ADMIN:
-                                b.append(SR.MS_AFFILIATION_ADMIN);
-                                break;
-                            case AFFILIATION_OWNER:
-                                b.append(SR.MS_AFFILIATION_OWNER);
-                                break;
-                        }
+                    if (roleChanged)
+                        b.append(SR.MS_AND);
+                    b.append(getAffiliationLocale(affiliationCode));
                 }
                 if (!roleChanged && !affiliationChanged)
                     b.append(presence.getPresenceTxt());
@@ -327,6 +285,41 @@ public class MucContact extends Contact{
         
         setStatus(presenceType);
         return b.toString();
+    }
+    
+    public static String getRoleLocale(int rol) {
+        String locale = null;
+        switch (rol) {
+            case ROLE_VISITOR:
+                locale=SR.MS_ROLE_VISITOR;
+                break;
+            case ROLE_PARTICIPANT:
+                locale=SR.MS_ROLE_PARTICIPANT;
+                break;
+            case ROLE_MODERATOR:
+                locale=SR.MS_ROLE_MODERATOR;
+                break;
+        }
+        return locale;
+    }
+    
+    public static String getAffiliationLocale(int aff) {
+        String locale = null;
+        switch (aff) {
+            case AFFILIATION_NONE:
+                locale=SR.MS_AFFILIATION_NONE;
+                break;
+            case AFFILIATION_MEMBER:
+                locale=SR.MS_AFFILIATION_MEMBER;
+                break;
+            case AFFILIATION_ADMIN:
+                locale=SR.MS_AFFILIATION_ADMIN;
+                break;
+            case AFFILIATION_OWNER:
+                locale=SR.MS_AFFILIATION_OWNER;
+                break;
+        }
+        return locale;
     }
     
     private void appendL(StringBuffer sb, String append){
@@ -363,6 +356,7 @@ public class MucContact extends Contact{
     
     void testMeOffline(){
          ConferenceGroup group=(ConferenceGroup)getGroup();
+         group.inRoom=false;
          if ( group.getSelfContact() == this ) 
             StaticData.getInstance().roster.roomOffline(group);
     }

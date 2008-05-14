@@ -267,4 +267,64 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
 //#endif
         System.gc();
     }
+    
+
+    public void getKeys() {
+        int pm=cf.phoneManufacturer;
+        if (pm==Config.SIEMENS || pm==Config.SIEMENS2) {
+             Config.SOFT_LEFT=-1;
+             Config.SOFT_RIGHT=-4;
+             return;
+        }
+
+        if (pm==Config.WINDOWS) {
+             Config.SOFT_LEFT=40;
+             Config.SOFT_RIGHT=41;
+             return;     
+        }
+        if (pm==Config.NOKIA || pm==Config.SONYE) {
+            Config.SOFT_LEFT=-6;
+            Config.SOFT_RIGHT=-7;
+            return;
+        } 
+        
+        if (pm==Config.MOTOEZX) {
+            Config.SOFT_LEFT=-21;
+            Config.SOFT_RIGHT=-22;
+            return;
+        } 
+        
+        try {
+            // Set Motorola specific keycodes
+            Class.forName("com.motorola.phonebook.PhoneBookRecord");
+            if (getKeyName(-21).toUpperCase().indexOf("SOFT")>=0) {
+                Config.SOFT_LEFT=-21;
+                Config.SOFT_RIGHT=-22;
+            } else {
+                Config.SOFT_LEFT=21;
+                Config.SOFT_RIGHT=22;
+            }
+        } catch (ClassNotFoundException ignore2) {
+            try {   
+                if (getKeyName(21).toUpperCase().indexOf("SOFT")>=0) {
+                    Config.SOFT_LEFT=21;
+                    Config.SOFT_RIGHT=22;
+                }
+                if (getKeyName(-6).toUpperCase().indexOf("SOFT")>=0) {
+                    Config.SOFT_LEFT=-6;
+                    Config.SOFT_RIGHT=-7;
+                }
+            } catch(Exception e) {}
+
+            for (int i=-127;i<127;i++) {
+            // run thru all the keys
+                try {
+                   if (getKeyName(i).toUpperCase().indexOf("SOFT")>=0) {         // Check for "SOFT" in name description
+                      if (getKeyName(i).indexOf("1")>=0) Config.SOFT_LEFT=i;         // check for the 1st softkey
+                      if (getKeyName(i).indexOf("2")>=0) Config.SOFT_RIGHT=i;         // check for 2nd softkey
+                   }
+                } catch(Exception e){ }
+            }
+        }
+    }
 }

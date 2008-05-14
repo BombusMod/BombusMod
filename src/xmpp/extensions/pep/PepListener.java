@@ -81,7 +81,7 @@ public class PepListener implements JabberBlockListener{
         JabberDataBlock mood=extractEvent(event, "mood", "http://jabber.org/protocol/mood");
         
         String tag=null;
-        String moodText = "";
+        String moodText=null;
         if (mood!=null) {
             try {
                 for (Enumeration e=mood.getChildBlocks().elements(); e.hasMoreElements();) {
@@ -99,9 +99,12 @@ public class PepListener implements JabberBlockListener{
             
             result.append(Moods.getInstance().getMoodLabel(moodIndex));
             moodText=mood.getChildBlockText("text");
-            if (moodText!=""){
-                result.append(" - ");
-                result.append(moodText);
+            if (moodText!=null){
+                if (moodText.length()>0) {
+                    result.append("(");
+                    result.append(moodText);
+                    result.append(")");
+                }
             }
 //#ifdef DEBUG
 //#             System.out.println(from+": "+result.toString());

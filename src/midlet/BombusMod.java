@@ -98,7 +98,10 @@ public class BombusMod extends MIDlet implements Runnable{
         } catch (Exception e) {
             s.img=null;
         }
+        s.getKeys();
+        
         s.setProgress(5);
+        
 //#ifdef COLORS
         Colors cl=Colors.getInstance();
 //#else

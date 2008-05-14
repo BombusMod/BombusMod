@@ -84,10 +84,10 @@ public class Contact extends IconTextElement{
 //#     public int pepMood=-1;
 //#ifdef PEP_TUNE
 //#     public boolean pepTune;
-//#     public String pepTuneText;
+//#     public String pepTuneText=null;
 //#endif
-//#     public String pepMoodName;
-//#     public String pepMoodText;
+//#     public String pepMoodName=null;
+//#     public String pepMoodText=null;
 //#endif
     public final static short ORIGIN_ROSTER=0;
     public final static short ORIGIN_ROSTERRES=1;
@@ -587,9 +587,11 @@ public class Contact extends IconTextElement{
 //#         if (hasMood()) {
 //#              mood=new StringBuffer(pepMoodName);
 //#              if (pepMoodText!=null) {
-//#                  mood.append("(");
-//#                  mood.append(pepMoodText);
-//#                  mood.append(")");
+//#                 if (pepMoodText.length()>0) {
+//#                      mood.append("(");
+//#                      mood.append(pepMoodText);
+//#                      mood.append(")");
+//#                 }
 //#              }
 //#         }
 //#         return mood.toString();
