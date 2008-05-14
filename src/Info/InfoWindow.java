@@ -52,10 +52,13 @@ public class InfoWindow implements CommandListener{
 
         form.append(Version.getNameVersion()+"\nMobile Jabber client\n");
         form.append(Config.getOs());
-        form.append("\nCopyright (c) 2005-2008, Eugene Stahov (evgs), ad(modification)\n");
+        form.append("\n");
+        form.append("Copyright (c) 2005-2008, Eugene Stahov (evgs), Daniel Apatin (ad)");
+
+        form.append("\n");
+        form.append("\n");
         
-        StringBuffer memInfo=new StringBuffer("\n");
-        memInfo.append(SR.MS_MEMORY);
+        StringBuffer memInfo=new StringBuffer(SR.MS_MEMORY);
         memInfo.append("\n");
         memInfo.append(SR.MS_FREE);
 
@@ -65,8 +68,116 @@ public class InfoWindow implements CommandListener{
         memInfo.append(SR.MS_TOTAL);
         memInfo.append(Runtime.getRuntime().totalMemory()>>10);
         form.append(memInfo.toString());
-        
         memInfo=null;
+        
+        form.append("\n");
+        StringBuffer abilities=new StringBuffer("Abilities: ");
+//#ifdef COLORS
+        abilities.append(", COLORS");
+//#endif
+//#ifdef ARCHIVE
+        abilities.append(", ARCHIVE");
+//#endif
+//#ifdef POPUPS
+        abilities.append(", POPUPS");
+//#endif
+//#ifdef ELF
+//#         abilities.append(", ELF");
+//#endif
+//#ifdef NEW_MENU
+        abilities.append(", NEW_MENU");
+//#endif
+//#ifdef SERVICE_DISCOVERY
+        abilities.append(", SERVICE_DISCOVERY");
+//#endif
+//#ifdef PRIVACY
+        abilities.append(", PRIVACY");
+//#endif
+//#ifdef SMILES
+        abilities.append(", SMILES");
+//#endif
+//#ifdef ANTISPAM
+//#         abilities.append(", ANTISPAM");
+//#endif
+//#ifdef REQUEST_VOICE
+//#         abilities.append(", REQUEST_VOICE");
+//#endif
+//#ifdef HISTORY
+//#         abilities.append(", HISTORY");
+//#endif
+//#ifdef SE_LIGHT
+//#         abilities.append(", SE_LIGHT");
+//#endif
+//#ifdef TEMPLATES
+        abilities.append(", TEMPLATES");
+//#endif
+//#ifdef USER_KEYS
+//#         abilities.append(", USER_KEYS");
+//#endif
+//#ifdef AUTOSTATUS
+//#         abilities.append(", AUTOSTATUS");
+//#endif
+//#ifdef USE_ROTATOR
+        abilities.append(", USE_ROTATOR");
+//#endif
+//#ifdef FILE_TRANSFER
+        abilities.append(", FILE_TRANSFER");
+//#endif
+//#ifdef LAST_MESSAGES
+//#         abilities.append(", LAST_MESSAGES");
+//#endif
+//#ifdef CHECK_VERSION
+//#         abilities.append(", CHECK_VERSION");
+//#endif
+//#ifdef TRANSLIT
+        abilities.append(", TRANSLIT");
+//#endif
+//#ifdef WMUC
+//#         abilities.append(", WMUC");
+//#endif
+//#ifdef AUTODELETE
+//#         abilities.append(", AUTODELETE");
+//#endif
+//#ifdef WSYSTEMGC
+//#         abilities.append(", WSYSTEMGC");
+//#endif
+//#ifdef NICK_COLORS
+        abilities.append(", NICK_COLORS");
+//#endif
+//#ifdef IMPORT_EXPORT
+//#         abilities.append(", IMPORT_EXPORT");
+//#endif
+//#ifdef SECONDSTRING
+//#         abilities.append(", SECONDSTRING");
+//#endif
+//#ifdef CHANGE_TRANSPORT
+//#         abilities.append(", CHANGE_TRANSPORT");
+//#endif
+//#ifdef CONSOLE
+//#         abilities.append(", CONSOLE");
+//#endif
+//#ifdef CLIPBOARD
+//#         abilities.append(", CLIPBOARD");
+//#endif
+//#ifdef GRADIENT
+//#         abilities.append(", GRADIENT");
+//#endif
+//#ifdef PEP
+//#         abilities.append(", PEP");
+//#endif
+//#ifdef PEP_TUNE
+//#         abilities.append(", PEP_TUNE");
+//#endif
+//#ifdef CAPTCHA
+//#         abilities.append(", CAPTCHA");
+//#endif
+//#ifdef STATS
+//#         abilities.append(", STATS");
+//#endif
+        form.append(abilities.toString());
+        abilities=null;
+        
+        form.append("\n");
         form.setCommandListener(this);
         display.setCurrent(form);
     }

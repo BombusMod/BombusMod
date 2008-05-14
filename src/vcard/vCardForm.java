@@ -29,8 +29,8 @@ package vcard;
 import Client.StaticData;
 //#if (FILE_IO)
 //#ifdef TRANSLIT
-//# import Client.Config;
-//# import util.Translit;
+import Client.Config;
+import util.Translit;
 //#endif
 import io.file.FileIO;
 import io.file.browse.Browser;
@@ -90,9 +90,8 @@ public class vCardForm
         
         this.vcard=vcard;
         
-        f=new Form(SR.MS_VCARD);
-        f.append(vcard.getJid());
-        
+        f=new Form(SR.MS_VCARD+" "+vcard.getNickName());
+       
         if (vcard.isEmpty() && !editable) 
             f.append("\n[no vCard available]"); 
         else { 
@@ -229,16 +228,16 @@ public class vCardForm
         StringBuffer nickDate=new StringBuffer();
         nickDate.append("photo_");
 //#ifdef TRANSLIT
-//#         String userName=(vcard.getNickName()!=null)?vcard.getNickName():vcard.getJid();
-//#         if (Config.getInstance().transliterateFilenames) {
-//#             nickDate.append(Translit.translit(userName));
-//#         } else {
-//#             nickDate.append(userName);
-//#         }
+        String userName=(vcard.getNickName()!=null)?vcard.getNickName():vcard.getJid();
+        if (Config.getInstance().transliterateFilenames) {
+            nickDate.append(Translit.translit(userName));
+        } else {
+            nickDate.append(userName);
+        }
 //#else
-         if (vcard.getNickName()!=null) {
-             nickDate.append(vcard.getNickName());
-         } else nickDate.append(vcard.getJid());
+//#          if (vcard.getNickName()!=null) {
+//#              nickDate.append(vcard.getNickName());
+//#          } else nickDate.append(vcard.getJid());
 //#endif
         nickDate.append("_");
         nickDate.append(Time.dayLocalString(Time.utcTimeMillis()).trim());

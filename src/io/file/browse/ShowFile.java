@@ -83,7 +83,6 @@ public class ShowFile implements CommandListener{
         Image img = Image.createImage(b, 0, len);
 
         Form form = new Form(file);
-        form.append(new Spacer(10, 10));
         form.append(new ImageItem(null, img, ImageItem.LAYOUT_CENTER | ImageItem.LAYOUT_NEWLINE_BEFORE, "[image]"));
 
         form.addCommand(back);
