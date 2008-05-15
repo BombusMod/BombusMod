@@ -40,15 +40,18 @@ abstract public class IconTextElement implements VirtualElement {
     
     protected ImageList il;
 
-    private int heightFirstLine=0;
-
     private int ilImageSize=0;
 
-    private int fontHeight;
 //#ifdef SECONDSTRING
-//#     private int secondFontHeight;
-//#     private Font secondFont;
+//#     private Font getSecondFont() {
+//#         return FontCache.getBalloonFont();
+//#     }
+//#     
+//#     private int getSecondFontHeight() {
+//#         return FontCache.getBalloonFont().getHeight()-2;
+//#     }
 //#endif
+    
     abstract protected int getImageIndex();
 
     public int getFontIndex() { return 0;}
@@ -63,7 +66,7 @@ abstract public class IconTextElement implements VirtualElement {
        g.setFont(getFont());
        
        String str=toString();
-       int offset=4+ilImageSize;
+       int offset=4;
 //#ifdef SECONDSTRING
 //#        String secstr="";
 //#        if (hasSecondString()) {
@@ -71,18 +74,22 @@ abstract public class IconTextElement implements VirtualElement {
 //#        }
 //#endif
        
-       if (il!=null)
-           il.drawImage(g, getImageIndex(), 2, imageYOfs);
+       if (il!=null) {
+            if (getImageIndex()!=-1) {
+                offset+=ilImageSize;
+                il.drawImage(g, getImageIndex(), 2, imageYOfs);
+            }
+       }
            
        g.clipRect(offset, 0, g.getClipWidth(), itemHeight);
        
-       g.drawString(str,offset-ofs, fontYOfs, Graphics.TOP|Graphics.LEFT);
+       g.drawString(str, offset-ofs, fontYOfs, Graphics.TOP|Graphics.LEFT);
        
 //#ifdef SECONDSTRING
 //#        if (hasSecondString()) {
-//#            g.setFont(secondFont);
+//#            g.setFont(getSecondFont());
 //#            g.setColor(Colors.SECOND_LINE);
-//#            g.drawString(secstr, offset-ofs, fontYOfs+fontHeight-2, Graphics.TOP|Graphics.LEFT);
+//#            g.drawString(secstr, offset-ofs, fontYOfs+getFont().getHeight()-2, Graphics.TOP|Graphics.LEFT);
 //#        }
 //#endif
     }
@@ -92,7 +99,7 @@ abstract public class IconTextElement implements VirtualElement {
 //#ifdef SECONDSTRING
 //#         int wst=0;
 //#         if (hasSecondString())
-//#             wst=secondFont.stringWidth(getSecondString());
+//#             wst=getSecondFont().stringWidth(getSecondString());
 //#         return ((wft>wst)?wft:wst)+ilImageSize+4;   
 //#else
             return wft+ilImageSize+4;
@@ -100,12 +107,12 @@ abstract public class IconTextElement implements VirtualElement {
     }
     
     public int getVHeight(){ 
-        itemHeight=heightFirstLine;
+        itemHeight=(ilImageSize>getFont().getHeight())?ilImageSize:getFont().getHeight();
 
-        fontYOfs=(itemHeight-fontHeight)/2;
+        fontYOfs=(itemHeight-getFont().getHeight())/2;
 //#ifdef SECONDSTRING
 //#         if (hasSecondString()){
-//#             itemHeight+=secondFontHeight;
+//#             itemHeight+=getSecondFontHeight();
 //#         }
 //#endif
         imageYOfs=(itemHeight-ilImageSize)/2;
@@ -118,15 +125,9 @@ abstract public class IconTextElement implements VirtualElement {
     public IconTextElement(ImageList il) {
         super();
         this.il=il;
-        fontHeight=FontCache.getRosterNormalFont().getHeight();
-//#ifdef SECONDSTRING
-//#         secondFont = FontCache.getBalloonFont();
-//#         secondFontHeight=secondFont.getHeight()-2;
-//#endif
 	if (il!=null){
 	    ilImageSize=il.getHeight();
 	}
-        heightFirstLine=(ilImageSize>fontHeight)?ilImageSize:fontHeight;
     }
 
     public String getTipString() {

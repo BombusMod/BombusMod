@@ -46,10 +46,9 @@ import Fonts.FontCache;
 //# import util.ClipBoard;
 //#endif
 
-public abstract class MessageList 
-    extends VirtualList
-    implements CommandListener
-{
+public abstract class MessageList extends VirtualList implements CommandListener {
+    
+    private Config cf;
     
     protected Vector messages;
 //#ifdef CLIPBOARD
@@ -61,9 +60,6 @@ public abstract class MessageList
 //#ifdef COLORS
     protected Command cmdxmlSkin = new Command(SR.MS_USE_COLOR_SCHEME, Command.SCREEN, 40);
 //#endif
-//#ifdef SMILES
-    protected Command cmdSmiles = new Command(SR.MS_SMILES_TOGGLE, Command.SCREEN, 50);
-//#endif
     protected Command cmdUrl = new Command(SR.MS_GOTO_URL, Command.SCREEN, 80);
     protected Command cmdBack = new Command(SR.MS_BACK, Command.BACK, 99);
     
@@ -72,13 +68,16 @@ public abstract class MessageList
     public MessageList() {
         super();
 	messages=new Vector();
+        
+        cf=Config.getInstance();
+        
 //#ifdef SMILES
-        smiles=Config.getInstance().smiles;
+        smiles=cf.smiles;
 //#else
 //#         smiles=false;
 //#endif
 //#ifdef CLIPBOARD
-//#         if (Config.getInstance().useClipBoard) {
+//#         if (cf.useClipBoard) {
 //#             clipboard=ClipBoard.getInstance();
 //#             addCommand(cmdCopy);
 //#             addCommand(cmdCopyPlus);
@@ -90,9 +89,6 @@ public abstract class MessageList
 
 //#ifdef COLORS
         addCommand(cmdxmlSkin);
-//#endif
-//#ifdef SMILES
-        addCommand(cmdSmiles);
 //#endif
         addCommand(cmdUrl);
         addCommand(cmdBack);
@@ -124,6 +120,20 @@ public abstract class MessageList
     
     protected boolean smiles;
 
+    public void removeCommands () {
+//#ifdef CLIPBOARD
+//#         if (cf.useClipBoard) {
+//#             removeCommand(cmdCopy);
+//#             removeCommand(cmdCopyPlus);
+//#         }
+//#endif
+//#ifdef COLORS
+        removeCommand(cmdxmlSkin);
+//#endif
+        removeCommand(cmdUrl);
+        removeCommand(cmdBack);
+    }
+
     public void commandAction(Command c, Displayable d) {
         if (c==cmdBack) {
             StaticData.getInstance().roster.activeContact=null;
@@ -135,13 +145,6 @@ public abstract class MessageList
                 new MessageUrl(display, urls); //throws NullPointerException if no urls
             } catch (Exception e) {/* no urls found */}
         }
-//#ifdef SMILES
-        if (c==cmdSmiles) {
-            try {
-                ((MessageItem)getFocusedObject()).toggleSmiles();
-            } catch (Exception e){}
-        }
-//#endif
 //#ifdef COLORS
         if (c==cmdxmlSkin) {
             try {

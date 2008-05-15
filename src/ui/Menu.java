@@ -37,7 +37,7 @@ import locale.SR;
 public class Menu extends VirtualList implements CommandListener
 {
     Vector menuitems;
-    /** Creates a new instance of Menu */
+
     Command cmdBack=new Command(SR.MS_BACK,Command.BACK,99);
     Command cmdOk=new Command(SR.MS_OK,Command.OK,1);
     
