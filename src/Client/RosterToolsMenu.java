@@ -44,6 +44,7 @@ import ServiceDiscovery.ServiceDiscovery;
 //#endif
 //#ifdef PEP
 //# import Mood.MoodList;
+//# import images.MenuIcons;
 //#endif
 import javax.microedition.lcdui.Display;
 import locale.SR;
@@ -74,62 +75,62 @@ public class RosterToolsMenu extends Menu {
         cf=Config.getInstance();
 //#ifdef SERVICE_DISCOVERY
         if (sd.roster.isLoggedIn())
-            addItem(SR.MS_DISCO, 0, 0x13);
+            addItem(SR.MS_DISCO, 0, MenuIcons.ICON_DISCO);
 //#endif
 //#ifdef PRIVACY
         if (sd.roster.isLoggedIn())
-            addItem(SR.MS_PRIVACY_LISTS, 1, 0x46);
+            addItem(SR.MS_PRIVACY_LISTS, 1, MenuIcons.ICON_PRIVACY);
 //#endif
 //#ifdef PEP
 //#         if (cf.sndrcvmood && sd.roster.isLoggedIn())
-//#             addItem(SR.MS_USER_MOOD, 2, 0x0f16);
+//#             addItem(SR.MS_USER_MOOD, 2, MenuIcons.ICON_MOOD);
 //#endif
         if (sd.roster.isLoggedIn())
-            addItem(SR.MS_MY_VCARD, 3, 0x0f16);
-        addItem(SR.MS_OPTIONS, 4, 0x0f03);
+            addItem(SR.MS_MY_VCARD, 3, MenuIcons.ICON_VCARD);
+        addItem(SR.MS_OPTIONS, 4, MenuIcons.ICON_SETTINGS);
 //#if (FILE_IO && HISTORY)
-//#         addItem(SR.MS_HISTORY_OPTIONS, 5, 0x0f01);
+//#         addItem(SR.MS_HISTORY_OPTIONS, 5, MenuIcons.ICON_HISTORY);
 //#endif
-       addItem(SR.MS_FONTS_OPTIONS, 6, 0x0f01);
+       addItem(SR.MS_FONTS_OPTIONS, 6, MenuIcons.ICON_FONTS);
 //#if (FILE_IO)
-        addItem(SR.MS_ROOT, 7, 0x0f10);
+        addItem(SR.MS_ROOT, 7, MenuIcons.ICON_FILEMAN);
 //#endif
 //#if (FILE_IO && FILE_TRANSFER)
         if (sd.roster.isLoggedIn())
-            addItem(SR.MS_FILE_TRANSFERS, 8, 0x0f34);
+            addItem(SR.MS_FILE_TRANSFERS, 8, MenuIcons.ICON_FT);
 //#endif
 //#ifdef COLORS
-        addItem(SR.MS_COLOR_TUNE, 9, 0x0f25);
+        addItem(SR.MS_COLOR_TUNE, 9, MenuIcons.ICON_COLOR_TUNE);
 //#endif
 //#if IMPORT_EXPORT
-//#         addItem(SR.MS_IMPORT_EXPORT, 10, 0x0f03);
+//#         addItem(SR.MS_IMPORT_EXPORT, 10, MenuIcons.ICON_IE);
 //#endif
-        addItem(SR.MS_NOTICES_OPTIONS, 11, 0x0f17);
+        addItem(SR.MS_NOTICES_OPTIONS, 11, MenuIcons.ICON_NOTIFY);
 //#ifdef POPUPS
 //#ifdef STATS
-//#         addItem(SR.MS_STATS, 12, 0x0f30);
+//#         addItem(SR.MS_STATS, 12, MenuIcons.ICON_STAT);
 //#endif
 //#endif
 //#ifdef CHECK_VERSION
-//#         addItem(SR.MS_CHECK_UPDATE, 13, 0x46);
+//#         addItem(SR.MS_CHECK_UPDATE, 13, MenuIcons.ICON_CHECK_UPD);
 //#         if (cf.getStringProperty("Bombus-Upgrade", "123")!="123")
-//#             addItem(SR.MS_BUILD_NEW, 14, 0x46);
+//#             addItem(SR.MS_BUILD_NEW, 14, MenuIcons.ICON_BUILD_NEW);
 //#endif
 //#ifdef USER_KEYS
 //#         if (cf.userKeys)
-//#             addItem(SR.MS_CUSTOM_KEYS, 15, 0x0f03);
+//#             addItem(SR.MS_CUSTOM_KEYS, 15, MenuIcons.ICON_KEYS);
 //#endif
 //#if SASL_XGOOGLETOKEN
 //#         if (sd.account.isGmail() && sd.roster.isLoggedIn())
-//#             addItem(SR.MS_CHECK_GOOGLE_MAIL, 16,0x46);
+//#             addItem(SR.MS_CHECK_GOOGLE_MAIL, 16, MenuIcons.ICON_GMAIL);
 //#endif 
 //#if AUTOTASK
-//#         addItem(SR.MS_AUTOTASKS, 17, 0x0f03);
+//#         addItem(SR.MS_AUTOTASKS, 17, MenuIcons.ICON_TASKS);
 //#endif
-        addItem(SR.MS_INVERT, 18, 0x0f06);
-        addItem(SR.MS_BREAK_CONECTION, 19, 0x13);
+        addItem(SR.MS_INVERT, 18, MenuIcons.ICON_INVERSE);
+        addItem(SR.MS_BREAK_CONECTION, 19, MenuIcons.ICON_RECONNECT);
 //#ifdef CONSOLE
-//#         addItem(SR.MS_XML_CONSOLE, 20, 0x46);
+//#         addItem(SR.MS_XML_CONSOLE, 20, MenuIcons.ICON_CONCOLE);
 //#endif
         attachDisplay(display);
     }
