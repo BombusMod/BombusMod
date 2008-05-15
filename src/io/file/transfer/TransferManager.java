@@ -72,6 +72,16 @@ public class TransferManager extends VirtualList implements CommandListener{
         if (t!=null)
             if (t.isAcceptWaiting()) new TransferAcceptFile(display, t);
     }
+    
+    protected void keyClear() {
+        if (getItemCount()>0) {
+            synchronized (taskList) {
+                TransferTask task=(TransferTask) taskList.elementAt(cursor);
+                task.cancel();
+                taskList.removeElementAt(cursor);
+            }
+        }
+    }
 
     public void commandAction(Command c, Displayable d) {
         if (c==cmdClrF) {
@@ -90,13 +100,7 @@ public class TransferManager extends VirtualList implements CommandListener{
             redraw();
         }
         if (c==cmdDel) {
-            if (getItemCount()>0) {
-                synchronized (taskList) {
-                    TransferTask task=(TransferTask) taskList.elementAt(cursor);
-                    task.cancel();
-                    taskList.removeElementAt(cursor);
-                }
-            }
+            keyClear();
         }
         if (c==cmdBack) {
             TransferDispatcher.getInstance().eventNotify();
