@@ -40,6 +40,7 @@ public class FontCache {
     private static Font msgFont;
     private static Font msgFontBold;
     private static Font balloonFont;
+    private static Font smallFont;
     private static Font clockFont;
     private static Font barFont;
     
@@ -90,6 +91,13 @@ public class FontCache {
             balloonFont=Font.getFont(Font.FACE_PROPORTIONAL, Font.STYLE_PLAIN, balloonFontSize);
         }
         return balloonFont;
+    }
+    
+    public final static Font getSmallFont() {
+        if (smallFont==null) {
+            smallFont=Font.getFont(Font.FACE_PROPORTIONAL, Font.STYLE_PLAIN, Font.SIZE_SMALL);
+        }
+        return smallFont;
     }
 
     public final static Font getClockFont() {

@@ -44,7 +44,7 @@ public class MessageItem implements
 	MessageParser.MessageParserNotify
 {
     
-    Msg msg;
+    public Msg msg;
     Vector msgLines;
     private VirtualList view;
     private boolean even;

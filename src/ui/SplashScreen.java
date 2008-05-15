@@ -41,6 +41,7 @@ import java.util.TimerTask;
 import javax.microedition.lcdui.*;
 import midlet.BombusMod;
 import Colors.Colors;
+import ui.controls.Progress;
 
 /**
  *
@@ -65,8 +66,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
     private int kHold;
     
     private TimerTaskClock tc;
-    
-    //private StaticData sd=StaticData.getInstance();
+
     private Config cf=Config.getInstance();
     
     private static SplashScreen instance;
@@ -74,6 +74,8 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
     public int keypressed=0;
 
     private Font f;
+    
+    private Progress pb;
     
     public static SplashScreen getInstance(){
         if (instance==null) 
@@ -86,11 +88,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         setFullScreenMode(cf.fullscreen);
     }
     
-    public SplashScreen(
-            Display display, 
-            ComplexString status, 
-            char exitKey) 
-    {
+    public SplashScreen( Display display, ComplexString status, char exitKey) {
         this.status=status;
         this.display=display;
         kHold=this.exitKey=exitKey;
@@ -120,10 +118,10 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
 
         if (img!=null) 
             g.drawImage(img, width/2, height/2, Graphics.VCENTER|Graphics.HCENTER);
-        
-        f = (pos==-1)?FontCache.getClockFont():FontCache.getBalloonFont();
-        
+
         if (pos==-1) {
+            f = FontCache.getClockFont();
+            g.setFont(f);
             int h=f.getHeight()+1;
 
             int y=0;
@@ -143,22 +141,12 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
                 g.drawString(time, 0, 0, Graphics.BOTTOM | Graphics.HCENTER);
             }
         } else {
-            int h=4;
-            int xp=pos*width/100;
-            int xt=(width/2);
-            int y=height-h-2;
-            int yt=y-f.getHeight();
+            int filled=pos*width/100;
+            int y=height-12;
             
-            g.setFont(f);
-            g.setColor(Colors.BLK_INK);
-            g.drawString(capt, xt, yt, Graphics.TOP|Graphics.HCENTER);
-            
-            g.setColor(Colors.PGS_REMAINED);
-            g.fillRect(1, y, width, h);
-
-            g.setColor(Colors.PGS_COMPLETE);
-            g.setClip(1, y+1, xp, h-2);
-            g.fillRect(1, y+1, width-2,h-2);
+            if (pb==null)
+                pb=new Progress(g, 0, y, 12, width);
+            pb.draw(filled, capt);
         }
     }
     
