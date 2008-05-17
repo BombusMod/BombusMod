@@ -782,6 +782,7 @@ public abstract class VirtualList
                 return;
             }
          }
+         if (keyCode==greenKeyCode) { keyGreen(); }
 //#ifdef USER_KEYS
 //#         if (userKeys) {
 //#             switch (additionKeyState) {
@@ -857,7 +858,6 @@ public abstract class VirtualList
                         break;
                 default:
                     if (keyCode==keyClear) { keyClear(); break; }
-                    if (keyCode==greenKeyCode) { keyGreen(); break; }
                     if (keyCode==keyVolDown) { moveCursorEnd(); break; }
                     if (keyCode=='5') {  eventOk(); break; }
                     if (keyCode==Config.KEY_BACK && canBack==true) { destroyView(); }
