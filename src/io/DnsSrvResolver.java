@@ -49,7 +49,7 @@ public class DnsSrvResolver {
     private String server;
     private String resolvedHost;
     private int resolvedPort;
-    /** Creates a new instance of DnsSrvResolver */
+    private Config cf;
     
     public DnsSrvResolver() {
         resolvedPort=5222;
@@ -57,7 +57,20 @@ public class DnsSrvResolver {
     
     public boolean getSrv(String server){
         this.server=server;
+        cf=Config.getInstance();
         
+        SHA1 shaVer=new SHA1();
+        shaVer.init();
+        shaVer.updateASCII(Version.getVersionNumber()+server);
+        shaVer.finish();
+
+        if (cf.verHash.equals(shaVer.getDigestHex())) {
+            resolvedHost=cf.resolvedHost;
+            resolvedPort=cf.resolvedPort;
+            //System.out.println(resolvedHost+":"+resolvedPort);
+            return true;
+        }
+
         StringBuffer url=new StringBuffer(resolverUrl);
         url.append("?host=").append(server);
         
@@ -76,8 +89,11 @@ public class DnsSrvResolver {
 
         try {
             HttpConnection c = (HttpConnection) Connector.open(url.toString());
+
+            //System.out.println(url.toString());
             
-            if (c.getResponseCode()!=HttpConnection.HTTP_OK) return false;
+            if (c.getResponseCode()!=HttpConnection.HTTP_OK) 
+                return false;
             
             Hashtable ht=new util.StringLoader().hashtableLoader(c.openInputStream());
             
@@ -85,6 +101,13 @@ public class DnsSrvResolver {
             
             resolvedHost=(String)ht.get("host");
             resolvedPort=Integer.parseInt((String)ht.get("port"));
+            
+            //System.out.println(resolvedHost+":"+resolvedPort);
+            
+            cf.verHash=shaVer.getDigestHex();
+            cf.resolvedHost=resolvedHost;
+            cf.resolvedPort=resolvedPort;
+            cf.saveToStorage();
 
             return true;
         } catch (Exception e) { 

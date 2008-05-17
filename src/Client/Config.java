@@ -264,6 +264,10 @@ type = \"-=Siemens=-\";
 //#endif
     public boolean firstRun = true;
     
+    public String verHash="";
+    public String resolvedHost="";
+    public int resolvedPort=0;
+    
     public static Config getInstance(){
 	if (instance==null) {
 	    instance=new Config();
@@ -478,6 +482,10 @@ type = \"-=Siemens=-\";
             font3=inputStream.readInt();
             font4=inputStream.readInt();
             
+            verHash=inputStream.readUTF();
+            resolvedHost=inputStream.readUTF();
+            resolvedPort=inputStream.readInt();
+            
 	    inputStream.close();
 	} catch (Exception e) {
             try {
@@ -672,6 +680,10 @@ type = \"-=Siemens=-\";
 //#endif
             outputStream.writeInt(font3);
             outputStream.writeInt(font4);
+            
+            outputStream.writeUTF(verHash);
+            outputStream.writeUTF(resolvedHost);
+            outputStream.writeInt(resolvedPort);
 	} catch (Exception e) { }
 	
 	NvStorage.writeFileRecord(outputStream, "config", 0, true);
