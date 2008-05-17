@@ -42,7 +42,7 @@ import io.file.FileIO;
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
 import Client.Config;
-import ui.controls.vGauge;
+import ui.controls.AlertBox;
 import util.strconv;
 //#endif
 import ui.Time;
@@ -189,7 +189,7 @@ public class ArchiveList
     }
     
     private void deleteAllMessages() {
-        new vGauge(SR.MS_DELETE, SR.MS_SURE_DELETE, 0, display, this) {
+        new AlertBox(SR.MS_DELETE, SR.MS_SURE_DELETE, display, this) {
             public void yes() {
                 archive.deleteAll();
                 messages=new Vector();
@@ -221,7 +221,7 @@ public class ArchiveList
     
     public void keyClear() { 
         if (getItemCount()>0) {
-            new vGauge(SR.MS_DELETE, SR.MS_SURE_DELETE, 0, display, this) {
+            new AlertBox(SR.MS_DELETE, SR.MS_SURE_DELETE, display, this) {
                 public void yes() {
                     deleteMessage();
                 }

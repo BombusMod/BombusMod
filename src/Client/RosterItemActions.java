@@ -39,8 +39,8 @@ import Conference.affiliation.Affiliations;
 //#endif
 //#ifdef SERVICE_DISCOVERY
 import ServiceDiscovery.ServiceDiscovery;
-import ui.controls.vGauge;
 //#endif
+import ui.controls.AlertBox;
 
 import xmpp.extensions.IqLast;
 import xmpp.extensions.IqPing;
@@ -305,7 +305,7 @@ public class RosterItemActions extends Menu {
         String to=null;
         if (isContact) to=(index<3)? c.getJid() : c.getBareJid();
             switch (index) {
-                case 0: // info
+                case 0: // version
                     sd.roster.setQuerySign(true);
                     sd.roster.theStream.send(IqVersionReply.query(to));
                     break;
@@ -324,12 +324,11 @@ public class RosterItemActions extends Menu {
                 case 2:
                     (new ContactEdit(display, c )).parentView=sd.roster;
                     return; //break;
-                    
                 case 3: //subscription
                     new SubscriptionEdit(display, c);
                     return; //break;
                 case 4:
-                    new vGauge(SR.MS_DELETE_ASK, c.getNickJid(), 0, display,  sd.roster) {
+                    new AlertBox(SR.MS_DELETE_ASK, c.getNickJid(), display,  sd.roster) {
                         public void yes() {
                             sd.roster.deleteContact((Contact)item);
                         }
@@ -337,77 +336,54 @@ public class RosterItemActions extends Menu {
                     };
                     return;
                 case 6: // logoff
-                {
                     sd.roster.blockNotify(-111,10000); //block sounds to 10 sec
                     Presence presence = new Presence(
                     Presence.PRESENCE_OFFLINE, -1, "", null);
                     presence.setTo(c.getJid());
                     sd.roster.theStream.send( presence );
                     break;
-                }
                 case 5: // logon
-                {
                     sd.roster.blockNotify(-111,10000); //block sounds to 10 sec
                     //querysign=true; displayStatus();
-                    Presence presence = new Presence(sd.roster.myStatus, 0, "", null);
-                    presence.setTo(c.getJid());
-                    sd.roster.theStream.send( presence );
+                    Presence presence2 = new Presence(sd.roster.myStatus, 0, "", null);
+                    presence2.setTo(c.getJid());
+                    sd.roster.theStream.send( presence2 );
                     break;
-                }
                 case 7: // Nick resolver
-                {
                     sd.roster.resolveNicknames(c.getBareJid());
                     break;
-                }
 //#if CHANGE_TRANSPORT
 //#                 case 915: // change transport
-//#                 {
 //#                     new ChangeTransport(display, c.getBareJid());
 //#                     return;
-//#                 }
 //#endif
                 case 21:
-                {
                     sd.roster.cleanupSearch();
                     break;
-                }
 //#ifdef SERVICE_DISCOVERY
                 case 30:
-                {
                     new ServiceDiscovery(display, c.getJid(), "http://jabber.org/protocol/commands");
                     return;
-                }
 //#endif
                 case 1003: 
-                {
                     new RenameGroup(display, null, c);
                     return;
-                }
                 case 889: //idle
-                {
                     sd.roster.setQuerySign(true);
                     sd.roster.theStream.send(IqLast.query(c.getJid()));
                     break;
-                }
                 case 890: //seen & online
-                {
                     sd.roster.setQuerySign(true);
                     sd.roster.theStream.send(IqLast.query(c.getBareJid()));
                     break;
-                }
-                
                 case 891: //time
-                {
                     sd.roster.setQuerySign(true);
                     sd.roster.theStream.send(IqTimeReply.query(c.getJid()));
                     break;
-                }
 //#ifdef CLIPBOARD
 //#                 case 892: //Copy JID
-//#                 {
 //#ifndef WMUC
 //#                     if (!(c instanceof MucContact)) {
-//#                         //System.out.println("1 c "+c.bareJid);
 //#endif
 //#                         try {
 //#                             if (c.bareJid!=null)
@@ -417,20 +393,16 @@ public class RosterItemActions extends Menu {
 //#                     }
 //#endif
 //#                     break;
-//#                 }
 //#endif
                 case 893: //ping
-                {
                     try {
                         sd.roster.setQuerySign(true);
                         //c.setPing();
                         sd.roster.theStream.send(IqPing.query(c.getJid(), "_ping_"+Time.utcTimeMillis()));
                     } catch (Exception e) {/*no messages*/}
                     break;
-                }
 //#ifdef COLORS
                 case 912: //send color scheme
-                {
                     String from=sd.account.toString();
                     String body=ColorUtils.getSkin();
                     String subj="";
@@ -448,11 +420,9 @@ public class RosterItemActions extends Menu {
                         //e.printStackTrace();
                     }
                     break;
-                }
 //#endif
 //#ifdef CLIPBOARD
 //#                 case 914: //send message from buffer
-//#                 {
 //#                     String body=clipboard.getClipBoard();
 //#                     if (body.length()==0)
 //#                         return;
@@ -472,11 +442,9 @@ public class RosterItemActions extends Menu {
 //#                         //e.printStackTrace();
 //#                     }
 //#                     break;
-//#                 }
 //#endif
 //#ifndef WMUC
                 case 40: //invite
-                {
                     //new InviteForm(c, display);
                     if (c.jid!=null) {
                         new InviteForm(c, display);                        
@@ -496,130 +464,81 @@ public class RosterItemActions extends Menu {
                         }
                     }
                     return;
-                }
 //#endif
                 case 45: //direct presence
-                {
                     (new StatusSelect(display, c)).setParentView(sd.roster);
                     return;
-                }
-                
 //#if (FILE_IO && FILE_TRANSFER)
                 case 50: //send file
-                {
                     new TransferSendFile(display, c.getJid());
                     return;
-                }   
 //#endif
             }
 //#ifndef WMUC
             if (c instanceof MucContact || g instanceof ConferenceGroup) {
                 MucContact mc=(MucContact) c;
+                String roomJid=((ConferenceGroup)g).getConference().getJid();
+                ConferenceGroup mucGrp=(ConferenceGroup)c.getGroup();
+                String myNick=mucGrp.getSelfContact().getName();
                 
                 switch (index) { // muc contact actions
                     case 10: // room config
-                    {
-                        String roomJid=((ConferenceGroup)g).getConference().getJid();
                         new QueryConfigForm(display, roomJid);
                         break;
-                    }
                     case 11: // owners
                     case 12: // admins
                     case 13: // members
-
                     case 14: // outcasts
-                    {
-                        String roomJid=((ConferenceGroup)g).getConference().getJid();
                         new Affiliations(display, roomJid, (short)(index-10));
                         return;
-                    }
-
                     case 22:
-                    {
                         sd.roster.leaveRoom( g );
                         break;
-                    }
                     case 23:
-                    {
                         sd.roster.reEnterRoom( g );
                         return; //break;
-                    }
                     case 46: //conference presence
-                    {
                         new StatusSelect(display, ((ConferenceGroup)g).getConference()).setParentView(sd.roster);
                         return;
-                    }
-                    
                      case 8: // kick
-                     {
-                        ConferenceGroup mucGrp=(ConferenceGroup)c.getGroup();
-                        String myNick=mucGrp.getSelfContact().getName();
                         new ConferenceQuickPrivelegeModify(display, mc, ConferenceQuickPrivelegeModify.KICK,myNick);
                         return;
-                     }
                      case 9: // ban
-                     {
-                        ConferenceGroup mucGrp=(ConferenceGroup)c.getGroup();
-                        String myNick=mucGrp.getSelfContact().getName();
                         new ConferenceQuickPrivelegeModify(display, mc, ConferenceQuickPrivelegeModify.OUTCAST,myNick);
                         return;
-                     }
                      case 31: //grant voice and revoke moderator
-                     {
                         new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.PARTICIPANT,null);
                         return;
-                     }
                      case 32: //revoke voice
-                     {
                         new ConferenceQuickPrivelegeModify(display, mc, ConferenceQuickPrivelegeModify.VISITOR,null);
                         return;
-                     }
-                     
                      case 33: //grant moderator
-                     {
                         new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.MODERATOR,null);
                         return;
-                     }
-                    
-                case 35: //grant membership and revoke admin
-                 {
-                    new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.MEMBER,null);
-                     return;
-                 }
-                 
-                case 36: //revoke membership
-                 {
-                    new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.NONE,null);
-                     return;
-                 }
-                 
-                case 37: //grant admin and revoke owner
-                 {
-                    new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.ADMIN,null);
-                     return;
-                 }
-                 
-                case 38: //grant owner
-                 {
-                    new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.OWNER,null);
-                     return;
-                 }
+                    case 35: //grant membership and revoke admin
+                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.MEMBER,null);
+                        return;
+                    case 36: //revoke membership
+                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.NONE,null);
+                         return;
+                    case 37: //grant admin and revoke owner
+                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.ADMIN,null);
+                        return;
+                    case 38: //grant owner
+                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.OWNER,null);
+                        return;
 //#ifdef REQUEST_VOICE		 
 //#                 case 39: //request voice
-//#                  {
 //#                     new QueryRequestVoice(display, mc, ConferenceQuickPrivelegeModify.PARTICIPANT);
 //#                     return;
-//#                  }
 //#endif
 //#ifdef CLIPBOARD
-//#                 case 892: //Copy JID
-//#                 {
-//#                     try {
-//#                         if (mc.realJid!=null)
-//#                             clipboard.setClipBoard(mc.realJid);
-//#                     } catch (Exception e) {}
-//#                     break;
-//#                  }
+//#                     case 892: //Copy JID
+//#                         try {
+//#                             if (mc.realJid!=null)
+//#                                 clipboard.setClipBoard(mc.realJid);
+//#                         } catch (Exception e) {}
+//#                         break;
 //#endif
              }
         } else {
@@ -634,13 +553,10 @@ public class RosterItemActions extends Menu {
             {
                 switch (index) {
                     case 1001: //rename
-                    {
                         new RenameGroup(display, sg, null);
                         return;
-                    }
                     case 1004: //delete
-                    {
-                        new vGauge(SR.MS_DELETE_ASK, sg.getName(), 0, display, sd.roster) {
+                        new AlertBox(SR.MS_DELETE_ASK, sg.getName(), display, sd.roster) {
                             public void yes() {
                                 sd.roster.deleteGroup((Group)item);
                             }
@@ -648,7 +564,6 @@ public class RosterItemActions extends Menu {
                             }
                         };
                         return;
-                    }    
                 }
             }
 //#ifndef WMUC

@@ -307,7 +307,7 @@ type = \"-=Siemens=-\";
                 break;
             case NOKIA:
                 KEY_BACK=VirtualList.NOKIA_PEN;
-                greenKeyCode=VirtualList.NOKIA_GREEN;
+                greenKeyCode=-10;
                 break;
             case SIEMENS:
             case SIEMENS2:

@@ -1,7 +1,7 @@
 /*
- * vGauge.java
+ * AlertBox.java
  *
- * Created on 21 јпрель 2008 г., 13:16
+ * Created on 17.05.2008, 14:35
  * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
  *
  * This program is free software; you can redistribute it and/or
@@ -46,47 +46,44 @@ import util.strconv;
  *
  * @author ad
  */
-public abstract class vGauge extends Canvas implements Runnable, CommandListener {
+public abstract class AlertBox extends Canvas implements CommandListener {
     
     protected Display display;
     protected Displayable next;
+    
     protected Command cmdOk=new Command(SR.MS_OK, Command.OK, 1);
     protected Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 2);
     
-    boolean vibrate=false;
-    
-    private boolean isShowing;
-    private int timeout;
+    public boolean isShowing;
 
-    private int value;
-    
-    //Font barFont; //TODO
     Font messageFont;
-    
-    private String text;
+    Font barFont;
+
     private String mainbar;
+    private String text;
     
-    private Vector lines;
-    private boolean parsed;
+    private Vector lines=null;
     
 //#ifdef GRADIENT
 //#     private Gradient gr=null;
 //#endif
+    
+    private Progress pb;
+
+    int pos=0;
+
+    int steps=1;
         
-    public vGauge(String mainbar, String text, int timeout, Display display, Displayable nextDisplayable) {
+    public AlertBox(String mainbar, String text, Display display, Displayable nextDisplayable) {
         this.display=display;
-        
-        //barFont=FontCache.getBarFont(); //TODO
+
         messageFont=FontCache.getMsgFont();
+        barFont=FontCache.getBarFont();
         
         next=(nextDisplayable==null)? display.getCurrent() : nextDisplayable;
-        
-        this.mainbar=mainbar;
-        this.text=text;
-        this.timeout=timeout;
 
-        lines=new Vector();
-        
+        this.text=text;
+        this.mainbar=mainbar;
         isShowing=true;
         
         addCommand(cmdOk);
@@ -94,12 +91,10 @@ public abstract class vGauge extends Canvas implements Runnable, CommandListener
 
         setCommandListener(this);
         display.setCurrent(this);
-        
-        if (timeout>0)
-            new Thread(this).start();
     }
     
     public void commandAction(Command command, Displayable displayable) {
+        isShowing=false;
         if (command==cmdOk) {
             yes();
         } else {
@@ -119,21 +114,10 @@ public abstract class vGauge extends Canvas implements Runnable, CommandListener
         }
     }
     
-    public void run() {
-        while (isShowing) {
-            try {
-                Thread.sleep(1000);
-            } catch (Exception e) { break; }
-            value+=1;
-            if (value>=timeout) {
-                if (vibrate) display.vibrate(1000);
-                //System.out.println("execute");
-                yes();
-                destroyView();
-                break;
-            }
-            repaint();
-            if (vibrate) display.vibrate(200);
+    private void getLines(int width, int height, int fh) {
+        if (lines==null) {
+            lines=strconv.parseMessage(text, width-4, height-fh-10, false, messageFont);
+            text=null;
         }
     }
 
@@ -142,54 +126,49 @@ public abstract class vGauge extends Canvas implements Runnable, CommandListener
             int width=getWidth();
             int height=getHeight();
 
-            int border=10;
-            int y=height-8;
-            int xt=(width/2);
-
             int oldColor=g.getColor();
+            
             g.setColor(Colors.LIST_BGND);
             g.fillRect(0,0, width, height); //fill back
 
-            g.setFont(messageFont);
-            int fh=messageFont.getHeight();
-            if (!parsed) {
-                lines=strconv.parseMessage(text, width-4, height-fh-10, false, messageFont);
-                parsed=true;
-            }
-            g.setClip(0,0, width, fh);
+            int fh=0;
+            if (mainbar!=null) {
+                fh=getFontHeight();
+            
+                g.setClip(0,0, width, fh);
 //#ifdef GRADIENT
-//#             if (gr==null) {
-//#                 gr=new Gradient(0, 0, width, fh, Colors.BAR_BGND, Colors.BAR_BGND_BOTTOM, false);
-//#             }
-//#             gr.paint(g);
+//#                 if (gr==null) {
+//#                     gr=new Gradient(0, 0, width, fh, Colors.BAR_BGND, Colors.BAR_BGND_BOTTOM, false);
+//#                 }
+//#                 gr.paint(g);
 //#else
-         g.setColor(Colors.BAR_BGND);
-         g.fillRect(0, 0, width, fh);
+            g.setColor(Colors.BAR_BGND);
+            g.fillRect(0, 0, width, fh);
 //#endif
-
-            g.setColor(Colors.BAR_INK);
-            String timeoutString=(timeout>0)?" - "+(timeout-value):"";
-            g.drawString(mainbar+timeoutString, xt, 0, Graphics.TOP|Graphics.HCENTER);
+                g.setFont(barFont);
+                g.setColor(Colors.BAR_INK);
+                g.drawString(mainbar, width/2, 0, Graphics.TOP|Graphics.HCENTER);
+            }
+            
             g.setClip(0,0, width, height);
             
-            if (timeout>0) {
-                int itemWidth=width-(border*2);
-                int itemHeight=5;
-                int filled=(itemWidth*value)/timeout;
-                g.fillRect(border, y, itemWidth, itemHeight);
-                g.setColor(Colors.BAR_BGND);
-                g.drawRect(border, y, itemWidth, itemHeight);
-                g.fillRect(border, y, filled, itemHeight);
-            }
+            getLines(width-4, height-fh-15, fh);
             drawAllStrings(g, 2, fh);
             g.setColor(oldColor);
+            
+            if (pos>0)
+                drawProgress (g, width, height);
         }
     }
     
     private void drawAllStrings(Graphics g, int x, int y) {
-        if (lines.size()<1) return;
-        int fh=getFontHeight();
+        if (lines==null)
+            return;
+        if (lines.size()<1)
+            return;
         
+        g.setFont(messageFont);
+        int fh=getFontHeight();
         g.setColor(Colors.LIST_INK);
 
 	for (int line=0; line<lines.size(); ){
@@ -201,6 +180,14 @@ public abstract class vGauge extends Canvas implements Runnable, CommandListener
     
     private int getFontHeight() {
         return messageFont.getHeight();
+    }
+    
+    public void drawProgress (Graphics g, int width, int height) {
+        int filled=pos*width/steps;
+
+        if (pb==null)
+            pb=new Progress(g, 0, height-12, 12, width);
+        pb.draw(filled, Integer.toString(pos));
     }
     
     public abstract void yes();

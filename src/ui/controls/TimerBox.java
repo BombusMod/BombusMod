@@ -1,6 +1,7 @@
 /*
- * Reconnect.java
- * Created on 25.04.2008, 17:42
+ * TimerBox.java
+ *
+ * Created on 17.05.2008, 14:37
  * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
  *
  * This program is free software; you can redistribute it and/or
@@ -23,26 +24,47 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-package Client;
+package ui.controls;
 
 import javax.microedition.lcdui.Display;
-import ui.controls.TimerBox;
+import javax.microedition.lcdui.Displayable;
 
-public class Reconnect extends TimerBox {
+/**
+ *
+ * @author ad
+ */
+public abstract class TimerBox extends AlertBox implements Runnable {
     
-    private final static int WAITTIME=15;
+    private int timeout;
 
-    public Reconnect(String mainbar, String body, Display display) {
-        super(mainbar, body, WAITTIME, display, null);
+    public TimerBox(String mainbar, String text, int timeout, Display display, Displayable nextDisplayable) {
+        super(mainbar, text, display, nextDisplayable);
+        
+        this.timeout=timeout;
+        super.isShowing=true;
+        super.steps=timeout;
+        new Thread(this).start();
+    }
+    
+    public void run() {
+        while (super.isShowing) {
+            try {
+                Thread.sleep(1000);
+            } catch (Exception e) { break; }
+
+            super.pos+=1;
+            
+            if (super.pos>=timeout) {
+                yes();
+                super.destroyView();
+                super.isShowing=false;
+                break;
+            }
+            repaint();
+        }
     }
 
-    public void yes() {
-        try {
-             StaticData.getInstance().roster.sendPresence(5, null); //Presence.PRESENCE_OFFLINE
-        } catch (Exception e2) { }
-        StaticData.getInstance().roster.doReconnect();
-    }
+    public abstract void yes();
 
-    public void no() {
-    }
+    public abstract void no();
 }

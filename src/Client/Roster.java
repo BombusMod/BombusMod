@@ -51,7 +51,7 @@ import login.LoginListener;
 import login.SASLAuth;
 import midlet.BombusMod;
 import ui.MainBar;
-import ui.controls.vGauge;
+import ui.controls.AlertBox;
 import util.strconv;
 import vcard.VCard;
 import vcard.vCardForm;
@@ -1999,7 +1999,7 @@ public class Roster
 //#                 boolean isMucContact=false;
 //#endif
                 if (isContact && !isMucContact) {
-                   new vGauge(c.getNickJid(), SR.MS_DELETE_ASK, 0, display, this) {
+                   new AlertBox(c.getNickJid(), SR.MS_DELETE_ASK, display, this) {
                         public void yes() {
                             deleteContact((Contact)getFocusedObject());
                         }
@@ -2323,12 +2323,18 @@ public class Roster
 
     public void quit() {
 //#ifdef AUTOSTATUS
-//#         if (cf.autoAwayType!=Config.AWAY_OFF)
-//#             autostatus.destroyTask();
+//#         if (cf.autoAwayType!=Config.AWAY_OFF) {
+//#             try {
+//#                 autostatus.destroyTask();
+//#             } catch (Exception ex) {}
+//#         }
 //#endif
 //#ifdef SE_LIGHT
-//#         if (cf.phoneManufacturer==Config.SONYE || cf.phoneManufacturer==Config.NOKIA)
-//#             selight.destroyTask();
+//#         if (cf.phoneManufacturer==Config.SONYE || cf.phoneManufacturer==Config.NOKIA) {
+//#             try {
+//#                 selight.destroyTask();
+//#             } catch (Exception ex) {}
+//#         }
 //#endif
         destroyView();
         logoff(null);
@@ -2362,7 +2368,7 @@ public class Roster
 //menu actions
     public void cmdQuit() { 
         if (cf.queryExit) {
-            new vGauge(SR.MS_QUIT_ASK, SR.MS_SURE_QUIT, 0, display, null) {
+            new AlertBox(SR.MS_QUIT_ASK, SR.MS_SURE_QUIT, display, null) {
                 public void yes() {quit(); }
                 public void no() { }
             };

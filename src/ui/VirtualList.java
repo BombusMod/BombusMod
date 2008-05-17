@@ -131,7 +131,6 @@ public abstract class VirtualList
     public static final short SIEMENS_GREEN=-11;
     
     public static final short NOKIA_PEN=-50;
-    public static final short NOKIA_GREEN=-10;
 
     public static final short MOTOE680_VOL_UP=-9;
     public static final short MOTOE680_VOL_DOWN=-8;

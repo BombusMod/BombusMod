@@ -42,7 +42,7 @@ import ui.MainBar;
 import io.NvStorage;
 import java.io.DataInputStream;
 import java.io.EOFException;
-import ui.controls.vGauge;
+import ui.controls.AlertBox;
 import xmpp.XmppError;
 
 /**
@@ -223,7 +223,7 @@ public class ServiceDiscovery
             
             XmppError xe=XmppError.findInStanza(data);
             
-            new vGauge(data.getAttribute("from"), xe.toString(), 0, display, this) {
+            new AlertBox(data.getAttribute("from"), xe.toString(), display, this) {
                 public void yes() { };
                 public void no() { };
             };
@@ -314,7 +314,7 @@ public class ServiceDiscovery
             if (text==SR.MS_DONE && id.endsWith("Search") ) {
                 new SearchResult(display, data);
             } else {
-                new vGauge(mainbar, text, 0, display, null) {
+                new AlertBox(mainbar, text, display, null) {
                     public void yes() { }
                     public void no() { }
                 };

@@ -37,7 +37,7 @@ import ui.*;
 import java.util.*;
 import com.alsutton.jabber.*;
 import ui.MainBar;
-import ui.controls.vGauge;
+import ui.controls.AlertBox;
 
 /**
  *
@@ -253,7 +253,7 @@ public class Bookmarks
     }
     
     protected void keyClear(){
-        new vGauge(SR.MS_DELETE_ASK, ((BookmarkItem)getFocusedObject()).getJid(), 0, display, this) {
+        new AlertBox(SR.MS_DELETE_ASK, ((BookmarkItem)getFocusedObject()).getJid(), display, this) {
             public void yes() {
                 deleteBookmark();
             }

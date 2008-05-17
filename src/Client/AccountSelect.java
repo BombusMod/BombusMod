@@ -34,7 +34,7 @@ import java.util.*;
 import javax.microedition.lcdui.*;
 import ui.MainBar;
 import io.NvStorage;
-import ui.controls.vGauge;
+import ui.controls.AlertBox;
 
 
 /**
@@ -148,7 +148,7 @@ public class AccountSelect
             new AccountForm(this, display, null);
         }
         if (c==cmdDel) {
-            new vGauge(SR.MS_DELETE, getFocusedObject().toString(), 0, display, this) {
+            new AlertBox(SR.MS_DELETE, getFocusedObject().toString(), display, this) {
                 public void yes() {
                     delAccount();
                 }

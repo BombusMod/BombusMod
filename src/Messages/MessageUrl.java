@@ -34,7 +34,6 @@ import javax.microedition.lcdui.Display;
 import locale.SR;
 import midlet.BombusMod;
 import ui.Menu;
-import ui.controls.vGauge;
 
 /**
  *

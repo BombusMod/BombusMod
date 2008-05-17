@@ -35,7 +35,7 @@ import javax.microedition.lcdui.*;
 import locale.SR;
 import ui.controls.TextFieldCombo;
 import ui.controls.TextFieldEx;
-import ui.controls.vGauge;
+import ui.controls.AlertBox;
 
 /**
  *
@@ -122,7 +122,7 @@ public class AffiliationModify implements CommandListener {
                 warn.append(jid.getString());
                 warn.append(SR.MS_FROM_OWNER_TO/*" from OWNER to "*/);
                 warn.append(AffiliationItem.getAffiliationName((short)affiliation.getSelectedIndex()));
-                new vGauge(SR.MS_MODIFY_AFFILIATION, warn.toString(), 0, display, null) {
+                new AlertBox(SR.MS_MODIFY_AFFILIATION, warn.toString(), display, null) {
                         public void yes() {
                             modify();
                             destroyView();

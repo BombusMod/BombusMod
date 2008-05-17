@@ -33,7 +33,7 @@ import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
 import javax.microedition.lcdui.Display;
 import locale.SR;
-import ui.controls.vGauge;
+import ui.controls.AlertBox;
 import xmpp.XmppError;
 
 public class MoodPublishResult implements JabberBlockListener{
@@ -56,7 +56,7 @@ public class MoodPublishResult implements JabberBlockListener{
         
         XmppError e=XmppError.findInStanza(data);
         
-        new vGauge(SR.MS_ERROR_, SR.MS_PEP_NOT_SUPPORTED+"("+e.toString()+")", 0, display, null) {
+        new AlertBox(SR.MS_ERROR_, SR.MS_PEP_NOT_SUPPORTED+"("+e.toString()+")", display, null) {
             public void yes() { }
             public void no() { }
         };
