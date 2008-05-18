@@ -145,40 +145,39 @@ public class StanzaEdit implements CommandListener, Runnable {
     public void destroyView(){
         if (display!=null)   display.setCurrent(parentView);
     }
-//#ifdef CLIPBOARD
-//#     public int getCaretPos() {     
-//#         int caretPos=t.getCaretPosition();
-//#         // +MOTOROLA STUB
-//#         if (cf.phoneManufacturer==Config.MOTO)
-//#             caretPos=-1;
-//#         
-//#         if (caretPos<0) caretPos=t.getString().length();
-//#         
-//#         return caretPos;
-//#     }
-//# 
-//#     public void insertText(String s, int caretPos) {
-//#         String src=t.getString();
-//# 
-//#         StringBuffer sb=new StringBuffer(s);
-//#         
-//#         if (caretPos>0) 
-//#             if (src.charAt(caretPos-1)!=' ')   
-//#                 sb.insert(0, ' ');
-//#         
-//#         if (caretPos<src.length())
-//#             if (src.charAt(caretPos)!=' ')
-//#                 sb.append(' ');
-//#         
-//#         if (caretPos==src.length()) sb.append(' ');
-//#         
-//#         try {
-//#             int freeSz=t.getMaxSize()-t.size();
-//#             if (freeSz<sb.length()) sb.delete(freeSz, sb.length());
-//#         } catch (Exception e) {}
-//#        
-//#         t.insert(sb.toString(), caretPos);
-//#         sb=null;
-//#     }
-//#endif
+
+    public int getCaretPos() {     
+        int caretPos=t.getCaretPosition();
+        // +MOTOROLA STUB
+        if (cf.phoneManufacturer==Config.MOTO)
+            caretPos=-1;
+        
+        if (caretPos<0) caretPos=t.getString().length();
+        
+        return caretPos;
+    }
+
+    public void insertText(String s, int caretPos) {
+        String src=t.getString();
+
+        StringBuffer sb=new StringBuffer(s);
+        
+        if (caretPos>0) 
+            if (src.charAt(caretPos-1)!=' ')   
+                sb.insert(0, ' ');
+        
+        if (caretPos<src.length())
+            if (src.charAt(caretPos)!=' ')
+                sb.append(' ');
+        
+        if (caretPos==src.length()) sb.append(' ');
+        
+        try {
+            int freeSz=t.getMaxSize()-t.size();
+            if (freeSz<sb.length()) sb.delete(freeSz, sb.length());
+        } catch (Exception e) {}
+       
+        t.insert(sb.toString(), caretPos);
+        sb=null;
+    }
 }

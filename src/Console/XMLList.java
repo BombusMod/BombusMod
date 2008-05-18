@@ -52,9 +52,10 @@ public class XMLList
         try {
             focusedItem(0);
         } catch (Exception e) {}
-        
-	MainBar mainbar=new MainBar(SR.MS_XML_CONSOLE);
-        setMainBarItem(mainbar);
+//#ifdef CONSOLE        
+//# 	MainBar mainbar=new MainBar(SR.MS_XML_CONSOLE);
+//#         setMainBarItem(mainbar);
+//#endif
     }
     
     protected void beginPaint() {
