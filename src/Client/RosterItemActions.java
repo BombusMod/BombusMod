@@ -423,22 +423,21 @@ public class RosterItemActions extends Menu {
 //#endif
 //#ifdef CLIPBOARD
 //#                 case 914: //send message from buffer
-//#                     String body=clipboard.getClipBoard();
-//#                     if (body.length()==0)
+//#                     String body2=clipboard.getClipBoard();
+//#                     if (body2.length()==0)
 //#                         return;
 //#                     
-//#                     String from=sd.account.toString();
-//#                     String subj="";
+//#                     String from2=sd.account.toString();
 //#                     
-//#                     String id=String.valueOf((int) System.currentTimeMillis());
+//#                     String id2=String.valueOf((int) System.currentTimeMillis());
 //#                     
-//#                     Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,body);
-//#                     msg.id=id;
+//#                     Msg msg2=new Msg(Msg.MESSAGE_TYPE_OUT,from2,null,body2);
+//#                     msg2.id=id2;
 //#                     try {
-//#                         sd.roster.sendMessage(c, id, body, subj, null);
-//#                         c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"message sended from clipboard("+body.length()+"chars)"));
+//#                         sd.roster.sendMessage(c, id2, body2, null, null);
+//#                         c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from2,null,"message sended from clipboard("+body2.length()+"chars)"));
 //#                     } catch (Exception e) {
-//#                         c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"message NOT sended"));
+//#                         c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from2,null,"message NOT sended"));
 //#                         //e.printStackTrace();
 //#                     }
 //#                     break;
