@@ -194,11 +194,6 @@ public class MessageEdit
 //#ifdef ARCHIVE
 	if (c==cmdPaste) { new ArchiveList(display, caretPos, 1); return; }
 //#endif
-        
-//        if (c==cmdAbc) {setInitialCaps(false); return; }
-//        if (c==cmdABC) {setInitialCaps(true); return; }
-        
-//        if (c==cmdClearTitle) { t.setTitle(t.getTitle()==null?subject:null); return; }
 //#ifdef CLIPBOARD
 //#         if (c==cmdPasteText) { insertText(clipboard.getClipBoard(), getCaretPos()); return; }
 //#endif
@@ -316,9 +311,8 @@ public class MessageEdit
         // +MOTOROLA STUB
         if (cf.phoneManufacturer==Config.MOTO)
             caretPos=-1;
-        
-        if (caretPos<0) caretPos=t.getString().length();
-        
+        if (caretPos<0)
+            caretPos=t.getString().length();
         return caretPos;
     }
 

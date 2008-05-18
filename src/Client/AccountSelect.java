@@ -103,9 +103,9 @@ public class AccountSelect
         if (enableQuit) 
             addCommand(cmdQuit);
 //#ifdef POPUPS
-        if (accountList.isEmpty()) {
+        /*if (accountList.isEmpty()) {
             VirtualList.setWobble(1, (Contact) null, SR.MS_ENTER_ACCOUNT_SETTINGS);
-        }
+        }*/
 //#endif
         commandState();
         setCommandListener(this);

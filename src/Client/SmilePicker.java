@@ -70,8 +70,9 @@ public class SmilePicker extends VirtualList implements CommandListener, Virtual
 //#ifdef SMILES 
         smileTable=MessageParser.getInstance().getSmileTable();
 //#endif
+        System.out.println(caretPos);
+        
         imgCnt=smileTable.size();
-        //il.getCount();
         
         realWidth=getWidth()-scrollbar.getScrollWidth();
         

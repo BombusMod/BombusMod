@@ -304,8 +304,9 @@ public class Roster
     // establishing connection process
     public void run(){
 //#ifdef POPUPS
-        if (cf.firstRun)
+        /*if (cf.firstRun)
             setWobbler(1, (Contact) null, SR.MS_ENTER_SETTINGS);
+         */
 //#endif
         setQuerySign(true);
         setProgress(25);
@@ -387,7 +388,7 @@ public class Roster
     private void updateMainBar(){
         int s=querysign?RosterIcons.ICON_PROGRESS_INDEX:myStatus;
         int profile=cf.profile;
-        Object en=(profile>1)? new Integer(profile+RosterIcons.ICON_PROFILE_INDEX+1):null;
+        Object en=(profile>0)? new Integer(profile+RosterIcons.ICON_PROFILE_INDEX+1):null;
         MainBar mainbar=(MainBar) getMainBarItem();
         mainbar.setElementAt(new Integer(s), 2);
         mainbar.setElementAt(en, 5);
@@ -1880,8 +1881,6 @@ public class Roster
         }
        
         int profile=cf.profile;
-        /*if (profile==AlertProfile.AUTO) 
-            profile=AlertProfile.ALL;*/
 
         EventNotify notify=null;
         

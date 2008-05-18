@@ -480,13 +480,11 @@ public class RosterItemActions extends Menu {
                 
                 String roomJid="";
                 if (g instanceof ConferenceGroup) {
-                    System.out.println("MucGroup");
                     roomJid=((ConferenceGroup)g).getConference().getJid();
                 }
                 
                 String myNick="";
                 if (c instanceof MucContact) {
-                    System.out.println("MucContact");
                     myNick=((ConferenceGroup)c.getGroup()).getSelfContact().getName();
                 }
                 

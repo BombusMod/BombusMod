@@ -602,19 +602,22 @@ public class SR {
 
     public static String MS_INVERT = loadString("Invert colors");
 
-    public static String MS_ENTER_ACCOUNT_SETTINGS = loadString("Please create account or enter account(s) settings.\n\nMenu, New Account");
-    public static String MS_ENTER_SETTINGS = loadString("Please enter settings.\n\nMenu, Tools, Options");
-
-    public static String MS_XML_CONSOLE = loadString("XML console");
-
-    public static String MS_CLIPBOARD = loadString("Clipboard");
-
-    public static String MS_USER_TUNE = loadString("User tune");
-    public static String MS_USER_MOOD = loadString( "User mood" );
-    public static String MS_PEP_NOT_SUPPORTED = loadString("Personal events not supported");
-
-    public static String MS_RECEIVE_USERTUNE=loadString("user tune receive");
-
+//    public static String MS_ENTER_ACCOUNT_SETTINGS = loadString("Please create account or enter account(s) settings.\n\nMenu, New Account");
+//    public static String MS_ENTER_SETTINGS = loadString("Please enter settings.\n\nMenu, Tools, Options");
+//#ifdef CONSOLE
+//#     public static String MS_XML_CONSOLE = loadString("XML console");
+//#endif
+//#ifdef CLIPBOARD
+//#     public static String MS_CLIPBOARD = loadString("Clipboard");
+//#endif
+//#ifdef PEP
+//#     public static String MS_USER_MOOD = loadString( "User mood" );
+//#     public static String MS_PEP_NOT_SUPPORTED = loadString("Personal events not supported");
+//#ifdef PEP_TUNE
+//#     public static String MS_USER_TUNE = loadString("User tune");
+//#     public static String MS_RECEIVE_USERTUNE=loadString("user tune receive");
+//#endif
+//#endif
     public static String MS_BAR_FONT=loadString("Bar font");
     public static String MS_POPUP_FONT=loadString("Popup & ballon font");
 

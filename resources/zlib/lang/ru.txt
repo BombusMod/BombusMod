@@ -576,5 +576,15 @@ Browse rooms	Обзор комнат
 Autorespond	Автоответчик
 
 Invert colors	Инверсия цвета
-Please create account or enter account(s) settings\n\nMenu, New Account	Пожалуйста создайте новый аккаунт или введи настройки существующего\n\nМеню, Новый аккаунт
-Please enter settings\n\nMenu, Tools, Options	Пожалуйста введите настройки\n\nМеню, Инструменты, Настройки
+Please create account or enter account(s) settings.\n\nMenu, New Account	Пожалуйста создайте новый аккаунт или введи настройки существующего\n\nМеню, Новый аккаунт
+Please enter settings.\n\nMenu, Tools, Options	Пожалуйста введите настройки\n\nМеню, Инструменты, Настройки
+
+Clipboard	Буфер обмена
+User tune	Музыка
+User mood	Настроение
+Personal events not supported	PEP не поддерживается
+user tune receive	инфо о музыке
+Bar font	Шрифт панелей
+Popup & ballon font	Шрифт попапов и баллунов
+Fonts options	Настройка шрифтов
+Second line	Дополнительная строка

@@ -782,7 +782,12 @@ public abstract class VirtualList
                 return;
             }
          }
-         if (keyCode==greenKeyCode) { keyGreen(); }
+         if (keyCode==greenKeyCode) {
+            if (cf.phoneManufacturer==Config.MOTO || cf.phoneManufacturer==Config.NOKIA || cf.phoneManufacturer==Config.NOKIA_9XXX) {
+                keyGreen();
+                return;
+            }
+         }
 //#ifdef USER_KEYS
 //#         if (userKeys) {
 //#             switch (additionKeyState) {

@@ -152,6 +152,7 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
             
             tfMessage=new TextFieldCombo(SR.MS_MESSAGE, status.getMessage(), 100, 0, "ex_status_list", display);
             f.append(tfMessage);
+            tfMessage.setConstraints(Config.getInstance().capsState? TextField.INITIAL_CAPS_SENTENCE: TextField.ANY);
             
             tfPriority=new NumberField(SR.MS_PRIORITY, status.getPriority(), -128, 128);
             f.append(tfPriority);
