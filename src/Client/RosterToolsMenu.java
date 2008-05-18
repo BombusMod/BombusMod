@@ -73,19 +73,20 @@ public class RosterToolsMenu extends Menu {
     public RosterToolsMenu(Display display) {
         super(SR.MS_TOOLS);
         cf=Config.getInstance();
+        boolean connected=sd.roster.isLoggedIn();
 //#ifdef SERVICE_DISCOVERY
-        if (sd.roster.isLoggedIn())
+        if (connected)
             addItem(SR.MS_DISCO, 0, MenuIcons.ICON_DISCO);
 //#endif
 //#ifdef PRIVACY
-        if (sd.roster.isLoggedIn())
+        if (connected)
             addItem(SR.MS_PRIVACY_LISTS, 1, MenuIcons.ICON_PRIVACY);
 //#endif
 //#ifdef PEP
-//#         if (cf.sndrcvmood && sd.roster.isLoggedIn())
+//#         if (cf.sndrcvmood && connected)
 //#             addItem(SR.MS_USER_MOOD, 2, MenuIcons.ICON_MOOD);
 //#endif
-        if (sd.roster.isLoggedIn())
+        if (connected)
             addItem(SR.MS_MY_VCARD, 3, MenuIcons.ICON_VCARD);
         addItem(SR.MS_OPTIONS, 4, MenuIcons.ICON_SETTINGS);
 //#if (FILE_IO && HISTORY)
@@ -96,7 +97,7 @@ public class RosterToolsMenu extends Menu {
         addItem(SR.MS_ROOT, 7, MenuIcons.ICON_FILEMAN);
 //#endif
 //#if (FILE_IO && FILE_TRANSFER)
-        if (sd.roster.isLoggedIn())
+        if (connected)
             addItem(SR.MS_FILE_TRANSFERS, 8, MenuIcons.ICON_FT);
 //#endif
 //#ifdef COLORS
@@ -121,7 +122,7 @@ public class RosterToolsMenu extends Menu {
 //#             addItem(SR.MS_CUSTOM_KEYS, 15, MenuIcons.ICON_KEYS);
 //#endif
 //#if SASL_XGOOGLETOKEN
-//#         if (sd.account.isGmail() && sd.roster.isLoggedIn())
+//#         if (sd.account.isGmail() && connected)
 //#             addItem(SR.MS_CHECK_GOOGLE_MAIL, 16, MenuIcons.ICON_GMAIL);
 //#endif 
 //#if AUTOTASK

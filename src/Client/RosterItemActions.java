@@ -477,9 +477,18 @@ public class RosterItemActions extends Menu {
 //#ifndef WMUC
             if (c instanceof MucContact || g instanceof ConferenceGroup) {
                 MucContact mc=(MucContact) c;
-                String roomJid=((ConferenceGroup)g).getConference().getJid();
-                ConferenceGroup mucGrp=(ConferenceGroup)c.getGroup();
-                String myNick=mucGrp.getSelfContact().getName();
+                
+                String roomJid="";
+                if (g instanceof ConferenceGroup) {
+                    System.out.println("MucGroup");
+                    roomJid=((ConferenceGroup)g).getConference().getJid();
+                }
+                
+                String myNick="";
+                if (c instanceof MucContact) {
+                    System.out.println("MucContact");
+                    myNick=((ConferenceGroup)c.getGroup()).getSelfContact().getName();
+                }
                 
                 switch (index) { // muc contact actions
                     case 10: // room config

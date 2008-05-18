@@ -162,7 +162,7 @@ Resume Message	Чернетка
 Alert Profile >	Сигнали >
 My vCard	Моя візитна картка (vCard)
 transports	транспорти
-New Account	Нов. аккаунт
+New Account	Нов. обл. запис
 self-contact	свої контакти
 vCard	Візитна картка (vCard)
 Set Subject	Встановити тему
@@ -315,7 +315,7 @@ message incoming	Вхiдне повiдомлення
 message outgoing	Вихiдне повiдомлення
 message presence	Статусне повiдомлення
 message auth	Повiдомлення авторизацiї
-message history	iсторiя повiдомлень в конференцiї
+message history	Історiя повiдомлень в конференцiї
 progress bar remained	Залишилося індикатора прогресу
 progress bar complete	Зроблено індикатора прогресу
 progress border	Рамка індикатора прогресу
@@ -530,7 +530,7 @@ conn., 	з'єдн.,
 bold font for contacts	товстий шрифт контактів
 running message	показ. повідомл. при наборі
 Composing message to you	Повід. про набір пові. для Вас
-No compression	Вимкнути компресию
+No compression	вимкнути компресию
 New room created	Створена нова кімната
 Import/Export	Зберегти/Відновити парам.
 Authorize new contacts	Авторизувати нових користувачів
@@ -559,3 +559,16 @@ Hour	Годин
 Min	Хвилин
 Browse rooms	Перегляд кімнат
 Autorespond	Автовідповідач
+Invert colors	Інвертувати кольори
+XML console	XML консоль
+Clipboard	буфер обміну
+Please create account or enter account(s) settings.\n\nMenu, New Account	Будь ласка, створіть обліковий запис або увійдіть до налаштувань облікових записів.\n\nМеню, Нов. обл. запис
+Please enter settings.\n\nMenu, Tools, Options	Будь ласка, створіть налаштування.\n\nМеню, Інструменти, Параметри
+User tune	Що слухає
+User mood	Настрій
+Personal events not supported	Особисті події не підтримуються
+user tune receive	отримувати назви композицій
+Bar font	Шрифт панелі
+Popup & ballon font	Шрифт спливаючих повідомлень
+Fonts options	Параметри шрифтів
+Second line	додатковий рядок

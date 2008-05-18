@@ -1,0 +1,62 @@
+﻿afraid	Наляканий
+amazed	Вражений
+angry	Сердитий
+annoyed	Роздратований
+anxious	Занепокоєний
+aroused	Збуджений
+ashamed	Присоромлений
+bored	Нудьгую
+brave	Хоробий
+calm	Спокійний
+cold	Байдужий
+confused	Спантеличений
+contented	Задоволений
+cranky	Невдоволений
+curious	Допитливий
+depressed	Пригнічений
+disappointed	Розчарований
+disgusted	Відчуття огиди
+distracted	Розгублений
+embarrassed	Збентежений
+excited	Схвильований
+flirtatious	Кокетливий
+frustrated	Розбитий
+grumpy	Сварливий
+guilty	Винний
+happy	Счасливий
+hot	Палаю
+humbled	Смиренний
+humiliated	Принижений
+hungry	Голодний
+hurt	Неприємно вражений
+impressed	Приємно вражений
+in_awe	Трепечу (Благоговію)
+in_love	Закоханий
+indignant	Обурений
+interested	Зацікавлений
+intoxicated	Сп'янілий
+invincible	Невидимий
+jealous	Ревнивий
+lonely	Одинокий
+mean	Підлий
+moody	Мінливий
+nervous	Знервований
+neutral	Байдужий
+offended	Ображений
+playful	Грайливий
+proud	Гордий
+relieved	Полегшення
+remorseful	Покаяння
+restless	Невгамовний
+sad	Сумний
+sarcastic	Саркастичний
+serious	Серйозний
+shocked	Шокований
+shy	Сором'язливий
+sick	Хворий
+sleepy	Сонний
+stressed	Напружений
+surprised	Здивований
+thirsty	Спраглий
+worried	Занепокоєний
+-	<не встановлений>
