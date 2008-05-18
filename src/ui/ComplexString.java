@@ -28,8 +28,8 @@
 package ui;
 //#if NICK_COLORS || COLORS
 import Colors.ColorScheme;
-import Fonts.FontCache;
 //#endif
+import Fonts.FontCache;
 import java.util.*;
 import javax.microedition.lcdui.*;
 import Colors.Colors;

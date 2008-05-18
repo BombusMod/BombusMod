@@ -44,8 +44,8 @@ import ServiceDiscovery.ServiceDiscovery;
 //#endif
 //#ifdef PEP
 //# import Mood.MoodList;
-//# import images.MenuIcons;
 //#endif
+import images.MenuIcons;
 import javax.microedition.lcdui.Display;
 import locale.SR;
 //#ifdef COLORS
