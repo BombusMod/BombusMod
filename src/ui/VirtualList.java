@@ -866,6 +866,7 @@ public abstract class VirtualList
                     if (keyCode==keyVolDown) { moveCursorEnd(); break; }
                     if (keyCode=='5') {  eventOk(); break; }
                     if (keyCode==Config.KEY_BACK && canBack==true) { destroyView(); }
+                    if (keyCode==greenKeyCode) { keyGreen(); }
 
                     userKeyPressed(keyCode);
                 }
