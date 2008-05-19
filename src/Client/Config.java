@@ -332,6 +332,7 @@ type = \"-=Siemens=-\";
             case MOTOEZX:
                 VirtualList.keyVolDown=VirtualList.MOTOE680_VOL_DOWN;
                 KEY_BACK=VirtualList.MOTOE680_REALPLAYER;
+		greenKeyCode=-31;
                 break;  
             case XENIUM99:
                 istreamWaiting=false; //is it critical for phillips xenium?
