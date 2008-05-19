@@ -35,12 +35,13 @@ import com.alsutton.jabber.datablocks.Iq;
 import com.ssttr.crypto.MD5;
 import java.io.IOException;
 import locale.SR;
+import xmpp.XmppError;
 
 import util.strconv;
 //#if SASL_XGOOGLETOKEN
-import java.io.InputStream;
-import javax.microedition.io.Connector;
-import javax.microedition.io.HttpConnection;
+//# import java.io.InputStream;
+//# import javax.microedition.io.Connector;
+//# import javax.microedition.io.HttpConnection;
 //#endif
 
 /**
@@ -64,8 +65,8 @@ public class SASLAuth implements JabberBlockListener{
     }
     
 //#if SASL_XGOOGLETOKEN
-    private String token;
-    public void setToken(String token) { this.token=token; }
+//#     private String token;
+//#     public void setToken(String token) { this.token=token; }
 //#endif
 
     public int blockArrived(JabberDataBlock data) {
@@ -104,18 +105,18 @@ public class SASLAuth implements JabberBlockListener{
                 }
                 
 //#if SASL_XGOOGLETOKEN
-                // X-GOOGLE-TOKEN mechanism
-                if (mech.getChildBlockByText("X-GOOGLE-TOKEN")!=null  && token!=null) {
-                    auth.setAttribute("mechanism", "X-GOOGLE-TOKEN");
-                    auth.setText(token);
-                    
-                    //System.out.println(auth.toString());
-                    
-                    stream.send(auth);
-                    listener.loginMessage(SR.MS_AUTH);
-                    return JabberBlockListener.BLOCK_PROCESSED;
-                    
-                }
+//#                 // X-GOOGLE-TOKEN mechanism
+//#                 if (mech.getChildBlockByText("X-GOOGLE-TOKEN")!=null  && token!=null) {
+//#                     auth.setAttribute("mechanism", "X-GOOGLE-TOKEN");
+//#                     auth.setText(token);
+//#                     
+//#                     //System.out.println(auth.toString());
+//#                     
+//#                     stream.send(auth);
+//#                     listener.loginMessage(SR.MS_AUTH);
+//#                     return JabberBlockListener.BLOCK_PROCESSED;
+//#                     
+//#                 }
 //#endif
 
                 if (mech.getChildBlockByText("PLAIN")!=null) {
@@ -200,7 +201,7 @@ public class SASLAuth implements JabberBlockListener{
             
         else if ( data.getTagName().equals("failure")) {
             // first stream - step 4a. not authorized
-            listener.loginFailed( data.getText()+"failure" );  
+            listener.loginFailed( XmppError.decodeSaslError(data).toString() );
         } else if ( data.getTagName().equals("success")) {
             // first stream - step 4b. success.
             try {
@@ -317,66 +318,66 @@ public class SASLAuth implements JabberBlockListener{
     
     
 //#if SASL_XGOOGLETOKEN
-    private String readLine(InputStream is) {
-        StringBuffer buf = new StringBuffer();
-        try {
-            while(true) {
-                int ch = is.read();
-                if (ch==-1 || ch == '\n') break;
-                buf.append((char)ch);
-            }
-        } catch (Exception e) {}
-        return buf.toString();
-    }
-    
-    /**
-     * Generates X-GOOGLE-TOKEN response by communication with http://www.google.com
-     * (algorithm from MGTalk/NetworkThread.java)
-     * @param userName
-     * @param passwd
-     * @return
-     */
-    public String responseXGoogleToken() {
-        try {
-            String firstUrl = "https://www.google.com:443/accounts/ClientAuth?Email="
-                    + strconv.unicodeToUTF(account.getUserName()) + "%40"+ account.getServer()
-                    + "&Passwd=" + strconv.unicodeToUTF(account.getPassword()) 
-                    + "&PersistentCookie=false&source=googletalk";
-            
-            //log.addMessage("Connecting to www.google.com");
-            HttpConnection c = (HttpConnection) Connector.open(firstUrl.toString());
-            InputStream is = c.openInputStream();
-            
-            
-            String sid = readLine(is);
-            if(!sid.startsWith("SID=")) {
-                throw new SecurityException(SR.MS_LOGIN_FAILED);
-            }
-            
-            String lsid = readLine(is);
-            
-            String secondUrl = "https://www.google.com:443/accounts/IssueAuthToken?"
-                    + sid + "&" + lsid + "&service=mail&Session=true";
-            is.close();
-            c.close();
-            //log.addMessage("Next www.google.com connection");
-            c = (HttpConnection) Connector.open(secondUrl);
-            is = c.openInputStream();
-            //str = readLine(dis);
-            String token = "\0"+strconv.unicodeToUTF(account.getUserName())+"\0"+readLine(is);
-            is.close();
-            c.close();
-            return strconv.toBase64(token);
-        } catch (javax.microedition.pki.CertificateException e) {
-            throw new SecurityException(e.getMessage());
-        } catch (SecurityException e) {
-            throw e;
-        } catch(Exception e) {
-            e.printStackTrace();
-            listener.loginFailed("Google token error");
-        }
-        return null;
-    }
+//#     private String readLine(InputStream is) {
+//#         StringBuffer buf = new StringBuffer();
+//#         try {
+//#             while(true) {
+//#                 int ch = is.read();
+//#                 if (ch==-1 || ch == '\n') break;
+//#                 buf.append((char)ch);
+//#             }
+//#         } catch (Exception e) {}
+//#         return buf.toString();
+//#     }
+//#     
+//#     /**
+//#      * Generates X-GOOGLE-TOKEN response by communication with http://www.google.com
+//#      * (algorithm from MGTalk/NetworkThread.java)
+//#      * @param userName
+//#      * @param passwd
+//#      * @return
+//#      */
+//#     public String responseXGoogleToken() {
+//#         try {
+//#             String firstUrl = "https://www.google.com:443/accounts/ClientAuth?Email="
+//#                     + strconv.unicodeToUTF(account.getUserName()) + "%40"+ account.getServer()
+//#                     + "&Passwd=" + strconv.unicodeToUTF(account.getPassword()) 
+//#                     + "&PersistentCookie=false&source=googletalk";
+//#             
+//#             //log.addMessage("Connecting to www.google.com");
+//#             HttpConnection c = (HttpConnection) Connector.open(firstUrl.toString());
+//#             InputStream is = c.openInputStream();
+//#             
+//#             
+//#             String sid = readLine(is);
+//#             if(!sid.startsWith("SID=")) {
+//#                 throw new SecurityException(SR.MS_LOGIN_FAILED);
+//#             }
+//#             
+//#             String lsid = readLine(is);
+//#             
+//#             String secondUrl = "https://www.google.com:443/accounts/IssueAuthToken?"
+//#                     + sid + "&" + lsid + "&service=mail&Session=true";
+//#             is.close();
+//#             c.close();
+//#             //log.addMessage("Next www.google.com connection");
+//#             c = (HttpConnection) Connector.open(secondUrl);
+//#             is = c.openInputStream();
+//#             //str = readLine(dis);
+//#             String token = "\0"+strconv.unicodeToUTF(account.getUserName())+"\0"+readLine(is);
+//#             is.close();
+//#             c.close();
+//#             return strconv.toBase64(token);
+//#         } catch (javax.microedition.pki.CertificateException e) {
+//#             throw new SecurityException(e.getMessage());
+//#         } catch (SecurityException e) {
+//#             throw e;
+//#         } catch(Exception e) {
+//#             e.printStackTrace();
+//#             listener.loginFailed("Google token error");
+//#         }
+//#         return null;
+//#     }
 //#endif
     
 }

@@ -40,7 +40,13 @@ public class XmppError {
     public final static int SUBSCRIPTION_REQUIRED=20;
     public final static int UNDEFINED_CONDITION=21;
     public final static int UNEXPECTED_REQUEST=22;
-    
+    public final static int ABORTED=23;
+    public final static int INCORRECT_ENCODING=24;
+    public final static int INVALID_AUTHZID=25;
+    public final static int INVALID_MECHANISM=26;
+    public final static int MECHANISM_TOO_WEAK=27;
+    public final static int TEMPORARY_AUTH_FAILURE=28;
+
     public final static int TYPE_UNDEFINED=0; 
     public final static int TYPE_MODIFY=1; 
     public final static int TYPE_CANCEL=2; 
@@ -136,6 +142,30 @@ public class XmppError {
                 errorType=TYPE_WAIT;
                 textCondition="unexpected-request";
                 break;
+            case ABORTED:
+                errorType=TYPE_CANCEL;
+                textCondition="aborted";
+                break;
+            case INCORRECT_ENCODING:
+                errorType=TYPE_CANCEL;
+                textCondition="incorrect-encoding";
+                break;
+            case INVALID_AUTHZID:
+                errorType=TYPE_CANCEL;
+                textCondition="invalid-authzid";
+                break;
+            case INVALID_MECHANISM:
+                errorType=TYPE_CANCEL;
+                textCondition="invalid-mechanism";
+                break;
+            case MECHANISM_TOO_WEAK:
+                errorType=TYPE_CANCEL;
+                textCondition="mechanism-too-weak";
+                break;
+            case TEMPORARY_AUTH_FAILURE:
+                errorType=TYPE_CANCEL;
+                textCondition="temporary-auth-failure";
+                break;
         }
         errCondition=condition;
         this.text=text;
@@ -173,13 +203,20 @@ public class XmppError {
         if (!error.getTagName().equals("stream:error")) throw new IllegalArgumentException();
         return decodeError(error, "urn:ietf:params:xml:ns:xmpp-streams");
     }
+    
+    public static XmppError decodeSaslError(JabberDataBlock error) {
+        if (!error.getTagName().equals("failure")) throw new IllegalArgumentException();
+        return decodeError(error, "urn:ietf:params:xml:ns:xmpp-sasl");
+    }
         
     private static XmppError decodeError(JabberDataBlock error, String ns) {
         int errCond=NONE;
         String text=null;
         for (Enumeration e=error.getChildBlocks().elements(); e.hasMoreElements();) {
             JabberDataBlock child=(JabberDataBlock) e.nextElement();
-            if (!child.isJabberNameSpace(ns)) continue;
+            String xmlns=child.getAttribute("xmlns");
+            if (xmlns!=null) if (!xmlns.equals(ns)) continue;
+            
             String tag=child.getTagName();
             if (tag.equals("text"))                    text=child.getText();
             if (tag.equals("bad-request"))             errCond=BAD_REQUEST;
@@ -204,6 +241,17 @@ public class XmppError {
             if (tag.equals("subscription-required"))   errCond=SUBSCRIPTION_REQUIRED;
             if (tag.equals("undefined-condition"))     errCond=UNDEFINED_CONDITION;
             if (tag.equals("unexpected-request"))      errCond=UNEXPECTED_REQUEST;
+            
+            //SASL conditions
+            if (tag.equals("aborted"))                 errCond=ABORTED;
+            if (tag.equals("incorrect-encoding"))      errCond=INCORRECT_ENCODING;
+            if (tag.equals("invalid-authzid"))         errCond=INVALID_AUTHZID;
+            if (tag.equals("invalid-mechanism"))       errCond=INVALID_MECHANISM;
+            if (tag.equals("mechanism-too-weak"))      errCond=MECHANISM_TOO_WEAK;
+            // already defined
+            //if (tag.equals("not-authorized"))          errCond=NOT_AUTHORIZED;
+            if (tag.equals("temporary-auth-failure"))  errCond=TEMPORARY_AUTH_FAILURE;
+            
         }
         
         if (errCond==NONE) {

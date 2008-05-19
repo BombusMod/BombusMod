@@ -2230,7 +2230,11 @@ public class Roster
     public void showInfo() {
         try {
             VirtualList.popup.next();
-            if (getFocusedObject() instanceof Group || getFocusedObject() instanceof ConferenceGroup)
+            if (getFocusedObject() instanceof Group
+//#ifndef WMUC
+                    || getFocusedObject() instanceof ConferenceGroup
+//#endif
+                    )
                 return;
             setWobbler(1, (Contact) null, null);
         } catch (Exception e) { }
