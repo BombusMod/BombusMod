@@ -58,7 +58,7 @@ public class textInput
         super(RosterIcons.getInstance());
         this.display=display;
         this.name=name;
-        this.text=text;
+        this.text=(text==null)?"":text;
     }
 
     protected int getImageIndex() { return -1; }

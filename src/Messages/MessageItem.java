@@ -196,7 +196,5 @@ public class MessageItem implements
 //#     }
 //#endif
 
-    public boolean isSelectable() {
-        return true;
-    }
+    public boolean isSelectable() { return true; }
 }

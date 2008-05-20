@@ -105,9 +105,7 @@ public class testForm
         attachDisplay(display);
     }
 
-    protected int getItemCount() {
-        return itemsList.size();
-    }
+    protected int getItemCount() { return itemsList.size(); }
 
     protected VirtualElement getItemRef(int index) {
         return (VirtualElement)itemsList.elementAt(index);

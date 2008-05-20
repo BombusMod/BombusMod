@@ -216,7 +216,5 @@ public class SmilePicker extends VirtualList implements CommandListener, Virtual
 //#     }
 //#endif
 
-    public boolean isSelectable() {
-        return true;
-    }
+    public boolean isSelectable() { return true; }
 }

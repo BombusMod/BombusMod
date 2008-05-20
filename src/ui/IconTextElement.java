@@ -42,11 +42,7 @@ abstract public class IconTextElement implements VirtualElement {
 
     private int ilImageSize=0;
     
-    private boolean selectable=true;
-    
-    public boolean isSelectable() {
-        return selectable;
-    }
+    private boolean selectable=true; public boolean isSelectable() { return selectable; }    
 
 //#ifdef SECONDSTRING
 //#     private Font getSecondFont() {
