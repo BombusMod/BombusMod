@@ -48,7 +48,7 @@ import ui.controls.form.textInput;
  *
  * @author ad
  */
-public class newAccountForm 
+public class AccountForm 
         extends VirtualList
         implements CommandListener {
 
@@ -93,7 +93,7 @@ public class newAccountForm
     boolean newaccount;
     
     /** Creates a new instance of newAccountForm */
-    public newAccountForm(AccountSelect accountSelect, Display display, Account account) {
+    public AccountForm(AccountSelect accountSelect, Display display, Account account) {
 	this.accountSelect = accountSelect;
 	this.display=display;
 	parentView=display.getCurrent();

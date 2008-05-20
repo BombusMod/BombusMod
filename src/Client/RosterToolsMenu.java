@@ -35,11 +35,11 @@ import PrivacyLists.PrivacySelect;
 //#if AUTOTASK
 //# import AutoTasks.AutoTaskForm;
 //#endif
-import Fonts.newConfigFonts;
+import Fonts.ConfigFonts;
 //#ifdef SERVICE_DISCOVERY
 import ServiceDiscovery.ServiceDiscovery;
 //#endif
-//#if (FILE_IO && HISTORY)
+//#if (HISTORY)
 //# import History.HistoryConfig;
 //#endif
 //#ifdef PEP
@@ -89,7 +89,7 @@ public class RosterToolsMenu extends Menu {
         if (connected)
             addItem(SR.MS_MY_VCARD, 3, MenuIcons.ICON_VCARD);
         addItem(SR.MS_OPTIONS, 4, MenuIcons.ICON_SETTINGS);
-//#if (FILE_IO && HISTORY)
+//#if (HISTORY)
 //#         addItem(SR.MS_HISTORY_OPTIONS, 5, MenuIcons.ICON_HISTORY);
 //#endif
        addItem(SR.MS_FONTS_OPTIONS, 6, MenuIcons.ICON_FONTS);
@@ -177,7 +177,7 @@ public class RosterToolsMenu extends Menu {
 //#                 return;
 //#endif
             case 6:
-                new newConfigFonts(display);
+                new ConfigFonts(display);
                 return;
 //#if (FILE_IO)
             case 7:

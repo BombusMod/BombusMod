@@ -1,8 +1,8 @@
 /*
  * ConfigForm.java
  *
- * Created on 2.05.2005, 18:19
- * Copyright (c) 2005-2008, Eugene Stahov (evgs), http://bombus-im.org
+ * Created on 20.05.2008, 22:47
+ * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -26,278 +26,264 @@
  */
 
 package Client;
-import Colors.ColorUtils;
-import java.util.Enumeration;
+//#ifndef COLORS
+//# import Colors.ColorUtils;
+//#endif
 import java.util.Vector;
-import javax.microedition.lcdui.*;
+import javax.microedition.lcdui.Canvas;
+import javax.microedition.lcdui.Command;
+import javax.microedition.lcdui.CommandListener;
+import javax.microedition.lcdui.Display;
+import javax.microedition.lcdui.Displayable;
 import locale.SR;
-import ui.controls.NumberField;
+import ui.MainBar;
+import ui.VirtualElement;
+import ui.VirtualList;
+import ui.controls.form.checkBox;
+import ui.controls.form.choiceBox;
+import ui.controls.form.numberInput;
+import ui.controls.form.simpleString;
 import util.StringLoader;
-import ui.*;
 import com.alsutton.jabber.datablocks.Presence;
 import xmpp.EntityCaps;
 
-public class ConfigForm implements
-	CommandListener, ItemCommandListener
-{
+public class ConfigForm
+        extends VirtualList
+        implements CommandListener {
+    
     private Display display;
     private Displayable parentView;
+    
+    private checkBox showOfflineContacts;
+    private checkBox selfContact;
+    private checkBox showTransports;
+    private checkBox ignore;
+    private checkBox collapsedGroups;
+    private checkBox autoFocus;
+    private checkBox showResources;
+    private checkBox useBoldFont;
+//#ifdef SECONDSTRING
+//#     private checkBox rosterStatus;
+//#endif
+    
+    private choiceBox subscr;
+    private choiceBox nil;
+    
+//#ifdef SMILES
+    private checkBox smiles;
+//#endif
+    private checkBox eventComposing;
+    private checkBox capsState;
+    private checkBox storeConfPresence;
+    private checkBox autoScroll;
+    private checkBox useTabs;
+//#ifdef PEP
+//#     private checkBox sndrcvmood;
+//#ifdef PEP_TUNE
+//#    private checkBox rcvtune;
+//#endif
+//#endif
+     private checkBox notifyWhenMessageType;
+//#ifdef ANTISPAM
+//#    private checkBox antispam;
+//#endif
+//#ifdef POPUPS
+    private checkBox popUps;
+//#endif
+    private checkBox showBalloons;     
+    private checkBox eventDelivery;
+//#ifdef CLIPBOARD
+//#     private checkBox useClipBoard;
+//#endif
+    
+//#if AUTODELETE
+//#         private numberInput messageCountLimit;
+//#endif
+    private numberInput messageLimit;
+    
+    private checkBox autoLogin;
+    private checkBox autoJoinConferences;
 
-    Form f;
-    ChoiceGroup roster;
-    ChoiceGroup message;
-    ChoiceGroup subscr;
-    
-    ChoiceGroup nil;
-    
-    NumberField MessageLimit;
-    NumberField MessageCountLimit;
-    
-    ChoiceGroup startup;
-    ChoiceGroup application;
+    private checkBox fullscreen;
+    private checkBox memMonitor;
+    private checkBox enableVersionOs;
+    private checkBox queryExit;
+//#ifdef USER_KEYS
+//#    private checkBox userKeys;
+//#endif
+//#ifdef NEW_MENU
+    private checkBox newMenu;
+//#endif
+    private checkBox lightState;
+//#ifdef IRC_LIKE
+//#    private checkBox ircLikeStatus;
+//#endif
+    private checkBox popupFromMinimized;
 
-    ChoiceGroup lang;
+    private numberInput fieldGmt; 
+    private numberInput fieldLoc;
     
-    ChoiceGroup textWrap;
-
-    NumberField fieldLoc;
-    NumberField fieldGmt;
+    private choiceBox textWrap;
+    private choiceBox langFiles;
+    private choiceBox skinFiles;
 //#ifdef AUTOSTATUS
-//#     ChoiceGroup awayStatus;
-//# 
-//#     NumberField fieldAwatDelay;
-//#     ChoiceGroup autoAwayType;
+//#     private choiceBox autoAwayType;
+//#     private numberInput fieldAwayDelay; 
+//#     private checkBox awayStatus;
 //#endif
-    Command cmdOk=new Command(SR.MS_OK,Command.OK,1);
 
-    ChoiceGroup SkinFile;
-    private Vector[] Skinfiles;
-    
-//#ifdef COLORS
-    Command cmdLoadSkin=new Command(SR.MS_LOAD_SKIN, Command.ITEM,15);
-//#endif
+    Command cmdOk=new Command(SR.MS_OK,Command.OK,1);
     Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK,99);
     
+    private Vector[] Skinfiles;
+    private Vector langs[];
+
     StaticData sd=StaticData.getInstance();
     
     Config cf;
-    boolean ra[];
-    boolean mv[];
-    boolean ap[];
-    boolean su[];
-//#ifdef AUTOSTATUS
-//#     boolean aa[];
-//#endif
-    boolean lc[];
-    boolean se[];
-    Vector files[];
-    Vector langs[];
+
+    private Vector itemsList=new Vector();    
     
     /** Creates a new instance of ConfigForm */
     public ConfigForm(Display display) {
         this.display=display;
         parentView=display.getCurrent();
 
+        setMainBarItem(new MainBar(SR.MS_OPTIONS));
+        
         cf=Config.getInstance();
-        
-        f=new Form(SR.MS_OPTIONS);
-        roster=new ChoiceGroup(SR.MS_ROSTER_ELEMENTS, Choice.MULTIPLE);
-        roster.append(SR.MS_OFFLINE_CONTACTS, null);
-        roster.append(SR.MS_SELF_CONTACT, null);
-        roster.append(SR.MS_TRANSPORTS, null);
-        roster.append(SR.MS_IGNORE_LIST, null);
-        roster.append(SR.MS_COLLAPSED_GROUPS, null);
-        roster.append(SR.MS_AUTOFOCUS,null);
-        roster.append(SR.MS_SHOW_RESOURCES,null);
-        roster.append(SR.MS_BOLD_FONT,null);
+
+        itemsList.addElement(new simpleString(SR.MS_ROSTER_ELEMENTS));
+        showOfflineContacts = new checkBox(SR.MS_OFFLINE_CONTACTS, cf.showOfflineContacts); itemsList.addElement(showOfflineContacts);
+        selfContact = new checkBox(SR.MS_SELF_CONTACT, cf.selfContact); itemsList.addElement(selfContact);
+        showTransports = new checkBox(SR.MS_TRANSPORTS, cf.showTransports); itemsList.addElement(showTransports);
+        ignore = new checkBox(SR.MS_IGNORE_LIST, cf.ignore); itemsList.addElement(ignore);
+        collapsedGroups = new checkBox(SR.MS_COLLAPSED_GROUPS, cf.collapsedGroups); itemsList.addElement(collapsedGroups);
+        autoFocus = new checkBox(SR.MS_AUTOFOCUS, cf.autoFocus); itemsList.addElement(autoFocus);
+        showResources = new checkBox(SR.MS_SHOW_RESOURCES, cf.showResources); itemsList.addElement(showResources);
+        useBoldFont = new checkBox(SR.MS_BOLD_FONT, cf.useBoldFont); itemsList.addElement(useBoldFont);
 //#ifdef SECONDSTRING
-//#         roster.append(SR.MS_SECOND_LINE,null);
+//#         rosterStatus = new checkBox(SR.MS_SECOND_LINE, cf.rosterStatus); itemsList.addElement(rosterStatus);
 //#endif
 
-        boolean rosterA[]={
-            cf.showOfflineContacts,
-            cf.selfContact,
-            cf.showTransports, 
-            cf.ignore, 
-            cf.collapsedGroups,
-            cf.autoFocus,
-            cf.showResources,
-            cf.useBoldFont
-//#ifdef SECONDSTRING
-//#             ,cf.rosterStatus
-//#endif
-        };
-        this.ra=rosterA;
-        roster.setSelectedFlags(rosterA);
-    
-        subscr=new ChoiceGroup(SR.MS_AUTH_NEW, Choice.POPUP);
-        subscr.append(SR.MS_SUBSCR_AUTO, null);
-        subscr.append(SR.MS_SUBSCR_ASK, null);
-        subscr.append(SR.MS_SUBSCR_DROP, null);
-        subscr.append(SR.MS_SUBSCR_REJECT, null);
-        subscr.setSelectedIndex(cf.autoSubscribe, true);
+        itemsList.addElement(new simpleString(SR.MS_AUTH_NEW));
+        subscr=new choiceBox();
+        subscr.append(SR.MS_SUBSCR_AUTO);
+        subscr.append(SR.MS_SUBSCR_ASK);
+        subscr.append(SR.MS_SUBSCR_DROP);
+        subscr.append(SR.MS_SUBSCR_REJECT);
+        subscr.setSelectedIndex(cf.autoSubscribe);
+        itemsList.addElement(subscr);
 
-        nil=new ChoiceGroup(SR.MS_NOT_IN_LIST, ChoiceGroup.POPUP);
-        nil.append(SR.MS_NIL_DROP_MP, null);
-        nil.append(SR.MS_NIL_DROP_P, null);
-        nil.append(SR.MS_NIL_ALLOW_ALL, null);
-        nil.setSelectedIndex((cf.notInListDropLevel>NotInListFilter.ALLOW_ALL)? NotInListFilter.ALLOW_ALL: cf.notInListDropLevel, true);
+        itemsList.addElement(new simpleString(SR.MS_NOT_IN_LIST));
+        nil=new choiceBox();
+        nil.append(SR.MS_NIL_DROP_MP);
+        nil.append(SR.MS_NIL_DROP_P);
+        nil.append(SR.MS_NIL_ALLOW_ALL);
+        nil.setSelectedIndex((cf.notInListDropLevel>NotInListFilter.ALLOW_ALL)? NotInListFilter.ALLOW_ALL: cf.notInListDropLevel);
+        itemsList.addElement(nil);
 
-        message=new ChoiceGroup(SR.MS_MESSAGES, Choice.MULTIPLE);
+        itemsList.addElement(new simpleString(SR.MS_MESSAGES));
 //#ifdef SMILES
-        message.append(SR.MS_SMILES, null);
+            smiles = new checkBox(SR.MS_SMILES, cf.smiles); itemsList.addElement(smiles);
 //#endif
-        message.append(SR.MS_COMPOSING_EVENTS, null);
-        message.append(SR.MS_CAPS_STATE, null);
-        message.append(SR.MS_STORE_PRESENCE,null);
-        message.append(SR.MS_AUTOSCROLL, null);
-        message.append(SR.MS_EMULATE_TABS, null);
+            eventComposing = new checkBox(SR.MS_COMPOSING_EVENTS, cf.eventComposing); itemsList.addElement(eventComposing);
+            capsState = new checkBox(SR.MS_CAPS_STATE, cf.capsState); itemsList.addElement(capsState);
+            storeConfPresence = new checkBox(SR.MS_STORE_PRESENCE, cf.storeConfPresence); itemsList.addElement(storeConfPresence);
+            autoScroll = new checkBox(SR.MS_AUTOSCROLL, cf.autoScroll); itemsList.addElement(autoScroll);
+            useTabs = new checkBox(SR.MS_EMULATE_TABS, cf.useTabs); itemsList.addElement(useTabs);
 //#ifdef PEP
-//#         message.append(SR.MS_SEND_RECEIVE_USERMOODS, null);
+//#             sndrcvmood = new checkBox(SR.MS_SEND_RECEIVE_USERMOODS, cf.sndrcvmood); itemsList.addElement(sndrcvmood);
 //#ifdef PEP_TUNE
-//#         message.append(SR.MS_RECEIVE_USERTUNE, null);
+//#             rcvtune = new checkBox(SR.MS_RECEIVE_USERTUNE, cf.rcvtune); itemsList.addElement(rcvtune);
 //#endif
 //#endif
-        message.append(SR.MS_RUNNING_MESSAGE, null);
+            notifyWhenMessageType = new checkBox(SR.MS_RUNNING_MESSAGE, cf.notifyWhenMessageType); itemsList.addElement(notifyWhenMessageType);
 //#ifdef ANTISPAM
-//#         message.append(SR.MS_ANTISPAM_CONFERENCE, null);
+//#             antispam = new checkBox(SR.MS_ANTISPAM_CONFERENCE, cf.antispam); itemsList.addElement(antispam);
 //#endif
 //#ifdef POPUPS
-        message.append(SR.MS_POPUPS, null);
+            popUps = new checkBox(SR.MS_POPUPS, cf.popUps); itemsList.addElement(popUps);
 //#endif
-        message.append(SR.MS_SHOW_BALLONS, null);
-        message.append(SR.MS_DELIVERY, null);
+            showBalloons = new checkBox(SR.MS_SHOW_BALLONS, cf.showBalloons); itemsList.addElement(showBalloons);     
+            eventDelivery = new checkBox(SR.MS_DELIVERY, cf.eventDelivery); itemsList.addElement(eventDelivery);
 //#ifdef CLIPBOARD
-//#         message.append(SR.MS_CLIPBOARD, null);
+//#             useClipBoard = new checkBox(SR.MS_CLIPBOARD, cf.useClipBoard); itemsList.addElement(useClipBoard);
 //#endif
-        boolean messageV[]={
-//#ifdef SMILES
-            cf.smiles,
-//#endif
-            cf.eventComposing,
-            cf.capsState,
-            cf.storeConfPresence,
-            cf.autoScroll,
-            cf.useTabs,
-//#ifdef PEP
-//#             cf.sndrcvmood,
-//#ifdef PEP_TUNE
-//#             cf.rcvtune,
-//#endif
-//#endif
-            cf.notifyWhenMessageType
-//#ifdef ANTISPAM
-//#             ,cf.antispam
-//#endif
-//#ifdef POPUPS
-            ,cf.popUps
-//#endif
-            ,cf.showBalloons       
-            ,cf.eventDelivery
-//#ifdef CLIPBOARD
-//#             ,cf.useClipBoard
-//#endif
-        };
-        this.mv=messageV;
 
-        message.setSelectedFlags(messageV);
+            
 //#if AUTODELETE
-//#         MessageCountLimit=new NumberField(SR.MS_MESSAGE_COUNT_LIMIT, cf.msglistLimit, 10, 1000);
+//#         itemsList.addElement(new simpleString(SR.MS_MESSAGE_COUNT_LIMIT));
+//#         messageCountLimit=new numberInput(display, Integer.toString(cf.msglistLimit), 10, 1000);
+//#         itemsList.addElement(messageCountLimit);
 //#endif
-        MessageLimit=new NumberField(SR.MS_MESSAGE_COLLAPSE_LIMIT, cf.messageLimit, 200, 1000);
 
-	startup=new ChoiceGroup(SR.MS_STARTUP_ACTIONS, Choice.MULTIPLE);
-        startup.append(SR.MS_AUTOLOGIN, null);
-        startup.append(SR.MS_AUTO_CONFERENCES,null);
-        su=new boolean[2];
-        su[0]=cf.autoLogin;
-        su[1]=cf.autoJoinConferences;
-        startup.setSelectedFlags(su);
+        itemsList.addElement(new simpleString(SR.MS_MESSAGE_COLLAPSE_LIMIT));
+        messageLimit=new numberInput(display, Integer.toString(cf.messageLimit), 200, 1000);
+        itemsList.addElement(messageLimit);
         
-        application=new ChoiceGroup(SR.MS_APPLICATION, Choice.MULTIPLE);
-        application.append(SR.MS_FULLSCREEN,null);
-        application.append(SR.MS_HEAP_MONITOR,null);
-        application.append(SR.MS_SHOW_HARDWARE,null);
-        application.append(SR.MS_CONFIRM_EXIT,null);
+        itemsList.addElement(new simpleString(SR.MS_STARTUP_ACTIONS));
+        autoLogin = new checkBox(SR.MS_AUTOLOGIN, cf.autoLogin); itemsList.addElement(autoLogin);
+        autoJoinConferences = new checkBox(SR.MS_AUTO_CONFERENCES, cf.autoJoinConferences); itemsList.addElement(autoJoinConferences);
+        
+        itemsList.addElement(new simpleString(SR.MS_APPLICATION));
+        fullscreen = new checkBox(SR.MS_FULLSCREEN, cf.fullscreen); itemsList.addElement(fullscreen);
+        memMonitor = new checkBox(SR.MS_HEAP_MONITOR, cf.memMonitor); itemsList.addElement(memMonitor);
+        enableVersionOs = new checkBox(SR.MS_SHOW_HARDWARE, cf.enableVersionOs); itemsList.addElement(enableVersionOs);
+        queryExit = new checkBox(SR.MS_CONFIRM_EXIT, cf.queryExit); itemsList.addElement(queryExit);
 //#ifdef USER_KEYS
-//#         application.append(SR.MS_CUSTOM_KEYS,null);
+//#         userKeys = new checkBox(SR.MS_CUSTOM_KEYS, cf.userKeys); itemsList.addElement(userKeys);
 //#endif
 //#ifdef NEW_MENU
-        application.append(SR.MS_NEW_MENU,null);
+        newMenu = new checkBox(SR.MS_NEW_MENU, cf.newMenu); itemsList.addElement(newMenu);
 //#endif
-        application.append(SR.MS_FLASHLIGHT,null);
+        lightState = new checkBox(SR.MS_FLASHLIGHT, cf.lightState); itemsList.addElement(lightState);
 //#ifdef IRC_LIKE
-//#         application.append(SR.MS_IRCLIKESTATUS,null);
+//#         ircLikeStatus = new checkBox(SR.MS_IRCLIKESTATUS, cf.ircLikeStatus); itemsList.addElement(ircLikeStatus);
 //#endif
-	if (cf.allowMinimize)
-            application.append(SR.MS_ENABLE_POPUP,null);
-       
-        boolean appP[]={
-            cf.fullscreen,
-            cf.memMonitor,
-            cf.enableVersionOs,
-            cf.queryExit,
-//#ifdef USER_KEYS
-//#             cf.userKeys,
-//#endif
-//#ifdef NEW_MENU
-            cf.newMenu,
-//#endif
-            cf.lightState,
-//#ifdef IRC_LIKE
-//#             cf.ircLikeStatus,
-//#endif
-            cf.popupFromMinimized
-        };
-
-        this.ap=appP;
+        if (cf.allowMinimize) {
+            popupFromMinimized = new checkBox(SR.MS_ENABLE_POPUP, cf.popupFromMinimized);
+            itemsList.addElement(popupFromMinimized);
+        }
         
-        application.setSelectedFlags(appP);
 
-	fieldGmt=new NumberField(SR.MS_GMT_OFFSET, cf.gmtOffset, -12, 12); 
-        fieldLoc=new NumberField(SR.MS_CLOCK_OFFSET, cf.locOffset, -12, 12 );
-
-        f.append(roster);
+        itemsList.addElement(new simpleString(SR.MS_TIME_SETTINGS));
+        itemsList.addElement(new simpleString(SR.MS_GMT_OFFSET));
+	fieldGmt=new numberInput(display, Integer.toString(cf.gmtOffset), -12, 12); 
+        itemsList.addElement(fieldGmt);
         
+        itemsList.addElement(new simpleString(SR.MS_CLOCK_OFFSET));
+        fieldLoc=new numberInput(display, Integer.toString(cf.locOffset), -12, 12 );
+        itemsList.addElement(fieldLoc);
+
         try {
-            String tempScheme=(cf.scheme=="")?"default":cf.scheme;
-           
-            SkinFile=new ChoiceGroup(SR.MS_LOAD_SKIN, ChoiceGroup.POPUP);
             Skinfiles=new StringLoader().stringLoader("/skins/res.txt",2);
-            for (int i=0; i<Skinfiles[0].size(); i++) {
-                String schemeName = (String)Skinfiles[1].elementAt(i);
-                SkinFile.append(schemeName, null);
+            if (Skinfiles[0].size()>0) {
+                String tempScheme=(cf.scheme=="")?"default":cf.scheme;
+                itemsList.addElement(new simpleString(SR.MS_LOAD_SKIN));
+                skinFiles=new choiceBox();
+
+                for (int i=0; i<Skinfiles[0].size(); i++) {
+                    String schemeName = (String)Skinfiles[1].elementAt(i);
+                    skinFiles.append(schemeName);
 //#ifndef COLORS
 //#                 if (tempScheme.equals(schemeName))
-//#                     SkinFile.setSelectedIndex(i, true);
+//#                     skinFiles.setSelectedIndex(i);
 //#endif
+                }
+                itemsList.addElement(skinFiles);
             }
-//#ifdef COLORS
-            if (Skinfiles.length>0) {
-                SkinFile.setItemCommandListener(this);
-                SkinFile.addCommand(cmdLoadSkin);
-            }
-//#endif 
-            f.append(SkinFile);
         } catch (Exception e) {}
-        
-        f.append(subscr);
-        
-        f.append(nil);
 
-        f.append(message);
-        f.append(MessageLimit);
-//#if AUTODELETE
-//#         f.append(MessageCountLimit);
-//#endif
+        itemsList.addElement(new simpleString(SR.MS_TEXTWRAP));
+        textWrap=new choiceBox();
+        textWrap.append(SR.MS_TEXTWRAP_CHARACTER);
+        textWrap.append(SR.MS_TEXTWRAP_WORD);
+	textWrap.setSelectedIndex(cf.textWrap);
+	itemsList.addElement(textWrap);
         
-	String textWraps[]={SR.MS_TEXTWRAP_CHARACTER, SR.MS_TEXTWRAP_WORD};
-	textWrap=new ChoiceGroup(SR.MS_TEXTWRAP, ChoiceGroup.POPUP, textWraps,null);
-	textWrap.setSelectedIndex(cf.textWrap, true);
-	f.append(textWrap);
-        
-//******************** lang
-        lang=new ChoiceGroup(SR.MS_LANGUAGE, ChoiceGroup.POPUP);
+        itemsList.addElement(new simpleString(SR.MS_LANGUAGE));
+        langFiles=new choiceBox();
 	langs=new StringLoader().stringLoader("/lang/res.txt",3);
         
         String tempLang=cf.lang;
@@ -311,155 +297,128 @@ public class ConfigForm implements
 	for (int i=0; i<langs[0].size(); i++) {
             String label=(String) langs[2].elementAt(i);
             String langCode=(String) langs[0].elementAt(i);
-	    lang.append( label, null );
+	    langFiles.append(label);
             if (tempLang.equals(langCode))
-                lang.setSelectedIndex(i, true);
+                langFiles.setSelectedIndex(i);
         }
-//******************** lang
-        f.append(startup);
+        itemsList.addElement(langFiles);
 
-	f.append(application);
-
-	//f.append(keepAlive);
-	
-        f.append(SR.MS_TIME_SETTINGS);
-        f.append("\n");
-        
-        f.append(fieldGmt);
-        f.append(fieldLoc);      
-        f.append(lang);
 //#ifdef AUTOSTATUS
-//#         autoAwayType=new ChoiceGroup(SR.MS_AWAY_TYPE, Choice.POPUP);
-//#         autoAwayType.append(SR.MS_AWAY_OFF, null);
-//#         autoAwayType.append(SR.MS_AWAY_LOCK, null);
-//#         autoAwayType.append(SR.MS_MESSAGE_LOCK, null);
-//#         autoAwayType.append(SR.MS_IDLE, null);
-//#         autoAwayType.setSelectedIndex(cf.autoAwayType, true);
+//#         itemsList.addElement(new simpleString(SR.MS_AWAY_TYPE));
+//#         autoAwayType=new choiceBox();
+//#         autoAwayType.append(SR.MS_AWAY_OFF);
+//#         autoAwayType.append(SR.MS_AWAY_LOCK);
+//#         autoAwayType.append(SR.MS_MESSAGE_LOCK);
+//#         autoAwayType.append(SR.MS_IDLE);
+//#         autoAwayType.setSelectedIndex(cf.autoAwayType);
+//#         itemsList.addElement(autoAwayType);
+//#                 
+//#         itemsList.addElement(new simpleString(SR.MS_AWAY_PERIOD));
+//#         fieldAwayDelay=new numberInput(display, Integer.toString(cf.autoAwayDelay), 1, 60);
+//#         itemsList.addElement(fieldAwayDelay);
 //# 
-//#         fieldAwatDelay=new NumberField(SR.MS_AWAY_PERIOD, cf.autoAwayDelay, 1, 60);
-//# 
-//#         awayStatus=new ChoiceGroup(SR.MS_SET, Choice.MULTIPLE);
-//#         awayStatus.append(SR.MS_AUTOSTATUS_MESSAGE, null);
-//# 
-//#         boolean autoAway[]={
-//#             cf.setAutoStatusMessage
-//#         };
-//# 
-//#         this.aa=autoAway;
-//#         awayStatus.setSelectedFlags(autoAway);
-//#         f.append(awayStatus);
-//# 
-//#         f.append(autoAwayType);
-//#         f.append(fieldAwatDelay);
+//#         awayStatus=new checkBox(SR.MS_AUTOSTATUS_MESSAGE, cf.setAutoStatusMessage);
+//#         itemsList.addElement(awayStatus);
 //#endif
 
-        f.addCommand(cmdOk);
-        f.addCommand(cmdCancel);       
-        f.setCommandListener(this);    
-        display.setCurrent(f);
+        addCommand(cmdOk);
+        addCommand(cmdCancel);       
+        setCommandListener(this);    
+        
+        //moveCursorTo(getNextSelectableRef(-1));
+        attachDisplay(display);
     }
     
     public void commandAction(Command c, Displayable d) {
         if (c==cmdOk) {
-            roster.getSelectedFlags(ra);
-            message.getSelectedFlags(mv);
-            application.getSelectedFlags(ap);
-	    startup.getSelectedFlags(su);
-//#ifdef AUTOSTATUS
-//#             awayStatus.getSelectedFlags(aa);
-//#endif
-            
-            cf.notInListDropLevel=nil.getSelectedIndex();
-            
-            cf.showOfflineContacts=ra[0];
-            cf.selfContact=ra[1];
-            cf.showTransports=ra[2];
-            cf.ignore=ra[3];
-            cf.collapsedGroups=ra[4];
-            cf.autoFocus=ra[5];
-            cf.showResources=ra[6];
-            cf.useBoldFont=ra[7];
+            cf.showOfflineContacts=showOfflineContacts.getValue();
+            cf.selfContact=selfContact.getValue();
+            cf.showTransports=showTransports.getValue();
+            cf.ignore=ignore.getValue();
+            cf.collapsedGroups=collapsedGroups.getValue();
+            cf.autoFocus=autoFocus.getValue();
+            cf.showResources=showResources.getValue();
+            cf.useBoldFont=useBoldFont.getValue();
 //#ifdef SECONDSTRING
-//#             cf.rosterStatus=ra[8];
+//#             cf.rosterStatus=rosterStatus.getValue();
 //#endif
             
             cf.autoSubscribe=subscr.getSelectedIndex();
-
-            int mvctr=0;
+            
 //#ifdef SMILES
-            cf.smiles=mv[mvctr++];
+            cf.smiles=smiles.getValue();
 //#endif
-            cf.eventComposing=mv[mvctr++];
-            cf.capsState=mv[mvctr++];
-            cf.storeConfPresence=mv[mvctr++];
-            cf.autoScroll=mv[mvctr++];
-            cf.useTabs=mv[mvctr++];
+            cf.eventComposing=eventComposing.getValue();
+            cf.capsState=capsState.getValue();
+            cf.storeConfPresence=storeConfPresence.getValue();
+            cf.autoScroll=autoScroll.getValue();
+            cf.useTabs=useTabs.getValue();
 //#ifdef PEP
-//#             cf.sndrcvmood=mv[mvctr++];
+//#             cf.sndrcvmood=sndrcvmood.getValue();
 //#ifdef PEP_TUNE
-//#             cf.rcvtune=mv[mvctr++];
+//#             cf.rcvtune=rcvtune.getValue();
 //#endif
 //#endif
-            cf.notifyWhenMessageType=mv[mvctr++];
+            cf.notifyWhenMessageType=notifyWhenMessageType.getValue();
 //#ifdef ANTISPAM
-//#             cf.antispam=mv[mvctr++];
+//#             cf.antispam=antispam.getValue();
 //#endif
 //#ifdef POPUPS
-            cf.popUps=mv[mvctr++];
+            cf.popUps=popUps.getValue();
 //#endif
-            cf.showBalloons=mv[mvctr++];
+            cf.showBalloons=showBalloons.getValue();
             VirtualList.showBalloons=cf.showBalloons;
-            cf.eventDelivery=mv[mvctr++];
+            cf.eventDelivery=eventDelivery.getValue();
 //#ifdef CLIPBOARD
-//#             cf.useClipBoard=mv[mvctr++];
+//#             cf.useClipBoard=useClipBoard.getValue();
 //#endif
             
-	    cf.autoLogin=su[0];
-	    cf.autoJoinConferences=su[1];
+	    cf.autoLogin=autoLogin.getValue();
+	    cf.autoJoinConferences=autoJoinConferences.getValue();
             
-	    int apctr=0;
-            VirtualList.fullscreen=cf.fullscreen=ap[apctr++];
-	    VirtualList.memMonitor=cf.memMonitor=ap[apctr++];
-            cf.enableVersionOs=ap[apctr++];
-            cf.queryExit=ap[apctr++];
+            VirtualList.fullscreen=cf.fullscreen=fullscreen.getValue();
+	    VirtualList.memMonitor=cf.memMonitor=memMonitor.getValue();
+            cf.enableVersionOs=enableVersionOs.getValue();
+            cf.queryExit=queryExit.getValue();
 //#ifdef USER_KEYS
-//#             VirtualList.userKeys=cf.userKeys=ap[apctr++];
+//#             VirtualList.userKeys=cf.userKeys=userKeys.getValue();
 //#endif
 //#ifdef NEW_MENU
-            cf.newMenu=ap[apctr++];
+            cf.newMenu=newMenu.getValue();
 //#endif
-            cf.lightState=ap[apctr++];
+            cf.lightState=lightState.getValue();
 //#ifdef IRC_LIKE
-//#             cf.ircLikeStatus=ap[apctr++];
+//#             cf.ircLikeStatus=ircLikeStatus.getValue();
 //#endif
-            //cf.blFlash=ap[apctr++];
             if (cf.allowMinimize)
-                cf.popupFromMinimized=ap[apctr++];
+                cf.popupFromMinimized=popupFromMinimized.getValue();
             
-	    cf.gmtOffset=fieldGmt.getValue();
-	    cf.locOffset=fieldLoc.getValue();
+	    cf.gmtOffset=Integer.parseInt(fieldGmt.getValue());
+	    cf.locOffset=Integer.parseInt(fieldLoc.getValue());
 	    
 	    cf.textWrap=textWrap.getSelectedIndex();
 
-            cf.lang=(String) langs[0].elementAt( lang.getSelectedIndex() );
+            cf.lang=(String) langs[0].elementAt( langFiles.getSelectedIndex() );
 //#ifdef AUTOSTATUS
-//#             cf.setAutoStatusMessage=aa[0];
-//#             cf.autoAwayDelay=fieldAwatDelay.getValue();
+//#             cf.setAutoStatusMessage=awayStatus.getValue();
+//#             cf.autoAwayDelay=Integer.parseInt(fieldAwayDelay.getValue());
 //#             cf.autoAwayType=autoAwayType.getSelectedIndex();
 //#endif
-            cf.messageLimit=MessageLimit.getValue();
+            cf.messageLimit=Integer.parseInt(messageLimit.getValue());
 //#if AUTODELETE
-//#             cf.msglistLimit=MessageCountLimit.getValue();
+//#             cf.msglistLimit=Integer.parseInt(messageCountLimit.getValue());
 //#endif
 
 //#ifndef COLORS
-//#             if (SkinFile.getSelectedIndex()>-1) {
-//#                 String tempScheme=(String) Skinfiles[1].elementAt( SkinFile.getSelectedIndex() );
-//#                 if (!tempScheme.equals(cf.scheme)) {
-//#                     cf.scheme=(String) Skinfiles[1].elementAt( SkinFile.getSelectedIndex() );
-//#                     ColorUtils.loadSkin((String)Skinfiles[0].elementAt(SkinFile.getSelectedIndex()), 1);
+//#             try {
+//#                 if (skinFiles.getSelectedIndex()>-1) {
+//#                     String tempScheme=(String) Skinfiles[1].elementAt( skinFiles.getSelectedIndex() );
+//#                     if (!tempScheme.equals(cf.scheme)) {
+//#                         cf.scheme=(String) Skinfiles[1].elementAt( skinFiles.getSelectedIndex() );
+//#                         ColorUtils.loadSkin((String)Skinfiles[0].elementAt(skinFiles.getSelectedIndex()), 1);
+//#                     }
 //#                 }
-//#             }
+//#             } catch (Exception ex) {}
 //#endif
 
             sd.roster.setLight(cf.lightState);   
@@ -477,24 +436,19 @@ public class ConfigForm implements
                 sd.roster.sendPresence(Presence.PRESENCE_SAME, null);
             
             sd.roster.reEnumRoster();
+            destroyView();
         }
-        destroyView();
     }
 
-    public void commandAction(Command command, Item item) {
-//#ifdef COLORS
-	if (command==cmdLoadSkin) {
-            int skinfl=SkinFile.getSelectedIndex();
-            String skinFile=(String)Skinfiles[0].elementAt(skinfl);
-            //ColorUtils.saveSkin(skinFile);
-            ColorUtils.loadSkin(skinFile, 1);
-	}
-//#endif
-    }
-    
     public void destroyView(){
         if (display!=null)  
             display.setCurrent(sd.roster);
         ((Canvas)parentView).setFullScreenMode(cf.fullscreen);
+    }
+    
+    protected int getItemCount() { return itemsList.size(); }
+
+    protected VirtualElement getItemRef(int index) {
+        return (VirtualElement)itemsList.elementAt(index);
     }
 }

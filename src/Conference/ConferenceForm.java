@@ -28,17 +28,26 @@
 package Conference;
 import Client.*;
 import com.alsutton.jabber.JabberDataBlock;
+import java.util.Vector;
 import locale.SR;
 import javax.microedition.lcdui.*;
-import ui.controls.NumberField;
-import ui.controls.TextFieldCombo;
+import ui.MainBar;
+import ui.VirtualElement;
+import ui.VirtualList;
 import com.alsutton.jabber.datablocks.Presence;
+import ui.controls.form.checkBox;
+import ui.controls.form.numberInput;
+import ui.controls.form.passwordInput;
+import ui.controls.form.simpleString;
+import ui.controls.form.textInput;
 
 /**
  *
  * @author EvgS
  */
-public class ConferenceForm implements CommandListener{
+public class ConferenceForm
+    extends VirtualList
+    implements CommandListener {
     
     private Display display;
     private Displayable parentView;
@@ -50,18 +59,18 @@ public class ConferenceForm implements CommandListener{
     Command cmdEdit=new Command(SR.MS_SAVE, Command.SCREEN, 6);
     Command cmdCancel=new Command (SR.MS_CANCEL, Command.BACK, 99);
     
-    TextField roomField;
-    TextField hostField;
-    TextField nickField;
-    TextField nameField;
-    TextField passField;
-    NumberField msgLimitField;
+    private textInput roomField;
+    private textInput hostField;
+    private textInput nickField;
+    private textInput nameField;
+    private passwordInput passField;
+    private numberInput msgLimitField;
+    private checkBox autoJoin;
+    
+    private Vector itemsList=new Vector();
     
     BookmarkItem editConf;
-    
-    ChoiceGroup AutoJoin;
-    boolean aa[];  
-    
+
     private static boolean sndprs=false;
     
     private static StaticData sd=StaticData.getInstance();
@@ -141,46 +150,45 @@ public class ConferenceForm implements CommandListener{
      private void createForm(final Display display, String name, String room, String server, String nick, final String password, boolean autojoin) {
         this.display=display;
         parentView=display.getCurrent();
-        
-        Form formJoin=new Form(SR.MS_JOIN_CONFERENCE);
 
-        roomField=new TextField(SR.MS_ROOM, room, 64, TextField.ANY);
-        formJoin.append(roomField);
+        setMainBarItem(new MainBar(SR.MS_JOIN_CONFERENCE));
+
+        itemsList.addElement(new simpleString(SR.MS_ROOM));
+        roomField=new textInput(display, room);//, 64, TextField.ANY);
+        itemsList.addElement(roomField);
         
-        hostField=new TextFieldCombo(SR.MS_AT_HOST, server, 64, TextField.ANY, "muc-host", display);
-        TextFieldCombo.setLowerCaseLatin(hostField); 
-        formJoin.append(hostField);
+        itemsList.addElement(new simpleString(SR.MS_AT_HOST));
+        hostField=new textInput(display, server);//, 64, TextField.ANY, "muc-host", display);
+        itemsList.addElement(hostField);
         
         if (nick==null) nick=sd.account.getNickName();
-        nickField=new TextFieldCombo(SR.MS_NICKNAME, nick, 32, TextField.ANY, "roomnick", display);
-        formJoin.append(nickField);
+        itemsList.addElement(new simpleString(SR.MS_NICKNAME));
+        nickField=new textInput(display, nick);//, 32, TextField.ANY, "roomnick", display);
+        itemsList.addElement(nickField);
         
-        msgLimitField=new NumberField(SR.MS_MSG_LIMIT, cf.confMessageCount, 0, 100);
-        formJoin.append(msgLimitField);
+        itemsList.addElement(new simpleString(SR.MS_MSG_LIMIT));
+        msgLimitField=new numberInput(display, Integer.toString(cf.confMessageCount), 0, 100);
+        itemsList.addElement(msgLimitField);
         
-        nameField=new TextField(SR.MS_DESCRIPTION, name, 128, TextField.ANY);
-        formJoin.append(nameField);
+        itemsList.addElement(new simpleString(SR.MS_DESCRIPTION));
+        nameField=new textInput(display, name);//, 128, TextField.ANY);
+        itemsList.addElement(nameField);
         
-        passField=new TextField(SR.MS_PASSWORD, password, 32, TextField.ANY | TextField.SENSITIVE );
-        formJoin.append(passField);
+        itemsList.addElement(new simpleString(SR.MS_PASSWORD));
+        passField=new passwordInput(display, password);//, 32, TextField.ANY | TextField.SENSITIVE );
+        itemsList.addElement(passField);
 
-        AutoJoin=new ChoiceGroup(SR.MS_SET, Choice.MULTIPLE);
-        AutoJoin.append(SR.MS_AUTOLOGIN, null);
+        autoJoin=new checkBox(SR.MS_AUTOLOGIN, autojoin);
+        itemsList.addElement(autoJoin);
         
-        boolean aa[]={
-            autojoin,
-        };
-        this.aa=aa;
-        AutoJoin.setSelectedFlags(aa);
-        formJoin.append(AutoJoin);
+        addCommand(cmdJoin);
+        addCommand(cmdAdd);
+        addCommand(cmdEdit);
+        addCommand(cmdCancel);
         
-        formJoin.addCommand(cmdJoin);
-        formJoin.addCommand(cmdAdd);
-        formJoin.addCommand(cmdEdit);
-        formJoin.addCommand(cmdCancel);
-        formJoin.setCommandListener(this);
-        
-        display.setCurrent(formJoin);
+	setCommandListener(this);
+        moveCursorTo(getNextSelectableRef(-1));
+        attachDisplay(display);
     }
      
     public void commandAction(Command c, Displayable d){
@@ -188,15 +196,14 @@ public class ConferenceForm implements CommandListener{
         
         sndprs=true;
         
-        String nick=nickField.getString();
-        String name=nameField.getString();
-        String host=hostField.getString();
-        String room=roomField.getString();
-        String pass=passField.getString();
-        int msgLimit=msgLimitField.getValue();
-        
-        AutoJoin.getSelectedFlags(aa);
-        boolean autojoin=aa[0];
+        String nick=nickField.getValue();
+        String name=nameField.getValue();
+        String host=hostField.getValue();
+        String room=roomField.getValue();
+        String pass=passField.getValue();
+        int msgLimit=Integer.parseInt(msgLimitField.getValue());
+
+        boolean autojoin=autoJoin.getValue();
         
         if (nick.length()==0) return;
         if (room.length()==0) return;
@@ -277,5 +284,11 @@ public class ConferenceForm implements CommandListener{
     public void destroyView(){
         if (parentView!=null) 
             display.setCurrent(parentView);
+    }
+
+    protected int getItemCount() { return itemsList.size(); }
+
+    protected VirtualElement getItemRef(int index) {
+        return (VirtualElement)itemsList.elementAt(index);
     }
 }

@@ -47,7 +47,7 @@ import xmpp.extensions.IqQueryRoster;
  *
  * @author ad
  */
-public class newRenameGroup 
+public class RenameGroup 
         extends VirtualList
         implements CommandListener {
     
@@ -65,7 +65,7 @@ public class newRenameGroup
     private Vector itemsList=new Vector();
     
     /** Creates a new instance of newRenameGroup */
-    public newRenameGroup(Display display, Group group, Contact contact) {
+    public RenameGroup(Display display, Group group, Contact contact) {
         this.contact=contact;
         this.group=group;
         this.display=display;

@@ -36,7 +36,7 @@ import ui.VirtualList;
 import ui.controls.form.choiceBox;
 import ui.controls.form.simpleString;
 
-public class newConfigFonts 
+public class ConfigFonts 
         extends VirtualList
         implements CommandListener {
     
@@ -58,7 +58,7 @@ public class newConfigFonts
     Config cf;
     
     /** Creates a new instance of newConfigFonts */
-    public newConfigFonts(Display display) {
+    public ConfigFonts(Display display) {
         this.display=display;
         parentView=display.getCurrent();
         

@@ -64,7 +64,7 @@ public class textInput
 
     public int getColor() { return Colors.LIST_INK; }
     
-    public String toString() { return text; }
+    public String toString() { return (text==null)?"":text; }
     
     public void onSelect(){
         new editBox(display, text, this);
@@ -72,7 +72,7 @@ public class textInput
     
     public String getValue() { return text; }
 
-    private void setValue(String text) { this.text=text; }
+    public void setValue(String text) { this.text=text; }
     
     public void drawItem(Graphics g, int ofs, boolean sel) {
         int width=g.getClipWidth();

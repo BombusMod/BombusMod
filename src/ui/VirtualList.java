@@ -1010,11 +1010,11 @@ public abstract class VirtualList
             win_top-=winHeight;
             if (win_top<0) {
                 win_top=0;
-                cursor=getNextSelectableRef(0);
+                //if (!getItemRef(0).isSelectable()) cursor=getNextSelectableRef(-1); else cursor=0;
+                cursor=getNextSelectableRef(-1);
             }
             if (!cursorInWindow()) {
-                //cursor=getElementIndexAt(itemLayoutY[cursor]-winHeight);
-                cursor=getNextSelectableRef(getElementIndexAt(itemLayoutY[cursor]-winHeight));
+                cursor=getElementIndexAt(itemLayoutY[cursor]-winHeight);
                 if (((VirtualElement)getFocusedObject()).getVHeight()<=winHeight) 
                     fitCursorByTop();
             }
@@ -1032,14 +1032,25 @@ public abstract class VirtualList
             int endTop=listHeight-winHeight;
             if (endTop<win_top) {
                 win_top= (listHeight<winHeight)? 0 : endTop;
-                cursor=getPrevSelectableRef(getItemCount()-1);
-            } else
+                int lastItemNum=getItemCount()-1;
+                if (!getItemRef(lastItemNum).isSelectable())
+                    cursor=getPrevSelectableRef(lastItemNum);
+                else
+                    cursor=lastItemNum;
+                    //cursor=getItemCount()-1;
+            } else {
                 if (!cursorInWindow()) {
-                    //cursor=getElementIndexAt(itemLayoutY[cursor]+winHeight);
-                    cursor=getPrevSelectableRef(getElementIndexAt(itemLayoutY[cursor]-winHeight));
+                    cursor=getElementIndexAt(itemLayoutY[cursor]+winHeight);
+                    /*int tempCur=getElementIndexAt(itemLayoutY[cursor]-winHeight);
+                    if (!getItemRef(tempCur).isSelectable()) {
+                        tempCur=getPrevSelectableRef(tempCur);
+                    }
+                    cursor=tempCur;*/
                    
-                    if (((VirtualElement)getFocusedObject()).getVHeight()<=winHeight) fitCursorByTop();
+                    if (((VirtualElement)getFocusedObject()).getVHeight()<=winHeight) 
+                        fitCursorByTop();
                 }
+            }
             setRotator();
         } catch (Exception e) {}
     }
@@ -1086,7 +1097,7 @@ public abstract class VirtualList
 
     public void destroyView(){
         sd.roster.activeContact=null;
-        if (display!=null && parentView!=null /*prevents potential app hiding*/ )   
+        if (display!=null && parentView!=null) /*prevents potential app hiding*/ 
             display.setCurrent(parentView);
     }
 

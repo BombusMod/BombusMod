@@ -1,168 +1,182 @@
 /*
  * AutoTaskForm.java
  *
- * Created on 20 Март 2008 г., 19:52
+ * Created on 20.03.2008, 19:52
  *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
+ * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * You can also redistribute and/or modify this program under the
+ * terms of the Psi License, specified in the accompanied COPYING
+ * file, as published by the Psi Project; either dated January 1st,
+ * 2005, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
 package AutoTasks;
 
 import Client.StaticData;
-import javax.microedition.lcdui.Choice;
-import javax.microedition.lcdui.ChoiceGroup;
+import java.util.Vector;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
-import javax.microedition.lcdui.Form;
-import javax.microedition.lcdui.Item;
-import javax.microedition.lcdui.ItemCommandListener;
-import javax.microedition.lcdui.ItemStateListener;
 import locale.SR;
-import ui.Time;
-import ui.controls.NumberField;
+import ui.MainBar;
+import ui.VirtualElement;
+import ui.VirtualList;
+import ui.controls.form.choiceBox;
+import ui.controls.form.numberInput;
+import ui.controls.form.simpleString;
 
 /**
  *
  * @author ad
  */
-public class AutoTaskForm implements
-    CommandListener, ItemCommandListener, ItemStateListener
-{
+public class AutoTaskForm
+    extends VirtualList    
+    implements CommandListener {
+    
     private Display display;
     private Displayable parentView;
-
-    Form f;
+    
+    private Vector itemsList=new Vector();
     
     int hour =0;
     int min  =0;
     int wait =1;
 
-    private ChoiceGroup taskType;
-    private ChoiceGroup actionType;
+    private choiceBox taskType;
+    private choiceBox actionType;
 
-    private NumberField autoTaskDelay;
+    private numberInput autoTaskDelay;
 
-    private NumberField autoTaskMin;
-    private NumberField autoTaskHour;
+    private numberInput autoTaskMin;
+    private numberInput autoTaskHour;
+    
 //#if AUTOTASK
 //#     private AutoTask at=StaticData.getInstance().autoTask;
 //#endif
+    
     private Command cmdOk=new Command(SR.MS_OK, Command.OK, 1);
     private Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 2);
+
+    private int actionIndex;
+    private int typeIndex;
 
     
     /** Creates a new instance of AutoTaskForm */
     public AutoTaskForm(Display display) {
         this.display=display;
         parentView=display.getCurrent();
-
-        f=new Form(SR.MS_AUTOTASKS);
-//#if AUTOTASK
-//#         taskType=new ChoiceGroup(SR.MS_AUTOTASK_TYPE, Choice.POPUP);
-//#         taskType.append(SR.MS_DISABLED, null);
-//#         taskType.append(SR.MS_BY_TIME_, null);
-//#         taskType.append(SR.MS_BY_TIMER_, null);
-//#         taskType.setItemCommandListener(this);
-//#         taskType.setSelectedIndex(at.taskType, true);
-//#         f.append(taskType);
+//#ifdef AUTOTASK
+//#         setMainBarItem(new MainBar(SR.MS_AUTOTASKS));
 //#         
-//#         actionType=new ChoiceGroup(SR.MS_AUTOTASK_ACTION_TYPE, Choice.POPUP);
-//#         actionType.append(SR.MS_AUTOTASK_QUIT_BOMBUSMOD, null);
-//#         actionType.append(SR.MS_AUTOTASK_QUIT_CONFERENCES, null);
-//#         actionType.append(SR.MS_AUTOTASK_LOGOFF, null);
-//#         actionType.append(SR.MS_BREAK_CONECTION, null);
-//#         actionType.setSelectedIndex(at.taskAction, true);
-//#         f.append(actionType);
+//#         typeIndex=at.taskType;
+//#         actionIndex=at.taskAction;
+//#         if (autoTaskHour!=null) hour = at.startHour;
+//#         if (autoTaskMin!=null) min = at.startMin;
+//#         if (autoTaskDelay!=null) wait = at.waitTime/60000;    
+//# 
+//#         update();
 //#         
-//#         if (at.taskType==1) {
-//#                 f.append(SR.MS_AUTOTASK_TIME);
-//#                 autoTaskHour=new NumberField(SR.MS_AUTOTASK_HOUR, at.startHour, 0, 23);
-//#                 f.append(autoTaskHour);
-//#                 autoTaskMin=new NumberField(SR.MS_AUTOTASK_MIN, at.startMin, 0, 59);
-//#                 f.append(autoTaskMin);
-//#          } else if (at.taskType==2) {
-//#                 autoTaskDelay=new NumberField(SR.MS_AUTOTASK_DELAY, at.waitTime/(60000), 1, 600);
-//#                 f.append(autoTaskDelay);
-//#         }
+//# 	addCommand(cmdOk);
+//# 	addCommand(cmdCancel);
+//# 	setCommandListener(this);
+//#         
+//#         moveCursorTo(getNextSelectableRef(-1));
+//#         attachDisplay(display);
 //#endif
-        f.addCommand(cmdOk);
-        f.addCommand(cmdCancel);
-        f.setCommandListener(this);
-        f.setItemStateListener(this);
-        display.setCurrent(f);
     }
 
     public void commandAction(Command command, Displayable displayable) {
-        if (command==cmdOk) {
-//#if AUTOTASK
+//#ifdef AUTOTASK
+//#         if (command==cmdOk) {
 //#             at.taskType=taskType.getSelectedIndex();
 //#             at.taskAction=actionType.getSelectedIndex();
 //#             if (at.taskType==1) {
-//#                 at.startHour=autoTaskHour.getValue();
-//#                 at.startMin=autoTaskMin.getValue();
+//#                 at.startHour=Integer.parseInt(autoTaskHour.getValue());
+//#                 at.startMin=Integer.parseInt(autoTaskMin.getValue());
 //#             } else if(at.taskType==2) {
-//#                 at.waitTime=autoTaskDelay.getValue()*1000*60;
+//#                 at.waitTime=Integer.parseInt(autoTaskDelay.getValue())*1000*60;
 //#                 at.initTime=System.currentTimeMillis();
 //#             }
 //#             if (at.taskType!=0)
 //#                 at.startTask();
+//#         }
+//#         destroyView();
 //#endif
-            destroyView();
-        } else if (command==cmdCancel) {
-            destroyView();
-        }
     }
-
-    public void commandAction(Command command, Item item) {
-        itemStateChanged(item);
-    }
-    
-    public void destroyView(){
-        if (display!=null)  
-            display.setCurrent(StaticData.getInstance().roster);
-    }
-
-    public void itemStateChanged(Item item){
-        if (item==taskType) {
-            int index=taskType.getSelectedIndex();
-            if (autoTaskHour!=null) hour = autoTaskHour.getValue();
-            if (autoTaskMin!=null) min = autoTaskMin.getValue();
-            if (autoTaskDelay!=null) wait = autoTaskDelay.getValue();
-            f.deleteAll();
-            
-            taskType=new ChoiceGroup(SR.MS_AUTOTASK_TYPE, Choice.POPUP);
-            taskType.append(SR.MS_DISABLED, null);
-            taskType.append(SR.MS_BY_TIME_, null);
-            taskType.append(SR.MS_BY_TIMER_, null);
-            taskType.setSelectedIndex(index, true);
-            f.append(taskType);
-
-            actionType=new ChoiceGroup(SR.MS_AUTOTASK_ACTION_TYPE, Choice.POPUP);
-            actionType.append(SR.MS_AUTOTASK_QUIT_BOMBUSMOD, null);
-            actionType.append(SR.MS_AUTOTASK_QUIT_CONFERENCES, null);
-            actionType.append(SR.MS_AUTOTASK_LOGOFF, null);
-            actionType.append(SR.MS_BREAK_CONECTION, null);
-//#if AUTOTASK
-//#             actionType.setSelectedIndex(at.taskAction, true);
+//#ifdef AUTOTASK
+//#     public void eventOk(){
+//#         super.eventOk();
+//#         if (cursor==1) {
+//#             typeIndex=taskType.getSelectedIndex();
+//#             actionIndex=actionType.getSelectedIndex();
+//#             if (autoTaskHour!=null) hour = Integer.parseInt(autoTaskHour.getValue());
+//#             if (autoTaskMin!=null) min = Integer.parseInt(autoTaskMin.getValue());
+//#             if (autoTaskDelay!=null) wait = Integer.parseInt(autoTaskDelay.getValue());            
+//#             update();
+//#         }
+//#     }
+//#     
+//#     public void destroyView(){
+//#         if (display!=null)  
+//#             display.setCurrent(StaticData.getInstance().roster);
+//#     }
+//# 
+//#     public void update(){
+//#         itemsList=new Vector();
+//#         
+//#         itemsList.addElement(new simpleString(SR.MS_AUTOTASK_TYPE));
+//#         taskType=new choiceBox();
+//#         taskType.append(SR.MS_DISABLED);
+//#         taskType.append(SR.MS_BY_TIME_);
+//#         taskType.append(SR.MS_BY_TIMER_);
+//#         taskType.setSelectedIndex(typeIndex);
+//#         itemsList.addElement(taskType);
+//#         
+//#         itemsList.addElement(new simpleString(SR.MS_AUTOTASK_ACTION_TYPE));
+//#         actionType=new choiceBox();
+//#         actionType.append(SR.MS_AUTOTASK_QUIT_BOMBUSMOD);
+//#         actionType.append(SR.MS_AUTOTASK_QUIT_CONFERENCES);
+//#         actionType.append(SR.MS_AUTOTASK_LOGOFF);
+//#         actionType.append(SR.MS_BREAK_CONECTION);
+//#         actionType.setSelectedIndex(actionIndex);
+//#         itemsList.addElement(actionType);
+//#         
+//#         if (typeIndex==1) {
+//#             itemsList.addElement(new simpleString(SR.MS_AUTOTASK_TIME));
+//#             
+//#             itemsList.addElement(new simpleString(SR.MS_AUTOTASK_HOUR));
+//#             autoTaskHour=new numberInput(display, Integer.toString(hour), 0, 23);
+//#             itemsList.addElement(autoTaskHour);
+//#             
+//#             itemsList.addElement(new simpleString(SR.MS_AUTOTASK_MIN));
+//#             autoTaskMin=new numberInput(display, Integer.toString(min), 0, 59);
+//#             itemsList.addElement(autoTaskMin);
+//#          } else if (typeIndex==2) {
+//#             itemsList.addElement(new simpleString(SR.MS_AUTOTASK_DELAY));
+//#             autoTaskDelay=new numberInput(display, Integer.toString(wait), 1, 600);
+//#             itemsList.addElement(autoTaskDelay);
+//#         }
+//#     }
 //#endif
-            f.append(actionType);
-            
-            if (index==0) {
+    protected int getItemCount() { return itemsList.size(); }
 
-            } else if (index==1) {
-                f.append(SR.MS_AUTOTASK_TIME);
-                autoTaskHour=new NumberField(SR.MS_AUTOTASK_HOUR, hour, 0, 23);
-                f.append(autoTaskHour);
-                autoTaskMin=new NumberField(SR.MS_AUTOTASK_MIN, min, 0, 59);
-                f.append(autoTaskMin);
-            } else if (index==2) {
-                autoTaskDelay=new NumberField(SR.MS_AUTOTASK_DELAY, wait, 1, 600);
-                f.append(autoTaskDelay);
-            }
-        }
-    }
-    
+    protected VirtualElement getItemRef(int index) {
+        return (VirtualElement)itemsList.elementAt(index);
+    }    
 }

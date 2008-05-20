@@ -143,9 +143,9 @@ public class AccountSelect
         }
         if (c==cmdLogin) switchAccount(true);
         if (c==cmdSelect) switchAccount(false);
-        if (c==cmdEdit) new newAccountForm(this, display,(Account)getFocusedObject());
+        if (c==cmdEdit) new AccountForm(this, display,(Account)getFocusedObject());
         if (c==cmdAdd) {
-            new newAccountForm(this, display, null);
+            new AccountForm(this, display, null);
         }
         if (c==cmdDel) {
             new AlertBox(SR.MS_DELETE, getFocusedObject().toString(), display, this) {

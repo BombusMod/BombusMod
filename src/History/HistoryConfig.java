@@ -1,8 +1,10 @@
 /*
- * HistoryConfig.java
+ * newHistoryConfig.java
  *
- * Created on 18.06.2007., 15:35
+ * Created on 20.05.2008, 19:43
+ *
  * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
@@ -21,165 +23,125 @@
  * You should have received a copy of the GNU General Public License
  * along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
  */
 
 package History;
 
 import Client.Config;
-import Client.StaticData;
-//#if FILE_IO
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
-//#endif
-import javax.microedition.lcdui.Choice;
-import javax.microedition.lcdui.ChoiceGroup;
+import java.util.Vector;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
-import javax.microedition.lcdui.Form;
-//#if FILE_IO
 import javax.microedition.lcdui.Item;
 import javax.microedition.lcdui.ItemCommandListener;
-import javax.microedition.lcdui.TextField;
-import ui.controls.TextFieldEx;
-//#endif
 import locale.SR;
+import ui.MainBar;
+import ui.VirtualElement;
+import ui.VirtualList;
+import ui.controls.form.checkBox;
+import ui.controls.form.simpleString;
+import ui.controls.form.textInput;
 
+/**
+ *
+ * @author ad
+ */
+public class HistoryConfig 
+        extends VirtualList
+        implements
+        BrowserListener,
+        CommandListener {
 
-public class HistoryConfig implements
-	CommandListener 
-//#if FILE_IO
-	,ItemCommandListener
-        , BrowserListener
-//#endif
-{
     private Display display;
     private Displayable parentView;
-
-    Form f;
-    ChoiceGroup message;
-//#if FILE_IO
-    ChoiceGroup history;
-    TextField historyFolder;
-
-    Command cmdSetHistFolder=new Command(SR.MS_SELECT_HISTORY_FOLDER, Command.ITEM,11);
+    
+    private Vector itemsList=new Vector();
+    
+    
+    Command cmdOk = new Command(SR.MS_OK, Command.OK, 1);
+    Command cmdCancel = new Command(SR.MS_BACK, Command.BACK, 99);
+    Command cmdSetHistFolder=new Command(SR.MS_SELECT_HISTORY_FOLDER, Command.ITEM,2);
+    
+    private textInput historyFolder;
+    
+    private checkBox loadHistory;
+    private checkBox saveHistory;
+    private checkBox savePres;
+    private checkBox saveConfHistory;
+    private checkBox saveConfPres;
+    private checkBox win1251;
+//#ifdef TRANSLIT
+    private checkBox translit;
 //#endif
     
-    Command cmdOk=new Command(SR.MS_OK,Command.OK,1);    
-    Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK,99);
-    
     Config cf;
-    boolean mv[];
-    boolean his[];
     
-    /** Creates a new instance of ConfigForm */
+    /** Creates a new instance of newHistoryConfig */
     public HistoryConfig(Display display) {
-        this.display=display;
-        parentView=display.getCurrent();
+	this.display=display;
+	parentView=display.getCurrent();
         
         cf=Config.getInstance();
         
-        f=new Form(SR.MS_HISTORY_OPTIONS);
-        
-        message=new ChoiceGroup(SR.MS_MESSAGES, Choice.MULTIPLE);
-        message.append("Last messages", null);
+	setMainBarItem(new MainBar(SR.MS_HISTORY_OPTIONS));
 
-        boolean mv[]={
-            cf.lastMessages
-        };
-        this.mv=mv;
-        message.setSelectedFlags(mv);
-        f.append(message);
-        
-//#if FILE_IO
-        history=new ChoiceGroup(SR.MS_HISTORY, Choice.MULTIPLE); //locale
-        history.append(SR.MS_SAVE_HISTORY, null); //locale
-        history.append(SR.MS_SAVE_PRESENCES,null);    //locale     
-        history.append(SR.MS_SAVE_HISTORY_CONF, null); //locale
-        history.append(SR.MS_SAVE_PRESENCES_CONF, null); //locale
-        history.append(SR.MS_1251_CORRECTION, null); //locale
+        loadHistory = new checkBox(SR.MS_LOAD_HISTORY, cf.lastMessages); itemsList.addElement(loadHistory);
+        saveHistory = new checkBox(SR.MS_SAVE_HISTORY, cf.msgLog); itemsList.addElement(saveHistory);
+        savePres = new checkBox(SR.MS_SAVE_PRESENCES, cf.msgLogPresence); itemsList.addElement(savePres);
+        saveConfHistory = new checkBox(SR.MS_SAVE_HISTORY_CONF, cf.msgLogConf); itemsList.addElement(saveConfHistory);
+        saveConfPres = new checkBox(SR.MS_SAVE_PRESENCES_CONF, cf.msgLogConfPresence); itemsList.addElement(saveConfPres);
+        win1251 = new checkBox(SR.MS_1251_CORRECTION, cf.cp1251); itemsList.addElement(win1251);
 //#ifdef TRANSLIT
-//#         history.append(SR.MS_1251_TRANSLITERATE_FILENAMES, null); //locale
+        translit = new checkBox(SR.MS_1251_TRANSLITERATE_FILENAMES, cf.transliterateFilenames); itemsList.addElement(translit);
 //#endif
         
-        boolean his[]={
-            cf.msgLog,
-            cf.msgLogPresence,
-            cf.msgLogConf,
-            cf.msgLogConfPresence,
-            cf.cp1251
-//#ifdef TRANSLIT
-//#             , cf.transliterateFilenames
-//#endif
-        };
-        this.his=his;
+        itemsList.addElement(new simpleString(SR.MS_HISTORY_FOLDER));
+	historyFolder = new textInput(display, cf.msgPath);//128, TextField.ANY
+        itemsList.addElement(historyFolder);
         
-        history.setSelectedFlags(his);
-        f.append(history);
+	addCommand(cmdOk);
+	addCommand(cmdCancel);
+        addCommand(cmdSetHistFolder);
+	setCommandListener(this);
         
-        historyFolder=new TextFieldEx(SR.MS_HISTORY_FOLDER, null, 200, TextField.ANY);
-        historyFolder.setString(cf.msgPath);
-        historyFolder.addCommand(cmdSetHistFolder);
-        f.append(historyFolder);
-        historyFolder.setItemCommandListener(this);
-//#endif
-
-        f.addCommand(cmdOk);
-        f.addCommand(cmdCancel);
-        
-        f.setCommandListener(this);
-       
-        display.setCurrent(f);
+        moveCursorTo(getNextSelectableRef(-1));
+        attachDisplay(display);
     }
-    
-    public void commandAction(Command c, Displayable d) {
-        if (c==cmdOk) {
-            message.getSelectedFlags(mv);
-//#if FILE_IO
-            history.getSelectedFlags(his);
-//#endif
 
-            int mvctr=0;
-            cf.lastMessages=mv[mvctr++];
-	    
-//#if FILE_IO
-            cf.msgLog=his[0];
-            cf.msgLogPresence=his[1];
-            cf.msgLogConf=his[2];
-            cf.msgLogConfPresence=his[3];
-            cf.cp1251=his[4];
-//#ifdef TRANSLIT
-//#             cf.transliterateFilenames=his[5];
-//#endif
-            cf.msgPath=historyFolder.getString();
-//#endif             
-            
-            cf.saveToStorage();
-            
-            StaticData.getInstance().roster.reEnumRoster();
-            destroyView();
-        }
-        if (c==cmdCancel) destroyView();
+    protected int getItemCount() { return itemsList.size(); }
+
+    protected VirtualElement getItemRef(int index) {
+        return (VirtualElement)itemsList.elementAt(index);
     }
-    
-//#if FILE_IO
-    public void commandAction(Command command, Item item) {
+
+    public void BrowserFilePathNotify(String pathSelected) {
+        historyFolder.setValue(pathSelected);
+    }
+
+    public void commandAction(Command command, Displayable displayable) {
         if (command==cmdSetHistFolder) {
             new Browser(null, display, this, true);
+            return;
         }
-    }
+        if (command==cmdOk) {
+            cf.lastMessages=loadHistory.getValue();
+	    
+            cf.msgLog=saveHistory.getValue();
+            cf.msgLogPresence=savePres.getValue();
+            cf.msgLogConf=saveConfHistory.getValue();
+            cf.msgLogConfPresence=saveConfPres.getValue();
+            cf.cp1251=win1251.getValue();
+//#ifdef TRANSLIT
+            cf.transliterateFilenames=translit.getValue();
 //#endif
+            cf.msgPath=historyFolder.getValue();         
+            
+            cf.saveToStorage();
+        }
+        destroyView();
+    }
     
-    public void destroyView(){
-        if (display!=null)
-            display.setCurrent(parentView);
-    }
-
-//#if FILE_IO
-    public void BrowserFilePathNotify(String pathSelected) {
-        historyFolder.setString(pathSelected);
-    }
-//#endif
 }

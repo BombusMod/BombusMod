@@ -144,7 +144,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
             int filled=pos*width/100;
             int y=height-12;
             
-            if (pb==null)
+            //if (pb==null)
                 pb=new Progress(g, 0, y, 12, width);
             pb.draw(filled, capt);
         }
