@@ -1,7 +1,7 @@
 /*
  * textInput.java
  *
- * Created on 19 Май 2008 г., 23:01
+ * Created on 19.05.2008, 23:01
  *
  * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
  *

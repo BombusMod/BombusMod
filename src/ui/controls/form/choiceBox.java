@@ -44,7 +44,7 @@ public class choiceBox
     private int index=0;
 
     private String name;
-    private String caption;
+    //private String caption;
     
     private Vector items=new Vector();
     
@@ -53,10 +53,10 @@ public class choiceBox
     //protected Font font=FontCache.getMsgFont();
     
     /** Creates a new instance of choiceBox */
-    public choiceBox(String name, String caption) {
+    public choiceBox(String name/*, String caption*/) {
         super(RosterIcons.getInstance());
         this.name=name;
-        this.caption=caption;
+        //this.caption=caption;
     }
 
     protected int getImageIndex() { return -1; }
@@ -64,7 +64,7 @@ public class choiceBox
     public int getColor() { return Colors.LIST_INK; }
     
     public String toString() {
-        if (items.size()<1) return caption;
+        if (items.size()<1) return "";//caption;
         return (String) items.elementAt(index);
     }
 
@@ -84,7 +84,7 @@ public class choiceBox
     public int getSelectedIndex() { return index; }
     
     public void drawItem(Graphics g, int ofs, boolean sel) {
-        int captionWidth=getFont().stringWidth(caption)+4;
+        int captionWidth=0;//getFont().stringWidth(caption)+4;
         
         int width=g.getClipWidth()-captionWidth;
         int height=g.getClipHeight();
@@ -108,9 +108,9 @@ public class choiceBox
                 g.getClipX()+g.getClipWidth()-RosterIcons.getInstance().getWidth(), 
                 0 
         );
-        g.drawString(caption, 0, 0, Graphics.LEFT|Graphics.TOP);
-        g.translate(captionWidth, 0);
-        g.setClip(0, 2, width-RosterIcons.getInstance().getWidth(), height-2);
+        //g.drawString(caption, 2, 0, Graphics.LEFT|Graphics.TOP);
+        //g.translate(captionWidth, 0);
+        //g.setClip(0, 2, width-RosterIcons.getInstance().getWidth(), height-2);
         super.drawItem(g, ofs, sel);
     }
     

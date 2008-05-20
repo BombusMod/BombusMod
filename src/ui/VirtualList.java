@@ -1009,10 +1009,11 @@ public abstract class VirtualList
             win_top-=winHeight;
             if (win_top<0) {
                 win_top=0;
-                cursor=0;
+                cursor=getNextSelectableRef(0);
             }
             if (!cursorInWindow()) {
-                cursor=getElementIndexAt(itemLayoutY[cursor]-winHeight);
+                //cursor=getElementIndexAt(itemLayoutY[cursor]-winHeight);
+                cursor=getNextSelectableRef(getElementIndexAt(itemLayoutY[cursor]-winHeight));
                 if (((VirtualElement)getFocusedObject()).getVHeight()<=winHeight) 
                     fitCursorByTop();
             }
@@ -1030,10 +1031,11 @@ public abstract class VirtualList
             int endTop=listHeight-winHeight;
             if (endTop<win_top) {
                 win_top= (listHeight<winHeight)? 0 : endTop;
-                cursor=getItemCount()-1;
+                cursor=getPrevSelectableRef(getItemCount()-1);
             } else
                 if (!cursorInWindow()) {
-                    cursor=getElementIndexAt(itemLayoutY[cursor]+winHeight);
+                    //cursor=getElementIndexAt(itemLayoutY[cursor]+winHeight);
+                    cursor=getPrevSelectableRef(getElementIndexAt(itemLayoutY[cursor]-winHeight));
                    
                     if (((VirtualElement)getFocusedObject()).getVHeight()<=winHeight) fitCursorByTop();
                 }
