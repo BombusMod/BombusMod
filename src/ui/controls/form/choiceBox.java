@@ -42,21 +42,14 @@ public class choiceBox
         extends IconTextElement {
     
     private int index=0;
-
-    private String name;
-    //private String caption;
     
     private Vector items=new Vector();
     
     private boolean selectable=true;
     
-    //protected Font font=FontCache.getMsgFont();
-    
     /** Creates a new instance of choiceBox */
-    public choiceBox(String name/*, String caption*/) {
+    public choiceBox() {
         super(RosterIcons.getInstance());
-        this.name=name;
-        //this.caption=caption;
     }
 
     protected int getImageIndex() { return -1; }
@@ -74,8 +67,6 @@ public class choiceBox
     }
     
     public int getValue() { return index; }
-    
-    public String getName() { return name; }
     
     public void append(String value) { items.addElement(value); }
     
@@ -103,14 +94,8 @@ public class choiceBox
         g.setColor(oldColor);
 
         RosterIcons.getInstance().drawImage(
-                g, 
-                0x26, 
-                g.getClipX()+g.getClipWidth()-RosterIcons.getInstance().getWidth(), 
-                0 
+                g, 0x26, g.getClipX()+g.getClipWidth()-RosterIcons.getInstance().getWidth(), 0 
         );
-        //g.drawString(caption, 2, 0, Graphics.LEFT|Graphics.TOP);
-        //g.translate(captionWidth, 0);
-        //g.setClip(0, 2, width-RosterIcons.getInstance().getWidth(), height-2);
         super.drawItem(g, ofs, sel);
     }
     

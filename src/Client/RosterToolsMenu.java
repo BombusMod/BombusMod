@@ -35,7 +35,7 @@ import PrivacyLists.PrivacySelect;
 //#if AUTOTASK
 //# import AutoTasks.AutoTaskForm;
 //#endif
-import Fonts.ConfigFonts;
+import Fonts.newConfigFonts;
 //#ifdef SERVICE_DISCOVERY
 import ServiceDiscovery.ServiceDiscovery;
 //#endif
@@ -177,7 +177,7 @@ public class RosterToolsMenu extends Menu {
 //#                 return;
 //#endif
             case 6:
-                new ConfigFonts(display);
+                new newConfigFonts(display);
                 return;
 //#if (FILE_IO)
             case 7:

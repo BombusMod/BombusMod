@@ -27,7 +27,6 @@
 
 package Client;
 
-import java.util.Enumeration;
 import java.util.Vector;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
@@ -39,6 +38,7 @@ import ui.VirtualElement;
 import ui.VirtualList;
 import ui.controls.form.checkBox;
 import ui.controls.form.choiceBox;
+import ui.controls.form.numberInput;
 import ui.controls.form.passwordInput;
 import ui.controls.form.simpleString;
 import ui.controls.form.spacerItem;
@@ -63,7 +63,7 @@ public class newAccountForm
     private passwordInput passbox;
     private textInput servbox;
     private textInput ipbox;
-    private textInput portbox;
+    private numberInput portbox;
     private textInput resourcebox;
     private textInput nickbox;
     private checkBox sslbox;
@@ -77,7 +77,7 @@ public class newAccountForm
 //#endif
     private checkBox registerbox;
 	
-    private textInput keepAlive;
+    private numberInput keepAlive;
     private choiceBox keepAliveType;
     
 //#if HTTPPOLL || HTTPCONNECT  
@@ -105,39 +105,39 @@ public class newAccountForm
 	String mainbar = (newaccount)?SR.MS_NEW_ACCOUNT:(account.toString());
 	setMainBarItem(new MainBar(mainbar));
         
-        itemsList.addElement(new simpleString("str0", SR.MS_USERNAME));
-        userbox = new textInput(display, "userbox", account.getUserName()); //, 64, TextField.ANY
+        itemsList.addElement(new simpleString(SR.MS_USERNAME));
+        userbox = new textInput(display, account.getUserName()); //, 64, TextField.ANY
         itemsList.addElement(userbox);
     
-        itemsList.addElement(new simpleString("str1", SR.MS_PASSWORD));
-	passbox = new passwordInput(display, "passbox", account.getPassword());//, 64, TextField.PASSWORD
+        itemsList.addElement(new simpleString(SR.MS_PASSWORD));
+	passbox = new passwordInput(display, account.getPassword());//, 64, TextField.PASSWORD
         itemsList.addElement(passbox);
         
-        itemsList.addElement(new simpleString("str2", SR.MS_SERVER));
-        servbox = new textInput(display, "servbox", account.getServer());//, 64, TextField.ANY
+        itemsList.addElement(new simpleString(SR.MS_SERVER));
+        servbox = new textInput(display, account.getServer());//, 64, TextField.ANY
         itemsList.addElement(servbox);
         
-        itemsList.addElement(new simpleString("str3", SR.MS_HOST_IP));
-	ipbox = new textInput(display, "ipbox", account.getHostAddr());//, 64, TextField.ANY
+        itemsList.addElement(new simpleString(SR.MS_HOST_IP));
+	ipbox = new textInput(display, account.getHostAddr());//, 64, TextField.ANY
         itemsList.addElement(ipbox);
         
-        itemsList.addElement(new simpleString("str4", SR.MS_PORT));
-        portbox = new textInput(display, "portbox", Integer.toString(account.getPort()));//, 0, 65535
+        itemsList.addElement(new simpleString(SR.MS_PORT));
+        portbox = new numberInput(display, Integer.toString(account.getPort()), 0, 65535);//, 0, 65535
         itemsList.addElement(portbox);
         
-        sslbox = new checkBox("sslbox", SR.MS_SSL, account.getUseSSL()); itemsList.addElement(sslbox);
-        plainPwdbox = new checkBox("plainPwdbox", SR.MS_PLAIN_PWD, account.getPlainAuth()); itemsList.addElement(plainPwdbox);
-        noComprbox = new checkBox("noComprbox", SR.MS_NO_COMPRESSION, !account.useCompression()); itemsList.addElement(noComprbox);
-        confOnlybox = new checkBox("confOnlybox", SR.MS_CONFERENCES_ONLY, account.isMucOnly()); itemsList.addElement(confOnlybox);
+        sslbox = new checkBox(SR.MS_SSL, account.getUseSSL()); itemsList.addElement(sslbox);
+        plainPwdbox = new checkBox(SR.MS_PLAIN_PWD, account.getPlainAuth()); itemsList.addElement(plainPwdbox);
+        noComprbox = new checkBox(SR.MS_NO_COMPRESSION, !account.useCompression()); itemsList.addElement(noComprbox);
+        confOnlybox = new checkBox(SR.MS_CONFERENCES_ONLY, account.isMucOnly()); itemsList.addElement(confOnlybox);
 //#if HTTPCONNECT
 //#        proxybox = new checkBox("proxybox", SR.MS_PROXY_ENABLE, account.isEnableProxy()); itemsList.addElement(proxybox);
 //#elif HTTPPOLL        
 //#        pollingbox = new checkBox("pollingbox", "HTTP Polling", false); itemsList.addElement(pollingbox);
 //#endif
-        registerbox = new checkBox("registerbox", SR.MS_REGISTER_ACCOUNT, false); itemsList.addElement(registerbox);
+        registerbox = new checkBox(SR.MS_REGISTER_ACCOUNT, false); itemsList.addElement(registerbox);
         
-        itemsList.addElement(new simpleString("str5", SR.MS_KEEPALIVE));
-        keepAliveType=new choiceBox("keepAliveType");
+        itemsList.addElement(new simpleString(SR.MS_KEEPALIVE));
+        keepAliveType=new choiceBox();
         keepAliveType.append("by socket");
         keepAliveType.append("1 byte");
         keepAliveType.append("<iq/>");
@@ -145,8 +145,8 @@ public class newAccountForm
         keepAliveType.setSelectedIndex(account.keepAliveType);
         itemsList.addElement(keepAliveType);
 
-        itemsList.addElement(new simpleString("str6", SR.MS_KEEPALIVE_PERIOD));
-        keepAlive = new textInput(display, "keepAlive", Integer.toString(account.keepAlivePeriod));//10, 2096
+        itemsList.addElement(new simpleString(SR.MS_KEEPALIVE_PERIOD));
+        keepAlive = new numberInput(display, Integer.toString(account.keepAlivePeriod), 10, 2048);//10, 2096
         itemsList.addElement(keepAlive);
 
 //#if HTTPPOLL || HTTPCONNECT  
@@ -154,12 +154,12 @@ public class newAccountForm
 //#     private textInput proxyPort;
 //#endif
         
-        itemsList.addElement(new simpleString("str7", SR.MS_RESOURCE));
-        resourcebox = new textInput(display, "resourcebox", account.getResource());//64, TextField.ANY
+        itemsList.addElement(new simpleString(SR.MS_RESOURCE));
+        resourcebox = new textInput(display, account.getResource());//64, TextField.ANY
         itemsList.addElement(resourcebox);
         
-        itemsList.addElement(new simpleString("str8", SR.MS_NICKNAME));
-        nickbox = new textInput(display, "nickbox", account.getNick());//64, TextField.ANY
+        itemsList.addElement(new simpleString(SR.MS_NICKNAME));
+        nickbox = new textInput(display, account.getNick());//64, TextField.ANY
         itemsList.addElement(nickbox);
 
 //#if HTTPCONNECT
@@ -176,7 +176,7 @@ public class newAccountForm
 //# 	itemsList.addElement(proxyHost);
 //#endif
 
-        itemsList.addElement(new spacerItem("spacer1"));
+        itemsList.addElement(new spacerItem());
         
 	addCommand(cmdOk);
 	addCommand(cmdCancel);

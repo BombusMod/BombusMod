@@ -48,40 +48,40 @@ public class testForm
         //this.display=display;
         setMainBarItem(new MainBar("test form"));
         
-        simpleString testSimpleString0=new simpleString("testSimpleString0", "test string");
+        simpleString testSimpleString0=new simpleString("test string");
         itemsList.addElement(testSimpleString0);
-        simpleString testSimpleString1=new simpleString("testSimpleString1", "test checkBox");
+        simpleString testSimpleString1=new simpleString("test checkBox");
         itemsList.addElement(testSimpleString1);        
-        checkBox testCheckBox1=new checkBox("testCheckBox1", "checkBox1", false);
+        checkBox testCheckBox1=new checkBox("checkBox1", false);
         itemsList.addElement(testCheckBox1);
         
-        spacerItem testSpacerItem1=new spacerItem("testSpacerItem1");
+        spacerItem testSpacerItem1=new spacerItem();
         itemsList.addElement(testSpacerItem1);     
         
-        simpleString testSimpleString2=new simpleString("testSimpleString2", "test CheckBoxGroup");
+        simpleString testSimpleString2=new simpleString("test CheckBoxGroup");
         itemsList.addElement(testSimpleString2);   
-        checkBox testCheckBox2=new checkBox("testCheckBox2", "item1", true);
+        checkBox testCheckBox2=new checkBox("item1", true);
         itemsList.addElement(testCheckBox2);
-        checkBox testCheckBox3=new checkBox("testCheckBox3", "item2", true);
+        checkBox testCheckBox3=new checkBox("item2", true);
         itemsList.addElement(testCheckBox3);
         
-        spacerItem testSpacerItem2=new spacerItem("testSpacerItem2");
+        spacerItem testSpacerItem2=new spacerItem();
         itemsList.addElement(testSpacerItem2);  
 
-        simpleString testSimpleString3=new simpleString("testSimpleString3", "test textInput");
+        simpleString testSimpleString3=new simpleString("test textInput");
         itemsList.addElement(testSimpleString3);
-        textInput testTextInput1=new textInput(display, "testTextInput1", "text of input text");
+        textInput testTextInput1=new textInput(display, "text of input text");
         itemsList.addElement(testTextInput1);
         
-        spacerItem testSpacerItem3=new spacerItem("testSpacerItem3");
+        spacerItem testSpacerItem3=new spacerItem();
         itemsList.addElement(testSpacerItem3);  
-        spacerItem testSpacerItem4=new spacerItem("testSpacerItem4");
+        spacerItem testSpacerItem4=new spacerItem();
         itemsList.addElement(testSpacerItem4);
         
-        simpleString testSimpleString4=new simpleString("testSimpleString4", "test ChoiceGroup");
+        simpleString testSimpleString4=new simpleString("test ChoiceGroup");
         itemsList.addElement(testSimpleString4);
         
-        choiceBox testChoiceBox1=new choiceBox("testChoiceBox1"/*, "KeepAlive:"*/);
+        choiceBox testChoiceBox1=new choiceBox(/*, "KeepAlive:"*/);
         testChoiceBox1.append("by socket");
         testChoiceBox1.append("1 byte");
         testChoiceBox1.append("<iq/>");
@@ -90,15 +90,15 @@ public class testForm
         testChoiceBox1.setSelectedIndex(4);
         itemsList.addElement(testChoiceBox1);
 
-        spacerItem testSpacerItem5=new spacerItem("testSpacerItem5");
+        spacerItem testSpacerItem5=new spacerItem();
         itemsList.addElement(testSpacerItem5);  
 
-        simpleString testSimpleString5=new simpleString("testSimpleString5", "test passwordItem");
+        simpleString testSimpleString5=new simpleString("test passwordItem");
         itemsList.addElement(testSimpleString5);
-        passwordInput testPasswordInput1=new passwordInput(display, "testPasswordInput1", "pass");
+        passwordInput testPasswordInput1=new passwordInput(display, "pass");
         itemsList.addElement(testPasswordInput1);
 
-        spacerItem testSpacerItem6=new spacerItem("testSpacerItem6");
+        spacerItem testSpacerItem6=new spacerItem();
         itemsList.addElement(testSpacerItem6);
         
         moveCursorTo(getNextSelectableRef(-1));

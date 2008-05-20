@@ -27,6 +27,7 @@
 
 package ui.controls.form;
 
+import Client.Config;
 import Colors.Colors;
 import images.RosterIcons;
 import javax.microedition.lcdui.Command;
@@ -47,17 +48,15 @@ public class textInput
         extends IconTextElement {
 
     private String text;
-    private String name;
     
     private boolean selectable=true;
 
     private Display display;
     
     /** Creates a new instance of textInput */
-    public textInput(Display display, String name, String text) {
+    public textInput(Display display, String text) {
         super(RosterIcons.getInstance());
         this.display=display;
-        this.name=name;
         this.text=(text==null)?"":text;
     }
 
@@ -72,8 +71,6 @@ public class textInput
     }
     
     public String getValue() { return text; }
-
-    public String getName() { return name; }
 
     private void setValue(String text) { this.text=text; }
     
@@ -115,6 +112,7 @@ public class textInput
             t.addCommand(cmdOk);
             t.addCommand(cmdCancel);
             t.setCommandListener(this);
+            t.setConstraints(Config.getInstance().capsState?TextField.INITIAL_CAPS_SENTENCE:TextField.ANY);
             display.setCurrent(t);
         }
 

@@ -270,4 +270,9 @@ public class ComplexString extends Vector implements VirtualElement {
     public boolean isSelectable() {
         return true;
     }
+    
+    public void clearWHCache() {
+        width=0;
+        height=0;
+    }
 }

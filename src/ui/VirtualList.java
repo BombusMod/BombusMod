@@ -350,7 +350,8 @@ public abstract class VirtualList
         width=getWidth();	// patch for SE
         height=getHeight();
 
-        int mHeight=0, iHeight=0; // nokia fix
+        int mHeight=0; // nokia fix
+        int iHeight=0; // nokia fix
         
         Graphics g = graphics;      
 //#ifdef POPUPS
@@ -383,7 +384,7 @@ public abstract class VirtualList
         if (mainbar!=null)
             mHeight=mainbar.getVHeight(); // nokia fix
 
-        iHeight=FontCache.getBalloonFont().getHeight(); // nokia fix
+        iHeight=FontCache.getBarFont().getHeight(); // nokia fix
         
         if (paintTop) {
             if (reverse) {

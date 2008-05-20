@@ -1,7 +1,7 @@
 /*
- * spacerItem.java
+ * numberInput.java
  *
- * Created on 19 Май 2008 г., 23:41
+ * Created on 20.05.2008, 16:20
  *
  * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
  *
@@ -27,33 +27,33 @@
 
 package ui.controls.form;
 
-import Colors.Colors;
-import images.RosterIcons;
-import ui.IconTextElement;
+import javax.microedition.lcdui.Display;
 
 /**
  *
  * @author ad
  */
-public class spacerItem 
-        extends IconTextElement {
-    
-    private final static int ITEM_HEIGHT=4;
-    
-    private boolean selectable=false;
-    
-    /** Creates a new instance of spacerItem */
-    public spacerItem() {
-        super(RosterIcons.getInstance());
+public class numberInput
+    extends textInput {
+
+    private int max;
+    private int min;
+    private String initValue;  
+    /** Creates a new instance of numberInput */
+    public numberInput(Display display, String text, int min, int max) {
+        super(display, text);
+        this.min=min;
+        this.max=max;
+        initValue=text;
     }
-
-    protected int getImageIndex() { return -1; }
-
-    public int getColor() { return Colors.LIST_INK; }
     
-    public String toString() { return " "; }
-    
-    public int getVHeight(){ return ITEM_HEIGHT; }
-
-    public boolean isSelectable() { return selectable; }
+    public String getValue() {
+	try {
+	    int value=Integer.parseInt(super.getValue());
+	    if (value>max) return Integer.toString(max);
+	    if (value<min) return Integer.toString(min);
+	    return Integer.toString(value);
+	} catch (NumberFormatException e) { /* returning initValue */ }
+	return initValue;
+    }
 }

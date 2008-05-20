@@ -366,7 +366,7 @@ public class RosterItemActions extends Menu {
                     return;
 //#endif
                 case 1003: 
-                    new RenameGroup(display, null, c);
+                    new newRenameGroup(display, null, c);
                     return;
                 case 889: //idle
                     sd.roster.setQuerySign(true);
@@ -559,7 +559,7 @@ public class RosterItemActions extends Menu {
             {
                 switch (index) {
                     case 1001: //rename
-                        new RenameGroup(display, sg, null);
+                        new newRenameGroup(display, sg, null);
                         return;
                     case 1004: //delete
                         new AlertBox(SR.MS_DELETE_ASK, sg.getName(), display, sd.roster) {

@@ -39,15 +39,12 @@ public class simpleString
         extends IconTextElement {
 
     private String text;
-
-    private String name;
     
     private boolean selectable=false;
     
     /** Creates a new instance of simpleString */
-    public simpleString(String name, String text) {
+    public simpleString(String text) {
         super(RosterIcons.getInstance());
-        this.name=name;
         this.text=text;
     }
 
@@ -56,8 +53,6 @@ public class simpleString
     public int getColor() { return Colors.LIST_INK; }
     
     public String toString() { return text; }
-    
-    public String getName() { return name; }
     
     public boolean isSelectable() { return selectable; }
 }

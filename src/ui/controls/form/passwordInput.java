@@ -37,8 +37,8 @@ public class passwordInput
     extends textInput {
     
     /** Creates a new instance of passwordInput */
-    public passwordInput(Display display, String name, String text) {
-        super(display, name, text);
+    public passwordInput(Display display, String text) {
+        super(display, text);
     }
     
     public String toString(){

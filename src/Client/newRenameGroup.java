@@ -1,5 +1,7 @@
 /*
- * RenameGroup.java
+ * newRenameGroup.java
+ *
+ * Created on 20.05.2008, 15:26
  *
  * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
  *
@@ -27,22 +29,29 @@ package Client;
 
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
-import xmpp.extensions.IqQueryRoster;
 import java.util.Enumeration;
+import java.util.Vector;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
-import javax.microedition.lcdui.Form;
-import javax.microedition.lcdui.TextField;
 import locale.SR;
-import ui.controls.TextFieldCombo;
+import ui.MainBar;
+import ui.VirtualElement;
+import ui.VirtualList;
+import ui.controls.form.spacerItem;
+import ui.controls.form.textInput;
+import xmpp.extensions.IqQueryRoster;
 
-public class RenameGroup implements CommandListener{
-
+/**
+ *
+ * @author ad
+ */
+public class newRenameGroup 
+        extends VirtualList
+        implements CommandListener {
+    
     private Display display;
-    private Form f;
-    private TextFieldCombo groupName;
     private Group group;
     private Contact contact;
     
@@ -50,34 +59,49 @@ public class RenameGroup implements CommandListener{
     private Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 99);
 
     StaticData sd=StaticData.getInstance();
-
-    public RenameGroup(Display display, Group group, Contact contact) {
+    
+    private textInput groupName;
+    
+    private Vector itemsList=new Vector();
+    
+    /** Creates a new instance of newRenameGroup */
+    public newRenameGroup(Display display, Group group, Contact contact) {
         this.contact=contact;
         this.group=group;
         this.display=display;
+
+	setMainBarItem(new MainBar(SR.MS_RENAME));
         
-        f=new Form(SR.MS_NEWGROUP);
+        groupName = new textInput(display, (contact==null)?group.getName():contact.getGroup().getName()); // 32, TextField.ANY
+        itemsList.addElement(groupName);
         
-        groupName=new TextFieldCombo(SR.MS_MOVE, (contact==null)?group.getName():contact.getGroup().getName(), 32, TextField.ANY, "group", display);
-        f.append(groupName);
+        itemsList.addElement(new spacerItem());
         
-        f.addCommand(cmdOk);
-        f.addCommand(cmdCancel);
+	addCommand(cmdOk);
+	addCommand(cmdCancel);
+	setCommandListener(this);
         
-        f.setCommandListener(this);
+        moveCursorTo(getNextSelectableRef(-1));
+        attachDisplay(display);
         
-        display.setCurrent(f);
+    }
+
+    protected int getItemCount() { return itemsList.size(); }
+
+    protected VirtualElement getItemRef(int index) {
+        return (VirtualElement)itemsList.elementAt(index);
     }
 
     public void commandAction(Command command, Displayable displayable) {
         if (command==cmdOk) {
             if (contact==null)
-                sd.roster.theStream.send(new IqQueryRenameGroup (group.getName(), groupName.getString()));
+                sd.roster.theStream.send(new IqQueryRenameGroup (group.getName(), groupName.getValue()));
             else
-                sd.roster.theStream.send(new IqQueryRoster(contact.getBareJid(), contact.nick, groupName.getString(), null));        
+                sd.roster.theStream.send(new IqQueryRoster(contact.getBareJid(), contact.nick, groupName.getValue(), null));        
         }
         display.setCurrent(StaticData.getInstance().roster);
     }
+    
     
     class IqQueryRenameGroup extends Iq {
         public IqQueryRenameGroup(String sourceGroup, String destGroup){

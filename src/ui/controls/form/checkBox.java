@@ -41,15 +41,12 @@ public class checkBox
     
     private boolean state=false;
     private String text="";
-
-    private String name;
     
     private boolean selectable=true;
     
     /** Creates a new instance of checkBox */
-    public checkBox(String name, String text, boolean state) {
+    public checkBox(String text, boolean state) {
         super(RosterIcons.getInstance());
-        this.name=name;
         this.text=text;
         this.state=state;
     }
@@ -65,8 +62,6 @@ public class checkBox
     }
     
     public boolean getValue() { return state; }
-    
-    public String getName() { return name; }
     
     public boolean isSelectable() { return selectable; }
 }
