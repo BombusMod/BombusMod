@@ -266,4 +266,8 @@ public class ComplexString extends Vector implements VirtualElement {
 //#         return null;
 //#     }
 //#endif
+
+    public boolean isSelectable() {
+        return true;
+    }
 }

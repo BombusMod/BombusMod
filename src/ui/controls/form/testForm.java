@@ -74,6 +74,23 @@ public class testForm
         
         simpleString testSimpleString4=new simpleString("testSimpleString4", "test string 4");
         itemsList.addElement(testSimpleString4);
+
+        spacerItem testSpacerItem4=new spacerItem("testSpacerItem4");
+        itemsList.addElement(testSpacerItem4);
+        
+        choiceBox testChoiceBox1=new choiceBox("testChoiceBox1", "KeepAlive:");
+        testChoiceBox1.append("by socket");
+        testChoiceBox1.append("1 byte");
+        testChoiceBox1.append("<iq/>");
+        testChoiceBox1.append("ping");
+        testChoiceBox1.append("a b c d e f g h i j k l m n o p q r s t u v w x y z");
+        testChoiceBox1.setSelectedIndex(4);
+        itemsList.addElement(testChoiceBox1);
+
+        spacerItem testSpacerItem5=new spacerItem("testSpacerItem5");
+        itemsList.addElement(testSpacerItem5);
+        
+        moveCursorTo(getNextSelectableRef(-1));
         attachDisplay(display);
     }
 

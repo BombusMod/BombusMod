@@ -128,4 +128,6 @@ public class textInput
             display.setCurrent(parentView);
         }
     }
+    
+    public boolean isSelectable() { return selectable; }
 }

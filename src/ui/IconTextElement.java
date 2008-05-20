@@ -41,6 +41,12 @@ abstract public class IconTextElement implements VirtualElement {
     protected ImageList il;
 
     private int ilImageSize=0;
+    
+    private boolean selectable=true;
+    
+    public boolean isSelectable() {
+        return selectable;
+    }
 
 //#ifdef SECONDSTRING
 //#     private Font getSecondFont() {
@@ -56,7 +62,7 @@ abstract public class IconTextElement implements VirtualElement {
 
     public int getFontIndex() { return 0;}
     
-    private Font getFont() {
+    public Font getFont() {
         return (getFontIndex()==0)?
             FontCache.getRosterNormalFont():
             FontCache.getRosterBoldFont();

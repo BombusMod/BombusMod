@@ -59,11 +59,7 @@ public class checkBox
     public int getColor() { return Colors.LIST_INK; }
     
     public String toString() { return text; }
-    
-//#ifdef SECONDSTRING
-//#         public String getSecondString() { return null; }
-//#endif
-        
+
     public void onSelect(){
         state=!state;
     }
@@ -71,4 +67,6 @@ public class checkBox
     public boolean getValue() { return state; }
     
     public String getName() { return name; }
+    
+    public boolean isSelectable() { return selectable; }
 }

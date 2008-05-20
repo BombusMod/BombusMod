@@ -46,4 +46,6 @@ public interface VirtualElement {
 //#endif
     
     public void onSelect();
+    
+    public boolean isSelectable();
 }

@@ -636,7 +636,8 @@ public abstract class VirtualList
         if (index<0) index=0;
         if (index>=count) index=count-1; 
         
-        cursor=index;
+        if (getItemRef(index).isSelectable())
+            cursor=index;
         stickyWindow=true;
         
         repaint();
@@ -880,14 +881,24 @@ public abstract class VirtualList
 //# 	System.out.println("keyUp");
 //#endif
         if (cursor==0) {
-            if (wrapping)  moveCursorEnd(); else itemPageUp();
+            if (wrapping) {
+                if (getItemRef(getItemCount()-1).isSelectable())
+                    moveCursorEnd();
+                else
+                    moveCursorTo(getItemCount()-2);
+            } else {
+                itemPageUp();
+            }
             setRotator();
             return;
         }
 
         if (itemPageUp()) return;
         //stickyWindow=true;
-        cursor--;
+        if (getItemRef(cursor-1).isSelectable())
+            cursor--;
+        else
+            cursor=getPrevSelectableRef(cursor);
         fitCursorByBottom();
         setRotator();
     }
@@ -896,19 +907,54 @@ public abstract class VirtualList
 //#ifdef DEBUG
 //#         System.out.println("keyDwn");
 //#endif
-	if (cursor==getItemCount()-1) 
-        { 
-            if (wrapping) moveCursorHome(); else itemPageDown();
+	if (cursor==getItemCount()-1) { 
+            if (wrapping) {
+                moveCursorHome();
+            } else {
+                itemPageDown();
+            }
             setRotator();
             return; 
         }
         
         if (itemPageDown()) return;
-        stickyWindow=true; 
-        cursor++;
+        stickyWindow=true;
+        if (getItemRef(cursor+1).isSelectable())
+            cursor++;
+        else {
+            cursor=getNextSelectableRef(cursor);
+        }
         setRotator();
     }
     
+    public int getPrevSelectableRef(int curRef) {
+        int prevRef=curRef;
+        boolean process=true;
+        while (process) {
+            prevRef--;
+            if (getItemRef(prevRef).isSelectable())
+                break;
+            if (prevRef==0)
+                prevRef=getItemCount();
+        }
+        
+        return prevRef;
+    }
+
+    public int getNextSelectableRef(int curRef) {
+        int nextRef=curRef;
+        boolean process=true;
+        while (process) {
+            nextRef++;
+            if (nextRef==getItemCount())
+                nextRef=0;
+            if (getItemRef(nextRef).isSelectable())
+                break;
+        }
+        
+        return nextRef;
+    }
+
     private boolean itemPageDown() {
         try {
             stickyWindow=false;

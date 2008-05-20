@@ -58,4 +58,6 @@ public class simpleString
     public String toString() { return text; }
     
     public String getName() { return name; }
+    
+    public boolean isSelectable() { return selectable; }
 }

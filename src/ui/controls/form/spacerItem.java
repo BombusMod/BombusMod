@@ -59,4 +59,6 @@ public class spacerItem
     public String getName() { return name; }
     
     public int getVHeight(){ return ITEM_HEIGHT; }
+
+    public boolean isSelectable() { return selectable; }
 }
