@@ -38,7 +38,7 @@ import javax.microedition.io.Connector;
  *
  * @author evgs
  */
-class FileJSR75 extends FileIO{
+class FileJSR75 extends FileIO {
     private javax.microedition.io.file.FileConnection fileConnection;
 
     /** Creates a new instance of FileJSR75 */

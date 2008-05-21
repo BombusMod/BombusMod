@@ -588,3 +588,6 @@ Bar font	Шрифт панелей
 Popup & ballon font	Шрифт попапов и баллунов
 Fonts options	Настройка шрифтов
 Second line	Дополнительная строка
+
+Load history	Подгружать историю
+Connect to	Подключиться к

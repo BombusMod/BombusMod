@@ -330,6 +330,8 @@ public class ConfigForm
 //#endif
 
         cf.autoSubscribe=subscr.getSelectedIndex();
+        
+        cf.notInListDropLevel=nil.getSelectedIndex();
 
 //#ifdef SMILES
         cf.smiles=smiles.getValue();

@@ -64,8 +64,6 @@ public class defForm
 	addCommand(cmdOk);
 	addCommand(cmdCancel);
 	setCommandListener(this);
-        
-        //setFullScreenMode(Config.getInstance().fullscreen);
     }
 
     protected int getItemCount() { return itemsList.size(); }
@@ -75,6 +73,7 @@ public class defForm
     }
     
     public void touchLeftPressed(){ cmdOk(); }
+    public void touchRightPressed(){ cmdCancel(); }
 
     public void commandAction(Command command, Displayable displayable) {
 	if (command==cmdCancel) {

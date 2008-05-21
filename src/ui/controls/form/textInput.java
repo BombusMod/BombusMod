@@ -79,14 +79,11 @@ public class textInput
         int height=g.getClipHeight();
 
         int oldColor=g.getColor();
-
-        g.setColor(0xc0c0c0);
-        g.drawRect(1, 1, width-2, height-2);
         
         g.setColor(0xffffff);
         g.fillRect(2, 2, width-4, height-4);
-        
-        g.setColor((sel)?0xff0000:0x668866);
+
+        g.setColor((sel)?Colors.CURSOR_OUTLINE:Colors.CURSOR_BGND);
         g.drawRect(0, 0, width-1, height-1);
         
         g.setColor(oldColor);

@@ -56,12 +56,12 @@ public class Colors {
     public static int HEAP_TOTAL=0xffffff;
     public static int HEAP_FREE=0x00007f;
     
-    public static int CURSOR_BGND=0xbabaff;
-    public static int CURSOR_OUTLINE=0xa5a5a5;
+    public static int CURSOR_BGND=0xbbddee;
+    public static int CURSOR_OUTLINE=0x1ea5c5;
     
-    public static int SCROLL_BRD=0xbbbbbb;
-    public static int SCROLL_BAR=0x950d04;
-    public static int SCROLL_BGND=0xffffff;
+    public static int SCROLL_BRD=0x565656;
+    public static int SCROLL_BAR=0x929292;
+    public static int SCROLL_BGND=0x727272;
     
     public static int POPUP_MESSAGE_INK = 0x4866ad;
     public static int POPUP_MESSAGE_BGND = 0xffffe0;

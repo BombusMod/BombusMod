@@ -97,7 +97,7 @@ public class ArchiveList
 
     private String start_body="<START_BODY>";
     private String end_body="<END_BODY>";
-    private Config cf=Config.getInstance();
+    private Config cf;
 //#endif
     private int where=1;
     /** Creates a new instance of ArchiveList */
@@ -105,6 +105,7 @@ public class ArchiveList
  	super ();
         this.where=where;
         this.caretPos=caretPos;
+        cf=Config.getInstance();
         archive=new MessageArchive(where);
         //enableListWrapping(true); //TEST:������� ����� ����� ������
 	setCommandListener(this);
@@ -123,8 +124,7 @@ public class ArchiveList
 	}
         
         attachDisplay(display);
-        
-        
+
         try {
             focusedItem(0);
         } catch (Exception e) {}

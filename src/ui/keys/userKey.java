@@ -123,6 +123,7 @@ public class userKey extends IconTextElement {
     public int getColor(){ return Colors.LIST_INK; }
     
     protected int getImageIndex() {return active?0:5;}
+    
     public void onSelect(){};
     
     public String getTipString() { return null; }

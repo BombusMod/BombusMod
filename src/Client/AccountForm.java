@@ -29,6 +29,8 @@ package Client;
 
 import javax.microedition.lcdui.Display;
 import locale.SR;
+import ui.SplashScreen;
+import ui.controls.AlertBox;
 import ui.controls.form.boldString;
 import ui.controls.form.checkBox;
 import ui.controls.form.choiceBox;
@@ -83,7 +85,7 @@ public class AccountForm
 	this.accountSelect = accountSelect;
         this.display=display;
         
-	newaccount=account==null;
+	newaccount=(account==null);
 	if (newaccount) account=new Account();
 	this.account=account;
 	
@@ -166,69 +168,61 @@ public class AccountForm
         moveCursorTo(getNextSelectableRef(-1));
         attachDisplay(display);
     }
-/*
-    protected String getValue(String name) {
-        String value="";
-	for (Enumeration r=itemsList.elements(); r.hasMoreElements(); ){
-	    VirtualElement e=(VirtualElement)r.nextElement();
-	    if (e.getName().equals(name)) {
-                value=e.getValue();
-                break;
-            }
-	}
-        return value;
-    }
-    
-    protected boolean getBoolValue(String name) {
-        if (getValue(name).equals("true"))
-            return true;
-        return false;
-    }
-    
-    protected int getIntValue(String name) {
-        try {
-            return Integer.parseInt(getValue(name));
-        } catch (Exception ex) {}
-        return 0;
-    }
-*/
     
     public void cmdOk() {
-	    String user = userbox.getValue();
-	    int at = user.indexOf('@');
-	    if (at!=-1) user=user.substring(0, at);
-	    account.setUserName(user.trim().toLowerCase());
-            
-	    account.setPassword(passbox.getValue());
-            
-	    account.setServer(servbox.getValue().trim().toLowerCase());
-	    account.setHostAddr(ipbox.getValue());
-	    account.setResource(resourcebox.getValue());
-	    account.setNick(nickbox.getValue());
-	    account.setUseSSL(sslbox.getValue());
-	    account.setPlainAuth(plainPwdbox.getValue());
-            account.setUseCompression(!noComprbox.getValue());
-	    account.setMucOnly(confOnlybox.getValue());
+        String user = userbox.getValue();
+        int at = user.indexOf('@');
+        if (at!=-1) user=user.substring(0, at);
+        account.setUserName(user.trim().toLowerCase());
+
+        account.setPassword(passbox.getValue());
+
+        account.setServer(servbox.getValue().trim().toLowerCase());
+        account.setHostAddr(ipbox.getValue());
+        account.setResource(resourcebox.getValue());
+        account.setNick(nickbox.getValue());
+        account.setUseSSL(sslbox.getValue());
+        account.setPlainAuth(plainPwdbox.getValue());
+        account.setUseCompression(!noComprbox.getValue());
+        account.setMucOnly(confOnlybox.getValue());
 
 //#if HTTPPOLL || HTTPCONNECT            
 //# 	    account.setEnableProxy(proxybox.getValue());
 //#endif
-	    account.setPort(Integer.parseInt(portbox.getValue()));
+        account.setPort(Integer.parseInt(portbox.getValue()));
 //#if HTTPPOLL || HTTPCONNECT 
 //# 	    account.setProxyHostAddr(proxyHost.getValue());
 //#         account.setProxyPort(proxyPort.getValue());
 //#endif
-            
-            account.keepAlivePeriod=Integer.parseInt(keepAlive.getValue());
-            account.keepAliveType=keepAliveType.getValue();
-	    
-	    if (newaccount) accountSelect.accountList.addElement(account);
-	    accountSelect.rmsUpdate();
-	    accountSelect.commandState();
-	    
-	    if (registerbox.getValue())
-		new AccountRegister(account, display, parentView); 
-	    else
-                destroyView();
+
+        account.keepAlivePeriod=Integer.parseInt(keepAlive.getValue());
+        account.keepAliveType=keepAliveType.getValue();
+
+        if (newaccount) accountSelect.accountList.addElement(account);
+        accountSelect.rmsUpdate();
+        accountSelect.commandState();
+
+        if (registerbox.getValue())
+            new AccountRegister(account, display, parentView); 
+        else {
+            destroyView();
+        }
+        account=null;
+    }
+
+    public void destroyView(){
+        if (newaccount) {
+            new AlertBox(SR.MS_CONECT_TO, account.getBareJid()+"?", display, StaticData.getInstance().roster) {
+                public void yes() { startLogin();}
+                public void no() { }
+            };
+        }
+        if (display!=null)  
+            display.setCurrent(parentView);
+    }
+    
+    private void startLogin(){
+        Account.loadAccount(true);
+        SplashScreen.getInstance().close();
     }
 }

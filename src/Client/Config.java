@@ -28,6 +28,9 @@
 package Client;
 import images.RosterIcons;
 import images.SmilesIcons;
+//#ifdef FILE_IO
+import io.file.FileIO;
+//#endif
 import java.io.*;
 import java.util.*;
 import midlet.BombusMod;
@@ -73,6 +76,7 @@ public class Config {
     public final static int XENIUM99=12;
     public final static int SAMSUNG=14;
     public final static int LG=15;
+    public final static int JBED=16;
     public final static int WTK=50;
     public final static int OTHER=99;
     
@@ -749,7 +753,13 @@ type = \"-=Siemens=-\";
             } else if (platform.startsWith("j2me")) {
                 phoneManufacturer=J2ME;
                 return;
-            } else {
+            } else if (platform.startsWith("Jbed")) {
+                phoneManufacturer=JBED;
+//#ifdef FILE_IO
+                try { FileIO f=FileIO.createConnection(""); } catch (Exception ex) { }
+//#endif
+                return;
+            }else {
                 phoneManufacturer=OTHER;
             }
         }

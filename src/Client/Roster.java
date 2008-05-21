@@ -1114,7 +1114,7 @@ public class Roster
         }
         //
         theStream.enableRosterNotify(true);
-        rpercent=60;
+        rpercent=50;
 
         if (sd.account.isMucOnly()) {
             setProgress(SR.MS_CONNECTED,100);

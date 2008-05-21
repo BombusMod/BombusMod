@@ -128,13 +128,9 @@ public class BombusMod extends MIDlet implements Runnable{
             s.setProgress("Entering setup",22);
         
         s.setProgress(24);
-        
         if (!selAccount && cf.autoLogin) {
             // connect whithout account select
-            selAccount=(Account.loadAccount(cf.autoLogin)==null);
-	    if (!cf.autoLogin) {
-                s.close();
-            }
+            Account.loadAccount(cf.autoLogin);
         } else {
             new AccountSelect(display, true);
         }

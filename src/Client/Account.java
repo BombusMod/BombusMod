@@ -61,23 +61,26 @@ public class Account extends IconTextElement{
 	
     public int keepAlivePeriod=200;
     public int keepAliveType=1;
-
+    
+    static StaticData sd=StaticData.getInstance();
+    static Config cf;
+    
     public Account() {
         super(RosterIcons.getInstance());
     }
     
     public static Account loadAccount(boolean launch){
-	StaticData sd=StaticData.getInstance();
-	Account a=sd.account=Account.createFromStorage(Config.getInstance().accountIndex);
+        cf=Config.getInstance();
+	Account a=sd.account=Account.createFromStorage(cf.accountIndex);
 	if (a!=null) {
             if (sd.roster.isLoggedIn())
                 sd.roster.logoff(null);
 	    sd.roster.resetRoster();
             if (launch) {
-                if (Config.getInstance().loginstatus==Presence.PRESENCE_OFFLINE) {
+                if (cf.loginstatus==Presence.PRESENCE_OFFLINE) {
                     sd.roster.sendPresence(Presence.PRESENCE_INVISIBLE, null);    
                 } else {
-                    sd.roster.sendPresence(Config.getInstance().loginstatus, null);
+                    sd.roster.sendPresence(cf.loginstatus, null);
                 }
             }
         }

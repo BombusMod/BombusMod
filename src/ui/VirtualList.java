@@ -125,7 +125,8 @@ public abstract class VirtualList
     
     public void touchLeftPressed(){}
     public void touchRightPressed(){
-        destroyView();
+        if (canBack)
+            destroyView();
     }
 
     public static final short SIEMENS_GREEN=-11;

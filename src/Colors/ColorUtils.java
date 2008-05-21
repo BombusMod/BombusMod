@@ -140,7 +140,6 @@ public class ColorUtils {
     
     
 //#ifdef COLORS
-
 /*
      public static void saveSkin(String skinF) {
         skinFile=skinF;
@@ -195,7 +194,7 @@ public class ColorUtils {
         skin=null;
         skinFile=null;
     }
-     */
+*/
     private static String loadString(String key) {
         if (skin==null) {
             skin=new StringLoader().hashtableLoader(skinFile);

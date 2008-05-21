@@ -1,0 +1,2 @@
+/skins/default.txt	default
+/skins/tkabber.txt	Tkabber

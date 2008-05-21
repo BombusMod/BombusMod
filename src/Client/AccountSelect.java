@@ -159,7 +159,15 @@ public class AccountSelect
             return;
         destroyView();
     }
-    
+
+    public void destroyView(){
+        if(accountList.size()>0) {
+            if (StaticData.getInstance().account==null)
+                Account.loadAccount(false);
+            display.setCurrent(StaticData.getInstance().roster);
+        }
+    }
+
     private void delAccount(){
         if (cf.accountIndex>cursor) cf.accountIndex--;
         cf.saveToStorage();
@@ -172,12 +180,10 @@ public class AccountSelect
     }
     
     private void switchAccount(boolean login){
-        if (!login) 
-            parentView=StaticData.getInstance().roster;
-        destroyView();
         cf.accountIndex=cursor;
         cf.saveToStorage();
         Account.loadAccount(login);
+        destroyView();
     }
     
     public void eventOk(){

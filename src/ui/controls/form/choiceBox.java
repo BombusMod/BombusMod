@@ -27,6 +27,7 @@
 package ui.controls.form;
 
 import Colors.Colors;
+import Colors.Colors;
 import Fonts.FontCache;
 import images.RosterIcons;
 import java.util.Vector;
@@ -75,21 +76,16 @@ public class choiceBox
     public int getSelectedIndex() { return index; }
     
     public void drawItem(Graphics g, int ofs, boolean sel) {
-        int captionWidth=0;//getFont().stringWidth(caption)+4;
-        
-        int width=g.getClipWidth()-captionWidth;
+        int width=g.getClipWidth();
         int height=g.getClipHeight();
 
         int oldColor=g.getColor();
 
-        g.setColor(0xc0c0c0);
-        g.drawRect(captionWidth+1, 1, width-2, height-2);
+        g.setColor((sel)?Colors.CURSOR_BGND:Colors.LIST_BGND);
+        g.fillRect(2, 2, width-4, height-4);
         
-        g.setColor(0xffffff);
-        g.fillRect(captionWidth+2, 2, width-4, height-4);
-        
-        g.setColor((sel)?0xff0000:0x668866);
-        g.drawRect(captionWidth+0, 0, width-1, height-1);
+        g.setColor((sel)?Colors.CURSOR_OUTLINE:Colors.CURSOR_BGND);
+        g.drawRect(0, 0, width-1, height-1);
         
         g.setColor(oldColor);
 

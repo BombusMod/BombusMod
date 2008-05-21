@@ -55,18 +55,21 @@ public abstract class FileIO {
         if (fileSystemType==NOT_DETECTED) {
             fileSystemType=NONE;
             try {
-                Class.forName("javax.microedition.io.file.FileConnection");
+                if (Config.getInstance().phoneManufacturer!=Config.JBED)
+                    Class.forName("javax.microedition.io.file.FileConnection");
                 fileSystemType=JSR75;
                 if (Config.getInstance().phoneManufacturer==Config.SIEMENS) fileSystemType=JSR75_SIEMENS;
-            } catch (Exception e) {}
-            try {
-                Class.forName("com.motorola.io.FileConnection");
-                fileSystemType=COM_MOTOROLA;
-            } catch (Exception e) {}
-            try {
-                Class.forName("com.siemens.mp.io.File");
-                fileSystemType=COM_SIEMENS;
-            } catch (Exception e) {}
+            } catch (Exception e) {
+                try {
+                    Class.forName("com.motorola.io.FileConnection");
+                    fileSystemType=COM_MOTOROLA;
+                } catch (Exception e2) {
+                    try {
+                        Class.forName("com.siemens.mp.io.File");
+                        fileSystemType=COM_SIEMENS;
+                    } catch (Exception e3) {}
+                }
+            }
             //System.out.println("Detected fs:"+fileSystemType );
         }
         switch (fileSystemType) {

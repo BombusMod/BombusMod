@@ -40,8 +40,7 @@ public class StaticData {
     public Roster roster;
     
     public Account account;
-    
-    public int account_index;
+
 //#ifdef AUTOTASK
 //#     public AutoTask autoTask;
 //#endif
@@ -49,7 +48,8 @@ public class StaticData {
     private StaticData() { }
     
     public static StaticData getInstance(){
-        if (sd==null) sd=new StaticData();
+        if (sd==null) 
+            sd=new StaticData();
         return sd;
     }
 

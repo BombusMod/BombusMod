@@ -626,6 +626,8 @@ public class SR {
     public static String MS_SECOND_LINE=loadString("Second line");
 
     public static String MS_LOAD_HISTORY=loadString("Load history");
+
+    public static String MS_CONECT_TO=loadString("Connect to");
     
     private SR() { }
     
