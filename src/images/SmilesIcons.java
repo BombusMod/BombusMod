@@ -51,15 +51,21 @@ public class SmilesIcons extends ImageList {
     public static ImageList getInstance() {
 	if (instance==null){
             try {
-                Vector[] smiles=new StringLoader().stringLoader(restxt,1);
-                cols=(smiles[0].size()/SMILES_IN_ROW);
-                cols++;
-            } catch (Exception e) { 
+                int smilesCount=((Vector[]) new StringLoader().stringLoader(restxt,1))[0].size();
+                cols=ceil(SMILES_IN_ROW, smilesCount);
+            } catch (Exception e) {
                 System.out.print("Can't load ");
                 System.out.println(restxt);
             }
             instance=new SmilesIcons();
         }
 	return instance;
+    }
+    
+    private static int ceil(int rows, int count){
+        int cols=count/rows;
+        if (count>(cols*rows))
+            cols++;
+        return cols;
     }
 }

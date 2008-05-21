@@ -80,7 +80,7 @@ public class textInput
 
         int oldColor=g.getColor();
         
-        g.setColor(0xffffff);
+        g.setColor(Colors.LIST_BGND);
         g.fillRect(2, 2, width-4, height-4);
 
         g.setColor((sel)?Colors.CURSOR_OUTLINE:Colors.CURSOR_BGND);
