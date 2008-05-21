@@ -618,7 +618,7 @@ public abstract class VirtualList
     public void moveCursorHome(){
         stickyWindow=true;
         if (cursor>0) {
-            cursor=0;
+            cursor=getNextSelectableRef(-1);
         }
         setRotator();
     }

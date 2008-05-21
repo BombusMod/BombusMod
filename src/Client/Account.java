@@ -83,19 +83,6 @@ public class Account extends IconTextElement{
         }
         return a;
     }
-
-    public static Account createFromJad(){
-        Account a=new Account();
-        MIDlet m=BombusMod.getInstance();
-        try {
-            a.userName=m.getAppProperty("def_user");
-            a.password=m.getAppProperty("def_pass");
-            a.server=m.getAppProperty("def_server");
-            a.hostAddr=m.getAppProperty("def_ip");
-        } catch (Exception e) { }
-            if (a.server==null) return null;
-        return a;
-    }
     
     public static Account createFromDataInputStream(DataInputStream inputStream){
         

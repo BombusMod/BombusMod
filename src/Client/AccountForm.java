@@ -27,20 +27,14 @@
 
 package Client;
 
-import java.util.Vector;
-import javax.microedition.lcdui.Command;
-import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
-import javax.microedition.lcdui.Displayable;
 import locale.SR;
-import ui.MainBar;
-import ui.VirtualElement;
-import ui.VirtualList;
+import ui.controls.form.boldString;
 import ui.controls.form.checkBox;
 import ui.controls.form.choiceBox;
+import ui.controls.form.defForm;
 import ui.controls.form.numberInput;
 import ui.controls.form.passwordInput;
-import ui.controls.form.simpleString;
 import ui.controls.form.spacerItem;
 import ui.controls.form.textInput;
 
@@ -49,16 +43,10 @@ import ui.controls.form.textInput;
  * @author ad
  */
 public class AccountForm 
-        extends VirtualList
-        implements CommandListener {
+        extends defForm {
 
     private final AccountSelect accountSelect;
-    
-    private Display display;
-    private Displayable parentView;
-    
-    private Vector itemsList=new Vector();
-    
+
     private textInput userbox;
     private passwordInput passbox;
     private textInput servbox;
@@ -84,44 +72,41 @@ public class AccountForm
 //#     private textInput proxyHost;
 //#     private textInput proxyPort;
 //#endif
-    
-    Command cmdOk = new Command(SR.MS_OK, Command.OK, 1);
-    Command cmdCancel = new Command(SR.MS_BACK, Command.BACK, 99);
-    
+
     Account account;
     
     boolean newaccount;
     
     /** Creates a new instance of newAccountForm */
     public AccountForm(AccountSelect accountSelect, Display display, Account account) {
+        super(display, null);
 	this.accountSelect = accountSelect;
-	this.display=display;
-	parentView=display.getCurrent();
-	
-	newaccount= account==null;
+        this.display=display;
+        
+	newaccount=account==null;
 	if (newaccount) account=new Account();
 	this.account=account;
 	
 	String mainbar = (newaccount)?SR.MS_NEW_ACCOUNT:(account.toString());
-	setMainBarItem(new MainBar(mainbar));
+        getMainBarItem().setElementAt(mainbar, 0);
         
-        itemsList.addElement(new simpleString(SR.MS_USERNAME));
+        itemsList.addElement(new boldString(SR.MS_USERNAME));
         userbox = new textInput(display, account.getUserName()); //, 64, TextField.ANY
         itemsList.addElement(userbox);
     
-        itemsList.addElement(new simpleString(SR.MS_PASSWORD));
+        itemsList.addElement(new boldString(SR.MS_PASSWORD));
 	passbox = new passwordInput(display, account.getPassword());//, 64, TextField.PASSWORD
         itemsList.addElement(passbox);
         
-        itemsList.addElement(new simpleString(SR.MS_SERVER));
+        itemsList.addElement(new boldString(SR.MS_SERVER));
         servbox = new textInput(display, account.getServer());//, 64, TextField.ANY
         itemsList.addElement(servbox);
         
-        itemsList.addElement(new simpleString(SR.MS_HOST_IP));
+        itemsList.addElement(new boldString(SR.MS_HOST_IP));
 	ipbox = new textInput(display, account.getHostAddr());//, 64, TextField.ANY
         itemsList.addElement(ipbox);
         
-        itemsList.addElement(new simpleString(SR.MS_PORT));
+        itemsList.addElement(new boldString(SR.MS_PORT));
         portbox = new numberInput(display, Integer.toString(account.getPort()), 0, 65535);//, 0, 65535
         itemsList.addElement(portbox);
         
@@ -136,7 +121,7 @@ public class AccountForm
 //#endif
         registerbox = new checkBox(SR.MS_REGISTER_ACCOUNT, false); itemsList.addElement(registerbox);
         
-        itemsList.addElement(new simpleString(SR.MS_KEEPALIVE));
+        itemsList.addElement(new boldString(SR.MS_KEEPALIVE));
         keepAliveType=new choiceBox();
         keepAliveType.append("by socket");
         keepAliveType.append("1 byte");
@@ -145,7 +130,7 @@ public class AccountForm
         keepAliveType.setSelectedIndex(account.keepAliveType);
         itemsList.addElement(keepAliveType);
 
-        itemsList.addElement(new simpleString(SR.MS_KEEPALIVE_PERIOD));
+        itemsList.addElement(new boldString(SR.MS_KEEPALIVE_PERIOD));
         keepAlive = new numberInput(display, Integer.toString(account.keepAlivePeriod), 10, 2048);//10, 2096
         itemsList.addElement(keepAlive);
 
@@ -154,42 +139,32 @@ public class AccountForm
 //#     private textInput proxyPort;
 //#endif
         
-        itemsList.addElement(new simpleString(SR.MS_RESOURCE));
+        itemsList.addElement(new boldString(SR.MS_RESOURCE));
         resourcebox = new textInput(display, account.getResource());//64, TextField.ANY
         itemsList.addElement(resourcebox);
         
-        itemsList.addElement(new simpleString(SR.MS_NICKNAME));
+        itemsList.addElement(new boldString(SR.MS_NICKNAME));
         nickbox = new textInput(display, account.getNick());//64, TextField.ANY
         itemsList.addElement(nickbox);
 
 //#if HTTPCONNECT
-//# 	simpleString str9=new simpleString("str9", SR.MS_PROXY_HOST); itemsList.addElement(str9);
+//# 	itemsList.addElement(new boldString(SR.MS_PROXY_HOST);
 //# 	proxyHost = new textInput(display, "proxyHost", account.getProxyHostAddr());//32, TextField.URL
 //# 	itemsList.addElement(proxyHost);
 //#
-//# 	simpleString str10=new simpleString("str10", SR.MS_PROXY_PORT); itemsList.addElement(str10);
+//# 	itemsList.addElement(new boldString(SR.MS_PROXY_PORT);
 //# 	proxyPort = new textInput(display, "proxyPort", Integer.toString(account.getProxyPort()));//0, 65535
 //# 	itemsList.addElement(proxyPort);
 //#elif HTTPPOLL        
-//# 	simpleString str9=new simpleString("str9", SR.MS_PROXY_HOST); itemsList.addElement(str9);
+//# 	itemsList.addElement(new boldString(SR.MS_PROXY_HOST);
 //# 	proxyHost = new textInput(display, "proxyHost", account.getProxyHostAddr());//32, TextField.URL
 //# 	itemsList.addElement(proxyHost);
 //#endif
 
         itemsList.addElement(new spacerItem());
         
-	addCommand(cmdOk);
-	addCommand(cmdCancel);
-	setCommandListener(this);
-        
         moveCursorTo(getNextSelectableRef(-1));
         attachDisplay(display);
-    }
-
-    protected int getItemCount() { return itemsList.size(); }
-
-    protected VirtualElement getItemRef(int index) {
-        return (VirtualElement)itemsList.elementAt(index);
     }
 /*
     protected String getValue(String name) {
@@ -217,12 +192,8 @@ public class AccountForm
         return 0;
     }
 */
-    public void commandAction(Command command, Displayable displayable) {
-	if (command==cmdCancel) {
-	    destroyView();
-	    return;
-	}
-	if (command==cmdOk) {
+    
+    public void cmdOk() {
 	    String user = userbox.getValue();
 	    int at = user.indexOf('@');
 	    if (at!=-1) user=user.substring(0, at);
@@ -259,11 +230,5 @@ public class AccountForm
 		new AccountRegister(account, display, parentView); 
 	    else
                 destroyView();
-        }
-    }
-    
-    public void destroyView()	{
-	if (display!=null)
-            display.setCurrent(parentView);
     }
 }

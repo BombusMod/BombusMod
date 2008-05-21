@@ -30,15 +30,9 @@ package Client;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
 import java.util.Enumeration;
-import java.util.Vector;
-import javax.microedition.lcdui.Command;
-import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
-import javax.microedition.lcdui.Displayable;
 import locale.SR;
-import ui.MainBar;
-import ui.VirtualElement;
-import ui.VirtualList;
+import ui.controls.form.defForm;
 import ui.controls.form.spacerItem;
 import ui.controls.form.textInput;
 import xmpp.extensions.IqQueryRoster;
@@ -48,57 +42,42 @@ import xmpp.extensions.IqQueryRoster;
  * @author ad
  */
 public class RenameGroup 
-        extends VirtualList
-        implements CommandListener {
+        extends defForm {
     
     private Display display;
     private Group group;
     private Contact contact;
-    
-    private Command cmdOk=new Command(SR.MS_OK, Command.SCREEN, 1);
-    private Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 99);
-
     StaticData sd=StaticData.getInstance();
     
     private textInput groupName;
     
-    private Vector itemsList=new Vector();
-    
     /** Creates a new instance of newRenameGroup */
     public RenameGroup(Display display, Group group, Contact contact) {
+        super(display, SR.MS_RENAME);
         this.contact=contact;
         this.group=group;
         this.display=display;
-
-	setMainBarItem(new MainBar(SR.MS_RENAME));
         
         groupName = new textInput(display, (contact==null)?group.getName():contact.getGroup().getName()); // 32, TextField.ANY
         itemsList.addElement(groupName);
         
         itemsList.addElement(new spacerItem());
         
-	addCommand(cmdOk);
-	addCommand(cmdCancel);
-	setCommandListener(this);
-        
         moveCursorTo(getNextSelectableRef(-1));
         attachDisplay(display);
         
     }
 
-    protected int getItemCount() { return itemsList.size(); }
+    public void  cmdOk() {
+        if (contact==null)
+            sd.roster.theStream.send(new IqQueryRenameGroup (group.getName(), groupName.getValue()));
+        else
+            sd.roster.theStream.send(new IqQueryRoster(contact.getBareJid(), contact.nick, groupName.getValue(), null)); 
 
-    protected VirtualElement getItemRef(int index) {
-        return (VirtualElement)itemsList.elementAt(index);
+        destroyView();
     }
-
-    public void commandAction(Command command, Displayable displayable) {
-        if (command==cmdOk) {
-            if (contact==null)
-                sd.roster.theStream.send(new IqQueryRenameGroup (group.getName(), groupName.getValue()));
-            else
-                sd.roster.theStream.send(new IqQueryRoster(contact.getBareJid(), contact.nick, groupName.getValue(), null));        
-        }
+    
+    public void destroyView() {
         display.setCurrent(StaticData.getInstance().roster);
     }
     

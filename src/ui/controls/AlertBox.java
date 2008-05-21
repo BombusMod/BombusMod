@@ -133,7 +133,7 @@ public abstract class AlertBox extends Canvas implements CommandListener {
 
             int fh=0;
             if (mainbar!=null) {
-                fh=getFontHeight();
+                fh=getBarFontHeight();
             
                 g.setClip(0,0, width, fh);
 //#ifdef GRADIENT
@@ -176,6 +176,10 @@ public abstract class AlertBox extends Canvas implements CommandListener {
             line=line+1;
             y += fh;
 	}
+    }
+    
+    private int getBarFontHeight() {
+        return barFont.getHeight();
     }
     
     private int getFontHeight() {

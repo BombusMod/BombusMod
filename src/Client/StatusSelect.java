@@ -31,9 +31,10 @@ import javax.microedition.lcdui.*;
 import locale.SR;
 import ui.*;
 import ui.MainBar;
+import ui.controls.form.boldString;
 import ui.controls.form.checkBox;
+import ui.controls.form.defForm;
 import ui.controls.form.numberInput;
-import ui.controls.form.simpleString;
 import ui.controls.form.textInput;
 
 /**
@@ -127,79 +128,56 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
     }
 
     class StatusForm 
-        extends VirtualList
-        implements CommandListener {
+        extends defForm {
         
         private Display display;
         public Displayable parentView;
-        
-        private Vector itemsList=new Vector();
 
         private numberInput tfPriority;
         private textInput tfMessage;
         private textInput tfAutoRespondMessage;
         
         private ExtendedStatus status;
-        
-        private Command cmdOk=new Command(SR.MS_OK,Command.OK,1);
-        private Command cmdCancel=new Command(SR.MS_CANCEL,Command.BACK,99);
 
         private checkBox autoRespond;
         
         public StatusForm(Display display, ExtendedStatus status){
+            super(display, status.getScreenName());
             this.display=display;
             parentView=display.getCurrent();
             this.status=status;
             
-            setMainBarItem(new MainBar(status.getScreenName()));
-            
-            itemsList.addElement(new simpleString(SR.MS_MESSAGE));
+            itemsList.addElement(new boldString(SR.MS_MESSAGE));
             tfMessage = new textInput(display, status.getMessage()); //, 100, TextField.ANY "ex_status_list"
             itemsList.addElement(tfMessage);
             
-            itemsList.addElement(new simpleString(SR.MS_PRIORITY));
+            itemsList.addElement(new boldString(SR.MS_PRIORITY));
             tfPriority = new numberInput(display, Integer.toString(status.getPriority()), -128, 128); //, 100, TextField.ANY "ex_status_list"
             itemsList.addElement(tfPriority);
 
             if (status.getImageIndex()<5) {
-                itemsList.addElement(new simpleString(SR.MS_AUTORESPOND));
+                itemsList.addElement(new boldString(SR.MS_AUTORESPOND));
                 tfAutoRespondMessage=new textInput(display, status.getAutoRespondMessage());//, 100, 0
                 itemsList.addElement(tfAutoRespondMessage);
 
                 autoRespond = new checkBox(SR.MS_SET, status.getAutoRespond()); itemsList.addElement(autoRespond);
             }
-            addCommand(cmdOk);
-            addCommand(cmdCancel);
-            setCommandListener(this);
 
             moveCursorTo(getNextSelectableRef(-1));
             attachDisplay(display);
         }
         
-        public void commandAction(Command c, Displayable d){
-            if (c==cmdOk) {
-                if (status.getImageIndex()<5) {
-                    status.setAutoRespondMessage(tfAutoRespondMessage.getValue());
-                    status.setAutoRespond(autoRespond.getValue());
-                }
-                status.setMessage(tfMessage.getValue());                    
-                status.setPriority(Integer.parseInt(tfPriority.getValue()));
- 
-                save();
+        public void cmdOk() {
+            if (status.getImageIndex()<5) {
+                status.setAutoRespondMessage(tfAutoRespondMessage.getValue());
+                status.setAutoRespond(autoRespond.getValue());
             }
-            
+            status.setMessage(tfMessage.getValue());                    
+            status.setPriority(Integer.parseInt(tfPriority.getValue()));
+
+            save();
+
             destroyView();
-        }
-        
-        public void destroyView(){
-            if (display!=null)   
-                display.setCurrent(parentView);
-        }
-
-        protected int getItemCount() { return itemsList.size(); }
-
-        protected VirtualElement getItemRef(int index) {
-            return (VirtualElement)itemsList.elementAt(index);
         }
     }
 }

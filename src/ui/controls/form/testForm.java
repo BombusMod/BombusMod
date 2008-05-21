@@ -47,7 +47,8 @@ public class testForm
         super();
         //this.display=display;
         setMainBarItem(new MainBar("test form"));
-        
+        boldString testBoldString0=new boldString("test bold string");
+        itemsList.addElement(testBoldString0);
         simpleString testSimpleString0=new simpleString("test string");
         itemsList.addElement(testSimpleString0);
         simpleString testSimpleString1=new simpleString("test checkBox");

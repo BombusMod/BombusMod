@@ -29,15 +29,12 @@ package AutoTasks;
 
 import Client.StaticData;
 import java.util.Vector;
-import javax.microedition.lcdui.Command;
-import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
-import ui.MainBar;
-import ui.VirtualElement;
-import ui.VirtualList;
+import ui.controls.form.boldString;
 import ui.controls.form.choiceBox;
+import ui.controls.form.defForm;
 import ui.controls.form.numberInput;
 import ui.controls.form.simpleString;
 
@@ -46,13 +43,10 @@ import ui.controls.form.simpleString;
  * @author ad
  */
 public class AutoTaskForm
-    extends VirtualList    
-    implements CommandListener {
+    extends defForm {
     
     private Display display;
     private Displayable parentView;
-    
-    private Vector itemsList=new Vector();
     
     int hour =0;
     int min  =0;
@@ -69,9 +63,6 @@ public class AutoTaskForm
 //#if AUTOTASK
 //#     private AutoTask at=StaticData.getInstance().autoTask;
 //#endif
-    
-    private Command cmdOk=new Command(SR.MS_OK, Command.OK, 1);
-    private Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 2);
 
     private int actionIndex;
     private int typeIndex;
@@ -79,11 +70,10 @@ public class AutoTaskForm
     
     /** Creates a new instance of AutoTaskForm */
     public AutoTaskForm(Display display) {
+        super(display, SR.MS_AUTOTASKS);
         this.display=display;
         parentView=display.getCurrent();
 //#ifdef AUTOTASK
-//#         setMainBarItem(new MainBar(SR.MS_AUTOTASKS));
-//#         
 //#         typeIndex=at.taskType;
 //#         actionIndex=at.taskAction;
 //#         if (autoTaskHour!=null) hour = at.startHour;
@@ -100,26 +90,22 @@ public class AutoTaskForm
 //#         attachDisplay(display);
 //#endif
     }
-
-    public void commandAction(Command command, Displayable displayable) {
 //#ifdef AUTOTASK
-//#         if (command==cmdOk) {
-//#             at.taskType=taskType.getSelectedIndex();
-//#             at.taskAction=actionType.getSelectedIndex();
-//#             if (at.taskType==1) {
-//#                 at.startHour=Integer.parseInt(autoTaskHour.getValue());
-//#                 at.startMin=Integer.parseInt(autoTaskMin.getValue());
-//#             } else if(at.taskType==2) {
-//#                 at.waitTime=Integer.parseInt(autoTaskDelay.getValue())*1000*60;
-//#                 at.initTime=System.currentTimeMillis();
-//#             }
-//#             if (at.taskType!=0)
-//#                 at.startTask();
+//#     public void cmdOk() {
+//#         at.taskType=taskType.getSelectedIndex();
+//#         at.taskAction=actionType.getSelectedIndex();
+//#         if (at.taskType==1) {
+//#             at.startHour=Integer.parseInt(autoTaskHour.getValue());
+//#             at.startMin=Integer.parseInt(autoTaskMin.getValue());
+//#         } else if(at.taskType==2) {
+//#             at.waitTime=Integer.parseInt(autoTaskDelay.getValue())*1000*60;
+//#             at.initTime=System.currentTimeMillis();
 //#         }
+//#         if (at.taskType!=0)
+//#             at.startTask();
 //#         destroyView();
-//#endif
-    }
-//#ifdef AUTOTASK
+//#     }
+//# 
 //#     public void eventOk(){
 //#         super.eventOk();
 //#         if (cursor==1) {
@@ -140,7 +126,7 @@ public class AutoTaskForm
 //#     public void update(){
 //#         itemsList=new Vector();
 //#         
-//#         itemsList.addElement(new simpleString(SR.MS_AUTOTASK_TYPE));
+//#         itemsList.addElement(new boldString(SR.MS_AUTOTASK_TYPE));
 //#         taskType=new choiceBox();
 //#         taskType.append(SR.MS_DISABLED);
 //#         taskType.append(SR.MS_BY_TIME_);
@@ -148,7 +134,7 @@ public class AutoTaskForm
 //#         taskType.setSelectedIndex(typeIndex);
 //#         itemsList.addElement(taskType);
 //#         
-//#         itemsList.addElement(new simpleString(SR.MS_AUTOTASK_ACTION_TYPE));
+//#         itemsList.addElement(new boldString(SR.MS_AUTOTASK_ACTION_TYPE));
 //#         actionType=new choiceBox();
 //#         actionType.append(SR.MS_AUTOTASK_QUIT_BOMBUSMOD);
 //#         actionType.append(SR.MS_AUTOTASK_QUIT_CONFERENCES);
@@ -158,7 +144,7 @@ public class AutoTaskForm
 //#         itemsList.addElement(actionType);
 //#         
 //#         if (typeIndex==1) {
-//#             itemsList.addElement(new simpleString(SR.MS_AUTOTASK_TIME));
+//#             itemsList.addElement(new boldString(SR.MS_AUTOTASK_TIME));
 //#             
 //#             itemsList.addElement(new simpleString(SR.MS_AUTOTASK_HOUR));
 //#             autoTaskHour=new numberInput(display, Integer.toString(hour), 0, 23);
@@ -168,15 +154,10 @@ public class AutoTaskForm
 //#             autoTaskMin=new numberInput(display, Integer.toString(min), 0, 59);
 //#             itemsList.addElement(autoTaskMin);
 //#          } else if (typeIndex==2) {
-//#             itemsList.addElement(new simpleString(SR.MS_AUTOTASK_DELAY));
+//#             itemsList.addElement(new boldString(SR.MS_AUTOTASK_DELAY));
 //#             autoTaskDelay=new numberInput(display, Integer.toString(wait), 1, 600);
 //#             itemsList.addElement(autoTaskDelay);
 //#         }
 //#     }
 //#endif
-    protected int getItemCount() { return itemsList.size(); }
-
-    protected VirtualElement getItemRef(int index) {
-        return (VirtualElement)itemsList.elementAt(index);
-    }    
 }

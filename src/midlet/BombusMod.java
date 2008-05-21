@@ -46,9 +46,6 @@ import ui.*;
 
 import Client.*;
 import Info.Version;
-//#ifdef TEST_NEW_FORM
-//# import ui.controls.form.testForm;
-//#endif
 
 /** Entry point class
  *
@@ -77,14 +74,11 @@ public class BombusMod extends MIDlet implements Runnable{
     
     /** Entry point  */
     public void startApp() {
-        
         if (isRunning) {
 	    hideApp(false);
             return;
         }
-        
         isRunning=true;
-
         new Thread(this).start();
     }
     
@@ -126,25 +120,21 @@ public class BombusMod extends MIDlet implements Runnable{
 //#         s.setProgress(17);
 //#endif
 
+        sd.roster=new Roster(display);
+        s.setProgress(20);
+        
         boolean selAccount=( (cf.accountIndex<0) || s.keypressed!=0);
         if (selAccount) 
-            s.setProgress("Entering setup",20);
-	s.setProgress(23);
+            s.setProgress("Entering setup",22);
         
-        sd.roster=new Roster(display);
-        s.setProgress(25);
+        s.setProgress(24);
         
-//#ifdef TEST_NEW_FORM
-//#         if (true) {
-//#             new testForm(display);
-//#             return;
-//#         }
-//#endif
         if (!selAccount && cf.autoLogin) {
             // connect whithout account select
             selAccount=(Account.loadAccount(cf.autoLogin)==null);
-	    if (!cf.autoLogin) 
+	    if (!cf.autoLogin) {
                 s.close();
+            }
         } else {
             new AccountSelect(display, true);
         }

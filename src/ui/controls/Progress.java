@@ -29,6 +29,9 @@ package ui.controls;
 
 import Fonts.FontCache;
 import javax.microedition.lcdui.Graphics;
+//#ifdef GRADIENT
+//# //import ui.Gradient;
+//#endif
 
 /**
  *
@@ -43,6 +46,10 @@ public class Progress {
     private static int x;
 
     private static Graphics g;
+    
+//#ifdef GRADIENT
+//# //    private Gradient gr=null;
+//#endif
     
     /** Creates a new instance of progress */
     public Progress(Graphics g, int x, int y, int height, int width) {

@@ -30,18 +30,12 @@ package History;
 import Client.Config;
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
-import java.util.Vector;
 import javax.microedition.lcdui.Command;
-import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
-import javax.microedition.lcdui.Item;
-import javax.microedition.lcdui.ItemCommandListener;
 import locale.SR;
-import ui.MainBar;
-import ui.VirtualElement;
-import ui.VirtualList;
 import ui.controls.form.checkBox;
+import ui.controls.form.defForm;
 import ui.controls.form.simpleString;
 import ui.controls.form.textInput;
 
@@ -50,19 +44,11 @@ import ui.controls.form.textInput;
  * @author ad
  */
 public class HistoryConfig 
-        extends VirtualList
-        implements
-        BrowserListener,
-        CommandListener {
+        extends defForm
+        implements BrowserListener {
 
     private Display display;
-    private Displayable parentView;
     
-    private Vector itemsList=new Vector();
-    
-    
-    Command cmdOk = new Command(SR.MS_OK, Command.OK, 1);
-    Command cmdCancel = new Command(SR.MS_BACK, Command.BACK, 99);
     Command cmdSetHistFolder=new Command(SR.MS_SELECT_HISTORY_FOLDER, Command.ITEM,2);
     
     private textInput historyFolder;
@@ -81,12 +67,11 @@ public class HistoryConfig
     
     /** Creates a new instance of newHistoryConfig */
     public HistoryConfig(Display display) {
+        super(display, SR.MS_HISTORY_OPTIONS);
 	this.display=display;
 	parentView=display.getCurrent();
         
         cf=Config.getInstance();
-        
-	setMainBarItem(new MainBar(SR.MS_HISTORY_OPTIONS));
 
         loadHistory = new checkBox(SR.MS_LOAD_HISTORY, cf.lastMessages); itemsList.addElement(loadHistory);
         saveHistory = new checkBox(SR.MS_SAVE_HISTORY, cf.msgLog); itemsList.addElement(saveHistory);
@@ -102,19 +87,10 @@ public class HistoryConfig
 	historyFolder = new textInput(display, cf.msgPath);//128, TextField.ANY
         itemsList.addElement(historyFolder);
         
-	addCommand(cmdOk);
-	addCommand(cmdCancel);
         addCommand(cmdSetHistFolder);
-	setCommandListener(this);
         
         moveCursorTo(getNextSelectableRef(-1));
         attachDisplay(display);
-    }
-
-    protected int getItemCount() { return itemsList.size(); }
-
-    protected VirtualElement getItemRef(int index) {
-        return (VirtualElement)itemsList.elementAt(index);
     }
 
     public void BrowserFilePathNotify(String pathSelected) {
@@ -126,22 +102,24 @@ public class HistoryConfig
             new Browser(null, display, this, true);
             return;
         }
-        if (command==cmdOk) {
-            cf.lastMessages=loadHistory.getValue();
-	    
-            cf.msgLog=saveHistory.getValue();
-            cf.msgLogPresence=savePres.getValue();
-            cf.msgLogConf=saveConfHistory.getValue();
-            cf.msgLogConfPresence=saveConfPres.getValue();
-            cf.cp1251=win1251.getValue();
-//#ifdef TRANSLIT
-            cf.transliterateFilenames=translit.getValue();
-//#endif
-            cf.msgPath=historyFolder.getValue();         
-            
-            cf.saveToStorage();
-        }
+        super.commandAction(command, displayable);
         destroyView();
+    }
+    
+    public void cmdOk() {
+        cf.lastMessages=loadHistory.getValue();
+
+        cf.msgLog=saveHistory.getValue();
+        cf.msgLogPresence=savePres.getValue();
+        cf.msgLogConf=saveConfHistory.getValue();
+        cf.msgLogConfPresence=saveConfPres.getValue();
+        cf.cp1251=win1251.getValue();
+//#ifdef TRANSLIT
+        cf.transliterateFilenames=translit.getValue();
+//#endif
+        cf.msgPath=historyFolder.getValue();         
+
+        cf.saveToStorage();
     }
     
 }

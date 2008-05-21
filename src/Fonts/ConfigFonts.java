@@ -27,31 +27,21 @@
 package Fonts;
 import Client.Config;
 import Client.StaticData;
-import java.util.Vector;
 import javax.microedition.lcdui.*;
 import locale.SR;
-import ui.MainBar;
-import ui.VirtualElement;
-import ui.VirtualList;
 import ui.controls.form.choiceBox;
+import ui.controls.form.defForm;
 import ui.controls.form.simpleString;
 
 public class ConfigFonts 
-        extends VirtualList
-        implements CommandListener {
+        extends defForm {
     
     private Display display;
-    private Displayable parentView;
-    
-    private Vector itemsList=new Vector();
     
     private choiceBox font1;
     private choiceBox font2;
     private choiceBox font3;
     private choiceBox font4;
-    
-    Command cmdOk=new Command(SR.MS_OK,Command.OK,1);
-    Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK,99);
     
     StaticData sd=StaticData.getInstance();
     
@@ -59,14 +49,11 @@ public class ConfigFonts
     
     /** Creates a new instance of newConfigFonts */
     public ConfigFonts(Display display) {
+        super(display, SR.MS_FONTS_OPTIONS);
         this.display=display;
         parentView=display.getCurrent();
         
-        cf=Config.getInstance();;
-
-	setMainBarItem(new MainBar(SR.MS_FONTS_OPTIONS));
-
-        String fnts[]={SR.MS_FONTSIZE_NORMAL, SR.MS_FONTSIZE_SMALL, SR.MS_FONTSIZE_LARGE};
+        cf=Config.getInstance();
         
         itemsList.addElement(new simpleString(SR.MS_ROSTER_FONT));
         font1=new choiceBox();
@@ -99,38 +86,22 @@ public class ConfigFonts
         font4.append(SR.MS_FONTSIZE_LARGE);
         font4.setSelectedIndex(cf.font4/8);
         itemsList.addElement(font4);
-        
-        addCommand(cmdOk);
-        addCommand(cmdCancel);    
-        setCommandListener(this);    
+  
         moveCursorTo(getNextSelectableRef(-1));
         attachDisplay(display);
     }
     
-    public void commandAction(Command c, Displayable d) {
-        if (c==cmdOk) {
-            FontCache.rosterFontSize=cf.font1=font1.getValue()*8;
-            FontCache.msgFontSize=cf.font2=font2.getValue()*8;
-            FontCache.barFontSize=cf.font3=font3.getValue()*8;
-            FontCache.balloonFontSize=cf.font4=font4.getValue()*8;
-            FontCache.resetCache();
+    public void cmdOk() {
+        FontCache.rosterFontSize=cf.font1=font1.getValue()*8;
+        FontCache.msgFontSize=cf.font2=font2.getValue()*8;
+        FontCache.barFontSize=cf.font3=font3.getValue()*8;
+        FontCache.balloonFontSize=cf.font4=font4.getValue()*8;
+        FontCache.resetCache();
 
-            cf.saveToStorage();
-            super.getInfoBarItem().setFont(FontCache.getBarFont());
-            super.getInfoBarItem().clearWHCache();
-            sd.roster.reEnumRoster();
-        }
+        cf.saveToStorage();
+        super.getInfoBarItem().setFont(FontCache.getBarFont());
+        super.getInfoBarItem().clearWHCache();
+        sd.roster.reEnumRoster();
         destroyView();
-    }
-    
-    public void destroyView(){
-        if (display!=null)
-            display.setCurrent(sd.roster);
-    }
-
-    protected int getItemCount() { return itemsList.size(); }
-
-    protected VirtualElement getItemRef(int index) {
-        return (VirtualElement)itemsList.elementAt(index);
     }
 }

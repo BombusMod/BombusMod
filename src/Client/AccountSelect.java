@@ -87,15 +87,12 @@ public class AccountSelect
              }
        } while (a!=null);
         
-        if (accountList.isEmpty()) {
-            a=Account.createFromJad();
-            if (a!=null) {
-                accountList.addElement(a);
-                rmsUpdate();
-            }
+        if (!accountList.isEmpty()) {
+            moveCursorTo(activeAccount);
+        } else {
+            new AccountForm(this, display, null);
+            return;
         }
-        
-        moveCursorTo(activeAccount);
         
         attachDisplay(display);
         addCommand(cmdAdd);
@@ -155,6 +152,12 @@ public class AccountSelect
                 public void no() { }
             };
         }
+    }
+    
+    public void touchRightPressed(){
+        if (!canBack) 
+            return;
+        destroyView();
     }
     
     private void delAccount(){

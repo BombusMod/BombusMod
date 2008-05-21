@@ -91,7 +91,8 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
     public SplashScreen( Display display, ComplexString status, char exitKey) {
         this.status=status;
         this.display=display;
-        kHold=this.exitKey=exitKey;
+        this.exitKey=exitKey;
+        kHold=exitKey;
         
         parentView=display.getCurrent();
 
@@ -107,8 +108,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
 
         System.gc();   // heap cleanup
     }
-    
-    
+
     public void paint(Graphics g){
         width=getWidth();
         height=getHeight();
@@ -205,8 +205,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         
         display.setCurrent(this);
     }
-    
-    
+
     private class TimerTaskClock extends TimerTask {
         private Timer t;
         public TimerTaskClock(){
@@ -223,10 +222,10 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         }
     }
 
-    public void keyPressed(int keyCode) { 
-        if (pos>24)
+    public void keyPressed(int keyCode) {
+        keypressed=keyCode;
+        if (pos>=20)
             close();
-        
         kHold=0;
     }
 
@@ -255,7 +254,6 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
 //#endif
         System.gc();
     }
-    
 
     public void getKeys() {
         int pm=cf.phoneManufacturer;
