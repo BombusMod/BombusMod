@@ -1,9 +1,9 @@
 /*
  * SmilesIcons.java
  *
- * Created on 3.12.2005, 20:07
+ * Created on 21.05.2008, 22:24
  *
- * Copyright (c) 2005-2008, Eugene Stahov (evgs), http://bombus-im.org
+ * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -27,9 +27,8 @@
 
 package images;
 
-import java.util.Vector;
+import Messages.MessageParser;
 import ui.ImageList;
-import util.StringLoader;
 
 /**
  *
@@ -51,7 +50,7 @@ public class SmilesIcons extends ImageList {
     public static ImageList getInstance() {
 	if (instance==null){
             try {
-                int smilesCount=((Vector[]) new StringLoader().stringLoader(restxt,1))[0].size();
+                int smilesCount=MessageParser.getInstance().getSmileTable().size();
                 cols=ceil(SMILES_IN_ROW, smilesCount);
             } catch (Exception e) {
                 System.out.print("Can't load ");

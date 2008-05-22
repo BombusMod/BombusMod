@@ -47,6 +47,16 @@ public class testForm
         super();
         //this.display=display;
         setMainBarItem(new MainBar("test form"));
+        
+        newChoiceBox testNewChoiceBox1=new newChoiceBox(display);
+        testNewChoiceBox1.append("by socket");
+        testNewChoiceBox1.append("1 byte");
+        testNewChoiceBox1.append("<iq/>");
+        testNewChoiceBox1.append("ping");
+        testNewChoiceBox1.append("a b c d e f g h i j k l m n o p q r s t u v w x y z");
+        testNewChoiceBox1.setSelectedIndex(4);
+        itemsList.addElement(testNewChoiceBox1);
+        
         boldString testBoldString0=new boldString("test bold string");
         itemsList.addElement(testBoldString0);
         simpleString testSimpleString0=new simpleString("test string");

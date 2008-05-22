@@ -1142,7 +1142,7 @@ public abstract class VirtualList
             s.append(Time.localTime());
             getInfoBarItem().setElementAt(s.toString(), 1);
             s.setLength(0);
-            s.append(strconv.getSizeString(Stats.getGPRS()));
+            s.append(strconv.getSizeString(Stats.getInstance().getGPRS()));
 //#ifdef ELF
 //#             s.append(getNetworkLevel());
 //#             s.append(getAccuLevel());

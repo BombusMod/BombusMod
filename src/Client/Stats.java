@@ -126,11 +126,12 @@ public class Stats {
 //#             } catch (Exception e) { sie_gprs=false; }
 //#         }
 //#endif
-        if (StaticData.getInstance().roster.theStream!=null)
-            sessionGPRS=StaticData.getInstance().roster.theStream.getBytes();
-        else 
-            return 0;
-        
+        try {
+            if (StaticData.getInstance().roster.theStream!=null)
+                    sessionGPRS=StaticData.getInstance().roster.theStream.getBytes();
+            else 
+                return 0;
+        } catch (Exception e) {}        
         return sessionGPRS*2;
     }   
 }

@@ -123,8 +123,8 @@ public abstract class AlertBox extends Canvas implements CommandListener {
 
     protected void paint(Graphics g) {
         if (isShowing) {
-            int width=getWidth();
-            int height=getHeight();
+            int width=g.getClipWidth();
+            int height=g.getClipHeight();
 
             int oldColor=g.getColor();
             

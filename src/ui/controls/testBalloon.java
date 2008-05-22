@@ -1,9 +1,9 @@
 /*
- * Baloon.java
+ * testBalloon.java
  *
- * Created on 6.02.2006, 23:09
+ * Created on 31.03.2008, 14:46
  *
- * Copyright (c) 2005-2008, Eugene Stahov (evgs), http://bombus-im.org
+ * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -25,36 +25,33 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+
 package ui.controls;
 
-import javax.microedition.lcdui.Font;
-import javax.microedition.lcdui.Graphics;
 import Colors.Colors;
-import Fonts.FontCache;
+import javax.microedition.lcdui.Graphics;
 
-public class Balloon {
-    private static Font f=FontCache.getBalloonFont();
-    
-    public static int getHeight(){
-        return f.getHeight()+1;
-    }
-    
-    public static void draw(Graphics g, String text) {
-        g.setFont(f);
-        int height=getHeight();
-        int width=f.stringWidth(text)+6;
+/**
+ *
+ * @author ad
+ */
+public class testBalloon {
+    public static void draw(Graphics g, int wPop, int hPop, int x, int y, String text) {
+        int height=g.getClipHeight();
+        int width=g.getClipWidth();
         
-        int y=height-g.getTranslateY();
-        if (y<0) y=0;
-        y-=height-1;
-        g.translate(0, y);
+        if (x+wPop>width) {
+            x=width-wPop-2;
+        }
+        if (y+hPop>height) {
+            y=height-hPop-2;
+        }
+        
+        g.translate(x, y);
 
         g.setColor(Colors.BALLOON_BGND);
-        g.fillRect(3, 1, width-2, height-2);
-        
-        
+        g.fillRect(0, 0, wPop, hPop);
         g.setColor(Colors.BALLOON_INK);
-        g.drawRect(2, 0, width-1, height-1);
-        g.drawString(text, 5, 1, Graphics.TOP | Graphics.LEFT);
+        g.drawRect(0, 0, wPop, hPop);
     }
 }

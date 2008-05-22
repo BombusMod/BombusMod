@@ -46,7 +46,7 @@ orange 0xffa500
 green 0x008000
 blue 0x0000ff
      */
-    
+
     public static int strong(int color) {
         if (color==instance.MESSAGE_IN) {
             return instance.MESSAGE_IN_S;
@@ -60,8 +60,6 @@ blue 0x0000ff
 //#endif
 
 //#ifdef COLORS
-    
-    
     public static void loadFromStorage(){
 	try {
 	    DataInputStream inputStream=NvStorage.ReadFileRecord("ColorDB", 0);

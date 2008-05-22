@@ -110,8 +110,10 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
     }
 
     public void paint(Graphics g){
-        width=getWidth();
-        height=getHeight();
+        width=g.getClipWidth();
+        height=g.getClipHeight();
+        g.translate(0, 0);
+        g.setClip(0,0, width, height);
         
         g.setColor(Colors.BLK_BGND);
         g.fillRect(0,0, width, height);
@@ -124,21 +126,17 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
             g.setFont(f);
             int h=f.getHeight()+1;
 
-            int y=0;
-
             g.setColor(Colors.BLK_INK);
-            g.translate(0, y);
+
             status.drawItem(g, 0, false);
 
             String time=Time.localTime();
             int tw=f.stringWidth(time);
 
-            g.translate(width/2, height);
-
             if (Colors.BLK_INK!=0x010101) {
                 g.setFont(f);
                 g.setColor(Colors.BLK_INK);
-                g.drawString(time, 0, 0, Graphics.BOTTOM | Graphics.HCENTER);
+                g.drawString(time, width/2, height, Graphics.BOTTOM | Graphics.HCENTER);
             }
         } else {
             int filled=pos*width/100;
