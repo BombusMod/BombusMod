@@ -26,9 +26,7 @@
  */
 
 package Client;
-//#ifndef COLORS
-//# import Colors.ColorUtils;
-//#endif
+import Colors.ColorUtils;
 import java.util.Vector;
 import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Display;
@@ -397,17 +395,15 @@ public class ConfigForm
 //#             cf.msglistLimit=Integer.parseInt(messageCountLimit.getValue());
 //#endif
 
-//#ifndef COLORS
-//#         try {
-//#             if (skinFiles.getSelectedIndex()>-1) {
-//#                 String tempScheme=(String) Skinfiles[1].elementAt( skinFiles.getSelectedIndex() );
-//#                 if (!tempScheme.equals(cf.scheme)) {
-//#                     cf.scheme=(String) Skinfiles[1].elementAt( skinFiles.getSelectedIndex() );
-//#                     ColorUtils.loadSkin((String)Skinfiles[0].elementAt(skinFiles.getSelectedIndex()), 1);
-//#                 }
-//#             }
-//#         } catch (Exception ex) {}
-//#endif
+        try {
+            if (skinFiles.getSelectedIndex()>-1) {
+                String tempScheme=(String) Skinfiles[1].elementAt( skinFiles.getSelectedIndex() );
+                if (!tempScheme.equals(cf.scheme)) {
+                    cf.scheme=(String) Skinfiles[1].elementAt( skinFiles.getSelectedIndex() );
+                    ColorUtils.loadSkin((String)Skinfiles[0].elementAt(skinFiles.getSelectedIndex()), 1);
+                }
+            }
+        } catch (Exception ex) {}
 
         sd.roster.setLight(cf.lightState);   
 
