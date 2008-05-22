@@ -51,7 +51,9 @@ public class Colors {
     public static int MESSAGE_PRESENCE_S =0x00c040;
     
     public static int PGS_REMAINED=0xeeeeee;
-    public static int PGS_COMPLETE=0xad1010;
+    public static int PGS_COMPLETE_TOP=0xffe29d;
+    public static int PGS_COMPLETE_BOTTOM=0xa87824;
+    public static int PGS_INK=0x000000;
     
     public static int HEAP_TOTAL=0xffffff;
     public static int HEAP_FREE=0x00007f;

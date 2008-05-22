@@ -343,54 +343,60 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
                 cl.PGS_REMAINED=value; 
                 break;
             case 25:
-                cl.PGS_COMPLETE=value; 
+                cl.PGS_COMPLETE_TOP=value; 
                 break;
             case 26:
-                cl.HEAP_TOTAL=value; 
+                cl.PGS_COMPLETE_BOTTOM=value; 
                 break;
             case 27:
-                cl.HEAP_FREE=value; 
+                cl.PGS_INK=value; 
                 break;
             case 28:
-                cl.CURSOR_BGND=value; 
+                cl.HEAP_TOTAL=value; 
                 break;
             case 29:
-                cl.CURSOR_OUTLINE=value; 
-                break;                    
+                cl.HEAP_FREE=value; 
+                break;
             case 30:
-                cl.SCROLL_BRD=value; 
+                cl.CURSOR_BGND=value; 
                 break;
             case 31:
-                cl.SCROLL_BAR=value; 
-                break;
+                cl.CURSOR_OUTLINE=value; 
+                break;                    
             case 32:
-                cl.SCROLL_BGND=value; 
+                cl.SCROLL_BRD=value; 
                 break;
             case 33:
-                cl.CONTACT_J2J=value; 
+                cl.SCROLL_BAR=value; 
                 break;
             case 34:
-                cl.MESSAGE_IN_S=value; 
+                cl.SCROLL_BGND=value; 
                 break;
             case 35:
-                cl.MESSAGE_OUT_S=value; 
+                cl.CONTACT_J2J=value; 
                 break;
             case 36:
-                cl.MESSAGE_PRESENCE_S=value; 
+                cl.MESSAGE_IN_S=value; 
                 break;
             case 37:
-                cl.POPUP_MESSAGE_INK=value; 
+                cl.MESSAGE_OUT_S=value; 
                 break;
             case 38:
-                cl.POPUP_MESSAGE_BGND=value; 
+                cl.MESSAGE_PRESENCE_S=value; 
                 break;
             case 39:
-                cl.POPUP_SYSTEM_INK=value; 
+                cl.POPUP_MESSAGE_INK=value; 
                 break;
             case 40:
-                cl.POPUP_SYSTEM_BGND=value; 
+                cl.POPUP_MESSAGE_BGND=value; 
                 break;
             case 41:
+                cl.POPUP_SYSTEM_INK=value; 
+                break;
+            case 42:
+                cl.POPUP_SYSTEM_BGND=value; 
+                break;
+            case 43:
                 cl.SECOND_LINE=value; 
                 break;
         }

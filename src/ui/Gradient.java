@@ -40,6 +40,10 @@ public class Gradient {
 			paintH(g);
 		}
 	}
+        
+	public void paintWidth(Graphics g, int width) {
+            paintHWidth(g, width);
+	}
 	
 	private void paintV(Graphics g) {
 		for(int i2 = x1; i2 <= x2 - 1; i2++) {
@@ -54,6 +58,15 @@ public class Gradient {
 			int ai[] = GradBackgr(redS, greenS, blueS, redE, greenE, blueE, i2, y1, y2 - 1);
 			g.setColor(ai[0], ai[1], ai[2]);
 			g.drawLine(x1, i2, x2 - 1, i2);
+		}
+	}
+        
+            
+	private void paintHWidth(Graphics g, int width) {
+		for(int i2 = y1; i2 <= y2 - 1; i2++) {
+			int ai[] = GradBackgr(redS, greenS, blueS, redE, greenE, blueE, i2, y1, y2 - 1);
+			g.setColor(ai[0], ai[1], ai[2]);
+			g.drawLine(x1, i2, width-1, i2);
 		}
 	}
 	

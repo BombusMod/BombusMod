@@ -60,7 +60,7 @@ public class ColorForm implements CommandListener
             SR.MS_MSG_HIGHLIGHT,
             SR.MS_DISCO_CMD,
             SR.MS_BAR_BGND,
-            SR.MS_BAR_BGND+"2",
+            SR.MS_BAR_BGND+" 2",
             SR.MS_BAR_INK,
 
             SR.MS_CONTACT_DEFAULT,
@@ -78,9 +78,12 @@ public class ColorForm implements CommandListener
             
             SR.MS_MESSAGE_AUTH,
             SR.MS_MESSAGE_HISTORY,
+            
             SR.MS_PGS_REMAINED,
             SR.MS_PGS_COMPLETE,
-
+            SR.MS_PGS_COMPLETE+" 2",
+            SR.MS_PGS_INK,
+            
             SR.MS_HEAP_TOTAL,
             SR.MS_HEAP_FREE,
             SR.MS_CURSOR_BGND,
@@ -90,7 +93,7 @@ public class ColorForm implements CommandListener
             SR.MS_SCROLL_BAR,
             SR.MS_SCROLL_BGND,
             
-            SR.MS_CONTACT+"J2J",
+            SR.MS_CONTACT+" J2J",
             
             SR.MS_MESSAGE_IN_S,
             SR.MS_MESSAGE_OUT_S,
@@ -133,8 +136,11 @@ public class ColorForm implements CommandListener
             
             cs.MESSAGE_AUTH,
             cs.MESSAGE_HISTORY,
+            
             cs.PGS_REMAINED,
-            cs.PGS_COMPLETE,
+            cs.PGS_COMPLETE_TOP,
+            cs.PGS_COMPLETE_BOTTOM,
+            cs.PGS_INK,
 
             cs.HEAP_TOTAL,
             cs.HEAP_FREE,
@@ -189,8 +195,11 @@ public class ColorForm implements CommandListener
             
             imageData(cs.MESSAGE_AUTH),
             imageData(cs.MESSAGE_HISTORY),
+            
             imageData(cs.PGS_REMAINED),
-            imageData(cs.PGS_COMPLETE),
+            imageData(cs.PGS_COMPLETE_TOP),
+            imageData(cs.PGS_COMPLETE_BOTTOM),
+            imageData(cs.PGS_INK),
 
             imageData(cs.HEAP_TOTAL),
             imageData(cs.HEAP_FREE),

@@ -89,9 +89,9 @@ blue 0x0000ff
             instance.MESSAGE_AUTH=inputStream.readInt();
             instance.MESSAGE_HISTORY=inputStream.readInt();
             instance.PGS_REMAINED=inputStream.readInt();
-            instance.PGS_COMPLETE=inputStream.readInt();
-            inputStream.readInt();//PGS_BORDER=inputStream.readInt();
-            inputStream.readInt();//PGS_BGND=inputStream.readInt();
+            instance.PGS_COMPLETE_TOP=inputStream.readInt();
+            instance.PGS_COMPLETE_BOTTOM=inputStream.readInt();
+            instance.PGS_INK=inputStream.readInt();
             instance.HEAP_TOTAL=inputStream.readInt();
             instance.HEAP_FREE=inputStream.readInt();
             instance.CURSOR_BGND=inputStream.readInt();
@@ -140,9 +140,9 @@ blue 0x0000ff
 	    outputStream.writeInt(instance.MESSAGE_AUTH);
 	    outputStream.writeInt(instance.MESSAGE_HISTORY);
 	    outputStream.writeInt(instance.PGS_REMAINED);
-	    outputStream.writeInt(instance.PGS_COMPLETE);
-	    outputStream.writeInt(0);//outputStream.writeInt(PGS_BORDER);
-	    outputStream.writeInt(0);//outputStream.writeInt(PGS_BGND);
+	    outputStream.writeInt(instance.PGS_COMPLETE_TOP);
+	    outputStream.writeInt(instance.PGS_COMPLETE_BOTTOM);
+	    outputStream.writeInt(instance.PGS_INK);
 	    outputStream.writeInt(instance.HEAP_TOTAL);
 	    outputStream.writeInt(instance.HEAP_FREE);
 	    outputStream.writeInt(instance.CURSOR_BGND);
@@ -195,7 +195,9 @@ blue 0x0000ff
             instance.MESSAGE_AUTH=invertColor(instance.MESSAGE_AUTH);
             instance.MESSAGE_HISTORY=invertColor(instance.MESSAGE_HISTORY);
             instance.PGS_REMAINED=invertColor(instance.PGS_REMAINED);
-            instance.PGS_COMPLETE=invertColor(instance.PGS_COMPLETE);
+            instance.PGS_COMPLETE_TOP=invertColor(instance.PGS_COMPLETE_TOP);
+            instance.PGS_COMPLETE_BOTTOM=invertColor(instance.PGS_COMPLETE_BOTTOM);
+            instance.PGS_INK=invertColor(instance.PGS_INK);
             instance.HEAP_TOTAL=invertColor(instance.HEAP_TOTAL);
             instance.HEAP_FREE=invertColor(instance.HEAP_FREE);
             instance.CURSOR_BGND=invertColor(instance.CURSOR_BGND);

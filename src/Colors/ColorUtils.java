@@ -84,7 +84,9 @@ public class ColorUtils {
             cs.MESSAGE_AUTH=loadInt("MESSAGE_AUTH", cs.MESSAGE_AUTH);
             cs.MESSAGE_HISTORY=loadInt("MESSAGE_HISTORY", cs.MESSAGE_HISTORY);
             cs.PGS_REMAINED=loadInt("PGS_REMAINED", cs.PGS_REMAINED);
-            cs.PGS_COMPLETE=loadInt("PGS_COMPLETE", cs.PGS_COMPLETE);
+            cs.PGS_COMPLETE_TOP=loadInt("PGS_COMPLETE_TOP", cs.PGS_COMPLETE_TOP);
+            cs.PGS_COMPLETE_BOTTOM=loadInt("PGS_COMPLETE_BOTTOM", cs.PGS_COMPLETE_BOTTOM);
+            cs.PGS_INK=loadInt("PGS_INK", cs.PGS_INK);
             cs.HEAP_TOTAL=loadInt("HEAP_TOTAL", cs.HEAP_TOTAL);
             cs.HEAP_FREE=loadInt("HEAP_FREE", cs.HEAP_FREE);
             cs.CURSOR_BGND=loadInt("CURSOR_BGND", cs.CURSOR_BGND);
@@ -140,61 +142,6 @@ public class ColorUtils {
     
     
 //#ifdef COLORS
-/*
-     public static void saveSkin(String skinF) {
-        skinFile=skinF;
-        
-        StringBuffer body=new StringBuffer();
-        
-        body.append("package midlet;\n//#ifdef COLORS\nimport ui.ColorScheme;\n//#endif\npublic class Colors {\n    private static Colors instance;\n    \n    public static Colors getInstance(){\n	if (instance==null) {\n	    instance=new Colors();\n//#ifdef COLORS\n	    ColorScheme.loadFromStorage();\n//#endif\n	}\n	return instance;\n    }\n");
-        
-        body.append("public static int BALLOON_INK="+loadString("BALLOON_INK")+";\n");
-        body.append("public static int BALLOON_BGND="+loadString("BALLOON_BGND")+";\n");
-        body.append("public static int LIST_BGND="+loadString("LIST_BGND")+";\n");
-        body.append("public static int LIST_BGND_EVEN="+loadString("LIST_BGND_EVEN")+";\n");
-        body.append("public static int LIST_INK="+loadString("LIST_INK")+";\n");
-        body.append("public static int MSG_SUBJ="+loadString("MSG_SUBJ")+";\n");
-        body.append("public static int MSG_HIGHLIGHT="+loadString("MSG_HIGHLIGHT")+";\n");
-        body.append("public static int DISCO_CMD="+loadString("DISCO_CMD")+";\n");
-        body.append("public static int BAR_BGND="+loadString("BAR_BGND")+";\n");
-        body.append("public static int BAR_BGND_BOTTOM="+loadString("BAR_BGND_BOTTOM")+";\n");
-        body.append("public static int BAR_INK="+loadString("BAR_INK")+";\n");
-        body.append("public static int CONTACT_DEFAULT="+loadString("CONTACT_DEFAULT")+";\n");
-        body.append("public static int CONTACT_CHAT="+loadString("CONTACT_CHAT")+";\n");
-        body.append("public static int CONTACT_AWAY="+loadString("CONTACT_AWAY")+";\n");
-        body.append("public static int CONTACT_XA="+loadString("CONTACT_XA")+";\n");
-        body.append("public static int CONTACT_DND="+loadString("CONTACT_DND")+";\n");
-        body.append("public static int GROUP_INK="+loadString("GROUP_INK")+";\n");
-        body.append("public static int BLK_INK="+loadString("BLK_INK")+";\n");
-        body.append("public static int BLK_BGND="+loadString("BLK_BGND")+";\n");
-        body.append("public static int MESSAGE_IN="+loadString("MESSAGE_IN")+";\n");
-        body.append("public static int MESSAGE_OUT="+loadString("MESSAGE_OUT")+";\n");
-        body.append("public static int MESSAGE_PRESENCE="+loadString("MESSAGE_PRESENCE")+";\n");
-        body.append("public static int MESSAGE_AUTH="+loadString("MESSAGE_AUTH")+";\n");
-        body.append("public static int MESSAGE_HISTORY="+loadString("MESSAGE_HISTORY")+";\n");
-        body.append("public static int PGS_REMAINED="+loadString("PGS_REMAINED")+";\n");
-        body.append("public static int PGS_COMPLETE="+loadString("PGS_COMPLETE")+";\n");
-        body.append("public static int HEAP_TOTAL="+loadString("HEAP_TOTAL")+";\n");
-        body.append("public static int HEAP_FREE="+loadString("HEAP_FREE")+";\n");
-        body.append("public static int CURSOR_BGND="+loadString("CURSOR_BGND")+";\n");
-        body.append("public static int CURSOR_OUTLINE="+loadString("CURSOR_OUTLINE")+";\n");
-        body.append("public static int SCROLL_BRD="+loadString("SCROLL_BRD")+";\n");
-        body.append("public static int SCROLL_BAR="+loadString("SCROLL_BAR")+";\n");
-        body.append("public static int SCROLL_BGND="+loadString("SCROLL_BGND")+";\n");
-        body.append("public static int CONTACT_J2J="+loadString("CONTACT_J2J")+";\n");
-        body.append("public static int POPUP_MESSAGE_INK="+loadString("POPUP_MESSAGE_INK")+";\n");
-        body.append("public static int POPUP_MESSAGE_BGND="+loadString("POPUP_MESSAGE_BGND")+";\n");
-        body.append("public static int POPUP_SYSTEM_INK="+loadString("POPUP_SYSTEM_INK")+";\n");
-        body.append("public static int POPUP_SYSTEM_BGND="+loadString("POPUP_SYSTEM_BGND")+";\n");
-        body.append("public static int SECOND_LINE="+loadString("SECOND_LINE")+";\n");
-        body.append("}\n");
-        
-        System.out.println(body.toString());
-
-        skin=null;
-        skinFile=null;
-    }
-*/
     private static String loadString(String key) {
         if (skin==null) {
             skin=new StringLoader().hashtableLoader(skinFile);
@@ -238,7 +185,9 @@ public class ColorUtils {
         body.append("MESSAGE_AUTH\t"+getColorString(cs.MESSAGE_AUTH)+"\r\n");
         body.append("MESSAGE_HISTORY\t"+getColorString(cs.MESSAGE_HISTORY)+"\r\n");
         body.append("PGS_REMAINED\t"+getColorString(cs.PGS_REMAINED)+"\r\n");
-        body.append("PGS_COMPLETE\t"+getColorString(cs.PGS_COMPLETE)+"\r\n");
+        body.append("PGS_COMPLETE_TOP\t"+getColorString(cs.PGS_COMPLETE_TOP)+"\r\n");
+        body.append("PGS_COMPLETE_BOTTOM\t"+getColorString(cs.PGS_COMPLETE_BOTTOM)+"\r\n");
+        body.append("PGS_INK\t"+getColorString(cs.PGS_INK)+"\r\n");
         body.append("HEAP_TOTAL\t"+getColorString(cs.HEAP_TOTAL)+"\r\n");
         body.append("HEAP_FREE\t"+getColorString(cs.HEAP_FREE)+"\r\n");
         body.append("CURSOR_BGND\t"+getColorString(cs.CURSOR_BGND)+"\r\n");

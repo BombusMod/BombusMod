@@ -311,6 +311,7 @@ public class SR {
     public static String MS_MESSAGE_HISTORY=loadString("message history");
     public static String MS_PGS_REMAINED=loadString("progress bar remained");
     public static String MS_PGS_COMPLETE=loadString("progress bar complete");
+    public static String MS_PGS_INK=loadString("progress bar font");
     public static String MS_HEAP_TOTAL=loadString("Heap mon total");
     public static String MS_HEAP_FREE=loadString("Heap mon free");
     public static String MS_CURSOR_BGND=loadString("Cursor background");

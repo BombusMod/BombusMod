@@ -27,10 +27,12 @@
 
 package ui.controls;
 
+import Colors.Colors;
 import Fonts.FontCache;
+import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
 //#ifdef GRADIENT
-//# //import ui.Gradient;
+//# import ui.Gradient;
 //#endif
 
 /**
@@ -46,45 +48,50 @@ public class Progress {
     private static int x;
 
     private static Graphics g;
+    private static Font font;
     
 //#ifdef GRADIENT
-//# //    private Gradient gr=null;
+//#     private static Gradient gr=null;
+//#     private static int bottomColor;
 //#endif
-    
+    private static int topColor;
+
     /** Creates a new instance of progress */
-    public Progress(Graphics g, int x, int y, int height, int width) {
+    public Progress(Graphics g, int x, int y, int width) {
         this.g=g;
         this.x=x;
         this.y=y;
-        this.height=height;
         this.width=width;
+        this.font=FontCache.getSmallFont();
+        this.height=font.getHeight();
+        this.topColor=Colors.PGS_COMPLETE_TOP;
+//#ifdef GRADIENT
+//#         this.bottomColor=Colors.PGS_COMPLETE_BOTTOM;
+//#         if (topColor!=bottomColor)
+//#             this.gr=new Gradient(0, 0, width, height-1, Colors.PGS_COMPLETE_TOP, Colors.PGS_COMPLETE_BOTTOM, false);
+//#endif
     }
     
     public static void draw(int filled, String text) {
-        g.translate(x, y);
+        g.translate(x, y-height);
+        g.setClip(0,0,width,height);
         
-        g.setColor(0xffffff);
+        g.setColor(Colors.PGS_REMAINED);
         g.fillRect(0, 0, width, height);
-                
-        //draw remained
-        g.setColor(0xa2a2a2); g.fillRect(0, 0, width, 1);
-        g.setColor(0xb3b3b3); g.fillRect(0, 1, width, 1);
-        g.setColor(0xc6c6c6); g.fillRect(0, 2, width, 1);
-        g.setColor(0xe6e6e6); g.fillRect(0, 3, width, 7);
-        g.setColor(0xffffff); g.fillRect(0, 10, width, 2);
-        
-        // draw filled
-        g.setColor(0x89b700); g.fillRect(0, 0, filled, 1);
-        g.setColor(0xc5e26f); g.fillRect(0, 1, filled, 2); 
-        g.setColor(0xb6d752); g.fillRect(0, 3, filled, 2);
-        g.setColor(0x89b700); g.fillRect(0, 5, filled, 3);
-        g.setColor(0x99cc00); g.fillRect(0, 8, filled, 1);
-        g.setColor(0x89b700); g.fillRect(0, 9, filled, 1);
-        g.setColor(0xc6c6c6); g.fillRect(0, 10, filled, 1);
-        g.setColor(0xe6e6e6); g.fillRect(0, 11, filled, 1);
-
-        g.setColor(0x000000);
-        g.setFont(FontCache.getSmallFont());
+//#ifdef GRADIENT
+//#         if (topColor!=bottomColor) {
+//#             gr.paintWidth(g, filled);
+//#         } else {
+//#endif
+            g.setColor(topColor);
+            g.drawRect(0, 0, filled, height-1);
+//#ifdef GRADIENT
+//#         }
+//#endif
+       
+        g.setColor(Colors.PGS_INK);
+        g.setFont(font);
         g.drawString(text, width/2, 0, Graphics.TOP|Graphics.HCENTER);
+        g.drawLine(x,0,width,0);
     }
 }
