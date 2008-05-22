@@ -52,11 +52,15 @@ public class IqPing implements JabberBlockListener {
         String id=data.getAttribute("id");
         
         if (type.equals("get") || type.equals("error")) {
-            if (!id.equals("ping")) return BLOCK_REJECTED;
-            
-            StaticData.getInstance().roster.theStream.pingSent=false;
-            
-            return BLOCK_PROCESSED;
+            if (id.equals("ping")) {
+                StaticData.getInstance().roster.theStream.pingSent=false;
+                return BLOCK_PROCESSED;
+            }
+            if (id.startsWith("_ping_")) {
+                Iq reply=new Iq(data.getAttribute("from"), Iq.TYPE_RESULT, data.getAttribute("id"));
+                StaticData.getInstance().roster.theStream.send(reply);
+                return BLOCK_PROCESSED;
+            }
         }
         if (type.equals("result")) {
             if (id.startsWith("_ping_")) {
