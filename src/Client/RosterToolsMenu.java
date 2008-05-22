@@ -61,7 +61,7 @@ import vcard.vCardForm;
 //#ifdef CHECK_VERSION
 //# import Info.Upgrade;
 //#endif
-import Colors.ColorScheme;
+import Colors.ColorTheme;
 //#if SASL_XGOOGLETOKEN
 //# import xmpp.extensions.IqGmail;
 //#endif
@@ -234,7 +234,7 @@ public class RosterToolsMenu extends Menu {
 //#                 return;
 //#endif
             case 18:
-                ColorScheme.invertSkin();
+                ColorTheme.getInstance().invertSkin();
                 return;
             case 19:
                 sd.roster.connectionTerminated(new Exception(SR.MS_SIMULATED_BREAK));

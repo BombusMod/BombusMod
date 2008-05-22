@@ -29,7 +29,7 @@ package ui.controls;
 
 import Client.Contact;
 import Client.StaticData;
-import Colors.Colors;
+import Colors.ColorTheme;
 import java.util.Vector;
 import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
@@ -54,6 +54,8 @@ public class PopUp {
     private int height;
     
     private Vector popUps;
+    
+    private ColorTheme ct;
 
     synchronized public void addPopup(int type, Contact contact, String message){
         if (message!=null)
@@ -66,6 +68,7 @@ public class PopUp {
     public PopUp() {
          font=FontCache.getBalloonFont();
          popUps = new Vector();
+         ct=ColorTheme.getInstance();
     }
     
     public void init(Graphics g) {
@@ -138,11 +141,11 @@ public class PopUp {
         int type=((PopUpElement)popUps.elementAt(0)).getType();
         switch (type) {
             case TYPE_SYSTEM:
-                return Colors.POPUP_SYSTEM_INK;
+                return ct.getColor(ColorTheme.POPUP_SYSTEM_INK);
             case TYPE_MESSAGE:
-                return Colors.POPUP_MESSAGE_INK;
+                return ct.getColor(ColorTheme.POPUP_MESSAGE_INK);
             case TYPE_ALERT:
-                return COLOR_ALERT_INK;
+                return ct.getColor(COLOR_ALERT_INK);
         }
         return 0x000000;
     }
@@ -151,13 +154,13 @@ public class PopUp {
         int type=((PopUpElement)popUps.elementAt(0)).getType();
         switch (type) {
             case TYPE_SYSTEM:
-                return Colors.POPUP_SYSTEM_BGND;
+                return ct.getColor(ColorTheme.POPUP_SYSTEM_BGND);
             case TYPE_MESSAGE:
-                return Colors.POPUP_MESSAGE_BGND;
+                return ct.getColor(ColorTheme.POPUP_MESSAGE_BGND);
             case TYPE_ALERT:
-                return COLOR_ALERT_BGND;
+                return ct.getColor(COLOR_ALERT_BGND);
         }
-        return 0x000000;
+        return 0xffffff;
     }
     
 //paint

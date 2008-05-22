@@ -1,10 +1,26 @@
 /*
  * ColorUtils.java
  *
- * Created on 27 Март 2008 г., 10:49
+ * Created on 27.03.2008, 10:49
  *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * You can also redistribute and/or modify this program under the
+ * terms of the Psi License, specified in the accompanied COPYING
+ * file, as published by the Psi Project; either dated January 1st,
+ * 2005, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
 package Colors;
@@ -17,12 +33,13 @@ import io.NvStorage;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import Colors.Colors;
+import Colors.ColorTheme;
 import util.Translit;
 //#endif
 
 //#ifndef COLORS
 //# import Client.Config;
+//# import java.util.Enumeration;
 //#endif
 
 import util.StringLoader;
@@ -40,7 +57,7 @@ public class ColorUtils {
     private static String skinFile;
     private static int resourceType=1;
 
-    private static Colors cs=Colors.getInstance();
+    private static ColorTheme ct=ColorTheme.getInstance();
 //#ifndef COLORS
 //#     public static void loadScheme() {
 //#         skinFile = Config.getInstance().schemeFileName();
@@ -50,56 +67,30 @@ public class ColorUtils {
 //#         loadSkin(skinFile, 1);
 //#     }
 //#endif
+
+    static class ColorItem {
+        private String name;
+        private int color;
+        
+        public ColorItem(String name, int color){
+            this.name=name;
+            this.color=color;
+        }
+        
+        public String getName() { return name; }
+        public int getColor() { return color; }
+        public void setColor(int color) { this.color=color; }
+    }
     
     public static void loadSkin(String skinF, int resourceT){
         skinFile=skinF;
         resourceType=resourceT;
         
         try {
-            cs.BALLOON_INK=loadInt("BALLOON_INK", cs.BALLOON_INK);
-            cs.BALLOON_BGND=loadInt("BALLOON_BGND", cs.BALLOON_BGND);
-            cs.LIST_BGND=loadInt("LIST_BGND", cs.LIST_BGND);
-            cs.LIST_BGND_EVEN=loadInt("LIST_BGND_EVEN", cs.LIST_BGND_EVEN);
-            cs.LIST_INK=loadInt("LIST_INK", cs.LIST_INK);
-            cs.MSG_SUBJ=loadInt("MSG_SUBJ", cs.MSG_SUBJ);
-            cs.MSG_HIGHLIGHT=loadInt("MSG_HIGHLIGHT", cs.MSG_HIGHLIGHT);
-            cs.DISCO_CMD=loadInt("DISCO_CMD", cs.DISCO_CMD);
-            cs.BAR_BGND=loadInt("BAR_BGND", cs.BAR_BGND);
-            cs.BAR_BGND_BOTTOM=loadInt("BAR_BGND_BOTTOM", cs.BAR_BGND_BOTTOM);
-            cs.BAR_INK=loadInt("BAR_INK", cs.BAR_INK);
-            cs.CONTACT_DEFAULT=loadInt("CONTACT_DEFAULT", cs.CONTACT_DEFAULT);
-            cs.CONTACT_CHAT=loadInt("CONTACT_CHAT", cs.CONTACT_CHAT);
-            cs.CONTACT_AWAY=loadInt("CONTACT_AWAY", cs.CONTACT_AWAY);
-            cs.CONTACT_XA=loadInt("CONTACT_XA", cs.CONTACT_XA);
-            cs.CONTACT_DND=loadInt("CONTACT_DND", cs.CONTACT_DND);
-            cs.GROUP_INK=loadInt("GROUP_INK", cs.GROUP_INK);
-            cs.BLK_INK=loadInt("BLK_INK", cs.BLK_INK);
-            cs.BLK_BGND=loadInt("BLK_BGND", cs.BLK_BGND);
-            cs.MESSAGE_IN=loadInt("MESSAGE_IN", cs.MESSAGE_IN);
-            cs.MESSAGE_OUT=loadInt("MESSAGE_OUT", cs.MESSAGE_OUT);
-            cs.MESSAGE_PRESENCE=loadInt("MESSAGE_PRESENCE", cs.MESSAGE_PRESENCE);
-            cs.MESSAGE_IN_S=loadInt("MESSAGE_IN_S", cs.MESSAGE_IN_S);
-            cs.MESSAGE_OUT_S=loadInt("MESSAGE_OUT_S", cs.MESSAGE_OUT_S);
-            cs.MESSAGE_PRESENCE_S=loadInt("MESSAGE_PRESENCE_S", cs.MESSAGE_PRESENCE_S);
-            cs.MESSAGE_AUTH=loadInt("MESSAGE_AUTH", cs.MESSAGE_AUTH);
-            cs.MESSAGE_HISTORY=loadInt("MESSAGE_HISTORY", cs.MESSAGE_HISTORY);
-            cs.PGS_REMAINED=loadInt("PGS_REMAINED", cs.PGS_REMAINED);
-            cs.PGS_COMPLETE_TOP=loadInt("PGS_COMPLETE_TOP", cs.PGS_COMPLETE_TOP);
-            cs.PGS_COMPLETE_BOTTOM=loadInt("PGS_COMPLETE_BOTTOM", cs.PGS_COMPLETE_BOTTOM);
-            cs.PGS_INK=loadInt("PGS_INK", cs.PGS_INK);
-            cs.HEAP_TOTAL=loadInt("HEAP_TOTAL", cs.HEAP_TOTAL);
-            cs.HEAP_FREE=loadInt("HEAP_FREE", cs.HEAP_FREE);
-            cs.CURSOR_BGND=loadInt("CURSOR_BGND", cs.CURSOR_BGND);
-            cs.CURSOR_OUTLINE=loadInt("CURSOR_OUTLINE", cs.CURSOR_OUTLINE);
-            cs.SCROLL_BRD=loadInt("SCROLL_BRD", cs.SCROLL_BRD);
-            cs.SCROLL_BAR=loadInt("SCROLL_BAR", cs.SCROLL_BAR);
-            cs.SCROLL_BGND=loadInt("SCROLL_BGND", cs.SCROLL_BGND);
-            cs.CONTACT_J2J=loadInt("CONTACT_J2J", cs.CONTACT_J2J);
-            cs.POPUP_MESSAGE_INK=loadInt("POPUP_MESSAGE_INK", cs.POPUP_MESSAGE_INK);
-            cs.POPUP_MESSAGE_BGND=loadInt("POPUP_MESSAGE_BGND", cs.POPUP_MESSAGE_BGND);
-            cs.POPUP_SYSTEM_INK=loadInt("POPUP_SYSTEM_INK", cs.POPUP_SYSTEM_INK);
-            cs.POPUP_SYSTEM_BGND=loadInt("POPUP_SYSTEM_BGND", cs.POPUP_SYSTEM_BGND);
-            cs.SECOND_LINE=loadInt("SECOND_LINE", cs.SECOND_LINE);
+            for (Enumeration r=ct.colorsContainer.elements(); r.hasMoreElements();) {
+                ColorItem c=(ColorItem)r.nextElement();
+                c.setColor(loadInt(c.getName(), c.getColor()));
+            }
 //#ifdef COLORS
             ColorScheme.saveToStorage();
 //#endif
@@ -259,7 +250,6 @@ public class ColorUtils {
     public static int invertColor(int color){
         return 0xFFFFFF-color;
     }
-    
         
     public static int getRed(int color) {
         return ((color >> 16) & 0xFF);

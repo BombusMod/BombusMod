@@ -28,7 +28,7 @@
 package PrivacyLists;
 import images.RosterIcons;
 import locale.SR;
-import Colors.Colors;
+import Colors.ColorTheme;
 import ui.*;
 import com.alsutton.jabber.*;
 import Client.*;
@@ -66,8 +66,6 @@ public class PrivacyItem extends IconTextElement{
     public int getImageIndex(){
         return action+ RosterIcons.ICON_PRIVACY_ALLOW;
     }
-    
-    public int getColor() { return Colors.LIST_INK; }
     
     public String toString() { return (type==ITEM_ANY)?"ANY":value; }
     

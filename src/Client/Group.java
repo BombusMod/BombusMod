@@ -29,7 +29,7 @@ package Client;
 import com.alsutton.jabber.datablocks.Presence;
 import images.RosterIcons;
 import java.util.*;
-import Colors.Colors;
+import Colors.ColorTheme;
 import javax.microedition.lcdui.Graphics;
 import ui.*;
 
@@ -62,7 +62,7 @@ public class Group extends IconTextElement {
         this.name=name;        
     }
     
-    public int getColor(){ return Colors.GROUP_INK; }
+    public int getColor(){ return ColorTheme.getInstance().getColor(ColorTheme.GROUP_INK); }
     
     public int getImageIndex() {
         return collapsed?imageCollapsedIndex:imageExpandedIndex;

@@ -32,7 +32,6 @@ import io.file.browse.BrowserListener;
 //#endif
 import javax.microedition.lcdui.*;
 import locale.SR;
-import Colors.Colors;
 import ui.*;
 
 public class ColorForm implements CommandListener
@@ -44,7 +43,7 @@ public class ColorForm implements CommandListener
     private Display display;
     private Displayable parentView;
       
-    private static Colors cs;
+    private static ColorTheme ct;
       
     private final static int w=6;
     private final static int h=16;
@@ -106,66 +105,7 @@ public class ColorForm implements CommandListener
             
             SR.MS_SECOND_LINE
         };
-        
-        public static int[] COLORS = {            
-            cs.BALLOON_INK,
-            cs.BALLOON_BGND,
-            cs.LIST_BGND,
-            cs.LIST_BGND_EVEN,
-            cs.LIST_INK,
-            
-            cs.MSG_SUBJ,
-            cs.MSG_HIGHLIGHT,
-            cs.DISCO_CMD,
-            cs.BAR_BGND,
-            cs.BAR_BGND_BOTTOM,
-            cs.BAR_INK,
-            
-            cs.CONTACT_DEFAULT,
-            cs.CONTACT_CHAT,
-            cs.CONTACT_AWAY,
-            cs.CONTACT_XA,
-            cs.CONTACT_DND,
-            
-            cs.GROUP_INK,
-            cs.BLK_INK,
-            cs.BLK_BGND,
-            cs.MESSAGE_IN,
-            cs.MESSAGE_OUT,
-            cs.MESSAGE_PRESENCE,
-            
-            cs.MESSAGE_AUTH,
-            cs.MESSAGE_HISTORY,
-            
-            cs.PGS_REMAINED,
-            cs.PGS_COMPLETE_TOP,
-            cs.PGS_COMPLETE_BOTTOM,
-            cs.PGS_INK,
-
-            cs.HEAP_TOTAL,
-            cs.HEAP_FREE,
-            cs.CURSOR_BGND,
-            
-            cs.CURSOR_OUTLINE,
-            cs.SCROLL_BRD,
-            cs.SCROLL_BAR,
-            cs.SCROLL_BGND,
-            
-            cs.CONTACT_J2J,
-            
-            cs.MESSAGE_IN_S,
-            cs.MESSAGE_OUT_S,
-            cs.MESSAGE_PRESENCE_S,
-    
-            cs.POPUP_MESSAGE_INK,
-            cs.POPUP_MESSAGE_BGND,
-            cs.POPUP_SYSTEM_INK,
-            cs.POPUP_SYSTEM_BGND,
-            
-            cs.SECOND_LINE
-      };
-        
-      
+/*
     public static Image[] IMAGES= {
             imageData(cs.BALLOON_INK),
             imageData(cs.BALLOON_BGND),
@@ -222,8 +162,7 @@ public class ColorForm implements CommandListener
             
             imageData(cs.SECOND_LINE)
       };
-
-
+*/
     private static List selectionList;
 
 //#if (FILE_IO)
@@ -241,8 +180,8 @@ public class ColorForm implements CommandListener
         super();
         this.display=display;
         parentView=display.getCurrent();
-        cs=Colors.getInstance();
-        selectionList = new List(SR.MS_COLOR_TUNE, List.IMPLICIT, NAMES, IMAGES);
+        ct=ColorTheme.getInstance();
+        selectionList = new List(SR.MS_COLOR_TUNE, List.IMPLICIT, NAMES, null/*IMAGES*/);
 
         selectionList.setSelectCommand(selectCommand);
 
@@ -253,8 +192,6 @@ public class ColorForm implements CommandListener
         selectionList.addCommand(cmdCancel);
         display.setCurrent(selectionList);
         selectionList.setCommandListener(this);
-        
-        
     }
       
     public void commandAction(Command c, Displayable d) {
@@ -305,7 +242,7 @@ public class ColorForm implements CommandListener
     }
     
     public static void updateItem(int item) {
-        selectionList.set(item,NAMES[item],IMAGES[item]);
+        selectionList.set(item,NAMES[item],null/*IMAGES[item]*/);
     }
     
     public static Image imageData(int color) {

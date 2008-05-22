@@ -29,6 +29,7 @@ package ui.keys;
 import Client.Config;
 import Client.ConfigForm;
 import Client.StaticData;
+import Colors.ColorTheme;
 //#ifdef CONSOLE
 //# import Console.XMLList;
 //#endif
@@ -43,7 +44,6 @@ import java.util.Vector;
 import javax.microedition.lcdui.Display;
 import locale.SR;
 import midlet.BombusMod;
-import Colors.ColorScheme;
 
 public class userKeyExec {
     
@@ -166,7 +166,7 @@ public class userKeyExec {
                     BombusMod.getInstance().hideApp(true);
                 break;
             case 15:
-                ColorScheme.invertSkin();
+                ColorTheme.getInstance().invertSkin();
                 break;
             case 16:
 //#ifdef CONSOLE

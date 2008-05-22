@@ -26,12 +26,13 @@
  */
 
 package ui;
-import Colors.ColorScheme;
 import Fonts.FontCache;
 import images.RosterIcons;
 import javax.microedition.lcdui.*;
 import java.util.*;
-import Colors.Colors;
+//#ifdef COLORTHEME
+//# import Colors.ColorTheme;
+//#endif
 
 abstract public class IconTextElement implements VirtualElement {
     int itemHeight;
@@ -41,6 +42,8 @@ abstract public class IconTextElement implements VirtualElement {
     protected ImageList il;
 
     private int ilImageSize=0;
+    
+    ColorTheme ct;
     
     private boolean selectable=true; public boolean isSelectable() { return selectable; }    
 
@@ -90,7 +93,7 @@ abstract public class IconTextElement implements VirtualElement {
 //#ifdef SECONDSTRING
 //#        if (hasSecondString()) {
 //#            g.setFont(getSecondFont());
-//#            g.setColor(Colors.SECOND_LINE);
+//#            g.setColor(ct.getColor(ColorTheme.SECOND_LINE));
 //#            g.drawString(secstr, offset-ofs, fontYOfs+getFont().getHeight()-2, Graphics.TOP|Graphics.LEFT);
 //#        }
 //#endif
@@ -120,13 +123,15 @@ abstract public class IconTextElement implements VirtualElement {
         imageYOfs=(itemHeight-ilImageSize)/2;
         return itemHeight;
     }
-    public int getColorBGnd(){ return Colors.LIST_BGND;}
+    public int getColorBGnd(){ return ct.getColor(ColorTheme.LIST_BGND);}
+    public int getColor(){ return ct.getColor(ColorTheme.LIST_INK);}
 
     public void onSelect(){ };
     
     public IconTextElement(ImageList il) {
         super();
         this.il=il;
+        ct=ColorTheme.getInstance();
 	if (il!=null){
 	    ilImageSize=il.getHeight();
 	}

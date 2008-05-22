@@ -40,7 +40,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import javax.microedition.lcdui.*;
 import midlet.BombusMod;
-import Colors.Colors;
+import Colors.ColorTheme;
 import ui.controls.Progress;
 
 /**
@@ -77,6 +77,8 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
     
     private Progress pb;
     
+    private ColorTheme ct;
+    
     public static SplashScreen getInstance(){
         if (instance==null) 
             instance=new SplashScreen();
@@ -86,6 +88,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
     /** Creates a new instance of SplashScreen */
     private SplashScreen() {
         setFullScreenMode(cf.fullscreen);
+        ct=ColorTheme.getInstance();
     }
     
     public SplashScreen( Display display, ComplexString status, char exitKey) {
@@ -115,7 +118,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         g.translate(0, 0);
         g.setClip(0,0, width, height);
         
-        g.setColor(Colors.BLK_BGND);
+        g.setColor(ct.getColor(ColorTheme.BLK_BGND));
         g.fillRect(0,0, width, height);
 
         if (img!=null) 
@@ -126,18 +129,15 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
             g.setFont(f);
             int h=f.getHeight()+1;
 
-            g.setColor(Colors.BLK_INK);
+            g.setColor(ct.getColor(ColorTheme.BLK_INK));
 
             status.drawItem(g, 0, false);
 
             String time=Time.localTime();
             int tw=f.stringWidth(time);
 
-            if (Colors.BLK_INK!=0x010101) {
-                g.setFont(f);
-                g.setColor(Colors.BLK_INK);
-                g.drawString(time, width/2, height, Graphics.BOTTOM | Graphics.HCENTER);
-            }
+            g.setFont(f);
+            g.drawString(time, width/2, height, Graphics.BOTTOM | Graphics.HCENTER);
         } else {
             int filled=pos*width/100;
             int y=height;

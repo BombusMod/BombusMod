@@ -42,7 +42,7 @@ import javax.microedition.lcdui.Graphics;
 //# import ui.ImageList;
 //#endif
 import images.RosterIcons;
-import Colors.Colors;
+import Colors.ColorTheme;
 import ui.Time;
 import vcard.VCard;
 import java.util.*;
@@ -57,10 +57,13 @@ public class Contact extends IconTextElement{
 
 //#if USE_ROTATOR
     private int isnew=0;    
+
     public void setNewContact() {
         this.isnew = 10;        
     }
 //#endif
+    
+    private ColorTheme ct;
     
     public int getColor() {
 //#if USE_ROTATOR        
@@ -70,15 +73,15 @@ public class Contact extends IconTextElement{
     }
 //#endif
         if (j2j!=null)
-            return Colors.CONTACT_J2J;
+            return ct.getColor(ColorTheme.CONTACT_J2J);
         
         switch (status) {
-            case Presence.PRESENCE_CHAT: return Colors.CONTACT_CHAT;
-            case Presence.PRESENCE_AWAY: return Colors.CONTACT_AWAY;
-            case Presence.PRESENCE_XA: return Colors.CONTACT_XA;
-            case Presence.PRESENCE_DND: return Colors.CONTACT_DND;
+            case Presence.PRESENCE_CHAT: return ct.getColor(ColorTheme.CONTACT_CHAT);
+            case Presence.PRESENCE_AWAY: return ct.getColor(ColorTheme.CONTACT_AWAY);
+            case Presence.PRESENCE_XA: return ct.getColor(ColorTheme.CONTACT_XA);
+            case Presence.PRESENCE_DND: return ct.getColor(ColorTheme.CONTACT_DND);
         }
-        return Colors.CONTACT_DEFAULT;
+        return ct.getColor(ColorTheme.CONTACT_DEFAULT);
     }
 //#ifdef PEP    
 //#     public int pepMood=-1;
@@ -170,6 +173,7 @@ public class Contact extends IconTextElement{
     protected Contact (){
         super(RosterIcons.getInstance());
         cf=Config.getInstance();
+        ct=ColorTheme.getInstance();
         msgs=new Vector();
         key1="";
     }

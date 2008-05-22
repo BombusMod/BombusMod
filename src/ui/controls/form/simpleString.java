@@ -27,8 +27,6 @@
 
 package ui.controls.form;
 
-import Colors.Colors;
-import images.RosterIcons;
 import ui.IconTextElement;
 
 /**
@@ -44,13 +42,11 @@ public class simpleString
     
     /** Creates a new instance of simpleString */
     public simpleString(String text) {
-        super(RosterIcons.getInstance());
+        super(null);
         this.text=text;
     }
 
     protected int getImageIndex() { return -1; }
-
-    public int getColor() { return Colors.LIST_INK; }
     
     public String toString() { return text; }
     

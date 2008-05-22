@@ -32,7 +32,7 @@ import images.RosterIcons;
 import java.util.Enumeration;
 import java.util.Vector;
 import javax.microedition.lcdui.Graphics;
-import Colors.Colors;
+import Colors.ColorTheme;
 import ui.ComplexString;
 import Fonts.FontCache;
 import ui.Time;
@@ -71,8 +71,8 @@ public class MessageItem implements
     
     public int getColorBGnd() {
         return (even)?
-            Colors.LIST_BGND_EVEN:
-            Colors.LIST_BGND;
+            ColorTheme.getInstance().getColor(ColorTheme.LIST_BGND_EVEN):
+            ColorTheme.getInstance().getColor(ColorTheme.LIST_BGND);
     }
     
     public int getColor() { return msg.getColor(); }

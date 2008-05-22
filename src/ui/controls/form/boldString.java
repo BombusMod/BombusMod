@@ -27,7 +27,6 @@
 
 package ui.controls.form;
 
-import Colors.Colors;
 import Fonts.FontCache;
 import images.RosterIcons;
 import javax.microedition.lcdui.Font;

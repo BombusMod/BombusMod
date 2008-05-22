@@ -27,7 +27,7 @@
 package ui.controls;
 
 import Client.StaticData;
-import Colors.Colors;
+import Colors.ColorTheme;
 import java.util.Vector;
 import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Command;
@@ -73,9 +73,13 @@ public abstract class AlertBox extends Canvas implements CommandListener {
     int pos=0;
 
     int steps=1;
+    
+    ColorTheme ct;
         
     public AlertBox(String mainbar, String text, Display display, Displayable nextDisplayable) {
         this.display=display;
+        
+        ct=ColorTheme.getInstance();
 
         messageFont=FontCache.getMsgFont();
         barFont=FontCache.getBarFont();
@@ -128,7 +132,7 @@ public abstract class AlertBox extends Canvas implements CommandListener {
 
             int oldColor=g.getColor();
             
-            g.setColor(Colors.LIST_BGND);
+            g.setColor(ct.getColor(ColorTheme.LIST_BGND));
             g.fillRect(0,0, width, height); //fill back
 
             int fh=0;
@@ -138,15 +142,15 @@ public abstract class AlertBox extends Canvas implements CommandListener {
                 g.setClip(0,0, width, fh);
 //#ifdef GRADIENT
 //#                 if (gr==null) {
-//#                     gr=new Gradient(0, 0, width, fh, Colors.BAR_BGND, Colors.BAR_BGND_BOTTOM, false);
+//#                     gr=new Gradient(0, 0, width, fh, ct.getColor(ColorTheme.BAR_BGND), ct.getColor(ColorTheme.BAR_BGND_BOTTOM), false);
 //#                 }
 //#                 gr.paint(g);
 //#else
-            g.setColor(Colors.BAR_BGND);
+            g.setColor(ct.getColor(ColorTheme.BAR_BGND));
             g.fillRect(0, 0, width, fh);
 //#endif
                 g.setFont(barFont);
-                g.setColor(Colors.BAR_INK);
+                g.setColor(ct.getColor(ColorTheme.BAR_INK));
                 g.drawString(mainbar, width/2, 0, Graphics.TOP|Graphics.HCENTER);
             }
             
@@ -169,7 +173,7 @@ public abstract class AlertBox extends Canvas implements CommandListener {
         
         g.setFont(messageFont);
         int fh=getFontHeight();
-        g.setColor(Colors.LIST_INK);
+        g.setColor(ct.getColor(ColorTheme.LIST_INK));
 
 	for (int line=0; line<lines.size(); ){
             g.drawString((String) lines.elementAt(line), x, y, Graphics.TOP|Graphics.LEFT);

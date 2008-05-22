@@ -27,7 +27,7 @@
 
 package ui.controls;
 
-import Colors.Colors;
+import Colors.ColorTheme;
 import Fonts.FontCache;
 import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
@@ -55,6 +55,8 @@ public class Progress {
 //#     private static int bottomColor;
 //#endif
     private static int topColor;
+    
+    private static ColorTheme ct;
 
     /** Creates a new instance of progress */
     public Progress(Graphics g, int x, int y, int width) {
@@ -64,11 +66,12 @@ public class Progress {
         this.width=width;
         this.font=FontCache.getSmallFont();
         this.height=font.getHeight();
-        this.topColor=Colors.PGS_COMPLETE_TOP;
+        ct=ColorTheme.getInstance();
+        this.topColor=ct.getColor(ColorTheme.PGS_COMPLETE_TOP);
 //#ifdef GRADIENT
-//#         this.bottomColor=Colors.PGS_COMPLETE_BOTTOM;
+//#         this.bottomColor=ct.getColor(ColorTheme.PGS_COMPLETE_BOTTOM);
 //#         if (topColor!=bottomColor)
-//#             this.gr=new Gradient(0, 0, width, height-1, Colors.PGS_COMPLETE_TOP, Colors.PGS_COMPLETE_BOTTOM, false);
+//#             this.gr=new Gradient(0, 1, width, height, topColor, bottomColor, false);
 //#endif
     }
     
@@ -76,7 +79,7 @@ public class Progress {
         g.translate(x, y-height);
         g.setClip(0,0,width,height);
         
-        g.setColor(Colors.PGS_REMAINED);
+        g.setColor(ct.getColor(ColorTheme.PGS_REMAINED));
         g.fillRect(0, 0, width, height);
 //#ifdef GRADIENT
 //#         if (topColor!=bottomColor) {
@@ -84,15 +87,15 @@ public class Progress {
 //#         } else {
 //#endif
             g.setColor(topColor);
-            g.drawRect(0, 0, filled, height-1);
+            g.drawRect(0, 1, filled, height);
 //#ifdef GRADIENT
 //#         }
 //#endif
        
-        g.setColor(Colors.PGS_INK);
+        g.setColor(ct.getColor(ColorTheme.PGS_INK));
         g.setFont(font);
         g.drawString(text, width/2, 0, Graphics.TOP|Graphics.HCENTER);
         g.drawLine(x,0,width,0);
-        g.drawLine(filled,0,filled,height-1);
+        g.drawLine(filled,1,filled,height-1);
     }
 }

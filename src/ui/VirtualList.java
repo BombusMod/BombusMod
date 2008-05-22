@@ -27,11 +27,16 @@
  */
 
 package ui;
+//#ifdef COLORTHEME
+//# import Colors.ColorTheme;
+//#else
+import Colors.Colors;
+//#endif
+
 import Fonts.FontCache;
 import javax.microedition.lcdui.*;
 import java.util.*;
 import Client.*;
-import Colors.Colors;
 //#ifdef POPUPS
 import ui.controls.PopUp;
 //#endif
@@ -55,8 +60,8 @@ public abstract class VirtualList
 
     abstract protected VirtualElement getItemRef(int index);
 
-    protected int getMainBarBGnd() {return Colors.BAR_BGND;} 
-    protected int getMainBarBGndBottom() {return Colors.BAR_BGND_BOTTOM;} 
+    protected int getMainBarBGnd() {return ct.getColor(ColorTheme.BAR_BGND);} 
+    protected int getMainBarBGndBottom() {return ct.getColor(ColorTheme.BAR_BGND_BOTTOM);} 
     
     private StaticData sd=StaticData.getInstance();
 
@@ -101,7 +106,7 @@ public abstract class VirtualList
         popup.addPopup(type, contact, txt);
     }
 //#endif
-    protected int getMainBarRGB() {return Colors.BAR_INK;} 
+    protected int getMainBarRGB() {return ct.getColor(ColorTheme.BAR_INK);} 
     
     private Config cf=Config.getInstance();
 
@@ -184,6 +189,9 @@ public abstract class VirtualList
 //#     public Image img;
 //#endif
     
+//#ifdef COLORTHEME
+//#     private ColorTheme ct;
+//#endif    
     
     protected synchronized void updateLayout(){
         int size=getItemCount();
@@ -267,6 +275,8 @@ public abstract class VirtualList
     public VirtualList() {
         width=getWidth();
         height=getHeight();
+        
+        ct=ColorTheme.getInstance();
         
 //#ifdef POPUPS
         popup = new PopUp();
@@ -477,7 +487,11 @@ public abstract class VirtualList
                 ) {
             setAbsOrg(g, 0,displayedBottom);
             g.setClip(0, 0, itemMaxWidth, clrH);
+//#ifdef COLORTHEME
+//#             g.setColor(ColorTheme.getInstance().getColor(ColorTheme.LIST_BGND));
+//#else
             g.setColor(Colors.LIST_BGND);
+//#endif
             g.fillRect(0, 0, itemMaxWidth, clrH);
         }
 
@@ -555,8 +569,8 @@ public abstract class VirtualList
     private void drawHeapMonitor(final Graphics g, int y) {
         if (memMonitor) {
             int ram=(int)(((int)Runtime.getRuntime().freeMemory()*width)/(int)Runtime.getRuntime().totalMemory());
-            g.setColor(Colors.HEAP_TOTAL);  g.fillRect(0,y,width,1);
-            g.setColor(Colors.HEAP_FREE);  g.fillRect(0,y,ram,1);
+            g.setColor(ct.getColor(ColorTheme.HEAP_TOTAL));  g.fillRect(0,y,width,1);
+            g.setColor(ct.getColor(ColorTheme.HEAP_FREE));  g.fillRect(0,y,ram,1);
         }
     }
 
@@ -1088,8 +1102,8 @@ public abstract class VirtualList
     }
     
     protected void drawCursor (Graphics g, int width, int height){
-            g.setColor(Colors.CURSOR_BGND);    g.fillRect(1, 1, width-1, height-1);
-            g.setColor(Colors.CURSOR_OUTLINE); g.drawRect(0, 0, width-1, height-1);
+        g.setColor(ct.getColor(ColorTheme.CURSOR_BGND));    g.fillRect(1, 1, width-1, height-1);
+        g.setColor(ct.getColor(ColorTheme.CURSOR_OUTLINE)); g.drawRect(0, 0, width-1, height-1);
     }
 
     public void setParentView(Displayable parentView){

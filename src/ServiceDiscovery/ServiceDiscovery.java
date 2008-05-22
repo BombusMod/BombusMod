@@ -33,7 +33,9 @@ import images.RosterIcons;
 import java.util.*;
 import javax.microedition.lcdui.*;
 import locale.SR;
-import Colors.Colors;
+//#ifdef COLORTHEME
+//# import Colors.ColorTheme;
+//#endif
 import ui.*;
 import com.alsutton.jabber.*;
 import com.alsutton.jabber.datablocks.*;
@@ -425,7 +427,7 @@ public class ServiceDiscovery
             super(RosterIcons.getInstance());
             this.icon=icon; this.name=name;
         }
-        public int getColor(){ return Colors.DISCO_CMD; }
+        public int getColor(){ return ColorTheme.getInstance().getColor(ColorTheme.DISCO_CMD); }
         public int getImageIndex() { return icon; }
         public String toString(){ return name; }
         public void onSelect(){

@@ -34,7 +34,7 @@ import Fonts.FontCache;
 import java.io.*;
 import java.util.Vector;
 import javax.microedition.lcdui.Font;
-import Colors.Colors;
+import Colors.ColorTheme;
 
 import ui.*;
 import Client.Msg;
@@ -257,8 +257,8 @@ public final class MessageParser implements Runnable{
             String txt=(state==0)? task.msg.subject: task.msg.toString();
             
             int color=(state==0)?
-                Colors.MSG_SUBJ:
-                Colors.LIST_INK;
+                ColorTheme.getInstance().getColor(ColorTheme.MSG_SUBJ):
+                ColorTheme.getInstance().getColor(ColorTheme.LIST_INK);
             l.setColor(color);
            
             if (txt==null) {
@@ -366,7 +366,7 @@ public final class MessageParser implements Runnable{
                             l.addElement(s.toString());
                             s.setLength(0); w=0;
 
-                            if (c==0xa0) l.setColor(Colors.MSG_HIGHLIGHT);
+                            if (c==0xa0) l.setColor(ColorTheme.getInstance().getColor(ColorTheme.MSG_HIGHLIGHT));
 //#ifdef SMILES
                             l=new ComplexString(smileImages);
 //#else

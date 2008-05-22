@@ -29,7 +29,7 @@ package ui;
 
 import images.MenuIcons;
 import images.RosterIcons;
-import Colors.Colors;
+import Colors.ColorTheme;
 
 /**
  *
@@ -52,6 +52,5 @@ public class MenuItem extends IconTextElement
     }
 
     protected int getImageIndex() { return iconIndex;  }
-    public int getColor() { return Colors.LIST_INK; }
     public String toString(){ return name; }
 }

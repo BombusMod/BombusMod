@@ -27,8 +27,7 @@
 
 package ui.controls.form;
 
-import Colors.ColorScheme;
-import Colors.Colors;
+import Colors.ColorTheme;
 import images.RosterIcons;
 import ui.IconTextElement;
 
@@ -52,8 +51,6 @@ public class checkBox
     }
 
     protected int getImageIndex() { return (state)?0x36:0x37; }
-
-    public int getColor() { return Colors.LIST_INK; }
     
     public String toString() { return text; }
 

@@ -32,7 +32,9 @@ import images.RosterIcons;
 import java.io.*;
 import javax.microedition.midlet.MIDlet;
 import midlet.BombusMod;
-import Colors.Colors;
+//#ifdef COLORTHEME
+//# import Colors.ColorTheme;
+//#endif
 import ui.IconTextElement;
 import com.alsutton.jabber.*;
 import io.NvStorage;
@@ -197,12 +199,7 @@ public class Account extends IconTextElement{
         
     }
     
-    //public void onSelect(){ }
-    //public String toString(){ return jid; }
-    public int getColor(){ return Colors.LIST_INK; }
-    
     protected int getImageIndex() {return active?0:5;}
-    public void onSelect(){};
 
     public String getUserName() { return userName;  }
     public void setUserName(String userName) { this.userName = userName;  }

@@ -28,7 +28,7 @@
 
 package ui.controls;
 
-import Colors.Colors;
+import Colors.ColorTheme;
 import javax.microedition.lcdui.Graphics;
 
 /**
@@ -49,9 +49,9 @@ public class testBalloon {
         
         g.translate(x, y);
 
-        g.setColor(Colors.BALLOON_BGND);
+        g.setColor(ColorTheme.getInstance().getColor(ColorTheme.BALLOON_BGND));
         g.fillRect(0, 0, wPop, hPop);
-        g.setColor(Colors.BALLOON_INK);
+        g.setColor(ColorTheme.getInstance().getColor(ColorTheme.BALLOON_INK));
         g.drawRect(0, 0, wPop, hPop);
     }
 }

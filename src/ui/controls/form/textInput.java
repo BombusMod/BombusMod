@@ -28,7 +28,7 @@
 package ui.controls.form;
 
 import Client.Config;
-import Colors.Colors;
+import Colors.ColorTheme;
 import images.RosterIcons;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
@@ -53,16 +53,17 @@ public class textInput
 
     private Display display;
     
+    ColorTheme ct;
+    
     /** Creates a new instance of textInput */
     public textInput(Display display, String text) {
         super(RosterIcons.getInstance());
         this.display=display;
         this.text=(text==null)?"":text;
+        ct=ColorTheme.getInstance();
     }
 
     protected int getImageIndex() { return -1; }
-
-    public int getColor() { return Colors.LIST_INK; }
     
     public String toString() { return (text==null)?"":text; }
     
@@ -80,10 +81,10 @@ public class textInput
 
         int oldColor=g.getColor();
         
-        g.setColor(Colors.LIST_BGND);
+        g.setColor(ct.getColor(ColorTheme.LIST_BGND));
         g.fillRect(2, 2, width-4, height-4);
 
-        g.setColor((sel)?Colors.CURSOR_OUTLINE:Colors.CURSOR_BGND);
+        g.setColor((sel)?ct.getColor(ColorTheme.CURSOR_OUTLINE):ct.getColor(ColorTheme.CURSOR_BGND));
         g.drawRect(0, 0, width-1, height-1);
         
         g.setColor(oldColor);

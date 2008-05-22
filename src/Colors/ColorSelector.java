@@ -29,7 +29,7 @@ import io.NvStorage;
 import java.io.DataOutputStream;
 import javax.microedition.lcdui.*;
 import locale.SR;
-import Colors.Colors;
+import Colors.ColorTheme;
 import ui.*;
 
 public class ColorSelector extends Canvas implements Runnable, CommandListener {
@@ -40,7 +40,7 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
     private Display display;
     Displayable parentView;
     Graphics G;
-    private Colors cl;
+    private ColorTheme ct;
 
     int cpos;
     String nowcolor;
@@ -71,9 +71,11 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
         super();
         this.display=display;
         parentView=display.getCurrent();
-        this.color=ColorForm.COLORS[paramName];
         this.paramName=paramName;
-
+        
+        ct=ColorTheme.getInstance();
+        this.color=ct.getColor(paramName);
+        
         w = getWidth();
         h = getHeight();
 
@@ -265,144 +267,8 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
 
     public void setValue(int vall) {
         this.value=vall;
-        cl=Colors.getInstance();
-        switch(paramName) {
-            case 0:
-                cl.BALLOON_INK=value;
-                break;
-            case 1:
-                cl.BALLOON_BGND=value; 
-                break;
-            case 2:
-                cl.LIST_BGND=value; 
-                break;
-            case 3:
-                cl.LIST_BGND_EVEN=value; 
-                break;
-            case 4:
-                cl.LIST_INK=value; 
-                break;
-            case 5:
-                cl.MSG_SUBJ=value; 
-                break;
-            case 6:
-                cl.MSG_HIGHLIGHT=value; 
-                break;
-            case 7:
-                cl.DISCO_CMD=value; 
-                break;
-            case 8:
-                cl.BAR_BGND=value; 
-                break;
-            case 9:
-                cl.BAR_BGND_BOTTOM=value; 
-                break;
-            case 10:
-                cl.BAR_INK=value; 
-                break;
-            case 11:
-                cl.CONTACT_DEFAULT=value; 
-                break;
-            case 12:
-                cl.CONTACT_CHAT=value; 
-                break;
-            case 13:
-                cl.CONTACT_AWAY=value; 
-                break;
-            case 14:
-                cl.CONTACT_XA=value; 
-                break;
-            case 15:
-                cl.CONTACT_DND=value; 
-                break;
-            case 16:
-                cl.GROUP_INK=value; 
-                break;
-            case 17:
-                cl.BLK_INK=value; 
-                break;
-            case 18:
-                cl.BLK_BGND=value; 
-                break;
-            case 19:
-                cl.MESSAGE_IN=value; 
-                break;
-            case 20:
-                cl.MESSAGE_OUT=value; 
-                break;
-            case 21:
-                cl.MESSAGE_PRESENCE=value; 
-                break;
-            case 22:
-                cl.MESSAGE_AUTH=value; 
-                break;
-            case 23:
-                cl.MESSAGE_HISTORY=value; 
-                break;
-            case 24:
-                cl.PGS_REMAINED=value; 
-                break;
-            case 25:
-                cl.PGS_COMPLETE_TOP=value; 
-                break;
-            case 26:
-                cl.PGS_COMPLETE_BOTTOM=value; 
-                break;
-            case 27:
-                cl.PGS_INK=value; 
-                break;
-            case 28:
-                cl.HEAP_TOTAL=value; 
-                break;
-            case 29:
-                cl.HEAP_FREE=value; 
-                break;
-            case 30:
-                cl.CURSOR_BGND=value; 
-                break;
-            case 31:
-                cl.CURSOR_OUTLINE=value; 
-                break;                    
-            case 32:
-                cl.SCROLL_BRD=value; 
-                break;
-            case 33:
-                cl.SCROLL_BAR=value; 
-                break;
-            case 34:
-                cl.SCROLL_BGND=value; 
-                break;
-            case 35:
-                cl.CONTACT_J2J=value; 
-                break;
-            case 36:
-                cl.MESSAGE_IN_S=value; 
-                break;
-            case 37:
-                cl.MESSAGE_OUT_S=value; 
-                break;
-            case 38:
-                cl.MESSAGE_PRESENCE_S=value; 
-                break;
-            case 39:
-                cl.POPUP_MESSAGE_INK=value; 
-                break;
-            case 40:
-                cl.POPUP_MESSAGE_BGND=value; 
-                break;
-            case 41:
-                cl.POPUP_SYSTEM_INK=value; 
-                break;
-            case 42:
-                cl.POPUP_SYSTEM_BGND=value; 
-                break;
-            case 43:
-                cl.SECOND_LINE=value; 
-                break;
-        }
-//#if (COLORS)
-        ColorScheme.saveToStorage();
-//#endif
+        ct.setColor(paramName, value);
+        ct.saveToStorage();
     }
 
     private void movePoint() {

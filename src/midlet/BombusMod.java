@@ -33,10 +33,14 @@ package midlet;
 //#ifdef AUTOTASK
 //# import AutoTasks.AutoTask;
 //#endif
+//#ifdef COLORTHEME
+//# import Colors.ColorTheme;
+//#else
 //#ifdef COLORS
 import Colors.Colors;
 //#else
 //# import Colors.ColorUtils;
+//#endif
 //#endif
 import javax.microedition.midlet.*;
 import javax.microedition.lcdui.*;
@@ -98,11 +102,14 @@ public class BombusMod extends MIDlet implements Runnable{
         s.getKeys();
         
         s.setProgress(5);
-        
+//#ifdef COLORTHEME
+//#         ColorTheme ct=ColorTheme.getInstance();
+//#else
 //#ifdef COLORS
         Colors cl=Colors.getInstance();
 //#else
 //#         ColorUtils.loadScheme();
+//#endif
 //#endif
         s.setProgress(7);
         

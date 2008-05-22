@@ -27,7 +27,7 @@
 
 package Mood;
 
-import Colors.Colors;
+import Colors.ColorTheme;
 import images.MoodIcons;
 import ui.IconTextElement;
 
@@ -51,7 +51,7 @@ public class MoodItem extends IconTextElement {
     }
 
     protected int getImageIndex() { return iconIndex; }
-    public int getColor() { return Colors.CONTACT_DEFAULT; }
+    public int getColor() { return ColorTheme.getInstance().getColor(ColorTheme.CONTACT_DEFAULT); }
     public String toString() { return label; }
     public String getTipString() { return name; }
 

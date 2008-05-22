@@ -29,7 +29,7 @@ package Client;
 import Messages.MessageParser;
 import images.SmilesIcons;
 import locale.SR;
-import Colors.Colors;
+import Colors.ColorTheme;
 import ui.*;
 import javax.microedition.lcdui.*;
 import java.util.Vector;
@@ -98,8 +98,8 @@ public class SmilePicker extends VirtualList implements CommandListener, Virtual
 
     public int getVWidth(){ return 0; }
     public int getVHeight() { return lineHeight; }
-    public int getColor(){ return Colors.LIST_INK; }
-    public int getColorBGnd(){ return Colors.LIST_BGND; }
+    public int getColor(){ return ColorTheme.getInstance().getColor(ColorTheme.LIST_INK); }
+    public int getColorBGnd(){ return ColorTheme.getInstance().getColor(ColorTheme.LIST_BGND); }
     public void onSelect(){
         try {
             StaticData.getInstance().roster.me.insertText( getTipString() , caretPos);
@@ -117,7 +117,7 @@ public class SmilePicker extends VirtualList implements CommandListener, Virtual
 
     public void drawCursor (Graphics g, int width, int height){
         int x=xBorder+(xCursor*imgWidth);
-        g.setColor(Colors.LIST_BGND);
+        g.setColor(getColorBGnd());
         g.fillRect(0,0,width, height);
         g.translate(x,0);
         super.drawCursor(g, imgWidth, lineHeight);

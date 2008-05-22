@@ -1127,7 +1127,7 @@ public class Roster
             SplashScreen.getInstance().close(); // display.setCurrent(this);
         } else {
             JabberDataBlock qr=new IqQueryRoster();
-            setProgress(SR.MS_ROSTER_REQUEST, 60);
+            setProgress(SR.MS_ROSTER_REQUEST, 49);
             theStream.send( qr );
         }
 //#ifndef WMUC
@@ -2544,8 +2544,8 @@ public class Roster
         if (askSubscribe) theStream.send(new Presence(jid,"subscribe"));
     }
 
-    public void loginMessage(String msg) {
-        setProgress(msg, 42);
+    public void loginMessage(String msg, int pos) {
+        setProgress(msg, pos);
     }
 
     private class ReEnumerator implements Runnable{

@@ -29,7 +29,7 @@ package Client;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import Colors.Colors;
+import Colors.ColorTheme;
 import ui.Time;
 
 /**
@@ -71,6 +71,8 @@ public class Msg //implements MessageList.Element
     public boolean itemCollapsed;
     public int itemHeight=-1;
     
+    private ColorTheme ct;
+    
     /** Creates a new instance of msg */
     public Msg(int messageType, String from, String subj, String body) {
         this.messageType=messageType;
@@ -84,6 +86,7 @@ public class Msg //implements MessageList.Element
         else if (body!=null && messageType!=MESSAGE_TYPE_SUBJ)
             if (body.length()>Config.getInstance().messageLimit)
                 itemCollapsed=true;
+        ct=ColorTheme.getInstance();
     }
     
     public void onSelect(){}
@@ -101,18 +104,18 @@ public class Msg //implements MessageList.Element
     
     public int getColor() {
         if (highlite) 
-            return Colors.MSG_HIGHLIGHT;
+            return ct.getColor(ColorTheme.MSG_HIGHLIGHT);
         
         switch (messageType) {
-            case MESSAGE_TYPE_IN: return Colors.MESSAGE_IN;
-            case MESSAGE_TYPE_HEADLINE: return Colors.MESSAGE_IN;
-            case MESSAGE_TYPE_OUT: return Colors.MESSAGE_OUT;
-            case MESSAGE_TYPE_PRESENCE: return Colors.MESSAGE_PRESENCE;
-            case MESSAGE_TYPE_AUTH: return Colors.MESSAGE_AUTH;
-            case MESSAGE_TYPE_HISTORY: return Colors.MESSAGE_HISTORY;
-            case MESSAGE_TYPE_SUBJ:return Colors.MSG_SUBJ;
+            case MESSAGE_TYPE_IN: return ct.getColor(ColorTheme.MESSAGE_IN);
+            case MESSAGE_TYPE_HEADLINE: return ct.getColor(ColorTheme.MESSAGE_IN);
+            case MESSAGE_TYPE_OUT: return ct.getColor(ColorTheme.MESSAGE_OUT);
+            case MESSAGE_TYPE_PRESENCE: return ct.getColor(ColorTheme.MESSAGE_PRESENCE);
+            case MESSAGE_TYPE_AUTH: return ct.getColor(ColorTheme.MESSAGE_AUTH);
+            case MESSAGE_TYPE_HISTORY: return ct.getColor(ColorTheme.MESSAGE_HISTORY);
+            case MESSAGE_TYPE_SUBJ:return ct.getColor(ColorTheme.MSG_SUBJ);
         }
-        return Colors.LIST_INK;
+        return ct.getColor(ColorTheme.LIST_INK);
     }
     public String toString(){
         StringBuffer time=new StringBuffer();

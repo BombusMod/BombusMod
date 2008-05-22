@@ -27,7 +27,7 @@
 
 package ui.controls.form;
 
-import Colors.Colors;
+import Colors.ColorTheme;
 import images.RosterIcons;
 import java.util.Vector;
 import javax.microedition.lcdui.Display;
@@ -50,16 +50,17 @@ public class newChoiceBox
 
     private Display display;
     
+    private ColorTheme ct;
+    
     /** Creates a new instance of choiceBox */
     public newChoiceBox(Display diplay) {
         super(RosterIcons.getInstance());
         this.display=display;
         items=new Vector();
+        ct=ColorTheme.getInstance();
     }
 
     protected int getImageIndex() { return -1; }
-
-    public int getColor() { return Colors.LIST_INK; }
     
     public String toString() {
         if (items.size()<1) return "";//caption;
@@ -86,10 +87,10 @@ public class newChoiceBox
 
         int oldColor=g.getColor();
 
-        g.setColor((sel)?Colors.CURSOR_BGND:Colors.LIST_BGND);
+        g.setColor((sel)?ct.getColor(ColorTheme.CURSOR_BGND):ct.getColor(ColorTheme.LIST_BGND));
         g.fillRect(2, 2, width-4, height-4);
         
-        g.setColor((sel)?Colors.CURSOR_OUTLINE:Colors.CURSOR_BGND);
+        g.setColor((sel)?ct.getColor(ColorTheme.CURSOR_OUTLINE):ct.getColor(ColorTheme.CURSOR_BGND));
         g.drawRect(0, 0, width-1, height-1);
         
         g.setColor(oldColor);

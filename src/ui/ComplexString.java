@@ -26,13 +26,10 @@
  */
 
 package ui;
-//#if NICK_COLORS || COLORS
-import Colors.ColorScheme;
-//#endif
 import Fonts.FontCache;
 import java.util.*;
 import javax.microedition.lcdui.*;
-import Colors.Colors;
+import Colors.ColorTheme;
 
 /**
  *
@@ -54,12 +51,16 @@ public class ComplexString extends Vector implements VirtualElement {
     private int height;
     private int width;
     private ImageList imageList;
-    private int colorBGnd=Colors.LIST_BGND;
-    private int color=Colors.LIST_INK;
+    private int colorBGnd;
+    private int color;
     
+    ColorTheme ct;
     /** Creates a new instance of ComplexString */
     public ComplexString() {
         super();
+        ct=ColorTheme.getInstance();
+        color=ct.getColor(ColorTheme.LIST_INK);
+        colorBGnd=ct.getColor(ColorTheme.LIST_BGND);
     }
 
     /** Creates a new instance of ComplexString */
@@ -75,8 +76,8 @@ public class ComplexString extends Vector implements VirtualElement {
         return (imageList==null)?0:imageList.getWidth();
     }
     
-    public int getColor() {return color;}
-    public int getColorBGnd() {return colorBGnd;}
+    public int getColor() { return color; }
+    public int getColorBGnd() { return colorBGnd; }
     
     public void setColorBGnd(int color){ colorBGnd=color;}
     public void setColor(int color){ this.color=color;}
@@ -123,7 +124,7 @@ public class ComplexString extends Vector implements VirtualElement {
                                 if ( (c1&0xff00) != (c2 &0xff00) ) break;
                                 p2++;
                             }
-                            int vColor=ColorScheme.strong(color);
+                            int vColor=ct.strong(color);
                             g.setColor( (c1>255) ? vColor : color);
                             dw=font.substringWidth(s, p1, p2-p1);
                             if (ralign) w-=dw;

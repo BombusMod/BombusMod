@@ -62,7 +62,7 @@ public class NonSASLAuth implements JabberBlockListener{
         
         jabberIqAuth(AUTH_GET);
        
-        listener.loginMessage(SR.MS_AUTH);
+        listener.loginMessage(SR.MS_AUTH, 42);
     }
 
     private final static int AUTH_GET=0;

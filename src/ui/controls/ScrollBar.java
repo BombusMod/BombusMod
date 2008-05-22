@@ -27,9 +27,8 @@
 
 package ui.controls;
 
-import Colors.ColorScheme;
 import javax.microedition.lcdui.Graphics;
-import Colors.Colors;
+import Colors.ColorTheme;
 //#ifdef GRADIENT
 //# import ui.Gradient;
 //#endif
@@ -67,9 +66,12 @@ public class ScrollBar {
     private int minimumHeight=3;
     private int scrollWidth=WIDTH_SCROLL_1;
     
+    private ColorTheme ct;
+    
     /** Creates a new instance of ScrollBar */
     public ScrollBar() {
         point_y=-1;
+        ct=ColorTheme.getInstance();
     }
 
     public void setWindowSize(int windowSize) {
@@ -145,7 +147,7 @@ public class ScrollBar {
 
 //#ifdef GRADIENT
 //#         if (drawHeight!=prevDrawHeight) {
-//#             gr=new Gradient(0, 0, scrollWidth, drawHeight, 0xFFFFFF-Colors.LIST_BGND, Colors.LIST_BGND, true);
+//#             gr=new Gradient(0, 0, scrollWidth, drawHeight, 0xFFFFFF-ct.getColor(ColorTheme.SCROLL_BGND), ct.getColor(ColorTheme.SCROLL_BGND), true);
 //#             prevDrawHeight=drawHeight;
 //#         }
 //#         gr.paint(g);
@@ -160,10 +162,10 @@ public class ScrollBar {
  	
  	scrollerPos=(drawHeight*position)/size;
 
-        g.setColor(Colors.SCROLL_BAR);
+        g.setColor(ct.getColor(ColorTheme.SCROLL_BAR));
 	g.fillRect(1, scrollerPos+1, scrollWidth-2, scrollerSize-1);
 
-        g.setColor(Colors.SCROLL_BRD);
+        g.setColor(ct.getColor(ColorTheme.SCROLL_BRD));
 	g.drawRect(0, scrollerPos, scrollWidth-1, scrollerSize);
     }
 }

@@ -34,6 +34,6 @@ package login;
 public interface LoginListener {
     public void loginFailed(String error);
     public void loginSuccess();
-    public void loginMessage(String msg);
+    public void loginMessage(String msg, int pos);
     public void bindResource(String myJid);
 }

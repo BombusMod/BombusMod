@@ -27,7 +27,7 @@
 
 package ui.controls.form;
 
-import Colors.Colors;
+import Colors.ColorTheme;
 import images.RosterIcons;
 import ui.IconTextElement;
 
@@ -48,8 +48,6 @@ public class spacerItem
     }
 
     protected int getImageIndex() { return -1; }
-
-    public int getColor() { return Colors.LIST_INK; }
     
     public String toString() { return " "; }
     
