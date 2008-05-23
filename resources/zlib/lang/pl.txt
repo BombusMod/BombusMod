@@ -1,12 +1,10 @@
-﻿// All rights reserved.
-// (c) 2007 Eugene Stahov (evgs), http://bombus.jrudevels.org
-// (c) Alexey V.Lubimov <avl@l14.ru>, 2006.
-// (c) Vladimir N. Shelukhin, 2006.
-xmlLang	
+﻿// All rights reserved. salskY (11)
+// (c) 2008 salskY <salas.millennium@gmail.com>
+xmlLang	pl
 //463
 langfile	Polski 
 Jid	JID 
-Loading	Ładowanie
+Loading	  Ładowanie
 Privacy Lists	Listy prywatności 
 Existing groups	Istniejące Grupy 
 Message font	Czcionka wiadomości 
@@ -74,11 +72,11 @@ Username	Użytkownik
 fullscreen	Pełny ekran 
 All Priorities	Wszystkie priorytety 
 Add bookmark	Dodaj Zakładkę 
-conferences only	Tylko Czat 
+conferences only	Tylko konferencje 
 Client Version	Wersja klienta 
 Discard Search	Odrzuć Wyszukiwanie 
 Search Results	Rezultaty Wyszukiwania
-Members	Klubowicze 
+Members	Członkowie 
 // offline	Rozłączony 
 Add Contact	Dodaj kontakt 
 Subscription	Autoryzacja 
@@ -104,7 +102,7 @@ Append	Dokończ
 Active Contacts	Aktywne kontakty 
 Select nickname	Wybierz pseudonim 
 Group	Grupa 
-Join conference	Dołącz do Czata 
+Join conference	Dołącz do konferencji
 No	Nie 
 Yes	Tak 
 Re-Enter Room	Wejdź ponownie 
@@ -114,7 +112,7 @@ Logon	Włącz
 Logoff	Wyłącz 
 Login in progress	Logowanie w trakcie 
 at Host	na Serwerze 
-join conferences	Automatyczne wejście w Czat 
+join conferences	Automatyczne wejście do konferencji 
 Status	Status 
 Smiles	Emotikony 
 Contact >	Kontakt > 
@@ -146,7 +144,7 @@ Cancel	Anuluj
 Close	Zamknij 
 Archive	Archiwum 
 free 	Wolne: 
-Conference	Czat 
+Conference	Konferencje
 Sound	Dźwięk 
 Login failed	Nie Uwierzytelniono 
 New Jid	Nowy JID 
@@ -181,7 +179,7 @@ My vCard	Moja wizytówka
 transports	Transporty
 New Account	Nowe konto 
 self-contact	Własny kontakt
-vCard	Dane publiczne 
+vCard	Katalog publiczny 
 Set Subject	Ustaw Temat 
 Tools	Narzędzia 
 Jabber Tools	Narzędzia Jabber'a 
@@ -207,37 +205,41 @@ Clear	Wyczyść
 Ask subscription	Zapytaj o Autoryzację 
 Grant subscription	Daj Autoryzację 
 //502
-Invite to conference	Zaproś do Czata 
+Invite to conference	Zaproś do konferencji 
 Reason	Powód 
 You have been invited to 	Zostałeś zaproszony do: 
  is inviting You to 	 zaprasza Cię na: 
-Visitors are not allowed to send messages to all occupants	Nowoprzybyli Wizytorzy nie posiadają zezwolenia na wysyłanie wiadomości do wszystkich uczestników czata. 
+Visitors are not allowed to send messages to all occupants	Nowoprzybyli Wizytorzy nie posiadają zezwolenia na wysyłanie wiadomości do wszystkich uczestników czatu. 
 Unaffiliate	Odbierz przynależność 
 Grant Moderator	Daj Moderatora 
 Revoke Moderator	Odbierz Moderatora 
 Grant Admin	Daj Administratora 
 Grant Ownership	Daj Właściciela 
 room presences	Uczestnicy pokoju 
- is now known as 	 zmienił pseudonim i nazywa się teraz: 
- was banned 	 został zablokowany 
- was kicked 	 został wyrzucony 
- has been kicked because room became members-only	 został wyrzucony, ponieważ pokój jest tylko dla klubowiczów 
- has left the channel	 opuścił czat
- has joined the channel as 	 wszedł na czat i jest w tym pokoju: 
+ is now known as 	 zmienił(a) nick na 
+ was banned 	 został(a) zablokowany(a)
+ was kicked 	 został(a) wyrzucony(a)
+ has been kicked because room became members-only	 został(a) wyrzucony(a) ponieważ pokój jest tylko dla osób posiadających członkowstwo w pokoju
+ has left the channel	 opuścił(a) rozmowę
+ has joined the channel as 	 dołączył(a) do rozmowy jako 
  and 	 i 
- is now 	 jest teraz: 
+ is now 	 jest teraz 
 Participants	Uczestnicy 
-Abc	Аbc 
-online	Dostępny 
+Abc	Аbc
+
+ 
+online	dostępny 
 error	Błąd 
-chat	Czat 
-away	Nieobecny 
-xa	Zaraz wracam 
-dnd	Nie przeszkadzać 
-invisible	Niewidoczny 
-offline	Rozłączony 
+chat	chętny do rozmowy 
+away	oddalony
+xa	zaraz wracam 
+dnd	niedostępny
+invisible	niewidoczny 
+offline	wylogowany 
+
 Clear Photo	Usuń Zdjęcie 
 Camera	Kamera 
+
 Load Photo	Wybierz Zdjęcie 
 Hide finished	Ukryj przesłane 
 Transfer tasks	Przesłane pliki 
@@ -253,16 +255,23 @@ Save conference history	Zapisz czat
 Save conference presences	Zapisz obecność czata 
 1251 correction	Korekcja Windows 1251 
 History folder	Folder Historii 
+
 Copy	Kopiuj 
 Paste	Wklej 
+
 Save template	Do Notatek 
-Template	Notatki 
+Template	Notatki
+ 
 has set topic to	ustawił temat na:
+
 Seen	Aktywny 
 Time	Czas użytkownika 
 Main menu	Menu 
-Root	Przegląd dysku 
-File transfers	Transfer plików 
+
+Root	Przegląd dysku
+ 
+File transfers	Transfer plików
+ 
 Choose status	Wybierz Status 
 Add status	Dodaj Status 
 Remove status	Usuń Status 
@@ -278,19 +287,19 @@ Accept file	Akceptuj plik
 File	Plik: 
 Save To	Zapisz do 
 Sender	Nadawca: 
-size:	Rozmiar:
+Size	Rozmiar: 
 Description	Szczegóły: 
 Rejected	Odrzucono 
 Send file	Wyślij plik 
-To: 	Do: 
+To	Do 
 Can't open file	Nie można otworzyć pliku 
 New	Nowa 
 New Template	Nowa Notatka 
 Save photo	Zapisz zdjęcie 
-This user wants to subscribe to your presence	[Użytkownik pyta o Autoryzację]
-You are now authorized	[Jesteś teraz Autoryzowany]
-Your authorization has been removed!	[Użytkownik odebrał Autoryzację]
-Grant Membership	Daj Klubowicza 
+User has removed autorization	[Użytkownik odebrał Autoryzację] 
+You are now autorized	[Jesteś teraz Autoryzowany] 
+User request autorization	[Użytkownik pyta o Autoryzację] 
+Grant Membership	Daj Członkowstwo 
 Reply	Odpisz 
 Save template	Zapisz Notatkę 
 balloon ink	Czcionka dymku 
@@ -304,10 +313,10 @@ service discovery commands	Czcionka Serwera
 Header & Bottom background	Góra i Dół Panelu 
 Header font	Czcionka Panela 
 contact default	Kontakt Dostępny 
-contact chat	Kontakt Czat 
-contact away	Kontakt Nieobecny 
-contact extended away	Kontakt Zaraz Wracam 
-contact do not disturb	Kontakt Nie Przeszkadzać 
+contact chat	Kontakt chętny do rozmowy 
+contact away	Kontakt oddalony 
+contact extended away	Kontakt zaraz Wracam 
+contact do not disturb	Kontakt niedostępny
 group color	Kolor Grupy 
 keylock font	Kolor Czcionki Blokady Klawiatury 
 keylock background	Tło Blokady Klawiatury 
@@ -329,13 +338,13 @@ Scroll bar	Pasek Baneru
 Scroll back	Pasek Powrót 
 Send status	Pokaż status 
 Sounds options	Ustawienia dźwięku 
-participant	uczestnikiem
-moderator	moderatorem
-visitor	wizytorem
+participant	uczestnik
+moderator	moderator
+visitor	wizytor
 none	osobą bez przynależności
-member	klubowiczem
-admin	administratorem
-owner	właścicielem
+member	member
+admin	admin
+owner	właściciel
 Opening stream	Otwieranie strumienia
 Using compression	Użycie kompresji danych
 Authenticating	Identyfikowanie użytkownika
@@ -362,10 +371,10 @@ months_	miesięcy
 year	rok
 years	lata
 years_	lat
-Auto xa since %t	Automatyczny status (Zaraz wracam) z powodu bezczynności od: %t
-Auto away since %t	Automatyczny status (Nieobecny) z powodu braku aktywności od: %t
-Auto Status on KeyLock since %t	Automatyczny ststus (Nieibecny) z powodu blokady klawiatury od: %t
-Grant Membership	Daj Klubowicza
+Auto xa since %t	Auto status zaraz wracam od: %t
+Auto away since %t	Auto status (oddalony) od: %t
+Auto Status on KeyLock since %t	Auto status (oddalony) z powodu blokady klawiatury od: %t
+Grant Membership	Daj Członkowstwo
 SASL login	SASL Strumień
 Features	Szczegóły
 Show password	Pokaż hasło
@@ -389,3 +398,169 @@ keyblock / flip	Blokada klawiatury / Przycisk
 Idle	Bezczynny
 Remove readed	Wyczyść okienko
 Rename	Zmień nazwę
+Check Updates	Sprawdź aktualizacje
+Statistics	Statystyka
+Move	Przenieś
+Copy JID	Kopiuj JID
+Collapsed groups	Zwijanie grup
+show statuses	Pokaż status
+Show Resources	Pokaż zasób
+Save options to server	Zapisz ustawienia na serwerze
+Delete all messages	Usuń wszystkie wiadomości
+Use this Color scheme	Użyj tego schematu koloru
+
+Save chat	Zapisz chat
+Block private	Odrzuć rozmowę
+Allow private	Akceptuj rozmowę
+Change nickname	Zmień nick
+show new menu	Użyj nowego menu
+History options	Opcje Historii
+Last Messages	Ostatnie wiadomości
+Last messages	Ostatnie wiadomości
+Contact request chat, Allow or Block?	Użytkownik przesyła wiadomość, Akceptuj lub odrzuć.
+keyblock	Blokada klawiatury
+by message	Od ostatniej wiadomości
+Sound volume	Głośność dźwięku
+User mood	Nastrój
+delivery events	Potw. dostarczenia
+Recent services	Poprzednio przeglądane
+exit confirmation	Potw. wyjścia z aplikacji
+Last messages	Ostatnie wiadomości
+Filenames transliterate	Nazwa archiwum transliteracji
+Are you sure want to Quit?	Czy jesteś pewny(a) aby zakończyć?
+Yes	Tak
+No	Nie
+show statuses	pokaż statusy
+Change transport	zmień transport
+Edit/join	Edytuj/wejdź
+Last Messages	Ostatnie wiadomości
+No client info	Brak informacji na temat wersji klienta
+shared platform info	Pokaż informacje o platformie
+Join marked (auto)	Auto wejście do konferencji
+Turn on light	Włącz podświetlenie
+show last appeared contacts	Pokaż ostatnio ukazany kontakt
+show balloons	Pokaż "balloons"
+custom key	Klawisz skrótu
+custom keys	Klawisze skrótu
+Add custom key	Dodaj klawisz skrótu
+enabled	uaktywnij
+keys action	Skrót do:
+key	klawisz
+Enter Jabber server address here	Wpisz niżej adres serwera
+Address	Adres
+Delete All	Usuń wszystko
+Make BackUp	Zapisz archiwum (BackUp)
+Import from BackUp	Importuj zapisane archiwum (BackUp)
+convert to cp1251	konwertuj do cp1251
+reconnect	Zaloguj ponownie
+Clear popups	wyczyść popups
+Last messages 	Ostatnie wiadomości
+Message collapse limit	Auto zwijanie wiadomośći (ustaw po ilu znakach)
+Chat history length	Ilość wiadomości w konferencji
+Break connection	Wznów połączenie
+Sun	Niedziela
+Mon	Poniedziałek
+Tue	Wtorek
+Wed	Środa
+Thu	Czwartek
+Fri	Piątek
+Sat	Sobota
+Automatic subscription	Automatyczna autoryzacja
+Ask me	Zapytaj mnie
+Drop subscription	Odrzuć
+Deny subscription	Zabroń
+All signals	Wszystkie sygnały
+Vibra	Wibracja
+Sound	Dźwięk
+No signals	Bez sygnałów
+ (default)	 (domyślnie)
+Search	Szukaj
+Register	Zarejestruj
+messages & presences	wiadomości & prezencja
+
+Blink	Miganie
+Notices options	Ustawienia dźwięku
+
+Message sound	Dźwięk wiadomości
+Online sound	Dźwięk dostępny
+Offline sound	Dźwięk wylogowany
+"Message for me" sound	Dźwięk "wiadomość do mnie"
+Composing sound	Dźwięk kompozycji
+Conference sound	Dźwięk dla konferencji
+StartUP sound	Dźwięk przy uruchomieniu
+Outgoing sound	Dźwięk zw/oddalony
+Vip sound	Dźwięk dla VIP
+
+Copy JID	Kopiuj JID
+Ping request	Ping
+Online time	Dostępny
+
+Break connection	Wznów połączenie
+autoScroll	autoPrzewijanie
+emulate tabs	Przełączanie między kontaktami (klawisze 4-6)
+antispam conference	Antyspam w konferencji
+popUps	Wyskakujące okienka
+Started: 	Uruchomiono: 
+Traffic stats: 	Statystyka: 
+All: 	Wszysko: 
+Previous: 	Poprzednio: 
+Current: 	Użyto: 
+Memory:	Pamięć:
+Free: 	Wolne: 
+Total: 	Całkowita: 
+in: 	in: 
+out: 	out: 
+Stream: 	Strumień:
+ 	
+bold font for contacts	Pogrubienie czcionki dla kontaktów
+running message	Pokaż wiadomość (w trybie pisania)
+Composing message to you	User komponuje wiadomość do mnie
+No compression	Nie używaj kompresji
+New room created	Utworzono nowy pokój
+Sound volume	Głośność
+IRC-like conference nick-status	IRC status (nick-status)
+Description	Opis
+This user wants to subscribe to your presence	[Użytkownik prosi o autoryzacje]
+You are now authorized	[Zostałeś autoryzowany]
+Your authorization has been removed!	[Użytkownik odebrał autoryzacje]
+Send Buffer	Wyślij bufor
+Free: 	Wolne: 
+Build new version on constructor	Zbuduj nową wersję w kreatorze
+user moods send/receive	Nastrój (wyślij/odbierz)
+Import/Export	Zapisz/Przywróć ustawienia
+Auto tasks	Auto zadanie
+Auto task type	Auto zakończenie (typ)
+Auto task action type	Auto zakończenie zadania (typ)
+Quit BombusMod	Zamknij aplikacje
+Quit by time	Auto zakończenie
+Quit by timer:	Auto zakończenie po:
+Quit conferences	Zamknij czaty
+by time	ustaw po czasie
+by timer	ustaw po zegarze
+both	obustronna
+Disconnection	Przerwij połączenie
+Delay (min.)	Ustaw czas (w minutach)
+Start time	Ustaw zegar
+Hour	Godz.
+Min	Min.
+by timer 	ustaw czas
+by time 	ustaw wg zegara
+Use: 	Używa:
+Send current color scheme 	Wyślij swój schemat koloru
+Browse rooms	Przeglądaj pokoje
+Autorespond	AutoOdpowiedź
+show statuses	Pokaż statusy
+to	do
+from	od
+
+Invert colors	Zmień kolory
+XML console	konsola XML
+Please create account or enter account(s) settings.\n\nMenu, New Account	Prosze utworzyć konto lub edytuj konto\n\nMenu, Nowe konto
+Please enter settings.\n\nMenu, Tools, Options	Prosze wprowadzić ustawienia\n\nMenu, Narzędzia, Ustawienia ogólne
+
+Second line	Druga linia (pokaż opisy)
+Fonts options	Ustawienia czcionki
+Popup & ballon font	Czcionka dla balon i popUp
+normal	normalna
+small	mała
+large	duża
