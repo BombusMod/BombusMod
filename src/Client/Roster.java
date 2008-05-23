@@ -261,8 +261,8 @@ public class Roster
                 addCommand(cmdAccount);
                 
                 addCommand(cmdCleanAllMessages);
-
-                addCommand(cmdQuit);
+				if (cf.phoneManufacturer==Config.NOKIA_9XXX)
+					addCommand(cmdQuit);
 
                 addOptionCommands();
                 setCommandListener(this);
