@@ -312,10 +312,6 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
 //#         //System.out.println(val);
 //# 
 //#         setValue(finalColor);
-//#         //ColorForm.COLORS[paramName]=finalColor;
-//#         //ColorForm.IMAGES[paramName]=ColorForm.imageData(finalColor);
-//# 
-//#         ColorForm.updateItem(paramName);
 //#endif
         exit = true;
     }

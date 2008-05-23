@@ -41,10 +41,10 @@ import locale.SR;
 import io.file.FileIO;
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
-import Client.Config;
-import ui.controls.AlertBox;
 import util.strconv;
 //#endif
+import ui.controls.AlertBox;
+import Client.Config;
 import ui.Time;
 
 /**
@@ -97,8 +97,8 @@ public class ArchiveList
 
     private String start_body="<START_BODY>";
     private String end_body="<END_BODY>";
-    private Config cf;
 //#endif
+    private Config cf;
     private int where=1;
     /** Creates a new instance of ArchiveList */
     public ArchiveList(Display display, int caretPos, int where) {

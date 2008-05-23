@@ -1,6 +1,8 @@
 /*
  * ColorForm.java
  *
+ * Created on 23.05.2008, 13:10
+ *
  * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
  *
  * This program is free software; you can redistribute it and/or
@@ -24,185 +26,94 @@
  */
 
 package Colors;
-
 //#if FILE_IO
 import io.file.FileIO;
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
 //#endif
-import javax.microedition.lcdui.*;
+import java.util.Enumeration;
+import java.util.Vector;
+import javax.microedition.lcdui.Command;
+import javax.microedition.lcdui.CommandListener;
+import javax.microedition.lcdui.Display;
+import javax.microedition.lcdui.Displayable;
 import locale.SR;
-import ui.*;
+import ui.MainBar;
+import ui.VirtualElement;
+import ui.VirtualList;
 
-public class ColorForm implements CommandListener
+/**
+ *
+ * @author ad
+ */
+public class ColorForm
+        extends VirtualList
+        implements CommandListener
 //#if FILE_IO
         , BrowserListener
 //#endif
-{
-    private Displayable currentChoice = null;
-    private Display display;
-    private Displayable parentView;
-      
-    private static ColorTheme ct;
-      
-    private final static int w=6;
-    private final static int h=16;
-//#ifdef COLOR_TUNE
-//#     public static final String[] NAMES = {
-//#             SR.MS_BALLOON_INK,
-//#             SR.MS_BALLOON_BGND,
-//#             SR.MS_LIST_BGND,
-//#             SR.MS_LIST_BGND_EVEN,
-//#             SR.MS_LIST_INK,
-//# 
-//#             SR.MS_MSG_SUBJ,
-//#             SR.MS_MSG_HIGHLIGHT,
-//#             SR.MS_DISCO_CMD,
-//#             SR.MS_BAR_BGND,
-//#             SR.MS_BAR_BGND+" 2",
-//#             SR.MS_BAR_INK,
-//# 
-//#             SR.MS_CONTACT_DEFAULT,
-//#             SR.MS_CONTACT_CHAT,
-//#             SR.MS_CONTACT_AWAY,
-//#             SR.MS_CONTACT_XA,
-//#             SR.MS_CONTACT_DND,
-//# 
-//#             SR.MS_GROUP_INK,
-//#             SR.MS_BLK_INK,
-//#             SR.MS_BLK_BGND,
-//#             SR.MS_MESSAGE_IN,
-//#             SR.MS_MESSAGE_OUT,
-//#             SR.MS_MESSAGE_PRESENCE,
-//#             
-//#             SR.MS_MESSAGE_AUTH,
-//#             SR.MS_MESSAGE_HISTORY,
-//#             
-//#             SR.MS_PGS_REMAINED,
-//#             SR.MS_PGS_COMPLETE,
-//#             SR.MS_PGS_COMPLETE+" 2",
-//#             SR.MS_PGS_INK,
-//#             
-//#             SR.MS_HEAP_TOTAL,
-//#             SR.MS_HEAP_FREE,
-//#             SR.MS_CURSOR_BGND,
-//# 
-//#             SR.MS_CURSOR_OUTLINE,
-//#             SR.MS_SCROLL_BRD,
-//#             SR.MS_SCROLL_BAR,
-//#             SR.MS_SCROLL_BGND,
-//#             
-//#             SR.MS_CONTACT+" J2J",
-//#             
-//#             SR.MS_MESSAGE_IN_S,
-//#             SR.MS_MESSAGE_OUT_S,
-//#             SR.MS_MESSAGE_PRESENCE_S,
-//#             
-//#             SR.MS_POPUP_MESSAGE,
-//#             SR.MS_POPUP_MESSAGE_BGND,
-//#             SR.MS_POPUP_SYSTEM,
-//#             SR.MS_POPUP_SYSTEM_BGND,
-//#             
-//#             SR.MS_SECOND_LINE
-//#         };
-//#endif
-/*
-    public static Image[] IMAGES= {
-            imageData(cs.BALLOON_INK),
-            imageData(cs.BALLOON_BGND),
-            imageData(cs.LIST_BGND),
-            imageData(cs.LIST_BGND_EVEN),
-            imageData(cs.LIST_INK),
+    {
+    
+    public Display display;
+    public Displayable parentView;
+    
+    Vector itemsList=new Vector();
+    ColorTheme ct;
 
-            imageData(cs.MSG_SUBJ),
-            imageData(cs.MSG_HIGHLIGHT),
-            imageData(cs.DISCO_CMD),
-            imageData(cs.BAR_BGND),
-            imageData(cs.BAR_BGND_BOTTOM),
-            imageData(cs.BAR_INK),
-
-            imageData(cs.CONTACT_DEFAULT),
-            imageData(cs.CONTACT_CHAT),
-            imageData(cs.CONTACT_AWAY),
-            imageData(cs.CONTACT_XA),
-            imageData(cs.CONTACT_DND),
-                    
-            imageData(cs.GROUP_INK),
-            imageData(cs.BLK_INK),
-            imageData(cs.BLK_BGND),
-            imageData(cs.MESSAGE_IN),
-            imageData(cs.MESSAGE_OUT),
-            imageData(cs.MESSAGE_PRESENCE),
-            
-            imageData(cs.MESSAGE_AUTH),
-            imageData(cs.MESSAGE_HISTORY),
-            
-            imageData(cs.PGS_REMAINED),
-            imageData(cs.PGS_COMPLETE_TOP),
-            imageData(cs.PGS_COMPLETE_BOTTOM),
-            imageData(cs.PGS_INK),
-
-            imageData(cs.HEAP_TOTAL),
-            imageData(cs.HEAP_FREE),
-            imageData(cs.CURSOR_BGND),
-
-            imageData(cs.CURSOR_OUTLINE),
-            imageData(cs.SCROLL_BRD),
-            imageData(cs.SCROLL_BAR),
-            imageData(cs.SCROLL_BGND),
-            imageData(cs.CONTACT_J2J),
-            
-            imageData(cs.MESSAGE_IN_S),
-            imageData(cs.MESSAGE_OUT_S),
-            imageData(cs.MESSAGE_PRESENCE_S),
-
-            imageData(cs.POPUP_MESSAGE_INK),
-            imageData(cs.POPUP_MESSAGE_BGND),
-            imageData(cs.POPUP_SYSTEM_INK),
-            imageData(cs.POPUP_SYSTEM_BGND),
-            
-            imageData(cs.SECOND_LINE)
-      };
-*/
-    private static List selectionList;
-
-//#if (FILE_IO)
+    public Command cmdOk = new Command(SR.MS_EDIT, Command.OK, 1);
+    public Command cmdCancel = new Command(SR.MS_BACK, Command.BACK, 99);
+    
+//#if FILE_IO
     Command cmdSaveSkin=new Command(SR.MS_SAVE, Command.ITEM,3); 
     Command cmdLoadSkinFS=new Command(SR.MS_LOAD_SKIN+"FS", Command.ITEM,4);
     String filePath;
-//#endif
-    
-    private Command cmdCancel=new Command(SR.MS_CLOSE, Command.BACK, 99);
-    private Command selectCommand = new Command(SR.MS_EDIT, Command.ITEM, 1);
-
     private int loadType=0;
-    
-    public ColorForm(Display display) {
-        super();
-        this.display=display;
-        parentView=display.getCurrent();
-        ct=ColorTheme.getInstance();
-        selectionList = new List(SR.MS_COLOR_TUNE, List.IMPLICIT, NAMES, null/*IMAGES*/);
-
-        selectionList.setSelectCommand(selectCommand);
-
-//#if (FILE_IO)
-        selectionList.addCommand(cmdSaveSkin);
-        selectionList.addCommand(cmdLoadSkinFS);
 //#endif
-        selectionList.addCommand(cmdCancel);
-        display.setCurrent(selectionList);
-        selectionList.setCommandListener(this);
-    }
-      
-    public void commandAction(Command c, Displayable d) {
-        int pos = selectionList.getSelectedIndex();
+    
+    /**
+     * Creates a new instance of ColorForm
+     */
+    public ColorForm(Display display) {
+        ct=ColorTheme.getInstance();
+        itemsList=ct.colorsContainer;
         
+        int cnt=0;
+        for (Enumeration r=ct.colorsContainer.elements(); r.hasMoreElements();) {
+            ColorItem c=(ColorItem)r.nextElement();
+            c.setLocale(NAMES[cnt]);
+            cnt++;
+        }
+        
+        this.display=display;
+	parentView=display.getCurrent();
+        
+        setMainBarItem(new MainBar(SR.MS_COLOR_TUNE));
+        
+	addCommand(cmdOk);
+	addCommand(cmdCancel);
+//#if FILE_IO
+        addCommand(cmdSaveSkin);
+        addCommand(cmdLoadSkinFS);
+//#endif
+	setCommandListener(this);
+        attachDisplay(display);
+    }
+
+    protected int getItemCount() { return itemsList.size(); }
+
+    protected VirtualElement getItemRef(int index) {
+        return (VirtualElement)itemsList.elementAt(index);
+    }
+
+    public void commandAction(Command c, Displayable displayable) {
         if (c==cmdCancel) {
+            for (Enumeration r=ct.colorsContainer.elements(); r.hasMoreElements();) {
+                ColorItem ci=(ColorItem)r.nextElement();
+                ci.setLocale(null); // clean locale
+            }
             destroyView();
             return;
         }
-        
 //#if FILE_IO
         if (c==cmdSaveSkin) {
             loadType=0;
@@ -213,19 +124,19 @@ public class ColorForm implements CommandListener
             new Browser(null, display, this, false);
         }
 //#endif
-        
-        if (c==selectCommand) {
-          try {
-              if (!NAMES[pos].startsWith("(n/a)") && pos != NAMES.length) {
-//#if COLOR_TUNE
-//#                 new ColorSelector(display, pos);
-//#endif
-              }
-          } catch(Exception err) {}
-       }
+        if (c==cmdOk) {
+            eventOk();
+        }
     }
-
-
+    
+    public void eventOk() {
+        try {
+            if (!NAMES[cursor].startsWith("(n/a)")) {
+                new ColorSelector(display, cursor);
+            }
+        } catch(Exception err) {}
+    }
+    
 //#if FILE_IO
     public void BrowserFilePathNotify(String pathSelected) {
         if (loadType==0) {
@@ -236,27 +147,68 @@ public class ColorForm implements CommandListener
         }
     }
 //#endif 
-
-
-    public void destroyView(){
-        if (display!=null) display.setCurrent(parentView);
-    }
     
-    public static void updateItem(int item) {
-        selectionList.set(item,NAMES[item],null/*IMAGES[item]*/);
-    }
     
-    public static Image imageData(int color) {
-        try {
-            int len=w*h;
-            int[] arrayInt=new int[len];
-            
-            for (int i=0; i<len;i++) {
-                arrayInt[i]=color;
-            }
-            return Image.createRGBImage(arrayInt,w,h,false);
-        } catch (Exception ex) { }
-        
-        return null;
-    }
+//#ifdef COLOR_TUNE
+//#     public static final String[] NAMES = {
+//#             SR.MS_BALLOON_INK,
+//#             SR.MS_BALLOON_BGND,
+//#             SR.MS_LIST_BGND,
+//#             SR.MS_LIST_BGND_EVEN,
+//#             SR.MS_LIST_INK,
+//# 
+//#             SR.MS_MSG_SUBJ,
+//#             SR.MS_MSG_HIGHLIGHT,
+//# 
+//#             SR.MS_DISCO_CMD,
+//# 
+//#             SR.MS_BAR_BGND,
+//#             SR.MS_BAR_BGND+" 2",
+//#             SR.MS_BAR_INK,
+//# 
+//#             SR.MS_CONTACT_DEFAULT,
+//#             SR.MS_CONTACT_CHAT,
+//#             SR.MS_CONTACT_AWAY,
+//#             SR.MS_CONTACT_XA,
+//#             SR.MS_CONTACT_DND,
+//#             SR.MS_CONTACT+" J2J",
+//# 
+//#             SR.MS_GROUP_INK,
+//# 
+//#             SR.MS_BLK_INK,
+//#             SR.MS_BLK_BGND,
+//# 
+//#             SR.MS_MESSAGE_IN,
+//#             SR.MS_MESSAGE_OUT,
+//#             SR.MS_MESSAGE_PRESENCE,
+//#             SR.MS_MESSAGE_AUTH,
+//#             SR.MS_MESSAGE_HISTORY,
+//#             
+//#             SR.MS_MESSAGE_IN_S,
+//#             SR.MS_MESSAGE_OUT_S,
+//#             SR.MS_MESSAGE_PRESENCE_S,
+//# 
+//#             SR.MS_PGS_REMAINED,
+//#             SR.MS_PGS_COMPLETE,
+//#             SR.MS_PGS_COMPLETE+" 2",
+//#             SR.MS_PGS_INK,
+//#             
+//#             SR.MS_HEAP_TOTAL,
+//#             SR.MS_HEAP_FREE,
+//# 
+//#             SR.MS_CURSOR_BGND,
+//#             SR.MS_CURSOR_OUTLINE,
+//# 
+//#             SR.MS_SCROLL_BRD,
+//#             SR.MS_SCROLL_BAR,
+//#             SR.MS_SCROLL_BGND,
+//#             
+//#             SR.MS_POPUP_MESSAGE,
+//#             SR.MS_POPUP_MESSAGE_BGND,
+//#             SR.MS_POPUP_SYSTEM,
+//#             SR.MS_POPUP_SYSTEM_BGND,
+//#             
+//#             SR.MS_SECOND_LINE
+//#         };
+//#endif
 }

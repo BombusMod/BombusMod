@@ -221,7 +221,7 @@ public class vCardForm
             }
         }
     }
-//#endif
+
     
     
     private String getNickDate() {
@@ -243,7 +243,7 @@ public class vCardForm
         nickDate.append(Time.dayLocalString(Time.utcTimeMillis()).trim());
         return nickDate.toString();
     }
-    
+//#endif
     private String getFileType(String MIMEtype) {
         if (MIMEtype!=null) {
             if (MIMEtype=="image/jpeg") return ".jpg";

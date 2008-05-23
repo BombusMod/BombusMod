@@ -1,7 +1,7 @@
 /*
- * checkBox.java
+ * ColorItem.java
  *
- * Created on 19.05.2008, 22:16
+ * Created on 23.05.2008, 12:51
  *
  * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
  *
@@ -25,9 +25,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-package ui.controls.form;
+package Colors;
 
-import Colors.ColorTheme;
 import images.RosterIcons;
 import javax.microedition.lcdui.Graphics;
 import ui.IconTextElement;
@@ -36,55 +35,48 @@ import ui.IconTextElement;
  *
  * @author ad
  */
-public class checkBox 
+public class ColorItem
         extends IconTextElement {
     
-    private boolean state=false;
-    private String text="";
-    
-    private boolean selectable=true;
-    
-    ColorTheme ct;
-    
-    /** Creates a new instance of checkBox */
-    public checkBox(String text, boolean state) {
-        super(null);
-        this.text=text;
-        this.state=state;
-        ct=ColorTheme.getInstance();
+    private String name;
+    private int color;
+    private String locale="";
+
+    public ColorItem(String name, int color){
+        super(RosterIcons.getInstance());
+        this.name=name;
+        this.color=color;
     }
+
+    public String getName() { return name; }
+    public int getValue() { return color; }
+    public void setColor(int color) { this.color=color; }
 
     protected int getImageIndex() { return -1; }
     
-    public String toString() { return text; }
-
-    public void onSelect(){
-        state=!state;
-    }
+    public String toString() { return (locale==null)?name:locale; }
     
     public void drawItem(Graphics g, int ofs, boolean sel) {
         int width=g.getClipWidth();
         int height=g.getClipHeight();
 
         int oldColor=g.getColor();
-        
-        g.setColor((state)?ct.getColor(ColorTheme.CURSOR_OUTLINE):ct.getColor(ColorTheme.CURSOR_BGND));
+
+        g.setColor(color);
         g.fillRect(1, 1, height-2, height-2);
 
-        g.setColor((state)?ct.getColor(ColorTheme.CURSOR_BGND):ct.getColor(ColorTheme.LIST_BGND));
-        g.fillRect(2, 2, height-4, height-4);
-        
-        if (state) {
-            g.setColor(ct.getColor(ColorTheme.CURSOR_OUTLINE));
-            g.fillRect(4, 4, height-8, height-8);
-        }
-        
         g.setColor(oldColor);
-
+        
         super.drawItem(g, -height, sel);
-    }    
+    }
     
-    public boolean getValue() { return state; }
+    public void setLocale(String locale){
+        this.locale=locale;
+    }
     
-    public boolean isSelectable() { return selectable; }
+    public void onSelect(){
+        //state=!state;
+    }
+    
+    public boolean isSelectable() { return true; }
 }

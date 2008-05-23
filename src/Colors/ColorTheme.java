@@ -90,6 +90,7 @@ blue 0x0000ff
         colorsContainer.addElement(new ColorItem("CONTACT_XA", 0x535353));
         colorsContainer.addElement(new ColorItem("CONTACT_DND", 0x800000));
         colorsContainer.addElement(new ColorItem("CONTACT_J2J", 0xff0000));
+
         colorsContainer.addElement(new ColorItem("GROUP_INK", 0x000080));
     
         colorsContainer.addElement(new ColorItem("BLK_INK", 0x000000));
@@ -137,13 +138,13 @@ blue 0x0000ff
     }
     
     public static int getColor(int id) {
-	return ((ColorItem)colorsContainer.elementAt(id)).getColor();
+	return ((ColorItem)colorsContainer.elementAt(id)).getValue();
     }
     
     public int getColorByName(String name) {
 	for (Enumeration r=colorsContainer.elements(); r.hasMoreElements();) {
 	    ColorItem c=(ColorItem)r.nextElement();
-	    if (c.getName().equals(name)) return c.getColor();
+	    if (c.getName().equals(name)) return c.getValue();
 	}
         return 0;
     }
@@ -151,7 +152,7 @@ blue 0x0000ff
     public static void invertSkin(){
         for (Enumeration r=colorsContainer.elements(); r.hasMoreElements();) {
             ColorItem c=(ColorItem)r.nextElement();
-            c.setColor(0xFFFFFF-c.getColor());
+            c.setColor(0xFFFFFF-c.getValue());
         }
     }
     
@@ -167,7 +168,7 @@ blue 0x0000ff
         return color;
     }
 //#endif
-    
+/*
     static class ColorItem {
         private String name;
         private int color;
@@ -181,7 +182,7 @@ blue 0x0000ff
         public int getColor() { return color; }
         public void setColor(int color) { this.color=color; }
     }
-
+*/
     public final static int BALLOON_INK             =0;
     public final static int BALLOON_BGND            =1;
 
@@ -264,7 +265,7 @@ blue 0x0000ff
 //# 	try {
 //#             for (Enumeration r=colorsContainer.elements(); r.hasMoreElements();) {
 //#                 ColorItem c=(ColorItem)r.nextElement();
-//#                 outputStream.writeInt(c.getColor());
+//#                 outputStream.writeInt(c.getValue());
 //#             }
 //#         } catch (IOException e) { }
 //# 	NvStorage.writeFileRecord(outputStream, "ColorDB", 0, true);
@@ -282,7 +283,7 @@ blue 0x0000ff
         body.append("\r\n");
         for (Enumeration r=colorsContainer.elements(); r.hasMoreElements();) {
             ColorItem c=(ColorItem)r.nextElement();
-            body.append(c.getName()+"\t"+getColorString(c.getColor())+"\r\n");
+            body.append(c.getName()+"\t"+getColorString(c.getValue())+"\r\n");
         }
         return body.toString();
     }
@@ -294,7 +295,7 @@ blue 0x0000ff
         try {
             for (Enumeration r=colorsContainer.elements(); r.hasMoreElements();) {
                 ColorItem c=(ColorItem)r.nextElement();
-                c.setColor(loadInt(c.getName(), c.getColor()));
+                c.setColor(loadInt(c.getName(), c.getValue()));
             }
 //#ifdef COLOR_TUNE
 //#             saveToStorage();
