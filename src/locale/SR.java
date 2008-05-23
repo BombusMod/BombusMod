@@ -343,19 +343,19 @@ public class SR {
     public  static String MS_AFFILIATION_ADMIN=loadString("admin");
     public  static String MS_AFFILIATION_OWNER=loadString("owner");
     
-    public  static String MS_SEC3=loadString("seconds_");
+    public  static String MS_SEC3=loadString("second's");
     public  static String MS_SEC2=loadString("seconds");
     public  static String MS_SEC1=loadString("second");
     
-    public  static String MS_MIN3=loadString("minutes_");
+    public  static String MS_MIN3=loadString("minute's");
     public  static String MS_MIN2=loadString("minutes");
     public  static String MS_MIN1=loadString("minute");
     
-    public  static String MS_HOUR3=loadString("hours_");    
+    public  static String MS_HOUR3=loadString("hour's");    
     public  static String MS_HOUR2=loadString("hours");
     public  static String MS_HOUR1=loadString("hour");
     
-    public  static String MS_DAY3=loadString("days_");  
+    public  static String MS_DAY3=loadString("day's");  
     public  static String MS_DAY2=loadString("days");
     public  static String MS_DAY1=loadString("day");
 

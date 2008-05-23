@@ -108,13 +108,27 @@ public class EntityCaps implements JabberBlockListener{
  //#ifdef FILE_TRANSFER        
         features.addElement("http://jabber.org/protocol/ibb");
  //#endif
+//#ifdef PEP
+//#          if (Config.getInstance().sndrcvmood) {
+//#             features.addElement("http://jabber.org/protocol/mood");
+//#             features.addElement("http://jabber.org/protocol/mood+notify");
+//#          }
+//#endif
 //#ifndef WMUC
         features.addElement("http://jabber.org/protocol/muc");
 //#endif
- //#ifdef FILE_TRANSFER        
+ //#ifdef FILE_TRANSFER
         features.addElement("http://jabber.org/protocol/si");
         features.addElement("http://jabber.org/protocol/si/profile/file-transfer");
- //#endif        
+ //#endif
+//#ifdef PEP
+//#ifdef PEP_TUNE
+//#          if (Config.getInstance().rcvtune) {
+//#               features.addElement("http://jabber.org/protocol/tune");
+//#               features.addElement("http://jabber.org/protocol/tune+notify");
+//#          }
+//#endif
+//#endif
         features.addElement("jabber:iq:time"); //DEPRECATED
         features.addElement("jabber:iq:version");
         features.addElement("jabber:x:data");
@@ -123,23 +137,12 @@ public class EntityCaps implements JabberBlockListener{
         if (Config.getInstance().eventDelivery)
             features.addElement("urn:xmpp:receipts"); //xep-0184
         features.addElement("urn:xmpp:time");
-//#ifdef PEP
-//#          if (Config.getInstance().sndrcvmood) {
-//#                 features.addElement("http://jabber.org/protocol/mood");
-//#                  features.addElement("http://jabber.org/protocol/mood+notify");
-//#          }
-//#ifdef PEP_TUNE
-//#          if (Config.getInstance().rcvtune) {
-//#                 features.addElement("http://jabber.org/protocol/tune");
-//#                  features.addElement("http://jabber.org/protocol/tune+notify");
-//#          }
-//#endif
-//#endif
-        sort(features);
+
+        //sort(features);
     }
 
     private static Vector features=new Vector();
-    
+/*
     public final static void sort(Vector sortVector){
         try {
             synchronized (sortVector) {
@@ -162,4 +165,5 @@ public class EntityCaps implements JabberBlockListener{
             }
         } catch (Exception e) { }
     }
+ */
 }

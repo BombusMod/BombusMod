@@ -80,7 +80,9 @@ public class ColorForm
         int cnt=0;
         for (Enumeration r=ct.colorsContainer.elements(); r.hasMoreElements();) {
             ColorItem c=(ColorItem)r.nextElement();
-            c.setLocale(NAMES[cnt]);
+//#ifdef COLOR_TUNE
+//#             c.setLocale(NAMES[cnt]);
+//#endif
             cnt++;
         }
         
@@ -130,11 +132,13 @@ public class ColorForm
     }
     
     public void eventOk() {
-        try {
-            if (!NAMES[cursor].startsWith("(n/a)")) {
-                new ColorSelector(display, cursor);
-            }
-        } catch(Exception err) {}
+//#ifdef COLOR_TUNE
+//#         try {
+//#             if (!NAMES[cursor].startsWith("(n/a)")) {
+//#                 new ColorSelector(display, cursor);
+//#             }
+//#         } catch(Exception err) {}
+//#endif
     }
     
 //#if FILE_IO

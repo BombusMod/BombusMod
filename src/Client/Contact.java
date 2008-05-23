@@ -302,35 +302,29 @@ public class Contact extends IconTextElement{
 //#endif
 //#if HISTORY
 //# 
-//#         if (cf.msgLog && cf.msgPath==null) {
-//#ifdef POPUPS
-//#             StaticData.getInstance().roster.setWobbler(3, (Contact) null, "Please enter valid path to store log");
-//#endif
-//#         } else 
-//#             if (cf.msgLog && group.type!=Groups.TYPE_TRANSP && group.type!=Groups.TYPE_SEARCH_RESULT)
-//#         {
-//#             //String histRecord=(nick==null)?getBareJid():nick;
-//#             boolean allowLog=false;
-//#             switch (m.messageType) {
-//#                 case Msg.MESSAGE_TYPE_PRESENCE:
-//#                     if (origin>=ORIGIN_GROUPCHAT && cf.msgLogConfPresence) allowLog=true;
-//#                     if (origin<ORIGIN_GROUPCHAT && cf.msgLogPresence) allowLog=true;
-//#                     break;
-//#                 default:
-//#                     if (origin>=ORIGIN_GROUPCHAT && cf.msgLogConf) allowLog=true;
-//#                     if (origin<ORIGIN_GROUPCHAT) allowLog=true;
-//#             }
-//#             if (m.isHistory())
-//#                 allowLog=false;
+//#        if (cf.msgPath!=null && group.type!=Groups.TYPE_TRANSP && group.type!=Groups.TYPE_SEARCH_RESULT) {
+//#             if (!m.isHistory()) {
+//#                 boolean allowLog=false;
+//#                 switch (m.messageType) {
+//#                     case Msg.MESSAGE_TYPE_PRESENCE:
+//#                         if (origin>=ORIGIN_GROUPCHAT && cf.msgLogConfPresence){
+//#                             allowLog=true;
+//#                         } else  if (origin<ORIGIN_GROUPCHAT && cf.msgLogPresence) {
+//#                             allowLog=true;
+//#                         }
+//#                         break;
+//#                     default:
+//#                         if (origin>=ORIGIN_GROUPCHAT && cf.msgLogConf) allowLog=true;
+//#                         if (origin<ORIGIN_GROUPCHAT && cf.msgLog) allowLog=true;
+//#                 }
+//# 
 //#ifndef WMUC
-//#             if (origin!=ORIGIN_GROUPCHAT && this instanceof MucContact)
-//#                  allowLog=false;
+//#                 if (origin!=ORIGIN_GROUPCHAT && this instanceof MucContact)
+//#                      allowLog=false;
 //#endif
-//#             if (allowLog)
-//#             {
-//#                 //String histRecord=(nick==null)?getBareJid():nick;
-//#                 //new HistoryAppend(m, cf.lastMessages, histRecord);
-//#                 new HistoryAppend(m, cf.lastMessages, getBareJid());
+//#                 if (allowLog) {
+//#                     new HistoryAppend(m, cf.lastMessages, getBareJid());
+//#                 }
 //#             }
 //#        }
 //#endif

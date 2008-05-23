@@ -113,8 +113,9 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
         g.setColor(red,green,blue);
         g.fillRect(4, 4, 12, 12);
         g.setColor(0x800000);
-        g.drawString(s+" "+ColorForm.NAMES[paramName], 20, 5, g.TOP|g.LEFT);
-
+//#ifdef COLOR_TUNE
+//#         g.drawString(s+" "+ColorForm.NAMES[paramName], 20, 5, g.TOP|g.LEFT);
+//#endif
 
         //draw red
         int pxred = w/3-10;

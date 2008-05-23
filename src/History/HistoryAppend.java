@@ -49,8 +49,7 @@ public class HistoryAppend {
     public HistoryAppend(Msg m, boolean formatted, String filename) {
        cf=Config.getInstance();
        convertToWin1251=cf.cp1251;
-       StringBuffer body=createBody(m, formatted);
-       byte[] bodyMessage=body.toString().getBytes();
+       byte[] bodyMessage=createBody(m, formatted).getBytes();
 
 //#ifdef TRANSLIT
        filename=(cf.transliterateFilenames)?Translit.translit(filename):filename;
@@ -73,15 +72,14 @@ public class HistoryAppend {
             } catch (IOException ex2) { }
         }
         filename=null;
-        body=null;
         bodyMessage=null;
     }
     
     
-    private StringBuffer createBody(Msg m, boolean formatted) {
+    private String createBody(Msg m, boolean formatted) {
         String fromName=StaticData.getInstance().account.getUserName();
         if (m.messageType!=Msg.MESSAGE_TYPE_OUT)
-            fromName=toString();
+            fromName=m.from;
 
         StringBuffer body=new StringBuffer();
         
@@ -100,13 +98,13 @@ public class HistoryAppend {
             body.append("[");
             body.append(m.getDayTime());
             body.append("] ");
-            body.append((convertToWin1251)?strconv.convUnicodeToCp1251(fromName):fromName);
+            body.append(fromName);
             body.append(":\r\n");
             if (m.subject!=null) {
-                body.append((convertToWin1251)?strconv.convUnicodeToCp1251(m.subject):m.subject);
+                body.append(m.subject);
                 body.append("\r\n");
             }
-            body.append((convertToWin1251)?strconv.convUnicodeToCp1251(m.getBody()):m.getBody());
+            body.append(m.getBody());
             body.append("\r\n\r\n");
         } else {
             body.append("<m><t>");
@@ -114,17 +112,17 @@ public class HistoryAppend {
             body.append("</t><d>");
             body.append(m.getDayTime());
             body.append("</d><f>");
-            body.append((convertToWin1251)?strconv.convUnicodeToCp1251(fromName):fromName);
+            body.append(fromName);
             body.append("</f>");
             if (m.subject!=null) {
                 body.append("<s>");
-                body.append((convertToWin1251)?strconv.convUnicodeToCp1251(m.subject):m.subject);
+                body.append(m.subject);
                 body.append("</s>");
             }
             body.append("<b>");
-            body.append((convertToWin1251)?strconv.convUnicodeToCp1251(m.getBody()):m.getBody());
+            body.append(m.getBody());
             body.append("</b></m>\r\n");
         }
-        return body;
+        return (convertToWin1251)?strconv.convUnicodeToCp1251(body.toString()):body.toString();
     }
 }
