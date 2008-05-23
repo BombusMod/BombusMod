@@ -261,8 +261,8 @@ public class Roster
                 addCommand(cmdAccount);
                 
                 addCommand(cmdCleanAllMessages);
-				if (cf.phoneManufacturer!=Config.NOKIA_9XXX)
-					addCommand(cmdQuit);
+                if (cf.phoneManufacturer!=Config.NOKIA_9XXX)
+                    addCommand(cmdQuit);
 
                 addOptionCommands();
                 setCommandListener(this);
@@ -443,15 +443,14 @@ public class Roster
     }
     
     public void cmdCleanAllMessages(){
-        int index=0;
-        synchronized (hContacts) {
-            while (index<hContacts.size()) {
-                Contact c=(Contact) hContacts.elementAt(index);
+        for (Enumeration e=hContacts.elements();e.hasMoreElements();) {
+            Contact c=(Contact)e.nextElement();
+            try {
                 c.purge();
-                index++;
-            }
+            } catch (Exception ex) { }
         }
-        countNewMsgs();
+        highliteMessageCount=0;
+        messageCount=0;
         reEnumRoster();
         redraw();
     }
@@ -2228,6 +2227,9 @@ public class Roster
 
 //#ifdef POPUPS
     public void showInfo() {
+        if (getFocusedObject()==null)
+            return;
+
         try {
             VirtualList.popup.next();
             if (getFocusedObject() instanceof Group

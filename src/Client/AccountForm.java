@@ -214,10 +214,9 @@ public class AccountForm
         if (newaccount) {
             new AlertBox(SR.MS_CONECT_TO, account.getBareJid()+"?", display, StaticData.getInstance().roster) {
                 public void yes() { startLogin();}
-                public void no() { }
+                public void no() { if (display!=null) display.setCurrent(parentView); }
             };
-        }
-        if (display!=null)  
+        } else if (display!=null)  
             display.setCurrent(parentView);
     }
     

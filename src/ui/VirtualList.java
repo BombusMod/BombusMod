@@ -69,6 +69,8 @@ public abstract class VirtualList
 //#     Gradient grIB;
 //#     private int mbHeight;
 //#     Gradient grMB;
+//# 
+//#     private int stringHeight;
 //#endif
 //#ifdef TEST
 //#     private boolean drawTest;
@@ -294,6 +296,8 @@ public abstract class VirtualList
         secondBar.addRAlign();
         secondBar.addElement(null); //3
         setInfoBarItem(secondBar);
+        
+        stringHeight=FontCache.getMsgFont().getHeight();
         
 //#ifdef BACK_IMAGE
 //#         try {
@@ -964,21 +968,24 @@ public abstract class VirtualList
     private boolean itemPageDown() {
         try {
             stickyWindow=false;
-
             if (((VirtualElement)getFocusedObject()).getVHeight()<=winHeight) {
                 stickyWindow=true;
                 return false;
             }
 
-            if (!cursorInWindow()) return false;
+            if (!cursorInWindow()) {
+                return false;
+            }
             
             int remainder=itemLayoutY[cursor+1]-win_top;
-            if (remainder<=winHeight) return false;
+            if (remainder<=winHeight) {
+                return false;
+            }
             if (remainder<=2*winHeight) {
                 win_top=remainder-winHeight+win_top+8;
                 return true;
             }
-            win_top+=winHeight;//-stringHeight;
+            win_top+=winHeight-stringHeight;//-stringHeight;
             return true;
         } catch (Exception e) {}
         return false;
@@ -1000,7 +1007,7 @@ public abstract class VirtualList
                 win_top=itemLayoutY[cursor];
                 return true;
             }
-            win_top-=winHeight;//-stringHeight;
+            win_top-=winHeight-stringHeight;//-stringHeight;
             return true;
         } catch (Exception e) {}
         return false;

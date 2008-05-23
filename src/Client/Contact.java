@@ -436,6 +436,8 @@ public class Contact extends IconTextElement{
                 vcard=null;
             }
         } catch (Exception e) { }
+        
+        lastUnread=0;
         resetNewMsgCnt();
     }
     
@@ -531,19 +533,18 @@ public class Contact extends IconTextElement{
 //#         if (!tempMsgs.isEmpty())
 //#             return RosterIcons.ICON_AUTHRQ_INDEX;
 //#endif
+        if (showComposing==true) 
+            return RosterIcons.ICON_COMPOSING_INDEX;
+        
         if (getNewMsgsCount()>0)  {
             switch (unreadType) {
                 case Msg.MESSAGE_TYPE_AUTH: return RosterIcons.ICON_AUTHRQ_INDEX;
                 default: return RosterIcons.ICON_MESSAGE_INDEX;
             }
         }
-        if (showComposing==true) 
-            return RosterIcons.ICON_COMPOSING_INDEX;
 
         if (incomingState>0) 
             return incomingState;
-        
-        
         return -1;
     }
 //#if HISTORY

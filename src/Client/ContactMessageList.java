@@ -101,6 +101,7 @@ public class ContactMessageList extends MessageList
         mainbar.addRAlign();
         mainbar.addElement(null);
         mainbar.addElement(null);
+        mainbar.addElement(null);
 //#ifdef PEP
 //#         mainbar.addElement(null);
 //#ifdef PEP_TUNE
@@ -213,7 +214,11 @@ public class ContactMessageList extends MessageList
 //#endif
 //#endif
         getMainBarItem().setElementAt((contact.vcard==null)?null:RosterIcons.iconHasVcard, num++);
-        getMainBarItem().setElementAt(sd.roster.getEventIcon(), num++);
+        if (contact.showComposing) {
+            getMainBarItem().setElementAt(new Integer(RosterIcons.ICON_COMPOSING_INDEX), num++);
+        } else {
+            getMainBarItem().setElementAt(sd.roster.getEventIcon(), num++);
+        }
 //#ifdef PEP
 //#         if (!contact.hasMood()) {
 //#             getMainBarItem().setElementAt(RosterIcons.iconTransparent, num++);
@@ -388,9 +393,7 @@ public class ContactMessageList extends MessageList
     private void clearReadedMessageList() {
         contact.smartPurge(cursor+1);
         messages=new Vector();
-        
-        contact.lastUnread=getItemCount()-1;
-        
+        cursor=0;
         moveCursorHome();
         redraw();
     }
@@ -534,7 +537,6 @@ public class ContactMessageList extends MessageList
 //#             }
 //#         }
 //#     }
-//#     
 //# 
 //#     private boolean isMsgExists(Msg msg) {
 //#          for (Enumeration messages=contact.msgs.elements(); messages.hasMoreElements(); )  {
