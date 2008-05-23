@@ -85,7 +85,7 @@ public class choiceBox
         g.fillRect(2, 2, width-4, height-4);
         
         g.setColor((sel)?ct.getColor(ColorTheme.CURSOR_OUTLINE):ct.getColor(ColorTheme.CURSOR_BGND));
-        g.drawRect(0, 0, width-1, height-1);
+        g.drawRoundRect(0, 0, width-1, height-1, 6, 6);
         
         g.setColor(oldColor);
 

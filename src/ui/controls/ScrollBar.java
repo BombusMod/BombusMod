@@ -156,12 +156,12 @@ public class ScrollBar {
 
 //#ifdef GRADIENT
 //#         if (drawHeight!=prevDrawHeight) {
-//#             gr=new Gradient(0, 0, scrollWidth, drawHeight, colorTop, colorBottom, true);
+//#             gr=new Gradient(0, 0, scrollWidth, drawHeight, colorBottom, colorTop, true);
 //#             prevDrawHeight=drawHeight;
 //#         }
 //#         gr.paint(g);
 //#else
-     g.setColor(Colors.SCROLL_BGND);
+     g.setColor(colorTop);
 	 g.fillRect(0, 0, scrollWidth, drawHeight);
 //#endif
          

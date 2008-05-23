@@ -1092,8 +1092,8 @@ public abstract class VirtualList
     }
     
     protected void drawCursor (Graphics g, int width, int height){
-        g.setColor(ct.getColor(ColorTheme.CURSOR_BGND));    g.fillRect(1, 1, width-1, height-1);
-        g.setColor(ct.getColor(ColorTheme.CURSOR_OUTLINE)); g.drawRect(0, 0, width-1, height-1);
+        g.setColor(ct.getColor(ColorTheme.CURSOR_BGND));    g.fillRoundRect(0, 0, width-1, height-1, 6, 6);
+        g.setColor(ct.getColor(ColorTheme.CURSOR_OUTLINE)); g.drawRoundRect(0, 0, width-1, height-1, 6, 6);
     }
 
     public void setParentView(Displayable parentView){
