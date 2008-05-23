@@ -26,7 +26,7 @@
  */
 
 package Client;
-import Colors.ColorUtils;
+import Colors.ColorTheme;
 import java.util.Vector;
 import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Display;
@@ -255,10 +255,8 @@ public class ConfigForm
                 for (int i=0; i<Skinfiles[0].size(); i++) {
                     String schemeName = (String)Skinfiles[1].elementAt(i);
                     skinFiles.append(schemeName);
-//#ifndef COLORS
-//#                 if (tempScheme.equals(schemeName))
-//#                     skinFiles.setSelectedIndex(i);
-//#endif
+                    if (tempScheme.equals(schemeName))
+                        skinFiles.setSelectedIndex(i);
                 }
                 itemsList.addElement(skinFiles);
             }
@@ -400,7 +398,7 @@ public class ConfigForm
                 String tempScheme=(String) Skinfiles[1].elementAt( skinFiles.getSelectedIndex() );
                 if (!tempScheme.equals(cf.scheme)) {
                     cf.scheme=(String) Skinfiles[1].elementAt( skinFiles.getSelectedIndex() );
-                    ColorUtils.loadSkin((String)Skinfiles[0].elementAt(skinFiles.getSelectedIndex()), 1);
+                    ColorTheme.getInstance().loadSkin((String)Skinfiles[0].elementAt(skinFiles.getSelectedIndex()), 1);
                 }
             }
         } catch (Exception ex) {}

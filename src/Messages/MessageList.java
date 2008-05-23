@@ -30,15 +30,13 @@ package Messages;
 import Client.Config;
 import Client.Msg;
 import Client.StaticData;
+import Colors.ColorTheme;
 import java.util.Vector;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
-//#ifdef COLORS
-import Colors.ColorUtils;
-//#endif
 import ui.VirtualElement;
 import ui.VirtualList;
 import Fonts.FontCache;
@@ -57,9 +55,8 @@ public abstract class MessageList extends VirtualList implements CommandListener
 //#     protected Command cmdCopy = new Command(SR.MS_COPY, Command.SCREEN, 20);
 //#     protected Command cmdCopyPlus = new Command("+ "+SR.MS_COPY, Command.SCREEN, 30);
 //#endif
-//#ifdef COLORS
     protected Command cmdxmlSkin = new Command(SR.MS_USE_COLOR_SCHEME, Command.SCREEN, 40);
-//#endif
+
     protected Command cmdUrl = new Command(SR.MS_GOTO_URL, Command.SCREEN, 80);
     protected Command cmdBack = new Command(SR.MS_BACK, Command.BACK, 99);
     
@@ -87,9 +84,7 @@ public abstract class MessageList extends VirtualList implements CommandListener
 	
         cursor=0;//activate
 
-//#ifdef COLORS
         addCommand(cmdxmlSkin);
-//#endif
         addCommand(cmdUrl);
         addCommand(cmdBack);
     }
@@ -127,9 +122,7 @@ public abstract class MessageList extends VirtualList implements CommandListener
 //#             removeCommand(cmdCopyPlus);
 //#         }
 //#endif
-//#ifdef COLORS
         removeCommand(cmdxmlSkin);
-//#endif
         removeCommand(cmdUrl);
         removeCommand(cmdBack);
     }
@@ -145,15 +138,13 @@ public abstract class MessageList extends VirtualList implements CommandListener
                 new MessageUrl(display, urls); //throws NullPointerException if no urls
             } catch (Exception e) {/* no urls found */}
         }
-//#ifdef COLORS
         if (c==cmdxmlSkin) {
-            try {
-                if (((MessageItem)getFocusedObject()).msg.getBody().startsWith("xmlSkin")) {
-                   ColorUtils.loadSkin(((MessageItem)getFocusedObject()).msg.getBody(),2);
-                }
+           try {
+               if (((MessageItem)getFocusedObject()).msg.getBody().startsWith("xmlSkin")) {
+                  ColorTheme.getInstance().loadSkin(((MessageItem)getFocusedObject()).msg.getBody(),2);
+               }
             } catch (Exception e){}
         }
-//#endif
 //#ifdef CLIPBOARD
 //#         if (c == cmdCopy)
 //#         {

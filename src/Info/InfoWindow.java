@@ -72,8 +72,8 @@ public class InfoWindow implements CommandListener{
         
         form.append("\n");
         StringBuffer abilities=new StringBuffer("Abilities: ");
-//#ifdef COLORS
-        abilities.append(", COLORS");
+//#ifdef COLOR_TUNE
+//#         abilities.append(", COLOR_TUNE");
 //#endif
 //#ifdef ARCHIVE
         abilities.append(", ARCHIVE");

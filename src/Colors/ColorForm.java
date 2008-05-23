@@ -25,7 +25,7 @@
 
 package Colors;
 
-//#if (FILE_IO)
+//#if FILE_IO
 import io.file.FileIO;
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
@@ -35,7 +35,7 @@ import locale.SR;
 import ui.*;
 
 public class ColorForm implements CommandListener
-//#if (FILE_IO && COLORS)
+//#if FILE_IO
         , BrowserListener
 //#endif
 {
@@ -47,64 +47,65 @@ public class ColorForm implements CommandListener
       
     private final static int w=6;
     private final static int h=16;
-
-    public static final String[] NAMES = {
-            SR.MS_BALLOON_INK,
-            SR.MS_BALLOON_BGND,
-            SR.MS_LIST_BGND,
-            SR.MS_LIST_BGND_EVEN,
-            SR.MS_LIST_INK,
-
-            SR.MS_MSG_SUBJ,
-            SR.MS_MSG_HIGHLIGHT,
-            SR.MS_DISCO_CMD,
-            SR.MS_BAR_BGND,
-            SR.MS_BAR_BGND+" 2",
-            SR.MS_BAR_INK,
-
-            SR.MS_CONTACT_DEFAULT,
-            SR.MS_CONTACT_CHAT,
-            SR.MS_CONTACT_AWAY,
-            SR.MS_CONTACT_XA,
-            SR.MS_CONTACT_DND,
-
-            SR.MS_GROUP_INK,
-            SR.MS_BLK_INK,
-            SR.MS_BLK_BGND,
-            SR.MS_MESSAGE_IN,
-            SR.MS_MESSAGE_OUT,
-            SR.MS_MESSAGE_PRESENCE,
-            
-            SR.MS_MESSAGE_AUTH,
-            SR.MS_MESSAGE_HISTORY,
-            
-            SR.MS_PGS_REMAINED,
-            SR.MS_PGS_COMPLETE,
-            SR.MS_PGS_COMPLETE+" 2",
-            SR.MS_PGS_INK,
-            
-            SR.MS_HEAP_TOTAL,
-            SR.MS_HEAP_FREE,
-            SR.MS_CURSOR_BGND,
-
-            SR.MS_CURSOR_OUTLINE,
-            SR.MS_SCROLL_BRD,
-            SR.MS_SCROLL_BAR,
-            SR.MS_SCROLL_BGND,
-            
-            SR.MS_CONTACT+" J2J",
-            
-            SR.MS_MESSAGE_IN_S,
-            SR.MS_MESSAGE_OUT_S,
-            SR.MS_MESSAGE_PRESENCE_S,
-            
-            SR.MS_POPUP_MESSAGE,
-            SR.MS_POPUP_MESSAGE_BGND,
-            SR.MS_POPUP_SYSTEM,
-            SR.MS_POPUP_SYSTEM_BGND,
-            
-            SR.MS_SECOND_LINE
-        };
+//#ifdef COLOR_TUNE
+//#     public static final String[] NAMES = {
+//#             SR.MS_BALLOON_INK,
+//#             SR.MS_BALLOON_BGND,
+//#             SR.MS_LIST_BGND,
+//#             SR.MS_LIST_BGND_EVEN,
+//#             SR.MS_LIST_INK,
+//# 
+//#             SR.MS_MSG_SUBJ,
+//#             SR.MS_MSG_HIGHLIGHT,
+//#             SR.MS_DISCO_CMD,
+//#             SR.MS_BAR_BGND,
+//#             SR.MS_BAR_BGND+" 2",
+//#             SR.MS_BAR_INK,
+//# 
+//#             SR.MS_CONTACT_DEFAULT,
+//#             SR.MS_CONTACT_CHAT,
+//#             SR.MS_CONTACT_AWAY,
+//#             SR.MS_CONTACT_XA,
+//#             SR.MS_CONTACT_DND,
+//# 
+//#             SR.MS_GROUP_INK,
+//#             SR.MS_BLK_INK,
+//#             SR.MS_BLK_BGND,
+//#             SR.MS_MESSAGE_IN,
+//#             SR.MS_MESSAGE_OUT,
+//#             SR.MS_MESSAGE_PRESENCE,
+//#             
+//#             SR.MS_MESSAGE_AUTH,
+//#             SR.MS_MESSAGE_HISTORY,
+//#             
+//#             SR.MS_PGS_REMAINED,
+//#             SR.MS_PGS_COMPLETE,
+//#             SR.MS_PGS_COMPLETE+" 2",
+//#             SR.MS_PGS_INK,
+//#             
+//#             SR.MS_HEAP_TOTAL,
+//#             SR.MS_HEAP_FREE,
+//#             SR.MS_CURSOR_BGND,
+//# 
+//#             SR.MS_CURSOR_OUTLINE,
+//#             SR.MS_SCROLL_BRD,
+//#             SR.MS_SCROLL_BAR,
+//#             SR.MS_SCROLL_BGND,
+//#             
+//#             SR.MS_CONTACT+" J2J",
+//#             
+//#             SR.MS_MESSAGE_IN_S,
+//#             SR.MS_MESSAGE_OUT_S,
+//#             SR.MS_MESSAGE_PRESENCE_S,
+//#             
+//#             SR.MS_POPUP_MESSAGE,
+//#             SR.MS_POPUP_MESSAGE_BGND,
+//#             SR.MS_POPUP_SYSTEM,
+//#             SR.MS_POPUP_SYSTEM_BGND,
+//#             
+//#             SR.MS_SECOND_LINE
+//#         };
+//#endif
 /*
     public static Image[] IMAGES= {
             imageData(cs.BALLOON_INK),
@@ -202,7 +203,7 @@ public class ColorForm implements CommandListener
             return;
         }
         
-//#if (FILE_IO && COLORS)
+//#if FILE_IO
         if (c==cmdSaveSkin) {
             loadType=0;
             new Browser(null,display, this, true);
@@ -216,8 +217,8 @@ public class ColorForm implements CommandListener
         if (c==selectCommand) {
           try {
               if (!NAMES[pos].startsWith("(n/a)") && pos != NAMES.length) {
-//#if (COLORS)
-                new ColorSelector(display, pos);
+//#if COLOR_TUNE
+//#                 new ColorSelector(display, pos);
 //#endif
               }
           } catch(Exception err) {}
@@ -225,13 +226,13 @@ public class ColorForm implements CommandListener
     }
 
 
-//#if (FILE_IO && COLORS)
+//#if FILE_IO
     public void BrowserFilePathNotify(String pathSelected) {
         if (loadType==0) {
             FileIO file=FileIO.createConnection(pathSelected+"skin.txt");
-            file.fileWrite(ColorUtils.getSkin().getBytes());
+            file.fileWrite(ct.getSkin().getBytes());
         } else {
-            ColorUtils.loadSkin(pathSelected, 0);
+            ColorTheme.getInstance().loadSkin(pathSelected, 0);
         }
     }
 //#endif 

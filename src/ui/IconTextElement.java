@@ -30,9 +30,7 @@ import Fonts.FontCache;
 import images.RosterIcons;
 import javax.microedition.lcdui.*;
 import java.util.*;
-//#ifdef COLORTHEME
-//# import Colors.ColorTheme;
-//#endif
+import Colors.ColorTheme;
 
 abstract public class IconTextElement implements VirtualElement {
     int itemHeight;

@@ -26,6 +26,7 @@
  */
 
 package Client;
+import Colors.ColorTheme;
 //#ifndef WMUC
 import Conference.ConferenceGroup;
 import Conference.InviteForm;
@@ -54,9 +55,6 @@ import io.file.transfer.TransferSendFile;
 import java.util.Enumeration;
 import javax.microedition.lcdui.Display;
 import locale.SR;
-//#ifdef COLORS
-import Colors.ColorUtils;
-//#endif
 import ui.Menu;
 import ui.MenuItem;
 import ui.Time;
@@ -120,9 +118,7 @@ public class RosterItemActions extends Menu {
 //#                 }
 //#             }
 //#endif
-//#ifdef COLORS
-                addItem("Send current color scheme",912);
-//#endif
+            addItem(SR.MS_SEND_COLOR_SCHEME, 912);
             if (contact.status<Presence.PRESENCE_OFFLINE) {
                 addItem(SR.MS_TIME,891);
                 addItem(SR.MS_IDLE,889);
@@ -401,26 +397,24 @@ public class RosterItemActions extends Menu {
                         sd.roster.theStream.send(IqPing.query(c.getJid(), "_ping_"+Time.utcTimeMillis()));
                     } catch (Exception e) {/*no messages*/}
                     break;
-//#ifdef COLORS
                 case 912: //send color scheme
                     String from=sd.account.toString();
-                    String body=ColorUtils.getSkin();
+                    String body=ColorTheme.getInstance().getSkin();
                     String subj="";
-                    
+
                     String id=String.valueOf((int) System.currentTimeMillis());
-                    
+
                     Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,body);
                     msg.id=id;
-                    
+
                     try {
-                        sd.roster.sendMessage(c, id, body, subj, null);
+                    sd.roster.sendMessage(c, id, body, subj, null);
                         c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"scheme sended"));
                     } catch (Exception e) {
                         c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"scheme NOT sended"));
                         //e.printStackTrace();
                     }
-                    break;
-//#endif
+                break;
 //#ifdef CLIPBOARD
 //#                 case 914: //send message from buffer
 //#                     String body2=clipboard.getClipBoard();

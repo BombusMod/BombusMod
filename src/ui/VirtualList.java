@@ -27,11 +27,7 @@
  */
 
 package ui;
-//#ifdef COLORTHEME
-//# import Colors.ColorTheme;
-//#else
-import Colors.Colors;
-//#endif
+import Colors.ColorTheme;
 
 import Fonts.FontCache;
 import javax.microedition.lcdui.*;
@@ -189,10 +185,8 @@ public abstract class VirtualList
 //#     public Image img;
 //#endif
     
-//#ifdef COLORTHEME
-//#     private ColorTheme ct;
-//#endif    
-    
+    private ColorTheme ct;
+
     protected synchronized void updateLayout(){
         int size=getItemCount();
         if (size==0) {
@@ -386,7 +380,7 @@ public abstract class VirtualList
         
 //#ifdef BACK_IMAGE
 //#         if (img!=null) {
-//#             g.setColor(Colors.LIST_BGND);
+//#             g.setColor(ct.getColor(ColorTheme.LIST_BGND));
 //#             g.fillRect(0,0, width, height);
 //#             g.drawImage(img, width/2, height/2, Graphics.VCENTER|Graphics.HCENTER);
 //#         }
@@ -487,11 +481,7 @@ public abstract class VirtualList
                 ) {
             setAbsOrg(g, 0,displayedBottom);
             g.setClip(0, 0, itemMaxWidth, clrH);
-//#ifdef COLORTHEME
-//#             g.setColor(ColorTheme.getInstance().getColor(ColorTheme.LIST_BGND));
-//#else
-            g.setColor(Colors.LIST_BGND);
-//#endif
+            g.setColor(ct.getColor(ColorTheme.LIST_BGND));
             g.fillRect(0, 0, itemMaxWidth, clrH);
         }
 

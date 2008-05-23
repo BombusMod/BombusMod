@@ -1,5 +1,5 @@
 /*
- *ColorSelector.java
+ * ColorSelector.java
  *
  * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
  *
@@ -80,13 +80,13 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
         h = getHeight();
 
         //System.out.println(color+" "+cl.getColorString(color));
-//#if (COLORS)
-        red=ColorUtils.getRed(color);
-        green=ColorUtils.getGreen(color);
-        blue=ColorUtils.getBlue(color);
+
+        red=ct.getRed(color);
+        green=ct.getGreen(color);
+        blue=ct.getBlue(color);
 
         //String s = cl.ColorToString(red, green, blue);
-//#endif
+
         cpos = 0;
 
         exit = false;
@@ -105,12 +105,8 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
         g.setColor(0xffffff);
         g.fillRect(0, 0, w, h);
         g.setFont(mfont);
-//#if (COLORS)
-        String s = ColorUtils.ColorToString(red, green, blue);
-        //System.out.println(s);
-//#else
-//#                 String s = " ";
-//#endif
+        String s = ColorTheme.ColorToString(red, green, blue);
+
         g.setColor(0);
         g.setStrokeStyle(g.SOLID);
         g.drawRect(2, 2, 15, 15);
@@ -268,7 +264,9 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
     public void setValue(int vall) {
         this.value=vall;
         ct.setColor(paramName, value);
-        ct.saveToStorage();
+//#ifdef COLOR_TUNE
+//#         ct.saveToStorage();
+//#endif
     }
 
     private void movePoint() {
@@ -307,17 +305,17 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
     }
 
     private void eventOk () {
-//#if (COLORS)
-        String val = ColorUtils.ColorToString(red, green, blue);
-
-        int finalColor=ColorUtils.getColorInt(val);
-        //System.out.println(val);
-
-        setValue(finalColor);
-        ColorForm.COLORS[paramName]=finalColor;
-        ColorForm.IMAGES[paramName]=ColorForm.imageData(finalColor);
-
-        ColorForm.updateItem(paramName);
+//#if COLOR_TUNE
+//#         String val = ColorTheme.ColorToString(red, green, blue);
+//# 
+//#         int finalColor=ColorTheme.getColorInt(val);
+//#         //System.out.println(val);
+//# 
+//#         setValue(finalColor);
+//#         //ColorForm.COLORS[paramName]=finalColor;
+//#         //ColorForm.IMAGES[paramName]=ColorForm.imageData(finalColor);
+//# 
+//#         ColorForm.updateItem(paramName);
 //#endif
         exit = true;
     }

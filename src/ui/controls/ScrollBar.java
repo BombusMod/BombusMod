@@ -68,10 +68,19 @@ public class ScrollBar {
     
     private ColorTheme ct;
     
+    private int colorTop;
+    private int colorBottom;
+    private int colorBar;
+    private int colorBorder;
+    
     /** Creates a new instance of ScrollBar */
     public ScrollBar() {
         point_y=-1;
         ct=ColorTheme.getInstance();
+        colorTop=ct.getColor(ColorTheme.SCROLL_BGND);
+        colorBottom=0xFFFFFF-colorTop;
+        colorBar=ct.getColor(ColorTheme.SCROLL_BAR);
+        colorBorder=ct.getColor(ColorTheme.SCROLL_BRD);
     }
 
     public void setWindowSize(int windowSize) {
@@ -147,7 +156,7 @@ public class ScrollBar {
 
 //#ifdef GRADIENT
 //#         if (drawHeight!=prevDrawHeight) {
-//#             gr=new Gradient(0, 0, scrollWidth, drawHeight, 0xFFFFFF-ct.getColor(ColorTheme.SCROLL_BGND), ct.getColor(ColorTheme.SCROLL_BGND), true);
+//#             gr=new Gradient(0, 0, scrollWidth, drawHeight, colorTop, colorBottom, true);
 //#             prevDrawHeight=drawHeight;
 //#         }
 //#         gr.paint(g);
@@ -162,10 +171,10 @@ public class ScrollBar {
  	
  	scrollerPos=(drawHeight*position)/size;
 
-        g.setColor(ct.getColor(ColorTheme.SCROLL_BAR));
+        g.setColor(colorBar);
 	g.fillRect(1, scrollerPos+1, scrollWidth-2, scrollerSize-1);
 
-        g.setColor(ct.getColor(ColorTheme.SCROLL_BRD));
+        g.setColor(colorBorder);
 	g.drawRect(0, scrollerPos, scrollWidth-1, scrollerSize);
     }
 }

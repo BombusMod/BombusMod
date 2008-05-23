@@ -48,8 +48,8 @@ import ServiceDiscovery.ServiceDiscovery;
 import images.MenuIcons;
 import javax.microedition.lcdui.Display;
 import locale.SR;
-//#ifdef COLORS
-import Colors.ColorForm;
+//#ifdef COLOR_TUNE
+//# import Colors.ColorForm;
 //#endif
 import ui.Menu;
 import ui.MenuItem;
@@ -100,8 +100,8 @@ public class RosterToolsMenu extends Menu {
         if (connected)
             addItem(SR.MS_FILE_TRANSFERS, 8, MenuIcons.ICON_FT);
 //#endif
-//#ifdef COLORS
-        addItem(SR.MS_COLOR_TUNE, 9, MenuIcons.ICON_COLOR_TUNE);
+//#ifdef COLOR_TUNE
+//#         addItem(SR.MS_COLOR_TUNE, 9, MenuIcons.ICON_COLOR_TUNE);
 //#endif
 //#if IMPORT_EXPORT
 //#         addItem(SR.MS_IMPORT_EXPORT, 10, MenuIcons.ICON_IE);
@@ -189,10 +189,10 @@ public class RosterToolsMenu extends Menu {
                 new io.file.transfer.TransferManager(display);
                 return;
 //#endif
-//#ifdef COLORS
-            case 9:
-                new ColorForm(display);
-                return;
+//#ifdef COLOR_TUNE
+//#             case 9:
+//#                 new ColorForm(display);
+//#                 return;
 //#endif
                 
 //#if IMPORT_EXPORT

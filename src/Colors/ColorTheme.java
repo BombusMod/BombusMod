@@ -27,15 +27,17 @@
 
 package Colors;
 
-import java.util.Enumeration;
-import java.util.Vector;
-//#ifdef COLORS
+import Client.StaticData;
 import io.NvStorage;
+import io.file.FileIO;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import midlet.*;
-//#endif
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Vector;
+import util.StringLoader;
+import util.Translit;
 /**
  *
  * @author ad
@@ -55,8 +57,8 @@ blue 0x0000ff
 	if (instance==null) {
 	    instance=new ColorTheme();
             init();
-//#ifdef COLORS
-	    loadFromStorage();
+//#ifdef COLOR_TUNE
+//# 	    loadFromStorage();
 //#endif
 	}
 	return instance;
@@ -116,7 +118,7 @@ blue 0x0000ff
     
         colorsContainer.addElement(new ColorItem("SCROLL_BRD", 0x565656));
         colorsContainer.addElement(new ColorItem("SCROLL_BAR", 0x929292));
-        colorsContainer.addElement(new ColorItem("SCROLL_BGND", 0x727272));
+        colorsContainer.addElement(new ColorItem("SCROLL_BGND", 0xffffff));
     
         colorsContainer.addElement(new ColorItem("POPUP_MESSAGE_INK",  0x4866ad));
         colorsContainer.addElement(new ColorItem("POPUP_MESSAGE_BGND",  0xffffe0));
@@ -240,27 +242,151 @@ blue 0x0000ff
     public final static int SECOND_LINE             =43;
     
     
-//#ifdef COLORS
-    public static void loadFromStorage(){
-	try {
-	    DataInputStream inputStream=NvStorage.ReadFileRecord("ColorDB", 0);
-            for (Enumeration r=colorsContainer.elements(); r.hasMoreElements();) {
-                ColorItem c=(ColorItem)r.nextElement();
-                c.setColor(inputStream.readInt());
-            }
-	    inputStream.close();
-	} catch (Exception e) { }
-    }
-
-    public static void saveToStorage(){
-	DataOutputStream outputStream=NvStorage.CreateDataOutputStream();
-	try {
-            for (Enumeration r=colorsContainer.elements(); r.hasMoreElements();) {
-                ColorItem c=(ColorItem)r.nextElement();
-                outputStream.writeInt(c.getColor());
-            }
-        } catch (IOException e) { }
-	NvStorage.writeFileRecord(outputStream, "ColorDB", 0, true);
-    }
+    private static Hashtable skin;
+    private static String skinFile;
+    private static int resourceType=1;
+    
+    
+//#ifdef COLOR_TUNE
+//#     public static void loadFromStorage(){
+//# 	try {
+//# 	    DataInputStream inputStream=NvStorage.ReadFileRecord("ColorDB", 0);
+//#             for (Enumeration r=colorsContainer.elements(); r.hasMoreElements();) {
+//#                 ColorItem c=(ColorItem)r.nextElement();
+//#                 c.setColor(inputStream.readInt());
+//#             }
+//# 	    inputStream.close();
+//# 	} catch (Exception e) { }
+//#     }
+//# 
+//#     public static void saveToStorage(){
+//# 	DataOutputStream outputStream=NvStorage.CreateDataOutputStream();
+//# 	try {
+//#             for (Enumeration r=colorsContainer.elements(); r.hasMoreElements();) {
+//#                 ColorItem c=(ColorItem)r.nextElement();
+//#                 outputStream.writeInt(c.getColor());
+//#             }
+//#         } catch (IOException e) { }
+//# 	NvStorage.writeFileRecord(outputStream, "ColorDB", 0, true);
+//#     }
 //#endif
+    
+    public static String getSkin(){
+        StringBuffer body=new StringBuffer();
+       body.append("xmlSkin\t");
+//#ifdef TRANSLIT
+       body.append(Translit.translit(StaticData.getInstance().account.getNickName()));
+//#else
+//#        body.append(StaticData.getInstance().account.getNickName());
+//#endif
+        body.append("\r\n");
+        for (Enumeration r=colorsContainer.elements(); r.hasMoreElements();) {
+            ColorItem c=(ColorItem)r.nextElement();
+            body.append(c.getName()+"\t"+getColorString(c.getColor())+"\r\n");
+        }
+        return body.toString();
+    }
+    
+    public static void loadSkin(String skinF, int resourceT){
+        skinFile=skinF;
+        resourceType=resourceT;
+        
+        try {
+            for (Enumeration r=colorsContainer.elements(); r.hasMoreElements();) {
+                ColorItem c=(ColorItem)r.nextElement();
+                c.setColor(loadInt(c.getName(), c.getColor()));
+            }
+//#ifdef COLOR_TUNE
+//#             saveToStorage();
+//#endif
+        } catch (Exception e) { }
+        skin=null;
+        skinFile=null;
+    }
+    
+    private static int loadInt(String key, int defaultColor) {
+        if (skin==null) {
+            switch (resourceType) {
+//#if FILE_IO
+                case 0:
+                    FileIO f=FileIO.createConnection(skinFile);
+                    byte[] b=f.fileRead();
+                    if (b!=null) {
+                        String str=new String(b, 0, b.length).toString().trim();
+                        skin=new StringLoader().hashtableLoaderFromString(str);
+                    } else
+                        return defaultColor;
+                    break;
+//#endif
+                case 1:
+                    skin=new StringLoader().hashtableLoader(skinFile);
+                    break;
+                case 2:
+                    skin=new StringLoader().hashtableLoaderFromString(skinFile);
+            }
+        }
+        try {
+            String value=(String)skin.get(key);
+            return getColorInt(value);
+        } catch (Exception e) {
+            //StaticData.getInstance().roster.errorLog(e.toString());
+            return defaultColor;
+        }
+    }
+    
+    public static int getColorInt(int color, int pos) {
+        String ncolor = getColorString(color);
+
+        switch (pos) {
+            case 0:
+                return Integer.parseInt(ncolor.substring(2,4),16);
+            case 1:
+                return Integer.parseInt(ncolor.substring(4,6),16);
+            case 2:
+                return Integer.parseInt(ncolor.substring(6,8),16);
+        }
+        return -1;
+    }
+    
+    public static int getColorInt(String color) {
+        return Integer.parseInt(color.substring(2),16);
+    }
+    
+    public static String getColorString(int color) {
+        StringBuffer ncolor=new StringBuffer();
+        ncolor.append("0x");
+        String col=Integer.toHexString(color);
+        for (int i=0; i<6-col.length(); i++)
+            ncolor.append("0");
+        ncolor.append(col);
+        return ncolor.toString();
+    }
+    
+    public static int getRed(int color) {
+        return ((color >> 16) & 0xFF);
+    }
+    public static int getGreen(int color) {
+        return ((color >> 8) & 0xFF);
+    }
+    public static int getBlue(int color) {
+        return (color& 0xFF);
+    }
+    
+    public static String ColorToString(int cRed, int cGreen, int cBlue) {
+        StringBuffer color=new StringBuffer(8);
+        
+        color.append("0x");
+        color.append(expandHex(cRed));
+        color.append(expandHex(cGreen));
+        color.append(expandHex(cBlue));
+        
+        return color.toString();
+    }
+    
+    public static String expandHex(int eVal) {
+        String rVal=Integer.toHexString(eVal);
+        if (rVal.length()==1) rVal="0"+rVal;
+      
+        return rVal;
+    }
 }

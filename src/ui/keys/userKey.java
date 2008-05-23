@@ -32,7 +32,6 @@ import io.NvStorage;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import Colors.Colors;
 import ui.IconTextElement;
 
 /**
@@ -119,8 +118,6 @@ public class userKey extends IconTextElement {
     public void setKey(int key) { this.key = key; }
 
     public void setActive(boolean active) { this.active = active; }
-
-    public int getColor(){ return Colors.LIST_INK; }
     
     protected int getImageIndex() {return active?0:5;}
     
