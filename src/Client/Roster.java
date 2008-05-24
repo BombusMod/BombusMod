@@ -443,6 +443,17 @@ public class Roster
     }
     
     public void cmdCleanAllMessages(){
+        if (messageCount>0) {
+           new AlertBox(SR.MS_UNREAD_MESSAGES+": "+messageCount, SR.MS_SURE_DELETE, display, this) {
+                public void yes() { cleanAllMessages(); }
+                public void no() { }
+            };
+        } else {
+            cleanAllMessages();
+        }
+    }
+    
+    public void cleanAllMessages(){
         for (Enumeration e=hContacts.elements();e.hasMoreElements();) {
             Contact c=(Contact)e.nextElement();
             try {
