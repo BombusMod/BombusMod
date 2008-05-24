@@ -90,7 +90,7 @@ public class MessageEdit
 //#endif
     private boolean composing=true;
     StaticData sd = StaticData.getInstance();
-    private Config cf=Config.getInstance();
+    private Config cf;
 //#ifdef TRANSLIT
     private boolean sendInTranslit=false;
 //#endif
@@ -108,6 +108,8 @@ public class MessageEdit
         this.display=display;
         parentView=display.getCurrent();
 
+        cf=Config.getInstance();
+        
         if (cf.notifyWhenMessageType) {
             t=new TextBox(null, "", 500, TextField.ANY);
             setTicker(to.toString());

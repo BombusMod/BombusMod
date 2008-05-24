@@ -39,6 +39,9 @@ import javax.microedition.lcdui.TextBox;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
 import ui.IconTextElement;
+//#ifdef CLIPBOARD
+//# import util.ClipBoard;
+//#endif
 
 /**
  *
@@ -101,12 +104,24 @@ public class textInput
         private Command cmdOk=new Command(SR.MS_OK, Command.OK,1);
 
         private Displayable parentView;
-
+    
+//#ifdef CLIPBOARD
+//#         private ClipBoard clipboard;
+//#         private Command cmdPasteText=new Command(SR.MS_PASTE, Command.SCREEN, 10);  
+//#endif
         public editBox(Display display, String text, textInput ti) {
             this.display=display;
             parentView=display.getCurrent();
             this.ti=ti;
+
             t=new TextBox(SR.MS_EDIT, text, 500, TextField.ANY);
+//#ifdef CLIPBOARD
+//#             if (Config.getInstance().useClipBoard) {
+//#                 clipboard=ClipBoard.getInstance();
+//#                 if (!clipboard.isEmpty())
+//#                     t.addCommand(cmdPasteText);
+//#             }
+//#endif
             t.addCommand(cmdOk);
             t.addCommand(cmdCancel);
             t.setCommandListener(this);
@@ -117,13 +132,27 @@ public class textInput
         public void commandAction(Command c, Displayable d){
             String text=t.getString();
             if (text.length()==0) text=null;
-
+//#ifdef CLIPBOARD
+//#             if (c==cmdPasteText) {t.insert(clipboard.getClipBoard(), getCaretPos()); return; }
+//#endif
             if (c==cmdOk)
                 ti.setValue(text);
 
             display.setCurrent(parentView);
         }
+//#ifdef CLIPBOARD
+//#         public int getCaretPos() {     
+//#             int caretPos=t.getCaretPosition();
+//#             // +MOTOROLA STUB
+//#             if (Config.getInstance().phoneManufacturer==Config.MOTO)
+//#                 caretPos=-1;
+//#             if (caretPos<0)
+//#                 caretPos=t.getString().length();
+//#             return caretPos;
+//#         }
+//#endif
     }
+    
     
     public boolean isSelectable() { return selectable; }
 }
