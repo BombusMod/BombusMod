@@ -170,14 +170,23 @@ public class AccountForm
     }
     
     public void cmdOk() {
-        String user = userbox.getValue();
+        String user = userbox.getValue().trim().toLowerCase();
+        String server = servbox.getValue().trim().toLowerCase();
+        String pass = passbox.getValue();
+        int port=Integer.parseInt(portbox.getValue());
+
         int at = user.indexOf('@');
-        if (at!=-1) user=user.substring(0, at);
-        account.setUserName(user.trim().toLowerCase());
-
-        account.setPassword(passbox.getValue());
-
-        account.setServer(servbox.getValue().trim().toLowerCase());
+        if (at>-1) {
+            server=user.substring(at+1);
+            user=user.substring(0, at);
+        }
+        if (server=="" || user=="" || pass=="" || port==0)
+            return;
+        
+        account.setUserName(user);
+        account.setServer(server);
+        account.setPassword(pass);
+        account.setPort(port);
         account.setHostAddr(ipbox.getValue());
         account.setResource(resourcebox.getValue());
         account.setNick(nickbox.getValue());
@@ -187,18 +196,16 @@ public class AccountForm
         account.setMucOnly(confOnlybox.getValue());
 
 //#if HTTPPOLL || HTTPCONNECT            
-//# 	    account.setEnableProxy(proxybox.getValue());
-//#endif
-        account.setPort(Integer.parseInt(portbox.getValue()));
-//#if HTTPPOLL || HTTPCONNECT 
-//# 	    account.setProxyHostAddr(proxyHost.getValue());
+//#         account.setEnableProxy(proxybox.getValue());
+//#         account.setProxyHostAddr(proxyHost.getValue());
 //#         account.setProxyPort(proxyPort.getValue());
 //#endif
 
         account.keepAlivePeriod=Integer.parseInt(keepAlive.getValue());
         account.keepAliveType=keepAliveType.getValue();
 
-        if (newaccount) accountSelect.accountList.addElement(account);
+        if (newaccount) 
+            accountSelect.accountList.addElement(account);
         accountSelect.rmsUpdate();
         accountSelect.commandState();
 

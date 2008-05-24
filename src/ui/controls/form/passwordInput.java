@@ -42,6 +42,8 @@ public class passwordInput
     }
     
     public String toString(){
+        if (getValue()==null)
+            return "";
         StringBuffer str=new StringBuffer();
         for (int i=0;i<getValue().length();i++)
             str.append("*");

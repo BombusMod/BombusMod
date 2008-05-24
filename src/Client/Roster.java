@@ -1055,7 +1055,7 @@ public class Roster
     
     public void loginFailed(String error){
         myStatus=Presence.PRESENCE_OFFLINE;
-        setProgress(SR.MS_LOGIN_FAILED, 0);
+        setProgress(SR.MS_LOGIN_FAILED, 100);
         
         errorLog(error);
 		
@@ -2045,6 +2045,8 @@ public class Roster
         switch (keyCode) {
 //#ifdef POPUPS
             case KEY_POUND:
+                if (getItemCount()==0)
+                    return;                
                 showInfo();
                 return;
 //#endif
@@ -2084,6 +2086,8 @@ public class Roster
 //#                 break;
 //#endif
             case KEY_NUM0:
+                if (getItemCount()==0)
+                    return;
                 synchronized(hContacts) {
                     for (Enumeration e=hContacts.elements(); e.hasMoreElements();){
                         Contact c=(Contact)e.nextElement();
@@ -2114,6 +2118,8 @@ public class Roster
                 }
                 break;
             case KEY_NUM3:
+                if (getItemCount()==0)
+                    return;
                 int newpos=searchGroup(-1);
                 if (newpos>-1) {
                     moveCursorTo(newpos);
@@ -2121,6 +2127,8 @@ public class Roster
                 }
                 break;
             case KEY_NUM9:
+                if (getItemCount()==0)
+                    return;
                 int newpos2=searchGroup(1);
                 if (newpos2>-1) {
                     moveCursorTo(newpos2);

@@ -28,6 +28,7 @@
 package ui;
 
 import Client.Config;
+import Client.StaticData;
 import Fonts.FontCache;
 //#ifdef AUTOSTATUS
 //# import Client.ExtendedStatus;
@@ -155,7 +156,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
     }
 
     public void setFailed(){
-        setProgress("Failed", 0);
+        setProgress("Failed", 100);
     }
     
     public void setProgress(String caption, int progress){
@@ -184,8 +185,8 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
     }
     
     public void close(){
-        if (parentView!=null) 
-            display.setCurrent(parentView);
+        //if (parentView!=null)
+            display.setCurrent(StaticData.getInstance().roster);
         parentView=null;
         repaint();
         //serviceRepaints();

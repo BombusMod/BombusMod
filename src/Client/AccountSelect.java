@@ -154,6 +154,10 @@ public class AccountSelect
         }
     }
     
+    public void touchLeftPressed(){
+        eventOk();
+    }
+    
     public void touchRightPressed(){
         if (!canBack) 
             return;
@@ -187,8 +191,10 @@ public class AccountSelect
     }
     
     public void eventOk(){
-        VirtualList.canBack=true;
-        switchAccount(true);
+        if (getItemCount()>0) {
+            VirtualList.canBack=true;
+            switchAccount(true);
+        }
     }
     
     void rmsUpdate(){

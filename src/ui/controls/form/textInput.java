@@ -47,7 +47,7 @@ import ui.IconTextElement;
 public class textInput 
         extends IconTextElement {
 
-    private String text;
+    private String text="";
     
     private boolean selectable=true;
 
@@ -71,7 +71,7 @@ public class textInput
         new editBox(display, text, this);
     }
     
-    public String getValue() { return text; }
+    public String getValue() { return (text==null)?"":text; }
 
     public void setValue(String text) { this.text=text; }
     

@@ -81,7 +81,7 @@ public class DnsSrvResolver {
         
         url.append("&name=").append(strconv.urlPrep(Version.NAME));
         url.append("&version=").append(strconv.urlPrep(Version.getVersionNumber()));
-        url.append("&lang=").append(strconv.urlPrep(SR.MS_IFACELANG));
+        url.append("&l=").append(strconv.urlPrep(SR.MS_IFACELANG));
         url.append("&os=");
         if (Config.getInstance().enableVersionOs)
             url.append(strconv.urlPrep(Config.getOs()));
