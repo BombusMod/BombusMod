@@ -64,13 +64,12 @@ public abstract class VirtualList
     private boolean reverse=false;
     private boolean paintTop=true;
     private boolean paintBottom=true;
+    private int stringHeight;
 //#ifdef GRADIENT
 //#     private int ibHeight;
 //#     Gradient grIB;
 //#     private int mbHeight;
 //#     Gradient grMB;
-//# 
-//#     private int stringHeight;
 //#endif
 //#ifdef TEST
 //#     private boolean drawTest;
