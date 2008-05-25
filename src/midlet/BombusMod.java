@@ -34,6 +34,7 @@ package midlet;
 //# import AutoTasks.AutoTask;
 //#endif
 import Colors.ColorTheme;
+
 import javax.microedition.midlet.*;
 import javax.microedition.lcdui.*;
 import locale.SR;

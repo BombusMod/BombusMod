@@ -50,7 +50,7 @@ public class testForm
         //this.display=display;
         setMainBarItem(new MainBar("test form"));
         
-        newChoiceBox testNewChoiceBox1=new newChoiceBox(display);
+        dropChoiceBox testNewChoiceBox1=new dropChoiceBox(display);
         testNewChoiceBox1.append("by socket");
         testNewChoiceBox1.append("1 byte");
         testNewChoiceBox1.append("<iq/>");
@@ -58,6 +58,9 @@ public class testForm
         testNewChoiceBox1.append("a b c d e f g h i j k l m n o p q r s t u v w x y z");
         testNewChoiceBox1.setSelectedIndex(4);
         itemsList.addElement(testNewChoiceBox1);
+        
+        textInput testInputCombo1=new textInput(display, "pass", "test");
+        itemsList.addElement(testInputCombo1);
         
         linkString testLinkString0=new linkString(SR.MS_COLOR_TUNE) { public void doAction() { new ColorsList(display); } };
         itemsList.addElement(testLinkString0);
@@ -86,7 +89,7 @@ public class testForm
 
         simpleString testSimpleString3=new simpleString("test textInput");
         itemsList.addElement(testSimpleString3);
-        textInput testTextInput1=new textInput(display, "text of input text");
+        textInput testTextInput1=new textInput(display, "text of input text", null);
         itemsList.addElement(testTextInput1);
         
         spacerItem testSpacerItem3=new spacerItem(0);

@@ -93,7 +93,7 @@ public class AccountForm
         getMainBarItem().setElementAt(mainbar, 0);
         
         itemsList.addElement(new boldString(SR.MS_USERNAME));
-        userbox = new textInput(display, account.getUserName()); //, 64, TextField.ANY
+        userbox = new textInput(display, account.getUserName(), null); //, 64, TextField.ANY
         itemsList.addElement(userbox);
     
         itemsList.addElement(new boldString(SR.MS_PASSWORD));
@@ -101,11 +101,11 @@ public class AccountForm
         itemsList.addElement(passbox);
         
         itemsList.addElement(new boldString(SR.MS_SERVER));
-        servbox = new textInput(display, account.getServer());//, 64, TextField.ANY
+        servbox = new textInput(display, account.getServer(), null);//, 64, TextField.ANY
         itemsList.addElement(servbox);
         
         itemsList.addElement(new boldString(SR.MS_HOST_IP));
-	ipbox = new textInput(display, account.getHostAddr());//, 64, TextField.ANY
+	ipbox = new textInput(display, account.getHostAddr(), null);//, 64, TextField.ANY
         itemsList.addElement(ipbox);
         
         itemsList.addElement(new boldString(SR.MS_PORT));
@@ -142,11 +142,11 @@ public class AccountForm
 //#endif
         
         itemsList.addElement(new boldString(SR.MS_RESOURCE));
-        resourcebox = new textInput(display, account.getResource());//64, TextField.ANY
+        resourcebox = new textInput(display, account.getResource(), null);//64, TextField.ANY
         itemsList.addElement(resourcebox);
         
         itemsList.addElement(new boldString(SR.MS_NICKNAME));
-        nickbox = new textInput(display, account.getNick());//64, TextField.ANY
+        nickbox = new textInput(display, account.getNick(), null);//64, TextField.ANY
         itemsList.addElement(nickbox);
 
 //#if HTTPCONNECT

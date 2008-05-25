@@ -1,7 +1,7 @@
 /*
- * passwordInput.java
+ * dropChoiceBox.java
  *
- * Created on 20.05.2008, 11:53
+ * Created on 25 Май 2008 г., 16:51
  *
  * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
  *
@@ -33,21 +33,18 @@ import javax.microedition.lcdui.Display;
  *
  * @author ad
  */
-public class passwordInput
-    extends textInput {
+public class dropChoiceBox extends choiceBox {
+
+    private Display display;
     
-    /** Creates a new instance of passwordInput */
-    public passwordInput(Display display, String text) {
-        super(display, text, null);
+    /** Creates a new instance of dropChoiceBox */
+    public dropChoiceBox(Display display) {
+        super();
+        this.display=display;
     }
     
-    public String toString(){
-        if (getValue()==null)
-            return "";
-        StringBuffer str=new StringBuffer();
-        for (int i=0;i<getValue().length();i++)
-            str.append("*");
-        
-        return str.toString();
+    public void onSelect(){
+        if (items.size()<1) return;
+        new dropListBox(display, items, this);
     }
 }

@@ -43,7 +43,7 @@ public class choiceBox
     
     private int index=0;
     
-    private Vector items=new Vector();
+    public Vector items=new Vector();
     
     private boolean selectable=true;
     
@@ -84,14 +84,14 @@ public class choiceBox
         g.setColor((sel)?ct.getColor(ColorTheme.CURSOR_BGND):ct.getColor(ColorTheme.LIST_BGND));
         g.fillRect(2, 2, width-4, height-4);
         
+        int boxSize=height-1;
         g.setColor((sel)?ct.getColor(ColorTheme.CURSOR_OUTLINE):ct.getColor(ColorTheme.CURSOR_BGND));
-        g.drawRoundRect(0, 0, width-1, height-1, 6, 6);
+        g.drawRoundRect(0, 0, width-1, boxSize, 6, 6);
         
-        int boxWidth=height-1;
-        g.drawRoundRect(width-boxWidth, 0, boxWidth, height-1, 6, 6);
-        int horCenterTrinangle=width-(boxWidth/2);
-        int vertCenterTrinangle=height-(boxWidth/2);
-        int size=boxWidth/3;
+        g.drawRoundRect(width-boxSize-1, 0, boxSize, boxSize, 6, 6);
+        int horCenterTrinangle=width-(boxSize/2)-1;
+        int vertCenterTrinangle=height-(boxSize/2);
+        int size=boxSize/3;
         g.fillTriangle(horCenterTrinangle-size, vertCenterTrinangle-size, horCenterTrinangle+size, vertCenterTrinangle-size, horCenterTrinangle, vertCenterTrinangle+size);
         
         g.setColor(oldColor);

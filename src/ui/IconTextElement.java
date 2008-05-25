@@ -111,8 +111,11 @@ abstract public class IconTextElement implements VirtualElement {
     
     public int getVHeight(){ 
         itemHeight=(ilImageSize>getFont().getHeight())?ilImageSize:getFont().getHeight();
-
+//#if ALCATEL_FONT
+//#         fontYOfs=1+((itemHeight-getFont().getHeight())/2);
+//#else
         fontYOfs=(itemHeight-getFont().getHeight())/2;
+//#endif
 //#ifdef SECONDSTRING
 //#         if (hasSecondString()){
 //#             itemHeight+=getSecondFontHeight();

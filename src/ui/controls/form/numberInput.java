@@ -41,7 +41,7 @@ public class numberInput
     private String initValue;  
     /** Creates a new instance of numberInput */
     public numberInput(Display display, String text, int min, int max) {
-        super(display, text);
+        super(display, text, null);
         this.min=min;
         this.max=max;
         initValue=text;

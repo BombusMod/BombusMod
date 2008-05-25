@@ -1,7 +1,7 @@
 /*
- * passwordInput.java
+ * listItem.java
  *
- * Created on 20.05.2008, 11:53
+ * Created on 25.05.2008, 16:38
  *
  * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
  *
@@ -27,27 +27,23 @@
 
 package ui.controls.form;
 
-import javax.microedition.lcdui.Display;
+import ui.IconTextElement;
 
 /**
  *
  * @author ad
  */
-public class passwordInput
-    extends textInput {
+public class listItem 
+        extends IconTextElement {
+
+    private String text;
     
-    /** Creates a new instance of passwordInput */
-    public passwordInput(Display display, String text) {
-        super(display, text, null);
+    /** Creates a new instance of listItem */
+    public listItem(String text) {
+        super(null);
+        this.text=text;
     }
-    
-    public String toString(){
-        if (getValue()==null)
-            return "";
-        StringBuffer str=new StringBuffer();
-        for (int i=0;i<getValue().length();i++)
-            str.append("*");
-        
-        return str.toString();
-    }
+
+    protected int getImageIndex() { return -1; }
+    public String toString() { return text; }
 }

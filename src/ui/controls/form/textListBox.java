@@ -1,7 +1,7 @@
 /*
- * textInputCombo.java
+ * textListBox.java
  *
- * Created on 22.05.2008, 15:36
+ * Created on 25 Май 2008 г., 16:58
  *
  * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
  *
@@ -27,9 +27,16 @@
 
 package ui.controls.form;
 
-import Client.Config;
+import java.util.Vector;
+import javax.microedition.lcdui.Command;
+import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
-/*
+import javax.microedition.lcdui.Displayable;
+import locale.SR;
+import ui.MainBar;
+import ui.VirtualElement;
+import ui.VirtualList;
+
 import io.NvStorage;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -40,62 +47,48 @@ import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.Item;
 import javax.microedition.lcdui.ItemCommandListener;
 import locale.SR;
-*/
 
 /**
  *
  * @author ad
  */
-public class textInputCombo
-    extends textInput
-    //implements ItemCommandListener 
-    {
+public class textListBox 
+        extends VirtualList 
+        implements CommandListener {
+    
+    private Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK,99);
+    private Command cmdOk=new Command(SR.MS_OK, Command.OK,1);
 
-    private String id;
-/*
     private Vector recentList;
-    private Command cmdRecent;
-*/
-    /** Creates a new instance of textInputCombo */
-    public textInputCombo(Display display, String text, String id) {
-        super(display, text);
+
+    private editBox ti;
+
+    public textListBox(Display display, editBox ti) {
+        super(display);
+        this.ti=ti;
+        this.recentList=ti.recentList;
+        setMainBarItem(new MainBar(SR.MS_SELECT));
+        addCommand(cmdOk);
+        addCommand(cmdCancel);
+        setCommandListener(this);
+    }
+    
+    public void eventOk() {
+        if (recentList.size()>0)
+            ti.setValue((String) recentList.elementAt(cursor));
         
-        this.id="mru-"+id;
-/*      
-        loadRecentList();
-        try {
-          if (text==null) text=(String) recentList.elementAt(0);
-          setValue(text);
-        } catch (Exception e) { }
-
-
-        cmdRecent=new Command(SR.MS_RECENT, Command.ITEM, 2);
-        this.addCommand(cmdRecent);
-*/
-    }
-/*
-    public void commandAction(Command command, Item item) {
-
+        display.setCurrent(parentView);
     }
 
-    private void saveRecentList() {
-        DataOutputStream os=NvStorage.CreateDataOutputStream();
-        try {
-            for (Enumeration e=recentList.elements(); e.hasMoreElements(); ) {
-                String s=(String)e.nextElement();
-                os.writeUTF(s);
-            }
-        } catch (Exception e) { }
-        NvStorage.writeFileRecord(os, id, 0, true);
+    public void commandAction(Command c, Displayable d){
+        if (c==cmdOk)
+            eventOk();
+        else if (c==cmdCancel)
+            display.setCurrent(parentView);
     }
-    private void loadRecentList() {
-        recentList=new Vector(10);
-        try {
-            DataInputStream is=NvStorage.ReadFileRecord(id, 0);
-            try { 
-                while (true) recentList.addElement(is.readUTF());
-            } catch (EOFException e) { is.close(); }
-        } catch (Exception e) { }
+
+    public VirtualElement getItemRef(int index){ 
+        return new listItem((String) recentList.elementAt(index)); 
     }
-*/
+    public int getItemCount() { return recentList.size(); }
 }

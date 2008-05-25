@@ -60,7 +60,7 @@ import com.alsutton.jabber.datablocks.*;
 import java.util.*;
 import javax.microedition.lcdui.*;
 import ui.*;
-import com.siemens.mp.game.Light;
+//import com.siemens.mp.game.Light;
 import xmpp.EntityCaps;
 
 import xmpp.XmppError;
@@ -222,8 +222,8 @@ public class Roster
         if (cf.phoneManufacturer==Config.SIEMENS || cf.phoneManufacturer==Config.SIEMENS2) {
             try {
                 if (state) 
-                    Light.setLightOn();
-                else Light.setLightOff();  
+                    com.siemens.mp.game.Light.setLightOn();
+                else com.siemens.mp.game.Light.setLightOff();  
             } catch( Exception e ) { }
         }
 //#ifdef SE_LIGHT

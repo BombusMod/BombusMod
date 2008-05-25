@@ -84,7 +84,7 @@ public class HistoryConfig
 //#endif
         
         itemsList.addElement(new simpleString(SR.MS_HISTORY_FOLDER));
-	historyFolder = new textInput(display, cf.msgPath);//128, TextField.ANY
+	historyFolder = new textInput(display, cf.msgPath, null);//128, TextField.ANY
         itemsList.addElement(historyFolder);
         
         addCommand(cmdSetHistFolder);

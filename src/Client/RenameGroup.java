@@ -58,7 +58,7 @@ public class RenameGroup
         this.group=group;
         this.display=display;
         
-        groupName = new textInput(display, (contact==null)?group.getName():contact.getGroup().getName()); // 32, TextField.ANY
+        groupName = new textInput(display, (contact==null)?group.getName():contact.getGroup().getName(), null); // 32, TextField.ANY
         itemsList.addElement(groupName);
         
         itemsList.addElement(new spacerItem(0));

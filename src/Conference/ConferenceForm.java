@@ -149,16 +149,16 @@ public class ConferenceForm
         parentView=display.getCurrent();
 
         itemsList.addElement(new boldString(SR.MS_ROOM));
-        roomField=new textInput(display, room);//, 64, TextField.ANY);
+        roomField=new textInput(display, room, null);//, 64, TextField.ANY);
         itemsList.addElement(roomField);
         
         itemsList.addElement(new boldString(SR.MS_AT_HOST));
-        hostField=new textInput(display, server);//, 64, TextField.ANY, "muc-host", display);
+        hostField=new textInput(display, server, null);//, 64, TextField.ANY, "muc-host", display);
         itemsList.addElement(hostField);
         
         if (nick==null) nick=sd.account.getNickName();
         itemsList.addElement(new boldString(SR.MS_NICKNAME));
-        nickField=new textInput(display, nick);//, 32, TextField.ANY, "roomnick", display);
+        nickField=new textInput(display, nick, null);//, 32, TextField.ANY, "roomnick", display);
         itemsList.addElement(nickField);
         
         itemsList.addElement(new boldString(SR.MS_MSG_LIMIT));
@@ -166,7 +166,7 @@ public class ConferenceForm
         itemsList.addElement(msgLimitField);
         
         itemsList.addElement(new boldString(SR.MS_DESCRIPTION));
-        nameField=new textInput(display, name);//, 128, TextField.ANY);
+        nameField=new textInput(display, name, null);//, 128, TextField.ANY);
         itemsList.addElement(nameField);
         
         itemsList.addElement(new boldString(SR.MS_PASSWORD));
