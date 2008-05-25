@@ -1,9 +1,9 @@
 /*
- * BoldString.java
+ * ImageFileItem.java
  *
- * Created on 19.05.2008, 22:55
+ * Created on 25 Май 2008 г., 21:43
  *
- * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru 
+ * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -27,26 +27,22 @@
 
 package ui.controls.form;
 
-import Fonts.FontCache;
-import images.RosterIcons;
-import javax.microedition.lcdui.Font;
-import ui.IconTextElement;
+import java.io.IOException;
+import javax.microedition.lcdui.Image;
 
 /**
  *
  * @author ad
  */
-public class BoldString 
-        extends SimpleString {
+public class ImageFileItem extends ImageItem {
     
-    /**
-     * Creates a new instance of BoldString
-     */
-    public BoldString(String text) {
-        super(text);
+    /** Creates a new instance of ImageFileItem */
+    public ImageFileItem(String imagePath) {
+        super(null);
+        
+        try {
+            img=Image.createImage(imagePath);
+        } catch (IOException ex) { ex.printStackTrace(); }
     }
     
-    public Font getFont() {
-        return FontCache.getMsgFontBold();
-    }
 }

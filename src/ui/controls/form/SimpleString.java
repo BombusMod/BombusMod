@@ -27,6 +27,8 @@
 
 package ui.controls.form;
 
+import Fonts.FontCache;
+import javax.microedition.lcdui.Font;
 import ui.IconTextElement;
 
 /**
@@ -53,4 +55,6 @@ public class SimpleString
     public String toString() { return text; }
     
     public boolean isSelectable() { return selectable; }
+    
+    public Font getFont() { return FontCache.getMsgFont(); }
 }

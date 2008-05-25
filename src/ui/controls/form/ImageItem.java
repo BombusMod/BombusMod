@@ -27,7 +27,6 @@
 
 package ui.controls.form;
 
-import java.io.IOException;
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
 import ui.IconTextElement;
@@ -39,18 +38,16 @@ import ui.IconTextElement;
 public class ImageItem
         extends IconTextElement {
     
-    private Image img;
+    public Image img;
     private boolean collapsed;
     
     public boolean selectable=true;
     
     /** Creates a new instance of ImageItem */
-    public ImageItem(String imagePath) {
+    public ImageItem(Image img) {
         super(null);
 
-        try {
-            img=Image.createImage(imagePath);
-        } catch (IOException ex) { ex.printStackTrace(); }
+        this.img=img;
     }
     
     public void onSelect() {

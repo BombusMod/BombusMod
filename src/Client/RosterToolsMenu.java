@@ -55,7 +55,7 @@ import ui.MenuItem;
 //# import ui.keys.userKeysList;
 //#endif
 import vcard.VCard;
-import vcard.vCardForm;
+import vcard.VCardView;
 //#ifdef CHECK_VERSION
 //# import Info.Upgrade;
 //#endif
@@ -158,7 +158,7 @@ public class RosterToolsMenu extends Menu {
                 if (! connected) break;
                 Contact c=sd.roster.selfContact();
                 if (c.vcard!=null) {
-                    new vCardForm(display, c.vcard, true);
+                    new VCardView(display, c.vcard, true);
                     return;
                 }
                 VCard.request(c.getBareJid(), c.getJid());

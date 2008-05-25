@@ -222,8 +222,6 @@ public class vCardForm
         }
     }
 
-    
-    
     private String getNickDate() {
         StringBuffer nickDate=new StringBuffer();
         nickDate.append("photo_");

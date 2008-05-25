@@ -54,7 +54,7 @@ import ui.MainBar;
 import ui.controls.AlertBox;
 import util.strconv;
 import vcard.VCard;
-import vcard.vCardForm;
+import vcard.VCardView;
 import com.alsutton.jabber.*;
 import com.alsutton.jabber.datablocks.*;
 import java.util.*;
@@ -1185,7 +1185,7 @@ public class Roster
                         if (c!=null) {
                             c.vcard=vcard;
                             if (display.getCurrent() instanceof VirtualList)
-                                new vCardForm(display, vcard, c.getGroupType()==Groups.TYPE_SELF);
+                                new VCardView(display, vcard, c.getGroupType()==Groups.TYPE_SELF);
                         }
                         return JabberBlockListener.BLOCK_PROCESSED;
                     }

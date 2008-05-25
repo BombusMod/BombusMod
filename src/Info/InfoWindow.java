@@ -29,14 +29,18 @@ package Info;
 
 import Client.Config;
 import javax.microedition.io.ConnectionNotFoundException;
+import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.Display;
+import javax.microedition.lcdui.Displayable;
 import locale.SR;
 import midlet.BombusMod;
-import ui.controls.form.BoldString;
 import ui.controls.form.DefForm;
 import ui.controls.form.LinkString;
 import ui.controls.form.MultiLine;
 import ui.controls.form.SpacerItem;
+//#ifdef CLIPBOARD
+//# import util.ClipBoard;
+//#endif
 
 /**
  *
@@ -49,6 +53,11 @@ public class InfoWindow
     MultiLine description;
     MultiLine memory;
     MultiLine abilities;
+    
+//#ifdef CLIPBOARD
+//#     private Command cmdCopy   = new Command(SR.MS_COPY, Command.OK, 1);
+//#     private ClipBoard clipboard; 
+//#endif
     
     /**
      * Creates a new instance of InfoWindow
@@ -83,9 +92,28 @@ public class InfoWindow
         abilities=new MultiLine(getAbilities());
         abilities.selectable=true;
         itemsList.addElement(abilities);
+        
+        super.removeCommand(cmdOk);
+//#ifdef CLIPBOARD
+//#         if (Config.getInstance().useClipBoard) {
+//#             clipboard=ClipBoard.getInstance(); 
+//#             addCommand(cmdCopy);
+//#         }
+//#endif
 
         //moveCursorTo(getNextSelectableRef(-1));
         attachDisplay(display);
+    }
+    
+    public void commandAction(Command c, Displayable d){
+//#ifdef CLIPBOARD
+//#         if (c==cmdCopy) {
+//#             clipboard.setClipBoard(description.getValue()+"\n"+memory.getValue()+"\n"+abilities.getValue());
+//#             destroyView();
+//#             return;
+//#         }
+//#endif
+        super.commandAction(c, d);
     }
 
     private String getAbilities() {

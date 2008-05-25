@@ -29,6 +29,7 @@ package ui.controls.form;
 
 import Fonts.FontCache;
 import java.util.Vector;
+import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
 import ui.IconTextElement;
 import util.strconv;
@@ -40,10 +41,9 @@ import util.strconv;
 public class MultiLine extends IconTextElement {
     
     private Vector lines=null;
-
     private String text;
-    
     public boolean selectable;
+    private Font font;
     
     /**
      * Creates a new instance of MultiLine
@@ -51,17 +51,22 @@ public class MultiLine extends IconTextElement {
     public MultiLine(String text) {
         super(null);
         this.text=text;
+        font=FontCache.getMsgFont();
+    }
+    
+    public String getValue() {
+        return text;
     }
 
     protected int getImageIndex() { return -1; }
     
-    public int getVHeight(){ return (lines==null)?1:getFont().getHeight()*lines.size(); }
+    public int getVHeight(){ return (lines==null)?1:(font.getHeight()*lines.size())+2; }
     
     public void drawItem(Graphics g, int ofs, boolean sel) {
         int width=g.getClipWidth();
 
-        if (lines==null && width!=0) {
-            lines=strconv.parseMessage(text, width-4, -1, false, getFont());
+        if (lines==null) {
+            lines=strconv.parseMessage(text, width-6, -1, false, font);
         }
         if (lines!=null)
             drawAllStrings(g, 2, 0);
@@ -73,8 +78,8 @@ public class MultiLine extends IconTextElement {
         if (lines.size()<1)
             return;
 
-        int fh=getFont().getHeight();
-
+        int fh=font.getHeight();
+        g.setFont(font);
 	for (int line=0; line<lines.size(); ){
             g.drawString((String) lines.elementAt(line), x, y, Graphics.TOP|Graphics.LEFT);
             line=line+1;
@@ -84,4 +89,5 @@ public class MultiLine extends IconTextElement {
     
     public boolean isSelectable() { return selectable; }
     
+    public Font getFont() { return font; }
 }
