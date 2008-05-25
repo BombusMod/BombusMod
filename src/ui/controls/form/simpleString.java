@@ -1,5 +1,5 @@
 /*
- * simpleString.java
+ * SimpleString.java
  *
  * Created on 19.05.2008, 22:55
  *
@@ -33,15 +33,17 @@ import ui.IconTextElement;
  *
  * @author ad
  */
-public class simpleString 
+public class SimpleString 
         extends IconTextElement {
 
     private String text;
     
     private boolean selectable=false;
     
-    /** Creates a new instance of simpleString */
-    public simpleString(String text) {
+    /**
+     * Creates a new instance of SimpleString
+     */
+    public SimpleString(String text) {
         super(null);
         this.text=text;
     }

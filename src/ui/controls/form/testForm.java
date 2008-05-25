@@ -1,5 +1,5 @@
 /*
- * testForm.java
+ * TestForm.java
  *
  * Created on 19.05.2008, 22:22
  *
@@ -39,18 +39,20 @@ import ui.VirtualList;
  *
  * @author ad
  */
-public class testForm 
+public class TestForm 
         extends VirtualList {
     
     private Vector itemsList=new Vector();
     
-    /** Creates a new instance of testForm */
-    public testForm(final Display display) {
+    /**
+     * Creates a new instance of TestForm
+     */
+    public TestForm(final Display display) {
         super();
         //this.display=display;
         setMainBarItem(new MainBar("test form"));
         
-        dropChoiceBox testNewChoiceBox1=new dropChoiceBox(display);
+        DropChoiceBox testNewChoiceBox1=new DropChoiceBox(display);
         testNewChoiceBox1.append("by socket");
         testNewChoiceBox1.append("1 byte");
         testNewChoiceBox1.append("<iq/>");
@@ -59,48 +61,54 @@ public class testForm
         testNewChoiceBox1.setSelectedIndex(4);
         itemsList.addElement(testNewChoiceBox1);
         
-        textInput testInputCombo1=new textInput(display, "pass", "test");
+        TextInput testInputCombo1=new TextInput(display, "remember box text", "test");
         itemsList.addElement(testInputCombo1);
         
-        linkString testLinkString0=new linkString(SR.MS_COLOR_TUNE) { public void doAction() { new ColorsList(display); } };
+        MultiLine testMultiLine1=new MultiLine("remember box text\nyo yo yo\n yep!");
+        itemsList.addElement(testMultiLine1);
+        
+        ImageItem testImageItem1=new ImageItem("/images/splash.png");
+        itemsList.addElement(testImageItem1);
+
+        LinkString testLinkString0=new LinkString(SR.MS_COLOR_TUNE) { public void doAction() { new ColorsList(display); } };
         itemsList.addElement(testLinkString0);
         
-        boldString testBoldString0=new boldString("test bold string");
+        BoldString testBoldString0=new BoldString("test bold string");
         itemsList.addElement(testBoldString0);
-        simpleString testSimpleString0=new simpleString("test string");
+        SimpleString testSimpleString0=new SimpleString("test string");
         itemsList.addElement(testSimpleString0);
-        simpleString testSimpleString1=new simpleString("test checkBox");
+        SimpleString testSimpleString1=new SimpleString("test checkBox");
         itemsList.addElement(testSimpleString1);        
-        checkBox testCheckBox1=new checkBox("checkBox1", false);
+        CheckBox testCheckBox1=new CheckBox("checkBox1", false);
         itemsList.addElement(testCheckBox1);
         
-        spacerItem testSpacerItem1=new spacerItem(0);
+        SpacerItem testSpacerItem1=new SpacerItem(0);
         itemsList.addElement(testSpacerItem1);     
         
-        simpleString testSimpleString2=new simpleString("test CheckBoxGroup");
+        SimpleString testSimpleString2=new SimpleString("test CheckBoxGroup");
         itemsList.addElement(testSimpleString2);   
-        checkBox testCheckBox2=new checkBox("item1", true);
+        CheckBox testCheckBox2=new CheckBox("item1", true);
         itemsList.addElement(testCheckBox2);
-        checkBox testCheckBox3=new checkBox("item2", true);
+        CheckBox testCheckBox3=new CheckBox("item2", true);
         itemsList.addElement(testCheckBox3);
         
-        spacerItem testSpacerItem2=new spacerItem(0);
+        SpacerItem testSpacerItem2=new SpacerItem(0);
         itemsList.addElement(testSpacerItem2);  
 
-        simpleString testSimpleString3=new simpleString("test textInput");
+        SimpleString testSimpleString3=new SimpleString("test textInput");
         itemsList.addElement(testSimpleString3);
-        textInput testTextInput1=new textInput(display, "text of input text", null);
+        TextInput testTextInput1=new TextInput(display, "text of input text", null);
         itemsList.addElement(testTextInput1);
         
-        spacerItem testSpacerItem3=new spacerItem(0);
+        SpacerItem testSpacerItem3=new SpacerItem(0);
         itemsList.addElement(testSpacerItem3);  
-        spacerItem testSpacerItem4=new spacerItem(0);
+        SpacerItem testSpacerItem4=new SpacerItem(0);
         itemsList.addElement(testSpacerItem4);
         
-        simpleString testSimpleString4=new simpleString("test ChoiceGroup");
+        SimpleString testSimpleString4=new SimpleString("test ChoiceGroup");
         itemsList.addElement(testSimpleString4);
         
-        choiceBox testChoiceBox1=new choiceBox(/*, "KeepAlive:"*/);
+        ChoiceBox testChoiceBox1=new ChoiceBox(/*, "KeepAlive:"*/);
         testChoiceBox1.append("by socket");
         testChoiceBox1.append("1 byte");
         testChoiceBox1.append("<iq/>");
@@ -109,15 +117,15 @@ public class testForm
         testChoiceBox1.setSelectedIndex(4);
         itemsList.addElement(testChoiceBox1);
 
-        spacerItem testSpacerItem5=new spacerItem(0);
+        SpacerItem testSpacerItem5=new SpacerItem(0);
         itemsList.addElement(testSpacerItem5);  
 
-        simpleString testSimpleString5=new simpleString("test passwordItem");
+        SimpleString testSimpleString5=new SimpleString("test passwordItem");
         itemsList.addElement(testSimpleString5);
-        passwordInput testPasswordInput1=new passwordInput(display, "pass");
+        PasswordInput testPasswordInput1=new PasswordInput(display, "pass");
         itemsList.addElement(testPasswordInput1);
 
-        spacerItem testSpacerItem6=new spacerItem(0);
+        SpacerItem testSpacerItem6=new SpacerItem(0);
         itemsList.addElement(testSpacerItem6);
         
         moveCursorTo(getNextSelectableRef(-1));

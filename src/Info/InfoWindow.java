@@ -1,8 +1,9 @@
 /*
  * InfoWindow.java
  *
- * Created on 6.09.2005, 22:21
- * Copyright (c) 2005-2008, Eugene Stahov (evgs), http://bombus-im.org
+ * Created on 25.05.2008, 19:29
+ *
+ * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -22,55 +23,72 @@
  * You should have received a copy of the GNU General Public License
  * along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
  */
 
 package Info;
+
 import Client.Config;
-import Client.Roster;
-import javax.microedition.lcdui.*;
+import javax.microedition.io.ConnectionNotFoundException;
+import javax.microedition.lcdui.Display;
 import locale.SR;
+import midlet.BombusMod;
+import ui.controls.form.BoldString;
+import ui.controls.form.DefForm;
+import ui.controls.form.LinkString;
+import ui.controls.form.MultiLine;
+import ui.controls.form.SpacerItem;
 
 /**
  *
- * @author EvgS
+ * @author ad
  */
-public class InfoWindow implements CommandListener{
-
-    private Display display;
-    private Displayable parentView;
+public class InfoWindow
+        extends DefForm {
     
-    private Form form;
-
-    /** Creates a new instance of InfoWindow */
+    LinkString siteUrl;
+    MultiLine description;
+    MultiLine memory;
+    MultiLine abilities;
+    
+    /**
+     * Creates a new instance of InfoWindow
+     */
     public InfoWindow(Display display) {
+        super(display, SR.MS_ABOUT);
         this.display=display;
         parentView=display.getCurrent();
         
-        form=new Form(SR.MS_ABOUT);
-        form.addCommand(new Command(SR.MS_CLOSE, Command.BACK, 99));
-
-        form.append(Version.getNameVersion()+"\nMobile Jabber client\n");
-        form.append(Config.getOs());
-        form.append("\n");
-        form.append("Copyright (c) 2005-2008, Eugene Stahov (evgs), Daniel Apatin (ad)");
-
-        form.append("\n");
-        form.append("\n");
+        description=new MultiLine(Version.getNameVersion()+"\nMobile Jabber client\n"+Config.getOs()+"\nCopyright (c) 2005-2008, Eugene Stahov (evgs), Daniel Apatin (ad)");
+        description.selectable=true;
+        itemsList.addElement(description);
+        itemsList.addElement(new SpacerItem(0));
+        
+        siteUrl=new LinkString("http://bombusmod.net.ru"){ public void doAction() { try { BombusMod.getInstance().platformRequest("http://bombusmod.net.ru"); } catch (ConnectionNotFoundException ex) { }}};
+        itemsList.addElement(siteUrl);
+        itemsList.addElement(new SpacerItem(0));
         
         StringBuffer memInfo=new StringBuffer(SR.MS_MEMORY);
         memInfo.append("\n");
         memInfo.append(SR.MS_FREE);
-
         System.gc();
         memInfo.append(Runtime.getRuntime().freeMemory()>>10);
         memInfo.append("\n");
         memInfo.append(SR.MS_TOTAL);
         memInfo.append(Runtime.getRuntime().totalMemory()>>10);
-        form.append(memInfo.toString());
-        memInfo=null;
+        memory=new MultiLine(memInfo.toString());
+        memory.selectable=true;
+        itemsList.addElement(memory);
+        itemsList.addElement(new SpacerItem(0));
         
-        form.append("\n");
+        abilities=new MultiLine(getAbilities());
+        abilities.selectable=true;
+        itemsList.addElement(abilities);
+
+        //moveCursorTo(getNextSelectableRef(-1));
+        attachDisplay(display);
+    }
+
+    private String getAbilities() {
         StringBuffer abilities=new StringBuffer("Abilities: ");
 //#ifdef COLOR_TUNE
 //#         abilities.append(", COLOR_TUNE");
@@ -174,15 +192,6 @@ public class InfoWindow implements CommandListener{
 //#ifdef STATS
 //#         abilities.append(", STATS");
 //#endif
-        form.append(abilities.toString());
-        abilities=null;
-        
-        form.append("\n");
-        form.setCommandListener(this);
-        display.setCurrent(form);
-    }
-
-    public void commandAction(Command c, Displayable d) {
-        display.setCurrent(parentView);
+        return abilities.toString();
     }
 }

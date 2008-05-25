@@ -34,33 +34,33 @@ import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
-import ui.controls.form.checkBox;
-import ui.controls.form.defForm;
-import ui.controls.form.simpleString;
-import ui.controls.form.textInput;
+import ui.controls.form.CheckBox;
+import ui.controls.form.DefForm;
+import ui.controls.form.SimpleString;
+import ui.controls.form.TextInput;
 
 /**
  *
  * @author ad
  */
 public class HistoryConfig 
-        extends defForm
+        extends DefForm
         implements BrowserListener {
 
     private Display display;
     
     Command cmdSetHistFolder=new Command(SR.MS_SELECT_HISTORY_FOLDER, Command.ITEM,2);
     
-    private textInput historyFolder;
+    private TextInput historyFolder;
     
-    private checkBox loadHistory;
-    private checkBox saveHistory;
-    private checkBox savePres;
-    private checkBox saveConfHistory;
-    private checkBox saveConfPres;
-    private checkBox win1251;
+    private CheckBox loadHistory;
+    private CheckBox saveHistory;
+    private CheckBox savePres;
+    private CheckBox saveConfHistory;
+    private CheckBox saveConfPres;
+    private CheckBox win1251;
 //#ifdef TRANSLIT
-    private checkBox translit;
+    private CheckBox translit;
 //#endif
     
     Config cf;
@@ -73,18 +73,18 @@ public class HistoryConfig
         
         cf=Config.getInstance();
 
-        loadHistory = new checkBox(SR.MS_LOAD_HISTORY, cf.lastMessages); itemsList.addElement(loadHistory);
-        saveHistory = new checkBox(SR.MS_SAVE_HISTORY, cf.msgLog); itemsList.addElement(saveHistory);
-        savePres = new checkBox(SR.MS_SAVE_PRESENCES, cf.msgLogPresence); itemsList.addElement(savePres);
-        saveConfHistory = new checkBox(SR.MS_SAVE_HISTORY_CONF, cf.msgLogConf); itemsList.addElement(saveConfHistory);
-        saveConfPres = new checkBox(SR.MS_SAVE_PRESENCES_CONF, cf.msgLogConfPresence); itemsList.addElement(saveConfPres);
-        win1251 = new checkBox(SR.MS_1251_CORRECTION, cf.cp1251); itemsList.addElement(win1251);
+        loadHistory = new CheckBox(SR.MS_LOAD_HISTORY, cf.lastMessages); itemsList.addElement(loadHistory);
+        saveHistory = new CheckBox(SR.MS_SAVE_HISTORY, cf.msgLog); itemsList.addElement(saveHistory);
+        savePres = new CheckBox(SR.MS_SAVE_PRESENCES, cf.msgLogPresence); itemsList.addElement(savePres);
+        saveConfHistory = new CheckBox(SR.MS_SAVE_HISTORY_CONF, cf.msgLogConf); itemsList.addElement(saveConfHistory);
+        saveConfPres = new CheckBox(SR.MS_SAVE_PRESENCES_CONF, cf.msgLogConfPresence); itemsList.addElement(saveConfPres);
+        win1251 = new CheckBox(SR.MS_1251_CORRECTION, cf.cp1251); itemsList.addElement(win1251);
 //#ifdef TRANSLIT
-        translit = new checkBox(SR.MS_1251_TRANSLITERATE_FILENAMES, cf.transliterateFilenames); itemsList.addElement(translit);
+        translit = new CheckBox(SR.MS_1251_TRANSLITERATE_FILENAMES, cf.transliterateFilenames); itemsList.addElement(translit);
 //#endif
         
-        itemsList.addElement(new simpleString(SR.MS_HISTORY_FOLDER));
-	historyFolder = new textInput(display, cf.msgPath, null);//128, TextField.ANY
+        itemsList.addElement(new SimpleString(SR.MS_HISTORY_FOLDER));
+	historyFolder = new TextInput(display, cf.msgPath, null);//128, TextField.ANY
         itemsList.addElement(historyFolder);
         
         addCommand(cmdSetHistFolder);

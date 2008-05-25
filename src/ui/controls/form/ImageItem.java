@@ -1,7 +1,7 @@
 /*
- * SpacerItem.java
+ * ImageItem.java
  *
- * Created on 19 Май 2008 г., 23:41
+ * Created on 25.05.2008, 19:07
  *
  * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
  *
@@ -27,34 +27,57 @@
 
 package ui.controls.form;
 
-import Colors.ColorTheme;
+import java.io.IOException;
+import javax.microedition.lcdui.Graphics;
+import javax.microedition.lcdui.Image;
 import ui.IconTextElement;
 
 /**
  *
  * @author ad
  */
-public class SpacerItem 
+public class ImageItem
         extends IconTextElement {
     
-    private static int itemHeight=4;
+    private Image img;
+    private boolean collapsed;
     
-    private boolean selectable=false;
+    public boolean selectable=true;
     
-    /**
-     * Creates a new instance of SpacerItem
-     */
-    public SpacerItem(int height) {
+    /** Creates a new instance of ImageItem */
+    public ImageItem(String imagePath) {
         super(null);
-        if (height!=0)
-            itemHeight=height;
+
+        try {
+            img=Image.createImage(imagePath);
+        } catch (IOException ex) { ex.printStackTrace(); }
+    }
+    
+    public void onSelect() {
+        collapsed=!collapsed;
+    }
+    
+    public String toString() {
+        return (collapsed || img==null)?"[Image]":"";            
+    }
+    
+    public int getVHeight(){
+        if (collapsed || img==null)
+            return super.getVHeight();
+
+        return img.getHeight();
+    }
+    
+    public void drawItem(Graphics g, int ofs, boolean sel) {
+        int width=g.getClipWidth();
+        int height=g.getClipHeight();
+        if (!collapsed)
+            g.drawImage(img, width/2, height/2, Graphics.VCENTER|Graphics.HCENTER);
+        super.drawItem(g, ofs, sel);
     }
 
     protected int getImageIndex() { return -1; }
     
-    public String toString() { return " "; }
-    
-    public int getVHeight(){ return itemHeight; }
-
     public boolean isSelectable() { return selectable; }
+    
 }

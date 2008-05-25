@@ -394,8 +394,9 @@ public class strconv {
                     if (w+wordWidth+cw>availWidth || newline) {
                         lines.addElement(s.toString()); //lastest string in l
                         s.setLength(0); w=0;
-                        if (fontHeight*lines.size()>availHeight){
-                            return lines; //stop when linesHeight>height
+                        if (availHeight>-1)
+                            if (fontHeight*lines.size()>availHeight){
+                                return lines; //stop when linesHeight>height
                         }
                     }
                 }

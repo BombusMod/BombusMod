@@ -1,5 +1,5 @@
 /*
- * defForm.java
+ * DefForm.java
  *
  * Created on 21.05.2008, 9:40
  *
@@ -42,7 +42,7 @@ import ui.VirtualList;
  *
  * @author ad
  */
-public class defForm 
+public class DefForm 
         extends VirtualList
         implements CommandListener  {
     
@@ -54,8 +54,10 @@ public class defForm
     public Command cmdOk = new Command(SR.MS_OK, Command.OK, 1);
     public Command cmdCancel = new Command(SR.MS_BACK, Command.BACK, 99);
     
-    /** Creates a new instance of defForm */
-    public defForm(final Display display, String caption) {
+    /**
+     * Creates a new instance of DefForm
+     */
+    public DefForm(final Display display, String caption) {
 	this.display=display;
 	parentView=display.getCurrent();
         

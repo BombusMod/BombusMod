@@ -1,5 +1,5 @@
 /*
- * passwordInput.java
+ * PasswordInput.java
  *
  * Created on 20.05.2008, 11:53
  *
@@ -33,11 +33,13 @@ import javax.microedition.lcdui.Display;
  *
  * @author ad
  */
-public class passwordInput
-    extends textInput {
+public class PasswordInput
+    extends TextInput {
     
-    /** Creates a new instance of passwordInput */
-    public passwordInput(Display display, String text) {
+    /**
+     * Creates a new instance of PasswordInput
+     */
+    public PasswordInput(Display display, String text) {
         super(display, text, null);
     }
     

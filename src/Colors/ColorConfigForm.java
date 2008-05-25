@@ -35,10 +35,10 @@ import java.util.Vector;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
-import ui.controls.form.choiceBox;
-import ui.controls.form.defForm;
-import ui.controls.form.linkString;
-import ui.controls.form.spacerItem;
+import ui.controls.form.ChoiceBox;
+import ui.controls.form.DefForm;
+import ui.controls.form.LinkString;
+import ui.controls.form.SpacerItem;
 import util.StringLoader;
 
 /**
@@ -46,7 +46,7 @@ import util.StringLoader;
  * @author ad
  */
 public class ColorConfigForm 
-        extends defForm
+        extends DefForm
 //#if FILE_IO
         implements BrowserListener
 //#endif
@@ -55,22 +55,22 @@ public class ColorConfigForm
     private Display display;
     private Displayable parentView;
 //#ifdef COLOR_TUNE
-//#     private linkString configureColors;
+//#     private LinkString configureColors;
 //#endif
-    private linkString invertColors;
+    private LinkString invertColors;
 //#if FILE_IO
-    private linkString loadFromFile;
-    private linkString saveToFile;
+    private LinkString loadFromFile;
+    private LinkString saveToFile;
 
     String filePath;
     private int loadType=0;
 //#endif
     
     private Vector[] files;
-    private choiceBox skinFiles;
-    private linkString useFromJar;
+    private ChoiceBox skinFiles;
+    private LinkString useFromJar;
     
-    private linkString reset;
+    private LinkString reset;
     
 
     
@@ -80,37 +80,37 @@ public class ColorConfigForm
         this.display=display;
         parentView=display.getCurrent();
 //#ifdef COLOR_TUNE
-//#         configureColors=new linkString(SR.MS_COLOR_TUNE) { public void doAction() { new ColorsList(display); } };
+//#         configureColors=new LinkString(SR.MS_COLOR_TUNE) { public void doAction() { new ColorsList(display); } };
 //#         itemsList.addElement(configureColors);
 //#endif
-        invertColors=new linkString(SR.MS_INVERT) { public void doAction() { ColorTheme.getInstance().invertSkin(); } };
+        invertColors=new LinkString(SR.MS_INVERT) { public void doAction() { ColorTheme.getInstance().invertSkin(); } };
         itemsList.addElement(invertColors);
         
-        itemsList.addElement(new spacerItem(0));
+        itemsList.addElement(new SpacerItem(0));
         try {
             files=new StringLoader().stringLoader("/skins/res.txt",2);
             if (files[0].size()>0) {
-                skinFiles=new choiceBox();
+                skinFiles=new ChoiceBox();
                 for (int i=0; i<files[0].size(); i++) {
                     skinFiles.append((String)files[1].elementAt(i));
                 }
                 skinFiles.setSelectedIndex(0);
                 itemsList.addElement(skinFiles);
             }
-            useFromJar=new linkString(SR.MS_LOAD_SKIN) { public void doAction() { userThemeFromJar(); } };
+            useFromJar=new LinkString(SR.MS_LOAD_SKIN) { public void doAction() { userThemeFromJar(); } };
             itemsList.addElement(useFromJar);
         } catch (Exception e) {}
         
 //#if FILE_IO
-        itemsList.addElement(new spacerItem(10));
-        loadFromFile=new linkString(SR.MS_LOAD_SKIN+" FS") { public void doAction() { initBrowser(1); } };
+        itemsList.addElement(new SpacerItem(10));
+        loadFromFile=new LinkString(SR.MS_LOAD_SKIN+" FS") { public void doAction() { initBrowser(1); } };
         itemsList.addElement(loadFromFile);
-        saveToFile=new linkString(SR.MS_SAVE+" FS") { public void doAction() { initBrowser(0); } };
+        saveToFile=new LinkString(SR.MS_SAVE+" FS") { public void doAction() { initBrowser(0); } };
         itemsList.addElement(saveToFile);
 //#endif
         
-        itemsList.addElement(new spacerItem(10));
-        reset=new linkString(SR.MS_CLEAR) { public void doAction() { ColorTheme.getInstance().init(); ColorTheme.getInstance().saveToStorage(); } };
+        itemsList.addElement(new SpacerItem(10));
+        reset=new LinkString(SR.MS_CLEAR) { public void doAction() { ColorTheme.getInstance().init(); ColorTheme.getInstance().saveToStorage(); } };
         itemsList.addElement(reset);
         
         moveCursorTo(getNextSelectableRef(-1));

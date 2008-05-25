@@ -33,97 +33,97 @@ import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
 import ui.VirtualList;
-import ui.controls.form.boldString;
-import ui.controls.form.checkBox;
-import ui.controls.form.choiceBox;
-import ui.controls.form.defForm;
-import ui.controls.form.numberInput;
-import ui.controls.form.simpleString;
+import ui.controls.form.BoldString;
+import ui.controls.form.CheckBox;
+import ui.controls.form.ChoiceBox;
+import ui.controls.form.DefForm;
+import ui.controls.form.NumberInput;
+import ui.controls.form.SimpleString;
 import util.StringLoader;
 import com.alsutton.jabber.datablocks.Presence;
 import xmpp.EntityCaps;
 
 public class ConfigForm
-        extends defForm {
+        extends DefForm {
     
     private Display display;
     private Displayable parentView;
     
-    private checkBox showOfflineContacts;
-    private checkBox selfContact;
-    private checkBox showTransports;
-    private checkBox ignore;
-    private checkBox collapsedGroups;
-    private checkBox autoFocus;
-    private checkBox showResources;
-    private checkBox useBoldFont;
+    private CheckBox showOfflineContacts;
+    private CheckBox selfContact;
+    private CheckBox showTransports;
+    private CheckBox ignore;
+    private CheckBox collapsedGroups;
+    private CheckBox autoFocus;
+    private CheckBox showResources;
+    private CheckBox useBoldFont;
 //#ifdef SECONDSTRING
-//#     private checkBox rosterStatus;
+//#     private CheckBox rosterStatus;
 //#endif
     
-    private choiceBox subscr;
-    private choiceBox nil;
+    private ChoiceBox subscr;
+    private ChoiceBox nil;
     
 //#ifdef SMILES
-    private checkBox smiles;
+    private CheckBox smiles;
 //#endif
-    private checkBox eventComposing;
-    private checkBox capsState;
-    private checkBox storeConfPresence;
-    private checkBox autoScroll;
-    private checkBox useTabs;
+    private CheckBox eventComposing;
+    private CheckBox capsState;
+    private CheckBox storeConfPresence;
+    private CheckBox autoScroll;
+    private CheckBox useTabs;
 //#ifdef PEP
-//#     private checkBox sndrcvmood;
+//#     private CheckBox sndrcvmood;
 //#ifdef PEP_TUNE
-//#    private checkBox rcvtune;
+//#    private CheckBox rcvtune;
 //#endif
 //#endif
-     private checkBox notifyWhenMessageType;
+     private CheckBox notifyWhenMessageType;
 //#ifdef ANTISPAM
-//#    private checkBox antispam;
+//#    private CheckBox antispam;
 //#endif
 //#ifdef POPUPS
-    private checkBox popUps;
+    private CheckBox popUps;
 //#endif
-    private checkBox showBalloons;     
-    private checkBox eventDelivery;
+    private CheckBox showBalloons;     
+    private CheckBox eventDelivery;
 //#ifdef CLIPBOARD
-//#     private checkBox useClipBoard;
+//#     private CheckBox useClipBoard;
 //#endif
     
 //#if AUTODELETE
-//#         private numberInput messageCountLimit;
+//#         private NumberInput messageCountLimit;
 //#endif
-    private numberInput messageLimit;
+    private NumberInput messageLimit;
     
-    private checkBox autoLogin;
-    private checkBox autoJoinConferences;
+    private CheckBox autoLogin;
+    private CheckBox autoJoinConferences;
 
-    private checkBox fullscreen;
-    private checkBox memMonitor;
-    private checkBox enableVersionOs;
-    private checkBox queryExit;
+    private CheckBox fullscreen;
+    private CheckBox memMonitor;
+    private CheckBox enableVersionOs;
+    private CheckBox queryExit;
 //#ifdef USER_KEYS
-//#    private checkBox userKeys;
+//#    private CheckBox userKeys;
 //#endif
 //#ifdef NEW_MENU
-    private checkBox newMenu;
+    private CheckBox newMenu;
 //#endif
-    private checkBox lightState;
+    private CheckBox lightState;
 //#ifdef IRC_LIKE
-//#    private checkBox ircLikeStatus;
+//#    private CheckBox ircLikeStatus;
 //#endif
-    private checkBox popupFromMinimized;
+    private CheckBox popupFromMinimized;
 
-    private numberInput fieldGmt; 
-    private numberInput fieldLoc;
+    private NumberInput fieldGmt; 
+    private NumberInput fieldLoc;
     
-    private choiceBox textWrap;
-    private choiceBox langFiles;
+    private ChoiceBox textWrap;
+    private ChoiceBox langFiles;
 //#ifdef AUTOSTATUS
-//#     private choiceBox autoAwayType;
-//#     private numberInput fieldAwayDelay; 
-//#     private checkBox awayStatus;
+//#     private ChoiceBox autoAwayType;
+//#     private NumberInput fieldAwayDelay; 
+//#     private CheckBox awayStatus;
 //#endif
 
     private Vector langs[];
@@ -140,21 +140,21 @@ public class ConfigForm
 
         cf=Config.getInstance();
 
-        itemsList.addElement(new boldString(SR.MS_ROSTER_ELEMENTS));
-        showOfflineContacts = new checkBox(SR.MS_OFFLINE_CONTACTS, cf.showOfflineContacts); itemsList.addElement(showOfflineContacts);
-        selfContact = new checkBox(SR.MS_SELF_CONTACT, cf.selfContact); itemsList.addElement(selfContact);
-        showTransports = new checkBox(SR.MS_TRANSPORTS, cf.showTransports); itemsList.addElement(showTransports);
-        ignore = new checkBox(SR.MS_IGNORE_LIST, cf.ignore); itemsList.addElement(ignore);
-        collapsedGroups = new checkBox(SR.MS_COLLAPSED_GROUPS, cf.collapsedGroups); itemsList.addElement(collapsedGroups);
-        autoFocus = new checkBox(SR.MS_AUTOFOCUS, cf.autoFocus); itemsList.addElement(autoFocus);
-        showResources = new checkBox(SR.MS_SHOW_RESOURCES, cf.showResources); itemsList.addElement(showResources);
-        useBoldFont = new checkBox(SR.MS_BOLD_FONT, cf.useBoldFont); itemsList.addElement(useBoldFont);
+        itemsList.addElement(new BoldString(SR.MS_ROSTER_ELEMENTS));
+        showOfflineContacts = new CheckBox(SR.MS_OFFLINE_CONTACTS, cf.showOfflineContacts); itemsList.addElement(showOfflineContacts);
+        selfContact = new CheckBox(SR.MS_SELF_CONTACT, cf.selfContact); itemsList.addElement(selfContact);
+        showTransports = new CheckBox(SR.MS_TRANSPORTS, cf.showTransports); itemsList.addElement(showTransports);
+        ignore = new CheckBox(SR.MS_IGNORE_LIST, cf.ignore); itemsList.addElement(ignore);
+        collapsedGroups = new CheckBox(SR.MS_COLLAPSED_GROUPS, cf.collapsedGroups); itemsList.addElement(collapsedGroups);
+        autoFocus = new CheckBox(SR.MS_AUTOFOCUS, cf.autoFocus); itemsList.addElement(autoFocus);
+        showResources = new CheckBox(SR.MS_SHOW_RESOURCES, cf.showResources); itemsList.addElement(showResources);
+        useBoldFont = new CheckBox(SR.MS_BOLD_FONT, cf.useBoldFont); itemsList.addElement(useBoldFont);
 //#ifdef SECONDSTRING
-//#         rosterStatus = new checkBox(SR.MS_SECOND_LINE, cf.rosterStatus); itemsList.addElement(rosterStatus);
+//#         rosterStatus = new CheckBox(SR.MS_SECOND_LINE, cf.rosterStatus); itemsList.addElement(rosterStatus);
 //#endif
 
-        itemsList.addElement(new boldString(SR.MS_AUTH_NEW));
-        subscr=new choiceBox();
+        itemsList.addElement(new BoldString(SR.MS_AUTH_NEW));
+        subscr=new ChoiceBox();
         subscr.append(SR.MS_SUBSCR_AUTO);
         subscr.append(SR.MS_SUBSCR_ASK);
         subscr.append(SR.MS_SUBSCR_DROP);
@@ -162,96 +162,96 @@ public class ConfigForm
         subscr.setSelectedIndex(cf.autoSubscribe);
         itemsList.addElement(subscr);
 
-        itemsList.addElement(new boldString(SR.MS_NOT_IN_LIST));
-        nil=new choiceBox();
+        itemsList.addElement(new BoldString(SR.MS_NOT_IN_LIST));
+        nil=new ChoiceBox();
         nil.append(SR.MS_NIL_DROP_MP);
         nil.append(SR.MS_NIL_DROP_P);
         nil.append(SR.MS_NIL_ALLOW_ALL);
         nil.setSelectedIndex((cf.notInListDropLevel>NotInListFilter.ALLOW_ALL)? NotInListFilter.ALLOW_ALL: cf.notInListDropLevel);
         itemsList.addElement(nil);
 
-        itemsList.addElement(new boldString(SR.MS_MESSAGES));
+        itemsList.addElement(new BoldString(SR.MS_MESSAGES));
 //#ifdef SMILES
-            smiles = new checkBox(SR.MS_SMILES, cf.smiles); itemsList.addElement(smiles);
+            smiles = new CheckBox(SR.MS_SMILES, cf.smiles); itemsList.addElement(smiles);
 //#endif
-            eventComposing = new checkBox(SR.MS_COMPOSING_EVENTS, cf.eventComposing); itemsList.addElement(eventComposing);
-            capsState = new checkBox(SR.MS_CAPS_STATE, cf.capsState); itemsList.addElement(capsState);
-            storeConfPresence = new checkBox(SR.MS_STORE_PRESENCE, cf.storeConfPresence); itemsList.addElement(storeConfPresence);
-            autoScroll = new checkBox(SR.MS_AUTOSCROLL, cf.autoScroll); itemsList.addElement(autoScroll);
-            useTabs = new checkBox(SR.MS_EMULATE_TABS, cf.useTabs); itemsList.addElement(useTabs);
+            eventComposing = new CheckBox(SR.MS_COMPOSING_EVENTS, cf.eventComposing); itemsList.addElement(eventComposing);
+            capsState = new CheckBox(SR.MS_CAPS_STATE, cf.capsState); itemsList.addElement(capsState);
+            storeConfPresence = new CheckBox(SR.MS_STORE_PRESENCE, cf.storeConfPresence); itemsList.addElement(storeConfPresence);
+            autoScroll = new CheckBox(SR.MS_AUTOSCROLL, cf.autoScroll); itemsList.addElement(autoScroll);
+            useTabs = new CheckBox(SR.MS_EMULATE_TABS, cf.useTabs); itemsList.addElement(useTabs);
 //#ifdef PEP
-//#             sndrcvmood = new checkBox(SR.MS_SEND_RECEIVE_USERMOODS, cf.sndrcvmood); itemsList.addElement(sndrcvmood);
+//#             sndrcvmood = new CheckBox(SR.MS_SEND_RECEIVE_USERMOODS, cf.sndrcvmood); itemsList.addElement(sndrcvmood);
 //#ifdef PEP_TUNE
-//#             rcvtune = new checkBox(SR.MS_RECEIVE_USERTUNE, cf.rcvtune); itemsList.addElement(rcvtune);
+//#             rcvtune = new CheckBox(SR.MS_RECEIVE_USERTUNE, cf.rcvtune); itemsList.addElement(rcvtune);
 //#endif
 //#endif
-            notifyWhenMessageType = new checkBox(SR.MS_RUNNING_MESSAGE, cf.notifyWhenMessageType); itemsList.addElement(notifyWhenMessageType);
+            notifyWhenMessageType = new CheckBox(SR.MS_RUNNING_MESSAGE, cf.notifyWhenMessageType); itemsList.addElement(notifyWhenMessageType);
 //#ifdef ANTISPAM
-//#             antispam = new checkBox(SR.MS_ANTISPAM_CONFERENCE, cf.antispam); itemsList.addElement(antispam);
+//#             antispam = new CheckBox(SR.MS_ANTISPAM_CONFERENCE, cf.antispam); itemsList.addElement(antispam);
 //#endif
 //#ifdef POPUPS
-            popUps = new checkBox(SR.MS_POPUPS, cf.popUps); itemsList.addElement(popUps);
+            popUps = new CheckBox(SR.MS_POPUPS, cf.popUps); itemsList.addElement(popUps);
 //#endif
-            showBalloons = new checkBox(SR.MS_SHOW_BALLONS, cf.showBalloons); itemsList.addElement(showBalloons);     
-            eventDelivery = new checkBox(SR.MS_DELIVERY, cf.eventDelivery); itemsList.addElement(eventDelivery);
+            showBalloons = new CheckBox(SR.MS_SHOW_BALLONS, cf.showBalloons); itemsList.addElement(showBalloons);     
+            eventDelivery = new CheckBox(SR.MS_DELIVERY, cf.eventDelivery); itemsList.addElement(eventDelivery);
 //#ifdef CLIPBOARD
-//#             useClipBoard = new checkBox(SR.MS_CLIPBOARD, cf.useClipBoard); itemsList.addElement(useClipBoard);
+//#             useClipBoard = new CheckBox(SR.MS_CLIPBOARD, cf.useClipBoard); itemsList.addElement(useClipBoard);
 //#endif
 
             
 //#if AUTODELETE
-//#         itemsList.addElement(new simpleString(SR.MS_MESSAGE_COUNT_LIMIT));
-//#         messageCountLimit=new numberInput(display, Integer.toString(cf.msglistLimit), 10, 1000);
+//#         itemsList.addElement(new SimpleString(SR.MS_MESSAGE_COUNT_LIMIT));
+//#         messageCountLimit=new NumberInput(display, Integer.toString(cf.msglistLimit), 10, 1000);
 //#         itemsList.addElement(messageCountLimit);
 //#endif
 
-        itemsList.addElement(new simpleString(SR.MS_MESSAGE_COLLAPSE_LIMIT));
-        messageLimit=new numberInput(display, Integer.toString(cf.messageLimit), 200, 1000);
+        itemsList.addElement(new SimpleString(SR.MS_MESSAGE_COLLAPSE_LIMIT));
+        messageLimit=new NumberInput(display, Integer.toString(cf.messageLimit), 200, 1000);
         itemsList.addElement(messageLimit);
         
-        itemsList.addElement(new boldString(SR.MS_STARTUP_ACTIONS));
-        autoLogin = new checkBox(SR.MS_AUTOLOGIN, cf.autoLogin); itemsList.addElement(autoLogin);
-        autoJoinConferences = new checkBox(SR.MS_AUTO_CONFERENCES, cf.autoJoinConferences); itemsList.addElement(autoJoinConferences);
+        itemsList.addElement(new BoldString(SR.MS_STARTUP_ACTIONS));
+        autoLogin = new CheckBox(SR.MS_AUTOLOGIN, cf.autoLogin); itemsList.addElement(autoLogin);
+        autoJoinConferences = new CheckBox(SR.MS_AUTO_CONFERENCES, cf.autoJoinConferences); itemsList.addElement(autoJoinConferences);
         
-        itemsList.addElement(new boldString(SR.MS_APPLICATION));
-        fullscreen = new checkBox(SR.MS_FULLSCREEN, cf.fullscreen); itemsList.addElement(fullscreen);
-        memMonitor = new checkBox(SR.MS_HEAP_MONITOR, cf.memMonitor); itemsList.addElement(memMonitor);
-        enableVersionOs = new checkBox(SR.MS_SHOW_HARDWARE, cf.enableVersionOs); itemsList.addElement(enableVersionOs);
-        queryExit = new checkBox(SR.MS_CONFIRM_EXIT, cf.queryExit); itemsList.addElement(queryExit);
+        itemsList.addElement(new BoldString(SR.MS_APPLICATION));
+        fullscreen = new CheckBox(SR.MS_FULLSCREEN, cf.fullscreen); itemsList.addElement(fullscreen);
+        memMonitor = new CheckBox(SR.MS_HEAP_MONITOR, cf.memMonitor); itemsList.addElement(memMonitor);
+        enableVersionOs = new CheckBox(SR.MS_SHOW_HARDWARE, cf.enableVersionOs); itemsList.addElement(enableVersionOs);
+        queryExit = new CheckBox(SR.MS_CONFIRM_EXIT, cf.queryExit); itemsList.addElement(queryExit);
 //#ifdef USER_KEYS
-//#         userKeys = new checkBox(SR.MS_CUSTOM_KEYS, cf.userKeys); itemsList.addElement(userKeys);
+//#         userKeys = new CheckBox(SR.MS_CUSTOM_KEYS, cf.userKeys); itemsList.addElement(userKeys);
 //#endif
 //#ifdef NEW_MENU
-        newMenu = new checkBox(SR.MS_NEW_MENU, cf.newMenu); itemsList.addElement(newMenu);
+        newMenu = new CheckBox(SR.MS_NEW_MENU, cf.newMenu); itemsList.addElement(newMenu);
 //#endif
-        lightState = new checkBox(SR.MS_FLASHLIGHT, cf.lightState); itemsList.addElement(lightState);
+        lightState = new CheckBox(SR.MS_FLASHLIGHT, cf.lightState); itemsList.addElement(lightState);
 //#ifdef IRC_LIKE
-//#         ircLikeStatus = new checkBox(SR.MS_IRCLIKESTATUS, cf.ircLikeStatus); itemsList.addElement(ircLikeStatus);
+//#         ircLikeStatus = new CheckBox(SR.MS_IRCLIKESTATUS, cf.ircLikeStatus); itemsList.addElement(ircLikeStatus);
 //#endif
         if (cf.allowMinimize) {
-            popupFromMinimized = new checkBox(SR.MS_ENABLE_POPUP, cf.popupFromMinimized);
+            popupFromMinimized = new CheckBox(SR.MS_ENABLE_POPUP, cf.popupFromMinimized);
             itemsList.addElement(popupFromMinimized);
         }
         
 
-        itemsList.addElement(new boldString(SR.MS_TIME_SETTINGS));
-        itemsList.addElement(new simpleString(SR.MS_GMT_OFFSET));
-	fieldGmt=new numberInput(display, Integer.toString(cf.gmtOffset), -12, 12); 
+        itemsList.addElement(new BoldString(SR.MS_TIME_SETTINGS));
+        itemsList.addElement(new SimpleString(SR.MS_GMT_OFFSET));
+	fieldGmt=new NumberInput(display, Integer.toString(cf.gmtOffset), -12, 12); 
         itemsList.addElement(fieldGmt);
         
-        itemsList.addElement(new simpleString(SR.MS_CLOCK_OFFSET));
-        fieldLoc=new numberInput(display, Integer.toString(cf.locOffset), -12, 12 );
+        itemsList.addElement(new SimpleString(SR.MS_CLOCK_OFFSET));
+        fieldLoc=new NumberInput(display, Integer.toString(cf.locOffset), -12, 12 );
         itemsList.addElement(fieldLoc);
 
-        itemsList.addElement(new boldString(SR.MS_TEXTWRAP));
-        textWrap=new choiceBox();
+        itemsList.addElement(new BoldString(SR.MS_TEXTWRAP));
+        textWrap=new ChoiceBox();
         textWrap.append(SR.MS_TEXTWRAP_CHARACTER);
         textWrap.append(SR.MS_TEXTWRAP_WORD);
 	textWrap.setSelectedIndex(cf.textWrap);
 	itemsList.addElement(textWrap);
         
-        itemsList.addElement(new boldString(SR.MS_LANGUAGE));
-        langFiles=new choiceBox();
+        itemsList.addElement(new BoldString(SR.MS_LANGUAGE));
+        langFiles=new ChoiceBox();
 	langs=new StringLoader().stringLoader("/lang/res.txt",3);
         
         String tempLang=cf.lang;
@@ -272,8 +272,7 @@ public class ConfigForm
         itemsList.addElement(langFiles);
 
 //#ifdef AUTOSTATUS
-//#         itemsList.addElement(new boldString(SR.MS_AWAY_TYPE));
-//#         autoAwayType=new choiceBox();
+//#         itemsList.addElement(new boldString(SR.MS_AWAY_TYBoldString        autoAwayType=new ChoiceBox();
 //#         autoAwayType.append(SR.MS_AWAY_OFF);
 //#         autoAwayType.append(SR.MS_AWAY_LOCK);
 //#         autoAwayType.append(SR.MS_MESSAGE_LOCK);
@@ -281,11 +280,11 @@ public class ConfigForm
 //#         autoAwayType.setSelectedIndex(cf.autoAwayType);
 //#         itemsList.addElement(autoAwayType);
 //#                 
-//#         itemsList.addElement(new simpleString(SR.MS_AWAY_PERIOD));
-//#         fieldAwayDelay=new numberInput(display, Integer.toString(cf.autoAwayDelay), 1, 60);
+//#         itemsList.addElement(new SimpleString(SR.MS_AWAY_PERIOD));
+//#         fieldAwayDelay=new NumberInput(display, Integer.toString(cf.autoAwayDelay), 1, 60);
 //#         itemsList.addElement(fieldAwayDelay);
 //# 
-//#         awayStatus=new checkBox(SR.MS_AUTOSTATUS_MESSAGE, cf.setAutoStatusMessage);
+//#         awayStatus=new CheckBox(SR.MS_AUTOSTATUS_MESSAGE, cf.setAutoStatusMessage);
 //#         itemsList.addElement(awayStatus);
 //#endif
         

@@ -31,19 +31,19 @@ import com.alsutton.jabber.JabberDataBlock;
 import locale.SR;
 import javax.microedition.lcdui.*;
 import com.alsutton.jabber.datablocks.Presence;
-import ui.controls.form.boldString;
-import ui.controls.form.checkBox;
-import ui.controls.form.defForm;
-import ui.controls.form.numberInput;
-import ui.controls.form.passwordInput;
-import ui.controls.form.textInput;
+import ui.controls.form.BoldString;
+import ui.controls.form.CheckBox;
+import ui.controls.form.DefForm;
+import ui.controls.form.NumberInput;
+import ui.controls.form.PasswordInput;
+import ui.controls.form.TextInput;
 
 /**
  *
  * @author EvgS
  */
 public class ConferenceForm
-    extends defForm {
+    extends DefForm {
     
     private Display display;
     private Displayable parentView;
@@ -54,13 +54,13 @@ public class ConferenceForm
     Command cmdAdd=new Command(SR.MS_ADD_BOOKMARK, Command.SCREEN, 5);
     Command cmdEdit=new Command(SR.MS_SAVE, Command.SCREEN, 6);
     
-    private textInput roomField;
-    private textInput hostField;
-    private textInput nickField;
-    private textInput nameField;
-    private passwordInput passField;
-    private numberInput msgLimitField;
-    private checkBox autoJoin;
+    private TextInput roomField;
+    private TextInput hostField;
+    private TextInput nickField;
+    private TextInput nameField;
+    private PasswordInput passField;
+    private NumberInput msgLimitField;
+    private CheckBox autoJoin;
     
     BookmarkItem editConf;
 
@@ -148,32 +148,32 @@ public class ConferenceForm
         this.display=display;
         parentView=display.getCurrent();
 
-        itemsList.addElement(new boldString(SR.MS_ROOM));
-        roomField=new textInput(display, room, null);//, 64, TextField.ANY);
+        itemsList.addElement(new BoldString(SR.MS_ROOM));
+        roomField=new TextInput(display, room, null);//, 64, TextField.ANY);
         itemsList.addElement(roomField);
         
-        itemsList.addElement(new boldString(SR.MS_AT_HOST));
-        hostField=new textInput(display, server, null);//, 64, TextField.ANY, "muc-host", display);
+        itemsList.addElement(new BoldString(SR.MS_AT_HOST));
+        hostField=new TextInput(display, server, "muc-host");//, 64, TextField.ANY, "muc-host", display);
         itemsList.addElement(hostField);
         
         if (nick==null) nick=sd.account.getNickName();
-        itemsList.addElement(new boldString(SR.MS_NICKNAME));
-        nickField=new textInput(display, nick, null);//, 32, TextField.ANY, "roomnick", display);
+        itemsList.addElement(new BoldString(SR.MS_NICKNAME));
+        nickField=new TextInput(display, nick, "roomnick");//, 32, TextField.ANY, "roomnick", display);
         itemsList.addElement(nickField);
         
-        itemsList.addElement(new boldString(SR.MS_MSG_LIMIT));
-        msgLimitField=new numberInput(display, Integer.toString(cf.confMessageCount), 0, 100);
+        itemsList.addElement(new BoldString(SR.MS_MSG_LIMIT));
+        msgLimitField=new NumberInput(display, Integer.toString(cf.confMessageCount), 0, 100);
         itemsList.addElement(msgLimitField);
         
-        itemsList.addElement(new boldString(SR.MS_DESCRIPTION));
-        nameField=new textInput(display, name, null);//, 128, TextField.ANY);
+        itemsList.addElement(new BoldString(SR.MS_DESCRIPTION));
+        nameField=new TextInput(display, name, null);//, 128, TextField.ANY);
         itemsList.addElement(nameField);
         
-        itemsList.addElement(new boldString(SR.MS_PASSWORD));
-        passField=new passwordInput(display, password);//, 32, TextField.ANY | TextField.SENSITIVE );
+        itemsList.addElement(new BoldString(SR.MS_PASSWORD));
+        passField=new PasswordInput(display, password);//, 32, TextField.ANY | TextField.SENSITIVE );
         itemsList.addElement(passField);
 
-        autoJoin=new checkBox(SR.MS_AUTOLOGIN, autojoin);
+        autoJoin=new CheckBox(SR.MS_AUTOLOGIN, autojoin);
         itemsList.addElement(autoJoin);
         
         addCommand(cmdJoin);

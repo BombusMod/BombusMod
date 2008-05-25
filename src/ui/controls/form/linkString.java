@@ -1,5 +1,5 @@
 /*
- * linkString.java
+ * LinkString.java
  *
  * Created on 25.05.2008, 13:24
  *
@@ -33,11 +33,11 @@ import javax.microedition.lcdui.Graphics;
  *
  * @author ad
  */
-public abstract class linkString 
-        extends simpleString {
+public abstract class LinkString 
+        extends SimpleString {
     
     /** Creates a new instance of NewClass */
-    public linkString(String text) {
+    public LinkString(String text) {
         super(text);
     }
     

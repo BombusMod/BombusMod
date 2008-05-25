@@ -1,5 +1,5 @@
 /*
- * listItem.java
+ * ListItem.java
  *
  * Created on 25.05.2008, 16:38
  *
@@ -33,13 +33,15 @@ import ui.IconTextElement;
  *
  * @author ad
  */
-public class listItem 
+public class ListItem 
         extends IconTextElement {
 
     private String text;
     
-    /** Creates a new instance of listItem */
-    public listItem(String text) {
+    /**
+     * Creates a new instance of ListItem
+     */
+    public ListItem(String text) {
         super(null);
         this.text=text;
     }

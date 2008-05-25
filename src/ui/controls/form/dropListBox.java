@@ -1,5 +1,5 @@
 /*
- * dropListBox.java
+ * DropListBox.java
  *
  * Created on 22 Май 2008 г., 16:37
  *
@@ -23,7 +23,7 @@ import ui.VirtualList;
  *
  * @author ad
  */
-public class dropListBox 
+public class DropListBox 
         extends VirtualList 
         implements CommandListener {
     
@@ -32,9 +32,9 @@ public class dropListBox
 
     private Vector listItems;
 
-    private dropChoiceBox cb;
+    private DropChoiceBox cb;
 
-    public dropListBox(Display display, Vector listItems, dropChoiceBox cb) {
+    public DropListBox(Display display, Vector listItems, DropChoiceBox cb) {
         super(display);
         this.listItems=listItems;
         this.cb=cb;
@@ -61,7 +61,7 @@ public class dropListBox
     }
 
     public VirtualElement getItemRef(int index){ 
-        return new listItem((String) listItems.elementAt(index)); 
+        return new ListItem((String) listItems.elementAt(index)); 
     }
     public int getItemCount() { return listItems.size(); }
 }

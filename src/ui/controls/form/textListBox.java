@@ -1,5 +1,5 @@
 /*
- * textListBox.java
+ * TextListBox.java
  *
  * Created on 25 Май 2008 г., 16:58
  *
@@ -52,7 +52,7 @@ import locale.SR;
  *
  * @author ad
  */
-public class textListBox 
+public class TextListBox 
         extends VirtualList 
         implements CommandListener {
     
@@ -61,9 +61,9 @@ public class textListBox
 
     private Vector recentList;
 
-    private editBox ti;
+    private EditBox ti;
 
-    public textListBox(Display display, editBox ti) {
+    public TextListBox(Display display, EditBox ti) {
         super(display);
         this.ti=ti;
         this.recentList=ti.recentList;
@@ -88,7 +88,7 @@ public class textListBox
     }
 
     public VirtualElement getItemRef(int index){ 
-        return new listItem((String) recentList.elementAt(index)); 
+        return new ListItem((String) recentList.elementAt(index)); 
     }
     public int getItemCount() { return recentList.size(); }
 }

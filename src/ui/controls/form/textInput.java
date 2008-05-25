@@ -1,5 +1,5 @@
 /*
- * textInput.java
+ * TextInput.java
  *
  * Created on 19.05.2008, 23:01
  *
@@ -53,7 +53,7 @@ import ui.IconTextElement;
  *
  * @author ad
  */
-public class textInput 
+public class TextInput 
         extends IconTextElement {
 
     private String text="";
@@ -66,8 +66,10 @@ public class textInput
     
     ColorTheme ct;
     
-    /** Creates a new instance of textInput */
-    public textInput(Display display, String text, String id) {
+    /**
+     * Creates a new instance of TextInput
+     */
+    public TextInput(Display display, String text, String id) {
         super(null);
         this.display=display;
         this.text=(text==null)?"":text;
@@ -80,7 +82,7 @@ public class textInput
     public String toString() { return (text==null)?"":text; }
     
     public void onSelect(){
-        new editBox(display, text, this);
+        new EditBox(display, text, this);
     }
     
     public String getValue() { return (text==null)?"":text; }

@@ -1,5 +1,5 @@
 /*
- * numberInput.java
+ * NumberInput.java
  *
  * Created on 20.05.2008, 16:20
  *
@@ -33,14 +33,16 @@ import javax.microedition.lcdui.Display;
  *
  * @author ad
  */
-public class numberInput
-    extends textInput {
+public class NumberInput
+    extends TextInput {
 
     private int max;
     private int min;
     private String initValue;  
-    /** Creates a new instance of numberInput */
-    public numberInput(Display display, String text, int min, int max) {
+    /**
+     * Creates a new instance of NumberInput
+     */
+    public NumberInput(Display display, String text, int min, int max) {
         super(display, text, null);
         this.min=min;
         this.max=max;

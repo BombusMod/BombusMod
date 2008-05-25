@@ -31,11 +31,11 @@ import javax.microedition.lcdui.*;
 import locale.SR;
 import ui.*;
 import ui.MainBar;
-import ui.controls.form.boldString;
-import ui.controls.form.checkBox;
-import ui.controls.form.defForm;
-import ui.controls.form.numberInput;
-import ui.controls.form.textInput;
+import ui.controls.form.BoldString;
+import ui.controls.form.CheckBox;
+import ui.controls.form.DefForm;
+import ui.controls.form.NumberInput;
+import ui.controls.form.TextInput;
 
 /**
  *
@@ -128,18 +128,18 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
     }
 
     class StatusForm 
-        extends defForm {
+        extends DefForm {
         
         private Display display;
         public Displayable parentView;
 
-        private numberInput tfPriority;
-        private textInput tfMessage;
-        private textInput tfAutoRespondMessage;
+        private NumberInput tfPriority;
+        private TextInput tfMessage;
+        private TextInput tfAutoRespondMessage;
         
         private ExtendedStatus status;
 
-        private checkBox autoRespond;
+        private CheckBox autoRespond;
         
         public StatusForm(Display display, ExtendedStatus status){
             super(display, status.getScreenName());
@@ -147,20 +147,20 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
             parentView=display.getCurrent();
             this.status=status;
             
-            itemsList.addElement(new boldString(SR.MS_MESSAGE));
-            tfMessage = new textInput(display, status.getMessage(), "ex_status_list"); //, 100, TextField.ANY "ex_status_list"
+            itemsList.addElement(new BoldString(SR.MS_MESSAGE));
+            tfMessage = new TextInput(display, status.getMessage(), "ex_status_list"); //, 100, TextField.ANY "ex_status_list"
             itemsList.addElement(tfMessage);
             
-            itemsList.addElement(new boldString(SR.MS_PRIORITY));
-            tfPriority = new numberInput(display, Integer.toString(status.getPriority()), -128, 128); //, 100, TextField.ANY "ex_status_list"
+            itemsList.addElement(new BoldString(SR.MS_PRIORITY));
+            tfPriority = new NumberInput(display, Integer.toString(status.getPriority()), -128, 128); //, 100, TextField.ANY "ex_status_list"
             itemsList.addElement(tfPriority);
 
             if (status.getImageIndex()<5) {
-                itemsList.addElement(new boldString(SR.MS_AUTORESPOND));
-                tfAutoRespondMessage=new textInput(display, status.getAutoRespondMessage(), "autorespond");//, 100, 0
+                itemsList.addElement(new BoldString(SR.MS_AUTORESPOND));
+                tfAutoRespondMessage=new TextInput(display, status.getAutoRespondMessage(), "autorespond");//, 100, 0
                 itemsList.addElement(tfAutoRespondMessage);
 
-                autoRespond = new checkBox(SR.MS_SET, status.getAutoRespond()); itemsList.addElement(autoRespond);
+                autoRespond = new CheckBox(SR.MS_SET, status.getAutoRespond()); itemsList.addElement(autoRespond);
             }
 
             moveCursorTo(getNextSelectableRef(-1));

@@ -1,5 +1,5 @@
 /*
- * dropChoiceBox.java
+ * DropChoiceBox.java
  *
  * Created on 25 Май 2008 г., 16:51
  *
@@ -33,18 +33,20 @@ import javax.microedition.lcdui.Display;
  *
  * @author ad
  */
-public class dropChoiceBox extends choiceBox {
+public class DropChoiceBox extends ChoiceBox {
 
     private Display display;
     
-    /** Creates a new instance of dropChoiceBox */
-    public dropChoiceBox(Display display) {
+    /**
+     * Creates a new instance of DropChoiceBox
+     */
+    public DropChoiceBox(Display display) {
         super();
         this.display=display;
     }
     
     public void onSelect(){
         if (items.size()<1) return;
-        new dropListBox(display, items, this);
+        new DropListBox(display, items, this);
     }
 }

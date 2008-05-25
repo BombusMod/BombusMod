@@ -1,7 +1,7 @@
 /*
- * SpacerItem.java
+ * MultiLine.java
  *
- * Created on 19 Май 2008 г., 23:41
+ * Created on 25.05.2008, 18:37
  *
  * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
  *
@@ -27,34 +27,61 @@
 
 package ui.controls.form;
 
-import Colors.ColorTheme;
+import Fonts.FontCache;
+import java.util.Vector;
+import javax.microedition.lcdui.Graphics;
 import ui.IconTextElement;
+import util.strconv;
 
 /**
  *
  * @author ad
  */
-public class SpacerItem 
-        extends IconTextElement {
+public class MultiLine extends IconTextElement {
     
-    private static int itemHeight=4;
+    private Vector lines=null;
+
+    private String text;
     
-    private boolean selectable=false;
+    public boolean selectable;
     
     /**
-     * Creates a new instance of SpacerItem
+     * Creates a new instance of MultiLine
      */
-    public SpacerItem(int height) {
+    public MultiLine(String text) {
         super(null);
-        if (height!=0)
-            itemHeight=height;
+        this.text=text;
     }
 
     protected int getImageIndex() { return -1; }
     
-    public String toString() { return " "; }
+    public int getVHeight(){ return (lines==null)?1:getFont().getHeight()*lines.size(); }
     
-    public int getVHeight(){ return itemHeight; }
+    public void drawItem(Graphics g, int ofs, boolean sel) {
+        int width=g.getClipWidth();
 
+        if (lines==null && width!=0) {
+            lines=strconv.parseMessage(text, width-4, -1, false, getFont());
+        }
+        if (lines!=null)
+            drawAllStrings(g, 2, 0);
+
+        super.drawItem(g, ofs, sel);
+    }
+    
+    private void drawAllStrings(Graphics g, int x, int y) {
+        if (lines.size()<1)
+            return;
+
+        int fh=getFont().getHeight();
+
+	for (int line=0; line<lines.size(); ){
+            g.drawString((String) lines.elementAt(line), x, y, Graphics.TOP|Graphics.LEFT);
+            line=line+1;
+            y += fh;
+	}
+    }
+    
     public boolean isSelectable() { return selectable; }
+    
 }

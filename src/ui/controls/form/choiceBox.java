@@ -1,5 +1,5 @@
 /*
- * choiceBox.java
+ * ChoiceBox.java
  *
  * Created on 20.05.2008, 9:06
  *
@@ -38,7 +38,7 @@ import ui.IconTextElement;
  *
  * @author ad
  */
-public class choiceBox 
+public class ChoiceBox 
         extends IconTextElement {
     
     private int index=0;
@@ -49,8 +49,10 @@ public class choiceBox
     
     ColorTheme ct;
     
-    /** Creates a new instance of choiceBox */
-    public choiceBox() {
+    /**
+     * Creates a new instance of ChoiceBox
+     */
+    public ChoiceBox() {
         super(RosterIcons.getInstance());
         ct=ColorTheme.getInstance();
     }

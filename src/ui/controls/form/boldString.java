@@ -1,5 +1,5 @@
 /*
- * boldString.java
+ * BoldString.java
  *
  * Created on 19.05.2008, 22:55
  *
@@ -36,11 +36,13 @@ import ui.IconTextElement;
  *
  * @author ad
  */
-public class boldString 
-        extends simpleString {
+public class BoldString 
+        extends SimpleString {
     
-    /** Creates a new instance of boldString */
-    public boldString(String text) {
+    /**
+     * Creates a new instance of BoldString
+     */
+    public BoldString(String text) {
         super(text);
     }
     

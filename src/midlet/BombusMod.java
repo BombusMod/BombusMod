@@ -44,7 +44,7 @@ import ui.*;
 import Client.*;
 import Info.Version;
 //#ifdef TEST_NEW_FORM
-//# import ui.controls.form.testForm;
+//# import ui.controls.form.TestForm;
 //#endif
 
 /** Entry point class
@@ -110,7 +110,7 @@ public class BombusMod extends MIDlet implements Runnable{
         
 //#ifdef TEST_NEW_FORM
 //#         if (true) {
-//#             new testForm(display);
+//#             new TestForm(display);
 //#             return;
 //#         }
 //#endif

@@ -32,18 +32,18 @@ import java.util.Vector;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
-import ui.controls.form.boldString;
-import ui.controls.form.choiceBox;
-import ui.controls.form.defForm;
-import ui.controls.form.numberInput;
-import ui.controls.form.simpleString;
+import ui.controls.form.BoldString;
+import ui.controls.form.ChoiceBox;
+import ui.controls.form.DefForm;
+import ui.controls.form.NumberInput;
+import ui.controls.form.SimpleString;
 
 /**
  *
  * @author ad
  */
 public class AutoTaskForm
-    extends defForm {
+    extends DefForm {
     
     private Display display;
     private Displayable parentView;
@@ -52,13 +52,13 @@ public class AutoTaskForm
     int min  =0;
     int wait =1;
 
-    private choiceBox taskType;
-    private choiceBox actionType;
+    private ChoiceBox taskType;
+    private ChoiceBox actionType;
 
-    private numberInput autoTaskDelay;
+    private NumberInput autoTaskDelay;
 
-    private numberInput autoTaskMin;
-    private numberInput autoTaskHour;
+    private NumberInput autoTaskMin;
+    private NumberInput autoTaskHour;
     
 //#if AUTOTASK
 //#     private AutoTask at=StaticData.getInstance().autoTask;
@@ -126,16 +126,16 @@ public class AutoTaskForm
 //#     public void update(){
 //#         itemsList=new Vector();
 //#         
-//#         itemsList.addElement(new boldString(SR.MS_AUTOTASK_TYPE));
-//#         taskType=new choiceBox();
+//#         itemsList.addElement(new BoldString(SR.MS_AUTOTASK_TYPE));
+//#         taskType=new ChoiceBox();
 //#         taskType.append(SR.MS_DISABLED);
 //#         taskType.append(SR.MS_BY_TIME_);
 //#         taskType.append(SR.MS_BY_TIMER_);
 //#         taskType.setSelectedIndex(typeIndex);
 //#         itemsList.addElement(taskType);
 //#         
-//#         itemsList.addElement(new boldString(SR.MS_AUTOTASK_ACTION_TYPE));
-//#         actionType=new choiceBox();
+//#         itemsList.addElement(new BoldString(SR.MS_AUTOTASK_ACTION_TYPE));
+//#         actionType=new ChoiceBox();
 //#         actionType.append(SR.MS_AUTOTASK_QUIT_BOMBUSMOD);
 //#         actionType.append(SR.MS_AUTOTASK_QUIT_CONFERENCES);
 //#         actionType.append(SR.MS_AUTOTASK_LOGOFF);
@@ -144,18 +144,18 @@ public class AutoTaskForm
 //#         itemsList.addElement(actionType);
 //#         
 //#         if (typeIndex==1) {
-//#             itemsList.addElement(new boldString(SR.MS_AUTOTASK_TIME));
+//#             itemsList.addElement(new BoldString(SR.MS_AUTOTASK_TIME));
 //#             
-//#             itemsList.addElement(new simpleString(SR.MS_AUTOTASK_HOUR));
-//#             autoTaskHour=new numberInput(display, Integer.toString(hour), 0, 23);
+//#             itemsList.addElement(new SimpleString(SR.MS_AUTOTASK_HOUR));
+//#             autoTaskHour=new NumberInput(display, Integer.toString(hour), 0, 23);
 //#             itemsList.addElement(autoTaskHour);
 //#             
-//#             itemsList.addElement(new simpleString(SR.MS_AUTOTASK_MIN));
-//#             autoTaskMin=new numberInput(display, Integer.toString(min), 0, 59);
+//#             itemsList.addElement(new SimpleString(SR.MS_AUTOTASK_MIN));
+//#             autoTaskMin=new NumberInput(display, Integer.toString(min), 0, 59);
 //#             itemsList.addElement(autoTaskMin);
 //#          } else if (typeIndex==2) {
-//#             itemsList.addElement(new boldString(SR.MS_AUTOTASK_DELAY));
-//#             autoTaskDelay=new numberInput(display, Integer.toString(wait), 1, 600);
+//#             itemsList.addElement(new BoldString(SR.MS_AUTOTASK_DELAY));
+//#             autoTaskDelay=new NumberInput(display, Integer.toString(wait), 1, 600);
 //#             itemsList.addElement(autoTaskDelay);
 //#         }
 //#     }

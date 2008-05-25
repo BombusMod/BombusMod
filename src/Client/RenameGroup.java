@@ -32,9 +32,9 @@ import com.alsutton.jabber.datablocks.Iq;
 import java.util.Enumeration;
 import javax.microedition.lcdui.Display;
 import locale.SR;
-import ui.controls.form.defForm;
-import ui.controls.form.spacerItem;
-import ui.controls.form.textInput;
+import ui.controls.form.DefForm;
+import ui.controls.form.SpacerItem;
+import ui.controls.form.TextInput;
 import xmpp.extensions.IqQueryRoster;
 
 /**
@@ -42,14 +42,14 @@ import xmpp.extensions.IqQueryRoster;
  * @author ad
  */
 public class RenameGroup 
-        extends defForm {
+        extends DefForm {
     
     private Display display;
     private Group group;
     private Contact contact;
     StaticData sd=StaticData.getInstance();
     
-    private textInput groupName;
+    private TextInput groupName;
     
     /** Creates a new instance of newRenameGroup */
     public RenameGroup(Display display, Group group, Contact contact) {
@@ -58,10 +58,10 @@ public class RenameGroup
         this.group=group;
         this.display=display;
         
-        groupName = new textInput(display, (contact==null)?group.getName():contact.getGroup().getName(), null); // 32, TextField.ANY
+        groupName = new TextInput(display, (contact==null)?group.getName():contact.getGroup().getName(), "groups"); // 32, TextField.ANY
         itemsList.addElement(groupName);
         
-        itemsList.addElement(new spacerItem(0));
+        itemsList.addElement(new SpacerItem(0));
         
         moveCursorTo(getNextSelectableRef(-1));
         attachDisplay(display);

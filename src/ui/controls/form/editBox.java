@@ -1,5 +1,5 @@
 /*
- * editBox.java
+ * EditBox.java
  *
  * Created on 25 Май 2008 г., 17:20
  *
@@ -47,10 +47,10 @@ import util.ClipBoard;
  *
  * @author ad
  */
-public class editBox implements CommandListener {
+public class EditBox implements CommandListener {
     private Display display;
     private TextBox t;
-    private textInput ti;
+    private TextInput ti;
 
     private Command cmdOk=new Command(SR.MS_OK, Command.OK,1);
     private Command cmdRecent=new Command(SR.MS_RECENT, Command.SCREEN, 2);
@@ -64,7 +64,7 @@ public class editBox implements CommandListener {
 //#     private ClipBoard clipboard;
 //#     private Command cmdPasteText=new Command(SR.MS_PASTE, Command.SCREEN, 10);  
 //#endif
-    public editBox(Display display, String text, textInput ti) {
+    public EditBox(Display display, String text, TextInput ti) {
         this.display=display;
         parentView=display.getCurrent();
         this.ti=ti;
@@ -93,24 +93,28 @@ public class editBox implements CommandListener {
         String text=t.getString();
         if (text.length()==0) text=null;
         if (c==cmdRecent) {
-            new textListBox(display, this);
+            new TextListBox(display, this);
             return;
         }
 //#ifdef CLIPBOARD
-//#         if (c==cmdPasteText) {t.insert(clipboard.getClipBoard(), getCaretPos()); return; }
+//#         if (c==cmdPasteText) {
+//#             t.insert(clipboard.getClipBoard(), getCaretPos()); 
+//#             return;
+//#         }
 //#endif
         if (c==cmdOk) {
             ti.setValue(text);
+            if (ti.id!=null) {
+                if (text.length()==0) return;
 
-            if (text.length()==0) return;
-
-            int i=0;
-            while (i<recentList.size()) {
-                if ( text.equals((String)recentList.elementAt(i)) || i>9 ) recentList.removeElementAt(i);
-                else i++;
-            }
-            recentList.insertElementAt(text, 0);
-            saveRecentList();
+                int i=0;
+                while (i<recentList.size()) {
+                    if ( text.equals((String)recentList.elementAt(i)) || i>9 ) recentList.removeElementAt(i);
+                    else i++;
+                }
+                recentList.insertElementAt(text, 0);
+                saveRecentList();
+           }
         }
 
         display.setCurrent(parentView);

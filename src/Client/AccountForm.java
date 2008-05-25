@@ -31,48 +31,48 @@ import javax.microedition.lcdui.Display;
 import locale.SR;
 import ui.SplashScreen;
 import ui.controls.AlertBox;
-import ui.controls.form.boldString;
-import ui.controls.form.checkBox;
-import ui.controls.form.choiceBox;
-import ui.controls.form.defForm;
-import ui.controls.form.numberInput;
-import ui.controls.form.passwordInput;
-import ui.controls.form.spacerItem;
-import ui.controls.form.textInput;
+import ui.controls.form.BoldString;
+import ui.controls.form.CheckBox;
+import ui.controls.form.ChoiceBox;
+import ui.controls.form.DefForm;
+import ui.controls.form.NumberInput;
+import ui.controls.form.PasswordInput;
+import ui.controls.form.SpacerItem;
+import ui.controls.form.TextInput;
 
 /**
  *
  * @author ad
  */
 public class AccountForm 
-        extends defForm {
+        extends DefForm {
 
     private final AccountSelect accountSelect;
 
-    private textInput userbox;
-    private passwordInput passbox;
-    private textInput servbox;
-    private textInput ipbox;
-    private numberInput portbox;
-    private textInput resourcebox;
-    private textInput nickbox;
-    private checkBox sslbox;
-    private checkBox plainPwdbox;
-    private checkBox noComprbox;
-    private checkBox confOnlybox;
+    private TextInput userbox;
+    private PasswordInput passbox;
+    private TextInput servbox;
+    private TextInput ipbox;
+    private NumberInput portbox;
+    private TextInput resourcebox;
+    private TextInput nickbox;
+    private CheckBox sslbox;
+    private CheckBox plainPwdbox;
+    private CheckBox noComprbox;
+    private CheckBox confOnlybox;
 //#if HTTPCONNECT
-//#       private checkBox proxybox;
+//#       private CheckBox proxybox;
 //#elif HTTPPOLL        
-//#       private checkBox pollingbox;
+//#       private CheckBox pollingbox;
 //#endif
-    private checkBox registerbox;
+    private CheckBox registerbox;
 	
-    private numberInput keepAlive;
-    private choiceBox keepAliveType;
+    private NumberInput keepAlive;
+    private ChoiceBox keepAliveType;
     
 //#if HTTPPOLL || HTTPCONNECT  
-//#     private textInput proxyHost;
-//#     private textInput proxyPort;
+//#     private TextInput proxyHost;
+//#     private TextInput proxyPort;
 //#endif
 
     Account account;
@@ -92,39 +92,39 @@ public class AccountForm
 	String mainbar = (newaccount)?SR.MS_NEW_ACCOUNT:(account.toString());
         getMainBarItem().setElementAt(mainbar, 0);
         
-        itemsList.addElement(new boldString(SR.MS_USERNAME));
-        userbox = new textInput(display, account.getUserName(), null); //, 64, TextField.ANY
+        itemsList.addElement(new BoldString(SR.MS_USERNAME));
+        userbox = new TextInput(display, account.getUserName(), null); //, 64, TextField.ANY
         itemsList.addElement(userbox);
     
-        itemsList.addElement(new boldString(SR.MS_PASSWORD));
-	passbox = new passwordInput(display, account.getPassword());//, 64, TextField.PASSWORD
+        itemsList.addElement(new BoldString(SR.MS_PASSWORD));
+	passbox = new PasswordInput(display, account.getPassword());//, 64, TextField.PASSWORD
         itemsList.addElement(passbox);
         
-        itemsList.addElement(new boldString(SR.MS_SERVER));
-        servbox = new textInput(display, account.getServer(), null);//, 64, TextField.ANY
+        itemsList.addElement(new BoldString(SR.MS_SERVER));
+        servbox = new TextInput(display, account.getServer(), null);//, 64, TextField.ANY
         itemsList.addElement(servbox);
         
-        itemsList.addElement(new boldString(SR.MS_HOST_IP));
-	ipbox = new textInput(display, account.getHostAddr(), null);//, 64, TextField.ANY
+        itemsList.addElement(new BoldString(SR.MS_HOST_IP));
+	ipbox = new TextInput(display, account.getHostAddr(), null);//, 64, TextField.ANY
         itemsList.addElement(ipbox);
         
-        itemsList.addElement(new boldString(SR.MS_PORT));
-        portbox = new numberInput(display, Integer.toString(account.getPort()), 0, 65535);//, 0, 65535
+        itemsList.addElement(new BoldString(SR.MS_PORT));
+        portbox = new NumberInput(display, Integer.toString(account.getPort()), 0, 65535);//, 0, 65535
         itemsList.addElement(portbox);
         
-        sslbox = new checkBox(SR.MS_SSL, account.getUseSSL()); itemsList.addElement(sslbox);
-        plainPwdbox = new checkBox(SR.MS_PLAIN_PWD, account.getPlainAuth()); itemsList.addElement(plainPwdbox);
-        noComprbox = new checkBox(SR.MS_NO_COMPRESSION, !account.useCompression()); itemsList.addElement(noComprbox);
-        confOnlybox = new checkBox(SR.MS_CONFERENCES_ONLY, account.isMucOnly()); itemsList.addElement(confOnlybox);
+        sslbox = new CheckBox(SR.MS_SSL, account.getUseSSL()); itemsList.addElement(sslbox);
+        plainPwdbox = new CheckBox(SR.MS_PLAIN_PWD, account.getPlainAuth()); itemsList.addElement(plainPwdbox);
+        noComprbox = new CheckBox(SR.MS_NO_COMPRESSION, !account.useCompression()); itemsList.addElement(noComprbox);
+        confOnlybox = new CheckBox(SR.MS_CONFERENCES_ONLY, account.isMucOnly()); itemsList.addElement(confOnlybox);
 //#if HTTPCONNECT
-//#        proxybox = new checkBox("proxybox", SR.MS_PROXY_ENABLE, account.isEnableProxy()); itemsList.addElement(proxybox);
+//#        proxybox = new CheckBox("proxybox", SR.MS_PROXY_ENABLE, account.isEnableProxy()); itemsList.addElement(proxybox);
 //#elif HTTPPOLL        
-//#        pollingbox = new checkBox("pollingbox", "HTTP Polling", false); itemsList.addElement(pollingbox);
+//#        pollingbox = new CheckBox("pollingbox", "HTTP Polling", false); itemsList.addElement(pollingbox);
 //#endif
-        registerbox = new checkBox(SR.MS_REGISTER_ACCOUNT, false); itemsList.addElement(registerbox);
+        registerbox = new CheckBox(SR.MS_REGISTER_ACCOUNT, false); itemsList.addElement(registerbox);
         
-        itemsList.addElement(new boldString(SR.MS_KEEPALIVE));
-        keepAliveType=new choiceBox();
+        itemsList.addElement(new BoldString(SR.MS_KEEPALIVE));
+        keepAliveType=new ChoiceBox();
         keepAliveType.append("by socket");
         keepAliveType.append("1 byte");
         keepAliveType.append("<iq/>");
@@ -132,38 +132,38 @@ public class AccountForm
         keepAliveType.setSelectedIndex(account.keepAliveType);
         itemsList.addElement(keepAliveType);
 
-        itemsList.addElement(new boldString(SR.MS_KEEPALIVE_PERIOD));
-        keepAlive = new numberInput(display, Integer.toString(account.keepAlivePeriod), 10, 2048);//10, 2096
+        itemsList.addElement(new BoldString(SR.MS_KEEPALIVE_PERIOD));
+        keepAlive = new NumberInput(display, Integer.toString(account.keepAlivePeriod), 10, 2048);//10, 2096
         itemsList.addElement(keepAlive);
 
 //#if HTTPPOLL || HTTPCONNECT  
-//#     private textInput proxyHost;
-//#     private textInput proxyPort;
+//#     private TextInput proxyHost;
+//#     private TextInput proxyPort;
 //#endif
         
-        itemsList.addElement(new boldString(SR.MS_RESOURCE));
-        resourcebox = new textInput(display, account.getResource(), null);//64, TextField.ANY
+        itemsList.addElement(new BoldString(SR.MS_RESOURCE));
+        resourcebox = new TextInput(display, account.getResource(), null);//64, TextField.ANY
         itemsList.addElement(resourcebox);
         
-        itemsList.addElement(new boldString(SR.MS_NICKNAME));
-        nickbox = new textInput(display, account.getNick(), null);//64, TextField.ANY
+        itemsList.addElement(new BoldString(SR.MS_NICKNAME));
+        nickbox = new TextInput(display, account.getNick(), null);//64, TextField.ANY
         itemsList.addElement(nickbox);
 
 //#if HTTPCONNECT
-//# 	itemsList.addElement(new boldString(SR.MS_PROXY_HOST);
-//# 	proxyHost = new textInput(display, "proxyHost", account.getProxyHostAddr());//32, TextField.URL
+//# 	itemsList.addElement(new BoldString(SR.MS_PROXY_HOST);
+//# 	proxyHost = new TextInput(display, "proxyHost", account.getProxyHostAddr());//32, TextField.URL
 //# 	itemsList.addElement(proxyHost);
 //#
-//# 	itemsList.addElement(new boldString(SR.MS_PROXY_PORT);
-//# 	proxyPort = new textInput(display, "proxyPort", Integer.toString(account.getProxyPort()));//0, 65535
+//# 	itemsList.addElement(new BoldString(SR.MS_PROXY_PORT);
+//# 	proxyPort = new TextInput(display, "proxyPort", Integer.toString(account.getProxyPort()));//0, 65535
 //# 	itemsList.addElement(proxyPort);
 //#elif HTTPPOLL        
-//# 	itemsList.addElement(new boldString(SR.MS_PROXY_HOST);
-//# 	proxyHost = new textInput(display, "proxyHost", account.getProxyHostAddr());//32, TextField.URL
+//# 	itemsList.addElement(new BoldString(SR.MS_PROXY_HOST);
+//# 	proxyHost = new TextInput(display, "proxyHost", account.getProxyHostAddr());//32, TextField.URL
 //# 	itemsList.addElement(proxyHost);
 //#endif
 
-        itemsList.addElement(new spacerItem(0));
+        itemsList.addElement(new SpacerItem(0));
         
         moveCursorTo(getNextSelectableRef(-1));
         attachDisplay(display);

@@ -1,5 +1,5 @@
 /*
- * checkBox.java
+ * CheckBox.java
  *
  * Created on 19.05.2008, 22:16
  *
@@ -36,7 +36,7 @@ import ui.IconTextElement;
  *
  * @author ad
  */
-public class checkBox 
+public class CheckBox 
         extends IconTextElement {
     
     private boolean state=false;
@@ -46,8 +46,10 @@ public class checkBox
     
     ColorTheme ct;
     
-    /** Creates a new instance of checkBox */
-    public checkBox(String text, boolean state) {
+    /**
+     * Creates a new instance of CheckBox
+     */
+    public CheckBox(String text, boolean state) {
         super(null);
         this.text=text;
         this.state=state;
