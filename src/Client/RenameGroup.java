@@ -61,7 +61,7 @@ public class RenameGroup
         groupName = new textInput(display, (contact==null)?group.getName():contact.getGroup().getName()); // 32, TextField.ANY
         itemsList.addElement(groupName);
         
-        itemsList.addElement(new spacerItem());
+        itemsList.addElement(new spacerItem(0));
         
         moveCursorTo(getNextSelectableRef(-1));
         attachDisplay(display);

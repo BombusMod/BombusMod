@@ -57,15 +57,13 @@ blue 0x0000ff
 	if (instance==null) {
 	    instance=new ColorTheme();
             init();
-//#ifdef COLOR_TUNE
-//# 	    loadFromStorage();
-//#endif
+	    loadFromStorage();
 	}
 	return instance;
     }
     public static Vector colorsContainer;
     
-    private static void init() {
+    public static void init() {
         colorsContainer=new Vector();
         
         colorsContainer.addElement(new ColorItem("BALLOON_INK", 0x4866ad));
@@ -154,6 +152,7 @@ blue 0x0000ff
             ColorItem c=(ColorItem)r.nextElement();
             c.setColor(0xFFFFFF-c.getValue());
         }
+        saveToStorage();
     }
     
 //#if NICK_COLORS
@@ -248,29 +247,27 @@ blue 0x0000ff
     private static int resourceType=1;
     
     
-//#ifdef COLOR_TUNE
-//#     public static void loadFromStorage(){
-//# 	try {
-//# 	    DataInputStream inputStream=NvStorage.ReadFileRecord("ColorDB", 0);
-//#             for (Enumeration r=colorsContainer.elements(); r.hasMoreElements();) {
-//#                 ColorItem c=(ColorItem)r.nextElement();
-//#                 c.setColor(inputStream.readInt());
-//#             }
-//# 	    inputStream.close();
-//# 	} catch (Exception e) { }
-//#     }
-//# 
-//#     public static void saveToStorage(){
-//# 	DataOutputStream outputStream=NvStorage.CreateDataOutputStream();
-//# 	try {
-//#             for (Enumeration r=colorsContainer.elements(); r.hasMoreElements();) {
-//#                 ColorItem c=(ColorItem)r.nextElement();
-//#                 outputStream.writeInt(c.getValue());
-//#             }
-//#         } catch (IOException e) { }
-//# 	NvStorage.writeFileRecord(outputStream, "ColorDB", 0, true);
-//#     }
-//#endif
+    public static void loadFromStorage(){
+	try {
+	    DataInputStream inputStream=NvStorage.ReadFileRecord("ColorDB", 0);
+            for (Enumeration r=colorsContainer.elements(); r.hasMoreElements();) {
+                ColorItem c=(ColorItem)r.nextElement();
+                c.setColor(inputStream.readInt());
+            }
+	    inputStream.close();
+	} catch (Exception e) { }
+    }
+
+    public static void saveToStorage(){
+	DataOutputStream outputStream=NvStorage.CreateDataOutputStream();
+	try {
+            for (Enumeration r=colorsContainer.elements(); r.hasMoreElements();) {
+                ColorItem c=(ColorItem)r.nextElement();
+                outputStream.writeInt(c.getValue());
+            }
+        } catch (IOException e) { }
+	NvStorage.writeFileRecord(outputStream, "ColorDB", 0, true);
+    }
     
     public static String getSkin(){
         StringBuffer body=new StringBuffer();
@@ -291,15 +288,12 @@ blue 0x0000ff
     public static void loadSkin(String skinF, int resourceT){
         skinFile=skinF;
         resourceType=resourceT;
-        
         try {
             for (Enumeration r=colorsContainer.elements(); r.hasMoreElements();) {
                 ColorItem c=(ColorItem)r.nextElement();
                 c.setColor(loadInt(c.getName(), c.getValue()));
             }
-//#ifdef COLOR_TUNE
-//#             saveToStorage();
-//#endif
+            saveToStorage();
         } catch (Exception e) { }
         skin=null;
         skinFile=null;

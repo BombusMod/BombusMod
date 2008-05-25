@@ -163,7 +163,7 @@ public class AccountForm
 //# 	itemsList.addElement(proxyHost);
 //#endif
 
-        itemsList.addElement(new spacerItem());
+        itemsList.addElement(new spacerItem(0));
         
         moveCursorTo(getNextSelectableRef(-1));
         attachDisplay(display);

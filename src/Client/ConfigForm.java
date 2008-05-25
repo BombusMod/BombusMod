@@ -120,14 +120,12 @@ public class ConfigForm
     
     private choiceBox textWrap;
     private choiceBox langFiles;
-    private choiceBox skinFiles;
 //#ifdef AUTOSTATUS
 //#     private choiceBox autoAwayType;
 //#     private numberInput fieldAwayDelay; 
 //#     private checkBox awayStatus;
 //#endif
-    
-    private Vector[] Skinfiles;
+
     private Vector langs[];
 
     StaticData sd=StaticData.getInstance();
@@ -244,23 +242,6 @@ public class ConfigForm
         itemsList.addElement(new simpleString(SR.MS_CLOCK_OFFSET));
         fieldLoc=new numberInput(display, Integer.toString(cf.locOffset), -12, 12 );
         itemsList.addElement(fieldLoc);
-
-        try {
-            Skinfiles=new StringLoader().stringLoader("/skins/res.txt",2);
-            if (Skinfiles[0].size()>0) {
-                String tempScheme=(cf.scheme=="")?"default":cf.scheme;
-                itemsList.addElement(new boldString(SR.MS_LOAD_SKIN));
-                skinFiles=new choiceBox();
-
-                for (int i=0; i<Skinfiles[0].size(); i++) {
-                    String schemeName = (String)Skinfiles[1].elementAt(i);
-                    skinFiles.append(schemeName);
-                    if (tempScheme.equals(schemeName))
-                        skinFiles.setSelectedIndex(i);
-                }
-                itemsList.addElement(skinFiles);
-            }
-        } catch (Exception e) {}
 
         itemsList.addElement(new boldString(SR.MS_TEXTWRAP));
         textWrap=new choiceBox();
@@ -392,16 +373,6 @@ public class ConfigForm
 //#if AUTODELETE
 //#             cf.msglistLimit=Integer.parseInt(messageCountLimit.getValue());
 //#endif
-
-        try {
-            if (skinFiles.getSelectedIndex()>-1) {
-                String tempScheme=(String) Skinfiles[1].elementAt( skinFiles.getSelectedIndex() );
-                if (!tempScheme.equals(cf.scheme)) {
-                    cf.scheme=(String) Skinfiles[1].elementAt( skinFiles.getSelectedIndex() );
-                    ColorTheme.getInstance().loadSkin((String)Skinfiles[0].elementAt(skinFiles.getSelectedIndex()), 1);
-                }
-            }
-        } catch (Exception ex) {}
 
         sd.roster.setLight(cf.lightState);   
 

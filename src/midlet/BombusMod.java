@@ -42,6 +42,9 @@ import ui.*;
 
 import Client.*;
 import Info.Version;
+//#ifdef TEST_NEW_FORM
+//# import ui.controls.form.testForm;
+//#endif
 
 /** Entry point class
  *
@@ -103,6 +106,13 @@ public class BombusMod extends MIDlet implements Runnable{
         SR.loaded();
         
         s.setProgress(12);
+        
+//#ifdef TEST_NEW_FORM
+//#         if (true) {
+//#             new testForm(display);
+//#             return;
+//#         }
+//#endif
 
 	Config cf=Config.getInstance();
         s.setProgress(15);

@@ -55,7 +55,7 @@ public class defForm
     public Command cmdCancel = new Command(SR.MS_BACK, Command.BACK, 99);
     
     /** Creates a new instance of defForm */
-    public defForm(Display display, String caption) {
+    public defForm(final Display display, String caption) {
 	this.display=display;
 	parentView=display.getCurrent();
         

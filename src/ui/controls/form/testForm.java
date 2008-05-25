@@ -27,8 +27,10 @@
 
 package ui.controls.form;
 
+import Colors.ColorsList;
 import java.util.Vector;
 import javax.microedition.lcdui.Display;
+import locale.SR;
 import ui.MainBar;
 import ui.VirtualElement;
 import ui.VirtualList;
@@ -43,7 +45,7 @@ public class testForm
     private Vector itemsList=new Vector();
     
     /** Creates a new instance of testForm */
-    public testForm(Display display) {
+    public testForm(final Display display) {
         super();
         //this.display=display;
         setMainBarItem(new MainBar("test form"));
@@ -57,6 +59,9 @@ public class testForm
         testNewChoiceBox1.setSelectedIndex(4);
         itemsList.addElement(testNewChoiceBox1);
         
+        linkString testLinkString0=new linkString(SR.MS_COLOR_TUNE) { public void doAction() { new ColorsList(display); } };
+        itemsList.addElement(testLinkString0);
+        
         boldString testBoldString0=new boldString("test bold string");
         itemsList.addElement(testBoldString0);
         simpleString testSimpleString0=new simpleString("test string");
@@ -66,7 +71,7 @@ public class testForm
         checkBox testCheckBox1=new checkBox("checkBox1", false);
         itemsList.addElement(testCheckBox1);
         
-        spacerItem testSpacerItem1=new spacerItem();
+        spacerItem testSpacerItem1=new spacerItem(0);
         itemsList.addElement(testSpacerItem1);     
         
         simpleString testSimpleString2=new simpleString("test CheckBoxGroup");
@@ -76,7 +81,7 @@ public class testForm
         checkBox testCheckBox3=new checkBox("item2", true);
         itemsList.addElement(testCheckBox3);
         
-        spacerItem testSpacerItem2=new spacerItem();
+        spacerItem testSpacerItem2=new spacerItem(0);
         itemsList.addElement(testSpacerItem2);  
 
         simpleString testSimpleString3=new simpleString("test textInput");
@@ -84,9 +89,9 @@ public class testForm
         textInput testTextInput1=new textInput(display, "text of input text");
         itemsList.addElement(testTextInput1);
         
-        spacerItem testSpacerItem3=new spacerItem();
+        spacerItem testSpacerItem3=new spacerItem(0);
         itemsList.addElement(testSpacerItem3);  
-        spacerItem testSpacerItem4=new spacerItem();
+        spacerItem testSpacerItem4=new spacerItem(0);
         itemsList.addElement(testSpacerItem4);
         
         simpleString testSimpleString4=new simpleString("test ChoiceGroup");
@@ -101,7 +106,7 @@ public class testForm
         testChoiceBox1.setSelectedIndex(4);
         itemsList.addElement(testChoiceBox1);
 
-        spacerItem testSpacerItem5=new spacerItem();
+        spacerItem testSpacerItem5=new spacerItem(0);
         itemsList.addElement(testSpacerItem5);  
 
         simpleString testSimpleString5=new simpleString("test passwordItem");
@@ -109,7 +114,7 @@ public class testForm
         passwordInput testPasswordInput1=new passwordInput(display, "pass");
         itemsList.addElement(testPasswordInput1);
 
-        spacerItem testSpacerItem6=new spacerItem();
+        spacerItem testSpacerItem6=new spacerItem(0);
         itemsList.addElement(testSpacerItem6);
         
         moveCursorTo(getNextSelectableRef(-1));

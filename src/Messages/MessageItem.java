@@ -80,7 +80,7 @@ public class MessageItem implements
     public void drawItem(Graphics g, int ofs, boolean selected) {
         int xorg=g.getTranslateX();
         int yorg=g.getTranslateY();
-        g.translate(1,0);
+        g.translate(2,0);
         if (msgLines==null) {
             MessageParser.getInstance().parseMsg(this, view.getListWidth());
             return;

@@ -1,5 +1,5 @@
 /*
- * ColorForm.java
+ * ColorsList.java
  *
  * Created on 23.05.2008, 13:10
  *
@@ -26,11 +26,6 @@
  */
 
 package Colors;
-//#if FILE_IO
-import io.file.FileIO;
-import io.file.browse.Browser;
-import io.file.browse.BrowserListener;
-//#endif
 import java.util.Enumeration;
 import java.util.Vector;
 import javax.microedition.lcdui.Command;
@@ -46,12 +41,9 @@ import ui.VirtualList;
  *
  * @author ad
  */
-public class ColorForm
+public class ColorsList
         extends VirtualList
         implements CommandListener
-//#if FILE_IO
-        , BrowserListener
-//#endif
     {
     
     public Display display;
@@ -63,17 +55,10 @@ public class ColorForm
     public Command cmdOk = new Command(SR.MS_EDIT, Command.OK, 1);
     public Command cmdCancel = new Command(SR.MS_BACK, Command.BACK, 99);
     
-//#if FILE_IO
-    Command cmdSaveSkin=new Command(SR.MS_SAVE, Command.ITEM,3); 
-    Command cmdLoadSkinFS=new Command(SR.MS_LOAD_SKIN+"FS", Command.ITEM,4);
-    String filePath;
-    private int loadType=0;
-//#endif
-    
     /**
-     * Creates a new instance of ColorForm
+     * Creates a new instance of ColorsList
      */
-    public ColorForm(Display display) {
+    public ColorsList(Display display) {
         ct=ColorTheme.getInstance();
         itemsList=ct.colorsContainer;
         
@@ -93,11 +78,8 @@ public class ColorForm
         
 	addCommand(cmdOk);
 	addCommand(cmdCancel);
-//#if FILE_IO
-        addCommand(cmdSaveSkin);
-        addCommand(cmdLoadSkinFS);
-//#endif
-	setCommandListener(this);
+
+        setCommandListener(this);
         attachDisplay(display);
     }
 
@@ -116,19 +98,7 @@ public class ColorForm
             destroyView();
             return;
         }
-//#if FILE_IO
-        if (c==cmdSaveSkin) {
-            loadType=0;
-            new Browser(null,display, this, true);
-        }
-        if (c==cmdLoadSkinFS) {
-            loadType=1;
-            new Browser(null, display, this, false);
-        }
-//#endif
-        if (c==cmdOk) {
-            eventOk();
-        }
+        if (c==cmdOk) { eventOk(); }
     }
     
     public void eventOk() {
@@ -140,19 +110,7 @@ public class ColorForm
 //#         } catch(Exception err) {}
 //#endif
     }
-    
-//#if FILE_IO
-    public void BrowserFilePathNotify(String pathSelected) {
-        if (loadType==0) {
-            FileIO file=FileIO.createConnection(pathSelected+"skin.txt");
-            file.fileWrite(ct.getSkin().getBytes());
-        } else {
-            ColorTheme.getInstance().loadSkin(pathSelected, 0);
-        }
-    }
-//#endif 
-    
-    
+
 //#ifdef COLOR_TUNE
 //#     public static final String[] NAMES = {
 //#             SR.MS_BALLOON_INK,

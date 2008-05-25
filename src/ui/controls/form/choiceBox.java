@@ -87,11 +87,14 @@ public class choiceBox
         g.setColor((sel)?ct.getColor(ColorTheme.CURSOR_OUTLINE):ct.getColor(ColorTheme.CURSOR_BGND));
         g.drawRoundRect(0, 0, width-1, height-1, 6, 6);
         
+        int boxWidth=height-1;
+        g.drawRoundRect(width-boxWidth, 0, boxWidth, height-1, 6, 6);
+        int horCenterTrinangle=width-(boxWidth/2);
+        int vertCenterTrinangle=height-(boxWidth/2);
+        int size=boxWidth/3;
+        g.fillTriangle(horCenterTrinangle-size, vertCenterTrinangle-size, horCenterTrinangle+size, vertCenterTrinangle-size, horCenterTrinangle, vertCenterTrinangle+size);
+        
         g.setColor(oldColor);
-
-        RosterIcons.getInstance().drawImage(
-                g, 0x26, g.getClipX()+g.getClipWidth()-RosterIcons.getInstance().getWidth(), 0 
-        );
         super.drawItem(g, ofs, sel);
     }
     

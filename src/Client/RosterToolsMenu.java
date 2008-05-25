@@ -39,7 +39,7 @@ import Fonts.ConfigFonts;
 //#ifdef SERVICE_DISCOVERY
 import ServiceDiscovery.ServiceDiscovery;
 //#endif
-//#if (HISTORY)
+//#if HISTORY
 //# import History.HistoryConfig;
 //#endif
 //#ifdef PEP
@@ -48,9 +48,7 @@ import ServiceDiscovery.ServiceDiscovery;
 import images.MenuIcons;
 import javax.microedition.lcdui.Display;
 import locale.SR;
-//#ifdef COLOR_TUNE
-//# import Colors.ColorForm;
-//#endif
+import Colors.ColorConfigForm;
 import ui.Menu;
 import ui.MenuItem;
 //#ifdef USER_KEYS
@@ -61,7 +59,6 @@ import vcard.vCardForm;
 //#ifdef CHECK_VERSION
 //# import Info.Upgrade;
 //#endif
-import Colors.ColorTheme;
 //#if SASL_XGOOGLETOKEN
 //# import xmpp.extensions.IqGmail;
 //#endif
@@ -100,9 +97,9 @@ public class RosterToolsMenu extends Menu {
         if (connected)
             addItem(SR.MS_FILE_TRANSFERS, 8, MenuIcons.ICON_FT);
 //#endif
-//#ifdef COLOR_TUNE
-//#         addItem(SR.MS_COLOR_TUNE, 9, MenuIcons.ICON_COLOR_TUNE);
-//#endif
+        
+        addItem(SR.MS_COLOR_TUNE, 9, MenuIcons.ICON_COLOR_TUNE);
+
 //#if IMPORT_EXPORT
 //#         addItem(SR.MS_IMPORT_EXPORT, 10, MenuIcons.ICON_IE);
 //#endif
@@ -128,11 +125,10 @@ public class RosterToolsMenu extends Menu {
 //#if AUTOTASK
 //#         addItem(SR.MS_AUTOTASKS, 17, MenuIcons.ICON_TASKS);
 //#endif
-        addItem(SR.MS_INVERT, 18, MenuIcons.ICON_INVERSE);
-        addItem(SR.MS_BREAK_CONECTION, 19, MenuIcons.ICON_RECONNECT);
 //#ifdef CONSOLE
-//#         addItem(SR.MS_XML_CONSOLE, 20, MenuIcons.ICON_CONCOLE);
+//#         addItem(SR.MS_XML_CONSOLE, 18, MenuIcons.ICON_CONCOLE);
 //#endif
+        addItem(SR.MS_BREAK_CONECTION, 19, MenuIcons.ICON_RECONNECT);
         attachDisplay(display);
     }
     public void eventOk(){
@@ -189,12 +185,9 @@ public class RosterToolsMenu extends Menu {
                 new io.file.transfer.TransferManager(display);
                 return;
 //#endif
-//#ifdef COLOR_TUNE
-//#             case 9:
-//#                 new ColorForm(display);
-//#                 return;
-//#endif
-                
+            case 9:
+                new ColorConfigForm(display);
+                return;
 //#if IMPORT_EXPORT
 //#             case 10:
 //#                 new IE.IEMenu(display);
@@ -233,17 +226,14 @@ public class RosterToolsMenu extends Menu {
 //#                 new AutoTaskForm(display);
 //#                 return;
 //#endif
-            case 18:
-                ColorTheme.getInstance().invertSkin();
-                return;
-            case 19:
-                sd.roster.connectionTerminated(new Exception(SR.MS_SIMULATED_BREAK));
-                return;
 //#ifdef CONSOLE
-//#             case 20:
+//#             case 18:
 //#                 new XMLList(display);
 //#                 return;
 //#endif
+            case 19:
+                sd.roster.connectionTerminated(new Exception(SR.MS_SIMULATED_BREAK));
+                return;
         }
     }
 }

@@ -1,7 +1,7 @@
 /*
- * spacerItem.java
+ * linkString.java
  *
- * Created on 19 Май 2008 г., 23:41
+ * Created on 25.05.2008, 13:24
  *
  * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
  *
@@ -27,32 +27,46 @@
 
 package ui.controls.form;
 
-import Colors.ColorTheme;
-import ui.IconTextElement;
+import javax.microedition.lcdui.Graphics;
 
 /**
  *
  * @author ad
  */
-public class spacerItem 
-        extends IconTextElement {
+public abstract class linkString 
+        extends simpleString {
     
-    private static int itemHeight=4;
-    
-    private boolean selectable=false;
-    
-    /** Creates a new instance of spacerItem */
-    public spacerItem(int height) {
-        super(null);
-        if (height!=0)
-            itemHeight=height;
+    /** Creates a new instance of NewClass */
+    public linkString(String text) {
+        super(text);
     }
-
-    protected int getImageIndex() { return -1; }
     
-    public String toString() { return " "; }
+    public int getColor() {
+        return 0x0000ff;
+    }
     
-    public int getVHeight(){ return itemHeight; }
+    public void drawItem(Graphics g, int ofs, boolean sel) {
+        int width=g.getClipWidth();
+        int height=g.getClipHeight();
 
-    public boolean isSelectable() { return selectable; }
+        int oldColor=g.getColor();
+        
+        int stringWidth=getFont().stringWidth(toString());
+
+        g.setColor(getColor());
+        g.drawLine(4, height-2, stringWidth+4, height-2);
+
+        g.setColor(oldColor);
+
+        super.drawItem(g, ofs, sel);
+    }
+    
+    public boolean isSelectable() { return true; }
+    
+    public void onSelect(){
+        doAction();
+    }
+    
+    public abstract void doAction();
+    
 }
