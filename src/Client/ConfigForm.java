@@ -26,7 +26,6 @@
  */
 
 package Client;
-import Colors.ColorTheme;
 import java.util.Vector;
 import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Display;
@@ -272,7 +271,8 @@ public class ConfigForm
         itemsList.addElement(langFiles);
 
 //#ifdef AUTOSTATUS
-//#         itemsList.addElement(new boldString(SR.MS_AWAY_TYBoldString        autoAwayType=new ChoiceBox();
+//#         itemsList.addElement(new BoldString(SR.MS_AWAY_TYPE));
+//#         autoAwayType=new ChoiceBox();
 //#         autoAwayType.append(SR.MS_AWAY_OFF);
 //#         autoAwayType.append(SR.MS_AWAY_LOCK);
 //#         autoAwayType.append(SR.MS_MESSAGE_LOCK);
