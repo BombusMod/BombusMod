@@ -119,7 +119,7 @@ public class userKey extends IconTextElement {
 
     public void setActive(boolean active) { this.active = active; }
     
-    protected int getImageIndex() {return active?0:5;}
+    public int getImageIndex() {return active?0:5;}
     
     public void onSelect(){};
     

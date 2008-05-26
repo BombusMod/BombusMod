@@ -61,6 +61,9 @@ public class TestForm
         testNewChoiceBox1.setSelectedIndex(4);
         itemsList.addElement(testNewChoiceBox1);
         
+        TrackItem testTrackItem1=new TrackItem(3, 10);
+        itemsList.addElement(testTrackItem1);
+        
         TextInput testInputCombo1=new TextInput(display, "remember box text", "test");
         itemsList.addElement(testInputCombo1);
         

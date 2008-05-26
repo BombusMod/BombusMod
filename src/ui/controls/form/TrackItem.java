@@ -1,7 +1,7 @@
 /*
- * ChoiceBox.java
+ * TrackItem.java
  *
- * Created on 20.05.2008, 9:06
+ * Created on 26.05.2008, 11:16
  *
  * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
  *
@@ -24,10 +24,10 @@
  * along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+
 package ui.controls.form;
 
 import Colors.ColorTheme;
-import java.util.Vector;
 import javax.microedition.lcdui.Graphics;
 import ui.IconTextElement;
 
@@ -35,69 +35,55 @@ import ui.IconTextElement;
  *
  * @author ad
  */
-public class ChoiceBox 
+public class TrackItem
         extends IconTextElement {
     
-    private int index=0;
+    int value;
+    int steps;
     
-    public Vector items=new Vector();
+    ColorTheme ct;    
     
     private boolean selectable=true;
     
-    ColorTheme ct;
-    
-    /**
-     * Creates a new instance of ChoiceBox
-     */
-    public ChoiceBox() {
+    /** Creates a new instance of TrackItem */
+    public TrackItem(int value, int maxValue) {
         super(null);
+        this.value=value;
+        this.steps=maxValue+1;
+        
         ct=ColorTheme.getInstance();
     }
-
-    public String toString() {
-        if (items.size()<1) return "";//caption;
-        return (String) items.elementAt(index);
-    }
-
+    
     public void onSelect(){
-        if (items.size()<1) return;
-        index=(index+1)%items.size();
+        value=(value+1)%steps;
     }
     
-    public int getValue() { return index; }
+    public int getValue() { return value; }
     
-    public void append(String value) { items.addElement(value); }
-    
-    public void setSelectedIndex(int index) { 
-        if (index>items.size()-1)
-            index=0;
-        this.index=index;
-    }
-    
-    public int getSelectedIndex() { return index; }
     
     public void drawItem(Graphics g, int ofs, boolean sel) {
         int width=g.getClipWidth();
         int height=g.getClipHeight();
-
+        
+        int itemWidth=height/2;
+        int pos=((width-itemWidth)*value)/(steps-1);
+        
         int oldColor=g.getColor();
+        
+        g.setColor(ct.getColor(ColorTheme.CURSOR_OUTLINE));
+        g.drawLine(8, height/2, width-8, height/2);
+        
+        g.fillRoundRect(pos, 1, itemWidth, height-2, 10, 10);
 
-        g.setColor((sel)?ct.getColor(ColorTheme.CURSOR_BGND):ct.getColor(ColorTheme.LIST_BGND));
-        g.fillRect(2, 2, width-4, height-4);
+        g.setColor(ct.getColor(ColorTheme.CURSOR_BGND));
+        g.drawRoundRect(pos, 1, itemWidth, height-2, 10, 10);     
         
-        int boxSize=height-1;
-        g.setColor((sel)?ct.getColor(ColorTheme.CURSOR_OUTLINE):ct.getColor(ColorTheme.CURSOR_BGND));
-        g.drawRoundRect(0, 0, width-1, boxSize, 6, 6);
-        
-        g.drawRoundRect(width-boxSize-1, 0, boxSize, boxSize, 6, 6);
-        int horCenterTrinangle=width-(boxSize/2)-1;
-        int vertCenterTrinangle=height-(boxSize/2);
-        int size=boxSize/3;
-        g.fillTriangle(horCenterTrinangle-size, vertCenterTrinangle-size, horCenterTrinangle+size, vertCenterTrinangle-size, horCenterTrinangle, vertCenterTrinangle+size);
         
         g.setColor(oldColor);
+
         super.drawItem(g, ofs, sel);
-    }
+    }  
     
-    public boolean isSelectable() { return selectable; }
+    public String toString() { return " "; }
+    
 }
