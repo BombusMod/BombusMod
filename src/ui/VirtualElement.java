@@ -48,4 +48,6 @@ public interface VirtualElement {
     public void onSelect();
     
     public boolean isSelectable();
+    
+    public boolean handleEvent(int keyCode);
 }

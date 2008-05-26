@@ -54,31 +54,22 @@ public class TrackItem
         ct=ColorTheme.getInstance();
     }
     
-    public void onSelect(){
-        value=(value+1)%steps;
-    }
-    
     public int getValue() { return value; }
-    
     
     public void drawItem(Graphics g, int ofs, boolean sel) {
         int width=g.getClipWidth();
         int height=g.getClipHeight();
         
-        int itemWidth=height/2;
+        int itemWidth=6;
         int pos=((width-itemWidth)*value)/(steps-1);
         
         int oldColor=g.getColor();
         
         g.setColor(ct.getColor(ColorTheme.CURSOR_OUTLINE));
-        g.drawLine(8, height/2, width-8, height/2);
+        g.drawLine(4, height/2, width-4, height/2);
         
-        g.fillRoundRect(pos, 1, itemWidth, height-2, 10, 10);
+        g.fillRect(pos, 2, itemWidth, height-4);
 
-        g.setColor(ct.getColor(ColorTheme.CURSOR_BGND));
-        g.drawRoundRect(pos, 1, itemWidth, height-2, 10, 10);     
-        
-        
         g.setColor(oldColor);
 
         super.drawItem(g, ofs, sel);
@@ -86,4 +77,15 @@ public class TrackItem
     
     public String toString() { return " "; }
     
+    public boolean handleEvent(int keyCode) {
+         switch (keyCode) {
+            case 4:
+                value=(value>0)?value-1:steps-1;
+                return true;
+            case 6: 
+                value=(value+1)%steps;
+                return true;
+         }
+        return false;
+    }
 }

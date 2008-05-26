@@ -771,7 +771,45 @@ public abstract class VirtualList
 //#     }
 //#endif
     
+    private boolean sendEvent(int keyCode) {
+        int key=-1;
+        switch (keyCode) {
+            case KEY_NUM0: key=0; break;
+            case KEY_NUM1: key=1; break;
+            case KEY_NUM2: key=2; break;
+            case KEY_NUM3: key=3; break;
+            case KEY_NUM4: key=4; break;
+            case KEY_NUM5: key=5; break;
+            case KEY_NUM6: key=6; break;
+            case KEY_NUM7: key=7; break;
+            case KEY_NUM8: key=8; break;
+            case KEY_NUM9: key=9; break;
+            case KEY_STAR: key=10; break;
+            case KEY_POUND: key=11; break;
+            default:
+                try {
+                    switch (getGameAction(keyCode)){
+                        case UP: key=2; break;
+                        case LEFT: key=4; break;
+                        case FIRE: key=5; break;
+                        case RIGHT: key=6; break;
+                        case DOWN: key=8; break;
+                    }
+                } catch (Exception e) {}
+        }
+         
+        if (key>-1)
+            if (getFocusedObject()!=null)
+                return ((VirtualElement)getFocusedObject()).handleEvent(key);
+                
+        return false;
+    }
+    
     private void key(int keyCode) {
+        if (sendEvent(keyCode)) {
+            repaint();
+            return;
+        }
 //#if DEBUG
 //#         System.out.println(keyCode);
 //#endif

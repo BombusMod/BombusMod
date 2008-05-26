@@ -27,6 +27,7 @@
 
 package archive;
 
+import Client.MessageEdit;
 import Client.Msg;
 import Client.StaticData;
 import java.util.Enumeration;
@@ -100,40 +101,48 @@ public class ArchiveList
 //#endif
     private Config cf;
     private int where=1;
+
+    private MessageEdit t;
+    
     /** Creates a new instance of ArchiveList */
-    public ArchiveList(Display display, int caretPos, int where) {
+    public ArchiveList(Display display, int caretPos, int where, MessageEdit t) {
  	super ();
         this.where=where;
         this.caretPos=caretPos;
+        this.t=t;
         cf=Config.getInstance();
-        archive=new MessageArchive(where);
-        //enableListWrapping(true); //TEST:������� ����� ����� ������
-	setCommandListener(this);
-	addCommand(cmdBack);
-	addCommand(cmdDelete);
-//#if (FILE_IO)	
-        addCommand(cmdExport);
-        addCommand(cmdImport);
-//#endif
-	addCommand(cmdEdit);
-        addCommand(cmdNew);
-        addCommand(cmdDeleteAll);
-	if (sd.roster.me!=null) {
-	    addCommand(cmdPaste);
-	    addCommand(cmdJid);
-	}
         
-        try {
-            focusedItem(0);
-        } catch (Exception e) {}
-	
-	MainBar mainbar=new MainBar((where==1)?SR.MS_ARCHIVE:SR.MS_TEMPLATE /*"Archive"*/);
+        archive=new MessageArchive(where);
+        
+	MainBar mainbar=new MainBar((where==1)?SR.MS_ARCHIVE:SR.MS_TEMPLATE);
 	mainbar.addElement(null);
 	mainbar.addRAlign();
 	mainbar.addElement(null);
 	mainbar.addElement(SR.MS_FREE /*"free "*/);
         setMainBarItem(mainbar);
         
+        if (getItemCount()>0) {
+            addCommand(cmdDelete);
+//#ifdef FILE_IO
+            addCommand(cmdExport);
+//#endif
+            addCommand(cmdEdit);
+            addCommand(cmdDeleteAll);
+            
+            if (t!=null) {
+                addCommand(cmdPaste);
+                addCommand(cmdJid);
+            }
+        }
+        addCommand(cmdNew);
+//#ifdef FILE_IO
+        addCommand(cmdImport);
+//#endif
+	addCommand(cmdBack);
+	setCommandListener(this);
+        
+        moveCursorHome();
+
         attachDisplay(display);
     }
 
@@ -202,7 +211,7 @@ public class ArchiveList
     }
     
     private void pasteData(int field) {
-	if (sd.roster.me==null) return;
+	if (t==null) return;
 	Msg m=getMessage(cursor);
 	if (m==null) return;
 	String data;
@@ -216,7 +225,7 @@ public class ArchiveList
 	default:
 	    data=m.quoteString();
 	}
-	sd.roster.me.insertText(data, caretPos);
+	t.insertText(data, caretPos);
 	destroyView();
     }
     
@@ -235,7 +244,7 @@ public class ArchiveList
     }
     
     public void focusedItem(int index) {
-	if (sd.roster.me==null) return;
+	if (t==null) return;
 	try {
 	    if (getMessage(index).subject!=null) {
 		addCommand(cmdSubj);

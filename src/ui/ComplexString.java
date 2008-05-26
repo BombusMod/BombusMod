@@ -277,4 +277,6 @@ public class ComplexString extends Vector implements VirtualElement {
         width=0;
         height=0;
     }
+
+    public boolean handleEvent(int keyCode) { return false; }
 }

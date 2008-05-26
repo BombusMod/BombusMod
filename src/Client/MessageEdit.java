@@ -194,13 +194,13 @@ public class MessageEdit
         if (c==cmdInsNick) { new AppendNick(display, to, caretPos); return; }
 //#endif
 //#ifdef ARCHIVE
-	if (c==cmdPaste) { new ArchiveList(display, caretPos, 1); return; }
+	if (c==cmdPaste) { new ArchiveList(display, caretPos, 1, this); return; }
 //#endif
 //#ifdef CLIPBOARD
 //#         if (c==cmdPasteText) { insertText(clipboard.getClipBoard(), getCaretPos()); return; }
 //#endif
 //#if TEMPLATES
-        if (c==cmdTemplate) { new ArchiveList(display, caretPos, 2); return; }
+        if (c==cmdTemplate) { new ArchiveList(display, caretPos, 2, this); return; }
 //#endif
         if (c==cmdCancel) { 
             composing=false;

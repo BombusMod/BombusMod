@@ -38,12 +38,23 @@ abstract public class IconTextElement implements VirtualElement {
     int fontYOfs;
     
     protected ImageList il;
-
     private int ilImageSize=0;
     
     ColorTheme ct;
     
-    private boolean selectable=true; public boolean isSelectable() { return selectable; }    
+    public IconTextElement(ImageList il) {
+        super();
+        this.il=il;
+        ct=ColorTheme.getInstance();
+	if (il!=null){
+	    ilImageSize=il.getHeight();
+	}
+    }
+    
+    private boolean selectable=true; 
+    public boolean isSelectable() { return selectable; }    
+    
+    public boolean handleEvent(int keyCode) { return false; }
 
 //#ifdef SECONDSTRING
 //#     private Font getSecondFont() {
@@ -128,19 +139,8 @@ abstract public class IconTextElement implements VirtualElement {
     public int getColor(){ return ct.getColor(ColorTheme.LIST_INK);}
 
     public void onSelect(){ };
-    
-    public IconTextElement(ImageList il) {
-        super();
-        this.il=il;
-        ct=ColorTheme.getInstance();
-	if (il!=null){
-	    ilImageSize=il.getHeight();
-	}
-    }
 
-    public String getTipString() {
-        return null;
-    }
+    public String getTipString() { return null; }
     
 //#ifdef SECONDSTRING
 //#     private boolean hasSecondString() {

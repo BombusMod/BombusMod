@@ -194,7 +194,7 @@ public class Account extends IconTextElement{
         
     }
     
-    public int geImageIndex() {return active?0:5;}
+    protected int geImageIndex() {return active?0:5;}
 
     public String getUserName() { return userName;  }
     public void setUserName(String userName) { this.userName = userName;  }

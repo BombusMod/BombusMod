@@ -39,10 +39,8 @@ import ui.Time;
 import ui.VirtualElement;
 import ui.VirtualList;
 
-public class MessageItem implements 
-	VirtualElement,
-	MessageParser.MessageParserNotify
-{
+public class MessageItem
+    implements VirtualElement, MessageParser.MessageParserNotify {
     
     public Msg msg;
     Vector msgLines;
@@ -197,4 +195,6 @@ public class MessageItem implements
 //#endif
 
     public boolean isSelectable() { return true; }
+
+    public boolean handleEvent(int keyCode) { return false; }
 }

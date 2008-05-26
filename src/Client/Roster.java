@@ -2406,7 +2406,7 @@ public class Roster
     public void cmdStatus() { reconnectCount=0; new StatusSelect(display, null); }
     public void cmdAlert() { new AlertProfile(display); }
 //#ifdef ARCHIVE
-    public void cmdArchive() { new ArchiveList(display, -1, 1); }
+    public void cmdArchive() { new ArchiveList(display, -1, 1, null); }
 //#endif
     public void cmdInfo() { new Info.InfoWindow(display); }
     public void cmdTools() { new RosterToolsMenu(display); }
