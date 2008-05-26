@@ -28,7 +28,6 @@
 package ui.controls.form;
 
 import Colors.ColorTheme;
-import images.RosterIcons;
 import javax.microedition.lcdui.Graphics;
 import ui.IconTextElement;
 
@@ -55,8 +54,6 @@ public class CheckBox
         this.state=state;
         ct=ColorTheme.getInstance();
     }
-
-    protected int getImageIndex() { return -1; }
     
     public String toString() { return text; }
 

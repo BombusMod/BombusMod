@@ -51,8 +51,6 @@ public class ColorItem
     public String getName() { return name; }
     public int getValue() { return color; }
     public void setColor(int color) { this.color=color; }
-
-    protected int getImageIndex() { return -1; }
     
     public String toString() { return (locale==null)?name:locale; }
     

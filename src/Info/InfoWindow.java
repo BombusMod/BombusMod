@@ -101,7 +101,7 @@ public class InfoWindow
 //#         }
 //#endif
 
-        //moveCursorTo(getNextSelectableRef(-1));
+        moveCursorTo(getNextSelectableRef(-1));
         attachDisplay(display);
     }
     

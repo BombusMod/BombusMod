@@ -27,10 +27,7 @@
 package ui.controls.form;
 
 import Colors.ColorTheme;
-import Fonts.FontCache;
-import images.RosterIcons;
 import java.util.Vector;
-import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
 import ui.IconTextElement;
 
@@ -53,12 +50,10 @@ public class ChoiceBox
      * Creates a new instance of ChoiceBox
      */
     public ChoiceBox() {
-        super(RosterIcons.getInstance());
+        super(null);
         ct=ColorTheme.getInstance();
     }
 
-    protected int getImageIndex() { return -1; }
-    
     public String toString() {
         if (items.size()<1) return "";//caption;
         return (String) items.elementAt(index);

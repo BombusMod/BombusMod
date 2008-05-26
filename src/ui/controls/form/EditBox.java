@@ -62,7 +62,9 @@ public class EditBox implements CommandListener {
 
 //#ifdef CLIPBOARD
 //#     private ClipBoard clipboard;
-//#     private Command cmdPasteText=new Command(SR.MS_PASTE, Command.SCREEN, 10);  
+//#     private Command cmdCopy = new Command(SR.MS_COPY, Command.SCREEN, 3);
+//#     private Command cmdCopyPlus = new Command("+ "+SR.MS_COPY, Command.SCREEN, 4);
+//#     private Command cmdPasteText=new Command(SR.MS_PASTE, Command.SCREEN, 5);  
 //#endif
     public EditBox(Display display, String text, TextInput ti) {
         this.display=display;
@@ -73,8 +75,11 @@ public class EditBox implements CommandListener {
 //#ifdef CLIPBOARD
 //#         if (Config.getInstance().useClipBoard) {
 //#             clipboard=ClipBoard.getInstance();
-//#             if (!clipboard.isEmpty())
+//#             t.addCommand(cmdCopy);
+//#             if (!clipboard.isEmpty()) {
+//#                 t.addCommand(cmdCopyPlus);
 //#                 t.addCommand(cmdPasteText);
+//#             }
 //#         }
 //#endif
         t.addCommand(cmdOk);
@@ -97,6 +102,27 @@ public class EditBox implements CommandListener {
             return;
         }
 //#ifdef CLIPBOARD
+//#         if (c == cmdCopy) {
+//#             try {
+//#                clipboard.setClipBoard(text);
+//#                 if (!clipboard.isEmpty()) {
+//#                     t.addCommand(cmdCopyPlus);
+//#                 }
+//#             } catch (Exception e) {/*no messages*/}
+//#             return;
+//#         }
+//#         if (c==cmdCopyPlus) {
+//#             try {
+//#                 StringBuffer clipstr=new StringBuffer();
+//#                 clipstr.append(clipboard.getClipBoard());
+//#                 clipstr.append("\n\n");
+//#                 clipstr.append(text);
+//#                 
+//#                 clipboard.setClipBoard(clipstr.toString());
+//#                 clipstr=null;
+//#             } catch (Exception e) {/*no messages*/}
+//#             return;
+//#         }
 //#         if (c==cmdPasteText) {
 //#             t.insert(clipboard.getClipBoard(), getCaretPos()); 
 //#             return;

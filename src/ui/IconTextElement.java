@@ -55,9 +55,9 @@ abstract public class IconTextElement implements VirtualElement {
 //#     }
 //#endif
     
-    abstract protected int getImageIndex();
+    public int getImageIndex() { return -1; };
 
-    public int getFontIndex() { return 0;}
+    public int getFontIndex() { return 0; }
     
     public Font getFont() {
         return (getFontIndex()==0)?

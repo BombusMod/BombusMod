@@ -48,7 +48,6 @@ public class VCardView
     private byte[] photo;
     
     private BoldString noVCard=new BoldString("[No vCard available]");
-    private SimpleString sizePhoto;
     private SimpleString noPhoto=new SimpleString("[No photo available]");
     private SimpleString badFormat=new SimpleString("[Unsupported format]");
     
@@ -111,6 +110,8 @@ public class VCardView
         if (vcard.isEmpty() && !editable) {
             itemsList.addElement(noVCard);
         } else { 
+            photo=vcard.getPhoto();
+            setPhoto();
             for (int index=0; index<vcard.getCount(); index++) {
                 String data=vcard.getVCardData(index);
                 String name=(String)VCard.vCardLabels.elementAt(index);
@@ -121,26 +122,21 @@ public class VCardView
                     itemsList.addElement(nData);
                 }
             }
-            photo=vcard.getPhoto();
-            setPhoto();
         }
-
+        moveCursorTo(getNextSelectableRef(-1));
         attachDisplay(display);
     }
     
     
      private void setPhoto() {
         if (photo!=null) {
-            String size=String.valueOf(photo.length)+" bytes";
             try {
                 Image photoImg=Image.createImage(photo, 0, photo.length);
-                photoItem=new ImageItem(photoImg);
+                photoItem=new ImageItem(photoImg, String.valueOf(photo.length)+" bytes");
                 itemsList.addElement(photoItem);
             } catch (Exception e) {
                 itemsList.addElement(badFormat);
             }
-            sizePhoto=new SimpleString(String.valueOf(photo.length)+" bytes");
-            itemsList.addElement(sizePhoto);
         } else {
             itemsList.addElement(noPhoto);
         }

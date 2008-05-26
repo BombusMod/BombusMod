@@ -67,7 +67,7 @@ public class TestForm
         MultiLine testMultiLine1=new MultiLine("remember box text\nyo yo yo\n yep!");
         itemsList.addElement(testMultiLine1);
         
-        ImageItem testImageItem1=new ImageFileItem("/images/splash.png");
+        ImageItem testImageItem1=new ImageFileItem("/images/splash.png", "BM Splash");
         itemsList.addElement(testImageItem1);
 
         LinkString testLinkString0=new LinkString(SR.MS_COLOR_TUNE) { public void doAction() { new ColorsList(display); } };

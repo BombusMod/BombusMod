@@ -30,9 +30,6 @@ import Info.Version;
 import com.alsutton.jabber.datablocks.Presence;
 import images.RosterIcons;
 import java.io.*;
-import javax.microedition.midlet.MIDlet;
-import midlet.BombusMod;
-import Colors.ColorTheme;
 import ui.IconTextElement;
 import com.alsutton.jabber.*;
 import io.NvStorage;
@@ -197,7 +194,7 @@ public class Account extends IconTextElement{
         
     }
     
-    protected int getImageIndex() {return active?0:5;}
+    public int geImageIndex() {return active?0:5;}
 
     public String getUserName() { return userName;  }
     public void setUserName(String userName) { this.userName = userName;  }

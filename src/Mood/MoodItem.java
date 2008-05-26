@@ -50,7 +50,7 @@ public class MoodItem extends IconTextElement {
         iconIndex=index;
     }
 
-    protected int getImageIndex() { return iconIndex; }
+    public int getImageIndex() { return iconIndex; }
     public int getColor() { return ColorTheme.getInstance().getColor(ColorTheme.CONTACT_DEFAULT); }
     public String toString() { return label; }
     public String getTipString() { return name; }

@@ -27,7 +27,6 @@
 
 package ui.controls.form;
 
-import Colors.ColorTheme;
 import ui.IconTextElement;
 
 /**
@@ -49,8 +48,6 @@ public class SpacerItem
         if (height!=0)
             itemHeight=height;
     }
-
-    protected int getImageIndex() { return -1; }
     
     public String toString() { return " "; }
     

@@ -42,12 +42,15 @@ public class ImageItem
     private boolean collapsed;
     
     public boolean selectable=true;
+
+    private String altText;
     
     /** Creates a new instance of ImageItem */
-    public ImageItem(Image img) {
+    public ImageItem(Image img, String altText) {
         super(null);
 
         this.img=img;
+        this.altText=altText;
     }
     
     public void onSelect() {
@@ -55,7 +58,20 @@ public class ImageItem
     }
     
     public String toString() {
-        return (collapsed || img==null)?"[Image]":"";            
+        if (!collapsed)
+            return "";
+        
+        if (img==null)
+            return "[Image]";
+        
+        StringBuffer im=new StringBuffer(altText);
+        if (altText!=null)
+            im.append(" ");
+        im.append(img.getWidth());
+        im.append("x");
+        im.append(img.getHeight());
+        
+        return im.toString();            
     }
     
     public int getVHeight(){
@@ -69,12 +85,10 @@ public class ImageItem
         int width=g.getClipWidth();
         int height=g.getClipHeight();
         if (!collapsed)
-            g.drawImage(img, width/2, height/2, Graphics.VCENTER|Graphics.HCENTER);
+            g.drawImage(img, width/2, 0, Graphics.TOP|Graphics.HCENTER);
         super.drawItem(g, ofs, sel);
     }
 
-    protected int getImageIndex() { return -1; }
-    
     public boolean isSelectable() { return selectable; }
     
 }

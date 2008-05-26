@@ -49,8 +49,6 @@ public class SimpleString
         super(null);
         this.text=text;
     }
-
-    protected int getImageIndex() { return -1; }
     
     public String toString() { return text; }
     

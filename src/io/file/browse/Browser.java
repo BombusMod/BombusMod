@@ -247,7 +247,7 @@ public class Browser extends VirtualList implements CommandListener{
             }
         }
         
-        protected int getImageIndex() { 
+        public int getImageIndex() { 
             return iconIndex; 
         }
         

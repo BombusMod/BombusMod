@@ -118,7 +118,7 @@ public class TransferTask
         }
     }
 
-    protected int getImageIndex() { return state; }
+    public int getImageIndex() { return state; }
 
     public int getColor() { return (sending)? ColorTheme.getInstance().getColor(ColorTheme.MESSAGE_OUT) : ColorTheme.getInstance().getColor(ColorTheme.MESSAGE_IN); }
 

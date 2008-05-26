@@ -37,8 +37,8 @@ import javax.microedition.lcdui.Image;
 public class ImageFileItem extends ImageItem {
     
     /** Creates a new instance of ImageFileItem */
-    public ImageFileItem(String imagePath) {
-        super(null);
+    public ImageFileItem(String imagePath, String altText) {
+        super(null, altText);
         
         try {
             img=Image.createImage(imagePath);

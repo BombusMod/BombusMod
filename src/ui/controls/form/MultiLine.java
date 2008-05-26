@@ -57,8 +57,6 @@ public class MultiLine extends IconTextElement {
     public String getValue() {
         return text;
     }
-
-    protected int getImageIndex() { return -1; }
     
     public int getVHeight(){ return (lines==null)?1:(font.getHeight()*lines.size())+2; }
     
