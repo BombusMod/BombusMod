@@ -174,6 +174,10 @@ public class userKeyExec {
 //#                 new XMLList(display);
 //#endif
                 break;
+            case 17:
+                cf.fullscreen=!cf.fullscreen;
+                cf.saveToStorage();
+                break;
         }
     } 
 
@@ -203,7 +207,8 @@ public class userKeyExec {
             SR.MS_ABOUT,
             SR.MS_APP_MINIMIZE,
             SR.MS_INVERT,
-            SR.MS_XML_CONSOLE
+            SR.MS_XML_CONSOLE, 
+            SR.MS_FULLSCREEN
     };
     
     public static final String[] KEYS_NAME = {
