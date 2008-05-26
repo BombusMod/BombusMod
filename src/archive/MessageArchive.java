@@ -40,21 +40,24 @@ public class MessageArchive {
     
     RecordStore rs;
     Vector indexes;
+    
+    private final static String ARCHIVE="archive";
+    private final static String TEMPLATES="ad_templates";
+
+    private int where;
     /** Creates a new instance of MessageArchive */
     public MessageArchive(int where) {
+        this.where=where;
 	try {
-	    rs=RecordStore.openRecordStore((where==1)?"archive":"ad_templates", true);
+	    rs=RecordStore.openRecordStore((where==1)?ARCHIVE:TEMPLATES, true);
 	    int size=rs.getNumRecords();
 	    indexes=new Vector(size);
 	    RecordEnumeration re=rs.enumerateRecords(null, null, false);
 	    
 	    while (re.hasNextElement() ){
-		indexes.addElement(new Integer(re.nextRecordId() ));
+		indexes.addElement(new Integer(re.nextRecordId()));
 	    }
-	    
-	} catch (Exception e) { 
-            //e.printStackTrace();
-        }
+	} catch (Exception e) { }
     }
 
     public int size(){
@@ -98,6 +101,7 @@ public class MessageArchive {
 	} catch (Exception e) {}
 	try {
             indexes.removeAllElements();
+            rs.deleteRecordStore((where==1)?ARCHIVE:TEMPLATES);
 	} catch (Exception e) {}
     }
 
@@ -111,19 +115,10 @@ public class MessageArchive {
     public void close(){
 	try {
 	    rs.closeRecordStore();
-	} catch (Exception e) { 
-            //e.printStackTrace(); 
-        }
+	} catch (Exception e) { }
 	rs=null;
     }
-    
-    public void add(Msg msg, int where) {
-	try {
-            store(msg, where);
-	    indexes.insertElementAt(msg,0);
-	} catch (Exception e) {}
-    }
-    
+
     public static void store(Msg msg, int where) {
 	try {
 	    ByteArrayOutputStream bout = new ByteArrayOutputStream();
@@ -132,12 +127,9 @@ public class MessageArchive {
 	    dout.close();
 	    byte b[]=bout.toByteArray();
 	    
-	    RecordStore rs=RecordStore.openRecordStore((where==1)?"archive":"ad_templates", true);
+	    RecordStore rs=RecordStore.openRecordStore((where==1)?ARCHIVE:TEMPLATES, true);
 	    rs.addRecord(b, 0, b.length);
-	    rs.closeRecordStore();
-
-	} catch (Exception e) { 
-            //e.printStackTrace(); 
-        }
+            rs.closeRecordStore();
+	} catch (Exception e) { e.printStackTrace(); }
     }
 }

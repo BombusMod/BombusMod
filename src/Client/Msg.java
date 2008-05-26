@@ -36,8 +36,7 @@ import ui.Time;
  *
  * @author Eugene Stahov
  */
-public class Msg //implements MessageList.Element
-{
+public class Msg {
     // without signaling
     public final static int MESSAGE_TYPE_OUT=1;
     public final static int MESSAGE_TYPE_PRESENCE=2;
@@ -71,8 +70,6 @@ public class Msg //implements MessageList.Element
     public boolean itemCollapsed;
     public int itemHeight=-1;
     
-    private ColorTheme ct;
-    
     /** Creates a new instance of msg */
     public Msg(int messageType, String from, String subj, String body) {
         this.messageType=messageType;
@@ -86,7 +83,6 @@ public class Msg //implements MessageList.Element
         else if (body!=null && messageType!=MESSAGE_TYPE_SUBJ)
             if (body.length()>Config.getInstance().messageLimit)
                 itemCollapsed=true;
-        ct=ColorTheme.getInstance();
     }
     
     public void onSelect(){}
@@ -103,6 +99,8 @@ public class Msg //implements MessageList.Element
     }
     
     public int getColor() {
+        ColorTheme ct=ColorTheme.getInstance();
+        
         if (highlite) 
             return ct.getColor(ColorTheme.MSG_HIGHLIGHT);
         

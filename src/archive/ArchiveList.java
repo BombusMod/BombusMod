@@ -123,8 +123,6 @@ public class ArchiveList
 	    addCommand(cmdJid);
 	}
         
-        attachDisplay(display);
-
         try {
             focusedItem(0);
         } catch (Exception e) {}
@@ -135,6 +133,8 @@ public class ArchiveList
 	mainbar.addElement(null);
 	mainbar.addElement(SR.MS_FREE /*"free "*/);
         setMainBarItem(mainbar);
+        
+        attachDisplay(display);
     }
 
     protected void beginPaint() {
@@ -160,7 +160,7 @@ public class ArchiveList
             new Browser(null, display, this, false);
         }
 //#endif
-        if (c==cmdNew) { new NewTemplate(display, where); }
+        if (c==cmdNew) { new archiveEdit(display, -1, where, this); }
 	if (m==null) return;
         
 	if (c==cmdDelete) { keyClear(); }
@@ -176,12 +176,15 @@ public class ArchiveList
 //#endif
         if (c==cmdEdit) {
             try {
-                new archiveEdit(display, getMessage(cursor), where);
-                deleteMessage();
+                new archiveEdit(display, cursor, where, this);
             } catch (Exception e) {/*no messages*/}
         }
     }
-	
+    
+    public void reFresh() {
+        archive=new MessageArchive(where);
+        messages=new Vector();
+    }
 
     private void deleteMessage() {
         archive.delete(cursor);

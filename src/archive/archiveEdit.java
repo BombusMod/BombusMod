@@ -30,8 +30,10 @@ package archive;
 import Client.Config;
 import Client.Msg;
 import Client.StaticData;
+import java.util.Vector;
 import javax.microedition.lcdui.*;
 import locale.SR;
+import ui.VirtualList;
 //#ifdef CLIPBOARD
 //# import util.ClipBoard;
 //#endif
@@ -45,7 +47,7 @@ public class archiveEdit implements CommandListener
     private Display display;
     private Displayable parentView;
     private TextBox t;
-    private String body;
+    private String body="";
 
     private Command cmdCancel=new Command(SR.MS_CANCEL, Command.SCREEN,99);
     private Command cmdOk=new Command(SR.MS_OK, Command.OK /*Command.SCREEN*/,1);
@@ -61,19 +63,30 @@ public class archiveEdit implements CommandListener
     private Config cf;
 
     private int where=1;
+
+    private int pos;
+
+    private ArchiveList al;
     
-    public archiveEdit(Display display, Msg msg, int where) {
-        this.msg=msg;
+    public archiveEdit(Display display, int pos, int where, ArchiveList al) {
+        archive=new MessageArchive(where);
+
         this.where=where;
-        parentView=display.getCurrent();
         this.display=display;
-        this.body=msg.getBody();
+        parentView=display.getCurrent();
+        
+        this.pos=pos;
+        
+        this.al=al;
         
         cf=Config.getInstance();
         
-	t=new TextBox(SR.MS_EDIT, "", 500, TextField.ANY);
-	
-        archive=new MessageArchive(where);
+	t=new TextBox((pos>-1)?SR.MS_EDIT:SR.MS_NEW, "", 500, TextField.ANY);
+
+        if (pos>-1) {
+            this.msg=archive.msg(pos);
+            this.body=msg.getBody();
+        }
         try {
             //expanding buffer as much as possible
             int maxSize=t.setMaxSize(4096); //must not trow
@@ -111,46 +124,26 @@ public class archiveEdit implements CommandListener
 		
         if (body.length()==0) body=null;
 //#ifdef CLIPBOARD
-//#         if (c==cmdPasteText) { insertText(clipboard.getClipBoard(), caretPos/*getCaretPos()*/); return; }
+//#         if (c==cmdPasteText) { t.insert(clipboard.getClipBoard(), caretPos); return; }
 //#endif
-        Msg newmsg=null;
-        if (c==cmdCancel) { 
-            newmsg=new Msg(msg.messageType, msg.from, msg.subject, msg.getBody());
-        } else if (c==cmdOk) {
-            newmsg=new Msg(msg.messageType, msg.from, msg.subject, body);
+        if (c==cmdOk) {
+            int type=Msg.MESSAGE_TYPE_OUT;
+            String from="";
+            String subj="";
+            if (pos>-1) {
+                type=msg.messageType;
+                from=msg.from;
+                subj=msg.subject;
+                archive.delete(pos);
+            }
+            Msg newmsg=new Msg(type, from, subj, body);
+            
+            archive.store(newmsg, where);
+            archive.close();
+            
+            al.reFresh();
         }
         
-        archive.add(newmsg, where);
-        archive.close();
-        
-        body=null;
-        
-        new ArchiveList(display, -1, where).setParentView(parentView);
+        display.setCurrent(parentView);
     }
-
-//#ifdef CLIPBOARD
-//#     public void insertText(String s, int caretPos) {
-//#         String src=t.getString();
-//# 
-//#         StringBuffer sb=new StringBuffer(s);
-//#         
-//#         if (caretPos>0) 
-//#             if (src.charAt(caretPos-1)!=' ')   
-//#                 sb.insert(0, ' ');
-//#         
-//#         if (caretPos<src.length())
-//#             if (src.charAt(caretPos)!=' ')
-//#                 sb.append(' ');
-//#         
-//#         if (caretPos==src.length()) sb.append(' ');
-//#         
-//#         try {
-//#             int freeSz=t.getMaxSize()-t.size();
-//#             if (freeSz<sb.length()) sb.delete(freeSz, sb.length());
-//#         } catch (Exception e) {}
-//#        
-//#         t.insert(sb.toString(), caretPos);
-//#         sb=null;
-//#     }
-//#endif
 }

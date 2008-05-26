@@ -61,7 +61,7 @@ public class PrivacyItem extends IconTextElement{
     String value=new String();
     int action=1;
     int order;
-    boolean stanzasSet[]=new boolean[4];
+    public static boolean stanzasSet[]=new boolean[4];
     
     public int getImageIndex(){
         return action+ RosterIcons.ICON_PRIVACY_ALLOW;
