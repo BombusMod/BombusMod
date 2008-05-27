@@ -44,7 +44,7 @@ public class MultiLine extends IconTextElement {
     private String text;
     public boolean selectable;
     private Font font;
-    
+    private boolean parsed;
     /**
      * Creates a new instance of MultiLine
      */
@@ -58,34 +58,31 @@ public class MultiLine extends IconTextElement {
         return text;
     }
     
-    public int getVHeight(){ return (lines==null)?1:(font.getHeight()*lines.size())+2; }
+    public int getVHeight(){
+        return (parsed)?(font.getHeight()*lines.size())+2:font.getHeight();
+    }
     
     public void drawItem(Graphics g, int ofs, boolean sel) {
         int width=g.getClipWidth();
+        int height=g.getClipHeight();
 
         if (lines==null) {
             lines=strconv.parseMessage(text, width-6, -1, false, font);
+            parsed=true;
         }
-        if (lines!=null)
-            drawAllStrings(g, 2, 0);
-
-        super.drawItem(g, ofs, sel);
-    }
-    
-    private void drawAllStrings(Graphics g, int x, int y) {
-        if (lines.size()<1)
+        if (!parsed)
             return;
 
         int fh=font.getHeight();
         g.setFont(font);
+        int y=0;
 	for (int line=0; line<lines.size(); ){
-            g.drawString((String) lines.elementAt(line), x, y, Graphics.TOP|Graphics.LEFT);
+            g.drawString((String) lines.elementAt(line), 2, y, Graphics.TOP|Graphics.LEFT);
             line=line+1;
             y += fh;
 	}
+        //super.drawItem(g, ofs, sel);
     }
-    
+
     public boolean isSelectable() { return selectable; }
-    
-    public Font getFont() { return font; }
 }

@@ -57,7 +57,7 @@ public class TestForm
         testNewChoiceBox1.append("1 byte");
         testNewChoiceBox1.append("<iq/>");
         testNewChoiceBox1.append("ping");
-        testNewChoiceBox1.append("a b c d e f g h i j k l m n o p q r s t u v w x y z");
+        testNewChoiceBox1.append("a b c d e f g h i j k l m n o p q r s t u v w x y z 0 1 2 3 4 5 6 7 8 9");
         testNewChoiceBox1.setSelectedIndex(4);
         itemsList.addElement(testNewChoiceBox1);
         
@@ -92,7 +92,7 @@ public class TestForm
         itemsList.addElement(testSimpleString2);   
         CheckBox testCheckBox2=new CheckBox("item1", true);
         itemsList.addElement(testCheckBox2);
-        CheckBox testCheckBox3=new CheckBox("item2", true);
+        CheckBox testCheckBox3=new CheckBox("item2 a b c d e f g h i j k l m n o p q r s t u v w x y z 0 1 2 3 4 5 6 7 8 9", true);
         itemsList.addElement(testCheckBox3);
         
         SpacerItem testSpacerItem2=new SpacerItem(0);
@@ -116,7 +116,7 @@ public class TestForm
         testChoiceBox1.append("1 byte");
         testChoiceBox1.append("<iq/>");
         testChoiceBox1.append("ping");
-        testChoiceBox1.append("a b c d e f g h i j k l m n o p q r s t u v w x y z");
+        testChoiceBox1.append("a b c d e f g h i j k l m n o p q r s t u v w x y z 0 1 2 3 4 5 6 7 8 9");
         testChoiceBox1.setSelectedIndex(4);
         itemsList.addElement(testChoiceBox1);
 

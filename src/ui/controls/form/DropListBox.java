@@ -63,5 +63,6 @@ public class DropListBox
     public VirtualElement getItemRef(int index){ 
         return new ListItem((String) listItems.elementAt(index)); 
     }
+    
     public int getItemCount() { return listItems.size(); }
 }

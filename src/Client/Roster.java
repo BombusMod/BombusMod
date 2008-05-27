@@ -2319,10 +2319,10 @@ public class Roster
                 mess.append(cntact.statusString);
             }
             
-            VirtualList.setWobble(1, (Contact) null, mess.toString());
+            super.setWobble(1, (Contact) null, mess.toString());
             mess=null;
         } else {
-            VirtualList.setWobble(type, contact, info);
+            super.setWobble(type, contact, info);
         }
 
         redraw();

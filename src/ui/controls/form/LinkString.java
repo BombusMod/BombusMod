@@ -54,7 +54,7 @@ public abstract class LinkString
         int stringWidth=getFont().stringWidth(toString());
 
         g.setColor(getColor());
-        g.drawLine(4, height-2, stringWidth+4, height-2);
+        g.drawLine(4, height-1, stringWidth+4, height-1);
 
         g.setColor(oldColor);
 

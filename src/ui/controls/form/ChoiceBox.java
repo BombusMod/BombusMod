@@ -96,6 +96,8 @@ public class ChoiceBox
         g.fillTriangle(horCenterTrinangle-size, vertCenterTrinangle-size, horCenterTrinangle+size, vertCenterTrinangle-size, horCenterTrinangle, vertCenterTrinangle+size);
         
         g.setColor(oldColor);
+        
+        g.setClip(0, 0, width-height-2, height);
         super.drawItem(g, ofs, sel);
     }
     

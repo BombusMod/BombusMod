@@ -111,7 +111,7 @@ public abstract class AlertBox extends Canvas implements CommandListener {
         isShowing=false;
         removeCommand(cmdOk);
         removeCommand(cmdCancel);
-        if (next==null) {
+        if (display!=null && next==null) {
             display.setCurrent(StaticData.getInstance().roster);
         } else {
             display.setCurrent(next);

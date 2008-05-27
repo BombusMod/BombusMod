@@ -176,7 +176,6 @@ public class MucContact extends Contact {
             String reason=item.getChildBlockText("reason");
             String realJid=item.getAttribute("jid");
             switch (statusCode) {
-                
                 case 303:
                     b.append(SR.MS_IS_NOW_KNOWN_AS);
                     appendL(b,chNick);
@@ -186,28 +185,28 @@ public class MucContact extends Contact {
                     from=newJid;
                     nick=chNick;
                     break;
-                    
                 case 301: //ban
                     presenceType=Presence.PRESENCE_ERROR;
                 case 307: //kick
                     if (realJid!=null) {
                         b.append(" (");
                         b.append(realJid);
-                        b.append(')');
+                        b.append(")");
                     }
                     b.append((statusCode==301)? SR.MS_WAS_BANNED : SR.MS_WAS_KICKED );
 //#ifdef POPUPS
                     if (((ConferenceGroup)getGroup()).getSelfContact() == this ) {
-                        VirtualList.setWobble(3, (Contact) null, nick+((statusCode==301)? SR.MS_WAS_BANNED : SR.MS_WAS_KICKED)+"\n"+reason);
+                        StaticData.getInstance().roster.setWobble(3, (Contact) null, ((statusCode==301)? SR.MS_WAS_BANNED : SR.MS_WAS_KICKED)+((reason!="")?"\n"+reason:""));
                     }
 //#endif
-                    b.append("(");
-                    b.append(reason);
-                    b.append(")");
-					
+                    if (reason!="") {
+                        b.append("(");
+                        b.append(reason);
+                        b.append(")");
+                    }
                     if (realJid!=null) {
                         b.append(" - ");
-                        appendL(b,realJid);
+                        appendL(b, realJid);
                     }
 
                     if (reason.indexOf("talks") > -1) toTalks();
@@ -222,12 +221,11 @@ public class MucContact extends Contact {
                     b.append(SR.MS_HAS_BEEN_KICKED_BECAUSE_ROOM_BECAME_MEMBERS_ONLY);
                     testMeOffline();
                     break;
-                    
                 default:
                     if (realJid!=null) {
                         b.append(" (");
                         b.append(realJid);
-                        b.append(')');
+                        b.append(")");
                     }
                     b.append(SR.MS_HAS_LEFT_CHANNEL);
                     
@@ -239,7 +237,6 @@ public class MucContact extends Contact {
 
                     testMeOffline();
             } 
-                
         } else {
             if (this.status==Presence.PRESENCE_OFFLINE) {
                 String realJid=item.getAttribute("jid");

@@ -52,13 +52,12 @@ public class archiveEdit implements CommandListener
     private Command cmdCancel=new Command(SR.MS_CANCEL, Command.SCREEN,99);
     private Command cmdOk=new Command(SR.MS_OK, Command.OK /*Command.SCREEN*/,1);
 
-    private Command cmdPasteText=new Command(SR.MS_PASTE, Command.SCREEN, 98);  
-
     private Msg msg;
     
     MessageArchive archive;
 //#ifdef CLIPBOARD
 //#     private ClipBoard clipboard;
+//#     private Command cmdPasteText=new Command(SR.MS_PASTE, Command.SCREEN, 98);  
 //#endif
     private Config cf;
 

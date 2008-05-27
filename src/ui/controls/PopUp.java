@@ -66,8 +66,8 @@ public class PopUp {
     }
 
     public PopUp() {
-         font=FontCache.getBalloonFont();
          popUps = new Vector();
+         font=FontCache.getBalloonFont();
          ct=ColorTheme.getInstance();
     }
     
@@ -144,10 +144,8 @@ public class PopUp {
                 return ct.getColor(ColorTheme.POPUP_SYSTEM_INK);
             case TYPE_MESSAGE:
                 return ct.getColor(ColorTheme.POPUP_MESSAGE_INK);
-            case TYPE_ALERT:
-                return ct.getColor(COLOR_ALERT_INK);
         }
-        return 0x000000;
+        return COLOR_ALERT_INK;
     }
     
     private int getColorBgnd() {
@@ -157,10 +155,8 @@ public class PopUp {
                 return ct.getColor(ColorTheme.POPUP_SYSTEM_BGND);
             case TYPE_MESSAGE:
                 return ct.getColor(ColorTheme.POPUP_MESSAGE_BGND);
-            case TYPE_ALERT:
-                return ct.getColor(COLOR_ALERT_BGND);
         }
-        return 0xffffff;
+        return COLOR_ALERT_BGND;
     }
     
 //paint
@@ -171,9 +167,7 @@ public class PopUp {
         int strWdth=getMaxWidth();
         
         popUpWidth=(strWdth>(width-border))?width-border:strWdth+padding;
-
         widthBorder=(strWdth>popUpWidth)?border/2:(width-popUpWidth)/2;
-
 
         int stringsHeight=getHeight();
 
@@ -185,7 +179,7 @@ public class PopUp {
             heightBorder=(height-popUpHeight)/2;
         }
      
-        g.translate(widthBorder-g.getTranslateX(), heightBorder-g.getTranslateY());
+        g.translate(widthBorder, heightBorder);
 
         g.setClip(0,0,popUpWidth+1,popUpHeight+1);
 
