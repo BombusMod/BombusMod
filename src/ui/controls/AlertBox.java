@@ -38,7 +38,7 @@ import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
 import locale.SR;
 import Fonts.FontCache;
-import util.strconv;
+import util.StringUtils;
 //#ifdef GRADIENT
 //# import ui.Gradient;
 //#endif
@@ -71,7 +71,6 @@ public abstract class AlertBox extends Canvas implements CommandListener {
     private Progress pb;
 
     int pos=0;
-
     int steps=1;
     
     ColorTheme ct;
@@ -111,7 +110,8 @@ public abstract class AlertBox extends Canvas implements CommandListener {
         isShowing=false;
         removeCommand(cmdOk);
         removeCommand(cmdCancel);
-        if (display!=null && next==null) {
+
+        if (display==null) {
             display.setCurrent(StaticData.getInstance().roster);
         } else {
             display.setCurrent(next);
@@ -120,7 +120,8 @@ public abstract class AlertBox extends Canvas implements CommandListener {
     
     private void getLines(int width, int height, int fh) {
         if (lines==null) {
-            lines=strconv.parseMessage(text, width-4, height-fh-10, false, messageFont);
+            //lines=StringUtils.parseMessage(text, width-4, height-fh-10, false, messageFont);
+            lines=StringUtils.parseMessage(text, width-4, messageFont);
             text=null;
         }
     }

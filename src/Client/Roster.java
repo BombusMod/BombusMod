@@ -44,14 +44,13 @@ import Conference.ConferenceForm;
 import archive.ArchiveList;
 //#endif
 import images.RosterIcons;
-//import images.SmilesIcons;
-import Messages.MessageParser;
 import locale.SR;
 import login.LoginListener;
 import login.SASLAuth;
 import midlet.BombusMod;
 import ui.MainBar;
 import ui.controls.AlertBox;
+import util.StringUtils;
 import util.strconv;
 import vcard.VCard;
 import vcard.VCardView;
@@ -776,7 +775,7 @@ public class Roster
         if (message==null)
             myMessage=es.getMessage();
 
-        myMessage=strconv.toExtendedString(myMessage);
+        myMessage=StringUtils.toExtendedString(myMessage);
         
         Presence presence = new Presence(myStatus, es.getPriority(), myMessage, sd.account.getNick());
 		
@@ -829,7 +828,7 @@ public class Roster
         ExtendedStatus es= sl.getStatus(status);
         myMessage=es.getMessage();
  
-        myMessage=strconv.toExtendedString(myMessage);
+        myMessage=StringUtils.toExtendedString(myMessage);
 
         Presence presence = new Presence(status, es.getPriority(), myMessage, sd.account.getNick());
         
@@ -900,7 +899,7 @@ public class Roster
 //#                 }
 //#             }
 //#endif
-            Presence presence = new Presence(mcstatus, es.getPriority(), strconv.toExtendedString((message==null)?es.getMessage():message), null);
+            Presence presence = new Presence(mcstatus, es.getPriority(), StringUtils.toExtendedString((message==null)?es.getMessage():message), null);
             presence.setTo(myself.bareJid.substring(0, myself.bareJid.indexOf("/")+1)+myself.nick);
             theStream.send(presence);
          }
@@ -922,11 +921,11 @@ public class Roster
             if (es.getPriority()!=0) 
                 presence.addChild("priority",Integer.toString(es.getPriority()));
             if (es.getMessage()!=null) 
-                presence.addChild("status", strconv.toExtendedString(es.getMessage()));
+                presence.addChild("status", StringUtils.toExtendedString(es.getMessage()));
         } else if (conference) {
             ExtendedStatus es= sl.getStatus(Presence.PRESENCE_OFFLINE);            
             if (es.getMessage()!=null) 
-                presence.addChild("status", strconv.toExtendedString(es.getMessage()));
+                presence.addChild("status", StringUtils.toExtendedString(es.getMessage()));
         }
         
         theStream.send(presence);
@@ -1506,11 +1505,11 @@ public class Roster
                         if (pr.hasEntityCaps()) {
                             c.hasCaps=true;                             
                             if (pr.getEntityNode()!=null) {
-                                c.capsNode = strconv.replaceCaps(pr.getEntityNode());
+                                c.capsNode = StringUtils.replaceCaps(pr.getEntityNode());
                                 if (c.capsNode.indexOf("#")<0)
                                     c.capsVer=pr.getEntityVer();
                             } else {
-                                c.capsNode=strconv.replaceCaps(pr.getEntityNode());
+                                c.capsNode=StringUtils.replaceCaps(pr.getEntityNode());
                             }
                         }
                         JabberDataBlock j2j=pr.findNamespace("x", "j2j:history");
@@ -1580,11 +1579,11 @@ public class Roster
                             if (pr.hasEntityCaps()) {
                                 c.hasCaps=true;
                                 if (pr.getEntityNode()!=null) {
-                                    c.capsNode = strconv.replaceCaps(pr.getEntityNode());
+                                    c.capsNode = StringUtils.replaceCaps(pr.getEntityNode());
                                     if (c.capsNode.indexOf("#")<0)
                                         c.capsVer=pr.getEntityVer();
                                 } else {
-                                    c.capsNode=strconv.replaceCaps(pr.getEntityNode());
+                                    c.capsNode=StringUtils.replaceCaps(pr.getEntityNode());
                                 }
                             }
 
@@ -2780,15 +2779,15 @@ public class Roster
 //#         str.append(stats.getSessionsCount());
 //#         str.append(SR.MS_CONN);
 //# 
-//#         str.append(strconv.getSizeString(stats.getAllTraffic()));
+//#         str.append(StringUtils.getSizeString(stats.getAllTraffic()));
 //# 
 //#         str.append("\n");
 //#         str.append(SR.MS_PREVIOUS);
-//#         str.append(strconv.getSizeString(stats.getLatest()));
+//#         str.append(StringUtils.getSizeString(stats.getLatest()));
 //# 
 //#         str.append("\n");
 //#         str.append(SR.MS_CURRENT);
-//#         str.append(strconv.getSizeString(Stats.getGPRS()));
+//#         str.append(StringUtils.getSizeString(Stats.getGPRS()));
 //# 
 //#         if (isLoggedIn())
 //#             str.append(theStream.getStreamStats());

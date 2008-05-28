@@ -32,6 +32,7 @@ import Client.StaticData;
 import io.file.FileIO;
 import java.io.IOException;
 import java.io.OutputStream;
+import util.StringUtils;
 import util.Translit;
 import util.strconv;
 
@@ -55,7 +56,7 @@ public class HistoryAppend {
        filename=(cf.transliterateFilenames)?Translit.translit(filename):filename;
 //#endif
        
-       filename = cf.msgPath+strconv.replaceBadChars(filename)+".txt";
+       filename = cf.msgPath+StringUtils.replaceBadChars(filename)+".txt";
        file=FileIO.createConnection(filename);
         try {
             os = file.openOutputStream(0);

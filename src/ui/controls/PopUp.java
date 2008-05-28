@@ -28,13 +28,12 @@
 package ui.controls;
 
 import Client.Contact;
-import Client.StaticData;
 import Colors.ColorTheme;
 import java.util.Vector;
 import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
 import Fonts.FontCache;
-import util.strconv;
+import util.StringUtils;
 
 public class PopUp {
     private final static int TYPE_SYSTEM = 1;
@@ -59,7 +58,8 @@ public class PopUp {
 
     synchronized public void addPopup(int type, Contact contact, String message){
         if (message!=null)
-            popUps.addElement(new PopUpElement(type, contact, strconv.parseMessage(message, width-border-padding, height-border-padding, false, font)));
+            //popUps.addElement(new PopUpElement(type, contact, StringUtils.parseMessage(message, width-border-padding, height-border-padding, false, font)));
+            popUps.addElement(new PopUpElement(type, contact, StringUtils.parseMessage(message, width-border-padding, font)));
 //#ifdef DEBUG
 //# //	System.out.println("added message to array = "+message);
 //#endif

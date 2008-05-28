@@ -46,7 +46,7 @@ import locale.SR;
 import ui.Time;
 import ui.controls.StringItemEx;
 import ui.controls.TextFieldEx;
-import util.strconv;
+import util.StringUtils;
 
 /**
  *
@@ -215,7 +215,7 @@ public class vCardForm
             }
             if (st==2 & photo!=null) {
                 //System.out.println(photoType+"->"+getFileType(photoType));
-                String filename = strconv.replaceBadChars(getNickDate());
+                String filename = StringUtils.replaceBadChars(getNickDate());
                 FileIO file=FileIO.createConnection(pathSelected+filename+getFileType(getPhotoMIMEType()));
                 file.fileWrite(photo);
             }

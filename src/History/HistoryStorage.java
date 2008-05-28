@@ -27,13 +27,12 @@
 package History;
 
 import Client.Config;
-import Client.Contact;
 import Client.Msg;
 import io.file.FileIO;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Enumeration;
 import java.util.Vector;
+import util.StringUtils;
 import util.Translit;
 import util.strconv;
 
@@ -55,9 +54,9 @@ public class HistoryStorage {
     
     public HistoryStorage(String filename) {
 //#ifdef TRANSLIT
-//#        filename=(cf.transliterateFilenames)?Translit.translit(filename):filename;
+       filename=(cf.transliterateFilenames)?Translit.translit(filename):filename;
 //#endif
-       filename=cf.msgPath+strconv.replaceBadChars(filename)+".txt";
+       filename=cf.msgPath+StringUtils.replaceBadChars(filename)+".txt";
        this.history = loadHistory(filename);
    }
     

@@ -26,8 +26,11 @@
  */
 
 package Client;
+import images.MenuIcons;
 import images.RosterIcons;
+//#ifdef SMILES
 import images.SmilesIcons;
+//#endif
 //#ifdef FILE_IO
 import io.file.FileIO;
 //#endif
@@ -301,6 +304,7 @@ type = \"-=Siemens=-\";
             case SONYE:
                 //prefetch images
                 RosterIcons.getInstance();
+                MenuIcons.getInstance();
 //#ifdef SMILES
                 SmilesIcons.getInstance();
 //#endif

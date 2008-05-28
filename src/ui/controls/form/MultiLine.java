@@ -32,7 +32,7 @@ import java.util.Vector;
 import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
 import ui.IconTextElement;
-import util.strconv;
+import util.StringUtils;
 
 /**
  *
@@ -71,7 +71,8 @@ public class MultiLine extends IconTextElement {
         int height=g.getClipHeight();
 
         if (lines==null) {
-            lines=strconv.parseMessage(text, width-6, -1, false, font);
+            //lines=StringUtils.parseMessage(text, width-6, -1, false, font);
+            lines=StringUtils.parseMessage(text, width-6, font);
             itemHeight=(fontHeight*lines.size())+2;
             parsed=true;
         }

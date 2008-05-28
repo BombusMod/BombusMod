@@ -30,13 +30,12 @@ package io;
 import Client.Config;
 import Client.StaticData;
 import Info.Version;
-import com.ssttr.crypto.MD5;
 import com.ssttr.crypto.SHA1;
 import java.util.Hashtable;
 import javax.microedition.io.Connector;
 import javax.microedition.io.HttpConnection;
 import locale.SR;
-import util.strconv;
+import util.StringUtils;
 
 /**
  *
@@ -79,12 +78,12 @@ public class DnsSrvResolver {
         sha.updateASCII(StaticData.getInstance().account.getBareJid());
         sha.finish();
         
-        url.append("&name=").append(strconv.urlPrep(Version.NAME));
-        url.append("&version=").append(strconv.urlPrep(Version.getVersionNumber()));
-        url.append("&l=").append(strconv.urlPrep(SR.MS_IFACELANG));
+        url.append("&name=").append(StringUtils.urlPrep(Version.NAME));
+        url.append("&version=").append(StringUtils.urlPrep(Version.getVersionNumber()));
+        url.append("&l=").append(StringUtils.urlPrep(SR.MS_IFACELANG));
         url.append("&os=");
         if (Config.getInstance().enableVersionOs)
-            url.append(strconv.urlPrep(Config.getOs()));
+            url.append(StringUtils.urlPrep(Config.getOs()));
         url.append("&hash=").append(sha.getDigestHex());
 
         try {

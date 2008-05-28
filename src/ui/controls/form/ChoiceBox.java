@@ -92,13 +92,19 @@ public class ChoiceBox
         g.drawRoundRect(width-boxSize-1, 0, boxSize, boxSize, 6, 6);
         int horCenterTrinangle=width-(boxSize/2)-1;
         int vertCenterTrinangle=height-(boxSize/2);
-        int size=boxSize/3;
-        g.fillTriangle(horCenterTrinangle-size, vertCenterTrinangle-size, horCenterTrinangle+size, vertCenterTrinangle-size, horCenterTrinangle, vertCenterTrinangle+size);
+        int size=boxSize/4;
+        drawTriangle(horCenterTrinangle-size, vertCenterTrinangle-size, horCenterTrinangle+size, vertCenterTrinangle-size, horCenterTrinangle, vertCenterTrinangle+size, g);
         
         g.setColor(oldColor);
         
         g.setClip(0, 0, width-height-2, height);
         super.drawItem(g, ofs, sel);
+    }
+    
+    public static void drawTriangle(int x1, int y1, int x2, int y2, int x3, int y3, Graphics g) {
+            g.drawLine( x1, y1, x2, y2 );
+            g.drawLine( x2, y2, x3, y3 ); 
+            g.drawLine( x3, y3, x1, y1 );
     }
 
     public boolean handleEvent(int keyCode) {

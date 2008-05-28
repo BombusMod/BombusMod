@@ -32,8 +32,8 @@ public class Reconnect extends TimerBox {
     
     private final static int WAITTIME=15;
 
-    public Reconnect(String mainbar, String body, Display display) {
-        super(mainbar, body, WAITTIME, display, null);
+    public Reconnect(String title, String body, Display display) {
+        super(title, body, WAITTIME, display, null);
     }
 
     public void yes() {

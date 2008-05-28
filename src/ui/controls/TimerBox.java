@@ -55,12 +55,12 @@ public abstract class TimerBox extends AlertBox implements Runnable {
             super.pos+=1;
             
             if (super.pos>=timeout) {
-                yes();
-                super.destroyView();
                 break;
             }
             repaint();
         }
+        yes();
+        super.destroyView();
     }
 
     public abstract void yes();
