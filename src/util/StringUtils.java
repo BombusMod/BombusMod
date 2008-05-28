@@ -39,8 +39,7 @@ public class StringUtils {
     private final static String TKABBER_REP="http://tkabber.jabber.ru/";
     
     private final static String[] badChars= { "?", "\\", "/", "*", ".", "\"", ":", "%", "@", "|", "<", ">", "COM", "LPT", "NULL", "PRINT"};
-   
-    
+
     public static String replaceCaps(String src){
         if (src==null)
             return "Unknown";
@@ -163,6 +162,14 @@ public class StringUtils {
     
     
     public static Vector parseMessage(String value, int availWidth, Font font) {
+        StringBuffer out=new StringBuffer(value);
+        int vi = 0;
+        while (vi<out.length()) {
+            if (out.charAt(vi)<0x03) out.deleteCharAt(vi);
+            else vi++;
+        }
+        value=out.toString();
+        
         Vector lines=new Vector();
         char[] valueChars = value.toCharArray();
         int startPos = 0;
@@ -177,7 +184,7 @@ public class StringUtils {
                 lastSpacePos = -1;
                 startPos = i+1;
                 currentLineWidth = 0;
-                 i = startPos;
+                i = startPos;
             } else if (currentLineWidth >= availWidth && i > 0) {
                 if ( lastSpacePos == -1 ) {
                     i--;
@@ -190,7 +197,7 @@ public class StringUtils {
                     startPos =  lastSpacePos + 1;
                     lastSpacePos = -1;
                 }
-              } else if (c == ' ' || c == '\t') {
+            } else if (c == ' ' || c == '\t') {
                 lastSpacePos = i;
                 lastSpacePosLength = currentLineWidth;
             }

@@ -31,7 +31,7 @@ package Client;
 import Conference.MucContact;
 //#endif
 
-//#if (FILE_IO && HISTORY)
+//#if HISTORY
 //# import History.HistoryAppend;
 //#endif
 
@@ -223,12 +223,6 @@ public class Contact extends IconTextElement{
         return clone;
     }
 
-    public int getImageIndex() {
-        int st=(status==Presence.PRESENCE_OFFLINE)?offline_type:status;
-        if (st<8) st+=transport; 
-        return st;
-    }
-    
     public int getNewMsgsCount() {
         if (getGroupType()==Groups.TYPE_IGNORE) return 0;
         if (newMsgCnt>-1) return newMsgCnt;
@@ -528,14 +522,22 @@ public class Contact extends IconTextElement{
 //#     }
 //#endif
 
+
+    public int getImageIndex() {
+        if (showComposing==true) 
+            return RosterIcons.ICON_COMPOSING_INDEX;
+        int st=(status==Presence.PRESENCE_OFFLINE)?offline_type:status;
+        if (st<8) st+=transport; 
+        return st;
+    }
+    
+    
     public int getSecImageIndex() {
 //#ifdef ANTISPAM
 //#         if (!tempMsgs.isEmpty())
 //#             return RosterIcons.ICON_AUTHRQ_INDEX;
 //#endif
-        if (showComposing==true) 
-            return RosterIcons.ICON_COMPOSING_INDEX;
-        
+  
         if (getNewMsgsCount()>0)  {
             switch (unreadType) {
                 case Msg.MESSAGE_TYPE_AUTH: return RosterIcons.ICON_AUTHRQ_INDEX;
@@ -599,7 +601,7 @@ public class Contact extends IconTextElement{
 
     public void drawItem(Graphics g, int ofs, boolean sel) {
         int w=g.getClipWidth();
-        int h=g.getClipHeight();
+        int h=super.getVHeight();
         int xo=g.getClipX();
         int yo=g.getClipY();
         
@@ -623,6 +625,7 @@ public class Contact extends IconTextElement{
             w-=il.getWidth();
             il.drawImage(g, getSecImageIndex(), w,imgH);
         }
+        
         g.setClip(xo, yo, w, h);
         
         super.drawItem(g, ofs, sel);

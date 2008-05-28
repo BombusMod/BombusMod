@@ -206,7 +206,7 @@ public class ContactMessageList extends MessageList
 //#ifdef PEP
 //#         if (contact.hasMood()) {
 //#             getMainBarItem().setElementAt(RosterIcons.iconTransparent, num++);
-//#         }
+//#         } else
 //#ifdef PEP_TUNE
 //#         if (contact.pepTune) {
 //#             getMainBarItem().setElementAt(RosterIcons.iconTransparent, num++);
@@ -214,11 +214,7 @@ public class ContactMessageList extends MessageList
 //#endif
 //#endif
         getMainBarItem().setElementAt((contact.vcard==null)?null:RosterIcons.iconHasVcard, num++);
-        if (contact.showComposing) {
-            getMainBarItem().setElementAt(new Integer(RosterIcons.ICON_COMPOSING_INDEX), num++);
-        } else {
-            getMainBarItem().setElementAt(sd.roster.getEventIcon(), num++);
-        }
+        getMainBarItem().setElementAt(sd.roster.getEventIcon(), num++);
 //#ifdef PEP
 //#         if (!contact.hasMood()) {
 //#             getMainBarItem().setElementAt(RosterIcons.iconTransparent, num++);

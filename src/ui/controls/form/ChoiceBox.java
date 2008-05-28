@@ -78,7 +78,7 @@ public class ChoiceBox
     
     public void drawItem(Graphics g, int ofs, boolean sel) {
         int width=g.getClipWidth();
-        int height=g.getClipHeight();
+        int height=super.getVHeight();
 
         int oldColor=g.getColor();
 
