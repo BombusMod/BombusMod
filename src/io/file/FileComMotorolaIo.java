@@ -97,7 +97,7 @@ class FileComMotorolaIo extends FileIO{
         
         Vector rd=new Vector(list.length + 1);
         for (int i = 0; i < list.length; i++) {
-			if (directoriesOnly & !list[i].endsWith("/")) continue;
+            if (directoriesOnly & !list[i].endsWith("/")) continue;
             int st=(list[i].startsWith("/")) ? 1 : 0;
             rd.addElement(list[i].substring(st+fileName.length()));
         }

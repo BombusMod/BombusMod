@@ -28,6 +28,7 @@
 package ui.controls.form;
 
 import javax.microedition.lcdui.Display;
+import javax.microedition.lcdui.TextField;
 
 /**
  *
@@ -43,7 +44,7 @@ public class NumberInput
      * Creates a new instance of NumberInput
      */
     public NumberInput(Display display, String text, int min, int max) {
-        super(display, text, null);
+        super(display, text, null, TextField.NUMERIC);
         this.min=min;
         this.max=max;
         initValue=text;

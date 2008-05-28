@@ -41,8 +41,8 @@ public class Reconnect extends TimerBox {
              StaticData.getInstance().roster.sendPresence(5, null); //Presence.PRESENCE_OFFLINE
         } catch (Exception e2) { }
         StaticData.getInstance().roster.doReconnect();
+        super.destroyView();
     }
 
-    public void no() {
-    }
+    public void no() { }
 }

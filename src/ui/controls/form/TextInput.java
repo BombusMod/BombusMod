@@ -48,11 +48,13 @@ public class TextInput
     public String id;
     
     ColorTheme ct;
+
+    private int boxType;
     
     /**
      * Creates a new instance of TextInput
      */
-    public TextInput(Display display, String text, String id) {
+    public TextInput(Display display, String text, String id, int boxType) {
         super(null);
         this.display=display;
         this.text=(text==null)?"":text;
@@ -63,7 +65,7 @@ public class TextInput
     public String toString() { return (text==null)?"":text; }
     
     public void onSelect(){
-        new EditBox(display, text, this);
+        new EditBox(display, text, this, boxType);
     }
     
     public String getValue() { return (text==null)?"":text; }

@@ -42,7 +42,7 @@ public class ImageFileItem extends ImageItem {
         
         try {
             img=Image.createImage(imagePath);
-        } catch (IOException ex) { ex.printStackTrace(); }
+        } catch (IOException ex) { }
     }
     
 }

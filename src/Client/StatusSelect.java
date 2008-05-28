@@ -148,7 +148,7 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
             this.status=status;
             
             itemsList.addElement(new BoldString(SR.MS_MESSAGE));
-            tfMessage = new TextInput(display, status.getMessage(), "ex_status_list"); //, 100, TextField.ANY "ex_status_list"
+            tfMessage = new TextInput(display, status.getMessage(), "ex_status_list", TextField.ANY); //, 100, TextField.ANY "ex_status_list"
             itemsList.addElement(tfMessage);
             
             itemsList.addElement(new BoldString(SR.MS_PRIORITY));
@@ -157,7 +157,7 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
 
             if (status.getImageIndex()<5) {
                 itemsList.addElement(new BoldString(SR.MS_AUTORESPOND));
-                tfAutoRespondMessage=new TextInput(display, status.getAutoRespondMessage(), "autorespond");//, 100, 0
+                tfAutoRespondMessage=new TextInput(display, status.getAutoRespondMessage(), "autorespond", TextField.ANY);//, 100, 0
                 itemsList.addElement(tfAutoRespondMessage);
 
                 autoRespond = new CheckBox(SR.MS_SET, status.getAutoRespond()); itemsList.addElement(autoRespond);

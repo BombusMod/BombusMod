@@ -31,6 +31,7 @@ import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
 import java.util.Enumeration;
 import javax.microedition.lcdui.Display;
+import javax.microedition.lcdui.TextField;
 import locale.SR;
 import ui.controls.form.DefForm;
 import ui.controls.form.SpacerItem;
@@ -58,7 +59,7 @@ public class RenameGroup
         this.group=group;
         this.display=display;
         
-        groupName = new TextInput(display, (contact==null)?group.getName():contact.getGroup().getName(), "groups"); // 32, TextField.ANY
+        groupName = new TextInput(display, (contact==null)?group.getName():contact.getGroup().getName(), "groups", TextField.ANY); // 32, TextField.ANY
         itemsList.addElement(groupName);
         
         itemsList.addElement(new SpacerItem(0));

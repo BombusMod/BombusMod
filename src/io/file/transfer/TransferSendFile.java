@@ -32,6 +32,7 @@ import io.file.browse.BrowserListener;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
+import javax.microedition.lcdui.TextField;
 import locale.SR;
 import ui.controls.form.BoldString;
 import ui.controls.form.DefForm;
@@ -66,11 +67,11 @@ public class TransferSendFile
         itemsList.addElement(new SimpleString(recipientJid));
         
         itemsList.addElement(new BoldString(SR.MS_FILE));
-        fileName = new TextInput(display, null, "sendfile");
+        fileName = new TextInput(display, null, "sendfile", TextField.ANY);
         itemsList.addElement(fileName);
         
         itemsList.addElement(new BoldString(SR.MS_DESCRIPTION));
-        description = new TextInput(display, null, null);
+        description = new TextInput(display, null, null, TextField.ANY);
         itemsList.addElement(description);
         
         moveCursorTo(getNextSelectableRef(-1));

@@ -38,7 +38,7 @@ import ui.IconTextElement;
 public class ChoiceBox 
         extends IconTextElement {
     
-    private int index=0;
+    public int index=0;
     
     public Vector items=new Vector();
     
@@ -99,6 +99,18 @@ public class ChoiceBox
         
         g.setClip(0, 0, width-height-2, height);
         super.drawItem(g, ofs, sel);
+    }
+
+    public boolean handleEvent(int keyCode) {
+         switch (keyCode) {
+            case 4:
+                index=(index>0)?index-1:items.size()-1;
+                return true;
+            case 6: 
+                index=(index+1)%items.size();
+                return true;
+         }
+        return false;
     }
     
     public boolean isSelectable() { return selectable; }

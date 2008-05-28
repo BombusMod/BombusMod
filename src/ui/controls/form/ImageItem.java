@@ -36,7 +36,7 @@ import ui.IconTextElement;
  * @author ad
  */
 public class ImageItem
-        extends IconTextElement {
+    extends IconTextElement {
     
     public Image img;
     private boolean collapsed;

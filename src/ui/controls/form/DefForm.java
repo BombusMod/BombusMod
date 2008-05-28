@@ -51,7 +51,8 @@ public class DefForm
     
     public Vector itemsList=new Vector();
 
-    public Command cmdOk = new Command(SR.MS_OK, Command.OK, 1);
+    public Command cmdSelect = new Command(SR.MS_SELECT, Command.OK, 1);
+    public Command cmdOk = new Command(SR.MS_SAVE, Command.SCREEN, 2);
     public Command cmdCancel = new Command(SR.MS_BACK, Command.BACK, 99);
     
     /**
@@ -62,7 +63,7 @@ public class DefForm
 	parentView=display.getCurrent();
         
 	setMainBarItem(new MainBar(caption));
-        
+        addCommand(cmdSelect);
 	addCommand(cmdOk);
 	addCommand(cmdCancel);
 	setCommandListener(this);
@@ -81,6 +82,9 @@ public class DefForm
 	if (command==cmdCancel) {
 	    cmdCancel();
 	}
+	if (command==cmdSelect) {
+            getItemRef(cursor).onSelect();
+        }
 	if (command==cmdOk) {
             cmdOk();
         }

@@ -27,6 +27,7 @@
 
 package ui.controls.form;
 
+import Colors.ColorTheme;
 import javax.microedition.lcdui.Graphics;
 
 /**
@@ -34,15 +35,18 @@ import javax.microedition.lcdui.Graphics;
  * @author ad
  */
 public abstract class LinkString 
-        extends SimpleString {
+     extends SimpleString {
+    
+    ColorTheme ct;
     
     /** Creates a new instance of NewClass */
     public LinkString(String text) {
         super(text);
+        ct=ColorTheme.getInstance();
     }
     
     public int getColor() {
-        return 0x0000ff;
+        return ct.getColor(ColorTheme.MSG_HIGHLIGHT);
     }
     
     public void drawItem(Graphics g, int ofs, boolean sel) {

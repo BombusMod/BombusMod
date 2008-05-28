@@ -106,7 +106,13 @@ class FileJSR75 extends FileIO {
         close();
         Vector rd=new Vector();
         while (dirs.hasMoreElements()) {
-            rd.addElement((String)dirs.nextElement());
+            String item=(String)dirs.nextElement();
+            if (directoriesOnly) {
+                if (item.endsWith("/"))
+                    rd.addElement(item);
+            } else {            
+                rd.addElement(item);
+            }
         }
         return rd;
     }

@@ -79,11 +79,11 @@ public final class ContactEdit
         Vector groups=sd.roster.groups.getRosterGroupNames();
 
         
-        tJid=new TextInput(display, null, null); 
+        tJid=new TextInput(display, null, null, TextField.ANY); 
 
-        tNick=new TextInput(display, null, null);
+        tNick=new TextInput(display, null, null, TextField.ANY);
         
-        tGroup=new TextInput(display, (c==null)?"":c.getGroup().name, null);
+        tGroup=new TextInput(display, (c==null)?"":c.getGroup().name, null, TextField.ANY);
 
         tTranspList=new DropChoiceBox(display);
         // Transport droplist

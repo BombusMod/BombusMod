@@ -28,6 +28,7 @@
 package Client;
 
 import javax.microedition.lcdui.Display;
+import javax.microedition.lcdui.TextField;
 import locale.SR;
 import ui.SplashScreen;
 import ui.controls.AlertBox;
@@ -93,7 +94,7 @@ public class AccountForm
         getMainBarItem().setElementAt(mainbar, 0);
         
         itemsList.addElement(new BoldString(SR.MS_USERNAME));
-        userbox = new TextInput(display, account.getUserName(), null); //, 64, TextField.ANY
+        userbox = new TextInput(display, account.getUserName(), null, TextField.ANY); //, 64, TextField.ANY
         itemsList.addElement(userbox);
     
         itemsList.addElement(new BoldString(SR.MS_PASSWORD));
@@ -101,11 +102,11 @@ public class AccountForm
         itemsList.addElement(passbox);
         
         itemsList.addElement(new BoldString(SR.MS_SERVER));
-        servbox = new TextInput(display, account.getServer(), null);//, 64, TextField.ANY
+        servbox = new TextInput(display, account.getServer(), null, TextField.ANY);//, 64, TextField.ANY
         itemsList.addElement(servbox);
         
         itemsList.addElement(new BoldString(SR.MS_HOST_IP));
-	ipbox = new TextInput(display, account.getHostAddr(), null);//, 64, TextField.ANY
+	ipbox = new TextInput(display, account.getHostAddr(), null, TextField.ANY);//, 64, TextField.ANY
         itemsList.addElement(ipbox);
         
         itemsList.addElement(new BoldString(SR.MS_PORT));
@@ -142,16 +143,16 @@ public class AccountForm
 //#endif
         
         itemsList.addElement(new BoldString(SR.MS_RESOURCE));
-        resourcebox = new TextInput(display, account.getResource(), null);//64, TextField.ANY
+        resourcebox = new TextInput(display, account.getResource(), null, TextField.ANY);//64, TextField.ANY
         itemsList.addElement(resourcebox);
         
         itemsList.addElement(new BoldString(SR.MS_NICKNAME));
-        nickbox = new TextInput(display, account.getNick(), null);//64, TextField.ANY
+        nickbox = new TextInput(display, account.getNick(), null, TextField.ANY);//64, TextField.ANY
         itemsList.addElement(nickbox);
 
 //#if HTTPCONNECT
 //# 	itemsList.addElement(new BoldString(SR.MS_PROXY_HOST);
-//# 	proxyHost = new TextInput(display, "proxyHost", account.getProxyHostAddr());//32, TextField.URL
+//# 	proxyHost = new TextInput(display, "proxyHost", account.getProxyHostAddr(), null, TextField.URL);//32, TextField.URL
 //# 	itemsList.addElement(proxyHost);
 //#
 //# 	itemsList.addElement(new BoldString(SR.MS_PROXY_PORT);
@@ -159,7 +160,7 @@ public class AccountForm
 //# 	itemsList.addElement(proxyPort);
 //#elif HTTPPOLL        
 //# 	itemsList.addElement(new BoldString(SR.MS_PROXY_HOST);
-//# 	proxyHost = new TextInput(display, "proxyHost", account.getProxyHostAddr());//32, TextField.URL
+//# 	proxyHost = new TextInput(display, "proxyHost", account.getProxyHostAddr(), null, TextField.URL);//32, TextField.URL
 //# 	itemsList.addElement(proxyHost);
 //#endif
 

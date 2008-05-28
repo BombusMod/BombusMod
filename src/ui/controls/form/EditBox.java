@@ -66,12 +66,12 @@ public class EditBox implements CommandListener {
 //#     private Command cmdCopyPlus = new Command("+ "+SR.MS_COPY, Command.SCREEN, 4);
 //#     private Command cmdPasteText=new Command(SR.MS_PASTE, Command.SCREEN, 5);  
 //#endif
-    public EditBox(Display display, String text, TextInput ti) {
+    public EditBox(Display display, String text, TextInput ti, int boxType) {
         this.display=display;
         parentView=display.getCurrent();
         this.ti=ti;
 
-        t=new TextBox(SR.MS_EDIT, text, 500, TextField.ANY);
+        t=new TextBox(SR.MS_EDIT, text, 500, boxType);
 //#ifdef CLIPBOARD
 //#         if (Config.getInstance().useClipBoard) {
 //#             clipboard=ClipBoard.getInstance();

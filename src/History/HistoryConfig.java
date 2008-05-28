@@ -33,6 +33,7 @@ import io.file.browse.BrowserListener;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
+import javax.microedition.lcdui.TextField;
 import locale.SR;
 import ui.controls.form.CheckBox;
 import ui.controls.form.DefForm;
@@ -84,7 +85,7 @@ public class HistoryConfig
 //#endif
         
         itemsList.addElement(new SimpleString(SR.MS_HISTORY_FOLDER));
-	historyFolder = new TextInput(display, cf.msgPath, null);//128, TextField.ANY
+	historyFolder = new TextInput(display, cf.msgPath, null, TextField.ANY);//128, TextField.ANY
         itemsList.addElement(historyFolder);
         
         addCommand(cmdSetHistFolder);

@@ -71,11 +71,7 @@ public class TrackItem
         g.fillRect(pos, 2, itemWidth, height-4);
 
         g.setColor(oldColor);
-
-        //super.drawItem(g, ofs, sel);
     }  
-    
-    //public String toString() { return " "; }
     
     public void onSelect(){ value=(value+1)%steps; }
     

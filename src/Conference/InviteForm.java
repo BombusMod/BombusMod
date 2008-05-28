@@ -37,6 +37,7 @@ import java.util.Vector;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
+import javax.microedition.lcdui.TextField;
 import locale.SR;
 import ui.controls.form.BoldString;
 import ui.controls.form.DefForm;
@@ -78,7 +79,7 @@ public class InviteForm
         itemsList.addElement(conferenceList);
         
         itemsList.addElement(new BoldString(SR.MS_REASON));
-        reason=new TextInput(display, null, ""); //200
+        reason=new TextInput(display, null, "", TextField.ANY); //200
         itemsList.addElement(reason);
         
         moveCursorTo(getNextSelectableRef(-1));

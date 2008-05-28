@@ -61,13 +61,15 @@ public class Browser extends VirtualList implements CommandListener{
     
     private String path;
     private BrowserListener browserListener;
+
+    private boolean getDirectory;
     
     /** Creates a new instance of Browser */
     public Browser(String path, Display display, BrowserListener browserListener, boolean getDirectory) {
         super(display);
         
         this.browserListener=browserListener;
-		
+	this.getDirectory=getDirectory;
         this.path="";
 		
         setMainBarItem(new MainBar(2, null, null));
@@ -160,11 +162,11 @@ public class Browser extends VirtualList implements CommandListener{
                 focus=path.substring(remainderPos);
                 path=path.substring(0, 1+path.lastIndexOf('/', path.length()-2));
             }
-         } else {
+        } else {
             //if (path.length()==0) path="/";
              path+=relativePath;
-         }
-         readDirectory(this.path);
+        }
+        readDirectory(this.path);
         sort(dir);
 
         for (int i=0; i<dir.size(); i++) {
@@ -185,9 +187,9 @@ public class Browser extends VirtualList implements CommandListener{
         try {
             FileIO f=FileIO.createConnection(name);
             
-            Enumeration files=f.fileList(false).elements();
+            Enumeration files=f.fileList(getDirectory).elements();
             
-            while (files.hasMoreElements() )
+            while (files.hasMoreElements())
                 dir.addElement( new FileItem((String) files.nextElement()) );
             
         } catch (Exception ex) {

@@ -45,6 +45,8 @@ public class MultiLine extends IconTextElement {
     public boolean selectable;
     private Font font;
     private boolean parsed;
+    private int itemHeight=0;
+    private int fontHeight;
     /**
      * Creates a new instance of MultiLine
      */
@@ -52,6 +54,8 @@ public class MultiLine extends IconTextElement {
         super(null);
         this.text=text;
         font=FontCache.getMsgFont();
+        fontHeight=font.getHeight();
+        itemHeight=fontHeight;
     }
     
     public String getValue() {
@@ -59,7 +63,7 @@ public class MultiLine extends IconTextElement {
     }
     
     public int getVHeight(){
-        return (parsed)?(font.getHeight()*lines.size())+2:font.getHeight();
+        return itemHeight;
     }
     
     public void drawItem(Graphics g, int ofs, boolean sel) {
@@ -68,18 +72,18 @@ public class MultiLine extends IconTextElement {
 
         if (lines==null) {
             lines=strconv.parseMessage(text, width-6, -1, false, font);
+            itemHeight=(fontHeight*lines.size())+2;
             parsed=true;
         }
         if (!parsed)
             return;
 
-        int fh=font.getHeight();
         g.setFont(font);
         int y=0;
 	for (int line=0; line<lines.size(); ){
             g.drawString((String) lines.elementAt(line), 2, y, Graphics.TOP|Graphics.LEFT);
             line=line+1;
-            y += fh;
+            y += fontHeight;
 	}
         //super.drawItem(g, ofs, sel);
     }

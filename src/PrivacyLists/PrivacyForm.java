@@ -79,7 +79,7 @@ public class PrivacyForm
     private void update() {
         itemsList=new Vector();
         
-        textValue=new TextInput(display, item.value, "");//64, TextField.ANY);
+        textValue=new TextInput(display, item.value, "", TextField.ANY);//64, TextField.ANY);
         itemsList.addElement(textValue);
         
         itemsList.addElement(new BoldString(SR.MS_PRIVACY_ACTION));

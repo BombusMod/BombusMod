@@ -30,6 +30,7 @@ package ui.controls.form;
 import Colors.ColorsList;
 import java.util.Vector;
 import javax.microedition.lcdui.Display;
+import javax.microedition.lcdui.TextField;
 import locale.SR;
 import ui.MainBar;
 import ui.VirtualElement;
@@ -64,7 +65,7 @@ public class TestForm
         TrackItem testTrackItem1=new TrackItem(3, 10);
         itemsList.addElement(testTrackItem1);
         
-        TextInput testInputCombo1=new TextInput(display, "remember box text", "test");
+        TextInput testInputCombo1=new TextInput(display, "remember box text", "test", TextField.ANY);
         itemsList.addElement(testInputCombo1);
         
         MultiLine testMultiLine1=new MultiLine("remember box text\nyo yo yo\n yep!");
@@ -100,7 +101,7 @@ public class TestForm
 
         SimpleString testSimpleString3=new SimpleString("test textInput");
         itemsList.addElement(testSimpleString3);
-        TextInput testTextInput1=new TextInput(display, "text of input text", null);
+        TextInput testTextInput1=new TextInput(display, "text of input text", null, TextField.ANY);
         itemsList.addElement(testTextInput1);
         
         SpacerItem testSpacerItem3=new SpacerItem(0);
