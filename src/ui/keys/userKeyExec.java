@@ -44,6 +44,7 @@ import java.util.Vector;
 import javax.microedition.lcdui.Display;
 import locale.SR;
 import midlet.BombusMod;
+import ui.VirtualList;
 
 public class userKeyExec {
     
@@ -177,6 +178,8 @@ public class userKeyExec {
             case 17:
                 cf.fullscreen=!cf.fullscreen;
                 cf.saveToStorage();
+                VirtualList.fullscreen=cf.fullscreen;
+                sd.roster.setFullScreenMode(cf.fullscreen);
                 break;
         }
     } 

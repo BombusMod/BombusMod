@@ -45,7 +45,7 @@ public class MessageUrl extends Menu{
     
     /** Creates a new instance of MessageUrl */
     public MessageUrl(Display display, Vector urlList) {
-	super("URLs");
+	super("URLs", MenuIcons.getInstance());
 	this.urlList=urlList;
 	
 	for (int i=0; i<urlList.size(); i++) { // throws exception

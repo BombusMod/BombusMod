@@ -52,7 +52,7 @@ public class DefForm
     public Vector itemsList=new Vector();
 
     public Command cmdSelect = new Command(SR.MS_SELECT, Command.OK, 1);
-    public Command cmdOk = new Command(SR.MS_SAVE, Command.SCREEN, 2);
+    public Command cmdOk = new Command(SR.MS_OK, Command.SCREEN, 2);
     public Command cmdCancel = new Command(SR.MS_BACK, Command.BACK, 99);
     
     /**

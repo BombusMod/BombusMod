@@ -1,7 +1,7 @@
 /*
  * IEMenu.java
  *
- * Created on 24 Январь 2008 г., 21:55
+ * Created on 24 пїЅпїЅпїЅпїЅпїЅпїЅ 2008 пїЅ., 21:55
  *
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
@@ -26,7 +26,7 @@ public class IEMenu
     private int choice = -1;
     
     public IEMenu(Display display) {
-        super("Import/Export");
+        super("Import/Export", null);
         addItem("Config load", 0);
         addItem("Config save", 1);
         /*

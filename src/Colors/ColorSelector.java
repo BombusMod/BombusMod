@@ -234,7 +234,6 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
                             exit = true;
                             destroyView();
                             break;
-
                         default:
                             if (key=='5') {
                                 eventOk();

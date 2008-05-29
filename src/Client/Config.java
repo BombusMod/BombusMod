@@ -26,6 +26,7 @@
  */
 
 package Client;
+import images.ActionsIcons;
 import images.MenuIcons;
 import images.RosterIcons;
 //#ifdef SMILES
@@ -85,8 +86,8 @@ public class Config {
     
 /*
  PbICb [2277] 
-16  Апр, 19 :34 
-Вот коды известные мне (кусок паинткада) 
+16  пїЅпїЅпїЅ, 19 :34 
+пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ (пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ) 
 static void SetToMoto() { 
 MainForm.KEY_JOYSTICK = -20; 
 MainForm.KEY_UP = -1; 
@@ -303,6 +304,7 @@ type = \"-=Siemens=-\";
         switch (phoneManufacturer) {
             case SONYE:
                 //prefetch images
+                ActionsIcons.getInstance();
                 RosterIcons.getInstance();
                 MenuIcons.getInstance();
 //#ifdef SMILES

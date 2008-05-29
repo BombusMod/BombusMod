@@ -40,11 +40,14 @@ public class Menu extends VirtualList implements CommandListener
 
     Command cmdBack=new Command(SR.MS_BACK,Command.BACK,99);
     Command cmdOk=new Command(SR.MS_OK,Command.OK,1);
+
+    private ImageList il;
     
-    public Menu(String mainbar) {
+    public Menu(String mainbar, ImageList il) {
         super();
         setMainBarItem(new MainBar(mainbar));
         menuitems=new Vector();
+        this.il=il;
         addCommand(cmdBack);
         addCommand(cmdOk);
         setCommandListener(this);
@@ -60,11 +63,11 @@ public class Menu extends VirtualList implements CommandListener
     }
     
     public void addItem(String label, int index, int iconIndex){
-        addItem(new MenuItem(label, index, iconIndex));
+        addItem(new MenuItem(label, index, iconIndex, il));
     }
     
     public void addItem(String label, int index){
-        addItem(new MenuItem(label, index, -1));
+        addItem(new MenuItem(label, index, -1, il));
     }
     
     public void commandAction(Command c, Displayable d) {

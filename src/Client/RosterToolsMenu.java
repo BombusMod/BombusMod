@@ -68,7 +68,7 @@ public class RosterToolsMenu extends Menu {
     StaticData sd=StaticData.getInstance();
 
     public RosterToolsMenu(Display display) {
-        super(SR.MS_TOOLS);
+        super(SR.MS_TOOLS, MenuIcons.getInstance());
         cf=Config.getInstance();
         boolean connected=sd.roster.isLoggedIn();
 //#ifdef SERVICE_DISCOVERY

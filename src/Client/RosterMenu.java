@@ -25,7 +25,7 @@
 
 package Client;
 
-import images.RosterIcons;
+import images.MenuIcons;
 import javax.microedition.lcdui.Display;
 import locale.SR;
 import ui.Menu;
@@ -39,7 +39,7 @@ public class RosterMenu extends Menu {
     private StaticData sd=StaticData.getInstance();
 
     public RosterMenu(Display display, Object o) {
-        super(SR.MS_MAIN_MENU);
+        super(SR.MS_MAIN_MENU, MenuIcons.getInstance());
         this.o=o;
         cf=Config.getInstance();
         addItem(SR.MS_ITEM_ACTIONS, 0, 0x27);
