@@ -117,7 +117,8 @@ public class PrivacySelect
                 getLists();
             }
         }
-        if (c==cmdNewList) new MIDPTextBox(display, "New list name", "", this, TextField.ANY);
+        if (c==cmdNewList)
+            new MIDPTextBox(display, SR.MS_NEW, "", this, TextField.ANY);
     }
     
     // MIDPTextBox interface
@@ -159,9 +160,7 @@ public class PrivacySelect
                 
                 return JabberBlockListener.NO_MORE_BLOCKS;
                 }
-        } catch (Exception e) { 
-            //e.printStackTrace(); 
-        }
+        } catch (Exception e) { }
         return JabberBlockListener.BLOCK_REJECTED;
     }
 

@@ -28,6 +28,9 @@
  */
 
 package PrivacyLists;
+import Client.Contact;
+import Client.Group;
+import Client.StaticData;
 import java.util.Vector;
 import javax.microedition.lcdui.*;
 import locale.SR;
@@ -46,12 +49,12 @@ public class PrivacyForm
     
     private Display display;
     private Displayable parentView;
-    private PrivacyItem item;
     
     private PrivacyList targetList;
+    private PrivacyItem item;
     
     DropChoiceBox choiceAction;
-    DropChoiceBox choiseType;
+    DropChoiceBox choiceType;
     DropChoiceBox choiceSubscr;
     
     CheckBox messageStz;
@@ -60,6 +63,9 @@ public class PrivacyForm
     CheckBox iqStz;
 
     TextInput textValue;
+    
+    int selectedAction=-1;
+    String tValue="";
 
     /** Creates a new instance of PrivacyForm */
     public PrivacyForm(Display display, PrivacyItem item, PrivacyList plist) {
@@ -77,10 +83,12 @@ public class PrivacyForm
     }
     
     private void update() {
-        itemsList=new Vector();
+        selectedAction=(selectedAction<0)?item.action:choiceAction.getSelectedIndex();
+        tValue=(textValue!=null)?textValue.getValue():item.value;
         
-        textValue=new TextInput(display, item.value, "", TextField.ANY);//64, TextField.ANY);
-        itemsList.addElement(textValue);
+        Object rfocus=StaticData.getInstance().roster.getFocusedObject();
+        
+        itemsList=new Vector();
         
         itemsList.addElement(new BoldString(SR.MS_PRIVACY_ACTION));
         choiceAction=new DropChoiceBox(display);
@@ -89,38 +97,60 @@ public class PrivacyForm
         }
         choiceAction.setSelectedIndex(item.action);
         itemsList.addElement(choiceAction);
+        
 
         itemsList.addElement(new BoldString(SR.MS_PRIVACY_TYPE));
-        choiseType=new DropChoiceBox(display);
+        choiceType=new DropChoiceBox(display);
         for(int i=0; i<PrivacyItem.types.length; i++){
-            choiseType.append(PrivacyItem.types[i]);
+            choiceType.append(PrivacyItem.types[i]);
         }
-        choiseType.setSelectedIndex(item.type);
-        itemsList.addElement(choiseType);
+        choiceType.setSelectedIndex(item.type);
+        itemsList.addElement(choiceType);
         
-        itemsList.addElement(new BoldString(SR.MS_SUBSCRIPTION));
-        choiceSubscr=new DropChoiceBox(display);
-        for(int i=0; i<PrivacyItem.subscrs.length; i++){
-            choiceSubscr.append(PrivacyItem.subscrs[i]);
-        }
-        for (int i=0; i<PrivacyItem.subscrs.length; i++) {
-            if (item.value.equals(PrivacyItem.subscrs[i])) {
-                choiceSubscr.setSelectedIndex(i);
+        
+        textValue=new TextInput(display, tValue, "", TextField.ANY);//64, TextField.ANY);
+
+        switch (selectedAction) {
+            case 0: //jid
+                if (targetList!=null) {
+                    if (rfocus instanceof Contact) {
+                        textValue.setValue(((Contact)rfocus).getBareJid());
+                    }
+                }
+                itemsList.addElement(textValue);
                 break;
-            }
+            case 1: //group
+                if (targetList!=null)
+                    textValue.setValue(((rfocus instanceof Group)?(Group)rfocus:((Contact)rfocus).getGroup()).getName());
+                itemsList.addElement(textValue);
+                break;
+            case 2: //subscription
+                itemsList.addElement(new BoldString(SR.MS_SUBSCRIPTION));
+                choiceSubscr=new DropChoiceBox(display);
+                for(int i=0; i<PrivacyItem.subscrs.length; i++){
+                    choiceSubscr.append(PrivacyItem.subscrs[i]);
+                }
+                for (int i=0; i<PrivacyItem.subscrs.length; i++) {
+                    if (item.value.equals(PrivacyItem.subscrs[i])) {
+                        choiceSubscr.setSelectedIndex(i);
+                        break;
+                    }
+                }
+                itemsList.addElement(choiceSubscr);
+                break;
         }
-        itemsList.addElement(choiceSubscr);
-        
+
         itemsList.addElement(new BoldString(SR.MS_STANZAS));
-        messageStz=new CheckBox(PrivacyItem.stanzas[0], PrivacyItem.stanzasSet[0]); itemsList.addElement(messageStz);
-        presenceInStz=new CheckBox(PrivacyItem.stanzas[1], PrivacyItem.stanzasSet[1]); itemsList.addElement(presenceInStz);
-        presenceOutStz=new CheckBox(PrivacyItem.stanzas[2], PrivacyItem.stanzasSet[2]); itemsList.addElement(presenceOutStz);
-        iqStz=new CheckBox(PrivacyItem.stanzas[3], PrivacyItem.stanzasSet[3]); itemsList.addElement(iqStz);
+        
+        messageStz=new CheckBox(PrivacyItem.stanzas[0], item.messageStz); itemsList.addElement(messageStz);
+        presenceInStz=new CheckBox(PrivacyItem.stanzas[1], item.presenceInStz); itemsList.addElement(presenceInStz);
+        presenceOutStz=new CheckBox(PrivacyItem.stanzas[2], item.presenceOutStz); itemsList.addElement(presenceOutStz);
+        iqStz=new CheckBox(PrivacyItem.stanzas[3], item.iqStz); itemsList.addElement(iqStz);
     }
 
     public void cmdOk() {
         try {
-            int type=choiseType.getSelectedIndex();
+            int type=choiceType.getSelectedIndex();
             String value=textValue.getValue();
             if (type==2) value=PrivacyItem.subscrs[choiceSubscr.getSelectedIndex()];
             if (type!=PrivacyItem.ITEM_ANY) 
@@ -130,10 +160,10 @@ public class PrivacyForm
             item.type=type;
             item.value=value;
             
-            item.stanzasSet[0]=messageStz.getValue();
-            item.stanzasSet[1]=presenceInStz.getValue();
-            item.stanzasSet[2]=presenceOutStz.getValue();
-            item.stanzasSet[3]=iqStz.getValue();
+            item.messageStz=messageStz.getValue();
+            item.presenceInStz=presenceInStz.getValue();
+            item.presenceOutStz=presenceOutStz.getValue();
+            item.iqStz=iqStz.getValue();
 
             if (targetList!=null) {
                 if (!targetList.rules.contains(item)) {
@@ -142,5 +172,6 @@ public class PrivacyForm
                 }
             }
         } catch (Exception e) { }
+        destroyView();
     }
 }

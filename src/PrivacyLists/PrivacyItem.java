@@ -61,10 +61,14 @@ public class PrivacyItem extends IconTextElement{
     String value=new String();
     int action=1;
     int order;
-    public static boolean stanzasSet[]=new boolean[4];
+    
+    boolean messageStz=false;
+    boolean presenceInStz=false;
+    boolean presenceOutStz=false;
+    boolean iqStz=false;
     
     public int getImageIndex(){
-        return action+ RosterIcons.ICON_PRIVACY_ALLOW;
+        return action+RosterIcons.ICON_PRIVACY_ALLOW;
     }
     
     public String toString() { return (type==ITEM_ANY)?"ANY":value; }
@@ -77,25 +81,32 @@ public class PrivacyItem extends IconTextElement{
     public PrivacyItem(JabberDataBlock item) {
         this();
         String t=item.getTypeAttribute();
-        if (t==null) type=ITEM_ANY;
-        else 
-            for (type=0; type<2; type++) 
-                if (t.equals(types[type])) break;
+        if (t==null) {
+            type=ITEM_ANY;
+        } else {
+            for (type=0; type<2; type++) {
+                if (t.equals(types[type])) {
+                    break;
+                }
+            }
+        }
+        
         value=item.getAttribute("value");
         action=item.getAttribute("action").equals("allow")?0:1;
         order=Integer.parseInt(item.getAttribute("order"));
-        int index;
-        for (index=0; index<4; index++) {
-            if (item.getChildBlock(stanzas[index])!=null) stanzasSet[index]=true;
-        }
+
+        messageStz=(item.getChildBlock(stanzas[STANZA_MSG])!=null);
+        presenceInStz=(item.getChildBlock(stanzas[STANZA_PRESENCE_IN])!=null);
+        presenceOutStz=(item.getChildBlock(stanzas[STANZA_PRESENCE_OUT])!=null);
+        iqStz=(item.getChildBlock(stanzas[STANZA_IQ])!=null);
     }
     
     public static PrivacyItem itemIgnoreList(){
         PrivacyItem item=new PrivacyItem();
         item.type=ITEM_GROUP;
         item.value=SR.MS_IGNORE_LIST;
-        item.stanzasSet[STANZA_IQ]=true;
-        item.stanzasSet[STANZA_PRESENCE_OUT]=true;
+        item.iqStz=true;
+        item.presenceOutStz=true;
         return item;
     }
     
@@ -107,10 +118,12 @@ public class PrivacyItem extends IconTextElement{
         }
         item.setAttribute("action", actions[action] );
         item.setAttribute("order", String.valueOf(order));
-        int index;
-        for (index=0; index<4; index++) {
-            if (stanzasSet[index]) item.addChild(stanzas[index], null);
-        }
+
+        if (messageStz) item.addChild(stanzas[STANZA_MSG], null);
+        if (presenceInStz) item.addChild(stanzas[STANZA_PRESENCE_IN], null);
+        if (presenceOutStz) item.addChild(stanzas[STANZA_PRESENCE_OUT], null);
+        if (iqStz) item.addChild(stanzas[STANZA_IQ], null);
+
         return item;
     }
 	
@@ -124,16 +137,15 @@ public class PrivacyItem extends IconTextElement{
         }
         tip.append(' ');
         
-        if ((stanzasSet[0] && stanzasSet[1] && stanzasSet[2] && stanzasSet[3]) 
-        || !(stanzasSet[0] || stanzasSet[1] || stanzasSet[2] || stanzasSet[3])) { 
+        if (messageStz && presenceInStz && presenceOutStz && iqStz) {
+            tip.append("all stanzas"); 
+        } else if (!messageStz && !presenceInStz && !presenceOutStz && !iqStz) { 
             tip.append("all stanzas"); 
         } else {
-            for (int i=0; i<4; i++) {
-                if (stanzasSet[i]) {
-                    tip.append(stanzas[i]);
-                    tip.append(' ');
-                }
-            }
+            if (messageStz) { tip.append(stanzas[STANZA_MSG]); tip.append(" "); }
+            if (presenceInStz) { tip.append(stanzas[STANZA_PRESENCE_IN]); tip.append(" "); }
+            if (presenceOutStz) { tip.append(stanzas[STANZA_PRESENCE_OUT]); tip.append(" "); }
+            if (iqStz) { tip.append(stanzas[STANZA_IQ]); tip.append(" "); }
         }
         return tip.toString();
     }
