@@ -1057,6 +1057,9 @@ public class Roster
 //#                 String jid=k.getJid();
 //#                 jid=strconv.stringReplace(jid, srcTransport, dstTransport);
 //#                 storeContact(jid, k.nick, (k.getGroup().getName()!=SR.MS_GENERAL)?(k.getGroup().getName()):"", true); //new contact addition
+//#                 try {
+//#                     Thread.sleep(300);
+//#                 } catch (Exception ex) { }
 //#                 deleteContact(k); //old contact deletion
 //# 	    }
 //# 	}

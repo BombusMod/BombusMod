@@ -45,8 +45,8 @@ public class IqLast implements JabberBlockListener {
     
     public IqLast(){}
     
-    public static JabberDataBlock query(String to){
-        JabberDataBlock result=new Iq(to, Iq.TYPE_GET, "last");
+    public static JabberDataBlock query(String to, String type){
+        JabberDataBlock result=new Iq(to, Iq.TYPE_GET, "last_"+type);
         result.addChildNs("query", "jabber:iq:last");
         return result;
     }
@@ -71,8 +71,8 @@ public class IqLast implements JabberBlockListener {
 
             return BLOCK_PROCESSED;
         }
-        
-        if (data.getAttribute("id").equals("last")) {
+        String id=data.getAttribute("id");
+        if (id.startsWith("last_")) {
             Roster roster=StaticData.getInstance().roster;
             Contact c=roster.getContact( data.getAttribute("from"), false);
             //String from=data.getAttribute("from");
@@ -89,9 +89,12 @@ public class IqLast implements JabberBlockListener {
                 roster.querysign=false;
             }
             if (body!=null) {
-                String lastType=SR.MS_SEEN;
-                if (c.status<Presence.PRESENCE_OFFLINE)
+                String lastType=SR.MS_IDLE;
+                if (id.endsWith("seen")) {
+                    lastType=SR.MS_SEEN;
+                } else if (id.endsWith("online")) {
                     lastType=SR.MS_ONLINE_TIME;
+                }
                 String status=(data.getChildBlockText("query").length()!=0)?" ("+data.getChildBlockText("query")+")":"";
                 Msg m=new Msg(Msg.MESSAGE_TYPE_SYSTEM, "last", lastType, body+status);
                 roster.messageStore(c, m);

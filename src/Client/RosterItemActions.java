@@ -134,7 +134,7 @@ public class RosterItemActions extends Menu {
 		if (contact.status<Presence.PRESENCE_OFFLINE) {
                     addItem(SR.MS_ONLINE_TIME,890, ActionsIcons.ICON_ONLINE);    
                 } else {
-                    addItem(SR.MS_SEEN,890, ActionsIcons.ICON_ONLINE); 
+                    addItem(SR.MS_SEEN,894, ActionsIcons.ICON_ONLINE); 
                 }
                 if (contact.getGroupType()!=Groups.TYPE_TRANSP) {
                     addItem(SR.MS_EDIT,2, ActionsIcons.ICON_RENAME);
@@ -380,11 +380,15 @@ public class RosterItemActions extends Menu {
                     return;
                 case 889: //idle
                     sd.roster.setQuerySign(true);
-                    sd.roster.theStream.send(IqLast.query(c.getJid()));
+                    sd.roster.theStream.send(IqLast.query(c.getJid(), "idle"));
                     break;
-                case 890: //seen & online
+                case 890: //online
                     sd.roster.setQuerySign(true);
-                    sd.roster.theStream.send(IqLast.query(c.getBareJid()));
+                    sd.roster.theStream.send(IqLast.query(c.getBareJid(), "online"));
+                    break;
+                case 894: //seen
+                    sd.roster.setQuerySign(true);
+                    sd.roster.theStream.send(IqLast.query(c.getBareJid(), "seen"));
                     break;
                 case 891: //time
                     sd.roster.setQuerySign(true);
