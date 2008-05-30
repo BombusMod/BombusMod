@@ -104,6 +104,7 @@ public class VCardEdit
         addCommand(cmdRefresh);
 //#if FILE_IO
         addCommand(cmdLoadPhoto);
+        addCommand(cmdSavePhoto);
 //#endif
         String cameraAvailable=System.getProperty("supports.video.capture");
         if (cameraAvailable!=null) if (cameraAvailable.startsWith("true"))
@@ -153,11 +154,13 @@ public class VCardEdit
             new CameraImage(display, this);
 
         if (c==cmdDelPhoto) {
-            photo=null; 
+            vcard.photo=null; 
+            photo=null;
             setPhoto();
         }
         if (c==cmdPublish)
             cmdOk();
+
         super.commandAction(c, d);
     }
 

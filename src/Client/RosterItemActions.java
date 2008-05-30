@@ -67,6 +67,7 @@ import ui.Time;
 
 import vcard.VCard;
 import vcard.VCardEdit;
+import vcard.VCardView;
 
 /**
  *
@@ -322,7 +323,10 @@ public class RosterItemActions extends Menu {
                     break;
                 case 1: // vCard
                     if (c.vcard!=null) {
-                        new VCardEdit(display, c.vcard);
+                        if (c.getGroupType()==Groups.TYPE_SELF)
+                            new VCardEdit(display, c.vcard);
+                        else
+                            new VCardView(display, c.vcard);
                         return;
                     }
                     VCard.request(c.getBareJid(), c.getJid());
