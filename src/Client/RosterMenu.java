@@ -47,7 +47,7 @@ public class RosterMenu extends Menu {
         addItem(SR.MS_ACTIVE_CONTACTS, 2, 0x21);
         addItem(SR.MS_ALERT_PROFILE_CMD, 4, 0x17);
 //#ifndef WMUC
-        addItem(SR.MS_CONFERENCE, 5, 0x00);
+        addItem(SR.MS_CONFERENCE, 5, 0x21);
 //#endif
 //#ifdef ARCHIVE
         addItem(SR.MS_ARCHIVE, 6,0x12);
@@ -56,7 +56,7 @@ public class RosterMenu extends Menu {
         addItem(SR.MS_TOOLS, 8,0x24);    
         addItem(SR.MS_ACCOUNT_, 9,0x01);
         addItem(SR.MS_ABOUT, 10,0x04);
-        addItem(SR.MS_CLEAN_ALL_MESSAGES, 11, 0x00);
+        addItem(SR.MS_CLEAN_ALL_MESSAGES, 11, 0x33);
         addItem(SR.MS_APP_QUIT, 12,0x22);
     
 	attachDisplay(display);

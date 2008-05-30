@@ -75,8 +75,8 @@ public class SmilePicker extends VirtualList implements CommandListener, Virtual
         
         realWidth=getWidth()-scrollbar.getScrollWidth();
         
-        imgWidth=il.getWidth()+CURSOR_HOFFSET;
-        lineHeight = il.getHeight()+CURSOR_VOFFSET;
+        imgWidth=il.getWidth()+(CURSOR_HOFFSET*2);
+        lineHeight = il.getHeight()+(CURSOR_VOFFSET*2);
 
         xCnt= realWidth / imgWidth;
         

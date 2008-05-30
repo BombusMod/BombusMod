@@ -196,7 +196,7 @@ public abstract class AlertBox extends Canvas implements CommandListener {
 
         if (pb==null)
             pb=new Progress(g, 0, height, width);
-        pb.draw(filled, Integer.toString(pos));
+        pb.draw(filled, Integer.toString(steps-pos));
     }
     
     public abstract void yes();

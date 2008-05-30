@@ -307,6 +307,9 @@ public class Contact extends IconTextElement{
 //#                             allowLog=true;
 //#                         }
 //#                         break;
+//#                     case Msg.MESSAGE_TYPE_HISTORY:
+//#                         allowLog=false;
+//#                         break;
 //#                     default:
 //#                         if (origin>=ORIGIN_GROUPCHAT && cf.msgLogConf) allowLog=true;
 //#                         if (origin<ORIGIN_GROUPCHAT && cf.msgLog) allowLog=true;
@@ -316,6 +319,7 @@ public class Contact extends IconTextElement{
 //#                 if (origin!=ORIGIN_GROUPCHAT && this instanceof MucContact)
 //#                      allowLog=false;
 //#endif
+//#                 
 //#                 if (allowLog) {
 //#                     new HistoryAppend(m, cf.lastMessages, getBareJid());
 //#                 }
