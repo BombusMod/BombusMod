@@ -1,7 +1,7 @@
 /*
  * VCardView.java
  *
- * Created on 25 Май 2008 г., 21:27
+ * Created on 25 пїЅпїЅпїЅ 2008 пїЅ., 21:27
  *
  * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
  *
@@ -47,59 +47,13 @@ public class VCardView
     private ImageItem photoItem;
     private byte[] photo;
     
+    private SimpleString endVCard=new SimpleString("[end of vCard]");
     private BoldString noVCard=new BoldString("[No vCard available]");
     private SimpleString noPhoto=new SimpleString("[No photo available]");
     private SimpleString badFormat=new SimpleString("[Unsupported format]");
     
-/*    private BoldString FNLine;
-    private BoldString NICKNAMELine;
-    private BoldString BDAYLine;
-    private BoldString GENDERLine;
-    private BoldString GIVENLine;
-    private BoldString MIDDLELine;
-    private BoldString FAMILYLine;
-    private BoldString STREETLine;
-    private BoldString EXTADRLine;
-    private BoldString LOCALITYLine;
-    private BoldString REGIONLine;
-    private BoldString PCODELine;
-    private BoldString CTRYLine;
-    private BoldString HOMELine;
-    private BoldString NUMBERLine;
-    private BoldString USERIDLine;
-    private BoldString TITLELine;
-    private BoldString ROLELine;
-    private BoldString ORGNAMELine;
-    private BoldString ORGUNITLine;
-    private BoldString URLLine;
-    private BoldString DESCLine;
-
-    private MultiLine FN;
-    private MultiLine NICKNAME;
-    private MultiLine BDAY;
-    private MultiLine GENDER;
-    private MultiLine GIVEN;
-    private MultiLine MIDDLE;
-    private MultiLine FAMILY;
-    private MultiLine STREET;
-    private MultiLine EXTADR;
-    private MultiLine LOCALITY;
-    private MultiLine REGION;
-    private MultiLine PCODE;
-    private MultiLine CTRY;
-    private MultiLine HOME;
-    private MultiLine NUMBER;
-    private MultiLine USERID;
-    private MultiLine TITLE;
-    private MultiLine ROLE;
-    private MultiLine ORGNAME;
-    private MultiLine ORGUNIT;
-    private MultiLine URL;
-    private MultiLine DESC;
-*/
-    
     /** Creates a new instance of VCardView */
-    public VCardView(Display display, VCard vcard, boolean editable) {
+    public VCardView(Display display, VCard vcard) {
         super(display, SR.MS_VCARD+" "+vcard.getNickName());
         this.display=display;
         parentView=display.getCurrent();
@@ -107,7 +61,7 @@ public class VCardView
         this.vcard=vcard;
         
         
-        if (vcard.isEmpty() && !editable) {
+        if (vcard.isEmpty()) {
             itemsList.addElement(noVCard);
         } else { 
             photo=vcard.getPhoto();
@@ -122,6 +76,7 @@ public class VCardView
                     itemsList.addElement(nData);
                 }
             }
+            itemsList.addElement(endVCard);
         }
         moveCursorTo(getNextSelectableRef(-1));
         attachDisplay(display);

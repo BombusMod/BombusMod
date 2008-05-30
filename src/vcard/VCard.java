@@ -40,8 +40,29 @@ import util.strconv;
  */
 public class VCard {
 
-    public final static int NICK_INDEX=1;
-    public final static int FN_INDEX=0;
+    
+    public final static int FN=0;
+    public final static int NICKNAME=1;
+    public final static int BDAY=2;
+    public final static int GENDER=3;
+    public final static int GIVEN=4;
+    public final static int MIDDLE=5;
+    public final static int FAMILY=6;
+    public final static int STREET=7;
+    public final static int EXTADR=8;
+    public final static int LOCALITY=9;
+    public final static int REGION=10;
+    public final static int PCODE=11;
+    public final static int CTRY=12;
+    public final static int HOME=13;
+    public final static int NUMBER=14;
+    public final static int USERID=15;
+    public final static int TITLE=16;
+    public final static int ROLE=17;
+    public final static int ORGNAME=18;
+    public final static int ORGUNIT=19;
+    public final static int URL=20;
+    public final static int DESC=21;
     
     public static Vector vCardFields;
     public static Vector vCardFields2;
@@ -83,8 +104,7 @@ public class VCard {
                 String f1=(String)VCard.vCardFields.elementAt(i);
                 String f2=(String)VCard.vCardFields2.elementAt(i);
                 
-                JabberDataBlock d2=
-                        (f2==null) ? vcard : vcard.getChildBlock(f2);
+                JabberDataBlock d2=(f2==null)?vcard:vcard.getChildBlock(f2);
                 
                 String field=d2.getChildBlockText(f1);
                 
@@ -126,7 +146,6 @@ public class VCard {
             
         }
         if (photo!=null) {
-
                 JabberDataBlock ph=vcardTemp.addChild("PHOTO", null);
                 ph.addChild("BINVAL", strconv.toBase64(photo, -1));
             if (photoType!=null) {
@@ -141,9 +160,9 @@ public class VCard {
     public void setPhoto(byte[] photo) { this.photo=photo; }
     
     public String getNickName() { 
-        String name=getVCardData(NICK_INDEX);
+        String name=getVCardData(NICKNAME);
         if (name!=null) return name;
-        return getVCardData(FN_INDEX);
+        return getVCardData(FN);
     }
     
     public static JabberDataBlock getQueryVCard(String to, String id ) 
@@ -161,7 +180,7 @@ public class VCard {
     
     private void fieldsLoader(){
 	Vector table[]=new StringLoader().stringLoader("/vcard.txt", 3);
-
+               
 	vCardFields=table[1];
         vCardFields2=table[0];
         vCardLabels=table[2];
@@ -178,8 +197,7 @@ public class VCard {
     public void setPhotoType(String photoType) {
         this.photoType=photoType;
     }
-    
-    
+
     public int getCount(){ return vCardFields.size(); }
 
     public String getJid() { return jid; }

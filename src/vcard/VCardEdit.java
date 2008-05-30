@@ -1,31 +1,14 @@
 /*
- * vCardForm.java
+ * VCardEdit.java
  *
- * Created on 3.10.2005, 0:37
+ * Created on 30 Май 2008 г., 9:25
  *
- * Copyright (c) 2005-2008, Eugene Stahov (evgs), http://bombus-im.org
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * You can also redistribute and/or modify this program under the
- * terms of the Psi License, specified in the accompanied COPYING
- * file, as published by the Psi Project; either dated January 1st,
- * 2005, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * To change this template, choose Tools | Template Manager
+ * and open the template in the editor.
  */
 
 package vcard;
+
 import Client.StaticData;
 //#if (FILE_IO)
 //#ifdef TRANSLIT
@@ -48,12 +31,19 @@ import ui.controls.StringItemEx;
 import ui.controls.TextFieldEx;
 import util.StringUtils;
 
+import ui.controls.form.ImageItem;
+import ui.controls.form.DefForm;
+import ui.controls.form.SimpleString;
+import ui.controls.form.BoldString;
+import ui.controls.form.TextInput;
+
 /**
  *
- * @author EvgS
+ * @author ad
  */
-public class vCardForm 
-        implements CommandListener, Runnable
+public class VCardEdit
+        extends DefForm 
+        implements Runnable
 //#if (FILE_IO)
         , BrowserListener
 //#endif
@@ -64,86 +54,80 @@ public class vCardForm
     private Displayable parentView;
     
     protected Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 99);
-    protected Command cmdPublish=new Command(SR.MS_PUBLISH, Command.OK /*Command.SCREEN*/, 1);
+    protected Command cmdPublish=new Command(SR.MS_PUBLISH, Command.OK, 1);
     protected Command cmdRefresh=new Command(SR.MS_REFRESH, Command.SCREEN, 2);
-//#if (FILE_IO)
+//#if FILE_IO
     protected Command cmdLoadPhoto=new Command(SR.MS_LOAD_PHOTO, Command.SCREEN,3);
     protected Command cmdSavePhoto=new Command(SR.MS_SAVE_PHOTO, Command.SCREEN,4);
 //#endif
     protected Command cmdDelPhoto=new Command(SR.MS_CLEAR_PHOTO, Command.SCREEN,5);
     protected Command cmdCamera=new Command(SR.MS_CAMERA, Command.SCREEN,6);
-    protected Command cmdDelViewedPhoto = new Command(SR.MS_CLEAR_PHOTO, Command.SCREEN, 7);
-    
-    private Form f;
+
     private Vector items=new Vector();
     private VCard vcard;
     
+    private ImageItem photoItem;
     private byte[] photo;
-    private int photoIndex;
+    
     private String photoType=null;
     private int st=-1;
+    
+    
+    private SimpleString endVCard=new SimpleString("[end of vCard]");
+    private SimpleString noPhoto=new SimpleString("[No photo available]");
+    private SimpleString badFormat=new SimpleString("[Unsupported format]");
 
     /** Creates a new instance of vCardForm */
-    public vCardForm(Display display, VCard vcard, boolean editable) {
+    public VCardEdit(Display display, VCard vcard) {
+        super(display, SR.MS_VCARD+" "+vcard.getNickName());
         this.display=display;
         parentView=display.getCurrent();
-        
         this.vcard=vcard;
-        
-        f=new Form(SR.MS_VCARD+" "+vcard.getNickName());
-       
-        if (vcard.isEmpty() && !editable) 
-            f.append("\n[no vCard available]"); 
-        else { 
-            photoIndex=f.append("[]");
-             
-            photo=vcard.getPhoto();
-            setPhoto();
-        }
-        
+
         for (int index=0; index<vcard.getCount(); index++) {
             String data=vcard.getVCardData(index);
             String name=(String)VCard.vCardLabels.elementAt(index);
-            Item item=null;
-            if (editable) {
-                //truncating large string
-                if (data!=null) {
-                    int len=data.length();
-                    if (data.length()>500)
-                        data=data.substring(0, 494)+"<...>";
-                } 
-                
-                item=new TextFieldEx(name, data, 500, TextField.ANY);
-                items.addElement(item);
-            } else if (data!=null) {
-                item=new StringItemEx(name, data);
-            }
-            if (item!=null) {
-                f.append(item);
-                f.append(new Spacer(256, 3));
-            }
+            //truncating large string
+            if (data!=null) {
+                int len=data.length();
+                if (data.length()>500)
+                    data=data.substring(0, 494)+"<...>";
+            } 
+            itemsList.addElement(new BoldString(name));
+            itemsList.addElement(new TextInput(display, data, null, TextField.ANY));
         }
         
-        f.addCommand(cmdCancel);
-        f.addCommand(cmdRefresh);
-        if (editable) {
-            f.addCommand(cmdPublish);
-//#if (FILE_IO)
-            f.addCommand(cmdLoadPhoto);
+        photo=vcard.getPhoto();
+        setPhoto();
+        
+        addCommand(cmdRefresh);
+//#if FILE_IO
+        addCommand(cmdLoadPhoto);
 //#endif
-            String cameraAvailable=System.getProperty("supports.video.capture");
-            if (cameraAvailable!=null) if (cameraAvailable.startsWith("true"))
-                f.addCommand(cmdCamera);
-            f.addCommand(cmdDelPhoto);
+        String cameraAvailable=System.getProperty("supports.video.capture");
+        if (cameraAvailable!=null) if (cameraAvailable.startsWith("true"))
+            addCommand(cmdCamera);
+        addCommand(cmdDelPhoto);
+        
+        moveCursorTo(getNextSelectableRef(-1));
+        attachDisplay(display);
+    }
+    
+    public void cmdOk() {
+        vcard.setPhoto(photo);
+        vcard.setPhotoType(getPhotoMIMEType());
+        int i=1;
+        for (int index=0; index<vcard.getCount(); index++) {
+            try {
+                String field=((TextInput)itemsList.elementAt(i)).getValue();
+                if (field.length()==0) field=null;
+                vcard.setVCardData(index, field);
+             } catch (Exception ex) { }
+            i=i+2;
         }
-        if (!editable && photo!=null) {
-            f.addCommand(cmdDelViewedPhoto);
-//#if (FILE_IO)
-            f.addCommand(cmdSavePhoto);
-//#endif
-        }
-        f.setCommandListener(this);
-        display.setCurrent(f);
+        //System.out.println(vcard.constructVCard().toString());
+        new Thread(this).start();
+        destroyView();
     }
     
     public void commandAction(Command c, Displayable d) {
@@ -153,12 +137,7 @@ public class vCardForm
             destroyView();
         }
         
-        if (c==cmdDelViewedPhoto) {
-            vcard.photo=null;
-            destroyView();
-        }
-        
-//#if (FILE_IO)
+//#if FILE_IO
         if (c==cmdLoadPhoto) {
             st=1;
             new Browser(null, display, this, false);
@@ -176,23 +155,6 @@ public class vCardForm
             photo=null; 
             setPhoto();
         }
-        
-        if (c!=cmdPublish) return;
-        
-        vcard.setPhoto(photo);
-        vcard.setPhotoType(getPhotoMIMEType());
-        for (int index=0; index<vcard.getCount(); index++) {
-            String field=((TextField)items.elementAt(index)).getString();
-            if (field.length()==0) field=null;
-            vcard.setVCardData(index, field);
-        }
-        //System.out.println(vcard.constructVCard().toString());
-        new Thread(this).start();
-        destroyView();
-    }
-    
-    private void destroyView() {
-        display.setCurrent(parentView);
     }
 
     public void run() {
@@ -258,17 +220,17 @@ public class vCardForm
     }
 
      private void setPhoto() {
-        Item photoItem=new StringItem(null, "[no photo available]");
         if (photo!=null) {
-            String size=String.valueOf(photo.length)+" bytes";
             try {
                 Image photoImg=Image.createImage(photo, 0, photo.length);
-                photoItem=new ImageItem(size, photoImg, 0, null);
-            } catch (Exception e) { 
-                photoItem=new StringItem(size, "[Unsupported format]");
+                photoItem=new ImageItem(photoImg, String.valueOf(photo.length)+" bytes");
+                itemsList.addElement(photoItem);
+            } catch (Exception e) {
+                itemsList.addElement(badFormat);
             }
+        } else {
+            itemsList.addElement(noPhoto);
         }
-         f.set(photoIndex, photoItem);
      }
 	
     public String getPhotoMIMEType() {

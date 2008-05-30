@@ -53,6 +53,7 @@ import ui.controls.AlertBox;
 import util.StringUtils;
 import util.strconv;
 import vcard.VCard;
+import vcard.VCardEdit;
 import vcard.VCardView;
 import com.alsutton.jabber.*;
 import com.alsutton.jabber.datablocks.*;
@@ -1183,8 +1184,12 @@ public class Roster
                         Contact c=getContact(jid, false); // drop unwanted vcards
                         if (c!=null) {
                             c.vcard=vcard;
-                            if (display.getCurrent() instanceof VirtualList)
-                                new VCardView(display, vcard, c.getGroupType()==Groups.TYPE_SELF);
+                            if (display.getCurrent() instanceof VirtualList) {
+                                if (c.getGroupType()==Groups.TYPE_SELF)
+                                    new VCardEdit(display, vcard);
+                                else
+                                    new VCardView(display, vcard);
+                            }
                         }
                         return JabberBlockListener.BLOCK_PROCESSED;
                     }

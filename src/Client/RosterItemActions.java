@@ -64,8 +64,9 @@ import ui.Time;
 //#ifdef CLIPBOARD
 //# import util.ClipBoard;
 //#endif
+
 import vcard.VCard;
-import vcard.VCardView;
+import vcard.VCardEdit;
 
 /**
  *
@@ -181,7 +182,7 @@ public class RosterItemActions extends Menu {
                     
                     if (mc.affiliationCode<MucContact.AFFILIATION_ADMIN) 
                         /* 5.1.1 *** A moderator MUST NOT be able to revoke voice privileges from an admin or owner. */ 
-                    if (mc.roleCode==MucContact.ROLE_VISITOR) addItem(SR.MS_GRANT_VOICE,31);
+                    if (mc.roleCode==MucContact.ROLE_VISITOR) addItem(SR.MS_GRANT_VOICE,31, ActionsIcons.ICON_VOICE);
                     else addItem(SR.MS_REVOKE_VOICE, 32, ActionsIcons.ICON_DEVOICE);
                 }
 //#ifdef REQUEST_VOICE
@@ -207,7 +208,7 @@ public class RosterItemActions extends Menu {
                     //affiliations
                     if (mc.affiliationCode<myAffiliation) {
                         if (mc.affiliationCode!=MucContact.AFFILIATION_NONE) 
-                            addItem(SR.MS_UNAFFILIATE,36, ActionsIcons.ICON_OUTCASTS);
+                            addItem(SR.MS_UNAFFILIATE,36, ActionsIcons.ICON_DEMEMBER);
                         /* 5.2.2 */
                         if (mc.affiliationCode!=MucContact.AFFILIATION_MEMBER) 
                             addItem(SR.MS_GRANT_MEMBERSHIP,35, ActionsIcons.ICON_MEMBER);
@@ -321,7 +322,7 @@ public class RosterItemActions extends Menu {
                     break;
                 case 1: // vCard
                     if (c.vcard!=null) {
-                        new VCardView(display, c.vcard, c.getGroupType()==Groups.TYPE_SELF);
+                        new VCardEdit(display, c.vcard);
                         return;
                     }
                     VCard.request(c.getBareJid(), c.getJid());
