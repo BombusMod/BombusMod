@@ -99,7 +99,8 @@ public class VCardEdit
         
         photo=vcard.getPhoto();
         setPhoto();
-        
+        super.removeCommand(cmdOk);
+        addCommand(cmdPublish);
         addCommand(cmdRefresh);
 //#if FILE_IO
         addCommand(cmdLoadPhoto);
@@ -155,6 +156,9 @@ public class VCardEdit
             photo=null; 
             setPhoto();
         }
+        if (c==cmdPublish)
+            cmdOk();
+        super.commandAction(c, d);
     }
 
     public void run() {
@@ -220,7 +224,14 @@ public class VCardEdit
     }
 
      private void setPhoto() {
-        if (photo!=null) {
+        try {
+            itemsList.removeElement(endVCard);
+            itemsList.removeElement(noPhoto);
+            itemsList.removeElement(badFormat);
+            itemsList.removeElement(photoItem);
+        } catch (Exception e) { }
+        
+         if (photo!=null) {
             try {
                 Image photoImg=Image.createImage(photo, 0, photo.length);
                 photoItem=new ImageItem(photoImg, String.valueOf(photo.length)+" bytes");
@@ -231,6 +242,7 @@ public class VCardEdit
         } else {
             itemsList.addElement(noPhoto);
         }
+        itemsList.addElement(endVCard);
      }
 	
     public String getPhotoMIMEType() {
