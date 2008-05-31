@@ -105,8 +105,8 @@ blue 0x0000ff
         colorsContainer.addElement(new ColorItem("MESSAGE_PRESENCE_S", 0x00c040));
     
         colorsContainer.addElement(new ColorItem("PGS_REMAINED", 0xeeeeee));
-        colorsContainer.addElement(new ColorItem("PGS_COMPLETE_TOP", 0xffe29d));
-        colorsContainer.addElement(new ColorItem("PGS_COMPLETE_BOTTOM", 0xa87824));
+        colorsContainer.addElement(new ColorItem("PGS_COMPLETE_TOP", 0xa87824));
+        colorsContainer.addElement(new ColorItem("PGS_COMPLETE_BOTTOM", 0xffe29d));
         colorsContainer.addElement(new ColorItem("PGS_INK", 0x000000));
     
         colorsContainer.addElement(new ColorItem("HEAP_TOTAL", 0xffffff));

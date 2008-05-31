@@ -46,7 +46,9 @@ public class IqPing implements JabberBlockListener {
     }
 
     public int blockArrived(JabberDataBlock data) {
-        if (!(data instanceof Iq)) return BLOCK_REJECTED;
+        if (!(data instanceof Iq)) 
+            return BLOCK_REJECTED;
+        
         String type=data.getTypeAttribute();
         String from=data.getAttribute("from");
         String id=data.getAttribute("id");
@@ -57,9 +59,9 @@ public class IqPing implements JabberBlockListener {
                 return BLOCK_PROCESSED;
             }
         }
-        if (type.equals("error")) {
+        if (type.equals("get")) {
             if (id.startsWith("_ping_")) {
-                Iq reply=new Iq(data.getAttribute("from"), Iq.TYPE_RESULT, data.getAttribute("id"));
+                Iq reply=new Iq(from, Iq.TYPE_RESULT, id);
                 StaticData.getInstance().roster.theStream.send(reply);
                 return BLOCK_PROCESSED;
             }

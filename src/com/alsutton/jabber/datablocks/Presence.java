@@ -191,7 +191,7 @@ public class Presence extends JabberDataBlock
   public String getFrom() {
       return getAttribute("from");
   }
- 
+
   public String getStatus(){
       String status=getChildBlockText("status");
       return (status.length()==0)? null: getChildBlockText("status");

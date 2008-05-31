@@ -87,7 +87,7 @@ public class Progress {
 //#         } else {
 //#endif
             g.setColor(topColor);
-            g.drawRect(0, 1, filled, height);
+            g.fillRect(0, 1, filled, height);
 //#ifdef GRADIENT
 //#         }
 //#endif

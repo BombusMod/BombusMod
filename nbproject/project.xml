@@ -4,6 +4,8 @@
     <configuration>
         <configurations xmlns="http://www.netbeans.org/ns/project-configurations/1">
             <configuration>adsky</configuration>
+            <configuration>lite</configuration>
+            <configuration>superSmall</configuration>
             <configuration>full_ver</configuration>
         </configurations>
         <data xmlns="http://www.netbeans.org/ns/j2me-project">

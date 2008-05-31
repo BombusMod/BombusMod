@@ -44,15 +44,12 @@ public class HistoryStorage {
     final static int SEARCH_BODY  = 4;
     final static int SEARCH_BREAK = 5;   
 
-    private int afterEol;
-    
     private String history;
     
-    private Config cf=Config.getInstance();
-
-    private int pos=0;
+    private Config cf;
     
     public HistoryStorage(String filename) {
+        cf=Config.getInstance();
 //#ifdef TRANSLIT
        filename=(cf.transliterateFilenames)?Translit.translit(filename):filename;
 //#endif

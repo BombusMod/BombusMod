@@ -96,20 +96,20 @@ public class ColorConfigForm
                 }
                 skinFiles.setSelectedIndex(0);
                 itemsList.addElement(skinFiles);
+                useFromJar=new LinkString(SR.MS_LOAD_SKIN) { public void doAction() { userThemeFromJar(); } };
+                itemsList.addElement(useFromJar);
+                itemsList.addElement(new SpacerItem(10));
             }
-            useFromJar=new LinkString(SR.MS_LOAD_SKIN) { public void doAction() { userThemeFromJar(); } };
-            itemsList.addElement(useFromJar);
         } catch (Exception e) {}
         
 //#if FILE_IO
-        itemsList.addElement(new SpacerItem(10));
         loadFromFile=new LinkString(SR.MS_LOAD_SKIN+" FS") { public void doAction() { initBrowser(1); } };
         itemsList.addElement(loadFromFile);
         saveToFile=new LinkString(SR.MS_SAVE+" FS") { public void doAction() { initBrowser(0); } };
         itemsList.addElement(saveToFile);
+        itemsList.addElement(new SpacerItem(10));
 //#endif
         
-        itemsList.addElement(new SpacerItem(10));
         reset=new LinkString(SR.MS_CLEAR) { public void doAction() { ColorTheme.getInstance().init(); ColorTheme.getInstance().saveToStorage(); } };
         itemsList.addElement(reset);
         
@@ -126,6 +126,7 @@ public class ColorConfigForm
             display.setCurrent(parentView);
     }
     
+//#if FILE_IO
     public void initBrowser(int type) {
         loadType=type; 
         if (type==0) {
@@ -134,6 +135,7 @@ public class ColorConfigForm
             new Browser(null, display, this, false);
         }
     }
+//#endif
     
     public void userThemeFromJar(){
         try {

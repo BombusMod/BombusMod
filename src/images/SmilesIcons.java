@@ -49,6 +49,7 @@ public class SmilesIcons extends ImageList {
     private static ImageList instance;
     public static ImageList getInstance() {
 	if (instance==null){
+//#ifdef SMILES
             try {
                 int smilesCount=MessageParser.getInstance().getSmileTable().size();
                 cols=ceil(SMILES_IN_ROW, smilesCount);
@@ -56,6 +57,7 @@ public class SmilesIcons extends ImageList {
                 System.out.print("Can't load ");
                 System.out.println(restxt);
             }
+//#endif
             instance=new SmilesIcons();
         }
 	return instance;

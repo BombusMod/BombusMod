@@ -254,6 +254,6 @@ public class AutoTask
         if (parentView!=null)
             display.setCurrent(parentView);
         //parentView=null;
-        repaint();
+        //repaint();
     }
 }

@@ -41,6 +41,26 @@ public class HistoryAppend {
     private Config cf;
     private boolean convertToWin1251;
     
+    private final static String MS="<m>";
+    private final static String ME="</m>";
+    
+    private final static String TS="<t>";
+    private final static String TE="</t>";
+    
+    private final static String FS="<f>";
+    private final static String FE="</f>";
+    
+    private final static String DS="<d>";
+    private final static String DE="</d>";
+    
+    private final static String SS="<s>";
+    private final static String SE="</s>";
+    
+    private final static String BS="<b>";
+    private final static String BE="</b>";
+    
+    private final static String RN="\r\n";
+    
 //#if FILE_IO
     private int filePos;
     private FileIO file;
@@ -100,29 +120,36 @@ public class HistoryAppend {
             body.append(m.getDayTime());
             body.append("] ");
             body.append(fromName);
-            body.append(":\r\n");
+            body.append(":");
+            body.append(RN);
             if (m.subject!=null) {
                 body.append(m.subject);
-                body.append("\r\n");
+                body.append(RN);
             }
             body.append(m.getBody());
-            body.append("\r\n\r\n");
+            body.append(RN);
+            body.append(RN);
         } else {
-            body.append("<m><t>");
+            body.append(MS);
+            body.append(TS);
             body.append(marker);
-            body.append("</t><d>");
+            body.append(TE);
+            body.append(DS);
             body.append(m.getDayTime());
-            body.append("</d><f>");
+            body.append(DE);
+            body.append(FS);
             body.append(fromName);
-            body.append("</f>");
+            body.append(FE);
             if (m.subject!=null) {
-                body.append("<s>");
+                body.append(SS);
                 body.append(m.subject);
-                body.append("</s>");
+                body.append(SE);
             }
-            body.append("<b>");
+            body.append(BS);
             body.append(m.getBody());
-            body.append("</b></m>\r\n");
+            body.append(BE);
+            body.append(ME);
+            body.append(RN);
         }
         return (convertToWin1251)?strconv.convUnicodeToCp1251(body.toString()):body.toString();
     }

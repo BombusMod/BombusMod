@@ -67,12 +67,9 @@ public class VCardEdit
     private VCard vcard;
     
     private ImageItem photoItem;
-    private byte[] photo;
-    
-    private String photoType=null;
+
     private int st=-1;
-    
-    
+
     private SimpleString endVCard=new SimpleString("[end of vCard]");
     private SimpleString noPhoto=new SimpleString("[No photo available]");
     private SimpleString badFormat=new SimpleString("[Unsupported format]");
@@ -96,8 +93,6 @@ public class VCardEdit
             itemsList.addElement(new BoldString(name));
             itemsList.addElement(new TextInput(display, data, null, TextField.ANY));
         }
-        
-        photo=vcard.getPhoto();
         setPhoto();
         super.removeCommand(cmdOk);
         addCommand(cmdPublish);
@@ -116,8 +111,6 @@ public class VCardEdit
     }
     
     public void cmdOk() {
-        vcard.setPhoto(photo);
-        vcard.setPhotoType(getPhotoMIMEType());
         int i=1;
         for (int index=0; index<vcard.getCount(); index++) {
             try {
@@ -154,8 +147,7 @@ public class VCardEdit
             new CameraImage(display, this);
 
         if (c==cmdDelPhoto) {
-            vcard.photo=null; 
-            photo=null;
+            vcard.dropPhoto();
             setPhoto();
         }
         if (c==cmdPublish)
@@ -175,18 +167,18 @@ public class VCardEdit
             if (st==1) {
                 try {
                     FileIO f=FileIO.createConnection(pathSelected);
-                    photo=f.fileRead();
-                    vcard.setPhotoType(getPhotoMIMEType());
+                    vcard.photo=f.fileRead();
+                    vcard.setPhotoType();
                     setPhoto();
                 } catch (Exception e) {
                     System.out.println("error on load");
                 }
             }
-            if (st==2 & photo!=null) {
+            if (st==2 & vcard.hasPhoto) {
                 //System.out.println(photoType+"->"+getFileType(photoType));
                 String filename = StringUtils.replaceBadChars(getNickDate());
-                FileIO file=FileIO.createConnection(pathSelected+filename+getFileType(getPhotoMIMEType()));
-                file.fileWrite(photo);
+                FileIO file=FileIO.createConnection(pathSelected+filename+vcard.getFileType());
+                file.fileWrite(vcard.getPhoto());
             }
         }
     }
@@ -211,18 +203,9 @@ public class VCardEdit
         return nickDate.toString();
     }
 //#endif
-    private String getFileType(String MIMEtype) {
-        if (MIMEtype!=null) {
-            if (MIMEtype=="image/jpeg") return ".jpg";
-            if (MIMEtype=="image/png") return ".png";
-            if (MIMEtype=="image/gif") return ".gif";
-            if (MIMEtype=="image/x-ms-bmp") return ".bmp";
-        }
-        return ".jpg";
-    }
 
     public void cameraImageNotify(byte[] capturedPhoto) {
-        photo=capturedPhoto;
+        vcard.setPhoto(capturedPhoto);
         setPhoto();
     }
 
@@ -234,10 +217,10 @@ public class VCardEdit
             itemsList.removeElement(photoItem);
         } catch (Exception e) { }
         
-         if (photo!=null) {
+         if (vcard.hasPhoto) {
             try {
-                Image photoImg=Image.createImage(photo, 0, photo.length);
-                photoItem=new ImageItem(photoImg, String.valueOf(photo.length)+" bytes");
+                Image photoImg=Image.createImage(vcard.getPhoto(), 0,vcard.getPhoto().length);
+                photoItem=new ImageItem(photoImg, String.valueOf(vcard.getPhoto().length)+" bytes");
                 itemsList.addElement(photoItem);
             } catch (Exception e) {
                 itemsList.addElement(badFormat);
@@ -247,42 +230,4 @@ public class VCardEdit
         }
         itemsList.addElement(endVCard);
      }
-	
-    public String getPhotoMIMEType() {
-        try {
-             if (photo[0]==(byte)0xff &&
-                photo[1]==(byte)0xd8 &&
-                (photo[6]==(byte)'J' || photo[6]==(byte)'E' || photo[6]==(byte)'e') &&
-                (photo[7]==(byte)'F' || photo[7]==(byte)'x' || photo[7]==(byte)'X') &&
-                (photo[8]==(byte)'I' || photo[8]==(byte)'i') &&
-                (photo[9]==(byte)'F' || photo[9]==(byte)'f')) {
-                //System.out.println("image/jpeg");
-                 return "image/jpeg";
-             }
-             
-            if (photo[0]==(byte)0x89 &&
-                photo[1]==(byte)'P' &&
-                photo[2]==(byte)'N' &&
-                photo[3]==(byte)'G') {
-                //System.out.println("image/png");
-                return "image/png";
-            }
-            
-            if (photo[0]==(byte)'G' &&
-                photo[1]==(byte)'I' &&
-                photo[2]==(byte)'F') {
-                //System.out.println("image/gif");
-                 return "image/gif";
-             }
-             
-            if (photo[0]==(byte)'B' &&
-                photo[1]==(byte)'M') {
-                //System.out.println("image/x-ms-bmp");
-                 return "image/x-ms-bmp";
-             }
-            
-        } catch (Exception e) {}
-        //System.out.println("unknown MIME type");
-        return null;
-    }
 }
