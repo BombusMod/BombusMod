@@ -122,6 +122,10 @@ public class iConfigData {
 //#ifdef PEP_TUNE
 //#         cf.rcvtune=cf.getBooleanProperty(getValue("sndrcvtune"),true);
 //#endif
+        
+//#ifdef DETRANSLIT
+//#         cf.autoDeTranslit=cf.getBooleanProperty(getValue("autoDeTranslit"),false);
+//#endif
         cf.lastProfile=cf.profile=cf.def_profile;
         if (cf.lastProfile==AlertProfile.VIBRA) 
             cf.lastProfile=0;

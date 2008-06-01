@@ -50,6 +50,8 @@ public class DeTranslit {
     
     /** Creates a new instance of DeTranslit */
     public static String deTranslit(String src) {
+        if (translit.size()<1)
+            return src;
 	for (Enumeration r=translit.elements(); r.hasMoreElements(); ) {
 	    TranslitItem tr=(TranslitItem)r.nextElement();
             String temp=
@@ -59,6 +61,8 @@ public class DeTranslit {
     }
     
     public static String translit(String src) {
+        if (translit.size()<1)
+            return src;
 	for (Enumeration r=translit.elements(); r.hasMoreElements(); ) {
 	    TranslitItem tr=(TranslitItem)r.nextElement();
             src=stringReplace(src, tr.getCyr(), tr.getLat());

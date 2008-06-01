@@ -70,8 +70,8 @@ public class MessageEdit
     private Command cmdInsNick=new Command(SR.MS_NICKNAMES,Command.SCREEN,3);
     private Command cmdInsMe=new Command(SR.MS_SLASHME, Command.SCREEN, 4); ; // /me
 //#ifdef DETRANSLIT
-//#     private Command cmdSendInTranslit=new Command("Translit", Command.SCREEN, 5);
-//#     private Command cmdSendInDeTranslit=new Command("DeTranslit", Command.SCREEN, 5);
+//#     private Command cmdSendInTranslit=new Command(SR.MS_TRANSLIT, Command.SCREEN, 5);
+//#     private Command cmdSendInDeTranslit=new Command(SR.MS_DETRANSLIT, Command.SCREEN, 5);
 //#endif
     private Command cmdPaste=new Command(SR.MS_ARCHIVE, Command.SCREEN, 6);    
     private Command cmdSubj=new Command(SR.MS_SET_SUBJECT, Command.SCREEN, 7);
@@ -256,7 +256,7 @@ public class MessageEdit
 //#             if (subj!=null )
 //#                subj=dt.translit(subj);
 //#         }
-//#         if (sendInDeTranslit==true) {
+//#         if (sendInDeTranslit==true || cf.autoDeTranslit) {
 //#             if (body!=null)
 //#                body=dt.deTranslit(body);
 //#             if (subj!=null )

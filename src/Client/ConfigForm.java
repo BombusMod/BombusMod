@@ -86,6 +86,10 @@ public class ConfigForm
 //#endif
     private CheckBox showBalloons;     
     private CheckBox eventDelivery;
+    
+//#ifdef DETRANSLIT
+//#     private CheckBox autoDetranslit;
+//#endif
 //#ifdef CLIPBOARD
 //#     private CheckBox useClipBoard;
 //#endif
@@ -195,6 +199,9 @@ public class ConfigForm
             eventDelivery = new CheckBox(SR.MS_DELIVERY, cf.eventDelivery); itemsList.addElement(eventDelivery);
 //#ifdef CLIPBOARD
 //#             useClipBoard = new CheckBox(SR.MS_CLIPBOARD, cf.useClipBoard); itemsList.addElement(useClipBoard);
+//#endif
+//#ifdef DETRANSLIT
+//#            autoDetranslit = new CheckBox(SR.MS_AUTODETRANSLIT, cf.autoDeTranslit); itemsList.addElement(autoDetranslit);
 //#endif
 
             
@@ -335,6 +342,9 @@ public class ConfigForm
         cf.eventDelivery=eventDelivery.getValue();
 //#ifdef CLIPBOARD
 //#         cf.useClipBoard=useClipBoard.getValue();
+//#endif
+//#ifdef DETRANSLIT
+//#         cf.autoDeTranslit=autoDetranslit.getValue();
 //#endif
 
         cf.autoLogin=autoLogin.getValue();

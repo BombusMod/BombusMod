@@ -120,6 +120,10 @@ public class eConfigData {
 //#         array.addElement(new keyValue("sndrcvtune", (cf.rcvtune)?"1":"0"));
 //#endif
         
+//#ifdef DETRANSLIT
+//#         array.addElement(new keyValue("autoDeTranslit", (cf.autoDeTranslit)?"1":"0")); 
+//#endif
+        
         new eData(array, path+"config.txt");
         array = null;
     }

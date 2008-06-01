@@ -426,7 +426,9 @@ public class SR {
 //#endif
     
 //#ifdef DETRANSLIT
-//#     public static String MS_SEND_IN_TRANSLIT = loadString( "Send in translit" );
+//#     public static String MS_TRANSLIT = loadString( "Translit" );
+//#     public static String MS_DETRANSLIT = loadString( "ReTranslit" );
+//#     public static String MS_AUTODETRANSLIT = loadString( "Auto translit2Cyr" );
 //#endif
     public static String MS_CHECK_UPDATE = loadString( "Check Updates" );
     public static String MS_SHOW_RESOURCES = loadString( "Show Resources" );

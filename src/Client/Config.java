@@ -238,6 +238,7 @@ type = \"-=Siemens=-\";
     public boolean eventDelivery=false;
 //#ifdef DETRANSLIT
 //#     public boolean transliterateFilenames=false;
+//#     public boolean autoDeTranslit=false;
 //#endif
 //#ifdef SECONDSTRING
 //#     public boolean rosterStatus=false;
@@ -497,6 +498,12 @@ type = \"-=Siemens=-\";
             resolvedHost=inputStream.readUTF();
             resolvedPort=inputStream.readInt();
             
+//#ifdef DETRANSLIT
+//#             autoDeTranslit=inputStream.readBoolean();
+//#else
+            inputStream.readBoolean();
+//#endif
+            
 	    inputStream.close();
 	} catch (Exception e) {
             try {
@@ -695,6 +702,12 @@ type = \"-=Siemens=-\";
             outputStream.writeUTF(verHash);
             outputStream.writeUTF(resolvedHost);
             outputStream.writeInt(resolvedPort);
+            
+//#ifdef DETRANSLIT
+//#             outputStream.writeBoolean(autoDeTranslit);
+//#else
+            outputStream.writeBoolean(false);
+//#endif
 	} catch (Exception e) { }
 	
 	NvStorage.writeFileRecord(outputStream, "config", 0, true);
