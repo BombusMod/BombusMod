@@ -56,7 +56,7 @@ public class ColorItem
     
     public void drawItem(Graphics g, int ofs, boolean sel) {
         int width=g.getClipWidth();
-        int height=g.getClipHeight();
+        int height=super.getVHeight();
 
         int oldColor=g.getColor();
 
@@ -64,8 +64,12 @@ public class ColorItem
         g.fillRect(1, 1, height-2, height-2);
 
         g.setColor(oldColor);
+
+        g.translate(height,0);
+        g.setClip(0, 0, width-height-2, height);
+        super.drawItem(g, ofs, sel);
+        g.translate(-height,0);
         
-        super.drawItem(g, -height, sel);
     }
     
     public void setLocale(String locale){

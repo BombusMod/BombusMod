@@ -87,10 +87,12 @@ public class VCardView
                 String data=vcard.getVCardData(index);
                 String name=(String)VCard.vCardLabels.elementAt(index);
                 if (data!=null) {
-                    itemsList.addElement(new BoldString(name));
                     MultiLine nData=new MultiLine(data);
-                    nData.selectable=true;
-                    itemsList.addElement(nData);
+                    if (nData!=null) {
+                        itemsList.addElement(new BoldString(name));
+                        nData.selectable=true;
+                        itemsList.addElement(nData);
+                    }
                 }
             }
             itemsList.addElement(endVCard);
