@@ -37,7 +37,9 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
 import util.StringLoader;
-import util.Translit;
+//#ifdef DETRANSLIT
+//# import util.DeTranslit;
+//#endif
 /**
  *
  * @author ad
@@ -272,10 +274,10 @@ blue 0x0000ff
     public static String getSkin(){
         StringBuffer body=new StringBuffer();
        body.append("xmlSkin\t");
-//#ifdef TRANSLIT
-       body.append(Translit.translit(StaticData.getInstance().account.getNickName()));
+//#ifdef DETRANSLIT
+//#        body.append(DeTranslit.getInstance().translit(StaticData.getInstance().account.getNickName()));
 //#else
-//#        body.append(StaticData.getInstance().account.getNickName());
+       body.append(StaticData.getInstance().account.getNickName());
 //#endif
         body.append("\r\n");
         for (Enumeration r=colorsContainer.elements(); r.hasMoreElements();) {

@@ -60,8 +60,8 @@ public class HistoryConfig
     private CheckBox saveConfHistory;
     private CheckBox saveConfPres;
     private CheckBox win1251;
-//#ifdef TRANSLIT
-    private CheckBox translit;
+//#ifdef DETRANSLIT
+//#     private CheckBox translit;
 //#endif
     
     Config cf;
@@ -80,8 +80,8 @@ public class HistoryConfig
         saveConfHistory = new CheckBox(SR.MS_SAVE_HISTORY_CONF, cf.msgLogConf); itemsList.addElement(saveConfHistory);
         saveConfPres = new CheckBox(SR.MS_SAVE_PRESENCES_CONF, cf.msgLogConfPresence); itemsList.addElement(saveConfPres);
         win1251 = new CheckBox(SR.MS_1251_CORRECTION, cf.cp1251); itemsList.addElement(win1251);
-//#ifdef TRANSLIT
-        translit = new CheckBox(SR.MS_1251_TRANSLITERATE_FILENAMES, cf.transliterateFilenames); itemsList.addElement(translit);
+//#ifdef DETRANSLIT
+//#         translit = new CheckBox(SR.MS_1251_TRANSLITERATE_FILENAMES, cf.transliterateFilenames); itemsList.addElement(translit);
 //#endif
         
         itemsList.addElement(new SimpleString(SR.MS_HISTORY_FOLDER));
@@ -115,8 +115,8 @@ public class HistoryConfig
         cf.msgLogConf=saveConfHistory.getValue();
         cf.msgLogConfPresence=saveConfPres.getValue();
         cf.cp1251=win1251.getValue();
-//#ifdef TRANSLIT
-        cf.transliterateFilenames=translit.getValue();
+//#ifdef DETRANSLIT
+//#         cf.transliterateFilenames=translit.getValue();
 //#endif
         cf.msgPath=historyFolder.getValue();         
 

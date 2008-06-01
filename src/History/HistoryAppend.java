@@ -33,7 +33,9 @@ import io.file.FileIO;
 import java.io.IOException;
 import java.io.OutputStream;
 import util.StringUtils;
-import util.Translit;
+//#ifdef DETRANSLIT
+//# import util.DeTranslit;
+//#endif
 import util.strconv;
 
 public class HistoryAppend {
@@ -72,8 +74,8 @@ public class HistoryAppend {
        convertToWin1251=cf.cp1251;
        byte[] bodyMessage=createBody(m, formatted).getBytes();
 
-//#ifdef TRANSLIT
-       filename=(cf.transliterateFilenames)?Translit.translit(filename):filename;
+//#ifdef DETRANSLIT
+//#        filename=(cf.transliterateFilenames)?DeTranslit.getInstance().translit(filename):filename;
 //#endif
        
        filename = cf.msgPath+StringUtils.replaceBadChars(filename)+".txt";

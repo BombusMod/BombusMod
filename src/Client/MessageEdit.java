@@ -40,8 +40,8 @@ import ui.VirtualList;
 //#ifdef CLIPBOARD
 //# import util.ClipBoard;
 //#endif
-//#ifdef TRANSLIT
-import util.Translit;
+//#ifdef DETRANSLIT
+//# import util.DeTranslit;
 //#endif
 
 /**
@@ -69,8 +69,9 @@ public class MessageEdit
 //#endif
     private Command cmdInsNick=new Command(SR.MS_NICKNAMES,Command.SCREEN,3);
     private Command cmdInsMe=new Command(SR.MS_SLASHME, Command.SCREEN, 4); ; // /me
-//#ifdef TRANSLIT
-    private Command cmdSendInTranslit=new Command(SR.MS_SEND_IN_TRANSLIT, Command.SCREEN, 5);
+//#ifdef DETRANSLIT
+//#     private Command cmdSendInTranslit=new Command("Translit", Command.SCREEN, 5);
+//#     private Command cmdSendInDeTranslit=new Command("DeTranslit", Command.SCREEN, 5);
 //#endif
     private Command cmdPaste=new Command(SR.MS_ARCHIVE, Command.SCREEN, 6);    
     private Command cmdSubj=new Command(SR.MS_SET_SUBJECT, Command.SCREEN, 7);
@@ -91,8 +92,10 @@ public class MessageEdit
     private boolean composing=true;
     StaticData sd = StaticData.getInstance();
     private Config cf;
-//#ifdef TRANSLIT
-    private boolean sendInTranslit=false;
+//#ifdef DETRANSLIT
+//#     private boolean sendInTranslit=false;
+//#     private boolean sendInDeTranslit=false;
+//#     DeTranslit dt;
 //#endif
     private TextBox t;
 
@@ -109,7 +112,9 @@ public class MessageEdit
         parentView=display.getCurrent();
 
         cf=Config.getInstance();
-        
+//#ifdef DETRANSLIT
+//#         dt=DeTranslit.getInstance();
+//#endif
         if (cf.notifyWhenMessageType) {
             t=new TextBox(null, "", 500, TextField.ANY);
             setTicker(to.toString());
@@ -138,8 +143,9 @@ public class MessageEdit
 //#endif
         if (to.origin>=Contact.ORIGIN_GROUPCHAT)
             t.addCommand(cmdInsNick);
-//#ifdef TRANSLIT
-        t.addCommand(cmdSendInTranslit);
+//#ifdef DETRANSLIT
+//#         t.addCommand(cmdSendInTranslit);
+//#         t.addCommand(cmdSendInDeTranslit);
 //#endif
 //#ifdef ARCHIVE
         t.addCommand(cmdPaste);
@@ -212,10 +218,13 @@ public class MessageEdit
                 body=null;
         }
         if (c==cmdSend && body==null) return;
-//#ifdef TRANSLIT
-        if (c==cmdSendInTranslit) {
-            sendInTranslit=true;
-        }
+//#ifdef DETRANSLIT
+//#         if (c==cmdSendInTranslit) {
+//#             sendInTranslit=true;
+//#         }
+//#         if (c==cmdSendInDeTranslit) {
+//#             sendInDeTranslit=true;
+//#         }
 //#endif
         if (c==cmdSubj) {
             if (body==null) return;
@@ -240,13 +249,19 @@ public class MessageEdit
         
         if (body!=null)
             body=body.trim();
-//#ifdef TRANSLIT
-        if (sendInTranslit==true) {
-            if (body!=null)
-               body=Translit.translit(body);
-            if (subj!=null )
-               subj=Translit.translit(subj);
-        }
+//#ifdef DETRANSLIT
+//#         if (sendInTranslit==true) {
+//#             if (body!=null)
+//#                body=dt.translit(body);
+//#             if (subj!=null )
+//#                subj=dt.translit(subj);
+//#         }
+//#         if (sendInDeTranslit==true) {
+//#             if (body!=null)
+//#                body=dt.deTranslit(body);
+//#             if (subj!=null )
+//#                subj=dt.deTranslit(subj);
+//#         }
 //#endif
         if (body!=null || subj!=null ) {
             String from=sd.account.toString();

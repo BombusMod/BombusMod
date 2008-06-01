@@ -11,9 +11,9 @@ package vcard;
 
 import Client.StaticData;
 //#if (FILE_IO)
-//#ifdef TRANSLIT
-import Client.Config;
-import util.Translit;
+//#ifdef DETRANSLIT
+//# import util.DeTranslit;
+//# import Client.Config;
 //#endif
 import io.file.FileIO;
 import io.file.browse.Browser;
@@ -186,17 +186,17 @@ public class VCardEdit
     private String getNickDate() {
         StringBuffer nickDate=new StringBuffer();
         nickDate.append("photo_");
-//#ifdef TRANSLIT
-        String userName=(vcard.getNickName()!=null)?vcard.getNickName():vcard.getJid();
-        if (Config.getInstance().transliterateFilenames) {
-            nickDate.append(Translit.translit(userName));
-        } else {
-            nickDate.append(userName);
-        }
+//#ifdef DETRANSLIT
+//#         String userName=(vcard.getNickName()!=null)?vcard.getNickName():vcard.getJid();
+//#         if (Config.getInstance().transliterateFilenames) {
+//#             nickDate.append(DeTranslit.getInstance().translit(userName));
+//#         } else {
+//#             nickDate.append(userName);
+//#         }
 //#else
-//#          if (vcard.getNickName()!=null) {
-//#              nickDate.append(vcard.getNickName());
-//#          } else nickDate.append(vcard.getJid());
+         if (vcard.getNickName()!=null) {
+             nickDate.append(vcard.getNickName());
+         } else nickDate.append(vcard.getJid());
 //#endif
         nickDate.append("_");
         nickDate.append(Time.dayLocalString(Time.utcTimeMillis()).trim());

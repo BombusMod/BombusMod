@@ -1,7 +1,7 @@
 /*
  * VCardView.java
  *
- * Created on 25 ��� 2008 �., 21:27
+ * Created on 25.05.2008, 21:27
  *
  * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
  *
@@ -32,8 +32,10 @@ import io.file.FileIO;
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
 import util.StringUtils;
-import util.Translit;
 import ui.Time;
+//#endif
+//#ifdef DETRANSLIT
+//# import util.DeTranslit;
 //#endif
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Command;
@@ -157,17 +159,17 @@ public class VCardView
     private String getNickDate() {
         StringBuffer nickDate=new StringBuffer();
         nickDate.append("photo_");
-//#ifdef TRANSLIT
-        String userName=(vcard.getNickName()!=null)?vcard.getNickName():vcard.getJid();
-        if (Config.getInstance().transliterateFilenames) {
-            nickDate.append(Translit.translit(userName));
-        } else {
-            nickDate.append(userName);
-        }
+//#ifdef DETRANSLIT
+//#         String userName=(vcard.getNickName()!=null)?vcard.getNickName():vcard.getJid();
+//#         if (Config.getInstance().transliterateFilenames) {
+//#             nickDate.append(DeTranslit.getInstance().translit(userName));
+//#         } else {
+//#             nickDate.append(userName);
+//#         }
 //#else
-//#          if (vcard.getNickName()!=null) {
-//#              nickDate.append(vcard.getNickName());
-//#          } else nickDate.append(vcard.getJid());
+         if (vcard.getNickName()!=null) {
+             nickDate.append(vcard.getNickName());
+         } else nickDate.append(vcard.getJid());
 //#endif
         nickDate.append("_");
         nickDate.append(Time.dayLocalString(Time.utcTimeMillis()).trim());

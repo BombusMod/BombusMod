@@ -236,8 +236,8 @@ type = \"-=Siemens=-\";
     public boolean collapsedGroups=true;
     public int messageLimit=512;
     public boolean eventDelivery=false;
-//#ifdef TRANSLIT
-    public boolean transliterateFilenames=false;
+//#ifdef DETRANSLIT
+//#     public boolean transliterateFilenames=false;
 //#endif
 //#ifdef SECONDSTRING
 //#     public boolean rosterStatus=false;
@@ -441,10 +441,10 @@ type = \"-=Siemens=-\";
             messageLimit=inputStream.readInt();
             lang=inputStream.readUTF();
             eventDelivery=inputStream.readBoolean();
-//#ifdef TRANSLIT
-            transliterateFilenames=inputStream.readBoolean();
+//#ifdef DETRANSLIT
+//#             transliterateFilenames=inputStream.readBoolean();
 //#else
-//#             inputStream.readBoolean();
+            inputStream.readBoolean();
 //#endif
 //#ifdef SECONDSTRING
 //#             rosterStatus=inputStream.readBoolean();
@@ -641,10 +641,10 @@ type = \"-=Siemens=-\";
             outputStream.writeInt(messageLimit);
             outputStream.writeUTF(lang);      
             outputStream.writeBoolean(eventDelivery);
-//#ifdef TRANSLIT
-            outputStream.writeBoolean(transliterateFilenames);
+//#ifdef DETRANSLIT
+//#             outputStream.writeBoolean(transliterateFilenames);
 //#else
-//#             outputStream.writeBoolean(false);
+            outputStream.writeBoolean(false);
 //#endif
 //#ifdef SECONDSTRING
 //#             outputStream.writeBoolean(rosterStatus);

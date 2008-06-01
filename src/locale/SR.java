@@ -425,8 +425,8 @@ public class SR {
 //#     public static String MS_CONTACT_REQUEST_CHAT = loadString( "Contact request chat, Allow or Block?" );
 //#endif
     
-//#ifdef TRANSLIT
-    public static String MS_SEND_IN_TRANSLIT = loadString( "Send in translit" );
+//#ifdef DETRANSLIT
+//#     public static String MS_SEND_IN_TRANSLIT = loadString( "Send in translit" );
 //#endif
     public static String MS_CHECK_UPDATE = loadString( "Check Updates" );
     public static String MS_SHOW_RESOURCES = loadString( "Show Resources" );
@@ -457,8 +457,8 @@ public class SR {
     
 //#ifdef FILE_IO
     public static String MS_HISTORY_OPTIONS = loadString( "History options" );
-//#ifdef TRANSLIT
-    public static String MS_1251_TRANSLITERATE_FILENAMES = loadString( "Filenames transliterate" );
+//#ifdef DETRANSLIT
+//#     public static String MS_1251_TRANSLITERATE_FILENAMES = loadString( "Filenames transliterate" );
 //#endif
     public static String MS_SAVE_CHAT = loadString( "Save chat" );
 //#endif

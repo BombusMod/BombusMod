@@ -175,8 +175,8 @@ public class InfoWindow
 //#ifdef CHECK_VERSION
 //#         abilities.append(", CHECK_VERSION");
 //#endif
-//#ifdef TRANSLIT
-        abilities.append(", TRANSLIT");
+//#ifdef DETRANSLIT
+//#         abilities.append(", DETRANSLIT");
 //#endif
 //#ifdef WMUC
 //#         abilities.append(", WMUC");

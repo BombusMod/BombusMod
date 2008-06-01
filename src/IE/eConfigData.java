@@ -86,8 +86,8 @@ public class eConfigData {
         array.addElement(new keyValue("enableVersionOs", (cf.enableVersionOs)?"1":"0"));
         array.addElement(new keyValue("messageLimit", Integer.toString(cf.messageLimit)));
         array.addElement(new keyValue("eventDelivery", (cf.eventDelivery)?"1":"0"));
-//#ifdef TRANSLIT
-        array.addElement(new keyValue("transliterateFilenames", (cf.transliterateFilenames)?"1":"0")); 
+//#ifdef DETRANSLIT
+//#         array.addElement(new keyValue("transliterateFilenames", (cf.transliterateFilenames)?"1":"0")); 
 //#endif
 //#ifdef SECONDSTRING
 //#         array.addElement(new keyValue("rosterStatus", (cf.rosterStatus)?"1":"0"));

@@ -90,8 +90,8 @@ public class iConfigData {
         cf.enableVersionOs=cf.getBooleanProperty(getValue("enableVersionOs"),true);
         cf.messageLimit=cf.getIntProperty(getValue("messageLimit"),300);
         cf.eventDelivery=cf.getBooleanProperty(getValue("eventDelivery"),true);
-//#ifdef TRANSLIT
-        cf.transliterateFilenames=cf.getBooleanProperty(getValue("transliterateFilenames"),false);
+//#ifdef DETRANSLIT
+//#         cf.transliterateFilenames=cf.getBooleanProperty(getValue("transliterateFilenames"),false);
 //#endif
 //#ifdef SECONDSTRING
 //#         cf.rosterStatus=cf.getBooleanProperty(getValue("rosterStatus"),true);

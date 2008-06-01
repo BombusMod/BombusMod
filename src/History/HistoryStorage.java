@@ -33,7 +33,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Vector;
 import util.StringUtils;
-import util.Translit;
+//#ifdef DETRANSLIT
+//# import util.DeTranslit;
+//#endif
 import util.strconv;
 
 public class HistoryStorage {
@@ -50,8 +52,8 @@ public class HistoryStorage {
     
     public HistoryStorage(String filename) {
         cf=Config.getInstance();
-//#ifdef TRANSLIT
-       filename=(cf.transliterateFilenames)?Translit.translit(filename):filename;
+//#ifdef DETRANSLIT
+//#        filename=(cf.transliterateFilenames)?DeTranslit.getInstance().translit(filename):filename;
 //#endif
        filename=cf.msgPath+StringUtils.replaceBadChars(filename)+".txt";
        this.history = loadHistory(filename);
