@@ -74,6 +74,10 @@ public class ChoiceBox
         this.index=index;
     }
     
+    public int size() { 
+        return items.size();
+    }
+    
     public int getSelectedIndex() { return index; }
     
     public void drawItem(Graphics g, int ofs, boolean sel) {

@@ -347,6 +347,8 @@ public abstract class VirtualList
 //#ifndef WOFFSCREEN
         width=w;
         height=h;
+        ibHeight=0;
+        mbHeight=0;
 	if (!isDoubleBuffered()) offscreen=Image.createImage(width, height);
 //#endif
     }

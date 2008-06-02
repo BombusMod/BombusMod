@@ -49,16 +49,18 @@ public final class ContactEdit
     public Displayable parentView;
     
     //Form f;
-     private TextInput tJid;
-     private TextInput tNick;
-     private TextInput tGroup;
-     //private ChoiceGroup tGrpList;
-     private DropChoiceBox tTranspList;
-     private CheckBox tAskSubscrCheckBox;
-    
+    private TextInput tJid;
+    private TextInput tNick;
+    private TextInput tGroup;
+    private DropChoiceBox tGrpList;
+    private DropChoiceBox tTranspList;
+    private CheckBox tAskSubscrCheckBox;
+
     int ngroups;
     
-    int grpFIndex;
+    //int grpFIndex;
+    
+    int newGroupPos=0;
     
     //Command cmdOk=new Command(SR.MS_ADD, Command.OK, 1);
     //Command cmdSet=new Command(SR.MS_SET, Command.ITEM, 2);
@@ -66,6 +68,8 @@ public final class ContactEdit
     
     boolean newContact=true;
     Config cf;
+    
+    private boolean newGroup;
 
     StaticData sd=StaticData.getInstance();
     //StoreContact sC;
@@ -75,9 +79,6 @@ public final class ContactEdit
         this.display=display;
         parentView=display.getCurrent();
         cf=Config.getInstance();
-        
-        Vector groups=sd.roster.groups.getRosterGroupNames();
-
         
         tJid=new TextInput(display, null, null, TextField.ANY); 
 
@@ -95,7 +96,7 @@ public final class ContactEdit
                 tTranspList.append(transpJid.getBareJid());
         }
         tTranspList.append(SR.MS_OTHER);
-
+        tTranspList.setSelectedIndex(tTranspList.size()-1);
         
         tAskSubscrCheckBox=new CheckBox(SR.MS_ASK_SUBSCRIPTION, false);
         
@@ -131,18 +132,40 @@ public final class ContactEdit
             c=null;
         } // if MucContact does not contains realJid
         
-        if (c==null){
-            itemsList.addElement(new BoldString(SR.MS_USER_JID));
-            itemsList.addElement(tJid);
-            
-            itemsList.addElement(new BoldString(SR.MS_TRANSPORT));
-            itemsList.addElement(tTranspList);
-        }
-        itemsList.addElement(new BoldString(SR.MS_NAME));
-        itemsList.addElement(tNick);
+        int sel=-1;
+        ngroups=0;
+        String grpName="";
+        if (c!=null) grpName=c.getGroup().name;
         
-        itemsList.addElement(new BoldString(SR.MS_GROUP));
-        itemsList.addElement(tGroup);
+        Vector groups=sd.roster.groups.getRosterGroupNames();
+        if (groups!=null) {
+            tGrpList=new DropChoiceBox(display);
+            ngroups=groups.size();
+            for (int i=0;i<ngroups; i++) {
+                String gn=(String)groups.elementAt(i);
+                tGrpList.append(gn);
+                
+                if (gn.equals(grpName)) sel=i;
+            }
+        }
+        if (sel<0) sel=0;
+        
+        if (c==null){
+            itemsList.addElement(new BoldString(SR.MS_USER_JID)); newGroupPos++;
+            itemsList.addElement(tJid); newGroupPos++;
+            
+            itemsList.addElement(new BoldString(SR.MS_TRANSPORT)); newGroupPos++;
+            itemsList.addElement(tTranspList); newGroupPos++;
+        }
+        itemsList.addElement(new BoldString(SR.MS_NAME)); newGroupPos++;
+        itemsList.addElement(tNick); newGroupPos++;
+        
+        itemsList.addElement(new BoldString(SR.MS_GROUP)); newGroupPos++;
+        tGrpList.append(SR.MS_NEWGROUP);
+        tGrpList.setSelectedIndex(sel);
+        itemsList.addElement(tGrpList);
+        
+        //itemsList.addElement(tGroup);
 
         if (newContact) {
             itemsList.addElement(new BoldString(SR.MS_SUBSCRIPTION));
@@ -156,10 +179,44 @@ public final class ContactEdit
     public void cmdOk() {
         String jid=tJid.getValue();
         if (jid!=null) {
+            String name=tNick.getValue();
+            String group=group(tGrpList.getSelectedIndex());
+            if (group==null) group=tGroup.getValue();
             boolean ask=tAskSubscrCheckBox.getValue();
-            sd.roster.storeContact(jid, tNick.getValue(), tGroup.getValue(), ask);
+            
+            StringBuffer jidBuf=new StringBuffer(jid);
+            
+            int at=jid.indexOf('@');
+            if (at<0) at=jid.length();
+            
+            jidBuf.setLength(at);
+            jidBuf.append('@');
+            jidBuf.append(tTranspList.toString());
+            jid=jidBuf.toString();
+            
+            sd.roster.storeContact(jid, name, group, ask);
             destroyView();
         }
+    }
+    
+    protected void beginPaint(){
+        if (tGrpList!=null) {
+            if (tGrpList.toString()==SR.MS_NEWGROUP) {
+                if (!newGroup) {
+                    itemsList.insertElementAt(tGroup, newGroupPos);
+                    newGroup=true;
+                }
+            } else {
+                if (newGroup)
+                    itemsList.removeElement(tGroup);
+            }
+        }
+    }
+    
+    private String group(int index) {
+        if (index==0) return null;
+        if (index==tGrpList.size()-1) return null;
+        return tGrpList.toString();
     }
  
     public void destroyView(){
