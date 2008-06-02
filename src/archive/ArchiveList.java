@@ -84,20 +84,20 @@ public class ArchiveList
 
     private int returnVal=0;
 
-    private String start_item="<START_ITEM>";
-    private String end_item="<END_ITEM>";
+    private final static String start_item="<START_ITEM>";
+    private final static String end_item="<END_ITEM>";
 
-    private String start_date="<START_DATE>";
-    private String end_date="<END_DATE>";
+    private final static String start_date="<START_DATE>";
+    private final static String end_date="<END_DATE>";
 
-    private String start_from="<START_FROM>";
-    private String end_from="<END_FROM>";
+    private final static String start_from="<START_FROM>";
+    private final static String end_from="<END_FROM>";
 
-    private String start_subj="<START_SUBJ>";
-    private String end_subj="<END_SUBJ>";
+    private final static String start_subj="<START_SUBJ>";
+    private final static String end_subj="<END_SUBJ>";
 
-    private String start_body="<START_BODY>";
-    private String end_body="<END_BODY>";
+    private final static String start_body="<START_BODY>";
+    private final static String end_body="<END_BODY>";
 //#endif
     private Config cf;
     private int where=1;

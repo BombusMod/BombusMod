@@ -427,6 +427,8 @@ public class ContactMessageList extends MessageList
 
     public void keyPressed(int keyCode) {
         if (keyCode==KEY_POUND) {
+            if (!sd.roster.isLoggedIn())
+                return;
 //#ifndef WMUC
             if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT) {
                 Reply();
@@ -456,7 +458,8 @@ public class ContactMessageList extends MessageList
                 new ActiveContacts(display, contact);
                 return;        
             case KEY_NUM9:
-                Quote();
+                if (sd.roster.isLoggedIn()) 
+                    Quote();
                 return;  
 //#ifdef CLIPBOARD
 //#             case SIEMENS_VOLUP:

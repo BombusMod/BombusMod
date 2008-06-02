@@ -42,17 +42,19 @@ public class RosterMenu extends Menu {
         super(SR.MS_MAIN_MENU, MenuIcons.getInstance());
         this.o=o;
         cf=Config.getInstance();
-        addItem(SR.MS_ITEM_ACTIONS, 0, 0x27);
+        boolean connected=sd.roster.isLoggedIn();
+        
+        if (connected) addItem(SR.MS_ITEM_ACTIONS, 0, 0x27);
         addItem(SR.MS_STATUS_MENU, 1, 0x16);
         addItem(SR.MS_ACTIVE_CONTACTS, 2, 0x21);
         addItem(SR.MS_ALERT_PROFILE_CMD, 4, 0x17);
 //#ifndef WMUC
-        addItem(SR.MS_CONFERENCE, 5, 0x21);
+        if (connected) addItem(SR.MS_CONFERENCE, 5, 0x21);
 //#endif
 //#ifdef ARCHIVE
         addItem(SR.MS_ARCHIVE, 6,0x12);
 //#endif
-        addItem(SR.MS_ADD_CONTACT, 7, 0x02);
+        if (connected) addItem(SR.MS_ADD_CONTACT, 7, 0x02);
         addItem(SR.MS_TOOLS, 8,0x24);    
         addItem(SR.MS_ACCOUNT_, 9,0x01);
         addItem(SR.MS_ABOUT, 10,0x04);
