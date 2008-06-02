@@ -163,7 +163,9 @@ public class VCard {
     
     public String getNickName() { 
         String name=getVCardData(NICKNAME);
-        if (name!=null) return name;
+        if (name!=null)
+            if (name!="")
+                return name;
         return getVCardData(FN);
     }
     
