@@ -1,4 +1,5 @@
-﻿Sch	Щ
+﻿//translit table
+Sch	Щ
 sch	щ
 Yu	Ю
 yu	ю
@@ -48,7 +49,7 @@ L	Л
 l	л
 M	М
 m	м
-Н	N
+N	Н
 n	н
 O	О
 o	о

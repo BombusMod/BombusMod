@@ -331,6 +331,7 @@ public class Roster
             theStream.setJabberListener( this );
             theStream.initiateStream();
         } catch( Exception e ) {
+            SplashScreen.getInstance().close();
             setProgress(SR.MS_FAILED, 100);
             reconnect=false;
             myStatus=Presence.PRESENCE_OFFLINE;
@@ -1960,7 +1961,7 @@ public class Roster
         Msg m=new Msg(Msg.MESSAGE_TYPE_HISTORY, "local", topBar, error);
         messageStore(selfContact(), m);
 //#ifdef STATS
-//#         Stats.getInstance().save();
+//#         //Stats.getInstance().save();
 //#endif
         new Reconnect(topBar, error, display);
      }

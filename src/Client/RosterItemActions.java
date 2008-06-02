@@ -338,7 +338,7 @@ public class RosterItemActions extends Menu {
                     new SubscriptionEdit(display, c);
                     return; //break;
                 case 4:
-                    new AlertBox(SR.MS_DELETE_ASK, c.getNickJid(), display,  sd.roster) {
+                    new AlertBox(c.getNickJid(), SR.MS_DELETE_ASK, display,  sd.roster) {
                         public void yes() {
                             sd.roster.deleteContact((Contact)item);
                         }
@@ -574,7 +574,7 @@ public class RosterItemActions extends Menu {
                         new RenameGroup(display, sg, null);
                         return;
                     case 1004: //delete
-                        new AlertBox(SR.MS_DELETE_ASK, sg.getName(), display, sd.roster) {
+                        new AlertBox(sg.getName(), SR.MS_DELETE_ASK, display, sd.roster) {
                             public void yes() {
                                 sd.roster.deleteGroup((Group)item);
                             }
