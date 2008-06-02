@@ -132,7 +132,7 @@ public class ServiceDiscovery
             items.addElement(new DiscoContact(null, myServer, 0));
 
             try {
-                DataInputStream is=NvStorage.ReadFileRecord("mru-"+ServerBox.MRU_ID, 0);
+                DataInputStream is=NvStorage.ReadFileRecord("disco", 0);
            
                 try {
                     while (true) {
@@ -255,7 +255,7 @@ public class ServiceDiscovery
                 
             }
             
-			showResults(items);
+            showResults(items);
         } else if (id.equals(discoId("disco"))) {
             Vector cmds=new Vector();
             boolean showPartialResults=false;

@@ -29,7 +29,7 @@ package ServiceDiscovery;
 
 import Client.Contact;
 
-public class DiscoContact extends Contact{
+public class DiscoContact extends Contact {
     public DiscoContact(final String Nick, final String sJid, final int Status) {
         super( (Nick==null)? null: Nick.trim(), sJid, Status, null);
     }

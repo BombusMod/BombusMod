@@ -1,8 +1,9 @@
 /*
  * ServerBox.java
  *
- * Created on 8.07.2005, 1:09
- * Copyright (c) 2005-2008, Eugene Stahov (evgs), http://bombus-im.org
+ * Created on 2.06.2008, 22:43
+ *
+ * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -22,57 +23,58 @@
  * You should have received a copy of the GNU General Public License
  * along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
  */
 
 package ServiceDiscovery;
 
-import javax.microedition.lcdui.*;
+import Client.Contact;
+import Client.Group;
+import javax.microedition.lcdui.Display;
+import javax.microedition.lcdui.TextField;
 import locale.SR;
-import ui.controls.TextFieldCombo;
+import ui.controls.form.DefForm;
+import ui.controls.form.MultiLine;
+import ui.controls.form.TextInput;
+
 /**
  *
- * @author EvgS
+ * @author ad
  */
-public class ServerBox implements CommandListener {
+public class ServerBox 
+        extends DefForm {
     
     private Display display;
-    private Form f;
-    private TextField t;
+    private Group group;
+    private Contact contact;
+    
+    private TextInput serverName;
     
     private ServiceDiscovery sd;
-    
-    private Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK,99);
-    private Command cmdSend=new Command(SR.MS_DISCOVER, Command.OK /*Command.SCREEN*/,1);
-	
-	public final static String MRU_ID="disco";
-    
-    /** Creates a new instance of ServerBox */
+
+    /**
+     * Creates a new instance of ServerBox
+     */
     public ServerBox(Display display, String service, ServiceDiscovery sd) {
+        super(display, SR.MS_DISCO);
+        
         this.display=display;
         this.sd=sd;
+        itemsList.addElement(new MultiLine("Enter Jabber server address here"));
+        serverName=new TextInput(display, service, "disco", TextField.ANY);
+        itemsList.addElement(serverName);
         
-        f=new Form(SR.MS_DISCO);
-        f.append("Enter Jabber server address here");
-        t=new TextFieldCombo("Address",service,500, TextField.ANY, MRU_ID, display);
-        TextFieldCombo.setLowerCaseLatin(t);
-        f.append(t);
-        f.addCommand(cmdSend);
-        f.addCommand(cmdCancel);
-        f.setCommandListener(this);
+        moveCursorTo(getNextSelectableRef(-1));
+        attachDisplay(display);
         
-        //t.setInitialInputMode("MIDP_LOWERCASE_LATIN");
-        display.setCurrent(f);
     }
-    
-    public void commandAction(Command c, Displayable d){
-        String server=t.getString();
-        if (server.length()==0) server=null;
 
-        if (c==cmdSend && server!=null) { sd.browse(server, null); }
+    public void  cmdOk() {
+        String server=serverName.getValue();
+        if (server.length()==0) server=null;
+        
+        if (server!=null)
+            sd.browse(server, null);
         
         display.setCurrent(sd);
-        return;
     }
 }
-

@@ -36,9 +36,9 @@ import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Form;
+import javax.microedition.lcdui.StringItem;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
-import ui.controls.StringItemEx;
 import ui.controls.TextFieldCombo;
 
 /**
@@ -111,7 +111,7 @@ public class ConferenceQuickPrivelegeModify implements CommandListener{
             user.append(victim.realJid);
             user.append(")");
         }
-        f.append(new StringItemEx(SR.MS_USER,user.toString()));
+        f.append(new StringItem(SR.MS_USER,user.toString()));
         
         reason=new TextFieldCombo(SR.MS_REASON, "", 256, TextField.ANY, "reason", display);
         f.append(reason);

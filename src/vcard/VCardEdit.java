@@ -27,8 +27,6 @@ import javax.microedition.lcdui.*;
 import locale.SR;
 
 import ui.Time;
-import ui.controls.StringItemEx;
-import ui.controls.TextFieldEx;
 import util.StringUtils;
 
 import ui.controls.form.ImageItem;

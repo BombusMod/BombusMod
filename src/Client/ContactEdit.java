@@ -32,7 +32,6 @@ import Conference.MucContact;
 import javax.microedition.lcdui.*;
 import java.util.*;
 import locale.SR;
-import ui.controls.TextFieldEx;
 import ui.controls.form.BoldString;
 import ui.controls.form.CheckBox;
 import ui.controls.form.DefForm;

@@ -29,8 +29,6 @@ package ServiceDiscovery;
 import javax.microedition.lcdui.*;
 import com.alsutton.jabber.*;
 import java.util.*;
-import ui.controls.StringItemEx;
-import ui.controls.TextFieldEx;
 /**
  *
  * @author Evg_S
@@ -97,14 +95,14 @@ public class FormField {
                     body=body.substring(0,198);
                 }
                 int constrains=(type.equals("text-private"))? TextField.PASSWORD: TextField.ANY;
-                formItem=new TextFieldEx(label, body, 200, constrains);
+                formItem=new TextField(label, body, 200, constrains);
             }
         } else {
             // not x-data
             if ( instructions=name.equals("instructions") )
-                formItem=new StringItemEx("Instructions", body);
+                formItem=new StringItem("Instructions", body);
             else if ( name.equals("title") )
-                formItem=new StringItemEx(null, body);
+                formItem=new StringItem(null, body);
             else if ( name.equals("registered") ) {
                 ChoiceGroup cg=new ChoiceGroup("Registration", ChoiceGroup.MULTIPLE);
                 cg.append("Remove registration", null);
@@ -112,7 +110,7 @@ public class FormField {
                 registered=true;
             }
             else
-                formItem=new TextFieldEx(label, body, 64, 0);
+                formItem=new TextField(label, body, 64, 0);
         }
         
         if (name!=null)
