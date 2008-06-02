@@ -28,6 +28,7 @@
 package ui.controls.form;
 
 //import Client.Config;
+import Client.Config;
 import java.util.Vector;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
@@ -63,7 +64,8 @@ public class DefForm
 	parentView=display.getCurrent();
         
 	setMainBarItem(new MainBar(caption));
-        addCommand(cmdSelect);
+        if (Config.getInstance().phoneManufacturer==Config.NOKIA)
+                addCommand(cmdSelect);
 	addCommand(cmdOk);
 	addCommand(cmdCancel);
 	setCommandListener(this);

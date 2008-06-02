@@ -31,6 +31,7 @@ import Client.Config;
 import io.file.FileIO;
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
+import util.ClipBoard;
 import util.StringUtils;
 import ui.Time;
 //#endif
@@ -73,6 +74,12 @@ public class VCardView
 //#endif
     protected Command cmdDelPhoto=new Command(SR.MS_CLEAR_PHOTO, Command.SCREEN,5);
     
+//#ifdef CLIPBOARD
+//#     private Command cmdCopy   = new Command(SR.MS_COPY, Command.OK, 1);
+//#     private Command cmdCopyPlus = new Command("+ "+SR.MS_COPY, Command.SCREEN, 30);
+//#     private ClipBoard clipboard; 
+//#endif
+    
     /** Creates a new instance of VCardView */
     public VCardView(Display display, VCard vcard) {
         super(display, SR.MS_VCARD+" "+vcard.getNickName());
@@ -106,6 +113,13 @@ public class VCardView
 //#endif
         removeCommand(cmdOk);
         removeCommand(cmdSelect);
+//#ifdef CLIPBOARD
+//#         if (Config.getInstance().useClipBoard) {
+//#             clipboard=ClipBoard.getInstance();
+//#             addCommand(cmdCopy);
+//#             addCommand(cmdCopyPlus);
+//#         }
+//#endif
         if (vcard.hasPhoto)
             addCommand(cmdDelPhoto);
         //moveCursorTo(getNextSelectableRef(-1));
@@ -142,6 +156,28 @@ public class VCardView
         if (c==cmdSavePhoto) {
             new Browser(null, display, this, true);
         }
+//#endif
+//#ifdef CLIPBOARD
+//#         if (c == cmdCopy) {
+//#             try {
+//#                 StringBuffer clipstr=new StringBuffer();
+//#                 clipstr.append((((MultiLine)getFocusedObject()).getValue()==null)?"":((MultiLine)getFocusedObject()).getValue()+"\n");
+//#                 clipboard.setClipBoard(clipstr.toString());
+//#                 clipstr=null;
+//#             } catch (Exception e) {/*no messages*/}
+//#         }
+//#         
+//#         if (c==cmdCopyPlus) {
+//#             try {
+//#                 StringBuffer clipstr=new StringBuffer();
+//#                 clipstr.append(clipboard.getClipBoard());
+//#                 clipstr.append("\n\n");
+//#                 clipstr.append((((MultiLine)getFocusedObject()).getValue()==null)?"":((MultiLine)getFocusedObject()).getValue()+"\n");
+//#                 
+//#                 clipboard.setClipBoard(clipstr.toString());
+//#                 clipstr=null;
+//#             } catch (Exception e) {/*no messages*/}
+//#         }
 //#endif
         super.commandAction(c, d);
     }
