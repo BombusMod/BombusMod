@@ -186,8 +186,8 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
     
     public void close(){
         //if (parentView!=null)
-            display.setCurrent(StaticData.getInstance().roster);
-        parentView=null;
+        display.setCurrent(StaticData.getInstance().roster);
+        //parentView=null;
         repaint();
         //serviceRepaints();
         img=null;

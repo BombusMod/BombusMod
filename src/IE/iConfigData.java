@@ -56,7 +56,7 @@ public class iConfigData {
         cf.font3=cf.getIntProperty(getValue("font3"),0);
         cf.font4=cf.getIntProperty(getValue("font4"),0);
         cf.autoFocus=cf.getBooleanProperty(getValue("autoFocus"),false);
-        cf.lang=cf.getStringProperty(getValue("lang"),"en");
+        cf.lang=cf.getStringProperty(getValue("lang"), null);
         cf.capsState=cf.getBooleanProperty(getValue("capsState"),true);
         cf.textWrap=cf.getIntProperty(getValue("textWrap"),0);
         cf.loginstatus=cf.getIntProperty(getValue("loginstatus"),0);
@@ -115,7 +115,6 @@ public class iConfigData {
 //#ifdef PEP
 //#         cf.sndrcvmood=cf.getBooleanProperty(getValue("sndrcvmood"),true);
 //#endif
-        cf.scheme=cf.getStringProperty(getValue("scheme"),"");
 //#ifdef CLIPBOARD
 //#         cf.useClipBoard=cf.getBooleanProperty(getValue("useClipBoard"),true);
 //#endif

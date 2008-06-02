@@ -267,7 +267,6 @@ type = \"-=Siemens=-\";
 //#ifdef IRC_LIKE
 //#     public boolean ircLikeStatus = false;
 //#endif
-    public String scheme = "";
 //#ifdef CLIPBOARD
 //#     public boolean useClipBoard = true;
 //#endif
@@ -479,7 +478,7 @@ type = \"-=Siemens=-\";
 //#else
             inputStream.readBoolean();
 //#endif
-            scheme=inputStream.readUTF();
+            inputStream.readUTF(); //scheme
 
 //#ifdef CLIPBOARD
 //#             useClipBoard = inputStream.readBoolean();
@@ -540,20 +539,6 @@ type = \"-=Siemens=-\";
         	return (String) files[1].elementAt(i);
         }
         return null; //unknown language ->en
-    }
-    
-    public String schemeFileName(){
-        if (scheme=="")
-            return null;
-        if (scheme.equals("default")) 
-            return null;  //default
-	Vector files[]=new StringLoader().stringLoader("/skins/res.txt", 2);
-        for (int i=0; i<files[0].size(); i++) {
-            String schemeName=(String) files[1].elementAt(i);
-            if (scheme.equals(schemeName))
-        	return (String) files[0].elementAt(i);
-        }
-        return null;
     }
     
     public void saveToStorage(){
@@ -685,7 +670,7 @@ type = \"-=Siemens=-\";
 //#else
             outputStream.writeBoolean(false);
 //#endif
-            outputStream.writeUTF(scheme);
+            outputStream.writeUTF("");//scheme
 //#ifdef CLIPBOARD
 //#             outputStream.writeBoolean(useClipBoard);
 //#else

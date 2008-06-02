@@ -112,7 +112,6 @@ public class eConfigData {
 //#ifdef PEP
 //#         array.addElement(new keyValue("sndrcvmood", (cf.sndrcvmood)?"1":"0"));
 //#endif
-        array.addElement(new keyValue("scheme", cf.scheme));
 //#ifdef CLIPBOARD
 //#         array.addElement(new keyValue("useClipBoard", (cf.useClipBoard)?"1":"0"));
 //#endif

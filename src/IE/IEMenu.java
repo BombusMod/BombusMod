@@ -27,13 +27,16 @@ public class IEMenu
     
     public IEMenu(Display display) {
         super("Import/Export", null);
-        addItem("Config load", 0);
-        addItem("Config save", 1);
+        addItem("Config restore", 0);
+        addItem("Config backup", 1);
+        addItem("Archive restore", 2);
+        addItem("Archive backup", 3);
+        addItem("Templates restore", 4);
+        addItem("Templates backup", 5);
         /*
         addItem("Accounts load", 2);
         addItem("Accounts save", 3);
          */
-        addItem("Exit", 99);
     
 	attachDisplay(display);
     }
@@ -44,12 +47,7 @@ public class IEMenu
 	if (me==null)
             return;
         
-	int index=me.index;
-        if (index==99) {
-            destroyView();
-            return;
-        }
-        choice = index;
+	choice=me.index;
         
         if (choice==0)
             new Browser(null, display, this, false);
@@ -57,35 +55,17 @@ public class IEMenu
         if (choice==1)
             new Browser(null, display, this, true);
         
+        if (choice==2)
+            new Browser(null, display, this, false);
         
-        /*
-	switch (index) {
-	    case 0: //actions
-                choice = index;
-                break;
-	    case 1: //status
-
-		break;
-            case 2: //active
-
-		break;
-             case 3: //user mood
-
-                 break;
-            case 4: //alert
-
-		break;
-            case 5: //conference
-                
-                break;
-            case 6: //archive
-
-		break;
-            case 7: //add contact
-
-                break;
-	}
-         */
+        if (choice==3)
+            new Browser(null, display, this, true);
+        
+        if (choice==4)
+            new Browser(null, display, this, false);
+        
+        if (choice==5)
+            new Browser(null, display, this, true);
     }
 
     public void BrowserFilePathNotify(String pathSelected) {
@@ -95,6 +75,18 @@ public class IEMenu
                 break;
             case 1: //save Config
                 new IE.eConfigData(pathSelected);
+                break;
+            case 2: //load Archive
+                new IE.ArchiveTemplates(0, 1, pathSelected);
+                break;
+            case 3: //save Archive
+                new IE.ArchiveTemplates(1, 1, pathSelected);
+                break;
+            case 4: //load Templates
+                new IE.ArchiveTemplates(0, 0, pathSelected);
+                break;
+            case 5: //save Templates
+                new IE.ArchiveTemplates(1, 0, pathSelected);
                 break;
             /*
             case 2: //load Accounts
