@@ -35,6 +35,7 @@ import ui.controls.form.BoldString;
 import ui.controls.form.CheckBox;
 import ui.controls.form.DefForm;
 import ui.controls.form.DropChoiceBox;
+import ui.controls.form.SpacerItem;
 import ui.controls.form.TrackItem;
 import util.StringLoader;
 import java.util.Enumeration;
@@ -59,6 +60,8 @@ public class AlertCustomizeForm
     private DropChoiceBox StartUpFile;
     private DropChoiceBox OutgoingFile;
     private DropChoiceBox VIPFile;
+    
+    private CheckBox vibrateOnlyHighlited;
     
     private TrackItem sndVol;
     
@@ -124,7 +127,10 @@ public class AlertCustomizeForm
         blinkBox=new CheckBox(SR.MS_BLINKING, cf.notifyBlink); itemsList.addElement(blinkBox);
         soundBox=new CheckBox(SR.MS_SOUND, cf.notifySound); itemsList.addElement(soundBox);
         
-        itemsList.addElement(new BoldString("Sound volume"));
+        itemsList.addElement(new SpacerItem(10));
+        vibrateOnlyHighlited=new CheckBox(SR.MS_VIBRATE_ONLY_HIGHLITED, ac.vibrateOnlyHighlited); itemsList.addElement(vibrateOnlyHighlited);
+        
+        itemsList.addElement(new BoldString(SR.MS_SOUND_VOLUME));
         sndVol=new TrackItem(ac.soundVol/10, 10);
         itemsList.addElement(sndVol);
 
@@ -142,7 +148,9 @@ public class AlertCustomizeForm
         ac.soundConferenceIndex=ConferenceFile.getSelectedIndex(); 
         ac.soundStartUpIndex=StartUpFile.getSelectedIndex();
         ac.soundOutgoingIndex=OutgoingFile.getSelectedIndex(); 
-        ac.soundVIPIndex=VIPFile.getSelectedIndex(); 
+        ac.soundVIPIndex=VIPFile.getSelectedIndex();
+        
+        ac.vibrateOnlyHighlited=vibrateOnlyHighlited.getValue();
 
         ac.loadSoundName();
         ac.loadOnlineSoundName();

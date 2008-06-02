@@ -632,9 +632,11 @@ public class SR {
 
     public static String MS_CONECT_TO=loadString("Connect to");
 
-    public static String MS_SEND_COLOR_SCHEME=loadString("Send current color scheme");
+    public static String MS_SEND_COLOR_SCHEME=loadString("Send my color scheme");
 
     public static String MS_UNREAD_MESSAGES=loadString("Unread messages");
+
+    public static String MS_VIBRATE_ONLY_HIGHLITED=loadString("vibrate only highlited");
     
     private SR() { }
     

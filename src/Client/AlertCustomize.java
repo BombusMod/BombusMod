@@ -69,6 +69,8 @@ public class AlertCustomize {
     public int soundVIPIndex=0;
     public String soundVIP="";
     public String soundVIPType="tone sequence";
+    
+    public boolean vibrateOnlyHighlited;
 
     public int soundVol=100;
     
@@ -112,7 +114,9 @@ public class AlertCustomize {
 	    soundStartUpIndex=inputStream.readInt();
 	    soundOutgoingIndex=inputStream.readInt();
             soundVIPIndex=inputStream.readInt();
-           
+            
+            vibrateOnlyHighlited=inputStream.readBoolean();
+            
             inputStream.close();
 	} catch (Exception e) {
             try {
@@ -136,7 +140,9 @@ public class AlertCustomize {
 	    outputStream.writeInt(soundStartUpIndex);
 	    outputStream.writeInt(soundOutgoingIndex);
             outputStream.writeInt(soundVIPIndex);
-
+            
+            outputStream.writeBoolean(vibrateOnlyHighlited);
+            
             NvStorage.writeFileRecord(outputStream, "AlertCustomize", 0, true);
 	} catch (IOException e) {
             //e.printStackTrace();

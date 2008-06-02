@@ -1871,6 +1871,8 @@ public class Roster
             case SOUND_FOR_CONFERENCE: //conference
                 message=ac.soundConference;
                 type=ac.soundConferenceType;
+                if (ac.vibrateOnlyHighlited)
+                    vibraLen=0;
                 break;
             case SOUND_FOR_ME: //message for you
                 message=ac.soundForYou;
