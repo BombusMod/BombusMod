@@ -2608,13 +2608,13 @@ public class Roster
                     Vector tContacts=new Vector(vContacts.size());
                     
                     Enumeration e;
-                    //int i;
+                    int i;
                     groups.resetCounters();
                     
                     synchronized (hContacts) {
                         for (e=hContacts.elements();e.hasMoreElements();){
                             Contact c=(Contact)e.nextElement();
-                            boolean online=c.status<5;
+                            //boolean online=c.status<5;
                             // group counters
                             Group grp=c.getGroup();
 			    grp.addContact(c);
@@ -2637,7 +2637,7 @@ public class Roster
                     visibleGroup.visible=true;
                     
                     // adding groups
-                    for (int i=0; i<groups.getCount(); i++)
+                    for (i=0; i<groups.getCount(); i++)
                         groups.addToVector(tContacts,i);
                     
                     vContacts=tContacts;

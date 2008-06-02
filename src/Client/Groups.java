@@ -48,13 +48,14 @@ public class Groups implements JabberBlockListener{
 
     public final static int TYPE_SELF=1;
     public final static int TYPE_NO_GROUP=2;
-    public final static int TYPE_VISIBLE=3;
-    public final static int TYPE_COMMON=4;
-    public final static int TYPE_IGNORE=5;
-    public final static int TYPE_NOT_IN_LIST=6;
-    public final static int TYPE_MUC=7;
+    public final static int TYPE_COMMON=3;
+    public final static int TYPE_VISIBLE=4;
+    public final static int TYPE_MUC=5;
+    public final static int TYPE_IGNORE=6;
+    public final static int TYPE_NOT_IN_LIST=7;
     public final static int TYPE_SEARCH_RESULT=8;
     public final static int TYPE_TRANSP=9;
+    
     public final static String COMMON_GROUP=SR.MS_GENERAL;
     
     private final static String GROUPSTATE_NS="http://bombusmod.net.ru/groups";
@@ -78,7 +79,8 @@ public class Groups implements JabberBlockListener{
             Group grp=(Group)e.nextElement();
 	    grp.startCount();
         }
-	rosterContacts=rosterOnline=0;
+	rosterContacts=0;
+        rosterOnline=0;
     }
     
     public void addToVector(Vector d, int index){
@@ -120,15 +122,15 @@ public class Groups implements JabberBlockListener{
     }
     
     public Group addGroup(String name, int type) {
-         Group ng=new Group(name);
+        Group ng=new Group(name);
         ng.type=type;
         return addGroup(ng);
     }
     
     public Group addGroup(Group ng) {
-         groups.addElement(ng);
+        groups.addElement(ng);
         VirtualList.sort(groups);
-         return ng;
+        return ng;
     }
 
     public Vector getRosterGroupNames(){
