@@ -86,8 +86,7 @@ public class Group extends IconTextElement {
     public String getName() { return name; }
     
     protected String mainbar(String mainbarStart) {
-        StringBuffer mb=new StringBuffer();
-        mb.append(mainbarStart);
+        StringBuffer mb=new StringBuffer(mainbarStart);
         mb.append(" (");
         mb.append(getOnlines());
         mb.append("/");

@@ -88,14 +88,15 @@ public class Groups implements JabberBlockListener{
         if (!gr.visible) return;
         if (gr.contacts.size()>0){
             d.addElement(gr);
-            if (!gr.collapsed) for (Enumeration e=gr.contacts.elements();e.hasMoreElements();){
-                d.addElement(e.nextElement());
-            }
+            if (!gr.collapsed) 
+                for (Enumeration e=gr.contacts.elements();e.hasMoreElements();) {
+                    d.addElement(e.nextElement());
+                }
         }
 	gr.finishCount();
         
-        if (index==Groups.TYPE_SEARCH_RESULT) return;//don't count this contacts
-        if (index==Groups.TYPE_NOT_IN_LIST) return;//don't count this contacts
+        if (gr.type>Groups.TYPE_MUC)
+            return; //don't count this contacts
         
 	rosterContacts+=gr.getNContacts();
 	rosterOnline+=gr.getOnlines();
