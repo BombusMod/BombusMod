@@ -27,6 +27,7 @@
 
 package ui.controls.form;
 
+import images.Scale;
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
 import ui.IconTextElement;
@@ -44,6 +45,8 @@ public class ImageItem
     public boolean selectable=true;
 
     private String altText;
+
+    private int width;
     
     /** Creates a new instance of ImageItem */
     public ImageItem(Image img, String altText) {
@@ -82,7 +85,7 @@ public class ImageItem
     }
     
     public void drawItem(Graphics g, int ofs, boolean sel) {
-        int width=g.getClipWidth();
+        width=g.getClipWidth();
         int height=g.getClipHeight();
         if (!collapsed)
             g.drawImage(img, width/2, 0, Graphics.TOP|Graphics.HCENTER);
@@ -90,5 +93,17 @@ public class ImageItem
     }
 
     public boolean isSelectable() { return selectable; }
+    
+    public boolean handleEvent(int keyCode) {
+         switch (keyCode) {
+            case 0:
+                if (img.getWidth()>width) {
+                    int newHeight=(img.getHeight() * (width * 100 / img.getWidth()))/100;
+                    this.img=new Scale().scale(img, width, newHeight);
+                }
+                return true;
+         }
+        return false;
+    }
     
 }
