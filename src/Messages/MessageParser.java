@@ -39,7 +39,7 @@ import Colors.ColorTheme;
 import ui.*;
 import Client.Msg;
 import Client.Config;
-import util.strconv;
+import util.Strconv;
 
 public final class MessageParser implements Runnable{
     
@@ -175,7 +175,7 @@ public final class MessageParser implements Runnable{
                     case 0x0a:
                         if (strhaschars) endline=true; else break;
                     case 0x09:
-                        String smile=strconv.convCp1251ToUnicode(s.toString());
+                        String smile=Strconv.convCp1251ToUnicode(s.toString());
                         if (firstSmile) smileTable.addElement(smile);
 
                         addSmile(root, smile, strnumber);

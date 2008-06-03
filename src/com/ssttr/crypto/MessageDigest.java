@@ -203,7 +203,7 @@ public abstract class MessageDigest
     }
 
     public String getDigestBase64(){
-        return util.strconv.toBase64(digestBits, digestBits.length);
+        return util.Strconv.toBase64(digestBits, digestBits.length);
     }
 
     /**

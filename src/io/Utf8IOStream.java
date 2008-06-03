@@ -38,7 +38,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import javax.microedition.io.*;
 //import locale.SR;
-import util.strconv;
+import util.Strconv;
 
 /**
  *
@@ -82,7 +82,7 @@ public class Utf8IOStream implements Runnable{
     
     public void send( StringBuffer data ) throws IOException {
 	synchronized (outStream) {
-            StringBuffer outbuf=strconv.toUTFSb(data);
+            StringBuffer outbuf=Strconv.toUTFSb(data);
             int outLen=outbuf.length();
             byte bytes[]=new byte[outLen];
             for (int i=0; i<outLen; i++) {

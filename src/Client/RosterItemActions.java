@@ -65,9 +65,9 @@ import ui.Time;
 //# import util.ClipBoard;
 //#endif
 
-import vcard.VCard;
-import vcard.VCardEdit;
-import vcard.VCardView;
+import VCard.VCard;
+import VCard.VCardEdit;
+import VCard.VCardView;
 
 /**
  *

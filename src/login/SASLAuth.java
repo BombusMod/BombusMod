@@ -37,7 +37,7 @@ import java.io.IOException;
 import locale.SR;
 import xmpp.XmppError;
 
-import util.strconv;
+import util.Strconv;
 //#if SASL_XGOOGLETOKEN
 //# import java.io.InputStream;
 //# import javax.microedition.io.Connector;
@@ -128,12 +128,12 @@ public class SASLAuth implements JabberBlockListener{
                     
                     auth.setAttribute("mechanism", "PLAIN");
                     String plain=
-                            strconv.unicodeToUTF(account.getBareJid())
+                            Strconv.unicodeToUTF(account.getBareJid())
                             +(char)0x00
-                            +strconv.unicodeToUTF(account.getUserName())
+                            +Strconv.unicodeToUTF(account.getUserName())
                             +(char)0x00
-                            +strconv.unicodeToUTF(account.getPassword());
-                    auth.setText(strconv.toBase64(plain));
+                            +Strconv.unicodeToUTF(account.getPassword());
+                    auth.setText(Strconv.toBase64(plain));
                     
                     stream.send(auth);
                     listener.loginMessage(SR.MS_AUTH, 42);
@@ -174,8 +174,8 @@ public class SASLAuth implements JabberBlockListener{
                 String cnonce="123456789abcd";
                 
                 resp.setText(responseMd5Digest(
-                        strconv.unicodeToUTF(account.getUserName()),
-                        strconv.unicodeToUTF(account.getPassword()),
+                        Strconv.unicodeToUTF(account.getUserName()),
+                        Strconv.unicodeToUTF(account.getPassword()),
                         account.getServer(),
                         "xmpp/"+account.getServer(),
                         nonce,
@@ -310,9 +310,8 @@ public class SASLAuth implements JabberBlockListener{
                 "nonce=\""+nonce+"\",nc=00000001,cnonce=\""+cnonce+"\"," +
                 "qop=auth,digest-uri=\""+digestUri+"\"," +
                 "response=\""+hResp.getDigestHex()+"\",charset=utf-8";
-        String resp = strconv.toBase64(out);
+        String resp = Strconv.toBase64(out);
         //System.out.println(decodeBase64(resp));
-        
         return resp;
     }
     
@@ -340,11 +339,11 @@ public class SASLAuth implements JabberBlockListener{
 //#     public String responseXGoogleToken() {
 //#         try {
 //#             String firstUrl = "https://www.google.com:443/accounts/ClientAuth?Email="
-//#                     + strconv.unicodeToUTF(account.getUserName()) + "%40"+ account.getServer()
-//#                     + "&Passwd=" + strconv.unicodeToUTF(account.getPassword()) 
+//#                     + Strconv.unicodeToUTF(account.getUserName()) + "%40"+ account.getServer()
+//#                     + "&Passwd=" + Strconv.unicodeToUTF(account.getPassword()) 
 //#                     + "&PersistentCookie=false&source=googletalk";
 //#             
-//#             //log.addMessage("Connecting to www.google.com");
+//#             //log.addMessage("ConnectinStrconvw.google.com");
 //#             HttpConnection c = (HttpConnection) Connector.open(firstUrl.toString());
 //#             InputStream is = c.openInputStream();
 //#             
@@ -364,17 +363,17 @@ public class SASLAuth implements JabberBlockListener{
 //#             c = (HttpConnection) Connector.open(secondUrl);
 //#             is = c.openInputStream();
 //#             //str = readLine(dis);
-//#             String token = "\0"+strconv.unicodeToUTF(account.getUserName())+"\0"+readLine(is);
+//#             String token = "\0"+Strconv.unicodeToUTF(account.getUserName())+"\0"+readLine(is);
 //#             is.close();
 //#             c.close();
-//#             return strconv.toBase64(token);
+//#             return Strconv.toBase64(token);
 //#         } catch (javax.microedition.pki.CertificateException e) {
 //#             throw new SecurityException(e.getMessage());
 //#         } catch (SecurityException e) {
 //#             throw e;
 //#         } catch(Exception e) {
-//#             e.printStackTrace();
-//#             listener.loginFailed("Google token error");
+//#              e.printStackTrace();
+//#              listener.loginFailed("Google token error");
 //#         }
 //#         return null;
 //#     }

@@ -36,7 +36,7 @@ import javax.microedition.media.Manager;
 import javax.microedition.media.MediaException;
 import javax.microedition.media.Player;
 import locale.SR;
-import util.strconv;
+import util.Strconv;
 
 /**
  *
@@ -110,7 +110,7 @@ public class ShowFile implements CommandListener{
             } catch (Exception e) {}
 
                if (cf.cp1251) {
-                    tb.setString(strconv.convCp1251ToUnicode(s));
+                    tb.setString(Strconv.convCp1251ToUnicode(s));
                } else {
                     tb.setString(s);
                }

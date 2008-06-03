@@ -43,7 +43,7 @@ import javax.microedition.lcdui.*;
 //# import util.ClipBoard;
 //#endif
 //#ifdef ARCHIVE
-import archive.MessageArchive;
+import Archive.MessageArchive;
 //#endif
 
 public class ContactMessageList extends MessageList

@@ -44,7 +44,7 @@ import javax.microedition.lcdui.Graphics;
 import images.RosterIcons;
 import Colors.ColorTheme;
 import ui.Time;
-import vcard.VCard;
+import VCard.VCard;
 import java.util.*;
 import ui.IconTextElement;
 import com.alsutton.jabber.datablocks.Presence;

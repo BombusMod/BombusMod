@@ -41,7 +41,7 @@ import Conference.ConferenceForm;
 //#endif
 
 //#ifdef ARCHIVE
-import archive.ArchiveList;
+import Archive.ArchiveList;
 //#endif
 import images.RosterIcons;
 import locale.SR;
@@ -51,10 +51,10 @@ import midlet.BombusMod;
 import ui.MainBar;
 import ui.controls.AlertBox;
 import util.StringUtils;
-import util.strconv;
-import vcard.VCard;
-import vcard.VCardEdit;
-import vcard.VCardView;
+import util.Strconv;
+import VCard.VCard;
+import VCard.VCardEdit;
+import VCard.VCardView;
 import com.alsutton.jabber.*;
 import com.alsutton.jabber.datablocks.*;
 import java.util.*;

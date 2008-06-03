@@ -29,12 +29,12 @@ package IE;
 
 import Client.Config;
 import Client.Msg;
-import archive.*;
+import Archive.MessageArchive;
 import io.file.FileIO;
 import java.util.Enumeration;
 import java.util.Vector;
 import ui.Time;
-import util.strconv;
+import util.Strconv;
 
 /**
  *
@@ -94,7 +94,7 @@ public class ArchiveTemplates {
 
         if (bodyMessage!=null) {
             if (cf.cp1251) {
-                archive=strconv.convCp1251ToUnicode(new String(bodyMessage, 0, bodyMessage.length));
+                archive=Strconv.convCp1251ToUnicode(new String(bodyMessage, 0, bodyMessage.length));
             } else {
                 archive=new String(bodyMessage, 0, bodyMessage.length);
             }
@@ -170,7 +170,7 @@ public class ArchiveTemplates {
         }
 
         if (cf.cp1251) {
-            bodyMessage=strconv.convUnicodeToCp1251(body.toString()).getBytes();
+            bodyMessage=Strconv.convUnicodeToCp1251(body.toString()).getBytes();
         } else {
             bodyMessage=body.toString().getBytes();
         }

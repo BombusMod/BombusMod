@@ -12,7 +12,7 @@ package xmpp.extensions;
 import com.alsutton.jabber.JabberDataBlock;
 import java.util.*;
 import javax.microedition.lcdui.*;
-import util.strconv;
+import util.Strconv;
 
 /**
  *
@@ -115,7 +115,7 @@ public class XDataField {
         
         try { 
             if (!data.getTypeAttribute().startsWith("image")) return null;
-            byte[] bytes=strconv.fromBase64(data.getText());
+            byte[] bytes=Strconv.fromBase64(data.getText());
             Image img=Image.createImage(bytes, 0, bytes.length);
             return new ImageItem(null, img, Item.LAYOUT_CENTER, null);
         } catch (Exception e) {}

@@ -30,7 +30,7 @@ package Client;
 import Conference.AppendNick;
 //#endif
 //#ifdef ARCHIVE
-import archive.ArchiveList;
+import Archive.ArchiveList;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Message;
 //#endif

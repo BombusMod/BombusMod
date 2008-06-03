@@ -52,7 +52,7 @@ public class Upgrade
     //private Command cmdBack=new Command(SR.MS_BACK, Command.BACK, 99);
     private final static String VERSION_URL="http://bombusmod.net.ru/checkupdate/check.php";
 
-    upgradeItems items;
+    Vector news;
     Vector versions[];
     boolean build;
     
@@ -71,7 +71,7 @@ public class Upgrade
         this.display=display;
         this.build=build;
         
-        items=upgradeItems.getInstance();
+        news=new Vector();
         
         setCommandListener(this);
 	addCommand(cmdBack);
@@ -99,18 +99,7 @@ public class Upgrade
         String vUrl=(build)?Client.Config.getInstance().getStringProperty("Bombus-Upgrade", VERSION_URL):VERSION_URL;
         if (build) {
             vUrl+="?vers=new";
-        } /*else {
-            SHA1 sha=new SHA1();
-            sha.init();
-            sha.update(strconv.unicodeToUTF(StaticData.getInstance().account.getBareJid()) );
-            sha.finish();
-            
-            vUrl+="?name="+Version.NAME;
-            vUrl+="&version="+Version.getVersionNumber();
-            vUrl+="&lang="+SR.MS_IFACELANG;
-            vUrl+="&os="+Config.getOs();
-            vUrl+="&hash="+sha.getDigestHex();
-        }*/
+        }
         try {
             c = (HttpConnection) Connector.open(vUrl);
             is = c.openInputStream();
@@ -119,15 +108,16 @@ public class Upgrade
             for (int i=0; i<versions[0].size(); i++) {
                 if (versions[0].elementAt(i)==null) continue;
                 String name=(String)versions[0].elementAt(i);
-                items.add(new Msg(Msg.MESSAGE_TYPE_IN, "local", null, name)); 
+                news.addElement(new Msg(Msg.MESSAGE_TYPE_IN, null, null, name)); 
             }
 
             if(is!= null) is.close();
             if(c != null) c.close();
         } catch (Exception e) {
-            items.add(new Msg(Msg.MESSAGE_TYPE_IN, "local", null, "Error on request!"));
+            news.addElement(new Msg(Msg.MESSAGE_TYPE_IN, null, null, SR.MS_ERROR));
         }
         wait=false;
+        redraw();
     }
 
     public void commandAction(Command c, Displayable d) {
@@ -158,16 +148,16 @@ public class Upgrade
     }
 
     public int getItemCount() {
-        return items.size();
+        return news.size();
     }
 
     public Msg getMessage(int index) {
-	return items.msg(index);
+	return (Msg)news.elementAt(index);
     }
     
     private void clearList() {
         if (getItemCount()>0) {
-            items.clearAll();
+            news.removeAllElements();
             messages=new Vector();
         }
         redraw(); 

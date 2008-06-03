@@ -27,7 +27,7 @@
 
 package Client;
 
-import util.strconv;
+import util.Strconv;
 
 /**
  *
@@ -47,7 +47,7 @@ public class Jid {
         int resourcePos=s.indexOf('/');
         if (resourcePos<0) resourcePos=s.length();
         resource=s.substring(resourcePos);
-        bareJid=strconv.toLowerCase(s.substring(0,resourcePos));
+        bareJid=Strconv.toLowerCase(s.substring(0,resourcePos));
     }
     
     /** Compares two Jids */

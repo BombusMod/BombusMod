@@ -34,7 +34,7 @@ import com.alsutton.jabber.JabberStream;
 import com.alsutton.jabber.datablocks.Iq;
 import com.ssttr.crypto.SHA1;
 import locale.SR;
-import util.strconv;
+import util.Strconv;
 import xmpp.XmppError;
 
 /**
@@ -82,7 +82,7 @@ public class NonSASLAuth implements JabberBlockListener{
                 SHA1 sha=new SHA1();
                 sha.init();
                 sha.updateASCII(sessionId);
-                sha.updateASCII(strconv.unicodeToUTF(account.getPassword()) );
+                sha.updateASCII(Strconv.unicodeToUTF(account.getPassword()) );
                 sha.finish();
                 query.addChild("digest", sha.getDigestHex() );
 

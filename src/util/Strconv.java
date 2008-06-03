@@ -1,5 +1,5 @@
 /*
- * strconv.java
+ * Strconv.java
  *
  * Created on 12.01.2005, 1:25
  *
@@ -32,10 +32,12 @@
 package util;
 import java.io.ByteArrayOutputStream;
 
-public class strconv {
+public class Strconv {
     
-    /** Creates a new instance of strconv */
-    private strconv() {
+    /**
+     * Creates a new instance of Strconv
+     */
+    private Strconv() {
     }
 
     public static final String convCp1251ToUnicode(final String s){

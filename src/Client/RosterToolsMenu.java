@@ -45,6 +45,8 @@ import ServiceDiscovery.ServiceDiscovery;
 //#ifdef PEP
 //# import Mood.MoodList;
 //#endif
+import VCard.VCard;
+import VCard.VCardEdit;
 import images.MenuIcons;
 import javax.microedition.lcdui.Display;
 import locale.SR;
@@ -54,8 +56,6 @@ import ui.MenuItem;
 //#ifdef USER_KEYS
 //# import ui.keys.userKeysList;
 //#endif
-import vcard.VCard;
-import vcard.VCardEdit;
 //#ifdef CHECK_VERSION
 //# import Info.Upgrade;
 //#endif

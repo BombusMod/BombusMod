@@ -35,57 +35,57 @@ import javax.microedition.lcdui.*;
 import locale.SR;
 import ui.controls.TextFieldCombo;
 import ui.controls.AlertBox;
+import ui.controls.form.BoldString;
+import ui.controls.form.DefForm;
+import ui.controls.form.DropChoiceBox;
+import ui.controls.form.TextInput;
 
 /**
  *
  * @author EvgS
  */
-public class AffiliationModify implements CommandListener {
+public class AffiliationModify
+        extends DefForm {
     
     Display display;
     Displayable parentView;
-    
-    Form f=new Form(SR.MS_AFFILIATION);
-    TextField jid;
-    ChoiceGroup affiliation;
-	
-	TextFieldCombo reason;
+
+    TextInput jid;
+    DropChoiceBox affiliation;
+    TextInput reason;
     
     String room;
     int recentAffiliation;
     
-    Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 99);
-    Command cmdOk=new Command(SR.MS_SET, Command.OK, 1);
-    
     /** Creates a new instance of AffiliationModify */
     public AffiliationModify(Display display, String room, String jid, String affiliation, String reason) {
+        super(display, SR.MS_AFFILIATION);
+        
         this.display=display;
         parentView=display.getCurrent();
         
         this.room=room;
-        // WARNING!!! 1000 is experimental value. this length is required by RFC (reference?), 
-        // but may not supported by some phones
-        this.jid=new TextField(SR.MS_JID , jid, 1000, TextField.ANY);
-        TextFieldCombo.setLowerCaseLatin(this.jid);
-        
-	this.reason=new TextFieldCombo(SR.MS_REASON, reason, 256, TextField.ANY, "reason", display);
-        f.append(this.jid);
-        
-        this.affiliation=new ChoiceGroup(SR.MS_SET_AFFILIATION /*"Set affiliation to"*/, ChoiceGroup.POPUP);
+        itemsList.addElement(new BoldString(SR.MS_JID));
+        this.jid=new TextInput(display, "", null, TextField.ANY);
+        itemsList.addElement(jid);
+
+        itemsList.addElement(new BoldString(SR.MS_SET_AFFILIATION));
+        this.affiliation=new DropChoiceBox(display);
         for (short index=0; index<=AffiliationItem.AFFILIATION_OUTCAST; index++) {
             String name=AffiliationItem.getAffiliationName(index);
-            this.affiliation.append(name, null);
+            this.affiliation.append(name);
             if (affiliation.equals(name)) recentAffiliation=index;
         }
-        this.affiliation.setSelectedIndex(recentAffiliation, true);
-        f.append(this.affiliation);
-		
-		f.append(this.reason);
+        this.affiliation.setSelectedIndex(recentAffiliation);
+        itemsList.addElement(affiliation);
         
-        f.addCommand(cmdCancel);
-        f.addCommand(cmdOk);
-        f.setCommandListener(this);
-        display.setCurrent(f);
+        
+		
+        itemsList.addElement(new BoldString(SR.MS_REASON));
+	this.reason=new TextInput(display, "", "reason", TextField.ANY);
+	itemsList.addElement(reason);
+
+        attachDisplay(display);
     }
     
     
@@ -95,10 +95,10 @@ public class AffiliationModify implements CommandListener {
         JabberDataBlock request=new Iq(room, Iq.TYPE_SET, "admin_modify");
         JabberDataBlock query=request.addChildNs("query", "http://jabber.org/protocol/muc#admin");
         JabberDataBlock child=query.addChild("item", null);
-        child.setAttribute("jid", jid.getString());
+        child.setAttribute("jid", jid.getValue());
         child.setAttribute("affiliation", AffiliationItem.getAffiliationName((short)affiliation.getSelectedIndex()));
 		
-        String rs=reason.getString();
+        String rs=reason.getValue();
         if (rs.length()>0) child.addChild("reason", rs);        
 
         stream.send(request);
@@ -113,28 +113,24 @@ public class AffiliationModify implements CommandListener {
         destroyView();
     }
     
-    public void commandAction(Command c, Displayable d) {
-        if (c==cmdOk) {
-            if (jid.size()==0) return;
-            if (recentAffiliation==AffiliationItem.AFFILIATION_OWNER) {
-                StringBuffer warn=new StringBuffer(SR.MS_ARE_YOU_SURE_WANT_TO_DISCARD /*"Are You sure want to discard "*/);
-                warn.append(jid.getString());
-                warn.append(SR.MS_FROM_OWNER_TO/*" from OWNER to "*/);
-                warn.append(AffiliationItem.getAffiliationName((short)affiliation.getSelectedIndex()));
-                new AlertBox(SR.MS_MODIFY_AFFILIATION, warn.toString(), display, null) {
-                        public void yes() {
-                            modify();
-                            destroyView();
-                        }
-                        public void no() {}
-                };
-                warn=null;
-            } else modify();
-        }
-        if (c==cmdCancel) { destroyView(); }
+    public void cmdOk() {
+        if (jid.getValue()=="") return;
+        if (recentAffiliation==AffiliationItem.AFFILIATION_OWNER) {
+            StringBuffer warn=new StringBuffer(SR.MS_ARE_YOU_SURE_WANT_TO_DISCARD /*"Are You sure want to discard "*/);
+            warn.append(jid.getValue());
+            warn.append(SR.MS_FROM_OWNER_TO/*" from OWNER to "*/);
+            warn.append(AffiliationItem.getAffiliationName((short)affiliation.getSelectedIndex()));
+            new AlertBox(SR.MS_MODIFY_AFFILIATION, warn.toString(), display, null) {
+                    public void yes() {
+                        modify();
+                        destroyView();
+                    }
+                    public void no() {}
+            };
+            warn=null;
+        } else modify();
     }
-    
-    private void destroyView() { display.setCurrent(parentView); }
+
 	
     public void ActionConfirmed() {
         modify();

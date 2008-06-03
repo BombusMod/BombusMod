@@ -40,7 +40,7 @@ import javax.microedition.lcdui.Graphics;
 import locale.SR;
 import Colors.ColorTheme;
 import ui.IconTextElement;
-import util.strconv;
+import util.Strconv;
 import xmpp.XmppError;
 
 /**
@@ -286,7 +286,7 @@ public class TransferTask
             JabberDataBlock data=msg.addChildNs("data", "http://jabber.org/protocol/ibb");
             data.setAttribute("sid", sid);
             data.setAttribute("seq", String.valueOf(seq));   seq++;
-            data.setText(strconv.toBase64(buf, sz));
+            data.setText(Strconv.toBase64(buf, sz));
             
             JabberDataBlock amp=msg.addChildNs("amp", "http://jabber.org/protocol/amp");
             

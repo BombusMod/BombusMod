@@ -344,12 +344,14 @@ public abstract class VirtualList
     }
 
     protected void sizeChanged(int w, int h) {
-//#ifndef WOFFSCREEN
         width=w;
         height=h;
-        ibHeight=0;
-        mbHeight=0;
-	if (!isDoubleBuffered()) offscreen=Image.createImage(width, height);
+//#ifdef GRADIENT
+//#         ibHeight=0;
+//#         mbHeight=0;
+//#endif
+//#ifndef WOFFSCREEN
+        if (!isDoubleBuffered()) offscreen=Image.createImage(width, height);
 //#endif
     }
 

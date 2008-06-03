@@ -32,20 +32,22 @@ import Conference.*;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
 import javax.microedition.lcdui.Command;
-import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
-import javax.microedition.lcdui.Form;
-import javax.microedition.lcdui.StringItem;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
-import ui.controls.TextFieldCombo;
+import ui.controls.form.BoldString;
+import ui.controls.form.DefForm;
+import ui.controls.form.MultiLine;
+import ui.controls.form.TextInput;
 
 /**
  *
  * @author Evg_S
  */
-public class ConferenceQuickPrivelegeModify implements CommandListener{
+public class ConferenceQuickPrivelegeModify
+        extends DefForm {
+    
     public final static int KICK=1;
     public final static int VISITOR=2;
     public final static int PARTICIPANT=3;
@@ -58,13 +60,12 @@ public class ConferenceQuickPrivelegeModify implements CommandListener{
     public final static int OWNER=9;
 
     private Display display;
-    private Form f;
-    private TextFieldCombo reason;
+    //private Form f;
+    private TextInput reason;
     private MucContact victim;
     
     private Command cmdOk;
     private Command cmdNoReason=new Command(SR.MS_NO_REASON, Command.SCREEN, 2);
-    private Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 99);
     
     private int action;
 
@@ -74,36 +75,33 @@ public class ConferenceQuickPrivelegeModify implements CommandListener{
      * Creates a new instance of ConferenceQuickPrivelegeModify
      */
     public ConferenceQuickPrivelegeModify(Display display, MucContact victim, int action, String myNick) {
-
+        super(display, null);
+        
+        this.display=display;
+        
         this.victim=victim;
         this.action=action;
         this.myNick=myNick;
-		
+        
 	String okName = SR.MS_OK;
         
         switch (action) {
             case KICK: 
-                f=new Form(SR.MS_KICK);
 		okName=SR.MS_KICK;
                 break;
-
             case OUTCAST:
-                f=new Form(SR.MS_BAN);
 		okName=SR.MS_BAN;
-                f.append(SR.MS_CONFIRM_BAN);
                 break;
             case VISITOR:
-                //f=new Form (SR.MS_REVOKE_VOICE); //temporary commented until ejabberd fixes its bug
                 okName=SR.MS_REVOKE_VOICE;
-                break;
+                setMucMod();
+                return;
+            default:
+                setMucMod();
+                return;
         } // switch
-        
-        if (f==null) {
-            setMucMod();
-            return;
-        }
-        
-        this.display=display;
+
+        getMainBarItem().setElementAt(okName, 0);
         
         StringBuffer user=new StringBuffer(victim.nick);
         if (victim.jid!=null) {
@@ -111,28 +109,37 @@ public class ConferenceQuickPrivelegeModify implements CommandListener{
             user.append(victim.realJid);
             user.append(")");
         }
-        f.append(new StringItem(SR.MS_USER,user.toString()));
+        itemsList.addElement(new BoldString(SR.MS_USER));
+        itemsList.addElement(new MultiLine(user.toString()));
+
         
-        reason=new TextFieldCombo(SR.MS_REASON, "", 256, TextField.ANY, "reason", display);
-        f.append(reason);
+        reason=new TextInput(display, SR.MS_REASON, "reason", TextField.ANY);
+        itemsList.addElement(reason);
         
+        removeCommand(cmdOk);
         cmdOk=new Command( okName, Command.SCREEN, 1);
-        f.addCommand(cmdOk);
-        f.addCommand(cmdNoReason);
-        f.addCommand(cmdCancel);
-        f.setCommandListener(this);
+        addCommand(cmdOk);
+        addCommand(cmdNoReason);
         user=null;
-        display.setCurrent(f);
+        attachDisplay(display);
     }
 
+    public void cmdOk() {
+        setMucMod();
+        destroyView();
+    }
+    
+    public void destroyView(){
+        display.setCurrent(StaticData.getInstance().roster);
+    }
+    
     public void commandAction(Command command, Displayable displayable) {
         if (command==cmdNoReason) { 
-            reason.setString("");
+            reason.setValue("");
             return;
         }
         
-        if (command==cmdOk) setMucMod(); 
-        display.setCurrent(StaticData.getInstance().roster);
+        destroyView();
     }
     
     private void setMucMod(){
@@ -143,7 +150,7 @@ public class ConferenceQuickPrivelegeModify implements CommandListener{
         query.addChild(item);
 
         try {
-            String rzn=reason.getString();
+            String rzn=reason.getValue();
             String Nick="";
             if (rzn.startsWith("!")) {
                 rzn=rzn.substring(1);

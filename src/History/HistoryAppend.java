@@ -36,7 +36,7 @@ import util.StringUtils;
 //#ifdef DETRANSLIT
 //# import util.DeTranslit;
 //#endif
-import util.strconv;
+import util.Strconv;
 
 public class HistoryAppend {
     
@@ -153,6 +153,6 @@ public class HistoryAppend {
             body.append(ME);
             body.append(RN);
         }
-        return (convertToWin1251)?strconv.convUnicodeToCp1251(body.toString()):body.toString();
+        return (convertToWin1251)?Strconv.convUnicodeToCp1251(body.toString()):body.toString();
     }
 }

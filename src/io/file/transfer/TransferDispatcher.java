@@ -34,7 +34,7 @@ import com.alsutton.jabber.datablocks.Iq;
 import com.alsutton.jabber.datablocks.Message;
 import java.util.Enumeration;
 import java.util.Vector;
-import util.strconv;
+import util.Strconv;
 import xmpp.XmppError;
 
 /**
@@ -143,7 +143,7 @@ public class TransferDispatcher implements JabberBlockListener{
             String sid=bdata.getAttribute("sid");
             TransferTask task=getTransferBySid(sid);
             
-            byte b[]=strconv.fromBase64(bdata.getText());
+            byte b[]=Strconv.fromBase64(bdata.getText());
 //#ifdef DEBUG
 //#             System.out.println("data chunk received");
 //#endif

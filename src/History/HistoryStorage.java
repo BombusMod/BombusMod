@@ -36,7 +36,7 @@ import util.StringUtils;
 //#ifdef DETRANSLIT
 //# import util.DeTranslit;
 //#endif
-import util.strconv;
+import util.Strconv;
 
 public class HistoryStorage {
     final static int SEARCH_MARKER= 0;
@@ -66,7 +66,7 @@ public class HistoryStorage {
 
         if (bodyMessage!=null) {
             if (cf.cp1251) {
-                archive=strconv.convCp1251ToUnicode(new String(bodyMessage, 0, bodyMessage.length));
+                archive=Strconv.convCp1251ToUnicode(new String(bodyMessage, 0, bodyMessage.length));
             } else {
                 archive=new String(bodyMessage, 0, bodyMessage.length);
             }
