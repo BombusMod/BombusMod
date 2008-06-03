@@ -182,17 +182,17 @@ public final class ContactEdit
             String group=group(tGrpList.getSelectedIndex());
             if (group==null) group=tGroup.getValue();
             boolean ask=tAskSubscrCheckBox.getValue();
-            
-            StringBuffer jidBuf=new StringBuffer(jid);
-            
+
             int at=jid.indexOf('@');
-            if (at<0) at=jid.length();
-            
-            jidBuf.setLength(at);
-            jidBuf.append('@');
-            jidBuf.append(tTranspList.toString());
-            jid=jidBuf.toString();
-            
+            if (at<0) {
+                StringBuffer jidBuf=new StringBuffer(jid);
+                at=jid.length();
+                jidBuf.setLength(at);
+                jidBuf.append('@');
+                jidBuf.append(tTranspList.toString());
+                jid=jidBuf.toString();
+            }
+
             sd.roster.storeContact(jid, name, group, ask);
             destroyView();
         }
