@@ -31,6 +31,7 @@ package Client;
 
 import locale.SR;
 import java.util.Vector;
+import ui.EventNotify;
 import ui.controls.form.BoldString;
 import ui.controls.form.CheckBox;
 import ui.controls.form.DefForm;
@@ -70,6 +71,7 @@ public class AlertCustomizeForm
     Vector files[];
     Vector fileNames;
 
+    Command cmdTest=new Command(SR.MS_TEST_SOUND, Command.SCREEN, 2);
 
     /** Creates a new instance of ConfigForm */
     public AlertCustomizeForm(Display display) {
@@ -133,6 +135,8 @@ public class AlertCustomizeForm
         itemsList.addElement(new BoldString(SR.MS_SOUND_VOLUME));
         sndVol=new TrackItem(ac.soundVol/10, 10);
         itemsList.addElement(sndVol);
+        
+        addCommand(cmdTest);
 
         moveCursorTo(getNextSelectableRef(-1));
         attachDisplay(display);
@@ -172,4 +176,53 @@ public class AlertCustomizeForm
 
         destroyView();
     }
+    
+    public void commandAction(Command c, Displayable d) {
+        if (c==cmdTest) {
+            int testSound=-1;
+            switch (cursor) {
+                case 1: //MessageFile
+                    testSound=MessageFile.getSelectedIndex();
+                    break;
+                case 3: //OnlineFile
+                    testSound=OnlineFile.getSelectedIndex();
+                    break;
+                case 5: //OfflineFile
+                    testSound=OfflineFile.getSelectedIndex();
+                    break;
+                case 7: //ForYouFile
+                    testSound=ForYouFile.getSelectedIndex();
+                    break;
+                case 9: //ComposingFile
+                    testSound=ComposingFile.getSelectedIndex();
+                    break;
+                case 11: //ConferenceFile
+                    testSound=ConferenceFile.getSelectedIndex();
+                    break;
+                case 13: //StartUpFile
+                    testSound=StartUpFile.getSelectedIndex();
+                    break;
+                case 15: //OutgoingFile
+                    testSound=OutgoingFile.getSelectedIndex();
+                    break;
+                case 17: //VIPFile
+                    testSound=VIPFile.getSelectedIndex();
+                    break;
+            }
+            PlaySound(testSound);
+            return;
+        }
+
+        super.commandAction(c, d);
+    }
+    
+    private void PlaySound(int sound){
+        if (sound<0) return;
+        
+        String soundFile=(String)files[1].elementAt(sound);
+        String soundType=(String)files[0].elementAt(sound);
+        int soundVol=sndVol.getValue()*10;
+        //System.out.println(sound+" "+soundFile+" "+soundType+" "+soundVol);
+        new EventNotify(display, soundType, soundFile, soundVol, 0).startNotify();
+    } 
 }
