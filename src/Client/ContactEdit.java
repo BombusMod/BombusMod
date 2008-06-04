@@ -79,11 +79,11 @@ public final class ContactEdit
         parentView=display.getCurrent();
         cf=Config.getInstance();
         
-        tJid=new TextInput(display, null, null, TextField.ANY); 
+        tJid=new TextInput(display, SR.MS_USER_JID, null, null, TextField.ANY); 
 
-        tNick=new TextInput(display, null, null, TextField.ANY);
+        tNick=new TextInput(display, SR.MS_NAME, null, null, TextField.ANY);
         
-        tGroup=new TextInput(display, (c==null)?"":c.getGroup().name, null, TextField.ANY);
+        tGroup=new TextInput(display, null, (c==null)?"":c.getGroup().name, null, TextField.ANY);
 
         tTranspList=new DropChoiceBox(display);
         // Transport droplist
@@ -150,13 +150,11 @@ public final class ContactEdit
         if (sel<0) sel=0;
         
         if (c==null){
-            itemsList.addElement(new BoldString(SR.MS_USER_JID)); newGroupPos++;
             itemsList.addElement(tJid); newGroupPos++;
             
             itemsList.addElement(new BoldString(SR.MS_TRANSPORT)); newGroupPos++;
             itemsList.addElement(tTranspList); newGroupPos++;
         }
-        itemsList.addElement(new BoldString(SR.MS_NAME)); newGroupPos++;
         itemsList.addElement(tNick); newGroupPos++;
         
         itemsList.addElement(new BoldString(SR.MS_GROUP)); newGroupPos++;

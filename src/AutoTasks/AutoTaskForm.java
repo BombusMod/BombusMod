@@ -145,17 +145,14 @@ public class AutoTaskForm
 //#         
 //#         if (typeIndex==1) {
 //#             itemsList.addElement(new BoldString(SR.MS_AUTOTASK_TIME));
-//#             
-//#             itemsList.addElement(new SimpleString(SR.MS_AUTOTASK_HOUR));
-//#             autoTaskHour=new NumberInput(display, Integer.toString(hour), 0, 23);
+//# 
+//#             autoTaskHour=new NumberInput(display, SR.MS_AUTOTASK_HOUR, Integer.toString(hour), 0, 23);
 //#             itemsList.addElement(autoTaskHour);
-//#             
-//#             itemsList.addElement(new SimpleString(SR.MS_AUTOTASK_MIN));
-//#             autoTaskMin=new NumberInput(display, Integer.toString(min), 0, 59);
+//# 
+//#             autoTaskMin=new NumberInput(display, SR.MS_AUTOTASK_MIN, Integer.toString(min), 0, 59);
 //#             itemsList.addElement(autoTaskMin);
 //#          } else if (typeIndex==2) {
-//#             itemsList.addElement(new BoldString(SR.MS_AUTOTASK_DELAY));
-//#             autoTaskDelay=new NumberInput(display, Integer.toString(wait), 1, 600);
+//#             autoTaskDelay=new NumberInput(display, SR.MS_AUTOTASK_DELAY, Integer.toString(wait), 1, 600);
 //#             itemsList.addElement(autoTaskDelay);
 //#         }
 //#     }

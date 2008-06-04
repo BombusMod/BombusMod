@@ -67,7 +67,7 @@ public class InfoWindow
         this.display=display;
         parentView=display.getCurrent();
         
-        description=new MultiLine(Version.getNameVersion()+"\nMobile Jabber client\n"+Config.getOs()+"\nCopyright (c) 2005-2008, Eugene Stahov (evgs), Daniel Apatin (ad)");
+        description=new MultiLine(Version.getNameVersion(), "Mobile Jabber client\n"+Config.getOs()+"\nCopyright (c) 2005-2008, Eugene Stahov (evgs), Daniel Apatin (ad)");
         description.selectable=true;
         itemsList.addElement(description);
         itemsList.addElement(new SpacerItem(0));
@@ -76,20 +76,18 @@ public class InfoWindow
         itemsList.addElement(siteUrl);
         itemsList.addElement(new SpacerItem(0));
         
-        StringBuffer memInfo=new StringBuffer(SR.MS_MEMORY);
-        memInfo.append("\n");
-        memInfo.append(SR.MS_FREE);
+        StringBuffer memInfo=new StringBuffer(SR.MS_FREE);
         System.gc();
         memInfo.append(Runtime.getRuntime().freeMemory()>>10);
         memInfo.append("\n");
         memInfo.append(SR.MS_TOTAL);
         memInfo.append(Runtime.getRuntime().totalMemory()>>10);
-        memory=new MultiLine(memInfo.toString());
+        memory=new MultiLine(SR.MS_MEMORY, memInfo.toString());
         memory.selectable=true;
         itemsList.addElement(memory);
         itemsList.addElement(new SpacerItem(0));
         
-        abilities=new MultiLine(getAbilities());
+        abilities=new MultiLine("Abilities", getAbilities());
         abilities.selectable=true;
         itemsList.addElement(abilities);
         
@@ -108,7 +106,7 @@ public class InfoWindow
     public void commandAction(Command c, Displayable d){
 //#ifdef CLIPBOARD
 //#         if (c==cmdCopy) {
-//#             clipboard.setClipBoard(description.getValue()+"\n"+memory.getValue()+"\n"+abilities.getValue());
+//#             clipboard.setClipBoard(description.toString()+"\n"+memory.toString()+"\n"+abilities.toString());
 //#             destroyView();
 //#             return;
 //#         }
@@ -117,108 +115,108 @@ public class InfoWindow
     }
 
     private String getAbilities() {
-        StringBuffer abilities=new StringBuffer("Abilities: ");
+        StringBuffer abilities=new StringBuffer();
 //#ifdef COLOR_TUNE
-//#         abilities.append(", COLOR_TUNE");
+//#         abilities.append("COLOR_TUNE, ");
 //#endif
 //#ifdef ARCHIVE
-        abilities.append(", ARCHIVE");
+        abilities.append("ARCHIVE, ");
 //#endif
 //#ifdef POPUPS
-        abilities.append(", POPUPS");
+        abilities.append("POPUPS, ");
 //#endif
 //#ifdef ELF
-//#         abilities.append(", ELF");
+//#         abilities.append("ELF, ");
 //#endif
 //#ifdef NEW_MENU
-        abilities.append(", NEW_MENU");
+        abilities.append("NEW_MENU, ");
 //#endif
 //#ifdef SERVICE_DISCOVERY
-        abilities.append(", SERVICE_DISCOVERY");
+        abilities.append("SERVICE_DISCOVERY, ");
 //#endif
 //#ifdef PRIVACY
-        abilities.append(", PRIVACY");
+        abilities.append("PRIVACY, ");
 //#endif
 //#ifdef SMILES
-        abilities.append(", SMILES");
+        abilities.append("SMILES, ");
 //#endif
 //#ifdef ANTISPAM
-//#         abilities.append(", ANTISPAM");
+//#         abilities.append("ANTISPAM, ");
 //#endif
 //#ifdef REQUEST_VOICE
-//#         abilities.append(", REQUEST_VOICE");
+//#         abilities.append("REQUEST_VOICE, ");
 //#endif
 //#ifdef HISTORY
-//#         abilities.append(", HISTORY");
+//#         abilities.append("HISTORY, ");
 //#endif
 //#ifdef SE_LIGHT
-//#         abilities.append(", SE_LIGHT");
+//#         abilities.append("SE_LIGHT, ");
 //#endif
 //#ifdef TEMPLATES
-        abilities.append(", TEMPLATES");
+        abilities.append("TEMPLATES, ");
 //#endif
 //#ifdef USER_KEYS
-//#         abilities.append(", USER_KEYS");
+//#         abilities.append("USER_KEYS, ");
 //#endif
 //#ifdef AUTOSTATUS
-//#         abilities.append(", AUTOSTATUS");
+//#         abilities.append("AUTOSTATUS, ");
 //#endif
 //#ifdef USE_ROTATOR
-        abilities.append(", USE_ROTATOR");
+        abilities.append("USE_ROTATOR, ");
 //#endif
 //#ifdef FILE_TRANSFER
-        abilities.append(", FILE_TRANSFER");
+        abilities.append("FILE_TRANSFER, ");
 //#endif
 //#ifdef LAST_MESSAGES
-//#         abilities.append(", LAST_MESSAGES");
+//#         abilities.append("LAST_MESSAGES, ");
 //#endif
 //#ifdef CHECK_VERSION
-//#         abilities.append(", CHECK_VERSION");
+//#         abilities.append("CHECK_VERSION, ");
 //#endif
 //#ifdef DETRANSLIT
-//#         abilities.append(", DETRANSLIT");
+//#         abilities.append("DETRANSLIT, ");
 //#endif
 //#ifdef WMUC
-//#         abilities.append(", WMUC");
+//#         abilities.append("WMUC, ");
 //#endif
 //#ifdef AUTODELETE
-//#         abilities.append(", AUTODELETE");
+//#         abilities.append("AUTODELETE, ");
 //#endif
 //#ifdef WSYSTEMGC
-//#         abilities.append(", WSYSTEMGC");
+//#         abilities.append("WSYSTEMGC, ");
 //#endif
 //#ifdef NICK_COLORS
-        abilities.append(", NICK_COLORS");
+        abilities.append("NICK_COLORS, ");
 //#endif
 //#ifdef IMPORT_EXPORT
-//#         abilities.append(", IMPORT_EXPORT");
+//#         abilities.append("IMPORT_EXPORT, ");
 //#endif
 //#ifdef SECONDSTRING
-//#         abilities.append(", SECONDSTRING");
+//#         abilities.append("SECONDSTRING, ");
 //#endif
 //#ifdef CHANGE_TRANSPORT
-//#         abilities.append(", CHANGE_TRANSPORT");
+//#         abilities.append("CHANGE_TRANSPORT, ");
 //#endif
 //#ifdef CONSOLE
-//#         abilities.append(", CONSOLE");
+//#         abilities.append("CONSOLE, ");
 //#endif
 //#ifdef CLIPBOARD
-//#         abilities.append(", CLIPBOARD");
+//#         abilities.append("CLIPBOARD, ");
 //#endif
 //#ifdef GRADIENT
-//#         abilities.append(", GRADIENT");
+//#         abilities.append("GRADIENT, ");
 //#endif
 //#ifdef PEP
-//#         abilities.append(", PEP");
+//#         abilities.append("PEP, ");
 //#endif
 //#ifdef PEP_TUNE
-//#         abilities.append(", PEP_TUNE");
+//#         abilities.append("PEP_TUNE, ");
 //#endif
 //#ifdef CAPTCHA
-//#         abilities.append(", CAPTCHA");
+//#         abilities.append("CAPTCHA, ");
 //#endif
 //#ifdef STATS
-//#         abilities.append(", STATS");
+//#         abilities.append("STATS, ");
 //#endif
         return abilities.toString();
     }

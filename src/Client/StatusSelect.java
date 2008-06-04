@@ -147,17 +147,14 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
             parentView=display.getCurrent();
             this.status=status;
             
-            itemsList.addElement(new BoldString(SR.MS_MESSAGE));
-            tfMessage = new TextInput(display, status.getMessage(), "ex_status_list", TextField.ANY); //, 100, TextField.ANY "ex_status_list"
+            tfMessage = new TextInput(display, SR.MS_MESSAGE, status.getMessage(), "ex_status_list", TextField.ANY); //, 100, TextField.ANY "ex_status_list"
             itemsList.addElement(tfMessage);
-            
-            itemsList.addElement(new BoldString(SR.MS_PRIORITY));
-            tfPriority = new NumberInput(display, Integer.toString(status.getPriority()), -128, 128); //, 100, TextField.ANY "ex_status_list"
+
+            tfPriority = new NumberInput(display, SR.MS_PRIORITY, Integer.toString(status.getPriority()), -128, 128); //, 100, TextField.ANY "ex_status_list"
             itemsList.addElement(tfPriority);
 
             if (status.getImageIndex()<5) {
-                itemsList.addElement(new BoldString(SR.MS_AUTORESPOND));
-                tfAutoRespondMessage=new TextInput(display, status.getAutoRespondMessage(), "autorespond", TextField.ANY);//, 100, 0
+                tfAutoRespondMessage=new TextInput(display, SR.MS_AUTORESPOND, status.getAutoRespondMessage(), "autorespond", TextField.ANY);//, 100, 0
                 itemsList.addElement(tfAutoRespondMessage);
 
                 autoRespond = new CheckBox(SR.MS_SET, status.getAutoRespond()); itemsList.addElement(autoRespond);

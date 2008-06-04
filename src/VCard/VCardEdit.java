@@ -88,8 +88,7 @@ public class VCardEdit
                 if (data.length()>500)
                     data=data.substring(0, 494)+"<...>";
             } 
-            itemsList.addElement(new BoldString(name));
-            itemsList.addElement(new TextInput(display, data, null, TextField.ANY));
+            itemsList.addElement(new TextInput(display, name, data, null, TextField.ANY));
         }
         setPhoto();
         super.removeCommand(cmdOk);
@@ -109,14 +108,12 @@ public class VCardEdit
     }
     
     public void cmdOk() {
-        int i=1;
         for (int index=0; index<vcard.getCount(); index++) {
             try {
-                String field=((TextInput)itemsList.elementAt(i)).getValue();
+                String field=((TextInput)itemsList.elementAt(index)).getValue();
                 if (field.length()==0) field=null;
                 vcard.setVCardData(index, field);
              } catch (Exception ex) { }
-            i=i+2;
         }
         //System.out.println(vcard.constructVCard().toString());
         new Thread(this).start();

@@ -105,11 +105,10 @@ public class ConferenceQuickPrivelegeModify
             user.append(victim.realJid);
             user.append(")");
         }
-        itemsList.addElement(new BoldString(SR.MS_USER));
-        itemsList.addElement(new MultiLine(user.toString()));
+        itemsList.addElement(new MultiLine(SR.MS_USER, user.toString()));
 
         
-        reason=new TextInput(display, "", "reason", TextField.ANY);
+        reason=new TextInput(display, SR.MS_REASON, "", "reason", TextField.ANY);
         itemsList.addElement(reason);
         
         //removeCommand(cmdOk);

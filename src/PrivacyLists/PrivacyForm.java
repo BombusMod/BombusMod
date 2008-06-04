@@ -108,7 +108,7 @@ public class PrivacyForm
         itemsList.addElement(choiceType);
         
         
-        textValue=new TextInput(display, tValue, "", TextField.ANY);//64, TextField.ANY);
+        textValue=new TextInput(display, "", tValue, "", TextField.ANY);//64, TextField.ANY);
 
         switch (selectedAction) {
             case 0: //jid

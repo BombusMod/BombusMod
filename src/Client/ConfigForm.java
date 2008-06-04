@@ -211,8 +211,7 @@ public class ConfigForm
 //#         itemsList.addElement(messageCountLimit);
 //#endif
 
-        itemsList.addElement(new SimpleString(SR.MS_MESSAGE_COLLAPSE_LIMIT));
-        messageLimit=new NumberInput(display, Integer.toString(cf.messageLimit), 200, 1000);
+        messageLimit=new NumberInput(display, SR.MS_MESSAGE_COLLAPSE_LIMIT, Integer.toString(cf.messageLimit), 200, 1000);
         itemsList.addElement(messageLimit);
         
         itemsList.addElement(new BoldString(SR.MS_STARTUP_ACTIONS));
@@ -242,11 +241,11 @@ public class ConfigForm
 
         itemsList.addElement(new BoldString(SR.MS_TIME_SETTINGS));
         itemsList.addElement(new SimpleString(SR.MS_GMT_OFFSET));
-	fieldGmt=new NumberInput(display, Integer.toString(cf.gmtOffset), -12, 12); 
+	fieldGmt=new NumberInput(display, null, Integer.toString(cf.gmtOffset), -12, 12); 
         itemsList.addElement(fieldGmt);
         
         itemsList.addElement(new SimpleString(SR.MS_CLOCK_OFFSET));
-        fieldLoc=new NumberInput(display, Integer.toString(cf.locOffset), -12, 12 );
+        fieldLoc=new NumberInput(display, null, Integer.toString(cf.locOffset), -12, 12 );
         itemsList.addElement(fieldLoc);
 
         itemsList.addElement(new BoldString(SR.MS_TEXTWRAP));
@@ -286,9 +285,8 @@ public class ConfigForm
 //#         autoAwayType.append(SR.MS_IDLE);
 //#         autoAwayType.setSelectedIndex(cf.autoAwayType);
 //#         itemsList.addElement(autoAwayType);
-//#                 
-//#         itemsList.addElement(new SimpleString(SR.MS_AWAY_PERIOD));
-//#         fieldAwayDelay=new NumberInput(display, Integer.toString(cf.autoAwayDelay), 1, 60);
+//# 
+//#         fieldAwayDelay=new NumberInput(display, SR.MS_AWAY_PERIOD, Integer.toString(cf.autoAwayDelay), 1, 60);
 //#         itemsList.addElement(fieldAwayDelay);
 //# 
 //#         awayStatus=new CheckBox(SR.MS_AUTOSTATUS_MESSAGE, cf.setAutoStatusMessage);

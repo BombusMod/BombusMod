@@ -85,19 +85,16 @@ public class TransferAcceptFile
             }
         }
         
-        itemsList.addElement(new BoldString(SR.MS_FILE));
-        fileName=new TextInput(display, name, "", TextField.ANY);
+        fileName=new TextInput(display, SR.MS_FILE, name, "", TextField.ANY);
         itemsList.addElement(fileName);
         itemsList.addElement(new BoldString(SR.MS_FILE_SIZE+": "+String.valueOf(t.fileSize)));
-        
-        itemsList.addElement(new BoldString(SR.MS_SAVE_TO));
-        path=new TextInput(display, t.filePath, "recvPath", TextField.ANY);
+
+        path=new TextInput(display, SR.MS_SAVE_TO, t.filePath, "recvPath", TextField.ANY);
         itemsList.addElement(path);
                 
-        itemsList.addElement(new MultiLine(SR.MS_SENDER+": "+t.jid));
-        
-        itemsList.addElement(new BoldString(SR.MS_DESCRIPTION));
-        itemsList.addElement(new MultiLine(t.description));
+        itemsList.addElement(new MultiLine(SR.MS_SENDER, t.jid));
+
+        itemsList.addElement(new MultiLine(SR.MS_DESCRIPTION, t.description));
         
         addCommand(cmdPath);
         addCommand(cmdDecline);

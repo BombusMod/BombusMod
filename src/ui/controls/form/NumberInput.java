@@ -43,8 +43,8 @@ public class NumberInput
     /**
      * Creates a new instance of NumberInput
      */
-    public NumberInput(Display display, String text, int min, int max) {
-        super(display, text, null, TextField.NUMERIC);
+    public NumberInput(Display display, String caption, String text, int min, int max) {
+        super(display, caption, text, null, TextField.NUMERIC);
         this.min=min;
         this.max=max;
         initValue=text;

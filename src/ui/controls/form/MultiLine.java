@@ -42,24 +42,49 @@ public class MultiLine extends IconTextElement {
     
     private Vector lines=null;
     private String text;
+    
+    private String caption;
+    
     public boolean selectable;
+    
     private Font font;
+    private int fontHeight;
+    
+    private Font captionFont;
+    private int captionFontHeight;
+    
     private boolean parsed;
     private int itemHeight=0;
-    private int fontHeight;
+
+
     /**
      * Creates a new instance of MultiLine
      */
-    public MultiLine(String text) {
+    public MultiLine(String caption, String text) {
         super(null);
         this.text=text;
+        this.caption=caption;
+        
         font=FontCache.getMsgFont();
         fontHeight=font.getHeight();
         itemHeight=fontHeight;
+        
+        if (caption!=null) {
+            captionFont=FontCache.getMsgFontBold();
+            captionFontHeight=captionFont.getHeight();
+            itemHeight=captionFontHeight;
+        }
     }
     
     public String getValue() {
         return text;
+    }
+    
+    public String toString() {
+        if (caption==null)
+            return text;
+        
+        return caption+"\n"+text;
     }
     
     public int getVHeight(){
@@ -70,23 +95,30 @@ public class MultiLine extends IconTextElement {
         int width=g.getClipWidth();
         int height=g.getClipHeight();
 
-        if (lines==null) {
-            //lines=StringUtils.parseMessage(text, width-6, -1, false, font);
-            lines=StringUtils.parseMessage(text, width-6, font);
+        if (lines==null && width>0) {
+            lines=StringUtils.parseMessage(text, width-10, font);
             itemHeight=(fontHeight*lines.size())+2;
+            if (caption!=null)
+                itemHeight+=2+captionFontHeight;
             parsed=true;
         }
         if (!parsed)
             return;
+        
+        int y=0;
+        if (caption!=null) {
+            g.setFont(captionFont);
+            g.drawString(caption, 2, y, Graphics.TOP|Graphics.LEFT);
+            y=captionFontHeight;
+        }
 
         g.setFont(font);
-        int y=0;
+
 	for (int line=0; line<lines.size(); ){
             g.drawString((String) lines.elementAt(line), 2, y, Graphics.TOP|Graphics.LEFT);
             line=line+1;
             y += fontHeight;
 	}
-        //super.drawItem(g, ofs, sel);
     }
 
     public boolean isSelectable() { return selectable; }

@@ -28,7 +28,9 @@
 package ui.controls.form;
 
 import Colors.ColorTheme;
+import Fonts.FontCache;
 import javax.microedition.lcdui.Display;
+import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
 import ui.IconTextElement;
 
@@ -40,6 +42,7 @@ public class TextInput
         extends IconTextElement {
 
     private String text="";
+    private String caption="";
     
     private boolean selectable=true;
 
@@ -51,42 +54,73 @@ public class TextInput
 
     private int boxType;
     
+    private Font font;
+    private int fontHeight;
+    
+    private Font captionFont;
+    private int captionFontHeight;
+
+    private int itemHeight=0;
+    
     /**
      * Creates a new instance of TextInput
      */
-    public TextInput(Display display, String text, String id, int boxType) {
+    public TextInput(Display display, String caption, String text, String id, int boxType) {
         super(null);
         this.display=display;
         this.text=(text==null)?"":text;
+        this.caption=(caption==null)?"":caption;
         this.id=id;
+        
+        font=FontCache.getMsgFont();
+        fontHeight=font.getHeight();
+        itemHeight=fontHeight;
+        
+        if (caption!=null) {
+            captionFont=FontCache.getMsgFontBold();
+            captionFontHeight=captionFont.getHeight();
+            itemHeight+=captionFontHeight;
+        }
+    
         ct=ColorTheme.getInstance();
     }
     
     public String toString() { return (text==null)?"":text; }
     
-    public void onSelect(){
-        new EditBox(display, text, this, boxType);
-    }
+    public void onSelect(){ new EditBox(display, text, this, boxType); }
     
     public String getValue() { return (text==null)?"":text; }
 
     public void setValue(String text) { this.text=text; }
     
+    public int getVHeight(){
+        return itemHeight;
+    }
+    
     public void drawItem(Graphics g, int ofs, boolean sel) {
         int width=g.getClipWidth();
-        int height=g.getClipHeight();
+        int height=fontHeight;
 
         int oldColor=g.getColor();
         
+        int y=0;
+        if (caption!=null) {
+            g.setFont(captionFont);
+            g.drawString(caption, 2, y, Graphics.TOP|Graphics.LEFT);
+            y=captionFontHeight;
+        }
+        
         g.setColor(ct.getColor(ColorTheme.LIST_BGND));
-        g.fillRect(2, 2, width-4, height-4);
+        g.fillRect(2, y+2, width-4, height-4);
 
         g.setColor((sel)?ct.getColor(ColorTheme.CURSOR_OUTLINE):ct.getColor(ColorTheme.CURSOR_BGND));
-        g.drawRoundRect(0, 0, width-1, height-1, 6, 6);
-        
+        g.drawRoundRect(0, y+0, width-1, height-1, 6, 6);
+
         g.setColor(oldColor);
         
-        super.drawItem(g, ofs, sel);
+        g.setFont(font);
+        g.drawString(text, 4, y, Graphics.TOP|Graphics.LEFT);        
+        //super.drawItem(g, ofs, sel);
     }
 
     public boolean isSelectable() { return selectable; }

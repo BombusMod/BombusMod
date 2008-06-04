@@ -64,9 +64,8 @@ public class AffiliationModify
         parentView=display.getCurrent();
 
         this.room=room;
-        
-        itemsList.addElement(new BoldString(SR.MS_JID));
-        jidItem=new TextInput(display, jid, null, TextField.ANY);
+
+        jidItem=new TextInput(display, SR.MS_JID, jid, null, TextField.ANY);
         itemsList.addElement(jidItem);
 
         itemsList.addElement(new BoldString(SR.MS_SET_AFFILIATION));
@@ -79,8 +78,7 @@ public class AffiliationModify
         affiliationItem.setSelectedIndex(recentAffiliation);
         itemsList.addElement(affiliationItem);
 
-        itemsList.addElement(new BoldString(SR.MS_REASON));
-	reasonItem=new TextInput(display, reason, "reason", TextField.ANY);
+	reasonItem=new TextInput(display, SR.MS_REASON, reason, "reason", TextField.ANY);
 	itemsList.addElement(reasonItem);
 
         attachDisplay(display);

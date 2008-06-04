@@ -148,29 +148,23 @@ public class ConferenceForm
         this.display=display;
         parentView=display.getCurrent();
 
-        itemsList.addElement(new BoldString(SR.MS_ROOM));
-        roomField=new TextInput(display, room, null, TextField.ANY);//, 64, TextField.ANY);
+        roomField=new TextInput(display, SR.MS_ROOM, room, null, TextField.ANY);//, 64, TextField.ANY);
         itemsList.addElement(roomField);
-        
-        itemsList.addElement(new BoldString(SR.MS_AT_HOST));
-        hostField=new TextInput(display, server, "muc-host", TextField.ANY);//, 64, TextField.ANY, "muc-host", display);
+
+        hostField=new TextInput(display, SR.MS_AT_HOST, server, "muc-host", TextField.ANY);//, 64, TextField.ANY, "muc-host", display);
         itemsList.addElement(hostField);
         
         if (nick==null) nick=sd.account.getNickName();
-        itemsList.addElement(new BoldString(SR.MS_NICKNAME));
-        nickField=new TextInput(display, nick, "roomnick", TextField.ANY);//, 32, TextField.ANY, "roomnick", display);
+        nickField=new TextInput(display, SR.MS_NICKNAME, nick, "roomnick", TextField.ANY);//, 32, TextField.ANY, "roomnick", display);
         itemsList.addElement(nickField);
-        
-        itemsList.addElement(new BoldString(SR.MS_MSG_LIMIT));
-        msgLimitField=new NumberInput(display, Integer.toString(cf.confMessageCount), 0, 100);
+
+        msgLimitField=new NumberInput(display, SR.MS_MSG_LIMIT, Integer.toString(cf.confMessageCount), 0, 100);
         itemsList.addElement(msgLimitField);
-        
-        itemsList.addElement(new BoldString(SR.MS_DESCRIPTION));
-        nameField=new TextInput(display, name, null, TextField.ANY);//, 128, TextField.ANY);
+
+        nameField=new TextInput(display, SR.MS_DESCRIPTION, name, null, TextField.ANY);//, 128, TextField.ANY);
         itemsList.addElement(nameField);
-        
-        itemsList.addElement(new BoldString(SR.MS_PASSWORD));
-        passField=new PasswordInput(display, password);//, 32, TextField.ANY | TextField.SENSITIVE );
+
+        passField=new PasswordInput(display, SR.MS_PASSWORD, password);//, 32, TextField.ANY | TextField.SENSITIVE );
         itemsList.addElement(passField);
 
         autoJoin=new CheckBox(SR.MS_AUTOLOGIN, autojoin);

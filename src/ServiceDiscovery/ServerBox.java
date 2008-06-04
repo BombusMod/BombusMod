@@ -33,7 +33,6 @@ import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
 import ui.controls.form.DefForm;
-import ui.controls.form.MultiLine;
 import ui.controls.form.TextInput;
 
 /**
@@ -59,8 +58,7 @@ public class ServerBox
         
         this.display=display;
         this.sd=sd;
-        itemsList.addElement(new MultiLine("Enter Jabber server address here"));
-        serverName=new TextInput(display, service, "disco", TextField.ANY);
+        serverName=new TextInput(display, SR.MS_ADRESS, service, "disco", TextField.ANY);
         itemsList.addElement(serverName);
         
         moveCursorTo(getNextSelectableRef(-1));

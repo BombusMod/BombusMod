@@ -66,12 +66,10 @@ public class TransferSendFile
         itemsList.addElement(new BoldString(SR.MS_SEND_FILE_TO));
         itemsList.addElement(new SimpleString(recipientJid));
         
-        itemsList.addElement(new BoldString(SR.MS_FILE));
-        fileName = new TextInput(display, null, "sendfile", TextField.ANY);
+        fileName = new TextInput(display, SR.MS_FILE, null, "sendfile", TextField.ANY);
         itemsList.addElement(fileName);
-        
-        itemsList.addElement(new BoldString(SR.MS_DESCRIPTION));
-        description = new TextInput(display, null, null, TextField.ANY);
+
+        description = new TextInput(display, SR.MS_DESCRIPTION, null, null, TextField.ANY);
         itemsList.addElement(description);
         
         moveCursorTo(getNextSelectableRef(-1));

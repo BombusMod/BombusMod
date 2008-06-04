@@ -65,10 +65,10 @@ public class TestForm
         TrackItem testTrackItem1=new TrackItem(3, 10);
         itemsList.addElement(testTrackItem1);
         
-        TextInput testInputCombo1=new TextInput(display, "remember box text", "test", TextField.ANY);
+        TextInput testInputCombo1=new TextInput(display, "remember box", "text", "test", TextField.ANY);
         itemsList.addElement(testInputCombo1);
         
-        MultiLine testMultiLine1=new MultiLine("remember box text\nyo yo yo\n yep!");
+        MultiLine testMultiLine1=new MultiLine("test", "multi line text\nyo yo yo\n yep!");
         itemsList.addElement(testMultiLine1);
         
         ImageItem testImageItem1=new ImageFileItem("/images/splash.png", "BM Splash");
@@ -99,9 +99,7 @@ public class TestForm
         SpacerItem testSpacerItem2=new SpacerItem(0);
         itemsList.addElement(testSpacerItem2);  
 
-        SimpleString testSimpleString3=new SimpleString("test textInput");
-        itemsList.addElement(testSimpleString3);
-        TextInput testTextInput1=new TextInput(display, "text of input text", null, TextField.ANY);
+        TextInput testTextInput1=new TextInput(display, "test textInput", "text of input text", null, TextField.ANY);
         itemsList.addElement(testTextInput1);
         
         SpacerItem testSpacerItem3=new SpacerItem(0);
@@ -124,9 +122,7 @@ public class TestForm
         SpacerItem testSpacerItem5=new SpacerItem(0);
         itemsList.addElement(testSpacerItem5);  
 
-        SimpleString testSimpleString5=new SimpleString("test passwordItem");
-        itemsList.addElement(testSimpleString5);
-        PasswordInput testPasswordInput1=new PasswordInput(display, "pass");
+        PasswordInput testPasswordInput1=new PasswordInput(display, "test passwordItem", "pass");
         itemsList.addElement(testPasswordInput1);
 
         SpacerItem testSpacerItem6=new SpacerItem(0);

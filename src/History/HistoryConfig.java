@@ -83,9 +83,8 @@ public class HistoryConfig
 //#ifdef DETRANSLIT
 //#         translit = new CheckBox(SR.MS_1251_TRANSLITERATE_FILENAMES, cf.transliterateFilenames); itemsList.addElement(translit);
 //#endif
-        
-        itemsList.addElement(new SimpleString(SR.MS_HISTORY_FOLDER));
-	historyFolder = new TextInput(display, cf.msgPath, null, TextField.ANY);//128, TextField.ANY
+
+	historyFolder = new TextInput(display, SR.MS_HISTORY_FOLDER, cf.msgPath, null, TextField.ANY);//128, TextField.ANY
         itemsList.addElement(historyFolder);
         
         addCommand(cmdSetHistFolder);

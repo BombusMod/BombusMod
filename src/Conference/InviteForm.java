@@ -78,8 +78,7 @@ public class InviteForm
         }
         itemsList.addElement(conferenceList);
         
-        itemsList.addElement(new BoldString(SR.MS_REASON));
-        reason=new TextInput(display, null, "", TextField.ANY); //200
+        reason=new TextInput(display, SR.MS_REASON, null, "", TextField.ANY); //200
         itemsList.addElement(reason);
         
         moveCursorTo(getNextSelectableRef(-1));

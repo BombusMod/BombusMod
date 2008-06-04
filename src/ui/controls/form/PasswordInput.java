@@ -40,8 +40,8 @@ public class PasswordInput
     /**
      * Creates a new instance of PasswordInput
      */
-    public PasswordInput(Display display, String text) {
-        super(display, text, null, TextField.PASSWORD);
+    public PasswordInput(Display display, String caption, String text) {
+        super(display, caption, text, null, TextField.PASSWORD);
     }
     
     public String toString(){

@@ -92,25 +92,20 @@ public class AccountForm
 	
 	String mainbar = (newaccount)?SR.MS_NEW_ACCOUNT:(account.toString());
         getMainBarItem().setElementAt(mainbar, 0);
-        
-        itemsList.addElement(new BoldString(SR.MS_USERNAME));
-        userbox = new TextInput(display, account.getUserName(), null, TextField.ANY); //, 64, TextField.ANY
+
+        userbox = new TextInput(display, SR.MS_USERNAME, account.getUserName(), null, TextField.ANY); //, 64, TextField.ANY
         itemsList.addElement(userbox);
-    
-        itemsList.addElement(new BoldString(SR.MS_PASSWORD));
-	passbox = new PasswordInput(display, account.getPassword());//, 64, TextField.PASSWORD
+
+	passbox = new PasswordInput(display, SR.MS_PASSWORD, account.getPassword());//, 64, TextField.PASSWORD
         itemsList.addElement(passbox);
-        
-        itemsList.addElement(new BoldString(SR.MS_SERVER));
-        servbox = new TextInput(display, account.getServer(), null, TextField.ANY);//, 64, TextField.ANY
+
+        servbox = new TextInput(display, SR.MS_SERVER, account.getServer(), null, TextField.ANY);//, 64, TextField.ANY
         itemsList.addElement(servbox);
-        
-        itemsList.addElement(new BoldString(SR.MS_HOST_IP));
-	ipbox = new TextInput(display, account.getHostAddr(), null, TextField.ANY);//, 64, TextField.ANY
+
+	ipbox = new TextInput(display, SR.MS_HOST_IP, account.getHostAddr(), null, TextField.ANY);//, 64, TextField.ANY
         itemsList.addElement(ipbox);
-        
-        itemsList.addElement(new BoldString(SR.MS_PORT));
-        portbox = new NumberInput(display, Integer.toString(account.getPort()), 0, 65535);//, 0, 65535
+
+        portbox = new NumberInput(display, SR.MS_PORT, Integer.toString(account.getPort()), 0, 65535);//, 0, 65535
         itemsList.addElement(portbox);
         
         sslbox = new CheckBox(SR.MS_SSL, account.getUseSSL()); itemsList.addElement(sslbox);
@@ -133,34 +128,28 @@ public class AccountForm
         keepAliveType.setSelectedIndex(account.keepAliveType);
         itemsList.addElement(keepAliveType);
 
-        itemsList.addElement(new BoldString(SR.MS_KEEPALIVE_PERIOD));
-        keepAlive = new NumberInput(display, Integer.toString(account.keepAlivePeriod), 10, 2048);//10, 2096
+        keepAlive = new NumberInput(display, SR.MS_KEEPALIVE_PERIOD, Integer.toString(account.keepAlivePeriod), 10, 2048);//10, 2096
         itemsList.addElement(keepAlive);
 
 //#if HTTPPOLL || HTTPCONNECT  
 //#     private TextInput proxyHost;
 //#     private TextInput proxyPort;
 //#endif
-        
-        itemsList.addElement(new BoldString(SR.MS_RESOURCE));
-        resourcebox = new TextInput(display, account.getResource(), null, TextField.ANY);//64, TextField.ANY
+
+        resourcebox = new TextInput(display, SR.MS_RESOURCE, account.getResource(), null, TextField.ANY);//64, TextField.ANY
         itemsList.addElement(resourcebox);
-        
-        itemsList.addElement(new BoldString(SR.MS_NICKNAME));
-        nickbox = new TextInput(display, account.getNick(), null, TextField.ANY);//64, TextField.ANY
+
+        nickbox = new TextInput(display, SR.MS_NICKNAME, account.getNick(), null, TextField.ANY);//64, TextField.ANY
         itemsList.addElement(nickbox);
 
 //#if HTTPCONNECT
-//# 	itemsList.addElement(new BoldString(SR.MS_PROXY_HOST);
-//# 	proxyHost = new TextInput(display, "proxyHost", account.getProxyHostAddr(), null, TextField.URL);//32, TextField.URL
+//# 	proxyHost = new TextInput(display, SR.MS_PROXY_HOST, account.getProxyHostAddr(), null, TextField.URL);//32, TextField.URL
 //# 	itemsList.addElement(proxyHost);
-//#
-//# 	itemsList.addElement(new BoldString(SR.MS_PROXY_PORT);
-//# 	proxyPort = new TextInput(display, "proxyPort", Integer.toString(account.getProxyPort()));//0, 65535
+//# 
+//# 	proxyPort = new TextInput(display, SR.MS_PROXY_PORT, Integer.toString(account.getProxyPort()));//0, 65535
 //# 	itemsList.addElement(proxyPort);
 //#elif HTTPPOLL        
-//# 	itemsList.addElement(new BoldString(SR.MS_PROXY_HOST);
-//# 	proxyHost = new TextInput(display, "proxyHost", account.getProxyHostAddr(), null, TextField.URL);//32, TextField.URL
+//# 	proxyHost = new TextInput(display, SR.MS_PROXY_HOST, account.getProxyHostAddr(), null, TextField.URL);//32, TextField.URL
 //# 	itemsList.addElement(proxyHost);
 //#endif
 
