@@ -74,7 +74,8 @@ public class JabberStream implements XMLEventListener, Runnable {
      */
     
     public JabberStream( String server, String hostAddr, boolean xmppV1, String proxy)
-    throws IOException {
+        throws IOException {
+        
         this.server=server;
         this.xmppV1=xmppV1;
         boolean waiting=Config.getInstance().istreamWaiting;

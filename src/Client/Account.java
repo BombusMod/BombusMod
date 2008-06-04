@@ -237,7 +237,6 @@ public class Account extends IconTextElement{
         
         if (hostAddr!=null) if (hostAddr.length()>0)
             host=hostAddr;
-          
         else {
             io.DnsSrvResolver dns=new io.DnsSrvResolver();
             if (dns.getSrv(server)) {
@@ -246,8 +245,8 @@ public class Account extends IconTextElement{
             } 
         }
 
-	StringBuffer url=new StringBuffer();
-        url.append(host).append(':').append(port);
+	StringBuffer url=new StringBuffer(host);
+        url.append(':').append(port);
         if (!isEnableProxy()) {
 	    url.insert(0, (useSSL)?"ssl://":"socket://");
         } else {
@@ -257,7 +256,7 @@ public class Account extends IconTextElement{
 //#             proxy="socket://" + getProxyHostAddr() + ':' + getProxyPort();
 //#endif  
         }
-        return new JabberStream(  getServer(), url.toString(), true, proxy);
+        return new JabberStream( getServer(), url.toString(), true, proxy);
     }
 
     public boolean isEnableProxy() {
@@ -294,7 +293,7 @@ public class Account extends IconTextElement{
     
     public boolean useGoogleToken() {
         if (useSSL) return false;
-        return (server.startsWith("gmail.com"));
+        return isGmail();
     }
 //#ifdef SECONDSTRING
 //#     public String getSecondString() {

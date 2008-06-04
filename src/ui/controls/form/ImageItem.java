@@ -40,7 +40,7 @@ public class ImageItem
     extends IconTextElement {
     
     public Image img;
-    private boolean collapsed;
+    public boolean collapsed;
     
     public boolean selectable=true;
 
@@ -65,7 +65,7 @@ public class ImageItem
             return "";
         
         if (img==null)
-            return "[Image]";
+            return "[No image]";
         
         StringBuffer im=new StringBuffer(altText);
         if (altText!=null)

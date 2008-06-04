@@ -142,7 +142,7 @@ public class Roster
     public static int oldStatus=0;
     private static int lastOnlineStatus;
 	
-    private final static int maxReconnect=10;
+    public final static int maxReconnect=10;
     public int reconnectCount;
     boolean reconnect=false;
     
@@ -309,11 +309,10 @@ public class Roster
          */
 //#endif
         setQuerySign(true);
-        setProgress(25);
 	if (!reconnect) {
-	    resetRoster();
-	}
-        setProgress(26);
+            setProgress(25);
+            resetRoster();
+        }
 
         try {
             Account a=sd.account;
@@ -351,6 +350,7 @@ public class Roster
 	}
 	setMyJid(new Jid(sd.account.getJid()));
 	updateContact(sd.account.getNick(), myJid.getBareJid(), SR.MS_SELF_CONTACT, "self", false);
+        setProgress(SR.MS_DISCONNECTED, 26);
 //#ifndef WSYSTEMGC
 	System.gc();
 //#endif
@@ -1969,7 +1969,12 @@ public class Roster
      }
     
      public void doReconnect() {
-        sendPresence(lastOnlineStatus, null);
+        try {
+            sendPresence(Presence.PRESENCE_OFFLINE, null);
+        } catch (Exception e) {}
+        try {
+            sendPresence(lastOnlineStatus, null);
+        } catch (Exception e) {}
      }
     
     public void eventOk(){

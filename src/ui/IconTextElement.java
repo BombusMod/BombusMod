@@ -26,6 +26,7 @@
  */
 
 package ui;
+import Client.Config;
 import Fonts.FontCache;
 import images.RosterIcons;
 import javax.microedition.lcdui.*;
@@ -36,6 +37,8 @@ abstract public class IconTextElement implements VirtualElement {
     int itemHeight;
     int imageYOfs;
     int fontYOfs;
+    
+    int heightCorrect;
     
     protected ImageList il;
     private int ilImageSize=0;
@@ -49,6 +52,8 @@ abstract public class IconTextElement implements VirtualElement {
 	if (il!=null){
 	    ilImageSize=il.getHeight();
 	}
+        if (Config.getInstance().phoneManufacturer==Config.WINDOWS || Config.getInstance().phoneManufacturer==Config.NOKIA)
+            heightCorrect=1;
     }
     
     private boolean selectable=true; 
@@ -122,11 +127,7 @@ abstract public class IconTextElement implements VirtualElement {
     
     public int getVHeight(){ 
         itemHeight=(ilImageSize>getFont().getHeight())?ilImageSize:getFont().getHeight();
-//#if ALCATEL_FONT
-//#         fontYOfs=1+((itemHeight-getFont().getHeight())/2);
-//#else
-        fontYOfs=(itemHeight-getFont().getHeight())/2;
-//#endif
+        fontYOfs=heightCorrect+(itemHeight-getFont().getHeight())/2;
 //#ifdef SECONDSTRING
 //#         if (hasSecondString()){
 //#             itemHeight+=getSecondFontHeight();

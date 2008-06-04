@@ -64,7 +64,7 @@ public class VCardView
     private VCard vcard;
     private ImageItem photoItem;
     
-    private SimpleString endVCard=new SimpleString("[end of vCard]");
+    private SimpleString endVCard=new SimpleString("[End of vCard]");
     private BoldString noVCard=new BoldString("[No vCard available]");
     private SimpleString noPhoto=new SimpleString("[No photo available]");
     private SimpleString badFormat=new SimpleString("[Unsupported format]");
@@ -136,8 +136,11 @@ public class VCardView
         
          if (vcard.hasPhoto) {
             try {
-                Image photoImg=Image.createImage(vcard.getPhoto(), 0, vcard.getPhoto().length);
-                photoItem=new ImageItem(photoImg, String.valueOf(vcard.getPhoto().length)+" bytes");
+                int length=vcard.getPhoto().length;
+                Image photoImg=Image.createImage(vcard.getPhoto(), 0, length);
+                photoItem=new ImageItem(photoImg, String.valueOf(length)+" bytes");
+                if (length>10240)
+                    photoItem.collapsed=true;
                 itemsList.insertElementAt(photoItem, 0);
             } catch (Exception e) {
                 itemsList.addElement(badFormat);

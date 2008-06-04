@@ -26,6 +26,7 @@
  */
 
 package ui;
+import Client.Config;
 import Fonts.FontCache;
 import java.util.*;
 import javax.microedition.lcdui.*;
@@ -54,6 +55,8 @@ public class ComplexString extends Vector implements VirtualElement {
     private int colorBGnd;
     private int color;
     
+    private int heightCorrect;
+    
     ColorTheme ct;
     /** Creates a new instance of ComplexString */
     public ComplexString() {
@@ -61,6 +64,9 @@ public class ComplexString extends Vector implements VirtualElement {
         ct=ColorTheme.getInstance();
         color=ct.getColor(ColorTheme.LIST_INK);
         colorBGnd=ct.getColor(ColorTheme.LIST_BGND);
+        
+        if (Config.getInstance().phoneManufacturer==Config.WINDOWS || Config.getInstance().phoneManufacturer==Config.NOKIA)
+            heightCorrect=1;
     }
 
     /** Creates a new instance of ComplexString */
@@ -95,12 +101,9 @@ public class ComplexString extends Vector implements VirtualElement {
         int w=offset;
         int dw;
         int imageYOfs=(( getVHeight()-imgHeight() )>>1);
-        
-//#if ALCATEL_FONT
-//#         int fontYOfs=(( getVHeight()-font.getHeight() )>>1) +1;
-//#else
-        int fontYOfs=(( getVHeight()-font.getHeight() )>>1);
-//#endif
+
+        int fontYOfs=(( getVHeight()-font.getHeight() )>>1)+heightCorrect;
+
         int imgWidth=imgWidth();
         
         g.setFont(font);

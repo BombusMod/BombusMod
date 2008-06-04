@@ -30,6 +30,8 @@ import ui.controls.TimerBox;
 
 public class Reconnect extends TimerBox {
     
+    Roster roster=StaticData.getInstance().roster;
+    
     private final static int WAITTIME=15;
 
     public Reconnect(String title, String body, Display display) {
@@ -37,12 +39,12 @@ public class Reconnect extends TimerBox {
     }
 
     public void yes() {
-        try {
-             StaticData.getInstance().roster.sendPresence(5, null); //Presence.PRESENCE_OFFLINE
-        } catch (Exception e2) { }
-        StaticData.getInstance().roster.doReconnect();
-        super.destroyView();
+        roster.doReconnect();
+        //super.destroyView();
     }
 
-    public void no() { }
+    public void no() {
+        //roster.reconnect=false;
+        roster.reconnectCount=roster.maxReconnect;
+    }
 }

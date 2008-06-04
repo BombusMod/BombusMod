@@ -376,26 +376,28 @@ public abstract class VirtualList
 
         beginPaint();
 
-        setInfo();
-        
         int list_bottom=0;        
         itemBorder[0]=0;
         updateLayout();
         
         setAbsOrg(g, 0,0);
         
+        g.setColor(ct.getColor(ColorTheme.LIST_BGND));
+        g.fillRect(0, 0, width, height);
+        
 //#ifdef BACK_IMAGE
 //#         if (img!=null) {
-//#             g.setColor(ct.getColor(ColorTheme.LIST_BGND));
-//#             g.fillRect(0,0, width, height);
 //#             g.drawImage(img, width/2, height/2, Graphics.VCENTER|Graphics.HCENTER);
 //#         }
 //#endif
         
         if (mainbar!=null)
             mHeight=mainbar.getVHeight(); // nokia fix
-
-        iHeight=FontCache.getBarFont().getHeight(); // nokia fix
+        
+        if (infobar!=null) {
+            setInfo();
+            iHeight=FontCache.getBarFont().getHeight(); // nokia fix
+        }
         
         if (paintTop) {
             if (reverse) {
