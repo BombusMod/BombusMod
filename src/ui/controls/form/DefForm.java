@@ -65,7 +65,7 @@ public class DefForm
         
 	setMainBarItem(new MainBar(caption));
         if (Config.getInstance().phoneManufacturer==Config.NOKIA)
-                addCommand(cmdSelect);
+            addCommand(cmdSelect);
 	addCommand(cmdOk);
 	addCommand(cmdCancel);
 	setCommandListener(this);

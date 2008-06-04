@@ -41,27 +41,26 @@ public abstract class TimerBox extends AlertBox implements Runnable {
         super(mainbar, text, display, nextDisplayable);
         
         this.timeout=timeout;
-        super.isShowing=true;
-        super.steps=timeout;
+        isShowing=true;
+        steps=timeout;
         new Thread(this).start();
     }
     
     public void run() {
-        while (super.isShowing) {
+        while (isShowing) {
             try {
                 Thread.sleep(1000);
             } catch (Exception e) { break; }
 
-            super.pos+=1;
+            pos+=1;
             
             repaint();            
             
-            if (super.pos>=timeout) {
-                super.isShowing=false;
+            if (pos>=timeout) {
+                yes();
                 break;
             }
         }
-        yes();
     }
 
     public abstract void yes();

@@ -29,9 +29,7 @@ import javax.microedition.lcdui.Display;
 import ui.controls.TimerBox;
 
 public class Reconnect extends TimerBox {
-    
-    Roster roster=StaticData.getInstance().roster;
-    
+
     private final static int WAITTIME=15;
 
     public Reconnect(String title, String body, Display display) {
@@ -39,12 +37,8 @@ public class Reconnect extends TimerBox {
     }
 
     public void yes() {
-        roster.doReconnect();
-        //super.destroyView();
+        StaticData.getInstance().roster.doReconnect();
     }
 
-    public void no() {
-        //roster.reconnect=false;
-        roster.reconnectCount=roster.maxReconnect;
-    }
+    public void no() { }
 }

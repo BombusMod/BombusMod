@@ -97,7 +97,6 @@ public abstract class AlertBox extends Canvas implements CommandListener {
     }
     
     public void commandAction(Command command, Displayable displayable) {
-        isShowing=false;
         if (command==cmdOk) {
             yes();
         } else {
@@ -108,8 +107,6 @@ public abstract class AlertBox extends Canvas implements CommandListener {
     
     public void destroyView()	{
         isShowing=false;
-        removeCommand(cmdOk);
-        removeCommand(cmdCancel);
 
         if (display==null) {
             display.setCurrent(StaticData.getInstance().roster);

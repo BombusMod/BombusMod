@@ -101,6 +101,7 @@ public class InfoWindow
 
         moveCursorTo(getNextSelectableRef(-1));
         attachDisplay(display);
+        redraw();
     }
     
     public void commandAction(Command c, Displayable d){

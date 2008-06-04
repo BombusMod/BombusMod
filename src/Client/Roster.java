@@ -1935,10 +1935,10 @@ public class Roster
 
     public void connectionTerminated( Exception e ) {
         String error=null;
-        setProgress(SR.MS_DISCONNECTED, 100);
          if( e != null ) {
             askReconnect(e);
         } else {
+            setProgress(SR.MS_DISCONNECTED, 100);
             try {
                 sendPresence(Presence.PRESENCE_OFFLINE, null);
             } catch (Exception e2) {
