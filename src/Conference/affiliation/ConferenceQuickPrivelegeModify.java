@@ -60,11 +60,11 @@ public class ConferenceQuickPrivelegeModify
     public final static int OWNER=9;
 
     private Display display;
-    //private Form f;
+
     private TextInput reason;
     private MucContact victim;
     
-    private Command cmdOk;
+    //private Command cmdOk;
     private Command cmdNoReason=new Command(SR.MS_NO_REASON, Command.SCREEN, 2);
     
     private int action;
@@ -92,10 +92,6 @@ public class ConferenceQuickPrivelegeModify
             case OUTCAST:
 		okName=SR.MS_BAN;
                 break;
-            case VISITOR:
-                okName=SR.MS_REVOKE_VOICE;
-                setMucMod();
-                return;
             default:
                 setMucMod();
                 return;
@@ -113,12 +109,12 @@ public class ConferenceQuickPrivelegeModify
         itemsList.addElement(new MultiLine(user.toString()));
 
         
-        reason=new TextInput(display, SR.MS_REASON, "reason", TextField.ANY);
+        reason=new TextInput(display, "", "reason", TextField.ANY);
         itemsList.addElement(reason);
         
-        removeCommand(cmdOk);
-        cmdOk=new Command( okName, Command.SCREEN, 1);
-        addCommand(cmdOk);
+        //removeCommand(cmdOk);
+        //cmdOk=new Command( okName, Command.SCREEN, 1);
+        //addCommand(cmdOk);
         addCommand(cmdNoReason);
         user=null;
         attachDisplay(display);
@@ -133,13 +129,13 @@ public class ConferenceQuickPrivelegeModify
         display.setCurrent(StaticData.getInstance().roster);
     }
     
-    public void commandAction(Command command, Displayable displayable) {
-        if (command==cmdNoReason) { 
+    public void commandAction(Command c, Displayable d) {
+        if (c==cmdNoReason) { 
             reason.setValue("");
+            cmdOk();
             return;
         }
-        
-        destroyView();
+        super.commandAction(c, d);
     }
     
     private void setMucMod(){
@@ -162,8 +158,6 @@ public class ConferenceQuickPrivelegeModify
             } else {
                 item.addChild("reason", Nick);
             }
-            
-            
         } catch (Exception e) {}
         
         switch (action) {

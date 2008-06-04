@@ -525,25 +525,25 @@ public class RosterItemActions extends Menu {
                         new ConferenceQuickPrivelegeModify(display, mc, ConferenceQuickPrivelegeModify.OUTCAST,myNick);
                         return;
                      case 31: //grant voice and revoke moderator
-                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.PARTICIPANT,null);
+                        new ConferenceQuickPrivelegeModify(display, mc, ConferenceQuickPrivelegeModify.PARTICIPANT,null); //
                         return;
                      case 32: //revoke voice
                         new ConferenceQuickPrivelegeModify(display, mc, ConferenceQuickPrivelegeModify.VISITOR,null);
                         return;
                      case 33: //grant moderator
-                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.MODERATOR,null);
+                        new ConferenceQuickPrivelegeModify(display, mc, ConferenceQuickPrivelegeModify.MODERATOR,null); //
                         return;
                     case 35: //grant membership and revoke admin
-                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.MEMBER,null);
+                        new ConferenceQuickPrivelegeModify(display, mc, ConferenceQuickPrivelegeModify.MEMBER,null); //
                         return;
                     case 36: //revoke membership
-                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.NONE,null);
+                        new ConferenceQuickPrivelegeModify(display, mc, ConferenceQuickPrivelegeModify.NONE,null); //
                          return;
                     case 37: //grant admin and revoke owner
-                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.ADMIN,null);
+                        new ConferenceQuickPrivelegeModify(display, mc, ConferenceQuickPrivelegeModify.ADMIN,null); //
                         return;
                     case 38: //grant owner
-                        new ConferenceQuickPrivelegeModify(null, mc, ConferenceQuickPrivelegeModify.OWNER,null);
+                        new ConferenceQuickPrivelegeModify(display, mc, ConferenceQuickPrivelegeModify.OWNER,null); //
                         return;
 //#ifdef REQUEST_VOICE		 
 //#                 case 39: //request voice

@@ -46,15 +46,15 @@ import ui.controls.form.TextInput;
 public class AffiliationModify
         extends DefForm {
     
-    Display display;
-    Displayable parentView;
+    private Display display;
+    private Displayable parentView;
 
-    TextInput jid;
-    DropChoiceBox affiliation;
-    TextInput reason;
+    private TextInput jidItem;
+    private DropChoiceBox affiliationItem;
+    private TextInput reasonItem;
     
-    String room;
-    int recentAffiliation;
+    private String room;
+    private int recentAffiliation;
     
     /** Creates a new instance of AffiliationModify */
     public AffiliationModify(Display display, String room, String jid, String affiliation, String reason) {
@@ -62,27 +62,26 @@ public class AffiliationModify
         
         this.display=display;
         parentView=display.getCurrent();
-        
+
         this.room=room;
+        
         itemsList.addElement(new BoldString(SR.MS_JID));
-        this.jid=new TextInput(display, "", null, TextField.ANY);
-        itemsList.addElement(jid);
+        jidItem=new TextInput(display, jid, null, TextField.ANY);
+        itemsList.addElement(jidItem);
 
         itemsList.addElement(new BoldString(SR.MS_SET_AFFILIATION));
-        this.affiliation=new DropChoiceBox(display);
+        affiliationItem=new DropChoiceBox(display);
         for (short index=0; index<=AffiliationItem.AFFILIATION_OUTCAST; index++) {
             String name=AffiliationItem.getAffiliationName(index);
-            this.affiliation.append(name);
+            affiliationItem.append(name);
             if (affiliation.equals(name)) recentAffiliation=index;
         }
-        this.affiliation.setSelectedIndex(recentAffiliation);
-        itemsList.addElement(affiliation);
-        
-        
-		
+        affiliationItem.setSelectedIndex(recentAffiliation);
+        itemsList.addElement(affiliationItem);
+
         itemsList.addElement(new BoldString(SR.MS_REASON));
-	this.reason=new TextInput(display, "", "reason", TextField.ANY);
-	itemsList.addElement(reason);
+	reasonItem=new TextInput(display, reason, "reason", TextField.ANY);
+	itemsList.addElement(reasonItem);
 
         attachDisplay(display);
     }
@@ -94,11 +93,11 @@ public class AffiliationModify
         JabberDataBlock request=new Iq(room, Iq.TYPE_SET, "admin_modify");
         JabberDataBlock query=request.addChildNs("query", "http://jabber.org/protocol/muc#admin");
         JabberDataBlock child=query.addChild("item", null);
-        child.setAttribute("jid", jid.getValue());
-        child.setAttribute("affiliation", AffiliationItem.getAffiliationName((short)affiliation.getSelectedIndex()));
+        child.setAttribute("jid", jidItem.getValue());
+        child.setAttribute("affiliation", AffiliationItem.getAffiliationName((short)affiliationItem.getSelectedIndex()));
 		
-        String rs=reason.getValue();
-        if (rs.length()>0) child.addChild("reason", rs);        
+        String rs=reasonItem.getValue();
+        if (rs!="") child.addChild("reason", rs);        
 
         stream.send(request);
         try {
@@ -113,12 +112,12 @@ public class AffiliationModify
     }
     
     public void cmdOk() {
-        if (jid.getValue()=="") return;
+        if (jidItem.getValue()=="") return;
         if (recentAffiliation==AffiliationItem.AFFILIATION_OWNER) {
             StringBuffer warn=new StringBuffer(SR.MS_ARE_YOU_SURE_WANT_TO_DISCARD /*"Are You sure want to discard "*/);
-            warn.append(jid.getValue());
+            warn.append(jidItem.getValue());
             warn.append(SR.MS_FROM_OWNER_TO/*" from OWNER to "*/);
-            warn.append(AffiliationItem.getAffiliationName((short)affiliation.getSelectedIndex()));
+            warn.append(AffiliationItem.getAffiliationName((short)affiliationItem.getSelectedIndex()));
             new AlertBox(SR.MS_MODIFY_AFFILIATION, warn.toString(), display, null) {
                     public void yes() {
                         modify();
