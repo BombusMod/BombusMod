@@ -60,16 +60,6 @@ abstract public class IconTextElement implements VirtualElement {
     public boolean isSelectable() { return selectable; }    
     
     public boolean handleEvent(int keyCode) { return false; }
-
-//#ifdef SECONDSTRING
-//#     private Font getSecondFont() {
-//#         return FontCache.getBalloonFont();
-//#     }
-//#     
-//#     private int getSecondFontHeight() {
-//#         return FontCache.getBalloonFont().getHeight()-2;
-//#     }
-//#endif
     
     public int getImageIndex() { return -1; };
 
@@ -86,12 +76,6 @@ abstract public class IconTextElement implements VirtualElement {
        
        String str=toString();
        int offset=4;
-//#ifdef SECONDSTRING
-//#        String secstr="";
-//#        if (hasSecondString()) {
-//#            secstr=getSecondString();
-//#        }
-//#endif
        
        if (il!=null) {
             if (getImageIndex()!=-1) {
@@ -103,36 +87,15 @@ abstract public class IconTextElement implements VirtualElement {
        g.clipRect(offset, 0, g.getClipWidth(), itemHeight);
        
        g.drawString(str, offset-ofs, fontYOfs, Graphics.TOP|Graphics.LEFT);
-       
-//#ifdef SECONDSTRING
-//#        if (hasSecondString()) {
-//#            g.setFont(getSecondFont());
-//#            g.setColor(ct.getColor(ColorTheme.SECOND_LINE));
-//#            g.drawString(secstr, offset-ofs, fontYOfs+getFont().getHeight()-2, Graphics.TOP|Graphics.LEFT);
-//#        }
-//#endif
     }
 
     public int getVWidth(){ 
-        int wft=getFont().stringWidth(toString());
-//#ifdef SECONDSTRING
-//#         int wst=0;
-//#         if (hasSecondString())
-//#             wst=getSecondFont().stringWidth(getSecondString());
-//#         return ((wft>wst)?wft:wst)+ilImageSize+4;   
-//#else
-            return wft+ilImageSize+4;
-//#endif
+        return getFont().stringWidth(toString())+ilImageSize+4;
     }
     
     public int getVHeight(){ 
         itemHeight=(ilImageSize>getFont().getHeight())?ilImageSize:getFont().getHeight();
         fontYOfs=heightCorrect+(itemHeight-getFont().getHeight())/2;
-//#ifdef SECONDSTRING
-//#         if (hasSecondString()){
-//#             itemHeight+=getSecondFontHeight();
-//#         }
-//#endif
         imageYOfs=(itemHeight-ilImageSize)/2;
         return itemHeight;
     }
@@ -142,21 +105,6 @@ abstract public class IconTextElement implements VirtualElement {
     public void onSelect(){ };
 
     public String getTipString() { return null; }
-    
-//#ifdef SECONDSTRING
-//#     private boolean hasSecondString() {
-//#         try {
-//#             String secstr=getSecondString();
-//#             if (secstr!=null)
-//#                 if (secstr.length()>0)
-//#                     return true;
-//#         } catch (Exception ex) {}
-//#         return false;
-//#     }
-//# 
-//#     public String getSecondString() { 
-//#         return null;
-//#     }
-//#endif
+
     public int compare(IconTextElement right) { return 0; }
 }

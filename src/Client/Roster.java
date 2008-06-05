@@ -1512,13 +1512,8 @@ public class Roster
                         MucContact c = mucContact(from);
 
                         if (pr.hasEntityCaps()) {
-                            c.hasCaps=true;                             
                             if (pr.getEntityNode()!=null) {
-                                c.capsNode = StringUtils.replaceCaps(pr.getEntityNode());
-                                if (c.capsNode.indexOf("#")<0)
-                                    c.capsVer=pr.getEntityVer();
-                            } else {
-                                c.capsNode=StringUtils.replaceCaps(pr.getEntityNode());
+                                c.setClientVersion(StringUtils.replaceCaps(pr.getEntityNode()));
                             }
                         }
                         JabberDataBlock j2j=pr.findNamespace("x", "j2j:history");
@@ -1585,16 +1580,9 @@ public class Roster
                         if (c==null) return JabberBlockListener.BLOCK_REJECTED; //drop not-in-list presence
                         
                         if (pr.getTypeIndex()!=Presence.PRESENCE_ERROR) {
-                            if (pr.hasEntityCaps()) {
-                                c.hasCaps=true;
-                                if (pr.getEntityNode()!=null) {
-                                    c.capsNode = StringUtils.replaceCaps(pr.getEntityNode());
-                                    if (c.capsNode.indexOf("#")<0)
-                                        c.capsVer=pr.getEntityVer();
-                                } else {
-                                    c.capsNode=StringUtils.replaceCaps(pr.getEntityNode());
-                                }
-                            }
+                            if (pr.hasEntityCaps())
+                                if (pr.getEntityNode()!=null)
+                                    c.setClientVersion(StringUtils.replaceCaps(pr.getEntityNode()));
 
                             JabberDataBlock j2j=pr.findNamespace("x", "j2j:history");
                             if (j2j!=null) {
@@ -2325,8 +2313,7 @@ public class Roster
             }
 //#endif
             mess.append((cntact.getJ2J()!=null)?"\nJ2J: "+cntact.getJ2J():"");
-            mess.append((cntact.hasCaps)?"\nUse: "+cntact.capsNode:"");
-            mess.append((cntact.capsVer!=null)?"#"+cntact.capsVer:"");
+            mess.append((cntact.getClientVersion()!=null)?"\nUse: "+cntact.getClientVersion():"");
             if (cntact.statusString!=null) {
                 mess.append("\n");
                 mess.append(SR.MS_STATUS);

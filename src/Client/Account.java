@@ -194,7 +194,7 @@ public class Account extends IconTextElement{
         
     }
     
-    protected int geImageIndex() {return active?0:5;}
+    public int geImageIndex() {return active?0:5;}
 
     public String getUserName() { return userName;  }
     public void setUserName(String userName) { this.userName = userName;  }
@@ -295,11 +295,7 @@ public class Account extends IconTextElement{
         if (useSSL) return false;
         return isGmail();
     }
-//#ifdef SECONDSTRING
-//#     public String getSecondString() {
-//#          return server;
-//#     }
-//#endif
+
     public void setUseCompression(boolean value) {
         this.compression = value;
     }

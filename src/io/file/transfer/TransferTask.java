@@ -330,9 +330,4 @@ public class TransferTask
         errMsg="Canceled";
         closeFile();
     }
-//#ifdef SECONDSTRING
-//#         public String getSecondString() { 
-//#             return jid;
-//#         }
-//#endif
 }

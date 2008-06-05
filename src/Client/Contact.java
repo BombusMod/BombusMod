@@ -29,10 +29,12 @@ package Client;
 
 //#ifndef WMUC
 import Conference.MucContact;
+import Fonts.FontCache;
 //#endif
 
 //#if HISTORY
 //# import History.HistoryAppend;
+//# import javax.microedition.lcdui.Font;
 //#endif
 
 import javax.microedition.lcdui.Graphics;
@@ -49,18 +51,12 @@ import java.util.*;
 import ui.IconTextElement;
 import com.alsutton.jabber.datablocks.Presence;
 
-/**
- * Contact
- * @author Eugene Stahov
- */
 public class Contact extends IconTextElement{
 
 //#if USE_ROTATOR
     private int isnew=0;    
 
-    public void setNewContact() {
-        this.isnew = 10;        
-    }
+    public void setNewContact() { this.isnew = 10; }
 //#endif
     
     private ColorTheme ct;
@@ -69,7 +65,7 @@ public class Contact extends IconTextElement{
 //#if USE_ROTATOR        
     if (isnew>0){
         isnew--;
-            return (isnew%2==0)?0xFF0000:0x0000FF;
+        return (isnew%2==0)?0xFF0000:0x0000FF;
     }
 //#endif
         if (j2j!=null)
@@ -85,12 +81,12 @@ public class Contact extends IconTextElement{
     }
 //#ifdef PEP    
 //#     public int pepMood=-1;
+//#     public String pepMoodName=null;
+//#     public String pepMoodText=null;
 //#ifdef PEP_TUNE
 //#     public boolean pepTune;
 //#     public String pepTuneText=null;
 //#endif
-//#     public String pepMoodName=null;
-//#     public String pepMoodText=null;
 //#endif
     public final static short ORIGIN_ROSTER=0;
     public final static short ORIGIN_ROSTERRES=1;
@@ -117,8 +113,8 @@ public class Contact extends IconTextElement{
     
     public boolean moveToLatest=false;
 
-    public String presence;
-    public String statusString=null;
+    //public String presence;
+    public String statusString;
     
     public boolean acceptComposing;
     public boolean showComposing=false;
@@ -154,10 +150,8 @@ public class Contact extends IconTextElement{
     public int lastUnread;
     
     public VCard vcard;
-    
-    public boolean hasCaps;
-    public String capsNode;
-    public String capsVer;
+
+    private String clientVersion;
     
 //#if AUTODELETE
 //#     public boolean redraw=false;
@@ -169,6 +163,12 @@ public class Contact extends IconTextElement{
     private String j2j;
     
     private boolean loaded=false;
+    
+    private Font secondFont=FontCache.getBalloonFont();
+    private int secondFontHeight;
+    
+    //int itemHeight;
+    int ilHeight;
 
     protected Contact (){
         super(RosterIcons.getInstance());
@@ -176,6 +176,9 @@ public class Contact extends IconTextElement{
         ct=ColorTheme.getInstance();
         msgs=new Vector();
         key1="";
+        
+        ilHeight=il.getHeight();
+        secondFontHeight=secondFont.getHeight();
     }
     
     public int firstUnread(){
@@ -285,7 +288,7 @@ public class Contact extends IconTextElement{
     public void addMessage(Msg m) {
         boolean first_replace=false;
         if (m.isPresence()) {
-            presence=m.getBody();
+            statusString=m.getBody();
             if (msgs.size()==1) 
                 if ( ((Msg)msgs.firstElement()).isPresence())
                     if (origin!=ORIGIN_GROUPCHAT) 
@@ -351,17 +354,7 @@ public class Contact extends IconTextElement{
 
         return active()?1:0;
     }
-    
-    public String toString() {
-        if (!cf.showResources)
-            return (nick==null)?getJid():nick;
-        if (origin>ORIGIN_GROUPCHAT) 
-            return nick;
-        if (origin==ORIGIN_GROUPCHAT) 
-            return getJid();
-        return (nick==null)?getJid():nick+jid.getResource(); 
-    }
-   
+
     public final String getName(){ 
         return (nick==null)?getBareJid():nick; 
     }
@@ -504,28 +497,54 @@ public class Contact extends IconTextElement{
     }
     
 //#ifdef ANTISPAM
-//#     public void addTempMessage(Msg m) {
-//#         tempMsgs.addElement(m);
-//#     }
+//#     public void addTempMessage(Msg m) { tempMsgs.addElement(m); }
 //# 
-//#     public final void purgeTemps() {
-//#         tempMsgs=new Vector();
-//#     }
+//#     public final void purgeTemps() { tempMsgs=new Vector(); }
 //#endif
     
-//#ifdef SECONDSTRING
-//#     public String getSecondString() {
-//#         if (cf.rosterStatus){
-//#             if (statusString!=null)
-//#                 return statusString;
+    public int getVWidth(){
+        String str=(getFirstLength()>getSecondLength())?getFirstString():getSecondString();
+        int wft=getFont().stringWidth(str);
+        
+        return wft+il.getWidth()+4;
+    }
+    
+    public String toString() {
+        return getFirstString();
+    }
+
+    public int getSecondLength() {
+        if (statusString==null) return 0;
+        if (statusString=="") return 0;
+        return secondFont.stringWidth(statusString);
+    }
+
+    public int getFirstLength() {
+        if (getFirstString()==null) return 0;
+        if (getFirstString()=="") return 0;
+        return getFont().stringWidth(getFirstString());
+    }
+    
+    public String getFirstString() {
+        if (!cf.showResources)
+            return (nick==null)?getJid():nick;
+        if (origin>ORIGIN_GROUPCHAT) 
+            return nick;
+        if (origin==ORIGIN_GROUPCHAT) 
+            return getJid();
+        return (nick==null)?getJid():nick+jid.getResource(); 
+    }
+    
+    public String getSecondString() {
+        if (cf.rosterStatus){
+            if (statusString!=null)
+                return statusString;
 //#if PEP
 //#             return getMoodString();
 //#endif
-//#         }
-//#         return null;
-//#     }
-//#endif
-
+        }
+        return null;
+    }
 
     public int getImageIndex() {
         if (showComposing==true) 
@@ -534,8 +553,7 @@ public class Contact extends IconTextElement{
         if (st<8) st+=transport; 
         return st;
     }
-    
-    
+
     public int getSecImageIndex() {
 //#ifdef ANTISPAM
 //#         if (!tempMsgs.isEmpty())
@@ -563,15 +581,19 @@ public class Contact extends IconTextElement{
 //#     }
 //#endif
     
+    public void setClientVersion (String ver) {
+        clientVersion=ver;
+    }
+    
+    public String getClientVersion () {
+        return clientVersion;
+    }
+    
 //#ifdef PEP
 //#ifdef PEP_TUNE
-//#     public void setUserTune (String tune) {
-//#         pepTuneText=tune;
-//#     }
+//#     public void setUserTune (String tune) { pepTuneText=tune; }
 //#     
-//#     public String getUserTune() {
-//#         return pepTuneText;
-//#     }
+//#     public String getUserTune() { return pepTuneText; }
 //#endif
 //#     public void setUserMood (String mood) {
 //#         pepMoodName=mood;
@@ -599,17 +621,34 @@ public class Contact extends IconTextElement{
 //#                 }
 //#              }
 //#         }
-//#         return mood.toString();
+//#         return (mood!=null)?mood.toString():null;
 //#     }
 //#endif
+    
+    public int getVHeight(){ 
+        int itemVHeight;
+        int firstHeight=getFont().getHeight();
+        itemVHeight=(ilHeight>firstHeight)?ilHeight:firstHeight;
+        if (getSecondString()!=null)
+            itemVHeight+=secondFont.getHeight();
+        
+        return itemVHeight;
+    }
 
     public void drawItem(Graphics g, int ofs, boolean sel) {
         int w=g.getClipWidth();
-        int h=super.getVHeight();
+        int h=getVHeight();
         int xo=g.getClipX();
         int yo=g.getClipY();
         
-        int imgH=(h-il.getHeight())/2;
+        int offset=4;
+       
+        int imgH=(h-ilHeight)/2;
+        
+        if (getImageIndex()>-1) {
+            offset+=ilHeight;
+            il.drawImage(g, getImageIndex(), 2, imgH);
+        }
         
 //#ifdef PEP
 //#         if (hasMood()) {
@@ -620,19 +659,35 @@ public class Contact extends IconTextElement{
 //#         }
 //#ifdef PEP_TUNE
 //#         if (pepTune) {
-//#             w-=il.getWidth();
+//#             w-=ilHeight;
 //#             il.drawImage(g, RosterIcons.ICON_PROFILE_INDEX+1, w,imgH);
 //#         }
 //#endif
 //#endif
         if (getSecImageIndex()>-1) {
-            w-=il.getWidth();
+            w-=ilHeight;
             il.drawImage(g, getSecImageIndex(), w,imgH);
         }
+
+        int y=0;
+        int thisOfs=0;
         
+        g.setClip(offset, yo, w, h);
+
+        thisOfs=(getFirstLength()>w)?-ofs+offset:offset;
+        g.setFont(getFont());
+        g.drawString(getFirstString(), thisOfs, y, Graphics.TOP|Graphics.LEFT);
+        
+
+        y=getFont().getHeight();
+        
+        if (getSecondString()!=null) {
+            thisOfs=(getSecondLength()>w)?-ofs+offset:offset;
+            g.setFont(secondFont);
+            g.setColor(ct.getColor(ColorTheme.SECOND_LINE));
+            g.drawString(getSecondString(), thisOfs, y, Graphics.TOP|Graphics.LEFT);
+        }
         g.setClip(xo, yo, w, h);
-        
-        super.drawItem(g, ofs, sel);
     }
 //#ifdef PEP
 //#     boolean hasMood() {

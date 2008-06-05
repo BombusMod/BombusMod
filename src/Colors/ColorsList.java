@@ -170,7 +170,7 @@ public class ColorsList
 //#             SR.MS_POPUP_SYSTEM,
 //#             SR.MS_POPUP_SYSTEM_BGND,
 //#             
-//#             SR.MS_SECOND_LINE
+//#             SR.MS_SHOW_STATUSES
 //#         };
 //#endif
 }

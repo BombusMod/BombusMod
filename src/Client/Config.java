@@ -240,9 +240,7 @@ type = \"-=Siemens=-\";
 //#     public boolean transliterateFilenames=false;
 //#     public boolean autoDeTranslit=false;
 //#endif
-//#ifdef SECONDSTRING
-//#     public boolean rosterStatus=false;
-//#endif
+    public boolean rosterStatus=true;
 //#ifdef PEP
 //#     public boolean sndrcvmood = false;
 //#ifdef PEP_TUNE
@@ -446,11 +444,9 @@ type = \"-=Siemens=-\";
 //#else
             inputStream.readBoolean();
 //#endif
-//#ifdef SECONDSTRING
-//#             rosterStatus=inputStream.readBoolean();
-//#else
-            inputStream.readBoolean();
-//#endif
+            
+            rosterStatus=inputStream.readBoolean();
+            
             queryExit=inputStream.readBoolean();
             notifyPicture=inputStream.readBoolean();
             showBalloons=inputStream.readBoolean();
@@ -638,11 +634,9 @@ type = \"-=Siemens=-\";
 //#else
             outputStream.writeBoolean(false);
 //#endif
-//#ifdef SECONDSTRING
-//#             outputStream.writeBoolean(rosterStatus);
-//#else
-            outputStream.writeBoolean(false);
-//#endif
+
+            outputStream.writeBoolean(rosterStatus);
+
             outputStream.writeBoolean(queryExit);
             outputStream.writeBoolean(notifyPicture);
             outputStream.writeBoolean(showBalloons);

@@ -125,9 +125,7 @@ public class ConfigData {
 //#ifdef DETRANSLIT
 //#         array.addElement(new keyValue(transliterateFilenames, (cf.transliterateFilenames)?"1":"0")); 
 //#endif
-//#ifdef SECONDSTRING
-//#         array.addElement(new keyValue(rosterStatus, (cf.rosterStatus)?"1":"0"));
-//#endif
+        array.addElement(new keyValue(rosterStatus, (cf.rosterStatus)?"1":"0"));
         array.addElement(new keyValue(queryExit, (cf.queryExit)?"1":"0"));
         array.addElement(new keyValue(showBalloons, (cf.showBalloons)?"1":"0"));
         array.addElement(new keyValue(notifyPicture, (cf.notifyPicture)?"1":"0"));
@@ -254,9 +252,7 @@ public class ConfigData {
 //#ifdef DETRANSLIT
 //#         cf.transliterateFilenames=cf.getBooleanProperty(getValue(transliterateFilenames),false);
 //#endif
-//#ifdef SECONDSTRING
-//#         cf.rosterStatus=cf.getBooleanProperty(getValue(rosterStatus),true);
-//#endif
+        cf.rosterStatus=cf.getBooleanProperty(getValue(rosterStatus),true);
         cf.queryExit=cf.getBooleanProperty(getValue(queryExit),false);
         VirtualList.showBalloons=cf.showBalloons=cf.getBooleanProperty(getValue(showBalloons),false);
 //#ifdef USER_KEYS
@@ -413,9 +409,7 @@ public class ConfigData {
 //#     private final static String transliterateFilenames="transliterateFilenames"; 
 //#     private final static String autoDeTranslit="autoDeTranslit"; 
 //#endif
-//#ifdef SECONDSTRING
-//#     private final static String rosterStatus="rosterStatus";
-//#endif
+    private final static String rosterStatus="rosterStatus";
     private final static String queryExit="queryExit";
     private final static String showBalloons="showBalloons";
     private final static String notifyPicture="notifyPicture";

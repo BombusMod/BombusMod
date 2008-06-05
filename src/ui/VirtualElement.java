@@ -41,10 +41,6 @@ public interface VirtualElement {
 
     public String getTipString();
     
-//#ifdef SECONDSTRING
-//#     public String getSecondString();
-//#endif
-    
     public void onSelect();
     
     public boolean isSelectable();

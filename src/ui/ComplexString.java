@@ -265,12 +265,6 @@ public class ComplexString extends Vector implements VirtualElement {
     }
 
     public String getTipString() { return null; }
-    
-//#ifdef SECONDSTRING
-//#     public String getSecondString() {
-//#         return null;
-//#     }
-//#endif
 
     public boolean isSelectable() {
         return true;

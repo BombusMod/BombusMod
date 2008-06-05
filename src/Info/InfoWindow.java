@@ -192,9 +192,6 @@ public class InfoWindow
 //#ifdef IMPORT_EXPORT
 //#         abilities.append("IMPORT_EXPORT, ");
 //#endif
-//#ifdef SECONDSTRING
-//#         abilities.append("SECONDSTRING, ");
-//#endif
 //#ifdef CHANGE_TRANSPORT
 //#         abilities.append("CHANGE_TRANSPORT, ");
 //#endif

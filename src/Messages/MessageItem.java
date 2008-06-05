@@ -187,12 +187,6 @@ public class MessageItem
     
     boolean smilesEnabled() {return smiles; }
 //#endif
-    
-//#ifdef SECONDSTRING
-//#     public String getSecondString() {
-//#         return null;
-//#     }
-//#endif
 
     public boolean isSelectable() { return true; }
 

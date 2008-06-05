@@ -56,9 +56,7 @@ public class ConfigForm
     private CheckBox autoFocus;
     private CheckBox showResources;
     private CheckBox useBoldFont;
-//#ifdef SECONDSTRING
-//#     private CheckBox rosterStatus;
-//#endif
+    private CheckBox rosterStatus;
     
     private ChoiceBox subscr;
     private ChoiceBox nil;
@@ -152,9 +150,7 @@ public class ConfigForm
         autoFocus = new CheckBox(SR.MS_AUTOFOCUS, cf.autoFocus); itemsList.addElement(autoFocus);
         showResources = new CheckBox(SR.MS_SHOW_RESOURCES, cf.showResources); itemsList.addElement(showResources);
         useBoldFont = new CheckBox(SR.MS_BOLD_FONT, cf.useBoldFont); itemsList.addElement(useBoldFont);
-//#ifdef SECONDSTRING
-//#         rosterStatus = new CheckBox(SR.MS_SECOND_LINE, cf.rosterStatus); itemsList.addElement(rosterStatus);
-//#endif
+        rosterStatus = new CheckBox(SR.MS_SHOW_STATUSES, cf.rosterStatus); itemsList.addElement(rosterStatus);
 
         itemsList.addElement(new BoldString(SR.MS_AUTH_NEW));
         subscr=new ChoiceBox();
@@ -306,9 +302,7 @@ public class ConfigForm
         cf.autoFocus=autoFocus.getValue();
         cf.showResources=showResources.getValue();
         cf.useBoldFont=useBoldFont.getValue();
-//#ifdef SECONDSTRING
-//#         cf.rosterStatus=rosterStatus.getValue();
-//#endif
+        cf.rosterStatus=rosterStatus.getValue();
 
         cf.autoSubscribe=subscr.getSelectedIndex();
         

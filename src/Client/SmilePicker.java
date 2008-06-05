@@ -208,12 +208,6 @@ public class SmilePicker extends VirtualList implements CommandListener, Virtual
                 pageRight(); break;
         }
     }
-    
-//#ifdef SECONDSTRING
-//#     public String getSecondString() {
-//#         return null;
-//#     }
-//#endif
 
     public boolean isSelectable() { return true; }
     

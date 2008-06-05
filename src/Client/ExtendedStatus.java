@@ -83,12 +83,4 @@ public class ExtendedStatus extends IconTextElement{
     
     public String getAutoRespondMessage() { return autoRespondMessage; }
     public void setAutoRespondMessage(String s) { autoRespondMessage=s; }
-    
-    
-//#ifdef SECONDSTRING
-//#     public String getSecondString() { 
-//#         return status.trim();
-//#     }
-//#endif
-
 }
