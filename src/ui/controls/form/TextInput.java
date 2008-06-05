@@ -85,7 +85,19 @@ public class TextInput
         ct=ColorTheme.getInstance();
     }
     
-    public String toString() { return (text==null)?"":text; }
+    public int getCaptionLength() {
+        if (caption==null) return 0;
+        if (caption=="") return 0;
+        return captionFont.stringWidth(caption);
+    }
+
+    public int getTextLength() {
+        if (text==null) return 0;
+        if (text=="") return 0;
+        return font.stringWidth(text);
+    }
+    
+    public String toString() { return (getCaptionLength()>getTextLength())?caption:getValue(); }
     
     public void onSelect(){ new EditBox(display, text, this, boxType); }
     
@@ -103,10 +115,13 @@ public class TextInput
 
         int oldColor=g.getColor();
         
+        int thisOfs=0;
+        
         int y=0;
         if (caption!=null) {
+            thisOfs=(getCaptionLength()>width)?-ofs:2;
             g.setFont(captionFont);
-            g.drawString(caption, 2, y, Graphics.TOP|Graphics.LEFT);
+            g.drawString(caption, thisOfs, y, Graphics.TOP|Graphics.LEFT);
             y=captionFontHeight;
         }
         
@@ -117,9 +132,10 @@ public class TextInput
         g.drawRoundRect(0, y+0, width-1, height-1, 6, 6);
 
         g.setColor(oldColor);
-        
+
+        thisOfs=(getTextLength()>width)?-ofs+4:4;
         g.setFont(font);
-        g.drawString(text, 4, y, Graphics.TOP|Graphics.LEFT);        
+        g.drawString(text, thisOfs, y, Graphics.TOP|Graphics.LEFT);        
         //super.drawItem(g, ofs, sel);
     }
 

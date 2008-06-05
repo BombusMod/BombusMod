@@ -1,7 +1,9 @@
 /*
  * Reconnect.java
- * Created on 25.04.2008, 17:42
- * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
+ *
+ * Created on 14.12.2006, 1:51
+ *
+ * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -25,20 +27,76 @@
 
 package Client;
 
+import javax.microedition.lcdui.Alert;
+import javax.microedition.lcdui.Command;
+import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
-import ui.controls.TimerBox;
+import javax.microedition.lcdui.Displayable;
+import javax.microedition.lcdui.Gauge;
+import locale.SR;
 
-public class Reconnect extends TimerBox {
+/**
+ *
+ * @author Evg_S
+ */
+public class Reconnect
+    implements Runnable, CommandListener {
 
+    protected Display display;
+    protected Displayable next;
+    protected Alert alert;
+    protected Command cmdOk=new Command("OK", Command.OK, 1);
+    
+    private Gauge timer;
+    boolean isRunning;
+    
     private final static int WAITTIME=15;
-
+    
+    /** Creates a new instance of Reconnect */
+    private Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 2);
     public Reconnect(String title, String body, Display display) {
-        super(title, body, WAITTIME, display, null);
+        alert=new Alert(title, body, null, null);
+        next=display.getCurrent();
+        this.display=display;
+        
+        alert.setTimeout(15000); //15 seconds
+        alert.addCommand(cmdOk);
+        alert.setCommandListener(this);
+
+        alert.setTimeout(Alert.FOREVER);
+        
+        timer=new Gauge(null, false, WAITTIME, 1);
+
+        alert.setIndicator(timer);
+
+        alert.addCommand(cmdCancel);
+        
+        display.setCurrent(alert);
+        
+        new Thread(this).start();
     }
 
-    public void yes() {
-        StaticData.getInstance().roster.doReconnect();
+    public void commandAction(Command command, Displayable displayable) {
+        if (command==cmdOk) {
+            if (isRunning) {
+                isRunning=false;
+                StaticData.getInstance().roster.doReconnect();
+            }
+        }
+        isRunning=false;
+        display.setCurrent(next);
     }
 
-    public void no() { }
+    public void run() {
+        isRunning=true;
+        while (isRunning) {
+            try { 
+                Thread.sleep(1000);
+            } catch (Exception e) { break; }
+            int value=timer.getValue()+1;
+            timer.setValue(value);
+            if (value>=WAITTIME) break;
+        }
+        commandAction(cmdOk, alert);
+    }
 }
