@@ -113,7 +113,7 @@ public class Contact extends IconTextElement{
     
     public boolean moveToLatest=false;
 
-    //public String presence;
+    public String presence;
     public String statusString;
     
     public boolean acceptComposing;
@@ -288,7 +288,7 @@ public class Contact extends IconTextElement{
     public void addMessage(Msg m) {
         boolean first_replace=false;
         if (m.isPresence()) {
-            statusString=m.getBody();
+            presence=m.getBody();
             if (msgs.size()==1) 
                 if ( ((Msg)msgs.firstElement()).isPresence())
                     if (origin!=ORIGIN_GROUPCHAT) 
@@ -653,9 +653,8 @@ public class Contact extends IconTextElement{
 //#ifdef PEP
 //#         if (hasMood()) {
 //#             ImageList moods=MoodIcons.getInstance();
-//#             imgH=(h-moods.getHeight())/2;
 //#             w-=moods.getWidth();
-//#             moods.drawImage(g, pepMood, w, imgH);
+//#             moods.drawImage(g, pepMood, w, (h-moods.getHeight())/2);
 //#         }
 //#ifdef PEP_TUNE
 //#         if (pepTune) {

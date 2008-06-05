@@ -45,7 +45,7 @@ public class ConfigData {
     private String file;
     
     public ConfigData(String path, int direction) {
-        Config.getInstance();
+        cf=Config.getInstance();
         array=new Vector();
         this.file=path;
         
@@ -153,10 +153,9 @@ public class ConfigData {
 //#ifdef DETRANSLIT
 //#         array.addElement(new keyValue(autoDeTranslit, (cf.autoDeTranslit)?"1":"0")); 
 //#endif
-        
         StringBuffer body = new StringBuffer();
         body = createArrayString(array);
-        
+
         FileIO fileOut=FileIO.createConnection(file+"config.txt");
         fileOut.fileWrite(body.toString().getBytes());
     }
@@ -437,7 +436,7 @@ public class ConfigData {
     class keyValue {
         String value; String key;
 
-        public keyValue(String key, String value) { this.key=key; this.value=value; }
+        public keyValue(String key, String value) { this.key=key; this.value=(value==null)?"":value; }
 
         public String getKey() { return key; }
         public String getValue() { return value; }
