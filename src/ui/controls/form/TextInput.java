@@ -109,6 +109,10 @@ public class TextInput
         return itemHeight;
     }
     
+    public String getText() {
+        return getValue();
+    }
+    
     public void drawItem(Graphics g, int ofs, boolean sel) {
         int width=g.getClipWidth();
         int height=fontHeight;
@@ -132,10 +136,11 @@ public class TextInput
         g.drawRoundRect(0, y+0, width-1, height-1, 6, 6);
 
         g.setColor(oldColor);
-
-        thisOfs=(getTextLength()>width)?-ofs+4:4;
-        g.setFont(font);
-        g.drawString(text, thisOfs, y, Graphics.TOP|Graphics.LEFT);        
+        if (getTextLength()>0) {
+            thisOfs=(getTextLength()>width)?-ofs+4:4;
+            g.setFont(font);
+            g.drawString(getText(), thisOfs, y, Graphics.TOP|Graphics.LEFT); 
+        }
         //super.drawItem(g, ofs, sel);
     }
 

@@ -635,6 +635,8 @@ public class SR {
     public static String MS_UNREAD_MESSAGES=loadString("Unread messages");
 
     public static String MS_VIBRATE_ONLY_HIGHLITED=loadString("vibrate only highlited");
+
+    public static String MS_EXTENDED_SETTINGS=loadString("Extended settings");
     
     private SR() { }
     

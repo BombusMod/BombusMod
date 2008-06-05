@@ -44,7 +44,7 @@ public class PasswordInput
         super(display, caption, text, null, TextField.PASSWORD);
     }
     
-    public String toString(){
+    public String getText(){
         if (getValue()==null)
             return "";
         StringBuffer str=new StringBuffer();

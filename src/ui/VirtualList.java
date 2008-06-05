@@ -382,11 +382,10 @@ public abstract class VirtualList
         
         setAbsOrg(g, 0,0);
         
-        g.setColor(ct.getColor(ColorTheme.LIST_BGND));
-        g.fillRect(0, 0, width, height);
-        
 //#ifdef BACK_IMAGE
 //#         if (img!=null) {
+//#             g.setColor(ct.getColor(ColorTheme.LIST_BGND));
+//#             g.fillRect(0, 0, width, height);
 //#             g.drawImage(img, width/2, height/2, Graphics.VCENTER|Graphics.HCENTER);
 //#         }
 //#endif

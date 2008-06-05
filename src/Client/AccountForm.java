@@ -36,6 +36,7 @@ import ui.controls.form.BoldString;
 import ui.controls.form.CheckBox;
 import ui.controls.form.ChoiceBox;
 import ui.controls.form.DefForm;
+import ui.controls.form.LinkString;
 import ui.controls.form.NumberInput;
 import ui.controls.form.PasswordInput;
 import ui.controls.form.SpacerItem;
@@ -80,6 +81,10 @@ public class AccountForm
     
     boolean newaccount;
     
+    boolean showExtended;
+    
+    LinkString linkShowExtended;
+    
     /** Creates a new instance of newAccountForm */
     public AccountForm(AccountSelect accountSelect, Display display, Account account) {
         super(display, null);
@@ -95,29 +100,51 @@ public class AccountForm
 
         userbox = new TextInput(display, SR.MS_USERNAME, account.getUserName(), null, TextField.ANY); //, 64, TextField.ANY
         itemsList.addElement(userbox);
-
-	passbox = new PasswordInput(display, SR.MS_PASSWORD, account.getPassword());//, 64, TextField.PASSWORD
-        itemsList.addElement(passbox);
-
+        
         servbox = new TextInput(display, SR.MS_SERVER, account.getServer(), null, TextField.ANY);//, 64, TextField.ANY
         itemsList.addElement(servbox);
 
-	ipbox = new TextInput(display, SR.MS_HOST_IP, account.getHostAddr(), null, TextField.ANY);//, 64, TextField.ANY
-        itemsList.addElement(ipbox);
-
-        portbox = new NumberInput(display, SR.MS_PORT, Integer.toString(account.getPort()), 0, 65535);//, 0, 65535
-        itemsList.addElement(portbox);
+	passbox = new PasswordInput(display, SR.MS_PASSWORD, account.getPassword());//, 64, TextField.PASSWORD
+        itemsList.addElement(passbox);
         
-        sslbox = new CheckBox(SR.MS_SSL, account.getUseSSL()); itemsList.addElement(sslbox);
-        plainPwdbox = new CheckBox(SR.MS_PLAIN_PWD, account.getPlainAuth()); itemsList.addElement(plainPwdbox);
-        noComprbox = new CheckBox(SR.MS_NO_COMPRESSION, !account.useCompression()); itemsList.addElement(noComprbox);
-        confOnlybox = new CheckBox(SR.MS_CONFERENCES_ONLY, account.isMucOnly()); itemsList.addElement(confOnlybox);
-//#if HTTPCONNECT
-//#        proxybox = new CheckBox("proxybox", SR.MS_PROXY_ENABLE, account.isEnableProxy()); itemsList.addElement(proxybox);
-//#elif HTTPPOLL        
-//#        pollingbox = new CheckBox("pollingbox", "HTTP Polling", false); itemsList.addElement(pollingbox);
-//#endif
+        nickbox = new TextInput(display, SR.MS_NICKNAME, account.getNick(), null, TextField.ANY);//64, TextField.ANY
+        itemsList.addElement(nickbox);
+        
         registerbox = new CheckBox(SR.MS_REGISTER_ACCOUNT, false); itemsList.addElement(registerbox);
+        
+        linkShowExtended = new LinkString(SR.MS_EXTENDED_SETTINGS) { public void doAction() { showExtended(); } };
+        itemsList.addElement(linkShowExtended);
+        
+        moveCursorTo(getNextSelectableRef(-1));
+        attachDisplay(display);
+    }
+    
+    public void showExtended() {
+        showExtended=true;
+        itemsList.removeElement(linkShowExtended);
+        
+	ipbox = new TextInput(display, SR.MS_HOST_IP, account.getHostAddr(), null, TextField.ANY);//, 64, TextField.ANY
+        portbox = new NumberInput(display, SR.MS_PORT, Integer.toString(account.getPort()), 0, 65535);//, 0, 65535
+        
+        sslbox = new CheckBox(SR.MS_SSL, account.getUseSSL());
+        plainPwdbox = new CheckBox(SR.MS_PLAIN_PWD, account.getPlainAuth());
+        noComprbox = new CheckBox(SR.MS_NO_COMPRESSION, !account.useCompression());
+        confOnlybox = new CheckBox(SR.MS_CONFERENCES_ONLY, account.isMucOnly());
+//#if HTTPCONNECT
+//#        proxybox = new CheckBox("proxybox", SR.MS_PROXY_ENABLE, account.isEnableProxy());
+//#elif HTTPPOLL        
+//#        pollingbox = new CheckBox("pollingbox", "HTTP Polling", false);
+//#endif
+        
+        itemsList.addElement(sslbox);
+        itemsList.addElement(plainPwdbox);
+        itemsList.addElement(noComprbox);
+        itemsList.addElement(confOnlybox);
+//#if HTTPCONNECT
+//#        itemsList.addElement(proxybox);
+//#elif HTTPPOLL        
+//#        itemsList.addElement(pollingbox);
+//#endif
         
         itemsList.addElement(new BoldString(SR.MS_KEEPALIVE));
         keepAliveType=new ChoiceBox();
@@ -126,64 +153,59 @@ public class AccountForm
         keepAliveType.append("<iq/>");
         keepAliveType.append("ping");
         keepAliveType.setSelectedIndex(account.keepAliveType);
-        itemsList.addElement(keepAliveType);
-
         keepAlive = new NumberInput(display, SR.MS_KEEPALIVE_PERIOD, Integer.toString(account.keepAlivePeriod), 10, 2048);//10, 2096
-        itemsList.addElement(keepAlive);
-
-//#if HTTPPOLL || HTTPCONNECT  
-//#     private TextInput proxyHost;
-//#     private TextInput proxyPort;
-//#endif
-
+        itemsList.addElement(keepAliveType);
+        
         resourcebox = new TextInput(display, SR.MS_RESOURCE, account.getResource(), null, TextField.ANY);//64, TextField.ANY
-        itemsList.addElement(resourcebox);
-
-        nickbox = new TextInput(display, SR.MS_NICKNAME, account.getNick(), null, TextField.ANY);//64, TextField.ANY
-        itemsList.addElement(nickbox);
 
 //#if HTTPCONNECT
 //# 	proxyHost = new TextInput(display, SR.MS_PROXY_HOST, account.getProxyHostAddr(), null, TextField.URL);//32, TextField.URL
-//# 	itemsList.addElement(proxyHost);
 //# 
 //# 	proxyPort = new TextInput(display, SR.MS_PROXY_PORT, Integer.toString(account.getProxyPort()));//0, 65535
-//# 	itemsList.addElement(proxyPort);
 //#elif HTTPPOLL        
 //# 	proxyHost = new TextInput(display, SR.MS_PROXY_HOST, account.getProxyHostAddr(), null, TextField.URL);//32, TextField.URL
+//#endif
+        
+        itemsList.addElement(ipbox);
+        itemsList.addElement(portbox);
+
+        itemsList.addElement(keepAlive);
+        itemsList.addElement(resourcebox);
+
+//#if HTTPCONNECT
+//# 	itemsList.addElement(proxyHost);
+//# 	itemsList.addElement(proxyPort);
+//#elif HTTPPOLL        
 //# 	itemsList.addElement(proxyHost);
 //#endif
-
-        itemsList.addElement(new SpacerItem(0));
-        
-        moveCursorTo(getNextSelectableRef(-1));
-        attachDisplay(display);
     }
     
     public void cmdOk() {
         String user = userbox.getValue().trim().toLowerCase();
         String server = servbox.getValue().trim().toLowerCase();
         String pass = passbox.getValue();
-        int port=Integer.parseInt(portbox.getValue());
 
         int at = user.indexOf('@');
         if (at>-1) {
             server=user.substring(at+1);
             user=user.substring(0, at);
         }
-        if (server=="" || user=="" || pass=="" || port==0)
+        if (server=="" || user=="" || pass=="")
             return;
         
         account.setUserName(user);
         account.setServer(server);
         account.setPassword(pass);
-        account.setPort(port);
-        account.setHostAddr(ipbox.getValue());
-        account.setResource(resourcebox.getValue());
         account.setNick(nickbox.getValue());
-        account.setUseSSL(sslbox.getValue());
-        account.setPlainAuth(plainPwdbox.getValue());
-        account.setUseCompression(!noComprbox.getValue());
-        account.setMucOnly(confOnlybox.getValue());
+       
+        if (showExtended) {
+            account.setPort(Integer.parseInt(portbox.getValue()));
+            account.setHostAddr(ipbox.getValue());
+            account.setResource(resourcebox.getValue());
+            account.setUseSSL(sslbox.getValue());
+            account.setPlainAuth(plainPwdbox.getValue());
+            account.setUseCompression(!noComprbox.getValue());
+            account.setMucOnly(confOnlybox.getValue());
 
 //#if HTTPPOLL || HTTPCONNECT            
 //#         account.setEnableProxy(proxybox.getValue());
@@ -191,8 +213,9 @@ public class AccountForm
 //#         account.setProxyPort(proxyPort.getValue());
 //#endif
 
-        account.keepAlivePeriod=Integer.parseInt(keepAlive.getValue());
-        account.keepAliveType=keepAliveType.getValue();
+            account.keepAlivePeriod=Integer.parseInt(keepAlive.getValue());
+            account.keepAliveType=keepAliveType.getValue();
+        }
 
         if (newaccount) 
             accountSelect.accountList.addElement(account);
