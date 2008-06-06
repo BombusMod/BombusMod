@@ -46,7 +46,10 @@ public class ImageItem
 
     private String altText;
 
-    private int width;
+    private int heightShift;
+    
+    private int screenWidth;
+    private int screenHeight;
     
     /** Creates a new instance of ImageItem */
     public ImageItem(Image img, String altText) {
@@ -81,14 +84,16 @@ public class ImageItem
         if (collapsed || img==null)
             return super.getVHeight();
 
-        return img.getHeight();
+        return img.getHeight()-heightShift;
     }
     
     public void drawItem(Graphics g, int ofs, boolean sel) {
-        width=g.getClipWidth();
-        int height=g.getClipHeight();
-        if (!collapsed)
-            g.drawImage(img, width/2, 0, Graphics.TOP|Graphics.HCENTER);
+        screenWidth=g.getClipWidth();
+        screenHeight=g.getClipHeight();
+        if (!collapsed) {
+            //g.clipRect(0, img.getHeight()-heightShift, width, img.getHeight());
+            g.drawImage(img, screenWidth/2, -heightShift, Graphics.TOP|Graphics.HCENTER);
+        }
         super.drawItem(g, ofs, sel);
     }
 
@@ -97,13 +102,29 @@ public class ImageItem
     public boolean handleEvent(int keyCode) {
          switch (keyCode) {
             case 0:
-                if (img.getWidth()>width) {
-                    int newHeight=(img.getHeight() * (width * 100 / img.getWidth()))/100;
-                    this.img=new Scale().scale(img, width, newHeight);
+                if (img.getWidth()>screenWidth) {
+                    int newHeight=(img.getHeight() * (screenWidth * 100 / img.getWidth()))/100;
+                    this.img=new Scale().scale(img, screenWidth, newHeight);
+                    return true;
                 }
-                return true;
+                break;
+            case 2:
+                if (heightShift>0) {
+                    heightShift-=10;
+                    return true;
+                }
+                break;
+            case 8:
+                if (heightShift>=0 && heightShift<=img.getHeight()) {
+                    heightShift+=10;
+                    return true;
+                }
          }
         return false;
     }
-    
+/*
+    private void shift() {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+*/    
 }
