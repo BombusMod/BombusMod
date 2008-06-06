@@ -35,7 +35,7 @@ import java.util.Vector;
  * @author ad
  */
 public class DeTranslit {
-    static Vector translit;
+    static Vector translit[];
     static boolean filled=false;
     
     private static DeTranslit instance;
@@ -50,36 +50,35 @@ public class DeTranslit {
     
     /** Creates a new instance of DeTranslit */
     public static String deTranslit(String src) {
-        if (translit.size()<1)
-            return src;
-	for (Enumeration r=translit.elements(); r.hasMoreElements(); ) {
-	    TranslitItem tr=(TranslitItem)r.nextElement();
-            String temp=
-            src=stringReplace(src, tr.getLat(), tr.getCyr());
+        if (translit[0].size()<1) return src;
+        if (src==null) return null;
+        for (int i=0; i<translit[0].size(); i++) {
+            src=stringReplace(src, (String) translit[0].elementAt(i), (String) translit[1].elementAt(i));
 	}
         return src;
     }
     
     public static String translit(String src) {
-        if (translit.size()<1)
-            return src;
-	for (Enumeration r=translit.elements(); r.hasMoreElements(); ) {
-	    TranslitItem tr=(TranslitItem)r.nextElement();
-            src=stringReplace(src, tr.getCyr(), tr.getLat());
+        if (translit[0].size()<1) return src;
+        if (src==null) return null;
+        for (int i=0; i<translit[0].size(); i++) {
+            src=stringReplace(src, (String) translit[1].elementAt(i), (String) translit[0].elementAt(i));
 	}
         return src;
     }
     
     private static void fill() {
-        translit=new Vector();
+        translit=new Vector[2];
+        translit[0]=new Vector();
+        translit[1]=new Vector();
+        
         Vector defs[]=new StringLoader().stringLoader("/translit.txt", 2);
         for (int i=0; i<defs[0].size(); i++) {
-            String lat=(String) defs[0].elementAt(i);
-            String cyr=(String) defs[1].elementAt(i);
-            translit.addElement( new TranslitItem(lat, cyr) );
+            translit[0].addElement((String) defs[0].elementAt(i));
+            translit[1].addElement((String) defs[1].elementAt(i));
         }
     }
-    
+
     public static String stringReplace(String aSearch, String aFind, String aReplace) {
     	int pos = aSearch.indexOf(aFind);
     	if (pos != -1) {
@@ -95,16 +94,22 @@ public class DeTranslit {
     	}
     	return aSearch;
     }
-
-    static class TranslitItem {
-        private String lat; private String cyr;
-        
-        public TranslitItem(String lat, String cyr){
-            this.lat=lat;
-            this.cyr=cyr;
+/*
+    public static String stringReplace(String aSearch, String aFind, String aReplace) {
+        String result = aSearch;
+        if (result != null && result.length() > 0) {
+            int a = 0;
+            int b = 0;
+            while (true) {
+                a = result.indexOf(aFind, b);
+                if (a != -1) {
+                    result = result.substring(0, a) + aReplace + result.substring(a + aFind.length());
+                    b = a + aReplace.length();
+                } else
+                    break;
+            }
         }
-        
-        public String getLat() { return lat; }
-        public String getCyr() { return cyr; }
+        return result;
     }
+*/
 }

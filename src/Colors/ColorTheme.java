@@ -272,7 +272,7 @@ blue 0x0000ff
     }
     
     public static String getSkin(){
-        StringBuffer body=new StringBuffer();
+       StringBuffer body=new StringBuffer();
        body.append("xmlSkin\t");
 //#ifdef DETRANSLIT
 //#        body.append(DeTranslit.getInstance().translit(StaticData.getInstance().account.getNickName()));
@@ -305,7 +305,7 @@ blue 0x0000ff
         if (skin==null) {
             switch (resourceType) {
 //#if FILE_IO
-                case 0:
+                case 0: // from fs
                     FileIO f=FileIO.createConnection(skinFile);
                     byte[] b=f.fileRead();
                     if (b!=null) {
@@ -315,10 +315,10 @@ blue 0x0000ff
                         return defaultColor;
                     break;
 //#endif
-                case 1:
+                case 1: // from jar
                     skin=new StringLoader().hashtableLoader(skinFile);
                     break;
-                case 2:
+                case 2: // from message
                     skin=new StringLoader().hashtableLoaderFromString(skinFile);
             }
         }
@@ -333,7 +333,6 @@ blue 0x0000ff
     
     public static int getColorInt(int color, int pos) {
         String ncolor = getColorString(color);
-
         switch (pos) {
             case 0:
                 return Integer.parseInt(ncolor.substring(2,4),16);
