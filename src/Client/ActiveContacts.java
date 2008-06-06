@@ -146,6 +146,7 @@ public class ActiveContacts
     protected void keyClear () {
         Contact c=(Contact)getFocusedObject();
         c.purge();
+        activeContacts.removeElementAt(cursor);
     }
     
     public void destroyView(){

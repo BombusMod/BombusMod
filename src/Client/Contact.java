@@ -671,7 +671,7 @@ public class Contact extends IconTextElement{
         int y=0;
         int thisOfs=0;
         
-        g.setClip(offset, yo, w, h);
+        g.setClip(offset, yo, w-offset, h);
 
         thisOfs=(getFirstLength()>w)?-ofs+offset:offset;
         g.setFont(getFont());
