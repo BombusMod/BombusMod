@@ -26,6 +26,8 @@
 
 package util;
 
+import Client.Msg;
+
 public class ClipBoard
  {
     
@@ -56,5 +58,26 @@ public class ClipBoard
             if (clipBoard.length()>0)
                 empty = false;
         return empty;
+    }
+    
+    public void add(Msg msg) {
+        try {
+            StringBuffer clipstr=new StringBuffer();
+            clipstr.append((msg.getSubject()==null)?"":msg.getSubject()+"\n");
+            clipstr.append(msg.quoteString());
+            setClipBoard(clipstr.toString());
+            clipstr=null;
+        } catch (Exception e) {/*no messages*/}
+    }
+    
+    public void append(Msg msg) {
+        try {
+            StringBuffer clipstr=new StringBuffer(clipBoard);
+            clipstr.append("\n\n");
+            clipstr.append((msg.getSubject()==null)?"":msg.getSubject()+"\n");
+            clipstr.append(msg.quoteString());
+            setClipBoard(clipstr.toString());
+            clipstr=null;
+        } catch (Exception e) {/*no messages*/}
     }
 }

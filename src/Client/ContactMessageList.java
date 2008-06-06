@@ -468,16 +468,10 @@ public class ContactMessageList extends MessageList
 //#                     if (messages.isEmpty()) 
 //#                         return;
 //#                     try {
-//#                         StringBuffer clipstr=new StringBuffer();
-//#                         clipstr.append(clipboard.getClipBoard());
-//#                         if (clipstr.length()>0)
-//#                             clipstr.append("\n\n");
-//# 
-//#                         clipstr.append((getMessage(cursor).getSubject()==null)?"":getMessage(cursor).getSubject()+"\n");
-//#                         clipstr.append(getMessage(cursor).quoteString());
-//# 
-//#                         clipboard.setClipBoard(clipstr.toString());
-//#                         clipstr=null;
+//#                         if (clipboard.getClipBoard().length()>0) 
+//#                             clipboard.append(getMessage(cursor));
+//#                         else
+//#                             clipboard.add(getMessage(cursor));
 //#                     } catch (Exception e) {/*no messages*/}
 //#                     return;
 //#                  }

@@ -1279,8 +1279,12 @@ public class Roster
                         
                         // subject
                         if (subj!=null) {
-                            if (body==null) 
-                                body=name+" "+SR.MS_HAS_SET_TOPIC_TO+" "+subj;
+                            if (body==null)
+                                body=name+" "+SR.MS_HAS_SET_TOPIC_TO+": "+subj;
+                            
+                            if (cf.rosterStatus)
+                                getContact(from, true).statusString=subj; // adding secondLine to conference
+                            
                             subj=null;
                             start_me=-1;
                             highlite=true;
@@ -1515,13 +1519,6 @@ public class Roster
                             if (pr.getEntityNode()!=null) {
                                 c.setClientVersion(StringUtils.replaceCaps(pr.getEntityNode()));
                             }
-                        }
-                        JabberDataBlock j2j=pr.findNamespace("x", "j2j:history");
-                        if (j2j!=null) {
-                            if (j2j.getChildBlock("jid")!=null)
-                                c.setJ2J(j2j.getChildBlock("jid").getAttribute("gateway"));
-                            else
-                                c.setJ2J("true");
                         }
                         
                         int rp=from.indexOf('/');

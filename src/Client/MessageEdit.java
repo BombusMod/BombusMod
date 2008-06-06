@@ -70,7 +70,7 @@ public class MessageEdit
     private Command cmdInsNick=new Command(SR.MS_NICKNAMES,Command.SCREEN,3);
     private Command cmdInsMe=new Command(SR.MS_SLASHME, Command.SCREEN, 4); ; // /me
 //#ifdef DETRANSLIT
-//#     private Command cmdSendInTranslit=new Command(SR.MS_TRANSLIT, Command.SCREEN, 5);
+//# //    private Command cmdSendInTranslit=new Command(SR.MS_TRANSLIT, Command.SCREEN, 5);
 //#     private Command cmdSendInDeTranslit=new Command(SR.MS_DETRANSLIT, Command.SCREEN, 5);
 //#endif
     private Command cmdPaste=new Command(SR.MS_ARCHIVE, Command.SCREEN, 6);    
@@ -144,7 +144,7 @@ public class MessageEdit
         if (to.origin>=Contact.ORIGIN_GROUPCHAT)
             t.addCommand(cmdInsNick);
 //#ifdef DETRANSLIT
-//#         t.addCommand(cmdSendInTranslit);
+//# //        t.addCommand(cmdSendInTranslit);
 //#         t.addCommand(cmdSendInDeTranslit);
 //#endif
 //#ifdef ARCHIVE
@@ -219,9 +219,11 @@ public class MessageEdit
         }
         if (c==cmdSend && body==null) return;
 //#ifdef DETRANSLIT
+//# /*
 //#         if (c==cmdSendInTranslit) {
 //#             sendInTranslit=true;
 //#         }
+//#  */
 //#         if (c==cmdSendInDeTranslit) {
 //#             sendInDeTranslit=true;
 //#         }

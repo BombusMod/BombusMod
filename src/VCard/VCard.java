@@ -166,7 +166,12 @@ public class VCard {
         if (name!=null)
             if (name!="")
                 return name;
-        return getVCardData(FN);
+        name=getVCardData(FN);
+        if (name!=null)
+            if (name!="")
+                return name;
+        
+        return jid;
     }
     
     public static JabberDataBlock getQueryVCard(String to, String id ) 

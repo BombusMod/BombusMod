@@ -145,28 +145,18 @@ public abstract class MessageList extends VirtualList implements CommandListener
                }
             } catch (Exception e){}
         }
+        
 //#ifdef CLIPBOARD
 //#         if (c == cmdCopy)
 //#         {
 //#             try {
-//#                 StringBuffer clipstr=new StringBuffer();
-//#                 clipstr.append((((MessageItem)getFocusedObject()).msg.getSubject()==null)?"":((MessageItem)getFocusedObject()).msg.getSubject()+"\n");
-//#                 clipstr.append(((MessageItem)getFocusedObject()).msg.quoteString());
-//#                 clipboard.setClipBoard(clipstr.toString());
-//#                 clipstr=null;
+//#                 clipboard.add(((MessageItem)getFocusedObject()).msg);
 //#             } catch (Exception e) {/*no messages*/}
 //#         }
 //#         
 //#         if (c==cmdCopyPlus) {
 //#             try {
-//#                 StringBuffer clipstr=new StringBuffer();
-//#                 clipstr.append(clipboard.getClipBoard());
-//#                 clipstr.append("\n\n");
-//#                 clipstr.append((((MessageItem)getFocusedObject()).msg.getSubject()==null)?"":((MessageItem)getFocusedObject()).msg.getSubject()+"\n");
-//#                 clipstr.append(((MessageItem)getFocusedObject()).msg.quoteString());
-//#                 
-//#                 clipboard.setClipBoard(clipstr.toString());
-//#                 clipstr=null;
+//#                 clipboard.append(((MessageItem)getFocusedObject()).msg);
 //#             } catch (Exception e) {/*no messages*/}
 //#         }
 //#endif

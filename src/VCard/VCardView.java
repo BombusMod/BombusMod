@@ -68,17 +68,17 @@ public class VCardView
     private BoldString noVCard=new BoldString("[No vCard available]");
     private SimpleString noPhoto=new SimpleString("[No photo available]");
     private SimpleString badFormat=new SimpleString("[Unsupported format]");
-    
+
+//#ifdef CLIPBOARD
+//#     private Command cmdCopy   = new Command(SR.MS_COPY, Command.OK, 1);
+//#     private Command cmdCopyPlus = new Command("+ "+SR.MS_COPY, Command.SCREEN, 2);
+//#     private ClipBoard clipboard; 
+//#endif
+    protected Command cmdRefresh=new Command(SR.MS_REFRESH, Command.SCREEN, 3);
 //#if FILE_IO
     protected Command cmdSavePhoto=new Command(SR.MS_SAVE_PHOTO, Command.SCREEN,4);
 //#endif
     protected Command cmdDelPhoto=new Command(SR.MS_CLEAR_PHOTO, Command.SCREEN,5);
-    
-//#ifdef CLIPBOARD
-//#     private Command cmdCopy   = new Command(SR.MS_COPY, Command.OK, 1);
-//#     private Command cmdCopyPlus = new Command("+ "+SR.MS_COPY, Command.SCREEN, 30);
-//#     private ClipBoard clipboard; 
-//#endif
     
     /** Creates a new instance of VCardView */
     public VCardView(Display display, VCard vcard) {
@@ -110,6 +110,7 @@ public class VCardView
 //#endif
         removeCommand(cmdOk);
         removeCommand(cmdSelect);
+        addCommand(cmdRefresh);
 //#ifdef CLIPBOARD
 //#         if (Config.getInstance().useClipBoard) {
 //#             clipboard=ClipBoard.getInstance();
@@ -151,6 +152,11 @@ public class VCardView
         if (c==cmdDelPhoto) {
             vcard.dropPhoto(); 
             setPhoto();
+        }
+        if (c==cmdRefresh) {
+            VCard.request(vcard.getJid(), vcard.getId().substring(5));
+            destroyView();
+            return;
         }
 //#if FILE_IO
         if (c==cmdSavePhoto) {
