@@ -1,7 +1,7 @@
 /*
  * EditBox.java
  *
- * Created on 25 Май 2008 г., 17:20
+ * Created on 25.05.2008, 17:20
  *
  * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
  *
@@ -72,6 +72,7 @@ public class EditBox implements CommandListener {
         this.ti=ti;
 
         t=new TextBox(SR.MS_EDIT, text, 500, boxType);
+        t.setConstraints(boxType);
 //#ifdef CLIPBOARD
 //#         if (Config.getInstance().useClipBoard) {
 //#             clipboard=ClipBoard.getInstance();

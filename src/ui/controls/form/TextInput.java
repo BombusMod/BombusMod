@@ -71,6 +71,7 @@ public class TextInput
         this.text=(text==null)?"":text;
         this.caption=(caption==null)?"":caption;
         this.id=id;
+        this.boxType=boxType;
         
         font=FontCache.getMsgFont();
         fontHeight=font.getHeight();

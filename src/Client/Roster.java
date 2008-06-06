@@ -341,6 +341,7 @@ public class Roster
         }
     }
 
+    
     public void resetRoster() {
 	synchronized (hContacts) {
 	    hContacts=new Vector();
@@ -350,7 +351,6 @@ public class Roster
 	}
 	setMyJid(new Jid(sd.account.getJid()));
 	updateContact(sd.account.getNick(), myJid.getBareJid(), SR.MS_SELF_CONTACT, "self", false);
-        setProgress(SR.MS_DISCONNECTED, 26);
 //#ifndef WSYSTEMGC
 	System.gc();
 //#endif
@@ -1957,9 +1957,7 @@ public class Roster
         try {
             sendPresence(Presence.PRESENCE_OFFLINE, null);
         } catch (Exception e) {}
-        try {
-            sendPresence(lastOnlineStatus, null);
-        } catch (Exception e) {}
+        sendPresence(lastOnlineStatus, null);
      }
     
     public void eventOk(){

@@ -542,8 +542,7 @@ public abstract class VirtualList
 //#endif
         
 //#ifndef WOFFSCREEN
-        if (g != graphics)
-            g.drawImage(offscreen, 0, 0, Graphics.LEFT | Graphics.TOP);
+        if (g != graphics) g.drawImage(offscreen, 0, 0, Graphics.LEFT | Graphics.TOP);
 //#endif
     }
     
