@@ -29,12 +29,13 @@ package Client;
 
 //#ifndef WMUC
 import Conference.MucContact;
-import Fonts.FontCache;
 //#endif
+
+import Fonts.FontCache;
+import javax.microedition.lcdui.Font;
 
 //#if HISTORY
 //# import History.HistoryAppend;
-//# import javax.microedition.lcdui.Font;
 //#endif
 
 import javax.microedition.lcdui.Graphics;
