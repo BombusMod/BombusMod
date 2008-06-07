@@ -366,7 +366,7 @@ public abstract class VirtualList
         
         Graphics g = graphics;      
 //#ifdef POPUPS
-        popup.init(g);
+        popup.init(g, width, height);
 //#endif
 
 //#ifndef WOFFSCREEN

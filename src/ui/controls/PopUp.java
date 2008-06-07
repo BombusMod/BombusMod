@@ -71,9 +71,9 @@ public class PopUp {
          ct=ColorTheme.getInstance();
     }
     
-    public void init(Graphics g) {
-        height=g.getClipHeight();
-        width=g.getClipWidth();
+    public void init(Graphics g, int width, int height) {
+        this.height=height;
+        this.width=width;
     }
     
     public Contact getContact() {

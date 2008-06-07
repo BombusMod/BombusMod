@@ -631,7 +631,7 @@ public class Contact extends IconTextElement{
         int firstHeight=getFont().getHeight();
         itemVHeight=(ilHeight>firstHeight)?ilHeight:firstHeight;
         if (getSecondString()!=null)
-            itemVHeight+=secondFont.getHeight();
+            itemVHeight+=secondFont.getHeight()-3;
         
         return itemVHeight;
     }
@@ -669,19 +669,16 @@ public class Contact extends IconTextElement{
             il.drawImage(g, getSecImageIndex(), w,imgH);
         }
 
-        int y=0;
         int thisOfs=0;
         
         g.setClip(offset, yo, w-offset, h);
 
         thisOfs=(getFirstLength()>w)?-ofs+offset:offset;
         g.setFont(getFont());
-        g.drawString(getFirstString(), thisOfs, y, Graphics.TOP|Graphics.LEFT);
-        
+        g.drawString(getFirstString(), thisOfs, 0, Graphics.TOP|Graphics.LEFT);
 
-        y=getFont().getHeight();
-        
         if (getSecondString()!=null) {
+            int y=getFont().getHeight()-3;
             thisOfs=(getSecondLength()>w)?-ofs+offset:offset;
             g.setFont(secondFont);
             g.setColor(ct.getColor(ColorTheme.SECOND_LINE));
