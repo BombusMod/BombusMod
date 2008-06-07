@@ -110,7 +110,10 @@ public class AccountForm
         nickbox = new TextInput(display, SR.MS_NICKNAME, account.getNick(), null, TextField.ANY);//64, TextField.ANY
         itemsList.addElement(nickbox);
         
-        registerbox = new CheckBox(SR.MS_REGISTER_ACCOUNT, false); itemsList.addElement(registerbox);
+        registerbox = new CheckBox(SR.MS_REGISTER_ACCOUNT, false); 
+        
+        if (newaccount)
+            itemsList.addElement(registerbox);
         
         linkShowExtended = new LinkString(SR.MS_EXTENDED_SETTINGS) { public void doAction() { showExtended(); } };
         itemsList.addElement(linkShowExtended);
@@ -122,6 +125,9 @@ public class AccountForm
     public void showExtended() {
         showExtended=true;
         itemsList.removeElement(linkShowExtended);
+        
+        if (!newaccount)
+            itemsList.addElement(registerbox);
         
 	ipbox = new TextInput(display, SR.MS_HOST_IP, account.getHostAddr(), null, TextField.ANY);//, 64, TextField.ANY
         portbox = new NumberInput(display, SR.MS_PORT, Integer.toString(account.getPort()), 0, 65535);//, 0, 65535
@@ -197,8 +203,14 @@ public class AccountForm
         account.setServer(server);
         account.setPassword(pass);
         account.setNick(nickbox.getValue());
-       
+        
+        boolean registerNew = false;
+        
+        if (newaccount)
+            registerNew=registerbox.getValue();
+
         if (showExtended) {
+            registerNew=registerbox.getValue();
             account.setPort(Integer.parseInt(portbox.getValue()));
             account.setHostAddr(ipbox.getValue());
             account.setResource(resourcebox.getValue());
@@ -222,7 +234,7 @@ public class AccountForm
         accountSelect.rmsUpdate();
         accountSelect.commandState();
 
-        if (registerbox.getValue())
+        if (registerNew)
             new AccountRegister(account, display, parentView); 
         else {
             destroyView();
