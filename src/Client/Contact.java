@@ -168,6 +168,8 @@ public class Contact extends IconTextElement{
     private Font secondFont=FontCache.getBalloonFont();
     private int secondFontHeight;
     
+    private int fontHeight;
+    
     //int itemHeight;
     int ilHeight;
 
@@ -178,8 +180,10 @@ public class Contact extends IconTextElement{
         msgs=new Vector();
         key1="";
         
+        
         ilHeight=il.getHeight();
         secondFontHeight=secondFont.getHeight();
+        fontHeight=getFont().getHeight();
     }
     
     public int firstUnread(){
@@ -504,7 +508,7 @@ public class Contact extends IconTextElement{
 //#endif
     
     public int getVWidth(){
-        String str=(getFirstLength()>getSecondLength())?getFirstString():getSecondString();
+        String str=(!cf.rosterStatus)?getFirstString():(getFirstLength()>getSecondLength())?getFirstString():getSecondString();
         int wft=getFont().stringWidth(str);
         
         return wft+il.getWidth()+4;
@@ -627,11 +631,9 @@ public class Contact extends IconTextElement{
 //#endif
     
     public int getVHeight(){ 
-        int itemVHeight;
-        int firstHeight=getFont().getHeight();
-        itemVHeight=(ilHeight>firstHeight)?ilHeight:firstHeight;
+        int itemVHeight=(ilHeight>fontHeight)?ilHeight:fontHeight;
         if (getSecondString()!=null)
-            itemVHeight+=secondFont.getHeight()-3;
+            itemVHeight+=secondFontHeight-3;
         
         return itemVHeight;
     }
