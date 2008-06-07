@@ -74,6 +74,14 @@ public class Group extends IconTextElement {
         int xo=g.getClipX();
         int yo=g.getClipY();
         
+        if (!sel) {
+            int oldColor=g.getColor();
+            g.setColor(ColorTheme.getInstance().getColor(ColorTheme.LIST_BGND_EVEN));
+            g.fillRect(0, 0, w, h);
+        
+            g.setColor(oldColor);
+        }
+        
         if (collapsed && unreadMessages>0) {
             w-=il.getWidth();
             il.drawImage(g, RosterIcons.ICON_MESSAGE_INDEX, w,0);
@@ -121,6 +129,7 @@ public class Group extends IconTextElement {
 	if ( online || Config.getInstance().showOfflineContacts || c.getNewMsgsCount()>0 || type==Groups.TYPE_NOT_IN_LIST || type==Groups.TYPE_TRANSP || type==Groups.TYPE_VISIBLE || c.origin==Contact.ORIGIN_GROUPCHAT )
             contacts.addElement(c);
     }
+    
     void finishCount() {
 	//contacts=tcontacts;
         onlines=tonlines;

@@ -195,8 +195,6 @@ public class SmilePicker extends VirtualList implements CommandListener, Virtual
     }
     
     public void userKeyPressed(int keyCode) {
-        super.userKeyPressed(keyCode);
-        
         switch (keyCode) {
             case KEY_NUM3 :
                 super.pageLeft(); keyDwn(); break;
@@ -207,6 +205,7 @@ public class SmilePicker extends VirtualList implements CommandListener, Virtual
             case KEY_NUM6:
                 pageRight(); break;
         }
+        super.userKeyPressed(keyCode);
     }
 
     public boolean isSelectable() { return true; }

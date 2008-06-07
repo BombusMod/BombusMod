@@ -81,7 +81,7 @@ public class CheckBox
         g.setColor(oldColor);
 
         g.translate(height,0);
-        g.setClip(0, 0, width-height-2, height);
+        //g.setClip(0, 0, width-height-2, height);
         super.drawItem(g, ofs, sel);
         g.translate(-height,0);
     }    

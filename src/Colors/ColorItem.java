@@ -66,7 +66,6 @@ public class ColorItem
         g.setColor(oldColor);
 
         g.translate(height,0);
-        g.setClip(0, 0, width-height-2, height);
         super.drawItem(g, ofs, sel);
         g.translate(-height,0);
         
