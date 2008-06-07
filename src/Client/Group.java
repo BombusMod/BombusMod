@@ -73,7 +73,7 @@ public class Group extends IconTextElement {
         int h=g.getClipHeight();
         int xo=g.getClipX();
         int yo=g.getClipY();
-        
+/*
         if (!sel) {
             int oldColor=g.getColor();
             g.setColor(ColorTheme.getInstance().getColor(ColorTheme.LIST_BGND_EVEN));
@@ -81,7 +81,7 @@ public class Group extends IconTextElement {
         
             g.setColor(oldColor);
         }
-        
+*/
         if (collapsed && unreadMessages>0) {
             w-=il.getWidth();
             il.drawImage(g, RosterIcons.ICON_MESSAGE_INDEX, w,0);

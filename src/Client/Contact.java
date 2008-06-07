@@ -62,24 +62,6 @@ public class Contact extends IconTextElement{
     
     private ColorTheme ct;
     
-    public int getColor() {
-//#if USE_ROTATOR        
-    if (isnew>0){
-        isnew--;
-        return (isnew%2==0)?0xFF0000:0x0000FF;
-    }
-//#endif
-        if (j2j!=null)
-            return ct.getColor(ColorTheme.CONTACT_J2J);
-        
-        switch (status) {
-            case Presence.PRESENCE_CHAT: return ct.getColor(ColorTheme.CONTACT_CHAT);
-            case Presence.PRESENCE_AWAY: return ct.getColor(ColorTheme.CONTACT_AWAY);
-            case Presence.PRESENCE_XA: return ct.getColor(ColorTheme.CONTACT_XA);
-            case Presence.PRESENCE_DND: return ct.getColor(ColorTheme.CONTACT_DND);
-        }
-        return ct.getColor(ColorTheme.CONTACT_DEFAULT);
-    }
 //#ifdef PEP    
 //#     public int pepMood=-1;
 //#     public String pepMoodName=null;
@@ -229,6 +211,25 @@ public class Contact extends IconTextElement{
 //#endif
         clone.bareJid=bareJid;
         return clone;
+    }
+    
+    public int getColor() {
+//#if USE_ROTATOR        
+    if (isnew>0){
+        isnew--;
+        return (isnew%2==0)?0xFF0000:0x0000FF;
+    }
+//#endif
+        if (j2j!=null)
+            return ct.getColor(ColorTheme.CONTACT_J2J);
+        
+        switch (status) {
+            case Presence.PRESENCE_CHAT: return ct.getColor(ColorTheme.CONTACT_CHAT);
+            case Presence.PRESENCE_AWAY: return ct.getColor(ColorTheme.CONTACT_AWAY);
+            case Presence.PRESENCE_XA: return ct.getColor(ColorTheme.CONTACT_XA);
+            case Presence.PRESENCE_DND: return ct.getColor(ColorTheme.CONTACT_DND);
+        }
+        return ct.getColor(ColorTheme.CONTACT_DEFAULT);
     }
 
     public int getNewMsgsCount() {

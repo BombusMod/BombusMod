@@ -1281,13 +1281,16 @@ public class Roster
                         if (subj!=null) {
                             if (body==null)
                                 body=name+" "+SR.MS_HAS_SET_TOPIC_TO+": "+subj;
-                            
-                            if (cf.rosterStatus)
+
+                            if (!subj.equals(getContact(from, true).statusString)) {
                                 getContact(from, true).statusString=subj; // adding secondLine to conference
-                            
+                                highlite=true;
+                            } else {
+                                return JabberBlockListener.BLOCK_PROCESSED;
+                            }
+
                             subj=null;
                             start_me=-1;
-                            highlite=true;
                             mType=Msg.MESSAGE_TYPE_SUBJ;
                         }
                     } else if (type.equals("error")) {
