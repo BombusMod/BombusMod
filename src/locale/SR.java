@@ -294,8 +294,8 @@ public class SR {
 //#     public static String MS_MSG_SUBJ=loadString("message subject");
 //#     public static String MS_MSG_HIGHLIGHT=loadString("message highlight");
 //#     public static String MS_DISCO_CMD=loadString("service discovery commands");
-//#     public static String MS_BAR_BGND=loadString("Header & Bottom background");
-//#     public static String MS_BAR_INK=loadString("Header font");
+//#     public static String MS_BAR_BGND=loadString("panels background");
+//#     public static String MS_BAR_INK=loadString("header font");
 //#     public static String MS_CONTACT_DEFAULT=loadString("contact default");
 //#     public static String MS_CONTACT_CHAT=loadString("contact chat");
 //#     public static String MS_CONTACT_AWAY=loadString("contact away");
@@ -319,13 +319,14 @@ public class SR {
 //#     public static String MS_SCROLL_BRD=loadString("Scroll border");
 //#     public static String MS_SCROLL_BAR=loadString("Scroll bar");
 //#     public static String MS_SCROLL_BGND=loadString("Scroll back");    
-//#     public static String MS_MESSAGE_IN_S=loadString("S message incoming"); 
-//#     public static String MS_MESSAGE_OUT_S=loadString("S message outgoing"); 
-//#     public static String MS_MESSAGE_PRESENCE_S=loadString("S message presence");
-//#     public static String MS_POPUP_MESSAGE=loadString("Popup message");
-//#     public static String MS_POPUP_MESSAGE_BGND=loadString("Popup message background");
-//#     public static String MS_POPUP_SYSTEM=loadString("Popup system");
+//#     public static String MS_MESSAGE_IN_S=loadString("other message incoming"); 
+//#     public static String MS_MESSAGE_OUT_S=loadString("other message outgoing"); 
+//#     public static String MS_MESSAGE_PRESENCE_S=loadString("other message presence");
+//#     public static String MS_POPUP_MESSAGE=loadString("Popup font");
+//#     public static String MS_POPUP_MESSAGE_BGND=loadString("Popup background");
+//#     public static String MS_POPUP_SYSTEM=loadString("Popup system font");
 //#     public static String MS_POPUP_SYSTEM_BGND=loadString("Popup system background");
+//#     public static String MS_CONTACT_STATUS=loadString("Contact status font");
 //#endif
     public static String MS_COLOR_TUNE=loadString("Color tune");
     public static String MS_LOAD_SKIN=loadString("Load Scheme");
@@ -637,6 +638,10 @@ public class SR {
     public static String MS_VIBRATE_ONLY_HIGHLITED=loadString("vibrate only highlited");
 
     public static String MS_EXTENDED_SETTINGS=loadString("Extended settings");
+
+    public static String MS_SAVE_TO_FILE=loadString("Save to file");
+
+    public static String MS_LOAD_FROM_FILE=loadString("Load from file");
     
     private SR() { }
     

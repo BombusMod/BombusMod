@@ -29,6 +29,7 @@ package IE;
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
 import javax.microedition.lcdui.Display;
+import locale.SR;
 import ui.Menu;
 import ui.MenuItem;
 
@@ -44,12 +45,12 @@ public class IEMenu
     
     public IEMenu(Display display) {
         super("Import/Export", null);
-        addItem("Config restore", 0);
-        addItem("Config backup", 1);
-        addItem("Archive restore", 2);
-        addItem("Archive backup", 3);
-        addItem("Templates restore", 4);
-        addItem("Templates backup", 5);
+        addItem(SR.MS_OPTIONS+": "+SR.MS_LOAD_FROM_FILE, 0);
+        addItem(SR.MS_OPTIONS+": "+SR.MS_SAVE_TO_FILE, 1);
+        addItem(SR.MS_ARCHIVE+": "+SR.MS_LOAD_FROM_FILE, 2);
+        addItem(SR.MS_ARCHIVE+": "+SR.MS_SAVE_TO_FILE, 3);
+        addItem(SR.MS_TEMPLATE+": "+SR.MS_LOAD_FROM_FILE, 4);
+        addItem(SR.MS_TEMPLATE+": "+SR.MS_SAVE_TO_FILE, 5);
         /*
         addItem("Accounts load", 2);
         addItem("Accounts save", 3);

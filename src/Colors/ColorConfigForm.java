@@ -103,9 +103,9 @@ public class ColorConfigForm
         } catch (Exception e) {}
         
 //#if FILE_IO
-        loadFromFile=new LinkString(SR.MS_LOAD_SKIN+" FS") { public void doAction() { initBrowser(1); } };
+        loadFromFile=new LinkString(SR.MS_LOAD_FROM_FILE) { public void doAction() { initBrowser(1); } };
         itemsList.addElement(loadFromFile);
-        saveToFile=new LinkString(SR.MS_SAVE+" FS") { public void doAction() { initBrowser(0); } };
+        saveToFile=new LinkString(SR.MS_SAVE_TO_FILE) { public void doAction() { initBrowser(0); } };
         itemsList.addElement(saveToFile);
         itemsList.addElement(new SpacerItem(10));
 //#endif

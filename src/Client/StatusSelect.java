@@ -35,6 +35,7 @@ import ui.controls.form.BoldString;
 import ui.controls.form.CheckBox;
 import ui.controls.form.DefForm;
 import ui.controls.form.NumberInput;
+import ui.controls.form.SimpleString;
 import ui.controls.form.TextInput;
 
 /**
@@ -154,12 +155,15 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
             itemsList.addElement(tfPriority);
 
             if (status.getImageIndex()<5) {
+                autoRespond = new CheckBox(SR.MS_SET, status.getAutoRespond()); itemsList.addElement(autoRespond);
+                
                 tfAutoRespondMessage=new TextInput(display, SR.MS_AUTORESPOND, status.getAutoRespondMessage(), "autorespond", TextField.ANY);//, 100, 0
                 itemsList.addElement(tfAutoRespondMessage);
-
-                autoRespond = new CheckBox(SR.MS_SET, status.getAutoRespond()); itemsList.addElement(autoRespond);
             }
-
+            
+            itemsList.addElement(new SimpleString("%t - time"));
+            itemsList.addElement(new SimpleString("%dt - date time"));
+            
             moveCursorTo(getNextSelectableRef(-1));
             attachDisplay(display);
         }

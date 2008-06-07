@@ -262,9 +262,6 @@ type = \"-=Siemens=-\";
     public boolean notifyPicture=false;
     public boolean useBoldFont=false;
     public boolean notifyWhenMessageType = false;
-//#ifdef IRC_LIKE
-//#     public boolean ircLikeStatus = false;
-//#endif
 //#ifdef CLIPBOARD
 //#     public boolean useClipBoard = true;
 //#endif
@@ -464,11 +461,7 @@ type = \"-=Siemens=-\";
             autoSubscribe=inputStream.readInt();
             useBoldFont=inputStream.readBoolean();
             notifyWhenMessageType = inputStream.readBoolean();
-//#ifdef IRC_LIKE
-//#             ircLikeStatus = inputStream.readBoolean();
-//#else
-            inputStream.readBoolean();
-//#endif
+            inputStream.readBoolean(); //IRC_LIKE
 //#ifdef PEP
 //#             sndrcvmood = inputStream.readBoolean();
 //#else
@@ -654,11 +647,7 @@ type = \"-=Siemens=-\";
             outputStream.writeInt(autoSubscribe);
             outputStream.writeBoolean(useBoldFont);
             outputStream.writeBoolean(notifyWhenMessageType);
-//#ifdef IRC_LIKE
-//#             outputStream.writeBoolean(ircLikeStatus);
-//#else
-            outputStream.writeBoolean(false);
-//#endif
+            outputStream.writeBoolean(false); //IRC_LIKE
 //#ifdef PEP
 //#             outputStream.writeBoolean(sndrcvmood);
 //#else

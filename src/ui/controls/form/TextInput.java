@@ -29,6 +29,9 @@ package ui.controls.form;
 
 import Colors.ColorTheme;
 import Fonts.FontCache;
+import io.NvStorage;
+import java.io.DataInputStream;
+import java.io.EOFException;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
@@ -68,7 +71,6 @@ public class TextInput
     public TextInput(Display display, String caption, String text, String id, int boxType) {
         super(null);
         this.display=display;
-        this.text=(text==null)?"":text;
         this.caption=(caption==null)?"":caption;
         this.id=id;
         this.boxType=boxType;
@@ -82,7 +84,19 @@ public class TextInput
             captionFontHeight=captionFont.getHeight();
             itemHeight+=captionFontHeight;
         }
-    
+        if (text==null && id!=null) {
+            String tempText="";
+            try {
+                DataInputStream is=NvStorage.ReadFileRecord(id, 0);
+                try { 
+                    tempText=is.readUTF();
+                } catch (EOFException e) { is.close(); }
+            } catch (Exception e) {/* no history available */}
+            this.text=(tempText==null)?"":tempText;
+        } else {
+            this.text=(text==null)?"":text;
+        }
+
         ct=ColorTheme.getInstance();
     }
     
@@ -104,7 +118,7 @@ public class TextInput
     
     public String getValue() { return (text==null)?"":text; }
 
-    public void setValue(String text) { this.text=text; }
+    public void setValue(String text) { this.text=(text==null)?"":text; }
     
     public int getVHeight(){
         return itemHeight;

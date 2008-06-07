@@ -103,11 +103,7 @@ public class ColorsList
     
     public void eventOk() {
 //#ifdef COLOR_TUNE
-//#         try {
-//#             if (!NAMES[cursor].startsWith("(n/a)")) {
-//#                 new ColorSelector(display, cursor);
-//#             }
-//#         } catch(Exception err) {}
+//#         new ColorSelector(display, cursor);
 //#endif
     }
 
@@ -170,7 +166,7 @@ public class ColorsList
 //#             SR.MS_POPUP_SYSTEM,
 //#             SR.MS_POPUP_SYSTEM_BGND,
 //#             
-//#             SR.MS_SHOW_STATUSES
+//#             SR.MS_CONTACT_STATUS
 //#         };
 //#endif
 }

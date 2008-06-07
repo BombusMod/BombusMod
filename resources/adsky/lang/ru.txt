@@ -306,25 +306,29 @@ messagelist & roster & common font	Общий шрифт
 message subject	Тема сообщения
 message highlight	Подсвеченное сообещение
 service discovery commands	Команды диско
-Header & Bottom background	Цвет верхней и нижней панели
-Header font	Цвет шрифта верхней панели
-contact default	Обычный контакт
-contact chat	Чат контакт
-contact away	Отсутствую контакт
-contact extended away	Расширенное отсутствие контакт
-contact do not disturb	Не беспокоить контакт
-group color	Цвет групп
-keylock font	Шрифт при блоке
-keylock background	Фон в блоке
+panels background	Цвет панелей
+header font	Шрифт панелей
+contact default	Шрифт контакта
+contact chat	Контакт "Хочу пообщаться"
+contact away	Контакт "Отсутствую"
+contact extended away	Контакта "Давно отсутствую"
+contact do not disturb	Контакт "Не беспокоить"
+group color	Шрифт групп
+keylock font	Шрифт при блоке кнопок
+keylock background	Фон при блоке кнопок
 message incoming	Входящее сообщение
 message outgoing	Исходящее сообщение
 message presence	Статусное сообщение
+other message incoming	Выделенное входящее сообщение
+other message outgoing	Выделенное исходящее сообщение
+other message presence	Выделенное статусное сообщение
 message auth	Сообщение авторизации
-message history	История сообщений в конференции
+message history	Шрифт истории сообщений
 progress bar remained	Осталось прогресса
 progress bar complete	Сделано прогресса
 progress border	Ободок прогресса
 progress bar background	Фон прогресса
+progress bar font	Шрифт прогресса
 Heap mon total	Всего кучи
 Heap mon free	Свободно кучи
 Cursor background	Фон курсора
@@ -332,6 +336,11 @@ Cursor ink & outline	Цвет шрифта курсора и ободка
 Scroll border	Цвет ободка скролла
 Scroll bar	Цвет бегунка скролла
 Scroll back	Цвет фона скролла
+Popup font	Шрифт всплывающего окошка
+Popup background	Фон всплывающего окошка
+Popup system font	Шрифт системного окошка
+Popup system background	Фон системного окошка
+Contact status font	Шрифт статуса контакта
 
 Send status	Отправить статус
 Sounds options	Настройки звуков
@@ -576,8 +585,6 @@ Browse rooms	Обзор комнат
 Autorespond	Автоответчик
 
 Invert colors	Инверсия цвета
-Please create account or enter account(s) settings.\n\nMenu, New Account	Пожалуйста создайте новый аккаунт или введи настройки существующего\n\nМеню, Новый аккаунт
-Please enter settings.\n\nMenu, Tools, Options	Пожалуйста введите настройки\n\nМеню, Инструменты, Настройки
 
 Clipboard	Буфер обмена
 User tune	Музыка
@@ -591,3 +598,12 @@ Second line	Дополнительная строка
 
 Load history	Подгружать историю
 Connect to	Подключиться к
+
+Send my color scheme	Отправить мою цветовую схему
+Unread messages	Непрочитанные сообщения
+vibrate only highlited	Вибрировать только при обращении ко мне
+
+Extended settings	Расширенные настройки
+
+Save to file	Сохранить в файл
+Load from file	Загрузить из файла

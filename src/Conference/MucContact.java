@@ -209,7 +209,7 @@ public class MucContact extends Contact {
                         appendL(b, realJid);
                     }
 
-                    if (reason.indexOf("talks") > -1) toTalks();
+                    //if (reason.indexOf("talks") > -1) toTalks();
                     
                     testMeOffline();
                     break;
@@ -276,7 +276,7 @@ public class MucContact extends Contact {
                 if (!roleChanged && !affiliationChanged)
                     b.append(presence.getPresenceTxt());
             }
-//toon
+
         }
         
         setStatus(presenceType);
@@ -341,7 +341,7 @@ public class MucContact extends Contact {
         
         return (tip.length()==0)? null:tip.toString();
     }
-    
+/*
     void toTalks(){
         ConferenceGroup group=(ConferenceGroup)getGroup();
         if ( group.getSelfContact() == this ) {
@@ -349,7 +349,7 @@ public class MucContact extends Contact {
             sd.roster.confJoin("bombus-talks@conference.jabber.ru/"+sd.account.getNickName());
         }
     }  
-    
+*/
     void testMeOffline(){
          ConferenceGroup group=(ConferenceGroup)getGroup();
          if ( group.getSelfContact() == this ) 

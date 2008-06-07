@@ -87,7 +87,7 @@ public class TransferAcceptFile
         
         fileName=new TextInput(display, SR.MS_FILE, name, "", TextField.ANY);
         itemsList.addElement(fileName);
-        itemsList.addElement(new BoldString(SR.MS_FILE_SIZE+": "+String.valueOf(t.fileSize)));
+        itemsList.addElement(new BoldString(SR.MS_FILE_SIZE+String.valueOf(t.fileSize)));
 
         path=new TextInput(display, SR.MS_SAVE_TO, t.filePath, "recvPath", TextField.ANY);
         itemsList.addElement(path);

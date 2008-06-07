@@ -111,9 +111,6 @@ public class ConfigForm
     private CheckBox newMenu;
 //#endif
     private CheckBox lightState;
-//#ifdef IRC_LIKE
-//#    private CheckBox ircLikeStatus;
-//#endif
     private CheckBox popupFromMinimized;
 
     private NumberInput fieldGmt; 
@@ -226,9 +223,6 @@ public class ConfigForm
         newMenu = new CheckBox(SR.MS_NEW_MENU, cf.newMenu); itemsList.addElement(newMenu);
 //#endif
         lightState = new CheckBox(SR.MS_FLASHLIGHT, cf.lightState); itemsList.addElement(lightState);
-//#ifdef IRC_LIKE
-//#         ircLikeStatus = new CheckBox(SR.MS_IRCLIKESTATUS, cf.ircLikeStatus); itemsList.addElement(ircLikeStatus);
-//#endif
         if (cf.allowMinimize) {
             popupFromMinimized = new CheckBox(SR.MS_ENABLE_POPUP, cf.popupFromMinimized);
             itemsList.addElement(popupFromMinimized);
@@ -353,9 +347,6 @@ public class ConfigForm
         cf.newMenu=newMenu.getValue();
 //#endif
         cf.lightState=lightState.getValue();
-//#ifdef IRC_LIKE
-//#             cf.ircLikeStatus=ircLikeStatus.getValue();
-//#endif
         if (cf.allowMinimize)
             cf.popupFromMinimized=popupFromMinimized.getValue();
 

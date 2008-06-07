@@ -878,29 +878,6 @@ public class Roster
                 ConferenceForm.join(confGroup.desc, myself.getJid(), confGroup.password, 20);
                 continue;
             }
-//#ifdef IRC_LIKE
-//#             boolean ircLike=cf.ircLikeStatus;
-//#             if (ircLike) {
-//#                 if (myself.origNick==null)
-//#                     myself.origNick=myself.nick;
-//# 
-//#                 String addStatus = "";
-//#                 switch (myStatus.getImageIndex()) {
-//#                     case Presence.PRESENCE_CHAT:
-//#                         addStatus="|chat"; break;
-//#                     case Presence.PRESENCE_AWAY:
-//#                         addStatus="|away"; break;
-//#                     case Presence.PRESENCE_XA:
-//#                         addStatus="|x.away"; break;
-//#                     case Presence.PRESENCE_DND:
-//#                         addStatus="|busy"; break;
-//#                 }
-//#                 if(myself.addStatus!=addStatus) {
-//#                     myself.addStatus=addStatus;
-//#                     myself.nick=(addStatus==null)?myself.origNick:myself.origNick+addStatus;
-//#                 }
-//#             }
-//#endif
             Presence presence = new Presence(mcstatus, es.getPriority(), StringUtils.toExtendedString((message==null)?es.getMessage():message), null);
             presence.setTo(myself.bareJid.substring(0, myself.bareJid.indexOf("/")+1)+myself.nick);
             theStream.send(presence);

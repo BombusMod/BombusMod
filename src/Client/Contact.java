@@ -55,8 +55,8 @@ import com.alsutton.jabber.datablocks.Presence;
 public class Contact extends IconTextElement{
 
 //#if USE_ROTATOR
-    private int isnew=0;    
-
+    private int isnew=0;
+    
     public void setNewContact() { this.isnew = 10; }
 //#endif
     
@@ -71,6 +71,7 @@ public class Contact extends IconTextElement{
 //#     public String pepTuneText=null;
 //#endif
 //#endif
+    
     public final static short ORIGIN_ROSTER=0;
     public final static short ORIGIN_ROSTERRES=1;
     public final static short ORIGIN_CLONE=2;
@@ -80,11 +81,9 @@ public class Contact extends IconTextElement{
     public final static short ORIGIN_GC_MEMBER=5;
     public final static short ORIGIN_GC_MYSELF=6;
 //#endif
+    
     public String nick;
-//#ifdef IRC_LIKE
-//#     public String addStatus;
-//#     public String origNick;
-//#endif
+
     public Jid jid;
     public String bareJid;    // for roster/subscription manipulating
     public int status;
@@ -103,12 +102,12 @@ public class Contact extends IconTextElement{
     public boolean showComposing=false;
     
     public short deliveryType;
-    
-    public short incomingState=0;
-    
+
     public final static short INC_NONE=0;
     public final static short INC_APPEARING=1;
     public final static short INC_VIEWING=2;
+    
+    public short incomingState=INC_NONE;
     
     public String msgSuspended;
     
@@ -128,7 +127,8 @@ public class Contact extends IconTextElement{
 //#     public Vector tempMsgs=new Vector();
 //#endif
     
-    private int newMsgCnt=-1;
+    private int newMsgCnt=0;
+    private int newHighLitedMsgCnt=0;
     public int unreadType;
     public int lastUnread;
     
@@ -151,8 +151,7 @@ public class Contact extends IconTextElement{
     private int secondFontHeight;
     
     private int fontHeight;
-    
-    //int itemHeight;
+
     int ilHeight;
 
     protected Contact (){
@@ -161,8 +160,7 @@ public class Contact extends IconTextElement{
         ct=ColorTheme.getInstance();
         msgs=new Vector();
         key1="";
-        
-        
+
         ilHeight=il.getHeight();
         secondFontHeight=secondFont.getHeight();
         fontHeight=getFont().getHeight();
@@ -171,7 +169,8 @@ public class Contact extends IconTextElement{
     public int firstUnread(){
         int unreadIndex=0;
         for (Enumeration e=msgs.elements(); e.hasMoreElements();) {
-            if (((Msg)e.nextElement()).unread) break;
+            if (((Msg)e.nextElement()).unread)
+                break;
             unreadIndex++;
         }
         return unreadIndex;
@@ -215,10 +214,10 @@ public class Contact extends IconTextElement{
     
     public int getColor() {
 //#if USE_ROTATOR        
-    if (isnew>0){
-        isnew--;
-        return (isnew%2==0)?0xFF0000:0x0000FF;
-    }
+        if (isnew>0){
+            isnew--;
+            return (isnew%2==0)?0xFF0000:0x0000FF;
+        }
 //#endif
         if (j2j!=null)
             return ct.getColor(ColorTheme.CONTACT_J2J);
@@ -233,40 +232,41 @@ public class Contact extends IconTextElement{
     }
 
     public int getNewMsgsCount() {
-        if (getGroupType()==Groups.TYPE_IGNORE) return 0;
-        if (newMsgCnt>-1) return newMsgCnt;
+        if (newMsgCnt>0) return newMsgCnt;
         int nm=0;
-        unreadType=Msg.MESSAGE_TYPE_IN;
-        for (Enumeration e=msgs.elements(); e.hasMoreElements(); ) {
-            Msg m=(Msg)e.nextElement();
-            if (m.unread) { 
-                nm++;
-                if (m.messageType==Msg.MESSAGE_TYPE_AUTH) 
-                    unreadType=m.messageType;
+        if (getGroupType()!=Groups.TYPE_IGNORE) {
+            unreadType=Msg.MESSAGE_TYPE_IN;
+            for (Enumeration e=msgs.elements(); e.hasMoreElements(); ) {
+                Msg m=(Msg)e.nextElement();
+                if (m.unread) {
+                    nm++;
+                    if (m.messageType==Msg.MESSAGE_TYPE_AUTH) 
+                        unreadType=m.messageType;
+                }
             }
         }
         return newMsgCnt=nm;
     }
     
     public int getNewHighliteMsgsCount() {
-        if (getGroupType()==Groups.TYPE_IGNORE) return 0;
+        if (newHighLitedMsgCnt>0) return newHighLitedMsgCnt;
         int nm=0;
-        for (Enumeration e=msgs.elements(); e.hasMoreElements(); ) {
-            Msg m=(Msg)e.nextElement();
-            if (m.unread && m.isHighlited()) { 
-                nm++;
+        if (getGroupType()!=Groups.TYPE_IGNORE) {
+            for (Enumeration e=msgs.elements(); e.hasMoreElements(); ) {
+                Msg m=(Msg)e.nextElement();
+                if (m.unread && m.isHighlited()) { 
+                    nm++;
+                }
             }
         }
-        return nm;
+        return newHighLitedMsgCnt=nm;
     }
 
     public boolean active(){
-        if (activeMessage>-1)
-            return true;
-        return false;
+        return (activeMessage>-1);
     }
     
-    public void resetNewMsgCnt() { newMsgCnt=-1;}
+    public void resetNewMsgCnt() { newMsgCnt=0; newHighLitedMsgCnt=0; }
   
     public void setIncoming (int state) {
         short i=0;
@@ -293,31 +293,31 @@ public class Contact extends IconTextElement{
     
     public void addMessage(Msg m) {
         boolean first_replace=false;
-        if (m.isPresence()) {
-            presence=m.getBody();
-            if (msgs.size()==1) 
-                if ( ((Msg)msgs.firstElement()).isPresence())
-                    if (origin!=ORIGIN_GROUPCHAT) 
-                       first_replace=true;
+        if (origin!=ORIGIN_GROUPCHAT) {
+            if (m.isPresence()) {
+                presence=m.getBody();
+                if (msgs.size()==1) 
+                    if (((Msg)msgs.firstElement()).isPresence())
+                        first_replace=true;
+            }
         }
 //#if AUTODELETE
 //#             else { redraw=deleteOldMessages(); }
 //#endif
 //#if HISTORY
-//# 
-//#        if (cf.msgPath!=null && group.type!=Groups.TYPE_TRANSP && group.type!=Groups.TYPE_SEARCH_RESULT) {
-//#             if (!m.isHistory()) {
+//#         if (!m.isHistory()) {
+//#             if (cf.msgPath!=null && group.type!=Groups.TYPE_TRANSP && group.type!=Groups.TYPE_SEARCH_RESULT) {
 //#                 boolean allowLog=false;
 //#                 switch (m.messageType) {
 //#                     case Msg.MESSAGE_TYPE_PRESENCE:
-//#                         if (origin>=ORIGIN_GROUPCHAT && cf.msgLogConfPresence){
-//#                             allowLog=true;
-//#                         } else  if (origin<ORIGIN_GROUPCHAT && cf.msgLogPresence) {
+//#                         if (origin>=ORIGIN_GROUPCHAT) {
+//#                             if (cf.msgLogConfPresence)
+//#                                 allowLog=true;
+//#                         } else  if (cf.msgLogPresence) {
 //#                             allowLog=true;
 //#                         }
 //#                         break;
 //#                     case Msg.MESSAGE_TYPE_HISTORY:
-//#                         allowLog=false;
 //#                         break;
 //#                     default:
 //#                         if (origin>=ORIGIN_GROUPCHAT && cf.msgLogConf) allowLog=true;
@@ -335,16 +335,17 @@ public class Contact extends IconTextElement{
 //#             }
 //#        }
 //#endif
+        if (first_replace) {
+            msgs.setElementAt(m,0);
+            return;
+        }
+
         if (cf.autoScroll)
             moveToLatest=true;
         
         if (m.messageType!=Msg.MESSAGE_TYPE_HISTORY && m.messageType!=Msg.MESSAGE_TYPE_PRESENCE)
             activeMessage=msgs.size()+1;
-                    
-        if (first_replace) {
-            msgs.setElementAt(m,0);
-            return;
-        } 
+
         msgs.addElement(m);
         
         if (m.unread) {
@@ -451,9 +452,7 @@ public class Contact extends IconTextElement{
         return null;
     }
 
-    public Group getGroup() { 
-        return group; 
-    }
+    public Group getGroup() { return group; }
     
     public int getGroupType() {  
         if (group==null) 
@@ -461,21 +460,13 @@ public class Contact extends IconTextElement{
         return group.type;
     }
     
-    public boolean inGroup(Group ingroup) {  
-        return group==ingroup;  
-    }
+    public boolean inGroup(Group ingroup) { return group==ingroup; }
 
-    public void setGroup(Group group) { 
-        this.group = group; 
-    }
+    public void setGroup(Group group) { this.group = group; }
     
-    public String getJ2J() {  
-        return j2j;  
-    }
+    public String getJ2J() { return j2j; }
 
-    public void setJ2J(String j2j) { 
-        this.j2j = j2j; 
-    }
+    public void setJ2J(String j2j) { this.j2j = j2j; }
 
     public void setStatus(int status) {
         setIncoming(0);
@@ -484,9 +475,7 @@ public class Contact extends IconTextElement{
             acceptComposing=false;
     }
 
-    public int getStatus() {
-        return status;
-    }
+    public int getStatus() { return status; }
     
     public void setComposing (boolean state) {
         showComposing=state;
@@ -520,9 +509,9 @@ public class Contact extends IconTextElement{
     }
 
     public int getSecondLength() {
-        if (statusString==null) return 0;
-        if (statusString=="") return 0;
-        return secondFont.stringWidth(statusString);
+        if (getSecondString()==null) return 0;
+        if (getSecondString()=="") return 0;
+        return secondFont.stringWidth(getSecondString());
     }
 
     public int getFirstLength() {
@@ -578,22 +567,14 @@ public class Contact extends IconTextElement{
         return -1;
     }
 //#if HISTORY
-//#     public boolean isHistoryLoaded () {
-//#         return loaded;
-//#     }
+//#     public boolean isHistoryLoaded () { return loaded; }
 //#     
-//#     public void setHistoryLoaded (boolean state) {
-//#         loaded=state;
-//#     }
+//#     public void setHistoryLoaded (boolean state) { loaded=state; }
 //#endif
     
-    public void setClientVersion (String ver) {
-        clientVersion=ver;
-    }
+    public void setClientVersion (String ver) { clientVersion=ver; }
     
-    public String getClientVersion () {
-        return clientVersion;
-    }
+    public String getClientVersion () { return clientVersion; }
     
 //#ifdef PEP
 //#ifdef PEP_TUNE

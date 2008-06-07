@@ -72,7 +72,6 @@ public class EditBox implements CommandListener {
         this.ti=ti;
 
         t=new TextBox(SR.MS_EDIT, text, 500, boxType);
-        t.setConstraints(boxType);
 //#ifdef CLIPBOARD
 //#         if (Config.getInstance().useClipBoard) {
 //#             clipboard=ClipBoard.getInstance();
@@ -91,7 +90,8 @@ public class EditBox implements CommandListener {
         }
         t.addCommand(cmdCancel);
         t.setCommandListener(this);
-        t.setConstraints(Config.getInstance().capsState?TextField.INITIAL_CAPS_SENTENCE:TextField.ANY);
+        if (Config.getInstance().capsState)
+            t.setConstraints(TextField.INITIAL_CAPS_SENTENCE);
         display.setCurrent(t);
     }
 
@@ -131,9 +131,7 @@ public class EditBox implements CommandListener {
 //#endif
         if (c==cmdOk) {
             ti.setValue(text);
-            if (ti.id!=null) {
-                if (text.length()==0) return;
-
+            if (ti.id!=null && text!=null) {
                 int i=0;
                 while (i<recentList.size()) {
                     if ( text.equals((String)recentList.elementAt(i)) || i>9 ) recentList.removeElementAt(i);
