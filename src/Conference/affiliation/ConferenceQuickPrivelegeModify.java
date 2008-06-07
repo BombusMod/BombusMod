@@ -105,7 +105,7 @@ public class ConferenceQuickPrivelegeModify
             user.append(victim.realJid);
             user.append(")");
         }
-        itemsList.addElement(new MultiLine(SR.MS_USER, user.toString()));
+        itemsList.addElement(new MultiLine(SR.MS_USER, user.toString(), super.superWidth));
 
         
         reason=new TextInput(display, SR.MS_REASON, "", "reason", TextField.ANY);

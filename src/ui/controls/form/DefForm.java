@@ -56,6 +56,7 @@ public class DefForm
     public Command cmdOk = new Command(SR.MS_OK, Command.SCREEN, 2);
     public Command cmdCancel = new Command(SR.MS_BACK, Command.BACK, 99);
     
+    public int superWidth;
     /**
      * Creates a new instance of DefForm
      */
@@ -64,8 +65,12 @@ public class DefForm
 	parentView=display.getCurrent();
         
 	setMainBarItem(new MainBar(caption));
+        
+        superWidth=super.getWidth();
+        
         if (Config.getInstance().phoneManufacturer==Config.NOKIA)
             addCommand(cmdSelect);
+        
 	addCommand(cmdOk);
 	addCommand(cmdCancel);
 	setCommandListener(this);

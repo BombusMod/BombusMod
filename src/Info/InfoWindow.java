@@ -66,8 +66,8 @@ public class InfoWindow
         super(display, SR.MS_ABOUT);
         this.display=display;
         parentView=display.getCurrent();
-        
-        description=new MultiLine(Version.getName(), Version.getVersionNumber()+"\nMobile Jabber client\n"+Config.getOs()+"\nCopyright (c) 2005-2008, Eugene Stahov (evgs), Daniel Apatin (ad)");
+
+        description=new MultiLine(Version.getName(), Version.getVersionNumber()+"\nMobile Jabber client\n"+Config.getOs()+"\nCopyright (c) 2005-2008, Eugene Stahov (evgs), Daniel Apatin (ad)", super.superWidth);
         description.selectable=true;
         itemsList.addElement(description);
         itemsList.addElement(new SpacerItem(0));
@@ -82,12 +82,12 @@ public class InfoWindow
         memInfo.append("\n");
         memInfo.append(SR.MS_TOTAL);
         memInfo.append(Runtime.getRuntime().totalMemory()>>10);
-        memory=new MultiLine(SR.MS_MEMORY, memInfo.toString());
+        memory=new MultiLine(SR.MS_MEMORY, memInfo.toString(), super.superWidth);
         memory.selectable=true;
         itemsList.addElement(memory);
         itemsList.addElement(new SpacerItem(0));
         
-        abilities=new MultiLine("Abilities", getAbilities());
+        abilities=new MultiLine("Abilities", getAbilities(), super.superWidth);
         abilities.selectable=true;
         itemsList.addElement(abilities);
         

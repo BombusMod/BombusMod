@@ -96,7 +96,7 @@ public class VCardView
                 String data=vcard.getVCardData(index);
                 String name=(String)VCard.vCardLabels.elementAt(index);
                 if (data!=null && name!=null) {
-                    MultiLine nData=new MultiLine(name, data);
+                    MultiLine nData=new MultiLine(name, data, super.superWidth);
                     nData.selectable=true;
                     itemsList.addElement(nData);
                 }
@@ -121,6 +121,9 @@ public class VCardView
         if (vcard.hasPhoto)
             addCommand(cmdDelPhoto);
         //moveCursorTo(getNextSelectableRef(-1));
+        
+        enableListWrapping(false);
+        
         attachDisplay(display);
     }
     

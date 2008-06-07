@@ -55,12 +55,14 @@ public class MultiLine extends IconTextElement {
     
     private boolean parsed;
     private int itemHeight=0;
+    
+    private int width;
 
 
     /**
      * Creates a new instance of MultiLine
      */
-    public MultiLine(String caption, String text) {
+    public MultiLine(String caption, String text, int availWidth) {
         super(null);
         this.text=text;
         this.caption=caption;
@@ -68,6 +70,8 @@ public class MultiLine extends IconTextElement {
         font=FontCache.getMsgFont();
         fontHeight=font.getHeight();
         itemHeight=fontHeight;
+        
+        width=availWidth;
         
         if (caption!=null) {
             captionFont=FontCache.getMsgFontBold();
@@ -88,13 +92,6 @@ public class MultiLine extends IconTextElement {
     }
     
     public int getVHeight(){
-        return itemHeight;
-    }
-    
-    public void drawItem(Graphics g, int ofs, boolean sel) {
-        int width=g.getClipWidth();
-        int height=g.getClipHeight();
-
         if (lines==null && width>0) {
             lines=StringUtils.parseMessage(text, width-10, font);
             itemHeight=(fontHeight*lines.size())+2;
@@ -102,8 +99,11 @@ public class MultiLine extends IconTextElement {
                 itemHeight+=2+captionFontHeight;
             parsed=true;
         }
-        if (!parsed)
-            return;
+        return itemHeight;
+    }
+    
+    public void drawItem(Graphics g, int ofs, boolean sel) {
+        if (!parsed) return;
         
         int y=0;
         if (caption!=null) {

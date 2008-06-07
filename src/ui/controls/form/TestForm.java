@@ -41,7 +41,7 @@ import ui.VirtualList;
  * @author ad
  */
 public class TestForm 
-        extends VirtualList {
+        extends DefForm {
     
     private Vector itemsList=new Vector();
     
@@ -49,9 +49,8 @@ public class TestForm
      * Creates a new instance of TestForm
      */
     public TestForm(final Display display) {
-        super();
-        //this.display=display;
-        setMainBarItem(new MainBar("test form"));
+        super(display, "test form");
+        this.display=display;
         
         DropChoiceBox testNewChoiceBox1=new DropChoiceBox(display);
         testNewChoiceBox1.append("by socket");
@@ -68,7 +67,7 @@ public class TestForm
         TextInput testInputCombo1=new TextInput(display, "remember box", "text", "test", TextField.ANY);
         itemsList.addElement(testInputCombo1);
         
-        MultiLine testMultiLine1=new MultiLine("test", "multi line text\nyo yo yo\n yep!");
+        MultiLine testMultiLine1=new MultiLine("test", "multi line text\nyo yo yo\n yep!", super.superWidth);
         itemsList.addElement(testMultiLine1);
         
         ImageItem testImageItem1=new ImageFileItem("/images/splash.png", "BM Splash");

@@ -92,9 +92,9 @@ public class TransferAcceptFile
         path=new TextInput(display, SR.MS_SAVE_TO, t.filePath, "recvPath", TextField.ANY);
         itemsList.addElement(path);
                 
-        itemsList.addElement(new MultiLine(SR.MS_SENDER, t.jid));
+        itemsList.addElement(new MultiLine(SR.MS_SENDER, t.jid, super.superWidth));
 
-        itemsList.addElement(new MultiLine(SR.MS_DESCRIPTION, t.description));
+        itemsList.addElement(new MultiLine(SR.MS_DESCRIPTION, t.description, super.superWidth));
         
         addCommand(cmdPath);
         addCommand(cmdDecline);
