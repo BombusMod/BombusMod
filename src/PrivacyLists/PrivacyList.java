@@ -57,8 +57,7 @@ public class PrivacyList extends IconTextElement{
         RosterIcons.ICON_PRIVACY_PASSIVE; }
     
     public String toString() {
-        StringBuffer result=new StringBuffer((name==null)? "<none>": name);
-        result.append(' ');
+        StringBuffer result=new StringBuffer((name==null)? "<none>": name).append(' ');
         if (isDefault) result.append("(default)");
         return result.toString();
     }

@@ -84,7 +84,10 @@ public class JabberDataBlockDispatcher extends Thread
   }
 
   public void addBlockListener(JabberBlockListener listener) {
-      synchronized (blockListeners) { blockListeners.addElement(listener); }
+      synchronized (blockListeners) { 
+          if (blockListeners.indexOf(listener) > 0) return;
+          blockListeners.addElement(listener); 
+      }
   }
   public void cancelBlockListener(JabberBlockListener listener) {
       synchronized (blockListeners) { 

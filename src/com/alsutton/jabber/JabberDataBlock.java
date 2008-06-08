@@ -26,6 +26,7 @@
 
 package com.alsutton.jabber;
 import java.util.*;
+import xml.XMLParser;
 
 /**
  * Title:        JabberDataBlock.java
@@ -191,16 +192,7 @@ public class JabberDataBlock
    */
 
   public String getAttribute( String attributeName ) {
-      if (attributes==null) return null;
-      int index=0;
-      while (index<attributes.size()) {
-          if ( ((String)attributes.elementAt(index)).equals(attributeName) )
-              return (String)attributes.elementAt(index+1);
-          
-          index+=2;
-      }
-      
-      return null;
+      return XMLParser.extractAttribute(attributeName, attributes);
    }
   
   public String getTypeAttribute(){
@@ -210,7 +202,7 @@ public class JabberDataBlock
   public boolean isJabberNameSpace(String xmlns){
       String xmlnsatr=getAttribute("xmlns");
       if (xmlnsatr==null) return false;
-      return xmlnsatr.startsWith(xmlns);
+      return xmlnsatr.equals(xmlns);
   } 
 
   public JabberDataBlock findNamespace(String tagName, String xmlns) {
@@ -351,8 +343,7 @@ public class JabberDataBlock
   }
 
   public void constructXML(StringBuffer data) {
-      data.append('<');
-      data.append( getTagName() );
+      data.append('<').append( getTagName() );
       if( attributes != null )
           addAttributeToStringBuffer( data );
       
@@ -376,9 +367,7 @@ public class JabberDataBlock
       }
       
       // end tag
-      data.append( "</" );
-      data.append( getTagName() );
-      data.append( '>' );
+      data.append( "</" ).append( getTagName() ).append( '>' );
   }
   
   /**
@@ -395,11 +384,8 @@ public class JabberDataBlock
           String nextValue = (String) attributes.elementAt(index+1);
           index+=2;
           
-          buffer.append( ' ' );
-          buffer.append( nextKey );
-          buffer.append( "=\"" );
+          buffer.append( ' ' ).append( nextKey ).append( "=\"" );
           appendXML(buffer, nextValue);
-          //buffer.append( nextValue );
           buffer.append( '\"' );
       }
    }

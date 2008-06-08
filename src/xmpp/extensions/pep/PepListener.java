@@ -60,13 +60,13 @@ public class PepListener implements JabberBlockListener{
 //#             else {
 //#                 String src=tune.getChildBlockText("source");
 //#                 
-//#                 result.append(tune.getChildBlockText("title"));
-//#                 result.append(" - ");
-//#                 result.append(tune.getChildBlockText("artist"));
+//#                 result.append(tune.getChildBlockText("title"))
+//#                 .append(" - ")
+//#                 .append(tune.getChildBlockText("artist"));
 //#                 if (src.length()>0) {
-//#                     result.append(" (");
-//#                     result.append(src);
-//#                     result.append(')');
+//#                     result.append(" (")
+//#                     .append(src)
+//#                     .append(')');
 //#                 }
 //#                 
 //#                 tuneValue=true;
@@ -101,11 +101,12 @@ public class PepListener implements JabberBlockListener{
             moodText=mood.getChildBlockText("text");
             if (moodText!=null){
                 if (moodText.length()>0) {
-                    result.append("(");
-                    result.append(moodText);
-                    result.append(")");
+                    result.append("(")
+                            .append(moodText)
+                            .append(")");
                 }
             }
+
 //#ifdef DEBUG
 //#             System.out.println(from+": "+result.toString());
 //#endif

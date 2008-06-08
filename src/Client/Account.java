@@ -125,12 +125,9 @@ public class Account extends IconTextElement{
         if (nick.length()!=0)
             s.append(nick);
         else {
-            s.append(userName);
-            s.append('@');
-            s.append(server);
+            s.append(userName).append('@').append(server);
         }
-        s.append('/');
-        s.append(resource);
+        s.append('/').append(resource);
         return s.toString();
     }
     
@@ -245,8 +242,7 @@ public class Account extends IconTextElement{
             } 
         }
 
-	StringBuffer url=new StringBuffer(host);
-        url.append(':').append(port);
+	StringBuffer url=new StringBuffer(host).append(':').append(port);
         if (!isEnableProxy()) {
 	    url.insert(0, (useSSL)?"ssl://":"socket://");
         } else {

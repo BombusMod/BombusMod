@@ -44,6 +44,9 @@ public class StaticData {
 //#ifdef AUTOTASK
 //#     public AutoTask autoTask;
 //#endif
+    
+    public int screenWidth;
+    
     /** Creates a new instance of StaticData */
     private StaticData() { }
     

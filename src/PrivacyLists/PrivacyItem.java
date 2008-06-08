@@ -129,11 +129,9 @@ public class PrivacyItem extends IconTextElement{
 	
     public String getTipString() {
         StringBuffer tip=new StringBuffer(actions[action]);
-        tip.append(" if ");
-        tip.append(types[type]);
+        tip.append(" if ").append(types[type]);
         if (type!=ITEM_ANY) {
-            tip.append('=');
-            tip.append(value);
+            tip.append('=').append(value);
         }
         tip.append(' ');
         

@@ -40,11 +40,12 @@ import com.alsutton.jabber.datablocks.*;
 import xml.*;
 import locale.SR;
 import xmpp.XmppError;
+import xmpp.XmppParser;
 
 import xmpp.extensions.IqPing;
 import xmpp.extensions.IqPing;
 
-public class JabberStream implements XMLEventListener, Runnable {
+public class JabberStream extends XmppParser implements Runnable {
     
     private Utf8IOStream iostream;
 
@@ -104,20 +105,57 @@ public class JabberStream implements XMLEventListener, Runnable {
     }
 
     public void initiateStream() throws IOException {
-        StringBuffer header=new StringBuffer("<stream:stream to='" );
-        header.append( server );
-        header.append( "' xmlns='jabber:client' xmlns:stream='http://etherx.jabber.org/streams'" );
+        StringBuffer header=new StringBuffer("<stream:stream to='" ).append( server ).append( "' xmlns='jabber:client' xmlns:stream='http://etherx.jabber.org/streams'" );
         if (xmppV1) header.append(" version='1.0'");
         if (SR.MS_XMLLANG!=null) {
-            header.append(" xml:lang='");
-            header.append(SR.MS_XMLLANG);
-            header.append("'");
+            header.append(" xml:lang='").append(SR.MS_XMLLANG).append("'");
         }
         header.append( '>' );
         send(header.toString());
         header=null;
     }
-	
+
+    public boolean tagStart(String name, Vector attributes) {
+        if (name.equals( "stream:stream" ) ) {
+            String SessionId = XMLParser.extractAttribute("id", attributes);
+            dispatcher.broadcastBeginConversation(SessionId);
+            return false;
+        }
+        
+        return super.tagStart(name, attributes);
+    }
+
+
+     
+    public void tagEnd(String name) throws XMLException {
+        if (currentBlock == null) {
+            if (name.equals( "stream:stream" ) ) {
+                dispatcher.halt();
+                iostream.close();
+                throw new XMLException("Normal stream shutdown");
+            }
+            return;
+        }
+        
+        if (currentBlock.getParent() == null) {
+
+            if (currentBlock.getTagName().equals("stream:error")) {
+                XmppError xe = XmppError.decodeStreamError(currentBlock);
+
+                dispatcher.halt();
+                iostream.close();
+                throw new XMLException("Stream error: "+xe.toString());
+                
+            }
+        }
+        
+        super.tagEnd(name);
+    }
+
+    protected void dispatchXmppStanza(JabberDataBlock currentBlock) {
+        dispatcher.broadcastJabberDataBlock( currentBlock );
+    }
+    
     public void startKeepAliveTask(){
         Account account=StaticData.getInstance().account;
         if (account.keepAliveType==0) 
@@ -251,101 +289,6 @@ public class JabberStream implements XMLEventListener, Runnable {
         dispatcher.setJabberListener( listener );
     }
     
-    /**
-     * The current class being constructed.
-     */
-    
-    private JabberDataBlock currentBlock;
-    
-    /**
-     * Method called when an XML tag is started in the stream comming from the
-     * server.
-     *
-     * @param name Tag name.
-     * @param attributes The tags attributes.
-     */
-    
-    public boolean tagStart( String name, Vector attributes ) {
-        if (currentBlock!=null){
-            
-            currentBlock = new JabberDataBlock( name, currentBlock, attributes );
-            // photo reading
-            if ( name.equals("BINVAL") ){
-                return true;
-            }
-            if (rosterNotify) if (name.equals("item")) dispatcher.rosterNotify();
-            
-        } else if ( name.equals( "stream:stream" ) ) {
-            JabberDataBlock stream=new JabberDataBlock( name, null, attributes );
-            String SessionId=stream.getAttribute("id");
-            dispatcher.broadcastBeginConversation(SessionId);
-        } else if ( name.equals( "message" ) )
-            currentBlock = new Message( currentBlock, attributes );
-        else if ( name.equals("iq") )
-            currentBlock = new Iq( currentBlock, attributes );
-        else if ( name.equals("presence") )
-            currentBlock = new Presence( currentBlock, attributes );
-        else if ( name.equals("xml")) return false;
-        else currentBlock = new JabberDataBlock(name, null, attributes);
-        return false;
-    }
-    
-    /**
-     * Method called when some plain text is encountered in the XML stream
-     * comming from the server.
-     *
-     * @param text The plain text in question
-     */
-    
-    public void plainTextEncountered( String text ) {
-        if( currentBlock != null ) {
-            currentBlock.setText( text );
-        }
-    }
-    
-    public void binValueEncountered( byte binVaule[] ) {
-        if( currentBlock != null ) {
-            //currentBlock.addText( text );
-            currentBlock.addChild(binVaule);
-        }
-    }
-    
-    /**
-     * The method called when a tag is ended in the stream comming from the
-     * server.
-     *
-     * @param name The name of the tag that has just ended.
-     */
-    
-    public void tagEnd( String name ) throws XMLException {
-        if( currentBlock == null ) {
-            if ( name.equals( "stream:stream" ) ) {
-                dispatcher.halt();
-                iostream.close();
-                throw new XMLException("Normal stream shutdown");
-            }
-            return;
-        }
-        
-        if (currentBlock.childBlocks!=null) currentBlock.childBlocks.trimToSize();
-        
-        JabberDataBlock parent = currentBlock.getParent();
-        if( parent == null ) {
-            if (currentBlock.getTagName().equals("stream:error")) {
-                XmppError xe=XmppError.decodeStreamError(currentBlock);
-                
-                dispatcher.halt();
-                iostream.close();
-                throw new XMLException("Stream error: "+xe.toString());
-                
-            }
-            dispatcher.broadcastJabberDataBlock( currentBlock );
-            //System.out.println(currentBlock.toString());
-        } else
-            parent.addChild( currentBlock );
-        currentBlock = parent;
-    }
-
     private void ping() {
         pingSent=true;
         send(IqPing.query(StaticData.getInstance().account.getServer(), "ping"));

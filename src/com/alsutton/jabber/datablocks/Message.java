@@ -80,12 +80,9 @@ public class Message extends JabberDataBlock {
       JabberDataBlock oobData=findNamespace("x", "jabber:x:oob");
       StringBuffer oob=new StringBuffer();
       try {
-          oob.append("\n");
-          oob.append(oobData.getChildBlockText("desc"));
+          oob.append("\n").append(oobData.getChildBlockText("desc"));
           if (oob.length()>1) oob.append(" ");
-          oob.append("( ");
-          oob.append(oobData.getChildBlockText("url"));
-          oob.append(" )");
+          oob.append("( ").append(oobData.getChildBlockText("url")).append(" )");
       } catch (Exception ex) { return null; }
   
       return oob.toString();

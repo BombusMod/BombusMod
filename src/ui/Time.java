@@ -116,9 +116,7 @@ public class Time {
         int tzi=tzo;
         char sign='+';
         if (tzo<0) { sign='-'; tzi=-tzo; }
-        tz.append(sign);
-        tz.append(lz2(tzi));
-        tz.append(":00");
+        tz.append(sign).append(lz2(tzi)).append(":00");
         return tz.toString();
     }
     

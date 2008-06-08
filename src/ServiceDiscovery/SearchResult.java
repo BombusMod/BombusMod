@@ -101,10 +101,10 @@ public class SearchResult
                     if (value.length()>0)
                     {
                         //vcard.append(new StringItem(name,value+"\n"));
-                        vcard.append(name);
-                        vcard.append((char)0xa0);
-                        vcard.append(value);
-                        vcard.append((char)'\n');
+                        vcard.append(name)
+                             .append((char)0xa0)
+                             .append(value)
+                             .append((char)'\n');
                     }
 		    // status returned by jit
 		    if (name.equals("status")) if (!value.equals("offline")) status=Presence.PRESENCE_ONLINE;
@@ -122,8 +122,8 @@ public class SearchResult
             }
         }
 //#ifdef POPUPS
-//#         if (getItemCount()<1)
-//#             VirtualList.setWobble(3, (Contact) null, "Not found :(");
+        if (getItemCount()<1)
+            VirtualList.setWobble(3, (Contact) null, "Not found :(");
 //#endif
         sd.roster.reEnumRoster();
     }

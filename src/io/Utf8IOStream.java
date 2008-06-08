@@ -142,17 +142,11 @@ public class Utf8IOStream implements Runnable{
 //#if ZLIB
     
     private void appendZlibStats(StringBuffer s, long packed, long unpacked, boolean read){
-        s.append(packed); s.append(read?"->":"<-"); s.append(unpacked);
+        s.append(packed).append(read?"->":"<-").append(unpacked);
         String ratio=Long.toString((10*unpacked)/packed);
         int dotpos=ratio.length()-1;
-        
-        
-        s.append(" (");
-        s.append( (dotpos==0)? "0":ratio.substring(0, dotpos));
-        s.append('.');
-        s.append(ratio.substring(dotpos));
-        s.append('x');
-        s.append(")");
+
+        s.append(" (").append( (dotpos==0)? "0":ratio.substring(0, dotpos)).append('.').append(ratio.substring(dotpos)).append('x').append(")");
         
     }
 
@@ -169,8 +163,10 @@ public class Utf8IOStream implements Runnable{
                 stats.append("\nZLib:\nin: "); appendZlibStats(stats, z.getTotalIn(), z.getTotalOut(), true);
                 stats.append("\nout: "); appendZlibStats(stats, zo.getTotalOut(), zo.getTotalIn(), false);
             }
-            stats.append("\nstream: \nin: "); stats.append(recv);
-            stats.append(" out: "); stats.append(sent);
+            stats.append("\nstream: \nin: ")
+                 .append(recv)
+                 .append(" out: ")
+                 .append(sent);
         } catch (Exception e) {
             stats=null;
             return "";
@@ -213,8 +209,7 @@ public class Utf8IOStream implements Runnable{
 //#          try {
 //#              int sent=this.bytesSent;
 //#              int recv=this.bytesRecv;
-//#              stats.append("\nStream: in="); stats.append(recv);
-//#              stats.append(" out="); stats.append(sent);
+//#              stats.append("\nStream: in=").append(recv).append(" out=").append(sent);
 //#          } catch (Exception e) {
 //#              stats=null;
 //#              return "";

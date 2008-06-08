@@ -200,9 +200,7 @@ public class ConferenceForm
         if (room.length()==0) return;
         if (host.length()==0) return;
         
-        StringBuffer gchat=new StringBuffer(room.trim());
-        gchat.append('@');
-        gchat.append(host.trim());
+        StringBuffer gchat=new StringBuffer(room.trim()).append('@').append(host.trim());
         
         if (name.length()==0) name=gchat.toString();
         
@@ -219,8 +217,7 @@ public class ConferenceForm
             try {
                 cf.defGcRoom=room+"@"+host;
                 cf.saveToStorage();
-                gchat.append('/');
-                gchat.append(nick);
+                gchat.append('/').append(nick);
                 join(name, gchat.toString(),pass, msgLimit);
                 display.setCurrent(sd.roster);
             } catch (Exception e) { }

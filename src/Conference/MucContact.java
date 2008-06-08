@@ -189,9 +189,7 @@ public class MucContact extends Contact {
                     presenceType=Presence.PRESENCE_ERROR;
                 case 307: //kick
                     if (realJid!=null) {
-                        b.append(" (");
-                        b.append(realJid);
-                        b.append(")");
+                        b.append(" (").append(realJid).append(")");
                     }
                     b.append((statusCode==301)? SR.MS_WAS_BANNED : SR.MS_WAS_KICKED );
 //#ifdef POPUPS
@@ -200,9 +198,7 @@ public class MucContact extends Contact {
                     }
 //#endif
                     if (reason!="") {
-                        b.append("(");
-                        b.append(reason);
-                        b.append(")");
+                        b.append("(").append(reason).append(")");
                     }
                     if (realJid!=null) {
                         b.append(" - ");
@@ -223,16 +219,12 @@ public class MucContact extends Contact {
                     break;
                 default:
                     if (realJid!=null) {
-                        b.append(" (");
-                        b.append(realJid);
-                        b.append(")");
+                        b.append(" (").append(realJid).append(")");
                     }
                     b.append(SR.MS_HAS_LEFT_CHANNEL);
                     
                 if (statusText.length()>0) {
-                    b.append(" (");
-                    b.append(statusText);
-                    b.append(")");
+                    b.append(" (").append(statusText).append(")");
                 }
 
                     testMeOffline();
@@ -259,9 +251,7 @@ public class MucContact extends Contact {
                 }
                 
                 if (statusText.length()>0) {
-                    b.append(" (");
-                    b.append(statusText);
-                    b.append(")");
+                    b.append(" (").append(statusText).append(")");
                 }
             } else {
                 b.append(SR.MS_IS_NOW);

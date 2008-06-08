@@ -139,20 +139,7 @@ public class StringUtils {
             
             if (mask.indexOf(s)<0) {  out.append(s); continue;  }
             
-            out.append('%');
-            
-            char c = (char) ((s >> 4) & 0xf);
-            if (c > 9)   c = (char) ((c - 10) + 'a');
-            else  c = (char) (c + '0');
-            out.append(c);
-            
-            c = (char) (s & 0xf);
-            if (c > 9)
-                c = (char)((c-10) + 'a');
-            else
-                c = (char)(c + '0');
-            out.append(c);
-            
+            out.append('%').append(hexByteToString((byte)s));
         }
         
         return out.toString();
@@ -286,5 +273,22 @@ public class StringUtils {
         src=stringReplace(src,"%dt",Time.dispLocalTime());
         src=stringReplace(src,"%t",Time.localTime());
         return src;
+    }
+    
+    
+    public static String hexByteToString(byte b){
+        StringBuffer out=new StringBuffer();
+        char c = (char) ((b >> 4) & 0xf);
+        if (c > 9)   c = (char) ((c - 10) + 'a');
+        else  c = (char) (c + '0');
+        out.append(c);
+        c = (char) (b & 0xf);
+        if (c > 9)
+            c = (char)((c-10) + 'a');
+        else
+            c = (char)(c + '0');
+        out.append(c);
+        
+        return out.toString();
     }
 }

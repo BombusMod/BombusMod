@@ -105,10 +105,10 @@ public class IqVersionReply implements JabberBlockListener {
         for (int i=0; i<TOPFIELDS.length; i++){
             String field=data.getChildBlockText(TOPFIELDS[i]);
             if (field.length()>0) {
-                vc.append(TOPFIELDS[i]);
-                vc.append((char)0xa0);
-                vc.append(field);
-                vc.append((char)'\n');
+                vc.append(TOPFIELDS[i])
+                  .append((char)0xa0)
+                  .append(field)
+                  .append((char)'\n');
             }
         }
         return vc.toString();

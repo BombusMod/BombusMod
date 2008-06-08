@@ -77,14 +77,12 @@ public class HttpPollingConnection implements StreamConnection {
                 if (keys.size()==0) {
                     initKeys();
                 }
-                out.append(";");
-                out.append((String)keys.lastElement());
+                out.append(";").append((String)keys.lastElement());
                 keys.removeElementAt(keys.size()-1);
             } while (keys.size()==0);
             
             
-            out.append(",");
-            out.append(postData);
+            out.append(",").append(postData);
             
             int outLen=out.length();
             //hc.setRequestProperty("Content-Length", String.valueOf(outLen));

@@ -78,10 +78,10 @@ public class InfoWindow
         
         StringBuffer memInfo=new StringBuffer(SR.MS_FREE);
         System.gc();
-        memInfo.append(Runtime.getRuntime().freeMemory()>>10);
-        memInfo.append("\n");
-        memInfo.append(SR.MS_TOTAL);
-        memInfo.append(Runtime.getRuntime().totalMemory()>>10);
+        memInfo.append(Runtime.getRuntime().freeMemory()>>10)
+               .append("\n")
+               .append(SR.MS_TOTAL)
+               .append(Runtime.getRuntime().totalMemory()>>10);
         memory=new MultiLine(SR.MS_MEMORY, memInfo.toString(), super.superWidth);
         memory.selectable=true;
         itemsList.addElement(memory);
@@ -117,105 +117,104 @@ public class InfoWindow
 
     private String getAbilities() {
         StringBuffer abilities=new StringBuffer();
+        abilities.append("")
 //#ifdef COLOR_TUNE
-//#         abilities.append("COLOR_TUNE, ");
+//#         .append("COLOR_TUNE, ")
 //#endif
 //#ifdef ARCHIVE
-        abilities.append("ARCHIVE, ");
+        .append("ARCHIVE, ")
 //#endif
 //#ifdef POPUPS
-        abilities.append("POPUPS, ");
+        .append("POPUPS, ")
 //#endif
 //#ifdef ELF
-//#         abilities.append("ELF, ");
+//#         .append("ELF, ")
 //#endif
 //#ifdef NEW_MENU
-        abilities.append("NEW_MENU, ");
+        .append("NEW_MENU, ")
 //#endif
 //#ifdef SERVICE_DISCOVERY
-        abilities.append("SERVICE_DISCOVERY, ");
+        .append("SERVICE_DISCOVERY, ")
 //#endif
 //#ifdef PRIVACY
-        abilities.append("PRIVACY, ");
+        .append("PRIVACY, ")
 //#endif
 //#ifdef SMILES
-        abilities.append("SMILES, ");
+        .append("SMILES, ")
 //#endif
 //#ifdef ANTISPAM
-//#         abilities.append("ANTISPAM, ");
+//#         .append("ANTISPAM, ")
 //#endif
 //#ifdef REQUEST_VOICE
-//#         abilities.append("REQUEST_VOICE, ");
+//#         .append("REQUEST_VOICE, ")
 //#endif
 //#ifdef HISTORY
-//#         abilities.append("HISTORY, ");
+//#         .append("HISTORY, ")
 //#endif
 //#ifdef SE_LIGHT
-//#         abilities.append("SE_LIGHT, ");
+//#         .append("SE_LIGHT, ")
 //#endif
 //#ifdef TEMPLATES
-        abilities.append("TEMPLATES, ");
+        .append("TEMPLATES, ")
 //#endif
 //#ifdef USER_KEYS
-//#         abilities.append("USER_KEYS, ");
+//#         .append("USER_KEYS, ")
 //#endif
 //#ifdef AUTOSTATUS
-//#         abilities.append("AUTOSTATUS, ");
+//#         .append("AUTOSTATUS, ")
 //#endif
 //#ifdef USE_ROTATOR
-        abilities.append("USE_ROTATOR, ");
+        .append("USE_ROTATOR, ")
 //#endif
 //#ifdef FILE_TRANSFER
-        abilities.append("FILE_TRANSFER, ");
-//#endif
-//#ifdef LAST_MESSAGES
-//#         abilities.append("LAST_MESSAGES, ");
+        .append("FILE_TRANSFER, ")
 //#endif
 //#ifdef CHECK_VERSION
-//#         abilities.append("CHECK_VERSION, ");
+//#         .append("CHECK_VERSION, ")
 //#endif
 //#ifdef DETRANSLIT
-//#         abilities.append("DETRANSLIT, ");
+//#         .append("DETRANSLIT, ")
 //#endif
 //#ifdef WMUC
-//#         abilities.append("WMUC, ");
+//#         .append("WMUC, ")
 //#endif
 //#ifdef AUTODELETE
-//#         abilities.append("AUTODELETE, ");
+//#         .append("AUTODELETE, ")
 //#endif
 //#ifdef WSYSTEMGC
-//#         abilities.append("WSYSTEMGC, ");
+//#         .append("WSYSTEMGC, ")
 //#endif
 //#ifdef NICK_COLORS
-        abilities.append("NICK_COLORS, ");
+        .append("NICK_COLORS, ")
 //#endif
 //#ifdef IMPORT_EXPORT
-//#         abilities.append("IMPORT_EXPORT, ");
+//#         .append("IMPORT_EXPORT, ")
 //#endif
 //#ifdef CHANGE_TRANSPORT
-//#         abilities.append("CHANGE_TRANSPORT, ");
+//#         .append("CHANGE_TRANSPORT, ")
 //#endif
 //#ifdef CONSOLE
-//#         abilities.append("CONSOLE, ");
+//#         .append("CONSOLE, ")
 //#endif
 //#ifdef CLIPBOARD
-//#         abilities.append("CLIPBOARD, ");
+//#         .append("CLIPBOARD, ")
 //#endif
 //#ifdef GRADIENT
-//#         abilities.append("GRADIENT, ");
+//#         .append("GRADIENT, ")
 //#endif
 //#ifdef PEP
-//#         abilities.append("PEP, ");
+//#         .append("PEP, ")
 //#endif
 //#ifdef PEP_TUNE
-//#         abilities.append("PEP_TUNE, ");
+//#         .append("PEP_TUNE, ")
 //#endif
 //#ifdef CAPTCHA
-//#         abilities.append("CAPTCHA, ");
+//#         .append("CAPTCHA, ")
 //#endif
 //#ifdef STATS
-//#         abilities.append("STATS, ");
+//#         .append("STATS, ")
 //#endif
+        .append("");
         return abilities.toString();
     }
 }

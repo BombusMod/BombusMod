@@ -2263,23 +2263,25 @@ public class Roster
                     mess.append(MucContact.getRoleLocale(mucContact.roleCode));
             } else {
 //#endif
-                mess.append("jid: "+cntact.bareJid);
-                mess.append(cntact.jid.getResource());
-                mess.append("\n"+SR.MS_SUBSCRIPTION+": "+cntact.subscr);
+                mess.append("jid: ")
+                    .append(cntact.bareJid)
+                    .append(cntact.jid.getResource())
+                    .append("\n")
+                    .append(SR.MS_SUBSCRIPTION)
+                    .append(": ")
+                    .append(cntact.subscr);
 //#ifdef PEP
 //#                 if (cntact.hasMood()) {
-//#                     mess.append("\n");
-//#                     mess.append(SR.MS_USER_MOOD);
-//#                     mess.append(": ");
-//#                     mess.append(cntact.getMoodString());
+//#                     mess.append("\n")
+//#                         .append(SR.MS_USER_MOOD)
+//#                         .append(": ")
+//#                         .append(cntact.getMoodString());
 //#                 }
 //#ifdef PEP_TUNE
 //#                 if (cntact.pepTune) {
-//#                     mess.append("\n");
-//#                     mess.append(SR.MS_USER_TUNE);
+//#                     mess.append("\n").append(SR.MS_USER_TUNE);
 //#                     if (cntact.getUserTune()!="") {
-//#                         mess.append(": ");
-//#                         mess.append(cntact.getUserTune());
+//#                         mess.append(": ").append(cntact.getUserTune());
 //#                     }
 //#                 }
 //#endif
@@ -2290,10 +2292,10 @@ public class Roster
             mess.append((cntact.getJ2J()!=null)?"\nJ2J: "+cntact.getJ2J():"");
             mess.append((cntact.getClientVersion()!=null)?"\nUse: "+cntact.getClientVersion():"");
             if (cntact.statusString!=null) {
-                mess.append("\n");
-                mess.append(SR.MS_STATUS);
-                mess.append(": ");
-                mess.append(cntact.statusString);
+                mess.append("\n")
+                    .append(SR.MS_STATUS)
+                    .append(": ")
+                    .append(cntact.statusString);
             }
             
             super.setWobble(1, (Contact) null, mess.toString());
@@ -2750,22 +2752,22 @@ public class Roster
 //#     public void showStats() {
 //#         StringBuffer str= new StringBuffer(SR.MS_STARTED+startTime);
 //#         Stats stats=Stats.getInstance();
-//#         str.append("\n");
-//#         str.append(SR.MS_TRAFFIC_STATS);
-//#         str.append("\n");
-//#         str.append(SR.MS_ALL);
-//#         str.append(stats.getSessionsCount());
-//#         str.append(SR.MS_CONN);
+//#         str.append("\n")
+//#            .append(SR.MS_TRAFFIC_STATS)
+//#            .append("\n")
+//#            .append(SR.MS_ALL)
+//#            .append(stats.getSessionsCount())
+//#            .append(SR.MS_CONN)
 //# 
-//#         str.append(StringUtils.getSizeString(stats.getAllTraffic()));
+//#            .append(StringUtils.getSizeString(stats.getAllTraffic()))
 //# 
-//#         str.append("\n");
-//#         str.append(SR.MS_PREVIOUS);
-//#         str.append(StringUtils.getSizeString(stats.getLatest()));
-//# 
-//#         str.append("\n");
-//#         str.append(SR.MS_CURRENT);
-//#         str.append(StringUtils.getSizeString(Stats.getGPRS()));
+//#            .append("\n")
+//#            .append(SR.MS_PREVIOUS)
+//#            .append(StringUtils.getSizeString(stats.getLatest()))
+//#            
+//#            .append("\n")
+//#            .append(SR.MS_CURRENT)
+//#            .append(StringUtils.getSizeString(Stats.getGPRS()));
 //# 
 //#         if (isLoggedIn())
 //#             str.append(theStream.getStreamStats());

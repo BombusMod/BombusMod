@@ -314,7 +314,7 @@ public abstract class VirtualList
     }
 
     public void attachDisplay (Display display) {
-        if (this.display!=null) return;
+        //if (this.display!=null) return;
         this.display=display;
         parentView=display.getCurrent();
         display.setCurrent(this);
@@ -375,6 +375,8 @@ public abstract class VirtualList
 //#endif
 
         beginPaint();
+        
+        StaticData.getInstance().screenWidth=width;
 
         int list_bottom=0;        
         itemBorder[0]=0;
@@ -622,7 +624,7 @@ public abstract class VirtualList
         }
     }
 
-    private void setAbsOrg(Graphics g, int x, int y){
+    public static void setAbsOrg(Graphics g, int x, int y){
         g.translate(x-g.getTranslateX(), y-g.getTranslateY());
     }
 

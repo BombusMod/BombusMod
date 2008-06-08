@@ -308,4 +308,26 @@ public class XMLParser {
         sb.setLength(opos);
         return sb.toString();
     }
+
+    public void pushOutPlainText() throws XMLException {
+        if (state==PLAIN_TEXT) {
+            if (sbuf.length()>0)
+                eventListener.plainTextEncountered( parsePlainText(sbuf) );
+            
+            sbuf.setLength(0);
+        }
+    }
+
+    public final static String extractAttribute(String attributeName, Vector attributes) {
+      if (attributes==null) return null;
+      int index=0;
+      while (index<attributes.size()) {
+          if ( ((String)attributes.elementAt(index)).equals(attributeName) )
+              return (String)attributes.elementAt(index+1);
+          
+          index+=2;
+      }
+      
+      return null;
+    }
 }

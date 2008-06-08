@@ -112,10 +112,11 @@ public class AffiliationModify
     public void cmdOk() {
         if (jidItem.getValue()=="") return;
         if (recentAffiliation==AffiliationItem.AFFILIATION_OWNER) {
-            StringBuffer warn=new StringBuffer(SR.MS_ARE_YOU_SURE_WANT_TO_DISCARD /*"Are You sure want to discard "*/);
-            warn.append(jidItem.getValue());
-            warn.append(SR.MS_FROM_OWNER_TO/*" from OWNER to "*/);
-            warn.append(AffiliationItem.getAffiliationName((short)affiliationItem.getSelectedIndex()));
+            StringBuffer warn=new StringBuffer(SR.MS_ARE_YOU_SURE_WANT_TO_DISCARD /*"Are You sure want to discard "*/)
+            .append(jidItem.getValue())
+            .append(SR.MS_FROM_OWNER_TO/*" from OWNER to "*/)
+            .append(AffiliationItem.getAffiliationName((short)affiliationItem.getSelectedIndex()));
+            
             new AlertBox(SR.MS_MODIFY_AFFILIATION, warn.toString(), display, null) {
                     public void yes() {
                         modify();
