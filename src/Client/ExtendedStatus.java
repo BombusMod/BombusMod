@@ -38,7 +38,7 @@ import ui.IconTextElement;
 public class ExtendedStatus extends IconTextElement{
     
     private String name="";    // status name
-    private String status;
+    private String status="";
     private int priority;
     int index;
     private String screenName="";
@@ -60,7 +60,7 @@ public class ExtendedStatus extends IconTextElement{
         s.append(priority);
         s.append(") ");
         if (status!=null)
-            if (status!="") {
+            if (status.length()>0) {
                 s.append('"');
                 s.append(status);
                 s.append('"');
