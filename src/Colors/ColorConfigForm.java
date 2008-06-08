@@ -35,7 +35,7 @@ import java.util.Vector;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
-import ui.controls.form.ChoiceBox;
+import ui.controls.form.DropChoiceBox;
 import ui.controls.form.DefForm;
 import ui.controls.form.LinkString;
 import ui.controls.form.SpacerItem;
@@ -67,7 +67,7 @@ public class ColorConfigForm
 //#endif
     
     private Vector[] files;
-    private ChoiceBox skinFiles;
+    private DropChoiceBox skinFiles;
     private LinkString useFromJar;
     
     private LinkString reset;
@@ -90,7 +90,7 @@ public class ColorConfigForm
         try {
             files=new StringLoader().stringLoader("/skins/res.txt",2);
             if (files[0].size()>0) {
-                skinFiles=new ChoiceBox();
+                skinFiles=new DropChoiceBox(display);
                 for (int i=0; i<files[0].size(); i++) {
                     skinFiles.append((String)files[1].elementAt(i));
                 }

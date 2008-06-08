@@ -186,8 +186,8 @@ public final class ContactEdit
                 StringBuffer jidBuf=new StringBuffer(jid);
                 at=jid.length();
                 jidBuf.setLength(at);
-                jidBuf.append('@');
-                jidBuf.append(tTranspList.toString());
+                jidBuf.append('@')
+                      .append(tTranspList.toString());
                 jid=jidBuf.toString();
             }
 

@@ -2613,12 +2613,12 @@ public class Roster
                     
                     vContacts=tContacts;
                     
-                    StringBuffer onl=new StringBuffer();
-                    onl.append("(");
-                    onl.append(groups.getRosterOnline());
-                    onl.append("/");
-                    onl.append(groups.getRosterContacts());
-                    onl.append(")");
+                    StringBuffer onl=new StringBuffer()
+                    .append("(")
+                    .append(groups.getRosterOnline())
+                    .append("/")
+                    .append(groups.getRosterContacts())
+                    .append(")");
                     setRosterMainBar(onl.toString());
                     onl=null;
                     

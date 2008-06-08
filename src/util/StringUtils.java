@@ -99,24 +99,24 @@ public class StringUtils {
 
                 int dotpos=ratio.length()-1;
 
-                suffix.append( (dotpos==0)? "0":ratio.substring(0, dotpos));
-                suffix.append('.');
-                suffix.append(ratio.substring(dotpos));
-
-                suffix.append("mb");
+                suffix.append( (dotpos==0)? "0":ratio.substring(0, dotpos))
+                      .append('.')
+                      .append(ratio.substring(dotpos))
+                      
+                      .append("mb");
             } else if ( number > 1024 ) {
                 String ratio=Long.toString(number/100);
 
                 int dotpos=ratio.length()-1;
 
-                suffix.append( (dotpos==0)? "0":ratio.substring(0, dotpos));
-                suffix.append('.');
-                suffix.append(ratio.substring(dotpos));
-
-                suffix.append("kb");
+                suffix.append( (dotpos==0)? "0":ratio.substring(0, dotpos))
+                      .append('.')
+                      .append(ratio.substring(dotpos))
+                      
+                      .append("kb");
             } else {
-                suffix.append(number);
-                suffix.append("b");
+                suffix.append(number)
+                      .append("b");
             }
         } catch (Exception e) { }
         

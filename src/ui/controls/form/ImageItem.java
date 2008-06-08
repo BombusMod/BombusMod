@@ -70,9 +70,7 @@ public class ImageItem
         StringBuffer im=new StringBuffer(altText);
         if (altText!=null)
             im.append(" ");
-        im.append(img.getWidth());
-        im.append("x");
-        im.append(img.getHeight());
+        im.append(img.getWidth()).append("x").append(img.getHeight());
         
         return im.toString();            
     }

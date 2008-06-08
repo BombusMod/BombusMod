@@ -56,12 +56,7 @@ public class userKey extends IconTextElement {
     }
     
     public String toString(){
-        StringBuffer s=new StringBuffer("");
-        s.append("(* + ");
-        s.append(userKeyExec.getKeyDesc(key));
-        s.append(") ");
-        s.append(getDesc());
-        
+        StringBuffer s=new StringBuffer("(* + ").append(userKeyExec.getKeyDesc(key)).append(") ").append(getDesc());
         return s.toString();
     }
     

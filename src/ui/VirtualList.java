@@ -1198,16 +1198,13 @@ public abstract class VirtualList
     }
     
     public void setInfo() {
-            StringBuffer s=new StringBuffer();
-            s.append(Time.localWeekDay());
-            s.append(" ");
-            s.append(Time.localTime());
+            StringBuffer s=new StringBuffer(Time.localWeekDay());
+            s.append(" ").append(Time.localTime());
             getInfoBarItem().setElementAt(s.toString(), 1);
             s.setLength(0);
             s.append(StringUtils.getSizeString(Stats.getInstance().getGPRS()));
 //#ifdef ELF
-//#             s.append(getNetworkLevel());
-//#             s.append(getAccuLevel());
+//#             s.append(getNetworkLevel()).append(getAccuLevel());
 //#endif
             getInfoBarItem().setElementAt(s.toString(), 3);
             s=null;

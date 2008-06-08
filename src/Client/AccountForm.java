@@ -34,7 +34,7 @@ import ui.SplashScreen;
 import ui.controls.AlertBox;
 import ui.controls.form.BoldString;
 import ui.controls.form.CheckBox;
-import ui.controls.form.ChoiceBox;
+import ui.controls.form.DropChoiceBox;
 import ui.controls.form.DefForm;
 import ui.controls.form.LinkString;
 import ui.controls.form.NumberInput;
@@ -70,7 +70,7 @@ public class AccountForm
     private CheckBox registerbox;
 	
     private NumberInput keepAlive;
-    private ChoiceBox keepAliveType;
+    private DropChoiceBox keepAliveType;
     
 //#if HTTPPOLL || HTTPCONNECT  
 //#     private TextInput proxyHost;
@@ -153,7 +153,7 @@ public class AccountForm
 //#endif
         
         itemsList.addElement(new BoldString(SR.MS_KEEPALIVE));
-        keepAliveType=new ChoiceBox();
+        keepAliveType=new DropChoiceBox(display);
         keepAliveType.append("by socket");
         keepAliveType.append("1 byte");
         keepAliveType.append("<iq/>");

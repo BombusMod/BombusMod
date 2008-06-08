@@ -92,11 +92,11 @@ public class IqPing implements JabberBlockListener {
         String first = (dotpos==0)? "0":timePing.substring(0, dotpos);
         String second = timePing.substring(dotpos);
 
-        StringBuffer s=new StringBuffer(first);
-        s.append('.');
-        s.append(second);
-        s.append(' ');
-        s.append(Time.goodWordForm (Integer.parseInt(second), 0));
+        StringBuffer s=new StringBuffer(first)
+        .append('.')
+        .append(second)
+        .append(' ')
+        .append(Time.goodWordForm (Integer.parseInt(second), 0));
 
         return s.toString();
     }

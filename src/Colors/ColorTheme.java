@@ -371,10 +371,10 @@ blue 0x0000ff
     public static String ColorToString(int cRed, int cGreen, int cBlue) {
         StringBuffer color=new StringBuffer(8);
         
-        color.append("0x");
-        color.append(expandHex(cRed));
-        color.append(expandHex(cGreen));
-        color.append(expandHex(cBlue));
+        color.append("0x")
+             .append(expandHex(cRed))
+             .append(expandHex(cGreen))
+             .append(expandHex(cBlue));
         
         return color.toString();
     }

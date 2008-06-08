@@ -82,10 +82,10 @@ public class BookmarkItem extends IconTextElement{
         
         if ((autojoin==true) && (cf.autoJoinConferences==true)) {
             //System.out.println(jid+" autojoin");
-            StringBuffer gchat=new StringBuffer();
-            gchat.append(jid);
-            gchat.append('/');
-            gchat.append(nick);
+            StringBuffer gchat=new StringBuffer()
+            .append(jid)
+            .append('/')
+            .append(nick);
             join(desc, gchat.toString(),password,cf.confMessageCount);
             gchat=null; //for nokia
         }

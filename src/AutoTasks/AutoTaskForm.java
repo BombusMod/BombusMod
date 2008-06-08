@@ -33,7 +33,7 @@ import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
 import ui.controls.form.BoldString;
-import ui.controls.form.ChoiceBox;
+import ui.controls.form.DropChoiceBox;
 import ui.controls.form.DefForm;
 import ui.controls.form.NumberInput;
 import ui.controls.form.SimpleString;
@@ -52,8 +52,8 @@ public class AutoTaskForm
     int min  =0;
     int wait =1;
 
-    private ChoiceBox taskType;
-    private ChoiceBox actionType;
+    private DropChoiceBox taskType;
+    private DropChoiceBox actionType;
 
     private NumberInput autoTaskDelay;
 
@@ -127,7 +127,7 @@ public class AutoTaskForm
 //#         itemsList=new Vector();
 //#         
 //#         itemsList.addElement(new BoldString(SR.MS_AUTOTASK_TYPE));
-//#         taskType=new ChoiceBox();
+//#         taskType=new DropChoiceBox(display);
 //#         taskType.append(SR.MS_DISABLED);
 //#         taskType.append(SR.MS_BY_TIME_);
 //#         taskType.append(SR.MS_BY_TIMER_);
@@ -135,7 +135,7 @@ public class AutoTaskForm
 //#         itemsList.addElement(taskType);
 //#         
 //#         itemsList.addElement(new BoldString(SR.MS_AUTOTASK_ACTION_TYPE));
-//#         actionType=new ChoiceBox();
+//#         actionType=new DropChoiceBox(display);
 //#         actionType.append(SR.MS_AUTOTASK_QUIT_BOMBUSMOD);
 //#         actionType.append(SR.MS_AUTOTASK_QUIT_CONFERENCES);
 //#         actionType.append(SR.MS_AUTOTASK_LOGOFF);

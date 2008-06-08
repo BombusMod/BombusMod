@@ -114,10 +114,7 @@ public class EditBox implements CommandListener {
 //#         }
 //#         if (c==cmdCopyPlus) {
 //#             try {
-//#                 StringBuffer clipstr=new StringBuffer();
-//#                 clipstr.append(clipboard.getClipBoard());
-//#                 clipstr.append("\n\n");
-//#                 clipstr.append(text);
+//#                 StringBuffer clipstr=new StringBuffer(clipboard.getClipBoard()).append("\n\n").append(text);
 //#                 
 //#                 clipboard.setClipBoard(clipstr.toString());
 //#                 clipstr=null;

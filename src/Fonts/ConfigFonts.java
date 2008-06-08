@@ -29,7 +29,7 @@ import Client.Config;
 import Client.StaticData;
 import javax.microedition.lcdui.*;
 import locale.SR;
-import ui.controls.form.ChoiceBox;
+import ui.controls.form.DropChoiceBox;
 import ui.controls.form.DefForm;
 import ui.controls.form.SimpleString;
 
@@ -38,10 +38,10 @@ public class ConfigFonts
     
     private Display display;
     
-    private ChoiceBox font1;
-    private ChoiceBox font2;
-    private ChoiceBox font3;
-    private ChoiceBox font4;
+    private DropChoiceBox font1;
+    private DropChoiceBox font2;
+    private DropChoiceBox font3;
+    private DropChoiceBox font4;
     
     StaticData sd=StaticData.getInstance();
     
@@ -56,7 +56,7 @@ public class ConfigFonts
         cf=Config.getInstance();
         
         itemsList.addElement(new SimpleString(SR.MS_ROSTER_FONT));
-        font1=new ChoiceBox();
+        font1=new DropChoiceBox(display);
         font1.append(SR.MS_FONTSIZE_NORMAL);
         font1.append(SR.MS_FONTSIZE_SMALL);
         font1.append(SR.MS_FONTSIZE_LARGE);
@@ -64,7 +64,7 @@ public class ConfigFonts
         itemsList.addElement(font1);
         
         itemsList.addElement(new SimpleString(SR.MS_MESSAGE_FONT));
-        font2=new ChoiceBox();
+        font2=new DropChoiceBox(display);
         font2.append(SR.MS_FONTSIZE_NORMAL);
         font2.append(SR.MS_FONTSIZE_SMALL);
         font2.append(SR.MS_FONTSIZE_LARGE);
@@ -72,7 +72,7 @@ public class ConfigFonts
         itemsList.addElement(font2);
         
         itemsList.addElement(new SimpleString(SR.MS_BAR_FONT));
-        font3=new ChoiceBox();
+        font3=new DropChoiceBox(display);
         font3.append(SR.MS_FONTSIZE_NORMAL);
         font3.append(SR.MS_FONTSIZE_SMALL);
         font3.append(SR.MS_FONTSIZE_LARGE);
@@ -80,7 +80,7 @@ public class ConfigFonts
         itemsList.addElement(font3);
         
         itemsList.addElement(new SimpleString(SR.MS_POPUP_FONT));
-        font4=new ChoiceBox();
+        font4=new DropChoiceBox(display);
         font4.append(SR.MS_FONTSIZE_NORMAL);
         font4.append(SR.MS_FONTSIZE_SMALL);
         font4.append(SR.MS_FONTSIZE_LARGE);

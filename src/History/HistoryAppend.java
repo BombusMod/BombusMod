@@ -118,40 +118,40 @@ public class HistoryAppend {
                 marker=Msg.MESSAGE_MARKER_OUT;
         }
         if (!formatted) {
-            body.append("[");
-            body.append(m.getDayTime());
-            body.append("] ");
-            body.append(fromName);
-            body.append(":");
-            body.append(RN);
+            body.append("[")
+                .append(m.getDayTime())
+                .append("] ")
+                .append(fromName)
+                .append(":")
+                .append(RN);
             if (m.subject!=null) {
-                body.append(m.subject);
-                body.append(RN);
+                body.append(m.subject)
+                    .append(RN);
             }
-            body.append(m.getBody());
-            body.append(RN);
-            body.append(RN);
+            body.append(m.getBody())
+                .append(RN)
+                .append(RN);
         } else {
-            body.append(MS);
-            body.append(TS);
-            body.append(marker);
-            body.append(TE);
-            body.append(DS);
-            body.append(m.getDayTime());
-            body.append(DE);
-            body.append(FS);
-            body.append(fromName);
-            body.append(FE);
+            body.append(MS)
+                .append(TS)
+                .append(marker)
+                .append(TE)
+                .append(DS)
+                .append(m.getDayTime())
+                .append(DE)
+                .append(FS)
+                .append(fromName)
+                .append(FE);
             if (m.subject!=null) {
-                body.append(SS);
-                body.append(m.subject);
-                body.append(SE);
+                body.append(SS)
+                    .append(m.subject)
+                    .append(SE);
             }
-            body.append(BS);
-            body.append(m.getBody());
-            body.append(BE);
-            body.append(ME);
-            body.append(RN);
+            body.append(BS)
+                .append(m.getBody())
+                .append(BE)
+                .append(ME)
+                .append(RN);
         }
         return (convertToWin1251)?Strconv.convUnicodeToCp1251(body.toString()):body.toString();
     }

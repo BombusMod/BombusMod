@@ -94,12 +94,12 @@ public class Group extends IconTextElement {
     public String getName() { return name; }
     
     protected String mainbar(String mainbarStart) {
-        StringBuffer mb=new StringBuffer(mainbarStart);
-        mb.append(" (");
-        mb.append(getOnlines());
-        mb.append("/");
-        mb.append(getNContacts());
-        mb.append(")");
+        StringBuffer mb=new StringBuffer(mainbarStart)
+        .append(" (")
+        .append(getOnlines())
+        .append("/")
+        .append(getNContacts())
+        .append(")");
 
         return mb.toString();
     }

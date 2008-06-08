@@ -101,9 +101,9 @@ public class ConferenceQuickPrivelegeModify
         
         StringBuffer user=new StringBuffer(victim.nick);
         if (victim.jid!=null) {
-            user.append(" (");
-            user.append(victim.realJid);
-            user.append(")");
+            user.append(" (")
+            .append(victim.realJid)
+            .append(")");
         }
         itemsList.addElement(new MultiLine(SR.MS_USER, user.toString(), super.superWidth));
 

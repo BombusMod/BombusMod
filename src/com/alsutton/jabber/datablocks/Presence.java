@@ -117,7 +117,8 @@ public class Presence extends JabberDataBlock
           }
       } else {
           // online-kinds
-          show=getShow(); text.append(SR.getPresence(show));
+          show=getShow(); 
+          text.append(SR.getPresence(show));
           presenceCode=PRESENCE_ONLINE;
           if (show.equals(PRS_CHAT)) presenceCode=PRESENCE_CHAT;
           if (show.equals(PRS_AWAY)) presenceCode=PRESENCE_AWAY;
@@ -128,17 +129,13 @@ public class Presence extends JabberDataBlock
       String status=(errText==null)? getChildBlockText("status"):errText;
       if (status!=null)
           if (status.length()>0) {
-              text.append(" (");
-              text.append( status );
-              text.append(')');
+              text.append(" (").append( status ).append(')');
           }
       
       // priority
       int priority=getPriority();
       if (priority!=0) {
-          text.append(" [");
-          text.append(getPriority());
-          text.append(']');
+          text.append(" [").append(getPriority()).append(']');
       }
           
       

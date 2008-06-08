@@ -193,8 +193,7 @@ public class VCardEdit
              nickDate.append(vcard.getNickName());
          } else nickDate.append(vcard.getJid());
 //#endif
-        nickDate.append("_");
-        nickDate.append(Time.dayLocalString(Time.utcTimeMillis()).trim());
+        nickDate.append("_").append(Time.dayLocalString(Time.utcTimeMillis()).trim());
         return nickDate.toString();
     }
 //#endif

@@ -602,9 +602,9 @@ public class Contact extends IconTextElement{
 //#              mood=new StringBuffer(pepMoodName);
 //#              if (pepMoodText!=null) {
 //#                 if (pepMoodText.length()>0) {
-//#                      mood.append("(");
-//#                      mood.append(pepMoodText);
-//#                      mood.append(")");
+//#                      mood.append("(")
+//#                          .append(pepMoodText)
+//#                          .append(")");
 //#                 }
 //#              }
 //#         }

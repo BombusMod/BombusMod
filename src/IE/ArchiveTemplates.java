@@ -151,22 +151,28 @@ public class ArchiveTemplates {
 
         for(int i=0; i<items; i++){
             Msg m=getMessage(i);
-            body.append(start_item+"\r\n");
-            body.append(start_date);
-            body.append(m.getDayTime());
-            body.append(end_date+"\r\n");
-            body.append(start_from);
-            body.append(m.from);
-            body.append(end_from+"\r\n");
-            body.append(start_subj);
+            body.append(start_item)
+            .append("\r\n")
+            .append(start_date)
+            .append(m.getDayTime())
+            .append(end_date)
+            .append("\r\n")
+            .append(start_from)
+            .append(m.from)
+            .append(end_from)
+            .append("\r\n")
+            .append(start_subj);
             if (m.subject!=null) {
                 body.append(m.subject);
             }
-            body.append(end_subj+"\r\n");
-            body.append(start_body);
-            body.append(m.getBody());
-            body.append(end_body+"\r\n");
-            body.append(end_item+"\r\n\r\n");
+            body.append(end_subj)
+            .append("\r\n")
+            .append(start_body)
+            .append(m.getBody())
+            .append(end_body)
+            .append("\r\n")
+            .append(end_item)
+            .append("\r\n\r\n");
         }
 
         if (cf.cp1251) {

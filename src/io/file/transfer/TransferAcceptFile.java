@@ -76,10 +76,9 @@ public class TransferAcceptFile
             if (extLen>FileIO.MAX_NAME_LEN) {
                 name=name.substring(0, FileIO.MAX_NAME_LEN-1);
             } else {
-                StringBuffer newName=new StringBuffer();
-                newName.append(name.substring(0, FileIO.MAX_NAME_LEN-extLen-2));
-                newName.append("~");
-                newName.append(name.substring(extPos));
+                StringBuffer newName=new StringBuffer(name.substring(0, FileIO.MAX_NAME_LEN-extLen-2))
+                .append("~")
+                .append(name.substring(extPos));
                 name=newName.toString();
                 newName=null;
             }

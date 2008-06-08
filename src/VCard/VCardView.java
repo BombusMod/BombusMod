@@ -169,19 +169,15 @@ public class VCardView
 //#ifdef CLIPBOARD
 //#         if (c == cmdCopy) {
 //#             try {
-//#                 StringBuffer clipstr=new StringBuffer();
-//#                 clipstr.append((((MultiLine)getFocusedObject()).getValue()==null)?"":((MultiLine)getFocusedObject()).getValue()+"\n");
-//#                 clipboard.setClipBoard(clipstr.toString());
-//#                 clipstr=null;
+//#                 clipboard.setClipBoard((((MultiLine)getFocusedObject()).getValue()==null)?"":((MultiLine)getFocusedObject()).getValue()+"\n");
 //#             } catch (Exception e) {/*no messages*/}
 //#         }
 //#         
 //#         if (c==cmdCopyPlus) {
 //#             try {
-//#                 StringBuffer clipstr=new StringBuffer();
-//#                 clipstr.append(clipboard.getClipBoard());
-//#                 clipstr.append("\n\n");
-//#                 clipstr.append((((MultiLine)getFocusedObject()).getValue()==null)?"":((MultiLine)getFocusedObject()).getValue()+"\n");
+//#                 StringBuffer clipstr=new StringBuffer(clipboard.getClipBoard())
+//#                 .append("\n\n")
+//#                 .append((((MultiLine)getFocusedObject()).getValue()==null)?"":((MultiLine)getFocusedObject()).getValue()+"\n");
 //#                 
 //#                 clipboard.setClipBoard(clipstr.toString());
 //#                 clipstr=null;
@@ -216,8 +212,7 @@ public class VCardView
              nickDate.append(vcard.getNickName());
          } else nickDate.append(vcard.getJid());
 //#endif
-        nickDate.append("_");
-        nickDate.append(Time.dayLocalString(Time.utcTimeMillis()).trim());
+        nickDate.append('_').append(Time.dayLocalString(Time.utcTimeMillis()).trim());
         return nickDate.toString();
     }
 //#endif

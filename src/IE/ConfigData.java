@@ -165,11 +165,11 @@ public class ConfigData {
         
         for (Enumeration e=array.elements(); e.hasMoreElements();) {
                 keyValue i=(keyValue)e.nextElement();
-                body.append("<i><k>");
-                body.append(i.getKey());
-                body.append("</k><v>");
-                body.append(i.getValue());
-                body.append("</v></i>\r\n");  
+                body.append("<i><k>")
+                .append(i.getKey())
+                .append("</k><v>")
+                .append(i.getValue())
+                .append("</v></i>\r\n");  
         }
         return body;
     }

@@ -59,10 +59,10 @@ public class XMLList
     }
     
     protected void beginPaint() {
-        StringBuffer str = new StringBuffer();
-        str.append(" (");
-        str.append(getItemCount());
-        str.append(")");
+        StringBuffer str = new StringBuffer()
+        .append(" (")
+        .append(getItemCount())
+        .append(")");
         
         if (!stanzas.enabled)
             str.append(" - Disabled");

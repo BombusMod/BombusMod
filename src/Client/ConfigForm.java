@@ -34,7 +34,7 @@ import locale.SR;
 import ui.VirtualList;
 import ui.controls.form.BoldString;
 import ui.controls.form.CheckBox;
-import ui.controls.form.ChoiceBox;
+import ui.controls.form.DropChoiceBox;
 import ui.controls.form.DefForm;
 import ui.controls.form.NumberInput;
 import ui.controls.form.SimpleString;
@@ -58,8 +58,8 @@ public class ConfigForm
     private CheckBox useBoldFont;
     private CheckBox rosterStatus;
     
-    private ChoiceBox subscr;
-    private ChoiceBox nil;
+    private DropChoiceBox subscr;
+    private DropChoiceBox nil;
     
 //#ifdef SMILES
     private CheckBox smiles;
@@ -116,10 +116,10 @@ public class ConfigForm
     private NumberInput fieldGmt; 
     private NumberInput fieldLoc;
     
-    private ChoiceBox textWrap;
-    private ChoiceBox langFiles;
+    private DropChoiceBox textWrap;
+    private DropChoiceBox langFiles;
 //#ifdef AUTOSTATUS
-//#     private ChoiceBox autoAwayType;
+//#     private DropChoiceBox autoAwayType;
 //#     private NumberInput fieldAwayDelay; 
 //#     private CheckBox awayStatus;
 //#endif
@@ -150,7 +150,7 @@ public class ConfigForm
         rosterStatus = new CheckBox(SR.MS_SHOW_STATUSES, cf.rosterStatus); itemsList.addElement(rosterStatus);
 
         itemsList.addElement(new BoldString(SR.MS_AUTH_NEW));
-        subscr=new ChoiceBox();
+        subscr=new DropChoiceBox(display);
         subscr.append(SR.MS_SUBSCR_AUTO);
         subscr.append(SR.MS_SUBSCR_ASK);
         subscr.append(SR.MS_SUBSCR_DROP);
@@ -159,7 +159,7 @@ public class ConfigForm
         itemsList.addElement(subscr);
 
         itemsList.addElement(new BoldString(SR.MS_NOT_IN_LIST));
-        nil=new ChoiceBox();
+        nil=new DropChoiceBox(display);
         nil.append(SR.MS_NIL_DROP_MP);
         nil.append(SR.MS_NIL_DROP_P);
         nil.append(SR.MS_NIL_ALLOW_ALL);
@@ -239,14 +239,14 @@ public class ConfigForm
         itemsList.addElement(fieldLoc);
 
         itemsList.addElement(new BoldString(SR.MS_TEXTWRAP));
-        textWrap=new ChoiceBox();
+        textWrap=new DropChoiceBox(display);
         textWrap.append(SR.MS_TEXTWRAP_CHARACTER);
         textWrap.append(SR.MS_TEXTWRAP_WORD);
 	textWrap.setSelectedIndex(cf.textWrap);
 	itemsList.addElement(textWrap);
         
         itemsList.addElement(new BoldString(SR.MS_LANGUAGE));
-        langFiles=new ChoiceBox();
+        langFiles=new DropChoiceBox(display);
 	langs=new StringLoader().stringLoader("/lang/res.txt",3);
         
         String tempLang=cf.lang;
@@ -268,7 +268,7 @@ public class ConfigForm
 
 //#ifdef AUTOSTATUS
 //#         itemsList.addElement(new BoldString(SR.MS_AWAY_TYPE));
-//#         autoAwayType=new ChoiceBox();
+//#         autoAwayType=new DropChoiceBox(display);
 //#         autoAwayType.append(SR.MS_AWAY_OFF);
 //#         autoAwayType.append(SR.MS_AWAY_LOCK);
 //#         autoAwayType.append(SR.MS_MESSAGE_LOCK);
