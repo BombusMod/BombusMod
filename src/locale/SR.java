@@ -55,7 +55,7 @@ public class SR {
     public   static String MS_GMT_OFFSET = loadString( "GMT offset" );
     public   static String MS_TIME_SETTINGS = loadString( "Time settings (hours)" );
     public   static String MS_CONNECTED = loadString( "Connected" );
-    public   static String MS_CONNECT_TO = loadString( "Connect to " );
+    public   static String MS_CONNECT_TO_= loadString( "Connect to " );
     public   static String MS_ALERT_PROFILE = loadString( "Alert Profile" );
     public   static String MS_MOVE_UP = loadString( "Move Up" );
     public   static String MS_OWNERS = loadString( "Owners" );
@@ -267,8 +267,8 @@ public class SR {
 
     public static String MS_VIEW=loadString("View");
     public static String MS_STOP=loadString("Stop");
-//#ifdef FILE_TRANSFER
     public static String MS_FILE_TRANSFERS=loadString("File transfers");
+//#ifdef FILE_TRANSFER
     public static String MS_PATH=loadString("Path");
     public static String MS_ACCEPT_FILE=loadString("Accept file");
     public static String MS_FILE=loadString("File");
@@ -629,7 +629,7 @@ public class SR {
 
     public static String MS_LOAD_HISTORY=loadString("Load history");
 
-    public static String MS_CONECT_TO=loadString("Connect to");
+    public static String MS_CONNECT_TO=loadString("Connect to");
 
     public static String MS_SEND_COLOR_SCHEME=loadString("Send my color scheme");
 
