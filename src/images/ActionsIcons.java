@@ -16,7 +16,7 @@ import ui.ImageList;
  *
  * @author ad
  */
-public class ActionsIcons extends ImageList{
+public class ActionsIcons extends ImageList {
     
     private static ActionsIcons instance;
 
@@ -42,7 +42,7 @@ public class ActionsIcons extends ImageList{
     public static final int ICON_OFF            = 0x01; //Отключить
     public static final int ICON_NICK_RESOLVE   = 0x02; //Преобразовать в ник
     public static final int ICON_VCARD          = 0x03; //vCard
-    public static final int ICON_INFO           = 0x04; //Инфо
+    public static final int ICON_INFO           = 0x04; //�?нфо
     public static final int ICON_VERSION        = 0x05; //Версия клиента
     public static final int ICON_COMMAND        = 0x06; //Команды
     public static final int ICON_SEND_BUFFER    = 0x07; //Послать текст из буфера
@@ -65,7 +65,7 @@ public class ActionsIcons extends ImageList{
     public static final int ICON_ADMINS         = 0x26; //Администраторы
     public static final int ICON_MEMBERS        = 0x27; //Члены
     
-    public static final int ICON_OUTCASTS       = 0x30; //Изгои(Ban)
+    public static final int ICON_OUTCASTS       = 0x30; //�?згои(Ban)
     public static final int ICON_KICK           = 0x31; //Выгнать (kick)
     public static final int ICON_BAN            = 0x32; //Бан (ban)
     public static final int ICON_DEVOICE        = 0x33; //Отнять право голоса

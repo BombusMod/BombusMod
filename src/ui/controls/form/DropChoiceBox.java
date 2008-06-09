@@ -87,6 +87,8 @@ public class DropChoiceBox
     public void drawItem(Graphics g, int ofs, boolean sel) {
         int width=g.getClipWidth();
         int height=super.getVHeight();
+        int xo=g.getClipX();
+        int yo=g.getClipY();
 
         int oldColor=g.getColor();
 
@@ -98,21 +100,17 @@ public class DropChoiceBox
         g.drawRoundRect(0, 0, width-1, boxSize, 6, 6);
         
         g.drawRoundRect(width-boxSize-1, 0, boxSize, boxSize, 6, 6);
-        int horCenterTrinangle=width-(boxSize/2)-1;
-        int vertCenterTrinangle=height-(boxSize/2);
+
+        int horCenterTrinangle=width-(boxSize/2);
+        int vertCenterTrinangle=height/2;
         int size=boxSize/4;
-        drawTriangle(horCenterTrinangle-size, vertCenterTrinangle-size, horCenterTrinangle+size, vertCenterTrinangle-size, horCenterTrinangle, vertCenterTrinangle+size, g);
+        g.fillTriangle(horCenterTrinangle-size, vertCenterTrinangle-size, horCenterTrinangle+size, vertCenterTrinangle-size, horCenterTrinangle, vertCenterTrinangle+size);
         
         g.setColor(oldColor);
         
-        g.setClip(0, 0, width-height-2, height);
+        g.setClip(0, yo, width-height-2, height);
         super.drawItem(g, ofs, sel);
-    }
-    
-    public static void drawTriangle(int x1, int y1, int x2, int y2, int x3, int y3, Graphics g) {
-            g.drawLine( x1, y1, x2, y2 );
-            g.drawLine( x2, y2, x3, y3 ); 
-            g.drawLine( x3, y3, x1, y1 );
+        g.setClip(xo, yo, width, height);
     }
 
     public boolean handleEvent(int keyCode) {

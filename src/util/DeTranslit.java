@@ -53,7 +53,7 @@ public class DeTranslit {
         if (translit[0].size()<1) return src;
         if (src==null) return null;
         for (int i=0; i<translit[0].size(); i++) {
-            src=stringReplace(src, (String) translit[0].elementAt(i), (String) translit[1].elementAt(i));
+            src=StringUtils.stringReplace(src, (String) translit[0].elementAt(i), (String) translit[1].elementAt(i));
 	}
         return src;
     }
@@ -62,7 +62,7 @@ public class DeTranslit {
         if (translit[0].size()<1) return src;
         if (src==null) return null;
         for (int i=0; i<translit[0].size(); i++) {
-            src=stringReplace(src, (String) translit[1].elementAt(i), (String) translit[0].elementAt(i));
+            src=StringUtils.stringReplace(src, (String) translit[1].elementAt(i), (String) translit[0].elementAt(i));
 	}
         return src;
     }
@@ -77,22 +77,6 @@ public class DeTranslit {
             translit[0].addElement((String) defs[0].elementAt(i));
             translit[1].addElement((String) defs[1].elementAt(i));
         }
-    }
-
-    public static String stringReplace(String aSearch, String aFind, String aReplace) {
-    	int pos = aSearch.indexOf(aFind);
-    	if (pos != -1) {
-            StringBuffer buffer = new StringBuffer();
-            int lastPos = 0;
-             while (pos != -1) {
-                    buffer.append(aSearch.substring(lastPos, pos)).append(aReplace);
-                    lastPos = pos + aFind.length();
-                    pos = aSearch.indexOf(aFind, lastPos);
-            }
-            buffer.append( aSearch.substring(lastPos));
-            aSearch = buffer.toString();
-    	}
-    	return aSearch;
     }
 /*
     public static String stringReplace(String aSearch, String aFind, String aReplace) {

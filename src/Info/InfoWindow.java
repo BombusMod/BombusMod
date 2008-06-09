@@ -215,6 +215,9 @@ public class InfoWindow
 //#ifdef STATS
 //#         .append("STATS, ")
 //#endif
+//#ifdef CLIENTS_ICONS
+//#         .append("CLIENTS_ICONS, ")
+//#endif
         .append("");
         return abilities.toString();
     }

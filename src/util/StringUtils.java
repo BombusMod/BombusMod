@@ -23,56 +23,7 @@ public class StringUtils {
     /** Creates a new instance of StringUtils */
     public StringUtils() { }
     
-    
-    private final static String BOMBUSMOD_REP=Version.getUrl()+"/caps";
-    private final static String BOMBUS_NG_REP="http://bombus-im.org/ng";
-    private final static String BOMBUS_PLUS="http://voffk.org.ru/bombus";
-    private final static String PSI_REP="http://psi-im.org/caps";
-    private final static String GOOGLE_REP="http://www.google.com/xmpp/client/caps";
-    private final static String MIRANDA_REP="http://miranda-im.org/caps";
-    private final static String GAJIM_REP="http://gajim.org/caps";
-    private final static String GAIM_REP="http://gaim.sf.net/caps";
-    private final static String BOMBUS_REP="http://bombus-im.org/java";
-    private final static String KOPETE_REP="http://kopete.kde.org/jabber/caps";
-    private final static String PIDGIN_REP="http://pidgin.im/caps";
-    private final static String QIP_REP="http://qip.ru/caps";
-    private final static String TKABBER_REP="http://tkabber.jabber.ru/";
-    
     private final static String[] badChars= { "?", "\\", "/", "*", ".", "\"", ":", "%", "@", "|", "<", ">", "COM", "LPT", "NULL", "PRINT"};
-
-    public static String replaceCaps(String src){
-        if (src==null)
-            return "Unknown";
-
-        if (src.indexOf(BOMBUSMOD_REP)>-1)
-            return stringReplace(src,BOMBUSMOD_REP,"BombusMod");
-        else if (src.indexOf(BOMBUS_REP)>-1)
-            return stringReplace(src,BOMBUS_REP,"Bombus");  
-        else if (src.indexOf(BOMBUS_NG_REP)>-1)
-            return stringReplace(src,BOMBUS_NG_REP,"Bombus-NG");
-        else if (src.indexOf(BOMBUS_PLUS)>-1)
-            return stringReplace(src,BOMBUS_PLUS,"Bombus+");
-        else if (src.indexOf(PSI_REP)>-1)
-            return stringReplace(src,PSI_REP,"Psi");
-        else if (src.indexOf(MIRANDA_REP)>-1)
-            return stringReplace(src,MIRANDA_REP,"Miranda");
-        else if (src.indexOf(GAJIM_REP)>-1)
-            return stringReplace(src,GAJIM_REP,"Gajim");
-        else if (src.indexOf(GOOGLE_REP)>-1)
-            return stringReplace(src,GOOGLE_REP,"Google");
-        else if (src.indexOf(GAIM_REP)>-1)
-            return stringReplace(src,GAIM_REP,"Gaim");
-	else if (src.indexOf(KOPETE_REP)>-1)
-            return stringReplace(src,KOPETE_REP,"Kopete");  
-        else if (src.indexOf(PIDGIN_REP)>-1)
-            return stringReplace(src,PIDGIN_REP,"Pidgin");  
-        else if (src.indexOf(QIP_REP)>-1)
-            return stringReplace(src,QIP_REP,"Qip");  
-        else if (src.indexOf(TKABBER_REP)>-1)
-            return stringReplace(src,TKABBER_REP,"Tkabber"); 
-
-        return src;
-    }
     
     public static String stringReplace(String aSearch, String aFind, String aReplace) {
     	int pos = aSearch.indexOf(aFind);

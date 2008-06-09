@@ -32,6 +32,9 @@ import Conference.MucContact;
 //#endif
 
 import Fonts.FontCache;
+//#ifdef CLIENTS_ICONS
+//# import images.ClientsIcons;
+//#endif
 import javax.microedition.lcdui.Font;
 
 //#if HISTORY
@@ -134,7 +137,7 @@ public class Contact extends IconTextElement{
     
     public VCard vcard;
 
-    private String clientVersion;
+    private int client=-1;
     
 //#if AUTODELETE
 //#     public boolean redraw=false;
@@ -572,9 +575,9 @@ public class Contact extends IconTextElement{
 //#     public void setHistoryLoaded (boolean state) { loaded=state; }
 //#endif
     
-    public void setClientVersion (String ver) { clientVersion=ver; }
+    public void setClient (int client) { this.client=client; }
     
-    public String getClientVersion () { return clientVersion; }
+    public int getClient () { return client; }
     
 //#ifdef PEP
 //#ifdef PEP_TUNE
@@ -634,7 +637,13 @@ public class Contact extends IconTextElement{
             offset+=ilHeight;
             il.drawImage(g, getImageIndex(), 2, imgH);
         }
-        
+//#ifdef CLIENTS_ICONS
+//#         if (client>-1) {
+//#             ImageList clients=ClientsIcons.getInstance();
+//#             w-=clients.getWidth();
+//#             clients.drawImage(g, client, w, (h-clients.getHeight())/2);
+//#         }
+//#endif
 //#ifdef PEP
 //#         if (hasMood()) {
 //#             ImageList moods=MoodIcons.getInstance();

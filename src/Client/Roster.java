@@ -42,6 +42,7 @@ import Conference.ConferenceForm;
 
 //#ifdef ARCHIVE
 import Archive.ArchiveList;
+import images.ClientsIcons;
 //#endif
 import images.RosterIcons;
 import locale.SR;
@@ -324,7 +325,7 @@ public class Roster
 //#                     throw new SecurityException("Can't get Google token");
 //#             }
 //#endif
-            setProgress(SR.MS_CONNECT_TO+a.getServer(), 30);
+            setProgress(SR.MS_CONNECT_TO_+a.getServer(), 30);
             theStream= a.openJabberStream();
             setProgress(SR.MS_OPENING_STREAM, 40);
             theStream.setJabberListener( this );
@@ -1497,7 +1498,7 @@ public class Roster
 
                         if (pr.hasEntityCaps()) {
                             if (pr.getEntityNode()!=null) {
-                                c.setClientVersion(StringUtils.replaceCaps(pr.getEntityNode()));
+                                c.setClient(ClientsIcons.getInstance().getClientIDByCaps(pr.getEntityNode()));
                             }
                         }
                         
@@ -1559,7 +1560,7 @@ public class Roster
                         if (pr.getTypeIndex()!=Presence.PRESENCE_ERROR) {
                             if (pr.hasEntityCaps())
                                 if (pr.getEntityNode()!=null)
-                                    c.setClientVersion(StringUtils.replaceCaps(pr.getEntityNode()));
+                                    c.setClient(ClientsIcons.getInstance().getClientIDByCaps(pr.getEntityNode()));
 
                             JabberDataBlock j2j=pr.findNamespace("x", "j2j:history");
                             if (j2j!=null) {
@@ -2290,7 +2291,7 @@ public class Roster
             }
 //#endif
             mess.append((cntact.getJ2J()!=null)?"\nJ2J: "+cntact.getJ2J():"");
-            mess.append((cntact.getClientVersion()!=null)?"\nUse: "+cntact.getClientVersion():"");
+            mess.append((cntact.getClient()>-1)?"\nUse: "+ClientsIcons.getInstance().getClientNameByID(cntact.getClient()):"");
             if (cntact.statusString!=null) {
                 mess.append("\n")
                     .append(SR.MS_STATUS)

@@ -1,0 +1,13 @@
+http://bombusmod.net.ru/caps	BombusMod
+http://bombus-im.org/java	Bombus
+http://bombus-im.org/ng	BombusNG
+http://psi-im.org/caps	Psi
+http://miranda-im.org/caps	Miranda
+http://voffk.org.ru/bombus	Bombus+
+http://www.google.com/xmpp/client/caps	Google
+http://tkabber.jabber.ru/	Tkabber
+http://gajim.org/caps	Gajim
+http://qip.ru/caps	Qip
+http://pidgin.im/caps	Pidgin
+http://gaim.sf.net/caps	Gaim
+http://kopete.kde.org/jabber/caps	Kopete

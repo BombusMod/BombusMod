@@ -107,6 +107,9 @@ public class ContactMessageList extends MessageList
 //#         mainbar.addElement(null);
 //#endif
 //#endif
+//#ifdef CLIENTS_ICONS
+//#         mainbar.addElement(null);
+//#endif
         
         cursor=0;//activate
 //#ifndef WMUC     
@@ -202,18 +205,26 @@ public class ContactMessageList extends MessageList
             }
         }
         int num=2;
+//#ifdef CLIENTS_ICONS
+//#         if (contact.getClient()>-1)
+//#             getMainBarItem().setElementAt(RosterIcons.iconTransparent, num++);
+//#endif
 //#ifdef PEP
 //#         if (contact.hasMood()) {
 //#             getMainBarItem().setElementAt(RosterIcons.iconTransparent, num++);
-//#         } else
+//#         }
 //#ifdef PEP_TUNE
-//#         if (contact.pepTune) {
+//#         else if (contact.pepTune) {
 //#             getMainBarItem().setElementAt(RosterIcons.iconTransparent, num++);
 //#         }
 //#endif
 //#endif
         getMainBarItem().setElementAt((contact.vcard==null)?null:RosterIcons.iconHasVcard, num++);
         getMainBarItem().setElementAt(sd.roster.getEventIcon(), num++);
+//#ifdef CLIENTS_ICONS
+//#         if (contact.getClient()<0)
+//#             getMainBarItem().setElementAt(RosterIcons.iconTransparent, num++);
+//#endif
 //#ifdef PEP
 //#         if (!contact.hasMood()) {
 //#             getMainBarItem().setElementAt(RosterIcons.iconTransparent, num++);
