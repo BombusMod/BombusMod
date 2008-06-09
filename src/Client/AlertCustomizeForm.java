@@ -32,7 +32,7 @@ package Client;
 import locale.SR;
 import java.util.Vector;
 import ui.EventNotify;
-import ui.controls.form.BoldString;
+import ui.controls.form.SimpleString;
 import ui.controls.form.CheckBox;
 import ui.controls.form.DefForm;
 import ui.controls.form.DropChoiceBox;
@@ -88,43 +88,43 @@ public class AlertCustomizeForm
             fileNames.addElement((String)file.nextElement());
 	}
         
-        itemsList.addElement(new BoldString(SR.MS_MESSAGE_SOUND));
+        itemsList.addElement(new SimpleString(SR.MS_MESSAGE_SOUND, true));
         MessageFile=new DropChoiceBox(display); MessageFile.items=fileNames; 
         MessageFile.setSelectedIndex(ac.soundsMsgIndex); itemsList.addElement(MessageFile);
         
-        itemsList.addElement(new BoldString(SR.MS_ONLINE_SOUND));
+        itemsList.addElement(new SimpleString(SR.MS_ONLINE_SOUND, true));
         OnlineFile=new DropChoiceBox(display); OnlineFile.items=fileNames; 
         OnlineFile.setSelectedIndex(ac.soundOnlineIndex); itemsList.addElement(OnlineFile);
         
-        itemsList.addElement(new BoldString(SR.MS_OFFLINE_SOUND));
+        itemsList.addElement(new SimpleString(SR.MS_OFFLINE_SOUND, true));
         OfflineFile=new DropChoiceBox(display); OfflineFile.items=fileNames; 
         OfflineFile.setSelectedIndex(ac.soundOfflineIndex); itemsList.addElement(OfflineFile);
         
-        itemsList.addElement(new BoldString(SR.MS_MESSAGE_FOR_ME_SOUND));
+        itemsList.addElement(new SimpleString(SR.MS_MESSAGE_FOR_ME_SOUND, true));
         ForYouFile=new DropChoiceBox(display); ForYouFile.items=fileNames; 
         ForYouFile.setSelectedIndex(ac.soundForYouIndex); itemsList.addElement(ForYouFile);
         
-        itemsList.addElement(new BoldString(SR.MS_COMPOSING_SOUND));
+        itemsList.addElement(new SimpleString(SR.MS_COMPOSING_SOUND, true));
         ComposingFile=new DropChoiceBox(display); ComposingFile.items=fileNames; 
         ComposingFile.setSelectedIndex(ac.soundComposingIndex); itemsList.addElement(ComposingFile);
         
-        itemsList.addElement(new BoldString(SR.MS_CONFERENCE_SOUND));
+        itemsList.addElement(new SimpleString(SR.MS_CONFERENCE_SOUND, true));
         ConferenceFile=new DropChoiceBox(display); ConferenceFile.items=fileNames; 
         ConferenceFile.setSelectedIndex(ac.soundConferenceIndex); itemsList.addElement(ConferenceFile);
         
-        itemsList.addElement(new BoldString(SR.MS_STARTUP_SOUND));
+        itemsList.addElement(new SimpleString(SR.MS_STARTUP_SOUND, true));
         StartUpFile=new DropChoiceBox(display); StartUpFile.items=fileNames; 
         StartUpFile.setSelectedIndex(ac.soundStartUpIndex); itemsList.addElement(StartUpFile);
         
-        itemsList.addElement(new BoldString(SR.MS_OUTGOING_SOUND));
+        itemsList.addElement(new SimpleString(SR.MS_OUTGOING_SOUND, true));
         OutgoingFile=new DropChoiceBox(display); OutgoingFile.items=fileNames; 
         OutgoingFile.setSelectedIndex(ac.soundOutgoingIndex); itemsList.addElement(OutgoingFile);
         
-        itemsList.addElement(new BoldString(SR.MS_VIP_SOUND));
+        itemsList.addElement(new SimpleString(SR.MS_VIP_SOUND, true));
         VIPFile=new DropChoiceBox(display); VIPFile.items=fileNames; 
         VIPFile.setSelectedIndex(ac.soundVIPIndex); itemsList.addElement(VIPFile);
 
-        itemsList.addElement(new BoldString(SR.MS_SHOW_LAST_APPEARED_CONTACTS));
+        itemsList.addElement(new SimpleString(SR.MS_SHOW_LAST_APPEARED_CONTACTS, true));
         statusBox=new CheckBox(SR.MS_STATUS, cf.notifyPicture); itemsList.addElement(statusBox);
         blinkBox=new CheckBox(SR.MS_BLINKING, cf.notifyBlink); itemsList.addElement(blinkBox);
         soundBox=new CheckBox(SR.MS_SOUND, cf.notifySound); itemsList.addElement(soundBox);
@@ -132,7 +132,7 @@ public class AlertCustomizeForm
         itemsList.addElement(new SpacerItem(10));
         vibrateOnlyHighlited=new CheckBox(SR.MS_VIBRATE_ONLY_HIGHLITED, ac.vibrateOnlyHighlited); itemsList.addElement(vibrateOnlyHighlited);
         
-        itemsList.addElement(new BoldString(SR.MS_SOUND_VOLUME));
+        itemsList.addElement(new SimpleString(SR.MS_SOUND_VOLUME, true));
         sndVol=new TrackItem(ac.soundVol/10, 10);
         itemsList.addElement(sndVol);
         

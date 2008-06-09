@@ -52,12 +52,12 @@ public abstract class MessageList extends VirtualList implements CommandListener
 //#ifdef CLIPBOARD
 //#     private ClipBoard clipboard;
 //#     
-//#     protected Command cmdCopy = new Command(SR.MS_COPY, Command.SCREEN, 20);
-//#     protected Command cmdCopyPlus = new Command("+ "+SR.MS_COPY, Command.SCREEN, 30);
+//#     protected Command cmdCopy = new Command(SR.MS_COPY, Command.ITEM, 20);
+//#     protected Command cmdCopyPlus = new Command("+ "+SR.MS_COPY, Command.ITEM, 30);
 //#endif
-    protected Command cmdxmlSkin = new Command(SR.MS_USE_COLOR_SCHEME, Command.SCREEN, 40);
+    protected Command cmdxmlSkin = new Command(SR.MS_USE_COLOR_SCHEME, Command.ITEM, 40);
 
-    protected Command cmdUrl = new Command(SR.MS_GOTO_URL, Command.SCREEN, 80);
+    protected Command cmdUrl = new Command(SR.MS_GOTO_URL, Command.ITEM, 80);
     protected Command cmdBack = new Command(SR.MS_BACK, Command.BACK, 99);
     
     /** Creates a new instance of MessageList */

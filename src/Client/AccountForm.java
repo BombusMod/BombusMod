@@ -32,7 +32,7 @@ import javax.microedition.lcdui.TextField;
 import locale.SR;
 import ui.SplashScreen;
 import ui.controls.AlertBox;
-import ui.controls.form.BoldString;
+import ui.controls.form.SimpleString;
 import ui.controls.form.CheckBox;
 import ui.controls.form.DropChoiceBox;
 import ui.controls.form.DefForm;
@@ -152,7 +152,7 @@ public class AccountForm
 //#        itemsList.addElement(pollingbox);
 //#endif
         
-        itemsList.addElement(new BoldString(SR.MS_KEEPALIVE));
+        itemsList.addElement(new SimpleString(SR.MS_KEEPALIVE, true));
         keepAliveType=new DropChoiceBox(display);
         keepAliveType.append("by socket");
         keepAliveType.append("1 byte");
@@ -244,7 +244,7 @@ public class AccountForm
 
     public void destroyView(){
         if (newaccount) {
-            new AlertBox(SR.MS_CONECT_TO, account.getBareJid()+"?", display, StaticData.getInstance().roster) {
+            new AlertBox(SR.MS_CONNECT_TO, account.getBareJid()+"?", display, StaticData.getInstance().roster) {
                 public void yes() { startLogin();}
                 public void no() { if (display!=null) display.setCurrent(parentView); }
             };

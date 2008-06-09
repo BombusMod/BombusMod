@@ -36,7 +36,6 @@ import locale.SR;
 import ui.controls.form.DefForm;
 import ui.controls.form.SpacerItem;
 import ui.controls.form.TextInput;
-import xmpp.extensions.IqQueryRoster;
 
 /**
  *
@@ -47,19 +46,19 @@ public class RenameGroup
     
     private Display display;
     private Group group;
-    private Contact contact;
+    //private Contact contact;
     StaticData sd=StaticData.getInstance();
     
     private TextInput groupName;
     
     /** Creates a new instance of newRenameGroup */
-    public RenameGroup(Display display, Group group, Contact contact) {
+    public RenameGroup(Display display, Group group/*, Contact contact*/) {
         super(display, SR.MS_RENAME);
-        this.contact=contact;
+        //this.contact=contact;
         this.group=group;
         this.display=display;
         
-        groupName = new TextInput(display, null, (contact==null)?group.getName():contact.getGroup().getName(), "groups", TextField.ANY); // 32, TextField.ANY
+        groupName = new TextInput(display, null, /*(contact==null)?*/group.getName()/*:contact.getGroup().getName()*/, "groups", TextField.ANY); // 32, TextField.ANY
         itemsList.addElement(groupName);
         
         itemsList.addElement(new SpacerItem(0));
@@ -70,10 +69,10 @@ public class RenameGroup
     }
 
     public void  cmdOk() {
-        if (contact==null)
+        //if (contact==null)
             sd.roster.theStream.send(new IqQueryRenameGroup (group.getName(), groupName.getValue()));
-        else
-            sd.roster.theStream.send(new IqQueryRoster(contact.getBareJid(), contact.nick, groupName.getValue(), null)); 
+        /*else
+            sd.roster.theStream.send(new IqQueryRoster(contact.getBareJid(), contact.nick, groupName.getValue(), null)); */
 
         destroyView();
     }

@@ -31,7 +31,7 @@ import com.alsutton.jabber.JabberDataBlock;
 import locale.SR;
 import javax.microedition.lcdui.*;
 import com.alsutton.jabber.datablocks.Presence;
-import ui.controls.form.BoldString;
+import ui.controls.form.SimpleString;
 import ui.controls.form.CheckBox;
 import ui.controls.form.DefForm;
 import ui.controls.form.NumberInput;

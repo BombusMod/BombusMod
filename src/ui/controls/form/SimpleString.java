@@ -41,18 +41,21 @@ public class SimpleString
     private String text;
     
     private boolean selectable=false;
+
+    private boolean bold;
     
     /**
      * Creates a new instance of SimpleString
      */
-    public SimpleString(String text) {
+    public SimpleString(String text, boolean bold) {
         super(null);
         this.text=text;
+        this.bold=bold;
     }
     
     public String toString() { return text; }
     
     public boolean isSelectable() { return selectable; }
     
-    public Font getFont() { return FontCache.getMsgFont(); }
+    public Font getFont() { return (bold)?FontCache.getMsgFontBold():FontCache.getMsgFont(); }
 }

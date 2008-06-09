@@ -35,7 +35,7 @@ import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
-import ui.controls.form.BoldString;
+import ui.controls.form.SimpleString;
 import ui.controls.form.DefForm;
 import ui.controls.form.MultiLine;
 import ui.controls.form.TextInput;
@@ -86,7 +86,7 @@ public class TransferAcceptFile
         
         fileName=new TextInput(display, SR.MS_FILE, name, "", TextField.ANY);
         itemsList.addElement(fileName);
-        itemsList.addElement(new BoldString(SR.MS_FILE_SIZE+String.valueOf(t.fileSize)));
+        itemsList.addElement(new SimpleString(SR.MS_FILE_SIZE+String.valueOf(t.fileSize), true));
 
         path=new TextInput(display, SR.MS_SAVE_TO, t.filePath, "recvPath", TextField.ANY);
         itemsList.addElement(path);

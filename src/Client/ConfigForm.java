@@ -32,7 +32,6 @@ import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
 import ui.VirtualList;
-import ui.controls.form.BoldString;
 import ui.controls.form.CheckBox;
 import ui.controls.form.DropChoiceBox;
 import ui.controls.form.DefForm;
@@ -138,7 +137,7 @@ public class ConfigForm
 
         cf=Config.getInstance();
 
-        itemsList.addElement(new BoldString(SR.MS_ROSTER_ELEMENTS));
+        itemsList.addElement(new SimpleString(SR.MS_ROSTER_ELEMENTS, true));
         showOfflineContacts = new CheckBox(SR.MS_OFFLINE_CONTACTS, cf.showOfflineContacts); itemsList.addElement(showOfflineContacts);
         selfContact = new CheckBox(SR.MS_SELF_CONTACT, cf.selfContact); itemsList.addElement(selfContact);
         showTransports = new CheckBox(SR.MS_TRANSPORTS, cf.showTransports); itemsList.addElement(showTransports);
@@ -149,7 +148,7 @@ public class ConfigForm
         useBoldFont = new CheckBox(SR.MS_BOLD_FONT, cf.useBoldFont); itemsList.addElement(useBoldFont);
         rosterStatus = new CheckBox(SR.MS_SHOW_STATUSES, cf.rosterStatus); itemsList.addElement(rosterStatus);
 
-        itemsList.addElement(new BoldString(SR.MS_AUTH_NEW));
+        itemsList.addElement(new SimpleString(SR.MS_AUTH_NEW, true));
         subscr=new DropChoiceBox(display);
         subscr.append(SR.MS_SUBSCR_AUTO);
         subscr.append(SR.MS_SUBSCR_ASK);
@@ -158,7 +157,7 @@ public class ConfigForm
         subscr.setSelectedIndex(cf.autoSubscribe);
         itemsList.addElement(subscr);
 
-        itemsList.addElement(new BoldString(SR.MS_NOT_IN_LIST));
+        itemsList.addElement(new SimpleString(SR.MS_NOT_IN_LIST, true));
         nil=new DropChoiceBox(display);
         nil.append(SR.MS_NIL_DROP_MP);
         nil.append(SR.MS_NIL_DROP_P);
@@ -166,7 +165,7 @@ public class ConfigForm
         nil.setSelectedIndex((cf.notInListDropLevel>NotInListFilter.ALLOW_ALL)? NotInListFilter.ALLOW_ALL: cf.notInListDropLevel);
         itemsList.addElement(nil);
 
-        itemsList.addElement(new BoldString(SR.MS_MESSAGES));
+        itemsList.addElement(new SimpleString(SR.MS_MESSAGES, false));
 //#ifdef SMILES
             smiles = new CheckBox(SR.MS_SMILES, cf.smiles); itemsList.addElement(smiles);
 //#endif
@@ -207,11 +206,11 @@ public class ConfigForm
         messageLimit=new NumberInput(display, SR.MS_MESSAGE_COLLAPSE_LIMIT, Integer.toString(cf.messageLimit), 200, 1000);
         itemsList.addElement(messageLimit);
         
-        itemsList.addElement(new BoldString(SR.MS_STARTUP_ACTIONS));
+        itemsList.addElement(new SimpleString(SR.MS_STARTUP_ACTIONS, true));
         autoLogin = new CheckBox(SR.MS_AUTOLOGIN, cf.autoLogin); itemsList.addElement(autoLogin);
         autoJoinConferences = new CheckBox(SR.MS_AUTO_CONFERENCES, cf.autoJoinConferences); itemsList.addElement(autoJoinConferences);
         
-        itemsList.addElement(new BoldString(SR.MS_APPLICATION));
+        itemsList.addElement(new SimpleString(SR.MS_APPLICATION, true));
         fullscreen = new CheckBox(SR.MS_FULLSCREEN, cf.fullscreen); itemsList.addElement(fullscreen);
         memMonitor = new CheckBox(SR.MS_HEAP_MONITOR, cf.memMonitor); itemsList.addElement(memMonitor);
         enableVersionOs = new CheckBox(SR.MS_SHOW_HARDWARE, cf.enableVersionOs); itemsList.addElement(enableVersionOs);
@@ -229,23 +228,23 @@ public class ConfigForm
         }
         
 
-        itemsList.addElement(new BoldString(SR.MS_TIME_SETTINGS));
-        itemsList.addElement(new SimpleString(SR.MS_GMT_OFFSET));
+        itemsList.addElement(new SimpleString(SR.MS_TIME_SETTINGS, true));
+        itemsList.addElement(new SimpleString(SR.MS_GMT_OFFSET, false));
 	fieldGmt=new NumberInput(display, null, Integer.toString(cf.gmtOffset), -12, 12); 
         itemsList.addElement(fieldGmt);
         
-        itemsList.addElement(new SimpleString(SR.MS_CLOCK_OFFSET));
+        itemsList.addElement(new SimpleString(SR.MS_CLOCK_OFFSET, false));
         fieldLoc=new NumberInput(display, null, Integer.toString(cf.locOffset), -12, 12 );
         itemsList.addElement(fieldLoc);
 
-        itemsList.addElement(new BoldString(SR.MS_TEXTWRAP));
+        itemsList.addElement(new SimpleString(SR.MS_TEXTWRAP, true));
         textWrap=new DropChoiceBox(display);
         textWrap.append(SR.MS_TEXTWRAP_CHARACTER);
         textWrap.append(SR.MS_TEXTWRAP_WORD);
 	textWrap.setSelectedIndex(cf.textWrap);
 	itemsList.addElement(textWrap);
         
-        itemsList.addElement(new BoldString(SR.MS_LANGUAGE));
+        itemsList.addElement(new SimpleString(SR.MS_LANGUAGE, true));
         langFiles=new DropChoiceBox(display);
 	langs=new StringLoader().stringLoader("/lang/res.txt",3);
         
@@ -267,7 +266,7 @@ public class ConfigForm
         itemsList.addElement(langFiles);
 
 //#ifdef AUTOSTATUS
-//#         itemsList.addElement(new BoldString(SR.MS_AWAY_TYPE));
+//#         itemsList.addElement(new SimpleString(SR.MS_AWAY_TYPE, true));
 //#         autoAwayType=new DropChoiceBox(display);
 //#         autoAwayType.append(SR.MS_AWAY_OFF);
 //#         autoAwayType.append(SR.MS_AWAY_LOCK);

@@ -34,7 +34,7 @@ import Client.StaticData;
 import java.util.Vector;
 import javax.microedition.lcdui.*;
 import locale.SR;
-import ui.controls.form.BoldString;
+import ui.controls.form.SimpleString;
 import ui.controls.form.CheckBox;
 import ui.controls.form.DefForm;
 import ui.controls.form.DropChoiceBox;
@@ -90,7 +90,7 @@ public class PrivacyForm
         
         itemsList=new Vector();
         
-        itemsList.addElement(new BoldString(SR.MS_PRIVACY_ACTION));
+        itemsList.addElement(new SimpleString(SR.MS_PRIVACY_ACTION, true));
         choiceAction=new DropChoiceBox(display);
         for(int i=0; i<PrivacyItem.actions.length; i++){
             choiceAction.append(PrivacyItem.actions[i]);
@@ -99,7 +99,7 @@ public class PrivacyForm
         itemsList.addElement(choiceAction);
         
 
-        itemsList.addElement(new BoldString(SR.MS_PRIVACY_TYPE));
+        itemsList.addElement(new SimpleString(SR.MS_PRIVACY_TYPE, true));
         choiceType=new DropChoiceBox(display);
         for(int i=0; i<PrivacyItem.types.length; i++){
             choiceType.append(PrivacyItem.types[i]);
@@ -125,7 +125,7 @@ public class PrivacyForm
                 itemsList.addElement(textValue);
                 break;
             case 2: //subscription
-                itemsList.addElement(new BoldString(SR.MS_SUBSCRIPTION));
+                itemsList.addElement(new SimpleString(SR.MS_SUBSCRIPTION, true));
                 choiceSubscr=new DropChoiceBox(display);
                 for(int i=0; i<PrivacyItem.subscrs.length; i++){
                     choiceSubscr.append(PrivacyItem.subscrs[i]);
@@ -140,7 +140,7 @@ public class PrivacyForm
                 break;
         }
 
-        itemsList.addElement(new BoldString(SR.MS_STANZAS));
+        itemsList.addElement(new SimpleString(SR.MS_STANZAS, true));
         
         messageStz=new CheckBox(PrivacyItem.stanzas[0], item.messageStz); itemsList.addElement(messageStz);
         presenceInStz=new CheckBox(PrivacyItem.stanzas[1], item.presenceInStz); itemsList.addElement(presenceInStz);

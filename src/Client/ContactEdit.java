@@ -32,7 +32,7 @@ import Conference.MucContact;
 import javax.microedition.lcdui.*;
 import java.util.*;
 import locale.SR;
-import ui.controls.form.BoldString;
+import ui.controls.form.SimpleString;
 import ui.controls.form.CheckBox;
 import ui.controls.form.DefForm;
 import ui.controls.form.DropChoiceBox;
@@ -151,12 +151,12 @@ public final class ContactEdit
         if (c==null){
             itemsList.addElement(tJid);// newGroupPos++;
             
-            itemsList.addElement(new BoldString(SR.MS_TRANSPORT));// newGroupPos++;
+            itemsList.addElement(new SimpleString(SR.MS_TRANSPORT, true));// newGroupPos++;
             itemsList.addElement(tTranspList);// newGroupPos++;
         }
         itemsList.addElement(tNick);// newGroupPos++;
         
-        itemsList.addElement(new BoldString(SR.MS_GROUP));// newGroupPos++;
+        itemsList.addElement(new SimpleString(SR.MS_GROUP, true));// newGroupPos++;
         tGrpList.append(SR.MS_NEWGROUP);
         tGrpList.setSelectedIndex(sel);
         itemsList.addElement(tGrpList);
@@ -166,7 +166,7 @@ public final class ContactEdit
         //itemsList.addElement(tGroup);
 
         if (newContact) {
-            itemsList.addElement(new BoldString(SR.MS_SUBSCRIPTION));
+            itemsList.addElement(new SimpleString(SR.MS_SUBSCRIPTION, true));
             itemsList.addElement(tAskSubscrCheckBox);
         }
         
@@ -181,6 +181,9 @@ public final class ContactEdit
             String group=group(tGrpList.getSelectedIndex());
             if (group==null) group=tGroup.getValue();
             boolean ask=tAskSubscrCheckBox.getValue();
+            
+            if (group.equals(SR.MS_GENERAL))
+                group="";
 
             int at=jid.indexOf('@');
             if (at<0 && tTranspList.getSelectedIndex()!=tTranspList.size()-1) {

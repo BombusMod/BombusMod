@@ -41,7 +41,7 @@ public abstract class LinkString
     
     /** Creates a new instance of NewClass */
     public LinkString(String text) {
-        super(text);
+        super(text, true);
         ct=ColorTheme.getInstance();
     }
     

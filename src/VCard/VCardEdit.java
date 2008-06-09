@@ -32,7 +32,7 @@ import util.StringUtils;
 import ui.controls.form.ImageItem;
 import ui.controls.form.DefForm;
 import ui.controls.form.SimpleString;
-import ui.controls.form.BoldString;
+import ui.controls.form.SimpleString;
 import ui.controls.form.TextInput;
 
 /**
@@ -68,9 +68,9 @@ public class VCardEdit
 
     private int st=-1;
 
-    private SimpleString endVCard=new SimpleString("[end of vCard]");
-    private SimpleString noPhoto=new SimpleString("[No photo available]");
-    private SimpleString badFormat=new SimpleString("[Unsupported format]");
+    private SimpleString endVCard=new SimpleString("[end of vCard]", false);
+    private SimpleString noPhoto=new SimpleString("[No photo available]", false);
+    private SimpleString badFormat=new SimpleString("[Unsupported format]", false);
 
     /** Creates a new instance of vCardForm */
     public VCardEdit(Display display, VCard vcard) {

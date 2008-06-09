@@ -31,7 +31,6 @@ import javax.microedition.lcdui.*;
 import locale.SR;
 import ui.*;
 import ui.MainBar;
-import ui.controls.form.BoldString;
 import ui.controls.form.CheckBox;
 import ui.controls.form.DefForm;
 import ui.controls.form.NumberInput;
@@ -161,8 +160,8 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
                 itemsList.addElement(tfAutoRespondMessage);
             }
             
-            itemsList.addElement(new SimpleString("%t - time"));
-            itemsList.addElement(new SimpleString("%dt - date time"));
+            itemsList.addElement(new SimpleString("%t - time", false));
+            itemsList.addElement(new SimpleString("%dt - date time", false));
             
             moveCursorTo(getNextSelectableRef(-1));
             attachDisplay(display);

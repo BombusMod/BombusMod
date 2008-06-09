@@ -140,7 +140,7 @@ public class RosterItemActions extends Menu {
                     addItem(SR.MS_EDIT,2, ActionsIcons.ICON_RENAME);
                 }
 		addItem(SR.MS_SUBSCRIPTION,3, ActionsIcons.ICON_SUBSCR);
-		addItem(SR.MS_MOVE,1003, ActionsIcons.ICON_MOVE);
+//		addItem(SR.MS_MOVE,1003, ActionsIcons.ICON_MOVE);
 		addItem(SR.MS_DELETE, 4, ActionsIcons.ICON_DELETE);
 		addItem(SR.MS_DIRECT_PRESENCE,45, ActionsIcons.ICON_SET_STATUS);
 	    }
@@ -375,9 +375,10 @@ public class RosterItemActions extends Menu {
                     new ServiceDiscovery(display, c.getJid(), "http://jabber.org/protocol/commands");
                     return;
 //#endif
-                case 1003: 
+/*                case 1003: 
                     new RenameGroup(display, null, c);
                     return;
+ */
                 case 889: //idle
                     sd.roster.setQuerySign(true);
                     sd.roster.theStream.send(IqLast.query(c.getJid(), "idle"));
@@ -571,7 +572,7 @@ public class RosterItemActions extends Menu {
             {
                 switch (index) {
                     case 1001: //rename
-                        new RenameGroup(display, sg, null);
+                        new RenameGroup(display, sg/*, null*/);
                         return;
                     case 1004: //delete
                         new AlertBox(sg.getName(), SR.MS_DELETE_ASK, display, sd.roster) {

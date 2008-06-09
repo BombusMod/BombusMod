@@ -55,7 +55,7 @@ public class ConfigFonts
         
         cf=Config.getInstance();
         
-        itemsList.addElement(new SimpleString(SR.MS_ROSTER_FONT));
+        itemsList.addElement(new SimpleString(SR.MS_ROSTER_FONT, false));
         font1=new DropChoiceBox(display);
         font1.append(SR.MS_FONTSIZE_NORMAL);
         font1.append(SR.MS_FONTSIZE_SMALL);
@@ -63,7 +63,7 @@ public class ConfigFonts
         font1.setSelectedIndex(cf.font1/8);
         itemsList.addElement(font1);
         
-        itemsList.addElement(new SimpleString(SR.MS_MESSAGE_FONT));
+        itemsList.addElement(new SimpleString(SR.MS_MESSAGE_FONT, false));
         font2=new DropChoiceBox(display);
         font2.append(SR.MS_FONTSIZE_NORMAL);
         font2.append(SR.MS_FONTSIZE_SMALL);
@@ -71,7 +71,7 @@ public class ConfigFonts
         font2.setSelectedIndex(cf.font2/8);
         itemsList.addElement(font2);
         
-        itemsList.addElement(new SimpleString(SR.MS_BAR_FONT));
+        itemsList.addElement(new SimpleString(SR.MS_BAR_FONT, false));
         font3=new DropChoiceBox(display);
         font3.append(SR.MS_FONTSIZE_NORMAL);
         font3.append(SR.MS_FONTSIZE_SMALL);
@@ -79,7 +79,7 @@ public class ConfigFonts
         font3.setSelectedIndex(cf.font3/8);
         itemsList.addElement(font3);
         
-        itemsList.addElement(new SimpleString(SR.MS_POPUP_FONT));
+        itemsList.addElement(new SimpleString(SR.MS_POPUP_FONT, false));
         font4=new DropChoiceBox(display);
         font4.append(SR.MS_FONTSIZE_NORMAL);
         font4.append(SR.MS_FONTSIZE_SMALL);

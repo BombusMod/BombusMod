@@ -32,7 +32,6 @@ import java.util.Vector;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
-import ui.controls.form.BoldString;
 import ui.controls.form.DropChoiceBox;
 import ui.controls.form.DefForm;
 import ui.controls.form.NumberInput;
@@ -126,7 +125,7 @@ public class AutoTaskForm
 //#     public void update(){
 //#         itemsList=new Vector();
 //#         
-//#         itemsList.addElement(new BoldString(SR.MS_AUTOTASK_TYPE));
+//#         itemsList.addElement(new SimpleString(SR.MS_AUTOTASK_TYPE, true));
 //#         taskType=new DropChoiceBox(display);
 //#         taskType.append(SR.MS_DISABLED);
 //#         taskType.append(SR.MS_BY_TIME_);
@@ -134,7 +133,7 @@ public class AutoTaskForm
 //#         taskType.setSelectedIndex(typeIndex);
 //#         itemsList.addElement(taskType);
 //#         
-//#         itemsList.addElement(new BoldString(SR.MS_AUTOTASK_ACTION_TYPE));
+//#         itemsList.addElement(new SimpleString(SR.MS_AUTOTASK_ACTION_TYPE, true));
 //#         actionType=new DropChoiceBox(display);
 //#         actionType.append(SR.MS_AUTOTASK_QUIT_BOMBUSMOD);
 //#         actionType.append(SR.MS_AUTOTASK_QUIT_CONFERENCES);
@@ -144,7 +143,7 @@ public class AutoTaskForm
 //#         itemsList.addElement(actionType);
 //#         
 //#         if (typeIndex==1) {
-//#             itemsList.addElement(new BoldString(SR.MS_AUTOTASK_TIME));
+//#             itemsList.addElement(new SimpleString(SR.MS_AUTOTASK_TIME, true));
 //# 
 //#             autoTaskHour=new NumberInput(display, SR.MS_AUTOTASK_HOUR, Integer.toString(hour), 0, 23);
 //#             itemsList.addElement(autoTaskHour);

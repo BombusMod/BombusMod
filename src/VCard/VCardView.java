@@ -43,7 +43,6 @@ import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Image;
 import locale.SR;
-import ui.controls.form.BoldString;
 import ui.controls.form.DefForm;
 import ui.controls.form.ImageItem;
 import ui.controls.form.MultiLine;
@@ -64,10 +63,10 @@ public class VCardView
     private VCard vcard;
     private ImageItem photoItem;
     
-    private SimpleString endVCard=new SimpleString("[End of vCard]");
-    private BoldString noVCard=new BoldString("[No vCard available]");
-    private SimpleString noPhoto=new SimpleString("[No photo available]");
-    private SimpleString badFormat=new SimpleString("[Unsupported format]");
+    private SimpleString endVCard=new SimpleString("[End of vCard]", false);
+    private SimpleString noVCard=new SimpleString("[No vCard available]", true);
+    private SimpleString noPhoto=new SimpleString("[No photo available]", false);
+    private SimpleString badFormat=new SimpleString("[Unsupported format]", false);
 
 //#ifdef CLIPBOARD
 //#     private Command cmdCopy   = new Command(SR.MS_COPY, Command.OK, 1);

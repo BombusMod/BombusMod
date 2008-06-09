@@ -76,11 +76,11 @@ public class TestForm
         LinkString testLinkString0=new LinkString(SR.MS_COLOR_TUNE) { public void doAction() { new ColorsList(display); } };
         itemsList.addElement(testLinkString0);
         
-        BoldString testBoldString0=new BoldString("test bold string");
+        SimpleString testBoldString0=new SimpleString("test bold string", true);
         itemsList.addElement(testBoldString0);
-        SimpleString testSimpleString0=new SimpleString("test string");
+        SimpleString testSimpleString0=new SimpleString("test string", false);
         itemsList.addElement(testSimpleString0);
-        SimpleString testSimpleString1=new SimpleString("test checkBox");
+        SimpleString testSimpleString1=new SimpleString("test checkBox", false);
         itemsList.addElement(testSimpleString1);        
         CheckBox testCheckBox1=new CheckBox("checkBox1", false);
         itemsList.addElement(testCheckBox1);
@@ -88,7 +88,7 @@ public class TestForm
         SpacerItem testSpacerItem1=new SpacerItem(0);
         itemsList.addElement(testSpacerItem1);     
         
-        SimpleString testSimpleString2=new SimpleString("test CheckBoxGroup");
+        SimpleString testSimpleString2=new SimpleString("test CheckBoxGroup", false);
         itemsList.addElement(testSimpleString2);   
         CheckBox testCheckBox2=new CheckBox("item1", true);
         itemsList.addElement(testCheckBox2);
@@ -106,10 +106,10 @@ public class TestForm
         SpacerItem testSpacerItem4=new SpacerItem(0);
         itemsList.addElement(testSpacerItem4);
         
-        SimpleString testSimpleString4=new SimpleString("test ChoiceGroup");
+        SimpleString testSimpleString4=new SimpleString("test ChoiceGroup", false);
         itemsList.addElement(testSimpleString4);
         
-        ChoiceBox testChoiceBox1=new ChoiceBox(/*, "KeepAlive:"*/);
+        DropChoiceBox testChoiceBox1=new DropChoiceBox(display);
         testChoiceBox1.append("by socket");
         testChoiceBox1.append("1 byte");
         testChoiceBox1.append("<iq/>");

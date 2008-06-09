@@ -39,7 +39,7 @@ import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
-import ui.controls.form.BoldString;
+import ui.controls.form.SimpleString;
 import ui.controls.form.DefForm;
 import ui.controls.form.DropChoiceBox;
 import ui.controls.form.TextInput;
@@ -63,9 +63,9 @@ public class InviteForm
         this.contact=contact;
         parentView=display.getCurrent();
         
-        itemsList.addElement(new BoldString(contact.getName()));
+        itemsList.addElement(new SimpleString(contact.getName(), true));
 
-        itemsList.addElement(new BoldString(SR.MS_CONFERENCE));
+        itemsList.addElement(new SimpleString(SR.MS_CONFERENCE, true));
         conferenceList=new DropChoiceBox(display);
         for (Enumeration c=StaticData.getInstance().roster.getHContacts().elements(); c.hasMoreElements(); ) {
             try {

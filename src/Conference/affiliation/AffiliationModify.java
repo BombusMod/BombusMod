@@ -34,7 +34,7 @@ import com.alsutton.jabber.datablocks.Iq;
 import javax.microedition.lcdui.*;
 import locale.SR;
 import ui.controls.AlertBox;
-import ui.controls.form.BoldString;
+import ui.controls.form.SimpleString;
 import ui.controls.form.DefForm;
 import ui.controls.form.DropChoiceBox;
 import ui.controls.form.TextInput;
@@ -68,7 +68,7 @@ public class AffiliationModify
         jidItem=new TextInput(display, SR.MS_JID, jid, null, TextField.ANY);
         itemsList.addElement(jidItem);
 
-        itemsList.addElement(new BoldString(SR.MS_SET_AFFILIATION));
+        itemsList.addElement(new SimpleString(SR.MS_SET_AFFILIATION, true));
         affiliationItem=new DropChoiceBox(display);
         for (short index=0; index<=AffiliationItem.AFFILIATION_OUTCAST; index++) {
             String name=AffiliationItem.getAffiliationName(index);

@@ -89,4 +89,13 @@ public class CheckBox
     public boolean getValue() { return state; }
     
     public boolean isSelectable() { return selectable; }
+    
+    public boolean handleEvent(int keyCode) {
+         switch (keyCode) {
+            case 5:
+                state=!state;
+                return true;
+         }
+        return false;
+    }
 }
