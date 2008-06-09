@@ -99,9 +99,10 @@ public class InfoWindow
 //#         }
 //#endif
 
+        enableListWrapping(false);
+        
         moveCursorTo(getNextSelectableRef(-1));
         attachDisplay(display);
-        redraw();
     }
     
     public void commandAction(Command c, Displayable d){

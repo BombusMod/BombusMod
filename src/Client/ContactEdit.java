@@ -101,7 +101,6 @@ public final class ContactEdit
         
         //tGrpList=new ChoiceGroup(SR.MS_GROUP , ChoiceGroup.POPUP);
 
-        
         try {
             String jid;
 //#ifndef WMUC
@@ -150,17 +149,19 @@ public final class ContactEdit
         if (sel<0) sel=0;
         
         if (c==null){
-            itemsList.addElement(tJid); newGroupPos++;
+            itemsList.addElement(tJid);// newGroupPos++;
             
-            itemsList.addElement(new BoldString(SR.MS_TRANSPORT)); newGroupPos++;
-            itemsList.addElement(tTranspList); newGroupPos++;
+            itemsList.addElement(new BoldString(SR.MS_TRANSPORT));// newGroupPos++;
+            itemsList.addElement(tTranspList);// newGroupPos++;
         }
-        itemsList.addElement(tNick); newGroupPos++;
+        itemsList.addElement(tNick);// newGroupPos++;
         
-        itemsList.addElement(new BoldString(SR.MS_GROUP)); newGroupPos++;
+        itemsList.addElement(new BoldString(SR.MS_GROUP));// newGroupPos++;
         tGrpList.append(SR.MS_NEWGROUP);
         tGrpList.setSelectedIndex(sel);
         itemsList.addElement(tGrpList);
+        
+        newGroupPos=itemsList.indexOf(tGrpList);
         
         //itemsList.addElement(tGroup);
 
@@ -182,7 +183,7 @@ public final class ContactEdit
             boolean ask=tAskSubscrCheckBox.getValue();
 
             int at=jid.indexOf('@');
-            if (at<0) {
+            if (at<0 && tTranspList.getSelectedIndex()!=tTranspList.size()-1) {
                 StringBuffer jidBuf=new StringBuffer(jid);
                 at=jid.length();
                 jidBuf.setLength(at);
@@ -204,8 +205,9 @@ public final class ContactEdit
                     newGroup=true;
                 }
             } else {
-                if (newGroup)
+                if (newGroup) {
                     itemsList.removeElement(tGroup);
+                }
             }
         }
     }

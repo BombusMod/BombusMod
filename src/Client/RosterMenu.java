@@ -28,6 +28,7 @@ package Client;
 import images.MenuIcons;
 import javax.microedition.lcdui.Display;
 import locale.SR;
+import midlet.BombusMod;
 import ui.Menu;
 import ui.MenuItem;
 
@@ -58,8 +59,10 @@ public class RosterMenu extends Menu {
         addItem(SR.MS_TOOLS, 8,0x24);    
         addItem(SR.MS_ACCOUNT_, 9,0x01);
         addItem(SR.MS_ABOUT, 10,0x04);
-        addItem(SR.MS_CLEAN_ALL_MESSAGES, 11, 0x33);
-        addItem(SR.MS_APP_QUIT, 12,0x22);
+        if (cf.allowMinimize)
+            addItem(SR.MS_APP_MINIMIZE, 11,0x10);
+        addItem(SR.MS_CLEAN_ALL_MESSAGES, 12, 0x33);
+        addItem(SR.MS_APP_QUIT, 13,0x22);
     
 	attachDisplay(display);
     }
@@ -106,10 +109,13 @@ public class RosterMenu extends Menu {
             case 10: //about
                 sd.roster.cmdInfo();
 		break; 
-            case 11: //cleanup All Histories
+            case 11: //minimize
+                BombusMod.getInstance().hideApp(true);
+		break; 
+            case 12: //cleanup All Histories
                 sd.roster.cmdCleanAllMessages();
 		break; 
-	    case 12: {//quit
+	    case 13: {//quit
                 sd.roster.cmdQuit();
                 return;
 	    }
