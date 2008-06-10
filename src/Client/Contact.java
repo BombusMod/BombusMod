@@ -42,10 +42,9 @@ import javax.microedition.lcdui.Font;
 //#endif
 
 import javax.microedition.lcdui.Graphics;
-
+import ui.ImageList;
 //#ifdef PEP
 //# import images.MoodIcons;
-//# import ui.ImageList;
 //#endif
 import images.RosterIcons;
 import Colors.ColorTheme;

@@ -26,6 +26,7 @@ GMT offset	Часовой пояс (GMT+)
 Time settings (hours)	Налашт. часу
 Connected	З'єднано
 Connect to 	З'єднання з 
+Connect to	З'єднатися з
 Alert Profile	Сигнали
 Move Up	Перемістити вище
 Move Down	Перемістити нижче
@@ -54,7 +55,7 @@ Quit	Вихiд
 Edit list	Редагувати список
 Registering	Реєстрацiя
 Done	Виконано
-Error:	 Помилка: 
+Error: 	Помилка: 
 Browse	Огляд
 Save list	Зберегти список
 Keep-Alive period	Перiод підтримання з'єдання
@@ -171,8 +172,8 @@ Port	Порт
 
 Connect	З'єднатися
 history -	Iсторiя
-Are You sure want to discard	 Ви дiйсно хочете понизити у 
- from OWNER to	  з власника (OWNER) до 
+Are You sure want to discard 	Ви дiйсно хочете понизити у 
+ from OWNER to 	 з власника (OWNER) до 
 Modify affiliation	Змiна членства
 
 // DO NOT TRANSLATE THIS LINES!!!
@@ -187,8 +188,8 @@ Grant subscription	Дозволити пiдписку
 
 Invite to conference	Запросити в конференцiю
 Reason	Причина
-You have been invited to	 Ви були запрошенi до 
- is inviting You to	  запрошує Вас в 
+You have been invited to 	 Ви були запрошенi до 
+ is inviting You to 	 запрошує Вас в 
 Visitors are not allowed to send messages to all occupants	Гостi не можуть вiдсилати повiдомлення в загальний чат
 Unaffiliate	Позбавити членства
 Grant Moderator	Надати право модератора
@@ -198,14 +199,14 @@ Grant Ownership	Надати право власника
 
 room presences	статуси в конференцiї
 
- is now known as	  змінив НIК на 
- was banned	  заборонили входити в кiмнату 
- was kicked	  вигнали iз кiмнати 
+ is now known as 	 змінив НIК на 
+ was banned 	 заборонили входити в кiмнату 
+ was kicked 	 вигнали iз кiмнати 
  has been kicked because room became members-only	 вигнали, т.як. кiмната закрилася
- has left the channel	 вийшов з кiмнати
- has joined the channel as	  зайшов як 
- and	  i 
- is now	  тепер 
+ has left the channel	вийшов з кiмнати
+ has joined the channel as 	 зайшов як 
+ and 	 i 
+ is now 	 тепер 
 
 Participants	Учасники
 Abc	Абв
@@ -346,19 +347,19 @@ Initiating session	Створення сесiї
 
 second	секунда
 seconds	секунди
-seconds_	секунд
+second's	секунд
 
 minute	хвилина
 minutes	хвилини
-minutes_	хвилин
+minute's	хвилин
 
 hour	година
 hours	години
-hours_	годин
+hour's	годин
 
 day	день
 days	дня
-days_	днiв
+day's	днiв
 
 Auto xa since %t	Автостатус "недоступний" починючи з %t
 Auto away since %t	Автостатус "Вiдсутнiй" починаючи з %t
@@ -513,7 +514,6 @@ Deny subscription	Відмовіляти у підписці
 Not-in-list	Не-в-списку
 Clear popups	Видалити спривалючі повідомлення
 Last Messages	Останні повідомлення
-Sound volume	Гучність
 Break connection	Розірвати з'єднання
 autoScroll	автопрокрутка
 antispam conference	антиспам в конференціях
@@ -572,3 +572,30 @@ Bar font	Шрифт панелі
 Popup & ballon font	Шрифт спливаючих повідомлень
 Fonts options	Параметри шрифтів
 Second line	додатковий рядок
+Invert colors	Інвертувати кольори
+XML console	XML консоль
+Clipboard	буфер обміну
+Please create account or enter account(s) settings.\n\nMenu, New Account	Будь ласка, створіть обліковий запис або увійдіть до налаштувань облікових записів.\n\nМеню, Нов. обл. запис
+Please enter settings.\n\nMenu, Tools, Options	Будь ласка, створіть налаштування.\n\nМеню, Інструменти, Параметри
+User tune	Що слухає
+User mood	Настрій
+Personal events not supported	PEP не підтримується
+user tune receive	отримувати назви композицій
+Bar font	Шрифт панелі
+Popup & ballon font	Шрифт спливаючих повідомлень
+Fonts options	Параметри шрифтів
+Second line	додатковий рядок
+Load history	Завантажувати історію
+Send my color scheme	Надіслати поточну кольорову схему
+vibrate only highlited	снгали лише для особистих повідомлень
+Extended settings	Розширені параметри
+Save to file	Зберегти в файл
+Load from file	Завантажити з файлу
+Sound	Звук
+Chat history length	Зберігати повідомлень
+Visible	Видима
+Search	Пошук
+Register	Зареєструвати
+Check Google mail	Перевірити пошту на Google
+Simulated break	Розірвати з'єднання
+Unread messages	Видалити повідомлення
