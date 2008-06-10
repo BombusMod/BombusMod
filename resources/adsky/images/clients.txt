@@ -9,5 +9,4 @@ http://tkabber.jabber.ru/	Tkabber
 http://gajim.org/caps	Gajim
 http://qip.ru/caps	Qip
 http://pidgin.im/caps	Pidgin
-http://gaim.sf.net/caps	Gaim
 http://kopete.kde.org/jabber/caps	Kopete

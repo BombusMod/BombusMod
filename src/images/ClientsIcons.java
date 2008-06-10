@@ -1,7 +1,7 @@
 /*
  * ClientsIcons.java
  *
- * Created on 9 Èþíü 2008 ã., 22:45
+ * Created on 9.06.2008, 22:45
  *
  * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
  *
@@ -28,7 +28,6 @@
 package images;
 
 import java.util.Vector;
-import javax.microedition.lcdui.Graphics;
 import ui.ImageList;
 import util.StringLoader;
 
@@ -50,10 +49,6 @@ public class ClientsIcons extends ImageList {
     private ClientsIcons() {
         super(res, cols, CLIENTS_IN_ROW);
     }
-/*
-     private static ImageList instance;
-    public static ImageList getInstance() {
- */
     
     private static ClientsIcons instance;
     public static ClientsIcons getInstance() {
@@ -64,15 +59,9 @@ public class ClientsIcons extends ImageList {
                 clients[0]=new Vector();
                 clients[1]=new Vector();
 
-                Vector defs[]=new StringLoader().stringLoader(restxt, 2);
-                for (int i=0; i<defs[0].size(); i++) {
-                    clients[0].addElement((String) defs[0].elementAt(i));
-                    clients[1].addElement((String) defs[1].elementAt(i));
-                }
-                defs=null;
-                
-                int clientsCount=clients[0].size();
-                cols=ceil(CLIENTS_IN_ROW, clientsCount);
+                clients=new StringLoader().stringLoader(restxt, 2);
+
+                cols=ceil(CLIENTS_IN_ROW, clients[0].size());
             } catch (Exception e) {
                 System.out.print("Can't load ");
                 System.out.println(restxt);
