@@ -45,7 +45,9 @@ public class Reconnect
     protected Display display;
     protected Displayable next;
     protected Alert alert;
-    protected Command cmdOk=new Command("OK", Command.OK, 1);
+    
+    protected Command cmdOk=new Command(SR.MS_OK, Command.OK, 1);
+    private Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 2);
     
     private Gauge timer;
     boolean isRunning;
@@ -53,36 +55,27 @@ public class Reconnect
     private final static int WAITTIME=15;
     
     /** Creates a new instance of Reconnect */
-    private Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 2);
     public Reconnect(String title, String body, Display display) {
         alert=new Alert(title, body, null, null);
         next=display.getCurrent();
         this.display=display;
         
-        alert.setTimeout(15000); //15 seconds
+        //alert.setTimeout(15000); //15 seconds
         alert.addCommand(cmdOk);
+        alert.addCommand(cmdCancel);
         alert.setCommandListener(this);
-
-        alert.setTimeout(Alert.FOREVER);
         
         timer=new Gauge(null, false, WAITTIME, 1);
-
         alert.setIndicator(timer);
-
-        alert.addCommand(cmdCancel);
-        
         display.setCurrent(alert);
         
         new Thread(this).start();
     }
 
     public void commandAction(Command command, Displayable displayable) {
-        if (command==cmdOk) {
-            if (isRunning) {
-                isRunning=false;
+        if (command==cmdOk)
+            if (isRunning)
                 StaticData.getInstance().roster.doReconnect();
-            }
-        }
         isRunning=false;
         display.setCurrent(next);
     }

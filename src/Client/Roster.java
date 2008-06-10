@@ -342,7 +342,6 @@ public class Roster
         }
     }
 
-    
     public void resetRoster() {
 	synchronized (hContacts) {
 	    hContacts=new Vector();
@@ -354,7 +353,7 @@ public class Roster
 	updateContact(sd.account.getNick(), myJid.getBareJid(), SR.MS_SELF_CONTACT, "self", false);
 //#ifndef WSYSTEMGC
 	System.gc();
-        try { Thread.sleep(20); } catch (InterruptedException e){}
+        try { Thread.sleep(50); } catch (InterruptedException e){}
 //#endif
     }
     
@@ -477,19 +476,33 @@ public class Roster
         if (g instanceof ConferenceGroup) {
             ConferenceGroup cg= (ConferenceGroup) g;
 
-            if (!cg.inRoom)
-                groups.removeGroup(g);
-
-            if (cg.getSelfContact().status>=Presence.PRESENCE_OFFLINE
-                && cg.getConference().getStatus()==Presence.PRESENCE_ONLINE) {
-                return;
+            if (!cg.inRoom) {
+                int index=0;
+                boolean removeGroup=true;
+                synchronized (hContacts) {
+                    while (index<hContacts.size()) {
+                        Contact contact=(Contact)hContacts.elementAt(index);
+                        if (contact.inGroup(g)) {
+                            if (contact.getNewMsgsCount()==0) {
+                                contact=null;
+                                hContacts.removeElementAt(index);
+                            } else {
+                                removeGroup=false;
+                                index++;
+                            } 
+                        } else index++; 
+                    }
+                    if (removeGroup) {
+                        groups.removeGroup(g);
+                    } else {
+                        return;
+                    }
+                }
             }
         }
 //#endif
         int index=0;
 
-        //int onlineContacts=0; // JUST FOR TEST
-        
         synchronized (hContacts) {
             while (index<hContacts.size()) {
                 Contact contact=(Contact)hContacts.elementAt(index);
@@ -497,18 +510,16 @@ public class Roster
                     if ( contact.origin>Contact.ORIGIN_ROSTERRES
                          && contact.status>=Presence.PRESENCE_OFFLINE
                          && contact.getNewMsgsCount()==0
-                         && contact.origin!=Contact.ORIGIN_GROUPCHAT) // JUST FOR TEST
+                         && contact.origin!=Contact.ORIGIN_GROUPCHAT)
                         hContacts.removeElementAt(index);
                     else {
                         index++;
-                        //onlineContacts++; // JUST FOR TEST
                     } 
                 }
                 else index++; 
             }
-            if (g.getOnlines()==0) { // JUST FOR TEST (onlineContacts)
+            if (g.getOnlines()==0) {
                 if (g.type==Groups.TYPE_MUC) groups.removeGroup(g);
-            } else {
             }
         }
     }
@@ -813,7 +824,7 @@ public class Roster
 //#endif
 //#ifndef WSYSTEMGC
                 System.gc();
-                try { Thread.sleep(20); } catch (InterruptedException e){}
+                try { Thread.sleep(50); } catch (InterruptedException e){}
 //#endif
             }
         }
@@ -1062,7 +1073,7 @@ public class Roster
         theStream=null;
 //#ifndef WSYSTEMGC
         System.gc();
-        try { Thread.sleep(20); } catch (InterruptedException e){}
+        try { Thread.sleep(50); } catch (InterruptedException e){}
 //#endif
         reconnect=false;
         setQuerySign(false);
@@ -1695,7 +1706,7 @@ public class Roster
 //#ifndef WSYSTEMGC
         if (cf.ghostMotor) {
             System.gc(); 
-            try { Thread.sleep(20); } catch (InterruptedException e){}
+            try { Thread.sleep(50); } catch (InterruptedException e){}
         }
 //#endif
 //#ifdef POPUPS
@@ -1906,6 +1917,23 @@ public class Roster
 
     public void connectionTerminated( Exception e ) {
         String error=null;
+        setProgress(SR.MS_DISCONNECTED, 100);
+         if( e != null ) {
+            askReconnect(e);
+        } else {
+            try {
+                sendPresence(Presence.PRESENCE_OFFLINE, null);
+            } catch (Exception e2) {
+//#if DEBUG
+//#                 e2.printStackTrace();
+//#endif
+            }
+         }
+        redraw();
+    }
+/*
+    public void connectionTerminated( Exception e ) {
+        String error=null;
          if( e != null ) {
             askReconnect(e);
         } else {
@@ -1920,7 +1948,8 @@ public class Roster
          }
         redraw();
     }
-    
+*/
+/*
     private void askReconnect(final Exception e) {
         String error=e.getClass().getName()+"\n"+e.getMessage();
 //#if DEBUG
@@ -1938,11 +1967,30 @@ public class Roster
 //#endif
         new Reconnect(topBar, error, display);
      }
-    
-     public void doReconnect() {
+*/
+    private void askReconnect(final Exception e) {
+        StringBuffer error=new StringBuffer(e.getClass().getName()).append('\n');
+        if (e.getMessage()!=null)
+            error.append(e.getMessage());
+//#if DEBUG
+//#         e.printStackTrace();
+//#endif
         try {
-            sendPresence(Presence.PRESENCE_OFFLINE, null);
-        } catch (Exception e) {}
+             sendPresence(Presence.PRESENCE_OFFLINE, null);
+        } catch (Exception e2) { }
+
+        if (e instanceof SecurityException) { errorLog(error.toString()); return; }
+        if (reconnectCount>=maxReconnect) { errorLog(error.toString()); return; }
+        
+        reconnectCount++;
+        String topBar="("+reconnectCount+"/"+maxReconnect+") Reconnecting";
+        Msg m=new Msg(Msg.MESSAGE_TYPE_OUT, "local", topBar, error.toString());
+        messageStore(selfContact(), m);
+        //Stats.getInstance().save();
+        new Reconnect(topBar, error.toString(), display);
+
+     }
+     public void doReconnect() {
         sendPresence(lastOnlineStatus, null);
      }
     
@@ -2093,7 +2141,7 @@ public class Roster
                 redraw();
 //#ifndef WSYSTEMGC
                 System.gc();
-                try { Thread.sleep(20); } catch (InterruptedException e){}
+                try { Thread.sleep(50); } catch (InterruptedException e){}
 //#endif
                 if (messageCount==0) return;
                 Object atcursor=getFocusedObject();
@@ -2593,8 +2641,6 @@ public class Roster
                     synchronized (hContacts) {
                         for (e=hContacts.elements();e.hasMoreElements();){
                             Contact c=(Contact)e.nextElement();
-                            //boolean online=c.status<5;
-                            // group counters
                             Group grp=c.getGroup();
 			    grp.addContact(c);
                         }
@@ -2641,9 +2687,7 @@ public class Roster
                     focusedItem(cursor);
                     redraw();
                 }
-            } catch (Exception e) {
-                //e.printStackTrace();
-            }
+            } catch (Exception e) { }
             thread=null;
         }
     }

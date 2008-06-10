@@ -97,5 +97,6 @@ public class Progress {
         g.drawString(text, width/2, 0, Graphics.TOP|Graphics.HCENTER);
         g.drawLine(x,0,width,0);
         g.drawLine(filled,1,filled,height-1);
+        g.translate(x, y+height);
     }
 }

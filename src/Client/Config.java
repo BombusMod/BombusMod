@@ -301,10 +301,15 @@ type = \"-=Siemens=-\";
                 //prefetch images
                 ActionsIcons.getInstance();
                 RosterIcons.getInstance();
-                MenuIcons.getInstance();
+                if (newMenu)
+                    MenuIcons.getInstance();
 //#ifdef SMILES
-                SmilesIcons.getInstance();
+                if (smiles)
+                    SmilesIcons.getInstance();
 //#endif
+                System.gc();
+                try { Thread.sleep(50); } catch (InterruptedException e){}
+                
                 allowMinimize=true;
                 greenKeyCode=-10;
                 break;
