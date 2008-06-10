@@ -354,6 +354,7 @@ public class Roster
 	updateContact(sd.account.getNick(), myJid.getBareJid(), SR.MS_SELF_CONTACT, "self", false);
 //#ifndef WSYSTEMGC
 	System.gc();
+        try { Thread.sleep(20); } catch (InterruptedException e){}
 //#endif
     }
     
@@ -812,6 +813,7 @@ public class Roster
 //#endif
 //#ifndef WSYSTEMGC
                 System.gc();
+                try { Thread.sleep(20); } catch (InterruptedException e){}
 //#endif
             }
         }
@@ -1060,6 +1062,7 @@ public class Roster
         theStream=null;
 //#ifndef WSYSTEMGC
         System.gc();
+        try { Thread.sleep(20); } catch (InterruptedException e){}
 //#endif
         reconnect=false;
         setQuerySign(false);
@@ -1690,8 +1693,10 @@ public class Roster
                     setTicker(message.getBody());
         
 //#ifndef WSYSTEMGC
-        if (cf.ghostMotor)
+        if (cf.ghostMotor) {
             System.gc(); 
+            try { Thread.sleep(20); } catch (InterruptedException e){}
+        }
 //#endif
 //#ifdef POPUPS
             if (message.messageType==Msg.MESSAGE_TYPE_AUTH && showWobbler(c))
@@ -2082,11 +2087,13 @@ public class Roster
                     for (Enumeration e=hContacts.elements(); e.hasMoreElements();){
                         Contact c=(Contact)e.nextElement();
                         c.setIncoming(Contact.INC_NONE);
+                        c=null;
                     }
                 }
                 redraw();
 //#ifndef WSYSTEMGC
                 System.gc();
+                try { Thread.sleep(20); } catch (InterruptedException e){}
 //#endif
                 if (messageCount==0) return;
                 Object atcursor=getFocusedObject();

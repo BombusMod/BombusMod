@@ -38,7 +38,7 @@ abstract public class IconTextElement implements VirtualElement {
     int imageYOfs;
     int fontYOfs;
     
-    int heightCorrect;
+    //int heightCorrect;
     
     protected ImageList il;
     private int ilImageSize=0;
@@ -52,8 +52,8 @@ abstract public class IconTextElement implements VirtualElement {
 	if (il!=null){
 	    ilImageSize=il.getHeight();
 	}
-        if (Config.getInstance().phoneManufacturer==Config.WINDOWS || Config.getInstance().phoneManufacturer==Config.NOKIA)
-            heightCorrect=1;
+/*        if (Config.getInstance().phoneManufacturer==Config.WINDOWS || Config.getInstance().phoneManufacturer==Config.NOKIA)
+            heightCorrect=1;*/
     }
     
     private boolean selectable=true; 
@@ -95,7 +95,7 @@ abstract public class IconTextElement implements VirtualElement {
     
     public int getVHeight(){ 
         itemHeight=(ilImageSize>getFont().getHeight())?ilImageSize:getFont().getHeight();
-        fontYOfs=heightCorrect+(itemHeight-getFont().getHeight())/2;
+        fontYOfs=/*heightCorrect+*/(itemHeight-getFont().getHeight())/2;
         imageYOfs=(itemHeight-ilImageSize)/2;
         return itemHeight;
     }

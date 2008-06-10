@@ -55,7 +55,7 @@ public class ComplexString extends Vector implements VirtualElement {
     private int colorBGnd;
     private int color;
     
-    private int heightCorrect;
+    //private int heightCorrect;
     
     ColorTheme ct;
     /** Creates a new instance of ComplexString */
@@ -65,8 +65,8 @@ public class ComplexString extends Vector implements VirtualElement {
         color=ct.getColor(ColorTheme.LIST_INK);
         colorBGnd=ct.getColor(ColorTheme.LIST_BGND);
         
-        if (Config.getInstance().phoneManufacturer==Config.WINDOWS || Config.getInstance().phoneManufacturer==Config.NOKIA)
-            heightCorrect=1;
+        /*if (Config.getInstance().phoneManufacturer==Config.WINDOWS || Config.getInstance().phoneManufacturer==Config.NOKIA)
+            heightCorrect=1;*/
     }
 
     /** Creates a new instance of ComplexString */
@@ -102,7 +102,7 @@ public class ComplexString extends Vector implements VirtualElement {
         int dw;
         int imageYOfs=(( getVHeight()-imgHeight() )>>1);
 
-        int fontYOfs=(( getVHeight()-font.getHeight() )>>1)+heightCorrect;
+        int fontYOfs=(( getVHeight()-font.getHeight() )>>1);//+heightCorrect;
 
         int imgWidth=imgWidth();
         

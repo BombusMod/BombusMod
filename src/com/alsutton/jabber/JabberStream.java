@@ -332,6 +332,7 @@ public class JabberStream extends XmppParser implements Runnable {
                  //System.out.println("Keep-Alive");
                  sendKeepAlive(type);
                  System.gc();
+                 Thread.sleep(20);
             } catch (Exception e) { 
                 dispatcher.broadcastTerminatedConnection(e);
                 //e.printStackTrace(); 

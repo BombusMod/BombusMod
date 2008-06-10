@@ -725,7 +725,7 @@ public abstract class VirtualList
 	    if (lastClickY-y<5 && y-lastClickY<5) {
                 if (clickTime-lastClickTime<500){
                     //System.out.println("short");
-		    y=0;    // ������ "�������� �����"
+		    y=0;
 		    eventOk();
                 }
             }
@@ -734,8 +734,7 @@ public abstract class VirtualList
         lastClickX=x;
 	lastClickY=y;
 	lastClickItem=cursor;
-        
-        // ??������ ??������ ���??������� �������
+
         int il=itemLayoutY[cursor+1]-winHeight;
         if (il>win_top) win_top=il;
         il=itemLayoutY[cursor];
@@ -752,7 +751,7 @@ public abstract class VirtualList
 	long clickTime=System.currentTimeMillis();
         if (lastClickY-y<5 && y-lastClickY<5) {
             if (clickTime-lastClickTime>1000){
-                y=0;    // ������ "�������� �����"
+                y=0;
                 eventLongOk();
             }
         }

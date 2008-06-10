@@ -155,6 +155,7 @@ public class Contact extends IconTextElement{
     private int fontHeight;
 
     int ilHeight;
+    int maxImgHeight;
 
     protected Contact (){
         super(RosterIcons.getInstance());
@@ -164,6 +165,7 @@ public class Contact extends IconTextElement{
         key1="";
 
         ilHeight=il.getHeight();
+        maxImgHeight=ilHeight;
         secondFontHeight=secondFont.getHeight();
         fontHeight=getFont().getHeight();
     }
@@ -615,7 +617,7 @@ public class Contact extends IconTextElement{
 //#endif
     
     public int getVHeight(){ 
-        int itemVHeight=(ilHeight>fontHeight)?ilHeight:fontHeight;
+        int itemVHeight=(maxImgHeight>fontHeight)?maxImgHeight:fontHeight;
         if (getSecondString()!=null)
             itemVHeight+=secondFontHeight-3;
         
@@ -630,6 +632,7 @@ public class Contact extends IconTextElement{
         
         int offset=4;
        
+        maxImgHeight=ilHeight;
         int imgH=(h-ilHeight)/2;
         
         if (getImageIndex()>-1) {
@@ -639,15 +642,21 @@ public class Contact extends IconTextElement{
 //#ifdef CLIENTS_ICONS
 //#         if (client>-1) {
 //#             ImageList clients=ClientsIcons.getInstance();
-//#             w-=clients.getWidth();
-//#             clients.drawImage(g, client, w, (h-clients.getHeight())/2);
+//#             int clientImgSize=clients.getWidth();
+//#             w-=clientImgSize;
+//#             clients.drawImage(g, client, w, (h-clientImgSize)/2);
+//#             if (maxImgHeight<clientImgSize)
+//#                 maxImgHeight=clientImgSize;
 //#         }
 //#endif
 //#ifdef PEP
 //#         if (hasMood()) {
 //#             ImageList moods=MoodIcons.getInstance();
-//#             w-=moods.getWidth();
-//#             moods.drawImage(g, pepMood, w, (h-moods.getHeight())/2);
+//#             int moodImgSize=moods.getWidth();
+//#             w-=moodImgSize;
+//#             moods.drawImage(g, pepMood, w, (h-moodImgSize)/2);
+//#             if (maxImgHeight<moodImgSize)
+//#                 maxImgHeight=moodImgSize;
 //#         }
 //#ifdef PEP_TUNE
 //#         if (pepTune) {

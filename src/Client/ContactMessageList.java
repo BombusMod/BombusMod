@@ -155,7 +155,9 @@ public class ContactMessageList extends MessageList
         addCommand(cmdTemplate);
 //#endif
 //#ifdef FILE_IO
-        addCommand(cmdSaveChat);
+        if (cf.msgPath!=null)
+            if (cf.msgPath!="")
+                addCommand(cmdSaveChat);
 //#endif
         setCommandListener(this);
         
@@ -538,6 +540,7 @@ public class ContactMessageList extends MessageList
 //#                 message.setHistory(true);
 //#                 contact.msgs.insertElementAt(message, 0);
 //#             }
+//#             message=null;
 //#         }
 //#     }
 //# 
@@ -547,6 +550,7 @@ public class ContactMessageList extends MessageList
 //#             if (message.getBody().equals(msg.getBody())) {
 //#                 return true;
 //#             }
+//#             message=null;
 //#          }
 //#         return false;
 //#     }
@@ -566,6 +570,7 @@ public class ContactMessageList extends MessageList
 //#         for (Enumeration messages=contact.msgs.elements(); messages.hasMoreElements(); ) {
 //#             Msg message=(Msg) messages.nextElement();
 //#             new HistoryAppend(message, false, histRecord);
+//#             message=null;
 //#         }
 //#     }
 //#endif
