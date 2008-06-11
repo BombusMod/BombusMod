@@ -1132,15 +1132,15 @@ public class Roster
             setQuerySign(false);
             reconnect=false;
             SplashScreen.getInstance().close(); // display.setCurrent(this);
-//#ifndef WMUC
-            //query bookmarks
-            theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
-//#endif
         } else {
             JabberDataBlock qr=new IqQueryRoster();
             setProgress(SR.MS_ROSTER_REQUEST, 49);
             theStream.send( qr );
         }
+//#ifndef WMUC
+            //query bookmarks
+            theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
+//#endif
     }
 
     public void bindResource(String myJid) {
