@@ -327,6 +327,7 @@ public class SR {
 //#     public static String MS_POPUP_SYSTEM=loadString("Popup system font");
 //#     public static String MS_POPUP_SYSTEM_BGND=loadString("Popup system background");
 //#     public static String MS_CONTACT_STATUS=loadString("Contact status font");
+//#     public static String MS_CONTROL_ITEM=loadString("Control color");
 //#endif
     public static String MS_COLOR_TUNE=loadString("Color tune");
     public static String MS_LOAD_SKIN=loadString("Load Scheme");

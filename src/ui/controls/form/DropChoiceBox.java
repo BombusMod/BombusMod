@@ -45,9 +45,9 @@ public class DropChoiceBox
     
     private boolean selectable=true;
     
-    private ColorTheme ct;
-    
     private Display display;
+
+    private int colorItem;
     
     /**
      * Creates a new instance of ChoiceBox
@@ -55,7 +55,7 @@ public class DropChoiceBox
     public DropChoiceBox(Display display) {
         super(null);
         this.display=display;
-        ct=ColorTheme.getInstance();
+        colorItem=ColorTheme.getInstance().getColor(ColorTheme.CONTROL_ITEM);
     }
 
     public String toString() {
@@ -92,11 +92,8 @@ public class DropChoiceBox
 
         int oldColor=g.getColor();
 
-        g.setColor((sel)?ct.getColor(ColorTheme.CURSOR_BGND):ct.getColor(ColorTheme.LIST_BGND));
-        g.fillRect(2, 2, width-4, height-4);
-        
         int boxSize=height-1;
-        g.setColor((sel)?ct.getColor(ColorTheme.CURSOR_OUTLINE):ct.getColor(ColorTheme.CURSOR_BGND));
+        g.setColor(colorItem);
         g.drawRoundRect(0, 0, width-1, boxSize, 6, 6);
         
         g.drawRoundRect(width-boxSize-1, 0, boxSize, boxSize, 6, 6);

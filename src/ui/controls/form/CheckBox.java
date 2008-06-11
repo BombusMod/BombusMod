@@ -42,9 +42,9 @@ public class CheckBox
     private String text="";
     
     private boolean selectable=true;
-    
-    ColorTheme ct;
-    
+
+    private int colorItem;
+
     /**
      * Creates a new instance of CheckBox
      */
@@ -52,7 +52,7 @@ public class CheckBox
         super(null);
         this.text=text;
         this.state=state;
-        ct=ColorTheme.getInstance();
+        colorItem=ColorTheme.getInstance().getColor(ColorTheme.CONTROL_ITEM);
     }
     
     public String toString() { return text; }
@@ -64,24 +64,18 @@ public class CheckBox
     public void drawItem(Graphics g, int ofs, boolean sel) {
         int width=g.getClipWidth();
         int height=super.getVHeight();
-
+        
         int oldColor=g.getColor();
-        
-        g.setColor((state)?ct.getColor(ColorTheme.CURSOR_OUTLINE):ct.getColor(ColorTheme.CURSOR_BGND));
-        g.fillRect(1, 1, height-2, height-2);
+   
+        g.setColor(colorItem); g.drawRect(2, 2, height-5, height-5);
 
-        g.setColor((state)?ct.getColor(ColorTheme.CURSOR_BGND):ct.getColor(ColorTheme.LIST_BGND));
-        g.fillRect(2, 2, height-4, height-4);
-        
         if (state) {
-            g.setColor(ct.getColor(ColorTheme.CURSOR_OUTLINE));
-            g.fillRect(4, 4, height-8, height-8);
+            g.setColor(colorItem); g.fillRect(4, 4, height-8, height-8);
         }
         
         g.setColor(oldColor);
 
         g.translate(height,0);
-        //g.setClip(0, 0, width-height-2, height);
         super.drawItem(g, ofs, sel);
         g.translate(-height,0);
     }    

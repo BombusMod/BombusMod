@@ -127,6 +127,8 @@ blue 0x0000ff
         colorsContainer.addElement(new ColorItem("POPUP_SYSTEM_BGND",  0xffffe0));
     
         colorsContainer.addElement(new ColorItem("SECOND_LINE", 0xa0a0a0));
+
+        colorsContainer.addElement(new ColorItem("CONTROL_ITEM", 0x1ea5c5));
     }
     
     public static void setColor(int id, int color) {
@@ -242,6 +244,8 @@ blue 0x0000ff
     public final static int POPUP_SYSTEM_BGND       =42;
 
     public final static int SECOND_LINE             =43;
+    
+    public final static int CONTROL_ITEM           =44;
     
     
     private static Hashtable skin;

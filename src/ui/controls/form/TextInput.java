@@ -52,8 +52,6 @@ public class TextInput
     private Display display;
     
     public String id;
-    
-    ColorTheme ct;
 
     private int boxType;
     
@@ -64,6 +62,8 @@ public class TextInput
     private int captionFontHeight;
 
     private int itemHeight=0;
+
+    private int colorItem;
     
     /**
      * Creates a new instance of TextInput
@@ -74,6 +74,8 @@ public class TextInput
         this.caption=(caption==null)?"":caption;
         this.id=id;
         this.boxType=boxType;
+
+        colorItem=ColorTheme.getInstance().getColor(ColorTheme.CONTROL_ITEM);
         
         font=FontCache.getMsgFont();
         fontHeight=font.getHeight();
@@ -96,8 +98,6 @@ public class TextInput
         } else {
             this.text=(text==null)?"":text;
         }
-
-        ct=ColorTheme.getInstance();
     }
     
     public int getCaptionLength() {
@@ -144,13 +144,14 @@ public class TextInput
             y=captionFontHeight;
         }
         
-        g.setColor(ct.getColor(ColorTheme.LIST_BGND));
+        g.setColor(ColorTheme.getInstance().getColor(ColorTheme.LIST_BGND));
         g.fillRect(2, y+2, width-4, height-4);
 
-        g.setColor((sel)?ct.getColor(ColorTheme.CURSOR_OUTLINE):ct.getColor(ColorTheme.CURSOR_BGND));
+        g.setColor(colorItem);
         g.drawRoundRect(0, y+0, width-1, height-1, 6, 6);
 
         g.setColor(oldColor);
+        
         if (getTextLength()>0) {
             thisOfs=(getTextLength()>width)?-ofs+4:4;
             g.setFont(font);

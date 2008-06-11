@@ -166,7 +166,9 @@ public class ColorsList
 //#             SR.MS_POPUP_SYSTEM,
 //#             SR.MS_POPUP_SYSTEM_BGND,
 //#             
-//#             SR.MS_CONTACT_STATUS
+//#             SR.MS_CONTACT_STATUS, 
+//#             
+//#             SR.MS_CONTROL_ITEM,
 //#         };
 //#endif
 }

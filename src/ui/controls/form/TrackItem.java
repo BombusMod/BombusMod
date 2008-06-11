@@ -40,9 +40,7 @@ public class TrackItem
     
     int value;
     int steps;
-    
-    ColorTheme ct;    
-    
+
     private boolean selectable=true;
     
     /** Creates a new instance of TrackItem */
@@ -50,8 +48,6 @@ public class TrackItem
         super(null);
         this.value=value;
         this.steps=maxValue+1;
-        
-        ct=ColorTheme.getInstance();
     }
     
     public int getValue() { return value; }
@@ -65,7 +61,7 @@ public class TrackItem
         
         int oldColor=g.getColor();
         
-        g.setColor(ct.getColor(ColorTheme.CURSOR_OUTLINE));
+        g.setColor(ColorTheme.getInstance().getColor(ColorTheme.CONTROL_ITEM));
         g.drawLine(4, height/2, width-4, height/2);
         
         g.fillRect(pos, 2, itemWidth, height-4);

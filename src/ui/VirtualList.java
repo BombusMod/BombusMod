@@ -603,7 +603,6 @@ public abstract class VirtualList
             int h=mainbar.getVHeight()+1;
             g.setClip(0,0, width, h);
 //#ifdef GRADIENT
-//#             /*   red:ad1010*730000   green:4c7300*78ad10   gold:8a6b10*c1971b   */
 //#             if (getMainBarBGnd()!=getMainBarBGndBottom()) {
 //#                 if (mbHeight!=h) {
 //#                     grMB=new Gradient(0, 0, width, h, getMainBarBGnd(), getMainBarBGndBottom(), false);
@@ -618,7 +617,6 @@ public abstract class VirtualList
             g.setColor(getMainBarBGnd());
             g.fillRect(0, 0, width, h);
 //#endif
-           
             g.setColor(getMainBarRGB());
             mainbar.drawItem(g,(cf.phoneManufacturer==Config.NOKIA)?17:0,false);
         }
@@ -1149,8 +1147,17 @@ public abstract class VirtualList
     }
     
     protected void drawCursor (Graphics g, int width, int height){
-        g.setColor(ct.getColor(ColorTheme.CURSOR_BGND));    g.fillRoundRect(0, 0, width, height, 6, 6);
-        g.setColor(ct.getColor(ColorTheme.CURSOR_OUTLINE)); g.drawRoundRect(0, 0, width-1, height-1, 6, 6);
+        int cursorBGnd=ct.getColor(ColorTheme.CURSOR_BGND);
+        int cursorOutline=ct.getColor(ColorTheme.CURSOR_OUTLINE);
+        
+        if (cursorBGnd!=0x010101)
+            g.setColor(ct.getColor(ColorTheme.CURSOR_BGND));
+        g.fillRoundRect(0, 0, width, height, 6, 6);
+        
+        if (cursorOutline!=0x010101) {
+            g.setColor(cursorOutline); 
+            g.drawRoundRect(0, 0, width-1, height-1, 6, 6);
+        }
     }
 
     public void setParentView(Displayable parentView){
