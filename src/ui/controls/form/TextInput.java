@@ -64,6 +64,8 @@ public class TextInput
     private int itemHeight=0;
 
     private int colorItem;
+    private int colorBorder;
+    private int colorBGnd;
     
     /**
      * Creates a new instance of TextInput
@@ -76,6 +78,8 @@ public class TextInput
         this.boxType=boxType;
 
         colorItem=ColorTheme.getInstance().getColor(ColorTheme.CONTROL_ITEM);
+        colorBorder=ColorTheme.getInstance().getColor(ColorTheme.CURSOR_OUTLINE);
+        colorBGnd=ColorTheme.getInstance().getColor(ColorTheme.LIST_BGND);
         
         font=FontCache.getMsgFont();
         fontHeight=font.getHeight();
@@ -143,11 +147,11 @@ public class TextInput
             g.drawString(caption, thisOfs, y, Graphics.TOP|Graphics.LEFT);
             y=captionFontHeight;
         }
-        
-        g.setColor(ColorTheme.getInstance().getColor(ColorTheme.LIST_BGND));
+
+        g.setColor(colorBGnd);
         g.fillRect(2, y+2, width-4, height-4);
 
-        g.setColor(colorItem);
+        g.setColor((sel)?colorBorder:colorItem);
         g.drawRoundRect(0, y+0, width-1, height-1, 6, 6);
 
         g.setColor(oldColor);

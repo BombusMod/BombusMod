@@ -48,6 +48,7 @@ public class DropChoiceBox
     private Display display;
 
     private int colorItem;
+    private int colorBorder;
     
     /**
      * Creates a new instance of ChoiceBox
@@ -56,6 +57,7 @@ public class DropChoiceBox
         super(null);
         this.display=display;
         colorItem=ColorTheme.getInstance().getColor(ColorTheme.CONTROL_ITEM);
+        colorBorder=ColorTheme.getInstance().getColor(ColorTheme.CURSOR_OUTLINE);
     }
 
     public String toString() {
@@ -93,16 +95,18 @@ public class DropChoiceBox
         int oldColor=g.getColor();
 
         int boxSize=height-1;
-        g.setColor(colorItem);
+
+        g.setColor((sel)?colorBorder:colorItem);        
         g.drawRoundRect(0, 0, width-1, boxSize, 6, 6);
         
-        g.drawRoundRect(width-boxSize-1, 0, boxSize, boxSize, 6, 6);
+        if (sel) {
+            g.drawRoundRect(width-boxSize-1, 0, boxSize, boxSize, 6, 6);
 
-        int horCenterTrinangle=width-(boxSize/2);
-        int vertCenterTrinangle=height/2;
-        int size=boxSize/4;
-        g.fillTriangle(horCenterTrinangle-size, vertCenterTrinangle-size, horCenterTrinangle+size, vertCenterTrinangle-size, horCenterTrinangle, vertCenterTrinangle+size);
-        
+            int horCenterTrinangle=width-(boxSize/2);
+            int vertCenterTrinangle=height/2;
+            int size=boxSize/4;
+            g.fillTriangle(horCenterTrinangle-size, vertCenterTrinangle-size, horCenterTrinangle+size, vertCenterTrinangle-size, horCenterTrinangle, vertCenterTrinangle+size);
+        }
         g.setColor(oldColor);
         
         g.setClip(0, yo, width-height-2, height);

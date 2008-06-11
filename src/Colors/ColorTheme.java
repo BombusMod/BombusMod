@@ -154,7 +154,8 @@ blue 0x0000ff
     public static void invertSkin(){
         for (Enumeration r=colorsContainer.elements(); r.hasMoreElements();) {
             ColorItem c=(ColorItem)r.nextElement();
-            c.setColor(0xFFFFFF-c.getValue());
+            if (c.getValue()!=0x010101)
+                c.setColor(0xFFFFFF-c.getValue());
         }
         saveToStorage();
     }
