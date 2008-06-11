@@ -1,7 +1,7 @@
 /*
  * progress.java
  *
- * Created on 15 Май 2008 г., 19:47
+ * Created on 15 пїЅпїЅпїЅ 2008 пїЅ., 19:47
  *
  * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
  *
@@ -71,32 +71,32 @@ public class Progress {
 //#ifdef GRADIENT
 //#         this.bottomColor=ct.getColor(ColorTheme.PGS_COMPLETE_BOTTOM);
 //#         if (topColor!=bottomColor)
-//#             this.gr=new Gradient(0, 1, width, height, topColor, bottomColor, false);
+//#             this.gr=new Gradient(0, y+1, width, y+height, topColor, bottomColor, false);
 //#endif
     }
     
     public static void draw(int filled, String text) {
-        g.translate(x, y-height);
-        g.setClip(0,0,width,height);
+        //g.translate(x, y-height);
+        //g.setClip(0,0,width,height);
         
         g.setColor(ct.getColor(ColorTheme.PGS_REMAINED));
-        g.fillRect(0, 0, width, height);
+        g.fillRect(0, y, width, height);
 //#ifdef GRADIENT
 //#         if (topColor!=bottomColor) {
 //#             gr.paintWidth(g, filled);
 //#         } else {
 //#endif
             g.setColor(topColor);
-            g.fillRect(0, 1, filled, height);
+            g.fillRect(0, y+1, filled, height);
 //#ifdef GRADIENT
 //#         }
 //#endif
        
         g.setColor(ct.getColor(ColorTheme.PGS_INK));
         g.setFont(font);
-        g.drawString(text, width/2, 0, Graphics.TOP|Graphics.HCENTER);
-        g.drawLine(x,0,width,0);
-        g.drawLine(filled,1,filled,height-1);
-        g.translate(x, y+height);
+        g.drawString(text, width/2, y, Graphics.TOP|Graphics.HCENTER);
+        g.drawLine(x,y,width,y);
+        g.drawLine(filled,y+1,filled,y+height-1);
+        //g.translate(x, y+height);
     }
 }

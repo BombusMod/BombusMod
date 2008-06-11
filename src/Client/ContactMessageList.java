@@ -154,10 +154,10 @@ public class ContactMessageList extends MessageList
 //#if TEMPLATES
         addCommand(cmdTemplate);
 //#endif
-//#ifdef FILE_IO
-        if (cf.msgPath!=null)
-            if (cf.msgPath!="")
-                addCommand(cmdSaveChat);
+//#ifdef HISTORY
+//#         if (cf.msgPath!=null)
+//#             if (cf.msgPath!="")
+//#                 addCommand(cmdSaveChat);
 //#endif
         setCommandListener(this);
         

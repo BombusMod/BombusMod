@@ -42,8 +42,8 @@ import Conference.ConferenceForm;
 
 //#ifdef ARCHIVE
 import Archive.ArchiveList;
-import images.ClientsIcons;
 //#endif
+import images.ClientsIcons;
 import images.RosterIcons;
 import locale.SR;
 import login.LoginListener;
@@ -773,11 +773,12 @@ public class Roster
 	
         if (myStatus!=Presence.PRESENCE_OFFLINE) {
              lastOnlineStatus=myStatus;
-         }
-         
+        }
+        
+        // reconnect if disconnected
         if (myStatus!=Presence.PRESENCE_OFFLINE && theStream==null ) {
-             reconnect=(hContacts.size()>1);
-             redraw();
+            reconnect=(hContacts.size()>1);
+            redraw();
 
             new Thread(this).start();
             return;
@@ -1131,15 +1132,15 @@ public class Roster
             setQuerySign(false);
             reconnect=false;
             SplashScreen.getInstance().close(); // display.setCurrent(this);
+//#ifndef WMUC
+            //query bookmarks
+            theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
+//#endif
         } else {
             JabberDataBlock qr=new IqQueryRoster();
             setProgress(SR.MS_ROSTER_REQUEST, 49);
             theStream.send( qr );
         }
-//#ifndef WMUC
-        //query bookmarks
-        theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
-//#endif
     }
 
     public void bindResource(String myJid) {
@@ -1969,7 +1970,11 @@ public class Roster
      }
 */
     private void askReconnect(final Exception e) {
-        StringBuffer error=new StringBuffer(e.getClass().getName()).append('\n');
+        StringBuffer error=new StringBuffer();
+        if (e.getClass().getName()!="java.lang.Exception") {
+            error.append(e.getClass().getName());
+            error.append('\n');
+        }
         if (e.getMessage()!=null)
             error.append(e.getMessage());
 //#if DEBUG
@@ -2435,6 +2440,7 @@ public class Roster
             quit();
         }
     }
+
     public void cmdMinimize() { BombusMod.getInstance().hideApp(true);  }
     public void cmdActiveContacts() { new ActiveContacts(display, null); }
     public void cmdAccount(){ new AccountSelect(display, false); }

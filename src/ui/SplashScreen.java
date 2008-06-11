@@ -117,7 +117,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         width=g.getClipWidth();
         height=g.getClipHeight();
         //g.translate(0, 0);
-        g.setClip(0,0, width, height);
+        //g.setClip(0,0, width, height);
         
         g.setColor(ct.getColor(ColorTheme.BLK_BGND));
         g.fillRect(0,0, width, height);
@@ -141,10 +141,9 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
             g.drawString(time, width/2, height, Graphics.BOTTOM | Graphics.HCENTER);
         } else {
             int filled=pos*width/100;
-            int y=height;
-            
-            if (pb==null)
-                pb=new Progress(g, 0, y, width);
+            if (pb==null) {
+                pb=new Progress(g, 0, height-FontCache.getSmallFont().getHeight(), width);
+            }
             pb.draw(filled, capt);
         }
     }
@@ -152,7 +151,6 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
     public void setProgress(int progress) {
         pos=progress;
         repaint();
-        //serviceRepaints();
     }
 
     public void setFailed(){
@@ -191,7 +189,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         repaint();
         //serviceRepaints();
         img=null;
-        instance=null; // �??���������� ���??��
+        instance=null;
         System.gc();
     }
 
