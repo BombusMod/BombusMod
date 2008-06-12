@@ -3,6 +3,8 @@
     <type>org.netbeans.modules.kjava.j2meproject</type>
     <configuration>
         <configurations xmlns="http://www.netbeans.org/ns/project-configurations/1">
+            <configuration>FORYOU</configuration>
+            <configuration>MYTEST</configuration>
             <configuration>adsky</configuration>
             <configuration>lite</configuration>
             <configuration>superSmall</configuration>
