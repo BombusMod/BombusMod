@@ -54,6 +54,7 @@ public class AccountSelect
     Command cmdAdd=new Command(SR.MS_NEW_ACCOUNT, Command.SCREEN,3);
     Command cmdEdit=new Command(SR.MS_EDIT,Command.ITEM,3);
     Command cmdDel=new Command(SR.MS_DELETE,Command.ITEM,4);
+    Command cmdConfig=new Command(SR.MS_OPTIONS,Command.ITEM,5);
     Command cmdCancel=new Command(SR.MS_BACK,Command.BACK,99);
     Command cmdQuit=new Command(SR.MS_APP_QUIT,Command.SCREEN,10);
     
@@ -96,6 +97,7 @@ public class AccountSelect
         
         attachDisplay(display);
         addCommand(cmdAdd);
+        addCommand(cmdConfig);
         
         if (enableQuit) 
             addCommand(cmdQuit);
@@ -138,6 +140,7 @@ public class AccountSelect
         if (c==cmdCancel) {
             destroyView();
         }
+        if (c==cmdConfig) new ConfigForm(display);
         if (c==cmdLogin) switchAccount(true);
         if (c==cmdSelect) switchAccount(false);
         if (c==cmdEdit) new AccountForm(this, display,(Account)getFocusedObject());
