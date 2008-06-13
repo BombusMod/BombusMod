@@ -25,13 +25,17 @@
  *
  */
 
-package Client;
+package Account;
+import Client.Config;
+import Client.StaticData;
 import Info.Version;
+import com.alsutton.jabber.JabberStream;
 import com.alsutton.jabber.datablocks.Presence;
 import images.RosterIcons;
-import java.io.*;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import ui.IconTextElement;
-import com.alsutton.jabber.*;
 import io.NvStorage;
 
 public class Account extends IconTextElement{
@@ -43,7 +47,7 @@ public class Account extends IconTextElement{
     private String server;
     private String hostAddr;
     private int port=5222;
-    public boolean active;
+    private boolean active;
     private boolean useSSL;
     private boolean compression=true;
     private boolean plainAuth;
@@ -56,68 +60,33 @@ public class Account extends IconTextElement{
     private String proxyHostAddr;
     private int proxyPort;
 	
-    public int keepAlivePeriod=200;
-    public int keepAliveType=1;
+    private int keepAlivePeriod=200;
+    private int keepAliveType=1;
     
-    static StaticData sd=StaticData.getInstance();
-    static Config cf;
+    private static StaticData sd=StaticData.getInstance();
+    
+    //private static Config cf=Config.getInstance();
     
     public Account() {
         super(RosterIcons.getInstance());
     }
     
-    public static Account loadAccount(boolean launch){
-        cf=Config.getInstance();
-	Account a=sd.account=Account.createFromStorage(cf.accountIndex);
+    public static void loadAccount(boolean launch, int accountIndex){
+	Account a=sd.account=Account.createFromStorage(accountIndex);
 	if (a!=null) {
             if (sd.roster.isLoggedIn())
                 sd.roster.logoff(null);
+            
 	    sd.roster.resetRoster();
             if (launch) {
-                if (cf.loginstatus==Presence.PRESENCE_OFFLINE) {
+                int loginstatus=Config.getInstance().loginstatus;
+                if (loginstatus>=Presence.PRESENCE_OFFLINE) {
                     sd.roster.sendPresence(Presence.PRESENCE_INVISIBLE, null);    
                 } else {
-                    sd.roster.sendPresence(cf.loginstatus, null);
+                    sd.roster.sendPresence(loginstatus, null);
                 }
             }
         }
-        return a;
-    }
-    
-    public static Account createFromDataInputStream(DataInputStream inputStream){
-        
-        int version=0;
-        Account a=new Account();
-        try {
-            version    = inputStream.readByte();
-            a.userName = inputStream.readUTF();
-            a.password = inputStream.readUTF();
-            a.server   = inputStream.readUTF();
-            a.hostAddr = inputStream.readUTF();
-            a.port     = inputStream.readInt();
-
-            a.nick     = inputStream.readUTF();
-            a.resource = inputStream.readUTF();
-	    
-            a.useSSL=inputStream.readBoolean();
-            a.plainAuth=inputStream.readBoolean();
-            
-	    a.mucOnly=inputStream.readBoolean();
-            
-            a.setEnableProxy(inputStream.readBoolean());
-            a.setProxyHostAddr(inputStream.readUTF());
-            a.setProxyPort(inputStream.readInt());
-
-            a.compression=inputStream.readBoolean();
-
-            a.keepAliveType=inputStream.readInt()%4;
-            a.keepAlivePeriod=inputStream.readInt();
-            
-            inputStream.readBoolean(); //firstrun
-            
-        } catch (IOException e) { /*e.printStackTrace();*/ }
-            
-        return (a.userName==null)?null:a;
     }
 
     public String toString(){
@@ -153,7 +122,42 @@ public class Account extends IconTextElement{
         } catch (Exception e) { /*e.printStackTrace();*/ }
         return a;
     }
-    
+
+    public static Account createFromDataInputStream(DataInputStream inputStream){
+        int version=0;
+        Account a=new Account();
+        try {
+            version    = inputStream.readByte();
+            a.userName = inputStream.readUTF();
+            a.password = inputStream.readUTF();
+            a.server   = inputStream.readUTF();
+            a.hostAddr = inputStream.readUTF();
+            a.port     = inputStream.readInt();
+
+            a.nick     = inputStream.readUTF();
+            a.resource = inputStream.readUTF();
+	    
+            a.useSSL=inputStream.readBoolean();
+            a.plainAuth=inputStream.readBoolean();
+            
+	    a.mucOnly=inputStream.readBoolean();
+            
+            a.setEnableProxy(inputStream.readBoolean());
+            a.setProxyHostAddr(inputStream.readUTF());
+            a.setProxyPort(inputStream.readInt());
+
+            a.compression=inputStream.readBoolean();
+
+            a.keepAliveType=inputStream.readInt()%4;
+            a.keepAlivePeriod=inputStream.readInt();
+            
+            inputStream.readBoolean(); //firstrun
+            
+        } catch (IOException e) { /*e.printStackTrace();*/ }
+            
+        return (a.userName==null)?null:a;
+    }
+
     public void saveToDataOutputStream(DataOutputStream outputStream){
         
         if (hostAddr==null) hostAddr="";
@@ -191,7 +195,7 @@ public class Account extends IconTextElement{
         
     }
     
-    public int geImageIndex() {return active?0:5;}
+    public int getImageIndex(){ return active?0:5; }
 
     public String getUserName() { return userName;  }
     public void setUserName(String userName) { this.userName = userName;  }
@@ -223,7 +227,7 @@ public class Account extends IconTextElement{
  
     public void setNick(String nick) { this.nick = nick;  }
 
-    boolean isMucOnly() { return mucOnly; }
+    public boolean isMucOnly() { return mucOnly; }
     public void setMucOnly(boolean mucOnly) {  this.mucOnly = mucOnly; }
 
     public JabberStream openJabberStream() throws java.io.IOException{
@@ -278,7 +282,7 @@ public class Account extends IconTextElement{
     public void setProxyPort(int proxyPort) {
         this.proxyPort = proxyPort;
     }
-
+ 
     public boolean useCompression() { return compression; }
     
     public boolean isGmail() {
@@ -294,5 +298,25 @@ public class Account extends IconTextElement{
 
     public void setUseCompression(boolean value) {
         this.compression = value;
+    }
+
+    public void setActive(boolean b) {
+        active=b;
+    }
+
+    public int getKeepAliveType() {
+        return keepAliveType;
+    }
+
+    public int getKeepAlivePeriod() {
+        return keepAlivePeriod;
+    }
+
+    void setKeepAlivePeriod(int i) {
+        keepAlivePeriod=i;
+    }
+
+    void setKeepAliveType(int i) {
+        keepAliveType=i;
     }
 }

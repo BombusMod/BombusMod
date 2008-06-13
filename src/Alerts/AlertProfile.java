@@ -25,8 +25,9 @@
  *
  */
 
-package Client;
+package Alerts;
 
+import Client.*;
 import images.RosterIcons;
 import locale.SR;
 import Colors.ColorTheme;

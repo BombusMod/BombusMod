@@ -32,6 +32,10 @@ package Client;
 //#endif
 
 //#ifndef WMUC
+import Account.Account;
+import Account.AccountSelect;
+import Alerts.AlertCustomize;
+import Alerts.AlertProfile;
 import Conference.BookmarkQuery;
 import Conference.Bookmarks;
 import Conference.ConferenceGroup;
@@ -45,6 +49,9 @@ import Archive.ArchiveList;
 //#endif
 import images.ClientsIcons;
 import images.RosterIcons;
+
+import io.file.FileIO;
+
 import locale.SR;
 import login.LoginListener;
 import login.SASLAuth;
@@ -409,8 +416,25 @@ public class Roster
                 setTitle("Bombus "+getHeaderString());
             }
         }
+/*        saveStats();
     }
-    
+
+    private void saveStats() {
+        if (cf.msgPath==null)
+            return;
+        
+        if (cf.msgPath=="")
+            return;
+        
+        String str="content=";
+        if (messageCount!=0) {
+            str+=getHeaderString();
+        }
+        FileIO fileOut=FileIO.createConnection(cf.msgPath+"bm.txt");
+        fileOut.fileWrite(str.getBytes());
+*/
+    }
+
     public String getHeaderString() {
         return ((highliteMessageCount==0)?" ":" "+highliteMessageCount+"/")+messageCount+" ";
     }
@@ -1971,7 +1995,7 @@ public class Roster
 */
     private void askReconnect(final Exception e) {
         StringBuffer error=new StringBuffer();
-        if (e.getClass().getName()!="java.lang.Exception") {
+        if (e.getClass().getName().indexOf("java.lang.Exception")<0) {
             error.append(e.getClass().getName());
             error.append('\n');
         }
@@ -1992,7 +2016,7 @@ public class Roster
         Msg m=new Msg(Msg.MESSAGE_TYPE_OUT, "local", topBar, error.toString());
         messageStore(selfContact(), m);
         //Stats.getInstance().save();
-        new Reconnect(topBar, error.toString(), display);
+        new MyReconnect(topBar, error.toString(), display);
 
      }
      public void doReconnect() {

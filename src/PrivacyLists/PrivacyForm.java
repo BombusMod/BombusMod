@@ -95,7 +95,7 @@ public class PrivacyForm
         for(int i=0; i<PrivacyItem.actions.length; i++){
             choiceAction.append(PrivacyItem.actions[i]);
         }
-        choiceAction.setSelectedIndex(item.action);
+        choiceAction.setSelectedIndex(selectedAction);
         itemsList.addElement(choiceAction);
         
 
@@ -108,7 +108,7 @@ public class PrivacyForm
         itemsList.addElement(choiceType);
         
         
-        textValue=new TextInput(display, "", tValue, "", TextField.ANY);//64, TextField.ANY);
+        textValue=new TextInput(display, SR.MS_VALUE, tValue, "", TextField.ANY);//64, TextField.ANY);
 
         switch (selectedAction) {
             case 0: //jid

@@ -244,15 +244,16 @@ public class ServiceDiscovery
                     String jid=i.getAttribute("jid");
                     String node=i.getAttribute("node");
                     Object serv=null;
-                    if (node==null) { 
-                        serv=new DiscoContact(name,jid,0);
+                    if (node==null) {
+                        if (name==null)
+                            serv=new DiscoContact(name, jid, 0);
+                        else
+                            serv=new DiscoCommand(RosterIcons.ICON_GCJOIN_INDEX, name);
                     } else {
                         serv=new Node(name, node);
                     }
                     items.addElement(serv);
                 }
-                
-                
             }
             
             showResults(items);
@@ -338,20 +339,20 @@ public class ServiceDiscovery
 	
 
     private void showResults(final Vector items) {
-        try { 
+        try {
             sort(items);
         } catch (Exception e) { 
             //e.printStackTrace(); 
         };
         
-        /*if (data.getAttribute("from").equals(service)) - jid hashed in id attribute*/ {
+        /*if (data.getAttribute("from").equals(service)) - jid hashed in id attribute*/ //{
             for (Enumeration e=cmds.elements(); e.hasMoreElements();) 
                 items.insertElementAt(e.nextElement(),0);
             this.items=items;
             moveCursorHome();
             discoIcon=0; 
             mainbarUpdate(); 
-        }
+        //}
     }
     
     public void browse(String service, String node){

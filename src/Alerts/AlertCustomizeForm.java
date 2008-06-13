@@ -27,8 +27,9 @@
  *
  */
 
-package Client;
+package Alerts;
 
+import Client.*;
 import locale.SR;
 import java.util.Vector;
 import ui.EventNotify;
@@ -63,6 +64,8 @@ public class AlertCustomizeForm
     private DropChoiceBox VIPFile;
     
     private CheckBox vibrateOnlyHighlited;
+    
+    private CheckBox IQNotify;
     
     private TrackItem sndVol;
     
@@ -136,6 +139,10 @@ public class AlertCustomizeForm
         sndVol=new TrackItem(ac.soundVol/10, 10);
         itemsList.addElement(sndVol);
         
+        itemsList.addElement(new SpacerItem(10));
+        IQNotify=new CheckBox(SR.MS_SHOW_IQ_REQUESTS, cf.IQNotify); itemsList.addElement(IQNotify);
+        
+        
         addCommand(cmdTest);
 
         moveCursorTo(getNextSelectableRef(-1));
@@ -171,6 +178,8 @@ public class AlertCustomizeForm
         cf.notifyPicture=statusBox.getValue();
         cf.notifyBlink=blinkBox.getValue();
         cf.notifySound=soundBox.getValue();
+        
+        cf.IQNotify=IQNotify.getValue();
 
         cf.saveToStorage();
 

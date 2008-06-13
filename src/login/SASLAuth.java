@@ -27,7 +27,7 @@
 
 package login;
 
-import Client.Account;
+import Account.Account;
 import com.alsutton.jabber.JabberBlockListener;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.JabberStream;

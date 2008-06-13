@@ -25,7 +25,7 @@
  */
 
 package com.alsutton.jabber;
-import Client.Account;
+import Account.Account;
 import Client.Config;
 import Client.StaticData;
 //#ifdef CONSOLE
@@ -158,9 +158,11 @@ public class JabberStream extends XmppParser implements Runnable {
     
     public void startKeepAliveTask(){
         Account account=StaticData.getInstance().account;
-        if (account.keepAliveType==0) 
+        int keepAliveType=account.getKeepAliveType();
+        int keepAlivePeriod=account.getKeepAlivePeriod();
+        if (keepAliveType==0) 
             return;
-        keepAlive=new TimerTaskKeepAlive(account.keepAlivePeriod, account.keepAliveType);
+        keepAlive=new TimerTaskKeepAlive(keepAlivePeriod, keepAliveType);
     }
     
     /**

@@ -28,59 +28,75 @@
 package Client;
 import javax.microedition.lcdui.*;
 import locale.SR;
+import ui.controls.form.DefForm;
+import ui.controls.form.DropChoiceBox;
+import ui.controls.form.SimpleString;
+import ui.controls.form.SpacerItem;
 
 /**
  *
  * @author Evg_S
  */
-public class SubscriptionEdit extends Form implements CommandListener{
+public class SubscriptionEdit 
+        extends DefForm {
     
     private Display display;
-      
-    Command cmdAskSubscr=new Command(SR.MS_ASK_SUBSCRIPTION, Command.SCREEN, 1);
-    Command cmdGrantSubscr=new Command(SR.MS_GRANT_SUBSCRIPTION, Command.SCREEN, 2);
-    Command cmdSubscrDel=new Command(SR.MS_SUBSCR_REMOVE, Command.SCREEN, 3);
-    //Command cmdUnsubscr=new Command(SR.MS_UNSUBSCRIBE, Command.SCREEN);
-    Command cmdBack=new Command(SR.MS_CANCEL, Command.BACK, 99);
+    private Displayable parentView;
     
-    Roster r=StaticData.getInstance().roster;
+    private DropChoiceBox action;
+
     String to;
     /** Creates a new instance of YesNoAlert */
     public SubscriptionEdit(Display display, Contact c) {
-        super(SR.MS_SUBSCRIPTION);
-        to=c.getBareJid();
-        StringBuffer s=new StringBuffer(c.getNickJid()).append('\n').append("subscr:").append(c.subscr);
-        if (c.ask_subscribe) s.append(",ask");
+        super(display, SR.MS_SUBSCRIPTION);
         
-//#if !(MIDP1)
-        append("\n");
-//#endif
-        append(s.toString());
-        s=null;
-
-        addCommand(cmdGrantSubscr);
-        addCommand(cmdAskSubscr);
-        addCommand(cmdSubscrDel);
-        addCommand(cmdBack);
-        
-        setCommandListener(this);
-
         this.display=display;
-        display.setCurrent(this);
+        parentView=display.getCurrent();
+        
+        to=c.getBareJid();
+
+        itemsList.addElement(new SimpleString(to+": "+c.subscr+((c.ask_subscribe)?",ask":""), false));
+
+        itemsList.addElement(new SpacerItem(10));
+        
+        itemsList.addElement(new SimpleString(SR.MS_ACTION, true));
+        action=new DropChoiceBox(display);
+        action.append(SR.MS_NO);
+        action.append(SR.MS_ASK_SUBSCRIPTION);
+        action.append(SR.MS_GRANT_SUBSCRIPTION);
+        action.append(SR.MS_SUBSCR_REMOVE);
+        action.setSelectedIndex(0);
+        itemsList.addElement(action);
+
+        moveCursorTo(getNextSelectableRef(-1));
+        attachDisplay(display);
     }
-    public void commandAction(Command c, Displayable d ){
-        String presence=null;
-        if (c==cmdAskSubscr) { presence="subscribe"; }
-        if (c==cmdGrantSubscr) { presence="subscribed"; }
-        if (c==cmdSubscrDel) { presence="unsubscribed"; }
+    
+    public void cmdOk() {
+        int actionType=action.getSelectedIndex();
         
-        if (presence!=null) r.sendPresence(to,presence, null, false);
-        
+        if (actionType>0) {
+            String presence=null;
+            switch (actionType) {
+                case 1:
+                    presence="subscribe";
+                    break;
+                case 2:
+                    presence="subscribed";
+                    break;
+                case 3:
+                    presence="unsubscribed";
+                    break;
+            }
+
+            if (presence!=null) StaticData.getInstance().roster.sendPresence(to, presence, null, false);
+        }
         destroyView();
     }
 
     public void destroyView(){
-        if (display!=null)   display.setCurrent(r);
+        if (display!=null)
+            display.setCurrent(StaticData.getInstance().roster);
     }
 
 }

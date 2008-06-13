@@ -61,8 +61,7 @@ public class Presence extends JabberDataBlock
   };
   
 
-  public Presence(int status, int priority, String message, String nick)
-  {
+  public Presence(int status, int priority, String message, String nick) {
     super( null, null );
     switch (status){
         case PRESENCE_OFFLINE: setType(PRS_OFFLINE); break;

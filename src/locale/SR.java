@@ -643,6 +643,14 @@ public class SR {
     public static String MS_SAVE_TO_FILE=loadString("Save to file");
 
     public static String MS_LOAD_FROM_FILE=loadString("Load from file");
+
+    public static String MS_SHOW_IQ_REQUESTS=loadString("Show IQ requests");
+
+    public static String MS_SHOW_CLIENTS_ICONS=loadString("Show clients icons");
+
+    public static String MS_ACTION=loadString("Action");
+
+    public static String MS_VALUE=loadString("Value");
     
     private SR() { }
     

@@ -33,6 +33,8 @@ package midlet;
 //#ifdef AUTOTASK
 //# import AutoTasks.AutoTask;
 //#endif
+import Account.Account;
+import Account.AccountSelect;
 import Colors.ColorTheme;
 
 import javax.microedition.midlet.*;
@@ -133,7 +135,7 @@ public class BombusMod extends MIDlet implements Runnable{
         s.setProgress(24);
         if (!selAccount && cf.autoLogin) {
             // connect whithout account select
-            Account.loadAccount(cf.autoLogin);
+            Account.loadAccount(cf.autoLogin, cf.accountIndex);
         } else {
             new AccountSelect(display, true);
         }

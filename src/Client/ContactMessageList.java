@@ -49,30 +49,30 @@ import Archive.MessageArchive;
 public class ContactMessageList extends MessageList
 {
     Contact contact;
-    Command cmdSubscribe=new Command(SR.MS_SUBSCRIBE, Command.ITEM, 1);
-    Command cmdUnsubscribed=new Command(SR.MS_DECLINE, Command.ITEM, 2);
-    Command cmdMessage=new Command(SR.MS_NEW_MESSAGE,Command.ITEM,3);
-    Command cmdResume=new Command(SR.MS_RESUME,Command.ITEM,1);
-    Command cmdReply=new Command(SR.MS_REPLY,Command.ITEM,4);
-    Command cmdQuote=new Command(SR.MS_QUOTE,Command.ITEM,5);
+    Command cmdSubscribe=new Command(SR.MS_SUBSCRIBE, Command.SCREEN, 1);
+    Command cmdUnsubscribed=new Command(SR.MS_DECLINE, Command.SCREEN, 2);
+    Command cmdMessage=new Command(SR.MS_NEW_MESSAGE,Command.SCREEN,3);
+    Command cmdResume=new Command(SR.MS_RESUME,Command.SCREEN,1);
+    Command cmdReply=new Command(SR.MS_REPLY,Command.SCREEN,4);
+    Command cmdQuote=new Command(SR.MS_QUOTE,Command.SCREEN,5);
 //#ifdef ARCHIVE
-    Command cmdArch=new Command(SR.MS_ADD_ARCHIVE,Command.ITEM,6);
+    Command cmdArch=new Command(SR.MS_ADD_ARCHIVE,Command.SCREEN,6);
 //#endif
-    Command cmdPurge=new Command(SR.MS_CLEAR_LIST, Command.ITEM, 7);
-    Command cmdActions=new Command(SR.MS_CONTACT,Command.ITEM,8);
-    Command cmdActive=new Command(SR.MS_ACTIVE_CONTACTS,Command.ITEM,11);
+    Command cmdPurge=new Command(SR.MS_CLEAR_LIST, Command.SCREEN, 7);
+    Command cmdActions=new Command(SR.MS_CONTACT,Command.SCREEN,8);
+    Command cmdActive=new Command(SR.MS_ACTIVE_CONTACTS,Command.SCREEN,11);
 //#if TEMPLATES
-    Command cmdTemplate=new Command(SR.MS_SAVE_TEMPLATE,Command.ITEM,14);
+    Command cmdTemplate=new Command(SR.MS_SAVE_TEMPLATE,Command.SCREEN,14);
 //#endif
 //#ifdef ANTISPAM
-//#     Command cmdBlock = new Command(SR.MS_BLOCK_PRIVATE, Command.ITEM, 22);
-//#     Command cmdUnlock = new Command(SR.MS_UNLOCK_PRIVATE, Command.ITEM, 23);
+//#     Command cmdBlock = new Command(SR.MS_BLOCK_PRIVATE, Command.SCREEN, 22);
+//#     Command cmdUnlock = new Command(SR.MS_UNLOCK_PRIVATE, Command.SCREEN, 23);
 //#endif
 //#ifdef FILE_IO
-    Command cmdSaveChat=new Command(SR.MS_SAVE_CHAT, Command.ITEM, 16);
+    Command cmdSaveChat=new Command(SR.MS_SAVE_CHAT, Command.SCREEN, 16);
 //#endif
 //#ifdef CLIPBOARD    
-//#     Command cmdSendBuffer=new Command(SR.MS_SEND_BUFFER, Command.ITEM, 15);
+//#     Command cmdSendBuffer=new Command(SR.MS_SEND_BUFFER, Command.SCREEN, 15);
 //#     private ClipBoard clipboard;
 //#endif
 

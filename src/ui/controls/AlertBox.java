@@ -192,7 +192,7 @@ public abstract class AlertBox extends Canvas implements CommandListener {
         int filled=pos*width/steps;
 
         if (pb==null)
-            pb=new Progress(g, 0, height, width);
+            pb=new Progress(g, 0, height-FontCache.getSmallFont().getHeight(), width);
         pb.draw(filled, Integer.toString(steps-pos));
     }
     

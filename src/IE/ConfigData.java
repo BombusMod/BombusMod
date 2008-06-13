@@ -27,7 +27,7 @@
 
 package IE;
 
-import Client.AlertProfile;
+import Alerts.AlertProfile;
 import Client.Config;
 import io.file.FileIO;
 import java.util.Enumeration;
@@ -153,6 +153,10 @@ public class ConfigData {
 //#ifdef DETRANSLIT
 //#         array.addElement(new keyValue(autoDeTranslit, (cf.autoDeTranslit)?"1":"0")); 
 //#endif
+        array.addElement(new keyValue(IQNotify, (cf.IQNotify)?"1":"0")); 
+//#ifdef CLIENTS_ICONS
+//#         array.addElement(new keyValue(showClientIcon, (cf.showClientIcon)?"1":"0")); 
+//#endif
         StringBuffer body = new StringBuffer();
         body = createArrayString(array);
 
@@ -277,6 +281,10 @@ public class ConfigData {
         
 //#ifdef DETRANSLIT
 //#         cf.autoDeTranslit=cf.getBooleanProperty(getValue(autoDeTranslit),false);
+//#endif
+        cf.IQNotify=cf.getBooleanProperty(getValue(IQNotify),false);
+//#ifdef CLIENTS_ICONS
+//#         cf.showClientIcon=cf.getBooleanProperty(getValue(showClientIcon),true);
 //#endif
         cf.lastProfile=cf.profile=cf.def_profile;
         if (cf.lastProfile==AlertProfile.VIBRA) 
@@ -432,6 +440,8 @@ public class ConfigData {
 //#ifdef PEP_TUNE
 //#     private final static String sndrcvtune="sndrcvtune";
 //#endif
+    private final static String IQNotify="IQNotify";
+    private final static String showClientIcon="showClientIcon";
     
     class keyValue {
         String value; String key;

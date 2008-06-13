@@ -38,6 +38,7 @@ public class MyReconnect extends TimerBox {
 
     public void yes() {
         StaticData.getInstance().roster.doReconnect();
+        destroyView();
     }
 
     public void no() { }

@@ -37,7 +37,7 @@ import util.StringLoader;
  */
 public class ClientsIcons extends ImageList {
     
-    private static Vector clients[];
+    private static Vector clients[]=new Vector[2];
     
     private static String res= "/images/clients.png";
     private static String restxt= "/images/clients.txt";
@@ -54,8 +54,6 @@ public class ClientsIcons extends ImageList {
     public static ClientsIcons getInstance() {
 	if (instance==null){
             try {
-                
-                clients=new Vector[2];
                 clients[0]=new Vector();
                 clients[1]=new Vector();
 
@@ -80,6 +78,8 @@ public class ClientsIcons extends ImageList {
     
     public int getClientIDByCaps(String caps) {
         int clientID=-1;
+        if (clients.length<1) return clientID;
+        
         for (int i=0; i<clients[0].size(); i++) {
             if (clients[0].elementAt(i).equals(caps))
                 return i;
@@ -88,6 +88,8 @@ public class ClientsIcons extends ImageList {
     }
     
     public String getClientNameByID(int id) {
+        if (clients.length<1) return "";
+        
         return (String) clients[1].elementAt(id);
     }
     

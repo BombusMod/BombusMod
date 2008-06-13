@@ -45,12 +45,11 @@ import ui.controls.AlertBox;
  */
 public class Bookmarks 
         extends VirtualList 
-        implements CommandListener
-{   
+        implements CommandListener {   
+    
     private BookmarkItem toAdd;
     
     private StaticData sd = StaticData.getInstance();
-    
     private Config cf=Config.getInstance();
     
     private Command cmdCancel=new Command (SR.MS_CANCEL, Command.BACK, 99);
@@ -143,7 +142,9 @@ public class Bookmarks
             return;
         if (join.isUrl) 
             return;
-
+        
+        ConferenceForm.join(join.desc, join.getJidNick(), join.password, cf.confMessageCount);
+/*
         ConferenceGroup grp=sd.roster.initMuc(join.getJidNick(), join.password);
         grp.desc=join.desc;
         JabberDataBlock x=new JabberDataBlock("x", null, null);
@@ -161,6 +162,7 @@ public class Bookmarks
         sd.roster.sendPresence(join.getJidNick(), null, x, false);
         
         sd.roster.reEnumRoster();
+ */
         display.setCurrent(sd.roster);
     }
     
@@ -170,17 +172,15 @@ public class Bookmarks
             new ConferenceForm(display);
             return;
         }
-
+        if (c==cmdJoin) eventOk();
+        
 	if (getItemCount()==0) return;
         String roomJid=((BookmarkItem)getFocusedObject()).getJid();
 
-        if (c==cmdJoin) eventOk();
-        else if (c==cmdAdvJoin) {
+        if (c==cmdAdvJoin) {
             BookmarkItem join=(BookmarkItem)getFocusedObject();
             new ConferenceForm(display, join, cursor);
-        }
-
-        else if (c==cmdDel) {
+        } else if (c==cmdDel) {
             deleteBookmark();
             setMainBarItem(new MainBar(2, null, SR.MS_BOOKMARKS+" ("+getItemCount()+") "));
             return;

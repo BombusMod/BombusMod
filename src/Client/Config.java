@@ -26,6 +26,7 @@
  */
 
 package Client;
+import Alerts.AlertProfile;
 import images.ActionsIcons;
 import images.MenuIcons;
 import images.RosterIcons;
@@ -271,6 +272,12 @@ type = \"-=Siemens=-\";
     public String resolvedHost="";
     public int resolvedPort=0;
     
+    public boolean IQNotify=false;
+//#ifdef CLIENTS_ICONS
+//#     public boolean showClientIcon=true;
+//#endif
+            
+    
     public static Config getInstance(){
 	if (instance==null) {
 	    instance=new Config();
@@ -466,7 +473,7 @@ type = \"-=Siemens=-\";
             autoSubscribe=inputStream.readInt();
             useBoldFont=inputStream.readBoolean();
             notifyWhenMessageType = inputStream.readBoolean();
-            inputStream.readBoolean(); //IRC_LIKE
+            IQNotify=inputStream.readBoolean(); //IRC_LIKE
 //#ifdef PEP
 //#             sndrcvmood = inputStream.readBoolean();
 //#else
@@ -493,6 +500,11 @@ type = \"-=Siemens=-\";
             
 //#ifdef DETRANSLIT
 //#             autoDeTranslit=inputStream.readBoolean();
+//#else
+            inputStream.readBoolean();
+//#endif
+//#ifdef CLIENTS_ICONS
+//#             showClientIcon=inputStream.readBoolean();
 //#else
             inputStream.readBoolean();
 //#endif
@@ -652,7 +664,7 @@ type = \"-=Siemens=-\";
             outputStream.writeInt(autoSubscribe);
             outputStream.writeBoolean(useBoldFont);
             outputStream.writeBoolean(notifyWhenMessageType);
-            outputStream.writeBoolean(false); //IRC_LIKE
+            outputStream.writeBoolean(IQNotify); //IRC_LIKE
 //#ifdef PEP
 //#             outputStream.writeBoolean(sndrcvmood);
 //#else
@@ -678,6 +690,11 @@ type = \"-=Siemens=-\";
             
 //#ifdef DETRANSLIT
 //#             outputStream.writeBoolean(autoDeTranslit);
+//#else
+            outputStream.writeBoolean(false);
+//#endif
+//#ifdef CLIENTS_ICONS
+//#             outputStream.writeBoolean(showClientIcon);
 //#else
             outputStream.writeBoolean(false);
 //#endif

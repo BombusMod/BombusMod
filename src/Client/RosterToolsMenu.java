@@ -30,6 +30,7 @@ package Client;
 //# import Console.XMLList;
 //#endif
 //#ifdef PRIVACY
+import Alerts.AlertCustomizeForm;
 import PrivacyLists.PrivacySelect;
 //#endif
 //#if AUTOTASK

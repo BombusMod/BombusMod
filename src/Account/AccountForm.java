@@ -25,8 +25,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-package Client;
+package Account;
 
+import Client.*;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
@@ -158,8 +159,8 @@ public class AccountForm
         keepAliveType.append("1 byte");
         keepAliveType.append("<iq/>");
         keepAliveType.append("ping");
-        keepAliveType.setSelectedIndex(account.keepAliveType);
-        keepAlive = new NumberInput(display, SR.MS_KEEPALIVE_PERIOD, Integer.toString(account.keepAlivePeriod), 10, 2048);//10, 2096
+        keepAliveType.setSelectedIndex(account.getKeepAliveType());
+        keepAlive = new NumberInput(display, SR.MS_KEEPALIVE_PERIOD, Integer.toString(account.getKeepAlivePeriod()), 10, 2048);//10, 2096
         itemsList.addElement(keepAliveType);
         
         resourcebox = new TextInput(display, SR.MS_RESOURCE, account.getResource(), null, TextField.ANY);//64, TextField.ANY
@@ -225,8 +226,8 @@ public class AccountForm
 //#         account.setProxyPort(proxyPort.getValue());
 //#endif
 
-            account.keepAlivePeriod=Integer.parseInt(keepAlive.getValue());
-            account.keepAliveType=keepAliveType.getValue();
+            account.setKeepAlivePeriod(Integer.parseInt(keepAlive.getValue()));
+            account.setKeepAliveType(keepAliveType.getValue());
         }
 
         if (newaccount) 
@@ -253,7 +254,7 @@ public class AccountForm
     }
     
     private void startLogin(){
-        Account.loadAccount(true);
+        Account.loadAccount(true, Config.getInstance().accountIndex);
         SplashScreen.getInstance().close();
     }
 }

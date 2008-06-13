@@ -26,6 +26,8 @@
  */
 
 package Client;
+
+import Account.Account;
 //#ifdef AUTOTASK
 //# import AutoTasks.AutoTask;
 //#endif

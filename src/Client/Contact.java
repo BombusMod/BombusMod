@@ -182,7 +182,10 @@ public class Contact extends IconTextElement{
 
     public Contact(final String Nick, final String sJid, final int Status, String subscr) {
         this();
-        nick=Nick; jid= new Jid(sJid); status=Status;
+        nick=Nick; 
+        jid= new Jid(sJid);
+        status=Status;
+        
         bareJid=sJid;
         this.subscr=subscr;
     
@@ -273,6 +276,8 @@ public class Contact extends IconTextElement{
     public void resetNewMsgCnt() { newMsgCnt=0; newHighLitedMsgCnt=0; }
   
     public void setIncoming (int state) {
+        if (!cf.IQNotify) return;
+
         short i=0;
         switch (state){
             case INC_APPEARING:
@@ -508,9 +513,7 @@ public class Contact extends IconTextElement{
         return wft+il.getWidth()+4;
     }
     
-    public String toString() {
-        return getFirstString();
-    }
+    public String toString() { return getFirstString(); }
 
     public int getSecondLength() {
         if (getSecondString()==null) return 0;
@@ -640,13 +643,15 @@ public class Contact extends IconTextElement{
             il.drawImage(g, getImageIndex(), 2, imgH);
         }
 //#ifdef CLIENTS_ICONS
-//#         if (client>-1) {
-//#             ImageList clients=ClientsIcons.getInstance();
-//#             int clientImgSize=clients.getWidth();
-//#             w-=clientImgSize;
-//#             clients.drawImage(g, client, w, (h-clientImgSize)/2);
-//#             if (maxImgHeight<clientImgSize)
-//#                 maxImgHeight=clientImgSize;
+//#         if (cf.showClientIcon) {
+//#             if (client>-1) {
+//#                 ImageList clients=ClientsIcons.getInstance();
+//#                 int clientImgSize=clients.getWidth();
+//#                 w-=clientImgSize;
+//#                 clients.drawImage(g, client, w, (h-clientImgSize)/2);
+//#                 if (maxImgHeight<clientImgSize)
+//#                     maxImgHeight=clientImgSize;
+//#             }
 //#         }
 //#endif
 //#ifdef PEP

@@ -64,7 +64,7 @@ public class ConferenceForm
     
     BookmarkItem editConf;
 
-    private static boolean sndprs=false;
+    //private static boolean sndprs=false;
     
     private static StaticData sd=StaticData.getInstance();
 
@@ -185,7 +185,7 @@ public class ConferenceForm
     public void commandAction(Command c, Displayable d){
         super.commandAction(c, d);
         
-        sndprs=true;
+        //sndprs=true;
         
         String nick=nickField.getValue();
         String name=nameField.getValue();
@@ -257,14 +257,14 @@ public class ConferenceForm
                 history.setAttribute("seconds",String.valueOf(delay)); // todo: change to since
         } catch (Exception e) {}
         
-        if (sndprs) {
+        //if (sndprs) {
             //sd.roster.sendPresence(name, null, x, false);
             int status=sd.roster.myStatus;
             if (status==Presence.PRESENCE_INVISIBLE) 
                 status=Presence.PRESENCE_ONLINE;
             sd.roster.sendDirectPresence(status, jid, x);
-            sndprs=false;
-        }
+            //sndprs=false;
+        //}
         grp.inRoom=true;
         sd.roster.reEnumRoster();
     }

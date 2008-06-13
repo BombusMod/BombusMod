@@ -30,12 +30,11 @@ package ServiceDiscovery;
 import Client.Contact;
 
 public class DiscoContact extends Contact {
-    public DiscoContact(final String Nick, final String sJid, final int Status) {
-        super( (Nick==null)? null: Nick.trim(), sJid, Status, null);
+    public DiscoContact(String nick, String sJid, int status) { 
+        super( (nick==null)?null:nick.trim(), sJid, status, null);
     }
+    
     public String toString() { return (nick==null)?getJid():nick; }
 
-    public String getTipString() {
-        return getJid()+((nick==null)?"":"\n"+nick);
-    }
+    public String getTipString() { return getJid()+((nick==null)?"":"\n"+nick); }
 }

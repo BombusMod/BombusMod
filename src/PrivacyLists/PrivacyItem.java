@@ -59,7 +59,7 @@ public class PrivacyItem extends IconTextElement{
     
     int type;    //jid|group|subscription|ANY
     String value=new String();
-    int action=1;
+    int action=0;
     int order;
     
     boolean messageStz=false;

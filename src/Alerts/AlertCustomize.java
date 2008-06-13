@@ -23,7 +23,7 @@
  *
  */
 
-package Client;
+package Alerts;
 
 import io.NvStorage;
 import java.io.DataInputStream;

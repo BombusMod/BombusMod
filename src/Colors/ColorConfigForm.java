@@ -71,9 +71,7 @@ public class ColorConfigForm
     private LinkString useFromJar;
     
     private LinkString reset;
-    
 
-    
     /** Creates a new instance of ColorConfigForm */
     public ColorConfigForm(final Display display) {
         super(display, SR.MS_COLOR_TUNE);
@@ -86,7 +84,7 @@ public class ColorConfigForm
         invertColors=new LinkString(SR.MS_INVERT) { public void doAction() { ColorTheme.getInstance().invertSkin(); } };
         itemsList.addElement(invertColors);
         
-        itemsList.addElement(new SpacerItem(0));
+        itemsList.addElement(new SpacerItem(10));
         try {
             files=new StringLoader().stringLoader("/skins/res.txt",2);
             if (files[0].size()>0) {

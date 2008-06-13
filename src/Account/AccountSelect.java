@@ -25,7 +25,8 @@
  *
  */
 
-package Client;
+package Account;
+import Client.*;
 import locale.SR;
 import midlet.BombusMod;
 import ui.*;
@@ -45,7 +46,7 @@ public class AccountSelect
         extends VirtualList 
         implements CommandListener{
 
-    Vector accountList;
+    public Vector accountList;
     int activeAccount;
     boolean enableQuit;
     
@@ -82,8 +83,8 @@ public class AccountSelect
         do {
             a=Account.createFromStorage(index);
             if (a!=null) {
+                a.setActive(activeAccount==index);
                 accountList.addElement(a);
-                a.active=(activeAccount==index);
                 index++;
              }
        } while (a!=null);
@@ -110,7 +111,7 @@ public class AccountSelect
         setCommandListener(this);
     }
     
-    void commandState(){
+    public void commandState(){
         if (accountList.isEmpty()) {
             removeCommand(cmdEdit);
             removeCommand(cmdDel);
@@ -170,7 +171,7 @@ public class AccountSelect
     public void destroyView(){
         if(accountList.size()>0) {
             if (StaticData.getInstance().account==null)
-                Account.loadAccount(false);
+                Account.loadAccount(false, cf.accountIndex);
             display.setCurrent(StaticData.getInstance().roster);
         }
     }
@@ -189,7 +190,7 @@ public class AccountSelect
     private void switchAccount(boolean login){
         cf.accountIndex=cursor;
         cf.saveToStorage();
-        Account.loadAccount(login);
+        Account.loadAccount(login, cursor);
         destroyView();
     }
     
@@ -200,7 +201,7 @@ public class AccountSelect
         }
     }
     
-    void rmsUpdate(){
+    public void rmsUpdate(){
         DataOutputStream outputStream=NvStorage.CreateDataOutputStream();
         for (int i=0;i<accountList.size();i++) 
             ((Account)accountList.elementAt(i)).saveToDataOutputStream(outputStream);

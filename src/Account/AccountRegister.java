@@ -25,7 +25,7 @@
  *
  */
 
-package Client;
+package Account;
 import com.alsutton.jabber.*;
 import com.alsutton.jabber.datablocks.*;
 import javax.microedition.lcdui.*;
