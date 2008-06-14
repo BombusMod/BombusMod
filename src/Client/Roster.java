@@ -525,7 +525,7 @@ public class Roster
                         return;
                     }
                 }
-            }
+            } else return;
         }
 //#endif
         int index=0;
@@ -2298,19 +2298,18 @@ public class Roster
             boolean isMucContact=(getFocusedObject() instanceof MucContact);
             if (isMucContact) {
                 MucContact mucContact=(MucContact)getFocusedObject();
-                
-                if (mucContact.origin==Contact.ORIGIN_GROUPCHAT) // dont show info for confContact
-                    return;
 
-                mess.append((mucContact.realJid==null)?"":"jid: "+mucContact.realJid+"\n");
+                if (mucContact.origin!=Contact.ORIGIN_GROUPCHAT){// dont show info for confContact
+                    mess.append((mucContact.realJid==null)?"":"jid: "+mucContact.realJid+"\n");
 
-                if (mucContact.affiliationCode>0) {
-                    mess.append(MucContact.getAffiliationLocale(mucContact.affiliationCode));
+                    if (mucContact.affiliationCode>0) {
+                        mess.append(MucContact.getAffiliationLocale(mucContact.affiliationCode));
+                        if (mucContact.affiliationCode!=MucContact.AFFILIATION_MEMBER)
+                            mess.append("/");
+                    }
                     if (mucContact.affiliationCode!=MucContact.AFFILIATION_MEMBER)
-                        mess.append("/");
+                        mess.append(MucContact.getRoleLocale(mucContact.roleCode));
                 }
-                if (mucContact.affiliationCode!=MucContact.AFFILIATION_MEMBER)
-                    mess.append(MucContact.getRoleLocale(mucContact.roleCode));
             } else {
 //#endif
                 mess.append("jid: ")
@@ -2339,13 +2338,17 @@ public class Roster
 //#ifndef WMUC
             }
 //#endif
-            mess.append((cntact.getJ2J()!=null)?"\nJ2J: "+cntact.getJ2J():"");
-            mess.append((cntact.getClient()>-1)?"\nUse: "+ClientsIcons.getInstance().getClientNameByID(cntact.getClient()):"");
+            if (cntact.origin!=Contact.ORIGIN_GROUPCHAT){
+                mess.append((cntact.getJ2J()!=null)?"\nJ2J: "+cntact.getJ2J():"");
+                mess.append((cntact.getClient()>-1)?"\nUse: "+ClientsIcons.getInstance().getClientNameByID(cntact.getClient()):"");
+            }
             if (cntact.statusString!=null) {
-                mess.append("\n")
-                    .append(SR.MS_STATUS)
-                    .append(": ")
-                    .append(cntact.statusString);
+                if (cntact.origin!=Contact.ORIGIN_GROUPCHAT){
+                    mess.append("\n")
+                        .append(SR.MS_STATUS)
+                        .append(": ");
+                }
+                mess.append(cntact.statusString);
             }
             
             super.setWobble(1, (Contact) null, mess.toString());
