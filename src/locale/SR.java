@@ -651,6 +651,9 @@ public class SR {
     public static String MS_ACTION=loadString("Action");
 
     public static String MS_VALUE=loadString("Value");
+
+    public static String MS_RECONNECT_COUNT_RETRY=loadString("Quantity of attempts");
+    public static String MS_RECONNECT_WAIT=loadString("Delay before reconnect(sec.)");
     
     private SR() { }
     

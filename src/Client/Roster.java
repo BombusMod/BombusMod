@@ -150,9 +150,12 @@ public class Roster
     public static int oldStatus=0;
     private static int lastOnlineStatus;
 	
-    public final static int maxReconnect=10;
-    public int reconnectCount;
-    boolean reconnect=false;
+    //public final static int maxReconnect=10;
+    //public int reconnectCount;
+    //boolean reconnect=false;
+    
+    public int currentReconnect=0;
+    public boolean doReconnect=false;
     
     public boolean querysign=false;
     
@@ -229,8 +232,7 @@ public class Roster
     public void setLight(boolean state) {
         if (cf.phoneManufacturer==Config.SIEMENS || cf.phoneManufacturer==Config.SIEMENS2) {
             try {
-                if (state) 
-                    com.siemens.mp.game.Light.setLightOn();
+                if (state) com.siemens.mp.game.Light.setLightOn();
                 else com.siemens.mp.game.Light.setLightOff();  
             } catch( Exception e ) { }
         }
@@ -317,11 +319,10 @@ public class Roster
          */
 //#endif
         setQuerySign(true);
-	if (!reconnect) {
+	if (!doReconnect) {
             setProgress(25);
             resetRoster();
         }
-
         try {
             Account a=sd.account;
 //#if SASL_XGOOGLETOKEN
@@ -338,13 +339,15 @@ public class Roster
             theStream.setJabberListener( this );
             theStream.initiateStream();
         } catch( Exception e ) {
-            SplashScreen.getInstance().close();
+//#ifdef DEBUG
+//#             e.printStackTrace();
+//#endif
+            //SplashScreen.getInstance().close();
             setProgress(SR.MS_FAILED, 100);
-            reconnect=false;
+            doReconnect=false;
             myStatus=Presence.PRESENCE_OFFLINE;
-            //e.printStackTrace();
             setQuerySign(false);
-            redraw();
+            redraw();           
             askReconnect(e);
         }
     }
@@ -801,9 +804,8 @@ public class Roster
         
         // reconnect if disconnected
         if (myStatus!=Presence.PRESENCE_OFFLINE && theStream==null ) {
-            reconnect=(hContacts.size()>1);
+            doReconnect=(hContacts.size()>1);
             redraw();
-
             new Thread(this).start();
             return;
         }
@@ -1100,7 +1102,7 @@ public class Roster
         System.gc();
         try { Thread.sleep(50); } catch (InterruptedException e){}
 //#endif
-        reconnect=false;
+        doReconnect=false;
         setQuerySign(false);
         redraw();
     }
@@ -1129,17 +1131,16 @@ public class Roster
      
         //enable keep-alive packets
         theStream.startKeepAliveTask();
+        
 	theStream.loggedIn=true;
-	reconnectCount=0;
+	currentReconnect=0;
         
         playNotify(SOUND_CONNECTED);
-        if (reconnect) {
-            querysign=false;
-            reconnect=false;
+        if (doReconnect) {
+            querysign=doReconnect=false;
             sendPresence(myStatus, null);
 //#ifndef WMUC
-            if (cf.autoJoinConferences)
-                mucReconnect();
+            //if (cf.autoJoinConferences) mucReconnect();
 //#endif
             return;
         }
@@ -1154,7 +1155,7 @@ public class Roster
             } catch (Exception e) { }
 			
             setQuerySign(false);
-            reconnect=false;
+            doReconnect=false;
             SplashScreen.getInstance().close(); // display.setCurrent(this);
         } else {
             JabberDataBlock qr=new IqQueryRoster();
@@ -1228,8 +1229,7 @@ public class Roster
                             setProgress(SR.MS_CONNECTED,100);
                             reEnumRoster();
 
-                            querysign=false;
-                            reconnect=false;
+                            querysign=doReconnect=false;
 
                             if (cf.loginstatus==5) {
                                 sendPresence(Presence.PRESENCE_INVISIBLE, null);    
@@ -1942,7 +1942,7 @@ public class Roster
 
     public void connectionTerminated( Exception e ) {
         String error=null;
-        setProgress(SR.MS_DISCONNECTED, 100);
+        setProgress(SR.MS_DISCONNECTED, 0);
          if( e != null ) {
             askReconnect(e);
         } else {
@@ -1956,43 +1956,7 @@ public class Roster
          }
         redraw();
     }
-/*
-    public void connectionTerminated( Exception e ) {
-        String error=null;
-         if( e != null ) {
-            askReconnect(e);
-        } else {
-            setProgress(SR.MS_DISCONNECTED, 100);
-            try {
-                sendPresence(Presence.PRESENCE_OFFLINE, null);
-            } catch (Exception e2) {
-//#if DEBUG
-//#                 e2.printStackTrace();
-//#endif
-            }
-         }
-        redraw();
-    }
-*/
-/*
-    private void askReconnect(final Exception e) {
-        String error=e.getClass().getName()+"\n"+e.getMessage();
-//#if DEBUG
-//#         e.printStackTrace();
-//#endif
-        if (e instanceof SecurityException) { errorLog(error); return; }
-        if (reconnectCount>=maxReconnect) { errorLog(error); return; }
-        
-        reconnectCount++;
-        String topBar="("+reconnectCount+"/"+maxReconnect+") "+SR.MS_RECONNECT;
-        Msg m=new Msg(Msg.MESSAGE_TYPE_HISTORY, "local", topBar, error);
-        messageStore(selfContact(), m);
-//#ifdef STATS
-//#         //Stats.getInstance().save();
-//#endif
-        new Reconnect(topBar, error, display);
-     }
-*/
+
     private void askReconnect(final Exception e) {
         StringBuffer error=new StringBuffer();
         if (e.getClass().getName().indexOf("java.lang.Exception")<0) {
@@ -2006,21 +1970,22 @@ public class Roster
 //#endif
         try {
              sendPresence(Presence.PRESENCE_OFFLINE, null);
-        } catch (Exception e2) { }
+        } catch (Exception e2) { System.out.println("E2"); e2.printStackTrace(); }
 
         if (e instanceof SecurityException) { errorLog(error.toString()); return; }
-        if (reconnectCount>=maxReconnect) { errorLog(error.toString()); return; }
+        if (currentReconnect>=cf.reconnectCount) { errorLog(error.toString()); return; }
         
-        reconnectCount++;
-        String topBar="("+reconnectCount+"/"+maxReconnect+") Reconnecting";
+        currentReconnect++;
+        String topBar="("+currentReconnect+"/"+cf.reconnectCount+") Reconnecting";
         Msg m=new Msg(Msg.MESSAGE_TYPE_OUT, "local", topBar, error.toString());
         messageStore(selfContact(), m);
         //Stats.getInstance().save();
         new MyReconnect(topBar, error.toString(), display);
 
      }
+    
      public void doReconnect() {
-        sendPresence(lastOnlineStatus, null);
+         sendPresence(lastOnlineStatus, null);
      }
     
     public void eventOk(){
@@ -2077,7 +2042,7 @@ public class Roster
                     };
                 }
 //#ifndef WMUC
-                else if (isContact && isMucContact) {
+                else if (isContact && isMucContact && c.origin!=Contact.ORIGIN_GROUPCHAT) {
                     ConferenceGroup mucGrp=(ConferenceGroup)c.getGroup();
                     String myNick=mucGrp.getSelfContact().getName();
                     MucContact mc=(MucContact) c;
@@ -2468,7 +2433,7 @@ public class Roster
     public void cmdMinimize() { BombusMod.getInstance().hideApp(true);  }
     public void cmdActiveContacts() { new ActiveContacts(display, null); }
     public void cmdAccount(){ new AccountSelect(display, false); }
-    public void cmdStatus() { reconnectCount=0; new StatusSelect(display, null); }
+    public void cmdStatus() { currentReconnect=0; new StatusSelect(display, null); }
     public void cmdAlert() { new AlertProfile(display); }
 //#ifdef ARCHIVE
     public void cmdArchive() { new ArchiveList(display, -1, 1, null); }
@@ -2660,8 +2625,7 @@ public class Roster
                     
                     int locCursor=cursor;
                     Object focused=(desiredFocus==null)?getFocusedObject():desiredFocus;
-		    desiredFocus=null;
-                    
+		    desiredFocus=null;                    
                     Vector tContacts=new Vector(vContacts.size());
                     
                     Enumeration e;
@@ -2674,8 +2638,7 @@ public class Roster
                             Group grp=c.getGroup();
 			    grp.addContact(c);
                         }
-                    }
-                    
+                    }                
                     // self-contact group
                     Group selfContactGroup=groups.getGroup(Groups.TYPE_SELF);
                     selfContactGroup.visible=(cf.selfContact || selfContactGroup.tonlines>1 || selfContactGroup.unreadMessages>0 );
@@ -2695,8 +2658,7 @@ public class Roster
                     for (i=0; i<groups.getCount(); i++)
                         groups.addToVector(tContacts,i);
                     
-                    vContacts=tContacts;
-                    
+                    vContacts=tContacts;          
                     StringBuffer onl=new StringBuffer()
                     .append("(")
                     .append(groups.getRosterOnline())
@@ -2713,11 +2675,14 @@ public class Roster
                         if (c>=0) moveCursorTo(c);
 			force=false;
                     }
-
                     focusedItem(cursor);
                     redraw();
                 }
-            } catch (Exception e) { }
+            } catch (Exception e) {
+//#ifdef DEBUG
+//#                 e.printStackTrace();
+//#endif
+            }
             thread=null;
         }
     }

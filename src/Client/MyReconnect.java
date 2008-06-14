@@ -30,7 +30,7 @@ import ui.controls.TimerBox;
 
 public class MyReconnect extends TimerBox {
 
-    private final static int WAITTIME=15;
+    private final static int WAITTIME=Config.getInstance().reconnectTime;
 
     public MyReconnect(String title, String body, Display display) {
         super(title, body, WAITTIME, display, null);

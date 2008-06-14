@@ -10,3 +10,5 @@ http://gajim.org/caps	Gajim
 http://qip.ru/caps	Qip
 http://pidgin.im/caps	Pidgin
 http://kopete.kde.org/jabber/caps	Kopete
+http://exodus.jabberstudio.org/caps	Exodus
+Siemens Native Jabber Client	SieJC

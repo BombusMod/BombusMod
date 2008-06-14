@@ -157,6 +157,10 @@ public class ConfigData {
 //#ifdef CLIENTS_ICONS
 //#         array.addElement(new keyValue(showClientIcon, (cf.showClientIcon)?"1":"0")); 
 //#endif
+        
+        array.addElement(new keyValue(reconnectCount, Integer.toString(cf.reconnectCount)));
+        array.addElement(new keyValue(reconnectTime, Integer.toString(cf.reconnectTime)));
+        
         StringBuffer body = new StringBuffer();
         body = createArrayString(array);
 
@@ -286,6 +290,11 @@ public class ConfigData {
 //#ifdef CLIENTS_ICONS
 //#         cf.showClientIcon=cf.getBooleanProperty(getValue(showClientIcon),true);
 //#endif
+        
+        cf.autoSubscribe=cf.getIntProperty(getValue(autoSubscribe), cf.SUBSCR_ASK);
+        cf.reconnectCount=cf.getIntProperty(getValue(reconnectCount), 10);
+        cf.reconnectTime=cf.getIntProperty(getValue(reconnectTime), 15);
+    
         cf.lastProfile=cf.profile=cf.def_profile;
         if (cf.lastProfile==AlertProfile.VIBRA) 
             cf.lastProfile=0;
@@ -442,6 +451,9 @@ public class ConfigData {
 //#endif
     private final static String IQNotify="IQNotify";
     private final static String showClientIcon="showClientIcon";
+    
+    private final static String reconnectCount="reconnectCount";
+    private final static String reconnectTime="reconnectTime";
     
     class keyValue {
         String value; String key;

@@ -607,3 +607,13 @@ Extended settings	Расширенные настройки
 
 Save to file	Сохранить в файл
 Load from file	Загрузить из файла
+
+Show IQ requests	Отображать запросы IQ
+Show clients icons	Отображать иконки клиентов
+
+Action	Действие
+
+Value	Значение
+
+Quantity of attempts	Количество попыток
+Delay before reconnect(sec.)	Задержка между попытками(сек.)

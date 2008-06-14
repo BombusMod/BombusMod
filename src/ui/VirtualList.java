@@ -876,6 +876,7 @@ public abstract class VirtualList
             break; 
         case KEY_STAR:
             System.gc();
+            try { Thread.sleep(50); } catch (InterruptedException ex) { }
 //#ifdef POPUPS
             setWobble(1, null, "Free: "+(Runtime.getRuntime().freeMemory()>>10)+" kb");
 //#endif

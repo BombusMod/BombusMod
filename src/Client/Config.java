@@ -276,7 +276,9 @@ type = \"-=Siemens=-\";
 //#ifdef CLIENTS_ICONS
 //#     public boolean showClientIcon=true;
 //#endif
-            
+    
+    public int reconnectCount=10;
+    public int reconnectTime=15;
     
     public static Config getInstance(){
 	if (instance==null) {
@@ -509,6 +511,9 @@ type = \"-=Siemens=-\";
             inputStream.readBoolean();
 //#endif
             
+            reconnectCount=inputStream.readInt();
+            reconnectTime=inputStream.readInt();
+            
 	    inputStream.close();
 	} catch (Exception e) {
             try {
@@ -698,6 +703,9 @@ type = \"-=Siemens=-\";
 //#else
             outputStream.writeBoolean(false);
 //#endif
+            
+            outputStream.writeInt(reconnectCount);
+            outputStream.writeInt(reconnectTime);
 	} catch (Exception e) { }
 	
 	NvStorage.writeFileRecord(outputStream, "config", 0, true);

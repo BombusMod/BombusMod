@@ -103,6 +103,9 @@ public class ConfigForm
     private CheckBox autoLogin;
     private CheckBox autoJoinConferences;
 
+    private NumberInput reconnectCount;
+    private NumberInput reconnectTime;
+
     private CheckBox fullscreen;
     private CheckBox memMonitor;
     private CheckBox enableVersionOs;
@@ -221,6 +224,14 @@ public class ConfigForm
         itemsList.addElement(new SimpleString(SR.MS_STARTUP_ACTIONS, true));
         autoLogin = new CheckBox(SR.MS_AUTOLOGIN, cf.autoLogin); itemsList.addElement(autoLogin);
         autoJoinConferences = new CheckBox(SR.MS_AUTO_CONFERENCES, cf.autoJoinConferences); itemsList.addElement(autoJoinConferences);
+        
+        itemsList.addElement(new SpacerItem(10));
+        itemsList.addElement(new SimpleString(SR.MS_RECONNECT, true));
+        itemsList.addElement(new SimpleString(SR.MS_RECONNECT_COUNT_RETRY, false));
+	reconnectCount=new NumberInput(display, null, Integer.toString(cf.reconnectCount), 1, 100); itemsList.addElement(reconnectCount);
+        
+        itemsList.addElement(new SimpleString(SR.MS_RECONNECT_WAIT, false));
+        reconnectTime=new NumberInput(display, null, Integer.toString(cf.reconnectTime), 1, 60 ); itemsList.addElement(reconnectTime);
         
         itemsList.addElement(new SpacerItem(10));
         itemsList.addElement(new SimpleString(SR.MS_APPLICATION, true));
@@ -352,6 +363,9 @@ public class ConfigForm
 
         cf.autoLogin=autoLogin.getValue();
         cf.autoJoinConferences=autoJoinConferences.getValue();
+        
+        cf.reconnectCount=Integer.parseInt(reconnectCount.getValue());
+        cf.reconnectTime=Integer.parseInt(reconnectTime.getValue());
 
         VirtualList.fullscreen=cf.fullscreen=fullscreen.getValue();
         VirtualList.memMonitor=cf.memMonitor=memMonitor.getValue();
