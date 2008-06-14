@@ -39,9 +39,13 @@ public class IqPing implements JabberBlockListener {
 
     public IqPing(){};
     
+    private final static String PING="ping";
+    private final static String _PING_="_ping_";
+    
     public static JabberDataBlock query(String to, String id) {
-        JabberDataBlock result=new Iq(to, Iq.TYPE_GET, id);
-        result.addChildNs("ping", "urn:xmpp:ping");
+        String newId=(id==null)?_PING_+Time.utcTimeMillis():id;
+        JabberDataBlock result=new Iq(to, Iq.TYPE_GET, newId);
+        result.addChildNs(PING, "urn:xmpp:ping");
         return result;
     }
 
@@ -54,20 +58,23 @@ public class IqPing implements JabberBlockListener {
         String id=data.getAttribute("id");
         
         if (type.equals("get") || type.equals("error")) {
-            if (id.equals("ping")) {
+            if (id.equals(PING)) {
                 StaticData.getInstance().roster.theStream.pingSent=false;
                 return BLOCK_PROCESSED;
             }
         }
         if (type.equals("get")) {
-            if (id.startsWith("_ping_")) {
-                Iq reply=new Iq(from, Iq.TYPE_RESULT, id);
-                StaticData.getInstance().roster.theStream.send(reply);
-                return BLOCK_PROCESSED;
+            JabberDataBlock ping=data.getChildBlock(PING);
+            if (ping!=null) {
+                if (ping.getAttribute("xmlns").equals("urn:xmpp:ping")) {
+                    Iq reply=new Iq(from, Iq.TYPE_RESULT, id);
+                    StaticData.getInstance().roster.theStream.send(reply);
+                    return BLOCK_PROCESSED;
+                }
             }
         }
         if (type.equals("result")) {
-            if (id.startsWith("_ping_")) {
+            if (id.startsWith(_PING_)) {
                 Roster roster=StaticData.getInstance().roster;
                 Contact c=roster.getContact(from, false);
 

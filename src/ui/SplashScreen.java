@@ -110,14 +110,13 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         
         setFullScreenMode(cf.fullscreen);
 
-        System.gc();   // heap cleanup
+        System.gc();
+        try { Thread.sleep(50); } catch (InterruptedException ex) { }
     }
 
     public void paint(Graphics g){
         width=g.getClipWidth();
         height=g.getClipHeight();
-        //g.translate(0, 0);
-        //g.setClip(0,0, width, height);
         
         g.setColor(ct.getColor(ColorTheme.BLK_BGND));
         g.fillRect(0,0, width, height);

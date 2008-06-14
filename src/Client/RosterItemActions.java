@@ -413,7 +413,7 @@ public class RosterItemActions extends Menu {
                     try {
                         sd.roster.setQuerySign(true);
                         //c.setPing();
-                        sd.roster.theStream.send(IqPing.query(c.getJid(), "_ping_"+Time.utcTimeMillis()));
+                        sd.roster.theStream.send(IqPing.query(c.getJid(), null));
                     } catch (Exception e) {/*no messages*/}
                     break;
                 case 912: //send color scheme

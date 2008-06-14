@@ -29,8 +29,8 @@ package Client;
 //#ifdef CONSOLE
 //# import Console.XMLList;
 //#endif
-//#ifdef PRIVACY
 import Alerts.AlertCustomizeForm;
+//#ifdef PRIVACY
 import PrivacyLists.PrivacySelect;
 //#endif
 //#if AUTOTASK
