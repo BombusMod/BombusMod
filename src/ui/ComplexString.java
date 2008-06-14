@@ -55,6 +55,9 @@ public class ComplexString extends Vector implements VirtualElement {
     private int colorBGnd;
     private int color;
     
+    //private int colors[]={0x800080, 0xff0000, 0xffa500, 0x008000, 0x0000ff};
+    /*   purple 0x800080   red 0xff0000   orange 0xffa500   green 0x008000   blue 0x0000ff   */
+    
     //private int heightCorrect;
     
     ColorTheme ct;
@@ -117,6 +120,8 @@ public class ComplexString extends Vector implements VirtualElement {
 //#if NICK_COLORS
                     if (nick) {
                         int color=g.getColor();
+                        int vColor=ct.strong(color);
+                        //int randColor=randomColor();
                         dw=0;
                         int p1=0; 
                         while (p1<s.length()) {
@@ -128,8 +133,8 @@ public class ComplexString extends Vector implements VirtualElement {
                                 if ( (c1&0xff00) != (c2 &0xff00) ) break;
                                 p2++;
                             }
-                            int vColor=ct.strong(color);
                             g.setColor( (c1>255) ? vColor : color);
+                            //g.setColor(randColor);
                             dw=font.substringWidth(s, p1, p2-p1);
                             if (ralign) w-=dw;
                             g.drawSubstring( s, p1, p2-p1, 
@@ -276,4 +281,21 @@ public class ComplexString extends Vector implements VirtualElement {
     }
 
     public boolean handleEvent(int keyCode) { return false; }
+/*
+    private int randomColor() {
+        int color = 0;
+        color=colors[random(0, 4)];
+        return color;
+    }
+    
+    private int random( int beginValue, int endValue ) {
+        if( endValue == beginValue ) {
+            return beginValue;
+        }
+        if( endValue < beginValue ) {
+            return Integer.MIN_VALUE;
+        }
+        return (new Random().nextInt()% ( endValue - beginValue ) + beginValue);
+    }
+ */
 }

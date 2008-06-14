@@ -42,10 +42,10 @@ public class Account extends IconTextElement{
     
     public final static String storage="accnt_db";
             
-    private String userName;
-    private String password;
-    private String server;
-    private String hostAddr;
+    private String userName="";
+    private String password="";
+    private String server="";
+    private String hostAddr="";
     private int port=5222;
     private boolean active;
     private boolean useSSL;
@@ -57,16 +57,14 @@ public class Account extends IconTextElement{
     private String resource=Version.NAME;
     
     private boolean enableProxy;
-    private String proxyHostAddr;
+    private String proxyHostAddr="";
     private int proxyPort;
 	
     private int keepAlivePeriod=200;
     private int keepAliveType=1;
     
     private static StaticData sd=StaticData.getInstance();
-    
-    //private static Config cf=Config.getInstance();
-    
+
     public Account() {
         super(RosterIcons.getInstance());
     }
@@ -312,11 +310,11 @@ public class Account extends IconTextElement{
         return keepAlivePeriod;
     }
 
-    void setKeepAlivePeriod(int i) {
+    public void setKeepAlivePeriod(int i) {
         keepAlivePeriod=i;
     }
 
-    void setKeepAliveType(int i) {
+    public void setKeepAliveType(int i) {
         keepAliveType=i;
     }
 }

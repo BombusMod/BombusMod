@@ -51,6 +51,9 @@ public class IEMenu
         addItem(SR.MS_ARCHIVE+": "+SR.MS_SAVE_TO_FILE, 3);
         addItem(SR.MS_TEMPLATE+": "+SR.MS_LOAD_FROM_FILE, 4);
         addItem(SR.MS_TEMPLATE+": "+SR.MS_SAVE_TO_FILE, 5);
+        
+        addItem("Accounts: "+SR.MS_LOAD_FROM_FILE, 6);
+        addItem("Accounts: "+SR.MS_SAVE_TO_FILE, 7);
         /*
         addItem("Accounts load", 2);
         addItem("Accounts save", 3);
@@ -84,6 +87,12 @@ public class IEMenu
         
         if (choice==5)
             new Browser(null, display, this, true);
+        
+        if (choice==6)
+            new Browser(null, display, this, false);
+        
+        if (choice==7)
+            new Browser(null, display, this, true);
     }
 
     public void BrowserFilePathNotify(String pathSelected) {
@@ -106,14 +115,12 @@ public class IEMenu
             case 5: //save Templates
                 new IE.ArchiveTemplates(1, 0, pathSelected);
                 break;
-            /*
-            case 2: //load Accounts
-                new IE.iAccountsData(pathSelected);
+            case 6: //load Accounts
+                new IE.Accounts(pathSelected, 0);
                 break;
-            case 3: //save Accounts
-                new IE.eAccountsData(pathSelected);
+            case 7: //save Accounts
+                new IE.Accounts(pathSelected, 1);
                 break;
-             */
         }
     }
 }
