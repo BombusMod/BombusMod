@@ -525,7 +525,7 @@ public class Roster
                         return;
                     }
                 }
-            } else return;
+            }// else return;
         }
 //#endif
         int index=0;
@@ -545,7 +545,7 @@ public class Roster
                 }
                 else index++; 
             }
-            if (g.getOnlines()==0) {
+            if (g.getOnlines()==0 && !(g instanceof ConferenceGroup)) {
                 if (g.type==Groups.TYPE_MUC) groups.removeGroup(g);
             }
         }
