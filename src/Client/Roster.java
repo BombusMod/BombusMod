@@ -826,20 +826,21 @@ public class Roster
 //#ifndef WMUC
             multicastConferencePresence(myMessage, myStatus); //null
 //#endif
-            // disconnect
-            if (myStatus==Presence.PRESENCE_OFFLINE) {
-                try {
-                    theStream.close();
-                } catch (Exception e) {
-                    //e.printStackTrace();
-                }
-                synchronized(hContacts) {
-                    for (Enumeration e=hContacts.elements(); e.hasMoreElements();){
-                        Contact c=(Contact)e.nextElement();
-                        c.setStatus(Presence.PRESENCE_OFFLINE); // keep error & unknown
-                    }
-                }
+        }
+        
+        // disconnect
+        if (myStatus==Presence.PRESENCE_OFFLINE) {
+            try {
+                theStream.close(); // sends </stream:stream> and closes socket
+            } catch (Exception e) { e.printStackTrace(); }
 
+            synchronized(hContacts) {
+                for (Enumeration e=hContacts.elements(); e.hasMoreElements();){
+                    Contact c=(Contact)e.nextElement();
+                    //if (c.myStatus<Presence.PRESENCE_UNKNOWN)
+                    c.setStatus(Presence.PRESENCE_OFFLINE); // keep error & unknown
+                 }
+                }
                 theStream=null;
 //#ifdef AUTOSTATUS
 //#                 autoAway=false;
@@ -849,7 +850,6 @@ public class Roster
                 System.gc();
                 try { Thread.sleep(50); } catch (InterruptedException e){}
 //#endif
-            }
         }
         Contact c=selfContact();
         c.setStatus(myStatus);

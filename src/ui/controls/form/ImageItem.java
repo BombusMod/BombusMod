@@ -27,7 +27,6 @@
 
 package ui.controls.form;
 
-import images.Scale;
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
 import ui.IconTextElement;
@@ -98,11 +97,32 @@ public class ImageItem
             case 0:
                 if (img.getWidth()>screenWidth) {
                     int newHeight=(img.getHeight() * (screenWidth * 100 / img.getWidth()))/100;
-                    this.img=new Scale().scale(img, screenWidth, newHeight);
+                    this.img=scale(img, screenWidth, newHeight);
                     return true;
                 }
-                break;
+                //break;
          }
         return false;
+    }
+    
+    public Image scale(Image image, int w, int h) {
+        int w0 = image.getWidth();
+        int h0 = image.getHeight();
+        int[] arrayOld = new int[w0*h0];
+        int[] arrayNew = new int[w*h];
+        image.getRGB(arrayOld, 0, w0, 0, 0, w0, h0);
+        
+        int wy=0;
+        int wy1=0;
+        
+        for (int y = 0; y < h; y++) {
+             wy=w*y; 
+             wy1=w0*(int)(y*h0/h); //thanks evgs :)
+             for (int x = 0; x < w; x++) {
+                   arrayNew[x+wy] = arrayOld[x*w0/w+wy1];
+             }
+        }
+        arrayOld=null;
+        return Image.createRGBImage(arrayNew, w, h, true);
     }
 }
