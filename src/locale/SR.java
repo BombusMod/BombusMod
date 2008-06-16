@@ -609,9 +609,8 @@ public class SR {
 
 //    public static String MS_ENTER_ACCOUNT_SETTINGS = loadString("Please create account or enter account(s) settings.\n\nMenu, New Account");
 //    public static String MS_ENTER_SETTINGS = loadString("Please enter settings.\n\nMenu, Tools, Options");
-//#ifdef CONSOLE
-//#     public static String MS_XML_CONSOLE = loadString("XML console");
-//#endif
+    public static String MS_XML_CONSOLE = loadString("XML console");
+
 //#ifdef CLIPBOARD
 //#     public static String MS_CLIPBOARD = loadString("Clipboard");
 //#endif

@@ -417,7 +417,7 @@ public class ConfigForm
 
     public void destroyView(){
         if (display!=null)  
-            display.setCurrent(sd.roster);
+            display.setCurrent(parentView);
         ((Canvas)parentView).setFullScreenMode(cf.fullscreen);
     }
 }
