@@ -27,10 +27,10 @@
 
 package Archive;
 
-import Client.MessageEdit;
 import Client.Msg;
 import Client.StaticData;
 import java.util.Enumeration;
+import javax.microedition.lcdui.TextBox;
 import ui.MainBar;
 import Messages.MessageList;
 import java.util.Vector;
@@ -77,10 +77,10 @@ public class ArchiveList
     
     private int where=1;
 
-    private MessageEdit t;
+    private TextBox t;
     
     /** Creates a new instance of ArchiveList */
-    public ArchiveList(Display display, int caretPos, int where, MessageEdit t) {
+    public ArchiveList(Display display, int caretPos, int where, TextBox t) {
  	super ();
         this.where=where;
         this.caretPos=caretPos;
@@ -184,7 +184,7 @@ public class ArchiveList
 	default:
 	    data=m.quoteString();
 	}
-	t.insertText(data, caretPos);
+	t.insert(data, caretPos);
 	destroyView();
     }
     

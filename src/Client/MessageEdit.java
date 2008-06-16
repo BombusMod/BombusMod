@@ -29,38 +29,41 @@ package Client;
 //#ifndef WMUC
 import Conference.AppendNick;
 //#endif
-//#ifdef ARCHIVE
-import Archive.ArchiveList;
-import com.alsutton.jabber.JabberDataBlock;
-import com.alsutton.jabber.datablocks.Message;
+//#ifdef DETRANSLIT
+//# import util.DeTranslit;
 //#endif
 import javax.microedition.lcdui.*;
 import locale.SR;
 import ui.VirtualList;
-//#ifdef CLIPBOARD
-//# import util.ClipBoard;
-//#endif
-//#ifdef DETRANSLIT
-//# import util.DeTranslit;
-//#endif
 
 /**
  *
  * @author Eugene Stahov
  */
 public class MessageEdit 
-        implements CommandListener, Runnable
-{
+        extends UniTextEdit
+        implements CommandListener, Runnable {
     
     private Display display;
     private Displayable parentView;
 
-    private Ticker notifyTicker=null;     // Ticker
-    
     private String body;
     private String subj;
     
     public Contact to;
+    
+    private boolean composing=true;
+    
+    StaticData sd = StaticData.getInstance();
+    
+    private Config cf;
+    
+//#ifdef DETRANSLIT
+//#     private boolean sendInTranslit=false;
+//#     private boolean sendInDeTranslit=false;
+//#     DeTranslit dt;
+//#endif
+    
     private Command cmdSuspend=new Command(SR.MS_SUSPEND, Command.BACK,90);
     private Command cmdCancel=new Command(SR.MS_CANCEL, Command.SCREEN,99);
     private Command cmdSend=new Command(SR.MS_SEND, Command.OK,1);
@@ -73,40 +76,11 @@ public class MessageEdit
 //#     private Command cmdSendInTranslit=new Command(SR.MS_TRANSLIT, Command.SCREEN, 5);
 //#     private Command cmdSendInDeTranslit=new Command(SR.MS_DETRANSLIT, Command.SCREEN, 5);
 //#endif
-    private Command cmdPaste=new Command(SR.MS_ARCHIVE, Command.SCREEN, 6);    
     private Command cmdSubj=new Command(SR.MS_SET_SUBJECT, Command.SCREEN, 7);
-//#ifdef KILLALL
-//#     private Command cmdKill2=new Command("killall",Command.SCREEN,8);
-//#     private boolean sendKill2=false;
-//#endif
-//#if TEMPLATES
-    private Command cmdTemplate=new Command(SR.MS_TEMPLATE, Command.SCREEN, 9); 
-//#endif  
-    
-    //private Command cmdABC=new Command("Abc", Command.SCREEN, 9);
-    //private Command cmdAbc=new Command("abc", Command.SCREEN, 9);
-    //private Command cmdClearTitle=new Command("clear title", Command.SCREEN, 10);
-//#ifdef CLIPBOARD
-//#     private Command cmdPasteText=new Command(SR.MS_PASTE, Command.SCREEN, 10);  
-//#endif
-    private boolean composing=true;
-    StaticData sd = StaticData.getInstance();
-    private Config cf;
-//#ifdef DETRANSLIT
-//#     private boolean sendInTranslit=false;
-//#     private boolean sendInDeTranslit=false;
-//#     DeTranslit dt;
-//#endif
-    private TextBox t;
-
-    private String subject;
-    
-//#ifdef CLIPBOARD
-//#     private ClipBoard clipboard;
-//#endif
     
     /** Creates a new instance of MessageEdit */
     public MessageEdit(Display display, Contact to, String body) {
+        super(display, body, to.toString(), TextField.ANY);
         this.to=to;
         this.display=display;
         parentView=display.getCurrent();
@@ -115,26 +89,8 @@ public class MessageEdit
 //#ifdef DETRANSLIT
 //#         dt=DeTranslit.getInstance();
 //#endif
-        if (cf.notifyWhenMessageType) {
-            t=new TextBox(null, "", 500, TextField.ANY);
-            setTicker(to.toString());
-        } else {
-            t=new TextBox(to.toString(), "", 500, TextField.ANY);
-        }
         
-        this.subject=to.toString();
-		
-        try {
-            //expanding buffer as much as possible
-            int maxSize=t.setMaxSize(4096); //must not trow
-
-            if (body!=null) {
-                if (body.length()>maxSize)
-                    body=body.substring(0, maxSize-1);
-                t.setString(body);
-            }
-         } catch (Exception e) {}
-
+        //this.subj=to.toString();
         
         t.addCommand(cmdSend);
         t.addCommand(cmdInsMe);
@@ -147,66 +103,34 @@ public class MessageEdit
 //#         t.addCommand(cmdSendInTranslit);
 //#         t.addCommand(cmdSendInDeTranslit);
 //#endif
-//#ifdef ARCHIVE
-        t.addCommand(cmdPaste);
-//#endif
-//#ifdef CLIPBOARD
-//#         if (cf.useClipBoard) {
-//#             clipboard=ClipBoard.getInstance();
-//#             if (!clipboard.isEmpty())
-//#                 t.addCommand(cmdPasteText);
-//#         }
-//#endif
-//#ifdef KILLALL
-//#         t.addCommand(cmdKill2);
-//#endif
-//        t.addCommand(cmdClearTitle);
-        
-//        setInitialCaps(cf.capsState);
-        
         t.addCommand(cmdSuspend);
-//#if TEMPLATES
-        t.addCommand(cmdTemplate);
-//#endif
         t.addCommand(cmdCancel);
         t.setCommandListener(this);
         
         if (to.origin==Contact.ORIGIN_GROUPCHAT)
             t.addCommand(cmdSubj);
+                
+        t.setCommandListener(this);
 
         new Thread(this).start() ; // composing
-        
-        setInitialCaps(cf.capsState);
         
         display.setCurrent(t);
     }
     
-    public void setParentView(Displayable parentView){
-        this.parentView=parentView;
-    }
-    
     public void commandAction(Command c, Displayable d){
-        body=t.getString();
+        if (executeCommand(c, d)) return;
         
-        int caretPos=getCaretPos();
-		
+        body=t.getString();
         if (body.length()==0) body=null;
         
+        int caretPos=getCaretPos();
+
         if (c==cmdInsMe) { t.insert("/me ", 0); return; }
 //#ifdef SMILES
-        if (c==cmdSmile) { new SmilePicker(display, caretPos); return; }
+        if (c==cmdSmile) { new SmilePicker(display, caretPos, t); return; }
 //#endif
 //#ifndef WMUC
-        if (c==cmdInsNick) { new AppendNick(display, to, caretPos); return; }
-//#endif
-//#ifdef ARCHIVE
-	if (c==cmdPaste) { new ArchiveList(display, caretPos, 1, this); return; }
-//#endif
-//#ifdef CLIPBOARD
-//#         if (c==cmdPasteText) { insertText(clipboard.getClipBoard(), getCaretPos()); return; }
-//#endif
-//#if TEMPLATES
-        if (c==cmdTemplate) { new ArchiveList(display, caretPos, 2, this); return; }
+        if (c==cmdInsNick) { new AppendNick(display, to, caretPos, t); return; }
 //#endif
         if (c==cmdCancel) { 
             composing=false;
@@ -233,15 +157,9 @@ public class MessageEdit
             subj=body;
             body=null; //"/me "+SR.MS_HAS_SET_TOPIC_TO+": "+subj;
         }
-//#ifdef KILLALL
-//#         if (c==cmdKill2) {
-//#             sendKill2=true;
-//#         }
-//#endif
         // message/composing sending
         destroyView();
         new Thread(this).start();
-        return; 
     }
     
     public void run(){
@@ -281,113 +199,11 @@ public class MessageEdit
         
         try {
             if (body!=null || subj!=null || comp!=null) {
-//#ifdef KILLALL
-//#                 if (sendKill2)
-//#                     sendKill2Message(to, body);
-//#                 else
-//#endif
                     sd.roster.sendMessage(to, id, body, subj, comp);
             }
         } catch (Exception e) { }
 
         ((VirtualList)parentView).redraw();
-        //((VirtualList)parentView).repaint();
-    }
-    
-    public void destroyView(){
-        if (display!=null)   display.setCurrent(parentView);
-    }
-    
-//#ifdef KILLALL
-//#     public void sendKill2Message(Contact to, final String body) {
-//#         try {
-//#             boolean groupchat=to.origin==Contact.ORIGIN_GROUPCHAT;
-//# 
-//#             Message message = new Message( 
-//#                     to.getJid(), 
-//#                     body, 
-//#                     null, 
-//#                     groupchat 
-//#             );
-//#             message.setAttribute("id", "killall2");
-//#             
-//#             if (groupchat && body==null) 
-//#                 return;
-//#             
-//#             JabberDataBlock html=message.addChildNs("html", "http://jabber.org/protocol/xhtml-im");
-//#             JabberDataBlock bodyNS=html.addChildNs("body", "http://www.w3.org/1999/xhtml");
-//#             bodyNS.setText(body);
-//#             JabberDataBlock a=bodyNS.addChild("a", body);
-//#             a.setAttribute("href", "http://");
-//#             
-//#             sd.roster.theStream.send( message );
-//#         } catch (Exception e) { e.printStackTrace(); }
-//#     }
-//#endif
-
-    public int getCaretPos() {     
-        int caretPos=t.getCaretPosition();
-        // +MOTOROLA STUB
-        if (cf.phoneManufacturer==Config.MOTO)
-            caretPos=-1;
-        if (caretPos<0)
-            caretPos=t.getString().length();
-        return caretPos;
-    }
-
-    public void setTicker(String msg) {
-        if (msg!=null) {
-            StringBuffer out=new StringBuffer(msg);
-            int i=0;
-            while (i<out.length()) {
-                if (out.charAt(i)<0x03) out.deleteCharAt(i);
-                else i++;
-            }
-            msg=out.toString();
-        }
-        String em=t.getString();
-        if (notifyTicker==null) {
-            notifyTicker= new Ticker(msg);
-            t.setTicker(notifyTicker);
-        } else {
-            if (msg=="") {
-                notifyTicker=null;
-                t.setTicker(null);
-            } else {
-                notifyTicker.setString(msg);
-            }
-        }
-        if (t==null)
-            t.setString(em);
-        em=null;
-    }
-    
-    public void insertText(String s, int caretPos) {
-        String src=t.getString();
-
-        StringBuffer sb=new StringBuffer(s);
-        
-        if (caretPos>0) 
-            if (src.charAt(caretPos-1)!=' ')   
-                sb.insert(0, ' ');
-        
-        if (caretPos<src.length())
-            if (src.charAt(caretPos)!=' ')
-                sb.append(' ');
-        
-        if (caretPos==src.length()) sb.append(' ');
-        
-        try {
-            int freeSz=t.getMaxSize()-t.size();
-            if (freeSz<sb.length()) sb.delete(freeSz, sb.length());
-        } catch (Exception e) {}
-       
-        t.insert(sb.toString(), caretPos);
-        sb=null;
-    }
-    
-    private void setInitialCaps(boolean state) {
-        t.setConstraints(state? TextField.INITIAL_CAPS_SENTENCE: TextField.ANY);
     }
 }
 

@@ -421,7 +421,7 @@ public class ContactMessageList extends MessageList
         if (!sd.roster.isLoggedIn()) 
             return;
         
-        (sd.roster.me=new MessageEdit(display,contact,contact.msgSuspended)).setParentView(this);
+        (new MessageEdit(display,contact,contact.msgSuspended)).setParentView(this);
         contact.msgSuspended=null;
     }
     
@@ -510,7 +510,7 @@ public class ContactMessageList extends MessageList
 
             Msg msg=getMessage(cursor);
 
-            sd.roster.me=new MessageEdit(display,contact,msg.from+": ");
+            new MessageEdit(display,contact,msg.from+": ");
         } catch (Exception e) {/*no messages*/}
     }
     
@@ -523,7 +523,7 @@ public class ContactMessageList extends MessageList
                 .append(getMessage(cursor).quoteString())
                 .append("\n")
                 .toString();
-            sd.roster.me=new MessageEdit(display,contact,msg);
+            new MessageEdit(display,contact,msg);
             msg=null;
         } catch (Exception e) {/*no messages*/}
     }

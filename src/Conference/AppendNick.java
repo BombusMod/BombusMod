@@ -48,10 +48,14 @@ public class AppendNick
     
     Command cmdSelect=new Command(SR.MS_APPEND, Command.OK, 1);
     Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 99);
+
+    private TextBox t;
     
-    public AppendNick(Display display, Contact to, int caretPos) {
+    public AppendNick(Display display, Contact to, int caretPos, TextBox t) {
         super(display);
         this.caretPos=caretPos;
+        
+        this.t=t;
         
         setMainBarItem(new MainBar(SR.MS_SELECT_NICKNAME));
         
@@ -82,7 +86,7 @@ public class AppendNick
              StringBuffer b=new StringBuffer(nick.substring(rp+1));
              
             if (caretPos==0) b.append(':');
-            StaticData.getInstance().roster.me.insertText(b.toString(), caretPos);
+            t.insert(b.toString(), caretPos);
             b=null;
          } catch (Exception e) {}
         destroyView();

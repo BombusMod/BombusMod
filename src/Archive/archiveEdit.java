@@ -30,24 +30,22 @@ package Archive;
 import Client.Config;
 import Client.Msg;
 import Client.StaticData;
+import Client.UniTextEdit;
 import java.util.Vector;
 import javax.microedition.lcdui.*;
 import locale.SR;
 import ui.VirtualList;
-//#ifdef CLIPBOARD
-//# import util.ClipBoard;
-//#endif
 /**
  *
- * @author Eugene Stahov
+ * @author ad
  */
-public class archiveEdit implements CommandListener
-{
+public class archiveEdit 
+        extends UniTextEdit
+        implements CommandListener {
     
     private Display display;
     private Displayable parentView;
-    private TextBox t;
-    private String body="";
+
 
     private Command cmdCancel=new Command(SR.MS_CANCEL, Command.SCREEN,99);
     private Command cmdOk=new Command(SR.MS_OK, Command.OK /*Command.SCREEN*/,1);
@@ -55,10 +53,7 @@ public class archiveEdit implements CommandListener
     private Msg msg;
     
     MessageArchive archive;
-//#ifdef CLIPBOARD
-//#     private ClipBoard clipboard;
-//#     private Command cmdPasteText=new Command(SR.MS_PASTE, Command.SCREEN, 98);  
-//#endif
+
     private Config cf;
 
     private int where=1;
@@ -68,11 +63,14 @@ public class archiveEdit implements CommandListener
     private ArchiveList al;
     
     public archiveEdit(Display display, int pos, int where, ArchiveList al) {
+        super(display, null, (pos>-1)?SR.MS_EDIT:SR.MS_NEW, TextField.ANY);
+        
+        this.display=display;
+        parentView=display.getCurrent();
+        
         archive=new MessageArchive(where);
 
         this.where=where;
-        this.display=display;
-        parentView=display.getCurrent();
         
         this.pos=pos;
         
@@ -80,11 +78,9 @@ public class archiveEdit implements CommandListener
         
         cf=Config.getInstance();
         
-	t=new TextBox((pos>-1)?SR.MS_EDIT:SR.MS_NEW, "", 500, TextField.ANY);
-
         if (pos>-1) {
             this.msg=archive.msg(pos);
-            this.body=msg.getBody();
+            body=msg.getBody();
         }
         try {
             //expanding buffer as much as possible
@@ -96,14 +92,6 @@ public class archiveEdit implements CommandListener
                 t.setString(body);
             }
          } catch (Exception e) {}
-
-//#ifdef CLIPBOARD
-//#         if (Config.getInstance().useClipBoard) {
-//#             clipboard=ClipBoard.getInstance();
-//#             if (!clipboard.isEmpty())
-//#                 t.addCommand(cmdPasteText);
-//#         }
-//#endif
         
         t.addCommand(cmdOk);
 
@@ -114,17 +102,12 @@ public class archiveEdit implements CommandListener
     }
     
     public void commandAction(Command c, Displayable d){
+        if (executeCommand(c, d)) return;
+        
         body=t.getString();
 		
-        int caretPos=t.getCaretPosition();
-        if (cf.phoneManufacturer==Config.MOTO)
-            caretPos=-1;
-        if (caretPos<0) caretPos=body.length();
-		
         if (body.length()==0) body=null;
-//#ifdef CLIPBOARD
-//#         if (c==cmdPasteText) { t.insert(clipboard.getClipBoard(), caretPos); return; }
-//#endif
+
         if (c==cmdOk) {
             int type=Msg.MESSAGE_TYPE_OUT;
             String from="";

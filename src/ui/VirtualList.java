@@ -365,15 +365,15 @@ public abstract class VirtualList
         int iHeight=0; // nokia fix
         
         Graphics g = graphics;      
-//#ifdef POPUPS
-        popup.init(g, width, height);
-//#endif
 
 //#ifndef WOFFSCREEN
         if (offscreen != null)
             graphics = offscreen.getGraphics();
 //#endif
 
+//#ifdef POPUPS
+        popup.init(g, width, height);
+//#endif
         beginPaint();
         
         StaticData.getInstance().screenWidth=width;

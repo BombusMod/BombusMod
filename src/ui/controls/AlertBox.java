@@ -36,6 +36,9 @@ import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
+//#ifndef WOFFSCREEN
+import javax.microedition.lcdui.Image;
+//#endif
 import locale.SR;
 import Fonts.FontCache;
 import util.StringUtils;
@@ -74,7 +77,14 @@ public abstract class AlertBox extends Canvas implements CommandListener {
     int steps=1;
     
     ColorTheme ct;
+    
+//#ifndef WOFFSCREEN
+    private Image offscreen = null;
+//#endif
         
+    private int height;
+    private int width;    
+    
     public AlertBox(String mainbar, String text, Display display, Displayable nextDisplayable) {
         this.display=display;
         
@@ -123,10 +133,15 @@ public abstract class AlertBox extends Canvas implements CommandListener {
         }
     }
 
-    protected void paint(Graphics g) {
+    protected void paint(Graphics graphics) {
+        Graphics g = graphics;      
+
+//#ifndef WOFFSCREEN
+        if (offscreen != null) graphics = offscreen.getGraphics();
+//#endif
         if (isShowing) {
-            int width=g.getClipWidth();
-            int height=g.getClipHeight();
+            width=g.getClipWidth();
+            height=g.getClipHeight();
 
             int oldColor=g.getColor();
             
@@ -161,6 +176,9 @@ public abstract class AlertBox extends Canvas implements CommandListener {
             if (pos>0)
                 drawProgress (g, width, height);
         }
+//#ifndef WOFFSCREEN
+        if (g != graphics) g.drawImage(offscreen, 0, 0, Graphics.LEFT | Graphics.TOP);
+//#endif
     }
     
     private void drawAllStrings(Graphics g, int x, int y) {
@@ -194,6 +212,26 @@ public abstract class AlertBox extends Canvas implements CommandListener {
         if (pb==null)
             pb=new Progress(g, 0, height-FontCache.getSmallFont().getHeight(), width);
         pb.draw(filled, Integer.toString(steps-pos));
+    }
+    
+    protected void hideNotify() {
+//#ifndef WOFFSCREEN
+	offscreen=null;
+//#endif
+    }
+    
+    protected void showNotify() {
+//#ifndef WOFFSCREEN
+	if (!isDoubleBuffered()) offscreen=Image.createImage(width, height);
+//#endif
+    }
+    
+    protected void sizeChanged(int w, int h) {
+        width=w;
+        height=h;
+//#ifndef WOFFSCREEN
+        if (!isDoubleBuffered()) offscreen=Image.createImage(width, height);
+//#endif
     }
     
     public abstract void yes();
