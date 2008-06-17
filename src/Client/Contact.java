@@ -530,10 +530,11 @@ public class Contact extends IconTextElement{
     public String getFirstString() {
         if (!cf.showResources)
             return (nick==null)?getJid():nick;
-        if (origin>ORIGIN_GROUPCHAT) 
+        if (origin>ORIGIN_GROUPCHAT)
             return nick;
-        if (origin==ORIGIN_GROUPCHAT) 
+        if (origin==ORIGIN_GROUPCHAT)
             return getJid();
+
         return (nick==null)?getJid():nick+jid.getResource(); 
     }
     

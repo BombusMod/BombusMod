@@ -245,10 +245,10 @@ public class ServiceDiscovery
                     String node=i.getAttribute("node");
                     Object serv=null;
                     if (node==null) {
-                        if (name==null)
-                            serv=new DiscoContact(name, jid, 0);
-                        else
-                            serv=new DiscoCommand(RosterIcons.ICON_GCJOIN_INDEX, name);
+                        int resourcePos=jid.indexOf('/');
+                        if (resourcePos>-1)
+                            jid=jid.substring(0, resourcePos);
+                        serv=new DiscoContact(name, jid, 0);
                     } else {
                         serv=new Node(name, node);
                     }
@@ -458,6 +458,10 @@ public class ServiceDiscovery
                 default:
             }
         }
+    }
+    private void exitDiscovery(){
+        stream.cancelBlockListener(this);
+        destroyView();
     }
 }
 class State{
