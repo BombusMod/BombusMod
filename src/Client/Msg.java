@@ -99,7 +99,8 @@ public class Msg {
     }
     
     public int getColor() {
-        ColorTheme ct=ColorTheme.getInstance();
+        return 0x000000;
+        /*ColorTheme ct=ColorTheme.getInstance();
         
         if (highlite) 
             return ct.getColor(ColorTheme.MSG_HIGHLIGHT);
@@ -113,9 +114,9 @@ public class Msg {
             case MESSAGE_TYPE_HISTORY: return ct.getColor(ColorTheme.MESSAGE_HISTORY);
             case MESSAGE_TYPE_SUBJ:return ct.getColor(ColorTheme.MSG_SUBJ);
         }
-        return ct.getColor(ColorTheme.LIST_INK);
+        return ct.getColor(ColorTheme.LIST_INK);*/
     }
-    public String toString(){
+    public String toString() {
         StringBuffer time=new StringBuffer();
         if (messageType==MESSAGE_TYPE_PRESENCE || !Config.getInstance().showBalloons) {
             time.append("[").append(getTime()).append("] ");

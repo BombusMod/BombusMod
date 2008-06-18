@@ -31,6 +31,7 @@ import Conference.MucContact;
 //#endif
 //#ifdef HISTORY
 //# import History.HistoryAppend;
+//# import History.HistoryReader;
 //# import History.HistoryStorage;
 //#endif
 import Messages.MessageList;
@@ -438,6 +439,12 @@ public class ContactMessageList extends MessageList
     }  
 
     public void keyPressed(int keyCode) {
+//#ifdef HISTORY
+//#             if (keyCode==KEY_NUM7) {
+//#                 new HistoryReader(display, contact);
+//#                 return;
+//#             }
+//#endif
         if (keyCode==KEY_POUND) {
             if (!sd.roster.isLoggedIn())
                 return;
