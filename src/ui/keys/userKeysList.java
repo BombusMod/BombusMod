@@ -91,21 +91,21 @@ public class userKeysList
 //#     }
 //# 
 //#     public VirtualElement getItemRef(int Index) { 
-//#         
 //#         return (VirtualElement)commandsList.elementAt(Index); 
 //#     }
-//#     protected int getItemCount() { return commandsList.size();  }
+//#     
+//#     protected int getItemCount() {
+//#         return commandsList.size();
+//#     }
 //#endif
     
     public void commandAction(Command c, Displayable d){
 //#ifdef USER_KEYS
-//#         VirtualList.canBack=true;
 //#         if (c==cmdCancel) {
 //#             destroyView();
 //#         }
 //#         if (c==cmdOK) {
 //#             rmsUpdate();
-//#             parentView=StaticData.getInstance().roster;
 //#             destroyView();    
 //#         }
 //#         if (c==cmdEdit) 

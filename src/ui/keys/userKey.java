@@ -50,7 +50,6 @@ public class userKey extends IconTextElement {
     }
     
     public static userKey loadUserKey(int index){
-	StaticData sd=StaticData.getInstance();
 	userKey u=userKey.createFromStorage(index);
         return u;
     }
@@ -96,28 +95,17 @@ public class userKey extends IconTextElement {
             outputStream.writeInt(key);	    
 	    outputStream.writeBoolean(active);	    
         } catch (IOException e) { }
-        
     }
-    
-    
-    public int getCommandId() { return commandId; }
-    
-    public int getKey(){ return (key<0)?0:key; }
-    
-    public boolean getActive () { return active; }
-    
-    
-    
+
     public void setCommand(int descId) { this.commandId = descId; }
+    public int getCommandId() { return commandId; }
 
     public void setKey(int key) { this.key = key; }
+    public int getKey(){ return (key<0)?0:key; }
 
     public void setActive(boolean active) { this.active = active; }
+    public boolean getActive () { return active; }
     
     public int getImageIndex() {return active?0:5;}
-    
-    public void onSelect(){};
-    
-    public String getTipString() { return null; }
 }
 

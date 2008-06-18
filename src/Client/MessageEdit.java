@@ -35,13 +35,14 @@ import Conference.AppendNick;
 import javax.microedition.lcdui.*;
 import locale.SR;
 import ui.VirtualList;
+import ui.controls.ExTextBox;
 
 /**
  *
  * @author Eugene Stahov
  */
 public class MessageEdit 
-        extends UniTextEdit
+        extends ExTextBox
         implements CommandListener, Runnable {
     
     private Display display;
@@ -92,45 +93,45 @@ public class MessageEdit
         
         //this.subj=to.toString();
         
-        t.addCommand(cmdSend);
-        t.addCommand(cmdInsMe);
+        addCommand(cmdSend);
+        addCommand(cmdInsMe);
 //#ifdef SMILES
-        t.addCommand(cmdSmile);
+        addCommand(cmdSmile);
 //#endif
         if (to.origin>=Contact.ORIGIN_GROUPCHAT)
-            t.addCommand(cmdInsNick);
+            addCommand(cmdInsNick);
 //#ifdef DETRANSLIT
-//#         t.addCommand(cmdSendInTranslit);
-//#         t.addCommand(cmdSendInDeTranslit);
+//#         addCommand(cmdSendInTranslit);
+//#         addCommand(cmdSendInDeTranslit);
 //#endif
-        t.addCommand(cmdSuspend);
-        t.addCommand(cmdCancel);
-        t.setCommandListener(this);
+        addCommand(cmdSuspend);
+        addCommand(cmdCancel);
+        setCommandListener(this);
         
         if (to.origin==Contact.ORIGIN_GROUPCHAT)
-            t.addCommand(cmdSubj);
+            addCommand(cmdSubj);
                 
-        t.setCommandListener(this);
+        setCommandListener(this);
 
         new Thread(this).start() ; // composing
         
-        display.setCurrent(t);
+        display.setCurrent(this);
     }
     
     public void commandAction(Command c, Displayable d){
         if (executeCommand(c, d)) return;
         
-        body=t.getString();
+        body=getString();
         if (body.length()==0) body=null;
         
         int caretPos=getCaretPos();
 
-        if (c==cmdInsMe) { t.insert("/me ", 0); return; }
+        if (c==cmdInsMe) { insert("/me ", 0); return; }
 //#ifdef SMILES
-        if (c==cmdSmile) { new SmilePicker(display, caretPos, t); return; }
+        if (c==cmdSmile) { new SmilePicker(display, caretPos, this); return; }
 //#endif
 //#ifndef WMUC
-        if (c==cmdInsNick) { new AppendNick(display, to, caretPos, t); return; }
+        if (c==cmdInsNick) { new AppendNick(display, to, caretPos, this); return; }
 //#endif
         if (c==cmdCancel) { 
             composing=false;

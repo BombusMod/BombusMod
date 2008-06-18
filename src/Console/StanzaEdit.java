@@ -12,7 +12,6 @@ package Console;
 import Client.Config;
 import Client.Roster;
 import Client.StaticData;
-import Client.UniTextEdit;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
@@ -21,13 +20,14 @@ import javax.microedition.lcdui.TextBox;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
 import ui.VirtualList;
+import ui.controls.ExTextBox;
 
 /**
  *
  * @author ad
  */
 public class StanzaEdit 
-        extends UniTextEdit
+        extends ExTextBox
         implements CommandListener, Runnable {
 
     private Display display;
@@ -58,19 +58,19 @@ public class StanzaEdit
 
         cf=Config.getInstance();
         
-        t.addCommand(cmdSend);
+        addCommand(cmdSend);
 
-        t.addCommand(cmdPasteIQDisco);
-        t.addCommand(cmdPasteIQVersion);
-        t.addCommand(cmdPastePresence);
-        t.addCommand(cmdPasteMessage);
+        addCommand(cmdPasteIQDisco);
+        addCommand(cmdPasteIQVersion);
+        addCommand(cmdPastePresence);
+        addCommand(cmdPasteMessage);
         
-        t.addCommand(cmdCancel);
-        t.setCommandListener(this);
+        addCommand(cmdCancel);
+        setCommandListener(this);
 
         new Thread(this).start() ; // composing
         
-        display.setCurrent(t);
+        display.setCurrent(this);
     }
     
     public void setParentView(Displayable parentView){
@@ -80,15 +80,15 @@ public class StanzaEdit
     public void commandAction(Command c, Displayable d){
         if (executeCommand(c, d)) return;
         
-        body=t.getString();
+        body=getString();
         if (body.length()==0) body=null;
 
         int caretPos=getCaretPos();
 
-        if (c==cmdPasteIQDisco) { insertText(TEMPLATE_IQ_DISCO, caretPos); return; }
-        if (c==cmdPasteIQVersion) { insertText(TEMPLATE_IQ_VERSION, caretPos); return; }
-        if (c==cmdPastePresence) { insertText(TEMPLATE_PRESENCE, caretPos); return; }
-        if (c==cmdPasteMessage) { insertText(TEMPLATE_MESSAGE, caretPos); return; }
+        if (c==cmdPasteIQDisco) { insert(TEMPLATE_IQ_DISCO, caretPos); return; }
+        if (c==cmdPasteIQVersion) { insert(TEMPLATE_IQ_VERSION, caretPos); return; }
+        if (c==cmdPastePresence) { insert(TEMPLATE_PRESENCE, caretPos); return; }
+        if (c==cmdPasteMessage) { insert(TEMPLATE_MESSAGE, caretPos); return; }
 
         if (c==cmdCancel) { 
             body=null;

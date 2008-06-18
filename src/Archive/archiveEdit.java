@@ -30,17 +30,17 @@ package Archive;
 import Client.Config;
 import Client.Msg;
 import Client.StaticData;
-import Client.UniTextEdit;
 import java.util.Vector;
 import javax.microedition.lcdui.*;
 import locale.SR;
 import ui.VirtualList;
+import ui.controls.ExTextBox;
 /**
  *
  * @author ad
  */
 public class archiveEdit 
-        extends UniTextEdit
+        extends ExTextBox
         implements CommandListener {
     
     private Display display;
@@ -61,6 +61,8 @@ public class archiveEdit
     private int pos;
 
     private ArchiveList al;
+
+    private String body;
     
     public archiveEdit(Display display, int pos, int where, ArchiveList al) {
         super(display, null, (pos>-1)?SR.MS_EDIT:SR.MS_NEW, TextField.ANY);
@@ -82,29 +84,21 @@ public class archiveEdit
             this.msg=archive.msg(pos);
             body=msg.getBody();
         }
-        try {
-            //expanding buffer as much as possible
-            int maxSize=t.setMaxSize(4096); //must not trow
-
-            if (body!=null) {
-                if (body.length()>maxSize)
-                    body=body.substring(0, maxSize-1);
-                t.setString(body);
-            }
-         } catch (Exception e) {}
         
-        t.addCommand(cmdOk);
+        setText(body);
+        
+        addCommand(cmdOk);
 
-        t.addCommand(cmdCancel);
-        t.setCommandListener(this);
+        addCommand(cmdCancel);
+        setCommandListener(this);
 
-        display.setCurrent(t);
+        display.setCurrent(this);
     }
     
     public void commandAction(Command c, Displayable d){
         if (executeCommand(c, d)) return;
         
-        body=t.getString();
+        body=getString();
 		
         if (body.length()==0) body=null;
 

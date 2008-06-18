@@ -49,12 +49,13 @@ import ui.VirtualList;
 public class userKeyExec {
     
     private static userKeyExec instance;
-    static Config cf=Config.getInstance();
+    private static Config cf;
     StaticData sd=StaticData.getInstance();
     
     public static userKeyExec getInstance(){
 	if (instance==null) {
 	    instance=new userKeyExec();
+            cf=Config.getInstance();
             instance.initCommands();
 	}
 	return instance;

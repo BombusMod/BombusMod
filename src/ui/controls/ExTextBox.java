@@ -1,19 +1,33 @@
 /*
- * UniTextEdit.java
+ * ExTextBox.java
  *
- * Created on 16 Июнь 2008 г., 9:48
+ * Created on 18.06.2008, 9:16
+ * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
  *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * You can also redistribute and/or modify this program under the
+ * terms of the Psi License, specified in the accompanied COPYING
+ * file, as published by the Psi Project; either dated January 1st,
+ * 2005, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
  */
+package ui.controls;
 
-package Client;
-
-//#ifdef ARCHIVE
-import Archive.ArchiveList;
-//#endif
+import Client.Config;
 import javax.microedition.lcdui.Command;
-import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.TextBox;
@@ -22,12 +36,16 @@ import locale.SR;
 //#ifdef CLIPBOARD
 //# import util.ClipBoard;
 //#endif
+//#ifdef ARCHIVE
+import Archive.ArchiveList;
+//#endif
 
 /**
  *
  * @author ad
  */
-public class UniTextEdit {
+public class ExTextBox
+    extends TextBox {
 
     private Display display;
     private Displayable parentView;
@@ -36,8 +54,6 @@ public class UniTextEdit {
     private String subj;
 
     private Config cf;
-    
-    public TextBox t;
     
 //#ifdef CLIPBOARD
 //#     private ClipBoard clipboard;
@@ -53,43 +69,49 @@ public class UniTextEdit {
 //#     private Command cmdPasteText=new Command(SR.MS_PASTE, Command.SCREEN, 8);  
 //#endif
     
+    int maxSize=500;
+            
     /** Creates a new instance of UniTextEdit */
-    public UniTextEdit(Display display, String body, String subj, int type) {
+    public ExTextBox(Display display, String body, String subj, int type) {
+        super(subj, "", 500, type);
+        
         this.display=display;
         parentView=display.getCurrent();
 
         cf=Config.getInstance();
 
-        t=new TextBox(subj, "", 500, type);
-
         this.subj=subj;
 		
         try {
             //expanding buffer as much as possible
-            int maxSize=t.setMaxSize(4096); //must not trow
+            maxSize=setMaxSize(4096); //must not trow
 
-            if (body!=null) {
-                if (body.length()>maxSize)
-                    body=body.substring(0, maxSize-1);
-                t.setString(body);
-            }
+            setText(body);
          } catch (Exception e) {}
 
 
 //#ifdef ARCHIVE
-        t.addCommand(cmdPaste);
+        addCommand(cmdPaste);
 //#endif
 //#ifdef CLIPBOARD
 //#         if (cf.useClipBoard) {
 //#             clipboard=ClipBoard.getInstance();
 //#             if (!clipboard.isEmpty())
-//#                 t.addCommand(cmdPasteText);
+//#                 addCommand(cmdPasteText);
 //#         }
 //#endif
 //#if TEMPLATES
-        t.addCommand(cmdTemplate);
+        addCommand(cmdTemplate);
 //#endif
         setInitialCaps(cf.capsState);
+    }
+    
+    public void setText(String body) {
+        if (body!=null) {
+            if (body.length()>maxSize)
+                body=body.substring(0, maxSize-1);
+            setString(body);
+        }
     }
     
     
@@ -102,38 +124,38 @@ public class UniTextEdit {
     }
 
     public int getCaretPos() {     
-        int caretPos=t.getCaretPosition();
+        int caretPos=getCaretPosition();
         // +MOTOROLA STUB
         if (cf.phoneManufacturer==Config.MOTO)
             caretPos=-1;
         if (caretPos<0)
-            caretPos=t.getString().length();
+            caretPos=getString().length();
         return caretPos;
     }
     
     public boolean executeCommand(Command c, Displayable displayable) {
-        body=t.getString();
+        body=getString();
         
         int caretPos=getCaretPos();
 		
         if (body.length()==0) body=null;
 
 //#ifdef ARCHIVE
-	if (c==cmdPaste) { new ArchiveList(display, caretPos, 1, t); return true; }
+	if (c==cmdPaste) { new ArchiveList(display, caretPos, 1, this); return true; }
 //#endif
 //#ifdef CLIPBOARD
-//#         if (c==cmdPasteText) { insertText(clipboard.getClipBoard(), getCaretPos()); return true; }
+//#         if (c==cmdPasteText) { insert(clipboard.getClipBoard(), getCaretPos()); return true; }
 //#endif
 //#if TEMPLATES
-        if (c==cmdTemplate) { new ArchiveList(display, caretPos, 2, t); return true; }
+        if (c==cmdTemplate) { new ArchiveList(display, caretPos, 2, this); return true; }
 //#endif
 
         return false;
     }
     
     
-    public void insertText(String s, int caretPos) {
-        String src=t.getString();
+    public void insert(String s, int caretPos) {
+        String src=getString();
 
         StringBuffer sb=new StringBuffer(s);
         
@@ -145,18 +167,20 @@ public class UniTextEdit {
             if (src.charAt(caretPos)!=' ')
                 sb.append(' ');
         
-        if (caretPos==src.length()) sb.append(' ');
+        if (caretPos==src.length())
+            sb.append(' ');
         
         try {
-            int freeSz=t.getMaxSize()-t.size();
-            if (freeSz<sb.length()) sb.delete(freeSz, sb.length());
+            int freeSz=getMaxSize()-size();
+            if (freeSz<sb.length())
+                sb.delete(freeSz, sb.length());
         } catch (Exception e) {}
        
-        t.insert(sb.toString(), caretPos);
+        super.insert(sb.toString(), caretPos);
         sb=null;
     }
     
     private void setInitialCaps(boolean state) {
-        t.setConstraints(state? TextField.INITIAL_CAPS_SENTENCE: TextField.ANY);
+        setConstraints(state?TextField.INITIAL_CAPS_SENTENCE:TextField.ANY);
     }
 }
