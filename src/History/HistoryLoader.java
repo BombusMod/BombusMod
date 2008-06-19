@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Vector;
 import util.DeTranslit;
+import util.Strconv;
 import util.StringUtils;
 
 /**
@@ -79,6 +80,9 @@ public class HistoryLoader {
 
                 if (start_pos>-1) {
                     str=str.substring(start_pos+3, end_pos);
+                    if (cf.cp1251) {
+                        str=Strconv.convCp1251ToUnicode(str);
+                    }
                     type=findBlock(str,"t"); date=findBlock(str,"d");  from=findBlock(str,"f");  subj=findBlock(str,"s");  body=findBlock(str,"b");
                     
                     //System.out.println(type+" ["+date+"]"+from+": "+subj+" "+body+"\r\n");
