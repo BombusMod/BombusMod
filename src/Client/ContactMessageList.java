@@ -32,7 +32,7 @@ import Conference.MucContact;
 //#ifdef HISTORY
 //# import History.HistoryAppend;
 //# import History.HistoryReader;
-//# import History.HistoryStorage;
+//# //import History.HistoryStorage;
 //#endif
 import Messages.MessageList;
 import images.RosterIcons;
@@ -71,6 +71,11 @@ public class ContactMessageList extends MessageList
 //#endif
 //#ifdef FILE_IO
     Command cmdSaveChat=new Command(SR.MS_SAVE_CHAT, Command.SCREEN, 16);
+//#endif
+//#ifdef HISTORY
+//#          Command cmdReadHistory=new Command("Read history", Command.SCREEN, 17);
+//#             
+//# //        if (cf.lastMessages && !contact.isHistoryLoaded()) loadRecentList();
 //#endif
 //#ifdef CLIPBOARD    
 //#     Command cmdSendBuffer=new Command(SR.MS_SEND_BUFFER, Command.SCREEN, 15);
@@ -160,12 +165,19 @@ public class ContactMessageList extends MessageList
 //#             if (cf.msgPath!="")
 //#                 addCommand(cmdSaveChat);
 //#endif
+//#ifdef HISTORY
+//#         if (cf.lastMessages)
+//#             addCommand(cmdReadHistory);
+//#             
+//# //        if (cf.lastMessages && !contact.isHistoryLoaded()) loadRecentList();
+//#endif
         setCommandListener(this);
         
         contact.setIncoming(0);
 //#ifdef HISTORY
-//#         if (cf.lastMessages && !contact.isHistoryLoaded())
-//#             loadRecentList();
+//#         if (cf.lastMessages)
+//#             
+//# //        if (cf.lastMessages && !contact.isHistoryLoaded()) loadRecentList();
 //#endif
         moveCursorTo(contact.firstUnread());
     }
@@ -298,6 +310,11 @@ public class ContactMessageList extends MessageList
         if (c==cmdPurge) {
             if (messages.isEmpty()) return;
             clearReadedMessageList();
+        }
+        
+        if (c==cmdReadHistory) {
+            new HistoryReader(display, contact);
+            return;
         }
         
         /** login-critical section */
@@ -439,12 +456,6 @@ public class ContactMessageList extends MessageList
     }  
 
     public void keyPressed(int keyCode) {
-//#ifdef HISTORY
-//#             if (keyCode==KEY_NUM7) {
-//#                 new HistoryReader(display, contact);
-//#                 return;
-//#             }
-//#endif
         if (keyCode==KEY_POUND) {
             if (!sd.roster.isLoggedIn())
                 return;
@@ -536,6 +547,7 @@ public class ContactMessageList extends MessageList
     }
     
 //#ifdef HISTORY
+//# /*
 //#     public void loadRecentList() {
 //#         contact.setHistoryLoaded(true);
 //#         HistoryStorage hs = new HistoryStorage(contact.getBareJid());
@@ -561,19 +573,16 @@ public class ContactMessageList extends MessageList
 //#          }
 //#         return false;
 //#     }
+//#  */
 //#endif
 
 //#if (FILE_IO && HISTORY)
 //#     private void saveMessages() {
-//#         if (cf.msgPath==null) {
-//#ifdef POPUPS
-//#            sd.roster.setWobbler(3, (Contact) null, "Please enter valid path to store log");
-//#endif
+//#         if (cf.msgPath=="") {
 //#            return;
 //#         }
 //#         
 //#         String histRecord="log_"+contact.getBareJid();
-//#          
 //#         for (Enumeration messages=contact.msgs.elements(); messages.hasMoreElements(); ) {
 //#             Msg message=(Msg) messages.nextElement();
 //#             new HistoryAppend(message, false, histRecord);
@@ -581,6 +590,7 @@ public class ContactMessageList extends MessageList
 //#         }
 //#     }
 //#endif
+
     public void destroyView(){
         sd.roster.activeContact=null;
         sd.roster.reEnumRoster(); //to reset unread messages icon for this conference in roster

@@ -39,13 +39,6 @@ import util.StringUtils;
 import util.Strconv;
 
 public class HistoryStorage {
-    final static int SEARCH_MARKER= 0;
-    final static int SEARCH_DATE  = 1;
-    final static int SEARCH_FROM  = 2;
-    final static int SEARCH_SUBJ  = 3;
-    final static int SEARCH_BODY  = 4;
-    final static int SEARCH_BREAK = 5;   
-
     private String history;
     
     private Config cf;

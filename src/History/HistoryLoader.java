@@ -32,7 +32,9 @@ import io.file.FileIO;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Vector;
-import util.DeTranslit;
+//#ifdef DETRANSLIT
+//# import util.DeTranslit;
+//#endif
 import util.Strconv;
 import util.StringUtils;
 
@@ -43,7 +45,7 @@ import util.StringUtils;
 public class HistoryLoader {
     Config cf;
 
-    private String fileName="";//"root1/test.txt";
+    private String fileName="";
 
     private Vector fileMap;
 
@@ -54,7 +56,6 @@ public class HistoryLoader {
 //#endif
        fileName=cf.msgPath+StringUtils.replaceBadChars(file)+".txt";
        
-       fileMap = new Vector();
        fileMap = getFileMap();
     }
     
@@ -63,13 +64,15 @@ public class HistoryLoader {
         try {
             InputStream is=f.openInputStream(); 
             String str="";
-            int blockSize=2048;
+            int blockSize=1024;
 
             int pos=((posItem)fileMap.elementAt(index)).getPos();
             is.skip(pos);
             
             byte[] b = new byte[blockSize];
             is.read(b);
+            
+            is.close();  f.close();
                 
             if (b!=null) {
                 str = new String(b, 0, blockSize).trim();

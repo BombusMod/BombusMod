@@ -74,7 +74,7 @@ public class HistoryConfig
         
         cf=Config.getInstance();
 
-        loadHistory = new CheckBox(SR.MS_LOAD_HISTORY, cf.lastMessages); itemsList.addElement(loadHistory);
+        loadHistory = new CheckBox("Format for reading", cf.lastMessages); itemsList.addElement(loadHistory);
         saveHistory = new CheckBox(SR.MS_SAVE_HISTORY, cf.msgLog); itemsList.addElement(saveHistory);
         savePres = new CheckBox(SR.MS_SAVE_PRESENCES, cf.msgLogPresence); itemsList.addElement(savePres);
         saveConfHistory = new CheckBox(SR.MS_SAVE_HISTORY_CONF, cf.msgLogConf); itemsList.addElement(saveConfHistory);
