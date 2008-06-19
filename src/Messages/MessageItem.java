@@ -57,6 +57,7 @@ public class MessageItem
     }
 
     public int getVHeight() { 
+        if (msg==null) return 0;
         if (msg.itemHeight<0) msg.itemHeight=FontCache.getMsgFont().getHeight();
         if (msg.delivered) {
             int rh=RosterIcons.getInstance().getHeight();

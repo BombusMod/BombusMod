@@ -41,9 +41,15 @@ import ui.MainBar;
 public class HistoryReader
     extends MessageList {
     
-    public int lastFilePos=0;
+    public int thisIndex=-1;
 
     private HistoryLoader hl;
+    
+    private boolean parsing=false;
+    
+    private Msg thisMsg=null;
+    
+    private int listSize=0;
     
     /** Creates a new instance of HistoryReader */
     public HistoryReader(Display display, Contact c) {
@@ -52,7 +58,17 @@ public class HistoryReader
         setMainBarItem(new MainBar("History reader"));
         
         hl = new HistoryLoader(c.getBareJid());
-        //msgs=hl.getFileMap();
+        
+        listSize=hl.getSize();
+        
+        if (listSize>0)
+            loadMessage(0);
+        else
+            return;
+        
+        setCommandListener(this);
+        
+	addCommand(cmdBack);
         
         attachDisplay(display);
     }
@@ -60,17 +76,70 @@ public class HistoryReader
     protected void beginPaint() {
         StringBuffer str = new StringBuffer()
         .append(" (")
-        .append(getItemCount())
+        .append(thisIndex+1)
+        .append("/")
+        .append(listSize)
         .append(")");
         
         getMainBarItem().setElementAt(str.toString(),1);
     }    
 
     public int getItemCount() {
-        return hl.getSize();
+        return (listSize>0)?1:0;
     }
 
     public Msg getMessage(int index) {
-	return (Msg) hl.getMessage(index);
+	return thisMsg;
+    }
+    
+    public void keyPressed(int keyCode) {
+        if (parsing) return;
+        
+        switch (keyCode) {
+            case KEY_NUM4:
+                loadPrev();
+                return;
+            case KEY_NUM6:
+                loadNext();
+                return;
+        default:
+            try {
+                switch (getGameAction(keyCode)){
+                    case LEFT:
+                        loadPrev();
+                        break;
+                    case RIGHT:
+                        loadNext();
+                        break;
+                }
+            } catch (Exception e) {/* IllegalArgumentException @ getGameAction */}
+        }
+        super.keyPressed(keyCode);
+    }
+    
+    public void loadNext() {
+        loadMessage ((thisIndex<listSize-1)?thisIndex+1:0);
+    }
+    
+    public void loadPrev() {
+        loadMessage ((thisIndex>0)?thisIndex-1:listSize-1);
+    }
+    
+    public void loadMessage (final int index) {
+        if (thisIndex==index) return;
+        
+        parsing=true;
+        new Thread(new Runnable() {
+            public void run() {
+                messages=new Vector();
+                thisMsg=hl.getMessage(index);
+                thisMsg.itemCollapsed=false;
+                thisIndex=index;
+                parsing=false;
+
+                repaint();
+            }
+        }).start();
+        //redraw();
     }
 }

@@ -102,7 +102,7 @@ public abstract class MessageList extends VirtualList implements CommandListener
 	if (mi==null) {
 	    mi=new MessageItem(getMessage(index), this, smiles);
             mi.setEven( (index & 1) == 0);
-            mi.getColor();
+            //mi.getColor();
 	    messages.setElementAt(mi, index);
 	}
         return mi;
