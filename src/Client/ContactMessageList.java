@@ -311,12 +311,12 @@ public class ContactMessageList extends MessageList
             if (messages.isEmpty()) return;
             clearReadedMessageList();
         }
-        
-        if (c==cmdReadHistory) {
-            new HistoryReader(display, contact);
-            return;
-        }
-        
+//#ifdef HISTORY
+//#         if (c==cmdReadHistory) {
+//#             new HistoryReader(display, contact);
+//#             return;
+//#         }
+//#endif
         /** login-critical section */
         if (!sd.roster.isLoggedIn()) return;
 

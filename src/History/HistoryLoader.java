@@ -64,9 +64,15 @@ public class HistoryLoader {
         try {
             InputStream is=f.openInputStream(); 
             String str="";
-            int blockSize=1024;
-
+            
+            int blockSize=0;
+            
             int pos=((posItem)fileMap.elementAt(index)).getPos();
+            if (index<getSize()-2) {
+                blockSize=((posItem)fileMap.elementAt(index+1)).getPos()-pos;
+            } else {
+                blockSize=(int)f.fileSize()-pos;
+            }
             is.skip(pos);
             
             byte[] b = new byte[blockSize];
