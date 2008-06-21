@@ -43,28 +43,7 @@ public class VCard {
     
     public final static int FN=0;
     public final static int NICKNAME=1;
-    /*
-    public final static int BDAY=2;
-    public final static int GENDER=3;
-    public final static int GIVEN=4;
-    public final static int MIDDLE=5;
-    public final static int FAMILY=6;
-    public final static int STREET=7;
-    public final static int EXTADR=8;
-    public final static int LOCALITY=9;
-    public final static int REGION=10;
-    public final static int PCODE=11;
-    public final static int CTRY=12;
-    public final static int HOME=13;
-    public final static int NUMBER=14;
-    public final static int USERID=15;
-    public final static int TITLE=16;
-    public final static int ROLE=17;
-    public final static int ORGNAME=18;
-    public final static int ORGUNIT=19;
-    public final static int URL=20;
-    public final static int DESC=21;
-    */
+
     public static Vector vCardFields;
     public static Vector vCardFields2;
     public static Vector vCardLabels;
@@ -84,8 +63,7 @@ public class VCard {
     
     /** Creates a new instance of vCard */
     public VCard() {
-        if (vCardFields==null) 
-            fieldsLoader();
+        if (vCardFields==null) fieldsLoader();
     }
     
     public VCard(JabberDataBlock data) {
@@ -188,11 +166,14 @@ public class VCard {
     }
     
     private void fieldsLoader(){
-	Vector table[]=new StringLoader().stringLoader("/vcard.txt", 3);
-               
+        String vcardFile="/lang/"+Client.Config.getInstance().lang+".vcard.txt";
+        Vector table[]=new StringLoader().stringLoader(vcardFile, 3);
+        if (table==null) table=new StringLoader().stringLoader("/lang/en.vcard.txt", 3);
+  
 	vCardFields=table[1];
         vCardFields2=table[0];
         vCardLabels=table[2];
+        table=null;
         
     }
     public String getVCardData(int index) {

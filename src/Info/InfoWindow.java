@@ -67,7 +67,7 @@ public class InfoWindow
         this.display=display;
         parentView=display.getCurrent();
 
-        description=new MultiLine(Version.getName(), Version.getVersionNumber()+"\nMobile Jabber client\n"+Config.getOs()+"\nCopyright (c) 2005-2008, Eugene Stahov (evgs), Daniel Apatin (ad)", super.superWidth);
+        description=new MultiLine(Version.getName(), Version.getVersionNumber()+"\nMobile Jabber client\n"+Config.getOs()+"\nCopyright (c) 2005-2008, Eugene Stahov (evgs), Daniel Apatin (ad)\nDistributed under GNU Public License (GPL) v2.0", super.superWidth);
         description.selectable=true;
         itemsList.addElement(description);
         itemsList.addElement(new SpacerItem(0));
