@@ -10,8 +10,10 @@
 package ui.controls.form;
 
 import java.util.Vector;
+//#ifndef MENU
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
+//#endif
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
@@ -25,11 +27,14 @@ import ui.VirtualList;
  */
 public class DropListBox 
         extends VirtualList 
-        implements CommandListener {
-    
+//#ifndef MENU
+        implements CommandListener
+//#endif
+    {
+//#ifndef MENU
     private Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK,99);
     private Command cmdOk=new Command(SR.MS_OK, Command.OK,1);
-
+//#endif
     private Vector listItems;
 
     private DropChoiceBox cb;
@@ -40,9 +45,11 @@ public class DropListBox
         this.cb=cb;
         
         setMainBarItem(new MainBar(SR.MS_SELECT));
+//#ifndef MENU
         addCommand(cmdOk);
         addCommand(cmdCancel);
         setCommandListener(this);
+//#endif
         moveCursorTo(cb.getSelectedIndex());
     }
     
@@ -53,12 +60,20 @@ public class DropListBox
         display.setCurrent(parentView);
     }
 
+
+//#ifndef MENU
     public void commandAction(Command c, Displayable d){
         if (c==cmdOk)
             eventOk();
         else if (c==cmdCancel)
             display.setCurrent(parentView);
     }
+//#else
+//#     public String getLeftCommand() { return SR.MS_OK; }
+//#     public void leftCommand() { eventOk(); }
+//#     
+//#     public String getRightCommand() { return SR.MS_CANCEL; }
+//#endif
 
     public VirtualElement getItemRef(int index){ 
         return new ListItem((String) listItems.elementAt(index)); 

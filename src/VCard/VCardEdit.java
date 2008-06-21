@@ -50,7 +50,7 @@ public class VCardEdit
     
     private Display display;
     private Displayable parentView;
-    
+//#ifndef MENU
     protected Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 99);
     protected Command cmdPublish=new Command(SR.MS_PUBLISH, Command.OK, 1);
     protected Command cmdRefresh=new Command(SR.MS_REFRESH, Command.SCREEN, 2);
@@ -60,7 +60,7 @@ public class VCardEdit
 //#endif
     protected Command cmdDelPhoto=new Command(SR.MS_CLEAR_PHOTO, Command.SCREEN,5);
     protected Command cmdCamera=new Command(SR.MS_CAMERA, Command.SCREEN,6);
-
+//#endif
     private Vector items=new Vector();
     private VCard vcard;
     
@@ -91,6 +91,7 @@ public class VCardEdit
             itemsList.addElement(new TextInput(display, name, data, null, TextField.ANY));
         }
         setPhoto();
+//#ifndef MENU
         super.removeCommand(cmdOk);
         addCommand(cmdPublish);
         addCommand(cmdRefresh);
@@ -102,7 +103,7 @@ public class VCardEdit
         if (cameraAvailable!=null) if (cameraAvailable.startsWith("true"))
             addCommand(cmdCamera);
         addCommand(cmdDelPhoto);
-        
+//#endif
         moveCursorTo(getNextSelectableRef(-1));
         attachDisplay(display);
     }
@@ -119,7 +120,7 @@ public class VCardEdit
         new Thread(this).start();
         destroyView();
     }
-    
+//#ifndef MENU
     public void commandAction(Command c, Displayable d) {
         if (c==cmdCancel) destroyView();
         if (c==cmdRefresh) {
@@ -150,7 +151,7 @@ public class VCardEdit
 
         super.commandAction(c, d);
     }
-
+//#endif
     public void run() {
         StaticData.getInstance().roster.theStream.send(vcard.constructVCard());
         //System.out.println("VCard sent");

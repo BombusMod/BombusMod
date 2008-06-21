@@ -81,17 +81,13 @@ public class TransferSendFile
 
     public void BrowserFilePathNotify(String pathSelected) { fileName.setValue(pathSelected); }
 
-    public void commandAction(Command c, Displayable d) {
-        if (c==cmdOk) {
-            try {
-                TransferTask task=new TransferTask(to, String.valueOf(System.currentTimeMillis()), fileName.getValue(), description.getValue());
-                TransferDispatcher.getInstance().sendFile(task);
-                //switch to file transfer manager
-                (new io.file.transfer.TransferManager(display)).setParentView(parentView);
-                return;
-            } catch (Exception e) {}
-        }
-        display.setCurrent(parentView);
+    public void cmdOk() {
+        try {
+            TransferTask task=new TransferTask(to, String.valueOf(System.currentTimeMillis()), fileName.getValue(), description.getValue());
+            TransferDispatcher.getInstance().sendFile(task);
+            //switch to file transfer manager
+            (new io.file.transfer.TransferManager(display)).setParentView(parentView);
+            return;
+        } catch (Exception e) {}
     }
-  
 }

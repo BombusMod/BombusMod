@@ -42,12 +42,13 @@ public class MenuContainer {
     static Font boldFont = null;
     protected static int boldHeight = 0;
     
-    static Font normalFont = null;
+    //static Font normalFont = null;
     
     static int scWidth = 0;
     static int scHeight = 0;
     
     protected String leftCommand = "";
+    protected String centerCommand = "";
     protected String rightCommand = "";
     
     private boolean initiated=false;
@@ -61,7 +62,7 @@ public class MenuContainer {
         point_y=-1;
         point_x=-1;
     }
-
+/*
     public static String cutStringToWidth(String s, Font font, int width){
         String str = s;
         if(font.stringWidth(str)<width)
@@ -71,10 +72,17 @@ public class MenuContainer {
             str = str.substring(0, str.length()-2);
         return str+"...";
     }
-    
+*/
     public static void drawFooter(Graphics g){
         g.setColor(0x000000);
-        g.fillRect(0, scHeight-boldHeight, scWidth, boldHeight/2);
+        g.fillRect(0, scHeight-boldHeight, scWidth, boldHeight);
+    }
+    
+    public static void drawCenterCommand(Graphics g, String val){
+        g.setColor(0xffffff);
+        g.setFont(getBoldFont());
+        int tw = getBoldFont().stringWidth(val);
+        g.drawString(val, scWidth/2, scHeight, Graphics.HCENTER | Graphics.BOTTOM);
     }
     
     public static void drawLeftCommand(Graphics g, String val){
@@ -95,15 +103,12 @@ public class MenuContainer {
         return boldFont;
     }
     
-    public static Font getNormalFont() {
-        return normalFont;
-    }
+    //public static Font getNormalFont() { return normalFont; }
     
     public int getHeight() {
         return boldHeight;
     }
-    
-    
+
     public String getLeftCommand() {
         return leftCommand;
     }
@@ -111,12 +116,27 @@ public class MenuContainer {
     private int getWidthLeftCommand() {
         if(!leftCommand.equals("")) 
             return getBoldFont().stringWidth(leftCommand);
-        
+
         return 0;
     }
 
     public void setLeftCommand(String leftCommand) {
         this.leftCommand = leftCommand;
+    }
+    
+    public String getCenterCommand() {
+        return centerCommand;
+    }
+    
+    private int getWidthCenterCommand() {
+        if(!centerCommand.equals("")) 
+            return getBoldFont().stringWidth(centerCommand);
+
+        return 0;
+    }
+
+    public void setCenterCommand(String centerCommand) {
+        this.centerCommand = centerCommand;
     }
 
     public String getRightCommand() {
@@ -131,30 +151,43 @@ public class MenuContainer {
     }
 
     private boolean isClickOnLeftCommand(int x, int y) {
-        int cx=getWidthLeftCommand();
-        if (cx==0)
-            return false;
-        
-        if (x>cx)
-            return false;
-        
         if (y<scHeight-boldHeight)
             return false;
-               
+        
+        int cx=getWidthLeftCommand();
+        if (cx==0) return false;
+        
+        if (x>cx) return false;
+
+        return true;
+    }
+    
+    private boolean isClickOnCenterCommand(int x, int y) {
+        if (y<scHeight-boldHeight) return false;
+        
+        int cx=getWidthCenterCommand();
+        if (cx==0)
+            return false;
+        int centerScreen=scWidth/2;
+        
+        int startX=centerScreen-(cx/2);
+        int endX=centerScreen+(cx/2);
+
+        if (x<startX) return false;
+        if (x>endX) return false;
+
         return true;
     }
     
     private boolean isClickOnRightCommand(int x, int y) {
-        int cx=getWidthRightCommand();
-        if (cx==0)
-            return false;
-        
-        if (x<(scWidth-cx))
-            return false;
-        
         if (y<scHeight-boldHeight)
             return false;
-               
+        
+        int cx=getWidthRightCommand();
+        if (cx==0) return false;
+        
+        if (x<(scWidth-cx)) return false;
+ 
         return true;
     }
     
@@ -168,9 +201,12 @@ public class MenuContainer {
             drawFooter(g);
             if(!leftCommand.equals(""))
                 drawLeftCommand(g, leftCommand);
-            //if(!center.equals(""))
-                //drawCenter(g, center);
-            drawCenter(g, Time.localTime());
+            
+            if(!centerCommand.equals("")) {
+                drawCenterCommand(g, centerCommand);
+            } else {
+                drawCenterCommand(g, Time.localTime());
+            }
             
             if(!rightCommand.equals(""))
                 drawRightCommand(g, rightCommand);
@@ -188,21 +224,13 @@ public class MenuContainer {
         boldFont = Font.getFont(Font.FACE_SYSTEM, Font.STYLE_BOLD, Font.SIZE_SMALL);
         boldHeight = boldFont.getHeight();
         
-        normalFont = Font.getFont(Font.FACE_SYSTEM, Font.STYLE_PLAIN, Font.SIZE_SMALL);
+        //normalFont = Font.getFont(Font.FACE_SYSTEM, Font.STYLE_PLAIN, Font.SIZE_SMALL);
         
         scWidth = g.getClipWidth();
         scHeight = g.getClipHeight();
         
         initiated = true;
     }
-    
-    public static void drawCenter(Graphics g, String val){
-        g.setColor(0xffffff);
-        g.setFont(getNormalFont());
-        int tw = getNormalFont().stringWidth(val);
-        g.drawString(val, scWidth/2, scHeight, Graphics.HCENTER | Graphics.BOTTOM);
-    }
-    
     
 /*           Pointer events              */
     
@@ -216,9 +244,14 @@ public class MenuContainer {
             return 1;
         }
         
+        if (isClickOnCenterCommand(x, y)) {
+            //System.out.println("isClickOnCenterCommand");
+            return 2;
+        }
+        
         if (isClickOnRightCommand(x, y)) {
             //System.out.println("isClickOnRightCommand");
-            return 2;
+            return 3;
         }
         
 	return 0;

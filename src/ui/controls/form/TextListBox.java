@@ -54,11 +54,14 @@ import locale.SR;
  */
 public class TextListBox 
         extends VirtualList 
-        implements CommandListener {
-    
+//#ifndef MENU
+        implements CommandListener
+//#endif
+    {
+//#ifndef MENU
     private Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK,99);
     private Command cmdOk=new Command(SR.MS_OK, Command.OK,1);
-
+//#endif
     private Vector recentList;
 
     private EditBox ti;
@@ -68,9 +71,11 @@ public class TextListBox
         this.ti=ti;
         this.recentList=ti.recentList;
         setMainBarItem(new MainBar(SR.MS_SELECT));
+//#ifndef MENU
         addCommand(cmdOk);
         addCommand(cmdCancel);
         setCommandListener(this);
+//#endif
     }
     
     public void eventOk() {
@@ -80,12 +85,19 @@ public class TextListBox
         display.setCurrent(parentView);
     }
 
+//#ifndef MENU
     public void commandAction(Command c, Displayable d){
         if (c==cmdOk)
             eventOk();
         else if (c==cmdCancel)
             display.setCurrent(parentView);
     }
+//#else
+//#     public String getLeftCommand() { return SR.MS_OK; }
+//#     public void leftCommand() { eventOk(); }
+//#     
+//#     public String getRightCommand() { return SR.MS_CANCEL; }
+//#endif
 
     public VirtualElement getItemRef(int index){ 
         return new ListItem((String) recentList.elementAt(index)); 

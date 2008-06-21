@@ -68,6 +68,7 @@ public class VCardView
     private SimpleString noPhoto=new SimpleString("[No photo available]", false);
     private SimpleString badFormat=new SimpleString("[Unsupported format]", false);
 
+//#ifndef MENU
 //#ifdef CLIPBOARD
 //#     private Command cmdCopy   = new Command(SR.MS_COPY, Command.OK, 1);
 //#     private Command cmdCopyPlus = new Command("+ "+SR.MS_COPY, Command.SCREEN, 2);
@@ -78,7 +79,7 @@ public class VCardView
     protected Command cmdSavePhoto=new Command(SR.MS_SAVE_PHOTO, Command.SCREEN,4);
 //#endif
     protected Command cmdDelPhoto=new Command(SR.MS_CLEAR_PHOTO, Command.SCREEN,5);
-    
+//#endif
     /** Creates a new instance of VCardView */
     public VCardView(Display display, VCard vcard) {
         super(display, SR.MS_VCARD+" "+vcard.getNickName());
@@ -102,7 +103,7 @@ public class VCardView
             }
             itemsList.addElement(endVCard);
         }
-
+//#ifndef MENU
 //#if FILE_IO
         if (vcard.hasPhoto)
             addCommand(cmdSavePhoto);
@@ -120,9 +121,9 @@ public class VCardView
         if (vcard.hasPhoto)
             addCommand(cmdDelPhoto);
         //moveCursorTo(getNextSelectableRef(-1));
-        
+//#endif
+
         enableListWrapping(false);
-        
         attachDisplay(display);
     }
     
@@ -149,7 +150,7 @@ public class VCardView
             itemsList.addElement(noPhoto);
         }
      }
-     
+//#ifndef MENU
     public void commandAction(Command c, Displayable d) {
         if (c==cmdDelPhoto) {
             vcard.dropPhoto(); 
@@ -185,6 +186,7 @@ public class VCardView
 //#endif
         super.commandAction(c, d);
     }
+//#endif
 
 //#if FILE_IO
     public void BrowserFilePathNotify(String pathSelected) {

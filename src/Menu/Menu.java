@@ -25,22 +25,26 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-package ui;
+package Menu;
 import java.util.*;
 import javax.microedition.lcdui.*;
 import locale.SR;
+import ui.*;
 
 /**
  *
  * @author Evg_S
  */
-public class Menu extends VirtualList implements CommandListener
+public class Menu extends VirtualList
+//#ifndef MENU
+        implements CommandListener
+//#endif
 {
     Vector menuitems;
-
+//#ifndef MENU
     Command cmdBack=new Command(SR.MS_BACK,Command.BACK,99);
     Command cmdOk=new Command(SR.MS_OK,Command.OK,1);
-
+//#endif
     private ImageList il;
     
     public Menu(String mainbar, ImageList il) {
@@ -48,9 +52,11 @@ public class Menu extends VirtualList implements CommandListener
         setMainBarItem(new MainBar(mainbar));
         menuitems=new Vector();
         this.il=il;
+//#ifndef MENU
         addCommand(cmdBack);
         addCommand(cmdOk);
         setCommandListener(this);
+//#endif
     }
     
     public VirtualElement getItemRef(int index){ 
@@ -69,9 +75,13 @@ public class Menu extends VirtualList implements CommandListener
     public void addItem(String label, int index){
         addItem(new MenuItem(label, index, -1, il));
     }
-    
+//#ifndef MENU
     public void commandAction(Command c, Displayable d) {
         if (c==cmdBack) destroyView();
 	if (c==cmdOk) eventOk();
     }
+//#else 
+//#     public void leftCommand() { eventOk(); }
+//#     public String getLeftCommand() { return SR.MS_OK; }
+//#endif
 }

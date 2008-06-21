@@ -653,6 +653,10 @@ public class SR {
 
     public static String MS_RECONNECT_COUNT_RETRY=loadString("Quantity of attempts");
     public static String MS_RECONNECT_WAIT=loadString("Delay before reconnect(sec.)");
+
+    public static String MS_MENU=loadString("Menu");
+
+    public static String MS_CHANGE=loadString("Change");
     
     private SR() { }
     

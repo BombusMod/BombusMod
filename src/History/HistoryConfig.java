@@ -49,9 +49,9 @@ public class HistoryConfig
         implements BrowserListener {
 
     private Display display;
-    
+//#ifndef MENU
     Command cmdSetHistFolder=new Command(SR.MS_SELECT_HISTORY_FOLDER, Command.ITEM,2);
-    
+//#endif
     private TextInput historyFolder;
     
     private CheckBox loadHistory;
@@ -86,9 +86,9 @@ public class HistoryConfig
 
 	historyFolder = new TextInput(display, SR.MS_HISTORY_FOLDER, cf.msgPath, null, TextField.ANY);//128, TextField.ANY
         itemsList.addElement(historyFolder);
-        
+//#ifndef MENU
         addCommand(cmdSetHistFolder);
-        
+//#endif
         moveCursorTo(getNextSelectableRef(-1));
         attachDisplay(display);
     }
@@ -96,7 +96,7 @@ public class HistoryConfig
     public void BrowserFilePathNotify(String pathSelected) {
         historyFolder.setValue(pathSelected);
     }
-
+//#ifndef MENU
     public void commandAction(Command command, Displayable displayable) {
         if (command==cmdSetHistFolder) {
             new Browser(null, display, this, true);
@@ -105,7 +105,7 @@ public class HistoryConfig
         super.commandAction(command, displayable);
         destroyView();
     }
-    
+//#endif
     public void cmdOk() {
         cf.lastMessages=loadHistory.getValue();
 

@@ -49,11 +49,11 @@ public class ConferenceForm
     private Displayable parentView;
     
     private Config cf=Config.getInstance();
-    
+//#ifndef MENU
     Command cmdJoin=new Command(SR.MS_JOIN, Command.SCREEN, 1);
     Command cmdAdd=new Command(SR.MS_ADD_BOOKMARK, Command.SCREEN, 5);
     Command cmdEdit=new Command(SR.MS_SAVE, Command.SCREEN, 6);
-    
+//#endif
     private TextInput roomField;
     private TextInput hostField;
     private TextInput nickField;
@@ -169,7 +169,7 @@ public class ConferenceForm
 
         autoJoin=new CheckBox(SR.MS_AUTOLOGIN, autojoin);
         itemsList.addElement(autoJoin);
-        
+//#ifndef MENU
         addCommand(cmdJoin);
         addCommand(cmdAdd);
         addCommand(cmdEdit);
@@ -178,10 +178,11 @@ public class ConferenceForm
         removeCommand(cmdOk);
         
 	setCommandListener(this);
+//#endif
         moveCursorTo(getNextSelectableRef(-1));
         attachDisplay(display);
     }
-     
+//#ifndef MENU
     public void commandAction(Command c, Displayable d){
         super.commandAction(c, d);
         
@@ -229,7 +230,7 @@ public class ConferenceForm
         room=null;
         pass=null;
     }
-    
+//#endif
     private void saveMsgCount(int msgLimit) {
         if (cf.confMessageCount!=msgLimit) {
             cf.confMessageCount=msgLimit;

@@ -64,12 +64,12 @@ public class DropChoiceBox
         if (items.size()<1) return "";//caption;
         return (String) items.elementAt(index);
     }
-
+/*
     public void onSelect(){
         if (items.size()<1) return;
         index=(index+1)%items.size();
     }
-    
+*/
     public int getValue() { return index; }
     
     public void append(String value) { items.addElement(value); }
@@ -126,6 +126,7 @@ public class DropChoiceBox
                 return true;
              case 5:
                 new DropListBox(display, items, this);
+                return true;
          }
         return false;
     }

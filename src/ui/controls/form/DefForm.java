@@ -30,8 +30,10 @@ package ui.controls.form;
 //import Client.Config;
 import Client.Config;
 import java.util.Vector;
+//#ifndef MENU
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
+//#endif
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
@@ -45,17 +47,20 @@ import ui.VirtualList;
  */
 public class DefForm 
         extends VirtualList
-        implements CommandListener  {
+//#ifndef MENU
+        implements CommandListener
+//#endif
+    {
     
     public Display display;
     public Displayable parentView;
     
     public Vector itemsList=new Vector();
-
+//#ifndef MENU
     public Command cmdSelect = new Command(SR.MS_SELECT, Command.OK, 1);
     public Command cmdOk = new Command(SR.MS_OK, Command.SCREEN, 2);
     public Command cmdCancel = new Command(SR.MS_BACK, Command.BACK, 99);
-    
+//#endif
     public int superWidth;
     /**
      * Creates a new instance of DefForm
@@ -67,13 +72,14 @@ public class DefForm
 	setMainBarItem(new MainBar(caption));
         
         superWidth=super.getWidth();
-        
+//#ifndef MENU
         if (Config.getInstance().phoneManufacturer==Config.NOKIA)
             addCommand(cmdSelect);
         
 	addCommand(cmdOk);
 	addCommand(cmdCancel);
 	setCommandListener(this);
+//#endif
     }
 
     protected int getItemCount() { return itemsList.size(); }
@@ -81,10 +87,11 @@ public class DefForm
     protected VirtualElement getItemRef(int index) {
         return (VirtualElement)itemsList.elementAt(index);
     }
-    
+
+//#ifndef MENU
     public void touchLeftPressed(){ cmdOk(); }
     public void touchRightPressed(){ cmdCancel(); }
-
+    
     public void commandAction(Command command, Displayable displayable) {
 	if (command==cmdCancel) {
 	    cmdCancel();
@@ -96,6 +103,13 @@ public class DefForm
             cmdOk();
         }
     }
+//#else
+//#     public void leftCommand() { cmdOk(); }
+//#     public String getLeftCommand() { return SR.MS_OK; }
+//#     
+//#     public void centerCommand() { getItemRef(cursor).onSelect(); }
+//#     //public String getCenterCommand() { return SR.MS_CHANGE; }
+//#endif
 
     public void destroyView()	{
 	if (display!=null)

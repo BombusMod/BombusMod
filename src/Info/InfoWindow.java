@@ -55,7 +55,9 @@ public class InfoWindow
     MultiLine abilities;
     
 //#ifdef CLIPBOARD
+//#ifndef MENU
 //#     private Command cmdCopy   = new Command(SR.MS_COPY, Command.OK, 1);
+//#endif
 //#     private ClipBoard clipboard; 
 //#endif
     
@@ -90,32 +92,38 @@ public class InfoWindow
         abilities=new MultiLine("Abilities", getAbilities(), super.superWidth);
         abilities.selectable=true;
         itemsList.addElement(abilities);
-        
-        super.removeCommand(cmdOk);
 //#ifdef CLIPBOARD
 //#         if (Config.getInstance().useClipBoard) {
 //#             clipboard=ClipBoard.getInstance(); 
+//#         }
+//#endif
+        
+//#ifndef MENU
+        super.removeCommand(cmdOk);
+//#ifdef CLIPBOARD
+//#         if (Config.getInstance().useClipBoard) {
 //#             addCommand(cmdCopy);
 //#         }
 //#endif
-
+//#endif
         enableListWrapping(false);
         
         moveCursorTo(getNextSelectableRef(-1));
         attachDisplay(display);
     }
-    
-    public void commandAction(Command c, Displayable d){
+    public void cmdOk(){
 //#ifdef CLIPBOARD
-//#         if (c==cmdCopy) {
-//#             clipboard.setClipBoard(description.toString()+"\n"+memory.toString()+"\n"+abilities.toString());
-//#             destroyView();
-//#             return;
-//#         }
+//#         clipboard.setClipBoard(description.toString()+"\n"+memory.toString()+"\n"+abilities.toString());
+//#         destroyView();
 //#endif
-        super.commandAction(c, d);
     }
-
+//#ifdef MENU
+//#ifdef CLIPBOARD
+//#     public String getLeftCommand() { return SR.MS_COPY; }
+//#endif
+//#     public String getRightCommand() { return SR.MS_BACK; }
+//#endif
+    
     private String getAbilities() {
         StringBuffer abilities=new StringBuffer();
         abilities.append("")

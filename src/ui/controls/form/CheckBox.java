@@ -86,6 +86,7 @@ public class CheckBox
     
     public boolean handleEvent(int keyCode) {
          switch (keyCode) {
+            case 12: // enter
             case 5:
                 state=!state;
                 return true;

@@ -33,6 +33,10 @@ import Fonts.FontCache;
 import javax.microedition.lcdui.*;
 import java.util.*;
 import Client.*;
+import locale.SR;
+//#ifdef MENU
+//# import ui.controls.MenuContainer;
+//#endif
 //#ifdef POPUPS
 import ui.controls.PopUp;
 //#endif
@@ -60,9 +64,6 @@ public abstract class VirtualList
     
     private StaticData sd=StaticData.getInstance();
 
-    private boolean reverse=false;
-    private boolean paintTop=true;
-    private boolean paintBottom=true;
     private int stringHeight;
 //#ifdef GRADIENT
 //#     private int ibHeight;
@@ -73,6 +74,12 @@ public abstract class VirtualList
 //#ifdef TEST
 //#     private boolean drawTest;
 //#endif
+    
+//#ifndef MENU
+    private boolean reverse=false;
+    private boolean paintTop=true;
+    private boolean paintBottom=true;
+    
     public void changeOrient() {
         switch (cf.isbottom) {
             case 0: paintTop=false; paintBottom=false; reverse=false; break;
@@ -84,6 +91,7 @@ public abstract class VirtualList
             case 6: paintTop=false; paintBottom=true;  reverse=true;  break;
         }
     }
+//#endif
     
 //#ifdef USER_KEYS
 //#     private static final int USER_OTHER_KEY_PRESSED = 1;
@@ -123,12 +131,6 @@ public abstract class VirtualList
     public void userKeyPressed(int keyCode){}
     
     public void userAdditionKeyPressed(int keyCode){}
-    
-    public void touchLeftPressed(){}
-    public void touchRightPressed(){
-        if (canBack)
-            destroyView();
-    }
 
     public static final short SIEMENS_GREEN=-11;
     
@@ -183,6 +185,26 @@ public abstract class VirtualList
     
 //#ifdef BACK_IMAGE
 //#     public Image img;
+//#endif
+    
+//#ifdef MENU
+//#     public static MenuContainer menu = new MenuContainer();
+//#     public void leftCommand() {}
+//#     public String getLeftCommand() { return ""; }
+//#     
+//#     public void centerCommand() {}
+//#     public String getCenterCommand() { return ""; }
+//#  
+//#     public void rightCommand() { if (canBack) destroyView(); }
+//#     public String getRightCommand() { return (canBack)?SR.MS_BACK:""; }
+//#else
+    activeRegions ar=new activeRegions();
+    
+    public void touchLeftPressed(){}
+    public void touchRightPressed(){
+        if (canBack)
+            destroyView();
+    }
 //#endif
     
     private ColorTheme ct;
@@ -263,8 +285,6 @@ public abstract class VirtualList
 
     protected ScrollBar scrollbar;
     
-    activeRegions ar=new activeRegions();
-    
     /** Creates a new instance of VirtualList */
     public VirtualList() {
         width=getWidth();
@@ -279,9 +299,9 @@ public abstract class VirtualList
         if (cf.phoneManufacturer==Config.WINDOWS) {
             setTitle("Bombus CE");
         }
-        
+//#ifndef MENU
         changeOrient();
-
+//#endif
         setFullScreenMode(fullscreen);
 
 	itemBorder=new int[32];
@@ -296,7 +316,7 @@ public abstract class VirtualList
         setInfoBarItem(secondBar);
         
         stringHeight=FontCache.getMsgFont().getHeight();
-        
+
 //#ifdef BACK_IMAGE
 //#         try {
 //#             if (img==null)
@@ -395,6 +415,18 @@ public abstract class VirtualList
         if (mainbar!=null)
             mHeight=mainbar.getVHeight(); // nokia fix
         
+//#ifdef MENU
+//#         if (mainbar!=null) {
+//#             itemBorder[0]=mHeight; 
+//#             drawMainPanel(g);
+//#         }
+//#         if (menu!=null) {
+//#             menu.setLeftCommand(getLeftCommand());
+//#             menu.setCenterCommand(getCenterCommand());
+//#             menu.setRightCommand(getRightCommand());
+//#            list_bottom=menu.getHeight();
+//#         }
+//#else
         if (infobar!=null) {
             setInfo();
             iHeight=FontCache.getBarFont().getHeight(); // nokia fix
@@ -422,7 +454,7 @@ public abstract class VirtualList
                 list_bottom=iHeight; 
             }
         }
-       
+//#endif
         winHeight=height-itemBorder[0]-list_bottom;
 
         int count=getItemCount(); // ������ ??��??��
@@ -520,6 +552,7 @@ public abstract class VirtualList
                     drawBalloon(g, baloon, text);
             }
         }
+//#ifndef MENU
         if (paintBottom) {
             if (reverse) {
                 setAbsOrg(g, 0, height-mHeight);
@@ -531,6 +564,15 @@ public abstract class VirtualList
                 ar.init(width, height, iHeight);
             }
         }
+//#else
+//#         if (menu!=null) {
+//#             int xx=g.getTranslateX();
+//#             int yy=g.getTranslateY();
+//#             setAbsOrg(g, 0, 0);
+//#             menu.draw(g);
+//#             setAbsOrg(g, xx, yy);
+//#         }
+//#endif
         setAbsClip(g, width, height);
         
 //#ifdef POPUPS
@@ -571,7 +613,7 @@ public abstract class VirtualList
             g.setColor(ct.getColor(ColorTheme.HEAP_FREE));  g.fillRect(0,y,ram,1);
         }
     }
-
+//#ifndef MENU
     private void drawInfoPanel (final Graphics g) {
         if (infobar!=null) {
             int h=infobar.getVHeight()+1;
@@ -597,7 +639,8 @@ public abstract class VirtualList
             infobar.drawItem(g,0,false);
         }
     }
-
+//#endif
+    
     private void drawMainPanel (final Graphics g) {    
         if (mainbar!=null) {
             int h=mainbar.getVHeight()+1;
@@ -693,6 +736,23 @@ public abstract class VirtualList
 //#ifdef POPUPS
         popup.next();
 //#endif        
+
+//#ifdef MENU
+//#         int act=menu.pointerPressed(x, y, this);
+//#         if (act==1) {
+//#              leftCommand();
+//#              stickyWindow=false;
+//#              return;
+//#         } else if (act==2) {
+//#             centerCommand();
+//#             stickyWindow=false;
+//#             return;
+//#         }  else if (act==3) {
+//#             rightCommand();
+//#             stickyWindow=false;
+//#             return;
+//#         } 
+//#else
         int act=ar.pointerPressed(x, y, this);
         if (act==1) {
              touchLeftPressed();
@@ -702,7 +762,9 @@ public abstract class VirtualList
             touchRightPressed();
             stickyWindow=false;
             return;
-        } else if (scrollbar.pointerPressed(x, y, this)) {
+        }
+//#endif
+        if (scrollbar.pointerPressed(x, y, this)) {
             stickyWindow=false;
             return;
         }
@@ -793,9 +855,9 @@ public abstract class VirtualList
                     switch (getGameAction(keyCode)){
                         case UP: key=2; break;
                         case LEFT: key=4; break;
-                        case FIRE: key=5; break;
                         case RIGHT: key=6; break;
                         case DOWN: key=8; break;
+                        case FIRE: key=12; break;
                     }
                 } catch (Exception e) {}
         }
@@ -825,6 +887,16 @@ public abstract class VirtualList
         }
         popup.next();
 //#endif
+//#ifdef MENU
+//#          if (keyCode==Config.SOFT_LEFT) {
+//#             leftCommand();
+//#             return;
+//#          }
+//#          if (keyCode==Config.SOFT_RIGHT) {
+//#             rightCommand();
+//#             return;
+//#          }
+//#else
          if (keyCode==Config.SOFT_RIGHT) {
             if (cf.phoneManufacturer!=Config.SONYE || cf.phoneManufacturer==Config.SIEMENS || cf.phoneManufacturer==Config.SIEMENS2 || cf.phoneManufacturer==Config.MOTO) {
                if (canBack==true)
@@ -832,6 +904,7 @@ public abstract class VirtualList
                 return;
             }
          }
+//#endif
          if (keyCode==greenKeyCode) {
             if (cf.phoneManufacturer==Config.MOTO || cf.phoneManufacturer==Config.NOKIA || cf.phoneManufacturer==Config.NOKIA_9XXX) {
                 keyGreen();

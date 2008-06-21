@@ -2,10 +2,6 @@
 	FN	Full Name
 	NICKNAME	Nickname
 	BDAY	Birthday
-	GENDER	Gender
-N	GIVEN	Name
-N	MIDDLE	Middlename
-N	FAMILY	Family
 ADR	STREET	Street
 ADR	EXTADR	Street2
 ADR	LOCALITY	City

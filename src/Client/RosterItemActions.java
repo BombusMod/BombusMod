@@ -58,8 +58,8 @@ import io.file.transfer.TransferSendFile;
 import java.util.Enumeration;
 import javax.microedition.lcdui.Display;
 import locale.SR;
-import ui.Menu;
-import ui.MenuItem;
+import Menu.Menu;
+import Menu.MenuItem;
 import ui.Time;
 //#ifdef CLIPBOARD
 //# import util.ClipBoard;

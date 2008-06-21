@@ -34,7 +34,6 @@ import com.alsutton.jabber.datablocks.Message;
 import com.alsutton.jabber.datablocks.Presence;
 import java.util.Enumeration;
 import java.util.Vector;
-import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.TextField;
@@ -45,8 +44,7 @@ import ui.controls.form.DropChoiceBox;
 import ui.controls.form.TextInput;
 
 public class InviteForm
-        extends DefForm
-        implements CommandListener {
+        extends DefForm {
     
     private Display display;
     private Displayable parentView;
@@ -85,6 +83,9 @@ public class InviteForm
         attachDisplay(display);
     }
 
+//#ifdef MENU
+//#     public String getLeftCommand() { return SR.MS_OK; }
+//#endif
     public void cmdOk() {
         String room=(String) conferences.elementAt(conferenceList.getSelectedIndex());
         String rs=reason.getValue();
@@ -96,7 +97,7 @@ public class InviteForm
 
         invite.setAttribute("to", invited);
 
-         invite.addChild("reason",rs);
+        invite.addChild("reason",rs);
         StaticData.getInstance().roster.theStream.send(inviteMsg);
         display.setCurrent(StaticData.getInstance().roster);
     }

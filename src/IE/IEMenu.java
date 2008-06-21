@@ -30,8 +30,8 @@ import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
 import javax.microedition.lcdui.Display;
 import locale.SR;
-import ui.Menu;
-import ui.MenuItem;
+import Menu.Menu;
+import Menu.MenuItem;
 
 /**
  *

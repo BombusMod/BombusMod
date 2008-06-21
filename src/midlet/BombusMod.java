@@ -36,6 +36,7 @@ package midlet;
 import Account.Account;
 import Account.AccountSelect;
 import Colors.ColorTheme;
+import java.util.Vector;
 
 import javax.microedition.midlet.*;
 import javax.microedition.lcdui.*;
@@ -45,6 +46,7 @@ import ui.*;
 
 import Client.*;
 import Info.Version;
+import util.StringLoader;
 //#ifdef TEST_NEW_FORM
 //# import ui.controls.form.TestForm;
 //#endif
@@ -92,6 +94,19 @@ public class BombusMod extends MIDlet implements Runnable{
     public void pauseApp() { }
 
     public void run(){
+/*
+        if (true) {
+            Vector files[]=new StringLoader().stringLoader("/fs.txt", 1);
+            System.out.println("strings: "+files[0].size());
+            for (int i=0; i<files[0].size(); i++) {
+                String str=(String) files[0].elementAt(i);
+                int lastpos=str.lastIndexOf('/');
+                str=str.substring(0, lastpos).toUpperCase()+str.substring(lastpos);
+                System.out.println(str);
+            }
+            return;
+        }
+ */
         try {
             s.img=Image.createImage("/images/splash.png");
         } catch (Exception e) {

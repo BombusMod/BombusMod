@@ -64,9 +64,9 @@ public class ConferenceQuickPrivelegeModify
     private TextInput reason;
     private MucContact victim;
     
-    //private Command cmdOk;
+//#ifndef MENU
     private Command cmdNoReason=new Command(SR.MS_NO_REASON, Command.SCREEN, 2);
-    
+//#endif
     private int action;
 
     private String myNick;
@@ -111,10 +111,9 @@ public class ConferenceQuickPrivelegeModify
         reason=new TextInput(display, SR.MS_REASON, "", "reason", TextField.ANY);
         itemsList.addElement(reason);
         
-        //removeCommand(cmdOk);
-        //cmdOk=new Command( okName, Command.SCREEN, 1);
-        //addCommand(cmdOk);
+//#ifndef MENU
         addCommand(cmdNoReason);
+//#endif
         user=null;
         attachDisplay(display);
     }
@@ -127,7 +126,7 @@ public class ConferenceQuickPrivelegeModify
     public void destroyView(){
         display.setCurrent(StaticData.getInstance().roster);
     }
-    
+//#ifndef MENU
     public void commandAction(Command c, Displayable d) {
         if (c==cmdNoReason) { 
             reason.setValue("");
@@ -136,7 +135,11 @@ public class ConferenceQuickPrivelegeModify
         }
         super.commandAction(c, d);
     }
-    
+//#else
+//#     public String getLeftCommand() { return SR.MS_OK; }
+//#     public String getCenterCommand() { return SR.MS_NO_REASON; }
+//#     public void centerCommand() { reason.setValue(""); cmdOk(); }
+//#endif
     private void setMucMod(){
         JabberDataBlock iq=new Iq(victim.jid.getBareJid(), Iq.TYPE_SET, "itemmuc");
         JabberDataBlock query=iq.addChildNs("query", "http://jabber.org/protocol/muc#admin"); 

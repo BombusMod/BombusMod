@@ -96,11 +96,13 @@ public class Roster
         extends VirtualList
         implements
         JabberListener,
+//#ifndef MENU
         CommandListener,
+//#endif
         Runnable,
         LoginListener
 {
-    
+//#ifndef MENU
     private Command cmdActions=new Command(SR.MS_ITEM_ACTIONS, Command.SCREEN, 1);
     private Command cmdStatus=new Command(SR.MS_STATUS_MENU, Command.SCREEN, 2);
     private Command cmdActiveContacts;//=new Command(SR.MS_ACTIVE_CONTACTS, Command.SCREEN, 3);
@@ -118,7 +120,7 @@ public class Roster
     private Command cmdInfo=new Command(SR.MS_ABOUT, Command.SCREEN, 80);
     private Command cmdMinimize=new Command(SR.MS_APP_MINIMIZE, Command.SCREEN, 90);
     private Command cmdQuit=new Command(SR.MS_APP_QUIT, Command.SCREEN, 99);
-    
+//#endif
     private Config cf=Config.getInstance();
     private StaticData sd=StaticData.getInstance();
     
@@ -213,8 +215,9 @@ public class Roster
         vContacts=new Vector(); // just for displaying
         
 	updateMainBar();
-
+//#ifndef MENU
         addMenuCommands();
+//#endif
         SplashScreen.getInstance().setExit(display, this);
 //#ifdef AUTOSTATUS
 //#         if (cf.autoAwayType==Config.AWAY_IDLE || cf.autoAwayType==Config.AWAY_MESSAGE)
@@ -239,6 +242,7 @@ public class Roster
 //#endif
     }
     
+//#ifndef MENU
     public void addMenuCommands(){
 //#ifdef NEW_MENU
         if (!cf.newMenu) {
@@ -281,6 +285,7 @@ public class Roster
         if (cf.allowMinimize) 
             addCommand(cmdMinimize);
     }
+//#endif
     
     public void setProgress(String pgs,int percent){
         SplashScreen.getInstance().setProgress(pgs, percent);
@@ -2020,31 +2025,37 @@ public class Roster
             } catch (Exception e) { /* NullPointerException */ }
         }
     }
-    
+//#ifdef MENU
+//#     public void leftCommand() { new RosterMenu(display, getFocusedObject()); }
+//#     public String getLeftCommand() { return SR.MS_MENU; }
+//#  
+//#     public void rightCommand() { new RosterItemActions(display, getFocusedObject(), -1); }
+//#     public String getRightCommand() { return SR.MS_ACTION; }
+//#else
     public void touchLeftPressed(){
-//#ifdef NEW_MENU
         new RosterMenu(display, getFocusedObject());
-//#endif
     }
     
     public void touchRightPressed(){
         if (isLoggedIn()) 
             new RosterItemActions(display, getFocusedObject(), -1);
     }
+//#endif
+    
 
     public void keyPressed(int keyCode){
-//#ifdef NEW_MENU
+//#ifndef MENU
         if (keyCode==Config.SOFT_LEFT) {
             new RosterMenu(display, getFocusedObject());
             return;
         }
-//#endif
-       
+
         if (keyCode==Config.SOFT_RIGHT) {
             if (isLoggedIn()) 
                 new RosterItemActions(display, getFocusedObject(), -1);
             return;
         }
+//#endif
         super.keyPressed(keyCode);
         
         switch (keyCode) {
@@ -2069,7 +2080,6 @@ public class Roster
                 return;
             case KEY_NUM6:
                 super.pageRight();
-                changeOrient();
                 return;
 //#ifdef AUTOSTATUS
 //#             case SE_FLIPCLOSE_JP6:
@@ -2194,13 +2204,14 @@ public class Roster
 //#endif
        	else if (keyCode==KEY_NUM3) new ActiveContacts(display, null);
        	else if (keyCode==KEY_NUM4) new ConfigForm(display);
+//#ifndef MENU
         else if (keyCode==KEY_NUM6) {
             cf.isbottom=(cf.isbottom+1)%7;
             cf.saveToStorage();
-        } else if (keyCode==KEY_NUM7){
-            new RosterToolsMenu(display);
         }
-        
+//#endif
+        else if (keyCode==KEY_NUM7)
+            new RosterToolsMenu(display);
         else if (keyCode==KEY_NUM9) {
             if (cf.allowMinimize)
                 BombusMod.getInstance().hideApp(true);
@@ -2365,7 +2376,7 @@ public class Roster
 
         BombusMod.getInstance().notifyDestroyed();
     }
-   
+//#ifndef MENU
     public void commandAction(Command c, Displayable d){
 //#ifdef AUTOSTATUS
 //#         userActivity();
@@ -2388,7 +2399,7 @@ public class Roster
         else if (c==cmdQuit) { cmdQuit(); }
         else if (c==cmdAdd) { cmdAdd(); }
     }
-    
+//#endif
 //menu actions
     public void cmdQuit() { 
         if (cf.queryExit) {

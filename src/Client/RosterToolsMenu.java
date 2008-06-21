@@ -52,8 +52,8 @@ import images.MenuIcons;
 import javax.microedition.lcdui.Display;
 import locale.SR;
 import Colors.ColorConfigForm;
-import ui.Menu;
-import ui.MenuItem;
+import Menu.Menu;
+import Menu.MenuItem;
 //#ifdef USER_KEYS
 //# import ui.keys.userKeysList;
 //#endif

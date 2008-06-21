@@ -73,9 +73,9 @@ public class AlertCustomizeForm
     Config cf;
     Vector files[];
     Vector fileNames;
-
+//#ifndef MENU
     Command cmdTest=new Command(SR.MS_TEST_SOUND, Command.SCREEN, 2);
-
+//#endif
     /** Creates a new instance of ConfigForm */
     public AlertCustomizeForm(Display display) {
         super(display, SR.MS_NOTICES_OPTIONS);
@@ -142,9 +142,9 @@ public class AlertCustomizeForm
         itemsList.addElement(new SpacerItem(10));
         IQNotify=new CheckBox(SR.MS_SHOW_IQ_REQUESTS, cf.IQNotify); itemsList.addElement(IQNotify);
         
-        
+//#ifndef MENU
         addCommand(cmdTest);
-
+//#endif
         moveCursorTo(getNextSelectableRef(-1));
         attachDisplay(display);
     }
@@ -186,46 +186,67 @@ public class AlertCustomizeForm
         destroyView();
     }
     
+//#ifndef MENU
     public void commandAction(Command c, Displayable d) {
         if (c==cmdTest) {
-            int testSound=-1;
-            switch (cursor) {
-                case 1: //MessageFile
-                    testSound=MessageFile.getSelectedIndex();
-                    break;
-                case 3: //OnlineFile
-                    testSound=OnlineFile.getSelectedIndex();
-                    break;
-                case 5: //OfflineFile
-                    testSound=OfflineFile.getSelectedIndex();
-                    break;
-                case 7: //ForYouFile
-                    testSound=ForYouFile.getSelectedIndex();
-                    break;
-                case 9: //ComposingFile
-                    testSound=ComposingFile.getSelectedIndex();
-                    break;
-                case 11: //ConferenceFile
-                    testSound=ConferenceFile.getSelectedIndex();
-                    break;
-                case 13: //StartUpFile
-                    testSound=StartUpFile.getSelectedIndex();
-                    break;
-                case 15: //OutgoingFile
-                    testSound=OutgoingFile.getSelectedIndex();
-                    break;
-                case 17: //VIPFile
-                    testSound=VIPFile.getSelectedIndex();
-                    break;
-            }
-            PlaySound(testSound);
+            PlaySound();
             return;
         }
-
         super.commandAction(c, d);
     }
+//#else
+//#     public String getCenterCommand() { return (playable()>-1)?SR.MS_TEST_SOUND:""; }
+//#     public void centerCommand() { System.out.println("test"); if (playable()>-1) PlaySound(); }
+//#endif
     
-    private void PlaySound(int sound){
+    private int playable () {
+        int ret=-1;
+        switch (cursor) {
+            case 1: //MessageFile
+            case 3: //OnlineFile
+            case 5: //OfflineFile
+            case 7: //ForYouFile
+            case 9: //ComposingFile
+            case 11: //ConferenceFile
+            case 13: //StartUpFile
+            case 15: //OutgoingFile
+            case 17: //VIPFile
+                return cursor;
+        }
+        return -1;
+    }
+    
+    private void PlaySound(){
+        int sound=-1;
+        switch (cursor) {
+            case 1: //MessageFile
+                sound=MessageFile.getSelectedIndex();
+                break;
+            case 3: //OnlineFile
+                sound=OnlineFile.getSelectedIndex();
+                break;
+            case 5: //OfflineFile
+                sound=OfflineFile.getSelectedIndex();
+                break;
+            case 7: //ForYouFile
+                sound=ForYouFile.getSelectedIndex();
+                break;
+            case 9: //ComposingFile
+                sound=ComposingFile.getSelectedIndex();
+                break;
+            case 11: //ConferenceFile
+                sound=ConferenceFile.getSelectedIndex();
+                break;
+            case 13: //StartUpFile
+                sound=StartUpFile.getSelectedIndex();
+                break;
+            case 15: //OutgoingFile
+                sound=OutgoingFile.getSelectedIndex();
+                break;
+            case 17: //VIPFile
+                sound=VIPFile.getSelectedIndex();
+                break;
+        }
         if (sound<0) return;
         
         String soundFile=(String)files[1].elementAt(sound);
