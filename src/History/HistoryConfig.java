@@ -66,6 +66,8 @@ public class HistoryConfig
     
     Config cf;
     
+    private int histPos=6;
+    
     /** Creates a new instance of newHistoryConfig */
     public HistoryConfig(Display display) {
         super(display, SR.MS_HISTORY_OPTIONS);
@@ -81,7 +83,7 @@ public class HistoryConfig
         saveConfPres = new CheckBox(SR.MS_SAVE_PRESENCES_CONF, cf.msgLogConfPresence); itemsList.addElement(saveConfPres);
         win1251 = new CheckBox(SR.MS_1251_CORRECTION, cf.cp1251); itemsList.addElement(win1251);
 //#ifdef DETRANSLIT
-//#         translit = new CheckBox(SR.MS_1251_TRANSLITERATE_FILENAMES, cf.transliterateFilenames); itemsList.addElement(translit);
+//#         translit = new CheckBox(SR.MS_1251_TRANSLITERATE_FILENAMES, cf.transliterateFilenames); itemsList.addElement(translit); histPos++;
 //#endif
 
 	historyFolder = new TextInput(display, SR.MS_HISTORY_FOLDER, cf.msgPath, null, TextField.ANY);//128, TextField.ANY
@@ -105,6 +107,9 @@ public class HistoryConfig
         super.commandAction(command, displayable);
         destroyView();
     }
+//#else
+//#     public String getCenterCommand() { return (cursor==histPos)?SR.MS_SELECT_HISTORY_FOLDER:""; }
+//#     public void centerCommand() { if (cursor==histPos) new Browser(null, display, this, true); }
 //#endif
     public void cmdOk() {
         cf.lastMessages=loadHistory.getValue();

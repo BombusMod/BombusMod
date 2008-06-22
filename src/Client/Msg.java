@@ -160,4 +160,16 @@ public class Msg {
         }
         return out.toString();
     };
+    
+    public boolean isHasUrl() { 
+        if (body.indexOf("http://")>-1)
+            return true;
+        if (body.indexOf("https://")>-1)
+            return true;
+        if (body.indexOf("tel://")>-1)
+            return true;
+        if (body.indexOf("native:")>-1)
+            return true;
+        return false; 
+    }
 }

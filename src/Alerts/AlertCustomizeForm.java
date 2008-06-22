@@ -196,7 +196,7 @@ public class AlertCustomizeForm
     }
 //#else
 //#     public String getCenterCommand() { return (playable()>-1)?SR.MS_TEST_SOUND:""; }
-//#     public void centerCommand() { System.out.println("test"); if (playable()>-1) PlaySound(); }
+//#     public void centerCommand() { if (playable()>-1) PlaySound(); }
 //#endif
     
     private int playable () {
