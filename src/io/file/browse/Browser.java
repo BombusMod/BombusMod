@@ -180,7 +180,7 @@ public class Browser extends VirtualList implements CommandListener{
      }
     
     private void readDirectory(String name) {
-        getMainBarItem().setElementAt(path, 0);
+        getMainBarItem().setElementAt((path.endsWith("/"))?path.substring(0, path.length()-1):path, 0);
         
         dir=new Vector();
         
@@ -253,7 +253,7 @@ public class Browser extends VirtualList implements CommandListener{
             return iconIndex; 
         }
         
-        public String toString() { return name; }
+        public String toString() { return (name.endsWith("/"))?name.substring(0, name.length()-1):name; }
         
         public int compare(IconTextElement right){
             FileItem fileItem=(FileItem) right;
