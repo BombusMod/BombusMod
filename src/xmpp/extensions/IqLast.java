@@ -90,9 +90,12 @@ public class IqLast implements JabberBlockListener {
             }
             if (body!=null) {
                 String lastType=SR.MS_IDLE;
-                if (id.endsWith("seen")) {
+                String resource="";
+                if (id.startsWith("last_seen")) {
                     lastType=SR.MS_SEEN;
-                } else if (id.endsWith("online")) {
+                } else if (id.startsWith("last_online")) {
+                    resource=id.substring(id.indexOf("last_online_")+12);
+                    c=roster.getContact( data.getAttribute("from")+resource, false);
                     lastType=SR.MS_ONLINE_TIME;
                 }
                 String status=(data.getChildBlockText("query").length()!=0)?" ("+data.getChildBlockText("query")+")":"";

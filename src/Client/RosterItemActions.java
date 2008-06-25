@@ -385,7 +385,7 @@ public class RosterItemActions extends Menu {
                     break;
                 case 890: //online
                     sd.roster.setQuerySign(true);
-                    sd.roster.theStream.send(IqLast.query(c.getBareJid(), "online"));
+                    sd.roster.theStream.send(IqLast.query(c.getBareJid(), "online_"+c.getResource()));
                     break;
                 case 894: //seen
                     sd.roster.setQuerySign(true);

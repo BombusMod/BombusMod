@@ -382,6 +382,11 @@ public class Contact extends IconTextElement{
     public final String getBareJid() {
         return bareJid;
     }
+    
+
+    public String getResource() {
+        return jid.getResource();
+    }
 
     public String getNickJid() {
         if (nick==null) 
