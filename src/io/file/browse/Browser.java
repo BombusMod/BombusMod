@@ -26,6 +26,13 @@
  */
 
 package io.file.browse;
+//#ifdef MENU
+//# import Menu.Menu;
+//# import Menu.MenuItem;
+//#else
+import javax.microedition.lcdui.Command;
+import javax.microedition.lcdui.CommandListener;
+//#endif
 
 import ui.MainBar;
 import images.RosterIcons;
@@ -33,8 +40,6 @@ import io.file.FileIO;
 import java.util.Enumeration;
 import java.util.Vector;
 
-import javax.microedition.lcdui.Command;
-import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
@@ -47,10 +52,14 @@ import ui.VirtualList;
  *
  * @author evgs
  */
-public class Browser extends VirtualList implements CommandListener{
+public class Browser extends VirtualList
+//#ifndef MENU
+    implements CommandListener
+//#endif
+    {
  
     private Vector dir;
-    
+//#ifndef MENU
     Command cmdOk=new Command(SR.MS_BROWSE, Command.OK, 1);
     Command cmdSelect=new Command(SR.MS_SELECT, Command.SCREEN, 2);
     Command cmdView=new Command(SR.MS_VIEW, Command.SCREEN, 3);
@@ -58,7 +67,7 @@ public class Browser extends VirtualList implements CommandListener{
     Command cmdDelete=new Command(SR.MS_DELETE, Command.SCREEN, 5);
     Command cmdBack=new Command(SR.MS_BACK, Command.BACK, 98);
     Command cmdCancel=new Command(SR.MS_CANCEL, Command.EXIT, 99);
-    
+//#endif
     private String path;
     private BrowserListener browserListener;
 
@@ -73,7 +82,7 @@ public class Browser extends VirtualList implements CommandListener{
         this.path="";
 		
         setMainBarItem(new MainBar(2, null, null));
-        
+//#ifndef MENU
         addCommand(cmdOk);
         
         if (getDirectory) {
@@ -86,7 +95,7 @@ public class Browser extends VirtualList implements CommandListener{
         addCommand(cmdBack);
         addCommand(cmdCancel);
         setCommandListener(this);
-        
+//#endif
         // test for empty path
         if (path==null) path="";
        
@@ -101,7 +110,7 @@ public class Browser extends VirtualList implements CommandListener{
     protected int getItemCount() { return dir.size(); }
     
     protected VirtualElement getItemRef(int index) { return (VirtualElement) dir.elementAt(index); }
-    
+//#ifndef MENU
     public void commandAction(Command command, Displayable displayable) {
         if (command==cmdBack) {
             if (!chDir("../")) {
@@ -129,25 +138,15 @@ public class Browser extends VirtualList implements CommandListener{
         }
         
         if (command==cmdDelete) {
-            String f=((FileItem)getFocusedObject()).name;
-            if (f.endsWith("/")) return;
-            try {
-                FileIO fio=FileIO.createConnection(path+f);
-                fio.delete();
-                fio.close();
-                dir.removeElement(getFocusedObject());
-                redraw();
-            } catch (Exception e) { e.printStackTrace(); }
+            fileDelete();
         }
 
         if (command==cmdView) {
-            FileItem fi=(FileItem)getFocusedObject();
-            if (fi.getType()<4 && fi.getType()>0)
-                new ShowFile(display, path+fi.name, fi.getType());
+            showFile();
         }
         if (command==cmdCancel) { destroyView(); }
     }
-    
+//#endif
     
      private boolean chDir(String relativePath) {
         String focus="";
@@ -178,6 +177,15 @@ public class Browser extends VirtualList implements CommandListener{
         moveCursorHome();
          return true;
      }
+     
+//#ifdef MENU
+//#         public void leftCommand() {
+//#             new BrowserMenu(display, this);
+//#         }
+//#         public String getLeftCommand() {
+//#             return SR.MS_MENU;
+//#         }
+//#endif
     
     private void readDirectory(String name) {
         getMainBarItem().setElementAt((path.endsWith("/"))?path.substring(0, path.length()-1):path, 0);
@@ -196,6 +204,25 @@ public class Browser extends VirtualList implements CommandListener{
             dir.addElement( new FileItem("../(Restricted Access)"));
             ex.printStackTrace();
         }
+    }
+    
+    public void fileDelete() {
+        String f=((FileItem)getFocusedObject()).name;
+        if (f.endsWith("/"))
+            return;
+        try {
+            FileIO fio=FileIO.createConnection(path+f);
+            fio.delete();
+            fio.close();
+            dir.removeElement(getFocusedObject());
+            redraw();
+        } catch (Exception e) { e.printStackTrace(); }
+    }
+    
+    public void showFile() {
+        FileItem fi=(FileItem)getFocusedObject();
+        if (fi.getType()<4 && fi.getType()>0)
+            new ShowFile(display, path+fi.name, fi.getType());
     }
     
     public void eventOk() {
@@ -267,4 +294,74 @@ public class Browser extends VirtualList implements CommandListener{
             return type;
         }
     }
+//#ifdef MENU
+//#     class BrowserMenu extends Menu {
+//#         private Displayable parentView;
+//#         
+//#         private Browser browser;
+//#         
+//#         public BrowserMenu (Display display, Browser browser) {
+//#             super("", null);
+//#             this.browser=browser;
+//#             this.parentView=display.getCurrent();
+//#     
+//#             addItem(SR.MS_BROWSE, 1);
+//# 
+//#             if (getDirectory) {
+//#                 addItem(SR.MS_SELECT, 2);
+//#             } else {
+//#                 addItem(SR.MS_VIEW, 3);
+//#             }
+//#             addItem(SR.MS_ROOT, 4);
+//#             addItem(SR.MS_DELETE, 5);
+//#             addItem(SR.MS_BACK, 6);
+//#             addItem(SR.MS_CANCEL, 7);
+//# 
+//#             attachDisplay(display);
+//#         }
+//# 
+//#         public void eventOk(){
+//#             MenuItem me=(MenuItem) getFocusedObject();
+//#             if (me==null)  return;
+//#             int index=me.index;
+//#            
+//#             switch (index) {
+//#                 case 1:
+//#                     browser.eventOk();
+//#                     break;
+//#                 case 2:
+//#                     String f=((FileItem) browser.getFocusedObject()).name;
+//#                     if (f.endsWith("/")) {
+//#                         if (f.startsWith("../")) f="";
+//#                         if (browser.browserListener==null) return;
+//#                         browser.destroyView();
+//#                         browser.browserListener.BrowserFilePathNotify(path+f);
+//#                     }
+//#                     //todo: choose directory here, drop ../
+//#                     break;
+//#                 case 3:
+//#                     destroyView();
+//#                     browser.showFile();
+//#                     return;
+//#                 case 4:
+//#                     browser.path="";
+//#                     browser.chDir("");
+//#                     break;
+//#                 case 5:
+//#                     browser.fileDelete();
+//#                     break;
+//#                 case 6:
+//#                     if (!browser.chDir("../"))
+//#                         browser.destroyView();
+//#                     else
+//#                         browser.redraw();
+//#                     break;
+//#                 case 7:
+//#                     browser.destroyView();
+//#                     break;
+//#             }
+//#             destroyView();
+//#         }
+//#     }
+//#endif
 }

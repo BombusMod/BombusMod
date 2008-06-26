@@ -56,7 +56,7 @@ public class MenuContainer {
     private boolean hasPointerEvents;
     private int point_y; 
     private int point_x;
-    private int yTranslate;
+    //private int yTranslate;
     
     public MenuContainer() {
         point_y=-1;
@@ -197,6 +197,9 @@ public class MenuContainer {
     }
     
     public void paint(Graphics g){
+        scWidth = g.getClipWidth();
+        scHeight = g.getClipHeight();
+        
         if((!leftCommand.equals("")) || (!rightCommand.equals(""))){
             drawFooter(g);
             if(!leftCommand.equals(""))
@@ -225,10 +228,7 @@ public class MenuContainer {
         boldHeight = boldFont.getHeight();
         
         //normalFont = Font.getFont(Font.FACE_SYSTEM, Font.STYLE_PLAIN, Font.SIZE_SMALL);
-        
-        scWidth = g.getClipWidth();
-        scHeight = g.getClipHeight();
-        
+
         initiated = true;
     }
     
