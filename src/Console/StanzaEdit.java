@@ -1,25 +1,41 @@
 /*
  * StanzaEdit.java
  *
- * Created on 7 ������ 2008 �., 16:05
+ * Created on 7.04.2008, 16:05
  *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
+ * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * You can also redistribute and/or modify this program under the
+ * terms of the Psi License, specified in the accompanied COPYING
+ * file, as published by the Psi Project; either dated January 1st,
+ * 2005, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
 package Console;
 
 import Client.Config;
-import Client.Roster;
 import Client.StaticData;
+import java.io.IOException;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
-import javax.microedition.lcdui.TextBox;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
-import ui.VirtualList;
 import ui.controls.ExTextBox;
 
 /**
@@ -28,7 +44,7 @@ import ui.controls.ExTextBox;
  */
 public class StanzaEdit 
         extends ExTextBox
-        implements CommandListener, Runnable {
+        implements CommandListener {
 
     private Display display;
     private Displayable parentView;
@@ -67,8 +83,6 @@ public class StanzaEdit
         
         addCommand(cmdCancel);
         setCommandListener(this);
-
-        new Thread(this).start() ; // composing
         
         display.setCurrent(this);
     }
@@ -94,22 +108,13 @@ public class StanzaEdit
             body=null;
         }
 
-        if (c==cmdSend && body==null) return;
+        if (c==cmdSend && body!=null) {
+            try {
+                StaticData.getInstance().roster.theStream.send(body);
+            } catch (IOException ex) { }
+        }
 
         // message/composing sending
         destroyView();
-        new Thread(this).start();
-    }
-    
-    public void run(){
-        Roster r=StaticData.getInstance().roster;
-        try {
-            if (body!=null) {
-                body=body.trim();
-                r.theStream.send(body);
-            }
-        } catch (Exception e) { }
-
-        ((VirtualList)parentView).redraw();
     }
 }

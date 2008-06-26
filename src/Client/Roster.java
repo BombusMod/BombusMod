@@ -1592,9 +1592,13 @@ public class Roster
                         
                         if (pr.getTypeIndex()!=Presence.PRESENCE_ERROR) {
 //#ifdef CLIENTS_ICONS
-//#                             if (pr.hasEntityCaps())
-//#                                 if (pr.getEntityNode()!=null)
+//#                             if (pr.hasEntityCaps()) {
+//#                                 if (pr.getEntityNode()!=null) {
 //#                                     c.setClient(ClientsIcons.getInstance().getClientIDByCaps(pr.getEntityNode()));
+//#                                 }
+//#                             } else {
+//#                                 c.setClient(ClientsIcons.getInstance().getClientIDByCaps(c.getResource().substring(1)));
+//#                             }
 //#endif
                             JabberDataBlock j2j=pr.findNamespace("x", "j2j:history");
                             if (j2j!=null) {

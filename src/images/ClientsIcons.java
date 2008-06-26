@@ -81,8 +81,24 @@ public class ClientsIcons extends ImageList {
         if (clients.length<1) return clientID;
         
         for (int i=0; i<clients[0].size(); i++) {
-            if (clients[0].elementAt(i).equals(caps))
-                return i;
+            String client=(String) clients[0].elementAt(i);
+            if (client.indexOf(",")>-1) {
+                boolean parse = true;
+                int pos=0;
+                while (parse) {
+                    if (pos>-1) {
+                        int endpos=client.indexOf(",", pos);
+                        String eqStr=(endpos<0)?client.substring(pos):client.substring(pos, endpos);
+                        if (caps.toUpperCase().equals(eqStr.toUpperCase())) return i;
+                        
+                        pos=client.indexOf(",", pos+1);
+                        if (pos<0) parse=false; else pos=pos+1;
+                    } else parse=false;
+                }
+            } else {
+                if (client.startsWith(caps))
+                    return i;
+            }
 	}
         return clientID;        
     }
