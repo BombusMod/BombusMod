@@ -47,7 +47,9 @@ import Conference.ConferenceForm;
 //#ifdef ARCHIVE
 import Archive.ArchiveList;
 //#endif
-import images.ClientsIcons;
+//#ifdef CLIENTS_ICONS
+//# import images.ClientsIcons;
+//#endif
 import images.RosterIcons;
 
 import io.file.FileIO;
@@ -1526,13 +1528,13 @@ public class Roster
                 if (xmuc!=null) {
                     try {
                         MucContact c = mucContact(from);
-
-                        if (pr.hasEntityCaps()) {
-                            if (pr.getEntityNode()!=null) {
-                                c.setClient(ClientsIcons.getInstance().getClientIDByCaps(pr.getEntityNode()));
-                            }
-                        }
-                        
+//#ifdef CLIENTS_ICONS
+//#                         if (pr.hasEntityCaps()) {
+//#                             if (pr.getEntityNode()!=null) {
+//#                                 c.setClient(ClientsIcons.getInstance().getClientIDByCaps(pr.getEntityNode()));
+//#                             }
+//#                         }
+//#endif
                         int rp=from.indexOf('/');
 
                         String name=from.substring(rp+1);
@@ -1589,10 +1591,11 @@ public class Roster
                         if (c==null) return JabberBlockListener.BLOCK_REJECTED; //drop not-in-list presence
                         
                         if (pr.getTypeIndex()!=Presence.PRESENCE_ERROR) {
-                            if (pr.hasEntityCaps())
-                                if (pr.getEntityNode()!=null)
-                                    c.setClient(ClientsIcons.getInstance().getClientIDByCaps(pr.getEntityNode()));
-
+//#ifdef CLIENTS_ICONS
+//#                             if (pr.hasEntityCaps())
+//#                                 if (pr.getEntityNode()!=null)
+//#                                     c.setClient(ClientsIcons.getInstance().getClientIDByCaps(pr.getEntityNode()));
+//#endif
                             JabberDataBlock j2j=pr.findNamespace("x", "j2j:history");
                             if (j2j!=null) {
                                 if (j2j.getChildBlock("jid")!=null)
@@ -2319,7 +2322,9 @@ public class Roster
 //#endif
             if (cntact.origin!=Contact.ORIGIN_GROUPCHAT){
                 mess.append((cntact.getJ2J()!=null)?"\nJ2J: "+cntact.getJ2J():"");
-                mess.append((cntact.getClient()>-1)?"\nUse: "+ClientsIcons.getInstance().getClientNameByID(cntact.getClient()):"");
+//#ifdef CLIENTS_ICONS
+//#                 mess.append((cntact.getClient()>-1)?"\nUse: "+ClientsIcons.getInstance().getClientNameByID(cntact.getClient()):"");
+//#endif
             }
             if (cntact.statusString!=null) {
                 if (cntact.origin!=Contact.ORIGIN_GROUPCHAT){
