@@ -31,10 +31,14 @@ import Conference.MucContact;
 //#endif
 //#ifdef HISTORY
 //# import History.HistoryAppend;
+//#ifdef HISTORY_READER
 //# import History.HistoryReader;
+//#endif
+//# //import History.HistoryStorage;
+//#endif
+//#ifdef MENU
 //# import Menu.Menu;
 //# import Menu.MenuItem;
-//# //import History.HistoryStorage;
 //#endif
 import Messages.MessageList;
 import images.RosterIcons;
@@ -76,8 +80,9 @@ public class ContactMessageList extends MessageList
     Command cmdSaveChat=new Command(SR.MS_SAVE_CHAT, Command.SCREEN, 16);
 //#endif
 //#ifdef HISTORY
+//#ifdef HISTORY_READER
 //#          Command cmdReadHistory=new Command("Read history", Command.SCREEN, 17);
-//#             
+//#endif
 //# //        if (cf.lastMessages && !contact.isHistoryLoaded()) loadRecentList();
 //#endif
 //#ifdef CLIPBOARD    
@@ -174,8 +179,10 @@ public class ContactMessageList extends MessageList
 //#                 addCommand(cmdSaveChat);
 //#endif
 //#ifdef HISTORY
+//#ifdef HISTORY_READER
 //#         if (cf.lastMessages)
 //#             addCommand(cmdReadHistory);
+//#endif
 //# //        if (cf.lastMessages && !contact.isHistoryLoaded()) loadRecentList();
 //#endif
         setCommandListener(this);
@@ -318,10 +325,12 @@ public class ContactMessageList extends MessageList
             clearReadedMessageList();
         }
 //#ifdef HISTORY
+//#ifdef HISTORY_READER
 //#         if (c==cmdReadHistory) {
 //#             new HistoryReader(display, contact);
 //#             return;
 //#         }
+//#endif
 //#endif
         /** login-critical section */
         if (!sd.roster.isLoggedIn()) return;
@@ -694,8 +703,10 @@ public class ContactMessageList extends MessageList
 //#endif
             addItem(SR.MS_COPY, 12);
 //#ifdef HISTORY
+//#ifdef HISTORY_READER
 //#             if (cf.lastMessages)
 //#                 addItem("Read history", 10);
+//#endif
 //# //           if (cf.lastMessages && !contact.isHistoryLoaded()) loadRecentList();
 //#             if (cf.msgPath!="")
 //#                 addItem(SR.MS_SAVE_CHAT, 16);
