@@ -12,3 +12,5 @@ http://pidgin.im/caps	Pidgin
 http://kopete.kde.org/jabber/caps	Kopete
 http://exodus.jabberstudio.org/caps	Exodus
 Siemens Native Jabber Client	SieJC
+home	Home
+work,psi_work,psiwork,office	Work

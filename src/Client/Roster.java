@@ -1596,7 +1596,7 @@ public class Roster
 //#                                 if (pr.getEntityNode()!=null) {
 //#                                     c.setClient(ClientsIcons.getInstance().getClientIDByCaps(pr.getEntityNode()));
 //#                                 }
-//#                             } else {
+//#                             } else if (c.jid.hasResource()) {
 //#                                 c.setClient(ClientsIcons.getInstance().getClientIDByCaps(c.getResource().substring(1)));
 //#                             }
 //#endif
@@ -1604,8 +1604,6 @@ public class Roster
                             if (j2j!=null) {
                                 if (j2j.getChildBlock("jid")!=null)
                                     c.setJ2J(j2j.getChildBlock("jid").getAttribute("gateway"));
-                                else
-                                    c.setJ2J("true");
                             }
 
                             c.statusString=pr.getStatus();
