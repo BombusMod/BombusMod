@@ -146,7 +146,7 @@ public class MessageItem
         Vector urlList=new Vector();
         addUrls(msg.getBody(), "http://", urlList);
         addUrls(msg.getBody(), "https://", urlList);
-        addUrls(msg.getBody(), "tel://", urlList);
+        addUrls(msg.getBody(), "tel:", urlList);
         addUrls(msg.getBody(), "ftp://", urlList);
         addUrls(msg.getBody(), "native:", urlList);
         return (urlList.size()==0)? null: urlList;
