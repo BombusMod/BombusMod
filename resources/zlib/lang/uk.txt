@@ -599,3 +599,24 @@ Register	Зареєструвати
 Check Google mail	Перевірити пошту на Google
 Simulated break	Розірвати з'єднання
 Unread messages	Видалити повідомлення
+panels background	фон панелей
+header font	шрифт заголовку
+progress bar font	шрифт прогресу
+other message incoming	Виділене вхідне повідомлення
+other message outgoing	Виділене вихідне повідомлення
+other message presence	Статусно повідомлення
+Popup font	Шрифт сплив. повідомлення
+Popup background	Тло сплив. повідомлення
+Popup system font	Шрифт системного вікна
+Popup system background	Тло системного вікна
+Contact status font	Шрифт статусу контакта
+Translit	Трансілтерація
+ReTranslit	Зворотн. трансліт
+Auto translit2Cyr	Авт. перетвор. в кирилицю
+Show IQ requests	Показувати запити IQ
+Show clients icons	Іконки клієнтів
+Value	Значення
+Quantity of attempts	Кількість спроб
+Delay before reconnect(sec.)	Затримка між спробами (сек.)
+Menu	Меню
+Change	Змінити

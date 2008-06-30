@@ -225,35 +225,33 @@ public class VCard {
         try {
              if (photo[0]==(byte)0xff &&
                 photo[1]==(byte)0xd8 &&
-                (photo[6]==(byte)'J' || photo[6]==(byte)'E' || photo[6]==(byte)'e') &&
-                (photo[7]==(byte)'F' || photo[7]==(byte)'x' || photo[7]==(byte)'X') &&
-                (photo[8]==(byte)'I' || photo[8]==(byte)'i') &&
-                (photo[9]==(byte)'F' || photo[9]==(byte)'f')) {
-                //System.out.println("image/jpeg");
+                ((photo[6]==(byte)'J' &&
+                  photo[7]==(byte)'F' &&
+                  photo[8]==(byte)'I' &&
+                  photo[9]==(byte)'F') 
+                  ||
+                 (photo[6]==(byte)'E' &&
+                  photo[7]==(byte)'x' &&
+                  photo[8]==(byte)'i' &&
+                  photo[9]==(byte)'f')
+                 )
+                )
                  return "image/jpeg";
-             }
              
             if (photo[0]==(byte)0x89 &&
                 photo[1]==(byte)'P' &&
                 photo[2]==(byte)'N' &&
-                photo[3]==(byte)'G') {
-                //System.out.println("image/png");
+                photo[3]==(byte)'G')
                 return "image/png";
-            }
             
             if (photo[0]==(byte)'G' &&
                 photo[1]==(byte)'I' &&
-                photo[2]==(byte)'F') {
-                //System.out.println("image/gif");
+                photo[2]==(byte)'F')
                  return "image/gif";
-             }
              
             if (photo[0]==(byte)'B' &&
-                photo[1]==(byte)'M') {
-                //System.out.println("image/x-ms-bmp");
+                photo[1]==(byte)'M')
                  return "image/x-ms-bmp";
-             }
-            
         } catch (Exception e) {}
         //System.out.println("unknown MIME type");
         return null;

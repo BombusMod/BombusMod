@@ -1,0 +1,19 @@
+﻿//vCard descriptions
+	FN	ФІО
+	NICKNAME	Нік
+	BDAY	День народження
+ADR	STREET	Адреса
+ADR	EXTADR	Адреса2
+ADR	LOCALITY	Місто
+ADR	REGION	Область
+ADR	PCODE	Поштовий індекс
+ADR	CTRY	Країна
+TEL	HOME	Телефон (д)
+TEL	NUMBER	Телефон
+EMAIL	USERID	E-Mail
+	TITLE	Посада
+	ROLE	Професія
+ORG	ORGNAME	Організація
+ORG	ORGUNIT	Відділ
+	URL	Url
+	DESC	Про себе
