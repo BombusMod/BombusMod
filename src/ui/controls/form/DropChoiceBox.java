@@ -61,15 +61,15 @@ public class DropChoiceBox
     }
 
     public String toString() {
-        if (items.size()<1) return "";//caption;
+        if (items.size()<1) return "";
         return (String) items.elementAt(index);
     }
-/*
+
     public void onSelect(){
         if (items.size()<1) return;
-        index=(index+1)%items.size();
+        new DropListBox(display, items, this);
     }
-*/
+
     public int getValue() { return index; }
     
     public void append(String value) { items.addElement(value); }

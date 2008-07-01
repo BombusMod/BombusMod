@@ -49,11 +49,6 @@ public class Msg {
     public final static int MESSAGE_TYPE_AUTH=14;
     public final static int MESSAGE_TYPE_SYSTEM=15;
 
-    public final static int MESSAGE_MARKER_OUT=1;
-    public final static int MESSAGE_MARKER_PRESENCE=2;
-    public final static int MESSAGE_MARKER_IN=3;
-    public final static int MESSAGE_MARKER_OTHER=0;
-
     private boolean highlite;
     private boolean history;
     
@@ -117,6 +112,7 @@ public class Msg {
         }
         return ct.getColor(ColorTheme.LIST_INK);
     }
+    
     public String toString() {
         StringBuffer time=new StringBuffer();
         if (messageType==MESSAGE_TYPE_PRESENCE || !Config.getInstance().showBalloons) {
@@ -134,6 +130,7 @@ public class Msg {
 	os.writeLong(dateGmt);
 	if (subject!=null) os.writeUTF(subject);
     }
+    
     public Msg (DataInputStream is) throws IOException {
 	from=is.readUTF();
 	body=is.readUTF();
@@ -159,17 +156,5 @@ public class Msg {
             else i++;
         }
         return out.toString();
-    };
-    
-    public boolean isHasUrl() { 
-        if (body.indexOf("http://")>-1)
-            return true;
-        if (body.indexOf("https://")>-1)
-            return true;
-        if (body.indexOf("tel://")>-1)
-            return true;
-        if (body.indexOf("native:")>-1)
-            return true;
-        return false; 
     }
 }

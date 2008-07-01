@@ -42,6 +42,11 @@ public class HistoryStorage {
     private String history;
     
     private Config cf;
+
+    public final static int MESSAGE_MARKER_OUT=1;
+    public final static int MESSAGE_MARKER_PRESENCE=2;
+    public final static int MESSAGE_MARKER_IN=3;
+    public final static int MESSAGE_MARKER_OTHER=0;    
     
     public HistoryStorage(String filename) {
         cf=Config.getInstance();
@@ -82,7 +87,7 @@ public class HistoryStorage {
                         tempstr=history.substring(start_pos+3, end_pos);
                         type=findBlock(tempstr,"t"); date=findBlock(tempstr,"d");  from=findBlock(tempstr,"f");  subj=findBlock(tempstr,"s");  body=findBlock(tempstr,"b");                   
                         
-                        if (Integer.parseInt(type)!=Msg.MESSAGE_MARKER_PRESENCE) {
+                        if (Integer.parseInt(type)!=MESSAGE_MARKER_PRESENCE) {
                             //System.out.println(type+" ["+date+"]"+from+": "+subj+" "+body+"\r\n");
                             vector.insertElementAt(processMessage (type, date, from, subj, body),0);
                         }
@@ -104,13 +109,13 @@ public class HistoryStorage {
         int mrk = Integer.parseInt(marker);
         
         switch (mrk) {
-            case Msg.MESSAGE_MARKER_IN:
+            case MESSAGE_MARKER_IN:
                 msgType=Msg.MESSAGE_TYPE_IN;
                 break;
-            case Msg.MESSAGE_MARKER_OUT:
+            case MESSAGE_MARKER_OUT:
                 msgType=Msg.MESSAGE_TYPE_OUT;
                 break;
-            case Msg.MESSAGE_MARKER_PRESENCE:
+            case MESSAGE_MARKER_PRESENCE:
                 msgType=Msg.MESSAGE_TYPE_PRESENCE;
                 break;
         }

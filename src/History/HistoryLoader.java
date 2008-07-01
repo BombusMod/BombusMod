@@ -49,6 +49,11 @@ public class HistoryLoader {
 
     private Vector fileMap;
 
+    public final static int MESSAGE_MARKER_OUT=1;
+    public final static int MESSAGE_MARKER_PRESENCE=2;
+    public final static int MESSAGE_MARKER_IN=3;
+    public final static int MESSAGE_MARKER_OTHER=0;
+
     public HistoryLoader(String file){
        cf=Config.getInstance();
 //#ifdef DETRANSLIT
@@ -108,13 +113,13 @@ public class HistoryLoader {
         int mrk = Integer.parseInt(marker);
 
         switch (mrk) {
-            case Msg.MESSAGE_MARKER_IN:
+            case MESSAGE_MARKER_IN:
                 msgType=Msg.MESSAGE_TYPE_IN;
                 break;
-            case Msg.MESSAGE_MARKER_OUT:
+            case MESSAGE_MARKER_OUT:
                 msgType=Msg.MESSAGE_TYPE_OUT;
                 break;
-            case Msg.MESSAGE_MARKER_PRESENCE:
+            case MESSAGE_MARKER_PRESENCE:
                 msgType=Msg.MESSAGE_TYPE_PRESENCE;
                 break;
         }

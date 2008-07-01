@@ -38,10 +38,10 @@ import Conference.MucContact;
 //#ifdef MENU
 //# import Menu.Menu;
 //# import Menu.MenuItem;
+//# import Messages.MessageItem;
+//# import Messages.MessageList;
+//# import Messages.MessageUrl;
 //#endif
-import Menu.Menu;
-import Menu.MenuItem;
-import Messages.MessageList;
 import images.RosterIcons;
 import locale.SR;
 import ui.MainBar;
@@ -187,6 +187,12 @@ public class ContactMessageList extends MessageList
 //# //        if (cf.lastMessages && !contact.isHistoryLoaded()) loadRecentList();
 //#endif
         setCommandListener(this);
+//#else
+//#         removeCommand(cmdCopy);
+//#         removeCommand(cmdCopyPlus);
+//#         removeCommand(cmdxmlSkin);
+//#         removeCommand(cmdUrl);
+//#         removeCommand(cmdBack);
 //#endif
         contact.setIncoming(0);
 
@@ -618,36 +624,36 @@ public class ContactMessageList extends MessageList
             display.setCurrent(sd.roster);
     }
 //#ifdef MENU
-    class ContactMessageListMenu extends Menu {
-        
-        private Config cf;
-
-        private Contact contact;
-        
-        private boolean connected;
-
-        private ClipBoard clipboard=ClipBoard.getInstance();
-        private StaticData sd=StaticData.getInstance();
- 
-        private Displayable parentView;
-
-        private int curPos;
-
-        private Msg msg=null;
-
-        private ContactMessageList clist;
-        
-        public ContactMessageListMenu (Display display, Contact contact, int curPos, ContactMessageList clist) {
-            super(contact.toString(), null);
-            this.contact=contact;
-            this.curPos=curPos;
-            this.parentView=display.getCurrent();
-            this.clist=clist;
-            try {
-                this.msg=(Msg) contact.msgs.elementAt(curPos);
-            } catch (Exception ex) {}
-
-            cf=Config.getInstance();
+//#     class ContactMessageListMenu extends Menu {
+//#         
+//#         private Config cf;
+//# 
+//#         private Contact contact;
+//#         
+//#         private boolean connected;
+//# 
+//#         private ClipBoard clipboard=ClipBoard.getInstance();
+//#         private StaticData sd=StaticData.getInstance();
+//#  
+//#         private Displayable parentView;
+//# 
+//#         private int curPos;
+//# 
+//#         private Msg msg=null;
+//# 
+//#         private ContactMessageList clist;
+//#         
+//#         public ContactMessageListMenu (Display display, Contact contact, int curPos, ContactMessageList clist) {
+//#             super(contact.toString(), null);
+//#             this.contact=contact;
+//#             this.curPos=curPos;
+//#             this.parentView=display.getCurrent();
+//#             this.clist=clist;
+//#             try {
+//#                 this.msg=(Msg) contact.msgs.elementAt(curPos);
+//#             } catch (Exception ex) {}
+//# 
+//#             cf=Config.getInstance();
 //#ifndef WMUC     
 //#ifdef ANTISPAM
 //#             if (contact instanceof MucContact && contact.origin!=Contact.ORIGIN_GROUPCHAT && cf.antispam) {
@@ -670,45 +676,48 @@ public class ContactMessageList extends MessageList
 //#             }
 //#endif
 //#endif
-
-           if (contact.msgSuspended!=null) 
-               addItem(SR.MS_RESUME, 0);
-
-           addItem(SR.MS_NEW_MESSAGE, 3);
-       
-           if (msg!=null) {
-               if (msg.messageType==Msg.MESSAGE_TYPE_AUTH) {
-                   addItem(SR.MS_SUBSCRIBE, 1);
-                   addItem(SR.MS_DECLINE, 2);
-               }
-           }
+//# 
+//#            if (contact.msgSuspended!=null) 
+//#                addItem(SR.MS_RESUME, 0);
+//# 
+//#            addItem(SR.MS_NEW_MESSAGE, 3);
+//#        
+//#            if (msg!=null) {
+//#                if (msg.messageType==Msg.MESSAGE_TYPE_AUTH) {
+//#                    addItem(SR.MS_SUBSCRIBE, 1);
+//#                    addItem(SR.MS_DECLINE, 2);
+//#                }
+//#            }
 //#ifndef WMUC
-           if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT) {
-               addItem(SR.MS_REPLY, 4);
-           }
+//#            if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT) {
+//#                addItem(SR.MS_REPLY, 4);
+//#            }
 //#endif
-           if (msg!=null) {
-               addItem(SR.MS_CLEAR_LIST, 7);
-           }
-       
-           if (contact.origin!=Contact.ORIGIN_GROUPCHAT)
-               addItem(SR.MS_CONTACT, 8);
-           if (msg!=null) {
-               if (msg.isHasUrl())
-                   addItem(SR.MS_GOTO_URL,9);
-               if (msg.getBody().startsWith("xmlSkin"))
-               addItem(SR.MS_USE_COLOR_SCHEME,10);
-           }
-           addItem(SR.MS_ACTIVE_CONTACTS, 11);
-           if (msg!=null) {
-                addItem(SR.MS_QUOTE, 5);
+//#            if (msg!=null) {
+//#                addItem(SR.MS_CLEAR_LIST, 7);
+//#            }
+//#        
+//#            if (contact.origin!=Contact.ORIGIN_GROUPCHAT)
+//#                addItem(SR.MS_CONTACT, 8);
+//#            
+//#            if (msg!=null) {
+//#                if (isHasUrl(msg.getBody()))
+//#                    addItem(SR.MS_GOTO_URL,9);
+//#                if (msg.getBody().startsWith("xmlSkin"))
+//#                addItem(SR.MS_USE_COLOR_SCHEME,10);
+//#            }
+//#            
+//#            addItem(SR.MS_ACTIVE_CONTACTS, 11);
+//#            
+//#            if (msg!=null) {
+//#                 addItem(SR.MS_QUOTE, 5);
 //#ifdef ARCHIVE
-                addItem(SR.MS_ADD_ARCHIVE, 6);
+//#                 addItem(SR.MS_ADD_ARCHIVE, 6);
 //#endif
 //#if TEMPLATES
-            addItem(SR.MS_SAVE_TEMPLATE, 14);
+//#             addItem(SR.MS_SAVE_TEMPLATE, 14);
 //#endif
-                addItem(SR.MS_COPY, 12);
+//#                 addItem(SR.MS_COPY, 12);
 //#ifdef HISTORY
 //#                 if (cf.lastMessages)
 //#                     addItem("Read history", 10);
@@ -716,132 +725,130 @@ public class ContactMessageList extends MessageList
 //#                 if (cf.msgPath!="")
 //#                     addItem(SR.MS_SAVE_CHAT, 16);
 //#endif
-           }
-           if (!clipboard.isEmpty()) {
-               if (msg!=null) {
-                   addItem("+ "+SR.MS_COPY, 13);
-               }
-               addItem(SR.MS_SEND_BUFFER, 15);
-           }
-           attachDisplay(display);
-        }
-
-        public void eventOk(){
-            MenuItem me=(MenuItem) getFocusedObject();
-            if (me==null)  return;
-            int index=me.index;
-
-    //#ifndef WMUC
-            MucContact mc=null;
-            if (contact instanceof MucContact) {
-                mc=(MucContact) contact;
-            }
-    //#endif
-
-            switch (index) {
-                case 0:
-                    (new MessageEdit(display,contact,contact.msgSuspended)).setParentView(parentView);
-                    contact.msgSuspended=null;
-                    return;
-                case 1:
-                    sd.roster.doSubscribe(contact);
-                    break;
-                case 2:
-                    sd.roster.sendPresence(contact.getBareJid(), "unsubscribed", null, false);
-                    break;
-                case 3:
-                    contact.msgSuspended=null;
-                   (new MessageEdit(display,contact,contact.msgSuspended)).setParentView(parentView);
-                   return;
-                case 4:
-                    Reply();
-                    return;
-                case 5:
-                    Quote();
-                    return;
-                case 6:
-                    try {
-                        MessageArchive.store(msg, 1);
-                    } catch (Exception e) {/*no messages*/}
-                    break;
-                case 7:
-                    clist.clearReadedMessageList();
-                    destroyView();
-                    return;
-                case 8:
-    //#ifndef WMUC
-                    if (contact instanceof MucContact) {
-                        new RosterItemActions(display, mc, -1);
-                    } else {
-    //#endif
-                        new RosterItemActions(display, contact, -1);
-    //#ifndef WMUC
-                    }
-    //#endif
-                    return;
-                case 9:
-                    try {
-                        //Vector urls=msg.getUrlList();
-                        //new MessageUrl(display, urls);
-                    } catch (Exception e) {/*no urls*/}
-                    break;
-    //#ifdef COLORS 
-            case 10:
-                ColorScheme.getInstance().loadSkin(msg.getBody(),2);
-                break;
-    //#endif
-                case 11:
-                    new ActiveContacts(display, contact);
-                    return;
-                case 12:
-                    try {
-                        StringBuffer clipstr=new StringBuffer();
-                        clipstr.append((msg.getSubject()==null)?"":msg.getSubject()+"\n");
-                        clipstr.append(msg.quoteString());
-                        clipboard.setClipBoard(clipstr.toString());
-                        clipstr=null;
-                    } catch (Exception e) {/*no messages*/}
-                    break;
-                case 13:
-                    try {
-                        StringBuffer clipstr=new StringBuffer();
-                        clipstr.append(clipboard.getClipBoard());
-                        clipstr.append("\n\n");
-                        clipstr.append((msg.getSubject()==null)?"":msg.getSubject()+"\n");
-                        clipstr.append(msg.quoteString());
-
-                        clipboard.setClipBoard(clipstr.toString());
-                        clipstr=null;
-                    } catch (Exception e) {/*no messages*/}
-                    break;
-    //#if TEMPLATES
-                case 14:
-                    try {
-                        MessageArchive.store(msg, 2);
-                    } catch (Exception e) {/*no messages*/}
-                    break;
-    //#endif
-                case 15:
-                    String from=StaticData.getInstance().account.toString();
-                    String body=clipboard.getClipBoard();
-
-                    String id=String.valueOf((int) System.currentTimeMillis());
-
-                    try {
-                        if (body!=null)
-                            sd.roster.sendMessage(contact, id, body, null, null);
-                        contact.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,null,"message sended from clipboard("+body.length()+"chars)"));
-                    } catch (Exception e) {
-                        contact.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,null,"message NOT sended"));
-                    }
-                    break;
-    //#if LAST_MESSAGES
+//#            }
+//#            if (!clipboard.isEmpty()) {
+//#                if (msg!=null) {
+//#                    addItem("+ "+SR.MS_COPY, 13);
+//#                }
+//#                addItem(SR.MS_SEND_BUFFER, 15);
+//#            }
+//#            attachDisplay(display);
+//#         }
+//# 
+//#         public void eventOk(){
+//#             MenuItem me=(MenuItem) getFocusedObject();
+//#             if (me==null)  return;
+//#             int index=me.index;
+//# 
+//#ifndef WMUC
+//#             MucContact mc=null;
+//#             if (contact instanceof MucContact) {
+//#                 mc=(MucContact) contact;
+//#             }
+//#endif
+//# 
+//#             switch (index) {
+//#                 case 0:
+//#                     (new MessageEdit(display,contact,contact.msgSuspended)).setParentView(parentView);
+//#                     contact.msgSuspended=null;
+//#                     return;
+//#                 case 1:
+//#                     sd.roster.doSubscribe(contact);
+//#                     break;
+//#                 case 2:
+//#                     sd.roster.sendPresence(contact.getBareJid(), "unsubscribed", null, false);
+//#                     break;
+//#                 case 3:
+//#                     contact.msgSuspended=null;
+//#                    (new MessageEdit(display,contact,contact.msgSuspended)).setParentView(parentView);
+//#                    return;
+//#                 case 4:
+//#                     Reply();
+//#                     return;
+//#                 case 5:
+//#                     Quote();
+//#                     return;
+//#                 case 6:
+//#                     try {
+//#                         MessageArchive.store(msg, 1);
+//#                     } catch (Exception e) {/*no messages*/}
+//#                     break;
+//#                 case 7:
+//#                     clist.clearReadedMessageList();
+//#                     destroyView();
+//#                     return;
+//#                 case 8:
+//#ifndef WMUC
+//#                     if (contact instanceof MucContact)
+//#                         new RosterItemActions(display, mc, -1);
+//#                     else
+//#endif
+//#                         new RosterItemActions(display, contact, -1);
+//#                     return;
+//#                 case 9:
+//#                     try {
+//#                         Vector urls=((MessageItem)clist.messages.elementAt(curPos)).getUrlList();
+//#                         System.out.println(urls.size());
+//#                         new MessageUrl(display, urls);
+//#                     } catch (Exception e) {/*no urls*/}
+//#                     return;
+//#ifdef COLORS 
+//#             case 10:
+//#                 ColorScheme.getInstance().loadSkin(msg.getBody(),2);
+//#                 break;
+//#endif
+//#                 case 11:
+//#                     new ActiveContacts(display, contact);
+//#                     return;
+//#                 case 12:
+//#                     try {
+//#                         StringBuffer clipstr=new StringBuffer();
+//#                         clipstr.append((msg.getSubject()==null)?"":msg.getSubject()+"\n");
+//#                         clipstr.append(msg.quoteString());
+//#                         clipboard.setClipBoard(clipstr.toString());
+//#                         clipstr=null;
+//#                     } catch (Exception e) {/*no messages*/}
+//#                     break;
+//#                 case 13:
+//#                     try {
+//#                         StringBuffer clipstr=new StringBuffer();
+//#                         clipstr.append(clipboard.getClipBoard());
+//#                         clipstr.append("\n\n");
+//#                         clipstr.append((msg.getSubject()==null)?"":msg.getSubject()+"\n");
+//#                         clipstr.append(msg.quoteString());
+//# 
+//#                         clipboard.setClipBoard(clipstr.toString());
+//#                         clipstr=null;
+//#                     } catch (Exception e) {/*no messages*/}
+//#                     break;
+//#if TEMPLATES
+//#                 case 14:
+//#                     try {
+//#                         MessageArchive.store(msg, 2);
+//#                     } catch (Exception e) {/*no messages*/}
+//#                     break;
+//#endif
+//#                 case 15:
+//#                     String from=StaticData.getInstance().account.toString();
+//#                     String body=clipboard.getClipBoard();
+//# 
+//#                     String id=String.valueOf((int) System.currentTimeMillis());
+//# 
+//#                     try {
+//#                         if (body!=null)
+//#                             sd.roster.sendMessage(contact, id, body, null, null);
+//#                         contact.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,null,body));
+//#                     } catch (Exception e) {
+//#                         contact.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,null,"Sending buffer failed!"));
+//#                     }
+//#                     break;
+//#if LAST_MESSAGES
     //#             case 17:
     //#                 loadRecentList();
     //#                 break;
-    //#endif
-    //#ifndef WMUC 
-    //#ifdef ANTISPAM
+//#endif
+//#ifndef WMUC 
+//#ifdef ANTISPAM
 //#                 case 22:
 //#                     mc.setPrivateState(MucContact.PRIVATE_DECLINE);
 //#     
@@ -860,13 +867,13 @@ public class ContactMessageList extends MessageList
 //#                         contact.purgeTemps();
 //#                     }
 //#                     break;
-    //#endif
-    //#endif
-            }
-            destroyView();
-        }
-
-
+//#endif
+//#endif
+//#             }
+//#             destroyView();
+//#         }
+//# 
+//# 
 //#if (FILE_IO && HISTORY)
 //#         private void saveMessages() {
 //#             String histRecord="log_"+contact.getBareJid();
@@ -877,39 +884,53 @@ public class ContactMessageList extends MessageList
 //#             }
 //#         }
 //#endif
-
-/*
-        private void clearReadedMessageList() {
+//# 
+//# /*
+//#         private void clearReadedMessageList() {
 //#if LAST_MESSAGES
 //#             if (hisStorage) new HistoryStorage(contact.getBareJid(), "", true);
 //#endif
-            contact.smartPurge(curPos+1);
-            contact.lastUnread=contact.msgs.size()-1;
-            
-        }
-*/
-
-        private void Reply() {
-            try {
-                if (msg.messageType < Msg.MESSAGE_TYPE_PRESENCE/*.MESSAGE_TYPE_HISTORY*/) return;
-                if (msg.messageType == Msg.MESSAGE_TYPE_SUBJ) return;
-
-                (new MessageEdit(display,contact,msg.from+": ")).setParentView(parentView);
-            } catch (Exception e) {/*no messages*/}
-        }
-
-        private void Quote() {
-            try {
-                String message=new StringBuffer()
-                    .append((char)0xbb) // �
-                    .append(" ")
-                    .append(msg.quoteString())
-                    .append("\n")
-                    .toString();
-                (new MessageEdit(display,contact,message)).setParentView(parentView);
-                message=null;
-            } catch (Exception e) {/*no messages*/}
-        }
-    }
+//#             contact.smartPurge(curPos+1);
+//#             contact.lastUnread=contact.msgs.size()-1;
+//#             
+//#         }
+//# */
+//# 
+//#         private void Reply() {
+//#             try {
+//#                 if (msg.messageType < Msg.MESSAGE_TYPE_PRESENCE/*.MESSAGE_TYPE_HISTORY*/) return;
+//#                 if (msg.messageType == Msg.MESSAGE_TYPE_SUBJ) return;
+//# 
+//#                 (new MessageEdit(display,contact,msg.from+": ")).setParentView(parentView);
+//#             } catch (Exception e) {/*no messages*/}
+//#         }
+//# 
+//#         private void Quote() {
+//#             try {
+//#                 String message=new StringBuffer()
+//#                     .append((char)0xbb) // �
+//#                     .append(" ")
+//#                     .append(msg.quoteString())
+//#                     .append("\n")
+//#                     .toString();
+//#                 (new MessageEdit(display,contact,message)).setParentView(parentView);
+//#                 message=null;
+//#             } catch (Exception e) {/*no messages*/}
+//#         }
+//#     
+//#         public boolean isHasUrl(String body) { 
+//#             if (body.indexOf("http://")>-1)
+//#                 return true;
+//#             if (body.indexOf("https://")>-1)
+//#                 return true;
+//#             if (body.indexOf("ftp://")>-1)
+//#                 return true;
+//#             if (body.indexOf("tel:")>-1)
+//#                 return true;
+//#             if (body.indexOf("native:")>-1)
+//#                 return true;
+//#             return false; 
+//#         }
+//#     }
 //#endif
 }

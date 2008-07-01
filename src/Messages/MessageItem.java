@@ -186,7 +186,7 @@ public class MessageItem
         MessageParser.getInstance().parseMsg(this, view.getListWidth());  
     }
     
-    boolean smilesEnabled() {return smiles; }
+    boolean smilesEnabled() { return smiles; }
 //#endif
 
     public boolean isSelectable() { return true; }

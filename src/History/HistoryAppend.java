@@ -62,6 +62,11 @@ public class HistoryAppend {
     private final static String BE="</b>";
     
     private final static String RN="\r\n";
+
+    public final static int MESSAGE_MARKER_OUT=1;
+    public final static int MESSAGE_MARKER_PRESENCE=2;
+    public final static int MESSAGE_MARKER_IN=3;
+    public final static int MESSAGE_MARKER_OTHER=0;
     
 //#if FILE_IO
     private int filePos;
@@ -106,16 +111,16 @@ public class HistoryAppend {
 
         StringBuffer body=new StringBuffer();
         
-        int marker=Msg.MESSAGE_MARKER_OTHER;
+        int marker=MESSAGE_MARKER_OTHER;
         switch (m.messageType){
             case Msg.MESSAGE_TYPE_IN:
-                marker=Msg.MESSAGE_MARKER_IN;
+                marker=MESSAGE_MARKER_IN;
                 break;
             case Msg.MESSAGE_TYPE_PRESENCE:
-                marker=Msg.MESSAGE_MARKER_PRESENCE;
+                marker=MESSAGE_MARKER_PRESENCE;
                 break;
-           case Msg.MESSAGE_MARKER_OUT:
-                marker=Msg.MESSAGE_MARKER_OUT;
+           case Msg.MESSAGE_TYPE_OUT:
+                marker=MESSAGE_MARKER_OUT;
         }
         if (!formatted) {
             body.append("[")

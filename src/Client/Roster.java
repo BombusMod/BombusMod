@@ -179,7 +179,7 @@ public class Roster
     private int blState=Integer.MAX_VALUE;
 
 //#ifdef SE_LIGHT
-//#     private KeepLightTask selight;
+//#     private KeepLightTask selight=KeepLightTask.getInstance();
 //#endif
     
 //#ifdef AUTOTASK
@@ -199,9 +199,7 @@ public class Roster
         this.display=display;
 
         sl=StatusList.getInstance();
-//#ifdef SE_LIGHT
-//#         selight=KeepLightTask.getInstance();
-//#endif
+
         setLight(cf.lightState);
         
         MainBar mainbar=new MainBar(4, null, null);
