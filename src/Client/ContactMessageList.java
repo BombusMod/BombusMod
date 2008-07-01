@@ -39,9 +39,9 @@ import Conference.MucContact;
 //# import Menu.Menu;
 //# import Menu.MenuItem;
 //# import Messages.MessageItem;
-//# import Messages.MessageList;
 //# import Messages.MessageUrl;
 //#endif
+import Messages.MessageList;
 import images.RosterIcons;
 import locale.SR;
 import ui.MainBar;
