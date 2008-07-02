@@ -56,7 +56,7 @@ public class InfoWindow
     
 //#ifdef CLIPBOARD
 //#ifndef MENU
-//#     private Command cmdCopy   = new Command(SR.MS_COPY, Command.OK, 1);
+//#     public Command cmdOk = new Command(SR.MS_COPY, Command.OK, 1);
 //#endif
 //#     private ClipBoard clipboard; 
 //#endif
@@ -99,10 +99,10 @@ public class InfoWindow
 //#endif
         
 //#ifndef MENU
-        super.removeCommand(cmdOk);
+        super.removeCommand(super.cmdOk);
 //#ifdef CLIPBOARD
 //#         if (Config.getInstance().useClipBoard) {
-//#             addCommand(cmdCopy);
+//#             addCommand(cmdOk);
 //#         }
 //#endif
 //#endif
@@ -122,6 +122,13 @@ public class InfoWindow
 //#     public String getLeftCommand() { return SR.MS_COPY; }
 //#endif
 //#     public String getRightCommand() { return SR.MS_BACK; }
+//#else
+    public void commandAction(Command command, Displayable displayable) {
+	if (command==cmdOk) {
+	    cmdOk();
+	}
+        super.commandAction(command, displayable);
+    }
 //#endif
     
     private String getAbilities() {

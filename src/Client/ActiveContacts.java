@@ -44,15 +44,18 @@ import ui.VirtualList;
  */
 public class ActiveContacts 
     extends VirtualList
+//#ifndef MENU
     implements CommandListener
+//#endif
 {
     
     Vector activeContacts;
     
     StaticData sd = StaticData.getInstance();
-    
+//#ifndef MENU
     private Command cmdCancel=new Command(SR.MS_BACK, Command.BACK, 99);
     private Command cmdSelect=new Command(SR.MS_SELECT, Command.SCREEN, 1);
+//#endif
     /** Creates a new instance of ActiveContacts */
     public ActiveContacts(Display display, Contact current) {
 	super();
@@ -69,17 +72,16 @@ public class ActiveContacts
         MainBar mainbar=new MainBar(2, String.valueOf(getItemCount()), " ");
         mainbar.addElement(SR.MS_ACTIVE_CONTACTS);
         setMainBarItem(mainbar);
-
+//#ifndef MENU
 	addCommand(cmdSelect);
 	addCommand(cmdCancel);
 	setCommandListener(this);
-	
+//#endif
 	try {
             int focus=activeContacts.indexOf(current);
             moveCursorTo(focus);
         } catch (Exception e) {}
-        //if (current!=null) mov
-	
+
 	attachDisplay(display);
     }
 
@@ -93,14 +95,19 @@ public class ActiveContacts
 	new ContactMessageList((Contact)c,display).setParentView(sd.roster);
         //c.msgSuspended=null; // clear suspended message for selected contact
     }
-    
+//#ifndef MENU
     public void commandAction(Command c, Displayable d) {
 	if (c==cmdCancel) destroyView();
 	if (c==cmdSelect) eventOk();
     }
-    
-    
-    
+//#else
+//#     public void rightCommand() { destroyView(); }
+//#     public String getRightCommand() { return SR.MS_BACK; }
+//#     
+//#     public void leftCommand() { eventOk(); }
+//#     public String getLeftCommand() { return SR.MS_SELECT; }
+//#endif
+
     public void keyPressed(int keyCode) {
 //#ifdef POPUPS
         VirtualList.popup.next();
@@ -147,6 +154,7 @@ public class ActiveContacts
         Contact c=(Contact)getFocusedObject();
         c.purge();
         activeContacts.removeElementAt(cursor);
+        getMainBarItem().setElementAt(String.valueOf(getItemCount()), 0);
     }
     
     public void destroyView(){

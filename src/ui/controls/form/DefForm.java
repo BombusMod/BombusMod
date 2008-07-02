@@ -57,8 +57,8 @@ public class DefForm
     
     public Vector itemsList=new Vector();
 //#ifndef MENU
-    public Command cmdSelect = new Command(SR.MS_SELECT, Command.OK, 1);
-    public Command cmdOk = new Command(SR.MS_OK, Command.SCREEN, 2);
+    //public Command cmdSelect = new Command(SR.MS_SELECT, Command.OK, 1);
+    public Command cmdOk = new Command(SR.MS_OK, Command.OK, 1);
     public Command cmdCancel = new Command(SR.MS_BACK, Command.BACK, 99);
 //#endif
     public int superWidth;
@@ -73,8 +73,8 @@ public class DefForm
         
         superWidth=super.getWidth();
 //#ifndef MENU
-        if (Config.getInstance().phoneManufacturer==Config.NOKIA)
-            addCommand(cmdSelect);
+        //if (Config.getInstance().phoneManufacturer==Config.NOKIA)
+        //    addCommand(cmdSelect);
         
 	addCommand(cmdOk);
 	addCommand(cmdCancel);
@@ -96,9 +96,9 @@ public class DefForm
 	if (command==cmdCancel) {
 	    cmdCancel();
 	}
-	if (command==cmdSelect) {
-            getItemRef(cursor).onSelect();
-        }
+	//if (command==cmdSelect) {
+        //    getItemRef(cursor).onSelect();
+        //}
 	if (command==cmdOk) {
             cmdOk();
         }

@@ -258,7 +258,6 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
              Config.SOFT_RIGHT=-4;
              return;
         }
-
         if (pm==Config.WINDOWS) {
              Config.SOFT_LEFT=40;
              Config.SOFT_RIGHT=41;
@@ -269,13 +268,11 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
             Config.SOFT_RIGHT=-7;
             return;
         } 
-        
         if (pm==Config.MOTOEZX) {
             Config.SOFT_LEFT=-21;
             Config.SOFT_RIGHT=-22;
             return;
         } 
-        
         try {
             // Set Motorola specific keycodes
             Class.forName("com.motorola.phonebook.PhoneBookRecord");

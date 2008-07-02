@@ -109,7 +109,7 @@ public class VCardView
             addCommand(cmdSavePhoto);
 //#endif
         removeCommand(cmdOk);
-        removeCommand(cmdSelect);
+        //removeCommand(cmdSelect);
         addCommand(cmdRefresh);
 //#ifdef CLIPBOARD
 //#         if (Config.getInstance().useClipBoard) {
