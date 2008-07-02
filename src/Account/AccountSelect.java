@@ -149,6 +149,9 @@ public class AccountSelect
             new AccountForm(this, display, null);
         }
         if (c==cmdDel) {
+            if (cursor==cf.accountIndex && StaticData.getInstance().roster.isLoggedIn()) return;
+            //if (((Account)getFocusedObject()).equals(StaticData.getInstance().account)) return;
+            
             new AlertBox(SR.MS_DELETE, getFocusedObject().toString(), display, this) {
                 public void yes() {
                     delAccount();
