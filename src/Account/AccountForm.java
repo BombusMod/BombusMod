@@ -85,6 +85,8 @@ public class AccountForm
     boolean showExtended;
     
     LinkString linkShowExtended;
+
+    private boolean doConnect;
     
     /** Creates a new instance of newAccountForm */
     public AccountForm(AccountSelect accountSelect, Display display, Account account) {
@@ -197,7 +199,7 @@ public class AccountForm
             server=user.substring(at+1);
             user=user.substring(0, at);
         }
-        if (server=="" || user=="" || pass=="")
+        if (server.length()==0 || user.length()==0 || pass.length()==0)
             return;
         
         account.setUserName(user);
@@ -235,16 +237,18 @@ public class AccountForm
         accountSelect.rmsUpdate();
         accountSelect.commandState();
 
-        if (registerNew)
+        doConnect=true;
+        
+        if (registerNew) {
             new AccountRegister(account, display, parentView); 
-        else {
+        } else {
             destroyView();
         }
         account=null;
     }
 
     public void destroyView(){
-        if (newaccount) {
+        if (newaccount && doConnect) {
             new AlertBox(SR.MS_CONNECT_TO, account.getBareJid()+"?", display, StaticData.getInstance().roster) {
                 public void yes() { startLogin();}
                 public void no() { if (display!=null) display.setCurrent(parentView); }
