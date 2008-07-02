@@ -50,13 +50,13 @@ public class AccountRegister
     private Account raccount;
     private JabberStream theStream ;
     private SplashScreen spl=SplashScreen.getInstance();
-    private Command cmdOK=new Command(SR.MS_OK,Command.BACK, 2);
+    private Command cmdOK=new Command(SR.MS_OK,Command.OK, 1);
     private Command cmdCancel=new Command(SR.MS_BACK,Command.BACK, 2);
     
     /** Creates a new instance of AccountRegister */
     public AccountRegister(Account account, Display display, Displayable parentView) {
         this.display=display;
-        this.parentView=parentView;//display.getCurrent();
+        this.parentView=display.getCurrent();
 
         raccount=account;
         spl.setProgress(SR.MS_STARTUP,5);
@@ -128,7 +128,7 @@ public class AccountRegister
     }
     
     public void destroyView(){
-        if (display!=null)   display.setCurrent(parentView);
+        if (display!=null) display.setCurrent(parentView);
     }
 
 }
