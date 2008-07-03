@@ -963,7 +963,7 @@ public abstract class VirtualList
             System.gc();
             try { Thread.sleep(50); } catch (InterruptedException ex) { }
 //#ifdef POPUPS
-            setWobble(1, null, "1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\nFree: "+(Runtime.getRuntime().freeMemory()>>10)+" kb");
+            setWobble(1, null, (cf.phoneManufacturer==Config.SONYE)?"Total: "+(Runtime.getRuntime().totalMemory()>>10)+" kb\n":""+"Free: "+(Runtime.getRuntime().freeMemory()>>10)+" kb");
 //#endif
             break;
 //#ifdef POPUPS
