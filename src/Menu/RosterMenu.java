@@ -23,15 +23,13 @@
  *
  */
 
-package Client;
+package Menu;
 
+import Client.*;
 import images.MenuIcons;
 import javax.microedition.lcdui.Display;
 import locale.SR;
 import midlet.BombusMod;
-import Menu.Menu;
-import Menu.MenuItem;
-
 
 public class RosterMenu extends Menu {
     private Object o;

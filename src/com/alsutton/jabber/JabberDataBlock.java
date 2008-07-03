@@ -76,17 +76,6 @@ public class JabberDataBlock
   }
 
   /**
-   * Constructor
-   *
-   * @param parent The parent of this data block
-   */
-
-  //public JabberDataBlock( JabberDataBlock _parent )
-  //{
-  //  this( "unknown", _parent, null );
-  //}
-
-  /**
    * Constructor including an Attribute list
    *
    * @param _parent The parent of this datablock
@@ -116,6 +105,8 @@ public class JabberDataBlock
     this( _tagName, _parent, null );
     setText(_body);
   }
+
+
   /**
    * Method to add a child to the list of child blocks
    *
@@ -167,10 +158,8 @@ public class JabberDataBlock
    * @return The data to send as a byte array
    */
 
-  public byte[] getBytes()
-  {
-    String data = toString();
-    return data.getBytes();
+  public byte[] getBytes() {
+    return toString().getBytes();
   }
 
   /**
@@ -221,6 +210,7 @@ public class JabberDataBlock
   public void setNameSpace(String xmlns){
       setAttribute("xmlns", xmlns);
   }
+
   /**
    * Method to set an attribute value
    *

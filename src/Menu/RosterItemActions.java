@@ -25,7 +25,8 @@
  *
  */
 
-package Client;
+package Menu;
+import Client.*;
 import Colors.ColorTheme;
 //#ifndef WMUC
 import Conference.ConferenceGroup;
@@ -58,8 +59,6 @@ import io.file.transfer.TransferSendFile;
 import java.util.Enumeration;
 import javax.microedition.lcdui.Display;
 import locale.SR;
-import Menu.Menu;
-import Menu.MenuItem;
 import ui.Time;
 //#ifdef CLIPBOARD
 //# import util.ClipBoard;

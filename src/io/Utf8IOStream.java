@@ -44,7 +44,7 @@ import util.Strconv;
  *
  * @author EvgS
  */
-public class Utf8IOStream implements Runnable{
+public class Utf8IOStream /*implements Runnable*/ {
     
     private StreamConnection connection;
     private InputStream inpStream;
@@ -67,17 +67,17 @@ public class Utf8IOStream implements Runnable{
     /** Creates a new instance of Utf8IOStream */
     public Utf8IOStream(StreamConnection connection) throws IOException {
 	this.connection=connection;
-//#if !(MIDP1)
+/*
         try {
             SocketConnection sc=(SocketConnection)connection;
             sc.setSocketOption(SocketConnection.KEEPALIVE, 1);
         } catch (Exception e) {}
-//#endif
-	
+*/
 	inpStream = connection.openInputStream();
 	outStream = connection.openOutputStream();	
 
-      length=pbyte=0;
+        length=0;
+        pbyte=0;
     }
     
     public void send( StringBuffer data ) throws IOException {
@@ -108,13 +108,7 @@ public class Utf8IOStream implements Runnable{
     public int read(byte buf[]) throws IOException {
         int avail=inpStream.available();
 
-        if (avail==0)
-//#if !ZLIB
-//#             //trying to fix phillips 9@9
-//#             if (!Config.getInstance().istreamWaiting) avail=1;
-//#             else
-//#endif           
-            return 0;
+        if (avail==0) return 0;
 
         if (avail>buf.length) avail=buf.length;
 
@@ -131,14 +125,14 @@ public class Utf8IOStream implements Runnable{
 	try { inpStream.close();    }  catch (Exception e) {}
 	// Alcatel temporary bugfix - this method hangs
 	//try { connection.close();   }  catch (Exception e) {};
-	new Thread(this).start();
+	//new Thread(this).start();
     }
-
+/*
     public void run() {
 	// Alcatel temporary bugfix - this method hangs
 	try { connection.close();   }  catch (Exception e) {}
     }
-
+*/
 //#if ZLIB
     
     private void appendZlibStats(StringBuffer s, long packed, long unpacked, boolean read){
@@ -147,7 +141,6 @@ public class Utf8IOStream implements Runnable{
         int dotpos=ratio.length()-1;
 
         s.append(" (").append( (dotpos==0)? "0":ratio.substring(0, dotpos)).append('.').append(ratio.substring(dotpos)).append('x').append(")");
-        
     }
 
     public String getStreamStats() {
@@ -174,22 +167,6 @@ public class Utf8IOStream implements Runnable{
         return stats.toString();
     }
 
-    /*public int getBytesR() {
-        if (inpStream instanceof ZInputStream) {
-            ZInputStream z = (ZInputStream) inpStream;
-            return (int)z.getTotalIn();
-        }
-        return bytesRecv;
-    }
-    
-    public int getBytesS() {
-        if (inpStream instanceof ZInputStream) {
-            ZOutputStream zo = (ZOutputStream) outStream;
-            return (int)zo.getTotalOut();
-        }
-        return bytesSent;
-    }*/
-    
     public long getBytes() {
         try {
             if (inpStream instanceof ZInputStream) {

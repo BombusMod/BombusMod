@@ -46,6 +46,9 @@ import Conference.ConferenceForm;
 
 //#ifdef ARCHIVE
 import Archive.ArchiveList;
+import Menu.RosterItemActions;
+import Menu.RosterMenu;
+import Menu.RosterToolsMenu;
 //#endif
 //#ifdef CLIENTS_ICONS
 //# import images.ClientsIcons;
@@ -315,9 +318,7 @@ public class Roster
     // establishing connection process
     public void run(){
 //#ifdef POPUPS
-        /*if (cf.firstRun)
-            setWobbler(1, (Contact) null, SR.MS_ENTER_SETTINGS);
-         */
+        //if (cf.firstRun) setWobbler(1, (Contact) null, SR.MS_ENTER_SETTINGS);
 //#endif
         setQuerySign(true);
 	if (!doReconnect) {
@@ -335,6 +336,7 @@ public class Roster
 //#             }
 //#endif
             setProgress(SR.MS_CONNECT_TO_+a.getServer(), 30);
+            
             theStream= a.openJabberStream();
             setProgress(SR.MS_OPENING_STREAM, 40);
             theStream.setJabberListener( this );
@@ -348,7 +350,7 @@ public class Roster
             doReconnect=false;
             myStatus=Presence.PRESENCE_OFFLINE;
             setQuerySign(false);
-            redraw();           
+            redraw();
             askReconnect(e);
         }
     }
@@ -484,11 +486,13 @@ public class Roster
     }
     
     public void cleanAllMessages(){
-        for (Enumeration e=hContacts.elements();e.hasMoreElements();) {
-            Contact c=(Contact)e.nextElement();
-            try {
-                c.purge();
-            } catch (Exception ex) { }
+        synchronized (hContacts) {
+            for (Enumeration e=hContacts.elements();e.hasMoreElements();) {
+                Contact c=(Contact)e.nextElement();
+                try {
+                    c.purge();
+                } catch (Exception ex) { }
+            }
         }
         highliteMessageCount=0;
         messageCount=0;
@@ -577,37 +581,38 @@ public class Roster
         }
         
         boolean firstInstance=true; //FS#712 workaround
-        
-        for (Enumeration e=hContacts.elements();e.hasMoreElements();) {
-            c=(Contact)e.nextElement();
-            if (c.jid.equals(J,false)) {
-                Group group= (c.jid.isTransport())? 
-                    groups.getGroup(Groups.TYPE_TRANSP) :
-                    groups.getGroup(grpName);
-                if (group==null) {
-                    group=groups.addGroup(grpName, Groups.TYPE_COMMON);
-                }
-                c.nick=nick;
-                c.setGroup(group);
-                c.subscr=subscr;
-                c.offline_type=status;
-                c.ask_subscribe=ask;
-                
-                if (c.origin==Contact.ORIGIN_PRESENCE) {
-                    if (firstInstance) c.origin=Contact.ORIGIN_ROSTERRES;
-                    else c.origin=Contact.ORIGIN_CLONE;
-                }
-                firstInstance=false;
-                
-                if (querysign==true)
-                {
-                    if (cf.collapsedGroups) {
-                        Group g=c.getGroup();
-                        g.collapsed=true; 
+        synchronized (hContacts) {
+            for (Enumeration e=hContacts.elements();e.hasMoreElements();) {
+                c=(Contact)e.nextElement();
+                if (c.jid.equals(J,false)) {
+                    Group group= (c.jid.isTransport())? 
+                        groups.getGroup(Groups.TYPE_TRANSP) :
+                        groups.getGroup(grpName);
+                    if (group==null) {
+                        group=groups.addGroup(grpName, Groups.TYPE_COMMON);
                     }
+                    c.nick=nick;
+                    c.setGroup(group);
+                    c.subscr=subscr;
+                    c.offline_type=status;
+                    c.ask_subscribe=ask;
+
+                    if (c.origin==Contact.ORIGIN_PRESENCE) {
+                        if (firstInstance) c.origin=Contact.ORIGIN_ROSTERRES;
+                        else c.origin=Contact.ORIGIN_CLONE;
+                    }
+                    firstInstance=false;
+
+                    if (querysign==true)
+                    {
+                        if (cf.collapsedGroups) {
+                            Group g=c.getGroup();
+                            g.collapsed=true; 
+                        }
+                    }
+
+                    c.setSortKey((nick==null)? jid:nick);
                 }
-                
-                c.setSortKey((nick==null)? jid:nick);
             }
         }
         if (status<0) removeTrash();
@@ -632,7 +637,9 @@ public class Roster
             return (MucContact) contact;
         } catch (Exception e) {
             // drop buggy bookmark in roster
-            hContacts.removeElement(contact);
+            synchronized (hContacts) {
+                hContacts.removeElement(contact);
+            }
             return null;
         }
     }
@@ -805,7 +812,9 @@ public class Roster
         
         // reconnect if disconnected
         if (myStatus!=Presence.PRESENCE_OFFLINE && theStream==null ) {
-            doReconnect=(hContacts.size()>1);
+            synchronized (hContacts) {
+                doReconnect=(hContacts.size()>1);
+            }
             redraw();
             new Thread(this).start();
             return;
@@ -906,23 +915,25 @@ public class Roster
          if (mcstatus==Presence.PRESENCE_INVISIBLE) return; //block multicasting presence invisible
 
          ExtendedStatus es= sl.getStatus(mcstatus);
-         for (Enumeration e=hContacts.elements(); e.hasMoreElements();) {
-            Contact c=(Contact) e.nextElement();
-            if (c.origin!=Contact.ORIGIN_GROUPCHAT) continue;
-            if (!((MucContact)c).commonPresence) continue; // stop if room left manually
-            ConferenceGroup confGroup=(ConferenceGroup)c.getGroup();
-            
-            if (!confGroup.inRoom) continue; // don`t reenter to leaved rooms
-            
-            Contact myself=confGroup.getSelfContact();
+         synchronized (hContacts) {
+             for (Enumeration e=hContacts.elements(); e.hasMoreElements();) {
+                Contact c=(Contact) e.nextElement();
+                if (c.origin!=Contact.ORIGIN_GROUPCHAT) continue;
+                if (!((MucContact)c).commonPresence) continue; // stop if room left manually
+                ConferenceGroup confGroup=(ConferenceGroup)c.getGroup();
 
-            if (c.status==Presence.PRESENCE_OFFLINE){
-                ConferenceForm.join(confGroup.desc, myself.getJid(), confGroup.password, 20);
-                continue;
-            }
-            Presence presence = new Presence(mcstatus, es.getPriority(), StringUtils.toExtendedString((message==null)?es.getMessage():message), null);
-            presence.setTo(myself.bareJid.substring(0, myself.bareJid.indexOf("/")+1)+myself.nick);
-            theStream.send(presence);
+                if (!confGroup.inRoom) continue; // don`t reenter to leaved rooms
+
+                Contact myself=confGroup.getSelfContact();
+
+                if (c.status==Presence.PRESENCE_OFFLINE){
+                    ConferenceForm.join(confGroup.desc, myself.getJid(), confGroup.password, 20);
+                    continue;
+                }
+                Presence presence = new Presence(mcstatus, es.getPriority(), StringUtils.toExtendedString((message==null)?es.getMessage():message), null);
+                presence.setTo(myself.bareJid.substring(0, myself.bareJid.indexOf("/")+1)+myself.nick);
+                theStream.send(presence);
+             }
          }
     }
 //#endif
@@ -1037,14 +1048,16 @@ public class Roster
     
     public void resolveNicknames(String transport){
 	vCardQueue=new Vector();
-	for (Enumeration e=hContacts.elements(); e.hasMoreElements();){
-	    Contact k=(Contact) e.nextElement();
-	    if (k.jid.isTransport()) 
-                continue;
-            int grpType=k.getGroupType();
-            if (k.jid.getServer().equals(transport) && k.nick==null && (grpType==Groups.TYPE_COMMON || grpType==Groups.TYPE_NO_GROUP))
-                vCardQueue.addElement(VCard.getQueryVCard(k.getJid(), "nickvc"+k.bareJid));
-	}
+        synchronized (hContacts) {
+            for (Enumeration e=hContacts.elements(); e.hasMoreElements();){
+                Contact k=(Contact) e.nextElement();
+                if (k.jid.isTransport()) 
+                    continue;
+                int grpType=k.getGroupType();
+                if (k.jid.getServer().equals(transport) && k.nick==null && (grpType==Groups.TYPE_COMMON || grpType==Groups.TYPE_NO_GROUP))
+                    vCardQueue.addElement(VCard.getQueryVCard(k.getJid(), "nickvc"+k.bareJid));
+            }
+        }
 	setQuerySign(true);
 	sendVCardReq();
 	
@@ -1917,11 +1930,10 @@ public class Roster
     }
 
     public void connectionTerminated( Exception e ) {
-        String error=null;
-        setProgress(SR.MS_DISCONNECTED, 0);
-         if( e != null ) {
+         if( e!=null ) {
             askReconnect(e);
         } else {
+            setProgress(SR.MS_DISCONNECTED, 0);
             try {
                 sendPresence(Presence.PRESENCE_OFFLINE, null);
             } catch (Exception e2) {
@@ -1941,26 +1953,30 @@ public class Roster
         }
         if (e.getMessage()!=null)
             error.append(e.getMessage());
-//#if DEBUG
-//#         e.printStackTrace();
-//#endif
-        try {
-             sendPresence(Presence.PRESENCE_OFFLINE, null);
-        } catch (Exception e2) { System.out.println("E2"); e2.printStackTrace(); }
 
         if (e instanceof SecurityException) { errorLog(error.toString()); return; }
         if (currentReconnect>=cf.reconnectCount) { errorLog(error.toString()); return; }
         
         currentReconnect++;
+        
         String topBar="("+currentReconnect+"/"+cf.reconnectCount+") Reconnecting";
         Msg m=new Msg(Msg.MESSAGE_TYPE_OUT, "local", topBar, error.toString());
         messageStore(selfContact(), m);
-        //Stats.getInstance().save();
-        new MyReconnect(topBar, error.toString(), display);
 
+        new MyReconnect(topBar, error.toString(), display);
      }
     
      public void doReconnect() {
+        setProgress(SR.MS_DISCONNECTED, 0);
+        try {
+             sendPresence(Presence.PRESENCE_OFFLINE, null);
+        } catch (Exception e2) { }
+/*
+        try {
+            theStream.close(); // sends </stream:stream> and closes socket
+            theStream=null;
+        } catch (Exception e) { e.printStackTrace(); }
+*/
          sendPresence(lastOnlineStatus, null);
      }
     
@@ -2523,16 +2539,21 @@ public class Roster
     
     public void searchActiveContact(int direction){
 	Vector activeContacts=new Vector();
-        int nowContact = -1, contacts=-1;
-	for (Enumeration r=hContacts.elements(); r.hasMoreElements(); ){
-	    Contact c=(Contact)r.nextElement();
-	    if (c.active()) {
-                activeContacts.addElement(c);
-                contacts=contacts+1;
-                if (c==activeContact) 
-                    nowContact=contacts;
+        int nowContact = -1, contacts=-1, currentContact=-1;
+        synchronized (hContacts) {
+            for (Enumeration r=hContacts.elements(); r.hasMoreElements(); ){
+                Contact c=(Contact)r.nextElement();
+                if (c.active()) {
+                    activeContacts.addElement(c);
+                    contacts=contacts+1;
+                    if (c==activeContact) {
+                        nowContact=contacts;
+                        currentContact=contacts;
+                    }
+                }
             }
-	}
+        }
+        
         int size=activeContacts.size();
         
 	if (size==0) return;
@@ -2542,33 +2563,37 @@ public class Roster
             if (nowContact<0) nowContact=size-1;
             if (nowContact>=size) nowContact=0;
             
+            if (currentContact==nowContact) return;
+            
             Contact c=(Contact)activeContacts.elementAt(nowContact);
             new ContactMessageList((Contact)c,display);
         } catch (Exception e) { }
     }
 
     public void deleteContact(Contact c) {
-	for (Enumeration e=hContacts.elements();e.hasMoreElements();) {
-	    Contact c2=(Contact)e. nextElement();
-	    if (c.jid.equals(c2. jid,false)) {
-			c2.setStatus(Presence.PRESENCE_TRASH);
-			c2.offline_type=Presence.PRESENCE_TRASH;
-	    }
-	}
-	
-	if (c.getGroupType()==Groups.TYPE_NOT_IN_LIST) {
-	    hContacts.removeElement(c);
-            countNewMsgs();
-	    reEnumRoster();
-	} else {
-            theStream.send(new IqQueryRoster(c.getBareJid(),null,null,"remove"));
-            
-            JabberDataBlock removeIq=new Iq(c.getJid(), Iq.TYPE_SET, "push");
-            JabberDataBlock query=removeIq.addChildNs("query", "jabber:iq:roster");
-            JabberDataBlock item= query.addChild("item",null);
-            item.setAttribute("subscription", "remove");
-            item.setAttribute("jid", c.getBareJid());
-            theStream.send(removeIq);
+        synchronized (hContacts) {
+            for (Enumeration e=hContacts.elements();e.hasMoreElements();) {
+                Contact c2=(Contact)e. nextElement();
+                if (c.jid.equals(c2. jid,false)) {
+                            c2.setStatus(Presence.PRESENCE_TRASH);
+                            c2.offline_type=Presence.PRESENCE_TRASH;
+                }
+            }
+
+            if (c.getGroupType()==Groups.TYPE_NOT_IN_LIST) {
+                hContacts.removeElement(c);
+                countNewMsgs();
+                reEnumRoster();
+            } else {
+                theStream.send(new IqQueryRoster(c.getBareJid(),null,null,"remove"));
+
+                JabberDataBlock removeIq=new Iq(c.getJid(), Iq.TYPE_SET, "push");
+                JabberDataBlock query=removeIq.addChildNs("query", "jabber:iq:roster");
+                JabberDataBlock item= query.addChild("item",null);
+                item.setAttribute("subscription", "remove");
+                item.setAttribute("jid", c.getBareJid());
+                theStream.send(removeIq);
+            }
         }
     }
 
@@ -2607,20 +2632,17 @@ public class Roster
         public void run(){
             try {
                 while (pendingRepaints>0) {
-                    //System.out.println(pendingRepaints);
                     pendingRepaints=0;
                     
                     int locCursor=cursor;
                     Object focused=(desiredFocus==null)?getFocusedObject():desiredFocus;
 		    desiredFocus=null;                    
                     Vector tContacts=new Vector(vContacts.size());
-                    
-                    Enumeration e;
-                    int i;
+
                     groups.resetCounters();
                     
                     synchronized (hContacts) {
-                        for (e=hContacts.elements();e.hasMoreElements();){
+                        for (Enumeration e=hContacts.elements(); e.hasMoreElements();){
                             Contact c=(Contact)e.nextElement();
                             Group grp=c.getGroup();
 			    grp.addContact(c);
@@ -2642,10 +2664,10 @@ public class Roster
                     visibleGroup.visible=true;
                     
                     // adding groups
-                    for (i=0; i<groups.getCount(); i++)
+                    for (int i=0; i<groups.getCount(); i++)
                         groups.addToVector(tContacts,i);
                     
-                    vContacts=tContacts;          
+                    vContacts=tContacts;
                     StringBuffer onl=new StringBuffer()
                     .append("(")
                     .append(groups.getRosterOnline())
@@ -2774,10 +2796,12 @@ public class Roster
 //#endif
 
     public void deleteGroup(Group deleteGroup) {
-        for (Enumeration e=hContacts.elements(); e.hasMoreElements();){
-            Contact cr=(Contact)e.nextElement();
-            if (cr.getGroup()==deleteGroup)
-                deleteContact(cr);                
+        synchronized (hContacts) {
+            for (Enumeration e=hContacts.elements(); e.hasMoreElements();){
+                Contact cr=(Contact)e.nextElement();
+                if (cr.getGroup()==deleteGroup)
+                    deleteContact(cr);                
+            }
         }
     }
     

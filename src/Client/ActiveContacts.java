@@ -60,12 +60,12 @@ public class ActiveContacts
     public ActiveContacts(Display display, Contact current) {
 	super();
 	activeContacts=new Vector();
-	for (Enumeration r=sd.roster.getHContacts().elements(); 
-	    r.hasMoreElements(); ) 
-	{
-	    Contact c=(Contact)r.nextElement();
-	    if (c.active()) activeContacts.addElement(c);
-	}
+        synchronized(sd.roster.getHContacts()) {
+            for (Enumeration r=sd.roster.getHContacts().elements(); r.hasMoreElements(); )  {
+                Contact c=(Contact)r.nextElement();
+                if (c.active()) activeContacts.addElement(c);
+            }
+        }
 	// РЅРµ СЃРѕР·РґР°С�?Р�? РІРёРґ, РµСЃР»Рё РЅРµС‚ Р°РєС‚РёРІРЅС‹С… РєРѕРЅС‚Р°РєС‚РѕРІ
 	if (getItemCount()==0) return;
 	

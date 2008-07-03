@@ -230,7 +230,6 @@ public class Account extends IconTextElement{
 
     public JabberStream openJabberStream() throws java.io.IOException{
         String proxy=null;
-        
         String host=this.server;
         int port=this.port;
         
@@ -254,7 +253,7 @@ public class Account extends IconTextElement{
 //#             proxy="socket://" + getProxyHostAddr() + ':' + getProxyPort();
 //#endif  
         }
-        return new JabberStream( getServer(), url.toString(), true, proxy);
+        return new JabberStream( getServer(), url.toString(), proxy);
     }
 
     public boolean isEnableProxy() {

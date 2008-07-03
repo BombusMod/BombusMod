@@ -36,13 +36,10 @@ import java.io.*;
 import java.util.*;
 import javax.microedition.io.*;
 import com.alsutton.jabber.datablocks.*;
-//import com.alsutton.xmlparser.*;
 import xml.*;
 import locale.SR;
 import xmpp.XmppError;
 import xmpp.XmppParser;
-
-import xmpp.extensions.IqPing;
 import xmpp.extensions.IqPing;
 
 public class JabberStream extends XmppParser implements Runnable {
@@ -54,9 +51,7 @@ public class JabberStream extends XmppParser implements Runnable {
      */
     
     private JabberDataBlockDispatcher dispatcher;
-    
-    //private Vector sendQueue;
-    
+
     private boolean rosterNotify;
     
     private String server; // for ping
@@ -65,8 +60,6 @@ public class JabberStream extends XmppParser implements Runnable {
 	
     public boolean loggedIn;
     
-    private boolean xmppV1;
-    
     public void enableRosterNotify(boolean en){ rosterNotify=en; }
     
     /**
@@ -74,11 +67,9 @@ public class JabberStream extends XmppParser implements Runnable {
      *
      */
     
-    public JabberStream( String server, String hostAddr, boolean xmppV1, String proxy)
-        throws IOException {
-        
+    public JabberStream( String server, String hostAddr, String proxy) throws IOException {
         this.server=server;
-        this.xmppV1=xmppV1;
+
         boolean waiting=Config.getInstance().istreamWaiting;
         
          StreamConnection connection;
@@ -95,18 +86,14 @@ public class JabberStream extends XmppParser implements Runnable {
          }
  
         iostream=new Utf8IOStream(connection);
-        //iostream.setStreamWaiting(waiting);
-    
         dispatcher = new JabberDataBlockDispatcher(this);        
      
         new Thread( this ). start();
-        
-        //initiateStream();
     }
 
     public void initiateStream() throws IOException {
         StringBuffer header=new StringBuffer("<stream:stream to='" ).append( server ).append( "' xmlns='jabber:client' xmlns:stream='http://etherx.jabber.org/streams'" );
-        if (xmppV1) header.append(" version='1.0'");
+        header.append(" version='1.0'");
         if (SR.MS_XMLLANG!=null) {
             header.append(" xml:lang='").append(SR.MS_XMLLANG).append("'");
         }
@@ -138,7 +125,6 @@ public class JabberStream extends XmppParser implements Runnable {
         }
         
         if (currentBlock.getParent() == null) {
-
             if (currentBlock.getTagName().equals("stream:error")) {
                 XmppError xe = XmppError.decodeStreamError(currentBlock);
 
@@ -159,9 +145,9 @@ public class JabberStream extends XmppParser implements Runnable {
     public void startKeepAliveTask(){
         Account account=StaticData.getInstance().account;
         int keepAliveType=account.getKeepAliveType();
+        if (keepAliveType==0) return;
         int keepAlivePeriod=account.getKeepAlivePeriod();
-        if (keepAliveType==0) 
-            return;
+
         keepAlive=new TimerTaskKeepAlive(keepAlivePeriod, keepAliveType);
     }
     
@@ -185,10 +171,9 @@ public class JabberStream extends XmppParser implements Runnable {
 
                 parser.parse(cbuf, length); 
             } 
-             //dispatcher.broadcastTerminatedConnection( null );
         } catch( Exception e ) {
              System.out.println("Exception in parser:");
-             e.printStackTrace();
+             //e.printStackTrace();
              dispatcher.broadcastTerminatedConnection(e);
          }
      }
@@ -212,13 +197,9 @@ public class JabberStream extends XmppParser implements Runnable {
                 if ((--time)<0) break;
             }
              //connection.close();
-        } catch( IOException e ) {
-            // Ignore an IO Exceptions because they mean that the stream is
-            // unavailable, which is irrelevant.
-        } finally {
-            dispatcher.halt();
-	    iostream.close();
-        }
+        } catch( IOException e ) { }
+        dispatcher.halt();
+        iostream.close();
     }
     
     /**
@@ -272,13 +253,14 @@ public class JabberStream extends XmppParser implements Runnable {
 //#         StanzasList.getInstance().add(data, 1);
 //#     }
 //#endif
+
     /**
      * Set the listener to this stream.
      */
-    
     public void addBlockListener(JabberBlockListener listener) { 
         dispatcher.addBlockListener(listener);
     }
+
     public void cancelBlockListener(JabberBlockListener listener) { 
         dispatcher.cancelBlockListener(listener);
     }
@@ -305,36 +287,27 @@ public class JabberStream extends XmppParser implements Runnable {
      public String getStreamStats() {
          return iostream.getStreamStats();
      }
-    
-    /*public int getBytesIn() {
-        return iostream.getBytesR();
-    }
-    public int getBytesOut() {
-        return iostream.getBytesS();
-    }*/
 
     public long getBytes() {
         return iostream.getBytes();
     }
     
      private class TimerTaskKeepAlive extends TimerTask{
-         private Timer t;
+        private Timer t;
         private int verifyCtr;
         private int period;
         private int type;
         public TimerTaskKeepAlive(int periodSeconds, int type){
-             t=new Timer();
+            t=new Timer();
             this.type=type;
             this.period=periodSeconds;
             long periodRun=periodSeconds*1000; // milliseconds
             t.schedule(this, periodRun, periodRun);
          }
          public void run() {
-             try {
+            try {
                  //System.out.println("Keep-Alive");
                  sendKeepAlive(type);
-                 System.gc();
-                 Thread.sleep(50);
             } catch (Exception e) { 
                 dispatcher.broadcastTerminatedConnection(e);
                 //e.printStackTrace(); 
@@ -358,16 +331,15 @@ public class JabberStream extends XmppParser implements Runnable {
             this.data=data;
             new Thread(this).start();
         }
+
         public void run(){
             try {
-		Thread.sleep(100);
+	Thread.sleep(100);
                 StringBuffer buf=new StringBuffer();
                 data.constructXML(buf);
                 sendBuf( buf );
                 buf=null;
-            } catch (Exception e) {
-                //e.printStackTrace(); 
-            }
+            } catch (Exception e) { }
         }
     }
 }

@@ -25,11 +25,12 @@
  *
  */
 
-package Client;
+package Menu;
 //#ifdef CONSOLE
 //# import Console.XMLList;
 //#endif
 import Alerts.AlertCustomizeForm;
+import Client.*;
 //#ifdef PRIVACY
 import PrivacyLists.PrivacySelect;
 //#endif
@@ -52,8 +53,6 @@ import images.MenuIcons;
 import javax.microedition.lcdui.Display;
 import locale.SR;
 import Colors.ColorConfigForm;
-import Menu.Menu;
-import Menu.MenuItem;
 //#ifdef USER_KEYS
 //# import ui.keys.userKeysList;
 //#endif

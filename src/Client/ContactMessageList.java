@@ -41,6 +41,7 @@ import Conference.MucContact;
 //# import Messages.MessageItem;
 //# import Messages.MessageUrl;
 //#endif
+import Menu.RosterItemActions;
 import Messages.MessageList;
 import images.RosterIcons;
 import locale.SR;

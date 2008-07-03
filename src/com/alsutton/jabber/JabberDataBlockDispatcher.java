@@ -46,8 +46,6 @@ public class JabberDataBlockDispatcher extends Thread
   private JabberListener listener = null;
   private JabberStream stream;
 
-  boolean isActive() { return dispatcherActive; }
-  
   private Vector blockListeners=new Vector();
 
   /**
@@ -61,6 +59,8 @@ public class JabberDataBlockDispatcher extends Thread
    */
 
   private boolean dispatcherActive;
+
+  boolean isActive() { return dispatcherActive; }
 
   /**
    * Constructor to start the dispatcher in a thread.
@@ -98,18 +98,6 @@ public class JabberDataBlockDispatcher extends Thread
       }
   }
   
-  public void cancelBlockListenerByClass(Class removeClass){
-      synchronized (blockListeners) {
-          int index=0;
-          while (index<blockListeners.size()) {
-              Object listener=blockListeners.elementAt(index);
-              if (listener.getClass().equals(removeClass)) blockListeners.removeElementAt(index); 
-              else index++;
-          }
-      }
-  }
-  
-  
   /**
    * Method to add a datablock to the dispatch queue
    *
@@ -136,10 +124,11 @@ public class JabberDataBlockDispatcher extends Thread
 
             JabberDataBlock dataBlock = (JabberDataBlock) waitingQueue.elementAt(0);
             waitingQueue.removeElementAt( 0 );
-            int i=0;
+
             try {
                 int processResult=JabberBlockListener.BLOCK_REJECTED;
                 synchronized (blockListeners) {
+                    int i=0;
                     while (i<blockListeners.size()) {
                         processResult=((JabberBlockListener)blockListeners.elementAt(i)).blockArrived(dataBlock);
                         if (processResult==JabberBlockListener.BLOCK_PROCESSED) break;
@@ -167,11 +156,20 @@ public class JabberDataBlockDispatcher extends Thread
 //#ifdef CONSOLE
 //#                 StanzasList.getInstance().add(dataBlock.toString(), 10);
 //#endif
-            } catch (Exception e) {
-            //e.printStackTrace(); //error here
-            }
+            } catch (Exception e) { }
         }
     }
+    
+  public void cancelBlockListenerByClass(Class removeClass){
+      synchronized (blockListeners) {
+          int index=0;
+          while (index<blockListeners.size()) {
+              Object listener=blockListeners.elementAt(index);
+              if (listener.getClass().equals(removeClass)) blockListeners.removeElementAt(index); 
+              else index++;
+          }
+      }
+  }
 
   public void rosterNotify(){
     listener.rosterItemNotify();
@@ -197,8 +195,7 @@ public class JabberDataBlockDispatcher extends Thread
   public void broadcastTerminatedConnection( Exception exception )
   {
     halt();
-    if( listener != null )
-      listener.connectionTerminated( exception );
+    if( listener != null ) listener.connectionTerminated( exception );
   }
 
   /**
@@ -207,7 +204,6 @@ public class JabberDataBlockDispatcher extends Thread
 
   public void broadcastBeginConversation( String SessionId )
   {
-    if( listener != null )
-      listener.beginConversation(SessionId);
+    if( listener != null ) listener.beginConversation(SessionId);
   }
 }
