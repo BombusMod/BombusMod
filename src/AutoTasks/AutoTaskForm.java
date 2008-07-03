@@ -51,8 +51,13 @@ public class AutoTaskForm
     int min  =0;
     int wait =1;
 
+    private SimpleString taskTypeDesc;
     private DropChoiceBox taskType;
+    
+    private SimpleString actionTypeDesc;
     private DropChoiceBox actionType;
+
+    private SimpleString autoTaskTimeDesc;
 
     private NumberInput autoTaskDelay;
 
@@ -77,8 +82,27 @@ public class AutoTaskForm
 //#         actionIndex=at.taskAction;
 //#         if (autoTaskHour!=null) hour = at.startHour;
 //#         if (autoTaskMin!=null) min = at.startMin;
-//#         if (autoTaskDelay!=null) wait = at.waitTime/60000;    
+//#         if (autoTaskDelay!=null) wait = at.waitTime/60000;
+//#         
+//#         taskTypeDesc=new SimpleString(SR.MS_AUTOTASK_TYPE, true);
+//#         taskType=new DropChoiceBox(display);
+//#         taskType.append(SR.MS_DISABLED);
+//#         taskType.append(SR.MS_BY_TIME_);
+//#         taskType.append(SR.MS_BY_TIMER_);
+//#         
+//#         actionTypeDesc=new SimpleString(SR.MS_AUTOTASK_ACTION_TYPE, true);
+//#         actionType=new DropChoiceBox(display);
+//#         actionType.append(SR.MS_AUTOTASK_QUIT_BOMBUSMOD);
+//#         actionType.append(SR.MS_AUTOTASK_QUIT_CONFERENCES);
+//#         actionType.append(SR.MS_AUTOTASK_LOGOFF);
+//#         actionType.append(SR.MS_BREAK_CONECTION);
+//#         
+//#         autoTaskTimeDesc=new SimpleString(SR.MS_AUTOTASK_TIME, true);
 //# 
+//#         autoTaskHour=new NumberInput(display, SR.MS_AUTOTASK_HOUR, Integer.toString(hour), 0, 23);
+//#         autoTaskMin=new NumberInput(display, SR.MS_AUTOTASK_MIN, Integer.toString(min), 0, 59);
+//#         autoTaskDelay=new NumberInput(display, SR.MS_AUTOTASK_DELAY, Integer.toString(wait), 1, 600);
+//#             
 //#         update();
 //#         
 //# 	addCommand(cmdOk);
@@ -104,10 +128,9 @@ public class AutoTaskForm
 //#             at.startTask();
 //#         destroyView();
 //#     }
-//# 
-//#     public void eventOk(){
-//#         super.eventOk();
-//#         if (cursor==1) {
+//#     
+//#     protected void beginPaint(){
+//#         if(typeIndex!=taskType.getSelectedIndex()); {
 //#             typeIndex=taskType.getSelectedIndex();
 //#             actionIndex=actionType.getSelectedIndex();
 //#             if (autoTaskHour!=null) hour = Integer.parseInt(autoTaskHour.getValue());
@@ -125,33 +148,24 @@ public class AutoTaskForm
 //#     public void update(){
 //#         itemsList=new Vector();
 //#         
-//#         itemsList.addElement(new SimpleString(SR.MS_AUTOTASK_TYPE, true));
-//#         taskType=new DropChoiceBox(display);
-//#         taskType.append(SR.MS_DISABLED);
-//#         taskType.append(SR.MS_BY_TIME_);
-//#         taskType.append(SR.MS_BY_TIMER_);
+//#         itemsList.addElement(taskTypeDesc);
 //#         taskType.setSelectedIndex(typeIndex);
 //#         itemsList.addElement(taskType);
-//#         
-//#         itemsList.addElement(new SimpleString(SR.MS_AUTOTASK_ACTION_TYPE, true));
-//#         actionType=new DropChoiceBox(display);
-//#         actionType.append(SR.MS_AUTOTASK_QUIT_BOMBUSMOD);
-//#         actionType.append(SR.MS_AUTOTASK_QUIT_CONFERENCES);
-//#         actionType.append(SR.MS_AUTOTASK_LOGOFF);
-//#         actionType.append(SR.MS_BREAK_CONECTION);
+//# 
+//#         itemsList.addElement(actionTypeDesc);
 //#         actionType.setSelectedIndex(actionIndex);
 //#         itemsList.addElement(actionType);
 //#         
 //#         if (typeIndex==1) {
-//#             itemsList.addElement(new SimpleString(SR.MS_AUTOTASK_TIME, true));
+//#             itemsList.addElement(autoTaskTimeDesc);
 //# 
-//#             autoTaskHour=new NumberInput(display, SR.MS_AUTOTASK_HOUR, Integer.toString(hour), 0, 23);
+//#             autoTaskHour.setValue(Integer.toString(hour));
 //#             itemsList.addElement(autoTaskHour);
 //# 
-//#             autoTaskMin=new NumberInput(display, SR.MS_AUTOTASK_MIN, Integer.toString(min), 0, 59);
+//#             autoTaskMin.setValue(Integer.toString(min));
 //#             itemsList.addElement(autoTaskMin);
 //#          } else if (typeIndex==2) {
-//#             autoTaskDelay=new NumberInput(display, SR.MS_AUTOTASK_DELAY, Integer.toString(wait), 1, 600);
+//#             autoTaskDelay.setValue(Integer.toString(wait));
 //#             itemsList.addElement(autoTaskDelay);
 //#         }
 //#     }
