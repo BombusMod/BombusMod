@@ -29,6 +29,7 @@ package ui.controls;
 
 import Client.Contact;
 import Colors.ColorTheme;
+import images.RosterIcons;
 import java.util.Enumeration;
 import java.util.Vector;
 import javax.microedition.lcdui.Font;
@@ -68,6 +69,8 @@ public class PopUp {
     
     public int scrollable=SCROLLABLE_NONE;
     
+    private RosterIcons ri;
+    
     synchronized public void addPopup(int type, Contact contact, String message){
         if (message!=null)
             //popUps.addElement(new PopUpElement(type, contact, StringUtils.parseMessage(message, width-border-padding, height-border-padding, false, font)));
@@ -81,6 +84,7 @@ public class PopUp {
          popUps = new Vector();
          font=FontCache.getBalloonFont();
          ct=ColorTheme.getInstance();
+         ri=RosterIcons.getInstance();
     }
     
     public void init(Graphics g, int width, int height) {
@@ -129,18 +133,7 @@ public class PopUp {
         if (lines.size()<1) return;
         
         int fh=getFontHeight();
-        
-        switch (scrollable) {
-            case SCROLLABLE_UP:
-                g.drawString("▲", maxWdth-10, y, Graphics.TOP|Graphics.LEFT);
-                break;
-            case SCROLLABLE_BOTH:
-                g.drawString("▲▼", maxWdth-15, y, Graphics.TOP|Graphics.LEFT);
-                break;
-            case SCROLLABLE_DOWN:
-                g.drawString("▼", maxWdth-10, y, Graphics.TOP|Graphics.LEFT);
-                break;
-        }
+
         int pos=0;
         
         for (Enumeration stringLine=lines.elements(); stringLine.hasMoreElements(); ) {
@@ -242,7 +235,22 @@ public class PopUp {
         g.fillRect(1,1,popUpWidth-2,popUpHeight-2);             //fill
         
         g.setColor(getColorInk());
+        
         g.setFont(font);
+        switch (scrollable) {
+            case SCROLLABLE_UP:
+                ri.drawImage(g, 0x27, maxWdth-ri.getWidth(), popUpHeight-ri.getHeight());
+                //g.drawString("▲", maxWdth-10, 3, Graphics.TOP|Graphics.LEFT);
+                break;
+            case SCROLLABLE_BOTH:
+                ri.drawImage(g, 0x25, maxWdth-ri.getWidth(), popUpHeight-ri.getHeight());
+                //g.drawString("▲▼", maxWdth-15, 3, Graphics.TOP|Graphics.LEFT);
+                break;
+            case SCROLLABLE_DOWN:
+                ri.drawImage(g, 0x26, maxWdth-ri.getWidth(), popUpHeight-ri.getHeight());
+                //g.drawString("▼", maxWdth-10, 3, Graphics.TOP|Graphics.LEFT);
+                break;
+        }
         
         drawAllStrings(g, 2,3);
     }
