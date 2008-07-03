@@ -879,10 +879,21 @@ public abstract class VirtualList
 //#         System.out.println(keyCode);
 //#endif
 //#ifdef POPUPS
-        if (keyCode==greenKeyCode) {
+        /*if (keyCode==greenKeyCode) {
             if (popup.getContact()!=null) {
                 new ContactMessageList(popup.getContact(),display);
                 popup.next();
+                return;
+            }
+        }*/
+        if (popup.scrollable>-1) {
+            if (keyCode==KEY_NUM2) {
+                popup.scrollUp();
+                repaint();
+                return;
+            } else if (keyCode==KEY_NUM8) {
+                popup.scrollDown();
+                repaint();
                 return;
             }
         }
@@ -952,7 +963,7 @@ public abstract class VirtualList
             System.gc();
             try { Thread.sleep(50); } catch (InterruptedException ex) { }
 //#ifdef POPUPS
-            setWobble(1, null, "Free: "+(Runtime.getRuntime().freeMemory()>>10)+" kb");
+            setWobble(1, null, "1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\nFree: "+(Runtime.getRuntime().freeMemory()>>10)+" kb");
 //#endif
             break;
 //#ifdef POPUPS

@@ -29,6 +29,7 @@ package ui.controls;
 
 import Client.Contact;
 import Colors.ColorTheme;
+import java.util.Enumeration;
 import java.util.Vector;
 import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
@@ -56,10 +57,21 @@ public class PopUp {
     
     private ColorTheme ct;
 
+    private final static int  SCROLLABLE_NONE=-1;
+    private final static int  SCROLLABLE_DOWN=0;
+    private final static int  SCROLLABLE_BOTH=1;
+    private final static int  SCROLLABLE_UP=2;
+
+    private int maxWdth;
+
+    private int startLine;
+    
+    public int scrollable=SCROLLABLE_NONE;
+    
     synchronized public void addPopup(int type, Contact contact, String message){
         if (message!=null)
             //popUps.addElement(new PopUpElement(type, contact, StringUtils.parseMessage(message, width-border-padding, height-border-padding, false, font)));
-            popUps.addElement(new PopUpElement(type, contact, StringUtils.parseMessage(message, width-border-padding, font)));
+            popUps.addElement(new PopUpElement(type, /*contact,*/ StringUtils.parseMessage(message, width-border-padding, font)));
 //#ifdef DEBUG
 //# //	System.out.println("added message to array = "+message);
 //#endif
@@ -75,16 +87,34 @@ public class PopUp {
         this.height=height;
         this.width=width;
     }
-    
+/*
     public Contact getContact() {
         if(popUps.size()>0)
             return ((PopUpElement)popUps.elementAt(0)).getContact();
         return null;
     }
-    
+*/
     public void next() {
         if(popUps.size()>0){
             popUps.removeElementAt(0);
+        }
+    }
+    
+    public void scrollDown() {
+        if (scrollable==SCROLLABLE_DOWN || scrollable==SCROLLABLE_BOTH) {
+            Vector lines=((PopUpElement)popUps.elementAt(0)).getMessage();
+            if (lines.size()<1) return;
+            startLine++;
+//System.out.println("scrollDown()");
+        }
+    }
+    
+    public void scrollUp() {
+        if (scrollable==SCROLLABLE_UP || scrollable==SCROLLABLE_BOTH) {
+            Vector lines=((PopUpElement)popUps.elementAt(0)).getMessage();
+            if (lines.size()<1) return;
+            startLine--;
+//System.out.println("scrollUp()");
         }
     }
     
@@ -98,12 +128,28 @@ public class PopUp {
         if (lines.size()<1) return;
         
         int fh=getFontHeight();
-
-	for (int line=0; line<lines.size(); ) 
-	{
-            g.drawString((String) lines.elementAt(line), x, y, Graphics.TOP|Graphics.LEFT);
-            line=line+1;
-            y += fh;
+        
+        switch (scrollable) {
+            case SCROLLABLE_UP:
+                g.drawString("▲", maxWdth-10, y, Graphics.TOP|Graphics.LEFT);
+                break;
+            case SCROLLABLE_BOTH:
+                g.drawString("▲▼", maxWdth-15, y, Graphics.TOP|Graphics.LEFT);
+                break;
+            case SCROLLABLE_DOWN:
+                g.drawString("▼", maxWdth-10, y, Graphics.TOP|Graphics.LEFT);
+                break;
+        }
+        int pos=0;
+        
+        for (Enumeration stringLine=lines.elements(); stringLine.hasMoreElements(); ) {
+            String str=(String)stringLine.nextElement();
+            if (pos>=startLine) {
+                g.drawString(str, x, y, Graphics.TOP|Graphics.LEFT);
+                y += fh;
+            }
+            pos++;
+            str=null;
 	}
     }
     
@@ -114,7 +160,7 @@ public class PopUp {
     private int getHeight() {
         Vector message=((PopUpElement)popUps.elementAt(0)).getMessage();
         
-        return getFontHeight()*message.size();
+        return getFontHeight()*(message.size()-startLine);
     }
     
     private int getStrWidth(String string) {
@@ -128,8 +174,7 @@ public class PopUp {
         
         if (lines.size()<1) return length;
 
-	for (int line=0; line<lines.size(); ) 
-	{
+	for (int line=0; line<lines.size(); ) {
             String string=(String) lines.elementAt(line);
             length=(length>getStrWidth(string))?length:getStrWidth(string);
             line++;
@@ -164,14 +209,18 @@ public class PopUp {
 	if(popUps.size()<1)
 	    return;
         
-        int strWdth=getMaxWidth();
+        scrollable=(startLine>0)?SCROLLABLE_UP:SCROLLABLE_NONE;
         
-        popUpWidth=(strWdth>(width-border))?width-border:strWdth+padding;
-        widthBorder=(strWdth>popUpWidth)?border/2:(width-popUpWidth)/2;
+        maxWdth=getMaxWidth();
+        
+        popUpWidth=(maxWdth>(width-border))?width-border:maxWdth+padding;
+        widthBorder=(maxWdth>popUpWidth)?border/2:(width-popUpWidth)/2;
 
         int stringsHeight=getHeight();
 
         if (stringsHeight>height) {
+            scrollable=(startLine>0)?SCROLLABLE_BOTH:SCROLLABLE_DOWN;
+            
             heightBorder=0;
             popUpHeight=height;
         } else {
@@ -200,18 +249,18 @@ public class PopUp {
     
     class PopUpElement {
         private int type;
-        private Contact from;
+        //private Contact from;
         private Vector message;
 
-        public PopUpElement(int type, Contact from, Vector message) {
-            this.from=from;
+        public PopUpElement(int type, /*Contact from,*/ Vector message) {
+            //this.from=from;
             this.type=type;
             this.message=message;
         }
 
         public int getType() { return type; }
         public Vector getMessage() { return message; }
-        public Contact getContact() { return from; }
+        //public Contact getContact() { return from; }
     }
 }
  
