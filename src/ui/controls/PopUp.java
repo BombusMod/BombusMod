@@ -97,6 +97,7 @@ public class PopUp {
     public void next() {
         if(popUps.size()>0){
             popUps.removeElementAt(0);
+            startLine=0;
         }
     }
     
