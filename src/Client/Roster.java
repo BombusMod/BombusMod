@@ -1226,6 +1226,8 @@ public class Roster
                                 else
                                     new VCardView(display, vcard);
                             }
+                        } else {
+                            new VCardView(display, vcard);
                         }
                         return JabberBlockListener.BLOCK_PROCESSED;
                     }
@@ -2575,8 +2577,8 @@ public class Roster
             for (Enumeration e=hContacts.elements();e.hasMoreElements();) {
                 Contact c2=(Contact)e. nextElement();
                 if (c.jid.equals(c2. jid,false)) {
-                            c2.setStatus(Presence.PRESENCE_TRASH);
-                            c2.offline_type=Presence.PRESENCE_TRASH;
+                    c2.setStatus(Presence.PRESENCE_TRASH);
+                    c2.offline_type=Presence.PRESENCE_TRASH;
                 }
             }
 

@@ -29,9 +29,11 @@ package Client;
 //#ifndef WMUC
 import Conference.MucContact;
 //#endif
+import VCard.VCard;
 import javax.microedition.lcdui.*;
 import java.util.*;
 import locale.SR;
+import ui.controls.form.LinkString;
 import ui.controls.form.SimpleString;
 import ui.controls.form.CheckBox;
 import ui.controls.form.DefForm;
@@ -48,6 +50,7 @@ public final class ContactEdit
     public Displayable parentView;
     
     //Form f;
+    private LinkString vCardReq;
     private TextInput tJid;
     private TextInput tNick;
     private TextInput tGroup;
@@ -80,7 +83,7 @@ public final class ContactEdit
         cf=Config.getInstance();
         
         tJid=new TextInput(display, SR.MS_USER_JID, null, null, TextField.ANY); 
-
+        
         tNick=new TextInput(display, SR.MS_NAME, null, null, TextField.ANY);
         
         tGroup=new TextInput(display, null, (c==null)?"":c.getGroup().name, null, TextField.ANY);
@@ -168,10 +171,19 @@ public final class ContactEdit
         if (newContact) {
             itemsList.addElement(new SimpleString(SR.MS_SUBSCRIPTION, true));
             itemsList.addElement(tAskSubscrCheckBox);
+            
+            vCardReq=new LinkString(SR.MS_VCARD){ public void doAction() { requestVCard(); }};
+            itemsList.addElement(vCardReq);
         }
         
         moveCursorTo(getNextSelectableRef(-1));
         attachDisplay(display);
+    }
+    
+    private void requestVCard() {
+        String jid=tJid.getValue();
+        if (jid.length()>0)
+            VCard.request(jid, jid);
     }
 
     public void cmdOk() {
