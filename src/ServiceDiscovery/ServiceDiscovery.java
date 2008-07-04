@@ -163,7 +163,6 @@ public class ServiceDiscovery
     
     
     private void mainbarUpdate(){
-        
         getMainBarItem().setElementAt(new Integer(discoIcon), 0);
         getMainBarItem().setElementAt((service==null)?SR.MS_RECENT:service, 2);
         getMainBarItem().setElementAt(sd.roster.getEventIcon(), 4);
@@ -177,7 +176,7 @@ public class ServiceDiscovery
 	} else {
 	    removeCommand(cmdOk);
 	}
-        getMainBarItem().setElementAt(count,1);	    
+        getMainBarItem().setElementAt(count,1);
     }
     
     private void requestQuery(String namespace, String id){
@@ -210,7 +209,6 @@ public class ServiceDiscovery
     }
     
     public int blockArrived(JabberDataBlock data) {
-        //System.out.println("<< "+data.toString());
         if (!(data instanceof Iq)) return JabberBlockListener.BLOCK_REJECTED;
         String id=data.getAttribute("id");
         if (!id.startsWith("disco")) return JabberBlockListener.BLOCK_REJECTED;
@@ -230,10 +228,19 @@ public class ServiceDiscovery
 
             return JabberBlockListener.BLOCK_PROCESSED;
         }
-
+        JabberDataBlock command1=data.getChildBlock("query");
+        JabberDataBlock command2=data.getChildBlock("command");
+        if (command1==null) {
+            if (command2!=null) {
+                command1=command2;
+            }
+            if (command1.getAttribute("node").startsWith("http://jabber.org/protocol/rc#")) id="discocmd"; //hack
+        }
+        
         JabberDataBlock query=data.getChildBlock((id.equals("discocmd"))?"command":"query");
         Vector childs=query.getChildBlocks();
         //System.out.println(id);
+
         if (id.equals(discoId("disco2"))) {
             Vector items=new Vector();
             if (childs!=null)

@@ -71,7 +71,7 @@ public class PopUp {
     
     private RosterIcons ri;
     
-    synchronized public void addPopup(int type, Contact contact, String message){
+    synchronized public void addPopup(int type, /*Contact contact,*/ String message){
         if (message!=null)
             //popUps.addElement(new PopUpElement(type, contact, StringUtils.parseMessage(message, width-border-padding, height-border-padding, false, font)));
             popUps.addElement(new PopUpElement(type, /*contact,*/ StringUtils.parseMessage(message, width-border-padding, font)));
@@ -101,6 +101,7 @@ public class PopUp {
     public void next() {
         if(popUps.size()>0){
             popUps.removeElementAt(0);
+            scrollable=SCROLLABLE_NONE;
             startLine=0;
         }
     }

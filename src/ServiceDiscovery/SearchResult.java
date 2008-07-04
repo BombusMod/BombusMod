@@ -123,7 +123,7 @@ public class SearchResult
         }
 //#ifdef POPUPS
         if (getItemCount()<1)
-            VirtualList.setWobble(3, (Contact) null, "Not found :(");
+            VirtualList.setWobble(3, /*(Contact) null,*/ "Not found :(");
 //#endif
         sd.roster.reEnumRoster();
     }

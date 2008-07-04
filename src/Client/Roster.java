@@ -88,6 +88,9 @@ import xmpp.extensions.IqLast;
 import xmpp.extensions.IqPing;
 import xmpp.extensions.IqVersionReply;
 import xmpp.extensions.IqTimeReply;
+//#ifdef ADHOC
+//# import xmpp.extensions.IQCommands;
+//#endif
 
 //#ifdef PEP
 //# import xmpp.extensions.pep.PepListener;
@@ -1129,6 +1132,9 @@ public class Roster
         theStream.addBlockListener(new IqLast());
         theStream.addBlockListener(new IqVersionReply());
         theStream.addBlockListener(new IqTimeReply());
+//#ifdef ADHOC
+//#         theStream.addBlockListener(new IQCommands());
+//#endif
         theStream.addBlockListener(new EntityCaps());
 //#ifdef PEP
 //#         if (cf.sndrcvmood)
@@ -2353,10 +2359,10 @@ public class Roster
                 mess.append(cntact.statusString);
             }
             
-            super.setWobble(1, (Contact) null, mess.toString());
+            super.setWobble(1, /*(Contact) null,*/ mess.toString());
             mess=null;
         } else {
-            super.setWobble(type, contact, info);
+            super.setWobble(type, /*contact,*/ info);
         }
 
         redraw();
@@ -2832,7 +2838,7 @@ public class Roster
 //#         if (isLoggedIn())
 //#             str.append(theStream.getStreamStats());
 //# 
-//#         VirtualList.setWobble(1, (Contact) null, str.toString());
+//#         VirtualList.setWobble(1, /*(Contact) null,*/ str.toString());
 //#         str=null;
 //#     }
 //#endif

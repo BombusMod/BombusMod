@@ -447,7 +447,6 @@ public class SR {
 //#     public static String MS_STARTED=loadString("Started: ");
 //#     public static String MS_TRAFFIC_STATS=loadString("Traffic stats: ");
 //#     public static String MS_ALL=loadString("All: ");
-//#     public static String MS_PREVIOUS=loadString("Previous: ");
 //#     public static String MS_CURRENT=loadString("Current: ");
 //#endif
     public static String MS_LAST_MESSAGES = loadString( "Last Messages" );
