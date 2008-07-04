@@ -113,6 +113,8 @@ public class Contact extends IconTextElement{
     
     public String msgSuspended;
     
+    public String lastSendedMessage;
+    
     protected short key0;
     protected String key1;
 
@@ -402,6 +404,7 @@ public class Contact extends IconTextElement{
 //#endif
         msgs=new Vector();
         
+        lastSendedMessage=null;
         activeMessage=-1; //drop activeMessage num
         
         resetNewMsgCnt();
@@ -448,7 +451,7 @@ public class Contact extends IconTextElement{
                 vcard=null;
             }
         } catch (Exception e) { }
-        
+        lastSendedMessage=null;
         lastUnread=0;
         resetNewMsgCnt();
     }

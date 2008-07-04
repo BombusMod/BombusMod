@@ -77,6 +77,7 @@ public class MessageEdit
 //#     private Command cmdSendInTranslit=new Command(SR.MS_TRANSLIT, Command.SCREEN, 5);
 //#     private Command cmdSendInDeTranslit=new Command(SR.MS_DETRANSLIT, Command.SCREEN, 5);
 //#endif
+    private Command cmdLastMessage=new Command(SR.MS_PREVIOUS, Command.SCREEN, 6);
     private Command cmdSubj=new Command(SR.MS_SET_SUBJECT, Command.SCREEN, 7);
     
     /** Creates a new instance of MessageEdit */
@@ -106,10 +107,12 @@ public class MessageEdit
 //#endif
         addCommand(cmdSuspend);
         addCommand(cmdCancel);
-        setCommandListener(this);
         
         if (to.origin==Contact.ORIGIN_GROUPCHAT)
             addCommand(cmdSubj);
+        
+        if (to.lastSendedMessage!=null)
+            addCommand(cmdLastMessage);
                 
         setCommandListener(this);
 
@@ -127,6 +130,7 @@ public class MessageEdit
         int caretPos=getCaretPos();
 
         if (c==cmdInsMe) { insert("/me ", 0); return; }
+        if (c==cmdLastMessage) { super.setText(to.lastSendedMessage); return; }
 //#ifdef SMILES
         if (c==cmdSmile) { new SmilePicker(display, caretPos, this); return; }
 //#endif
@@ -200,7 +204,8 @@ public class MessageEdit
         
         try {
             if (body!=null || subj!=null || comp!=null) {
-                    sd.roster.sendMessage(to, id, body, subj, comp);
+                to.lastSendedMessage=body;
+                sd.roster.sendMessage(to, id, body, subj, comp);
             }
         } catch (Exception e) { }
 

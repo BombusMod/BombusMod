@@ -657,6 +657,8 @@ public class SR {
     public static String MS_MENU=loadString("Menu");
 
     public static String MS_CHANGE=loadString("Change");
+
+    public static String MS_PREVIOUS=loadString("Previous");
     
     private SR() { }
     
