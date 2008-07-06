@@ -28,8 +28,11 @@
 
 package xmpp.extensions;
 
+import Client.Contact;
 import Client.Jid;
 import Client.StaticData;
+import Conference.ConferenceGroup;
+import Conference.MucContact;
 import com.alsutton.jabber.JabberBlockListener;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
@@ -46,8 +49,7 @@ public class IQCommands implements JabberBlockListener {
      * Creates a new instance of IQCommands
      */
     public IQCommands() { }
-    
-
+        
     public int blockArrived(JabberDataBlock data) {
         if (!(data instanceof Iq)) return BLOCK_REJECTED;
         String type=data.getTypeAttribute();
@@ -78,18 +80,21 @@ public class IQCommands implements JabberBlockListener {
                 status.setAttribute("jid", StaticData.getInstance().roster.selfContact().getJid());
                 status.setAttribute("node", "http://jabber.org/protocol/rc#set-status");
                 status.setAttribute("name", "Set Status");
-    /*
+
                 //http://jabber.org/protocol/rc#leave-groupchats //4.5 Leave Groupchats 
                 JabberDataBlock leaveChats=query.addChild("item", "");
                 leaveChats.setAttribute("jid", StaticData.getInstance().roster.selfContact().getJid());
                 leaveChats.setAttribute("node", "http://jabber.org/protocol/rc#leave-groupchats");
                 leaveChats.setAttribute("name", "Leave Groupchats");
-    */
+
                 StaticData.getInstance().roster.theStream.send(reply);
-//System.out.println(">>> "+reply.toString());
+
                 return BLOCK_PROCESSED;
             } else if (query.getAttribute("node").equals("http://jabber.org/protocol/rc#set-status")) {
-                processRequest(data);
+                processStatusRequest(data);
+                return BLOCK_PROCESSED;
+            } else if (query.getAttribute("node").equals("http://jabber.org/protocol/rc#leave-groupchats")) {
+                processGCRequest(data);
                 return BLOCK_PROCESSED;
             }
         } else if (type.equals("set")) {
@@ -98,7 +103,7 @@ public class IQCommands implements JabberBlockListener {
             
             if (command.getAttribute("node").equals("http://jabber.org/protocol/rc#set-status")) {
                 if (command.getAttribute("sessionid")==null) {
-                    processRequest(data);
+                    processStatusRequest(data);
                     return BLOCK_PROCESSED;
                 } else if (command.getAttribute("action")!="cancel") {
                     Iq reply=new Iq(data.getAttribute("from"), Iq.TYPE_RESULT, data.getAttribute("id"));
@@ -107,7 +112,7 @@ public class IQCommands implements JabberBlockListener {
                     cmd.setAttribute("node", "http://jabber.org/protocol/rc#set-status");
                     cmd.setAttribute("sessionid", command.getAttribute("sessionid"));
                     StaticData.getInstance().roster.theStream.send(reply);
-//System.out.println(">>> "+reply.toString());
+
                     //parsing task
                     JabberDataBlock x=command.findNamespace("x", "jabber:x:data");
                     Enumeration e;
@@ -120,9 +125,10 @@ public class IQCommands implements JabberBlockListener {
                         JabberDataBlock field=(JabberDataBlock) e.nextElement();
                         if (field.getAttribute("var").equals("status")) {
                             status=field.getChildBlockText("value");
-                        } /*else if (field.getAttribute("var").equals("status-priority")) {
-                            priority=field.getChildBlockText("value");
-                        }*/ else if (field.getAttribute("var").equals("status-message")) {
+                        } //else if (field.getAttribute("var").equals("status-priority")) {
+                            //priority=field.getChildBlockText("value");
+                        //}
+                            else if (field.getAttribute("var").equals("status-message")) {
                             message=field.getChildBlockText("value");
                         }
                     }
@@ -138,12 +144,51 @@ public class IQCommands implements JabberBlockListener {
 
                     return BLOCK_PROCESSED;
                 }
+            } else if (command.getAttribute("node").equals("http://jabber.org/protocol/rc#leave-groupchats")) {
+                if (command.getAttribute("sessionid")==null) {
+                    processGCRequest(data);
+                    return BLOCK_PROCESSED;
+                } else if (command.getAttribute("action")!="cancel") {
+                    Iq reply=new Iq(data.getAttribute("from"), Iq.TYPE_RESULT, data.getAttribute("id"));
+                    JabberDataBlock cmd=reply.addChildNs("command", "http://jabber.org/protocol/commands");
+                    cmd.setAttribute("status", "completed");
+                    cmd.setAttribute("node", "http://jabber.org/protocol/rc#leave-groupchats");
+                    cmd.setAttribute("sessionid", command.getAttribute("sessionid"));
+                    StaticData.getInstance().roster.theStream.send(reply);
+
+                    //parsing task
+                    JabberDataBlock x=command.findNamespace("x", "jabber:x:data");
+                    for (Enumeration e=x.getChildBlocks().elements(); e.hasMoreElements(); ){
+                        JabberDataBlock field=(JabberDataBlock) e.nextElement();
+                        if (field.getAttribute("var").equals("groupchats")) {
+                            for (Enumeration e2=field.getChildBlocks().elements(); e2.hasMoreElements(); ){
+                                JabberDataBlock value=(JabberDataBlock) e2.nextElement();
+                                String roomName=value.getText();
+                                
+                                for (Enumeration c=StaticData.getInstance().roster.getHContacts().elements(); c.hasMoreElements(); ) {
+                                    try {
+                                        Contact cl=(Contact) c.nextElement();
+                                        if (cl.origin!=Contact.ORIGIN_GROUPCHAT) continue;
+                                        if (!((MucContact)cl).commonPresence) continue; // stop if room left manually
+                                        ConferenceGroup confGroup=(ConferenceGroup)cl.getGroup();
+
+                                        if (!confGroup.inRoom) continue; // don`t reenter to leaved rooms
+
+                                        if (confGroup.getName().equals(roomName))
+                                            StaticData.getInstance().roster.leaveRoom(confGroup);
+                                    } catch (Exception ex) {}
+                                }
+                            }
+                        }
+                    }
+                    return BLOCK_PROCESSED;
+                }
             }
         }
         return BLOCK_REJECTED;
     }
     
-    private void processRequest(JabberDataBlock data) {
+    private void processStatusRequest(JabberDataBlock data) {
         Iq reply=new Iq(data.getAttribute("from"), Iq.TYPE_RESULT, data.getAttribute("id"));
 
         JabberDataBlock cmd=reply.addChildNs("command", "http://jabber.org/protocol/commands");
@@ -168,33 +213,11 @@ public class IQCommands implements JabberBlockListener {
         fieldStatus.addChild("value", "online");
         fieldStatus.addChild("required", "");
 
-        JabberDataBlock labelOnline=fieldStatus.addChild("option", "");
-        labelOnline.setAttribute("label", "Online");
-        labelOnline.addChild("value", "online");
-
-        JabberDataBlock labelChat=fieldStatus.addChild("option", "");
-        labelChat.setAttribute("label", "Chat");
-        labelChat.addChild("value", "chat");
-
-        JabberDataBlock labelAway=fieldStatus.addChild("option", "");
-        labelAway.setAttribute("label", "Away");
-        labelAway.addChild("value", "away");
-
-        JabberDataBlock labelExtendedAway=fieldStatus.addChild("option", "");
-        labelExtendedAway.setAttribute("label", "Extended Away");
-        labelExtendedAway.addChild("value", "xa");
-
-        JabberDataBlock labelDoNotDisturb=fieldStatus.addChild("option", "");
-        labelDoNotDisturb.setAttribute("label", "Do Not Disturb");
-        labelDoNotDisturb.addChild("value", "dnd");
-
-        JabberDataBlock labelInvisible=fieldStatus.addChild("option", "");
-        labelInvisible.setAttribute("label", "Invisible");
-        labelInvisible.addChild("value", "invisible");
-
-        JabberDataBlock labelOffline=fieldStatus.addChild("option", "");
-        labelOffline.setAttribute("label", "Offline");
-        labelOffline.addChild("value", "offline");
+        for (int i=0; i<7; i++) {
+            JabberDataBlock labelStatus=fieldStatus.addChild("option", "");
+            labelStatus.setAttribute("label", statusesDesc[i]);
+            labelStatus.addChild("value", statuses[i]);
+        }
 /*
         JabberDataBlock fieldPriority=x.addChild("field", "");
         fieldPriority.setTypeAttribute("text-single");
@@ -210,4 +233,46 @@ public class IQCommands implements JabberBlockListener {
         StaticData.getInstance().roster.theStream.send(reply);
 //System.out.println(">>> "+reply.toString());
     }
+    
+    private void processGCRequest(JabberDataBlock data) {
+        Iq reply=new Iq(data.getAttribute("from"), Iq.TYPE_RESULT, data.getAttribute("id"));
+
+        JabberDataBlock cmd=reply.addChildNs("command", "http://jabber.org/protocol/commands");
+        cmd.setAttribute("status", "executing");
+        cmd.setAttribute("node", "http://jabber.org/protocol/rc#leave-groupchats");
+        cmd.setAttribute("sessionid", "leave-groupchats:"+Time.utcTime());
+
+        JabberDataBlock x=cmd.addChildNs("x", "jabber:x:data");
+        x.setTypeAttribute("form");
+        x.addChild("title", "Leave Groupchats");
+        x.addChild("instructions", "Choose the groupchats you want to leave");
+
+        JabberDataBlock fieldHidden=x.addChild("field", "");
+        fieldHidden.setTypeAttribute("hidden");
+        fieldHidden.setAttribute("var", "FORM_TYPE");
+        fieldHidden.addChild("value", "http://jabber.org/protocol/rc");
+
+        JabberDataBlock fieldGroupchats=x.addChild("field", "");
+        fieldGroupchats.setTypeAttribute("list-multi");
+        fieldGroupchats.setAttribute("var", "groupchats");
+        fieldGroupchats.setAttribute("label", "Groupchats");
+        fieldGroupchats.addChild("value", "online");
+        fieldGroupchats.addChild("required", "");
+
+        for (Enumeration c=StaticData.getInstance().roster.getHContacts().elements(); c.hasMoreElements(); ) {
+            try {
+                MucContact mc=(MucContact)c.nextElement();
+                if (mc.origin==Contact.ORIGIN_GROUPCHAT && mc.getStatus()==0) {
+                    JabberDataBlock labelOnline=fieldGroupchats.addChild("option", "");
+                    labelOnline.setAttribute("label", mc.getJid());
+                    labelOnline.addChild("value", mc.getJid());
+                }
+            } catch (Exception e) {}
+        }
+
+        StaticData.getInstance().roster.theStream.send(reply);
+//System.out.println(">>> "+reply.toString());
+    }
+    private static final String[] statuses = {"online", "chat", "away", "xa", "dnd", "invisible", "offline"};
+    private static final String[] statusesDesc = {"Online", "Chat", "Away", "Extended Away", "Do Not Disturb", "Invisible", "Offline"};
 }
