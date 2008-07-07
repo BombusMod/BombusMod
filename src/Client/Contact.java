@@ -123,7 +123,7 @@ public class Contact extends IconTextElement{
     public String subscr;
     public int offline_type=Presence.PRESENCE_UNKNOWN;
     public boolean ask_subscribe;
-    
+
     public Vector msgs;
     public int activeMessage=-1;
 
@@ -139,11 +139,9 @@ public class Contact extends IconTextElement{
     public VCard vcard;
 
     private int client=-1;
-    
-//#if AUTODELETE
+//#ifdef LOGROTATE
 //#     public boolean redraw=false;
 //#endif
-    
     private Config cf;
     private RosterIcons ri = RosterIcons.getInstance();
 
@@ -163,7 +161,9 @@ public class Contact extends IconTextElement{
         super(RosterIcons.getInstance());
         cf=Config.getInstance();
         ct=ColorTheme.getInstance();
+
         msgs=new Vector();
+        
         key1="";
 
         ilHeight=il.getHeight();
@@ -312,8 +312,8 @@ public class Contact extends IconTextElement{
                         first_replace=true;
             }
         }
-//#if AUTODELETE
-//#             else { redraw=deleteOldMessages(); }
+//#ifdef LOGROTATE
+//#         else { redraw=deleteOldMessages(); }
 //#endif
 //#if HISTORY
 //#         if (!m.isHistory()) {
@@ -356,7 +356,10 @@ public class Contact extends IconTextElement{
         
         if (m.messageType!=Msg.MESSAGE_TYPE_HISTORY && m.messageType!=Msg.MESSAGE_TYPE_PRESENCE)
             activeMessage=msgs.size()+1;
-
+//#ifdef LOGROTATE
+//#         //if (msgs.size()>cf.msglistLimit)
+//#         //    msgs.removeElementAt(0);
+//#endif
         msgs.addElement(m);
         
         if (m.unread) {
@@ -402,6 +405,7 @@ public class Contact extends IconTextElement{
 //#            purgeTemps();
 //#        } catch (Exception e) { }
 //#endif
+        
         msgs=new Vector();
         
         lastSendedMessage=null;
@@ -417,15 +421,15 @@ public class Contact extends IconTextElement{
         } catch (Exception e) { }
     }
     
-//#if AUTODELETE
+//#ifdef LOGROTATE
 //#     public final boolean deleteOldMessages() {
 //#         int limit=cf.msglistLimit;
 //#         if (msgs.size()<limit)
 //#             return false;
 //#         
 //#         int trash = msgs.size()-limit;
-//#             for (int i=0; i<trash; i++)
-//#                 msgs.removeElementAt(0);
+//#         for (int i=0; i<trash; i++)
+//#             msgs.removeElementAt(0);
 //#         
 //#         return true;
 //#     }

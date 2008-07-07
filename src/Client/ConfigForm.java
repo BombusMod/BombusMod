@@ -95,8 +95,8 @@ public class ConfigForm
 //#     private CheckBox useClipBoard;
 //#endif
     
-//#if AUTODELETE
-//#         private NumberInput messageCountLimit;
+//#if LOGROTATE
+//#     private NumberInput messageCountLimit;
 //#endif
     private NumberInput messageLimit;
     
@@ -210,9 +210,8 @@ public class ConfigForm
 //#endif
 
             
-//#if AUTODELETE
-//#         itemsList.addElement(new SimpleString(SR.MS_MESSAGE_COUNT_LIMIT));
-//#         messageCountLimit=new NumberInput(display, Integer.toString(cf.msglistLimit), 10, 1000);
+//#if LOGROTATE
+//#         messageCountLimit=new NumberInput(display, SR.MS_MESSAGE_COUNT_LIMIT, Integer.toString(cf.msglistLimit), 3, 1000);
 //#         itemsList.addElement(messageCountLimit);
 //#endif
 
@@ -393,7 +392,7 @@ public class ConfigForm
 //#             cf.autoAwayType=autoAwayType.getSelectedIndex();
 //#endif
         cf.messageLimit=Integer.parseInt(messageLimit.getValue());
-//#if AUTODELETE
+//#if LOGROTATE
 //#             cf.msglistLimit=Integer.parseInt(messageCountLimit.getValue());
 //#endif
 

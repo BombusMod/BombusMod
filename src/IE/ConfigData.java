@@ -132,7 +132,7 @@ public class ConfigData {
 //#ifdef USER_KEYS
 //#         array.addElement(new keyValue(userKeys, (cf.userKeys)?"1":"0"));
 //#endif
-//#ifdef AUTODELETE
+//#ifdef LOGROTATE
 //#         array.addElement(new keyValue(msglistLimit, Integer.toString(cf.msglistLimit)));
 //#endif
         array.addElement(new keyValue(useTabs, (cf.useTabs)?"1":"0"));  
@@ -265,7 +265,7 @@ public class ConfigData {
 //#ifdef USER_KEYS
 //#         cf.userKeys=cf.getBooleanProperty(getValue(userKeys),false);
 //#endif
-//#ifdef AUTODELETE
+//#ifdef LOGROTATE
 //#         cf.msglistLimit=cf.getIntProperty(getValue(msglistLimit),100);
 //#endif
         cf.useTabs=cf.getBooleanProperty(getValue(useTabs),true);
@@ -432,7 +432,7 @@ public class ConfigData {
 //#ifdef USER_KEYS
 //#     private final static String userKeys="userKeys";
 //#endif
-//#ifdef AUTODELETE
+//#ifdef LOGROTATE
 //#     private final static String msglistLimit="msglistLimit";
 //#endif
     private final static String useTabs="useTabs";

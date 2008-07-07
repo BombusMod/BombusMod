@@ -254,8 +254,8 @@ type = \"-=Siemens=-\";
 //#ifdef USER_KEYS
 //#     public boolean userKeys = false;
 //#endif
-//#ifdef AUTODELETE
-//#     public int msglistLimit=100;
+//#ifdef LOGROTATE
+//#     public int msglistLimit=500;
 //#endif
     public boolean useTabs=true;
     public boolean notifyBlink=true;
@@ -466,7 +466,7 @@ type = \"-=Siemens=-\";
 //#else
             inputStream.readBoolean();
 //#endif
-//#ifdef AUTODELETE
+//#ifdef LOGROTATE
 //#             msglistLimit=inputStream.readInt();
 //#else
             inputStream.readInt();
@@ -660,7 +660,7 @@ type = \"-=Siemens=-\";
 //#else
             outputStream.writeBoolean(false);
 //#endif
-//#ifdef AUTODELETE
+//#ifdef LOGROTATE
 //#             outputStream.writeInt(msglistLimit);
 //#else
             outputStream.writeInt(512);

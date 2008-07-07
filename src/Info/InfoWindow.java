@@ -194,8 +194,11 @@ public class InfoWindow
 //#ifdef WMUC
 //#         .append("WMUC, ")
 //#endif
-//#ifdef AUTODELETE
-//#         .append("AUTODELETE, ")
+//#ifdef ADHOC
+//#         .append("ADHOC, ")
+//#endif
+//#ifdef LOGROTATE
+//#         .append("LOGROTATE, ")
 //#endif
 //#ifdef WSYSTEMGC
 //#         .append("WSYSTEMGC, ")
