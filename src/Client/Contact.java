@@ -366,6 +366,8 @@ public class Contact extends IconTextElement{
             lastUnread=msgs.size()-1;
             if (m.messageType>unreadType) unreadType=m.messageType;
             if (newMsgCnt>=0) newMsgCnt++;
+            if (m.isHighlited())
+                if (newHighLitedMsgCnt>=0) newHighLitedMsgCnt++;
         }
     }
 
