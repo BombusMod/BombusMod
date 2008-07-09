@@ -48,7 +48,6 @@ import ui.controls.form.ImageItem;
 import ui.controls.form.MultiLine;
 import ui.controls.form.SimpleString;
 
-
 /**
  *
  * @author ad
@@ -63,10 +62,10 @@ public class VCardView
     private VCard vcard;
     private ImageItem photoItem;
     
-    private SimpleString endVCard=new SimpleString("[End of vCard]", false);
-    private SimpleString noVCard=new SimpleString("[No vCard available]", true);
-    private SimpleString noPhoto=new SimpleString("[No photo available]", false);
-    private SimpleString badFormat=new SimpleString("[Unsupported format]", false);
+    private SimpleString endVCard=new SimpleString(SR.MS_END_OF_VCARD, false);
+    private SimpleString noVCard=new SimpleString(SR.MS_NO_VCARD, true);
+    private SimpleString noPhoto=new SimpleString(SR.MS_NO_PHOTO, false);
+    private SimpleString badFormat=new SimpleString(SR.MS_UNSUPPORTED_FORMAT, false);
 
 //#ifndef MENU
 //#ifdef CLIPBOARD
@@ -81,8 +80,8 @@ public class VCardView
     protected Command cmdDelPhoto=new Command(SR.MS_CLEAR_PHOTO, Command.SCREEN,5);
 //#endif
     /** Creates a new instance of VCardView */
-    public VCardView(Display display, VCard vcard) {
-        super(display, SR.MS_VCARD+" "+vcard.getNickName());
+    public VCardView(Display display, VCard vcard, String caption) {
+        super(display, caption);
         this.display=display;
         parentView=display.getCurrent();
         
