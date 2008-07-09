@@ -1,1 +1,1 @@
-/skins/tkabber.txt	Tkabber
+/skins/coolkaas.txt	coolkaas
