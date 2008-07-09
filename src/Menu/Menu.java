@@ -27,7 +27,9 @@
 
 package Menu;
 import java.util.*;
-import javax.microedition.lcdui.*;
+import javax.microedition.lcdui.Command;
+import javax.microedition.lcdui.CommandListener;
+import javax.microedition.lcdui.Displayable;
 import locale.SR;
 import ui.*;
 

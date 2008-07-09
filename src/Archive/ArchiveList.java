@@ -34,7 +34,11 @@ import javax.microedition.lcdui.TextBox;
 import ui.MainBar;
 import Messages.MessageList;
 import java.util.Vector;
+//#ifndef MENU_LISTENER
 import javax.microedition.lcdui.Command;
+//#else
+//# import Menu.Command;
+//#endif
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
@@ -108,8 +112,10 @@ public class ArchiveList
             }
         }
         addCommand(cmdNew);
+        
+        addCommands();
 
-	addCommand(cmdBack);
+	//addCommand(cmdBack);
 	setCommandListener(this);
         
         moveCursorHome();

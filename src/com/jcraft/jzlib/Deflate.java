@@ -36,7 +36,7 @@ package com.jcraft.jzlib;
 
 public final class Deflate{
 
-  static final private int MAX_MEM_LEVEL=9;
+  static final private int MAX_MEM_LEVEL=4; //9
 
   static final private int Z_DEFAULT_COMPRESSION=-1;
 

@@ -167,6 +167,7 @@ public class ZInputStream extends FilterInputStream {
   }
 
   public void close() throws IOException{
+    z.free();
     in.close();
   }
 }

@@ -44,10 +44,16 @@ import Conference.MucContact;
 import Menu.RosterItemActions;
 import Messages.MessageList;
 import images.RosterIcons;
+import javax.microedition.lcdui.Display;
+import javax.microedition.lcdui.Displayable;
 import locale.SR;
 import ui.MainBar;
 import java.util.*;
-import javax.microedition.lcdui.*;
+//#ifndef MENU_LISTENER
+import javax.microedition.lcdui.Command;
+//#else
+//# import Menu.Command;
+//#endif
 //#ifdef CLIPBOARD
 //# import util.ClipBoard;
 //#endif
@@ -55,8 +61,7 @@ import javax.microedition.lcdui.*;
 import Archive.MessageArchive;
 //#endif
 
-public class ContactMessageList extends MessageList
-{
+public class ContactMessageList extends MessageList {
     Contact contact;
 //#ifndef MENU
     Command cmdSubscribe=new Command(SR.MS_SUBSCRIBE, Command.SCREEN, 1);

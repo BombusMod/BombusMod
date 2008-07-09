@@ -339,7 +339,7 @@ public class RosterItemActions extends Menu {
                         if (c.getGroupType()==Groups.TYPE_SELF)
                             new VCardEdit(display, c.vcard);
                         else
-                            new VCardView(display, c.vcard);
+                            new VCardView(display, c.vcard, c.getNickJid());
                         return;
                     }
                     VCard.request(c.getBareJid(), c.getJid());

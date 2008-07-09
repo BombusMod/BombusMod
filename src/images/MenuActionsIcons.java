@@ -1,7 +1,7 @@
 /*
  * MenuActionsIcons.java
  *
- * Created on 9 Июль 2008 г., 9:39
+ * Created on 9.07.2008, 9:39
  *
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
@@ -65,7 +65,7 @@ public class MenuActionsIcons extends ImageList {
     public static final int ICON_ADMINS         = 0x26; //Администраторы
     public static final int ICON_MEMBERS        = 0x27; //Члены
     
-    public static final int ICON_OUTCASTS       = 0x30; //Изгои(Ban)
+    public static final int ICON_OUTCASTS       = 0x30; //�?згои(Ban)
     public static final int ICON_KICK           = 0x31; //Выгнать (kick)
     public static final int ICON_BAN            = 0x32; //Бан (ban)
     public static final int ICON_DEVOICE        = 0x33; //Отнять право голоса

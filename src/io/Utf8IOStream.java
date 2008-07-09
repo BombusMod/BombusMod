@@ -58,6 +58,7 @@ public class Utf8IOStream /*implements Runnable*/ {
 
 //#if (ZLIB)
     public void setStreamCompression(){
+        //try { if(inpStream!=null) inpStream.close(); } catch (IOException ex) { }
         inpStream=new ZInputStream(inpStream);
         outStream=new ZOutputStream(outStream, JZlib.Z_DEFAULT_COMPRESSION);
         ((ZOutputStream)outStream).setFlushMode(JZlib.Z_SYNC_FLUSH);

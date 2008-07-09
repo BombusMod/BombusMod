@@ -56,6 +56,7 @@ public class ZOutputStream extends OutputStream {
   public ZOutputStream(OutputStream out, int level) {
     this(out, level, false);
   }
+  
   public ZOutputStream(OutputStream out, int level, boolean nowrap) {
     super();
     this.out=out;
@@ -115,6 +116,7 @@ public class ZOutputStream extends OutputStream {
     while(z.avail_in>0 || z.avail_out==0);
     flush();
   }
+  
   public void end() {
     if(z==null)
       return;
@@ -123,6 +125,7 @@ public class ZOutputStream extends OutputStream {
     z.free();
     z=null;
   }
+  
   public void close() throws IOException {
     try{
       try{finish();}

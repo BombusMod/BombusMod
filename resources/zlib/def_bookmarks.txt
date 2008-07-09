@@ -3,4 +3,5 @@ newbie@conference.jabber.ru			Помощь новичкам!
 bombus-talks@conference.jabber.ru			Поболтать о bombus здесь :)
 bombus@conference.jabber.ru			Комната тех. поддержки Bombus
 bombus-english@conference.jabber.ru			English support for Bombus
+bombusmod-indo@conference.jabber.ru			Indonesian support for BombusMod
 talks@conference.jabber.ru			Поболтать здесь :)

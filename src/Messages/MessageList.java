@@ -32,8 +32,14 @@ import Client.Msg;
 import Client.StaticData;
 import Colors.ColorTheme;
 import java.util.Vector;
-import javax.microedition.lcdui.Command;
+//#ifndef MENU_LISTENER
 import javax.microedition.lcdui.CommandListener;
+import javax.microedition.lcdui.Command;
+//#else
+//# import Menu.MenuListener;
+//# import Menu.Command;
+//# import Menu.MyMenu;
+//#endif
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
@@ -43,7 +49,14 @@ import ui.VirtualList;
 //# import util.ClipBoard;
 //#endif
 
-public abstract class MessageList extends VirtualList implements CommandListener {
+public abstract class MessageList extends VirtualList
+    implements
+//#ifndef MENU_LISTENER
+        CommandListener
+//#else
+//#         MenuListener
+//#endif
+    {
     
     private Config cf;
     
@@ -64,7 +77,9 @@ public abstract class MessageList extends VirtualList implements CommandListener
     public MessageList() {
         super();
 	messages=new Vector();
-        
+//#ifdef MENU_LISTENER
+//#         menuCommands.removeAllElements();
+//#endif
         cf=Config.getInstance();
         
 //#ifdef SMILES
@@ -72,20 +87,11 @@ public abstract class MessageList extends VirtualList implements CommandListener
 //#else
 //#         smiles=false;
 //#endif
-//#ifdef CLIPBOARD
-//#         if (cf.useClipBoard) {
-//#             clipboard=ClipBoard.getInstance();
-//#             addCommand(cmdCopy);
-//#             addCommand(cmdCopyPlus);
-//#         }
-//#endif
         enableListWrapping(false);
 	
         cursor=0;//activate
 
-        addCommand(cmdxmlSkin);
-        addCommand(cmdUrl);
-        addCommand(cmdBack);
+        setCommandListener(this);
     }
 
     public MessageList(Display display) {
@@ -114,6 +120,18 @@ public abstract class MessageList extends VirtualList implements CommandListener
     
     protected boolean smiles;
 
+    public void addCommands() {
+//#ifdef CLIPBOARD
+//#         if (cf.useClipBoard) {
+//#             clipboard=ClipBoard.getInstance();
+//#             addCommand(cmdCopy);
+//#             addCommand(cmdCopyPlus);
+//#         }
+//#endif
+        addCommand(cmdxmlSkin);
+        addCommand(cmdUrl);
+        addCommand(cmdBack);
+    }
     public void removeCommands () {
 //#ifdef CLIPBOARD
 //#         if (cf.useClipBoard) {
@@ -160,8 +178,15 @@ public abstract class MessageList extends VirtualList implements CommandListener
 //#         }
 //#endif
     }
-//#ifdef SMILES
+
     protected void keyPressed(int keyCode) { // overriding this method to avoid autorepeat
+//#ifndef MENU
+        if (keyCode==Config.SOFT_LEFT) {
+            showMenu();
+            return;
+        }
+//#endif
+//#ifdef SMILES
         if (keyCode=='*') {
             try {
                 ((MessageItem)getFocusedObject()).toggleSmiles();
@@ -170,8 +195,32 @@ public abstract class MessageList extends VirtualList implements CommandListener
             try { Thread.sleep(50); } catch (InterruptedException ex) { }
             return;
         }
+//#endif
         super.keyPressed(keyCode);
     }
+   
+//#ifdef MENU_LISTENER    
+//#     public void addCommand(Command command) {
+//#         menuCommands.addElement(command);        
+//#     }
+//#     public void removeCommand(Command command) {
+//#         menuCommands.removeElement(command);        
+//#     }
+//#     
+//#     public void setCommandListener(MenuListener menuListener) { }
 //#endif
-//    public void keyGreen() { eventOk(); }
+    public void showMenu() {
+//#ifdef MENU_LISTENER
+//#         new MyMenu(display, this, "", null);
+//#endif
+    }
+    
+//#ifdef MENU
+//#     public void leftCommand() { showMenu(); }
+//#     public String getLeftCommand() { return SR.MS_MENU; }
+//#else
+    public void touchLeftPressed(){
+        showMenu();
+    }
+//#endif
 }

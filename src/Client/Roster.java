@@ -44,18 +44,34 @@ import Conference.affiliation.ConferenceQuickPrivelegeModify;
 import Conference.ConferenceForm;
 //#endif
 
+//#ifdef NEW_SKIN
+//# import images.MenuActionsIcons;
+//#else
+import images.MenuIcons;
+//#endif
+
 //#ifdef ARCHIVE
 import Archive.ArchiveList;
-import Menu.RosterItemActions;
-import Menu.RosterMenu;
-import Menu.RosterToolsMenu;
 //#endif
+import Menu.RosterItemActions;
+import Menu.RosterToolsMenu;
 //#ifdef CLIENTS_ICONS
 //# import images.ClientsIcons;
 //#endif
 import images.RosterIcons;
 
 import io.file.FileIO;
+
+//#ifndef MENU_LISTENER
+import javax.microedition.lcdui.CommandListener;
+import javax.microedition.lcdui.Command;
+//#else
+//# import Menu.MenuListener;
+//# import Menu.Command;
+//# import Menu.MyMenu;
+//#endif
+import javax.microedition.lcdui.Display;
+import javax.microedition.lcdui.Displayable;
 
 import locale.SR;
 import login.LoginListener;
@@ -71,7 +87,6 @@ import VCard.VCardView;
 import com.alsutton.jabber.*;
 import com.alsutton.jabber.datablocks.*;
 import java.util.*;
-import javax.microedition.lcdui.*;
 import ui.*;
 //import com.siemens.mp.game.Light;
 import xmpp.EntityCaps;
@@ -104,13 +119,15 @@ public class Roster
         extends VirtualList
         implements
         JabberListener,
-//#ifndef MENU
+//#ifndef MENU_LISTENER
         CommandListener,
+//#else
+//#         MenuListener,
 //#endif
         Runnable,
         LoginListener
 {
-//#ifndef MENU
+
     private Command cmdActions=new Command(SR.MS_ITEM_ACTIONS, Command.SCREEN, 1);
     private Command cmdStatus=new Command(SR.MS_STATUS_MENU, Command.SCREEN, 2);
     private Command cmdActiveContacts;//=new Command(SR.MS_ACTIVE_CONTACTS, Command.SCREEN, 3);
@@ -128,7 +145,7 @@ public class Roster
     private Command cmdInfo=new Command(SR.MS_ABOUT, Command.SCREEN, 80);
     private Command cmdMinimize=new Command(SR.MS_APP_MINIMIZE, Command.SCREEN, 90);
     private Command cmdQuit=new Command(SR.MS_APP_QUIT, Command.SCREEN, 99);
-//#endif
+
     private Config cf=Config.getInstance();
     private StaticData sd=StaticData.getInstance();
     
@@ -221,7 +238,7 @@ public class Roster
         vContacts=new Vector(); // just for displaying
         
 	updateMainBar();
-//#ifndef MENU
+//#ifndef MENU_LISTENER
         addMenuCommands();
 //#endif
         SplashScreen.getInstance().setExit(display, this);
@@ -248,50 +265,65 @@ public class Roster
 //#endif
     }
     
-//#ifndef MENU
-    public void addMenuCommands(){
-//#ifdef NEW_MENU
-        if (!cf.newMenu) {
+//#ifdef NEW_SKIN
+//#     MenuActionsIcons menuIcons=MenuActionsIcons.getInstance();
+//#else
+    MenuIcons menuIcons=MenuIcons.getInstance();
 //#endif
-                int activeType=Command.SCREEN;
-                if (cf.phoneManufacturer==Config.NOKIA) activeType=Command.BACK;
-                if (cf.phoneManufacturer==Config.INTENT) activeType=Command.BACK;
-                if (cf.phoneManufacturer==Config.J2ME) activeType=Command.BACK;
-
-                cmdActiveContacts=new Command(SR.MS_ACTIVE_CONTACTS, activeType, 3);
-
-                addCommand(cmdStatus);
-                addCommand(cmdActions);
-                addCommand(cmdActiveContacts);
-
-                addCommand(cmdAlert);
-                addCommand(cmdAdd);
-//#ifndef WMUC
-                addCommand(cmdConference);
-//#endif
-                addCommand(cmdTools);
-//#ifdef ARCHIVE
-                addCommand(cmdArchive);
-//#endif
-                addCommand(cmdInfo);
-                addCommand(cmdAccount);
-                
-                addCommand(cmdCleanAllMessages);
-                if (cf.phoneManufacturer!=Config.NOKIA_9XXX)
-                    addCommand(cmdQuit);
-
-                addOptionCommands();
-                setCommandListener(this);
-//#ifdef NEW_MENU
-        }
-//#endif
-    }
     
-    void addOptionCommands(){
+    public void addMenuCommands(){
+        int activeType=Command.SCREEN;
+        if (cf.phoneManufacturer==Config.NOKIA) activeType=Command.BACK;
+        if (cf.phoneManufacturer==Config.INTENT) activeType=Command.BACK;
+        if (cf.phoneManufacturer==Config.J2ME) activeType=Command.BACK;
+
+        cmdActiveContacts=new Command(SR.MS_ACTIVE_CONTACTS, activeType, 3);
+        
+        addCommand(cmdActions);
+        addCommand(cmdStatus);
+        addCommand(cmdActiveContacts);
+//#ifndef WMUC
+        addCommand(cmdConference);
+//#endif
+        addCommand(cmdAlert);
+//#ifdef ARCHIVE
+        addCommand(cmdArchive);
+//#endif
+        addCommand(cmdAdd);
+        addCommand(cmdAccount);
+        addCommand(cmdTools);
+        addCommand(cmdInfo);
+
         if (cf.allowMinimize) 
             addCommand(cmdMinimize);
-    }
+
+        addCommand(cmdCleanAllMessages);
+        if (cf.phoneManufacturer!=Config.NOKIA_9XXX)
+            addCommand(cmdQuit);
+        
+//#ifdef MENU_LISTENER
+//#         cmdActions.setImg(menuIcons.ICON_ITEM_ACTIONS);
+//#         cmdStatus.setImg(menuIcons.ICON_STATUS);
+//#         
+//#         cmdActiveContacts.setImg(menuIcons.ICON_CONFERENCE);
+//#         cmdAlert.setImg(menuIcons.ICON_NOTIFY);
+//#ifndef WMUC
+//#         cmdConference.setImg(menuIcons.ICON_CONFERENCE);
 //#endif
+//#ifdef ARCHIVE
+//#         cmdArchive.setImg(menuIcons.ICON_ARCHIVE);
+//#endif
+//#         cmdAdd.setImg(menuIcons.ICON_ADD_CONTACT);
+//#         cmdTools.setImg(menuIcons.ICON_SETTINGS);    
+//#         cmdAccount.setImg(menuIcons.ICON_VCARD);
+//#         cmdInfo.setImg(menuIcons.ICON_CHECK_UPD);
+//#         if (cf.allowMinimize)
+//#             cmdMinimize.setImg(menuIcons.ICON_FILEMAN);
+//#         cmdCleanAllMessages.setImg(menuIcons.ICON_CLEAN_MESSAGES);
+//#         cmdQuit.setImg(menuIcons.ICON_BUILD_NEW);
+//#endif
+        setCommandListener(this);
+    }
     
     public void setProgress(String pgs,int percent){
         SplashScreen.getInstance().setProgress(pgs, percent);
@@ -1230,10 +1262,10 @@ public class Roster
                                 if (c.getGroupType()==Groups.TYPE_SELF)
                                     new VCardEdit(display, vcard);
                                 else
-                                    new VCardView(display, vcard);
+                                    new VCardView(display, vcard, c.getNickJid());
                             }
                         } else {
-                            new VCardView(display, vcard);
+                            new VCardView(display, vcard, c.getNickJid());
                         }
                         return JabberBlockListener.BLOCK_PROCESSED;
                     }
@@ -2053,14 +2085,14 @@ public class Roster
         }
     }
 //#ifdef MENU
-//#     public void leftCommand() { new RosterMenu(display, getFocusedObject()); }
+//#     public void leftCommand() { showMenu(); }
 //#     public String getLeftCommand() { return SR.MS_MENU; }
 //#  
 //#     public void rightCommand() { new RosterItemActions(display, getFocusedObject(), -1); }
 //#     public String getRightCommand() { return SR.MS_ACTION; }
 //#else
     public void touchLeftPressed(){
-        new RosterMenu(display, getFocusedObject());
+        showMenu();
     }
     
     public void touchRightPressed(){
@@ -2073,7 +2105,7 @@ public class Roster
     public void keyPressed(int keyCode){
 //#ifndef MENU
         if (keyCode==Config.SOFT_LEFT) {
-            new RosterMenu(display, getFocusedObject());
+            showMenu();
             return;
         }
 
@@ -2843,4 +2875,22 @@ public class Roster
 //#     }
 //#endif
 //#endif
+    
+//#ifdef MENU_LISTENER    
+//#     public void addCommand(Command command) {
+//#         menuCommands.addElement(command);        
+//#     }
+//#     public void removeCommand(Command command) {
+//#         menuCommands.removeElement(command);        
+//#     }
+//#     
+//#     public void setCommandListener(MenuListener menuListener) { }
+//#endif
+    public void showMenu() {
+//#ifdef MENU_LISTENER
+//#         menuCommands.removeAllElements();
+//#         addMenuCommands();
+//#         new MyMenu(display, this, SR.MS_MAIN_MENU, menuIcons);
+//#endif
+    }
 }

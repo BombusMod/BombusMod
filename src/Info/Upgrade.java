@@ -34,8 +34,13 @@ import java.io.InputStream;
 import java.util.Vector;
 import javax.microedition.io.Connector;
 import javax.microedition.io.HttpConnection;
-import javax.microedition.lcdui.Command;
+//#ifndef MENU_LISTENER
 import javax.microedition.lcdui.CommandListener;
+import javax.microedition.lcdui.Command;
+//#else
+//# import Menu.MenuListener;
+//# import Menu.Command;
+//#endif
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
@@ -47,7 +52,13 @@ import ui.MainBar;
  */
 public class Upgrade 
         extends MessageList 
-        implements Runnable, CommandListener{
+        implements Runnable,
+//#ifndef MENU_LISTENER
+        CommandListener
+//#else
+//#         MenuListener
+//#endif
+    {
    
     //private Command cmdBack=new Command(SR.MS_BACK, Command.BACK, 99);
     private final static String VERSION_URL="http://bombusmod.net.ru/checkupdate/check.php";

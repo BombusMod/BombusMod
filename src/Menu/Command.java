@@ -1,9 +1,9 @@
 /*
- * MoodIcons.java
+ * Command.java
  *
- * Created on 3.12.2005, 20:07
+ * Created on 9.07.2008, 18:25
  *
- * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
+ * Copyright (c) 2005-2008, Eugene Stahov (evgs), http://bombus-im.org
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -25,24 +25,40 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-package images;
+package Menu;
 
-import ui.ImageList;
+import ui.IconTextElement;
 
 /**
  *
- * @author EvgS
+ * @author ad
  */
-public class MoodIcons extends ImageList{
-    
-    private final static int SMILES_IN_ROW=16;
-    /** Creates a new instance of SmilesIcons */
-    private MoodIcons() {
-	super("/images/moods.png", 0, SMILES_IN_ROW);
+public class Command extends IconTextElement {
+    String name="";
+    int pos;
+    int map;
+    int img;
+
+    public static int OK        = 1;
+    public static int SCREEN    = 2;
+    public static int BACK      = 3;
+
+    public Command(String name, int map, int pos) {
+        super(null);
+        this.name=name;
+        this.map=map;
+        this.pos=pos;
     }
-    private static ImageList instance;
-    public static ImageList getInstance() {
-	if (instance==null) instance=new MoodIcons();
-	return instance;
+    
+    public void setImg(int img) {
+        this.img=img;
+    }
+    
+    public int getImg() {
+        return img;
+    }   
+    
+    public String getName() {
+        return name;
     }
 }

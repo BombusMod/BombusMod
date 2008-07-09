@@ -1,9 +1,9 @@
 /*
- * MoodIcons.java
+ * MenuListener.java
  *
- * Created on 3.12.2005, 20:07
+ * Created on 9.07.2008, 17:54
  *
- * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
+ * Copyright (c) 2005-2008, Eugene Stahov (evgs), http://bombus-im.org
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -25,24 +25,20 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-package images;
+package Menu;
 
-import ui.ImageList;
+import java.util.Vector;
+import javax.microedition.lcdui.Displayable;
 
 /**
  *
- * @author EvgS
+ * @author ad
  */
-public class MoodIcons extends ImageList{
-    
-    private final static int SMILES_IN_ROW=16;
-    /** Creates a new instance of SmilesIcons */
-    private MoodIcons() {
-	super("/images/moods.png", 0, SMILES_IN_ROW);
-    }
-    private static ImageList instance;
-    public static ImageList getInstance() {
-	if (instance==null) instance=new MoodIcons();
-	return instance;
-    }
+public interface MenuListener {
+    public Vector menuCommands=new Vector();
+    public void commandAction(Command command, Displayable displayable);
+    public void addCommand(Command command);
+    public void removeCommand(Command command);
+    public void setCommandListener(MenuListener menuListener);
+    public void showMenu();
 }

@@ -1,7 +1,7 @@
 /*
  * MenuIcons.java
  *
- * Created on 29 ������ 2008 �., 18:31
+ * Created on 29.02.2008, 18:31
  * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
  *
  * This program is free software; you can redistribute it and/or
