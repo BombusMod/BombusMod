@@ -145,11 +145,19 @@ public class MucContact extends Contact {
                 key0=GROUP_MODERATOR;
                 break;
             case ROLE_VISITOR:
+//#ifdef NEW_SKIN
+//#                 transport=RosterIcons.ICON_VISITOR_INDEX;
+//#else
                 transport=RosterIcons.getInstance().getTransportIndex("conference_visitors");
+//#endif
                 key0=GROUP_VISITOR;
                 break;
             default:
+//#ifdef NEW_SKIN
+//#                 transport=(affiliation.equals("member"))? 0: RosterIcons.ICON_VISITOR_INDEX;
+//#else
                 transport=(affiliation.equals("member"))? 0: RosterIcons.getInstance().getTransportIndex("conference_visitors");
+//#endif
                 key0=(affiliation.equals("member"))?GROUP_MEMBER:GROUP_PARTICIPANT;
         }
 

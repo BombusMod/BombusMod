@@ -49,7 +49,11 @@ import ServiceDiscovery.ServiceDiscovery;
 //#endif
 import VCard.VCard;
 import VCard.VCardEdit;
+//#ifdef NEW_SKIN
+//# import images.MenuActionsIcons;
+//#else
 import images.MenuIcons;
+//#endif
 import javax.microedition.lcdui.Display;
 import locale.SR;
 import Colors.ColorConfigForm;
@@ -66,69 +70,79 @@ import Colors.ColorConfigForm;
 public class RosterToolsMenu extends Menu {
     Config cf;
     StaticData sd=StaticData.getInstance();
+    
+//#ifdef NEW_SKIN
+//#     MenuActionsIcons menuIcons=MenuActionsIcons.getInstance();
+//#else
+    MenuIcons menuIcons=MenuIcons.getInstance();
+//#endif
 
     public RosterToolsMenu(Display display) {
+//#ifdef NEW_SKIN
+//#         super(SR.MS_TOOLS, MenuActionsIcons.getInstance());
+//#else
         super(SR.MS_TOOLS, MenuIcons.getInstance());
+//#endif
         cf=Config.getInstance();
         boolean connected=sd.roster.isLoggedIn();
 //#ifdef SERVICE_DISCOVERY
         if (connected)
-            addItem(SR.MS_DISCO, 0, MenuIcons.ICON_DISCO);
+            addItem(SR.MS_DISCO, 0, menuIcons.ICON_DISCO);
 //#endif
 //#ifdef PRIVACY
         if (connected)
-            addItem(SR.MS_PRIVACY_LISTS, 1, MenuIcons.ICON_PRIVACY);
+            addItem(SR.MS_PRIVACY_LISTS, 1, menuIcons.ICON_PRIVACY);
 //#endif
 //#ifdef PEP
 //#         if (cf.sndrcvmood && connected)
-//#             addItem(SR.MS_USER_MOOD, 2, MenuIcons.ICON_MOOD);
+//#             addItem(SR.MS_USER_MOOD, 2, menuIcons.ICON_MOOD);
 //#endif
         if (connected)
-            addItem(SR.MS_MY_VCARD, 3, MenuIcons.ICON_VCARD);
-        addItem(SR.MS_OPTIONS, 4, MenuIcons.ICON_SETTINGS);
+            addItem(SR.MS_MY_VCARD, 3, menuIcons.ICON_VCARD);
+        addItem(SR.MS_OPTIONS, 4, menuIcons.ICON_SETTINGS);
 //#if (HISTORY)
-//#         addItem(SR.MS_HISTORY_OPTIONS, 5, MenuIcons.ICON_HISTORY);
+//#         addItem(SR.MS_HISTORY_OPTIONS, 5, menuIcons.ICON_HISTORY);
 //#endif
-       addItem(SR.MS_FONTS_OPTIONS, 6, MenuIcons.ICON_FONTS);
+       addItem(SR.MS_FONTS_OPTIONS, 6, menuIcons.ICON_FONTS);
 //#if (FILE_IO)
-        addItem(SR.MS_ROOT, 7, MenuIcons.ICON_FILEMAN);
+        addItem(SR.MS_ROOT, 7, menuIcons.ICON_FILEMAN);
 //#endif
 //#if (FILE_IO && FILE_TRANSFER)
         if (connected)
-            addItem(SR.MS_FILE_TRANSFERS, 8, MenuIcons.ICON_FT);
+            addItem(SR.MS_FILE_TRANSFERS, 8, menuIcons.ICON_FT);
 //#endif
         
-        addItem(SR.MS_COLOR_TUNE, 9, MenuIcons.ICON_COLOR_TUNE);
+        addItem(SR.MS_COLOR_TUNE, 9, menuIcons.ICON_COLOR_TUNE);
 
 //#if IMPORT_EXPORT
-//#         addItem(SR.MS_IMPORT_EXPORT, 10, MenuIcons.ICON_IE);
+//#         addItem(SR.MS_IMPORT_EXPORT, 10, menuIcons.ICON_IE);
 //#endif
-        addItem(SR.MS_NOTICES_OPTIONS, 11, MenuIcons.ICON_NOTIFY);
+        addItem(SR.MS_NOTICES_OPTIONS, 11, menuIcons.ICON_NOTIFY);
 //#ifdef POPUPS
 //#ifdef STATS
-//#         addItem(SR.MS_STATS, 12, MenuIcons.ICON_STAT);
+//#         addItem(SR.MS_STATS, 12, menuIcons.ICON_STAT);
 //#endif
 //#endif
 //#ifdef CHECK_VERSION
-//#         addItem(SR.MS_CHECK_UPDATE, 13, MenuIcons.ICON_CHECK_UPD);
+//#         addItem(SR.MS_CHECK_UPDATE, 13, menuIcons.ICON_CHECK_UPD);
 //#         if (cf.getStringProperty("Bombus-Upgrade", "123")!="123")
-//#             addItem(SR.MS_BUILD_NEW, 14, MenuIcons.ICON_BUILD_NEW);
+//#             addItem(SR.MS_BUILD_NEW, 14, menuIcons.ICON_BUILD_NEW);
 //#endif
 //#ifdef USER_KEYS
 //#         if (cf.userKeys)
-//#             addItem(SR.MS_CUSTOM_KEYS, 15, MenuIcons.ICON_KEYS);
+//#             addItem(SR.MS_CUSTOM_KEYS, 15, menuIcons.ICON_KEYS);
 //#endif
 //#if SASL_XGOOGLETOKEN
 //#         if (sd.account.isGmail() && connected)
-//#             addItem(SR.MS_CHECK_GOOGLE_MAIL, 16, MenuIcons.ICON_GMAIL);
+//#             addItem(SR.MS_CHECK_GOOGLE_MAIL, 16, menuIcons.ICON_GMAIL);
 //#endif 
 //#if AUTOTASK
-//#         addItem(SR.MS_AUTOTASKS, 17, MenuIcons.ICON_TASKS);
+//#         addItem(SR.MS_AUTOTASKS, 17, menuIcons.ICON_TASKS);
 //#endif
 //#ifdef CONSOLE
-//#         addItem(SR.MS_XML_CONSOLE, 18, MenuIcons.ICON_CONCOLE);
+//#         addItem(SR.MS_XML_CONSOLE, 18, menuIcons.ICON_CONCOLE);
 //#endif
-        addItem(SR.MS_BREAK_CONECTION, 19, MenuIcons.ICON_RECONNECT);
+        addItem(SR.MS_BREAK_CONECTION, 19, menuIcons.ICON_RECONNECT);
         attachDisplay(display);
     }
     public void eventOk(){

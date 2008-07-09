@@ -27,8 +27,12 @@
 
 package Client;
 import Alerts.AlertProfile;
+//#ifndef NEW_SKIN
 import images.ActionsIcons;
 import images.MenuIcons;
+//#else
+//# import images.MenuActionsIcons;
+//#endif
 import images.RosterIcons;
 //#ifdef SMILES
 import images.SmilesIcons;
@@ -308,10 +312,14 @@ type = \"-=Siemens=-\";
         switch (phoneManufacturer) {
             case SONYE:
                 //prefetch images
-                ActionsIcons.getInstance();
                 RosterIcons.getInstance();
+//#ifndef NEW_SKIN
+                ActionsIcons.getInstance();
 //#ifdef NEW_MENU
                 if (newMenu) MenuIcons.getInstance();
+//#endif
+//#else
+//#                 MenuActionsIcons.getInstance();
 //#endif
 //#ifdef SMILES
                 if (smiles) SmilesIcons.getInstance();

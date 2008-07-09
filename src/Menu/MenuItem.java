@@ -27,7 +27,6 @@
 
 package Menu;
 
-import images.MenuIcons;
 import ui.*;
 
 /**

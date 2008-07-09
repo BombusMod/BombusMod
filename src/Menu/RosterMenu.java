@@ -26,7 +26,11 @@
 package Menu;
 
 import Client.*;
+//#ifdef NEW_SKIN
+//# import images.MenuActionsIcons;
+//#else
 import images.MenuIcons;
+//#endif
 import javax.microedition.lcdui.Display;
 import locale.SR;
 import midlet.BombusMod;
@@ -36,31 +40,42 @@ public class RosterMenu extends Menu {
     
     private Config cf;
     private StaticData sd=StaticData.getInstance();
+    
+//#ifdef NEW_SKIN
+//#     MenuActionsIcons menuIcons=MenuActionsIcons.getInstance();
+//#else
+    MenuIcons menuIcons=MenuIcons.getInstance();
+//#endif
 
     public RosterMenu(Display display, Object o) {
+//#ifdef NEW_SKIN
+//#         super(SR.MS_MAIN_MENU, MenuActionsIcons.getInstance());
+//#else
         super(SR.MS_MAIN_MENU, MenuIcons.getInstance());
+//#endif
+        
         this.o=o;
         cf=Config.getInstance();
         boolean connected=sd.roster.isLoggedIn();
         
-        if (connected) addItem(SR.MS_ITEM_ACTIONS, 0, 0x27);
-        addItem(SR.MS_STATUS_MENU, 1, 0x16);
-        addItem(SR.MS_ACTIVE_CONTACTS, 2, 0x21);
-        addItem(SR.MS_ALERT_PROFILE_CMD, 4, 0x17);
+        if (connected) addItem(SR.MS_ITEM_ACTIONS, 0, menuIcons.ICON_ITEM_ACTIONS);
+        addItem(SR.MS_STATUS_MENU, 1, menuIcons.ICON_STATUS);
+        addItem(SR.MS_ACTIVE_CONTACTS, 2, menuIcons.ICON_CONFERENCE);
+        addItem(SR.MS_ALERT_PROFILE_CMD, 4, menuIcons.ICON_NOTIFY);
 //#ifndef WMUC
-        if (connected) addItem(SR.MS_CONFERENCE, 5, 0x21);
+        if (connected) addItem(SR.MS_CONFERENCE, 5, menuIcons.ICON_CONFERENCE);
 //#endif
 //#ifdef ARCHIVE
-        addItem(SR.MS_ARCHIVE, 6,0x12);
+        addItem(SR.MS_ARCHIVE, 6, menuIcons.ICON_ARCHIVE);
 //#endif
-        if (connected) addItem(SR.MS_ADD_CONTACT, 7, 0x02);
-        addItem(SR.MS_TOOLS, 8,0x24);    
-        addItem(SR.MS_ACCOUNT_, 9,0x01);
-        addItem(SR.MS_ABOUT, 10,0x04);
+        if (connected) addItem(SR.MS_ADD_CONTACT, 7, menuIcons.ICON_ADD_CONTACT);
+        addItem(SR.MS_TOOLS, 8, menuIcons.ICON_SETTINGS);    
+        addItem(SR.MS_ACCOUNT_, 9, menuIcons.ICON_VCARD);
+        addItem(SR.MS_ABOUT, 10, menuIcons.ICON_CHECK_UPD);
         if (cf.allowMinimize)
-            addItem(SR.MS_APP_MINIMIZE, 11,0x10);
-        addItem(SR.MS_CLEAN_ALL_MESSAGES, 12, 0x33);
-        addItem(SR.MS_APP_QUIT, 13,0x22);
+            addItem(SR.MS_APP_MINIMIZE, 11, menuIcons.ICON_FILEMAN);
+        addItem(SR.MS_CLEAN_ALL_MESSAGES, 12, menuIcons.ICON_CLEAN_MESSAGES);
+        addItem(SR.MS_APP_QUIT, 13, menuIcons.ICON_BUILD_NEW);
     
 	attachDisplay(display);
     }

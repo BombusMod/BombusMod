@@ -27,7 +27,6 @@
 
 package Messages;
 
-import images.MenuIcons;
 import java.util.Vector;
 import javax.microedition.io.ConnectionNotFoundException;
 import javax.microedition.lcdui.Display;
@@ -45,11 +44,11 @@ public class MessageUrl extends Menu{
     
     /** Creates a new instance of MessageUrl */
     public MessageUrl(Display display, Vector urlList) {
-	super("URLs", MenuIcons.getInstance());
+	super("URLs", null);
 	this.urlList=urlList;
 	
 	for (int i=0; i<urlList.size(); i++) { // throws exception
-	    addItem((String)urlList.elementAt(i), i, MenuIcons.ICON_URL);
+	    addItem((String)urlList.elementAt(i), i);
 	}
 	attachDisplay(display);
     }

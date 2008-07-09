@@ -1,7 +1,7 @@
 /*
- * ActionsIcons.java
+ * MenuActionsIcons.java
  *
- * Created on 29 Май 2008 г., 13:18
+ * Created on 9 Июль 2008 г., 9:39
  *
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
@@ -16,22 +16,22 @@ import ui.ImageList;
  *
  * @author ad
  */
-public class ActionsIcons extends ImageList {
+public class MenuActionsIcons extends ImageList {
     
-    private static ActionsIcons instance;
+    private static MenuActionsIcons instance;
 
-    public static ActionsIcons getInstance() {
+    public static MenuActionsIcons getInstance() {
 	if (instance==null)
-            instance=new ActionsIcons();
+            instance=new MenuActionsIcons();
 	return instance;
     }
 
     private final static int ICONS_IN_ROW=8;
-    private final static int ICONS_IN_COL=5;
+    private final static int ICONS_IN_COL=9;
 
     /** Creates a new instance of RosterIcons */
-    private ActionsIcons() {
-	super("/images/actions.png", ICONS_IN_COL, ICONS_IN_ROW);
+    private MenuActionsIcons() {
+	super("/images/menuactions.png", ICONS_IN_COL, ICONS_IN_ROW);
     }
 
     public void drawImage(Graphics g, int index, int x, int y) {
@@ -79,6 +79,39 @@ public class ActionsIcons extends ImageList {
     public static final int ICON_SEND_FILE      = 0x42; //Послать файл
     public static final int ICON_RENAME         = 0x43; //Переименовать
     public static final int ICON_CONSOLE        = 0x44; //Консоль
-    //public static final int ICON_      = 0x45; //
-   // public static final int ICON_      = 0x46; //
+    
+
+    
+    //public static final int ICON_VCARD      = 0x51;
+    public static final int ICON_ADD_CONTACT= 0x52;
+    public static final int ICON_FONTS      = 0x53;
+    public static final int ICON_CHECK_UPD  = 0x54;
+    public static final int ICON_CONCOLE    = 0x57;
+
+    public static final int ICON_FILEMAN    = 0x60;
+    public static final int ICON_MOOD       = 0x61;
+    public static final int ICON_ARCHIVE    = 0x62;
+    public static final int ICON_PRIVACY    = 0x63;
+    public static final int ICON_RECONNECT  = 0x65;
+    public static final int ICON_STATUS     = 0x66;
+    public static final int ICON_NOTIFY     = 0x67;
+
+    public static final int ICON_GMAIL      = 0x70;
+    public static final int ICON_CONFERENCE = 0x71;
+    public static final int ICON_BUILD_NEW  = 0x72;
+    public static final int ICON_HISTORY    = 0x73;
+    public static final int ICON_SETTINGS   = 0x74;
+    public static final int ICON_COLOR_TUNE = 0x75;
+    public static final int ICON_ITEM_ACTIONS = 0x77;
+
+    public static final int ICON_STAT       = 0x80;
+    public static final int ICON_TASKS      = 0x81;
+    public static final int ICON_CLEAN_MESSAGES= 0x83;
+    public static final int ICON_FT         = 0x84;
+
+    public static final int ICON_KEYS       = 0x93;
+    public static final int ICON_URL        = 0x95;
+    public static final int ICON_DISCO      = 0x95;
+    public static final int ICON_IE         = 0x94;
+    public static final int ICON_INVERSE    = 0x95;
 }
