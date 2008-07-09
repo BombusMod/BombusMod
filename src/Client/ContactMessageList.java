@@ -192,6 +192,7 @@ public class ContactMessageList extends MessageList {
 //#endif
 //# //        if (cf.lastMessages && !contact.isHistoryLoaded()) loadRecentList();
 //#endif
+        addCommand(cmdBack);
         setCommandListener(this);
 //#else
 //#         removeCommand(cmdCopy);

@@ -118,14 +118,14 @@ public class ArchiveTemplates {
                         //System.out.println("["+date+"]"+from+": "+subj+" "+body+"\r\n");
                         Msg msg = new Msg(Msg.MESSAGE_TYPE_IN,from,subj,body);
                         msg.setDayTime(date);
-                        vector.insertElementAt(msg,0);
+                        vector.insertElementAt(msg, 0);
                     } else
                         break;
 
                     pos=end_pos+end_item.length();
                 }
             } catch (Exception e)	{ 
-               System.out.println(e.toString());
+               //System.out.println(e.toString());
             }
         }
 

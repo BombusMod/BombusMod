@@ -180,11 +180,16 @@ public abstract class MessageList extends VirtualList
     }
 
     protected void keyPressed(int keyCode) { // overriding this method to avoid autorepeat
-//#ifndef MENU
-        if (keyCode==Config.SOFT_LEFT) {
-            showMenu();
-            return;
-        }
+//#ifdef MENU_LISTENER
+//#         if (keyCode==Config.SOFT_LEFT) {
+//#             showMenu();
+//#             return;
+//#         }
+//#         if (keyCode==Config.SOFT_RIGHT) {
+//#             StaticData.getInstance().roster.activeContact=null;
+//#             destroyView();
+//#             return;
+//#         }
 //#endif
 //#ifdef SMILES
         if (keyCode=='*') {
