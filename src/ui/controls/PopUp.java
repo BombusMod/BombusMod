@@ -93,39 +93,60 @@ public class PopUp {
     }
 /*
     public Contact getContact() {
-        if(popUps.size()>0)
+        if(size()>0)
             return ((PopUpElement)popUps.elementAt(0)).getContact();
         return null;
     }
 */
     public void next() {
-        if(popUps.size()>0){
+        if(size()>0){
             popUps.removeElementAt(0);
             scrollable=SCROLLABLE_NONE;
             startLine=0;
         }
     }
     
-    public void scrollDown() {
+    private void scrollDown() {
         if (scrollable==SCROLLABLE_DOWN || scrollable==SCROLLABLE_BOTH) {
             Vector lines=((PopUpElement)popUps.elementAt(0)).getMessage();
             if (lines.size()<1) return;
             startLine++;
-//System.out.println("scrollDown()");
         }
     }
     
-    public void scrollUp() {
+    private void scrollUp() {
         if (scrollable==SCROLLABLE_UP || scrollable==SCROLLABLE_BOTH) {
             Vector lines=((PopUpElement)popUps.elementAt(0)).getMessage();
             if (lines.size()<1) return;
             startLine--;
-//System.out.println("scrollUp()");
         }
     }
     
+    public boolean handleEvent(int keyCode) {
+         switch (keyCode) {
+            case 2:
+            case 4: 
+                scrollUp();
+                break;
+             case 6:
+             case 8:
+                scrollDown();
+                break;
+             case 5:
+             case 12:
+                next();
+                break;
+             default:
+                if (((PopUpElement)popUps.elementAt(0)).getType()==TYPE_SYSTEM) {
+                    next();
+                    return false;
+                }
+         }
+        return true;
+    }
+    
     public void clear() {
-        if(popUps.size()>0)
+        if(size()>0)
             popUps.removeAllElements();
     }
 
@@ -201,7 +222,7 @@ public class PopUp {
     
 //paint
     public void paintCustom(Graphics g) {
-	if(popUps.size()<1)
+	if(size()<1)
 	    return;
         
         scrollable=(startLine>0)?SCROLLABLE_UP:SCROLLABLE_NONE;
@@ -254,6 +275,10 @@ public class PopUp {
         }
         
         drawAllStrings(g, 2,3);
+    }
+
+    public int size() {
+        return popUps.size();
     }
 //paint
     

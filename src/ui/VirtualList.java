@@ -863,9 +863,15 @@ public abstract class VirtualList
                 } catch (Exception e) {}
         }
          
-        if (key>-1)
+        if (key>-1) {
+//#ifdef POPUPS
+            if (popup.size()>0) {
+                return popup.handleEvent(key);
+            } else  
+//#endif
             if (getFocusedObject()!=null)
                 return ((VirtualElement)getFocusedObject()).handleEvent(key);
+        }
                 
         return false;
     }
@@ -886,18 +892,6 @@ public abstract class VirtualList
                 return;
             }
         }*/
-        if (popup.scrollable>-1) {
-            if (keyCode==KEY_NUM2) {
-                popup.scrollUp();
-                repaint();
-                return;
-            } else if (keyCode==KEY_NUM8) {
-                popup.scrollDown();
-                repaint();
-                return;
-            }
-        }
-        popup.next();
 //#endif
 //#ifdef MENU
 //#          if (keyCode==Config.SOFT_LEFT) {

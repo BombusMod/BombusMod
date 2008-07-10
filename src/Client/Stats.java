@@ -54,12 +54,12 @@ public class Stats {
 	}
 	return instance;
     }
-    
+
     public void save(){
-        loadFromStorage();
+        //loadFromStorage();
         saveToStorage();
     }
-    
+
     public long getLatest(){
         return latestTraffic;
     }
@@ -126,12 +126,10 @@ public class Stats {
 //#             } catch (Exception e) { sie_gprs=false; }
 //#         }
 //#endif
-        try {
-            if (StaticData.getInstance().roster.theStream!=null)
-                    sessionGPRS=StaticData.getInstance().roster.theStream.getBytes();
-            else 
-                return 0;
-        } catch (Exception e) {}        
-        return sessionGPRS*2;
+        if (StaticData.getInstance().roster.theStream!=null) {
+            sessionGPRS=StaticData.getInstance().trafficIn+StaticData.getInstance().trafficOut;
+            return sessionGPRS*2;
+        }
+        return 0;
     }   
 }

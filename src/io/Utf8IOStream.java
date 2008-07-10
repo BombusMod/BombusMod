@@ -32,19 +32,18 @@ import com.jcraft.jzlib.JZlib;
 import com.jcraft.jzlib.ZInputStream;
 import com.jcraft.jzlib.ZOutputStream;
 //#endif
-import Client.Config;
+import Client.StaticData;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import javax.microedition.io.*;
-//import locale.SR;
 import util.Strconv;
 
 /**
  *
  * @author EvgS
  */
-public class Utf8IOStream /*implements Runnable*/ {
+public class Utf8IOStream {
     
     private StreamConnection connection;
     private InputStream inpStream;
@@ -52,9 +51,8 @@ public class Utf8IOStream /*implements Runnable*/ {
 
     private boolean iStreamWaiting;
 
-    private int bytesRecv;
-
-    private int bytesSent;
+    private long bytesRecv;
+    private long bytesSent;
 
 //#if (ZLIB)
     public void setStreamCompression(){
@@ -68,12 +66,7 @@ public class Utf8IOStream /*implements Runnable*/ {
     /** Creates a new instance of Utf8IOStream */
     public Utf8IOStream(StreamConnection connection) throws IOException {
 	this.connection=connection;
-/*
-        try {
-            SocketConnection sc=(SocketConnection)connection;
-            sc.setSocketOption(SocketConnection.KEEPALIVE, 1);
-        } catch (Exception e) {}
-*/
+
 	inpStream = connection.openInputStream();
 	outStream = connection.openOutputStream();	
 
@@ -91,7 +84,7 @@ public class Utf8IOStream /*implements Runnable*/ {
             }
             
 	    outStream.write(bytes);
-            bytesSent+=outLen;
+            setSent(bytesSent+outLen);
 
 	    outStream.flush();
             outbuf=null;
@@ -117,76 +110,78 @@ public class Utf8IOStream /*implements Runnable*/ {
 //#if (XML_STREAM_DEBUG)
 //# 	System.out.println("<< "+new String(buf, 0, avail));
 //#endif
-        bytesRecv+=avail;
+        setRecv(bytesRecv+avail);
         return avail;
     }
+    
+    private void setRecv(long bytes) {
+        bytesRecv=bytes;
+        StaticData.getInstance().trafficIn=bytes;
+    }
+    
+    private void setSent(long bytes) {
+        bytesSent=bytes;
+        StaticData.getInstance().trafficOut=bytes;
+    }    
     
     public void close() {
 	try { outStream.close();    }  catch (Exception e) {}
 	try { inpStream.close();    }  catch (Exception e) {}
-	// Alcatel temporary bugfix - this method hangs
-	//try { connection.close();   }  catch (Exception e) {};
-	//new Thread(this).start();
     }
-/*
-    public void run() {
-	// Alcatel temporary bugfix - this method hangs
-	try { connection.close();   }  catch (Exception e) {}
-    }
-*/
+
 //#if ZLIB
-    
-    private void appendZlibStats(StringBuffer s, long packed, long unpacked, boolean read){
-        s.append(packed).append(read?"->":"<-").append(unpacked);
-        String ratio=Long.toString((10*unpacked)/packed);
-        int dotpos=ratio.length()-1;
-
-        s.append(" (").append( (dotpos==0)? "0":ratio.substring(0, dotpos)).append('.').append(ratio.substring(dotpos)).append('x').append(")");
-    }
-
-    public String getStreamStats() {
-        StringBuffer stats=new StringBuffer();
-        try {
-            int sent=this.bytesSent;
-            int recv=this.bytesRecv;
-            if (inpStream instanceof ZInputStream) {
-                ZInputStream z = (ZInputStream) inpStream;
-                recv+=z.getTotalIn()-z.getTotalOut();
-                ZOutputStream zo = (ZOutputStream) outStream;
-                sent+=zo.getTotalOut()-zo.getTotalIn();
-                stats.append("\nZLib:\nin: "); appendZlibStats(stats, z.getTotalIn(), z.getTotalOut(), true);
-                stats.append("\nout: "); appendZlibStats(stats, zo.getTotalOut(), zo.getTotalIn(), false);
-            }
-            stats.append("\nstream: \nin: ")
-                 .append(recv)
-                 .append(" out: ")
-                 .append(sent);
-        } catch (Exception e) {
-            stats=null;
-            return "";
-        }
-        return stats.toString();
-    }
-
-    public long getBytes() {
-        try {
-            if (inpStream instanceof ZInputStream) {
-                ZOutputStream zo = (ZOutputStream) outStream;
-                ZInputStream z = (ZInputStream) inpStream;
-                return (int)zo.getTotalOut()+(int)z.getTotalIn();
-            }
-            return this.bytesSent+this.bytesRecv;
-        } catch (Exception e) { }
-        return 0;
-    }
-    
+//#ifdef STATS
+//#     private void appendZlibStats(StringBuffer s, long packed, long unpacked, boolean read){
+//#         s.append(packed).append(read?"->":"<-").append(unpacked);
+//#         String ratio=Long.toString((10*unpacked)/packed);
+//#         int dotpos=ratio.length()-1;
+//# 
+//#         s.append(" (").append( (dotpos==0)? "0":ratio.substring(0, dotpos)).append('.').append(ratio.substring(dotpos)).append('x').append(")");
+//#     }
+//# 
+//#     public String getStreamStats() {
+//#         StringBuffer stats=new StringBuffer();
+//#         try {
+//#             long sent=bytesSent;
+//#             long recv=bytesRecv;
+//#             if (inpStream instanceof ZInputStream) {
+//#                 ZInputStream z = (ZInputStream) inpStream;
+//#                 recv+=z.getTotalIn()-z.getTotalOut();
+//#                 ZOutputStream zo = (ZOutputStream) outStream;
+//#                 sent+=zo.getTotalOut()-zo.getTotalIn();
+//#                 stats.append("\nZLib:\nin: "); appendZlibStats(stats, z.getTotalIn(), z.getTotalOut(), true);
+//#                 stats.append("\nout: "); appendZlibStats(stats, zo.getTotalOut(), zo.getTotalIn(), false);
+//#             }
+//#             stats.append("\nstream: \nin: ")
+//#                  .append(recv)
+//#                  .append(" out: ")
+//#                  .append(sent);
+//#         } catch (Exception e) {
+//#             stats=null;
+//#             return "";
+//#         }
+//#         return stats.toString();
+//#     }
+//# 
+//#     public long getBytes() {
+//#         try {
+//#             if (inpStream instanceof ZInputStream) {
+//#                 ZOutputStream zo = (ZOutputStream) outStream;
+//#                 ZInputStream z = (ZInputStream) inpStream;
+//#                 return (int)zo.getTotalOut()+(int)z.getTotalIn();
+//#             }
+//#             return bytesSent*2;
+//#         } catch (Exception e) { }
+//#         return 0;
+//#     }
+//#endif
 //#else
 //#     
 //#      public String getStreamStats() {
 //#          StringBuffer stats=new StringBuffer();
 //#          try {
-//#              int sent=this.bytesSent;
-//#              int recv=this.bytesRecv;
+//#              long sent=bytesSent;
+//#              long recv=bytesRecv;
 //#              stats.append("\nStream: in=").append(recv).append(" out=").append(sent);
 //#          } catch (Exception e) {
 //#              stats=null;
@@ -197,17 +192,17 @@ public class Utf8IOStream /*implements Runnable*/ {
 //#      
 //#      public long getBytes() {
 //#          try {
-//#              return this.bytesSent+this.bytesRecv;
+//#              return bytesSent*2;
 //#          } catch (Exception e) { }
 //#          return 0;
 //#      }
 //#      
 //#     /*public int getBytesR() {
-//#         return this.bytesRecv;
+//#         return bytesRecv;
 //#     }
 //#     
 //#     public int getBytesS() {
-//#         return this.bytesSent;
+//#         return bytesSent;
 //#     }*/
 //#endif
 }

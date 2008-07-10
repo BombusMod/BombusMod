@@ -173,7 +173,7 @@ public class JabberStream extends XmppParser implements Runnable {
             } 
         } catch( Exception e ) {
              System.out.println("Exception in parser:");
-             //e.printStackTrace();
+             e.printStackTrace();
              dispatcher.broadcastTerminatedConnection(e);
          }
      }
@@ -283,15 +283,15 @@ public class JabberStream extends XmppParser implements Runnable {
         iostream.setStreamCompression();
     }
 //#endif
-    
-     public String getStreamStats() {
-         return iostream.getStreamStats();
-     }
-
-    public long getBytes() {
-        return iostream.getBytes();
-    }
-    
+//#ifdef STATS
+//#      public String getStreamStats() {
+//#          return iostream.getStreamStats();
+//#      }
+//# 
+//#     public long getBytes() {
+//#         return iostream.getBytes();
+//#     }
+//#endif
      private class TimerTaskKeepAlive extends TimerTask{
         private Timer t;
         private int verifyCtr;
@@ -334,7 +334,7 @@ public class JabberStream extends XmppParser implements Runnable {
 
         public void run(){
             try {
-	Thread.sleep(100);
+                Thread.sleep(100);
                 StringBuffer buf=new StringBuffer();
                 data.constructXML(buf);
                 sendBuf( buf );

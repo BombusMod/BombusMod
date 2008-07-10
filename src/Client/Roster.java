@@ -2411,9 +2411,7 @@ public class Roster
             } catch (Exception e) { }
         }
 //#ifdef STATS
-//#         try {
-//#              Stats.getInstance().save();
-//#         } catch (Exception e) { }
+//#         try { Stats.getInstance().save(); } catch (Exception e) { }
 //#endif
     }
 
