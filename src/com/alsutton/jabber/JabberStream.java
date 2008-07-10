@@ -291,6 +291,7 @@ public class JabberStream extends XmppParser implements Runnable {
 //#     public long getBytes() {
 //#         return iostream.getBytes();
 //#     }
+//# 
 //#endif
      private class TimerTaskKeepAlive extends TimerTask{
         private Timer t;

@@ -49,8 +49,10 @@ public class StaticData {
     
     public int screenWidth;
     
-    public long trafficIn;
-    public long trafficOut;
+    public long traffic;
+
+    public int trafficOut;
+    public int trafficIn;
     
     /** Creates a new instance of StaticData */
     private StaticData() { }

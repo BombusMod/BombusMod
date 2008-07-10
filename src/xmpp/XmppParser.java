@@ -1,7 +1,7 @@
 /*
  * xmppParser.java
  *
- * Created on 1 �?юнь 2008 г., 20:48
+ * Created on 1 �?юнь 2008 г., 20:48
  *
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
@@ -9,6 +9,7 @@
 
 package xmpp;
 
+import Client.StaticData;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
 import com.alsutton.jabber.datablocks.Message;
@@ -49,6 +50,8 @@ public abstract class XmppParser implements XMLEventListener {
         }  else
             parent.addChild( currentBlock );
         currentBlock = parent;
+        
+        StaticData.getInstance().trafficIn=0;
     }
 
     
@@ -61,6 +64,8 @@ public abstract class XmppParser implements XMLEventListener {
      */
     
     public boolean tagStart(String name, Vector attributes) {
+        StaticData.getInstance().trafficIn=1;
+        
         if (currentBlock != null){
             
             currentBlock = new JabberDataBlock(name, currentBlock, attributes);

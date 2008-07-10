@@ -174,10 +174,12 @@ public class Contact extends IconTextElement{
     
     public int firstUnread(){
         int unreadIndex=0;
-        for (Enumeration e=msgs.elements(); e.hasMoreElements();) {
-            if (((Msg)e.nextElement()).unread)
-                break;
-            unreadIndex++;
+        if (msgs.size()>0) {
+            for (Enumeration e=msgs.elements(); e.hasMoreElements();) {
+                if (((Msg)e.nextElement()).unread)
+                    break;
+                unreadIndex++;
+            }
         }
         return unreadIndex;
     }

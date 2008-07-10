@@ -149,10 +149,10 @@ public class TextInput
         }
 
         g.setColor(colorBGnd);
-        g.fillRect(2, y+2, width-4, height-4);
+        g.fillRoundRect(0, y, width-1, height-1, 6, 6);
 
         g.setColor((sel)?colorBorder:colorItem);
-        g.drawRoundRect(0, y+0, width-1, height-1, 6, 6);
+        g.drawRoundRect(0, y, width-1, height-1, 6, 6);
 
         g.setColor(oldColor);
         

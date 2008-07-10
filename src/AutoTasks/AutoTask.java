@@ -1,7 +1,7 @@
 /*
  * AutoTasks.java
  *
- * Created on 20 Март 2008 г., 19:51
+ * Created on 20.03.2008, 19:51
  * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
  *
  * This program is free software; you can redistribute it and/or
@@ -28,14 +28,12 @@ package AutoTasks;
 
 import Client.StaticData;
 import com.alsutton.jabber.datablocks.Presence;
-import javax.microedition.lcdui.Alert;
 import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Font;
-import javax.microedition.lcdui.Gauge;
 import javax.microedition.lcdui.Graphics;
 import locale.SR;
 import midlet.BombusMod;
@@ -89,6 +87,8 @@ public class AutoTask
     private int value;
     
     Font f=FontCache.getBalloonFont();
+
+    private Displayable next;
 
     public AutoTask(Display display) {
 	super();
@@ -177,11 +177,13 @@ public class AutoTask
     
     public void showAlert(int type) {
         //System.out.println("start alert");
-
+        next=display.getCurrent();
+        
         this.addCommand(cmdOk);
         this.addCommand(cmdCancel);
 
         this.setCommandListener(this);
+
         display.setCurrent(this);
         isShowing=true;
     }
@@ -251,8 +253,15 @@ public class AutoTask
     public void destroyView()	{
         this.removeCommand(cmdOk);
         this.removeCommand(cmdCancel);
-        if (parentView!=null)
-            display.setCurrent(parentView);
+        
+        if (display==null) {
+            display.setCurrent(StaticData.getInstance().roster);
+        } else {
+            display.setCurrent(next);
+        }
+        
+        //if (parentView!=null)
+        //    display.setCurrent(parentView);
         //parentView=null;
         //repaint();
     }

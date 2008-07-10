@@ -123,25 +123,25 @@ public class PopUp {
     }
     
     public boolean handleEvent(int keyCode) {
-         switch (keyCode) {
-            case 2:
-            case 4: 
-                scrollUp();
-                break;
-             case 6:
-             case 8:
-                scrollDown();
-                break;
-             case 5:
-             case 12:
-                next();
-                break;
-             default:
-                if (((PopUpElement)popUps.elementAt(0)).getType()==TYPE_SYSTEM) {
-                    next();
-                    return false;
-                }
-         }
+        if (scrollable>-1) {
+            switch (keyCode) {
+                case 2:
+                case 4:
+                    scrollUp();
+                    return true;
+                case 6:
+                case 8:
+                    scrollDown();
+                    return true;
+            }
+        }
+        if (((PopUpElement)popUps.elementAt(0)).getType()==TYPE_SYSTEM) {
+            next();
+            return false;
+        }
+        if (keyCode==5 || keyCode==12) {
+            next();
+        }
         return true;
     }
     

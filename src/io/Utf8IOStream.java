@@ -82,12 +82,14 @@ public class Utf8IOStream {
             for (int i=0; i<outLen; i++) {
                 bytes[i]=(byte)outbuf.charAt(i);
             }
-            
+            StaticData.getInstance().trafficOut=1;
 	    outStream.write(bytes);
+            StaticData.getInstance().trafficOut=0;
             setSent(bytesSent+outLen);
 
 	    outStream.flush();
             outbuf=null;
+            updateTraffic();
 	}
 //#if (XML_STREAM_DEBUG)        
 //#         System.out.println(">> "+data);
@@ -97,31 +99,31 @@ public class Utf8IOStream {
     byte cbuf[]=new byte[512];
     int length;
     int pbyte;
-    
-    
+
     public int read(byte buf[]) throws IOException {
         int avail=inpStream.available();
-
         if (avail==0) return 0;
 
         if (avail>buf.length) avail=buf.length;
-
         avail=inpStream.read(buf, 0, avail);
 //#if (XML_STREAM_DEBUG)
 //# 	System.out.println("<< "+new String(buf, 0, avail));
 //#endif
         setRecv(bytesRecv+avail);
+        updateTraffic();
         return avail;
+    }
+
+    private void updateTraffic() {
+        StaticData.getInstance().traffic=getBytes();
     }
     
     private void setRecv(long bytes) {
         bytesRecv=bytes;
-        StaticData.getInstance().trafficIn=bytes;
     }
     
     private void setSent(long bytes) {
         bytesSent=bytes;
-        StaticData.getInstance().trafficOut=bytes;
     }    
     
     public void close() {
@@ -130,51 +132,50 @@ public class Utf8IOStream {
     }
 
 //#if ZLIB
-//#ifdef STATS
-//#     private void appendZlibStats(StringBuffer s, long packed, long unpacked, boolean read){
-//#         s.append(packed).append(read?"->":"<-").append(unpacked);
-//#         String ratio=Long.toString((10*unpacked)/packed);
-//#         int dotpos=ratio.length()-1;
-//# 
-//#         s.append(" (").append( (dotpos==0)? "0":ratio.substring(0, dotpos)).append('.').append(ratio.substring(dotpos)).append('x').append(")");
-//#     }
-//# 
-//#     public String getStreamStats() {
-//#         StringBuffer stats=new StringBuffer();
-//#         try {
-//#             long sent=bytesSent;
-//#             long recv=bytesRecv;
-//#             if (inpStream instanceof ZInputStream) {
-//#                 ZInputStream z = (ZInputStream) inpStream;
-//#                 recv+=z.getTotalIn()-z.getTotalOut();
-//#                 ZOutputStream zo = (ZOutputStream) outStream;
-//#                 sent+=zo.getTotalOut()-zo.getTotalIn();
-//#                 stats.append("\nZLib:\nin: "); appendZlibStats(stats, z.getTotalIn(), z.getTotalOut(), true);
-//#                 stats.append("\nout: "); appendZlibStats(stats, zo.getTotalOut(), zo.getTotalIn(), false);
-//#             }
-//#             stats.append("\nstream: \nin: ")
-//#                  .append(recv)
-//#                  .append(" out: ")
-//#                  .append(sent);
-//#         } catch (Exception e) {
-//#             stats=null;
-//#             return "";
-//#         }
-//#         return stats.toString();
-//#     }
-//# 
-//#     public long getBytes() {
-//#         try {
-//#             if (inpStream instanceof ZInputStream) {
-//#                 ZOutputStream zo = (ZOutputStream) outStream;
-//#                 ZInputStream z = (ZInputStream) inpStream;
-//#                 return (int)zo.getTotalOut()+(int)z.getTotalIn();
-//#             }
-//#             return bytesSent*2;
-//#         } catch (Exception e) { }
-//#         return 0;
-//#     }
-//#endif
+    private void appendZlibStats(StringBuffer s, long packed, long unpacked, boolean read){
+        s.append(packed).append(read?"->":"<-").append(unpacked);
+        String ratio=Long.toString((10*unpacked)/packed);
+        int dotpos=ratio.length()-1;
+
+        s.append(" (").append( (dotpos==0)? "0":ratio.substring(0, dotpos)).append('.').append(ratio.substring(dotpos)).append('x').append(")");
+    }
+
+    public String getStreamStats() {
+        StringBuffer stats=new StringBuffer();
+        try {
+            long sent=bytesSent;
+            long recv=bytesRecv;
+            if (inpStream instanceof ZInputStream) {
+                ZInputStream z = (ZInputStream) inpStream;
+                recv+=z.getTotalIn()-z.getTotalOut();
+                ZOutputStream zo = (ZOutputStream) outStream;
+                sent+=zo.getTotalOut()-zo.getTotalIn();
+                stats.append("\nZLib:\nin: "); appendZlibStats(stats, z.getTotalIn(), z.getTotalOut(), true);
+                stats.append("\nout: "); appendZlibStats(stats, zo.getTotalOut(), zo.getTotalIn(), false);
+            }
+            stats.append("\nstream: \nin: ")
+                 .append(recv)
+                 .append(" out: ")
+                 .append(sent);
+        } catch (Exception e) {
+            stats=null;
+            return "";
+        }
+        return stats.toString();
+    }
+
+    public long getBytes() {
+        long startBytes=bytesSent+bytesRecv;
+        try {
+            if (inpStream instanceof ZInputStream) {
+                ZOutputStream zo = (ZOutputStream) outStream;
+                ZInputStream z = (ZInputStream) inpStream;
+                return (long)zo.getTotalOut()+(long)z.getTotalIn()+startBytes;
+            }
+            return startBytes;
+        } catch (Exception e) { }
+        return 0;
+    }
 //#else
 //#     
 //#      public String getStreamStats() {
@@ -192,17 +193,9 @@ public class Utf8IOStream {
 //#      
 //#      public long getBytes() {
 //#          try {
-//#              return bytesSent*2;
+//#              return bytesSent+bytesRecv;
 //#          } catch (Exception e) { }
 //#          return 0;
 //#      }
-//#      
-//#     /*public int getBytesR() {
-//#         return bytesRecv;
-//#     }
-//#     
-//#     public int getBytesS() {
-//#         return bytesSent;
-//#     }*/
 //#endif
 }

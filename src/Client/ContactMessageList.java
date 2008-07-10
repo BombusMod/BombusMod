@@ -203,7 +203,8 @@ public class ContactMessageList extends MessageList {
 //#endif
         contact.setIncoming(0);
 
-        moveCursorTo(contact.firstUnread());
+        if (!messages.isEmpty())
+            moveCursorTo(contact.firstUnread());
     }
 
     public void showNotify(){

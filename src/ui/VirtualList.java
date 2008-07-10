@@ -584,6 +584,8 @@ public abstract class VirtualList
 //#             test.draw(g, 100, 100, lastClickX, lastClickY, lastClickX+"/"+lastClickY);
 //#         }
 //#endif
+        if (sd.trafficIn>0) { g.setColor(0x00ff00); g.fillRect((width/2)-3, height-2, 2, 2); }
+        if (sd.trafficOut>0) { g.setColor(0xff0000); g.fillRect((width/2)+1, height-2, 2, 2); }
         
 //#ifndef WOFFSCREEN
         if (g != graphics) g.drawImage(offscreen, 0, 0, Graphics.LEFT | Graphics.TOP);

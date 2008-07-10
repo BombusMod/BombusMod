@@ -127,8 +127,8 @@ public class Stats {
 //#         }
 //#endif
         if (StaticData.getInstance().roster.theStream!=null) {
-            sessionGPRS=StaticData.getInstance().trafficIn+StaticData.getInstance().trafficOut;
-            return sessionGPRS*2;
+            sessionGPRS=StaticData.getInstance().traffic;
+            return sessionGPRS;
         }
         return 0;
     }   
