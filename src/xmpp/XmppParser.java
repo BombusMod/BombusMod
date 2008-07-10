@@ -50,8 +50,6 @@ public abstract class XmppParser implements XMLEventListener {
         }  else
             parent.addChild( currentBlock );
         currentBlock = parent;
-        
-        StaticData.getInstance().trafficIn=0;
     }
 
     
@@ -64,7 +62,7 @@ public abstract class XmppParser implements XMLEventListener {
      */
     
     public boolean tagStart(String name, Vector attributes) {
-        StaticData.getInstance().trafficIn=1;
+        StaticData.getInstance().updateTrafficIn();
         
         if (currentBlock != null){
             

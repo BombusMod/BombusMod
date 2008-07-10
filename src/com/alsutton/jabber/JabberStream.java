@@ -287,12 +287,11 @@ public class JabberStream extends XmppParser implements Runnable {
 //#      public String getStreamStats() {
 //#          return iostream.getStreamStats();
 //#      }
-//# 
 //#     public long getBytes() {
 //#         return iostream.getBytes();
 //#     }
-//# 
 //#endif
+
      private class TimerTaskKeepAlive extends TimerTask{
         private Timer t;
         private int verifyCtr;

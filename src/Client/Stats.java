@@ -127,7 +127,7 @@ public class Stats {
 //#         }
 //#endif
         if (StaticData.getInstance().roster.theStream!=null) {
-            sessionGPRS=StaticData.getInstance().traffic;
+            sessionGPRS=StaticData.getInstance().traffic*2;
             return sessionGPRS;
         }
         return 0;

@@ -76,15 +76,14 @@ public class Utf8IOStream {
     
     public void send( StringBuffer data ) throws IOException {
 	synchronized (outStream) {
+            StaticData.getInstance().updateTrafficOut();
             StringBuffer outbuf=Strconv.toUTFSb(data);
             int outLen=outbuf.length();
             byte bytes[]=new byte[outLen];
             for (int i=0; i<outLen; i++) {
                 bytes[i]=(byte)outbuf.charAt(i);
             }
-            StaticData.getInstance().trafficOut=1;
 	    outStream.write(bytes);
-            StaticData.getInstance().trafficOut=0;
             setSent(bytesSent+outLen);
 
 	    outStream.flush();
@@ -170,7 +169,7 @@ public class Utf8IOStream {
             if (inpStream instanceof ZInputStream) {
                 ZOutputStream zo = (ZOutputStream) outStream;
                 ZInputStream z = (ZInputStream) inpStream;
-                return (long)zo.getTotalOut()+(long)z.getTotalIn()+startBytes;
+                return (long)zo.getTotalOut()+(long)z.getTotalIn();
             }
             return startBytes;
         } catch (Exception e) { }

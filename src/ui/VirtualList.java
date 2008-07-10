@@ -575,6 +575,9 @@ public abstract class VirtualList
 //#endif
         setAbsClip(g, width, height);
         
+        if (System.currentTimeMillis()-sd.getTrafficIn()<2000) { g.setColor(0x00ff00); g.fillRect((width/2)-3, height-2, 2, 2); }
+        if (System.currentTimeMillis()-sd.getTrafficOut()<2000) { g.setColor(0xff0000); g.fillRect((width/2)+1, height-2, 2, 2); }
+        
 //#ifdef POPUPS
         drawPopUp(g);
 //#endif
@@ -584,8 +587,6 @@ public abstract class VirtualList
 //#             test.draw(g, 100, 100, lastClickX, lastClickY, lastClickX+"/"+lastClickY);
 //#         }
 //#endif
-        if (sd.trafficIn>0) { g.setColor(0x00ff00); g.fillRect((width/2)-3, height-2, 2, 2); }
-        if (sd.trafficOut>0) { g.setColor(0xff0000); g.fillRect((width/2)+1, height-2, 2, 2); }
         
 //#ifndef WOFFSCREEN
         if (g != graphics) g.drawImage(offscreen, 0, 0, Graphics.LEFT | Graphics.TOP);

@@ -51,8 +51,13 @@ public class StaticData {
     
     public long traffic;
 
-    public int trafficOut;
-    public int trafficIn;
+    private long trafficOut;
+    private long trafficIn;
+    
+    public void updateTrafficIn() { trafficIn=System.currentTimeMillis(); }
+    public long getTrafficIn() { return trafficIn; }
+    public void updateTrafficOut() { trafficOut=System.currentTimeMillis(); }
+    public long getTrafficOut() { return trafficOut; }
     
     /** Creates a new instance of StaticData */
     private StaticData() { }
