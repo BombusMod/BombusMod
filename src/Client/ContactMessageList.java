@@ -230,8 +230,14 @@ public class ContactMessageList extends MessageList {
 //#                 if (!clipboard.isEmpty()) addCommand(cmdCopyPlus);
 //#             }
 //#endif
-            if (isHasScheme()) addCommand(cmdxmlSkin);
-            if (isHasUrl()) addCommand(cmdUrl);
+//#ifdef MENU_LISTENER
+//#             if (isHasScheme()) 
+//#endif
+                addCommand(cmdxmlSkin);
+//#ifdef MENU_LISTENER
+//#             if (isHasUrl()) 
+//#endif
+                addCommand(cmdUrl);
         }
         
         if (contact.origin!=Contact.ORIGIN_GROUPCHAT)
@@ -613,12 +619,12 @@ public class ContactMessageList extends MessageList {
     
     private void Reply() {
         try {
-            if (getMessage(cursor).messageType < Msg.MESSAGE_TYPE_PRESENCE/*.MESSAGE_TYPE_HISTORY*/) return;
-            if (getMessage(cursor).messageType == Msg.MESSAGE_TYPE_SUBJ) return;
-
             Msg msg=getMessage(cursor);
-
-            new MessageEdit(display,contact,msg.from+": ");
+            
+            if (msg.messageType < Msg.MESSAGE_TYPE_IN || msg.messageType == Msg.MESSAGE_TYPE_SUBJ)
+                keyGreen();
+            else
+                new MessageEdit(display,contact,msg.from+": ");
         } catch (Exception e) {/*no messages*/}
     }
     

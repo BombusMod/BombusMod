@@ -31,7 +31,16 @@ import Conference.affiliation.Affiliations;
 //#ifdef SERVICE_DISCOVERY
 import ServiceDiscovery.ServiceDiscovery;
 //#endif
-import javax.microedition.lcdui.*;
+//#ifndef MENU_LISTENER
+import javax.microedition.lcdui.CommandListener;
+import javax.microedition.lcdui.Command;
+//#else
+//# import Menu.MenuListener;
+//# import Menu.Command;
+//# import Menu.MyMenu;
+//#endif
+import javax.microedition.lcdui.Displayable;
+import javax.microedition.lcdui.Display;
 import locale.SR;
 import ui.*;
 import java.util.*;
@@ -45,7 +54,13 @@ import ui.controls.AlertBox;
  */
 public class Bookmarks 
         extends VirtualList 
-        implements CommandListener {   
+        implements
+//#ifndef MENU_LISTENER
+        CommandListener
+//#else
+//#         MenuListener
+//#endif
+    {   
     
     private BookmarkItem toAdd;
     
@@ -89,25 +104,26 @@ public class Bookmarks
         
         setMainBarItem(new MainBar(2, null, SR.MS_BOOKMARKS+" ("+getItemCount()+") "));//for title updating after "add bookmark"
         
-        addCommand(cmdCancel);
+//#ifdef MENU_LISTENER
+//#         menuCommands.removeAllElements();
+//#endif
         addCommand(cmdJoin);
-        //addCommand(cmdDoAutoJoin);
         addCommand(cmdAdvJoin);
 	addCommand(cmdNew);
-        
         addCommand(cmdUp);
         addCommand(cmdDwn);
-        addCommand(cmdSort);
         addCommand(cmdSave);
+        addCommand(cmdSort);
 //#ifdef SERVICE_DISCOVERY
         addCommand(cmdDisco);
 //#endif
-        addCommand(cmdConfigure);
+        addCommand(cmdDel);
         addCommand(cmdRoomOwners);
         addCommand(cmdRoomAdmins);
         addCommand(cmdRoomMembers);
         addCommand(cmdRoomBanned);
-        addCommand(cmdDel);
+        addCommand(cmdConfigure);
+        addCommand(cmdCancel);
         setCommandListener(this);
 	attachDisplay(display);
     }
@@ -144,25 +160,6 @@ public class Bookmarks
             return;
         
         ConferenceForm.join(join.desc, join.getJidNick(), join.password, cf.confMessageCount);
-/*
-        ConferenceGroup grp=sd.roster.initMuc(join.getJidNick(), join.password);
-        grp.desc=join.desc;
-        JabberDataBlock x=new JabberDataBlock("x", null, null);
-        x.setNameSpace("http://jabber.org/protocol/muc");
-        
-        JabberDataBlock history=x.addChild("history", null);
-        history.setAttribute("maxstanzas", Integer.toString(cf.confMessageCount));
-        history.setAttribute("maxchars","32768");
-        try {
-            long last=grp.getConference().lastMessageTime;
-            long delay= ( grp.conferenceJoinTime - last ) /1000 ;
-            if (last!=0) history.setAttribute("seconds",String.valueOf(delay)); // todo: change to since
-        } catch (Exception e) {}
-        
-        sd.roster.sendPresence(join.getJidNick(), null, x, false);
-        
-        sd.roster.reEnumRoster();
- */
         display.setCurrent(sd.roster);
     }
     
@@ -259,5 +256,34 @@ public class Bookmarks
             }
             public void no() {}
         };
+    }
+    
+//#ifdef MENU_LISTENER    
+//#     public void addCommand(Command command) {
+//#         menuCommands.addElement(command);        
+//#     }
+//#     public void removeCommand(Command command) {
+//#         menuCommands.removeElement(command);        
+//#     }
+//#     
+//#     public void setCommandListener(MenuListener menuListener) { }
+//#     
+//#     protected void keyPressed(int keyCode) { // overriding this method to avoid autorepeat
+//#         if (keyCode==Config.SOFT_LEFT) {
+//#             showMenu();
+//#             return;
+//#         }
+//#         if (keyCode==Config.SOFT_RIGHT) {
+//#             exitBookmarks();
+//#             return;
+//#         }
+//#         super.keyPressed(keyCode);
+//#     }
+//#endif
+    
+    public void showMenu() {
+//#ifdef MENU_LISTENER
+//#         new MyMenu(display, this, SR.MS_BOOKMARKS, null);
+//#endif
     }
 }

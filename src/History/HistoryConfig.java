@@ -30,7 +30,11 @@ package History;
 import Client.Config;
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
+//#ifndef MENU_LISTENER
 import javax.microedition.lcdui.Command;
+//#else
+//# import Menu.Command;
+//#endif
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.TextField;

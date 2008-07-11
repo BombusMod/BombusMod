@@ -176,16 +176,20 @@ public class ConferenceForm
 
         autoJoin=new CheckBox(SR.MS_AUTOLOGIN, autojoin);
         itemsList.addElement(autoJoin);
-//#ifndef MENU
+        
+//#ifdef MENU_LISTENER
+//#         menuCommands.removeAllElements();
+//#endif
         addCommand(cmdJoin);
         addCommand(cmdAdd);
         addCommand(cmdEdit);
+//#ifndef MENU_LISTENER
         addCommand(cmdCancel);
-        
+//#endif
         removeCommand(cmdOk);
         
 	setCommandListener(this);
-//#endif
+
         moveCursorTo(getNextSelectableRef(-1));
         attachDisplay(display);
     }

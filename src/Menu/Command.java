@@ -44,6 +44,7 @@ public class Command extends IconTextElement {
     public static int BACK      = 3;
     public static int EXIT      = 4;
     public static int CANCEL    = 5;
+    public static int ITEM      = 6;
 
     public Command(String name, int map, int pos) {
         super(null);

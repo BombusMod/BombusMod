@@ -63,7 +63,7 @@
     </target>
 
     <!-- version patch in manifest -->
-    <target name="pre-jar">
+    <target name="pre-jar" depends="create-jad">
 	<property file="resources/.version" />
 	<replace file="${build.dir}/manifest.mf"  
 	    token="$BOMBUSVERSION$"

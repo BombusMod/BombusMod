@@ -193,7 +193,11 @@ public class ServiceDiscovery
 	removeCommand(cmdOk);
         
 	if (size>0) {
-	    menuCommands.insertElementAt(cmdOk, 0); 
+//#ifdef MENU_LISTENER
+//# 	    menuCommands.insertElementAt(cmdOk, 0); 
+//#else
+            addCommand(cmdOk);
+//#endif
 	    count=" ("+size+") ";
 	}
         getMainBarItem().setElementAt(count,1);
@@ -516,7 +520,7 @@ public class ServiceDiscovery
     
     public void showMenu() {
 //#ifdef MENU_LISTENER
-//#         new MyMenu(display, this, "", null);
+//#         new MyMenu(display, this, SR.MS_DISCO, null);
 //#endif
     }
 }
