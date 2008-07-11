@@ -62,7 +62,7 @@ public abstract class MessageList extends VirtualList
     
     protected Vector messages;
 //#ifdef CLIPBOARD
-//#     private ClipBoard clipboard;
+//#     private ClipBoard clipboard=ClipBoard.getInstance();
 //#     
 //#     protected Command cmdCopy = new Command(SR.MS_COPY, Command.SCREEN, 20);
 //#     protected Command cmdCopyPlus = new Command("+ "+SR.MS_COPY, Command.SCREEN, 30);
@@ -123,7 +123,6 @@ public abstract class MessageList extends VirtualList
     public void addCommands() {
 //#ifdef CLIPBOARD
 //#         if (cf.useClipBoard) {
-//#             clipboard=ClipBoard.getInstance();
 //#             addCommand(cmdCopy);
 //#             addCommand(cmdCopyPlus);
 //#         }

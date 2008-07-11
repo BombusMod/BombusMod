@@ -31,7 +31,16 @@ import Conference.ConferenceForm;
 //#endif
 import images.RosterIcons;
 import java.util.*;
-import javax.microedition.lcdui.*;
+//#ifndef MENU_LISTENER
+import javax.microedition.lcdui.CommandListener;
+import javax.microedition.lcdui.Command;
+//#else
+//# import Menu.MenuListener;
+//# import Menu.Command;
+//# import Menu.MyMenu;
+//#endif
+import javax.microedition.lcdui.Display;
+import javax.microedition.lcdui.Displayable;
 import locale.SR;
 import Colors.ColorTheme;
 import ui.*;
@@ -51,7 +60,12 @@ import xmpp.XmppError;
  */
 public class ServiceDiscovery 
         extends VirtualList
-        implements CommandListener,
+        implements
+//#ifndef MENU_LISTENER
+        CommandListener,
+//#else
+//#         MenuListener,
+//#endif
         JabberBlockListener
 {
     private final static String NS_ITEMS="http://jabber.org/protocol/disco#items";
@@ -107,6 +121,11 @@ public class ServiceDiscovery
         stream.addBlockListener(this);
         //sd.roster.discoveryListener=this;
         
+//#ifdef MENU_LISTENER
+//#         menuCommands.removeAllElements();
+//#else
+        addCommand(cmdBack);
+//#endif
         setCommandListener(this);
         addCommand(cmdRfsh);
         addCommand(cmdSrv);
@@ -115,7 +134,7 @@ public class ServiceDiscovery
         addCommand(cmdCancel);
         
 
-        addCommand(cmdBack);
+
         
         items=new Vector();
         features=new Vector();
@@ -170,11 +189,12 @@ public class ServiceDiscovery
 	int size=0;
 	try { size=items.size(); } catch (Exception e) {}
 	String count=null;
+        
+	removeCommand(cmdOk);
+        
 	if (size>0) {
-	    addCommand(cmdOk); 
+	    menuCommands.insertElementAt(cmdOk, 0); 
 	    count=" ("+size+") ";
-	} else {
-	    removeCommand(cmdOk);
 	}
         getMainBarItem().setElementAt(count,1);
     }
@@ -469,6 +489,34 @@ public class ServiceDiscovery
     private void exitDiscovery(){
         stream.cancelBlockListener(this);
         destroyView();
+    }
+//#ifdef MENU_LISTENER    
+//#     public void addCommand(Command command) {
+//#         menuCommands.addElement(command);        
+//#     }
+//#     public void removeCommand(Command command) {
+//#         menuCommands.removeElement(command);        
+//#     }
+//#     
+//#     public void setCommandListener(MenuListener menuListener) { }
+//#     
+//#     protected void keyPressed(int keyCode) { // overriding this method to avoid autorepeat
+//#         if (keyCode==Config.SOFT_LEFT) {
+//#             showMenu();
+//#             return;
+//#         }
+//#         if (keyCode==Config.SOFT_RIGHT) {
+//#             exitDiscovery(false);
+//#             return;
+//#         }
+//#         super.keyPressed(keyCode);
+//#     }
+//#endif
+    
+    public void showMenu() {
+//#ifdef MENU_LISTENER
+//#         new MyMenu(display, this, "", null);
+//#endif
     }
 }
 class State{

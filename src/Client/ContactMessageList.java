@@ -604,7 +604,11 @@ public class ContactMessageList extends MessageList {
         }
     }
     public void touchLeftPressed(){
+//#ifdef MENU_LISTENER
+//#         showMenu();
+//#else
         sd.roster.searchActiveContact(-1);
+//#endif
     }
     
     private void Reply() {

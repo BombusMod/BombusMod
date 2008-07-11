@@ -2066,7 +2066,7 @@ public class Roster
 //#                 boolean isMucContact=false;
 //#endif
                 if (isContact && !isMucContact) {
-                   new AlertBox(c.getNickJid(), SR.MS_DELETE_ASK, display, this) {
+                   new AlertBox(SR.MS_DELETE_ASK, c.getNickJid(), display, this) {
                         public void yes() {
                             deleteContact((Contact)getFocusedObject());
                         }

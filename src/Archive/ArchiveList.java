@@ -166,7 +166,7 @@ public class ArchiveList
     }
     
     private void deleteAllMessages() {
-        new AlertBox(SR.MS_DELETE, SR.MS_SURE_DELETE, display, this) {
+        new AlertBox(SR.MS_ACTION, SR.MS_DELETE_ALL+"?", display, this) {
             public void yes() {
                 archive.deleteAll();
                 messages=new Vector();

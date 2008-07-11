@@ -42,6 +42,7 @@ public class Command extends IconTextElement {
     public static int OK        = 1;
     public static int SCREEN    = 2;
     public static int BACK      = 3;
+    public static int EXIT      = 4;
 
     public Command(String name, int map, int pos) {
         super(null);

@@ -26,9 +26,12 @@
  */
 
 package Menu;
+import Client.Config;
 import java.util.*;
+//#ifndef MENU_LISTENER
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
+//#endif
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
 import ui.*;
@@ -38,12 +41,12 @@ import ui.*;
  * @author Evg_S
  */
 public class Menu extends VirtualList
-//#ifndef MENU
+//#ifndef MENU_LISTENER
         implements CommandListener
 //#endif
 {
     Vector menuitems;
-//#ifndef MENU
+//#ifndef MENU_LISTENER
     Command cmdBack=new Command(SR.MS_BACK,Command.BACK,99);
     Command cmdOk=new Command(SR.MS_OK,Command.OK,1);
 //#endif
@@ -54,7 +57,7 @@ public class Menu extends VirtualList
         setMainBarItem(new MainBar(mainbar));
         menuitems=new Vector();
         this.il=il;
-//#ifndef MENU
+//#ifndef MENU_LISTENER
         addCommand(cmdBack);
         addCommand(cmdOk);
         setCommandListener(this);
@@ -77,13 +80,24 @@ public class Menu extends VirtualList
     public void addItem(String label, int index){
         addItem(new MenuItem(label, index, -1, il));
     }
-//#ifndef MENU
+//#ifndef MENU_LISTENER
     public void commandAction(Command c, Displayable d) {
         if (c==cmdBack) destroyView();
-	if (c==cmdOk) eventOk();
+        if (c==cmdOk) eventOk();
     }
-//#else 
-//#     public void leftCommand() { eventOk(); }
-//#     public String getLeftCommand() { return SR.MS_OK; }
+//#else
+//#     public void keyPressed(int keyCode) {
+//#         if (keyCode==Config.SOFT_LEFT) {
+//#             eventOk();
+//#             return;
+//#         }
+//#         if (keyCode==Config.SOFT_RIGHT) {
+//#             destroyView();
+//#             return;
+//#         }
+//#             
+//#         super.keyPressed(keyCode);
+//#     }
 //#endif
+    
 }

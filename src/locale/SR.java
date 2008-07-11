@@ -660,12 +660,11 @@ public class SR {
     public static String MS_PREVIOUS=loadString("Previous");
 
     public static String MS_END_OF_VCARD=loadString("[End of vCard]");
-
     public static String MS_NO_VCARD=loadString("[No vCard available]");
-
     public static String MS_NO_PHOTO=loadString("[No photo available]");
-
     public static String MS_UNSUPPORTED_FORMAT=loadString("[Unsupported format]");
+
+    public static String MS_DELETE_GROUP_ASK=loadString("Delete group?");
     
     private SR() { }
     
