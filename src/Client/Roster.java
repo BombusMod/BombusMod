@@ -2624,13 +2624,9 @@ public class Roster
                 reEnumRoster();
             } else {
                 theStream.send(new IqQueryRoster(c.getBareJid(),null,null,"remove"));
-
-                JabberDataBlock removeIq=new Iq(c.getJid(), Iq.TYPE_SET, "push");
-                JabberDataBlock query=removeIq.addChildNs("query", "jabber:iq:roster");
-                JabberDataBlock item= query.addChild("item",null);
-                item.setAttribute("subscription", "remove");
-                item.setAttribute("jid", c.getBareJid());
-                theStream.send(removeIq);
+                
+                sendPresence(c.getBareJid(), "unsubscribe", null, false);
+                sendPresence(c.getBareJid(), "unsubscribed", null, false);
             }
         }
     }

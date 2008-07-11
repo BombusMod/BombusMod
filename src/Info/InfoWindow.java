@@ -29,7 +29,11 @@ package Info;
 
 import Client.Config;
 import javax.microedition.io.ConnectionNotFoundException;
+//#ifndef MENU_LISTENER
 import javax.microedition.lcdui.Command;
+//#else
+//# import Menu.Command;
+//#endif
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;

@@ -393,6 +393,7 @@ public class ServiceDiscovery
             
             items=new Vector();
             features=new Vector();
+            removeCommand(cmdBack);
             addCommand(cmdBack);
             this.service=service;
             this.node=node;

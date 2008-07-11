@@ -40,7 +40,7 @@ import locale.SR;
  *
  * @author Eugene Stahov
  */
-public class DiscoFeatures implements CommandListener{
+public class DiscoFeatures implements CommandListener {
     
     Command cmdBack=new Command(SR.MS_BACK, Command.BACK, 99);
     Command cmdOk=new Command(SR.MS_OK, Command.OK, 1);

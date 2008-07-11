@@ -91,11 +91,10 @@ public class Menu extends VirtualList
 //#             eventOk();
 //#             return;
 //#         }
-//#         if (keyCode==Config.SOFT_RIGHT) {
+//#         if (keyCode==Config.SOFT_RIGHT || keyCode==Config.KEY_BACK) {
 //#             destroyView();
 //#             return;
 //#         }
-//#             
 //#         super.keyPressed(keyCode);
 //#     }
 //#endif

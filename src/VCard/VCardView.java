@@ -31,15 +31,21 @@ import Client.Config;
 import io.file.FileIO;
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
-import util.ClipBoard;
 import util.StringUtils;
 import ui.Time;
+//#endif
+//#ifdef CLIPBOARD
+//# import util.ClipBoard;
 //#endif
 //#ifdef DETRANSLIT
 //# import util.DeTranslit;
 //#endif
 import javax.microedition.lcdui.Displayable;
+//#ifndef MENU_LISTENER
 import javax.microedition.lcdui.Command;
+//#else
+//# import Menu.Command;
+//#endif
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Image;
 import locale.SR;

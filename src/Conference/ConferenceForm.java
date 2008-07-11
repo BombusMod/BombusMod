@@ -28,8 +28,10 @@
 package Conference;
 import Client.*;
 import com.alsutton.jabber.JabberDataBlock;
+import javax.microedition.lcdui.Display;
+import javax.microedition.lcdui.Displayable;
+import javax.microedition.lcdui.TextField;
 import locale.SR;
-import javax.microedition.lcdui.*;
 import com.alsutton.jabber.datablocks.Presence;
 import ui.controls.form.SimpleString;
 import ui.controls.form.CheckBox;
@@ -37,6 +39,11 @@ import ui.controls.form.DefForm;
 import ui.controls.form.NumberInput;
 import ui.controls.form.PasswordInput;
 import ui.controls.form.TextInput;
+//#ifndef MENU_LISTENER
+import javax.microedition.lcdui.Command;
+//#else
+//# import Menu.Command;
+//#endif
 
 /**
  *

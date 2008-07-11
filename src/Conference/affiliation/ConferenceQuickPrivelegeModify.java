@@ -31,7 +31,6 @@ import Client.StaticData;
 import Conference.*;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
-import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.TextField;
@@ -40,6 +39,11 @@ import ui.controls.form.SimpleString;
 import ui.controls.form.DefForm;
 import ui.controls.form.MultiLine;
 import ui.controls.form.TextInput;
+//#ifndef MENU_LISTENER
+import javax.microedition.lcdui.Command;
+//#else
+//# import Menu.Command;
+//#endif
 
 /**
  *

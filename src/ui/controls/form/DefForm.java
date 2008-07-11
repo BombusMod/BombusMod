@@ -30,9 +30,13 @@ package ui.controls.form;
 //import Client.Config;
 import Client.Config;
 import java.util.Vector;
-//#ifndef MENU
-import javax.microedition.lcdui.Command;
+//#ifndef MENU_LISTENER
 import javax.microedition.lcdui.CommandListener;
+import javax.microedition.lcdui.Command;
+//#else
+//# import Menu.MenuListener;
+//# import Menu.Command;
+//# import Menu.MyMenu;
 //#endif
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
@@ -47,8 +51,11 @@ import ui.VirtualList;
  */
 public class DefForm 
         extends VirtualList
-//#ifndef MENU
-        implements CommandListener
+        implements
+//#ifndef MENU_LISTENER
+        CommandListener
+//#else
+//#         MenuListener
 //#endif
     {
     
@@ -56,11 +63,10 @@ public class DefForm
     public Displayable parentView;
     
     public Vector itemsList=new Vector();
-//#ifndef MENU
-    //public Command cmdSelect = new Command(SR.MS_SELECT, Command.OK, 1);
+
     public Command cmdOk = new Command(SR.MS_OK, Command.OK, 1);
     public Command cmdCancel = new Command(SR.MS_BACK, Command.BACK, 99);
-//#endif
+
     public int superWidth;
     /**
      * Creates a new instance of DefForm
@@ -72,14 +78,12 @@ public class DefForm
 	setMainBarItem(new MainBar(caption));
         
         superWidth=super.getWidth();
-//#ifndef MENU
-        //if (Config.getInstance().phoneManufacturer==Config.NOKIA)
-        //    addCommand(cmdSelect);
-        
+//#ifdef MENU_LISTENER
+//#         menuCommands.removeAllElements();
+//#endif
 	addCommand(cmdOk);
 	addCommand(cmdCancel);
 	setCommandListener(this);
-//#endif
     }
 
     protected int getItemCount() { return itemsList.size(); }
@@ -88,28 +92,17 @@ public class DefForm
         return (VirtualElement)itemsList.elementAt(index);
     }
 
-//#ifndef MENU
-    public void touchLeftPressed(){ cmdOk(); }
+    public void touchLeftPressed(){ showMenu(); }
     public void touchRightPressed(){ cmdCancel(); }
     
     public void commandAction(Command command, Displayable displayable) {
 	if (command==cmdCancel) {
 	    cmdCancel();
 	}
-	//if (command==cmdSelect) {
-        //    getItemRef(cursor).onSelect();
-        //}
 	if (command==cmdOk) {
             cmdOk();
         }
     }
-//#else
-//#     public void leftCommand() { cmdOk(); }
-//#     public String getLeftCommand() { return SR.MS_OK; }
-//#     
-//#     public void centerCommand() { getItemRef(cursor).onSelect(); }
-//#     //public String getCenterCommand() { return SR.MS_CHANGE; }
-//#endif
 
     public void destroyView()	{
 	if (display!=null)
@@ -120,4 +113,33 @@ public class DefForm
         destroyView();
     }
     public void cmdOk() { }
+    
+//#ifdef MENU_LISTENER    
+//#     public void addCommand(Command command) {
+//#         menuCommands.addElement(command);        
+//#     }
+//#     public void removeCommand(Command command) {
+//#         menuCommands.removeElement(command);        
+//#     }
+//#     
+//#     public void setCommandListener(MenuListener menuListener) { }
+//#     
+//#     protected void keyPressed(int keyCode) { // overriding this method to avoid autorepeat
+//#         if (keyCode==Config.SOFT_LEFT) {
+//#             showMenu();
+//#             return;
+//#         }
+//#         if (keyCode==Config.SOFT_RIGHT) {
+//#             cmdCancel();
+//#             return;
+//#         }
+//#         super.keyPressed(keyCode);
+//#     }
+//#endif
+    
+    public void showMenu() {
+//#ifdef MENU_LISTENER
+//#         new MyMenu(display, this, "", null);
+//#endif
+    }
 }

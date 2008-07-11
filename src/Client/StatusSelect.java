@@ -27,7 +27,9 @@
 
 package Client;
 import java.util.*;
-import javax.microedition.lcdui.*;
+import javax.microedition.lcdui.Display;
+import javax.microedition.lcdui.Displayable;
+import javax.microedition.lcdui.TextField;
 import locale.SR;
 import ui.*;
 import ui.MainBar;
@@ -36,12 +38,28 @@ import ui.controls.form.DefForm;
 import ui.controls.form.NumberInput;
 import ui.controls.form.SimpleString;
 import ui.controls.form.TextInput;
+//#ifndef MENU_LISTENER
+import javax.microedition.lcdui.CommandListener;
+import javax.microedition.lcdui.Command;
+//#else
+//# import Menu.MenuListener;
+//# import Menu.Command;
+//# import Menu.MyMenu;
+//#endif
 
 /**
  *
  * @author ad
  */
-public class StatusSelect extends VirtualList implements CommandListener, Runnable{
+public class StatusSelect
+        extends VirtualList
+        implements
+//#ifndef MENU_LISTENER
+        CommandListener,
+//#else
+//#         MenuListener,
+//#endif
+        Runnable{
     
     private Command cmdOk=new Command(SR.MS_SELECT,Command.OK,1);
     private Command cmdEdit=new Command(SR.MS_EDIT,Command.SCREEN,2);
@@ -65,10 +83,15 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
         } else {
             setMainBarItem(new MainBar(to));
         }
+//#ifdef MENU_LISTENER
+//#         menuCommands.removeAllElements();
+//#else
+        addCommand(cmdCancel);
+//#endif
         addCommand(cmdOk);
         addCommand(cmdEdit);
         addCommand(cmdDef);
-        addCommand(cmdCancel);
+
         setCommandListener(this);
         
         defp=cf.loginstatus;
@@ -125,6 +148,35 @@ public class StatusSelect extends VirtualList implements CommandListener, Runnab
     
     private void save(){
         StatusList.getInstance().saveStatusToStorage();
+    }
+    
+//#ifdef MENU_LISTENER    
+//#     public void addCommand(Command command) {
+//#         menuCommands.addElement(command);        
+//#     }
+//#     public void removeCommand(Command command) {
+//#         menuCommands.removeElement(command);        
+//#     }
+//#     
+//#     public void setCommandListener(MenuListener menuListener) { }
+//#     
+//#     protected void keyPressed(int keyCode) { // overriding this method to avoid autorepeat
+//#         if (keyCode==Config.SOFT_LEFT) {
+//#             showMenu();
+//#             return;
+//#         }
+//#         if (keyCode==Config.SOFT_RIGHT) {
+//#             destroyView();
+//#             return;
+//#         }
+//#         super.keyPressed(keyCode);
+//#     }
+//#endif
+    
+    public void showMenu() {
+//#ifdef MENU_LISTENER
+//#         new MyMenu(display, this, SR.MS_STATUS, null);
+//#endif
     }
 
     class StatusForm 

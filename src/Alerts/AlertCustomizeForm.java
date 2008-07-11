@@ -30,6 +30,8 @@
 package Alerts;
 
 import Client.*;
+import javax.microedition.lcdui.Display;
+import javax.microedition.lcdui.Displayable;
 import locale.SR;
 import java.util.Vector;
 import ui.EventNotify;
@@ -41,7 +43,11 @@ import ui.controls.form.SpacerItem;
 import ui.controls.form.TrackItem;
 import util.StringLoader;
 import java.util.Enumeration;
-import javax.microedition.lcdui.*;
+//#ifndef MENU_LISTENER
+import javax.microedition.lcdui.Command;
+//#else
+//# import Menu.Command;
+//#endif
 
 
 public class AlertCustomizeForm 

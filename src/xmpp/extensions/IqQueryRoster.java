@@ -59,14 +59,13 @@ public class IqQueryRoster extends Iq
   /** add to roster*/
   public IqQueryRoster(String jid, String name, String group, String subscription) {
     super(null, Iq.TYPE_SET, "addros");
-
     JabberDataBlock qB = addChildNs("query", "jabber:iq:roster" );
     JabberDataBlock item= qB.addChild("item",null);
     item.setAttribute("jid", jid);
-    item.setAttribute("name", name);
+    if (name!=null)
+        item.setAttribute("name", name);
     item.setAttribute("subscription", subscription);
-    if (group!=null) {
+    if (group!=null)
         item.addChild("group",group);
-    }
   }
 }

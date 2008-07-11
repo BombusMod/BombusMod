@@ -23,7 +23,15 @@ import io.file.browse.BrowserListener;
 import images.camera.*;
 
 import java.util.*;
-import javax.microedition.lcdui.*;
+//#ifndef MENU_LISTENER
+import javax.microedition.lcdui.Command;
+//#else
+//# import Menu.Command;
+//#endif
+import javax.microedition.lcdui.Display;
+import javax.microedition.lcdui.Displayable;
+import javax.microedition.lcdui.Image;
+import javax.microedition.lcdui.TextField;
 import locale.SR;
 
 import ui.Time;
