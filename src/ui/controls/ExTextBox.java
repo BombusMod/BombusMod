@@ -32,6 +32,7 @@ import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.TextBox;
 import javax.microedition.lcdui.TextField;
+import javax.microedition.lcdui.Ticker;
 import locale.SR;
 //#ifdef CLIPBOARD
 //# import util.ClipBoard;
@@ -79,7 +80,7 @@ public class ExTextBox
         parentView=display.getCurrent();
 
         cf=Config.getInstance();
-
+        
         this.subj=subj;
 		
         try {
@@ -182,5 +183,34 @@ public class ExTextBox
     
     private void setInitialCaps(boolean state) {
         setConstraints(state?TextField.INITIAL_CAPS_SENTENCE:TextField.ANY);
+    }
+    
+    private Ticker notifyTicker=null;
+
+    public void setMyTicker(String msg) {
+        if (msg!=null) {
+            StringBuffer out=new StringBuffer(msg);
+            int i=0;
+            while (i<out.length()) {
+                if (out.charAt(i)<0x03) out.deleteCharAt(i);
+                else i++;
+            }
+            msg=out.toString();
+        }
+        String em=getString();
+        if (notifyTicker==null) {
+            notifyTicker= new Ticker(msg);
+            setTicker(notifyTicker);
+        } else {
+            if (msg=="") {
+                notifyTicker=null;
+                setTicker(null);
+            } else {
+                notifyTicker.setString(msg);
+            }
+        }
+        if (getString()==null)
+            setString(em);
+        em=null;
     }
 }

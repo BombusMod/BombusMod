@@ -165,7 +165,7 @@ public class StatusSelect
 //#             showMenu();
 //#             return;
 //#         }
-//#         if (keyCode==Config.SOFT_RIGHT) {
+//#         if (keyCode==Config.SOFT_RIGHT || keyCode==Config.KEY_BACK) {
 //#             destroyView();
 //#             return;
 //#         }

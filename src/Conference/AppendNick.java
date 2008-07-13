@@ -86,7 +86,7 @@ public class AppendNick
              StringBuffer b=new StringBuffer(nick.substring(rp+1));
              
             if (caretPos==0) b.append(':');
-            t.insert(b.toString(), caretPos);
+            StaticData.getInstance().roster.me.insert(b.toString(), caretPos);
             b=null;
          } catch (Exception e) {}
         destroyView();

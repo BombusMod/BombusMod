@@ -184,7 +184,7 @@ public abstract class MessageList extends VirtualList
 //#             showMenu();
 //#             return;
 //#         }
-//#         if (keyCode==Config.SOFT_RIGHT) {
+//#         if (keyCode==Config.SOFT_RIGHT || keyCode==Config.KEY_BACK) {
 //#             StaticData.getInstance().roster.activeContact=null;
 //#             destroyView();
 //#             return;

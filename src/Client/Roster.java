@@ -216,6 +216,8 @@ public class Roster
     private final static int SOUND_FOR_VIP=100;
     private final static int SOUND_COMPOSING=888;
     private final static int SOUND_OUTGOING=999;
+
+    public MessageEdit me=null;
    
     public Roster(Display display) {
         super();
@@ -1448,20 +1450,22 @@ public class Roster
                     if (message.findNamespace("active", "http://jabber.org/protocol/chatstates")!=null) {
                         c.acceptComposing=true;
                         c.setComposing(false);
+                        setTicker(c, "");
                      }
 
                     if (message.findNamespace("paused", "http://jabber.org/protocol/chatstates")!=null) {
                         c.acceptComposing=true;
                         c.setComposing(false);
+                        setTicker(c, "");
                     }
 
                     if (message.findNamespace("composing", "http://jabber.org/protocol/chatstates")!=null) {
                         playNotify(SOUND_COMPOSING);
                         c.acceptComposing=true;
                         c.setComposing(true);
+                        setTicker(c, SR.MS_COMPOSING_NOTIFY);
                     }
                 }
-     
                 redraw();
 
                 if (body==null) 
@@ -1688,6 +1692,11 @@ public class Roster
                         c.setComposing(false);
                     }
                     if (ti>=0) {
+                        if (ti==Presence.PRESENCE_OFFLINE)
+                            setTicker(c, SR.getPresence(Presence.PRS_OFFLINE));
+                        if (ti==Presence.PRESENCE_ONLINE)
+                            setTicker(c, SR.getPresence(Presence.PRS_ONLINE));
+                        
                         if ((ti==Presence.PRESENCE_ONLINE || ti==Presence.PRESENCE_CHAT || ti==Presence.PRESENCE_OFFLINE) && (c.getGroupType()!=Groups.TYPE_TRANSP) && (c.getGroupType()!=Groups.TYPE_IGNORE)) 
                             playNotify(ti);
                     }
@@ -1756,6 +1765,9 @@ public class Roster
         c.addMessage(message);
         
         boolean autorespond = false;
+        
+        if (message.messageType==Msg.MESSAGE_TYPE_IN)
+            setTicker(c, message.getBody());
         
 //#ifndef WSYSTEMGC
         if (cf.ghostMotor) {
@@ -2050,7 +2062,7 @@ public class Roster
         Displayable pview=createMsgList();
         if (pview!=null) {
             Contact c=(Contact)getFocusedObject();
-            ( new MessageEdit(display, c, c.msgSuspended) ).setParentView(pview);
+            ( me = new MessageEdit(display, c, c.msgSuspended) ).setParentView(pview);
             c.msgSuspended=null;
         }
     }
@@ -2886,5 +2898,13 @@ public class Roster
 //#         addMenuCommands();
 //#         new MyMenu(display, this, SR.MS_MAIN_MENU, menuIcons);
 //#endif
+    }
+    
+    void setTicker(Contact c, String message) {
+        if (cf.notifyWhenMessageType) {
+            if (me!=null)
+                if (me.to==c)
+                    me.setMyTicker(message);
+        }
     }
 }

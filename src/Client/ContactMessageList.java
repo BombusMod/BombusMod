@@ -377,7 +377,9 @@ public class ContactMessageList extends MessageList {
 //#endif
     public int getItemCount(){ return contact.msgs.size(); }
 
-    public Msg getMessage(int index) { 
+    public Msg getMessage(int index) {
+        if (index> getItemCount()-1) return null;
+        
 	Msg msg=(Msg) contact.msgs.elementAt(index); 
 	if (msg.unread) contact.resetNewMsgCnt();
 	msg.unread=false;
@@ -532,7 +534,7 @@ public class ContactMessageList extends MessageList {
         if (!sd.roster.isLoggedIn()) 
             return;
         
-        (new MessageEdit(display,contact,contact.msgSuspended)).setParentView(this);
+        (sd.roster.me=new MessageEdit(display,contact,contact.msgSuspended)).setParentView(this);
         contact.msgSuspended=null;
     }
     
@@ -621,10 +623,13 @@ public class ContactMessageList extends MessageList {
         try {
             Msg msg=getMessage(cursor);
             
-            if (msg.messageType < Msg.MESSAGE_TYPE_IN || msg.messageType == Msg.MESSAGE_TYPE_SUBJ)
+            if (msg==null ||
+                msg.messageType == Msg.MESSAGE_TYPE_HISTORY ||
+                msg.messageType == Msg.MESSAGE_TYPE_OUT ||
+                msg.messageType == Msg.MESSAGE_TYPE_SUBJ)
                 keyGreen();
             else
-                new MessageEdit(display,contact,msg.from+": ");
+                sd.roster.me=new MessageEdit(display,contact,msg.from+": ");
         } catch (Exception e) {/*no messages*/}
     }
     
@@ -637,7 +642,7 @@ public class ContactMessageList extends MessageList {
                 .append(getMessage(cursor).quoteString())
                 .append("\n")
                 .toString();
-            new MessageEdit(display,contact,msg);
+            sd.roster.me=new MessageEdit(display,contact,msg);
             msg=null;
         } catch (Exception e) {/*no messages*/}
     }

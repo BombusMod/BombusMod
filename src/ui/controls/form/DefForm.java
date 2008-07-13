@@ -129,7 +129,7 @@ public class DefForm
 //#             showMenu();
 //#             return;
 //#         }
-//#         if (keyCode==Config.SOFT_RIGHT) {
+//#         if (keyCode==Config.SOFT_RIGHT || keyCode==Config.KEY_BACK) {
 //#             cmdCancel();
 //#             return;
 //#         }

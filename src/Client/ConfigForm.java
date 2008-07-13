@@ -78,7 +78,7 @@ public class ConfigForm
 //#    private CheckBox rcvtune;
 //#endif
 //#endif
-     //private CheckBox notifyWhenMessageType;
+     private CheckBox notifyWhenMessageType;
 //#ifdef ANTISPAM
 //#    private CheckBox antispam;
 //#endif
@@ -193,7 +193,7 @@ public class ConfigForm
 //#             rcvtune = new CheckBox(SR.MS_RECEIVE_USERTUNE, cf.rcvtune); itemsList.addElement(rcvtune);
 //#endif
 //#endif
-            //notifyWhenMessageType = new CheckBox(SR.MS_RUNNING_MESSAGE, cf.notifyWhenMessageType); itemsList.addElement(notifyWhenMessageType);
+            notifyWhenMessageType = new CheckBox(SR.MS_RUNNING_MESSAGE, cf.notifyWhenMessageType); itemsList.addElement(notifyWhenMessageType);
 //#ifdef ANTISPAM
 //#             antispam = new CheckBox(SR.MS_ANTISPAM_CONFERENCE, cf.antispam); itemsList.addElement(antispam);
 //#endif
@@ -343,7 +343,7 @@ public class ConfigForm
 //#             cf.rcvtune=rcvtune.getValue();
 //#endif
 //#endif
-        //cf.notifyWhenMessageType=notifyWhenMessageType.getValue();
+        cf.notifyWhenMessageType=notifyWhenMessageType.getValue();
 //#ifdef ANTISPAM
 //#             cf.antispam=antispam.getValue();
 //#endif
