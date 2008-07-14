@@ -88,6 +88,7 @@ public class PrivacyForm
         
         Object rfocus=StaticData.getInstance().roster.getFocusedObject();
         
+        itemsList=null;
         itemsList=new Vector();
         
         itemsList.addElement(new SimpleString(SR.MS_PRIVACY_ACTION, true));

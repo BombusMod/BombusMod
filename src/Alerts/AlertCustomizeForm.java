@@ -94,6 +94,7 @@ public class AlertCustomizeForm
         cf=Config.getInstance();
         
         files=new StringLoader().stringLoader("/sounds/res.txt",3);
+        fileNames=null;
         fileNames=new Vector();
 	for (Enumeration file=files[2].elements(); file.hasMoreElements(); ) {
             fileNames.addElement((String)file.nextElement());

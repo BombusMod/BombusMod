@@ -66,6 +66,7 @@ public class userKeyExec {
     public Vector commandsList;
     
     private void initCommands() {
+        commandsList=null;
         commandsList=new Vector();
         
         userKey u;

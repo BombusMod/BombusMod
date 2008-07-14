@@ -162,6 +162,7 @@ public class Contact extends IconTextElement{
         cf=Config.getInstance();
         ct=ColorTheme.getInstance();
 
+        msgs=null;
         msgs=new Vector();
         
         key1="";
@@ -407,7 +408,7 @@ public class Contact extends IconTextElement{
 //#            purgeTemps();
 //#        } catch (Exception e) { }
 //#endif
-        
+        msgs=null;
         msgs=new Vector();
         
         lastSendedMessage=null;
@@ -440,6 +441,7 @@ public class Contact extends IconTextElement{
     public final void smartPurge(int cursor) {
         try {
             if (cursor==msgs.size() && msgs.size()>0) {
+                msgs=null;
                 msgs=new Vector();
                 activeMessage=-1; //drop activeMessage num
             } else {
@@ -517,7 +519,7 @@ public class Contact extends IconTextElement{
 //#ifdef ANTISPAM
 //#     public void addTempMessage(Msg m) { tempMsgs.addElement(m); }
 //# 
-//#     public final void purgeTemps() { tempMsgs=new Vector(); }
+//#     public final void purgeTemps() { tempMsgs=null; tempMsgs=new Vector(); }
 //#endif
     
     public int getVWidth(){

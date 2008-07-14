@@ -162,7 +162,7 @@ public class EditBox implements CommandListener {
 
             try { 
                 while (true) recentList.addElement(is.readUTF());
-            } catch (EOFException e) { is.close(); }
+            } catch (EOFException e) { is.close(); is=null; }
         } catch (Exception e) { }
     }
 

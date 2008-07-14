@@ -89,6 +89,8 @@ public class Affiliations
         
         setMainBarItem(new MainBar(2, null, " "));
         getMainBarItem().addElement(id);
+        
+        items=null;
         items=new Vector();
         
         addCommand(cmdCancel);

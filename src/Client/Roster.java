@@ -234,9 +234,11 @@ public class Roster
         mainbar.addElement(null);
         mainbar.addElement(null); //ft
 
+        hContacts=null;
         hContacts=new Vector();
         groups=new Groups();
         
+        vContacts=null;
         vContacts=new Vector(); // just for displaying
         
 	updateMainBar();
@@ -394,8 +396,10 @@ public class Roster
 
     public void resetRoster() {
 	synchronized (hContacts) {
+            hContacts=null;
 	    hContacts=new Vector();
 	    groups=new Groups();
+            vContacts=null;
 	    vContacts=new Vector(); // just for displaying
 	    bookmarks=null;
 	}
@@ -883,6 +887,7 @@ public class Roster
         if (myStatus==Presence.PRESENCE_OFFLINE) {
             try {
                 theStream.close(); // sends </stream:stream> and closes socket
+                
             } catch (Exception e) { e.printStackTrace(); }
 
             synchronized(hContacts) {
@@ -1084,6 +1089,7 @@ public class Roster
     private Vector vCardQueue;
     
     public void resolveNicknames(String transport){
+        vCardQueue=null;
 	vCardQueue=new Vector();
         synchronized (hContacts) {
             for (Enumeration e=hContacts.elements(); e.hasMoreElements();){

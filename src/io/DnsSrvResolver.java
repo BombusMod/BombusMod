@@ -97,6 +97,7 @@ public class DnsSrvResolver {
             Hashtable ht=new util.StringLoader().hashtableLoader(c.openInputStream());
             
             c.close();
+            c=null;
             
             resolvedHost=(String)ht.get("host");
             resolvedPort=Integer.parseInt((String)ht.get("port"));

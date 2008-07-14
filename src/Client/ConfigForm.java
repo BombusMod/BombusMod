@@ -273,8 +273,8 @@ public class ConfigForm
         itemsList.addElement(new SpacerItem(10));
         itemsList.addElement(new SimpleString(SR.MS_PANELS, true));
         panels=new DropChoiceBox(display);
-        panels.append(SR.MS_MAIN_BAR+" : [   ]");
         panels.append("[   ] : [   ]");
+        panels.append(SR.MS_MAIN_BAR+" : [   ]");
         panels.append(SR.MS_MAIN_BAR+" : "+SR.MS_INFO_BAR);
         panels.append("[   ] : "+SR.MS_INFO_BAR);
         panels.append(SR.MS_INFO_BAR+" : [   ]");
@@ -282,7 +282,7 @@ public class ConfigForm
         panels.append("[   ] : "+SR.MS_MAIN_BAR);
 	panels.setSelectedIndex(cf.panelsState);
 	itemsList.addElement(panels);
-        
+
         itemsList.addElement(new SpacerItem(10));
         itemsList.addElement(new SimpleString(SR.MS_LANGUAGE, true));
         langFiles=new DropChoiceBox(display);

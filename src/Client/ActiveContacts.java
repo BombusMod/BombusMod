@@ -59,6 +59,7 @@ public class ActiveContacts
     /** Creates a new instance of ActiveContacts */
     public ActiveContacts(Display display, Contact current) {
 	super();
+        activeContacts=null;
 	activeContacts=new Vector();
         synchronized(sd.roster.getHContacts()) {
             for (Enumeration r=sd.roster.getHContacts().elements(); r.hasMoreElements(); )  {

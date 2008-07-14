@@ -145,6 +145,7 @@ public class PrivacyModifyList
                 data=data.findNamespace("query", "jabber:iq:privacy");
                 try {
                     data=data.getChildBlock("list");
+                    plist.rules=null;
                     plist.rules=new Vector();
                     for (Enumeration e=data.getChildBlocks().elements(); e.hasMoreElements();) {
                         JabberDataBlock item=(JabberDataBlock) e.nextElement();

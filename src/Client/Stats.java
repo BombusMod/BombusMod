@@ -83,10 +83,13 @@ public class Stats {
             latestTraffic=inputStream.readLong();
             sessions=inputStream.readInt();
             inputStream.close();
+            inputStream=null;
 	} catch (Exception e) {
             try {
-                if (inputStream!=null) 
+                if (inputStream!=null) {
                     inputStream.close();
+                    inputStream=null;
+                }
             } catch (IOException ex) {}
 	}
     }

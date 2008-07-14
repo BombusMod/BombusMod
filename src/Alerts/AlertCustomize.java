@@ -120,10 +120,13 @@ public class AlertCustomize {
             vibrateOnlyHighlited=inputStream.readBoolean();
             flashBackLight=inputStream.readBoolean();
             inputStream.close();
+            inputStream=null;
 	} catch (Exception e) {
             try {
-                if (inputStream!=null)
+                if (inputStream!=null) {
                     inputStream.close();
+                    inputStream=null;
+                }
             } catch (IOException ex) {}
 	}
     }

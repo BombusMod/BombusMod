@@ -126,8 +126,8 @@ public class Utf8IOStream {
     }    
     
     public void close() {
-	try { outStream.close();    }  catch (Exception e) {}
-	try { inpStream.close();    }  catch (Exception e) {}
+	try { outStream.close(); outStream=null; }  catch (Exception e) {}
+	try { inpStream.close(); inpStream=null; }  catch (Exception e) {}
     }
 
 //#if ZLIB

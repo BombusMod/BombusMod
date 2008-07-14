@@ -114,8 +114,10 @@ public class JabberDataBlock
    */
 
   public void addChild( Object newData ) {
-      if( childBlocks == null )
+      if( childBlocks == null ) {
+          childBlocks=null;
 	  childBlocks = new Vector();
+      }
       if (childBlocks.size()<MAX_CHILDS)
 	  childBlocks.addElement( newData );
   }
@@ -222,8 +224,10 @@ public class JabberDataBlock
       if( attributeName == null )
           return;
       
-      if( attributes == null )
+      if( attributes == null ) {
+          attributes=null;
           attributes = new Vector();
+      }
       
       int index=0;
       while (index<attributes.size()) {

@@ -114,6 +114,7 @@ public class Group extends IconTextElement {
 	tonlines=0;
         tncontacts=0;
         unreadMessages=0;
+        contacts=null;
 	contacts=new Vector();
     }
 

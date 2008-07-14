@@ -153,6 +153,7 @@ public final class MessageParser implements Runnable{
     }
 
     private MessageParser(String resource) {
+        smileTable=null;
         smileTable=new Vector();
         root=new Leaf();
 //#ifdef SMILES
@@ -196,6 +197,7 @@ public final class MessageParser implements Runnable{
             }
             s.setLength(0);
             in.close();
+            in=null;
         } catch (Exception e) {
             s.setLength(0);
         }

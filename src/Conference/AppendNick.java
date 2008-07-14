@@ -59,6 +59,7 @@ public class AppendNick
         
         setMainBarItem(new MainBar(SR.MS_SELECT_NICKNAME));
         
+        nicknames=null;
         nicknames=new Vector();
         for (Enumeration e=StaticData.getInstance().roster.getHContacts().elements(); e.hasMoreElements(); ) {
             Contact c=(Contact)e.nextElement();

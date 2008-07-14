@@ -146,6 +146,7 @@ public class AutoTaskForm
 //#     }
 //# 
 //#     public void update(){
+//#         itemsList=null;
 //#         itemsList=new Vector();
 //#         
 //#         itemsList.addElement(taskTypeDesc);

@@ -134,6 +134,7 @@ public class XMLList
     private void deleteAllMessages() {
         if (getItemCount()>0) {
             stanzas.deleteAll();
+            messages=null;
             messages=new Vector();
         }
         redraw(); 

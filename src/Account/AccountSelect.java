@@ -74,7 +74,7 @@ public class AccountSelect
         if (enableQuit) {
             VirtualList.canBack=false;
         }
-        
+        accountList=null;
         accountList=new Vector();
         Account a;
         

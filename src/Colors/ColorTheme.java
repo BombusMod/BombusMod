@@ -66,6 +66,7 @@ blue 0x0000ff
     public static Vector colorsContainer;
     
     public static void init() {
+        colorsContainer=null;
         colorsContainer=new Vector();
         
         colorsContainer.addElement(new ColorItem("BALLOON_INK", 0x4866ad));
@@ -262,6 +263,7 @@ blue 0x0000ff
                 c.setColor(inputStream.readInt());
             }
 	    inputStream.close();
+            inputStream=null;
 	} catch (Exception e) { }
     }
 

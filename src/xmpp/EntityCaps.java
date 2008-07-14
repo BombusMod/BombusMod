@@ -99,6 +99,7 @@ public class EntityCaps implements JabberBlockListener{
     
     public static void initCaps() {
         ver=null;
+        features=null;
         features=new Vector();
         
         //features MUST be sorted        

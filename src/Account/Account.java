@@ -117,6 +117,7 @@ public class Account extends IconTextElement{
                 index--;
             } while (index>-1);
             is.close();
+            is=null;
         } catch (Exception e) { /*e.printStackTrace();*/ }
         return a;
     }

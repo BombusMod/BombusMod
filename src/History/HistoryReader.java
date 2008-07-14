@@ -131,6 +131,7 @@ public class HistoryReader
         parsing=true;
         new Thread(new Runnable() {
             public void run() {
+                messages=null;
                 messages=new Vector();
                 thisMsg=hl.getMessage(index);
                 thisMsg.itemCollapsed=false;

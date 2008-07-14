@@ -119,6 +119,7 @@ public class JabberStream extends XmppParser implements Runnable {
             if (name.equals( "stream:stream" ) ) {
                 dispatcher.halt();
                 iostream.close();
+                iostream=null;
                 throw new XMLException("Normal stream shutdown");
             }
             return;
@@ -130,6 +131,7 @@ public class JabberStream extends XmppParser implements Runnable {
 
                 dispatcher.halt();
                 iostream.close();
+                iostream=null;
                 throw new XMLException("Stream error: "+xe.toString());
                 
             }
@@ -200,6 +202,7 @@ public class JabberStream extends XmppParser implements Runnable {
         } catch( IOException e ) { }
         dispatcher.halt();
         iostream.close();
+        iostream=null;
     }
     
     /**

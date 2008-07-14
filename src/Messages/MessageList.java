@@ -76,6 +76,7 @@ public abstract class MessageList extends VirtualList
   
     public MessageList() {
         super();
+        messages=null;
 	messages=new Vector();
 //#ifdef MENU_LISTENER
 //#         menuCommands.removeAllElements();

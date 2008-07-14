@@ -44,8 +44,11 @@ public class Moods {
        
        if (vMood==null) vMood=new StringLoader().stringLoader("/lang/en.moods.txt", 2);
        if (vMood==null) {
-           System.out.println("Cant't load mood names");
-           moodKey=moodValue=new Vector();
+           //System.out.println("Cant't load mood names");
+           moodKey=null;
+           moodKey=new Vector();
+           moodValue=null;
+           moodValue=new Vector();
        } else {
            moodKey=(Vector)vMood[0];
            moodValue=(Vector)vMood[1];

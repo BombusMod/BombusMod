@@ -38,6 +38,7 @@ public class StringLoader {
 	StringBuffer buf = new StringBuffer();
 	Vector table[] = new Vector[columns];
 	for (int i = 0; i<columns; i++) {
+            table[i]=null;
 	    table[i]=new Vector();
 	}
 	
@@ -83,6 +84,7 @@ public class StringLoader {
         StringBuffer buf = new StringBuffer();
         Vector table[] = new Vector[columns];
         for (int i = 0; i<columns; i++) {
+            table[i]=null;
             table[i]=new Vector();
         }
         

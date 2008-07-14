@@ -66,6 +66,7 @@ public class StatusList {
 	    createFromStream(Presence.PRESENCE_OFFLINE, Presence.PRS_OFFLINE, inputStream);
 	    
 	    inputStream.close();
+            inputStream=null;
         } catch (Exception e) { 
             //e.printStackTrace(); 
         }

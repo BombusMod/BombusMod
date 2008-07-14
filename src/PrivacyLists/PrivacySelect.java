@@ -132,6 +132,7 @@ public class PrivacySelect
                 if (data.getAttribute("id").equals("getplists")) {
                 data=data.findNamespace("query", "jabber:iq:privacy");
                 if (data!=null) {
+                    list=null;
                     list=new Vector();
                     String activeList="";
                     String defaultList="";

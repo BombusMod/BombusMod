@@ -366,12 +366,14 @@ public class ContactMessageList extends MessageList {
 //#     private void getRedraw(boolean redraw) {
 //#         if (redraw) {
 //#             contact.redraw=false;
+//#             messages=null;
 //#             messages=new Vector();
 //#             redraw();
 //#         }
 //#     }
 //#     private void setRedraw() {
 //#         contact.redraw=false;
+//#             messages=null;
 //#         messages=new Vector();
 //#     }
 //#endif
@@ -513,6 +515,7 @@ public class ContactMessageList extends MessageList {
 
     public void clearReadedMessageList() {
         contact.smartPurge(cursor+1);
+        messages=null;
         messages=new Vector();
         cursor=0;
         moveCursorHome();

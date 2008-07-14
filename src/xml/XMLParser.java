@@ -86,6 +86,7 @@ public class XMLParser {
                         
                         sbuf.setLength(0);
                         tagName.setLength(0);
+                        attr=null;
                         attr=new Vector();
                         
                         continue;
@@ -213,7 +214,7 @@ public class XMLParser {
                 
                 else if (c == '<') {
                     try { 
-                        baos.close(); 
+                        baos.close();
                         
                         if (baos.size()<MAX_BIN_DATASIZE)
                             eventListener.binValueEncountered( baos.toByteArray() );
