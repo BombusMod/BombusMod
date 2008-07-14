@@ -62,23 +62,24 @@ public class EventNotify
 	String soundMediaType, 
 	String soundFileName, 
 	int sndVolume,
-	int vibraLength 
-    , boolean flashBackLight) {
+	int vibraLength, 
+        boolean flashBackLight)
+    {
         this.display=display;
-	this.soundName=soundFileName;
-	this.soundType=soundMediaType;
-	this.lenVibra=vibraLength;
+        this.soundName=soundFileName;
+        this.soundType=soundMediaType;
+        this.lenVibra=vibraLength;
         this.flashBackLight=flashBackLight;
-	if (soundType!=null) 
+        if (soundType!=null) 
             toneSequence= soundType.equals("tone");
-	this.sndVolume=sndVolume;
+        this.sndVolume=sndVolume;
     }
     
     public void startNotify (){
         release();
         try {
             if (flashBackLight) {
-                display.flashBacklight(500);
+                display.flashBacklight(1000);
             }
         } catch (Exception e2) { /* e.printStackTrace(); */}
         
