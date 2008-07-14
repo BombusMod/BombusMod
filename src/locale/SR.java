@@ -665,6 +665,12 @@ public class SR {
     public static String MS_UNSUPPORTED_FORMAT=loadString("[Unsupported format]");
 
     public static String MS_DELETE_GROUP_ASK=loadString("Delete group?");
+
+    public static String MS_PANELS=loadString("Panels");
+    public static String MS_TOP_PANEL_YES=loadString("top panel");
+    public static String MS_TOP_PANEL_NONE=loadString("no top panel");
+    public static String MS_BOTTOM_PANEL_YES=loadString("bottom panel");
+    public static String MS_BOTTOM_PANEL_NONE=loadString("no bottom panel");
     
     private SR() { }
     

@@ -2275,12 +2275,6 @@ public class Roster
 //#endif
        	else if (keyCode==KEY_NUM3) new ActiveContacts(display, null);
        	else if (keyCode==KEY_NUM4) new ConfigForm(display);
-//#ifndef MENU
-        else if (keyCode==KEY_NUM6) {
-            cf.isbottom=(cf.isbottom+1)%7;
-            cf.saveToStorage();
-        }
-//#endif
         else if (keyCode==KEY_NUM7)
             new RosterToolsMenu(display);
         else if (keyCode==KEY_NUM9) {

@@ -100,7 +100,7 @@ public class ConfigData {
 //#         array.addElement(new keyValue(msgLogConf, (cf.msgLogConf)?"1":"0"));
 //#endif
         array.addElement(new keyValue(cp1251, (cf.cp1251)?"1":"0"));
-        array.addElement(new keyValue(isbottom, Integer.toString(cf.isbottom)));
+        array.addElement(new keyValue(panelsState, Integer.toString(cf.panelsState)));
 //#ifdef NEW_MENU
         array.addElement(new keyValue(newMenu, (cf.newMenu)?"1":"0"));
 //#endif
@@ -235,7 +235,7 @@ public class ConfigData {
 //#         cf.msgLogConf=cf.getBooleanProperty(getValue(msgLogConf),false);
 //#endif
         cf.cp1251=cf.getBooleanProperty(getValue(cp1251),true);
-        cf.isbottom=cf.getIntProperty(getValue(isbottom),2);
+        cf.panelsState=cf.getIntProperty(getValue(panelsState),2);
 //#ifdef NEW_MENU
         cf.newMenu=cf.getBooleanProperty(getValue(newMenu),false);
 //#endif
@@ -399,7 +399,7 @@ public class ConfigData {
 //#     private final static String msgLogConf="msgLogConf";
 //#endif
     private final static String cp1251="cp1251";
-    private final static String isbottom="isbottom";
+    private final static String panelsState="panelsState";
 //#ifdef NEW_MENU
     private final static String newMenu="newMenu";
 //#endif

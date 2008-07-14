@@ -139,7 +139,7 @@ public class PopUp {
             next();
             return false;
         }
-        if (keyCode==5 || keyCode==12) {
+        if (keyCode==5 || keyCode==12 || keyCode==13) {
             next();
         }
         return true;

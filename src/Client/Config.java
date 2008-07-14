@@ -227,7 +227,7 @@ type = \"-=Siemens=-\";
     public boolean istreamWaiting;
     public int phoneManufacturer=NOT_DETECTED;
 
-    public int isbottom=2; //default state both panels show, reverse disabled
+    public int panelsState=2; //default state both panels show, reverse disabled
     public boolean lightState=false;
     public boolean autoScroll=true;
 //#ifdef POPUPS
@@ -421,7 +421,7 @@ type = \"-=Siemens=-\";
 //#endif
             defGcRoom=inputStream.readUTF();
             firstRun=inputStream.readBoolean();
-            isbottom=inputStream.readInt();
+            panelsState=inputStream.readInt();
             confMessageCount=inputStream.readInt();
 //#ifdef NEW_MENU
             newMenu=inputStream.readBoolean();
@@ -536,6 +536,7 @@ type = \"-=Siemens=-\";
 	VirtualList.fullscreen=fullscreen;
 	VirtualList.memMonitor=memMonitor;
         VirtualList.showBalloons=showBalloons;
+        VirtualList.panelsState=panelsState;
 //#ifdef USER_KEYS
 //#         VirtualList.userKeys=userKeys;
 //#endif
@@ -615,7 +616,7 @@ type = \"-=Siemens=-\";
 //#endif
             outputStream.writeUTF(defGcRoom);
             outputStream.writeBoolean(firstRun);
-            outputStream.writeInt(isbottom);
+            outputStream.writeInt(panelsState);
             outputStream.writeInt(confMessageCount);
 //#ifdef NEW_MENU
             outputStream.writeBoolean(newMenu);

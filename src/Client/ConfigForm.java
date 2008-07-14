@@ -129,6 +129,8 @@ public class ConfigForm
 //#     private NumberInput fieldAwayDelay; 
 //#     private CheckBox awayStatus;
 //#endif
+    
+    private DropChoiceBox panels;
 
     private Vector langs[];
 
@@ -269,6 +271,19 @@ public class ConfigForm
 	itemsList.addElement(textWrap);
         
         itemsList.addElement(new SpacerItem(10));
+        itemsList.addElement(new SimpleString(SR.MS_PANELS, true));
+        panels=new DropChoiceBox(display);
+        panels.append(SR.MS_TOP_PANEL_NONE+" : "+SR.MS_BOTTOM_PANEL_NONE);
+        panels.append(SR.MS_TOP_PANEL_YES+" : "+SR.MS_BOTTOM_PANEL_NONE);
+        panels.append(SR.MS_TOP_PANEL_YES+" : "+SR.MS_BOTTOM_PANEL_YES);
+        panels.append(SR.MS_TOP_PANEL_NONE+" : "+SR.MS_BOTTOM_PANEL_YES);
+        panels.append(SR.MS_BOTTOM_PANEL_YES+" : "+SR.MS_TOP_PANEL_NONE);
+        panels.append(SR.MS_BOTTOM_PANEL_YES+" : "+SR.MS_TOP_PANEL_YES);
+        panels.append(SR.MS_BOTTOM_PANEL_NONE+" : "+SR.MS_TOP_PANEL_YES);
+	panels.setSelectedIndex(cf.panelsState);
+	itemsList.addElement(panels);
+        
+        itemsList.addElement(new SpacerItem(10));
         itemsList.addElement(new SimpleString(SR.MS_LANGUAGE, true));
         langFiles=new DropChoiceBox(display);
 	langs=new StringLoader().stringLoader("/lang/res.txt",3);
@@ -395,6 +410,10 @@ public class ConfigForm
 //#if LOGROTATE
 //#             cf.msglistLimit=Integer.parseInt(messageCountLimit.getValue());
 //#endif
+        if (cf.panelsState!=panels.getSelectedIndex()) {
+            cf.panelsState=panels.getSelectedIndex();
+            VirtualList.changeOrient(cf.panelsState);
+        }       
 
         sd.roster.setLight(cf.lightState);   
 

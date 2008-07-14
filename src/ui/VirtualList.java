@@ -75,13 +75,15 @@ public abstract class VirtualList
 //#     private boolean drawTest;
 //#endif
     
-//#ifndef MENU
-    private boolean reverse=false;
-    private boolean paintTop=true;
-    private boolean paintBottom=true;
+
+    public static int panelsState=2;
+    private static boolean reverse=false;
+    private static boolean paintTop=true;
+    private static boolean paintBottom=true;
     
-    public void changeOrient() {
-        switch (cf.isbottom) {
+    public static void changeOrient(int newOrient) {
+        panelsState=newOrient;
+        switch (panelsState) {
             case 0: paintTop=false; paintBottom=false; reverse=false; break;
             case 1: paintTop=true;  paintBottom=false; reverse=false; break;
             case 2: paintTop=true;  paintBottom=true;  reverse=false; break;
@@ -91,7 +93,6 @@ public abstract class VirtualList
             case 6: paintTop=false; paintBottom=true;  reverse=true;  break;
         }
     }
-//#endif
     
 //#ifdef USER_KEYS
 //#     private static final int USER_OTHER_KEY_PRESSED = 1;
@@ -299,9 +300,9 @@ public abstract class VirtualList
         if (cf.phoneManufacturer==Config.WINDOWS) {
             setTitle("Bombus CE");
         }
-//#ifndef MENU
-        changeOrient();
-//#endif
+        
+        changeOrient(cf.panelsState);
+        
         setFullScreenMode(fullscreen);
 
 	itemBorder=new int[32];
@@ -552,27 +553,22 @@ public abstract class VirtualList
                     drawBalloon(g, baloon, text);
             }
         }
-//#ifndef MENU
         if (paintBottom) {
             if (reverse) {
-                setAbsOrg(g, 0, height-mHeight);
-                drawMainPanel(g);
-                ar.init(width, height, mHeight);
+                if (mainbar!=null) {
+                    setAbsOrg(g, 0, height-mHeight);
+                    drawMainPanel(g);
+                    ar.init(width, height, mHeight);
+                }
             } else {
-                setAbsOrg(g, 0, height-iHeight);
-                drawInfoPanel(g);
-                ar.init(width, height, iHeight);
+                if (infobar!=null) {
+                    setAbsOrg(g, 0, height-iHeight);
+                    drawInfoPanel(g);
+                    ar.init(width, height, iHeight);
+                }
             }
         }
-//#else
-//#         if (menu!=null) {
-//#             int xx=g.getTranslateX();
-//#             int yy=g.getTranslateY();
-//#             setAbsOrg(g, 0, 0);
-//#             menu.draw(g);
-//#             setAbsOrg(g, xx, yy);
-//#         }
-//#endif
+        
         setAbsClip(g, width, height);
         
         if (System.currentTimeMillis()-sd.getTrafficIn()<2000) { g.setColor(0x00ff00); g.fillRect((width/2)-3, height-2, 2, 2); }
@@ -638,8 +634,8 @@ public abstract class VirtualList
             g.fillRect(0, 0, width, h);
 //#endif
             g.setColor(getMainBarRGB());
-
-            infobar.drawItem(g,0,false);
+            int offset=(cf.phoneManufacturer==Config.NOKIA && reverse)?17:0;
+            infobar.drawItem(g,offset,false);
         }
     }
 //#endif
@@ -664,8 +660,8 @@ public abstract class VirtualList
             g.fillRect(0, 0, width, h);
 //#endif
             g.setColor(getMainBarRGB());
-            setAbsOrg(g,(cf.phoneManufacturer==Config.NOKIA)?17:0,0);
-            mainbar.drawItem(g,0,false);
+            int offset=(cf.phoneManufacturer==Config.NOKIA && !reverse)?17:0;
+            mainbar.drawItem(g,offset,false);
         }
     }
 
@@ -864,6 +860,7 @@ public abstract class VirtualList
                         case FIRE: key=12; break;
                     }
                 } catch (Exception e) {}
+                if (keyCode==Config.KEY_BACK) key=13;
         }
          
         if (key>-1) {
