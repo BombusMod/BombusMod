@@ -273,13 +273,13 @@ public class ConfigForm
         itemsList.addElement(new SpacerItem(10));
         itemsList.addElement(new SimpleString(SR.MS_PANELS, true));
         panels=new DropChoiceBox(display);
-        panels.append(SR.MS_TOP_PANEL_NONE+" : "+SR.MS_BOTTOM_PANEL_NONE);
-        panels.append(SR.MS_TOP_PANEL_YES+" : "+SR.MS_BOTTOM_PANEL_NONE);
-        panels.append(SR.MS_TOP_PANEL_YES+" : "+SR.MS_BOTTOM_PANEL_YES);
-        panels.append(SR.MS_TOP_PANEL_NONE+" : "+SR.MS_BOTTOM_PANEL_YES);
-        panels.append(SR.MS_BOTTOM_PANEL_YES+" : "+SR.MS_TOP_PANEL_NONE);
-        panels.append(SR.MS_BOTTOM_PANEL_YES+" : "+SR.MS_TOP_PANEL_YES);
-        panels.append(SR.MS_BOTTOM_PANEL_NONE+" : "+SR.MS_TOP_PANEL_YES);
+        panels.append(SR.MS_MAIN_BAR+" : [   ]");
+        panels.append("[   ] : [   ]");
+        panels.append(SR.MS_MAIN_BAR+" : "+SR.MS_INFO_BAR);
+        panels.append("[   ] : "+SR.MS_INFO_BAR);
+        panels.append(SR.MS_INFO_BAR+" : [   ]");
+        panels.append(SR.MS_INFO_BAR+" : "+SR.MS_MAIN_BAR);
+        panels.append("[   ] : "+SR.MS_MAIN_BAR);
 	panels.setSelectedIndex(cf.panelsState);
 	itemsList.addElement(panels);
         

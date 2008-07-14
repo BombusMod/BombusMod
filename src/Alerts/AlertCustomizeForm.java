@@ -70,6 +70,7 @@ public class AlertCustomizeForm
     private DropChoiceBox VIPFile;
     
     private CheckBox vibrateOnlyHighlited;
+    private CheckBox flashBackLight;
     
     private CheckBox IQNotify;
     
@@ -81,6 +82,7 @@ public class AlertCustomizeForm
     Vector fileNames;
 //#ifndef MENU
     Command cmdTest=new Command(SR.MS_TEST_SOUND, Command.SCREEN, 2);
+
 //#endif
     /** Creates a new instance of ConfigForm */
     public AlertCustomizeForm(Display display) {
@@ -140,6 +142,9 @@ public class AlertCustomizeForm
         
         itemsList.addElement(new SpacerItem(10));
         vibrateOnlyHighlited=new CheckBox(SR.MS_VIBRATE_ONLY_HIGHLITED, ac.vibrateOnlyHighlited); itemsList.addElement(vibrateOnlyHighlited);
+
+        itemsList.addElement(new SpacerItem(10));
+        flashBackLight=new CheckBox(SR.MS_FLASH_BACKLIGHT, ac.flashBackLight); itemsList.addElement(flashBackLight);
         
         itemsList.addElement(new SimpleString(SR.MS_SOUND_VOLUME, true));
         sndVol=new TrackItem(ac.soundVol/10, 10);
@@ -168,7 +173,8 @@ public class AlertCustomizeForm
         ac.soundVIPIndex=VIPFile.getSelectedIndex();
         
         ac.vibrateOnlyHighlited=vibrateOnlyHighlited.getValue();
-
+        ac.flashBackLight=flashBackLight.getValue();
+        
         ac.loadSoundName();
         ac.loadOnlineSoundName();
         ac.loadOfflineSoundName();
@@ -259,6 +265,6 @@ public class AlertCustomizeForm
         String soundType=(String)files[0].elementAt(sound);
         int soundVol=sndVol.getValue()*10;
         //System.out.println(sound+" "+soundFile+" "+soundType+" "+soundVol);
-        new EventNotify(display, soundType, soundFile, soundVol, 0).startNotify();
+        new EventNotify(display, soundType, soundFile, soundVol, 0, false).startNotify();
     } 
 }

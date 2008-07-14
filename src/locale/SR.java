@@ -667,10 +667,10 @@ public class SR {
     public static String MS_DELETE_GROUP_ASK=loadString("Delete group?");
 
     public static String MS_PANELS=loadString("Panels");
-    public static String MS_TOP_PANEL_YES=loadString("top panel");
-    public static String MS_TOP_PANEL_NONE=loadString("no top panel");
-    public static String MS_BOTTOM_PANEL_YES=loadString("bottom panel");
-    public static String MS_BOTTOM_PANEL_NONE=loadString("no bottom panel");
+    public static String MS_MAIN_BAR=loadString("[main bar]");
+    public static String MS_INFO_BAR=loadString("[info bar]");
+
+    public static String MS_FLASH_BACKLIGHT=loadString("Flash backlight");
     
     private SR() { }
     

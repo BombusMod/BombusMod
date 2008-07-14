@@ -1763,7 +1763,7 @@ public class Roster
         if (c==null) return;
 
         c.addMessage(message);
-        
+
         boolean autorespond = false;
         
         if (message.messageType==Msg.MESSAGE_TYPE_IN)
@@ -1891,6 +1891,7 @@ public class Roster
         int volume=ac.soundVol;
         int vibraLen=cf.vibraLen;
         String type, message;
+        boolean flashBackLight=ac.flashBackLight;
 
         switch (event) {
             case 0: //online
@@ -1953,10 +1954,10 @@ public class Roster
         EventNotify notify=null;
         
         switch (profile) {
-            case AlertProfile.ALL:   notify=new EventNotify(display,    type,   message,    volume,     vibraLen); break;
-            case AlertProfile.NONE:  notify=new EventNotify(display,    null,   null,       volume,     0); break;
-            case AlertProfile.VIBRA: notify=new EventNotify(display,    null,   null,       volume,     vibraLen); break;
-            case AlertProfile.SOUND: notify=new EventNotify(display,    type,   message,    volume,     0); break;
+            case AlertProfile.ALL:   notify=new EventNotify(display,    type,   message,    volume,     vibraLen, flashBackLight); break;
+            case AlertProfile.NONE:  notify=new EventNotify(display,    null,   null,       volume,     0, flashBackLight); break;
+            case AlertProfile.VIBRA: notify=new EventNotify(display,    null,   null,       volume,     vibraLen, flashBackLight); break;
+            case AlertProfile.SOUND: notify=new EventNotify(display,    type,   message,    volume,     0, flashBackLight); break;
         }
         if (notify!=null) 
             notify.startNotify();

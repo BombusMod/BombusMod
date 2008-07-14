@@ -53,6 +53,8 @@ public class EventNotify
     
     private final static String tone="A6E6J6";
     private int sndVolume;
+
+    private boolean flashBackLight;
     
     /** Creates a new instance of EventNotify */
     public EventNotify(
@@ -61,11 +63,12 @@ public class EventNotify
 	String soundFileName, 
 	int sndVolume,
 	int vibraLength 
-    ) {
+    , boolean flashBackLight) {
         this.display=display;
 	this.soundName=soundFileName;
 	this.soundType=soundMediaType;
 	this.lenVibra=vibraLength;
+        this.flashBackLight=flashBackLight;
 	if (soundType!=null) 
             toneSequence= soundType.equals("tone");
 	this.sndVolume=sndVolume;
@@ -73,17 +76,20 @@ public class EventNotify
     
     public void startNotify (){
         release();
-
+        try {
+            if (flashBackLight) {
+                display.flashBacklight(500);
+            }
+        } catch (Exception e2) { /* e.printStackTrace(); */}
+        
         if (soundName!=null) {
             try {
-
                 InputStream is = getClass().getResourceAsStream(soundName);
                 player = Manager.createPlayer(is, soundType);
 
                 player.addPlayerListener(this);
                 player.realize();
                 player.prefetch();
-
 
                 try {
                     VolumeControl vol=(VolumeControl) player.getControl("VolumeControl");
@@ -94,10 +100,11 @@ public class EventNotify
             } catch (Exception e) { }
         }
 
-        if (lenVibra>0)
-         display.vibrate(lenVibra);
-        
-	if (toneSequence) 
+        if (lenVibra>0) {
+            display.vibrate(lenVibra);
+        }
+
+	if (toneSequence)
             new Thread(this).start();
     }
     

@@ -617,3 +617,16 @@ Value	Значение
 
 Quantity of attempts	Количество попыток
 Delay before reconnect(sec.)	Задержка между попытками(сек.)
+
+[End of vCard]	Конец вКард
+[No vCard available]	вКард не доступна
+[No photo available]	Фото недоступно
+[Unsupported format]	Неподдерживаемый формат
+
+Delete group?	Удалить группу?
+
+Panels	Панели
+[main bar]	[основная]
+[info bar]	[инфо]
+
+Flash backlight	Мигать подсветкой
