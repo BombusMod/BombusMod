@@ -66,6 +66,10 @@ public class Utf8IOStream {
     /** Creates a new instance of Utf8IOStream */
     public Utf8IOStream(StreamConnection connection) throws IOException {
 	this.connection=connection;
+        try {
+            SocketConnection sc=(SocketConnection)connection;
+            sc.setSocketOption(SocketConnection.KEEPALIVE, 1);
+        } catch (Exception e) {}
 
 	inpStream = connection.openInputStream();
 	outStream = connection.openOutputStream();	

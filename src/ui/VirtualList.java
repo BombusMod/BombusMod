@@ -570,9 +570,12 @@ public abstract class VirtualList
         }
         
         setAbsClip(g, width, height);
-        
-        if (System.currentTimeMillis()-sd.getTrafficIn()<2000) { g.setColor(0x00ff00); g.fillRect((width/2)-3, height-2, 2, 2); }
-        if (System.currentTimeMillis()-sd.getTrafficOut()<2000) { g.setColor(0xff0000); g.fillRect((width/2)+1, height-2, 2, 2); }
+        if (System.currentTimeMillis()-sd.getTrafficIn()<2000) {
+            drawTraffic(g, false);
+        }
+        if (System.currentTimeMillis()-sd.getTrafficOut()<2000) {
+            drawTraffic(g, true);
+        }
         
 //#ifdef POPUPS
         drawPopUp(g);
@@ -587,6 +590,18 @@ public abstract class VirtualList
 //#ifndef WOFFSCREEN
         if (g != graphics) g.drawImage(offscreen, 0, 0, Graphics.LEFT | Graphics.TOP);
 //#endif
+    }
+    
+    private void drawTraffic(final Graphics g, boolean up) {
+        int pos=(up)?(width/2)+3:(width/2)-3;
+        int pos2=(up)?height-4:height-2;
+        
+        //g.setColor((up)?0xff0000:0x00ff00);
+        g.setColor(getMainBarRGB());
+        g.drawLine(pos, height-5, pos, height-1);
+        g.drawLine(pos-1, pos2, pos+1, pos2);       
+        g.fillRect(pos-2, height-3, 1, 1);
+        g.fillRect(pos+2, height-3, 1, 1);
     }
     
 //#ifdef POPUPS

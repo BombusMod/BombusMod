@@ -887,24 +887,21 @@ public class Roster
         if (myStatus==Presence.PRESENCE_OFFLINE) {
             try {
                 theStream.close(); // sends </stream:stream> and closes socket
-                
-            } catch (Exception e) { e.printStackTrace(); }
+            } catch (Exception e) { /*e.printStackTrace();*/ }
 
             synchronized(hContacts) {
                 for (Enumeration e=hContacts.elements(); e.hasMoreElements();){
-                    Contact c=(Contact)e.nextElement();
-                    //if (c.myStatus<Presence.PRESENCE_UNKNOWN)
-                    c.setStatus(Presence.PRESENCE_OFFLINE); // keep error & unknown
+                    ((Contact)e.nextElement()).setStatus(Presence.PRESENCE_OFFLINE); // keep error & unknown
                  }
-                }
-                theStream=null;
+            }
+            theStream=null;
 //#ifdef AUTOSTATUS
-//#                 autoAway=false;
-//#                 autoXa=false;
+//#             autoAway=false;
+//#             autoXa=false;
 //#endif
 //#ifndef WSYSTEMGC
-                System.gc();
-                try { Thread.sleep(50); } catch (InterruptedException e){}
+            System.gc();
+            try { Thread.sleep(50); } catch (InterruptedException e){}
 //#endif
         }
         Contact c=selfContact();
@@ -2030,13 +2027,16 @@ public class Roster
         try {
              sendPresence(Presence.PRESENCE_OFFLINE, null);
         } catch (Exception e2) { }
+        try {
+             sendPresence(lastOnlineStatus, null);
+        } catch (Exception e2) { }
 /*
         try {
             theStream.close(); // sends </stream:stream> and closes socket
             theStream=null;
         } catch (Exception e) { e.printStackTrace(); }
 */
-         sendPresence(lastOnlineStatus, null);
+         //sendPresence(lastOnlineStatus, null);
      }
     
     public void eventOk(){
@@ -2885,7 +2885,8 @@ public class Roster
     
 //#ifdef MENU_LISTENER    
 //#     public void addCommand(Command command) {
-//#         menuCommands.addElement(command);        
+//#         if (menuCommands.indexOf(command)<0)
+//#             menuCommands.addElement(command);
 //#     }
 //#     public void removeCommand(Command command) {
 //#         menuCommands.removeElement(command);        

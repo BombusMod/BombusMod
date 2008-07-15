@@ -497,7 +497,8 @@ public class ServiceDiscovery
     }
 //#ifdef MENU_LISTENER    
 //#     public void addCommand(Command command) {
-//#         menuCommands.addElement(command);        
+//#         if (menuCommands.indexOf(command)<0)
+//#             menuCommands.addElement(command);
 //#     }
 //#     public void removeCommand(Command command) {
 //#         menuCommands.removeElement(command);        
