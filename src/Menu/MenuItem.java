@@ -61,7 +61,7 @@ public class MenuItem
 //#         if (pos<10 && Config.getInstance().executeByNum) {
 //#             int w=g.getClipWidth();
 //#             g.setFont(FontCache.getSmallFont());
-//#             g.drawString("*"+Integer.toString(index), w, 0, Graphics.TOP|Graphics.RIGHT);
+//#             g.drawString(Integer.toString(pos), w, 0, Graphics.TOP|Graphics.RIGHT);
 //#         }
 //#         
 //#         super.drawItem(g, ofs, sel);
