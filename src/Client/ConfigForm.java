@@ -87,6 +87,7 @@ public class ConfigForm
 //#endif
     private CheckBox showBalloons;     
     private CheckBox eventDelivery;
+    private CheckBox executeByNum;
     
 //#ifdef DETRANSLIT
 //#     private CheckBox autoDetranslit;
@@ -209,6 +210,9 @@ public class ConfigForm
 //#endif
 //#ifdef DETRANSLIT
 //#            autoDetranslit = new CheckBox(SR.MS_AUTODETRANSLIT, cf.autoDeTranslit); itemsList.addElement(autoDetranslit);
+//#endif
+//#ifdef MENU_LISTENER
+//#             executeByNum = new CheckBox(SR.MS_EXECUTE_MENU_BY_NUMKEY, cf.executeByNum); itemsList.addElement(executeByNum);
 //#endif
 
             
@@ -373,6 +377,9 @@ public class ConfigForm
 //#endif
 //#ifdef DETRANSLIT
 //#         cf.autoDeTranslit=autoDetranslit.getValue();
+//#endif
+//#ifdef MENU_LISTENER
+//#         cf.executeByNum=executeByNum.getValue();
 //#endif
 
         cf.autoLogin=autoLogin.getValue();

@@ -26,20 +26,24 @@
  */
 
 package Menu;
-
+//#ifdef MENU_LISTENER
+//# import Client.Config;
+//# import Fonts.FontCache;
+//# import javax.microedition.lcdui.Graphics;
+//#endif
 import ui.*;
 
 /**
  *
  * @author Eugene Stahov
  */
-public class MenuItem extends IconTextElement
-{
-    
+public class MenuItem
+    extends IconTextElement {
+
     /** Creates a new instance of MenuItem */
     public int index;
     private String name;
-
+    public int pos;
     private int iconIndex;
     
     public MenuItem(String name, int index, int iconIndex, ImageList il) {
@@ -51,4 +55,16 @@ public class MenuItem extends IconTextElement
 
     public int getImageIndex() { return iconIndex;  }
     public String toString(){ return name; }
+    
+//#ifdef MENU_LISTENER
+//#     public void drawItem(Graphics g, int ofs, boolean sel) {
+//#         if (pos<10 && Config.getInstance().executeByNum) {
+//#             int w=g.getClipWidth();
+//#             g.setFont(FontCache.getSmallFont());
+//#             g.drawString("*"+Integer.toString(index), w, 0, Graphics.TOP|Graphics.RIGHT);
+//#         }
+//#         
+//#         super.drawItem(g, ofs, sel);
+//#     }
+//#endif
 }

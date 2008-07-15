@@ -51,7 +51,9 @@ public class Menu extends VirtualList
     Command cmdOk=new Command(SR.MS_OK,Command.OK,1);
 //#endif
     private ImageList il;
-    
+//#ifdef MENU_LISTENER
+//#     private boolean executeByNum;
+//#endif
     public Menu(String mainbar, ImageList il) {
         super();
         setMainBarItem(new MainBar(mainbar));
@@ -61,6 +63,8 @@ public class Menu extends VirtualList
         addCommand(cmdBack);
         addCommand(cmdOk);
         setCommandListener(this);
+//#else
+//#         executeByNum=Config.getInstance().executeByNum;
 //#endif
     }
     
@@ -70,6 +74,7 @@ public class Menu extends VirtualList
     public int getItemCount() { return menuitems.size(); }
     
     public void addItem(MenuItem mi){
+        mi.pos=getItemCount();
         menuitems.addElement(mi);
     }
     
@@ -95,7 +100,45 @@ public class Menu extends VirtualList
 //#             destroyView();
 //#             return;
 //#         }
+//#         if (executeByNum && getItemCount()>0) {
+//#             switch (keyCode) {
+//#                 case KEY_NUM0:
+//#                     executeCommand(0); return;
+//#                 case KEY_NUM1:
+//#                     executeCommand(1); return;
+//#                 case KEY_NUM2:
+//#                     executeCommand(2); return;
+//#                 case KEY_NUM3:
+//#                     executeCommand(3); return;
+//#                 case KEY_NUM4:
+//#                     executeCommand(4); return;
+//#                 case KEY_NUM5:
+//#                     executeCommand(5); return;
+//#                 case KEY_NUM6:
+//#                     executeCommand(6); return;
+//#                 case KEY_NUM7:
+//#                     executeCommand(7); return;
+//#                 case KEY_NUM8:
+//#                     executeCommand(8); return;
+//#                 case KEY_NUM9:
+//#                     executeCommand(9); return;
+//#             }
+//#         }
 //#         super.keyPressed(keyCode);
+//#     }
+//#     
+//#     private void executeCommand(int index) {
+//#         moveCursorTo(index);
+//#         eventOk();
+//#         /*int pos=0;
+//#         for (Enumeration mi=menuitems.elements(); mi.hasMoreElements(); ) {
+//#             MenuItem mit=(MenuItem)mi.nextElement();
+//#             if (mit.index==index) {
+//#                 moveCursorTo(pos);
+//#                 eventOk();
+//#             }
+//#             pos++;  
+//#         }*/
 //#     }
 //#endif
     

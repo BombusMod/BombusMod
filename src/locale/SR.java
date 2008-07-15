@@ -671,6 +671,8 @@ public class SR {
     public static String MS_INFO_BAR=loadString("[info bar]");
 
     public static String MS_FLASH_BACKLIGHT=loadString("Flash backlight");
+
+    public static String MS_EXECUTE_MENU_BY_NUMKEY=loadString("execute menu by numkey");
     
     private SR() { }
     
