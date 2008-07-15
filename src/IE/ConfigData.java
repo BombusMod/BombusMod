@@ -162,6 +162,8 @@ public class ConfigData {
         array.addElement(new keyValue(reconnectTime, Integer.toString(cf.reconnectTime)));
         
         array.addElement(new keyValue(executeByNum, (cf.executeByNum)?"1":"0"));
+        array.addElement(new keyValue(showNickNames, (cf.showNickNames)?"1":"0"));
+        
         
         StringBuffer body = new StringBuffer();
         body = createArrayString(array);
@@ -298,7 +300,8 @@ public class ConfigData {
         cf.reconnectTime=cf.getIntProperty(getValue(reconnectTime), 15);
         
         cf.executeByNum=cf.getBooleanProperty(getValue(executeByNum),false);
-    
+        cf.showNickNames=cf.getBooleanProperty(getValue(showNickNames),false);
+
         cf.lastProfile=cf.profile=cf.def_profile;
         if (cf.lastProfile==AlertProfile.VIBRA) 
             cf.lastProfile=0;
@@ -460,6 +463,8 @@ public class ConfigData {
     private final static String reconnectTime="reconnectTime";
     
     private final static String executeByNum="executeByNum";
+    
+    private final static String showNickNames="showNickNames";
     
     class keyValue {
         String value; String key;

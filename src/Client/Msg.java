@@ -115,7 +115,7 @@ public class Msg {
     
     public String toString() {
         StringBuffer time=new StringBuffer();
-        if (messageType==MESSAGE_TYPE_PRESENCE || !Config.getInstance().showBalloons) {
+        if (messageType==MESSAGE_TYPE_PRESENCE) {
             time.append("[").append(getTime()).append("] ");
         }
         time.append(body);
@@ -149,7 +149,10 @@ public class Msg {
     void setHistory(boolean state) { history=state; }
     
     public String quoteString(){
-        StringBuffer out=new StringBuffer(body);
+        StringBuffer out=new StringBuffer();
+        if (subject!=null)
+            out.append(subject).append("\n");
+        out.append(body);
         int i=0;
         while (i<out.length()) {
             if (out.charAt(i)<0x03) out.deleteCharAt(i);

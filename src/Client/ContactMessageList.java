@@ -641,7 +641,6 @@ public class ContactMessageList extends MessageList {
             String msg=new StringBuffer()
                 .append((char)0xbb) //
                 .append(" ")
-		.append((getMessage(cursor).getSubject()==null)?"":getMessage(cursor).getSubject()+"\n")
                 .append(getMessage(cursor).quoteString())
                 .append("\n")
                 .toString();

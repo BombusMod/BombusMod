@@ -285,6 +285,7 @@ type = \"-=Siemens=-\";
     public int reconnectTime=15;
 
     public boolean executeByNum;
+    public boolean showNickNames;
     
     public static Config getInstance(){
 	if (instance==null) {
@@ -526,6 +527,8 @@ type = \"-=Siemens=-\";
             
             executeByNum=inputStream.readBoolean();
             
+            showNickNames=inputStream.readBoolean();
+            
 	    inputStream.close();
             inputStream=null;
 	} catch (Exception e) {
@@ -724,6 +727,8 @@ type = \"-=Siemens=-\";
             outputStream.writeInt(reconnectTime);
             
             outputStream.writeBoolean(executeByNum);
+            
+            outputStream.writeBoolean(showNickNames);
 	} catch (Exception e) { }
 	
 	NvStorage.writeFileRecord(outputStream, "config", 0, true);

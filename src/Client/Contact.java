@@ -311,6 +311,15 @@ public class Contact extends IconTextElement{
                 if (msgs.size()==1) 
                     if (((Msg)msgs.firstElement()).isPresence())
                         first_replace=true;
+            } else if (cf.showNickNames) {
+                StringBuffer who=new StringBuffer();
+                who.append((m.messageType==Msg.MESSAGE_TYPE_IN)?getName():StaticData.getInstance().account.getNickName())
+                    .append(" (")
+                    .append(m.getTime())
+                    .append(") ");
+                if (m.subject!=null)
+                    who.append(m.subject);
+                m.subject=who.toString();
             }
         }
 //#ifdef LOGROTATE

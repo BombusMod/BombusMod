@@ -132,6 +132,8 @@ public class ConfigForm
 //#endif
     
     private DropChoiceBox panels;
+    
+    private CheckBox showNickNames;
 
     private Vector langs[];
 
@@ -211,6 +213,7 @@ public class ConfigForm
 //#ifdef DETRANSLIT
 //#            autoDetranslit = new CheckBox(SR.MS_AUTODETRANSLIT, cf.autoDeTranslit); itemsList.addElement(autoDetranslit);
 //#endif
+           showNickNames = new CheckBox(SR.MS_SHOW_NACKNAMES, cf.showNickNames); itemsList.addElement(showNickNames);
 //#ifdef MENU_LISTENER
 //#             executeByNum = new CheckBox(SR.MS_EXECUTE_MENU_BY_NUMKEY, cf.executeByNum); itemsList.addElement(executeByNum);
 //#endif
@@ -378,6 +381,7 @@ public class ConfigForm
 //#ifdef DETRANSLIT
 //#         cf.autoDeTranslit=autoDetranslit.getValue();
 //#endif
+        cf.showNickNames=showNickNames.getValue();
 //#ifdef MENU_LISTENER
 //#         cf.executeByNum=executeByNum.getValue();
 //#endif

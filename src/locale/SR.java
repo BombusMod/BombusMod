@@ -673,6 +673,8 @@ public class SR {
     public static String MS_FLASH_BACKLIGHT=loadString("Flash backlight");
 
     public static String MS_EXECUTE_MENU_BY_NUMKEY=loadString("execute menu by numkey");
+
+    public static String MS_SHOW_NACKNAMES=loadString("show nicknames");
     
     private SR() { }
     
