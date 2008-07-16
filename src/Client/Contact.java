@@ -147,12 +147,16 @@ public class Contact extends IconTextElement{
 
     private String j2j;
     
-    private boolean loaded=false;
-    
     private Font secondFont=FontCache.getBalloonFont();
     private int secondFontHeight;
     
     private int fontHeight;
+    
+//#ifdef HISTORY
+//#ifdef LAST_MESSAGES
+//#     private boolean loaded;
+//#endif
+//#endif
 
     int ilHeight;
     int maxImgHeight;
@@ -327,7 +331,7 @@ public class Contact extends IconTextElement{
 //#endif
 //#if HISTORY
 //#         if (!m.isHistory()) {
-//#             if (cf.msgPath!=null && group.type!=Groups.TYPE_TRANSP && group.type!=Groups.TYPE_SEARCH_RESULT) {
+//#             if (cf.msgPath!=null && cf.msgPath!="" && group.type!=Groups.TYPE_TRANSP && group.type!=Groups.TYPE_SEARCH_RESULT) {
 //#                 boolean allowLog=false;
 //#                 switch (m.messageType) {
 //#                     case Msg.MESSAGE_TYPE_PRESENCE:
@@ -525,6 +529,14 @@ public class Contact extends IconTextElement{
         }
     }
     
+//#ifdef HISTORY
+//#ifdef LAST_MESSAGES
+//#     public boolean isHistoryLoaded () { return loaded; }
+//#     
+//#     public void setHistoryLoaded (boolean state) { loaded=state; }
+//#endif
+//#endif
+    
 //#ifdef ANTISPAM
 //#     public void addTempMessage(Msg m) { tempMsgs.addElement(m); }
 //# 
@@ -599,11 +611,6 @@ public class Contact extends IconTextElement{
             return incomingState;
         return -1;
     }
-//#if HISTORY
-//#     public boolean isHistoryLoaded () { return loaded; }
-//#     
-//#     public void setHistoryLoaded (boolean state) { loaded=state; }
-//#endif
     
     public void setClient (int client) { this.client=client; }
     

@@ -79,8 +79,11 @@ public class HistoryConfig
 	parentView=display.getCurrent();
         
         cf=Config.getInstance();
-
-        loadHistory = new CheckBox("Format for reading", cf.lastMessages); itemsList.addElement(loadHistory);
+//#ifdef LAST_MESSAGES
+//#         loadHistory = new CheckBox(SR.MS_LAST_MESSAGES, cf.lastMessages); itemsList.addElement(loadHistory);
+//#elifdef HISTORY_READER
+//#         loadHistory = new CheckBox("Format for reading", cf.lastMessages); itemsList.addElement(loadHistory);
+//#endif
         saveHistory = new CheckBox(SR.MS_SAVE_HISTORY, cf.msgLog); itemsList.addElement(saveHistory);
         savePres = new CheckBox(SR.MS_SAVE_PRESENCES, cf.msgLogPresence); itemsList.addElement(savePres);
         saveConfHistory = new CheckBox(SR.MS_SAVE_HISTORY_CONF, cf.msgLogConf); itemsList.addElement(saveConfHistory);

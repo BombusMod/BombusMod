@@ -55,6 +55,7 @@ public class InfoWindow
     
     LinkString siteUrl;
     MultiLine description;
+    MultiLine name;
     MultiLine memory;
     MultiLine abilities;
     
@@ -73,14 +74,16 @@ public class InfoWindow
         this.display=display;
         parentView=display.getCurrent();
 
-        description=new MultiLine(Version.getName(), Version.getVersionNumber()+"\nMobile Jabber client\n"+Config.getOs()+"\nCopyright (c) 2005-2008, Eugene Stahov (evgs), Daniel Apatin (ad)\nDistributed under GNU Public License (GPL) v2.0", super.superWidth);
+        name=new MultiLine(Version.getName(), Version.getVersionNumber(), super.superWidth);
+        name.selectable=true;
+        itemsList.addElement(name);
+
+        description=new MultiLine("\nMobile Jabber client", Config.getOs()+"\nCopyright (c) 2005-2008, Eugene Stahov (evgs), Daniel Apatin (ad)\nDistributed under GNU Public License (GPL) v2.0", super.superWidth);
         description.selectable=true;
         itemsList.addElement(description);
-        itemsList.addElement(new SpacerItem(0));
         
         siteUrl=new LinkString("http://bombusmod.net.ru"){ public void doAction() { try { BombusMod.getInstance().platformRequest("http://bombusmod.net.ru"); } catch (ConnectionNotFoundException ex) { }}};
         itemsList.addElement(siteUrl);
-        itemsList.addElement(new SpacerItem(0));
         
         StringBuffer memInfo=new StringBuffer(SR.MS_FREE);
         System.gc();
@@ -91,7 +94,6 @@ public class InfoWindow
         memory=new MultiLine(SR.MS_MEMORY, memInfo.toString(), super.superWidth);
         memory.selectable=true;
         itemsList.addElement(memory);
-        itemsList.addElement(new SpacerItem(0));
         
         abilities=new MultiLine("Abilities", getAbilities(), super.superWidth);
         abilities.selectable=true;
@@ -117,7 +119,7 @@ public class InfoWindow
     }
     public void cmdOk(){
 //#ifdef CLIPBOARD
-//#         clipboard.setClipBoard(description.toString()+"\n"+memory.toString()+"\n"+abilities.toString());
+//#         clipboard.setClipBoard(name.toString()+"\n"+memory.toString()+"\n"+abilities.toString());
 //#         destroyView();
 //#endif
     }
@@ -173,6 +175,12 @@ public class InfoWindow
 //#endif
 //#ifdef HISTORY
 //#         .append("HISTORY, ")
+//#endif
+//#ifdef HISTORY_READER
+//#         .append("HISTORY_READER, ")
+//#endif
+//#ifdef LAST_MESSAGES
+//#         .append("LAST_MESSAGES, ")
 //#endif
 //#ifdef SE_LIGHT
 //#         .append("SE_LIGHT, ")

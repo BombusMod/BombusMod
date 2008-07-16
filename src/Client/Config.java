@@ -180,7 +180,7 @@ type = \"-=Siemens=-\";
 //#      public boolean msgLogPresence=false;
 //#      public boolean msgLogConf=false;
 //#      public boolean msgLogConfPresence=false;
-//#     public boolean lastMessages=false;
+//#      public boolean lastMessages=false;
 //#endif
     public boolean cp1251=true;     
 //#ifndef WMUC

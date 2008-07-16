@@ -31,6 +31,9 @@ import Conference.MucContact;
 //#endif
 //#ifdef HISTORY
 //# import History.HistoryAppend;
+//#ifdef LAST_MESSAGES
+//# import History.HistoryStorage;
+//#endif
 //#ifdef HISTORY_READER
 //# import History.HistoryReader;
 //#endif
@@ -136,7 +139,11 @@ public class ContactMessageList extends MessageList {
 //#endif
 
         contact.setIncoming(0);
-
+//#ifdef HISTORY
+//#ifdef LAST_MESSAGES
+//#         if (cf.lastMessages && !contact.isHistoryLoaded()) loadRecentList();
+//#endif
+//#endif
         if (contact.msgs.size()>0)
             moveCursorTo(contact.firstUnread());
     }
@@ -261,17 +268,13 @@ public class ContactMessageList extends MessageList {
 //#         if (cf.msgPath!=null)
 //#             if (cf.msgPath!="")
 //#                 addCommand(cmdSaveChat);
-//#endif
-//#ifdef HISTORY
 //#ifdef HISTORY_READER
 //#         if (cf.lastMessages)
 //#             addCommand(cmdReadHistory);
 //#endif
-//# //        if (cf.lastMessages && !contact.isHistoryLoaded()) loadRecentList();
 //#endif
         addCommand(cmdBack);
     }
-
 
     public void showNotify(){
 //#ifdef LOGROTATE
@@ -650,44 +653,42 @@ public class ContactMessageList extends MessageList {
     }
     
 //#ifdef HISTORY
-//# /*
-//#     public void loadRecentList() {
-//#         contact.setHistoryLoaded(true);
-//#         HistoryStorage hs = new HistoryStorage(contact.getBareJid());
-//#         Vector history=hs.importData();
-//#         
-//#         for (Enumeration messages=history.elements(); messages.hasMoreElements(); )  {
-//#             Msg message=(Msg) messages.nextElement();
-//#             if (!isMsgExists(message)) {
-//#                 message.setHistory(true);
-//#                 contact.msgs.insertElementAt(message, 0);
-//#             }
-//#             message=null;
-//#         }
-//#     }
+//#ifdef LAST_MESSAGES
+//# public void loadRecentList() {
+//#     contact.setHistoryLoaded(true);
+//#     HistoryStorage hs = new HistoryStorage(contact.getBareJid());
+//#     Vector history=hs.importData();
 //# 
-//#     private boolean isMsgExists(Msg msg) {
-//#          for (Enumeration messages=contact.msgs.elements(); messages.hasMoreElements(); )  {
-//#             Msg message=(Msg) messages.nextElement();
-//#             if (message.getBody().equals(msg.getBody())) {
-//#                 return true;
-//#             }
-//#             message=null;
-//#          }
-//#         return false;
-//#     }
-//#  */
-//#endif
-
-//#ifdef HISTORY
-//#     private void saveMessages() {
-//#         String histRecord="log_"+contact.getBareJid();
-//#         for (Enumeration messages=contact.msgs.elements(); messages.hasMoreElements(); ) {
-//#             Msg message=(Msg) messages.nextElement();
-//#             new HistoryAppend(message, false, histRecord);
-//#             message=null;
+//#     for (Enumeration messages=history.elements(); messages.hasMoreElements(); )  {
+//#         Msg message=(Msg) messages.nextElement();
+//#         if (!isMsgExists(message)) {
+//#             message.setHistory(true);
+//#             contact.msgs.insertElementAt(message, 0);
 //#         }
+//#         message=null;
 //#     }
+//# }
+//# 
+//# private boolean isMsgExists(Msg msg) {
+//#      for (Enumeration messages=contact.msgs.elements(); messages.hasMoreElements(); )  {
+//#         Msg message=(Msg) messages.nextElement();
+//#         if (message.getBody().equals(msg.getBody())) {
+//#             return true;
+//#         }
+//#         message=null;
+//#      }
+//#     return false;
+//# }
+//#endif
+//# 
+//# private void saveMessages() {
+//#     String histRecord="log_"+contact.getBareJid();
+//#     for (Enumeration messages=contact.msgs.elements(); messages.hasMoreElements(); ) {
+//#         Msg message=(Msg) messages.nextElement();
+//#         new HistoryAppend(message, false, histRecord);
+//#         message=null;
+//#     }
+//# }
 //#endif
 
     public void destroyView(){
