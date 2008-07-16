@@ -232,11 +232,8 @@ public class ConfigForm
         
         itemsList.addElement(new SpacerItem(10));
         itemsList.addElement(new SimpleString(SR.MS_RECONNECT, true));
-        itemsList.addElement(new SimpleString(SR.MS_RECONNECT_COUNT_RETRY, false));
-	reconnectCount=new NumberInput(display, null, Integer.toString(cf.reconnectCount), 1, 100); itemsList.addElement(reconnectCount);
-        
-        itemsList.addElement(new SimpleString(SR.MS_RECONNECT_WAIT, false));
-        reconnectTime=new NumberInput(display, null, Integer.toString(cf.reconnectTime), 1, 60 ); itemsList.addElement(reconnectTime);
+	reconnectCount=new NumberInput(display, SR.MS_RECONNECT_COUNT_RETRY, Integer.toString(cf.reconnectCount), 1, 100); itemsList.addElement(reconnectCount);
+        reconnectTime=new NumberInput(display, SR.MS_RECONNECT_WAIT, Integer.toString(cf.reconnectTime), 1, 60 ); itemsList.addElement(reconnectTime);
         
         itemsList.addElement(new SpacerItem(10));
         itemsList.addElement(new SimpleString(SR.MS_APPLICATION, true));
@@ -255,12 +252,10 @@ public class ConfigForm
         
         itemsList.addElement(new SpacerItem(10));
         itemsList.addElement(new SimpleString(SR.MS_TIME_SETTINGS, true));
-        itemsList.addElement(new SimpleString(SR.MS_GMT_OFFSET, false));
-	fieldGmt=new NumberInput(display, null, Integer.toString(cf.gmtOffset), -12, 12); 
+	fieldGmt=new NumberInput(display, SR.MS_GMT_OFFSET, Integer.toString(cf.gmtOffset), -12, 12); 
         itemsList.addElement(fieldGmt);
-        
-        itemsList.addElement(new SimpleString(SR.MS_CLOCK_OFFSET, false));
-        fieldLoc=new NumberInput(display, null, Integer.toString(cf.locOffset), -12, 12 );
+
+        fieldLoc=new NumberInput(display, SR.MS_CLOCK_OFFSET, Integer.toString(cf.locOffset), -12, 12 );
         itemsList.addElement(fieldLoc);
 
         itemsList.addElement(new SpacerItem(10));

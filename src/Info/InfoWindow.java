@@ -112,7 +112,7 @@ public class InfoWindow
 //#endif
         enableListWrapping(false);
         
-        moveCursorTo(getNextSelectableRef(-1));
+        moveCursorTo(0);
         attachDisplay(display);
     }
     public void cmdOk(){
