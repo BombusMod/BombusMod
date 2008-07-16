@@ -114,9 +114,6 @@ public class ConfigForm
 //#ifdef USER_KEYS
 //#    private CheckBox userKeys;
 //#endif
-//#ifdef NEW_MENU
-    private CheckBox newMenu;
-//#endif
     private CheckBox lightState;
     private CheckBox popupFromMinimized;
 
@@ -249,9 +246,6 @@ public class ConfigForm
         queryExit = new CheckBox(SR.MS_CONFIRM_EXIT, cf.queryExit); itemsList.addElement(queryExit);
 //#ifdef USER_KEYS
 //#         userKeys = new CheckBox(SR.MS_CUSTOM_KEYS, cf.userKeys); itemsList.addElement(userKeys);
-//#endif
-//#ifdef NEW_MENU
-        newMenu = new CheckBox(SR.MS_NEW_MENU, cf.newMenu); itemsList.addElement(newMenu);
 //#endif
         lightState = new CheckBox(SR.MS_FLASHLIGHT, cf.lightState); itemsList.addElement(lightState);
         if (cf.allowMinimize) {
@@ -398,9 +392,6 @@ public class ConfigForm
         cf.queryExit=queryExit.getValue();
 //#ifdef USER_KEYS
 //#             VirtualList.userKeys=cf.userKeys=userKeys.getValue();
-//#endif
-//#ifdef NEW_MENU
-        cf.newMenu=newMenu.getValue();
 //#endif
         cf.lightState=lightState.getValue();
         if (cf.allowMinimize)

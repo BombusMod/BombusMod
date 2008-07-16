@@ -121,17 +121,19 @@ public class AccountSelect
 //#ifdef MENU_LISTENER
 //#         menuCommands.removeAllElements();
 //#endif
+        if (!accountList.isEmpty()) {
+            addCommand(cmdLogin);
+            addCommand(cmdSelect);
+            
+            addCommand(cmdEdit);
+            addCommand(cmdDel);
+        }
         addCommand(cmdAdd);
         addCommand(cmdConfig);
         
-        if (!accountList.isEmpty()) {
-            addCommand(cmdEdit);
-            addCommand(cmdDel);
-            addCommand(cmdLogin);
-            addCommand(cmdSelect);
-            if (activeAccount>=0 && !enableQuit)
-                addCommand(cmdCancel);  // нельз�? выйти без активного аккаунта
-        }
+        if (activeAccount>=0 && !enableQuit)
+            addCommand(cmdCancel);  // нельз�? выйти без активного аккаунта
+
         if (enableQuit) 
             addCommand(cmdQuit);
     }

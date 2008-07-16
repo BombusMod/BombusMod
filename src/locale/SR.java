@@ -234,7 +234,7 @@ public class SR {
     public   static String MS_IS_NOW=loadString(" is now ");    
     public  static String MS_ERROR=loadString("error");
     public static String MS_SELECT_HISTORY_FOLDER=loadString("Select history folder");
-    public static String MS_NEW_MENU=loadString("show new menu");
+    //public static String MS_NEW_MENU=loadString("show new menu");
     public static String MS_SOUND_VOLUME=loadString("Sound volume");
     public static String MS_LANGUAGE=loadString("Language");
     public static String MS_SAVE_HISTORY=loadString("Save history");
@@ -653,9 +653,9 @@ public class SR {
     public static String MS_RECONNECT_COUNT_RETRY=loadString("Quantity of attempts");
     public static String MS_RECONNECT_WAIT=loadString("Delay before reconnect(sec.)");
 
-    public static String MS_MENU=loadString("Menu");
+    //public static String MS_MENU=loadString("Menu");
 
-    public static String MS_CHANGE=loadString("Change");
+    //public static String MS_CHANGE=loadString("Change");
 
     public static String MS_PREVIOUS=loadString("Previous");
 

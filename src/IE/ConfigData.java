@@ -101,9 +101,7 @@ public class ConfigData {
 //#endif
         array.addElement(new keyValue(cp1251, (cf.cp1251)?"1":"0"));
         array.addElement(new keyValue(panelsState, Integer.toString(cf.panelsState)));
-//#ifdef NEW_MENU
-        array.addElement(new keyValue(newMenu, (cf.newMenu)?"1":"0"));
-//#endif
+
         array.addElement(new keyValue(lightState, (cf.lightState)?"1":"0"));
         array.addElement(new keyValue(notifySound, (cf.notifySound)?"1":"0"));
 //#ifdef AUTOSTATUS
@@ -240,9 +238,7 @@ public class ConfigData {
 //#endif
         cf.cp1251=cf.getBooleanProperty(getValue(cp1251),true);
         cf.panelsState=cf.getIntProperty(getValue(panelsState),2);
-//#ifdef NEW_MENU
-        cf.newMenu=cf.getBooleanProperty(getValue(newMenu),false);
-//#endif
+
         cf.lightState=cf.getBooleanProperty(getValue(lightState),true);
 //#ifdef AUTOSTATUS
 //#         cf.autoAwayDelay=cf.getIntProperty(getValue(autoAwayDelay),5);
@@ -407,9 +403,7 @@ public class ConfigData {
 //#endif
     private final static String cp1251="cp1251";
     private final static String panelsState="panelsState";
-//#ifdef NEW_MENU
-    private final static String newMenu="newMenu";
-//#endif
+
     private final static String lightState="lightState";
     private final static String notifySound="notifySound";
 //#ifdef AUTOSTATUS

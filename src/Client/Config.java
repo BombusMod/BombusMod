@@ -208,13 +208,12 @@ type = \"-=Siemens=-\";
     public int locOffset;
     public boolean popupFromMinimized=true;
     public boolean memMonitor=true;
-//#ifdef NEW_MENU
-    public boolean newMenu=false;
-//#endif
+
     public int font1=0;
     public int font2=0;
     public int font3=0;
     public int font4=0;
+    
     public String lang;  //not detected (en)
     public boolean capsState=false;
     public int textWrap=0;
@@ -318,9 +317,6 @@ type = \"-=Siemens=-\";
                 RosterIcons.getInstance();
 //#ifndef NEW_SKIN
                 ActionsIcons.getInstance();
-//#ifdef NEW_MENU
-                if (newMenu) MenuIcons.getInstance();
-//#endif
 //#else
 //#                 MenuActionsIcons.getInstance();
 //#endif
@@ -426,11 +422,9 @@ type = \"-=Siemens=-\";
             firstRun=inputStream.readBoolean();
             panelsState=inputStream.readInt();
             confMessageCount=inputStream.readInt();
-//#ifdef NEW_MENU
-            newMenu=inputStream.readBoolean();
-//#else
-//#             inputStream.readBoolean();
-//#endif
+
+            inputStream.readBoolean(); //newMenu
+
             lightState=inputStream.readBoolean();
             notifySound=inputStream.readBoolean();
 //#ifdef HISTORY
@@ -628,11 +622,9 @@ type = \"-=Siemens=-\";
             outputStream.writeBoolean(firstRun);
             outputStream.writeInt(panelsState);
             outputStream.writeInt(confMessageCount);
-//#ifdef NEW_MENU
-            outputStream.writeBoolean(newMenu);
-//#else
-//#             outputStream.writeBoolean(false);
-//#endif
+
+            outputStream.writeBoolean(false); //newMenu
+
             outputStream.writeBoolean(lightState);
             outputStream.writeBoolean(notifySound);
 //#ifdef HISTORY

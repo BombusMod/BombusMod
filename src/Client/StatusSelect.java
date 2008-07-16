@@ -83,14 +83,6 @@ public class StatusSelect
         } else {
             setMainBarItem(new MainBar(to));
         }
-//#ifdef MENU_LISTENER
-//#         menuCommands.removeAllElements();
-//#else
-        addCommand(cmdCancel);
-//#endif
-        addCommand(cmdOk);
-        addCommand(cmdEdit);
-        addCommand(cmdDef);
 
         setCommandListener(this);
         
@@ -98,6 +90,17 @@ public class StatusSelect
         moveCursorTo(defp);
         attachDisplay(d);
     }
+    
+    protected void beginPaint() {
+//#ifdef MENU_LISTENER
+//#         menuCommands.removeAllElements();
+//#endif
+        addCommand(cmdOk);
+        addCommand(cmdEdit);
+        addCommand(cmdDef);
+        addCommand(cmdCancel);
+    }
+    
     public VirtualElement getItemRef(int Index){
         return (VirtualElement)statusList.elementAt(Index);
     }

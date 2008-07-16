@@ -140,6 +140,12 @@ public class DefForm
     
     public void showMenu() {
 //#ifdef MENU_LISTENER
+//#         if (menuCommands.size()==2) {
+//#             if (menuCommands.elementAt(0).equals(cmdOk) && menuCommands.elementAt(1).equals(cmdCancel)) {
+//#                 cmdOk();
+//#                 return;
+//#             }
+//#         }
 //#         new MyMenu(display, this, "", null);
 //#endif
     }

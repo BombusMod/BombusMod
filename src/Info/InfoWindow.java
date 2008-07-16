@@ -150,8 +150,11 @@ public class InfoWindow
 //#ifdef ELF
 //#         .append("ELF, ")
 //#endif
-//#ifdef NEW_MENU
-        .append("NEW_MENU, ")
+//#ifdef NEW_SKIN
+//#         .append("NEW_SKIN, ")
+//#endif
+//#ifdef MENU_LISTENER
+//#         .append("MENU_LISTENER, ")
 //#endif
 //#ifdef SERVICE_DISCOVERY
         .append("SERVICE_DISCOVERY, ")
