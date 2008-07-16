@@ -26,12 +26,14 @@
  */
 
 package io.file.browse;
-//#ifdef MENU
-//# import Menu.Menu;
-//# import Menu.MenuItem;
-//#else
-import javax.microedition.lcdui.Command;
+import Client.Config;
+//#ifndef MENU_LISTENER
 import javax.microedition.lcdui.CommandListener;
+import javax.microedition.lcdui.Command;
+//#else
+//# import Menu.MenuListener;
+//# import Menu.Command;
+//# import Menu.MyMenu;
 //#endif
 
 import ui.MainBar;
@@ -52,14 +54,18 @@ import ui.VirtualList;
  *
  * @author evgs
  */
-public class Browser extends VirtualList
-//#ifndef MENU
-    implements CommandListener
+public class Browser
+    extends VirtualList
+    implements
+//#ifndef MENU_LISTENER
+        CommandListener
+//#else
+//#         MenuListener
 //#endif
     {
  
     private Vector dir;
-//#ifndef MENU
+
     Command cmdOk=new Command(SR.MS_BROWSE, Command.OK, 1);
     Command cmdSelect=new Command(SR.MS_SELECT, Command.SCREEN, 2);
     Command cmdView=new Command(SR.MS_VIEW, Command.SCREEN, 3);
@@ -67,7 +73,7 @@ public class Browser extends VirtualList
     Command cmdDelete=new Command(SR.MS_DELETE, Command.SCREEN, 5);
     Command cmdBack=new Command(SR.MS_BACK, Command.BACK, 98);
     Command cmdCancel=new Command(SR.MS_CANCEL, Command.EXIT, 99);
-//#endif
+
     private String path;
     private BrowserListener browserListener;
 
@@ -82,7 +88,11 @@ public class Browser extends VirtualList
         this.path="";
 		
         setMainBarItem(new MainBar(2, null, null));
-//#ifndef MENU
+        
+//#ifdef MENU_LISTENER
+//#         menuCommands.removeAllElements();
+//#endif
+        
         addCommand(cmdOk);
         
         if (getDirectory) {
@@ -95,7 +105,7 @@ public class Browser extends VirtualList
         addCommand(cmdBack);
         addCommand(cmdCancel);
         setCommandListener(this);
-//#endif
+
         // test for empty path
         if (path==null) path="";
        
@@ -110,15 +120,18 @@ public class Browser extends VirtualList
     protected int getItemCount() { return dir.size(); }
     
     protected VirtualElement getItemRef(int index) { return (VirtualElement) dir.elementAt(index); }
-//#ifndef MENU
-    public void commandAction(Command command, Displayable displayable) {
-        if (command==cmdBack) {
-            if (!chDir("../")) {
-                destroyView();
-                return;
-            }
-            redraw();
+    
+    private void cmdBack() {
+        if (!chDir("../")) {
+            destroyView();
+            return;
         }
+        redraw();
+    }
+
+    public void commandAction(Command command, Displayable displayable) {
+        if (command==cmdBack) cmdBack();
+
         if (command==cmdRoot) {
             path="";
             chDir(path);
@@ -146,7 +159,7 @@ public class Browser extends VirtualList
         }
         if (command==cmdCancel) { destroyView(); }
     }
-//#endif
+
     
      private boolean chDir(String relativePath) {
         String focus="";
@@ -177,15 +190,6 @@ public class Browser extends VirtualList
         moveCursorHome();
          return true;
      }
-     
-//#ifdef MENU
-//#         public void leftCommand() {
-//#             new BrowserMenu(display, this);
-//#         }
-//#         public String getLeftCommand() {
-//#             return SR.MS_MENU;
-//#         }
-//#endif
     
     private void readDirectory(String name) {
         getMainBarItem().setElementAt((path.endsWith("/"))?path.substring(0, path.length()-1):path, 0);
@@ -294,74 +298,33 @@ public class Browser extends VirtualList
             return type;
         }
     }
-//#ifdef MENU
-//#     class BrowserMenu extends Menu {
-//#         private Displayable parentView;
-//#         
-//#         private Browser browser;
-//#         
-//#         public BrowserMenu (Display display, Browser browser) {
-//#             super("", null);
-//#             this.browser=browser;
-//#             this.parentView=display.getCurrent();
+//#ifdef MENU_LISTENER    
+//#     public void addCommand(Command command) {
+//#         if (menuCommands.indexOf(command)<0)
+//#             menuCommands.addElement(command);
+//#     }
+//#     public void removeCommand(Command command) {
+//#         menuCommands.removeElement(command);        
+//#     }
 //#     
-//#             addItem(SR.MS_BROWSE, 1);
-//# 
-//#             if (getDirectory) {
-//#                 addItem(SR.MS_SELECT, 2);
-//#             } else {
-//#                 addItem(SR.MS_VIEW, 3);
-//#             }
-//#             addItem(SR.MS_ROOT, 4);
-//#             addItem(SR.MS_DELETE, 5);
-//#             addItem(SR.MS_BACK, 6);
-//#             addItem(SR.MS_CANCEL, 7);
-//# 
-//#             attachDisplay(display);
+//#     public void setCommandListener(MenuListener menuListener) { }
+//#     
+//#     protected void keyPressed(int keyCode) { // overriding this method to avoid autorepeat
+//#         if (keyCode==Config.SOFT_LEFT) {
+//#             showMenu();
+//#             return;
 //#         }
-//# 
-//#         public void eventOk(){
-//#             MenuItem me=(MenuItem) getFocusedObject();
-//#             if (me==null)  return;
-//#             int index=me.index;
-//#            
-//#             switch (index) {
-//#                 case 1:
-//#                     browser.eventOk();
-//#                     break;
-//#                 case 2:
-//#                     String f=((FileItem) browser.getFocusedObject()).name;
-//#                     if (f.endsWith("/")) {
-//#                         if (f.startsWith("../")) f="";
-//#                         if (browser.browserListener==null) return;
-//#                         browser.destroyView();
-//#                         browser.browserListener.BrowserFilePathNotify(path+f);
-//#                     }
-//#                     //todo: choose directory here, drop ../
-//#                     break;
-//#                 case 3:
-//#                     destroyView();
-//#                     browser.showFile();
-//#                     return;
-//#                 case 4:
-//#                     browser.path="";
-//#                     browser.chDir("");
-//#                     break;
-//#                 case 5:
-//#                     browser.fileDelete();
-//#                     break;
-//#                 case 6:
-//#                     if (!browser.chDir("../"))
-//#                         browser.destroyView();
-//#                     else
-//#                         browser.redraw();
-//#                     break;
-//#                 case 7:
-//#                     browser.destroyView();
-//#                     break;
-//#             }
-//#             destroyView();
+//#         if (keyCode==Config.SOFT_RIGHT || keyCode==Config.KEY_BACK) {
+//#             cmdBack();
+//#             return;
 //#         }
+//#         super.keyPressed(keyCode);
 //#     }
 //#endif
+    
+    public void showMenu() {
+//#ifdef MENU_LISTENER
+//#         new MyMenu(display, this, SR.MS_DISCO, null);
+//#endif
+    }
 }

@@ -30,8 +30,15 @@ package io.file.transfer;
 import Client.StaticData;
 import ui.MainBar;
 import java.util.Vector;
-import javax.microedition.lcdui.Command;
+import Client.Config;
+//#ifndef MENU_LISTENER
 import javax.microedition.lcdui.CommandListener;
+import javax.microedition.lcdui.Command;
+//#else
+//# import Menu.MenuListener;
+//# import Menu.Command;
+//# import Menu.MyMenu;
+//#endif
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
@@ -42,7 +49,15 @@ import ui.VirtualList;
  *
  * @author Evg_S
  */
-public class TransferManager extends VirtualList implements CommandListener{
+public class TransferManager
+    extends VirtualList
+    implements
+//#ifndef MENU_LISTENER
+        CommandListener
+//#else
+//#         MenuListener
+//#endif
+    {
     
     private Vector taskList;
     
@@ -53,7 +68,9 @@ public class TransferManager extends VirtualList implements CommandListener{
     /** Creates a new instance of TransferManager */
     public TransferManager(Display display) {
         super(display);
-        
+//#ifdef MENU_LISTENER
+//#         menuCommands.removeAllElements();
+//#endif
         addCommand(cmdBack);
         addCommand(cmdDel);
         addCommand(cmdClrF);
@@ -99,13 +116,42 @@ public class TransferManager extends VirtualList implements CommandListener{
                 StaticData.getInstance().roster.setEventIcon(null);
             redraw();
         }
-        if (c==cmdDel) {
-            keyClear();
-        }
-        if (c==cmdBack) {
-            TransferDispatcher.getInstance().eventNotify();
-            destroyView();
-        }
+        if (c==cmdDel) keyClear();
+        if (c==cmdBack) cmdBack();
         
+    }
+    private void cmdBack() {
+        TransferDispatcher.getInstance().eventNotify();
+        destroyView();
+    }
+    
+//#ifdef MENU_LISTENER    
+//#     public void addCommand(Command command) {
+//#         if (menuCommands.indexOf(command)<0)
+//#             menuCommands.addElement(command);
+//#     }
+//#     public void removeCommand(Command command) {
+//#         menuCommands.removeElement(command);        
+//#     }
+//#     
+//#     public void setCommandListener(MenuListener menuListener) { }
+//#     
+//#     protected void keyPressed(int keyCode) { // overriding this method to avoid autorepeat
+//#         if (keyCode==Config.SOFT_LEFT) {
+//#             showMenu();
+//#             return;
+//#         }
+//#         if (keyCode==Config.SOFT_RIGHT || keyCode==Config.KEY_BACK) {
+//#             cmdBack();
+//#             return;
+//#         }
+//#         super.keyPressed(keyCode);
+//#     }
+//#endif
+    
+    public void showMenu() {
+//#ifdef MENU_LISTENER
+//#         new MyMenu(display, this, SR.MS_DISCO, null);
+//#endif
     }
 }

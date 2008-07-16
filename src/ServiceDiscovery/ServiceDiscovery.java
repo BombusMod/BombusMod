@@ -75,11 +75,7 @@ public class ServiceDiscovery
     private final static String NS_GATE="jabber:iq:gateway";
     private final static String NS_MUC="http://jabber.org/protocol/muc";
     private final static String NODE_CMDS="http://jabber.org/protocol/commands";
-    
-    
-    //private final static String strJoin="Join Conference";
-    //private final static String strReg=SR.MS_REGISTER;
-    //private final static String strSrch=SR.MS_SEARCH;
+
     private final static String strCmds="Execute";
     private final int AD_HOC_INDEX=17;
     

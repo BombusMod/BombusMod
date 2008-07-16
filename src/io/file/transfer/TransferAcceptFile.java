@@ -58,10 +58,10 @@ public class TransferAcceptFile
     TransferTask t;
     TextInput fileName;
     TextInput path;
-//#ifndef MENU
+
     Command cmdDecline=new Command(SR.MS_CANCEL, Command.CANCEL, 90);
     Command cmdPath=new Command(SR.MS_PATH, Command.SCREEN, 2);
-//#endif
+
     /** Creates a new instance of TransferAcceptFile */
     public TransferAcceptFile(Display display, TransferTask transferTask) {
         super(display, SR.MS_ACCEPT_FILE);
@@ -98,10 +98,10 @@ public class TransferAcceptFile
         itemsList.addElement(new MultiLine(SR.MS_SENDER, t.jid, super.superWidth));
 
         itemsList.addElement(new MultiLine(SR.MS_DESCRIPTION, t.description, super.superWidth));
-//#ifndef MENU
+
         addCommand(cmdPath);
         addCommand(cmdDecline);
-//#endif
+
         attachDisplay(display);
     }
 

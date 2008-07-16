@@ -27,12 +27,21 @@
 
 package Account;
 import Client.*;
+import javax.microedition.lcdui.Display;
+import javax.microedition.lcdui.Displayable;
 import locale.SR;
 import midlet.BombusMod;
 import ui.*;
 import java.io.*;
 import java.util.*;
-import javax.microedition.lcdui.*;
+//#ifndef MENU_LISTENER
+import javax.microedition.lcdui.CommandListener;
+import javax.microedition.lcdui.Command;
+//#else
+//# import Menu.MenuListener;
+//# import Menu.Command;
+//# import Menu.MyMenu;
+//#endif
 import ui.MainBar;
 import io.NvStorage;
 import ui.controls.AlertBox;
@@ -43,8 +52,14 @@ import ui.controls.AlertBox;
  * @author Eugene Stahov
  */
 public class AccountSelect 
-        extends VirtualList 
-        implements CommandListener{
+    extends VirtualList 
+    implements
+//#ifndef MENU_LISTENER
+        CommandListener
+//#else
+//#         MenuListener
+//#endif
+    {
 
     public Vector accountList;
     int activeAccount;
@@ -70,7 +85,7 @@ public class AccountSelect
         cf=Config.getInstance();
         
         setMainBarItem(new MainBar(SR.MS_ACCOUNTS));
-        
+
         if (enableQuit) {
             VirtualList.canBack=false;
         }
@@ -97,28 +112,19 @@ public class AccountSelect
         }
         
         attachDisplay(display);
-        addCommand(cmdAdd);
-        addCommand(cmdConfig);
-        
-        if (enableQuit) 
-            addCommand(cmdQuit);
-//#ifdef POPUPS
-        /*if (accountList.isEmpty()) {
-            VirtualList.setWobble(1, (Contact) null, SR.MS_ENTER_ACCOUNT_SETTINGS);
-        }*/
-//#endif
+
         commandState();
         setCommandListener(this);
     }
     
     public void commandState(){
-        if (accountList.isEmpty()) {
-            removeCommand(cmdEdit);
-            removeCommand(cmdDel);
-            removeCommand(cmdSelect);
-            removeCommand(cmdLogin);
-            removeCommand(cmdCancel);
-        } else {
+//#ifdef MENU_LISTENER
+//#         menuCommands.removeAllElements();
+//#endif
+        addCommand(cmdAdd);
+        addCommand(cmdConfig);
+        
+        if (!accountList.isEmpty()) {
             addCommand(cmdEdit);
             addCommand(cmdDel);
             addCommand(cmdLogin);
@@ -126,6 +132,8 @@ public class AccountSelect
             if (activeAccount>=0 && !enableQuit)
                 addCommand(cmdCancel);  // нельз�? выйти без активного аккаунта
         }
+        if (enableQuit) 
+            addCommand(cmdQuit);
     }
 
     public VirtualElement getItemRef(int Index) { return (VirtualElement)accountList.elementAt(Index); }
@@ -210,5 +218,33 @@ public class AccountSelect
             ((Account)accountList.elementAt(i)).saveToDataOutputStream(outputStream);
         NvStorage.writeFileRecord(outputStream, Account.storage, 0, true);
     }
-
+//#ifdef MENU_LISTENER    
+//#     public void addCommand(Command command) {
+//#         if (menuCommands.indexOf(command)<0)
+//#             menuCommands.addElement(command);
+//#     }
+//#     public void removeCommand(Command command) {
+//#         menuCommands.removeElement(command);        
+//#     }
+//#     
+//#     public void setCommandListener(MenuListener menuListener) { }
+//#     
+//#     protected void keyPressed(int keyCode) { // overriding this method to avoid autorepeat
+//#         if (keyCode==Config.SOFT_LEFT) {
+//#             showMenu();
+//#             return;
+//#         }
+//#         if (keyCode==Config.SOFT_RIGHT || keyCode==Config.KEY_BACK) {
+//#             if (canBack) destroyView();
+//#             return;
+//#         }
+//#         super.keyPressed(keyCode);
+//#     }
+//#endif
+    
+    public void showMenu() {
+//#ifdef MENU_LISTENER
+//#         new MyMenu(display, this, SR.MS_DISCO, null);
+//#endif
+    }
 }
