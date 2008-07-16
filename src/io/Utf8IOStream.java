@@ -56,7 +56,6 @@ public class Utf8IOStream {
 
 //#if (ZLIB)
     public void setStreamCompression(){
-        //try { if(inpStream!=null) inpStream.close(); } catch (IOException ex) { }
         inpStream=new ZInputStream(inpStream);
         outStream=new ZOutputStream(outStream, JZlib.Z_DEFAULT_COMPRESSION);
         ((ZOutputStream)outStream).setFlushMode(JZlib.Z_SYNC_FLUSH);
@@ -69,6 +68,7 @@ public class Utf8IOStream {
         try {
             SocketConnection sc=(SocketConnection)connection;
             sc.setSocketOption(SocketConnection.KEEPALIVE, 1);
+            sc.setSocketOption(SocketConnection.LINGER, 60);
         } catch (Exception e) {}
 
 	inpStream = connection.openInputStream();

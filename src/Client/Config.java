@@ -566,7 +566,6 @@ type = \"-=Siemens=-\";
     }
     
     public void saveToStorage(){
-	
 	DataOutputStream outputStream=NvStorage.CreateDataOutputStream();
 	
 	try {

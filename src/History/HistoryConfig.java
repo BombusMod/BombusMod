@@ -1,5 +1,5 @@
 /*
- * newHistoryConfig.java
+ * HistoryConfig.java
  *
  * Created on 20.05.2008, 19:43
  *
@@ -72,7 +72,7 @@ public class HistoryConfig
     
     private int histPos=6;
     
-    /** Creates a new instance of newHistoryConfig */
+    /** Creates a new instance of HistoryConfig */
     public HistoryConfig(Display display) {
         super(display, SR.MS_HISTORY_OPTIONS);
 	this.display=display;
@@ -118,9 +118,13 @@ public class HistoryConfig
 //#     public String getCenterCommand() { return (cursor==histPos)?SR.MS_SELECT_HISTORY_FOLDER:""; }
 //#     public void centerCommand() { if (cursor==histPos) new Browser(null, display, this, true); }
 //#endif
-    public void cmdOk() {
-        cf.lastMessages=loadHistory.getValue();
 
+    public void cmdOk() {
+//#ifdef LAST_MESSAGES
+//#         cf.lastMessages=loadHistory.getValue();
+//#elifdef HISTORY_READER
+//#         cf.lastMessages=loadHistory.getValue();
+//#endif
         cf.msgLog=saveHistory.getValue();
         cf.msgLogPresence=savePres.getValue();
         cf.msgLogConf=saveConfHistory.getValue();
