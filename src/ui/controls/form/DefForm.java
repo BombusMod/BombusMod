@@ -89,7 +89,6 @@ public class DefForm
         return (VirtualElement)itemsList.elementAt(index);
     }
 
-    public void touchLeftPressed(){ showMenu(); }
     public void touchRightPressed(){ cmdCancel(); }
     
     public void commandAction(Command command, Displayable displayable) {
@@ -110,6 +109,14 @@ public class DefForm
         destroyView();
     }
     public void cmdOk() { }
+    
+    public void commandState() {
+//#ifdef MENU_LISTENER
+//#         menuCommands.removeAllElements();
+//#endif
+	addCommand(cmdOk);
+	addCommand(cmdCancel);
+    }
     
 //#ifdef MENU_LISTENER    
 //#     public void addCommand(Command command) {
@@ -134,13 +141,6 @@ public class DefForm
 //#         super.keyPressed(keyCode);
 //#     }
 //#     
-//#     public void commandState() {
-//#ifdef MENU_LISTENER
-//#         menuCommands.removeAllElements();
-//#endif
-//# 	addCommand(cmdOk);
-//# 	addCommand(cmdCancel);
-//#     }
 //#     
 //#     public void showMenu() {
 //#         commandState();
@@ -152,5 +152,6 @@ public class DefForm
 //#         }
 //#         new MyMenu(display, this, "", null);
 //#     }
+//#     public void touchLeftPressed(){ showMenu(); }
 //#endif
 }

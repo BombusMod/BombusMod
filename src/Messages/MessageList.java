@@ -218,16 +218,16 @@ public abstract class MessageList extends VirtualList
 //#     public void showMenu() {
 //#         commandState();
 //#         new MyMenu(display, this, "", null);
+//#    }
+//#     public void touchLeftPressed(){
+//#         showMenu();
+//#     }
 //#endif
-    }
+
     
 //#ifdef MENU
 //#     public void leftCommand() { showMenu(); }
 //#     public String getLeftCommand() { return SR.MS_MENU; }
-//#else
-    public void touchLeftPressed(){
-        showMenu();
-    }
 //#endif
 
     public void commandState() { }

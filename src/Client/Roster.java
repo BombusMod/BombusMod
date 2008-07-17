@@ -2119,10 +2119,6 @@ public class Roster
 //#     public void rightCommand() { new RosterItemActions(display, getFocusedObject(), -1); }
 //#     public String getRightCommand() { return SR.MS_ACTION; }
 //#else
-    public void touchLeftPressed(){
-        showMenu();
-    }
-    
     public void touchRightPressed(){
         if (isLoggedIn()) 
             new RosterItemActions(display, getFocusedObject(), -1);
@@ -2131,17 +2127,17 @@ public class Roster
     
 
     public void keyPressed(int keyCode){
-//#ifndef MENU
-        if (keyCode==Config.SOFT_LEFT) {
-            showMenu();
-            return;
-        }
-
-        if (keyCode==Config.SOFT_RIGHT) {
-            if (isLoggedIn()) 
-                new RosterItemActions(display, getFocusedObject(), -1);
-            return;
-        }
+//#ifdef MENU_LISTENER
+//#         if (keyCode==Config.SOFT_LEFT) {
+//#             showMenu();
+//#             return;
+//#         }
+//# 
+//#         if (keyCode==Config.SOFT_RIGHT) {
+//#             if (isLoggedIn()) 
+//#                 new RosterItemActions(display, getFocusedObject(), -1);
+//#             return;
+//#         }
 //#endif
         super.keyPressed(keyCode);
         
@@ -2906,6 +2902,9 @@ public class Roster
 //#     public void showMenu() {
 //#         commandState();
 //#         new MyMenu(display, this, SR.MS_MAIN_MENU, menuIcons);
+//#     }
+//#     public void touchLeftPressed(){
+//#         showMenu();
 //#     }
 //#endif
     

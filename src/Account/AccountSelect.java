@@ -246,6 +246,7 @@ public class AccountSelect
 //#     public void showMenu() {
 //#         commandState();
 //#         new MyMenu(display, this, SR.MS_DISCO, null);
+//#    }
 //#endif
-    }
+
 }
