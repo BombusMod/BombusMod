@@ -80,7 +80,7 @@ public class AccountSelect
     public AccountSelect(Display display, boolean enableQuit) {
         super();
         this.enableQuit=enableQuit;
-        //this.display=display;
+        this.display=display;
         
         cf=Config.getInstance();
         

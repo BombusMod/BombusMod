@@ -68,7 +68,7 @@ public class Utf8IOStream {
         try {
             SocketConnection sc=(SocketConnection)connection;
             sc.setSocketOption(SocketConnection.KEEPALIVE, 1);
-            sc.setSocketOption(SocketConnection.LINGER, 60);
+            sc.setSocketOption(SocketConnection.LINGER, 300);
         } catch (Exception e) {}
 
 	inpStream = connection.openInputStream();

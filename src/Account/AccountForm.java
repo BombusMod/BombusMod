@@ -1,5 +1,5 @@
 /*
- * newAccountForm.java
+ * AccountForm.java
  *
  * Created on 20.05.2008, 13:05
  *
@@ -88,7 +88,7 @@ public class AccountForm
 
     private boolean doConnect;
     
-    /** Creates a new instance of newAccountForm */
+    /** Creates a new instance of AccountForm */
     public AccountForm(AccountSelect accountSelect, Display display, Account account) {
         super(display, null);
 	this.accountSelect = accountSelect;
@@ -251,10 +251,10 @@ public class AccountForm
         if (newaccount && doConnect) {
             new AlertBox(SR.MS_CONNECT_TO, account.getBareJid()+"?", display, StaticData.getInstance().roster) {
                 public void yes() { startLogin();}
-                public void no() { if (display!=null) display.setCurrent(parentView); }
+                public void no() { display.setCurrent(accountSelect); }
             };
-        } else if (display!=null)  
-            display.setCurrent(parentView);
+        } else
+            display.setCurrent(accountSelect);
     }
     
     private void startLogin(){
