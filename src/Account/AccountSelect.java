@@ -242,10 +242,9 @@ public class AccountSelect
 //#         }
 //#         super.keyPressed(keyCode);
 //#     }
-//#endif
-    
-    public void showMenu() {
-//#ifdef MENU_LISTENER
+//#     
+//#     public void showMenu() {
+//#         commandState();
 //#         new MyMenu(display, this, SR.MS_DISCO, null);
 //#endif
     }

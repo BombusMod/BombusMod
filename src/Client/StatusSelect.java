@@ -84,6 +84,8 @@ public class StatusSelect
             setMainBarItem(new MainBar(to));
         }
 
+        commandState();
+        
         setCommandListener(this);
         
         defp=cf.loginstatus;
@@ -91,7 +93,7 @@ public class StatusSelect
         attachDisplay(d);
     }
     
-    protected void beginPaint() {
+    public void commandState() {
 //#ifdef MENU_LISTENER
 //#         menuCommands.removeAllElements();
 //#endif
@@ -153,7 +155,11 @@ public class StatusSelect
         StatusList.getInstance().saveStatusToStorage();
     }
     
-//#ifdef MENU_LISTENER    
+//#ifdef MENU_LISTENER   
+//#     public void touchLeftPressed(){
+//#         showMenu();
+//#     }
+//# 
 //#     public void addCommand(Command command) {
 //#         if (menuCommands.indexOf(command)<0)
 //#             menuCommands.addElement(command);
@@ -175,14 +181,13 @@ public class StatusSelect
 //#         }
 //#         super.keyPressed(keyCode);
 //#     }
+//# 
+//#     public void showMenu() {
+//#         commandState();
+//#         new MyMenu(display, this, SR.MS_STATUS, null);
+//#     }
 //#endif
     
-    public void showMenu() {
-//#ifdef MENU_LISTENER
-//#         new MyMenu(display, this, SR.MS_STATUS, null);
-//#endif
-    }
-
     class StatusForm 
         extends DefForm {
         

@@ -95,9 +95,9 @@ public class HistoryConfig
 
 	historyFolder = new TextInput(display, SR.MS_HISTORY_FOLDER, cf.msgPath, null, TextField.ANY);//128, TextField.ANY
         itemsList.addElement(historyFolder);
-//#ifndef MENU
-        addCommand(cmdSetHistFolder);
-//#endif
+
+        commandState();
+
         moveCursorTo(getNextSelectableRef(-1));
         attachDisplay(display);
     }
@@ -136,6 +136,11 @@ public class HistoryConfig
         cf.msgPath=historyFolder.getValue();         
 
         cf.saveToStorage();
+    }
+    
+    public void commandState() {
+        super.commandState();
+        addCommand(cmdSetHistFolder);
     }
     
 }

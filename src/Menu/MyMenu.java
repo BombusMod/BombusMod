@@ -29,6 +29,7 @@ package Menu;
 
 import java.util.Enumeration;
 import javax.microedition.lcdui.Display;
+import javax.microedition.lcdui.Displayable;
 import ui.ImageList;
 
 /**
@@ -39,6 +40,7 @@ public class MyMenu extends Menu {
     
     private MenuListener ml;
     private Object o;
+    private Displayable parentView;
     
     /** Creates a new instance of MyMenu */
     public MyMenu(Display display, MenuListener menuListener, String caption, ImageList il) {
@@ -50,6 +52,8 @@ public class MyMenu extends Menu {
             addItem(c.getName(), i, c.getImg());
         }
         
+        parentView=display.getCurrent();
+        
         attachDisplay(display);
     }
     
@@ -60,7 +64,7 @@ public class MyMenu extends Menu {
 	if (me==null)  return;
         
 	int index=me.index;
-        ml.commandAction(getCommand(index), null);
+        ml.commandAction(getCommand(index), parentView);
     }
     
     private Command getCommand(int index) {

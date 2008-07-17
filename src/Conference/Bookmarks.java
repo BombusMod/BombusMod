@@ -104,6 +104,13 @@ public class Bookmarks
         
         setMainBarItem(new MainBar(2, null, SR.MS_BOOKMARKS+" ("+getItemCount()+") "));//for title updating after "add bookmark"
         
+        commandState();
+
+        setCommandListener(this);
+	attachDisplay(display);
+    }
+    
+    public void commandState() {
 //#ifdef MENU_LISTENER
 //#         menuCommands.removeAllElements();
 //#endif
@@ -124,8 +131,6 @@ public class Bookmarks
         addCommand(cmdRoomBanned);
         addCommand(cmdConfigure);
         addCommand(cmdCancel);
-        setCommandListener(this);
-	attachDisplay(display);
     }
 
     protected int getItemCount() { 
@@ -280,11 +285,10 @@ public class Bookmarks
 //#         }
 //#         super.keyPressed(keyCode);
 //#     }
-//#endif
-    
-    public void showMenu() {
-//#ifdef MENU_LISTENER
+//# 
+//#     public void showMenu() {
+//#         commandState();
 //#         new MyMenu(display, this, SR.MS_BOOKMARKS, null);
+//#     }
 //#endif
-    }
 }

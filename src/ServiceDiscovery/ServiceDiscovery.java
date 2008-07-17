@@ -128,10 +128,7 @@ public class ServiceDiscovery
         addCommand(cmdFeatures);
         //addCommand(cmdAdd);
         addCommand(cmdCancel);
-        
 
-
-        
         items=new Vector();
         features=new Vector();
         

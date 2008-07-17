@@ -100,6 +100,19 @@ public class ArchiveList
 	mainbar.addElement(SR.MS_FREE /*"free "*/);
         setMainBarItem(mainbar);
         
+        commandState();
+        addCommands();
+	setCommandListener(this);
+        
+        moveCursorHome();
+
+        attachDisplay(display);
+    }
+    
+    public void commandState(){
+//#ifdef MENU_LISTENER
+//#         menuCommands.removeAllElements();
+//#endif
         if (getItemCount()>0) {
             addCommand(cmdDelete);
             
@@ -112,15 +125,6 @@ public class ArchiveList
             }
         }
         addCommand(cmdNew);
-        
-        addCommands();
-
-	//addCommand(cmdBack);
-	setCommandListener(this);
-        
-        moveCursorHome();
-
-        attachDisplay(display);
     }
 
     protected void beginPaint() {

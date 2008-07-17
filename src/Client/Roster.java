@@ -242,9 +242,10 @@ public class Roster
         vContacts=new Vector(); // just for displaying
         
 	updateMainBar();
-//#ifndef MENU_LISTENER
-        addMenuCommands();
-//#endif
+
+        commandState();
+        setCommandListener(this);
+
         SplashScreen.getInstance().setExit(display, this);
 //#ifdef AUTOSTATUS
 //#         if (cf.autoAwayType==Config.AWAY_IDLE || cf.autoAwayType==Config.AWAY_MESSAGE)
@@ -275,7 +276,10 @@ public class Roster
     MenuIcons menuIcons=MenuIcons.getInstance();
 //#endif
     
-    public void addMenuCommands(){
+    public void commandState(){
+//#ifdef MENU_LISTENER
+//#         menuCommands.removeAllElements();
+//#endif
         int activeType=Command.SCREEN;
         if (cf.phoneManufacturer==Config.NOKIA) activeType=Command.BACK;
         if (cf.phoneManufacturer==Config.INTENT) activeType=Command.BACK;
@@ -326,7 +330,6 @@ public class Roster
 //#         cmdCleanAllMessages.setImg(menuIcons.ICON_CLEAN_MESSAGES);
 //#         cmdQuit.setImg(menuIcons.ICON_BUILD_NEW);
 //#endif
-        setCommandListener(this);
     }
     
     public void setProgress(String pgs,int percent){
@@ -1906,11 +1909,13 @@ public class Roster
                     message=null; type=null;
                 }
                 vibraLen=0;
+                flashBackLight=false;
                 break;
             case 5: //offline
                 message=ac.soundOffline;
                 type=ac.soundOfflineType;
                 vibraLen=0;
+                flashBackLight=false;
                 break;
             case SOUND_FOR_VIP: //VIP
                 message=ac.soundVIP;
@@ -1934,21 +1939,25 @@ public class Roster
                 message=ac.soundStartUp;
                 type=ac.soundStartUpType;
                 vibraLen=0;
+                flashBackLight=false;
                 break;
             case SOUND_COMPOSING: //composing
                 message=ac.soundComposing;
                 type=ac.soundComposingType;
                 vibraLen=0;
+                flashBackLight=false;
                 break;
             case SOUND_OUTGOING: //Outgoing
                 message=ac.soundOutgoing;
                 type=ac.soundOutgoingType;
                 vibraLen=0;
+                flashBackLight=false;
                 break;
             default:
                 message="";
                 type="none";
                 vibraLen=0;
+                flashBackLight=false;
                 break;
         }
        
@@ -2893,14 +2902,12 @@ public class Roster
 //#     }
 //#     
 //#     public void setCommandListener(MenuListener menuListener) { }
-//#endif
-    public void showMenu() {
-//#ifdef MENU_LISTENER
-//#         menuCommands.removeAllElements();
-//#         addMenuCommands();
+//# 
+//#     public void showMenu() {
+//#         commandState();
 //#         new MyMenu(display, this, SR.MS_MAIN_MENU, menuIcons);
+//#     }
 //#endif
-    }
     
     void setTicker(Contact c, String message) {
         if (cf.notifyWhenMessageType) {

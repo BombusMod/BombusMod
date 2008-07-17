@@ -78,11 +78,8 @@ public class DefForm
 	setMainBarItem(new MainBar(caption));
         
         superWidth=super.getWidth();
-//#ifdef MENU_LISTENER
-//#         menuCommands.removeAllElements();
-//#endif
-	addCommand(cmdOk);
-	addCommand(cmdCancel);
+        
+        commandState();
 	setCommandListener(this);
     }
 
@@ -136,10 +133,17 @@ public class DefForm
 //#         }
 //#         super.keyPressed(keyCode);
 //#     }
-//#endif
-    
-    public void showMenu() {
+//#     
+//#     public void commandState() {
 //#ifdef MENU_LISTENER
+//#         menuCommands.removeAllElements();
+//#endif
+//# 	addCommand(cmdOk);
+//# 	addCommand(cmdCancel);
+//#     }
+//#     
+//#     public void showMenu() {
+//#         commandState();
 //#         if (menuCommands.size()==2) {
 //#             if (menuCommands.elementAt(0).equals(cmdOk) && menuCommands.elementAt(1).equals(cmdCancel)) {
 //#                 cmdOk();
@@ -147,6 +151,6 @@ public class DefForm
 //#             }
 //#         }
 //#         new MyMenu(display, this, "", null);
+//#     }
 //#endif
-    }
 }

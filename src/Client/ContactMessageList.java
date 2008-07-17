@@ -133,11 +133,9 @@ public class ContactMessageList extends MessageList {
 //#endif
         
         cursor=0;//activate
-//#ifndef MENU_LISTENER
-        updateCommands();
-        setCommandListener(this);        
-//#endif
-
+        commandState();
+        setCommandListener(this);
+        
         contact.setIncoming(0);
 //#ifdef HISTORY
 //#ifdef LAST_MESSAGES
@@ -148,44 +146,10 @@ public class ContactMessageList extends MessageList {
             moveCursorTo(contact.firstUnread());
     }
     
-    private void updateCommands(){
-//#ifdef CLIPBOARD
-//#         removeCommand(cmdCopy);
-//#         removeCommand(cmdCopyPlus);
+    public void commandState(){
+//#ifdef MENU_LISTENER
+//#         menuCommands.removeAllElements();
 //#endif
-        removeCommand(cmdxmlSkin);
-        removeCommand(cmdUrl);
-        removeCommand(cmdSubscribe);
-        removeCommand(cmdUnsubscribed);
-        removeCommand(cmdMessage);
-        removeCommand(cmdResume);
-        removeCommand(cmdReply);
-        removeCommand(cmdQuote);
-//#ifdef ARCHIVE
-        removeCommand(cmdArch);
-//#endif
-        removeCommand(cmdPurge);
-        removeCommand(cmdActions);
-        removeCommand(cmdActive);
-//#if TEMPLATES
-        removeCommand(cmdTemplate);
-//#endif
-//#ifdef ANTISPAM
-//#         removeCommand(cmdBlock);
-//#         removeCommand(cmdUnlock);
-//#endif
-//#ifdef FILE_IO
-        removeCommand(cmdSaveChat);
-//#endif
-//#ifdef HISTORY
-//#ifdef HISTORY_READER
-//#         removeCommand(cmdReadHistory);
-//#endif
-//#endif
-//#ifdef CLIPBOARD    
-//#         removeCommand(cmdSendBuffer);
-//#endif
-        removeCommand(cmdBack);
         
 //#ifndef WMUC
 //#ifdef ANTISPAM
@@ -281,31 +245,6 @@ public class ContactMessageList extends MessageList {
 //#         getRedraw(true);
 //#endif
         super.showNotify();
-//#ifndef MENU_LISTENER
-        if (cmdResume==null) return;
-        
-        if (contact.msgSuspended==null) 
-            removeCommand(cmdResume);
-        else 
-            addCommand(cmdResume);
-        
-        if (cmdSubscribe==null) return;
-        try {
-            Msg msg=(Msg) contact.msgs.elementAt(cursor); 
-            if (msg.messageType==Msg.MESSAGE_TYPE_AUTH) {
-                addCommand(cmdSubscribe);
-                addCommand(cmdUnsubscribed);
-            } else {
-                removeCommand(cmdSubscribe);
-                removeCommand(cmdUnsubscribed);
-            }
-        } catch (Exception e) {}
-//#ifdef CLIPBOARD
-//#         if (!clipboard.isEmpty() && cf.useClipBoard) {
-//#             addCommand(cmdSendBuffer);
-//#         }
-//#endif
-//#endif
     }
 
     protected void beginPaint(){
@@ -700,7 +639,7 @@ public class ContactMessageList extends MessageList {
     
 //#ifdef MENU_LISTENER
 //#     public void showMenu() {
-//#          updateCommands();
+//#          commandState();
 //#          super.showMenu();
 //#     }
 //#     

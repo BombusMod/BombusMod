@@ -214,9 +214,9 @@ public abstract class MessageList extends VirtualList
 //#     }
 //#     
 //#     public void setCommandListener(MenuListener menuListener) { }
-//#endif
-    public void showMenu() {
-//#ifdef MENU_LISTENER
+//# 
+//#     public void showMenu() {
+//#         commandState();
 //#         new MyMenu(display, this, "", null);
 //#endif
     }
@@ -229,4 +229,6 @@ public abstract class MessageList extends VirtualList
         showMenu();
     }
 //#endif
+
+    public void commandState() { }
 }

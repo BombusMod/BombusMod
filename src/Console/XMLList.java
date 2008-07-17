@@ -60,13 +60,8 @@ public class XMLList
         super ();
         
         stanzas=StanzasList.getInstance();
-        
+        commandState();
         setCommandListener(this);
-        
-	addCommand(cmdBack);
-        addCommand(cmdNew);
-        addCommand(cmdEnableDisable);
-        addCommand(cmdDeleteAll);
 
         attachDisplay(display);
         
@@ -77,6 +72,16 @@ public class XMLList
 //# 	MainBar mainbar=new MainBar(SR.MS_XML_CONSOLE);
 //#         setMainBarItem(mainbar);
 //#endif
+    }
+    
+    public void commandState() {
+//#ifdef MENU_LISTENER
+//#         menuCommands.removeAllElements();
+//#endif
+	addCommand(cmdBack);
+        addCommand(cmdNew);
+        addCommand(cmdEnableDisable);
+        addCommand(cmdDeleteAll);
     }
     
     protected void beginPaint() {
