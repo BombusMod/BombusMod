@@ -41,7 +41,6 @@ import javax.microedition.lcdui.TextField;
 import locale.SR;
 import ui.controls.form.CheckBox;
 import ui.controls.form.DefForm;
-import ui.controls.form.SimpleString;
 import ui.controls.form.TextInput;
 
 /**
@@ -52,10 +51,8 @@ public class HistoryConfig
         extends DefForm
         implements BrowserListener {
 
-    private Display display;
-//#ifndef MENU
-    Command cmdSetHistFolder=new Command(SR.MS_SELECT_HISTORY_FOLDER, Command.ITEM,2);
-//#endif
+    Command cmdPath=new Command(SR.MS_SELECT_HISTORY_FOLDER, Command.SCREEN, 2);
+
     private TextInput historyFolder;
     
     private CheckBox loadHistory;
@@ -69,15 +66,11 @@ public class HistoryConfig
 //#endif
     
     Config cf;
-    
-    private int histPos=6;
-    
+
     /** Creates a new instance of HistoryConfig */
     public HistoryConfig(Display display) {
         super(display, SR.MS_HISTORY_OPTIONS);
-	this.display=display;
-	parentView=display.getCurrent();
-        
+
         cf=Config.getInstance();
 //#ifdef LAST_MESSAGES
 //#         loadHistory = new CheckBox(SR.MS_LAST_MESSAGES, cf.lastMessages); itemsList.addElement(loadHistory);
@@ -90,34 +83,31 @@ public class HistoryConfig
         saveConfPres = new CheckBox(SR.MS_SAVE_PRESENCES_CONF, cf.msgLogConfPresence); itemsList.addElement(saveConfPres);
         win1251 = new CheckBox(SR.MS_1251_CORRECTION, cf.cp1251); itemsList.addElement(win1251);
 //#ifdef DETRANSLIT
-//#         translit = new CheckBox(SR.MS_1251_TRANSLITERATE_FILENAMES, cf.transliterateFilenames); itemsList.addElement(translit); histPos++;
+//#         translit = new CheckBox(SR.MS_1251_TRANSLITERATE_FILENAMES, cf.transliterateFilenames); itemsList.addElement(translit);
 //#endif
 
-	historyFolder = new TextInput(display, SR.MS_HISTORY_FOLDER, cf.msgPath, null, TextField.ANY);//128, TextField.ANY
-        itemsList.addElement(historyFolder);
+	historyFolder = new TextInput(display, SR.MS_HISTORY_FOLDER, cf.msgPath, null, TextField.ANY); itemsList.addElement(historyFolder);
 
         commandState();
+        addCommand(cmdPath);
+        
+        moveCursorTo(0);
 
-        moveCursorTo(getNextSelectableRef(-1));
         attachDisplay(display);
     }
 
     public void BrowserFilePathNotify(String pathSelected) {
         historyFolder.setValue(pathSelected);
     }
-//#ifndef MENU
+
     public void commandAction(Command command, Displayable displayable) {
-        if (command==cmdSetHistFolder) {
+        if (command==cmdPath) {
             new Browser(null, display, this, true);
             return;
         }
         super.commandAction(command, displayable);
         destroyView();
     }
-//#else
-//#     public String getCenterCommand() { return (cursor==histPos)?SR.MS_SELECT_HISTORY_FOLDER:""; }
-//#     public void centerCommand() { if (cursor==histPos) new Browser(null, display, this, true); }
-//#endif
 
     public void cmdOk() {
 //#ifdef LAST_MESSAGES
@@ -137,10 +127,10 @@ public class HistoryConfig
 
         cf.saveToStorage();
     }
-    
-    public void commandState() {
-        super.commandState();
-        addCommand(cmdSetHistFolder);
-    }
-    
+//#ifdef MENU_LISTENER
+//#     public void commandState() {
+//#         super.commandState();
+//#         addCommand(cmdPath);
+//#     }
+//#endif
 }

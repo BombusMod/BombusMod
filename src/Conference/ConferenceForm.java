@@ -177,7 +177,13 @@ public class ConferenceForm
         autoJoin=new CheckBox(SR.MS_AUTOLOGIN, autojoin);
         itemsList.addElement(autoJoin);
         
-        commandState();
+//#ifndef MENU_LISTENER
+        addCommand(cmdJoin);
+        addCommand(cmdAdd);
+        addCommand(cmdEdit);
+        addCommand(cmdCancel);
+        removeCommand(cmdOk);
+//#endif
         
 	setCommandListener(this);
 
@@ -231,18 +237,16 @@ public class ConferenceForm
         pass=null;
     }
     
-    public void commandState(){
 //#ifdef MENU_LISTENER
+//#     public void commandState(){
 //#         menuCommands.removeAllElements();
+//#         addCommand(cmdJoin);
+//#         addCommand(cmdAdd);
+//#         addCommand(cmdEdit);
+//#         addCommand(cmdCancel);
+//#     }
 //#endif
-        addCommand(cmdJoin);
-        addCommand(cmdAdd);
-        addCommand(cmdEdit);
-//#ifndef MENU_LISTENER
-        addCommand(cmdCancel);
-//#endif
-        removeCommand(cmdOk);
-    }
+
     private void saveMsgCount(int msgLimit) {
         if (cf.confMessageCount!=msgLimit) {
             cf.confMessageCount=msgLimit;

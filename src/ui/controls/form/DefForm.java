@@ -79,8 +79,8 @@ public class DefForm
         
         superWidth=super.getWidth();
         
-        commandState();
 	setCommandListener(this);
+        commandState();
     }
 
     protected int getItemCount() { return itemsList.size(); }
@@ -113,6 +113,9 @@ public class DefForm
     public void commandState() {
 //#ifdef MENU_LISTENER
 //#         menuCommands.removeAllElements();
+//#else
+	removeCommand(cmdOk);
+	removeCommand(cmdCancel);
 //#endif
 	addCommand(cmdOk);
 	addCommand(cmdCancel);
@@ -141,7 +144,6 @@ public class DefForm
 //#         super.keyPressed(keyCode);
 //#     }
 //#     
-//#     
 //#     public void showMenu() {
 //#         commandState();
 //#         if (menuCommands.size()==2) {
@@ -152,6 +154,7 @@ public class DefForm
 //#         }
 //#         new MyMenu(display, this, "", null);
 //#     }
+//#     
 //#     public void touchLeftPressed(){ showMenu(); }
 //#endif
 }

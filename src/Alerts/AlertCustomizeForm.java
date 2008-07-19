@@ -80,10 +80,9 @@ public class AlertCustomizeForm
     Config cf;
     Vector files[];
     Vector fileNames;
-//#ifndef MENU
+
     Command cmdTest=new Command(SR.MS_TEST_SOUND, Command.SCREEN, 2);
 
-//#endif
     /** Creates a new instance of ConfigForm */
     public AlertCustomizeForm(Display display) {
         super(display, SR.MS_NOTICES_OPTIONS);
@@ -157,7 +156,7 @@ public class AlertCustomizeForm
 //#ifndef MENU
         addCommand(cmdTest);
 //#endif
-        moveCursorTo(getNextSelectableRef(-1));
+        moveCursorTo(1);
         attachDisplay(display);
     }
     
