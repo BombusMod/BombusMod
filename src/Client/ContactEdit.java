@@ -206,8 +206,8 @@ public final class ContactEdit
                       .append(tTranspList.toString());
                 jid=jidBuf.toString();
             }
-
-            sd.roster.storeContact(jid, name, group, ask);
+            if (!new Jid(jid).getBareJid().equals(StaticData.getInstance().roster.selfContact().getBareJid()))
+                sd.roster.storeContact(jid, name, group, ask);
             destroyView();
         }
     }
