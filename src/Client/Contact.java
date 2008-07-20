@@ -312,12 +312,12 @@ public class Contact extends IconTextElement{
         if (origin!=ORIGIN_GROUPCHAT) {
             if (m.isPresence()) {
                 presence=m.getBody();
-                if (msgs.size()==1) 
+                if (msgs.size()==1)
                     if (((Msg)msgs.firstElement()).isPresence())
                         first_replace=true;
             } else if (cf.showNickNames) {
                 StringBuffer who=new StringBuffer();
-                who.append((m.messageType==Msg.MESSAGE_TYPE_IN)?getName():StaticData.getInstance().account.getNickName())
+                who.append((m.messageType==Msg.MESSAGE_TYPE_OUT)?StaticData.getInstance().account.getNickName():getName())
                     .append(" (")
                     .append(m.getTime())
                     .append(") ");

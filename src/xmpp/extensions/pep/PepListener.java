@@ -113,7 +113,7 @@ public class PepListener implements JabberBlockListener{
             type=SR.MS_USER_MOOD;
         }
 
-        Msg m=new Msg(Msg.MESSAGE_TYPE_HISTORY, from, type, result.toString());
+        Msg m=new Msg(Msg.MESSAGE_TYPE_PRESENCE, from, type, result.toString());
         
         Vector hContacts=StaticData.getInstance().roster.getHContacts();
         synchronized (hContacts) {
