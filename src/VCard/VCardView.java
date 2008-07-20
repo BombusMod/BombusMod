@@ -73,18 +73,18 @@ public class VCardView
     private SimpleString noPhoto=new SimpleString(SR.MS_NO_PHOTO, false);
     private SimpleString badFormat=new SimpleString(SR.MS_UNSUPPORTED_FORMAT, false);
 
-//#ifndef MENU
+
 //#ifdef CLIPBOARD
-//#     private Command cmdCopy   = new Command(SR.MS_COPY, Command.OK, 1);
-//#     private Command cmdCopyPlus = new Command("+ "+SR.MS_COPY, Command.SCREEN, 2);
-//#     private ClipBoard clipboard; 
+//#     ClipBoard clipboard=ClipBoard.getInstance(); 
+//#     Command cmdCopy      = new Command(SR.MS_COPY, Command.SCREEN, 1);
+//#     Command cmdCopyPlus  = new Command("+ "+SR.MS_COPY, Command.SCREEN, 2);
 //#endif
-    protected Command cmdRefresh=new Command(SR.MS_REFRESH, Command.SCREEN, 3);
+    Command cmdRefresh   = new Command(SR.MS_REFRESH, Command.SCREEN, 3);
 //#if FILE_IO
-    protected Command cmdSavePhoto=new Command(SR.MS_SAVE_PHOTO, Command.SCREEN,4);
+    Command cmdSavePhoto = new Command(SR.MS_SAVE_PHOTO, Command.SCREEN,4);
 //#endif
-    protected Command cmdDelPhoto=new Command(SR.MS_CLEAR_PHOTO, Command.SCREEN,5);
-//#endif
+    Command cmdDelPhoto  = new Command(SR.MS_CLEAR_PHOTO, Command.SCREEN,5);
+
     /** Creates a new instance of VCardView */
     public VCardView(Display display, VCard vcard, String caption) {
         super(display, caption);
@@ -108,7 +108,9 @@ public class VCardView
             }
             itemsList.addElement(endVCard);
         }
-//#ifndef MENU
+
+//#ifndef MENU_LISTENER
+        commandState();
 //#if FILE_IO
         if (vcard.hasPhoto)
             addCommand(cmdSavePhoto);
@@ -125,7 +127,6 @@ public class VCardView
 //#endif
         if (vcard.hasPhoto)
             addCommand(cmdDelPhoto);
-        //moveCursorTo(getNextSelectableRef(-1));
 //#endif
 
         enableListWrapping(false);
@@ -221,5 +222,27 @@ public class VCardView
         nickDate.append('_').append(Time.dayLocalString(Time.utcTimeMillis()).trim());
         return nickDate.toString();
     }
+//#endif
+    
+//#ifdef MENU_LISTENER
+//#     public void commandState() {
+//#         super.commandState();
+//# 
+//#         if (vcard!=null) {
+//#             if (vcard.hasPhoto) {
+//#if FILE_IO
+//#                 addCommand(cmdSavePhoto);
+//#endif
+//#                 addCommand(cmdDelPhoto);
+//#             }
+//#ifdef CLIPBOARD
+//#             if (Config.getInstance().useClipBoard) {
+//#                 addCommand(cmdCopy);
+//#                 addCommand(cmdCopyPlus);
+//#             }
+//#endif
+//#         }
+//#         addCommand(cmdRefresh);
+//#     }
 //#endif
 }

@@ -58,17 +58,17 @@ public class VCardEdit
     
     private Display display;
     private Displayable parentView;
-//#ifndef MENU
-    protected Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 99);
-    protected Command cmdPublish=new Command(SR.MS_PUBLISH, Command.OK, 1);
-    protected Command cmdRefresh=new Command(SR.MS_REFRESH, Command.SCREEN, 2);
+
+    Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 99);
+    Command cmdPublish=new Command(SR.MS_PUBLISH, Command.OK, 1);
+    Command cmdRefresh=new Command(SR.MS_REFRESH, Command.SCREEN, 2);
 //#if FILE_IO
-    protected Command cmdLoadPhoto=new Command(SR.MS_LOAD_PHOTO, Command.SCREEN,3);
-    protected Command cmdSavePhoto=new Command(SR.MS_SAVE_PHOTO, Command.SCREEN,4);
+    Command cmdLoadPhoto=new Command(SR.MS_LOAD_PHOTO, Command.SCREEN,3);
+    Command cmdSavePhoto=new Command(SR.MS_SAVE_PHOTO, Command.SCREEN,4);
 //#endif
-    protected Command cmdDelPhoto=new Command(SR.MS_CLEAR_PHOTO, Command.SCREEN,5);
-    protected Command cmdCamera=new Command(SR.MS_CAMERA, Command.SCREEN,6);
-//#endif
+    Command cmdDelPhoto=new Command(SR.MS_CLEAR_PHOTO, Command.SCREEN,5);
+    Command cmdCamera=new Command(SR.MS_CAMERA, Command.SCREEN,6);
+
     private Vector items=new Vector();
     private VCard vcard;
     
@@ -99,6 +99,8 @@ public class VCardEdit
             itemsList.addElement(new TextInput(display, name, data, null, TextField.ANY));
         }
         setPhoto();
+//#ifndef MENU_LISTENER
+        commandState();
 //#ifndef MENU
         super.removeCommand(cmdOk);
         addCommand(cmdPublish);
@@ -112,7 +114,8 @@ public class VCardEdit
             addCommand(cmdCamera);
         addCommand(cmdDelPhoto);
 //#endif
-        moveCursorTo(getNextSelectableRef(-1));
+//#endif
+        enableListWrapping(false);
         attachDisplay(display);
     }
     
@@ -233,4 +236,22 @@ public class VCardEdit
         }
         itemsList.addElement(endVCard);
      }
+     
+//#ifdef MENU_LISTENER
+//#     public void commandState() {
+//#         super.commandState();
+//#         
+//#         removeCommand(cmdOk);
+//#         addCommand(cmdPublish);
+//#         addCommand(cmdRefresh);
+//#if FILE_IO
+//#         addCommand(cmdLoadPhoto);
+//#         addCommand(cmdSavePhoto);
+//#endif
+//#         String cameraAvailable=System.getProperty("supports.video.capture");
+//#         if (cameraAvailable!=null) if (cameraAvailable.startsWith("true"))
+//#             addCommand(cmdCamera);
+//#         addCommand(cmdDelPhoto);
+//#     }
+//#endif
 }

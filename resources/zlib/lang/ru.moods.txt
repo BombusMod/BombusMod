@@ -2,8 +2,8 @@
 amazed	изумленное
 angry	рассерженное
 annoyed	раздраженное
-anxious	беспокойное
-aroused	возбужденное
+anxious	озабоченное
+aroused	пробужденное
 ashamed	пристыженное
 bored	скучающее
 brave	смелое
@@ -58,5 +58,5 @@ sleepy	сонное
 stressed	напряженное
 surprised	удивленное
 thirsty	хочу пить
-worried	взволнованное
+worried	беспокойное
 -	<нет настроения>
