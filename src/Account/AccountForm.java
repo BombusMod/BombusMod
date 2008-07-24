@@ -85,6 +85,7 @@ public class AccountForm
     boolean showExtended;
     
     LinkString linkShowExtended;
+    LinkString linkSave;
 
     private boolean doConnect;
     
@@ -121,6 +122,9 @@ public class AccountForm
         linkShowExtended = new LinkString(SR.MS_EXTENDED_SETTINGS) { public void doAction() { showExtended(); } };
         itemsList.addElement(linkShowExtended);
         
+        linkSave = new LinkString(SR.MS_SAVE) { public void doAction() { cmdOk(); } };
+        itemsList.addElement(linkSave);
+        
         moveCursorTo(getNextSelectableRef(-1));
         attachDisplay(display);
     }
@@ -128,6 +132,7 @@ public class AccountForm
     public void showExtended() {
         showExtended=true;
         itemsList.removeElement(linkShowExtended);
+        itemsList.removeElement(linkSave);
         
         if (!newaccount)
             itemsList.addElement(registerbox);
@@ -187,6 +192,7 @@ public class AccountForm
 //#elif HTTPPOLL        
 //# 	itemsList.addElement(proxyHost);
 //#endif
+        itemsList.addElement(linkSave);
     }
     
     public void cmdOk() {

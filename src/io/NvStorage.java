@@ -92,6 +92,7 @@ public class NvStorage {
                 recordStore.setRecord(index+1, b, 0, b.length);
             } catch (InvalidRecordIDException e) { recordStore.addRecord(b, 0, b.length); }
             recordStore.closeRecordStore();
+            ostream.flush();
             ostream.close();
         } catch (Exception e) { 
             //e.printStackTrace(); 
