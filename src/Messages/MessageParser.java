@@ -204,7 +204,7 @@ public final class MessageParser implements Runnable{
 //#endif
         
  	addSmile(root, "http://", URL);
-        addSmile(root, "tel://",URL);
+        addSmile(root, "tel:",URL);
         addSmile(root, "ftp://",URL);
         addSmile(root, "https://",URL);
         addSmile(root, "native:",URL);
@@ -215,7 +215,7 @@ public final class MessageParser implements Runnable{
         
         emptyRoot=new Leaf();
 	addSmile(emptyRoot, "http://", URL);
-        addSmile(emptyRoot, "tel://",URL);
+        addSmile(emptyRoot, "tel:",URL);
         addSmile(emptyRoot, "ftp://",URL);
         addSmile(emptyRoot, "https://",URL);
         addSmile(emptyRoot, "native:",URL);
@@ -420,9 +420,7 @@ public final class MessageParser implements Runnable{
         }
     }
     
-
     public interface MessageParserNotify {
         void notifyRepaint(Vector v, Msg parsedMsg, boolean finalized);
     }
 }
-

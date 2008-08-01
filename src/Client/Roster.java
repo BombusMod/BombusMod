@@ -1765,6 +1765,7 @@ public class Roster
         return(!c.equals(activeContact));
     }
 //#endif
+    
     public void messageStore(Contact c, Msg message) {
         if (c==null) return;
 
@@ -1808,21 +1809,8 @@ public class Roster
                 setWobbler(2, c, message.getBody());
 //#endif
             autorespond = true;
-        }
-//#ifndef WMUC
-        else if (c.origin>=Contact.ORIGIN_GROUPCHAT) {
-            if (message.messageType==Msg.MESSAGE_TYPE_IN) {
-                if (c.origin!=Contact.ORIGIN_GROUPCHAT && c instanceof MucContact) {
-                     playNotify(SOUND_MESSAGE); //private message
-                     autorespond = true;
-                } else {
-                    playNotify(SOUND_FOR_CONFERENCE);
-                }
-            }
-        } 
-//#endif
-        else {
-             if (message.messageType==Msg.MESSAGE_TYPE_IN) {
+        } else if (message.messageType==Msg.MESSAGE_TYPE_IN) {
+            if (c.origin<Contact.ORIGIN_GROUPCHAT) {
 //#ifndef WMUC
                 if (!(c instanceof MucContact))
 //#endif
@@ -1840,8 +1828,18 @@ public class Roster
                     autorespond = true;
                 }
             }
+//#ifndef WMUC
+            else {
+                if (c.origin!=Contact.ORIGIN_GROUPCHAT && c instanceof MucContact) {
+                     playNotify(SOUND_MESSAGE); //private message
+                     autorespond = true;
+                } else {
+                    playNotify(SOUND_FOR_CONFERENCE);
+                }
+            }
+//#endif
         }
-            
+        
         if (c.origin==Contact.ORIGIN_GROUPCHAT || c.jid.isTransport() || c.getGroupType()==Groups.TYPE_TRANSP || c.getGroupType()==Groups.TYPE_SEARCH_RESULT || c.getGroupType()==Groups.TYPE_SELF) 
             autorespond=false;
         
@@ -1867,8 +1865,8 @@ public class Roster
                 c.addMessage(new Msg(Msg.MESSAGE_TYPE_SYSTEM, "local", SR.MS_AUTORESPOND, ""));
             }
         }
-        
     }
+        
 //#ifdef ANTISPAM
 //#     void tempMessageStore(Contact c, Msg message) {
 //#         c.addTempMessage(message);
@@ -2287,6 +2285,12 @@ public class Roster
 //#endif
        	else if (keyCode==KEY_NUM3) new ActiveContacts(display, null);
        	else if (keyCode==KEY_NUM4) new ConfigForm(display);
+        else if (keyCode==KEY_NUM6) {
+            cf.fullscreen=!cf.fullscreen;
+            cf.saveToStorage();
+            VirtualList.fullscreen=cf.fullscreen;
+            StaticData.getInstance().roster.setFullScreenMode(cf.fullscreen);
+        }
         else if (keyCode==KEY_NUM7)
             new RosterToolsMenu(display);
         else if (keyCode==KEY_NUM9) {
