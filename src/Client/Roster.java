@@ -60,8 +60,6 @@ import Menu.RosterToolsMenu;
 //#endif
 import images.RosterIcons;
 
-import io.file.FileIO;
-
 //#ifndef MENU_LISTENER
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Command;
@@ -80,7 +78,6 @@ import midlet.BombusMod;
 import ui.MainBar;
 import ui.controls.AlertBox;
 import util.StringUtils;
-import util.Strconv;
 import VCard.VCard;
 import VCard.VCardEdit;
 import VCard.VCardView;
@@ -169,7 +166,7 @@ public class Roster
     
     public Vector bookmarks;
     
-    //public MessageEdit me=null;
+    public MessageEdit me=null;
 
     private StatusList sl;
     public int myStatus=cf.loginstatus;
@@ -216,9 +213,7 @@ public class Roster
     private final static int SOUND_FOR_VIP=100;
     private final static int SOUND_COMPOSING=888;
     private final static int SOUND_OUTGOING=999;
-
-    public MessageEdit me=null;
-   
+    
     public Roster(Display display) {
         super();
         this.display=display;
@@ -1131,7 +1126,7 @@ public class Roster
 //#                     (grpType==Groups.TYPE_COMMON || grpType==Groups.TYPE_NO_GROUP || 
 //#                     grpType==Groups.TYPE_VISIBLE || grpType==Groups.TYPE_IGNORE)) {
 //#                 String jid=k.getJid();
-//#                 jid=strconv.stringReplace(jid, srcTransport, dstTransport);
+//#                 jid=StringUtils.stringReplace(jid, srcTransport, dstTransport);
 //#                 storeContact(jid, k.nick, (k.getGroup().getName()!=SR.MS_GENERAL)?(k.getGroup().getName()):"", true); //new contact addition
 //#                 try {
 //#                     Thread.sleep(300);
