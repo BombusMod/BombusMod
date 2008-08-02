@@ -3,7 +3,7 @@
  *
  * Created on 7.04.2008, 13:37
  *
- * Copyright (c) 2005-2008, Eugene Stahov (evgs), http://bombus-im.org
+ * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -54,10 +54,12 @@ public class XMLList
     
     private Command cmdNew=new Command(SR.MS_NEW, Command.SCREEN, 5);
     private Command cmdEnableDisable=new Command("Enable/Disable", Command.SCREEN, 6);
-    private Command cmdDeleteAll=new Command(SR.MS_CLEAR_LIST, Command.SCREEN, 10);    
+    private Command cmdPurge=new Command(SR.MS_CLEAR_LIST, Command.SCREEN, 10);    
     /** Creates a new instance of XMLList */
     public XMLList(Display display) {
         super ();
+        
+        super.smiles=false;
         
         stanzas=StanzasList.getInstance();
         commandState();
@@ -65,9 +67,11 @@ public class XMLList
 
         attachDisplay(display);
         
-        try {
+        /*try {
             focusedItem(0);
-        } catch (Exception e) {}
+        } catch (Exception e) {}*/
+        moveCursorHome();
+        
 //#ifdef CONSOLE        
 //# 	MainBar mainbar=new MainBar(SR.MS_XML_CONSOLE);
 //#         setMainBarItem(mainbar);
@@ -81,12 +85,11 @@ public class XMLList
 	addCommand(cmdBack);
         addCommand(cmdNew);
         addCommand(cmdEnableDisable);
-        addCommand(cmdDeleteAll);
+        addCommand(cmdPurge);
     }
     
     protected void beginPaint() {
-        StringBuffer str = new StringBuffer()
-        .append(" (")
+        StringBuffer str = new StringBuffer(" (")
         .append(getItemCount())
         .append(")");
         
@@ -131,22 +134,29 @@ public class XMLList
         }
 	if (m==null) return;
 
-        if (c==cmdDeleteAll) { 
-            deleteAllMessages();
+        if (c==cmdPurge) { 
+            clearReadedMessageList();
         }
     }
     
-    private void deleteAllMessages() {
-        if (getItemCount()>0) {
-            stanzas.deleteAll();
-            messages=null;
+    private void clearReadedMessageList() {
+        try {
+            if (cursor+1==stanzas.size()) {
+                stanzas.stanzas.removeAllElements();
+                messages=null;
+            }
+            else {
+                for (int i=0; i<cursor+1; i++)
+                    stanzas.stanzas.removeElementAt(0);
+            }
             messages=new Vector();
-        }
+        } catch (Exception e) { }
+        moveCursorHome();
         redraw(); 
     }
-
+    
     public void keyClear() { 
-        deleteAllMessages();
+        clearReadedMessageList();
     }
     
     public void destroyView(){

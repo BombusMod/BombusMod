@@ -27,7 +27,6 @@
 
 package Console;
 
-import Client.Config;
 import Client.StaticData;
 import java.io.IOException;
 import javax.microedition.lcdui.Command;
@@ -58,8 +57,6 @@ public class StanzaEdit
     private Command cmdPasteIQVersion=new Command("jabber:iq:version", Command.SCREEN,12);
     private Command cmdPastePresence=new Command("presence", Command.SCREEN,13);
     private Command cmdPasteMessage=new Command("message", Command.SCREEN,14);
-
-    private Config cf;
     
     private static final String TEMPLATE_IQ_DISCO="<iq to='???' type='get'>\n<query xmlns='http://jabber.org/protocol/disco#info'/>\n</iq>";
     private static final String TEMPLATE_IQ_VERSION="<iq to='???' type='get'>\n<query xmlns='jabber:iq:version'/>\n</iq>";
@@ -71,8 +68,6 @@ public class StanzaEdit
         
         this.display=display;
         parentView=display.getCurrent();
-
-        cf=Config.getInstance();
         
         addCommand(cmdSend);
 
@@ -110,11 +105,10 @@ public class StanzaEdit
 
         if (c==cmdSend && body!=null) {
             try {
-                StaticData.getInstance().roster.theStream.send(body);
+                StaticData.getInstance().roster.theStream.send(body.trim());
             } catch (IOException ex) { }
         }
 
-        // message/composing sending
         destroyView();
     }
 }
