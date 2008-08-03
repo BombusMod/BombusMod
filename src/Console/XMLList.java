@@ -159,6 +159,11 @@ public class XMLList
         clearReadedMessageList();
     }
     
+    public void userKeyPressed(int keyCode) {
+        if (keyCode=='0')
+            clearReadedMessageList();
+    }
+    
     public void destroyView(){
 	super.destroyView();
     }

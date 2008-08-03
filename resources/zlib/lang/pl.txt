@@ -227,7 +227,6 @@ room presences	Uczestnicy pokoju
 Participants	Uczestnicy 
 Abc	Аbc
 
- 
 online	dostępny 
 error	Błąd 
 chat	chętny do rozmowy 
@@ -246,7 +245,6 @@ Transfer tasks	Przesłane pliki
 Color tune	Ustawienia kolorów 
 Load Scheme	Załaduj skórkę 
 Select history folder	Wybierz folder Historii 
-Classic chat	Klasyczny Czat 
 Sound volume	Głośność dźwięku 
 Language	Język 
 Save history	Zapisuj historię 

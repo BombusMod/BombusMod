@@ -212,6 +212,7 @@ Participants	Учасники
 Abc	Абв
 
 error	помилка
+online	в мережi
 chat	хочу побалакати
 away	вiдсутнiй
 xa	давно вiдсутнiй
@@ -229,7 +230,6 @@ Transfer tasks	Задачi передачi данних
 Color tune	Настройка кольорiв
 
 Select history folder	Вибiр папки історiї
-Classic chat	Класичний чат
 Language	Мова
 Save history	Зберiгати iсторiю
 Save presences	Зберiгати статуси
@@ -417,7 +417,6 @@ Show new menu	Показувати нове меню
 Save conference history	Зберiгати iсторiю конференцiї
 AutoStatus Message	Повiдомлення Автостатусу
 
-online	в мережi
 Load Scheme	Завантаж. схему
 show new menu	графiчне меню
 convert to cp1251	зберiгати в Win-1251

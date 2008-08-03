@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
+// Copyright (c) 2005-2008, Eugene Stahov (evgs), http://bombus-im.org
 // All rights reserved.
 
 // ask server to send us localized messages
@@ -217,13 +217,13 @@ Participants	Участники
 Abc	Абв
 
 error	ошибка
+online	в сети
 chat	хочу поговорить
 away	отсутствую
 xa	давно отсутствую
 dnd	занят
 invisible	невидимка
 offline	не в сети
-
 
 Clear Photo	Очистить фото
 Camera	Камера
@@ -235,7 +235,6 @@ Color tune	Настройка цветов
 Load Skin	Загрузить тему
 
 Select history folder	Выбор папки истории
-Classic chat	Классический чат
 Digital heap monitor	Цифровой монитор памяти
 Sound volume	Громкость звука
 Language	Язык
@@ -362,19 +361,19 @@ Initiating session	Создание сессии
 
 second	секунда
 seconds	секунды
-seconds_	секунд
+second's	секунд
 
 minute	минута
 minutes	минуты
-minutes_	минут
+minute's	минут
 
 hour	час
 hours	часа
-hours_	часов
+hour's	часов
 
 day	день
 days	дня
-days_	дней
+day's	дней
 
 Auto xa since %t	Автостатус "Недоступен" сработал в %t
 Auto away since %t	Автостатус "Отсутствую" сработал в %t
@@ -435,7 +434,6 @@ Show new menu Показывать новое меню
 Save conference history	Сохранять историю конференции
 AutoStatus Message	Сообщение Автостатуса
 
-online	В сети
 Load Scheme	Загрузить схему
 show new menu	Графическое меню
 convert to cp1251	Сохранять в windows-1251
