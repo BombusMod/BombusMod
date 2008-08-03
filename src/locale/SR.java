@@ -282,9 +282,7 @@ public class SR {
     public static String MS_NEW_TEMPLATE=loadString("New Template");
 
     public static String MS_SAVE_PHOTO=loadString("Save photo");
-
-    public static String MS_MESSAGE_FOR_ME="Message for me";
-
+    
 //#ifdef COLOR_TUNE
 //#     public static String MS_BALLOON_INK=loadString("balloon ink");
 //#     public static String MS_BALLOON_BGND=loadString("balloon background");
@@ -705,8 +703,8 @@ public class SR {
 //#         if (value==null) {
 //#             if (!lang.isEmpty()) {
 //#                 System.out.print("Can't find local string for <");
-//#                 System.out.println(key);
-//#                 System.out.println('>');
+//#                 System.out.print(key);
+//#                 System.out.println(">");
 //#             }
 //#         }
 //#endif

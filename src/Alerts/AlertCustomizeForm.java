@@ -5,7 +5,6 @@
  *
  * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
  *
- * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
@@ -264,7 +263,16 @@ public class AlertCustomizeForm
         String soundFile=(String)files[1].elementAt(sound);
         String soundType=(String)files[0].elementAt(sound);
         int soundVol=sndVol.getValue()*10;
-        //System.out.println(sound+" "+soundFile+" "+soundType+" "+soundVol);
+//#ifdef DEBUG
+//#         System.out.println(cursor+": "+sound+" "+soundFile+" "+soundType+" "+soundVol);
+//#endif
         new EventNotify(display, soundType, soundFile, soundVol, 0, false).startNotify();
-    } 
+    }
+    
+//#ifdef MENU_LISTENER
+//#     public void commandState() {
+//#         super.commandState();
+//#         addCommand(cmdTest);
+//#     }
+//#endif
 }

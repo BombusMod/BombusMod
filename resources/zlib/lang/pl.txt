@@ -285,11 +285,11 @@ Accept file	Akceptuj plik
 File	Plik: 
 Save To	Zapisz do 
 Sender	Nadawca: 
-Size	Rozmiar: 
+size:	Rozmiar: 
 Description	Szczegóły: 
 Rejected	Odrzucono 
 Send file	Wyślij plik 
-To	Do 
+To: 	Do: 
 Can't open file	Nie można otworzyć pliku 
 New	Nowa 
 New Template	Nowa Notatka 
@@ -350,30 +350,20 @@ Resource binding	Uwierzytelnienie z serwera
 Initiating session	Inicjowanie sesji
 second	sekunda
 seconds	sekundy
-seconds_	sekund
+second's	sekund
 minute	minuta
 minutes	minuty
-minutes_	minut
+minute's	minut
 hour	godzina
 hours	godziny
-hours_	godzin
-week	tydzień
-weeks	tygodnie
-weeks_	tygodni
+hour's	godzin
 day	dzień
 days	dni
-days_	dni
-month	miesiąc
-months	miesiące
-months_	miesięcy
-year	rok
-years	lata
-years_	lat
+day's	dni
 Auto xa since %t	Auto status zaraz wracam od: %t
 Auto away since %t	Auto status (oddalony) od: %t
 Auto Status on KeyLock since %t	Auto status (oddalony) z powodu blokady klawiatury od: %t
 Grant Membership	Daj Członkowstwo
-SASL login	SASL Strumień
 Features	Szczegóły
 Show password	Pokaż hasło
 No client version available	[Funkcja wersji klienta i oprogramowania nie jest w tej chwili dostępna]
@@ -403,7 +393,6 @@ Copy JID	Kopiuj JID
 Collapsed groups	Zwijanie grup
 show statuses	Pokaż status
 Show Resources	Pokaż zasób
-Save options to server	Zapisz ustawienia na serwerze
 Delete all messages	Usuń wszystkie wiadomości
 Use this Color scheme	Użyj tego schematu koloru
 
@@ -548,8 +537,6 @@ Send current color scheme 	Wyślij swój schemat koloru
 Browse rooms	Przeglądaj pokoje
 Autorespond	AutoOdpowiedź
 show statuses	Pokaż statusy
-to	do
-from	od
 
 Invert colors	Zmień kolory
 XML console	konsola XML

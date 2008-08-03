@@ -399,8 +399,6 @@ Automatic Away	Автозмiна статусу
 disabled	вимкнено
 keyblock / flip	блок / флiп
 
-Save options to server	Зберегти на серверi
-Restore options from server	Завантажити настройки iз серверу
 Make BackUp	Зберегти копiю на диск
 Delete All	Очистити архiв
 Use this Color scheme	Використати схему
