@@ -2,7 +2,7 @@
 :-(	:(	=(	)=	):	)-:
 ;-)	;)	^_~
 :-P	:P	:-p	:p	+P	=P	+p	=p	:-b	:b	+b	=b
-*JOKINGLY*	*jokingly*	:o)
+*JOKINGLY*	:o)
 O:-)	O:)	O+)	O=)	0:-)	0:)	0+)	0=)	(A)	(a)
 :-[	:[	(e)	(E)	:')	:'-)	=')
 8-)	8-)	8)	B-)	B)	(H)	(h)	B-D	BD	B-|
@@ -11,7 +11,7 @@ O:-)	O:)	O+)	O=)	0:-)	0:)	0+)	0=)	(A)	(a)
 *THUMBS UP*	*THUMBS_UP*	*GOOD*
 *PARDON*	=]
 =-O	=O	=-o	=0	=-0	=o	O_O	O_o	o_O	0_o	o_0
-:-|	:|	=|	*ERMM*	*ermm*
+:-|	:|	=|	*ERMM*
 :-\	:-/	=/	=\	*BEEE*
 :'(	:'-(	:"(	;-(	;(	='(	*CRY*
 *SORRY*
@@ -31,7 +31,7 @@ O:-)	O:)	O+)	O=)	0:-)	0:)	0+)	0=)	(A)	(a)
 *TIRED*	*BOREDOM*	|-0
 *DANCE*	*YAHOO*
 *BRAVO*	*CLAPPING*
-*DRINK*	*BEER*	*beer*
+*DRINK*	*BEER*
 :-!	:!	:-~	;-~	:(~	+(~	=(~	*SICK*
 ]:->	}:->	]:>	}:>	>:-]	>:]	(6)
 *WASSUP*	*SUP*	*MAMBA*
