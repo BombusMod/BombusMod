@@ -77,7 +77,7 @@ public class SR {
     public   static String MS_ACCOUNT_= loadString( "Account >" );
     public   static String MS_SELECT = loadString( "Select" );
     public   static String MS_SUBJECT = loadString( "Subject" );
-    public   static String MS_GROUP_MENU = loadString( "Group menu" );
+    //public   static String MS_GROUP_MENU = loadString( "Group menu" );
     public   static String MS_APP_QUIT = loadString( "Quit" );
     public   static String MS_EDIT_LIST = loadString( "Edit list" );
     public   static String MS_REGISTERING = loadString( "Registering" );

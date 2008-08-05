@@ -50,7 +50,6 @@ Account >	Обліковий запис >
 Show Offlines	Показати вiдключених
 Select	Обрати
 Subject	Тема
-Group menu	Меню групп
 Quit	Вихiд
 Edit list	Редагувати список
 Registering	Реєстрацiя
@@ -411,12 +410,10 @@ Show Resources	Показувати ресурси
 PopUps	Випливаючi вiкна
 Last messages	Останнi повiдомлення
 Shared platform info	Показувати інформацію про платформу
-Show new menu	Показувати нове меню
 Save conference history	Зберiгати iсторiю конференцiї
 AutoStatus Message	Повiдомлення Автостатусу
 
 Load Scheme	Завантаж. схему
-show new menu	графiчне меню
 convert to cp1251	зберiгати в Win-1251
 AutoStatus time (min)	Автостатус через(хвил.)
 Import from BackUp	Вiдновити iз файла

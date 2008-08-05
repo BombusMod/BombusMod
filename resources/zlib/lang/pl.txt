@@ -49,7 +49,6 @@ Account >	Konta >
 Show Offlines	Pokaż Rozłączone kontakty 
 Select	Wybierz 
 Subject	Temat 
-Group menu	Menu Grup 
 Quit	Zakończ 
 Add to roster	Dodaj do kontaktów 
 Edit list	Edytuj Listę 
@@ -170,7 +169,6 @@ Clock -	Zegar-
 Login	Zaloguj się 
 Clock offset	Różnica Zegara 
 Authorize new contacts	Autoryzuj nowe kontakty 
-Show new menu	Pokaż nowe Menu 
 flash backlight	Efekty Podświetlania 
 Suspend	Przerwij 
 Resume Message	Dokończ 
@@ -400,7 +398,6 @@ Save chat	Zapisz chat
 Block private	Odrzuć rozmowę
 Allow private	Akceptuj rozmowę
 Change nickname	Zmień nick
-show new menu	Użyj nowego menu
 History options	Opcje Historii
 Last Messages	Ostatnie wiadomości
 Last messages	Ostatnie wiadomości

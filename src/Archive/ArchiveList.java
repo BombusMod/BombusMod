@@ -28,8 +28,6 @@
 package Archive;
 
 import Client.Msg;
-import Client.StaticData;
-import java.util.Enumeration;
 import javax.microedition.lcdui.TextBox;
 import ui.MainBar;
 import Messages.MessageList;
@@ -42,15 +40,7 @@ import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
-//#if FILE_IO
-import io.file.FileIO;
-import io.file.browse.Browser;
-import io.file.browse.BrowserListener;
-import util.Strconv;
-//#endif
 import ui.controls.AlertBox;
-import Client.Config;
-import ui.Time;
 
 /**
  *
@@ -64,20 +54,12 @@ public class ArchiveList
     Command cmdSubj=new Command(SR.MS_PASTE_SUBJECT, Command.SCREEN, 3);
     Command cmdEdit=new Command(SR.MS_EDIT, Command.SCREEN, 4);
     Command cmdNew=new Command(SR.MS_NEW, Command.SCREEN, 5);
-//#if (FILE_IO)
-    Command cmdExport=new Command(SR.MS_EXPORT_TO_FILE, Command.SCREEN, 7);
-    Command cmdImport=new Command(SR.MS_IMPORT_TO_FILE, Command.SCREEN, 8);
-//#endif
     Command cmdDelete=new Command(SR.MS_DELETE, Command.SCREEN, 9);
     Command cmdDeleteAll=new Command(SR.MS_CLEAR_LIST, Command.SCREEN, 10);
 
     MessageArchive archive;
    
     private int caretPos;
-
-    private StaticData sd=StaticData.getInstance();
-
-    private Config cf;
     
     private int where=1;
 
@@ -89,9 +71,14 @@ public class ArchiveList
         this.where=where;
         this.caretPos=caretPos;
         this.t=t;
-        cf=Config.getInstance();
         
         archive=new MessageArchive(where);
+        
+        commandState();
+        addCommands();
+        setCommandListener(this);
+        
+        attachDisplay(display);
         
 	MainBar mainbar=new MainBar((where==1)?SR.MS_ARCHIVE:SR.MS_TEMPLATE);
 	mainbar.addElement(null);
@@ -100,19 +87,13 @@ public class ArchiveList
 	mainbar.addElement(SR.MS_FREE /*"free "*/);
         setMainBarItem(mainbar);
         
-        commandState();
-        addCommands();
-	setCommandListener(this);
-        
-        moveCursorHome();
-
-        attachDisplay(display);
     }
-    
-    public void commandState(){
+
+    public void commandState() {
 //#ifdef MENU_LISTENER
 //#         menuCommands.removeAllElements();
 //#endif
+
         if (getItemCount()>0) {
             addCommand(cmdDelete);
             
@@ -122,9 +103,14 @@ public class ArchiveList
             if (t!=null) {
                 addCommand(cmdPaste);
                 addCommand(cmdJid);
+                addCommand(cmdSubj);
             }
         }
         addCommand(cmdNew);
+        
+//#ifdef MENU_LISTENER
+//#         super.addCommands();
+//#endif
     }
 
     protected void beginPaint() {
@@ -215,8 +201,8 @@ public class ArchiveList
         }
     }
     
-    public void focusedItem(int index) {
-	if (t==null) return;
+    /*public void focusedItem(int index) {
+	if (target==null) return;
 	try {
 	    if (getMessage(index).subject!=null) {
 		addCommand(cmdSubj);
@@ -224,8 +210,8 @@ public class ArchiveList
 	    }
 	} catch (Exception e) { }
 	removeCommand(cmdSubj);
-    }
-  
+    }*/
+    
     public void destroyView(){
 	super.destroyView();
 	archive.close();

@@ -46,7 +46,6 @@ Delete list	Удалить список
 Account >	Аккаунт >
 Select	Выбрать
 Subject	Тема
-Group menu	Меню групп
 Quit	Выход
 Add to roster	Добавить в ростер
 Edit list	Редактировать список
@@ -428,12 +427,10 @@ Antispam Conference	Антиспам в конференции
 PopUps	Всплывающие окна
 Last messages	Последние сообщения
 Shared platform info	Скрыть инфо о клиенте
-Show new menu Показывать новое меню
 Save conference history	Сохранять историю конференции
 AutoStatus Message	Сообщение Автостатуса
 
 Load Scheme	Загрузить схему
-show new menu	Графическое меню
 convert to cp1251	Сохранять в windows-1251
 AutoStatus time (min)	Автостатус через(мин)
 Address	Адрес
@@ -626,3 +623,5 @@ Panels	Панели
 [info bar]	[инфо]
 
 Flash backlight	Мигать подсветкой
+Previous	Предыдущее
+execute menu by numkey	выполнение команд нажатием цифровых кнопок

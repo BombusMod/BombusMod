@@ -2413,6 +2413,7 @@ public class Roster
 //#endif
                 if (cntact.getLang()!=null) mess.append("\nLang: "+cntact.getLang());
             }
+            
             if (cntact.statusString!=null) {
                 if (cntact.origin!=Contact.ORIGIN_GROUPCHAT){
                     mess.append("\n")
