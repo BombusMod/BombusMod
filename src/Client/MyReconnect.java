@@ -42,4 +42,9 @@ public class MyReconnect extends TimerBox {
     }
 
     public void no() { }
+
+    public void clock() {
+        if (StaticData.getInstance().roster.isLoggedIn() && StaticData.getInstance().roster.doReconnect)
+            destroyView();
+    }
 }

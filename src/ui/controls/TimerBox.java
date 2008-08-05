@@ -51,7 +51,9 @@ public abstract class TimerBox extends AlertBox implements Runnable {
             try {
                 Thread.sleep(1000);
             } catch (Exception e) { break; }
-
+            
+            clock();
+            
             pos+=1;
             
             repaint();            
@@ -66,4 +68,6 @@ public abstract class TimerBox extends AlertBox implements Runnable {
     public abstract void yes();
 
     public abstract void no();
+    
+    public abstract void clock();
 }
