@@ -1591,6 +1591,13 @@ public class Roster
 //#                             }
 //#                         }
 //#endif
+                        String lang=pr.getAttribute("xml:lang");
+//#if DEBUG
+//#                         System.out.println(lang);
+//#endif
+                        if (lang!=null)
+                            c.setLang(lang);
+
                         int rp=from.indexOf('/');
 
                         String name=from.substring(rp+1);
@@ -1661,6 +1668,12 @@ public class Roster
                                 if (j2j.getChildBlock("jid")!=null)
                                     c.setJ2J(j2j.getChildBlock("jid").getAttribute("gateway"));
                             }
+                            
+                            String lang=pr.getAttribute("xml:lang");
+//#if DEBUG
+//#                             System.out.println(lang);
+//#endif
+                            c.setLang(lang);
 
                             c.statusString=pr.getStatus();
                         }
@@ -2398,6 +2411,7 @@ public class Roster
 //#ifdef CLIENTS_ICONS
 //#                 mess.append((cntact.getClient()>-1)?"\nUse: "+ClientsIcons.getInstance().getClientNameByID(cntact.getClient()):"");
 //#endif
+                if (cntact.getLang()!=null) mess.append("\nLang: "+cntact.getLang());
             }
             if (cntact.statusString!=null) {
                 if (cntact.origin!=Contact.ORIGIN_GROUPCHAT){

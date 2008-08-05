@@ -54,7 +54,8 @@ public class XMLList
     
     private Command cmdNew=new Command(SR.MS_NEW, Command.SCREEN, 5);
     private Command cmdEnableDisable=new Command("Enable/Disable", Command.SCREEN, 6);
-    private Command cmdPurge=new Command(SR.MS_CLEAR_LIST, Command.SCREEN, 10);    
+    private Command cmdPurge=new Command(SR.MS_CLEAR_LIST, Command.SCREEN, 10);
+    
     /** Creates a new instance of XMLList */
     public XMLList(Display display) {
         super ();
@@ -62,7 +63,9 @@ public class XMLList
         super.smiles=false;
         
         stanzas=StanzasList.getInstance();
+        
         commandState();
+        addCommands();
         setCommandListener(this);
 
         attachDisplay(display);
@@ -105,7 +108,7 @@ public class XMLList
     }
     
     public Msg getMessage(int index) {
-        Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,"local",null,null);
+        Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT, "local", null, null);
         try {
             msg=stanzas.msg(index);
         } catch (Exception e) {}

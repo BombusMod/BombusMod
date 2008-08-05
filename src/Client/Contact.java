@@ -147,6 +147,8 @@ public class Contact extends IconTextElement{
 
     private String j2j;
     
+    private String lang;
+    
     private Font secondFont=FontCache.getBalloonFont();
     private int secondFontHeight;
     
@@ -276,7 +278,8 @@ public class Contact extends IconTextElement{
         return newHighLitedMsgCnt=nm;
     }
 
-    public boolean active(){
+    public boolean active() {
+        if (msgSuspended!=null) return true;
         return (activeMessage>-1);
     }
     
@@ -505,9 +508,13 @@ public class Contact extends IconTextElement{
     public void setGroup(Group group) { this.group = group; }
     
     public String getJ2J() { return j2j; }
-
+    
     public void setJ2J(String j2j) { this.j2j = j2j; }
-
+    
+    public String getLang() { return lang; }
+    
+    public void setLang(String lang) { this.lang = lang; }
+    
     public void setStatus(int status) {
         setIncoming(0);
         this.status = status;
