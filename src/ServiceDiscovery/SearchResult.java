@@ -72,7 +72,7 @@ public class SearchResult
         JabberDataBlock x=query.getChildBlock("x");
         if (x!=null) { query=x; xData=true; }
         
-        sd.roster.cleanupSearch();
+        sd.roster.cleanupSearch(); //!!!
         
         for (Enumeration e=query.getChildBlocks().elements(); e.hasMoreElements(); ){
             JabberDataBlock child=(JabberDataBlock) e.nextElement();
@@ -121,10 +121,6 @@ public class SearchResult
                 vcard=null;
             }
         }
-//#ifdef POPUPS
-        if (getItemCount()<1)
-            VirtualList.setWobble(3, /*(Contact) null,*/ "Not found :(");
-//#endif
         sd.roster.reEnumRoster();
     }
     
