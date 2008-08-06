@@ -29,14 +29,27 @@
 package ui.controls;
 
 import Colors.ColorTheme;
+import images.RosterIcons;
 import javax.microedition.lcdui.Graphics;
+import ui.ComplexString;
 
 /**
  *
  * @author ad
  */
 public class testBalloon {
+
     public static void draw(Graphics g, int wPop, int hPop, int x, int y, String text) {
+        //messages=null;
+	//messages=new Vector();
+        
+        ComplexString status=new ComplexString(RosterIcons.getInstance());
+        status.addElement(" 0 ");
+        status.addElement(new Integer(0x01));
+        
+        //items.addElement(l1);
+        //items.addElement(l2);
+        
         int height=g.getClipHeight();
         int width=g.getClipWidth();
         
@@ -53,5 +66,9 @@ public class testBalloon {
         g.fillRect(0, 0, wPop, hPop);
         g.setColor(ColorTheme.getInstance().getColor(ColorTheme.BALLOON_INK));
         g.drawRect(0, 0, wPop, hPop);
+        
+        status.drawItem(g, 0, false);
+        
+        g.translate(-x, -y);
     }
 }

@@ -72,7 +72,7 @@ public class SearchResult
         JabberDataBlock x=query.getChildBlock("x");
         if (x!=null) { query=x; xData=true; }
         
-        sd.roster.cleanupSearch(); //!!!
+        sd.roster.cleanupSearch();
         
         for (Enumeration e=query.getChildBlocks().elements(); e.hasMoreElements(); ){
             JabberDataBlock child=(JabberDataBlock) e.nextElement();

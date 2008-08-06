@@ -45,7 +45,7 @@ import ui.controls.ScrollBar;
 import ui.controls.activeRegions;
 import util.StringUtils;
 //#ifdef TEST
-//# import ui.controls.test;
+//# import ui.controls.testBalloon;
 //#endif
 //#ifdef USER_KEYS
 //# import ui.keys.userKeyExec;
@@ -583,7 +583,7 @@ public abstract class VirtualList
         
 //#ifdef TEST
 //#         if (drawTest) {
-//#             test.draw(g, 100, 100, lastClickX, lastClickY, lastClickX+"/"+lastClickY);
+//#             test.draw(g, 100, 100, lastClickX, lastClickY, lastClickX+"/"+lastClickY+"abc\ndef");
 //#         }
 //#endif
         
@@ -591,6 +591,10 @@ public abstract class VirtualList
         if (g != graphics) g.drawImage(offscreen, 0, 0, Graphics.LEFT | Graphics.TOP);
 //#endif
     }
+    
+//#ifdef TEST
+//#     testBalloon test=new testBalloon();
+//#endif
     
     private void drawTraffic(final Graphics g, boolean up) {
         int pos=(up)?(width/2)+3:(width/2)-3;

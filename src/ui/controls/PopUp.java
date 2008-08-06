@@ -275,6 +275,9 @@ public class PopUp {
         }
         
         drawAllStrings(g, 2,3);
+        
+        g.translate(-widthBorder, -heightBorder);
+        g.setClip(0,0,width,height);
     }
 
     public int size() {
