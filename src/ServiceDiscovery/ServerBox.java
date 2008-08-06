@@ -40,14 +40,10 @@ import ui.controls.form.TextInput;
  * @author ad
  */
 public class ServerBox 
-        extends DefForm {
+    extends DefForm {
     
     private Display display;
-    private Group group;
-    private Contact contact;
-    
     private TextInput serverName;
-    
     private ServiceDiscovery sd;
 
     /**
@@ -63,15 +59,12 @@ public class ServerBox
         
         moveCursorTo(getNextSelectableRef(-1));
         attachDisplay(display);
-        
     }
 
     public void  cmdOk() {
         String server=serverName.getValue();
         if (server.length()==0) server=null;
-        
-        if (server!=null)
-            sd.browse(server, null);
+        if (server!=null) sd.browse(server, null);
         
         display.setCurrent(sd);
     }

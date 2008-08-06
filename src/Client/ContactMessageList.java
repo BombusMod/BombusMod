@@ -593,41 +593,54 @@ public class ContactMessageList extends MessageList {
     
 //#ifdef HISTORY
 //#ifdef LAST_MESSAGES
-//# public void loadRecentList() {
-//#     contact.setHistoryLoaded(true);
-//#     HistoryStorage hs = new HistoryStorage(contact.getBareJid());
-//#     Vector history=hs.importData();
+//#     public void loadRecentList() {
+//#         contact.setHistoryLoaded(true);
+//#         HistoryStorage hs = new HistoryStorage(contact.getBareJid());
+//#         Vector history=hs.importData();
 //# 
-//#     for (Enumeration messages=history.elements(); messages.hasMoreElements(); )  {
-//#         Msg message=(Msg) messages.nextElement();
-//#         if (!isMsgExists(message)) {
-//#             message.setHistory(true);
-//#             contact.msgs.insertElementAt(message, 0);
+//#         for (Enumeration messages=history.elements(); messages.hasMoreElements(); )  {
+//#             Msg message=(Msg) messages.nextElement();
+//#             if (!isMsgExists(message)) {
+//#                 message.setHistory(true);
+//#                 contact.msgs.insertElementAt(message, 0);
+//#             }
+//#             message=null;
 //#         }
-//#         message=null;
 //#     }
-//# }
 //# 
-//# private boolean isMsgExists(Msg msg) {
-//#      for (Enumeration messages=contact.msgs.elements(); messages.hasMoreElements(); )  {
-//#         Msg message=(Msg) messages.nextElement();
-//#         if (message.getBody().equals(msg.getBody())) {
-//#             return true;
-//#         }
-//#         message=null;
-//#      }
-//#     return false;
-//# }
+//#     private boolean isMsgExists(Msg msg) {
+//#          for (Enumeration messages=contact.msgs.elements(); messages.hasMoreElements(); )  {
+//#             Msg message=(Msg) messages.nextElement();
+//#             if (message.getBody().equals(msg.getBody())) {
+//#                 return true;
+//#             }
+//#             message=null;
+//#          }
+//#         return false;
+//#     }
 //#endif
 //# 
-//# private void saveMessages() {
-//#     String histRecord="log_"+contact.getBareJid();
-//#     for (Enumeration messages=contact.msgs.elements(); messages.hasMoreElements(); ) {
-//#         Msg message=(Msg) messages.nextElement();
-//#         new HistoryAppend(message, false, histRecord);
-//#         message=null;
+//#     private void saveMessages() {
+//#         StringBuffer histRecord=new StringBuffer("chatlog_");
+//#ifndef WMUC
+//#         if (contact instanceof MucContact) {
+//#             String nick=contact.getJid();
+//#             int rp=nick.indexOf('/');
+//#             histRecord.append(nick.substring(rp+1)).append("_").append(nick.substring(0, rp));
+//#             nick=null;
+//#         } else {
+//#endif
+//#             histRecord.append(contact.getBareJid());
+//#ifndef WMUC
+//#         }
+//#endif
+//#         for (Enumeration messages=contact.msgs.elements(); messages.hasMoreElements(); ) {
+//#             Msg message=(Msg) messages.nextElement();
+//#             new HistoryAppend(message, false, histRecord.toString());
+//#             message=null;
+//#             histRecord=null;
+//#         }
 //#     }
-//# }
 //#endif
 
     public void destroyView(){

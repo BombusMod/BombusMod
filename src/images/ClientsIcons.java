@@ -89,7 +89,7 @@ public class ClientsIcons extends ImageList {
                     if (pos>-1) {
                         int endpos=client.indexOf(",", pos);
                         String eqStr=(endpos<0)?client.substring(pos):client.substring(pos, endpos);
-                        if (caps.toUpperCase().equals(eqStr.toUpperCase())) return i;
+                        if (caps.toLowerCase().indexOf(eqStr.toLowerCase())>-1) return i;
                         
                         pos=client.indexOf(",", pos+1);
                         if (pos<0) parse=false; else pos=pos+1;

@@ -32,6 +32,7 @@ import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
 import ui.SplashScreen;
+import ui.VirtualList;
 import ui.controls.AlertBox;
 import ui.controls.form.SimpleString;
 import ui.controls.form.CheckBox;
@@ -266,5 +267,19 @@ public class AccountForm
     private void startLogin(){
         Account.loadAccount(true, Config.getInstance().accountIndex);
         SplashScreen.getInstance().close();
+    }
+    
+    protected void keyRepeated(int keyCode) {
+        super.keyRepeated(keyCode);
+        if (kHold==keyCode) return;
+        kHold=keyCode;
+        
+        if (keyCode==KEY_NUM6) {
+            Config cf=Config.getInstance();
+            cf.fullscreen=!cf.fullscreen;
+            cf.saveToStorage();
+            VirtualList.fullscreen=cf.fullscreen;
+            StaticData.getInstance().roster.setFullScreenMode(cf.fullscreen);
+        }
     }
 }

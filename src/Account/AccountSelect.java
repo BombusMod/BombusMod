@@ -248,5 +248,18 @@ public class AccountSelect
 //#         new MyMenu(display, this, SR.MS_DISCO, null);
 //#    }
 //#endif
-
+    
+    protected void keyRepeated(int keyCode) {
+        super.keyRepeated(keyCode);
+        if (kHold==keyCode) return;
+        kHold=keyCode;
+        
+        if (keyCode==KEY_NUM6) {
+            Config cf=Config.getInstance();
+            cf.fullscreen=!cf.fullscreen;
+            cf.saveToStorage();
+            VirtualList.fullscreen=cf.fullscreen;
+            StaticData.getInstance().roster.setFullScreenMode(cf.fullscreen);
+        }
+    }
 }

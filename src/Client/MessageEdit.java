@@ -129,7 +129,7 @@ public class MessageEdit
         
         int caretPos=getCaretPos();
 
-        if (c==cmdInsMe) { insert("/me ", 0); return; }
+        if (c==cmdInsMe) { insert("/me", 0); return; }
         if (c==cmdLastMessage) { super.setText(to.lastSendedMessage); return; }
 //#ifdef SMILES
         if (c==cmdSmile) { new SmilePicker(display, caretPos, this); return; }
