@@ -1,7 +1,7 @@
 /*
- * TransferSendFile.java
+ * TransferImage.java
  *
- * Created on 26.05.2008, 9:15
+ * Created on 7.08.2008, 23:47
  *
  * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
  *
@@ -27,32 +27,31 @@
 
 package io.file.transfer;
 
-import io.file.browse.Browser;
-import io.file.browse.BrowserListener;
+import images.camera.CameraImage;
+import images.camera.CameraImageListener;
 import javax.microedition.lcdui.Display;
-import javax.microedition.lcdui.Displayable;
-import javax.microedition.lcdui.TextField;
+import javax.microedition.lcdui.Image;
 import locale.SR;
 import ui.controls.form.DefForm;
+import ui.controls.form.ImageItem;
 import ui.controls.form.LinkString;
 import ui.controls.form.SimpleString;
-import ui.controls.form.TextInput;
 
-public class TransferSendFile
+/**
+ *
+ * @author ad
+ */
+public class TransferImage
         extends DefForm 
-        implements BrowserListener {
-    
-    private Display display;
-    private Displayable parentView;
+        implements CameraImageListener {
 
     private String to;
-    
+    private byte[] photo;
+    private ImageItem photoItem;
     private LinkString selectFile;
-    private TextInput fileName;
-    private TextInput description;
-
-    /** Creates a new instance of TransferAcceptFile */
-    public TransferSendFile(final Display display, String recipientJid) {
+    
+    /** Creates a new instance of TransferImage */
+    public TransferImage(final Display display, String recipientJid) {
         super(display, SR.MS_SEND_FILE);
         this.display=display;
         this.to=recipientJid;
@@ -61,28 +60,30 @@ public class TransferSendFile
         itemsList.addElement(new SimpleString(SR.MS_SEND_FILE_TO, true));
         itemsList.addElement(new SimpleString(recipientJid, false));
         
-        fileName = new TextInput(display, SR.MS_FILE, null, "sendfile", TextField.ANY);
-        itemsList.addElement(fileName);
-        
-        selectFile=new LinkString(SR.MS_SELECT_FILE) { public void doAction() { initBrowser(); } };
+        selectFile=new LinkString(SR.MS_SELECT_FILE) { public void doAction() { initCamera(); } };
         itemsList.addElement(selectFile);
-        
-        description = new TextInput(display, SR.MS_DESCRIPTION, null, null, TextField.ANY);
-        itemsList.addElement(description);
         
         moveCursorTo(2);
         attachDisplay(display);
     }
     
-    public void initBrowser() {
-        new Browser(null, display, this, false);
+    public void initCamera() {
+        new CameraImage(display, this);
     }
 
-    public void BrowserFilePathNotify(String pathSelected) { fileName.setValue(pathSelected); redraw(); }
-
+    public void cameraImageNotify(byte[] capturedPhoto) {
+        this.photo=capturedPhoto;
+        try {
+            itemsList.removeElement(photoItem);
+            Image photoImg=Image.createImage(photo, 0, photo.length);
+            photoItem=new ImageItem(photoImg, String.valueOf(photo.length)+" bytes");
+            itemsList.addElement(photoItem);
+        } catch (Exception e) { }
+    }
+    
     public void cmdOk() {
         try {
-            TransferTask task=new TransferTask(to, String.valueOf(System.currentTimeMillis()), fileName.getValue(), description.getValue(), false, null);
+            TransferTask task=new TransferTask(to, String.valueOf(System.currentTimeMillis()), "photo.png", "my photo", true, photo);
             TransferDispatcher.getInstance().sendFile(task);
             //switch to file transfer manager
             (new io.file.transfer.TransferManager(display)).setParentView(parentView);

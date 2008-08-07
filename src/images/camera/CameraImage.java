@@ -68,14 +68,7 @@ public class CameraImage implements CommandListener{
         int exp=0;
         try {
             String uri="capture://video";
-            /*String contentTypes[]=Manager.getSupportedContentTypes(null);
-            for (int i=0; i < contentTypes.length; i++) {
-                System.out.println(contentTypes[i]);
-                if (contentTypes[i].equals("image")) {
-                    uri="capture://image"; //break;
-                }
-            }*/
-            
+
             player = Manager.createPlayer(uri);
             player.realize();
             

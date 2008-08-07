@@ -49,6 +49,10 @@ import ServiceDiscovery.ServiceDiscovery;
 import images.ActionsIcons;
 //#endif
 
+//#if FILE_TRANSFER
+import io.file.transfer.TransferImage;
+//#endif
+
 import ui.controls.AlertBox;
 
 import xmpp.extensions.IqLast;
@@ -252,6 +256,12 @@ public class RosterItemActions extends Menu {
             if (contact.getGroupType()!=Groups.TYPE_TRANSP) 
                 if (contact!=sd.roster.selfContact())
                     addItem(SR.MS_SEND_FILE, 50, menuIcons.ICON_SEND_FILE);
+            
+//#endif
+//#if FILE_TRANSFER
+            if (contact.getGroupType()!=Groups.TYPE_TRANSP) 
+                if (contact!=sd.roster.selfContact())
+                    addItem("send photo", 51, menuIcons.ICON_SEND_FILE);
             
 //#endif
         } else {
@@ -496,6 +506,11 @@ public class RosterItemActions extends Menu {
 //#if (FILE_IO && FILE_TRANSFER)
                 case 50: //send file
                     new TransferSendFile(display, c.getJid());
+                    return;
+//#endif
+//#if FILE_TRANSFER
+                case 51: //send photo
+                    new TransferImage(display, c.getJid());
                     return;
 //#endif
             }

@@ -32,6 +32,7 @@ import com.alsutton.jabber.datablocks.Iq;
 import com.alsutton.jabber.datablocks.Message;
 import images.RosterIcons;
 import io.file.FileIO;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -62,12 +63,16 @@ public class TransferTask
     private int state=NONE;
     private boolean sending;
     boolean showEvent;
+    boolean isBytes;
+    byte[] bytes;
+    
     String jid;
     String id;
     String sid;
     String fileName;
     String description;
     String errMsg;
+    
     int fileSize;
     private int filePos;
     String filePath;
@@ -94,7 +99,7 @@ public class TransferTask
     /**
      * Sending constructor
      */
-    public TransferTask(String jid, String sid, String fileName, String description) {
+    public TransferTask(String jid, String sid, String fileName, String description, boolean isBytes, byte[] bytes) {
         super(RosterIcons.getInstance());
         state=HANDSHAKE;
         sending=true;
@@ -103,18 +108,28 @@ public class TransferTask
         this.sid=sid;
         this.fileName=fileName.substring( fileName.lastIndexOf('/')+1 );
         this.description=description;
+        
+        this.isBytes=isBytes;
+        this.bytes=bytes;
+        
         //this.fileSize=size;
         //this.methods=methods;
-        try {
-            file=FileIO.createConnection(fileName);
-            is=file.openInputStream();
+        if (!isBytes) {
+            try {
+                file=FileIO.createConnection(fileName);
+                is=file.openInputStream();
+
+                fileSize=(int)file.fileSize();
+            } catch (Exception e) {
+                e.printStackTrace();
+                state=ERROR;
+                errMsg=SR.MS_CANT_OPEN_FILE;
+                showEvent=true;
+            }
+        } else {
+            is=new ByteArrayInputStream(bytes);
+            fileSize=bytes.length;
             
-            fileSize=(int)file.fileSize();
-        } catch (Exception e) {
-            e.printStackTrace();
-            state=ERROR;
-            errMsg=SR.MS_CANT_OPEN_FILE;
-            showEvent=true;
         }
     }
 
@@ -157,7 +172,6 @@ public class TransferTask
     }
 
     void accept() {
-        
         try {
             file=FileIO.createConnection(filePath+fileName);
             os=file.openOutputStream();
@@ -236,33 +250,31 @@ public class TransferTask
     }
 
     void sendInit() {
-            if (state==ERROR) return;
-            
-            JabberDataBlock iq=new Iq(jid, Iq.TYPE_SET, sid); 
-            
-            JabberDataBlock si=iq.addChildNs("si", "http://jabber.org/protocol/si");
-            si.setAttribute("id",sid);
-            si.setAttribute("mime-type","text/plain");
-            si.setAttribute("profile", "http://jabber.org/protocol/si/profile/file-transfer");
-            
-            JabberDataBlock file=si.addChildNs("file", "http://jabber.org/protocol/si/profile/file-transfer");
-            file.setAttribute("name", fileName);
-            file.setAttribute("size", String.valueOf(fileSize));
-            
-            JabberDataBlock feature=si.addChildNs("feature", "http://jabber.org/protocol/feature-neg");
-            
-            JabberDataBlock x=feature.addChildNs("x", "jabber:x:data");
-            x.setTypeAttribute("form");
-            
-            JabberDataBlock field=x.addChild("field", null);
-            field.setTypeAttribute("list-single");
-            field.setAttribute("var", "stream-method");
-            
-            field.addChild("option", null).addChild("value", "http://jabber.org/protocol/ibb");
-            
-            TransferDispatcher.getInstance().send(iq, true);
-            
-        
+        if (state==ERROR) return;
+
+        JabberDataBlock iq=new Iq(jid, Iq.TYPE_SET, sid); 
+
+        JabberDataBlock si=iq.addChildNs("si", "http://jabber.org/protocol/si");
+        si.setAttribute("id",sid);
+        si.setAttribute("mime-type","text/plain");
+        si.setAttribute("profile", "http://jabber.org/protocol/si/profile/file-transfer");
+
+        JabberDataBlock file=si.addChildNs("file", "http://jabber.org/protocol/si/profile/file-transfer");
+        file.setAttribute("name", fileName);
+        file.setAttribute("size", String.valueOf(fileSize));
+
+        JabberDataBlock feature=si.addChildNs("feature", "http://jabber.org/protocol/feature-neg");
+
+        JabberDataBlock x=feature.addChildNs("x", "jabber:x:data");
+        x.setTypeAttribute("form");
+
+        JabberDataBlock field=x.addChild("field", null);
+        field.setTypeAttribute("list-single");
+        field.setAttribute("var", "stream-method");
+
+        field.addChild("option", null).addChild("value", "http://jabber.org/protocol/ibb");
+
+        TransferDispatcher.getInstance().send(iq, true);
     }
 
     void initIBB() {
@@ -328,6 +340,9 @@ public class TransferTask
         if (isStopped()) return;
         state=ERROR;
         errMsg="Canceled";
-        closeFile();
+        if (!isBytes)
+            closeFile();
+        else
+            bytes=null;
     }
 }
