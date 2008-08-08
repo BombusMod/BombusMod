@@ -259,10 +259,13 @@ public class RosterItemActions extends Menu {
             
 //#endif
 //#if FILE_TRANSFER
-            if (contact.getGroupType()!=Groups.TYPE_TRANSP) 
-                if (contact!=sd.roster.selfContact())
-                    addItem("send photo", 51, menuIcons.ICON_SEND_FILE);
-            
+            if (contact.getGroupType()!=Groups.TYPE_TRANSP) {
+                if (contact!=sd.roster.selfContact()) {
+                    String cameraAvailable=System.getProperty("supports.video.capture");
+                    if (cameraAvailable!=null) if (cameraAvailable.startsWith("true"))
+                        addItem(SR.MS_SEND_PHOTO, 51, menuIcons.ICON_SEND_FILE);
+                }
+            }
 //#endif
         } else {
 	    Group group=(Group)item;

@@ -76,9 +76,10 @@ public class VCardEdit
 
     private int st=-1;
 
-    private SimpleString endVCard=new SimpleString("[end of vCard]", false);
-    private SimpleString noPhoto=new SimpleString("[No photo available]", false);
-    private SimpleString badFormat=new SimpleString("[Unsupported format]", false);
+    private SimpleString endVCard=new SimpleString(SR.MS_END_OF_VCARD, false);
+    private SimpleString noPhoto=new SimpleString(SR.MS_NO_PHOTO, false);
+    private SimpleString badFormat=new SimpleString(SR.MS_UNSUPPORTED_FORMAT, false);
+    private SimpleString photoTooLarge=new SimpleString(SR.MS_PHOTO_TOO_LARGE, false);
 
     /** Creates a new instance of vCardForm */
     public VCardEdit(Display display, VCard vcard) {
@@ -221,15 +222,21 @@ public class VCardEdit
             itemsList.removeElement(noPhoto);
             itemsList.removeElement(badFormat);
             itemsList.removeElement(photoItem);
+            itemsList.removeElement(photoTooLarge);
         } catch (Exception e) { }
         
          if (vcard.hasPhoto) {
-            try {
-                Image photoImg=Image.createImage(vcard.getPhoto(), 0,vcard.getPhoto().length);
-                photoItem=new ImageItem(photoImg, String.valueOf(vcard.getPhoto().length)+" bytes");
-                itemsList.addElement(photoItem);
-            } catch (Exception e) {
-                itemsList.addElement(badFormat);
+            if (vcard.getPhoto().length==1) {
+                vcard.setPhoto(null);
+                itemsList.addElement(photoTooLarge);
+            } else {
+                try {
+                    Image photoImg=Image.createImage(vcard.getPhoto(), 0,vcard.getPhoto().length);
+                    photoItem=new ImageItem(photoImg, String.valueOf(vcard.getPhoto().length)+" bytes");
+                    itemsList.addElement(photoItem);
+                } catch (Exception e) {
+                    itemsList.addElement(badFormat);
+                }
             }
         } else {
             itemsList.addElement(noPhoto);

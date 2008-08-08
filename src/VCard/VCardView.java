@@ -72,7 +72,7 @@ public class VCardView
     private SimpleString noVCard=new SimpleString(SR.MS_NO_VCARD, true);
     private SimpleString noPhoto=new SimpleString(SR.MS_NO_PHOTO, false);
     private SimpleString badFormat=new SimpleString(SR.MS_UNSUPPORTED_FORMAT, false);
-
+    private SimpleString photoTooLarge=new SimpleString(SR.MS_PHOTO_TOO_LARGE, false);
 
 //#ifdef CLIPBOARD
 //#     ClipBoard clipboard=ClipBoard.getInstance(); 
@@ -139,16 +139,22 @@ public class VCardView
             itemsList.removeElement(noPhoto);
             itemsList.removeElement(badFormat);
             itemsList.removeElement(photoItem);
+            itemsList.removeElement(photoTooLarge);
         } catch (Exception e) { }
         
          if (vcard.hasPhoto) {
             try {
                 int length=vcard.getPhoto().length;
-                Image photoImg=Image.createImage(vcard.getPhoto(), 0, length);
-                photoItem=new ImageItem(photoImg, String.valueOf(length)+" bytes");
-                if (length>10240)
-                    photoItem.collapsed=true;
-                itemsList.insertElementAt(photoItem, 0);
+                if (length==1) {
+                    vcard.setPhoto(null);
+                    itemsList.addElement(photoTooLarge);
+                } else {
+                    Image photoImg=Image.createImage(vcard.getPhoto(), 0, length);
+                    photoItem=new ImageItem(photoImg, String.valueOf(length)+" bytes");
+                    if (length>10240)
+                        photoItem.collapsed=true;
+                    itemsList.insertElementAt(photoItem, 0);
+                }
             } catch (Exception e) {
                 itemsList.addElement(badFormat);
             }

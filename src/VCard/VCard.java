@@ -222,6 +222,7 @@ public class VCard {
     
 //#if FILE_IO
     public String getPhotoMIMEType() {
+        if (photo.length==1) return null;
         try {
              if (photo[0]==(byte)0xff &&
                 photo[1]==(byte)0xd8 &&

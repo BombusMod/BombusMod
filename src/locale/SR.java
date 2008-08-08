@@ -661,6 +661,7 @@ public class SR {
     public static String MS_NO_VCARD=loadString("[No vCard available]");
     public static String MS_NO_PHOTO=loadString("[No photo available]");
     public static String MS_UNSUPPORTED_FORMAT=loadString("[Unsupported format]");
+    public static String MS_PHOTO_TOO_LARGE=loadString("[large photo was dropped]");
 
     public static String MS_DELETE_GROUP_ASK=loadString("Delete group?");
 
@@ -673,6 +674,8 @@ public class SR {
     public static String MS_EXECUTE_MENU_BY_NUMKEY=loadString("execute menu by numkey");
 
     public static String MS_SHOW_NACKNAMES=loadString("show nicknames");
+
+    public static String MS_SEND_PHOTO=loadString("Send photo");
     
     private SR() { }
     

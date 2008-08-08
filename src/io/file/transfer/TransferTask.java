@@ -262,6 +262,8 @@ public class TransferTask
         JabberDataBlock file=si.addChildNs("file", "http://jabber.org/protocol/si/profile/file-transfer");
         file.setAttribute("name", fileName);
         file.setAttribute("size", String.valueOf(fileSize));
+        
+        JabberDataBlock desc=file.addChild("desc", description);
 
         JabberDataBlock feature=si.addChildNs("feature", "http://jabber.org/protocol/feature-neg");
 
@@ -317,7 +319,7 @@ public class TransferTask
             TransferDispatcher.getInstance().send(msg, false);
             TransferDispatcher.getInstance().repaintNotify();
 
-            Thread.sleep( 2000L ); //shaping traffic
+            Thread.sleep( 1500L ); //shaping traffic
         }
         } catch (Exception e) { /*null pointer exception if terminated*/}
         closeFile();

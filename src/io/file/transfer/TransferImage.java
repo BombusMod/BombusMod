@@ -31,11 +31,13 @@ import images.camera.CameraImage;
 import images.camera.CameraImageListener;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Image;
+import javax.microedition.lcdui.TextField;
 import locale.SR;
 import ui.controls.form.DefForm;
 import ui.controls.form.ImageItem;
 import ui.controls.form.LinkString;
 import ui.controls.form.SimpleString;
+import ui.controls.form.TextInput;
 
 /**
  *
@@ -47,21 +49,25 @@ public class TransferImage
 
     private String to;
     private byte[] photo;
+    
     private ImageItem photoItem;
-    private LinkString selectFile;
+    private LinkString shot;
+    private TextInput description;
     
     /** Creates a new instance of TransferImage */
     public TransferImage(final Display display, String recipientJid) {
-        super(display, SR.MS_SEND_FILE);
+        super(display, SR.MS_SEND_PHOTO);
         this.display=display;
         this.to=recipientJid;
         parentView=display.getCurrent();
 
-        itemsList.addElement(new SimpleString(SR.MS_SEND_FILE_TO, true));
         itemsList.addElement(new SimpleString(recipientJid, false));
         
-        selectFile=new LinkString(SR.MS_SELECT_FILE) { public void doAction() { initCamera(); } };
-        itemsList.addElement(selectFile);
+        shot=new LinkString(SR.MS_CAMERASHOT) { public void doAction() { initCamera(); } };
+        itemsList.addElement(shot);
+        
+        description = new TextInput(display, SR.MS_DESCRIPTION, null, null, TextField.ANY);
+        itemsList.addElement(description);
         
         moveCursorTo(2);
         attachDisplay(display);
@@ -83,7 +89,7 @@ public class TransferImage
     
     public void cmdOk() {
         try {
-            TransferTask task=new TransferTask(to, String.valueOf(System.currentTimeMillis()), "photo.png", "my photo", true, photo);
+            TransferTask task=new TransferTask(to, String.valueOf(System.currentTimeMillis()), "photo.png", description.getValue(), true, photo);
             TransferDispatcher.getInstance().sendFile(task);
             //switch to file transfer manager
             (new io.file.transfer.TransferManager(display)).setParentView(parentView);
