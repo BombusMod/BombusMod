@@ -76,6 +76,7 @@ public class BookmarkQuery implements JabberBlockListener{
                 JabberDataBlock storage=data.findNamespace("query", "jabber:iq:private"). findNamespace("storage", "storage:bookmarks");
                 Vector bookmarks=new Vector();
 		boolean autojoin=cf.autoJoinConferences && sd.roster.myStatus!=Presence.PRESENCE_INVISIBLE;
+
                 try {
                     for (Enumeration e=storage.getChildBlocks().elements(); e.hasMoreElements(); ){
                         BookmarkItem bm=new BookmarkItem((JabberDataBlock)e.nextElement());
@@ -84,8 +85,8 @@ public class BookmarkQuery implements JabberBlockListener{
                             ConferenceForm.join(bm.desc, bm.jid+'/'+bm.nick, bm.password, cf.confMessageCount);
                         }
                     }
-                } catch (Exception e) { /* no any bookmarks */}
-				
+                } catch (Exception e) { } //no any bookmarks
+
                 if (bookmarks.isEmpty()) 
                     loadDefaults(bookmarks);
 					

@@ -119,18 +119,17 @@ public class TransferAcceptFile
         t.decline();
         destroyView();
     }
-//#ifndef MENU
+    
     public void commandAction(Command c, Displayable d) {
-        if (c==cmdPath) { new Browser(path.getValue(), display, this, true); return; }
-
-        super.commandAction(c, d);
+        if (c==cmdPath) { 
+            new Browser(path.getValue(), display, this, true);
+        } else super.commandAction(c, d);
     }
-//#else
-//#     public String getLeftCommand() { return SR.MS_OK; }
-//#     
-//#     public String getCenterCommand() { return SR.MS_PATH; }
-//#     public void centerCommand() { new Browser(path.getValue(), display, this, true); }
-//#     
-//#     public String getRightCommand() { return SR.MS_CANCEL; }
-//#endif
+    
+    public void commandState() {
+        super.commandState();
+        removeCommand(cmdCancel);
+        addCommand(cmdPath);
+        addCommand(cmdDecline);
+    }
 }

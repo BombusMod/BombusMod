@@ -79,16 +79,6 @@ public class BookmarkItem extends IconTextElement{
         jid=data.getAttribute((isUrl)?"url":"jid");
         nick=data.getChildBlockText("nick");
         password=data.getChildBlockText("password");
-        
-        if ((autojoin==true) && (cf.autoJoinConferences==true)) {
-            //System.out.println(jid+" autojoin");
-            StringBuffer gchat=new StringBuffer()
-            .append(jid)
-            .append('/')
-            .append(nick);
-            join(desc, gchat.toString(),password,cf.confMessageCount);
-            gchat=null; //for nokia
-        }
     }
     
     public BookmarkItem(String desc, String jid, String nick, String password, boolean autojoin){
@@ -110,31 +100,7 @@ public class BookmarkItem extends IconTextElement{
 
         return data;
     }
-    
-    public static void join(String name, String jid, String pass, int maxStanzas) {
-        StaticData sd=StaticData.getInstance();
-        
-        ConferenceGroup grp=sd.roster.initMuc(jid, pass);
-        grp.desc=name;
-        JabberDataBlock x=new JabberDataBlock("x", null, null);
-        x.setNameSpace("http://jabber.org/protocol/muc");
-        if (pass.length()!=0) {
-            x.addChild("password", pass);
-        }
-        
-        JabberDataBlock history=x.addChild("history", null);
-        history.setAttribute("maxstanzas", String.valueOf(maxStanzas));
-        history.setAttribute("maxchars","32768");
-        try {
-            long last=grp.getConference().lastMessageTime;
-            long delay= ( grp.conferenceJoinTime - last ) /1000 ;
-            if (last!=0) history.setAttribute("seconds",String.valueOf(delay)); // todo: change to since
-        } catch (Exception e) {}
 
-        sd.roster.sendPresence(jid, null, x, false);
-        sd.roster.reEnumRoster();
-    }
-    
     public int compare(IconTextElement right) {
         String th=(nick==null)? jid: jid+'/'+nick;
         return th.compareTo(right.toString());

@@ -51,6 +51,7 @@ import javax.microedition.lcdui.Command;
 
 public class AlertCustomizeForm 
         extends DefForm {
+    
     private Display display;
     private Displayable parentView;
 
@@ -151,10 +152,9 @@ public class AlertCustomizeForm
         
         itemsList.addElement(new SpacerItem(10));
         IQNotify=new CheckBox(SR.MS_SHOW_IQ_REQUESTS, cf.IQNotify); itemsList.addElement(IQNotify);
-        
-//#ifndef MENU
+
         addCommand(cmdTest);
-//#endif
+
         moveCursorTo(1);
         attachDisplay(display);
     }
@@ -197,18 +197,11 @@ public class AlertCustomizeForm
         destroyView();
     }
     
-//#ifndef MENU
     public void commandAction(Command c, Displayable d) {
-        if (c==cmdTest) {
+        if (c==cmdTest)
             PlaySound();
-            return;
-        }
-        super.commandAction(c, d);
+        else super.commandAction(c, d);
     }
-//#else
-//#     public String getCenterCommand() { return (playable()>-1)?SR.MS_TEST_SOUND:""; }
-//#     public void centerCommand() { if (playable()>-1) PlaySound(); }
-//#endif
     
     private int playable () {
         int ret=-1;
@@ -269,10 +262,8 @@ public class AlertCustomizeForm
         new EventNotify(display, soundType, soundFile, soundVol, 0, false).startNotify();
     }
     
-//#ifdef MENU_LISTENER
-//#     public void commandState() {
-//#         super.commandState();
-//#         addCommand(cmdTest);
-//#     }
-//#endif
+    public void commandState() {
+        super.commandState();
+        addCommand(cmdTest);
+    }
 }
