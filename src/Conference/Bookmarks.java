@@ -262,7 +262,7 @@ public class Bookmarks
             public void no() {}
         };
     }
-    
+        
 //#ifdef MENU_LISTENER    
 //#     public void addCommand(Command command) {
 //#         if (menuCommands.indexOf(command)<0)
@@ -289,6 +289,10 @@ public class Bookmarks
 //#     public void showMenu() {
 //#         commandState();
 //#         new MyMenu(display, this, SR.MS_BOOKMARKS, null);
+//#     }
+//#     
+//#     public void touchLeftPressed(){
+//#         showMenu();
 //#     }
 //#endif
 }

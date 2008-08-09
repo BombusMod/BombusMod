@@ -170,11 +170,7 @@ public class AccountSelect
             };
         }
     }
-    
-    public void touchLeftPressed(){
-        eventOk();
-    }
-    
+
     public void touchRightPressed(){
         if (!canBack) 
             return;
@@ -247,6 +243,10 @@ public class AccountSelect
 //#         commandState();
 //#         new MyMenu(display, this, SR.MS_DISCO, null);
 //#    }
+//#     
+//#     public void touchLeftPressed(){
+//#         showMenu();
+//#     }
 //#endif
     
     protected void keyRepeated(int keyCode) {
