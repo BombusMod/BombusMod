@@ -256,6 +256,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         if (pm==Config.SIEMENS || pm==Config.SIEMENS2) {
              Config.SOFT_LEFT=-1;
              Config.SOFT_RIGHT=-4;
+             Config.KEY_BACK=-12;
              return;
         }
         if (pm==Config.WINDOWS) {

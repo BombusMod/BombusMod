@@ -60,6 +60,10 @@ public class JabberStream extends XmppParser implements Runnable {
 	
     public boolean loggedIn;
     
+    private boolean xmppV1;
+    
+    private String sessionId;
+    
     public void enableRosterNotify(boolean en){ rosterNotify=en; }
     
     /**
@@ -104,15 +108,20 @@ public class JabberStream extends XmppParser implements Runnable {
 
     public boolean tagStart(String name, Vector attributes) {
         if (name.equals( "stream:stream" ) ) {
-            String SessionId = XMLParser.extractAttribute("id", attributes);
-            dispatcher.broadcastBeginConversation(SessionId);
+            sessionId = XMLParser.extractAttribute("id", attributes);
+            String version=XMLParser.extractAttribute("version", attributes);
+            xmppV1 = ("1.0".equals(version));
+            
+            dispatcher.broadcastBeginConversation();
             return false;
         }
         
         return super.tagStart(name, attributes);
     }
 
-
+    public boolean isXmppV1() { return xmppV1; }
+ 
+    public String getSessionId() { return sessionId; }
      
     public void tagEnd(String name) throws XMLException {
         if (currentBlock == null) {

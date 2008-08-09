@@ -202,8 +202,8 @@ public class JabberDataBlockDispatcher extends Thread
    * Method to tell the listener the stream is ready for talking to.
    */
 
-  public void broadcastBeginConversation( String SessionId )
+  public void broadcastBeginConversation()
   {
-    if( listener != null ) listener.beginConversation(SessionId);
+    if( listener != null ) listener.beginConversation();
   }
 }

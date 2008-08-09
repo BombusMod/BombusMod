@@ -36,7 +36,7 @@ public interface JabberListener
    * Method called once the stream has been set up
    */
 
-  public void beginConversation(String SessionId);
+  public void beginConversation();
 
   /**
    * Method to handle an incomming block.

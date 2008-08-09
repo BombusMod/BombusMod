@@ -72,8 +72,12 @@ import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 
 import locale.SR;
+
 import login.LoginListener;
+import login.NonSASLAuth;
 import login.SASLAuth;
+import login.GoogleTokenAuth;
+
 import midlet.BombusMod;
 import ui.MainBar;
 import ui.controls.AlertBox;
@@ -367,9 +371,8 @@ public class Roster
 //#if SASL_XGOOGLETOKEN
 //#             if (a.useGoogleToken()) {
 //#                 setProgress(SR.MS_TOKEN, 30);
-//#                 token=new SASLAuth(a, null, this, null).responseXGoogleToken();
-//#                 if (token==null) 
-//#                     throw new SecurityException("Can't get Google token");
+//#                 token=new GoogleTokenAuth(a).responseXGoogleToken();
+//#                 if (token==null) throw new SecurityException("Can't get Google token");
 //#             }
 //#endif
             setProgress(SR.MS_CONNECT_TO_+a.getServer(), 30);
@@ -1992,12 +1995,16 @@ public class Roster
         if (index>=0) moveCursorTo(index);
     }
 
-    public void beginConversation(String SessionId) { //todo: verify xmpp version
-            new SASLAuth(sd.account, SessionId, this, theStream)
+    public void beginConversation() { //todo: verify xmpp version
+        if (theStream.isXmppV1())
+            new SASLAuth(sd.account, this, theStream)
 //#if SASL_XGOOGLETOKEN
-//#             .setToken(token)
+//#              .setToken(token)
 //#endif
-            ;
+             ;
+//#if NON_SASL_AUTH
+//#         else new NonSASLAuth(sd.account, this, theStream);
+//#endif
     }
 
     public void connectionTerminated( Exception e ) {

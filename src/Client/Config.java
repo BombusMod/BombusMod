@@ -131,7 +131,7 @@ MainForm.KEY_DOWN = -2;
 MainForm.KEY_LEFT = -3; 
 MainForm.KEY_RIGHT = -4; 
 MainForm.KEY_RED = -8; 
-MainForm.KEY_GREEN = -11; 
+MainForm.KEY_GREEN = -11;
 MainForm.KEY_LSOFT = -6; 
 MainForm.KEY_RSOFT = -7; 
 type = \"-=Sony Ericsson=-\"; 

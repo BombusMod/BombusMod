@@ -53,12 +53,11 @@ public class SASLAuth implements JabberBlockListener{
     private LoginListener listener;
     private Account account;
     private JabberStream stream;
-    private String sessionId;
+
     /** Creates a new instance of SASLAuth */
-    public SASLAuth(Account account, String sessionId, LoginListener listener, JabberStream stream) {
+    public SASLAuth(Account account, LoginListener listener, JabberStream stream) {
         this.listener=listener;
         this.account=account;
-        this.sessionId=sessionId;
         this.stream=stream;
         if (stream!=null) stream.addBlockListener(this);
         //listener.loginMessage(SR.MS_SASL_STREAM);
@@ -155,7 +154,17 @@ public class SASLAuth implements JabberBlockListener{
                 
                 return JabberBlockListener.BLOCK_PROCESSED;
             }
-            listener.loginFailed("Server does not support SASL"); 
+            
+//#ifdef NON_SASL_AUTH
+//#             if (data.findNamespace("auth", "http://jabber.org/features/iq-auth")!=null) {
+//#                 new NonSASLAuth(account, listener, stream);
+//#                 return JabberBlockListener.NO_MORE_BLOCKS;
+//#             }
+//#endif            
+            
+            //fallback if no known authentication methods were found
+            listener.loginFailed("No known authentication methods");
+
             return JabberBlockListener.NO_MORE_BLOCKS; 
         } else if (data.getTagName().equals("challenge")) {
             // first stream - step 2,3. reaction to challenges
@@ -314,69 +323,4 @@ public class SASLAuth implements JabberBlockListener{
         //System.out.println(decodeBase64(resp));
         return resp;
     }
-    
-    
-//#if SASL_XGOOGLETOKEN
-//#     private String readLine(InputStream is) {
-//#         StringBuffer buf = new StringBuffer();
-//#         try {
-//#             while(true) {
-//#                 int ch = is.read();
-//#                 if (ch==-1 || ch == '\n') break;
-//#                 buf.append((char)ch);
-//#             }
-//#         } catch (Exception e) {}
-//#         return buf.toString();
-//#     }
-//#     
-//#     /**
-//#      * Generates X-GOOGLE-TOKEN response by communication with http://www.google.com
-//#      * (algorithm from MGTalk/NetworkThread.java)
-//#      * @param userName
-//#      * @param passwd
-//#      * @return
-//#      */
-//#     public String responseXGoogleToken() {
-//#         try {
-//#             String firstUrl = "https://www.google.com:443/accounts/ClientAuth?Email="
-//#                     + Strconv.unicodeToUTF(account.getUserName()) + "%40"+ account.getServer()
-//#                     + "&Passwd=" + Strconv.unicodeToUTF(account.getPassword()) 
-//#                     + "&PersistentCookie=false&source=googletalk";
-//#             
-//#             //log.addMessage("ConnectinStrconvw.google.com");
-//#             HttpConnection c = (HttpConnection) Connector.open(firstUrl.toString());
-//#             InputStream is = c.openInputStream();
-//#             
-//#             
-//#             String sid = readLine(is);
-//#             if(!sid.startsWith("SID=")) {
-//#                 throw new SecurityException(SR.MS_LOGIN_FAILED);
-//#             }
-//#             
-//#             String lsid = readLine(is);
-//#             
-//#             String secondUrl = "https://www.google.com:443/accounts/IssueAuthToken?"
-//#                     + sid + "&" + lsid + "&service=mail&Session=true";
-//#             is.close();
-//#             c.close();
-//#             //log.addMessage("Next www.google.com connection");
-//#             c = (HttpConnection) Connector.open(secondUrl);
-//#             is = c.openInputStream();
-//#             //str = readLine(dis);
-//#             String token = "\0"+Strconv.unicodeToUTF(account.getUserName())+"\0"+readLine(is);
-//#             is.close();
-//#             c.close();
-//#             return Strconv.toBase64(token);
-//#         } catch (javax.microedition.pki.CertificateException e) {
-//#             throw new SecurityException(e.getMessage());
-//#         } catch (SecurityException e) {
-//#             throw e;
-//#         } catch(Exception e) {
-//#              e.printStackTrace();
-//#              listener.loginFailed("Google token error");
-//#         }
-//#         return null;
-//#     }
-//#endif
-    
 }

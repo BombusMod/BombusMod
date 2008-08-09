@@ -191,11 +191,13 @@ public final class ContactEdit
         if (jid!=null) {
             String name=tNick.getValue();
             String group=group(tGrpList.getSelectedIndex());
-            if (group==null) group=tGroup.getValue();
+
+            if (tGrpList.getSelectedIndex()==tGrpList.size()-1)
+                group=tGroup.getValue();
+
             boolean ask=tAskSubscrCheckBox.getValue();
             
-            if (group.equals(SR.MS_GENERAL))
-                group="";
+            if (group==SR.MS_GENERAL) group="";
 
             int at=jid.indexOf('@');
             if (at<0 && tTranspList.getSelectedIndex()!=tTranspList.size()-1) {
