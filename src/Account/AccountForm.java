@@ -160,9 +160,8 @@ public class AccountForm
 //#elif HTTPPOLL        
 //#        itemsList.addElement(pollingbox);
 //#endif
-        
-        itemsList.addElement(new SimpleString(SR.MS_KEEPALIVE, true));
-        keepAliveType=new DropChoiceBox(display);
+
+        keepAliveType=new DropChoiceBox(display, SR.MS_KEEPALIVE);
         keepAliveType.append("by socket");
         keepAliveType.append("1 byte");
         keepAliveType.append("<iq/>");

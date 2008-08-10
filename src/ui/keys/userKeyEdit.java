@@ -69,16 +69,14 @@ class userKeyEdit
 //#         active=new CheckBox(SR.MS_ENABLED, u.getActive());
 //#         itemsList.addElement(active);
 //# 
-//#         itemsList.addElement(new SimpleString(SR.MS_KEYS_ACTION, true));
-//#         keyDesc=new DropChoiceBox(display);
+//#         keyDesc=new DropChoiceBox(display, SR.MS_KEYS_ACTION);
 //#         for (int i=0;i<userKeyExec.getInstance().COMMANDS_DESC.length;i++) {
 //#             keyDesc.append(userKeyExec.getInstance().COMMANDS_DESC[i]);
 //#         }
 //#         keyDesc.setSelectedIndex(u.getCommandId());
 //#         itemsList.addElement(keyDesc);
-//#         
-//#         itemsList.addElement(new SimpleString(SR.MS_KEY, true));
-//#         keyCode=new DropChoiceBox(display);
+//# 
+//#         keyCode=new DropChoiceBox(display, SR.MS_KEY);
 //#         for (int i=0;i<userKeyExec.getInstance().KEYS_NAME.length;i++) {
 //#             keyCode.append(userKeyExec.getInstance().KEYS_NAME[i]);
 //#         }

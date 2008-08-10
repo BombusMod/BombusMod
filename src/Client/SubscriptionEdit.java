@@ -58,9 +58,8 @@ public class SubscriptionEdit
         itemsList.addElement(new SimpleString(to+": "+c.subscr+((c.ask_subscribe)?",ask":""), false));
 
         itemsList.addElement(new SpacerItem(10));
-        
-        itemsList.addElement(new SimpleString(SR.MS_ACTION, true));
-        action=new DropChoiceBox(display);
+
+        action=new DropChoiceBox(display, SR.MS_ACTION);
         action.append(SR.MS_NO);
         action.append(SR.MS_ASK_SUBSCRIPTION);
         action.append(SR.MS_GRANT_SUBSCRIPTION);

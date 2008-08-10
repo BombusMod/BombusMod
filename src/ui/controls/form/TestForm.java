@@ -52,7 +52,7 @@ public class TestForm
         super(display, "test form");
         this.display=display;
         
-        DropChoiceBox testNewChoiceBox1=new DropChoiceBox(display);
+        DropChoiceBox testNewChoiceBox1=new DropChoiceBox(display, null);
         testNewChoiceBox1.append("by socket");
         testNewChoiceBox1.append("1 byte");
         testNewChoiceBox1.append("<iq/>");
@@ -109,7 +109,7 @@ public class TestForm
         SimpleString testSimpleString4=new SimpleString("test ChoiceGroup", false);
         itemsList.addElement(testSimpleString4);
         
-        DropChoiceBox testChoiceBox1=new DropChoiceBox(display);
+        DropChoiceBox testChoiceBox1=new DropChoiceBox(display, "drop choice");
         testChoiceBox1.append("by socket");
         testChoiceBox1.append("1 byte");
         testChoiceBox1.append("<iq/>");

@@ -160,8 +160,7 @@ public class ConfigForm
 //#endif
         
         itemsList.addElement(new SpacerItem(10));
-        itemsList.addElement(new SimpleString(SR.MS_AUTH_NEW, true));
-        subscr=new DropChoiceBox(display);
+        subscr=new DropChoiceBox(display, SR.MS_AUTH_NEW);
         subscr.append(SR.MS_SUBSCR_AUTO);
         subscr.append(SR.MS_SUBSCR_ASK);
         subscr.append(SR.MS_SUBSCR_DROP);
@@ -170,8 +169,7 @@ public class ConfigForm
         itemsList.addElement(subscr);
 
         itemsList.addElement(new SpacerItem(10));
-        itemsList.addElement(new SimpleString(SR.MS_NOT_IN_LIST, true));
-        nil=new DropChoiceBox(display);
+        nil=new DropChoiceBox(display, SR.MS_NOT_IN_LIST);
         nil.append(SR.MS_NIL_DROP_MP);
         nil.append(SR.MS_NIL_DROP_P);
         nil.append(SR.MS_NIL_ALLOW_ALL);
@@ -255,16 +253,14 @@ public class ConfigForm
         itemsList.addElement(fieldGmt);
 
         itemsList.addElement(new SpacerItem(10));
-        itemsList.addElement(new SimpleString(SR.MS_TEXTWRAP, true));
-        textWrap=new DropChoiceBox(display);
+        textWrap=new DropChoiceBox(display, SR.MS_TEXTWRAP);
         textWrap.append(SR.MS_TEXTWRAP_CHARACTER);
         textWrap.append(SR.MS_TEXTWRAP_WORD);
 	textWrap.setSelectedIndex(cf.textWrap);
 	itemsList.addElement(textWrap);
         
         itemsList.addElement(new SpacerItem(10));
-        itemsList.addElement(new SimpleString(SR.MS_PANELS, true));
-        panels=new DropChoiceBox(display);
+        panels=new DropChoiceBox(display, SR.MS_PANELS);
         panels.append("[   ] : [   ]");
         panels.append(SR.MS_MAIN_BAR+" : [   ]");
         panels.append(SR.MS_MAIN_BAR+" : "+SR.MS_INFO_BAR);
@@ -276,8 +272,7 @@ public class ConfigForm
 	itemsList.addElement(panels);
 
         itemsList.addElement(new SpacerItem(10));
-        itemsList.addElement(new SimpleString(SR.MS_LANGUAGE, true));
-        langFiles=new DropChoiceBox(display);
+        langFiles=new DropChoiceBox(display, SR.MS_LANGUAGE);
 	langs=new StringLoader().stringLoader("/lang/res.txt",3);
         
         String tempLang=cf.lang;
@@ -299,8 +294,7 @@ public class ConfigForm
 
 //#ifdef AUTOSTATUS
 //#         itemsList.addElement(new SpacerItem(10));
-//#         itemsList.addElement(new SimpleString(SR.MS_AWAY_TYPE, true));
-//#         autoAwayType=new DropChoiceBox(display);
+//#         autoAwayType=new DropChoiceBox(display, SR.MS_AWAY_TYPE);
 //#         autoAwayType.append(SR.MS_AWAY_OFF);
 //#         autoAwayType.append(SR.MS_AWAY_LOCK);
 //#         autoAwayType.append(SR.MS_MESSAGE_LOCK);

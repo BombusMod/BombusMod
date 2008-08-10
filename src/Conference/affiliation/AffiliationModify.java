@@ -68,8 +68,7 @@ public class AffiliationModify
         jidItem=new TextInput(display, SR.MS_JID, jid, null, TextField.ANY);
         itemsList.addElement(jidItem);
 
-        itemsList.addElement(new SimpleString(SR.MS_SET_AFFILIATION, true));
-        affiliationItem=new DropChoiceBox(display);
+        affiliationItem=new DropChoiceBox(display, SR.MS_SET_AFFILIATION);
         for (short index=0; index<=AffiliationItem.AFFILIATION_OUTCAST; index++) {
             String name=AffiliationItem.getAffiliationName(index);
             affiliationItem.append(name);

@@ -98,41 +98,32 @@ public class AlertCustomizeForm
 	for (Enumeration file=files[2].elements(); file.hasMoreElements(); ) {
             fileNames.addElement((String)file.nextElement());
 	}
-        
-        itemsList.addElement(new SimpleString(SR.MS_MESSAGE_SOUND, true));
-        MessageFile=new DropChoiceBox(display); MessageFile.items=fileNames; 
+
+        MessageFile=new DropChoiceBox(display, SR.MS_MESSAGE_SOUND); MessageFile.items=fileNames; 
         MessageFile.setSelectedIndex(ac.soundsMsgIndex); itemsList.addElement(MessageFile);
-        
-        itemsList.addElement(new SimpleString(SR.MS_ONLINE_SOUND, true));
-        OnlineFile=new DropChoiceBox(display); OnlineFile.items=fileNames; 
+
+        OnlineFile=new DropChoiceBox(display, SR.MS_ONLINE_SOUND); OnlineFile.items=fileNames; 
         OnlineFile.setSelectedIndex(ac.soundOnlineIndex); itemsList.addElement(OnlineFile);
-        
-        itemsList.addElement(new SimpleString(SR.MS_OFFLINE_SOUND, true));
-        OfflineFile=new DropChoiceBox(display); OfflineFile.items=fileNames; 
+
+        OfflineFile=new DropChoiceBox(display, SR.MS_OFFLINE_SOUND); OfflineFile.items=fileNames; 
         OfflineFile.setSelectedIndex(ac.soundOfflineIndex); itemsList.addElement(OfflineFile);
-        
-        itemsList.addElement(new SimpleString(SR.MS_MESSAGE_FOR_ME_SOUND, true));
-        ForYouFile=new DropChoiceBox(display); ForYouFile.items=fileNames; 
+
+        ForYouFile=new DropChoiceBox(display, SR.MS_MESSAGE_FOR_ME_SOUND); ForYouFile.items=fileNames; 
         ForYouFile.setSelectedIndex(ac.soundForYouIndex); itemsList.addElement(ForYouFile);
-        
-        itemsList.addElement(new SimpleString(SR.MS_COMPOSING_SOUND, true));
-        ComposingFile=new DropChoiceBox(display); ComposingFile.items=fileNames; 
+
+        ComposingFile=new DropChoiceBox(display, SR.MS_COMPOSING_SOUND); ComposingFile.items=fileNames; 
         ComposingFile.setSelectedIndex(ac.soundComposingIndex); itemsList.addElement(ComposingFile);
-        
-        itemsList.addElement(new SimpleString(SR.MS_CONFERENCE_SOUND, true));
-        ConferenceFile=new DropChoiceBox(display); ConferenceFile.items=fileNames; 
+
+        ConferenceFile=new DropChoiceBox(display, SR.MS_CONFERENCE_SOUND); ConferenceFile.items=fileNames; 
         ConferenceFile.setSelectedIndex(ac.soundConferenceIndex); itemsList.addElement(ConferenceFile);
-        
-        itemsList.addElement(new SimpleString(SR.MS_STARTUP_SOUND, true));
-        StartUpFile=new DropChoiceBox(display); StartUpFile.items=fileNames; 
+
+        StartUpFile=new DropChoiceBox(display, SR.MS_STARTUP_SOUND); StartUpFile.items=fileNames; 
         StartUpFile.setSelectedIndex(ac.soundStartUpIndex); itemsList.addElement(StartUpFile);
-        
-        itemsList.addElement(new SimpleString(SR.MS_OUTGOING_SOUND, true));
-        OutgoingFile=new DropChoiceBox(display); OutgoingFile.items=fileNames; 
+
+        OutgoingFile=new DropChoiceBox(display, SR.MS_OUTGOING_SOUND); OutgoingFile.items=fileNames; 
         OutgoingFile.setSelectedIndex(ac.soundOutgoingIndex); itemsList.addElement(OutgoingFile);
-        
-        itemsList.addElement(new SimpleString(SR.MS_VIP_SOUND, true));
-        VIPFile=new DropChoiceBox(display); VIPFile.items=fileNames; 
+
+        VIPFile=new DropChoiceBox(display, SR.MS_VIP_SOUND); VIPFile.items=fileNames; 
         VIPFile.setSelectedIndex(ac.soundVIPIndex); itemsList.addElement(VIPFile);
 
         itemsList.addElement(new SimpleString(SR.MS_SHOW_LAST_APPEARED_CONTACTS, true));
@@ -154,8 +145,8 @@ public class AlertCustomizeForm
         IQNotify=new CheckBox(SR.MS_SHOW_IQ_REQUESTS, cf.IQNotify); itemsList.addElement(IQNotify);
 
         addCommand(cmdTest);
-
-        moveCursorTo(1);
+        setCommandListener(this);
+        //moveCursorTo(1);
         attachDisplay(display);
     }
     
@@ -204,50 +195,38 @@ public class AlertCustomizeForm
     }
     
     private int playable () {
-        int ret=-1;
-        switch (cursor) {
-            case 1: //MessageFile
-            case 3: //OnlineFile
-            case 5: //OfflineFile
-            case 7: //ForYouFile
-            case 9: //ComposingFile
-            case 11: //ConferenceFile
-            case 13: //StartUpFile
-            case 15: //OutgoingFile
-            case 17: //VIPFile
-                return cursor;
-        }
+        if (cursor<9) return cursor;
         return -1;
     }
     
     private void PlaySound(){
         int sound=-1;
         switch (cursor) {
-            case 1: //MessageFile
+            case 0: //MessageFile
                 sound=MessageFile.getSelectedIndex();
                 break;
-            case 3: //OnlineFile
+            case 1: //OnlineFile
                 sound=OnlineFile.getSelectedIndex();
                 break;
-            case 5: //OfflineFile
+            case 2: //OfflineFile
                 sound=OfflineFile.getSelectedIndex();
                 break;
-            case 7: //ForYouFile
+            case 3: //ForYouFile
                 sound=ForYouFile.getSelectedIndex();
                 break;
-            case 9: //ComposingFile
+            case 4: //ComposingFile
                 sound=ComposingFile.getSelectedIndex();
                 break;
-            case 11: //ConferenceFile
+            case 5: //ConferenceFile
                 sound=ConferenceFile.getSelectedIndex();
                 break;
-            case 13: //StartUpFile
+            case 6: //StartUpFile
                 sound=StartUpFile.getSelectedIndex();
                 break;
-            case 15: //OutgoingFile
+            case 7: //OutgoingFile
                 sound=OutgoingFile.getSelectedIndex();
                 break;
-            case 17: //VIPFile
+            case 8: //VIPFile
                 sound=VIPFile.getSelectedIndex();
                 break;
         }
@@ -262,8 +241,11 @@ public class AlertCustomizeForm
         new EventNotify(display, soundType, soundFile, soundVol, 0, false).startNotify();
     }
     
-    public void commandState() {
-        super.commandState();
-        addCommand(cmdTest);
-    }
+    
+//#ifdef MENU_LISTENER
+//#     public void commandState(){
+//#         super.commandState();
+//#         addCommand(cmdTest);
+//#     }
+//#endif
 }

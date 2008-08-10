@@ -1255,11 +1255,11 @@ public abstract class VirtualList
         
         if (cursorBGnd!=0x010101)
             g.setColor(ct.getColor(ColorTheme.CURSOR_BGND));
-        g.fillRoundRect(0, 0, width, height, 6, 6);
+        g.fillRect(0, 0, width, height);
         
         if (cursorOutline!=0x010101) {
             g.setColor(cursorOutline); 
-            g.drawRoundRect(0, 0, width-1, height-1, 6, 6);
+            g.drawRect(0, 0, width-1, height-1);
         }
     }
 

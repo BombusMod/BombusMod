@@ -149,10 +149,10 @@ public class TextInput
         }
 
         g.setColor(colorBGnd);
-        g.fillRoundRect(0, y, width-1, height-1, 6, 6);
+        g.fillRect(0, y, width-1, height-1);
 
         g.setColor((sel)?colorBorder:colorItem);
-        g.drawRoundRect(0, y, width-1, height-1, 6, 6);
+        g.drawRect(0, y, width-1, height-1);
 
         g.setColor(oldColor);
         
@@ -161,7 +161,6 @@ public class TextInput
             g.setFont(font);
             g.drawString(getText(), thisOfs, y, Graphics.TOP|Graphics.LEFT); 
         }
-        //super.drawItem(g, ofs, sel);
     }
 
     public boolean isSelectable() { return selectable; }

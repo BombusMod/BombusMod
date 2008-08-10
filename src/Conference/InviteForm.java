@@ -62,9 +62,7 @@ public class InviteForm
         parentView=display.getCurrent();
         
         itemsList.addElement(new SimpleString(contact.getName(), true));
-
-        itemsList.addElement(new SimpleString(SR.MS_CONFERENCE, true));
-        conferenceList=new DropChoiceBox(display);
+        conferenceList=new DropChoiceBox(display, SR.MS_CONFERENCE);
         for (Enumeration c=StaticData.getInstance().roster.getHContacts().elements(); c.hasMoreElements(); ) {
             try {
                 MucContact mc=(MucContact)c.nextElement();

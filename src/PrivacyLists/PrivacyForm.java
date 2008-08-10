@@ -90,18 +90,15 @@ public class PrivacyForm
         
         itemsList=null;
         itemsList=new Vector();
-        
-        itemsList.addElement(new SimpleString(SR.MS_PRIVACY_ACTION, true));
-        choiceAction=new DropChoiceBox(display);
+
+        choiceAction=new DropChoiceBox(display, SR.MS_PRIVACY_ACTION);
         for(int i=0; i<PrivacyItem.actions.length; i++){
             choiceAction.append(PrivacyItem.actions[i]);
         }
         choiceAction.setSelectedIndex(selectedAction);
         itemsList.addElement(choiceAction);
-        
 
-        itemsList.addElement(new SimpleString(SR.MS_PRIVACY_TYPE, true));
-        choiceType=new DropChoiceBox(display);
+        choiceType=new DropChoiceBox(display, SR.MS_PRIVACY_TYPE);
         for(int i=0; i<PrivacyItem.types.length; i++){
             choiceType.append(PrivacyItem.types[i]);
         }
@@ -126,8 +123,7 @@ public class PrivacyForm
                 itemsList.addElement(textValue);
                 break;
             case 2: //subscription
-                itemsList.addElement(new SimpleString(SR.MS_SUBSCRIPTION, true));
-                choiceSubscr=new DropChoiceBox(display);
+                choiceSubscr=new DropChoiceBox(display, SR.MS_SUBSCRIPTION);
                 for(int i=0; i<PrivacyItem.subscrs.length; i++){
                     choiceSubscr.append(PrivacyItem.subscrs[i]);
                 }

@@ -63,14 +63,16 @@ public class CheckBox
     
     public void drawItem(Graphics g, int ofs, boolean sel) {
         int width=g.getClipWidth();
-        int height=super.getVHeight();
+        int height=getItemHeight();
         
         int oldColor=g.getColor();
    
-        g.setColor(colorItem); g.drawRect(2, 2, height-5, height-5);
+        g.setColor(colorItem); 
+        g.drawRect(2, 2, height-5, height-5);
 
         if (state) {
-            g.setColor(colorItem); g.fillRect(4, 4, height-8, height-8);
+            g.setColor(colorItem); 
+            g.fillRect(4, 4, height-8, height-8);
         }
         
         g.setColor(oldColor);

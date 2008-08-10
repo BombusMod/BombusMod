@@ -88,7 +88,7 @@ public class ColorConfigForm
         try {
             files=new StringLoader().stringLoader("/skins/res.txt",2);
             if (files[0].size()>0) {
-                skinFiles=new DropChoiceBox(display);
+                skinFiles=new DropChoiceBox(display, null);
                 for (int i=0; i<files[0].size(); i++) {
                     skinFiles.append((String)files[1].elementAt(i));
                 }
