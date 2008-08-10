@@ -65,9 +65,7 @@ public class MessageEdit
 //#     DeTranslit dt;
 //#endif
     
-    private Command cmdSuspend=new Command(SR.MS_SUSPEND, Command.BACK,90);
-    private Command cmdCancel=new Command(SR.MS_CANCEL, Command.SCREEN,99);
-    private Command cmdSend=new Command(SR.MS_SEND, Command.OK,1);
+    private Command cmdSend=new Command(SR.MS_SEND, Command.OK, 1);
 //#ifdef SMILES
     private Command cmdSmile=new Command(SR.MS_ADD_SMILE, Command.SCREEN,2);
 //#endif
@@ -77,8 +75,10 @@ public class MessageEdit
 //#     private Command cmdSendInTranslit=new Command(SR.MS_TRANSLIT, Command.SCREEN, 5);
 //#     private Command cmdSendInDeTranslit=new Command(SR.MS_DETRANSLIT, Command.SCREEN, 5);
 //#endif
-    private Command cmdLastMessage=new Command(SR.MS_PREVIOUS, Command.SCREEN, 6);
-    private Command cmdSubj=new Command(SR.MS_SET_SUBJECT, Command.SCREEN, 7);
+    private Command cmdLastMessage=new Command(SR.MS_PREVIOUS, Command.SCREEN, 9);
+    private Command cmdSubj=new Command(SR.MS_SET_SUBJECT, Command.SCREEN, 10);
+    private Command cmdSuspend=new Command(SR.MS_SUSPEND, Command.BACK,90);
+    private Command cmdCancel=new Command(SR.MS_CANCEL, Command.SCREEN,99);
     
     /** Creates a new instance of MessageEdit */
     public MessageEdit(Display display, Contact to, String body) {

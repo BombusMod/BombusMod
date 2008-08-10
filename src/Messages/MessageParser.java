@@ -242,8 +242,12 @@ public final class MessageParser implements Runnable{
         int state=0;
         if (task.msg.subject==null) state=1;
         while (state<2) {
+//#ifdef SMILES
             if (task.smilesEnabled())
                 smileRoot=(state==0)?emptyRoot:root;
+//#else
+//#             smileRoot=emptyRoot;
+//#endif
             int w=0;
             StringBuffer s=new StringBuffer();
 	    int wordWidth=0;

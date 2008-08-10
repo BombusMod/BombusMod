@@ -11,6 +11,7 @@ package xmpp;
 
 import com.alsutton.jabber.*;
 import java.util.Enumeration;
+import java.util.Vector;
 
 /**
  *
@@ -211,8 +212,11 @@ public class XmppError {
         
     private static XmppError decodeError(JabberDataBlock error, String ns) {
         int errCond=NONE;
-        String text=null;
-        for (Enumeration e=error.getChildBlocks().elements(); e.hasMoreElements();) {
+        String text=error.getText();
+        if (text.length()==0) text=null;
+        
+        Vector errChilds=error.getChildBlocks();
+        if (errChilds!=null) for (Enumeration e=errChilds.elements(); e.hasMoreElements();) {
             JabberDataBlock child=(JabberDataBlock) e.nextElement();
             String xmlns=child.getAttribute("xmlns");
             if (xmlns!=null) if (!xmlns.equals(ns)) continue;

@@ -101,7 +101,7 @@ public class AccountRegister
     public int blockArrived( JabberDataBlock data ) {
         //destroyView();
         if (data instanceof Iq) {
-            theStream.close();
+            //theStream.close();
             int pgs=100;
             String type=data.getTypeAttribute();
             String mainbar=SR.MS_DONE; 
@@ -110,9 +110,10 @@ public class AccountRegister
                 spl.addCommand(cmdOK);
             } else {
                 pgs=0;
-                mainbar=SR.MS_ERROR_ + XmppError.findInStanza(data).getName();
+                mainbar=SR.MS_ERROR_ + XmppError.findInStanza(data).toString();
             }
             spl.setProgress(mainbar,pgs);
+            theStream.close();
         }
         return JabberBlockListener.BLOCK_PROCESSED;
     }

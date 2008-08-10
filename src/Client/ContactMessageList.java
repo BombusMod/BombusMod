@@ -239,12 +239,33 @@ public class ContactMessageList extends MessageList {
 //#endif
         addCommand(cmdBack);
     }
-
+    
     public void showNotify(){
+        sd.roster.activeContact=contact;
 //#ifdef LOGROTATE
 //#         getRedraw(true);
 //#endif
         super.showNotify();
+//#ifndef MENU_LISTENER
+        if (cmdResume==null) return;
+        if (contact.msgSuspended==null)
+            removeCommand(cmdResume);
+        else
+            addCommand(cmdResume);
+        
+        if (cmdSubscribe==null) return;
+        try {
+            Msg msg=(Msg) contact.msgs.elementAt(cursor); 
+            if (msg.messageType==Msg.MESSAGE_TYPE_AUTH) {
+                addCommand(cmdSubscribe);
+                addCommand(cmdUnsubscribed);
+            }
+            else {
+                removeCommand(cmdSubscribe);
+                removeCommand(cmdUnsubscribed);
+            }
+        } catch (Exception e) {}
+//#endif
     }
 
     protected void beginPaint(){
@@ -257,33 +278,25 @@ public class ContactMessageList extends MessageList {
         }
         int num=2;
 //#ifdef CLIENTS_ICONS
-//#         if (contact.getClient()>-1)
-//#             getMainBarItem().setElementAt(RosterIcons.iconTransparent, num++);
+//#         if (contact.getClient()>-1) getMainBarItem().setElementAt(RosterIcons.iconTransparent, num++);
 //#endif
+        
 //#ifdef PEP
-//#         if (contact.hasMood()) {
-//#             getMainBarItem().setElementAt(RosterIcons.iconTransparent, num++);
-//#         }
+//#         if (contact.hasMood()) getMainBarItem().setElementAt(RosterIcons.iconTransparent, num++);
 //#ifdef PEP_TUNE
-//#         else if (contact.pepTune) {
-//#             getMainBarItem().setElementAt(RosterIcons.iconTransparent, num++);
-//#         }
+//#         else if (contact.pepTune) getMainBarItem().setElementAt(RosterIcons.iconTransparent, num++);
 //#endif
 //#endif
         getMainBarItem().setElementAt((contact.vcard==null)?null:RosterIcons.iconHasVcard, num++);
         getMainBarItem().setElementAt(sd.roster.getEventIcon(), num++);
 //#ifdef CLIENTS_ICONS
-//#         if (contact.getClient()<0)
-//#             getMainBarItem().setElementAt(RosterIcons.iconTransparent, num++);
+//#         if (contact.getClient()<0) getMainBarItem().setElementAt(RosterIcons.iconTransparent, num++);
 //#endif
+        
 //#ifdef PEP
-//#         if (!contact.hasMood()) {
-//#             getMainBarItem().setElementAt(RosterIcons.iconTransparent, num++);
-//#         }
+//#         if (!contact.hasMood()) getMainBarItem().setElementAt(RosterIcons.iconTransparent, num++);
 //#ifdef PEP_TUNE
-//#         if (!contact.pepTune) {
-//#             getMainBarItem().setElementAt(RosterIcons.iconTransparent, num++);
-//#         }
+//#         if (!contact.pepTune) getMainBarItem().setElementAt(RosterIcons.iconTransparent, num++);
 //#endif
 //#endif
     }   
@@ -333,6 +346,7 @@ public class ContactMessageList extends MessageList {
     public void focusedItem(int index){ 
         markRead(index); 
     }
+    
     public void commandAction(Command c, Displayable d){
         super.commandAction(c,d);
 		
@@ -556,6 +570,7 @@ public class ContactMessageList extends MessageList {
 //#endif
         }
     }
+    
     public void touchLeftPressed(){
 //#ifdef MENU_LISTENER
 //#         showMenu();

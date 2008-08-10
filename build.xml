@@ -10,6 +10,9 @@
     <!-- release tasks -->
     <target name="for-release-configs">
         <antcall inheritrefs="false" inheritall="false" target="${target.to.call}">
+            <param name="config.active" value="full_ver_newmenu"/>
+        </antcall>
+        <antcall inheritrefs="false" inheritall="false" target="${target.to.call}">
             <param name="config.active" value="full_ver"/>
         </antcall>
         <antcall inheritrefs="false" inheritall="false" target="${target.to.call}">
@@ -20,6 +23,12 @@
     <target name="rebuild-fullver">
 	    <antcall inheritrefs="false" inheritall="false" target="rebuild">
 		    <param name="config.active" value="full_ver"/>
+	    </antcall>
+    </target>
+	
+    <target name="rebuild-fullver-newmenu">
+	    <antcall inheritrefs="false" inheritall="false" target="rebuild">
+		    <param name="config.active" value="full_ver_newmenu"/>
 	    </antcall>
     </target>
 
