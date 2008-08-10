@@ -33,7 +33,6 @@ import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
 import com.alsutton.jabber.datablocks.Presence;
-import ui.controls.form.SimpleString;
 import ui.controls.form.CheckBox;
 import ui.controls.form.DefForm;
 import ui.controls.form.NumberInput;

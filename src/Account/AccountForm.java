@@ -34,14 +34,12 @@ import locale.SR;
 import ui.SplashScreen;
 import ui.VirtualList;
 import ui.controls.AlertBox;
-import ui.controls.form.SimpleString;
 import ui.controls.form.CheckBox;
 import ui.controls.form.DropChoiceBox;
 import ui.controls.form.DefForm;
 import ui.controls.form.LinkString;
 import ui.controls.form.NumberInput;
 import ui.controls.form.PasswordInput;
-import ui.controls.form.SpacerItem;
 import ui.controls.form.TextInput;
 
 /**
@@ -125,8 +123,7 @@ public class AccountForm
         
         linkSave = new LinkString(SR.MS_SAVE) { public void doAction() { cmdOk(); } };
         itemsList.addElement(linkSave);
-        
-        moveCursorTo(getNextSelectableRef(-1));
+
         attachDisplay(display);
     }
     

@@ -31,7 +31,6 @@ import javax.microedition.lcdui.*;
 import locale.SR;
 import ui.controls.form.DropChoiceBox;
 import ui.controls.form.DefForm;
-import ui.controls.form.SimpleString;
 
 public class ConfigFonts 
         extends DefForm {

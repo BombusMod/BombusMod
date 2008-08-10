@@ -88,7 +88,7 @@ public final class ContactEdit
         
         tGroup=new TextInput(display, null, (c==null)?"":c.getGroup().name, null, TextField.ANY);
 
-        tTranspList=new DropChoiceBox(display, null);
+        tTranspList=new DropChoiceBox(display, SR.MS_TRANSPORT);
         // Transport droplist
         tTranspList.append(sd.account.getServer());
         for (Enumeration e=sd.roster.getHContacts().elements(); e.hasMoreElements(); ){
@@ -140,7 +140,7 @@ public final class ContactEdit
         
         Vector groups=sd.roster.groups.getRosterGroupNames();
         if (groups!=null) {
-            tGrpList=new DropChoiceBox(display, null);
+            tGrpList=new DropChoiceBox(display, SR.MS_GROUP);
             ngroups=groups.size();
             for (int i=0;i<ngroups; i++) {
                 String gn=(String)groups.elementAt(i);
@@ -153,13 +153,11 @@ public final class ContactEdit
         
         if (c==null){
             itemsList.addElement(tJid);// newGroupPos++;
-            
-            itemsList.addElement(new SimpleString(SR.MS_TRANSPORT, true));// newGroupPos++;
+
             itemsList.addElement(tTranspList);// newGroupPos++;
         }
         itemsList.addElement(tNick);// newGroupPos++;
-        
-        itemsList.addElement(new SimpleString(SR.MS_GROUP, true));// newGroupPos++;
+
         tGrpList.append(SR.MS_NEWGROUP);
         tGrpList.setSelectedIndex(sel);
         itemsList.addElement(tGrpList);

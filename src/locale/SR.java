@@ -495,7 +495,7 @@ public class SR {
 //#     public static String MS_KEY = loadString( "key" );
 //#endif
 
-    public static String MS_RECONNECT = loadString( "reconnect" );
+    public static String MS_RECONNECT = loadString( "Reconnect" );
     public static String MS_SORT = loadString( "Sort list" );
     public static String MS_FLASHLIGHT = loadString( "Turn on light" );
     public static String MS_CLEAR_POPUPS = loadString( "Clear popups" );
@@ -676,6 +676,8 @@ public class SR {
     public static String MS_SHOW_NACKNAMES=loadString("show nicknames");
 
     public static String MS_SEND_PHOTO=loadString("Send photo");
+
+    public static String MS_ENABLE_AUTORESPOND=loadString("enable autorespond");
     
     private SR() { }
     
@@ -690,7 +692,10 @@ public class SR {
             MS_XMLLANG=(String)lang.get("xmlLang");
             
             MS_IFACELANG=MS_XMLLANG;
-            if (MS_IFACELANG==null) MS_IFACELANG="en";
+            if (MS_IFACELANG==null) {
+                MS_IFACELANG="en";
+                MS_XMLLANG="en";
+            }
             
             presences=new Hashtable();
             presences.put("online", loadString("online"));

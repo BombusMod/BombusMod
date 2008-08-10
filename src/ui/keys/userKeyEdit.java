@@ -31,7 +31,6 @@ import javax.microedition.lcdui.Displayable;
 import ui.controls.form.CheckBox;
 import ui.controls.form.DefForm;
 import ui.controls.form.DropChoiceBox;
-import ui.controls.form.SimpleString;
 
 /**
  *

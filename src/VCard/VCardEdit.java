@@ -40,7 +40,6 @@ import util.StringUtils;
 import ui.controls.form.ImageItem;
 import ui.controls.form.DefForm;
 import ui.controls.form.SimpleString;
-import ui.controls.form.SimpleString;
 import ui.controls.form.TextInput;
 
 /**
