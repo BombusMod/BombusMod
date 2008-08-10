@@ -99,7 +99,6 @@ public final class MessageParser implements Runnable{
     private void addSmile(Leaf rootSmile, String smile, int index) {
 	Leaf p=rootSmile;
 	Leaf p1;
-        smile=smile.toUpperCase();
 	
 	int len=smile.length();
 	for (int i=0; i<len; i++) {
@@ -304,7 +303,7 @@ public final class MessageParser implements Runnable{
                         }
                         break;
                     }
-                    smileLeaf=smileLeaf.findChild(Character.toUpperCase(c));
+                    smileLeaf=smileLeaf.findChild(c);
                     if (smileLeaf==null) {
                         break;
                     }

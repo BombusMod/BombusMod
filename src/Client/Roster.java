@@ -2430,10 +2430,10 @@ public class Roster
                 mess.append(cntact.statusString);
             }
             
-            super.setWobble(1, /*(Contact) null,*/ mess.toString());
+            super.setWobble(1, null, mess.toString());
             mess=null;
         } else {
-            super.setWobble(type, /*contact,*/ info);
+            super.setWobble(type, contact, info);
         }
 
         redraw();

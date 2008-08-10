@@ -126,6 +126,8 @@ public class TransferManager
     }
     
 //#ifdef MENU_LISTENER    
+//#     public void touchLeftPressed(){ showMenu(); }
+//#     
 //#     public void addCommand(Command command) {
 //#         if (menuCommands.indexOf(command)<0)
 //#             menuCommands.addElement(command);

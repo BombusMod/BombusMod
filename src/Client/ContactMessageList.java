@@ -569,7 +569,6 @@ public class ContactMessageList extends MessageList {
             Msg msg=getMessage(cursor);
             
             if (msg==null ||
-                msg.messageType == Msg.MESSAGE_TYPE_HISTORY ||
                 msg.messageType == Msg.MESSAGE_TYPE_OUT ||
                 msg.messageType == Msg.MESSAGE_TYPE_SUBJ)
                 keyGreen();

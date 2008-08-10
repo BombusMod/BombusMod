@@ -107,8 +107,8 @@ public abstract class VirtualList
 //#ifdef POPUPS
     public static PopUp popup;
 
-    public static void setWobble(int type, /*Contact contact,*/ String txt){
-        popup.addPopup(type, /*contact,*/ txt);
+    public static void setWobble(int type, Contact contact, String txt){
+        popup.addPopup(type, contact, txt);
     }
 //#endif
     protected int getMainBarRGB() {return ct.getColor(ColorTheme.BAR_INK);} 
@@ -904,13 +904,13 @@ public abstract class VirtualList
 //#         System.out.println(keyCode);
 //#endif
 //#ifdef POPUPS
-        /*if (keyCode==greenKeyCode) {
+        if (keyCode==greenKeyCode) {
             if (popup.getContact()!=null) {
                 new ContactMessageList(popup.getContact(),display);
                 popup.next();
                 return;
             }
-        }*/
+        }
 //#endif
 //#ifdef MENU
 //#          if (keyCode==Config.SOFT_LEFT) {
@@ -980,7 +980,7 @@ public abstract class VirtualList
             if (cf.phoneManufacturer==Config.SONYE)
                 mem.append("Total: ").append(Runtime.getRuntime().totalMemory()>>10).append(" kb\n");
             mem.append("Free: ").append(Runtime.getRuntime().freeMemory()>>10).append(" kb");
-            setWobble(1, /*null,*/ mem.toString());
+            setWobble(1, null, mem.toString());
 //#endif
             break;
 //#ifdef POPUPS
@@ -989,7 +989,7 @@ public abstract class VirtualList
                 try {
                     String text=((VirtualElement)getFocusedObject()).getTipString();
                     if (text!=null) {
-                        setWobble(1, /*null,*/ text);
+                        setWobble(1, null, text);
                     }
                 } catch (Exception e) { }
             }

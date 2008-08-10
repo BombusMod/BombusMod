@@ -71,10 +71,10 @@ public class PopUp {
     
     private RosterIcons ri;
     
-    synchronized public void addPopup(int type, /*Contact contact,*/ String message){
+    synchronized public void addPopup(int type, Contact contact, String message){
         if (message!=null)
             //popUps.addElement(new PopUpElement(type, contact, StringUtils.parseMessage(message, width-border-padding, height-border-padding, false, font)));
-            popUps.addElement(new PopUpElement(type, /*contact,*/ StringUtils.parseMessage(message, width-border-padding, font)));
+            popUps.addElement(new PopUpElement(type, contact, StringUtils.parseMessage(message, width-border-padding, font)));
 //#ifdef DEBUG
 //# //	System.out.println("added message to array = "+message);
 //#endif
@@ -91,13 +91,13 @@ public class PopUp {
         this.height=height;
         this.width=width;
     }
-/*
+
     public Contact getContact() {
         if(size()>0)
             return ((PopUpElement)popUps.elementAt(0)).getContact();
         return null;
     }
-*/
+
     public void next() {
         if(size()>0){
             popUps.removeElementAt(0);
@@ -135,14 +135,14 @@ public class PopUp {
                     return true;
             }
         }
-        if (((PopUpElement)popUps.elementAt(0)).getType()==TYPE_SYSTEM) {
+        //if (((PopUpElement)popUps.elementAt(0)).getType()==TYPE_SYSTEM) {
             next();
             return false;
-        }
+        /*}
         if (keyCode==5 || keyCode==12 || keyCode==13) {
             next();
         }
-        return true;
+        return true;*/
     }
     
     public void clear() {
@@ -287,18 +287,18 @@ public class PopUp {
     
     class PopUpElement {
         private int type;
-        //private Contact from;
+        private Contact from;
         private Vector message;
 
-        public PopUpElement(int type, /*Contact from,*/ Vector message) {
-            //this.from=from;
+        public PopUpElement(int type, Contact from, Vector message) {
+            this.from=from;
             this.type=type;
             this.message=message;
         }
 
         public int getType() { return type; }
         public Vector getMessage() { return message; }
-        //public Contact getContact() { return from; }
+        public Contact getContact() { return from; }
     }
 }
  

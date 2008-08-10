@@ -202,7 +202,7 @@ public class MucContact extends Contact {
                     b.append((statusCode==301)? SR.MS_WAS_BANNED : SR.MS_WAS_KICKED );
 //#ifdef POPUPS
                     if (((ConferenceGroup)getGroup()).getSelfContact() == this ) {
-                        StaticData.getInstance().roster.setWobble(3, /*(Contact) null,*/ ((statusCode==301)? SR.MS_WAS_BANNED : SR.MS_WAS_KICKED)+((reason!="")?"\n"+reason:""));
+                        StaticData.getInstance().roster.setWobble(3, null, ((statusCode==301)? SR.MS_WAS_BANNED : SR.MS_WAS_KICKED)+((reason!="")?"\n"+reason:""));
                     }
 //#endif
                     if (reason!="") {
