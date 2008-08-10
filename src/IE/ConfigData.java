@@ -71,7 +71,6 @@ public class ConfigData {
         array.addElement(new keyValue(ignore, (cf.ignore)?"1":"0"));
         array.addElement(new keyValue(eventComposing, (cf.eventComposing)?"1":"0"));
         array.addElement(new keyValue(gmtOffset, Integer.toString(cf.gmtOffset)));
-        array.addElement(new keyValue(locOffset, Integer.toString(cf.locOffset)));
         array.addElement(new keyValue(autoLogin, (cf.autoLogin)?"1":"0"));
 //#ifndef WMUC
         array.addElement(new keyValue(autoJoinConferences, (cf.autoJoinConferences)?"1":"0"));
@@ -209,7 +208,6 @@ public class ConfigData {
         cf.collapsedGroups=cf.getBooleanProperty(getValue(collapsedGroups),false);
         cf.eventComposing=cf.getBooleanProperty(getValue(eventComposing),true);
         cf.gmtOffset=cf.getIntProperty(getValue(gmtOffset),0);
-        cf.locOffset=cf.getIntProperty(getValue(locOffset),0);
         cf.autoLogin=cf.getBooleanProperty(getValue(autoLogin),true);
 //#ifndef WMUC
         cf.autoJoinConferences=cf.getBooleanProperty(getValue(autoJoinConferences),true);
@@ -373,7 +371,6 @@ public class ConfigData {
     private final static String ignore="ignore";
     private final static String eventComposing="eventComposing";
     private final static String gmtOffset="gmtOffset";
-    private final static String locOffset="locOffset";
     private final static String autoLogin="autoLogin";
 //#ifndef WMUC
     private final static String autoJoinConferences="autoJoinConferences";

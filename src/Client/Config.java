@@ -205,7 +205,6 @@ type = \"-=Siemens=-\";
     public boolean autoFocus=false;
     public int loginstatus=0;//loginstatus
     public int gmtOffset;
-    public int locOffset;
     public boolean popupFromMinimized=true;
     public boolean memMonitor=true;
 
@@ -306,7 +305,6 @@ type = \"-=Siemens=-\";
         getPhoneManufacturer();
         
 	int gmtloc=TimeZone.getDefault().getRawOffset()/3600000;
-	locOffset=0;
 	gmtOffset=gmtloc;
 	
 	short greenKeyCode=-1000;
@@ -385,7 +383,7 @@ type = \"-=Siemens=-\";
 	    ignore=inputStream.readBoolean();
 	    eventComposing=inputStream.readBoolean();
 	    gmtOffset=inputStream.readInt();
-	    locOffset=inputStream.readInt();
+	    inputStream.readInt(); //locOffset
 	    autoLogin=inputStream.readBoolean();
 	    autoJoinConferences=inputStream.readBoolean();
 	    popupFromMinimized=inputStream.readBoolean();
@@ -584,7 +582,7 @@ type = \"-=Siemens=-\";
 	    outputStream.writeBoolean(ignore);
 	    outputStream.writeBoolean(eventComposing);
 	    outputStream.writeInt(gmtOffset);
-	    outputStream.writeInt(locOffset);
+	    outputStream.writeInt(0); //locOffset
 	    outputStream.writeBoolean(autoLogin);
 	    outputStream.writeBoolean(autoJoinConferences);
             outputStream.writeBoolean(popupFromMinimized);
@@ -727,7 +725,7 @@ type = \"-=Siemens=-\";
 
     
     public void updateTime(){
-	Time.setOffset(gmtOffset, locOffset);
+	Time.setOffset(gmtOffset);
     }
 
     

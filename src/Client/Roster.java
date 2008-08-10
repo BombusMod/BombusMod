@@ -2903,7 +2903,7 @@ public class Roster
 //#         if (isLoggedIn())
 //#             str.append(theStream.getStreamStats());
 //# 
-//#         VirtualList.setWobble(1, /*(Contact) null,*/ str.toString());
+//#         VirtualList.setWobble(1, null, str.toString());
 //#         str=null;
 //#     }
 //#endif

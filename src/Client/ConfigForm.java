@@ -118,7 +118,6 @@ public class ConfigForm
     private CheckBox popupFromMinimized;
 
     private NumberInput fieldGmt; 
-    private NumberInput fieldLoc;
     
     private DropChoiceBox textWrap;
     private DropChoiceBox langFiles;
@@ -255,9 +254,6 @@ public class ConfigForm
 	fieldGmt=new NumberInput(display, SR.MS_GMT_OFFSET, Integer.toString(cf.gmtOffset), -12, 12); 
         itemsList.addElement(fieldGmt);
 
-        fieldLoc=new NumberInput(display, SR.MS_CLOCK_OFFSET, Integer.toString(cf.locOffset), -12, 12 );
-        itemsList.addElement(fieldLoc);
-
         itemsList.addElement(new SpacerItem(10));
         itemsList.addElement(new SimpleString(SR.MS_TEXTWRAP, true));
         textWrap=new DropChoiceBox(display);
@@ -393,7 +389,6 @@ public class ConfigForm
             cf.popupFromMinimized=popupFromMinimized.getValue();
 
         cf.gmtOffset=Integer.parseInt(fieldGmt.getValue());
-        cf.locOffset=Integer.parseInt(fieldLoc.getValue());
 
         cf.textWrap=textWrap.getSelectedIndex();
 
