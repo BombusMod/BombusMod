@@ -82,8 +82,13 @@ public class archiveEdit
         addCommand(cmdOk);
         addCommand(cmdCancel);
         
+        
+//#ifdef ARCHIVE
         super.removeCommand(cmdPaste);
+//#endif
+//#if TEMPLATES
         super.removeCommand(cmdTemplate);
+//#endif
         
         setCommandListener(this);
         

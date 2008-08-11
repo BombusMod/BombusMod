@@ -320,6 +320,10 @@ public class Browser
 //#         }
 //#         super.keyPressed(keyCode);
 //#     }
+//#     
+//#     public void touchLeftPressed(){
+//#         showMenu();
+//#     }
 //#endif
     
     public void showMenu() {
