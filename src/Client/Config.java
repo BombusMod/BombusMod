@@ -82,7 +82,9 @@ public class Config {
     public final static int J2ME=9;
     public final static int NOKIA_9XXX=10;
     public final static int SONYE_M600=11;
-    public final static int XENIUM99=12;
+//#if !ZLIB
+//#     public final static int XENIUM99=12;
+//#endif
     public final static int SAMSUNG=14;
     public final static int LG=15;
     public final static int JBED=16;
@@ -358,9 +360,11 @@ type = \"-=Siemens=-\";
                 KEY_BACK=VirtualList.MOTOE680_REALPLAYER;
 		greenKeyCode=-31;
                 break;  
-            case XENIUM99:
-                istreamWaiting=false; //is it critical for phillips xenium?
-                break;
+//#if !ZLIB
+//#             case XENIUM99:
+//#                 istreamWaiting=false; //is it critical for phillips xenium?
+//#                 break;
+//#endif
         }
 	VirtualList.greenKeyCode=greenKeyCode;
     }
@@ -753,9 +757,11 @@ type = \"-=Siemens=-\";
                 }
                 phoneManufacturer=SONYE;
                 return;
-            } else if (platform.indexOf("9@9")>-1) {
-                phoneManufacturer=XENIUM99;
-                return;
+//#if !ZLIB
+//#             } else if (platform.indexOf("9@9")>-1) {
+//#                 phoneManufacturer=XENIUM99;
+//#                 return;
+//#endif
             } else if (platform.startsWith("Windows")) {
                 phoneManufacturer=WINDOWS;
                 return;

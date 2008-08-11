@@ -61,13 +61,13 @@ public class ExTextBox
 //#endif
     
 //#ifdef ARCHIVE
-    private Command cmdPaste=new Command(SR.MS_ARCHIVE, Command.SCREEN, 6);    
+    protected Command cmdPaste=new Command(SR.MS_ARCHIVE, Command.SCREEN, 6);    
 //#endif
 //#if TEMPLATES
-    private Command cmdTemplate=new Command(SR.MS_TEMPLATE, Command.SCREEN, 7); 
+    protected Command cmdTemplate=new Command(SR.MS_TEMPLATE, Command.SCREEN, 7); 
 //#endif  
 //#ifdef CLIPBOARD
-//#     private Command cmdPasteText=new Command(SR.MS_PASTE, Command.SCREEN, 8);  
+//#     protected Command cmdPasteText=new Command(SR.MS_PASTE, Command.SCREEN, 8);  
 //#endif
     
     int maxSize=500;

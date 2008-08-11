@@ -27,14 +27,11 @@
 
 package Archive;
 
-import Client.Config;
 import Client.Msg;
-import Client.StaticData;
-import java.util.Vector;
 import javax.microedition.lcdui.*;
 import locale.SR;
-import ui.VirtualList;
 import ui.controls.ExTextBox;
+
 /**
  *
  * @author ad
@@ -44,17 +41,14 @@ public class archiveEdit
         implements CommandListener {
     
     private Display display;
-    private Displayable parentView;
+    //private Displayable parentView;
 
-
-    private Command cmdCancel=new Command(SR.MS_CANCEL, Command.SCREEN,99);
-    private Command cmdOk=new Command(SR.MS_OK, Command.OK /*Command.SCREEN*/,1);
+    private Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 99);
+    private Command cmdOk=new Command(SR.MS_OK, Command.OK /*Command.SCREEN*/, 1);
 
     private Msg msg;
     
     MessageArchive archive;
-
-    private Config cf;
 
     private int where=1;
 
@@ -68,7 +62,7 @@ public class archiveEdit
         super(display, null, (pos>-1)?SR.MS_EDIT:SR.MS_NEW, TextField.ANY);
         
         this.display=display;
-        parentView=display.getCurrent();
+        //parentView=display.getCurrent();
         
         archive=new MessageArchive(where);
 
@@ -78,8 +72,6 @@ public class archiveEdit
         
         this.al=al;
         
-        cf=Config.getInstance();
-        
         if (pos>-1) {
             this.msg=archive.msg(pos);
             body=msg.getBody();
@@ -88,10 +80,13 @@ public class archiveEdit
         setText(body);
         
         addCommand(cmdOk);
-
         addCommand(cmdCancel);
+        
+        super.removeCommand(cmdPaste);
+        super.removeCommand(cmdTemplate);
+        
         setCommandListener(this);
-
+        
         display.setCurrent(this);
     }
     
@@ -101,7 +96,7 @@ public class archiveEdit
         body=getString();
 		
         if (body.length()==0) body=null;
-
+        
         if (c==cmdOk) {
             int type=Msg.MESSAGE_TYPE_OUT;
             String from="";
@@ -120,6 +115,6 @@ public class archiveEdit
             al.reFresh();
         }
         
-        display.setCurrent(parentView);
+        display.setCurrent(/*parentView*/al);
     }
 }

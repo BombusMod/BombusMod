@@ -36,6 +36,7 @@ import java.util.Vector;
 import javax.microedition.lcdui.Command;
 //#else
 //# import Menu.Command;
+//# import Client.StaticData;
 //#endif
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
@@ -213,12 +214,15 @@ public class ArchiveList
     }*/
     
     public void destroyView(){
+//#ifndef MENU_LISTENER
 	super.destroyView();
+//#else
+//#         display.setCurrent(StaticData.getInstance().roster);
+//#endif
 	archive.close();
     }
 
     private int getFreeSpace() {
         return archive.freeSpace();
     }
-
 }
