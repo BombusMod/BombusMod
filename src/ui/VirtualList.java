@@ -577,6 +577,9 @@ public abstract class VirtualList
             drawTraffic(g, true);
         }
         
+        if (sd.roster.messageCount>0)
+            drawEnvelop(g);
+        
 //#ifdef POPUPS
         drawPopUp(g);
 //#endif
@@ -595,6 +598,18 @@ public abstract class VirtualList
 //#ifdef TEST
 //#     testBalloon test=new testBalloon();
 //#endif
+    
+    private void drawEnvelop(final Graphics g) {
+        g.setColor(getMainBarRGB());
+        int wpos= (width/2);
+        int hpos= height-13;
+        
+        g.drawRect(wpos-4,	hpos, 	8, 	6);
+        g.drawLine(wpos-3,	hpos+1,	wpos,	hpos+4);
+        g.drawLine(wpos,	hpos+4,	wpos+3,	hpos+1);
+        g.drawLine(wpos-3,	hpos+5,	wpos-2,	hpos+4);
+        g.drawLine(wpos+2,	hpos+4,	wpos+3,	hpos+5);
+    }
     
     private void drawTraffic(final Graphics g, boolean up) {
         int pos=(up)?(width/2)+3:(width/2)-3;

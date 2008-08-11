@@ -156,7 +156,7 @@ public class Roster
 
     public JabberStream theStream;
         
-    int messageCount;
+    public int messageCount;
     int highliteMessageCount;
     
     private Object messageIcon;
