@@ -39,7 +39,7 @@ invincible	неукротимое
 jealous	ревнивое
 lonely	одинокое
 mean	сволочное
-moody	капризное
+moody	унылое
 nervous	нервное
 neutral	безразличное
 offended	обиженное

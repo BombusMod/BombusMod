@@ -106,14 +106,7 @@ public class Utf8IOStream {
     public int read(byte buf[]) throws IOException {
         int avail=inpStream.available();
 
-        if (avail==0) 
-//#if !ZLIB
-//#             //trying to fix phillips 9@9
-//#             if (!Config.getInstance().istreamWaiting) avail=1;
-//#             else
-//#endif
-            
-            return 0;
+        if (avail==0) return 0;
 
         if (avail>buf.length) avail=buf.length;
         
