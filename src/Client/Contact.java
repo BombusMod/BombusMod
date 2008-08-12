@@ -465,7 +465,7 @@ public class Contact extends IconTextElement{
                          cp++;
                      } else delPos++;
                 }
-                activeMessage=msgs.size(); //drop activeMessage count
+                activeMessage=msgs.size()-1; //drop activeMessage count
             }
         } catch (Exception e) { }
         try {
