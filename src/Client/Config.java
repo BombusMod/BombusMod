@@ -193,7 +193,7 @@ type = \"-=Siemens=-\";
 //#endif
     // non-volatile values
     public int accountIndex=-1;
-    public boolean fullscreen=false;
+    public boolean fullscreen=true;
     public int def_profile=0;
 //#ifdef SMILES
     public boolean smiles=true;
