@@ -59,7 +59,7 @@ public class TransferManager
 //#endif
     {
     
-    private Vector taskList;
+    private Vector taskList=new Vector();;
     
     Command cmdBack=new Command(SR.MS_BACK, Command.BACK, 99);
     Command cmdDel=new Command(SR.MS_DECLINE, Command.SCREEN, 10);
@@ -68,16 +68,24 @@ public class TransferManager
     /** Creates a new instance of TransferManager */
     public TransferManager(Display display) {
         super(display);
-//#ifdef MENU_LISTENER
-//#         menuCommands.removeAllElements();
-//#endif
-        addCommand(cmdBack);
-        addCommand(cmdDel);
-        addCommand(cmdClrF);
+
+        commandState();
         setCommandListener(this);
         setMainBarItem(new MainBar(2, null, SR.MS_TRANSFERS));
         
         taskList=TransferDispatcher.getInstance().getTaskList();
+    }
+    
+    
+    public void commandState(){
+//#ifdef MENU_LISTENER
+//#         menuCommands.removeAllElements();
+//#endif
+        addCommand(cmdBack);
+        if (getItemCount()>0) {
+            addCommand(cmdDel);
+            addCommand(cmdClrF);
+        }
     }
 
     protected int getItemCount() { return taskList.size(); }
@@ -152,6 +160,7 @@ public class TransferManager
 //#endif
     
     public void showMenu() {
+        commandState();
 //#ifdef MENU_LISTENER
 //#         new MyMenu(display, parentView, this, SR.MS_DISCO, null);
 //#endif

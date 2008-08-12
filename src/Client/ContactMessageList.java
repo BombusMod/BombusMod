@@ -231,7 +231,8 @@ public class ContactMessageList extends MessageList {
 //#ifdef HISTORY
 //#         if (cf.msgPath!=null)
 //#             if (cf.msgPath!="")
-//#                 addCommand(cmdSaveChat);
+//#                 if (contact.msgs.size()>0)
+//#                     addCommand(cmdSaveChat);
 //#ifdef HISTORY_READER
 //#         if (cf.lastMessages)
 //#             addCommand(cmdReadHistory);
@@ -358,6 +359,13 @@ public class ContactMessageList extends MessageList {
             } catch (Exception e) {/*no messages*/}
         }
 //#endif
+//#if TEMPLATES
+        if (c==cmdTemplate) {
+            try {
+                MessageArchive.store(getMessage(cursor),2);
+            } catch (Exception e) {/*no messages*/}
+        }
+//#endif
         if (c==cmdPurge) {
             if (messages.isEmpty()) return;
             clearReadedMessageList();
@@ -370,6 +378,9 @@ public class ContactMessageList extends MessageList {
 //#         }
 //#endif
 //#endif
+//#if (FILE_IO && HISTORY)
+//#         if (c==cmdSaveChat) saveMessages();
+//#endif
         /** login-critical section */
         if (!sd.roster.isLoggedIn()) return;
 
@@ -377,10 +388,10 @@ public class ContactMessageList extends MessageList {
             contact.msgSuspended=null; 
             keyGreen(); 
         }
-        if (c==cmdResume) { keyGreen(); }
-        if (c==cmdQuote) {
-            Quote();
-        }
+        if (c==cmdResume) keyGreen();
+        if (c==cmdQuote) Quote();
+        if (c==cmdReply) Reply();
+        
         if (c==cmdActions) {
 //#ifndef WMUC
             if (contact instanceof MucContact) {
@@ -393,26 +404,8 @@ public class ContactMessageList extends MessageList {
             }
 //#endif
         }
-	
-	if (c==cmdActive) {
-	    new ActiveContacts(display, this, contact);
-	}
+	if (c==cmdActive) new ActiveContacts(display, this, contact);
         
-        if (c==cmdReply) {
-            Reply();
-        }
-//#if (FILE_IO && HISTORY)
-//#         if (c==cmdSaveChat) {
-//#             saveMessages();
-//#         }
-//#endif        
-//#if TEMPLATES
-        if (c==cmdTemplate) {
-            try {
-                MessageArchive.store(getMessage(cursor),2);
-            } catch (Exception e) {/*no messages*/}
-        }
-//#endif
         if (c==cmdSubscribe) {
             sd.roster.doSubscribe(contact);
         }
@@ -588,7 +581,7 @@ public class ContactMessageList extends MessageList {
                 msg.messageType == Msg.MESSAGE_TYPE_SUBJ)
                 keyGreen();
             else
-                sd.roster.me=new MessageEdit(display,contact,msg.from+": ");
+                (sd.roster.me=new MessageEdit(display,contact,msg.from+": ")).setParentView(this);
         } catch (Exception e) {/*no messages*/}
     }
     
@@ -600,7 +593,7 @@ public class ContactMessageList extends MessageList {
                 .append(getMessage(cursor).quoteString())
                 .append("\n")
                 .toString();
-            sd.roster.me=new MessageEdit(display,contact,msg);
+            (sd.roster.me=new MessageEdit(display,contact,msg)).setParentView(this);
             msg=null;
         } catch (Exception e) {/*no messages*/}
     }

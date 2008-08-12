@@ -64,7 +64,7 @@ public class SmilePicker extends VirtualList implements CommandListener, Virtual
     private TextBox t;
  
      /** Creates a new instance of SmilePicker */
-    public SmilePicker(Display display, int caretPos, TextBox t) {
+    public SmilePicker(Display display, Displayable pView, int caretPos, TextBox t) {
          super(display);
          this.caretPos=caretPos;
          
@@ -93,6 +93,7 @@ public class SmilePicker extends VirtualList implements CommandListener, Virtual
         addCommand(cmdOK);
         addCommand(cmdBack);
         setCommandListener(this);
+        this.parentView=pView;
     }
     
     int lineIndex;

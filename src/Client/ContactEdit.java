@@ -210,6 +210,7 @@ public final class ContactEdit
             } else {
                 if (newGroup) {
                     itemsList.removeElement(tGroup);
+                    newGroup=false;
                 }
             }
         }

@@ -327,6 +327,9 @@ public class Browser
 //#     public void touchLeftPressed(){
 //#         showMenu();
 //#     }
+//#     public void touchRightPressed(){
+//#         cmdBack();
+//#     }
 //#endif
     
     public void showMenu() {
