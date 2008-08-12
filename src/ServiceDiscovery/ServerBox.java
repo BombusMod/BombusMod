@@ -30,6 +30,7 @@ package ServiceDiscovery;
 import Client.Contact;
 import Client.Group;
 import javax.microedition.lcdui.Display;
+import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
 import ui.controls.form.DefForm;
@@ -49,8 +50,8 @@ public class ServerBox
     /**
      * Creates a new instance of ServerBox
      */
-    public ServerBox(Display display, String service, ServiceDiscovery sd) {
-        super(display, SR.MS_DISCO);
+    public ServerBox(Display display, Displayable pView, String service, ServiceDiscovery sd) {
+        super(display, pView, SR.MS_DISCO);
         
         this.display=display;
         this.sd=sd;
@@ -59,6 +60,7 @@ public class ServerBox
         
         moveCursorTo(getNextSelectableRef(-1));
         attachDisplay(display);
+        this.parentView=pView;
     }
 
     public void  cmdOk() {

@@ -68,8 +68,8 @@ public class HistoryConfig
     Config cf;
 
     /** Creates a new instance of HistoryConfig */
-    public HistoryConfig(Display display) {
-        super(display, SR.MS_HISTORY_OPTIONS);
+    public HistoryConfig(Display display, Displayable pView) {
+        super(display, pView, SR.MS_HISTORY_OPTIONS);
 
         cf=Config.getInstance();
 //#ifdef LAST_MESSAGES
@@ -94,6 +94,7 @@ public class HistoryConfig
         moveCursorTo(0);
 
         attachDisplay(display);
+        this.parentView=pView;
     }
 
     public void BrowserFilePathNotify(String pathSelected) {
@@ -102,7 +103,7 @@ public class HistoryConfig
 
     public void commandAction(Command command, Displayable displayable) {
         if (command==cmdPath) {
-            new Browser(null, display, this, true);
+            new Browser(null, display, this, this, true);
             return;
         }
         super.commandAction(command, displayable);

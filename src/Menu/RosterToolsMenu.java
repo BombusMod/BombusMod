@@ -55,6 +55,7 @@ import VCard.VCardEdit;
 import images.MenuIcons;
 //#endif
 import javax.microedition.lcdui.Display;
+import javax.microedition.lcdui.Displayable;
 import locale.SR;
 import Colors.ColorConfigForm;
 //#ifdef USER_KEYS
@@ -77,7 +78,7 @@ public class RosterToolsMenu extends Menu {
     MenuIcons menuIcons=MenuIcons.getInstance();
 //#endif
 
-    public RosterToolsMenu(Display display) {
+    public RosterToolsMenu(Display display, Displayable pView) {
 //#ifdef NEW_SKIN
 //#         super(SR.MS_TOOLS, MenuActionsIcons.getInstance());
 //#else
@@ -105,7 +106,7 @@ public class RosterToolsMenu extends Menu {
 //#endif
        addItem(SR.MS_FONTS_OPTIONS, 6, menuIcons.ICON_FONTS);
 //#if (FILE_IO)
-        addItem(SR.MS_ROOT, 7, menuIcons.ICON_FILEMAN);
+        addItem(SR.MS_FILE_MANAGER, 7, menuIcons.ICON_FILEMAN);
 //#endif
 //#if (FILE_IO && FILE_TRANSFER)
         if (connected)
@@ -144,7 +145,9 @@ public class RosterToolsMenu extends Menu {
 //#endif
         addItem(SR.MS_BREAK_CONECTION, 19, menuIcons.ICON_RECONNECT);
         attachDisplay(display);
+        this.parentView=pView;
     }
+    
     public void eventOk(){
         destroyView();
         boolean connected= ( sd.roster.isLoggedIn() );
@@ -172,26 +175,26 @@ public class RosterToolsMenu extends Menu {
                 if (! connected) break;
                 Contact c=sd.roster.selfContact();
                 if (c.vcard!=null) {
-                    new VCardEdit(display, c.vcard);
+                    new VCardEdit(display, parentView, c.vcard);
                     return;
                 }
                 VCard.request(c.getBareJid(), c.getJid());
                 return;
             }
             case 4:
-                new ConfigForm(display);
+                new ConfigForm(display, parentView);
                 return;
 //#if (HISTORY)
 //#             case 5: //history
-//#                 new HistoryConfig(display);
+//#                 new HistoryConfig(display, parentView);
 //#                 return;
 //#endif
             case 6:
-                new ConfigFonts(display);
+                new ConfigFonts(display, parentView);
                 return;
 //#if (FILE_IO)
             case 7:
-                new io.file.browse.Browser(null, display, null, false);
+                new io.file.browse.Browser(null, display, sd.roster, null, false);
                 return;
 //#endif
 //#if (FILE_TRANSFER)
@@ -200,15 +203,15 @@ public class RosterToolsMenu extends Menu {
                 return;
 //#endif
             case 9:
-                new ColorConfigForm(display);
+                new ColorConfigForm(display, parentView);
                 return;
 //#if IMPORT_EXPORT
 //#             case 10:
-//#                 new IE.IEMenu(display);
+//#                 new IE.IEMenu(display, parentView);
 //#                 return; 
 //#endif
             case 11:
-                new AlertCustomizeForm(display);
+                new AlertCustomizeForm(display, parentView);
                 return;
 //#ifdef POPUPS
 //#ifdef STATS
@@ -219,10 +222,10 @@ public class RosterToolsMenu extends Menu {
 //#endif
 //#ifdef CHECK_VERSION
 //#             case 13:
-//#                 new Upgrade(display, false);
+//#                 new Upgrade(display, parentView, false);
 //#                 return;
 //#             case 14:
-//#                 new Upgrade(display, true);
+//#                 new Upgrade(display, parentView, true);
 //#                 return;
 //#endif
 //#ifdef USER_KEYS
@@ -237,12 +240,12 @@ public class RosterToolsMenu extends Menu {
 //#endif
 //#if AUTOTASK
 //#             case 17:
-//#                 new AutoTaskForm(display);
+//#                 new AutoTaskForm(display, parentView);
 //#                 return;
 //#endif
 //#ifdef CONSOLE
 //#             case 18:
-//#                 new XMLList(display);
+//#                 new XMLList(display, parentView);
 //#                 return;
 //#endif
             case 19:

@@ -49,7 +49,7 @@ public class TestForm
      * Creates a new instance of TestForm
      */
     public TestForm(final Display display) {
-        super(display, "test form");
+        super(display, display.getCurrent(), "test form");
         this.display=display;
         
         DropChoiceBox testNewChoiceBox1=new DropChoiceBox(display, null);

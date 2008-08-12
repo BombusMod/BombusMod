@@ -77,7 +77,7 @@ public class AccountSelect
     private Config cf;
     
     /** Creates a new instance of AccountPicker */
-    public AccountSelect(Display display, boolean enableQuit) {
+    public AccountSelect(Display display, Displayable pView, boolean enableQuit) {
         super();
         this.enableQuit=enableQuit;
         this.display=display;
@@ -107,14 +107,15 @@ public class AccountSelect
         if (!accountList.isEmpty()) {
             moveCursorTo(activeAccount);
         } else {
-            new AccountForm(this, display, null);
+            new AccountForm(display, this, this, null);
             return;
         }
+        commandState();
+        setCommandListener(this);
         
         attachDisplay(display);
 
-        commandState();
-        setCommandListener(this);
+        this.parentView=pView;
     }
     
     public void commandState(){
@@ -151,12 +152,12 @@ public class AccountSelect
         if (c==cmdCancel) {
             destroyView();
         }
-        if (c==cmdConfig) new ConfigForm(display);
+        if (c==cmdConfig) new ConfigForm(display, this);
         if (c==cmdLogin) switchAccount(true);
         if (c==cmdSelect) switchAccount(false);
-        if (c==cmdEdit) new AccountForm(this, display,(Account)getFocusedObject());
+        if (c==cmdEdit) new AccountForm(display, this, this, (Account)getFocusedObject());
         if (c==cmdAdd) {
-            new AccountForm(this, display, null);
+            new AccountForm(display, this, this, null);
         }
         if (c==cmdDel) {
             if (cursor==cf.accountIndex && StaticData.getInstance().roster.isLoggedIn()) return;
@@ -241,7 +242,7 @@ public class AccountSelect
 //#     
 //#     public void showMenu() {
 //#         commandState();
-//#         new MyMenu(display, this, SR.MS_DISCO, null);
+//#         new MyMenu(display, parentView, this, SR.MS_DISCO, null);
 //#    }
 //#     
 //#     public void touchLeftPressed(){

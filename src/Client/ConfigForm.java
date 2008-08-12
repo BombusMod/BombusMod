@@ -46,7 +46,6 @@ public class ConfigForm
         extends DefForm {
     
     private Display display;
-    private Displayable parentView;
     
     private CheckBox showOfflineContacts;
     private CheckBox selfContact;
@@ -138,10 +137,9 @@ public class ConfigForm
     Config cf;
     
     /** Creates a new instance of ConfigForm */
-    public ConfigForm(Display display) {
-        super(display, SR.MS_OPTIONS);
+    public ConfigForm(Display display, Displayable pView) {
+        super(display, pView, SR.MS_OPTIONS);
         this.display=display;
-        parentView=display.getCurrent();
 
         cf=Config.getInstance();
 
@@ -311,6 +309,7 @@ public class ConfigForm
         
         enableListWrapping(false);
         attachDisplay(display);
+        this.parentView=pView;
     }
     
     public void cmdOk() {

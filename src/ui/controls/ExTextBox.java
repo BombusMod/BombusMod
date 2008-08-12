@@ -142,13 +142,13 @@ public class ExTextBox
         if (body.length()==0) body=null;
 
 //#ifdef ARCHIVE
-	if (c==cmdPaste) { new ArchiveList(display, caretPos, 1, this); return true; }
+	if (c==cmdPaste) { new ArchiveList(display, this, caretPos, 1, this); return true; }
 //#endif
 //#ifdef CLIPBOARD
 //#         if (c==cmdPasteText) { insert(clipboard.getClipBoard(), getCaretPos()); return true; }
 //#endif
 //#if TEMPLATES
-        if (c==cmdTemplate) { new ArchiveList(display, caretPos, 2, this); return true; }
+        if (c==cmdTemplate) { new ArchiveList(display, this, caretPos, 2, this); return true; }
 //#endif
 
         return false;

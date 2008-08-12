@@ -29,6 +29,7 @@ package Account;
 
 import Client.*;
 import javax.microedition.lcdui.Display;
+import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
 import ui.SplashScreen;
@@ -89,8 +90,8 @@ public class AccountForm
     private boolean doConnect;
     
     /** Creates a new instance of AccountForm */
-    public AccountForm(AccountSelect accountSelect, Display display, Account account) {
-        super(display, null);
+    public AccountForm(Display display, Displayable pView, AccountSelect accountSelect, Account account) {
+        super(display, pView, null);
 	this.accountSelect = accountSelect;
         this.display=display;
         
@@ -125,6 +126,7 @@ public class AccountForm
         itemsList.addElement(linkSave);
 
         attachDisplay(display);
+        this.parentView=pView;
     }
     
     public void showExtended() {

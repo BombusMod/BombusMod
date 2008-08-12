@@ -401,7 +401,7 @@ public class ServiceDiscovery
 	if (c==cmdOk) eventOk();
         if (c==cmdBack) exitDiscovery(false);            
         if (c==cmdRfsh) { if (service!=null) requestQuery(NS_INFO, "disco"); }
-        if (c==cmdSrv) { new ServerBox(display, service, this); }
+        if (c==cmdSrv) { new ServerBox(display, parentView, service, this); }
         if (c==cmdFeatures) {new DiscoFeatures(display, service, features); }
         if (c==cmdCancel) exitDiscovery(true);
     }
@@ -465,7 +465,7 @@ public class ServiceDiscovery
                         room=service.substring(0,rp);
                         server=service.substring(rp+1);
                     }
-                    new ConferenceForm(display, room, service, null, false);
+                    new ConferenceForm(display, parentView, room, service, null, false);
                     break;
                 }
 //#endif
@@ -518,7 +518,7 @@ public class ServiceDiscovery
     
     public void showMenu() {
 //#ifdef MENU_LISTENER
-//#         new MyMenu(display, this, SR.MS_DISCO, null);
+//#         new MyMenu(display, parentView, this, SR.MS_DISCO, null);
 //#endif
     }
 }

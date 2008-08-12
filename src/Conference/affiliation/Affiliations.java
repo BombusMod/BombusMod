@@ -74,7 +74,7 @@ public class Affiliations
     
     
     /** Creates a new instance of AffiliationList */
-    public Affiliations(Display display, String room, short affiliationIndex) {
+    public Affiliations(Display display, Displayable pView, String room, short affiliationIndex) {
         super ();
         this.room=room;
         
@@ -105,6 +105,7 @@ public class Affiliations
         
         setCommandListener(this);
         attachDisplay(display);
+        this.parentView=pView;
         getList();
     }
     
@@ -115,7 +116,7 @@ public class Affiliations
     }
     
     public void commandAction(Command c, Displayable d){
-        if (c==cmdNew) new AffiliationModify(display, room, null, "none", "");
+        if (c==cmdNew) new AffiliationModify(display, parentView, room, null, "none", "");
         if (c==cmdModify) eventOk();
 //#ifdef CLIPBOARD
 //#         if (c==cmdCopy) {
@@ -140,7 +141,7 @@ public class Affiliations
     public void eventOk(){
         try {
             AffiliationItem item=(AffiliationItem)getFocusedObject();
-            new AffiliationModify(display, room, item.jid, 
+            new AffiliationModify(display, parentView, room, item.jid, 
 					AffiliationItem.getAffiliationName( (short)item.affiliation), 
                                         (item.reason==null)? "":item.reason
                     );

@@ -66,6 +66,7 @@ import io.file.transfer.TransferSendFile;
 //#endif
 import java.util.Enumeration;
 import javax.microedition.lcdui.Display;
+import javax.microedition.lcdui.Displayable;
 import locale.SR;
 import ui.Time;
 //#ifdef CLIPBOARD
@@ -97,7 +98,7 @@ public class RosterItemActions extends Menu {
 //#endif
     
     /** Creates a new instance of RosterItemActions */
-    public RosterItemActions(Display display, Object item, int action) {
+    public RosterItemActions(Display display, Displayable pView, Object item, int action) {
 //#ifdef NEW_SKIN
 //#         super(item.toString(), MenuActionsIcons.getInstance());
 //#else
@@ -308,9 +309,10 @@ public class RosterItemActions extends Menu {
 //#endif
  	}
 	if (getItemCount()>0) {
-            if (action<0) 
+            if (action<0) {
                 attachDisplay(display);
-            else try {
+                this.parentView=pView;
+            } else try {
                 this.display=display; // to invoke dialog Y/N
                 doAction(action);
             } catch (Exception e) { 
@@ -350,18 +352,18 @@ public class RosterItemActions extends Menu {
                 case 1: // vCard
                     if (c.vcard!=null) {
                         if (c.getGroupType()==Groups.TYPE_SELF)
-                            new VCardEdit(display, c.vcard);
+                            new VCardEdit(display, sd.roster, c.vcard);
                         else
-                            new VCardView(display, c.vcard, c.getNickJid());
+                            new VCardView(display, sd.roster, c.vcard, c.getNickJid());
                         return;
                     }
                     VCard.request(c.getBareJid(), c.getJid());
                     break;
                 case 2:
-                    (new ContactEdit(display, c )).parentView=sd.roster;
+                    new ContactEdit(display, sd.roster, c );
                     return; //break;
                 case 3: //subscription
-                    new SubscriptionEdit(display, c);
+                    new SubscriptionEdit(display, sd.roster, c);
                     return; //break;
                 case 4:
                     new AlertBox(SR.MS_DELETE_ASK, c.getNickJid(), display,  sd.roster) {
@@ -485,7 +487,7 @@ public class RosterItemActions extends Menu {
                 case 40: //invite
                     //new InviteForm(c, display);
                     if (c.jid!=null) {
-                        new InviteForm(c, display);                        
+                        new InviteForm(display, sd.roster, c);
                     } else {
                         MucContact mcJ=(MucContact) c;
 
@@ -498,22 +500,22 @@ public class RosterItemActions extends Menu {
                                         onlineConferences=true;
                                 } catch (Exception e) {}
                             }
-                            if (onlineConferences) new InviteForm(mcJ, display);
+                            if (onlineConferences) new InviteForm(display, sd.roster, mcJ);
                         }
                     }
                     return;
 //#endif
                 case 45: //direct presence
-                    (new StatusSelect(display, c)).setParentView(sd.roster);
+                    new StatusSelect(display, sd.roster, c);
                     return;
 //#if (FILE_IO && FILE_TRANSFER)
                 case 50: //send file
-                    new TransferSendFile(display, c.getJid());
+                    new TransferSendFile(display, sd.roster, c.getJid());
                     return;
 //#endif
 //#if FILE_TRANSFER
                 case 51: //send photo
-                    new TransferImage(display, c.getJid());
+                    new TransferImage(display, sd.roster, c.getJid());
                     return;
 //#endif
             }
@@ -539,7 +541,7 @@ public class RosterItemActions extends Menu {
                     case 12: // admins
                     case 13: // members
                     case 14: // outcasts
-                        new Affiliations(display, roomJid, (short)(index-10));
+                        new Affiliations(display, parentView, roomJid, (short)(index-10));
                         return;
                     case 22:
                         sd.roster.leaveRoom( g );
@@ -548,38 +550,38 @@ public class RosterItemActions extends Menu {
                         sd.roster.reEnterRoom( g );
                         return; //break;
                     case 46: //conference presence
-                        new StatusSelect(display, ((ConferenceGroup)g).getConference()).setParentView(sd.roster);
+                        new StatusSelect(display, sd.roster, ((ConferenceGroup)g).getConference());
                         return;
                      case 8: // kick
-                        new ConferenceQuickPrivelegeModify(display, mc, ConferenceQuickPrivelegeModify.KICK,myNick);
+                        new ConferenceQuickPrivelegeModify(display, sd.roster, mc, ConferenceQuickPrivelegeModify.KICK,myNick);
                         return;
                      case 9: // ban
-                        new ConferenceQuickPrivelegeModify(display, mc, ConferenceQuickPrivelegeModify.OUTCAST,myNick);
+                        new ConferenceQuickPrivelegeModify(display, sd.roster, mc, ConferenceQuickPrivelegeModify.OUTCAST,myNick);
                         return;
                      case 31: //grant voice and revoke moderator
-                        new ConferenceQuickPrivelegeModify(display, mc, ConferenceQuickPrivelegeModify.PARTICIPANT,null); //
+                        new ConferenceQuickPrivelegeModify(display, sd.roster, mc, ConferenceQuickPrivelegeModify.PARTICIPANT,null); //
                         return;
                      case 32: //revoke voice
-                        new ConferenceQuickPrivelegeModify(display, mc, ConferenceQuickPrivelegeModify.VISITOR,null);
+                        new ConferenceQuickPrivelegeModify(display, sd.roster, mc, ConferenceQuickPrivelegeModify.VISITOR,null);
                         return;
                      case 33: //grant moderator
-                        new ConferenceQuickPrivelegeModify(display, mc, ConferenceQuickPrivelegeModify.MODERATOR,null); //
+                        new ConferenceQuickPrivelegeModify(display, sd.roster, mc, ConferenceQuickPrivelegeModify.MODERATOR,null); //
                         return;
                     case 35: //grant membership and revoke admin
-                        new ConferenceQuickPrivelegeModify(display, mc, ConferenceQuickPrivelegeModify.MEMBER,null); //
+                        new ConferenceQuickPrivelegeModify(display, sd.roster, mc, ConferenceQuickPrivelegeModify.MEMBER,null); //
                         return;
                     case 36: //revoke membership
-                        new ConferenceQuickPrivelegeModify(display, mc, ConferenceQuickPrivelegeModify.NONE,null); //
+                        new ConferenceQuickPrivelegeModify(display, sd.roster, mc, ConferenceQuickPrivelegeModify.NONE,null); //
                          return;
                     case 37: //grant admin and revoke owner
-                        new ConferenceQuickPrivelegeModify(display, mc, ConferenceQuickPrivelegeModify.ADMIN,null); //
+                        new ConferenceQuickPrivelegeModify(display, sd.roster, mc, ConferenceQuickPrivelegeModify.ADMIN,null); //
                         return;
                     case 38: //grant owner
-                        new ConferenceQuickPrivelegeModify(display, mc, ConferenceQuickPrivelegeModify.OWNER,null); //
+                        new ConferenceQuickPrivelegeModify(display, sd.roster, mc, ConferenceQuickPrivelegeModify.OWNER,null); //
                         return;
 //#ifdef REQUEST_VOICE		 
 //#                 case 39: //request voice
-//#                     new QueryRequestVoice(display, mc, ConferenceQuickPrivelegeModify.PARTICIPANT);
+//#                     new QueryRequestVoice(display, sd.roster, mc, ConferenceQuickPrivelegeModify.PARTICIPANT);
 //#                     return;
 //#endif
 //#ifdef CLIPBOARD
@@ -603,7 +605,7 @@ public class RosterItemActions extends Menu {
             {
                 switch (index) {
                     case 1001: //rename
-                        new RenameGroup(display, sg/*, null*/);
+                        new RenameGroup(display, sd.roster, sg/*, null*/);
                         return;
                     case 1004: //delete
                         new AlertBox(SR.MS_DELETE_GROUP_ASK, sg.getName(), display, sd.roster) {

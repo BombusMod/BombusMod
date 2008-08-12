@@ -57,7 +57,7 @@ public class XMLList
     private Command cmdPurge=new Command(SR.MS_CLEAR_LIST, Command.SCREEN, 10);
     
     /** Creates a new instance of XMLList */
-    public XMLList(Display display) {
+    public XMLList(Display display, Displayable pView) {
         super ();
         
         super.smiles=false;
@@ -68,17 +68,14 @@ public class XMLList
         addCommands();
         setCommandListener(this);
 
-        attachDisplay(display);
-        
-        /*try {
-            focusedItem(0);
-        } catch (Exception e) {}*/
         moveCursorHome();
         
 //#ifdef CONSOLE        
 //# 	MainBar mainbar=new MainBar(SR.MS_XML_CONSOLE);
 //#         setMainBarItem(mainbar);
 //#endif
+        attachDisplay(display);
+        this.parentView=pView;
     }
     
     public void commandState() {

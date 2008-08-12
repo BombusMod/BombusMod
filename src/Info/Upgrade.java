@@ -71,13 +71,12 @@ public class Upgrade
     InputStream is;
             
     private Display display;
-    private Displayable parentView;
 
     private boolean wait=true;
     private boolean error=false;
     
     /** Creates a new instance of Upgrade */
-    public Upgrade(Display display, boolean build) {
+    public Upgrade(Display display, Displayable pView, boolean build) {
         super ();
         this.display=display;
         this.build=build;
@@ -86,7 +85,6 @@ public class Upgrade
         
         setCommandListener(this);
 	addCommand(cmdBack);
-        attachDisplay(display);
         
         try {
             focusedItem(0);
@@ -97,9 +95,11 @@ public class Upgrade
         mainbar.addElement(null);
         mainbar.addRAlign();
         mainbar.addElement(null);
+
+        attachDisplay(display);
+        this.parentView=pView;
         
         new Thread(this).start();
-        
     }
 
     public void run() {

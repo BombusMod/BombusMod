@@ -43,7 +43,6 @@ public class TransferSendFile
         implements BrowserListener {
     
     private Display display;
-    private Displayable parentView;
 
     private String to;
     
@@ -52,11 +51,10 @@ public class TransferSendFile
     private TextInput description;
 
     /** Creates a new instance of TransferAcceptFile */
-    public TransferSendFile(final Display display, String recipientJid) {
-        super(display, SR.MS_SEND_FILE);
+    public TransferSendFile(final Display display, Displayable pView, String recipientJid) {
+        super(display, pView, SR.MS_SEND_FILE);
         this.display=display;
         this.to=recipientJid;
-        parentView=display.getCurrent();
 
         itemsList.addElement(new SimpleString(SR.MS_SEND_FILE_TO, true));
         itemsList.addElement(new SimpleString(recipientJid, false));
@@ -72,10 +70,11 @@ public class TransferSendFile
         
         moveCursorTo(2);
         attachDisplay(display);
+        this.parentView=pView;
     }
     
     public void initBrowser() {
-        new Browser(null, display, this, false);
+        new Browser(null, display, this, this, false);
     }
 
     public void BrowserFilePathNotify(String pathSelected) { fileName.setValue(pathSelected); redraw(); }

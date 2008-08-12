@@ -80,7 +80,7 @@ public class Browser
     private boolean getDirectory;
     
     /** Creates a new instance of Browser */
-    public Browser(String path, Display display, BrowserListener browserListener, boolean getDirectory) {
+    public Browser(String path, Display display, Displayable pView, BrowserListener browserListener, boolean getDirectory) {
         super(display);
         
         this.browserListener=browserListener;
@@ -115,6 +115,9 @@ public class Browser
         } else path=path.substring(0,l+1);
 
         chDir(path);
+        
+        attachDisplay(display);
+        this.parentView=pView;
     }
     
     protected int getItemCount() { return dir.size(); }
@@ -328,7 +331,7 @@ public class Browser
     
     public void showMenu() {
 //#ifdef MENU_LISTENER
-//#         new MyMenu(display, this, SR.MS_DISCO, null);
+//#         new MyMenu(display, parentView, this, SR.MS_DISCO, null);
 //#endif
     }
 }

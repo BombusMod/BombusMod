@@ -385,17 +385,17 @@ public class ContactMessageList extends MessageList {
 //#ifndef WMUC
             if (contact instanceof MucContact) {
                 MucContact mc=(MucContact) contact;
-                new RosterItemActions(display, mc, -1);
+                new RosterItemActions(display, this, mc, -1);
             } else {
 //#endif
-                new RosterItemActions(display, contact, -1);
+                new RosterItemActions(display, this, contact, -1);
 //#ifndef WMUC
             }
 //#endif
         }
 	
 	if (c==cmdActive) {
-	    new ActiveContacts(display, contact);
+	    new ActiveContacts(display, this, contact);
 	}
         
         if (c==cmdReply) {
@@ -539,7 +539,7 @@ public class ContactMessageList extends MessageList {
                     super.pageRight();
                 return;
             case KEY_NUM3:
-                new ActiveContacts(display, contact);
+                new ActiveContacts(display, this, contact);
                 return;        
             case KEY_NUM9:
                 if (sd.roster.isLoggedIn()) 

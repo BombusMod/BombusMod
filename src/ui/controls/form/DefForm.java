@@ -60,7 +60,6 @@ public class DefForm
     {
     
     public Display display;
-    public Displayable parentView;
     
     public Vector itemsList=new Vector();
 
@@ -71,9 +70,8 @@ public class DefForm
     /**
      * Creates a new instance of DefForm
      */
-    public DefForm(final Display display, String caption) {
+    public DefForm(final Display display, Displayable pView, String caption) {
 	this.display=display;
-	parentView=display.getCurrent();
         
 	setMainBarItem(new MainBar(caption));
         
@@ -81,6 +79,7 @@ public class DefForm
         
 	setCommandListener(this);
         commandState();
+        this.parentView=pView;
     }
 
     protected int getItemCount() { return itemsList.size(); }
@@ -152,7 +151,7 @@ public class DefForm
 //#                 return;
 //#             }
 //#         }
-//#         new MyMenu(display, this, "", null);
+//#         new MyMenu(display, parentView, this, "", null);
 //#     }
 //#     
 //#     public void touchLeftPressed(){ showMenu(); }

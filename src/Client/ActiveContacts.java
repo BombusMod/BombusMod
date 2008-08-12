@@ -57,7 +57,7 @@ public class ActiveContacts
     private Command cmdSelect=new Command(SR.MS_SELECT, Command.SCREEN, 1);
 //#endif
     /** Creates a new instance of ActiveContacts */
-    public ActiveContacts(Display display, Contact current) {
+    public ActiveContacts(Display display, Displayable pView, Contact current) {
 	super();
         activeContacts=null;
 	activeContacts=new Vector();
@@ -84,6 +84,7 @@ public class ActiveContacts
         } catch (Exception e) {}
 
 	attachDisplay(display);
+        this.parentView=pView;
     }
 
     protected int getItemCount() { return activeContacts.size(); }

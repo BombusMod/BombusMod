@@ -109,9 +109,9 @@ public class userKeysList
 //#             destroyView();    
 //#         }
 //#         if (c==cmdEdit) 
-//#             new userKeyEdit(this, display,(userKey)getFocusedObject());
+//#             new userKeyEdit(display, parentView, this, (userKey)getFocusedObject());
 //#         if (c==cmdAdd)
-//#             new userKeyEdit(this, display, null);
+//#             new userKeyEdit(display, parentView, this, null);
 //#         if (c==cmdDel) {
 //#             userKeyExec.getInstance().commandsList.removeElement(getFocusedObject());
 //#             
@@ -125,7 +125,7 @@ public class userKeysList
     
     public void eventOk(){
 //#ifdef USER_KEYS
-//#         new userKeyEdit(this, display,(userKey)getFocusedObject());
+//#         new userKeyEdit(display, parentView, this, (userKey)getFocusedObject());
 //#endif
     }
     

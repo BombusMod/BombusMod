@@ -41,7 +41,6 @@ public class archiveEdit
         implements CommandListener {
     
     private Display display;
-    //private Displayable parentView;
 
     private Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 99);
     private Command cmdOk=new Command(SR.MS_OK, Command.OK /*Command.SCREEN*/, 1);
@@ -62,7 +61,6 @@ public class archiveEdit
         super(display, null, (pos>-1)?SR.MS_EDIT:SR.MS_NEW, TextField.ANY);
         
         this.display=display;
-        //parentView=display.getCurrent();
         
         archive=new MessageArchive(where);
 

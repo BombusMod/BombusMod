@@ -457,20 +457,15 @@ public class Contact extends IconTextElement{
     public final void smartPurge(int cursor) {
         try {
             if (msgs.size()>0){
-                if (cursor==msgs.size() && ((Msg)msgs.lastElement()).dateGmt+1000<System.currentTimeMillis()) {
-                    msgs=null;
-                    msgs=new Vector();
-                    activeMessage=-1; //drop activeMessage num
-                } else {
-                    int cp=-1;
-                    for (int i=0; i<cursor; i++) {
-                        if (((Msg)msgs.elementAt(i)).dateGmt+1000<System.currentTimeMillis()) {
-                            cp++;
-                            msgs.removeElementAt(0);
-                        }
-                    }
-                    activeMessage=activeMessage-cp; //drop activeMessage count
+                int delPos=0;
+                int cp=0;
+                for (int i=0; i<cursor; i++) {
+                     if(((Msg)msgs.elementAt(delPos)).dateGmt+1000<System.currentTimeMillis()) {
+                         msgs.removeElementAt(delPos);
+                         cp++;
+                     } else delPos++;
                 }
+                activeMessage=activeMessage-cp; //drop activeMessage count
             }
         } catch (Exception e) { }
         try {

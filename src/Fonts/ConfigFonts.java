@@ -47,10 +47,9 @@ public class ConfigFonts
     Config cf;
     
     /** Creates a new instance of newConfigFonts */
-    public ConfigFonts(Display display) {
-        super(display, SR.MS_FONTS_OPTIONS);
+    public ConfigFonts(Display display, Displayable pView) {
+        super(display, pView, SR.MS_FONTS_OPTIONS);
         this.display=display;
-        parentView=display.getCurrent();
         
         cf=Config.getInstance();
 
@@ -81,9 +80,9 @@ public class ConfigFonts
         font4.append(SR.MS_FONTSIZE_LARGE);
         font4.setSelectedIndex(cf.font4/8);
         itemsList.addElement(font4);
-  
-        moveCursorTo(getNextSelectableRef(-1));
+
         attachDisplay(display);
+        this.parentView=pView;
     }
     
     public void cmdOk() {

@@ -217,7 +217,7 @@ public abstract class MessageList extends VirtualList
 //# 
 //#     public void showMenu() {
 //#         commandState();
-//#         new MyMenu(display, this, "", null);
+//#         new MyMenu(display, parentView, this, "", null);
 //#    }
 //#     public void touchLeftPressed(){
 //#         showMenu();

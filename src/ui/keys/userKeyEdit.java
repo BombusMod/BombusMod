@@ -42,7 +42,6 @@ class userKeyEdit
 //#     private final userKeysList keysList;
 //#     
 //#     private Display display;
-//#     private Displayable parentView;
 //# 
 //#     private CheckBox active;
 //#     private DropChoiceBox keyDesc;
@@ -52,12 +51,11 @@ class userKeyEdit
 //#     
 //#     boolean newKey;
 //#endif
-    public userKeyEdit(userKeysList keysList, Display display, userKey u) {
+    public userKeyEdit(Display display, Displayable pView, userKeysList keysList, userKey u) {
 //#ifdef USER_KEYS
-//#         super(display, (u==null)?SR.MS_ADD_CUSTOM_KEY:(u.toString()));
+//#         super(display, pView, (u==null)?SR.MS_ADD_CUSTOM_KEY:(u.toString()));
 //#         
 //#         this.display=display;
-//#         parentView=display.getCurrent();
 //#         
 //# 	this.keysList = keysList;
 //# 	
@@ -84,6 +82,7 @@ class userKeyEdit
 //#         
 //#         moveCursorTo(getNextSelectableRef(-1));
 //#         attachDisplay(display);
+//#         this.parentView=pView;
 //#endif
     }
     

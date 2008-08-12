@@ -58,7 +58,7 @@ public class AlertProfile extends VirtualList implements CommandListener {
     private Command cmdDef=new Command(SR.MS_SETDEFAULT,Command.OK,2);
     private Command cmdCancel=new Command(SR.MS_BACK,Command.BACK,99);
     /** Creates a new instance of SelectStatus */
-    public AlertProfile(Display d) {
+    public AlertProfile(Display d, Displayable pView) {
         super();
         
         cf=Config.getInstance();
@@ -75,6 +75,7 @@ public class AlertProfile extends VirtualList implements CommandListener {
         
         moveCursorTo(p);
         attachDisplay(d);
+        this.parentView=pView;
     }
     
     int index;

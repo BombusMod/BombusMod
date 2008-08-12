@@ -97,7 +97,7 @@ public class PrivacyModifyList
             destroyView();
         }
         if (c==cmdAdd) {
-            new PrivacyForm(display, new PrivacyItem(), plist);
+            new PrivacyForm(display, parentView, new PrivacyItem(), plist);
         }
         if (c==cmdEdit) eventOk();
         if (c==cmdDel) {
@@ -135,7 +135,7 @@ public class PrivacyModifyList
     public void eventOk(){
         PrivacyItem pitem=(PrivacyItem) getFocusedObject();
         if (pitem!=null) {
-            new PrivacyForm(display, pitem, null);
+            new PrivacyForm(display, parentView, pitem, null);
         }
     }
     

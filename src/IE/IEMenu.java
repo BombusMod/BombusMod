@@ -29,6 +29,7 @@ package IE;
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
 import javax.microedition.lcdui.Display;
+import javax.microedition.lcdui.Displayable;
 import locale.SR;
 import Menu.Menu;
 import Menu.MenuItem;
@@ -43,7 +44,7 @@ public class IEMenu
 {
     private int choice = -1;
     
-    public IEMenu(Display display) {
+    public IEMenu(Display display, Displayable pView) {
         super("Import/Export", null);
         addItem(SR.MS_OPTIONS+": "+SR.MS_LOAD_FROM_FILE, 0);
         addItem(SR.MS_OPTIONS+": "+SR.MS_SAVE_TO_FILE, 1);
@@ -60,6 +61,7 @@ public class IEMenu
          */
     
 	attachDisplay(display);
+        this.parentView=pView;
     }
     public void eventOk(){
 	//destroyView();
@@ -71,28 +73,28 @@ public class IEMenu
 	choice=me.index;
         
         if (choice==0)
-            new Browser(null, display, this, false);
+            new Browser(null, display, this, this, false);
         
         if (choice==1)
-            new Browser(null, display, this, true);
+            new Browser(null, display, this, this, true);
         
         if (choice==2)
-            new Browser(null, display, this, false);
+            new Browser(null, display, this, this, false);
         
         if (choice==3)
-            new Browser(null, display, this, true);
+            new Browser(null, display, this, this, true);
         
         if (choice==4)
-            new Browser(null, display, this, false);
+            new Browser(null, display, this, this, false);
         
         if (choice==5)
-            new Browser(null, display, this, true);
+            new Browser(null, display, this, this, true);
         
         if (choice==6)
-            new Browser(null, display, this, false);
+            new Browser(null, display, this, this, false);
         
         if (choice==7)
-            new Browser(null, display, this, true);
+            new Browser(null, display, this, this, true);
     }
 
     public void BrowserFilePathNotify(String pathSelected) {

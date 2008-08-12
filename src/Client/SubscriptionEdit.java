@@ -41,17 +41,15 @@ public class SubscriptionEdit
         extends DefForm {
     
     private Display display;
-    private Displayable parentView;
     
     private DropChoiceBox action;
 
     String to;
     /** Creates a new instance of YesNoAlert */
-    public SubscriptionEdit(Display display, Contact c) {
-        super(display, SR.MS_SUBSCRIPTION);
+    public SubscriptionEdit(Display display, Displayable pView, Contact c) {
+        super(display, pView, SR.MS_SUBSCRIPTION);
         
         this.display=display;
-        parentView=display.getCurrent();
         
         to=c.getBareJid();
 
@@ -69,6 +67,7 @@ public class SubscriptionEdit
 
         moveCursorTo(getNextSelectableRef(-1));
         attachDisplay(display);
+        this.parentView=pView;
     }
     
     public void cmdOk() {

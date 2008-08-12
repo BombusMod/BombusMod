@@ -87,7 +87,7 @@ public class TransferManager
     public void eventOk() {
         TransferTask t=(TransferTask) getFocusedObject();
         if (t!=null)
-            if (t.isAcceptWaiting()) new TransferAcceptFile(display, t);
+            if (t.isAcceptWaiting()) new TransferAcceptFile(display, parentView, t);
     }
     
     protected void keyClear() {
@@ -153,7 +153,7 @@ public class TransferManager
     
     public void showMenu() {
 //#ifdef MENU_LISTENER
-//#         new MyMenu(display, this, SR.MS_DISCO, null);
+//#         new MyMenu(display, parentView, this, SR.MS_DISCO, null);
 //#endif
     }
 }

@@ -139,7 +139,7 @@ public class BombusMod extends MIDlet implements Runnable{
             // connect whithout account select
             Account.loadAccount(cf.autoLogin, cf.accountIndex);
         } else {
-            new AccountSelect(display, true);
+            new AccountSelect(display, sd.roster, true);
         }
     }
 

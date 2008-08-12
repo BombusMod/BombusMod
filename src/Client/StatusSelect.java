@@ -74,8 +74,9 @@ public class StatusSelect
     private Config cf;
     private StaticData sd = StaticData.getInstance();
     
-    public StatusSelect(Display d, Contact to) {
+    public StatusSelect(Display d, Displayable pView, Contact to) {
         super();
+        
         cf=Config.getInstance();
         statusList=StatusList.getInstance().statusList;
         this.to=to;
@@ -92,6 +93,8 @@ public class StatusSelect
         defp=cf.loginstatus;
         moveCursorTo(defp);
         attachDisplay(d);
+        
+        this.parentView=pView;
     }
     
     public void commandState() {
@@ -107,17 +110,13 @@ public class StatusSelect
     public VirtualElement getItemRef(int Index){
         return (VirtualElement)statusList.elementAt(Index);
     }
-    
-    public void setParentView(Displayable parentView){
-        this.parentView=parentView;
-    }
-    
+
     private ExtendedStatus getSel(){ return (ExtendedStatus)getFocusedObject();}
     
     public void commandAction(Command c, Displayable d){
         if (c==cmdOk) eventOk(); 
         if (c==cmdEdit) {
-            new StatusForm( display, getSel() );
+            new StatusForm( display, this, getSel() );
         }
         
         if (c==cmdDef) {
@@ -185,7 +184,7 @@ public class StatusSelect
 //# 
 //#     public void showMenu() {
 //#         commandState();
-//#         new MyMenu(display, this, SR.MS_STATUS, null);
+//#         new MyMenu(display, parentView, this, SR.MS_STATUS, null);
 //#     }
 //#endif
     
@@ -193,7 +192,6 @@ public class StatusSelect
         extends DefForm {
         
         private Display display;
-        public Displayable parentView;
 
         private NumberInput tfPriority;
         private TextInput tfMessage;
@@ -203,10 +201,9 @@ public class StatusSelect
 
         private CheckBox autoRespond;
         
-        public StatusForm(Display display, ExtendedStatus status){
-            super(display, status.getScreenName());
+        public StatusForm(Display display, Displayable pView, ExtendedStatus status){
+            super(display, pView, status.getScreenName());
             this.display=display;
-            parentView=display.getCurrent();
             this.status=status;
             
             tfMessage = new TextInput(display, SR.MS_MESSAGE, status.getMessage(), "ex_status_list", TextField.ANY); //, 100, TextField.ANY "ex_status_list"
@@ -231,6 +228,7 @@ public class StatusSelect
             
             moveCursorTo(getNextSelectableRef(-1));
             attachDisplay(display);
+            this.parentView=pView;
         }
         
         public void cmdOk() {

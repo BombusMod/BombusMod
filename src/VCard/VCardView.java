@@ -86,10 +86,9 @@ public class VCardView
     Command cmdDelPhoto  = new Command(SR.MS_CLEAR_PHOTO, Command.SCREEN,5);
 
     /** Creates a new instance of VCardView */
-    public VCardView(Display display, VCard vcard, String caption) {
-        super(display, caption);
+    public VCardView(Display display, Displayable pView, VCard vcard, String caption) {
+        super(display, pView, caption);
         this.display=display;
-        parentView=display.getCurrent();
         
         this.vcard=vcard;
 
@@ -131,6 +130,7 @@ public class VCardView
 
         enableListWrapping(false);
         attachDisplay(display);
+        this.parentView=pView;
     }
     
     
@@ -175,7 +175,7 @@ public class VCardView
         }
 //#if FILE_IO
         if (c==cmdSavePhoto) {
-            new Browser(null, display, this, true);
+            new Browser(null, display, this, this, true);
         }
 //#endif
 //#ifdef CLIPBOARD

@@ -54,9 +54,9 @@ public class AccountRegister
     private Command cmdCancel=new Command(SR.MS_BACK,Command.BACK, 2);
     
     /** Creates a new instance of AccountRegister */
-    public AccountRegister(Account account, Display display, Displayable parentView) {
+    public AccountRegister(Account account, Display display, Displayable pView) {
         this.display=display;
-        this.parentView=display.getCurrent();
+        this.parentView=pView;
 
         raccount=account;
         spl.setProgress(SR.MS_STARTUP,5);

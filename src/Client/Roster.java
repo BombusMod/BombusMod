@@ -1266,12 +1266,12 @@ public class Roster
                             c.vcard=vcard;
                             if (display.getCurrent() instanceof VirtualList) {
                                 if (c.getGroupType()==Groups.TYPE_SELF)
-                                    new VCardEdit(display, vcard);
+                                    new VCardEdit(display, this, vcard);
                                 else
-                                    new VCardView(display, vcard, c.getNickJid());
+                                    new VCardView(display, this, vcard, c.getNickJid());
                             }
                         } else {
-                            new VCardView(display, vcard, c.getNickJid());
+                            new VCardView(display, this, vcard, c.getNickJid());
                         }
                         return JabberBlockListener.BLOCK_PROCESSED;
                     }
@@ -2119,7 +2119,7 @@ public class Roster
                     ConferenceGroup mucGrp=(ConferenceGroup)c.getGroup();
                     String myNick=mucGrp.getSelfContact().getName();
                     MucContact mc=(MucContact) c;
-                    new ConferenceQuickPrivelegeModify(display, mc, ConferenceQuickPrivelegeModify.KICK,myNick);
+                    new ConferenceQuickPrivelegeModify(display, this, mc, ConferenceQuickPrivelegeModify.KICK,myNick);
                 }
 //#endif 
             } catch (Exception e) { /* NullPointerException */ }
@@ -2134,7 +2134,7 @@ public class Roster
 //#else
     public void touchRightPressed(){
         if (isLoggedIn()) 
-            new RosterItemActions(display, getFocusedObject(), -1);
+            new RosterItemActions(display, this, getFocusedObject(), -1);
     }
 //#endif
     
@@ -2148,7 +2148,7 @@ public class Roster
 //# 
 //#         if (keyCode==Config.SOFT_RIGHT) {
 //#             if (isLoggedIn()) 
-//#                 new RosterItemActions(display, getFocusedObject(), -1);
+//#                 new RosterItemActions(display, this, getFocusedObject(), -1);
 //#             return;
 //#         }
 //#endif
@@ -2296,10 +2296,10 @@ public class Roster
             return;
         }
 //#ifndef WMUC
-        else if (keyCode==KEY_NUM1 && isLoggedIn()) new Bookmarks(display, null);
+        else if (keyCode==KEY_NUM1 && isLoggedIn()) new Bookmarks(display, this, null);
 //#endif
-       	else if (keyCode==KEY_NUM3) new ActiveContacts(display, null);
-       	else if (keyCode==KEY_NUM4) new ConfigForm(display);
+       	else if (keyCode==KEY_NUM3) new ActiveContacts(display, this, null);
+       	else if (keyCode==KEY_NUM4) new ConfigForm(display, this);
         else if (keyCode==KEY_NUM6) {
             cf.fullscreen=!cf.fullscreen;
             cf.saveToStorage();
@@ -2307,7 +2307,7 @@ public class Roster
             StaticData.getInstance().roster.setFullScreenMode(cf.fullscreen);
         }
         else if (keyCode==KEY_NUM7)
-            new RosterToolsMenu(display);
+            new RosterToolsMenu(display, this);
         else if (keyCode==KEY_NUM9) {
             if (cf.allowMinimize)
                 BombusMod.getInstance().hideApp(true);
@@ -2511,24 +2511,24 @@ public class Roster
     }
 
     public void cmdMinimize() { BombusMod.getInstance().hideApp(true);  }
-    public void cmdActiveContacts() { new ActiveContacts(display, null); }
-    public void cmdAccount(){ new AccountSelect(display, false); }
-    public void cmdStatus() { currentReconnect=0; new StatusSelect(display, null); }
-    public void cmdAlert() { new AlertProfile(display); }
+    public void cmdActiveContacts() { new ActiveContacts(display, this, null); }
+    public void cmdAccount(){ new AccountSelect(display, this, false); }
+    public void cmdStatus() { currentReconnect=0; new StatusSelect(display, this, null); }
+    public void cmdAlert() { new AlertProfile(display, this); }
 //#ifdef ARCHIVE
-    public void cmdArchive() { new ArchiveList(display, -1, 1, null); }
+    public void cmdArchive() { new ArchiveList(display, this, -1, 1, null); }
 //#endif
-    public void cmdInfo() { new Info.InfoWindow(display); }
-    public void cmdTools() { new RosterToolsMenu(display); }
+    public void cmdInfo() { new Info.InfoWindow(display, this); }
+    public void cmdTools() { new RosterToolsMenu(display, this); }
 //#ifdef POPUPS
     public void cmdClearPopups() { VirtualList.popup.clear(); }
 //#endif
 //#ifndef WMUC
-   public void cmdConference() { if (isLoggedIn()) new Bookmarks(display, null); }
+   public void cmdConference() { if (isLoggedIn()) new Bookmarks(display, this, null); }
 //#endif
    public void cmdActions() {
        if (isLoggedIn())
-           new RosterItemActions(display, getFocusedObject(), -1);
+           new RosterItemActions(display, this, getFocusedObject(), -1);
    }
    
    public void cmdAdd() {
@@ -2544,7 +2544,7 @@ public class Roster
             if (o instanceof MucContact)
                 cn=(Contact)o;
 //#endif
-            new ContactEdit(display, cn);
+            new ContactEdit(display, this, cn);
        }
    }
 
@@ -2553,7 +2553,7 @@ public class Roster
 	ConferenceGroup confGroup=(ConferenceGroup)group;
         String confJid=confGroup.getSelfContact().getJid();
         String name=confGroup.desc;
-	new ConferenceForm(display, name, confJid, confGroup.password, false);
+	new ConferenceForm(display, this, name, confJid, confGroup.password, false);
     }
     
     public void leaveRoom(Group group){
@@ -2922,7 +2922,7 @@ public class Roster
 //# 
 //#     public void showMenu() {
 //#         commandState();
-//#         new MyMenu(display, this, SR.MS_MAIN_MENU, menuIcons);
+//#         new MyMenu(display, parentView, this, SR.MS_MAIN_MENU, menuIcons);
 //#     }
 //#     public void touchLeftPressed(){
 //#         showMenu();

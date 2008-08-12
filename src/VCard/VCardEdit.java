@@ -56,7 +56,6 @@ public class VCardEdit
 {
     
     private Display display;
-    private Displayable parentView;
 
     Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 99);
     Command cmdPublish=new Command(SR.MS_PUBLISH, Command.OK, 1);
@@ -81,10 +80,9 @@ public class VCardEdit
     private SimpleString photoTooLarge=new SimpleString(SR.MS_PHOTO_TOO_LARGE, false);
 
     /** Creates a new instance of vCardForm */
-    public VCardEdit(Display display, VCard vcard) {
-        super(display, SR.MS_VCARD+" "+vcard.getNickName());
+    public VCardEdit(Display display, Displayable pView, VCard vcard) {
+        super(display, pView, SR.MS_VCARD+" "+vcard.getNickName());
         this.display=display;
-        parentView=display.getCurrent();
         this.vcard=vcard;
 
         for (int index=0; index<vcard.getCount(); index++) {
@@ -117,6 +115,7 @@ public class VCardEdit
 //#endif
         enableListWrapping(false);
         attachDisplay(display);
+        this.parentView=pView;
     }
     
     public void cmdOk() {
@@ -142,11 +141,11 @@ public class VCardEdit
 //#if FILE_IO
         if (c==cmdLoadPhoto) {
             st=1;
-            new Browser(null, display, this, false);
+            new Browser(null, display, this, this, false);
         }
         if (c==cmdSavePhoto) {
             st=2;
-            new Browser(null, display, this, true);
+            new Browser(null, display, this, this, true);
         }
 //#endif
 

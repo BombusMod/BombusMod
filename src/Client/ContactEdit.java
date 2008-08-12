@@ -47,9 +47,7 @@ import ui.controls.form.TextInput;
 public final class ContactEdit
         extends DefForm {
     private Display display;
-    public Displayable parentView;
-    
-    //Form f;
+
     private LinkString vCardReq;
     private TextInput tJid;
     private TextInput tNick;
@@ -59,34 +57,26 @@ public final class ContactEdit
     private CheckBox tAskSubscrCheckBox;
 
     int ngroups;
-    
-    //int grpFIndex;
-    
+
     int newGroupPos=0;
-    
-    //Command cmdOk=new Command(SR.MS_ADD, Command.OK, 1);
-    //Command cmdSet=new Command(SR.MS_SET, Command.ITEM, 2);
-    //Command cmdCancel=new Command(SR.MS_CANCEL,Command.BACK,99);
-    
+
     boolean newContact=true;
     Config cf;
     
     private boolean newGroup;
 
     StaticData sd=StaticData.getInstance();
-    //StoreContact sC;
     
-    public ContactEdit(Display display, Contact c) {
-        super(display, SR.MS_ADD_CONTACT);
+    public ContactEdit(Display display, Displayable pView, Contact c) {
+        super(display, pView, SR.MS_ADD_CONTACT);
         this.display=display;
-        parentView=display.getCurrent();
         cf=Config.getInstance();
         
         tJid=new TextInput(display, SR.MS_USER_JID, null, null, TextField.ANY); 
         
         tNick=new TextInput(display, SR.MS_NAME, null, null, TextField.ANY);
         
-        tGroup=new TextInput(display, null, (c==null)?"":c.getGroup().name, null, TextField.ANY);
+        tGroup=new TextInput(display, SR.MS_NEWGROUP, (c==null)?"":c.getGroup().name, null, TextField.ANY);
 
         tTranspList=new DropChoiceBox(display, SR.MS_TRANSPORT);
         // Transport droplist
@@ -101,8 +91,6 @@ public final class ContactEdit
         tTranspList.setSelectedIndex(tTranspList.size()-1);
         
         tAskSubscrCheckBox=new CheckBox(SR.MS_ASK_SUBSCRIPTION, false);
-        
-        //tGrpList=new ChoiceGroup(SR.MS_GROUP , ChoiceGroup.POPUP);
 
         try {
             String jid;
@@ -152,19 +140,18 @@ public final class ContactEdit
         if (sel<0) sel=0;
         
         if (c==null){
-            itemsList.addElement(tJid);// newGroupPos++;
+            itemsList.addElement(tJid);
 
-            itemsList.addElement(tTranspList);// newGroupPos++;
+            itemsList.addElement(tTranspList);
         }
-        itemsList.addElement(tNick);// newGroupPos++;
+        itemsList.addElement(tNick);
 
         tGrpList.append(SR.MS_NEWGROUP);
         tGrpList.setSelectedIndex(sel);
         itemsList.addElement(tGrpList);
         
-        newGroupPos=itemsList.indexOf(tGrpList);
-        
-        //itemsList.addElement(tGroup);
+        newGroupPos=itemsList.indexOf(tGrpList)+1;
+
 
         if (newContact) {
             itemsList.addElement(new SimpleString(SR.MS_SUBSCRIPTION, true));
@@ -176,6 +163,7 @@ public final class ContactEdit
         
         moveCursorTo(getNextSelectableRef(-1));
         attachDisplay(display);
+        this.parentView=pView;
     }
     
     private void requestVCard() {
@@ -230,7 +218,7 @@ public final class ContactEdit
     private String group(int index) {
         if (index==0) return null;
         if (index==tGrpList.size()-1) return null;
-        return tGrpList.toString();
+        return (String) tGrpList.items.elementAt(index);
     }
  
     public void destroyView(){

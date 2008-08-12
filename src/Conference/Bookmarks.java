@@ -90,10 +90,10 @@ public class Bookmarks
 
     JabberStream stream=sd.roster.theStream;
     /** Creates a new instance of Bookmarks */
-    public Bookmarks(Display display, BookmarkItem toAdd) {
+    public Bookmarks(Display display, Displayable pView, BookmarkItem toAdd) {
         super ();
         if (getItemCount()==0 && toAdd==null) {
-            new ConferenceForm(display);
+            new ConferenceForm(display, pView);
             return;
         }
 
@@ -108,6 +108,7 @@ public class Bookmarks
 
         setCommandListener(this);
 	attachDisplay(display);
+        this.parentView=pView;
     }
     
     public void commandState() {
@@ -171,7 +172,7 @@ public class Bookmarks
     public void commandAction(Command c, Displayable d){
         if (c==cmdCancel) exitBookmarks();
         if (c==cmdNew) { 
-            new ConferenceForm(display);
+            new ConferenceForm(display, this);
             return;
         }
         if (c==cmdJoin) eventOk();
@@ -181,7 +182,7 @@ public class Bookmarks
 
         if (c==cmdAdvJoin) {
             BookmarkItem join=(BookmarkItem)getFocusedObject();
-            new ConferenceForm(display, join, cursor);
+            new ConferenceForm(display, this, join, cursor);
         } else if (c==cmdDel) {
             deleteBookmark();
             setMainBarItem(new MainBar(2, null, SR.MS_BOOKMARKS+" ("+getItemCount()+") "));
@@ -191,10 +192,10 @@ public class Bookmarks
         else if (c==cmdDisco) new ServiceDiscovery(display, roomJid, null);
 //#endif
         else if (c==cmdConfigure) new QueryConfigForm(display, roomJid);
-        else if (c==cmdRoomOwners) new Affiliations(display, roomJid, (short)1);  
-        else if (c==cmdRoomAdmins) new Affiliations(display, roomJid, (short)2);  
-        else if (c==cmdRoomMembers) new Affiliations(display, roomJid, (short)3);  
-        else if (c==cmdRoomBanned) new Affiliations(display, roomJid, (short)4);  
+        else if (c==cmdRoomOwners) new Affiliations(display, this, roomJid, (short)1);  
+        else if (c==cmdRoomAdmins) new Affiliations(display, this, roomJid, (short)2);  
+        else if (c==cmdRoomMembers) new Affiliations(display, this, roomJid, (short)3);  
+        else if (c==cmdRoomBanned) new Affiliations(display, this, roomJid, (short)4);  
         else if (c==cmdSort) sort(sd.roster.bookmarks);
         /*else if (c==cmdDoAutoJoin) {
             for (Enumeration e=sd.roster.bookmarks.elements(); e.hasMoreElements();) {
@@ -288,7 +289,7 @@ public class Bookmarks
 //# 
 //#     public void showMenu() {
 //#         commandState();
-//#         new MyMenu(display, this, SR.MS_BOOKMARKS, null);
+//#         new MyMenu(display, parentView, this, SR.MS_BOOKMARKS, null);
 //#     }
 //#     
 //#     public void touchLeftPressed(){

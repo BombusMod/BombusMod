@@ -30,6 +30,7 @@ package io.file.transfer;
 import images.camera.CameraImage;
 import images.camera.CameraImageListener;
 import javax.microedition.lcdui.Display;
+import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
@@ -55,11 +56,10 @@ public class TransferImage
     private TextInput description;
     
     /** Creates a new instance of TransferImage */
-    public TransferImage(final Display display, String recipientJid) {
-        super(display, SR.MS_SEND_PHOTO);
+    public TransferImage(final Display display, Displayable pView, String recipientJid) {
+        super(display, pView, SR.MS_SEND_PHOTO);
         this.display=display;
         this.to=recipientJid;
-        parentView=display.getCurrent();
 
         itemsList.addElement(new SimpleString(recipientJid, false));
         
@@ -71,6 +71,7 @@ public class TransferImage
         
         moveCursorTo(2);
         attachDisplay(display);
+        this.parentView=pView;
     }
     
     public void initCamera() {

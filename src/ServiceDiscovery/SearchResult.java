@@ -130,7 +130,7 @@ public class SearchResult
     public void commandAction(Command c, Displayable d){
         if (c==cmdAdd){
             destroyView();
-            new ContactEdit(display, (Contact)getFocusedObject());
+            new ContactEdit(display, sd.roster, (Contact)getFocusedObject());
             return;
         }
         

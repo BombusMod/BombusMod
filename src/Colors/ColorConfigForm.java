@@ -53,7 +53,7 @@ public class ColorConfigForm
     {
     
     private Display display;
-    private Displayable parentView;
+
 //#ifdef COLOR_TUNE
 //#     private LinkString configureColors;
 //#endif
@@ -73,10 +73,10 @@ public class ColorConfigForm
     private LinkString reset;
 
     /** Creates a new instance of ColorConfigForm */
-    public ColorConfigForm(final Display display) {
-        super(display, SR.MS_COLOR_TUNE);
+    public ColorConfigForm(final Display display, Displayable pView) {
+        super(display, pView, SR.MS_COLOR_TUNE);
         this.display=display;
-        parentView=display.getCurrent();
+
 //#ifdef COLOR_TUNE
 //#         configureColors=new LinkString(SR.MS_COLOR_TUNE) { public void doAction() { new ColorsList(display); } };
 //#         itemsList.addElement(configureColors);
@@ -113,6 +113,7 @@ public class ColorConfigForm
         
         moveCursorTo(getNextSelectableRef(-1));
         attachDisplay(display);
+        this.parentView=pView;
     }
     
     public void cmdOk() {
@@ -128,9 +129,9 @@ public class ColorConfigForm
     public void initBrowser(int type) {
         loadType=type; 
         if (type==0) {
-            new Browser(null,display, this, true);
+            new Browser(null,display, this, this, true);
         } else if(type==1) {
-            new Browser(null, display, this, false);
+            new Browser(null, display, this, this, false);
         }
     }
 //#endif

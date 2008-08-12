@@ -40,31 +40,30 @@ public class MyMenu extends Menu {
     
     private MenuListener ml;
     private Object o;
-    private Displayable parentView;
+
     
     /** Creates a new instance of MyMenu */
-    public MyMenu(Display display, MenuListener menuListener, String caption, ImageList il) {
+    public MyMenu(Display display, Displayable parentView, MenuListener menuListener, String caption, ImageList il) {
         super(caption, il);
         this.ml=menuListener;
+
+        this.parentView=parentView;
         
         for (int i=0; i<ml.menuCommands.size(); i++) {
             Command c=(Command)ml.menuCommands.elementAt(i);
             addItem(c.getName(), i, c.getImg());
         }
-        
-        parentView=display.getCurrent();
-        
+
         attachDisplay(display);
     }
     
     public void eventOk(){
 	destroyView();
-	MenuItem me=(MenuItem) getFocusedObject();
+        MenuItem me=(MenuItem) getFocusedObject();
         
 	if (me==null)  return;
-        
-	int index=me.index;
-        ml.commandAction(getCommand(index), parentView);
+
+        ml.commandAction(getCommand(me.index), parentView);
     }
     
     private Command getCommand(int index) {

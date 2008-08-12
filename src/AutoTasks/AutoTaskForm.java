@@ -45,7 +45,6 @@ public class AutoTaskForm
     extends DefForm {
     
     private Display display;
-    private Displayable parentView;
     
 //#if AUTOTASK    
 //#     int hour =0;
@@ -69,10 +68,9 @@ public class AutoTaskForm
 //#endif
     
     /** Creates a new instance of AutoTaskForm */
-    public AutoTaskForm(Display display) {
-        super(display, SR.MS_AUTOTASKS);
+    public AutoTaskForm(Display display, Displayable pView) {
+        super(display, pView, SR.MS_AUTOTASKS);
         this.display=display;
-        parentView=display.getCurrent();
         
 //#ifdef AUTOTASK
 //#         typeIndex=at.taskType;
@@ -106,6 +104,7 @@ public class AutoTaskForm
 //#         
 //#         update();
 //#         attachDisplay(display);
+//#         this.parentView=pView;
 //#     }
 //# 
 //#     public void cmdOk() {

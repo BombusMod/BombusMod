@@ -53,7 +53,6 @@ public class TransferAcceptFile
         implements BrowserListener {
     
     private Display display;
-    private Displayable parentView;
 
     TransferTask t;
     TextInput fileName;
@@ -63,11 +62,10 @@ public class TransferAcceptFile
     Command cmdPath=new Command(SR.MS_PATH, Command.SCREEN, 2);
 
     /** Creates a new instance of TransferAcceptFile */
-    public TransferAcceptFile(Display display, TransferTask transferTask) {
-        super(display, SR.MS_ACCEPT_FILE);
+    public TransferAcceptFile(Display display, Displayable pView, TransferTask transferTask) {
+        super(display, pView, SR.MS_ACCEPT_FILE);
         
         this.display=display;
-        parentView=display.getCurrent();
         
         t=transferTask;
         
@@ -103,6 +101,7 @@ public class TransferAcceptFile
         addCommand(cmdDecline);
 
         attachDisplay(display);
+        this.parentView=pView;
     }
 
     public void BrowserFilePathNotify(String pathSelected) { path.setValue(pathSelected); }
@@ -122,7 +121,7 @@ public class TransferAcceptFile
     
     public void commandAction(Command c, Displayable d) {
         if (c==cmdPath) { 
-            new Browser(path.getValue(), display, this, true);
+            new Browser(path.getValue(), display, this, this, true);
         } else super.commandAction(c, d);
     }
     

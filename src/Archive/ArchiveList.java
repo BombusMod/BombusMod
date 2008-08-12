@@ -36,7 +36,6 @@ import java.util.Vector;
 import javax.microedition.lcdui.Command;
 //#else
 //# import Menu.Command;
-//# import Client.StaticData;
 //#endif
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
@@ -67,19 +66,13 @@ public class ArchiveList
     private TextBox t;
     
     /** Creates a new instance of ArchiveList */
-    public ArchiveList(Display display, int caretPos, int where, TextBox t) {
+    public ArchiveList(Display display, Displayable pView, int caretPos, int where, TextBox t) {
  	super ();
         this.where=where;
         this.caretPos=caretPos;
         this.t=t;
         
         archive=new MessageArchive(where);
-        
-        commandState();
-        addCommands();
-        setCommandListener(this);
-        
-        attachDisplay(display);
         
 	MainBar mainbar=new MainBar((where==1)?SR.MS_ARCHIVE:SR.MS_TEMPLATE);
 	mainbar.addElement(null);
@@ -88,6 +81,12 @@ public class ArchiveList
 	mainbar.addElement(SR.MS_FREE /*"free "*/);
         setMainBarItem(mainbar);
         
+        commandState();
+        addCommands();
+        setCommandListener(this);
+        
+        attachDisplay(display);
+        this.parentView=pView;
     }
 
     public void commandState() {
@@ -214,11 +213,7 @@ public class ArchiveList
     }*/
     
     public void destroyView(){
-//#ifndef MENU_LISTENER
-	super.destroyView();
-//#else
-//#         display.setCurrent(StaticData.getInstance().roster);
-//#endif
+        super.destroyView();
 	archive.close();
     }
 

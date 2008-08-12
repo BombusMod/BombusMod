@@ -47,7 +47,7 @@ public class InviteForm
         extends DefForm {
     
     private Display display;
-    private Displayable parentView;
+
     Vector conferences=new Vector();
     
     TextInput reason;
@@ -55,11 +55,10 @@ public class InviteForm
     Contact contact;
     
     /** Creates a new instance of InviteForm */
-    public InviteForm(Contact contact, Display display) {
-        super(display, SR.MS_INVITE);
+    public InviteForm(Display display, Displayable pView, Contact contact) {
+        super(display, pView, SR.MS_INVITE);
         this.display=display;
         this.contact=contact;
-        parentView=display.getCurrent();
         
         itemsList.addElement(new SimpleString(contact.getName(), true));
         conferenceList=new DropChoiceBox(display, SR.MS_CONFERENCE);
@@ -79,6 +78,7 @@ public class InviteForm
         
         moveCursorTo(getNextSelectableRef(-1));
         attachDisplay(display);
+        this.parentView=pView;
     }
 
 //#ifdef MENU

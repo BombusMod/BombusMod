@@ -110,7 +110,7 @@ public class userKeyExec {
                 // do nothing
                 break;
             case 1: 
-                new ConfigForm(display);
+                new ConfigForm(display, sd.roster);
                 break;
             case 2: 
                 sd.roster.cmdCleanAllMessages();
@@ -162,7 +162,7 @@ public class userKeyExec {
                 cf.saveToStorage();
                 break;
             case 13:
-                new Info.InfoWindow(display);
+                sd.roster.cmdInfo();
                 break;
             case 14:
                 if (cf.allowMinimize)
@@ -174,7 +174,7 @@ public class userKeyExec {
             case 16:
 //#ifdef CONSOLE
 //# 
-//#                 new XMLList(display);
+//#                 new XMLList(display, display.getCurrent());
 //#endif
                 break;
             case 17:

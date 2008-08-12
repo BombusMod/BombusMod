@@ -69,10 +69,9 @@ public class InfoWindow
     /**
      * Creates a new instance of InfoWindow
      */
-    public InfoWindow(Display display) {
-        super(display, SR.MS_ABOUT);
+    public InfoWindow(Display display, Displayable pView) {
+        super(display, pView, SR.MS_ABOUT);
         this.display=display;
-        parentView=display.getCurrent();
 
         name=new MultiLine(Version.getName(), Version.getVersionNumber(), super.superWidth);
         name.selectable=true;
@@ -116,6 +115,7 @@ public class InfoWindow
         
         moveCursorTo(0);
         attachDisplay(display);
+        this.parentView=pView;
     }
     public void cmdOk(){
 //#ifdef CLIPBOARD
@@ -140,38 +140,50 @@ public class InfoWindow
     private String getAbilities() {
         StringBuffer abilities=new StringBuffer();
         abilities.append("")
-//#ifdef COLOR_TUNE
-//#         .append("COLOR_TUNE, ")
-//#endif
-//#ifdef ARCHIVE
-        .append("ARCHIVE, ")
-//#endif
-//#ifdef POPUPS
-        .append("POPUPS, ")
-//#endif
-//#ifdef ELF
-//#         .append("ELF, ")
-//#endif
-//#ifdef NEW_SKIN
-//#         .append("NEW_SKIN, ")
-//#endif
-//#ifdef MENU_LISTENER
-//#         .append("MENU_LISTENER, ")
-//#endif
-//#ifdef SERVICE_DISCOVERY
-        .append("SERVICE_DISCOVERY, ")
-//#endif
-//#ifdef PRIVACY
-        .append("PRIVACY, ")
-//#endif
-//#ifdef SMILES
-        .append("SMILES, ")
+//#ifdef ADHOC
+//#         .append("ADHOC, ")
 //#endif
 //#ifdef ANTISPAM
 //#         .append("ANTISPAM, ")
 //#endif
-//#ifdef REQUEST_VOICE
-//#         .append("REQUEST_VOICE, ")
+//#ifdef ARCHIVE
+        .append("ARCHIVE, ")
+//#endif
+//#ifdef AUTOSTATUS
+//#         .append("AUTOSTATUS, ")
+//#endif
+//#ifdef CAPTCHA
+//#         .append("CAPTCHA, ")
+//#endif
+//#ifdef CHANGE_TRANSPORT
+//#         .append("CHANGE_TRANSPORT, ")
+//#endif
+//#ifdef CHECK_VERSION
+//#         .append("CHECK_VERSION, ")
+//#endif
+//#ifdef CLIENTS_ICONS
+//#         .append("CLIENTS_ICONS, ")
+//#endif
+//#ifdef CLIPBOARD
+//#         .append("CLIPBOARD, ")
+//#endif
+//#ifdef CONSOLE
+//#         .append("CONSOLE, ")
+//#endif
+//#ifdef COLOR_TUNE
+//#         .append("COLOR_TUNE, ")
+//#endif
+//#ifdef DETRANSLIT
+//#         .append("DETRANSLIT, ")
+//#endif
+//#ifdef ELF
+//#         .append("ELF, ")
+//#endif
+//#ifdef FILE_TRANSFER
+        .append("FILE_TRANSFER, ")
+//#endif
+//#ifdef GRADIENT
+//#         .append("GRADIENT, ")
 //#endif
 //#ifdef HISTORY
 //#         .append("HISTORY, ")
@@ -179,62 +191,23 @@ public class InfoWindow
 //#ifdef HISTORY_READER
 //#         .append("HISTORY_READER, ")
 //#endif
+//#ifdef IMPORT_EXPORT
+//#         .append("IMPORT_EXPORT, ")
+//#endif
 //#ifdef LAST_MESSAGES
 //#         .append("LAST_MESSAGES, ")
-//#endif
-//#ifdef SE_LIGHT
-//#         .append("SE_LIGHT, ")
-//#endif
-//#ifdef TEMPLATES
-        .append("TEMPLATES, ")
-//#endif
-//#ifdef USER_KEYS
-//#         .append("USER_KEYS, ")
-//#endif
-//#ifdef AUTOSTATUS
-//#         .append("AUTOSTATUS, ")
-//#endif
-//#ifdef USE_ROTATOR
-        .append("USE_ROTATOR, ")
-//#endif
-//#ifdef FILE_TRANSFER
-        .append("FILE_TRANSFER, ")
-//#endif
-//#ifdef CHECK_VERSION
-//#         .append("CHECK_VERSION, ")
-//#endif
-//#ifdef DETRANSLIT
-//#         .append("DETRANSLIT, ")
-//#endif
-//#ifdef WMUC
-//#         .append("WMUC, ")
-//#endif
-//#ifdef ADHOC
-//#         .append("ADHOC, ")
 //#endif
 //#ifdef LOGROTATE
 //#         .append("LOGROTATE, ")
 //#endif
-//#ifdef WSYSTEMGC
-//#         .append("WSYSTEMGC, ")
+//#ifdef MENU_LISTENER
+//#         .append("MENU_LISTENER, ")
+//#endif
+//#ifdef NEW_SKIN
+//#         .append("NEW_SKIN, ")
 //#endif
 //#ifdef NICK_COLORS
         .append("NICK_COLORS, ")
-//#endif
-//#ifdef IMPORT_EXPORT
-//#         .append("IMPORT_EXPORT, ")
-//#endif
-//#ifdef CHANGE_TRANSPORT
-//#         .append("CHANGE_TRANSPORT, ")
-//#endif
-//#ifdef CONSOLE
-//#         .append("CONSOLE, ")
-//#endif
-//#ifdef CLIPBOARD
-//#         .append("CLIPBOARD, ")
-//#endif
-//#ifdef GRADIENT
-//#         .append("GRADIENT, ")
 //#endif
 //#ifdef PEP
 //#         .append("PEP, ")
@@ -242,14 +215,41 @@ public class InfoWindow
 //#ifdef PEP_TUNE
 //#         .append("PEP_TUNE, ")
 //#endif
-//#ifdef CAPTCHA
-//#         .append("CAPTCHA, ")
+//#ifdef POPUPS
+        .append("POPUPS, ")
+//#endif
+//#ifdef REQUEST_VOICE
+//#         .append("REQUEST_VOICE, ")
+//#endif
+//#ifdef PRIVACY
+        .append("PRIVACY, ")
+//#endif
+//#ifdef SE_LIGHT
+//#         .append("SE_LIGHT, ")
+//#endif
+//#ifdef SERVICE_DISCOVERY
+        .append("SERVICE_DISCOVERY, ")
+//#endif
+//#ifdef SMILES
+        .append("SMILES, ")
 //#endif
 //#ifdef STATS
 //#         .append("STATS, ")
 //#endif
-//#ifdef CLIENTS_ICONS
-//#         .append("CLIENTS_ICONS, ")
+//#ifdef TEMPLATES
+        .append("TEMPLATES, ")
+//#endif
+//#ifdef USER_KEYS
+//#         .append("USER_KEYS, ")
+//#endif
+//#ifdef USE_ROTATOR
+        .append("USE_ROTATOR, ")
+//#endif
+//#ifdef WMUC
+//#         .append("WMUC, ")
+//#endif
+//#ifdef WSYSTEMGC
+//#         .append("WSYSTEMGC, ")
 //#endif
         .append("");
         return abilities.toString();

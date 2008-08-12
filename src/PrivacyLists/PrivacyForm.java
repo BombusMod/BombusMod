@@ -48,7 +48,6 @@ public class PrivacyForm
         extends DefForm {
     
     private Display display;
-    private Displayable parentView;
     
     private PrivacyList targetList;
     private PrivacyItem item;
@@ -68,10 +67,9 @@ public class PrivacyForm
     String tValue="";
 
     /** Creates a new instance of PrivacyForm */
-    public PrivacyForm(Display display, PrivacyItem item, PrivacyList plist) {
-        super(display, SR.MS_PRIVACY_RULE);
+    public PrivacyForm(Display display, Displayable pView, PrivacyItem item, PrivacyList plist) {
+        super(display, pView, SR.MS_PRIVACY_RULE);
         this.display=display;
-        parentView=display.getCurrent();
         
         this.item=item;
         targetList=plist;
@@ -80,6 +78,7 @@ public class PrivacyForm
         
         moveCursorTo(getNextSelectableRef(-1));
         attachDisplay(display);
+        this.parentView=pView;
     }
     
     private void update() {

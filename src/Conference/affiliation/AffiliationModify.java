@@ -46,7 +46,6 @@ public class AffiliationModify
         extends DefForm {
     
     private Display display;
-    private Displayable parentView;
 
     private TextInput jidItem;
     private DropChoiceBox affiliationItem;
@@ -56,11 +55,10 @@ public class AffiliationModify
     private int recentAffiliation;
     
     /** Creates a new instance of AffiliationModify */
-    public AffiliationModify(Display display, String room, String jid, String affiliation, String reason) {
-        super(display, SR.MS_AFFILIATION);
+    public AffiliationModify(Display display, Displayable pView, String room, String jid, String affiliation, String reason) {
+        super(display, pView, SR.MS_AFFILIATION);
         
         this.display=display;
-        parentView=display.getCurrent();
 
         this.room=room;
 
@@ -80,6 +78,7 @@ public class AffiliationModify
 	itemsList.addElement(reasonItem);
 
         attachDisplay(display);
+        this.parentView=pView;
     }
     
     

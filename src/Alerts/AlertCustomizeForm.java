@@ -53,7 +53,6 @@ public class AlertCustomizeForm
         extends DefForm {
     
     private Display display;
-    private Displayable parentView;
 
     private CheckBox statusBox;
     private CheckBox blinkBox;
@@ -84,10 +83,9 @@ public class AlertCustomizeForm
     Command cmdTest=new Command(SR.MS_TEST_SOUND, Command.SCREEN, 2);
 
     /** Creates a new instance of ConfigForm */
-    public AlertCustomizeForm(Display display) {
-        super(display, SR.MS_NOTICES_OPTIONS);
+    public AlertCustomizeForm(Display display, Displayable pView) {
+        super(display, pView, SR.MS_NOTICES_OPTIONS);
         this.display=display;
-        parentView=display.getCurrent();
         
         ac=AlertCustomize.getInstance();
         cf=Config.getInstance();
@@ -146,8 +144,9 @@ public class AlertCustomizeForm
 
         addCommand(cmdTest);
         setCommandListener(this);
-        //moveCursorTo(1);
+
         attachDisplay(display);
+        this.parentView=pView;
     }
     
     public void cmdOk() {
