@@ -97,6 +97,7 @@ public class TransferAcceptFile
 
         itemsList.addElement(new MultiLine(SR.MS_DESCRIPTION, t.description, super.superWidth));
 
+        removeCommand(cmdCancel);
         addCommand(cmdPath);
         addCommand(cmdDecline);
 
@@ -122,13 +123,17 @@ public class TransferAcceptFile
     public void commandAction(Command c, Displayable d) {
         if (c==cmdPath) { 
             new Browser(path.getValue(), display, this, this, true);
-        } else super.commandAction(c, d);
+        } else if (c==cmdDecline)
+            cmdCancel();
+        else super.commandAction(c, d);
     }
     
-    public void commandState() {
-        super.commandState();
-        removeCommand(cmdCancel);
-        addCommand(cmdPath);
-        addCommand(cmdDecline);
-    }
+//#ifdef MENU_LISTENER
+//#     public void commandState() {
+//#         super.commandState();
+//#         removeCommand(cmdCancel);
+//#         addCommand(cmdPath);
+//#         addCommand(cmdDecline);
+//#     }
+//#endif
 }

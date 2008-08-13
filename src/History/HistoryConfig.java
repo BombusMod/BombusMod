@@ -88,8 +88,8 @@ public class HistoryConfig
 
 	historyFolder = new TextInput(display, SR.MS_HISTORY_FOLDER, cf.msgPath, null, TextField.ANY); itemsList.addElement(historyFolder);
 
-        commandState();
         addCommand(cmdPath);
+        commandState();
         
         moveCursorTo(0);
 

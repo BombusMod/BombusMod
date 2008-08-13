@@ -95,7 +95,7 @@ public class TransferManager
     public void eventOk() {
         TransferTask t=(TransferTask) getFocusedObject();
         if (t!=null)
-            if (t.isAcceptWaiting()) new TransferAcceptFile(display, parentView, t);
+            if (t.isAcceptWaiting()) new TransferAcceptFile(display, this, t);
     }
     
     protected void keyClear() {

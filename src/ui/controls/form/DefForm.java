@@ -77,8 +77,10 @@ public class DefForm
         
         superWidth=super.getWidth();
         
-	setCommandListener(this);
         commandState();
+        
+	setCommandListener(this);
+        
         this.parentView=pView;
     }
 

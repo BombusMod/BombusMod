@@ -28,6 +28,7 @@ package ui.controls.form;
 
 import Colors.ColorTheme;
 import Fonts.FontCache;
+import images.RosterIcons;
 import java.util.Vector;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Font;
@@ -67,13 +68,9 @@ public class DropChoiceBox
      * Creates a new instance of ChoiceBox
      */
     public DropChoiceBox(Display display, String caption) {
-        super(null);
+        super(RosterIcons.getInstance());
         this.display=display;
         this.caption=(caption==null)?"":caption;
-        
-        colorItem=ColorTheme.getInstance().getColor(ColorTheme.CONTROL_ITEM);
-        colorBorder=ColorTheme.getInstance().getColor(ColorTheme.CURSOR_OUTLINE);
-        colorBGnd=ColorTheme.getInstance().getColor(ColorTheme.LIST_BGND);
         
         font=FontCache.getMsgFont();
         fontHeight=font.getHeight();
@@ -108,8 +105,8 @@ public class DropChoiceBox
     }
 
     public void onSelect(){
-        if (items.size()<1) return;
-        new DropListBox(display, items, this);
+        if (items.size()>1)
+            new DropListBox(display, items, this);
     }
 
     public int getValue() { return index; }
@@ -129,6 +126,9 @@ public class DropChoiceBox
     public int getSelectedIndex() { return index; }
     
     public void drawItem(Graphics g, int ofs, boolean sel) {
+        colorItem=ColorTheme.getInstance().getColor(ColorTheme.CONTROL_ITEM);
+        colorBorder=ColorTheme.getInstance().getColor(ColorTheme.CURSOR_OUTLINE);
+        colorBGnd=ColorTheme.getInstance().getColor(ColorTheme.LIST_BGND);
 /*
         int width=g.getClipWidth();
         int height=getItemHeight();
@@ -177,6 +177,9 @@ public class DropChoiceBox
             g.drawString(getTextValue(), thisOfs, y, Graphics.TOP|Graphics.LEFT); 
         }
         
+        if (size()>1)
+            il.drawImage(g, 0x24, (width-il.getHeight())-1, ((y)+height/2)-il.getHeight()/2);
+/*
         if (sel) {
             int boxSize=height-1;
             g.setColor(colorBorder);
@@ -185,6 +188,7 @@ public class DropChoiceBox
             g.fillRect(width-boxSize, y+1, boxSize-1, boxSize-1);
             g.setColor(oldColor);
         }
+ */
     }
     
     public int getVHeight(){
@@ -204,7 +208,7 @@ public class DropChoiceBox
                 return true;
  */
              case 5:
-                new DropListBox(display, items, this);
+                onSelect();
                 return true;
          }
         return false;

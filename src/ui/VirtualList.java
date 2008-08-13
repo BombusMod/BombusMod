@@ -1268,13 +1268,23 @@ public abstract class VirtualList
         int cursorBGnd=ct.getColor(ColorTheme.CURSOR_BGND);
         int cursorOutline=ct.getColor(ColorTheme.CURSOR_OUTLINE);
         
-        if (cursorBGnd!=0x010101)
+        if (cursorBGnd!=0x010101) {
             g.setColor(ct.getColor(ColorTheme.CURSOR_BGND));
-        g.fillRect(0, 0, width, height);
-        
+            g.fillRect(0, 0, width, height);
+        }
+
         if (cursorOutline!=0x010101) {
-            g.setColor(cursorOutline); 
-            g.drawRect(0, 0, width-1, height-1);
+            g.setColor(cursorOutline);
+            /*
+            g.drawLine(4, 0, width-5, 0); //top
+            g.drawLine(4, height-1, width-5, height-1); //bottom
+            
+            g.drawArc(width-7, 0, 6, 6, 0, 90); // right top
+            g.drawArc(0, 0, 6, 6, 90, 90); // left top
+            g.drawArc(0, height-7, 6, 6, 180, 90); // left bottom
+            g.drawArc(width-7, height-7, 6, 6, 270, 90); // right bottom
+            */
+            g.drawRect(0, 0, width-1, height-1); //old cursor
         }
     }
 

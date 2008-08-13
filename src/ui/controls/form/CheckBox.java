@@ -28,6 +28,7 @@
 package ui.controls.form;
 
 import Colors.ColorTheme;
+import images.RosterIcons;
 import javax.microedition.lcdui.Graphics;
 import ui.IconTextElement;
 
@@ -49,7 +50,7 @@ public class CheckBox
      * Creates a new instance of CheckBox
      */
     public CheckBox(String text, boolean state) {
-        super(null);
+        super(RosterIcons.getInstance());
         this.text=text;
         this.state=state;
         colorItem=ColorTheme.getInstance().getColor(ColorTheme.CONTROL_ITEM);
@@ -60,11 +61,11 @@ public class CheckBox
     public void onSelect(){
         state=!state;
     }
-    
-    public void drawItem(Graphics g, int ofs, boolean sel) {
+/*
+    public void drawItem(Graphics g, int ofs, boolean sel) { //56, 57
         int width=g.getClipWidth();
         int height=getItemHeight();
-        
+
         int oldColor=g.getColor();
    
         g.setColor(colorItem); 
@@ -80,7 +81,9 @@ public class CheckBox
         g.translate(height,0);
         super.drawItem(g, ofs, sel);
         g.translate(-height,0);
-    }    
+    }
+*/
+    public int getImageIndex(){ return state?0x57:0x56; }
     
     public boolean getValue() { return state; }
     

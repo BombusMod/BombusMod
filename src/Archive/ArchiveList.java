@@ -55,7 +55,7 @@ public class ArchiveList
     Command cmdEdit=new Command(SR.MS_EDIT, Command.SCREEN, 4);
     Command cmdNew=new Command(SR.MS_NEW, Command.SCREEN, 5);
     Command cmdDelete=new Command(SR.MS_DELETE, Command.SCREEN, 9);
-    Command cmdDeleteAll=new Command(SR.MS_CLEAR_LIST, Command.SCREEN, 10);
+    Command cmdDeleteAll=new Command(SR.MS_DELETE_ALL, Command.SCREEN, 10);
 
     MessageArchive archive;
    
@@ -95,16 +95,15 @@ public class ArchiveList
 //#endif
 
         if (getItemCount()>0) {
-            addCommand(cmdDelete);
-            
-            addCommand(cmdEdit);
-            addCommand(cmdDeleteAll);
-            
             if (t!=null) {
                 addCommand(cmdPaste);
                 addCommand(cmdJid);
                 addCommand(cmdSubj);
             }
+            addCommand(cmdEdit);
+            
+            addCommand(cmdDelete);
+            addCommand(cmdDeleteAll);
         }
         addCommand(cmdNew);
         
