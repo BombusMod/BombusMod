@@ -60,6 +60,11 @@ public class Time {
         return lz2(c.get(Calendar.HOUR_OF_DAY))+':'+lz2(c.get(Calendar.MINUTE));
      }
     
+    public static String dateTimeLocalString(long date){
+        Calendar c=calDate(date+utcToLocalOffsetMillis);
+        return lz2(c.get(Calendar.HOUR_OF_DAY))+':'+lz2(c.get(Calendar.MINUTE))+':'+lz2(c.get(Calendar.SECOND));
+     }
+    
     private static Calendar calDate(long date){
         c.setTime(new Date(date+utcToLocalOffsetMillis));
         return c;

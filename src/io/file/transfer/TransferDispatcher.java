@@ -87,6 +87,7 @@ public class TransferDispatcher implements JabberBlockListener{
                     synchronized (taskList){ taskList.addElement(task); }
                     
                     eventNotify();
+                    sd.roster.addMessageStore(data.getAttribute("from"), file.getAttribute("name")+"\n"+Integer.parseInt(file.getAttribute("size"))+" bytes");
                     sd.roster.playNotify(1000);
                     return BLOCK_PROCESSED;
                 }

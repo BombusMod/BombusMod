@@ -56,10 +56,10 @@ public class TransferTask
     public final static int COMPLETE=1;
     public final static int PROGRESS=3;
     public final static int ERROR=4;
+    public final static int NONE=5;
     public final static int HANDSHAKE=6;
     public final static int IN_ASK=7;
-    public final static int NONE=5;
-    
+
     private int state=NONE;
     private boolean sending;
     boolean showEvent;
@@ -81,6 +81,9 @@ public class TransferTask
     private InputStream is;
     
     private Vector methods;
+
+    long started;
+    long finished;
     
     /** Creates TransferTask for incoming file */
     public TransferTask(String jid, String id, String sid, String name, String description, int size, Vector methods) {
@@ -162,6 +165,7 @@ public class TransferTask
     }
 
     void decline() {
+        finished=System.currentTimeMillis();
         JabberDataBlock reject=new Iq(jid, Iq.TYPE_ERROR, id);
         reject.addChild(new XmppError(XmppError.NOT_ALLOWED, "declined by user"));
         TransferDispatcher.getInstance().send(reject, true);
@@ -172,6 +176,7 @@ public class TransferTask
     }
 
     void accept() {
+        started=System.currentTimeMillis();
         try {
             file=FileIO.createConnection(filePath+fileName);
             os=file.openOutputStream();
@@ -231,6 +236,7 @@ public class TransferTask
     boolean isAcceptWaiting() { return state==IN_ASK; }
 
     void closeFile() {
+        finished=System.currentTimeMillis();
         try {
             if (os!=null)
                 os.close();
@@ -291,36 +297,36 @@ public class TransferTask
         byte buf[]=new byte[2048];
         int seq=0;
         try {
-        while (true) {
-            int sz=readFile(buf);
-            if (sz==0) break;
-            
-            JabberDataBlock msg=new Message(jid);
-            
-            JabberDataBlock data=msg.addChildNs("data", "http://jabber.org/protocol/ibb");
-            data.setAttribute("sid", sid);
-            data.setAttribute("seq", String.valueOf(seq));   seq++;
-            data.setText(Strconv.toBase64(buf, sz));
-            
-            JabberDataBlock amp=msg.addChildNs("amp", "http://jabber.org/protocol/amp");
-            
-            JabberDataBlock rule;
-            
-            rule=amp.addChild("rule", null);
-            rule.setAttribute("condition", "deliver-at"); 
-            rule.setAttribute("value", "stored");
-            rule.setAttribute("action", "error");
-            
-            rule=amp.addChild("rule", null);
-            rule.setAttribute("condition", "match-resource"); 
-            rule.setAttribute("value", "exact");
-            rule.setAttribute("action", "error");
-            
-            TransferDispatcher.getInstance().send(msg, false);
-            TransferDispatcher.getInstance().repaintNotify();
+            while (true) {
+                int sz=readFile(buf);
+                if (sz==0) break;
 
-            Thread.sleep( 1500L ); //shaping traffic
-        }
+                JabberDataBlock msg=new Message(jid);
+
+                JabberDataBlock data=msg.addChildNs("data", "http://jabber.org/protocol/ibb");
+                data.setAttribute("sid", sid);
+                data.setAttribute("seq", String.valueOf(seq));   seq++;
+                data.setText(Strconv.toBase64(buf, sz));
+
+                JabberDataBlock amp=msg.addChildNs("amp", "http://jabber.org/protocol/amp");
+
+                JabberDataBlock rule;
+
+                rule=amp.addChild("rule", null);
+                rule.setAttribute("condition", "deliver-at"); 
+                rule.setAttribute("value", "stored");
+                rule.setAttribute("action", "error");
+
+                rule=amp.addChild("rule", null);
+                rule.setAttribute("condition", "match-resource"); 
+                rule.setAttribute("value", "exact");
+                rule.setAttribute("action", "error");
+
+                TransferDispatcher.getInstance().send(msg, false);
+                TransferDispatcher.getInstance().repaintNotify();
+
+                Thread.sleep( 1500L ); //shaping traffic
+            }
         } catch (Exception e) { /*null pointer exception if terminated*/}
         closeFile();
         JabberDataBlock iq=new Iq(jid, Iq.TYPE_SET, "close");
@@ -337,7 +343,11 @@ public class TransferTask
     boolean isStopped() {
         return (state==COMPLETE || state==ERROR);
     }
-
+    
+    boolean isStarted() {
+        return (state!=NONE && state!=IN_ASK);
+    }
+    
     public void cancel() {
         if (isStopped()) return;
         state=ERROR;

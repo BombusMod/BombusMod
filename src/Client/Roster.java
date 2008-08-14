@@ -1777,6 +1777,10 @@ public class Roster
     }
 //#endif
     
+    public void addMessageStore(String from, String message) {
+        messageStore(getContact(from, true), new Msg(Msg.MESSAGE_TYPE_SYSTEM, from, SR.MS_FILE, message));
+    }
+    
     public void messageStore(Contact c, Msg message) {
         if (c==null) return;
 

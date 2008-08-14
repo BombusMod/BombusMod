@@ -42,6 +42,7 @@ import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
+import ui.Time;
 import ui.VirtualElement;
 import ui.VirtualList;
 
@@ -64,6 +65,7 @@ public class TransferManager
     Command cmdBack=new Command(SR.MS_BACK, Command.BACK, 99);
     Command cmdDel=new Command(SR.MS_DECLINE, Command.SCREEN, 10);
     Command cmdClrF=new Command(SR.MS_HIDE_FINISHED, Command.SCREEN, 11);
+    Command cmdInfo=new Command(SR.MS_INFO, Command.SCREEN, 12);
     
     /** Creates a new instance of TransferManager */
     public TransferManager(Display display) {
@@ -85,6 +87,7 @@ public class TransferManager
         if (getItemCount()>0) {
             addCommand(cmdDel);
             addCommand(cmdClrF);
+            addCommand(cmdInfo);
         }
     }
 
@@ -126,6 +129,7 @@ public class TransferManager
         }
         if (c==cmdDel) keyClear();
         if (c==cmdBack) cmdBack();
+        if (c==cmdInfo) cmdInfo();
         
     }
     private void cmdBack() {
@@ -155,6 +159,9 @@ public class TransferManager
 //#             cmdBack();
 //#             return;
 //#         }
+//#         if (keyCode==KEY_POUND) {
+//#             cmdInfo();
+//#         }
 //#         super.keyPressed(keyCode);
 //#     }
 //#endif
@@ -164,5 +171,26 @@ public class TransferManager
 //#ifdef MENU_LISTENER
 //#         new MyMenu(display, parentView, this, SR.MS_DISCO, null);
 //#endif
+    }
+
+    private void cmdInfo() {
+        if (getItemCount()>0) {
+            TransferTask t=(TransferTask) getFocusedObject();
+            StringBuffer info=new StringBuffer();
+            info.append(t.jid)
+                .append("\n")
+                .append(t.fileName)
+                .append("\n")
+                .append(t.fileSize)
+                .append(" bytes");
+            if (t.description!="")
+                info.append("\n").append(t.description);
+            if (t.isStarted())
+                info.append("\nStarted: ").append(Time.dateTimeLocalString(t.started));
+            if (t.isStopped())
+                info.append("\nFinished: ").append(Time.dateTimeLocalString(t.finished));
+
+            super.setWobble(1, null, info.toString());
+        }
     }
 }
