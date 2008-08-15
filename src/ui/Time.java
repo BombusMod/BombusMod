@@ -61,7 +61,7 @@ public class Time {
      }
     
     public static String dateTimeLocalString(long date){
-        Calendar c=calDate(date+utcToLocalOffsetMillis);
+        Calendar c=calDate(date);
         return lz2(c.get(Calendar.HOUR_OF_DAY))+':'+lz2(c.get(Calendar.MINUTE))+':'+lz2(c.get(Calendar.SECOND));
      }
     

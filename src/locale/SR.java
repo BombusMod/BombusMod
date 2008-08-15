@@ -666,6 +666,7 @@ public class SR {
     public static String MS_DELETE_GROUP_ASK=loadString("Delete group?");
 
     public static String MS_PANELS=loadString("Panels");
+    public static String MS_NO_BAR=loadString("[ ]");
     public static String MS_MAIN_BAR=loadString("[main bar]");
     public static String MS_INFO_BAR=loadString("[info bar]");
 

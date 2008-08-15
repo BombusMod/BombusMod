@@ -35,7 +35,7 @@ import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Form;
 import locale.SR;
 
-public class ChangeTransport implements CommandListener{
+public class ChangeTransport implements CommandListener {
 
     private Display display;
     private Form f;

@@ -584,9 +584,10 @@ public class Roster
                     if ( contact.origin>Contact.ORIGIN_ROSTERRES
                          && contact.status>=Presence.PRESENCE_OFFLINE
                          && contact.getNewMsgsCount()==0
-                         && contact.origin!=Contact.ORIGIN_GROUPCHAT)
+                         && contact.origin!=Contact.ORIGIN_GROUPCHAT) {
+                        
                         hContacts.removeElementAt(index);
-                    else {
+                    } else {
                         index++;
                     } 
                 }
@@ -2849,6 +2850,10 @@ public class Roster
     }
     
     public void confJoin(String conference){
+//#ifndef WSYSTEMGC
+            System.gc();
+            try { Thread.sleep(50); } catch (InterruptedException e){}
+//#endif        
         ConferenceGroup grp=initMuc(conference, "");
         
         JabberDataBlock x=new JabberDataBlock("x", null, null);
@@ -2861,7 +2866,7 @@ public class Roster
         
         JabberDataBlock history=x.addChild("history", null);
         history.setAttribute("maxstanzas", String.valueOf(cf.confMessageCount));
-        history.setAttribute("maxchars","32768");
+        history.setAttribute("maxchars", "32768");
         try {
             long last=grp.getConference().lastMessageTime;
             long delay= ( grp.conferenceJoinTime - last ) /1000 ;

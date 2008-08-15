@@ -239,7 +239,10 @@ public class JabberStream extends XmppParser implements Runnable {
     public void send( String data ) throws IOException {
 	iostream.send(new StringBuffer(data));
 //#ifdef CONSOLE
-//#         addLog(data);
+//#         if (data!="</iq" && data!=" ")
+//#             addLog(data);
+//#         else
+//#             addLog("Ping myself");
 //#endif
     }
     

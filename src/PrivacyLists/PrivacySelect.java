@@ -27,11 +27,22 @@
 
 package PrivacyLists;
 
+import Client.Config;
 import Client.Groups;
 import Client.StaticData;
+import javax.microedition.lcdui.Display;
+import javax.microedition.lcdui.Displayable;
+import javax.microedition.lcdui.TextField;
 import ui.MainBar;
 import images.RosterIcons;
-import javax.microedition.lcdui.*;
+//#ifndef MENU_LISTENER
+import javax.microedition.lcdui.CommandListener;
+import javax.microedition.lcdui.Command;
+//#else
+//# import Menu.MenuListener;
+//# import Menu.Command;
+//# import Menu.MyMenu;
+//#endif
 import locale.SR;
 import ui.*;
 import java.util.*;
@@ -43,7 +54,12 @@ import com.alsutton.jabber.*;
  */
 public class PrivacySelect 
         extends VirtualList 
-        implements CommandListener,
+        implements
+//#ifndef MENU_LISTENER
+        CommandListener,
+//#else
+//#         MenuListener,
+//#endif
         JabberBlockListener,
         MIDPTextBox.TextBoxNotify
 {
@@ -60,21 +76,29 @@ public class PrivacySelect
     JabberStream stream=StaticData.getInstance().roster.theStream;
     
     /** Creates a new instance of PrivacySelect */
-    public PrivacySelect(Display display) {
+    public PrivacySelect(Display display, Displayable pView) {
         super(display);
         
         setMainBarItem(new MainBar(2, null, SR.MS_PRIVACY_LISTS));
+
+        list.addElement(new PrivacyList(null));//none
+        
+        commandState();
+        
+        getLists();
+        this.parentView=pView;
+    }
+    
+    public void commandState() {
+//#ifdef MENU_LISTENER
+//#         menuCommands.removeAllElements();
+//#endif
         addCommand(cmdActivate);
         addCommand(cmdDefault);
         addCommand(cmdCancel);
         addCommand(cmdNewList);
         addCommand(cmdDelete);
-        //addCommand(cmdEdit);
         addCommand(cmdIL);
-        setCommandListener(this);
-        list.addElement(new PrivacyList(null));//none
-        
-        getLists();
     }
 
     private void processIcon(boolean processing){
@@ -107,7 +131,6 @@ public class PrivacySelect
         }
         if (c==cmdIL) {
             generateIgnoreList();
-            //new PrivacyForm(display, PrivacyItem.itemIgnoreList());
             getLists();
         }
         if (c==cmdDelete) {
@@ -121,9 +144,43 @@ public class PrivacySelect
             new MIDPTextBox(display, SR.MS_NEW, "", this, TextField.ANY);
     }
     
+//#ifdef MENU_LISTENER   
+//#     public void touchLeftPressed(){
+//#         showMenu();
+//#     }
+//# 
+//#     public void addCommand(Command command) {
+//#         if (menuCommands.indexOf(command)<0)
+//#             menuCommands.addElement(command);
+//#     }
+//#     public void removeCommand(Command command) {
+//#         menuCommands.removeElement(command);        
+//#     }
+//#     
+//#     public void setCommandListener(MenuListener menuListener) { }
+//#     
+//#     protected void keyPressed(int keyCode) { // overriding this method to avoid autorepeat
+//#         if (keyCode==Config.SOFT_LEFT) {
+//#             showMenu();
+//#             return;
+//#         }
+//#         if (keyCode==Config.SOFT_RIGHT || keyCode==Config.KEY_BACK) {
+//#             destroyView();
+//#             return;
+//#         }
+//#         super.keyPressed(keyCode);
+//#     }
+//# 
+//#     public void showMenu() {
+//#         commandState();
+//#         new MyMenu(display, parentView, this, SR.MS_STATUS, null);
+//#     }
+//#endif
+    
     // MIDPTextBox interface
     public void OkNotify(String listName) {
-        if (listName.length()>0) (new PrivacyModifyList(display, new PrivacyList(listName))).setParentView(parentView);
+        if (listName.length()>0)
+            new PrivacyModifyList(display, this, new PrivacyList(listName));
     }
     
     public int blockArrived(JabberDataBlock data){
@@ -168,7 +225,7 @@ public class PrivacySelect
     public void eventOk(){
         PrivacyList pl=(PrivacyList) getFocusedObject();
         if (pl!=null) {
-            if (pl.name!=null) new PrivacyModifyList(display, pl);
+            if (pl.name!=null) new PrivacyModifyList(display, this, pl);
         }
     }
     private void generateIgnoreList(){

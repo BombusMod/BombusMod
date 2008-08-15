@@ -59,12 +59,16 @@ public class CameraImage implements CommandListener{
     Form f;
     CameraImageListener imgListener;
 
+    private String sizes; //"width=800&height=600"
+
     /** Creates a new instance of CameraImage */
-    public CameraImage(Display display, CameraImageListener imgListener) {
+    public CameraImage(Display display, CameraImageListener imgListener/*, String sizes*/) {
         this.display=display;
         parentView=display.getCurrent();
         this.imgListener=imgListener;
 
+        //if (sizes!=null) this.sizes=sizes;
+        
         int exp=0;
         try {
             String uri="capture://video";
@@ -95,8 +99,9 @@ public class CameraImage implements CommandListener{
     public void commandAction(Command command, Displayable displayable) {
         if (command==cmdShot) {
             try {
-                byte photo[]=videoControl.getSnapshot(null);
+                byte photo[]=videoControl.getSnapshot(sizes);
                 imgListener.cameraImageNotify(photo);
+                photo=null;
             } catch (Exception e) { e.printStackTrace(); }
         }
         // Shut down the player.
@@ -105,5 +110,6 @@ public class CameraImage implements CommandListener{
         videoControl = null;
 
         display.setCurrent(parentView);
+
     }
 }

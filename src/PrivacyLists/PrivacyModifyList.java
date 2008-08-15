@@ -27,10 +27,20 @@
 
 package PrivacyLists;
 
+import Client.Config;
 import Client.StaticData;
+import javax.microedition.lcdui.Display;
+import javax.microedition.lcdui.Displayable;
 import ui.MainBar;
 import images.RosterIcons;
-import javax.microedition.lcdui.*;
+//#ifndef MENU_LISTENER
+import javax.microedition.lcdui.CommandListener;
+import javax.microedition.lcdui.Command;
+//#else
+//# import Menu.MenuListener;
+//# import Menu.Command;
+//# import Menu.MyMenu;
+//#endif
 import locale.SR;
 import ui.*;
 import java.util.*;
@@ -42,7 +52,12 @@ import com.alsutton.jabber.*;
  */
 public class PrivacyModifyList 
         extends VirtualList 
-        implements CommandListener,
+        implements
+//#ifndef MENU_LISTENER
+        CommandListener,
+//#else
+//#         MenuListener,
+//#endif
         JabberBlockListener
 {
     private PrivacyList plist;
@@ -58,9 +73,21 @@ public class PrivacyModifyList
     JabberStream stream=StaticData.getInstance().roster.theStream;
     
     /** Creates a new instance of PrivacySelect */
-    public PrivacyModifyList(Display display, PrivacyList privacyList) {
+    public PrivacyModifyList(Display display, Displayable pView, PrivacyList privacyList) {
         super(display);
         setMainBarItem(new MainBar(2, null, SR.MS_PRIVACY_LISTS));
+
+        commandState();
+
+        plist=privacyList;
+        getList();
+        this.parentView=pView;
+    }
+
+    public void commandState() {
+//#ifdef MENU_LISTENER
+//#         menuCommands.removeAllElements();
+//#endif
         addCommand(cmdCancel);
         addCommand(cmdEdit);
         addCommand(cmdAdd);
@@ -68,12 +95,40 @@ public class PrivacyModifyList
         addCommand(cmdUp);
         addCommand(cmdDwn);
         addCommand(cmdSave);
-        
-        setCommandListener(this);
-
-        plist=privacyList;
-        getList();
     }
+    
+//#ifdef MENU_LISTENER   
+//#     public void touchLeftPressed(){
+//#         showMenu();
+//#     }
+//# 
+//#     public void addCommand(Command command) {
+//#         if (menuCommands.indexOf(command)<0)
+//#             menuCommands.addElement(command);
+//#     }
+//#     public void removeCommand(Command command) {
+//#         menuCommands.removeElement(command);        
+//#     }
+//#     
+//#     public void setCommandListener(MenuListener menuListener) { }
+//#     
+//#     protected void keyPressed(int keyCode) { // overriding this method to avoid autorepeat
+//#         if (keyCode==Config.SOFT_LEFT) {
+//#             showMenu();
+//#             return;
+//#         }
+//#         if (keyCode==Config.SOFT_RIGHT || keyCode==Config.KEY_BACK) {
+//#             destroyView();
+//#             return;
+//#         }
+//#         super.keyPressed(keyCode);
+//#     }
+//# 
+//#     public void showMenu() {
+//#         commandState();
+//#         new MyMenu(display, parentView, this, SR.MS_STATUS, null);
+//#     }
+//#endif
     
     private void processIcon(boolean processing){
         getMainBarItem().setElementAt((processing)?(Object)new Integer(RosterIcons.ICON_PROGRESS_INDEX):(Object)null, 0);
@@ -97,7 +152,7 @@ public class PrivacyModifyList
             destroyView();
         }
         if (c==cmdAdd) {
-            new PrivacyForm(display, parentView, new PrivacyItem(), plist);
+            new PrivacyForm(display, this, new PrivacyItem(), plist);
         }
         if (c==cmdEdit) eventOk();
         if (c==cmdDel) {
@@ -135,7 +190,7 @@ public class PrivacyModifyList
     public void eventOk(){
         PrivacyItem pitem=(PrivacyItem) getFocusedObject();
         if (pitem!=null) {
-            new PrivacyForm(display, parentView, pitem, null);
+            new PrivacyForm(display, this, pitem, null);
         }
     }
     

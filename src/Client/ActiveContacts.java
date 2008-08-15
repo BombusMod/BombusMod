@@ -29,8 +29,14 @@ package Client;
 
 import java.util.Enumeration;
 import java.util.Vector;
-import javax.microedition.lcdui.Command;
+//#ifndef MENU_LISTENER
 import javax.microedition.lcdui.CommandListener;
+import javax.microedition.lcdui.Command;
+//#else
+//# import Menu.MenuListener;
+//# import Menu.Command;
+//# import Menu.MyMenu;
+//#endif
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
@@ -44,18 +50,21 @@ import ui.VirtualList;
  */
 public class ActiveContacts 
     extends VirtualList
-//#ifndef MENU
-    implements CommandListener
+    implements
+//#ifndef MENU_LISTENER
+        CommandListener
+//#else
+//#         MenuListener
 //#endif
 {
     
     Vector activeContacts;
     
     StaticData sd = StaticData.getInstance();
-//#ifndef MENU
+
     private Command cmdCancel=new Command(SR.MS_BACK, Command.BACK, 99);
-    private Command cmdSelect=new Command(SR.MS_SELECT, Command.SCREEN, 1);
-//#endif
+    private Command cmdOk=new Command(SR.MS_SELECT, Command.SCREEN, 1);
+    
     /** Creates a new instance of ActiveContacts */
     public ActiveContacts(Display display, Displayable pView, Contact current) {
 	super();
@@ -67,17 +76,15 @@ public class ActiveContacts
                 if (c.active()) activeContacts.addElement(c);
             }
         }
-	// РЅРµ СЃРѕР·РґР°С�?Р�? РІРёРґ, РµСЃР»Рё РЅРµС‚ Р°РєС‚РёРІРЅС‹С… РєРѕРЅС‚Р°РєС‚РѕРІ
+
 	if (getItemCount()==0) return;
 	
         MainBar mainbar=new MainBar(2, String.valueOf(getItemCount()), " ");
         mainbar.addElement(SR.MS_ACTIVE_CONTACTS);
         setMainBarItem(mainbar);
-//#ifndef MENU
-	addCommand(cmdSelect);
-	addCommand(cmdCancel);
-	setCommandListener(this);
-//#endif
+
+	commandState();
+
 	try {
             int focus=activeContacts.indexOf(current);
             moveCursorTo(focus);
@@ -86,6 +93,35 @@ public class ActiveContacts
 	attachDisplay(display);
         this.parentView=pView;
     }
+    
+    public void commandState() {
+//#ifdef MENU_LISTENER
+//#         menuCommands.removeAllElements();
+//#endif
+        addCommand(cmdOk);
+        addCommand(cmdCancel);
+    }
+    
+//#ifdef MENU_LISTENER
+//#     public void touchLeftPressed(){
+//#         showMenu();
+//#     }
+//# 
+//#     public void addCommand(Command command) {
+//#         if (menuCommands.indexOf(command)<0)
+//#             menuCommands.addElement(command);
+//#     }
+//#     public void removeCommand(Command command) {
+//#         menuCommands.removeElement(command);        
+//#     }
+//#     
+//#     public void setCommandListener(MenuListener menuListener) { }
+//# 
+//#     public void showMenu() {
+//#         commandState();
+//#         new MyMenu(display, parentView, this, SR.MS_STATUS, null);
+//#     }
+//#endif
 
     protected int getItemCount() { return activeContacts.size(); }
     protected VirtualElement getItemRef(int index) { 
@@ -97,22 +133,25 @@ public class ActiveContacts
 	new ContactMessageList((Contact)c,display).setParentView(sd.roster);
         //c.msgSuspended=null; // clear suspended message for selected contact
     }
-//#ifndef MENU
+
     public void commandAction(Command c, Displayable d) {
 	if (c==cmdCancel) destroyView();
-	if (c==cmdSelect) eventOk();
+	if (c==cmdOk) eventOk();
     }
-//#else
-//#     public void rightCommand() { destroyView(); }
-//#     public String getRightCommand() { return SR.MS_BACK; }
-//#     
-//#     public void leftCommand() { eventOk(); }
-//#     public String getLeftCommand() { return SR.MS_SELECT; }
-//#endif
 
     public void keyPressed(int keyCode) {
 //#ifdef POPUPS
         VirtualList.popup.next();
+//#endif
+//#ifdef MENU_LISTENER
+//#         if (keyCode==Config.SOFT_LEFT) {
+//#             showMenu();
+//#             return;
+//#         }
+//#         if (keyCode==Config.SOFT_RIGHT || keyCode==Config.KEY_BACK) {
+//#             destroyView();
+//#             return;
+//#         }
 //#endif
 	if (keyCode==KEY_NUM3) {
             destroyView();

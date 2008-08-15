@@ -145,7 +145,7 @@ public class userKeyExec {
                 break;
             case 9: 
 //#ifdef PRIVACY
-                if (connected) new PrivacySelect(display);
+                if (connected) new PrivacySelect(display, sd.roster);
 //#endif
                 break;
             case 10: //key pound

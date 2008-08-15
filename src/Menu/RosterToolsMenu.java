@@ -162,7 +162,7 @@ public class RosterToolsMenu extends Menu {
 //#endif
 //#ifdef PRIVACY
             case 1: // Privacy Lists
-                if (connected) new PrivacySelect(display);
+                if (connected) new PrivacySelect(display, parentView);
                 break;
 //#endif
 //#ifdef PEP

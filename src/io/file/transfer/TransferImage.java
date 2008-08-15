@@ -69,7 +69,7 @@ public class TransferImage
         description = new TextInput(display, SR.MS_DESCRIPTION, null, null, TextField.ANY);
         itemsList.addElement(description);
         
-        moveCursorTo(2);
+        moveCursorTo(1);
         attachDisplay(display);
         this.parentView=pView;
     }
@@ -94,7 +94,8 @@ public class TransferImage
             TransferDispatcher.getInstance().sendFile(task);
             //switch to file transfer manager
             (new io.file.transfer.TransferManager(display)).setParentView(parentView);
+            photo=null;
             return;
-        } catch (Exception e) {}
+        } catch (Exception e) { photo=null; }
     }
 }

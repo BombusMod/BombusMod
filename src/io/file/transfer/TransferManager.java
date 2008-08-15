@@ -78,6 +78,15 @@ public class TransferManager
         taskList=TransferDispatcher.getInstance().getTaskList();
     }
     
+    public void showNotify(){
+        super.showNotify();
+//#ifndef MENU_LISTENER
+        removeCommand(cmdDel);
+        removeCommand(cmdClrF);
+        removeCommand(cmdInfo);
+        commandState();
+//#endif
+    }
     
     public void commandState(){
 //#ifdef MENU_LISTENER
@@ -159,10 +168,12 @@ public class TransferManager
 //#             cmdBack();
 //#             return;
 //#         }
+//#         
+//#         super.keyPressed(keyCode);
+//#         
 //#         if (keyCode==KEY_POUND) {
 //#             cmdInfo();
 //#         }
-//#         super.keyPressed(keyCode);
 //#     }
 //#endif
     
@@ -185,10 +196,12 @@ public class TransferManager
                 .append(" bytes");
             if (t.description!="")
                 info.append("\n").append(t.description);
-            if (t.isStarted())
+            if (t.isStarted() && t.started!=0)
                 info.append("\nStarted: ").append(Time.dateTimeLocalString(t.started));
-            if (t.isStopped())
+            if (t.isStopped() && t.finished!=0)
                 info.append("\nFinished: ").append(Time.dateTimeLocalString(t.finished));
+            if (t.errMsg!=null)
+                info.append("\nError: ").append(t.errMsg);
 
             super.setWobble(1, null, info.toString());
         }

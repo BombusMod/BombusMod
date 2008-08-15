@@ -160,10 +160,6 @@ public class TransferTask
     
     public String toString() { return fileName; }
 
-    public String getTipString() { 
-        return (errMsg==null)? String.valueOf(fileSize) : errMsg; 
-    }
-
     void decline() {
         finished=System.currentTimeMillis();
         JabberDataBlock reject=new Iq(jid, Iq.TYPE_ERROR, id);
@@ -256,6 +252,7 @@ public class TransferTask
     }
 
     void sendInit() {
+        started=System.currentTimeMillis();
         if (state==ERROR) return;
 
         JabberDataBlock iq=new Iq(jid, Iq.TYPE_SET, sid); 

@@ -619,9 +619,15 @@ Delay before reconnect(sec.)	Задержка между попытками(се
 Delete group?	Удалить группу?
 
 Panels	Панели
+[ ]	[нет]
 [main bar]	[основная]
 [info bar]	[инфо]
 
 Flash backlight	Мигать подсветкой
 Previous	Предыдущее
 execute menu by numkey	выполнение команд нажатием цифровых кнопок
+
+show nicknames	показывать ник отправителя
+Send photo	Отправить фото
+enable autorespond	включить автоответчик
+File manager	Менеджер файлов
