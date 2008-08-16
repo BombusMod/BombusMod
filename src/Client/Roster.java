@@ -2096,7 +2096,7 @@ public class Roster
         Displayable pview=createMsgList();
         if (pview!=null) {
             Contact c=(Contact)getFocusedObject();
-            ( me = new MessageEdit(display, c, c.msgSuspended) ).setParentView(pview);
+            me = new MessageEdit(display, pview, c, c.msgSuspended);
             c.msgSuspended=null;
         }
     }

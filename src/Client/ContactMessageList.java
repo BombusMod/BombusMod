@@ -271,6 +271,7 @@ public class ContactMessageList extends MessageList {
 
     protected void beginPaint(){
         markRead(cursor);
+        
         if (cursor==(messages.size()-1)) {
             if (contact.moveToLatest) {
                 contact.moveToLatest=false;
@@ -305,14 +306,14 @@ public class ContactMessageList extends MessageList {
     public void markRead(int msgIndex) {
 	if (msgIndex>=getItemCount()) return;
         if (msgIndex<contact.lastUnread) return;
-        
+        /*
         if (cursor==(messages.size()-1)) {
             if (contact.moveToLatest) {
                 contact.moveToLatest=false;
                 moveCursorEnd();
             }
         }
-        
+        */
         sd.roster.countNewMsgs();
 //#ifdef LOGROTATE
 //#         getRedraw(contact.redraw);
@@ -486,7 +487,7 @@ public class ContactMessageList extends MessageList {
         if (!sd.roster.isLoggedIn()) 
             return;
         
-        (sd.roster.me=new MessageEdit(display,contact,contact.msgSuspended)).setParentView(this);
+        sd.roster.me=new MessageEdit(display, this, contact, contact.msgSuspended);
         contact.msgSuspended=null;
     }
     
@@ -581,7 +582,7 @@ public class ContactMessageList extends MessageList {
                 msg.messageType == Msg.MESSAGE_TYPE_SUBJ)
                 keyGreen();
             else
-                (sd.roster.me=new MessageEdit(display,contact,msg.from+": ")).setParentView(this);
+                sd.roster.me=new MessageEdit(display, this, contact, msg.from+": ");
         } catch (Exception e) {/*no messages*/}
     }
     
@@ -593,7 +594,7 @@ public class ContactMessageList extends MessageList {
                 .append(getMessage(cursor).quoteString())
                 .append("\n")
                 .toString();
-            (sd.roster.me=new MessageEdit(display,contact,msg)).setParentView(this);
+            sd.roster.me=new MessageEdit(display, this, contact, msg);
             msg=null;
         } catch (Exception e) {/*no messages*/}
     }

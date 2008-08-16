@@ -79,13 +79,13 @@ public class MessageEdit
     private Command cmdSubj=new Command(SR.MS_SET_SUBJECT, Command.SCREEN, 10);
     private Command cmdSuspend=new Command(SR.MS_SUSPEND, Command.BACK,90);
     private Command cmdCancel=new Command(SR.MS_CANCEL, Command.SCREEN,99);
-    
+
     /** Creates a new instance of MessageEdit */
-    public MessageEdit(Display display, Contact to, String body) {
+    public MessageEdit(Display display, Displayable pView, Contact to, String body) {
         super(display, body, to.toString(), TextField.ANY);
         this.to=to;
         this.display=display;
-        parentView=display.getCurrent();
+        //parentView=display.getCurrent();
 
         cf=Config.getInstance();
 //#ifdef DETRANSLIT
@@ -119,6 +119,7 @@ public class MessageEdit
         new Thread(this).start() ; // composing
         
         display.setCurrent(this);
+        this.parentView=pView;
     }
     
     public void commandAction(Command c, Displayable d){
@@ -164,14 +165,32 @@ public class MessageEdit
         }
         // message/composing sending
         destroyView();
-        new Thread(this).start();
+       sendSomeThing=true;
+       
+       //((VirtualList) parentView).redraw();       
     }
     
+    boolean sendSomeThing=true;
+    int i=0;
     public void run(){
+        while (i>-1) {
+            if (sendSomeThing) send();
+            
+            if (notifyMessage!=null && notifyMessage!="") {
+                setTitle(notifyMessage.substring(i++));
+                if ((notifyMessage.length()-i)<0)
+                    i=0;
+            }
+            try {
+                Thread.sleep(250);
+            } catch (Exception e) { break; }
+        }
+    }
+    
+    private void send() {
         String comp=null; // composing event off
 
         String id=String.valueOf((int) System.currentTimeMillis());
-        
         if (body!=null)
             body=body.trim();
 //#ifdef DETRANSLIT
@@ -199,8 +218,7 @@ public class MessageEdit
             }
         } else if (to.acceptComposing) comp=(composing)? "composing":"paused";
         
-        if (!cf.eventComposing) 
-            comp=null;
+        if (!cf.eventComposing) comp=null;
         
         try {
             if (body!=null || subj!=null || comp!=null) {
@@ -208,8 +226,24 @@ public class MessageEdit
                 sd.roster.sendMessage(to, id, body, subj, comp);
             }
         } catch (Exception e) { }
-
-        ((VirtualList)parentView).redraw();
+        sendSomeThing=false;
+    }
+    
+    private String notifyMessage;
+    public void setMyTicker(String msg) {
+        if (msg!=null && msg!="") {
+            StringBuffer out=new StringBuffer(msg);
+            int i=0;
+            while (i<out.length()) {
+                if (out.charAt(i)<0x03) out.deleteCharAt(i);
+                else i++;
+            }
+            msg=out.toString();
+        } else {
+            setTitle(to.toString());
+        }
+        notifyMessage=msg;
+        i=0;
     }
 }
 
