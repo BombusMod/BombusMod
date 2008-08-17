@@ -27,7 +27,6 @@
 
 package Menu;
 
-import java.util.Vector;
 import javax.microedition.lcdui.Displayable;
 
 /**
@@ -35,7 +34,6 @@ import javax.microedition.lcdui.Displayable;
  * @author ad
  */
 public interface MenuListener {
-    public Vector menuCommands=new Vector();
     public void commandAction(Command command, Displayable displayable);
     public void addCommand(Command command);
     public void removeCommand(Command command);

@@ -34,7 +34,6 @@ import Conference.AppendNick;
 //#endif
 import javax.microedition.lcdui.*;
 import locale.SR;
-import ui.VirtualList;
 import ui.controls.ExTextBox;
 
 /**
@@ -82,7 +81,7 @@ public class MessageEdit
 
     /** Creates a new instance of MessageEdit */
     public MessageEdit(Display display, Displayable pView, Contact to, String body) {
-        super(display, body, to.toString(), TextField.ANY);
+        super(display, pView, body, to.toString(), TextField.ANY);
         this.to=to;
         this.display=display;
         //parentView=display.getCurrent();
@@ -149,7 +148,6 @@ public class MessageEdit
         }
         if (c==cmdSend && body==null) return;
 //#ifdef DETRANSLIT
-//# 
 //#         if (c==cmdSendInTranslit) {
 //#             sendInTranslit=true;
 //#         }
@@ -165,25 +163,33 @@ public class MessageEdit
         }
         // message/composing sending
         destroyView();
-       sendSomeThing=true;
+        runState=3;
        
        //((VirtualList) parentView).redraw();       
     }
     
-    boolean sendSomeThing=true;
-    int i=0;
+    /*
+     0 - do nothing
+     1 - scroll
+     2 - send
+     3 - send and close
+     4 - end cycle
+     * 
+     */
+    int runState=2;
+
+    int strPos=0;
     public void run(){
-        while (i>-1) {
-            if (sendSomeThing) send();
+        while (runState<4) {
+            System.out.println(runState+" "+notifyMessage);
+            if (runState==2) { runState=0; send(); }
+            if (runState==3) { runState=4; send(); break; }
             
-            if (notifyMessage!=null && notifyMessage!="") {
-                setTitle(notifyMessage.substring(i++));
-                if ((notifyMessage.length()-i)<0)
-                    i=0;
+            if (runState==1) {
+                setTitle(notifyMessage.substring(strPos++));
+                if ((notifyMessage.length()-strPos)<0) strPos=0;
             }
-            try {
-                Thread.sleep(250);
-            } catch (Exception e) { break; }
+            try { Thread.sleep(500); } catch (Exception e) { break; }
         }
     }
     
@@ -226,7 +232,6 @@ public class MessageEdit
                 sd.roster.sendMessage(to, id, body, subj, comp);
             }
         } catch (Exception e) { }
-        sendSomeThing=false;
     }
     
     private String notifyMessage;
@@ -239,11 +244,13 @@ public class MessageEdit
                 else i++;
             }
             msg=out.toString();
+            runState=1;
         } else {
             setTitle(to.toString());
+            runState=0;
         }
         notifyMessage=msg;
-        i=0;
+        strPos=0;
     }
 }
 

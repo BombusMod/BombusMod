@@ -59,7 +59,7 @@ public class TransferManager
 //#         MenuListener
 //#endif
     {
-    
+
     private Vector taskList=new Vector();;
     
     Command cmdBack=new Command(SR.MS_BACK, Command.BACK, 99);
@@ -146,7 +146,9 @@ public class TransferManager
         destroyView();
     }
     
-//#ifdef MENU_LISTENER    
+//#ifdef MENU_LISTENER
+//#     public Vector menuCommands=new Vector();
+//# 
 //#     public void touchLeftPressed(){ showMenu(); }
 //#     
 //#     public void addCommand(Command command) {
@@ -180,7 +182,7 @@ public class TransferManager
     public void showMenu() {
         commandState();
 //#ifdef MENU_LISTENER
-//#         new MyMenu(display, parentView, this, SR.MS_DISCO, null);
+//#         new MyMenu(display, parentView, this, SR.MS_DISCO, null, menuCommands);
 //#endif
     }
 

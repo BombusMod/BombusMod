@@ -59,6 +59,8 @@ public class DefForm
 //#endif
     {
     
+    public Vector menuCommands=new Vector();
+    
     public Display display;
     
     public Vector itemsList=new Vector();
@@ -153,7 +155,7 @@ public class DefForm
 //#                 return;
 //#             }
 //#         }
-//#         new MyMenu(display, parentView, this, "", null);
+//#         new MyMenu(display, parentView, this, "", null, menuCommands);
 //#     }
 //#     
 //#     public void touchLeftPressed(){ showMenu(); }

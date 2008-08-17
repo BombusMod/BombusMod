@@ -217,7 +217,9 @@ public class AccountSelect
             ((Account)accountList.elementAt(i)).saveToDataOutputStream(outputStream);
         NvStorage.writeFileRecord(outputStream, Account.storage, 0, true);
     }
-//#ifdef MENU_LISTENER    
+//#ifdef MENU_LISTENER
+//#     public Vector menuCommands=new Vector();
+//#     
 //#     public void addCommand(Command command) {
 //#         if (menuCommands.indexOf(command)<0)
 //#             menuCommands.addElement(command);
@@ -242,7 +244,7 @@ public class AccountSelect
 //#     
 //#     public void showMenu() {
 //#         commandState();
-//#         new MyMenu(display, parentView, this, SR.MS_DISCO, null);
+//#         new MyMenu(display, parentView, this, SR.MS_DISCO, null, menuCommands);
 //#    }
 //#     
 //#     public void touchLeftPressed(){

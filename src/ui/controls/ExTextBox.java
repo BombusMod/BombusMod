@@ -73,11 +73,10 @@ public class ExTextBox
     int maxSize=500;
             
     /** Creates a new instance of UniTextEdit */
-    public ExTextBox(Display display, String body, String subj, int type) {
+    public ExTextBox(Display display, Displayable pView, String body, String subj, int type) {
         super(subj, "", 500, type);
         
         this.display=display;
-        parentView=display.getCurrent();
 
         cf=Config.getInstance();
         
@@ -105,6 +104,7 @@ public class ExTextBox
         addCommand(cmdTemplate);
 //#endif
         setInitialCaps(cf.capsState);
+        this.parentView=pView;
     }
     
     public void setText(String body) {
@@ -115,13 +115,8 @@ public class ExTextBox
         }
     }
     
-    
-    public void setParentView(Displayable parentView){
-        this.parentView=parentView;
-    }
-    
     public void destroyView(){
-        if (display!=null) display.setCurrent(parentView);
+        display.setCurrent(parentView);
     }
 
     public int getCaretPos() {     

@@ -57,8 +57,8 @@ public class archiveEdit
 
     private String body;
     
-    public archiveEdit(Display display, int pos, int where, ArchiveList al) {
-        super(display, null, (pos>-1)?SR.MS_EDIT:SR.MS_NEW, TextField.ANY);
+    public archiveEdit(Display display, Displayable pView, int pos, int where, ArchiveList al) {
+        super(display, pView, null, (pos>-1)?SR.MS_EDIT:SR.MS_NEW, TextField.ANY);
         
         this.display=display;
         

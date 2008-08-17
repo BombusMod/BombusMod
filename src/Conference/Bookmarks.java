@@ -264,7 +264,9 @@ public class Bookmarks
         };
     }
         
-//#ifdef MENU_LISTENER    
+//#ifdef MENU_LISTENER
+//#     public Vector menuCommands=new Vector();
+//# 
 //#     public void addCommand(Command command) {
 //#         if (menuCommands.indexOf(command)<0)
 //#             menuCommands.addElement(command);
@@ -289,7 +291,7 @@ public class Bookmarks
 //# 
 //#     public void showMenu() {
 //#         commandState();
-//#         new MyMenu(display, parentView, this, SR.MS_BOOKMARKS, null);
+//#         new MyMenu(display, parentView, this, SR.MS_BOOKMARKS, null, menuCommands);
 //#     }
 //#     
 //#     public void touchLeftPressed(){

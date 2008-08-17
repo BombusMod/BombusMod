@@ -36,20 +36,12 @@ package midlet;
 import Account.Account;
 import Account.AccountSelect;
 import Colors.ColorTheme;
-import java.util.Vector;
-
 import javax.microedition.midlet.*;
 import javax.microedition.lcdui.*;
 import locale.SR;
-
 import ui.*;
-
 import Client.*;
 import Info.Version;
-import util.StringLoader;
-//#ifdef TEST_NEW_FORM
-//# import ui.controls.form.TestForm;
-//#endif
 
 /** Entry point class
  *
@@ -105,19 +97,10 @@ public class BombusMod extends MIDlet implements Runnable{
         ColorTheme ct=ColorTheme.getInstance();
 
         s.setProgress(7);
-        
         s.setProgress(Version.getVersionNumber(),10);
         
         SR.loaded();
-        
         s.setProgress(12);
-        
-//#ifdef TEST_NEW_FORM
-//#         if (true) {
-//#             new TestForm(display);
-//#             return;
-//#         }
-//#endif
 
 	Config cf=Config.getInstance();
         s.setProgress(15);
@@ -135,29 +118,23 @@ public class BombusMod extends MIDlet implements Runnable{
             s.setProgress("Entering setup",22);
         
         s.setProgress(24);
-        if (!selAccount && cf.autoLogin) {
-            // connect whithout account select
-            Account.loadAccount(cf.autoLogin, cf.accountIndex);
-        } else {
+        if (!selAccount && cf.autoLogin)
+            Account.loadAccount(cf.autoLogin, cf.accountIndex); // connect whithout account select
+        else
             new AccountSelect(display, sd.roster, true);
-        }
     }
 
     public void destroyApp(boolean unconditional) { }
 
     public void hideApp(boolean hide) {
-	if (hide) {
-	    display.setCurrent(null);
-	} else {
-            if (isMinimized) {
-                 display.setCurrent(display.getCurrent());
-            }
-	}
+	if (hide)
+            display.setCurrent(null);
+	else if (isMinimized)
+            display.setCurrent(display.getCurrent());
         isMinimized=hide;
     }
     
     public static BombusMod getInstance() {
         return instance;
     }
-  
 }

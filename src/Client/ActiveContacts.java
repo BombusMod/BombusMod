@@ -103,6 +103,8 @@ public class ActiveContacts
     }
     
 //#ifdef MENU_LISTENER
+//#     public Vector menuCommands=new Vector();
+//# 
 //#     public void touchLeftPressed(){
 //#         showMenu();
 //#     }
@@ -119,7 +121,7 @@ public class ActiveContacts
 //# 
 //#     public void showMenu() {
 //#         commandState();
-//#         new MyMenu(display, parentView, this, SR.MS_STATUS, null);
+//#         new MyMenu(display, parentView, this, SR.MS_STATUS, null, menuCommands);
 //#     }
 //#endif
 

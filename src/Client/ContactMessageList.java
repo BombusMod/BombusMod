@@ -659,6 +659,8 @@ public class ContactMessageList extends MessageList {
     }
     
 //#ifdef MENU_LISTENER
+//#     public Vector menuCommands=new Vector();
+//# 
 //#     public void showMenu() {
 //#          commandState();
 //#          super.showMenu();

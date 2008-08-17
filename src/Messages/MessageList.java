@@ -204,7 +204,9 @@ public abstract class MessageList extends VirtualList
         super.keyPressed(keyCode);
     }
    
-//#ifdef MENU_LISTENER    
+//#ifdef MENU_LISTENER
+//#     public Vector menuCommands=new Vector();
+//#     
 //#     public void addCommand(Command command) {
 //#         if (menuCommands.indexOf(command)<0)
 //#             menuCommands.addElement(command);
@@ -217,7 +219,7 @@ public abstract class MessageList extends VirtualList
 //# 
 //#     public void showMenu() {
 //#         commandState();
-//#         new MyMenu(display, parentView, this, "", null);
+//#         new MyMenu(display, parentView, this, "", null, menuCommands);
 //#    }
 //#     public void touchLeftPressed(){
 //#         showMenu();

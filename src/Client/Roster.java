@@ -31,11 +31,11 @@ package Client;
 //# import AutoTasks.AutoTask;
 //#endif
 
-//#ifndef WMUC
 import Account.Account;
 import Account.AccountSelect;
 import Alerts.AlertCustomize;
 import Alerts.AlertProfile;
+//#ifndef WMUC
 import Conference.BookmarkQuery;
 import Conference.Bookmarks;
 import Conference.ConferenceGroup;
@@ -74,12 +74,16 @@ import javax.microedition.lcdui.Displayable;
 import locale.SR;
 
 import login.LoginListener;
-import login.NonSASLAuth;
+
+//#ifdef NON_SASL_AUTH
+//# import login.NonSASLAuth;
+//#endif
+//#if SASL_XGOOGLETOKEN
+//# import login.GoogleTokenAuth;
+//#endif
 import login.SASLAuth;
-import login.GoogleTokenAuth;
 
 import midlet.BombusMod;
-import ui.MainBar;
 import ui.controls.AlertBox;
 import util.StringUtils;
 import VCard.VCard;
@@ -89,7 +93,6 @@ import com.alsutton.jabber.*;
 import com.alsutton.jabber.datablocks.*;
 import java.util.*;
 import ui.*;
-//import com.siemens.mp.game.Light;
 import xmpp.EntityCaps;
 
 import xmpp.XmppError;
@@ -2918,7 +2921,9 @@ public class Roster
 //#endif
 //#endif
     
-//#ifdef MENU_LISTENER    
+//#ifdef MENU_LISTENER
+//#     public Vector menuCommands=new Vector();
+//# 
 //#     public void addCommand(Command command) {
 //#         if (menuCommands.indexOf(command)<0)
 //#             menuCommands.addElement(command);
@@ -2931,7 +2936,7 @@ public class Roster
 //# 
 //#     public void showMenu() {
 //#         commandState();
-//#         new MyMenu(display, parentView, this, SR.MS_MAIN_MENU, menuIcons);
+//#         new MyMenu(display, parentView, this, SR.MS_MAIN_MENU, menuIcons, menuCommands);
 //#     }
 //#     public void touchLeftPressed(){
 //#         showMenu();

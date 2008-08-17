@@ -155,7 +155,9 @@ public class StatusSelect
         StatusList.getInstance().saveStatusToStorage();
     }
     
-//#ifdef MENU_LISTENER   
+//#ifdef MENU_LISTENER
+//#     public Vector menuCommands=new Vector();
+//# 
 //#     public void touchLeftPressed(){
 //#         showMenu();
 //#     }
@@ -184,7 +186,7 @@ public class StatusSelect
 //# 
 //#     public void showMenu() {
 //#         commandState();
-//#         new MyMenu(display, parentView, this, SR.MS_STATUS, null);
+//#         new MyMenu(display, parentView, this, SR.MS_STATUS, null, menuCommands);
 //#     }
 //#endif
     

@@ -144,7 +144,9 @@ public class PrivacySelect
             new MIDPTextBox(display, SR.MS_NEW, "", this, TextField.ANY);
     }
     
-//#ifdef MENU_LISTENER   
+//#ifdef MENU_LISTENER
+//#     public Vector menuCommands=new Vector();
+//# 
 //#     public void touchLeftPressed(){
 //#         showMenu();
 //#     }
@@ -173,7 +175,7 @@ public class PrivacySelect
 //# 
 //#     public void showMenu() {
 //#         commandState();
-//#         new MyMenu(display, parentView, this, SR.MS_STATUS, null);
+//#         new MyMenu(display, parentView, this, SR.MS_STATUS, null, menuCommands);
 //#     }
 //#endif
     

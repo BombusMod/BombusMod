@@ -63,11 +63,10 @@ public class StanzaEdit
     private static final String TEMPLATE_PRESENCE="<presence to='???'>\n<show>???</show>\n<status>???</status>\n</presence>";
     private static final String TEMPLATE_MESSAGE="<message to='???' type='???'>\n<body>???</body>\n</message>";
 
-    public StanzaEdit(Display display, String body) {
-        super(display, body, SR.MS_XML_CONSOLE, TextField.ANY);
+    public StanzaEdit(Display display, Displayable pView, String body) {
+        super(display, pView, body, SR.MS_XML_CONSOLE, TextField.ANY);
         
         this.display=display;
-        parentView=display.getCurrent();
         
         addCommand(cmdSend);
 
@@ -80,6 +79,7 @@ public class StanzaEdit
         setCommandListener(this);
         
         display.setCurrent(this);
+        parentView=pView;
     }
     
     public void setParentView(Displayable parentView){

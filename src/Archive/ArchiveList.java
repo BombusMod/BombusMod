@@ -129,7 +129,7 @@ public class ArchiveList
         super.commandAction(c,d);
         
 	Msg m=getMessage(cursor);
-        if (c==cmdNew) { new archiveEdit(display, -1, where, this); }
+        if (c==cmdNew) { new archiveEdit(display, this, -1, where, this); }
 	if (m==null) return;
         
 	if (c==cmdDelete) { keyClear(); }
@@ -139,7 +139,7 @@ public class ArchiveList
 	if (c==cmdJid) { pasteData(2); }
         if (c==cmdEdit) {
             try {
-                new archiveEdit(display, cursor, where, this);
+                new archiveEdit(display, this, cursor, where, this);
             } catch (Exception e) {/*no messages*/}
         }
     }

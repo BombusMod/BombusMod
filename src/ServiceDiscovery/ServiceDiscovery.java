@@ -488,7 +488,9 @@ public class ServiceDiscovery
         stream.cancelBlockListener(this);
         destroyView();
     }
-//#ifdef MENU_LISTENER    
+//#ifdef MENU_LISTENER
+//#     public Vector menuCommands=new Vector();
+//# 
 //#     public void addCommand(Command command) {
 //#         if (menuCommands.indexOf(command)<0)
 //#             menuCommands.addElement(command);
@@ -518,7 +520,7 @@ public class ServiceDiscovery
     
     public void showMenu() {
 //#ifdef MENU_LISTENER
-//#         new MyMenu(display, parentView, this, SR.MS_DISCO, null);
+//#         new MyMenu(display, parentView, this, SR.MS_DISCO, null, menuCommands);
 //#endif
     }
 }

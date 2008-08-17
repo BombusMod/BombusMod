@@ -39,7 +39,9 @@ import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
-import ui.MainBar;
+//#ifdef CONSOLE 
+//# import ui.MainBar;
+//#endif
 //import ui.YesNoAlert;
 
 /**
@@ -118,7 +120,7 @@ public class XMLList
         try {
             stanza =  m.toString();
         } catch (Exception e) {}
-        new StanzaEdit(display, stanza).setParentView(this);
+        new StanzaEdit(display, this, stanza).setParentView(this);
     }
     
     public void commandAction(Command c, Displayable d) {

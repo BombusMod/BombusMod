@@ -28,6 +28,7 @@
 package Menu;
 
 import java.util.Enumeration;
+import java.util.Vector;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import ui.ImageList;
@@ -40,17 +41,19 @@ public class MyMenu extends Menu {
     
     private MenuListener ml;
     private Object o;
+    private Vector menuCommands;
 
     
     /** Creates a new instance of MyMenu */
-    public MyMenu(Display display, Displayable parentView, MenuListener menuListener, String caption, ImageList il) {
+    public MyMenu(Display display, Displayable parentView, MenuListener menuListener, String caption, ImageList il, Vector menuCommands) {
         super(caption, il);
         this.ml=menuListener;
+        this.menuCommands=menuCommands;
 
         this.parentView=parentView;
         
-        for (int i=0; i<ml.menuCommands.size(); i++) {
-            Command c=(Command)ml.menuCommands.elementAt(i);
+        for (int i=0; i<menuCommands.size(); i++) {
+            Command c=(Command)menuCommands.elementAt(i);
             addItem(c.getName(), i, c.getImg());
         }
 
@@ -67,7 +70,7 @@ public class MyMenu extends Menu {
     }
     
     private Command getCommand(int index) {
-        for (Enumeration command=ml.menuCommands.elements(); command.hasMoreElements();) {
+        for (Enumeration command=menuCommands.elements(); command.hasMoreElements();) {
             Command cmd =(Command)command.nextElement();
             if (cmd.getName().equals(getFocusedObject().toString()))
                 return cmd;

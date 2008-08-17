@@ -85,6 +85,7 @@ public class Upgrade
         
         setCommandListener(this);
 	addCommand(cmdBack);
+        addCommand(cmdUrl);
         
         try {
             focusedItem(0);
