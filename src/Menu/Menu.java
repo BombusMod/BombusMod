@@ -91,6 +91,13 @@ public class Menu extends VirtualList
         if (c==cmdOk) eventOk();
     }
 //#else
+//#     
+//#     public String touchLeftCommand(){ return SR.MS_OK; }
+//#     
+//#     public void touchLeftPressed(){
+//#         eventOk();
+//#     }
+//#      
 //#     public void keyPressed(int keyCode) {
 //#         if (keyCode==Config.SOFT_LEFT) {
 //#             eventOk();

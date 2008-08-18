@@ -81,7 +81,7 @@ public class AlertCustomize {
 
     private Vector files[]=new StringLoader().stringLoader("/sounds/res.txt", 3);
 
-    public boolean flashBackLight;
+    //public boolean flashBackLight;
     
     public static AlertCustomize getInstance(){
 	if (instance==null) {
@@ -118,7 +118,7 @@ public class AlertCustomize {
             soundVIPIndex=inputStream.readInt();
             
             vibrateOnlyHighlited=inputStream.readBoolean();
-            flashBackLight=inputStream.readBoolean();
+            inputStream.readBoolean(); //flashBackLight
             inputStream.close();
             inputStream=null;
 	} catch (Exception e) {
@@ -147,7 +147,7 @@ public class AlertCustomize {
             outputStream.writeInt(soundVIPIndex);
             
             outputStream.writeBoolean(vibrateOnlyHighlited);
-            outputStream.writeBoolean(flashBackLight);
+            outputStream.writeBoolean(false); //flashBackLight
             NvStorage.writeFileRecord(outputStream, "AlertCustomize", 0, true);
 	} catch (IOException e) {
             //e.printStackTrace();

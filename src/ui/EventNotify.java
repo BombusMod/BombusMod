@@ -42,7 +42,7 @@ public class EventNotify
 	,PlayerListener
 {
     
-    private int lenVibra;
+    private int vibraLength;
     private boolean toneSequence;
     private String soundName;
     private String soundType;
@@ -54,7 +54,7 @@ public class EventNotify
     private final static String tone="A6E6J6";
     private int sndVolume;
 
-    private boolean flashBackLight;
+    //private boolean flashBackLight;
     
     /** Creates a new instance of EventNotify */
     public EventNotify(
@@ -62,14 +62,13 @@ public class EventNotify
 	String soundMediaType, 
 	String soundFileName, 
 	int sndVolume,
-	int vibraLength, 
-        boolean flashBackLight)
+	int vibraLength)
     {
         this.display=display;
         this.soundName=soundFileName;
         this.soundType=soundMediaType;
-        this.lenVibra=vibraLength;
-        this.flashBackLight=flashBackLight;
+        this.vibraLength=vibraLength;
+        //this.flashBackLight=flashBackLight;
         if (soundType!=null) 
             toneSequence= soundType.equals("tone");
         this.sndVolume=sndVolume;
@@ -77,11 +76,7 @@ public class EventNotify
     
     public void startNotify (){
         release();
-        try {
-            if (flashBackLight) {
-                display.flashBacklight(1000);
-            }
-        } catch (Exception e2) { /* e.printStackTrace(); */}
+        //try { if (flashBackLight) display.flashBacklight(1000); } catch (Exception e2) { /* e.printStackTrace(); */}
         
         if (soundName!=null) {
             try {
@@ -101,8 +96,8 @@ public class EventNotify
             } catch (Exception e) { }
         }
 
-        if (lenVibra>0) {
-            display.vibrate(lenVibra);
+        if (vibraLength>0) {
+            display.vibrate(vibraLength);
         }
 
 	if (toneSequence)
@@ -111,14 +106,12 @@ public class EventNotify
     
     public void run(){
         try {
-	    if (toneSequence) {
-		for (int i=0; i<tone.length(); ) {
-		    int note=(tone.charAt(i++)-'A')+12*(tone.charAt(i++)-'0');
-		    int duration=150;
-		    Manager.playTone(note, duration, sndVolume);
-		    Thread.sleep(duration);
-		}
-	    }
+            for (int i=0; i<tone.length(); ) {
+                int note=(tone.charAt(i++)-'A')+12*(tone.charAt(i++)-'0');
+                int duration=150;
+                Manager.playTone(note, duration, sndVolume);
+                Thread.sleep(duration);
+            }
         } catch (Exception e) { }
     }
     

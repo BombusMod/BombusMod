@@ -26,11 +26,8 @@
  */
 
 package ui;
-import Client.Config;
 import Fonts.FontCache;
-import images.RosterIcons;
 import javax.microedition.lcdui.*;
-import java.util.*;
 import Colors.ColorTheme;
 
 abstract public class IconTextElement implements VirtualElement {
@@ -43,12 +40,12 @@ abstract public class IconTextElement implements VirtualElement {
     protected ImageList il;
     private int ilImageSize=0;
     
-    ColorTheme ct;
+    //ColorTheme ct;
     
     public IconTextElement(ImageList il) {
         super();
         this.il=il;
-        ct=ColorTheme.getInstance();
+        //ct=ColorTheme.getInstance();
 	if (il!=null){
 	    ilImageSize=il.getHeight();
 	}
@@ -104,8 +101,8 @@ abstract public class IconTextElement implements VirtualElement {
         return itemHeight;
     }
     
-    public int getColorBGnd(){ return ct.getColor(ColorTheme.LIST_BGND);}
-    public int getColor(){ return ct.getColor(ColorTheme.LIST_INK);}
+    public int getColorBGnd(){ return ColorTheme.getColor(ColorTheme.LIST_BGND);}
+    public int getColor(){ return ColorTheme.getColor(ColorTheme.LIST_INK);}
 
     public void onSelect(){ };
 

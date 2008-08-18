@@ -490,6 +490,11 @@ public class ServiceDiscovery
     }
 //#ifdef MENU_LISTENER
 //#     public Vector menuCommands=new Vector();
+//#     
+//#     public Command getCommand(int index) {
+//#         if (index>menuCommands.size()-1) return null;
+//#         return (Command) menuCommands.elementAt(index);
+//#     }
 //# 
 //#     public void addCommand(Command command) {
 //#         if (menuCommands.indexOf(command)<0)

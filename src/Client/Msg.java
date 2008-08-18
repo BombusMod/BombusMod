@@ -65,7 +65,7 @@ public class Msg {
     public boolean itemCollapsed;
     public int itemHeight=-1;
     
-    ColorTheme ct;
+    //ColorTheme ct;
     
     /** Creates a new instance of msg */
     public Msg(int messageType, String from, String subj, String body) {
@@ -81,7 +81,7 @@ public class Msg {
             if (body.length()>Config.getInstance().messageLimit)
                 itemCollapsed=true;
         
-        ct=ColorTheme.getInstance();
+        //ct=ColorTheme.getInstance();
     }
     
     public void onSelect(){}
@@ -99,18 +99,18 @@ public class Msg {
     
     public int getColor() {
         if (highlite) 
-            return ct.getColor(ColorTheme.MSG_HIGHLIGHT);
+            return ColorTheme.getColor(ColorTheme.MSG_HIGHLIGHT);
 
         switch (messageType) {
-            case MESSAGE_TYPE_IN: return ct.getColor(ColorTheme.MESSAGE_IN);
-            case MESSAGE_TYPE_HEADLINE: return ct.getColor(ColorTheme.MESSAGE_IN);
-            case MESSAGE_TYPE_OUT: return ct.getColor(ColorTheme.MESSAGE_OUT);
-            case MESSAGE_TYPE_PRESENCE: return ct.getColor(ColorTheme.MESSAGE_PRESENCE);
-            case MESSAGE_TYPE_AUTH: return ct.getColor(ColorTheme.MESSAGE_AUTH);
-            case MESSAGE_TYPE_HISTORY: return ct.getColor(ColorTheme.MESSAGE_HISTORY);
-            case MESSAGE_TYPE_SUBJ:return ct.getColor(ColorTheme.MSG_SUBJ);
+            case MESSAGE_TYPE_IN: return ColorTheme.getColor(ColorTheme.MESSAGE_IN);
+            case MESSAGE_TYPE_HEADLINE: return ColorTheme.getColor(ColorTheme.MESSAGE_IN);
+            case MESSAGE_TYPE_OUT: return ColorTheme.getColor(ColorTheme.MESSAGE_OUT);
+            case MESSAGE_TYPE_PRESENCE: return ColorTheme.getColor(ColorTheme.MESSAGE_PRESENCE);
+            case MESSAGE_TYPE_AUTH: return ColorTheme.getColor(ColorTheme.MESSAGE_AUTH);
+            case MESSAGE_TYPE_HISTORY: return ColorTheme.getColor(ColorTheme.MESSAGE_HISTORY);
+            case MESSAGE_TYPE_SUBJ:return ColorTheme.getColor(ColorTheme.MSG_SUBJ);
         }
-        return ct.getColor(ColorTheme.LIST_INK);
+        return ColorTheme.getColor(ColorTheme.LIST_INK);
     }
     
     public String toString() {

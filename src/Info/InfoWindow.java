@@ -117,6 +117,14 @@ public class InfoWindow
         attachDisplay(display);
         this.parentView=pView;
     }
+//#ifdef MENU_LISTENER
+//#     public String touchLeftCommand(){ return SR.MS_COPY; }
+//#     
+//#     public void touchLeftPressed(){
+//#         eventOk();
+//#     }
+//#endif
+    
     public void cmdOk(){
 //#ifdef CLIPBOARD
 //#         clipboard.setClipBoard(name.toString()+"\n"+memory.toString()+"\n"+abilities.toString());

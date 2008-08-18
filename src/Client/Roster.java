@@ -273,9 +273,9 @@ public class Roster
     }
     
 //#ifdef NEW_SKIN
-//#     MenuActionsIcons menuIcons=MenuActionsIcons.getInstance();
+//#     //MenuActionsIcons menuIcons=MenuActionsIcons.getInstance();
 //#else
-    MenuIcons menuIcons=MenuIcons.getInstance();
+    //MenuIcons menuIcons=MenuIcons.getInstance();
 //#endif
     
     public void commandState(){
@@ -312,25 +312,25 @@ public class Roster
             addCommand(cmdQuit);
         
 //#ifdef MENU_LISTENER
-//#         cmdActions.setImg(menuIcons.ICON_ITEM_ACTIONS);
-//#         cmdStatus.setImg(menuIcons.ICON_STATUS);
+//#         cmdActions.setImg(MenuIcons.ICON_ITEM_ACTIONS);
+//#         cmdStatus.setImg(MenuIcons.ICON_STATUS);
 //#         
-//#         cmdActiveContacts.setImg(menuIcons.ICON_CONFERENCE);
-//#         cmdAlert.setImg(menuIcons.ICON_NOTIFY);
+//#         cmdActiveContacts.setImg(MenuIcons.ICON_CONFERENCE);
+//#         cmdAlert.setImg(MenuIcons.ICON_NOTIFY);
 //#ifndef WMUC
-//#         cmdConference.setImg(menuIcons.ICON_CONFERENCE);
+//#         cmdConference.setImg(MenuIcons.ICON_CONFERENCE);
 //#endif
 //#ifdef ARCHIVE
-//#         cmdArchive.setImg(menuIcons.ICON_ARCHIVE);
+//#         cmdArchive.setImg(MenuIcons.ICON_ARCHIVE);
 //#endif
-//#         cmdAdd.setImg(menuIcons.ICON_ADD_CONTACT);
-//#         cmdTools.setImg(menuIcons.ICON_SETTINGS);    
-//#         cmdAccount.setImg(menuIcons.ICON_VCARD);
-//#         cmdInfo.setImg(menuIcons.ICON_CHECK_UPD);
+//#         cmdAdd.setImg(MenuIcons.ICON_ADD_CONTACT);
+//#         cmdTools.setImg(MenuIcons.ICON_SETTINGS);    
+//#         cmdAccount.setImg(MenuIcons.ICON_VCARD);
+//#         cmdInfo.setImg(MenuIcons.ICON_CHECK_UPD);
 //#         if (cf.allowMinimize)
-//#             cmdMinimize.setImg(menuIcons.ICON_FILEMAN);
-//#         cmdCleanAllMessages.setImg(menuIcons.ICON_CLEAN_MESSAGES);
-//#         cmdQuit.setImg(menuIcons.ICON_BUILD_NEW);
+//#             cmdMinimize.setImg(MenuIcons.ICON_FILEMAN);
+//#         cmdCleanAllMessages.setImg(MenuIcons.ICON_CLEAN_MESSAGES);
+//#         cmdQuit.setImg(MenuIcons.ICON_BUILD_NEW);
 //#endif
     }
     
@@ -956,6 +956,7 @@ public class Roster
     }
 //#ifndef WMUC
     public void multicastConferencePresence(String message, int mcstatus) {
+         if (!cf.autoJoinConferences) return;
          if (mcstatus==Presence.PRESENCE_INVISIBLE) return; //block multicasting presence invisible
 
          ExtendedStatus es= sl.getStatus(mcstatus);
@@ -1134,7 +1135,7 @@ public class Roster
 //#                     grpType==Groups.TYPE_VISIBLE || grpType==Groups.TYPE_IGNORE)) {
 //#                 String jid=k.getJid();
 //#                 jid=StringUtils.stringReplace(jid, srcTransport, dstTransport);
-//#                 storeContact(jid, k.nick, (k.getGroup().getName()!=SR.MS_GENERAL)?(k.getGroup().getName()):"", true); //new contact addition
+//#                 storeContact(jid, k.nick, (!k.getGroup().getName().equals(SR.MS_GENERAL))?(k.getGroup().getName()):"", true); //new contact addition
 //#                 try {
 //#                     Thread.sleep(300);
 //#                 } catch (Exception ex) { }
@@ -1201,9 +1202,6 @@ public class Roster
         if (doReconnect) {
             querysign=doReconnect=false;
             sendPresence(myStatus, null);
-//#ifndef WMUC
-            //if (cf.autoJoinConferences) mucReconnect();
-//#endif
             return;
         }
         //
@@ -1914,7 +1912,7 @@ public class Roster
         int volume=ac.soundVol;
         int vibraLen=cf.vibraLen;
         String type, message;
-        boolean flashBackLight=ac.flashBackLight;
+        //boolean flashBackLight=ac.flashBackLight;
 
         switch (event) {
             case 0: //online
@@ -1926,13 +1924,13 @@ public class Roster
                     message=null; type=null;
                 }
                 vibraLen=0;
-                flashBackLight=false;
+                //flashBackLight=false;
                 break;
             case 5: //offline
                 message=ac.soundOffline;
                 type=ac.soundOfflineType;
                 vibraLen=0;
-                flashBackLight=false;
+                //flashBackLight=false;
                 break;
             case SOUND_FOR_VIP: //VIP
                 message=ac.soundVIP;
@@ -1956,25 +1954,25 @@ public class Roster
                 message=ac.soundStartUp;
                 type=ac.soundStartUpType;
                 vibraLen=0;
-                flashBackLight=false;
+                //flashBackLight=false;
                 break;
             case SOUND_COMPOSING: //composing
                 message=ac.soundComposing;
                 type=ac.soundComposingType;
                 vibraLen=0;
-                flashBackLight=false;
+                //flashBackLight=false;
                 break;
             case SOUND_OUTGOING: //Outgoing
                 message=ac.soundOutgoing;
                 type=ac.soundOutgoingType;
                 vibraLen=0;
-                flashBackLight=false;
+                //flashBackLight=false;
                 break;
             default:
                 message="";
                 type="none";
                 vibraLen=0;
-                flashBackLight=false;
+                //flashBackLight=false;
                 break;
         }
        
@@ -1983,13 +1981,13 @@ public class Roster
         EventNotify notify=null;
         
         switch (profile) {
-            case AlertProfile.ALL:   notify=new EventNotify(display,    type,   message,    volume,     vibraLen, flashBackLight); break;
-            case AlertProfile.NONE:  notify=new EventNotify(display,    null,   null,       volume,     0, flashBackLight); break;
-            case AlertProfile.VIBRA: notify=new EventNotify(display,    null,   null,       volume,     vibraLen, flashBackLight); break;
-            case AlertProfile.SOUND: notify=new EventNotify(display,    type,   message,    volume,     0, flashBackLight); break;
+                                                         //display   fileType   soundName   volume      vibrate
+            case AlertProfile.ALL:   notify=new EventNotify(display,    type,   message,    volume,     vibraLen); break;
+            case AlertProfile.NONE:  notify=new EventNotify(display,    null,   null,       volume,     0); break;
+            case AlertProfile.VIBRA: notify=new EventNotify(display,    null,   null,       volume,     vibraLen); break;
+            case AlertProfile.SOUND: notify=new EventNotify(display,    type,   message,    volume,     0); break;
         }
-        if (notify!=null) 
-            notify.startNotify();
+        if (notify!=null) notify.startNotify();
         blockNotify(event, 2000);
     }
 
@@ -2438,10 +2436,10 @@ public class Roster
                 mess.append(cntact.statusString);
             }
             
-            super.setWobble(1, null, mess.toString());
+            VirtualList.setWobble(1, null, mess.toString());
             mess=null;
         } else {
-            super.setWobble(type, contact, info);
+            VirtualList.setWobble(type, contact, info);
         }
 
         redraw();
@@ -2826,59 +2824,6 @@ public class Roster
 //#         }
 //#     }
 //#endif
-//#ifndef WMUC
-    public void mucReconnect() {
-        Enumeration e;
-        
-        synchronized (hContacts) {
-            for (e=hContacts.elements();e.hasMoreElements();){
-                Contact c=(Contact)e.nextElement();
-                
-                if (c.origin==Contact.ORIGIN_GROUPCHAT) {
-                    if (c.getGroup() instanceof ConferenceGroup) {
-                        ConferenceGroup mucGrp=(ConferenceGroup)c.getGroup();
-                        if (!mucGrp.inRoom)
-                            continue;
-                        MucContact self=mucGrp.getSelfContact();
-                        if (self.status>=Presence.PRESENCE_OFFLINE) {
-                            confJoin(mucGrp.getConference().bareJid);
-//#if DEBUG 
-//#                             System.out.println("reconnect "+mucGrp.getConference().bareJid);
-//#endif
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
-    public void confJoin(String conference){
-//#ifndef WSYSTEMGC
-            System.gc();
-            try { Thread.sleep(50); } catch (InterruptedException e){}
-//#endif        
-        ConferenceGroup grp=initMuc(conference, "");
-        
-        JabberDataBlock x=new JabberDataBlock("x", null, null);
-        x.setNameSpace("http://jabber.org/protocol/muc");
-        
-        if (grp.password.length()!=0) {
-            // adding password to presence
-            x.addChild("password", grp.password);
-        }
-        
-        JabberDataBlock history=x.addChild("history", null);
-        history.setAttribute("maxstanzas", String.valueOf(cf.confMessageCount));
-        history.setAttribute("maxchars", "32768");
-        try {
-            long last=grp.getConference().lastMessageTime;
-            long delay= ( grp.conferenceJoinTime - last ) /1000 ;
-            if (last!=0) history.setAttribute("seconds",String.valueOf(delay)); // todo: change to since
-        } catch (Exception e) {}
-        sendPresence(conference, null, x, false);
-        reEnumRoster();
-    } 
-//#endif
 
     public void deleteGroup(Group deleteGroup) {
         synchronized (hContacts) {
@@ -2923,6 +2868,11 @@ public class Roster
     
 //#ifdef MENU_LISTENER
 //#     public Vector menuCommands=new Vector();
+//#     
+//#     public Command getCommand(int index) {
+//#         if (index>menuCommands.size()-1) return null;
+//#         return (Command) menuCommands.elementAt(index);
+//#     }
 //# 
 //#     public void addCommand(Command command) {
 //#         if (menuCommands.indexOf(command)<0)
@@ -2936,11 +2886,12 @@ public class Roster
 //# 
 //#     public void showMenu() {
 //#         commandState();
-//#         new MyMenu(display, parentView, this, SR.MS_MAIN_MENU, menuIcons, menuCommands);
+//#         new MyMenu(display, parentView, this, SR.MS_MAIN_MENU, MenuIcons.getInstance(), menuCommands);
 //#     }
 //#     public void touchLeftPressed(){
 //#         showMenu();
 //#     }
+//#     public String touchRightCommand(){ return SR.MS_ACTION; }
 //#endif
     
     void setTicker(Contact c, String message) {

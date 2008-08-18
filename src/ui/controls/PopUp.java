@@ -135,14 +135,11 @@ public class PopUp {
                     return true;
             }
         }
-        //if (((PopUpElement)popUps.elementAt(0)).getType()==TYPE_SYSTEM) {
-            next();
-            return false;
-        /*}
-        if (keyCode==5 || keyCode==12 || keyCode==13) {
-            next();
-        }
-        return true;*/
+        next();
+        if (keyCode==5)
+            return true;
+        
+        return false;
     }
     
     public void clear() {

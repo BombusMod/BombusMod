@@ -112,7 +112,7 @@ public class archiveEdit
             }
             Msg newmsg=new Msg(type, from, subj, body);
             
-            archive.store(newmsg, where);
+            MessageArchive.store(newmsg, where);
             archive.close();
             
             al.reFresh();

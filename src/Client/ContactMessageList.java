@@ -230,7 +230,7 @@ public class ContactMessageList extends MessageList {
 //#endif
 //#ifdef HISTORY
 //#         if (cf.msgPath!=null)
-//#             if (cf.msgPath!="")
+//#             if (!cf.msgPath.equals(""))
 //#                 if (contact.msgs.size()>0)
 //#                     addCommand(cmdSaveChat);
 //#ifdef HISTORY_READER

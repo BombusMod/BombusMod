@@ -39,4 +39,5 @@ public interface MenuListener {
     public void removeCommand(Command command);
     public void setCommandListener(MenuListener menuListener);
     public void showMenu();
+    public Command getCommand(int index);
 }

@@ -45,7 +45,6 @@ import java.util.Vector;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
-import Colors.ColorTheme;
 import ui.IconTextElement;
 import ui.VirtualElement;
 import ui.VirtualList;
@@ -303,6 +302,11 @@ public class Browser
     }
 //#ifdef MENU_LISTENER
 //#     public Vector menuCommands=new Vector();
+//#     
+//#     public Command getCommand(int index) {
+//#         if (index>menuCommands.size()-1) return null;
+//#         return (Command) menuCommands.elementAt(index);
+//#     }
 //# 
 //#     public void addCommand(Command command) {
 //#         if (menuCommands.indexOf(command)<0)
@@ -329,14 +333,13 @@ public class Browser
 //#     public void touchLeftPressed(){
 //#         showMenu();
 //#     }
+//# 
 //#     public void touchRightPressed(){
 //#         cmdBack();
 //#     }
-//#endif
-    
-    public void showMenu() {
-//#ifdef MENU_LISTENER
+//#     
+//#     public void showMenu() {
 //#         new MyMenu(display, parentView, this, SR.MS_DISCO, null, menuCommands);
+//#     }
 //#endif
-    }
 }

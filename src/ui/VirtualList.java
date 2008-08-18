@@ -59,8 +59,8 @@ public abstract class VirtualList
 
     abstract protected VirtualElement getItemRef(int index);
 
-    protected int getMainBarBGnd() {return ct.getColor(ColorTheme.BAR_BGND);} 
-    protected int getMainBarBGndBottom() {return ct.getColor(ColorTheme.BAR_BGND_BOTTOM);} 
+    protected int getMainBarBGnd() {return ColorTheme.getColor(ColorTheme.BAR_BGND);} 
+    protected int getMainBarBGndBottom() {return ColorTheme.getColor(ColorTheme.BAR_BGND_BOTTOM);}
     
     private StaticData sd=StaticData.getInstance();
 
@@ -98,9 +98,9 @@ public abstract class VirtualList
 //#     private static final int USER_OTHER_KEY_PRESSED = 1;
 //#     private static final int USER_STAR_KEY_PRESSED = 2;
 //#     private static final int USER_KEY_EXECUTED = 3;
-//#     
+//# 
 //#     private int additionKeyState = USER_OTHER_KEY_PRESSED;
-//#    
+//# 
 //#     public userKeyExec ue=userKeyExec.getInstance();
 //#endif
 
@@ -111,7 +111,7 @@ public abstract class VirtualList
         popup.addPopup(type, contact, txt);
     }
 //#endif
-    protected int getMainBarRGB() {return ct.getColor(ColorTheme.BAR_INK);} 
+    protected int getMainBarRGB() {return ColorTheme.getColor(ColorTheme.BAR_INK);}
     
     private Config cf=Config.getInstance();
 
@@ -206,9 +206,12 @@ public abstract class VirtualList
         if (canBack)
             destroyView();
     }
+    
+    public String touchLeftCommand(){ return SR.MS_MENU; }
+    public String touchRightCommand(){ return SR.MS_BACK; }
 //#endif
     
-    private ColorTheme ct;
+    //private ColorTheme ct;
 
     protected synchronized void updateLayout(){
         int size=getItemCount();
@@ -291,7 +294,7 @@ public abstract class VirtualList
         width=getWidth();
         height=getHeight();
         
-        ct=ColorTheme.getInstance();
+        //ct=ColorTheme.getInstance();
         
 //#ifdef POPUPS
         popup = new PopUp();
@@ -407,7 +410,7 @@ public abstract class VirtualList
         
 //#ifdef BACK_IMAGE
 //#         if (img!=null) {
-//#             g.setColor(ct.getColor(ColorTheme.LIST_BGND));
+//#             g.setColor(ColorTheme.getColor(ColorTheme.LIST_BGND));
 //#             g.fillRect(0, 0, width, height);
 //#             g.drawImage(img, width/2, height/2, Graphics.VCENTER|Graphics.HCENTER);
 //#         }
@@ -523,7 +526,7 @@ public abstract class VirtualList
                 ) {
             setAbsOrg(g, 0,displayedBottom);
             g.setClip(0, 0, itemMaxWidth, clrH);
-            g.setColor(ct.getColor(ColorTheme.LIST_BGND));
+            g.setColor(ColorTheme.getColor(ColorTheme.LIST_BGND));
             g.fillRect(0, 0, itemMaxWidth, clrH);
         }
 
@@ -576,9 +579,12 @@ public abstract class VirtualList
         if (System.currentTimeMillis()-sd.getTrafficOut()<2000) {
             drawTraffic(g, true);
         }
+       
+        if (sd.roster.messageCount>0) drawEnvelop(g);
         
-        if (sd.roster.messageCount>0)
-            drawEnvelop(g);
+//#ifdef MENU_LISTENER
+//#         if (drawMenuCommand) drawMenuCommands(g);
+//#endif
         
 //#ifdef POPUPS
         drawPopUp(g);
@@ -598,7 +604,23 @@ public abstract class VirtualList
 //#ifdef TEST
 //#     testBalloon test=new testBalloon();
 //#endif
-    
+
+//#ifdef MENU_LISTENER
+//#     public boolean drawMenuCommand = true;
+//#     
+//#     private void drawMenuCommands(final Graphics g) {
+//#         g.setColor(getMainBarRGB());
+//#         g.setFont(FontCache.getBarFont());
+//#         String leftStr=touchLeftCommand();
+//#         //int tw = FontCache.getRosterBoldFont().stringWidth("left");
+//#         g.drawString(leftStr, 2, height, Graphics.LEFT | Graphics.BOTTOM);
+//# 
+//#         String rightStr=touchRightCommand();
+//#         //int tw = FontCache.getRosterNormalFont().stringWidth(rightStr);
+//#         g.drawString(rightStr, width-2, height, Graphics.RIGHT | Graphics.BOTTOM);
+//#     }
+//#endif
+
     private void drawEnvelop(final Graphics g) {
         g.setColor(getMainBarRGB());
         int wpos= (width/2);
@@ -642,8 +664,8 @@ public abstract class VirtualList
     private void drawHeapMonitor(final Graphics g, int y) {
         if (memMonitor) {
             int ram=(int)(((int)Runtime.getRuntime().freeMemory()*width)/(int)Runtime.getRuntime().totalMemory());
-            g.setColor(ct.getColor(ColorTheme.HEAP_TOTAL));  g.fillRect(0,y,width,1);
-            g.setColor(ct.getColor(ColorTheme.HEAP_FREE));  g.fillRect(0,y,ram,1);
+            g.setColor(ColorTheme.getColor(ColorTheme.HEAP_TOTAL));  g.fillRect(0,y,width,1);
+            g.setColor(ColorTheme.getColor(ColorTheme.HEAP_FREE));  g.fillRect(0,y,ram,1);
         }
     }
 //#ifndef MENU
@@ -667,9 +689,15 @@ public abstract class VirtualList
             g.setColor(getMainBarBGnd());
             g.fillRect(0, 0, width, h);
 //#endif
-            g.setColor(getMainBarRGB());
-            int offset=(cf.phoneManufacturer==Config.NOKIA && reverse)?17:0;
-            infobar.drawItem(g,offset,false);
+            
+//#ifdef MENU_LISTENER
+//#             if (!reverse)
+//#                 if (drawMenuCommand)
+//#                     return;
+//#endif
+                g.setColor(getMainBarRGB());
+
+                infobar.drawItem(g,(cf.phoneManufacturer==Config.NOKIA && reverse)?17:0,false);
         }
     }
 //#endif
@@ -693,9 +721,13 @@ public abstract class VirtualList
             g.setColor(getMainBarBGnd());
             g.fillRect(0, 0, width, h);
 //#endif
-            g.setColor(getMainBarRGB());
-            int offset=(cf.phoneManufacturer==Config.NOKIA && !reverse)?17:0;
-            mainbar.drawItem(g,offset,false);
+//#ifdef MENU_LISTENER
+//#             if (reverse)
+//#                 if (drawMenuCommand)
+//#                     return;
+//#endif
+                g.setColor(getMainBarRGB());
+                mainbar.drawItem(g,(cf.phoneManufacturer==Config.NOKIA && !reverse)?17:0,false);
         }
     }
 
@@ -1265,11 +1297,11 @@ public abstract class VirtualList
     }
     
     protected void drawCursor (Graphics g, int width, int height){
-        int cursorBGnd=ct.getColor(ColorTheme.CURSOR_BGND);
-        int cursorOutline=ct.getColor(ColorTheme.CURSOR_OUTLINE);
+        int cursorBGnd=ColorTheme.getColor(ColorTheme.CURSOR_BGND);
+        int cursorOutline=ColorTheme.getColor(ColorTheme.CURSOR_OUTLINE);
         
         if (cursorBGnd!=0x010101) {
-            g.setColor(ct.getColor(ColorTheme.CURSOR_BGND));
+            g.setColor(ColorTheme.getColor(ColorTheme.CURSOR_BGND));
             g.fillRect(0, 0, width, height);
         }
 
@@ -1336,7 +1368,7 @@ public abstract class VirtualList
             s.append(" ").append(Time.localTime());
             getInfoBarItem().setElementAt(s.toString(), 1);
             s.setLength(0);
-            s.append(StringUtils.getSizeString(Stats.getInstance().getGPRS()));
+            s.append(StringUtils.getSizeString(Stats.getGPRS()));
 //#ifdef ELF
 //#             s.append(getNetworkLevel()).append(getAccuLevel());
 //#endif
@@ -1375,7 +1407,9 @@ class TimerTaskRotate extends Thread{
     private int scrollLen;
     private int scroll; //wait before scroll * sleep
     private int balloon; // show balloon time
-
+//#ifdef MENU_LISTENER
+//#     private int drawMenu; // menu show time
+//#endif
     private boolean scrollline;
     
     private VirtualList attachedList;
@@ -1407,8 +1441,11 @@ class TimerTaskRotate extends Thread{
             instance.scrollLen=max;
             instance.scrollline=(max>0);
             instance.attachedList=list;
-            instance.balloon= 14;
-            instance.scroll= 5;
+            instance.balloon  = 14;
+//#ifdef MENU_LISTENER
+//#             instance.drawMenu = 14;
+//#endif
+            instance.scroll   = 5;
         }
     }
     
@@ -1418,7 +1455,12 @@ class TimerTaskRotate extends Thread{
 
             synchronized (this) {
                 if (scroll==0) {
-                    if (instance.scroll() || instance.balloon())
+                    if (        instance.scroll()
+                            ||  instance.balloon()
+//#ifdef MENU_LISTENER
+//#                             ||  instance.menu()
+//#endif
+                        )
                         attachedList.redraw();
                 } else {
                     scroll --;                    
@@ -1449,6 +1491,17 @@ class TimerTaskRotate extends Thread{
             return true;
         }
     }
+//#ifdef MENU_LISTENER
+//#     public boolean menu() {
+//#         synchronized (this) {
+//#             if (attachedList==null || drawMenu<0)
+//#                 return false;
+//#             drawMenu--;
+//#             attachedList.drawMenuCommand=(drawMenu<15 && drawMenu>0);
+//#             return true;
+//#         }
+//#     }
+//#endif
     
     public void destroyTask(){
         synchronized (this) { 

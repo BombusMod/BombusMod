@@ -29,7 +29,6 @@ package Client;
 import Alerts.AlertProfile;
 //#ifndef NEW_SKIN
 import images.ActionsIcons;
-import images.MenuIcons;
 //#else
 //# import images.MenuActionsIcons;
 //#endif

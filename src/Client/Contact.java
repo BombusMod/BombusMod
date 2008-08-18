@@ -48,7 +48,6 @@ import ui.ImageList;
 //#endif
 import images.RosterIcons;
 import Colors.ColorTheme;
-import ui.Time;
 import VCard.VCard;
 import java.util.*;
 import ui.IconTextElement;
@@ -62,7 +61,7 @@ public class Contact extends IconTextElement{
     public void setNewContact() { this.isnew = 10; }
 //#endif
     
-    private ColorTheme ct;
+    //private ColorTheme ct;
     
 //#ifdef PEP    
 //#     public int pepMood=-1;
@@ -166,7 +165,7 @@ public class Contact extends IconTextElement{
     protected Contact (){
         super(RosterIcons.getInstance());
         cf=Config.getInstance();
-        ct=ColorTheme.getInstance();
+        //ct=ColorTheme.getInstance();
 
         msgs=null;
         msgs=new Vector();
@@ -236,15 +235,15 @@ public class Contact extends IconTextElement{
         }
 //#endif
         if (j2j!=null)
-            return ct.getColor(ColorTheme.CONTACT_J2J);
+            return ColorTheme.getColor(ColorTheme.CONTACT_J2J);
         
         switch (status) {
-            case Presence.PRESENCE_CHAT: return ct.getColor(ColorTheme.CONTACT_CHAT);
-            case Presence.PRESENCE_AWAY: return ct.getColor(ColorTheme.CONTACT_AWAY);
-            case Presence.PRESENCE_XA: return ct.getColor(ColorTheme.CONTACT_XA);
-            case Presence.PRESENCE_DND: return ct.getColor(ColorTheme.CONTACT_DND);
+            case Presence.PRESENCE_CHAT: return ColorTheme.getColor(ColorTheme.CONTACT_CHAT);
+            case Presence.PRESENCE_AWAY: return ColorTheme.getColor(ColorTheme.CONTACT_AWAY);
+            case Presence.PRESENCE_XA: return ColorTheme.getColor(ColorTheme.CONTACT_XA);
+            case Presence.PRESENCE_DND: return ColorTheme.getColor(ColorTheme.CONTACT_DND);
         }
-        return ct.getColor(ColorTheme.CONTACT_DEFAULT);
+        return ColorTheme.getColor(ColorTheme.CONTACT_DEFAULT);
     }
 
     public int getNewMsgsCount() {
@@ -334,7 +333,7 @@ public class Contact extends IconTextElement{
 //#endif
 //#if HISTORY
 //#         if (!m.isHistory()) {
-//#             if (cf.msgPath!=null && cf.msgPath!="" && group.type!=Groups.TYPE_TRANSP && group.type!=Groups.TYPE_SEARCH_RESULT) {
+//#             if (!cf.msgPath.equals("") && group.type!=Groups.TYPE_TRANSP && group.type!=Groups.TYPE_SEARCH_RESULT) {
 //#                 boolean allowLog=false;
 //#                 switch (m.messageType) {
 //#                     case Msg.MESSAGE_TYPE_PRESENCE:
@@ -560,13 +559,13 @@ public class Contact extends IconTextElement{
 
     public int getSecondLength() {
         if (getSecondString()==null) return 0;
-        if (getSecondString()=="") return 0;
+        if (getSecondString().equals("")) return 0;
         return secondFont.stringWidth(getSecondString());
     }
 
     public int getFirstLength() {
         if (getFirstString()==null) return 0;
-        if (getFirstString()=="") return 0;
+        if (getFirstString().equals("")) return 0;
         return getFont().stringWidth(getFirstString());
     }
     
@@ -726,7 +725,7 @@ public class Contact extends IconTextElement{
             int y=getFont().getHeight()-3;
             thisOfs=(getSecondLength()>w)?-ofs+offset:offset;
             g.setFont(secondFont);
-            g.setColor(ct.getColor(ColorTheme.SECOND_LINE));
+            g.setColor(ColorTheme.getColor(ColorTheme.SECOND_LINE));
             g.drawString(getSecondString(), thisOfs, y, Graphics.TOP|Graphics.LEFT);
         }
         g.setClip(xo, yo, w, h);

@@ -28,13 +28,13 @@
 package Conference;
 
 import Client.Contact;
+import Client.Roster;
 import Client.StaticData;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Presence;
 import images.RosterIcons;
 import locale.SR;
 import Client.Msg;
-import ui.VirtualList;
 import xmpp.XmppError;
 
 /**
@@ -119,21 +119,21 @@ public class MucContact extends Contact {
         
         JabberDataBlock item=xmuc.getChildBlock("item");   
 
-        String role=item.getAttribute("role");
-        if (role.equals("visitor")) roleCode=ROLE_VISITOR;
-        if (role.equals("participant")) roleCode=ROLE_PARTICIPANT;
-        if (role.equals("moderator")) roleCode=ROLE_MODERATOR;
+        String tempRole=item.getAttribute("role");
+        if (tempRole.equals("visitor")) roleCode=ROLE_VISITOR;
+        if (tempRole.equals("participant")) roleCode=ROLE_PARTICIPANT;
+        if (tempRole.equals("moderator")) roleCode=ROLE_MODERATOR;
         
-        String affiliation=item.getAttribute("affiliation");
-        if (affiliation.equals("owner")) affiliationCode=AFFILIATION_OWNER;
-        if (affiliation.equals("admin")) affiliationCode=AFFILIATION_ADMIN;
-        if (affiliation.equals("member")) affiliationCode=AFFILIATION_MEMBER;
-        if (affiliation.equals("none")) affiliationCode=AFFILIATION_NONE;
+        String tempAffiliation=item.getAttribute("affiliation");
+        if (tempAffiliation.equals("owner")) affiliationCode=AFFILIATION_OWNER;
+        if (tempAffiliation.equals("admin")) affiliationCode=AFFILIATION_ADMIN;
+        if (tempAffiliation.equals("member")) affiliationCode=AFFILIATION_MEMBER;
+        if (tempAffiliation.equals("none")) affiliationCode=AFFILIATION_NONE;
         
-        boolean roleChanged= !role.equals(this.role);
-        boolean affiliationChanged= !affiliation.equals(this.affiliation);
-        this.role=role;
-        this.affiliation=affiliation;
+        boolean roleChanged= !tempRole.equals(role);
+        boolean affiliationChanged= !tempAffiliation.equals(affiliation);
+        role=tempRole;
+        affiliation=tempAffiliation;
         
         String chNick=item.getAttribute("nick");
 
@@ -175,6 +175,7 @@ public class MucContact extends Contact {
         
         String statusText=presence.getChildBlockText("status");
         
+        String tempRealJid="";
         if (statusCode==201) {
             //todo: fix this nasty hack, it will not work if multiple status codes are nested in presence)
             b.setLength(0);
@@ -182,7 +183,7 @@ public class MucContact extends Contact {
         } else if (presenceType==Presence.PRESENCE_OFFLINE) {
             key0=3;
             String reason=item.getChildBlockText("reason");
-            String realJid=item.getAttribute("jid");
+            tempRealJid=item.getAttribute("jid");
             switch (statusCode) {
                 case 303:
                     b.append(SR.MS_IS_NOW_KNOWN_AS);
@@ -196,21 +197,21 @@ public class MucContact extends Contact {
                 case 301: //ban
                     presenceType=Presence.PRESENCE_ERROR;
                 case 307: //kick
-                    if (realJid!=null) {
-                        b.append(" (").append(realJid).append(")");
+                    if (tempRealJid!=null) {
+                        b.append(" (").append(tempRealJid).append(")");
                     }
                     b.append((statusCode==301)? SR.MS_WAS_BANNED : SR.MS_WAS_KICKED );
 //#ifdef POPUPS
                     if (((ConferenceGroup)getGroup()).getSelfContact() == this ) {
-                        StaticData.getInstance().roster.setWobble(3, null, ((statusCode==301)? SR.MS_WAS_BANNED : SR.MS_WAS_KICKED)+((reason!="")?"\n"+reason:""));
+                        Roster.setWobble(3, null, ((statusCode==301)? SR.MS_WAS_BANNED : SR.MS_WAS_KICKED)+((!reason.equals(""))?"\n"+reason:""));
                     }
 //#endif
-                    if (reason!="") {
+                    if (!reason.equals("")) {
                         b.append("(").append(reason).append(")");
                     }
-                    if (realJid!=null) {
+                    if (tempRealJid!=null) {
                         b.append(" - ");
-                        appendL(b, realJid);
+                        appendL(b, tempRealJid);
                     }
 
                     //if (reason.indexOf("talks") > -1) toTalks();
@@ -226,8 +227,8 @@ public class MucContact extends Contact {
                     testMeOffline();
                     break;
                 default:
-                    if (realJid!=null) {
-                        b.append(" (").append(realJid).append(")");
+                    if (tempRealJid!=null) {
+                        b.append(" (").append(tempRealJid).append(")");
                     }
                     b.append(SR.MS_HAS_LEFT_CHANNEL);
                     
@@ -239,11 +240,11 @@ public class MucContact extends Contact {
             } 
         } else {
             if (this.status==Presence.PRESENCE_OFFLINE) {
-                String realJid=item.getAttribute("jid");
-                if (realJid!=null) {
-                    this.realJid=realJid;  //for moderating purposes
+                tempRealJid=item.getAttribute("jid");
+                if (tempRealJid!=null) {
+                    realJid=tempRealJid;  //for moderating purposes
                     b.append(" (");
-                    appendL(b, realJid);
+                    appendL(b, tempRealJid);
                     b.append(')');
                 }
                 b.append(SR.MS_HAS_JOINED_THE_CHANNEL_AS);
@@ -339,15 +340,7 @@ public class MucContact extends Contact {
         
         return (tip.length()==0)? null:tip.toString();
     }
-/*
-    void toTalks(){
-        ConferenceGroup group=(ConferenceGroup)getGroup();
-        if ( group.getSelfContact() == this ) {
-            StaticData sd=StaticData.getInstance();
-            sd.roster.confJoin("bombus-talks@conference.jabber.ru/"+sd.account.getNickName());
-        }
-    }  
-*/
+
     void testMeOffline(){
          ConferenceGroup group=(ConferenceGroup)getGroup();
          if ( group.getSelfContact() == this ) 

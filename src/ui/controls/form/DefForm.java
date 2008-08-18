@@ -116,15 +116,17 @@ public class DefForm
     public void commandState() {
 //#ifdef MENU_LISTENER
 //#         menuCommands.removeAllElements();
-//#else
-	removeCommand(cmdOk);
-	removeCommand(cmdCancel);
 //#endif
 	addCommand(cmdOk);
 	addCommand(cmdCancel);
     }
     
-//#ifdef MENU_LISTENER    
+//#ifdef MENU_LISTENER
+//#     public Command getCommand(int index) {
+//#         if (index>menuCommands.size()-1) return null;
+//#         return (Command) menuCommands.elementAt(index);
+//#     }
+//# 
 //#     public void addCommand(Command command) {
 //#         if (menuCommands.indexOf(command)<0)
 //#             menuCommands.addElement(command);
@@ -157,6 +159,8 @@ public class DefForm
 //#         }
 //#         new MyMenu(display, parentView, this, "", null, menuCommands);
 //#     }
+//#     
+//#     public String touchLeftCommand(){ return SR.MS_OK; }
 //#     
 //#     public void touchLeftPressed(){ showMenu(); }
 //#endif

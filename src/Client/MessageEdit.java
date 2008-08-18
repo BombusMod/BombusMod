@@ -189,7 +189,7 @@ public class MessageEdit
                 setTitle(notifyMessage.substring(strPos++));
                 if ((notifyMessage.length()-strPos)<0) strPos=0;
             }
-            try { Thread.sleep(500); } catch (Exception e) { break; }
+            try { Thread.sleep(250); } catch (Exception e) { break; }
         }
     }
     
@@ -236,7 +236,7 @@ public class MessageEdit
     
     private String notifyMessage;
     public void setMyTicker(String msg) {
-        if (msg!=null && msg!="") {
+        if (msg!=null && !msg.equals("")) {
             StringBuffer out=new StringBuffer(msg);
             int i=0;
             while (i<out.length()) {
