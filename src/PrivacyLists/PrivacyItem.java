@@ -28,10 +28,8 @@
 package PrivacyLists;
 import images.RosterIcons;
 import locale.SR;
-import Colors.ColorTheme;
 import ui.*;
 import com.alsutton.jabber.*;
-import Client.*;
 
 /**
  *

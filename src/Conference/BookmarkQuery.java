@@ -27,7 +27,6 @@
 
 package Conference;
 
-import Client.Roster;
 import Client.StaticData;
 import com.alsutton.jabber.JabberBlockListener;
 import com.alsutton.jabber.JabberDataBlock;

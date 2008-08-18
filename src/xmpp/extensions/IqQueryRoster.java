@@ -29,7 +29,6 @@ package xmpp.extensions;
 
 import com.alsutton.jabber.*;
 import com.alsutton.jabber.datablocks.*;
-import java.util.*;
 
 /**
  * Class representing the iq message block

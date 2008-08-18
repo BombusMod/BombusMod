@@ -160,14 +160,15 @@ public class Affiliations
         try {
             if (data.getAttribute("id").equals(id)) {
                 JabberDataBlock query=data.findNamespace("query", namespace);
-                Vector items=new Vector();
+                Vector tempItems=new Vector();
                 try {
                     for (Enumeration e=query.getChildBlocks().elements(); e.hasMoreElements(); ){
-                        items.addElement(new AffiliationItem((JabberDataBlock)e.nextElement()));
+                        tempItems.addElement(new AffiliationItem((JabberDataBlock)e.nextElement()));
                     }
                 } catch (Exception e) { /* no any items */}
-                sort(items);
-                this.items=items;
+                sort(tempItems);
+                items=tempItems;
+                tempItems=null;
                 
                 if (display!=null) redraw();
                 

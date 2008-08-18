@@ -27,7 +27,6 @@
 package ui.keys;
 //#ifdef USER_KEYS
 //# import Client.Config;
-//# import Client.StaticData;
 //# import io.NvStorage;
 //# import java.io.DataOutputStream;
 //# import java.util.Vector;

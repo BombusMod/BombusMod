@@ -25,12 +25,8 @@
 
 package Colors;
 
-import io.NvStorage;
-import java.io.DataOutputStream;
 import javax.microedition.lcdui.*;
 import locale.SR;
-import Colors.ColorTheme;
-import ui.*;
 
 public class ColorSelector extends Canvas implements Runnable, CommandListener {
 
@@ -40,7 +36,6 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
     private Display display;
     Displayable parentView;
     Graphics G;
-    private ColorTheme ct;
 
     int cpos;
     String nowcolor;
@@ -72,18 +67,17 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
         this.display=display;
         parentView=display.getCurrent();
         this.paramName=paramName;
-        
-        ct=ColorTheme.getInstance();
-        this.color=ct.getColor(paramName);
+
+        this.color=ColorTheme.getColor(paramName);
         
         w = getWidth();
         h = getHeight();
 
         //System.out.println(color+" "+cl.getColorString(color));
 
-        red=ct.getRed(color);
-        green=ct.getGreen(color);
-        blue=ct.getBlue(color);
+        red=ColorTheme.getRed(color);
+        green=ColorTheme.getGreen(color);
+        blue=ColorTheme.getBlue(color);
 
         //String s = cl.ColorToString(red, green, blue);
 
@@ -108,27 +102,27 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
         String s = ColorTheme.ColorToString(red, green, blue);
 
         g.setColor(0);
-        g.setStrokeStyle(g.SOLID);
+        g.setStrokeStyle(Graphics.SOLID);
         g.drawRect(2, 2, 15, 15);
         g.setColor(red,green,blue);
         g.fillRect(4, 4, 12, 12);
         g.setColor(0x800000);
 //#ifdef COLOR_TUNE
-//#         g.drawString(s+" "+ColorsList.NAMES[paramName], 20, 5, g.TOP|g.LEFT);
+//#         g.drawString(s+" "+ColorsList.NAMES[paramName], 20, 5, Graphics.TOP|Graphics.LEFT);
 //#endif
 
         //draw red
         int pxred = w/3-10;
         int psred = (ph*red)/255;
         g.setColor(0);
-        g.setStrokeStyle(g.SOLID);
+        g.setStrokeStyle(Graphics.SOLID);
         g.fillRect(pxred-2, py-ph, 5, ph);
-        g.drawString("R", pxred, py+2, g.TOP|g.HCENTER);
+        g.drawString("R", pxred, py+2, Graphics.TOP|Graphics.HCENTER);
         g.setColor(0xff2020);
         g.fillRect(pxred-2, py-psred, 5, psred);
         if (cpos == 0) {
             g.setColor(0);
-            g.setStrokeStyle(g.DOTTED);
+            g.setStrokeStyle(Graphics.DOTTED);
             g.drawRect(pxred-7, py-ph-5, 15, ph+20);
         }
         
@@ -136,14 +130,14 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
         int pxgreen = w/2;
         int psgreen = (ph*green)/255;
         g.setColor(0);
-        g.setStrokeStyle(g.SOLID);
+        g.setStrokeStyle(Graphics.SOLID);
         g.fillRect(pxgreen-2, py-ph, 5, ph);
-        g.drawString("G", pxgreen, py+2, g.TOP|g.HCENTER);
+        g.drawString("G", pxgreen, py+2, Graphics.TOP|Graphics.HCENTER);
         g.setColor(0x00ff00);
         g.fillRect(pxgreen-2, py-psgreen, 5, psgreen);
         if (cpos == 1) {
             g.setColor(0);
-            g.setStrokeStyle(g.DOTTED);
+            g.setStrokeStyle(Graphics.DOTTED);
             g.drawRect(pxgreen-7, py-ph-5, 15, ph+20);
         }
         
@@ -151,14 +145,14 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
         int pxblue = w-(w/3-10);
         int psblue = (ph*blue)/255;
         g.setColor(0);
-        g.setStrokeStyle(g.SOLID);
+        g.setStrokeStyle(Graphics.SOLID);
         g.fillRect(pxblue-2, py-ph, 5, ph);
-        g.drawString("B", pxblue, py+2, g.TOP|g.HCENTER);
+        g.drawString("B", pxblue, py+2, Graphics.TOP|Graphics.HCENTER);
         g.setColor(0x4848ff);
         g.fillRect(pxblue-2, py-psblue, 5, psblue);
         if (cpos == 2) {
             g.setColor(0);
-            g.setStrokeStyle(g.DOTTED);
+            g.setStrokeStyle(Graphics.DOTTED);
             g.drawRect(pxblue-7, py-ph-5, 15, ph+20);
         }
     }
@@ -263,9 +257,9 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
 
     public void setValue(int vall) {
         this.value=vall;
-        ct.setColor(paramName, value);
+        ColorTheme.setColor(paramName, value);
 //#ifdef COLOR_TUNE
-//#         ct.saveToStorage();
+//#         ColorTheme.saveToStorage();
 //#endif
     }
 

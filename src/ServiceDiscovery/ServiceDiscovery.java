@@ -336,7 +336,7 @@ public class ServiceDiscovery
             if (mainbar.equals("error")) {
                 text=XmppError.findInStanza(data).toString();
             }
-            if (text==SR.MS_DONE && id.endsWith("Search") ) {
+            if (text.equals(SR.MS_DONE) && id.endsWith("Search") ) {
                 new SearchResult(display, data);
             } else {
                 new AlertBox(mainbar, text, display, null) {

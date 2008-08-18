@@ -85,13 +85,13 @@ public class DropChoiceBox
     
     public int getCaptionLength() {
         if (caption==null) return 0;
-        if (caption=="") return 0;
+        if (caption.equals("")) return 0;
         return captionFont.stringWidth(caption);
     }
 
     public int getTextLength() {
         String text=getTextValue();
-        if (text=="") return 0;
+        if (text.equals("")) return 0;
         return font.stringWidth(text);
     }
 

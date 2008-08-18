@@ -41,10 +41,7 @@ import midlet.BombusMod;
 import ui.controls.form.DefForm;
 import ui.controls.form.LinkString;
 import ui.controls.form.MultiLine;
-import ui.controls.form.SpacerItem;
-//#ifdef CLIPBOARD
-//# import util.ClipBoard;
-//#endif
+import util.ClipBoard;
 
 /**
  *

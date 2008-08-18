@@ -232,7 +232,7 @@ public class Account extends IconTextElement{
     public JabberStream openJabberStream() throws java.io.IOException{
         String proxy=null;
         String host=this.server;
-        int port=this.port;
+        int tempPort=port;
         
         if (hostAddr!=null) if (hostAddr.length()>0)
             host=hostAddr;
@@ -240,11 +240,11 @@ public class Account extends IconTextElement{
             io.DnsSrvResolver dns=new io.DnsSrvResolver();
             if (dns.getSrv(server)) {
                 host=dns.getHost();
-                port=dns.getPort();
+                tempPort=dns.getPort();
             } 
         }
 
-	StringBuffer url=new StringBuffer(host).append(':').append(port);
+	StringBuffer url=new StringBuffer(host).append(':').append(tempPort);
         if (!isEnableProxy()) {
 	    url.insert(0, (useSSL)?"ssl://":"socket://");
         } else {

@@ -164,8 +164,8 @@ public class JabberDataBlockDispatcher extends Thread
       synchronized (blockListeners) {
           int index=0;
           while (index<blockListeners.size()) {
-              Object listener=blockListeners.elementAt(index);
-              if (listener.getClass().equals(removeClass)) blockListeners.removeElementAt(index); 
+              Object list=blockListeners.elementAt(index);
+              if (list.getClass().equals(removeClass)) blockListeners.removeElementAt(index); 
               else index++;
           }
       }

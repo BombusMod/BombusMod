@@ -61,7 +61,7 @@ public class TrackItem
         
         int oldColor=g.getColor();
         
-        g.setColor(ColorTheme.getInstance().getColor(ColorTheme.CONTROL_ITEM));
+        g.setColor(ColorTheme.getColor(ColorTheme.CONTROL_ITEM));
         g.drawLine(4, height/2, width-4, height/2);
         
         g.fillRect(pos, 2, itemWidth, height-4);

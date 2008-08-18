@@ -55,8 +55,6 @@ public class Progress {
 //#     private static int bottomColor;
 //#endif
     private static int topColor;
-    
-    private static ColorTheme ct;
 
     /** Creates a new instance of progress */
     public Progress(Graphics g, int x, int y, int width) {
@@ -66,10 +64,9 @@ public class Progress {
         this.width=width;
         this.font=FontCache.getSmallFont();
         this.height=font.getHeight();
-        ct=ColorTheme.getInstance();
-        this.topColor=ct.getColor(ColorTheme.PGS_COMPLETE_TOP);
+        this.topColor=ColorTheme.getColor(ColorTheme.PGS_COMPLETE_TOP);
 //#ifdef GRADIENT
-//#         this.bottomColor=ct.getColor(ColorTheme.PGS_COMPLETE_BOTTOM);
+//#         this.bottomColor=ColorTheme.getColor(ColorTheme.PGS_COMPLETE_BOTTOM);
 //#         if (topColor!=bottomColor)
 //#             this.gr=new Gradient(0, y+1, width, y+height, topColor, bottomColor, false);
 //#endif
@@ -79,7 +76,7 @@ public class Progress {
         //g.translate(x, y-height);
         //g.setClip(0,0,width,height);
         
-        g.setColor(ct.getColor(ColorTheme.PGS_REMAINED));
+        g.setColor(ColorTheme.getColor(ColorTheme.PGS_REMAINED));
         g.fillRect(0, y, width, height);
 //#ifdef GRADIENT
 //#         if (topColor!=bottomColor) {
@@ -92,7 +89,7 @@ public class Progress {
 //#         }
 //#endif
        
-        g.setColor(ct.getColor(ColorTheme.PGS_INK));
+        g.setColor(ColorTheme.getColor(ColorTheme.PGS_INK));
         g.setFont(font);
         g.drawString(text, width/2, y, Graphics.TOP|Graphics.HCENTER);
         g.drawLine(x,y,width,y);

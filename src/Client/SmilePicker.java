@@ -103,8 +103,8 @@ public class SmilePicker extends VirtualList implements CommandListener, Virtual
 
     public int getVWidth(){ return 0; }
     public int getVHeight() { return lineHeight; }
-    public int getColor(){ return ColorTheme.getInstance().getColor(ColorTheme.LIST_INK); }
-    public int getColorBGnd(){ return ColorTheme.getInstance().getColor(ColorTheme.LIST_BGND); }
+    public int getColor(){ return ColorTheme.getColor(ColorTheme.LIST_INK); }
+    public int getColorBGnd(){ return ColorTheme.getColor(ColorTheme.LIST_BGND); }
     public void onSelect(){
         try {
             StaticData.getInstance().roster.me.insert( getTipString() , caretPos);

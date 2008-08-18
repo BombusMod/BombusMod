@@ -27,8 +27,6 @@
 
 package ServiceDiscovery;
 
-import Client.Contact;
-import Client.Group;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.TextField;

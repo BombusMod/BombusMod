@@ -30,7 +30,6 @@ import Client.StaticData;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
 import java.util.*;
-import java.io.*;
 import util.StringLoader;
 import util.Strconv;
 
@@ -142,11 +141,11 @@ public class VCard {
     public String getNickName() { 
         String name=getVCardData(NICKNAME);
         if (name!=null)
-            if (name!="")
+            if (!name.equals(""))
                 return name;
         name=getVCardData(FN);
         if (name!=null)
-            if (name!="")
+            if (!name.equals(""))
                 return name;
         
         return jid;

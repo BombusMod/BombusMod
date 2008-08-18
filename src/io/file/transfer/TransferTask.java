@@ -138,7 +138,7 @@ public class TransferTask
 
     public int getImageIndex() { return state; }
 
-    public int getColor() { return (sending)? ColorTheme.getInstance().getColor(ColorTheme.MESSAGE_OUT) : ColorTheme.getInstance().getColor(ColorTheme.MESSAGE_IN); }
+    public int getColor() { return (sending)? ColorTheme.getColor(ColorTheme.MESSAGE_OUT) : ColorTheme.getColor(ColorTheme.MESSAGE_IN); }
 
     public void drawItem(Graphics g, int ofs, boolean sel) {
         int xpgs=(g.getClipWidth()/3)*2;

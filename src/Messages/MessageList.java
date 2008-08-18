@@ -158,7 +158,7 @@ public abstract class MessageList extends VirtualList
         if (c==cmdxmlSkin) {
            try {
                if (((MessageItem)getFocusedObject()).msg.getBody().indexOf("xmlSkin")>-1) {
-                  ColorTheme.getInstance().loadSkin(((MessageItem)getFocusedObject()).msg.getBody(),2);
+                    ColorTheme.loadSkin(((MessageItem)getFocusedObject()).msg.getBody(),2);
                }
             } catch (Exception e){}
         }

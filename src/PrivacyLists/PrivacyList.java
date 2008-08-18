@@ -29,7 +29,6 @@ package PrivacyLists;
 import com.alsutton.jabber.datablocks.Iq;
 import images.RosterIcons;
 import java.util.*;
-import Colors.ColorTheme;
 import ui.*;
 import Client.*;
 import com.alsutton.jabber.*;

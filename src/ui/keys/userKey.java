@@ -26,7 +26,6 @@
 
 package ui.keys;
 
-import Client.StaticData;
 import images.RosterIcons;
 import io.NvStorage;
 import java.io.DataInputStream;

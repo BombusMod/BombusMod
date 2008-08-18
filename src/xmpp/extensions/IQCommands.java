@@ -105,7 +105,7 @@ public class IQCommands implements JabberBlockListener {
                 if (command.getAttribute("sessionid")==null) {
                     processStatusRequest(data);
                     return BLOCK_PROCESSED;
-                } else if (command.getAttribute("action")!="cancel") {
+                } else if (!command.getAttribute("action").equals("cancel")) {
                     Iq reply=new Iq(data.getAttribute("from"), Iq.TYPE_RESULT, data.getAttribute("id"));
                     JabberDataBlock cmd=reply.addChildNs("command", "http://jabber.org/protocol/commands");
                     cmd.setAttribute("status", "completed");
@@ -148,7 +148,7 @@ public class IQCommands implements JabberBlockListener {
                 if (command.getAttribute("sessionid")==null) {
                     processGCRequest(data);
                     return BLOCK_PROCESSED;
-                } else if (command.getAttribute("action")!="cancel") {
+                } else if (!command.getAttribute("action").equals("cancel")) {
                     Iq reply=new Iq(data.getAttribute("from"), Iq.TYPE_RESULT, data.getAttribute("id"));
                     JabberDataBlock cmd=reply.addChildNs("command", "http://jabber.org/protocol/commands");
                     cmd.setAttribute("status", "completed");

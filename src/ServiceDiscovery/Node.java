@@ -28,7 +28,6 @@
 package ServiceDiscovery;
 
 import images.RosterIcons;
-import Colors.ColorTheme;
 import ui.IconTextElement;
 
 /**

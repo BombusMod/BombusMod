@@ -77,9 +77,9 @@ public class TextInput
         this.id=id;
         this.boxType=boxType;
 
-        colorItem=ColorTheme.getInstance().getColor(ColorTheme.CONTROL_ITEM);
-        colorBorder=ColorTheme.getInstance().getColor(ColorTheme.CURSOR_OUTLINE);
-        colorBGnd=ColorTheme.getInstance().getColor(ColorTheme.LIST_BGND);
+        colorItem=ColorTheme.getColor(ColorTheme.CONTROL_ITEM);
+        colorBorder=ColorTheme.getColor(ColorTheme.CURSOR_OUTLINE);
+        colorBGnd=ColorTheme.getColor(ColorTheme.LIST_BGND);
         
         font=FontCache.getMsgFont();
         fontHeight=font.getHeight();
@@ -106,13 +106,13 @@ public class TextInput
     
     public int getCaptionLength() {
         if (caption==null) return 0;
-        if (caption=="") return 0;
+        if (caption.equals("")) return 0;
         return captionFont.stringWidth(caption);
     }
 
     public int getTextLength() {
         if (text==null) return 0;
-        if (text=="") return 0;
+        if (text.equals("")) return 0;
         return font.stringWidth(text);
     }
     

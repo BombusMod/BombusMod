@@ -55,8 +55,6 @@ public class PopUp {
     private int height;
     
     private Vector popUps;
-    
-    private ColorTheme ct;
 
     private final static int  SCROLLABLE_NONE=-1;
     private final static int  SCROLLABLE_DOWN=0;
@@ -83,7 +81,6 @@ public class PopUp {
     public PopUp() {
          popUps = new Vector();
          font=FontCache.getBalloonFont();
-         ct=ColorTheme.getInstance();
          ri=RosterIcons.getInstance();
     }
     
@@ -199,9 +196,9 @@ public class PopUp {
         int type=((PopUpElement)popUps.elementAt(0)).getType();
         switch (type) {
             case TYPE_SYSTEM:
-                return ct.getColor(ColorTheme.POPUP_SYSTEM_INK);
+                return ColorTheme.getColor(ColorTheme.POPUP_SYSTEM_INK);
             case TYPE_MESSAGE:
-                return ct.getColor(ColorTheme.POPUP_MESSAGE_INK);
+                return ColorTheme.getColor(ColorTheme.POPUP_MESSAGE_INK);
         }
         return COLOR_ALERT_INK;
     }
@@ -210,9 +207,9 @@ public class PopUp {
         int type=((PopUpElement)popUps.elementAt(0)).getType();
         switch (type) {
             case TYPE_SYSTEM:
-                return ct.getColor(ColorTheme.POPUP_SYSTEM_BGND);
+                return ColorTheme.getColor(ColorTheme.POPUP_SYSTEM_BGND);
             case TYPE_MESSAGE:
-                return ct.getColor(ColorTheme.POPUP_MESSAGE_BGND);
+                return ColorTheme.getColor(ColorTheme.POPUP_MESSAGE_BGND);
         }
         return COLOR_ALERT_BGND;
     }

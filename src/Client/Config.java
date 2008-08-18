@@ -47,7 +47,6 @@ import util.StringLoader;
 import ui.Time;
 import ui.VirtualList;
 import io.NvStorage;
-//import javax.microedition.rms.*;
 
 /**
  *

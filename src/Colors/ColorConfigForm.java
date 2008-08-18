@@ -81,7 +81,7 @@ public class ColorConfigForm
 //#         configureColors=new LinkString(SR.MS_COLOR_TUNE) { public void doAction() { new ColorsList(display); } };
 //#         itemsList.addElement(configureColors);
 //#endif
-        invertColors=new LinkString(SR.MS_INVERT) { public void doAction() { ColorTheme.getInstance().invertSkin(); } };
+        invertColors=new LinkString(SR.MS_INVERT) { public void doAction() { ColorTheme.invertSkin(); } };
         itemsList.addElement(invertColors);
         
         itemsList.addElement(new SpacerItem(10));
@@ -108,7 +108,7 @@ public class ColorConfigForm
         itemsList.addElement(new SpacerItem(10));
 //#endif
         
-        reset=new LinkString(SR.MS_CLEAR) { public void doAction() { ColorTheme.getInstance().init(); ColorTheme.getInstance().saveToStorage(); } };
+        reset=new LinkString(SR.MS_CLEAR) { public void doAction() { ColorTheme.init(); ColorTheme.saveToStorage(); } };
         itemsList.addElement(reset);
         
         moveCursorTo(getNextSelectableRef(-1));
@@ -139,7 +139,7 @@ public class ColorConfigForm
     public void userThemeFromJar(){
         try {
             if (skinFiles.getSelectedIndex()>-1) {
-                ColorTheme.getInstance().loadSkin((String)files[0].elementAt(skinFiles.getSelectedIndex()), 1);
+                ColorTheme.loadSkin((String)files[0].elementAt(skinFiles.getSelectedIndex()), 1);
             }
         } catch (Exception ex) {}
     }
@@ -148,9 +148,9 @@ public class ColorConfigForm
     public void BrowserFilePathNotify(String pathSelected) {
         if (loadType==0) {
             FileIO file=FileIO.createConnection(pathSelected+"skin.txt");
-            file.fileWrite(ColorTheme.getInstance().getSkin().getBytes());
+            file.fileWrite(ColorTheme.getSkin().getBytes());
         } else {
-            ColorTheme.getInstance().loadSkin(pathSelected, 0);
+            ColorTheme.loadSkin(pathSelected, 0);
         }
     }
 //#endif

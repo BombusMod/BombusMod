@@ -66,8 +66,6 @@ public class ScrollBar {
     private int minimumHeight=3;
     private int scrollWidth=WIDTH_SCROLL_1;
     
-    private ColorTheme ct;
-    
     private int colorTop;
     private int colorBottom;
     private int colorBar;
@@ -76,11 +74,10 @@ public class ScrollBar {
     /** Creates a new instance of ScrollBar */
     public ScrollBar() {
         point_y=-1;
-        ct=ColorTheme.getInstance();
-        colorTop=ct.getColor(ColorTheme.SCROLL_BGND);
+        colorTop=ColorTheme.getColor(ColorTheme.SCROLL_BGND);
         colorBottom=0xFFFFFF-colorTop;
-        colorBar=ct.getColor(ColorTheme.SCROLL_BAR);
-        colorBorder=ct.getColor(ColorTheme.SCROLL_BRD);
+        colorBar=ColorTheme.getColor(ColorTheme.SCROLL_BAR);
+        colorBorder=ColorTheme.getColor(ColorTheme.SCROLL_BRD);
     }
 
     public void setWindowSize(int windowSize) {

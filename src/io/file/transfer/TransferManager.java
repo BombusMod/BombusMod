@@ -201,7 +201,7 @@ public class TransferManager
                 .append("\n")
                 .append(t.fileSize)
                 .append(" bytes");
-            if (t.description!="")
+            if (!t.description.equals(""))
                 info.append("\n").append(t.description);
             if (t.isStarted() && t.started!=0)
                 info.append("\nStarted: ").append(Time.dateTimeLocalString(t.started));
@@ -210,7 +210,7 @@ public class TransferManager
             if (t.errMsg!=null)
                 info.append("\nError: ").append(t.errMsg);
 
-            super.setWobble(1, null, info.toString());
+            VirtualList.setWobble(1, null, info.toString());
         }
     }
 }

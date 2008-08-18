@@ -51,7 +51,7 @@ public class MoodItem extends IconTextElement {
     }
 
     public int getImageIndex() { return iconIndex; }
-    public int getColor() { return ColorTheme.getInstance().getColor(ColorTheme.CONTACT_DEFAULT); }
+    public int getColor() { return ColorTheme.getColor(ColorTheme.CONTACT_DEFAULT); }
     public String toString() { return label; }
     public String getTipString() { return name; }
 

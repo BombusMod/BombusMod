@@ -31,7 +31,6 @@ import Client.Config;
 import Client.StaticData;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
-import ui.MainBar;
 import images.RosterIcons;
 //#ifndef MENU_LISTENER
 import javax.microedition.lcdui.CommandListener;

@@ -183,7 +183,7 @@ public final class ContactEdit
 
             boolean ask=tAskSubscrCheckBox.getValue();
             
-            if (group==SR.MS_GENERAL) group="";
+            if (group.equals(SR.MS_GENERAL)) group="";
 
             int at=jid.indexOf('@');
             if (at<0 && tTranspList.getSelectedIndex()!=tTranspList.size()-1) {

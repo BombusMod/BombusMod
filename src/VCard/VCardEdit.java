@@ -130,7 +130,7 @@ public class VCardEdit
         new Thread(this).start();
         destroyView();
     }
-//#ifndef MENU
+
     public void commandAction(Command c, Displayable d) {
         if (c==cmdCancel) destroyView();
         if (c==cmdRefresh) {
@@ -161,7 +161,7 @@ public class VCardEdit
 
         super.commandAction(c, d);
     }
-//#endif
+
     public void run() {
         StaticData.getInstance().roster.theStream.send(vcard.constructVCard());
         //System.out.println("VCard sent");
@@ -195,7 +195,7 @@ public class VCardEdit
 //#ifdef DETRANSLIT
 //#         String userName=(vcard.getNickName()!=null)?vcard.getNickName():vcard.getJid();
 //#         if (Config.getInstance().transliterateFilenames) {
-//#             nickDate.append(DeTranslit.getInstance().translit(userName));
+//#             nickDate.append(DeTranslit.translit(userName));
 //#         } else {
 //#             nickDate.append(userName);
 //#         }
@@ -258,5 +258,7 @@ public class VCardEdit
 //#             addCommand(cmdCamera);
 //#         addCommand(cmdDelPhoto);
 //#     }
+//# 
+//#     public String touchLeftCommand() { return SR.MS_MENU; }
 //#endif
 }

@@ -1,7 +1,7 @@
 /*
  * TextListBox.java
  *
- * Created on 25 Май 2008 г., 16:58
+ * Created on 25 пїЅпїЅпїЅ 2008 пїЅ., 16:58
  *
  * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
  *
@@ -27,25 +27,15 @@
 
 package ui.controls.form;
 
-import java.util.Vector;
-import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
-import locale.SR;
 import ui.MainBar;
 import ui.VirtualElement;
 import ui.VirtualList;
 
-import io.NvStorage;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.EOFException;
-import java.util.Enumeration;
 import java.util.Vector;
 import javax.microedition.lcdui.Command;
-import javax.microedition.lcdui.Item;
-import javax.microedition.lcdui.ItemCommandListener;
 import locale.SR;
 
 /**
@@ -54,14 +44,12 @@ import locale.SR;
  */
 public class TextListBox 
         extends VirtualList 
-//#ifndef MENU
         implements CommandListener
-//#endif
     {
-//#ifndef MENU
+
     private Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK,99);
     private Command cmdOk=new Command(SR.MS_OK, Command.OK,1);
-//#endif
+
     private Vector recentList;
 
     private EditBox ti;
@@ -71,11 +59,11 @@ public class TextListBox
         this.ti=ti;
         this.recentList=ti.recentList;
         setMainBarItem(new MainBar(SR.MS_SELECT));
-//#ifndef MENU
+
         addCommand(cmdOk);
         addCommand(cmdCancel);
         setCommandListener(this);
-//#endif
+
     }
     
     public void eventOk() {
@@ -85,19 +73,12 @@ public class TextListBox
         display.setCurrent(parentView);
     }
 
-//#ifndef MENU
     public void commandAction(Command c, Displayable d){
         if (c==cmdOk)
             eventOk();
         else if (c==cmdCancel)
             display.setCurrent(parentView);
     }
-//#else
-//#     public String getLeftCommand() { return SR.MS_OK; }
-//#     public void leftCommand() { eventOk(); }
-//#     
-//#     public String getRightCommand() { return SR.MS_CANCEL; }
-//#endif
 
     public VirtualElement getItemRef(int index){ 
         return new ListItem((String) recentList.elementAt(index)); 

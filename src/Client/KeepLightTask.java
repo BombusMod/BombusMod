@@ -26,7 +26,6 @@
 
 package Client;
 
-import com.nokia.mid.ui.DeviceControl;
 
 public class KeepLightTask implements Runnable {    
     
@@ -64,7 +63,7 @@ public class KeepLightTask implements Runnable {
             
             try {
                  if (setLight)
-                     DeviceControl.setLights(0, 100);
+                     com.nokia.mid.ui.DeviceControl.setLights(0, 100);
             } catch (Exception e) {
                 setLight=false;
             }

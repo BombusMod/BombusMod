@@ -26,16 +26,17 @@
  */
 
 package AutoTasks;
-
-import Client.StaticData;
-import java.util.Vector;
+//#if AUTOTASK    
+//# import Client.StaticData;
+//# import java.util.Vector;
+//# import ui.controls.form.DropChoiceBox;
+//# import ui.controls.form.NumberInput;
+//# import ui.controls.form.SimpleString;
+//#endif
+import ui.controls.form.DefForm;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
-import ui.controls.form.DropChoiceBox;
-import ui.controls.form.DefForm;
-import ui.controls.form.NumberInput;
-import ui.controls.form.SimpleString;
 
 /**
  *

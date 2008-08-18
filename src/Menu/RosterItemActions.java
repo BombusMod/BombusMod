@@ -68,7 +68,6 @@ import java.util.Enumeration;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
-import ui.Time;
 //#ifdef CLIPBOARD
 //# import util.ClipBoard;
 //#endif

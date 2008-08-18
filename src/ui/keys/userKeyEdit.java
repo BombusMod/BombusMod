@@ -67,15 +67,15 @@ class userKeyEdit
 //#         itemsList.addElement(active);
 //# 
 //#         keyDesc=new DropChoiceBox(display, SR.MS_KEYS_ACTION);
-//#         for (int i=0;i<userKeyExec.getInstance().COMMANDS_DESC.length;i++) {
-//#             keyDesc.append(userKeyExec.getInstance().COMMANDS_DESC[i]);
+//#         for (int i=0;i<userKeyExec.COMMANDS_DESC.length;i++) {
+//#             keyDesc.append(userKeyExec.COMMANDS_DESC[i]);
 //#         }
 //#         keyDesc.setSelectedIndex(u.getCommandId());
 //#         itemsList.addElement(keyDesc);
 //# 
 //#         keyCode=new DropChoiceBox(display, SR.MS_KEY);
-//#         for (int i=0;i<userKeyExec.getInstance().KEYS_NAME.length;i++) {
-//#             keyCode.append(userKeyExec.getInstance().KEYS_NAME[i]);
+//#         for (int i=0;i<userKeyExec.KEYS_NAME.length;i++) {
+//#             keyCode.append(userKeyExec.KEYS_NAME[i]);
 //#         }
 //#         keyCode.setSelectedIndex(u.getKey());
 //#         itemsList.addElement(keyCode);

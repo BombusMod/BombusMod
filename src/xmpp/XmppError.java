@@ -281,7 +281,7 @@ public class XmppError {
                     case 504: errCond=REMOTE_SERVER_TIMEOUT; break;
                     default: errCond=UNDEFINED_CONDITION;
                 }
-            } catch (Exception e) { errCond=UNDEFINED_CONDITION; };
+            } catch (Exception e) { errCond=UNDEFINED_CONDITION; }
         }
         
         XmppError xe=new XmppError(errCond, text);

@@ -38,11 +38,6 @@ import locale.SR;
 import xmpp.XmppError;
 
 import util.Strconv;
-//#if SASL_XGOOGLETOKEN
-//# import java.io.InputStream;
-//# import javax.microedition.io.Connector;
-//# import javax.microedition.io.HttpConnection;
-//#endif
 
 /**
  *

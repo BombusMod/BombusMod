@@ -1,7 +1,7 @@
 /*
  * StringUtils.java
  *
- * Created on 28 Май 2008 г., 13:27
+ * Created on 28 пїЅпїЅпїЅ 2008 пїЅ., 13:27
  *
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
@@ -9,7 +9,6 @@
 
 package util;
 
-import Info.Version;
 import java.util.Vector;
 import javax.microedition.lcdui.Font;
 import ui.Time;

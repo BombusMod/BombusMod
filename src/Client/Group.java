@@ -62,7 +62,7 @@ public class Group extends IconTextElement {
         this.name=name;        
     }
     
-    public int getColor(){ return ColorTheme.getInstance().getColor(ColorTheme.GROUP_INK); }
+    public int getColor(){ return ColorTheme.getColor(ColorTheme.GROUP_INK); }
     
     public int getImageIndex() {
         return collapsed?imageCollapsedIndex:imageExpandedIndex;

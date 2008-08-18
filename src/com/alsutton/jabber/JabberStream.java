@@ -35,7 +35,6 @@ import io.Utf8IOStream;
 import java.io.*;
 import java.util.*;
 import javax.microedition.io.*;
-import com.alsutton.jabber.datablocks.*;
 import xml.*;
 import locale.SR;
 import xmpp.XmppError;
@@ -176,7 +175,7 @@ public class JabberStream extends XmppParser implements Runnable {
                 if (iostream!=null)
                     length=*/iostream.read(cbuf);
                 if (length==0) {
-                    try { Thread.sleep(100); } catch (Exception e) {}; 
+                    try { Thread.sleep(100); } catch (Exception e) { }; 
                     continue; 
                 }
                 parser.parse(cbuf, length);           
@@ -239,10 +238,10 @@ public class JabberStream extends XmppParser implements Runnable {
     public void send( String data ) throws IOException {
 	iostream.send(new StringBuffer(data));
 //#ifdef CONSOLE
-//#         if (data!="</iq" && data!=" ")
-//#             addLog(data);
-//#         else
+//#         if (data.equals("</iq") || data.equals(" "))
 //#             addLog("Ping myself");
+//#         else
+//#             addLog(data);
 //#endif
     }
     

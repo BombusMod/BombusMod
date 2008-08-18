@@ -27,13 +27,8 @@
 
 package xml;
 
-//#if ZLIB
-import com.jcraft.jzlib.ZInputStream;
-//#endif
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.*;
-import io.*;
 
 public class XMLParser {
     private final static int MAX_BIN_DATASIZE=64*1024; //64 KB - experimental
@@ -275,7 +270,7 @@ public class XMLParser {
                 }
                 sb.setCharAt(opos++, c); 
                 continue;
-            };
+            }
             if (c<0x80) { 
                 sb.setCharAt(opos++, c); 
                 continue; 

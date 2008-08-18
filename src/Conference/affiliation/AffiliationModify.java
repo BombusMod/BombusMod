@@ -92,7 +92,7 @@ public class AffiliationModify
         child.setAttribute("affiliation", AffiliationItem.getAffiliationName((short)affiliationItem.getSelectedIndex()));
 		
         String rs=reasonItem.getValue();
-        if (rs!="") child.addChild("reason", rs);        
+        if (!rs.equals("")) child.addChild("reason", rs);        
 
         stream.send(request);
         try {
@@ -107,7 +107,7 @@ public class AffiliationModify
     }
     
     public void cmdOk() {
-        if (jidItem.getValue()=="") return;
+        if (jidItem.getValue().equals("")) return;
         if (recentAffiliation==AffiliationItem.AFFILIATION_OWNER) {
             StringBuffer warn=new StringBuffer(SR.MS_ARE_YOU_SURE_WANT_TO_DISCARD /*"Are You sure want to discard "*/)
             .append(jidItem.getValue())

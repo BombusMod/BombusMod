@@ -12,7 +12,6 @@ package io;
 import com.ssttr.crypto.MessageDigest;
 import com.ssttr.crypto.SHA1;
 import java.io.DataInputStream;
-import java.io.DataOutput;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;

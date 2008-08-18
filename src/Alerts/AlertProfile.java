@@ -30,7 +30,6 @@ package Alerts;
 import Client.*;
 import images.RosterIcons;
 import locale.SR;
-import Colors.ColorTheme;
 import ui.*;
 import javax.microedition.lcdui.*;
 import ui.MainBar;

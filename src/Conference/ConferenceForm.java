@@ -243,6 +243,8 @@ public class ConferenceForm
 //#         addCommand(cmdEdit);
 //#         addCommand(cmdCancel);
 //#     }
+//# 
+//#     public String touchLeftCommand(){ return SR.MS_MENU; }
 //#endif
 
     private void saveMsgCount(int msgLimit) {

@@ -113,8 +113,7 @@ public final class MessageParser implements Runnable{
 	p.smile=index;
     }
 
-    public void parseMsg(MessageItem messageItem,  int width)
-    {
+    public void parseMsg(MessageItem messageItem,  int width) {
         synchronized (tasks) {
             wordsWrap=Config.getInstance().textWrap==1;
             messageItem.msgLines=new Vector();
@@ -265,8 +264,8 @@ public final class MessageParser implements Runnable{
             String txt=(state==0)? task.msg.subject: task.msg.toString();
             
             int color=(state==0)?
-                ColorTheme.getInstance().getColor(ColorTheme.MSG_SUBJ):
-                ColorTheme.getInstance().getColor(ColorTheme.LIST_INK);
+                ColorTheme.getColor(ColorTheme.MSG_SUBJ):
+                ColorTheme.getColor(ColorTheme.LIST_INK);
             l.setColor(color);
            
             if (txt==null) {
@@ -373,7 +372,7 @@ public final class MessageParser implements Runnable{
                             l.addElement(s.toString());
                             s.setLength(0); w=0;
 
-                            if (c==0xa0) l.setColor(ColorTheme.getInstance().getColor(ColorTheme.MSG_HIGHLIGHT));
+                            if (c==0xa0) l.setColor(ColorTheme.getColor(ColorTheme.MSG_HIGHLIGHT));
 //#ifdef SMILES
                             l=new ComplexString(smileImages);
 //#else

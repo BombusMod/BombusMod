@@ -57,7 +57,7 @@ public class HttpProxyConnection implements StreamConnection {
 	while (true) {
             
             while (is.available()==0) 
-                try { Thread.sleep(100); } catch (Exception e) {};
+                try { Thread.sleep(100); } catch (Exception e) { };
                 
 	    int c = is.read();
 	    if (c<0) { 

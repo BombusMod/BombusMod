@@ -30,7 +30,6 @@ package io.file.browse;
 import Client.Config;
 import io.file.FileIO;
 import java.io.IOException;
-import java.io.InputStream;
 import javax.microedition.lcdui.*;
 import javax.microedition.media.Manager;
 import javax.microedition.media.MediaException;

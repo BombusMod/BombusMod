@@ -162,7 +162,6 @@ public class VCardView
             itemsList.addElement(noPhoto);
         }
      }
-//#ifndef MENU
     public void commandAction(Command c, Displayable d) {
         if (c==cmdDelPhoto) {
             vcard.dropPhoto(); 
@@ -198,7 +197,6 @@ public class VCardView
 //#endif
         super.commandAction(c, d);
     }
-//#endif
 
 //#if FILE_IO
     public void BrowserFilePathNotify(String pathSelected) {
@@ -216,7 +214,7 @@ public class VCardView
 //#ifdef DETRANSLIT
 //#         String userName=(vcard.getNickName()!=null)?vcard.getNickName():vcard.getJid();
 //#         if (Config.getInstance().transliterateFilenames) {
-//#             nickDate.append(DeTranslit.getInstance().translit(userName));
+//#             nickDate.append(DeTranslit.translit(userName));
 //#         } else {
 //#             nickDate.append(userName);
 //#         }
@@ -250,5 +248,7 @@ public class VCardView
 //#         }
 //#         addCommand(cmdRefresh);
 //#     }
+//# 
+//#     public String touchLeftCommand() { return SR.MS_MENU; }
 //#endif
 }

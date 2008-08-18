@@ -27,7 +27,6 @@
 
 package Mood;
 
-import java.util.Hashtable;
 import java.util.Vector;
 import util.StringLoader;
 

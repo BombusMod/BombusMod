@@ -28,7 +28,6 @@
 package Client;
 
 import images.RosterIcons;
-import Colors.ColorTheme;
 import ui.IconTextElement;
 
 /**

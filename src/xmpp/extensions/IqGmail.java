@@ -25,7 +25,6 @@
 
 package xmpp.extensions;
 
-import Client.Contact;
 import Client.Msg;
 import Client.Roster;
 import Client.StaticData;
@@ -33,8 +32,6 @@ import com.alsutton.jabber.JabberBlockListener;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.*;
 import java.util.Enumeration;
-import locale.SR;
-import ui.Time;
 
 public class IqGmail implements JabberBlockListener {
 

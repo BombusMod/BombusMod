@@ -70,10 +70,10 @@ public class ClientsIcons extends ImageList {
     }
     
     private static int ceil(int rows, int count){
-        int cols=count/rows;
-        if (count>(cols*rows))
-            cols++;
-        return cols;
+        int tempCols=count/rows;
+        if (count>(tempCols*rows))
+            tempCols++;
+        return tempCols;
     }
     
     public int getClientIDByCaps(String caps) {

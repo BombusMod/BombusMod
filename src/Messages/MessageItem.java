@@ -70,8 +70,8 @@ public class MessageItem
     
     public int getColorBGnd() {
         return (even)?
-            ColorTheme.getInstance().getColor(ColorTheme.LIST_BGND_EVEN):
-            ColorTheme.getInstance().getColor(ColorTheme.LIST_BGND);
+            ColorTheme.getColor(ColorTheme.LIST_BGND_EVEN):
+            ColorTheme.getColor(ColorTheme.LIST_BGND);
     }
     
     public int getColor() { return msg.getColor(); }

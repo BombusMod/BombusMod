@@ -91,7 +91,7 @@ public class RenameGroup
 
             for (Enumeration e=sd.roster.hContacts.elements(); e.hasMoreElements();){
                 Contact cr=(Contact)e.nextElement();
-                if (cr.getGroup().getName()==sourceGroup) {
+                if (cr.getGroup().getName().equals(sourceGroup)) {
                     JabberDataBlock item= qB.addChild("item",null);
                     item.setAttribute("jid", cr.getBareJid());
                     item.setAttribute("name", cr.nick);

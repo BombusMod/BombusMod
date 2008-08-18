@@ -31,7 +31,6 @@ package xmpp.extensions;
 import Info.Version;
 import com.alsutton.jabber.*;
 import com.alsutton.jabber.datablocks.*;
-import java.util.*;
 import Client.*;
 
 /**

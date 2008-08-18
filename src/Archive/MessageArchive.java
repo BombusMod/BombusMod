@@ -101,7 +101,7 @@ public class MessageArchive {
 	} catch (Exception e) {}
 	try {
             indexes.removeAllElements();
-            rs.deleteRecordStore((where==1)?ARCHIVE:TEMPLATES);
+            RecordStore.deleteRecordStore((where==1)?ARCHIVE:TEMPLATES);
 	} catch (Exception e) {}
     }
 

@@ -52,7 +52,7 @@ public class XDataForm implements CommandListener {
                 f.append(ch.getText());
                 f.append("\n");
                 continue;
-            };
+            }
             
             if (!ch.getTagName().equals("field")) continue;
             

@@ -36,17 +36,14 @@ import javax.microedition.lcdui.Graphics;
  */
 public abstract class LinkString 
      extends SimpleString {
-    
-    ColorTheme ct;
-    
+
     /** Creates a new instance of NewClass */
     public LinkString(String text) {
         super(text, true);
-        ct=ColorTheme.getInstance();
     }
     
     public int getColor() {
-        return ct.getColor(ColorTheme.MSG_HIGHLIGHT);
+        return ColorTheme.getColor(ColorTheme.MSG_HIGHLIGHT);
     }
     
     public void drawItem(Graphics g, int ofs, boolean sel) {

@@ -50,7 +50,6 @@ public class ColorsList
     public Displayable parentView;
     
     Vector itemsList=new Vector();
-    ColorTheme ct;
 
     public Command cmdOk = new Command(SR.MS_EDIT, Command.OK, 1);
     public Command cmdCancel = new Command(SR.MS_BACK, Command.BACK, 99);
@@ -59,11 +58,10 @@ public class ColorsList
      * Creates a new instance of ColorsList
      */
     public ColorsList(Display display) {
-        ct=ColorTheme.getInstance();
-        itemsList=ct.colorsContainer;
+        itemsList=ColorTheme.colorsContainer;
         
         int cnt=0;
-        for (Enumeration r=ct.colorsContainer.elements(); r.hasMoreElements();) {
+        for (Enumeration r=ColorTheme.colorsContainer.elements(); r.hasMoreElements();) {
             ColorItem c=(ColorItem)r.nextElement();
 //#ifdef COLOR_TUNE
 //#             c.setLocale(NAMES[cnt]);
@@ -91,7 +89,7 @@ public class ColorsList
 
     public void commandAction(Command c, Displayable displayable) {
         if (c==cmdCancel) {
-            for (Enumeration r=ct.colorsContainer.elements(); r.hasMoreElements();) {
+            for (Enumeration r=ColorTheme.colorsContainer.elements(); r.hasMoreElements();) {
                 ColorItem ci=(ColorItem)r.nextElement();
                 ci.setLocale(null); // clean locale
             }

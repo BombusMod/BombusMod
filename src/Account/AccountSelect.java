@@ -263,7 +263,6 @@ public class AccountSelect
         kHold=keyCode;
         
         if (keyCode==KEY_NUM6) {
-            Config cf=Config.getInstance();
             cf.fullscreen=!cf.fullscreen;
             cf.saveToStorage();
             VirtualList.fullscreen=cf.fullscreen;

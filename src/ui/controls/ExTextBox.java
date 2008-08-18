@@ -32,7 +32,6 @@ import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.TextBox;
 import javax.microedition.lcdui.TextField;
-import javax.microedition.lcdui.Ticker;
 import locale.SR;
 //#ifdef CLIPBOARD
 //# import util.ClipBoard;

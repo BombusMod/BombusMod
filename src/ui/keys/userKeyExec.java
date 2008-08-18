@@ -169,7 +169,7 @@ public class userKeyExec {
                     BombusMod.getInstance().hideApp(true);
                 break;
             case 15:
-                ColorTheme.getInstance().invertSkin();
+                ColorTheme.invertSkin();
                 break;
             case 16:
 //#ifdef CONSOLE
