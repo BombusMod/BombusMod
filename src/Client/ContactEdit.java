@@ -217,8 +217,8 @@ public final class ContactEdit
     }
     
     private String group(int index) {
-        if (index==0) return null;
-        if (index==tGrpList.size()-1) return null;
+        if (index==0) return "";
+        if (index==tGrpList.size()-1) return "";
         return (String) tGrpList.items.elementAt(index);
     }
  

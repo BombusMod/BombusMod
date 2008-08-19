@@ -135,5 +135,6 @@ public class TransferAcceptFile
 //#         addCommand(cmdPath);
 //#         addCommand(cmdDecline);
 //#     }
+//#     public String touchLeftCommand(){ return SR.MS_MENU; }
 //#endif
 }

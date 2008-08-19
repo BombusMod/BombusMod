@@ -35,22 +35,13 @@ abstract public class IconTextElement implements VirtualElement {
     int imageYOfs;
     int fontYOfs;
     
-    //int heightCorrect;
-    
     protected ImageList il;
     private int ilImageSize=0;
-    
-    //ColorTheme ct;
     
     public IconTextElement(ImageList il) {
         super();
         this.il=il;
-        //ct=ColorTheme.getInstance();
-	if (il!=null){
-	    ilImageSize=il.getHeight();
-	}
-/*        if (Config.getInstance().phoneManufacturer==Config.WINDOWS || Config.getInstance().phoneManufacturer==Config.NOKIA)
-            heightCorrect=1;*/
+	if (il!=null) ilImageSize=il.getHeight();
     }
     
     private boolean selectable=true; 

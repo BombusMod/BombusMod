@@ -401,8 +401,8 @@ public class ServiceDiscovery
 	if (c==cmdOk) eventOk();
         if (c==cmdBack) exitDiscovery(false);            
         if (c==cmdRfsh) { if (service!=null) requestQuery(NS_INFO, "disco"); }
-        if (c==cmdSrv) { new ServerBox(display, parentView, service, this); }
-        if (c==cmdFeatures) {new DiscoFeatures(display, service, features); }
+        if (c==cmdSrv) { new ServerBox(display, this, service, this); }
+        if (c==cmdFeatures) { new DiscoFeatures(display, service, features); }
         if (c==cmdCancel) exitDiscovery(true);
     }
     

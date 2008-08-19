@@ -66,6 +66,7 @@ public class ServerBox
         if (server.length()==0) server=null;
         if (server!=null) sd.browse(server, null);
         
+        //destroyView();
         display.setCurrent(sd);
     }
 }

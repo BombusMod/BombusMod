@@ -47,7 +47,7 @@ public class StaticData {
 //#     public AutoTask autoTask;
 //#endif
     
-    public int screenWidth;
+    //public int screenWidth;
     
     public long traffic;
 

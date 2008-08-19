@@ -1,5 +1,5 @@
 /*
- * ImageListC.java
+ * ImageList.java
  *
  * Created on 31.01.2005, 0:06
  *
@@ -42,7 +42,7 @@ public class ImageList {
     protected int height;
     protected int width;
 
-    /** Creates a new instance of ImageListC */
+    /** Creates a new instance of ImageList */
     public ImageList(String resource, int rows, int columns) {
         try {
             resImage = Image.createImage(resource);
