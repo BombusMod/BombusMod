@@ -108,9 +108,9 @@ public class userKeysList
 //#             destroyView();    
 //#         }
 //#         if (c==cmdEdit) 
-//#             new userKeyEdit(display, parentView, this, (userKey)getFocusedObject());
+//#             new userKeyEdit(display, this, this, (userKey)getFocusedObject());
 //#         if (c==cmdAdd)
-//#             new userKeyEdit(display, parentView, this, null);
+//#             new userKeyEdit(display, this, this, null);
 //#         if (c==cmdDel) {
 //#             userKeyExec.getInstance().commandsList.removeElement(getFocusedObject());
 //#             

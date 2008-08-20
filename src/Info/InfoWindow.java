@@ -152,7 +152,12 @@ public class InfoWindow
 //#         .append("ANTISPAM, ")
 //#endif
 //#ifdef ARCHIVE
-        .append("ARCHIVE, ")
+        .append("");
+        try {
+            Class.forName("Archive.ArchiveList");
+            abilities.append("ARCHIVE, ");
+        } catch (ClassNotFoundException ignore2) { }
+        abilities.append("")
 //#endif
 //#ifdef AUTOSTATUS
 //#         .append("AUTOSTATUS, ")

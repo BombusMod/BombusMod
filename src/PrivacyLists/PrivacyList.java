@@ -39,6 +39,8 @@ import com.alsutton.jabber.*;
  */
 public class PrivacyList extends IconTextElement{
     
+    public static String plugin = new String("PLUGIN_PRIVACY");
+    
     String name;
     boolean isActive;
     boolean isDefault;

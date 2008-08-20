@@ -239,16 +239,16 @@ public class JabberStream extends XmppParser implements Runnable {
 	iostream.send(new StringBuffer(data));
 //#ifdef CONSOLE
 //#         if (data.equals("</iq") || data.equals(" "))
-//#             addLog("Ping myself");
+//#             addLog("Ping myself", 1);
 //#         else
-//#             addLog(data);
+//#             addLog(data, 1);
 //#endif
     }
     
     public void sendBuf( StringBuffer data ) throws IOException {
 	iostream.send(data);
 //#ifdef CONSOLE
-//#         addLog(data.toString());
+//#         addLog(data.toString(), 1);
 //#endif
     }
     
@@ -261,9 +261,21 @@ public class JabberStream extends XmppParser implements Runnable {
     public void send( JabberDataBlock block )  {
         new SendJabberDataBlock(block);
     }
+    
 //#ifdef CONSOLE
-//#     private void addLog (String data) {
-//#         StanzasList.getInstance().add(data, 1);
+//#     private int canLog=0;
+//#     
+//#     public void addLog (String data, int type) {
+//#         if (canLog<1) {
+//#             try {
+//#                 Class.forName("Console.XMLList");
+//#                 canLog=1;
+//#             } catch (ClassNotFoundException ignore3) {
+//#                 canLog=-1;
+//#                 return;
+//#             }
+//#         }
+//#         StanzasList.getInstance().add(data, type);
 //#     }
 //#endif
 

@@ -39,6 +39,9 @@ import util.StringUtils;
 import util.Strconv;
 
 public class HistoryStorage {
+    
+    public static String plugin = new String("PLUGIN_HISTORY");
+    
     private String history;
     
     private Config cf;

@@ -36,6 +36,8 @@ import java.util.Vector;
  */
 public class StanzasList {
     
+    public static String plugin = new String("PLUGIN_CONSOLE");
+    
     Vector stanzas=new Vector();
     
     boolean enabled = false;

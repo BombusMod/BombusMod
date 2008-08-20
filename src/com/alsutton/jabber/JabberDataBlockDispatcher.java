@@ -154,7 +154,7 @@ public class JabberDataBlockDispatcher extends Thread
                     //TODO: reject iq stansas where type =="get" | "set"
                 }
 //#ifdef CONSOLE
-//#                 StanzasList.getInstance().add(dataBlock.toString(), 10);
+//#                 stream.addLog(dataBlock.toString(), 10);
 //#endif
             } catch (Exception e) { }
         }

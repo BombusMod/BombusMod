@@ -40,6 +40,8 @@ public class archiveEdit
         extends ExTextBox
         implements CommandListener {
     
+    public static String plugin = new String("PLUGIN_ARCHIVE");
+    
     private Display display;
 
     private Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 99);

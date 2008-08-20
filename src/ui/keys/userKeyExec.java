@@ -135,7 +135,10 @@ public class userKeyExec {
                 break;
             case 7: 
 //#ifdef ARCHIVE
-                sd.roster.cmdArchive();
+                try {
+                    Class.forName("Archive.ArchiveList");
+                    sd.roster.cmdArchive();
+                } catch (ClassNotFoundException ignore2) { }
 //#endif
                 break;
             case 8: 
@@ -173,8 +176,10 @@ public class userKeyExec {
                 break;
             case 16:
 //#ifdef CONSOLE
-//# 
-//#                 new XMLList(display, display.getCurrent());
+//#                 try {
+//#                     Class.forName("Console.XMLList");
+//#                     new XMLList(display, display.getCurrent());
+//#                 } catch (ClassNotFoundException ignore3) { }
 //#endif
                 break;
             case 17:

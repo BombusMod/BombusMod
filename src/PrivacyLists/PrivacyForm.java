@@ -47,6 +47,8 @@ import ui.controls.form.TextInput;
 public class PrivacyForm
         extends DefForm {
     
+    public static String plugin = new String("PLUGIN_PRIVACY");
+    
     private Display display;
     
     private PrivacyList targetList;

@@ -53,6 +53,8 @@ public class TransferTask
         implements Runnable
 {
     
+    public static String plugin = new String("PLUGIN_FILE_TRANSFER");
+    
     public final static int COMPLETE=1;
     public final static int PROGRESS=3;
     public final static int ERROR=4;

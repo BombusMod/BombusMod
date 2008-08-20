@@ -44,6 +44,8 @@ import ui.controls.ExTextBox;
 public class StanzaEdit 
         extends ExTextBox
         implements CommandListener {
+    
+    public static String plugin = new String("PLUGIN_CONSOLE");
 
     private Display display;
     private Displayable parentView;

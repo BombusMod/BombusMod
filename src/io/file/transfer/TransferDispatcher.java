@@ -42,6 +42,8 @@ import xmpp.XmppError;
  * @author Evg_S
  */
 public class TransferDispatcher implements JabberBlockListener{
+    
+    public static String plugin = new String("PLUGIN_FILE_TRANSFER");
 
     /** Singleton */
     private static TransferDispatcher instance;
@@ -58,6 +60,7 @@ public class TransferDispatcher implements JabberBlockListener{
     
     /** Creates a new instance of TransferDispatcher */
     private TransferDispatcher() {
+        sd.roster.theStream.addBlockListener(instance);
         taskList=new Vector();
     }
 
@@ -176,7 +179,6 @@ public class TransferDispatcher implements JabberBlockListener{
 	
     // send shortcut
     void send(JabberDataBlock data, boolean async) {
-        //StaticData.getInstance().roster.theStream.send(data);
         try {
             StringBuffer sb=new StringBuffer();
             data.constructXML(sb);

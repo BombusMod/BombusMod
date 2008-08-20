@@ -48,7 +48,9 @@ import ui.controls.AlertBox;
  */
 public class ArchiveList 
     extends MessageList {
-
+    
+    public static String plugin = new String("PLUGIN_ARCHIVE");
+    
     Command cmdPaste=new Command(SR.MS_PASTE_BODY, Command.SCREEN, 1);
     Command cmdJid=new Command(SR.MS_PASTE_JID /*"Paste Jid"*/, Command.SCREEN, 2);
     Command cmdSubj=new Command(SR.MS_PASTE_SUBJECT, Command.SCREEN, 3);

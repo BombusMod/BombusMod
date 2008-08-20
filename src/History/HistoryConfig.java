@@ -50,6 +50,8 @@ import ui.controls.form.TextInput;
 public class HistoryConfig 
         extends DefForm
         implements BrowserListener {
+    
+    public static String plugin = new String("PLUGIN_HISTORY");
 
     Command cmdPath=new Command(SR.MS_SELECT_HISTORY_FOLDER, Command.SCREEN, 2);
 
@@ -132,6 +134,10 @@ public class HistoryConfig
 //#     public void commandState() {
 //#         super.commandState();
 //#         addCommand(cmdPath);
+//#     }
+//# 
+//#     public String touchLeftCommand() {
+//#         return SR.MS_MENU;
 //#     }
 //#endif
 }

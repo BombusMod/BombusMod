@@ -52,6 +52,8 @@ public class TransferAcceptFile
         extends DefForm
         implements BrowserListener {
     
+    public static String plugin = new String("PLUGIN_FILE_TRANSFER");
+    
     private Display display;
 
     TransferTask t;

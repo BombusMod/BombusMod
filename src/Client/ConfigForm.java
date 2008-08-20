@@ -185,9 +185,18 @@ public class ConfigForm
             autoScroll = new CheckBox(SR.MS_AUTOSCROLL, cf.autoScroll); itemsList.addElement(autoScroll);
             useTabs = new CheckBox(SR.MS_EMULATE_TABS, cf.useTabs); itemsList.addElement(useTabs);
 //#ifdef PEP
-//#             sndrcvmood = new CheckBox(SR.MS_SEND_RECEIVE_USERMOODS, cf.sndrcvmood); itemsList.addElement(sndrcvmood);
+//#             sndrcvmood = new CheckBox(SR.MS_SEND_RECEIVE_USERMOODS, cf.sndrcvmood); 
+//#             try {
+//#                 Class.forName("Xmpp.Extensions.PepListener");
+//#                 itemsList.addElement(sndrcvmood);
+//#             } catch (ClassNotFoundException ignore2) { }
+//# 
 //#ifdef PEP_TUNE
-//#             rcvtune = new CheckBox(SR.MS_RECEIVE_USERTUNE, cf.rcvtune); itemsList.addElement(rcvtune);
+//#             rcvtune = new CheckBox(SR.MS_RECEIVE_USERTUNE, cf.rcvtune); 
+//#             try {
+//#                 Class.forName("Xmpp.Extensions.PepListener");
+//#                 itemsList.addElement(rcvtune);
+//#             } catch (ClassNotFoundException ignore2) { }
 //#endif
 //#endif
             notifyWhenMessageType = new CheckBox(SR.MS_RUNNING_MESSAGE, cf.notifyWhenMessageType); itemsList.addElement(notifyWhenMessageType);

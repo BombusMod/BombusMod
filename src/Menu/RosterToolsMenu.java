@@ -91,26 +91,41 @@ public class RosterToolsMenu extends Menu {
             addItem(SR.MS_DISCO, 0, menuIcons.ICON_DISCO);
 //#endif
 //#ifdef PRIVACY
-        if (connected)
-            addItem(SR.MS_PRIVACY_LISTS, 1, menuIcons.ICON_PRIVACY);
+        if (connected) {
+            try {
+                Class.forName("PrivacyLists.PrivacySelect");
+                addItem(SR.MS_PRIVACY_LISTS, 1, menuIcons.ICON_PRIVACY);
+            } catch (ClassNotFoundException ignore2) { }
+        }
 //#endif
 //#ifdef PEP
-//#         if (cf.sndrcvmood && connected)
-//#             addItem(SR.MS_USER_MOOD, 2, menuIcons.ICON_MOOD);
+//#         if (cf.sndrcvmood && connected) {
+//#             try {
+//#                 Class.forName("Xmpp.Extensions.PepListener");
+//#                 addItem(SR.MS_USER_MOOD, 2, menuIcons.ICON_MOOD);
+//#             } catch (ClassNotFoundException ignore2) { }
+//#         }            
 //#endif
         if (connected)
             addItem(SR.MS_MY_VCARD, 3, menuIcons.ICON_VCARD);
         addItem(SR.MS_OPTIONS, 4, menuIcons.ICON_SETTINGS);
 //#if (HISTORY)
-//#         addItem(SR.MS_HISTORY_OPTIONS, 5, menuIcons.ICON_HISTORY);
+//#         try {
+//#             Class.forName("History.HistoryConfig");
+//#             addItem(SR.MS_HISTORY_OPTIONS, 5, menuIcons.ICON_HISTORY);
+//#         } catch (ClassNotFoundException ignore2) { }
 //#endif
        addItem(SR.MS_FONTS_OPTIONS, 6, menuIcons.ICON_FONTS);
 //#if (FILE_IO)
         addItem(SR.MS_FILE_MANAGER, 7, menuIcons.ICON_FILEMAN);
 //#endif
 //#if (FILE_IO && FILE_TRANSFER)
-        if (connected)
-            addItem(SR.MS_FILE_TRANSFERS, 8, menuIcons.ICON_FT);
+        if (connected) {
+            try {
+                Class.forName("io.file.transfer.TransferManager");
+                addItem(SR.MS_FILE_TRANSFERS, 8, menuIcons.ICON_FT);
+            } catch (ClassNotFoundException ignore2) { }
+        }
 //#endif
         
         addItem(SR.MS_COLOR_TUNE, 9, menuIcons.ICON_COLOR_TUNE);
@@ -141,7 +156,10 @@ public class RosterToolsMenu extends Menu {
 //#         addItem(SR.MS_AUTOTASKS, 17, menuIcons.ICON_TASKS);
 //#endif
 //#ifdef CONSOLE
-//#         addItem(SR.MS_XML_CONSOLE, 18, menuIcons.ICON_CONCOLE);
+//#         try {
+//#             Class.forName("Console.XMLList");
+//#             addItem(SR.MS_XML_CONSOLE, 18, menuIcons.ICON_CONCOLE);
+//#         } catch (ClassNotFoundException ignore3) { }
 //#endif
         addItem(SR.MS_BREAK_CONECTION, 19, menuIcons.ICON_RECONNECT);
         attachDisplay(display);

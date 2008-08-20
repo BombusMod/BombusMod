@@ -44,6 +44,8 @@ import util.StringUtils;
  */
 public class HistoryLoader {
     Config cf;
+    
+    public static String plugin = new String("PLUGIN_HISTORY");
 
     private String fileName="";
 

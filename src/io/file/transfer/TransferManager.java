@@ -59,7 +59,8 @@ public class TransferManager
 //#         MenuListener
 //#endif
     {
-
+    public static String plugin = new String("PLUGIN_FILE_TRANSFER");
+    
     private Vector taskList=new Vector();;
     
     Command cmdBack=new Command(SR.MS_BACK, Command.BACK, 99);

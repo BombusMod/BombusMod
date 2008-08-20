@@ -25,7 +25,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-package xmpp.extensions.pep;
+package xmpp.extensions;
 
 import Client.*;
 import Mood.Moods;
@@ -36,8 +36,22 @@ import locale.SR;
 
 public class PepListener implements JabberBlockListener{
     
-    /** Creates a new instance of PepListener */
-    public PepListener() { }
+    public static String plugin = new String("PLUGIN_PEP");
+
+    /** Singleton */
+    private static PepListener instance;
+    
+    public static PepListener getInstance() {
+        if (instance==null) instance=new PepListener();
+        return instance;
+    }
+   
+    StaticData sd = StaticData.getInstance();
+    
+    /** Creates a new instance of TransferDispatcher */
+    private PepListener() {
+        sd.roster.theStream.addBlockListener(instance);
+    }
 
     public int blockArrived(JabberDataBlock data) {
         if (!(data instanceof Message)) return BLOCK_REJECTED;
@@ -115,7 +129,7 @@ public class PepListener implements JabberBlockListener{
 
         Msg m=new Msg(Msg.MESSAGE_TYPE_PRESENCE, from, type, result.toString());
         
-        Vector hContacts=StaticData.getInstance().roster.getHContacts();
+        Vector hContacts=sd.roster.getHContacts();
         synchronized (hContacts) {
             Jid j=new Jid(from);
             for (Enumeration e=hContacts.elements();e.hasMoreElements();){
@@ -143,7 +157,7 @@ public class PepListener implements JabberBlockListener{
             }
         }
         
-        StaticData.getInstance().roster.redraw();
+        sd.roster.redraw();
         
         return BLOCK_PROCESSED;
     }

@@ -37,6 +37,8 @@ import com.alsutton.jabber.*;
  */
 public class PrivacyItem extends IconTextElement{
     
+    public static String plugin = new String("PLUGIN_PRIVACY");    
+    
     public final static String types[]={"jid", "group", "subscription", "ANY"};
     public final static int ITEM_JID=0;
     public final static int ITEM_GROUP=1;

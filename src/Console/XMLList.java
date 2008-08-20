@@ -51,6 +51,8 @@ import locale.SR;
 public class XMLList 
     extends MessageList {
     
+    public static String plugin = new String("PLUGIN_CONSOLE");
+    
     StanzasList stanzas;
     private StaticData sd=StaticData.getInstance();
     

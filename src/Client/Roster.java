@@ -68,6 +68,11 @@ import javax.microedition.lcdui.Command;
 //# import Menu.Command;
 //# import Menu.MyMenu;
 //#endif
+
+//#if FILE_TRANSFER
+import io.file.transfer.TransferDispatcher;
+//#endif
+
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 
@@ -112,11 +117,7 @@ import xmpp.extensions.IqTimeReply;
 //#endif
 
 //#ifdef PEP
-//# import xmpp.extensions.pep.PepListener;
-//#endif
-
-//#if FILE_TRANSFER
-import io.file.transfer.TransferDispatcher;
+//# import xmpp.extensions.PepListener;
 //#endif
 
 public class Roster
@@ -297,7 +298,10 @@ public class Roster
 //#endif
         addCommand(cmdAlert);
 //#ifdef ARCHIVE
-        addCommand(cmdArchive);
+         try {
+            Class.forName("Archive.ArchiveList");
+            addCommand(cmdArchive);
+        } catch (ClassNotFoundException ignore2) { }
 //#endif
         addCommand(cmdAdd);
         addCommand(cmdAccount);
@@ -1180,8 +1184,10 @@ public class Roster
 //#endif
         theStream.addBlockListener(new EntityCaps());
 //#ifdef PEP
-//#         if (cf.sndrcvmood)
-//#             theStream.addBlockListener(new PepListener()); //TODO: dynamic enabling/disabling
+//#         try {
+//#             Class.forName("xmpp.extensions.PepListener");
+//#             if (cf.sndrcvmood==true) PepListener.getInstance();
+//#         } catch (ClassNotFoundException ignore2) { }
 //#endif
 //#if SASL_XGOOGLETOKEN
 //#         if (StaticData.getInstance().account.isGmail())
@@ -1189,7 +1195,10 @@ public class Roster
 //#endif
 //#if FILE_TRANSFER
         // enable File transfers
-        theStream.addBlockListener(TransferDispatcher.getInstance());
+        try {
+            Class.forName("io.file.transfer.TransferDispatcher");
+            TransferDispatcher.getInstance();
+        } catch (ClassNotFoundException ignore3) { }
 //#endif
      
         //enable keep-alive packets
@@ -2139,8 +2148,7 @@ public class Roster
 //#     public String getRightCommand() { return SR.MS_ACTION; }
 //#else
     public void touchRightPressed(){
-        if (isLoggedIn()) 
-            new RosterItemActions(display, this, getFocusedObject(), -1);
+        cmdActions();
     }
 //#endif
     
@@ -2153,8 +2161,7 @@ public class Roster
 //#         }
 //# 
 //#         if (keyCode==Config.SOFT_RIGHT) {
-//#             if (isLoggedIn()) 
-//#                 new RosterItemActions(display, this, getFocusedObject(), -1);
+//#             cmdActions();
 //#             return;
 //#         }
 //#endif
@@ -2533,8 +2540,11 @@ public class Roster
    public void cmdConference() { if (isLoggedIn()) new Bookmarks(display, this, null); }
 //#endif
    public void cmdActions() {
-       if (isLoggedIn())
-           new RosterItemActions(display, this, getFocusedObject(), -1);
+       if (isLoggedIn()) {
+           try {
+            new RosterItemActions(display, this, getFocusedObject(), -1);
+           } catch (Exception ex) {}
+       }
    }
    
    public void cmdAdd() {

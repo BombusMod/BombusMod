@@ -217,10 +217,16 @@ public class ContactMessageList extends MessageList {
 	addCommand(cmdActive);
         if (contact.msgs.size()>0) {
 //#ifdef ARCHIVE
+         try {
+            Class.forName("Archive.ArchiveList");
             addCommand(cmdArch);
+        } catch (ClassNotFoundException ignore2) { }
 //#endif
 //#if TEMPLATES
+         try {
+            Class.forName("Archive.ArchiveList");
             addCommand(cmdTemplate);
+        } catch (ClassNotFoundException ignore2) { }
 //#endif
         }
 //#ifdef CLIPBOARD
@@ -231,8 +237,12 @@ public class ContactMessageList extends MessageList {
 //#ifdef HISTORY
 //#         if (cf.msgPath!=null)
 //#             if (!cf.msgPath.equals(""))
-//#                 if (contact.msgs.size()>0)
-//#                     addCommand(cmdSaveChat);
+//#                 if (contact.msgs.size()>0) {
+//#                     try {
+//#                         Class.forName("History.HistoryAppend");
+//#                         addCommand(cmdSaveChat);
+//#                     } catch (ClassNotFoundException ignore2) { }
+//#                 }
 //#ifdef HISTORY_READER
 //#         if (cf.lastMessages)
 //#             addCommand(cmdReadHistory);

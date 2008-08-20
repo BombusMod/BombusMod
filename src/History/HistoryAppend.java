@@ -40,6 +40,8 @@ import util.Strconv;
 
 public class HistoryAppend {
     
+    public static String plugin = new String("PLUGIN_HISTORY");
+    
     private Config cf;
     private boolean convertToWin1251;
     

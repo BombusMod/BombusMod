@@ -90,7 +90,10 @@ public class ExTextBox
 
 
 //#ifdef ARCHIVE
-        addCommand(cmdPaste);
+        try {
+            Class.forName("Archive.ArchiveList");
+            addCommand(cmdPaste);
+        } catch (ClassNotFoundException ignore2) { }
 //#endif
 //#ifdef CLIPBOARD
 //#         if (cf.useClipBoard) {
@@ -100,7 +103,10 @@ public class ExTextBox
 //#         }
 //#endif
 //#if TEMPLATES
-        addCommand(cmdTemplate);
+        try {
+            Class.forName("Archive.ArchiveList");
+            addCommand(cmdTemplate);
+        } catch (ClassNotFoundException ignore2) { }
 //#endif
         setInitialCaps(cf.capsState);
         this.parentView=pView;

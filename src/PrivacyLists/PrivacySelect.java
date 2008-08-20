@@ -61,6 +61,8 @@ public class PrivacySelect
         JabberBlockListener,
         MIDPTextBox.TextBoxNotify
 {
+    public static String plugin = new String("PLUGIN_PRIVACY");
+    
     private Vector list=new Vector();
     
     private Command cmdCancel=new Command (SR.MS_BACK, Command.BACK, 99);

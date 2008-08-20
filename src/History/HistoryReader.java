@@ -41,6 +41,8 @@ import ui.MainBar;
 public class HistoryReader
     extends MessageList {
     
+    public static String plugin = new String("PLUGIN_HISTORY");
+    
     public int thisIndex=-1;
 
     private HistoryLoader hl;

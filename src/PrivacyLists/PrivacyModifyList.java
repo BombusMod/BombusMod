@@ -59,6 +59,8 @@ public class PrivacyModifyList
 //#endif
         JabberBlockListener
 {
+    public static String plugin = new String("PLUGIN_PRIVACY");
+    
     private PrivacyList plist;
     
     private Command cmdCancel=new Command (SR.MS_CANCEL, Command.BACK, 99);
