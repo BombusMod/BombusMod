@@ -410,6 +410,7 @@ public class Roster
 	synchronized (hContacts) {
             hContacts=null;
 	    hContacts=new Vector();
+            groups=null;
 	    groups=new Groups();
             vContacts=null;
 	    vContacts=new Vector(); // just for displaying
@@ -2741,7 +2742,7 @@ public class Roster
                     
                     int locCursor=cursor;
                     Object focused=(desiredFocus==null)?getFocusedObject():desiredFocus;
-		    desiredFocus=null;                    
+		    desiredFocus=null;
                     Vector tContacts=new Vector(vContacts.size());
 
                     groups.resetCounters();
@@ -2773,6 +2774,7 @@ public class Roster
                         groups.addToVector(tContacts,i);
                     
                     vContacts=tContacts;
+                    tContacts=null;
                     StringBuffer onl=new StringBuffer()
                     .append("(")
                     .append(groups.getRosterOnline())

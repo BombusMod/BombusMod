@@ -44,6 +44,8 @@ public class MessageEdit
         extends ExTextBox
         implements CommandListener, Runnable {
     
+    Thread thread;
+    
     private Display display;
     private Displayable parentView;
 
@@ -115,7 +117,7 @@ public class MessageEdit
                 
         setCommandListener(this);
 
-        new Thread(this).start() ; // composing
+        if (thread==null) (thread=new Thread(this)).start() ; // composing
         
         display.setCurrent(this);
         this.parentView=pView;
@@ -181,9 +183,9 @@ public class MessageEdit
     int strPos=0;
     public void run(){
         while (runState<4) {
-            System.out.println(runState+" "+notifyMessage);
+            //System.out.println(runState+" "+notifyMessage);
             if (runState==2) { runState=0; send(); }
-            if (runState==3) { runState=4; send(); break; }
+            if (runState==3) { runState=4; send(); thread=null; break; }
             
             if (runState==1) {
                 setTitle(notifyMessage.substring(strPos++));

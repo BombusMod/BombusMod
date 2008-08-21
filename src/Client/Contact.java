@@ -49,20 +49,18 @@ import ui.ImageList;
 import images.RosterIcons;
 import Colors.ColorTheme;
 import VCard.VCard;
-import java.util.*;
 import ui.IconTextElement;
 import com.alsutton.jabber.datablocks.Presence;
+import java.util.Enumeration;
+import java.util.Vector;
 
 public class Contact extends IconTextElement{
 
 //#if USE_ROTATOR
     private int isnew=0;
-    
     public void setNewContact() { this.isnew = 10; }
 //#endif
-    
-    //private ColorTheme ct;
-    
+
 //#ifdef PEP    
 //#     public int pepMood=-1;
 //#     public String pepMoodName=null;
@@ -84,7 +82,6 @@ public class Contact extends IconTextElement{
 //#endif
     
     public String nick;
-
     public Jid jid;
     public String bareJid;    // for roster/subscription manipulating
     public int status;
@@ -111,7 +108,6 @@ public class Contact extends IconTextElement{
     public short incomingState=INC_NONE;
     
     public String msgSuspended;
-    
     public String lastSendedMessage;
     
     protected short key0;
@@ -142,10 +138,8 @@ public class Contact extends IconTextElement{
 //#     public boolean redraw=false;
 //#endif
     private Config cf;
-    private RosterIcons ri = RosterIcons.getInstance();
 
     private String j2j;
-    
     private String lang;
     
     private Font secondFont=FontCache.getBalloonFont();
@@ -165,7 +159,6 @@ public class Contact extends IconTextElement{
     protected Contact (){
         super(RosterIcons.getInstance());
         cf=Config.getInstance();
-        //ct=ColorTheme.getInstance();
 
         msgs=null;
         msgs=new Vector();
@@ -200,7 +193,7 @@ public class Contact extends IconTextElement{
         setSortKey((Nick==null)?sJid:Nick);
         
         //calculating transport
-        transport=ri.getTransportIndex(jid.getTransport());
+        transport=RosterIcons.getInstance().getTransportIndex(jid.getTransport());
     }
     
     public Contact clone(Jid newjid, final int status) {
@@ -213,7 +206,7 @@ public class Contact extends IconTextElement{
         clone.offline_type=offline_type;
         clone.origin=ORIGIN_CLONE; 
         clone.status=status; 
-        clone.transport=ri.getTransportIndex(newjid.getTransport()); //<<<<
+        clone.transport=RosterIcons.getInstance().getTransportIndex(newjid.getTransport()); //<<<<
 //#ifdef PEP
 //#         clone.pepMood=pepMood;
 //#         clone.pepMoodName=pepMoodName;
@@ -234,8 +227,7 @@ public class Contact extends IconTextElement{
             return (isnew%2==0)?0xFF0000:0x0000FF;
         }
 //#endif
-        if (j2j!=null)
-            return ColorTheme.getColor(ColorTheme.CONTACT_J2J);
+        if (j2j!=null) return ColorTheme.getColor(ColorTheme.CONTACT_J2J);
         
         switch (status) {
             case Presence.PRESENCE_CHAT: return ColorTheme.getColor(ColorTheme.CONTACT_CHAT);
@@ -374,8 +366,7 @@ public class Contact extends IconTextElement{
             return;
         }
 
-        if (cf.autoScroll)
-            moveToLatest=true;
+        if (cf.autoScroll) moveToLatest=true;
         
         if (m.messageType!=Msg.MESSAGE_TYPE_HISTORY && m.messageType!=Msg.MESSAGE_TYPE_PRESENCE)
             activeMessage=msgs.size()+1;
@@ -389,14 +380,12 @@ public class Contact extends IconTextElement{
             lastUnread=msgs.size()-1;
             if (m.messageType>unreadType) unreadType=m.messageType;
             if (newMsgCnt>=0) newMsgCnt++;
-            if (m.isHighlited())
-                if (newHighLitedMsgCnt>=0) newHighLitedMsgCnt++;
+            if (m.isHighlited()) if (newHighLitedMsgCnt>=0) newHighLitedMsgCnt++;
         }
     }
 
     public int getFontIndex(){
-        if (cf.showResources)
-            return (cf.useBoldFont && status<5)?1:0;
+        if (cf.showResources) return (cf.useBoldFont && status<5)?1:0;
 
         return active()?1:0;
     }
@@ -419,8 +408,7 @@ public class Contact extends IconTextElement{
     }
 
     public String getNickJid() {
-        if (nick==null) 
-            return bareJid;
+        if (nick==null) return bareJid;
         return nick+" <"+bareJid+">";
     }
     
@@ -498,24 +486,18 @@ public class Contact extends IconTextElement{
         return null;
     }
 
-    public Group getGroup() { return group; }
-    
     public int getGroupType() {  
-        if (group==null) 
-            return 0; 
+        if (group==null) return 0;
         return group.type;
     }
-    
     public boolean inGroup(Group ingroup) { return group==ingroup; }
-
+    public Group getGroup() { return group; }
     public void setGroup(Group group) { this.group = group; }
     
     public String getJ2J() { return j2j; }
-    
     public void setJ2J(String j2j) { this.j2j = j2j; }
     
     public String getLang() { return lang; }
-    
     public void setLang(String lang) { this.lang = lang; }
     
     public void setStatus(int status) {
@@ -524,12 +506,10 @@ public class Contact extends IconTextElement{
         if (status>=Presence.PRESENCE_OFFLINE) 
             acceptComposing=false;
     }
-
+    
     public int getStatus() { return status; }
     
-    public void setComposing (boolean state) {
-        showComposing=state;
-    }
+    public void setComposing (boolean state) { showComposing=state; }
    
     void markDelivered(String id) {
         if (id==null) return;
@@ -612,15 +592,12 @@ public class Contact extends IconTextElement{
 //#             return RosterIcons.ICON_AUTHRQ_INDEX;
 //#endif
   
-        if (getNewMsgsCount()>0)  {
-            switch (unreadType) {
-                case Msg.MESSAGE_TYPE_AUTH: return RosterIcons.ICON_AUTHRQ_INDEX;
-                default: return RosterIcons.ICON_MESSAGE_INDEX;
-            }
-        }
+        if (getNewMsgsCount()>0)
+            return (unreadType==Msg.MESSAGE_TYPE_AUTH)?RosterIcons.ICON_AUTHRQ_INDEX:RosterIcons.ICON_MESSAGE_INDEX;
 
-        if (incomingState>0) 
+        if (incomingState>0)
             return incomingState;
+        
         return -1;
     }
     
@@ -691,8 +668,7 @@ public class Contact extends IconTextElement{
         int yo=g.getClipY();
         
         int offset=4;
-       
-        maxImgHeight=ilHeight;
+
         int imgH=(h-ilHeight)/2;
         
         if (getImageIndex()>-1) {
