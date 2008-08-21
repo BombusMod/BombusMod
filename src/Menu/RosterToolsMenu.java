@@ -92,39 +92,55 @@ public class RosterToolsMenu extends Menu {
 //#endif
 //#ifdef PRIVACY
         if (connected) {
-            try {
-                Class.forName("PrivacyLists.PrivacySelect");
+//#ifdef PLUGINS
+//#             try {
+//#                 Class.forName("PrivacyLists.PrivacySelect");
+//#endif
                 addItem(SR.MS_PRIVACY_LISTS, 1, menuIcons.ICON_PRIVACY);
-            } catch (ClassNotFoundException ignore2) { }
+//#ifdef PLUGINS
+//#             } catch (ClassNotFoundException ignore2) { }
+//#endif
         }
 //#endif
 //#ifdef PEP
 //#         if (cf.sndrcvmood && connected) {
+//#ifdef PLUGINS
 //#             try {
-//#                 Class.forName("Xmpp.Extensions.PepListener");
+//#                 Class.forName("xmpp.extensions.PepListener");
+//#endif
 //#                 addItem(SR.MS_USER_MOOD, 2, menuIcons.ICON_MOOD);
+//#ifdef PLUGINS
 //#             } catch (ClassNotFoundException ignore2) { }
+//#endif
 //#         }            
 //#endif
         if (connected)
             addItem(SR.MS_MY_VCARD, 3, menuIcons.ICON_VCARD);
         addItem(SR.MS_OPTIONS, 4, menuIcons.ICON_SETTINGS);
 //#if (HISTORY)
+//#ifdef PLUGINS
 //#         try {
 //#             Class.forName("History.HistoryConfig");
+//#endif
 //#             addItem(SR.MS_HISTORY_OPTIONS, 5, menuIcons.ICON_HISTORY);
+//#ifdef PLUGINS
 //#         } catch (ClassNotFoundException ignore2) { }
+//#endif
 //#endif
        addItem(SR.MS_FONTS_OPTIONS, 6, menuIcons.ICON_FONTS);
 //#if (FILE_IO)
         addItem(SR.MS_FILE_MANAGER, 7, menuIcons.ICON_FILEMAN);
 //#endif
 //#if (FILE_IO && FILE_TRANSFER)
-        if (connected) {
-            try {
-                Class.forName("io.file.transfer.TransferManager");
+        if (connected && cf.fileTransfer) {
+//#ifdef PLUGINS
+//#             try {
+//#                 Class.forName("io.file.transfer.TransferManager");
+//#endif
                 addItem(SR.MS_FILE_TRANSFERS, 8, menuIcons.ICON_FT);
-            } catch (ClassNotFoundException ignore2) { }
+//#ifdef PLUGINS
+//#             } catch (ClassNotFoundException ignore2) { }
+//#endif
         }
 //#endif
         
@@ -156,10 +172,14 @@ public class RosterToolsMenu extends Menu {
 //#         addItem(SR.MS_AUTOTASKS, 17, menuIcons.ICON_TASKS);
 //#endif
 //#ifdef CONSOLE
+//#ifdef PLUGINS
 //#         try {
 //#             Class.forName("Console.XMLList");
+//#endif
 //#             addItem(SR.MS_XML_CONSOLE, 18, menuIcons.ICON_CONCOLE);
+//#ifdef PLUGINS
 //#         } catch (ClassNotFoundException ignore3) { }
+//#endif
 //#endif
         addItem(SR.MS_BREAK_CONECTION, 19, menuIcons.ICON_RECONNECT);
         attachDisplay(display);

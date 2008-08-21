@@ -90,10 +90,14 @@ public class ExTextBox
 
 
 //#ifdef ARCHIVE
-        try {
-            Class.forName("Archive.ArchiveList");
+//#ifdef PLUGINS
+//#         try {
+//#             Class.forName("Archive.ArchiveList");
+//#endif
             addCommand(cmdPaste);
-        } catch (ClassNotFoundException ignore2) { }
+//#ifdef PLUGINS
+//#         } catch (ClassNotFoundException ignore2) { }
+//#endif
 //#endif
 //#ifdef CLIPBOARD
 //#         if (cf.useClipBoard) {
@@ -103,10 +107,14 @@ public class ExTextBox
 //#         }
 //#endif
 //#if TEMPLATES
-        try {
-            Class.forName("Archive.ArchiveList");
+//#ifdef PLUGINS
+//#         try {
+//#             Class.forName("Archive.ArchiveList");
+//#endif
             addCommand(cmdTemplate);
-        } catch (ClassNotFoundException ignore2) { }
+//#ifdef PLUGINS
+//#         } catch (ClassNotFoundException ignore2) { }
+//#endif
 //#endif
         setInitialCaps(cf.capsState);
         this.parentView=pView;

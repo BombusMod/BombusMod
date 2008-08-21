@@ -106,6 +106,7 @@ public class ConfigForm
     private NumberInput reconnectCount;
     private NumberInput reconnectTime;
 
+    private CheckBox fileTransfer;
     private CheckBox fullscreen;
     private CheckBox memMonitor;
     private CheckBox enableVersionOs;
@@ -177,46 +178,54 @@ public class ConfigForm
         itemsList.addElement(new SpacerItem(10));
         itemsList.addElement(new SimpleString(SR.MS_MESSAGES, true));
 //#ifdef SMILES
-            smiles = new CheckBox(SR.MS_SMILES, cf.smiles); itemsList.addElement(smiles);
+        smiles = new CheckBox(SR.MS_SMILES, cf.smiles); itemsList.addElement(smiles);
 //#endif
-            eventComposing = new CheckBox(SR.MS_COMPOSING_EVENTS, cf.eventComposing); itemsList.addElement(eventComposing);
-            capsState = new CheckBox(SR.MS_CAPS_STATE, cf.capsState); itemsList.addElement(capsState);
-            storeConfPresence = new CheckBox(SR.MS_STORE_PRESENCE, cf.storeConfPresence); itemsList.addElement(storeConfPresence);
-            autoScroll = new CheckBox(SR.MS_AUTOSCROLL, cf.autoScroll); itemsList.addElement(autoScroll);
-            useTabs = new CheckBox(SR.MS_EMULATE_TABS, cf.useTabs); itemsList.addElement(useTabs);
+        eventComposing = new CheckBox(SR.MS_COMPOSING_EVENTS, cf.eventComposing); itemsList.addElement(eventComposing);
+        capsState = new CheckBox(SR.MS_CAPS_STATE, cf.capsState); itemsList.addElement(capsState);
+        storeConfPresence = new CheckBox(SR.MS_STORE_PRESENCE, cf.storeConfPresence); itemsList.addElement(storeConfPresence);
+        autoScroll = new CheckBox(SR.MS_AUTOSCROLL, cf.autoScroll); itemsList.addElement(autoScroll);
+        useTabs = new CheckBox(SR.MS_EMULATE_TABS, cf.useTabs); itemsList.addElement(useTabs);
 //#ifdef PEP
-//#             sndrcvmood = new CheckBox(SR.MS_SEND_RECEIVE_USERMOODS, cf.sndrcvmood); 
-//#             try {
-//#                 Class.forName("Xmpp.Extensions.PepListener");
-//#                 itemsList.addElement(sndrcvmood);
-//#             } catch (ClassNotFoundException ignore2) { }
+//#         sndrcvmood = new CheckBox(SR.MS_SEND_RECEIVE_USERMOODS, cf.sndrcvmood); 
+//#ifdef PLUGINS
+//#         try {
+//#             Class.forName("xmpp.extensions.PepListener");
+//#endif
+//#             itemsList.addElement(sndrcvmood);
+//#ifdef PLUGINS
+//#         } catch (ClassNotFoundException ignore2) { }
+//#endif
 //# 
 //#ifdef PEP_TUNE
-//#             rcvtune = new CheckBox(SR.MS_RECEIVE_USERTUNE, cf.rcvtune); 
-//#             try {
-//#                 Class.forName("Xmpp.Extensions.PepListener");
-//#                 itemsList.addElement(rcvtune);
-//#             } catch (ClassNotFoundException ignore2) { }
+//#         rcvtune = new CheckBox(SR.MS_RECEIVE_USERTUNE, cf.rcvtune); 
+//#ifdef PLUGINS
+//#         try {
+//#             Class.forName("xmpp.extensions.PepListener");
+//#endif
+//#             itemsList.addElement(rcvtune);
+//#ifdef PLUGINS
+//#         } catch (ClassNotFoundException ignore2) { }
 //#endif
 //#endif
-            notifyWhenMessageType = new CheckBox(SR.MS_RUNNING_MESSAGE, cf.notifyWhenMessageType); itemsList.addElement(notifyWhenMessageType);
+//#endif
+        notifyWhenMessageType = new CheckBox(SR.MS_RUNNING_MESSAGE, cf.notifyWhenMessageType); itemsList.addElement(notifyWhenMessageType);
 //#ifdef ANTISPAM
-//#             antispam = new CheckBox(SR.MS_ANTISPAM_CONFERENCE, cf.antispam); itemsList.addElement(antispam);
+//#         antispam = new CheckBox(SR.MS_ANTISPAM_CONFERENCE, cf.antispam); itemsList.addElement(antispam);
 //#endif
 //#ifdef POPUPS
-            popUps = new CheckBox(SR.MS_POPUPS, cf.popUps); itemsList.addElement(popUps);
+        popUps = new CheckBox(SR.MS_POPUPS, cf.popUps); itemsList.addElement(popUps);
 //#endif
-            showBalloons = new CheckBox(SR.MS_SHOW_BALLONS, cf.showBalloons); itemsList.addElement(showBalloons);     
-            eventDelivery = new CheckBox(SR.MS_DELIVERY, cf.eventDelivery); itemsList.addElement(eventDelivery);
+        showBalloons = new CheckBox(SR.MS_SHOW_BALLONS, cf.showBalloons); itemsList.addElement(showBalloons);     
+        eventDelivery = new CheckBox(SR.MS_DELIVERY, cf.eventDelivery); itemsList.addElement(eventDelivery);
 //#ifdef CLIPBOARD
-//#             useClipBoard = new CheckBox(SR.MS_CLIPBOARD, cf.useClipBoard); itemsList.addElement(useClipBoard);
+//#         useClipBoard = new CheckBox(SR.MS_CLIPBOARD, cf.useClipBoard); itemsList.addElement(useClipBoard);
 //#endif
 //#ifdef DETRANSLIT
-//#            autoDetranslit = new CheckBox(SR.MS_AUTODETRANSLIT, cf.autoDeTranslit); itemsList.addElement(autoDetranslit);
+//#        autoDetranslit = new CheckBox(SR.MS_AUTODETRANSLIT, cf.autoDeTranslit); itemsList.addElement(autoDetranslit);
 //#endif
-           showNickNames = new CheckBox(SR.MS_SHOW_NACKNAMES, cf.showNickNames); itemsList.addElement(showNickNames);
+       showNickNames = new CheckBox(SR.MS_SHOW_NACKNAMES, cf.showNickNames); itemsList.addElement(showNickNames);
 //#ifdef MENU_LISTENER
-//#             executeByNum = new CheckBox(SR.MS_EXECUTE_MENU_BY_NUMKEY, cf.executeByNum); itemsList.addElement(executeByNum);
+//#         executeByNum = new CheckBox(SR.MS_EXECUTE_MENU_BY_NUMKEY, cf.executeByNum); itemsList.addElement(executeByNum);
 //#endif
 
             
@@ -249,6 +258,7 @@ public class ConfigForm
 //#         userKeys = new CheckBox(SR.MS_CUSTOM_KEYS, cf.userKeys); itemsList.addElement(userKeys);
 //#endif
         lightState = new CheckBox(SR.MS_FLASHLIGHT, cf.lightState); itemsList.addElement(lightState);
+        fileTransfer = new CheckBox(SR.MS_FILE_TRANSFERS, cf.fileTransfer); itemsList.addElement(fileTransfer);
         if (cf.allowMinimize) {
             popupFromMinimized = new CheckBox(SR.MS_ENABLE_POPUP, cf.popupFromMinimized);
             itemsList.addElement(popupFromMinimized);
@@ -379,6 +389,7 @@ public class ConfigForm
         cf.reconnectCount=Integer.parseInt(reconnectCount.getValue());
         cf.reconnectTime=Integer.parseInt(reconnectTime.getValue());
 
+        cf.fileTransfer=fileTransfer.getValue();
         VirtualList.fullscreen=cf.fullscreen=fullscreen.getValue();
         VirtualList.memMonitor=cf.memMonitor=memMonitor.getValue();
         cf.enableVersionOs=enableVersionOs.getValue();

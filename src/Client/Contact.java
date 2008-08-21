@@ -357,10 +357,14 @@ public class Contact extends IconTextElement{
 //#endif
 //#                 
 //#                 if (allowLog) {
+//#ifdef PLUGINS
 //#                     try {
 //#                         Class.forName("History.HistoryAppend");
+//#endif
 //#                         new HistoryAppend(m, cf.lastMessages, getBareJid());
+//#ifdef PLUGINS
 //#                     } catch (ClassNotFoundException ignore2) { }
+//#endif
 //#                 }
 //#             }
 //#        }
@@ -627,18 +631,22 @@ public class Contact extends IconTextElement{
 //#ifdef PEP
 //#ifdef PEP_TUNE
 //#     public void setUserTune (String tune) { 
+//#ifdef PLUGINS
 //#         try {
-//#             Class.forName("Xmpp.Extensions.PepListener");
+//#             Class.forName("xmpp.extensions.PepListener");
 //#         } catch (ClassNotFoundException ignore2) { return; }
+//#endif
 //#         pepTuneText=tune;
 //#     }
 //#     
 //#     public String getUserTune() { return pepTuneText; }
 //#endif
 //#     public void setUserMood (String mood) {
+//#ifdef PLUGINS
 //#         try {
-//#             Class.forName("Xmpp.Extensions.PepListener");
+//#             Class.forName("xmpp.extensions.PepListener");
 //#         } catch (ClassNotFoundException ignore2) { return; }
+//#endif
 //#         pepMoodName=mood;
 //#     }
 //#     public void setUserMoodText (String mood) {

@@ -298,10 +298,14 @@ public class Roster
 //#endif
         addCommand(cmdAlert);
 //#ifdef ARCHIVE
-         try {
-            Class.forName("Archive.ArchiveList");
+//#ifdef PLUGINS
+//#          try {
+//#             Class.forName("Archive.ArchiveList");
+//#endif
             addCommand(cmdArchive);
-        } catch (ClassNotFoundException ignore2) { }
+//#ifdef PLUGINS
+//#         } catch (ClassNotFoundException ignore2) { }
+//#endif
 //#endif
         addCommand(cmdAdd);
         addCommand(cmdAccount);
@@ -1184,10 +1188,16 @@ public class Roster
 //#endif
         theStream.addBlockListener(new EntityCaps());
 //#ifdef PEP
-//#         try {
-//#             Class.forName("xmpp.extensions.PepListener");
-//#             if (cf.sndrcvmood==true) PepListener.getInstance();
-//#         } catch (ClassNotFoundException ignore2) { }
+//#         if (cf.sndrcvmood) { 
+//#ifdef PLUGINS
+//#             try {
+//#                 Class.forName("xmpp.extensions.PepListener");
+//#endif
+//#                 PepListener.getInstance().addBlockListener();
+//#ifdef PLUGINS
+//#             } catch (ClassNotFoundException ignore2) { }
+//#endif
+//#         }
 //#endif
 //#if SASL_XGOOGLETOKEN
 //#         if (StaticData.getInstance().account.isGmail())
@@ -1195,10 +1205,16 @@ public class Roster
 //#endif
 //#if FILE_TRANSFER
         // enable File transfers
-        try {
-            Class.forName("io.file.transfer.TransferDispatcher");
-            TransferDispatcher.getInstance();
-        } catch (ClassNotFoundException ignore3) { }
+        if (cf.fileTransfer) {
+//#ifdef PLUGINS
+//#             try {
+//#                 Class.forName("io.file.transfer.TransferDispatcher");
+//#endif
+                TransferDispatcher.getInstance().addBlockListener();
+//#ifdef PLUGINS
+//#             } catch (ClassNotFoundException ignore3) { }
+//#endif
+        }
 //#endif
      
         //enable keep-alive packets

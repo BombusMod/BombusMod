@@ -48,8 +48,10 @@ public class PepListener implements JabberBlockListener{
    
     StaticData sd = StaticData.getInstance();
     
-    /** Creates a new instance of TransferDispatcher */
-    private PepListener() {
+    /** Creates a new instance of PepListener */
+    private PepListener() { }
+    
+    public void addBlockListener() {
         sd.roster.theStream.addBlockListener(instance);
     }
 

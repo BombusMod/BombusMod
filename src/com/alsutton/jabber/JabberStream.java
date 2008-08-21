@@ -266,6 +266,7 @@ public class JabberStream extends XmppParser implements Runnable {
 //#     private int canLog=0;
 //#     
 //#     public void addLog (String data, int type) {
+//#ifdef PLUGINS
 //#         if (canLog<1) {
 //#             try {
 //#                 Class.forName("Console.XMLList");
@@ -275,6 +276,7 @@ public class JabberStream extends XmppParser implements Runnable {
 //#                 return;
 //#             }
 //#         }
+//#endif
 //#         StanzasList.getInstance().add(data, type);
 //#     }
 //#endif

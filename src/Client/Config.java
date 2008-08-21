@@ -284,6 +284,8 @@ type = \"-=Siemens=-\";
 
     public boolean executeByNum;
     public boolean showNickNames;
+
+    public boolean fileTransfer=true;
     
     public static Config getInstance(){
 	if (instance==null) {
@@ -423,7 +425,7 @@ type = \"-=Siemens=-\";
             panelsState=inputStream.readInt();
             confMessageCount=inputStream.readInt();
 
-            inputStream.readBoolean(); //newMenu
+            fileTransfer=inputStream.readBoolean(); //newMenu
 
             lightState=inputStream.readBoolean();
             notifySound=inputStream.readBoolean();
@@ -622,7 +624,7 @@ type = \"-=Siemens=-\";
             outputStream.writeInt(panelsState);
             outputStream.writeInt(confMessageCount);
 
-            outputStream.writeBoolean(false); //newMenu
+            outputStream.writeBoolean(fileTransfer); //newMenu
 
             outputStream.writeBoolean(lightState);
             outputStream.writeBoolean(notifySound);

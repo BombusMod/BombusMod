@@ -135,10 +135,14 @@ public class userKeyExec {
                 break;
             case 7: 
 //#ifdef ARCHIVE
-                try {
-                    Class.forName("Archive.ArchiveList");
+//#ifdef PLUGINS
+//#                 try {
+//#                     Class.forName("Archive.ArchiveList");
+//#endif
                     sd.roster.cmdArchive();
-                } catch (ClassNotFoundException ignore2) { }
+//#ifdef PLUGINS
+//#                 } catch (ClassNotFoundException ignore2) { }
+//#endif
 //#endif
                 break;
             case 8: 
@@ -176,10 +180,14 @@ public class userKeyExec {
                 break;
             case 16:
 //#ifdef CONSOLE
+//#ifdef PLUGINS
 //#                 try {
 //#                     Class.forName("Console.XMLList");
+//#endif
 //#                     new XMLList(display, display.getCurrent());
+//#ifdef PLUGINS
 //#                 } catch (ClassNotFoundException ignore3) { }
+//#endif
 //#endif
                 break;
             case 17:

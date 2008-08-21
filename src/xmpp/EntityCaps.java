@@ -97,23 +97,27 @@ public class EntityCaps implements JabberBlockListener{
     private final static String BOMBUS_ID_CATEGORY="client";
     private final static String BOMBUS_ID_TYPE="mobile";
     
+    private static Config cf=Config.getInstance();
+    
     public static void initCaps() {
         ver=null;
         features=null;
         features=new Vector();
         
         //features MUST be sorted        
-        if (Config.getInstance().eventComposing)
+        if (cf.eventComposing)
             features.addElement("http://jabber.org/protocol/chatstates"); //xep-0085
 //#ifdef ADHOC
 //#         features.addElement("http://jabber.org/protocol/commands"); //xep-0050
 //#endif
         features.addElement("http://jabber.org/protocol/disco#info");
- //#ifdef FILE_TRANSFER        
-        features.addElement("http://jabber.org/protocol/ibb");
+ //#ifdef FILE_TRANSFER
+        if (cf.fileTransfer) {
+            features.addElement("http://jabber.org/protocol/ibb");
+        }
  //#endif
 //#ifdef PEP
-//#          if (Config.getInstance().sndrcvmood) {
+//#          if (cf.sndrcvmood) {
 //#             features.addElement("http://jabber.org/protocol/mood");
 //#             features.addElement("http://jabber.org/protocol/mood+notify");
 //#          }
@@ -122,12 +126,14 @@ public class EntityCaps implements JabberBlockListener{
         features.addElement("http://jabber.org/protocol/muc");
 //#endif
  //#ifdef FILE_TRANSFER
-        features.addElement("http://jabber.org/protocol/si");
-        features.addElement("http://jabber.org/protocol/si/profile/file-transfer");
+        if (cf.fileTransfer) {
+            features.addElement("http://jabber.org/protocol/si");
+            features.addElement("http://jabber.org/protocol/si/profile/file-transfer");
+        }
  //#endif
 //#ifdef PEP
 //#ifdef PEP_TUNE
-//#          if (Config.getInstance().rcvtune) {
+//#          if (cf.rcvtune) {
 //#               features.addElement("http://jabber.org/protocol/tune");
 //#               features.addElement("http://jabber.org/protocol/tune+notify");
 //#          }
@@ -138,7 +144,7 @@ public class EntityCaps implements JabberBlockListener{
         features.addElement("jabber:x:data");
          //"jabber:x:event", //DEPRECATED
         features.addElement("urn:xmpp:ping");
-        if (Config.getInstance().eventDelivery)
+        if (cf.eventDelivery)
             features.addElement("urn:xmpp:receipts"); //xep-0184
         features.addElement("urn:xmpp:time");
 

@@ -61,6 +61,7 @@ public class ConfigData {
         array.addElement(new keyValue(accountIndex, Integer.toString(cf.accountIndex)));
         array.addElement(new keyValue(showOfflineContacts, (cf.showOfflineContacts)?"1":"0"));
         array.addElement(new keyValue(fullscreen, (cf.fullscreen)?"1":"0"));
+        array.addElement(new keyValue(fileTransfer, (cf.fileTransfer)?"1":"0"));
         array.addElement(new keyValue(def_profile, Integer.toString(cf.def_profile)));
 //#ifdef SMILES
         array.addElement(new keyValue(smiles, (cf.smiles)?"1":"0"));
@@ -198,6 +199,7 @@ public class ConfigData {
         cf.accountIndex=cf.getIntProperty(getValue(accountIndex),-1);
         cf.showOfflineContacts=cf.getBooleanProperty(getValue(showOfflineContacts),false);
         cf.fullscreen=cf.getBooleanProperty(getValue(fullscreen),true);
+        cf.fileTransfer=cf.getBooleanProperty(getValue(fileTransfer),true);
         cf.def_profile = cf.getIntProperty(getValue(def_profile),0);
 //#ifdef SMILES
         cf.smiles=cf.getBooleanProperty(getValue(smiles),true);
@@ -361,6 +363,7 @@ public class ConfigData {
     private final static String accountIndex="accountIndex";
     private final static String showOfflineContacts="showOfflineContacts";
     private final static String fullscreen="fullscreen";
+    private final static String fileTransfer="fileTransfer";
     private final static String def_profile="def_profile";
 //#ifdef SMILES
     private final static String smiles="smiles";

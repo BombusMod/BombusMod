@@ -28,6 +28,8 @@
 package Info;
 
 import Client.Config;
+import java.util.Enumeration;
+import java.util.Vector;
 import javax.microedition.io.ConnectionNotFoundException;
 //#ifndef MENU_LISTENER
 import javax.microedition.lcdui.Command;
@@ -143,125 +145,150 @@ public class InfoWindow
 //#endif
     
     private String getAbilities() {
-        StringBuffer abilities=new StringBuffer();
-        abilities.append("")
+        Vector abilitiesList=new Vector();
 //#ifdef ADHOC
-//#         .append("ADHOC, ")
+//#         abilitiesList.addElement((String)"ADHOC");
 //#endif
 //#ifdef ANTISPAM
-//#         .append("ANTISPAM, ")
+//#         abilitiesList.addElement((String)"ANTISPAM");
 //#endif
 //#ifdef ARCHIVE
-        .append("");
         try {
-            Class.forName("Archive.ArchiveList");
-            abilities.append("ARCHIVE, ");
+            Class.forName("Archive.ArchiveList"); abilitiesList.addElement((String)"ARCHIVE");
         } catch (ClassNotFoundException ignore2) { }
-        abilities.append("")
 //#endif
 //#ifdef AUTOSTATUS
-//#         .append("AUTOSTATUS, ")
+//#         abilitiesList.addElement((String)"AUTOSTATUS");
 //#endif
 //#ifdef CAPTCHA
-//#         .append("CAPTCHA, ")
+//#         abilitiesList.addElement((String)"CAPTCHA");
 //#endif
 //#ifdef CHANGE_TRANSPORT
-//#         .append("CHANGE_TRANSPORT, ")
+//#         try {
+//#             Class.forName("Client.ChangeTransport"); abilitiesList.addElement((String)"CHANGE_TRANSPORT");
+//#         } catch (ClassNotFoundException ignore2) { }
 //#endif
 //#ifdef CHECK_VERSION
-//#         .append("CHECK_VERSION, ")
+//#         abilitiesList.addElement((String)"CHECK_VERSION");
 //#endif
 //#ifdef CLIENTS_ICONS
-//#         .append("CLIENTS_ICONS, ")
+//#         abilitiesList.addElement((String)"CLIENTS_ICONS");
 //#endif
 //#ifdef CLIPBOARD
-//#         .append("CLIPBOARD, ")
+//#         abilitiesList.addElement((String)"CLIPBOARD");
 //#endif
 //#ifdef CONSOLE
-//#         .append("CONSOLE, ")
+//#         try {
+//#             Class.forName("Console.XMLList"); abilitiesList.addElement((String)"CONSOLE");
+//#         } catch (ClassNotFoundException ignore3) { }
 //#endif
 //#ifdef COLOR_TUNE
-//#         .append("COLOR_TUNE, ")
+//#         abilitiesList.addElement((String)"COLOR_TUNE");
 //#endif
 //#ifdef DETRANSLIT
-//#         .append("DETRANSLIT, ")
+//#         abilitiesList.addElement((String)"DETRANSLIT");
 //#endif
 //#ifdef ELF
-//#         .append("ELF, ")
+//#         abilitiesList.addElement((String)"ELF");
 //#endif
 //#ifdef FILE_TRANSFER
-        .append("FILE_TRANSFER, ")
+        try {
+            Class.forName("io.file.transfer.TransferDispatcher"); abilitiesList.addElement((String)"FILE_TRANSFER");
+        } catch (ClassNotFoundException ignore3) { }
 //#endif
 //#ifdef GRADIENT
-//#         .append("GRADIENT, ")
+//#         abilitiesList.addElement((String)"GRADIENT");
 //#endif
 //#ifdef HISTORY
-//#         .append("HISTORY, ")
+//#         try {
+//#             Class.forName("History.HistoryConfig"); abilitiesList.addElement((String)"HISTORY");
+//#         } catch (ClassNotFoundException ignore2) { }
 //#endif
 //#ifdef HISTORY_READER
-//#         .append("HISTORY_READER, ")
+//#         try {
+//#             Class.forName("History.HistoryConfig"); abilitiesList.addElement((String)"HISTORY_READER");
+//#         } catch (ClassNotFoundException ignore2) { }
 //#endif
 //#ifdef IMPORT_EXPORT
-//#         .append("IMPORT_EXPORT, ")
+//#         abilitiesList.addElement((String)"IMPORT_EXPORT");
 //#endif
 //#ifdef LAST_MESSAGES
-//#         .append("LAST_MESSAGES, ")
+//#         try {
+//#             Class.forName("History.HistoryConfig"); abilitiesList.addElement((String)"LAST_MESSAGES");
+//#         } catch (ClassNotFoundException ignore2) { }
 //#endif
 //#ifdef LOGROTATE
-//#         .append("LOGROTATE, ")
+//#         abilitiesList.addElement((String)"LOGROTATE");
 //#endif
 //#ifdef MENU_LISTENER
-//#         .append("MENU_LISTENER, ")
+//#         abilitiesList.addElement((String)"MENU_LISTENER");
 //#endif
 //#ifdef NEW_SKIN
-//#         .append("NEW_SKIN, ")
+//#         abilitiesList.addElement((String)"NEW_SKIN");
 //#endif
 //#ifdef NICK_COLORS
-        .append("NICK_COLORS, ")
+        abilitiesList.addElement((String)"NICK_COLORS");
 //#endif
 //#ifdef PEP
-//#         .append("PEP, ")
+//#         try {
+//#             Class.forName("xmpp.extensions.PepListener"); abilitiesList.addElement((String)"PEP");
+//#         } catch (ClassNotFoundException ignore2) { }
 //#endif
 //#ifdef PEP_TUNE
-//#         .append("PEP_TUNE, ")
+//#         try {
+//#             Class.forName("xmpp.extensions.PepListener"); abilitiesList.addElement((String)"PEP_TUNE");
+//#         } catch (ClassNotFoundException ignore2) { }
 //#endif
 //#ifdef POPUPS
-        .append("POPUPS, ")
+        abilitiesList.addElement((String)"POPUPS");
 //#endif
 //#ifdef REQUEST_VOICE
-//#         .append("REQUEST_VOICE, ")
+//#         abilitiesList.addElement((String)"REQUEST_VOICE");
 //#endif
 //#ifdef PRIVACY
-        .append("PRIVACY, ")
+        try {
+            Class.forName("PrivacyLists.PrivacySelect"); abilitiesList.addElement((String)"PRIVACY");
+        } catch (ClassNotFoundException ignore2) { }
 //#endif
 //#ifdef SE_LIGHT
-//#         .append("SE_LIGHT, ")
+//#         abilitiesList.addElement((String)"SE_LIGHT");
 //#endif
 //#ifdef SERVICE_DISCOVERY
-        .append("SERVICE_DISCOVERY, ")
+        abilitiesList.addElement((String)"SERVICE_DISCOVERY");
 //#endif
 //#ifdef SMILES
-        .append("SMILES, ")
+        abilitiesList.addElement((String)"SMILES");
 //#endif
 //#ifdef STATS
-//#         .append("STATS, ")
+//#         abilitiesList.addElement((String)"STATS");
 //#endif
 //#ifdef TEMPLATES
-        .append("TEMPLATES, ")
+        try {
+            Class.forName("Archive.ArchiveList"); abilitiesList.addElement((String)"TEMPLATES");
+        } catch (ClassNotFoundException ignore2) { }
 //#endif
 //#ifdef USER_KEYS
-//#         .append("USER_KEYS, ")
+//#         abilitiesList.addElement((String)"USER_KEYS");
 //#endif
 //#ifdef USE_ROTATOR
-        .append("USE_ROTATOR, ")
+        abilitiesList.addElement((String)"USE_ROTATOR");
 //#endif
 //#ifdef WMUC
-//#         .append("WMUC, ")
+//#         abilitiesList.addElement((String)"WMUC");
 //#endif
 //#ifdef WSYSTEMGC
-//#         .append("WSYSTEMGC, ")
+//#         abilitiesList.addElement((String)"WSYSTEMGC");
 //#endif
-        .append("");
-        return abilities.toString();
+        
+        StringBuffer abilities=new StringBuffer();
+        
+	for (Enumeration ability=abilitiesList.elements(); ability.hasMoreElements(); ) {
+            abilities.append((String)ability.nextElement());
+            abilities.append(", ");
+	}
+        String ab=abilities.toString();
+        abilities=null;
+        abilitiesList=null;
+        return ab.substring(0, ab.length()-2);
     }
 }

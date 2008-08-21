@@ -48,11 +48,15 @@ public class IEMenu
         super("Import/Export", null);
         addItem(SR.MS_OPTIONS+": "+SR.MS_LOAD_FROM_FILE, 0);
         addItem(SR.MS_OPTIONS+": "+SR.MS_SAVE_TO_FILE, 1);
-        try {
-            Class.forName("Archive.ArchiveList");
+//#ifdef PLUGINS
+//#         try {
+//#             Class.forName("Archive.ArchiveList");
+//#endif
             addItem(SR.MS_ARCHIVE+": "+SR.MS_LOAD_FROM_FILE, 2);
             addItem(SR.MS_ARCHIVE+": "+SR.MS_SAVE_TO_FILE, 3);
-        } catch (ClassNotFoundException ignore2) { }
+//#ifdef PLUGINS
+//#         } catch (ClassNotFoundException ignore2) { }
+//#endif
         addItem(SR.MS_TEMPLATE+": "+SR.MS_LOAD_FROM_FILE, 4);
         addItem(SR.MS_TEMPLATE+": "+SR.MS_SAVE_TO_FILE, 5);
         

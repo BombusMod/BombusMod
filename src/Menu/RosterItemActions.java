@@ -51,6 +51,7 @@ import images.ActionsIcons;
 
 //#if FILE_TRANSFER
 import io.file.transfer.TransferImage;
+import io.file.transfer.TransferSendFile;
 //#endif
 
 import ui.controls.AlertBox;
@@ -61,9 +62,7 @@ import xmpp.extensions.IqTimeReply;
 import xmpp.extensions.IqVersionReply;
 
 import com.alsutton.jabber.datablocks.Presence;
-//#if FILE_TRANSFER
-import io.file.transfer.TransferSendFile;
-//#endif
+
 import java.util.Enumeration;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
@@ -96,6 +95,8 @@ public class RosterItemActions extends Menu {
     ActionsIcons menuIcons=ActionsIcons.getInstance();
 //#endif
     
+    Config cf=Config.getInstance();
+    
     /** Creates a new instance of RosterItemActions */
     public RosterItemActions(Display display, Displayable pView, Object item, int action) {
 //#ifdef NEW_SKIN
@@ -111,7 +112,7 @@ public class RosterItemActions extends Menu {
         if (item==null) return;
         boolean isContact=( item instanceof Contact );
 //#ifdef CLIPBOARD
-//#         if (Config.getInstance().useClipBoard)
+//#         if (cf.useClipBoard)
 //#             clipboard=ClipBoard.getInstance();
 //#endif
 	if (isContact) {
@@ -121,10 +122,14 @@ public class RosterItemActions extends Menu {
 		addItem(SR.MS_LOGOFF,6, menuIcons.ICON_OFF);
                 addItem(SR.MS_RESOLVE_NICKNAMES, 7, menuIcons.ICON_NICK_RESOLVE);
 //#if CHANGE_TRANSPORT
+//#ifdef PLUGINS
 //#                 try {
 //#                     Class.forName("Client.ChangeTransport");
+//#endif
 //#                     addItem("Change transport", 915);
+//#ifdef PLUGINS
 //#                 } catch (ClassNotFoundException ignore2) { }
+//#endif
 //#endif
 	    }
 	    addItem(SR.MS_VCARD,1, menuIcons.ICON_VCARD);
@@ -136,7 +141,7 @@ public class RosterItemActions extends Menu {
 	    addItem(SR.MS_COMMANDS,30, menuIcons.ICON_COMMAND);
 //#endif
 //#ifdef CLIPBOARD
-//#             if (Config.getInstance().useClipBoard) {
+//#             if (cf.useClipBoard) {
 //#                 addItem(SR.MS_SEND_BUFFER,914, menuIcons.ICON_SEND_BUFFER);
 //#                 if (contact.getGroupType()!=Groups.TYPE_SELF) {
 //#                     addItem(SR.MS_COPY_JID,892, menuIcons.ICON_COPY_JID);
@@ -256,24 +261,32 @@ public class RosterItemActions extends Menu {
             }
 //#endif
 //#if (FILE_IO && FILE_TRANSFER)
-            if (contact.getGroupType()!=Groups.TYPE_TRANSP) 
+            if (contact.getGroupType()!=Groups.TYPE_TRANSP && cf.fileTransfer) 
                 if (contact!=sd.roster.selfContact()) {
-                    try {
-                        Class.forName("io.file.transfer.TransferSendFile");
+//#ifdef PLUGINS
+//#                     try {
+//#                         Class.forName("io.file.transfer.TransferSendFile");
+//#endif
                         addItem(SR.MS_SEND_FILE, 50, menuIcons.ICON_SEND_FILE);
-                    } catch (ClassNotFoundException ignore2) { }
+//#ifdef PLUGINS
+//#                     } catch (ClassNotFoundException ignore2) { }
+//#endif
                 }
             
 //#endif
 //#if FILE_TRANSFER
-            if (contact.getGroupType()!=Groups.TYPE_TRANSP) {
+            if (contact.getGroupType()!=Groups.TYPE_TRANSP && cf.fileTransfer) {
                 if (contact!=sd.roster.selfContact()) {
                     String cameraAvailable=System.getProperty("supports.video.capture");
                     if (cameraAvailable!=null) if (cameraAvailable.startsWith("true")) {
-                        try {
-                            Class.forName("io.file.transfer.TransferImage");
+//#ifdef PLUGINS
+//#                         try {
+//#                             Class.forName("io.file.transfer.TransferImage");
+//#endif
                             addItem(SR.MS_SEND_PHOTO, 51, menuIcons.ICON_SEND_FILE);
-                        } catch (ClassNotFoundException ignore2) { }
+//#ifdef PLUGINS
+//#                         } catch (ClassNotFoundException ignore2) { }
+//#endif
                     }
                 }
             }
