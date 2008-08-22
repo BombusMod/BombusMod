@@ -26,6 +26,7 @@
  */
 package IE;
 
+import Client.StaticData;
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
 import javax.microedition.lcdui.Display;
@@ -49,13 +50,12 @@ public class IEMenu
         addItem(SR.MS_OPTIONS+": "+SR.MS_LOAD_FROM_FILE, 0);
         addItem(SR.MS_OPTIONS+": "+SR.MS_SAVE_TO_FILE, 1);
 //#ifdef PLUGINS
-//#         try {
-//#             Class.forName("Archive.ArchiveList");
+//#         if (StaticData.getInstance().Archive) {
 //#endif
             addItem(SR.MS_ARCHIVE+": "+SR.MS_LOAD_FROM_FILE, 2);
             addItem(SR.MS_ARCHIVE+": "+SR.MS_SAVE_TO_FILE, 3);
 //#ifdef PLUGINS
-//#         } catch (ClassNotFoundException ignore2) { }
+//#         }
 //#endif
         addItem(SR.MS_TEMPLATE+": "+SR.MS_LOAD_FROM_FILE, 4);
         addItem(SR.MS_TEMPLATE+": "+SR.MS_SAVE_TO_FILE, 5);

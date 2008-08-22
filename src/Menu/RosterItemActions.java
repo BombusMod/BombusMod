@@ -123,13 +123,9 @@ public class RosterItemActions extends Menu {
                 addItem(SR.MS_RESOLVE_NICKNAMES, 7, menuIcons.ICON_NICK_RESOLVE);
 //#if CHANGE_TRANSPORT
 //#ifdef PLUGINS
-//#                 try {
-//#                     Class.forName("Client.ChangeTransport");
+//#                 if (sd.ChangeTransport");
 //#endif
 //#                     addItem("Change transport", 915);
-//#ifdef PLUGINS
-//#                 } catch (ClassNotFoundException ignore2) { }
-//#endif
 //#endif
 	    }
 	    addItem(SR.MS_VCARD,1, menuIcons.ICON_VCARD);
@@ -264,13 +260,9 @@ public class RosterItemActions extends Menu {
             if (contact.getGroupType()!=Groups.TYPE_TRANSP && cf.fileTransfer) 
                 if (contact!=sd.roster.selfContact()) {
 //#ifdef PLUGINS
-//#                     try {
-//#                         Class.forName("io.file.transfer.TransferSendFile");
+//#                     if (sd.FileTransfer)
 //#endif
                         addItem(SR.MS_SEND_FILE, 50, menuIcons.ICON_SEND_FILE);
-//#ifdef PLUGINS
-//#                     } catch (ClassNotFoundException ignore2) { }
-//#endif
                 }
             
 //#endif
@@ -280,13 +272,9 @@ public class RosterItemActions extends Menu {
                     String cameraAvailable=System.getProperty("supports.video.capture");
                     if (cameraAvailable!=null) if (cameraAvailable.startsWith("true")) {
 //#ifdef PLUGINS
-//#                         try {
-//#                             Class.forName("io.file.transfer.TransferImage");
+//#                         if (sd.ImageTransfer)
 //#endif
                             addItem(SR.MS_SEND_PHOTO, 51, menuIcons.ICON_SEND_FILE);
-//#ifdef PLUGINS
-//#                         } catch (ClassNotFoundException ignore2) { }
-//#endif
                     }
                 }
             }

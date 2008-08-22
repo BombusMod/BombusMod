@@ -39,6 +39,7 @@ import locale.SR;
 //#ifdef ARCHIVE
 import Archive.ArchiveList;
 //#endif
+import Client.StaticData;
 
 /**
  *
@@ -91,13 +92,9 @@ public class ExTextBox
 
 //#ifdef ARCHIVE
 //#ifdef PLUGINS
-//#         try {
-//#             Class.forName("Archive.ArchiveList");
+//#         if (StaticData.getInstance().Archive)
 //#endif
             addCommand(cmdPaste);
-//#ifdef PLUGINS
-//#         } catch (ClassNotFoundException ignore2) { }
-//#endif
 //#endif
 //#ifdef CLIPBOARD
 //#         if (cf.useClipBoard) {
@@ -108,13 +105,9 @@ public class ExTextBox
 //#endif
 //#if TEMPLATES
 //#ifdef PLUGINS
-//#         try {
-//#             Class.forName("Archive.ArchiveList");
+//#         if (StaticData.getInstance().Archive)
 //#endif
             addCommand(cmdTemplate);
-//#ifdef PLUGINS
-//#         } catch (ClassNotFoundException ignore2) { }
-//#endif
 //#endif
         setInitialCaps(cf.capsState);
         this.parentView=pView;

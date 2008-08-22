@@ -42,6 +42,8 @@ import locale.SR;
 import ui.*;
 import Client.*;
 import Info.Version;
+import java.util.Vector;
+import util.StringLoader;
 
 /** Entry point class
  *
@@ -101,6 +103,10 @@ public class BombusMod extends MIDlet implements Runnable{
         
         SR.loaded();
         s.setProgress(12);
+        
+//#ifdef PLUGINS
+//#         getPlugins ();
+//#endif
 
 	Config cf=Config.getInstance();
         s.setProgress(15);
@@ -137,4 +143,36 @@ public class BombusMod extends MIDlet implements Runnable{
     public static BombusMod getInstance() {
         return instance;
     }
+
+//#ifdef PLUGINS
+//#     private void getPlugins () {
+//# 	Vector defs[]=new StringLoader().stringLoader("/modules.txt", 2);
+//#         if (defs!=null) {
+//#             for (int i=0; i<defs[0].size(); i++) {
+//#                 String name      =(String) defs[0].elementAt(i);
+//#                 String value     =(String) defs[1].elementAt(i);
+//# 
+//#                 boolean state=value.equals("true");
+//# 
+//#                 if (name.equals("Archive")) {
+//#                     sd.Archive=state;
+//#                 } else if(name.equals("ChangeTransport")) {
+//#                     sd.ChangeTransport=state;
+//#                 } else if(name.equals("Console")) {
+//#                     sd.Console=state;
+//#                 } else if(name.equals("FileTransfer")) {
+//#                     sd.FileTransfer=state;
+//#                 } else if(name.equals("History")) {
+//#                     sd.History=state;
+//#                 } else if(name.equals("ImageTransfer")) {
+//#                     sd.ImageTransfer=state;
+//#                 } else if(name.equals("PEP")) {
+//#                     sd.PEP=state;
+//#                 } else if(name.equals("Privacy")) {
+//#                     sd.Privacy=state;
+//#                 }
+//#             }
+//#         }
+//#     }
+//#endif
 }

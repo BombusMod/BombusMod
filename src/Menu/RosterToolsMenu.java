@@ -93,25 +93,17 @@ public class RosterToolsMenu extends Menu {
 //#ifdef PRIVACY
         if (connected) {
 //#ifdef PLUGINS
-//#             try {
-//#                 Class.forName("PrivacyLists.PrivacySelect");
+//#             if (sd.Privacy)
 //#endif
                 addItem(SR.MS_PRIVACY_LISTS, 1, menuIcons.ICON_PRIVACY);
-//#ifdef PLUGINS
-//#             } catch (ClassNotFoundException ignore2) { }
-//#endif
         }
 //#endif
 //#ifdef PEP
 //#         if (cf.sndrcvmood && connected) {
 //#ifdef PLUGINS
-//#             try {
-//#                 Class.forName("xmpp.extensions.PepListener");
+//#             if (sd.PEP)
 //#endif
 //#                 addItem(SR.MS_USER_MOOD, 2, menuIcons.ICON_MOOD);
-//#ifdef PLUGINS
-//#             } catch (ClassNotFoundException ignore2) { }
-//#endif
 //#         }            
 //#endif
         if (connected)
@@ -119,13 +111,9 @@ public class RosterToolsMenu extends Menu {
         addItem(SR.MS_OPTIONS, 4, menuIcons.ICON_SETTINGS);
 //#if (HISTORY)
 //#ifdef PLUGINS
-//#         try {
-//#             Class.forName("History.HistoryConfig");
+//#         if (sd.History)
 //#endif
 //#             addItem(SR.MS_HISTORY_OPTIONS, 5, menuIcons.ICON_HISTORY);
-//#ifdef PLUGINS
-//#         } catch (ClassNotFoundException ignore2) { }
-//#endif
 //#endif
        addItem(SR.MS_FONTS_OPTIONS, 6, menuIcons.ICON_FONTS);
 //#if (FILE_IO)
@@ -134,13 +122,9 @@ public class RosterToolsMenu extends Menu {
 //#if (FILE_IO && FILE_TRANSFER)
         if (connected && cf.fileTransfer) {
 //#ifdef PLUGINS
-//#             try {
-//#                 Class.forName("io.file.transfer.TransferManager");
+//#             if (sd.FileTransfer)
 //#endif
                 addItem(SR.MS_FILE_TRANSFERS, 8, menuIcons.ICON_FT);
-//#ifdef PLUGINS
-//#             } catch (ClassNotFoundException ignore2) { }
-//#endif
         }
 //#endif
         
@@ -173,13 +157,9 @@ public class RosterToolsMenu extends Menu {
 //#endif
 //#ifdef CONSOLE
 //#ifdef PLUGINS
-//#         try {
-//#             Class.forName("Console.XMLList");
+//#         if (sd.Console)
 //#endif
 //#             addItem(SR.MS_XML_CONSOLE, 18, menuIcons.ICON_CONCOLE);
-//#ifdef PLUGINS
-//#         } catch (ClassNotFoundException ignore3) { }
-//#endif
 //#endif
         addItem(SR.MS_BREAK_CONECTION, 19, menuIcons.ICON_RECONNECT);
         attachDisplay(display);

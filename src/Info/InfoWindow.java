@@ -28,6 +28,7 @@
 package Info;
 
 import Client.Config;
+import Client.StaticData;
 import java.util.Enumeration;
 import java.util.Vector;
 import javax.microedition.io.ConnectionNotFoundException;
@@ -153,9 +154,7 @@ public class InfoWindow
 //#         abilitiesList.addElement((String)"ANTISPAM");
 //#endif
 //#ifdef ARCHIVE
-        try {
-            Class.forName("Archive.ArchiveList"); abilitiesList.addElement((String)"ARCHIVE");
-        } catch (ClassNotFoundException ignore2) { }
+        if (StaticData.getInstance().Archive) abilitiesList.addElement((String)"ARCHIVE");
 //#endif
 //#ifdef AUTOSTATUS
 //#         abilitiesList.addElement((String)"AUTOSTATUS");
@@ -164,9 +163,7 @@ public class InfoWindow
 //#         abilitiesList.addElement((String)"CAPTCHA");
 //#endif
 //#ifdef CHANGE_TRANSPORT
-//#         try {
-//#             Class.forName("Client.ChangeTransport"); abilitiesList.addElement((String)"CHANGE_TRANSPORT");
-//#         } catch (ClassNotFoundException ignore2) { }
+//#         if (StaticData.getInstance().ChangeTransport) abilitiesList.addElement((String)"CHANGE_TRANSPORT");
 //#endif
 //#ifdef CHECK_VERSION
 //#         abilitiesList.addElement((String)"CHECK_VERSION");
@@ -178,9 +175,7 @@ public class InfoWindow
 //#         abilitiesList.addElement((String)"CLIPBOARD");
 //#endif
 //#ifdef CONSOLE
-//#         try {
-//#             Class.forName("Console.XMLList"); abilitiesList.addElement((String)"CONSOLE");
-//#         } catch (ClassNotFoundException ignore3) { }
+//#         if (StaticData.getInstance().Console.XMLList) abilitiesList.addElement((String)"CONSOLE");
 //#endif
 //#ifdef COLOR_TUNE
 //#         abilitiesList.addElement((String)"COLOR_TUNE");
@@ -192,30 +187,22 @@ public class InfoWindow
 //#         abilitiesList.addElement((String)"ELF");
 //#endif
 //#ifdef FILE_TRANSFER
-        try {
-            Class.forName("io.file.transfer.TransferDispatcher"); abilitiesList.addElement((String)"FILE_TRANSFER");
-        } catch (ClassNotFoundException ignore3) { }
+        if (StaticData.getInstance().FileTransfer) abilitiesList.addElement((String)"FILE_TRANSFER");
 //#endif
 //#ifdef GRADIENT
 //#         abilitiesList.addElement((String)"GRADIENT");
 //#endif
 //#ifdef HISTORY
-//#         try {
-//#             Class.forName("History.HistoryConfig"); abilitiesList.addElement((String)"HISTORY");
-//#         } catch (ClassNotFoundException ignore2) { }
+//#         if (StaticData.getInstance().History) abilitiesList.addElement((String)"HISTORY");
 //#endif
 //#ifdef HISTORY_READER
-//#         try {
-//#             Class.forName("History.HistoryConfig"); abilitiesList.addElement((String)"HISTORY_READER");
-//#         } catch (ClassNotFoundException ignore2) { }
+//#         if (StaticData.getInstance().History) abilitiesList.addElement((String)"HISTORY_READER");
 //#endif
 //#ifdef IMPORT_EXPORT
 //#         abilitiesList.addElement((String)"IMPORT_EXPORT");
 //#endif
 //#ifdef LAST_MESSAGES
-//#         try {
-//#             Class.forName("History.HistoryConfig"); abilitiesList.addElement((String)"LAST_MESSAGES");
-//#         } catch (ClassNotFoundException ignore2) { }
+//#         if (StaticData.getInstance().History) abilitiesList.addElement((String)"LAST_MESSAGES");
 //#endif
 //#ifdef LOGROTATE
 //#         abilitiesList.addElement((String)"LOGROTATE");
@@ -230,14 +217,10 @@ public class InfoWindow
         abilitiesList.addElement((String)"NICK_COLORS");
 //#endif
 //#ifdef PEP
-//#         try {
-//#             Class.forName("xmpp.extensions.PepListener"); abilitiesList.addElement((String)"PEP");
-//#         } catch (ClassNotFoundException ignore2) { }
+//#         if (StaticData.getInstance().PEP) abilitiesList.addElement((String)"PEP");
 //#endif
 //#ifdef PEP_TUNE
-//#         try {
-//#             Class.forName("xmpp.extensions.PepListener"); abilitiesList.addElement((String)"PEP_TUNE");
-//#         } catch (ClassNotFoundException ignore2) { }
+//#         if (StaticData.getInstance().PEP) abilitiesList.addElement((String)"PEP_TUNE");
 //#endif
 //#ifdef POPUPS
         abilitiesList.addElement((String)"POPUPS");
@@ -246,9 +229,7 @@ public class InfoWindow
 //#         abilitiesList.addElement((String)"REQUEST_VOICE");
 //#endif
 //#ifdef PRIVACY
-        try {
-            Class.forName("PrivacyLists.PrivacySelect"); abilitiesList.addElement((String)"PRIVACY");
-        } catch (ClassNotFoundException ignore2) { }
+        if (StaticData.getInstance().Privacy) abilitiesList.addElement((String)"PRIVACY");
 //#endif
 //#ifdef SE_LIGHT
 //#         abilitiesList.addElement((String)"SE_LIGHT");
@@ -263,9 +244,7 @@ public class InfoWindow
 //#         abilitiesList.addElement((String)"STATS");
 //#endif
 //#ifdef TEMPLATES
-        try {
-            Class.forName("Archive.ArchiveList"); abilitiesList.addElement((String)"TEMPLATES");
-        } catch (ClassNotFoundException ignore2) { }
+        if (StaticData.getInstance().Archive) abilitiesList.addElement((String)"TEMPLATES");
 //#endif
 //#ifdef USER_KEYS
 //#         abilitiesList.addElement((String)"USER_KEYS");

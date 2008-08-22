@@ -188,24 +188,15 @@ public class ConfigForm
 //#ifdef PEP
 //#         sndrcvmood = new CheckBox(SR.MS_SEND_RECEIVE_USERMOODS, cf.sndrcvmood); 
 //#ifdef PLUGINS
-//#         try {
-//#             Class.forName("xmpp.extensions.PepListener");
+//#         if (sd.PEP)
 //#endif
 //#             itemsList.addElement(sndrcvmood);
-//#ifdef PLUGINS
-//#         } catch (ClassNotFoundException ignore2) { }
-//#endif
-//# 
 //#ifdef PEP_TUNE
 //#         rcvtune = new CheckBox(SR.MS_RECEIVE_USERTUNE, cf.rcvtune); 
 //#ifdef PLUGINS
-//#         try {
-//#             Class.forName("xmpp.extensions.PepListener");
+//#         if (sd.PEP)
 //#endif
 //#             itemsList.addElement(rcvtune);
-//#ifdef PLUGINS
-//#         } catch (ClassNotFoundException ignore2) { }
-//#endif
 //#endif
 //#endif
         notifyWhenMessageType = new CheckBox(SR.MS_RUNNING_MESSAGE, cf.notifyWhenMessageType); itemsList.addElement(notifyWhenMessageType);
@@ -258,7 +249,13 @@ public class ConfigForm
 //#         userKeys = new CheckBox(SR.MS_CUSTOM_KEYS, cf.userKeys); itemsList.addElement(userKeys);
 //#endif
         lightState = new CheckBox(SR.MS_FLASHLIGHT, cf.lightState); itemsList.addElement(lightState);
-        fileTransfer = new CheckBox(SR.MS_FILE_TRANSFERS, cf.fileTransfer); itemsList.addElement(fileTransfer);
+//#ifdef FILE_TRANSFER
+        fileTransfer = new CheckBox(SR.MS_FILE_TRANSFERS, cf.fileTransfer); 
+//#ifdef PLUGINS
+//#         if (sd.FileTransfer)
+//#endif
+            itemsList.addElement(fileTransfer);
+//#endif
         if (cf.allowMinimize) {
             popupFromMinimized = new CheckBox(SR.MS_ENABLE_POPUP, cf.popupFromMinimized);
             itemsList.addElement(popupFromMinimized);
@@ -388,8 +385,12 @@ public class ConfigForm
         
         cf.reconnectCount=Integer.parseInt(reconnectCount.getValue());
         cf.reconnectTime=Integer.parseInt(reconnectTime.getValue());
-
-        cf.fileTransfer=fileTransfer.getValue();
+//#ifdef FILE_TRANSFER
+//#ifdef PLUGINS
+//#         if (sd.FileTransfer)
+//#endif
+            cf.fileTransfer=fileTransfer.getValue();
+//#endif
         VirtualList.fullscreen=cf.fullscreen=fullscreen.getValue();
         VirtualList.memMonitor=cf.memMonitor=memMonitor.getValue();
         cf.enableVersionOs=enableVersionOs.getValue();

@@ -68,4 +68,14 @@ public class StaticData {
         return sd;
     }
 
+//#ifdef PLUGINS
+//#     public boolean Archive=true;
+//#     public boolean ChangeTransport=true;
+//#     public boolean Console=true;
+//#     public boolean FileTransfer=true;
+//#     public boolean History=true;
+//#     public boolean ImageTransfer=true;
+//#     public boolean PEP=true;
+//#     public boolean Privacy=true;
+//#endif
 }

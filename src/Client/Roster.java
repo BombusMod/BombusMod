@@ -299,13 +299,9 @@ public class Roster
         addCommand(cmdAlert);
 //#ifdef ARCHIVE
 //#ifdef PLUGINS
-//#          try {
-//#             Class.forName("Archive.ArchiveList");
+//#          if (sd.Archive)
 //#endif
             addCommand(cmdArchive);
-//#ifdef PLUGINS
-//#         } catch (ClassNotFoundException ignore2) { }
-//#endif
 //#endif
         addCommand(cmdAdd);
         addCommand(cmdAccount);
@@ -1191,13 +1187,9 @@ public class Roster
 //#ifdef PEP
 //#         if (cf.sndrcvmood) { 
 //#ifdef PLUGINS
-//#             try {
-//#                 Class.forName("xmpp.extensions.PepListener");
+//#             if (sd.PEP)
 //#endif
 //#                 PepListener.getInstance().addBlockListener();
-//#ifdef PLUGINS
-//#             } catch (ClassNotFoundException ignore2) { }
-//#endif
 //#         }
 //#endif
 //#if SASL_XGOOGLETOKEN
@@ -1208,13 +1200,9 @@ public class Roster
         // enable File transfers
         if (cf.fileTransfer) {
 //#ifdef PLUGINS
-//#             try {
-//#                 Class.forName("io.file.transfer.TransferDispatcher");
+//#             if (sd.FileTransfer)
 //#endif
                 TransferDispatcher.getInstance().addBlockListener();
-//#ifdef PLUGINS
-//#             } catch (ClassNotFoundException ignore3) { }
-//#endif
         }
 //#endif
      

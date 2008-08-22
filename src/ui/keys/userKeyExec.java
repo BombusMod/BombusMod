@@ -136,13 +136,9 @@ public class userKeyExec {
             case 7: 
 //#ifdef ARCHIVE
 //#ifdef PLUGINS
-//#                 try {
-//#                     Class.forName("Archive.ArchiveList");
+//#                 if (sd.Archive)
 //#endif
                     sd.roster.cmdArchive();
-//#ifdef PLUGINS
-//#                 } catch (ClassNotFoundException ignore2) { }
-//#endif
 //#endif
                 break;
             case 8: 
