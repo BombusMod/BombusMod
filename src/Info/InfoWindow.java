@@ -175,7 +175,7 @@ public class InfoWindow
 //#         abilitiesList.addElement((String)"CLIPBOARD");
 //#endif
 //#ifdef CONSOLE
-//#         if (StaticData.getInstance().Console.XMLList) abilitiesList.addElement((String)"CONSOLE");
+//#         if (StaticData.getInstance().Console) abilitiesList.addElement((String)"CONSOLE");
 //#endif
 //#ifdef COLOR_TUNE
 //#         abilitiesList.addElement((String)"COLOR_TUNE");

@@ -123,7 +123,7 @@ public class RosterItemActions extends Menu {
                 addItem(SR.MS_RESOLVE_NICKNAMES, 7, menuIcons.ICON_NICK_RESOLVE);
 //#if CHANGE_TRANSPORT
 //#ifdef PLUGINS
-//#                 if (sd.ChangeTransport");
+//#                 if (sd.ChangeTransport);
 //#endif
 //#                     addItem("Change transport", 915);
 //#endif
