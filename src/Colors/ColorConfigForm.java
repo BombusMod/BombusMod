@@ -31,6 +31,7 @@ import io.file.FileIO;
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
 //#endif
+import Client.StaticData;
 import java.util.Vector;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
@@ -78,8 +79,14 @@ public class ColorConfigForm
         this.display=display;
 
 //#ifdef COLOR_TUNE
+//#ifdef PLUGINS
+//#             if (StaticData.getInstance().Colors) {
+//#endif
 //#         configureColors=new LinkString(SR.MS_COLOR_TUNE) { public void doAction() { new ColorsList(display); } };
 //#         itemsList.addElement(configureColors);
+//#ifdef PLUGINS
+//#             }
+//#endif
 //#endif
         invertColors=new LinkString(SR.MS_INVERT) { public void doAction() { ColorTheme.invertSkin(); } };
         itemsList.addElement(invertColors);

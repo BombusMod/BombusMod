@@ -133,21 +133,21 @@ blue 0x0000ff
     }
     
     public static void setColor(int id, int color) {
-	((ColorItem)colorsContainer.elementAt(id)).setColor(color);
+	((ColorItem)colorsContainer.elementAt(id)).color=color;
     }
     
     public static String getName(int id) {
-	return ((ColorItem)colorsContainer.elementAt(id)).getName();
+	return ((ColorItem)colorsContainer.elementAt(id)).name;
     }
     
     public static int getColor(int id) {
-	return ((ColorItem)colorsContainer.elementAt(id)).getValue();
+	return ((ColorItem)colorsContainer.elementAt(id)).color;
     }
     
     public int getColorByName(String name) {
 	for (Enumeration r=colorsContainer.elements(); r.hasMoreElements();) {
 	    ColorItem c=(ColorItem)r.nextElement();
-	    if (c.getName().equals(name)) return c.getValue();
+	    if (c.name.equals(name)) return c.color;
 	}
         return 0;
     }
@@ -155,8 +155,8 @@ blue 0x0000ff
     public static void invertSkin(){
         for (Enumeration r=colorsContainer.elements(); r.hasMoreElements();) {
             ColorItem c=(ColorItem)r.nextElement();
-            if (c.getValue()!=0x010101)
-                c.setColor(0xFFFFFF-c.getValue());
+            if (c.color!=0x010101)
+                c.color=0xFFFFFF-c.color;
         }
         saveToStorage();
     }
@@ -260,7 +260,7 @@ blue 0x0000ff
 	    DataInputStream inputStream=NvStorage.ReadFileRecord("ColorDB", 0);
             for (Enumeration r=colorsContainer.elements(); r.hasMoreElements();) {
                 ColorItem c=(ColorItem)r.nextElement();
-                c.setColor(inputStream.readInt());
+                c.color=inputStream.readInt();
             }
 	    inputStream.close();
             inputStream=null;
@@ -272,7 +272,7 @@ blue 0x0000ff
 	try {
             for (Enumeration r=colorsContainer.elements(); r.hasMoreElements();) {
                 ColorItem c=(ColorItem)r.nextElement();
-                outputStream.writeInt(c.getValue());
+                outputStream.writeInt(c.color);
             }
         } catch (IOException e) { }
 	NvStorage.writeFileRecord(outputStream, "ColorDB", 0, true);
@@ -289,7 +289,7 @@ blue 0x0000ff
         body.append("\r\n");
         for (Enumeration r=colorsContainer.elements(); r.hasMoreElements();) {
             ColorItem c=(ColorItem)r.nextElement();
-            body.append(c.getName()+"\t"+getColorString(c.getValue())+"\r\n");
+            body.append(c.name+"\t"+getColorString(c.color)+"\r\n");
         }
         return body.toString();
     }
@@ -300,7 +300,7 @@ blue 0x0000ff
         try {
             for (Enumeration r=colorsContainer.elements(); r.hasMoreElements();) {
                 ColorItem c=(ColorItem)r.nextElement();
-                c.setColor(loadInt(c.getName(), c.getValue()));
+                c.color=loadInt(c.name, c.color);
             }
             saveToStorage();
         } catch (Exception e) { }

@@ -36,7 +36,13 @@ public class Version {
     
     public final static String BOMBUS_SITE_URL="http://bombusmod.net.ru";
     
-    public static String getVersionLang() { return version+" ("+SR.MS_IFACELANG+")"; }
+//#ifdef PLUGINS
+//#     private static String plugins="P";
+//#else
+    private static String plugins="";
+//#endif
+    
+    public static String getVersionLang() { return plugins+version+" ("+SR.MS_IFACELANG+")"; }
     
     public static String getVersionNumber() { return version; }
     public static String getName() { return NAME; }

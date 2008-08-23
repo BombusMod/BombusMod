@@ -170,6 +170,10 @@ public class BombusMod extends MIDlet implements Runnable{
 //#                     sd.PEP=state;
 //#                 } else if(name.equals("Privacy")) {
 //#                     sd.Privacy=state;
+//#                 } else if(name.equals("IE")) {
+//#                     sd.IE=state;
+//#                 } else if(name.equals("Colors")) {
+//#                     sd.Colors=state;
 //#                 }
 //#             }
 //#         }

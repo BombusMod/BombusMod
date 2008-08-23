@@ -53,7 +53,7 @@ public class StaticData {
 
     private long trafficOut;
     private long trafficIn;
-    
+
     public void updateTrafficIn() { trafficIn=System.currentTimeMillis(); }
     public long getTrafficIn() { return trafficIn; }
     public void updateTrafficOut() { trafficOut=System.currentTimeMillis(); }
@@ -77,5 +77,7 @@ public class StaticData {
 //#     public boolean ImageTransfer=true;
 //#     public boolean PEP=true;
 //#     public boolean Privacy=true;
+//#     public boolean IE=true;
+//#     public boolean Colors=true;
 //#endif
 }

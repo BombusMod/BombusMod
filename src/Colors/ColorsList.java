@@ -45,11 +45,18 @@ public class ColorsList
         extends VirtualList
         implements CommandListener
     {
+
+    public static String plugin = new String("PLUGIN_COLORS");
+    
+
+    static void setColor(int paramName, int value) {
+        ((ColorVisualItem)itemsList.elementAt(paramName)).setColor(value);
+    }
     
     public Display display;
     public Displayable parentView;
     
-    Vector itemsList=new Vector();
+    static Vector itemsList=new Vector();
 
     public Command cmdOk = new Command(SR.MS_EDIT, Command.OK, 1);
     public Command cmdCancel = new Command(SR.MS_BACK, Command.BACK, 99);
@@ -58,13 +65,13 @@ public class ColorsList
      * Creates a new instance of ColorsList
      */
     public ColorsList(Display display) {
-        itemsList=ColorTheme.colorsContainer;
+        //itemsList=ColorTheme.colorsContainer;
         
         int cnt=0;
         for (Enumeration r=ColorTheme.colorsContainer.elements(); r.hasMoreElements();) {
             ColorItem c=(ColorItem)r.nextElement();
-//#ifdef COLOR_TUNE
-//#             c.setLocale(NAMES[cnt]);
+//#ifdef COLORS
+            itemsList.addElement(new ColorVisualItem(c.name, NAMES[cnt], c.color));
 //#endif
             cnt++;
         }
@@ -89,10 +96,11 @@ public class ColorsList
 
     public void commandAction(Command c, Displayable displayable) {
         if (c==cmdCancel) {
-            for (Enumeration r=ColorTheme.colorsContainer.elements(); r.hasMoreElements();) {
-                ColorItem ci=(ColorItem)r.nextElement();
-                ci.setLocale(null); // clean locale
-            }
+            //for (Enumeration r=ColorTheme.colorsContainer.elements(); r.hasMoreElements();) {
+            //    ColorItem ci=(ColorItem)r.nextElement();
+            //    ci.locale=null; // clean locale
+            //}
+            itemsList=null;
             destroyView();
             return;
         }
@@ -139,7 +147,7 @@ public class ColorsList
 //#             SR.MS_MESSAGE_PRESENCE,
 //#             SR.MS_MESSAGE_AUTH,
 //#             SR.MS_MESSAGE_HISTORY,
-//#             
+//# 
 //#             SR.MS_MESSAGE_IN_S,
 //#             SR.MS_MESSAGE_OUT_S,
 //#             SR.MS_MESSAGE_PRESENCE_S,
@@ -148,7 +156,7 @@ public class ColorsList
 //#             SR.MS_PGS_COMPLETE,
 //#             SR.MS_PGS_COMPLETE+" 2",
 //#             SR.MS_PGS_INK,
-//#             
+//# 
 //#             SR.MS_HEAP_TOTAL,
 //#             SR.MS_HEAP_FREE,
 //# 
@@ -158,14 +166,14 @@ public class ColorsList
 //#             SR.MS_SCROLL_BRD,
 //#             SR.MS_SCROLL_BAR,
 //#             SR.MS_SCROLL_BGND,
-//#             
+//# 
 //#             SR.MS_POPUP_MESSAGE,
 //#             SR.MS_POPUP_MESSAGE_BGND,
 //#             SR.MS_POPUP_SYSTEM,
 //#             SR.MS_POPUP_SYSTEM_BGND,
-//#             
-//#             SR.MS_CONTACT_STATUS, 
-//#             
+//# 
+//#             SR.MS_CONTACT_STATUS,
+//# 
 //#             SR.MS_CONTROL_ITEM,
 //#         };
 //#endif

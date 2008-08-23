@@ -215,7 +215,7 @@ public class AccountSelect
         DataOutputStream outputStream=NvStorage.CreateDataOutputStream();
         for (int i=0;i<accountList.size();i++) 
             ((Account)accountList.elementAt(i)).saveToDataOutputStream(outputStream);
-        NvStorage.writeFileRecord(outputStream, Account.storage, 0, true);
+        NvStorage.writeFileRecord(outputStream, "accnt_db", 0, true); //Account.storage
     }
 //#ifdef MENU_LISTENER
 //#     public Vector menuCommands=new Vector();

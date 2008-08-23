@@ -154,7 +154,10 @@ public class InfoWindow
 //#         abilitiesList.addElement((String)"ANTISPAM");
 //#endif
 //#ifdef ARCHIVE
-        if (StaticData.getInstance().Archive) abilitiesList.addElement((String)"ARCHIVE");
+//#ifdef PLUGINS
+//#         if (StaticData.getInstance().Archive)
+//#endif
+            abilitiesList.addElement((String)"ARCHIVE");
 //#endif
 //#ifdef AUTOSTATUS
 //#         abilitiesList.addElement((String)"AUTOSTATUS");
@@ -163,7 +166,10 @@ public class InfoWindow
 //#         abilitiesList.addElement((String)"CAPTCHA");
 //#endif
 //#ifdef CHANGE_TRANSPORT
-//#         if (StaticData.getInstance().ChangeTransport) abilitiesList.addElement((String)"CHANGE_TRANSPORT");
+//#ifdef PLUGINS
+//#         if (StaticData.getInstance().ChangeTransport)
+//#endif
+//#             abilitiesList.addElement((String)"CHANGE_TRANSPORT");
 //#endif
 //#ifdef CHECK_VERSION
 //#         abilitiesList.addElement((String)"CHECK_VERSION");
@@ -175,7 +181,10 @@ public class InfoWindow
 //#         abilitiesList.addElement((String)"CLIPBOARD");
 //#endif
 //#ifdef CONSOLE
-//#         if (StaticData.getInstance().Console) abilitiesList.addElement((String)"CONSOLE");
+//#ifdef PLUGINS
+//#         if (StaticData.getInstance().Console)
+//#endif
+//#             abilitiesList.addElement((String)"CONSOLE");
 //#endif
 //#ifdef COLOR_TUNE
 //#         abilitiesList.addElement((String)"COLOR_TUNE");
@@ -187,22 +196,34 @@ public class InfoWindow
 //#         abilitiesList.addElement((String)"ELF");
 //#endif
 //#ifdef FILE_TRANSFER
-        if (StaticData.getInstance().FileTransfer) abilitiesList.addElement((String)"FILE_TRANSFER");
+//#ifdef PLUGINS
+//#         if (StaticData.getInstance().FileTransfer)
+//#endif
+            abilitiesList.addElement((String)"FILE_TRANSFER");
 //#endif
 //#ifdef GRADIENT
 //#         abilitiesList.addElement((String)"GRADIENT");
 //#endif
 //#ifdef HISTORY
-//#         if (StaticData.getInstance().History) abilitiesList.addElement((String)"HISTORY");
+//#ifdef PLUGINS
+//#         if (StaticData.getInstance().History)
+//#endif
+//#             abilitiesList.addElement((String)"HISTORY");
 //#endif
 //#ifdef HISTORY_READER
-//#         if (StaticData.getInstance().History) abilitiesList.addElement((String)"HISTORY_READER");
+//#ifdef PLUGINS
+//#         if (StaticData.getInstance().History)
+//#endif
+//#             abilitiesList.addElement((String)"HISTORY_READER");
 //#endif
 //#ifdef IMPORT_EXPORT
 //#         abilitiesList.addElement((String)"IMPORT_EXPORT");
 //#endif
 //#ifdef LAST_MESSAGES
-//#         if (StaticData.getInstance().History) abilitiesList.addElement((String)"LAST_MESSAGES");
+//#ifdef PLUGINS
+//#         if (StaticData.getInstance().History)
+//#endif
+//#             abilitiesList.addElement((String)"LAST_MESSAGES");
 //#endif
 //#ifdef LOGROTATE
 //#         abilitiesList.addElement((String)"LOGROTATE");
@@ -217,10 +238,16 @@ public class InfoWindow
         abilitiesList.addElement((String)"NICK_COLORS");
 //#endif
 //#ifdef PEP
-//#         if (StaticData.getInstance().PEP) abilitiesList.addElement((String)"PEP");
+//#ifdef PLUGINS
+//#         if (StaticData.getInstance().PEP)
+//#endif
+//#             abilitiesList.addElement((String)"PEP");
 //#endif
 //#ifdef PEP_TUNE
-//#         if (StaticData.getInstance().PEP) abilitiesList.addElement((String)"PEP_TUNE");
+//#ifdef PLUGINS
+//#         if (StaticData.getInstance().PEP)
+//#endif
+//#             abilitiesList.addElement((String)"PEP_TUNE");
 //#endif
 //#ifdef POPUPS
         abilitiesList.addElement((String)"POPUPS");
@@ -229,7 +256,10 @@ public class InfoWindow
 //#         abilitiesList.addElement((String)"REQUEST_VOICE");
 //#endif
 //#ifdef PRIVACY
-        if (StaticData.getInstance().Privacy) abilitiesList.addElement((String)"PRIVACY");
+//#ifdef PLUGINS
+//#         if (StaticData.getInstance().Privacy)
+//#endif
+            abilitiesList.addElement((String)"PRIVACY");
 //#endif
 //#ifdef SE_LIGHT
 //#         abilitiesList.addElement((String)"SE_LIGHT");
@@ -244,7 +274,10 @@ public class InfoWindow
 //#         abilitiesList.addElement((String)"STATS");
 //#endif
 //#ifdef TEMPLATES
-        if (StaticData.getInstance().Archive) abilitiesList.addElement((String)"TEMPLATES");
+//#ifdef PLUGINS
+//#         if (StaticData.getInstance().Archive)
+//#endif
+        abilitiesList.addElement((String)"TEMPLATES");
 //#endif
 //#ifdef USER_KEYS
 //#         abilitiesList.addElement((String)"USER_KEYS");

@@ -131,7 +131,10 @@ public class RosterToolsMenu extends Menu {
         addItem(SR.MS_COLOR_TUNE, 9, menuIcons.ICON_COLOR_TUNE);
 
 //#if IMPORT_EXPORT
-//#         addItem(SR.MS_IMPORT_EXPORT, 10, menuIcons.ICON_IE);
+//#ifdef PLUGINS
+//#             if (sd.IE)
+//#endif
+//#             addItem(SR.MS_IMPORT_EXPORT, 10, menuIcons.ICON_IE);
 //#endif
         addItem(SR.MS_NOTICES_OPTIONS, 11, menuIcons.ICON_NOTIFY);
 //#ifdef POPUPS

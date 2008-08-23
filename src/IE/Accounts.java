@@ -39,6 +39,8 @@ import java.util.Vector;
  */
 public class Accounts {
     
+    public static String plugin = new String("PLUGIN_IE");
+    
     private final static String userName = "userName"; 
     private final static String server = "server"; 
     private final static String hostAddr = "hostAddr"; 
@@ -126,7 +128,7 @@ public class Accounts {
         DataOutputStream outputStream=NvStorage.CreateDataOutputStream();
         for (int i=0; i<getItemCount(); i++)
             getAccount(i).saveToDataOutputStream(outputStream);
-        NvStorage.writeFileRecord(outputStream, Account.storage, 0, true);
+        NvStorage.writeFileRecord(outputStream, "accnt_db", 0, true); //Account.storage
     }
     
     

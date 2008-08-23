@@ -535,7 +535,7 @@ public abstract class VirtualList
         }
         
 //#ifdef MENU_LISTENER
-//#         if (drawMenuCommand) drawMenuCommands(g);
+//#         if (drawMenuCommand && paintBottom) drawMenuCommands(g);
 //#endif
         
 //#ifdef POPUPS

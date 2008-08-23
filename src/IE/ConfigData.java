@@ -40,6 +40,8 @@ import ui.VirtualList;
  */
 public class ConfigData {
     
+    public static String plugin = new String("PLUGIN_IE");
+    
     private Config cf;
     private Vector array;
     private String file;

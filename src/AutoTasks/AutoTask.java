@@ -49,14 +49,14 @@ public class AutoTask
         implements Runnable, CommandListener
 {
     
-    public final static int TASK_TYPE_DISABLED=0;
-    public final static int TASK_TYPE_TIME=1;
-    public final static int TASK_TYPE_TIMER=2;
+    public final int TASK_TYPE_DISABLED=0;
+    public final int TASK_TYPE_TIME=1;
+    public final int TASK_TYPE_TIMER=2;
 
-    public final static int TASK_ACTION_QUIT=0;
-    public final static int TASK_ACTION_CONFERENCE_QUIT=1;
-    public final static int TASK_ACTION_LOGOFF=2;
-    public final static int TASK_ACTION_RECONNECT=3;
+    public final int TASK_ACTION_QUIT=0;
+    public final int TASK_ACTION_CONFERENCE_QUIT=1;
+    public final int TASK_ACTION_LOGOFF=2;
+    public final int TASK_ACTION_RECONNECT=3;
     
     public int taskType=TASK_TYPE_DISABLED;
     public int taskAction=TASK_ACTION_QUIT;
@@ -77,7 +77,7 @@ public class AutoTask
     private Display display;
     private Displayable parentView=sd.roster;
     
-    private final static int WAITTIME=60;
+    private int WAITTIME=60;
 
     private boolean isShowing;
     

@@ -27,57 +27,26 @@
 
 package Colors;
 
-import images.RosterIcons;
-import javax.microedition.lcdui.Graphics;
-import ui.IconTextElement;
-
 /**
  *
  * @author ad
  */
-public class ColorItem
-        extends IconTextElement {
+public class ColorItem {
     
-    private String name;
-    private int color;
-    private String locale="";
+    public String name;
+    public int color;
+    //public String locale="";
 
     public ColorItem(String name, int color){
-        super(RosterIcons.getInstance());
         this.name=name;
         this.color=color;
     }
 
-    public String getName() { return name; }
-    public int getValue() { return color; }
-    public void setColor(int color) { this.color=color; }
+    //public String getName() { return name; }
+    //public int getValue() { return color; }
     
-    public String toString() { return (locale==null)?name:locale; }
+    //public void setColor(int color) { this.color=color; }
+    //public int getColor() { return color; }
     
-    public void drawItem(Graphics g, int ofs, boolean sel) {
-        int width=g.getClipWidth();
-        int height=super.getVHeight();
-
-        int oldColor=g.getColor();
-
-        g.setColor(color);
-        g.fillRect(1, 1, height-2, height-2);
-
-        g.setColor(oldColor);
-
-        g.translate(height,0);
-        super.drawItem(g, ofs, sel);
-        g.translate(-height,0);
-        
-    }
-    
-    public void setLocale(String locale){
-        this.locale=locale;
-    }
-    
-    public void onSelect(){
-        //state=!state;
-    }
-    
-    public boolean isSelectable() { return true; }
+    //public void setLocale(String locale){ this.locale=locale; }
 }

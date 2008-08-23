@@ -40,7 +40,7 @@ import io.NvStorage;
 
 public class Account extends IconTextElement{
     
-    public final static String storage="accnt_db";
+    //public final static String storage="accnt_db";
             
     private String userName="";
     private String password="";
@@ -108,7 +108,7 @@ public class Account extends IconTextElement{
     
     public static Account createFromStorage(int index) {
         Account a=null;
-        DataInputStream is=NvStorage.ReadFileRecord(storage, 0);
+        DataInputStream is=NvStorage.ReadFileRecord("accnt_db", 0); //storage
         if (is==null) return null;
         try {
             do {

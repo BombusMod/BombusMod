@@ -29,6 +29,7 @@ import javax.microedition.lcdui.*;
 import locale.SR;
 
 public class ColorSelector extends Canvas implements Runnable, CommandListener {
+    public static String plugin = new String("PLUGIN_COLORS");
 
     static Font mfont = Font.getFont(Font.FACE_SYSTEM, Font.STYLE_BOLD, Font.SIZE_SMALL);
     static int w, h;
@@ -258,6 +259,7 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
     public void setValue(int vall) {
         this.value=vall;
         ColorTheme.setColor(paramName, value);
+        ColorsList.setColor(paramName, value);
 //#ifdef COLOR_TUNE
 //#         ColorTheme.saveToStorage();
 //#endif

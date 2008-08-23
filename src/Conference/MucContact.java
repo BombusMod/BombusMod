@@ -63,7 +63,7 @@ public class MucContact extends Contact {
 //#     public final static int PRIVATE_NONE=0;
 //#     public final static int PRIVATE_REQUEST=2;
 //#     public final static int PRIVATE_ACCEPT=3;
-//#     
+//#
 //#     private int privateState;
 //#endif
 
@@ -121,17 +121,17 @@ public class MucContact extends Contact {
 
         String tempRole=item.getAttribute("role");
         if (tempRole.equals("visitor")) roleCode=ROLE_VISITOR;
-        if (tempRole.equals("participant")) roleCode=ROLE_PARTICIPANT;
-        if (tempRole.equals("moderator")) roleCode=ROLE_MODERATOR;
+        else if (tempRole.equals("participant")) roleCode=ROLE_PARTICIPANT;
+        else if (tempRole.equals("moderator")) roleCode=ROLE_MODERATOR;
         
         String tempAffiliation=item.getAttribute("affiliation");
         if (tempAffiliation.equals("owner")) affiliationCode=AFFILIATION_OWNER;
-        if (tempAffiliation.equals("admin")) affiliationCode=AFFILIATION_ADMIN;
-        if (tempAffiliation.equals("member")) affiliationCode=AFFILIATION_MEMBER;
-        if (tempAffiliation.equals("none")) affiliationCode=AFFILIATION_NONE;
+        else if (tempAffiliation.equals("admin")) affiliationCode=AFFILIATION_ADMIN;
+        else if (tempAffiliation.equals("member")) affiliationCode=AFFILIATION_MEMBER;
+        else if (tempAffiliation.equals("none")) affiliationCode=AFFILIATION_NONE;
         
         boolean roleChanged= !tempRole.equals(role);
-        boolean affiliationChanged= !tempAffiliation.equals(affiliation);
+        boolean affiliationChanged=!tempAffiliation.equals(affiliation);
         role=tempRole;
         affiliation=tempAffiliation;
         
@@ -362,7 +362,7 @@ public class MucContact extends Contact {
 //#     public void setPrivateState (int state) {
 //#         privateState=state;
 //#     }
-//#     
+//#
 //#     public int getPrivateState () {
 //#         return privateState;
 //#     }
