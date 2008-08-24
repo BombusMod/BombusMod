@@ -73,9 +73,6 @@ public class Progress {
     }
     
     public static void draw(int filled, String text) {
-        //g.translate(x, y-height);
-        //g.setClip(0,0,width,height);
-        
         g.setColor(ColorTheme.getColor(ColorTheme.PGS_REMAINED));
         g.fillRect(0, y, width, height);
 //#ifdef GRADIENT
@@ -94,6 +91,5 @@ public class Progress {
         g.drawString(text, width/2, y, Graphics.TOP|Graphics.HCENTER);
         g.drawLine(x,y,width,y);
         g.drawLine(filled,y+1,filled,y+height-1);
-        //g.translate(x, y+height);
     }
 }

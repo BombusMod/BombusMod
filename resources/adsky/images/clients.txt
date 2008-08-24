@@ -4,7 +4,7 @@ bombus-im.org/ng	BombusNG
 psi-im.org	Psi
 miranda-im	Miranda
 voffk.org.ru/bombus	Bombus+
-google.com	Google
+google.com,gmail	Google
 tkabber	Tkabber
 gajim	Gajim
 qip	Qip

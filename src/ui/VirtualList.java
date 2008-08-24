@@ -42,7 +42,7 @@ import ui.controls.PopUp;
 //#endif
 import ui.controls.Balloon;
 import ui.controls.ScrollBar;
-import ui.controls.activeRegions;
+import ui.controls.CommandsPointer;
 import util.StringUtils;
 //#ifdef USER_KEYS
 //# import ui.keys.userKeyExec;
@@ -179,7 +179,7 @@ public abstract class VirtualList
 //#     public Image img;
 //#endif
     
-    activeRegions ar=new activeRegions();
+    CommandsPointer ar=new CommandsPointer();
     
     public void touchLeftPressed(){}
     public void touchRightPressed(){
@@ -519,24 +519,25 @@ public abstract class VirtualList
                 if (mainbar!=null) {
                     setAbsOrg(g, 0, height-mHeight);
                     drawMainPanel(g);
-                    ar.init(width, height, mHeight);
+                    if (hasPointerEvents())
+                        ar.init(width, height, mHeight);
                 }
             } else {
                 if (infobar!=null) {
                     setAbsOrg(g, 0, height-iHeight);
                     drawInfoPanel(g);
-                    ar.init(width, height, iHeight);
+                    if (hasPointerEvents())
+                        ar.init(width, height, iHeight);
                 }
             }
-            if (sd.roster.messageCount>0) drawEnvelop(g);
             setAbsClip(g, width, height);
+//#ifdef MENU_LISTENER
+//#             if (drawMenuCommand) drawMenuCommands(g);
+//#endif
+            if (sd.roster.messageCount>0) drawEnvelop(g);
             if (System.currentTimeMillis()-sd.getTrafficIn()<2000) drawTraffic(g, false);
             if (System.currentTimeMillis()-sd.getTrafficOut()<2000) drawTraffic(g, true);
         }
-        
-//#ifdef MENU_LISTENER
-//#         if (drawMenuCommand && paintBottom) drawMenuCommands(g);
-//#endif
         
 //#ifdef POPUPS
         drawPopUp(g);
@@ -732,7 +733,7 @@ public abstract class VirtualList
         popup.next();
 //#endif        
 
-        int act=ar.pointerPressed(x, y, this);
+        int act=ar.pointerPressed(x, y);
         if (act==1) {
              touchLeftPressed();
              stickyWindow=false;

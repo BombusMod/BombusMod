@@ -1,5 +1,5 @@
 /*
- * activeRegions.java
+ * CommandsPointer.java
  * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
  *
  * This program is free software; you can redistribute it and/or
@@ -24,23 +24,23 @@
 
 package ui.controls;
 
-import ui.VirtualList;
-
-public class activeRegions {
+public class CommandsPointer {
     static int cHeight = 0;
     static int cWidth = 0;   
-    public activeRegions() { }
+    public CommandsPointer() { }
     
     public void init(int width, int height, int lineHeight) {
         this.cWidth=width/2;
         this.cHeight=height-lineHeight;
     }
     
-    public int pointerPressed(int x, int y, VirtualList v) {
-        if (x<cWidth && y>cHeight)//System.out.println("isClickOnLeftCommand");
-            return 1;        
-        if (x>cWidth && y>cHeight)//System.out.println("isClickOnRightCommand");
+    public int pointerPressed(int x, int y) {
+        if (x<cWidth && y>cHeight) //System.out.println("isClickOnLeftCommand");
+            return 1; 
+                   
+        if (x>cWidth && y>cHeight) //System.out.println("isClickOnRightCommand");
             return 2;
+            
 	return 0;
     }
 }

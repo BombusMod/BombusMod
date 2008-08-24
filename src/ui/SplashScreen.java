@@ -78,7 +78,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
     
     private Progress pb;
     
-    private ColorTheme ct;
+    //private ColorTheme ct;
     
     public static SplashScreen getInstance(){
         if (instance==null) 
@@ -89,7 +89,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
     /** Creates a new instance of SplashScreen */
     private SplashScreen() {
         setFullScreenMode(cf.fullscreen);
-        ct=ColorTheme.getInstance();
+        //ct=ColorTheme.getInstance();
     }
     
     public SplashScreen( Display display, ComplexString status, char exitKey) {
@@ -118,7 +118,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         width=g.getClipWidth();
         height=g.getClipHeight();
         
-        g.setColor(ct.getColor(ColorTheme.BLK_BGND));
+        g.setColor(ColorTheme.getColor(ColorTheme.BLK_BGND));
         g.fillRect(0,0, width, height);
 
         if (img!=null) 
@@ -129,7 +129,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
             g.setFont(f);
             int h=f.getHeight()+1;
 
-            g.setColor(ct.getColor(ColorTheme.BLK_INK));
+            g.setColor(ColorTheme.getColor(ColorTheme.BLK_INK));
 
             status.drawItem(g, 0, false);
 

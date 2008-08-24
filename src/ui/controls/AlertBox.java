@@ -26,12 +26,15 @@
 
 package ui.controls;
 
+import Client.Config;
 import Client.StaticData;
 import Colors.ColorTheme;
 import java.util.Vector;
 import javax.microedition.lcdui.Canvas;
-import javax.microedition.lcdui.Command;
+//#ifndef MENU_LISTENER
 import javax.microedition.lcdui.CommandListener;
+import javax.microedition.lcdui.Command;
+//#endif
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Font;
@@ -49,26 +52,43 @@ import util.StringUtils;
  *
  * @author ad
  */
-public abstract class AlertBox extends Canvas implements CommandListener {
-    
+public abstract class AlertBox
+        extends Canvas
+        
+//#ifndef MENU_LISTENER
+        implements CommandListener
+//#endif
+    {
+
     protected Display display;
     protected Displayable next;
     
+//#ifndef MENU_LISTENER
     protected Command cmdOk=new Command(SR.MS_OK, Command.OK, 1);
     protected Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 2);
+//#endif
     
     public boolean isShowing;
 
     Font messageFont;
     Font barFont;
 
+    private String left=SR.MS_OK;
+    private String right=SR.MS_CANCEL;
+    
+    boolean init;
+    CommandsPointer ar=new CommandsPointer();
+
     private String mainbar;
     private String text;
     
     private Vector lines=null;
     
+    private int topColor=ColorTheme.getColor(ColorTheme.BAR_BGND);
 //#ifdef GRADIENT
+//#     private int bottomColor=ColorTheme.getColor(ColorTheme.BAR_BGND_BOTTOM);
 //#     private Gradient gr=null;
+//#     private Gradient gr2=null;
 //#endif
     
     private Progress pb;
@@ -86,6 +106,8 @@ public abstract class AlertBox extends Canvas implements CommandListener {
     
     public AlertBox(String mainbar, String text, Display display, Displayable nextDisplayable) {
         this.display=display;
+        
+        setFullScreenMode(Config.getInstance().fullscreen);
 
         messageFont=FontCache.getMsgFont();
         barFont=FontCache.getBarFont();
@@ -95,14 +117,16 @@ public abstract class AlertBox extends Canvas implements CommandListener {
         this.text=text;
         this.mainbar=mainbar;
         isShowing=true;
-        
+//#ifndef MENU_LISTENER
         addCommand(cmdOk);
         addCommand(cmdCancel);
 
         setCommandListener(this);
+//#endif
         display.setCurrent(this);
     }
     
+//#ifndef MENU_LISTENER
     public void commandAction(Command command, Displayable displayable) {
         if (command==cmdOk) {
             yes();
@@ -111,7 +135,8 @@ public abstract class AlertBox extends Canvas implements CommandListener {
         }
         destroyView();
     }
-    
+//#endif
+
     public void destroyView()	{
         isShowing=false;
 
@@ -122,24 +147,25 @@ public abstract class AlertBox extends Canvas implements CommandListener {
         }
     }
     
-    private void getLines(int width, int height, int fh) {
+    private void getLines(int width) {
         if (lines==null) {
-            //lines=StringUtils.parseMessage(text, width-4, height-fh-10, false, messageFont);
             lines=StringUtils.parseMessage(text, width-4, messageFont);
             text=null;
         }
     }
 
     protected void paint(Graphics graphics) {
-        Graphics g = graphics;      
-
-//#ifndef WOFFSCREEN
-        if (offscreen != null) graphics = offscreen.getGraphics();
-//#endif
         if (isShowing) {
+            Graphics g = graphics;
+//#ifndef WOFFSCREEN
+            if (offscreen != null) graphics = offscreen.getGraphics();
+//#endif
             width=g.getClipWidth();
             height=g.getClipHeight();
 
+            if (!init && hasPointerEvents())
+                    ar.init(width, height, getBarFontHeight());
+            
             int oldColor=g.getColor();
             
             g.setColor(ColorTheme.getColor(ColorTheme.LIST_BGND));
@@ -148,34 +174,47 @@ public abstract class AlertBox extends Canvas implements CommandListener {
             int fh=0;
             if (mainbar!=null) {
                 fh=getBarFontHeight();
-            
-                g.setClip(0,0, width, fh);
 //#ifdef GRADIENT
 //#                 if (gr==null) {
-//#                     gr=new Gradient(0, 0, width, fh, ColorTheme.getColor(ColorTheme.BAR_BGND), ColorTheme.getColor(ColorTheme.BAR_BGND_BOTTOM), false);
+//#                     gr=new Gradient(0, 0, width, fh, ColorTheme.getColor(ColorTheme.BAR_BGND), bottomColor, false);
 //#                 }
 //#                 gr.paint(g);
 //#else
-            g.setColor(ct.getColor(ColorTheme.BAR_BGND));
+            g.setColor(topColor);
             g.fillRect(0, 0, width, fh);
 //#endif
                 g.setFont(barFont);
                 g.setColor(ColorTheme.getColor(ColorTheme.BAR_INK));
                 g.drawString(mainbar, width/2, 0, Graphics.TOP|Graphics.HCENTER);
             }
-            
-            g.setClip(0,0, width, height);
-            
-            getLines(width-4, height-fh-15, fh);
-            drawAllStrings(g, 2, fh);
-            g.setColor(oldColor);
-            
-            if (pos>0)
-                drawProgress (g, width, height);
-        }
-//#ifndef WOFFSCREEN
-        if (g != graphics) g.drawImage(offscreen, 0, 0, Graphics.LEFT | Graphics.TOP);
+
+
+            fh=getBarFontHeight();
+//#ifdef GRADIENT
+//#             if (gr2==null) {
+//#                 gr2=new Gradient(0, height-fh, width, height, topColor, bottomColor, false);
+//#             }
+//#             gr2.paint(g);
+//#else
+        g.setColor(topColor);
+        g.fillRect(0, height-fh, width, fh);
 //#endif
+            g.setFont(barFont);
+            g.setColor(ColorTheme.getColor(ColorTheme.BAR_INK));
+            g.drawString(left, 2, height-fh, Graphics.TOP|Graphics.LEFT);
+            g.drawString(right, width-2, height-fh, Graphics.TOP|Graphics.RIGHT);
+
+            getLines(width-4);
+            drawAllStrings(g, 2, fh);
+
+            if (pos>0)
+                drawProgress (g, width, height-fh);
+            
+            g.setColor(oldColor);
+//#ifndef WOFFSCREEN
+            if (g != graphics) g.drawImage(offscreen, 0, 0, Graphics.LEFT | Graphics.TOP);
+//#endif
+        }
     }
     
     private void drawAllStrings(Graphics g, int x, int y) {
@@ -231,7 +270,31 @@ public abstract class AlertBox extends Canvas implements CommandListener {
 //#endif
     }
     
+    protected void keyPressed(int keyCode) { // overriding this method to avoid autorepeat
+        if (keyCode==Config.SOFT_LEFT) {
+            yes();
+            destroyView();
+        } else if (keyCode==Config.SOFT_RIGHT || keyCode==Config.KEY_BACK) {
+            no();
+            destroyView();
+        }
+    }
+    
+    protected void pointerPressed(int x, int y) {
+        int act=ar.pointerPressed(x, y);
+        if (act==1) {
+            yes();
+            destroyView();
+            return;
+        } else if (act==2) {
+            no();
+            destroyView();
+            return;
+        }
+    }
+    
     public abstract void yes();
 
     public abstract void no();    
 }
+

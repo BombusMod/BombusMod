@@ -56,6 +56,7 @@ public class BombusMod extends MIDlet implements Runnable{
     private boolean isRunning;
     private boolean isMinimized;
     StaticData sd=StaticData.getInstance();
+    ColorTheme ct=ColorTheme.getInstance();
     SplashScreen s=SplashScreen.getInstance();
 
     public static Image splash;
@@ -93,10 +94,11 @@ public class BombusMod extends MIDlet implements Runnable{
         } catch (Exception e) {
             s.img=null;
         }
+        s.setProgress(3);
         s.getKeys();
         
-        s.setProgress(5);
-        ColorTheme ct=ColorTheme.getInstance();
+        //s.setProgress(5);
+        //ColorTheme ct=ColorTheme.getInstance();
 
         s.setProgress(7);
         s.setProgress(Version.getVersionNumber(),10);
