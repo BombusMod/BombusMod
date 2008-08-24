@@ -108,7 +108,8 @@ public class EntityCaps implements JabberBlockListener{
         if (cf.eventComposing)
             features.addElement("http://jabber.org/protocol/chatstates"); //xep-0085
 //#ifdef ADHOC
-//#         features.addElement("http://jabber.org/protocol/commands"); //xep-0050
+//#         if (cf.adhoc)
+//#             features.addElement("http://jabber.org/protocol/commands"); //xep-0050
 //#endif
         features.addElement("http://jabber.org/protocol/disco#info");
  //#ifdef FILE_TRANSFER

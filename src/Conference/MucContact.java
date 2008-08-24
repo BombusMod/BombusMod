@@ -264,6 +264,7 @@ public class MucContact extends Contact {
                 }
             } else {
                 b.append(SR.MS_IS_NOW);
+                
                 if ( roleChanged ) {
                     b.append(getRoleLocale(roleCode));
                 }

@@ -1181,11 +1181,16 @@ public class Roster
         theStream.addBlockListener(new IqVersionReply());
         theStream.addBlockListener(new IqTimeReply());
 //#ifdef ADHOC
-//#         theStream.addBlockListener(new IQCommands());
+//#         if (cf.adhoc) {
+//#ifdef PLUGINS
+//#             if (sd.Adhoc)
+//#endif
+//#                 IQCommands.getInstance().addBlockListener();
+//#         }
 //#endif
         theStream.addBlockListener(new EntityCaps());
 //#ifdef PEP
-//#         if (cf.sndrcvmood) { 
+//#         if (cf.sndrcvmood) {
 //#ifdef PLUGINS
 //#             if (sd.PEP)
 //#endif
@@ -2392,16 +2397,17 @@ public class Roster
             if (isMucContact) {
                 MucContact mucContact=(MucContact)getFocusedObject();
 
-                if (mucContact.origin!=Contact.ORIGIN_GROUPCHAT){// dont show info for confContact
+                if (mucContact.origin!=Contact.ORIGIN_GROUPCHAT){
                     mess.append((mucContact.realJid==null)?"":"jid: "+mucContact.realJid+"\n");
 
-                    if (mucContact.affiliationCode>0) {
+                    if (mucContact.affiliationCode>MucContact.AFFILIATION_NONE)
                         mess.append(MucContact.getAffiliationLocale(mucContact.affiliationCode));
-                        if (mucContact.affiliationCode!=MucContact.AFFILIATION_MEMBER)
-                            mess.append("/");
-                    }
-                    if (mucContact.affiliationCode!=MucContact.AFFILIATION_MEMBER)
+
+                    if (!(mucContact.roleCode==MucContact.ROLE_PARTICIPANT && mucContact.affiliationCode==MucContact.AFFILIATION_MEMBER)) {
+                        if (mucContact.affiliationCode>MucContact.AFFILIATION_NONE)
+                            mess.append(SR.MS_AND);
                         mess.append(MucContact.getRoleLocale(mucContact.roleCode));
+                    }
                 }
             } else {
 //#endif

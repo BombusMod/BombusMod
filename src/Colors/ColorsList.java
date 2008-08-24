@@ -56,7 +56,7 @@ public class ColorsList
     public Display display;
     public Displayable parentView;
     
-    static Vector itemsList=new Vector();
+    static Vector itemsList;
 
     public Command cmdOk = new Command(SR.MS_EDIT, Command.OK, 1);
     public Command cmdCancel = new Command(SR.MS_BACK, Command.BACK, 99);
@@ -65,13 +65,13 @@ public class ColorsList
      * Creates a new instance of ColorsList
      */
     public ColorsList(Display display) {
-        //itemsList=ColorTheme.colorsContainer;
+        itemsList=new Vector();
         
         int cnt=0;
         for (Enumeration r=ColorTheme.colorsContainer.elements(); r.hasMoreElements();) {
             ColorItem c=(ColorItem)r.nextElement();
-//#ifdef COLORS
-            itemsList.addElement(new ColorVisualItem(c.name, NAMES[cnt], c.color));
+//#ifdef COLOR_TUNE
+//#             itemsList.addElement(new ColorVisualItem(c.name, NAMES[cnt], c.color));
 //#endif
             cnt++;
         }
@@ -100,7 +100,7 @@ public class ColorsList
             //    ColorItem ci=(ColorItem)r.nextElement();
             //    ci.locale=null; // clean locale
             //}
-            itemsList=null;
+            //itemsList=null;
             destroyView();
             return;
         }

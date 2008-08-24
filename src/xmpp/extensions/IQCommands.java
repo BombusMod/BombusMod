@@ -44,11 +44,24 @@ import ui.Time;
  * @author ad
  */
 public class IQCommands implements JabberBlockListener {
+    public static String plugin = new String("PLUGIN_ADHOC");
     
-    /**
-     * Creates a new instance of IQCommands
-     */
-    public IQCommands() { }
+    /** Singleton */
+    private static IQCommands instance;
+    
+    public static IQCommands getInstance() {
+        if (instance==null) instance=new IQCommands();
+        return instance;
+    }
+   
+    StaticData sd = StaticData.getInstance();
+    
+    /** Creates a new instance of PepListener */
+    private IQCommands() { }
+    
+    public void addBlockListener() {
+        sd.roster.theStream.addBlockListener(instance);
+    }
         
     public int blockArrived(JabberDataBlock data) {
         if (!(data instanceof Iq)) return BLOCK_REJECTED;
@@ -56,7 +69,7 @@ public class IQCommands implements JabberBlockListener {
         String from=data.getAttribute("from");
         
         if (from!=null) {
-            if (!new Jid(from).getBareJid().equals(StaticData.getInstance().roster.selfContact().getBareJid()))
+            if (!new Jid(from).getBareJid().equals(sd.roster.selfContact().getBareJid()))
                 return BLOCK_REJECTED;
         } else return BLOCK_REJECTED;
 
@@ -77,17 +90,17 @@ public class IQCommands implements JabberBlockListener {
 
                 //http://jabber.org/protocol/rc#set-status //4.1 Change Status
                 JabberDataBlock status=query.addChild("item", "");
-                status.setAttribute("jid", StaticData.getInstance().roster.selfContact().getJid());
+                status.setAttribute("jid", sd.roster.selfContact().getJid());
                 status.setAttribute("node", "http://jabber.org/protocol/rc#set-status");
                 status.setAttribute("name", "Set Status");
 
                 //http://jabber.org/protocol/rc#leave-groupchats //4.5 Leave Groupchats 
                 JabberDataBlock leaveChats=query.addChild("item", "");
-                leaveChats.setAttribute("jid", StaticData.getInstance().roster.selfContact().getJid());
+                leaveChats.setAttribute("jid", sd.roster.selfContact().getJid());
                 leaveChats.setAttribute("node", "http://jabber.org/protocol/rc#leave-groupchats");
                 leaveChats.setAttribute("name", "Leave Groupchats");
 
-                StaticData.getInstance().roster.theStream.send(reply);
+                sd.roster.theStream.send(reply);
 
                 return BLOCK_PROCESSED;
             } else if (query.getAttribute("node").equals("http://jabber.org/protocol/rc#set-status")) {
@@ -111,7 +124,7 @@ public class IQCommands implements JabberBlockListener {
                     cmd.setAttribute("status", "completed");
                     cmd.setAttribute("node", "http://jabber.org/protocol/rc#set-status");
                     cmd.setAttribute("sessionid", command.getAttribute("sessionid"));
-                    StaticData.getInstance().roster.theStream.send(reply);
+                    sd.roster.theStream.send(reply);
 
                     //parsing task
                     JabberDataBlock x=command.findNamespace("x", "jabber:x:data");
@@ -140,7 +153,7 @@ public class IQCommands implements JabberBlockListener {
                     else if (status.equals("invisible")) newStatus=8;
                     else if (status.equals("offline")) newStatus=5;
 
-                    StaticData.getInstance().roster.sendPresence(newStatus, message);
+                    sd.roster.sendPresence(newStatus, message);
 
                     return BLOCK_PROCESSED;
                 }
@@ -154,7 +167,7 @@ public class IQCommands implements JabberBlockListener {
                     cmd.setAttribute("status", "completed");
                     cmd.setAttribute("node", "http://jabber.org/protocol/rc#leave-groupchats");
                     cmd.setAttribute("sessionid", command.getAttribute("sessionid"));
-                    StaticData.getInstance().roster.theStream.send(reply);
+                    sd.roster.theStream.send(reply);
 
                     //parsing task
                     JabberDataBlock x=command.findNamespace("x", "jabber:x:data");
@@ -165,7 +178,7 @@ public class IQCommands implements JabberBlockListener {
                                 JabberDataBlock value=(JabberDataBlock) e2.nextElement();
                                 String roomName=value.getText();
                                 
-                                for (Enumeration c=StaticData.getInstance().roster.getHContacts().elements(); c.hasMoreElements(); ) {
+                                for (Enumeration c=sd.roster.getHContacts().elements(); c.hasMoreElements(); ) {
                                     try {
                                         Contact cl=(Contact) c.nextElement();
                                         if (cl.origin!=Contact.ORIGIN_GROUPCHAT) continue;
@@ -175,7 +188,7 @@ public class IQCommands implements JabberBlockListener {
                                         if (!confGroup.inRoom) continue; // don`t reenter to leaved rooms
 
                                         if (confGroup.getName().equals(roomName))
-                                            StaticData.getInstance().roster.leaveRoom(confGroup);
+                                            sd.roster.leaveRoom(confGroup);
                                     } catch (Exception ex) {}
                                 }
                             }
@@ -230,7 +243,7 @@ public class IQCommands implements JabberBlockListener {
         fieldMessage.setAttribute("var", "status-message");
         fieldMessage.setAttribute("label", "Message");
 
-        StaticData.getInstance().roster.theStream.send(reply);
+        sd.roster.theStream.send(reply);
 //System.out.println(">>> "+reply.toString());
     }
     
@@ -259,7 +272,7 @@ public class IQCommands implements JabberBlockListener {
         fieldGroupchats.addChild("value", "online");
         fieldGroupchats.addChild("required", "");
 
-        for (Enumeration c=StaticData.getInstance().roster.getHContacts().elements(); c.hasMoreElements(); ) {
+        for (Enumeration c=sd.roster.getHContacts().elements(); c.hasMoreElements(); ) {
             try {
                 MucContact mc=(MucContact)c.nextElement();
                 if (mc.origin==Contact.ORIGIN_GROUPCHAT && mc.getStatus()==0) {
@@ -270,7 +283,7 @@ public class IQCommands implements JabberBlockListener {
             } catch (Exception e) {}
         }
 
-        StaticData.getInstance().roster.theStream.send(reply);
+        sd.roster.theStream.send(reply);
 //System.out.println(">>> "+reply.toString());
     }
     private static final String[] statuses = {"online", "chat", "away", "xa", "dnd", "invisible", "offline"};

@@ -105,8 +105,12 @@ public class ConfigForm
 
     private NumberInput reconnectCount;
     private NumberInput reconnectTime;
-
+//#ifdef FILE_TRANSFER
     private CheckBox fileTransfer;
+//#endif
+//#ifdef ADHOC
+//#     private CheckBox adhoc;
+//#endif
     private CheckBox fullscreen;
     private CheckBox memMonitor;
     private CheckBox enableVersionOs;
@@ -256,6 +260,13 @@ public class ConfigForm
 //#endif
             itemsList.addElement(fileTransfer);
 //#endif
+//#ifdef ADHOC
+//#         adhoc = new CheckBox(SR.MS_ADHOC, cf.adhoc); 
+//#ifdef PLUGINS
+//#         if (sd.Adhoc)
+//#endif
+//#             itemsList.addElement(adhoc);
+//#endif
         if (cf.allowMinimize) {
             popupFromMinimized = new CheckBox(SR.MS_ENABLE_POPUP, cf.popupFromMinimized);
             itemsList.addElement(popupFromMinimized);
@@ -391,6 +402,13 @@ public class ConfigForm
 //#endif
             cf.fileTransfer=fileTransfer.getValue();
 //#endif
+//#ifdef ADHOC
+//#ifdef PLUGINS
+//#         if (sd.Adhoc)
+//#endif
+//#             cf.adhoc=adhoc.getValue();
+//#endif
+        
         VirtualList.fullscreen=cf.fullscreen=fullscreen.getValue();
         VirtualList.memMonitor=cf.memMonitor=memMonitor.getValue();
         cf.enableVersionOs=enableVersionOs.getValue();

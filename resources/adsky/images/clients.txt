@@ -11,7 +11,7 @@ qip	Qip
 pidgin,gaim.	Pidgin
 kopete	Kopete
 exodus	Exodus
-Siemens Native Jabber Client,SieJC 	SieJC
+Siemens Native Jabber Client,SieJC	SieJC
 bitlbee.org	Bitlbee
 coccinella	Coccinella
 mcabber	mcabber
@@ -20,3 +20,4 @@ jabbim	Jabbim
 bombus.pl	Bombus(PL)
 home	Home
 work,office	Work
+Just Another Jabber Client, jajc	JAJC

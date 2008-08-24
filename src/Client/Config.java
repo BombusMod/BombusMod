@@ -152,6 +152,8 @@ type = \"-=Siemens=-\";
 }
  */
     
+    StaticData sd = StaticData.getInstance();
+    
     private static String platformName;
     
     public boolean ghostMotor=false;
@@ -286,6 +288,7 @@ type = \"-=Siemens=-\";
     public boolean showNickNames;
 
     public boolean fileTransfer=true;
+    public boolean adhoc=false;
     
     public static Config getInstance(){
 	if (instance==null) {
@@ -525,6 +528,8 @@ type = \"-=Siemens=-\";
             
             showNickNames=inputStream.readBoolean();
             
+            adhoc=inputStream.readBoolean();
+            
 	    inputStream.close();
             inputStream=null;
 	} catch (Exception e) {
@@ -545,6 +550,25 @@ type = \"-=Siemens=-\";
         VirtualList.panelsState=panelsState;
 //#ifdef USER_KEYS
 //#         VirtualList.userKeys=userKeys;
+//#endif
+        
+//#ifdef PLUGINS
+//#ifdef FILE_TRANSFER
+//#         if(sd.FileTransfer==false);
+//#             fileTransfer=false;
+//#endif
+//#ifdef PEP
+//#         if(sd.PEP==false)
+//#             sndrcvmood=false;
+//#endif
+//#ifdef PEP_TUNE
+//#         if(sd.PEP==false)
+//#             rcvtune=false;
+//#endif
+//#ifdef ADHOC
+//#         if(sd.Adhoc==false)
+//#             adhoc=false;
+//#endif
 //#endif
     }
     
@@ -722,6 +746,8 @@ type = \"-=Siemens=-\";
             outputStream.writeBoolean(executeByNum);
             
             outputStream.writeBoolean(showNickNames);
+            
+            outputStream.writeBoolean(adhoc);
 	} catch (Exception e) { }
 	
 	NvStorage.writeFileRecord(outputStream, "config", 0, true);

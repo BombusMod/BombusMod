@@ -148,7 +148,10 @@ public class InfoWindow
     private String getAbilities() {
         Vector abilitiesList=new Vector();
 //#ifdef ADHOC
-//#         abilitiesList.addElement((String)"ADHOC");
+//#ifdef PLUGINS
+//#         if (StaticData.getInstance().Adhoc)
+//#endif
+//#             abilitiesList.addElement((String)"ADHOC");
 //#endif
 //#ifdef ANTISPAM
 //#         abilitiesList.addElement((String)"ANTISPAM");
@@ -187,6 +190,9 @@ public class InfoWindow
 //#             abilitiesList.addElement((String)"CONSOLE");
 //#endif
 //#ifdef COLOR_TUNE
+//#ifdef PLUGINS
+//#         if (StaticData.getInstance().Colors)
+//#endif
 //#         abilitiesList.addElement((String)"COLOR_TUNE");
 //#endif
 //#ifdef DETRANSLIT
@@ -217,7 +223,10 @@ public class InfoWindow
 //#             abilitiesList.addElement((String)"HISTORY_READER");
 //#endif
 //#ifdef IMPORT_EXPORT
-//#         abilitiesList.addElement((String)"IMPORT_EXPORT");
+//#ifdef PLUGINS
+//#         if (StaticData.getInstance().IE)
+//#endif
+//#             abilitiesList.addElement((String)"IMPORT_EXPORT");
 //#endif
 //#ifdef LAST_MESSAGES
 //#ifdef PLUGINS

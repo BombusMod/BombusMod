@@ -79,5 +79,6 @@ public class StaticData {
 //#     public boolean Privacy=true;
 //#     public boolean IE=true;
 //#     public boolean Colors=true;
+//#     public boolean Adhoc=true;
 //#endif
 }

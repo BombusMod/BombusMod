@@ -191,7 +191,7 @@ public final class ContactEdit
                 at=jid.length();
                 jidBuf.setLength(at);
                 jidBuf.append('@')
-                      .append(tTranspList.toString());
+                      .append(tTranspList.getValue());
                 jid=jidBuf.toString();
             }
             if (!new Jid(jid).getBareJid().equals(StaticData.getInstance().roster.selfContact().getBareJid()))

@@ -105,7 +105,7 @@ public class BombusMod extends MIDlet implements Runnable{
         s.setProgress(12);
         
 //#ifdef PLUGINS
-//#         getPlugins ();
+//#         getPlugins();
 //#endif
 
 	Config cf=Config.getInstance();
@@ -174,6 +174,8 @@ public class BombusMod extends MIDlet implements Runnable{
 //#                     sd.IE=state;
 //#                 } else if(name.equals("Colors")) {
 //#                     sd.Colors=state;
+//#                 } else if(name.equals("Adhoc")) {
+//#                     sd.Adhoc=state;
 //#                 }
 //#             }
 //#         }

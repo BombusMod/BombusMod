@@ -677,10 +677,12 @@ public class SR {
     public static String MS_SHOW_NACKNAMES=loadString("show nicknames");
 
     public static String MS_SEND_PHOTO=loadString("Send photo");
-
+    
     public static String MS_ENABLE_AUTORESPOND=loadString("enable autorespond");
 
     public static String MS_FILE_MANAGER=loadString("File manager");
+    
+    public static String MS_ADHOC=loadString("remote control");
     
     private SR() { }
     
