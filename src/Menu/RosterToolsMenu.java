@@ -132,7 +132,7 @@ public class RosterToolsMenu extends Menu {
 
 //#if IMPORT_EXPORT
 //#ifdef PLUGINS
-//#             if (sd.IE)
+//#         if (sd.IE)
 //#endif
 //#             addItem(SR.MS_IMPORT_EXPORT, 10, menuIcons.ICON_IE);
 //#endif

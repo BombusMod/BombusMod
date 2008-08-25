@@ -79,6 +79,7 @@ public class PrivacyModifyList
         setMainBarItem(new MainBar(2, null, SR.MS_PRIVACY_LISTS));
 
         commandState();
+        setCommandListener(this);
 
         plist=privacyList;
         getList();

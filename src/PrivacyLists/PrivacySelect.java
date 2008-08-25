@@ -78,15 +78,18 @@ public class PrivacySelect
     /** Creates a new instance of PrivacySelect */
     public PrivacySelect(Display display, Displayable pView) {
         super(display);
-        
+        this.parentView=pView;
+
         setMainBarItem(new MainBar(2, null, SR.MS_PRIVACY_LISTS));
 
         list.addElement(new PrivacyList(null));//none
         
         commandState();
+        setCommandListener(this);
         
         getLists();
-        this.parentView=pView;
+        
+        //attachDisplay(display);        
     }
     
     public void commandState() {
@@ -114,17 +117,22 @@ public class PrivacySelect
     
     protected int getItemCount() { return list.size(); }
     protected VirtualElement getItemRef(int index) { return (VirtualElement) list.elementAt(index); }
+    
     public void commandAction(Command c, Displayable d) {
         if (c==cmdCancel) {
             destroyView();
             stream.cancelBlockListener(this);
+            return;
         }
         if (c==cmdActivate || c==cmdDefault) {
             PrivacyList active=((PrivacyList)getFocusedObject());
             for (Enumeration e=list.elements(); e.hasMoreElements(); ) {
                 PrivacyList pl=(PrivacyList)e.nextElement();
                 boolean state=(pl==active);
-                if (c==cmdActivate) pl.isActive=state; else pl.isDefault=state;
+                if (c==cmdActivate)
+                    pl.isActive=state;
+                else
+                    pl.isDefault=state;
             }
             ((PrivacyList)getFocusedObject()).activate( (c==cmdActivate)? "active":"default" ); 
             getLists();
@@ -132,11 +140,13 @@ public class PrivacySelect
         if (c==cmdIL) {
             generateIgnoreList();
             getLists();
+            destroyView();
         }
         if (c==cmdDelete) {
             PrivacyList pl=(PrivacyList) getFocusedObject();
             if (pl!=null) {
-                if (pl.name!=null) pl.deleteList();
+                if (pl.name!=null)
+                        pl.deleteList();
                 getLists();
             }
         }

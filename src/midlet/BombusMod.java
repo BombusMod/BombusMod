@@ -94,6 +94,9 @@ public class BombusMod extends MIDlet implements Runnable{
         } catch (Exception e) {
             s.img=null;
         }
+//#ifdef PLUGINS
+//#         getPlugins();
+//#endif
         s.setProgress(3);
         s.getKeys();
         
@@ -106,9 +109,7 @@ public class BombusMod extends MIDlet implements Runnable{
         SR.loaded();
         s.setProgress(12);
         
-//#ifdef PLUGINS
-//#         getPlugins();
-//#endif
+
 
 	Config cf=Config.getInstance();
         s.setProgress(15);

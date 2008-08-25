@@ -554,20 +554,16 @@ type = \"-=Siemens=-\";
         
 //#ifdef PLUGINS
 //#ifdef FILE_TRANSFER
-//#         if(sd.FileTransfer==false);
-//#             fileTransfer=false;
+//#         if(!sd.FileTransfer) fileTransfer=false;
 //#endif
 //#ifdef PEP
-//#         if(sd.PEP==false)
-//#             sndrcvmood=false;
+//#         if(!sd.PEP) sndrcvmood=false;
 //#endif
 //#ifdef PEP_TUNE
-//#         if(sd.PEP==false)
-//#             rcvtune=false;
+//#         if(!sd.PEP) rcvtune=false;
 //#endif
 //#ifdef ADHOC
-//#         if(sd.Adhoc==false)
-//#             adhoc=false;
+//#         if(!sd.Adhoc) adhoc=false;
 //#endif
 //#endif
     }

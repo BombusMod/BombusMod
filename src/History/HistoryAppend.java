@@ -42,6 +42,19 @@ public class HistoryAppend {
     
     public static String plugin = new String("PLUGIN_HISTORY");
     
+    /** Singleton */
+    private static HistoryAppend instance;
+    
+    public static HistoryAppend getInstance() {
+        if (instance==null) instance=new HistoryAppend();
+        return instance;
+    }
+   
+    StaticData sd = StaticData.getInstance();
+    
+    /** Creates a new instance of PepListener */
+    private HistoryAppend() { }
+    
     private Config cf;
     private boolean convertToWin1251;
     
@@ -76,7 +89,7 @@ public class HistoryAppend {
     private OutputStream os;
 //#endif
     
-    public HistoryAppend(Msg m, boolean formatted, String filename) {
+    public void addMessage(Msg m, boolean formatted, String filename) {
        cf=Config.getInstance();
        convertToWin1251=cf.cp1251;
        byte[] bodyMessage=createBody(m, formatted).getBytes();
@@ -105,6 +118,34 @@ public class HistoryAppend {
         bodyMessage=null;
     }
     
+    public void addMessageList(String messages, String filename) {
+       cf=Config.getInstance();
+       convertToWin1251=cf.cp1251;
+       byte[] bodyMessage=messages.getBytes();
+
+//#ifdef DETRANSLIT
+//#        filename=(cf.transliterateFilenames)?DeTranslit.getInstance().translit(filename):filename;
+//#endif
+       
+       filename = cf.msgPath+StringUtils.replaceBadChars(filename)+".txt";
+       file=FileIO.createConnection(filename);
+        try {
+            os = file.openOutputStream(0);
+            try {
+                os.write(bodyMessage);
+                filePos+=bodyMessage.length;
+            } catch (IOException ex) { }
+            os.close();
+            os.flush();
+            file.close();
+        } catch (IOException ex) {
+            try {
+                file.close();
+            } catch (IOException ex2) { }
+        }
+        filename=null;
+        bodyMessage=null;
+    }
     
     private String createBody(Msg m, boolean formatted) {
         String fromName=StaticData.getInstance().account.getUserName();

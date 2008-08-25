@@ -34,6 +34,7 @@ import Conference.AppendNick;
 //#endif
 import javax.microedition.lcdui.*;
 import locale.SR;
+import ui.VirtualList;
 import ui.controls.ExTextBox;
 
 /**
@@ -185,7 +186,7 @@ public class MessageEdit
         while (runState<4) {
             //System.out.println(runState+" "+notifyMessage);
             if (runState==2) { runState=0; send(); }
-            if (runState==3) { runState=4; send(); thread=null; break; }
+            if (runState==3) { runState=4; send(); thread=null; ((VirtualList) parentView).redraw(); break; }
             
             if (runState==1) {
                 setTitle(notifyMessage.substring(strPos++));

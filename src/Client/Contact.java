@@ -352,7 +352,7 @@ public class Contact extends IconTextElement{
 //#ifdef PLUGINS
 //#                     if(StaticData.getInstance().History)
 //#endif
-//#                         new HistoryAppend(m, cf.lastMessages, getBareJid());
+//#                         HistoryAppend.getInstance().addMessage(m, cf.lastMessages, getBareJid());
 //#                 }
 //#             }
 //#        }
@@ -366,10 +366,7 @@ public class Contact extends IconTextElement{
         
         if (m.messageType!=Msg.MESSAGE_TYPE_HISTORY && m.messageType!=Msg.MESSAGE_TYPE_PRESENCE)
             activeMessage=msgs.size()+1;
-//#ifdef LOGROTATE
-//#         //if (msgs.size()>cf.msglistLimit)
-//#         //    msgs.removeElementAt(0);
-//#endif
+
         msgs.addElement(m);
         
         if (m.unread) {
@@ -422,6 +419,10 @@ public class Contact extends IconTextElement{
         
         resetNewMsgCnt();
         
+        clearVCard();
+    }
+    
+    public final void clearVCard() {
         try {
             if (vcard!=null) {
                 vcard.clearVCard();
@@ -447,23 +448,70 @@ public class Contact extends IconTextElement{
     public final void smartPurge(int cursor) {
         try {
             if (msgs.size()>0){
-                int delPos=0;
-                int cp=0;
+                int virtCursor=msgs.size();
+                boolean delete = false;
+//System.out.println("size: "+ msgs.size());
+//System.out.println("cursor: "+ cursor);
+                int i=msgs.size();
+                while (true) {
+                    if (i<0) break;
+
+                    if (i<cursor) {
+                        if (!delete) {
+                            //System.out.println("not found else");
+                            if (((Msg)msgs.elementAt(virtCursor)).dateGmt+1000<System.currentTimeMillis()) {
+                                //System.out.println("can delete: "+ delPos);
+                                msgs.removeElementAt(virtCursor);
+                                //delPos--;
+                                delete=true;
+                            }
+                        } else {
+                            //System.out.println("delete: "+ delPos);
+                            msgs.removeElementAt(virtCursor);
+                            //delPos--;
+                        }
+                    }
+                    virtCursor--;
+                    i--;
+                }
+                /*
+                for (int i=msgs.size()-1; i>-1; i--) {
+                    //System.out.println("checking message: " + i);
+                    if (i<=cursor) {
+                        if (!delete) {
+                            //System.out.println("not found else");
+                            if (((Msg)msgs.elementAt(delPos)).dateGmt+1000<System.currentTimeMillis()) {
+                                //System.out.println("can delete: "+ delPos);
+                                msgs.removeElementAt(delPos);
+                                //delPos--;
+                                delete=true;
+                            }
+                        } else {
+                            //System.out.println("delete: "+ delPos);
+                            msgs.removeElementAt(delPos);
+                            //delPos--;
+                        }
+                    } else {
+                        //delPos--;
+                        //System.out.println("decrease to: "+ delPos);
+                    }
+                    delPos--;
+                }*/
+//System.out.println("--------------------------------");
+                /*
                 for (int i=0; i<cursor; i++) {
                      if(((Msg)msgs.elementAt(delPos)).dateGmt+1000<System.currentTimeMillis()) {
                          msgs.removeElementAt(delPos);
                          cp++;
                      } else delPos++;
                 }
+                */
                 activeMessage=msgs.size()-1; //drop activeMessage count
             }
         } catch (Exception e) { }
-        try {
-            if (vcard!=null) {
-                vcard.clearVCard();
-                vcard=null;
-            }
-        } catch (Exception e) { }
+        
+        clearVCard();
+        
         lastSendedMessage=null;
         lastUnread=0;
         resetNewMsgCnt();

@@ -652,12 +652,14 @@ public class ContactMessageList extends MessageList {
 //#ifndef WMUC
 //#         }
 //#endif
-//#         for (Enumeration messages=contact.msgs.elements(); messages.hasMoreElements(); ) {
-//#             Msg message=(Msg) messages.nextElement();
-//#             new HistoryAppend(message, false, histRecord.toString());
-//#             message=null;
-//#             histRecord=null;
+//#         StringBuffer messageList=new StringBuffer();
+//#         for (Enumeration cmessages=contact.msgs.elements(); cmessages.hasMoreElements(); ) {
+//#             Msg message=(Msg) cmessages.nextElement();
+//#             messageList.append(message.quoteString());
 //#         }
+//#         HistoryAppend.getInstance().addMessageList(messageList.toString(), histRecord.toString());
+//#         messageList=null;
+//#         histRecord=null;
 //#     }
 //#endif
 

@@ -246,5 +246,7 @@ public class AlertCustomizeForm
 //#         super.commandState();
 //#         addCommand(cmdTest);
 //#     }
+//# 
+//#     public String touchLeftCommand(){ return SR.MS_MENU; }
 //#endif
 }
