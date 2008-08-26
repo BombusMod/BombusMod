@@ -139,7 +139,10 @@ public class RosterToolsMenu extends Menu {
         addItem(SR.MS_NOTICES_OPTIONS, 11, menuIcons.ICON_NOTIFY);
 //#ifdef POPUPS
 //#ifdef STATS
-//#         addItem(SR.MS_STATS, 12, menuIcons.ICON_STAT);
+//#ifdef PLUGINS
+//#         if (sd.Stats)
+//#endif
+//#             addItem(SR.MS_STATS, 12, menuIcons.ICON_STAT);
 //#endif
 //#endif
 //#ifdef CHECK_VERSION
@@ -237,7 +240,7 @@ public class RosterToolsMenu extends Menu {
 //#ifdef POPUPS
 //#ifdef STATS
 //#             case 12: //traffic stats
-//#                 sd.roster.showStats();
+//#                 Stats.getInstance().showStats();
 //#                 return;
 //#endif
 //#endif

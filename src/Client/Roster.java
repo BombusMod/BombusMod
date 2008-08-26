@@ -472,23 +472,6 @@ public class Roster
                 setTitle("Bombus "+getHeaderString());
             }
         }
-/*        saveStats();
-    }
-
-    private void saveStats() {
-        if (cf.msgPath==null)
-            return;
-        
-        if (cf.msgPath=="")
-            return;
-        
-        String str="content=";
-        if (messageCount!=0) {
-            str+=getHeaderString();
-        }
-        FileIO fileOut=FileIO.createConnection(cf.msgPath+"bm.txt");
-        fileOut.fileWrite(str.getBytes());
-*/
     }
 
     public String getHeaderString() {
@@ -1035,14 +1018,6 @@ public class Roster
         try {
 //#ifndef WMUC
             boolean groupchat=to.origin==Contact.ORIGIN_GROUPCHAT;
-//#ifdef ANTISPAM
-//#             if (to instanceof MucContact && !groupchat) {
-//#                 MucContact mc=(MucContact) to;
-//#                 if (mc.getPrivateState()!=MucContact.PRIVATE_DECLINE)
-//#                     mc.setPrivateState(MucContact.PRIVATE_ACCEPT);
-//#             }
-//#endif
-            
 //#else 
 //#           boolean groupchat=false;  
 //#endif
@@ -1536,50 +1511,6 @@ public class Roster
                     }
                     m.from=name;
                 }
-
-                //if (c.getGroupType()!=Groups.TYPE_NOT_IN_LIST) {
-//#ifdef ANTISPAM
-//#                     if (cf.antispam) {
-//#                         if (c instanceof MucContact && c.origin!=Contact.ORIGIN_GROUPCHAT) {
-//#                             //Contact c=getContact(from, true);
-//#                             MucContact mc=(MucContact) c;
-//# 
-//#                             if (mc.roleCode==MucContact.ROLE_MODERATOR || mc.affiliationCode==MucContact.AFFILIATION_MEMBER) {
-//#                                 //System.out.println("MucContact.ROLE_MODERATOR "+mc.realJid);
-//#                                 messageStore(c, m);
-//#                             } else {
-//#                                 switch (mc.getPrivateState()) {
-//#                                     case MucContact.PRIVATE_NONE: {
-//#                                         //System.out.println("Contact request chat, Allow or Block?");
-//#                                         mc.setPrivateState(MucContact.PRIVATE_REQUEST);
-//#                                         Msg rm=new Msg(Msg.MESSAGE_TYPE_IN, m.from, null, SR.MS_CONTACT_REQUEST_CHAT);
-//#                                         messageStore(c, rm);
-//#                                         tempMessageStore(c, m);
-//#                                         break;
-//#                                     }
-//# 
-//#                                     case MucContact.PRIVATE_ACCEPT: {
-//#                                         //System.out.println("accept message");
-//#                                         messageStore(c, m);
-//#                                         break;
-//#                                     }
-//# 
-//#                                     case MucContact.PRIVATE_DECLINE: {
-//#                                         //System.out.println("decline message");
-//#                                         return JabberBlockListener.BLOCK_REJECTED;
-//#                                     }
-//# 
-//#                                     case MucContact.PRIVATE_REQUEST: {
-//#                                         //System.out.println("receive temp message");
-//#                                         tempMessageStore(c, m);
-//#                                         break;
-//#                                     }
-//#                                 }
-//#                             }
-//#                         } else 
-//#                             messageStore(c, m);
-//#                     } else
-//#endif
 //#endif
                 messageStore(c, m);
                 return JabberBlockListener.BLOCK_PROCESSED;   
@@ -1609,18 +1540,15 @@ public class Roster
                     try {
                         MucContact c = mucContact(from);
 //#ifdef CLIENTS_ICONS
-//#                         if (pr.hasEntityCaps()) {
-//#                             if (pr.getEntityNode()!=null) {
+//#                         if (pr.hasEntityCaps())
+//#                             if (pr.getEntityNode()!=null)
 //#                                 c.setClient(ClientsIcons.getInstance().getClientIDByCaps(pr.getEntityNode()));
-//#                             }
-//#                         }
 //#endif
                         String lang=pr.getAttribute("xml:lang");
 //#if DEBUG
 //#                         System.out.println(lang);
 //#endif
-                        if (lang!=null)
-                            c.setLang(lang);
+                        if (lang!=null) c.setLang(lang);
 
                         int rp=from.indexOf('/');
 
@@ -1641,9 +1569,7 @@ public class Roster
                         messageStore(c,m);
 
                         c.priority=pr.getPriority();
-                    } catch (Exception e) { 
-                        //e.printStackTrace(); 
-                    }
+                    } catch (Exception e) { }
                 } else {
 //#endif
                     Contact c=null;
@@ -1902,12 +1828,7 @@ public class Roster
             }
         }
     }
-        
-//#ifdef ANTISPAM
-//#     void tempMessageStore(Contact c, Msg message) {
-//#         c.addTempMessage(message);
-//#     }
-//#endif  
+
     public void blockNotify(int event, long ms) {
         if (!notifyReady(-111)) return;
         blockNotifyEvent=event;
@@ -2474,7 +2395,10 @@ public class Roster
             } catch (Exception e) { }
         }
 //#ifdef STATS
-//#         try { Stats.getInstance().save(); } catch (Exception e) { }
+//#ifdef PLUGINS
+//#         if (sd.Stats)
+//#endif
+//#             Stats.getInstance().save();
 //#endif
     }
 
@@ -2856,37 +2780,7 @@ public class Roster
             }
         }
     }
-    
-//#ifdef POPUPS
-//#ifdef STATS
-//#     public void showStats() {
-//#         StringBuffer str= new StringBuffer(SR.MS_STARTED+startTime);
-//#         Stats stats=Stats.getInstance();
-//#         str.append("\n")
-//#            .append(SR.MS_TRAFFIC_STATS)
-//#            .append("\n")
-//#            .append(SR.MS_ALL)
-//#            .append(stats.getSessionsCount())
-//#            .append(SR.MS_CONN)
-//# 
-//#            .append(StringUtils.getSizeString(stats.getAllTraffic()))
-//# 
-//#            .append("\n")
-//#            .append(SR.MS_PREVIOUS)
-//#            .append(StringUtils.getSizeString(stats.getLatest()))
-//#            
-//#            .append("\n")
-//#            .append(SR.MS_CURRENT)
-//#            .append(StringUtils.getSizeString(Stats.getGPRS()));
-//# 
-//#         if (isLoggedIn())
-//#             str.append(theStream.getStreamStats());
-//# 
-//#         VirtualList.setWobble(1, null, str.toString());
-//#         str=null;
-//#     }
-//#endif
-//#endif
+
     
 //#ifdef MENU_LISTENER
 //#     public Vector menuCommands=new Vector();

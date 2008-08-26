@@ -76,10 +76,6 @@ public class ContactMessageList extends MessageList {
 //#if TEMPLATES
     Command cmdTemplate=new Command(SR.MS_SAVE_TEMPLATE,Command.SCREEN,14);
 //#endif
-//#ifdef ANTISPAM
-//#     Command cmdBlock = new Command(SR.MS_BLOCK_PRIVATE, Command.SCREEN, 22);
-//#     Command cmdUnlock = new Command(SR.MS_UNLOCK_PRIVATE, Command.SCREEN, 23);
-//#endif
 //#ifdef FILE_IO
     Command cmdSaveChat=new Command(SR.MS_SAVE_CHAT, Command.SCREEN, 16);
 //#endif
@@ -149,30 +145,6 @@ public class ContactMessageList extends MessageList {
     public void commandState(){
 //#ifdef MENU_LISTENER
 //#         menuCommands.removeAllElements();
-//#endif
-        
-//#ifndef WMUC
-//#ifdef ANTISPAM
-//#         if (contact instanceof MucContact && contact.origin!=Contact.ORIGIN_GROUPCHAT && cf.antispam) {
-//#             MucContact mc=(MucContact) contact;
-//#             if (mc.roleCode!=MucContact.GROUP_MODERATOR && mc.affiliationCode!=MucContact.AFFILIATION_MEMBER) {
-//#                 switch (mc.getPrivateState()) {
-//#                     case MucContact.PRIVATE_DECLINE:
-//#                         addCommand(cmdUnlock);
-//#                         break;
-//#                     case MucContact.PRIVATE_NONE:
-//#                     case MucContact.PRIVATE_REQUEST:
-//#                         addCommand(cmdUnlock);
-//#                         addCommand(cmdBlock);
-//#                         break;
-//#                     case MucContact.PRIVATE_ACCEPT:
-//#                         addCommand(cmdBlock);
-//#                         break;
-//#                 }
-//#                 
-//#             }
-//#         }
-//#endif
 //#endif
         if (contact.msgSuspended!=null) 
             addCommand(cmdResume);
@@ -424,33 +396,6 @@ public class ContactMessageList extends MessageList {
         if (c==cmdUnsubscribed) {
             sd.roster.sendPresence(contact.getBareJid(), "unsubscribed", null, false);
         }
-//#ifndef WMUC     
-//#ifdef ANTISPAM
-//#         if (c==cmdUnlock) {
-//#             MucContact mc=(MucContact) contact;
-//#             mc.setPrivateState(MucContact.PRIVATE_ACCEPT);
-//# 
-//#             if (!contact.tempMsgs.isEmpty()) {
-//#                 for (Enumeration tempMsgs=contact.tempMsgs.elements(); tempMsgs.hasMoreElements(); ) 
-//#                 {
-//#                     Msg tmpmsg=(Msg) tempMsgs.nextElement();
-//#                     contact.addMessage(tmpmsg);
-//#                 }
-//#                 contact.purgeTemps();
-//#             }
-//#             redraw();
-//#         }
-//# 
-//#         if (c==cmdBlock) {
-//#             MucContact mc=(MucContact) contact;
-//#             mc.setPrivateState(MucContact.PRIVATE_DECLINE);
-//# 
-//#             if (!contact.tempMsgs.isEmpty())
-//#                 contact.purgeTemps();
-//#             redraw();
-//#         }
-//#endif
-//#endif
 //#ifdef CLIPBOARD
 //#         if (c==cmdSendBuffer) {
 //#             String from=sd.account.toString();

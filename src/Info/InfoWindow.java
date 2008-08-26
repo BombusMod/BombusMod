@@ -59,6 +59,8 @@ public class InfoWindow
     MultiLine memory;
     MultiLine abilities;
     
+    StaticData sd=StaticData.getInstance();
+    
 //#ifdef CLIPBOARD
 //#ifndef MENU
 //#     public Command cmdOk = new Command(SR.MS_COPY, Command.OK, 1);
@@ -149,16 +151,13 @@ public class InfoWindow
         Vector abilitiesList=new Vector();
 //#ifdef ADHOC
 //#ifdef PLUGINS
-//#         if (StaticData.getInstance().Adhoc)
+//#         if (sd.Adhoc)
 //#endif
 //#             abilitiesList.addElement((String)"ADHOC");
 //#endif
-//#ifdef ANTISPAM
-//#         abilitiesList.addElement((String)"ANTISPAM");
-//#endif
 //#ifdef ARCHIVE
 //#ifdef PLUGINS
-//#         if (StaticData.getInstance().Archive)
+//#         if (sd.Archive)
 //#endif
             abilitiesList.addElement((String)"ARCHIVE");
 //#endif
@@ -170,7 +169,7 @@ public class InfoWindow
 //#endif
 //#ifdef CHANGE_TRANSPORT
 //#ifdef PLUGINS
-//#         if (StaticData.getInstance().ChangeTransport)
+//#         if (sd.ChangeTransport)
 //#endif
 //#             abilitiesList.addElement((String)"CHANGE_TRANSPORT");
 //#endif
@@ -185,13 +184,13 @@ public class InfoWindow
 //#endif
 //#ifdef CONSOLE
 //#ifdef PLUGINS
-//#         if (StaticData.getInstance().Console)
+//#         if (sd.Console)
 //#endif
 //#             abilitiesList.addElement((String)"CONSOLE");
 //#endif
 //#ifdef COLOR_TUNE
 //#ifdef PLUGINS
-//#         if (StaticData.getInstance().Colors)
+//#         if (sd.Colors)
 //#endif
 //#         abilitiesList.addElement((String)"COLOR_TUNE");
 //#endif
@@ -203,7 +202,7 @@ public class InfoWindow
 //#endif
 //#ifdef FILE_TRANSFER
 //#ifdef PLUGINS
-//#         if (StaticData.getInstance().FileTransfer)
+//#         if (sd.FileTransfer)
 //#endif
             abilitiesList.addElement((String)"FILE_TRANSFER");
 //#endif
@@ -212,25 +211,25 @@ public class InfoWindow
 //#endif
 //#ifdef HISTORY
 //#ifdef PLUGINS
-//#         if (StaticData.getInstance().History)
+//#         if (sd.History)
 //#endif
 //#             abilitiesList.addElement((String)"HISTORY");
 //#endif
 //#ifdef HISTORY_READER
 //#ifdef PLUGINS
-//#         if (StaticData.getInstance().History)
+//#         if (sd.History)
 //#endif
 //#             abilitiesList.addElement((String)"HISTORY_READER");
 //#endif
 //#ifdef IMPORT_EXPORT
 //#ifdef PLUGINS
-//#         if (StaticData.getInstance().IE)
+//#         if (sd.IE)
 //#endif
 //#             abilitiesList.addElement((String)"IMPORT_EXPORT");
 //#endif
 //#ifdef LAST_MESSAGES
 //#ifdef PLUGINS
-//#         if (StaticData.getInstance().History)
+//#         if (sd.History)
 //#endif
 //#             abilitiesList.addElement((String)"LAST_MESSAGES");
 //#endif
@@ -248,13 +247,13 @@ public class InfoWindow
 //#endif
 //#ifdef PEP
 //#ifdef PLUGINS
-//#         if (StaticData.getInstance().PEP)
+//#         if (sd.PEP)
 //#endif
 //#             abilitiesList.addElement((String)"PEP");
 //#endif
 //#ifdef PEP_TUNE
 //#ifdef PLUGINS
-//#         if (StaticData.getInstance().PEP)
+//#         if (sd.PEP)
 //#endif
 //#             abilitiesList.addElement((String)"PEP_TUNE");
 //#endif
@@ -266,7 +265,7 @@ public class InfoWindow
 //#endif
 //#ifdef PRIVACY
 //#ifdef PLUGINS
-//#         if (StaticData.getInstance().Privacy)
+//#         if (sd.Privacy)
 //#endif
             abilitiesList.addElement((String)"PRIVACY");
 //#endif
@@ -280,11 +279,14 @@ public class InfoWindow
         abilitiesList.addElement((String)"SMILES");
 //#endif
 //#ifdef STATS
-//#         abilitiesList.addElement((String)"STATS");
+//#ifdef PLUGINS
+//#         if (sd.Stats)
+//#endif
+//#             abilitiesList.addElement((String)"STATS");
 //#endif
 //#ifdef TEMPLATES
 //#ifdef PLUGINS
-//#         if (StaticData.getInstance().Archive)
+//#         if (sd.Archive)
 //#endif
         abilitiesList.addElement((String)"TEMPLATES");
 //#endif

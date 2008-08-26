@@ -29,19 +29,19 @@ import io.NvStorage;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import locale.SR;
+import ui.VirtualList;
+import util.StringUtils;
 
 public class Stats {
+    
+    public static String plugin = new String("PLUGIN_STATS");
 
     private long latestTraffic=0;
     private long traffic=0;
     private int sessions=0;
 
     public static long sessionGPRS=0;
-    
-//#ifdef ELF    
-//#     private static long startGPRS=-1;
-//#     private static boolean sie_gprs=true;
-//#endif
     
     // Singleton
     private static Stats instance;
@@ -56,7 +56,6 @@ public class Stats {
     }
 
     public void save(){
-        //loadFromStorage();
         saveToStorage();
     }
 
@@ -95,6 +94,7 @@ public class Stats {
     }
     
     private void saveToStorage(){
+        long ss=getGPRS();
         long sessionTraffic=getCurrentTraffic();
         long allTraffic=traffic+sessionTraffic;
         
@@ -112,27 +112,40 @@ public class Stats {
     }
     
     public static long getGPRS() {
-//#ifdef ELF
-//#         if (sie_gprs) {
-//#             try {
-//#                 int gprscnt=Integer.parseInt(System.getProperty("MPJCGPRS"));
-//# 
-//#                 if (gprscnt>-1) {
-//#                     if (startGPRS<0) {
-//#                         startGPRS=gprscnt;
-//#                         sessionGPRS=0;
-//#                     } else {
-//#                         sessionGPRS=gprscnt-startGPRS;
-//#                     }
-//#                     return sessionGPRS;
-//#                 }
-//#             } catch (Exception e) { sie_gprs=false; }
-//#         }
-//#endif
         if (StaticData.getInstance().roster.theStream!=null) {
             sessionGPRS=StaticData.getInstance().traffic*2;
             return sessionGPRS;
         }
         return 0;
-    }   
+    }
+    
+    
+//#ifdef POPUPS
+    public void showStats() {
+        StringBuffer str= new StringBuffer(SR.MS_STARTED+StaticData.getInstance().roster.startTime);
+        Stats stats=Stats.getInstance();
+        str.append("\n")
+           .append(SR.MS_TRAFFIC_STATS)
+           .append("\n")
+           .append(SR.MS_ALL)
+           .append(stats.getSessionsCount())
+           .append(SR.MS_CONN)
+
+           .append(StringUtils.getSizeString(stats.getAllTraffic()))
+
+           .append("\n")
+           .append(SR.MS_PREVIOUS_)
+           .append(StringUtils.getSizeString(stats.getLatest()))
+           
+           .append("\n")
+           .append(SR.MS_CURRENT)
+           .append(StringUtils.getSizeString(Stats.getGPRS()));
+
+        if (StaticData.getInstance().roster.isLoggedIn())
+            str.append(StaticData.getInstance().roster.theStream.getStreamStats());
+
+        VirtualList.setWobble(1, null, str.toString());
+        str=null;
+    }
+//#endif
 }

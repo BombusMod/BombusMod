@@ -1,9 +1,15 @@
-// Copyright (c) 2005-2008, Eugene Stahov (evgs), http://bombus-im.org
+﻿// Copyright (c) 2005-2008, Eugene Stahov (evgs), http://bombus-im.org
 // All rights reserved.
 
 // ask server to send us localized messages
 xmlLang	ru
-//463
+online	в сети
+chat	хочу поговорить
+away	отсутствую
+xa	давно отсутствую
+invisible	невидимка
+dnd	занят
+offline	не в сети
 Jid	Jid
 Privacy Lists	Списки приватности
 Message font	Шрифт сообщения
@@ -26,7 +32,6 @@ Connected	Соединение установлено
 Connect to 	Соединение с 
 Alert Profile	Сигналы
 Move Up	Сместить вверх
-Move Down	Сместить вниз
 Owners	Владельцы
 Ok	ОК
 Minimize	Свернуть
@@ -47,7 +52,6 @@ Account >	Аккаунт >
 Select	Выбрать
 Subject	Тема
 Quit	Выход
-Add to roster	Добавить в ростер
 Edit list	Редактировать список
 Registering	Регистрация
 Done	Выполнено
@@ -61,6 +65,7 @@ Priority	Приоритет
 Failed	Ошибка соединения
 Set Priority	Установить приоритет
 Delete rule	Удалить правило
+Ignore-List	Ignore-List
 Roster request	Получение ростера
 Type	Тип
 Name	Имя
@@ -71,6 +76,7 @@ conferences only	только конференции
 Client Version	Версия клиента
 Discard Search	Сбросить результаты
 Search Results	Результаты поиска
+General	General
 Members	Члены
 Add Contact	Новый контакт
 Subscription	Подписка
@@ -90,18 +96,18 @@ Back	Назад
 heap monitor	монитор heap
 Message	Сообщение
 <Other>	<Другой>
+history -	история -
 Append	Добавить
 Active Contacts	Актив. контакты
 Select nickname	Выбрать ник
 Group	Группа
 Join conference	Присоединиться к конференции
 No	Нет
-Yes	Да
 Re-Enter Room	Перезайти в комнату
 New Message	Новое сообщение
 Add	Добавить
 Logon	Подключить
-Logoff	Отключить
+Stanzas	Stanzas
 at Host	Сервер
 join conferences	автовход в конференции
 Status	Статус
@@ -113,6 +119,7 @@ composing events	"composing" события
 Add Smile	Встав. смайлик
 Nickname	Ник
 Revoke Voice	Отнять право голоса
+Not-in-list	Not-in-list
 Commands	Команды
 - (Sign)	- (знак)
 Set default	Уст. по умолчанию
@@ -120,6 +127,7 @@ Outcasts (Ban)	Изгои (Ban)
 Set affiliation to	Изменить членство на
 Register Account	Зарегистрировать аккаунт
 autologin	автосоединение
+Logoff	Отключить
 Publish	Опубликовать
 Remove subscription	Удалить подписку
 Set	Установить
@@ -131,16 +139,17 @@ Edit rule	Редактировать правило
 Cancel	Отмена
 Close	Закрыть
 Archive	Архив
-free 	свободно  
 Conference	Конференция
 Sound	Звук
 Login failed	Ошибка авторизации
+Browse	Обзор
 New Jid	Новый Jid
 plain-text password	пароль откр. текстом
 Paste Nickname	Вставить ник
 Kick	Выгнать (kick)
 Remove readed	Удалить сообщения
 Grant Voice	Дать право голоса
+Move Down	Сместить вниз
 Quote	Цитировать
 Roster elements	Элементы ростера
 popup from background	всплывать из фона
@@ -155,9 +164,8 @@ for all status types	для всех статусов
 Paste Jid	Вставить Jid
 Goto URL	Перейти к URL
 Clock offset	Смещение часов
-flash backlight	мигать подсветкой
+Yes	Да
 Suspend	Отложить
-Resume Message	Черновик
 Alert Profile >	Сигналы >
 My vCard	Личная vCard
 transports	транспорты
@@ -167,42 +175,27 @@ vCard	vCard
 Set Subject	Установить тему
 Tools	Инструменты
 Port	Порт
-
-//473
-Autofocus	автофокус
-Connect	Подключиться
-history -	история -
+Resume Message	Черновик
 Are You sure want to discard 	Вы действительно собираетесь понизить у 
  from OWNER to 	 право OWNER до 
 Modify affiliation	Изменение членства
-
-// DO NOT TRANSLATE THIS LINES!!!
-Ignore-List	Ignore-List
-General	General
-Stanzas	Stanzas
-Not-in-list	Not-in-list
-
-//476
 Clear	Очистить
-
-//494
-Ask subscription	Запросить подписку
-Grant subscription	Разрешить подписку
-
-//502
-Invite to conference	Пригласить в конференцию
-Reason	Причина
-You have been invited to 	Вы были приглашены в 
- is inviting You to 	 приглашает Вас в 
-Visitors are not allowed to send messages to all occupants	Гости не могут посылать сообщения в общий чат
+Connect	Подключиться
 Unaffiliate	Отнять членство
 Grant Moderator	Дать право модератора
 Revoke Moderator	Отнять право модератора
 Grant Admin	Дать право администратора
 Grant Ownership	Дать право владельца
-
+Visitors are not allowed to send messages to all occupants	Гости не могут посылать сообщения в общий чат
+ is inviting You to 	 приглашает Вас в 
+Ask subscription	Запросить подписку
+Grant subscription	Разрешить подписку
+Invite to conference	Пригласить в конференцию
+Reason	Причина
+You have been invited to 	Вы были приглашены в 
+Participants	Участники
+Abc	Абв
 room presences	статусы в конференции
-
  is now known as 	 меняет ник на 
  was banned 	 запретили входить в комнату 
  was kicked 	 выгнали из комнаты 
@@ -211,91 +204,44 @@ room presences	статусы в конференции
  has joined the channel as 	 заходит как 
  and 	 и 
  is now 	 теперь 
-
-Participants	Участники
-Abc	Абв
-
 error	ошибка
-online	в сети
-chat	хочу поговорить
-away	отсутствую
-xa	давно отсутствую
-dnd	занят
-invisible	невидимка
-offline	не в сети
-
-Clear Photo	Очистить фото
-Camera	Камера
-
-Hide finished	Скрыть завершенные
-Transfer tasks	Задачи передачи данных 
-
-Color tune	Настройка цветов
-Load Skin	Загрузить тему
-
 Select history folder	Выбор папки истории
-Digital heap monitor	Цифровой монитор памяти
 Sound volume	Громкость звука
 Language	Язык
 Save history	Сохранять историю
 Save presences	Сохранять статусы
-Save conference history Сохранять историю конференции
+Save conference history	Сохранять историю конференции
 Save conference presences	Сохранять статусы конференции
-1251 correction Коррекция русской кодировки 1251
+convert to cp1251	Сохранять в windows-1251
 History folder	Папка истории
-AutoStatus	Автостатус
-AutoStatus time Время автостатуса
-
 Copy	Копировать
 Paste	Вставить
-
-Save template Сохранить шаблон
+Save template	Сохранить шаблон
 Template	Шаблон
-
 has set topic to	изменил топик на
-
 Seen	Видели
 Idle	Бездействие
-
 Main menu	Главное меню
-
-Root	Менеджер файлов
-
-File transfers	Передача файлов
-
 Choose status	Выбор статуса
 Add status	Добавить статус
 Remove status	Удалить статус
-
-User	Пользователь
-Reason	Причина
-Address Адрес
-Export to file	Экспорт в файл
-
+Address	Адрес
+Make BackUp	Сохранить копию на диск
+Import from BackUp	Восстановить из файла
 View	Просмотр
 Stop	Остановить
-
-To: 	Кому: 
-size:	размер:
+File transfers	Передача файлов
 Path	Путь
-Accept file Принять файл
+Accept file	Принять файл
 File	Файл
-Save To Сохранить как
+Save To	Сохранить в
 Sender	Отправитель
-Description Описание
 Rejected	Отменено
 Send file	Послать файл
-Can't open file Файл не открывается
-
-New Новый
+Can't open file	Невозможно открыть файл
+New	Новый
 New Template	Новый шаблон
-
 Save photo	Сохранить фото
-
-Grant Membership	Дать мембера
-Reply	Ответить
-Save template	Сохранить шаблон
-
 balloon ink	Шрифт баллона
 balloon background	Фон баллона
 messagelist & roster background	Цвет фона, общий
@@ -317,15 +263,10 @@ keylock background	Фон при блоке кнопок
 message incoming	Входящее сообщение
 message outgoing	Исходящее сообщение
 message presence	Статусное сообщение
-other message incoming	Выделенное входящее сообщение
-other message outgoing	Выделенное исходящее сообщение
-other message presence	Выделенное статусное сообщение
 message auth	Сообщение авторизации
 message history	Шрифт истории сообщений
 progress bar remained	Осталось прогресса
 progress bar complete	Сделано прогресса
-progress border	Ободок прогресса
-progress bar background	Фон прогресса
 progress bar font	Шрифт прогресса
 Heap mon total	Всего кучи
 Heap mon free	Свободно кучи
@@ -334,65 +275,70 @@ Cursor ink & outline	Цвет шрифта курсора и ободка
 Scroll border	Цвет ободка скролла
 Scroll bar	Цвет бегунка скролла
 Scroll back	Цвет фона скролла
+other message incoming	Выделенное входящее сообщение
+other message outgoing	Выделенное исходящее сообщение
+other message presence	Выделенное статусное сообщение
 Popup font	Шрифт всплывающего окошка
 Popup background	Фон всплывающего окошка
 Popup system font	Шрифт системного окошка
 Popup system background	Фон системного окошка
 Contact status font	Шрифт статуса контакта
-
-Send status	Отправить статус
+Control color	Цвет контролов
+Color tune	Настройка цветов
+Load Scheme	Загрузить схему
 Sounds options	Настройки звуков
-
+Time	Время
 participant	участник
 moderator	модератор
 visitor	гость
-    
 none	никто
 member	постоянный участник
 admin	администратор
 owner	владелец
-
+second's	секунд
+seconds	секунды
+second	секунда
+minute's	минут
+minutes	минуты
+minute	минута
+hour's	часов
+hours	часа
+hour	час
+day's	дней
+days	дня
+day	день
+Minutes before away	Таймер автостатуса (минуты)
+Automatic Away	Автосмена статуса
+disabled	Выключено
+keyblock	блок кнопок
+by message	по сообщению
+AutoStatus	Автостатус
+AutoStatus time (min)	Автостатус через(мин)
+Auto xa since %t	Автостатус "Недоступен" сработал в %t
+Auto away since %t	Автостатус "Отсутствую" сработал в %t
+autofocus	Автофокус
+Grant Membership	Дать членство
+Are You sure want to clear messagelist?	Очистить список сообщений
+Google token request	Запрос гуглепожатия
+Features	Возможности
+Show password	Показать пароль
+No client version available	Версия клиента недоступна
+Message limit	Количество сообщений
 Opening stream	Подключение
 Using compression	Включение компрессии
 Authenticating	Авторизация
 Resource binding	Назначение ресурса
 Initiating session	Создание сессии
-
-second	секунда
-seconds	секунды
-second's	секунд
-
-minute	минута
-minutes	минуты
-minute's	минут
-
-hour	час
-hours	часа
-hour's	часов
-
-day	день
-days	дня
-day's	дней
-
-Auto xa since %t	Автостатус "Недоступен" сработал в %t
-Auto away since %t	Автостатус "Отсутствую" сработал в %t
-
-Grant Membership	Дать членство
-
-Features	Возможности
-Show password	Показать пароль
-No client version available	Версия клиента недоступна
-Message limit	Количество сообщений
-
 Text wrapping	Перенос текста
 by chars	по буквам
 by words	по словам
 Info	Инфо
 Reply	Ответить
 Send status	Установить статус
+Are you sure want to BAN this person?	Запретить входить в комнату?
 No reason	Без причины
 Recent	История ввода
-
+Shot	Снимок
 Select file	Выбрать файл
 Load Photo	Загрузить фото
 Clear Photo	Очистить фото
@@ -406,71 +352,36 @@ Decline	Отклонить
 Authorize new contacts	автоматическая авторизация
 [auto-subscribe]	[автоподписка]
 Keep-Alive	Тип Keep-Alive
-
-Minutes before away	Таймер автостатуса (минуты)
-Automatic Away	Автосмена статуса
-disabled	выключено
-keyblock / flip	блок / флип
-
-Make BackUp	Сохранить копию на диск
-Import from Back	Загрузить с диска
-Delete All	Очистить архив
-Use this Color scheme	Использовать схему
-
-Send Buffer	Послать текст из буфера
-Send Current color scheme	Послать цветовую схему
-Copy JID	Копировать JID
-autofocus	Автофокус
-Show Resources	Показывать ресурсы
-AutoScroll	Автопрокрутка
-Antispam Conference	Антиспам в конференции
-PopUps	Всплывающие окна
-Last messages	Последние сообщения
-Shared platform info	Скрыть инфо о клиенте
-Save conference history	Сохранять историю конференции
-AutoStatus Message	Сообщение Автостатуса
-
-Load Scheme	Загрузить схему
-convert to cp1251	Сохранять в windows-1251
-AutoStatus time (min)	Автостатус через(мин)
-Address	Адрес
-Import from BackUp	Восстановить из файла
-Accept file	Принять файл
-Save To	Сохранить в
-Description	Описание
-Can't open file	Невозможно открыть файл
-New	Новый
-Time	Время
-Are You sure want to clear messagelist?	Очистить список сообщений
-Are you sure want to BAN this person?	Запретить входить в комнату?
-Shot	Снимок
  has been unaffiliated and kicked from members-only room	 выгнали, так комната закрыта для гостей
-keyblock	блок кнопок
 Rename	Переименовать
 Move	Переместить
 Save	Сохранить
-Allow private	Разрешить приват
-Block private	Запретить приват
-Contact request chat, Allow or Block?	С вами хотят общаться, Разрешить или Запретить?
-shared platform info	показывать информацию о платформе
-Send in translit	Отправить транслитом
+Translit	Транслит
+ReTranslit	ДеТранслит
+Auto translit2Cyr	Автоотправка транслита кириллицей
 Check Updates	Проверка обновления
+Show Resources	Показывать ресурсы
 Collapsed groups	Свернутые группы
+Send Buffer	Послать текст из буфера
 Change nickname	Сменить ник
 Message collapse limit	Сворачивать сообщения больше
 No client info	Невозможно получить информацию
 Delete all messages	Удалить все сообщения
+Join marked (auto)	Автоподключаться
 Statistics	Статистика
+Started: 	Запуск: 
+Traffic stats: 	Статистика: 
+All: 	Всего: 
+Current: 	Текущ.: 
 Last Messages	Последние сообщения
 Edit/join	Редактировать/Подключить
-Save chat	Сохранить сообщения
-show statuses	показывать статусы
-Google token request	Запрос гуглепожатия
-by message	по сообщению
-Join marked (auto)	Автоподключаться
+Use this Color scheme	Использовать схему
+Delete All	Очистить архив
 History options	Настройка истории
 Filenames transliterate	Имена файлов транслитом
-User mood	Настроение
+Save chat	Сохранить сообщения
+show statuses	показывать статусы
+shared platform info	показывать информацию о платформе
 delivery events	события доставки
 drop all	отбрасывать все
 receive messages	получать сообщения
@@ -478,7 +389,6 @@ messages & presences	сообщения и статусы
 normal	средний
 small	мелкий
 large	крупный
-Auto	Авто
 All signals	Все сигналы
 Vibra	Вибрация
 No signals	Без сигналов
@@ -492,10 +402,16 @@ Add custom key	Добавить сочетание кнопок
 keys action	действие
 enabled	включено
 key	кнопка
-reconnect	переподключение
+Reconnect	Переподключение
 Sort list	Сортировать список
 Turn on light	Не выключать подсветку
-
+Clear popups	Очистить попапы
+Chat history length	Длина списка истории
+This user wants to subscribe to your presence	Запрос подписки на присутствие
+You are now authorized	Вы получили подписку
+Your authorization has been removed!	Ваша подписка была удалена!
+To: 	Кому: 
+size:	размер:
 Sun	Вс
 Mon	Пн
 Tue	Вт
@@ -503,10 +419,15 @@ Wed	Ср
 Thu	Чт
 Fri	Пт
 Sat	Сб
-
+Automatic subscription	автоподписка
+Ask me	спросить меня
+Drop subscription	отклонять
+Deny subscription	запрещать
+Search	Поиск
+Register	Регистрация
+Check Google mail	Проверить GMail
 Blink	миганием
 Notices options	Настройка уведомлений
-
 Message sound	Звук сообщений
 Online sound	Звук для подключившихся
 Offline sound	Звук для отключившихся
@@ -516,40 +437,22 @@ Conference sound	Звук для конференции
 StartUP sound	Звук при запуске
 Outgoing sound	Звук при отправке
 Vip sound	Звук для VIP
-
 Copy JID	Копировать JID
 Ping request	Время отклика
 Online time	Время в сети
-
-
 Break connection	Переподключение
 autoScroll	автопрокрутка сообщений
 emulate tabs	эмулировать вкладки
-antispam conference	антиспам в конференциях
+show balloons	показывать баллуны
 popUps	всплывающие окна
-Started: 	Запуск: 
-Traffic stats: 	Статистика: 
-All: 	Всего: 
-Previous: 	Пред.: 
-Current: 	Текущ.: 
+AutoStatus Message	Сообщение Автостатуса
 Memory:	Память:
 Free: 	Своб.: 
 Total: 	Всего: 
-in: 	вх: 
-out: 	исх: 
-Stream: 	Поток: 
 conn., 	соед., 
-
-This user wants to subscribe to your presence	Запрос подписки на присутствие
-You are now authorized	Вы получили подписку
-Your authorization has been removed!	Ваша подписка была удалена!
-Automatic subscription	автоподписка
-Ask me	спросить меня
-Drop subscription	отклонять
-Deny subscription	запрещать
-Search	Поиск
-Register	Регистрация
-
+Description	Описание
+User	Пользователь
+Import/Export	Импорт/Экспорт данных
 bold font for contacts	жирный шрифт для контактов ростера
 running message	бегущая строка в заголовке
 Composing message to you	Пишет сообщение
@@ -559,7 +462,6 @@ IRC-like conference nick-status	смена ника при смене стату
 user moods send/receive	получение и отправка настроений
 Simulated break	Ручное переподключение
 Build new version on constructor	Собрать новую версию на конструкторе
-
 Auto tasks	Планировщик
 Auto task type	Тип срабатывания
 by timer 	По таймеру
@@ -573,55 +475,49 @@ Delay (min.)	Выполнить через (мин.)
 Start time	Выполнить в
 Hour	Часов
 Min	Минут
-
 Browse rooms	Обзор комнат
 Autorespond	Автоответчик
-
 Invert colors	Инверсия цвета
-
+XML console	XML консоль
 Clipboard	Буфер обмена
-User tune	Музыка
 User mood	Настроение
 Personal events not supported	PEP не поддерживается
+User tune	Музыка
 user tune receive	инфо о музыке
 Bar font	Шрифт панелей
 Popup & ballon font	Шрифт попапов и баллунов
 Fonts options	Настройка шрифтов
-Second line	Дополнительная строка
-
 Load history	Подгружать историю
 Connect to	Подключиться к
-
 Send my color scheme	Отправить мою цветовую схему
 Unread messages	Непрочитанные сообщения
 vibrate only highlited	Вибрировать только при обращении ко мне
-
 Extended settings	Расширенные настройки
-
 Save to file	Сохранить в файл
 Load from file	Загрузить из файла
-
 Show IQ requests	Отображать запросы IQ
 Show clients icons	Отображать иконки клиентов
-
 Action	Действие
-
 Value	Значение
-
 Quantity of attempts	Количество попыток
 Delay before reconnect(sec.)	Задержка между попытками(сек.)
-
+Menu	Меню
+Previous	Предыдущее
+Previous: 	Пред.: 
 [End of vCard]	Конец вКард
 [No vCard available]	вКард не доступна
 [No photo available]	Фото недоступно
 [Unsupported format]	Неподдерживаемый формат
-
+[large photo was dropped]	[большое фото]
 Delete group?	Удалить группу?
-
 Panels	Панели
+[ ]	[нет]
 [main bar]	[основная]
 [info bar]	[инфо]
-
 Flash backlight	Мигать подсветкой
-Previous	Предыдущее
 execute menu by numkey	выполнение команд нажатием цифровых кнопок
+show nicknames	показывать ник отправителя
+Send photo	Отправить фото
+enable autorespond	включить автоответчик
+File manager	Менеджер файлов
+remote control	удаленное управление

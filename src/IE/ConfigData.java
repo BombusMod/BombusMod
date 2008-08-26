@@ -118,9 +118,6 @@ public class ConfigData {
         array.addElement(new keyValue(popUps, (cf.popUps)?"1":"0"));
 //#endif
         array.addElement(new keyValue(showResources, (cf.showResources)?"1":"0"));
-//#ifdef ANTISPAM
-//#         array.addElement(new keyValue(antispam, (cf.antispam)?"1":"0"));
-//#endif
         array.addElement(new keyValue(enableVersionOs, (cf.enableVersionOs)?"1":"0"));
         array.addElement(new keyValue(messageLimit, Integer.toString(cf.messageLimit)));
         array.addElement(new keyValue(eventDelivery, (cf.eventDelivery)?"1":"0"));
@@ -255,9 +252,6 @@ public class ConfigData {
         cf.popUps=cf.getBooleanProperty(getValue(popUps),true);
 //#endif
         cf.showResources=cf.getBooleanProperty(getValue(showResources),true);
-//#ifdef ANTISPAM
-//#         cf.antispam=cf.getBooleanProperty(getValue(antispam),false);
-//#endif
         cf.enableVersionOs=cf.getBooleanProperty(getValue(enableVersionOs),true);
         cf.messageLimit=cf.getIntProperty(getValue(messageLimit),300);
         cf.eventDelivery=cf.getBooleanProperty(getValue(eventDelivery),true);
@@ -421,9 +415,6 @@ public class ConfigData {
     private final static String popUps="popUps";
 //#endif
     private final static String showResources="showResources";
-//#ifdef ANTISPAM
-//#     private final static String antispam="antispam";
-//#endif
     private final static String enableVersionOs="enableVersionOs";
     private final static String messageLimit="messageLimit";
     private final static String eventDelivery="eventDelivery";

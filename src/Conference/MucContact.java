@@ -57,15 +57,6 @@ public class MucContact extends Contact {
     public final static short GROUP_MEMBER=3;
     public final static short GROUP_PARTICIPANT=2;
     public final static short GROUP_MODERATOR=1;
-    
-//#ifdef ANTISPAM
-//#     public final static int PRIVATE_DECLINE=-1;
-//#     public final static int PRIVATE_NONE=0;
-//#     public final static int PRIVATE_REQUEST=2;
-//#     public final static int PRIVATE_ACCEPT=3;
-//#
-//#     private int privateState;
-//#endif
 
     public String realJid;
     
@@ -85,12 +76,7 @@ public class MucContact extends Contact {
         offline_type=Presence.PRESENCE_OFFLINE;
     }
     
-    public String processPresence(JabberDataBlock xmuc, Presence presence) {
-        String from=jid.getJid();
-        
-        int presenceType=presence.getTypeIndex();
-        
-         if (presenceType==Presence.PRESENCE_ERROR) {
+    private String processError(Presence presence) {
             XmppError xe=XmppError.findInStanza(presence);
             int errCode=xe.getCondition();
 
@@ -98,7 +84,7 @@ public class MucContact extends Contact {
             if (status>=Presence.PRESENCE_OFFLINE) 
                 testMeOffline();
             if (errCode!=XmppError.CONFLICT || status>=Presence.PRESENCE_OFFLINE)
-                setStatus(presenceType);
+                setStatus(presence.getTypeIndex());
 
             String errText=xe.getText();
             if (errText!=null) return xe.toString(); // if error description is provided by server
@@ -115,7 +101,14 @@ public class MucContact extends Contact {
                 case XmppError.SERVICE_UNAVAILABLE:   return "Maximum number of users has been reached in this room";
                 default: return xe.getName();
             }
-         }
+    }
+    
+    public String processPresence(JabberDataBlock xmuc, Presence presence) {
+        String from=jid.getJid();
+        
+        int presenceType=presence.getTypeIndex();
+        
+        if (presenceType==Presence.PRESENCE_ERROR) processError(presence);
         
         JabberDataBlock item=xmuc.getChildBlock("item");   
 
@@ -134,11 +127,9 @@ public class MucContact extends Contact {
         boolean affiliationChanged=!tempAffiliation.equals(affiliation);
         role=tempRole;
         affiliation=tempAffiliation;
-        
-        String chNick=item.getAttribute("nick");
 
         setSortKey(nick);
-        
+
         switch (roleCode) {
             case ROLE_MODERATOR:
                 transport=RosterIcons.ICON_MODERATOR_INDEX;
@@ -148,7 +139,7 @@ public class MucContact extends Contact {
 //#ifdef NEW_SKIN
 //#                 transport=RosterIcons.ICON_VISITOR_INDEX;
 //#else
-                transport=RosterIcons.getInstance().getTransportIndex("conference_visitors");
+                transport=RosterIcons.getInstance().getTransportIndex("muc#vis");
 //#endif
                 key0=GROUP_VISITOR;
                 break;
@@ -156,11 +147,26 @@ public class MucContact extends Contact {
 //#ifdef NEW_SKIN
 //#                 transport=(affiliation.equals("member"))? 0: RosterIcons.ICON_VISITOR_INDEX;
 //#else
-                transport=(affiliation.equals("member"))? 0: RosterIcons.getInstance().getTransportIndex("conference_visitors");
+                transport=(affiliation.equals("member"))? 0: RosterIcons.getInstance().getTransportIndex("muc#vis");
 //#endif
                 key0=(affiliation.equals("member"))?GROUP_MEMBER:GROUP_PARTICIPANT;
         }
 
+/*
+        switch (roleCode) {
+            case ROLE_MODERATOR:
+                transport=RosterIcons.ICON_MODERATOR_INDEX;
+                key0=1;
+                break;
+            case ROLE_VISITOR:
+                transport=RosterIcons.getInstance().getTransportIndex("muc#vis");
+                key0=3;
+                break;
+            default:
+                transport=0;
+                key0=2;
+        }
+*/
         int rp=from.indexOf('/');
         
         JabberDataBlock statusBlock=xmuc.getChildBlock("status");
@@ -169,7 +175,6 @@ public class MucContact extends Contact {
             statusCode=Integer.parseInt( statusBlock.getAttribute("code") ); 
         } catch (Exception e) { statusCode=0; }
         
-
         StringBuffer b=new StringBuffer();
         appendL(b,nick);
         
@@ -187,6 +192,7 @@ public class MucContact extends Contact {
             switch (statusCode) {
                 case 303:
                     b.append(SR.MS_IS_NOW_KNOWN_AS);
+                    String chNick=item.getAttribute("nick");
                     appendL(b,chNick);
                     String newJid=from.substring(0,rp+1)+chNick;
                     jid.setJid(newJid);
@@ -219,11 +225,8 @@ public class MucContact extends Contact {
                     testMeOffline();
                     break;
                 case 321:
-                    b.append(SR.MS_HAS_BEEN_UNAFFILIATED_AND_KICKED_FROM_MEMBERS_ONLY_ROOM);
-                    testMeOffline();
-                    break;
                 case 322:
-                    b.append(SR.MS_HAS_BEEN_KICKED_BECAUSE_ROOM_BECAME_MEMBERS_ONLY);
+                    b.append((statusCode==321)?SR.MS_HAS_BEEN_UNAFFILIATED_AND_KICKED_FROM_MEMBERS_ONLY_ROOM:SR.MS_HAS_BEEN_KICKED_BECAUSE_ROOM_BECAME_MEMBERS_ONLY);
                     testMeOffline();
                     break;
                 default:
@@ -265,57 +268,37 @@ public class MucContact extends Contact {
             } else {
                 b.append(SR.MS_IS_NOW);
                 
-                if ( roleChanged ) {
-                    b.append(getRoleLocale(roleCode));
-                }
+                if (roleChanged) b.append(getRoleLocale(roleCode));
+
                  if (affiliationChanged) {
-                    if (roleChanged)
-                        b.append(SR.MS_AND);
+                    if (roleChanged) b.append(SR.MS_AND);
                     b.append(getAffiliationLocale(affiliationCode));
                 }
-                if (!roleChanged && !affiliationChanged)
-                    b.append(presence.getPresenceTxt());
+                if (!roleChanged && !affiliationChanged) b.append(presence.getPresenceTxt());
             }
-
         }
         
         setStatus(presenceType);
         return b.toString();
     }
-    
+
     public static String getRoleLocale(int rol) {
-        String locale = null;
         switch (rol) {
-            case ROLE_VISITOR:
-                locale=SR.MS_ROLE_VISITOR;
-                break;
-            case ROLE_PARTICIPANT:
-                locale=SR.MS_ROLE_PARTICIPANT;
-                break;
-            case ROLE_MODERATOR:
-                locale=SR.MS_ROLE_MODERATOR;
-                break;
+            case ROLE_VISITOR: return SR.MS_ROLE_VISITOR;
+            case ROLE_PARTICIPANT: return SR.MS_ROLE_PARTICIPANT;
+            case ROLE_MODERATOR: return SR.MS_ROLE_MODERATOR;
         }
-        return locale;
+        return null;
     }
     
     public static String getAffiliationLocale(int aff) {
-        String locale = null;
         switch (aff) {
-            case AFFILIATION_NONE:
-                locale=SR.MS_AFFILIATION_NONE;
-                break;
-            case AFFILIATION_MEMBER:
-                locale=SR.MS_AFFILIATION_MEMBER;
-                break;
-            case AFFILIATION_ADMIN:
-                locale=SR.MS_AFFILIATION_ADMIN;
-                break;
-            case AFFILIATION_OWNER:
-                locale=SR.MS_AFFILIATION_OWNER;
-                break;
+            case AFFILIATION_NONE: return SR.MS_AFFILIATION_NONE;
+            case AFFILIATION_MEMBER: return SR.MS_AFFILIATION_MEMBER;
+            case AFFILIATION_ADMIN: return SR.MS_AFFILIATION_ADMIN;
+            case AFFILIATION_OWNER: return SR.MS_AFFILIATION_OWNER;
         }
-        return locale;
+        return null;
     }
     
     private void appendL(StringBuffer sb, String append){
@@ -358,14 +341,4 @@ public class MucContact extends Contact {
         }
         lastMessageTime=m.dateGmt;
     }
-    
-//#ifdef ANTISPAM
-//#     public void setPrivateState (int state) {
-//#         privateState=state;
-//#     }
-//#
-//#     public int getPrivateState () {
-//#         return privateState;
-//#     }
-//#endif
 }

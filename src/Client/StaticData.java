@@ -49,7 +49,7 @@ public class StaticData {
     
     //public int screenWidth;
     
-    public long traffic;
+    public long traffic = 0;
 
     private long trafficOut;
     private long trafficIn;
@@ -80,5 +80,6 @@ public class StaticData {
 //#     public boolean IE=true;
 //#     public boolean Colors=true;
 //#     public boolean Adhoc=true;
+//#     public boolean Stats=true;
 //#endif
 }

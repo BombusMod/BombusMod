@@ -121,10 +121,6 @@ public class Contact extends IconTextElement{
 
     public Vector msgs;
     public int activeMessage=-1;
-
-//#ifdef ANTISPAM
-//#     public Vector tempMsgs=new Vector();
-//#endif
     
     private int newMsgCnt=0;
     private int newHighLitedMsgCnt=0;
@@ -406,11 +402,6 @@ public class Contact extends IconTextElement{
     }
     
     public final void purge() {
-//#ifdef ANTISPAM
-//#        try {
-//#            purgeTemps();
-//#        } catch (Exception e) { }
-//#endif
         msgs=null;
         msgs=new Vector();
         
@@ -573,12 +564,6 @@ public class Contact extends IconTextElement{
 //#endif
 //#endif
     
-//#ifdef ANTISPAM
-//#     public void addTempMessage(Msg m) { tempMsgs.addElement(m); }
-//# 
-//#     public final void purgeTemps() { tempMsgs=null; tempMsgs=new Vector(); }
-//#endif
-    
     public int getVWidth(){
         String str=(!cf.rosterStatus)?getFirstString():(getFirstLength()>getSecondLength())?getFirstString():getSecondString();
         int wft=getFont().stringWidth(str);
@@ -631,11 +616,6 @@ public class Contact extends IconTextElement{
     }
 
     public int getSecImageIndex() {
-//#ifdef ANTISPAM
-//#         if (!tempMsgs.isEmpty())
-//#             return RosterIcons.ICON_AUTHRQ_INDEX;
-//#endif
-  
         if (getNewMsgsCount()>0)
             return (unreadType==Msg.MESSAGE_TYPE_AUTH)?RosterIcons.ICON_AUTHRQ_INDEX:RosterIcons.ICON_MESSAGE_INDEX;
 

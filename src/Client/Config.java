@@ -234,9 +234,6 @@ type = \"-=Siemens=-\";
     public boolean popUps=true;
 //#endif
     public boolean showResources=true;
-//#ifdef ANTISPAM
-//#     public boolean antispam=false;
-//#endif
     public boolean enableVersionOs=true;
     public boolean collapsedGroups=true;
     public int messageLimit=512;
@@ -451,11 +448,9 @@ type = \"-=Siemens=-\";
 //#             inputStream.readBoolean();
 //#endif
             showResources=inputStream.readBoolean();
-//#ifdef ANTISPAM
-//#             antispam=inputStream.readBoolean();
-//#else
-            inputStream.readBoolean();
-//#endif
+            
+            inputStream.readBoolean(); //antispam
+
             enableVersionOs=inputStream.readBoolean();
             messageLimit=inputStream.readInt();
             lang=inputStream.readUTF();
@@ -667,11 +662,9 @@ type = \"-=Siemens=-\";
 //#             outputStream.writeBoolean(false);
 //#endif
             outputStream.writeBoolean(showResources);
-//#ifdef ANTISPAM
-//#             outputStream.writeBoolean(antispam);
-//#else
-            outputStream.writeBoolean(false);
-//#endif
+
+            outputStream.writeBoolean(false); //antispam
+
             outputStream.writeBoolean(enableVersionOs);
             outputStream.writeInt(messageLimit);
             outputStream.writeUTF(lang);      

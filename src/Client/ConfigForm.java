@@ -78,9 +78,6 @@ public class ConfigForm
 //#endif
 //#endif
      private CheckBox notifyWhenMessageType;
-//#ifdef ANTISPAM
-//#    private CheckBox antispam;
-//#endif
 //#ifdef POPUPS
     private CheckBox popUps;
 //#endif
@@ -204,9 +201,6 @@ public class ConfigForm
 //#endif
 //#endif
         notifyWhenMessageType = new CheckBox(SR.MS_RUNNING_MESSAGE, cf.notifyWhenMessageType); itemsList.addElement(notifyWhenMessageType);
-//#ifdef ANTISPAM
-//#         antispam = new CheckBox(SR.MS_ANTISPAM_CONFERENCE, cf.antispam); itemsList.addElement(antispam);
-//#endif
 //#ifdef POPUPS
         popUps = new CheckBox(SR.MS_POPUPS, cf.popUps); itemsList.addElement(popUps);
 //#endif
@@ -371,9 +365,6 @@ public class ConfigForm
 //#endif
 //#endif
         cf.notifyWhenMessageType=notifyWhenMessageType.getValue();
-//#ifdef ANTISPAM
-//#             cf.antispam=antispam.getValue();
-//#endif
 //#ifdef POPUPS
         cf.popUps=popUps.getValue();
 //#endif

@@ -419,12 +419,6 @@ public class SR {
     public   static String MS_MOVE = loadString( "Move" );
     public static String MS_SAVE = loadString( "Save" );
     
-//#ifdef ANTISPAM
-//#     public static String MS_UNLOCK_PRIVATE = loadString( "Allow private" );
-//#     public static String MS_BLOCK_PRIVATE = loadString( "Block private" );
-//#     public static String MS_CONTACT_REQUEST_CHAT = loadString( "Contact request chat, Allow or Block?" );
-//#endif
-    
 //#ifdef DETRANSLIT
 //#     public static String MS_TRANSLIT = loadString( "Translit" );
 //#     public static String MS_DETRANSLIT = loadString( "ReTranslit" );
@@ -451,10 +445,6 @@ public class SR {
     public static String MS_EDIT_JOIN = loadString( "Edit/join" );
     public static String MS_USE_COLOR_SCHEME = loadString( "Use this Color scheme" );
     public static String MS_DELETE_ALL = loadString( "Delete All" );
-    
-//#ifdef REQUEST_VOICE
-//#     public static String MS_REQUEST_PARTICIPANT_ROLE = "Request voice";
-//#endif
     
 //#ifdef FILE_IO
     public static String MS_HISTORY_OPTIONS = loadString( "History options" );
@@ -522,7 +512,7 @@ public class SR {
     public static String MS_SUBSCR_DROP=loadString("Drop subscription");
     public static String MS_SUBSCR_REJECT=loadString("Deny subscription");  //TODO: correct according to RFC
     
-    public static String MS_VISIBLE_GROUP=loadString("Visible");
+    public static String MS_VISIBLE_GROUP="Visible";
     
 //2007-11-07
     public static String MS_SEARCH=loadString("Search");
@@ -555,7 +545,6 @@ public class SR {
     public static String MS_EMULATE_TABS=loadString("emulate tabs");
     public static String MS_SHOW_BALLONS=loadString("show balloons");
     public static String MS_POPUPS=loadString("popUps");
-    public static String MS_ANTISPAM_CONFERENCE=loadString("antispam conference");
     public static String MS_AUTOSTATUS_MESSAGE=loadString("AutoStatus Message");
 
     public static String MS_MEMORY=loadString("Memory:");
@@ -656,6 +645,7 @@ public class SR {
     //public static String MS_CHANGE=loadString("Change");
 
     public static String MS_PREVIOUS=loadString("Previous");
+    public static String MS_PREVIOUS_=loadString("Previous: ");
 
     public static String MS_END_OF_VCARD=loadString("[End of vCard]");
     public static String MS_NO_VCARD=loadString("[No vCard available]");
@@ -715,10 +705,14 @@ public class SR {
 //#if LOCALE_DEBUG
 //#         if (value==null) {
 //#             if (!lang.isEmpty()) {
-//#                 System.out.print("Can't find local string for <");
+//#                 System.out.print("-----> Can't find local string for <");
 //#                 System.out.print(key);
-//#                 System.out.println(">");
+//#                 System.out.println("> <-----");
 //#             }
+//#         } else {
+//#             System.out.print(key);
+//#             System.out.print('\t');
+//#             System.out.println(value);
 //#         }
 //#endif
         return (value==null)?key:value;

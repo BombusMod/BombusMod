@@ -29,6 +29,7 @@ package ui.keys;
 import Client.Config;
 import Client.ConfigForm;
 import Client.StaticData;
+import Client.Stats;
 import Colors.ColorTheme;
 //#ifdef CONSOLE
 //# import Console.XMLList;
@@ -120,8 +121,11 @@ public class userKeyExec {
                 break;
 //#ifdef POPUPS
 //#ifdef STATS
-//#             case 4: 
-//#                 sd.roster.showStats();
+//#             case 4:
+//#ifdef PLUGINS
+//#                 if (sd.Stats)
+//#endif
+//#                     Stats.getInstance().showStats();
 //#                 break;
 //#endif
 //#endif

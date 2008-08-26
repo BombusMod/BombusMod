@@ -309,14 +309,14 @@ public class JabberStream extends XmppParser implements Runnable {
         iostream.setStreamCompression();
     }
 //#endif
-//#ifdef STATS
-//#      public String getStreamStats() {
-//#          return iostream.getStreamStats();
-//#      }
-//#     public long getBytes() {
-//#         return iostream.getBytes();
-//#     }
-//#endif
+
+    public String getStreamStats() {
+        return iostream.getStreamStats();
+    }
+
+    public long getBytes() {
+        return iostream.getBytes();
+    }
 
      private class TimerTaskKeepAlive extends TimerTask{
         private Timer t;

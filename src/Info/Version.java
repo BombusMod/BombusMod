@@ -42,7 +42,7 @@ public class Version {
     private static String plugins="";
 //#endif
     
-    public static String getVersionLang() { return plugins+version+" ("+SR.MS_IFACELANG+")"; }
+    public static String getVersionLang() { return version+plugins+" ("+SR.MS_IFACELANG+")"; }
     
     public static String getVersionNumber() { return version; }
     public static String getName() { return NAME; }

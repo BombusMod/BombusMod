@@ -60,12 +60,12 @@ public class KeepLightTask implements Runnable {
             } catch (InterruptedException ex) {
                 stop=true;
             }
-            
-            try {
-                 if (setLight)
-                     com.nokia.mid.ui.DeviceControl.setLights(0, 100);
-            } catch (Exception e) {
-                setLight=false;
+            if (setLight) {
+                try {
+                    com.nokia.mid.ui.DeviceControl.setLights(0, 100);
+                } catch (Exception e) {
+                    setLight=false;
+                }
             }
         }
     }

@@ -1254,38 +1254,13 @@ public abstract class VirtualList
             s.append(" ").append(Time.localTime());
             getInfoBarItem().setElementAt(s.toString(), 1);
             s.setLength(0);
-            s.append(StringUtils.getSizeString(Stats.getGPRS()));
-//#ifdef ELF
-//#             s.append(getNetworkLevel()).append(getAccuLevel());
-//#endif
+            long traffic = StaticData.getInstance().traffic;
+            
+            s.append(StringUtils.getSizeString((traffic>0)?traffic*2:0));
+
             getInfoBarItem().setElementAt(s.toString(), 3);
             s=null;
     }
-    
-//#ifdef ELF    
-//#     private static String getAccuLevel() {
-//# 
-//#         if (sie_accu==false) return "";
-//#         try {
-//#             String cap=System.getProperty("MPJC_CAP");
-//#             return (cap==null)? "": " "+cap+"%";
-//#         } catch (Exception e) { sie_accu=false; }
-//# 
-//#         return "";
-//#     }
-//#     
-//#     private static String getNetworkLevel() {
-//# 
-//#         if (sie_net==false) return "";
-//#         try {
-//#             String rx=System.getProperty("MPJCRXLS");
-//#             int rp=rx.indexOf(',');
-//#             return (rp<0)? "": " "+rx.substring(0,rp)+"db";
-//#         } catch (Exception e) { sie_net=false; }
-//# 
-//#         return "";
-//#     }
-//#endif 
 }
 
 //#if (USE_ROTATOR)    
