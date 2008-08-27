@@ -54,9 +54,9 @@ public class ConferenceGroup extends Group{
     public String password;
     public String desc;
     private MucContact conference;
-    public String toString(){ 
-        return mainbar(label);
-    }
+    //public String toString(){ 
+    //    return mainbar(label);
+    //}
 
     public MucContact getSelfContact() { return selfContact; }
     public void setSelfContact(MucContact selfContact) { this.selfContact=selfContact; }
@@ -68,4 +68,8 @@ public class ConferenceGroup extends Group{
     public int getNContacts(){ return (nContacts>0)? nContacts-1:0; }
     
     public long conferenceJoinTime;
+    
+    public String toString() {
+        return mainbar(desc);
+    }
 }

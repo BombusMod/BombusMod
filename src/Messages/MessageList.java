@@ -224,18 +224,15 @@ public abstract class MessageList extends VirtualList
 //# 
 //#     public void showMenu() {
 //#         commandState();
-//#         new MyMenu(display, parentView, this, "", null, menuCommands);
+//#         String capt="";
+//#         try {
+//#             capt=getMainBarItem().elementAt(0).toString();
+//#         } catch (Exception ex){ }
+//#         new MyMenu(display, parentView, this, capt, null, menuCommands);
 //#    }
 //#     public void touchLeftPressed(){
 //#         showMenu();
 //#     }
 //#endif
-
-    
-//#ifdef MENU
-//#     public void leftCommand() { showMenu(); }
-//#     public String getLeftCommand() { return SR.MS_MENU; }
-//#endif
-
     public void commandState() { }
 }

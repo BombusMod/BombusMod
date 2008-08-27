@@ -87,8 +87,9 @@ public class EditBox implements CommandListener {
         t.addCommand(cmdOk);
         if (ti.id!=null) {
             loadRecentList();
-            if (recentList.size()>0)
+            if (recentList.size()>0) {
                 t.addCommand(cmdRecent);
+            }
         }
         t.addCommand(cmdCancel);
         t.setCommandListener(this);
@@ -166,7 +167,7 @@ public class EditBox implements CommandListener {
         } catch (Exception e) { }
     }
 
-    private void saveRecentList() {
+    public void saveRecentList() {
         DataOutputStream os=NvStorage.CreateDataOutputStream();
         try {
             for (Enumeration e=recentList.elements(); e.hasMoreElements(); ) {

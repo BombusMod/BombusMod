@@ -253,38 +253,7 @@ public class ConferenceForm
             cf.saveToStorage();
         }
     }
-    
-//#ifdef MENU
-//#         public void leftCommand() {
-//#             try {
-//#                 String nick=nickField.getValue();
-//#                 String name=nameField.getValue();
-//#                 String host=hostField.getValue();
-//#                 String room=roomField.getValue();
-//#                 String pass=passField.getValue();
-//#                 int msgLimit=Integer.parseInt(msgLimitField.getValue());
-//# 
-//#                 boolean autojoin=autoJoin.getValue();
-//# 
-//#                 if (nick.length()==0) return;
-//#                 if (room.length()==0) return;
-//#                 if (host.length()==0) return;
-//# 
-//#                 StringBuffer gchat=new StringBuffer(room.trim()).append('@').append(host.trim());
-//# 
-//#                 if (name.length()==0) name=gchat.toString();
-//# 
-//#                 saveMsgCount(msgLimit);
-//#         
-//#                 cf.defGcRoom=room+"@"+host;
-//#                 cf.saveToStorage();
-//#                 gchat.append('/').append(nick);
-//#                 join(name, gchat.toString(),pass, msgLimit);
-//#                 display.setCurrent(sd.roster);
-//#             } catch (Exception e) { }
-//#         }
-//#endif
-    
+
     public static void join(String name, String jid, String pass, int maxStanzas) {
         ConferenceGroup grp=sd.roster.initMuc(jid, pass);
         grp.desc=name;

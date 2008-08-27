@@ -34,9 +34,6 @@ import javax.microedition.lcdui.*;
 import java.util.*;
 import Client.*;
 import locale.SR;
-//#ifdef MENU
-//# import ui.controls.MenuContainer;
-//#endif
 //#ifdef POPUPS
 import ui.controls.PopUp;
 //#endif

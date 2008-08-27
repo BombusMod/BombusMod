@@ -133,19 +133,13 @@ public class InfoWindow
 //#         destroyView();
 //#endif
     }
-//#ifdef MENU
-//#ifdef CLIPBOARD
-//#     public String getLeftCommand() { return SR.MS_COPY; }
-//#endif
-//#     public String getRightCommand() { return SR.MS_BACK; }
-//#else
+
     public void commandAction(Command command, Displayable displayable) {
 	if (command==cmdOk) {
 	    cmdOk();
 	}
         super.commandAction(command, displayable);
     }
-//#endif
     
     private String getAbilities() {
         Vector abilitiesList=new Vector();

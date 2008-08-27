@@ -81,9 +81,6 @@ public class InviteForm
         this.parentView=pView;
     }
 
-//#ifdef MENU
-//#     public String getLeftCommand() { return SR.MS_OK; }
-//#endif
     public void cmdOk() {
         String room=(String) conferences.elementAt(conferenceList.getSelectedIndex());
         String rs=reason.getValue();

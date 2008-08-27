@@ -49,6 +49,7 @@ public class TextListBox
 
     private Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK,99);
     private Command cmdOk=new Command(SR.MS_OK, Command.OK,1);
+    private Command cmdClear=new Command(SR.MS_CLEAR, Command.SCREEN, 2);
 
     private Vector recentList;
 
@@ -61,6 +62,7 @@ public class TextListBox
         setMainBarItem(new MainBar(SR.MS_SELECT));
 
         addCommand(cmdOk);
+        addCommand(cmdClear);
         addCommand(cmdCancel);
         setCommandListener(this);
 
@@ -69,15 +71,18 @@ public class TextListBox
     public void eventOk() {
         if (recentList.size()>0)
             ti.setValue((String) recentList.elementAt(cursor));
-        
-        display.setCurrent(parentView);
     }
 
     public void commandAction(Command c, Displayable d){
+        if (c==cmdClear) {
+            ti.recentList.removeAllElements();
+            ti.saveRecentList();
+        }
         if (c==cmdOk)
             eventOk();
-        else if (c==cmdCancel)
-            display.setCurrent(parentView);
+
+        display.setCurrent(parentView);
+        
     }
 
     public VirtualElement getItemRef(int index){ 

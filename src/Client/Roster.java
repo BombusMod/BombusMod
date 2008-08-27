@@ -2071,18 +2071,10 @@ public class Roster
             } catch (Exception e) { /* NullPointerException */ }
         }
     }
-//#ifdef MENU
-//#     public void leftCommand() { showMenu(); }
-//#     public String getLeftCommand() { return SR.MS_MENU; }
-//#  
-//#     public void rightCommand() { new RosterItemActions(display, getFocusedObject(), -1); }
-//#     public String getRightCommand() { return SR.MS_ACTION; }
-//#else
+
     public void touchRightPressed(){
         cmdActions();
     }
-//#endif
-    
 
     public void keyPressed(int keyCode){
 //#ifdef MENU_LISTENER

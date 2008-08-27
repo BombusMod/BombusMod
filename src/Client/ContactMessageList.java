@@ -601,6 +601,7 @@ public class ContactMessageList extends MessageList {
 //#         for (Enumeration cmessages=contact.msgs.elements(); cmessages.hasMoreElements(); ) {
 //#             Msg message=(Msg) cmessages.nextElement();
 //#             messageList.append(message.quoteString());
+//#             messageList.append("\n\n");
 //#         }
 //#         HistoryAppend.getInstance().addMessageList(messageList.toString(), histRecord.toString());
 //#         messageList=null;

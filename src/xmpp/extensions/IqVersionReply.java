@@ -74,6 +74,8 @@ public class IqVersionReply implements JabberBlockListener {
                     body=dispatchVersion(vc);
                 }
             } else return BLOCK_REJECTED;
+
+            StaticData.getInstance().roster.querysign=false;
             
             if (body!=null) {
                 Roster roster=StaticData.getInstance().roster;
