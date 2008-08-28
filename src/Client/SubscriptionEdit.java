@@ -51,7 +51,7 @@ public class SubscriptionEdit
         
         this.display=display;
         
-        to=c.getBareJid();
+        to=c.bareJid;
 
         itemsList.addElement(new SimpleString(to, false));
         itemsList.addElement(new SimpleString(c.subscr+((c.ask_subscribe)?",ask":""), false));

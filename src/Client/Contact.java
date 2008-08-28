@@ -83,10 +83,10 @@ public class Contact extends IconTextElement{
     
     public String nick;
     public Jid jid;
-    public String bareJid;    // for roster/subscription manipulating
+    public String bareJid; // for roster/subscription manipulating
     public int status;
     public int priority;
-    private Group group;
+    public Group group;
     public int transport;
     
     public boolean autoresponded=false;
@@ -128,15 +128,17 @@ public class Contact extends IconTextElement{
     public int lastUnread;
     
     public VCard vcard;
-
-    private int client=-1;
+//#ifdef CLIENTS_ICONS
+//#     public int client=-1;
+//#     public String clientName=null;
+//#endif
 //#ifdef LOGROTATE
 //#     public boolean redraw=false;
 //#endif
     private Config cf;
 
-    private String j2j;
-    private String lang;
+    public String j2j;
+    public String lang;
     
     private Font secondFont=FontCache.getBalloonFont();
     private int secondFontHeight;
@@ -148,6 +150,8 @@ public class Contact extends IconTextElement{
 //#     private boolean loaded;
 //#endif
 //#endif
+    
+    StaticData sd=StaticData.getInstance();
 
     int ilHeight;
     int maxImgHeight;
@@ -307,7 +311,7 @@ public class Contact extends IconTextElement{
                         first_replace=true;
             } else if (cf.showNickNames) {
                 StringBuffer who=new StringBuffer();
-                who.append((m.messageType==Msg.MESSAGE_TYPE_OUT)?StaticData.getInstance().account.getNickName():getName())
+                who.append((m.messageType==Msg.MESSAGE_TYPE_OUT)?sd.account.getNickName():getName())
                     .append(" (")
                     .append(m.getTime())
                     .append(") ");
@@ -320,6 +324,9 @@ public class Contact extends IconTextElement{
 //#         else { redraw=deleteOldMessages(); }
 //#endif
 //#if HISTORY
+//#ifdef PLUGINS
+//#     if(sd.History)
+//#endif
 //#         if (!m.isHistory()) {
 //#             if (!cf.msgPath.equals("") && group.type!=Groups.TYPE_TRANSP && group.type!=Groups.TYPE_SEARCH_RESULT) {
 //#                 boolean allowLog=false;
@@ -345,10 +352,7 @@ public class Contact extends IconTextElement{
 //#endif
 //#                 
 //#                 if (allowLog) {
-//#ifdef PLUGINS
-//#                     if(StaticData.getInstance().History)
-//#endif
-//#                         HistoryAppend.getInstance().addMessage(m, cf.lastMessages, getBareJid());
+//#                         HistoryAppend.getInstance().addMessage(m, cf.lastMessages, bareJid);
 //#                 }
 //#             }
 //#        }
@@ -380,16 +384,14 @@ public class Contact extends IconTextElement{
     }
 
     public final String getName(){ 
-        return (nick==null)?getBareJid():nick; 
+        return (nick==null)?bareJid:nick; 
     }
 
     public final String getJid() {
         return jid.getJid();
     }
 
-    public final String getBareJid() {
-        return bareJid;
-    }
+    //public final String getBareJid() { return bareJid; }
     
 
     public String getResource() {
@@ -441,8 +443,6 @@ public class Contact extends IconTextElement{
             if (msgs.size()>0){
                 int virtCursor=msgs.size();
                 boolean delete = false;
-//System.out.println("size: "+ msgs.size());
-//System.out.println("cursor: "+ cursor);
                 int i=msgs.size();
                 while (true) {
                     if (i<0) break;
@@ -465,38 +465,6 @@ public class Contact extends IconTextElement{
                     virtCursor--;
                     i--;
                 }
-                /*
-                for (int i=msgs.size()-1; i>-1; i--) {
-                    //System.out.println("checking message: " + i);
-                    if (i<=cursor) {
-                        if (!delete) {
-                            //System.out.println("not found else");
-                            if (((Msg)msgs.elementAt(delPos)).dateGmt+1000<System.currentTimeMillis()) {
-                                //System.out.println("can delete: "+ delPos);
-                                msgs.removeElementAt(delPos);
-                                //delPos--;
-                                delete=true;
-                            }
-                        } else {
-                            //System.out.println("delete: "+ delPos);
-                            msgs.removeElementAt(delPos);
-                            //delPos--;
-                        }
-                    } else {
-                        //delPos--;
-                        //System.out.println("decrease to: "+ delPos);
-                    }
-                    delPos--;
-                }*/
-//System.out.println("--------------------------------");
-                /*
-                for (int i=0; i<cursor; i++) {
-                     if(((Msg)msgs.elementAt(delPos)).dateGmt+1000<System.currentTimeMillis()) {
-                         msgs.removeElementAt(delPos);
-                         cp++;
-                     } else delPos++;
-                }
-                */
                 activeMessage=msgs.size()-1; //drop activeMessage count
             }
         } catch (Exception e) { }
@@ -526,14 +494,14 @@ public class Contact extends IconTextElement{
         return group.type;
     }
     public boolean inGroup(Group ingroup) { return group==ingroup; }
-    public Group getGroup() { return group; }
-    public void setGroup(Group group) { this.group = group; }
+    //public Group getGroup() { return group; }
+    //public void setGroup(Group group) { this.group = group; }
     
-    public String getJ2J() { return j2j; }
-    public void setJ2J(String j2j) { this.j2j = j2j; }
+    //public String getJ2J() { return j2j; }
+    //public void setJ2J(String j2j) { this.j2j = j2j; }
     
-    public String getLang() { return lang; }
-    public void setLang(String lang) { this.lang = lang; }
+    //public String getLang() { return lang; }
+    //public void setLang(String lang) { this.lang = lang; }
     
     public void setStatus(int status) {
         setIncoming(0);
@@ -542,9 +510,9 @@ public class Contact extends IconTextElement{
             acceptComposing=false;
     }
     
-    public int getStatus() { return status; }
+    //public int getStatus() { return status; }
     
-    public void setComposing (boolean state) { showComposing=state; }
+    //public void setComposing (boolean state) { showComposing=state; }
    
     void markDelivered(String id) {
         if (id==null) return;
@@ -625,38 +593,24 @@ public class Contact extends IconTextElement{
         return -1;
     }
     
-    public void setClient (int client) { this.client=client; }
+    //public void setClient (int client) { this.client=client; }
     
-    public int getClient () { return client; }
+    //public int getClient () { return client; }
     
 //#ifdef PEP
 //#ifdef PEP_TUNE
-//#     public void setUserTune (String tune) { 
-//#ifdef PLUGINS
-//#         if (!StaticData.getInstance().PEP) return;
-//#endif
-//#         pepTuneText=tune;
-//#     }
+//#     //public void setUserTune (String tune) { pepTuneText=tune; }
 //#     
-//#     public String getUserTune() { return pepTuneText; }
+//#     //public String getUserTune() { return pepTuneText; }
 //#endif
-//#     public void setUserMood (String mood) {
-//#ifdef PLUGINS
-//#         if (!StaticData.getInstance().PEP) return;
-//#endif
-//#         pepMoodName=mood;
-//#     }
-//#     public void setUserMoodText (String mood) {
-//#         pepMoodText=mood;
-//#     }
+//#     //public void setUserMood (String mood) { pepMoodName=mood; }
 //#     
-//#     public String getUserMood() {
-//#         return pepMoodName;
-//#     }
+//#     //public void setUserMoodText (String mood) { pepMoodText=mood; }
 //#     
-//#     public String getUserMoodText() {
-//#         return pepMoodText;
-//#     }
+//#     //public String getUserMood() { return pepMoodName; }
+//#     
+//#     //public String getUserMoodText() { return pepMoodText; }
+//#     
 //#     public String getMoodString() {
 //#         StringBuffer mood=null;
 //#         if (hasMood()) {
@@ -696,15 +650,12 @@ public class Contact extends IconTextElement{
             il.drawImage(g, getImageIndex(), 2, imgH);
         }
 //#ifdef CLIENTS_ICONS
-//#         if (cf.showClientIcon) {
-//#             if (client>-1) {
-//#                 ImageList clients=ClientsIcons.getInstance();
-//#                 int clientImgSize=clients.getWidth();
-//#                 w-=clientImgSize;
-//#                 clients.drawImage(g, client, w, (h-clientImgSize)/2);
-//#                 if (maxImgHeight<clientImgSize)
-//#                     maxImgHeight=clientImgSize;
-//#             }
+//#         if (hasClientIcon()) {
+//#             ImageList clients=ClientsIcons.getInstance();
+//#             int clientImgSize=clients.getWidth();
+//#             w-=clientImgSize;
+//#             clients.drawImage(g, client, w, (h-clientImgSize)/2);
+//#             if (maxImgHeight<clientImgSize) maxImgHeight=clientImgSize;
 //#         }
 //#endif
 //#ifdef PEP
@@ -713,8 +664,7 @@ public class Contact extends IconTextElement{
 //#             int moodImgSize=moods.getWidth();
 //#             w-=moodImgSize;
 //#             moods.drawImage(g, pepMood, w, (h-moodImgSize)/2);
-//#             if (maxImgHeight<moodImgSize)
-//#                 maxImgHeight=moodImgSize;
+//#             if (maxImgHeight<moodImgSize) maxImgHeight=moodImgSize;
 //#         }
 //#ifdef PEP_TUNE
 //#         if (pepTune) {
@@ -745,6 +695,13 @@ public class Contact extends IconTextElement{
         }
         g.setClip(xo, yo, w, h);
     }
+    
+//#ifdef CLIENTS_ICONS
+//#     boolean hasClientIcon() {
+//#         return (client>-1);
+//#     }
+//#endif
+    
 //#ifdef PEP
 //#     boolean hasMood() {
 //#         return (pepMood>-1 && pepMood<61);

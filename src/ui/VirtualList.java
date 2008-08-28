@@ -1355,7 +1355,7 @@ class TimerTaskRotate extends Thread{
 //#             if (attachedList==null || drawMenu<0)
 //#                 return false;
 //#             drawMenu--;
-//#             attachedList.drawMenuCommand=(drawMenu<15 && drawMenu>0);
+//#             attachedList.drawMenuCommand=(drawMenu<7 && drawMenu>0);
 //#             return true;
 //#         }
 //#     }

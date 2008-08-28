@@ -64,6 +64,8 @@ public class Account extends IconTextElement{
     private int keepAliveType=1;
     
     private static StaticData sd=StaticData.getInstance();
+    
+    private boolean dnsResolver=true;
 
     public Account() {
         super(RosterIcons.getInstance());
@@ -150,7 +152,7 @@ public class Account extends IconTextElement{
             a.keepAliveType=inputStream.readInt()%4;
             a.keepAlivePeriod=inputStream.readInt();
             
-            inputStream.readBoolean(); //firstrun
+            a.dnsResolver=inputStream.readBoolean(); //firstrun
             
         } catch (IOException e) { /*e.printStackTrace();*/ }
             
@@ -187,7 +189,7 @@ public class Account extends IconTextElement{
             outputStream.writeInt(keepAliveType);
             outputStream.writeInt(keepAlivePeriod);
             
-            outputStream.writeBoolean(false);  //firstrun    
+            outputStream.writeBoolean(dnsResolver);  //firstrun    
         } catch (IOException e) {
             //e.printStackTrace();
         }
@@ -218,12 +220,14 @@ public class Account extends IconTextElement{
     public boolean getPlainAuth() { return plainAuth; }
     public void setPlainAuth(boolean plain) { this.plainAuth = plain; }
     
+    public boolean getDnsResolver() { return dnsResolver; }
+    public void setDnsResolver(boolean dnsResolver) { this.dnsResolver = dnsResolver; }
+    
     public String getResource() { return resource;  }
     public void setResource(String resource) { this.resource = resource;  }
 
     public String getNickName() { return (nick.length()==0)?userName:nick;  }
     public String getNick() { return (nick.length()==0)? null:nick;  }
- 
     public void setNick(String nick) { this.nick = nick;  }
 
     public boolean isMucOnly() { return mucOnly; }
@@ -234,9 +238,9 @@ public class Account extends IconTextElement{
         String host=this.server;
         int tempPort=port;
         
-        if (hostAddr!=null) if (hostAddr.length()>0)
-            host=hostAddr;
-        else {
+        if (hostAddr!=null && hostAddr.length()>0) {
+                host=hostAddr;
+        } else if (dnsResolver) {
             io.DnsSrvResolver dns=new io.DnsSrvResolver();
             if (dns.getSrv(server)) {
                 host=dns.getHost();

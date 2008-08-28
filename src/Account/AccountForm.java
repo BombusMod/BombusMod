@@ -69,6 +69,8 @@ public class AccountForm
 //#       private CheckBox pollingbox;
 //#endif
     private CheckBox registerbox;
+    
+    private CheckBox dnsResolver;
 	
     private NumberInput keepAlive;
     private DropChoiceBox keepAliveType;
@@ -140,6 +142,8 @@ public class AccountForm
 	ipbox = new TextInput(display, SR.MS_HOST_IP, account.getHostAddr(), null, TextField.ANY);//, 64, TextField.ANY
         portbox = new NumberInput(display, SR.MS_PORT, Integer.toString(account.getPort()), 0, 65535);//, 0, 65535
         
+                
+        dnsResolver = new CheckBox(SR.MS_USE_DNS_SRV_RESOLVER, account.getDnsResolver()); 
         sslbox = new CheckBox(SR.MS_SSL, account.getUseSSL());
         plainPwdbox = new CheckBox(SR.MS_PLAIN_PWD, account.getPlainAuth());
         noComprbox = new CheckBox(SR.MS_NO_COMPRESSION, !account.useCompression());
@@ -150,6 +154,7 @@ public class AccountForm
 //#        pollingbox = new CheckBox("pollingbox", "HTTP Polling", false);
 //#endif
         
+        itemsList.addElement(dnsResolver);
         itemsList.addElement(sslbox);
         itemsList.addElement(plainPwdbox);
         itemsList.addElement(noComprbox);
@@ -219,6 +224,7 @@ public class AccountForm
 
         if (showExtended) {
             registerNew=registerbox.getValue();
+            account.setDnsResolver(dnsResolver.getValue());
             account.setPort(Integer.parseInt(portbox.getValue()));
             account.setHostAddr(ipbox.getValue());
             account.setResource(resourcebox.getValue());

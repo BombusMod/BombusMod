@@ -80,7 +80,7 @@ public class MucContact extends Contact {
             XmppError xe=XmppError.findInStanza(presence);
             int errCode=xe.getCondition();
 
-            ConferenceGroup grp=(ConferenceGroup)getGroup();
+            ConferenceGroup grp=(ConferenceGroup)group;
             if (status>=Presence.PRESENCE_OFFLINE) 
                 testMeOffline();
             if (errCode!=XmppError.CONFLICT || status>=Presence.PRESENCE_OFFLINE)
@@ -208,7 +208,7 @@ public class MucContact extends Contact {
                     }
                     b.append((statusCode==301)? SR.MS_WAS_BANNED : SR.MS_WAS_KICKED );
 //#ifdef POPUPS
-                    if (((ConferenceGroup)getGroup()).getSelfContact() == this ) {
+                    if (((ConferenceGroup)group).getSelfContact() == this ) {
                         Roster.setWobble(3, null, ((statusCode==301)? SR.MS_WAS_BANNED : SR.MS_WAS_KICKED)+((!reason.equals(""))?"\n"+reason:""));
                     }
 //#endif
@@ -326,9 +326,9 @@ public class MucContact extends Contact {
     }
 
     void testMeOffline(){
-         ConferenceGroup group=(ConferenceGroup)getGroup();
-         if ( group.getSelfContact() == this ) 
-            StaticData.getInstance().roster.roomOffline(group);
+         ConferenceGroup gr=(ConferenceGroup)group;
+         if ( gr.getSelfContact() == this ) 
+            StaticData.getInstance().roster.roomOffline(gr);
     }
 
     public void addMessage(Msg m) {

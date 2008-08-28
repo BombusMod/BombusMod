@@ -171,7 +171,10 @@ public class InfoWindow
 //#         abilitiesList.addElement((String)"CHECK_VERSION");
 //#endif
 //#ifdef CLIENTS_ICONS
-//#         abilitiesList.addElement((String)"CLIENTS_ICONS");
+//#ifdef PLUGINS
+//#         if (sd.ClientsIcons)
+//#endif
+//#             abilitiesList.addElement((String)"CLIENTS_ICONS");
 //#endif
 //#ifdef CLIPBOARD
 //#         abilitiesList.addElement((String)"CLIPBOARD");

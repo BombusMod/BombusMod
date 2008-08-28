@@ -181,6 +181,8 @@ public class BombusMod extends MIDlet implements Runnable{
 //#                     sd.Adhoc=state;
 //#                 } else if(name.equals("Stats")) {
 //#                     sd.Stats=state;
+//#                 } else if (name.equals("ClientsIcons")) {
+//#                     sd.ClientsIcons=state;
 //#                 }
 //#             }
 //#         }

@@ -76,7 +76,7 @@ public final class ContactEdit
         
         tNick=new TextInput(display, SR.MS_NAME, null, null, TextField.ANY);
         
-        tGroup=new TextInput(display, SR.MS_NEWGROUP, (c==null)?"":c.getGroup().name, null, TextField.ANY);
+        tGroup=new TextInput(display, SR.MS_NEWGROUP, (c==null)?"":c.group.name, null, TextField.ANY);
 
         tTranspList=new DropChoiceBox(display, SR.MS_TRANSPORT);
         // Transport droplist
@@ -99,7 +99,7 @@ public final class ContactEdit
                 jid=Jid.toBareJid( ((MucContact)c).realJid );
             } else {
 //#endif
-                jid=c.getBareJid();
+                jid=c.bareJid;
 //#ifndef WMUC
             }
 //#endif
@@ -124,7 +124,7 @@ public final class ContactEdit
         int sel=-1;
         ngroups=0;
         String grpName="";
-        if (c!=null) grpName=c.getGroup().name;
+        if (c!=null) grpName=c.group.name;
         
         Vector groups=sd.roster.groups.getRosterGroupNames();
         if (groups!=null) {
@@ -194,7 +194,7 @@ public final class ContactEdit
                       .append((String) tTranspList.items.elementAt(tTranspList.getSelectedIndex()));
                 jid=jidBuf.toString();
             }
-            if (!new Jid(jid).getBareJid().equals(StaticData.getInstance().roster.selfContact().getBareJid()))
+            if (!new Jid(jid).getBareJid().equals(StaticData.getInstance().roster.selfContact().bareJid))
                 sd.roster.storeContact(jid, name, group, ask);
             destroyView();
         }

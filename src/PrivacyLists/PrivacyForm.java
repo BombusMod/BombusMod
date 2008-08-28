@@ -113,14 +113,14 @@ public class PrivacyForm
             case 0: //jid
                 if (targetList!=null) {
                     if (rfocus instanceof Contact) {
-                        textValue.setValue(((Contact)rfocus).getBareJid());
+                        textValue.setValue(((Contact)rfocus).bareJid);
                     }
                 }
                 itemsList.addElement(textValue);
                 break;
             case 1: //group
                 if (targetList!=null)
-                    textValue.setValue(((rfocus instanceof Group)?(Group)rfocus:((Contact)rfocus).getGroup()).getName());
+                    textValue.setValue(((rfocus instanceof Group)?(Group)rfocus:((Contact)rfocus).group).getName());
                 itemsList.addElement(textValue);
                 break;
             case 2: //subscription

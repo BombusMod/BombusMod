@@ -316,9 +316,9 @@ public class SR {
 //#     public static String MS_CURSOR_OUTLINE=loadString("Cursor ink & outline");
 //#     public static String MS_SCROLL_BRD=loadString("Scroll border");
 //#     public static String MS_SCROLL_BAR=loadString("Scroll bar");
-//#     public static String MS_SCROLL_BGND=loadString("Scroll back");    
-//#     public static String MS_MESSAGE_IN_S=loadString("other message incoming"); 
-//#     public static String MS_MESSAGE_OUT_S=loadString("other message outgoing"); 
+//#     public static String MS_SCROLL_BGND=loadString("Scroll back");
+//#     public static String MS_MESSAGE_IN_S=loadString("other message incoming");
+//#     public static String MS_MESSAGE_OUT_S=loadString("other message outgoing");
 //#     public static String MS_MESSAGE_PRESENCE_S=loadString("other message presence");
 //#     public static String MS_POPUP_MESSAGE=loadString("Popup font");
 //#     public static String MS_POPUP_MESSAGE_BGND=loadString("Popup background");
@@ -435,12 +435,12 @@ public class SR {
     public static String MS_DO_AUTOJOIN = loadString( "Join marked (auto)" ); //temporary
     
     public static String MS_STATS = loadString( "Statistics" );
-//#ifdef STATS
-//#     public static String MS_STARTED=loadString("Started: ");
-//#     public static String MS_TRAFFIC_STATS=loadString("Traffic stats: ");
-//#     public static String MS_ALL=loadString("All: ");
-//#     public static String MS_CURRENT=loadString("Current: ");
-//#endif
+
+    public static String MS_STARTED=loadString("Started: ");
+    public static String MS_TRAFFIC_STATS=loadString("Traffic stats: ");
+    public static String MS_ALL=loadString("All: ");
+    public static String MS_CURRENT=loadString("Current: ");
+
     public static String MS_LAST_MESSAGES = loadString( "Last Messages" );
     public static String MS_EDIT_JOIN = loadString( "Edit/join" );
     public static String MS_USE_COLOR_SCHEME = loadString( "Use this Color scheme" );
@@ -673,6 +673,8 @@ public class SR {
     public static String MS_FILE_MANAGER=loadString("File manager");
     
     public static String MS_ADHOC=loadString("remote control");
+    
+    public static String MS_USE_DNS_SRV_RESOLVER=loadString("resolve hostname");
     
     private SR() { }
     

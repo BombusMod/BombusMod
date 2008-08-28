@@ -81,5 +81,6 @@ public class StaticData {
 //#     public boolean Colors=true;
 //#     public boolean Adhoc=true;
 //#     public boolean Stats=true;
+//#     public boolean ClientsIcons=true;
 //#endif
 }

@@ -60,8 +60,8 @@ public class ChangeTransport implements CommandListener {
         tTranspList=new ChoiceGroup(SR.MS_TRANSPORT, ChoiceGroup.POPUP);
         for (Enumeration e=sd.roster.getHContacts().elements(); e.hasMoreElements(); ){
             Contact ct=(Contact)e.nextElement();
-            if (ct.jid.isTransport() && ct.getStatus()<Presence.PRESENCE_OFFLINE) //New transport must be online! If old transport is online and new transport is offline, contact list of guest IM account may be damaged
-                tTranspList.append(ct.getBareJid(), null);
+            if (ct.jid.isTransport() && ct.status<Presence.PRESENCE_OFFLINE) //New transport must be online! If old transport is online and new transport is offline, contact list of guest IM account may be damaged
+                tTranspList.append(ct.bareJid, null);
         }
         if (tTranspList.size()==0) {
             tTranspList.append(srcTransport, null); //for avoiding exceptions and for resubscribing to all users of the transport ;)

@@ -29,7 +29,9 @@ package Colors;
 
 import Client.StaticData;
 import io.NvStorage;
+//#ifdef FILE_IO
 import io.file.FileIO;
+//#endif
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;

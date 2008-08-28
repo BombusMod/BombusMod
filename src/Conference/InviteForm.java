@@ -65,7 +65,7 @@ public class InviteForm
         for (Enumeration c=StaticData.getInstance().roster.getHContacts().elements(); c.hasMoreElements(); ) {
             try {
                 MucContact mc=(MucContact)c.nextElement();
-                if (mc.origin==Contact.ORIGIN_GROUPCHAT && mc.getStatus()==Presence.PRESENCE_ONLINE) {
+                if (mc.origin==Contact.ORIGIN_GROUPCHAT && mc.status==Presence.PRESENCE_ONLINE) {
                     conferenceList.append(mc.getJid());
                     conferences.addElement(mc.getJid());
                 }
@@ -88,7 +88,7 @@ public class InviteForm
         Message inviteMsg=new Message(room);
         JabberDataBlock x=inviteMsg.addChildNs("x", "http://jabber.org/protocol/muc#user");
         JabberDataBlock invite=x.addChild("invite",null);
-        String invited=(contact instanceof MucContact)? ((MucContact)contact).realJid : contact.getBareJid();
+        String invited=(contact instanceof MucContact)? ((MucContact)contact).realJid : contact.bareJid;
 
         invite.setAttribute("to", invited);
 

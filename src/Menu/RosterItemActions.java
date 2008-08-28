@@ -178,7 +178,7 @@ public class RosterItemActions extends Menu {
             }
             
             if (contact instanceof MucContact) {
-                MucContact selfContact= ((ConferenceGroup) contact.getGroup()).getSelfContact();
+                MucContact selfContact= ((ConferenceGroup) contact.group).getSelfContact();
                 MucContact mc=(MucContact) contact;
                 
                 //invite
@@ -247,7 +247,7 @@ public class RosterItemActions extends Menu {
                     if (mc.affiliationCode!=MucContact.AFFILIATION_OWNER) 
                         addItem(SR.MS_GRANT_OWNERSHIP,38, menuIcons.ICON_OWNER);
                 }
-                if (mc.realJid!=null && mc.getStatus()<Presence.PRESENCE_OFFLINE) {
+                if (mc.realJid!=null && mc.status<Presence.PRESENCE_OFFLINE) {
                     
                 }
             } else if (contact.getGroupType()!=Groups.TYPE_TRANSP && contact.getGroupType()!=Groups.TYPE_SEARCH_RESULT) {
@@ -349,7 +349,7 @@ public class RosterItemActions extends Menu {
         if (isContact) c=(Contact)item; else g=(Group) item;
         
         String to=null;
-        if (isContact) to=(index<3)? c.getJid() : c.getBareJid();
+        if (isContact) to=(index<3)? c.getJid() : c.bareJid;
             switch (index) {
                 case 0: // version
                     sd.roster.setQuerySign(true);
@@ -368,7 +368,7 @@ public class RosterItemActions extends Menu {
                             new VCardView(display, sd.roster, c.vcard, c.getNickJid());
                         return;
                     }
-                    VCard.request(c.getBareJid(), c.getJid());
+                    VCard.request(c.bareJid, c.getJid());
                     break;
                 case 2:
                     new ContactEdit(display, sd.roster, c );
@@ -399,11 +399,11 @@ public class RosterItemActions extends Menu {
                     sd.roster.theStream.send( presence2 );
                     break;
                 case 7: // Nick resolver
-                    sd.roster.resolveNicknames(c.getBareJid());
+                    sd.roster.resolveNicknames(c.bareJid);
                     break;
 //#if CHANGE_TRANSPORT
 //#                 case 915: // change transport
-//#                     new ChangeTransport(display, c.getBareJid());
+//#                     new ChangeTransport(display, c.bareJid);
 //#                     return;
 //#endif
                 case 21:
@@ -424,11 +424,11 @@ public class RosterItemActions extends Menu {
                     break;
                 case 890: //online
                     sd.roster.setQuerySign(true);
-                    sd.roster.theStream.send(IqLast.query(c.getBareJid(), "online_"+c.getResource()));
+                    sd.roster.theStream.send(IqLast.query(c.bareJid, "online_"+c.getResource()));
                     break;
                 case 894: //seen
                     sd.roster.setQuerySign(true);
-                    sd.roster.theStream.send(IqLast.query(c.getBareJid(), "seen"));
+                    sd.roster.theStream.send(IqLast.query(c.bareJid, "seen"));
                     break;
                 case 891: //time
                     sd.roster.setQuerySign(true);
@@ -541,7 +541,7 @@ public class RosterItemActions extends Menu {
                 
                 String myNick="";
                 if (c instanceof MucContact) {
-                    myNick=((ConferenceGroup)c.getGroup()).getSelfContact().getName();
+                    myNick=((ConferenceGroup)c.group).getSelfContact().getName();
                 }
                 
                 switch (index) { // muc contact actions

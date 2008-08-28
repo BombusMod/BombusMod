@@ -110,7 +110,7 @@ public class SearchResult
 		    if (name.equals("status")) if (!value.equals("offline")) status=Presence.PRESENCE_ONLINE;
                 }
                 Contact serv=new DiscoContact(null, jid, status);
-                serv.setGroup(sd.roster.groups.getGroup(Groups.TYPE_SEARCH_RESULT));
+                serv.group=sd.roster.groups.getGroup(Groups.TYPE_SEARCH_RESULT);
                 serv.subscr="search";
                 Msg m=new Msg(Msg.MESSAGE_TYPE_IN, jid, "Short info", vcard.toString());
                 m.unread=false;

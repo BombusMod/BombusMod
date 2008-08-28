@@ -156,7 +156,11 @@ public class ConfigForm
         useBoldFont = new CheckBox(SR.MS_BOLD_FONT, cf.useBoldFont); itemsList.addElement(useBoldFont);
         rosterStatus = new CheckBox(SR.MS_SHOW_STATUSES, cf.rosterStatus); itemsList.addElement(rosterStatus);
 //#ifdef CLIENTS_ICONS
-//#         showClientIcon = new CheckBox(SR.MS_SHOW_CLIENTS_ICONS, cf.showClientIcon); itemsList.addElement(showClientIcon);
+//#         showClientIcon = new CheckBox(SR.MS_SHOW_CLIENTS_ICONS, cf.showClientIcon);
+//#ifdef PLUGINS
+//#         if (sd.ClientsIcons)
+//#endif
+//#             itemsList.addElement(showClientIcon);
 //#endif
         
         itemsList.addElement(new SpacerItem(10));
@@ -344,7 +348,10 @@ public class ConfigForm
         cf.useBoldFont=useBoldFont.getValue();
         cf.rosterStatus=rosterStatus.getValue();
 //#ifdef CLIENTS_ICONS
-//#         cf.showClientIcon=showClientIcon.getValue();
+//#ifdef PLUGINS
+//#         if (sd.ClientsIcons)
+//#endif
+//#             cf.showClientIcon=showClientIcon.getValue();
 //#endif
         cf.autoSubscribe=subscr.getSelectedIndex();
         

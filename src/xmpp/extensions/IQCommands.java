@@ -69,7 +69,7 @@ public class IQCommands implements JabberBlockListener {
         String from=data.getAttribute("from");
         
         if (from!=null) {
-            if (!new Jid(from).getBareJid().equals(sd.roster.selfContact().getBareJid()))
+            if (!new Jid(from).getBareJid().equals(sd.roster.selfContact().bareJid))
                 return BLOCK_REJECTED;
         } else return BLOCK_REJECTED;
 
@@ -183,7 +183,7 @@ public class IQCommands implements JabberBlockListener {
                                         Contact cl=(Contact) c.nextElement();
                                         if (cl.origin!=Contact.ORIGIN_GROUPCHAT) continue;
                                         if (!((MucContact)cl).commonPresence) continue; // stop if room left manually
-                                        ConferenceGroup confGroup=(ConferenceGroup)cl.getGroup();
+                                        ConferenceGroup confGroup=(ConferenceGroup)cl.group;
 
                                         if (!confGroup.inRoom) continue; // don`t reenter to leaved rooms
 
@@ -275,7 +275,7 @@ public class IQCommands implements JabberBlockListener {
         for (Enumeration c=sd.roster.getHContacts().elements(); c.hasMoreElements(); ) {
             try {
                 MucContact mc=(MucContact)c.nextElement();
-                if (mc.origin==Contact.ORIGIN_GROUPCHAT && mc.getStatus()==0) {
+                if (mc.origin==Contact.ORIGIN_GROUPCHAT && mc.status==0) {
                     JabberDataBlock labelOnline=fieldGroupchats.addChild("option", "");
                     labelOnline.setAttribute("label", mc.getJid());
                     labelOnline.addChild("value", mc.getJid());

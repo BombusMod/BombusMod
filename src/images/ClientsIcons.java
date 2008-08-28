@@ -36,7 +36,8 @@ import util.StringLoader;
  * @author ad
  */
 public class ClientsIcons extends ImageList {
-    
+    public static String plugin = new String("PLUGIN_CLIENTS_ICONS");
+
     private static Vector clients[]=new Vector[2];
     
     private static String res= "/images/clients.png";

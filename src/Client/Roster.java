@@ -626,7 +626,7 @@ public class Roster
                         group=groups.addGroup(grpName, Groups.TYPE_COMMON);
                     }
                     c.nick=nick;
-                    c.setGroup(group);
+                    c.group=group;
                     c.subscr=subscr;
                     c.offline_type=status;
                     c.ask_subscribe=ask;
@@ -640,7 +640,7 @@ public class Roster
                     if (querysign==true)
                     {
                         if (cf.collapsedGroups) {
-                            Group g=c.getGroup();
+                            Group g=c.group;
                             g.collapsed=true; 
                         }
                     }
@@ -713,7 +713,7 @@ public class Roster
         }
 		        
         // change nick if already in room
-        if (c.getStatus()==Presence.PRESENCE_ONLINE) return grp;
+        if (c.status==Presence.PRESENCE_ONLINE) return grp;
 
         c.setStatus(Presence.PRESENCE_ONLINE);
         
@@ -724,7 +724,7 @@ public class Roster
 
         grp.conferenceJoinTime=Time.utcTimeMillis();
         grp.setConference(c);
-        c.setGroup(grp);
+        c.group=grp;
         
         String nick=from.substring(rp+1);
 
@@ -753,7 +753,7 @@ public class Roster
         }
 
         grp.setSelfContact(c);
-        c.setGroup(grp);
+        c.group=grp;
         c.origin=Contact.ORIGIN_GC_MYSELF;
                
         sort(hContacts);
@@ -779,7 +779,7 @@ public class Roster
             c.origin=Contact.ORIGIN_GC_MEMBER;
         }
         
-        c.setGroup(grp);
+        c.group=grp;
         sort(hContacts);
         return c;
     }
@@ -797,7 +797,7 @@ public class Roster
             c=new Contact(null, jid, Presence.PRESENCE_OFFLINE, "none" ); /*"not-in-list"*/
 	    c.bareJid=J.getBareJid();
             c.origin=Contact.ORIGIN_PRESENCE;
-            c.setGroup(groups.getGroup(Groups.TYPE_NOT_IN_LIST));
+            c.group=groups.getGroup(Groups.TYPE_NOT_IN_LIST);
             addContact(c);
         } else {
             if (c.origin==Contact.ORIGIN_ROSTER) {
@@ -953,7 +953,7 @@ public class Roster
                 Contact c=(Contact) e.nextElement();
                 if (c.origin!=Contact.ORIGIN_GROUPCHAT) continue;
                 if (!((MucContact)c).commonPresence) continue; // stop if room left manually
-                ConferenceGroup confGroup=(ConferenceGroup)c.getGroup();
+                ConferenceGroup confGroup=(ConferenceGroup)c.group;
 
                 if (!confGroup.inRoom) continue; // don`t reenter to leaved rooms
 
@@ -1008,7 +1008,7 @@ public class Roster
                 c.subscr.startsWith("to");
                 //getMessage(cursor).messageType==Msg.MESSAGE_TYPE_AUTH;
         
-        String to=(c.jid.isTransport())?c.getJid():c.getBareJid();
+        String to=(c.jid.isTransport())?c.getJid():c.bareJid;
         
         if (subscribed) sendPresence(to,"subscribed", null, false);
         if (subscribe) sendPresence(to,"subscribe", null, false);
@@ -1115,7 +1115,7 @@ public class Roster
 //#                     grpType==Groups.TYPE_VISIBLE || grpType==Groups.TYPE_IGNORE)) {
 //#                 String jid=k.getJid();
 //#                 jid=StringUtils.stringReplace(jid, srcTransport, dstTransport);
-//#                 storeContact(jid, k.nick, (!k.getGroup().getName().equals(SR.MS_GENERAL))?(k.getGroup().getName()):"", true); //new contact addition
+//#                 storeContact(jid, k.nick, (!k.group.getName().equals(SR.MS_GENERAL))?(k.group.getName()):"", true); //new contact addition
 //#                 try {
 //#                     Thread.sleep(300);
 //#                 } catch (Exception ex) { }
@@ -1243,8 +1243,7 @@ public class Roster
                         
                         Contact c=findContact(new Jid(from), false);
                         
-                        String group=(c.getGroupType()==Groups.TYPE_NO_GROUP)?
-                            null: c.getGroup().name;
+                        String group=(c.getGroupType()==Groups.TYPE_NO_GROUP)? null: c.group.name;
                         if (nick!=null)  storeContact(from,nick,group, false);
                         //updateContact( nick, c.rosterJid, group, c.subscr, c.ask_subscribe);
                         sendVCardReq();
@@ -1449,20 +1448,20 @@ public class Roster
 
                     if (message.findNamespace("active", "http://jabber.org/protocol/chatstates")!=null) {
                         c.acceptComposing=true;
-                        c.setComposing(false);
+                        c.showComposing=false;
                         setTicker(c, "");
                      }
 
                     if (message.findNamespace("paused", "http://jabber.org/protocol/chatstates")!=null) {
                         c.acceptComposing=true;
-                        c.setComposing(false);
+                        c.showComposing=false;
                         setTicker(c, "");
                     }
 
                     if (message.findNamespace("composing", "http://jabber.org/protocol/chatstates")!=null) {
                         playNotify(SOUND_COMPOSING);
                         c.acceptComposing=true;
-                        c.setComposing(true);
+                        c.showComposing=true;
                         setTicker(c, SR.MS_COMPOSING_NOTIFY);
                     }
                 }
@@ -1477,12 +1476,12 @@ public class Roster
 //#ifndef WMUC
                 if (m.getBody().indexOf(SR.MS_IS_INVITING_YOU)>-1) m.dateGmt=0;
                 if (groupchat) {
-                    ConferenceGroup mucGrp=(ConferenceGroup)c.getGroup();
+                    ConferenceGroup mucGrp=(ConferenceGroup)c.group;
                     if (mucGrp.getSelfContact().getJid().equals(message.getFrom())) {
                         m.messageType=Msg.MESSAGE_TYPE_OUT;
                         m.unread=false;
                     } else {
-                        if (m.dateGmt<= ((ConferenceGroup)c.getGroup()).conferenceJoinTime)
+                        if (m.dateGmt<= ((ConferenceGroup)c.group).conferenceJoinTime)
                             m.messageType=Msg.MESSAGE_TYPE_HISTORY;
                         // highliting messages with myNick substring
 	                String myNick=mucGrp.getSelfContact().getName();
@@ -1540,15 +1539,20 @@ public class Roster
                     try {
                         MucContact c = mucContact(from);
 //#ifdef CLIENTS_ICONS
-//#                         if (pr.hasEntityCaps())
-//#                             if (pr.getEntityNode()!=null)
-//#                                 c.setClient(ClientsIcons.getInstance().getClientIDByCaps(pr.getEntityNode()));
+//#ifdef PLUGINS
+//#                         if (sd.ClientsIcons)
+//#endif
+//#                             if (pr.hasEntityCaps())
+//#                                 if (pr.getEntityNode()!=null) {
+//#                                     c.client=ClientsIcons.getInstance().getClientIDByCaps(pr.getEntityNode());
+//#                                     c.clientName=(c.client>-1)?c.clientName=ClientsIcons.getInstance().getClientNameByID(c.client):"";
+//#                                 }
 //#endif
                         String lang=pr.getAttribute("xml:lang");
 //#if DEBUG
 //#                         System.out.println(lang);
 //#endif
-                        if (lang!=null) c.setLang(lang);
+                        if (lang!=null) c.lang=lang;
 
                         int rp=from.indexOf('/');
 
@@ -1605,25 +1609,30 @@ public class Roster
                         
                         if (pr.getTypeIndex()!=Presence.PRESENCE_ERROR) {
 //#ifdef CLIENTS_ICONS
-//#                             if (pr.hasEntityCaps()) {
-//#                                 if (pr.getEntityNode()!=null) {
-//#                                     c.setClient(ClientsIcons.getInstance().getClientIDByCaps(pr.getEntityNode()));
+//#ifdef PLUGINS
+//#                             if (sd.ClientsIcons)
+//#endif
+//#                                 if (pr.hasEntityCaps()) {
+//#                                     if (pr.getEntityNode()!=null) {
+//#                                         c.client=ClientsIcons.getInstance().getClientIDByCaps(pr.getEntityNode());
+//#                                         c.clientName=(c.client>-1)?c.clientName=ClientsIcons.getInstance().getClientNameByID(c.client):"";
+//#                                     }
+//#                                 } else if (c.jid.hasResource()) {
+//#                                     c.client=ClientsIcons.getInstance().getClientIDByCaps(c.getResource().substring(1));
+//#                                     c.clientName=(c.client>-1)?c.clientName=ClientsIcons.getInstance().getClientNameByID(c.client):"";
 //#                                 }
-//#                             } else if (c.jid.hasResource()) {
-//#                                 c.setClient(ClientsIcons.getInstance().getClientIDByCaps(c.getResource().substring(1)));
-//#                             }
 //#endif
                             JabberDataBlock j2j=pr.findNamespace("x", "j2j:history");
                             if (j2j!=null) {
                                 if (j2j.getChildBlock("jid")!=null)
-                                    c.setJ2J(j2j.getChildBlock("jid").getAttribute("gateway"));
+                                    c.j2j=j2j.getChildBlock("jid").getAttribute("gateway");
                             }
                             
                             String lang=pr.getAttribute("xml:lang");
 //#if DEBUG
 //#                             System.out.println(lang);
 //#endif
-                            c.setLang(lang);
+                            c.lang=lang;
 
                             c.statusString=pr.getStatus();
                         }
@@ -1653,7 +1662,7 @@ public class Roster
                     }
                     if (ti==Presence.PRESENCE_OFFLINE)  {
                         c.setIncoming(Contact.INC_NONE);
-                        c.setComposing(false);
+                        c.showComposing=false;
                     }
                     if (ti>=0) {
                         if (ti==Presence.PRESENCE_OFFLINE)
@@ -1724,9 +1733,11 @@ public class Roster
     }
 //#endif
     
+//#ifdef FILE_TRANSFER
     public void addMessageStore(String from, String message) {
         messageStore(getContact(from, true), new Msg(Msg.MESSAGE_TYPE_SYSTEM, from, SR.MS_FILE, message));
     }
+//#endif
     
     public void messageStore(Contact c, Msg message) {
         if (c==null) return;
@@ -1932,7 +1943,7 @@ public class Roster
     }
 
     private void focusToContact(final Contact c, boolean force) {
-	Group g=c.getGroup();
+	Group g=c.group;
         if (g.collapsed) {
             g.collapsed=false;
             reEnumerator.queueEnum(c, force);
@@ -2062,7 +2073,7 @@ public class Roster
                 }
 //#ifndef WMUC
                 else if (isContact && isMucContact && c.origin!=Contact.ORIGIN_GROUPCHAT) {
-                    ConferenceGroup mucGrp=(ConferenceGroup)c.getGroup();
+                    ConferenceGroup mucGrp=(ConferenceGroup)c.group;
                     String myNick=mucGrp.getSelfContact().getName();
                     MucContact mc=(MucContact) c;
                     new ConferenceQuickPrivelegeModify(display, this, mc, ConferenceQuickPrivelegeModify.KICK,myNick);
@@ -2341,8 +2352,8 @@ public class Roster
 //#ifdef PEP_TUNE
 //#                 if (cntact.pepTune) {
 //#                     mess.append("\n").append(SR.MS_USER_TUNE);
-//#                     if (cntact.getUserTune()!="") {
-//#                         mess.append(": ").append(cntact.getUserTune());
+//#                     if (cntact.pepTuneText!="") {
+//#                         mess.append(": ").append(cntact.pepTuneText);
 //#                     }
 //#                 }
 //#endif
@@ -2351,11 +2362,15 @@ public class Roster
             }
 //#endif
             if (cntact.origin!=Contact.ORIGIN_GROUPCHAT){
-                mess.append((cntact.getJ2J()!=null)?"\nJ2J: "+cntact.getJ2J():"");
+                mess.append((cntact.j2j!=null)?"\nJ2J: "+cntact.j2j:"");
 //#ifdef CLIENTS_ICONS
-//#                 mess.append((cntact.getClient()>-1)?"\nUse: "+ClientsIcons.getInstance().getClientNameByID(cntact.getClient()):"");
+//#ifdef PLUGINS
+//#                 if (sd.ClientsIcons)
 //#endif
-                if (cntact.getLang()!=null) mess.append("\nLang: "+cntact.getLang());
+//#                     if (cntact.client>-1)
+//#                         mess.append("\nUse: "+cntact.clientName);
+//#endif
+                if (cntact.lang!=null) mess.append("\nLang: "+cntact.lang);
             }
             
             if (cntact.statusString!=null) {
@@ -2605,10 +2620,10 @@ public class Roster
                 countNewMsgs();
                 reEnumRoster();
             } else {
-                theStream.send(new IqQueryRoster(c.getBareJid(),null,null,"remove"));
+                theStream.send(new IqQueryRoster(c.bareJid,null,null,"remove"));
                 
-                sendPresence(c.getBareJid(), "unsubscribe", null, false);
-                sendPresence(c.getBareJid(), "unsubscribed", null, false);
+                sendPresence(c.bareJid, "unsubscribe", null, false);
+                sendPresence(c.bareJid, "unsubscribed", null, false);
             }
         }
     }
@@ -2660,7 +2675,7 @@ public class Roster
                     synchronized (hContacts) {
                         for (Enumeration e=hContacts.elements(); e.hasMoreElements();){
                             Contact c=(Contact)e.nextElement();
-                            Group grp=c.getGroup();
+                            Group grp=c.group;
 			    grp.addContact(c);
                         }
                     }                
@@ -2767,7 +2782,7 @@ public class Roster
         synchronized (hContacts) {
             for (Enumeration e=hContacts.elements(); e.hasMoreElements();){
                 Contact cr=(Contact)e.nextElement();
-                if (cr.getGroup()==deleteGroup)
+                if (cr.group==deleteGroup)
                     deleteContact(cr);                
             }
         }

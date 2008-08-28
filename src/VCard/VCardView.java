@@ -26,8 +26,8 @@
  */
 
 package VCard;
-//#if FILE_IO
 import Client.Config;
+//#if FILE_IO
 import io.file.FileIO;
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;

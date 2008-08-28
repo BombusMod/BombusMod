@@ -139,8 +139,8 @@ public class PepListener implements JabberBlockListener{
                 if (c.jid.equals(j, false)) {
                     if (mood!=null) {
                         c.pepMood=moodIndex;
-                        c.setUserMood(Moods.getInstance().getMoodLabel(moodIndex));
-                        c.setUserMoodText(moodText);
+                        c.pepMoodName=Moods.getInstance().getMoodLabel(moodIndex);
+                        c.pepMoodText=moodText;
                         
                         if (c.getGroupType()==Groups.TYPE_SELF) {
                             if (id!=null) Moods.getInstance().myMoodId=id;
@@ -151,7 +151,7 @@ public class PepListener implements JabberBlockListener{
 //#ifdef PEP_TUNE
 //#                     if (tune!=null) {
 //#                         c.pepTune=tuneValue;
-//#                         c.setUserTune(result.toString());
+//#                         c.pepTuneText=result.toString();
 //#                     }
 //#endif
                     c.addMessage(m);

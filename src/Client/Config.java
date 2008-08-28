@@ -560,6 +560,9 @@ type = \"-=Siemens=-\";
 //#ifdef ADHOC
 //#         if(!sd.Adhoc) adhoc=false;
 //#endif
+//#ifdef CLIENTS_ICONS
+//#         if(!sd.ClientsIcons) showClientIcon=false;
+//#endif
 //#endif
     }
     

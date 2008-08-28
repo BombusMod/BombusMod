@@ -125,7 +125,10 @@ public class ContactMessageList extends MessageList {
 //#endif
 //#endif
 //#ifdef CLIENTS_ICONS
-//#         mainbar.addElement(null);
+//#ifdef PLUGINS
+//#         if (sd.ClientsIcons)
+//#endif
+//#             mainbar.addElement(null);
 //#endif
         
         cursor=0;//activate
@@ -262,7 +265,10 @@ public class ContactMessageList extends MessageList {
         }
         int num=2;
 //#ifdef CLIENTS_ICONS
-//#         if (contact.getClient()>-1) getMainBarItem().setElementAt(RosterIcons.iconTransparent, num++);
+//#ifdef PLUGINS
+//#         if (sd.ClientsIcons)
+//#endif
+//#             if (contact.client>-1) getMainBarItem().setElementAt(RosterIcons.iconTransparent, num++);
 //#endif
         
 //#ifdef PEP
@@ -274,7 +280,10 @@ public class ContactMessageList extends MessageList {
         getMainBarItem().setElementAt((contact.vcard==null)?null:RosterIcons.iconHasVcard, num++);
         getMainBarItem().setElementAt(sd.roster.getEventIcon(), num++);
 //#ifdef CLIENTS_ICONS
-//#         if (contact.getClient()<0) getMainBarItem().setElementAt(RosterIcons.iconTransparent, num++);
+//#ifdef PLUGINS
+//#         if (sd.ClientsIcons)
+//#endif
+//#             if (contact.client<0) getMainBarItem().setElementAt(RosterIcons.iconTransparent, num++);
 //#endif
         
 //#ifdef PEP
@@ -394,7 +403,7 @@ public class ContactMessageList extends MessageList {
         }
 		
         if (c==cmdUnsubscribed) {
-            sd.roster.sendPresence(contact.getBareJid(), "unsubscribed", null, false);
+            sd.roster.sendPresence(contact.bareJid, "unsubscribed", null, false);
         }
 //#ifdef CLIPBOARD
 //#         if (c==cmdSendBuffer) {
@@ -558,17 +567,18 @@ public class ContactMessageList extends MessageList {
 //#ifdef LAST_MESSAGES
 //#     public void loadRecentList() {
 //#         contact.setHistoryLoaded(true);
-//#         HistoryStorage hs = new HistoryStorage(contact.getBareJid());
+//#         HistoryStorage hs = new HistoryStorage(contact.bareJid);
 //#         Vector history=hs.importData();
 //# 
-//#         for (Enumeration messages=history.elements(); messages.hasMoreElements(); )  {
-//#             Msg message=(Msg) messages.nextElement();
+//#         for (Enumeration messages2=history.elements(); messages2.hasMoreElements(); )  {
+//#             Msg message=(Msg) messages2.nextElement();
 //#             if (!isMsgExists(message)) {
 //#                 message.setHistory(true);
 //#                 contact.msgs.insertElementAt(message, 0);
 //#             }
 //#             message=null;
 //#         }
+//#         history=null;
 //#     }
 //# 
 //#     private boolean isMsgExists(Msg msg) {
@@ -593,7 +603,7 @@ public class ContactMessageList extends MessageList {
 //#             nick=null;
 //#         } else {
 //#endif
-//#             histRecord.append(contact.getBareJid());
+//#             histRecord.append(contact.bareJid);
 //#ifndef WMUC
 //#         }
 //#endif

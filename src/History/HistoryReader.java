@@ -59,7 +59,7 @@ public class HistoryReader
 
         setMainBarItem(new MainBar("History reader"));
         
-        hl = new HistoryLoader(c.getBareJid());
+        hl = new HistoryLoader(c.bareJid);
         
         listSize=hl.getSize();
         
