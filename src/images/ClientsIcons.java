@@ -27,9 +27,7 @@
 
 package images;
 
-import java.util.Vector;
 import ui.ImageList;
-import util.StringLoader;
 
 /**
  *
@@ -38,75 +36,16 @@ import util.StringLoader;
 public class ClientsIcons extends ImageList {
     public static String plugin = new String("PLUGIN_CLIENTS_ICONS");
 
-    private static Vector clients[]=new Vector[2];
-    
-    private static String res= "/images/clients.png";
-    private static String restxt= "/images/clients.txt";
-    
     private final static int CLIENTS_IN_ROW=16;
-    private static int cols;
 
     /** Creates a new instance of RosterIcons */
     private ClientsIcons() {
-        super(res, cols, CLIENTS_IN_ROW);
+        super("/images/clients.png", 0, CLIENTS_IN_ROW);
     }
     
-    private static ClientsIcons instance;
-    public static ClientsIcons getInstance() {
-	if (instance==null){
-            try {
-                clients[0]=new Vector();
-                clients[1]=new Vector();
-
-                clients=new StringLoader().stringLoader(restxt, 2);
-
-                cols=ceil(CLIENTS_IN_ROW, clients[0].size());
-            } catch (Exception e) {
-                System.out.print("Can't load ");
-                System.out.println(restxt);
-            }
-            instance=new ClientsIcons();
-        }
+    private static ImageList instance;
+    public static ImageList getInstance() {
+	if (instance==null) instance=new ClientsIcons();
 	return instance;
     }
-    
-    private static int ceil(int rows, int count){
-        int tempCols=count/rows;
-        if (count>(tempCols*rows))
-            tempCols++;
-        return tempCols;
-    }
-    
-    public int getClientIDByCaps(String caps) {
-        if (clients.length==0) return -1;
-        caps=caps.toLowerCase();
-        for (int i=0; i<clients[0].size(); i++) {
-            String client=((String) clients[0].elementAt(i)).toLowerCase();
-            if (client.indexOf(",")>-1) {
-                boolean parse = true;
-                int pos=0;
-                while (parse) {
-                    if (pos>-1) {
-                        int endpos=client.indexOf(",", pos);
-                        String eqStr=(endpos<0)?client.substring(pos):client.substring(pos, endpos);
-                        if (caps.indexOf(eqStr)>-1) return i;
-                        
-                        pos=client.indexOf(",", pos+1);
-                        if (pos<0) parse=false; else pos=pos+1;
-                    } else parse=false;
-                }
-            } else {
-                if (caps.indexOf(client)>-1)
-                    return i;
-            }
-	}
-        return -1;
-    }
-    
-    public String getClientNameByID(int id) {
-        if (clients.length==0) return "";
-        
-        return (String) clients[1].elementAt(id);
-    }
-    
 }

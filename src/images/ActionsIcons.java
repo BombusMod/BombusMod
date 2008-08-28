@@ -37,10 +37,8 @@ import ui.ImageList;
 public class ActionsIcons extends ImageList {
     
     private static ActionsIcons instance;
-
     public static ActionsIcons getInstance() {
-	if (instance==null)
-            instance=new ActionsIcons();
+	if (instance==null) instance=new ActionsIcons();
 	return instance;
     }
 
@@ -83,7 +81,7 @@ public class ActionsIcons extends ImageList {
     public static final int ICON_ADMINS         = 0x26; //Администраторы
     public static final int ICON_MEMBERS        = 0x27; //Члены
     
-    public static final int ICON_OUTCASTS       = 0x30; //�?згои(Ban)
+    public static final int ICON_OUTCASTS       = 0x30; //�?згои(Ban)
     public static final int ICON_KICK           = 0x31; //Выгнать (kick)
     public static final int ICON_BAN            = 0x32; //Бан (ban)
     public static final int ICON_DEVOICE        = 0x33; //Отнять право голоса

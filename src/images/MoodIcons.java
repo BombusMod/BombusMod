@@ -37,10 +37,12 @@ public class MoodIcons extends ImageList{
     public static String plugin = new String("PLUGIN_PEP");
     
     private final static int SMILES_IN_ROW=16;
+
     /** Creates a new instance of SmilesIcons */
     private MoodIcons() {
 	super("/images/moods.png", 0, SMILES_IN_ROW);
     }
+
     private static ImageList instance;
     public static ImageList getInstance() {
 	if (instance==null) instance=new MoodIcons();

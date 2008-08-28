@@ -36,10 +36,8 @@ import ui.ImageList;
 public class MenuIcons extends ImageList{
     
     private static MenuIcons instance;
-
     public static MenuIcons getInstance() {
-	if (instance==null)
-            instance=new MenuIcons();
+	if (instance==null) instance=new MenuIcons();
 	return instance;
     }
 

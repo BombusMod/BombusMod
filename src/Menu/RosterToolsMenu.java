@@ -58,6 +58,7 @@ import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
 import Colors.ColorConfigForm;
+import ui.ImageList;
 //#ifdef USER_KEYS
 //# import ui.keys.userKeysList;
 //#endif

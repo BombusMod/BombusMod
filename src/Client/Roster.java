@@ -56,7 +56,7 @@ import Archive.ArchiveList;
 import Menu.RosterItemActions;
 import Menu.RosterToolsMenu;
 //#ifdef CLIENTS_ICONS
-//# import images.ClientsIcons;
+//# import images.ClientsIconsData;
 //#endif
 import images.RosterIcons;
 
@@ -1543,33 +1543,29 @@ public class Roster
 //#                         if (sd.ClientsIcons)
 //#endif
 //#                             if (pr.hasEntityCaps())
-//#                                 if (pr.getEntityNode()!=null) {
-//#                                     c.client=ClientsIcons.getInstance().getClientIDByCaps(pr.getEntityNode());
-//#                                     c.clientName=(c.client>-1)?c.clientName=ClientsIcons.getInstance().getClientNameByID(c.client):"";
-//#                                 }
+//#                                 if (pr.getEntityNode()!=null)
+//#                                     ClientsIconsData.getInstance().processData(c, pr.getEntityNode());
 //#endif
                         String lang=pr.getAttribute("xml:lang");
 //#if DEBUG
 //#                         System.out.println(lang);
 //#endif
                         if (lang!=null) c.lang=lang;
+                        lang=null;
 
                         int rp=from.indexOf('/');
 
                         String name=from.substring(rp+1);
 
                         from=from.substring(0, rp);
-                        Msg chatPresence=new Msg(
-                               Msg.MESSAGE_TYPE_PRESENCE,
-                               name,
-                               null,
-                               c.processPresence(xmuc, pr) );     
-                        
+                        Msg chatPresence=new Msg(Msg.MESSAGE_TYPE_PRESENCE, name, null, c.processPresence(xmuc, pr) );
+                        name=null;
+
                         c.statusString=pr.getStatus();
                         
-                        if (cf.storeConfPresence || chatPresence.getBody().indexOf(SR.MS_WAS_BANNED)>-1 || chatPresence.getBody().indexOf(SR.MS_WAS_KICKED)>-1) {
+                        if (cf.storeConfPresence || chatPresence.getBody().indexOf(SR.MS_WAS_BANNED)>-1 || chatPresence.getBody().indexOf(SR.MS_WAS_KICKED)>-1)
                             messageStore(getContact(from, false), chatPresence);
-                        }
+
                         messageStore(c,m);
 
                         c.priority=pr.getPriority();
@@ -1613,13 +1609,10 @@ public class Roster
 //#                             if (sd.ClientsIcons)
 //#endif
 //#                                 if (pr.hasEntityCaps()) {
-//#                                     if (pr.getEntityNode()!=null) {
-//#                                         c.client=ClientsIcons.getInstance().getClientIDByCaps(pr.getEntityNode());
-//#                                         c.clientName=(c.client>-1)?c.clientName=ClientsIcons.getInstance().getClientNameByID(c.client):"";
-//#                                     }
+//#                                     if (pr.getEntityNode()!=null)
+//#                                         ClientsIconsData.getInstance().processData(c, pr.getEntityNode());
 //#                                 } else if (c.jid.hasResource()) {
-//#                                     c.client=ClientsIcons.getInstance().getClientIDByCaps(c.getResource().substring(1));
-//#                                     c.clientName=(c.client>-1)?c.clientName=ClientsIcons.getInstance().getClientNameByID(c.client):"";
+//#                                     ClientsIconsData.getInstance().processData(c, c.getResource().substring(1));
 //#                                 }
 //#endif
                             JabberDataBlock j2j=pr.findNamespace("x", "j2j:history");
@@ -1627,12 +1620,13 @@ public class Roster
                                 if (j2j.getChildBlock("jid")!=null)
                                     c.j2j=j2j.getChildBlock("jid").getAttribute("gateway");
                             }
+                            j2j=null;
                             
                             String lang=pr.getAttribute("xml:lang");
 //#if DEBUG
 //#                             System.out.println(lang);
 //#endif
-                            c.lang=lang;
+                            c.lang=lang; lang=null;
 
                             c.statusString=pr.getStatus();
                         }

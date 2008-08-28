@@ -208,7 +208,7 @@ public class Presence extends JabberDataBlock
         }
         return null;
     }
-  
+/*
     public String getEntityVer() {
         JabberDataBlock cc=getChildBlock("c");
         if (cc!=null){
@@ -220,6 +220,7 @@ public class Presence extends JabberDataBlock
         }
         return null;
     }
+ */
   
   public final static int PRESENCE_ONLINE=0;
   public final static int PRESENCE_CHAT=1;
