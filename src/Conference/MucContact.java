@@ -180,7 +180,8 @@ public class MucContact extends Contact {
         
         String statusText=presence.getChildBlockText("status");
         
-        String tempRealJid="";
+        String tempRealJid=item.getAttribute("jid");
+
         if (statusCode==201) {
             //todo: fix this nasty hack, it will not work if multiple status codes are nested in presence)
             b.setLength(0);
@@ -188,7 +189,6 @@ public class MucContact extends Contact {
         } else if (presenceType==Presence.PRESENCE_OFFLINE) {
             key0=3;
             String reason=item.getChildBlockText("reason");
-            tempRealJid=item.getAttribute("jid");
             switch (statusCode) {
                 case 303:
                     b.append(SR.MS_IS_NOW_KNOWN_AS);
@@ -203,8 +203,7 @@ public class MucContact extends Contact {
                 case 301: //ban
                     presenceType=Presence.PRESENCE_ERROR;
                 case 307: //kick
-                    if (tempRealJid!=null)
-                        b.append(" (").append(realJid).append(")");
+                    //if (tempRealJid!=null) b.append(" (").append(tempRealJid).append(")"); //ejabberd not send
 
                     b.append((statusCode==301)? SR.MS_WAS_BANNED : SR.MS_WAS_KICKED );
 //#ifdef POPUPS
@@ -215,8 +214,6 @@ public class MucContact extends Contact {
                     if (!reason.equals(""))
                         b.append("(").append(reason).append(")");
 
-                    //if (reason.indexOf("talks") > -1) toTalks();
-                    
                     testMeOffline();
                     break;
                 case 321:
@@ -225,41 +222,33 @@ public class MucContact extends Contact {
                     testMeOffline();
                     break;
                 default:
-                    if (tempRealJid!=null) {
+                    if (tempRealJid!=null)
                         b.append(" (").append(tempRealJid).append(")");
-                    }
+
                     b.append(SR.MS_HAS_LEFT_CHANNEL);
                     
-                if (statusText.length()>0) {
-                    b.append(" (").append(statusText).append(")");
-                }
+                    if (statusText.length()>0)
+                        b.append(" (").append(statusText).append(")");
 
                     testMeOffline();
             } 
         } else {
             if (this.status==Presence.PRESENCE_OFFLINE) {
-                tempRealJid=item.getAttribute("jid");
                 if (tempRealJid!=null) {
                     realJid=tempRealJid;  //for moderating purposes
-                    b.append(" (");
-                    appendL(b, tempRealJid);
-                    b.append(')');
+                    b.append(" (").append(tempRealJid).append(')');
                 }
                 b.append(SR.MS_HAS_JOINED_THE_CHANNEL_AS);
-                if (affiliationCode!=AFFILIATION_MEMBER) {
-                    b.append(getRoleLocale(roleCode));
-                }
+                if (affiliationCode!=AFFILIATION_MEMBER) b.append(getRoleLocale(roleCode));
 
                  if (!affiliation.equals("none")) {
-                    if (roleCode!=ROLE_PARTICIPANT) {
-                        b.append(SR.MS_AND);
-                    }
+                    if (roleCode!=ROLE_PARTICIPANT) b.append(SR.MS_AND);
+  
                     b.append(getAffiliationLocale(affiliationCode));
                 }
                 
-                if (statusText.length()>0) {
+                if (statusText.length()>0)
                     b.append(" (").append(statusText).append(")");
-                }
             } else {
                 b.append(SR.MS_IS_NOW);
                 

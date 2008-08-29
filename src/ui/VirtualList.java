@@ -31,7 +31,6 @@ import Colors.ColorTheme;
 
 import Fonts.FontCache;
 import javax.microedition.lcdui.*;
-import java.util.*;
 import Client.*;
 import locale.SR;
 //#ifdef POPUPS
@@ -44,6 +43,13 @@ import util.StringUtils;
 //#ifdef USER_KEYS
 //# import ui.keys.userKeyExec;
 //#endif
+
+//#ifdef MENU_LISTENER
+//# import java.util.Vector;
+//# import Menu.Command;
+//# import Menu.MenuListener;
+//#endif
+
 public abstract class VirtualList         
     extends Canvas {
     
@@ -176,10 +182,8 @@ public abstract class VirtualList
     
     CommandsPointer ar=new CommandsPointer();
     
-    public void touchLeftPressed(){}
     public void touchRightPressed(){
-        if (canBack)
-            destroyView();
+        if (canBack) destroyView();
     }
     
     public String touchLeftCommand(){ return SR.MS_MENU; }
@@ -851,6 +855,16 @@ public abstract class VirtualList
     }
     
     private void key(int keyCode) {
+//#ifdef MENU_LISTENER
+//#         if (keyCode==Config.SOFT_LEFT) {
+//#             showMenu();
+//#             return;
+//#         }
+//#         if (keyCode==Config.SOFT_RIGHT || keyCode==Config.KEY_BACK) {
+//#             cmdCancel();
+//#             return;
+//#         }
+//#endif
         if (sendEvent(keyCode)) {
             repaint();
             return;
@@ -1256,6 +1270,34 @@ public abstract class VirtualList
             getInfoBarItem().setElementAt(s.toString(), 3);
             s=null;
     }
+    
+//#ifdef MENU_LISTENER
+//#     public Vector menuCommands=new Vector();
+//# 
+//#     public void addCommand(Command command) {
+//#         if (menuCommands.indexOf(command)<0)
+//#             menuCommands.addElement(command);
+//#     }
+//#     
+//#     public void removeCommand(Command command) {
+//#         menuCommands.removeElement(command);        
+//#     }
+//#     
+//#     public void touchLeftPressed(){
+//#         showMenu();
+//#     }
+//#     
+//#     public void setCommandListener(MenuListener menuListener) { }
+//#     
+//#     public Command getCommand(int index) {
+//#         if (index>menuCommands.size()-1) return null;
+//#         return (Command) menuCommands.elementAt(index);
+//#     }
+//#     
+//#     public void showMenu() {}
+//#     
+//#     public void cmdCancel() {}
+//#endif
 }
 
 //#if (USE_ROTATOR)    

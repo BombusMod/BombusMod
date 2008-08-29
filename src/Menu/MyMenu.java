@@ -69,7 +69,7 @@ public class MyMenu extends Menu {
         ml.commandAction(getCommand(me.index), parentView);
     }
     
-    private Command getCommand(int index) {
+    public Command getCommand(int index) {
         for (Enumeration command=menuCommands.elements(); command.hasMoreElements();) {
             Command cmd =(Command)command.nextElement();
             if (cmd.getName().equals(getFocusedObject().toString()))

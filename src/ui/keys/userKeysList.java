@@ -35,14 +35,26 @@ import ui.MainBar;
 import ui.VirtualElement;
 import ui.VirtualList;
 
-import javax.microedition.lcdui.Command;
+//#ifndef MENU_LISTENER
 import javax.microedition.lcdui.CommandListener;
+import javax.microedition.lcdui.Command;
+//#else
+//# import Menu.MenuListener;
+//# import Menu.Command;
+//# import Menu.MyMenu;
+//#endif
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 
 public class userKeysList
         extends VirtualList 
-        implements CommandListener{
+        implements
+//#ifndef MENU_LISTENER
+        CommandListener
+//#else
+//#         MenuListener
+//#endif
+    {
 
     public static String plugin = new String("PLUGIN_USER_KEYS");
 
@@ -62,27 +74,27 @@ public class userKeysList
         setMainBarItem(new MainBar(SR.MS_CUSTOM_KEYS));
         
         commandsList=userKeyExec.getInstance().commandsList;
-       
-        attachDisplay(display);
-        addCommand(cmdAdd);
-        
+
         commandState();
         setCommandListener(this);
+        
+        attachDisplay(display);
     }
 
     void commandState(){
+//#ifdef MENU_LISTENER
+//#         menuCommands.removeAllElements();
+//#endif
+        addCommand(cmdAdd);
         if (commandsList.isEmpty()) {
             removeCommand(cmdEdit);
             removeCommand(cmdDel);
-            addCommand(cmdOK);
-            addCommand(cmdCancel);
         } else {
             addCommand(cmdEdit);
             addCommand(cmdDel);
-            addCommand(cmdOK);
-            addCommand(cmdCancel);
         }
-
+        addCommand(cmdOK);
+        addCommand(cmdCancel);
     }
 
     public VirtualElement getItemRef(int Index) { 
@@ -127,5 +139,12 @@ public class userKeysList
         }
         
         NvStorage.writeFileRecord(outputStream, userKey.storage, 0, true);
-    }    
+    }
+    
+//#ifdef MENU_LISTENER
+//#     public void showMenu() {
+//#         commandState();
+//#         new MyMenu(display, parentView, this, SR.MS_CUSTOM_KEYS, null, menuCommands);
+//#     }
+//#endif
 }

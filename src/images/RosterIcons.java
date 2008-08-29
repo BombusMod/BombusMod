@@ -118,7 +118,7 @@ public class RosterIcons extends ImageList{
     public static final int ICON_PRIVACY_ALLOW = 0x36;
     public static final int ICON_PRIVACY_BLOCK = 0x37;
     public static final int ICON_KEYBLOCK_INDEX = 0x17;
-    public static final int ICON_VIEWING_INDEX = 0x57;
+    public static final int ICON_VIEWING_INDEX = 0x14;
     public static final int ICON_APPEARING_INDEX = 0x36;
     public static Integer iconHasVcard=new Integer(ICON_SEARCH_INDEX);
     public static final int ICON_DELIVERED_INDEX = 0x27;

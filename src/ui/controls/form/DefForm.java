@@ -58,9 +58,7 @@ public class DefForm
 //#         MenuListener
 //#endif
     {
-    
-    public Vector menuCommands=new Vector();
-    
+
     public Display display;
     
     public Vector itemsList=new Vector();
@@ -91,6 +89,8 @@ public class DefForm
     protected VirtualElement getItemRef(int index) {
         return (VirtualElement)itemsList.elementAt(index);
     }
+    
+    public void touchLeftPressed(){ cmdOk(); }
 
     public void touchRightPressed(){ cmdCancel(); }
     
@@ -122,33 +122,6 @@ public class DefForm
     }
     
 //#ifdef MENU_LISTENER
-//#     public Command getCommand(int index) {
-//#         if (index>menuCommands.size()-1) return null;
-//#         return (Command) menuCommands.elementAt(index);
-//#     }
-//# 
-//#     public void addCommand(Command command) {
-//#         if (menuCommands.indexOf(command)<0)
-//#             menuCommands.addElement(command);
-//#     }
-//#     public void removeCommand(Command command) {
-//#         menuCommands.removeElement(command);        
-//#     }
-//#     
-//#     public void setCommandListener(MenuListener menuListener) { }
-//#     
-//#     protected void keyPressed(int keyCode) { // overriding this method to avoid autorepeat
-//#         if (keyCode==Config.SOFT_LEFT) {
-//#             showMenu();
-//#             return;
-//#         }
-//#         if (keyCode==Config.SOFT_RIGHT || keyCode==Config.KEY_BACK) {
-//#             cmdCancel();
-//#             return;
-//#         }
-//#         super.keyPressed(keyCode);
-//#     }
-//#     
 //#     public void showMenu() {
 //#         commandState();
 //#         if (menuCommands.size()==2) {
@@ -161,7 +134,5 @@ public class DefForm
 //#     }
 //#     
 //#     public String touchLeftCommand(){ return SR.MS_OK; }
-//#     
-//#     public void touchLeftPressed(){ showMenu(); }
 //#endif
 }

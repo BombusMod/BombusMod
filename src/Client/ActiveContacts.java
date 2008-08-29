@@ -103,27 +103,6 @@ public class ActiveContacts
     }
     
 //#ifdef MENU_LISTENER
-//#     public Vector menuCommands=new Vector();
-//#     
-//#     public Command getCommand(int index) {
-//#         if (index>menuCommands.size()-1) return null;
-//#         return (Command) menuCommands.elementAt(index);
-//#     }
-//# 
-//#     public void touchLeftPressed(){
-//#         showMenu();
-//#     }
-//# 
-//#     public void addCommand(Command command) {
-//#         if (menuCommands.indexOf(command)<0)
-//#             menuCommands.addElement(command);
-//#     }
-//#     public void removeCommand(Command command) {
-//#         menuCommands.removeElement(command);        
-//#     }
-//#     
-//#     public void setCommandListener(MenuListener menuListener) { }
-//# 
 //#     public void showMenu() {
 //#         commandState();
 //#         new MyMenu(display, parentView, this, SR.MS_STATUS, null, menuCommands);
@@ -149,16 +128,6 @@ public class ActiveContacts
     public void keyPressed(int keyCode) {
 //#ifdef POPUPS
         VirtualList.popup.next();
-//#endif
-//#ifdef MENU_LISTENER
-//#         if (keyCode==Config.SOFT_LEFT) {
-//#             showMenu();
-//#             return;
-//#         }
-//#         if (keyCode==Config.SOFT_RIGHT || keyCode==Config.KEY_BACK) {
-//#             destroyView();
-//#             return;
-//#         }
 //#endif
 	if (keyCode==KEY_NUM3) {
             destroyView();

@@ -181,14 +181,9 @@ public abstract class MessageList extends VirtualList
 
     protected void keyPressed(int keyCode) { // overriding this method to avoid autorepeat
 //#ifdef MENU_LISTENER
-//#         if (keyCode==Config.SOFT_LEFT) {
-//#             showMenu();
-//#             return;
-//#         }
 //#         if (keyCode==Config.SOFT_RIGHT || keyCode==Config.KEY_BACK) {
 //#             StaticData.getInstance().roster.activeContact=null;
 //#             destroyView();
-//#             return;
 //#         }
 //#endif
 //#ifdef SMILES
@@ -205,23 +200,6 @@ public abstract class MessageList extends VirtualList
     }
    
 //#ifdef MENU_LISTENER
-//#     public Vector menuCommands=new Vector();
-//#     
-//#     public Command getCommand(int index) {
-//#         if (index>menuCommands.size()-1) return null;
-//#         return (Command) menuCommands.elementAt(index);
-//#     }
-//# 
-//#     public void addCommand(Command command) {
-//#         if (menuCommands.indexOf(command)<0)
-//#             menuCommands.addElement(command);
-//#     }
-//#     public void removeCommand(Command command) {
-//#         menuCommands.removeElement(command);        
-//#     }
-//#     
-//#     public void setCommandListener(MenuListener menuListener) { }
-//# 
 //#     public void showMenu() {
 //#         commandState();
 //#         String capt="";
@@ -230,9 +208,7 @@ public abstract class MessageList extends VirtualList
 //#         } catch (Exception ex){ }
 //#         new MyMenu(display, parentView, this, capt, null, menuCommands);
 //#    }
-//#     public void touchLeftPressed(){
-//#         showMenu();
-//#     }
 //#endif
+
     public void commandState() { }
 }

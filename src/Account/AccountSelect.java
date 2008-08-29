@@ -218,43 +218,10 @@ public class AccountSelect
         NvStorage.writeFileRecord(outputStream, "accnt_db", 0, true); //Account.storage
     }
 //#ifdef MENU_LISTENER
-//#     public Vector menuCommands=new Vector();
-//#     
-//#     public Command getCommand(int index) {
-//#         if (index>menuCommands.size()-1) return null;
-//#         return (Command) menuCommands.elementAt(index);
-//#     }
-//# 
-//#     public void addCommand(Command command) {
-//#         if (menuCommands.indexOf(command)<0)
-//#             menuCommands.addElement(command);
-//#     }
-//#     public void removeCommand(Command command) {
-//#         menuCommands.removeElement(command);        
-//#     }
-//#     
-//#     public void setCommandListener(MenuListener menuListener) { }
-//#     
-//#     protected void keyPressed(int keyCode) { // overriding this method to avoid autorepeat
-//#         if (keyCode==Config.SOFT_LEFT) {
-//#             showMenu();
-//#             return;
-//#         }
-//#         if (keyCode==Config.SOFT_RIGHT || keyCode==Config.KEY_BACK) {
-//#             if (canBack) destroyView();
-//#             return;
-//#         }
-//#         super.keyPressed(keyCode);
-//#     }
-//#     
 //#     public void showMenu() {
 //#         commandState();
 //#         new MyMenu(display, parentView, this, SR.MS_DISCO, null, menuCommands);
 //#    }
-//#     
-//#     public void touchLeftPressed(){
-//#         showMenu();
-//#     }
 //#endif
     
     protected void keyRepeated(int keyCode) {
