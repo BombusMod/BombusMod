@@ -66,6 +66,7 @@ public class ConfigData {
         array.addElement(new keyValue(fullscreen, (cf.fullscreen)?"1":"0"));
         array.addElement(new keyValue(fileTransfer, (cf.fileTransfer)?"1":"0"));
         array.addElement(new keyValue(adhoc, (cf.adhoc)?"1":"0"));
+        array.addElement(new keyValue(saveHistory, (cf.saveHistory)?"1":"0"));
         array.addElement(new keyValue(def_profile, Integer.toString(cf.def_profile)));
 //#ifdef SMILES
         array.addElement(new keyValue(smiles, (cf.smiles)?"1":"0"));
@@ -202,6 +203,7 @@ public class ConfigData {
         cf.fullscreen=cf.getBooleanProperty(getValue(fullscreen),true);
         cf.fileTransfer=cf.getBooleanProperty(getValue(fileTransfer),true);
         cf.adhoc=cf.getBooleanProperty(getValue(adhoc),true);
+        cf.saveHistory=cf.getBooleanProperty(getValue(saveHistory),true);
         cf.def_profile = cf.getIntProperty(getValue(def_profile),0);
 //#ifdef SMILES
         cf.smiles=cf.getBooleanProperty(getValue(smiles),true);
@@ -363,6 +365,7 @@ public class ConfigData {
     private final static String fullscreen="fullscreen";
     private final static String fileTransfer="fileTransfer";
     private final static String adhoc="adhoc";
+    private final static String saveHistory="saveHistory";
     private final static String def_profile="def_profile";
 //#ifdef SMILES
     private final static String smiles="smiles";

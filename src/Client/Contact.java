@@ -325,7 +325,7 @@ public class Contact extends IconTextElement{
 //#endif
 //#if HISTORY
 //#ifdef PLUGINS
-//#     if(sd.History)
+//#     if(cf.saveHistory)
 //#endif
 //#         if (!m.isHistory()) {
 //#             if (!cf.msgPath.equals("") && group.type!=Groups.TYPE_TRANSP && group.type!=Groups.TYPE_SEARCH_RESULT) {

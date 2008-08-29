@@ -286,6 +286,7 @@ type = \"-=Siemens=-\";
 
     public boolean fileTransfer=true;
     public boolean adhoc=false;
+    public boolean saveHistory=false;
     
     public static Config getInstance(){
 	if (instance==null) {
@@ -449,7 +450,7 @@ type = \"-=Siemens=-\";
 //#endif
             showResources=inputStream.readBoolean();
             
-            inputStream.readBoolean(); //antispam
+            saveHistory=inputStream.readBoolean(); //antispam
 
             enableVersionOs=inputStream.readBoolean();
             messageLimit=inputStream.readInt();
@@ -563,6 +564,9 @@ type = \"-=Siemens=-\";
 //#ifdef CLIENTS_ICONS
 //#         if(!sd.ClientsIcons) showClientIcon=false;
 //#endif
+//#ifdef HISTORY
+//#         if(!sd.History) saveHistory=false;
+//#endif
 //#endif
     }
     
@@ -666,7 +670,7 @@ type = \"-=Siemens=-\";
 //#endif
             outputStream.writeBoolean(showResources);
 
-            outputStream.writeBoolean(false); //antispam
+            outputStream.writeBoolean(saveHistory); //antispam
 
             outputStream.writeBoolean(enableVersionOs);
             outputStream.writeInt(messageLimit);

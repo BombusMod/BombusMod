@@ -149,6 +149,9 @@ public class MessageEdit
                 to.msgSuspended=body; 
                 body=null;
         }
+        
+        runState=4;
+        
         if (c==cmdSend && body==null) return;
 //#ifdef DETRANSLIT
 //#         if (c==cmdSendInTranslit) {

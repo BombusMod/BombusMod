@@ -92,28 +92,24 @@ public class RosterToolsMenu extends Menu {
             addItem(SR.MS_DISCO, 0, menuIcons.ICON_DISCO);
 //#endif
 //#ifdef PRIVACY
-        if (connected) {
+        if (connected)
 //#ifdef PLUGINS
 //#             if (sd.Privacy)
 //#endif
                 addItem(SR.MS_PRIVACY_LISTS, 1, menuIcons.ICON_PRIVACY);
-        }
 //#endif
 //#ifdef PEP
-//#         if (cf.sndrcvmood && connected) {
+//#         if (cf.sndrcvmood && connected)
 //#ifdef PLUGINS
 //#             if (sd.PEP)
 //#endif
-//#                 addItem(SR.MS_USER_MOOD, 2, menuIcons.ICON_MOOD);
-//#         }            
+//#                 addItem(SR.MS_USER_MOOD, 2, menuIcons.ICON_MOOD);          
 //#endif
         if (connected)
             addItem(SR.MS_MY_VCARD, 3, menuIcons.ICON_VCARD);
         addItem(SR.MS_OPTIONS, 4, menuIcons.ICON_SETTINGS);
 //#if (HISTORY)
-//#ifdef PLUGINS
-//#         if (sd.History)
-//#endif
+//#         if (cf.saveHistory)
 //#             addItem(SR.MS_HISTORY_OPTIONS, 5, menuIcons.ICON_HISTORY);
 //#endif
        addItem(SR.MS_FONTS_OPTIONS, 6, menuIcons.ICON_FONTS);
@@ -121,12 +117,11 @@ public class RosterToolsMenu extends Menu {
         addItem(SR.MS_FILE_MANAGER, 7, menuIcons.ICON_FILEMAN);
 //#endif
 //#if (FILE_IO && FILE_TRANSFER)
-        if (connected && cf.fileTransfer) {
+        if (connected && cf.fileTransfer)
 //#ifdef PLUGINS
 //#             if (sd.FileTransfer)
 //#endif
                 addItem(SR.MS_FILE_TRANSFERS, 8, menuIcons.ICON_FT);
-        }
 //#endif
         
         addItem(SR.MS_COLOR_TUNE, 9, menuIcons.ICON_COLOR_TUNE);

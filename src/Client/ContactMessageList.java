@@ -210,16 +210,13 @@ public class ContactMessageList extends MessageList {
 //#         }
 //#endif
 //#ifdef HISTORY
-//#         if (cf.msgPath!=null)
-//#             if (!cf.msgPath.equals(""))
-//#                 if (contact.msgs.size()>0) {
-//#ifdef PLUGINS
-//#                     if (sd.History)
-//#endif
+//#         if (cf.saveHistory)
+//#             if (cf.msgPath!=null)
+//#                 if (!cf.msgPath.equals(""))
+//#                     if (contact.msgs.size()>0)
 //#                         addCommand(cmdSaveChat);
-//#                 }
 //#ifdef HISTORY_READER
-//#         if (cf.lastMessages)
+//#         if (cf.saveHistory && cf.lastMessages)
 //#             addCommand(cmdReadHistory);
 //#endif
 //#endif
@@ -597,10 +594,14 @@ public class ContactMessageList extends MessageList {
 //#         StringBuffer histRecord=new StringBuffer("chatlog_");
 //#ifndef WMUC
 //#         if (contact instanceof MucContact) {
-//#             String nick=contact.getJid();
-//#             int rp=nick.indexOf('/');
-//#             histRecord.append(nick.substring(rp+1)).append("_").append(nick.substring(0, rp));
-//#             nick=null;
+//#             if (contact.origin>=Contact.ORIGIN_GROUPCHAT) {
+//#                 histRecord.append(contact.bareJid);
+//#             } else {
+//#                 String nick=contact.getJid();
+//#                 int rp=nick.indexOf('/');
+//#                 histRecord.append(nick.substring(rp+1)).append("_").append(nick.substring(0, rp));
+//#                 nick=null;
+//#             }
 //#         } else {
 //#endif
 //#             histRecord.append(contact.bareJid);

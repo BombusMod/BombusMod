@@ -121,6 +121,8 @@ public class HistoryAppend {
     public void addMessageList(String messages, String filename) {
        cf=Config.getInstance();
        convertToWin1251=cf.cp1251;
+       if (convertToWin1251) messages=Strconv.convUnicodeToCp1251(messages);
+       
        byte[] bodyMessage=messages.getBytes();
 
 //#ifdef DETRANSLIT
@@ -128,6 +130,7 @@ public class HistoryAppend {
 //#endif
        
        filename = cf.msgPath+StringUtils.replaceBadChars(filename)+".txt";
+
        file=FileIO.createConnection(filename);
         try {
             os = file.openOutputStream(0);

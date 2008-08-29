@@ -29,16 +29,33 @@ package Alerts;
 
 import Client.*;
 import images.RosterIcons;
+import javax.microedition.lcdui.Display;
+import javax.microedition.lcdui.Displayable;
 import locale.SR;
 import ui.*;
-import javax.microedition.lcdui.*;
+//#ifndef MENU_LISTENER
+import javax.microedition.lcdui.CommandListener;
+import javax.microedition.lcdui.Command;
+//#else
+//# import java.util.Vector;
+//# import Menu.MenuListener;
+//# import Menu.Command;
+//# import Menu.MyMenu;
+//#endif
 import ui.MainBar;
 
 /**
  *
  * @author Eugene Stahov
  */
-public class AlertProfile extends VirtualList implements CommandListener {
+public class AlertProfile extends VirtualList implements
+//#ifndef MENU_LISTENER
+        CommandListener
+//#else
+//#         MenuListener
+//#endif
+    {
+    
     private final static int ALERT_COUNT=4;
     
     //public final static int AUTO=0;
@@ -64,9 +81,8 @@ public class AlertProfile extends VirtualList implements CommandListener {
         
         setMainBarItem(new MainBar(SR.MS_ALERT_PROFILE));
         
-        addCommand(cmdOk);
-        addCommand(cmdDef);
-        addCommand(cmdCancel);
+        commandState();
+
         setCommandListener(this);
         
         int p=cf.profile;
@@ -76,6 +92,55 @@ public class AlertProfile extends VirtualList implements CommandListener {
         attachDisplay(d);
         this.parentView=pView;
     }
+
+    public void commandState() {
+//#ifdef MENU_LISTENER
+//#         menuCommands.removeAllElements();
+//#endif
+        addCommand(cmdOk);
+        addCommand(cmdDef);
+        addCommand(cmdCancel);
+    }
+    
+//#ifdef MENU_LISTENER
+//#     public Vector menuCommands=new Vector();
+//#     
+//#     public Command getCommand(int index) {
+//#         if (index>menuCommands.size()-1) return null;
+//#         return (Command) menuCommands.elementAt(index);
+//#     }
+//# 
+//#     public void touchLeftPressed(){
+//#         showMenu();
+//#     }
+//# 
+//#     public void addCommand(Command command) {
+//#         if (menuCommands.indexOf(command)<0)
+//#             menuCommands.addElement(command);
+//#     }
+//#     public void removeCommand(Command command) {
+//#         menuCommands.removeElement(command);        
+//#     }
+//#     
+//#     public void setCommandListener(MenuListener menuListener) { }
+//#     
+//#     protected void keyPressed(int keyCode) { // overriding this method to avoid autorepeat
+//#         if (keyCode==Config.SOFT_LEFT) {
+//#             showMenu();
+//#             return;
+//#         }
+//#         if (keyCode==Config.SOFT_RIGHT || keyCode==Config.KEY_BACK) {
+//#             destroyView();
+//#             return;
+//#         }
+//#         super.keyPressed(keyCode);
+//#     }
+//# 
+//#     public void showMenu() {
+//#         commandState();
+//#         new MyMenu(display, parentView, this, SR.MS_STATUS, null, menuCommands);
+//#     }
+//#endif
     
     int index;
     public VirtualElement getItemRef(int Index){

@@ -74,7 +74,7 @@ public class archiveEdit
         
         if (pos>-1) {
             this.msg=archive.msg(pos);
-            body=msg.getBody();
+            body=msg.quoteString();
         }
         
         setText(body);

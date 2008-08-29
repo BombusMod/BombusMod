@@ -203,22 +203,17 @@ public class MucContact extends Contact {
                 case 301: //ban
                     presenceType=Presence.PRESENCE_ERROR;
                 case 307: //kick
-                    if (tempRealJid!=null) {
-                        b.append(" (").append(tempRealJid).append(")");
-                    }
+                    if (tempRealJid!=null)
+                        b.append(" (").append(realJid).append(")");
+
                     b.append((statusCode==301)? SR.MS_WAS_BANNED : SR.MS_WAS_KICKED );
 //#ifdef POPUPS
                     if (((ConferenceGroup)group).getSelfContact() == this ) {
                         Roster.setWobble(3, null, ((statusCode==301)? SR.MS_WAS_BANNED : SR.MS_WAS_KICKED)+((!reason.equals(""))?"\n"+reason:""));
                     }
 //#endif
-                    if (!reason.equals("")) {
+                    if (!reason.equals(""))
                         b.append("(").append(reason).append(")");
-                    }
-                    if (tempRealJid!=null) {
-                        b.append(" - ");
-                        appendL(b, tempRealJid);
-                    }
 
                     //if (reason.indexOf("talks") > -1) toTalks();
                     

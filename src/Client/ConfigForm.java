@@ -105,6 +105,9 @@ public class ConfigForm
 //#ifdef FILE_TRANSFER
     private CheckBox fileTransfer;
 //#endif
+//#ifdef HISTORY
+//#     private CheckBox saveHistory;
+//#endif
 //#ifdef ADHOC
 //#     private CheckBox adhoc;
 //#endif
@@ -258,6 +261,13 @@ public class ConfigForm
 //#endif
             itemsList.addElement(fileTransfer);
 //#endif
+//#ifdef HISTORY
+//#         saveHistory = new CheckBox(SR.MS_HISTORY, cf.saveHistory); 
+//#ifdef PLUGINS
+//#         if (sd.History)
+//#endif
+//#             itemsList.addElement(saveHistory);
+//#endif
 //#ifdef ADHOC
 //#         adhoc = new CheckBox(SR.MS_ADHOC, cf.adhoc); 
 //#ifdef PLUGINS
@@ -399,6 +409,12 @@ public class ConfigForm
 //#         if (sd.FileTransfer)
 //#endif
             cf.fileTransfer=fileTransfer.getValue();
+//#endif
+//#ifdef HISTORY
+//#ifdef PLUGINS
+//#         if (sd.History)
+//#endif
+//#             cf.saveHistory=saveHistory.getValue();
 //#endif
 //#ifdef ADHOC
 //#ifdef PLUGINS
