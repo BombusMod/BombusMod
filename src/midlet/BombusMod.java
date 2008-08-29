@@ -100,16 +100,11 @@ public class BombusMod extends MIDlet implements Runnable{
         s.setProgress(3);
         s.getKeys();
         
-        //s.setProgress(5);
-        //ColorTheme ct=ColorTheme.getInstance();
-
         s.setProgress(7);
         s.setProgress(Version.getVersionNumber(),10);
         
         SR.loaded();
         s.setProgress(12);
-        
-
 
 	Config cf=Config.getInstance();
         s.setProgress(15);
@@ -183,6 +178,8 @@ public class BombusMod extends MIDlet implements Runnable{
 //#                     sd.Stats=state;
 //#                 } else if (name.equals("ClientsIcons")) {
 //#                     sd.ClientsIcons=state;
+//#                 } else if (name.equals("UserKeys")) {
+//#                     sd.UserKeys=state;
 //#                 }
 //#             }
 //#         }

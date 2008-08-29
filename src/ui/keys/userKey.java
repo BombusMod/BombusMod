@@ -31,17 +31,20 @@ import io.NvStorage;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import locale.SR;
 import ui.IconTextElement;
 
 /**
  *
- * @author User
+ * @author ad
  */
 public class userKey extends IconTextElement {
+    public static String plugin = new String("PLUGIN_USER_KEYS");
+    
     public final static String storage="keys_db";
             
-    private int    commandId = 0;
-    private int    key       = -1;
+    public int    commandId = 0;
+    public int    key       = -1;
     public boolean active    = false;
 
     public userKey() {
@@ -54,12 +57,8 @@ public class userKey extends IconTextElement {
     }
     
     public String toString(){
-        StringBuffer s=new StringBuffer("(* + ").append(userKeyExec.getKeyDesc(key)).append(") ").append(getDesc());
+        StringBuffer s=new StringBuffer("(* + ").append(KEYS_NAME[key]).append(") ").append(COMMANDS_DESC[commandId]);
         return s.toString();
-    }
-    
-    public String getDesc(){
-        return userKeyExec.getDesc(commandId);
     }
     
     public static userKey createFromStorage(int index) {
@@ -73,7 +72,7 @@ public class userKey extends IconTextElement {
                 index--;
             } while (index>-1);
             is.close();
-        } catch (Exception e) { /*e.printStackTrace();*/ }
+        } catch (Exception e) { }
         return u;
     }    
     
@@ -96,15 +95,41 @@ public class userKey extends IconTextElement {
         } catch (IOException e) { }
     }
 
-    public void setCommand(int descId) { this.commandId = descId; }
-    public int getCommandId() { return commandId; }
-
-    public void setKey(int key) { this.key = key; }
-    public int getKey(){ return (key<0)?0:key; }
-
-    public void setActive(boolean active) { this.active = active; }
-    public boolean getActive () { return active; }
-    
     public int getImageIndex() {return active?0:5;}
+
+    public static final String[] COMMANDS_DESC = {
+            SR.MS_NO,
+            SR.MS_OPTIONS,
+            SR.MS_CLEAN_ALL_MESSAGES,
+            SR.MS_RECONNECT,
+            SR.MS_STATS,
+            SR.MS_STATUS_MENU,
+            SR.MS_FILE_TRANSFERS,
+            SR.MS_ARCHIVE,
+            SR.MS_DISCO,
+            SR.MS_PRIVACY_LISTS,
+            SR.MS_CUSTOM_KEYS,
+            SR.MS_CLEAR_POPUPS,
+            SR.MS_FLASHLIGHT,
+            SR.MS_ABOUT,
+            SR.MS_APP_MINIMIZE,
+            SR.MS_INVERT,
+            SR.MS_XML_CONSOLE, 
+            SR.MS_FULLSCREEN
+    };
+    
+    public static final String[] KEYS_NAME = {
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "#"
+    };
 }
 

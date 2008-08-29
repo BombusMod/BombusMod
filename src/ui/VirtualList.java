@@ -90,8 +90,6 @@ public abstract class VirtualList
 //#     private static final int USER_KEY_EXECUTED = 3;
 //# 
 //#     private int additionKeyState = USER_OTHER_KEY_PRESSED;
-//# 
-//#     public userKeyExec ue=userKeyExec.getInstance();
 //#endif
 
 //#ifdef POPUPS
@@ -796,17 +794,17 @@ public abstract class VirtualList
 //#ifdef USER_KEYS
 //#     private void additionKeyPressed(int keyCode) {
 //#         switch (keyCode) {
-//#             case KEY_NUM0: ue.commandExecute(display, 0); break;
-//#             case KEY_NUM1: ue.commandExecute(display, 1); break;
-//#             case KEY_NUM2: ue.commandExecute(display, 2); break;
-//#             case KEY_NUM3: ue.commandExecute(display, 3); break;
-//#             case KEY_NUM4: ue.commandExecute(display, 4); break;
-//#             case KEY_NUM5: ue.commandExecute(display, 5); break;
-//#             case KEY_NUM6: ue.commandExecute(display, 6); break;
-//#             case KEY_NUM7: ue.commandExecute(display, 7); break;
-//#             case KEY_NUM8: ue.commandExecute(display, 8); break;
-//#             case KEY_NUM9: ue.commandExecute(display, 9); break;
-//#             case KEY_POUND: ue.commandExecute(display, 10); break;
+//#             case KEY_NUM0: userKeyExec.getInstance().commandExecute(display, 0); break;
+//#             case KEY_NUM1: userKeyExec.getInstance().commandExecute(display, 1); break;
+//#             case KEY_NUM2: userKeyExec.getInstance().commandExecute(display, 2); break;
+//#             case KEY_NUM3: userKeyExec.getInstance().commandExecute(display, 3); break;
+//#             case KEY_NUM4: userKeyExec.getInstance().commandExecute(display, 4); break;
+//#             case KEY_NUM5: userKeyExec.getInstance().commandExecute(display, 5); break;
+//#             case KEY_NUM6: userKeyExec.getInstance().commandExecute(display, 6); break;
+//#             case KEY_NUM7: userKeyExec.getInstance().commandExecute(display, 7); break;
+//#             case KEY_NUM8: userKeyExec.getInstance().commandExecute(display, 8); break;
+//#             case KEY_NUM9: userKeyExec.getInstance().commandExecute(display, 9); break;
+//#             case KEY_POUND: userKeyExec.getInstance().commandExecute(display, 10); break;
 //#         }
 //#     }
 //#endif

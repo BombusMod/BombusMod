@@ -49,10 +49,12 @@ import ui.VirtualList;
 
 public class userKeyExec {
     
-    private static userKeyExec instance;
+    public static String plugin = new String("PLUGIN_USER_KEYS");
+
     private static Config cf;
     StaticData sd=StaticData.getInstance();
     
+    private static userKeyExec instance;
     public static userKeyExec getInstance(){
 	if (instance==null) {
 	    instance=new userKeyExec();
@@ -70,29 +72,26 @@ public class userKeyExec {
         commandsList=null;
         commandsList=new Vector();
         
-        userKey u;
+        userKey u = null;
 
         int index=0;
-        do {
+        while (u!=null) {
             u=userKey.createFromStorage(index);
             if (u!=null) {
                 commandsList.addElement(u);
                 index++;
              }
-       } while (u!=null);
+        }
     }
 
     private int getCommandByKey(int key) {
         int commandNum = -1;
-         for (Enumeration commands=commandsList.elements(); commands.hasMoreElements(); ) 
-         {
+         for (Enumeration commands=commandsList.elements(); commands.hasMoreElements(); ) {
             userKey userKeyItem=(userKey) commands.nextElement();
-            if (userKeyItem.getKey()==key) {
-                if (userKeyItem.getActive()) {
-                    commandNum=userKeyItem.getCommandId();
-                }
+            if (userKeyItem.key==key && userKeyItem.active) {
+                commandNum=userKeyItem.commandId;
+                break;
             }
-            
          }
         return commandNum;
     }
@@ -102,14 +101,11 @@ public class userKeyExec {
 
         int commandId=getCommandByKey(command);
         
+        if (commandId<1) return;
+            
         boolean connected= ( sd.roster.isLoggedIn() );
 
         switch (commandId) {
-            case -1: // ky-ky?
-                break;
-            case 0:
-                // do nothing
-                break;
             case 1: 
                 new ConfigForm(display, sd.roster);
                 break;
@@ -197,49 +193,5 @@ public class userKeyExec {
                 sd.roster.setFullScreenMode(cf.fullscreen);
                 break;
         }
-    } 
-
-
-    static String getDesc(int descId) {
-        return COMMANDS_DESC[descId];
     }
-    
-    static String getKeyDesc(int commandId) {
-        return KEYS_NAME[commandId];
-    }
-
-    public static final String[] COMMANDS_DESC = {
-            SR.MS_NO,
-            SR.MS_OPTIONS,
-            SR.MS_CLEAN_ALL_MESSAGES,
-            SR.MS_RECONNECT,
-            SR.MS_STATS,
-            SR.MS_STATUS_MENU,
-            SR.MS_FILE_TRANSFERS,
-            SR.MS_ARCHIVE,
-            SR.MS_DISCO,
-            SR.MS_PRIVACY_LISTS,
-            SR.MS_CUSTOM_KEYS,
-            SR.MS_CLEAR_POPUPS,
-            SR.MS_FLASHLIGHT,
-            SR.MS_ABOUT,
-            SR.MS_APP_MINIMIZE,
-            SR.MS_INVERT,
-            SR.MS_XML_CONSOLE, 
-            SR.MS_FULLSCREEN
-    };
-    
-    public static final String[] KEYS_NAME = {
-            "0",
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
-            "#"
-    };
 }

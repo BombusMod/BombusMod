@@ -544,7 +544,11 @@ type = \"-=Siemens=-\";
 	VirtualList.memMonitor=memMonitor;
         VirtualList.showBalloons=showBalloons;
         VirtualList.panelsState=panelsState;
+
 //#ifdef USER_KEYS
+//#ifdef PLUGINS
+//#         if(!sd.UserKeys) userKeys=false;
+//#endif
 //#         VirtualList.userKeys=userKeys;
 //#endif
         

@@ -38,73 +38,70 @@ import ui.controls.form.DropChoiceBox;
  */
 class userKeyEdit
      extends DefForm  {
-//#ifdef USER_KEYS
-//#     private final userKeysList keysList;
-//#     
-//#     private Display display;
-//# 
-//#     private CheckBox active;
-//#     private DropChoiceBox keyDesc;
-//#     private DropChoiceBox keyCode;
-//# 
-//#     userKey u;
-//#     
-//#     boolean newKey;
-//#endif
+    public static String plugin = new String("PLUGIN_USER_KEYS");
+
+    private final userKeysList keysList;
+    
+    private Display display;
+
+    private CheckBox active;
+    private DropChoiceBox keyDesc;
+    private DropChoiceBox keyCode;
+
+    userKey u;
+    
+    boolean newKey;
+
     public userKeyEdit(Display display, Displayable pView, userKeysList keysList, userKey u) {
-//#ifdef USER_KEYS
-//#         super(display, pView, (u==null)?SR.MS_ADD_CUSTOM_KEY:(u.toString()));
-//#         
-//#         this.display=display;
-//#         
-//# 	this.keysList = keysList;
-//# 	
-//# 	newKey=(u==null);
-//# 	if (newKey) u=new userKey();
-//# 	this.u=u;
-//#      
-//#         active=new CheckBox(SR.MS_ENABLED, u.getActive());
-//#         itemsList.addElement(active);
-//# 
-//#         keyDesc=new DropChoiceBox(display, SR.MS_KEYS_ACTION);
-//#         for (int i=0;i<userKeyExec.COMMANDS_DESC.length;i++) {
-//#             keyDesc.append(userKeyExec.COMMANDS_DESC[i]);
-//#         }
-//#         keyDesc.setSelectedIndex(u.getCommandId());
-//#         itemsList.addElement(keyDesc);
-//# 
-//#         keyCode=new DropChoiceBox(display, SR.MS_KEY);
-//#         for (int i=0;i<userKeyExec.KEYS_NAME.length;i++) {
-//#             keyCode.append(userKeyExec.KEYS_NAME[i]);
-//#         }
-//#         keyCode.setSelectedIndex(u.getKey());
-//#         itemsList.addElement(keyCode);
-//#         
-//#         moveCursorTo(getNextSelectableRef(-1));
-//#         attachDisplay(display);
-//#         this.parentView=pView;
-//#endif
+
+        super(display, pView, (u==null)?SR.MS_ADD_CUSTOM_KEY:(u.toString()));
+        
+        this.display=display;
+        
+	this.keysList = keysList;
+	
+	newKey=(u==null);
+	if (newKey) u=new userKey();
+	this.u=u;
+     
+        active=new CheckBox(SR.MS_ENABLED, u.active);
+        itemsList.addElement(active);
+
+        keyDesc=new DropChoiceBox(display, SR.MS_KEYS_ACTION);
+        for (int i=0;i<u.COMMANDS_DESC.length;i++) {
+            keyDesc.append(u.COMMANDS_DESC[i]);
+        }
+        keyDesc.setSelectedIndex(u.commandId);
+        itemsList.addElement(keyDesc);
+
+        keyCode=new DropChoiceBox(display, SR.MS_KEY);
+        for (int i=0;i<u.KEYS_NAME.length;i++) {
+            keyCode.append(u.KEYS_NAME[i]);
+        }
+        keyCode.setSelectedIndex((u.key<0)?0:u.key);
+        itemsList.addElement(keyCode);
+        
+        moveCursorTo(getNextSelectableRef(-1));
+        attachDisplay(display);
+        this.parentView=pView;
+
     }
     
     public void cmdOk() {
-//#ifdef USER_KEYS
-//#         u.setActive(active.getValue());
-//#         u.setCommand(keyDesc.getSelectedIndex());
-//#         u.setKey(keyCode.getSelectedIndex());
-//# 
-//#         if (newKey) {
-//#             keysList.commandsList.addElement(u);
-//#         }
-//# 
-//#         keysList.rmsUpdate();
-//#         keysList.commandState();
-//#         destroyView();
-//#endif
+        u.active=active.getValue();
+        u.commandId=keyDesc.getSelectedIndex();
+        u.key=keyCode.getSelectedIndex();
+
+        if (newKey) {
+            keysList.commandsList.addElement(u);
+        }
+
+        keysList.rmsUpdate();
+        keysList.commandState();
+        destroyView();
     }
     
     public void destroyView()	{
-//#ifdef USER_KEYS
-//# 	if (display!=null) display.setCurrent(parentView);
-//#endif
+	if (display!=null) display.setCurrent(parentView);
     }
 }

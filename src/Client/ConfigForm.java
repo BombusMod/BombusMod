@@ -251,7 +251,11 @@ public class ConfigForm
         enableVersionOs = new CheckBox(SR.MS_SHOW_HARDWARE, cf.enableVersionOs); itemsList.addElement(enableVersionOs);
         queryExit = new CheckBox(SR.MS_CONFIRM_EXIT, cf.queryExit); itemsList.addElement(queryExit);
 //#ifdef USER_KEYS
-//#         userKeys = new CheckBox(SR.MS_CUSTOM_KEYS, cf.userKeys); itemsList.addElement(userKeys);
+//#         userKeys = new CheckBox(SR.MS_CUSTOM_KEYS, cf.userKeys); 
+//#ifdef PLUGINS
+//#         if (sd.UserKeys)
+//#endif
+//#             itemsList.addElement(userKeys);
 //#endif
         lightState = new CheckBox(SR.MS_FLASHLIGHT, cf.lightState); itemsList.addElement(lightState);
 //#ifdef FILE_TRANSFER
@@ -428,7 +432,10 @@ public class ConfigForm
         cf.enableVersionOs=enableVersionOs.getValue();
         cf.queryExit=queryExit.getValue();
 //#ifdef USER_KEYS
-//#             VirtualList.userKeys=cf.userKeys=userKeys.getValue();
+//#ifdef PLUGINS
+//#             if (sd.UserKeys)
+//#endif
+//#                 cf.userKeys=VirtualList.userKeys=userKeys.getValue();
 //#endif
         cf.lightState=lightState.getValue();
         if (cf.allowMinimize)

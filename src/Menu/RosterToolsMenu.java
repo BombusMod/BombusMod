@@ -147,8 +147,11 @@ public class RosterToolsMenu extends Menu {
 //#             addItem(SR.MS_BUILD_NEW, 14, menuIcons.ICON_BUILD_NEW);
 //#endif
 //#ifdef USER_KEYS
-//#         if (cf.userKeys)
-//#             addItem(SR.MS_CUSTOM_KEYS, 15, menuIcons.ICON_KEYS);
+//#ifdef PLUGINS
+//#         if (sd.Stats)
+//#endif
+//#             if (cf.userKeys)
+//#                 addItem(SR.MS_CUSTOM_KEYS, 15, menuIcons.ICON_KEYS);
 //#endif
 //#if SASL_XGOOGLETOKEN
 //#         if (sd.account.isGmail() && connected)
