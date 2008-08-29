@@ -140,17 +140,17 @@ public class MessageEdit
 //#ifndef WMUC
         if (c==cmdInsNick) { new AppendNick(display, to, caretPos, this); return; }
 //#endif
-        if (c==cmdCancel) { 
+        if (c==cmdCancel) {
+            //runState=4;
             composing=false;
             body=null;
         }
         if (c==cmdSuspend) {
+                //runState=4;
                 composing=false; 
                 to.msgSuspended=body; 
                 body=null;
         }
-        
-        runState=4;
         
         if (c==cmdSend && body==null) return;
 //#ifdef DETRANSLIT
