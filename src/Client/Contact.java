@@ -261,7 +261,7 @@ public class Contact extends IconTextElement{
         if (getGroupType()!=Groups.TYPE_IGNORE) {
             for (Enumeration e=msgs.elements(); e.hasMoreElements(); ) {
                 Msg m=(Msg)e.nextElement();
-                if (m.unread && m.isHighlited()) { 
+                if (m.unread && m.highlite) { 
                     nm++;
                 }
             }
@@ -305,7 +305,7 @@ public class Contact extends IconTextElement{
         boolean first_replace=false;
         if (origin!=ORIGIN_GROUPCHAT) {
             if (m.isPresence()) {
-                presence=m.getBody();
+                presence=m.body;
                 if (msgs.size()==1)
                     if (((Msg)msgs.firstElement()).isPresence())
                         first_replace=true;
@@ -327,7 +327,7 @@ public class Contact extends IconTextElement{
 //#ifdef PLUGINS
 //#     if(cf.saveHistory)
 //#endif
-//#         if (!m.isHistory()) {
+//#         if (!m.history) {
 //#             if (!cf.msgPath.equals("") && group.type!=Groups.TYPE_TRANSP && group.type!=Groups.TYPE_SEARCH_RESULT) {
 //#                 boolean allowLog=false;
 //#                 switch (m.messageType) {
@@ -373,7 +373,7 @@ public class Contact extends IconTextElement{
             lastUnread=msgs.size()-1;
             if (m.messageType>unreadType) unreadType=m.messageType;
             if (newMsgCnt>=0) newMsgCnt++;
-            if (m.isHighlited()) if (newHighLitedMsgCnt>=0) newHighLitedMsgCnt++;
+            if (m.highlite) if (newHighLitedMsgCnt>=0) newHighLitedMsgCnt++;
         }
     }
 

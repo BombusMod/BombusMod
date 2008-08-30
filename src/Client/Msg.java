@@ -49,13 +49,13 @@ public class Msg {
     public final static int MESSAGE_TYPE_AUTH=14;
     public final static int MESSAGE_TYPE_SYSTEM=15;
 
-    private boolean highlite;
-    private boolean history;
+    public boolean highlite;
+    public boolean history;
     
     public int messageType;
     public String from;
     public String subject;
-    private String body;
+    public String body;
     public long dateGmt;
     public boolean delivered;
     public String id;
@@ -64,8 +64,6 @@ public class Msg {
 
     public boolean itemCollapsed;
     public int itemHeight=-1;
-    
-    //ColorTheme ct;
     
     /** Creates a new instance of msg */
     public Msg(int messageType, String from, String subj, String body) {
@@ -80,8 +78,6 @@ public class Msg {
         else if (body!=null && messageType!=MESSAGE_TYPE_SUBJ)
             if (body.length()>Config.getInstance().messageLimit)
                 itemCollapsed=true;
-        
-        //ct=ColorTheme.getInstance();
     }
     
     public void onSelect(){}
@@ -103,12 +99,12 @@ public class Msg {
 
         switch (messageType) {
             case MESSAGE_TYPE_IN: return ColorTheme.getColor(ColorTheme.MESSAGE_IN);
-            case MESSAGE_TYPE_HEADLINE: return ColorTheme.getColor(ColorTheme.MESSAGE_IN);
-            case MESSAGE_TYPE_OUT: return ColorTheme.getColor(ColorTheme.MESSAGE_OUT);
             case MESSAGE_TYPE_PRESENCE: return ColorTheme.getColor(ColorTheme.MESSAGE_PRESENCE);
+            case MESSAGE_TYPE_OUT: return ColorTheme.getColor(ColorTheme.MESSAGE_OUT);
+            case MESSAGE_TYPE_SUBJ:return ColorTheme.getColor(ColorTheme.MSG_SUBJ);
+            case MESSAGE_TYPE_HEADLINE: return ColorTheme.getColor(ColorTheme.MESSAGE_IN);
             case MESSAGE_TYPE_AUTH: return ColorTheme.getColor(ColorTheme.MESSAGE_AUTH);
             case MESSAGE_TYPE_HISTORY: return ColorTheme.getColor(ColorTheme.MESSAGE_HISTORY);
-            case MESSAGE_TYPE_SUBJ:return ColorTheme.getColor(ColorTheme.MSG_SUBJ);
         }
         return ColorTheme.getColor(ColorTheme.LIST_INK);
     }
@@ -139,19 +135,20 @@ public class Msg {
 	try { subject=is.readUTF(); } catch (Exception e) { subject=null; }
     }
 
-    public String getBody() { return body; }
-    public String getSubject() { return subject; }
+    //public String getBody() { return body; }
+    //public String getSubject() { return subject; }
 
-    void setHighlite(boolean state) { highlite=state; }
-    public boolean isHighlited() { return highlite; }
+    //void setHighlite(boolean state) { highlite=state; }
+    //public boolean isHighlited() { return highlite; }
     
-    public boolean isHistory() { return history; }
-    void setHistory(boolean state) { history=state; }
+    //public boolean isHistory() { return history; }
+    //void setHistory(boolean state) { history=state; }
     
     public String quoteString(){
         StringBuffer out=new StringBuffer();
         if (subject!=null)
-            out.append(subject).append("\n");
+            if (subject.length()>0)
+                out.append(subject).append("\n");
         out.append(body);
         int i=0;
         while (i<out.length()) {

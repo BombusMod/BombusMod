@@ -44,8 +44,9 @@ import util.StringUtils;
 //# import ui.keys.userKeyExec;
 //#endif
 
+import java.util.Vector;
+
 //#ifdef MENU_LISTENER
-//# import java.util.Vector;
 //# import Menu.Command;
 //# import Menu.MenuListener;
 //#endif
@@ -180,14 +181,9 @@ public abstract class VirtualList
 //#     public Image img;
 //#endif
     
-    CommandsPointer ar=new CommandsPointer();
-    
-    public void touchRightPressed(){
-        if (canBack) destroyView();
-    }
-    
-    public String touchLeftCommand(){ return SR.MS_MENU; }
-    public String touchRightCommand(){ return SR.MS_BACK; }
+//#ifdef MENU_LISTENER
+//#     CommandsPointer ar=new CommandsPointer();
+//#endif
 
     protected synchronized void updateLayout(){
         int size=getItemCount();
@@ -518,15 +514,19 @@ public abstract class VirtualList
                 if (mainbar!=null) {
                     setAbsOrg(g, 0, height-mHeight);
                     drawMainPanel(g);
-                    if (hasPointerEvents())
-                        ar.init(width, height, mHeight);
+//#ifdef MENU_LISTENER
+//#                     if (hasPointerEvents())
+//#                         ar.init(width, height, mHeight);
+//#endif
                 }
             } else {
                 if (infobar!=null) {
                     setAbsOrg(g, 0, height-iHeight);
                     drawInfoPanel(g);
-                    if (hasPointerEvents())
-                        ar.init(width, height, iHeight);
+//#ifdef MENU_LISTENER
+//#                     if (hasPointerEvents())
+//#                         ar.init(width, height, iHeight);
+//#endif
                 }
             }
             setAbsClip(g, width, height);
@@ -731,17 +731,18 @@ public abstract class VirtualList
 //#ifdef POPUPS
         popup.next();
 //#endif        
-
-        int act=ar.pointerPressed(x, y);
-        if (act==1) {
-             touchLeftPressed();
-             stickyWindow=false;
-             return;
-        } else if (act==2) {
-            touchRightPressed();
-            stickyWindow=false;
-            return;
-        }
+//#ifdef MENU_LISTENER
+//#         int act=ar.pointerPressed(x, y);
+//#         if (act==1) {
+//#              touchLeftPressed();
+//#              stickyWindow=false;
+//#              return;
+//#         } else if (act==2) {
+//#             touchRightPressed();
+//#             stickyWindow=false;
+//#             return;
+//#         }
+//#endif
         if (scrollbar.pointerPressed(x, y, this)) {
             stickyWindow=false;
             return;
@@ -860,10 +861,12 @@ public abstract class VirtualList
 //#             showMenu();
 //#             return;
 //#         }
-//#         if (keyCode==Config.SOFT_RIGHT || keyCode==Config.KEY_BACK) {
-//#             cmdCancel();
-//#             return;
-//#         }
+//#          if (keyCode==Config.SOFT_RIGHT) {
+//#             if (cf.phoneManufacturer!=Config.SONYE || cf.phoneManufacturer==Config.SIEMENS || cf.phoneManufacturer==Config.SIEMENS2 || cf.phoneManufacturer==Config.MOTO) {
+//#                 cmdCancel();
+//#                 return;
+//#             }
+//#          }
 //#endif
         if (sendEvent(keyCode)) {
             repaint();
@@ -1296,8 +1299,16 @@ public abstract class VirtualList
 //#     
 //#     public void showMenu() {}
 //#     
-//#     public void cmdCancel() {}
+//#     
+//#     public void touchRightPressed(){
+//#         if (canBack) destroyView();
+//#     }
+//#     
+//#     public String touchLeftCommand(){ return SR.MS_MENU; }
+//#     public String touchRightCommand(){ return SR.MS_BACK; }
 //#endif
+    
+    public void cmdCancel() { if (canBack) destroyView(); }
 }
 
 //#if (USE_ROTATOR)    

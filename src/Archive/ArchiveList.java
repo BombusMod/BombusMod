@@ -201,18 +201,7 @@ public class ArchiveList
             redraw();
         }
     }
-    
-    /*public void focusedItem(int index) {
-	if (target==null) return;
-	try {
-	    if (getMessage(index).subject!=null) {
-		addCommand(cmdSubj);
-		return;
-	    }
-	} catch (Exception e) { }
-	removeCommand(cmdSubj);
-    }*/
-    
+
     public void destroyView(){
         super.destroyView();
 	archive.close();

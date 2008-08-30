@@ -35,9 +35,9 @@ import javax.microedition.lcdui.Displayable;
  */
 public interface MenuListener {
     public void commandAction(Command command, Displayable displayable);
-    public void addCommand(Command command);
-    public void removeCommand(Command command);
-    public void setCommandListener(MenuListener menuListener);
-    public void showMenu();
-    public Command getCommand(int index);
+    //public void addCommand(Command command);
+    //public void removeCommand(Command command);
+    //public void setCommandListener(MenuListener menuListener);
+    //public void showMenu();
+    //public Command getCommand(int index);
 }

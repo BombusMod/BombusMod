@@ -639,7 +639,7 @@ public class ContactMessageList extends MessageList {
 //#         if (contact.msgs.size()<1) {
 //#             return false;
 //#         }
-//#         String body=((Msg) contact.msgs.elementAt(cursor)).getBody();
+//#         String body=((Msg) contact.msgs.elementAt(cursor)).body;
 //#         
 //#         if (body.indexOf("xmlSkin")>-1) return true;
 //#         return false;
@@ -649,7 +649,7 @@ public class ContactMessageList extends MessageList {
 //#         if (contact.msgs.size()<1) {
 //#             return false;
 //#         }
-//#         String body=((Msg) contact.msgs.elementAt(cursor)).getBody();
+//#         String body=((Msg) contact.msgs.elementAt(cursor)).body;
 //#         if (body.indexOf("http://")>-1) return true;
 //#         if (body.indexOf("https://")>-1) return true;
 //#         if (body.indexOf("ftp://")>-1) return true;

@@ -258,7 +258,7 @@ public final class MessageParser implements Runnable{
 //#endif
             lines.addElement(l);
             
-            Font f=(task.msg.isHighlited() || state==0)? FontCache.getMsgFontBold(): FontCache.getMsgFont();
+            Font f=(task.msg.highlite || state==0)? FontCache.getMsgFontBold(): FontCache.getMsgFont();
             l.setFont(f);
             
             String txt=(state==0)? task.msg.subject: task.msg.toString();

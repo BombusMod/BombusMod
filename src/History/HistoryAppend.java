@@ -179,7 +179,7 @@ public class HistoryAppend {
                 body.append(m.subject)
                     .append(RN);
             }
-            body.append(m.getBody())
+            body.append(m.body)
                 .append(RN)
                 .append(RN);
         } else {
@@ -199,7 +199,7 @@ public class HistoryAppend {
                     .append(SE);
             }
             body.append(BS)
-                .append(m.getBody())
+                .append(m.body)
                 .append(BE)
                 .append(ME)
                 .append(RN);

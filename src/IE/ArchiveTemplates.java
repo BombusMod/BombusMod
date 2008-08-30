@@ -170,7 +170,7 @@ public class ArchiveTemplates {
             body.append(end_subj)
             .append("\r\n")
             .append(start_body)
-            .append(m.getBody())
+            .append(m.body)
             .append(end_body)
             .append("\r\n")
             .append(end_item)

@@ -1474,7 +1474,7 @@ public class Roster
                 if (tStamp!=0) 
                     m.dateGmt=tStamp;
 //#ifndef WMUC
-                if (m.getBody().indexOf(SR.MS_IS_INVITING_YOU)>-1) m.dateGmt=0;
+                if (m.body.indexOf(SR.MS_IS_INVITING_YOU)>-1) m.dateGmt=0;
                 if (groupchat) {
                     ConferenceGroup mucGrp=(ConferenceGroup)c.group;
                     if (mucGrp.getSelfContact().getJid().equals(message.getFrom())) {
@@ -1506,7 +1506,7 @@ public class Roster
                                 highlite=true;
 			}
                         //TODO: custom highliting dictionary
-                        m.setHighlite(highlite); 
+                        m.highlite=highlite; 
                     }
                     m.from=name;
                 }
@@ -1563,7 +1563,7 @@ public class Roster
 
                         c.statusString=pr.getStatus();
                         
-                        if (cf.storeConfPresence || chatPresence.getBody().indexOf(SR.MS_WAS_BANNED)>-1 || chatPresence.getBody().indexOf(SR.MS_WAS_KICKED)>-1)
+                        if (cf.storeConfPresence || chatPresence.body.indexOf(SR.MS_WAS_BANNED)>-1 || chatPresence.body.indexOf(SR.MS_WAS_KICKED)>-1)
                             messageStore(getContact(from, false), chatPresence);
 
                         messageStore(c,m);
@@ -1741,7 +1741,7 @@ public class Roster
         boolean autorespond = false;
         
         if (message.messageType==Msg.MESSAGE_TYPE_IN)
-            setTicker(c, message.getBody());
+            setTicker(c, message.body);
         
 //#ifndef WSYSTEMGC
         if (cf.ghostMotor) {
@@ -1751,7 +1751,7 @@ public class Roster
 //#endif
 //#ifdef POPUPS
             if (message.messageType==Msg.MESSAGE_TYPE_AUTH && showWobbler(c))
-                setWobbler(2, c, message.from+"\n"+message.getBody());
+                setWobbler(2, c, message.from+"\n"+message.body);
 //#endif
         if (countNewMsgs())
             reEnumRoster();
@@ -1769,11 +1769,11 @@ public class Roster
         if (cf.autoFocus) 
             focusToContact(c, false);
 
-        if (message.isHighlited()) {
+        if (message.highlite) {
             playNotify(SOUND_FOR_ME);
 //#ifdef POPUPS
             if (showWobbler(c))
-                setWobbler(2, c, message.getBody());
+                setWobbler(2, c, message.body);
 //#endif
             autorespond = true;
         } else if (message.messageType==Msg.MESSAGE_TYPE_IN) {
@@ -1783,7 +1783,7 @@ public class Roster
 //#endif
 //#ifdef POPUPS
                     if (showWobbler(c)) {
-                        setWobbler(2, c, c.toString()+": "+message.getBody());
+                        setWobbler(2, c, c.toString()+": "+message.body);
                         autorespond = true;
                     }
 //#endif

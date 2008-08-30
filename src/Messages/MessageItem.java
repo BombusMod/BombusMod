@@ -144,11 +144,11 @@ public class MessageItem
 
     public Vector getUrlList() { 
         Vector urlList=new Vector();
-        addUrls(msg.getBody(), "http://", urlList);
-        addUrls(msg.getBody(), "https://", urlList);
-        addUrls(msg.getBody(), "tel:", urlList);
-        addUrls(msg.getBody(), "ftp://", urlList);
-        addUrls(msg.getBody(), "native:", urlList);
+        addUrls(msg.body, "http://", urlList);
+        addUrls(msg.body, "https://", urlList);
+        addUrls(msg.body, "tel:", urlList);
+        addUrls(msg.body, "ftp://", urlList);
+        addUrls(msg.body, "native:", urlList);
         return (urlList.size()==0)? null: urlList;
     }
     
