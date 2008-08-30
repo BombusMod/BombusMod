@@ -75,13 +75,13 @@ public class userKeyExec {
         userKey u = null;
 
         int index=0;
-        while (u!=null) {
+        do {
             u=userKey.createFromStorage(index);
             if (u!=null) {
                 commandsList.addElement(u);
                 index++;
              }
-        }
+        } while (u!=null);
     }
 
     private int getCommandByKey(int key) {

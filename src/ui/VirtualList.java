@@ -1209,12 +1209,12 @@ public abstract class VirtualList
         
         if (cursorBGnd!=0x010101) {
             g.setColor(ColorTheme.getColor(ColorTheme.CURSOR_BGND));
-            g.fillRect(0, 0, width, height);
+            g.fillRoundRect(0, 0, width, height, 6, 6);
         }
 
         if (cursorOutline!=0x010101) {
             g.setColor(cursorOutline);
-            g.drawRect(0, 0, width-1, height-1);
+            g.drawRoundRect(0, 0, width-1, height-1, 6, 6);
         }
     }
 
