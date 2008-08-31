@@ -38,7 +38,7 @@ public class MoodList extends VirtualList implements CommandListener, MIDPTextBo
     Vector moods;
     public MoodList(Display display) {
         super();
-        setMainBarItem(new MainBar(SR.MS_USER_MOOD));
+        setMainBarItem(new MainBar(SR.MS_USERMOOD));
         addCommand(cmdBack);
         addCommand(cmdOk);
         setCommandListener(this);
@@ -61,7 +61,7 @@ public class MoodList extends VirtualList implements CommandListener, MIDPTextBo
 
     public void eventOk() {
         if (cursor==0) OkNotify(null); 
-        else new MIDPTextBox(display, SR.MS_USER_MOOD, Moods.getInstance().myMoodText, this, TextField.ANY);
+        else new MIDPTextBox(display, SR.MS_USERMOOD, Moods.getInstance().myMoodText, this, TextField.ANY);
     }
     public void OkNotify(String moodText) {
         String moodName=((MoodItem)getFocusedObject()).getTipString();

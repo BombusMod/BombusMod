@@ -47,6 +47,7 @@ public class PepListener implements JabberBlockListener{
     }
    
     StaticData sd = StaticData.getInstance();
+    Config cf = Config.getInstance();
     
     /** Creates a new instance of PepListener */
     private PepListener() { }
@@ -70,99 +71,107 @@ public class PepListener implements JabberBlockListener{
         
 //#ifdef PEP_ACTIVITY
 //#         boolean hasActivity=false;
-//#         JabberDataBlock activity=extractEvent(event, "activity", "http://jabber.org/protocol/activity");
-//#         if (activity!=null) {
-//#             String tag=null;
-//#             String activityText=null;
-//#             //String activityString=null;
-//#             try {
-//#                 for (Enumeration e=activity.getChildBlocks().elements(); e.hasMoreElements();) {
-//#                     JabberDataBlock child=(JabberDataBlock)e.nextElement();
-//#                     tag=child.getTagName();
-//#                     if (tag.equals("text")) continue;
-//#                     result.append(tag);
-//#                     if (child.getChildBlocks()!=null)
-//#                         result.append(": ").append(((JabberDataBlock) child.getChildBlocks().elementAt(0)).getTagName());
-//#                     id=activity.getParent().getAttribute("id");
-//#                 }
-//#             } catch (Exception ex) { }
+//#         if (cf.rcvactivity) {
+//#             JabberDataBlock activity=extractEvent(event, "activity", "http://jabber.org/protocol/activity");
+//#             if (activity!=null) {
+//#                 String tag=null;
+//#                 String activityText=null;
+//#                 //String activityString=null;
+//#                 try {
+//#                     for (Enumeration e=activity.getChildBlocks().elements(); e.hasMoreElements();) {
+//#                         JabberDataBlock child=(JabberDataBlock)e.nextElement();
+//#                         tag=child.getTagName();
+//#                         if (tag.equals("text")) continue;
+//#                         result.append(tag);
+//#                         if (child.getChildBlocks()!=null)
+//#                             result.append(": ").append(((JabberDataBlock) child.getChildBlocks().elementAt(0)).getTagName());
+//#                         id=activity.getParent().getAttribute("id");
+//#                     }
+//#                 } catch (Exception ex) { }
 //# 
-//#             activityText=activity.getChildBlockText("text");
-//#             if (activityText!=null){
-//#                 if (activityText.length()>0) {
-//#                     result.append("(")
-//#                             .append(activityText)
-//#                             .append(")");
+//#                 activityText=activity.getChildBlockText("text");
+//#                 if (activityText!=null){
+//#                     if (activityText.length()>0) {
+//#                         result.append("(")
+//#                                 .append(activityText)
+//#                                 .append(")");
+//#                     }
 //#                 }
-//#             }
-//#             hasActivity=true;
+//#                 hasActivity=true;
+//# 
 //#ifdef DEBUG
 //#             System.out.println(from+": "+result.toString());
 //#endif
-//#             type="activity";
+//#                 type=SR.MS_USERACTIVITY;
+//#             }
 //#         }
 //#endif
         
 //#ifdef PEP_TUNE
 //#         boolean  tuneValue=false;
-//#         JabberDataBlock tune=extractEvent(event, "tune", "http://jabber.org/protocol/tune");
-//#         if (tune!=null) {
-//#             if (tune.getChildBlocks()==null) 
-//#                 result.append("(silence)");
-//#             else {
-//#                 String src=tune.getChildBlockText("source");
-//#                 
-//#                 result.append(tune.getChildBlockText("title"))
-//#                 .append(" - ")
-//#                 .append(tune.getChildBlockText("artist"));
-//#                 if (src.length()>0) {
-//#                     result.append(" (")
-//#                     .append(src)
-//#                     .append(')');
+//#         if (cf.rcvtune) {
+//#             JabberDataBlock tune=extractEvent(event, "tune", "http://jabber.org/protocol/tune");
+//#             if (tune!=null) {
+//#                 if (tune.getChildBlocks()==null)
+//#                     result.append("(silence)");
+//#                 else {
+//#                     String src=tune.getChildBlockText("source");
+//# 
+//#                     result.append(tune.getChildBlockText("title"))
+//#                     .append(" - ")
+//#                     .append(tune.getChildBlockText("artist"));
+//#                     if (src.length()>0) {
+//#                         result.append(" (")
+//#                         .append(src)
+//#                         .append(')');
+//#                     }
+//# 
+//#                     tuneValue=true;
 //#                 }
-//#                 
-//#                 tuneValue=true;
-//#             }
 //#ifdef DEBUG
 //#             System.out.println(from+": "+result.toString());
 //#endif
-//#             type=SR.MS_USER_TUNE;
+//#                 type=SR.MS_USERTUNE;
+//#             }
 //#         }
 //#endif
         int moodIndex=-1;
-        JabberDataBlock mood=extractEvent(event, "mood", "http://jabber.org/protocol/mood");
-        
-        String tag=null;
+        JabberDataBlock mood=null;
         String moodText=null;
-        if (mood!=null) {
-            try {
-                for (Enumeration e=mood.getChildBlocks().elements(); e.hasMoreElements();) {
-                    JabberDataBlock child=(JabberDataBlock)e.nextElement();
-                    tag=child.getTagName();
-                    if (tag.equals("text")) continue;
-                    
-                    moodIndex=Moods.getInstance().getMoodIngex(tag);
-                    
-                    id=mood.getParent().getAttribute("id");
+        String tag=null;
+        if (cf.sndrcvmood) {
+            mood=extractEvent(event, "mood", "http://jabber.org/protocol/mood");
+
+            if (mood!=null) {
+                try {
+                    for (Enumeration e=mood.getChildBlocks().elements(); e.hasMoreElements();) {
+                        JabberDataBlock child=(JabberDataBlock)e.nextElement();
+                        tag=child.getTagName();
+                        if (tag.equals("text")) continue;
+
+                        moodIndex=Moods.getInstance().getMoodIngex(tag);
+
+                        id=mood.getParent().getAttribute("id");
+                    }
+                } catch (Exception ex) {
+                    moodIndex=Moods.getInstance().getMoodIngex("-");
                 }
-            } catch (Exception ex) {
-                moodIndex=Moods.getInstance().getMoodIngex("-");
-            }
-            
-            result.append(Moods.getInstance().getMoodLabel(moodIndex));
-            moodText=mood.getChildBlockText("text");
-            if (moodText!=null){
-                if (moodText.length()>0) {
-                    result.append("(")
-                            .append(moodText)
-                            .append(")");
+
+                result.append(Moods.getInstance().getMoodLabel(moodIndex));
+                moodText=mood.getChildBlockText("text");
+                if (moodText!=null){
+                    if (moodText.length()>0) {
+                        result.append("(")
+                                .append(moodText)
+                                .append(")");
+                    }
                 }
-            }
 
 //#ifdef DEBUG
 //#             System.out.println(from+": "+result.toString());
 //#endif
-            type=SR.MS_USER_MOOD;
+                type=SR.MS_USERMOOD;
+            }
         }
 
         Msg m=new Msg(Msg.MESSAGE_TYPE_PRESENCE, from, type, result.toString());
@@ -190,7 +199,7 @@ public class PepListener implements JabberBlockListener{
 //#                     }
 //#endif
 //#ifdef PEP_TUNE
-//#                     if (tune!=null) {
+//#                     if (tuneValue) {
 //#                         c.pepTune=tuneValue;
 //#                         c.pepTuneText=result.toString();
 //#                     }

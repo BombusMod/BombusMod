@@ -2330,18 +2330,18 @@ public class Roster
 //#ifdef PEP
 //#                 if (cntact.hasMood()) {
 //#                     mess.append("\n")
-//#                         .append(SR.MS_USER_MOOD)
+//#                         .append(SR.MS_USERMOOD)
 //#                         .append(": ")
 //#                         .append(cntact.getMoodString());
 //#                 }
 //#ifdef PEP_ACTIVITY
-//#                 if (cntact.activity!=null) {
-//#                     mess.append("\nactivity: ").append(cntact.activity);
+//#                 if (cntact.hasActivity()) {
+//#                     mess.append("\n").append(SR.MS_USERACTIVITY).append(": ").append(cntact.activity);
 //#                 }
 //#endif
 //#ifdef PEP_TUNE
 //#                 if (cntact.pepTune) {
-//#                     mess.append("\n").append(SR.MS_USER_TUNE);
+//#                     mess.append("\n").append(SR.MS_USERTUNE);
 //#                     if (cntact.pepTuneText!="") {
 //#                         mess.append(": ").append(cntact.pepTuneText);
 //#                     }

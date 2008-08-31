@@ -677,10 +677,12 @@ public class Contact extends IconTextElement{
 //#             w-=ilHeight;
 //#             il.drawImage(g, RosterIcons.ICON_PROFILE_INDEX+1, w,imgH);
 //#         }
-//#         if (activity!=null) {
+//#ifdef PEP_ACTIVITY
+//#         if (hasActivity()) {
 //#             w-=ilHeight;
 //#             il.drawImage(g, RosterIcons.ICON_PROFILE_INDEX, w,imgH);
 //#         }
+//#endif
 //#endif
 //#endif
         if (getSecImageIndex()>-1) {
@@ -715,6 +717,14 @@ public class Contact extends IconTextElement{
 //#ifdef PEP
 //#     boolean hasMood() {
 //#         return (pepMood>-1 && pepMood<61);
+//#     }
+//#endif
+//#ifdef PEP_ACTIVITY
+//#     boolean hasActivity() {
+//#         if (activity!=null)
+//#             if (activity.length()>0)
+//#                 return true;
+//#         return false;
 //#     }
 //#endif
 }

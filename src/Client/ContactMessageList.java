@@ -570,7 +570,7 @@ public class ContactMessageList extends MessageList {
 //#         for (Enumeration messages2=history.elements(); messages2.hasMoreElements(); )  {
 //#             Msg message=(Msg) messages2.nextElement();
 //#             if (!isMsgExists(message)) {
-//#                 message.setHistory(true);
+//#                 message.history=true;
 //#                 contact.msgs.insertElementAt(message, 0);
 //#             }
 //#             message=null;
@@ -581,7 +581,7 @@ public class ContactMessageList extends MessageList {
 //#     private boolean isMsgExists(Msg msg) {
 //#          for (Enumeration messages=contact.msgs.elements(); messages.hasMoreElements(); )  {
 //#             Msg message=(Msg) messages.nextElement();
-//#             if (message.getBody().equals(msg.getBody())) {
+//#             if (message.body.equals(msg.body)) {
 //#                 return true;
 //#             }
 //#             message=null;

@@ -103,7 +103,7 @@ public class RosterToolsMenu extends Menu {
 //#ifdef PLUGINS
 //#             if (sd.PEP)
 //#endif
-//#                 addItem(SR.MS_USER_MOOD, 2, menuIcons.ICON_MOOD);          
+//#                 addItem(SR.MS_USERMOOD, 2, menuIcons.ICON_MOOD);          
 //#endif
         if (connected)
             addItem(SR.MS_MY_VCARD, 3, menuIcons.ICON_VCARD);

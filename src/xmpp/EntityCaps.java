@@ -106,8 +106,10 @@ public class EntityCaps implements JabberBlockListener{
         
         //features MUST be sorted
 //#ifdef PEP_ACTIVITY
-//#         features.addElement("http://jabber.org/protocol/activity");
-//#         features.addElement("http://jabber.org/protocol/activity+notify");
+//#         if (cf.rcvactivity) {
+//#             features.addElement("http://jabber.org/protocol/activity");
+//#             features.addElement("http://jabber.org/protocol/activity+notify");
+//#         }
 //#endif
         
         if (cf.eventComposing)

@@ -76,6 +76,9 @@ public class ConfigForm
 //#ifdef PEP_TUNE
 //#    private CheckBox rcvtune;
 //#endif
+//#ifdef PEP_ACTIVITY
+//#    private CheckBox rcvactivity;
+//#endif
 //#endif
      private CheckBox notifyWhenMessageType;
 //#ifdef POPUPS
@@ -182,6 +185,28 @@ public class ConfigForm
         nil.append(SR.MS_NIL_ALLOW_ALL);
         nil.setSelectedIndex((cf.notInListDropLevel>NotInListFilter.ALLOW_ALL)? NotInListFilter.ALLOW_ALL: cf.notInListDropLevel);
         itemsList.addElement(nil);
+        
+//#ifdef PEP
+//#ifdef PLUGINS
+//#         if (sd.PEP) {
+//#endif
+//#             itemsList.addElement(new SpacerItem(10));
+//#             itemsList.addElement(new SimpleString(SR.MS_PEP, true));
+//# 
+//#             sndrcvmood = new CheckBox(SR.MS_USERMOOD, cf.sndrcvmood);
+//#             itemsList.addElement(sndrcvmood);
+//#ifdef PEP_TUNE
+//#             rcvtune = new CheckBox(SR.MS_USERTUNE, cf.rcvtune); 
+//#             itemsList.addElement(rcvtune);
+//#endif
+//#ifdef PEP_ACTIVITY
+//#             rcvactivity = new CheckBox(SR.MS_USERACTIVITY, cf.rcvactivity);
+//#             itemsList.addElement(rcvactivity);
+//#endif
+//#ifdef PLUGINS
+//#         }
+//#endif
+//#endif
 
         itemsList.addElement(new SpacerItem(10));
         itemsList.addElement(new SimpleString(SR.MS_MESSAGES, true));
@@ -193,20 +218,6 @@ public class ConfigForm
         storeConfPresence = new CheckBox(SR.MS_STORE_PRESENCE, cf.storeConfPresence); itemsList.addElement(storeConfPresence);
         autoScroll = new CheckBox(SR.MS_AUTOSCROLL, cf.autoScroll); itemsList.addElement(autoScroll);
         useTabs = new CheckBox(SR.MS_EMULATE_TABS, cf.useTabs); itemsList.addElement(useTabs);
-//#ifdef PEP
-//#         sndrcvmood = new CheckBox(SR.MS_SEND_RECEIVE_USERMOODS, cf.sndrcvmood); 
-//#ifdef PLUGINS
-//#         if (sd.PEP)
-//#endif
-//#             itemsList.addElement(sndrcvmood);
-//#ifdef PEP_TUNE
-//#         rcvtune = new CheckBox(SR.MS_RECEIVE_USERTUNE, cf.rcvtune); 
-//#ifdef PLUGINS
-//#         if (sd.PEP)
-//#endif
-//#             itemsList.addElement(rcvtune);
-//#endif
-//#endif
         notifyWhenMessageType = new CheckBox(SR.MS_RUNNING_MESSAGE, cf.notifyWhenMessageType); itemsList.addElement(notifyWhenMessageType);
 //#ifdef POPUPS
         popUps = new CheckBox(SR.MS_POPUPS, cf.popUps); itemsList.addElement(popUps);
@@ -379,12 +390,23 @@ public class ConfigForm
         cf.storeConfPresence=storeConfPresence.getValue();
         cf.autoScroll=autoScroll.getValue();
         cf.useTabs=useTabs.getValue();
+        
 //#ifdef PEP
-//#         cf.sndrcvmood=sndrcvmood.getValue();
+//#ifdef PLUGINS
+//#         if (sd.PEP) {
+//#endif
+//#             cf.sndrcvmood=sndrcvmood.getValue();
 //#ifdef PEP_TUNE
 //#             cf.rcvtune=rcvtune.getValue();
 //#endif
+//#ifdef PEP_ACTIVITY
+//#             cf.rcvactivity=rcvactivity.getValue();
 //#endif
+//#ifdef PLUGINS
+//#         }
+//#endif
+//#endif       
+        
         cf.notifyWhenMessageType=notifyWhenMessageType.getValue();
 //#ifdef POPUPS
         cf.popUps=popUps.getValue();

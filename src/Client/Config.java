@@ -248,6 +248,9 @@ type = \"-=Siemens=-\";
 //#ifdef PEP_TUNE
 //#     public boolean rcvtune = false;
 //#endif
+//#ifdef PEP_ACTIVITY
+//#     public boolean rcvactivity = false;
+//#endif
 //#endif
     public boolean queryExit = false;
     public int notInListDropLevel=NotInListFilter.ALLOW_ALL; //enable all
@@ -287,6 +290,8 @@ type = \"-=Siemens=-\";
     public boolean fileTransfer=true;
     public boolean adhoc=false;
     public boolean saveHistory=false;
+    
+    
     
     public static Config getInstance(){
 	if (instance==null) {
@@ -525,7 +530,11 @@ type = \"-=Siemens=-\";
             showNickNames=inputStream.readBoolean();
             
             adhoc=inputStream.readBoolean();
-            
+//#ifdef PEP_ACTIVITY
+//#             rcvactivity = inputStream.readBoolean();
+//#else
+            inputStream.readBoolean();
+//#endif
 	    inputStream.close();
             inputStream=null;
 	} catch (Exception e) {
@@ -561,6 +570,9 @@ type = \"-=Siemens=-\";
 //#endif
 //#ifdef PEP_TUNE
 //#         if(!sd.PEP) rcvtune=false;
+//#endif
+//#ifdef PEP_ACTIVITY
+//#         if (!sd.PEP) rcvactivity=false;
 //#endif
 //#ifdef ADHOC
 //#         if(!sd.Adhoc) adhoc=false;
@@ -748,6 +760,12 @@ type = \"-=Siemens=-\";
             outputStream.writeBoolean(showNickNames);
             
             outputStream.writeBoolean(adhoc);
+            
+//#ifdef PEP_ACTIVITY
+//#             outputStream.writeBoolean(rcvactivity);
+//#else
+            outputStream.writeBoolean(false);
+//#endif
 	} catch (Exception e) { }
 	
 	NvStorage.writeFileRecord(outputStream, "config", 0, true);

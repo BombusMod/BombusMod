@@ -600,14 +600,7 @@ public class SR {
 //#ifdef CLIPBOARD
 //#     public static String MS_CLIPBOARD = loadString("Clipboard");
 //#endif
-//#ifdef PEP
-//#     public static String MS_USER_MOOD = loadString( "User mood" );
-//#     public static String MS_PEP_NOT_SUPPORTED = loadString("Personal events not supported");
-//#ifdef PEP_TUNE
-//#     public static String MS_USER_TUNE = loadString("User tune");
-//#     public static String MS_RECEIVE_USERTUNE=loadString("user tune receive");
-//#endif
-//#endif
+
     public static String MS_BAR_FONT=loadString("Bar font");
     public static String MS_POPUP_FONT=loadString("Popup & ballon font");
 
@@ -675,6 +668,15 @@ public class SR {
     public static String MS_ADHOC=loadString("remote control");
     
     public static String MS_USE_DNS_SRV_RESOLVER=loadString("resolve hostname");
+    
+//#ifdef PEP
+//#     public static String MS_PEP=loadString("Pubsub events");
+//#     public static String MS_USERMOOD=loadString("User moods");
+//#     public static String MS_USERTUNE=loadString("User tune");
+//#     public static String MS_USERACTIVITY=loadString("User activity");
+//#     
+//#     public static String MS_PEP_NOT_SUPPORTED = loadString("Personal events not supported");
+//#endif
     
     private SR() { }
     

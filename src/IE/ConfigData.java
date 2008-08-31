@@ -143,13 +143,16 @@ public class ConfigData {
 //#ifdef PEP
 //#         array.addElement(new keyValue(sndrcvmood, (cf.sndrcvmood)?"1":"0"));
 //#endif
-//#ifdef CLIPBOARD
-//#         array.addElement(new keyValue(useClipBoard, (cf.useClipBoard)?"1":"0"));
-//#endif
 //#ifdef PEP_TUNE
 //#         array.addElement(new keyValue(sndrcvtune, (cf.rcvtune)?"1":"0"));
 //#endif
-        
+//#ifdef PEP_ACTIVITY
+//#         array.addElement(new keyValue(rcvactivity, (cf.rcvactivity)?"1":"0"));
+//#endif
+//#ifdef CLIPBOARD
+//#         array.addElement(new keyValue(useClipBoard, (cf.useClipBoard)?"1":"0"));
+//#endif
+
 //#ifdef DETRANSLIT
 //#         array.addElement(new keyValue(autoDeTranslit, (cf.autoDeTranslit)?"1":"0")); 
 //#endif
@@ -277,13 +280,15 @@ public class ConfigData {
 //#ifdef PEP
 //#         cf.sndrcvmood=cf.getBooleanProperty(getValue(sndrcvmood),true);
 //#endif
-//#ifdef CLIPBOARD
-//#         cf.useClipBoard=cf.getBooleanProperty(getValue(useClipBoard),true);
-//#endif
 //#ifdef PEP_TUNE
 //#         cf.rcvtune=cf.getBooleanProperty(getValue(sndrcvtune),true);
 //#endif
-        
+//#ifdef PEP_ACTIVITY
+//#         cf.rcvactivity=cf.getBooleanProperty(getValue(rcvactivity),true);
+//#endif
+//#ifdef CLIPBOARD
+//#         cf.useClipBoard=cf.getBooleanProperty(getValue(useClipBoard),true);
+//#endif        
 //#ifdef DETRANSLIT
 //#         cf.autoDeTranslit=cf.getBooleanProperty(getValue(autoDeTranslit),false);
 //#endif
@@ -443,11 +448,14 @@ public class ConfigData {
 //#ifdef PEP
 //#     private final static String sndrcvmood="sndrcvmood";
 //#endif
-//#ifdef CLIPBOARD
-//#     private final static String useClipBoard="useClipBoard";
-//#endif
 //#ifdef PEP_TUNE
 //#     private final static String sndrcvtune="sndrcvtune";
+//#endif
+//#ifdef PEP_ACTIVITY
+//#     private final static String rcvactivity="rcvactivity";
+//#endif
+//#ifdef CLIPBOARD
+//#     private final static String useClipBoard="useClipBoard";
 //#endif
     private final static String IQNotify="IQNotify";
     private final static String showClientIcon="showClientIcon";
