@@ -856,18 +856,6 @@ public abstract class VirtualList
     }
     
     private void key(int keyCode) {
-//#ifdef MENU_LISTENER
-//#         if (keyCode==Config.SOFT_LEFT) {
-//#             showMenu();
-//#             return;
-//#         }
-//#          if (keyCode==Config.SOFT_RIGHT) {
-//#             if (cf.phoneManufacturer!=Config.SONYE || cf.phoneManufacturer==Config.SIEMENS || cf.phoneManufacturer==Config.SIEMENS2 || cf.phoneManufacturer==Config.MOTO) {
-//#                 cmdCancel();
-//#                 return;
-//#             }
-//#          }
-//#endif
         if (sendEvent(keyCode)) {
             repaint();
             return;
@@ -884,6 +872,16 @@ public abstract class VirtualList
             }
         }
 //#endif
+//#ifdef MENU_LISTENER
+//#         if (keyCode==Config.SOFT_LEFT) {
+//#             showMenu();
+//#             return;
+//#         }
+//#          if (keyCode==Config.SOFT_RIGHT) {
+//#             cmdCancel();
+//#             return;
+//#          }
+//#else
          if (keyCode==Config.SOFT_RIGHT) {
             if (cf.phoneManufacturer!=Config.SONYE || cf.phoneManufacturer==Config.SIEMENS || cf.phoneManufacturer==Config.SIEMENS2 || cf.phoneManufacturer==Config.MOTO) {
                if (canBack==true)
@@ -891,6 +889,7 @@ public abstract class VirtualList
                 return;
             }
          }
+//#endif
          if (keyCode==greenKeyCode) {
             if (cf.phoneManufacturer==Config.MOTO || cf.phoneManufacturer==Config.NOKIA || cf.phoneManufacturer==Config.NOKIA_9XXX) {
                 keyGreen();
