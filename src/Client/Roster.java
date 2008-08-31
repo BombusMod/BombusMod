@@ -2334,6 +2334,11 @@ public class Roster
 //#                         .append(": ")
 //#                         .append(cntact.getMoodString());
 //#                 }
+//#ifdef PEP_ACTIVITY
+//#                 if (cntact.activity!=null) {
+//#                     mess.append("\nactivity: ").append(cntact.activity);
+//#                 }
+//#endif
 //#ifdef PEP_TUNE
 //#                 if (cntact.pepTune) {
 //#                     mess.append("\n").append(SR.MS_USER_TUNE);

@@ -67,6 +67,42 @@ public class PepListener implements JabberBlockListener{
         String id=null;
         String type="";
         StringBuffer result=new StringBuffer();
+        
+//#ifdef PEP_ACTIVITY
+//#         boolean hasActivity=false;
+//#         JabberDataBlock activity=extractEvent(event, "activity", "http://jabber.org/protocol/activity");
+//#         if (activity!=null) {
+//#             String tag=null;
+//#             String activityText=null;
+//#             //String activityString=null;
+//#             try {
+//#                 for (Enumeration e=activity.getChildBlocks().elements(); e.hasMoreElements();) {
+//#                     JabberDataBlock child=(JabberDataBlock)e.nextElement();
+//#                     tag=child.getTagName();
+//#                     if (tag.equals("text")) continue;
+//#                     result.append(tag);
+//#                     if (child.getChildBlocks()!=null)
+//#                         result.append(": ").append(((JabberDataBlock) child.getChildBlocks().elementAt(0)).getTagName());
+//#                     id=activity.getParent().getAttribute("id");
+//#                 }
+//#             } catch (Exception ex) { }
+//# 
+//#             activityText=activity.getChildBlockText("text");
+//#             if (activityText!=null){
+//#                 if (activityText.length()>0) {
+//#                     result.append("(")
+//#                             .append(activityText)
+//#                             .append(")");
+//#                 }
+//#             }
+//#             hasActivity=true;
+//#ifdef DEBUG
+//#             System.out.println(from+": "+result.toString());
+//#endif
+//#             type="activity";
+//#         }
+//#endif
+        
 //#ifdef PEP_TUNE
 //#         boolean  tuneValue=false;
 //#         JabberDataBlock tune=extractEvent(event, "tune", "http://jabber.org/protocol/tune");
@@ -148,6 +184,11 @@ public class PepListener implements JabberBlockListener{
                             Moods.getInstance().myMoodName=moodText;
                         }
                     }
+//#ifdef PEP_ACTIVITY
+//#                     if (hasActivity) {
+//#                         c.activity=result.toString();
+//#                     }
+//#endif
 //#ifdef PEP_TUNE
 //#                     if (tune!=null) {
 //#                         c.pepTune=tuneValue;

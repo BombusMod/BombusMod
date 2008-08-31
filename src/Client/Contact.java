@@ -69,6 +69,9 @@ public class Contact extends IconTextElement{
 //#     public boolean pepTune;
 //#     public String pepTuneText=null;
 //#endif
+//#ifdef PEP_ACTIVITY
+//#     public String activity=null;
+//#endif
 //#endif
     
     public final static short ORIGIN_ROSTER=0;
@@ -214,6 +217,9 @@ public class Contact extends IconTextElement{
 //#ifdef PEP_TUNE
 //#         clone.pepTune=pepTune;
 //#         clone.pepTuneText=pepTuneText;
+//#endif
+//#ifdef PEP_ACTIVITY
+//#         clone.activity=activity;
 //#endif
 //#endif
         clone.bareJid=bareJid;
@@ -670,6 +676,10 @@ public class Contact extends IconTextElement{
 //#         if (pepTune) {
 //#             w-=ilHeight;
 //#             il.drawImage(g, RosterIcons.ICON_PROFILE_INDEX+1, w,imgH);
+//#         }
+//#         if (activity!=null) {
+//#             w-=ilHeight;
+//#             il.drawImage(g, RosterIcons.ICON_PROFILE_INDEX, w,imgH);
 //#         }
 //#endif
 //#endif

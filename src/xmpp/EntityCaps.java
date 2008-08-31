@@ -104,7 +104,12 @@ public class EntityCaps implements JabberBlockListener{
         features=null;
         features=new Vector();
         
-        //features MUST be sorted        
+        //features MUST be sorted
+//#ifdef PEP_ACTIVITY
+//#         features.addElement("http://jabber.org/protocol/activity");
+//#         features.addElement("http://jabber.org/protocol/activity+notify");
+//#endif
+        
         if (cf.eventComposing)
             features.addElement("http://jabber.org/protocol/chatstates"); //xep-0085
 //#ifdef ADHOC
@@ -153,28 +158,4 @@ public class EntityCaps implements JabberBlockListener{
     }
 
     private static Vector features=new Vector();
-/*
-    public final static void sort(Vector sortVector){
-        try {
-            synchronized (sortVector) {
-                int f, i;
-                String left, right;
-                
-                for (f = 1; f < sortVector.size(); f++) {
-                    left=(String)sortVector.elementAt(f);
-                    right=(String)sortVector.elementAt(f-1);
-                    if ( left.compareTo(right) >=0 ) continue;
-                    i = f-1;
-                    while (i>=0){
-                        right=(String)sortVector.elementAt(i);
-                        if (right.compareTo(left) <0) break;
-                        sortVector.setElementAt(right,i+1);
-                        i--;
-                    }
-                    sortVector.setElementAt(left,i+1);
-                }
-            }
-        } catch (Exception e) { }
-    }
- */
 }
