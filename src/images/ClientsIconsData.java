@@ -35,7 +35,9 @@ import util.StringLoader;
  * @author ad
  */
 public class ClientsIconsData {
-    public static String plugin = new String("PLUGIN_CLIENTS_ICONS");
+//#ifdef PLUGINS
+//#     public static String plugin = new String("PLUGIN_CLIENTS_ICONS");
+//#endif
     
     private static Vector clients[]=new Vector[2];
 

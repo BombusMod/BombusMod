@@ -55,8 +55,9 @@ public class userKeysList
 //#         MenuListener
 //#endif
     {
-
-    public static String plugin = new String("PLUGIN_USER_KEYS");
+//#ifdef PLUGINS
+//#     public static String plugin = new String("PLUGIN_USER_KEYS");
+//#endif
 
     Vector commandsList;
     

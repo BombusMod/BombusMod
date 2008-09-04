@@ -61,7 +61,9 @@ public class PrivacySelect
         JabberBlockListener,
         MIDPTextBox.TextBoxNotify
 {
-    public static String plugin = new String("PLUGIN_PRIVACY");
+//#ifdef PLUGINS
+//#     public static String plugin = new String("PLUGIN_PRIVACY");
+//#endif
     
     private Vector list=new Vector();
     

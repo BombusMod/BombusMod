@@ -243,5 +243,12 @@ public class Time {
             index=0;
         return suf[field][index];
     }
+    
+    public static String getTimeWeekDay() {
+        StringBuffer s=new StringBuffer(localWeekDay());
+        s.append(" ").append(localTime());
+        
+        return s.toString();
+    }
 }
 

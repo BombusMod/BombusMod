@@ -36,8 +36,9 @@ import javax.microedition.lcdui.Form;
 import locale.SR;
 
 public class ChangeTransport implements CommandListener {
-    
-    public static String plugin = new String("PLUGIN_CHANGE_TRANSPORT");
+//#ifdef PLUGINS
+//#     public static String plugin = new String("PLUGIN_CHANGE_TRANSPORT");
+//#endif
 
     private Display display;
     private Form f;

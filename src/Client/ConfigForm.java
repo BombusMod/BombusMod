@@ -135,8 +135,11 @@ public class ConfigForm
 //#endif
     
     private DropChoiceBox panels;
+    private CheckBox drawMenuCommand;
     
     private CheckBox showNickNames;
+    
+    private CheckBox oldSE;
 
     private Vector langs[];
 
@@ -261,6 +264,10 @@ public class ConfigForm
         memMonitor = new CheckBox(SR.MS_HEAP_MONITOR, cf.memMonitor); itemsList.addElement(memMonitor);
         enableVersionOs = new CheckBox(SR.MS_SHOW_HARDWARE, cf.enableVersionOs); itemsList.addElement(enableVersionOs);
         queryExit = new CheckBox(SR.MS_CONFIRM_EXIT, cf.queryExit); itemsList.addElement(queryExit);
+//#ifdef MENU_LISTENER
+//#         oldSE = new CheckBox("keys for old SE", cf.oldSE);
+//#         if (cf.phoneManufacturer==cf.SONYE) itemsList.addElement(oldSE);
+//#endif
 //#ifdef USER_KEYS
 //#         userKeys = new CheckBox(SR.MS_CUSTOM_KEYS, cf.userKeys); 
 //#ifdef PLUGINS
@@ -318,6 +325,8 @@ public class ConfigForm
         panels.append(SR.MS_NO_BAR+" : "+SR.MS_MAIN_BAR);
 	panels.setSelectedIndex(cf.panelsState);
 	itemsList.addElement(panels);
+        drawMenuCommand = new CheckBox(SR.MS_SHOW_TIME_TRAFFIC, cf.showTimeTraffic); 
+        itemsList.addElement(drawMenuCommand);
 
         itemsList.addElement(new SpacerItem(10));
         langFiles=new DropChoiceBox(display, SR.MS_LANGUAGE);
@@ -449,10 +458,14 @@ public class ConfigForm
 //#             cf.adhoc=adhoc.getValue();
 //#endif
         
+        VirtualList.showTimeTraffic=cf.showTimeTraffic=drawMenuCommand.getValue();
         VirtualList.fullscreen=cf.fullscreen=fullscreen.getValue();
         VirtualList.memMonitor=cf.memMonitor=memMonitor.getValue();
         cf.enableVersionOs=enableVersionOs.getValue();
         cf.queryExit=queryExit.getValue();
+//#ifdef MENU_LISTENER
+//#         if (cf.phoneManufacturer==cf.SONYE) cf.oldSE=oldSE.getValue();
+//#endif
 //#ifdef USER_KEYS
 //#ifdef PLUGINS
 //#             if (sd.UserKeys)

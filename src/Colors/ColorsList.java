@@ -45,8 +45,9 @@ public class ColorsList
         extends VirtualList
         implements CommandListener
     {
-
-    public static String plugin = new String("PLUGIN_COLORS");
+//#ifdef PLUGINS
+//#     public static String plugin = new String("PLUGIN_COLORS");
+//#endif
     
 
     static void setColor(int paramName, int value) {

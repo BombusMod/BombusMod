@@ -37,8 +37,10 @@ import ui.controls.form.DropChoiceBox;
  * @author ad
  */
 class userKeyEdit
-     extends DefForm  {
-    public static String plugin = new String("PLUGIN_USER_KEYS");
+     extends DefForm {
+//#ifdef PLUGINS
+//#     public static String plugin = new String("PLUGIN_USER_KEYS");
+//#endif
 
     private final userKeysList keysList;
     

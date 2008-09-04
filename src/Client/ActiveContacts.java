@@ -70,11 +70,9 @@ public class ActiveContacts
 	super();
         activeContacts=null;
 	activeContacts=new Vector();
-        synchronized(sd.roster.getHContacts()) {
-            for (Enumeration r=sd.roster.getHContacts().elements(); r.hasMoreElements(); )  {
-                Contact c=(Contact)r.nextElement();
-                if (c.active()) activeContacts.addElement(c);
-            }
+        for (Enumeration r=sd.roster.getHContacts().elements(); r.hasMoreElements(); )  {
+            Contact c=(Contact)r.nextElement();
+            if (c.active()) activeContacts.addElement(c);
         }
 
 	if (getItemCount()==0) return;

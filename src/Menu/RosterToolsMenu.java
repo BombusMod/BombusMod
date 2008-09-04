@@ -118,10 +118,7 @@ public class RosterToolsMenu extends Menu {
 //#endif
 //#if (FILE_IO && FILE_TRANSFER)
         if (connected && cf.fileTransfer)
-//#ifdef PLUGINS
-//#             if (sd.FileTransfer)
-//#endif
-                addItem(SR.MS_FILE_TRANSFERS, 8, menuIcons.ICON_FT);
+            addItem(SR.MS_FILE_TRANSFERS, 8, menuIcons.ICON_FT);
 //#endif
         
         addItem(SR.MS_COLOR_TUNE, 9, menuIcons.ICON_COLOR_TUNE);
@@ -142,16 +139,19 @@ public class RosterToolsMenu extends Menu {
 //#endif
 //#endif
 //#ifdef CHECK_VERSION
-//#         addItem(SR.MS_CHECK_UPDATE, 13, menuIcons.ICON_CHECK_UPD);
-//#         if (cf.getStringProperty("Bombus-Upgrade", "123")!="123")
-//#             addItem(SR.MS_BUILD_NEW, 14, menuIcons.ICON_BUILD_NEW);
+//#ifdef PLUGINS
+//#         if (sd.Upgrade)
+//#endif
+//#             addItem(SR.MS_CHECK_UPDATE, 13, menuIcons.ICON_CHECK_UPD);
+//#ifdef PLUGINS
+//#         if (sd.Upgrade)
+//#endif
+//#             if (cf.getStringProperty("Bombus-Upgrade", "123")!="123")
+//#                 addItem(SR.MS_BUILD_NEW, 14, menuIcons.ICON_BUILD_NEW);
 //#endif
 //#ifdef USER_KEYS
-//#ifdef PLUGINS
-//#         if (sd.Stats)
-//#endif
-//#             if (cf.userKeys)
-//#                 addItem(SR.MS_CUSTOM_KEYS, 15, menuIcons.ICON_KEYS);
+//#         if (cf.userKeys)
+//#             addItem(SR.MS_CUSTOM_KEYS, 15, menuIcons.ICON_KEYS);
 //#endif
 //#if SASL_XGOOGLETOKEN
 //#         if (sd.account.isGmail() && connected)

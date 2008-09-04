@@ -87,14 +87,11 @@ public class MessageEdit
         super(display, pView, body, to.toString(), TextField.ANY);
         this.to=to;
         this.display=display;
-        //parentView=display.getCurrent();
 
         cf=Config.getInstance();
 //#ifdef DETRANSLIT
 //#         dt=DeTranslit.getInstance();
 //#endif
-        
-        //this.subj=to.toString();
         
         addCommand(cmdSend);
         addCommand(cmdInsMe);
@@ -169,9 +166,7 @@ public class MessageEdit
         }
         // message/composing sending
         destroyView();
-        runState=3;
-       
-       //((VirtualList) parentView).redraw();       
+        runState=3;  
     }
     
     /*

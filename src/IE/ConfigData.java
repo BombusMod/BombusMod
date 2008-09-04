@@ -40,8 +40,9 @@ import ui.VirtualList;
  * @author ad
  */
 public class ConfigData {
-    
-    public static String plugin = new String("PLUGIN_IE");
+//#ifdef PLUGINS
+//#     public static String plugin = new String("PLUGIN_IE");
+//#endif
     
     private Config cf;
     private Vector array;
@@ -105,7 +106,9 @@ public class ConfigData {
 //#         array.addElement(new keyValue(msgLogConf, (cf.msgLogConf)?"1":"0"));
 //#endif
         array.addElement(new keyValue(cp1251, (cf.cp1251)?"1":"0"));
+        
         array.addElement(new keyValue(panelsState, Integer.toString(cf.panelsState)));
+        array.addElement(new keyValue(showTimeTraffic, (cf.showTimeTraffic)?"1":"0"));
 
         array.addElement(new keyValue(lightState, (cf.lightState)?"1":"0"));
         array.addElement(new keyValue(notifySound, (cf.notifySound)?"1":"0"));
@@ -244,7 +247,9 @@ public class ConfigData {
 //#         cf.msgLogConf=cf.getBooleanProperty(getValue(msgLogConf),false);
 //#endif
         cf.cp1251=cf.getBooleanProperty(getValue(cp1251),true);
+        
         cf.panelsState=cf.getIntProperty(getValue(panelsState),2);
+        cf.showTimeTraffic=cf.getBooleanProperty(getValue(showTimeTraffic),false);
 
         cf.lightState=cf.getBooleanProperty(getValue(lightState),true);
 //#ifdef AUTOSTATUS
@@ -409,7 +414,9 @@ public class ConfigData {
 //#     private final static String msgLogConf="msgLogConf";
 //#endif
     private final static String cp1251="cp1251";
+    
     private final static String panelsState="panelsState";
+    private final static String showTimeTraffic="showTimeTraffic";
 
     private final static String lightState="lightState";
     private final static String notifySound="notifySound";

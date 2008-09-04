@@ -50,8 +50,9 @@ import ui.controls.form.TextInput;
 public class HistoryConfig 
         extends DefForm
         implements BrowserListener {
-    
-    public static String plugin = new String("PLUGIN_HISTORY");
+//#ifdef PLUGINS
+//#     public static String plugin = new String("PLUGIN_HISTORY");
+//#endif
 
     Command cmdPath=new Command(SR.MS_SELECT_HISTORY_FOLDER, Command.SCREEN, 2);
 

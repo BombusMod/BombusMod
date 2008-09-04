@@ -41,8 +41,9 @@ import ui.controls.form.TextInput;
 public class TransferSendFile
         extends DefForm 
         implements BrowserListener {
-    
-    public static String plugin = new String("PLUGIN_FILE_TRANSFER");
+//#ifdef PLUGINS
+//#     public static String plugin = new String("PLUGIN_FILE_TRANSFER");
+//#endif
     
     private Display display;
 

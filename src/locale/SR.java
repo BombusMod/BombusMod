@@ -669,6 +669,8 @@ public class SR {
     
     public static String MS_USE_DNS_SRV_RESOLVER=loadString("resolve hostname");
     
+    public static String MS_SHOW_TIME_TRAFFIC=loadString("show time and traffic");
+    
 //#ifdef PEP
 //#     public static String MS_PEP=loadString("Pubsub events");
 //#     public static String MS_USERMOOD=loadString("User moods");

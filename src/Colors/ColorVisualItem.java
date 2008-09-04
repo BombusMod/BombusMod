@@ -36,8 +36,9 @@ import ui.IconTextElement;
  */
 public class ColorVisualItem
         extends IconTextElement {
-    
-    public static String plugin = new String("PLUGIN_COLORS");
+//#ifdef PLUGINS
+//#     public static String plugin = new String("PLUGIN_COLORS");
+//#endif
     
     private String name;
     private int color;

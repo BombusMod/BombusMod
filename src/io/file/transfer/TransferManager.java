@@ -59,7 +59,9 @@ public class TransferManager
 //#         MenuListener
 //#endif
     {
-    public static String plugin = new String("PLUGIN_FILE_TRANSFER");
+//#ifdef PLUGINS
+//#     public static String plugin = new String("PLUGIN_FILE_TRANSFER");
+//#endif
     
     private Vector taskList=new Vector();;
     

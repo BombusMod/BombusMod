@@ -39,7 +39,9 @@ import ui.IconTextElement;
  * @author ad
  */
 public class userKey extends IconTextElement {
-    public static String plugin = new String("PLUGIN_USER_KEYS");
+//#ifdef PLUGINS
+//#     public static String plugin = new String("PLUGIN_USER_KEYS");
+//#endif
     
     public final static String storage="keys_db";
             

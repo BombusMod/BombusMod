@@ -34,7 +34,9 @@ import ui.ImageList;
  * @author ad
  */
 public class ClientsIcons extends ImageList {
-    public static String plugin = new String("PLUGIN_CLIENTS_ICONS");
+//#ifdef PLUGINS
+//#     public static String plugin = new String("PLUGIN_CLIENTS_ICONS");
+//#endif
 
     private final static int CLIENTS_IN_ROW=16;
 

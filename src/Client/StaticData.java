@@ -83,5 +83,12 @@ public class StaticData {
 //#     public boolean Stats=true;
 //#     public boolean ClientsIcons=true;
 //#     public boolean UserKeys=true;
+<<<<<<< .mine
+//#     public boolean Upgrade=true;
+//#     public boolean Upgrade=true;
+=======
+//#     public boolean Upgrade=true;
+
+>>>>>>> .theirs
 //#endif
 }

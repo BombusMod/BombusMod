@@ -59,6 +59,9 @@ public class Upgrade
 //#         MenuListener
 //#endif
     {
+//#ifdef PLUGINS
+//#     public static String plugin = new String("PLUGIN_VERSION_UPGRADE");
+//#endif
    
     //private Command cmdBack=new Command(SR.MS_BACK, Command.BACK, 99);
     private final static String VERSION_URL="http://bombusmod.net.ru/checkupdate/check.php";

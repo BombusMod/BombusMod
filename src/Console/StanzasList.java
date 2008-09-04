@@ -35,8 +35,9 @@ import java.util.Vector;
  * @author ad
  */
 public class StanzasList {
-    
-    public static String plugin = new String("PLUGIN_CONSOLE");
+//#ifdef PLUGINS
+//#     public static String plugin = new String("PLUGIN_CONSOLE");
+//#endif
     
     Vector stanzas=new Vector();
     

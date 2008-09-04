@@ -42,8 +42,9 @@ import xmpp.XmppError;
  * @author Evg_S
  */
 public class TransferDispatcher implements JabberBlockListener{
-    
-    public static String plugin = new String("PLUGIN_FILE_TRANSFER");
+//#ifdef PLUGINS
+//#     public static String plugin = new String("PLUGIN_FILE_TRANSFER");
+//#endif
 
     /** Singleton */
     private static TransferDispatcher instance;

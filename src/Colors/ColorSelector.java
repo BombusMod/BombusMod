@@ -29,7 +29,9 @@ import javax.microedition.lcdui.*;
 import locale.SR;
 
 public class ColorSelector extends Canvas implements Runnable, CommandListener {
-    public static String plugin = new String("PLUGIN_COLORS");
+//#ifdef PLUGINS
+//#     public static String plugin = new String("PLUGIN_COLORS");
+//#endif
 
     static Font mfont = Font.getFont(Font.FACE_SYSTEM, Font.STYLE_BOLD, Font.SIZE_SMALL);
     static int w, h;

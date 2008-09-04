@@ -466,8 +466,7 @@ public class ContactMessageList extends MessageList {
 
     public void keyPressed(int keyCode) {
         if (keyCode==KEY_POUND) {
-            if (!sd.roster.isLoggedIn())
-                return;
+            if (!sd.roster.isLoggedIn()) return;
 //#ifndef WMUC
             if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT) {
                 Reply();
@@ -476,7 +475,28 @@ public class ContactMessageList extends MessageList {
 //#endif
             keyGreen();
             return;
-        } else super.keyPressed(keyCode);
+        }
+//#ifdef MENU_LISTENER
+//#         else if (keyCode==Config.SOFT_RIGHT) {
+//#             if (cf.oldSE) {
+//#                 showMenu();
+//#             } else {
+//#                 StaticData.getInstance().roster.activeContact=null;
+//#                 destroyView();
+//#             }
+//#             return;
+//#         }  else if (keyCode==Config.SOFT_LEFT) {
+//#             if (cf.oldSE) {
+//#                 keyGreen();
+//#             } else {
+//#                 showMenu();
+//#             }
+//#             return;
+//#         }
+//#endif
+        else {
+            super.keyPressed(keyCode);
+        }
     }
 
     public void userKeyPressed(int keyCode) {
@@ -628,8 +648,6 @@ public class ContactMessageList extends MessageList {
     }
     
 //#ifdef MENU_LISTENER
-//#     //public Vector menuCommands=new Vector();
-//# 
 //#     public void showMenu() {
 //#          commandState();
 //#          super.showMenu();
@@ -657,5 +675,8 @@ public class ContactMessageList extends MessageList {
 //#         if (body.indexOf("native:")>-1) return true;
 //#         return false;
 //#     }
+//#     
+//#     public String touchLeftCommand(){ return (cf.oldSE)?SR.MS_NEW:SR.MS_MENU; }
+//#     public String touchRightCommand(){ return (cf.oldSE)?SR.MS_MENU:SR.MS_BACK; }
 //#endif
 }

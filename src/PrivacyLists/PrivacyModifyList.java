@@ -59,7 +59,9 @@ public class PrivacyModifyList
 //#endif
         JabberBlockListener
 {
-    public static String plugin = new String("PLUGIN_PRIVACY");
+//#ifdef PLUGINS
+//#     public static String plugin = new String("PLUGIN_PRIVACY");
+//#endif
     
     private PrivacyList plist;
     

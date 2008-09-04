@@ -158,7 +158,7 @@ public class AutoTask
 //#ifndef WMUC
             case TASK_ACTION_CONFERENCE_QUIT:
                 caption+=SR.MS_AUTOTASK_QUIT_CONFERENCES;
-                sd.roster.multicastConferencePresence(caption, Presence.PRESENCE_OFFLINE);
+                sd.roster.multicastConferencePresence(Presence.PRESENCE_OFFLINE, caption, 0);
                 break;
 //#endif
             case TASK_ACTION_LOGOFF:

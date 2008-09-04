@@ -36,8 +36,10 @@ import locale.SR;
 import ui.controls.AlertBox;
 import xmpp.XmppError;
 
-public class MoodPublishResult implements JabberBlockListener{
-    public static String plugin = new String("PLUGIN_PEP");
+public class MoodPublishResult implements JabberBlockListener {
+//#ifdef PLUGINS
+//#     public static String plugin = new String("PLUGIN_PEP");
+//#endif
 
     private Display display;
     private String id;

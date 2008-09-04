@@ -28,8 +28,10 @@ import ui.VirtualList;
  *
  * @author evgs
  */
-public class MoodList extends VirtualList implements CommandListener, MIDPTextBox.TextBoxNotify{
-    public static String plugin = new String("PLUGIN_PEP");
+public class MoodList extends VirtualList implements CommandListener, MIDPTextBox.TextBoxNotify {
+//#ifdef PLUGINS
+//#     public static String plugin = new String("PLUGIN_PEP");
+//#endif
     
     /** Creates a new instance of MoodList */
     Command cmdBack=new Command(SR.MS_BACK,Command.BACK,99);

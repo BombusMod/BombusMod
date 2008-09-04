@@ -180,6 +180,8 @@ public class BombusMod extends MIDlet implements Runnable{
 //#                     sd.ClientsIcons=state;
 //#                 } else if (name.equals("UserKeys")) {
 //#                     sd.UserKeys=state;
+//#                 } else if (name.equals("Upgrade")) {
+//#                     sd.Upgrade=state;
 //#                 }
 //#             }
 //#         }

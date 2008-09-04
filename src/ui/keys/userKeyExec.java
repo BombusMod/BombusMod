@@ -48,8 +48,9 @@ import midlet.BombusMod;
 import ui.VirtualList;
 
 public class userKeyExec {
-    
-    public static String plugin = new String("PLUGIN_USER_KEYS");
+//#ifdef PLUGINS
+//#     public static String plugin = new String("PLUGIN_USER_KEYS");
+//#endif
 
     private static Config cf;
     StaticData sd=StaticData.getInstance();

@@ -855,24 +855,25 @@ public class Roster
         }
         
         blockNotify(-111,13000);
-        
-        // send presence
-        ExtendedStatus es= sl.getStatus(myStatus);
-        if (message==null)
-            myMessage=es.getMessage();
 
-        myMessage=StringUtils.toExtendedString(myMessage);
-        
-        Presence presence = new Presence(myStatus, es.getPriority(), myMessage, sd.account.getNick());
-		
         if (isLoggedIn()) {
             if (myStatus==Presence.PRESENCE_OFFLINE  && !cf.collapsedGroups)
                 groups.queryGroupState(false);
             
+            // send presence
+            ExtendedStatus es= sl.getStatus(myStatus);
+            if (message==null)
+                myMessage=StringUtils.toExtendedString(es.getMessage());;
+
+            myMessage=StringUtils.toExtendedString(myMessage);
+            int myPriority=es.getPriority();
+
+            Presence presence = new Presence(myStatus, myPriority, myMessage, sd.account.getNick());
+            
             if (!sd.account.isMucOnly() )
 		theStream.send( presence );
 //#ifndef WMUC
-            multicastConferencePresence(myMessage, myStatus); //null
+            multicastConferencePresence(myStatus, myMessage, myPriority);
 //#endif
         }
         
@@ -942,12 +943,12 @@ public class Roster
     public Contact selfContact() {
 	return getContact(myJid.getJid(), false);
     }
-//#ifndef WMUC
-    public void multicastConferencePresence(String message, int mcstatus) {
-         if (!cf.autoJoinConferences) return;
-         if (mcstatus==Presence.PRESENCE_INVISIBLE) return; //block multicasting presence invisible
 
-         ExtendedStatus es= sl.getStatus(mcstatus);
+//#ifndef WMUC
+    public void multicastConferencePresence(int myStatus, String myMessage, int myPriority) {
+         if (!cf.autoJoinConferences) return;
+         if (myStatus==Presence.PRESENCE_INVISIBLE) return; //block multicasting presence invisible
+         
          synchronized (hContacts) {
              for (Enumeration e=hContacts.elements(); e.hasMoreElements();) {
                 Contact c=(Contact) e.nextElement();
@@ -963,8 +964,8 @@ public class Roster
                     ConferenceForm.join(confGroup.desc, myself.getJid(), confGroup.password, 20);
                     continue;
                 }
-                Presence presence = new Presence(mcstatus, es.getPriority(), StringUtils.toExtendedString((message==null)?es.getMessage():message), null);
-                presence.setTo(myself.bareJid.substring(0, myself.bareJid.indexOf("/")+1)+myself.nick);
+                Presence presence = new Presence(myStatus, myPriority, myMessage, null);
+                presence.setTo(myself.bareJid);
                 theStream.send(presence);
              }
          }

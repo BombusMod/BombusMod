@@ -158,6 +158,9 @@ public class InfoWindow
 //#ifdef AUTOSTATUS
 //#         abilitiesList.addElement((String)"AUTOSTATUS");
 //#endif
+//#ifdef BACK_IMAGE
+//#         abilitiesList.addElement((String)"BACK_IMAGE");
+//#endif
 //#ifdef CAPTCHA
 //#         abilitiesList.addElement((String)"CAPTCHA");
 //#endif
@@ -168,7 +171,10 @@ public class InfoWindow
 //#             abilitiesList.addElement((String)"CHANGE_TRANSPORT");
 //#endif
 //#ifdef CHECK_VERSION
-//#         abilitiesList.addElement((String)"CHECK_VERSION");
+//#ifdef PLUGINS
+//#         if (sd.Upgrade)
+//#endif
+//#             abilitiesList.addElement((String)"CHECK_VERSION");
 //#endif
 //#ifdef CLIENTS_ICONS
 //#ifdef PLUGINS
@@ -189,7 +195,7 @@ public class InfoWindow
 //#ifdef PLUGINS
 //#         if (sd.Colors)
 //#endif
-//#         abilitiesList.addElement((String)"COLOR_TUNE");
+//#             abilitiesList.addElement((String)"COLOR_TUNE");
 //#endif
 //#ifdef DETRANSLIT
 //#         abilitiesList.addElement((String)"DETRANSLIT");
@@ -247,6 +253,12 @@ public class InfoWindow
 //#         if (sd.PEP)
 //#endif
 //#             abilitiesList.addElement((String)"PEP");
+//#endif
+//#ifdef PEP_ACTIVITY
+//#ifdef PLUGINS
+//#         if (sd.PEP)
+//#endif
+//#             abilitiesList.addElement((String)"PEP_ACTIVITY");
 //#endif
 //#ifdef PEP_TUNE
 //#ifdef PLUGINS

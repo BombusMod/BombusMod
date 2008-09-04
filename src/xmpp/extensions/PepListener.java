@@ -35,9 +35,9 @@ import java.util.*;
 import locale.SR;
 
 public class PepListener implements JabberBlockListener{
-    
-    public static String plugin = new String("PLUGIN_PEP");
-
+//#ifdef PLUGINS
+//#     public static String plugin = new String("PLUGIN_PEP");
+//#endif
     /** Singleton */
     private static PepListener instance;
     

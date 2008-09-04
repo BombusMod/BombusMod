@@ -34,8 +34,9 @@ import ui.VirtualList;
 import util.StringUtils;
 
 public class Stats {
-    
-    public static String plugin = new String("PLUGIN_STATS");
+//#ifdef PLUGINS
+//#     public static String plugin = new String("PLUGIN_STATS");
+//#endif
 
     private long latestTraffic=0;
     private long traffic=0;

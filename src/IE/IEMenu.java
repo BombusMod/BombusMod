@@ -42,8 +42,9 @@ import Menu.MenuItem;
 public class IEMenu 
         extends Menu
         implements BrowserListener {
-    
-    public static String plugin = new String("PLUGIN_IE");
+//#ifdef PLUGINS
+//#     public static String plugin = new String("PLUGIN_IE");
+//#endif
 
     private int choice = -1;
     
