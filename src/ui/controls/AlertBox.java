@@ -109,8 +109,8 @@ public abstract class AlertBox
         
         setFullScreenMode(Config.getInstance().fullscreen);
 
-        messageFont=FontCache.getMsgFont();
-        barFont=FontCache.getBarFont();
+        messageFont=FontCache.getFont(false, FontCache.msg);
+        barFont=FontCache.getFont(false, FontCache.bar);
         
         next=(nextDisplayable==null)? display.getCurrent() : nextDisplayable;
 
@@ -246,7 +246,7 @@ public abstract class AlertBox
         int filled=pos*width/steps;
 
         if (pb==null)
-            pb=new Progress(g, 0, height-FontCache.getSmallFont().getHeight(), width);
+            pb=new Progress(g, 0, height, width);
         Progress.draw(filled, Integer.toString(steps-pos));
     }
     

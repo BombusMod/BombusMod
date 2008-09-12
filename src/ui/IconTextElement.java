@@ -26,6 +26,7 @@
  */
 
 package ui;
+import Client.Config;
 import Fonts.FontCache;
 import javax.microedition.lcdui.*;
 import Colors.ColorTheme;
@@ -54,9 +55,7 @@ abstract public class IconTextElement implements VirtualElement {
     public int getFontIndex() { return 0; }
     
     public Font getFont() {
-        return (getFontIndex()==0)?
-            FontCache.getRosterNormalFont():
-            FontCache.getRosterBoldFont();
+        return FontCache.getFont((getFontIndex()==0)?false:true, FontCache.roster);
     }
 
     public void drawItem(Graphics g, int ofs, boolean sel){

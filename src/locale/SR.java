@@ -730,5 +730,6 @@ public class SR {
 
     public static void loaded() {
         lang=null;
+        //presences=null;
     }
 }

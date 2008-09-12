@@ -152,21 +152,6 @@ public class MucContact extends Contact {
                 key0=(affiliation.equals("member"))?GROUP_MEMBER:GROUP_PARTICIPANT;
         }
 
-/*
-        switch (roleCode) {
-            case ROLE_MODERATOR:
-                transport=RosterIcons.ICON_MODERATOR_INDEX;
-                key0=1;
-                break;
-            case ROLE_VISITOR:
-                transport=RosterIcons.getInstance().getTransportIndex("muc#vis");
-                key0=3;
-                break;
-            default:
-                transport=0;
-                key0=2;
-        }
-*/
         int rp=from.indexOf('/');
         
         JabberDataBlock statusBlock=xmuc.getChildBlock("status");

@@ -27,13 +27,14 @@
 
 package ui.controls;
 
+import Client.Config;
 import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
 import Colors.ColorTheme;
 import Fonts.FontCache;
 
 public class Balloon {
-    private static Font f=FontCache.getBalloonFont();
+    private static Font f=FontCache.getFont(false, FontCache.baloon);
     
     public static int getHeight(){
         return f.getHeight()+1;

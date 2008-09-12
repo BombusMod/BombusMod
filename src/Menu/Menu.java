@@ -103,10 +103,6 @@ public class Menu extends VirtualList
 //#             eventOk();
 //#             return;
 //#         }
-//#         if (keyCode==Config.SOFT_RIGHT || keyCode==Config.KEY_BACK) {
-//#             destroyView();
-//#             return;
-//#         }
 //#         if (executeByNum && getItemCount()>0) {
 //#             switch (keyCode) {
 //#                 case KEY_NUM0:

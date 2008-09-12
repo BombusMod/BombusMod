@@ -26,6 +26,7 @@
  */
 package ui.controls.form;
 
+import Client.Config;
 import Colors.ColorTheme;
 import Fonts.FontCache;
 import images.RosterIcons;
@@ -72,12 +73,12 @@ public class DropChoiceBox
         this.display=display;
         this.caption=(caption==null)?"":caption;
         
-        font=FontCache.getMsgFont();
+        font=FontCache.getFont(false, FontCache.msg);
         fontHeight=font.getHeight();
         itemHeight=fontHeight;
         
         if (caption!=null) {
-            captionFont=FontCache.getMsgFontBold();
+            captionFont=FontCache.getFont(true, FontCache.msg);
             captionFontHeight=captionFont.getHeight();
             itemHeight+=captionFontHeight;
         }
@@ -129,25 +130,7 @@ public class DropChoiceBox
         colorItem=ColorTheme.getInstance().getColor(ColorTheme.CONTROL_ITEM);
         colorBorder=ColorTheme.getInstance().getColor(ColorTheme.CURSOR_OUTLINE);
         colorBGnd=ColorTheme.getInstance().getColor(ColorTheme.LIST_BGND);
-/*
-        int width=g.getClipWidth();
-        int height=getItemHeight();
 
-        int oldColor=g.getColor();
-        
-        int boxSize=height-1;
-
-        super.drawItem(g, ofs, sel);
-        
-        g.setColor((sel)?colorBorder:colorItem);
-        
-        if (sel)
-            g.drawRect(width-boxSize-2, 0, boxSize, boxSize);
-        else
-            g.drawRect(0, 0, width-1, boxSize);
-
-        g.setColor(oldColor);
- */
         int width=g.getClipWidth();
         int height=fontHeight;
 
@@ -179,16 +162,6 @@ public class DropChoiceBox
         
         if (size()>1)
             il.drawImage(g, 0x24, (width-il.getHeight())-1, ((y)+height/2)-il.getHeight()/2);
-/*
-        if (sel) {
-            int boxSize=height-1;
-            g.setColor(colorBorder);
-            g.drawRect(width-boxSize-1, y, boxSize, boxSize);
-            g.setColor(colorBGnd);
-            g.fillRect(width-boxSize, y+1, boxSize-1, boxSize-1);
-            g.setColor(oldColor);
-        }
- */
     }
     
     public int getVHeight(){
@@ -199,14 +172,6 @@ public class DropChoiceBox
         if (items.size()<1) return false;
         
          switch (keyCode) {
-/*             
-            case 4:
-                index=(index>0)?index-1:items.size()-1;
-                return true;
-            case 6: 
-                index=(index+1)%items.size();
-                return true;
- */
              case 5:
                 onSelect();
                 return true;

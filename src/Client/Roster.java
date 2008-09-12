@@ -174,8 +174,10 @@ public class Roster
     
     public Vector bookmarks;
     
-    public MessageEdit me=null;
-
+//#ifdef RUNNING_MESSAGE
+//#     public MessageEdit me=null;
+//#endif
+    
     private StatusList sl;
     public int myStatus=cf.loginstatus;
     private static String myMessage;
@@ -549,6 +551,7 @@ public class Roster
                         Contact contact=(Contact)hContacts.elementAt(index);
                         if (contact.inGroup(g)) {
                             if (contact.getNewMsgsCount()==0) {
+                                contact.msgs=null;
                                 contact=null;
                                 hContacts.removeElementAt(index);
                             } else {
@@ -573,10 +576,12 @@ public class Roster
                 Contact contact=(Contact)hContacts.elementAt(index);
                 if (contact.inGroup(g)) {
                     if ( contact.origin>Contact.ORIGIN_ROSTERRES
-                         && contact.status>=Presence.PRESENCE_OFFLINE
-                         && contact.getNewMsgsCount()==0
-                         && contact.origin!=Contact.ORIGIN_GROUPCHAT) {
+                      && contact.status>=Presence.PRESENCE_OFFLINE
+                      && contact.getNewMsgsCount()==0
+                      && contact.origin!=Contact.ORIGIN_GROUPCHAT) {
                         
+                        contact.msgs=null;
+                        contact=null;
                         hContacts.removeElementAt(index);
                     } else {
                         index++;
@@ -1149,49 +1154,47 @@ public class Roster
     }
     
     public void loginSuccess() {
-//#ifdef CAPTCHA
-//#         theStream.addBlockListener(new Captcha(display));
-//#endif
+        theStream.addBlockListener(new EntityCaps());
+
         theStream.addBlockListener(new IqPing());
-        theStream.addBlockListener(new IqLast());
         theStream.addBlockListener(new IqVersionReply());
+        theStream.startKeepAliveTask(); //enable keep-alive packets
+        
+	theStream.loggedIn=true;
+	currentReconnect=0;
+        
+        theStream.addBlockListener(new IqLast());
         theStream.addBlockListener(new IqTimeReply());
 //#ifdef ADHOC
-//#         if (cf.adhoc) {
+//#         if (cf.adhoc)
 //#ifdef PLUGINS
 //#             if (sd.Adhoc)
 //#endif
 //#                 IQCommands.getInstance().addBlockListener();
-//#         }
 //#endif
-        theStream.addBlockListener(new EntityCaps());
+
 //#ifdef PEP
-//#         if (cf.sndrcvmood) {
+//#         if (cf.sndrcvmood)
 //#ifdef PLUGINS
 //#             if (sd.PEP)
 //#endif
 //#                 PepListener.getInstance().addBlockListener();
-//#         }
 //#endif
 //#if SASL_XGOOGLETOKEN
 //#         if (StaticData.getInstance().account.isGmail())
 //#             theStream.addBlockListener(new IqGmail());
 //#endif
 //#if FILE_TRANSFER
-        // enable File transfers
-        if (cf.fileTransfer) {
+        if (cf.fileTransfer) // enable File transfers
 //#ifdef PLUGINS
 //#             if (sd.FileTransfer)
 //#endif
                 TransferDispatcher.getInstance().addBlockListener();
-        }
 //#endif
      
-        //enable keep-alive packets
-        theStream.startKeepAliveTask();
-        
-	theStream.loggedIn=true;
-	currentReconnect=0;
+//#ifdef CAPTCHA
+//#         theStream.addBlockListener(new Captcha(display));
+//#endif
         
         playNotify(SOUND_CONNECTED);
         if (doReconnect) {
@@ -1218,7 +1221,8 @@ public class Roster
             theStream.send( qr );
         }
 //#ifndef WMUC
-            //query bookmarks
+        //query bookmarks
+        if (bookmarks==null)
             theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
 //#endif
     }
@@ -1304,11 +1308,7 @@ public class Roster
                         return JabberBlockListener.BLOCK_PROCESSED;
                     }
                 }
-            }
-            
-            // If we've received a message
-            
-            else if( data instanceof Message ) {
+            } else if( data instanceof Message ) { // If we've received a message
                 //System.out.println(data.toString());
                 querysign=false;
                 boolean highlite=false;
@@ -1316,14 +1316,14 @@ public class Roster
                 Message message = (Message) data;
                 
                 String from=message.getFrom();
-                //Enable forwarding only from self-jids
-                if (myJid.equals(new Jid(from), false)) {
+                
+                if (myJid.equals(new Jid(from), false)) //Enable forwarding only from self-jids
                     from=message.getXFrom();
-                }
+
                 String body=message.getBody().trim();
                 String oob=message.getOOB();
                 if (oob!=null) body+=oob;
-                if (body.length()==0) 
+                if (body.length()==0)
                     body=null; 
                 String subj=message.getSubject().trim(); 
                 if (subj.length()==0) 
@@ -1450,20 +1450,26 @@ public class Roster
                     if (message.findNamespace("active", "http://jabber.org/protocol/chatstates")!=null) {
                         c.acceptComposing=true;
                         c.showComposing=false;
-                        setTicker(c, "");
+//#ifdef RUNNING_MESSAGE
+//#                         setTicker(c, "");
+//#endif
                      }
 
                     if (message.findNamespace("paused", "http://jabber.org/protocol/chatstates")!=null) {
                         c.acceptComposing=true;
                         c.showComposing=false;
-                        setTicker(c, "");
+//#ifdef RUNNING_MESSAGE
+//#                         setTicker(c, "");
+//#endif
                     }
 
                     if (message.findNamespace("composing", "http://jabber.org/protocol/chatstates")!=null) {
                         playNotify(SOUND_COMPOSING);
                         c.acceptComposing=true;
                         c.showComposing=true;
-                        setTicker(c, SR.MS_COMPOSING_NOTIFY);
+//#ifdef RUNNING_MESSAGE
+//#                         setTicker(c, SR.MS_COMPOSING_NOTIFY);
+//#endif
                     }
                 }
                 redraw();
@@ -1486,26 +1492,29 @@ public class Roster
                             m.messageType=Msg.MESSAGE_TYPE_HISTORY;
                         // highliting messages with myNick substring
 	                String myNick=mucGrp.getSelfContact().getName();
+                        String myNick_=myNick+" ";
+                        String _myNick=" "+myNick;
 			if (body.indexOf(myNick)>-1) {
                             if (body.indexOf("> "+myNick+": ")>-1)
                                 highlite=true;
-                            else if (body.indexOf(" "+myNick+",")>-1)
+                            else if (body.indexOf(_myNick+",")>-1)
                                 highlite=true;
                             else if (body.indexOf(": "+myNick+": ")>-1)
                                 highlite=true;
-                            else if (body.indexOf(" "+myNick+" ")>-1)
+                            else if (body.indexOf(_myNick+" ")>-1)
                                 highlite=true;
                             else if (body.indexOf(", "+myNick)>-1)
                                 highlite=true;
-                            else if (body.endsWith(" "+myNick))
+                            else if (body.endsWith(_myNick))
                                 highlite=true;
-                            else if (body.indexOf(" "+myNick+"?")>-1)
+                            else if (body.indexOf(_myNick+"?")>-1)
                                 highlite=true;
-                            else if (body.indexOf(" "+myNick+"!")>-1)
+                            else if (body.indexOf(_myNick+"!")>-1)
                                 highlite=true;
-                            else if (body.indexOf(" "+myNick+".")>-1) 
+                            else if (body.indexOf(_myNick+".")>-1) 
                                 highlite=true;
 			}
+	                myNick=null; myNick_=null; _myNick=null;
                         //TODO: custom highliting dictionary
                         m.highlite=highlite; 
                     }
@@ -1514,12 +1523,11 @@ public class Roster
 //#endif
                 messageStore(c, m);
                 return JabberBlockListener.BLOCK_PROCESSED;   
-            }
-            else if( data instanceof Presence ) {
+            } else if( data instanceof Presence ) {  // If we've received a presence
                 //System.out.println("presence");
                 if (myStatus==Presence.PRESENCE_OFFLINE) 
                     return JabberBlockListener.BLOCK_REJECTED;
-                Presence pr= (Presence) data;
+                Presence pr = (Presence) data;
                 
                 String from=pr.getFrom();
                 pr.dispathch();
@@ -1527,8 +1535,7 @@ public class Roster
 
                 //PresenceContact(from, ti);
                 Msg m=new Msg(
-                        (ti==Presence.PRESENCE_AUTH || ti==Presence.PRESENCE_AUTH_ASK)?
-                            Msg.MESSAGE_TYPE_AUTH:Msg.MESSAGE_TYPE_PRESENCE,
+                        (ti==Presence.PRESENCE_AUTH || ti==Presence.PRESENCE_AUTH_ASK)?Msg.MESSAGE_TYPE_AUTH:Msg.MESSAGE_TYPE_PRESENCE,
                         from,
                         null,
                         pr.getPresenceTxt());
@@ -1570,6 +1577,7 @@ public class Roster
                         messageStore(c,m);
 
                         c.priority=pr.getPriority();
+                        Thread.sleep(50);
                     } catch (Exception e) { }
                 } else {
 //#endif
@@ -1660,11 +1668,12 @@ public class Roster
                         c.showComposing=false;
                     }
                     if (ti>=0) {
-                        if (ti==Presence.PRESENCE_OFFLINE)
-                            setTicker(c, SR.getPresence(Presence.PRS_OFFLINE));
-                        if (ti==Presence.PRESENCE_ONLINE)
-                            setTicker(c, SR.getPresence(Presence.PRS_ONLINE));
-                        
+//#ifdef RUNNING_MESSAGE
+//#                         if (ti==Presence.PRESENCE_OFFLINE)
+//#                             setTicker(c, SR.getPresence(Presence.PRS_OFFLINE));
+//#                         else if (ti==Presence.PRESENCE_ONLINE)
+//#                             setTicker(c, SR.getPresence(Presence.PRS_ONLINE));
+//#endif
                         if ((ti==Presence.PRESENCE_ONLINE || ti==Presence.PRESENCE_CHAT || ti==Presence.PRESENCE_OFFLINE) && (c.getGroupType()!=Groups.TYPE_TRANSP) && (c.getGroupType()!=Groups.TYPE_IGNORE)) 
                             playNotify(ti);
                     }
@@ -1740,10 +1749,10 @@ public class Roster
         c.addMessage(message);
 
         boolean autorespond = false;
-        
-        if (message.messageType==Msg.MESSAGE_TYPE_IN)
-            setTicker(c, message.body);
-        
+//#ifdef RUNNING_MESSAGE
+//#         if (message.messageType==Msg.MESSAGE_TYPE_IN)
+//#             setTicker(c, message.body);
+//#endif
 //#ifndef WSYSTEMGC
         if (cf.ghostMotor) {
             System.gc(); 
@@ -1993,7 +2002,8 @@ public class Roster
         Msg m=new Msg(Msg.MESSAGE_TYPE_OUT, "local", topBar, error.toString());
         messageStore(selfContact(), m);
 
-        new MyReconnect(topBar, error.toString(), display);
+        reconnectWindow.getInstance().startReconnect();
+        //new MyReconnect(topBar, error.toString(), display);
      }
     
      public void doReconnect() {
@@ -2004,13 +2014,6 @@ public class Roster
         try {
              sendPresence(lastOnlineStatus, null);
         } catch (Exception e2) { }
-/*
-        try {
-            theStream.close(); // sends </stream:stream> and closes socket
-            theStream=null;
-        } catch (Exception e) { e.printStackTrace(); }
-*/
-         //sendPresence(lastOnlineStatus, null);
      }
     
     public void eventOk(){
@@ -2043,7 +2046,11 @@ public class Roster
         Displayable pview=createMsgList();
         if (pview!=null) {
             Contact c=(Contact)getFocusedObject();
-            me = new MessageEdit(display, pview, c, c.msgSuspended);
+//#ifdef RUNNING_MESSAGE
+//#             me = new MessageEdit(display, pview, c, c.msgSuspended);
+//#else
+            new MessageEdit(display, pview, c, c.msgSuspended);
+//#endif
             c.msgSuspended=null;
         }
     }
@@ -2081,8 +2088,10 @@ public class Roster
     public void keyPressed(int keyCode){
 //#ifdef MENU_LISTENER
 //#         if (keyCode==Config.SOFT_RIGHT) {
-//#             cmdActions();
-//#             return;
+//#             if (!reconnectWindow.getInstance().isActive()) {
+//#                 cmdActions();
+//#                 return;
+//#             }
 //#         }
 //#endif
         super.keyPressed(keyCode);
@@ -2632,92 +2641,6 @@ public class Roster
     public void loginMessage(String msg, int pos) {
         setProgress(msg, pos);
     }
-
-    private class ReEnumerator implements Runnable{
-        Thread thread;
-        int pendingRepaints=0;
-	boolean force;
-	
-	Object desiredFocus;
-        
-        public void queueEnum(Object focusTo, boolean force) {
-	    desiredFocus=focusTo;
-	    this.force=force;
-	    queueEnum();
-        }
-	
-        synchronized public void queueEnum() {
-            pendingRepaints++;
-            if (thread==null) (thread=new Thread(this)).start();
-        }
-        
-        public void run(){
-            try {
-                while (pendingRepaints>0) {
-                    pendingRepaints=0;
-                    
-                    int locCursor=cursor;
-                    Object focused=(desiredFocus==null)?getFocusedObject():desiredFocus;
-		    desiredFocus=null;
-                    Vector tContacts=new Vector(vContacts.size());
-
-                    groups.resetCounters();
-                    
-                    synchronized (hContacts) {
-                        for (Enumeration e=hContacts.elements(); e.hasMoreElements();){
-                            Contact c=(Contact)e.nextElement();
-                            Group grp=c.group;
-			    grp.addContact(c);
-                        }
-                    }                
-                    // self-contact group
-                    Group selfContactGroup=groups.getGroup(Groups.TYPE_SELF);
-                    selfContactGroup.visible=(cf.selfContact || selfContactGroup.tonlines>1 || selfContactGroup.unreadMessages>0 );
-                    
-                    // hiddens
-                    groups.getGroup(Groups.TYPE_IGNORE).visible= cf.ignore ;
-                    
-                    // transports
-                    Group transpGroup=groups.getGroup(Groups.TYPE_TRANSP);
-                    transpGroup.visible= (cf.showTransports || transpGroup.unreadMessages>0);
-                    
-                    // always visible
-                    Group visibleGroup=groups.getGroup(Groups.TYPE_VISIBLE);
-                    visibleGroup.visible=true;
-                    
-                    // adding groups
-                    for (int i=0; i<groups.getCount(); i++)
-                        groups.addToVector(tContacts,i);
-                    
-                    vContacts=tContacts;
-                    tContacts=null;
-                    StringBuffer onl=new StringBuffer()
-                    .append("(")
-                    .append(groups.getRosterOnline())
-                    .append("/")
-                    .append(groups.getRosterContacts())
-                    .append(")");
-                    setRosterMainBar(onl.toString());
-                    onl=null;
-                    
-                    if (cursor<0) cursor=0;
-
-                    if ( locCursor==cursor && focused!=null ) {
-                        int c=vContacts.indexOf(focused);
-                        if (c>=0) moveCursorTo(c);
-			force=false;
-                    }
-                    focusedItem(cursor);
-                    redraw();
-                }
-            } catch (Exception e) {
-//#ifdef DEBUG
-//#                 e.printStackTrace();
-//#endif
-            }
-            thread=null;
-        }
-    }
 	
     public void setMyJid(Jid myJid) {
         this.myJid = myJid;
@@ -2789,12 +2712,101 @@ public class Roster
 //#     public String touchRightCommand(){ return SR.MS_ACTION; }
 //#     public void touchRightPressed(){ cmdActions(); }
 //#endif
+//#ifdef RUNNING_MESSAGE
+//#     void setTicker(Contact c, String message) {
+//#         if (cf.notifyWhenMessageType) {
+//#             if (me!=null)
+//#                 if (me.to==c)
+//#                     me.setMyTicker(message);
+//#         }
+//#     }
+//#endif
     
-    void setTicker(Contact c, String message) {
-        if (cf.notifyWhenMessageType) {
-            if (me!=null)
-                if (me.to==c)
-                    me.setMyTicker(message);
+
+    private class ReEnumerator implements Runnable{
+        //Thread thread;
+        int pendingRepaints=0;
+	boolean force;
+	
+	Object desiredFocus;
+        
+        public void queueEnum(Object focusTo, boolean force) {
+	    desiredFocus=focusTo;
+	    this.force=force;
+	    queueEnum();
+        }
+	
+        synchronized public void queueEnum() {
+            pendingRepaints++;
+            //if (thread==null) (thread=new Thread(this)).start();
+            new Thread(this).start();
+        }
+        
+        public void run(){
+            //try {
+                while (pendingRepaints>0) {
+                    pendingRepaints=0;
+                    
+                    int locCursor=cursor;
+                    Object focused=(desiredFocus==null)?getFocusedObject():desiredFocus;
+		    desiredFocus=null;
+                    Vector tContacts=new Vector(vContacts.size());
+
+                    groups.resetCounters();
+                    
+                    synchronized (hContacts) {
+                        for (Enumeration e=hContacts.elements(); e.hasMoreElements();){
+                            Contact c=(Contact)e.nextElement();
+                            Group grp=c.group;
+			    grp.addContact(c);
+                        }
+                    }                
+                    // self-contact group
+                    Group selfContactGroup=groups.getGroup(Groups.TYPE_SELF);
+                    selfContactGroup.visible=(cf.selfContact || selfContactGroup.tonlines>1 || selfContactGroup.unreadMessages>0 );
+                    
+                    // hiddens
+                    groups.getGroup(Groups.TYPE_IGNORE).visible= cf.ignore ;
+                    
+                    // transports
+                    Group transpGroup=groups.getGroup(Groups.TYPE_TRANSP);
+                    transpGroup.visible= (cf.showTransports || transpGroup.unreadMessages>0);
+                    
+                    // always visible
+                    Group visibleGroup=groups.getGroup(Groups.TYPE_VISIBLE);
+                    visibleGroup.visible=true;
+                    
+                    // adding groups
+                    for (int i=0; i<groups.getCount(); i++)
+                        groups.addToVector(tContacts,i);
+                    
+                    vContacts=tContacts;
+                    tContacts=null;
+                    StringBuffer onl=new StringBuffer()
+                    .append("(")
+                    .append(groups.getRosterOnline())
+                    .append("/")
+                    .append(groups.getRosterContacts())
+                    .append(")");
+                    setRosterMainBar(onl.toString());
+                    onl=null;
+                    
+                    if (cursor<0) cursor=0;
+
+                    if ( locCursor==cursor && focused!=null ) {
+                        int c=vContacts.indexOf(focused);
+                        if (c>=0) moveCursorTo(c);
+			force=false;
+                    }
+                    focusedItem(cursor);
+                    redraw();
+                }
+            //} catch (Exception e) {
+//#ifdef DEBUG
+//#                 //e.printStackTrace();
+//#endif
+            //}
+            //thread=null;
         }
     }
 }

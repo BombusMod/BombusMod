@@ -258,7 +258,7 @@ public final class MessageParser implements Runnable{
 //#endif
             lines.addElement(l);
             
-            Font f=(task.msg.highlite || state==0)? FontCache.getMsgFontBold(): FontCache.getMsgFont();
+            Font f=getFont((task.msg.highlite || state==0));
             l.setFont(f);
             
             String txt=(state==0)? task.msg.subject: task.msg.toString();
@@ -420,6 +420,10 @@ public final class MessageParser implements Runnable{
             state++;
             s.setLength(0);
         }
+    }
+    
+    public Font getFont(boolean bold) {
+        return FontCache.getFont(bold, FontCache.roster);
     }
     
     public interface MessageParserNotify {

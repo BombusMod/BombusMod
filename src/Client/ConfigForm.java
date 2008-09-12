@@ -80,7 +80,9 @@ public class ConfigForm
 //#    private CheckBox rcvactivity;
 //#endif
 //#endif
-     private CheckBox notifyWhenMessageType;
+//#ifdef RUNNING_MESSAGE
+//#      private CheckBox notifyWhenMessageType;
+//#endif
 //#ifdef POPUPS
     private CheckBox popUps;
 //#endif
@@ -221,7 +223,9 @@ public class ConfigForm
         storeConfPresence = new CheckBox(SR.MS_STORE_PRESENCE, cf.storeConfPresence); itemsList.addElement(storeConfPresence);
         autoScroll = new CheckBox(SR.MS_AUTOSCROLL, cf.autoScroll); itemsList.addElement(autoScroll);
         useTabs = new CheckBox(SR.MS_EMULATE_TABS, cf.useTabs); itemsList.addElement(useTabs);
-        notifyWhenMessageType = new CheckBox(SR.MS_RUNNING_MESSAGE, cf.notifyWhenMessageType); itemsList.addElement(notifyWhenMessageType);
+//#ifdef RUNNING_MESSAGE
+//#         notifyWhenMessageType = new CheckBox(SR.MS_RUNNING_MESSAGE, cf.notifyWhenMessageType); itemsList.addElement(notifyWhenMessageType);
+//#endif
 //#ifdef POPUPS
         popUps = new CheckBox(SR.MS_POPUPS, cf.popUps); itemsList.addElement(popUps);
 //#endif
@@ -328,27 +332,6 @@ public class ConfigForm
         drawMenuCommand = new CheckBox(SR.MS_SHOW_TIME_TRAFFIC, cf.showTimeTraffic); 
         itemsList.addElement(drawMenuCommand);
 
-        itemsList.addElement(new SpacerItem(10));
-        langFiles=new DropChoiceBox(display, SR.MS_LANGUAGE);
-	langs=new StringLoader().stringLoader("/lang/res.txt",3);
-        
-        String tempLang=cf.lang;
-        if (tempLang==null) { //not detected
-            String locale=System.getProperty("microedition.locale");  
-            if (locale!=null) {
-                tempLang=locale.substring(0, 2).toLowerCase();
-            }
-        }
-
-	for (int i=0; i<langs[0].size(); i++) {
-            String label=(String) langs[2].elementAt(i);
-            String langCode=(String) langs[0].elementAt(i);
-	    langFiles.append(label);
-            if (tempLang.equals(langCode))
-                langFiles.setSelectedIndex(i);
-        }
-        itemsList.addElement(langFiles);
-
 //#ifdef AUTOSTATUS
 //#         itemsList.addElement(new SpacerItem(10));
 //#         autoAwayType=new DropChoiceBox(display, SR.MS_AWAY_TYPE);
@@ -365,6 +348,28 @@ public class ConfigForm
 //#         awayStatus=new CheckBox(SR.MS_AUTOSTATUS_MESSAGE, cf.setAutoStatusMessage);
 //#         itemsList.addElement(awayStatus);
 //#endif
+
+	langs=new StringLoader().stringLoader("/lang/res.txt",3);
+        if (langs[0].size()>1) {
+            itemsList.addElement(new SpacerItem(10));
+            langFiles=new DropChoiceBox(display, SR.MS_LANGUAGE);
+            String tempLang=cf.lang;
+            if (tempLang==null) { //not detected
+                String locale=System.getProperty("microedition.locale");  
+                if (locale!=null) {
+                    tempLang=locale.substring(0, 2).toLowerCase();
+                }
+            }
+
+            for (int i=0; i<langs[0].size(); i++) {
+                String label=(String) langs[2].elementAt(i);
+                String langCode=(String) langs[0].elementAt(i);
+                langFiles.append(label);
+                if (tempLang.equals(langCode))
+                    langFiles.setSelectedIndex(i);
+            }
+            itemsList.addElement(langFiles);
+        }
         
         enableListWrapping(false);
         attachDisplay(display);
@@ -415,8 +420,9 @@ public class ConfigForm
 //#         }
 //#endif
 //#endif       
-        
-        cf.notifyWhenMessageType=notifyWhenMessageType.getValue();
+//#ifdef RUNNING_MESSAGE
+//#         cf.notifyWhenMessageType=notifyWhenMessageType.getValue();
+//#endif
 //#ifdef POPUPS
         cf.popUps=popUps.getValue();
 //#endif
@@ -480,7 +486,9 @@ public class ConfigForm
 
         cf.textWrap=textWrap.getSelectedIndex();
 
-        cf.lang=(String) langs[0].elementAt( langFiles.getSelectedIndex() );
+        if (langs[0].size()>1) {
+            cf.lang=(String) langs[0].elementAt( langFiles.getSelectedIndex() );
+        }
 //#ifdef AUTOSTATUS
 //#             cf.setAutoStatusMessage=awayStatus.getValue();
 //#             cf.autoAwayDelay=Integer.parseInt(fieldAwayDelay.getValue());

@@ -27,6 +27,7 @@
 
 package ui.controls.form;
 
+import Client.Config;
 import Fonts.FontCache;
 import java.util.Vector;
 import javax.microedition.lcdui.Font;
@@ -67,14 +68,14 @@ public class MultiLine extends IconTextElement {
         this.text=text;
         this.caption=caption;
         
-        font=FontCache.getMsgFont();
+        font=FontCache.getFont(false, FontCache.msg);
         fontHeight=font.getHeight();
         itemHeight=fontHeight;
         
         width=availWidth;
         
         if (caption!=null) {
-            captionFont=FontCache.getMsgFontBold();
+            captionFont=FontCache.getFont(true, FontCache.msg);
             captionFontHeight=captionFont.getHeight();
             itemHeight=captionFontHeight;
         }

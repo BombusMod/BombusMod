@@ -44,9 +44,9 @@ import ui.controls.ExTextBox;
 public class MessageEdit 
         extends ExTextBox
         implements CommandListener, Runnable {
-    
-    Thread thread;
-    
+//#ifdef RUNNING_MESSAGE
+//#     Thread thread;
+//#endif
     private Display display;
     private Displayable parentView;
 
@@ -114,9 +114,12 @@ public class MessageEdit
             addCommand(cmdLastMessage);
                 
         setCommandListener(this);
+//#ifdef RUNNING_MESSAGE
+//#         if (thread==null) (thread=new Thread(this)).start() ; // composing
+//#else
+        new Thread(this).start() ; // composing
+//#endif
 
-        if (thread==null) (thread=new Thread(this)).start() ; // composing
-        
         display.setCurrent(this);
         this.parentView=pView;
     }
@@ -138,12 +141,10 @@ public class MessageEdit
         if (c==cmdInsNick) { new AppendNick(display, to, caretPos, this); return; }
 //#endif
         if (c==cmdCancel) {
-            //runState=4;
             composing=false;
             body=null;
         }
         if (c==cmdSuspend) {
-                //runState=4;
                 composing=false; 
                 to.msgSuspended=body; 
                 body=null;
@@ -166,40 +167,45 @@ public class MessageEdit
         }
         // message/composing sending
         destroyView();
-        runState=3;  
+        
+//#ifdef RUNNING_MESSAGE
+//#         runState=3;
+//#else
+        new Thread(this).start();
+//#endif
     }
-    
-    /*
-     0 - do nothing
-     1 - scroll
-     2 - send
-     3 - send and close
-     4 - end cycle
-     * 
-     */
-    int runState=2;
-
-    int strPos=0;
-    public void run(){
-        while (runState<4) {
-            //System.out.println(runState+" "+notifyMessage);
-            if (runState==2) { runState=0; send(); }
-            if (runState==3) { runState=4; send(); thread=null; ((VirtualList) parentView).redraw(); break; }
-            
-            if (runState==1) {
-                setTitle(notifyMessage.substring(strPos++));
-                if ((notifyMessage.length()-strPos)<0) strPos=0;
-            }
-            try { Thread.sleep(250); } catch (Exception e) { break; }
-        }
-    }
-    
-    private void send() {
-        String comp=null; // composing event off
-
-        String id=String.valueOf((int) System.currentTimeMillis());
-        if (body!=null)
-            body=body.trim();
+//#ifdef RUNNING_MESSAGE
+//#     /*
+//#      0 - do nothing
+//#      1 - scroll
+//#      2 - send
+//#      3 - send and close
+//#      4 - end cycle
+//#      * 
+//#      */
+//#     int runState=2;
+//# 
+//#     int strPos=0;
+//#     public void run(){
+//#         while (runState<4) {
+//#             //System.out.println(runState+" "+notifyMessage);
+//#             if (runState==2) { runState=0; send(); }
+//#             if (runState==3) { runState=4; send(); thread=null; ((VirtualList) parentView).redraw(); break; }
+//#             
+//#             if (runState==1) {
+//#                 setTitle(notifyMessage.substring(strPos++));
+//#                 if ((notifyMessage.length()-strPos)<0) strPos=0;
+//#             }
+//#             try { Thread.sleep(250); } catch (Exception e) { break; }
+//#         }
+//#     }
+//#     
+//#     private void send() {
+//#         String comp=null; // composing event off
+//# 
+//#         String id=String.valueOf((int) System.currentTimeMillis());
+//#         if (body!=null)
+//#             body=body.trim();
 //#ifdef DETRANSLIT
 //#         if (sendInTranslit==true) {
 //#             if (body!=null)
@@ -214,7 +220,67 @@ public class MessageEdit
 //#                subj=dt.deTranslit(subj);
 //#         }
 //#endif
+//#         if (body!=null || subj!=null ) {
+//#             String from=sd.account.toString();
+//#             Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,body);
+//#             msg.id=id;
+//# 
+//#             if (to.origin!=Contact.ORIGIN_GROUPCHAT) {
+//#                 to.addMessage(msg);
+//#                 comp="active"; // composing event in message
+//#             }
+//#         } else if (to.acceptComposing) comp=(composing)? "composing":"paused";
+//#         
+//#         if (!cf.eventComposing) comp=null;
+//#         
+//#         try {
+//#             if (body!=null || subj!=null || comp!=null) {
+//#                 to.lastSendedMessage=body;
+//#                 sd.roster.sendMessage(to, id, body, subj, comp);
+//#             }
+//#         } catch (Exception e) { }
+//#     }
+//#     
+//#     private String notifyMessage;
+//#     public void setMyTicker(String msg) {
+//#         if (msg!=null && !msg.equals("")) {
+//#             StringBuffer out=new StringBuffer(msg);
+//#             int i=0;
+//#             while (i<out.length()) {
+//#                 if (out.charAt(i)<0x03) out.deleteCharAt(i);
+//#                 else i++;
+//#             }
+//#             msg=out.toString();
+//#             runState=1;
+//#         } else {
+//#             setTitle(to.toString());
+//#             runState=0;
+//#         }
+//#         notifyMessage=msg;
+//#         strPos=0;
+//#     }
+//#else
+    public void run(){
+        //Roster r=StaticData.getInstance().roster;
+        String comp=null; // composing event off
+        
+        String id=String.valueOf((int) System.currentTimeMillis());
+        
         if (body!=null || subj!=null ) {
+//#ifdef DETRANSLIT
+//#         if (sendInTranslit==true) {
+//#             if (body!=null)
+//#                body=dt.translit(body);
+//#             if (subj!=null )
+//#                subj=dt.translit(subj);
+//#         }
+//#         if (sendInDeTranslit==true || cf.autoDeTranslit) {
+//#             if (body!=null)
+//#                body=dt.deTranslit(body);
+//#             if (subj!=null )
+//#                subj=dt.deTranslit(subj);
+//#         }
+//#endif
             String from=sd.account.toString();
             Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,body);
             msg.id=id;
@@ -223,6 +289,7 @@ public class MessageEdit
                 to.addMessage(msg);
                 comp="active"; // composing event in message
             }
+            
         } else if (to.acceptComposing) comp=(composing)? "composing":"paused";
         
         if (!cf.eventComposing) comp=null;
@@ -232,26 +299,11 @@ public class MessageEdit
                 to.lastSendedMessage=body;
                 sd.roster.sendMessage(to, id, body, subj, comp);
             }
-        } catch (Exception e) { }
-    }
-    
-    private String notifyMessage;
-    public void setMyTicker(String msg) {
-        if (msg!=null && !msg.equals("")) {
-            StringBuffer out=new StringBuffer(msg);
-            int i=0;
-            while (i<out.length()) {
-                if (out.charAt(i)<0x03) out.deleteCharAt(i);
-                else i++;
-            }
-            msg=out.toString();
-            runState=1;
-        } else {
-            setTitle(to.toString());
-            runState=0;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        notifyMessage=msg;
-        strPos=0;
+        ((VirtualList)parentView).redraw();
     }
+//#endif
 }
 

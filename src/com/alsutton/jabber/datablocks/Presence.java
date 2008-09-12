@@ -119,25 +119,21 @@ public class Presence extends JabberDataBlock
           show=getShow(); 
           text.append(SR.getPresence(show));
           presenceCode=PRESENCE_ONLINE;
-          if (show.equals(PRS_CHAT)) presenceCode=PRESENCE_CHAT;
           if (show.equals(PRS_AWAY)) presenceCode=PRESENCE_AWAY;
-          if (show.equals(PRS_XA)) presenceCode=PRESENCE_XA;
-          if (show.equals(PRS_DND)) presenceCode=PRESENCE_DND;
+          else if (show.equals(PRS_DND)) presenceCode=PRESENCE_DND;
+          else if (show.equals(PRS_XA)) presenceCode=PRESENCE_XA;
+          else if (show.equals(PRS_CHAT)) presenceCode=PRESENCE_CHAT;
       }
           
       String status=(errText==null)? getChildBlockText("status"):errText;
       if (status!=null)
-          if (status.length()>0) {
+          if (status.length()>0)
               text.append(" (").append( status ).append(')');
-          }
       
       // priority
       int priority=getPriority();
-      if (priority!=0) {
+      if (priority!=0)
           text.append(" [").append(getPriority()).append(']');
-      }
-          
-      
   }
 
   /**

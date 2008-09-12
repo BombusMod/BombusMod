@@ -27,6 +27,7 @@
 
 package ui.controls;
 
+import Client.Config;
 import Client.Contact;
 import Colors.ColorTheme;
 import images.RosterIcons;
@@ -80,7 +81,7 @@ public class PopUp {
 
     public PopUp() {
          popUps = new Vector();
-         font=FontCache.getBalloonFont();
+         font=FontCache.getFont(false, FontCache.baloon);
          ri=RosterIcons.getInstance();
     }
     

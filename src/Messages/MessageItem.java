@@ -27,10 +27,12 @@
 
 package Messages;
 
+import Client.Config;
 import Client.Msg;
 import images.RosterIcons;
 import java.util.Enumeration;
 import java.util.Vector;
+import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
 import Colors.ColorTheme;
 import ui.ComplexString;
@@ -48,17 +50,19 @@ public class MessageItem
     private boolean even;
     private boolean smiles;
     private boolean partialParse=false;
+    private Font font;
     
     /** Creates a new instance of MessageItem */
     public MessageItem(Msg msg, VirtualList view, boolean showSmiles) {
 	this.msg=msg;
 	this.view=view;
         this.smiles=showSmiles;
+        this.font=FontCache.getFont(false, FontCache.msg);
     }
 
     public int getVHeight() { 
         if (msg==null) return 0;
-        if (msg.itemHeight<0) msg.itemHeight=FontCache.getMsgFont().getHeight();
+        if (msg.itemHeight<0) msg.itemHeight=font.getHeight();
         if (msg.delivered) {
             int rh=RosterIcons.getInstance().getHeight();
             if (msg.itemHeight<rh) return rh;

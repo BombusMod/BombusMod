@@ -74,11 +74,9 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
 
     public int keypressed=0;
 
-    private Font f;
+    private Font clockFont=FontCache.getFont(true, FontCache.bigSize);
     
     private Progress pb;
-    
-    //private ColorTheme ct;
     
     public static SplashScreen getInstance(){
         if (instance==null) 
@@ -89,7 +87,6 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
     /** Creates a new instance of SplashScreen */
     private SplashScreen() {
         setFullScreenMode(cf.fullscreen);
-        //ct=ColorTheme.getInstance();
     }
     
     public SplashScreen( Display display, ComplexString status, char exitKey) {
@@ -125,23 +122,21 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
             g.drawImage(img, width/2, height/2, Graphics.VCENTER|Graphics.HCENTER);
 
         if (pos==-1) {
-            f = FontCache.getClockFont();
-            g.setFont(f);
-            int h=f.getHeight()+1;
-
             g.setColor(ColorTheme.getColor(ColorTheme.BLK_INK));
 
             status.drawItem(g, 0, false);
 
+            g.setFont(clockFont);
+            int h=clockFont.getHeight()+1;
+            
             String time=Time.localTime();
-            int tw=f.stringWidth(time);
+            int tw=clockFont.stringWidth(time);
 
-            g.setFont(f);
             g.drawString(time, width/2, height, Graphics.BOTTOM | Graphics.HCENTER);
         } else {
             int filled=pos*width/100;
             if (pb==null) {
-                pb=new Progress(g, 0, height-FontCache.getSmallFont().getHeight(), width);
+                pb=new Progress(g, 0, height, width);
             }
             pb.draw(filled, capt);
         }

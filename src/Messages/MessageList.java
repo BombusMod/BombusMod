@@ -45,6 +45,7 @@ import javax.microedition.lcdui.Displayable;
 import locale.SR;
 import ui.VirtualElement;
 import ui.VirtualList;
+import ui.reconnectWindow;
 //#ifdef CLIPBOARD
 //# import util.ClipBoard;
 //#endif
@@ -182,8 +183,10 @@ public abstract class MessageList extends VirtualList
     protected void keyPressed(int keyCode) { // overriding this method to avoid autorepeat
 //#ifdef MENU_LISTENER
 //#         if (keyCode==Config.SOFT_RIGHT || keyCode==Config.KEY_BACK) {
-//#             StaticData.getInstance().roster.activeContact=null;
-//#             destroyView();
+//#             if (!reconnectWindow.getInstance().isActive()) {
+//#                 StaticData.getInstance().roster.activeContact=null;
+//#                 destroyView();
+//#             }
 //#         }
 //#endif
 //#ifdef SMILES

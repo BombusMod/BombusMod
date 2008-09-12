@@ -31,6 +31,9 @@ package Menu;
 //# import Fonts.FontCache;
 //# import javax.microedition.lcdui.Graphics;
 //#endif
+import Client.Config;
+import Fonts.FontCache;
+import javax.microedition.lcdui.Font;
 import ui.*;
 
 /**
@@ -45,12 +48,14 @@ public class MenuItem
     private String name;
     public int pos;
     private int iconIndex;
+    private Font font;
     
     public MenuItem(String name, int index, int iconIndex, ImageList il) {
         super(il);
         this.index=index;
 	this.name=name;
         this.iconIndex=iconIndex;
+        this.font=FontCache.getFont(false, FontCache.msg);
     }
 
     public int getImageIndex() { return iconIndex;  }
@@ -60,7 +65,7 @@ public class MenuItem
 //#     public void drawItem(Graphics g, int ofs, boolean sel) {
 //#         if (pos<10 && Config.getInstance().executeByNum) {
 //#             int w=g.getClipWidth();
-//#             g.setFont(FontCache.getSmallFont());
+//#             g.setFont(font);
 //#             g.drawString(Integer.toString((pos<9)?pos+1:0), w, 0, Graphics.TOP|Graphics.RIGHT);
 //#         }
 //#         

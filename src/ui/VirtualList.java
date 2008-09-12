@@ -37,6 +37,7 @@ import locale.SR;
 import ui.controls.PopUp;
 //#endif
 import ui.controls.Balloon;
+import ui.controls.Progress;
 import ui.controls.ScrollBar;
 import ui.controls.CommandsPointer;
 import util.StringUtils;
@@ -67,9 +68,9 @@ public abstract class VirtualList
 
     private int stringHeight;
 //#ifdef GRADIENT
-//#     private int ibHeight;
+//#     private int iHeight;
 //#     Gradient grIB;
-//#     private int mbHeight;
+//#     private int mHeight;
 //#     Gradient grMB;
 //#endif
 
@@ -269,27 +270,27 @@ public abstract class VirtualList
 //#ifdef POPUPS
         popup = new PopUp();
 //#endif
- 
+
         if (cf.phoneManufacturer==Config.WINDOWS) {
-            setTitle("Bombus CE");
+                setTitle("BombusMod");
         }
-        
+
         changeOrient(cf.panelsState);
-        
+
         setFullScreenMode(fullscreen);
 
-	itemBorder=new int[32];
-	
-	scrollbar=new ScrollBar();
-	scrollbar.setHasPointerEvents(hasPointerEvents());
-        
+        itemBorder=new int[32];
+
+        scrollbar=new ScrollBar();
+        scrollbar.setHasPointerEvents(hasPointerEvents());
+
         MainBar secondBar=new MainBar(" ");
         secondBar.addElement(null); //1
         secondBar.addRAlign();
         secondBar.addElement(null); //3
         setInfoBarItem(secondBar);
-        
-        stringHeight=FontCache.getRosterNormalFont().getHeight();
+
+        stringHeight=FontCache.getFont(false, FontCache.roster).getHeight();
 
 //#ifdef BACK_IMAGE
 //#         try {
@@ -297,6 +298,7 @@ public abstract class VirtualList
 //#                 img=Image.createImage("/images/bg.png");
 //#         } catch (Exception e) { }
 //#endif
+        TimerTaskRotate.startRotate(0, this);
     }
 
     /** Creates a new instance of VirtualList */
@@ -338,8 +340,8 @@ public abstract class VirtualList
         width=w;
         height=h;
 //#ifdef GRADIENT
-//#         ibHeight=0;
-//#         mbHeight=0;
+//#         iHeight=0;
+//#         mHeight=0;
 //#endif
 //#ifndef WOFFSCREEN
         if (!isDoubleBuffered()) offscreen=Image.createImage(width, height);
@@ -352,8 +354,10 @@ public abstract class VirtualList
         width=getWidth();
         height=getHeight();
 
-        int mHeight=0;
-        int iHeight=0;
+        //int 
+        mHeight=0;
+        //int 
+        iHeight=0;
         
         Graphics g = graphics;      
 
@@ -361,7 +365,7 @@ public abstract class VirtualList
         if (offscreen != null)
             graphics = offscreen.getGraphics();
 //#endif
-
+        
 //#ifdef POPUPS
         popup.init(g, width, height);
 //#endif
@@ -388,7 +392,7 @@ public abstract class VirtualList
 
         if (infobar!=null) {
             setInfo();
-            iHeight=FontCache.getBarFont().getHeight(); // nokia fix
+            iHeight=infobar.getVHeight(); // nokia fix
         }
         
         if (paintTop) {
@@ -542,9 +546,35 @@ public abstract class VirtualList
         drawPopUp(g);
 //#endif
         
+        if (reconnectWindow.getInstance().isActive()) {
+            if (reconnectTimeout>reconnectPos && reconnectPos!=0) {
+                int progressWidth=(width/3)*2;
+                int progressX=(width-progressWidth)/2;
+                if (pb==null) pb=new Progress(g, progressX, height/2, progressWidth);
+                int popHeight=pb.getHeight();
+                g.setColor(ColorTheme.getColor(ColorTheme.POPUP_SYSTEM_BGND));
+                g.fillRoundRect(progressX-2, (height/2)-(popHeight*2), progressWidth+4, (popHeight*2)+1, 6, 6);
+                g.setColor(ColorTheme.getColor(ColorTheme.POPUP_SYSTEM_INK));
+                g.drawRoundRect(progressX-2, (height/2)-(popHeight*2), progressWidth+4, (popHeight*2)+1, 6, 6);
+                g.drawString(SR.MS_RECONNECT, width/2, (height/2)-(popHeight*2), Graphics.TOP | Graphics.HCENTER);
+                Progress.draw(reconnectPos*progressWidth/reconnectTimeout, Integer.toString(reconnectTimeout-reconnectPos));
+            }
+        }
+        
 //#ifndef WOFFSCREEN
         if (g != graphics) g.drawImage(offscreen, 0, 0, Graphics.LEFT | Graphics.TOP);
 //#endif
+    }
+
+    private static int reconnectPos=0;
+    private static int reconnectTimeout=0;
+    public static boolean reconnectRedraw=false;
+    
+    private Progress pb;
+    public static void drawReconnect(int pos, int timeout) {
+        reconnectPos=pos;
+        reconnectTimeout=timeout;
+        reconnectRedraw=true;
     }
 
     private void drawEnvelop(final Graphics g) {
@@ -601,9 +631,9 @@ public abstract class VirtualList
         g.setClip(0,0, width, h);
 //#ifdef GRADIENT
 //#         if (getMainBarBGnd()!=getMainBarBGndBottom()) {
-//#             if (ibHeight!=h) {
+//#             if (iHeight!=h) {
 //#                 grIB=new Gradient(0, 0, width, h, getMainBarBGnd(), getMainBarBGndBottom(), false);
-//#                 ibHeight=h;
+//#                 iHeight=h;
 //#             }
 //#             grIB.paint(g);
 //#         } else {
@@ -626,9 +656,9 @@ public abstract class VirtualList
         g.setClip(0,0, width, h);
 //#ifdef GRADIENT
 //#         if (getMainBarBGnd()!=getMainBarBGndBottom()) {
-//#             if (mbHeight!=h) {
+//#             if (mHeight!=h) {
 //#                 grMB=new Gradient(0, 0, width, h, getMainBarBGnd(), getMainBarBGndBottom(), false);
-//#                 mbHeight=h;
+//#                 mHeight=h;
 //#             }
 //#             grMB.paint(g);
 //#         } else {
@@ -830,11 +860,21 @@ public abstract class VirtualList
         return false;
     }
     
+    
+    public void reconnectYes() {
+        reconnectWindow.getInstance().stopReconnect();
+        reconnectWindow.getInstance().reconnect();
+        //reconnectDraw=false;
+        redraw();
+    }
+    
+    public void reconnectNo() {
+        reconnectWindow.getInstance().stopReconnect();
+        //reconnectDraw=false;
+        redraw();
+    }
+    
     private void key(int keyCode) {
-        if (sendEvent(keyCode)) {
-            repaint();
-            return;
-        }
 //#if DEBUG
 //#         System.out.println(keyCode);
 //#endif
@@ -848,11 +888,19 @@ public abstract class VirtualList
         }
 //#endif
 //#ifdef MENU_LISTENER
-//#         if (keyCode==Config.SOFT_LEFT) {
+//#         if (keyCode==Config.SOFT_LEFT || keyCode=='(') {
+//#             if (reconnectWindow.getInstance().isActive()) {
+//#                 reconnectYes();
+//#                 return;
+//#             }
 //#             showMenu();
 //#             return;
 //#         }
-//#          if (keyCode==Config.SOFT_RIGHT) {
+//#          if (keyCode==Config.SOFT_RIGHT || keyCode==')') {
+//#             if (reconnectWindow.getInstance().isActive()) {
+//#                 reconnectNo();
+//#                 return;
+//#             }
 //#             cmdCancel();
 //#             return;
 //#          }
@@ -871,6 +919,10 @@ public abstract class VirtualList
                 return;
             }
          }
+        if (sendEvent(keyCode)) {
+            repaint();
+            return;
+        }
 //#ifdef USER_KEYS
 //#         if (userKeys) {
 //#             switch (additionKeyState) {
@@ -916,7 +968,7 @@ public abstract class VirtualList
                 .append(Time.getTimeWeekDay())
                 .append("\nTraffic: ")
                 .append(getTraffic())
-                .append("\n\nFree: ")
+                .append("\nFree: ")
                 .append(Runtime.getRuntime().freeMemory()>>10)
                 .append(" kb");            
             if (cf.phoneManufacturer==Config.SONYE)
@@ -1244,6 +1296,11 @@ public abstract class VirtualList
     }
     
     public void setInfo() {
+        if (reconnectWindow.getInstance().isActive()) {
+            getInfoBarItem().setElementAt(SR.MS_OK, 1);
+            getInfoBarItem().setElementAt(SR.MS_CANCEL, 3);
+            return;
+        }
         getInfoBarItem().setElementAt((!showTimeTraffic)?touchLeftCommand():Time.getTimeWeekDay(), 1);
         getInfoBarItem().setElementAt((!showTimeTraffic)?touchRightCommand():getTraffic(), 3);
     }
@@ -1315,9 +1372,9 @@ class TimerTaskRotate extends Thread{
         }
         if (instance==null) 
             instance=new TimerTaskRotate();
-
+        
         if (max<0) {
-            instance.destroyTask();
+            //instance.destroyTask();
             list.offset=0;
             return;
         }
@@ -1327,14 +1384,14 @@ class TimerTaskRotate extends Thread{
             instance.scrollLen=max;
             instance.scrollline=(max>0);
             instance.attachedList=list;
-            instance.balloon  = 7;
-            instance.scroll   = 5;
+            instance.balloon  = 4;
+            instance.scroll   = 4;
         }
     }
     
     public void run() {
         while (true) {
-            try {  sleep(200);  } catch (Exception e) {}
+            try {  sleep(250);  } catch (Exception e) {}
 
             synchronized (this) {
                 if (scroll==0) {
@@ -1344,6 +1401,10 @@ class TimerTaskRotate extends Thread{
                         attachedList.redraw();
                 } else {
                     scroll --;                    
+                }
+                if (attachedList.reconnectRedraw) {
+                    attachedList.reconnectRedraw=false;
+                    attachedList.redraw();
                 }
             }
         }
@@ -1367,16 +1428,16 @@ class TimerTaskRotate extends Thread{
             if (attachedList==null || balloon<0)
                 return false;
             balloon--;
-            attachedList.showBalloon=(balloon<7 && balloon>0);
+            attachedList.showBalloon=(balloon<4 && balloon>0);
             return true;
         }
     }
-    
+    /*
     public void destroyTask(){
         synchronized (this) { 
             if (attachedList!=null) 
                 attachedList.offset=0;
         }
-    }
+    }*/
 }
 //#endif

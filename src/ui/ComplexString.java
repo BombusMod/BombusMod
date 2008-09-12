@@ -48,7 +48,7 @@ public class ComplexString extends Vector implements VirtualElement {
     public final static int NICK_OFF  = 0x05000000;
 //#endif
 
-    protected Font font=FontCache.getMsgFont();
+    protected Font font;
     private int height;
     private int width;
     private ImageList imageList;
@@ -58,18 +58,12 @@ public class ComplexString extends Vector implements VirtualElement {
     //private int colors[]={0x800080, 0xff0000, 0xffa500, 0x008000, 0x0000ff};
     /*   purple 0x800080   red 0xff0000   orange 0xffa500   green 0x008000   blue 0x0000ff   */
     
-    //private int heightCorrect;
-    
-    ColorTheme ct;
     /** Creates a new instance of ComplexString */
     public ComplexString() {
         super();
-        ct=ColorTheme.getInstance();
-        color=ct.getColor(ColorTheme.LIST_INK);
-        colorBGnd=ct.getColor(ColorTheme.LIST_BGND);
-        
-        /*if (Config.getInstance().phoneManufacturer==Config.WINDOWS || Config.getInstance().phoneManufacturer==Config.NOKIA)
-            heightCorrect=1;*/
+        this.font=FontCache.getFont(false, FontCache.msg);
+        color=ColorTheme.getColor(ColorTheme.LIST_INK);
+        colorBGnd=ColorTheme.getColor(ColorTheme.LIST_BGND);
     }
 
     /** Creates a new instance of ComplexString */
@@ -120,7 +114,7 @@ public class ComplexString extends Vector implements VirtualElement {
 //#if NICK_COLORS
                     if (nick) {
                         int color=g.getColor();
-                        int vColor=ct.strong(color);
+                        int vColor=ColorTheme.strong(color);
                         //int randColor=randomColor();
                         dw=0;
                         int p1=0; 

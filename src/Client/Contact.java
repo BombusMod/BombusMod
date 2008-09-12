@@ -143,7 +143,7 @@ public class Contact extends IconTextElement{
     public String j2j;
     public String lang;
     
-    private Font secondFont=FontCache.getBalloonFont();
+    private Font secondFont;
     private int secondFontHeight;
     
     private int fontHeight;
@@ -170,6 +170,8 @@ public class Contact extends IconTextElement{
 
         ilHeight=il.getHeight();
         maxImgHeight=ilHeight;
+        
+        secondFont=FontCache.getFont(false, FontCache.baloon);
         secondFontHeight=secondFont.getHeight();
         fontHeight=getFont().getHeight();
     }
@@ -398,7 +400,6 @@ public class Contact extends IconTextElement{
     }
 
     //public final String getBareJid() { return bareJid; }
-    
 
     public String getResource() {
         return jid.getResource();

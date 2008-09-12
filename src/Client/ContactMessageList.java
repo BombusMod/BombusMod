@@ -46,6 +46,7 @@ import javax.microedition.lcdui.Displayable;
 import locale.SR;
 import ui.MainBar;
 import java.util.*;
+import ui.reconnectWindow;
 //#ifndef MENU_LISTENER
 import javax.microedition.lcdui.Command;
 //#else
@@ -447,8 +448,11 @@ public class ContactMessageList extends MessageList {
     public void keyGreen(){
         if (!sd.roster.isLoggedIn()) 
             return;
-        
-        sd.roster.me=new MessageEdit(display, this, contact, contact.msgSuspended);
+//#ifdef RUNNING_MESSAGE
+//#         sd.roster.me=new MessageEdit(display, this, contact, contact.msgSuspended);
+//#else
+        new MessageEdit(display, this, contact, contact.msgSuspended);
+//#endif
         contact.msgSuspended=null;
     }
     
@@ -478,13 +482,15 @@ public class ContactMessageList extends MessageList {
         }
 //#ifdef MENU_LISTENER
 //#         else if (keyCode==Config.SOFT_RIGHT) {
-//#             if (cf.oldSE) {
-//#                 showMenu();
-//#             } else {
-//#                 StaticData.getInstance().roster.activeContact=null;
-//#                 destroyView();
+//#             if (!reconnectWindow.getInstance().isActive()) {
+//#                 if (cf.oldSE) {
+//#                     showMenu();
+//#                 } else {
+//#                     StaticData.getInstance().roster.activeContact=null;
+//#                     destroyView();
+//#                 }
+//#                 return;
 //#             }
-//#             return;
 //#         }  else if (keyCode==Config.SOFT_LEFT) {
 //#             if (cf.oldSE) {
 //#                 keyGreen();
@@ -494,9 +500,8 @@ public class ContactMessageList extends MessageList {
 //#             return;
 //#         }
 //#endif
-        else {
-            super.keyPressed(keyCode);
-        }
+
+        super.keyPressed(keyCode);
     }
 
     public void userKeyPressed(int keyCode) {
@@ -563,7 +568,11 @@ public class ContactMessageList extends MessageList {
                 msg.messageType == Msg.MESSAGE_TYPE_SUBJ)
                 keyGreen();
             else
-                sd.roster.me=new MessageEdit(display, this, contact, msg.from+": ");
+//#ifdef RUNNING_MESSAGE
+//#                 sd.roster.me=new MessageEdit(display, this, contact, msg.from+": ");
+//#else
+                new MessageEdit(display, this, contact, msg.from+": ");
+//#endif
         } catch (Exception e) {/*no messages*/}
     }
     
@@ -575,7 +584,11 @@ public class ContactMessageList extends MessageList {
                 .append(getMessage(cursor).quoteString())
                 .append("\n")
                 .toString();
-            sd.roster.me=new MessageEdit(display, this, contact, msg);
+//#ifdef RUNNING_MESSAGE
+//#             sd.roster.me=new MessageEdit(display, this, contact, msg);
+//#else
+            new MessageEdit(display, this, contact, msg);
+//#endif
             msg=null;
         } catch (Exception e) {/*no messages*/}
     }

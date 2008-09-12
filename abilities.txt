@@ -28,8 +28,9 @@ CHANGE_TRANSPORT - смена транспорта(перенос контактов с одного транспорта на дру
 CONSOLE - XML консоль
 CLIPBOARD - Буфер обмена
 GRADIENT - градиенты
-PEP - pubsub(user mood, user tune)
+PEP - pubsub(user mood, user tune, user activity)
 PEP_TUNE - получение инфо о музыке играющей у контактов
+PEP_ACTIVITY - получение инфо состоянии контакта(xep 0108)
 CAPTCHA - капча
 STATS - статистика
 CLIENTS_ICONS - иконки клиентов
@@ -37,3 +38,5 @@ ADHOC - удаленное управление клиентом
 LOGROTATE - задает размер списка сообщений контакта(диапазон 21...1000)
 NEW_SKIN - иконки visitors объединены с skin, иконки menu объединены с actions
 MENU_LISTENER - новый тип меню(заменяет родное)
+RUNNING_MESSAGE - бегущая строка в заголовке окна набора сообщения
+PLUGINS - обертка для плагинов

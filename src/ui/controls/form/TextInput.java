@@ -27,6 +27,7 @@
 
 package ui.controls.form;
 
+import Client.Config;
 import Colors.ColorTheme;
 import Fonts.FontCache;
 import io.NvStorage;
@@ -81,12 +82,12 @@ public class TextInput
         colorBorder=ColorTheme.getColor(ColorTheme.CURSOR_OUTLINE);
         colorBGnd=ColorTheme.getColor(ColorTheme.LIST_BGND);
         
-        font=FontCache.getMsgFont();
+        font=FontCache.getFont(false, FontCache.msg);
         fontHeight=font.getHeight();
         itemHeight=fontHeight;
         
         if (caption!=null) {
-            captionFont=FontCache.getMsgFontBold();
+            captionFont=FontCache.getFont(true, FontCache.msg);
             captionFontHeight=captionFont.getHeight();
             itemHeight+=captionFontHeight;
         }

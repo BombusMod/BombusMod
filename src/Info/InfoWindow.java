@@ -44,6 +44,7 @@ import midlet.BombusMod;
 import ui.controls.form.DefForm;
 import ui.controls.form.LinkString;
 import ui.controls.form.MultiLine;
+import ui.controls.form.SpacerItem;
 import util.ClipBoard;
 
 /**
@@ -75,16 +76,18 @@ public class InfoWindow
         super(display, pView, SR.MS_ABOUT);
         this.display=display;
 
-        name=new MultiLine(Version.getName(), Version.getVersionNumber(), super.superWidth);
+        name=new MultiLine("Mobile Jabber client", Version.getName()+"\n"+Version.getVersionNumber()+"\n"+Config.getOs(), super.superWidth);
         name.selectable=true;
         itemsList.addElement(name);
 
-        description=new MultiLine("Mobile Jabber client", Config.getOs()+"\nCopyright (c) 2005-2008, Eugene Stahov (evgs), Daniel Apatin (ad)\nDistributed under GNU Public License (GPL) v2.0", super.superWidth);
+        description=new MultiLine("Copyright (c) 2005-2008", "Eugene Stahov (evgs),\nDaniel Apatin (ad)\n \nDistributed under GNU Public License (GPL) v2.0", super.superWidth);
         description.selectable=true;
         itemsList.addElement(description);
         
         siteUrl=new LinkString("http://bombusmod.net.ru"){ public void doAction() { try { BombusMod.getInstance().platformRequest("http://bombusmod.net.ru"); } catch (ConnectionNotFoundException ex) { }}};
         itemsList.addElement(siteUrl);
+        
+        itemsList.addElement(new SpacerItem(10));
         
         StringBuffer memInfo=new StringBuffer(SR.MS_FREE);
         System.gc();
@@ -95,6 +98,7 @@ public class InfoWindow
         memory=new MultiLine(SR.MS_MEMORY, memInfo.toString(), super.superWidth);
         memory.selectable=true;
         itemsList.addElement(memory);
+        memInfo=null;
         
         abilities=new MultiLine("Abilities", getAbilities(), super.superWidth);
         abilities.selectable=true;

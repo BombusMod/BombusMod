@@ -1,9 +1,8 @@
 /*
  * FontCache.java
  *
- * Created on 5.02.2006, 3:15
- *
- * Copyright (c) 2005-2008, Eugene Stahov (evgs), http://bombus-im.org
+ * Created on 5.09.2008, 9:54
+ * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -31,84 +30,72 @@ import javax.microedition.lcdui.Font;
 
 /**
  *
- * @author Evg_S
+ * @author ad
  */
 public class FontCache {
 
-    private static Font normal;
-    private static Font bold;
-    private static Font msgFont;
-    private static Font msgFontBold;
-    private static Font balloonFont;
-    private static Font smallFont;
-    private static Font clockFont;
-    private static Font barFont;
+    private static Font small;
+    private static Font smallBold;
     
-    public static int rosterFontSize=Font.SIZE_MEDIUM;
-    public static int msgFontSize=Font.SIZE_MEDIUM;
-    public static int barFontSize=Font.SIZE_SMALL;
-    public static int balloonFontSize=Font.SIZE_SMALL;
+    private static Font middle;
+    private static Font middleBold;
     
-    public final static int clockFontSize=Font.SIZE_LARGE;
-
-    public final static Font getRosterNormalFont() {
-        if (normal==null) {
-            normal=Font.getFont(Font.FACE_PROPORTIONAL, Font.STYLE_PLAIN, rosterFontSize);
-        }
-        return normal;
-    }
+    private static Font big;
+    private static Font bigBold;
     
-    public final static Font getRosterBoldFont() {
-        if (bold==null) {
-            bold=Font.getFont(Font.FACE_PROPORTIONAL, Font.STYLE_BOLD, rosterFontSize);
-        }
-        return bold;
-    }
+    public final static int smallSize=Font.SIZE_SMALL;
+    public final static int middleSize=Font.SIZE_MEDIUM;
+    public final static int bigSize=Font.SIZE_LARGE;
+    
+    public final static int plain=Font.STYLE_PLAIN;
+    public final static int bold=Font.STYLE_BOLD;
+    
+    public final static int face=Font.FACE_PROPORTIONAL;
 
-    public final static Font getMsgFont() {
-        if (msgFont==null) {
-            msgFont=Font.getFont(Font.FACE_PROPORTIONAL, Font.STYLE_PLAIN, msgFontSize);
-        }
-        return msgFont;
-    }
+    public static int roster=0;
+    public static int msg=0;
+    public static int bar=0;
+    public static int baloon=0;
 
-    public final static Font getMsgFontBold() {
-        if (msgFontBold==null) {
-            msgFontBold=Font.getFont(Font.FACE_PROPORTIONAL, Font.STYLE_BOLD, msgFontSize);
-        }
-        return msgFontBold;
+    
+    private final static Font getSmallFont() {
+        if (small==null) small=Font.getFont(face, plain, smallSize);
+        return small;
     }
-
-    public final static Font getBarFont() {
-        if (barFont==null) {
-            barFont=Font.getFont(Font.FACE_PROPORTIONAL, Font.STYLE_PLAIN, barFontSize);
-        }
-        return barFont;
+    private final static Font getSmallBoldFont() {
+        if (smallBold==null) smallBold=Font.getFont(face, bold, smallSize);
+        return smallBold;
     }
     
-    public final static Font getBalloonFont() {
-        if (balloonFont==null) {
-            balloonFont=Font.getFont(Font.FACE_PROPORTIONAL, Font.STYLE_PLAIN, balloonFontSize);
-        }
-        return balloonFont;
+    private final static Font getMiddleFont() {
+        if (middle==null) middle=Font.getFont(face, plain, middleSize);
+        return middle;
+    }
+    private final static Font getMiddleBoldFont() {
+        if (middleBold==null) middleBold=Font.getFont(face, bold, middleSize);
+        return middleBold;
     }
     
-    public final static Font getSmallFont() {
-        if (smallFont==null) {
-            smallFont=Font.getFont(Font.FACE_PROPORTIONAL, Font.STYLE_PLAIN, Font.SIZE_SMALL);
+    private final static Font getBigFont() {
+        if (big==null) big=Font.getFont(face, plain, bigSize);
+        return big;
+    }
+    private final static Font getBigBoldFont() {
+        if (bigBold==null) bigBold=Font.getFont(face, bold, bigSize);
+        return bigBold;
+    }
+    
+    public final static Font getFont(boolean isBold, int size) {
+        switch (size) {
+            case smallSize:
+                return (isBold)?getSmallBoldFont():getSmallFont();
+            case middleSize:
+                return (isBold)?getMiddleBoldFont():getMiddleFont();
+            case bigSize:
+                return (isBold)?getBigBoldFont():getBigFont();
         }
-        return smallFont;
+        return getSmallFont();
     }
 
-    public final static Font getClockFont() {
-        if (clockFont==null) {
-            clockFont=Font.getFont(Font.FACE_PROPORTIONAL, Font.STYLE_BOLD, clockFontSize);
-        }
-        return clockFont;
-    }
-
-
-    public final static void resetCache() {
-        normal=bold=msgFont=msgFontBold=balloonFont=barFont=null;
-    }
+    //public final static void resetCache() { roster=msg=bar=baloon=0; }
 }

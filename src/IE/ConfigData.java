@@ -88,10 +88,10 @@ public class ConfigData {
         array.addElement(new keyValue(popupFromMinimized, (cf.popupFromMinimized)?"1":"0"));
         array.addElement(new keyValue(notifyBlink, (cf.notifyBlink)?"1":"0"));
         array.addElement(new keyValue(memMonitor, (cf.memMonitor)?"1":"0"));
-        array.addElement(new keyValue(font1, Integer.toString(cf.font1)));
-        array.addElement(new keyValue(font2, Integer.toString(cf.font2)));
-        array.addElement(new keyValue(font3, Integer.toString(cf.font3)));
-        array.addElement(new keyValue(font4, Integer.toString(cf.font4)));
+        array.addElement(new keyValue(font1, Integer.toString(cf.rosterFont)));
+        array.addElement(new keyValue(font2, Integer.toString(cf.msgFont)));
+        array.addElement(new keyValue(font3, Integer.toString(cf.barFont)));
+        array.addElement(new keyValue(font4, Integer.toString(cf.baloonFont)));
         array.addElement(new keyValue(autoFocus, (cf.autoFocus)?"1":"0"));
         array.addElement(new keyValue(lang, cf.lang));
         array.addElement(new keyValue(capsState, (cf.capsState)?"1":"0"));
@@ -142,7 +142,9 @@ public class ConfigData {
         array.addElement(new keyValue(autoSubscribe, Integer.toString(cf.autoSubscribe)));
         array.addElement(new keyValue(notInListDropLevel, Integer.toString(cf.notInListDropLevel)));
         array.addElement(new keyValue(useBoldFont, (cf.useBoldFont)?"1":"0"));
-        array.addElement(new keyValue(notifyWhenMessageType, (cf.notifyWhenMessageType)?"1":"0"));
+//#ifdef RUNNING_MESSAGE
+//#         array.addElement(new keyValue(notifyWhenMessageType, (cf.notifyWhenMessageType)?"1":"0"));
+//#endif
 //#ifdef PEP
 //#         array.addElement(new keyValue(sndrcvmood, (cf.sndrcvmood)?"1":"0"));
 //#endif
@@ -229,10 +231,10 @@ public class ConfigData {
 //#endif
         cf.popupFromMinimized=cf.getBooleanProperty(getValue(popupFromMinimized),true);
         cf.memMonitor=cf.getBooleanProperty(getValue(memMonitor),true);
-        cf.font1=cf.getIntProperty(getValue(font1),0);
-        cf.font2=cf.getIntProperty(getValue(font2),0);
-        cf.font3=cf.getIntProperty(getValue(font3),0);
-        cf.font4=cf.getIntProperty(getValue(font4),0);
+        cf.rosterFont=cf.getIntProperty(getValue(font1),0);
+        cf.msgFont=cf.getIntProperty(getValue(font2),0);
+        cf.barFont=cf.getIntProperty(getValue(font3),0);
+        cf.baloonFont=cf.getIntProperty(getValue(font4),0);
         cf.autoFocus=cf.getBooleanProperty(getValue(autoFocus),false);
         cf.lang=cf.getStringProperty(getValue(lang), null);
         cf.capsState=cf.getBooleanProperty(getValue(capsState),true);
@@ -281,7 +283,9 @@ public class ConfigData {
         cf.autoSubscribe=cf.getIntProperty(getValue(autoSubscribe), Config.SUBSCR_ASK);
         cf.notInListDropLevel=cf.getIntProperty(getValue(notInListDropLevel), NotInListFilter.ALLOW_ALL);
         cf.useBoldFont=cf.getBooleanProperty(getValue(useBoldFont),false);
-        cf.notifyWhenMessageType=cf.getBooleanProperty(getValue(notifyWhenMessageType),false);
+//#ifdef RUNNING_MESSAGE
+//#         cf.notifyWhenMessageType=cf.getBooleanProperty(getValue(notifyWhenMessageType),false);
+//#endif
 //#ifdef PEP
 //#         cf.sndrcvmood=cf.getBooleanProperty(getValue(sndrcvmood),true);
 //#endif
@@ -451,7 +455,9 @@ public class ConfigData {
     private final static String autoSubscribe="autoSubscribe";
     private final static String notInListDropLevel="notInListDropLevel";
     private final static String useBoldFont="useBoldFont";
-    private final static String notifyWhenMessageType="notifyWhenMessageType";
+//#ifdef RUNNING_MESSAGE
+//#     private final static String notifyWhenMessageType="notifyWhenMessageType";
+//#endif
 //#ifdef PEP
 //#     private final static String sndrcvmood="sndrcvmood";
 //#endif

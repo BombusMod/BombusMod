@@ -27,6 +27,7 @@
 
 package ui.controls.form;
 
+import Client.Config;
 import Fonts.FontCache;
 import javax.microedition.lcdui.Font;
 import ui.IconTextElement;
@@ -44,6 +45,8 @@ public class SimpleString
 
     private boolean bold;
     
+    private Font font=null;
+    
     /**
      * Creates a new instance of SimpleString
      */
@@ -51,11 +54,12 @@ public class SimpleString
         super(null);
         this.text=text;
         this.bold=bold;
+        this.font=FontCache.getFont(bold, FontCache.msg);
     }
     
     public String toString() { return text; }
     
     public boolean isSelectable() { return selectable; }
     
-    public Font getFont() { return (bold)?FontCache.getMsgFontBold():FontCache.getMsgFont(); }
+    public Font getFont() { return font; }
 }

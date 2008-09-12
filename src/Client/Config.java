@@ -147,10 +147,10 @@ public class Config {
     public boolean popupFromMinimized=true;
     public boolean memMonitor=true;
 
-    public int font1=0;
-    public int font2=0;
-    public int font3=0;
-    public int font4=0;
+    public int rosterFont=0;
+    public int msgFont=0;
+    public int barFont=0;
+    public int baloonFont=0;
     
     public String lang;  //not detected (en)
     public boolean capsState=false;
@@ -203,7 +203,9 @@ public class Config {
     public boolean notifySound=false;
     public boolean notifyPicture=false;
     public boolean useBoldFont=false;
-    public boolean notifyWhenMessageType = false;
+//#ifdef RUNNING_MESSAGE
+//#     public boolean notifyWhenMessageType = false;
+//#endif
 //#ifdef CLIPBOARD
 //#     public boolean useClipBoard = true;
 //#endif
@@ -237,12 +239,12 @@ public class Config {
 	    instance=new Config();
 	    instance.loadFromStorage();
 
-            FontCache.rosterFontSize=instance.font1;
-            FontCache.msgFontSize=instance.font2;
+            FontCache.roster=instance.rosterFont;
+            FontCache.msg=instance.msgFont;
             
-            FontCache.barFontSize=instance.font3;
-            FontCache.balloonFontSize=instance.font4;
-            FontCache.resetCache();
+            FontCache.bar=instance.barFont;
+            FontCache.baloon=instance.baloonFont;
+            //FontCache.resetCache();
 	}
 	return instance;
     }
@@ -338,8 +340,8 @@ public class Config {
 	    popupFromMinimized=inputStream.readBoolean();
 	    notifyBlink=inputStream.readBoolean();
 	    memMonitor=inputStream.readBoolean();
-            font1=inputStream.readInt();
-            font2=inputStream.readInt();
+            rosterFont=inputStream.readInt();
+            msgFont=inputStream.readInt();
             autoFocus=inputStream.readBoolean();
             notInListDropLevel=inputStream.readInt();
             storeConfPresence=inputStream.readBoolean();
@@ -424,7 +426,11 @@ public class Config {
             useTabs=inputStream.readBoolean();
             autoSubscribe=inputStream.readInt();
             useBoldFont=inputStream.readBoolean();
-            notifyWhenMessageType = inputStream.readBoolean();
+//#ifdef RUNNING_MESSAGE
+//#             notifyWhenMessageType = inputStream.readBoolean();
+//#else
+            inputStream.readBoolean();
+//#endif
             IQNotify=inputStream.readBoolean(); //IRC_LIKE
 //#ifdef PEP
 //#             sndrcvmood = inputStream.readBoolean();
@@ -443,8 +449,8 @@ public class Config {
 //#else
             inputStream.readBoolean();
 //#endif
-            font3=inputStream.readInt();
-            font4=inputStream.readInt();
+            barFont=inputStream.readInt();
+            baloonFont=inputStream.readInt();
             
             verHash=inputStream.readUTF();
             resolvedHost=inputStream.readUTF();
@@ -574,8 +580,8 @@ public class Config {
             outputStream.writeBoolean(popupFromMinimized);
 	    outputStream.writeBoolean(notifyBlink);
 	    outputStream.writeBoolean(memMonitor);
-            outputStream.writeInt(font1);
-            outputStream.writeInt(font2);
+            outputStream.writeInt(rosterFont);
+            outputStream.writeInt(msgFont);
             outputStream.writeBoolean(autoFocus);
             outputStream.writeInt(notInListDropLevel);
             outputStream.writeBoolean(storeConfPresence); 
@@ -660,7 +666,11 @@ public class Config {
             outputStream.writeBoolean(useTabs);
             outputStream.writeInt(autoSubscribe);
             outputStream.writeBoolean(useBoldFont);
-            outputStream.writeBoolean(notifyWhenMessageType);
+//#ifdef RUNNING_MESSAGE
+//#             outputStream.writeBoolean(notifyWhenMessageType);
+//#else
+            outputStream.writeBoolean(false);
+//#endif
             outputStream.writeBoolean(IQNotify); //IRC_LIKE
 //#ifdef PEP
 //#             outputStream.writeBoolean(sndrcvmood);
@@ -678,8 +688,8 @@ public class Config {
 //#else
             outputStream.writeBoolean(false);
 //#endif
-            outputStream.writeInt(font3);
-            outputStream.writeInt(font4);
+            outputStream.writeInt(barFont);
+            outputStream.writeInt(baloonFont);
             
             outputStream.writeUTF(verHash);
             outputStream.writeUTF(resolvedHost);

@@ -26,6 +26,7 @@
 
 package AutoTasks;
 
+import Client.Config;
 import Client.StaticData;
 import com.alsutton.jabber.datablocks.Presence;
 import javax.microedition.lcdui.Canvas;
@@ -86,7 +87,7 @@ public class AutoTask
 
     private int value;
     
-    Font f=FontCache.getBalloonFont();
+    Font f=FontCache.getFont(false, FontCache.msg);
 
     private Displayable next;
 
@@ -259,10 +260,5 @@ public class AutoTask
         } else {
             display.setCurrent(next);
         }
-        
-        //if (parentView!=null)
-        //    display.setCurrent(parentView);
-        //parentView=null;
-        //repaint();
     }
 }
