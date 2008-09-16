@@ -251,16 +251,21 @@ public class ContactMessageList extends MessageList {
         } catch (Exception e) {}
 //#endif
     }
-
-    protected void beginPaint(){
-        markRead(cursor);
-        
-        if (cursor==(messages.size()-1)) {
-            if (contact.moveToLatest) {
+    
+    public void forceScrolling() { //by voffk
+        if (contact.moveToLatest) {
+            if (cursor==(messages.size()-1)) {
                 contact.moveToLatest=false;
                 moveCursorEnd();
             }
         }
+    }
+
+
+    protected void beginPaint(){
+        markRead(cursor);
+        forceScrolling();
+        
         int num=2;
 //#ifdef CLIENTS_ICONS
 //#ifdef PLUGINS
@@ -295,14 +300,7 @@ public class ContactMessageList extends MessageList {
     public void markRead(int msgIndex) {
 	if (msgIndex>=getItemCount()) return;
         if (msgIndex<contact.lastUnread) return;
-        /*
-        if (cursor==(messages.size()-1)) {
-            if (contact.moveToLatest) {
-                contact.moveToLatest=false;
-                moveCursorEnd();
-            }
-        }
-        */
+
         sd.roster.countNewMsgs();
 //#ifdef LOGROTATE
 //#         getRedraw(contact.redraw);
@@ -316,11 +314,6 @@ public class ContactMessageList extends MessageList {
 //#             messages=new Vector();
 //#             redraw();
 //#         }
-//#     }
-//#     private void setRedraw() {
-//#         contact.redraw=false;
-//#             messages=null;
-//#         messages=new Vector();
 //#     }
 //#endif
     public int getItemCount(){ return contact.msgs.size(); }
@@ -407,18 +400,20 @@ public class ContactMessageList extends MessageList {
 //#         if (c==cmdSendBuffer) {
 //#             String from=sd.account.toString();
 //#             String body=clipboard.getClipBoard();
-//#             String subj=null;
+//#             //String subj=null;
 //#             
 //#             String id=String.valueOf((int) System.currentTimeMillis());
-//#             Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,body);
+//#             Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,null,body);
 //#             msg.id=id;
+//#             msg.itemCollapsed=true;
 //#             
 //#             try {
-//#                 if (body!=null)
-//#                     sd.roster.sendMessage(contact, id, body, subj, null);
-//#                 contact.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"clipboard sended ("+body.length()+"chars)"));
+//#                 if (body!=null && body.length()>0) {
+//#                     sd.roster.sendMessage(contact, id, body, null, null);
+//#                     contact.addMessage(msg);
+//#                 }
 //#             } catch (Exception e) {
-//#                 contact.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"clipboard NOT sended"));
+//#                 contact.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,null,"clipboard NOT sended"));
 //#             }
 //#             redraw();
 //#         }

@@ -2076,9 +2076,11 @@ public class Roster
 //#ifndef WMUC
                 else if (isContact && isMucContact && c.origin!=Contact.ORIGIN_GROUPCHAT) {
                     ConferenceGroup mucGrp=(ConferenceGroup)c.group;
-                    String myNick=mucGrp.getSelfContact().getName();
-                    MucContact mc=(MucContact) c;
-                    new ConferenceQuickPrivelegeModify(display, this, mc, ConferenceQuickPrivelegeModify.KICK,myNick);
+                    if (mucGrp.getSelfContact().roleCode==MucContact.ROLE_MODERATOR) {
+                        String myNick=mucGrp.getSelfContact().getName();
+                        MucContact mc=(MucContact) c;
+                        new ConferenceQuickPrivelegeModify(display, this, mc, ConferenceQuickPrivelegeModify.KICK,myNick);
+                    }
                 }
 //#endif 
             } catch (Exception e) { /* NullPointerException */ }

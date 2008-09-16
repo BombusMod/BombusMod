@@ -74,8 +74,6 @@ public class XMLList
         setCommandListener(this);
 
         moveCursorHome();
-        
-        enableListWrapping(false);
 
 //#ifdef CONSOLE        
 //# 	MainBar mainbar=new MainBar(SR.MS_XML_CONSOLE);

@@ -299,10 +299,12 @@ public class MessageEdit
                 to.lastSendedMessage=body;
                 sd.roster.sendMessage(to, id, body, subj, comp);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        ((VirtualList)parentView).redraw();
+        } catch (Exception e) { }
+        
+        try {
+            ((ContactMessageList)parentView).forceScrolling();
+        } catch (Exception e) { }
+        //((VirtualList)parentView).redraw();
     }
 //#endif
 }
