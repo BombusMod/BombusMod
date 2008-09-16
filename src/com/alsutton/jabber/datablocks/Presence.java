@@ -167,7 +167,7 @@ public class Presence extends JabberDataBlock
   }
 
   
-  public int getTypeIndex() { return presenceCode;}
+  public int getTypeIndex() { return presenceCode; }
 
   public String getPresenceTxt(){ return text.toString(); }
   

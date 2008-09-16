@@ -1297,6 +1297,7 @@ public abstract class VirtualList
     
     public void setInfo() {
         if (reconnectWindow.getInstance().isActive()) {
+            getInfoBarItem().setFont(FontCache.getFont(true, FontCache.bar));
             getInfoBarItem().setElementAt(SR.MS_OK, 1);
             getInfoBarItem().setElementAt(SR.MS_CANCEL, 3);
             return;
@@ -1384,7 +1385,7 @@ class TimerTaskRotate extends Thread{
             instance.scrollLen=max;
             instance.scrollline=(max>0);
             instance.attachedList=list;
-            instance.balloon  = 4;
+            instance.balloon  = 8;
             instance.scroll   = 4;
         }
     }
@@ -1428,7 +1429,7 @@ class TimerTaskRotate extends Thread{
             if (attachedList==null || balloon<0)
                 return false;
             balloon--;
-            attachedList.showBalloon=(balloon<4 && balloon>0);
+            attachedList.showBalloon=(balloon<8 && balloon>0);
             return true;
         }
     }

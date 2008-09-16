@@ -77,8 +77,8 @@ public class AppendNick
     protected int getItemCount() { return nicknames.size();  }
 
     public void commandAction(Command c, Displayable d){
-        if (c==cmdCancel) destroyView();
-        else if (c==cmdSelect) eventOk();
+        if (c==cmdSelect) eventOk();
+        destroyView();
     }
      public void eventOk(){
          try {
@@ -94,7 +94,6 @@ public class AppendNick
 //#endif
             b=null;
          } catch (Exception e) {}
-        destroyView();
     }
 
 }

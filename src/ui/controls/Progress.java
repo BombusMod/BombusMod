@@ -62,7 +62,7 @@ public class Progress {
         this.g=g;
         this.x=x;
         this.width=width;
-        this.font=FontCache.getFont(true, FontCache.bar);
+        this.font=FontCache.getFont(false, FontCache.bar);
         this.height=font.getHeight();
         this.y=y-height;
         this.topColor=ColorTheme.getColor(ColorTheme.PGS_COMPLETE_TOP);

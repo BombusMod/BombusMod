@@ -41,6 +41,7 @@ import ui.controls.form.ImageItem;
 import ui.controls.form.DefForm;
 import ui.controls.form.SimpleString;
 import ui.controls.form.TextInput;
+import ui.controls.form.LinkString;
 
 /**
  *
@@ -74,10 +75,12 @@ public class VCardEdit
 
     private int st=-1;
 
-    private SimpleString endVCard=new SimpleString(SR.MS_END_OF_VCARD, false);
+    //private SimpleString endVCard=new SimpleString(SR.MS_END_OF_VCARD, false);
     private SimpleString noPhoto=new SimpleString(SR.MS_NO_PHOTO, false);
     private SimpleString badFormat=new SimpleString(SR.MS_UNSUPPORTED_FORMAT, false);
     private SimpleString photoTooLarge=new SimpleString(SR.MS_PHOTO_TOO_LARGE, false);
+    
+    private LinkString publish;
 
     /** Creates a new instance of vCardForm */
     public VCardEdit(Display display, Displayable pView, VCard vcard) {
@@ -96,7 +99,11 @@ public class VCardEdit
             } 
             itemsList.addElement(new TextInput(display, name, data, null, TextField.ANY));
         }
+
+        publish=new LinkString(SR.MS_PUBLISH) { public void doAction() { cmdOk(); } };
+        
         setPhoto();
+
 //#ifndef MENU_LISTENER
         commandState();
 //#ifndef MENU
@@ -216,11 +223,13 @@ public class VCardEdit
 
      private void setPhoto() {
         try {
-            itemsList.removeElement(endVCard);
+            //itemsList.removeElement(endVCard);
             itemsList.removeElement(noPhoto);
             itemsList.removeElement(badFormat);
             itemsList.removeElement(photoItem);
             itemsList.removeElement(photoTooLarge);
+            
+            itemsList.removeElement(publish);
         } catch (Exception e) { }
         
          if (vcard.hasPhoto) {
@@ -239,7 +248,9 @@ public class VCardEdit
         } else {
             itemsList.addElement(noPhoto);
         }
-        itemsList.addElement(endVCard);
+        //itemsList.addElement(endVCard);
+        
+        itemsList.addElement(publish);
      }
      
 //#ifdef MENU_LISTENER

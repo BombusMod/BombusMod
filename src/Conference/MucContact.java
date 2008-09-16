@@ -76,31 +76,32 @@ public class MucContact extends Contact {
         offline_type=Presence.PRESENCE_OFFLINE;
     }
     
-    private String processError(Presence presence) {
-            XmppError xe=XmppError.findInStanza(presence);
-            int errCode=xe.getCondition();
+    private String processError(Presence presence, int presenceType) {
 
-            ConferenceGroup grp=(ConferenceGroup)group;
-            if (status>=Presence.PRESENCE_OFFLINE) 
-                testMeOffline();
-            if (errCode!=XmppError.CONFLICT || status>=Presence.PRESENCE_OFFLINE)
-                setStatus(presence.getTypeIndex());
+        XmppError xe=XmppError.findInStanza(presence);
+        int errCode=xe.getCondition();
 
-            String errText=xe.getText();
-            if (errText!=null) return xe.toString(); // if error description is provided by server
-            
-            // legacy codes
-            switch (errCode) {
-                case XmppError.NOT_AUTHORIZED:        return "Password required";
-                case XmppError.FORBIDDEN:             return "You are banned in this room";
-                case XmppError.ITEM_NOT_FOUND:        return "Room does not exists";
-                case XmppError.NOT_ALLOWED:           return "You can't create room on this server";
-                case XmppError.NOT_ACCEPTABLE:        return "Reserved roomnick must be used";
-                case XmppError.REGISTRATION_REQUIRED: return "This room is members-only";
-                case XmppError.CONFLICT:              return "Nickname is already in use by another occupant";
-                case XmppError.SERVICE_UNAVAILABLE:   return "Maximum number of users has been reached in this room";
-                default: return xe.getName();
-            }
+        ConferenceGroup grp=(ConferenceGroup)group;
+        if (presenceType>=Presence.PRESENCE_OFFLINE) 
+            testMeOffline();
+        if (errCode!=XmppError.CONFLICT || presenceType>=Presence.PRESENCE_OFFLINE)
+            setStatus(presenceType);
+
+        String errText=xe.getText();
+        if (errText!=null) return xe.toString(); // if error description is provided by server
+
+        // legacy codes
+        switch (errCode) {
+            case XmppError.NOT_AUTHORIZED:        return "Password required";
+            case XmppError.FORBIDDEN:             return "You are banned in this room";
+            case XmppError.ITEM_NOT_FOUND:        return "Room does not exists";
+            case XmppError.NOT_ALLOWED:           return "You can't create room on this server";
+            case XmppError.NOT_ACCEPTABLE:        return "Reserved roomnick must be used";
+            case XmppError.REGISTRATION_REQUIRED: return "This room is members-only";
+            case XmppError.CONFLICT:              return "Nickname is already in use by another occupant";
+            case XmppError.SERVICE_UNAVAILABLE:   return "Maximum number of users has been reached in this room";
+            default: return xe.getName();
+        }
     }
     
     public String processPresence(JabberDataBlock xmuc, Presence presence) {
@@ -108,7 +109,7 @@ public class MucContact extends Contact {
         
         int presenceType=presence.getTypeIndex();
         
-        if (presenceType==Presence.PRESENCE_ERROR) processError(presence);
+        if (presenceType==Presence.PRESENCE_ERROR) return processError(presence, presenceType);
         
         JabberDataBlock item=xmuc.getChildBlock("item");   
 

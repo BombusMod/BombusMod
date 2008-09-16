@@ -28,6 +28,9 @@
 package ui.controls.form;
 
 import Client.Config;
+//#ifdef SMILES
+import Client.SmilePicker;
+//#endif
 import io.NvStorage;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -51,11 +54,14 @@ import locale.SR;
  */
 public class EditBox implements CommandListener {
     private Display display;
-    private TextBox t;
+    public TextBox t;
     private TextInput ti;
 
     private Command cmdOk=new Command(SR.MS_OK, Command.OK,1);
     private Command cmdRecent=new Command(SR.MS_RECENT, Command.SCREEN, 2);
+//#ifdef SMILES
+    private Command cmdSmile=new Command(SR.MS_ADD_SMILE, Command.SCREEN, 3);
+//#endif
     private Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK,99);
 
     public Vector recentList;
@@ -91,6 +97,9 @@ public class EditBox implements CommandListener {
                 t.addCommand(cmdRecent);
             }
         }
+//#ifdef SMILES
+        t.addCommand(cmdSmile);
+//#endif
         t.addCommand(cmdCancel);
         t.setCommandListener(this);
         if (Config.getInstance().capsState)
@@ -105,6 +114,12 @@ public class EditBox implements CommandListener {
             new TextListBox(display, this);
             return;
         }
+//#ifdef SMILES
+        if (c==cmdSmile) {
+            new SmilePicker(display, display.getCurrent(), getCaretPos(), t);
+            return;
+        }
+//#endif
 //#ifdef CLIPBOARD
 //#         if (c == cmdCopy) {
 //#             try {
@@ -144,16 +159,16 @@ public class EditBox implements CommandListener {
 
         display.setCurrent(parentView);
     }
-//#ifdef CLIPBOARD
-//#     public int getCaretPos() {     
-//#         int caretPos=t.getCaretPosition();
-//#         // +MOTOROLA STUB
-//#         if (Config.getInstance().phoneManufacturer==Config.MOTO)
-//#             caretPos=-1;
-//#         if (caretPos<0)
-//#             caretPos=t.getString().length();
-//#         return caretPos;
-//#     }
+//#if (CLIPBOARD||SMILES)
+    public int getCaretPos() {     
+        int caretPos=t.getCaretPosition();
+        // +MOTOROLA STUB
+        if (Config.getInstance().phoneManufacturer==Config.MOTO)
+            caretPos=-1;
+        if (caretPos<0)
+            caretPos=t.getString().length();
+        return caretPos;
+    }
 //#endif
 
     private void loadRecentList() {
@@ -181,5 +196,9 @@ public class EditBox implements CommandListener {
 
     void setValue(String string) {
         t.setString(string);
+    }
+
+    public void insert(String string, int caretPos) {
+        t.insert(string, caretPos);
     }
 }

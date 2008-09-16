@@ -53,6 +53,7 @@ import ui.controls.form.DefForm;
 import ui.controls.form.ImageItem;
 import ui.controls.form.MultiLine;
 import ui.controls.form.SimpleString;
+import ui.controls.form.LinkString;
 
 /**
  *
@@ -74,6 +75,8 @@ public class VCardView
     private SimpleString badFormat=new SimpleString(SR.MS_UNSUPPORTED_FORMAT, false);
     private SimpleString photoTooLarge=new SimpleString(SR.MS_PHOTO_TOO_LARGE, false);
 
+    private LinkString refresh;
+
 //#ifdef CLIPBOARD
 //#     ClipBoard clipboard=ClipBoard.getInstance(); 
 //#     Command cmdCopy      = new Command(SR.MS_COPY, Command.SCREEN, 1);
@@ -86,14 +89,17 @@ public class VCardView
     Command cmdDelPhoto  = new Command(SR.MS_CLEAR_PHOTO, Command.SCREEN,5);
 
     /** Creates a new instance of VCardView */
-    public VCardView(Display display, Displayable pView, VCard vcard, String caption) {
+    public VCardView(Display display, Displayable pView, final VCard vcard, String caption) {
         super(display, pView, caption);
         this.display=display;
         
         this.vcard=vcard;
+        
+        refresh=new LinkString(SR.MS_REFRESH) { public void doAction() { VCard.request(vcard.getJid(), vcard.getId().substring(5)); destroyView(); } };
 
         if (vcard.isEmpty()) {
             itemsList.addElement(noVCard);
+            itemsList.addElement(refresh);
         } else {
             setPhoto();
             for (int index=0; index<vcard.getCount(); index++) {
@@ -106,6 +112,7 @@ public class VCardView
                 }
             }
             itemsList.addElement(endVCard);
+            itemsList.addElement(refresh);
         }
 
 //#ifndef MENU_LISTENER
@@ -150,7 +157,7 @@ public class VCardView
                     itemsList.addElement(photoTooLarge);
                 } else {
                     Image photoImg=Image.createImage(vcard.getPhoto(), 0, length);
-                    photoItem=new ImageItem(photoImg, String.valueOf(length)+" bytes");
+                    photoItem=new ImageItem(photoImg, "minimized, size: "+String.valueOf(length)+"b.");
                     if (length>10240)
                         photoItem.collapsed=true;
                     itemsList.insertElementAt(photoItem, 0);
