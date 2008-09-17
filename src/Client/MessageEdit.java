@@ -138,7 +138,7 @@ public class MessageEdit
         if (c==cmdSmile) { new SmilePicker(display, this, caretPos, this); return; }
 //#endif
 //#ifndef WMUC
-        if (c==cmdInsNick) { new AppendNick(display, to, caretPos, this); return; }
+        if (c==cmdInsNick) { new AppendNick(display, this, to, caretPos, this); return; }
 //#endif
         if (c==cmdCancel) {
             composing=false;

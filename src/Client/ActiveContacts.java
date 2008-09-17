@@ -103,10 +103,7 @@ public class ActiveContacts
     }
     
 //#ifdef MENU_LISTENER
-//#     public void showMenu() {
-//#         commandState();
-//#         new MyMenu(display, parentView, this, SR.MS_STATUS, null, menuCommands);
-//#     }
+//#     public void showMenu(){ eventOk(); }
 //#endif
 
     protected int getItemCount() { return activeContacts.size(); }
@@ -178,4 +175,8 @@ public class ActiveContacts
         sd.roster.reEnumRoster();
         display.setCurrent(parentView);
     }
+//#ifdef MENU_LISTENER
+//#     public String touchLeftCommand(){ return SR.MS_SELECT; }
+//#     public String touchRightCommand(){ return SR.MS_BACK; }
+//#endif
 }

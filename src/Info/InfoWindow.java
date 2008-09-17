@@ -162,6 +162,9 @@ public class InfoWindow
 //#ifdef AUTOSTATUS
 //#         abilitiesList.addElement((String)"AUTOSTATUS");
 //#endif
+//#ifdef AUTOTASK
+//#         abilitiesList.addElement((String)"AUTOTASK");
+//#endif 
 //#ifdef BACK_IMAGE
 //#         abilitiesList.addElement((String)"BACK_IMAGE");
 //#endif
@@ -206,6 +209,9 @@ public class InfoWindow
 //#endif
 //#ifdef ELF
 //#         abilitiesList.addElement((String)"ELF");
+//#endif
+//#ifdef FILE_IO
+        abilitiesList.addElement((String)"FILE_IO");
 //#endif
 //#ifdef FILE_TRANSFER
 //#ifdef PLUGINS
@@ -252,6 +258,9 @@ public class InfoWindow
 //#ifdef NICK_COLORS
         abilitiesList.addElement((String)"NICK_COLORS");
 //#endif
+//#ifdef NON_SASL_AUTH
+//#         abilitiesList.addElement((String)"NON_SASL_AUTH");
+//#endif
 //#ifdef PEP
 //#ifdef PLUGINS
 //#         if (sd.PEP)
@@ -270,6 +279,9 @@ public class InfoWindow
 //#endif
 //#             abilitiesList.addElement((String)"PEP_TUNE");
 //#endif
+//#ifdef PLUGINS
+//#         abilitiesList.addElement((String)"PLUGINS");
+//#endif
 //#ifdef POPUPS
         abilitiesList.addElement((String)"POPUPS");
 //#endif
@@ -281,6 +293,9 @@ public class InfoWindow
 //#         if (sd.Privacy)
 //#endif
             abilitiesList.addElement((String)"PRIVACY");
+//#endif
+//#ifdef SASL_XGOOGLETOKEN
+//#         abilitiesList.addElement((String)"SASL_XGOOGLETOKEN");
 //#endif
 //#ifdef SE_LIGHT
 //#         abilitiesList.addElement((String)"SE_LIGHT");
@@ -314,6 +329,9 @@ public class InfoWindow
 //#endif
 //#ifdef WSYSTEMGC
 //#         abilitiesList.addElement((String)"WSYSTEMGC");
+//#endif
+//#ifdef ZLIB
+        abilitiesList.addElement((String)"ZLIB");
 //#endif
         
         StringBuffer abilities=new StringBuffer();

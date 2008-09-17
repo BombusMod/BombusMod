@@ -31,11 +31,32 @@ import images.SmilesIcons;
 import locale.SR;
 import Colors.ColorTheme;
 import ui.*;
-import javax.microedition.lcdui.*;
 import java.util.Vector;
 import ui.controls.Balloon;
 
-public class SmilePicker extends VirtualList implements CommandListener, VirtualElement{
+//#ifndef MENU_LISTENER
+import javax.microedition.lcdui.CommandListener;
+import javax.microedition.lcdui.Command;
+//#else
+//# import Menu.MenuListener;
+//# import Menu.Command;
+//#endif
+
+import javax.microedition.lcdui.Display;
+import javax.microedition.lcdui.Displayable;
+import javax.microedition.lcdui.Graphics;
+import javax.microedition.lcdui.TextBox;
+
+public class SmilePicker 
+        extends VirtualList 
+        implements 
+//#ifndef MENU_LISTENER
+        CommandListener,
+//#else
+//#         MenuListener,
+//#endif
+        VirtualElement
+{
 
     private final static int CURSOR_HOFFSET=1;
     private final static int CURSOR_VOFFSET=1;
@@ -56,8 +77,8 @@ public class SmilePicker extends VirtualList implements CommandListener, Virtual
     private int realWidth=0;
     private int xBorder = 0;
     
-    Command cmdBack=new Command(SR.MS_CANCEL,Command.BACK,99);
-    Command cmdOK=new Command(SR.MS_SELECT,Command.OK,1);
+    Command cmdCancel=new Command(SR.MS_CANCEL,Command.BACK,99);
+    Command cmdOk=new Command(SR.MS_SELECT,Command.OK,1);
      
     private Vector smileTable;
 
@@ -89,11 +110,19 @@ public class SmilePicker extends VirtualList implements CommandListener, Virtual
         if (xLastCnt>0) lines++; else xLastCnt=xCnt;
 
         xBorder=(realWidth-(xCnt*imgWidth))/2;
-        
-        addCommand(cmdOK);
-        addCommand(cmdBack);
-        setCommandListener(this);
+
+        commandState();
         this.parentView=pView;
+    }
+    
+    public void commandState() {
+//#ifdef MENU_LISTENER
+//#         menuCommands.removeAllElements();
+//#endif
+        addCommand(cmdOk);
+        addCommand(cmdCancel);
+        
+        setCommandListener(this);
     }
     
     int lineIndex;
@@ -173,11 +202,11 @@ public class SmilePicker extends VirtualList implements CommandListener, Virtual
     }
     
     public void commandAction(Command c, Displayable d){
-        if (c==cmdBack) {
+        if (c==cmdCancel) {
             destroyView();
             return;
         }
-        if (c==cmdOK) { eventOk(); }
+        if (c==cmdOk) { eventOk(); }
     }
 
     public void moveCursorEnd() {
@@ -220,4 +249,11 @@ public class SmilePicker extends VirtualList implements CommandListener, Virtual
     public boolean isSelectable() { return true; }
     
     public boolean handleEvent(int keyCode) { return false; }
+    
+//#ifdef MENU_LISTENER
+//#     public void showMenu(){ eventOk(); }
+//#      
+//#     public String touchLeftCommand(){ return SR.MS_SELECT; }
+//#     public String touchRightCommand(){ return SR.MS_BACK; }
+//#endif
 }

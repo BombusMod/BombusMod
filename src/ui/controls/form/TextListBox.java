@@ -27,7 +27,6 @@
 
 package ui.controls.form;
 
-import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import ui.MainBar;
@@ -35,8 +34,16 @@ import ui.VirtualElement;
 import ui.VirtualList;
 
 import java.util.Vector;
-import javax.microedition.lcdui.Command;
 import locale.SR;
+
+//#ifndef MENU_LISTENER
+import javax.microedition.lcdui.CommandListener;
+import javax.microedition.lcdui.Command;
+//#else
+//# import Menu.MenuListener;
+//# import Menu.Command;
+//# import Menu.MyMenu;
+//#endif
 
 /**
  *
@@ -44,7 +51,12 @@ import locale.SR;
  */
 public class TextListBox 
         extends VirtualList 
-        implements CommandListener
+        implements
+//#ifndef MENU_LISTENER
+        CommandListener
+//#else
+//#         MenuListener
+//#endif
     {
 
     private Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK,99);
@@ -61,16 +73,24 @@ public class TextListBox
         this.recentList=ti.recentList;
         setMainBarItem(new MainBar(SR.MS_SELECT));
 
+        commandState();
+    }
+    
+    public void commandState() {
+//#ifdef MENU_LISTENER
+//#         menuCommands.removeAllElements();
+//#endif
         addCommand(cmdOk);
         addCommand(cmdClear);
         addCommand(cmdCancel);
         setCommandListener(this);
-
     }
     
     public void eventOk() {
         if (recentList.size()>0)
             ti.setValue((String) recentList.elementAt(cursor));
+        
+        display.setCurrent(parentView);
     }
 
     public void commandAction(Command c, Displayable d){
@@ -78,15 +98,27 @@ public class TextListBox
             ti.recentList.removeAllElements();
             ti.saveRecentList();
         }
-        if (c==cmdOk)
+        if (c==cmdOk) {
             eventOk();
-
-        display.setCurrent(parentView);
+            return;
+        }
         
+        display.setCurrent(parentView);
     }
 
     public VirtualElement getItemRef(int index){ 
         return new ListItem((String) recentList.elementAt(index)); 
     }
     public int getItemCount() { return recentList.size(); }
+    
+//#ifdef MENU_LISTENER
+//#     public void showMenu() {
+//#         commandState();
+//#         String capt="";
+//#         try {
+//#             capt=getMainBarItem().elementAt(0).toString();
+//#         } catch (Exception ex){ }
+//#         new MyMenu(display, parentView, this, capt, null, menuCommands);
+//#    }
+//#endif
 }

@@ -27,13 +27,26 @@
 
 package Conference;
 
-import com.alsutton.jabber.datablocks.Presence;
+import Client.Contact;
+import Client.StaticData;
 import locale.SR;
-import ui.*;
-import Client.*;
-import java.util.*;
-import javax.microedition.lcdui.*;
 import ui.MainBar;
+import javax.microedition.lcdui.Display;
+import javax.microedition.lcdui.Displayable;
+import javax.microedition.lcdui.TextBox;
+import com.alsutton.jabber.datablocks.Presence;
+import java.util.Enumeration;
+import java.util.Vector;
+import ui.VirtualElement;
+import ui.VirtualList;
+
+//#ifndef MENU_LISTENER
+import javax.microedition.lcdui.CommandListener;
+import javax.microedition.lcdui.Command;
+//#else
+//# import Menu.MenuListener;
+//# import Menu.Command;
+//#endif
 
 /**
  *
@@ -41,17 +54,23 @@ import ui.MainBar;
  */
 public class AppendNick         
         extends VirtualList 
-        implements CommandListener{
+        implements
+//#ifndef MENU_LISTENER
+        CommandListener
+//#else
+//#         MenuListener
+//#endif
+{
 
     Vector nicknames;
     int caretPos; 
     
-    Command cmdSelect=new Command(SR.MS_APPEND, Command.OK, 1);
+    Command cmdOk=new Command(SR.MS_APPEND, Command.OK, 1);
     Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 99);
 
     private TextBox t;
     
-    public AppendNick(Display display, Contact to, int caretPos, TextBox t) {
+    public AppendNick(Display display, Displayable pView, Contact to, int caretPos, TextBox t) {
         super(display);
         this.caretPos=caretPos;
         
@@ -66,8 +85,16 @@ public class AppendNick
             if (c.inGroup(to.group) && c.origin>Contact.ORIGIN_GROUPCHAT && c.status<Presence.PRESENCE_OFFLINE)
                 nicknames.addElement(c);
         }
+        commandState();
 
-        addCommand(cmdSelect);
+        this.parentView=pView;
+    }
+    
+    public void commandState() {
+//#ifdef MENU_LISTENER
+//#         menuCommands.removeAllElements();
+//#endif
+        addCommand(cmdOk);
         addCommand(cmdCancel);
         
         setCommandListener(this);
@@ -77,9 +104,12 @@ public class AppendNick
     protected int getItemCount() { return nicknames.size();  }
 
     public void commandAction(Command c, Displayable d){
-        if (c==cmdSelect) eventOk();
-        destroyView();
+        if (c==cmdOk)
+            eventOk();
+        else
+            destroyView();
     }
+    
      public void eventOk(){
          try {
              String nick=((Contact)getFocusedObject()).getJid();
@@ -94,6 +124,13 @@ public class AppendNick
 //#endif
             b=null;
          } catch (Exception e) {}
+         destroyView();
     }
-
+     
+//#ifdef MENU_LISTENER
+//#     public void showMenu(){ eventOk(); }
+//#      
+//#     public String touchLeftCommand(){ return SR.MS_SELECT; }
+//#     public String touchRightCommand(){ return SR.MS_BACK; }
+//#endif
 }
