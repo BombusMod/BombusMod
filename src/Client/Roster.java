@@ -292,7 +292,10 @@ public class Roster
 
         cmdActiveContacts=new Command(SR.MS_ACTIVE_CONTACTS, activeType, 3);
         
+//#ifndef MENU_LISTENER
         addCommand(cmdActions);
+//#endif
+
         addCommand(cmdStatus);
         addCommand(cmdActiveContacts);
 //#ifndef WMUC

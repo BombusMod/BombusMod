@@ -119,7 +119,7 @@ public class TextInput
     
     public String toString() { return (getCaptionLength()>getTextLength())?caption:getValue(); }
     
-    public void onSelect(){ new EditBox(display, text, this, boxType); }
+    public void onSelect(){ new EditBox(display, caption, text, this, boxType); }
     
     public String getValue() { return (text==null)?"":text; }
 

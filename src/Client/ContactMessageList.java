@@ -639,8 +639,8 @@ public class ContactMessageList extends MessageList {
 //#         StringBuffer messageList=new StringBuffer();
 //#         for (Enumeration cmessages=contact.msgs.elements(); cmessages.hasMoreElements(); ) {
 //#             Msg message=(Msg) cmessages.nextElement();
-//#             messageList.append(message.quoteString());
-//#             messageList.append("\n\n");
+//#             messageList.append(message.quoteString())
+//#             .append("\n").append("\n");
 //#         }
 //#         HistoryAppend.getInstance().addMessageList(messageList.toString(), histRecord.toString());
 //#         messageList=null;

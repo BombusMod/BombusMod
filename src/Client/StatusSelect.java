@@ -176,7 +176,7 @@ public class StatusSelect
         private CheckBox autoRespond;
         
         public StatusForm(Display display, Displayable pView, ExtendedStatus status){
-            super(display, pView, status.getScreenName());
+            super(display, pView, SR.MS_STATUS+": "+status.getScreenName());
             this.display=display;
             this.status=status;
             

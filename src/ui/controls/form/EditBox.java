@@ -67,17 +67,20 @@ public class EditBox implements CommandListener {
     public Vector recentList;
 
     private Displayable parentView;
-
+    
+    private String caption;
+    
 //#ifdef CLIPBOARD
 //#     private ClipBoard clipboard;
 //#     private Command cmdCopy = new Command(SR.MS_COPY, Command.SCREEN, 3);
 //#     private Command cmdCopyPlus = new Command("+ "+SR.MS_COPY, Command.SCREEN, 4);
-//#     private Command cmdPasteText=new Command(SR.MS_PASTE, Command.SCREEN, 5);  
+//#     private Command cmdPasteText=new Command(SR.MS_PASTE, Command.SCREEN, 5);
 //#endif
-    public EditBox(Display display, String text, TextInput ti, int boxType) {
+    public EditBox(Display display, String caprion, String text, TextInput ti, int boxType) {
         this.display=display;
         parentView=display.getCurrent();
         this.ti=ti;
+        this.caption=caption;
 
         t=new TextBox(SR.MS_EDIT, text, 500, boxType);
 //#ifdef CLIPBOARD
@@ -132,7 +135,7 @@ public class EditBox implements CommandListener {
 //#         }
 //#         if (c==cmdCopyPlus) {
 //#             try {
-//#                 StringBuffer clipstr=new StringBuffer(clipboard.getClipBoard()).append("\n\n").append(text);
+//#                 StringBuffer clipstr=new StringBuffer(clipboard.getClipBoard()).append("\n").append("\n").append(text);
 //#                 
 //#                 clipboard.setClipBoard(clipstr.toString());
 //#                 clipstr=null;

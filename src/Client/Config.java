@@ -529,6 +529,8 @@ public class Config {
 //#endif
 //#ifdef CLIENTS_ICONS
 //#         if(!sd.ClientsIcons) showClientIcon=false;
+//#         
+//#         sd.ClientsIcons=showClientIcon;
 //#endif
 //#ifdef HISTORY
 //#         if(!sd.History) saveHistory=false;

@@ -479,19 +479,21 @@ public class RosterItemActions extends Menu {
 //#                     String body2=clipboard.getClipBoard();
 //#                     if (body2.length()==0)
 //#                         return;
-//#                     
+//# 
 //#                     String from2=sd.account.toString();
-//#                     
+//# 
 //#                     String id2=String.valueOf((int) System.currentTimeMillis());
-//#                     
 //#                     Msg msg2=new Msg(Msg.MESSAGE_TYPE_OUT,from2,null,body2);
 //#                     msg2.id=id2;
+//#                     msg2.itemCollapsed=true;
+//# 
 //#                     try {
-//#                         sd.roster.sendMessage(c, id2, body2, null, null);
-//#                         c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from2,null,"message sended from clipboard("+body2.length()+"chars)"));
+//#                         if (body2!=null && body2.length()>0) {
+//#                             sd.roster.sendMessage(c, id2, body2, null, null);
+//#                             c.addMessage(msg2);
+//#                         }
 //#                     } catch (Exception e) {
-//#                         c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from2,null,"message NOT sended"));
-//#                         //e.printStackTrace();
+//#                         c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from2,null,"clipboard NOT sended"));
 //#                     }
 //#                     break;
 //#endif
