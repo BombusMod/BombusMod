@@ -490,10 +490,11 @@ public class ServiceDiscovery
     }
 
 //#ifdef MENU_LISTENER
-//#     protected void keyPressed(int keyCode) { // overriding this method to avoid autorepeat
+//#     protected void keyPressed(int keyCode) {
 //#         if (keyCode==Config.SOFT_RIGHT || keyCode==Config.KEY_BACK) {
 //#             if (!reconnectWindow.getInstance().isActive()) {
 //#                 exitDiscovery(false);
+//#                 return;
 //#             }
 //#         }
 //#         super.keyPressed(keyCode);

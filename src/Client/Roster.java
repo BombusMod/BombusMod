@@ -1551,7 +1551,7 @@ public class Roster
                         MucContact c = mucContact(from);
 //#ifdef CLIENTS_ICONS
 //#ifdef PLUGINS
-//#                         if (sd.ClientsIcons)
+//#                         if (cf.showClientIcon)
 //#endif
 //#                             if (pr.hasEntityCaps())
 //#                                 if (pr.getEntityNode()!=null)
@@ -1618,7 +1618,7 @@ public class Roster
                         if (pr.getTypeIndex()!=Presence.PRESENCE_ERROR) {
 //#ifdef CLIENTS_ICONS
 //#ifdef PLUGINS
-//#                             if (sd.ClientsIcons)
+//#                             if (cf.showClientIcon)
 //#endif
 //#                                 if (pr.hasEntityCaps()) {
 //#                                     if (pr.getEntityNode()!=null)
@@ -2370,7 +2370,7 @@ public class Roster
                 mess.append((cntact.j2j!=null)?"\nJ2J: "+cntact.j2j:"");
 //#ifdef CLIENTS_ICONS
 //#ifdef PLUGINS
-//#                 if (sd.ClientsIcons)
+//#                 if (cf.showClientIcon)
 //#endif
 //#                     if (cntact.client>-1)
 //#                         mess.append("\nUse: "+cntact.clientName);

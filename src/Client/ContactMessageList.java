@@ -127,7 +127,7 @@ public class ContactMessageList extends MessageList {
 //#endif
 //#ifdef CLIENTS_ICONS
 //#ifdef PLUGINS
-//#         if (sd.ClientsIcons)
+//#         if (cf.showClientIcon)
 //#endif
 //#             mainbar.addElement(null);
 //#endif
@@ -268,10 +268,7 @@ public class ContactMessageList extends MessageList {
         
         int num=2;
 //#ifdef CLIENTS_ICONS
-//#ifdef PLUGINS
-//#         if (sd.ClientsIcons)
-//#endif
-//#             if (contact.client>-1) getMainBarItem().setElementAt(RosterIcons.iconTransparent, num++);
+//#         if (contact.client>-1) getMainBarItem().setElementAt(RosterIcons.iconTransparent, num++);
 //#endif
         
 //#ifdef PEP
@@ -283,10 +280,7 @@ public class ContactMessageList extends MessageList {
         getMainBarItem().setElementAt((contact.vcard==null)?null:RosterIcons.iconHasVcard, num++);
         getMainBarItem().setElementAt(sd.roster.getEventIcon(), num++);
 //#ifdef CLIENTS_ICONS
-//#ifdef PLUGINS
-//#         if (sd.ClientsIcons)
-//#endif
-//#             if (contact.client<0) getMainBarItem().setElementAt(RosterIcons.iconTransparent, num++);
+//#         if (contact.client<0) getMainBarItem().setElementAt(RosterIcons.iconTransparent, num++);
 //#endif
         
 //#ifdef PEP

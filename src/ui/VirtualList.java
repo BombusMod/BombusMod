@@ -67,10 +67,12 @@ public abstract class VirtualList
     private StaticData sd=StaticData.getInstance();
 
     private int stringHeight;
+    
+    private int iHeight;
+    private int mHeight;
+    
 //#ifdef GRADIENT
-//#     private int iHeight;
 //#     Gradient grIB;
-//#     private int mHeight;
 //#     Gradient grMB;
 //#endif
 
