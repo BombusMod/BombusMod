@@ -216,7 +216,9 @@ public class PopUp {
     }
     
 //paint
-    public void paintCustom(Graphics g) {
+    private static int[] alphaBuffer = null;
+    
+    public void paintCustom(Graphics graph) {
 	if(size()<1)
 	    return;
         
@@ -239,40 +241,75 @@ public class PopUp {
             heightBorder=(height-popUpHeight)/2;
         }
      
-        g.translate(widthBorder, heightBorder);
+        graph.translate(widthBorder, heightBorder);
 
-        g.setClip(0,0,popUpWidth+1,popUpHeight+1);
+        graph.setClip(0,0,popUpWidth+1,popUpHeight+1);
 
-        g.setColor(getColorInk());
+        graph.setColor(getColorInk());
         
-        g.fillRect(1,1,popUpWidth,popUpHeight);                 //shadow
-        g.fillRect(0,0,popUpWidth,popUpHeight);                 //border
+        //graph.fillRect(1,1,popUpWidth,popUpHeight);                 //shadow
+        graph.drawRect(0,0,popUpWidth,popUpHeight);                 //border
         
-        g.setColor(getColorBgnd());
-        g.fillRect(1,1,popUpWidth-2,popUpHeight-2);             //fill
+        //graph.setColor(getColorBgnd());
+        //graph.fillRect(1,1,popUpWidth-2,popUpHeight-2);             //fill
+        int alpha = 200;
+       
+        if (alpha<255) {
+            int r1 = ((getColorBgnd() & 0xFF0000) >> 16);
+            int g1 = ((getColorBgnd() & 0x00FF00) >> 8);
+            int b1 = (getColorBgnd() & 0x0000FF);
+                
+            int alphaValue = alpha << 24;
+
+            int spaceRequired = 32*popUpHeight;
+            if (alphaBuffer == null || alphaBuffer.length < spaceRequired) {
+                    alphaBuffer = null;
+                    alphaBuffer = new int[spaceRequired];
+            }
+
+            int idx = 0;
+            for (int y0 = 0; y0 < popUpHeight; y0++) {
+                    int crd1 = y0;
+                    int crd2 = (y0 + 1);
+                    if (crd1 == crd2) continue;
+
+                    int color = (r1 << 16) | (g1 << 8) | (b1) | (alphaValue);
+
+                    for (int x = 0; x < 32; x++) 
+                        alphaBuffer[idx++] = color;
+            }
+
+            int totalWidth = popUpWidth;
+            for (int x0 = 0; x0 < popUpWidth; x0 += 32) {
+                    graph.drawRGB(alphaBuffer, 0, 32, x0, 0, (totalWidth > 32) ? 32 : totalWidth, popUpHeight, true);
+                    totalWidth -= 32;
+            }
+        } else {
+            graph.fillRect(1,1,popUpWidth-2,popUpHeight-2);             //fill
+        }
         
-        g.setColor(getColorInk());
+        graph.setColor(getColorInk());
         
-        g.setFont(font);
+        graph.setFont(font);
         switch (scrollable) {
             case SCROLLABLE_UP:
-                ri.drawImage(g, 0x27, maxWdth-ri.getWidth(), popUpHeight-ri.getHeight());
+                ri.drawImage(graph, 0x27, maxWdth-ri.getWidth(), popUpHeight-ri.getHeight());
                 //g.drawString("▲", maxWdth-10, 3, Graphics.TOP|Graphics.LEFT);
                 break;
             case SCROLLABLE_BOTH:
-                ri.drawImage(g, 0x25, maxWdth-ri.getWidth(), popUpHeight-ri.getHeight());
+                ri.drawImage(graph, 0x25, maxWdth-ri.getWidth(), popUpHeight-ri.getHeight());
                 //g.drawString("▲▼", maxWdth-15, 3, Graphics.TOP|Graphics.LEFT);
                 break;
             case SCROLLABLE_DOWN:
-                ri.drawImage(g, 0x26, maxWdth-ri.getWidth(), popUpHeight-ri.getHeight());
+                ri.drawImage(graph, 0x26, maxWdth-ri.getWidth(), popUpHeight-ri.getHeight());
                 //g.drawString("▼", maxWdth-10, 3, Graphics.TOP|Graphics.LEFT);
                 break;
         }
         
-        drawAllStrings(g, 2,3);
+        drawAllStrings(graph, 2,3);
         
-        g.translate(-widthBorder, -heightBorder);
-        g.setClip(0,0,width,height);
+        graph.translate(-widthBorder, -heightBorder);
+        graph.setClip(0,0,width,height);
     }
 
     public int size() {
