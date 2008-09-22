@@ -1314,15 +1314,39 @@ public class Roster
             } else if( data instanceof Message ) { // If we've received a message
                 //System.out.println(data.toString());
                 querysign=false;
-                boolean highlite=false;
-               
+
                 Message message = (Message) data;
                 
                 String from=message.getFrom();
                 
                 if (myJid.equals(new Jid(from), false)) //Enable forwarding only from self-jids
                     from=message.getXFrom();
+                
+                String type=message.getTypeAttribute();
+                boolean groupchat=false;
+                
+                int start_me=-1;
+                String name=null;
 
+                if (type!=null)
+                    if (type.equals("groupchat"))
+                        groupchat=true;
+                
+                if (groupchat) {
+                    start_me=0; // добавить ник в начало
+                    
+                    int rp=from.indexOf('/');
+
+                    name=from.substring(rp+1);
+
+                    if (rp>0) from=from.substring(0, rp);
+                }
+                
+                Contact c=getContact(from, (cf.notInListDropLevel != NotInListFilter.DROP_MESSAGES_PRESENCES || groupchat));
+                if (c==null) return JabberBlockListener.BLOCK_REJECTED; //not-in-list message dropped
+
+                boolean highlite=false;
+                
                 String body=message.getBody().trim();
                 String oob=message.getOOB();
                 if (oob!=null) body+=oob;
@@ -1331,57 +1355,35 @@ public class Roster
                 String subj=message.getSubject().trim(); 
                 if (subj.length()==0) 
                     subj=null;
-		String type=message.getTypeAttribute();
-                
+
                 long tStamp=message.getMessageTime();
-		
-                int start_me=-1;
-                String name=null;
-                boolean groupchat=false;
-				
+	
 		int mType=Msg.MESSAGE_TYPE_IN;
                 
-                
-                try { // type=null
-		    //String type=message.getTypeAttribute();
-                    if (type.equals("groupchat")) {
-                        groupchat=true;
-                        start_me=0; // РґРѕР±Р°РІРёС‚СЊ РЅРёРє РІ РЅР°С‡Р°Р»Рѕ
-                        int rp=from.indexOf('/');
-                        
-                        name=from.substring(rp+1);
-                        
-                        if (rp>0) from=from.substring(0, rp);
-                        
-                        // subject
-                        if (subj!=null) {
-                            if (body==null)
-                                body=name+" "+SR.MS_HAS_SET_TOPIC_TO+": "+subj;
+                if (groupchat) {
+                    // subject
+                    if (subj!=null) {
+                        if (body==null)
+                            body=name+" "+SR.MS_HAS_SET_TOPIC_TO+": "+subj;
 
-                            if (!subj.equals(getContact(from, true).statusString)) {
-                                getContact(from, true).statusString=subj; // adding secondLine to conference
-                                highlite=true;
-                            } else {
-                                return JabberBlockListener.BLOCK_PROCESSED;
-                            }
-
-                            subj=null;
-                            start_me=-1;
-                            mType=Msg.MESSAGE_TYPE_SUBJ;
+                        if (!subj.equals(c.statusString)) {
+                            c.statusString=subj; // adding secondLine to conference
+                            highlite=true;
+                        } else {
+                            return JabberBlockListener.BLOCK_PROCESSED;
                         }
-                    } else if (type.equals("error")) {
-                        body=SR.MS_ERROR_+ XmppError.findInStanza(message).toString();
-                        //TODO: verify and cleanup
-                        //String errCode=message.getChildBlock("error").getAttribute("code");
-                        //
-                        //switch (Integer.parseInt(errCode)) {
-                        //    case 403: body=SR.MS_VIZITORS_FORBIDDEN; break;
-                        //    case 503: break;
-                        //    default: body=SR.MS_ERROR_+message.getChildBlock("error")+"\n"+body;
-                        //}
-                    } else if (type.equals("headline")) 
-                        mType=Msg.MESSAGE_TYPE_HEADLINE;
-                } catch (Exception e) { type="chat"; } //force type to chat
+
+                        subj=null;
+                        start_me=-1;
+                        mType=Msg.MESSAGE_TYPE_SUBJ;
+                    }
+                } else if (type.equals("error")) {
+                    body=SR.MS_ERROR_ + XmppError.findInStanza(message).toString();
+                } else if (type.equals("headline")) {
+                    mType=Msg.MESSAGE_TYPE_HEADLINE;
+                } else {
+                    type="chat";
+                }
 //#ifndef WMUC
                  try {
                     JabberDataBlock xmlns=message.findNamespace("x", "http://jabber.org/protocol/muc#user");
@@ -1413,9 +1415,6 @@ public class Roster
                     }
                 } catch (Exception e) { /*e.printStackTrace();*/ }
 //#endif
-                Contact c=getContact(from, cf.notInListDropLevel != NotInListFilter.DROP_MESSAGES_PRESENCES);
-                if (c==null) return JabberBlockListener.BLOCK_REJECTED; //not-in-list message dropped
-
                 if (name==null) name=c.getName();
                 // /me
                 if (body!=null) {
@@ -1550,37 +1549,37 @@ public class Roster
                     try {
                         MucContact c = mucContact(from);
 //#ifdef CLIENTS_ICONS
-//#ifdef PLUGINS
 //#                         if (cf.showClientIcon)
-//#endif
 //#                             if (pr.hasEntityCaps())
 //#                                 if (pr.getEntityNode()!=null)
 //#                                     ClientsIconsData.getInstance().processData(c, pr.getEntityNode());
 //#endif
                         String lang=pr.getAttribute("xml:lang");
-//#if DEBUG
-//#                         System.out.println(lang);
-//#endif
+
                         if (lang!=null) c.lang=lang;
                         lang=null;
 
-                        int rp=from.indexOf('/');
-
-                        String name=from.substring(rp+1);
-
-                        from=from.substring(0, rp);
-                        Msg chatPresence=new Msg(Msg.MESSAGE_TYPE_PRESENCE, name, null, c.processPresence(xmuc, pr) );
-                        name=null;
-
                         c.statusString=pr.getStatus();
                         
-                        if (cf.storeConfPresence || chatPresence.body.indexOf(SR.MS_WAS_BANNED)>-1 || chatPresence.body.indexOf(SR.MS_WAS_KICKED)>-1)
-                            messageStore(getContact(from, false), chatPresence);
+                        String chatPres=c.processPresence(xmuc, pr);
+                        
+                        if (cf.storeConfPresence || chatPres.indexOf(SR.MS_WAS_BANNED)>-1 || chatPres.indexOf(SR.MS_WAS_KICKED)>-1) {
+                            int rp=from.indexOf('/');
 
+                            String name=from.substring(rp+1);
+
+                            Msg chatPresence=new Msg(Msg.MESSAGE_TYPE_PRESENCE, name, null, chatPres );
+                            messageStore(getContact(from.substring(0, rp), false), chatPresence);
+                            name=null;
+                        }
+                        
+                        chatPres=null;
+                                
                         messageStore(c,m);
 
                         c.priority=pr.getPriority();
-                        Thread.sleep(50);
+                        //System.gc();
+                        //Thread.sleep(20);
                     } catch (Exception e) { }
                 } else {
 //#endif
@@ -1759,7 +1758,7 @@ public class Roster
 //#ifndef WSYSTEMGC
         if (cf.ghostMotor) {
             System.gc(); 
-            try { Thread.sleep(50); } catch (InterruptedException e){}
+            try { Thread.sleep(20); } catch (InterruptedException e){}
         }
 //#endif
 //#ifdef POPUPS
