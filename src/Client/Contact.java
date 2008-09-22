@@ -327,10 +327,12 @@ public class Contact extends IconTextElement{
                     who.append(m.subject);
                 m.subject=who.toString();
             }
-        }
+        } else {
+            status=Presence.PRESENCE_ONLINE;
 //#ifdef LOGROTATE
-//#         else { redraw=deleteOldMessages(); }
+//#             redraw=deleteOldMessages();
 //#endif
+        }
 //#if HISTORY
 //#ifdef PLUGINS
 //#     if(cf.saveHistory)
