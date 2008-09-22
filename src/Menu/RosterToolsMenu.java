@@ -118,6 +118,9 @@ public class RosterToolsMenu extends Menu {
 //#endif
 //#if (FILE_IO && FILE_TRANSFER)
         if (connected && cf.fileTransfer)
+//#ifdef PLUGINS
+//#             if (sd.FileTransfer)
+//#endif
             addItem(SR.MS_FILE_TRANSFERS, 8, menuIcons.ICON_FT);
 //#endif
         

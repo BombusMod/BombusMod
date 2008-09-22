@@ -1240,6 +1240,8 @@ public abstract class VirtualList
     }
     
     protected void drawCursor (Graphics g, int width, int height){
+        g.fillRect(0, 0, width, height);
+        
         int cursorBGnd=ColorTheme.getColor(ColorTheme.CURSOR_BGND);
         int cursorOutline=ColorTheme.getColor(ColorTheme.CURSOR_OUTLINE);
         
@@ -1299,7 +1301,6 @@ public abstract class VirtualList
     
     public void setInfo() {
         if (reconnectWindow.getInstance().isActive()) {
-            getInfoBarItem().setFont(FontCache.getFont(true, FontCache.bar));
             getInfoBarItem().setElementAt(SR.MS_OK, 1);
             getInfoBarItem().setElementAt(SR.MS_CANCEL, 3);
             return;

@@ -24,7 +24,6 @@
 
 package ui;
 
-import Client.Config;
 import Fonts.FontCache;
 import images.RosterIcons;
 
@@ -32,9 +31,10 @@ public class MainBar extends ComplexString{
 
     public MainBar(int size, Object first, Object second) {
         this (size);
-        super.setFont(FontCache.getFont(false, FontCache.bar));
         if (first!=null) setElementAt(first,0);
         if (second!=null) setElementAt(second,1);
+        
+        font = FontCache.getFont(true, FontCache.bar);
     }
     
     public MainBar(Object obj) {
@@ -44,5 +44,5 @@ public class MainBar extends ComplexString{
     public MainBar(int size) {
         super (RosterIcons.getInstance());
         setSize(size);
-    }
+    }   
 }
