@@ -275,7 +275,8 @@ public class RosterToolsMenu extends Menu {
 //#                 return;
 //#endif
             case 19:
-                sd.roster.connectionTerminated(new Exception(SR.MS_SIMULATED_BREAK));
+                sd.roster.errorLog(SR.MS_SIMULATED_BREAK);
+                sd.roster.doReconnect();//connectionTerminated(new Exception(SR.MS_SIMULATED_BREAK));
                 return;
         }
     }
