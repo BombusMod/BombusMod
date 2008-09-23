@@ -268,21 +268,19 @@ public class ConferenceForm
         history.setAttribute("maxstanzas", Integer.toString(maxStanzas));
         history.setAttribute("maxchars","32768");
         try {
-            long last=grp.getConference().lastMessageTime;
+            long last=grp.confContact.lastMessageTime;
             long delay= ( grp.conferenceJoinTime - last ) /1000 ;
             if (last!=0) 
                 history.setAttribute("seconds",String.valueOf(delay)); // todo: change to since
         } catch (Exception e) {}
         
-        //if (sndprs) {
-            //sd.roster.sendPresence(name, null, x, false);
-            int status=sd.roster.myStatus;
-            if (status==Presence.PRESENCE_INVISIBLE) 
-                status=Presence.PRESENCE_ONLINE;
-            sd.roster.sendDirectPresence(status, jid, x);
-            //sndprs=false;
-        //}
+        int status=sd.roster.myStatus;
+        if (status==Presence.PRESENCE_INVISIBLE) 
+            status=Presence.PRESENCE_ONLINE;
+        sd.roster.sendDirectPresence(status, jid, x);
+
         grp.inRoom=true;
+
         sd.roster.reEnumRoster();
     }
 }

@@ -179,7 +179,7 @@ public class RosterItemActions extends Menu {
             }
             
             if (contact instanceof MucContact) {
-                MucContact selfContact= ((ConferenceGroup) contact.group).getSelfContact();
+                MucContact selfContact= ((ConferenceGroup) contact.group).selfContact;
                 MucContact mc=(MucContact) contact;
                 
                 //invite
@@ -286,7 +286,7 @@ public class RosterItemActions extends Menu {
 		addItem(SR.MS_DISCARD,21, menuIcons.ICON_BAN);
 //#ifndef WMUC
 	    if (group instanceof ConferenceGroup) {
-		MucContact self=((ConferenceGroup)group).getSelfContact();
+		MucContact self=((ConferenceGroup)group).selfContact;
                 
 		addItem(SR.MS_LEAVE_ROOM,22, menuIcons.ICON_LEAVE);
                 
@@ -539,12 +539,12 @@ public class RosterItemActions extends Menu {
                 
                 String roomJid="";
                 if (g instanceof ConferenceGroup) {
-                    roomJid=((ConferenceGroup)g).getConference().getJid();
+                    roomJid=((ConferenceGroup)g).confContact.getJid();
                 }
                 
                 String myNick="";
                 if (c instanceof MucContact) {
-                    myNick=((ConferenceGroup)c.group).getSelfContact().getName();
+                    myNick=((ConferenceGroup)c.group).selfContact.getName();
                 }
                 
                 switch (index) { // muc contact actions
@@ -564,7 +564,7 @@ public class RosterItemActions extends Menu {
                         sd.roster.reEnterRoom( g );
                         return; //break;
                     case 46: //conference presence
-                        new StatusSelect(display, sd.roster, ((ConferenceGroup)g).getConference());
+                        new StatusSelect(display, sd.roster, ((ConferenceGroup)g).confContact);
                         return;
                      case 8: // kick
                         new ConferenceQuickPrivelegeModify(display, sd.roster, mc, ConferenceQuickPrivelegeModify.KICK,myNick);

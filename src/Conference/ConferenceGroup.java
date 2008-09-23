@@ -46,23 +46,14 @@ public class ConferenceGroup extends Group{
         this.type=Groups.TYPE_MUC;
     }
 
-    String label;
-    
     public boolean inRoom=true;
     
-    private MucContact selfContact;
-    public String password;
-    public String desc;
-    private MucContact conference;
-    //public String toString(){ 
-    //    return mainbar(label);
-    //}
-
-    public MucContact getSelfContact() { return selfContact; }
-    public void setSelfContact(MucContact selfContact) { this.selfContact=selfContact; }
+    public MucContact selfContact;
+    public MucContact confContact;
     
-    public MucContact getConference() { return conference; }
-    public void setConference(MucContact conference) { this.conference=conference; }
+    public String password;
+    public String label;
+    public String desc;
     
     public int getOnlines(){ return (onlines>0)? onlines-1:0; }
     public int getNContacts(){ return (nContacts>0)? nContacts-1:0; }
@@ -70,6 +61,6 @@ public class ConferenceGroup extends Group{
     public long conferenceJoinTime;
     
     public String toString() {
-        return mainbar(desc);
+        return mainbar((desc==null)?label:desc);
     }
 }

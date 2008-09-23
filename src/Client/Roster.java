@@ -731,13 +731,13 @@ public class Roster
         c.commonPresence=true;
 
         grp.conferenceJoinTime=Time.utcTimeMillis();
-        grp.setConference(c);
+        grp.confContact=c;
         c.group=grp;
         
         String nick=from.substring(rp+1);
 
         // old self-contact
-        c=grp.getSelfContact();
+        c=grp.selfContact;
         
         // check for existing entry - it may be our old self-contact
         // or another contact whose nick we pretend
@@ -760,7 +760,7 @@ public class Roster
             addContact(c);
         }
 
-        grp.setSelfContact(c);
+        grp.selfContact=c;
         c.group=grp;
         c.origin=Contact.ORIGIN_GC_MYSELF;
                
@@ -966,7 +966,7 @@ public class Roster
 
                 if (!confGroup.inRoom) continue; // don`t reenter to leaved rooms
 
-                Contact myself=confGroup.getSelfContact();
+                Contact myself=confGroup.selfContact;
 
                 if (c.status==Presence.PRESENCE_OFFLINE){
                     ConferenceForm.join(confGroup.desc, myself.getJid(), confGroup.password, 20);
@@ -1388,28 +1388,30 @@ public class Roster
                  try {
                     JabberDataBlock xmlns=message.findNamespace("x", "http://jabber.org/protocol/muc#user");
                     if (xmlns!=null) {
-                        //JabberDataBlock error=xmlns.getChildBlock("error");
                         JabberDataBlock invite=xmlns.getChildBlock("invite");
-                         // FS#657
+
                         if (invite !=null) {
                             if (message.getTypeAttribute().equals("error")) {
                                 ConferenceGroup invConf=(ConferenceGroup)groups.getGroup(from);
                                 body=XmppError.decodeStanzaError(message).toString(); /*"error: invites are forbidden"*/
                             } else {
-                                String inviteFrom=invite.getAttribute("from");
+                                String room=from+'/'+sd.account.getNickName();
+                                String password=xmlns.getChildBlockText("password");
+                                
+                                ConferenceGroup invConf=initMuc(room, password);
+
+                                invConf.confContact.commonPresence=false;
+
+                                if (invConf.selfContact.status==Presence.PRESENCE_OFFLINE)
+                                    invConf.confContact.status=Presence.PRESENCE_OFFLINE;
+
                                 String inviteReason=invite.getChildBlockText("reason");
                                 if (inviteReason!=null)
                                     inviteReason=(inviteReason.length()>0)?" ("+inviteReason+")":"";
-                                String room=from+'/'+sd.account.getNickName();
-                                String password=xmlns.getChildBlockText("password");
-                                ConferenceGroup invConf=initMuc(room, password);
                                 
-                                invConf.getConference().commonPresence=false; //FS#761
+                                body=invite.getAttribute("from")+SR.MS_IS_INVITING_YOU+from+inviteReason;
 
-                                if (invConf.getSelfContact().status==Presence.PRESENCE_OFFLINE)
-                                    invConf.getConference().status=Presence.PRESENCE_OFFLINE;
-
-                                body=inviteFrom+SR.MS_IS_INVITING_YOU+from+inviteReason;
+                                sd.roster.reEnumRoster();
                             }
                          }
                     }
@@ -1486,14 +1488,14 @@ public class Roster
                 if (m.body.indexOf(SR.MS_IS_INVITING_YOU)>-1) m.dateGmt=0;
                 if (groupchat) {
                     ConferenceGroup mucGrp=(ConferenceGroup)c.group;
-                    if (mucGrp.getSelfContact().getJid().equals(message.getFrom())) {
+                    if (mucGrp.selfContact.getJid().equals(message.getFrom())) {
                         m.messageType=Msg.MESSAGE_TYPE_OUT;
                         m.unread=false;
                     } else {
                         if (m.dateGmt<= ((ConferenceGroup)c.group).conferenceJoinTime)
                             m.messageType=Msg.MESSAGE_TYPE_HISTORY;
                         // highliting messages with myNick substring
-	                String myNick=mucGrp.getSelfContact().getName();
+	                String myNick=mucGrp.selfContact.getName();
                         String myNick_=myNick+" ";
                         String _myNick=" "+myNick;
 			if (body.indexOf(myNick)>-1) {
@@ -2078,8 +2080,8 @@ public class Roster
 //#ifndef WMUC
                 else if (isContact && isMucContact && c.origin!=Contact.ORIGIN_GROUPCHAT) {
                     ConferenceGroup mucGrp=(ConferenceGroup)c.group;
-                    if (mucGrp.getSelfContact().roleCode==MucContact.ROLE_MODERATOR) {
-                        String myNick=mucGrp.getSelfContact().getName();
+                    if (mucGrp.selfContact.roleCode==MucContact.ROLE_MODERATOR) {
+                        String myNick=mucGrp.selfContact.getName();
                         MucContact mc=(MucContact) c;
                         new ConferenceQuickPrivelegeModify(display, this, mc, ConferenceQuickPrivelegeModify.KICK,myNick);
                     }
@@ -2513,15 +2515,15 @@ public class Roster
 //#ifndef WMUC
     public void reEnterRoom(Group group) {
 	ConferenceGroup confGroup=(ConferenceGroup)group;
-        String confJid=confGroup.getSelfContact().getJid();
+        String confJid=confGroup.selfContact.getJid();
         String name=confGroup.desc;
 	new ConferenceForm(display, this, name, confJid, confGroup.password, false);
     }
     
     public void leaveRoom(Group group){
 	ConferenceGroup confGroup=(ConferenceGroup)group;
-	Contact myself=confGroup.getSelfContact();
-	confGroup.getConference().commonPresence=false; //disable reenter after reconnect
+	Contact myself=confGroup.selfContact;
+	confGroup.confContact.commonPresence=false; //disable reenter after reconnect
         sendPresence(myself.getJid(), "unavailable", null, true);
         
         confGroup.inRoom=false;
