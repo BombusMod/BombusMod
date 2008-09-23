@@ -27,7 +27,6 @@
 
 package ui.controls;
 
-import Client.Config;
 import Client.Contact;
 import Colors.ColorTheme;
 import images.RosterIcons;
@@ -218,6 +217,25 @@ public class PopUp {
 //paint
     private static int[] alphaBuffer = null;
     
+    private void fillSemiTransRect(Graphics graph, int color, int alpha, int xPos, int yPos, int rectWidth, int rectHeight) {
+        int r1 = ((color & 0xFF0000) >> 16);
+        int g1 = ((color & 0x00FF00) >> 8);
+        int b1 = (color & 0x0000FF);
+        
+        int col = (r1 << 16) | (g1 << 8) | (b1) | (alpha << 24);
+
+        int[] alphaBuffer = new int[rectWidth*rectHeight];
+        
+        for(int i = 0; i < alphaBuffer.length; i++)
+          alphaBuffer[i] = col;
+        
+        //Image img = Image.createImage(rectWidth, rectHeight);
+        
+        graph.drawRGB(alphaBuffer, 0, rectWidth, xPos, yPos, rectWidth, rectHeight, true);
+
+        alphaBuffer = null;
+    }
+    
     public void paintCustom(Graphics graph) {
 	if(size()<1)
 	    return;
@@ -241,51 +259,21 @@ public class PopUp {
             heightBorder=(height-popUpHeight)/2;
         }
      
-        graph.translate(widthBorder, heightBorder);
+        //graph.translate(widthBorder, heightBorder);
 
-        graph.setClip(0,0,popUpWidth+1,popUpHeight+1);
+        //graph.setClip(0,0,popUpWidth+1,popUpHeight+1);
 
         graph.setColor(getColorInk());
         
-        //graph.fillRect(1,1,popUpWidth,popUpHeight);                 //shadow
-        graph.drawRect(0,0,popUpWidth,popUpHeight);                 //border
-        
-        //graph.setColor(getColorBgnd());
-        //graph.fillRect(1,1,popUpWidth-2,popUpHeight-2);             //fill
+        graph.drawRect(widthBorder,heightBorder,popUpWidth,popUpHeight);                 //border
+
         int alpha = 200;
        
         if (alpha<255) {
-            int r1 = ((getColorBgnd() & 0xFF0000) >> 16);
-            int g1 = ((getColorBgnd() & 0x00FF00) >> 8);
-            int b1 = (getColorBgnd() & 0x0000FF);
-                
-            int alphaValue = alpha << 24;
-
-            int spaceRequired = 32*popUpHeight;
-            if (alphaBuffer == null || alphaBuffer.length < spaceRequired) {
-                    alphaBuffer = null;
-                    alphaBuffer = new int[spaceRequired];
-            }
-
-            int idx = 0;
-            for (int y0 = 0; y0 < popUpHeight; y0++) {
-                    int crd1 = y0;
-                    int crd2 = (y0 + 1);
-                    if (crd1 == crd2) continue;
-
-                    int color = (r1 << 16) | (g1 << 8) | (b1) | (alphaValue);
-
-                    for (int x = 0; x < 32; x++) 
-                        alphaBuffer[idx++] = color;
-            }
-
-            int totalWidth = popUpWidth;
-            for (int x0 = 0; x0 < popUpWidth; x0 += 32) {
-                    graph.drawRGB(alphaBuffer, 0, 32, x0, 0, (totalWidth > 32) ? 32 : totalWidth, popUpHeight, true);
-                    totalWidth -= 32;
-            }
+            fillSemiTransRect(graph, getColorBgnd(), alpha, widthBorder+1, heightBorder+1, popUpWidth-1, popUpHeight-1);
         } else {
-            graph.fillRect(1,1,popUpWidth-2,popUpHeight-2);             //fill
+            graph.setColor(getColorBgnd());
+            graph.fillRect(widthBorder,heightBorder,popUpWidth-2,popUpHeight-2);             //fill
         }
         
         graph.setColor(getColorInk());
@@ -293,23 +281,21 @@ public class PopUp {
         graph.setFont(font);
         switch (scrollable) {
             case SCROLLABLE_UP:
-                ri.drawImage(graph, 0x27, maxWdth-ri.getWidth(), popUpHeight-ri.getHeight());
-                //g.drawString("▲", maxWdth-10, 3, Graphics.TOP|Graphics.LEFT);
+                ri.drawImage(graph, 0x27, widthBorder+maxWdth-ri.getWidth(), heightBorder+popUpHeight-ri.getHeight());
+ 
                 break;
             case SCROLLABLE_BOTH:
-                ri.drawImage(graph, 0x25, maxWdth-ri.getWidth(), popUpHeight-ri.getHeight());
-                //g.drawString("▲▼", maxWdth-15, 3, Graphics.TOP|Graphics.LEFT);
+                ri.drawImage(graph, 0x25, widthBorder+maxWdth-ri.getWidth(), heightBorder+popUpHeight-ri.getHeight());
                 break;
             case SCROLLABLE_DOWN:
-                ri.drawImage(graph, 0x26, maxWdth-ri.getWidth(), popUpHeight-ri.getHeight());
-                //g.drawString("▼", maxWdth-10, 3, Graphics.TOP|Graphics.LEFT);
+                ri.drawImage(graph, 0x26, widthBorder+maxWdth-ri.getWidth(), heightBorder+popUpHeight-ri.getHeight());
                 break;
         }
         
-        drawAllStrings(graph, 2,3);
+        drawAllStrings(graph, widthBorder+2, heightBorder+3);
         
-        graph.translate(-widthBorder, -heightBorder);
-        graph.setClip(0,0,width,height);
+        //graph.translate(-widthBorder, -heightBorder);
+        //graph.setClip(0,0,width,height);
     }
 
     public int size() {

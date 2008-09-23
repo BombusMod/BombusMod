@@ -172,9 +172,9 @@ public abstract class VirtualList
 
     int width;
     int height;
-//#ifndef WOFFSCREEN
+
     private Image offscreen = null;
-//#endif
+
     protected int cursor;
 
     protected boolean stickyWindow=true;
@@ -324,15 +324,11 @@ public abstract class VirtualList
     }
 
     protected void hideNotify() {
-//#ifndef WOFFSCREEN
 	offscreen=null;
-//#endif
     }
 
     protected void showNotify() {
-//#ifndef WOFFSCREEN
 	if (!isDoubleBuffered()) offscreen=Image.createImage(width, height);
-//#endif
 //#if (USE_ROTATOR)
         TimerTaskRotate.startRotate(-1, this);
 //#endif
@@ -345,9 +341,7 @@ public abstract class VirtualList
 //#         iHeight=0;
 //#         mHeight=0;
 //#endif
-//#ifndef WOFFSCREEN
         if (!isDoubleBuffered()) offscreen=Image.createImage(width, height);
-//#endif
     }
 
     protected void beginPaint(){};
@@ -363,10 +357,8 @@ public abstract class VirtualList
         
         Graphics g = graphics;      
 
-//#ifndef WOFFSCREEN
         if (offscreen != null)
             graphics = offscreen.getGraphics();
-//#endif
         
 //#ifdef POPUPS
         popup.init(g, width, height);
@@ -563,9 +555,7 @@ public abstract class VirtualList
             }
         }
         
-//#ifndef WOFFSCREEN
         if (g != graphics) g.drawImage(offscreen, 0, 0, Graphics.LEFT | Graphics.TOP);
-//#endif
     }
 
     private static int reconnectPos=0;
@@ -1239,21 +1229,40 @@ public abstract class VirtualList
  //#endif
     }
     
-    protected void drawCursor (Graphics g, int width, int height){
+    protected void drawCursor (Graphics g, int width, int height) {
         g.fillRect(0, 0, width, height);
         
         int cursorBGnd=ColorTheme.getColor(ColorTheme.CURSOR_BGND);
         int cursorOutline=ColorTheme.getColor(ColorTheme.CURSOR_OUTLINE);
         
-        if (cursorBGnd!=0x010101) {
-            g.setColor(ColorTheme.getColor(ColorTheme.CURSOR_BGND));
-            g.fillRoundRect(0, 0, width, height, 6, 6);
-        }
+        //if (cursorBGnd!=0x010101) {
+            //g.setColor(ColorTheme.getColor(ColorTheme.CURSOR_BGND));
+            //g.fillRoundRect(0, 0, width, height, 6, 6);
+            fillSemiTransRect(g, ColorTheme.getColor(ColorTheme.CURSOR_BGND), 200, 1, 1, width-2, height-2);
+        //}
 
-        if (cursorOutline!=0x010101) {
+        //if (cursorOutline!=0x010101) {
             g.setColor(cursorOutline);
             g.drawRoundRect(0, 0, width-1, height-1, 6, 6);
-        }
+        //}
+    }
+
+    private void fillSemiTransRect(Graphics graph, int color, int alpha, int xPos, int yPos, int rectWidth, int rectHeight) {
+        int r1 = ((color & 0xFF0000) >> 16);
+        int g1 = ((color & 0x00FF00) >> 8);
+        int b1 = (color & 0x0000FF);
+        
+        int col = (r1 << 16) | (g1 << 8) | (b1) | (alpha << 24);
+        
+        
+        int[] alphaBuffer = new int[rectWidth*rectHeight];
+        
+        for(int i = 0; i < alphaBuffer.length; i++)
+          alphaBuffer[i] = col;
+        
+        graph.drawRGB(alphaBuffer, 0, rectWidth, xPos, yPos, rectWidth, rectHeight, true);
+
+        alphaBuffer = null;
     }
 
     public void setParentView(Displayable parentView){
