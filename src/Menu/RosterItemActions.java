@@ -458,19 +458,16 @@ public class RosterItemActions extends Menu {
                     break;
                 case 912: //send color scheme
                     String from=sd.account.toString();
+ System.out.println(from);
                     String body=ColorTheme.getInstance().getSkin();
-                    String subj="";
-
+ System.out.println(body);
                     String id=String.valueOf((int) System.currentTimeMillis());
 
-                    Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,body);
-                    msg.id=id;
-
                     try {
-                    sd.roster.sendMessage(c, id, body, subj, null);
-                        c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"scheme sended"));
+                        sd.roster.sendMessage(c, id, body, null, null);
+                        c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,null,"scheme sended"));
                     } catch (Exception e) {
-                        c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,"scheme NOT sended"));
+                        c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,null,"scheme NOT sended"));
                         //e.printStackTrace();
                     }
                 break;

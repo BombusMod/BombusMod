@@ -284,7 +284,7 @@ blue 0x0000ff
        StringBuffer body=new StringBuffer();
        body.append("xmlSkin\t");
 //#ifdef DETRANSLIT
-//#        body.append(DeTranslit.translit(StaticData.getInstance().account.getNickName()));
+//#        body.append(DeTranslit.getInstance().translit(StaticData.getInstance().account.getNickName()));
 //#else
        body.append(StaticData.getInstance().account.getNickName());
 //#endif

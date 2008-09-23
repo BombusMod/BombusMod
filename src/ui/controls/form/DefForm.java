@@ -81,6 +81,8 @@ public class DefForm
         
 	setCommandListener(this);
         
+        enableListWrapping(false);
+        
         this.parentView=pView;
     }
 
