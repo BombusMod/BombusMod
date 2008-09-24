@@ -216,7 +216,7 @@ public class PopUp {
     
 //paint
     private static int[] alphaBuffer = null;
-    
+/*    
     private void fillSemiTransRect(Graphics graph, int color, int alpha, int xPos, int yPos, int rectWidth, int rectHeight) {
         int r1 = ((color & 0xFF0000) >> 16);
         int g1 = ((color & 0x00FF00) >> 8);
@@ -235,7 +235,7 @@ public class PopUp {
 
         alphaBuffer = null;
     }
-    
+*/
     public void paintCustom(Graphics graph) {
 	if(size()<1)
 	    return;
@@ -262,27 +262,24 @@ public class PopUp {
         //graph.translate(widthBorder, heightBorder);
 
         //graph.setClip(0,0,popUpWidth+1,popUpHeight+1);
-
-        graph.setColor(getColorInk());
-        
-        graph.drawRect(widthBorder,heightBorder,popUpWidth,popUpHeight);                 //border
-
+/*
         int alpha = 200;
        
         if (alpha<255) {
             fillSemiTransRect(graph, getColorBgnd(), alpha, widthBorder+1, heightBorder+1, popUpWidth-1, popUpHeight-1);
         } else {
+ */
             graph.setColor(getColorBgnd());
-            graph.fillRect(widthBorder,heightBorder,popUpWidth-2,popUpHeight-2);             //fill
-        }
+            graph.fillRect(widthBorder+1,heightBorder+1,popUpWidth-1,popUpHeight-1);             //fill
+//        }
         
         graph.setColor(getColorInk());
+        graph.drawRect(widthBorder,heightBorder,popUpWidth,popUpHeight);                 //border
         
         graph.setFont(font);
         switch (scrollable) {
             case SCROLLABLE_UP:
                 ri.drawImage(graph, 0x27, widthBorder+maxWdth-ri.getWidth(), heightBorder+popUpHeight-ri.getHeight());
- 
                 break;
             case SCROLLABLE_BOTH:
                 ri.drawImage(graph, 0x25, widthBorder+maxWdth-ri.getWidth(), heightBorder+popUpHeight-ri.getHeight());

@@ -1235,18 +1235,18 @@ public abstract class VirtualList
         int cursorBGnd=ColorTheme.getColor(ColorTheme.CURSOR_BGND);
         int cursorOutline=ColorTheme.getColor(ColorTheme.CURSOR_OUTLINE);
         
-        //if (cursorBGnd!=0x010101) {
-            //g.setColor(ColorTheme.getColor(ColorTheme.CURSOR_BGND));
-            //g.fillRoundRect(0, 0, width, height, 6, 6);
-            fillSemiTransRect(g, ColorTheme.getColor(ColorTheme.CURSOR_BGND), 200, 1, 1, width-2, height-2);
-        //}
+        if (cursorBGnd!=0x010101) {
+            g.setColor(ColorTheme.getColor(ColorTheme.CURSOR_BGND));
+            g.fillRoundRect(0, 0, width, height, 6, 6);
+            //fillSemiTransRect(g, ColorTheme.getColor(ColorTheme.CURSOR_BGND), 200, 1, 1, width-2, height-2);
+        }
 
-        //if (cursorOutline!=0x010101) {
+        if (cursorOutline!=0x010101) {
             g.setColor(cursorOutline);
             g.drawRoundRect(0, 0, width-1, height-1, 6, 6);
-        //}
+        }
     }
-
+/*
     private void fillSemiTransRect(Graphics graph, int color, int alpha, int xPos, int yPos, int rectWidth, int rectHeight) {
         int r1 = ((color & 0xFF0000) >> 16);
         int g1 = ((color & 0x00FF00) >> 8);
@@ -1264,7 +1264,7 @@ public abstract class VirtualList
 
         alphaBuffer = null;
     }
-
+*/
     public void setParentView(Displayable parentView){
         this.parentView=parentView;
     }

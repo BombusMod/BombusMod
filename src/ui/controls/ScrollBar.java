@@ -30,7 +30,7 @@ package ui.controls;
 import javax.microedition.lcdui.Graphics;
 import Colors.ColorTheme;
 //#ifdef GRADIENT
-//# import ui.Gradient;
+//# //import ui.Gradient;
 //#endif
 import ui.VirtualList;
 
@@ -39,7 +39,7 @@ import ui.VirtualList;
  * @author EvgS
  */
 public class ScrollBar {
-    private static final int WIDTH_SCROLL_1      =3;
+    private static final int WIDTH_SCROLL_1      =4;
     private static final int WIDTH_SCROLL_2      =10;
     
     private int yTranslate;
@@ -52,8 +52,8 @@ public class ScrollBar {
     
     private int drawHeight;
 //#ifdef GRADIENT
-//#     private Gradient gr;
-//#     private int prevDrawHeight;
+//#     //private Gradient gr;
+//#     //private int prevDrawHeight;
 //#endif
     
     private int point_y;    // точка, за которую "держится" указатель
@@ -67,7 +67,7 @@ public class ScrollBar {
     private int scrollWidth=WIDTH_SCROLL_1;
     
     private int colorTop;
-    private int colorBottom;
+    //private int colorBottom;
     private int colorBar;
     private int colorBorder;
     
@@ -75,7 +75,7 @@ public class ScrollBar {
     public ScrollBar() {
         point_y=-1;
         colorTop=ColorTheme.getColor(ColorTheme.SCROLL_BGND);
-        colorBottom=0xFFFFFF-colorTop;
+        //colorBottom=0xFFFFFF-colorTop;
         colorBar=ColorTheme.getColor(ColorTheme.SCROLL_BAR);
         colorBorder=ColorTheme.getColor(ColorTheme.SCROLL_BRD);
     }
@@ -148,30 +148,28 @@ public class ScrollBar {
 	int drawWidth=g.getClipWidth();
 	
 	scrollerX=drawWidth-scrollWidth;
- 
- 	g.translate(scrollerX, 0);
 
-//#ifdef GRADIENT
-//#         if (drawHeight!=prevDrawHeight) {
-//#             gr=new Gradient(0, 0, scrollWidth, drawHeight, colorBottom, colorTop, true);
-//#             prevDrawHeight=drawHeight;
-//#         }
-//#         gr.paint(g);
-//#else
-     g.setColor(colorTop);
-	 g.fillRect(0, 0, scrollWidth, drawHeight);
-//#endif
-         
- 	drawHeight-=minimumHeight;
-         
- 	scrollerSize=(drawHeight*windowSize)/size+minimumHeight;
- 	
- 	scrollerPos=(drawHeight*position)/size;
+	g.translate(scrollerX, 0);
 
-        g.setColor(colorBar);
-	g.fillRect(1, scrollerPos+1, scrollWidth-2, scrollerSize-1);
-
+        g.setColor(colorTop);
+	g.fillRect(1, 0, scrollWidth-2, drawHeight-1);
+	
         g.setColor(colorBorder);
-	g.drawRect(0, scrollerPos, scrollWidth-1, scrollerSize);
+        g.drawLine(0, 0, 0, drawHeight-1);
+        g.drawLine(scrollWidth-1, 0, scrollWidth-1, drawHeight-1);
+
+	drawHeight-=minimumHeight;
+        
+	scrollerSize=(drawHeight*windowSize)/size+minimumHeight;
+	
+	scrollerPos=(drawHeight*position)/size;
+        g.setColor(colorBar);
+        g.fillRect(1, scrollerPos, scrollWidth-2, scrollerSize);
+        
+        g.setColor(colorBorder);
+        //g.drawRect(0, scrollerPos, scrollWidth-1, scrollerSize);
+        
+        g.drawLine(0, scrollerPos, scrollWidth-1, scrollerPos);
+        g.drawLine(0, scrollerPos+scrollerSize, scrollWidth-1, scrollerPos+scrollerSize);
     }
 }
