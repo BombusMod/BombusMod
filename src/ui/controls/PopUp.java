@@ -69,7 +69,7 @@ public class PopUp {
     
     private RosterIcons ri;
     
-    synchronized public void addPopup(int type, Contact contact, String message){
+    synchronized public void addPopup(int type, String contact, String message){
         if (message!=null)
             //popUps.addElement(new PopUpElement(type, contact, StringUtils.parseMessage(message, width-border-padding, height-border-padding, false, font)));
             popUps.addElement(new PopUpElement(type, contact, StringUtils.parseMessage(message, width-border-padding, font)));
@@ -89,7 +89,7 @@ public class PopUp {
         this.width=width;
     }
 
-    public Contact getContact() {
+    public String getContact() {
         if(size()>0)
             return ((PopUpElement)popUps.elementAt(0)).getContact();
         return null;
@@ -302,10 +302,10 @@ public class PopUp {
     
     class PopUpElement {
         private int type;
-        private Contact from;
+        private String from;
         private Vector message;
 
-        public PopUpElement(int type, Contact from, Vector message) {
+        public PopUpElement(int type, String from, Vector message) {
             this.from=from;
             this.type=type;
             this.message=message;
@@ -313,7 +313,7 @@ public class PopUp {
 
         public int getType() { return type; }
         public Vector getMessage() { return message; }
-        public Contact getContact() { return from; }
+        public String getContact() { return from; }
     }
 }
  

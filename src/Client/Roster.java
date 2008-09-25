@@ -534,7 +534,7 @@ public class Roster
         }
         highliteMessageCount=0;
         messageCount=0;
-        reEnumRoster();
+        //reEnumRoster();
         redraw();
     }
     
@@ -603,6 +603,8 @@ public class Roster
     public void reEnumRoster(){
         if (reEnumerator==null) reEnumerator=new ReEnumerator();
         reEnumerator.queueEnum();
+        
+        System.gc();
     }
     
     
@@ -763,6 +765,8 @@ public class Roster
         grp.selfContact=c;
         c.group=grp;
         c.origin=Contact.ORIGIN_GC_MYSELF;
+        
+        grp.collapsed=true; //test
                
         sort(hContacts);
         return grp;
@@ -1218,6 +1222,9 @@ public class Roster
             setQuerySign(false);
             doReconnect=false;
             SplashScreen.getInstance().close(); // display.setCurrent(this);
+            
+            //query bookmarks
+            theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
         } else {
             JabberDataBlock qr=new IqQueryRoster();
             setProgress(SR.MS_ROSTER_REQUEST, 49);
@@ -1282,28 +1289,28 @@ public class Roster
                 } // id!=null
                 if ( type.equals( "result" ) ) {
                     if (id.equals("getros")){
-                            theStream.enableRosterNotify(false);
+                        theStream.enableRosterNotify(false);
 
-                            processRoster(data);
+                        processRoster(data);
 
-                            if(!cf.collapsedGroups)
-                                groups.queryGroupState(true);
+                        if(!cf.collapsedGroups)
+                            groups.queryGroupState(true);
 
-                            setProgress(SR.MS_CONNECTED,100);
-                            reEnumRoster();
+                        setProgress(SR.MS_CONNECTED,100);
+                        reEnumRoster();
 
-                            querysign=doReconnect=false;
+                        querysign=doReconnect=false;
 
-                            if (cf.loginstatus==5) {
-                                sendPresence(Presence.PRESENCE_INVISIBLE, null);    
-                            } else {
-                                sendPresence(cf.loginstatus, null);
-                            }
-
-                            SplashScreen.getInstance().close();
-
-                            return JabberBlockListener.BLOCK_PROCESSED;
+                        if (cf.loginstatus==5) {
+                            sendPresence(Presence.PRESENCE_INVISIBLE, null);    
+                        } else {
+                            sendPresence(cf.loginstatus, null);
                         }
+
+                        SplashScreen.getInstance().close();
+
+                        return JabberBlockListener.BLOCK_PROCESSED;
+                    }
                 } else if (type.equals("set")) {
                     if (processRoster(data)) { 
                         theStream.send(new Iq(from, Iq.TYPE_RESULT, id));
@@ -1411,7 +1418,7 @@ public class Roster
                                 
                                 body=invite.getAttribute("from")+SR.MS_IS_INVITING_YOU+from+inviteReason;
 
-                                sd.roster.reEnumRoster();
+                                reEnumRoster();
                             }
                          }
                     }
@@ -1763,20 +1770,20 @@ public class Roster
             try { Thread.sleep(20); } catch (InterruptedException e){}
         }
 //#endif
-//#ifdef POPUPS
-            if (message.messageType==Msg.MESSAGE_TYPE_AUTH && showWobbler(c))
-                setWobbler(2, c, message.from+"\n"+message.body);
-//#endif
-        if (countNewMsgs())
-            reEnumRoster();
+        if (countNewMsgs()) reEnumRoster();
         
-        if (!message.unread) 
-            return;
+        if (!message.unread) return;
         //TODO: clear unread flag if not-in-list IS HIDDEN
 
         if (c.getGroupType()==Groups.TYPE_IGNORE) 
             return;    // no signalling/focus on ignore
         
+//#ifdef POPUPS
+        if (cf.popUps)
+            if (message.messageType==Msg.MESSAGE_TYPE_AUTH && showWobbler(c))
+                setWobbler(2, c, message.from+"\n"+message.body);
+//#endif
+
 	if (cf.popupFromMinimized)
 	    BombusMod.getInstance().hideApp(false);
         
@@ -1810,7 +1817,7 @@ public class Roster
                 }
             }
 //#ifndef WMUC
-            else {
+              else {
                 if (c.origin!=Contact.ORIGIN_GROUPCHAT && c instanceof MucContact) {
                      playNotify(SOUND_MESSAGE); //private message
                      autorespond = true;
@@ -2391,7 +2398,7 @@ public class Roster
             VirtualList.setWobble(1, null, mess.toString());
             mess=null;
         } else {
-            VirtualList.setWobble(type, contact, info);
+            VirtualList.setWobble(type, contact.getJid(), info);
         }
 
         redraw();

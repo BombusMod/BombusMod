@@ -167,7 +167,6 @@ public class ScrollBar {
         g.fillRect(1, scrollerPos, scrollWidth-2, scrollerSize);
         
         g.setColor(colorBorder);
-        //g.drawRect(0, scrollerPos, scrollWidth-1, scrollerSize);
         
         g.drawLine(0, scrollerPos, scrollWidth-1, scrollerPos);
         g.drawLine(0, scrollerPos+scrollerSize, scrollWidth-1, scrollerPos+scrollerSize);

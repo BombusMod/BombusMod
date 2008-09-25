@@ -105,7 +105,7 @@ public abstract class VirtualList
 //#ifdef POPUPS
     public static PopUp popup;
 
-    public static void setWobble(int type, Contact contact, String txt){
+    public static void setWobble(int type, String contact, String txt){
         popup.addPopup(type, contact, txt);
     }
 //#endif
@@ -873,7 +873,7 @@ public abstract class VirtualList
 //#ifdef POPUPS
         if (keyCode==greenKeyCode) {
             if (popup.getContact()!=null) {
-                new ContactMessageList(popup.getContact(),display);
+                new ContactMessageList(sd.roster.getContact(popup.getContact(), false),display);
                 popup.next();
                 return;
             }

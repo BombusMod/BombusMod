@@ -158,6 +158,8 @@ public class JabberStream extends XmppParser implements Runnable {
         if (keepAliveType==0) return;
         int keepAlivePeriod=account.getKeepAlivePeriod();
 
+        if (keepAlive!=null) { keepAlive.destroyTask(); keepAlive=null; }
+        
         keepAlive=new TimerTaskKeepAlive(keepAlivePeriod, keepAliveType);
     }
     
@@ -317,28 +319,32 @@ public class JabberStream extends XmppParser implements Runnable {
     public long getBytes() {
         return iostream.getBytes();
     }
+    
+    private TimerTaskKeepAlive keepAlive;
 
      private class TimerTaskKeepAlive extends TimerTask{
         private Timer t;
-        private int verifyCtr;
-        private int period;
+        //private int verifyCtr;
+        // int period;
         private int type;
         public TimerTaskKeepAlive(int periodSeconds, int type){
             t=new Timer();
             this.type=type;
-            this.period=periodSeconds;
+            //this.period=periodSeconds;
             long periodRun=periodSeconds*1000; // milliseconds
             t.schedule(this, periodRun, periodRun);
-         }
-         public void run() {
+        }
+        
+        public void run() {
             try {
                  //System.out.println("Keep-Alive");
-                 sendKeepAlive(type);
+                 if (loggedIn)
+                     sendKeepAlive(type);
             } catch (Exception e) { 
                 dispatcher.broadcastTerminatedConnection(e);
                 //e.printStackTrace(); 
             }
-         }
+        }
 	
         public void destroyTask(){
             if (t!=null){
@@ -348,8 +354,6 @@ public class JabberStream extends XmppParser implements Runnable {
             }
         }
     }
-    
-    private TimerTaskKeepAlive keepAlive;
     
     private class SendJabberDataBlock implements Runnable {
         private JabberDataBlock data;
