@@ -232,7 +232,7 @@ public class Roster
 
         setLight(cf.lightState);
         
-        MainBar mainbar=new MainBar(4, null, null);
+        MainBar mainbar=new MainBar(4);
         setMainBarItem(mainbar);
         mainbar.addRAlign();
         mainbar.addElement(null);
@@ -625,6 +625,7 @@ public class Roster
         }
         
         boolean firstInstance=true; //FS#712 workaround
+        int index=0;
         synchronized (hContacts) {
             for (Enumeration e=hContacts.elements();e.hasMoreElements();) {
                 c=(Contact)e.nextElement();
@@ -635,6 +636,12 @@ public class Roster
                     if (group==null) {
                         group=groups.addGroup(grpName, Groups.TYPE_COMMON);
                     }
+                    
+                    if (status<0) {
+                        hContacts.removeElementAt(index);
+                        continue;
+                    }
+                    
                     c.nick=nick;
                     c.group=group;
                     c.subscr=subscr;
@@ -657,9 +664,10 @@ public class Roster
 
                     c.setSortKey((nick==null)? jid:nick);
                 }
+                index++;
             }
         }
-        if (status<0) removeTrash();
+        //if (status<0) removeTrash();
     }
     
     private final void removeTrash(){

@@ -78,7 +78,7 @@ public class PrivacyModifyList
     /** Creates a new instance of PrivacySelect */
     public PrivacyModifyList(Display display, Displayable pView, PrivacyList privacyList) {
         super(display);
-        setMainBarItem(new MainBar(2, null, SR.MS_PRIVACY_LISTS));
+        setMainBarItem(new MainBar(2, null, SR.MS_PRIVACY_LISTS, false));
 
         commandState();
         setCommandListener(this);

@@ -82,7 +82,7 @@ public class PrivacySelect
         super(display);
         this.parentView=pView;
 
-        setMainBarItem(new MainBar(2, null, SR.MS_PRIVACY_LISTS));
+        setMainBarItem(new MainBar(2, null, SR.MS_PRIVACY_LISTS, false));
 
         list.addElement(new PrivacyList(null));//none
         

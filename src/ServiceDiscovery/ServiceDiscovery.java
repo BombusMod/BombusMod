@@ -108,7 +108,7 @@ public class ServiceDiscovery
     public ServiceDiscovery(Display display, String service, String node) {
         super(display);
 
-        setMainBarItem(new MainBar(3, null, null));
+        setMainBarItem(new MainBar(3));
         getMainBarItem().addRAlign();
         getMainBarItem().addElement(null);
         

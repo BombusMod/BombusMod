@@ -76,7 +76,7 @@ public class TransferManager
 
         commandState();
         setCommandListener(this);
-        setMainBarItem(new MainBar(2, null, SR.MS_TRANSFERS));
+        setMainBarItem(new MainBar(2, null, SR.MS_TRANSFERS, false));
         
         taskList=TransferDispatcher.getInstance().getTaskList();
     }

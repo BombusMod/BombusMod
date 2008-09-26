@@ -87,7 +87,7 @@ public class Affiliations
 	
         this.id=AffiliationItem.getAffiliationName(affiliationIndex);
         
-        setMainBarItem(new MainBar(2, null, " "));
+        setMainBarItem(new MainBar(2, null, " ", false));
         getMainBarItem().addElement(id);
         
         items=null;

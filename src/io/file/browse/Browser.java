@@ -86,7 +86,7 @@ public class Browser
 	this.getDirectory=getDirectory;
         this.path="";
 		
-        setMainBarItem(new MainBar(2, null, null));
+        setMainBarItem(new MainBar(2));
         
 //#ifdef MENU_LISTENER
 //#         menuCommands.removeAllElements();

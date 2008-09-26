@@ -27,6 +27,7 @@
 
 package Info;
 
+import Client.Config;
 import locale.SR;
 
 public class Version {
@@ -42,7 +43,13 @@ public class Version {
     private static String plugins="";
 //#endif
     
-    public static String getVersionLang() { return version+plugins+" ("+SR.MS_IFACELANG+")"; }
+    public static String getBuildNum () {
+        String build=Config.getInstance().getStringProperty("Bombus-Build", "0");
+        
+        return (build!="0")?" ["+build+"]":null;
+    }
+    
+    public static String getVersionLang() { return version+plugins+" ("+SR.MS_IFACELANG+")"+getBuildNum(); }
     
     public static String getVersionNumber() { return version; }
     public static String getName() { return NAME; }

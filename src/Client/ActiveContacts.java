@@ -79,7 +79,7 @@ public class ActiveContacts
 
 	if (getItemCount()==0) return;
 	
-        MainBar mainbar=new MainBar(2, String.valueOf(getItemCount()), " ");
+        MainBar mainbar=new MainBar(2, String.valueOf(getItemCount()), " ", false);
         mainbar.addElement(SR.MS_ACTIVE_CONTACTS);
         setMainBarItem(mainbar);
 

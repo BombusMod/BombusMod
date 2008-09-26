@@ -274,7 +274,7 @@ public abstract class VirtualList
 //#endif
 
         if (cf.phoneManufacturer==Config.WINDOWS) {
-                setTitle("BombusMod");
+            setTitle("BombusMod");
         }
 
         changeOrient(cf.panelsState);
@@ -286,7 +286,7 @@ public abstract class VirtualList
         scrollbar=new ScrollBar();
         scrollbar.setHasPointerEvents(hasPointerEvents());
 
-        MainBar secondBar=new MainBar(" ");
+        MainBar secondBar=new MainBar("", true);
         secondBar.addElement(null); //1
         secondBar.addRAlign();
         secondBar.addElement(null); //3
@@ -649,7 +649,7 @@ public abstract class VirtualList
 //#ifdef GRADIENT
 //#         if (getMainBarBGnd()!=getMainBarBGndBottom()) {
 //#             if (mHeight!=h) {
-//#                 grMB=new Gradient(0, 0, width, h, getMainBarBGnd(), getMainBarBGndBottom(), false);
+//#                 grMB=new Gradient(0, 0, width, h, getMainBarBGndBottom(), getMainBarBGnd(), false);
 //#                 mHeight=h;
 //#             }
 //#             grMB.paint(g);

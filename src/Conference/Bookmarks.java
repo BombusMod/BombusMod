@@ -102,7 +102,7 @@ public class Bookmarks
         if (toAdd!=null) 
             addBookmark();
         
-        setMainBarItem(new MainBar(2, null, SR.MS_BOOKMARKS+" ("+getItemCount()+") "));//for title updating after "add bookmark"
+        setMainBarItem(new MainBar(2, null, SR.MS_BOOKMARKS+" ("+getItemCount()+") ", false));//for title updating after "add bookmark"
         
         commandState();
 
@@ -185,7 +185,7 @@ public class Bookmarks
             new ConferenceForm(display, this, join, cursor);
         } else if (c==cmdDel) {
             deleteBookmark();
-            setMainBarItem(new MainBar(2, null, SR.MS_BOOKMARKS+" ("+getItemCount()+") "));
+            setMainBarItem(new MainBar(2, null, SR.MS_BOOKMARKS+" ("+getItemCount()+") ", false));
             return;
         }
 //#ifdef SERVICE_DISCOVERY

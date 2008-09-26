@@ -29,16 +29,20 @@ import images.RosterIcons;
 
 public class MainBar extends ComplexString{
 
-    public MainBar(int size, Object first, Object second) {
+    public MainBar(int size, Object first, Object second, boolean bold) {
         this (size);
         if (first!=null) setElementAt(first,0);
         if (second!=null) setElementAt(second,1);
         
-        font = FontCache.getFont(true, FontCache.bar);
+        font = FontCache.getFont(bold, FontCache.bar);
     }
     
     public MainBar(Object obj) {
-        this(1, obj, null);
+        this(1, obj, null, false);
+    }
+    
+    public MainBar(Object obj, boolean bold) {
+        this(1, obj, null, bold);
     }
     
     public MainBar(int size) {
