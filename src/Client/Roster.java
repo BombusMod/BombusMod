@@ -2107,14 +2107,6 @@ public class Roster
     }
 
     public void keyPressed(int keyCode){
-//#ifdef MENU_LISTENER
-//#         if (keyCode==Config.SOFT_RIGHT) {
-//#             if (!reconnectWindow.getInstance().isActive()) {
-//#                 cmdActions();
-//#                 return;
-//#             }
-//#         }
-//#endif
         super.keyPressed(keyCode);
         
         switch (keyCode) {
@@ -2731,10 +2723,11 @@ public class Roster
 //#     }
 //# 
 //#     public String touchRightCommand(){ return (cf.oldSE)?SR.MS_MENU:SR.MS_ACTION; }
-//#     
 //#     public String touchLeftCommand(){ return (cf.oldSE)?SR.MS_ACTION:SR.MS_MENU; }
 //#     
-//#     public void touchRightPressed(){ cmdActions(); }
+//#     public void touchRightPressed(){ if (cf.oldSE) showMenu(); else cmdActions(); }    
+//#     public void touchLeftPressed(){ if (cf.oldSE) cmdActions(); else showMenu(); }
+//# 
 //#endif
 //#ifdef RUNNING_MESSAGE
 //#     void setTicker(Contact c, String message) {

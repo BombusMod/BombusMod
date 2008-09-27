@@ -885,7 +885,7 @@ public abstract class VirtualList
 //#                 reconnectYes();
 //#                 return;
 //#             }
-//#             showMenu();
+//#             touchLeftPressed();
 //#             return;
 //#         }
 //#          if (keyCode==Config.SOFT_RIGHT || keyCode==')') {
@@ -893,7 +893,7 @@ public abstract class VirtualList
 //#                 reconnectNo();
 //#                 return;
 //#             }
-//#             cmdCancel();
+//#             touchRightPressed();
 //#             return;
 //#          }
 //#else
