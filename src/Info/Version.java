@@ -46,7 +46,7 @@ public class Version {
     public static String getBuildNum () {
         String build=Config.getInstance().getStringProperty("Bombus-Build", "0");
         
-        return (build!="0")?" ["+build+"]":null;
+        return (build!="0" && build!=null)?" ["+build+"]":"";
     }
     
     public static String getVersionLang() { return version+plugins+" ("+SR.MS_IFACELANG+")"+getBuildNum(); }

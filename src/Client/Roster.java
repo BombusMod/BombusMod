@@ -1273,8 +1273,8 @@ public class Roster
                         return JabberBlockListener.BLOCK_PROCESSED;
                     }
                     
-                    if (id.startsWith("getvc")) {
-                        if (type.equals("get") || type.equals("set")) return JabberBlockListener.BLOCK_REJECTED;
+                     if (id.startsWith("getvc")) {
+                        if (type.equals("get") || type.equals("set") || type.equals("error") ) return JabberBlockListener.BLOCK_REJECTED;
                         
                         setQuerySign(false);
                         VCard vcard=new VCard(data);
@@ -2730,7 +2730,10 @@ public class Roster
 //#         new MyMenu(display, parentView, this, SR.MS_MAIN_MENU, MenuIcons.getInstance(), menuCommands);
 //#     }
 //# 
-//#     public String touchRightCommand(){ return SR.MS_ACTION; }
+//#     public String touchRightCommand(){ return (cf.oldSE)?SR.MS_MENU:SR.MS_ACTION; }
+//#     
+//#     public String touchLeftCommand(){ return (cf.oldSE)?SR.MS_ACTION:SR.MS_MENU; }
+//#     
 //#     public void touchRightPressed(){ cmdActions(); }
 //#endif
 //#ifdef RUNNING_MESSAGE
