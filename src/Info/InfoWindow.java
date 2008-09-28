@@ -66,7 +66,7 @@ public class InfoWindow
 //#ifndef MENU
 //#     public Command cmdOk = new Command(SR.MS_COPY, Command.OK, 1);
 //#endif
-//#     private ClipBoard clipboard; 
+//#     private ClipBoard clipboard=ClipBoard.getInstance();
 //#endif
     
     /**
@@ -123,21 +123,20 @@ public class InfoWindow
         attachDisplay(display);
         this.parentView=pView;
     }
+//#ifdef CLIPBOARD
 //#ifdef MENU_LISTENER
 //#     public String touchLeftCommand(){ return SR.MS_COPY; }
 //#     
-//#     public void touchLeftPressed(){
-//#         eventOk();
+//#     public void touchLeftPressed(){ cmdOk(); }
+//#endif
+//#     
+//#     public void cmdOk(){
+//#         clipboard.setClipBoard(name.toString()+"\n"+memory.toString()+"\n"+abilities.toString());
+//#         destroyView();
+//# 
 //#     }
 //#endif
     
-    public void cmdOk(){
-//#ifdef CLIPBOARD
-//#         clipboard.setClipBoard(name.toString()+"\n"+memory.toString()+"\n"+abilities.toString());
-//#         destroyView();
-//#endif
-    }
-
     public void commandAction(Command command, Displayable displayable) {
 	if (command==cmdOk) {
 	    cmdOk();

@@ -245,6 +245,10 @@ public class ConferenceForm
 //#     }
 //# 
 //#     public String touchLeftCommand(){ return SR.MS_MENU; }
+//#     
+//#     public void touchLeftPressed(){
+//#         showMenu();
+//#     }
 //#endif
 
     private void saveMsgCount(int msgLimit) {

@@ -261,7 +261,6 @@ public class ContactMessageList extends MessageList {
         }
     }
 
-
     protected void beginPaint(){
         markRead(cursor);
         forceScrolling();
