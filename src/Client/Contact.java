@@ -226,7 +226,11 @@ public class Contact extends IconTextElement{
         }
 //#endif
         if (j2j!=null) return ColorTheme.getColor(ColorTheme.CONTACT_J2J);
-        
+
+        return getMainColor();
+    }
+    
+    public int getMainColor() {
         switch (status) {
             case Presence.PRESENCE_CHAT: return ColorTheme.getColor(ColorTheme.CONTACT_CHAT);
             case Presence.PRESENCE_AWAY: return ColorTheme.getColor(ColorTheme.CONTACT_AWAY);

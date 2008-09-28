@@ -1597,6 +1597,7 @@ public class Roster
                             String name=from.substring(rp+1);
 
                             Msg chatPresence=new Msg(Msg.MESSAGE_TYPE_PRESENCE, name, null, chatPres );
+                            chatPresence.color=c.getMainColor();
                             messageStore(getContact(from.substring(0, rp), false), chatPresence);
                             name=null;
                         }

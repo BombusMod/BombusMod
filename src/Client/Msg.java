@@ -65,6 +65,8 @@ public class Msg {
     public boolean itemCollapsed;
     public int itemHeight=-1;
     
+    public int color = -1;
+    
     /** Creates a new instance of msg */
     public Msg(int messageType, String from, String subj, String body) {
         this.messageType=messageType;
@@ -94,6 +96,8 @@ public class Msg {
     }
     
     public int getColor() {
+        if (color>-1) return color; 
+        
         if (highlite) 
             return ColorTheme.getColor(ColorTheme.MSG_HIGHLIGHT);
 
