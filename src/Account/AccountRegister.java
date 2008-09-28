@@ -49,7 +49,7 @@ public class AccountRegister
     
     private Account raccount;
     private JabberStream theStream ;
-    private SplashScreen spl=SplashScreen.getInstance();
+    private SplashScreen splash;
     private Command cmdOK=new Command(SR.MS_OK,Command.OK, 1);
     private Command cmdCancel=new Command(SR.MS_BACK,Command.BACK, 2);
     
@@ -59,22 +59,23 @@ public class AccountRegister
         this.parentView=pView;
 
         raccount=account;
-        spl.setProgress(SR.MS_STARTUP,5);
-        display.setCurrent(spl);
-        spl.addCommand(cmdCancel);
-        spl.setCommandListener(this);
+        splash=SplashScreen.getInstance(display);
+        splash.setProgress(SR.MS_STARTUP,5);
+        display.setCurrent(splash);
+        splash.addCommand(cmdCancel);
+        splash.setCommandListener(this);
         
         new Thread(this).start();
     }
     public void run() {
         try {
-            spl.setProgress(SR.MS_CONNECT_TO_+raccount.getServer(),30);
+            splash.setProgress(SR.MS_CONNECT_TO_+raccount.getServer(),30);
             theStream= raccount.openJabberStream();
             theStream.setJabberListener( this );
             theStream.initiateStream();
         } catch( Exception e ) {
             e.printStackTrace();
-            spl.setFailed();
+            splash.setFailed();
         }
 
     }
@@ -88,7 +89,7 @@ public class AccountRegister
     }
 
     public void beginConversation() {
-        spl.setProgress(SR.MS_REGISTERING,60);
+        splash.setProgress(SR.MS_REGISTERING,60);
         Iq iqreg=new Iq(null, Iq.TYPE_SET, "regac" );
         
         JabberDataBlock qB = iqreg.addChildNs("query", "jabber:iq:register" );
@@ -106,21 +107,21 @@ public class AccountRegister
             String type=data.getTypeAttribute();
             String mainbar=SR.MS_DONE; 
             if (type.equals("result")) {
-                spl.removeCommand(cmdCancel);
-                spl.addCommand(cmdOK);
+                splash.removeCommand(cmdCancel);
+                splash.addCommand(cmdOK);
             } else {
                 pgs=0;
                 mainbar=SR.MS_ERROR_ + XmppError.findInStanza(data).toString();
             }
-            spl.setProgress(mainbar,pgs);
+            splash.setProgress(mainbar,pgs);
             theStream.close();
         }
         return JabberBlockListener.BLOCK_PROCESSED;
     }
     
     public void commandAction(Command c, Displayable d) {
-        spl.setCommandListener(null);
-        spl.removeCommand(cmdCancel);
+        splash.setCommandListener(null);
+        splash.removeCommand(cmdCancel);
         try {
             theStream.close();
         } catch (Exception e) { 

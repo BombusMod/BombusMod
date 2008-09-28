@@ -224,10 +224,14 @@ public class Roster
     private final static int SOUND_COMPOSING=888;
     private final static int SOUND_OUTGOING=999;
     
+    SplashScreen splash;
+    
     public Roster(Display display) {
         super();
         this.display=display;
 
+        splash = SplashScreen.getInstance(display);
+         
         sl=StatusList.getInstance();
 
         setLight(cf.lightState);
@@ -251,7 +255,7 @@ public class Roster
         commandState();
         setCommandListener(this);
 
-        SplashScreen.getInstance().setExit(display, this);
+        splash.setExit(display, this);
 //#ifdef AUTOSTATUS
 //#         if (cf.autoAwayType==Config.AWAY_IDLE || cf.autoAwayType==Config.AWAY_MESSAGE)
 //#             autostatus=new AutoStatusTask();
@@ -344,13 +348,15 @@ public class Roster
     }
     
     public void setProgress(String pgs,int percent){
-        SplashScreen.getInstance().setProgress(pgs, percent);
+        if (splash!=null)
+            splash.setProgress(pgs, percent);
         setRosterMainBar(pgs);
         redraw();
     }
     
     public void setProgress(int percent){
-        SplashScreen.getInstance().setProgress(percent);
+        if (splash!=null)
+            splash.setProgress(percent);
     }
     
     private void setRosterMainBar(String s){
@@ -365,7 +371,8 @@ public class Roster
         if (rscaler<4) return;
         rscaler=0;
         if (rpercent<100) rpercent++;
-        SplashScreen.getInstance().setProgress(rpercent);
+        if (splash!=null)
+            splash.setProgress(rpercent);
     }
 
     // establishing connection process
@@ -1229,7 +1236,9 @@ public class Roster
 			
             setQuerySign(false);
             doReconnect=false;
-            SplashScreen.getInstance().close(); // display.setCurrent(this);
+            if (splash!=null)
+                splash.close(); // display.setCurrent(this);
+            splash=null;
             
             //query bookmarks
             theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
@@ -1315,7 +1324,9 @@ public class Roster
                             sendPresence(cf.loginstatus, null);
                         }
 
-                        SplashScreen.getInstance().close();
+                        if (splash!=null)
+                            splash.close();
+                        splash=null;
 
                         return JabberBlockListener.BLOCK_PROCESSED;
                     }
@@ -2279,6 +2290,8 @@ public class Roster
 
 //#ifdef AUTOSTATUS
 //#     private void userActivity() {
+//#         if (autostatus==null) return;
+//#         
 //#         if (cf.autoAwayType==Config.AWAY_IDLE) {
 //#             if (!autoAway) {
 //#                 autostatus.setTimeEvent(cf.autoAwayDelay* 60*1000);
@@ -2292,6 +2305,8 @@ public class Roster
 //#     }
 //#     
 //#     public void messageActivity() {
+//#         if (autostatus==null) return;
+//#         
 //#         if (cf.autoAwayType==Config.AWAY_MESSAGE) {
 //#              //System.out.println("messageActivity "+myStatus.getImageIndex());
 //#              if (myStatus<2)

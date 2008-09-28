@@ -57,7 +57,7 @@ public class BombusMod extends MIDlet implements Runnable{
     private boolean isMinimized;
     StaticData sd=StaticData.getInstance();
     ColorTheme ct=ColorTheme.getInstance();
-    SplashScreen s=SplashScreen.getInstance();
+    SplashScreen s;
 
     public static Image splash;
     
@@ -66,9 +66,8 @@ public class BombusMod extends MIDlet implements Runnable{
     public BombusMod() {
 	instance=this; 
         display = Display.getDisplay(this);
-
-        display.setCurrent(s);
-        s.setProgress("Loading",3); // this message will not be localized
+        s=SplashScreen.getInstance(display);
+        s.setProgress("Loading", 3); // this message will not be localized
     }
     
     /** Entry point  */

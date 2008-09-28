@@ -270,7 +270,7 @@ public class AccountForm
     
     private void startLogin(){
         Account.loadAccount(true, Config.getInstance().accountIndex);
-        SplashScreen.getInstance().close();
+        SplashScreen.getInstance(display).close();
     }
     
     protected void keyRepeated(int keyCode) {

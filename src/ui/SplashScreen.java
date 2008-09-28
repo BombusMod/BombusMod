@@ -78,18 +78,19 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
     
     private Progress pb;
     
-    public static SplashScreen getInstance(){
+    public static SplashScreen getInstance(Display display){
         if (instance==null) 
-            instance=new SplashScreen();
+            instance=new SplashScreen(display);
         return instance;
     }
     
     /** Creates a new instance of SplashScreen */
-    private SplashScreen() {
+    private SplashScreen(Display display) {
         setFullScreenMode(cf.fullscreen);
+        display.setCurrent(this);
     }
     
-    public SplashScreen( Display display, ComplexString status, char exitKey) {
+    public SplashScreen(Display display, ComplexString status, char exitKey) {
         this.status=status;
         this.display=display;
         this.exitKey=exitKey;
@@ -153,7 +154,9 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
     
     public void setProgress(String caption, int progress){
         capt=caption;
-        //System.out.println(capt);
+////#if DEBUG
+        System.out.println(capt);
+////#endif
 	setProgress(progress);
     }
     
@@ -180,7 +183,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         //if (parentView!=null)
         display.setCurrent(StaticData.getInstance().roster);
         //parentView=null;
-        repaint();
+        //repaint();
         //serviceRepaints();
         img=null;
         instance=null;
