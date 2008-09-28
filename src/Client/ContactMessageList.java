@@ -143,7 +143,17 @@ public class ContactMessageList extends MessageList {
 //#endif
 //#endif
         if (contact.msgs.size()>0)
-            moveCursorTo(contact.firstUnread());
+            moveCursorTo(firstUnread());
+    }
+    
+    public int firstUnread(){
+        int unreadIndex=0;
+        for (Enumeration e=contact.msgs.elements(); e.hasMoreElements();) {
+            if (((Msg)e.nextElement()).unread)
+                break;
+            unreadIndex++;
+        }
+        return unreadIndex;
     }
     
     public void commandState(){
@@ -414,7 +424,7 @@ public class ContactMessageList extends MessageList {
     }
 
     public void clearReadedMessageList() {
-        contact.smartPurge(cursor+1);
+        smartPurge();
         messages=null;
         messages=new Vector();
         cursor=0;
@@ -640,6 +650,47 @@ public class ContactMessageList extends MessageList {
 //#         histRecord=null;
 //#     }
 //#endif
+    
+ 
+    public final void smartPurge() {
+        Vector msgs=contact.msgs;
+        int cur=cursor+1;
+        try {
+            if (msgs.size()>0){
+                int virtCursor=msgs.size();
+                boolean delete = false;
+                int i=msgs.size();
+                while (true) {
+                    if (i<0) break;
+
+                    if (i<cur) {
+                        if (!delete) {
+                            //System.out.println("not found else");
+                            if (((Msg)msgs.elementAt(virtCursor)).dateGmt+1000<System.currentTimeMillis()) {
+                                //System.out.println("can delete: "+ delPos);
+                                msgs.removeElementAt(virtCursor);
+                                //delPos--;
+                                delete=true;
+                            }
+                        } else {
+                            //System.out.println("delete: "+ delPos);
+                            msgs.removeElementAt(virtCursor);
+                            //delPos--;
+                        }
+                    }
+                    virtCursor--;
+                    i--;
+                }
+                contact.activeMessage=msgs.size()-1; //drop activeMessage count
+            }
+        } catch (Exception e) { }
+        
+        contact.clearVCard();
+        
+        contact.lastSendedMessage=null;
+        contact.lastUnread=0;
+        contact.resetNewMsgCnt();
+    }
 
     public void destroyView(){
         sd.roster.activeContact=null;

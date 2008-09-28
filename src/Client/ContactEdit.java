@@ -173,7 +173,7 @@ public final class ContactEdit
     }
 
     public void cmdOk() {
-        String jid=tJid.getValue();
+        String jid=tJid.getValue().trim().toLowerCase();
         if (jid!=null) {
             String name=tNick.getValue();
             String group=group(tGrpList.getSelectedIndex());

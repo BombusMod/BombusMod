@@ -175,16 +175,6 @@ public class Contact extends IconTextElement{
         secondFontHeight=secondFont.getHeight();
         fontHeight=getFont().getHeight();
     }
-    
-    public int firstUnread(){
-        int unreadIndex=0;
-        for (Enumeration e=msgs.elements(); e.hasMoreElements();) {
-            if (((Msg)e.nextElement()).unread)
-                break;
-            unreadIndex++;
-        }
-        return unreadIndex;
-    }
 
     public Contact(final String Nick, final String sJid, final int Status, String subscr) {
         this();
@@ -446,44 +436,6 @@ public class Contact extends IconTextElement{
 //#         return true;
 //#     }
 //#endif
- 
-    public final void smartPurge(int cursor) {
-        try {
-            if (msgs.size()>0){
-                int virtCursor=msgs.size();
-                boolean delete = false;
-                int i=msgs.size();
-                while (true) {
-                    if (i<0) break;
-
-                    if (i<cursor) {
-                        if (!delete) {
-                            //System.out.println("not found else");
-                            if (((Msg)msgs.elementAt(virtCursor)).dateGmt+1000<System.currentTimeMillis()) {
-                                //System.out.println("can delete: "+ delPos);
-                                msgs.removeElementAt(virtCursor);
-                                //delPos--;
-                                delete=true;
-                            }
-                        } else {
-                            //System.out.println("delete: "+ delPos);
-                            msgs.removeElementAt(virtCursor);
-                            //delPos--;
-                        }
-                    }
-                    virtCursor--;
-                    i--;
-                }
-                activeMessage=msgs.size()-1; //drop activeMessage count
-            }
-        } catch (Exception e) { }
-        
-        clearVCard();
-        
-        lastSendedMessage=null;
-        lastUnread=0;
-        resetNewMsgCnt();
-    }
     
     public final void setSortKey(String sortKey){
         key1=(sortKey==null)? "": sortKey.toLowerCase();
