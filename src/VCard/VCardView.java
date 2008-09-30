@@ -238,7 +238,7 @@ public class VCardView
 //#ifdef MENU_LISTENER
 //#     public void commandState() {
 //#         super.commandState();
-//# 
+//#         
 //#         if (vcard!=null) {
 //#             if (vcard.hasPhoto) {
 //#if FILE_IO
@@ -254,8 +254,15 @@ public class VCardView
 //#endif
 //#         }
 //#         addCommand(cmdRefresh);
+//#         removeCommand(cmdOk);
+//#         removeCommand(cmdCancel);
+//#         addCommand(cmdCancel);
 //#     }
 //# 
 //#     public String touchLeftCommand() { return SR.MS_MENU; }
+//#     
+//#     public void cmdOk() {
+//#         showMenu();
+//#     }
 //#endif
 }

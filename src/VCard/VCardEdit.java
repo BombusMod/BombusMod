@@ -58,7 +58,6 @@ public class VCardEdit
     
     private Display display;
 
-    Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 99);
     Command cmdPublish=new Command(SR.MS_PUBLISH, Command.OK, 1);
     Command cmdRefresh=new Command(SR.MS_REFRESH, Command.SCREEN, 2);
 //#if FILE_IO
@@ -100,7 +99,7 @@ public class VCardEdit
             itemsList.addElement(new TextInput(display, name, data, null, TextField.ANY));
         }
 
-        publish=new LinkString(SR.MS_PUBLISH) { public void doAction() { cmdOk(); } };
+        publish=new LinkString(SR.MS_PUBLISH) { public void doAction() { publish(); } };
         
         setPhoto();
 
@@ -125,7 +124,7 @@ public class VCardEdit
         this.parentView=pView;
     }
     
-    public void cmdOk() {
+    public void publish() {
         for (int index=0; index<vcard.getCount(); index++) {
             try {
                 String field=((TextInput)itemsList.elementAt(index)).getValue();
@@ -164,11 +163,12 @@ public class VCardEdit
             setPhoto();
         }
         if (c==cmdPublish)
-            cmdOk();
+            publish();
 
         super.commandAction(c, d);
     }
 
+    
     public void run() {
         StaticData.getInstance().roster.theStream.send(vcard.constructVCard());
         //System.out.println("VCard sent");
@@ -256,8 +256,7 @@ public class VCardEdit
 //#ifdef MENU_LISTENER
 //#     public void commandState() {
 //#         super.commandState();
-//#         
-//#         removeCommand(cmdOk);
+//# 
 //#         addCommand(cmdPublish);
 //#         addCommand(cmdRefresh);
 //#if FILE_IO
@@ -268,8 +267,16 @@ public class VCardEdit
 //#         if (cameraAvailable!=null) if (cameraAvailable.startsWith("true"))
 //#             addCommand(cmdCamera);
 //#         addCommand(cmdDelPhoto);
+//#         
+//#         removeCommand(cmdOk);
+//#         removeCommand(cmdCancel);
+//#         addCommand(cmdCancel);
 //#     }
 //# 
 //#     public String touchLeftCommand() { return SR.MS_MENU; }
+//#     
+//#     public void cmdOk() {
+//#         showMenu();
+//#     }
 //#endif
 }
