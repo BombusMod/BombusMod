@@ -724,11 +724,12 @@ public class ContactMessageList extends MessageList {
 //#         if (body.indexOf("https://")>-1) return true;
 //#         if (body.indexOf("ftp://")>-1) return true;
 //#         if (body.indexOf("tel:")>-1) return true;
-//#         if (body.indexOf("native:")>-1) return true;
+//#         if (cf.phoneManufacturer==Config.SIEMENS || cf.phoneManufacturer==Config.SIEMENS2)
+//#             if (body.indexOf("native:")>-1) return true;
 //#         return false;
 //#     }
 //#     
-//#     public String touchLeftCommand(){ return (cf.oldSE)?SR.MS_NEW:SR.MS_MENU; }
+//#     public String touchLeftCommand(){ return (cf.oldSE)?((contact.msgSuspended!=null)?SR.MS_RESUME:SR.MS_NEW):SR.MS_MENU; }
 //#     public String touchRightCommand(){ return (cf.oldSE)?SR.MS_MENU:SR.MS_BACK; }
 //#endif
 }

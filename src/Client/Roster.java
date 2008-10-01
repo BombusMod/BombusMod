@@ -1340,7 +1340,6 @@ public class Roster
             } else if( data instanceof Message ) { // If we've received a message
                 //System.out.println(data.toString());
                 querysign=false;
-
                 Message message = (Message) data;
                 
                 String from=message.getFrom();
@@ -1349,6 +1348,7 @@ public class Roster
                     from=message.getXFrom();
                 
                 String type=message.getTypeAttribute();
+                
                 boolean groupchat=false;
                 
                 int start_me=-1;
@@ -1385,28 +1385,26 @@ public class Roster
                 long tStamp=message.getMessageTime();
 	
 		int mType=Msg.MESSAGE_TYPE_IN;
-                
                 if (groupchat) {
-                    // subject
-                    if (subj!=null) {
+                    if (subj!=null) { // subject
                         if (body==null)
                             body=name+" "+SR.MS_HAS_SET_TOPIC_TO+": "+subj;
-
                         if (!subj.equals(c.statusString)) {
                             c.statusString=subj; // adding secondLine to conference
                             highlite=true;
                         } else {
                             return JabberBlockListener.BLOCK_PROCESSED;
                         }
-
                         subj=null;
                         start_me=-1;
                         mType=Msg.MESSAGE_TYPE_SUBJ;
                     }
-                } else if (type.equals("error")) {
-                    body=SR.MS_ERROR_ + XmppError.findInStanza(message).toString();
-                } else if (type.equals("headline")) {
-                    mType=Msg.MESSAGE_TYPE_HEADLINE;
+                } else if (type!=null){
+                    if (type.equals("error")) {
+                        body=SR.MS_ERROR_ + XmppError.findInStanza(message).toString();
+                    } else if (type.equals("headline")) {
+                        mType=Msg.MESSAGE_TYPE_HEADLINE;
+                    }
                 } else {
                     type="chat";
                 }
@@ -1466,25 +1464,21 @@ public class Roster
                         b=null;
                     }
                 }
-                
                 //boolean compose=false;
                 if (type.equals("chat") && myStatus!=Presence.PRESENCE_INVISIBLE) {
                     if (message.findNamespace("request", "urn:xmpp:receipts")!=null) {
                         sendDeliveryMessage(c, data.getAttribute("id"));
                     }
-                    
                     if (message.findNamespace("received", "urn:xmpp:receipts")!=null) {
                          c.markDelivered(data.getAttribute("id"));
-                     }
-
+                    }
                     if (message.findNamespace("active", "http://jabber.org/protocol/chatstates")!=null) {
                         c.acceptComposing=true;
                         c.showComposing=false;
 //#ifdef RUNNING_MESSAGE
 //#                         setTicker(c, "");
 //#endif
-                     }
-
+                    }
                     if (message.findNamespace("paused", "http://jabber.org/protocol/chatstates")!=null) {
                         c.acceptComposing=true;
                         c.showComposing=false;
@@ -1492,7 +1486,6 @@ public class Roster
 //#                         setTicker(c, "");
 //#endif
                     }
-
                     if (message.findNamespace("composing", "http://jabber.org/protocol/chatstates")!=null) {
                         playNotify(SOUND_COMPOSING);
                         c.acceptComposing=true;
