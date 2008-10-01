@@ -76,7 +76,7 @@ public class InfoWindow
         super(display, pView, SR.MS_ABOUT);
         this.display=display;
 
-        name=new MultiLine("Mobile Jabber client", Version.getName()+"\n"+Version.getVersionNumber()+"\n"+Config.getOs(), super.superWidth);
+        name=new MultiLine(Version.getName(), Version.getVersionNumber()+"\n"+Config.getOs()+"\nMobile Jabber client", super.superWidth);
         name.selectable=true;
         itemsList.addElement(name);
 

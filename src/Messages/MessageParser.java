@@ -206,8 +206,7 @@ public final class MessageParser implements Runnable{
         addSmile(root, "tel:",URL);
         addSmile(root, "ftp://",URL);
         addSmile(root, "https://",URL);
-        if (Config.getInstance().phoneManufacturer==Config.SIEMENS || Config.getInstance().phoneManufacturer==Config.SIEMENS2)
-            addSmile(root, "native:",URL);
+        addSmile(root, "native:",URL);
 //#if NICK_COLORS
         addSmile(root, "\01", ComplexString.NICK_ON);
         addSmile(root, "\02", ComplexString.NICK_OFF);
@@ -218,8 +217,7 @@ public final class MessageParser implements Runnable{
         addSmile(emptyRoot, "tel:",URL);
         addSmile(emptyRoot, "ftp://",URL);
         addSmile(emptyRoot, "https://",URL);
-        if (Config.getInstance().phoneManufacturer==Config.SIEMENS || Config.getInstance().phoneManufacturer==Config.SIEMENS2)
-            addSmile(emptyRoot, "native:",URL);
+        addSmile(emptyRoot, "native:",URL);
 //#if NICK_COLORS
         addSmile(emptyRoot, "\01", ComplexString.NICK_ON);
         addSmile(emptyRoot, "\02", ComplexString.NICK_OFF);

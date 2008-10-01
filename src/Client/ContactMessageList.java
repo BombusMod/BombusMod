@@ -724,8 +724,7 @@ public class ContactMessageList extends MessageList {
 //#         if (body.indexOf("https://")>-1) return true;
 //#         if (body.indexOf("ftp://")>-1) return true;
 //#         if (body.indexOf("tel:")>-1) return true;
-//#         if (cf.phoneManufacturer==Config.SIEMENS || cf.phoneManufacturer==Config.SIEMENS2)
-//#             if (body.indexOf("native:")>-1) return true;
+//#         if (body.indexOf("native:")>-1) return true;
 //#         return false;
 //#     }
 //#     
