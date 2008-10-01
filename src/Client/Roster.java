@@ -1570,10 +1570,14 @@ public class Roster
                     try {
                         MucContact c = mucContact(from);
 //#ifdef CLIENTS_ICONS
+//#ifdef PLUGINS
+//#                     if (sd.ClientsIcons)
+//#endif
 //#                         if (cf.showClientIcon)
 //#                             if (pr.hasEntityCaps())
 //#                                 if (pr.getEntityNode()!=null)
-//#                                     ClientsIconsData.getInstance().processData(c, pr.getEntityNode());
+//#                                     getClientIcon(c, pr.getEntityNode());
+//#                                     
 //#endif
                         String lang=pr.getAttribute("xml:lang");
 
@@ -1715,6 +1719,11 @@ public class Roster
         }
         return JabberBlockListener.BLOCK_REJECTED;
     }
+//#ifdef CLIENTS_ICONS
+//#     private void getClientIcon(Contact c, String data) {
+//#         ClientsIconsData.getInstance().processData(c, data);
+//#     }
+//#endif
 
     boolean  processRoster(JabberDataBlock data){
         JabberDataBlock q=data.findNamespace("query", "jabber:iq:roster");
