@@ -187,7 +187,10 @@ public class AccountSelect
     }
 
     private void delAccount(){
-        if (cf.accountIndex>cursor) cf.accountIndex--;
+        if (accountList.size()==1) 
+            cf.accountIndex=-1;
+        else if (cf.accountIndex>cursor) cf.accountIndex--;
+
         cf.saveToStorage();
 
         accountList.removeElement(getFocusedObject());

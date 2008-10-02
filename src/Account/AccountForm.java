@@ -61,7 +61,7 @@ public class AccountForm
     private TextInput nickbox;
     private CheckBox sslbox;
     private CheckBox plainPwdbox;
-    private CheckBox noComprbox;
+    private CheckBox compressionBox;
     private CheckBox confOnlybox;
 //#if HTTPCONNECT
 //#       private CheckBox proxybox;
@@ -146,7 +146,7 @@ public class AccountForm
         dnsResolver = new CheckBox(SR.MS_USE_DNS_SRV_RESOLVER, account.getDnsResolver()); 
         sslbox = new CheckBox(SR.MS_SSL, account.getUseSSL());
         plainPwdbox = new CheckBox(SR.MS_PLAIN_PWD, account.getPlainAuth());
-        noComprbox = new CheckBox(SR.MS_NO_COMPRESSION, !account.useCompression());
+        compressionBox = new CheckBox(SR.MS_COMPRESSION, account.useCompression());
         confOnlybox = new CheckBox(SR.MS_CONFERENCES_ONLY, account.isMucOnly());
 //#if HTTPCONNECT
 //#        proxybox = new CheckBox("proxybox", SR.MS_PROXY_ENABLE, account.isEnableProxy());
@@ -157,7 +157,7 @@ public class AccountForm
         itemsList.addElement(dnsResolver);
         itemsList.addElement(sslbox);
         itemsList.addElement(plainPwdbox);
-        itemsList.addElement(noComprbox);
+        itemsList.addElement(compressionBox);
         itemsList.addElement(confOnlybox);
 //#if HTTPCONNECT
 //#        itemsList.addElement(proxybox);
@@ -230,7 +230,7 @@ public class AccountForm
             account.setResource(resourcebox.getValue());
             account.setUseSSL(sslbox.getValue());
             account.setPlainAuth(plainPwdbox.getValue());
-            account.setUseCompression(!noComprbox.getValue());
+            account.setUseCompression(compressionBox.getValue());
             account.setMucOnly(confOnlybox.getValue());
 
 //#if HTTPPOLL || HTTPCONNECT            
@@ -261,16 +261,16 @@ public class AccountForm
     public void destroyView(){
         if (newaccount && doConnect) {
             new AlertBox(SR.MS_CONNECT_TO, account.getBareJid()+"?", display, StaticData.getInstance().roster) {
-                public void yes() { startLogin();}
-                public void no() { display.setCurrent(accountSelect); }
+                public void yes() { startLogin(true);}
+                public void no() { startLogin(false); }
             };
         } else
             display.setCurrent(accountSelect);
     }
     
-    private void startLogin(){
+    private void startLogin(boolean login){
         Config.getInstance().accountIndex=accountSelect.accountList.size()-1;
-        Account.loadAccount(true, Config.getInstance().accountIndex);
+        Account.loadAccount(login, Config.getInstance().accountIndex);
         SplashScreen.getInstance(display).close();
     }
     

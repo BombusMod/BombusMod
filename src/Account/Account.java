@@ -287,6 +287,10 @@ public class Account extends IconTextElement{
  
     public boolean useCompression() { return compression; }
     
+    public void setUseCompression(boolean value) {
+        this.compression = value;
+    }
+    
     public boolean isGmail() {
         return server.startsWith("gmail.com");
     }
@@ -296,10 +300,6 @@ public class Account extends IconTextElement{
     public boolean useGoogleToken() {
         if (useSSL) return false;
         return isGmail();
-    }
-
-    public void setUseCompression(boolean value) {
-        this.compression = value;
     }
 
     public void setActive(boolean b) {

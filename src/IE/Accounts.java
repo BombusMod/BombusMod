@@ -44,6 +44,7 @@ public class Accounts {
     
     private final static String userName = "userName"; 
     private final static String server = "server"; 
+    private final static String password = ""; 
     private final static String hostAddr = "hostAddr"; 
     private final static String port = "port"; 
     private final static String nick = "nick"; 
@@ -107,10 +108,11 @@ public class Accounts {
                         account.setPort(Integer.parseInt(findBlock(tempstr, port)));
                         account.setHostAddr(findBlock(tempstr, hostAddr));
                         account.setResource(findBlock(tempstr, resource));
-                        account.setUseSSL((findBlock(tempstr, useSSL)=="1")?true:false);
-                        account.setPlainAuth((findBlock(tempstr, plainAuth)=="1")?true:false);
-                        account.setUseCompression((findBlock(tempstr, compression)=="1")?true:false);
-                        account.setMucOnly((findBlock(tempstr, mucOnly)=="1")?true:false);
+                        account.setPassword(findBlock(tempstr, password));
+                        account.setUseSSL((findBlock(tempstr, useSSL).equals("1"))?true:false);
+                        account.setPlainAuth((findBlock(tempstr, plainAuth).equals("1"))?true:false);
+                        account.setUseCompression((findBlock(tempstr, compression).equals("1"))?true:false);
+                        account.setMucOnly((findBlock(tempstr, mucOnly).equals("1"))?true:false);
                         account.setKeepAlivePeriod(Integer.parseInt(findBlock(tempstr, keepAlivePeriod)));
                         account.setKeepAliveType(Integer.parseInt(findBlock(tempstr, keepAliveType)));
                         
