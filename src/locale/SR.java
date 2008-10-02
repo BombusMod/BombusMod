@@ -671,6 +671,8 @@ public class SR {
     
     public static String MS_SHOW_TIME_TRAFFIC=loadString("show time and traffic");
     
+    public static String MS_KEYS_FOR_OLD_SE=loadString("keys for old SE");
+    
 //#ifdef PEP
 //#     public static String MS_PEP=loadString("Pubsub events");
 //#     public static String MS_USERMOOD=loadString("User moods");
@@ -678,6 +680,8 @@ public class SR {
 //#     public static String MS_USERACTIVITY=loadString("User activity");
 //#     
 //#     public static String MS_PEP_NOT_SUPPORTED = loadString("Personal events not supported");
+//# 
+//#     public static String MS_VIP_GROUP =  loadString("VIP");
 //#endif
     
     private SR() { }

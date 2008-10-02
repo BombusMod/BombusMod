@@ -46,10 +46,11 @@ public class Groups implements JabberBlockListener{
     
     StaticData sd = StaticData.getInstance();
 
-    public final static int TYPE_SELF=1;
-    public final static int TYPE_NO_GROUP=2;
-    public final static int TYPE_COMMON=3;
-    public final static int TYPE_VISIBLE=4;
+    public final static int TYPE_SELF=0;
+    public final static int TYPE_NO_GROUP=1;
+    public final static int TYPE_COMMON=2;
+    public final static int TYPE_VISIBLE=3;
+    public final static int TYPE_VIP=4;
     public final static int TYPE_IGNORE=5;
     public final static int TYPE_MUC=6;    
     public final static int TYPE_NOT_IN_LIST=7;
@@ -63,13 +64,14 @@ public class Groups implements JabberBlockListener{
     public Groups(){
         groups=null;
         groups=new Vector();
-        addGroup(SR.MS_TRANSPORTS, Groups.TYPE_TRANSP);
-        addGroup(SR.MS_SELF_CONTACT, Groups.TYPE_SELF);
-        addGroup(SR.MS_SEARCH_RESULTS, Groups.TYPE_SEARCH_RESULT);
-        addGroup(SR.MS_NOT_IN_LIST, Groups.TYPE_NOT_IN_LIST);
-        addGroup(SR.MS_IGNORE_LIST, Groups.TYPE_IGNORE);
-        addGroup(SR.MS_VISIBLE_GROUP, Groups.TYPE_VISIBLE);
-        addGroup(Groups.COMMON_GROUP, Groups.TYPE_NO_GROUP);
+        addGroup(SR.MS_TRANSPORTS, TYPE_TRANSP);
+        addGroup(SR.MS_SELF_CONTACT, TYPE_SELF);
+        addGroup(SR.MS_SEARCH_RESULTS, TYPE_SEARCH_RESULT);
+        addGroup(SR.MS_NOT_IN_LIST, TYPE_NOT_IN_LIST);
+        addGroup(SR.MS_IGNORE_LIST, TYPE_IGNORE);
+        addGroup(SR.MS_VISIBLE_GROUP, TYPE_VISIBLE);
+        addGroup(SR.MS_VIP_GROUP, TYPE_VIP);
+        addGroup(Groups.COMMON_GROUP, TYPE_NO_GROUP);
     }
 
     private int rosterContacts;

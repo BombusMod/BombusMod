@@ -269,7 +269,7 @@ public class ConfigForm
         enableVersionOs = new CheckBox(SR.MS_SHOW_HARDWARE, cf.enableVersionOs); itemsList.addElement(enableVersionOs);
         queryExit = new CheckBox(SR.MS_CONFIRM_EXIT, cf.queryExit); itemsList.addElement(queryExit);
 //#ifdef MENU_LISTENER
-//#         oldSE = new CheckBox("keys for old SE", cf.oldSE);
+//#         oldSE = new CheckBox(SR.MS_KEYS_FOR_OLD_SE, cf.oldSE);
 //#         if (cf.phoneManufacturer==cf.SONYE) itemsList.addElement(oldSE);
 //#endif
 //#ifdef USER_KEYS

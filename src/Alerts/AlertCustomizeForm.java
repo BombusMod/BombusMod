@@ -80,7 +80,7 @@ public class AlertCustomizeForm
     Vector files[];
     Vector fileNames;
 
-    Command cmdOk=new Command(SR.MS_SAVE, Command.OK, 1);
+    Command cmdSave=new Command(SR.MS_SAVE, Command.OK, 1);
     Command cmdTest=new Command(SR.MS_TEST_SOUND, Command.SCREEN, 2);
 
     /** Creates a new instance of ConfigForm */
@@ -191,52 +191,25 @@ public class AlertCustomizeForm
     public void commandAction(Command c, Displayable d) {
         if (c==cmdTest)
             PlaySound();
-        else if (c==cmdOk) {
+        else if (c==cmdSave) {
             cmdSave();
         }
         else super.commandAction(c, d);
     }
     
-    private int playable () {
+    private int playable() {
         if (cursor<9) return cursor;
         return -1;
     }
     
     private void PlaySound(){
-        int sound=-1;
-        switch (cursor) {
-            case 0: //MessageFile
-                sound=MessageFile.getSelectedIndex();
-                break;
-            case 1: //OnlineFile
-                sound=OnlineFile.getSelectedIndex();
-                break;
-            case 2: //OfflineFile
-                sound=OfflineFile.getSelectedIndex();
-                break;
-            case 3: //ForYouFile
-                sound=ForYouFile.getSelectedIndex();
-                break;
-            case 4: //ComposingFile
-                sound=ComposingFile.getSelectedIndex();
-                break;
-            case 5: //ConferenceFile
-                sound=ConferenceFile.getSelectedIndex();
-                break;
-            case 6: //StartUpFile
-                sound=StartUpFile.getSelectedIndex();
-                break;
-            case 7: //OutgoingFile
-                sound=OutgoingFile.getSelectedIndex();
-                break;
-            case 8: //VIPFile
-                sound=VIPFile.getSelectedIndex();
-                break;
-        }
+        int sound=playable();
         if (sound<0) return;
         
-        String soundFile=(String)files[1].elementAt(sound);
-        String soundType=(String)files[0].elementAt(sound);
+        int selectedSound=((DropChoiceBox)itemsList.elementAt(sound)).getSelectedIndex();
+        
+        String soundFile=(String)files[1].elementAt(selectedSound);
+        String soundType=(String)files[0].elementAt(selectedSound);
         int soundVol=sndVol.getValue()*10;
 //#ifdef DEBUG
 //#         System.out.println(cursor+": "+sound+" "+soundFile+" "+soundType+" "+soundVol);
@@ -248,13 +221,15 @@ public class AlertCustomizeForm
 //#ifdef MENU_LISTENER
 //#     public void commandState(){
 //#         super.commandState();
-//#         addCommand(cmdTest);
+//#         removeCommand(cmdCancel);
+//#         removeCommand(cmdOk);
+//#         if (playable()>-1)
+//#             addCommand(cmdTest);
+//#         addCommand(cmdSave);
+//#         addCommand(cmdCancel);
 //#     }
 //# 
 //#     public String touchLeftCommand(){ return SR.MS_MENU; }
-//#     
-//#     public void cmdOk() {
-//#         showMenu();
-//#     }
+//#     public void touchLeftPressed(){ showMenu(); }
 //#endif
 }

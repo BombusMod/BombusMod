@@ -120,7 +120,7 @@ composing events	уведомление о наборе текста
 Add Smile	Встав. смайлик
 Nickname	Ник
 Revoke Voice	Отнять право голоса
-Not-in-list	Контакты не в списке
+Not-in-list	Не в списке
 Commands	Команды
 - (Sign)	- (знак)
 Set default	Уст. по умолчанию

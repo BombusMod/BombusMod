@@ -1830,7 +1830,7 @@ public class Roster
                         autorespond = true;
                     }
 //#endif
-                if (c.getName().endsWith("!")) {
+                if (c.group.type==Groups.TYPE_VIP) {
                     playNotify(SOUND_FOR_VIP);
                     autorespond = true;
                 } else {
