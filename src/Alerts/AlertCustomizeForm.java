@@ -80,6 +80,7 @@ public class AlertCustomizeForm
     Vector files[];
     Vector fileNames;
 
+    Command cmdOk=new Command(SR.MS_SAVE, Command.OK, 1);
     Command cmdTest=new Command(SR.MS_TEST_SOUND, Command.SCREEN, 2);
 
     /** Creates a new instance of ConfigForm */
@@ -149,7 +150,7 @@ public class AlertCustomizeForm
         this.parentView=pView;
     }
     
-    public void cmdOk() {
+    public void cmdSave() {
         ac.soundsMsgIndex=MessageFile.getSelectedIndex();
         ac.soundVol=sndVol.getValue()*10;
         ac.soundOnlineIndex=OnlineFile.getSelectedIndex();
@@ -190,6 +191,9 @@ public class AlertCustomizeForm
     public void commandAction(Command c, Displayable d) {
         if (c==cmdTest)
             PlaySound();
+        else if (c==cmdOk) {
+            cmdSave();
+        }
         else super.commandAction(c, d);
     }
     
@@ -248,5 +252,9 @@ public class AlertCustomizeForm
 //#     }
 //# 
 //#     public String touchLeftCommand(){ return SR.MS_MENU; }
+//#     
+//#     public void cmdOk() {
+//#         showMenu();
+//#     }
 //#endif
 }

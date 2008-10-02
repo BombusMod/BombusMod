@@ -70,7 +70,7 @@ Roster request	Получение ростера
 Type	Тип
 Name	Имя
 Username	Имя пользователя
-fullscreen	полноэкранный
+fullscreen	полноэкранный режим
 Add bookmark	Добав. закладку
 conferences only	только конференции
 Client Version	Версия клиента
@@ -93,7 +93,8 @@ Authorize	Авторизовать
 Nicknames	Ники
 to Archive	В архив
 Back	Назад
-heap monitor	монитор heap
+heap monitor	монитор памяти(heap)
+keys for old SE	поменять местами софт-кнопки
 Message	Сообщение
 <Other>	<Другой>
 history -	история -
@@ -109,17 +110,17 @@ Add	Добавить
 Logon	Подключить
 Stanzas	Stanzas
 at Host	Сервер
-join conferences	автовход в конференции
+join conferences	автоматически входить в отмеченные конференции
 Status	Статус
 Smiles	Вкл/выкл смайлики
 Contact >	Контакт >
-offline contacts	показать отключенных
+offline contacts	показывать отключенных
 Transport	Транспорт
-composing events	"composing" события
+composing events	уведомление о наборе текста
 Add Smile	Встав. смайлик
 Nickname	Ник
 Revoke Voice	Отнять право голоса
-Not-in-list	Not-in-list
+Not-in-list	Контакты не в списке
 Commands	Команды
 - (Sign)	- (знак)
 Set default	Уст. по умолчанию
@@ -153,7 +154,7 @@ Move Down	Сместить вниз
 Quote	Цитировать
 Roster elements	Элементы ростера
 popup from background	всплывать из фона
-smiles	смайлики
+smiles	показывать смайлы
 About	О программе
 Resource	Ресурс
 Disconnected	Соединение разорвано
@@ -308,15 +309,15 @@ day's	дней
 days	дня
 day	день
 Minutes before away	Таймер автостатуса (минуты)
-Automatic Away	Автосмена статуса
-disabled	Выключено
-keyblock	блок кнопок
-by message	по сообщению
+Automatic Away	Автостатус
+disabled	выключен
+keyblock	при блокировке кнопок
+by message	при отсутствии исх. сообщений
 AutoStatus	Автостатус
 AutoStatus time (min)	Автостатус через(мин)
 Auto xa since %t	Автостатус "Недоступен" сработал в %t
 Auto away since %t	Автостатус "Отсутствую" сработал в %t
-autofocus	Автофокус
+autofocus	автофокус на контакт с новым сообщением
 Grant Membership	Дать членство
 Are You sure want to clear messagelist?	Очистить список сообщений
 Google token request	Запрос гуглепожатия
@@ -349,7 +350,7 @@ Are you sure want to delete this message?	Вы уверены, что хотит
 New conference	Новая конференция
 Root	Корень диска
 Decline	Отклонить
-Authorize new contacts	автоматическая авторизация
+Authorize new contacts	Автоматическая авторизация
 [auto-subscribe]	[автоподписка]
 Keep-Alive	Тип Keep-Alive
  has been unaffiliated and kicked from members-only room	 выгнали, так комната закрыта для гостей
@@ -360,11 +361,11 @@ Translit	Транслит
 ReTranslit	ДеТранслит
 Auto translit2Cyr	Автоотправка транслита кириллицей
 Check Updates	Проверка обновления
-Show Resources	Показывать ресурсы
-Collapsed groups	Свернутые группы
+Show Resources	показывать ресурсы контактов
+Collapsed groups	сворачивать группы при запуске
 Send Buffer	Послать текст из буфера
 Change nickname	Сменить ник
-Message collapse limit	Сворачивать сообщения больше
+Message collapse limit	Сворачивать сообщения, если больше(символов)
 No client info	Невозможно получить информацию
 Delete all messages	Удалить все сообщения
 Join marked (auto)	Автоподключаться
@@ -380,9 +381,9 @@ Delete All	Очистить архив
 History options	Настройка истории
 Filenames transliterate	Имена файлов транслитом
 Save chat	Сохранить сообщения
-show statuses	показывать статусы
+show statuses	показывать статусные сообщения в ростере
 shared platform info	показывать информацию о платформе
-delivery events	события доставки
+delivery events	уведомление о доставке
 drop all	отбрасывать все
 receive messages	получать сообщения
 messages & presences	сообщения и статусы
@@ -404,7 +405,8 @@ enabled	включено
 key	кнопка
 Reconnect	Переподключение
 Sort list	Сортировать список
-Turn on light	Не выключать подсветку
+Turn on light	поддерживать подсветку
+show time and traffic	показывать время и трафик
 Clear popups	Очистить попапы
 Chat history length	Длина списка истории
 This user wants to subscribe to your presence	Запрос подписки на присутствие
@@ -420,7 +422,7 @@ Thu	Чт
 Fri	Пт
 Sat	Сб
 Automatic subscription	автоподписка
-Ask me	спросить меня
+Ask me	спрашивать
 Drop subscription	отклонять
 Deny subscription	запрещать
 Search	Поиск
@@ -441,11 +443,11 @@ Copy JID	Копировать JID
 Ping request	Время отклика
 Online time	Время в сети
 Break connection	Переподключение
-autoScroll	автопрокрутка сообщений
-emulate tabs	эмулировать вкладки
-show balloons	показывать баллуны
+autoScroll	автопрокрутка списка сообщений
+emulate tabs	(4/6) быстрое переключение между окнами сообщений
+show balloons	показывать подсказки(баллуны)
 popUps	всплывающие окна
-AutoStatus Message	Сообщение Автостатуса
+AutoStatus Message	своё сообщение автостатуса
 Memory:	Память:
 Free: 	Своб.: 
 Total: 	Всего: 
@@ -479,8 +481,9 @@ Browse rooms	Обзор комнат
 Autorespond	Автоответчик
 Invert colors	Инверсия цвета
 XML console	XML консоль
-Clipboard	Буфер обмена
-User mood	Настроение
+Clipboard	буфер обмена
+User moods	Настроение
+User activity	Действие
 Personal events not supported	PEP не поддерживается
 User tune	Музыка
 user tune receive	инфо о музыке
@@ -496,7 +499,7 @@ Extended settings	Расширенные настройки
 Save to file	Сохранить в файл
 Load from file	Загрузить из файла
 Show IQ requests	Отображать запросы IQ
-Show clients icons	Отображать иконки клиентов
+Show clients icons	показывать иконки клиентов
 Action	Действие
 Value	Значение
 Quantity of attempts	Количество попыток
@@ -515,9 +518,10 @@ Panels	Панели
 [main bar]	[основная]
 [info bar]	[инфо]
 Flash backlight	Мигать подсветкой
-execute menu by numkey	выполнение команд нажатием цифровых кнопок
+execute menu by numkey	выполнение команд меню цифровыми кнопоками
 show nicknames	показывать ник отправителя
 Send photo	Отправить фото
 enable autorespond	включить автоответчик
 File manager	Менеджер файлов
-remote control	удаленное управление
+remote control	удаленное управление
+
