@@ -1,7 +1,7 @@
 /*
- * SELightTask.java
+ * KeepLightTask.java
  *
- * Created on 21.06.2007, 11:23
+ * Created on 03.10.2008, 00:34
  * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -26,48 +26,15 @@
 
 package Client;
 
-
-public class KeepLightTask implements Runnable {    
-    
-    private static KeepLightTask instance;
-    
-    public static KeepLightTask getInstance(){
-	if (instance==null) {
-	    instance=new KeepLightTask();
-	}
-	return instance;
-    }
-    
-    private boolean stop;
-    private boolean setLight;
-    
-    public KeepLightTask() {
-        new Thread(this).start();
-    }
-    
-    public void setLight(boolean setLight){
-        this.setLight=setLight;
-    }
-
-    public void destroyTask(){
-        stop=false;
-    }
-
+public class KeepLightTask extends Thread {    
     public void run() {
-        while (!stop) {
+        while(true){
             try {
                 Thread.sleep(5000);
             } catch (InterruptedException ex) {
-                stop=true;
+                break;
             }
-            if (setLight) {
-                try {
-                    com.nokia.mid.ui.DeviceControl.setLights(0, 100);
-                } catch (Exception e) {
-                    setLight=false;
-                }
-            }
+            com.nokia.mid.ui.DeviceControl.setLights(0, 100);
         }
     }
-
 }

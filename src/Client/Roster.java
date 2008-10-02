@@ -207,10 +207,6 @@ public class Roster
     private static int blockNotifyEvent=-111;
     
     private int blState=Integer.MAX_VALUE;
-
-//#ifdef SE_LIGHT
-//#     private KeepLightTask selight=KeepLightTask.getInstance();
-//#endif
     
 //#ifdef AUTOTASK
 //#     private AutoTask at=sd.autoTask;
@@ -271,10 +267,12 @@ public class Roster
                 if (state) com.siemens.mp.game.Light.setLightOn();
                 else com.siemens.mp.game.Light.setLightOff();  
             } catch( Exception e ) { }
+            return;
         }
+        if (!state) return;
 //#ifdef SE_LIGHT
-//#         else if (cf.phoneManufacturer==Config.SONYE || cf.phoneManufacturer==Config.NOKIA) {
-//#             selight.setLight(state);
+//#         if (cf.phoneManufacturer==Config.SONYE || cf.phoneManufacturer==Config.NOKIA) {
+//#             new KeepLightTask().start();
 //#          }
 //#endif
     }
@@ -2445,13 +2443,6 @@ public class Roster
 //#         if (cf.autoAwayType!=Config.AWAY_OFF) {
 //#             try {
 //#                 autostatus.destroyTask();
-//#             } catch (Exception ex) {}
-//#         }
-//#endif
-//#ifdef SE_LIGHT
-//#         if (cf.phoneManufacturer==Config.SONYE || cf.phoneManufacturer==Config.NOKIA) {
-//#             try {
-//#                 selight.destroyTask();
 //#             } catch (Exception ex) {}
 //#         }
 //#endif
