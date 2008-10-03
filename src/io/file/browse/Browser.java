@@ -70,8 +70,8 @@ public class Browser
     Command cmdView=new Command(SR.MS_VIEW, Command.SCREEN, 3);
     Command cmdRoot=new Command(SR.MS_ROOT, Command.SCREEN, 4);
     Command cmdDelete=new Command(SR.MS_DELETE, Command.SCREEN, 5);
-    Command cmdBack=new Command(SR.MS_BACK, Command.BACK, 98);
-    Command cmdCancel=new Command(SR.MS_CANCEL, Command.EXIT, 99);
+    Command cmdCancel=new Command(SR.MS_BACK, Command.BACK, 98);
+    Command cmdExit=new Command(SR.MS_CANCEL, Command.EXIT, 99);
 
     private String path;
     private BrowserListener browserListener;
@@ -101,7 +101,7 @@ public class Browser
         }
 	addCommand(cmdDelete);
         addCommand(cmdRoot);
-        addCommand(cmdBack);
+        addCommand(cmdExit);
         addCommand(cmdCancel);
         setCommandListener(this);
 
@@ -123,7 +123,7 @@ public class Browser
     
     protected VirtualElement getItemRef(int index) { return (VirtualElement) dir.elementAt(index); }
     
-    private void cmdBack() {
+    public void cmdCancel() {
         if (!chDir("../")) {
             destroyView();
             return;
@@ -132,7 +132,7 @@ public class Browser
     }
 
     public void commandAction(Command command, Displayable displayable) {
-        if (command==cmdBack) cmdBack();
+        if (command==cmdCancel) cmdCancel();
 
         if (command==cmdRoot) {
             path="";
@@ -159,7 +159,7 @@ public class Browser
         if (command==cmdView) {
             showFile();
         }
-        if (command==cmdCancel) { destroyView(); }
+        if (command==cmdExit) { destroyView(); }
     }
 
     

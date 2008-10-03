@@ -1404,20 +1404,20 @@ class TimerTaskRotate extends Thread{
     
     public void run() {
         while (true) {
-            try {  sleep(250);  } catch (Exception e) {}
+            try {  sleep(250);  } catch (Exception e) { instance=null; break; }
 
             synchronized (this) {
                 if (scroll==0) {
                     if (        instance.scroll()
                             ||  instance.balloon()
                         )
-                        attachedList.redraw();
+                        try { attachedList.redraw(); } catch (Exception e) { instance=null; break; }
                 } else {
                     scroll --;                    
                 }
                 if (attachedList.reconnectRedraw) {
                     attachedList.reconnectRedraw=false;
-                    attachedList.redraw();
+                    try { attachedList.redraw(); } catch (Exception e) { instance=null; break; }
                 }
             }
         }

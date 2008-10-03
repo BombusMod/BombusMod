@@ -317,9 +317,23 @@ public class Contact extends IconTextElement{
                     .append(" (")
                     .append(m.getTime())
                     .append(") ");
-                if (m.subject!=null)
-                    who.append(m.subject);
+                if (m.subject!=null) who.append(m.subject);
                 m.subject=who.toString();
+                
+                if (m.body.startsWith("/me ")) {
+                    StringBuffer b=new StringBuffer();
+//#if NICK_COLORS
+                    b.append("\01");
+//#endif
+                    b.append(getName());
+//#if NICK_COLORS
+                    b.append("\02");
+//#endif
+                    b.insert(0,'*');
+                    b.append(m.body.substring(3));
+                    m.body=b.toString();
+                    b=null;
+                }
             }
         } else {
             status=Presence.PRESENCE_ONLINE;
