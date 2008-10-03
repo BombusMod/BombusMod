@@ -412,7 +412,7 @@ public class RosterItemActions extends Menu {
                     break;
 //#ifdef SERVICE_DISCOVERY
                 case 30:
-                    new ServiceDiscovery(display, c.getJid(), "http://jabber.org/protocol/commands");
+                    new ServiceDiscovery(display, c.getJid(), "http://jabber.org/protocol/commands", false);
                     return;
 //#endif
 /*                case 1003: 

@@ -112,7 +112,7 @@ public class RosterToolsMenu extends Menu {
         addItem(SR.MS_OPTIONS, 4, menuIcons.ICON_SETTINGS);
         
         if (connected)
-            addItem(SR.MS_SEARCH, 5, menuIcons.ICON_VCARD);
+            addItem(SR.MS_USERS_SEARCH, 5, menuIcons.ICON_VCARD);
 //#if (HISTORY)
 //#         if (cf.saveHistory)
 //#             addItem(SR.MS_HISTORY_OPTIONS, 6, menuIcons.ICON_HISTORY);
@@ -186,7 +186,7 @@ public class RosterToolsMenu extends Menu {
         switch (index) {
 //#ifdef SERVICE_DISCOVERY
             case 0: // Service Discovery
-                if (connected) new ServiceDiscovery(display, null, null);
+                if (connected) new ServiceDiscovery(display, null, null, false);
                 break;
 //#endif
 //#ifdef PRIVACY

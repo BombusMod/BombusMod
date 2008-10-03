@@ -189,7 +189,7 @@ public class Bookmarks
             return;
         }
 //#ifdef SERVICE_DISCOVERY
-        else if (c==cmdDisco) new ServiceDiscovery(display, roomJid, null);
+        else if (c==cmdDisco) new ServiceDiscovery(display, roomJid, null, false);
 //#endif
         else if (c==cmdConfigure) new QueryConfigForm(display, roomJid);
         else if (c==cmdRoomOwners) new Affiliations(display, this, roomJid, (short)1);  

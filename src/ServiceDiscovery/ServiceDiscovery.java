@@ -105,7 +105,7 @@ public class ServiceDiscovery
 
     
     /** Creates a new instance of ServiceDiscovery */
-    public ServiceDiscovery(Display display, String service, String node) {
+    public ServiceDiscovery(Display display, String service, String node, boolean search) {
         super(display);
 
         setMainBarItem(new MainBar(3));
@@ -133,8 +133,11 @@ public class ServiceDiscovery
         features=new Vector();
         
         this.node=node;
-         
-        if (service!=null) {
+        
+        if (service!=null && search) {
+            this.service=service;
+            requestQuery(NS_SRCH, "discosrch");
+        } else if (service!=null) {
             this.service=service;
             requestQuery(NS_INFO, "disco");
         } else {

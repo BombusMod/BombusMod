@@ -147,7 +147,7 @@ public class userKeyExec {
                 break;
             case 8: 
 //#ifdef SERVICE_DISCOVERY
-                if (connected) new ServiceDiscovery(display, null, null);
+                if (connected) new ServiceDiscovery(display, null, null, false);
 //#endif
                 break;
             case 9: 

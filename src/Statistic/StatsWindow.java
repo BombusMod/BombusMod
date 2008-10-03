@@ -31,9 +31,9 @@ import Client.Config;
 import Client.StaticData;
 import Info.Version;
 //#ifndef MENU_LISTENER
-//# import javax.microedition.lcdui.Command;
+import javax.microedition.lcdui.Command;
 //#else
-import Menu.Command;
+//# import Menu.Command;
 //#endif
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
@@ -51,16 +51,16 @@ public class StatsWindow
         extends DefForm {
 
 //#ifdef PLUGINS
-    public static String plugin = new String("PLUGIN_STATS");
+//#     public static String plugin = new String("PLUGIN_STATS");
 //#endif
     
     Stats st=Stats.getInstance();
     
 //#ifdef CLIPBOARD
 //#ifndef MENU
-    public Command cmdOk = new Command(SR.MS_COPY, Command.OK, 1);
+//#     public Command cmdOk = new Command(SR.MS_COPY, Command.OK, 1);
 //#endif
-    private ClipBoard clipboard=ClipBoard.getInstance();
+//#     private ClipBoard clipboard=ClipBoard.getInstance();
 //#endif
     
     MultiLine item=null;
@@ -84,20 +84,24 @@ public class StatsWindow
         
         item=new MultiLine(SR.MS_CONN, Integer.toString(st.getSessionsCount()), super.superWidth); item.selectable=true; itemsList.addElement(item);
         
+        if (StaticData.getInstance().roster.isLoggedIn()) {
+            item=new MultiLine(SR.MS_CONNECTED, StaticData.getInstance().roster.theStream.getConnectionData(), super.superWidth); item.selectable=true; itemsList.addElement(item);
+        }
+        
         item=new MultiLine(SR.MS_STARTED, StaticData.getInstance().roster.startTime, super.superWidth); item.selectable=true; itemsList.addElement(item);
         
 //#ifdef CLIPBOARD
-        if (Config.getInstance().useClipBoard) {
-            clipboard=ClipBoard.getInstance(); 
-        }
+//#         if (Config.getInstance().useClipBoard) {
+//#             clipboard=ClipBoard.getInstance(); 
+//#         }
 //#endif
         
 //#ifndef MENU
         super.removeCommand(super.cmdOk);
 //#ifdef CLIPBOARD
-        if (Config.getInstance().useClipBoard) {
-            addCommand(cmdOk);
-        }
+//#         if (Config.getInstance().useClipBoard) {
+//#             addCommand(cmdOk);
+//#         }
 //#endif
 //#endif
 
@@ -107,19 +111,19 @@ public class StatsWindow
 
 //#ifdef CLIPBOARD
 //#ifdef MENU_LISTENER
-    public String touchLeftCommand(){ return SR.MS_COPY; }
-    
-    public void touchLeftPressed(){ cmdOk(); }
+//#     public String touchLeftCommand(){ return SR.MS_COPY; }
+//#     
+//#     public void touchLeftPressed(){ cmdOk(); }
 //#endif
-    
-    public void cmdOk(){
-        StringBuffer copy=new StringBuffer();
-        for (int i=0;i<itemsList.size();i++) {
-            copy.append(((MultiLine)itemsList.elementAt(i)).toString());
-        }
-        clipboard.setClipBoard(copy.toString());
-        destroyView();
-    }
+//#     
+//#     public void cmdOk(){
+//#         StringBuffer copy=new StringBuffer();
+//#         for (int i=0;i<itemsList.size();i++) {
+//#             copy.append(((MultiLine)itemsList.elementAt(i)).toString());
+//#         }
+//#         clipboard.setClipBoard(copy.toString());
+//#         destroyView();
+//#     }
 //#endif
     
     public void commandAction(Command command, Displayable displayable) {

@@ -315,6 +315,10 @@ public class JabberStream extends XmppParser implements Runnable {
     public String getStreamStats() {
         return iostream.getStreamStats();
     }
+    
+    public String getConnectionData() {
+        return iostream.getConnectionData();
+    }
 
     public long getBytes() {
         return iostream.getBytes();

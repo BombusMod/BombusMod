@@ -168,6 +168,22 @@ public class Utf8IOStream {
         }
         return stats.toString();
     }
+    
+    public String getConnectionData() {
+        StringBuffer stats=new StringBuffer();
+        try {
+            stats.append(((SocketConnection)connection).getLocalAddress())
+                 .append(":")
+                 .append(((SocketConnection)connection).getLocalPort())
+                 .append("->")
+                 .append(((SocketConnection)connection).getAddress())
+                 .append(":")
+                 .append(((SocketConnection)connection).getPort());
+        } catch (Exception ex) {
+            stats.append("unknown");
+        }
+        return stats.toString();
+    }
 
     public long getBytes() {
         long startBytes=bytesSent+bytesRecv;
