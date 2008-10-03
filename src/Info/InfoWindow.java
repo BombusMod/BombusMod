@@ -117,9 +117,7 @@ public class InfoWindow
 //#         }
 //#endif
 //#endif
-        enableListWrapping(false);
-        
-        moveCursorTo(0);
+
         attachDisplay(display);
         this.parentView=pView;
     }

@@ -26,7 +26,7 @@
 
 package Client;
 
-public class KeepLightTask extends Thread {    
+public class KeepLightTask extends Thread {
     public void run() {
         while(true){
             try {

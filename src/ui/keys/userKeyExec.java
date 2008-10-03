@@ -29,7 +29,9 @@ package ui.keys;
 import Client.Config;
 import Client.ConfigForm;
 import Client.StaticData;
-import Client.Stats;
+//#ifdef STATS
+//# import Statistic.Stats;
+//#endif
 import Colors.ColorTheme;
 //#ifdef CONSOLE
 //# import Console.XMLList;
@@ -39,6 +41,7 @@ import PrivacyLists.PrivacySelect;
 //#endif
 //#ifdef SERVICE_DISCOVERY
 import ServiceDiscovery.ServiceDiscovery;
+import Statistic.StatsWindow;
 //#endif
 import java.util.Enumeration;
 import java.util.Vector;
@@ -122,7 +125,7 @@ public class userKeyExec {
 //#ifdef PLUGINS
 //#                 if (sd.Stats)
 //#endif
-//#                     Stats.getInstance().showStats();
+//#                     new StatsWindow(display, sd.roster);
 //#                 break;
 //#endif
 //#endif

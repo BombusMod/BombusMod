@@ -23,8 +23,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-package Client;
+package Statistic;
 
+import Client.*;
 import io.NvStorage;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -119,34 +120,4 @@ public class Stats {
         }
         return 0;
     }
-    
-    
-//#ifdef POPUPS
-    public void showStats() {
-        StringBuffer str= new StringBuffer(SR.MS_STARTED+StaticData.getInstance().roster.startTime);
-        Stats stats=Stats.getInstance();
-        str.append("\n")
-           .append(SR.MS_TRAFFIC_STATS)
-           .append("\n")
-           .append(SR.MS_ALL)
-           .append(stats.getSessionsCount())
-           .append(SR.MS_CONN)
-
-           .append(StringUtils.getSizeString(stats.getAllTraffic()))
-
-           .append("\n")
-           .append(SR.MS_PREVIOUS_)
-           .append(StringUtils.getSizeString(stats.getLatest()))
-           
-           .append("\n")
-           .append(SR.MS_CURRENT)
-           .append(StringUtils.getSizeString(Stats.getGPRS()));
-
-        if (StaticData.getInstance().roster.isLoggedIn())
-            str.append(StaticData.getInstance().roster.theStream.getStreamStats());
-
-        VirtualList.setWobble(1, null, str.toString());
-        str=null;
-    }
-//#endif
 }

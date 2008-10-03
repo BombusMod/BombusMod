@@ -47,6 +47,8 @@ import ServiceDiscovery.ServiceDiscovery;
 //#ifdef PEP
 //# import Mood.MoodList;
 //#endif
+import Statistic.Stats;
+import Statistic.StatsWindow;
 import VCard.VCard;
 import VCard.VCardEdit;
 //#ifdef NEW_SKIN
@@ -108,68 +110,69 @@ public class RosterToolsMenu extends Menu {
         if (connected)
             addItem(SR.MS_MY_VCARD, 3, menuIcons.ICON_VCARD);
         addItem(SR.MS_OPTIONS, 4, menuIcons.ICON_SETTINGS);
+        
+        if (connected)
+            addItem(SR.MS_SEARCH, 5, menuIcons.ICON_VCARD);
 //#if (HISTORY)
 //#         if (cf.saveHistory)
-//#             addItem(SR.MS_HISTORY_OPTIONS, 5, menuIcons.ICON_HISTORY);
+//#             addItem(SR.MS_HISTORY_OPTIONS, 6, menuIcons.ICON_HISTORY);
 //#endif
-       addItem(SR.MS_FONTS_OPTIONS, 6, menuIcons.ICON_FONTS);
+       addItem(SR.MS_FONTS_OPTIONS, 7, menuIcons.ICON_FONTS);
 //#if (FILE_IO)
-        addItem(SR.MS_FILE_MANAGER, 7, menuIcons.ICON_FILEMAN);
+        addItem(SR.MS_FILE_MANAGER, 8, menuIcons.ICON_FILEMAN);
 //#endif
 //#if (FILE_IO && FILE_TRANSFER)
         if (connected && cf.fileTransfer)
 //#ifdef PLUGINS
 //#             if (sd.FileTransfer)
 //#endif
-            addItem(SR.MS_FILE_TRANSFERS, 8, menuIcons.ICON_FT);
+            addItem(SR.MS_FILE_TRANSFERS, 9, menuIcons.ICON_FT);
 //#endif
         
-        addItem(SR.MS_COLOR_TUNE, 9, menuIcons.ICON_COLOR_TUNE);
+        addItem(SR.MS_COLOR_TUNE, 10, menuIcons.ICON_COLOR_TUNE);
 
 //#if IMPORT_EXPORT
 //#ifdef PLUGINS
 //#         if (sd.IE)
 //#endif
-//#             addItem(SR.MS_IMPORT_EXPORT, 10, menuIcons.ICON_IE);
+//#             addItem(SR.MS_IMPORT_EXPORT, 11, menuIcons.ICON_IE);
 //#endif
-        addItem(SR.MS_NOTICES_OPTIONS, 11, menuIcons.ICON_NOTIFY);
-//#ifdef POPUPS
+        addItem(SR.MS_NOTICES_OPTIONS, 12, menuIcons.ICON_NOTIFY);
 //#ifdef STATS
 //#ifdef PLUGINS
 //#         if (sd.Stats)
 //#endif
-//#             addItem(SR.MS_STATS, 12, menuIcons.ICON_STAT);
-//#endif
+//#             addItem(SR.MS_STATS, 13, menuIcons.ICON_STAT);
 //#endif
 //#ifdef CHECK_VERSION
 //#ifdef PLUGINS
 //#         if (sd.Upgrade)
 //#endif
-//#             addItem(SR.MS_CHECK_UPDATE, 13, menuIcons.ICON_CHECK_UPD);
+//#             addItem(SR.MS_CHECK_UPDATE, 14, menuIcons.ICON_CHECK_UPD);
 //#ifdef PLUGINS
 //#         if (sd.Upgrade)
 //#endif
 //#             if (cf.getStringProperty("Bombus-Upgrade", "123")!="123")
-//#                 addItem(SR.MS_BUILD_NEW, 14, menuIcons.ICON_BUILD_NEW);
+//#                 addItem(SR.MS_BUILD_NEW, 15, menuIcons.ICON_BUILD_NEW);
 //#endif
 //#ifdef USER_KEYS
 //#         if (cf.userKeys)
-//#             addItem(SR.MS_CUSTOM_KEYS, 15, menuIcons.ICON_KEYS);
+//#             addItem(SR.MS_CUSTOM_KEYS, 16, menuIcons.ICON_KEYS);
 //#endif
 //#if SASL_XGOOGLETOKEN
 //#         if (sd.account.isGmail() && connected)
-//#             addItem(SR.MS_CHECK_GOOGLE_MAIL, 16, menuIcons.ICON_GMAIL);
+//#             addItem(SR.MS_CHECK_GOOGLE_MAIL, 17, menuIcons.ICON_GMAIL);
 //#endif 
 //#if AUTOTASK
-//#         addItem(SR.MS_AUTOTASKS, 17, menuIcons.ICON_TASKS);
+//#         addItem(SR.MS_AUTOTASKS, 18, menuIcons.ICON_TASKS);
 //#endif
 //#ifdef CONSOLE
 //#ifdef PLUGINS
 //#         if (sd.Console)
 //#endif
-//#             addItem(SR.MS_XML_CONSOLE, 18, menuIcons.ICON_CONCOLE);
+//#             addItem(SR.MS_XML_CONSOLE, 19, menuIcons.ICON_CONCOLE);
 //#endif
-        addItem(SR.MS_BREAK_CONECTION, 19, menuIcons.ICON_RECONNECT);
+        addItem(SR.MS_BREAK_CONECTION, 20, menuIcons.ICON_RECONNECT);
         attachDisplay(display);
         this.parentView=pView;
     }
@@ -210,71 +213,72 @@ public class RosterToolsMenu extends Menu {
             case 4:
                 new ConfigForm(display, parentView);
                 return;
+            case 5: //search
+                new SearchForm(display, parentView);
+                return;
 //#if (HISTORY)
-//#             case 5: //history
+//#             case 6: //history
 //#                 new HistoryConfig(display, parentView);
 //#                 return;
 //#endif
-            case 6:
+            case 7:
                 new ConfigFonts(display, parentView);
                 return;
 //#if (FILE_IO)
-            case 7:
+            case 8:
                 new io.file.browse.Browser(null, display, sd.roster, null, false);
                 return;
 //#endif
 //#if (FILE_TRANSFER)
-            case 8:
+            case 9:
                 new io.file.transfer.TransferManager(display);
                 return;
 //#endif
-            case 9:
+            case 10:
                 new ColorConfigForm(display, parentView);
                 return;
 //#if IMPORT_EXPORT
-//#             case 10:
+//#             case 11:
 //#                 new IE.IEMenu(display, parentView);
 //#                 return; 
 //#endif
-            case 11:
+            case 12:
                 new AlertCustomizeForm(display, parentView);
                 return;
-//#ifdef POPUPS
 //#ifdef STATS
-//#             case 12: //traffic stats
-//#                 Stats.getInstance().showStats();
+//#             case 13: //traffic stats
+//#                 new StatsWindow(display, parentView);
 //#                 return;
-//#endif
 //#endif
 //#ifdef CHECK_VERSION
-//#             case 13:
+//#             case 14:
 //#                 new Upgrade(display, parentView, false);
 //#                 return;
-//#             case 14:
+//#             case 15:
 //#                 new Upgrade(display, parentView, true);
 //#                 return;
 //#endif
 //#ifdef USER_KEYS
-//#             case 15:
+//#             case 16:
 //#                 new userKeysList(display);
 //#                 return;
 //#endif
 //#if SASL_XGOOGLETOKEN
-//#             case 16: //mail check
+//#             case 17: //mail check
 //#                 sd.roster.theStream.send(IqGmail.query());
 //# 		return; 
 //#endif
 //#if AUTOTASK
-//#             case 17:
+//#             case 18:
 //#                 new AutoTaskForm(display, parentView);
 //#                 return;
 //#endif
 //#ifdef CONSOLE
-//#             case 18:
+//#             case 19:
 //#                 new XMLList(display, parentView);
 //#                 return;
 //#endif
-            case 19:
+            case 20:
                 sd.roster.errorLog(SR.MS_SIMULATED_BREAK);
                 sd.roster.doReconnect();//connectionTerminated(new Exception(SR.MS_SIMULATED_BREAK));
                 return;

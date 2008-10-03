@@ -155,10 +155,10 @@ public class Utf8IOStream {
                 recv+=z.getTotalIn()-z.getTotalOut();
                 ZOutputStream zo = (ZOutputStream) outStream;
                 sent+=zo.getTotalOut()-zo.getTotalIn();
-                stats.append("\nZLib:\nin: "); appendZlibStats(stats, z.getTotalIn(), z.getTotalOut(), true);
-                stats.append("\nout: "); appendZlibStats(stats, zo.getTotalOut(), zo.getTotalIn(), false);
+                stats.append("ZLib:in: "); appendZlibStats(stats, z.getTotalIn(), z.getTotalOut(), true);
+                stats.append(" out: "); appendZlibStats(stats, zo.getTotalOut(), zo.getTotalIn(), false);
             }
-            stats.append("\nstream: \nin: ")
+            stats.append("in: ")
                  .append(recv)
                  .append(" out: ")
                  .append(sent);

@@ -43,7 +43,7 @@ import Conference.MucContact;
 import Conference.affiliation.ConferenceQuickPrivelegeModify;
 import Conference.ConferenceForm;
 //#endif
-
+import Statistic.Stats;
 //#ifdef NEW_SKIN
 //# import images.MenuActionsIcons;
 //#else
