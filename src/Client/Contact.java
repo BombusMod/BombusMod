@@ -311,21 +311,22 @@ public class Contact extends IconTextElement{
                 if (msgs.size()==1)
                     if (((Msg)msgs.firstElement()).isPresence())
                         first_replace=true;
-            } else if (cf.showNickNames) {
-                StringBuffer who=new StringBuffer();
-                who.append((m.messageType==Msg.MESSAGE_TYPE_OUT)?sd.account.getNickName():getName())
-                    .append(" (")
-                    .append(m.getTime())
-                    .append(") ");
-                if (m.subject!=null) who.append(m.subject);
-                m.subject=who.toString();
-                
+            } else {
+                if (cf.showNickNames) {
+                    StringBuffer who=new StringBuffer();
+                    who.append((m.messageType==Msg.MESSAGE_TYPE_OUT)?sd.account.getNickName():getName())
+                        .append(" (")
+                        .append(m.getTime())
+                        .append(") ");
+                    if (m.subject!=null) who.append(m.subject);
+                    m.subject=who.toString();
+                }
                 if (m.body.startsWith("/me ")) {
                     StringBuffer b=new StringBuffer();
 //#if NICK_COLORS
                     b.append("\01");
 //#endif
-                    b.append(getName());
+                    b.append((m.messageType==Msg.MESSAGE_TYPE_OUT)?sd.account.getNickName():getName());
 //#if NICK_COLORS
                     b.append("\02");
 //#endif
