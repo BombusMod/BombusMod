@@ -44,11 +44,7 @@ import Conference.affiliation.ConferenceQuickPrivelegeModify;
 import Conference.ConferenceForm;
 //#endif
 import Statistic.Stats;
-//#ifdef NEW_SKIN
-//# import images.MenuActionsIcons;
-//#else
 import images.MenuIcons;
-//#endif
 
 //#ifdef ARCHIVE
 import Archive.ArchiveList;
@@ -241,6 +237,8 @@ public class Roster
 
         hContacts=null;
         hContacts=new Vector();
+        
+        groups=null;
         groups=new Groups();
         
         vContacts=null;
@@ -277,12 +275,6 @@ public class Roster
 //#endif
     }
     
-//#ifdef NEW_SKIN
-//#     //MenuActionsIcons menuIcons=MenuActionsIcons.getInstance();
-//#else
-    //MenuIcons menuIcons=MenuIcons.getInstance();
-//#endif
-    
     public void commandState(){
 //#ifdef MENU_LISTENER
 //#         menuCommands.removeAllElements();
@@ -301,7 +293,10 @@ public class Roster
         addCommand(cmdStatus);
         addCommand(cmdActiveContacts);
 //#ifndef WMUC
-        addCommand(cmdConference);
+//#ifdef MENU_LISTENER
+//#         if (isLoggedIn())
+//#endif
+            addCommand(cmdConference);
 //#endif
         addCommand(cmdAlert);
 //#ifdef ARCHIVE
@@ -310,7 +305,10 @@ public class Roster
 //#endif
             addCommand(cmdArchive);
 //#endif
-        addCommand(cmdAdd);
+//#ifdef MENU_LISTENER
+//#         if (isLoggedIn())
+//#endif
+            addCommand(cmdAdd);
         addCommand(cmdAccount);
         addCommand(cmdTools);
         addCommand(cmdInfo);
@@ -416,14 +414,20 @@ public class Roster
 	synchronized (hContacts) {
             hContacts=null;
 	    hContacts=new Vector();
+            
             groups=null;
 	    groups=new Groups();
+            
             vContacts=null;
 	    vContacts=new Vector(); // just for displaying
+            
 	    bookmarks=null;
 	}
 	setMyJid(new Jid(sd.account.getJid()));
 	updateContact(sd.account.getNick(), myJid.getBareJid(), SR.MS_SELF_CONTACT, "self", false);
+    }
+    
+    public void systemGC() {
 //#ifndef WSYSTEMGC
 	System.gc();
         try { Thread.sleep(50); } catch (InterruptedException e){}
@@ -477,9 +481,9 @@ public class Roster
         mainbar.setElementAt(messageIcon, 0);
         if (cf.phoneManufacturer==Config.WINDOWS) {
             if (messageCount==0) {
-                setTitle("Bombus");
+                setTitle("BombusMod");
             } else {
-                setTitle("Bombus "+getHeaderString());
+                setTitle("BombusMod "+getHeaderString());
             }
         }
     }
@@ -609,7 +613,7 @@ public class Roster
         if (reEnumerator==null) reEnumerator=new ReEnumerator();
         reEnumerator.queueEnum();
         
-        System.gc();
+        systemGC();
     }
     
     
@@ -918,10 +922,7 @@ public class Roster
 //#             autoAway=false;
 //#             autoXa=false;
 //#endif
-//#ifndef WSYSTEMGC
-            System.gc();
-            try { Thread.sleep(50); } catch (InterruptedException e){}
-//#endif
+            systemGC();
         }
         Contact c=selfContact();
         c.setStatus(myStatus);
@@ -1164,10 +1165,9 @@ public class Roster
             //e.printStackTrace();
         }
         theStream=null;
-//#ifndef WSYSTEMGC
-        System.gc();
-        try { Thread.sleep(50); } catch (InterruptedException e){}
-//#endif
+        
+        systemGC();
+        
         doReconnect=false;
         setQuerySign(false);
         redraw();
@@ -1786,8 +1786,7 @@ public class Roster
 //#endif
 //#ifndef WSYSTEMGC
         if (cf.ghostMotor) {
-            System.gc(); 
-            try { Thread.sleep(20); } catch (InterruptedException e){}
+            systemGC();
         }
 //#endif
         if (countNewMsgs()) reEnumRoster();
@@ -2030,8 +2029,7 @@ public class Roster
         currentReconnect++;
         
         String topBar="("+currentReconnect+"/"+cf.reconnectCount+") Reconnecting";
-        Msg m=new Msg(Msg.MESSAGE_TYPE_OUT, "local", topBar, error.toString());
-        messageStore(selfContact(), m);
+        errorLog(topBar+"\n"+error.toString());
 
         reconnectWindow.getInstance().startReconnect();
         //new MyReconnect(topBar, error.toString(), display);
@@ -2174,10 +2172,9 @@ public class Roster
                     }
                 }
                 redraw();
-//#ifndef WSYSTEMGC
-                System.gc();
-                try { Thread.sleep(50); } catch (InterruptedException e){}
-//#endif
+
+                systemGC();
+                
                 if (messageCount==0) return;
                 Object atcursor=getFocusedObject();
                 

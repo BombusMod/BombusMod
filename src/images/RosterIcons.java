@@ -47,11 +47,8 @@ public class RosterIcons extends ImageList{
     }
 
     private final static int ICONS_IN_ROW=8;
-//#ifndef NEW_SKIN
     private final static int ICONS_IN_COL=6;
-//#else
-//#     private final static int ICONS_IN_COL=7;
-//#endif
+
     private Hashtable transports;
     private Vector transpSkins;
     /** Creates a new instance of RosterIcons */
@@ -60,9 +57,7 @@ public class RosterIcons extends ImageList{
         
         transports=new StringLoader().hashtableLoader("/images/transports.txt"); //new Hashtable();
         transpSkins=new Vector(transports.size());
-//#ifndef NEW_SKIN
         transports.put("conference", new Integer(ICON_GROUPCHAT_INDEX));
-//#endif
     }
     
     public int getTransportIndex(String name){
@@ -95,9 +90,6 @@ public class RosterIcons extends ImageList{
     public static final int ICON_TRASHCAN_INDEX = 0x12;
     public static final int ICON_PROGRESS_INDEX = 0x13;
     public static final int ICON_MODERATOR_INDEX = 0x50;
-//#ifdef NEW_SKIN
-//#     public static final int ICON_VISITOR_INDEX = 0x60;
-//#endif
     public static final int ICON_PRIVACY_ACTIVE = 0x46;
     public static final int ICON_ROOMLIST=ICON_PRIVACY_ACTIVE;
     public static final int ICON_PRIVACY_PASSIVE = 0x47;

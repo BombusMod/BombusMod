@@ -279,7 +279,8 @@ public class ConfigForm
 //#endif
 //#             itemsList.addElement(userKeys);
 //#endif
-        lightState = new CheckBox(SR.MS_FLASHLIGHT, cf.lightState); itemsList.addElement(lightState);
+        lightState = new CheckBox(SR.MS_FLASHLIGHT, cf.lightState);
+        if (cf.phoneManufacturer==Config.SIEMENS || cf.phoneManufacturer==Config.SIEMENS2 || cf.phoneManufacturer==Config.SONYE || cf.phoneManufacturer==Config.NOKIA) itemsList.addElement(lightState);
 //#ifdef FILE_TRANSFER
         fileTransfer = new CheckBox(SR.MS_FILE_TRANSFERS, cf.fileTransfer); 
 //#ifdef PLUGINS

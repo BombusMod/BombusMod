@@ -249,9 +249,6 @@ public class InfoWindow
 //#ifdef MENU_LISTENER
 //#         abilitiesList.addElement((String)"MENU_LISTENER");
 //#endif
-//#ifdef NEW_SKIN
-//#         abilitiesList.addElement((String)"NEW_SKIN");
-//#endif
 //#ifdef NICK_COLORS
         abilitiesList.addElement((String)"NICK_COLORS");
 //#endif

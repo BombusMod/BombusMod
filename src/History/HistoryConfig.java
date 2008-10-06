@@ -134,11 +134,13 @@ public class HistoryConfig
 //#ifdef MENU_LISTENER
 //#     public void commandState() {
 //#         super.commandState();
+//#         removeCommand(cmdCancel);
 //#         addCommand(cmdPath);
+//#         addCommand(cmdCancel);        
 //#     }
+//#     
+//#     public void touchLeftPressed(){ showMenu(); }
 //# 
-//#     public String touchLeftCommand() {
-//#         return SR.MS_MENU;
-//#     }
+//#     public String touchLeftCommand() { return SR.MS_MENU; }
 //#endif
 }

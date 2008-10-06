@@ -304,5 +304,7 @@ public class Browser
 //#     public void showMenu() {
 //#         new MyMenu(display, parentView, this, SR.MS_DISCO, null, menuCommands);
 //#     }
+//#     
+//#     public void touchRightPressed() { cmdCancel(); }
 //#endif
 }

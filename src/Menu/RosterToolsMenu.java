@@ -51,11 +51,7 @@ import Statistic.Stats;
 import Statistic.StatsWindow;
 import VCard.VCard;
 import VCard.VCardEdit;
-//#ifdef NEW_SKIN
-//# import images.MenuActionsIcons;
-//#else
 import images.MenuIcons;
-//#endif
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
@@ -74,19 +70,12 @@ import ui.ImageList;
 public class RosterToolsMenu extends Menu {
     Config cf;
     StaticData sd=StaticData.getInstance();
-    
-//#ifdef NEW_SKIN
-//#     MenuActionsIcons menuIcons=MenuActionsIcons.getInstance();
-//#else
+
     MenuIcons menuIcons=MenuIcons.getInstance();
-//#endif
 
     public RosterToolsMenu(Display display, Displayable pView) {
-//#ifdef NEW_SKIN
-//#         super(SR.MS_TOOLS, MenuActionsIcons.getInstance());
-//#else
         super(SR.MS_TOOLS, MenuIcons.getInstance());
-//#endif
+
         cf=Config.getInstance();
         boolean connected=sd.roster.isLoggedIn();
 //#ifdef SERVICE_DISCOVERY

@@ -27,11 +27,7 @@
 
 package Client;
 import Alerts.AlertProfile;
-//#ifndef NEW_SKIN
 import images.ActionsIcons;
-//#else
-//# import images.MenuActionsIcons;
-//#endif
 import images.RosterIcons;
 //#ifdef SMILES
 import images.SmilesIcons;
@@ -262,11 +258,7 @@ public class Config {
             case SONYE:
                 //prefetch images
                 RosterIcons.getInstance();
-//#ifndef NEW_SKIN
                 ActionsIcons.getInstance();
-//#else
-//#                 MenuActionsIcons.getInstance();
-//#endif
 //#ifdef SMILES
                 if (smiles) SmilesIcons.getInstance();
 //#endif

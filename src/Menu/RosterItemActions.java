@@ -43,11 +43,7 @@ import Conference.affiliation.Affiliations;
 import ServiceDiscovery.ServiceDiscovery;
 //#endif
 
-//#ifdef NEW_SKIN
-//# import images.MenuActionsIcons;
-//#else
 import images.ActionsIcons;
-//#endif
 
 //#if FILE_TRANSFER
 import io.file.transfer.TransferImage;
@@ -89,23 +85,16 @@ public class RosterItemActions extends Menu {
     private int action;
     
     StaticData sd=StaticData.getInstance();
-    
-//#ifdef NEW_SKIN
-//#     MenuActionsIcons menuIcons=MenuActionsIcons.getInstance();
-//#else
+
     ActionsIcons menuIcons=ActionsIcons.getInstance();
-//#endif
     
     Config cf=Config.getInstance();
     
     /** Creates a new instance of RosterItemActions */
     public RosterItemActions(Display display, Displayable pView, Object item, int action) {
-//#ifdef NEW_SKIN
-//#         super(item.toString(), MenuActionsIcons.getInstance());
-//#else
         super(item.toString(), ActionsIcons.getInstance());
-//#endif
-	this.item=item;
+
+        this.item=item;
         this.action=action;
         
         if (!sd.roster.isLoggedIn()) return;
