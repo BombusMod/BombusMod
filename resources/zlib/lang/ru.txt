@@ -451,7 +451,7 @@ AutoStatus Message	своё сообщение автостатуса
 Memory:	Память:
 Free: 	Своб.: 
 Total: 	Всего: 
-conn., 	соед., 
+Session(s): 	Сессий: 
 Description	Описание
 User	Пользователь
 Import/Export	Импорт/Экспорт данных

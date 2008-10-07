@@ -107,10 +107,6 @@ public class ContactMessageList extends MessageList {
         sd.roster.activeContact=contact;
 
         cf=Config.getInstance();
-//#ifdef CLIPBOARD
-//#         if (cf.useClipBoard)
-//#             clipboard=ClipBoard.getInstance();
-//#endif
         
         MainBar mainbar=new MainBar(contact);
         setMainBarItem(mainbar);

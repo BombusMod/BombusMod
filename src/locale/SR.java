@@ -551,7 +551,7 @@ public class SR {
     public static String MS_FREE = loadString("Free: ");
     public static String MS_TOTAL=loadString("Total: ");
 
-    public static String MS_CONN=loadString("conn., ");
+    public static String MS_CONN=loadString("Session(s): ");
     public static String MS_DESCRIPTION=loadString("Description");
     
 //2008-01-24
@@ -682,9 +682,10 @@ public class SR {
 //#     public static String MS_USERACTIVITY=loadString("User activity");
 //#     
 //#     public static String MS_PEP_NOT_SUPPORTED = loadString("Personal events not supported");
-//# 
-//#     public static String MS_VIP_GROUP =  loadString("VIP");
 //#endif
+    
+    public static String MS_VIP_GROUP =  loadString("VIP");
+    public static String MS_ENABLE_DISABLE =  loadString("Enable/Disable");
     
     private SR() { }
     

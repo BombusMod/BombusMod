@@ -143,8 +143,7 @@ public class AlertCustomizeForm
         itemsList.addElement(new SpacerItem(10));
         IQNotify=new CheckBox(SR.MS_SHOW_IQ_REQUESTS, cf.IQNotify); itemsList.addElement(IQNotify);
 
-        addCommand(cmdTest);
-        setCommandListener(this);
+        commandState();
 
         attachDisplay(display);
         this.parentView=pView;
@@ -216,19 +215,19 @@ public class AlertCustomizeForm
 //#endif
         new EventNotify(display, soundType, soundFile, soundVol, 0).startNotify();
     }
-    
+   
+    public void commandState(){
+        super.commandState();
+        removeCommand(cmdCancel);
+        removeCommand(cmdOk);
+        
+        if (playable()>-1)
+            addCommand(cmdTest);
+        addCommand(cmdSave);
+        addCommand(cmdCancel);
+    }
     
 //#ifdef MENU_LISTENER
-//#     public void commandState(){
-//#         super.commandState();
-//#         removeCommand(cmdCancel);
-//#         removeCommand(cmdOk);
-//#         if (playable()>-1)
-//#             addCommand(cmdTest);
-//#         addCommand(cmdSave);
-//#         addCommand(cmdCancel);
-//#     }
-//# 
 //#     public String touchLeftCommand(){ return SR.MS_MENU; }
 //#     public void touchLeftPressed(){ showMenu(); }
 //#endif

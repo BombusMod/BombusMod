@@ -42,8 +42,6 @@ public class Stats {
     private long latestTraffic=0;
     private long traffic=0;
     private int sessions=0;
-
-    public static long sessionGPRS=0;
     
     // Singleton
     private static Stats instance;
@@ -52,13 +50,8 @@ public class Stats {
 	if (instance==null) {
 	    instance=new Stats();
             instance.loadFromStorage();
-            getGPRS();
 	}
 	return instance;
-    }
-
-    public void save(){
-        saveToStorage();
     }
 
     public long getLatest(){
@@ -67,10 +60,6 @@ public class Stats {
     
     public long getAllTraffic(){
         return traffic+getCurrentTraffic();
-    }
-    
-    public long getCurrentTraffic(){
-        return (sessionGPRS==0)?getGPRS():sessionGPRS;
     }
     
     public int getSessionsCount(){
@@ -93,14 +82,25 @@ public class Stats {
                 }
             } catch (IOException ex) {}
 	}
+        sessions++;
     }
     
-    private void saveToStorage(){
-        long ss=getGPRS();
-        long sessionTraffic=getCurrentTraffic();
-        long allTraffic=traffic+sessionTraffic;
+    public void saveToStorage(boolean reset){
+        loadFromStorage();
+
+        long sessionTraffic;
+        long allTraffic;
         
-        sessions++;
+        if (reset) {
+            sessionTraffic  =   0;
+            allTraffic      =   0;
+            latestTraffic   =   0;
+            traffic         =   0;
+            sessions        =   0;
+        } else {
+            sessionTraffic=getCurrentTraffic();
+            allTraffic=traffic+sessionTraffic;
+        }
         
 	try {
             DataOutputStream outputStream=NvStorage.CreateDataOutputStream();
@@ -113,11 +113,7 @@ public class Stats {
 	} catch (IOException e) { }
     }
     
-    public static long getGPRS() {
-        if (StaticData.getInstance().roster.theStream!=null) {
-            sessionGPRS=StaticData.getInstance().traffic*2;
-            return sessionGPRS;
-        }
-        return 0;
+    public static long getCurrentTraffic() {
+        return StaticData.getInstance().traffic*2;
     }
 }

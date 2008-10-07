@@ -103,23 +103,8 @@ public class VCardEdit
         
         setPhoto();
 
-//#ifndef MENU_LISTENER
         commandState();
-//#ifndef MENU
-        super.removeCommand(cmdOk);
-        addCommand(cmdPublish);
-        addCommand(cmdRefresh);
-//#if FILE_IO
-        addCommand(cmdLoadPhoto);
-        addCommand(cmdSavePhoto);
-//#endif
-        String cameraAvailable=System.getProperty("supports.video.capture");
-        if (cameraAvailable!=null) if (cameraAvailable.startsWith("true"))
-            addCommand(cmdCamera);
-        addCommand(cmdDelPhoto);
-//#endif
-//#endif
-        enableListWrapping(false);
+
         attachDisplay(display);
         this.parentView=pView;
     }
@@ -253,26 +238,26 @@ public class VCardEdit
         itemsList.addElement(publish);
      }
      
-//#ifdef MENU_LISTENER
-//#     public void commandState() {
-//#         super.commandState();
-//# 
-//#         addCommand(cmdPublish);
-//#         addCommand(cmdRefresh);
+    public void commandState() {
+        super.commandState();
+        removeCommand(cmdOk);
+        removeCommand(cmdCancel);
+        
+        addCommand(cmdPublish);
+        addCommand(cmdRefresh);
 //#if FILE_IO
-//#         addCommand(cmdLoadPhoto);
-//#         addCommand(cmdSavePhoto);
+        addCommand(cmdLoadPhoto);
+        addCommand(cmdSavePhoto);
 //#endif
-//#         String cameraAvailable=System.getProperty("supports.video.capture");
-//#         if (cameraAvailable!=null) if (cameraAvailable.startsWith("true"))
-//#             addCommand(cmdCamera);
-//#         addCommand(cmdDelPhoto);
-//#         
-//#         removeCommand(cmdOk);
-//#         removeCommand(cmdCancel);
-//#         addCommand(cmdCancel);
-//#     }
-//# 
+        String cameraAvailable=System.getProperty("supports.video.capture");
+        if (cameraAvailable!=null) if (cameraAvailable.startsWith("true"))
+            addCommand(cmdCamera);
+        addCommand(cmdDelPhoto);
+        
+
+        addCommand(cmdCancel);
+    }
+//#ifdef MENU_LISTENER
 //#     public String touchLeftCommand() { return SR.MS_MENU; }
 //#     
 //#     public void cmdOk() {

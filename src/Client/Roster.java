@@ -2037,9 +2037,9 @@ public class Roster
     
      public void doReconnect() {
         setProgress(SR.MS_DISCONNECTED, 0);
-        try {
-             sendPresence(Presence.PRESENCE_OFFLINE, null);
-        } catch (Exception e2) { }
+        
+        logoff(null);
+        
         try {
              sendPresence(lastOnlineStatus, null);
         } catch (Exception e2) { }
@@ -2421,9 +2421,7 @@ public class Roster
     public void logoff(String mess){
         if (isLoggedIn()) {
             try {
-                ExtendedStatus es=sl.getStatus(Presence.PRESENCE_OFFLINE);
-                if (mess==null)
-                    mess=es.getMessage();
+                if (mess==null) mess=sl.getStatus(Presence.PRESENCE_OFFLINE).getMessage();
                 sendPresence(Presence.PRESENCE_OFFLINE, mess);
             } catch (Exception e) { }
         }
@@ -2431,7 +2429,7 @@ public class Roster
 //#ifdef PLUGINS
 //#         if (sd.Stats)
 //#endif
-//#             Stats.getInstance().save();
+//#             Stats.getInstance().saveToStorage(false);
 //#endif
     }
 

@@ -78,7 +78,7 @@ public class VCardView
     private LinkString refresh;
 
 //#ifdef CLIPBOARD
-//#     ClipBoard clipboard=ClipBoard.getInstance(); 
+//#     ClipBoard clipboard  = ClipBoard.getInstance(); 
 //#     Command cmdCopy      = new Command(SR.MS_COPY, Command.SCREEN, 1);
 //#     Command cmdCopyPlus  = new Command("+ "+SR.MS_COPY, Command.SCREEN, 2);
 //#endif
@@ -115,27 +115,8 @@ public class VCardView
             itemsList.addElement(refresh);
         }
 
-//#ifndef MENU_LISTENER
         commandState();
-//#if FILE_IO
-        if (vcard.hasPhoto)
-            addCommand(cmdSavePhoto);
-//#endif
-        removeCommand(cmdOk);
-        //removeCommand(cmdSelect);
-        addCommand(cmdRefresh);
-//#ifdef CLIPBOARD
-//#         if (Config.getInstance().useClipBoard) {
-//#             clipboard=ClipBoard.getInstance();
-//#             addCommand(cmdCopy);
-//#             addCommand(cmdCopyPlus);
-//#         }
-//#endif
-        if (vcard.hasPhoto)
-            addCommand(cmdDelPhoto);
-//#endif
 
-        enableListWrapping(false);
         attachDisplay(display);
         this.parentView=pView;
     }
@@ -234,31 +215,32 @@ public class VCardView
         return nickDate.toString();
     }
 //#endif
-    
-//#ifdef MENU_LISTENER
-//#     public void commandState() {
-//#         super.commandState();
-//#         
-//#         if (vcard!=null) {
-//#             if (vcard.hasPhoto) {
+
+    public void commandState() {
+        super.commandState();
+        removeCommand(cmdOk);
+        removeCommand(cmdCancel);
+        
+        if (vcard!=null) {
+            if (vcard.hasPhoto) {
 //#if FILE_IO
-//#                 addCommand(cmdSavePhoto);
+                addCommand(cmdSavePhoto);
 //#endif
-//#                 addCommand(cmdDelPhoto);
-//#             }
+                addCommand(cmdDelPhoto);
+            }
 //#ifdef CLIPBOARD
 //#             if (Config.getInstance().useClipBoard) {
 //#                 addCommand(cmdCopy);
-//#                 addCommand(cmdCopyPlus);
+//#                 if (!clipboard.isEmpty())
+//#                     addCommand(cmdCopyPlus);
 //#             }
 //#endif
-//#         }
-//#         addCommand(cmdRefresh);
-//#         removeCommand(cmdOk);
-//#         removeCommand(cmdCancel);
-//#         addCommand(cmdCancel);
-//#     }
-//# 
+        }
+        addCommand(cmdRefresh);
+        addCommand(cmdCancel);
+    }
+    
+//#ifdef MENU_LISTENER
 //#     public String touchLeftCommand() { return SR.MS_MENU; }
 //#     
 //#     public void cmdOk() {

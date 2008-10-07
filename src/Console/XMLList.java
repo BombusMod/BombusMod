@@ -27,6 +27,7 @@
 
 package Console;
 
+import Client.Config;
 import Client.Msg;
 import Client.StaticData;
 import Messages.MessageList;
@@ -39,10 +40,12 @@ import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
+//#ifdef CLIPBOARD   
+//# import util.ClipBoard;
+//#endif
 //#ifdef CONSOLE 
 //# import ui.MainBar;
 //#endif
-//import ui.YesNoAlert;
 
 /**
  *
@@ -58,8 +61,12 @@ public class XMLList
     private StaticData sd=StaticData.getInstance();
     
     private Command cmdNew=new Command(SR.MS_NEW, Command.SCREEN, 5);
-    private Command cmdEnableDisable=new Command("Enable/Disable", Command.SCREEN, 6);
+    private Command cmdEnableDisable=new Command(SR.MS_ENABLE_DISABLE, Command.SCREEN, 6);
     private Command cmdPurge=new Command(SR.MS_CLEAR_LIST, Command.SCREEN, 10);
+    
+//#ifdef CLIPBOARD    
+//#     private ClipBoard clipboard=ClipBoard.getInstance();
+//#endif
     
     /** Creates a new instance of XMLList */
     public XMLList(Display display, Displayable pView) {
@@ -89,6 +96,12 @@ public class XMLList
 //#endif
 	addCommand(cmdBack);
         addCommand(cmdNew);
+//#ifdef CLIPBOARD
+//#             if (Config.getInstance().useClipBoard) {
+//#                 addCommand(cmdCopy);
+//#                 if (!clipboard.isEmpty()) addCommand(cmdCopyPlus);
+//#             }
+//#endif
         addCommand(cmdEnableDisable);
         addCommand(cmdPurge);
     }
