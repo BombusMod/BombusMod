@@ -246,8 +246,8 @@ public abstract class AlertBox
         int filled=pos*width/steps;
 
         if (pb==null)
-            pb=new Progress(g, 0, height, width);
-        Progress.draw(filled, Integer.toString(steps-pos));
+            pb=new Progress(0, height, width);
+        Progress.draw(g, filled, Integer.toString(steps-pos));
     }
     
     protected void hideNotify() {

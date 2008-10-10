@@ -544,14 +544,14 @@ public abstract class VirtualList
             if (reconnectTimeout>reconnectPos && reconnectPos!=0) {
                 int progressWidth=(width/3)*2;
                 int progressX=(width-progressWidth)/2;
-                if (pb==null) pb=new Progress(g, progressX, height/2, progressWidth);
+                if (pb==null) pb=new Progress(progressX, height/2, progressWidth);
                 int popHeight=pb.getHeight();
                 g.setColor(ColorTheme.getColor(ColorTheme.POPUP_SYSTEM_BGND));
                 g.fillRoundRect(progressX-2, (height/2)-(popHeight*2), progressWidth+4, (popHeight*2)+1, 6, 6);
                 g.setColor(ColorTheme.getColor(ColorTheme.POPUP_SYSTEM_INK));
                 g.drawRoundRect(progressX-2, (height/2)-(popHeight*2), progressWidth+4, (popHeight*2)+1, 6, 6);
                 g.drawString(SR.MS_RECONNECT, width/2, (height/2)-(popHeight*2), Graphics.TOP | Graphics.HCENTER);
-                Progress.draw(reconnectPos*progressWidth/reconnectTimeout, Integer.toString(reconnectTimeout-reconnectPos));
+                Progress.draw(g, reconnectPos*progressWidth/reconnectTimeout, Integer.toString(reconnectTimeout-reconnectPos));
             }
         }
         

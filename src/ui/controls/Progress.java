@@ -48,7 +48,6 @@ public class Progress {
     private static int y;
     private static int x;
 
-    private static Graphics g;
     private static Font font;
     
 //#ifdef GRADIENT
@@ -58,8 +57,7 @@ public class Progress {
     private static int topColor;
 
     /** Creates a new instance of progress */
-    public Progress(Graphics g, int x, int y, int width) {
-        this.g=g;
+    public Progress(int x, int y, int width) {
         this.x=x;
         this.width=width;
         this.font=FontCache.getFont(false, FontCache.bar);
@@ -73,7 +71,7 @@ public class Progress {
 //#endif
     }
     
-    public static void draw(int filled, String text) {
+    public static void draw(Graphics g, int filled, String text) {
         g.setColor(ColorTheme.getColor(ColorTheme.PGS_REMAINED));
         g.fillRect(x, y, width, height);
 //#ifdef GRADIENT

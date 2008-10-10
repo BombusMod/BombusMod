@@ -2032,7 +2032,6 @@ public class Roster
         errorLog(topBar+"\n"+error.toString());
 
         reconnectWindow.getInstance().startReconnect();
-        //new MyReconnect(topBar, error.toString(), display);
      }
     
      public void doReconnect() {
