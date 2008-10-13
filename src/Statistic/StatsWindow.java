@@ -56,10 +56,11 @@ public class StatsWindow
     
     Stats st=Stats.getInstance();
     
+    public Command cmdClear = new Command(SR.MS_CLEAR, Command.SCREEN, 2);
+    
 //#ifdef CLIPBOARD
 //#ifndef MENU
 //#     public Command cmdCopy = new Command(SR.MS_COPY, Command.OK, 1);
-//#     public Command cmdClear = new Command(SR.MS_CLEAR, Command.SCREEN, 2);
 //#endif
 //#     private ClipBoard clipboard=ClipBoard.getInstance();
 //#endif

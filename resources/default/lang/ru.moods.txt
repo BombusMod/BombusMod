@@ -1,0 +1,62 @@
+﻿afraid	испуганное
+amazed	изумленное
+angry	рассерженное
+annoyed	раздраженное
+anxious	озабоченное
+aroused	пробужденное
+ashamed	пристыженное
+bored	скучающее
+brave	смелое
+calm	спокойное
+cold	холодно
+confused	в замешательстве
+contented	довольное
+cranky	недовольное
+curious	любознательное
+depressed	подавленное
+disappointed	разочарованное
+disgusted	чувствую отвращение
+distracted	растерянное
+embarrassed	смущенное
+excited	взволнованное
+flirtatious	кокетливое
+frustrated	расстроенное
+grumpy	ворчливое
+guilty	виноватое
+happy	счастливое
+hot	жарко
+humbled	смиренное
+humiliated	оскорбленное
+hungry	хочу есть
+hurt	уязвленное
+impressed	под впечатлением
+in_awe	подчиненное
+in_love	влюбленное
+indignant	возмущенное
+interested	заинтересованное
+intoxicated	опьяненное
+invincible	неукротимое
+jealous	ревнивое
+lonely	одинокое
+mean	сволочное
+moody	унылое
+nervous	нервное
+neutral	безразличное
+offended	обиженное
+playful	игривое
+proud	горделивое
+relieved	угасающее
+remorseful	раскаивающееся
+restless	неугомонное
+sad	печальное
+sarcastic	язвительное
+serious	серьезное
+shocked	потрясенное
+shy	застенчивое
+sick	болезненное
+sleepy	сонное
+stressed	напряженное
+surprised	удивленное
+thirsty	хочу пить
+worried	беспокойное
+-	<нет настроения>

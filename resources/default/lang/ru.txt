@@ -1,0 +1,527 @@
+﻿// Copyright (c) 2005-2008, Eugene Stahov (evgs), http://bombus-im.org
+// All rights reserved.
+
+// ask server to send us localized messages
+xmlLang	ru
+online	в сети
+chat	хочу поговорить
+away	отсутствую
+xa	давно отсутствую
+invisible	невидимка
+dnd	занят
+offline	не в сети
+Jid	Jid
+Privacy Lists	Списки приватности
+Message font	Шрифт сообщения
+Roster font	Шрифт ростера
+Paste Body	Встав. тело сообщения
+Configure Room	Конфигуратор комнаты
+Paste Subject	Встав. тему сообщения
+Service Discovery	Обзор сервисов
+User JID	JID пользователя
+New list	Новый список
+Select (no login)	Выбрать (без подключения)
+Privacy rule	Правило приватности
+use SSL	использовать SSL
+Modify	Изменить
+Update	Обновить
+Account name	Имя аккаунта
+GMT offset	Часовой пояс (GMT+)
+Time settings (hours)	Настройки времени
+Connected	Соединение установлено
+Connect to 	Соединение с 
+Alert Profile	Сигналы
+Move Up	Сместить вверх
+Owners	Владельцы
+Ok	ОК
+Minimize	Свернуть
+Room	Комната
+Messages	Сообщения
+Refresh	Обновить
+Resolve Nicknames	Преобразовать в ник
+Action	Действие
+Ban	Бан (ban)
+Leave Room	Покинуть комнату
+Password	Пароль
+Actions >	Действия >
+Activate	Активировать
+Affiliation	Членство
+Accounts	Аккаунты
+Delete list	Удалить список
+Account >	Аккаунт >
+Select	Выбрать
+Subject	Тема
+Quit	Выход
+Edit list	Редактировать список
+Registering	Регистрация
+Done	Выполнено
+Error: 	Ошибка: 
+Browse	Обзор
+Save list	Сохранить список
+Keep-Alive period	Период Keep-Alive
+<New Group>	<Новая группа>
+Send	Отправить
+Priority	Приоритет
+Failed	Ошибка соединения
+Set Priority	Установить приоритет
+Delete rule	Удалить правило
+Ignore-List	Ignore-List
+Roster request	Получение ростера
+Type	Тип
+Name	Имя
+Username	Имя пользователя
+fullscreen	полноэкранный режим
+Add bookmark	Добав. закладку
+conferences only	только конференции
+Client Version	Версия клиента
+Discard Search	Сбросить результаты
+Search Results	Результаты поиска
+General	General
+Members	Члены
+Add Contact	Новый контакт
+Subscription	Подписка
+Status >	Статус >
+Join	Присоединиться
+Startup actions	Действия при запуске
+Server	Сервер
+Admins	Администраторы
+Make Ignore-List	Создать Ignore-List
+Options	Настройки
+Delete	Удалить
+Delete contact?	Удалить контакт?
+Authorize	Авторизовать
+Nicknames	Ники
+to Archive	В архив
+Back	Назад
+heap monitor	монитор памяти(heap)
+keys for old SE	поменять местами софт-кнопки
+Message	Сообщение
+<Other>	<Другой>
+history -	история -
+Append	Добавить
+Active Contacts	Актив. контакты
+Select nickname	Выбрать ник
+Group	Группа
+Join conference	Присоединиться к конференции
+No	Нет
+Re-Enter Room	Перезайти в комнату
+New Message	Новое сообщение
+Add	Добавить
+Logon	Подключить
+Stanzas	Stanzas
+at Host	Сервер
+join conferences	автоматически входить в отмеченные конференции
+Status	Статус
+Smiles	Вкл/выкл смайлики
+Contact >	Контакт >
+offline contacts	показывать отключенных
+Transport	Транспорт
+composing events	уведомление о наборе текста
+Add Smile	Встав. смайлик
+Nickname	Ник
+Revoke Voice	Отнять право голоса
+Not-in-list	Не в списке
+Commands	Команды
+- (Sign)	- (знак)
+Set default	Уст. по умолчанию
+Outcasts (Ban)	Изгои (Ban)
+Set affiliation to	Изменить членство на
+Register Account	Зарегистрировать аккаунт
+autologin	автосоединение
+Logoff	Отключить
+Publish	Опубликовать
+Remove subscription	Удалить подписку
+Set	Установить
+Application	Приложение
+Bookmarks	Закладки
+Test sound	Тест звука
+Startup	Запуск
+Edit rule	Редактировать правило
+Cancel	Отмена
+Close	Закрыть
+Archive	Архив
+Conference	Конференция
+Sound	Звук
+Login failed	Ошибка авторизации
+Browse	Обзор
+New Jid	Новый Jid
+plain-text password	пароль откр. текстом
+Paste Nickname	Вставить ник
+Kick	Выгнать (kick)
+Remove readed	Удалить сообщения
+Grant Voice	Дать право голоса
+Move Down	Сместить вниз
+Quote	Цитировать
+Roster elements	Элементы ростера
+popup from background	всплывать из фона
+smiles	показывать смайлы
+About	О программе
+Resource	Ресурс
+Disconnected	Соединение разорвано
+Edit	Редактировать
+Host name/IP (optional)	Имя хоста/IP (необязательно)
+Add rule	Добавить правило
+for all status types	для всех статусов
+Paste Jid	Вставить Jid
+Goto URL	Перейти к URL
+Clock offset	Смещение часов
+Yes	Да
+Suspend	Отложить
+Alert Profile >	Сигналы >
+My vCard	Личная vCard
+transports	транспорты
+New Account	Новый аккаунт
+self-contact	свои контакты
+vCard	vCard
+Set Subject	Установить тему
+Tools	Инструменты
+Port	Порт
+Resume Message	Черновик
+Are You sure want to discard 	Вы действительно собираетесь понизить у 
+ from OWNER to 	 право OWNER до 
+Modify affiliation	Изменение членства
+Clear	Очистить
+Connect	Подключиться
+Unaffiliate	Отнять членство
+Grant Moderator	Дать право модератора
+Revoke Moderator	Отнять право модератора
+Grant Admin	Дать право администратора
+Grant Ownership	Дать право владельца
+Visitors are not allowed to send messages to all occupants	Гости не могут посылать сообщения в общий чат
+ is inviting You to 	 приглашает Вас в 
+Ask subscription	Запросить подписку
+Grant subscription	Разрешить подписку
+Invite to conference	Пригласить в конференцию
+Reason	Причина
+You have been invited to 	Вы были приглашены в 
+Participants	Участники
+Abc	Абв
+room presences	статусы в конференции
+ is now known as 	 меняет ник на 
+ was banned 	 запретили входить в комнату 
+ was kicked 	 выгнали из комнаты 
+ has been kicked because room became members-only	 выгнали, т.к. комната закрылась
+ has left the channel	 выходит из комнаты
+ has joined the channel as 	 заходит как 
+ and 	 и 
+ is now 	 теперь 
+error	ошибка
+Select history folder	Выбор папки истории
+Sound volume	Громкость звука
+Language	Язык
+Save history	Сохранять историю
+Save presences	Сохранять статусы
+Save conference history	Сохранять историю конференции
+Save conference presences	Сохранять статусы конференции
+convert to cp1251	Сохранять в windows-1251
+History folder	Папка истории
+Copy	Копировать
+Paste	Вставить
+Save template	Сохранить шаблон
+Template	Шаблон
+has set topic to	изменил топик на
+Seen	Видели
+Idle	Бездействие
+Main menu	Главное меню
+Choose status	Выбор статуса
+Add status	Добавить статус
+Remove status	Удалить статус
+Address	Адрес
+Make BackUp	Сохранить копию на диск
+Import from BackUp	Восстановить из файла
+View	Просмотр
+Stop	Остановить
+File transfers	Передача файлов
+Path	Путь
+Accept file	Принять файл
+File	Файл
+Save To	Сохранить в
+Sender	Отправитель
+Rejected	Отменено
+Send file	Послать файл
+Can't open file	Невозможно открыть файл
+New	Новый
+New Template	Новый шаблон
+Save photo	Сохранить фото
+balloon ink	Шрифт баллона
+balloon background	Фон баллона
+messagelist & roster background	Цвет фона, общий
+messagelist & roster even lines	Цвет фона, чередование
+messagelist & roster & common font	Общий шрифт
+message subject	Тема сообщения
+message highlight	Подсвеченное сообещение
+service discovery commands	Команды диско
+panels background	Цвет панелей
+header font	Шрифт панелей
+contact default	Шрифт контакта
+contact chat	Контакт "Хочу пообщаться"
+contact away	Контакт "Отсутствую"
+contact extended away	Контакта "Давно отсутствую"
+contact do not disturb	Контакт "Не беспокоить"
+group color	Шрифт групп
+keylock font	Шрифт при блоке кнопок
+keylock background	Фон при блоке кнопок
+message incoming	Входящее сообщение
+message outgoing	Исходящее сообщение
+message presence	Статусное сообщение
+message auth	Сообщение авторизации
+message history	Шрифт истории сообщений
+progress bar remained	Осталось прогресса
+progress bar complete	Сделано прогресса
+progress bar font	Шрифт прогресса
+Heap mon total	Всего кучи
+Heap mon free	Свободно кучи
+Cursor background	Фон курсора
+Cursor ink & outline	Цвет шрифта курсора и ободка
+Scroll border	Цвет ободка скролла
+Scroll bar	Цвет бегунка скролла
+Scroll back	Цвет фона скролла
+other message incoming	Выделенное входящее сообщение
+other message outgoing	Выделенное исходящее сообщение
+other message presence	Выделенное статусное сообщение
+Popup font	Шрифт всплывающего окошка
+Popup background	Фон всплывающего окошка
+Popup system font	Шрифт системного окошка
+Popup system background	Фон системного окошка
+Contact status font	Шрифт статуса контакта
+Control color	Цвет контролов
+Color tune	Настройка цветов
+Load Scheme	Загрузить схему
+Sounds options	Настройки звуков
+Time	Время
+participant	участник
+moderator	модератор
+visitor	гость
+none	никто
+member	постоянный участник
+admin	администратор
+owner	владелец
+second's	секунд
+seconds	секунды
+second	секунда
+minute's	минут
+minutes	минуты
+minute	минута
+hour's	часов
+hours	часа
+hour	час
+day's	дней
+days	дня
+day	день
+Minutes before away	Таймер автостатуса (минуты)
+Automatic Away	Автостатус
+disabled	выключен
+keyblock	при блокировке кнопок
+by message	при отсутствии исх. сообщений
+AutoStatus	Автостатус
+AutoStatus time (min)	Автостатус через(мин)
+Auto xa since %t	Автостатус "Недоступен" сработал в %t
+Auto away since %t	Автостатус "Отсутствую" сработал в %t
+autofocus	автофокус на контакт с новым сообщением
+Grant Membership	Дать членство
+Are You sure want to clear messagelist?	Очистить список сообщений
+Google token request	Запрос гуглепожатия
+Features	Возможности
+Show password	Показать пароль
+No client version available	Версия клиента недоступна
+Message limit	Количество сообщений
+Opening stream	Подключение
+Using compression	Включение компрессии
+Authenticating	Авторизация
+Resource binding	Назначение ресурса
+Initiating session	Создание сессии
+Text wrapping	Перенос текста
+by chars	по буквам
+by words	по словам
+Info	Инфо
+Reply	Ответить
+Send status	Установить статус
+Are you sure want to BAN this person?	Запретить входить в комнату?
+No reason	Без причины
+Recent	История ввода
+Shot	Снимок
+Select file	Выбрать файл
+Load Photo	Загрузить фото
+Clear Photo	Очистить фото
+Camera	Камера
+Hide finished	Спрятать завершённые
+Transfer tasks	Менеджер передачи файлов
+Are you sure want to delete this message?	Вы уверены, что хотите удалить данное сообщение?
+New conference	Новая конференция
+Root	Корень диска
+Decline	Отклонить
+Authorize new contacts	Автоматическая авторизация
+[auto-subscribe]	[автоподписка]
+Keep-Alive	Тип Keep-Alive
+ has been unaffiliated and kicked from members-only room	 выгнали, так комната закрыта для гостей
+Rename	Переименовать
+Move	Переместить
+Save	Сохранить
+Translit	Транслит
+ReTranslit	ДеТранслит
+Auto translit2Cyr	Автоотправка транслита кириллицей
+Check Updates	Проверка обновления
+Show Resources	показывать ресурсы контактов
+Collapsed groups	сворачивать группы при запуске
+Send Buffer	Послать текст из буфера
+Change nickname	Сменить ник
+Message collapse limit	Сворачивать сообщения, если больше(символов)
+No client info	Невозможно получить информацию
+Delete all messages	Удалить все сообщения
+Join marked (auto)	Автоподключаться
+Statistics	Статистика
+Started: 	Запуск: 
+Traffic stats: 	Статистика: 
+All: 	Всего: 
+Current: 	Текущ.: 
+Last Messages	Последние сообщения
+Edit/join	Редактировать/Подключить
+Use this Color scheme	Использовать схему
+Delete All	Очистить архив
+History options	Настройка истории
+Filenames transliterate	Имена файлов транслитом
+Save chat	Сохранить сообщения
+show statuses	показывать статусные сообщения в ростере
+shared platform info	показывать информацию о платформе
+delivery events	уведомление о доставке
+drop all	отбрасывать все
+receive messages	получать сообщения
+messages & presences	сообщения и статусы
+normal	средний
+small	мелкий
+large	крупный
+All signals	Все сигналы
+Vibra	Вибрация
+No signals	Без сигналов
+ (default)	 (по-умолчанию)
+Quit?	Выйти?
+Are you sure want to Quit?	Вы действительно хотите выйти?
+exit confirmation	подтверждение выхода
+show last appeared contacts	показывать недавно подключившихся
+custom keys	сочетания кнопок
+Add custom key	Добавить сочетание кнопок
+keys action	действие
+enabled	включено
+key	кнопка
+Reconnect	Переподключение
+Sort list	Сортировать список
+Turn on light	поддерживать подсветку
+show time and traffic	показывать время и трафик
+Clear popups	Очистить попапы
+Chat history length	Длина списка истории
+This user wants to subscribe to your presence	Запрос подписки на присутствие
+You are now authorized	Вы получили подписку
+Your authorization has been removed!	Ваша подписка была удалена!
+To: 	Кому: 
+size:	размер:
+Sun	Вс
+Mon	Пн
+Tue	Вт
+Wed	Ср
+Thu	Чт
+Fri	Пт
+Sat	Сб
+Automatic subscription	автоподписка
+Ask me	спрашивать
+Drop subscription	отклонять
+Deny subscription	запрещать
+Search	Поиск
+Register	Регистрация
+Check Google mail	Проверить GMail
+Blink	миганием
+Notices options	Настройка уведомлений
+Message sound	Звук сообщений
+Online sound	Звук для подключившихся
+Offline sound	Звук для отключившихся
+"Message for me" sound	Звук при обращении
+Composing sound	Звук при наборе
+Conference sound	Звук для конференции
+StartUP sound	Звук при запуске
+Outgoing sound	Звук при отправке
+Vip sound	Звук для VIP
+Copy JID	Копировать JID
+Ping request	Время отклика
+Online time	Время в сети
+Break connection	Переподключение
+autoScroll	автопрокрутка списка сообщений
+emulate tabs	(4/6) быстрое переключение между окнами сообщений
+show balloons	показывать подсказки(баллуны)
+popUps	всплывающие окна
+AutoStatus Message	своё сообщение автостатуса
+Memory:	Память:
+Free: 	Своб.: 
+Total: 	Всего: 
+Session(s): 	Сессий: 
+Description	Описание
+User	Пользователь
+Import/Export	Импорт/Экспорт данных
+bold font for contacts	жирный шрифт для контактов ростера
+running message	бегущая строка в заголовке
+Composing message to you	Пишет сообщение
+compression	сжатие трафика
+New room created	Создана новая комната, не забудьте настроить её в конфигураторе!
+IRC-like conference nick-status	смена ника при смене статуса в конференции как в IRC
+user moods send/receive	получение и отправка настроений
+Simulated break	Ручное переподключение
+Build new version on constructor	Собрать новую версию на конструкторе
+Auto tasks	Планировщик
+Auto task type	Тип срабатывания
+by timer 	По таймеру
+by time 	По часам
+Auto task action type	Действие
+Quit BombusMod	Выход из BombusMod
+Quit conferences	Выход из конференций
+Disconnection	Отключениe
+disabled	Выключено
+Delay (min.)	Выполнить через (мин.)
+Start time	Выполнить в
+Hour	Часов
+Min	Минут
+Browse rooms	Обзор комнат
+Autorespond	Автоответчик
+Invert colors	Инверсия цвета
+XML console	XML консоль
+Clipboard	буфер обмена
+User moods	Настроение
+User activity	Действие
+Personal events not supported	PEP не поддерживается
+User tune	Музыка
+user tune receive	инфо о музыке
+Bar font	Шрифт панелей
+Popup & ballon font	Шрифт попапов и баллунов
+Fonts options	Настройка шрифтов
+Load history	Подгружать историю
+Connect to	Подключиться к
+Send my color scheme	Отправить мою цветовую схему
+Unread messages	Непрочитанные сообщения
+vibrate only highlited	Вибрировать только при обращении ко мне
+Extended settings	Расширенные настройки
+Save to file	Сохранить в файл
+Load from file	Загрузить из файла
+Show IQ requests	Отображать запросы IQ
+Show clients icons	показывать иконки клиентов
+Action	Действие
+Value	Значение
+Quantity of attempts	Количество попыток
+Delay before reconnect(sec.)	Задержка между попытками(сек.)
+Menu	Меню
+Previous	Предыдущее
+Previous: 	Пред.: 
+[End of vCard]	Конец вКард
+[No vCard available]	вКард не доступна
+[No photo available]	Фото недоступно
+[Unsupported format]	Неподдерживаемый формат
+[large photo was dropped]	[большое фото]
+Delete group?	Удалить группу?
+Panels	Панели
+[ ]	[нет]
+[main bar]	[основная]
+[info bar]	[инфо]
+Flash backlight	Мигать подсветкой
+execute menu by numkey	выполнение команд меню цифровыми кнопоками
+show nicknames	показывать ник отправителя
+Send photo	Отправить фото
+enable autorespond	включить автоответчик
+File manager	Менеджер файлов
+remote control	удаленное управление
+

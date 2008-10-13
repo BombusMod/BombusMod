@@ -1,0 +1,24 @@
+﻿bombusmod.net.ru	BombusMod
+bombus-im.org/java	Bombus
+bombus-im.org/ng	BombusNG
+psi-im.org	Psi
+miranda-im	Miranda
+voffk.org.ru/bombus	Bombus+
+google.com,gmail	Google
+tkabber	Tkabber
+gajim	Gajim
+qip	Qip
+pidgin,gaim.	Pidgin
+kopete	Kopete
+exodus	Exodus
+Siemens Native Jabber Client,SieJC	SieJC
+bitlbee.org	Bitlbee
+coccinella	Coccinella
+mcabber	mcabber
+apple.com/ichat	iChatAgent
+jabbim	Jabbim
+bombus.pl	Bombus(PL)
+home,дом	Home
+work,office	Work
+Just Another Jabber Client,jajc	JAJC
+Ajabb,yandex.ru/caps	Я.Онлайн

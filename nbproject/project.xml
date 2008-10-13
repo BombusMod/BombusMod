@@ -8,6 +8,8 @@
             <configuration>adsky</configuration>
             <configuration>full_ver_newmenu</configuration>
             <configuration>lite</configuration>
+            <configuration>plugins_new_menu</configuration>
+            <configuration>standart</configuration>
             <configuration>superSmall</configuration>
             <configuration>full_ver</configuration>
         </configurations>

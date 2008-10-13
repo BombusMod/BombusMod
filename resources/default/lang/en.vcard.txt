@@ -1,0 +1,19 @@
+//vCard descriptions
+	FN	Full Name
+	NICKNAME	Nickname
+	BDAY	Birthday
+ADR	STREET	Street
+ADR	EXTADR	Street2
+ADR	LOCALITY	City
+ADR	REGION	State
+ADR	PCODE	Post code
+ADR	CTRY	Country
+TEL	HOME	Home Phone Number
+TEL	NUMBER	Phone Number
+EMAIL	USERID	E-Mail
+	TITLE	Position
+	ROLE	Role
+ORG	ORGNAME	Organization
+ORG	ORGUNIT	Dept
+	URL	Url
+	DESC	About

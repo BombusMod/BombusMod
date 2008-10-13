@@ -47,12 +47,12 @@ import util.StringLoader;
 import ServiceDiscovery.ServiceDiscovery;
 //#endif
 //#ifndef MENU_LISTENER
-import javax.microedition.lcdui.CommandListener;
-import javax.microedition.lcdui.Command;
+//# import javax.microedition.lcdui.CommandListener;
+//# import javax.microedition.lcdui.Command;
 //#else
-//# import Menu.MenuListener;
-//# import Menu.Command;
-//# import Menu.MyMenu;
+import Menu.MenuListener;
+import Menu.Command;
+import Menu.MyMenu;
 //#endif
 
 /**
@@ -63,9 +63,9 @@ public class SearchForm
         extends VirtualList 
         implements
 //#ifndef MENU_LISTENER
-        CommandListener
+//#         CommandListener
 //#else
-//#         MenuListener
+        MenuListener
 //#endif
         , MIDPTextBox.TextBoxNotify
     { 
@@ -102,7 +102,7 @@ public class SearchForm
     
     public void commandState() {
 //#ifdef MENU_LISTENER
-//#         menuCommands.removeAllElements();
+        menuCommands.removeAllElements();
 //#endif
         addCommand(cmdOk);
         addCommand(cmdAddServer);
@@ -112,12 +112,9 @@ public class SearchForm
 
 
 //#ifdef MENU_LISTENER
-//#     public String touchLeftCommand(){ return SR.MS_MENU; }
+    public String touchLeftCommand(){ return SR.MS_MENU; }
+        public void cmdOk(){ showMenu(); }
 //#endif
-    
-    public void cmdOk(){
-        showMenu();
-    }
     
     public void commandAction(Command c, Displayable displayable) {
         if (c==cmdCancel) {
@@ -188,11 +185,13 @@ public class SearchForm
     }
 
     public void eventOk(){
+//#ifdef SERVICE_DISCOVERY
         if (getItemCount()==0) 
             return;
         
         ListItem join=(ListItem)getFocusedObject();
         new ServiceDiscovery(display, join.toString(), null, true);
+//#endif
     }
     
     protected int getItemCount() {
@@ -204,10 +203,10 @@ public class SearchForm
     }
     
 //#ifdef MENU_LISTENER
-//#     public void showMenu() {
-//#         commandState();
-//#         new MyMenu(display, parentView, this, SR.MS_BOOKMARKS, null, menuCommands);
-//#     }
+    public void showMenu() {
+        commandState();
+        new MyMenu(display, parentView, this, SR.MS_BOOKMARKS, null, menuCommands);
+    }
 //#endif
 }
 

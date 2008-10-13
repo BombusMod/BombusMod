@@ -1,0 +1,5 @@
+//type	path	desc
+audio/midi	/sounds/tuk.mid	tuk.mid
+none		none
+tone		tone sequence
+audio/imelody	/sounds/vibra.imy	vibra.imy
