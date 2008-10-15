@@ -28,12 +28,12 @@
 package io.file.browse;
 import Client.Config;
 //#ifndef MENU_LISTENER
-import javax.microedition.lcdui.CommandListener;
-import javax.microedition.lcdui.Command;
+//# import javax.microedition.lcdui.CommandListener;
+//# import javax.microedition.lcdui.Command;
 //#else
-//# import Menu.MenuListener;
-//# import Menu.Command;
-//# import Menu.MyMenu;
+import Menu.MenuListener;
+import Menu.Command;
+import Menu.MyMenu;
 //#endif
 
 import ui.MainBar;
@@ -57,9 +57,9 @@ public class Browser
     extends VirtualList
     implements
 //#ifndef MENU_LISTENER
-        CommandListener
+//#         CommandListener
 //#else
-//#         MenuListener
+        MenuListener
 //#endif
     {
  
@@ -89,7 +89,7 @@ public class Browser
         setMainBarItem(new MainBar(2));
         
 //#ifdef MENU_LISTENER
-//#         menuCommands.removeAllElements();
+        menuCommands.removeAllElements();
 //#endif
         
         addCommand(cmdOk);
@@ -190,7 +190,7 @@ public class Browser
             }
         }
         moveCursorHome();
-         return true;
+        return true;
      }
     
     private void readDirectory(String name) {
@@ -246,8 +246,7 @@ public class Browser
         
         redraw();
     }
-    
-    
+
     private class FileItem extends IconTextElement {
         
         public String name;
@@ -301,10 +300,10 @@ public class Browser
         }
     }
 //#ifdef MENU_LISTENER
-//#     public void showMenu() {
-//#         new MyMenu(display, parentView, this, SR.MS_DISCO, null, menuCommands);
-//#     }
-//#     
-//#     public void touchRightPressed() { cmdCancel(); }
+    public void showMenu() {
+        new MyMenu(display, parentView, this, SR.MS_DISCO, null, menuCommands);
+    }
+    
+    public void touchRightPressed() { cmdCancel(); }
 //#endif
 }

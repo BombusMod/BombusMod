@@ -186,6 +186,7 @@ public class VCard {
 //#if FILE_IO
     public void setPhotoType() {
         this.photoType=getPhotoMIMEType();
+        this.hasPhoto=true;
     }
 //#endif
     

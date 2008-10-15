@@ -24,9 +24,9 @@ import images.camera.*;
 
 import java.util.*;
 //#ifndef MENU_LISTENER
-import javax.microedition.lcdui.Command;
+//# import javax.microedition.lcdui.Command;
 //#else
-//# import Menu.Command;
+import Menu.Command;
 //#endif
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
@@ -168,6 +168,7 @@ public class VCardEdit
                     vcard.photo=f.fileRead();
                     vcard.setPhotoType();
                     setPhoto();
+                    redraw();
                 } catch (Exception e) {
                     System.out.println("error on load");
                 }
@@ -216,7 +217,7 @@ public class VCardEdit
             
             itemsList.removeElement(publish);
         } catch (Exception e) { }
-        
+
          if (vcard.hasPhoto) {
             if (vcard.getPhoto().length==1) {
                 vcard.setPhoto(null);
@@ -258,10 +259,10 @@ public class VCardEdit
         addCommand(cmdCancel);
     }
 //#ifdef MENU_LISTENER
-//#     public String touchLeftCommand() { return SR.MS_MENU; }
-//#     
-//#     public void cmdOk() {
-//#         showMenu();
-//#     }
+    public String touchLeftCommand() { return SR.MS_MENU; }
+    
+    public void cmdOk() {
+        showMenu();
+    }
 //#endif
 }
