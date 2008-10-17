@@ -57,7 +57,7 @@ public class ConfigForm
     private CheckBox useBoldFont;
     private CheckBox rosterStatus;
 //#ifdef CLIENTS_ICONS
-//#     private CheckBox showClientIcon;
+    private CheckBox showClientIcon;
 //#endif
     
     private DropChoiceBox subscr;
@@ -167,11 +167,11 @@ public class ConfigForm
         useBoldFont = new CheckBox(SR.MS_BOLD_FONT, cf.useBoldFont); itemsList.addElement(useBoldFont);
         rosterStatus = new CheckBox(SR.MS_SHOW_STATUSES, cf.rosterStatus); itemsList.addElement(rosterStatus);
 //#ifdef CLIENTS_ICONS
-//#         showClientIcon = new CheckBox(SR.MS_SHOW_CLIENTS_ICONS, cf.showClientIcon);
+        showClientIcon = new CheckBox(SR.MS_SHOW_CLIENTS_ICONS, cf.showClientIcon);
 //#ifdef PLUGINS
 //#         if (sd.ClientsIcons)
 //#endif
-//#             itemsList.addElement(showClientIcon);
+            itemsList.addElement(showClientIcon);
 //#endif
         
         itemsList.addElement(new SpacerItem(10));
@@ -239,7 +239,7 @@ public class ConfigForm
 //#endif
        showNickNames = new CheckBox(SR.MS_SHOW_NACKNAMES, cf.showNickNames); itemsList.addElement(showNickNames);
 //#ifdef MENU_LISTENER
-//#         executeByNum = new CheckBox(SR.MS_EXECUTE_MENU_BY_NUMKEY, cf.executeByNum); itemsList.addElement(executeByNum);
+        executeByNum = new CheckBox(SR.MS_EXECUTE_MENU_BY_NUMKEY, cf.executeByNum); itemsList.addElement(executeByNum);
 //#endif
 
             
@@ -259,7 +259,7 @@ public class ConfigForm
         
         itemsList.addElement(new SpacerItem(10));
         itemsList.addElement(new SimpleString(SR.MS_RECONNECT, true));
-	reconnectCount=new NumberInput(display, SR.MS_RECONNECT_COUNT_RETRY, Integer.toString(cf.reconnectCount), 1, 100); itemsList.addElement(reconnectCount);
+	reconnectCount=new NumberInput(display, SR.MS_RECONNECT_COUNT_RETRY, Integer.toString(cf.reconnectCount), 0, 100); itemsList.addElement(reconnectCount);
         reconnectTime=new NumberInput(display, SR.MS_RECONNECT_WAIT, Integer.toString(cf.reconnectTime), 1, 60 ); itemsList.addElement(reconnectTime);
         
         itemsList.addElement(new SpacerItem(10));
@@ -269,8 +269,8 @@ public class ConfigForm
         enableVersionOs = new CheckBox(SR.MS_SHOW_HARDWARE, cf.enableVersionOs); itemsList.addElement(enableVersionOs);
         queryExit = new CheckBox(SR.MS_CONFIRM_EXIT, cf.queryExit); itemsList.addElement(queryExit);
 //#ifdef MENU_LISTENER
-//#         oldSE = new CheckBox(SR.MS_KEYS_FOR_OLD_SE, cf.oldSE);
-//#         if (cf.phoneManufacturer==cf.SONYE) itemsList.addElement(oldSE);
+        oldSE = new CheckBox(SR.MS_KEYS_FOR_OLD_SE, cf.oldSE);
+        if (cf.phoneManufacturer==cf.SONYE) itemsList.addElement(oldSE);
 //#endif
 //#ifdef USER_KEYS
 //#         userKeys = new CheckBox(SR.MS_CUSTOM_KEYS, cf.userKeys); 
@@ -391,7 +391,7 @@ public class ConfigForm
 //#ifdef PLUGINS
 //#         if (sd.ClientsIcons)
 //#endif
-//#             cf.showClientIcon=showClientIcon.getValue();
+            cf.showClientIcon=showClientIcon.getValue();
 //#endif
         cf.autoSubscribe=subscr.getSelectedIndex();
         
@@ -438,7 +438,7 @@ public class ConfigForm
 //#endif
         cf.showNickNames=showNickNames.getValue();
 //#ifdef MENU_LISTENER
-//#         cf.executeByNum=executeByNum.getValue();
+        cf.executeByNum=executeByNum.getValue();
 //#endif
 
         cf.autoLogin=autoLogin.getValue();
@@ -471,7 +471,7 @@ public class ConfigForm
         cf.enableVersionOs=enableVersionOs.getValue();
         cf.queryExit=queryExit.getValue();
 //#ifdef MENU_LISTENER
-//#         if (cf.phoneManufacturer==cf.SONYE) cf.oldSE=oldSE.getValue();
+        if (cf.phoneManufacturer==cf.SONYE) cf.oldSE=oldSE.getValue();
 //#endif
 //#ifdef USER_KEYS
 //#ifdef PLUGINS

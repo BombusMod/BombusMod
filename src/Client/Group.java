@@ -127,7 +127,7 @@ public class Group extends IconTextElement {
 	// hide offlines whithout new messages
         unreadMessages+=c.getNewMsgsCount();
         
-	if ( online || Config.getInstance().showOfflineContacts || c.getNewMsgsCount()>0 || type==Groups.TYPE_NOT_IN_LIST || type==Groups.TYPE_TRANSP || type==Groups.TYPE_VISIBLE || c.origin==Contact.ORIGIN_GROUPCHAT )
+	if ( online || Config.getInstance().showOfflineContacts || c.getNewMsgsCount()>0 || type==Groups.TYPE_NOT_IN_LIST || type==Groups.TYPE_TRANSP || type==Groups.TYPE_VISIBLE || type==Groups.TYPE_SEARCH_RESULT || c.origin==Contact.ORIGIN_GROUPCHAT )
             contacts.addElement(c);
     }
     

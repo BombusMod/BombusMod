@@ -213,7 +213,7 @@ public class Config {
     
     public boolean IQNotify=false;
 //#ifdef CLIENTS_ICONS
-//#     public boolean showClientIcon=true;
+    public boolean showClientIcon=true;
 //#endif
     
     public int reconnectCount=10;
@@ -277,6 +277,7 @@ public class Config {
             case NOKIA:
                 KEY_BACK=VirtualList.NOKIA_PEN;
                 greenKeyCode=-10;
+                allowMinimize=true;
                 break;
             case SIEMENS:
             case SIEMENS2:
@@ -454,9 +455,9 @@ public class Config {
             inputStream.readBoolean();
 //#endif
 //#ifdef CLIENTS_ICONS
-//#             showClientIcon=inputStream.readBoolean();
+            showClientIcon=inputStream.readBoolean();
 //#else
-            inputStream.readBoolean();
+//#             inputStream.readBoolean();
 //#endif
             
             reconnectCount=inputStream.readInt();
@@ -693,9 +694,9 @@ public class Config {
             outputStream.writeBoolean(false);
 //#endif
 //#ifdef CLIENTS_ICONS
-//#             outputStream.writeBoolean(showClientIcon);
+            outputStream.writeBoolean(showClientIcon);
 //#else
-            outputStream.writeBoolean(false);
+//#             outputStream.writeBoolean(false);
 //#endif
             
             outputStream.writeInt(reconnectCount);

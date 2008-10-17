@@ -68,7 +68,6 @@ public class SearchResult
         
         addCommand(cmdAdd);
 
-        
         JabberDataBlock x=query.getChildBlock("x");
         if (x!=null) { query=x; xData=true; }
         

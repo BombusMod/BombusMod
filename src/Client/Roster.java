@@ -52,17 +52,17 @@ import Archive.ArchiveList;
 import Menu.RosterItemActions;
 import Menu.RosterToolsMenu;
 //#ifdef CLIENTS_ICONS
-//# import images.ClientsIconsData;
+import images.ClientsIconsData;
 //#endif
 import images.RosterIcons;
 
 //#ifndef MENU_LISTENER
-import javax.microedition.lcdui.CommandListener;
-import javax.microedition.lcdui.Command;
+//# import javax.microedition.lcdui.CommandListener;
+//# import javax.microedition.lcdui.Command;
 //#else
-//# import Menu.MenuListener;
-//# import Menu.Command;
-//# import Menu.MyMenu;
+import Menu.MenuListener;
+import Menu.Command;
+import Menu.MyMenu;
 //#endif
 
 //#if FILE_TRANSFER
@@ -121,9 +121,9 @@ public class Roster
         implements
         JabberListener,
 //#ifndef MENU_LISTENER
-        CommandListener,
+//#         CommandListener,
 //#else
-//#         MenuListener,
+        MenuListener,
 //#endif
         Runnable,
         LoginListener
@@ -277,7 +277,7 @@ public class Roster
     
     public void commandState(){
 //#ifdef MENU_LISTENER
-//#         menuCommands.removeAllElements();
+        menuCommands.removeAllElements();
 //#endif
         int activeType=Command.SCREEN;
         if (cf.phoneManufacturer==Config.NOKIA) activeType=Command.BACK;
@@ -287,14 +287,14 @@ public class Roster
         cmdActiveContacts=new Command(SR.MS_ACTIVE_CONTACTS, activeType, 3);
         
 //#ifndef MENU_LISTENER
-        addCommand(cmdActions);
+//#         addCommand(cmdActions);
 //#endif
 
         addCommand(cmdStatus);
         addCommand(cmdActiveContacts);
 //#ifndef WMUC
 //#ifdef MENU_LISTENER
-//#         if (isLoggedIn())
+        if (isLoggedIn())
 //#endif
             addCommand(cmdConference);
 //#endif
@@ -306,7 +306,7 @@ public class Roster
             addCommand(cmdArchive);
 //#endif
 //#ifdef MENU_LISTENER
-//#         if (isLoggedIn())
+        if (isLoggedIn())
 //#endif
             addCommand(cmdAdd);
         addCommand(cmdAccount);
@@ -321,25 +321,25 @@ public class Roster
             addCommand(cmdQuit);
         
 //#ifdef MENU_LISTENER
-//#         cmdActions.setImg(MenuIcons.ICON_ITEM_ACTIONS);
-//#         cmdStatus.setImg(MenuIcons.ICON_STATUS);
-//#         
-//#         cmdActiveContacts.setImg(MenuIcons.ICON_CONFERENCE);
-//#         cmdAlert.setImg(MenuIcons.ICON_NOTIFY);
+        cmdActions.setImg(MenuIcons.ICON_ITEM_ACTIONS);
+        cmdStatus.setImg(MenuIcons.ICON_STATUS);
+        
+        cmdActiveContacts.setImg(MenuIcons.ICON_CONFERENCE);
+        cmdAlert.setImg(MenuIcons.ICON_NOTIFY);
 //#ifndef WMUC
-//#         cmdConference.setImg(MenuIcons.ICON_CONFERENCE);
+        cmdConference.setImg(MenuIcons.ICON_CONFERENCE);
 //#endif
 //#ifdef ARCHIVE
-//#         cmdArchive.setImg(MenuIcons.ICON_ARCHIVE);
+        cmdArchive.setImg(MenuIcons.ICON_ARCHIVE);
 //#endif
-//#         cmdAdd.setImg(MenuIcons.ICON_ADD_CONTACT);
-//#         cmdTools.setImg(MenuIcons.ICON_SETTINGS);    
-//#         cmdAccount.setImg(MenuIcons.ICON_VCARD);
-//#         cmdInfo.setImg(MenuIcons.ICON_CHECK_UPD);
-//#         if (cf.allowMinimize)
-//#             cmdMinimize.setImg(MenuIcons.ICON_FILEMAN);
-//#         cmdCleanAllMessages.setImg(MenuIcons.ICON_CLEAN_MESSAGES);
-//#         cmdQuit.setImg(MenuIcons.ICON_BUILD_NEW);
+        cmdAdd.setImg(MenuIcons.ICON_ADD_CONTACT);
+        cmdTools.setImg(MenuIcons.ICON_SETTINGS);    
+        cmdAccount.setImg(MenuIcons.ICON_VCARD);
+        cmdInfo.setImg(MenuIcons.ICON_CHECK_UPD);
+        if (cf.allowMinimize)
+            cmdMinimize.setImg(MenuIcons.ICON_FILEMAN);
+        cmdCleanAllMessages.setImg(MenuIcons.ICON_CLEAN_MESSAGES);
+        cmdQuit.setImg(MenuIcons.ICON_BUILD_NEW);
 //#endif
     }
     
@@ -663,8 +663,7 @@ public class Roster
                     }
                     firstInstance=false;
 
-                    if (querysign==true)
-                    {
+                    if (querysign==true) {
                         if (cf.collapsedGroups) {
                             Group g=c.group;
                             g.collapsed=true; 
@@ -1571,11 +1570,11 @@ public class Roster
 //#ifdef PLUGINS
 //#                     if (sd.ClientsIcons)
 //#endif
-//#                         if (cf.showClientIcon)
-//#                             if (pr.hasEntityCaps())
-//#                                 if (pr.getEntityNode()!=null)
-//#                                     getClientIcon(c, pr.getEntityNode());
-//#                                     
+                        if (cf.showClientIcon)
+                            if (pr.hasEntityCaps())
+                                if (pr.getEntityNode()!=null)
+                                    getClientIcon(c, pr.getEntityNode());
+                                    
 //#endif
                         String lang=pr.getAttribute("xml:lang");
 
@@ -1643,12 +1642,12 @@ public class Roster
 //#ifdef PLUGINS
 //#                             if (cf.showClientIcon)
 //#endif
-//#                                 if (pr.hasEntityCaps()) {
-//#                                     if (pr.getEntityNode()!=null)
-//#                                         ClientsIconsData.getInstance().processData(c, pr.getEntityNode());
-//#                                 } else if (c.jid.hasResource()) {
-//#                                     ClientsIconsData.getInstance().processData(c, c.getResource().substring(1));
-//#                                 }
+                                if (pr.hasEntityCaps()) {
+                                    if (pr.getEntityNode()!=null)
+                                        ClientsIconsData.getInstance().processData(c, pr.getEntityNode());
+                                } else if (c.jid.hasResource()) {
+                                    ClientsIconsData.getInstance().processData(c, c.getResource().substring(1));
+                                }
 //#endif
                             JabberDataBlock j2j=pr.findNamespace("x", "j2j:history");
                             if (j2j!=null) {
@@ -1718,9 +1717,9 @@ public class Roster
         return JabberBlockListener.BLOCK_REJECTED;
     }
 //#ifdef CLIENTS_ICONS
-//#     private void getClientIcon(Contact c, String data) {
-//#         ClientsIconsData.getInstance().processData(c, data);
-//#     }
+    private void getClientIcon(Contact c, String data) {
+        ClientsIconsData.getInstance().processData(c, data);
+    }
 //#endif
 
     boolean  processRoster(JabberDataBlock data){
@@ -2392,8 +2391,8 @@ public class Roster
 //#ifdef PLUGINS
 //#                 if (cf.showClientIcon)
 //#endif
-//#                     if (cntact.client>-1)
-//#                         mess.append("\nUse: "+cntact.clientName);
+                    if (cntact.client>-1)
+                        mess.append("\nUse: "+cntact.clientName);
 //#endif
                 if (cntact.lang!=null) mess.append("\nLang: "+cntact.lang);
             }
@@ -2720,17 +2719,17 @@ public class Roster
 
     
 //#ifdef MENU_LISTENER
-//#     public void showMenu() {
-//#         commandState();
-//#         new MyMenu(display, parentView, this, SR.MS_MAIN_MENU, MenuIcons.getInstance(), menuCommands);
-//#     }
-//# 
-//#     public String touchRightCommand(){ return (cf.oldSE)?SR.MS_MENU:SR.MS_ACTION; }
-//#     public String touchLeftCommand(){ return (cf.oldSE)?SR.MS_ACTION:SR.MS_MENU; }
-//#     
-//#     public void touchRightPressed(){ if (cf.oldSE) showMenu(); else cmdActions(); }    
-//#     public void touchLeftPressed(){ if (cf.oldSE) cmdActions(); else showMenu(); }
-//# 
+    public void showMenu() {
+        commandState();
+        new MyMenu(display, parentView, this, SR.MS_MAIN_MENU, MenuIcons.getInstance(), menuCommands);
+    }
+
+    public String touchRightCommand(){ return (cf.oldSE)?SR.MS_MENU:SR.MS_ACTION; }
+    public String touchLeftCommand(){ return (cf.oldSE)?SR.MS_ACTION:SR.MS_MENU; }
+    
+    public void touchRightPressed(){ if (cf.oldSE) showMenu(); else cmdActions(); }    
+    public void touchLeftPressed(){ if (cf.oldSE) cmdActions(); else showMenu(); }
+
 //#endif
 //#ifdef RUNNING_MESSAGE
 //#     void setTicker(Contact c, String message) {
@@ -2793,9 +2792,11 @@ public class Roster
                     transpGroup.visible= (cf.showTransports || transpGroup.unreadMessages>0);
                     
                     // always visible
-                    Group visibleGroup=groups.getGroup(Groups.TYPE_VISIBLE);
-                    visibleGroup.visible=true;
+                    groups.getGroup(Groups.TYPE_VISIBLE).visible=true;
                     
+                    // always visible
+                    groups.getGroup(Groups.TYPE_SEARCH_RESULT).visible=true;
+
                     // adding groups
                     for (int i=0; i<groups.getCount(); i++)
                         groups.addToVector(tContacts,i);

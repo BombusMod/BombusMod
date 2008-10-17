@@ -31,14 +31,15 @@ import io.file.FileIO;
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
 //#ifndef MENU_LISTENER
-import javax.microedition.lcdui.Command;
+//# import javax.microedition.lcdui.Command;
 //#else
-//# import Menu.Command;
+import Menu.Command;
 //#endif
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
+import ui.controls.form.LinkString;
 import ui.controls.form.SimpleString;
 import ui.controls.form.DefForm;
 import ui.controls.form.MultiLine;
@@ -60,9 +61,8 @@ public class TransferAcceptFile
     TransferTask t;
     TextInput fileName;
     TextInput path;
-
-    Command cmdDecline=new Command(SR.MS_CANCEL, Command.CANCEL, 90);
-    Command cmdPath=new Command(SR.MS_PATH, Command.SCREEN, 2);
+    
+    LinkString selectFile;
 
     /** Creates a new instance of TransferAcceptFile */
     public TransferAcceptFile(Display display, Displayable pView, TransferTask transferTask) {
@@ -95,18 +95,20 @@ public class TransferAcceptFile
 
         path=new TextInput(display, SR.MS_SAVE_TO, t.filePath, "recvPath", TextField.ANY);
         itemsList.addElement(path);
+        
+        selectFile=new LinkString(SR.MS_PATH) { public void doAction() { initBrowser(); } };
+        itemsList.addElement(selectFile);
                 
         itemsList.addElement(new MultiLine(SR.MS_SENDER, t.jid, super.superWidth));
 
         itemsList.addElement(new MultiLine(SR.MS_DESCRIPTION, t.description, super.superWidth));
 
-        removeCommand(cmdCancel);
-        addCommand(cmdPath);
-        addCommand(cmdDecline);
-
         attachDisplay(display);
         this.parentView=pView;
     }
+
+    
+    public void initBrowser() { new Browser(path.getValue(), display, this, this, true); }
 
     public void BrowserFilePathNotify(String pathSelected) { path.setValue(pathSelected); }
     
@@ -122,22 +124,4 @@ public class TransferAcceptFile
         t.decline();
         destroyView();
     }
-    
-    public void commandAction(Command c, Displayable d) {
-        if (c==cmdPath) { 
-            new Browser(path.getValue(), display, this, this, true);
-        } else if (c==cmdDecline)
-            cmdCancel();
-        else super.commandAction(c, d);
-    }
-    
-//#ifdef MENU_LISTENER
-//#     public void commandState() {
-//#         super.commandState();
-//#         removeCommand(cmdCancel);
-//#         addCommand(cmdPath);
-//#         addCommand(cmdDecline);
-//#     }
-//#     public String touchLeftCommand(){ return SR.MS_MENU; }
-//#endif
 }

@@ -83,6 +83,8 @@ public class TransferSendFile
     public void BrowserFilePathNotify(String pathSelected) { fileName.setValue(pathSelected); redraw(); }
 
     public void cmdOk() {
+        if (fileName.getValue()==null || fileName.getValue().length()==0) return;
+        
         try {
             TransferTask task=new TransferTask(to, String.valueOf(System.currentTimeMillis()), fileName.getValue(), description.getValue(), false, null);
             TransferDispatcher.getInstance().sendFile(task);
