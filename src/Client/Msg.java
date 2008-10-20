@@ -66,6 +66,10 @@ public class Msg {
     public int itemHeight=-1;
     
     public int color = -1;
+
+    public boolean selected;
+
+    public boolean oldHighlite;
     
     /** Creates a new instance of msg */
     public Msg(int messageType, String from, String subj, String body) {
@@ -96,6 +100,7 @@ public class Msg {
     }
     
     public int getColor() {
+        if (selected) ColorTheme.getColor(ColorTheme.MSG_HIGHLIGHT);
         if (color>-1) return color; 
         
         if (highlite) 

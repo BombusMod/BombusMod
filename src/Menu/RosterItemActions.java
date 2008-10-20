@@ -80,7 +80,7 @@ public class RosterItemActions extends Menu {
 
     Object item;
 //#ifdef CLIPBOARD
-//#     private ClipBoard clipboard;
+//#     private ClipBoard clipboard=ClipBoard.getInstance();
 //#endif
     private int action;
     
@@ -101,10 +101,7 @@ public class RosterItemActions extends Menu {
 	
         if (item==null) return;
         boolean isContact=( item instanceof Contact );
-//#ifdef CLIPBOARD
-//#         if (cf.useClipBoard)
-//#             clipboard=ClipBoard.getInstance();
-//#endif
+
 	if (isContact) {
 	    Contact contact=(Contact)item;
 	    if (contact.getGroupType()==Groups.TYPE_TRANSP) {
@@ -128,10 +125,10 @@ public class RosterItemActions extends Menu {
 //#endif
 //#ifdef CLIPBOARD
 //#             if (cf.useClipBoard) {
-//#                 addItem(SR.MS_SEND_BUFFER,914, menuIcons.ICON_SEND_BUFFER);
-//#                 if (contact.getGroupType()!=Groups.TYPE_SELF) {
+//#                 if (!clipboard.isEmpty())
+//#                     addItem(SR.MS_SEND_BUFFER,914, menuIcons.ICON_SEND_BUFFER);
+//#                 if (contact.getGroupType()!=Groups.TYPE_SELF)
 //#                     addItem(SR.MS_COPY_JID,892, menuIcons.ICON_COPY_JID);
-//#                 }
 //#             }
 //#endif
             addItem(SR.MS_SEND_COLOR_SCHEME, 912, menuIcons.ICON_SEND_COLORS);

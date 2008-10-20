@@ -26,7 +26,9 @@
  */
 
 package io.file.browse;
+
 import Client.Config;
+import Client.StaticData;
 //#ifndef MENU_LISTENER
 //# import javax.microedition.lcdui.CommandListener;
 //# import javax.microedition.lcdui.Command;
@@ -84,8 +86,11 @@ public class Browser
         
         this.browserListener=browserListener;
 	this.getDirectory=getDirectory;
-        this.path="";
-		
+        this.path=(path==null)?StaticData.getInstance().previousPath:path;
+
+        // test for empty path
+        if (path==null) path="";
+
         setMainBarItem(new MainBar(2));
         
 //#ifdef MENU_LISTENER
@@ -104,14 +109,13 @@ public class Browser
         addCommand(cmdExit);
         addCommand(cmdCancel);
         setCommandListener(this);
-
-        // test for empty path
-        if (path==null) path="";
        
         // trim filename
         int l=path.lastIndexOf('/');
-        if (l<0) {  path=""; 
-        } else path=path.substring(0,l+1);
+        if (l<0)
+            path=""; 
+        else
+            path=path.substring(0,l+1);
 
         chDir(path);
         
@@ -137,7 +141,7 @@ public class Browser
         if (command==cmdRoot) {
             path="";
             chDir(path);
-			return;
+            return;
         }
         if (command==cmdOk) eventOk();
         if (command==cmdSelect) {
@@ -161,8 +165,12 @@ public class Browser
         }
         if (command==cmdExit) { destroyView(); }
     }
-
     
+    public void destroyView(){
+        StaticData.getInstance().previousPath=path;
+        super.destroyView();
+    }
+
      private boolean chDir(String relativePath) {
         String focus="";
          if (relativePath.startsWith("/")) {

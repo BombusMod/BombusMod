@@ -47,6 +47,10 @@ public class StaticData {
 //#     public AutoTask autoTask;
 //#endif
     
+//#ifdef FILE_IO
+    public String previousPath="";
+//#endif
+    
     //public int screenWidth;
     
     public long traffic = 0;
