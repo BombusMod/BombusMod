@@ -32,12 +32,12 @@ import ui.MainBar;
 import java.util.Vector;
 import Client.Config;
 //#ifndef MENU_LISTENER
-import javax.microedition.lcdui.CommandListener;
-import javax.microedition.lcdui.Command;
+//# import javax.microedition.lcdui.CommandListener;
+//# import javax.microedition.lcdui.Command;
 //#else
-//# import Menu.MenuListener;
-//# import Menu.Command;
-//# import Menu.MyMenu;
+import Menu.MenuListener;
+import Menu.Command;
+import Menu.MyMenu;
 //#endif
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
@@ -54,9 +54,9 @@ public class TransferManager
     extends VirtualList
     implements
 //#ifndef MENU_LISTENER
-        CommandListener
+//#         CommandListener
 //#else
-//#         MenuListener
+        MenuListener
 //#endif
     {
 //#ifdef PLUGINS
@@ -84,16 +84,16 @@ public class TransferManager
     public void showNotify(){
         super.showNotify();
 //#ifndef MENU_LISTENER
-        removeCommand(cmdDel);
-        removeCommand(cmdClrF);
-        removeCommand(cmdInfo);
-        commandState();
+//#         removeCommand(cmdDel);
+//#         removeCommand(cmdClrF);
+//#         removeCommand(cmdInfo);
+//#         commandState();
 //#endif
     }
     
     public void commandState(){
 //#ifdef MENU_LISTENER
-//#         menuCommands.removeAllElements();
+        menuCommands.removeAllElements();
 //#endif
         addCommand(cmdBack);
         if (getItemCount()>0) {
@@ -150,18 +150,19 @@ public class TransferManager
     }
     
 //#ifdef MENU_LISTENER
-//#     protected void keyPressed(int keyCode) { // overriding this method to avoid autorepeat
-//#         if (keyCode==KEY_POUND) {
-//#             cmdInfo();
-//#             return;
-//#         }
-//#         super.keyPressed(keyCode);
-//#     }
-//# 
-//#     public void showMenu() {
-//#         commandState();
-//#         new MyMenu(display, parentView, this, SR.MS_DISCO, null, menuCommands);
-//#     }
+    protected void keyPressed(int keyCode) { // overriding this method to avoid autorepeat
+        kHold=0;
+        if (keyCode==KEY_POUND) {
+            cmdInfo();
+            return;
+        }
+        super.keyPressed(keyCode);
+    }
+
+    public void showMenu() {
+        commandState();
+        new MyMenu(display, parentView, this, SR.MS_DISCO, null, menuCommands);
+    }
 //#endif
 
     private void cmdInfo() {

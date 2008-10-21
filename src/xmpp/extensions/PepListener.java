@@ -108,7 +108,7 @@ public class PepListener implements JabberBlockListener{
 //#endif
         
 //#ifdef PEP_TUNE
-//#         boolean  tuneValue=false;
+//#         boolean  hasTune=false;
 //#         if (cf.rcvtune) {
 //#             JabberDataBlock tune=extractEvent(event, "tune", "http://jabber.org/protocol/tune");
 //#             if (tune!=null) {
@@ -126,7 +126,7 @@ public class PepListener implements JabberBlockListener{
 //#                         .append(')');
 //#                     }
 //# 
-//#                     tuneValue=true;
+//#                     hasTune=true;
 //#                 }
 //#ifdef DEBUG
 //#             System.out.println(from+": "+result.toString());
@@ -139,6 +139,7 @@ public class PepListener implements JabberBlockListener{
         JabberDataBlock mood=null;
         String moodText=null;
         String tag=null;
+        boolean hasMood = false;
         if (cf.sndrcvmood) {
             mood=extractEvent(event, "mood", "http://jabber.org/protocol/mood");
 
@@ -166,7 +167,7 @@ public class PepListener implements JabberBlockListener{
                                 .append(")");
                     }
                 }
-
+                hasMood = true;
 //#ifdef DEBUG
 //#             System.out.println(from+": "+result.toString());
 //#endif
@@ -182,7 +183,7 @@ public class PepListener implements JabberBlockListener{
             for (Enumeration e=hContacts.elements();e.hasMoreElements();){
                 Contact c=(Contact)e.nextElement();
                 if (c.jid.equals(j, false)) {
-                    if (mood!=null) {
+                    if (hasMood) {
                         c.pepMood=moodIndex;
                         c.pepMoodName=Moods.getInstance().getMoodLabel(moodIndex);
                         c.pepMoodText=moodText;
@@ -199,8 +200,8 @@ public class PepListener implements JabberBlockListener{
 //#                     }
 //#endif
 //#ifdef PEP_TUNE
-//#                     if (tuneValue) {
-//#                         c.pepTune=tuneValue;
+//#                     if (hasTune) {
+//#                         c.pepTune=true;
 //#                         c.pepTuneText=result.toString();
 //#                     }
 //#endif

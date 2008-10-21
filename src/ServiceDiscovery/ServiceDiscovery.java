@@ -32,12 +32,12 @@ import Conference.ConferenceForm;
 import images.RosterIcons;
 import java.util.*;
 //#ifndef MENU_LISTENER
-import javax.microedition.lcdui.CommandListener;
-import javax.microedition.lcdui.Command;
+//# import javax.microedition.lcdui.CommandListener;
+//# import javax.microedition.lcdui.Command;
 //#else
-//# import Menu.MenuListener;
-//# import Menu.Command;
-//# import Menu.MyMenu;
+import Menu.MenuListener;
+import Menu.Command;
+import Menu.MyMenu;
 //#endif
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
@@ -62,9 +62,9 @@ public class ServiceDiscovery
         extends VirtualList
         implements
 //#ifndef MENU_LISTENER
-        CommandListener,
+//#         CommandListener,
 //#else
-//#         MenuListener,
+        MenuListener,
 //#endif
         JabberBlockListener
 {
@@ -108,7 +108,7 @@ public class ServiceDiscovery
     public ServiceDiscovery(Display display, String service, String node, boolean search) {
         super(display);
 
-        setMainBarItem(new MainBar(3));
+        setMainBarItem(new MainBar(3, null, null, false));
         getMainBarItem().addRAlign();
         getMainBarItem().addElement(null);
         
@@ -118,9 +118,9 @@ public class ServiceDiscovery
         //sd.roster.discoveryListener=this;
         
 //#ifdef MENU_LISTENER
-//#         menuCommands.removeAllElements();
+        menuCommands.removeAllElements();
 //#else
-        addCommand(cmdBack);
+//#         addCommand(cmdBack);
 //#endif
         setCommandListener(this);
         addCommand(cmdRfsh);
@@ -190,9 +190,9 @@ public class ServiceDiscovery
         
 	if (size>0) {
 //#ifdef MENU_LISTENER
-//# 	    menuCommands.insertElementAt(cmdOk, 0); 
+	    menuCommands.insertElementAt(cmdOk, 0); 
 //#else
-            addCommand(cmdOk);
+//#             addCommand(cmdOk);
 //#endif
 	    count=" ("+size+") ";
 	}
@@ -493,19 +493,20 @@ public class ServiceDiscovery
     }
 
 //#ifdef MENU_LISTENER
-//#     protected void keyPressed(int keyCode) {
-//#         if (keyCode==Config.SOFT_RIGHT || keyCode==Config.KEY_BACK) {
-//#             if (!reconnectWindow.getInstance().isActive()) {
-//#                 exitDiscovery(false);
-//#                 return;
-//#             }
-//#         }
-//#         super.keyPressed(keyCode);
-//#     }
-//# 
-//#     public void showMenu() {
-//#         new MyMenu(display, parentView, this, SR.MS_DISCO, null, menuCommands);
-//#     }
+    protected void keyPressed(int keyCode) {
+        kHold=0;
+        if (keyCode==Config.SOFT_RIGHT || keyCode==Config.KEY_BACK) {
+            if (!reconnectWindow.getInstance().isActive()) {
+                exitDiscovery(false);
+                return;
+            }
+        }
+        super.keyPressed(keyCode);
+    }
+
+    public void showMenu() {
+        new MyMenu(display, parentView, this, SR.MS_DISCO, null, menuCommands);
+    }
 //#endif
 
 }

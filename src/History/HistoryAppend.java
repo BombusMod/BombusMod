@@ -56,7 +56,7 @@ public class HistoryAppend {
     /** Creates a new instance of PepListener */
     private HistoryAppend() { }
     
-    private Config cf;
+    private Config cf=Config.getInstance();
     private boolean convertToWin1251;
     
     private final static String MS="<m>";
@@ -85,13 +85,12 @@ public class HistoryAppend {
     public final static int MESSAGE_MARKER_OTHER=0;
     
 //#if FILE_IO
-    private int filePos;
+    //private int filePos;
     private FileIO file;
     private OutputStream os;
 //#endif
     
     public void addMessage(Msg m, boolean formatted, String filename) {
-       cf=Config.getInstance();
        convertToWin1251=cf.cp1251;
        byte[] bodyMessage=createBody(m, formatted).getBytes();
 
@@ -105,7 +104,7 @@ public class HistoryAppend {
             os = file.openOutputStream(0);
             try {
                 os.write(bodyMessage);
-                filePos+=bodyMessage.length;
+                //filePos+=bodyMessage.length;
             } catch (IOException ex) { }
             os.close();
             os.flush();
@@ -120,7 +119,6 @@ public class HistoryAppend {
     }
     
     public void addMessageList(String messages, String filename) {
-       cf=Config.getInstance();
        convertToWin1251=cf.cp1251;
        if (convertToWin1251) messages=Strconv.convUnicodeToCp1251(messages);
        
@@ -137,7 +135,7 @@ public class HistoryAppend {
             os = file.openOutputStream(0);
             try {
                 os.write(bodyMessage);
-                filePos+=bodyMessage.length;
+                //filePos+=bodyMessage.length;
             } catch (IOException ex) { }
             os.close();
             os.flush();

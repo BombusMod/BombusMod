@@ -48,8 +48,8 @@ import util.StringUtils;
 import java.util.Vector;
 
 //#ifdef MENU_LISTENER
-//# import Menu.Command;
-//# import Menu.MenuListener;
+import Menu.Command;
+import Menu.MenuListener;
 //#endif
 
 public abstract class VirtualList         
@@ -187,7 +187,7 @@ public abstract class VirtualList
 //#endif
     
 //#ifdef MENU_LISTENER
-//#     CommandsPointer ar=new CommandsPointer();
+    CommandsPointer ar=new CommandsPointer();
 //#endif
 
     protected synchronized void updateLayout(){
@@ -350,15 +350,10 @@ public abstract class VirtualList
         width=getWidth();
         height=getHeight();
 
-        //int 
         mHeight=0;
-        //int 
         iHeight=0;
         
-        Graphics g = graphics;      
-
-        if (offscreen != null)
-            graphics = offscreen.getGraphics();
+        Graphics g=(offscreen==null)? graphics: offscreen.getGraphics();
         
 //#ifdef POPUPS
         popup.init(g, width, height);
@@ -373,10 +368,11 @@ public abstract class VirtualList
         
         setAbsOrg(g, 0,0);
         
+        g.setColor(ColorTheme.getColor(ColorTheme.LIST_BGND));
+        g.fillRect(0, 0, width, height);
+        
 //#ifdef BACK_IMAGE
 //#         if (img!=null) {
-//#             g.setColor(ColorTheme.getColor(ColorTheme.LIST_BGND));
-//#             g.fillRect(0, 0, width, height);
 //#             g.drawImage(img, width/2, height/2, Graphics.VCENTER|Graphics.HCENTER);
 //#         }
 //#endif
@@ -515,8 +511,8 @@ public abstract class VirtualList
                     setAbsOrg(g, 0, height-mHeight);
                     drawMainPanel(g);
 //#ifdef MENU_LISTENER
-//#                     if (hasPointerEvents())
-//#                         ar.init(width, height, mHeight);
+                    if (hasPointerEvents())
+                        ar.init(width, height, mHeight);
 //#endif
                 }
             } else {
@@ -524,8 +520,8 @@ public abstract class VirtualList
                     setAbsOrg(g, 0, height-iHeight);
                     drawInfoPanel(g);
 //#ifdef MENU_LISTENER
-//#                     if (hasPointerEvents())
-//#                         ar.init(width, height, iHeight);
+                    if (hasPointerEvents())
+                        ar.init(width, height, iHeight);
 //#endif
                 }
             }
@@ -542,7 +538,9 @@ public abstract class VirtualList
         
         if (reconnectWindow.getInstance().isActive()) {
             if (reconnectTimeout>reconnectPos && reconnectPos!=0) {
+                int strWidth=g.getFont().stringWidth(SR.MS_RECONNECT);
                 int progressWidth=(width/3)*2;
+                progressWidth=(strWidth>progressWidth)?strWidth:progressWidth;
                 int progressX=(width-progressWidth)/2;
                 if (pb==null) pb=new Progress(progressX, height/2, progressWidth);
                 int popHeight=pb.getHeight();
@@ -551,7 +549,7 @@ public abstract class VirtualList
                 g.setColor(ColorTheme.getColor(ColorTheme.POPUP_SYSTEM_INK));
                 g.drawRoundRect(progressX-2, (height/2)-(popHeight*2), progressWidth+4, (popHeight*2)+1, 6, 6);
                 g.drawString(SR.MS_RECONNECT, width/2, (height/2)-(popHeight*2), Graphics.TOP | Graphics.HCENTER);
-                Progress.draw(g, reconnectPos*progressWidth/reconnectTimeout, Integer.toString(reconnectTimeout-reconnectPos));
+                Progress.draw(g, reconnectPos*progressWidth/reconnectTimeout, reconnectString);
             }
         }
         
@@ -561,12 +559,14 @@ public abstract class VirtualList
     private static int reconnectPos=0;
     private static int reconnectTimeout=0;
     public static boolean reconnectRedraw=false;
+    private static String reconnectString="";
     
     private Progress pb;
-    public static void drawReconnect(int pos, int timeout) {
+    public static void drawReconnect(int pos, int timeout, String reconnect) {
         reconnectPos=pos;
         reconnectTimeout=timeout;
         reconnectRedraw=true;
+        reconnectString=reconnect;
     }
 
     private void drawEnvelop(final Graphics g) {
@@ -729,16 +729,16 @@ public abstract class VirtualList
         popup.next();
 //#endif        
 //#ifdef MENU_LISTENER
-//#         int act=ar.pointerPressed(x, y);
-//#         if (act==1) {
-//#              touchLeftPressed();
-//#              stickyWindow=false;
-//#              return;
-//#         } else if (act==2) {
-//#             touchRightPressed();
-//#             stickyWindow=false;
-//#             return;
-//#         }
+        int act=ar.pointerPressed(x, y);
+        if (act==1) {
+             touchLeftPressed();
+             stickyWindow=false;
+             return;
+        } else if (act==2) {
+            touchRightPressed();
+            stickyWindow=false;
+            return;
+        }
 //#endif
         if (scrollbar.pointerPressed(x, y, this)) {
             stickyWindow=false;
@@ -854,7 +854,6 @@ public abstract class VirtualList
     
     
     public void reconnectYes() {
-        reconnectWindow.getInstance().stopReconnect();
         reconnectWindow.getInstance().reconnect();
         //reconnectDraw=false;
         redraw();
@@ -866,7 +865,7 @@ public abstract class VirtualList
         redraw();
     }
     
-    private void key(int keyCode) {
+private void key(int keyCode) {
 //#if DEBUG
 //#         System.out.println(keyCode);
 //#endif
@@ -880,30 +879,30 @@ public abstract class VirtualList
         }
 //#endif
 //#ifdef MENU_LISTENER
-//#         if (keyCode==Config.SOFT_LEFT || keyCode=='(') {
-//#             if (reconnectWindow.getInstance().isActive()) {
-//#                 reconnectYes();
-//#                 return;
-//#             }
-//#             touchLeftPressed();
-//#             return;
-//#         }
-//#          if (keyCode==Config.SOFT_RIGHT || keyCode==')') {
-//#             if (reconnectWindow.getInstance().isActive()) {
-//#                 reconnectNo();
-//#                 return;
-//#             }
-//#             touchRightPressed();
-//#             return;
-//#          }
-//#else
-         if (keyCode==Config.SOFT_RIGHT) {
-            if (cf.phoneManufacturer!=Config.SONYE || cf.phoneManufacturer==Config.SIEMENS || cf.phoneManufacturer==Config.SIEMENS2 || cf.phoneManufacturer==Config.MOTO) {
-               if (canBack==true)
-                    destroyView();
+        if (keyCode==Config.SOFT_LEFT || keyCode=='(') {
+            if (reconnectWindow.getInstance().isActive()) {
+                reconnectYes();
                 return;
             }
+            touchLeftPressed();
+            return;
+        }
+         if (keyCode==Config.SOFT_RIGHT || keyCode==')') {
+            if (reconnectWindow.getInstance().isActive()) {
+                reconnectNo();
+                return;
+            }
+            touchRightPressed();
+            return;
          }
+//#else
+//#          if (keyCode==Config.SOFT_RIGHT) {
+//#             if (cf.phoneManufacturer!=Config.SONYE || cf.phoneManufacturer==Config.SIEMENS || cf.phoneManufacturer==Config.SIEMENS2 || cf.phoneManufacturer==Config.MOTO) {
+//#                if (canBack==true)
+//#                     destroyView();
+//#                 return;
+//#             }
+//#          }
 //#endif
          if (keyCode==greenKeyCode) {
             if (cf.phoneManufacturer==Config.MOTO || cf.phoneManufacturer==Config.NOKIA || cf.phoneManufacturer==Config.NOKIA_9XXX) {
@@ -1265,6 +1264,7 @@ public abstract class VirtualList
         alphaBuffer = null;
     }
 */
+
     public void setParentView(Displayable parentView){
         this.parentView=parentView;
     }
@@ -1324,34 +1324,34 @@ public abstract class VirtualList
     }
     
 //#ifdef MENU_LISTENER
-//#     public Vector menuCommands=new Vector();
-//# 
-//#     public void addCommand(Command command) {
-//#         if (menuCommands.indexOf(command)<0)
-//#             menuCommands.addElement(command);
-//#     }
-//#     
-//#     public void removeCommand(Command command) {
-//#         menuCommands.removeElement(command);        
-//#     }
-//#     
-//#     public void touchLeftPressed(){
-//#         showMenu();
-//#     }
-//#     
-//#     public void setCommandListener(MenuListener menuListener) { }
-//#     
-//#     public Command getCommand(int index) {
-//#         if (index>menuCommands.size()-1) return null;
-//#         return (Command) menuCommands.elementAt(index);
-//#     }
-//#     
-//#     public void showMenu() {}
-//#     
-//#     
-//#     public void touchRightPressed(){
-//#         if (canBack) destroyView();
-//#     }
+    public Vector menuCommands=new Vector();
+
+    public void addCommand(Command command) {
+        if (menuCommands.indexOf(command)<0)
+            menuCommands.addElement(command);
+    }
+    
+    public void removeCommand(Command command) {
+        menuCommands.removeElement(command);        
+    }
+    
+    public void touchLeftPressed(){
+        showMenu();
+    }
+    
+    public void setCommandListener(MenuListener menuListener) { }
+    
+    public Command getCommand(int index) {
+        if (index>menuCommands.size()-1) return null;
+        return (Command) menuCommands.elementAt(index);
+    }
+    
+    public void showMenu() {}
+    
+    
+    public void touchRightPressed(){
+        if (canBack) destroyView();
+    }
 //#endif
     
     public String touchLeftCommand(){ return SR.MS_MENU; }

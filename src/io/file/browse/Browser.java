@@ -91,7 +91,7 @@ public class Browser
         // test for empty path
         if (path==null) path="";
 
-        setMainBarItem(new MainBar(2));
+        setMainBarItem(new MainBar(2, null, null, false));
         
 //#ifdef MENU_LISTENER
         menuCommands.removeAllElements();
@@ -242,7 +242,10 @@ public class Browser
     public void eventOk() {
         String f=((FileItem)getFocusedObject()).name;
         if (!f.endsWith("/")) {
-            if (browserListener==null) return;
+            if (browserListener==null) {
+                showFile();
+                return;
+            }
             destroyView();
             browserListener.BrowserFilePathNotify(path+f);
             return;

@@ -32,8 +32,8 @@ import Colors.ColorTheme;
 import java.util.Vector;
 import javax.microedition.lcdui.Canvas;
 //#ifndef MENU_LISTENER
-import javax.microedition.lcdui.CommandListener;
-import javax.microedition.lcdui.Command;
+//# import javax.microedition.lcdui.CommandListener;
+//# import javax.microedition.lcdui.Command;
 //#endif
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
@@ -56,7 +56,7 @@ public abstract class AlertBox
         extends Canvas
         
 //#ifndef MENU_LISTENER
-        implements CommandListener
+//#         implements CommandListener
 //#endif
     {
 
@@ -64,8 +64,8 @@ public abstract class AlertBox
     protected Displayable next;
     
 //#ifndef MENU_LISTENER
-    protected Command cmdOk=new Command(SR.MS_OK, Command.OK, 1);
-    protected Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 2);
+//#     protected Command cmdOk=new Command(SR.MS_OK, Command.OK, 1);
+//#     protected Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 2);
 //#endif
     
     public boolean isShowing;
@@ -118,23 +118,23 @@ public abstract class AlertBox
         this.mainbar=mainbar;
         isShowing=true;
 //#ifndef MENU_LISTENER
-        addCommand(cmdOk);
-        addCommand(cmdCancel);
-
-        setCommandListener(this);
+//#         addCommand(cmdOk);
+//#         addCommand(cmdCancel);
+//# 
+//#         setCommandListener(this);
 //#endif
         display.setCurrent(this);
     }
     
 //#ifndef MENU_LISTENER
-    public void commandAction(Command command, Displayable displayable) {
-        if (command==cmdOk) {
-            yes();
-        } else {
-            no();
-        }
-        destroyView();
-    }
+//#     public void commandAction(Command command, Displayable displayable) {
+//#         if (command==cmdOk) {
+//#             yes();
+//#         } else {
+//#             no();
+//#         }
+//#         destroyView();
+//#     }
 //#endif
 
     public void destroyView()	{

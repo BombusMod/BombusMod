@@ -96,6 +96,7 @@ public class HistoryReader
     }
     
     public void keyPressed(int keyCode) {
+        kHold=0;
         if (parsing) return;
         
         switch (keyCode) {

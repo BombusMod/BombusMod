@@ -43,6 +43,7 @@ import Conference.MucContact;
 import Conference.affiliation.ConferenceQuickPrivelegeModify;
 import Conference.ConferenceForm;
 //#endif
+import Fonts.FontCache;
 import Statistic.Stats;
 import images.MenuIcons;
 
@@ -158,8 +159,7 @@ public class Roster
         
     public int messageCount;
     int highliteMessageCount;
-    
-    private Object messageIcon;
+
     public Object transferIcon;
     
     public Vector hContacts;
@@ -228,7 +228,7 @@ public class Roster
 
         setLight(cf.lightState);
         
-        MainBar mainbar=new MainBar(4);
+        MainBar mainbar=new MainBar(4, null, null, false);
         setMainBarItem(mainbar);
         mainbar.addRAlign();
         mainbar.addElement(null);
@@ -461,7 +461,7 @@ public class Roster
     
     public Object getEventIcon() {
         if (transferIcon!=null) return transferIcon;
-        return messageIcon;
+        return null;
     }
   
     private void updateMainBar(){
@@ -469,16 +469,13 @@ public class Roster
         int profile=cf.profile;
         Object en=(profile>0)? new Integer(profile+RosterIcons.ICON_PROFILE_INDEX+1):null;
         MainBar mainbar=(MainBar) getMainBarItem();
+
+        mainbar.setElementAt((messageCount==0)?null:new Integer(RosterIcons.ICON_MESSAGE_INDEX), 0);
+        
+        mainbar.setElementAt((messageCount==0)?null:getHeaderString(),1);
         mainbar.setElementAt(new Integer(s), 2);
         mainbar.setElementAt(en, 5);
-        if (messageCount==0) {
-            messageIcon=null;
-            mainbar.setElementAt(null,1);
-        } else {
-            messageIcon=new Integer(RosterIcons.ICON_MESSAGE_INDEX);
-            mainbar.setElementAt(getHeaderString(),1);
-        }
-        mainbar.setElementAt(messageIcon, 0);
+        
         if (cf.phoneManufacturer==Config.WINDOWS) {
             if (messageCount==0) {
                 setTitle("BombusMod");
@@ -1356,7 +1353,7 @@ public class Roster
                         groupchat=true;
                 
                 if (groupchat) {
-                    start_me=0; // добавить ник в начало
+                    start_me=0; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
                     
                     int rp=from.indexOf('/');
 
@@ -1769,7 +1766,9 @@ public class Roster
     
 //#ifdef FILE_TRANSFER
     public void addMessageStore(String from, String message) {
-        messageStore(getContact(from, true), new Msg(Msg.MESSAGE_TYPE_SYSTEM, from, SR.MS_FILE, message));
+        Contact c=getContact(from, true);
+        c.fileTransfer=true;
+        messageStore(c, new Msg(Msg.MESSAGE_TYPE_SYSTEM, from, SR.MS_FILE, message));
     }
 //#endif
     
@@ -2115,6 +2114,7 @@ public class Roster
     }
 
     public void keyPressed(int keyCode){
+        kHold=0;
         super.keyPressed(keyCode);
         
         switch (keyCode) {

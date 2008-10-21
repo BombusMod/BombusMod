@@ -423,7 +423,7 @@ public final class MessageParser implements Runnable{
     }
     
     public Font getFont(boolean bold) {
-        return FontCache.getFont(bold, FontCache.roster);
+        return FontCache.getFont(bold, FontCache.msg);
     }
     
     public interface MessageParserNotify {

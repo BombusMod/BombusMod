@@ -73,7 +73,7 @@ public class DropChoiceBox
         this.display=display;
         this.caption=(caption==null)?"":caption;
         
-        font=FontCache.getFont(false, FontCache.msg);
+        font=FontCache.getFont(false, FontCache.roster);
         fontHeight=font.getHeight();
         itemHeight=fontHeight;
         

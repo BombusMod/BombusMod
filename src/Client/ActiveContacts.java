@@ -30,12 +30,12 @@ package Client;
 import java.util.Enumeration;
 import java.util.Vector;
 //#ifndef MENU_LISTENER
-import javax.microedition.lcdui.CommandListener;
-import javax.microedition.lcdui.Command;
+//# import javax.microedition.lcdui.CommandListener;
+//# import javax.microedition.lcdui.Command;
 //#else
-//# import Menu.MenuListener;
-//# import Menu.Command;
-//# import Menu.MyMenu;
+import Menu.MenuListener;
+import Menu.Command;
+import Menu.MyMenu;
 //#endif
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
@@ -52,9 +52,9 @@ public class ActiveContacts
     extends VirtualList
     implements
 //#ifndef MENU_LISTENER
-        CommandListener
+//#         CommandListener
 //#else
-//#         MenuListener
+        MenuListener
 //#endif
 {
     
@@ -96,14 +96,14 @@ public class ActiveContacts
     
     public void commandState() {
 //#ifdef MENU_LISTENER
-//#         menuCommands.removeAllElements();
+        menuCommands.removeAllElements();
 //#endif
         addCommand(cmdOk);
         addCommand(cmdCancel);
     }
     
 //#ifdef MENU_LISTENER
-//#     public void showMenu(){ eventOk(); }
+    public void showMenu(){ eventOk(); }
 //#endif
 
     protected int getItemCount() { return activeContacts.size(); }
@@ -123,6 +123,7 @@ public class ActiveContacts
     }
 
     public void keyPressed(int keyCode) {
+        kHold=0;
 //#ifdef POPUPS
         VirtualList.popup.next();
 //#endif
@@ -174,7 +175,7 @@ public class ActiveContacts
         display.setCurrent(parentView);
     }
 //#ifdef MENU_LISTENER
-//#     public String touchLeftCommand(){ return SR.MS_SELECT; }
-//#     public String touchRightCommand(){ return SR.MS_BACK; }
+    public String touchLeftCommand(){ return SR.MS_SELECT; }
+    public String touchRightCommand(){ return SR.MS_BACK; }
 //#endif
 }

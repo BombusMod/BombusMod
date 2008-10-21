@@ -1,7 +1,7 @@
 /*
  * DropListBox.java
  *
- * Created on 22 Ìàé 2008 ã., 16:37
+ * Created on 22 ÐœÐ°Ð¹ 2008 Ð³., 16:37
  *
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
@@ -10,9 +10,12 @@
 package ui.controls.form;
 
 import java.util.Vector;
-//#ifndef MENU
-import javax.microedition.lcdui.Command;
-import javax.microedition.lcdui.CommandListener;
+//#ifndef MENU_LISTENER
+//# import javax.microedition.lcdui.CommandListener;
+//# import javax.microedition.lcdui.Command;
+//#else
+import Menu.MenuListener;
+import Menu.Command;
 //#endif
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
@@ -27,8 +30,11 @@ import ui.VirtualList;
  */
 public class DropListBox 
         extends VirtualList 
-//#ifndef MENU
-        implements CommandListener
+        implements
+//#ifndef MENU_LISTENER
+//#         CommandListener
+//#else
+        MenuListener
 //#endif
     {
 //#ifndef MENU
@@ -45,39 +51,50 @@ public class DropListBox
         this.cb=cb;
         
         setMainBarItem(new MainBar(SR.MS_SELECT));
-//#ifndef MENU
-        addCommand(cmdOk);
-        addCommand(cmdCancel);
+        
+        commandState();
         setCommandListener(this);
-//#endif
+        
         moveCursorTo(cb.getSelectedIndex());
     }
     
+    public void commandState() {
+//#ifndef MENU_LISTENER
+//#         menuCommands.removeAllElements();
+//#         addCommand(cmdOk);
+//#         addCommand(cmdCancel);
+//#endif
+    }
+    
     public void eventOk() {
-        if (listItems.size()>0)
-            cb.setSelectedIndex(cursor);
+        if (listItems.size()>0)cb.setSelectedIndex(cursor);
         
-        display.setCurrent(parentView);
+        destroyView();
     }
 
+//#ifdef MENU_LISTENER
+    public String touchLeftCommand() { return SR.MS_OK; }
+    public void touchLeftPressed(){ eventOk(); }
 
-//#ifndef MENU
-    public void commandAction(Command c, Displayable d){
-        if (c==cmdOk)
-            eventOk();
-        else if (c==cmdCancel)
+    public String touchRightCommand() { return SR.MS_CANCEL; }
+    public void touchRightPressed(){ destroyView(); }
+//#endif
+    
+    public void destroyView()	{
+	if (display!=null)
             display.setCurrent(parentView);
     }
-//#else
-//#     public String getLeftCommand() { return SR.MS_OK; }
-//#     public void leftCommand() { eventOk(); }
-//#     
-//#     public String getRightCommand() { return SR.MS_CANCEL; }
-//#endif
 
     public VirtualElement getItemRef(int index){ 
         return new ListItem((String) listItems.elementAt(index)); 
     }
     
     public int getItemCount() { return listItems.size(); }
+
+    public void commandAction(Command c, Displayable displayable) {
+//#ifndef MENU_LISTENER
+//#         if (c==cmdOk) eventOk();
+//#         else if (c==cmdCancel) destroyView();
+//#endif
+    }
 }

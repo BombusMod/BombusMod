@@ -92,6 +92,7 @@ public class ConfigFonts
         FontCache.baloon=cf.baloonFont=font4.getValue()*8; //balloon
 
         cf.saveToStorage();
+        
         super.getInfoBarItem().setFont(FontCache.getFont(true, cf.barFont));
         super.getInfoBarItem().clearWHCache();
         sd.roster.reEnumRoster();

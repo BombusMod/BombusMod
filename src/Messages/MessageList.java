@@ -33,12 +33,12 @@ import Client.StaticData;
 import Colors.ColorTheme;
 import java.util.Vector;
 //#ifndef MENU_LISTENER
-import javax.microedition.lcdui.CommandListener;
-import javax.microedition.lcdui.Command;
+//# import javax.microedition.lcdui.CommandListener;
+//# import javax.microedition.lcdui.Command;
 //#else
-//# import Menu.MenuListener;
-//# import Menu.Command;
-//# import Menu.MyMenu;
+import Menu.MenuListener;
+import Menu.Command;
+import Menu.MyMenu;
 //#endif
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
@@ -53,9 +53,9 @@ import ui.reconnectWindow;
 public abstract class MessageList extends VirtualList
     implements
 //#ifndef MENU_LISTENER
-        CommandListener
+//#         CommandListener
 //#else
-//#         MenuListener
+        MenuListener
 //#endif
     {
     
@@ -80,7 +80,7 @@ public abstract class MessageList extends VirtualList
         messages=null;
 	messages=new Vector();
 //#ifdef MENU_LISTENER
-//#         menuCommands.removeAllElements();
+        menuCommands.removeAllElements();
 //#endif
         cf=Config.getInstance();
         
@@ -181,13 +181,14 @@ public abstract class MessageList extends VirtualList
     }
 
     protected void keyPressed(int keyCode) { // overriding this method to avoid autorepeat
+        kHold=0;
 //#ifdef MENU_LISTENER
-//#         if (keyCode==Config.SOFT_RIGHT || keyCode==Config.KEY_BACK) {
-//#             if (!reconnectWindow.getInstance().isActive()) {
-//#                 StaticData.getInstance().roster.activeContact=null;
-//#                 destroyView();
-//#             }
-//#         }
+        if (keyCode==Config.SOFT_RIGHT || keyCode==Config.KEY_BACK) {
+            if (!reconnectWindow.getInstance().isActive()) {
+                StaticData.getInstance().roster.activeContact=null;
+                destroyView();
+            }
+        }
 //#endif
 //#ifdef SMILES
         if (keyCode=='*') {
@@ -203,14 +204,14 @@ public abstract class MessageList extends VirtualList
     }
    
 //#ifdef MENU_LISTENER
-//#     public void showMenu() {
-//#         commandState();
-//#         String capt="";
-//#         try {
-//#             capt=getMainBarItem().elementAt(0).toString();
-//#         } catch (Exception ex){ }
-//#         new MyMenu(display, parentView, this, capt, null, menuCommands);
-//#    }
+    public void showMenu() {
+        commandState();
+        String capt="";
+        try {
+            capt=getMainBarItem().elementAt(0).toString();
+        } catch (Exception ex){ }
+        new MyMenu(display, parentView, this, capt, null, menuCommands);
+   }
 //#endif
 
     public void commandState() { }

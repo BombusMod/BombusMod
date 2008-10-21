@@ -57,6 +57,7 @@ import javax.microedition.lcdui.Displayable;
 import locale.SR;
 import Colors.ColorConfigForm;
 import ui.ImageList;
+//import ui.reconnectWindow;
 //#ifdef USER_KEYS
 //# import ui.keys.userKeysList;
 //#endif
@@ -269,6 +270,7 @@ public class RosterToolsMenu extends Menu {
 //#endif
             case 20:
                 sd.roster.errorLog(SR.MS_SIMULATED_BREAK);
+                //reconnectWindow.getInstance().startReconnect();
                 sd.roster.doReconnect();//connectionTerminated(new Exception(SR.MS_SIMULATED_BREAK));
                 return;
         }

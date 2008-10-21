@@ -33,7 +33,7 @@ import Conference.MucContact;
 
 import Fonts.FontCache;
 //#ifdef CLIENTS_ICONS
-//# import images.ClientsIcons;
+import images.ClientsIcons;
 //#endif
 import javax.microedition.lcdui.Font;
 
@@ -132,8 +132,8 @@ public class Contact extends IconTextElement{
     
     public VCard vcard;
 //#ifdef CLIENTS_ICONS
-//#     public int client=-1;
-//#     public String clientName=null;
+    public int client=-1;
+    public String clientName=null;
 //#endif
 //#ifdef LOGROTATE
 //#     public boolean redraw=false;
@@ -147,6 +147,8 @@ public class Contact extends IconTextElement{
     private int secondFontHeight;
     
     private int fontHeight;
+    
+    public boolean fileTransfer;
     
 //#ifdef HISTORY
 //#ifdef LAST_MESSAGES
@@ -578,19 +580,6 @@ public class Contact extends IconTextElement{
     //public int getClient () { return client; }
     
 //#ifdef PEP
-//#ifdef PEP_TUNE
-//#     //public void setUserTune (String tune) { pepTuneText=tune; }
-//#     
-//#     //public String getUserTune() { return pepTuneText; }
-//#endif
-//#     //public void setUserMood (String mood) { pepMoodName=mood; }
-//#     
-//#     //public void setUserMoodText (String mood) { pepMoodText=mood; }
-//#     
-//#     //public String getUserMood() { return pepMoodName; }
-//#     
-//#     //public String getUserMoodText() { return pepMoodText; }
-//#     
 //#     public String getMoodString() {
 //#         StringBuffer mood=null;
 //#         if (hasMood()) {
@@ -630,13 +619,13 @@ public class Contact extends IconTextElement{
             il.drawImage(g, getImageIndex(), 2, imgH);
         }
 //#ifdef CLIENTS_ICONS
-//#         if (hasClientIcon()) {
-//#             ImageList clients=ClientsIcons.getInstance();
-//#             int clientImgSize=clients.getWidth();
-//#             w-=clientImgSize;
-//#             clients.drawImage(g, client, w, (h-clientImgSize)/2);
-//#             if (maxImgHeight<clientImgSize) maxImgHeight=clientImgSize;
-//#         }
+        if (hasClientIcon()) {
+            ImageList clients=ClientsIcons.getInstance();
+            int clientImgSize=clients.getWidth();
+            w-=clientImgSize;
+            clients.drawImage(g, client, w, (h-clientImgSize)/2);
+            if (maxImgHeight<clientImgSize) maxImgHeight=clientImgSize;
+        }
 //#endif
 //#ifdef PEP
 //#         if (hasMood()) {
@@ -659,6 +648,16 @@ public class Contact extends IconTextElement{
 //#endif
 //#endif
 //#endif
+        if (vcard!=null) {
+            w-=ilHeight;
+            il.drawImage(g, RosterIcons.ICON_SEARCH_INDEX, w,imgH);
+        }
+
+        if (fileTransfer) {
+            w-=ilHeight;
+            il.drawImage(g, RosterIcons.ICON_PROGRESS_INDEX, w,imgH);
+        }
+        
         if (getSecImageIndex()>-1) {
             w-=ilHeight;
             il.drawImage(g, getSecImageIndex(), w,imgH);
@@ -684,9 +683,9 @@ public class Contact extends IconTextElement{
     }
     
 //#ifdef CLIENTS_ICONS
-//#     boolean hasClientIcon() {
-//#         return (client>-1);
-//#     }
+    boolean hasClientIcon() {
+        return (client>-1);
+    }
 //#endif
     
 //#ifdef PEP

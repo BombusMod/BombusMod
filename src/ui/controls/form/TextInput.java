@@ -82,7 +82,7 @@ public class TextInput
         colorBorder=ColorTheme.getColor(ColorTheme.CURSOR_OUTLINE);
         colorBGnd=ColorTheme.getColor(ColorTheme.LIST_BGND);
         
-        font=FontCache.getFont(false, FontCache.msg);
+        font=FontCache.getFont(false, FontCache.roster);
         fontHeight=font.getHeight();
         itemHeight=fontHeight;
         

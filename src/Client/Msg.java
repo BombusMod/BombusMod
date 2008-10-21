@@ -100,11 +100,8 @@ public class Msg {
     }
     
     public int getColor() {
-        if (selected) ColorTheme.getColor(ColorTheme.MSG_HIGHLIGHT);
+        if (selected || highlite) return ColorTheme.getColor(ColorTheme.MSG_HIGHLIGHT);
         if (color>-1) return color; 
-        
-        if (highlite) 
-            return ColorTheme.getColor(ColorTheme.MSG_HIGHLIGHT);
 
         switch (messageType) {
             case MESSAGE_TYPE_IN: return ColorTheme.getColor(ColorTheme.MESSAGE_IN);

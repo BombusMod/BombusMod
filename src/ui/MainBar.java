@@ -26,9 +26,10 @@ package ui;
 
 import Fonts.FontCache;
 import images.RosterIcons;
+import javax.microedition.lcdui.Font;
 
 public class MainBar extends ComplexString{
-
+    
     public MainBar(int size, Object first, Object second, boolean bold) {
         this (size);
         if (first!=null) setElementAt(first,0);

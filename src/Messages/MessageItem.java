@@ -50,24 +50,28 @@ public class MessageItem
     private boolean even;
     private boolean smiles;
     private boolean partialParse=false;
-    private Font font;
+    //private Font font;
     
     /** Creates a new instance of MessageItem */
     public MessageItem(Msg msg, VirtualList view, boolean showSmiles) {
 	this.msg=msg;
 	this.view=view;
         this.smiles=showSmiles;
-        this.font=FontCache.getFont(false, FontCache.msg);
+        //this.font=FontCache.getFont(false, FontCache.msg);
     }
 
     public int getVHeight() { 
         if (msg==null) return 0;
-        if (msg.itemHeight<0) msg.itemHeight=font.getHeight();
+        if (msg.itemHeight<0) msg.itemHeight=getFont().getHeight();
         if (msg.delivered) {
             int rh=RosterIcons.getInstance().getHeight();
             if (msg.itemHeight<rh) return rh;
         }
         return msg.itemHeight; 
+    }
+    
+    public Font getFont() {
+        return FontCache.getFont(false, FontCache.msg);
     }
     
     public int getVWidth() { return 0; }

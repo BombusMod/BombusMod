@@ -48,7 +48,7 @@ public class ComplexString extends Vector implements VirtualElement {
     public final static int NICK_OFF  = 0x05000000;
 //#endif
 
-    protected Font font;
+    protected Font font=FontCache.getFont(false, FontCache.msg);
     private int height;
     private int width;
     private ImageList imageList;
@@ -61,7 +61,6 @@ public class ComplexString extends Vector implements VirtualElement {
     /** Creates a new instance of ComplexString */
     public ComplexString() {
         super();
-        this.font=FontCache.getFont(false, FontCache.msg);
         color=ColorTheme.getColor(ColorTheme.LIST_INK);
         colorBGnd=ColorTheme.getColor(ColorTheme.LIST_BGND);
     }

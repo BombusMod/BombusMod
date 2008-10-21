@@ -29,8 +29,8 @@ package Menu;
 import Client.Config;
 import java.util.*;
 //#ifndef MENU_LISTENER
-import javax.microedition.lcdui.Command;
-import javax.microedition.lcdui.CommandListener;
+//# import javax.microedition.lcdui.Command;
+//# import javax.microedition.lcdui.CommandListener;
 //#endif
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
@@ -42,17 +42,17 @@ import ui.*;
  */
 public class Menu extends VirtualList
 //#ifndef MENU_LISTENER
-        implements CommandListener
+//#         implements CommandListener
 //#endif
 {
     Vector menuitems;
 //#ifndef MENU_LISTENER
-    Command cmdBack=new Command(SR.MS_BACK,Command.BACK,99);
-    Command cmdOk=new Command(SR.MS_OK,Command.OK,1);
+//#     Command cmdBack=new Command(SR.MS_BACK,Command.BACK,99);
+//#     Command cmdOk=new Command(SR.MS_OK,Command.OK,1);
 //#endif
     private ImageList il;
 //#ifdef MENU_LISTENER
-//#     private boolean executeByNum;
+    private boolean executeByNum;
 //#endif
     public Menu(String mainbar, ImageList il) {
         super();
@@ -60,11 +60,11 @@ public class Menu extends VirtualList
         menuitems=new Vector();
         this.il=il;
 //#ifndef MENU_LISTENER
-        addCommand(cmdBack);
-        addCommand(cmdOk);
-        setCommandListener(this);
+//#         addCommand(cmdBack);
+//#         addCommand(cmdOk);
+//#         setCommandListener(this);
 //#else
-//#         executeByNum=Config.getInstance().executeByNum;
+        executeByNum=Config.getInstance().executeByNum;
 //#endif
     }
     
@@ -86,63 +86,64 @@ public class Menu extends VirtualList
         addItem(new MenuItem(label, index, -1, il));
     }
 //#ifndef MENU_LISTENER
-    public void commandAction(Command c, Displayable d) {
-        if (c==cmdBack) destroyView();
-        if (c==cmdOk) eventOk();
-    }
+//#     public void commandAction(Command c, Displayable d) {
+//#         if (c==cmdBack) destroyView();
+//#         if (c==cmdOk) eventOk();
+//#     }
 //#else
-//#     
-//#     public String touchLeftCommand(){ return SR.MS_OK; }
-//#     
-//#     public void touchLeftPressed(){
-//#         eventOk();
-//#     }
-//#      
-//#     public void keyPressed(int keyCode) {
-//#         if (keyCode==Config.SOFT_LEFT) {
-//#             eventOk();
-//#             return;
-//#         }
-//#         if (executeByNum && getItemCount()>0) {
-//#             switch (keyCode) {
-//#                 case KEY_NUM0:
-//#                     executeCommand(9); return;
-//#                 case KEY_NUM1:
-//#                     executeCommand(0); return;
-//#                 case KEY_NUM2:
-//#                     executeCommand(1); return;
-//#                 case KEY_NUM3:
-//#                     executeCommand(2); return;
-//#                 case KEY_NUM4:
-//#                     executeCommand(3); return;
-//#                 case KEY_NUM5:
-//#                     executeCommand(4); return;
-//#                 case KEY_NUM6:
-//#                     executeCommand(5); return;
-//#                 case KEY_NUM7:
-//#                     executeCommand(6); return;
-//#                 case KEY_NUM8:
-//#                     executeCommand(7); return;
-//#                 case KEY_NUM9:
-//#                     executeCommand(8); return;
-//#             }
-//#         }
-//#         super.keyPressed(keyCode);
-//#     }
-//#     
-//#     private void executeCommand(int index) {
-//#         moveCursorTo(index);
-//#         eventOk();
-//#         /*int pos=0;
-//#         for (Enumeration mi=menuitems.elements(); mi.hasMoreElements(); ) {
-//#             MenuItem mit=(MenuItem)mi.nextElement();
-//#             if (mit.index==index) {
-//#                 moveCursorTo(pos);
-//#                 eventOk();
-//#             }
-//#             pos++;  
-//#         }*/
-//#     }
+    
+    public String touchLeftCommand(){ return SR.MS_OK; }
+    
+    public void touchLeftPressed(){
+        eventOk();
+    }
+     
+    public void keyPressed(int keyCode) {
+        kHold=0;
+        if (keyCode==Config.SOFT_LEFT) {
+            eventOk();
+            return;
+        }
+        if (executeByNum && getItemCount()>0) {
+            switch (keyCode) {
+                case KEY_NUM0:
+                    executeCommand(9); return;
+                case KEY_NUM1:
+                    executeCommand(0); return;
+                case KEY_NUM2:
+                    executeCommand(1); return;
+                case KEY_NUM3:
+                    executeCommand(2); return;
+                case KEY_NUM4:
+                    executeCommand(3); return;
+                case KEY_NUM5:
+                    executeCommand(4); return;
+                case KEY_NUM6:
+                    executeCommand(5); return;
+                case KEY_NUM7:
+                    executeCommand(6); return;
+                case KEY_NUM8:
+                    executeCommand(7); return;
+                case KEY_NUM9:
+                    executeCommand(8); return;
+            }
+        }
+        super.keyPressed(keyCode);
+    }
+    
+    private void executeCommand(int index) {
+        moveCursorTo(index);
+        eventOk();
+        /*int pos=0;
+        for (Enumeration mi=menuitems.elements(); mi.hasMoreElements(); ) {
+            MenuItem mit=(MenuItem)mi.nextElement();
+            if (mit.index==index) {
+                moveCursorTo(pos);
+                eventOk();
+            }
+            pos++;  
+        }*/
+    }
 //#endif
     
 }

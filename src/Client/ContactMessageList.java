@@ -114,28 +114,12 @@ public class ContactMessageList extends MessageList {
         MainBar mainbar=new MainBar(contact);
         setMainBarItem(mainbar);
         
-        mainbar.addRAlign();
-        mainbar.addElement(null);
-        mainbar.addElement(null);
-        mainbar.addElement(null);
-//#ifdef PEP
-//#         mainbar.addElement(null);
-//#ifdef PEP_TUNE
-//#         mainbar.addElement(null);
-//#endif
-//#endif
-//#ifdef CLIENTS_ICONS
-//#ifdef PLUGINS
-//#         if (cf.showClientIcon)
-//#endif
-            mainbar.addElement(null);
-//#endif
-        
         cursor=0;//activate
         commandState();
         setCommandListener(this);
         
         contact.setIncoming(0);
+        contact.fileTransfer=false;
 //#ifdef HISTORY
 //#ifdef LAST_MESSAGES
 //#         if (cf.lastMessages && !contact.isHistoryLoaded()) loadRecentList();
@@ -279,30 +263,6 @@ public class ContactMessageList extends MessageList {
     protected void beginPaint(){
         markRead(cursor);
         forceScrolling();
-        
-        int num=2;
-//#ifdef CLIENTS_ICONS
-        if (contact.client>-1) getMainBarItem().setElementAt(RosterIcons.iconTransparent, num++);
-//#endif
-        
-//#ifdef PEP
-//#         if (contact.hasMood()) getMainBarItem().setElementAt(RosterIcons.iconTransparent, num++);
-//#ifdef PEP_TUNE
-//#         else if (contact.pepTune) getMainBarItem().setElementAt(RosterIcons.iconTransparent, num++);
-//#endif
-//#endif
-        getMainBarItem().setElementAt((contact.vcard==null)?null:RosterIcons.iconHasVcard, num++);
-        getMainBarItem().setElementAt(sd.roster.getEventIcon(), num++);
-//#ifdef CLIENTS_ICONS
-        if (contact.client<0) getMainBarItem().setElementAt(RosterIcons.iconTransparent, num++);
-//#endif
-        
-//#ifdef PEP
-//#         if (!contact.hasMood()) getMainBarItem().setElementAt(RosterIcons.iconTransparent, num++);
-//#ifdef PEP_TUNE
-//#         if (!contact.pepTune) getMainBarItem().setElementAt(RosterIcons.iconTransparent, num++);
-//#endif
-//#endif
     }   
     
     public void markRead(int msgIndex) {
@@ -381,6 +341,7 @@ public class ContactMessageList extends MessageList {
             mess.selected = !mess.selected;
             mess.oldHighlite = mess.highlite;
             mess.highlite = mess.selected;
+            //redraw();
             return;
         }
 //#ifdef HISTORY
@@ -488,6 +449,7 @@ public class ContactMessageList extends MessageList {
     }  
 
     public void keyPressed(int keyCode) {
+        kHold=0;
         if (keyCode==KEY_POUND) {
             if (!sd.roster.isLoggedIn()) return;
 //#ifndef WMUC
