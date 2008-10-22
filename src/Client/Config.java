@@ -248,6 +248,7 @@ public class Config {
     /** Creates a new instance of Config */
     private Config() {
         getPhoneManufacturer();
+        VirtualList.phoneManufacturer=phoneManufacturer;
         
 	int gmtloc=TimeZone.getDefault().getRawOffset()/3600000;
 	gmtOffset=gmtloc;

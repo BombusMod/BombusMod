@@ -119,7 +119,7 @@ public class ContactMessageList extends MessageList {
         setCommandListener(this);
         
         contact.setIncoming(0);
-        contact.fileTransfer=false;
+        contact.fileQuery=false;
 //#ifdef HISTORY
 //#ifdef LAST_MESSAGES
 //#         if (cf.lastMessages && !contact.isHistoryLoaded()) loadRecentList();
@@ -426,8 +426,8 @@ public class ContactMessageList extends MessageList {
     }
     
     public void keyGreen(){
-        if (!sd.roster.isLoggedIn()) 
-            return;
+        if (!sd.roster.isLoggedIn()) return;
+        
 //#ifdef RUNNING_MESSAGE
 //#         sd.roster.me=new MessageEdit(display, this, contact, contact.msgSuspended);
 //#else
@@ -451,7 +451,6 @@ public class ContactMessageList extends MessageList {
     public void keyPressed(int keyCode) {
         kHold=0;
         if (keyCode==KEY_POUND) {
-            if (!sd.roster.isLoggedIn()) return;
 //#ifndef WMUC
             if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT) {
                 Reply();
@@ -461,26 +460,6 @@ public class ContactMessageList extends MessageList {
             keyGreen();
             return;
         }
-//#ifdef MENU_LISTENER
-        else if (keyCode==Config.SOFT_RIGHT) {
-            if (!reconnectWindow.getInstance().isActive()) {
-                if (cf.oldSE) {
-                    showMenu();
-                } else {
-                    StaticData.getInstance().roster.activeContact=null;
-                    destroyView();
-                }
-                return;
-            }
-        }  else if (keyCode==Config.SOFT_LEFT) {
-            if (cf.oldSE) {
-                keyGreen();
-            } else {
-                showMenu();
-            }
-            return;
-        }
-//#endif
 
         super.keyPressed(keyCode);
     }
@@ -492,55 +471,30 @@ public class ContactMessageList extends MessageList {
                     sd.roster.searchActiveContact(-1); //previous contact with messages
                 else
                     super.pageLeft();
-                return;
+                break;
             case KEY_NUM6:
                 if (cf.useTabs)
                     sd.roster.searchActiveContact(1); //next contact with messages
                 else
                     super.pageRight();
-                return;
+                break;
             case KEY_NUM3:
                 new ActiveContacts(display, this, contact);
-                return;        
+                break;        
             case KEY_NUM9:
-                if (sd.roster.isLoggedIn()) 
-                    Quote();
-                return;  
-//#ifdef CLIPBOARD
-//#             case SIEMENS_VOLUP:
-//#             case SIEMENS_CAMERA:
-//#                  if (cf.phoneManufacturer==Config.SIEMENS || cf.phoneManufacturer==Config.SIEMENS2) { //copy&copy+
-//#                     if (messages.isEmpty()) 
-//#                         return;
-//#                     try {
-//#                         if (clipboard.getClipBoard().length()>0) 
-//#                             clipboard.append(getMessage(cursor));
-//#                         else
-//#                             clipboard.add(getMessage(cursor));
-//#                     } catch (Exception e) {/*no messages*/}
-//#                     return;
-//#                  }
-//#                  break;
-//#             case SIEMENS_VOLDOWN:
-//#             case SIEMENS_MPLAYER:
-//#                 if (cf.phoneManufacturer==Config.SIEMENS || cf.phoneManufacturer==Config.SIEMENS2) { //clear clipboard
-//#                     clipboard.setClipBoard("");
-//#                     return;
-//#                 }
-//#                 break;
-//#endif
+                Quote();
+                break;
         }
     }
-    
-    public void touchLeftPressed(){
+
 //#ifdef MENU_LISTENER
-        showMenu();
-//#else
-//#         sd.roster.searchActiveContact(-1);
+    public void touchRightPressed(){ if (cf.oldSE) showMenu(); else destroyView(); }    
+    public void touchLeftPressed(){ if (cf.oldSE) keyGreen(); else showMenu(); }
 //#endif
-    }
     
     private void Reply() {
+        if (!sd.roster.isLoggedIn()) return;
+        
         try {
             Msg msg=getMessage(cursor);
             
@@ -558,6 +512,8 @@ public class ContactMessageList extends MessageList {
     }
     
     private void Quote() {
+        if (!sd.roster.isLoggedIn()) return;
+        
         try {
             String msg=new StringBuffer()
                 .append((char)0xbb) //
@@ -697,7 +653,6 @@ public class ContactMessageList extends MessageList {
             startSelection = false;
         }
         */
-
         sd.roster.activeContact=null;
         sd.roster.reEnumRoster(); //to reset unread messages icon for this conference in roster
         if (display!=null) display.setCurrent(sd.roster);

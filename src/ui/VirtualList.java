@@ -80,6 +80,8 @@ public abstract class VirtualList
     private static boolean reverse=false;
     private static boolean paintTop=true;
     private static boolean paintBottom=true;
+
+    public static int phoneManufacturer;
     
     public static void changeOrient(int newOrient) {
         panelsState=newOrient;
@@ -273,7 +275,7 @@ public abstract class VirtualList
         popup = new PopUp();
 //#endif
 
-        if (cf.phoneManufacturer==Config.WINDOWS) {
+        if (phoneManufacturer==Config.WINDOWS) {
             setTitle("BombusMod");
         }
 
@@ -639,7 +641,7 @@ public abstract class VirtualList
 
         g.setColor(getMainBarRGB());
 
-        infobar.drawItem(g,(cf.phoneManufacturer==Config.NOKIA && reverse)?17:0,false);
+        infobar.drawItem(g,(phoneManufacturer==Config.NOKIA && reverse)?17:0,false);
     }
 //#endif
     
@@ -663,7 +665,7 @@ public abstract class VirtualList
 //#endif
         
         g.setColor(getMainBarRGB());
-        mainbar.drawItem(g,(cf.phoneManufacturer==Config.NOKIA && !reverse)?17:0,false);
+        mainbar.drawItem(g,(phoneManufacturer==Config.NOKIA && !reverse)?17:0,false);
     }
 
     public static void setAbsOrg(Graphics g, int x, int y){
@@ -865,7 +867,7 @@ public abstract class VirtualList
         redraw();
     }
     
-private void key(int keyCode) {
+    private void key(int keyCode) {
 //#if DEBUG
 //#         System.out.println(keyCode);
 //#endif
@@ -874,6 +876,9 @@ private void key(int keyCode) {
             if (popup.getContact()!=null) {
                 new ContactMessageList(sd.roster.getContact(popup.getContact(), false),display);
                 popup.next();
+                return;
+            } else if (phoneManufacturer==Config.MOTO || phoneManufacturer==Config.NOKIA || phoneManufacturer==Config.NOKIA_9XXX) {
+                keyGreen();
                 return;
             }
         }
@@ -897,19 +902,13 @@ private void key(int keyCode) {
          }
 //#else
 //#          if (keyCode==Config.SOFT_RIGHT) {
-//#             if (cf.phoneManufacturer!=Config.SONYE || cf.phoneManufacturer==Config.SIEMENS || cf.phoneManufacturer==Config.SIEMENS2 || cf.phoneManufacturer==Config.MOTO) {
+//#             if (phoneManufacturer!=Config.SONYE || phoneManufacturer==Config.SIEMENS || phoneManufacturer==Config.SIEMENS2 || phoneManufacturer==Config.MOTO) {
 //#                if (canBack==true)
 //#                     destroyView();
 //#                 return;
 //#             }
 //#          }
 //#endif
-         if (keyCode==greenKeyCode) {
-            if (cf.phoneManufacturer==Config.MOTO || cf.phoneManufacturer==Config.NOKIA || cf.phoneManufacturer==Config.NOKIA_9XXX) {
-                keyGreen();
-                return;
-            }
-         }
         if (sendEvent(keyCode)) {
             repaint();
             return;
@@ -962,7 +961,7 @@ private void key(int keyCode) {
                 .append("\nFree: ")
                 .append(Runtime.getRuntime().freeMemory()>>10)
                 .append(" kb");            
-            if (cf.phoneManufacturer==Config.SONYE)
+            if (phoneManufacturer==Config.SONYE)
                 mem.append("\nTotal: ")
                    .append(Runtime.getRuntime().totalMemory()>>10)
                    .append(" kb");

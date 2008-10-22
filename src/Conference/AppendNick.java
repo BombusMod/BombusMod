@@ -41,11 +41,11 @@ import ui.VirtualElement;
 import ui.VirtualList;
 
 //#ifndef MENU_LISTENER
-import javax.microedition.lcdui.CommandListener;
-import javax.microedition.lcdui.Command;
+//# import javax.microedition.lcdui.CommandListener;
+//# import javax.microedition.lcdui.Command;
 //#else
-//# import Menu.MenuListener;
-//# import Menu.Command;
+import Menu.MenuListener;
+import Menu.Command;
 //#endif
 
 /**
@@ -56,9 +56,9 @@ public class AppendNick
         extends VirtualList 
         implements
 //#ifndef MENU_LISTENER
-        CommandListener
+//#         CommandListener
 //#else
-//#         MenuListener
+        MenuListener
 //#endif
 {
 
@@ -82,7 +82,7 @@ public class AppendNick
         nicknames=new Vector();
         for (Enumeration e=StaticData.getInstance().roster.getHContacts().elements(); e.hasMoreElements(); ) {
             Contact c=(Contact)e.nextElement();
-            if (c.inGroup(to.group) && c.origin>Contact.ORIGIN_GROUPCHAT && c.status<Presence.PRESENCE_OFFLINE)
+            if (c.group==to.group && c.origin>Contact.ORIGIN_GROUPCHAT && c.status<Presence.PRESENCE_OFFLINE)
                 nicknames.addElement(c);
         }
         commandState();
@@ -92,7 +92,7 @@ public class AppendNick
     
     public void commandState() {
 //#ifdef MENU_LISTENER
-//#         menuCommands.removeAllElements();
+        menuCommands.removeAllElements();
 //#endif
         addCommand(cmdOk);
         addCommand(cmdCancel);
@@ -128,9 +128,9 @@ public class AppendNick
     }
      
 //#ifdef MENU_LISTENER
-//#     public void showMenu(){ eventOk(); }
-//#      
-//#     public String touchLeftCommand(){ return SR.MS_SELECT; }
-//#     public String touchRightCommand(){ return SR.MS_BACK; }
+    public void showMenu(){ eventOk(); }
+     
+    public String touchLeftCommand(){ return SR.MS_SELECT; }
+    public String touchRightCommand(){ return SR.MS_BACK; }
 //#endif
 }

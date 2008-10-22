@@ -444,9 +444,9 @@ public class RosterItemActions extends Menu {
                     break;
                 case 912: //send color scheme
                     String from=sd.account.toString();
- System.out.println(from);
+//System.out.println(from);
                     String body=ColorTheme.getInstance().getSkin();
- System.out.println(body);
+//System.out.println(body);
                     String id=String.valueOf((int) System.currentTimeMillis());
 
                     try {
@@ -473,7 +473,8 @@ public class RosterItemActions extends Menu {
 //#                     try {
 //#                         if (body2!=null && body2.length()>0) {
 //#                             sd.roster.sendMessage(c, id2, body2, null, null);
-//#                             c.addMessage(msg2);
+//#                             
+//#                             if (c.origin!=Contact.ORIGIN_GROUPCHAT) c.addMessage(msg2);
 //#                         }
 //#                     } catch (Exception e) {
 //#                         c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from2,null,"clipboard NOT sended"));

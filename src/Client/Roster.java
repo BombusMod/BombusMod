@@ -260,7 +260,7 @@ public class Roster
     }
     
     public void setLight(boolean state) {
-        if (cf.phoneManufacturer==Config.SIEMENS || cf.phoneManufacturer==Config.SIEMENS2) {
+        if (phoneManufacturer==Config.SIEMENS || phoneManufacturer==Config.SIEMENS2) {
             try {
                 if (state) com.siemens.mp.game.Light.setLightOn();
                 else com.siemens.mp.game.Light.setLightOff();  
@@ -269,7 +269,7 @@ public class Roster
         }
         if (!state) return;
 //#ifdef SE_LIGHT
-//#         if (cf.phoneManufacturer==Config.SONYE || cf.phoneManufacturer==Config.NOKIA) {
+//#         if (phoneManufacturer==Config.SONYE || phoneManufacturer==Config.NOKIA) {
 //#             new KeepLightTask().start();
 //#          }
 //#endif
@@ -280,9 +280,9 @@ public class Roster
         menuCommands.removeAllElements();
 //#endif
         int activeType=Command.SCREEN;
-        if (cf.phoneManufacturer==Config.NOKIA) activeType=Command.BACK;
-        if (cf.phoneManufacturer==Config.INTENT) activeType=Command.BACK;
-        if (cf.phoneManufacturer==Config.J2ME) activeType=Command.BACK;
+        if (phoneManufacturer==Config.NOKIA) activeType=Command.BACK;
+        if (phoneManufacturer==Config.INTENT) activeType=Command.BACK;
+        if (phoneManufacturer==Config.J2ME) activeType=Command.BACK;
 
         cmdActiveContacts=new Command(SR.MS_ACTIVE_CONTACTS, activeType, 3);
         
@@ -317,7 +317,7 @@ public class Roster
             addCommand(cmdMinimize);
 
         addCommand(cmdCleanAllMessages);
-        if (cf.phoneManufacturer!=Config.NOKIA_9XXX)
+        if (phoneManufacturer!=Config.NOKIA_9XXX)
             addCommand(cmdQuit);
         
 //#ifdef MENU_LISTENER
@@ -476,7 +476,7 @@ public class Roster
         mainbar.setElementAt(new Integer(s), 2);
         mainbar.setElementAt(en, 5);
         
-        if (cf.phoneManufacturer==Config.WINDOWS) {
+        if (phoneManufacturer==Config.WINDOWS) {
             if (messageCount==0) {
                 setTitle("BombusMod");
             } else {
@@ -558,7 +558,7 @@ public class Roster
                 synchronized (hContacts) {
                     while (index<hContacts.size()) {
                         Contact contact=(Contact)hContacts.elementAt(index);
-                        if (contact.inGroup(g)) {
+                        if (contact.group==g) {
                             if (contact.getNewMsgsCount()==0) {
                                 contact.msgs=null;
                                 contact=null;
@@ -583,7 +583,7 @@ public class Roster
         synchronized (hContacts) {
             while (index<hContacts.size()) {
                 Contact contact=(Contact)hContacts.elementAt(index);
-                if (contact.inGroup(g)) {
+                if (contact.group==g) {
                     if ( contact.origin>Contact.ORIGIN_ROSTERRES
                       && contact.status>=Presence.PRESENCE_OFFLINE
                       && contact.getNewMsgsCount()==0
@@ -1353,7 +1353,7 @@ public class Roster
                         groupchat=true;
                 
                 if (groupchat) {
-                    start_me=0; // �������� ��� � ������
+                    start_me=0;
                     
                     int rp=from.indexOf('/');
 
@@ -1544,6 +1544,7 @@ public class Roster
                 //System.out.println("presence");
                 if (myStatus==Presence.PRESENCE_OFFLINE) 
                     return JabberBlockListener.BLOCK_REJECTED;
+
                 Presence pr = (Presence) data;
                 
                 String from=pr.getFrom();
@@ -1551,11 +1552,7 @@ public class Roster
                 int ti=pr.getTypeIndex();
 
                 //PresenceContact(from, ti);
-                Msg m=new Msg(
-                        (ti==Presence.PRESENCE_AUTH || ti==Presence.PRESENCE_AUTH_ASK)?Msg.MESSAGE_TYPE_AUTH:Msg.MESSAGE_TYPE_PRESENCE,
-                        from,
-                        null,
-                        pr.getPresenceTxt());
+                Msg m=new Msg( (ti==Presence.PRESENCE_AUTH || ti==Presence.PRESENCE_AUTH_ASK)?Msg.MESSAGE_TYPE_AUTH:Msg.MESSAGE_TYPE_PRESENCE, from, null, pr.getPresenceTxt());
 //#ifndef WMUC
                 JabberDataBlock xmuc=pr.findNamespace("x", "http://jabber.org/protocol/muc#user");
                 if (xmuc==null) xmuc=pr.findNamespace("x", "http://jabber.org/protocol/muc"); //join errors
@@ -1563,14 +1560,20 @@ public class Roster
                 if (xmuc!=null) {
                     try {
                         MucContact c = mucContact(from);
+                        
+                        if (pr.getAttribute("ver")!=null) c.version=pr.getAttribute("ver"); // for bombusmod only
 //#ifdef CLIENTS_ICONS
 //#ifdef PLUGINS
 //#                     if (sd.ClientsIcons)
 //#endif
-                        if (cf.showClientIcon)
-                            if (pr.hasEntityCaps())
+                        if (cf.showClientIcon) {
+                            if (pr.hasEntityCaps()) {
                                 if (pr.getEntityNode()!=null)
                                     getClientIcon(c, pr.getEntityNode());
+                                if (pr.getEntityVer()!=null)
+                                    c.version=pr.getEntityVer();
+                            }
+                        }
                                     
 //#endif
                         String lang=pr.getAttribute("xml:lang");
@@ -1619,7 +1622,7 @@ public class Roster
                             return JabberBlockListener.BLOCK_PROCESSED;
                         }
                         
-                        c=getContact(from, true); 
+                        c=getContact(from, true);
                         
                         messageStore(c, m);
 
@@ -1633,6 +1636,8 @@ public class Roster
                         c=getContact(from, enNIL);
                         
                         if (c==null) return JabberBlockListener.BLOCK_REJECTED; //drop not-in-list presence
+
+                        if (pr.getAttribute("ver")!=null) c.version=pr.getAttribute("ver");  // for bombusmod only
                         
                         if (pr.getTypeIndex()!=Presence.PRESENCE_ERROR) {
 //#ifdef CLIENTS_ICONS
@@ -1640,8 +1645,11 @@ public class Roster
 //#                             if (cf.showClientIcon)
 //#endif
                                 if (pr.hasEntityCaps()) {
-                                    if (pr.getEntityNode()!=null)
+                                    if (pr.getEntityNode()!=null) {
                                         ClientsIconsData.getInstance().processData(c, pr.getEntityNode());
+                                        if (pr.getEntityVer()!=null)
+                                            c.version=pr.getEntityVer();
+                                    }
                                 } else if (c.jid.hasResource()) {
                                     ClientsIconsData.getInstance().processData(c, c.getResource().substring(1));
                                 }
@@ -1765,9 +1773,9 @@ public class Roster
 //#endif
     
 //#ifdef FILE_TRANSFER
-    public void addMessageStore(String from, String message) {
+    public void addFileQuery(String from, String message) {
         Contact c=getContact(from, true);
-        c.fileTransfer=true;
+        c.fileQuery=true;
         messageStore(c, new Msg(Msg.MESSAGE_TYPE_SYSTEM, from, SR.MS_FILE, message));
     }
 //#endif
@@ -2114,7 +2122,6 @@ public class Roster
     }
 
     public void keyPressed(int keyCode){
-        kHold=0;
         super.keyPressed(keyCode);
         
         switch (keyCode) {
@@ -2144,7 +2151,7 @@ public class Roster
 //#             case SE_FLIPCLOSE_JP6:
 //#             case SIEMENS_FLIPCLOSE:
 //#             case MOTOROLA_FLIP:
-//#                 if (cf.phoneManufacturer!=Config.SONYE) { //workaround for SE JP6 - enabling vibra in closed state
+//#                 if (phoneManufacturer!=Config.SONYE) { //workaround for SE JP6 - enabling vibra in closed state
 //#                     display.setCurrent(null);
 //#                     try {
 //#                         Thread.sleep(300);
@@ -2273,11 +2280,11 @@ public class Roster
         else if (keyCode==KEY_NUM9) {
             if (cf.allowMinimize)
                 BombusMod.getInstance().hideApp(true);
-            else if (cf.phoneManufacturer==Config.SIEMENS2)//SIEMENS: MYMENU call. Possible Main Menu for capable phones
+            else if (phoneManufacturer==Config.SIEMENS2)//SIEMENS: MYMENU call. Possible Main Menu for capable phones
                  try {
                       BombusMod.getInstance().platformRequest("native:ELSE_STR_MYMENU");
                  } catch (Exception e) { }     
-            else if (cf.phoneManufacturer==Config.SIEMENS)//SIEMENS-NSG: MYMENU call. Possible Native Menu for capable phones
+            else if (phoneManufacturer==Config.SIEMENS)//SIEMENS-NSG: MYMENU call. Possible Native Menu for capable phones
                  try {
                     BombusMod.getInstance().platformRequest("native:NAT_MAIN_MENU");
                  } catch (Exception e) { }   
@@ -2394,6 +2401,7 @@ public class Roster
                     if (cntact.client>-1)
                         mess.append("\nUse: "+cntact.clientName);
 //#endif
+                if (cntact.version!=null) mess.append("\nVersion: "+cntact.version);
                 if (cntact.lang!=null) mess.append("\nLang: "+cntact.lang);
             }
             
@@ -2499,7 +2507,7 @@ public class Roster
    public void cmdActions() {
        if (isLoggedIn()) {
            try {
-            new RosterItemActions(display, this, getFocusedObject(), -1);
+                new RosterItemActions(display, this, getFocusedObject(), -1);
            } catch (Exception ex) {}
        }
    }
@@ -2542,7 +2550,7 @@ public class Roster
     public void roomOffline(final Group group) {
          for (Enumeration e=hContacts.elements(); e.hasMoreElements();) {
             Contact contact=(Contact)e.nextElement();
-            if (contact.inGroup(group)) {
+            if (contact.group==group) {
                 contact.setStatus(Presence.PRESENCE_OFFLINE);
             }
          }
@@ -2731,6 +2739,7 @@ public class Roster
     public void touchLeftPressed(){ if (cf.oldSE) cmdActions(); else showMenu(); }
 
 //#endif
+    
 //#ifdef RUNNING_MESSAGE
 //#     void setTicker(Contact c, String message) {
 //#         if (cf.notifyWhenMessageType) {

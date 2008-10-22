@@ -25,6 +25,7 @@
 */
 
 package com.alsutton.jabber.datablocks;
+import Info.Version;
 import xmpp.EntityCaps;
 import com.alsutton.jabber.*;
 import images.RosterIcons;
@@ -71,14 +72,19 @@ public class Presence extends JabberDataBlock
         case PRESENCE_XA: setShow(PRS_XA);break;
         case PRESENCE_DND: setShow(PRS_DND);break;
     }
-    if (priority!=0) addChild("priority",String.valueOf(priority));
+    if (priority!=0)
+        addChild("priority",String.valueOf(priority));
+    
     if (message!=null) 
-        if (message.length()>0) addChild("status",message);
+        if (message.length()>0)
+            addChild("status",message);
     
     if (status!=PRESENCE_OFFLINE) {
         addChild(EntityCaps.presenceEntityCaps());
         if (nick!=null)
             addChildNs("nick", "http://jabber.org/protocol/nick").setText(nick);
+        
+        setAttribute("ver", Version.getVersionLang());
     }
   }
 
@@ -204,7 +210,7 @@ public class Presence extends JabberDataBlock
         }
         return null;
     }
-/*
+
     public String getEntityVer() {
         JabberDataBlock cc=getChildBlock("c");
         if (cc!=null){
@@ -216,7 +222,6 @@ public class Presence extends JabberDataBlock
         }
         return null;
     }
- */
   
   public final static int PRESENCE_ONLINE=0;
   public final static int PRESENCE_CHAT=1;

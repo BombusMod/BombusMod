@@ -270,7 +270,7 @@ public class ConfigForm
         queryExit = new CheckBox(SR.MS_CONFIRM_EXIT, cf.queryExit); itemsList.addElement(queryExit);
 //#ifdef MENU_LISTENER
         oldSE = new CheckBox(SR.MS_KEYS_FOR_OLD_SE, cf.oldSE);
-        if (cf.phoneManufacturer==cf.SONYE) itemsList.addElement(oldSE);
+        if (phoneManufacturer==cf.SONYE) itemsList.addElement(oldSE);
 //#endif
 //#ifdef USER_KEYS
 //#         userKeys = new CheckBox(SR.MS_CUSTOM_KEYS, cf.userKeys); 
@@ -280,7 +280,7 @@ public class ConfigForm
 //#             itemsList.addElement(userKeys);
 //#endif
         lightState = new CheckBox(SR.MS_FLASHLIGHT, cf.lightState);
-        if (cf.phoneManufacturer==Config.SIEMENS || cf.phoneManufacturer==Config.SIEMENS2 || cf.phoneManufacturer==Config.SONYE || cf.phoneManufacturer==Config.NOKIA) itemsList.addElement(lightState);
+        if (phoneManufacturer==Config.SIEMENS || phoneManufacturer==Config.SIEMENS2 || phoneManufacturer==Config.SONYE || phoneManufacturer==Config.NOKIA) itemsList.addElement(lightState);
 //#ifdef FILE_TRANSFER
         fileTransfer = new CheckBox(SR.MS_FILE_TRANSFERS, cf.fileTransfer); 
 //#ifdef PLUGINS
@@ -471,7 +471,7 @@ public class ConfigForm
         cf.enableVersionOs=enableVersionOs.getValue();
         cf.queryExit=queryExit.getValue();
 //#ifdef MENU_LISTENER
-        if (cf.phoneManufacturer==cf.SONYE) cf.oldSE=oldSE.getValue();
+        if (phoneManufacturer==cf.SONYE) cf.oldSE=oldSE.getValue();
 //#endif
 //#ifdef USER_KEYS
 //#ifdef PLUGINS

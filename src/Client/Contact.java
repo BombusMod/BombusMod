@@ -30,17 +30,14 @@ package Client;
 //#ifndef WMUC
 import Conference.MucContact;
 //#endif
-
 import Fonts.FontCache;
 //#ifdef CLIENTS_ICONS
 import images.ClientsIcons;
 //#endif
 import javax.microedition.lcdui.Font;
-
 //#if HISTORY
 //# import History.HistoryAppend;
 //#endif
-
 import javax.microedition.lcdui.Graphics;
 import ui.ImageList;
 //#ifdef PEP
@@ -103,15 +100,12 @@ public class Contact extends IconTextElement{
     public boolean showComposing=false;
     
     public short deliveryType;
-
-    public final static short INC_NONE=0;
-    public final static short INC_APPEARING=1;
-    public final static short INC_VIEWING=2;
     
     public short incomingState=INC_NONE;
     
-    public String msgSuspended;
-    public String lastSendedMessage;
+    public final static short INC_NONE=0;
+    public final static short INC_APPEARING=1;
+    public final static short INC_VIEWING=2;
     
     protected short key0;
     protected String key1;
@@ -129,12 +123,16 @@ public class Contact extends IconTextElement{
     private int newHighLitedMsgCnt=0;
     public int unreadType;
     public int lastUnread;
+
+    public String msgSuspended;
+    public String lastSendedMessage;
     
     public VCard vcard;
 //#ifdef CLIENTS_ICONS
     public int client=-1;
     public String clientName=null;
 //#endif
+
 //#ifdef LOGROTATE
 //#     public boolean redraw=false;
 //#endif
@@ -142,14 +140,12 @@ public class Contact extends IconTextElement{
 
     public String j2j;
     public String lang;
+    public String version;
     
-    private Font secondFont;
-    private int secondFontHeight;
-    
-    private int fontHeight;
-    
-    public boolean fileTransfer;
-    
+//#ifdef FILE_TRANSFER
+    public boolean fileQuery;
+//#endif
+
 //#ifdef HISTORY
 //#ifdef LAST_MESSAGES
 //#     private boolean loaded;
@@ -157,7 +153,11 @@ public class Contact extends IconTextElement{
 //#endif
     
     StaticData sd=StaticData.getInstance();
-
+    
+    private Font secondFont;
+    private int secondFontHeight;
+    
+    private int fontHeight;
     int ilHeight;
     int maxImgHeight;
 
@@ -412,8 +412,6 @@ public class Contact extends IconTextElement{
         return jid.getJid();
     }
 
-    //public final String getBareJid() { return bareJid; }
-
     public String getResource() {
         return jid.getResource();
     }
@@ -475,15 +473,6 @@ public class Contact extends IconTextElement{
         if (group==null) return 0;
         return group.type;
     }
-    public boolean inGroup(Group ingroup) { return group==ingroup; }
-    //public Group getGroup() { return group; }
-    //public void setGroup(Group group) { this.group = group; }
-    
-    //public String getJ2J() { return j2j; }
-    //public void setJ2J(String j2j) { this.j2j = j2j; }
-    
-    //public String getLang() { return lang; }
-    //public void setLang(String lang) { this.lang = lang; }
     
     public void setStatus(int status) {
         setIncoming(0);
@@ -491,11 +480,7 @@ public class Contact extends IconTextElement{
         if (status>=Presence.PRESENCE_OFFLINE) 
             acceptComposing=false;
     }
-    
-    //public int getStatus() { return status; }
-    
-    //public void setComposing (boolean state) { showComposing=state; }
-   
+
     void markDelivered(String id) {
         if (id==null) return;
         for (Enumeration e=msgs.elements(); e.hasMoreElements();) {
@@ -575,10 +560,6 @@ public class Contact extends IconTextElement{
         return -1;
     }
     
-    //public void setClient (int client) { this.client=client; }
-    
-    //public int getClient () { return client; }
-    
 //#ifdef PEP
 //#     public String getMoodString() {
 //#         StringBuffer mood=null;
@@ -652,12 +633,12 @@ public class Contact extends IconTextElement{
             w-=ilHeight;
             il.drawImage(g, RosterIcons.ICON_SEARCH_INDEX, w,imgH);
         }
-
-        if (fileTransfer) {
+//#ifdef FILE_TRANSFER
+        if (fileQuery) {
             w-=ilHeight;
             il.drawImage(g, RosterIcons.ICON_PROGRESS_INDEX, w,imgH);
         }
-        
+//#endif
         if (getSecImageIndex()>-1) {
             w-=ilHeight;
             il.drawImage(g, getSecImageIndex(), w,imgH);
@@ -692,7 +673,6 @@ public class Contact extends IconTextElement{
 //#     boolean hasMood() {
 //#         return (pepMood>-1 && pepMood<61);
 //#     }
-//#endif
 //#ifdef PEP_ACTIVITY
 //#     boolean hasActivity() {
 //#         if (activity!=null)
@@ -700,5 +680,6 @@ public class Contact extends IconTextElement{
 //#                 return true;
 //#         return false;
 //#     }
+//#endif
 //#endif
 }
