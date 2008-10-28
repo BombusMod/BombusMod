@@ -494,7 +494,7 @@ public class ServiceDiscovery
 
 //#ifdef MENU_LISTENER
     protected void keyPressed(int keyCode) {
-        kHold=0;
+        //kHold=0;
         if (keyCode==Config.SOFT_RIGHT || keyCode==Config.KEY_BACK) {
             if (!reconnectWindow.getInstance().isActive()) {
                 exitDiscovery(false);

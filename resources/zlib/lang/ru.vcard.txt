@@ -8,9 +8,11 @@ ADR	LOCALITY	Город
 ADR	REGION	Область
 ADR	PCODE	Почтовый индекс
 ADR	CTRY	Страна
+	TZ	Часовой пояс (GMT)
 TEL	HOME	Телефон (д)
 TEL	NUMBER	Телефон
 EMAIL	USERID	E-Mail
+	JABBERID	JID
 	TITLE	Должность
 	ROLE	Профессия
 ORG	ORGNAME	Организация

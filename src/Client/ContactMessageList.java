@@ -395,7 +395,7 @@ public class ContactMessageList extends MessageList {
 //#             try {
 //#                 if (body!=null && body.length()>0) {
 //#                     sd.roster.sendMessage(contact, id, body, null, null);
-//#                     contact.addMessage(msg);
+//#                     if (contact.origin<Contact.ORIGIN_GROUPCHAT) contact.addMessage(msg);
 //#                 }
 //#             } catch (Exception e) {
 //#                 contact.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,null,"clipboard NOT sended"));
@@ -449,7 +449,7 @@ public class ContactMessageList extends MessageList {
     }  
 
     public void keyPressed(int keyCode) {
-        kHold=0;
+        //kHold=0;
         if (keyCode==KEY_POUND) {
 //#ifndef WMUC
             if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT) {

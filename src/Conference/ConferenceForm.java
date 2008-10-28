@@ -39,9 +39,9 @@ import ui.controls.form.NumberInput;
 import ui.controls.form.PasswordInput;
 import ui.controls.form.TextInput;
 //#ifndef MENU_LISTENER
-import javax.microedition.lcdui.Command;
+//# import javax.microedition.lcdui.Command;
 //#else
-//# import Menu.Command;
+import Menu.Command;
 //#endif
 
 /**
@@ -94,6 +94,7 @@ public class ConferenceForm
         room=null;
         server=null;
         nick=null;
+        this.parentView=pView;
     }
     
     /** Creates a new instance of GroupChatForm */
@@ -175,11 +176,11 @@ public class ConferenceForm
         itemsList.addElement(autoJoin);
         
 //#ifndef MENU_LISTENER
-        addCommand(cmdJoin);
-        addCommand(cmdAdd);
-        addCommand(cmdEdit);
-        addCommand(cmdCancel);
-        removeCommand(cmdOk);
+//#         addCommand(cmdJoin);
+//#         addCommand(cmdAdd);
+//#         addCommand(cmdEdit);
+//#         addCommand(cmdCancel);
+//#         removeCommand(cmdOk);
 //#endif
         
 	setCommandListener(this);
@@ -215,7 +216,7 @@ public class ConferenceForm
             sd.roster.bookmarks.removeElement(editConf);
             sd.roster.bookmarks.insertElementAt(new BookmarkItem(name, gchat.toString(), nick, pass, autojoin), cursor);
             new BookmarkQuery(BookmarkQuery.SAVE);
-            display.setCurrent(sd.roster);
+            display.setCurrent(parentView);
         } else if (c==cmdAdd) {
             new Bookmarks(display, sd.roster, new BookmarkItem(name, gchat.toString(), nick, pass, autojoin));
         } else if (c==cmdJoin) {
@@ -236,19 +237,19 @@ public class ConferenceForm
     }
     
 //#ifdef MENU_LISTENER
-//#     public void commandState(){
-//#         menuCommands.removeAllElements();
-//#         addCommand(cmdJoin);
-//#         addCommand(cmdAdd);
-//#         addCommand(cmdEdit);
-//#         addCommand(cmdCancel);
-//#     }
-//# 
-//#     public String touchLeftCommand(){ return SR.MS_MENU; }
-//#     
-//#     public void touchLeftPressed(){
-//#         showMenu();
-//#     }
+    public void commandState(){
+        menuCommands.removeAllElements();
+        addCommand(cmdJoin);
+        addCommand(cmdAdd);
+        addCommand(cmdEdit);
+        addCommand(cmdCancel);
+    }
+
+    public String touchLeftCommand(){ return SR.MS_MENU; }
+    
+    public void touchLeftPressed(){
+        showMenu();
+    }
 //#endif
 
     private void saveMsgCount(int msgLimit) {

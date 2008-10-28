@@ -474,7 +474,7 @@ public class RosterItemActions extends Menu {
 //#                         if (body2!=null && body2.length()>0) {
 //#                             sd.roster.sendMessage(c, id2, body2, null, null);
 //#                             
-//#                             if (c.origin!=Contact.ORIGIN_GROUPCHAT) c.addMessage(msg2);
+//#                             if (c.origin<Contact.ORIGIN_GROUPCHAT) c.addMessage(msg2);
 //#                         }
 //#                     } catch (Exception e) {
 //#                         c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from2,null,"clipboard NOT sended"));

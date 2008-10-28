@@ -53,7 +53,6 @@ public class BookmarkQuery implements JabberBlockListener{
     
     /** Creates a new instance of BookmarkQurery */
     public BookmarkQuery(boolean saveBookmarks) {
-        
         JabberDataBlock request=new Iq(null, (saveBookmarks)?Iq.TYPE_SET: Iq.TYPE_GET, "getbookmarks");
         JabberDataBlock query=request.addChildNs("query", "jabber:iq:private");
 

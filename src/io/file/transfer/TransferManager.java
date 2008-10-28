@@ -151,7 +151,7 @@ public class TransferManager
     
 //#ifdef MENU_LISTENER
     protected void keyPressed(int keyCode) { // overriding this method to avoid autorepeat
-        kHold=0;
+        //kHold=0;
         if (keyCode==KEY_POUND) {
             cmdInfo();
             return;
