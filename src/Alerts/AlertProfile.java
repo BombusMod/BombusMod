@@ -34,13 +34,12 @@ import javax.microedition.lcdui.Displayable;
 import locale.SR;
 import ui.*;
 //#ifndef MENU_LISTENER
-import javax.microedition.lcdui.CommandListener;
-import javax.microedition.lcdui.Command;
+//# import javax.microedition.lcdui.CommandListener;
+//# import javax.microedition.lcdui.Command;
 //#else
-//# import java.util.Vector;
-//# import Menu.MenuListener;
-//# import Menu.Command;
-//# import Menu.MyMenu;
+import Menu.MenuListener;
+import Menu.Command;
+import Menu.MyMenu;
 //#endif
 import ui.MainBar;
 
@@ -50,9 +49,9 @@ import ui.MainBar;
  */
 public class AlertProfile extends VirtualList implements
 //#ifndef MENU_LISTENER
-        CommandListener
+//#         CommandListener
 //#else
-//#         MenuListener
+        MenuListener
 //#endif
     {
     
@@ -95,7 +94,7 @@ public class AlertProfile extends VirtualList implements
 
     public void commandState() {
 //#ifdef MENU_LISTENER
-//#         menuCommands.removeAllElements();
+        menuCommands.removeAllElements();
 //#endif
         addCommand(cmdOk);
         addCommand(cmdDef);
@@ -103,10 +102,10 @@ public class AlertProfile extends VirtualList implements
     }
     
 //#ifdef MENU_LISTENER
-//#     public void showMenu() {
-//#         commandState();
-//#         new MyMenu(display, parentView, this, SR.MS_STATUS, null, menuCommands);
-//#     }
+    public void showMenu() {
+        commandState();
+        new MyMenu(display, parentView, this, SR.MS_STATUS, null, menuCommands);
+    }
 //#endif
     
     int index;

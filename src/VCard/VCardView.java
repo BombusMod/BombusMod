@@ -27,6 +27,9 @@
 
 package VCard;
 import Client.Config;
+import Client.Contact;
+import Client.StaticData;
+import ui.controls.AlertBox;
 //#if FILE_IO
 import io.file.FileIO;
 import io.file.browse.Browser;
@@ -42,9 +45,9 @@ import ui.Time;
 //#endif
 import javax.microedition.lcdui.Displayable;
 //#ifndef MENU_LISTENER
-import javax.microedition.lcdui.Command;
+//# import javax.microedition.lcdui.Command;
 //#else
-//# import Menu.Command;
+import Menu.Command;
 //#endif
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Image;
@@ -69,6 +72,8 @@ public class VCardView
     private VCard vcard;
     private ImageItem photoItem;
     
+    private Contact c;
+    
     private SimpleString endVCard=new SimpleString(SR.MS_END_OF_VCARD, false);
     private SimpleString noVCard=new SimpleString(SR.MS_NO_VCARD, true);
     private SimpleString noPhoto=new SimpleString(SR.MS_NO_PHOTO, false);
@@ -89,11 +94,12 @@ public class VCardView
     Command cmdDelPhoto  = new Command(SR.MS_CLEAR_PHOTO, Command.SCREEN,5);
 
     /** Creates a new instance of VCardView */
-    public VCardView(Display display, Displayable pView, final VCard vcard, String caption) {
-        super(display, pView, caption);
+    public VCardView(Display display, Displayable pView, Contact contact) {
+        super(display, pView, contact.getNickJid());
         this.display=display;
         
-        this.vcard=vcard;
+        this.vcard=contact.vcard;
+        this.c=contact;
         
         refresh=new LinkString(SR.MS_REFRESH) { public void doAction() { VCard.request(vcard.getJid(), vcard.getId().substring(5)); destroyView(); } };
 
@@ -122,7 +128,7 @@ public class VCardView
     }
     
     
-     private void setPhoto() {
+    private void setPhoto() {
         try {
             itemsList.removeElement(noPhoto);
             itemsList.removeElement(badFormat);
@@ -241,10 +247,28 @@ public class VCardView
     }
     
 //#ifdef MENU_LISTENER
-//#     public String touchLeftCommand() { return SR.MS_MENU; }
-//#     
-//#     public void cmdOk() {
-//#         showMenu();
-//#     }
+    public String touchLeftCommand() { return SR.MS_MENU; }
+    
+    public void cmdOk() { showMenu(); }
+    
+    public void cmdCancel() {
+        clearVcard();
+    }
+    
+    public void cmdExit() {
+        super.cmdCancel();
+    }
 //#endif
+    
+    public void clearVcard() {
+        new AlertBox(SR.MS_ACTION, SR.MS_DELETE+" "+SR.MS_VCARD+"?", display, this) {
+            public void yes() {
+                c.vcard=null;
+                cmdExit();
+            }
+            public void no() {
+                cmdExit();
+            }
+        };
+    }
 }

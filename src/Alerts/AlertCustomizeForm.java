@@ -43,9 +43,9 @@ import ui.controls.form.TrackItem;
 import util.StringLoader;
 import java.util.Enumeration;
 //#ifndef MENU_LISTENER
-import javax.microedition.lcdui.Command;
+//# import javax.microedition.lcdui.Command;
 //#else
-//# import Menu.Command;
+import Menu.Command;
 //#endif
 
 
@@ -228,7 +228,7 @@ public class AlertCustomizeForm
     }
     
 //#ifdef MENU_LISTENER
-//#     public String touchLeftCommand(){ return SR.MS_MENU; }
-//#     public void touchLeftPressed(){ showMenu(); }
+    public String touchLeftCommand(){ return SR.MS_MENU; }
+    public void touchLeftPressed(){ showMenu(); }
 //#endif
 }

@@ -1289,10 +1289,10 @@ public class Roster
                                 if (c.getGroupType()==Groups.TYPE_SELF)
                                     new VCardEdit(display, this, vcard);
                                 else
-                                    new VCardView(display, this, vcard, c.getNickJid());
+                                    new VCardView(display, this, c);
                             }
                         } else {
-                            new VCardView(display, this, vcard, c.getNickJid());
+                            new VCardView(display, this, c);
                         }
                         return JabberBlockListener.BLOCK_PROCESSED;
                     }
@@ -2480,7 +2480,7 @@ public class Roster
     public void cmdQuit() { 
         if (cf.queryExit) {
             new AlertBox(SR.MS_QUIT_ASK, SR.MS_SURE_QUIT, display, null) {
-                public void yes() {quit(); }
+                public void yes() { quit(); }
                 public void no() { }
             };
         } else {

@@ -229,7 +229,7 @@ public class RosterToolsMenu extends Menu {
                 return;
 //#if IMPORT_EXPORT
 //#             case 11:
-//#                 new IE.IEMenu(display, parentView);
+//#                 new IE.IEMenu(display, sd.roster);
 //#                 return; 
 //#endif
             case 12:

@@ -31,12 +31,12 @@ package ui.controls.form;
 import Client.Config;
 import java.util.Vector;
 //#ifndef MENU_LISTENER
-import javax.microedition.lcdui.CommandListener;
-import javax.microedition.lcdui.Command;
+//# import javax.microedition.lcdui.CommandListener;
+//# import javax.microedition.lcdui.Command;
 //#else
-//# import Menu.MenuListener;
-//# import Menu.Command;
-//# import Menu.MyMenu;
+import Menu.MenuListener;
+import Menu.Command;
+import Menu.MyMenu;
 //#endif
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
@@ -53,9 +53,9 @@ public class DefForm
         extends VirtualList
         implements
 //#ifndef MENU_LISTENER
-        CommandListener
+//#         CommandListener
 //#else
-//#         MenuListener
+        MenuListener
 //#endif
     {
 
@@ -113,28 +113,29 @@ public class DefForm
     public void cmdCancel() {
         destroyView();
     }
+
     public void cmdOk() { }
     
     public void commandState() {
 //#ifdef MENU_LISTENER
-//#         menuCommands.removeAllElements();
+        menuCommands.removeAllElements();
 //#endif
 	addCommand(cmdOk);
 	addCommand(cmdCancel);
     }
     
 //#ifdef MENU_LISTENER
-//#     public void showMenu() {
-//#         commandState();
-//#         if (menuCommands.size()==2) {
-//#             if (menuCommands.elementAt(0).equals(cmdOk) && menuCommands.elementAt(1).equals(cmdCancel)) {
-//#                 cmdOk();
-//#                 return;
-//#             }
-//#         }
-//#         new MyMenu(display, parentView, this, "", null, menuCommands);
-//#     }
-//#     
-//#     public String touchLeftCommand(){ return SR.MS_OK; }
+    public void showMenu() {
+        commandState();
+        if (menuCommands.size()==2) {
+            if (menuCommands.elementAt(0).equals(cmdOk) && menuCommands.elementAt(1).equals(cmdCancel)) {
+                cmdOk();
+                return;
+            }
+        }
+        new MyMenu(display, parentView, this, "", null, menuCommands);
+    }
+    
+    public String touchLeftCommand(){ return SR.MS_OK; }
 //#endif
 }

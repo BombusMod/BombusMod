@@ -49,7 +49,7 @@ public class IEMenu
     private int choice = -1;
     
     public IEMenu(Display display, Displayable pView) {
-        super("Import/Export", null);
+        super(SR.MS_IMPORT_EXPORT, null);
         addItem(SR.MS_OPTIONS+": "+SR.MS_LOAD_FROM_FILE, 0);
         addItem(SR.MS_OPTIONS+": "+SR.MS_SAVE_TO_FILE, 1);
 //#ifdef PLUGINS
@@ -63,14 +63,10 @@ public class IEMenu
         addItem(SR.MS_TEMPLATE+": "+SR.MS_LOAD_FROM_FILE, 4);
         addItem(SR.MS_TEMPLATE+": "+SR.MS_SAVE_TO_FILE, 5);
         
-        addItem("Accounts: "+SR.MS_LOAD_FROM_FILE, 6);
-        addItem("Accounts: "+SR.MS_SAVE_TO_FILE, 7);
-        /*
-        addItem("Accounts load", 2);
-        addItem("Accounts save", 3);
-         */
-    
-	attachDisplay(display);
+        addItem(SR.MS_ACCOUNTS+": "+SR.MS_LOAD_FROM_FILE, 6);
+        addItem(SR.MS_ACCOUNTS+": "+SR.MS_SAVE_TO_FILE, 7);
+
+        attachDisplay(display);
         this.parentView=pView;
     }
     public void eventOk(){

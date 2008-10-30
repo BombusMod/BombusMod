@@ -272,11 +272,11 @@ public abstract class AlertBox
     
     protected void keyPressed(int keyCode) { // overriding this method to avoid autorepeat
         if (keyCode==Config.SOFT_LEFT || keyCode==FIRE) {
+            destroyView();
             yes();
-            destroyView();
         } else if (keyCode==Config.SOFT_RIGHT || keyCode==Config.KEY_BACK) {
-            no();
             destroyView();
+            no();
         }
     }
     
