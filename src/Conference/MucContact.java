@@ -35,6 +35,7 @@ import com.alsutton.jabber.datablocks.Presence;
 import images.RosterIcons;
 import locale.SR;
 import Client.Msg;
+import util.StringUtils;
 import xmpp.XmppError;
 
 /**
@@ -76,53 +77,25 @@ public class MucContact extends Contact {
         offline_type=Presence.PRESENCE_OFFLINE;
     }
     
-    private String processError(Presence presence, int presenceType) {
-
-        XmppError xe=XmppError.findInStanza(presence);
-        int errCode=xe.getCondition();
-
-        ConferenceGroup grp=(ConferenceGroup)group;
-        if (presenceType>=Presence.PRESENCE_OFFLINE) 
-            testMeOffline();
-        if (errCode!=XmppError.CONFLICT || presenceType>=Presence.PRESENCE_OFFLINE)
-            setStatus(presenceType);
-
-        String errText=xe.getText();
-        if (errText!=null) return xe.toString(); // if error description is provided by server
-
-        // legacy codes
-        switch (errCode) {
-            case XmppError.NOT_AUTHORIZED:        return "Password required";
-            case XmppError.FORBIDDEN:             return "You are banned in this room";
-            case XmppError.ITEM_NOT_FOUND:        return "Room does not exists";
-            case XmppError.NOT_ALLOWED:           return "You can't create room on this server";
-            case XmppError.NOT_ACCEPTABLE:        return "Reserved roomnick must be used";
-            case XmppError.REGISTRATION_REQUIRED: return "This room is members-only";
-            case XmppError.CONFLICT:              return "Nickname is already in use by another occupant";
-            case XmppError.SERVICE_UNAVAILABLE:   return "Maximum number of users has been reached in this room";
-            default: return xe.getName();
-        }
-    }
-    
     public String processPresence(JabberDataBlock xmuc, Presence presence) {
         String from=jid.getJid();
         
         int presenceType=presence.getTypeIndex();
         
-        if (presenceType==Presence.PRESENCE_ERROR) return processError(presence, presenceType);
+        if (presenceType==Presence.PRESENCE_ERROR) return StringUtils.processError(presence, presenceType, (ConferenceGroup) group, this);
         
         JabberDataBlock item=xmuc.getChildBlock("item");   
 
         String tempRole=item.getAttribute("role");
         if (tempRole.equals("visitor")) roleCode=ROLE_VISITOR;
-        else if (tempRole.equals("participant")) roleCode=ROLE_PARTICIPANT;
-        else if (tempRole.equals("moderator")) roleCode=ROLE_MODERATOR;
+   else if (tempRole.equals("participant")) roleCode=ROLE_PARTICIPANT;
+   else if (tempRole.equals("moderator")) roleCode=ROLE_MODERATOR;
         
         String tempAffiliation=item.getAttribute("affiliation");
         if (tempAffiliation.equals("owner")) affiliationCode=AFFILIATION_OWNER;
-        else if (tempAffiliation.equals("admin")) affiliationCode=AFFILIATION_ADMIN;
-        else if (tempAffiliation.equals("member")) affiliationCode=AFFILIATION_MEMBER;
-        else if (tempAffiliation.equals("none")) affiliationCode=AFFILIATION_NONE;
+   else if (tempAffiliation.equals("admin")) affiliationCode=AFFILIATION_ADMIN;
+   else if (tempAffiliation.equals("member")) affiliationCode=AFFILIATION_MEMBER;
+   else if (tempAffiliation.equals("none")) affiliationCode=AFFILIATION_NONE;
         
         boolean roleChanged= !tempRole.equals(role);
         boolean affiliationChanged=!tempAffiliation.equals(affiliation);
@@ -144,20 +117,17 @@ public class MucContact extends Contact {
                 transport=(affiliation.equals("member"))? 0: RosterIcons.getInstance().getTransportIndex("muc#vis");
                 key0=(affiliation.equals("member"))?GROUP_MEMBER:GROUP_PARTICIPANT;
         }
-
-        int rp=from.indexOf('/');
         
         JabberDataBlock statusBlock=xmuc.getChildBlock("status");
-        int statusCode;
+        int statusCode = 0;
         try { 
             statusCode=Integer.parseInt( statusBlock.getAttribute("code") ); 
-        } catch (Exception e) { statusCode=0; }
+        } catch (Exception e) { }
         
         StringBuffer b=new StringBuffer();
         appendL(b,nick);
         
         String statusText=presence.getChildBlockText("status");
-        
         String tempRealJid=item.getAttribute("jid");
 
         if (statusCode==201) {
@@ -172,7 +142,7 @@ public class MucContact extends Contact {
                     b.append(SR.MS_IS_NOW_KNOWN_AS);
                     String chNick=item.getAttribute("nick");
                     appendL(b,chNick);
-                    String newJid=from.substring(0,rp+1)+chNick;
+                    String newJid=from.substring(0, from.indexOf('/')+1)+chNick;
                     jid.setJid(newJid);
                     bareJid=newJid;
                     from=newJid;
@@ -181,8 +151,6 @@ public class MucContact extends Contact {
                 case 301: //ban
                     presenceType=Presence.PRESENCE_ERROR;
                 case 307: //kick
-                    //if (tempRealJid!=null) b.append(" (").append(tempRealJid).append(")"); //ejabberd not send
-
                     b.append((statusCode==301)? SR.MS_WAS_BANNED : SR.MS_WAS_KICKED );
 //#ifdef POPUPS
                     if (((ConferenceGroup)group).selfContact == this ) {
@@ -202,6 +170,8 @@ public class MucContact extends Contact {
                 default:
                     if (tempRealJid!=null)
                         b.append(" (").append(tempRealJid).append(")");
+                    else if (from!=null)
+                        b.append(" (").append(from).append(")");
 
                     b.append(SR.MS_HAS_LEFT_CHANNEL);
                     
@@ -216,7 +186,9 @@ public class MucContact extends Contact {
                     realJid=tempRealJid;  //for moderating purposes
                     b.append(" (").append(tempRealJid).append(')');
                 }
+                
                 b.append(SR.MS_HAS_JOINED_THE_CHANNEL_AS);
+                
                 if (affiliationCode!=AFFILIATION_MEMBER) b.append(getRoleLocale(roleCode));
 
                  if (!affiliation.equals("none")) {
@@ -225,8 +197,7 @@ public class MucContact extends Contact {
                     b.append(getAffiliationLocale(affiliationCode));
                 }
                 
-                if (statusText.length()>0)
-                    b.append(" (").append(statusText).append(")");
+                if (statusText.length()>0) b.append(" (").append(statusText).append(")");
             } else {
                 b.append(SR.MS_IS_NOW);
                 
@@ -287,7 +258,7 @@ public class MucContact extends Contact {
         return (tip.length()==0)? null:tip.toString();
     }
 
-    void testMeOffline(){
+    public void testMeOffline(){
          ConferenceGroup gr=(ConferenceGroup)group;
          if ( gr.selfContact == this ) 
             StaticData.getInstance().roster.roomOffline(gr);
@@ -296,8 +267,8 @@ public class MucContact extends Contact {
     public void addMessage(Msg m) {
         super.addMessage(m);
         switch (m.messageType) {
-            case Msg.MESSAGE_TYPE_IN: break;
-            case Msg.MESSAGE_TYPE_OUT: break;
+            case Msg.MESSAGE_TYPE_IN:
+            case Msg.MESSAGE_TYPE_OUT:
             case Msg.MESSAGE_TYPE_HISTORY: break;
             default: return;
         }

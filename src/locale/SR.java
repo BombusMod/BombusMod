@@ -34,7 +34,6 @@ import util.StringLoader;
 public class SR {
 
     private static Hashtable lang;
-    private static Hashtable presences;
     
     public   static String MS_JID = loadString( "Jid" );
     public   static String MS_PRIVACY_LISTS = loadString( "Privacy Lists" );
@@ -684,8 +683,17 @@ public class SR {
 //#     public static String MS_PEP_NOT_SUPPORTED = loadString("Personal events not supported");
 //#endif
     
-    public static String MS_VIP_GROUP =  loadString("VIP");
-    public static String MS_ENABLE_DISABLE =  loadString("Enable/Disable");
+    public static String MS_VIP_GROUP = loadString("VIP");
+    public static String MS_ENABLE_DISABLE = loadString("Enable/Disable");
+    
+            
+   public static String MS_ONLINE = loadString("online");
+   public static String MS_CHAT = loadString("chat");
+   public static String MS_AWAY = loadString("away");
+   public static String MS_XA = loadString("xa");
+   public static String MS_INVISIBLE = loadString("invisible");
+   public static String MS_DND = loadString("dnd");
+   public static String MS_OFFLINE = loadString("offline");
     
     private SR() { }
     
@@ -704,15 +712,6 @@ public class SR {
                 MS_IFACELANG="en";
                 MS_XMLLANG="en";
             }
-            
-            presences=new Hashtable();
-            presences.put("online", loadString("online"));
-            presences.put("chat", loadString("chat"));
-            presences.put("away", loadString("away"));
-            presences.put("xa", loadString("xa"));
-            presences.put("invisible", loadString("invisible"));
-            presences.put("dnd", loadString("dnd"));
-            presences.put("unavailable", loadString("offline"));
         }
         String value=(String)lang.get(key);
 //#if LOCALE_DEBUG
@@ -732,11 +731,18 @@ public class SR {
     }
     
     public static String getPresence(String presenceName) {
-        return (String) presences.get(presenceName);
+        if (presenceName.equals("online"))       return MS_ONLINE;
+   else if (presenceName.equals("chat"))         return MS_CHAT;
+   else if (presenceName.equals("away"))         return MS_AWAY;
+   else if (presenceName.equals("xa"))           return MS_XA;
+   else if (presenceName.equals("invisible"))    return MS_INVISIBLE;
+   else if (presenceName.equals("dnd"))          return MS_DND;
+   else if (presenceName.equals("unavailable"))  return MS_OFFLINE;
+        return null;
     }
 
     public static void loaded() {
+        lang.clear();
         lang=null;
-        //presences=null;
     }
 }

@@ -9,9 +9,13 @@
 
 package util;
 
+import Conference.ConferenceGroup;
+import Conference.MucContact;
+import com.alsutton.jabber.datablocks.Presence;
 import java.util.Vector;
 import javax.microedition.lcdui.Font;
 import ui.Time;
+import xmpp.XmppError;
 
 /**
  *
@@ -94,10 +98,7 @@ public class StringUtils {
         
         return out.toString();
     }
-    
-    //private static String wrapSeparators=" .,-=/\\;:+*()[]<>~!@#%^_&";
-    
-    
+
     public static Vector parseMessage(String value, int availWidth, Font font) {
         StringBuffer out=new StringBuffer(value);
         int vi = 0;
@@ -144,88 +145,13 @@ public class StringUtils {
 
         return lines;
     }
-/*
-    public static Vector parseMessage(String str, int availWidth, int availHeight, boolean wordsWrap, Font font) {
-        Vector lines=new Vector();
-        int state=0;
-        String txt=str;
-        int fontHeight=font.getHeight()+1;
-        
-        while (state<1) {
-            int w=0;
-            StringBuffer s=new StringBuffer();
-	    int wordWidth=0;
-	    int wordStartPos=0;
-
-            if (txt==null) {
-                state++;
-                continue;
-            }
-            
-            int pos=0;
-            while (pos<txt.length()) {
-                char c=txt.charAt(pos);
-
-                int cw=font.charWidth(c);
-                if (c!=0x20) {
-                    boolean newline= ( c==0x0d || c==0x0a  );
-                    if (wordWidth+cw>availWidth || newline) {
-                        s.append(txt.substring(wordStartPos,pos));
-                        w+=wordWidth;
-                        wordWidth=0;
-                        wordStartPos=pos;
-                        if (newline) 
-                            wordStartPos++;
-                    }
-                    if (w+wordWidth+cw>availWidth || newline) {
-                        lines.addElement(s.toString()); //lastest string in l
-                        s.setLength(0); w=0;
-                        if (availHeight>-1)
-                            if (fontHeight*lines.size()>availHeight){
-                                return lines; //stop when linesHeight>height
-                        }
-                    }
-                }
-                if (c==0x09) 
-                    c=0x20;
-
-                if (c>0x1f) 
-                    wordWidth+=cw;
-
-                if (wrapSeparators.indexOf(c)>=0 || !wordsWrap) {
-                    if (pos>wordStartPos) 
-                        s.append(txt.substring(wordStartPos,pos));
-                    if (c>0x1f) s.append(c);
-                    w+=wordWidth;
-                    wordStartPos=pos+1;
-                    wordWidth=0;
-                }
-                
-                pos++;
-            }
-	    if (wordStartPos!=pos)
-		s.append(txt.substring(wordStartPos,pos));
-            if (s.length()>0) {
-                lines.addElement(s.toString());
-            }
-            
-            if (lines.isEmpty()) 
-                lines.removeElementAt(lines.size()-1);  //lastest string
-            
-            state++;
-            s=null;
-        }
-        return lines;
-    }
-*/    
 
     public static String toExtendedString(String src){
         src=stringReplace(src,"%dt",Time.dispLocalTime());
         src=stringReplace(src,"%t",Time.localTime());
         return src;
     }
-    
-    
+
     public static String hexByteToString(byte b){
         StringBuffer out=new StringBuffer();
         char c = (char) ((b >> 4) & 0xf);
@@ -240,5 +166,32 @@ public class StringUtils {
         out.append(c);
         
         return out.toString();
+    }
+
+    public static String processError(Presence presence, int presenceType, ConferenceGroup group, MucContact muc) {
+        XmppError xe=XmppError.findInStanza(presence);
+        int errCode=xe.getCondition();
+
+        ConferenceGroup grp=(ConferenceGroup)group;
+        if (presenceType>=Presence.PRESENCE_OFFLINE) 
+            muc.testMeOffline();
+        if (errCode!=XmppError.CONFLICT || presenceType>=Presence.PRESENCE_OFFLINE)
+            muc.setStatus(presenceType);
+
+        String errText=xe.getText();
+        if (errText!=null) return xe.toString(); // if error description is provided by server
+
+        // legacy codes
+        switch (errCode) {
+            case XmppError.NOT_AUTHORIZED:        return "Password required";
+            case XmppError.FORBIDDEN:             return "You are banned in this room";
+            case XmppError.ITEM_NOT_FOUND:        return "Room does not exists";
+            case XmppError.NOT_ALLOWED:           return "You can't create room on this server";
+            case XmppError.NOT_ACCEPTABLE:        return "Reserved roomnick must be used";
+            case XmppError.REGISTRATION_REQUIRED: return "This room is members-only";
+            case XmppError.CONFLICT:              return "Nickname is already in use by another occupant";
+            case XmppError.SERVICE_UNAVAILABLE:   return "Maximum number of users has been reached in this room";
+            default: return xe.getName();
+        }
     }
 }
