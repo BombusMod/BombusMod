@@ -158,7 +158,7 @@ public class Utf8IOStream {
                 stats.append("ZLib:\nin: "); appendZlibStats(stats, z.getTotalIn(), z.getTotalOut(), true);
                 stats.append("\nout: "); appendZlibStats(stats, zo.getTotalOut(), zo.getTotalIn(), false);
             }
-            stats.append("in: ")
+            stats.append("\nin: ")
                  .append(recv)
                  .append("\nout: ")
                  .append(sent);

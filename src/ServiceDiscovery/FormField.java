@@ -69,11 +69,8 @@ public class FormField {
                 numericBoolean=body.length()==1;
                 ch.setSelectedIndex(0, set);
             }
-            else if (type.equals("list-single") || type.equals("list-multi")) {
-                
-                int choiceType=(type.equals("list-single"))? 
-                    ChoiceGroup.POPUP : ChoiceGroup.MULTIPLE;
-                ChoiceGroup ch=new ChoiceGroup(label, choiceType);
+            else if (type.equals("list-single")) {
+                ChoiceGroup ch=new ChoiceGroup(label, ChoiceGroup.POPUP);
                 formItem=ch;
                 
                 optionsList=null;
@@ -87,6 +84,23 @@ public class FormField {
                         optionsList.addElement(value);
                         int index=ch.append(label, null);
                         if (body.equals(value)) ch.setSelectedIndex(index, true);
+                    }
+                }
+            }else if (type.equals("list-multi")) {
+                ChoiceGroup ch=new ChoiceGroup(label, ChoiceGroup.MULTIPLE);
+                formItem=ch;
+                
+                optionsList=new Vector();
+                for (Enumeration e=field.getChildBlocks().elements(); e.hasMoreElements();) {
+                    JabberDataBlock option=(JabberDataBlock)e.nextElement();
+                    if (option.getTagName().equals("option")) {
+                        String value=option.getChildBlockText("value");
+                        String label=option.getAttribute("label");
+                        if (label==null) label=value;
+                        optionsList.addElement(value);
+                        int index=ch.append(label, null);
+                        boolean check=field.getChildBlockByText(value)!=null;
+                        if (check) ch.setSelectedIndex(index, true);
                     }
                 }
             }

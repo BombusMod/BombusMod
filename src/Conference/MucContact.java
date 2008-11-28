@@ -170,8 +170,8 @@ public class MucContact extends Contact {
                 default:
                     if (tempRealJid!=null)
                         b.append(" (").append(tempRealJid).append(")");
-                    else if (from!=null)
-                        b.append(" (").append(from).append(")");
+                    //else if (from!=null)
+                    //    b.append(" (").append(from).append(")");
 
                     b.append(SR.MS_HAS_LEFT_CHANNEL);
                     

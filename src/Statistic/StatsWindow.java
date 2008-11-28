@@ -31,9 +31,9 @@ import Client.Config;
 import Client.StaticData;
 import Info.Version;
 //#ifndef MENU_LISTENER
-import javax.microedition.lcdui.Command;
+//# import javax.microedition.lcdui.Command;
 //#else
-//# import Menu.Command;
+import Menu.Command;
 //#endif
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
@@ -116,6 +116,7 @@ public class StatsWindow
 //#         StringBuffer copy=new StringBuffer();
 //#         for (int i=0;i<itemsList.size();i++) {
 //#             copy.append(((MultiLine)itemsList.elementAt(i)).toString());
+//#             copy.append("\n");
 //#         }
 //#         clipboard.setClipBoard(copy.toString());
 //#         destroyView();
@@ -123,8 +124,8 @@ public class StatsWindow
 //#endif
 
 //#ifdef MENU_LISTENER
-//#     public String touchLeftCommand(){ return SR.MS_MENU; }
-//#     public void touchLeftPressed(){ showMenu(); }
+    public String touchLeftCommand(){ return SR.MS_MENU; }
+    public void touchLeftPressed(){ showMenu(); }
 //#endif
     
     public void commandAction(Command command, Displayable displayable) {

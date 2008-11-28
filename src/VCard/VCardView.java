@@ -29,6 +29,8 @@ package VCard;
 import Client.Config;
 import Client.Contact;
 import Client.StaticData;
+import javax.microedition.io.ConnectionNotFoundException;
+import midlet.BombusMod;
 import ui.controls.AlertBox;
 //#if FILE_IO
 import io.file.FileIO;
@@ -81,6 +83,8 @@ public class VCardView
     private SimpleString photoTooLarge=new SimpleString(SR.MS_PHOTO_TOO_LARGE, false);
 
     private LinkString refresh;
+    
+    private String url="";
 
 //#ifdef CLIPBOARD
 //#     ClipBoard clipboard  = ClipBoard.getInstance(); 
@@ -112,9 +116,19 @@ public class VCardView
                 String data=vcard.getVCardData(index);
                 String name=(String)VCard.vCardLabels.elementAt(index);
                 if (data!=null && name!=null) {
-                    MultiLine nData=new MultiLine(name, data, super.superWidth);
-                    nData.selectable=true;
-                    itemsList.addElement(nData);
+                    if (!VCard.vCardFields.elementAt(index).equals("URL")) {
+                        MultiLine nData=new MultiLine(name, data, super.superWidth);
+                        nData.selectable=true;
+                        itemsList.addElement(nData);
+                    } else {
+                        url=data;
+                        LinkString nData=new LinkString(url) { public void doAction() {
+                                try {BombusMod.getInstance().platformRequest(url);
+                                } catch (ConnectionNotFoundException ex) {
+                                    ex.printStackTrace();
+                                } } };
+                        itemsList.addElement(nData);
+                    }
                 }
             }
             itemsList.addElement(endVCard);

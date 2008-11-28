@@ -28,6 +28,7 @@ package com.alsutton.jabber;
 //#ifdef CONSOLE
 //# import Console.StanzasList;
 //#endif
+import com.alsutton.jabber.datablocks.Iq;
 import java.util.*;
 import xmpp.XmppError;
 
@@ -143,6 +144,8 @@ public class JabberDataBlockDispatcher extends Thread
                         processResult=listener.blockArrived( dataBlock );
                 
                 if (processResult==JabberBlockListener.BLOCK_REJECTED) {
+                    if (!(dataBlock instanceof Iq)) continue;
+                    
                     String type=dataBlock.getTypeAttribute();
                     if (type.equals("get") || type.equals("set")) {
                         dataBlock.setAttribute("to", dataBlock.getAttribute("from"));
