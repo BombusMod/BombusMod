@@ -249,7 +249,7 @@ messagelist & roster background	Цвет фона, общий
 messagelist & roster even lines	Цвет фона, чередование
 messagelist & roster & common font	Общий шрифт
 message subject	Тема сообщения
-message highlight	Подсвеченное сообещение
+message highlight	Подсвеченное сообщение
 service discovery commands	Команды диско
 panels background	Цвет панелей
 header font	Шрифт панелей
@@ -524,4 +524,3 @@ Send photo	Отправить фото
 enable autorespond	включить автоответчик
 File manager	Менеджер файлов
 remote control	удаленное управление
-

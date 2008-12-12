@@ -310,7 +310,6 @@ public class JabberStream extends XmppParser implements Runnable {
     public void setZlibCompression() {
         iostream.setStreamCompression();
     }
-//#endif
 
     public String getStreamStats() {
         return iostream.getStreamStats();
@@ -319,6 +318,7 @@ public class JabberStream extends XmppParser implements Runnable {
     public String getConnectionData() {
         return iostream.getConnectionData();
     }
+//#endif
 
     public long getBytes() {
         return iostream.getBytes();

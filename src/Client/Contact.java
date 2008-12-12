@@ -281,7 +281,7 @@ public class Contact extends IconTextElement{
     public void resetNewMsgCnt() { newMsgCnt=0; newHighLitedMsgCnt=0; }
   
     public void setIncoming (int state) {
-        if (!cf.IQNotify) return;
+        if (!cf.IQNotify && state==INC_VIEWING) return;
 
         short i=0;
         switch (state){

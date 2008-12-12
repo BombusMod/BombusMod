@@ -1,1 +1,1 @@
-conference_visitors	/images/visitors.png
+muc#vis	/images/visitors.png

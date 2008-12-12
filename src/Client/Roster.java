@@ -1822,7 +1822,7 @@ public class Roster
                 setWobbler(2, c, message.body);
 //#endif
             autorespond = true;
-        } else if (message.messageType==Msg.MESSAGE_TYPE_IN) {
+        } else if (message.messageType==Msg.MESSAGE_TYPE_IN || message.messageType==Msg.MESSAGE_TYPE_HEADLINE) {
             if (c.origin<Contact.ORIGIN_GROUPCHAT) {
 //#ifndef WMUC
                 if (!(c instanceof MucContact))

@@ -80,6 +80,7 @@ public class StatsWindow
         
         item=new MultiLine(SR.MS_CURRENT, StringUtils.getSizeString(st.getCurrentTraffic()), super.superWidth); item.selectable=true; itemsList.addElement(item);
         
+//#if ZLIB
         if (StaticData.getInstance().roster.isLoggedIn()) {
             item=new MultiLine(SR.MS_COMPRESSION, StaticData.getInstance().roster.theStream.getStreamStats(), super.superWidth); item.selectable=true; itemsList.addElement(item);
         }
@@ -87,6 +88,7 @@ public class StatsWindow
         if (StaticData.getInstance().roster.isLoggedIn()) {
             item=new MultiLine(SR.MS_CONNECTED, StaticData.getInstance().roster.theStream.getConnectionData(), super.superWidth); item.selectable=true; itemsList.addElement(item);
         }
+//#endif
         
         item=new MultiLine(SR.MS_CONN, Integer.toString(st.getSessionsCount()), super.superWidth); item.selectable=true; itemsList.addElement(item);
                 
