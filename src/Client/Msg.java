@@ -117,8 +117,8 @@ public class Msg {
     
     public String toString() {
         StringBuffer time=new StringBuffer();
-        if (messageType==MESSAGE_TYPE_PRESENCE) {
-            time.append("[").append(getTime()).append("] ");
+        if (messageType==MESSAGE_TYPE_PRESENCE || !Config.getInstance().showBalloons) {
+            time.append("[").append((Time.utcTimeMillis()-dateGmt>(/*24*60*60*1000*/86400000))?getDayTime():getTime()).append("] ");
         }
         time.append(body);
         return time.toString(); 
@@ -155,7 +155,10 @@ public class Msg {
         if (subject!=null)
             if (subject.length()>0)
                 out.append(subject).append("\n");
-        out.append(body);
+        if (Config.getInstance().showBalloons)
+            out.append(toString());
+        else
+            out.append(body);
         int i=0;
         while (i<out.length()) {
             if (out.charAt(i)<0x03) out.deleteCharAt(i);

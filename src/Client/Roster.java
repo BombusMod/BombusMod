@@ -1135,7 +1135,8 @@ public class Roster
 //#             int grpType=k.getGroupType();
 //#             if (k.jid.getServer().equals(srcTransport) &&
 //#                     (grpType==Groups.TYPE_COMMON || grpType==Groups.TYPE_NO_GROUP || 
-//#                     grpType==Groups.TYPE_VISIBLE || grpType==Groups.TYPE_IGNORE)) {
+//#                     grpType==Groups.TYPE_VISIBLE || grpType==Groups.TYPE_VIP || 
+//#                     grpType==Groups.TYPE_IGNORE)) {
 //#                 String jid=k.getJid();
 //#                 jid=StringUtils.stringReplace(jid, srcTransport, dstTransport);
 //#                 storeContact(jid, k.nick, (!k.group.getName().equals(SR.MS_GENERAL))?(k.group.getName()):"", true); //new contact addition
@@ -1449,8 +1450,10 @@ public class Roster
 //#if NICK_COLORS
                         b.append("\02");
 //#endif
-                        if (start_me==0) 
+                        if (start_me==0) {
+                            if (!cf.showBalloons) b.insert(0,"<");
                             b.append("> ");
+                        }
                         else 
                             b.insert(0,'*');
                         b.append(body.substring(start_me));
@@ -2800,12 +2803,6 @@ public class Roster
                     Group transpGroup=groups.getGroup(Groups.TYPE_TRANSP);
                     transpGroup.visible= (cf.showTransports || transpGroup.unreadMessages>0);
                     
-                    // always visible
-                    groups.getGroup(Groups.TYPE_VISIBLE).visible=true;
-                    
-                    // always visible
-                    groups.getGroup(Groups.TYPE_SEARCH_RESULT).visible=true;
-
                     // adding groups
                     for (int i=0; i<groups.getCount(); i++)
                         groups.addToVector(tContacts,i);
