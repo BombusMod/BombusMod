@@ -32,12 +32,12 @@ import Conference.affiliation.Affiliations;
 import ServiceDiscovery.ServiceDiscovery;
 //#endif
 //#ifndef MENU_LISTENER
-import javax.microedition.lcdui.CommandListener;
-import javax.microedition.lcdui.Command;
+//# import javax.microedition.lcdui.CommandListener;
+//# import javax.microedition.lcdui.Command;
 //#else
-//# import Menu.MenuListener;
-//# import Menu.Command;
-//# import Menu.MyMenu;
+import Menu.MenuListener;
+import Menu.Command;
+import Menu.MyMenu;
 //#endif
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Display;
@@ -56,9 +56,9 @@ public class Bookmarks
         extends VirtualList 
         implements
 //#ifndef MENU_LISTENER
-        CommandListener
+//#         CommandListener
 //#else
-//#         MenuListener
+        MenuListener
 //#endif
     {   
     
@@ -113,7 +113,7 @@ public class Bookmarks
     
     public void commandState() {
 //#ifdef MENU_LISTENER
-//#         menuCommands.removeAllElements();
+        menuCommands.removeAllElements();
 //#endif
         addCommand(cmdJoin);
         addCommand(cmdAdvJoin);
@@ -167,6 +167,10 @@ public class Bookmarks
         
         ConferenceForm.join(join.desc, join.getJidNick(), join.password, cf.confMessageCount);
         display.setCurrent(sd.roster);
+    }
+    
+    public void cmdCancel() {
+        exitBookmarks();
     }
     
     public void commandAction(Command c, Displayable d){
@@ -265,9 +269,9 @@ public class Bookmarks
     }
         
 //#ifdef MENU_LISTENER
-//#     public void showMenu() {
-//#         commandState();
-//#         new MyMenu(display, parentView, this, SR.MS_BOOKMARKS, null, menuCommands);
-//#     }
+    public void showMenu() {
+        commandState();
+        new MyMenu(display, parentView, this, SR.MS_BOOKMARKS, null, menuCommands);
+    }
 //#endif
 }
