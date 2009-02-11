@@ -201,7 +201,7 @@ public class AlertCustomize {
     }
     
     public void loadOutgoingSoundName(){
-        if (soundOutgoingIndex>=size) soundOnlineIndex=0;
+        if (soundOutgoingIndex>=size) soundOutgoingIndex=0;
 	soundOutgoingType=(String) files[0].elementAt(soundOutgoingIndex);
 	soundOutgoing=(String) files[1].elementAt(soundOutgoingIndex);
     }
