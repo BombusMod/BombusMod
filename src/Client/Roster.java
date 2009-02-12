@@ -968,7 +968,7 @@ public class Roster
 
 //#ifndef WMUC
     public void multicastConferencePresence(int myStatus, String myMessage, int myPriority) {
-         if (!cf.autoJoinConferences) return;
+         //if (!cf.autoJoinConferences) return; //requested to disable
          if (myStatus==Presence.PRESENCE_INVISIBLE) return; //block multicasting presence invisible
          
          synchronized (hContacts) {
