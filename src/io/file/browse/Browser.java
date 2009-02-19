@@ -86,7 +86,9 @@ public class Browser
         
         this.browserListener=browserListener;
 	this.getDirectory=getDirectory;
+//#ifdef FILE_IO
         this.path=(path==null)?StaticData.getInstance().previousPath:path;
+//#endif
 
         // test for empty path
         if (path==null) path="";
@@ -167,7 +169,9 @@ public class Browser
     }
     
     public void destroyView(){
+//#ifdef FILE_IO
         StaticData.getInstance().previousPath=path;
+//#endif
         super.destroyView();
     }
 

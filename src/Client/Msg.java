@@ -117,7 +117,7 @@ public class Msg {
     
     public String toString() {
         StringBuffer time=new StringBuffer();
-        if (messageType==MESSAGE_TYPE_PRESENCE || !Config.getInstance().showBalloons) {
+        if (messageType==MESSAGE_TYPE_PRESENCE || !(Config.getInstance().showBalloons || Config.getInstance().showNickNames)) {
             time.append("[").append((Time.utcTimeMillis()-dateGmt>(/*24*60*60*1000*/86400000))?getDayTime():getTime()).append("] ");
         }
         time.append(body);

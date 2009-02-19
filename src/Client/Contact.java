@@ -522,7 +522,7 @@ public class Contact extends IconTextElement{
     
     public String getFirstString() {
         if (!cf.showResources)
-            return (nick==null)?getJid():nick;
+            return (nick==null)?jid.getBareJid():nick;
         if (origin>ORIGIN_GROUPCHAT)
             return nick;
         if (origin==ORIGIN_GROUPCHAT)

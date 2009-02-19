@@ -119,7 +119,9 @@ public class ContactMessageList extends MessageList {
         setCommandListener(this);
         
         contact.setIncoming(0);
+//#ifdef FILE_TRANSFER
         contact.fileQuery=false;
+//#endif
 //#ifdef HISTORY
 //#ifdef LAST_MESSAGES
 //#         if (cf.lastMessages && !contact.isHistoryLoaded()) loadRecentList();
