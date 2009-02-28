@@ -149,9 +149,9 @@ public class AccountForm
         compressionBox = new CheckBox(SR.MS_COMPRESSION, account.useCompression());
         confOnlybox = new CheckBox(SR.MS_CONFERENCES_ONLY, account.isMucOnly());
 //#if HTTPCONNECT
-//#        proxybox = new CheckBox("proxybox", SR.MS_PROXY_ENABLE, account.isEnableProxy());
+//#        proxybox = new CheckBox(/*SR.MS_PROXY_ENABLE*/"Proxy connect", account.isEnableProxy());
 //#elif HTTPPOLL        
-//#        pollingbox = new CheckBox("pollingbox", "HTTP Polling", false);
+//#        pollingbox = new CheckBox("HTTP Polling", account.isEnableProxy());
 //#endif
         
         itemsList.addElement(dnsResolver);
@@ -175,21 +175,20 @@ public class AccountForm
         itemsList.addElement(keepAliveType);
         
         resourcebox = new TextInput(display, SR.MS_RESOURCE, account.getResource(), null, TextField.ANY);//64, TextField.ANY
-
+        
 //#if HTTPCONNECT
-//# 	proxyHost = new TextInput(display, SR.MS_PROXY_HOST, account.getProxyHostAddr(), null, TextField.URL);//32, TextField.URL
-//# 
-//# 	proxyPort = new TextInput(display, SR.MS_PROXY_PORT, Integer.toString(account.getProxyPort()));//0, 65535
+//# 	proxyHost = new TextInput(display, /*SR.MS_PROXY_HOST*/"Proxy name/IP", account.getProxyHostAddr(), null, TextField.URL);//32, TextField.URL
+//# 	proxyPort = new NumberInput(display, /*SR.MS_PROXY_PORT*/"Proxy port", Integer.toString(account.getProxyPort()), 0, 65535);//, 0, 65535
 //#elif HTTPPOLL        
-//# 	proxyHost = new TextInput(display, SR.MS_PROXY_HOST, account.getProxyHostAddr(), null, TextField.URL);//32, TextField.URL
+//# 	proxyHost = new TextInput(display, "HTTP Polling URL (http://)", account.getProxyHostAddr(), null, TextField.URL);//32, TextField.URL
 //#endif
         
         itemsList.addElement(ipbox);
         itemsList.addElement(portbox);
-
+        
         itemsList.addElement(keepAlive);
         itemsList.addElement(resourcebox);
-
+        
 //#if HTTPCONNECT
 //# 	itemsList.addElement(proxyHost);
 //# 	itemsList.addElement(proxyPort);
@@ -221,7 +220,7 @@ public class AccountForm
         
         if (newaccount)
             registerNew=registerbox.getValue();
-
+        
         if (showExtended) {
             registerNew=registerbox.getValue();
             account.setDnsResolver(dnsResolver.getValue());
@@ -232,13 +231,17 @@ public class AccountForm
             account.setPlainAuth(plainPwdbox.getValue());
             account.setUseCompression(compressionBox.getValue());
             account.setMucOnly(confOnlybox.getValue());
-
-//#if HTTPPOLL || HTTPCONNECT            
-//#         account.setEnableProxy(proxybox.getValue());
-//#         account.setProxyHostAddr(proxyHost.getValue());
-//#         account.setProxyPort(proxyPort.getValue());
+//#if HTTPCONNECT
+//#             account.setEnableProxy(proxybox.getValue());
+//#elif HTTPPOLL
+//#             account.setEnableProxy(pollingbox.getValue());
 //#endif
-
+            
+//#if HTTPPOLL || HTTPCONNECT            
+//#             account.setProxyHostAddr(proxyHost.getValue());
+//#             account.setProxyPort(Integer.parseInt(proxyPort.getValue()));
+//#endif
+        
             account.setKeepAlivePeriod(Integer.parseInt(keepAlive.getValue()));
             account.setKeepAliveType(keepAliveType.getValue());
         }

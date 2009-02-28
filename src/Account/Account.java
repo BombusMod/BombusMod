@@ -56,9 +56,11 @@ public class Account extends IconTextElement{
     private String nick="";
     private String resource=Version.NAME;
     
-    private boolean enableProxy;
-    private String proxyHostAddr="";
-    private int proxyPort;
+//#if HTTPPOLL || HTTPCONNECT
+//#     private boolean enableProxy;
+//#     private String proxyHostAddr="";
+//#     private int proxyPort;
+//#endif
 	
     private int keepAlivePeriod=200;
     private int keepAliveType=1;
@@ -143,9 +145,15 @@ public class Account extends IconTextElement{
             
 	    a.mucOnly=inputStream.readBoolean();
             
-            a.setEnableProxy(inputStream.readBoolean());
-            a.setProxyHostAddr(inputStream.readUTF());
-            a.setProxyPort(inputStream.readInt());
+//#if HTTPPOLL || HTTPCONNECT
+//#                 a.setEnableProxy(inputStream.readBoolean());
+//#                 a.setProxyHostAddr(inputStream.readUTF());
+//#                 a.setProxyPort(inputStream.readInt());
+//#else
+                inputStream.readBoolean();
+                inputStream.readUTF();
+                inputStream.readInt();
+//#endif
 
             a.compression=inputStream.readBoolean();
 
@@ -162,7 +170,9 @@ public class Account extends IconTextElement{
     public void saveToDataOutputStream(DataOutputStream outputStream){
         
         if (hostAddr==null) hostAddr="";
-        if (proxyHostAddr==null) proxyHostAddr="";
+//#if HTTPPOLL || HTTPCONNECT
+//#         if (proxyHostAddr==null) proxyHostAddr="";
+//#endif
         
         try {
             outputStream.writeByte(7);
@@ -180,9 +190,15 @@ public class Account extends IconTextElement{
 	    
 	    outputStream.writeBoolean(mucOnly);
             
-            outputStream.writeBoolean(enableProxy);
-            outputStream.writeUTF(proxyHostAddr);
-            outputStream.writeInt(proxyPort);
+//#if HTTPPOLL || HTTPCONNECT
+//#             outputStream.writeBoolean(enableProxy);
+//#             outputStream.writeUTF(proxyHostAddr);
+//#             outputStream.writeInt(proxyPort);
+//#else
+            outputStream.writeBoolean(false);
+            outputStream.writeUTF("");
+            outputStream.writeInt(0);
+//#endif
             
             outputStream.writeBoolean(compression);
 			
@@ -249,42 +265,49 @@ public class Account extends IconTextElement{
         }
 
 	StringBuffer url=new StringBuffer(host).append(':').append(tempPort);
-        if (!isEnableProxy()) {
-	    url.insert(0, (useSSL)?"ssl://":"socket://");
-        } else {
-//#if HTTPPOLL
-//#             proxy=getProxyHostAddr();
+
+//#if HTTPPOLL || HTTPCONNECT
+//#         if (!isEnableProxy()) {
+//# 	    url.insert(0, (useSSL)?"ssl://":"socket://");
+//#         } else {
+//#ifdef HTTPPOLL
+//#              proxy=getProxyHostAddr();
 //#elif HTTPCONNECT
 //#             proxy="socket://" + getProxyHostAddr() + ':' + getProxyPort();
-//#endif  
-        }
+//#endif
+//#     }
+//#else
+            url.insert(0, (useSSL)?"ssl://":"socket://");
+//#endif
         return new JabberStream( getServer(), url.toString(), proxy);
     }
 
-    public boolean isEnableProxy() {
-        return enableProxy;
-    }
+//#if HTTPPOLL || HTTPCONNECT
+//#     public boolean isEnableProxy() {
+//#         return enableProxy;
+//#     }
+//# 
+//#     public void setEnableProxy(boolean enableProxy) {
+//#         this.enableProxy = enableProxy;
+//#     }
+//# 
+//#     public String getProxyHostAddr() {
+//#         return proxyHostAddr;
+//#     }
+//# 
+//#     public void setProxyHostAddr(String proxyHostAddr) {
+//#         this.proxyHostAddr = proxyHostAddr;
+//#     }
+//# 
+//#     public int getProxyPort() {
+//#         return proxyPort;
+//#     }
+//# 
+//#     public void setProxyPort(int proxyPort) {
+//#         this.proxyPort = proxyPort;
+//#     }
+//#endif 
 
-    public void setEnableProxy(boolean enableProxy) {
-        this.enableProxy = enableProxy;
-    }
-
-    public String getProxyHostAddr() {
-        return proxyHostAddr;
-    }
-
-    public void setProxyHostAddr(String proxyHostAddr) {
-        this.proxyHostAddr = proxyHostAddr;
-    }
-
-    public int getProxyPort() {
-        return proxyPort;
-    }
-
-    public void setProxyPort(int proxyPort) {
-        this.proxyPort = proxyPort;
-    }
- 
     public boolean useCompression() { return compression; }
     
     public void setUseCompression(boolean value) {

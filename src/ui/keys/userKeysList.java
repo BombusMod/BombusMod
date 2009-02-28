@@ -36,12 +36,12 @@ import ui.VirtualElement;
 import ui.VirtualList;
 
 //#ifndef MENU_LISTENER
-import javax.microedition.lcdui.CommandListener;
-import javax.microedition.lcdui.Command;
+//# import javax.microedition.lcdui.CommandListener;
+//# import javax.microedition.lcdui.Command;
 //#else
-//# import Menu.MenuListener;
-//# import Menu.Command;
-//# import Menu.MyMenu;
+import Menu.MenuListener;
+import Menu.Command;
+import Menu.MyMenu;
 //#endif
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
@@ -50,9 +50,9 @@ public class userKeysList
         extends VirtualList 
         implements
 //#ifndef MENU_LISTENER
-        CommandListener
+//#         CommandListener
 //#else
-//#         MenuListener
+        MenuListener
 //#endif
     {
 //#ifdef PLUGINS
@@ -62,7 +62,13 @@ public class userKeysList
     Vector commandsList;
     
     Command cmdOK=new Command(SR.MS_OK, Command.OK,1);
-    Command cmdAdd=new Command(SR.MS_ADD_CUSTOM_KEY, Command.SCREEN,3);
+    Command cmdAdd=new Command(
+//#ifdef USER_KEYS
+//#             SR.MS_ADD_CUSTOM_KEY
+//#else
+            ""
+//#endif
+            , Command.SCREEN,3);
     Command cmdEdit=new Command(SR.MS_EDIT,Command.ITEM,3);
     Command cmdDel=new Command(SR.MS_DELETE,Command.ITEM,4);
     Command cmdCancel=new Command(SR.MS_BACK,Command.BACK,99);
@@ -72,7 +78,9 @@ public class userKeysList
     /** Creates a new instance of AccountPicker */
     public userKeysList(Display display) {
         super();
-        setMainBarItem(new MainBar(SR.MS_CUSTOM_KEYS));
+//#ifdef USER_KEYS
+//#         setMainBarItem(new MainBar(SR.MS_CUSTOM_KEYS));
+//#endif
         
         commandsList=userKeyExec.getInstance().commandsList;
 
@@ -84,7 +92,7 @@ public class userKeysList
 
     void commandState(){
 //#ifdef MENU_LISTENER
-//#         menuCommands.removeAllElements();
+        menuCommands.removeAllElements();
 //#endif
         addCommand(cmdAdd);
         if (commandsList.isEmpty()) {
@@ -142,7 +150,7 @@ public class userKeysList
         NvStorage.writeFileRecord(outputStream, userKey.storage, 0, true);
     }
     
-//#ifdef MENU_LISTENER
+//#if (MENU_LISTENER && USER_KEYS)
 //#     public void showMenu() {
 //#         commandState();
 //#         new MyMenu(display, parentView, this, SR.MS_CUSTOM_KEYS, null, menuCommands);

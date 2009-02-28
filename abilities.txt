@@ -1,5 +1,6 @@
 Фишечки :)
 
+HTTPCONNECT - соединение через прокси ИЛИ HTTPPOLL - соединение по http [XEP-0124: Bidirectional-streams Over Synchronous HTTP (BOSH)]
 COLOR_TUNE - настройка цветов в приложении вручную
 ARCHIVE - архив
 POPUPS - всплывающая панель
@@ -18,7 +19,7 @@ AUTOSTATUS - автостатус
 USE_ROTATOR - баллуны и прокрутка длинных строк
 FILE_TRANSFER - передача файлов
 LAST_MESSAGES - последние 5 входящих сообщений контакта, загружаются из истории
-CHECK_VERSION	- проверка обновлений
+CHECK_VERSION - проверка обновлений
 DETRANSLIT - функции транслитерации и детранслитерации.
 WMUC - без поддержки конференций
 WSYSTEMGC - очистка кучи после интенсивного использования памяти

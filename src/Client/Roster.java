@@ -1703,9 +1703,9 @@ public class Roster
                     if (ti>=0) {
 //#ifdef RUNNING_MESSAGE
 //#                         if (ti==Presence.PRESENCE_OFFLINE)
-//#                             setTicker(c, SR.MS_OFFLINE));
+//#                             setTicker(c, SR.MS_OFFLINE);
 //#                         else if (ti==Presence.PRESENCE_ONLINE)
-//#                             setTicker(c, SR.MS_ONLINE));
+//#                             setTicker(c, SR.MS_ONLINE);
 //#endif
                         if ((ti==Presence.PRESENCE_ONLINE || ti==Presence.PRESENCE_CHAT || ti==Presence.PRESENCE_OFFLINE) && (c.getGroupType()!=Groups.TYPE_TRANSP) && (c.getGroupType()!=Groups.TYPE_IGNORE)) 
                             playNotify(ti);

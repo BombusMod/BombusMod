@@ -56,7 +56,13 @@ class userKeyEdit
 
     public userKeyEdit(Display display, Displayable pView, userKeysList keysList, userKey u) {
 
-        super(display, pView, (u==null)?SR.MS_ADD_CUSTOM_KEY:(u.toString()));
+        super(display, pView, (u==null)?
+//#ifdef USER_KEYS
+//#             SR.MS_ADD_CUSTOM_KEY:
+//#else
+                "":
+//#endif
+                (u.toString()));
         
         this.display=display;
         
@@ -65,28 +71,29 @@ class userKeyEdit
 	newKey=(u==null);
 	if (newKey) u=new userKey();
 	this.u=u;
-     
-        active=new CheckBox(SR.MS_ENABLED, u.active);
-        itemsList.addElement(active);
-
-        keyDesc=new DropChoiceBox(display, SR.MS_KEYS_ACTION);
-        for (int i=0;i<u.COMMANDS_DESC.length;i++) {
-            keyDesc.append(u.COMMANDS_DESC[i]);
-        }
-        keyDesc.setSelectedIndex(u.commandId);
-        itemsList.addElement(keyDesc);
-
-        keyCode=new DropChoiceBox(display, SR.MS_KEY);
-        for (int i=0;i<u.KEYS_NAME.length;i++) {
-            keyCode.append(u.KEYS_NAME[i]);
-        }
-        keyCode.setSelectedIndex((u.key<0)?0:u.key);
-        itemsList.addElement(keyCode);
+        
+//#ifdef USER_KEYS
+//#         active=new CheckBox(SR.MS_ENABLED, u.active);
+//#         itemsList.addElement(active);
+//# 
+//#         keyDesc=new DropChoiceBox(display, SR.MS_KEYS_ACTION);
+//#         for (int i=0;i<u.COMMANDS_DESC.length;i++) {
+//#             keyDesc.append(u.COMMANDS_DESC[i]);
+//#         }
+//#         keyDesc.setSelectedIndex(u.commandId);
+//#         itemsList.addElement(keyDesc);
+//# 
+//#         keyCode=new DropChoiceBox(display, SR.MS_KEY);
+//#         for (int i=0;i<u.KEYS_NAME.length;i++) {
+//#             keyCode.append(u.KEYS_NAME[i]);
+//#         }
+//#         keyCode.setSelectedIndex((u.key<0)?0:u.key);
+//#         itemsList.addElement(keyCode);
+//#endif
         
         moveCursorTo(getNextSelectableRef(-1));
         attachDisplay(display);
         this.parentView=pView;
-
     }
     
     public void cmdOk() {

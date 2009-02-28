@@ -150,6 +150,9 @@ public class InfoWindow
 //#endif
 //#             abilitiesList.addElement((String)"ADHOC");
 //#endif
+//#ifdef ANTISPAM
+//#             abilitiesList.addElement((String)"ANTISPAM");
+//#endif
 //#ifdef ARCHIVE
 //#ifdef PLUGINS
 //#         if (sd.Archive)
@@ -231,6 +234,12 @@ public class InfoWindow
 //#endif
 //#             abilitiesList.addElement((String)"HISTORY_READER");
 //#endif
+//#ifdef HTTPCONNECT
+//#         abilitiesList.addElement((String)"HTTPCONNECT");
+//#endif
+//#ifdef HTTPPOLL
+//#         abilitiesList.addElement((String)"HTTPPOLL");
+//#endif
 //#ifdef IMPORT_EXPORT
 //#ifdef PLUGINS
 //#         if (sd.IE)
@@ -248,6 +257,9 @@ public class InfoWindow
 //#endif
 //#ifdef MENU_LISTENER
 //#         abilitiesList.addElement((String)"MENU_LISTENER");
+//#endif
+//#ifdef NEW_SKIN
+//#         abilitiesList.addElement((String)"NEW_SKIN");
 //#endif
 //#ifdef NICK_COLORS
         abilitiesList.addElement((String)"NICK_COLORS");
@@ -281,6 +293,9 @@ public class InfoWindow
 //#endif
 //#ifdef REQUEST_VOICE
 //#         abilitiesList.addElement((String)"REQUEST_VOICE");
+//#endif
+//#ifdef RUNNING_MESSAGE
+//#         abilitiesList.addElement((String)"RUNNING_MESSAGE");
 //#endif
 //#ifdef PRIVACY
 //#ifdef PLUGINS

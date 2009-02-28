@@ -100,24 +100,26 @@ public class userKey extends IconTextElement {
     public int getImageIndex() {return active?0:5;}
 
     public static final String[] COMMANDS_DESC = {
-            SR.MS_NO,
-            SR.MS_OPTIONS,
-            SR.MS_CLEAN_ALL_MESSAGES,
-            SR.MS_RECONNECT,
-            SR.MS_STATS,
-            SR.MS_STATUS_MENU,
-            SR.MS_FILE_TRANSFERS,
-            SR.MS_ARCHIVE,
-            SR.MS_DISCO,
-            SR.MS_PRIVACY_LISTS,
-            SR.MS_CUSTOM_KEYS,
-            SR.MS_CLEAR_POPUPS,
-            SR.MS_FLASHLIGHT,
-            SR.MS_ABOUT,
-            SR.MS_APP_MINIMIZE,
-            SR.MS_INVERT,
-            SR.MS_XML_CONSOLE, 
-            SR.MS_FULLSCREEN
+//#ifdef USER_KEYS
+//#             SR.MS_NO,
+//#             SR.MS_OPTIONS,
+//#             SR.MS_CLEAN_ALL_MESSAGES,
+//#             SR.MS_RECONNECT,
+//#             SR.MS_STATS,
+//#             SR.MS_STATUS_MENU,
+//#             SR.MS_FILE_TRANSFERS,
+//#             SR.MS_ARCHIVE,
+//#             SR.MS_DISCO,
+//#             SR.MS_PRIVACY_LISTS,
+//#             SR.MS_CUSTOM_KEYS,
+//#             SR.MS_CLEAR_POPUPS,
+//#             SR.MS_FLASHLIGHT,
+//#             SR.MS_ABOUT,
+//#             SR.MS_APP_MINIMIZE,
+//#             SR.MS_INVERT,
+//#             SR.MS_XML_CONSOLE, 
+//#             SR.MS_FULLSCREEN
+//#endif
     };
     
     public static final String[] KEYS_NAME = {

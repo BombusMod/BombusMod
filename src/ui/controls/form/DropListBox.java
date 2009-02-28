@@ -59,11 +59,11 @@ public class DropListBox
     }
     
     public void commandState() {
-//#ifndef MENU_LISTENER
-//#         menuCommands.removeAllElements();
-//#         addCommand(cmdOk);
-//#         addCommand(cmdCancel);
+//#ifdef MENU_LISTENER
+        menuCommands.removeAllElements();
 //#endif
+        addCommand(cmdOk);
+        addCommand(cmdCancel);
     }
     
     public void eventOk() {

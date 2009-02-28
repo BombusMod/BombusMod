@@ -268,11 +268,11 @@ public class VCardView
     public void cmdCancel() {
         clearVcard();
     }
+//#endif
     
     public void cmdExit() {
         super.cmdCancel();
     }
-//#endif
     
     public void clearVcard() {
         new AlertBox(SR.MS_ACTION, SR.MS_DELETE+" "+SR.MS_VCARD+"?", display, this) {
