@@ -721,9 +721,9 @@ public abstract class VirtualList
 
     protected int kHold;
     
-    protected void keyRepeated(int keyCode){ kHold=0; key(keyCode); }
+    protected void keyRepeated(int keyCode){ key(keyCode); }
     protected void keyReleased(int keyCode) { kHold=0; }
-    protected void keyPressed(int keyCode) { kHold=0; key(keyCode); }
+    protected void keyPressed(int keyCode) { kHold=0; key(keyCode);  }
     
     protected void pointerPressed(int x, int y) {
         //System.out.println("pointerPressed("+x+", "+y+")");

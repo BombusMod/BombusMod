@@ -33,12 +33,12 @@ import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import images.RosterIcons;
 //#ifndef MENU_LISTENER
-import javax.microedition.lcdui.CommandListener;
-import javax.microedition.lcdui.Command;
+//# import javax.microedition.lcdui.CommandListener;
+//# import javax.microedition.lcdui.Command;
 //#else
-//# import Menu.MenuListener;
-//# import Menu.Command;
-//# import Menu.MyMenu;
+import Menu.MenuListener;
+import Menu.Command;
+import Menu.MyMenu;
 //#endif
 import locale.SR;
 import ui.*;
@@ -53,9 +53,9 @@ public class PrivacyModifyList
         extends VirtualList 
         implements
 //#ifndef MENU_LISTENER
-        CommandListener,
+//#         CommandListener,
 //#else
-//#         MenuListener,
+        MenuListener,
 //#endif
         JabberBlockListener
 {
@@ -78,7 +78,7 @@ public class PrivacyModifyList
     /** Creates a new instance of PrivacySelect */
     public PrivacyModifyList(Display display, Displayable pView, PrivacyList privacyList) {
         super(display);
-        setMainBarItem(new MainBar(2, null, SR.MS_PRIVACY_LISTS, false));
+        setMainBarItem(new MainBar(2, null, privacyList.name, false));
 
         commandState();
         setCommandListener(this);
@@ -90,7 +90,7 @@ public class PrivacyModifyList
 
     public void commandState() {
 //#ifdef MENU_LISTENER
-//#         menuCommands.removeAllElements();
+        menuCommands.removeAllElements();
 //#endif
         addCommand(cmdCancel);
         addCommand(cmdEdit);
@@ -102,10 +102,10 @@ public class PrivacyModifyList
     }
     
 //#ifdef MENU_LISTENER
-//#     public void showMenu() {
-//#         commandState();
-//#         new MyMenu(display, parentView, this, SR.MS_STATUS, null, menuCommands);
-//#     }
+    public void showMenu() {
+        commandState();
+        new MyMenu(display, parentView, this, SR.MS_STATUS, null, menuCommands);
+    }
 //#endif
     
     private void processIcon(boolean processing){

@@ -317,10 +317,10 @@ public class Contact extends IconTextElement{
                 if (cf.showNickNames) {
                     StringBuffer who=new StringBuffer();
                     who.append((m.messageType==Msg.MESSAGE_TYPE_OUT)?sd.account.getNickName():getName())
-                        .append(" (")
-                        .append(m.getTime())
-                        .append(") ");
-                    if (m.subject!=null) who.append(m.subject);
+                       .append(" (")
+                       .append(m.getTime())
+                       .append(") ");
+                    if (m.subject!=null) who.append("\n").append(m.subject);
                     m.subject=who.toString();
                 }
                 if (m.body.startsWith("/me ")) {

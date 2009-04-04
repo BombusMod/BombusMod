@@ -117,11 +117,11 @@ public class Msg {
     
     public String toString() {
         StringBuffer time=new StringBuffer();
-        if (messageType==MESSAGE_TYPE_PRESENCE || !(Config.getInstance().showBalloons || Config.getInstance().showNickNames)) {
+        if (messageType==MESSAGE_TYPE_PRESENCE || !(Config.getInstance().showBalloons || (Config.getInstance().showNickNames && subject!=null))) {
             time.append("[").append((Time.utcTimeMillis()-dateGmt>(/*24*60*60*1000*/86400000))?getDayTime():getTime()).append("] ");
         }
         time.append(body);
-        return time.toString(); 
+        return time.toString();
     }
     
     public boolean isPresence() { return messageType==MESSAGE_TYPE_PRESENCE; }
