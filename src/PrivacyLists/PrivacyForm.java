@@ -77,18 +77,9 @@ public class PrivacyForm
         this.item=item;
         targetList=plist;
         
-        update();
-        
-        moveCursorTo(getNextSelectableRef(-1));
-        attachDisplay(display);
-        this.parentView=pView;
-    }
-    
-    private void update() {
         selectedAction=(selectedAction<0)?item.action:choiceAction.getSelectedIndex();
-        tValue=(textValue!=null)?textValue.getValue():item.value;
         
-        Object rfocus=StaticData.getInstance().roster.getFocusedObject();
+        tValue=(textValue!=null)?textValue.getValue():item.value;
         
         itemsList=null;
         itemsList=new Vector();
@@ -107,22 +98,43 @@ public class PrivacyForm
         choiceType.setSelectedIndex(item.type);
         itemsList.addElement(choiceType);
         
-        
         textValue=new TextInput(display, SR.MS_VALUE, tValue, "", TextField.ANY);//64, TextField.ANY);
-
-        switch (selectedAction) {
+        
+        switchType();
+        
+        itemsList.addElement(new SimpleString(SR.MS_STANZAS, true));
+        
+        messageStz=new CheckBox(PrivacyItem.stanzas[0], item.messageStz); itemsList.addElement(messageStz);
+        presenceInStz=new CheckBox(PrivacyItem.stanzas[1], item.presenceInStz); itemsList.addElement(presenceInStz);
+        presenceOutStz=new CheckBox(PrivacyItem.stanzas[2], item.presenceOutStz); itemsList.addElement(presenceOutStz);
+        iqStz=new CheckBox(PrivacyItem.stanzas[3], item.iqStz); itemsList.addElement(iqStz);
+        
+        moveCursorTo(getNextSelectableRef(-1));
+        attachDisplay(display);
+        this.parentView=pView;
+    }
+    
+    private void switchType() {
+        try {
+            itemsList.removeElement(textValue);
+            itemsList.removeElement(choiceSubscr);
+        } catch (Exception e) {}
+        
+        Object rfocus=StaticData.getInstance().roster.getFocusedObject();
+        
+        switch (choiceType.getSelectedIndex()) {
             case 0: //jid
                 if (targetList!=null) {
                     if (rfocus instanceof Contact) {
                         textValue.setValue(((Contact)rfocus).bareJid);
                     }
                 }
-                itemsList.addElement(textValue);
+                itemsList.insertElementAt(textValue, 2);
                 break;
             case 1: //group
                 if (targetList!=null)
                     textValue.setValue(((rfocus instanceof Group)?(Group)rfocus:((Contact)rfocus).group).getName());
-                itemsList.addElement(textValue);
+                itemsList.insertElementAt(textValue, 2);
                 break;
             case 2: //subscription
                 choiceSubscr=new DropChoiceBox(display, SR.MS_SUBSCRIPTION);
@@ -135,18 +147,21 @@ public class PrivacyForm
                         break;
                     }
                 }
-                itemsList.addElement(choiceSubscr);
+                itemsList.insertElementAt(choiceSubscr, 2);
                 break;
         }
-
-        itemsList.addElement(new SimpleString(SR.MS_STANZAS, true));
-        
-        messageStz=new CheckBox(PrivacyItem.stanzas[0], item.messageStz); itemsList.addElement(messageStz);
-        presenceInStz=new CheckBox(PrivacyItem.stanzas[1], item.presenceInStz); itemsList.addElement(presenceInStz);
-        presenceOutStz=new CheckBox(PrivacyItem.stanzas[2], item.presenceOutStz); itemsList.addElement(presenceOutStz);
-        iqStz=new CheckBox(PrivacyItem.stanzas[3], item.iqStz); itemsList.addElement(iqStz);
     }
-
+    
+    public void keyDwn() {
+        super.keyDwn();
+        switchType();
+    }
+    
+    public void keyUp() {
+        super.keyUp();
+        switchType();
+    }
+    
     public void cmdOk() {
         try {
             int type=choiceType.getSelectedIndex();
