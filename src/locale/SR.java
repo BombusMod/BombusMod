@@ -565,12 +565,9 @@ public class SR {
     public static String MS_COMPOSING_NOTIFY=loadString("Composing message to you");
     public static String MS_COMPRESSION = loadString( "compression" );
     public static String MS_NEW_ROOM_CREATED = loadString( "New room created" );
-
     public static String MS_IRCLIKESTATUS = loadString( "IRC-like conference nick-status" );
-    public static String MS_SEND_RECEIVE_USERMOODS=loadString("user moods send/receive");
     public static String MS_SIMULATED_BREAK=loadString("Simulated break");
     public static String MS_BUILD_NEW=loadString("Build new version on constructor");
-    
     
 //2008-03-20
     public static String MS_AUTOTASKS=loadString("Auto tasks");
@@ -679,6 +676,7 @@ public class SR {
 //#     public static String MS_USERMOOD=loadString("User moods");
 //#     public static String MS_USERTUNE=loadString("User tune");
 //#     public static String MS_USERACTIVITY=loadString("User activity");
+//#     public static String MS_SEND_RECEIVE_USERMOODS=loadString("user moods send/receive");
 //#     
 //#     public static String MS_PEP_NOT_SUPPORTED = loadString("Personal events not supported");
 //#endif

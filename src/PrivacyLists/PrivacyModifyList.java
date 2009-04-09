@@ -76,7 +76,7 @@ public class PrivacyModifyList
     JabberStream stream=StaticData.getInstance().roster.theStream;
     
     /** Creates a new instance of PrivacySelect */
-    public PrivacyModifyList(Display display, Displayable pView, PrivacyList privacyList) {
+    public PrivacyModifyList(Display display, Displayable pView, PrivacyList privacyList, boolean newList) {
         super(display);
         setMainBarItem(new MainBar(2, null, privacyList.name, false));
 
@@ -84,7 +84,14 @@ public class PrivacyModifyList
         setCommandListener(this);
 
         plist=privacyList;
-        getList();
+        
+        if (!newList) {
+            processIcon(true);
+            stream.addBlockListener(this);
+            JabberDataBlock list=new JabberDataBlock("list", null, null);
+            list.setAttribute("name", plist.name);
+            PrivacyList.privacyListRq(false, list, "getlistitems");
+        }
         this.parentView=pView;
     }
 
@@ -113,13 +120,13 @@ public class PrivacyModifyList
         redraw();
     }
 
-    private void getList(){
+    /*private void getList(){
         processIcon(true);
         stream.addBlockListener(this);
         JabberDataBlock list=new JabberDataBlock("list", null, null);
         list.setAttribute("name", plist.name);
         PrivacyList.privacyListRq(false, list, "getlistitems");
-    }
+    }*/
     
     protected int getItemCount() { return plist.rules.size(); }
     protected VirtualElement getItemRef(int index) { return (VirtualElement) plist.rules.elementAt(index); }
@@ -191,5 +198,13 @@ public class PrivacyModifyList
             } //id, result
         return JabberBlockListener.BLOCK_REJECTED;
     }
-
+    
+    public void keyGreen() {
+        new PrivacyForm(display, this, new PrivacyItem(), plist);
+    }
+    
+    public void keyClear() {
+        Object del=getFocusedObject();
+        if (del!=null) plist.rules.removeElement(del);
+    }
 }

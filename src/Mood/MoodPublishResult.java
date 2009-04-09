@@ -58,12 +58,12 @@ public class MoodPublishResult implements JabberBlockListener {
         if (type.equals("result")) return NO_MORE_BLOCKS;
         
         XmppError e=XmppError.findInStanza(data);
-        
-        new AlertBox(SR.MS_ERROR_, SR.MS_PEP_NOT_SUPPORTED+"("+e.toString()+")", display, null) {
-            public void yes() { }
-            public void no() { }
-        };
-        
+//#ifdef PEP
+//#         new AlertBox(SR.MS_ERROR_, SR.MS_PEP_NOT_SUPPORTED+"("+e.toString()+")", display, null) {
+//#             public void yes() { }
+//#             public void no() { }
+//#         };
+//#endif
         return NO_MORE_BLOCKS;
     }
     

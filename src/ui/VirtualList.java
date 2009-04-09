@@ -302,7 +302,9 @@ public abstract class VirtualList
 //#                 img=Image.createImage("/images/bg.png");
 //#         } catch (Exception e) { }
 //#endif
+//#if USE_ROTATOR
         TimerTaskRotate.startRotate(0, this);
+//#endif
     }
 
     /** Creates a new instance of VirtualList */

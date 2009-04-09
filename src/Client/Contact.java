@@ -55,7 +55,7 @@ public class Contact extends IconTextElement{
 
 //#if USE_ROTATOR
     private int isnew=0;
-    public void setNewContact() { this.isnew = 10; }
+    public void setNewContact() { this.isnew = 8; }
 //#endif
 
 //#ifdef PEP    

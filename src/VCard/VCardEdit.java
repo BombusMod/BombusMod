@@ -83,7 +83,7 @@ public class VCardEdit
 
     /** Creates a new instance of vCardForm */
     public VCardEdit(Display display, Displayable pView, VCard vcard) {
-        super(display, pView, SR.MS_VCARD+" "+vcard.getNickName());
+        super(display, pView, SR.MS_VCARD+" "+StaticData.getInstance().account.getBareJid());
         this.display=display;
         this.vcard=vcard;
 

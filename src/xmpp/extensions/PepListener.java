@@ -140,41 +140,43 @@ public class PepListener implements JabberBlockListener{
         String moodText=null;
         String tag=null;
         boolean hasMood = false;
-        if (cf.sndrcvmood) {
-            mood=extractEvent(event, "mood", "http://jabber.org/protocol/mood");
-
-            if (mood!=null) {
-                try {
-                    for (Enumeration e=mood.getChildBlocks().elements(); e.hasMoreElements();) {
-                        JabberDataBlock child=(JabberDataBlock)e.nextElement();
-                        tag=child.getTagName();
-                        if (tag.equals("text")) continue;
-
-                        moodIndex=Moods.getInstance().getMoodIngex(tag);
-
-                        id=mood.getParent().getAttribute("id");
-                    }
-                } catch (Exception ex) {
-                    moodIndex=Moods.getInstance().getMoodIngex("-");
-                }
-
-                result.append(Moods.getInstance().getMoodLabel(moodIndex));
-                moodText=mood.getChildBlockText("text");
-                if (moodText!=null){
-                    if (moodText.length()>0) {
-                        result.append("(")
-                                .append(moodText)
-                                .append(")");
-                    }
-                }
-                hasMood = true;
-//#ifdef DEBUG
+//#ifdef PEP
+//#         if (cf.sndrcvmood) {
+//#             mood=extractEvent(event, "mood", "http://jabber.org/protocol/mood");
+//# 
+//#             if (mood!=null) {
+//#                 try {
+//#                     for (Enumeration e=mood.getChildBlocks().elements(); e.hasMoreElements();) {
+//#                         JabberDataBlock child=(JabberDataBlock)e.nextElement();
+//#                         tag=child.getTagName();
+//#                         if (tag.equals("text")) continue;
+//# 
+//#                         moodIndex=Moods.getInstance().getMoodIngex(tag);
+//# 
+//#                         id=mood.getParent().getAttribute("id");
+//#                     }
+//#                 } catch (Exception ex) {
+//#                     moodIndex=Moods.getInstance().getMoodIngex("-");
+//#                 }
+//# 
+//#                 result.append(Moods.getInstance().getMoodLabel(moodIndex));
+//#                 moodText=mood.getChildBlockText("text");
+//#                 if (moodText!=null){
+//#                     if (moodText.length()>0) {
+//#                         result.append("(")
+//#                                 .append(moodText)
+//#                                 .append(")");
+//#                     }
+//#                 }
+//#                 hasMood = true;
+//#if DEBUG
 //#             System.out.println(from+": "+result.toString());
 //#endif
-                type=SR.MS_USERMOOD;
-            }
-        }
-
+//#                 type=SR.MS_USERMOOD;
+//#             }
+//#         }
+//#endif
+        
         Msg m=new Msg(Msg.MESSAGE_TYPE_PRESENCE, from, type, result.toString());
         
         Vector hContacts=sd.roster.getHContacts();
@@ -184,9 +186,11 @@ public class PepListener implements JabberBlockListener{
                 Contact c=(Contact)e.nextElement();
                 if (c.jid.equals(j, false)) {
                     if (hasMood) {
-                        c.pepMood=moodIndex;
-                        c.pepMoodName=Moods.getInstance().getMoodLabel(moodIndex);
-                        c.pepMoodText=moodText;
+//#ifdef PEP
+//#                         c.pepMood=moodIndex;
+//#                         c.pepMoodName=Moods.getInstance().getMoodLabel(moodIndex);
+//#                         c.pepMoodText=moodText;
+//#endif
                         
                         if (c.getGroupType()==Groups.TYPE_SELF) {
                             if (id!=null) Moods.getInstance().myMoodId=id;

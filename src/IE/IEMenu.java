@@ -49,7 +49,13 @@ public class IEMenu
     private int choice = -1;
     
     public IEMenu(Display display, Displayable pView) {
-        super(SR.MS_IMPORT_EXPORT, null);
+        super(
+//#if IMPORT_EXPORT
+//#         SR.MS_IMPORT_EXPORT
+//#else
+               ""
+//#endif
+                 , null);
         addItem(SR.MS_OPTIONS+": "+SR.MS_LOAD_FROM_FILE, 0);
         addItem(SR.MS_OPTIONS+": "+SR.MS_SAVE_TO_FILE, 1);
 //#ifdef PLUGINS
