@@ -97,8 +97,9 @@ public class HistoryAppend {
 //#ifdef DETRANSLIT
 //#        filename=(cf.transliterateFilenames)?DeTranslit.getInstance().translit(filename):filename;
 //#endif
-       
-       filename = cf.msgPath+StringUtils.replaceBadChars(filename)+".txt";
+//#ifdef HISTORY
+//#        filename = cf.msgPath+StringUtils.replaceBadChars(filename)+".txt";
+//#endif
        file=FileIO.createConnection(filename);
         try {
             os = file.openOutputStream(0);
@@ -127,9 +128,9 @@ public class HistoryAppend {
 //#ifdef DETRANSLIT
 //#        filename=(cf.transliterateFilenames)?DeTranslit.getInstance().translit(filename):filename;
 //#endif
-       
-       filename = cf.msgPath+StringUtils.replaceBadChars(filename)+".txt";
-
+//#ifdef HISTORY
+//#        filename = cf.msgPath+StringUtils.replaceBadChars(filename)+".txt";
+//#endif
        file=FileIO.createConnection(filename);
         try {
             os = file.openOutputStream(0);

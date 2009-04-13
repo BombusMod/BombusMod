@@ -1386,12 +1386,12 @@ public class Roster
                             body=name+" "+SR.MS_HAS_SET_TOPIC_TO+": "+subj;
                         if (!subj.equals(c.statusString)) {
                             c.statusString=subj; // adding secondLine to conference
-                            highlite=true;
                         } else {
                             return JabberBlockListener.BLOCK_PROCESSED;
                         }
                         subj=null;
                         start_me=-1;
+                        highlite=true;
                         mType=Msg.MESSAGE_TYPE_SUBJ;
                     }
                 } else if (type!=null){
@@ -1408,31 +1408,29 @@ public class Roster
                     JabberDataBlock xmlns=message.findNamespace("x", "http://jabber.org/protocol/muc#user");
                     if (xmlns!=null) {
                         JabberDataBlock invite=xmlns.getChildBlock("invite");
-
-                        if (invite !=null) {
+                        if (invite!=null) {
                             if (message.getTypeAttribute().equals("error")) {
                                 ConferenceGroup invConf=(ConferenceGroup)groups.getGroup(from);
                                 body=XmppError.decodeStanzaError(message).toString(); /*"error: invites are forbidden"*/
                             } else {
+                                String inviteReason=invite.getChildBlockText("reason");
                                 String room=from+'/'+sd.account.getNickName();
-                                String password=xmlns.getChildBlockText("password");
                                 
-                                ConferenceGroup invConf=initMuc(room, password);
-
-                                invConf.confContact.commonPresence=false;
-
+                                ConferenceGroup invConf=initMuc(room, xmlns.getChildBlockText("password"));
+                                
+                                invConf.confContact.commonPresence=false; //FS#761
+                                
                                 if (invConf.selfContact.status==Presence.PRESENCE_OFFLINE)
                                     invConf.confContact.status=Presence.PRESENCE_OFFLINE;
 
-                                String inviteReason=invite.getChildBlockText("reason");
                                 if (inviteReason!=null)
                                     inviteReason=(inviteReason.length()>0)?" ("+inviteReason+")":"";
                                 
                                 body=invite.getAttribute("from")+SR.MS_IS_INVITING_YOU+from+inviteReason;
-
+                                
                                 reEnumRoster();
                             }
-                         }
+                        }
                     }
                 } catch (Exception e) { /*e.printStackTrace();*/ }
 //#endif
@@ -1536,11 +1534,11 @@ public class Roster
 			}
 	                myNick=null; myNick_=null; _myNick=null;
                         //TODO: custom highliting dictionary
-                        m.highlite=highlite; 
                     }
                     m.from=name;
                 }
 //#endif
+                m.highlite=highlite;
                 messageStore(c, m);
                 return JabberBlockListener.BLOCK_PROCESSED;   
             } else if( data instanceof Presence ) {  // If we've received a presence

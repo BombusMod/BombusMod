@@ -57,7 +57,9 @@ public class HistoryStorage {
 //#ifdef DETRANSLIT
 //#        filename=(cf.transliterateFilenames)?DeTranslit.getInstance().translit(filename):filename;
 //#endif
-       filename=cf.msgPath+StringUtils.replaceBadChars(filename)+".txt";
+//#ifdef HISTORY
+//#        filename=cf.msgPath+StringUtils.replaceBadChars(filename)+".txt";
+//#endif
        this.history = loadHistory(filename);
    }
     

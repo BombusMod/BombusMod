@@ -67,7 +67,7 @@ public class MessageEdit
 //#     DeTranslit dt;
 //#endif
     
-    private Command cmdSend=new Command(SR.MS_SEND, Command.OK, 1);
+    private Command cmdSend;//=new Command(SR.MS_SEND, Command.OK, 1);
 //#ifdef SMILES
     private Command cmdSmile=new Command(SR.MS_ADD_SMILE, Command.SCREEN,2);
 //#endif
@@ -79,7 +79,7 @@ public class MessageEdit
 //#endif
     private Command cmdLastMessage=new Command(SR.MS_PREVIOUS, Command.SCREEN, 9);
     private Command cmdSubj=new Command(SR.MS_SET_SUBJECT, Command.SCREEN, 10);
-    private Command cmdSuspend=new Command(SR.MS_SUSPEND, Command.BACK,90);
+    private Command cmdSuspend;//=new Command(SR.MS_SUSPEND, Command.BACK,90);
     private Command cmdCancel=new Command(SR.MS_CANCEL, Command.SCREEN,99);
 
     /** Creates a new instance of MessageEdit */
@@ -92,6 +92,14 @@ public class MessageEdit
 //#ifdef DETRANSLIT
 //#         dt=DeTranslit.getInstance();
 //#endif
+        
+        if (!cf.swapSendAndSuspend) {
+            cmdSuspend=new Command(SR.MS_SUSPEND, Command.BACK, 90);
+            cmdSend=new Command(SR.MS_SEND, Command.OK, 1);
+        } else {
+            cmdSuspend=new Command(SR.MS_SUSPEND, Command.OK, 1);
+            cmdSend=new Command(SR.MS_SEND, Command.BACK, 90);
+        }
         
         addCommand(cmdSend);
         addCommand(cmdInsMe);

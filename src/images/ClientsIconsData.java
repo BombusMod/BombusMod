@@ -89,8 +89,10 @@ public class ClientsIconsData {
     }
     
     public static void processData(Contact c, String data) {
+//#ifdef CLIENTS_ICONS
         c.client=getClientIDByCaps(data);
         c.clientName=(c.client>-1)?c.clientName=getClientNameByID(c.client):"";
+//#endif
     }
     
     private static String getClientNameByID(int id) {

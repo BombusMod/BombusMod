@@ -174,13 +174,14 @@ public class Presence extends JabberDataBlock {
         String status=getChildBlockText("status");
         return (status.length()==0)? null: getChildBlockText("status");
     }
-  
+    
+//#ifdef CLIENTS_ICONS
     public boolean hasEntityCaps() {
         JabberDataBlock cc=getChildBlock("c");
         if (cc==null) return false;
         return cc.isJabberNameSpace("http://jabber.org/protocol/caps");
     }
-  
+    
     public String getEntityNode() {
         JabberDataBlock cc=getChildBlock("c");
         if (cc!=null){
@@ -190,19 +191,19 @@ public class Presence extends JabberDataBlock {
         }
         return null;
     }
-
+    
     public String getEntityVer() {
         JabberDataBlock cc=getChildBlock("c");
         if (cc!=null){
             if (cc.isJabberNameSpace("http://jabber.org/protocol/caps")) {
                 String ver = cc.getAttribute("ver");
-                
                 return (ver.endsWith("=")?null:ver);
             }
         }
         return null;
     }
-
+//#endif
+    
     public final static int PRESENCE_ONLINE=0;
     public final static int PRESENCE_CHAT=1;
     public final static int PRESENCE_AWAY=2;

@@ -43,6 +43,7 @@ import Menu.MyMenu;
 //#endif
 import locale.SR;
 import ui.*;
+import ui.controls.AlertBox;
 import java.util.*;
 import com.alsutton.jabber.*;
 
@@ -227,12 +228,17 @@ public class PrivacySelect
     public void keyGreen() {
         new MIDPTextBox(display, SR.MS_NEW, "", this, TextField.ANY);
     }
-    
-    public void keyClear() {
-        PrivacyList pl=(PrivacyList) getFocusedObject();
-        if (pl!=null) {
-            if (pl.name!=null) pl.deleteList();
-            getLists();
-        }
+        
+    protected void keyClear(){
+        new AlertBox(SR.MS_DELETE, getFocusedObject().toString(), display, this) {
+            public void yes() {
+                PrivacyList pl=(PrivacyList) getFocusedObject();
+                if (pl!=null) {
+                    if (pl.name!=null) pl.deleteList();
+                    getLists();
+                }
+            }
+            public void no() {}
+        };
     }
 }

@@ -142,6 +142,8 @@ public class ConfigForm
     private CheckBox showNickNames;
     
     private CheckBox oldSE;
+    
+    private CheckBox swapSendAndSuspend;
 
     private Vector langs[];
 
@@ -238,10 +240,7 @@ public class ConfigForm
 //#        autoDetranslit = new CheckBox(SR.MS_AUTODETRANSLIT, cf.autoDeTranslit); itemsList.addElement(autoDetranslit);
 //#endif
        showNickNames = new CheckBox(SR.MS_SHOW_NACKNAMES, cf.showNickNames); itemsList.addElement(showNickNames);
-//#ifdef MENU_LISTENER
-        executeByNum = new CheckBox(SR.MS_EXECUTE_MENU_BY_NUMKEY, cf.executeByNum); itemsList.addElement(executeByNum);
-//#endif
-
+       swapSendAndSuspend = new CheckBox("swap \""+SR.MS_SEND+"\" and \""+SR.MS_SUSPEND+"\" commands", cf.swapSendAndSuspend); itemsList.addElement(swapSendAndSuspend);
             
 //#if LOGROTATE
 //#         messageCountLimit=new NumberInput(display, SR.MS_MESSAGE_COUNT_LIMIT, Integer.toString(cf.msglistLimit), 3, 1000);
@@ -306,6 +305,9 @@ public class ConfigForm
             popupFromMinimized = new CheckBox(SR.MS_ENABLE_POPUP, cf.popupFromMinimized);
             itemsList.addElement(popupFromMinimized);
         }
+//#ifdef MENU_LISTENER
+        executeByNum = new CheckBox(SR.MS_EXECUTE_MENU_BY_NUMKEY, cf.executeByNum); itemsList.addElement(executeByNum);
+//#endif
         
         itemsList.addElement(new SpacerItem(10));
         itemsList.addElement(new SimpleString(SR.MS_TIME_SETTINGS, true));
@@ -482,7 +484,8 @@ public class ConfigForm
         cf.lightState=lightState.getValue();
         if (cf.allowMinimize)
             cf.popupFromMinimized=popupFromMinimized.getValue();
-
+        cf.swapSendAndSuspend=swapSendAndSuspend.getValue();
+        
         cf.gmtOffset=Integer.parseInt(fieldGmt.getValue());
 
         cf.textWrap=textWrap.getSelectedIndex();

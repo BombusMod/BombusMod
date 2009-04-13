@@ -230,6 +230,8 @@ public class Config {
     
     public boolean showTimeTraffic=false;
     
+    public boolean swapSendAndSuspend=false;
+    
     public static Config getInstance(){
 	if (instance==null) {
 	    instance=new Config();
@@ -478,6 +480,8 @@ public class Config {
             
             showTimeTraffic=inputStream.readBoolean();
             
+            swapSendAndSuspend=inputStream.readBoolean();
+            
 	    inputStream.close();
             inputStream=null;
 	} catch (Exception e) {
@@ -717,6 +721,9 @@ public class Config {
             outputStream.writeBoolean(oldSE);
             
             outputStream.writeBoolean(showTimeTraffic);
+            
+            outputStream.writeBoolean(swapSendAndSuspend);
+            
 	} catch (Exception e) { }
 	
 	NvStorage.writeFileRecord(outputStream, "config", 0, true);

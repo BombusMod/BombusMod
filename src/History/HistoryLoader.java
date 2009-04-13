@@ -62,8 +62,9 @@ public class HistoryLoader {
 //#ifdef DETRANSLIT
 //#         file=(cf.transliterateFilenames)?DeTranslit.getInstance().translit(file):file;
 //#endif
-       fileName=cf.msgPath+StringUtils.replaceBadChars(file)+".txt";
-       
+//#ifdef HISTORY
+//#        fileName=cf.msgPath+StringUtils.replaceBadChars(file)+".txt";
+//#endif
        fileMap = getFileMap();
     }
     
