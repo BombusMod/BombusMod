@@ -35,11 +35,11 @@ import java.util.Vector;
 import ui.controls.Balloon;
 
 //#ifndef MENU_LISTENER
-import javax.microedition.lcdui.CommandListener;
-import javax.microedition.lcdui.Command;
+//# import javax.microedition.lcdui.CommandListener;
+//# import javax.microedition.lcdui.Command;
 //#else
-//# import Menu.MenuListener;
-//# import Menu.Command;
+import Menu.MenuListener;
+import Menu.Command;
 //#endif
 
 import javax.microedition.lcdui.Display;
@@ -51,9 +51,9 @@ public class SmilePicker
         extends VirtualList 
         implements 
 //#ifndef MENU_LISTENER
-        CommandListener,
+//#         CommandListener,
 //#else
-//#         MenuListener,
+        MenuListener,
 //#endif
         VirtualElement
 {
@@ -117,7 +117,7 @@ public class SmilePicker
     
     public void commandState() {
 //#ifdef MENU_LISTENER
-//#         menuCommands.removeAllElements();
+        menuCommands.removeAllElements();
 //#endif
         addCommand(cmdOk);
         addCommand(cmdCancel);
@@ -136,11 +136,7 @@ public class SmilePicker
     public int getColorBGnd(){ return ColorTheme.getColor(ColorTheme.LIST_BGND); }
     public void onSelect(){
         try {
-//#ifdef RUNNING_MESSAGE
-//#             StaticData.getInstance().roster.me.insert( getTipString() , caretPos);
-//#else
             t.insert(getTipString() , caretPos);
-//#endif
         } catch (Exception e) { /*e.printStackTrace();*/  }
         destroyView();
     }
@@ -251,9 +247,9 @@ public class SmilePicker
     public boolean handleEvent(int keyCode) { return false; }
     
 //#ifdef MENU_LISTENER
-//#     public void showMenu(){ eventOk(); }
-//#      
-//#     public String touchLeftCommand(){ return SR.MS_SELECT; }
-//#     public String touchRightCommand(){ return SR.MS_BACK; }
+    public void showMenu(){ eventOk(); }
+     
+    public String touchLeftCommand(){ return SR.MS_SELECT; }
+    public String touchRightCommand(){ return SR.MS_BACK; }
 //#endif
 }

@@ -33,9 +33,9 @@ import java.util.Enumeration;
 import java.util.Vector;
 import javax.microedition.io.ConnectionNotFoundException;
 //#ifndef MENU_LISTENER
-import javax.microedition.lcdui.Command;
+//# import javax.microedition.lcdui.Command;
 //#else
-//# import Menu.Command;
+import Menu.Command;
 //#endif
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
@@ -80,7 +80,7 @@ public class InfoWindow
         name.selectable=true;
         itemsList.addElement(name);
 
-        description=new MultiLine("Copyright (c) 2005-2008", "Eugene Stahov (evgs),\nDaniel Apatin (ad)\n \nDistributed under GNU Public License (GPL) v2.0", super.superWidth);
+        description=new MultiLine("Copyright (c) 2005-2009", "Eugene Stahov (evgs),\nDaniel Apatin (ad)\n \nDistributed under GNU Public License (GPL) v2.0", super.superWidth);
         description.selectable=true;
         itemsList.addElement(description);
         
@@ -187,7 +187,7 @@ public class InfoWindow
 //#ifdef PLUGINS
 //#         if (sd.ClientsIcons)
 //#endif
-//#             abilitiesList.addElement((String)"CLIENTS_ICONS");
+            abilitiesList.addElement((String)"CLIENTS_ICONS");
 //#endif
 //#ifdef CLIPBOARD
 //#         abilitiesList.addElement((String)"CLIPBOARD");
@@ -256,7 +256,7 @@ public class InfoWindow
 //#         abilitiesList.addElement((String)"LOGROTATE");
 //#endif
 //#ifdef MENU_LISTENER
-//#         abilitiesList.addElement((String)"MENU_LISTENER");
+        abilitiesList.addElement((String)"MENU_LISTENER");
 //#endif
 //#ifdef NEW_SKIN
 //#         abilitiesList.addElement((String)"NEW_SKIN");
@@ -325,7 +325,7 @@ public class InfoWindow
 //#ifdef PLUGINS
 //#         if (sd.Archive)
 //#endif
-        abilitiesList.addElement((String)"TEMPLATES");
+//#         abilitiesList.addElement((String)"TEMPLATES");
 //#endif
 //#ifdef USER_KEYS
 //#         abilitiesList.addElement((String)"USER_KEYS");

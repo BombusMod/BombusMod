@@ -37,13 +37,9 @@ import io.file.FileIO;
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
 import util.StringUtils;
-import ui.Time;
 //#endif
 //#ifdef CLIPBOARD
 //# import util.ClipBoard;
-//#endif
-//#ifdef DETRANSLIT
-//# import util.DeTranslit;
 //#endif
 import javax.microedition.lcdui.Displayable;
 //#ifndef MENU_LISTENER
@@ -210,32 +206,13 @@ public class VCardView
     public void BrowserFilePathNotify(String pathSelected) {
         if (vcard.hasPhoto) {
             //System.out.println(photoType+"->"+getFileType(photoType));
-            String filename = StringUtils.replaceBadChars(getNickDate());
+            String filename = StringUtils.replaceBadChars(vcard.getNickDate());
             FileIO file=FileIO.createConnection(pathSelected+filename+vcard.getFileType());
             file.fileWrite(vcard.getPhoto());
         }
     }
+//#endif
     
-    private String getNickDate() {
-        StringBuffer nickDate=new StringBuffer();
-        nickDate.append("photo_");
-//#ifdef DETRANSLIT
-//#         String userName=(vcard.getNickName()!=null)?vcard.getNickName():vcard.getJid();
-//#         if (Config.getInstance().transliterateFilenames) {
-//#             nickDate.append(DeTranslit.translit(userName));
-//#         } else {
-//#             nickDate.append(userName);
-//#         }
-//#else
-         if (vcard.getNickName()!=null) {
-             nickDate.append(vcard.getNickName());
-         } else nickDate.append(vcard.getJid());
-//#endif
-        nickDate.append('_').append(Time.dayLocalString(Time.utcTimeMillis()).trim());
-        return nickDate.toString();
-    }
-//#endif
-
     public void commandState() {
         super.commandState();
         removeCommand(cmdOk);

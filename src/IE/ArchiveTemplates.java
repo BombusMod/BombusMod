@@ -184,18 +184,13 @@ public class ArchiveTemplates {
             bodyMessage=body.toString().getBytes();
         }
 
-        FileIO file=FileIO.createConnection(arhPath+((where==1)?"archive_":"template_")+getDate()+".txt");
+        FileIO file=FileIO.createConnection(arhPath+((where==1)?"archive_":"template_")+Time.localDate()+".txt");
         file.fileWrite(bodyMessage);
 
         body=null;
         arhPath=null;
         
         archive.close();
-    }
-    
-    private String getDate() {
-        long dateGmt=Time.utcTimeMillis();
-        return Time.dayLocalString(dateGmt).trim(); 
     }
     
     public int getItemCount() {

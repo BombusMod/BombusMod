@@ -130,26 +130,28 @@ public class Time {
         return dayLocalString(utcDate)+timeLocalString(utcDate);
      }
      
-     public static String localWeekDay(){
+    public static String localWeekDay(){
         long utcDate=utcTimeMillis();
         return weekDayLocalString(utcDate);
-     }
+    }
      
-     public static String localTime(){
-        long utcDate=utcTimeMillis();
-        return timeLocalString(utcDate);
-     }
+    public static String localTime(){
+        return timeLocalString(utcTimeMillis());
+    }
+    
+    public static String localDate(){
+        return dayLocalString(utcTimeMillis()).trim();
+    }
      
-     public static int getHour(){
+    public static int getHour(){
         Calendar c=calDate(utcTimeMillis());
         return c.get(Calendar.HOUR_OF_DAY);
-     }
+    }
      
-     public static int getMin(){
+    public static int getMin(){
         Calendar c=calDate(utcTimeMillis());
         return c.get(Calendar.MINUTE);
-     }
-     
+    }
     
     private final static int[] calFields=
     {Calendar.YEAR,         Calendar.MONTH,     Calendar.DATE, 
@@ -251,4 +253,3 @@ public class Time {
         return s.toString();
     }
 }
-

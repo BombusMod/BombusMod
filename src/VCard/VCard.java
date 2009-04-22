@@ -32,6 +32,12 @@ import com.alsutton.jabber.datablocks.Iq;
 import java.util.*;
 import util.StringLoader;
 import util.Strconv;
+//#if FILE_IO
+//#ifdef DETRANSLIT
+//# import util.DeTranslit;
+//#endif
+import ui.Time;
+//#endif
 
 /**
  *
@@ -259,6 +265,26 @@ public class VCard {
             if (MIMEtype=="image/x-ms-bmp") return ".bmp";
         }
         return ".jpg";
+    }
+//#endif
+    
+//#if FILE_IO
+    public String getNickDate() {
+        StringBuffer nickDate=new StringBuffer("photo_");
+//#ifdef DETRANSLIT
+//#         String userName=(getNickName()!=null)?getNickName():getJid();
+//#         if (Client.Config.getInstance().transliterateFilenames) {
+//#             nickDate.append(DeTranslit.translit(userName));
+//#         } else {
+//#             nickDate.append(userName);
+//#         }
+//#else
+         if (vcard.getNickName()!=null) {
+             nickDate.append(vcard.getNickName());
+         } else nickDate.append(vcard.getJid());
+//#endif
+        nickDate.append("_").append(Time.localDate());
+        return nickDate.toString();
     }
 //#endif
 }

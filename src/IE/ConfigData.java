@@ -34,6 +34,7 @@ import io.file.FileIO;
 import java.util.Enumeration;
 import java.util.Vector;
 import ui.VirtualList;
+import ui.Time;
 
 /**
  *
@@ -163,7 +164,7 @@ public class ConfigData {
 //#endif
         array.addElement(new keyValue(IQNotify, (cf.IQNotify)?"1":"0")); 
 //#ifdef CLIENTS_ICONS
-//#         array.addElement(new keyValue(showClientIcon, (cf.showClientIcon)?"1":"0")); 
+        array.addElement(new keyValue(showClientIcon, (cf.showClientIcon)?"1":"0")); 
 //#endif
         
         array.addElement(new keyValue(reconnectCount, Integer.toString(cf.reconnectCount)));
@@ -171,12 +172,12 @@ public class ConfigData {
         
         array.addElement(new keyValue(executeByNum, (cf.executeByNum)?"1":"0"));
         array.addElement(new keyValue(showNickNames, (cf.showNickNames)?"1":"0"));
-        
+        array.addElement(new keyValue(swapSendAndSuspend, (cf.swapSendAndSuspend)?"1":"0"));
         
         StringBuffer body = new StringBuffer();
         body = createArrayString(array);
 
-        FileIO fileOut=FileIO.createConnection(file+"config.txt");
+        FileIO fileOut=FileIO.createConnection(file+"config_"+Time.localDate()+".txt");
         fileOut.fileWrite(body.toString().getBytes());
     }
     
@@ -303,7 +304,7 @@ public class ConfigData {
 //#endif
         cf.IQNotify=cf.getBooleanProperty(getValue(IQNotify),false);
 //#ifdef CLIENTS_ICONS
-//#         cf.showClientIcon=cf.getBooleanProperty(getValue(showClientIcon),true);
+        cf.showClientIcon=cf.getBooleanProperty(getValue(showClientIcon),true);
 //#endif
         
         cf.reconnectCount=cf.getIntProperty(getValue(reconnectCount), 10);
@@ -311,6 +312,7 @@ public class ConfigData {
         
         cf.executeByNum=cf.getBooleanProperty(getValue(executeByNum),false);
         cf.showNickNames=cf.getBooleanProperty(getValue(showNickNames),false);
+        cf.swapSendAndSuspend=cf.getBooleanProperty(getValue(swapSendAndSuspend),false);
 
         cf.lastProfile=cf.profile=cf.def_profile;
         if (cf.lastProfile==AlertProfile.VIBRA) 
@@ -477,8 +479,8 @@ public class ConfigData {
     private final static String reconnectTime="reconnectTime";
     
     private final static String executeByNum="executeByNum";
-    
     private final static String showNickNames="showNickNames";
+    private final static String swapSendAndSuspend="swapSendAndSuspend";
     
     class keyValue {
         String value; String key;

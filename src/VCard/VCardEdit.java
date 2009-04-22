@@ -11,10 +11,6 @@ package VCard;
 
 import Client.StaticData;
 //#if (FILE_IO)
-//#ifdef DETRANSLIT
-//# import util.DeTranslit;
-//# import Client.Config;
-//#endif
 import io.file.FileIO;
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
@@ -34,7 +30,6 @@ import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
 
-import ui.Time;
 import util.StringUtils;
 
 import ui.controls.form.ImageItem;
@@ -175,33 +170,14 @@ public class VCardEdit
             }
             if (st==2 & vcard.hasPhoto) {
                 //System.out.println(photoType+"->"+getFileType(photoType));
-                String filename = StringUtils.replaceBadChars(getNickDate());
+                String filename = StringUtils.replaceBadChars(vcard.getNickDate());
                 FileIO file=FileIO.createConnection(pathSelected+filename+vcard.getFileType());
                 file.fileWrite(vcard.getPhoto());
             }
         }
     }
-
-    private String getNickDate() {
-        StringBuffer nickDate=new StringBuffer();
-        nickDate.append("photo_");
-//#ifdef DETRANSLIT
-//#         String userName=(vcard.getNickName()!=null)?vcard.getNickName():vcard.getJid();
-//#         if (Config.getInstance().transliterateFilenames) {
-//#             nickDate.append(DeTranslit.translit(userName));
-//#         } else {
-//#             nickDate.append(userName);
-//#         }
-//#else
-         if (vcard.getNickName()!=null) {
-             nickDate.append(vcard.getNickName());
-         } else nickDate.append(vcard.getJid());
 //#endif
-        nickDate.append("_").append(Time.dayLocalString(Time.utcTimeMillis()).trim());
-        return nickDate.toString();
-    }
-//#endif
-
+    
     public void cameraImageNotify(byte[] capturedPhoto) {
         vcard.setPhoto(capturedPhoto);
         setPhoto();
