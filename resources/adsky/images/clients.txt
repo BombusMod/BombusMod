@@ -1,4 +1,4 @@
-﻿bombusmod.net.ru	BombusMod
+bombusmod.net.ru	BombusMod
 bombus-im.org/java	Bombus
 bombus-im.org/ng	BombusNG
 psi-im.org	Psi
@@ -22,3 +22,6 @@ home,дом	Home
 work,office	Work
 Just Another Jabber Client,jajc	JAJC
 Ajabb,yandex.ru/caps	Я.Онлайн
+psi-dev.googlecode.com/caps	Psi+
+jimm.net.ru/caps	Jimm aspro
+pyicqt.googlecode.com//protocol/caps	PyICQ-t

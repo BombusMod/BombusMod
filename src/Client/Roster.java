@@ -1643,8 +1643,9 @@ public class Roster
                         if (pr.getTypeIndex()!=Presence.PRESENCE_ERROR) {
 //#ifdef CLIENTS_ICONS
 //#ifdef PLUGINS
-//#                             if (cf.showClientIcon)
+//#                         if (sd.ClientsIcons)
 //#endif
+                            if (cf.showClientIcon) if (ti<Presence.PRESENCE_OFFLINE)
                                 if (pr.hasEntityCaps()) {
                                     if (pr.getEntityNode()!=null) {
                                         ClientsIconsData.getInstance().processData(c, pr.getEntityNode());
