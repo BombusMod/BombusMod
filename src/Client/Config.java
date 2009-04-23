@@ -273,6 +273,7 @@ public class Config {
                 break;
             case SONYE_M600:
                 KEY_BACK=-11;
+                greenKeyCode=13;
                 break;
             case WTK:
                 greenKeyCode=-10;
