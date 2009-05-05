@@ -1716,6 +1716,8 @@ public class Roster
                 reEnumRoster();
                 return JabberBlockListener.BLOCK_PROCESSED;                
             } // if presence
+        } catch(OutOfMemoryError eom){
+            System.out.println("error bombusmod\\src\\Client\\Roster.java:12");
         } catch( Exception e ) {
 //#if DEBUG
 //#             e.printStackTrace();
