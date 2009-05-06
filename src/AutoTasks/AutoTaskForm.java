@@ -70,10 +70,12 @@ public class AutoTaskForm
     
     /** Creates a new instance of AutoTaskForm */
     public AutoTaskForm(Display display, Displayable pView) {
-        super(display, pView, SR.MS_AUTOTASKS);
-        this.display=display;
-        
-//#ifdef AUTOTASK
+//#if !AUTOTASK
+        super(display, pView, "");
+//#else
+//#         super(display, pView, SR.MS_AUTOTASKS);
+//#         this.display=display;
+//#         
 //#         typeIndex=at.taskType;
 //#         actionIndex=at.taskAction;
 //#         

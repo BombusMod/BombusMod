@@ -86,7 +86,7 @@ public class Msg {
                 itemCollapsed=true;
     }
     
-    public void onSelect(){}
+    //public void onSelect(){}
 
     public String getTime(){
         return Time.timeLocalString(dateGmt); 

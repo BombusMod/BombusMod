@@ -4,6 +4,7 @@
  * Created on 4.07.2008, 14:48
  *
  * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
+ * Copyright (c) 2009, Vladimir Kichigin (voffk), http://voffk.org.ru
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -74,69 +75,76 @@ public class IQCommands implements JabberBlockListener {
             if (!new Jid(from).getBareJid().equals(sd.roster.selfContact().bareJid))
                 return BLOCK_REJECTED;
         } else return BLOCK_REJECTED;
-
-//System.out.println(">>> "+data.toString());
+        
+        //System.out.println(">>> "+data.toString());
         
         if (type.equals("get")) {
-            JabberDataBlock query=data.findNamespace("query", "http://jabber.org/protocol/disco#items");
-            JabberDataBlock query2=data.findNamespace("query", "http://jabber.org/protocol/disco#info");
-            if (query==null){
-                if (query2==null)
-                    return BLOCK_REJECTED;
-                else query=query2;
-            }
-            
-            if (query.getAttribute("node").equals("http://jabber.org/protocol/commands")) {
+            JabberDataBlock query=data.getChildBlock("query");
+            if (query.isJabberNameSpace("http://jabber.org/protocol/disco#info")) {
                 Iq reply=new Iq(data.getAttribute("from"), Iq.TYPE_RESULT, data.getAttribute("id"));
-                reply.addChild(query);
-
-                //http://jabber.org/protocol/rc#set-status //4.1 Change Status
-                JabberDataBlock status=query.addChild("item", "");
-                status.setAttribute("jid", sd.roster.selfContact().getJid());
-                status.setAttribute("node", "http://jabber.org/protocol/rc#set-status");
-                status.setAttribute("name", "Set Status");
-
-                //http://jabber.org/protocol/rc#leave-groupchats //4.5 Leave Groupchats 
-                JabberDataBlock leaveChats=query.addChild("item", "");
-                leaveChats.setAttribute("jid", sd.roster.selfContact().getJid());
-                leaveChats.setAttribute("node", "http://jabber.org/protocol/rc#leave-groupchats");
-                leaveChats.setAttribute("name", "Leave Groupchats");
-
+                JabberDataBlock replyChild=reply.addChildNs("query", "http://jabber.org/protocol/disco#info");
+                if (query.getAttribute("node")!=null)
+                    if (!query.getAttribute("node").equals("http://jabber.org/protocol/commands")) {
+                        replyChild.setAttribute("node", query.getAttribute("node"));
+                        JabberDataBlock identity=replyChild.addChild("identity", "");
+                            identity.setAttribute("category", "automation");
+                            identity.setTypeAttribute("command-node");
+                        JabberDataBlock feature1=replyChild.addChild("feature", "");
+                            feature1.setAttribute("var", "http://jabber.org/protocol/commands");
+                        JabberDataBlock feature2=replyChild.addChild("feature", "");
+                            feature2.setAttribute("var", "jabber:x:data");
+                    }
                 sd.roster.theStream.send(reply);
+                return BLOCK_PROCESSED;
+                
+            } else if (query.isJabberNameSpace("http://jabber.org/protocol/disco#items")) {
+                if (!query.getAttribute("node").equals("http://jabber.org/protocol/commands")) {
+                    Iq reply=new Iq(data.getAttribute("from"), Iq.TYPE_RESULT, data.getAttribute("id"));
+                    JabberDataBlock replyChild=reply.addChildNs("query", "http://jabber.org/protocol/disco#items");
+                    if (query.getAttribute("node")!=null)
+                        replyChild.setAttribute("node", query.getAttribute("node"));
+                    sd.roster.theStream.send(reply);
+                    return BLOCK_PROCESSED;
+                } else {
+                    Iq reply=new Iq(data.getAttribute("from"), Iq.TYPE_RESULT, data.getAttribute("id"));
+                    reply.addChild(query);
 
-                return BLOCK_PROCESSED;
-            } else if (query.getAttribute("node").equals("http://jabber.org/protocol/rc#set-status")) {
-                processStatusRequest(data);
-                return BLOCK_PROCESSED;
-            } else if (query.getAttribute("node").equals("http://jabber.org/protocol/rc#leave-groupchats")) {
-                processGCRequest(data);
-                return BLOCK_PROCESSED;
+                    //http://jabber.org/protocol/rc#set-status //4.1 Change Status
+                    JabberDataBlock status=query.addChild("item", "");
+                    status.setAttribute("jid", sd.roster.selfContact().getJid());
+                    status.setAttribute("node", "set-status");
+                    status.setAttribute("name", "Set Status");
+
+                    //http://jabber.org/protocol/rc#leave-groupchats //4.5 Leave Groupchats 
+                    JabberDataBlock leaveChats=query.addChild("item", "");
+                    leaveChats.setAttribute("jid", sd.roster.selfContact().getJid());
+                    leaveChats.setAttribute("node", "leave-groupchats");
+                    leaveChats.setAttribute("name", "Leave Groupchats");
+
+                    sd.roster.theStream.send(reply);
+
+                    return BLOCK_PROCESSED;
+                }
             }
         } else if (type.equals("set")) {
             JabberDataBlock command=data.findNamespace("command", "http://jabber.org/protocol/commands");
             if (command==null) return BLOCK_REJECTED;
             
-            if (command.getAttribute("node").equals("http://jabber.org/protocol/rc#set-status")) {
+            if (command.getAttribute("node").equals("set-status")) {
                 if (command.getAttribute("sessionid")==null) {
                     processStatusRequest(data);
                     return BLOCK_PROCESSED;
-                } else if (!command.getAttribute("action").equals("cancel")) {
-                    Iq reply=new Iq(data.getAttribute("from"), Iq.TYPE_RESULT, data.getAttribute("id"));
-                    JabberDataBlock cmd=reply.addChildNs("command", "http://jabber.org/protocol/commands");
-                    cmd.setAttribute("status", "completed");
-                    cmd.setAttribute("node", "http://jabber.org/protocol/rc#set-status");
-                    cmd.setAttribute("sessionid", command.getAttribute("sessionid"));
-                    sd.roster.theStream.send(reply);
-
+                } else /*if (!command.getAttribute("action").equals("cancel"))*/ {
                     //parsing task
                     JabberDataBlock x=command.findNamespace("x", "jabber:x:data");
-                    Enumeration e;
+                    if (!x.getTypeAttribute().equals("submit"))
+                        return BLOCK_REJECTED;
 
                     String status="";
                     //String priority="";
                     String message="";
 
-                    for (e=x.getChildBlocks().elements(); e.hasMoreElements(); ){
+                    for (Enumeration e=x.getChildBlocks().elements(); e.hasMoreElements(); ){
                         JabberDataBlock field=(JabberDataBlock) e.nextElement();
                         if (field.getAttribute("var").equals("status")) {
                             status=field.getChildBlockText("value");
@@ -157,23 +165,26 @@ public class IQCommands implements JabberBlockListener {
 
                     sd.roster.sendPresence(newStatus, message);
 
-                    return BLOCK_PROCESSED;
-                }
-            } else if (command.getAttribute("node").equals("http://jabber.org/protocol/rc#leave-groupchats")) {
-                if (command.getAttribute("sessionid")==null) {
-                    processGCRequest(data);
-                    return BLOCK_PROCESSED;
-                } else if (!command.getAttribute("action").equals("cancel")) {
                     Iq reply=new Iq(data.getAttribute("from"), Iq.TYPE_RESULT, data.getAttribute("id"));
                     JabberDataBlock cmd=reply.addChildNs("command", "http://jabber.org/protocol/commands");
                     cmd.setAttribute("status", "completed");
-                    cmd.setAttribute("node", "http://jabber.org/protocol/rc#leave-groupchats");
+                    cmd.setAttribute("node", "set-status");
                     cmd.setAttribute("sessionid", command.getAttribute("sessionid"));
                     sd.roster.theStream.send(reply);
-
+                    
+                    return BLOCK_PROCESSED;
+                }
+            } else if (command.getAttribute("node").equals("leave-groupchats")) {
+                if (command.getAttribute("sessionid")==null) {
+                    processGCRequest(data);
+                    return BLOCK_PROCESSED;
+                } else /*if (!command.getAttribute("action").equals("cancel"))*/ {
                     //parsing task
                     JabberDataBlock x=command.findNamespace("x", "jabber:x:data");
-                    for (Enumeration e=x.getChildBlocks().elements(); e.hasMoreElements(); ){
+                    if (!x.getTypeAttribute().equals("submit"))
+                        return BLOCK_REJECTED;
+                    
+                    for (Enumeration e=x.getChildBlocks().elements(); e.hasMoreElements(); ) {
                         JabberDataBlock field=(JabberDataBlock) e.nextElement();
                         if (field.getAttribute("var").equals("groupchats")) {
                             for (Enumeration e2=field.getChildBlocks().elements(); e2.hasMoreElements(); ){
@@ -187,7 +198,7 @@ public class IQCommands implements JabberBlockListener {
                                         if (!((MucContact)cl).commonPresence) continue; // stop if room left manually
                                         ConferenceGroup confGroup=(ConferenceGroup)cl.group;
 
-                                        if (!confGroup.inRoom) continue; // don`t reenter to leaved rooms
+                                        if (!confGroup.inRoom) continue; // don't process leaved leaved
 
                                         if (confGroup.getName().equals(roomName))
                                             sd.roster.leaveRoom(confGroup);
@@ -196,6 +207,14 @@ public class IQCommands implements JabberBlockListener {
                             }
                         }
                     }
+                    
+                    Iq reply=new Iq(data.getAttribute("from"), Iq.TYPE_RESULT, data.getAttribute("id"));
+                    JabberDataBlock cmd=reply.addChildNs("command", "http://jabber.org/protocol/commands");
+                    cmd.setAttribute("status", "completed");
+                    cmd.setAttribute("node", "leave-groupchats");
+                    cmd.setAttribute("sessionid", command.getAttribute("sessionid"));
+                    sd.roster.theStream.send(reply);
+                    
                     return BLOCK_PROCESSED;
                 }
             }
@@ -208,7 +227,7 @@ public class IQCommands implements JabberBlockListener {
 
         JabberDataBlock cmd=reply.addChildNs("command", "http://jabber.org/protocol/commands");
         cmd.setAttribute("status", "executing");
-        cmd.setAttribute("node", "http://jabber.org/protocol/rc#set-status");
+        cmd.setAttribute("node", "set-status");
         cmd.setAttribute("sessionid", "set-status:"+Time.utcTime());
 
         JabberDataBlock x=cmd.addChildNs("x", "jabber:x:data");
@@ -246,7 +265,7 @@ public class IQCommands implements JabberBlockListener {
         fieldMessage.setAttribute("label", "Message");
 
         sd.roster.theStream.send(reply);
-//System.out.println(">>> "+reply.toString());
+        //System.out.println(">>> "+reply.toString());
     }
     
     private void processGCRequest(JabberDataBlock data) {
@@ -254,7 +273,7 @@ public class IQCommands implements JabberBlockListener {
 
         JabberDataBlock cmd=reply.addChildNs("command", "http://jabber.org/protocol/commands");
         cmd.setAttribute("status", "executing");
-        cmd.setAttribute("node", "http://jabber.org/protocol/rc#leave-groupchats");
+        cmd.setAttribute("node", "leave-groupchats");
         cmd.setAttribute("sessionid", "leave-groupchats:"+Time.utcTime());
 
         JabberDataBlock x=cmd.addChildNs("x", "jabber:x:data");
@@ -286,8 +305,9 @@ public class IQCommands implements JabberBlockListener {
         }
 
         sd.roster.theStream.send(reply);
-//System.out.println(">>> "+reply.toString());
+        //System.out.println(">>> "+reply.toString());
     }
+    
     private static final String[] statuses = {"online", "chat", "away", "xa", "dnd", "invisible", "offline"};
     private static final String[] statusesDesc = {"Online", "Chat", "Away", "Extended Away", "Do Not Disturb", "Invisible", "Offline"};
 }

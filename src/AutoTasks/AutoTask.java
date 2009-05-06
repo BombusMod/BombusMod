@@ -26,7 +26,6 @@
 
 package AutoTasks;
 
-import Client.Config;
 import Client.StaticData;
 import com.alsutton.jabber.datablocks.Presence;
 import javax.microedition.lcdui.Canvas;
@@ -151,29 +150,31 @@ public class AutoTask
     }
     
     public void doAction() {
-        String caption=SR.MS_AUTOTASKS+": ";
-        switch (taskAction) {
-            case TASK_ACTION_QUIT:
-                BombusMod.getInstance().notifyDestroyed();
-                break;
+//#ifdef AUTOTASK
+//#         String caption=SR.MS_AUTOTASKS+": ";
+//#         switch (taskAction) {
+//#             case TASK_ACTION_QUIT:
+//#                 BombusMod.getInstance().notifyDestroyed();
+//#                 break;
 //#ifndef WMUC
-            case TASK_ACTION_CONFERENCE_QUIT:
-                caption+=SR.MS_AUTOTASK_QUIT_CONFERENCES;
-                sd.roster.multicastConferencePresence(Presence.PRESENCE_OFFLINE, caption, 0);
-                break;
+//#             case TASK_ACTION_CONFERENCE_QUIT:
+//#                 caption+=SR.MS_AUTOTASK_QUIT_CONFERENCES;
+//#                 sd.roster.multicastConferencePresence(Presence.PRESENCE_OFFLINE, caption, 0);
+//#                 break;
 //#endif
-            case TASK_ACTION_LOGOFF:
-                caption+=SR.MS_AUTOTASK_LOGOFF;
-                sd.roster.logoff(caption);
-                break;
-           case TASK_ACTION_RECONNECT:
-                caption+=SR.MS_RECONNECT;
-                taskType=TASK_TYPE_TIMER;
-                initTime=System.currentTimeMillis();
-                startTask();
-                sd.roster.connectionTerminated(new Exception(caption));
-                break;
-        }
+//#             case TASK_ACTION_LOGOFF:
+//#                 caption+=SR.MS_AUTOTASK_LOGOFF;
+//#                 sd.roster.logoff(caption);
+//#                 break;
+//#            case TASK_ACTION_RECONNECT:
+//#                 caption+=SR.MS_RECONNECT;
+//#                 taskType=TASK_TYPE_TIMER;
+//#                 initTime=System.currentTimeMillis();
+//#                 startTask();
+//#                 sd.roster.connectionTerminated(new Exception(caption));
+//#                 break;
+//#         }
+//#endif
     }
     
     public void showAlert(int type) {
@@ -202,61 +203,64 @@ public class AutoTask
 
     protected void paint(Graphics g) {
         if (isShowing) {
-            String caption=SR.MS_AUTOTASKS+": ";
-            
-            switch (taskAction) {
-                case TASK_ACTION_QUIT:
-                    caption=SR.MS_AUTOTASK_QUIT_BOMBUSMOD;
-                    break;
-                case TASK_ACTION_CONFERENCE_QUIT:
-                    caption=SR.MS_AUTOTASK_QUIT_CONFERENCES;
-                    break;
-                case TASK_ACTION_LOGOFF:
-                    caption=SR.MS_AUTOTASK_LOGOFF;
-                    break;
-                case TASK_ACTION_RECONNECT:
-                    caption=SR.MS_RECONNECT;
-                    break;
-            }
-            caption+=" - "+(WAITTIME-value);
-            
-            int width=getWidth();
-            int height=getHeight();
-
-            int border=10;
-            int y=height/2;
-            int xt=(width/2);
-            
-            int itemWidth=width-(border*2);
-            int itemHeight=5;
-            
-            int filled=(itemWidth*value)/WAITTIME;
-
-            int oldColor=g.getColor();
-            g.setColor(0xffffff);
-            
-            g.fillRect(0,0, width, height); //fill back
-            
-            g.fillRect(border, y, itemWidth, itemHeight);
-            g.setColor(0x668866);
-            g.drawRect(border, y, itemWidth, itemHeight);
-            g.fillRect(border, y, filled, itemHeight);
-            
-            int yt=y-f.getHeight();
-            g.setColor(0x668866);
-            g.setFont(f);
-            g.drawString(caption, xt, yt, Graphics.TOP|Graphics.HCENTER);
-            
-            g.setColor(oldColor);
+//#if AUTOTASK
+//#             String caption=SR.MS_AUTOTASKS+": ";
+//#             
+//#             switch (taskAction) {
+//#                 case TASK_ACTION_QUIT:
+//#                     caption=SR.MS_AUTOTASK_QUIT_BOMBUSMOD;
+//#                     break;
+//#                 case TASK_ACTION_CONFERENCE_QUIT:
+//#                     caption=SR.MS_AUTOTASK_QUIT_CONFERENCES;
+//#                     break;
+//#                 case TASK_ACTION_LOGOFF:
+//#                     caption=SR.MS_AUTOTASK_LOGOFF;
+//#                     break;
+//#                 case TASK_ACTION_RECONNECT:
+//#                     caption=SR.MS_RECONNECT;
+//#                     break;
+//#             }
+//#             caption+=" - "+(WAITTIME-value);
+//#             
+//#             int width=getWidth();
+//#             int height=getHeight();
+//# 
+//#             int border=10;
+//#             int y=height/2;
+//#             int xt=(width/2);
+//#             
+//#             int itemWidth=width-(border*2);
+//#             int itemHeight=5;
+//#             
+//#             int filled=(itemWidth*value)/WAITTIME;
+//# 
+//#             int oldColor=g.getColor();
+//#             g.setColor(0xffffff);
+//#             
+//#             g.fillRect(0,0, width, height); //fill back
+//#             
+//#             g.fillRect(border, y, itemWidth, itemHeight);
+//#             g.setColor(0x668866);
+//#             g.drawRect(border, y, itemWidth, itemHeight);
+//#             g.fillRect(border, y, filled, itemHeight);
+//#             
+//#             int yt=y-f.getHeight();
+//#             g.setColor(0x668866);
+//#             g.setFont(f);
+//#             g.drawString(caption, xt, yt, Graphics.TOP|Graphics.HCENTER);
+//#             
+//#             g.setColor(oldColor);
+//#endif
         }
     }
     
     public void destroyView()	{
+        value=0;
         this.removeCommand(cmdOk);
         this.removeCommand(cmdCancel);
         
         if (display==null) {
-            display.setCurrent(StaticData.getInstance().roster);
+            display.setCurrent(parentView);
         } else {
             display.setCurrent(next);
         }

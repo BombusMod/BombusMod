@@ -17,11 +17,11 @@ coccinella	Coccinella
 mcabber	mcabber
 apple.com/ichat	iChatAgent
 jabbim	Jabbim
-bombus.pl	Bombus(PL)
+bombus.pl	BombusMod(PL)
 home,дом	Home
 work,office	Work
 Just Another Jabber Client,jajc	JAJC
-Ajabb,yandex.ru/caps	Я.Онлайн
-psi-dev.googlecode.com/caps	Psi+
-jimm.net.ru/caps	Jimm aspro
-pyicqt.googlecode.com//protocol/caps	PyICQ-t
+Ajabb,yandex.ru	Я.Онлайн
+psi-dev.googlecode.com	Psi+
+jimm.net.ru	Jimm aspro
+pyicqt.googlecode.com	PyICQ-t

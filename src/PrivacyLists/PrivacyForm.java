@@ -66,7 +66,7 @@ public class PrivacyForm
 
     TextInput textValue;
     
-    int selectedAction=-1;
+    int typeIndex;
     String tValue="";
 
     /** Creates a new instance of PrivacyForm */
@@ -77,8 +77,6 @@ public class PrivacyForm
         this.item=item;
         targetList=plist;
         
-        selectedAction=(selectedAction<0)?item.action:choiceAction.getSelectedIndex();
-        
         tValue=(textValue!=null)?textValue.getValue():item.value;
         
         itemsList=null;
@@ -88,7 +86,7 @@ public class PrivacyForm
         for(int i=0; i<PrivacyItem.actions.length; i++){
             choiceAction.append(PrivacyItem.actions[i]);
         }
-        choiceAction.setSelectedIndex(selectedAction);
+        choiceAction.setSelectedIndex(item.action);
         itemsList.addElement(choiceAction);
 
         choiceType=new DropChoiceBox(display, SR.MS_PRIVACY_TYPE);
@@ -112,6 +110,13 @@ public class PrivacyForm
         moveCursorTo(getNextSelectableRef(-1));
         attachDisplay(display);
         this.parentView=pView;
+    }
+    
+    protected void beginPaint(){
+        if (typeIndex!=choiceType.getSelectedIndex()) {
+            typeIndex=choiceType.getSelectedIndex();       
+            switchType();
+        }
     }
     
     private void switchType() {
@@ -151,17 +156,7 @@ public class PrivacyForm
                 break;
         }
     }
-    
-    public void keyDwn() {
-        super.keyDwn();
-        switchType();
-    }
-    
-    public void keyUp() {
-        super.keyUp();
-        switchType();
-    }
-    
+        
     public void cmdOk() {
         try {
             int type=choiceType.getSelectedIndex();

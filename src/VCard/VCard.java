@@ -279,9 +279,9 @@ public class VCard {
 //#             nickDate.append(userName);
 //#         }
 //#else
-         if (vcard.getNickName()!=null) {
-             nickDate.append(vcard.getNickName());
-         } else nickDate.append(vcard.getJid());
+         if (getNickName()!=null) {
+             nickDate.append(getNickName());
+         } else nickDate.append(getJid());
 //#endif
         nickDate.append("_").append(Time.localDate());
         return nickDate.toString();

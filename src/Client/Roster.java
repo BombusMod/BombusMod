@@ -27,10 +27,6 @@
 
 package Client;
 
-//#ifdef AUTOTASK
-//# import AutoTasks.AutoTask;
-//#endif
-
 import Account.Account;
 import Account.AccountSelect;
 import Alerts.AlertCustomize;
@@ -203,11 +199,7 @@ public class Roster
     private static int blockNotifyEvent=-111;
     
     private int blState=Integer.MAX_VALUE;
-    
-//#ifdef AUTOTASK
-//#     private AutoTask at=sd.autoTask;
-//#endif
-    
+        
     private final static int SOUND_FOR_ME=500;
     private final static int SOUND_FOR_CONFERENCE=800;
     private final static int SOUND_MESSAGE=1000;
