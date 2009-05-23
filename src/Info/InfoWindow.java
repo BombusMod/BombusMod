@@ -90,7 +90,9 @@ public class InfoWindow
         itemsList.addElement(new SpacerItem(10));
         
         StringBuffer memInfo=new StringBuffer(SR.MS_FREE);
+//#ifndef WSYSTEMGC
         System.gc();
+//#endif
         memInfo.append(Runtime.getRuntime().freeMemory()>>10)
                .append("\n")
                .append(SR.MS_TOTAL)

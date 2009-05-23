@@ -265,8 +265,11 @@ public class Config {
 //#ifdef SMILES
                 if (smiles) SmilesIcons.getInstance();
 //#endif
+
+//#ifndef WSYSTEMGC
                 System.gc();
                 try { Thread.sleep(50); } catch (InterruptedException e){}
+//#endif
                 
                 allowMinimize=true;
                 greenKeyCode=-10;
