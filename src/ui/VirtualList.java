@@ -952,8 +952,10 @@ public abstract class VirtualList
             keyDwn();    
             break; 
         case KEY_STAR:
+//#ifndef WSYSTEMGC
             System.gc();
-            try { Thread.sleep(50); } catch (InterruptedException ex) { }
+            try { Thread.sleep(50); } catch (InterruptedException e){}
+//#endif
 //#ifdef POPUPS
             StringBuffer mem = new StringBuffer();
             mem.append("Time: ")
