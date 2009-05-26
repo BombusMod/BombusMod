@@ -1212,7 +1212,7 @@ public class Roster
             return;
         }
         //
-        theStream.enableRosterNotify(true);
+        //theStream.enableRosterNotify(true);  //<-voffk>
         rpercent=50;
 
         if (sd.account.isMucOnly()) {
@@ -1293,7 +1293,7 @@ public class Roster
                 } // id!=null
                 if ( type.equals( "result" ) ) {
                     if (id.equals("getros")){
-                        theStream.enableRosterNotify(false);
+                        //theStream.enableRosterNotify(false); //<-voffk>
 
                         processRoster(data);
 

@@ -51,8 +51,8 @@ public class JabberStream extends XmppParser implements Runnable {
     
     private JabberDataBlockDispatcher dispatcher;
 
-    private boolean rosterNotify;
-    
+    //private boolean rosterNotify; //<-voffk>
+
     private String server; // for ping
     
     public boolean pingSent;
@@ -63,7 +63,9 @@ public class JabberStream extends XmppParser implements Runnable {
     
     private String sessionId;
     
-    public void enableRosterNotify(boolean en){ rosterNotify=en; }
+    //public void enableRosterNotify(boolean en){ rosterNotify=en; } //<-voffk>
+    
+    private static boolean isSony=Config.getPlatformName().startsWith("SonyE"); //<+voffk>
     
     /**
      * Constructor. Connects to the server and sends the jabber welcome message.
@@ -127,7 +129,7 @@ public class JabberStream extends XmppParser implements Runnable {
             if (name.equals( "stream:stream" ) ) {
                 dispatcher.halt();
                 iostream.close();
-//                iostream=null;
+                if (/*Info.Version.S60_3_x==false*/!Config.getPlatformName().startsWith("Nokia")) iostream=null; //<+voffk>
                 throw new XMLException("Normal stream shutdown");
             }
             return;
@@ -139,7 +141,7 @@ public class JabberStream extends XmppParser implements Runnable {
 
                 dispatcher.halt();
                 iostream.close();
-//                iostream=null;
+                if (/*Info.Version.S60_3_x==false*/!Config.getPlatformName().startsWith("Nokia")) iostream=null; //<+voffk>
                 throw new XMLException("Stream error: "+xe.toString());
                 
             }
@@ -171,23 +173,36 @@ public class JabberStream extends XmppParser implements Runnable {
     public void run() {
         try {
             XMLParser parser = new XMLParser( this );
+
             byte cbuf[]=new byte[512]; 
+
             while (true) { 
-                int length=/*0;
-                if (iostream!=null)
-                    length=*/iostream.read(cbuf);
+                int length=iostream.read(cbuf);
+
                 if (length==0) {
                     try { Thread.sleep(100); } catch (Exception e) { }; 
                     continue; 
                 }
-                parser.parse(cbuf, length);           
-            } 
+
+                parser.parse(cbuf, length);
+                if (isSony) //<+voffk: preventing the allocation of large heap on some SE>
+                    try {
+                        Thread.sleep(170);
+                    } catch (InterruptedException e) {
+//#if DEBUG
+                        System.out.print("InterruptedException in JabberStream.run()");
+                        e.printStackTrace();
+//#endif
+                    }
+            }
+            
+            //dispatcher.broadcastTerminatedConnection( null );
         } catch( Exception e ) {
-             System.out.println("Exception in parser:");
-             e.printStackTrace();
-             dispatcher.broadcastTerminatedConnection(e);
-         }
-     }
+            System.out.println("Exception in parser:");
+            e.printStackTrace();
+            dispatcher.broadcastTerminatedConnection(e);
+        };
+    }
     
     /**
      * Method to close the connection to the server and tell the listener
@@ -211,7 +226,7 @@ public class JabberStream extends XmppParser implements Runnable {
         } catch( IOException e ) { }
         dispatcher.halt();
         iostream.close();
-//        iostream=null;
+        if (/*Info.Version.S60_3_x==false*/!Config.getPlatformName().startsWith("Nokia")) iostream=null; //<+voffk>
     }
     
     /**
