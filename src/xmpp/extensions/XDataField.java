@@ -28,6 +28,10 @@ public class XDataField {
     boolean hidden;
 
     Item formItem;
+    int formIndex=-1;
+    int mediaIndex=-1;
+    String mediaUri;
+    
     
     Item media;
     
@@ -109,16 +113,20 @@ public class XDataField {
 
     private Item extractMedia(JabberDataBlock field) {
         
-        JabberDataBlock m=field.findNamespace("media", "urn:xmpp:tmp:media-element");
+        try {
+            JabberDataBlock m=field.findNamespace("media", "urn:xmpp:media-element");
         if (m==null) return null;
 
-        JabberDataBlock data=m.findNamespace("data", "urn:xmpp:tmp:data-element");
+            for (Enumeration e=m.getChildBlocks().elements(); e.hasMoreElements(); ) {
+                JabberDataBlock u=(JabberDataBlock) e.nextElement();
+                if (u.getTagName().equals("uri")) {
+                    if (!u.getTypeAttribute().startsWith("image")) continue;
+                    mediaUri=u.getText();
+                    return new StringItem(null, "[Loading Image]");
+                }
+            }
         
-        try { 
-            if (!data.getTypeAttribute().startsWith("image")) return null;
-            byte[] bytes=Strconv.fromBase64(data.getText());
-            Image img=Image.createImage(bytes, 0, bytes.length);
-            return new ImageItem(null, img, Item.LAYOUT_CENTER, null);
+
         } catch (Exception e) {}
         return null;
     }

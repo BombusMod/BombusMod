@@ -13,6 +13,7 @@ import com.alsutton.jabber.JabberDataBlock;
 import java.util.*;
 import javax.microedition.lcdui.*;
 import locale.SR;
+import util.Strconv;
 
 /**
  *
@@ -32,6 +33,7 @@ public class XDataForm implements CommandListener {
     private Command cmdCancel=new Command(SR.MS_BACK, Command.BACK, 99);
     
     Vector items;
+    Form f;
     /** Creates a new instance of XDataForm */
     public XDataForm(Display display, JabberDataBlock form, NotifyListener notifyListener) {
         this.display=display;
@@ -39,7 +41,7 @@ public class XDataForm implements CommandListener {
         this.notifyListener=notifyListener;
 
         String title=form.getChildBlockText("title");
-        Form f=new Form(title);
+        f=new Form(title);
 
         items=null;
         items=new Vector();
@@ -62,8 +64,10 @@ public class XDataForm implements CommandListener {
             
             if (field.hidden) continue;
             
-            if (field.media!=null) f.append(field.media);
-            f.append(field.formItem);
+            if (field.media!=null)
+                field.mediaIndex = f.append(field.media);
+            field.formIndex=f.append(field.formItem);
+
         }
         
         f.setCommandListener(this);
@@ -71,6 +75,31 @@ public class XDataForm implements CommandListener {
         f.addCommand(cmdCancel);
         display.setCurrent(f);
     }
+    public void fetchMediaElements(Vector bobCache) {
+        //TODO: fetch external http bobs and non-cached in-band bobs
+        for (int i=0; i<items.size(); i++) {
+            XDataField field=(XDataField)items.elementAt(i);
+            if (field.mediaUri==null) continue;
+            if (!(field.media instanceof StringItem)) continue;
+
+            if (field.mediaUri.startsWith("cid:")) {
+                String cid=field.mediaUri.substring(4);
+                if (bobCache==null) continue; //TODO: in-band bob request
+
+                for (int bob=0; bob<bobCache.size(); bob++) {
+                    JabberDataBlock data=(JabberDataBlock) bobCache.elementAt(bob);
+                    if (data.isJabberNameSpace("urn:xmpp:bob") && cid.equals(data.getAttribute("cid"))) {
+                        byte[] bytes=Strconv.fromBase64(data.getText());
+                        Image img=Image.createImage(bytes, 0, bytes.length);
+                        f.delete(field.mediaIndex); // Workaround for SE
+                        f.insert(field.mediaIndex, new ImageItem(null, img, Item.LAYOUT_CENTER, null));
+                    }
+                }
+            }
+        }
+    }
+
+
 
     public void commandAction(Command command, Displayable displayable) {
         if (command==cmdOk) {

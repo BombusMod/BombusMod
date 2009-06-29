@@ -601,8 +601,9 @@ public class Roster
     public void reEnumRoster(){
         if (reEnumerator==null) reEnumerator=new ReEnumerator();
         reEnumerator.queueEnum();
-        
-        systemGC();
+//#ifndef WSYSTEMGC
+        System.gc(); // issue 87 workaround
+//#endif
     }
     
     

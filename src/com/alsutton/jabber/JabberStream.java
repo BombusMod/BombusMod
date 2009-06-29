@@ -185,16 +185,7 @@ public class JabberStream extends XmppParser implements Runnable {
                 }
 
                 parser.parse(cbuf, length);
-                if (isSony) //<+voffk: preventing the allocation of large heap on some SE>
-                    try {
-                        Thread.sleep(170);
-                    } catch (InterruptedException e) {
-//#if DEBUG
-                        System.out.print("InterruptedException in JabberStream.run()");
-                        e.printStackTrace();
-//#endif
                     }
-            }
             
             //dispatcher.broadcastTerminatedConnection( null );
         } catch( Exception e ) {

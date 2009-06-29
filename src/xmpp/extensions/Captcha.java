@@ -34,7 +34,7 @@ public class Captcha implements JabberBlockListener, XDataForm.NotifyListener{
     public int blockArrived(JabberDataBlock data) {
         if (data instanceof Message) {
      
-            JabberDataBlock challenge=data.findNamespace("challenge", "urn:xmpp:tmp:challenge");
+            JabberDataBlock challenge=data.findNamespace("captcha", "urn:xmpp:captcha");
             if (challenge==null) return BLOCK_REJECTED;
 
             JabberDataBlock xdata=challenge.findNamespace("x","jabber:x:data");
@@ -42,7 +42,7 @@ public class Captcha implements JabberBlockListener, XDataForm.NotifyListener{
             from=data.getAttribute("from");
             id=data.getAttribute("id");
 
-            new XDataForm(display, xdata, this);
+            new XDataForm(display, xdata, this).fetchMediaElements(data.getChildBlocks());
 
             return BLOCK_PROCESSED;
         }
@@ -60,7 +60,7 @@ public class Captcha implements JabberBlockListener, XDataForm.NotifyListener{
 
     public void XDataFormSubmit(JabberDataBlock form) {
         JabberDataBlock reply=new Iq(from, Iq.TYPE_SET, id);
-        reply.addChildNs("challenge", "urn:xmpp:tmp:challenge").addChild(form);
+        reply.addChildNs("captcha", "urn:xmpp:captcha").addChild(form);
         
         StaticData.getInstance().roster.theStream.send(reply);
     }
