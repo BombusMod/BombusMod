@@ -70,10 +70,11 @@ public class PopUp {
     private RosterIcons ri;
     
     synchronized public void addPopup(int type, String contact, String message){
-        if (message!=null)
+        if (message!=null) {
             //popUps.addElement(new PopUpElement(type, contact, StringUtils.parseMessage(message, width-border-padding, height-border-padding, false, font)));
             font=FontCache.getFont(false, FontCache.baloon); // issue 88
             popUps.addElement(new PopUpElement(type, contact, StringUtils.parseMessage(message, width-border-padding, font)));
+        }
 //#ifdef DEBUG
 //# //	System.out.println("added message to array = "+message);
 //#endif
