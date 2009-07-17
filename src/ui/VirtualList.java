@@ -950,9 +950,9 @@ public abstract class VirtualList
             break;
         case KEY_NUM8:
             keyDwn();    
-            break; 
-        case KEY_STAR:
+            break;
 //#ifndef WSYSTEMGC
+        case KEY_STAR:
             System.gc();
             try { Thread.sleep(50); } catch (InterruptedException e){}
 //#endif

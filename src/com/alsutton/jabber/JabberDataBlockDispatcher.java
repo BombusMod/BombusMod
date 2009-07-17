@@ -25,9 +25,6 @@
 */
 
 package com.alsutton.jabber;
-//#ifdef CONSOLE
-//# import Console.StanzasList;
-//#endif
 import com.alsutton.jabber.datablocks.Iq;
 import java.util.*;
 import xmpp.XmppError;

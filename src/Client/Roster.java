@@ -986,7 +986,7 @@ public class Roster
          }
     }
 //#endif
-    public void sendPresence(String to, String type, JabberDataBlock child, boolean conference) {
+    public void sendPresence(String to, String type, JabberDataBlock child, boolean conference) { //voffk: todo: check it!
         JabberDataBlock presence=new Presence(to, type);
        
         if (child!=null) {
@@ -1120,7 +1120,7 @@ public class Roster
     }
     
 //#if CHANGE_TRANSPORT
-//#     public void contactChangeTransport(String srcTransport, String dstTransport){ //<voffk>
+//#     public void contactChangeTransport(String srcTransport, String dstTransport){ //voffk
 //# 	setQuerySign(true);
 //#         for (Enumeration e=hContacts.elements(); e.hasMoreElements(); ) {
 //# 	    Contact k=(Contact) e.nextElement();
@@ -1213,7 +1213,7 @@ public class Roster
             return;
         }
         //
-        //theStream.enableRosterNotify(true);  //<-voffk>
+        //theStream.enableRosterNotify(true); //voffk
         rpercent=50;
 
         if (sd.account.isMucOnly()) {
@@ -1294,7 +1294,7 @@ public class Roster
                 } // id!=null
                 if ( type.equals( "result" ) ) {
                     if (id.equals("getros")){
-                        //theStream.enableRosterNotify(false); //<-voffk>
+                        //theStream.enableRosterNotify(false); //voffk
 
                         processRoster(data);
 

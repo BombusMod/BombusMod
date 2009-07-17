@@ -51,7 +51,7 @@ public class JabberStream extends XmppParser implements Runnable {
     
     private JabberDataBlockDispatcher dispatcher;
 
-    //private boolean rosterNotify; //<-voffk>
+    //private boolean rosterNotify; //voffk
 
     private String server; // for ping
     
@@ -63,15 +63,12 @@ public class JabberStream extends XmppParser implements Runnable {
     
     private String sessionId;
     
-    //public void enableRosterNotify(boolean en){ rosterNotify=en; } //<-voffk>
-    
-    private static boolean isSony=Config.getPlatformName().startsWith("SonyE"); //<+voffk>
+    //public void enableRosterNotify(boolean en){ rosterNotify=en; } //voffk
     
     /**
      * Constructor. Connects to the server and sends the jabber welcome message.
      *
      */
-    
     public JabberStream( String server, String hostAddr, String proxy) throws IOException {
         this.server=server;
 
@@ -129,7 +126,8 @@ public class JabberStream extends XmppParser implements Runnable {
             if (name.equals( "stream:stream" ) ) {
                 dispatcher.halt();
                 iostream.close();
-                if (/*Info.Version.S60_3_x==false*/!Config.getPlatformName().startsWith("Nokia")) iostream=null; //<+voffk>
+                if (Config.getInstance().phoneManufacturer!=Config.NOKIA && Config.getInstance().phoneManufacturer!=Config.NOKIA_9XXX)
+                    iostream=null;
                 throw new XMLException("Normal stream shutdown");
             }
             return;
@@ -141,7 +139,8 @@ public class JabberStream extends XmppParser implements Runnable {
 
                 dispatcher.halt();
                 iostream.close();
-                if (/*Info.Version.S60_3_x==false*/!Config.getPlatformName().startsWith("Nokia")) iostream=null; //<+voffk>
+                if (Config.getInstance().phoneManufacturer!=Config.NOKIA && Config.getInstance().phoneManufacturer!=Config.NOKIA_9XXX)
+                    iostream=null;
                 throw new XMLException("Stream error: "+xe.toString());
                 
             }
@@ -169,23 +168,22 @@ public class JabberStream extends XmppParser implements Runnable {
      * The threads run method. Handles the parsing of incomming data in its
      * own thread.
      */
-    
     public void run() {
         try {
             XMLParser parser = new XMLParser( this );
-
-            byte cbuf[]=new byte[512]; 
-
-            while (true) { 
+            
+            byte cbuf[]=new byte[512];
+            
+            while (true) {
                 int length=iostream.read(cbuf);
-
+                
                 if (length==0) {
-                    try { Thread.sleep(100); } catch (Exception e) { }; 
+                    try { Thread.sleep(100); } catch (Exception e) {}; 
                     continue; 
                 }
 
                 parser.parse(cbuf, length);
-                    }
+            }
             
             //dispatcher.broadcastTerminatedConnection( null );
         } catch( Exception e ) {
@@ -217,7 +215,8 @@ public class JabberStream extends XmppParser implements Runnable {
         } catch( IOException e ) { }
         dispatcher.halt();
         iostream.close();
-        if (/*Info.Version.S60_3_x==false*/!Config.getPlatformName().startsWith("Nokia")) iostream=null; //<+voffk>
+        if (Config.getInstance().phoneManufacturer!=Config.NOKIA && Config.getInstance().phoneManufacturer!=Config.NOKIA_9XXX)
+            iostream=null;
     }
     
     /**

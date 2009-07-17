@@ -32,10 +32,10 @@ public class XDataField {
     int mediaIndex=-1;
     String mediaUri;
     
-    
     Item media;
     
     private Vector optionsList;
+    
     
     /** Creates a new instance of XDataField */
     public XDataField(JabberDataBlock field) {
@@ -126,7 +126,6 @@ public class XDataField {
                 }
             }
         
-
         } catch (Exception e) {}
         return null;
     }
