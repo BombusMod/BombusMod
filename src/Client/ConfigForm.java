@@ -348,7 +348,7 @@ public class ConfigForm
 //#         fieldAwayDelay=new NumberInput(display, SR.MS_AWAY_PERIOD, Integer.toString(cf.autoAwayDelay), 1, 60);
 //#         itemsList.addElement(fieldAwayDelay);
 //# 
-//#         awayStatus=new CheckBox(SR.MS_AUTOSTATUS_MESSAGE, cf.setAutoStatusMessage);
+//#         awayStatus=new CheckBox(SR.MS_USE_MY_STATUS_MESSAGES, cf.useMyStatusMessages);
 //#         itemsList.addElement(awayStatus);
 //#endif
 
@@ -494,7 +494,7 @@ public class ConfigForm
             cf.lang=(String) langs[0].elementAt( langFiles.getSelectedIndex() );
         }
 //#ifdef AUTOSTATUS
-//#             cf.setAutoStatusMessage=awayStatus.getValue();
+//#             cf.useMyStatusMessages=awayStatus.getValue();
 //#             cf.autoAwayDelay=Integer.parseInt(fieldAwayDelay.getValue());
 //#             cf.autoAwayType=autoAwayType.getSelectedIndex();
 //#endif

@@ -368,7 +368,7 @@ Change nickname	Сменить ник
 Message collapse limit	Сворачивать сообщения, если больше(символов)
 No client info	Невозможно получить информацию
 Delete all messages	Удалить все сообщения
-Join marked (auto)	Автоподключаться
+Join marked (auto)	Подключ. к отмеч. для автовхода
 Statistics	Статистика
 Started: 	Запуск: 
 Traffic stats: 	Статистика: 
@@ -447,7 +447,7 @@ autoScroll	автопрокрутка списка сообщений
 emulate tabs	(4/6) быстрое переключение между окнами сообщений
 show balloons	показывать подсказки(баллуны)
 popUps	всплывающие окна
-AutoStatus Message	своё сообщение автостатуса
+use my status messages	использовать свои статусные сообщения
 Memory:	Память:
 Free: 	Своб.: 
 Total: 	Всего: 

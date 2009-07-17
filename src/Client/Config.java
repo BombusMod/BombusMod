@@ -106,7 +106,7 @@ public class Config {
 //#     
 //#     public int autoAwayType=0;
 //#     public int autoAwayDelay=5; //5 minutes
-//#     public boolean setAutoStatusMessage=true;
+//#     public boolean useMyStatusMessages=true;
 //#endif
     
 //#ifdef HISTORY
@@ -382,7 +382,7 @@ public class Config {
             inputStream.readBoolean();
 //#endif
 //#ifdef AUTOSTATUS
-//#             setAutoStatusMessage=inputStream.readBoolean();
+//#             useMyStatusMessages=inputStream.readBoolean();
 //#             autoAwayType=inputStream.readInt();
 //#else
             inputStream.readBoolean();
@@ -624,7 +624,7 @@ public class Config {
             outputStream.writeBoolean(false);
 //#endif
 //#ifdef AUTOSTATUS
-//#             outputStream.writeBoolean(setAutoStatusMessage);
+//#             outputStream.writeBoolean(useMyStatusMessages);
 //#             outputStream.writeInt(autoAwayType);
 //#else
             outputStream.writeBoolean(false);

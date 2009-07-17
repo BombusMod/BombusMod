@@ -431,7 +431,7 @@ public class SR {
     public static String MS_MESSAGE_COLLAPSE_LIMIT = loadString( "Message collapse limit" );
     public static String MS_NO_CLIENT_INFO = loadString( "No client info" );
     public static String MS_CLEAN_ALL_MESSAGES = loadString( "Delete all messages" );
-    public static String MS_DO_AUTOJOIN = loadString( "Join marked (auto)" ); //temporary
+    public static String MS_DO_AUTOJOIN = loadString( "Join marked (auto)" );
     
     public static String MS_STATS = loadString( "Statistics" );
 
@@ -544,7 +544,7 @@ public class SR {
     public static String MS_EMULATE_TABS=loadString("emulate tabs");
     public static String MS_SHOW_BALLONS=loadString("show balloons");
     public static String MS_POPUPS=loadString("popUps");
-    public static String MS_AUTOSTATUS_MESSAGE=loadString("AutoStatus Message");
+    public static String MS_USE_MY_STATUS_MESSAGES=loadString("use my status messages");
 
     public static String MS_MEMORY=loadString("Memory:");
     public static String MS_FREE = loadString("Free: ");

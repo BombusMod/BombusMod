@@ -2237,10 +2237,10 @@ public class Roster
 //#             if (cf.autoAwayType==Config.AWAY_LOCK) {
 //#                 if (!autoAway) {
 //#                     autoAway=true;
-//#                     if (cf.setAutoStatusMessage) {
-//#                         sendPresence(Presence.PRESENCE_AWAY, "Auto Status on KeyLock since %t");
-//#                     } else {
+//#                     if (cf.useMyStatusMessages) {
 //#                         sendPresence(Presence.PRESENCE_AWAY, null);
+//#                     } else {
+//#                         sendPresence(Presence.PRESENCE_AWAY, "Auto Status on KeyLock since %t");
 //#                     }
 //#                 }
 //#             }
@@ -2672,10 +2672,10 @@ public class Roster
 //#             oldStatus=myStatus;
 //#             if (myStatus==0 || myStatus==1) {
 //#                 autoAway=true;
-//#                 if (cf.setAutoStatusMessage) {
-//#                     sendPresence(Presence.PRESENCE_AWAY, SR.MS_AUTO_AWAY);
-//#                 } else {
+//#                 if (cf.useMyStatusMessages) {
 //#                     sendPresence(Presence.PRESENCE_AWAY, null);
+//#                 } else {
+//#                     sendPresence(Presence.PRESENCE_AWAY, SR.MS_AUTO_AWAY);
 //#                 }
 //#             }
 //#         }
@@ -2684,10 +2684,10 @@ public class Roster
 //#     public void setAutoXa() {
 //#         if (autoAway && !autoXa) {
 //#             autoXa=true;
-//#             if (cf.setAutoStatusMessage) {
-//#                 sendPresence(Presence.PRESENCE_XA, SR.MS_AUTO_XA);
-//#             } else {
+//#             if (cf.useMyStatusMessages) {
 //#                 sendPresence(Presence.PRESENCE_XA, null);
+//#             } else {
+//#                 sendPresence(Presence.PRESENCE_XA, SR.MS_AUTO_XA);
 //#             }
 //#         }
 //#     }
@@ -2703,10 +2703,10 @@ public class Roster
 //#         }
 //#         if (status!=Presence.PRESENCE_ONLINE && myStatus==Presence.PRESENCE_ONLINE && !autoAway) {
 //#             autoAway=true;
-//#             if (cf.setAutoStatusMessage) {
-//#                 sendPresence(Presence.PRESENCE_AWAY, "Auto Status on KeyLock since %t");
-//#             } else {
+//#             if (cf.useMyStatusMessages) {
 //#                 sendPresence(Presence.PRESENCE_AWAY, null);
+//#             } else {
+//#                 sendPresence(Presence.PRESENCE_AWAY, "Auto Status on KeyLock since %t");
 //#             }
 //#         }
 //#     }

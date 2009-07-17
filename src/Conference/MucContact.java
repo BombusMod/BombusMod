@@ -189,15 +189,18 @@ public class MucContact extends Contact {
                 
                 b.append(SR.MS_HAS_JOINED_THE_CHANNEL_AS);
                 
-                if (affiliationCode!=AFFILIATION_MEMBER) b.append(getRoleLocale(roleCode));
-
-                 if (!affiliation.equals("none")) {
-                    if (roleCode!=ROLE_PARTICIPANT) b.append(SR.MS_AND);
-  
+                if (affiliationCode==AFFILIATION_MEMBER && roleCode==ROLE_PARTICIPANT) {
                     b.append(getAffiliationLocale(affiliationCode));
+                } else {
+                    b.append(getRoleLocale(roleCode));
+                    if (affiliationCode!=AFFILIATION_NONE) {
+                        b.append(SR.MS_AND)
+                         .append(getAffiliationLocale(affiliationCode));
+                    }
                 }
                 
                 if (statusText.length()>0) b.append(" (").append(statusText).append(")");
+                
             } else {
                 b.append(SR.MS_IS_NOW);
                 

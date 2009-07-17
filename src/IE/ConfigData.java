@@ -115,7 +115,7 @@ public class ConfigData {
         array.addElement(new keyValue(notifySound, (cf.notifySound)?"1":"0"));
 //#ifdef AUTOSTATUS
 //#         array.addElement(new keyValue(autoAwayDelay, Integer.toString(cf.autoAwayDelay)));
-//#         array.addElement(new keyValue(setAutoStatusMessage, (cf.setAutoStatusMessage)?"1":"0"));
+//#         array.addElement(new keyValue(useMyStatusMessages, (cf.useMyStatusMessages)?"1":"0"));
 //#         array.addElement(new keyValue(autoAwayType, Integer.toString(cf.autoAwayType)));
 //#endif
         array.addElement(new keyValue(autoScroll, (cf.autoScroll)?"1":"0"));
@@ -257,7 +257,7 @@ public class ConfigData {
         cf.lightState=cf.getBooleanProperty(getValue(lightState),true);
 //#ifdef AUTOSTATUS
 //#         cf.autoAwayDelay=cf.getIntProperty(getValue(autoAwayDelay),5);
-//#         cf.setAutoStatusMessage=cf.getBooleanProperty(getValue(setAutoStatusMessage),false);
+//#         cf.useMyStatusMessages=cf.getBooleanProperty(getValue(useMyStatusMessages),false);
 //#         cf.autoAwayType=cf.getIntProperty(getValue(autoAwayType),0);
 //#endif
         cf.autoScroll=cf.getBooleanProperty(getValue(autoScroll),true);
@@ -428,7 +428,7 @@ public class ConfigData {
     private final static String notifySound="notifySound";
 //#ifdef AUTOSTATUS
 //#     private final static String autoAwayDelay="autoAwayDelay";
-//#     private final static String setAutoStatusMessage="setAutoStatusMessage";
+//#     private final static String useMyStatusMessages="setAutoStatusMessage";
 //#     private final static String autoAwayType="autoAwayType";
 //#endif
     private final static String autoScroll="autoScroll";

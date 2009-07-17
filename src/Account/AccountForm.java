@@ -32,7 +32,7 @@ import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
-import ui.SplashScreen;
+import midlet.BombusMod;
 import ui.VirtualList;
 import ui.controls.AlertBox;
 import ui.controls.form.CheckBox;
@@ -264,7 +264,7 @@ public class AccountForm
     public void destroyView(){
         if (newaccount && doConnect) {
             new AlertBox(SR.MS_CONNECT_TO, account.getBareJid()+"?", display, StaticData.getInstance().roster) {
-                public void yes() { startLogin(true);}
+                public void yes() { startLogin(true); }
                 public void no() { startLogin(false); }
             };
         } else
@@ -274,7 +274,7 @@ public class AccountForm
     private void startLogin(boolean login){
         Config.getInstance().accountIndex=accountSelect.accountList.size()-1;
         Account.loadAccount(login, Config.getInstance().accountIndex);
-        SplashScreen.getInstance(display).close();
+        BombusMod.getInstance().s.close();
     }
     
     protected void keyRepeated(int keyCode) {

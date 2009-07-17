@@ -57,7 +57,7 @@ public class BombusMod extends MIDlet implements Runnable{
     private boolean isMinimized;
     StaticData sd=StaticData.getInstance();
     ColorTheme ct=ColorTheme.getInstance();
-    SplashScreen s;
+    public SplashScreen s;
 
     public static Image splash;
     
