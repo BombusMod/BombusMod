@@ -249,14 +249,15 @@ public class Bookmarks
         } catch (Exception e) {/* IndexOutOfBounds */}
     }
 
-    public void userKeyPressed(int keyCode) {
-        super.userKeyPressed(keyCode);
-
+    public void keyPressed(int keyCode) {
+        super.keyPressed(keyCode);
         switch (keyCode) {
             case KEY_NUM4:
                 pageLeft(); break;
             case KEY_NUM6:
                 pageRight(); break;
+            case KEY_POUND:
+                new ServiceDiscovery(display, ((BookmarkItem)getFocusedObject()).getJid(), null, false);
         }
     }
     

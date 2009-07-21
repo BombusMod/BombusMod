@@ -154,8 +154,8 @@ public class Contact extends IconTextElement{
     
     StaticData sd=StaticData.getInstance();
     
-    private Font secondFont;
-    private int secondFontHeight;
+    //private Font secondFont; //Issue 88
+    //private int secondFontHeight;
     
     private int fontHeight;
     int ilHeight;
@@ -173,8 +173,8 @@ public class Contact extends IconTextElement{
         ilHeight=il.getHeight();
         maxImgHeight=ilHeight;
         
-        secondFont=FontCache.getFont(false, FontCache.baloon);
-        secondFontHeight=secondFont.getHeight();
+        //secondFont=FontCache.getFont(false, FontCache.baloon);
+        //secondFontHeight=secondFont.getHeight();
         fontHeight=getFont().getHeight();
     }
 
@@ -511,7 +511,7 @@ public class Contact extends IconTextElement{
     public int getSecondLength() {
         if (getSecondString()==null) return 0;
         if (getSecondString().equals("")) return 0;
-        return secondFont.stringWidth(getSecondString());
+        return FontCache.getFont(false, FontCache.baloon).stringWidth(getSecondString());
     }
 
     public int getFirstLength() {
@@ -580,7 +580,7 @@ public class Contact extends IconTextElement{
     public int getVHeight(){ 
         int itemVHeight=(maxImgHeight>fontHeight)?maxImgHeight:fontHeight;
         if (getSecondString()!=null)
-            itemVHeight+=secondFontHeight-3;
+            itemVHeight+=FontCache.getFont(false, FontCache.baloon).getHeight()-3;
         
         return itemVHeight;
     }
@@ -656,7 +656,7 @@ public class Contact extends IconTextElement{
         if (getSecondString()!=null) {
             int y=getFont().getHeight()-3;
             thisOfs=(getSecondLength()>w)?-ofs+offset:offset;
-            g.setFont(secondFont);
+            g.setFont(FontCache.getFont(false, FontCache.baloon));
             g.setColor(ColorTheme.getColor(ColorTheme.SECOND_LINE));
             g.drawString(getSecondString(), thisOfs, y, Graphics.TOP|Graphics.LEFT);
         }

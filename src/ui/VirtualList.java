@@ -951,8 +951,8 @@ public abstract class VirtualList
         case KEY_NUM8:
             keyDwn();    
             break;
-//#ifndef WSYSTEMGC
         case KEY_STAR:
+//#ifndef WSYSTEMGC
             System.gc();
             try { Thread.sleep(50); } catch (InterruptedException e){}
 //#endif

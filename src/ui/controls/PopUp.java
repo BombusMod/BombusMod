@@ -49,7 +49,7 @@ public class PopUp {
     private int border=8;
     private int padding=4;
     
-    private Font font;
+    private static Font font;
     
     private int width;
     private int height;
@@ -72,7 +72,7 @@ public class PopUp {
     synchronized public void addPopup(int type, String contact, String message){
         if (message!=null) {
             //popUps.addElement(new PopUpElement(type, contact, StringUtils.parseMessage(message, width-border-padding, height-border-padding, false, font)));
-            font=FontCache.getFont(false, FontCache.baloon); // issue 88
+            font=FontCache.getFont(false, FontCache.baloon); //Issue 88
             popUps.addElement(new PopUpElement(type, contact, StringUtils.parseMessage(message, width-border-padding, font)));
         }
 //#ifdef DEBUG

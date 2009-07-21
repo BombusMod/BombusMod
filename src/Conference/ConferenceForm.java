@@ -35,6 +35,7 @@ import locale.SR;
 import com.alsutton.jabber.datablocks.Presence;
 import ui.controls.form.CheckBox;
 import ui.controls.form.DefForm;
+import ui.controls.form.LinkString;
 import ui.controls.form.NumberInput;
 import ui.controls.form.PasswordInput;
 import ui.controls.form.TextInput;
@@ -66,6 +67,7 @@ public class ConferenceForm
     private PasswordInput passField;
     private NumberInput msgLimitField;
     private CheckBox autoJoin;
+    private LinkString linkJoin;
     
     BookmarkItem editConf;
 
@@ -175,6 +177,14 @@ public class ConferenceForm
         autoJoin=new CheckBox(SR.MS_AUTOLOGIN, autojoin);
         itemsList.addElement(autoJoin);
         
+        linkJoin=new LinkString(SR.MS_JOIN) {
+            public void doAction() {
+                join(nameField.getValue(), roomField.getValue().trim()+"@"+hostField.getValue().trim()+"/"+nickField.getValue(), passField.getValue(), Integer.parseInt(msgLimitField.getValue()));
+                display.setCurrent(sd.roster);
+            }
+        };
+        itemsList.addElement(linkJoin);
+        
 //#ifndef MENU_LISTENER
 //#         addCommand(cmdJoin);
 //#         addCommand(cmdAdd);
@@ -224,7 +234,7 @@ public class ConferenceForm
                 cf.defGcRoom=room+"@"+host;
                 cf.saveToStorage();
                 gchat.append('/').append(nick);
-                join(name, gchat.toString(),pass, msgLimit);
+                join(name, gchat.toString(), pass, msgLimit);
                 display.setCurrent(sd.roster);
             } catch (Exception e) { }
         }
