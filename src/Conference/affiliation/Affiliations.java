@@ -116,7 +116,7 @@ public class Affiliations
     }
     
     public void commandAction(Command c, Displayable d){
-        if (c==cmdNew) new AffiliationModify(display, parentView, room, null, "none", "");
+        if (c==cmdNew) new AffiliationModify(display, this, room, null, "none", "");
         if (c==cmdModify) eventOk();
 //#ifdef CLIPBOARD
 //#         if (c==cmdCopy) {
@@ -141,7 +141,7 @@ public class Affiliations
     public void eventOk(){
         try {
             AffiliationItem item=(AffiliationItem)getFocusedObject();
-            new AffiliationModify(display, parentView, room, item.jid, 
+            new AffiliationModify(display, this, room, item.jid, 
 					AffiliationItem.getAffiliationName( (short)item.affiliation), 
                                         (item.reason==null)? "":item.reason
                     );

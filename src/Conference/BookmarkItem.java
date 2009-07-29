@@ -27,6 +27,7 @@
 
 package Conference;
 import Client.Config;
+import Client.StaticData;
 import com.alsutton.jabber.JabberDataBlock;
 import images.RosterIcons;
 import ui.*;
@@ -57,7 +58,9 @@ public class BookmarkItem extends IconTextElement{
         
         return (nick==null)? jid: jid+'/'+nick;
     }
-    public String getJidNick() { return jid+'/'+nick; }
+    
+    public String getJidNick() { return jid+'/'+((nick.length()>0)?nick:StaticData.getInstance().account.getNickName()); }
+    
     public String getJid() { return jid; }
     
     /** Creates a new instance of BookmarkItem */

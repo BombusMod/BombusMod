@@ -208,6 +208,7 @@ public class Bookmarks
                 if (bm.autojoin) 
                     ConferenceForm.join(bm.desc, bm.jid+'/'+bm.nick, bm.password, cf.confMessageCount);
             }
+            exitBookmarks();
         }
         
         else if (c==cmdSave) saveBookmarks();

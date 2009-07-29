@@ -108,24 +108,11 @@ public class ConferenceForm
         this.editConf=join;
         this.cursor=cursor;
 
-        String confJid=join.getJidNick();
-        int roomEnd=confJid.indexOf('@');
+        int roomEnd=join.getJid().indexOf('@');
         String room="";
-        if (roomEnd>0) room=confJid.substring(0, roomEnd);
-        String server;
-        String nick=null;
-        int serverEnd=confJid.indexOf('/');
-        if (serverEnd>0) {
-            server=confJid.substring(roomEnd+1,serverEnd);
-            nick=confJid.substring(serverEnd+1);
-        } else {
-            server=confJid.substring(roomEnd+1);
-        }
-        createForm(display, pView, join.desc, room, server, nick, join.password, join.autojoin);
-        confJid=null;
+        if (roomEnd>0) room=join.getJid().substring(0, roomEnd);
+        createForm(display, pView, join.desc, room, join.getJid().substring(roomEnd+1), join.nick, join.password, join.autojoin);
         room=null;
-        server=null;
-        nick=null;
     }
     
     /** Creates a new instance of GroupChatForm */
