@@ -694,6 +694,9 @@ public class SR {
    public static String MS_INVISIBLE = loadString("invisible");
    public static String MS_DND = loadString("dnd");
    public static String MS_OFFLINE = loadString("offline");
+
+   public static String MS_USE = loadString("Use");
+   public static String MS_VERSION = loadString("Version");
     
     private SR() { }
     

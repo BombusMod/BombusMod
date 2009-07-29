@@ -2395,11 +2395,25 @@ public class Roster
 //#ifdef PLUGINS
 //#                 if (cf.showClientIcon)
 //#endif
-                    if (cntact.client>-1)
-                        mess.append("\nUse: "+cntact.clientName);
+                    if (cntact.client>-1) {
+                        mess.append("\n")
+                            .append(SR.MS_USE)
+                            .append(": ")
+                            .append(cntact.clientName);
+                    }
 //#endif
-                if (cntact.version!=null) mess.append("\nVersion: "+cntact.version);
-                if (cntact.lang!=null) mess.append("\nLang: "+cntact.lang);
+                if (cntact.version!=null) {
+                    mess.append("\n")
+                        .append(SR.MS_VERSION)
+                        .append(": ")
+                        .append(cntact.version);
+                }
+                if (cntact.lang!=null) {
+                    mess.append("\n")
+                        .append(SR.MS_LANGUAGE)
+                        .append(": ")
+                        .append(cntact.lang);
+                }
             }
             
             if (cntact.statusString!=null) {

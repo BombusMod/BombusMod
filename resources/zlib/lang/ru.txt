@@ -524,3 +524,5 @@ Send photo	Отправить фото
 enable autorespond	включить автоответчик
 File manager	Менеджер файлов
 remote control	удаленное управление
+Version	Версия
+Use	Использует
