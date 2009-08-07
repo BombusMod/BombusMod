@@ -90,6 +90,12 @@ public class ContactMessageList extends MessageList {
 //#ifdef CLIPBOARD    
 //#     Command cmdSendBuffer=new Command(SR.MS_SEND_BUFFER, Command.SCREEN, 14);
 //#endif
+    
+//#ifdef JUICK
+//#     Command cmdSendJuickPost=new Command(SR.MS_SEND_JUICK_POST, Command.SCREEN, 15);
+//#     Command cmdSendJuickPostReply=new Command(SR.MS_SEND_JUICK_POST_REPLY, Command.SCREEN, 16);
+//#     Command cmdSendJuickCommentReply=new Command(SR.MS_SEND_JUICK_COMMENT_REPLY, Command.SCREEN, 17);
+//#endif
 
 //#ifdef CLIPBOARD    
 //#     private ClipBoard clipboard=ClipBoard.getInstance();
@@ -222,6 +228,15 @@ public class ContactMessageList extends MessageList {
 //#             addCommand(cmdReadHistory);
 //#endif
 //#endif
+        
+//#ifdef JUICK
+//#         if (contact.bareJid.equals("juick@juick.com")) {
+//#             addCommand(cmdSendJuickPost);
+//#             addCommand(cmdSendJuickPostReply);
+//#             addCommand(cmdSendJuickCommentReply);
+//#         }
+//#endif
+
         addCommand(cmdBack);
     }
     

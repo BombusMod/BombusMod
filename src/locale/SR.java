@@ -686,18 +686,23 @@ public class SR {
     public static String MS_VIP_GROUP = loadString("VIP");
     public static String MS_ENABLE_DISABLE = loadString("Enable/Disable");
     
-            
-   public static String MS_ONLINE = loadString("online");
-   public static String MS_CHAT = loadString("chat");
-   public static String MS_AWAY = loadString("away");
-   public static String MS_XA = loadString("xa");
-   public static String MS_INVISIBLE = loadString("invisible");
-   public static String MS_DND = loadString("dnd");
-   public static String MS_OFFLINE = loadString("offline");
+    public static String MS_ONLINE = loadString("online");
+    public static String MS_CHAT = loadString("chat");
+    public static String MS_AWAY = loadString("away");
+    public static String MS_XA = loadString("xa");
+    public static String MS_INVISIBLE = loadString("invisible");
+    public static String MS_DND = loadString("dnd");
+    public static String MS_OFFLINE = loadString("offline");
 
-   public static String MS_USE = loadString("Use");
-   public static String MS_VERSION = loadString("Version");
-    
+    public static String MS_USE = loadString("Use");
+    public static String MS_VERSION = loadString("Version");
+
+//#ifdef JUICK
+//#     public static String MS_SEND_JUICK_POST = loadString("[J] New message");
+//#     public static String MS_SEND_JUICK_POST_REPLY = loadString("[J] Send Comment");
+//#     public static String MS_SEND_JUICK_COMMENT_REPLY = loadString("[J] Reply to comment");
+//#endif
+
     private SR() { }
     
     public static String MS_XMLLANG;
