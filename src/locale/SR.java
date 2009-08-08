@@ -698,8 +698,7 @@ public class SR {
     public static String MS_VERSION = loadString("Version");
 
 //#ifdef JUICK
-//#     public static String MS_SEND_JUICK_POST = loadString("[J] New message");
-//#     public static String MS_SEND_JUICK_POST_REPLY = loadString("[J] Send Comment");
+//#     public static String MS_SEND_JUICK_POST_REPLY = loadString("[J] New comment");
 //#     public static String MS_SEND_JUICK_COMMENT_REPLY = loadString("[J] Reply to comment");
 //#endif
 

@@ -92,9 +92,8 @@ public class ContactMessageList extends MessageList {
 //#endif
     
 //#ifdef JUICK
-//#     Command cmdSendJuickPost=new Command(SR.MS_SEND_JUICK_POST, Command.SCREEN, 15);
-//#     Command cmdSendJuickPostReply=new Command(SR.MS_SEND_JUICK_POST_REPLY, Command.SCREEN, 16);
-//#     Command cmdSendJuickCommentReply=new Command(SR.MS_SEND_JUICK_COMMENT_REPLY, Command.SCREEN, 17);
+//#     Command cmdSendJuickPostReply=new Command(SR.MS_SEND_JUICK_POST_REPLY, Command.SCREEN, 15);
+//#     Command cmdSendJuickCommentReply=new Command(SR.MS_SEND_JUICK_COMMENT_REPLY, Command.SCREEN, 16);
 //#endif
 
 //#ifdef CLIPBOARD    
@@ -231,9 +230,11 @@ public class ContactMessageList extends MessageList {
         
 //#ifdef JUICK
 //#         if (contact.bareJid.equals("juick@juick.com")) {
-//#             addCommand(cmdSendJuickPost);
-//#             addCommand(cmdSendJuickPostReply);
-//#             addCommand(cmdSendJuickCommentReply);
+//#             String body = ((Msg) contact.msgs.elementAt(cursor)).body;
+//#             if (body.startsWith("@"))
+//#                 addCommand(cmdSendJuickPostReply);
+//#             if (body.startsWith("Reply by "))
+//#                 addCommand(cmdSendJuickCommentReply);
 //#         }
 //#endif
 
@@ -418,6 +419,54 @@ public class ContactMessageList extends MessageList {
 //#                 contact.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,null,"clipboard NOT sended"));
 //#             }
 //#             redraw();
+//#         }
+//#endif
+        
+//#ifdef JUICK
+//#         if (c==cmdSendJuickCommentReply || c==cmdSendJuickPostReply) {
+//#             String str = ((Msg) contact.msgs.elementAt(cursor)).body;
+//# 
+//#             char[] valueChars = str.toCharArray();
+//#             String lastStr = null;
+//#             for (int i = valueChars.length-1; i>=0; i--) {
+//#                 char currChar = valueChars[i];
+//#                 if (currChar == '\n') {
+//#                     lastStr = str.substring(i+1);
+//#                     break;
+//#                 }
+//#             }
+//#             int strE=lastStr.indexOf(' ');
+//#             String postAndComment = null;
+//#             String post = null;
+//#             String comment = null;
+//#             if (strE>0) {
+//#                 postAndComment=lastStr.substring(1, strE);
+//#                 int strH=postAndComment.indexOf("/");
+//#                 if (strH>0) {
+//#                     post = postAndComment.substring(0, strH);
+//#                     comment = postAndComment.substring(strH+1);
+//#                 } else {
+//#                     post = postAndComment;
+//#                 }
+//#             }
+//#             
+//#             if (c==cmdSendJuickCommentReply) {
+//#                 try {
+//#ifdef RUNNING_MESSAGE
+//#                 sd.roster.me=new MessageEdit(display, this, contact, "#"+postAndComment);
+//#else
+//#                 new MessageEdit(display, this, contact, "#"+postAndComment+" ");
+//#endif
+//#                 } catch (Exception e) {/*no messages*/}
+//#             } else if (c==cmdSendJuickPostReply) {
+//#                 try {
+//#ifdef RUNNING_MESSAGE
+//#                 sd.roster.me=new MessageEdit(display, this, contact, "#"+post);
+//#else
+//#                 new MessageEdit(display, this, contact, "#"+post+" ");
+//#endif
+//#                 } catch (Exception e) {/*no messages*/}
+//#             }
 //#         }
 //#endif
     }
