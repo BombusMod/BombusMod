@@ -229,8 +229,12 @@ public class ContactMessageList extends MessageList {
 //#endif
         
 //#ifdef JUICK
-//#         if (contact.bareJid.equals("juick@juick.com")) {
-//#             String body = ((Msg) contact.msgs.elementAt(cursor)).body;
+//#                                                          // http://code.google.com/p/bm2/issues/detail?id=94#c1
+//#         if (contact.bareJid.equals("juick@juick.com") || contact.bareJid.startsWith("juick%juick.com@")) {
+//#             String body = "";
+//#             if (cursor != 0) // http://code.google.com/p/bm2/issues/detail?id=94#c1
+//#                 body = ((Msg) contact.msgs.elementAt(cursor)).body;
+//# 
 //#             if (body.startsWith("@"))
 //#                 addCommand(cmdSendJuickPostReply);
 //#             if (body.startsWith("Reply by "))
@@ -425,51 +429,56 @@ public class ContactMessageList extends MessageList {
 //#ifdef JUICK
 //#         if (c==cmdSendJuickCommentReply || c==cmdSendJuickPostReply) {
 //#             String str = ((Msg) contact.msgs.elementAt(cursor)).body;
-//# 
-//#             char[] valueChars = str.toCharArray();
-//#             String lastStr = null;
-//#             for (int i = valueChars.length-1; i>=0; i--) {
-//#                 char currChar = valueChars[i];
-//#                 if (currChar == '\n') {
-//#                     lastStr = str.substring(i+1);
-//#                     break;
-//#                 }
-//#             }
-//#             int strE=lastStr.indexOf(' ');
-//#             String postAndComment = null;
-//#             String post = null;
-//#             String comment = null;
-//#             if (strE>0) {
-//#                 postAndComment=lastStr.substring(1, strE);
-//#                 int strH=postAndComment.indexOf("/");
-//#                 if (strH>0) {
-//#                     post = postAndComment.substring(0, strH);
-//#                     comment = postAndComment.substring(strH+1);
-//#                 } else {
-//#                     post = postAndComment;
-//#                 }
-//#             }
-//#             
-//#             if (c==cmdSendJuickCommentReply) {
-//#                 try {
-//#ifdef RUNNING_MESSAGE
-//#                 sd.roster.me=new MessageEdit(display, this, contact, "#"+postAndComment);
-//#else
-//#                 new MessageEdit(display, this, contact, "#"+postAndComment+" ");
-//#endif
-//#                 } catch (Exception e) {/*no messages*/}
-//#             } else if (c==cmdSendJuickPostReply) {
-//#                 try {
-//#ifdef RUNNING_MESSAGE
-//#                 sd.roster.me=new MessageEdit(display, this, contact, "#"+post);
-//#else
-//#                 new MessageEdit(display, this, contact, "#"+post+" ");
-//#endif
-//#                 } catch (Exception e) {/*no messages*/}
-//#             }
+//#             juickReply(c==cmdSendJuickCommentReply, str);
 //#         }
 //#endif
     }
+    
+//#ifdef JUICK
+//#     public void juickReply(boolean isComment, String str) {
+//#         char[] valueChars = str.toCharArray();
+//#         String lastStr = null;
+//#         for (int i = valueChars.length-1; i>=0; i--) {
+//#             char currChar = valueChars[i];
+//#             if (currChar == '\n') {
+//#                 lastStr = str.substring(i+1);
+//#                 break;
+//#             }
+//#         }
+//#         int strE=lastStr.indexOf(' ');
+//#         String postAndComment = null;
+//#         String post = null;
+//#         String comment = null;
+//#         if (strE>0) {
+//#             postAndComment=lastStr.substring(1, strE);
+//#             int strH=postAndComment.indexOf("/");
+//#             if (strH>0) {
+//#                 post = postAndComment.substring(0, strH);
+//#                 comment = postAndComment.substring(strH+1);
+//#             } else {
+//#                 post = postAndComment;
+//#             }
+//#         }
+//# 
+//#         if (isComment) {
+//#             try {
+//#ifdef RUNNING_MESSAGE
+//#                 sd.roster.me=new MessageEdit(display, this, contact, "#"+postAndComment);
+//#else
+//#             new MessageEdit(display, this, contact, "#"+postAndComment+" ");
+//#endif
+//#             } catch (Exception e) {/*no messages*/}
+//#         } else {
+//#             try {
+//#ifdef RUNNING_MESSAGE
+//#                 sd.roster.me=new MessageEdit(display, this, contact, "#"+post);
+//#else
+//#             new MessageEdit(display, this, contact, "#"+post+" ");
+//#endif
+//#             } catch (Exception e) {/*no messages*/}
+//#         }
+//#     }
+//#endif
 
     public void clearReadedMessageList() {
         smartPurge();
@@ -564,16 +573,31 @@ public class ContactMessageList extends MessageList {
         try {
             Msg msg=getMessage(cursor);
             
-            if (msg==null ||
-                msg.messageType == Msg.MESSAGE_TYPE_OUT ||
-                msg.messageType == Msg.MESSAGE_TYPE_SUBJ)
+            if (msg==null || msg.messageType == Msg.MESSAGE_TYPE_OUT || msg.messageType == Msg.MESSAGE_TYPE_SUBJ) {
                 keyGreen();
-            else
+            } else {
+//#ifdef JUICK
+//#                 if (contact.bareJid.equals("juick@juick.com") || contact.bareJid.startsWith("juick%juick.com@")) {
+//#                     String body = "";
+//#                     if (cursor != 0) // http://code.google.com/p/bm2/issues/detail?id=94#c1
+//#                         body = msg.body;
+//#                     
+//#                     if (body.startsWith("@")) {
+//#                         juickReply(false, body); // post
+//#                         return;
+//#                     } else if (body.startsWith("Reply by ")) {
+//#                         juickReply(true, body); // comment
+//#                         return;
+//#                     }
+//#                 }
+//#endif
+
 //#ifdef RUNNING_MESSAGE
 //#                 sd.roster.me=new MessageEdit(display, this, contact, msg.from+": ");
 //#else
                 new MessageEdit(display, this, contact, msg.from+": ");
 //#endif
+            }
         } catch (Exception e) {/*no messages*/}
     }
     
