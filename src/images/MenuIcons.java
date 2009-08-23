@@ -85,4 +85,6 @@ public class MenuIcons extends ImageList{
     public static final int ICON_DISCO      = 0x15;
     public static final int ICON_IE         = 0x24;
     public static final int ICON_INVERSE    = 0x25;
+    
+    //public static final int ICON_JUICK      = 0x36;
 }

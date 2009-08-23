@@ -58,6 +58,9 @@ import Menu.Command;
 //#ifdef ARCHIVE
 import Archive.MessageArchive;
 //#endif
+//#ifdef JUICK
+//# import Menu.JuickThingsMenu;
+//#endif
 
 public class ContactMessageList extends MessageList {
     Contact contact;
@@ -94,6 +97,7 @@ public class ContactMessageList extends MessageList {
 //#ifdef JUICK
 //#     Command cmdSendJuickPostReply=new Command(SR.MS_SEND_JUICK_POST_REPLY, Command.SCREEN, 15);
 //#     Command cmdSendJuickCommentReply=new Command(SR.MS_SEND_JUICK_COMMENT_REPLY, Command.SCREEN, 16);
+//#     Command cmdJuickThings=new Command(SR.MS_JUICK_THINGS, Command.SCREEN, 17);
 //#endif
 
 //#ifdef CLIPBOARD    
@@ -239,6 +243,8 @@ public class ContactMessageList extends MessageList {
 //#                 addCommand(cmdSendJuickPostReply);
 //#             if (body.startsWith("Reply by "))
 //#                 addCommand(cmdSendJuickCommentReply);
+//#             if (cursor != 0)
+//#                 addCommand(cmdJuickThings);
 //#         }
 //#endif
 
@@ -430,6 +436,49 @@ public class ContactMessageList extends MessageList {
 //#         if (c==cmdSendJuickCommentReply || c==cmdSendJuickPostReply) {
 //#             String str = ((Msg) contact.msgs.elementAt(cursor)).body;
 //#             juickReply(c==cmdSendJuickCommentReply, str);
+//#         }
+//#         if (c==cmdJuickThings) {
+//#             String str = ((Msg) contact.msgs.elementAt(cursor)).body;
+//#             int numberOfThing=-1;
+//#             char[] valueChars = str.toCharArray();
+//#             int msg_length = valueChars.length;
+//#             String[] things = new String[100];
+//#             for (int i=0; i<msg_length; i++) {
+//#                 String thing = "";
+//#                 switch(valueChars[i]) {
+//#                     case '#':
+//#                         thing = "#";
+//#                         while((Character.isDigit(valueChars[++i]) || valueChars[i] == '/') && i<(msg_length-1))
+//#                             thing = thing + valueChars[i];
+//#                         if (i==(msg_length-1))
+//#                             thing = thing + valueChars[i];
+//#                         numberOfThing++;
+//#                         if (!thing.equals("#"))
+//#                             things[numberOfThing] = thing;
+//#                         break;
+//#                     case '@':
+//#                         thing = "@";
+//#                         while((Character.isLowerCase(valueChars[++i]) || Character.isUpperCase(valueChars[i]) || Character.isDigit(valueChars[i]) || valueChars[i] == '-' || valueChars[i] == '.' || valueChars[i] == '@' || valueChars[i] == '_' || valueChars[i] == '|') && i<(msg_length-1))
+//#                             thing = thing + valueChars[i];
+//#                         if (i==(msg_length-1))
+//#                             thing = thing + valueChars[i];
+//#                         numberOfThing++;
+//#                         if (!thing.equals("@"))
+//#                             things[numberOfThing] = thing;
+//#                         break;
+//#                     case '*':
+//#                         thing = "*";
+//#                         while((Character.isLowerCase(valueChars[++i]) || Character.isUpperCase(valueChars[i]) || Character.isDigit(valueChars[i]) || valueChars[i] == '-' || valueChars[i] == '.' || valueChars[i] == '?' || valueChars[i] == '_' || valueChars[i] == '|') && i<(msg_length-1))
+//#                             thing = thing + valueChars[i];
+//#                         if (i==(msg_length-1))
+//#                             thing = thing + valueChars[i];
+//#                         numberOfThing++;
+//#                         if (!thing.equals("*"))
+//#                             things[numberOfThing] = thing;
+//#                         break;
+//#                 }
+//#             }
+//#             new JuickThingsMenu(things, numberOfThing, display, this, contact);
 //#         }
 //#endif
     }

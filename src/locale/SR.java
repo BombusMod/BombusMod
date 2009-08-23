@@ -700,6 +700,7 @@ public class SR {
 //#ifdef JUICK
 //#     public static String MS_SEND_JUICK_POST_REPLY = loadString("[J] New comment");
 //#     public static String MS_SEND_JUICK_COMMENT_REPLY = loadString("[J] Reply to comment");
+//#     public static String MS_JUICK_THINGS = loadString("[J] Things");
 //#endif
 
     private SR() { }

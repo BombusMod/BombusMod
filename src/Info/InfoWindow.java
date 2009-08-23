@@ -248,6 +248,9 @@ public class InfoWindow
 //#endif
 //#             abilitiesList.addElement((String)"IMPORT_EXPORT");
 //#endif
+//#ifdef JUICK
+//#             abilitiesList.addElement((String)"JUICK");
+//#endif
 //#ifdef LAST_MESSAGES
 //#ifdef PLUGINS
 //#         if (sd.History)
