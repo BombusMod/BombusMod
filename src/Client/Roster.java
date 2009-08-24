@@ -1280,10 +1280,11 @@ public class Roster
                         if (c!=null) {
                             c.vcard=vcard;
                             if (display.getCurrent() instanceof VirtualList) {
-                                if (c.getGroupType()==Groups.TYPE_SELF)
+                                if (c.getGroupType()==Groups.TYPE_SELF) {
                                     new VCardEdit(display, this, vcard);
-                                else
+                                } else {
                                     new VCardView(display, this, c);
+                                }
                             }
                         } else {
                             new VCardView(display, this, c);

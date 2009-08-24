@@ -94,15 +94,6 @@ public class StatsWindow
                 
         item=new MultiLine(SR.MS_STARTED, StaticData.getInstance().roster.startTime, super.superWidth); item.selectable=true; itemsList.addElement(item);
         
-        commandState();
-
-        attachDisplay(display);
-        this.parentView=pView;
-    }
-    
-    public void commandState(){
-        super.commandState();
-        removeCommand(cmdCancel);
         removeCommand(cmdOk);
 //#ifdef CLIPBOARD
 //#         if (Config.getInstance().useClipBoard) {
@@ -111,6 +102,9 @@ public class StatsWindow
 //#endif
         addCommand(cmdClear);
         addCommand(cmdCancel);
+
+        attachDisplay(display);
+        this.parentView=pView;
     }
     
 //#ifdef CLIPBOARD

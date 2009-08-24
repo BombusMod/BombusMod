@@ -66,6 +66,8 @@ public class VCardView
         implements BrowserListener
 //#endif
     {
+    
+    private Display display;
 
     private VCard vcard;
     private ImageItem photoItem;
@@ -96,8 +98,8 @@ public class VCardView
     /** Creates a new instance of VCardView */
     public VCardView(Display display, Displayable pView, Contact contact) {
         super(display, pView, contact.getNickJid());
-        this.display=display;
-        
+        this.display = display;
+
         this.vcard=contact.vcard;
         this.c=contact;
         
@@ -131,8 +133,9 @@ public class VCardView
             itemsList.addElement(refresh);
         }
 
-        commandState();
-
+        //this.commandState();
+        //setCommandListener(this);
+        commandStateTest();
         attachDisplay(display);
         this.parentView=pView;
     }
@@ -212,12 +215,12 @@ public class VCardView
         }
     }
 //#endif
-    
-    public void commandState() {
-        super.commandState();
-        removeCommand(cmdOk);
-        removeCommand(cmdCancel);
-        
+
+    public void commandStateTest() {
+//#ifdef MENU_LISTENER
+        menuCommands.removeAllElements();
+//#endif
+
         if (vcard!=null) {
             if (vcard.hasPhoto) {
 //#if FILE_IO
@@ -233,10 +236,11 @@ public class VCardView
 //#             }
 //#endif
         }
+
         addCommand(cmdRefresh);
         addCommand(cmdCancel);
     }
-    
+
 //#ifdef MENU_LISTENER
     public String touchLeftCommand() { return SR.MS_MENU; }
     
