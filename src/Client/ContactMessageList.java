@@ -439,51 +439,62 @@ public class ContactMessageList extends MessageList {
 //#         }
 //#         if (c==cmdJuickThings) {
 //#             String str = ((Msg) contact.msgs.elementAt(cursor)).body;
-//#             int numberOfThing=-1;
 //#             char[] valueChars = str.toCharArray();
 //#             int msg_length = valueChars.length;
-//#             String[] things = new String[100];
-//#             for (int i=0; i<msg_length; i++) {
-//#                 String thing = "";
+//#             Vector things = new Vector();
+//#             for(int i=0; i<msg_length; i++) {
+//#                 if((i==0)||isCharBeforeJuickThing(valueChars[i-1]))
 //#                 switch(valueChars[i]) {
 //#                     case '#':
-//#                         thing = "#";
-//#                         while((Character.isDigit(valueChars[++i]) || valueChars[i] == '/') && i<(msg_length-1))
-//#                             thing = thing + valueChars[i];
-//#                         if (i==(msg_length-1))
-//#                             thing = thing + valueChars[i];
-//#                         numberOfThing++;
-//#                         if (!thing.equals("#"))
-//#                             things[numberOfThing] = thing;
-//#                         break;
 //#                     case '@':
-//#                         thing = "@";
-//#                         while((Character.isLowerCase(valueChars[++i]) || Character.isUpperCase(valueChars[i]) || Character.isDigit(valueChars[i]) || valueChars[i] == '-' || valueChars[i] == '.' || valueChars[i] == '@' || valueChars[i] == '_' || valueChars[i] == '|') && i<(msg_length-1))
-//#                             thing = thing + valueChars[i];
-//#                         if (i==(msg_length-1))
-//#                             thing = thing + valueChars[i];
-//#                         numberOfThing++;
-//#                         if (!thing.equals("@"))
-//#                             things[numberOfThing] = thing;
-//#                         break;
 //#                     case '*':
-//#                         thing = "*";
-//#                         while((Character.isLowerCase(valueChars[++i]) || Character.isUpperCase(valueChars[i]) || Character.isDigit(valueChars[i]) || valueChars[i] == '-' || valueChars[i] == '.' || valueChars[i] == '?' || valueChars[i] == '_' || valueChars[i] == '|') && i<(msg_length-1))
+//#                         char firstSymbol = valueChars[i];
+//#                         String thing = ""+firstSymbol;
+//#                         while(i<(msg_length-1) && isCharFromJuickThing(valueChars[++i], firstSymbol)) thing = thing + valueChars[i];
 //#                             thing = thing + valueChars[i];
-//#                         if (i==(msg_length-1))
-//#                             thing = thing + valueChars[i];
-//#                         numberOfThing++;
-//#                         if (!thing.equals("*"))
-//#                             things[numberOfThing] = thing;
+//#                             while(thing.charAt(thing.length()-1) == '.')
+//#                                 thing = thing.substring(0, thing.length()-2);
+//#                             if ((thing.length()>1) && (things.indexOf(thing)<0))
+//#                                 things.addElement(thing);
+//#                             i--;
 //#                         break;
 //#                 }
 //#             }
-//#             new JuickThingsMenu(things, numberOfThing, display, this, contact);
+//#             new JuickThingsMenu(things, display, this, contact);
 //#         }
 //#endif
     }
     
-//#ifdef JUICK
+ //#ifdef JUICK
+//#     public boolean isCharBeforeJuickThing(char ch) {
+//#         switch(ch) {
+//#             case '\u0020': // space
+//#             case '\u0009': // tab
+//#             case '\u000C': // formfeed
+//#             case '\n': // newline
+//#             case '\r': // carriage return
+//#             case '(':
+//#                 return true;
+//#         }
+//#         return false;
+//#     }
+//#     
+//#     public boolean isCharFromJuickThing(char ch, char type) {
+//#         boolean result = false;
+//#         switch(type) {
+//#             case '#': // #number
+//#                 result = (ch>46) && (ch<58); // [0-9/]
+//#                 break;
+//#             case '@': // @username
+//#                 result = ((ch>47)&&(ch<58)) || ((ch>63)&&(ch<91)) || ((ch>96)&&(ch<123)) || ((ch=='_')||(ch=='|')||(ch=='.')) || ((ch>44)&&(ch<47)); // [a-zA-Z0-9-.@_|]
+//#                 break;
+//#             case '*': // *tag
+//#                 result = ((ch>47)&&(ch<58)) || ((ch>64)&&(ch<91)) || ((ch>96)&&(ch<123)) || ((ch>1039)&&(ch<1104)) || ((ch=='_')||(ch=='|')||(ch=='.')) || ((ch>44)&&(ch<47)); // [a-zA-ZР-пр-џ0-9-._|])
+//#                 break;
+//#         }
+//#         return result;
+//#     }
+//# 
 //#     public void juickReply(boolean isComment, String str) {
 //#         char[] valueChars = str.toCharArray();
 //#         String lastStr = null;

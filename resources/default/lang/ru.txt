@@ -526,3 +526,4 @@ File manager	Менеджер файлов
 remote control	удаленное управление
 Version	Версия
 Use	Использует
+[J] Things	[J] Сущности
