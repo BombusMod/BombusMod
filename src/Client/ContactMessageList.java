@@ -439,6 +439,13 @@ public class ContactMessageList extends MessageList {
 //#         }
 //#         if (c==cmdJuickThings) {
 //#             String str = ((Msg) contact.msgs.elementAt(cursor)).body;
+//#             viewJuickThings(str);
+//#         }
+//#endif
+    }
+    
+ //#ifdef JUICK
+//#     public void viewJuickThings(String str) {
 //#             char[] valueChars = str.toCharArray();
 //#             int msg_length = valueChars.length;
 //#             Vector things = new Vector();
@@ -450,22 +457,20 @@ public class ContactMessageList extends MessageList {
 //#                     case '*':
 //#                         char firstSymbol = valueChars[i];
 //#                         String thing = ""+firstSymbol;
-//#                         while(i<(msg_length-1) && isCharFromJuickThing(valueChars[++i], firstSymbol)) thing = thing + valueChars[i];
+//#                         while(i<(msg_length-1) && isCharFromJuickThing(valueChars[++i], firstSymbol))
 //#                             thing = thing + valueChars[i];
-//#                             while(thing.charAt(thing.length()-1) == '.')
-//#                                 thing = thing.substring(0, thing.length()-2);
-//#                             if ((thing.length()>1) && (things.indexOf(thing)<0))
-//#                                 things.addElement(thing);
-//#                             i--;
+//#                         while(thing.charAt(thing.length()-1) == '.')
+//#                             thing = thing.substring(0, thing.length()-2);
+//#                         if ((thing.length()>1) && (things.indexOf(thing)<0))
+//#                             things.addElement(thing);
+//#                         if(i>0) i--;
 //#                         break;
 //#                 }
 //#             }
-//#             new JuickThingsMenu(things, display, this, contact);
-//#         }
-//#endif
-    }
-    
- //#ifdef JUICK
+//#             if(!things.isEmpty())
+//#               new JuickThingsMenu(things, display, this, contact);
+//#     }
+//# 
 //#     public boolean isCharBeforeJuickThing(char ch) {
 //#         switch(ch) {
 //#             case '\u0020': // space
@@ -489,7 +494,7 @@ public class ContactMessageList extends MessageList {
 //#                 result = ((ch>47)&&(ch<58)) || ((ch>63)&&(ch<91)) || ((ch>96)&&(ch<123)) || ((ch=='_')||(ch=='|')||(ch=='.')) || ((ch>44)&&(ch<47)); // [a-zA-Z0-9-.@_|]
 //#                 break;
 //#             case '*': // *tag
-//#                 result = ((ch>47)&&(ch<58)) || ((ch>64)&&(ch<91)) || ((ch>96)&&(ch<123)) || ((ch>1039)&&(ch<1104)) || ((ch=='_')||(ch=='|')||(ch=='.')) || ((ch>44)&&(ch<47)); // [a-zA-ZÀ-ßà-ÿ0-9-._|])
+//#                 result = ((ch>47)&&(ch<58)) || ((ch>64)&&(ch<91)) || ((ch>96)&&(ch<123)) || ((ch>1039)&&(ch<1104)) || ((ch=='_')||(ch=='|')||(ch=='.')) || ((ch>44)&&(ch<47)); // [a-zA-ZÐ-Ð¯Ð°-Ñ0-9-._|])
 //#                 break;
 //#         }
 //#         return result;

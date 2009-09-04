@@ -47,7 +47,7 @@ public class JuickThingsMenu extends Menu {
 //#                 sd.roster.me=new MessageEdit(display, parentView, contact, things.elementAt(index)+" ");
 //#else
         new MessageEdit(display, parentView, contact, things.elementAt(index)+" "); // To chat
-//        new MessageEdit(display, this, contact, things[index]+" "); // Previons menu
+//        new MessageEdit(display, this, contact, things.elementAt(index)+" "); // Previons menu
 //#endif
         } catch (Exception e) {/*no messages*/}
     }
