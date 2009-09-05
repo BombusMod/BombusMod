@@ -167,7 +167,7 @@ public class Roster
     public Vector bookmarks;
     
 //#ifdef RUNNING_MESSAGE
-//#     public MessageEdit me=null;
+//#     public static MessageEdit me=null;
 //#endif
     
     private StatusList sl;
