@@ -19,10 +19,10 @@ import java.util.*;
  */
 public class JuickThingsMenu extends Menu {
     //MenuIcons menuIcons=MenuIcons.getInstance();
-    Display display;
-    Displayable parentView;
-    Contact contact;
-    Vector things;
+    private Display display;
+    private Displayable parentView;
+    private Contact contact;
+    private Vector things;
 
     public JuickThingsMenu(Vector things, Display display, Displayable pView, Contact contact) {
         super(SR.MS_JUICK_THINGS, null); //MenuIcons.getInstance()

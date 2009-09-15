@@ -591,13 +591,7 @@ public class ContactMessageList extends MessageList {
     public void keyPressed(int keyCode) {
         //kHold=0;
         if (keyCode==KEY_POUND) {
-//#ifndef WMUC
-            if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT) {
-                Reply();
-                return;
-            }
-//#endif
-            keyGreen();
+            Reply();
             return;
         }
 

@@ -87,6 +87,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
     /** Creates a new instance of SplashScreen */
     private SplashScreen(Display display) {
         setFullScreenMode(cf.fullscreen);
+//        this.display = display; // http://code.google.com/p/bm2/issues/detail?id=93
         display.setCurrent(this);
     }
     
