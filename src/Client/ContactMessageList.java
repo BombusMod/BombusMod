@@ -233,18 +233,16 @@ public class ContactMessageList extends MessageList {
 //#endif
         
 //#ifdef JUICK
-//#                                                          // http://code.google.com/p/bm2/issues/detail?id=94#c1
-//#         if (contact.bareJid.equals("juick@juick.com") || contact.bareJid.startsWith("juick%juick.com@")) {
-//#             String body = "";
-//#             if (cursor != 0) // http://code.google.com/p/bm2/issues/detail?id=94#c1
-//#                 body = ((Msg) contact.msgs.elementAt(cursor)).body;
+//#         // http://code.google.com/p/bm2/issues/detail?id=94#c1
+//#         if (isJuickMessage()) {
+//#             String body = getMessage(cursor).body;
 //# 
-//#             if (body.startsWith("@"))
-//#                 addCommand(cmdSendJuickPostReply);
-//#             if (body.startsWith("Reply by "))
-//#                 addCommand(cmdSendJuickCommentReply);
-//#             if (cursor != 0)
-//#                 addCommand(cmdJuickThings);
+//#             addCommand(cmdJuickThings);
+//#             if (!getNumberJuickPostOrComment(body).equals("toThings"))
+//#                if (getNumberJuickPostOrComment(body).indexOf('/')>0)
+//#                    addCommand(cmdSendJuickCommentReply);
+//#                else
+//#                    addCommand(cmdSendJuickPostReply);
 //#         }
 //#endif
 
@@ -317,7 +315,7 @@ public class ContactMessageList extends MessageList {
     public Msg getMessage(int index) {
         if (index> getItemCount()-1) return null;
         
-	Msg msg=(Msg) contact.msgs.elementAt(index); 
+	Msg msg=(Msg) contact.msgs.elementAt(index);
 	if (msg.unread) contact.resetNewMsgCnt();
 	msg.unread=false;
 	return msg;
@@ -433,18 +431,24 @@ public class ContactMessageList extends MessageList {
 //#endif
         
 //#ifdef JUICK
+//#         String str = getMessage(cursor).body;
+//# 
 //#         if (c==cmdSendJuickCommentReply || c==cmdSendJuickPostReply) {
-//#             String str = ((Msg) contact.msgs.elementAt(cursor)).body;
-//#             juickReply(c==cmdSendJuickCommentReply, str);
+//#             juickReply(str);
 //#         }
 //#         if (c==cmdJuickThings) {
-//#             String str = ((Msg) contact.msgs.elementAt(cursor)).body;
 //#             viewJuickThings(str);
 //#         }
 //#endif
     }
     
  //#ifdef JUICK
+//#     public boolean isJuickMessage() {
+//#         return (contact.bareJid.equals("juick@juick.com")
+//#              || contact.bareJid.startsWith("juick%juick.com@"))
+//#              && (cursor != 0);
+//#     }
+//# 
 //#     public void viewJuickThings(String str) {
 //#             char[] valueChars = str.toCharArray();
 //#             int msg_length = valueChars.length;
@@ -460,15 +464,20 @@ public class ContactMessageList extends MessageList {
 //#                         while(i<(msg_length-1) && isCharFromJuickThing(valueChars[++i], firstSymbol))
 //#                             thing = thing + valueChars[i];
 //#                         while(thing.charAt(thing.length()-1) == '.')
-//#                             thing = thing.substring(0, thing.length()-2);
+//#                             thing = thing.substring(0, thing.length()-1);
 //#                         if ((thing.length()>1) && (things.indexOf(thing)<0))
 //#                             things.addElement(thing);
 //#                         if(i>0) i--;
 //#                         break;
 //#                 }
 //#             }
-//#             if(!things.isEmpty())
-//#               new JuickThingsMenu(things, display, this, contact);
+//#             if(things.isEmpty()) {
+//#                 things.addElement("#");
+//#                 things.addElement("#+");
+//#                 things.addElement("*");
+//#                 things.addElement("@");
+//#             }
+//#             new JuickThingsMenu(things, display, this, contact);
 //#     }
 //# 
 //#     public boolean isCharBeforeJuickThing(char ch) {
@@ -500,48 +509,30 @@ public class ContactMessageList extends MessageList {
 //#         return result;
 //#     }
 //# 
-//#     public void juickReply(boolean isComment, String str) {
-//#         char[] valueChars = str.toCharArray();
-//#         String lastStr = null;
-//#         for (int i = valueChars.length-1; i>=0; i--) {
-//#             char currChar = valueChars[i];
-//#             if (currChar == '\n') {
-//#                 lastStr = str.substring(i+1);
-//#                 break;
-//#             }
+//#     public String getNumberJuickPostOrComment(String str) {
+//#         if ((str.charAt(0) != '@') && !str.startsWith("Reply by @"))
+//#             return "toThings";
+//#         int lastStrStartIndex = str.lastIndexOf('\n')+1;
+//#         if (lastStrStartIndex<0)
+//#             return "toThings";
+//#         int numberEndsIndex = str.indexOf(" http://juick.com/", lastStrStartIndex);
+//#         if(numberEndsIndex>0) {
+//#            int numberEndsIndexTMP = str.indexOf(" (", lastStrStartIndex);
+//#            if(numberEndsIndexTMP>0)
+//#               numberEndsIndex = numberEndsIndexTMP;
+//#            return str.substring(lastStrStartIndex, numberEndsIndex);
 //#         }
-//#         int strE=lastStr.indexOf(' ');
-//#         String postAndComment = null;
-//#         String post = null;
-//#         String comment = null;
-//#         if (strE>0) {
-//#             postAndComment=lastStr.substring(1, strE);
-//#             int strH=postAndComment.indexOf("/");
-//#             if (strH>0) {
-//#                 post = postAndComment.substring(0, strH);
-//#                 comment = postAndComment.substring(strH+1);
-//#             } else {
-//#                 post = postAndComment;
-//#             }
-//#         }
+//#         return "toThings";
+//#     }
 //# 
-//#         if (isComment) {
-//#             try {
+//#     public void juickReply(String str) {
+//#           try {
 //#ifdef RUNNING_MESSAGE
-//#                 sd.roster.me=new MessageEdit(display, this, contact, "#"+postAndComment);
+//#                 sd.roster.me=new MessageEdit(display, this, contact, getNumberJuickPostOrComment(body)+" ");
 //#else
-//#             new MessageEdit(display, this, contact, "#"+postAndComment+" ");
+//#             new MessageEdit(display, this, contact, getNumberJuickPostOrComment(str)+" ");
 //#endif
 //#             } catch (Exception e) {/*no messages*/}
-//#         } else {
-//#             try {
-//#ifdef RUNNING_MESSAGE
-//#                 sd.roster.me=new MessageEdit(display, this, contact, "#"+post);
-//#else
-//#             new MessageEdit(display, this, contact, "#"+post+" ");
-//#endif
-//#             } catch (Exception e) {/*no messages*/}
-//#         }
 //#     }
 //#endif
 
@@ -586,15 +577,31 @@ public class ContactMessageList extends MessageList {
             clearReadedMessageList();
 	else 
             super.keyRepeated(keyCode);
-    }  
+    }
 
     public void keyPressed(int keyCode) {
         //kHold=0;
         if (keyCode==KEY_POUND) {
-            Reply();
+//#ifndef WMUC
+            if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT) {
+                Reply();
+                return;
+            }
+//#endif
+//#ifdef JUICK
+//#             if (isJuickMessage()) {
+//#                 String body = getMessage(cursor).body;
+//# 
+//#                 if (getNumberJuickPostOrComment(body).equals("toThings"))
+//#                     viewJuickThings(body);
+//#                 else
+//#                     juickReply(body);
+//#                 return;
+//#             }
+//#endif
+            keyGreen();
             return;
         }
-
         super.keyPressed(keyCode);
     }
 
@@ -635,22 +642,6 @@ public class ContactMessageList extends MessageList {
             if (msg==null || msg.messageType == Msg.MESSAGE_TYPE_OUT || msg.messageType == Msg.MESSAGE_TYPE_SUBJ) {
                 keyGreen();
             } else {
-//#ifdef JUICK
-//#                 if (contact.bareJid.equals("juick@juick.com") || contact.bareJid.startsWith("juick%juick.com@")) {
-//#                     String body = "";
-//#                     if (cursor != 0) // http://code.google.com/p/bm2/issues/detail?id=94#c1
-//#                         body = msg.body;
-//#                     
-//#                     if (body.startsWith("@")) {
-//#                         juickReply(false, body); // post
-//#                         return;
-//#                     } else if (body.startsWith("Reply by ")) {
-//#                         juickReply(true, body); // comment
-//#                         return;
-//#                     }
-//#                 }
-//#endif
-
 //#ifdef RUNNING_MESSAGE
 //#                 sd.roster.me=new MessageEdit(display, this, contact, msg.from+": ");
 //#else

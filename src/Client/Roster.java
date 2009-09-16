@@ -1227,7 +1227,7 @@ public class Roster
             if (splash!=null)
                 splash.close(); // display.setCurrent(this);
             splash=null;
-
+            
             //query bookmarks
             theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
         } else {
