@@ -528,7 +528,7 @@ public class ContactMessageList extends MessageList {
 //#     public void juickReply(String str) {
 //#           try {
 //#ifdef RUNNING_MESSAGE
-//#                 sd.roster.me=new MessageEdit(display, this, contact, getNumberJuickPostOrComment(body)+" ");
+//#                 sd.roster.me=new MessageEdit(display, this, contact, getNumberJuickPostOrComment(str)+" ");
 //#else
 //#             new MessageEdit(display, this, contact, getNumberJuickPostOrComment(str)+" ");
 //#endif
