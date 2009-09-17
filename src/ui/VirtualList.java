@@ -1335,7 +1335,7 @@ public abstract class VirtualList
     }
     
     public void removeCommand(Command command) {
-        menuCommands.removeElement(command);        
+        menuCommands.removeElement(command);
     }
     
     public void touchLeftPressed(){

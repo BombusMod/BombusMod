@@ -188,11 +188,11 @@ public class ContactMessageList extends MessageList {
 //#             }
 //#endif
 //#ifdef MENU_LISTENER
-            if (isHasScheme()) 
+            if (isHasScheme())
 //#endif
                 addCommand(cmdxmlSkin);
 //#ifdef MENU_LISTENER
-            if (isHasUrl()) 
+            if (isHasUrl())
 //#endif
                 addCommand(cmdUrl);
         }
@@ -261,10 +261,10 @@ public class ContactMessageList extends MessageList {
 //#             removeCommand(cmdResume);
 //#         else
 //#             addCommand(cmdResume);
-//#         
+//#
 //#         if (cmdSubscribe==null) return;
 //#         try {
-//#             Msg msg=(Msg) contact.msgs.elementAt(cursor); 
+//#             Msg msg=(Msg) contact.msgs.elementAt(cursor);
 //#             if (msg.messageType==Msg.MESSAGE_TYPE_AUTH) {
 //#                 addCommand(cmdSubscribe);
 //#                 addCommand(cmdUnsubscribed);
@@ -431,13 +431,11 @@ public class ContactMessageList extends MessageList {
 //#endif
         
 //#ifdef JUICK
-//#         String str = getMessage(cursor).body;
-//# 
 //#         if (c==cmdSendJuickCommentReply || c==cmdSendJuickPostReply) {
-//#             juickReply(str);
+//#             juickReply(getMessage(cursor).body);
 //#         }
 //#         if (c==cmdJuickThings) {
-//#             viewJuickThings(str);
+//#             viewJuickThings(getMessage(cursor).body);
 //#         }
 //#endif
     }
@@ -515,12 +513,11 @@ public class ContactMessageList extends MessageList {
 //#         int lastStrStartIndex = str.lastIndexOf('\n')+1;
 //#         if (lastStrStartIndex<0)
 //#             return "toThings";
+//#             // TODO Если сообщение с картинкой, то обработать след. строку или ка-то по-другому?
 //#         int numberEndsIndex = str.indexOf(" http://juick.com/", lastStrStartIndex);
-//#         if(numberEndsIndex>0) {
-//#            int numberEndsIndexTMP = str.indexOf(" (", lastStrStartIndex);
-//#            if(numberEndsIndexTMP>0)
-//#               numberEndsIndex = numberEndsIndexTMP;
-//#            return str.substring(lastStrStartIndex, numberEndsIndex);
+//#         if (numberEndsIndex>0) {
+//#             numberEndsIndex = str.indexOf(' ', lastStrStartIndex);
+//#             return str.substring(lastStrStartIndex, numberEndsIndex);
 //#         }
 //#         return "toThings";
 //#     }
@@ -629,7 +626,7 @@ public class ContactMessageList extends MessageList {
     }
 
 //#ifdef MENU_LISTENER
-    public void touchRightPressed(){ if (cf.oldSE) showMenu(); else destroyView(); }    
+    public void touchRightPressed(){ if (cf.oldSE) showMenu(); else destroyView(); }
     public void touchLeftPressed(){ if (cf.oldSE) keyGreen(); else showMenu(); }
 //#endif
     
@@ -797,19 +794,26 @@ public class ContactMessageList extends MessageList {
         sd.roster.reEnumRoster(); //to reset unread messages icon for this conference in roster
         if (display!=null) display.setCurrent(sd.roster);
     }
-    
+
+//#ifndef MENU_LISTENER
+//#         public void eventOk(){ // For Juick without MENU_LISTENER, but possibly for other commands need this
+//#         super.eventOk();
+//#         commandState();
+//#     }
+//#endif
+
 //#ifdef MENU_LISTENER
     public void showMenu() {
          commandState();
          super.showMenu();
     }
-    
+
     public boolean isHasScheme() {
         if (contact.msgs.size()<1) {
             return false;
         }
         String body=((Msg) contact.msgs.elementAt(cursor)).body;
-        
+
         if (body.indexOf("xmlSkin")>-1) return true;
         return false;
     }
@@ -826,7 +830,7 @@ public class ContactMessageList extends MessageList {
         if (body.indexOf("native:")>-1) return true;
         return false;
     }
-    
+
     public String touchLeftCommand(){ return (cf.oldSE)?((contact.msgSuspended!=null)?SR.MS_RESUME:SR.MS_NEW):SR.MS_MENU; }
     public String touchRightCommand(){ return (cf.oldSE)?SR.MS_MENU:SR.MS_BACK; }
 //#endif
