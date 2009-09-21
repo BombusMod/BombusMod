@@ -798,7 +798,7 @@ public class ContactMessageList extends MessageList {
 //#ifndef MENU_LISTENER
 //#         public void eventOk(){ // For Juick without MENU_LISTENER, but possibly for other commands need this
 //#         super.eventOk();
-//#         commandState();
+//#         commandState(); // Если переделывать на событие открытия меню, то поменять местами вызовы ф-ий.
 //#     }
 //#endif
 

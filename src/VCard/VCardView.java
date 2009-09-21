@@ -46,6 +46,7 @@ import javax.microedition.lcdui.Displayable;
 //# import javax.microedition.lcdui.Command;
 //#else
 import Menu.Command;
+import Menu.MyMenu;
 //#endif
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Image;
@@ -242,6 +243,14 @@ public class VCardView
     }
 
 //#ifdef MENU_LISTENER
+    public void showMenu() {
+        commandStateTest();
+        new MyMenu(display, parentView, this, "", null, menuCommands);
+    }
+//#endif
+
+//#ifdef MENU_LISTENER
+
     public String touchLeftCommand() { return SR.MS_MENU; }
     
     public void cmdOk() { showMenu(); }
