@@ -518,7 +518,7 @@ Panels	Панели
 [main bar]	[основная]
 [info bar]	[инфо]
 Flash backlight	Мигать подсветкой
-execute menu by numkey	выполнение команд меню цифровыми кнопоками
+execute menu by numkey	выполнение команд меню цифровыми кнопками
 show nicknames	показывать ник отправителя
 Send photo	Отправить фото
 enable autorespond	включить автоответчик
