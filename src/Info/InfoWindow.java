@@ -36,6 +36,7 @@ import javax.microedition.io.ConnectionNotFoundException;
 //# import javax.microedition.lcdui.Command;
 //#else
 import Menu.Command;
+import Menu.MyMenu;
 //#endif
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
@@ -110,36 +111,58 @@ public class InfoWindow
 //#             clipboard=ClipBoard.getInstance(); 
 //#         }
 //#endif
-        
-//#ifndef MENU
-        super.removeCommand(super.cmdOk);
-//#ifdef CLIPBOARD
-//#         if (Config.getInstance().useClipBoard) {
-//#             addCommand(cmdOk);
-//#         }
-//#endif
-//#endif
 
+        commandStateTest();
         attachDisplay(display);
         this.parentView=pView;
     }
+
 //#ifdef CLIPBOARD
 //#ifdef MENU_LISTENER
 //#     public String touchLeftCommand(){ return SR.MS_COPY; }
 //#     
-//#     public void touchLeftPressed(){ cmdOk(); }
+//#     public void touchLeftPressed(){ showMenu(); }
 //#endif
 //#     
 //#     public void cmdOk(){
 //#         clipboard.setClipBoard(name.toString()+"\n"+memory.toString()+"\n"+abilities.toString());
 //#         destroyView();
-//# 
 //#     }
 //#endif
-    
+
+    public void commandStateTest() {
+//#ifdef MENU_LISTENER
+        menuCommands.removeAllElements();
+//#endif
+
+//#ifndef MENU
+        super.removeCommand(super.cmdOk);
+        super.removeCommand(super.cmdCancel);
+//#ifdef CLIPBOARD
+//#         if (Config.getInstance().useClipBoard) {
+//#             addCommand(cmdOk);
+//#             addCommand(cmdCancel);
+//#         }
+//#endif
+//#endif
+    }
+
+//#ifdef MENU_LISTENER
+    public void showMenu() {
+        commandStateTest();
+        if (menuCommands.size()==2) {
+        if (menuCommands.elementAt(0).equals(cmdOk) && menuCommands.elementAt(1).equals(cmdCancel)) {
+            cmdOk();
+            return;
+            }
+        }
+        new MyMenu(display, parentView, this, "", null, menuCommands);
+    }
+//#endif
+
     public void commandAction(Command command, Displayable displayable) {
 	if (command==cmdOk) {
-	    cmdOk();
+	    showMenu();
 	}
         super.commandAction(command, displayable);
     }

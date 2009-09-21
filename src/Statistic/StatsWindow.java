@@ -34,6 +34,7 @@ import Info.Version;
 //# import javax.microedition.lcdui.Command;
 //#else
 import Menu.Command;
+import Menu.MyMenu;
 //#endif
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
@@ -66,20 +67,19 @@ public class StatsWindow
 //#endif
     
     MultiLine item=null;
-    
+    private Display display;
+
     /**
      * Creates a new instance of StatsWindow
      */
     public StatsWindow(Display display, Displayable pView) {
         super(display, pView, SR.MS_STATS);
         this.display=display;
-
         item=new MultiLine(SR.MS_ALL, StringUtils.getSizeString(st.getAllTraffic()), super.superWidth); item.selectable=true; itemsList.addElement(item);
 
         item=new MultiLine(SR.MS_PREVIOUS_, StringUtils.getSizeString(st.getLatest()), super.superWidth); item.selectable=true; itemsList.addElement(item);
         
         item=new MultiLine(SR.MS_CURRENT, StringUtils.getSizeString(st.getCurrentTraffic()), super.superWidth); item.selectable=true; itemsList.addElement(item);
-        
 //#if ZLIB
         if (StaticData.getInstance().roster.isLoggedIn()) {
             item=new MultiLine(SR.MS_COMPRESSION, StaticData.getInstance().roster.theStream.getStreamStats(), super.superWidth); item.selectable=true; itemsList.addElement(item);
@@ -89,20 +89,13 @@ public class StatsWindow
             item=new MultiLine(SR.MS_CONNECTED, StaticData.getInstance().roster.theStream.getConnectionData(), super.superWidth); item.selectable=true; itemsList.addElement(item);
         }
 //#endif
-        
         item=new MultiLine(SR.MS_CONN, Integer.toString(st.getSessionsCount()), super.superWidth); item.selectable=true; itemsList.addElement(item);
                 
         item=new MultiLine(SR.MS_STARTED, StaticData.getInstance().roster.startTime, super.superWidth); item.selectable=true; itemsList.addElement(item);
         
-        removeCommand(cmdOk);
-//#ifdef CLIPBOARD
-//#         if (Config.getInstance().useClipBoard) {
-//#             addCommand(cmdCopy);
-//#         }
-//#endif
-        addCommand(cmdClear);
-        addCommand(cmdCancel);
-
+//        removeCommand(cmdOk);
+        //setCommandListener(this);
+        commandStateTest();
         attachDisplay(display);
         this.parentView=pView;
     }
@@ -119,11 +112,34 @@ public class StatsWindow
 //#     }
 //#endif
 
+    public void commandStateTest() {
+//#ifdef MENU_LISTENER
+        menuCommands.removeAllElements();
+//#endif
+        
+//#ifdef CLIPBOARD
+//#         if (Config.getInstance().useClipBoard) {
+//#             addCommand(cmdCopy);
+//#         }
+//#endif
+        addCommand(cmdClear);
+        addCommand(cmdCancel);
+    }
+
 //#ifdef MENU_LISTENER
     public String touchLeftCommand(){ return SR.MS_MENU; }
-    public void touchLeftPressed(){ showMenu(); }
+//    public void touchLeftPressed(){ cmdOk(); }
 //#endif
-    
+
+//#ifdef MENU_LISTENER
+    public void showMenu() {
+        commandStateTest();
+        new MyMenu(display, parentView, this, "", null, menuCommands);
+    }
+//#endif
+
+    public void cmdOk() { showMenu(); }
+
     public void commandAction(Command command, Displayable displayable) {
 //#ifdef CLIPBOARD
 //# 	if (command==cmdCopy) {
