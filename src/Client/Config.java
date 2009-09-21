@@ -843,6 +843,11 @@ public class Config {
 		if (platformName.startsWith("Moto")) {
                 if (device==null) device=System.getProperty("funlights.product");
                 if (device!=null) platformName="Motorola-"+device;
+                try { // thanks vitalyster
+                   Class.forName("com.nokia.mid.ui.DeviceControl");
+                   platformName="Nokia"; // FS #896
+                }
+                catch (Throwable ex) {}
             }
 
             if (platformName.indexOf("SIE") > -1) {
@@ -850,11 +855,6 @@ public class Config {
             } else if (System.getProperty("com.siemens.OSVersion")!=null) {
                 platformName="SIE-"+System.getProperty("microedition.platform")+"/"+System.getProperty("com.siemens.OSVersion");
             }
-
-            try { // thanks vitalyster
-            Class.forName("com.nokia.mid.ui.DeviceControl");
-            platformName="Nokia"; // FS #896
-            } catch (Throwable ex) {}
 
             try {
                 Class.forName("com.samsung.util.Vibration");
