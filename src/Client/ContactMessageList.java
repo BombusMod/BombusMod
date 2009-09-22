@@ -444,7 +444,7 @@ public class ContactMessageList extends MessageList {
 //#     public boolean isJuickMessage() {
 //#         return (contact.bareJid.equals("juick@juick.com")
 //#              || contact.bareJid.startsWith("juick%juick.com@"))
-//#              && (cursor != 0);
+//#              && (contact.msgs.size()>0);
 //#     }
 //# 
 //#     public void viewJuickThings(String str) {
