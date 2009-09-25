@@ -120,7 +120,6 @@ public class InfoWindow
 //#ifdef CLIPBOARD
 //#ifdef MENU_LISTENER
 //#     public String touchLeftCommand(){ return SR.MS_COPY; }
-//#     
 //#     public void touchLeftPressed(){ showMenu(); }
 //#endif
 //#     
@@ -162,7 +161,7 @@ public class InfoWindow
 
     public void commandAction(Command command, Displayable displayable) {
 	if (command==cmdOk) {
-	    showMenu();
+	    cmdOk();
 	}
         super.commandAction(command, displayable);
     }

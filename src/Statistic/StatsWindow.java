@@ -128,7 +128,8 @@ public class StatsWindow
 
 //#ifdef MENU_LISTENER
     public String touchLeftCommand(){ return SR.MS_MENU; }
-//    public void touchLeftPressed(){ cmdOk(); }
+    public void touchLeftPressed(){ cmdOk(); }
+    public void cmdOk() { showMenu(); }
 //#endif
 
 //#ifdef MENU_LISTENER
@@ -137,8 +138,6 @@ public class StatsWindow
         new MyMenu(display, parentView, this, "", null, menuCommands);
     }
 //#endif
-
-    public void cmdOk() { showMenu(); }
 
     public void commandAction(Command command, Displayable displayable) {
 //#ifdef CLIPBOARD
