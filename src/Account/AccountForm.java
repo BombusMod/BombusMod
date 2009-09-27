@@ -32,7 +32,7 @@ import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
-import midlet.BombusMod;
+import ui.SplashScreen;
 import ui.VirtualList;
 import ui.controls.AlertBox;
 import ui.controls.form.CheckBox;
@@ -274,7 +274,7 @@ public class AccountForm
     private void startLogin(boolean login){
         Config.getInstance().accountIndex=accountSelect.accountList.size()-1;
         Account.loadAccount(login, Config.getInstance().accountIndex);
-        BombusMod.getInstance().s.close();
+        SplashScreen.getInstance(display).close();
     }
     
     protected void keyRepeated(int keyCode) {
