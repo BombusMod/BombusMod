@@ -31,10 +31,13 @@ import Client.Config;
 import Client.StaticData;
 import Info.Version;
 import com.ssttr.crypto.SHA1;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.util.Hashtable;
 import javax.microedition.io.Connector;
 import javax.microedition.io.HttpConnection;
 import locale.SR;
+import ui.Time;
 import util.StringUtils;
 
 /**
@@ -48,14 +51,52 @@ public class DnsSrvResolver {
     private String server;
     private String resolvedHost;
     private int resolvedPort;
+    private long ttl;
     private Config cf;
     
     public DnsSrvResolver() {
         resolvedPort=5222;
     }
     
-    public boolean getSrv(String server){
-        this.server=server;
+        private String getSrvRecordName() {
+        String srv="srv#"+server;
+        if (srv.length()>32) return srv.substring(0, 31);
+        return srv;
+    }
+
+    private boolean getCachedSrv() {
+        DataInputStream inputStream=NvStorage.ReadFileRecord(getSrvRecordName(), 0);
+        try {
+            resolvedHost=inputStream.readUTF();
+            resolvedPort=inputStream.readInt();
+            ttl=inputStream.readLong();
+            inputStream.close();
+
+            if (ttl>Time.utcTimeMillis()) {
+                System.out.println("Srv cache hit");
+                return true;
+            }
+            System.out.println("Srv cache expired");
+
+        } catch (Exception e) {
+            System.out.println("Srv cache missed");
+        }
+        return false;
+    }
+
+    private void writeSrvCache() {
+
+        DataOutputStream outputStream=NvStorage.CreateDataOutputStream();
+        try {
+            outputStream.writeUTF(resolvedHost);
+            outputStream.writeInt(resolvedPort);
+            outputStream.writeLong(ttl);
+        } catch (Exception e) { e.printStackTrace(); }
+        NvStorage.writeFileRecord(outputStream, getSrvRecordName(), 0, true);
+
+    }
+
+    private boolean askInetSrv() {
         cf=Config.getInstance();
         
         SHA1 shaVer=new SHA1();
@@ -101,6 +142,7 @@ public class DnsSrvResolver {
             
             resolvedHost=(String)ht.get("host");
             resolvedPort=Integer.parseInt((String)ht.get("port"));
+            ttl=Integer.parseInt((String)ht.get("ttl"))*1000+ Time.utcTimeMillis();
             
             //System.out.println(resolvedHost+":"+resolvedPort);
             
@@ -115,6 +157,18 @@ public class DnsSrvResolver {
         }
 
         return false;
+    }
+
+    public boolean getSrv(String server){
+        this.server=server;
+
+        if (getCachedSrv()) return true;
+
+        if (!askInetSrv()) return false;
+
+        writeSrvCache();
+
+        return true;
     }
 
     public String getHost() { return resolvedHost; }

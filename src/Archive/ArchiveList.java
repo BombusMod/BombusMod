@@ -157,6 +157,8 @@ public class ArchiveList
         archive.delete(cursor);
         messages=null;
         messages=new Vector();
+        setRotator();
+        redraw();
     }
     
     private void deleteAllMessages() {

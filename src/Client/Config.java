@@ -203,7 +203,7 @@ public class Config {
 //#     public boolean notifyWhenMessageType = false;
 //#endif
 //#ifdef CLIPBOARD
-//#     public boolean useClipBoard = true;
+    public boolean useClipBoard = true;
 //#endif
     public boolean firstRun = true;
     
@@ -440,9 +440,9 @@ public class Config {
             inputStream.readUTF(); //scheme
 
 //#ifdef CLIPBOARD
-//#             useClipBoard = inputStream.readBoolean();
+            useClipBoard = inputStream.readBoolean();
 //#else
-            inputStream.readBoolean();
+//#             inputStream.readBoolean();
 //#endif
 //#ifdef PEP_TUNE
 //#             rcvtune = inputStream.readBoolean();
@@ -681,9 +681,9 @@ public class Config {
 //#endif
             outputStream.writeUTF("");//scheme
 //#ifdef CLIPBOARD
-//#             outputStream.writeBoolean(useClipBoard);
+            outputStream.writeBoolean(useClipBoard);
 //#else
-            outputStream.writeBoolean(false);
+//#             outputStream.writeBoolean(false);
 //#endif
 //#ifdef PEP_TUNE
 //#             outputStream.writeBoolean(rcvtune);
@@ -815,6 +815,18 @@ public class Config {
             
             String device=System.getProperty("device.model");
             String firmware=System.getProperty("device.software.version");
+                        //detecting Samsung
+            try {
+                Class.forName("com.samsung.util.AudioClip");
+                platformName="Samsung-generic";
+            } catch (Throwable t0) {
+                try{
+                    Class.forName("com.samsung.util.Vibration");
+                    platformName="Samsung-generic";
+                }catch(Throwable t1){}
+            }
+
+
             
             if (platformName==null) platformName="Motorola";
             

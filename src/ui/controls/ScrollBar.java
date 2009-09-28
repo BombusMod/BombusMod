@@ -40,7 +40,7 @@ import ui.VirtualList;
  */
 public class ScrollBar {
     private static final int WIDTH_SCROLL_1      =4;
-    private static final int WIDTH_SCROLL_2      =10;
+    private static final int WIDTH_SCROLL_2      =18;
     
     private int yTranslate;
     
@@ -163,6 +163,7 @@ public class ScrollBar {
 	scrollerSize=(drawHeight*windowSize)/size+minimumHeight;
 	
 	scrollerPos=(drawHeight*position)/size;
+        scrollerX-=scrollWidth;
         g.setColor(colorBar);
         g.fillRect(1, scrollerPos, scrollWidth-2, scrollerSize);
         

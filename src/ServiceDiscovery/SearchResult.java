@@ -103,7 +103,7 @@ public class SearchResult
                         vcard.append(name)
                              .append((char)0xa0)
                              .append(value)
-                             .append((char)'\n');
+                             .append('\n');
                     }
 		    // status returned by jit
 		    if (name.equals("status")) if (!value.equals("offline")) status=Presence.PRESENCE_ONLINE;
@@ -111,7 +111,7 @@ public class SearchResult
                 Contact serv=new DiscoContact(null, jid, status);
                 serv.group=sd.roster.groups.getGroup(Groups.TYPE_SEARCH_RESULT);
                 serv.subscr="search";
-                Msg m=new Msg(Msg.MESSAGE_TYPE_IN, jid, "Short info", vcard.toString());
+                Msg m=new Msg(Msg.MESSAGE_TYPE_HISTORY, jid, "Short info", vcard.toString());
                 m.unread=false;
                 serv.addMessage(m);
                 

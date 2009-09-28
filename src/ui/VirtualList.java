@@ -183,6 +183,9 @@ public abstract class VirtualList
     
     private int itemLayoutY[]=new int[1];
     private int listHeight;
+
+    private int list_top;
+    private int list_bottom;
     
 //#ifdef BACK_IMAGE
 //#     public Image img;
@@ -234,7 +237,7 @@ public abstract class VirtualList
     public static int startGPRS=-1;
     public static int offGPRS=0;
 
-    private int itemBorder[];
+    //private int itemBorder[];
 
     private int lastClickX;
     private int lastClickY;
@@ -282,8 +285,7 @@ public abstract class VirtualList
         changeOrient(cf.panelsState);
 
         setFullScreenMode(fullscreen);
-
-        itemBorder=new int[32];
+        
 
         scrollbar=new ScrollBar();
         scrollbar.setHasPointerEvents(hasPointerEvents());
@@ -366,8 +368,8 @@ public abstract class VirtualList
         
         //StaticData.getInstance().screenWidth=width;
 
-        int list_bottom=0;        
-        itemBorder[0]=0;
+               
+        
         updateLayout();
         
         setAbsOrg(g, 0,0);
@@ -392,13 +394,13 @@ public abstract class VirtualList
         if (paintTop) {
             if (reverse) {
                 if (infobar!=null) {
-                    iHeight=infobar.getVHeight();
-                    itemBorder[0]=iHeight;
+                    iHeight=infobar.getVHeight();                    
+                    list_top = iHeight;
                     drawInfoPanel(g);
                 }
             } else {
-                if (mainbar!=null) {
-                    itemBorder[0]=mHeight; 
+                if (mainbar!=null) {                    
+                    list_top = mHeight;
                     drawMainPanel(g);
                 }
             }
@@ -412,7 +414,7 @@ public abstract class VirtualList
             }
         }
 
-        winHeight=height-itemBorder[0]-list_bottom;
+        winHeight=height-list_top-list_bottom;
 
         int count=getItemCount();
         
@@ -431,7 +433,7 @@ public abstract class VirtualList
 
         int itemIndex=getElementIndexAt(win_top);
         int displayedIndex=0;
-        int displayedBottom=itemBorder[0];
+        int displayedBottom=list_top;
    
         int baloon=-1;
         int itemYpos;
@@ -444,7 +446,7 @@ public abstract class VirtualList
                 
                 int lh=el.getVHeight();
 
-                setAbsOrg(g, 0, itemBorder[0]);
+                setAbsOrg(g, 0, list_top);
                 g.setClip(0,0, itemMaxWidth, winHeight);    
                 
                 g.translate(0,itemYpos);
@@ -466,7 +468,7 @@ public abstract class VirtualList
                 el.drawItem(g, (sel)?offset:0, sel);
                 
                 itemIndex++;
-		displayedBottom=itemBorder[++displayedIndex]=itemBorder[0]+itemYpos+lh;
+		displayedBottom=list_top+itemYpos+lh;
             }
         } catch (Exception e) { }
 
@@ -485,7 +487,7 @@ public abstract class VirtualList
 
         if (scroll) {
             int correct=(memMonitor)?1:0;
-            setAbsOrg(g, 0, itemBorder[0]+correct);
+            setAbsOrg(g, 0, list_top+correct);
             g.setClip(0, 0, width, winHeight);
 
 	    scrollbar.setPostion(win_top-correct);
@@ -497,7 +499,7 @@ public abstract class VirtualList
 
         setAbsClip(g, width, height);
         
-        drawHeapMonitor(g, itemBorder[0]); //heap monitor
+        drawHeapMonitor(g, list_top); //heap monitor
         
         if (showBalloon) {
             if (showBalloons) {
@@ -537,6 +539,7 @@ public abstract class VirtualList
         }
         
 //#ifdef POPUPS
+        setAbsClip(g, width, height);
         drawPopUp(g);
 //#endif
         
@@ -547,7 +550,7 @@ public abstract class VirtualList
                 progressWidth=(strWidth>progressWidth)?strWidth:progressWidth;
                 int progressX=(width-progressWidth)/2;
                 if (pb==null) pb=new Progress(progressX, height/2, progressWidth);
-                int popHeight=pb.getHeight();
+                int popHeight=Progress.getHeight();
                 g.setColor(ColorTheme.getColor(ColorTheme.POPUP_SYSTEM_BGND));
                 g.fillRoundRect(progressX-2, (height/2)-(popHeight*2), progressWidth+4, (popHeight*2)+1, 6, 6);
                 g.setColor(ColorTheme.getColor(ColorTheme.POPUP_SYSTEM_INK));
@@ -615,7 +618,7 @@ public abstract class VirtualList
 
     private void drawHeapMonitor(final Graphics g, int y) {
         if (memMonitor) {
-            int ram=(int)(((long)Runtime.getRuntime().freeMemory()*width)/(long)Runtime.getRuntime().totalMemory());
+            int ram=(int)((Runtime.getRuntime().freeMemory()*width)/Runtime.getRuntime().totalMemory());
             g.setColor(ColorTheme.getColor(ColorTheme.HEAP_TOTAL));  g.fillRect(0,y,width,1);
             g.setColor(ColorTheme.getColor(ColorTheme.HEAP_FREE));  g.fillRect(0,y,ram,1);
         }
@@ -744,22 +747,26 @@ public abstract class VirtualList
             return;
         }
 //#endif
+        yPointerPos = y;
+
         if (scrollbar.pointerPressed(x, y, this)) {
             stickyWindow=false;
             return;
         }
-	int i=0;
-	while (i<32) {
-	    if (y<itemBorder[i]) break;
-	    i++;
-	}
-	if (i==0 || i==32) return;
-	//System.out.println(i);
+	
+        if (y < list_top) return;
+        int oldCursor = cursor;
 	if (cursor>=0) {
-            moveCursorTo(getElementIndexAt(win_top)+i-1);
+            moveCursorTo(getElementIndexAt(win_top+y-list_top));
             setRotator();
         }
-	
+	if (cursor!=oldCursor) {
+            // Ñ_Ð_Ð÷Ð>Ð°Ð÷Ð_ Ñ_Ð>Ð÷Ð_Ð÷Ð_Ñ' Ð_Ð°ÐºÑ_Ð¸Ð_Ð°Ð>Ñ_Ð_Ð_ Ð_Ð¸Ð_Ð¸Ð_Ñ<Ð_
+            int il=itemLayoutY[cursor+1]-winHeight;
+            if (il>win_top) win_top=il;
+            il=itemLayoutY[cursor];
+            if (il<win_top) win_top=il;
+        }
 	long clickTime=System.currentTimeMillis();
 	if (cursor==lastClickItem) {
 	    if (lastClickY-y<5 && y-lastClickY<5) {
@@ -775,26 +782,43 @@ public abstract class VirtualList
 	lastClickY=y;
 	lastClickItem=cursor;
 
-        int il=itemLayoutY[cursor+1]-winHeight;
-        if (il>win_top) win_top=il;
-        il=itemLayoutY[cursor];
-        if (il<win_top) win_top=il;
         
         repaint();
     }
     protected void pointerDragged(int x, int y) { 
-        if (scrollbar.pointerDragged(x, y, this)) stickyWindow=false; 
+
+        if (scrollbar.pointerDragged(x, y, this)) {
+            stickyWindow=false;
+            return;
+        }
+
+        int dy = y-yPointerPos;
+
+        yPointerPos=y;
+
+        win_top-=dy;
+
+        if (win_top+winHeight>listHeight) win_top=listHeight-winHeight;
+        if (win_top<0) win_top=0;
+
+        stickyWindow=false;
+	if (cursor>=0) {
+            cursor=getElementIndexAt(win_top+y-list_top-list_bottom);
+            setRotator();
+        }
+
+        repaint();
     }
     protected void pointerReleased(int x, int y) { 
         scrollbar.pointerReleased(x, y, this); 
-        
+        /*
 	long clickTime=System.currentTimeMillis();
         if (lastClickY-y<5 && y-lastClickY<5) {
             if (clickTime-lastClickTime>500) {
                 y=0;
                 eventLongOk();
             }
-        }
+        }*/
     }
     
 //#ifdef USER_KEYS

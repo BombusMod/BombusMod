@@ -2026,6 +2026,8 @@ public class Roster
         }
         if (e.getMessage()!=null)
             error.append(e.getMessage());
+        String errSSL=io.SSLExceptionDecoder.decode(e);
+        errorLog(errSSL);
 
         if (e instanceof SecurityException) { errorLog(error.toString()); return; }
         if (currentReconnect>=cf.reconnectCount) { errorLog(error.toString()); return; }

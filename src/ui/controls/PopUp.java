@@ -27,7 +27,6 @@
 
 package ui.controls;
 
-import Client.Contact;
 import Colors.ColorTheme;
 import images.RosterIcons;
 import java.util.Enumeration;
