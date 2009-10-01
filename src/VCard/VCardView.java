@@ -68,7 +68,6 @@ public class VCardView
 //#endif
     {
     
-    private Display display;
 
     private VCard vcard;
     private ImageItem photoItem;
@@ -265,7 +264,7 @@ public class VCardView
     }
     
     public void clearVcard() {
-        new AlertBox(SR.MS_ACTION, SR.MS_DELETE+" "+SR.MS_VCARD+"?", display, this) {
+        new AlertBox(SR.MS_ACTION, SR.MS_DELETE+" "+SR.MS_VCARD+"?", display, StaticData.getInstance().roster) {
             public void yes() {
                 c.vcard=null;
                 cmdExit();

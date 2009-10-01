@@ -804,7 +804,7 @@ public abstract class VirtualList
 
         stickyWindow=false;
 	if (cursor>=0) {
-            cursor=getElementIndexAt(win_top+y-list_top-list_bottom);
+            cursor=getElementIndexAt(win_top+y-list_top);
             setRotator();
         }
 
@@ -1443,8 +1443,8 @@ class TimerTaskRotate extends Thread{
                 } else {
                     scroll --;                    
                 }
-                if (attachedList.reconnectRedraw) {
-                    attachedList.reconnectRedraw=false;
+                if (VirtualList.reconnectRedraw) {
+                    VirtualList.reconnectRedraw=false;
                     try { attachedList.redraw(); } catch (Exception e) { instance=null; break; }
                 }
             }

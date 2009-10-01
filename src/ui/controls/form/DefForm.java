@@ -28,7 +28,6 @@
 package ui.controls.form;
 
 //import Client.Config;
-import Client.Config;
 import java.util.Vector;
 //#ifndef MENU_LISTENER
 //# import javax.microedition.lcdui.CommandListener;
@@ -59,7 +58,6 @@ public class DefForm
 //#endif
     {
 
-    public Display display;
     
     public Vector itemsList=new Vector();
 

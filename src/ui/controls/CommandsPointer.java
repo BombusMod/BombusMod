@@ -30,8 +30,8 @@ public class CommandsPointer {
     public CommandsPointer() { }
     
     public void init(int width, int height, int lineHeight) {
-        this.cWidth=width/2;
-        this.cHeight=height-lineHeight;
+        CommandsPointer.cWidth=width/2;
+        CommandsPointer.cHeight=height-lineHeight;
     }
     
     public int pointerPressed(int x, int y) {
