@@ -401,7 +401,6 @@ public class Config {
 
             enableVersionOs=inputStream.readBoolean();
             messageLimit=inputStream.readInt();
-            widthScroll2=inputStream.readInt();
             lang=inputStream.readUTF();
             eventDelivery=inputStream.readBoolean();
 //#ifdef DETRANSLIT
@@ -487,6 +486,7 @@ public class Config {
             showTimeTraffic=inputStream.readBoolean();
             
             swapSendAndSuspend=inputStream.readBoolean();
+            widthScroll2=inputStream.readInt();
             
 	    inputStream.close();
             inputStream=null;
@@ -644,7 +644,6 @@ public class Config {
 
             outputStream.writeBoolean(enableVersionOs);
             outputStream.writeInt(messageLimit);
-            outputStream.writeInt(widthScroll2);
             outputStream.writeUTF(lang);      
             outputStream.writeBoolean(eventDelivery);
 //#ifdef DETRANSLIT
@@ -730,6 +729,7 @@ public class Config {
             outputStream.writeBoolean(showTimeTraffic);
             
             outputStream.writeBoolean(swapSendAndSuspend);
+            outputStream.writeInt(widthScroll2);
             
 	} catch (Exception e) { }
 	
