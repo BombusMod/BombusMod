@@ -170,6 +170,7 @@ public class Config {
     public boolean enableVersionOs=true;
     public boolean collapsedGroups=true;
     public int messageLimit=512;
+    public int widthScroll2=10;
     public boolean eventDelivery=false;
 //#ifdef DETRANSLIT
 //#     public boolean transliterateFilenames=false;
@@ -203,7 +204,7 @@ public class Config {
 //#     public boolean notifyWhenMessageType = false;
 //#endif
 //#ifdef CLIPBOARD
-    public boolean useClipBoard = true;
+//#     public boolean useClipBoard = true;
 //#endif
     public boolean firstRun = true;
     
@@ -400,6 +401,7 @@ public class Config {
 
             enableVersionOs=inputStream.readBoolean();
             messageLimit=inputStream.readInt();
+            widthScroll2=inputStream.readInt();
             lang=inputStream.readUTF();
             eventDelivery=inputStream.readBoolean();
 //#ifdef DETRANSLIT
@@ -440,9 +442,9 @@ public class Config {
             inputStream.readUTF(); //scheme
 
 //#ifdef CLIPBOARD
-            useClipBoard = inputStream.readBoolean();
+//#             useClipBoard = inputStream.readBoolean();
 //#else
-//#             inputStream.readBoolean();
+            inputStream.readBoolean();
 //#endif
 //#ifdef PEP_TUNE
 //#             rcvtune = inputStream.readBoolean();
@@ -642,6 +644,7 @@ public class Config {
 
             outputStream.writeBoolean(enableVersionOs);
             outputStream.writeInt(messageLimit);
+            outputStream.writeInt(widthScroll2);
             outputStream.writeUTF(lang);      
             outputStream.writeBoolean(eventDelivery);
 //#ifdef DETRANSLIT
@@ -681,9 +684,9 @@ public class Config {
 //#endif
             outputStream.writeUTF("");//scheme
 //#ifdef CLIPBOARD
-            outputStream.writeBoolean(useClipBoard);
+//#             outputStream.writeBoolean(useClipBoard);
 //#else
-//#             outputStream.writeBoolean(false);
+            outputStream.writeBoolean(false);
 //#endif
 //#ifdef PEP_TUNE
 //#             outputStream.writeBoolean(rcvtune);

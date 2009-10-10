@@ -101,6 +101,7 @@ public class ConfigForm
 //#     private NumberInput messageCountLimit;
 //#endif
     private NumberInput messageLimit;
+    private NumberInput widthScroll2;
     
     private CheckBox autoLogin;
     private CheckBox autoJoinConferences;
@@ -250,6 +251,8 @@ public class ConfigForm
         itemsList.addElement(new SpacerItem(10));
         messageLimit=new NumberInput(display, SR.MS_MESSAGE_COLLAPSE_LIMIT, Integer.toString(cf.messageLimit), 200, 1000);
         itemsList.addElement(messageLimit);
+        widthScroll2=new NumberInput(display, SR.MS_MESSAGE_WIDTH_SCROLL_2, Integer.toString(cf.widthScroll2), 1, 50);
+        itemsList.addElement(widthScroll2);
         
         itemsList.addElement(new SpacerItem(10));
         itemsList.addElement(new SimpleString(SR.MS_STARTUP_ACTIONS, true));
@@ -499,6 +502,7 @@ public class ConfigForm
 //#             cf.autoAwayType=autoAwayType.getSelectedIndex();
 //#endif
         cf.messageLimit=Integer.parseInt(messageLimit.getValue());
+        cf.widthScroll2=Integer.parseInt(widthScroll2.getValue());
 //#if LOGROTATE
 //#             cf.msglistLimit=Integer.parseInt(messageCountLimit.getValue());
 //#endif

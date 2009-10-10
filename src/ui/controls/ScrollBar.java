@@ -27,6 +27,7 @@
 
 package ui.controls;
 
+import Client.Config;
 import javax.microedition.lcdui.Graphics;
 import Colors.ColorTheme;
 //#ifdef GRADIENT
@@ -40,7 +41,9 @@ import ui.VirtualList;
  */
 public class ScrollBar {
     private static final int WIDTH_SCROLL_1      =4;
-    private static final int WIDTH_SCROLL_2      =18;
+    // private static final int WIDTH_SCROLL_2      =18;
+    private Config cf = Config.getInstance();
+    private final int WIDTH_SCROLL_2 = cf.widthScroll2+2;
     
     private int yTranslate;
     
