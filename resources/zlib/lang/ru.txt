@@ -366,6 +366,7 @@ Collapsed groups	сворачивать группы при запуске
 Send Buffer	Послать текст из буфера
 Change nickname	Сменить ник
 Message collapse limit	Сворачивать сообщения, если больше(символов)
+Width scroll	Диаметер "бревна"
 No client info	Невозможно получить информацию
 Delete all messages	Удалить все сообщения
 Join marked (auto)	Подключ. к отмеч. для автовхода

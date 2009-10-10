@@ -366,6 +366,7 @@ Collapsed groups	сворачивать группы при запуске
 Send Buffer	Послать текст из буфера
 Change nickname	Сменить ник
 Message collapse limit	Сворачивать сообщения, если больше(символов)
+Width scroll	Диаметер "бревна"
 No client info	Невозможно получить информацию
 Delete all messages	Удалить все сообщения
 Join marked (auto)	Подключ. к отмеч. для автовхода
@@ -518,7 +519,7 @@ Panels	Панели
 [main bar]	[основная]
 [info bar]	[инфо]
 Flash backlight	Мигать подсветкой
-execute menu by numkey	выполнение команд меню цифровыми кнопками
+execute menu by numkey	выполнение команд меню цифровыми кнопоками
 show nicknames	показывать ник отправителя
 Send photo	Отправить фото
 enable autorespond	включить автоответчик
