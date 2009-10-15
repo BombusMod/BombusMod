@@ -34,39 +34,48 @@ import ui.ImageList;
  *
  * @author EvgS
  */
-public class SmilesIcons extends ImageList {
+public class SmilesIcons {
     
     private static String res= "/images/smiles.png";
+//#ifdef ANISMILES
+//#     private static String restxt= "/smiles/smiles.txt";
+//#else
     private static String restxt= "/images/smiles.txt";
+//#endif
     
     private final static int SMILES_IN_ROW=16;
     private static int cols;
-    /** Creates a new instance of SmilesIcons */
-    private SmilesIcons() {
-	super(res, cols, SMILES_IN_ROW);
-    }
     
-    private static ImageList instance;
+    private static ImageList instance = null;
     public static ImageList getInstance() {
-	if (instance==null){
 //#ifdef SMILES
-            try {
-                int smilesCount=MessageParser.getInstance().getSmileTable().size();
-                cols=ceil(SMILES_IN_ROW, smilesCount);
-            } catch (Exception e) {
-                System.out.print("Can't load ");
-                System.out.println(restxt);
-            }
-//#endif
-            instance=new SmilesIcons();
+        if (null == instance){
+
+             try {
+                 int smilesCount = MessageParser.getInstance().getSmileTable().size();
+                 cols = ceil(SMILES_IN_ROW, smilesCount);
+             } catch (Exception e) {
+                 System.out.print("Can't load ");
+                 System.out.println(restxt);
+             }
+//#ifdef ANISMILES
+//#             instance=new AniImageList();
+//#             ((AniImageList)instance).load("/smiles");
+//#
+//#             if (0 == instance.getWidth()) {
+//#                 instance=new ImageList(res, cols, SMILES_IN_ROW);
+//#             }
+//#else
+            instance=new ImageList(res, cols, SMILES_IN_ROW);
+ //#endif
         }
-	return instance;
+//#endif
+        return instance;
     }
     
     private static int ceil(int rows, int count){
-        int tempCols=count/rows;
-        if (count>(tempCols*rows))
-            tempCols++;
+        int tempCols = count / rows;
+        if (count > (tempCols * rows)) tempCols++;
         return tempCols;
     }
 }

@@ -42,7 +42,7 @@ public class ClientsIconsData {
     private static Vector clients[]=new Vector[2];
 
     private static String restxt= "/images/clients.txt";
-    
+
     private static ClientsIconsData instance;
     public static ClientsIconsData getInstance() {
 	if (instance==null){
@@ -52,7 +52,7 @@ public class ClientsIconsData {
 
                 clients=new StringLoader().stringLoader(restxt, 2);
             } catch (Exception e) {
-                System.out.print("Can't load ");
+                System.out.print("ClientsIcons: Can't load ");
                 System.out.println(restxt);
             }
             instance=new ClientsIconsData();

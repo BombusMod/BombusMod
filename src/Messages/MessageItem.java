@@ -27,7 +27,6 @@
 
 package Messages;
 
-import Client.Config;
 import Client.Msg;
 import images.RosterIcons;
 import java.util.Enumeration;

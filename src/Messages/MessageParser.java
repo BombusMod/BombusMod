@@ -41,7 +41,7 @@ import Client.Msg;
 import Client.Config;
 import util.Strconv;
 
-public final class MessageParser implements Runnable{
+public final class MessageParser {
     
     private final static int URL=-2;
     private final static int NOSMILE=-1;
@@ -58,13 +58,15 @@ public final class MessageParser implements Runnable{
 //#ifdef SMILES 
     private ImageList smileImages;
 //#endif
-    private Vector tasks=new Vector();
     
-    private Thread thread;
     boolean wordsWrap;
     private static String wrapSeparators=" .,-=/\\;:+*()[]<>~!@#%^_&";
     
+//#ifdef ANISMILES
+    private static String res= "/smiles/smiles.txt";
+//#else
     private static String res= "/images/smiles.txt";
+//#endif
     
     public static MessageParser getInstance() {
         if (instance==null) 
@@ -114,41 +116,16 @@ public final class MessageParser implements Runnable{
     }
 
     public void parseMsg(MessageItem messageItem,  int width) {
-        synchronized (tasks) {
+
             wordsWrap=Config.getInstance().textWrap==1;
             messageItem.msgLines=new Vector();
 //#ifdef SMILES
             this.smileImages=SmilesIcons.getInstance();
 //#endif
             this.width=width;
+            parseMessage(messageItem);
 
-            if (tasks.indexOf(messageItem)>=0) return;
-
-            tasks.addElement(messageItem);
-            if (thread==null) {
-                thread=new Thread(this);
-                thread.setPriority(Thread.MAX_PRIORITY);
-                thread.start();
-            }
-        }
         return;
-    }
-    
-    public void run() {
-        while(true) {
-            MessageItem task=null;
-            synchronized (tasks) {
-                if (tasks.size()==0) {
-                    thread=null;
-                    return;
-                }
-                task=(MessageItem) tasks.lastElement();
-            }
-            parseMessage(task);
-            synchronized (tasks) {
-                tasks.removeElement(task);
-            }
-        }
     }
 
     private MessageParser(String resource) {

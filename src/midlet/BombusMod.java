@@ -36,6 +36,7 @@ package midlet;
 import Account.Account;
 import Account.AccountSelect;
 import Colors.ColorTheme;
+import images.ClientsIconsData;
 import javax.microedition.midlet.*;
 import javax.microedition.lcdui.*;
 import locale.SR;
@@ -64,16 +65,16 @@ public class BombusMod extends MIDlet implements Runnable{
     private static BombusMod instance; 
 
     public BombusMod() {
-	instance=this; 
+        instance=this; 
         display = Display.getDisplay(this);
-        s=SplashScreen.getInstance(display);
+        s = SplashScreen.getInstance(display);
         s.setProgress("Loading", 3); // this message will not be localized
     }
     
     /** Entry point  */
     public void startApp() {
         if (isRunning) {
-	    hideApp(false);
+            hideApp(false);
             return;
         }
         isRunning=true;
@@ -105,7 +106,7 @@ public class BombusMod extends MIDlet implements Runnable{
         SR.loaded();
         s.setProgress(12);
 
-	Config cf=Config.getInstance();
+        Config cf=Config.getInstance();
         s.setProgress(15);
         
 //#ifdef AUTOTASK
@@ -120,20 +121,25 @@ public class BombusMod extends MIDlet implements Runnable{
         if (selAccount) 
             s.setProgress("Entering setup",22);
         
+        try {
         s.setProgress(24);
         if (!selAccount && cf.autoLogin)
             Account.loadAccount(cf.autoLogin, cf.accountIndex); // connect whithout account select
         else
             new AccountSelect(display, sd.roster, true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void destroyApp(boolean unconditional) { }
 
     public void hideApp(boolean hide) {
-	if (hide)
+        if (hide)
             display.setCurrent(null);
-	else if (isMinimized)
+        else if (isMinimized) {
             display.setCurrent(display.getCurrent());
+        }
         isMinimized=hide;
     }
     
@@ -186,4 +192,8 @@ public class BombusMod extends MIDlet implements Runnable{
 //#         }
 //#     }
 //#endif
+
+    public Display getDisplay() {
+        return display;
+    }
 }

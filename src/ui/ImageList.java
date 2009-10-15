@@ -41,7 +41,8 @@ public class ImageList {
     protected Image resImage;
     protected int height;
     protected int width;
-
+    protected ImageList() {
+    }
     /** Creates a new instance of ImageList */
     public ImageList(String resource, int rows, int columns) {
         try {
