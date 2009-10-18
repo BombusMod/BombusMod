@@ -91,9 +91,9 @@ public class InfoWindow
         itemsList.addElement(new SpacerItem(10));
         
         StringBuffer memInfo=new StringBuffer(SR.MS_FREE);
-//#ifndef WSYSTEMGC
-        System.gc();
-//#endif
+        if (Config.getInstance().widthSystemgc) {
+            System.gc();
+        }
         memInfo.append(Runtime.getRuntime().freeMemory()>>10)
                .append("\n")
                .append(SR.MS_TOTAL)
@@ -341,6 +341,9 @@ public class InfoWindow
 //#endif
 //#ifdef SMILES
         abilitiesList.addElement((String)"SMILES");
+//#ifdef ANISMILES
+        abilitiesList.addElement((String)"ANISMILES");
+//#endif
 //#endif
 //#ifdef STATS
 //#ifdef PLUGINS
@@ -362,9 +365,6 @@ public class InfoWindow
 //#endif
 //#ifdef WMUC
 //#         abilitiesList.addElement((String)"WMUC");
-//#endif
-//#ifdef WSYSTEMGC
-//#         abilitiesList.addElement((String)"WSYSTEMGC");
 //#endif
 //#ifdef ZLIB
         abilitiesList.addElement((String)"ZLIB");

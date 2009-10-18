@@ -31,17 +31,12 @@
 
 package images;
 
-import Client.StaticData;
 import java.io.InputStream;
-import java.util.Vector;
 import javax.microedition.lcdui.Canvas;
-import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
-import javax.microedition.lcdui.Form;
 import javax.microedition.lcdui.Graphics;
 import midlet.BombusMod;
 import ui.ImageList;
-import ui.VirtualList;
 
 /**
  *
@@ -66,7 +61,7 @@ public class AniImageList extends ImageList implements Runnable {
 
     public void drawImage(Graphics g, int index, int x, int y) {
         if (0 <= index && index < icons.length) {
-            icons[index].drawImage(g, x, y);
+            icons[index].drawImage(g, x+(width-icons[index].getWidth())/2, y);
         } else {
         }
     }

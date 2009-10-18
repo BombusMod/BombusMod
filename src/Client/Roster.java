@@ -420,10 +420,10 @@ public class Roster
     }
     
     public void systemGC() {
-//#ifndef WSYSTEMGC
-	System.gc();
-        try { Thread.sleep(50); } catch (InterruptedException e){}
-//#endif
+        if (Config.getInstance().widthSystemgc) {
+            System.gc();
+            try { Thread.sleep(50); } catch (InterruptedException e){}
+        }
     }
     
     public void errorLog(String s){

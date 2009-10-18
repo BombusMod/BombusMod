@@ -126,6 +126,7 @@ public class ConfigForm
 //#endif
     private CheckBox lightState;
     private CheckBox popupFromMinimized;
+    private CheckBox widthSystemgc;
 
     private NumberInput fieldGmt; 
     
@@ -308,6 +309,8 @@ public class ConfigForm
             popupFromMinimized = new CheckBox(SR.MS_ENABLE_POPUP, cf.popupFromMinimized);
             itemsList.addElement(popupFromMinimized);
         }
+        widthSystemgc = new CheckBox(SR.MS_WIDTH_SYSTEM_GC, cf.widthSystemgc);
+        itemsList.addElement(widthSystemgc);
 //#ifdef MENU_LISTENER
         executeByNum = new CheckBox(SR.MS_EXECUTE_MENU_BY_NUMKEY, cf.executeByNum); itemsList.addElement(executeByNum);
 //#endif
@@ -487,6 +490,8 @@ public class ConfigForm
         cf.lightState=lightState.getValue();
         if (cf.allowMinimize)
             cf.popupFromMinimized=popupFromMinimized.getValue();
+
+        cf.widthSystemgc=widthSystemgc.getValue();
         cf.swapSendAndSuspend=swapSendAndSuspend.getValue();
         
         cf.gmtOffset=Integer.parseInt(fieldGmt.getValue());
