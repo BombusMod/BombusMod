@@ -61,7 +61,7 @@ public class AniImageList extends ImageList implements Runnable {
 
     public void drawImage(Graphics g, int index, int x, int y) {
         if (0 <= index && index < icons.length) {
-            icons[index].drawImage(g, x+(width-icons[index].getWidth())/2, y);
+            icons[index].drawImage(g, x+(width-icons[index].getWidth())/2, y+(height-icons[index].getHeight())/2);
         } else {
         }
     }
