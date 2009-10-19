@@ -268,10 +268,10 @@ public class Config {
                 if (smiles) SmilesIcons.getInstance();
 //#endif
 
-                if (widthSystemgc) {
+//                if (widthSystemgc) { _vt
                     System.gc();
                     try { Thread.sleep(50); } catch (InterruptedException e){}
-                }
+//                } _vt
                 
                 allowMinimize=true;
                 greenKeyCode=-10;

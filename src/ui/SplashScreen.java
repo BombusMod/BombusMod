@@ -109,10 +109,10 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         
         setFullScreenMode(cf.fullscreen);
 
-        if (cf.widthSystemgc) {
+//        if (cf.widthSystemgc) { _vt
             System.gc();
             try { Thread.sleep(50); } catch (InterruptedException ex) { }
-        }
+//        } _vt
     }
 
     public void paint(Graphics g){
@@ -188,9 +188,9 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         //serviceRepaints();
         img=null;
         instance=null;
-        if (cf.widthSystemgc) {
+//        if (cf.widthSystemgc) { _vt
             System.gc();
-        }
+//        } _vt
     }
 
     public void run() {
@@ -249,9 +249,9 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
 //#             sd.roster.sendPresence(newStatus, ms);
 //#         }
 //#endif
-        if (cf.widthSystemgc) {
+//        if (cf.widthSystemgc) { _vt
             System.gc();
-        }
+//        } _vt
     }
 
     public void getKeys() {

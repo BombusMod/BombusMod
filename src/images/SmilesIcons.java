@@ -27,6 +27,7 @@
 
 package images;
 
+import Client.Config;
 import Messages.MessageParser;
 import ui.ImageList;
 
@@ -61,7 +62,7 @@ public class SmilesIcons {
 //#ifdef ANISMILES
 //#             instance=new AniImageList();
 //#             ((AniImageList)instance).load("/smiles");
-//#
+//# 
 //#             if (0 == instance.getWidth()) {
 //#                 instance=new ImageList(res, cols, SMILES_IN_ROW);
 //#             }
@@ -69,7 +70,6 @@ public class SmilesIcons {
             instance=new ImageList(res, cols, SMILES_IN_ROW);
  //#endif
         }
-//#endif
         return instance;
     }
     

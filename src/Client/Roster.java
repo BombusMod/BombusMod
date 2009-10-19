@@ -601,9 +601,7 @@ public class Roster
     public void reEnumRoster(){
         if (reEnumerator==null) reEnumerator=new ReEnumerator();
         reEnumerator.queueEnum();
-//#ifndef WSYSTEMGC
-        System.gc(); // issue 87 workaround
-//#endif
+        systemGC(); // issue 87 workaround
     }
     
     
@@ -1788,11 +1786,11 @@ public class Roster
 //#         if (message.messageType==Msg.MESSAGE_TYPE_IN)
 //#             setTicker(c, message.body);
 //#endif
-//#ifndef WSYSTEMGC
-        if (cf.ghostMotor) {
-            systemGC();
+        if (Config.getInstance().widthSystemgc) {
+                if (cf.ghostMotor) {
+                      systemGC();
+                }
         }
-//#endif
         if (countNewMsgs()) reEnumRoster();
         
         if (!message.unread) return;
