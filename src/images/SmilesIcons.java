@@ -68,8 +68,9 @@ public class SmilesIcons {
 //#             }
 //#else
             instance=new ImageList(res, cols, SMILES_IN_ROW);
- //#endif
+//#endif
         }
+//#endif
         return instance;
     }
     
