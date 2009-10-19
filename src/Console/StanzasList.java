@@ -41,7 +41,7 @@ public class StanzasList {
     
     Vector stanzas=new Vector();
     
-    boolean enabled = false;
+    public boolean enabled = false;
     
     private static StanzasList instance;
     

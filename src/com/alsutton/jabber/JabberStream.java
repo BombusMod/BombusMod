@@ -246,16 +246,16 @@ public class JabberStream extends XmppParser implements Runnable {
 	iostream.send(new StringBuffer(data));
 //#ifdef CONSOLE
 //#         if (data.equals("</iq") || data.equals(" "))
-//#             addLog("Ping myself", 1);
+//#             if (StanzasList.getInstance().enabled) addLog("Ping myself", 1);
 //#         else
-//#             addLog(data, 1);
+//#             if (StanzasList.getInstance().enabled) addLog(data, 1);
 //#endif
     }
     
     public void sendBuf( StringBuffer data ) throws IOException {
 	iostream.send(data);
 //#ifdef CONSOLE
-//#         addLog(data.toString(), 1);
+//#         if (StanzasList.getInstance().enabled) addLog(data.toString(), 1);
 //#endif
     }
     
