@@ -171,7 +171,7 @@ public class Config {
     public boolean collapsedGroups=true;
     public int messageLimit=512;
     public int widthScroll2=10;
-    public boolean widthSystemgc=true;
+    public boolean widthSystemgc=false;
     public boolean eventDelivery=false;
 //#ifdef DETRANSLIT
 //#     public boolean transliterateFilenames=false;
