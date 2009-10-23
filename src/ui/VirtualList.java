@@ -757,8 +757,11 @@ public abstract class VirtualList
 	
         if (y < list_top) return;
         int oldCursor = cursor;
-	if (cursor>=0) {
-            moveCursorTo(getElementIndexAt(win_top+y-list_top));
+        int pos = getElementIndexAt(win_top+y-list_top);
+        if (cursor >= 0 && cursor != pos && this.getItemCount() >= pos) {
+            System.out.println("Items: " + this.getItemCount() + ", pos - " + pos);
+            moveCursorTo(pos);
+
             setRotator();
         }
 	if (cursor!=oldCursor) {
@@ -1364,7 +1367,11 @@ public abstract class VirtualList
     }
     
     public void touchLeftPressed(){
+        if (reconnectWindow.getInstance().isActive()) {
+            key(Config.SOFT_LEFT);
+        } else {
         showMenu();
+        }
     }
     
     public void setCommandListener(MenuListener menuListener) { }
@@ -1378,7 +1385,11 @@ public abstract class VirtualList
     
     
     public void touchRightPressed(){
+        if (reconnectWindow.getInstance().isActive()) {
+            key(Config.SOFT_RIGHT);
+        } else {
         if (canBack) destroyView();
+        }
     }
 //#endif
     
