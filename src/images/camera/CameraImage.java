@@ -27,6 +27,7 @@
 
 package images.camera;
 
+import Client.Config;
 import javax.microedition.lcdui.Alert;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
@@ -72,7 +73,14 @@ public class CameraImage implements CommandListener{
         int exp=0;
         try {
             String uri="capture://video";
-
+            String device = Config.getPlatformName().toLowerCase();
+            if (device.indexOf("nokia") != -1) {
+                 int firstDotIndex = device.indexOf('.');
+                 if ((-1 != firstDotIndex) && (-1 == device.indexOf('.', firstDotIndex + 1))) {
+                    // s40
+                    uri = "capture://image";
+                }
+            }
             player = Manager.createPlayer(uri);
             player.realize();
             
