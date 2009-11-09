@@ -254,7 +254,10 @@ public class ServiceDiscovery
             if (command2!=null) {
                 command1=command2;
             }
-            if (command1.getAttribute("node").startsWith("http://jabber.org/protocol/rc#")) id="discocmd"; //hack
+            String node = command1.getAttribute("node");
+            if ((node!=null) && (node.startsWith("http://jabber.org/protocol/rc#")))
+                id="discocmd"; //hack
+            node=null;
         }
         
         JabberDataBlock query=data.getChildBlock((id.equals("discocmd"))?"command":"query");
