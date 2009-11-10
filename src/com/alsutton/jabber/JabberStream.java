@@ -266,7 +266,7 @@ public class JabberStream extends XmppParser implements Runnable {
      */
     
     public void send( JabberDataBlock block )  {
-        new SendJabberDataBlock(block);
+        new SendJabberDataBlock(block).run();
     }
     
 //#ifdef CONSOLE
@@ -368,7 +368,7 @@ public class JabberStream extends XmppParser implements Runnable {
         private JabberDataBlock data;
         public SendJabberDataBlock(JabberDataBlock data) {
             this.data=data;
-            new Thread(this).start();
+//            new Thread(this).start();
         }
 
         public void run(){
