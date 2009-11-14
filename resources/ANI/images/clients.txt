@@ -25,3 +25,5 @@ Ajabb,yandex.ru	Я.Онлайн
 psi-dev.googlecode.com	Psi+
 jimm.net.ru	Jimm aspro
 pyicqt.googlecode.com	PyICQ-t
+isida-bot.com	Isida
+bombusmod-qd.wen.ru	Bombus-QD
