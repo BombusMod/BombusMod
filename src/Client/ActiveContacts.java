@@ -68,6 +68,7 @@ public class ActiveContacts
     /** Creates a new instance of ActiveContacts */
     public ActiveContacts(Display display, Displayable pView, Contact current) {
 	super();
+	this.parentView=pView;
         activeContacts=null;
 	activeContacts=new Vector();
         //synchronized (sd.roster.getHContacts()) {
@@ -91,7 +92,6 @@ public class ActiveContacts
         } catch (Exception e) {}
 
 	attachDisplay(display);
-        this.parentView=pView;
     }
     
     public void commandState() {
@@ -100,6 +100,10 @@ public class ActiveContacts
 //#endif
         addCommand(cmdOk);
         addCommand(cmdCancel);
+//#ifndef MENU_LISTENER
+//#         setCommandListener(this);
+//#endif
+
     }
     
 //#ifdef MENU_LISTENER
