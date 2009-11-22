@@ -702,6 +702,9 @@ public class SR {
     public static String MS_SEND_JUICK_POST_REPLY = loadString("[J] New comment");
     public static String MS_SEND_JUICK_COMMENT_REPLY = loadString("[J] Reply to comment");
     public static String MS_JUICK_THINGS = loadString("[J] Things");
+    public static String MS_JUICK_POST_SUBSCRIBE = loadString("[J] Subscribe to comments");
+    public static String MS_JUICK_POST_UNSUBSCRIBE = loadString("[J] Unsubscribe from comments");
+    public static String MS_JUICK_POST_RECOMMEND = loadString("[J] Recommend post");
 
     private SR() { }
     

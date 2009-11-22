@@ -98,6 +98,9 @@ public class ContactMessageList extends MessageList {
 //#     Command cmdSendJuickPostReply=new Command(SR.MS_SEND_JUICK_POST_REPLY, Command.SCREEN, 15);
 //#     Command cmdSendJuickCommentReply=new Command(SR.MS_SEND_JUICK_COMMENT_REPLY, Command.SCREEN, 16);
 //#     Command cmdJuickThings=new Command(SR.MS_JUICK_THINGS, Command.SCREEN, 17);
+//#     Command cmdJuickPostSubscribe=new Command(SR.MS_JUICK_POST_SUBSCRIBE, Command.SCREEN, 18);
+//#     Command cmdJuickPostUnsubscribe=new Command(SR.MS_JUICK_POST_UNSUBSCRIBE, Command.SCREEN, 19);
+//#     Command cmdJuickPostRecommend=new Command(SR.MS_JUICK_POST_RECOMMEND, Command.SCREEN, 20);
 //#endif
 
 //#ifdef CLIPBOARD    
@@ -238,11 +241,16 @@ public class ContactMessageList extends MessageList {
 //#             String body = getMessage(cursor).body;
 //# 
 //#             addCommand(cmdJuickThings);
-//#             if (!getNumberJuickPostOrComment(body).equals("toThings"))
-//#                if (getNumberJuickPostOrComment(body).indexOf('/')>0)
-//#                    addCommand(cmdSendJuickCommentReply);
-//#                else
-//#                    addCommand(cmdSendJuickPostReply);
+//#             if (!getNumberJuickPostOrComment(body).equals("toThings")) {
+//#                 if (getNumberJuickPostOrComment(body).indexOf('/') > 0) {
+//#                     addCommand(cmdSendJuickCommentReply);
+//#                 } else {
+//#                     addCommand(cmdSendJuickPostReply);
+//#                     addCommand(cmdJuickPostRecommend);
+//#                 }
+//#                 addCommand(cmdJuickPostSubscribe);
+//#                 addCommand(cmdJuickPostUnsubscribe);
+//#             }
 //#         }
 //#endif
 
@@ -431,10 +439,15 @@ public class ContactMessageList extends MessageList {
 //#endif
         
 //#ifdef JUICK
-//#         if (c==cmdSendJuickCommentReply || c==cmdSendJuickPostReply) {
+//#         if (c == cmdSendJuickCommentReply || c == cmdSendJuickPostReply) {
 //#             juickReply(getMessage(cursor).body);
-//#         }
-//#         if (c==cmdJuickThings) {
+//#         } else if (c == cmdJuickPostSubscribe) {
+//#             juickAction("S", getMessage(cursor).body);
+//#         } else if (c == cmdJuickPostUnsubscribe) {
+//#             juickAction("U", getMessage(cursor).body);
+//#         } else if (c == cmdJuickPostRecommend) {
+//#             juickAction("!", getMessage(cursor).body);
+//#         } else if (c == cmdJuickThings) {
 //#             viewJuickThings(getMessage(cursor).body);
 //#         }
 //#endif
@@ -513,7 +526,6 @@ public class ContactMessageList extends MessageList {
 //#         int lastStrStartIndex = str.lastIndexOf('\n')+1;
 //#         if (lastStrStartIndex<0)
 //#             return "toThings";
-//#             // TODO Если сообщение с картинкой, то обработать след. строку или ка-то по-другому?
 //#         int numberEndsIndex = str.indexOf(" http://juick.com/", lastStrStartIndex);
 //#         if (numberEndsIndex>0) {
 //#             numberEndsIndex = str.indexOf(' ', lastStrStartIndex);
@@ -530,6 +542,21 @@ public class ContactMessageList extends MessageList {
 //#             new MessageEdit(display, this, contact, getNumberJuickPostOrComment(str)+" ");
 //#endif
 //#             } catch (Exception e) {/*no messages*/}
+//#     }
+//# 
+//#     public void juickAction(String action, String body) {
+//#         String post = getNumberJuickPostOrComment(body);
+//#         if (post.indexOf("/") > 0) {
+//#             post = post.substring(0, post.indexOf("/"));
+//#         }
+//#         try {
+//#ifdef RUNNING_MESSAGE
+//#                 sd.roster.me=new MessageEdit(display, this, contact, action + " " + post);
+//#else
+//#             new MessageEdit(display, this, contact, action + " " + post);
+//#endif
+//#             } catch (Exception e) {/*no messages*/
+//#         }
 //#     }
 //#endif
 
