@@ -88,4 +88,7 @@ public class Moods {
     String getMoodName(int index) {
         return (String)moodKey.elementAt(index);
     }
+    public int getCount() {
+        return moodKey.size();
+    }
 }

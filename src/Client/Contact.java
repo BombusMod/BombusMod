@@ -45,6 +45,7 @@ import ui.ImageList;
 //#endif
 import images.RosterIcons;
 import Colors.ColorTheme;
+import Mood.Moods;
 import VCard.VCard;
 import ui.IconTextElement;
 import com.alsutton.jabber.datablocks.Presence;
@@ -671,7 +672,7 @@ public class Contact extends IconTextElement{
     
 //#ifdef PEP
 //#     boolean hasMood() {
-//#         return (pepMood>-1 && pepMood<61);
+//#         return (pepMood>-1 && pepMood<Moods.getInstance().getCount());
 //#     }
 //#ifdef PEP_ACTIVITY
 //#     boolean hasActivity() {
