@@ -2574,12 +2574,13 @@ public class Roster
         super.showNotify(); 
         countNewMsgs(); 
 //#ifdef AUTOSTATUS
-//#         if (cf.autoAwayType==Config.AWAY_IDLE)
+//#         if (cf.autoAwayType==Config.AWAY_IDLE) {
 //#             if (autostatus == null)  // Issue 107
 //#                 autostatus = new AutoStatusTask();
 //#             if (!autostatus.isAwayTimerSet())
 //#                 if (!autoAway) 
 //#                     autostatus.setTimeEvent(cf.autoAwayDelay* 60*1000);
+//#         }
 //#endif
     }
     
