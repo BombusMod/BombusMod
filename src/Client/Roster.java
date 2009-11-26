@@ -126,9 +126,9 @@ public class Roster
         LoginListener
 {
 
-    private Command cmdActions=new Command(SR.MS_ITEM_ACTIONS, Command.SCREEN, 1);
-    private Command cmdStatus=new Command(SR.MS_STATUS_MENU, Command.SCREEN, 2);
-    private Command cmdActiveContacts;//=new Command(SR.MS_ACTIVE_CONTACTS, Command.SCREEN, 3);
+    private Command cmdActions;//=new Command(SR.MS_ITEM_ACTIONS, Command.SCREEN, 1);
+    private Command cmdStatus=new Command(SR.MS_STATUS_MENU, Command.SCREEN, 4);
+    private Command cmdActiveContacts=new Command(SR.MS_ACTIVE_CONTACTS, Command.SCREEN, 3);
     private Command cmdAlert=new Command(SR.MS_ALERT_PROFILE_CMD, Command.SCREEN, 8);
 //#ifndef WMUC
     private Command cmdConference=new Command(SR.MS_CONFERENCE, Command.SCREEN, 10);
@@ -276,7 +276,7 @@ public class Roster
         if (phoneManufacturer==Config.INTENT) activeType=Command.BACK;
         if (phoneManufacturer==Config.J2ME) activeType=Command.BACK;
 
-        cmdActiveContacts=new Command(SR.MS_ACTIVE_CONTACTS, activeType, 3);
+        cmdActions=new Command(SR.MS_ITEM_ACTIONS, activeType, 2);
         
 //#ifndef MENU_LISTENER
 //#         addCommand(cmdActions);
