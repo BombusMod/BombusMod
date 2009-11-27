@@ -237,8 +237,15 @@ public class ContactMessageList extends MessageList {
         
 //#ifdef JUICK
 //#         // http://code.google.com/p/bm2/issues/detail?id=94#c1
-//#         if (isJuickMessage()) {
-//#             String body = getMessage(cursor).body;
+//#         if (isJuickContact()) {
+//#             Msg msg = getMessage(cursor);
+//#             String body;
+//# 
+//#             if (msg != null) {
+//#                 body = getMessage(cursor).body;
+//#             } else {
+//#                 body = "";
+//#             } msg = null;
 //# 
 //#             addCommand(cmdJuickThings);
 //#             if (!getNumberJuickPostOrComment(body).equals("toThings")) {
@@ -439,25 +446,33 @@ public class ContactMessageList extends MessageList {
 //#endif
         
 //#ifdef JUICK
+//#         Msg msg = getMessage(cursor);
+//#         String body;
+//# 
+//#         if (msg != null) {
+//#             body = getMessage(cursor).body;
+//#         } else {
+//#             body = "";
+//#         } msg = null;
+//# 
 //#         if (c == cmdSendJuickCommentReply || c == cmdSendJuickPostReply) {
-//#             juickReply(getMessage(cursor).body);
+//#             juickReply(body);
 //#         } else if (c == cmdJuickPostSubscribe) {
-//#             juickAction("S", getMessage(cursor).body);
+//#             juickAction("S", body);
 //#         } else if (c == cmdJuickPostUnsubscribe) {
-//#             juickAction("U", getMessage(cursor).body);
+//#             juickAction("U", body);
 //#         } else if (c == cmdJuickPostRecommend) {
-//#             juickAction("!", getMessage(cursor).body);
+//#             juickAction("!", body);
 //#         } else if (c == cmdJuickThings) {
-//#             viewJuickThings(getMessage(cursor).body);
+//#             viewJuickThings(body);
 //#         }
 //#endif
     }
     
  //#ifdef JUICK
-//#     public boolean isJuickMessage() {
+//#     public boolean isJuickContact() {
 //#         return (contact.bareJid.equals("juick@juick.com")
-//#              || contact.bareJid.startsWith("juick%juick.com@"))
-//#              && (contact.msgs.size()>0);
+//#              || contact.bareJid.startsWith("juick%juick.com@"));
 //#     }
 //# 
 //#     public void viewJuickThings(String str) {
@@ -521,6 +536,8 @@ public class ContactMessageList extends MessageList {
 //#     }
 //# 
 //#     public String getNumberJuickPostOrComment(String str) {
+//#         if ((str == null) || (str.equals("")))
+//#             return "toThings";
 //#         if ((str.charAt(0) != '@') && !str.startsWith("Reply by @"))
 //#             return "toThings";
 //#         int lastStrStartIndex = str.lastIndexOf('\n')+1;
@@ -613,8 +630,15 @@ public class ContactMessageList extends MessageList {
             }
 //#endif
 //#ifdef JUICK
-//#             if (isJuickMessage()) {
-//#                 String body = getMessage(cursor).body;
+//#             if (isJuickContact()) {
+//#                 Msg msg = getMessage(cursor);
+//#                 String body;
+//# 
+//#                 if (msg != null) {
+//#                     body = getMessage(cursor).body;
+//#                 } else {
+//#                     body = "";
+//#                 } msg = null;
 //# 
 //#                 if (getNumberJuickPostOrComment(body).equals("toThings"))
 //#                     viewJuickThings(body);

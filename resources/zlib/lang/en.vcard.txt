@@ -1,21 +1,30 @@
-//vCard descriptions
-	FN	Full Name
+//vCard 3.0 DTD
 	NICKNAME	Nickname
+	FN	Full name
+N	PREFIX	Prefix (mr.,mrs.)
+N	GIVEN	First name
+N	MIDDLE	Middle name
+N	FAMILY	Last name
+N	SUFFIX	Suffix
 	BDAY	Birthday
+	GENDER	Gender
 ADR	STREET	Street
-ADR	EXTADR	Street2
+ADR	POBOX	P.O. Box
+ADR	EXTADD	Address additional
+ADR	EXTADR	Extended address
 ADR	LOCALITY	City
-ADR	REGION	State
+GEO	LAT	Latitude
+GEO	LON	Longitude
+ADR	REGION	State/Region
 ADR	PCODE	Post code
 ADR	CTRY	Country
-	TZ	Time Zone (GMT)
-TEL	HOME	Home Phone Number
-TEL	NUMBER	Phone Number
+	TZ	Time zone (GMT)
+TEL	NUMBER	Phone number
 EMAIL	USERID	E-Mail
-	JABBERID	JID
-	TITLE	Position
+	JABBERID	JabberID
 	ROLE	Role
+	TITLE	Title
 ORG	ORGNAME	Organization
 ORG	ORGUNIT	Dept
-	URL	Url
+	URL	Home page
 	DESC	About

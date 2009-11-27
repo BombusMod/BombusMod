@@ -1,21 +1,30 @@
-//vCard descriptions
-	FN	ФИО
+//vCard 3.0 DTD
 	NICKNAME	Ник
+	FN	Полное имя
+N	PREFIX	Префикс (mr.,mrs.)
+N	GIVEN	Имя
+N	MIDDLE	Отчество
+N	FAMILY	Фамилия
+N	SUFFIX	Суффикс
 	BDAY	День рождения
-ADR	STREET	Адрес
-ADR	EXTADR	Адрес2
+	GENDER	Пол
+ADR	STREET	Улица, номер дома
+ADR	POBOX	Почтовый ящик
+ADR	EXTADD	Адрес подробнее
+ADR	EXTADR	Адрес расширенный
 ADR	LOCALITY	Город
-ADR	REGION	Область
+GEO	LAT	Широта
+GEO	LON	Долгота
+ADR	REGION	Область, регион
 ADR	PCODE	Почтовый индекс
 ADR	CTRY	Страна
-	TZ	Часовой пояс (GMT)
-TEL	HOME	Телефон (д)
+	TZ	Часовая зона/GMT
 TEL	NUMBER	Телефон
 EMAIL	USERID	E-Mail
 	JABBERID	JID
-	TITLE	Должность
 	ROLE	Профессия
+	TITLE	Должность
 ORG	ORGNAME	Организация
 ORG	ORGUNIT	Отдел
-	URL	Url
+	URL	URL
 	DESC	О себе
