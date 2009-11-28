@@ -34,7 +34,7 @@ import util.StringLoader;
 
 public class AlertCustomize {
     
-    public int soundsMsgIndex=1;
+    public int soundsMsgIndex=0;
     public String messagesnd="";
     public String messageSndType="tone sequence";
     
@@ -46,7 +46,7 @@ public class AlertCustomize {
     public String soundOffline="";
     public String soundOfflineType="none";
     
-    public int soundForYouIndex=1;
+    public int soundForYouIndex=0;
     public String soundForYou="";
     public String soundForYouType="tone sequence";
     
@@ -54,19 +54,19 @@ public class AlertCustomize {
     public String soundComposing="";
     public String soundComposingType="none";
     
-    public int soundConferenceIndex=1;
+    public int soundConferenceIndex=0;
     public String soundConference="";
     public String soundConferenceType="tone sequence";
     
-    public int soundStartUpIndex=1;
+    public int soundStartUpIndex=0;
     public String soundStartUp="";
     public String soundStartUpType="tone sequence";
     
-    public int soundOutgoingIndex=1;
+    public int soundOutgoingIndex=0;
     public String soundOutgoing="";
     public String soundOutgoingType="none";
     
-    public int soundVIPIndex=1;
+    public int soundVIPIndex=0;
     public String soundVIP="";
     public String soundVIPType="tone sequence";
     

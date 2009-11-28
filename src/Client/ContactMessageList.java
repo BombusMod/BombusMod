@@ -488,7 +488,7 @@ public void showNotify(){
 //#endif
     }
     
- //#ifdef JUICK
+//#ifdef JUICK
 //#     public void viewJuickThings(String str) {
 //#             char[] valueChars = str.toCharArray();
 //#             int msg_length = valueChars.length;

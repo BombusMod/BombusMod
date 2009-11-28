@@ -172,7 +172,7 @@ public class Config {
     public int messageLimit=512;
     public int widthScroll2=10;
     public boolean widthSystemgc=false;
-    public boolean eventDelivery=false;
+    public boolean eventDelivery=true;
 //#ifdef DETRANSLIT
 //#     public boolean transliterateFilenames=false;
 //#     public boolean autoDeTranslit=false;
@@ -197,7 +197,7 @@ public class Config {
 //#     public int msglistLimit=500;
 //#endif
     public boolean useTabs=true;
-    public boolean notifyBlink=true;
+    public boolean notifyBlink=false;
     public boolean notifySound=false;
     public boolean notifyPicture=false;
     public boolean useBoldFont=false;

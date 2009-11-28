@@ -52,13 +52,35 @@ import Menu.Command;
 import Menu.MenuListener;
 //#endif
 
+/**
+ * Вертикальный список виртуальных элементов.
+ * класс реализует управление списком, скроллбар,
+ * вызов отрисовки отображаемых на экране элементов.
+ * @author Eugene Stahov
+ */
 public abstract class VirtualList         
     extends Canvas {
-    
+    /**
+     * событие "Курсор выделил элемент"
+     * в классе VirtualList вызываемая функция не выполняет действий, необходимо
+     * переопределить (override) функцию для реализации необходимых действий
+     * @param index индекс выделенного элемента
+     */
     public void focusedItem(int index) {}
 
+    /**
+     * число элементов виртуального списка
+     * эта функция абстрактная, должна быть переопределена при наследовании
+     * @return число элементов списка, исключая заголовок
+     */
     abstract protected int getItemCount();
 
+    /**
+     * элемент виртуального списка
+     * эта функция абстрактная, должна быть переопределена при наследовании
+     * @param index номер элемента списка. не превосходит значение, возвращённое getItemCount()
+     * @return ссылка на элемент с номером index.
+     */
     abstract protected VirtualElement getItemRef(int index);
 
     protected int getMainBarBGnd() { return ColorTheme.getColor(ColorTheme.BAR_BGND);} 
@@ -115,6 +137,11 @@ public abstract class VirtualList
     
     private Config cf=Config.getInstance();
 
+    /**
+     * событие "Нажатие кнопки ОК"
+     * базовая реализация VirtualList вызывает функцию onSelect для выбранного элемента;
+     * необходимо переопределить (override) функцию для реализации желаемых действий
+     */
     public void eventOk(){
         try {
             ((VirtualElement)getFocusedObject()).onSelect();
@@ -129,6 +156,12 @@ public abstract class VirtualList
 //#endif
     }
 
+    /**
+     * Обработчик дополнительных кнопок. Вызывается в случае, если код кнопки
+     * не был обработан функцией key(keyCode)
+     * необходимо переопределить (override) функцию для реализации необходимых действий
+     * @param keyCode код клавиши
+     */
     public void userKeyPressed(int keyCode){}
     
     public void userAdditionKeyPressed(int keyCode){}
@@ -172,13 +205,25 @@ public abstract class VirtualList
 //#endif
     public static boolean canBack=true;
 
+    /** метрика экрана */
     int width;
     int height;
 
+    /** экранный буфер для скрытой отрисовки. используется, если платформа
+     * не поддерживает двойную буферизацию экрана
+     */
     private Image offscreen = null;
 
     protected int cursor;
 
+    /**
+     * окно приклеено к позиции курсора
+     * ПРИКЛЕИВАЕТСЯ:
+     *   при нажатии кнопок перемещения курсора
+     *   при выборе стилусом элемента списка
+     * ОТКЛЕИВАЕТСЯ:
+     *   при использовании скролбара
+     */
     protected boolean stickyWindow=true;
     
     private int itemLayoutY[]=new int[1];
@@ -222,10 +267,10 @@ public abstract class VirtualList
         return (yPos<itemLayoutY[end])? begin:end;
     }
     
-    public int win_top;
-    private int winHeight;
+    public int win_top; // верхняя граница окна относительно списка
+    private int winHeight; // отображаемый размер списка
     
-    protected int offset;
+    protected int offset; // счётчик автоскроллинга
     
     protected boolean showBalloon;
     
@@ -239,13 +284,23 @@ public abstract class VirtualList
 
     //private int itemBorder[];
 
+    /** обработка doubleclick */
     private int lastClickX;
     private int lastClickY;
     private int lastClickItem;
     private long lastClickTime;
-    
+
+    /**
+     * Разрешает заворачивание списка в кольцо (перенос курсора через конец списка)
+     * по умолчанию установлен true
+     * @param wrap будучи переданным true, разрешает перенос курсора через конец списка
+     */
     public void enableListWrapping(boolean wrap) { this.wrapping=wrap; }
-    
+
+    /**
+     * ссылка на заголовок списка
+     * @return объект типа ComplexString
+     */
     public ComplexString getMainBarItem() {return (ComplexString)mainbar;}
     public void setMainBarItem(ComplexString mainbar) { this.mainbar=mainbar; }
     
@@ -255,8 +310,14 @@ public abstract class VirtualList
 //#ifdef ELF    
 //#     private static boolean sie_accu=true;
 //#     private static boolean sie_net=true;
-//#endif    
-    
+//#endif
+
+    /**
+     * возвращает ссылку на объект в фокусе.
+     * в классе VirtualList возвращает VirtualElement, на который указывает курсор,
+     * однако, возможно переопределить функцию при наследовании
+     * @return ссылка на объект в фокусе.
+     */
     public Object getFocusedObject() { 
         try {
             return getItemRef(cursor);
@@ -315,6 +376,11 @@ public abstract class VirtualList
         attachDisplay(display);
     }
 
+    /**
+     * Запоминание предыдущего отображаемого объекта, подключенного к менеджеру
+     * дисплея и подключение к дисплею виртуального списка (this)
+     * @param display менеджер дисплея мобильного устройства {@link }
+     */
     public void attachDisplay (Display display) {
         this.display=display;
         parentView=display.getCurrent();
@@ -322,6 +388,7 @@ public abstract class VirtualList
         redraw();
     }
 
+    /** запуск отложенной отрисовки активного Canvas */
     public void redraw(){
         Displayable d=display.getCurrent();
         if (d instanceof Canvas) {
@@ -329,10 +396,20 @@ public abstract class VirtualList
         }
     }
 
+    /** Вызывается после скрытия VirtualList. переопределяет наследуемый метод
+     * Canvas.hideNotify(). действие по умолчанию - освобождение экранного
+     * буфера offscreen, используемого при работе без автоматической двойной
+     * буферизации
+     */
     protected void hideNotify() {
 	offscreen=null;
     }
 
+    /** Вызывается перед вызовом отрисовки VirtualList. переопределяет
+     * наследуемый метод Canvas.showNotify(). действие по умолчанию - создание
+     * экранного буфера offscreen, используемого при работе без автоматической
+     * двойной буферизации
+     */
     protected void showNotify() {
 	if (!isDoubleBuffered()) offscreen=Image.createImage(width, height);
 //#if (USE_ROTATOR)
@@ -340,6 +417,11 @@ public abstract class VirtualList
 //#endif
     }
 
+    /** Вызывается при изменении размера отображаемой области. переопределяет наследуемый метод
+     * Canvas.sizeChanged(int width, int heigth). сохраняет новые размеры области рисования.
+     * также создаёт новый экранный буфер offscreen, используемый при работе без автоматической
+     * двойной буферизации
+     */
     protected void sizeChanged(int w, int h) {
         width=w;
         height=h;
@@ -350,6 +432,14 @@ public abstract class VirtualList
         if (!isDoubleBuffered()) offscreen=Image.createImage(width, height);
     }
 
+    /**
+     * начало отрисовки списка.
+     * функция вызывается перед отрисовкой списка,
+     * перед любыми обращениями к элементам списка.
+     *
+     * в классе VirtualList функция не выполняет никаких действий, необходимо
+     * переопределить (override) функцию для реализации необходимых действий
+     */
     protected void beginPaint(){};
 
     public void paint(Graphics graphics) {
@@ -673,10 +763,17 @@ public abstract class VirtualList
         mainbar.drawItem(g,(phoneManufacturer==Config.NOKIA && !reverse)?17:0,false);
     }
 
+    /**
+     * перенос координат (0.0) в абсолютные координаты (x,y)
+     * @param g графический контекст отрисовки
+     * @param x абсолютная x-координата нового начала координат
+     * @param y абсолютная y-координата нового начала координат
+     */
     public static void setAbsOrg(Graphics g, int x, int y){
         g.translate(x-g.getTranslateX(), y-g.getTranslateY());
     }
 
+    /** перемещение курсора в начало списка */
     public void moveCursorHome(){
         stickyWindow=true;
         if (cursor>0) cursor=getNextSelectableRef(-1);
@@ -765,7 +862,7 @@ public abstract class VirtualList
             setRotator();
         }
 	if (cursor!=oldCursor) {
-            // �_�_���>а���_ �_�>���_���_�' �_ак�_и�_а�>�_�_�_ �_и�_и�_�<�_
+            // сделаем элемент максимально видимым
             int il=itemLayoutY[cursor+1]-winHeight;
             if (il>win_top) win_top=il;
             il=itemLayoutY[cursor];
@@ -896,7 +993,11 @@ public abstract class VirtualList
         //reconnectDraw=false;
         redraw();
     }
-    
+
+    /**
+     * обработка кодов кнопок
+     * @param keyCode код нажатой кнопки
+     */
     private void key(int keyCode) {
 //#if DEBUG
 //#         System.out.println(keyCode);
@@ -1045,6 +1146,11 @@ public abstract class VirtualList
         repaint();
     }
 
+    /**
+     * событие "Нажатие кнопки UP"
+     * в классе VirtualList функция перемещает курсор на одну позицию вверх.
+     * возможно переопределить (override) функцию для реализации необходимых действий
+     */
     public void keyUp() {
         if (getItemCount()==0)
             return;
@@ -1300,6 +1406,10 @@ public abstract class VirtualList
         this.parentView=parentView;
     }
 
+    /**
+     * отсоединение от менеджера дисплея текущего виртуального списка,
+     * присоединение к менеджеру предыдущего Displayable
+     */
     public void destroyView(){
         sd.roster.activeContact=null;
         if (display!=null && parentView!=null) /*prevents potential app hiding*/ 

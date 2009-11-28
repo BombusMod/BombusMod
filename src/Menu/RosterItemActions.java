@@ -576,7 +576,7 @@ public class RosterItemActions extends Menu {
                     case 38: //grant owner
                         new ConferenceQuickPrivelegeModify(display, sd.roster, mc, ConferenceQuickPrivelegeModify.OWNER,null); //
                         return;
-//#ifdef REQUEST_VOICE		 
+//#ifdef REQUEST_VOICE
 //#                 case 39: //request voice
 //#                     new QueryRequestVoice(display, sd.roster, mc, ConferenceQuickPrivelegeModify.PARTICIPANT);
 //#                     return;
