@@ -527,4 +527,11 @@ File manager	Менеджер файлов
 remote control	удаленное управление
 Version	Версия
 Use	Использует
+[J] New comment	[J] Новый комментарий
+[J] Reply to comment	[J] Ответ на комментарий
+[J] Reply to	[J] Ответить
 [J] Things	[J] Сущности
+[J] Subscribe to comments	[J] Подписаться на комментарии
+[J] Unsubscribe from comments	[J] Отписаться от комментариев
+[J] Recommend post	[J] Порекомендовать пост
+[J] Show post and comments	[J] Просмотреть пост и комментарии

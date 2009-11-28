@@ -1,4 +1,3 @@
-//vCard 3.0 DTD
 	NICKNAME	Ник
 	FN	Полное имя
 N	PREFIX	Префикс (mr.,mrs.)
@@ -7,7 +6,6 @@ N	MIDDLE	Отчество
 N	FAMILY	Фамилия
 N	SUFFIX	Суффикс
 	BDAY	День рождения
-	GENDER	Пол
 ADR	STREET	Улица, номер дома
 ADR	POBOX	Почтовый ящик
 ADR	EXTADD	Адрес подробнее

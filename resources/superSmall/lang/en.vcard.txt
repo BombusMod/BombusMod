@@ -1,4 +1,3 @@
-//vCard 3.0 DTD
 	NICKNAME	Nickname
 	FN	Full name
 N	PREFIX	Prefix (mr.,mrs.)
@@ -7,7 +6,6 @@ N	MIDDLE	Middle name
 N	FAMILY	Last name
 N	SUFFIX	Suffix
 	BDAY	Birthday
-	GENDER	Gender
 ADR	STREET	Street
 ADR	POBOX	P.O. Box
 ADR	EXTADD	Address additional

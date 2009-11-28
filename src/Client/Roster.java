@@ -847,6 +847,20 @@ public class Roster
         return null;
     }
 
+//#ifdef JUICK
+//#     public Contact getJuickContact() {
+//#         synchronized (hContacts) {
+//#             for (Enumeration e = hContacts.elements(); e.hasMoreElements();) {
+//#                 Contact c = (Contact) e.nextElement();
+//#                 if (c.bareJid.equals("juick@juick.com")
+//#                  || c.bareJid.startsWith("juick%juick.com@"))
+//#                     return c;
+//#             }
+//#         }
+//#         return null;//new Contact("Juick", "juick@juick.com", Presence.PRESENCE_UNKNOWN, "none");
+//#     }
+//#endif
+
     public void sendPresence(int newStatus, String message) {
         if (newStatus!=Presence.PRESENCE_SAME) 
             myStatus=newStatus;
