@@ -246,6 +246,8 @@ public class Config {
             FontCache.baloon=instance.baloonFont;
             //FontCache.resetCache();
 	}
+        if (instance.firstRun)
+            VirtualList.canBack = true; 
 	return instance;
     }
     
