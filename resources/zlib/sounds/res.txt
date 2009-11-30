@@ -2,3 +2,4 @@
 none		none
 tone		tone sequence
 audio/midi	/sounds/tuk.mid	tuk.mid
+audio/midi	/sounds/message.mid message.mid

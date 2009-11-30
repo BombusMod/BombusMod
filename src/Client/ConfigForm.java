@@ -309,7 +309,7 @@ public class ConfigForm
             popupFromMinimized = new CheckBox(SR.MS_ENABLE_POPUP, cf.popupFromMinimized);
             itemsList.addElement(popupFromMinimized);
         }
-        widthSystemgc = new CheckBox(SR.MS_WIDTH_SYSTEM_GC, cf.widthSystemgc);
+        widthSystemgc = new CheckBox(SR.MS_WITH_SYSTEM_GC, cf.widthSystemgc);
         itemsList.addElement(widthSystemgc);
 //#ifdef MENU_LISTENER
         executeByNum = new CheckBox(SR.MS_EXECUTE_MENU_BY_NUMKEY, cf.executeByNum); itemsList.addElement(executeByNum);
