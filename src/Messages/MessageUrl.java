@@ -30,26 +30,49 @@ package Messages;
 import java.util.Vector;
 import javax.microedition.io.ConnectionNotFoundException;
 import javax.microedition.lcdui.Display;
+import javax.microedition.lcdui.TextField;
 import midlet.BombusMod;
-import Menu.Menu;
+import javax.microedition.lcdui.Displayable;
+import ui.MIDPTextBox;
+import ui.MIDPTextBox.TextBoxNotify;
+import ui.controls.form.DefForm;
+import ui.controls.form.SimpleString;
+//#ifndef MENU_LISTENER
+//# import javax.microedition.lcdui.Command;
+//#else
+import Menu.Command;
+import locale.SR;
+//#endif
 
 /**
  *
  * @author EvgS
  */
-public class MessageUrl extends Menu{
+public class MessageUrl extends DefForm implements TextBoxNotify{
     
     private Vector urlList;
-    
+    Command cmdGoto=new Command("Goto", Command.OK, 1);
+    Command cmdEdit=new Command("Edit", Command.SCREEN, 2);
     /** Creates a new instance of MessageUrl */
-    public MessageUrl(Display display, Vector urlList) {
-	super("URLs", null);
+    public MessageUrl(Display display, Displayable pView, Vector urlList) {
+	super(display, pView, "URLs");
+        this.display = display;
+        this.parentView = pView;
 	this.urlList=urlList;
 	
 	for (int i=0; i<urlList.size(); i++) { // throws exception
-	    addItem((String)urlList.elementAt(i), i);
+	    itemsList.addElement(new SimpleString((String)urlList.elementAt(i), false));
 	}
+        commandState();
 	attachDisplay(display);
+    }
+    public void commandAction(Command c, Displayable d) {
+        if (c==cmdGoto)
+            eventOk();
+        else if (c==cmdEdit) {
+            EditURL();
+        }
+        else super.commandAction(c, d);
     }
     
     public void eventOk() {
@@ -60,4 +83,33 @@ public class MessageUrl extends Menu{
         }
 	destroyView();
     }
+	public void keyPressed(int keyCode) {
+		super.keyPressed(keyCode);
+		switch (keyCode) {
+			case KEY_POUND:                                
+                            EditURL();
+		}
+	}
+    private void EditURL() {
+        new MIDPTextBox(display, "Edit URL", (String)urlList.elementAt(cursor), this, TextField.ANY);
+    }
+
+    public void OkNotify(String text_return) {
+        destroyView();
+        Display.getDisplay(BombusMod.getInstance()).setCurrent(parentView);
+    }
+    public void commandState(){
+        super.commandState();
+        removeCommand(cmdCancel);
+        removeCommand(cmdOk);
+
+
+        addCommand(cmdGoto);
+        addCommand(cmdEdit);
+        addCommand(cmdCancel);
+    }
+//#ifdef MENU_LISTENER
+    public String touchLeftCommand(){ return SR.MS_MENU; }
+    public void touchLeftPressed(){ showMenu(); }
+//#endif
 }

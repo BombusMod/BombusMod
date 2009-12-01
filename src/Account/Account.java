@@ -67,7 +67,7 @@ public class Account extends IconTextElement{
     
     private static StaticData sd=StaticData.getInstance();
     
-    private boolean dnsResolver=true;
+    private boolean dnsResolver=false;
 
     public Account() {
         super(RosterIcons.getInstance());

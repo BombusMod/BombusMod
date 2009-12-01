@@ -366,7 +366,7 @@ Collapsed groups	сворачивать группы при запуске
 Send Buffer	Послать текст из буфера
 Change nickname	Сменить ник
 Message collapse limit	Сворачивать сообщения, если больше(символов)
-Scroll width	Ширина полоса прокрутки
+Scroll width	Ширина полосы прокрутки
 Memory cleaning Очистка памяти
 No client info	Невозможно получить информацию
 Delete all messages	Удалить все сообщения

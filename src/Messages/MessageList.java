@@ -153,7 +153,7 @@ public abstract class MessageList extends VirtualList
         if (c==cmdUrl) {
             try {
                 Vector urls=((MessageItem) getFocusedObject()).getUrlList();
-                new MessageUrl(display, urls); //throws NullPointerException if no urls
+                new MessageUrl(display, this, urls); //throws NullPointerException if no urls
             } catch (Exception e) {/* no urls found */}
         }
         if (c==cmdxmlSkin) {
