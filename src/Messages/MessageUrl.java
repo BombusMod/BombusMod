@@ -36,7 +36,7 @@ import javax.microedition.lcdui.Displayable;
 import ui.MIDPTextBox;
 import ui.MIDPTextBox.TextBoxNotify;
 import ui.controls.form.DefForm;
-import ui.controls.form.SimpleString;
+import ui.controls.form.ListItem;
 //#ifndef MENU_LISTENER
 //# import javax.microedition.lcdui.Command;
 //#else
@@ -56,23 +56,29 @@ public class MessageUrl extends DefForm implements TextBoxNotify{
     /** Creates a new instance of MessageUrl */
     public MessageUrl(Display display, Displayable pView, Vector urlList) {
 	super(display, pView, "URLs");
-        this.display = display;
-        this.parentView = pView;
+        this.display = display;        
 	this.urlList=urlList;
 	
 	for (int i=0; i<urlList.size(); i++) { // throws exception
-	    itemsList.addElement(new SimpleString((String)urlList.elementAt(i), false));
+	    itemsList.addElement(new ListItem((String)urlList.elementAt(i)));
 	}
-        commandState();
+//#ifndef MENU_LISTENER
+//#         addCommand(cmdGoto);
+//#         addCommand(cmdEdit);
+//#        addCommand(cmdCancel);
+//#         removeCommand(cmdOk);
+//#endif        
+        setCommandListener(this);        
 	attachDisplay(display);
+        this.parentView = pView;
     }
     public void commandAction(Command c, Displayable d) {
+        super.commandAction(c, d);
         if (c==cmdGoto)
             eventOk();
         else if (c==cmdEdit) {
             EditURL();
         }
-        else super.commandAction(c, d);
     }
     
     public void eventOk() {
@@ -88,7 +94,8 @@ public class MessageUrl extends DefForm implements TextBoxNotify{
 		switch (keyCode) {
 			case KEY_POUND:                                
                             EditURL();
-		}
+                    }
+
 	}
     private void EditURL() {
         new MIDPTextBox(display, "Edit URL", (String)urlList.elementAt(cursor), this, TextField.ANY);
@@ -98,18 +105,19 @@ public class MessageUrl extends DefForm implements TextBoxNotify{
         destroyView();
         Display.getDisplay(BombusMod.getInstance()).setCurrent(parentView);
     }
+//#ifdef MENU_LISTENER
     public void commandState(){
-        super.commandState();
-        removeCommand(cmdCancel);
-        removeCommand(cmdOk);
-
-
+        menuCommands.removeAllElements();
         addCommand(cmdGoto);
         addCommand(cmdEdit);
         addCommand(cmdCancel);
     }
-//#ifdef MENU_LISTENER
+
     public String touchLeftCommand(){ return SR.MS_MENU; }
-    public void touchLeftPressed(){ showMenu(); }
+
+    public void touchLeftPressed(){
+        showMenu();
+    }
 //#endif
+    
 }

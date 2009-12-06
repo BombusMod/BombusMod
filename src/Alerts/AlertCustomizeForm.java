@@ -49,11 +49,10 @@ import Menu.Command;
 //#endif
 
 
-public class AlertCustomizeForm 
+public class AlertCustomizeForm
         extends DefForm {
     
-    private Display display;
-
+    
     private CheckBox statusBox;
     private CheckBox blinkBox;
     private CheckBox soundBox;
@@ -143,7 +142,16 @@ public class AlertCustomizeForm
         itemsList.addElement(new SpacerItem(10));
         IQNotify=new CheckBox(SR.MS_SHOW_IQ_REQUESTS, cf.IQNotify); itemsList.addElement(IQNotify);
 
-        commandState();
+//#ifndef MENU_LISTENER        
+//# 
+//#         if (playable()>-1)
+//#             addCommand(cmdTest);
+//#         addCommand(cmdSave);
+//#         addCommand(cmdCancel);
+//#         removeCommand(cmdOk);
+//#endif
+
+        setCommandListener(this);        
 
         attachDisplay(display);
         this.parentView=pView;
@@ -188,12 +196,12 @@ public class AlertCustomizeForm
     }
     
     public void commandAction(Command c, Displayable d) {
+        super.commandAction(c, d);
         if (c==cmdTest)
             PlaySound();
         else if (c==cmdSave) {
             cmdSave();
-        }
-        else super.commandAction(c, d);
+        }        
     }
     
     private int playable() {
@@ -215,11 +223,10 @@ public class AlertCustomizeForm
 //#endif
         new EventNotify(display, soundType, soundFile, soundVol, 0).startNotify();
     }
-   
+
+//#ifdef MENU_LISTENER
     public void commandState(){
-        super.commandState();
-        removeCommand(cmdCancel);
-        removeCommand(cmdOk);
+        menuCommands.removeAllElements();
         
         if (playable()>-1)
             addCommand(cmdTest);
@@ -227,7 +234,7 @@ public class AlertCustomizeForm
         addCommand(cmdCancel);
     }
     
-//#ifdef MENU_LISTENER
+
     public String touchLeftCommand(){ return SR.MS_MENU; }
     public void touchLeftPressed(){ showMenu(); }
 //#endif
