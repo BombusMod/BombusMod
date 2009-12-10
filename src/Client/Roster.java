@@ -315,7 +315,7 @@ public class Roster
 //#ifdef MENU_LISTENER
         cmdActions.setImg(MenuIcons.ICON_ITEM_ACTIONS);
         cmdStatus.setImg(MenuIcons.ICON_STATUS);
-        
+
         cmdActiveContacts.setImg(MenuIcons.ICON_CONFERENCE);
         cmdAlert.setImg(MenuIcons.ICON_NOTIFY);
 //#ifndef WMUC
@@ -325,7 +325,7 @@ public class Roster
         cmdArchive.setImg(MenuIcons.ICON_ARCHIVE);
 //#endif
         cmdAdd.setImg(MenuIcons.ICON_ADD_CONTACT);
-        cmdTools.setImg(MenuIcons.ICON_SETTINGS);    
+        cmdTools.setImg(MenuIcons.ICON_SETTINGS);
         cmdAccount.setImg(MenuIcons.ICON_VCARD);
         cmdInfo.setImg(MenuIcons.ICON_CHECK_UPD);
         if (cf.allowMinimize)
@@ -438,7 +438,8 @@ public class Roster
     }
     
     public VirtualElement getItemRef(int Index){
-        return (VirtualElement) paintVContacts.elementAt(Index);
+        int pos = (Index >=0) ? Index : 1;
+        return (VirtualElement)paintVContacts.elementAt(pos);
     }
     
     public int getItemCount(){
@@ -2040,10 +2041,12 @@ public class Roster
         }
         if (e.getMessage()!=null)
             error.append(e.getMessage());
-        String errSSL=io.SSLExceptionDecoder.decode(e);
-        errorLog(errSSL);
-
-        if (e instanceof SecurityException) { errorLog(error.toString()); return; }
+        
+        if (e instanceof SecurityException) {
+            String errSSL=io.SSLExceptionDecoder.decode(e);
+            errorLog(errSSL);
+            return;
+        }
         if (currentReconnect>=cf.reconnectCount) { errorLog(error.toString()); return; }
         
         currentReconnect++;
@@ -2765,8 +2768,8 @@ public class Roster
 
     public String touchRightCommand(){ return (cf.oldSE)?SR.MS_MENU:SR.MS_ACTION; }
     public String touchLeftCommand(){ return (cf.oldSE)?SR.MS_ACTION:SR.MS_MENU; }
-    
-    public void touchRightPressed(){ if (cf.oldSE) showMenu(); else cmdActions(); }    
+
+    public void touchRightPressed(){ if (cf.oldSE) showMenu(); else cmdActions(); }
     public void touchLeftPressed(){ if (cf.oldSE) cmdActions(); else showMenu(); }
 
 //#endif

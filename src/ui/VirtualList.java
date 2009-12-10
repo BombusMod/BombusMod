@@ -39,7 +39,6 @@ import ui.controls.PopUp;
 import ui.controls.Balloon;
 import ui.controls.Progress;
 import ui.controls.ScrollBar;
-import ui.controls.CommandsPointer;
 import util.StringUtils;
 //#ifdef USER_KEYS
 //# import ui.keys.userKeyExec;
@@ -48,6 +47,7 @@ import util.StringUtils;
 import java.util.Vector;
 
 //#ifdef MENU_LISTENER
+import ui.controls.CommandsPointer;
 import Menu.Command;
 import Menu.MenuListener;
 //#endif
@@ -1032,8 +1032,18 @@ public abstract class VirtualList
             return;
          }
 //#else
+//#         if (keyCode==Config.SOFT_LEFT) {
+//#             if (reconnectWindow.getInstance().isActive()) {
+//#                 reconnectYes();
+//#                 return;
+//#             }
+//#         }
 //#          if (keyCode==Config.SOFT_RIGHT) {
-//#             if (phoneManufacturer!=Config.SONYE || phoneManufacturer==Config.SIEMENS || phoneManufacturer==Config.SIEMENS2 || phoneManufacturer==Config.MOTO) {
+//#              if (reconnectWindow.getInstance().isActive()) {
+//#                  reconnectNo();
+//#                  return;
+//#              }
+//#             if (phoneManufacturer!=Config.SONYE) { // || phoneManufacturer==Config.SIEMENS || phoneManufacturer==Config.SIEMENS2 || phoneManufacturer==Config.MOTO) {
 //#                if (canBack==true)
 //#                     destroyView();
 //#                 return;
@@ -1471,35 +1481,27 @@ public abstract class VirtualList
         if (menuCommands.indexOf(command)<0)
             menuCommands.addElement(command);
     }
-    
+
     public void removeCommand(Command command) {
         menuCommands.removeElement(command);
     }
-    
+
     public void touchLeftPressed(){
-        if (reconnectWindow.getInstance().isActive()) {
-            key(Config.SOFT_LEFT);
-        } else {
         showMenu();
-        }
     }
-    
+
     public void setCommandListener(MenuListener menuListener) { }
-    
+
     public Command getCommand(int index) {
         if (index>menuCommands.size()-1) return null;
         return (Command) menuCommands.elementAt(index);
     }
-    
+
     public void showMenu() {}
-    
-    
+
+
     public void touchRightPressed(){
-        if (reconnectWindow.getInstance().isActive()) {
-            key(Config.SOFT_RIGHT);
-        } else {
         if (canBack) destroyView();
-        }
     }
 //#endif
     
