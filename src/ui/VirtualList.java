@@ -791,8 +791,11 @@ public abstract class VirtualList
         int count=getItemCount();
         if (index<0) index=0;
         if (index>=count) index=count-1; 
-        
+
+        try {
         if (getItemRef(index).isSelectable()) cursor=index;
+        } catch (Exception ex){
+        }
         stickyWindow=true;
         repaint();
     }
@@ -904,7 +907,9 @@ public abstract class VirtualList
 
         stickyWindow=false;
 	if (cursor>=0) {
-            cursor=getElementIndexAt(win_top+y-list_top);
+            int pos = getElementIndexAt(win_top+y-list_top);
+            if (getItemRef(pos).isSelectable())
+                cursor= pos;
             setRotator();
         }
 

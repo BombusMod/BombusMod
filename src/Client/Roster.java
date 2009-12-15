@@ -438,8 +438,7 @@ public class Roster
     }
     
     public VirtualElement getItemRef(int Index){
-        int pos = (Index >=0) ? Index : 1;
-        return (VirtualElement)paintVContacts.elementAt(pos);
+        return (VirtualElement)paintVContacts.elementAt(Index);
     }
     
     public int getItemCount(){
