@@ -251,7 +251,13 @@ public class ConfigData {
 //#endif
         cf.cp1251=cf.getBooleanProperty(getValue(cp1251),true);
         
-        cf.panelsState=cf.getIntProperty(getValue(panelsState),2);
+        cf.panelsState=cf.getIntProperty(getValue(panelsState),
+//#ifdef MENU_LISTENER
+            2);
+//#else
+//#             1);
+//#endif    
+
         cf.showTimeTraffic=cf.getBooleanProperty(getValue(showTimeTraffic),false);
 
         cf.lightState=cf.getBooleanProperty(getValue(lightState),true);

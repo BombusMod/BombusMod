@@ -76,8 +76,8 @@ public class ServiceDiscovery
     private final static String NS_MUC="http://jabber.org/protocol/muc";
     private final static String NODE_CMDS="http://jabber.org/protocol/commands";
 
-    private final static String strCmds="Execute";
-    private final int AD_HOC_INDEX=17;
+   /* private final static String strCmds="Execute";
+    private final int AD_HOC_INDEX=17;*/
     
     private Command cmdOk=new Command(SR.MS_BROWSE, Command.SCREEN, 1);
     private Command cmdRfsh=new Command(SR.MS_REFRESH, Command.SCREEN, 2);
@@ -297,9 +297,9 @@ public class ServiceDiscovery
                 if (identity!=null) {
                     String category=identity.getAttribute("category");
                     String type=identity.getTypeAttribute();
-                    if (category.equals("automation") && type.equals("command-node"))  {
+                 /*   if (category.equals("automation") && type.equals("command-node"))  {
                         cmds.addElement(new DiscoCommand(RosterIcons.ICON_AD_HOC, strCmds));
-                    }
+                    }*/
                     if (category.equals("conference")) {
                         cmds.addElement(new DiscoCommand(RosterIcons.ICON_GCJOIN_INDEX, SR.MS_JOIN_CONFERENCE));
                         if (service.indexOf('@')<=0) {
@@ -373,7 +373,7 @@ public class ServiceDiscovery
             sort(items);
         } catch (Exception e) { 
             //e.printStackTrace(); 
-        };
+        }
         
         /*if (data.getAttribute("from").equals(service)) - jid hashed in id attribute*/ //{
             for (Enumeration e=cmds.elements(); e.hasMoreElements();) 
@@ -457,7 +457,7 @@ public class ServiceDiscovery
             super(RosterIcons.getInstance());
             this.icon=icon; this.name=name;
         }
-        public int getColor(){ return ColorTheme.getInstance().getColor(ColorTheme.DISCO_CMD); }
+        public int getColor(){ return ColorTheme.getColor(ColorTheme.DISCO_CMD); }
         public int getImageIndex() { return icon; }
         public String toString(){ return name; }
         public void onSelect(){
@@ -484,8 +484,8 @@ public class ServiceDiscovery
                 case RosterIcons.ICON_ROOMLIST:
                     requestQuery(NS_ITEMS, "disco2");
                     break;
-                case RosterIcons.ICON_AD_HOC:
-                    requestCommand(NODE_CMDS, "discocmd");
+               /* case RosterIcons.ICON_AD_HOC:
+                    requestCommand(NODE_CMDS, "discocmd");*/
                 default:
             }
         }

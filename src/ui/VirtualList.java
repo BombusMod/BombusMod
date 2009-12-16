@@ -98,7 +98,12 @@ public abstract class VirtualList
 //#     Gradient grMB;
 //#endif
 
-    public static int panelsState=2;
+    public static int panelsState=
+//#ifdef MENU_LISTENER
+            2;
+//#else
+//#             1;
+//#endif
     private static boolean reverse=false;
     private static boolean paintTop=true;
     private static boolean paintBottom=true;
@@ -194,8 +199,13 @@ public abstract class VirtualList
     public static short keyVolDown=0x1000;
     public static short keyBack=-11;
     public static short greenKeyCode=SIEMENS_GREEN;
-    
-    public static boolean fullscreen=true;
+
+    public static boolean fullscreen=
+//#ifdef MENU_LISTENER
+            true;
+//#else
+//#             false;
+//#endif
     public static boolean memMonitor;
     public static boolean showBalloons;
     public static boolean showTimeTraffic = true;

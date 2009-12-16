@@ -2286,10 +2286,10 @@ public class Roster
        	else if (keyCode==KEY_NUM3) new ActiveContacts(display, this, null);
        	else if (keyCode==KEY_NUM4) new ConfigForm(display, this);
         else if (keyCode==KEY_NUM6) {
-            cf.fullscreen=!cf.fullscreen;
+            Config.fullscreen=!Config.fullscreen;
             cf.saveToStorage();
-            VirtualList.fullscreen=cf.fullscreen;
-            StaticData.getInstance().roster.setFullScreenMode(cf.fullscreen);
+            VirtualList.fullscreen=Config.fullscreen;
+            StaticData.getInstance().roster.setFullScreenMode(Config.fullscreen);
         }
         else if (keyCode==KEY_NUM7)
             new RosterToolsMenu(display, this);

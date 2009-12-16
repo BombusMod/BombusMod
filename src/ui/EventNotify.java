@@ -39,7 +39,9 @@ import javax.microedition.media.control.VolumeControl;
  */
 public class EventNotify 
         implements Runnable
-	,PlayerListener
+//#ifndef NOSOUND
+	, PlayerListener
+//#endif
 {
     
     private int vibraLength;
@@ -77,24 +79,25 @@ public class EventNotify
     public void startNotify (){
         release();
         //try { if (flashBackLight) display.flashBacklight(1000); } catch (Exception e2) { /* e.printStackTrace(); */}
-        
-        if (soundName!=null) {
-            try {
-                InputStream is = getClass().getResourceAsStream(soundName);
-                player = Manager.createPlayer(is, soundType);
-
-                player.addPlayerListener(this);
-                player.realize();
-                player.prefetch();
-
-                try {
-                    VolumeControl vol=(VolumeControl) player.getControl("VolumeControl");
-                    vol.setLevel(sndVolume);
-                } catch (Exception e) { /* e.printStackTrace(); */}
-
-                player.start();
-            } catch (Exception e) { }
-        }
+//#ifndef NOSOUND
+//#         if (soundName!=null) {
+//#             try {
+//#                 InputStream is = getClass().getResourceAsStream(soundName);
+//#                 player = Manager.createPlayer(is, soundType);
+//#
+//#                 player.addPlayerListener(this);
+//#                 player.realize();
+//#                 player.prefetch();
+//#
+//#                 try {
+//#                     VolumeControl vol=(VolumeControl) player.getControl("VolumeControl");
+//#                     vol.setLevel(sndVolume);
+//#                 } catch (Exception e) { /* e.printStackTrace(); */}
+//#
+//#                 player.start();
+//#             } catch (Exception e) { }
+//#         }
+//#endif
 
         if (vibraLength>0) {
             display.vibrate(vibraLength);
@@ -116,11 +119,13 @@ public class EventNotify
     }
     
     public synchronized void release(){
-        if (player!=null) {
-	    player.removePlayerListener(this);
-	    player.close();
-	}
-        player=null;
+//#ifndef NOSOUND
+//#         if (player!=null) {
+//# 	    player.removePlayerListener(this);
+//# 	    player.close();
+//# 	}
+//#         player=null;
+//#endif
     }
     
     public void playerUpdate(Player player, String string, Object object) {

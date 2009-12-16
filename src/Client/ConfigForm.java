@@ -474,7 +474,7 @@ public class ConfigForm
 //#endif
         
         VirtualList.showTimeTraffic=cf.showTimeTraffic=drawMenuCommand.getValue();
-        VirtualList.fullscreen=cf.fullscreen=fullscreen.getValue();
+        VirtualList.fullscreen=Config.fullscreen=fullscreen.getValue();
         VirtualList.memMonitor=cf.memMonitor=memMonitor.getValue();
         cf.enableVersionOs=enableVersionOs.getValue();
         cf.queryExit=queryExit.getValue();
@@ -518,7 +518,7 @@ public class ConfigForm
 
         sd.roster.setLight(cf.lightState);   
 
-        sd.roster.setFullScreenMode(cf.fullscreen);
+        sd.roster.setFullScreenMode(Config.fullscreen);
 
         cf.firstRun=false;
 
@@ -537,6 +537,6 @@ public class ConfigForm
     public void destroyView(){
         if (display!=null)  
             display.setCurrent(parentView);
-        ((Canvas)parentView).setFullScreenMode(cf.fullscreen);
+        ((Canvas)parentView).setFullScreenMode(Config.fullscreen);
     }
 }

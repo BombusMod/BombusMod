@@ -126,7 +126,12 @@ public class Config {
 //#endif
     // non-volatile values
     public int accountIndex=-1;
-    public boolean fullscreen=true;
+public static boolean fullscreen=
+//#ifdef MENU_LISTENER
+            true;
+//#else
+//#             false;
+//#endif    
     public int def_profile=0;
 //#ifdef SMILES
     public boolean smiles=true;
@@ -160,7 +165,13 @@ public class Config {
     public boolean istreamWaiting;
     public int phoneManufacturer=NOT_DETECTED;
 
-    public int panelsState=2; //default state both panels show, reverse disabled
+    public int panelsState=
+//#ifdef MENU_LISTENER
+            2; //default state both panels show, reverse disabled
+//#else
+//#             1; // for old menu - show only top panel
+//#endif
+
     public boolean lightState=false;
     public boolean autoScroll=true;
 //#ifdef POPUPS
