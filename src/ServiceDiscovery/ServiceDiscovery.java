@@ -297,9 +297,10 @@ public class ServiceDiscovery
                 if (identity!=null) {
                     String category=identity.getAttribute("category");
                     String type=identity.getTypeAttribute();
-                 /*   if (category.equals("automation") && type.equals("command-node"))  {
-                        cmds.addElement(new DiscoCommand(RosterIcons.ICON_AD_HOC, strCmds));
-                    }*/
+                    if (category.equals("automation") && type.equals("command-node"))  {
+                     //   cmds.addElement(new DiscoCommand(RosterIcons.ICON_AD_HOC, strCmds));
+                        requestCommand(NODE_CMDS, "discocmd");
+                    }
                     if (category.equals("conference")) {
                         cmds.addElement(new DiscoCommand(RosterIcons.ICON_GCJOIN_INDEX, SR.MS_JOIN_CONFERENCE));
                         if (service.indexOf('@')<=0) {
