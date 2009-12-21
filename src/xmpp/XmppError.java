@@ -192,7 +192,11 @@ public class XmppError {
     }
     
     public static XmppError findInStanza(JabberDataBlock stanza) {
-        return decodeStanzaError(stanza.getChildBlock("error"));
+        XmppError err = decodeStanzaError(stanza.getChildBlock("error"));
+        // pytransports sends error description in body block
+        String body = stanza.getChildBlockText("body");
+        if (body != null) err.text += "\n" + body;
+        return err;
     }
     
     public static XmppError decodeStanzaError(JabberDataBlock error) {
@@ -213,8 +217,7 @@ public class XmppError {
     private static XmppError decodeError(JabberDataBlock error, String ns) {
         int errCond=NONE;
         String text=error.getText();
-        if (text.length()==0) text=null;
-        
+        if (text.length()==0) text=null;        
         Vector errChilds=error.getChildBlocks();
         if (errChilds!=null) for (Enumeration e=errChilds.elements(); e.hasMoreElements();) {
             JabberDataBlock child=(JabberDataBlock) e.nextElement();
@@ -222,7 +225,7 @@ public class XmppError {
             if (xmlns!=null) if (!xmlns.equals(ns)) continue;
             
             String tag=child.getTagName();
-            if (tag.equals("text"))                    text=child.getText();
+            if (tag.equals("text"))                    text=child.getText();            
             if (tag.equals("bad-request"))             errCond=BAD_REQUEST;
             if (tag.equals("conflict"))                errCond=CONFLICT;
             if (tag.equals("feature-not-implemented")) errCond=FEATURE_NOT_IMPLEMENTED;

@@ -204,12 +204,16 @@ public class MucContact extends Contact {
             } else {
                 b.append(SR.MS_IS_NOW);
                 
-                if (roleChanged) b.append(getRoleLocale(roleCode));
+                if (roleChanged) {
+                    b.append(getRoleLocale(roleCode));
+                    String reason = item.getChildBlockText("reason");
+                    if (!reason.equals("")) b.append("(").append(reason).append(")");
+                }
 
                  if (affiliationChanged) {
                     if (roleChanged) b.append(SR.MS_AND);
-                    b.append(getAffiliationLocale(affiliationCode));
-                }
+                    b.append(getAffiliationLocale(affiliationCode));                    
+                }                
                 if (!roleChanged && !affiliationChanged) b.append(presence.getPresenceTxt());
             }
         }

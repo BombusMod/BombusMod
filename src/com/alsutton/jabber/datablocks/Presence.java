@@ -76,6 +76,7 @@ public class Presence extends JabberDataBlock {
     }
 
     private StringBuffer text;
+    private String statustext;
     private int presenceCode;
   
     public void dispathch(){
@@ -122,6 +123,8 @@ public class Presence extends JabberDataBlock {
         if (status!=null)
             if (status.length()>0)
                 text.append(" (").append( status ).append(')');
+
+        statustext = text.toString();
 
         // priority
         int priority=getPriority();
@@ -172,7 +175,7 @@ public class Presence extends JabberDataBlock {
 
     public String getStatus(){
         String status=getChildBlockText("status");
-        return (status.length()==0)? null: getChildBlockText("status");
+        return (status.length()==0)? statustext : getChildBlockText("status");
     }
     
 //#ifdef CLIENTS_ICONS
