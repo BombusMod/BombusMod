@@ -27,6 +27,7 @@
 
 package Console;
 
+import Client.Config;
 import Client.StaticData;
 import java.io.IOException;
 import javax.microedition.lcdui.Command;
@@ -79,6 +80,7 @@ public class StanzaEdit
         addCommand(cmdPasteMessage);
         
         addCommand(cmdCancel);
+        if (Config.getInstance().phoneManufacturer == Config.SONYE) System.gc(); // prevent flickering on Sony Ericcsson C510
         setCommandListener(this);
         
         display.setCurrent(this);

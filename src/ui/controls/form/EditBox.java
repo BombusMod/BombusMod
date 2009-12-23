@@ -76,7 +76,7 @@ public class EditBox implements CommandListener {
 //#     private Command cmdCopyPlus = new Command("+ "+SR.MS_COPY, Command.SCREEN, 4);
 //#     private Command cmdPasteText=new Command(SR.MS_PASTE, Command.SCREEN, 5);
 //#endif
-    public EditBox(Display display, String caprion, String text, TextInput ti, int boxType) {
+    public EditBox(Display display, String caption, String text, TextInput ti, int boxType) {
         this.display=display;
         parentView=display.getCurrent();
         this.ti=ti;
@@ -107,6 +107,7 @@ public class EditBox implements CommandListener {
         t.setCommandListener(this);
         if (Config.getInstance().capsState)
             t.setConstraints(TextField.INITIAL_CAPS_SENTENCE);
+        if (Config.getInstance().phoneManufacturer == Config.SONYE) System.gc(); // prevent flickering on Sony Ericcsson C510
         display.setCurrent(t);
     }
 
@@ -129,6 +130,7 @@ public class EditBox implements CommandListener {
 //#                clipboard.setClipBoard(text);
 //#                 if (!clipboard.isEmpty()) {
 //#                     t.addCommand(cmdCopyPlus);
+//#                     if (Config.getInstance().phoneManufacturer == Config.SONYE) System.gc(); // prevent flickering on Sony Ericcsson C510
 //#                 }
 //#             } catch (Exception e) {/*no messages*/}
 //#             return;

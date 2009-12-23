@@ -868,10 +868,9 @@ public abstract class VirtualList
         if (y < list_top) return;
         int oldCursor = cursor;
         int pos = getElementIndexAt(win_top+y-list_top);
-        if (cursor >= 0 && cursor != pos && this.getItemCount() >= pos) {
-            System.out.println("Items: " + this.getItemCount() + ", pos - " + pos);
+        int lh = listHeight + getItemRef(pos).getVHeight();
+        if (cursor >= 0 && cursor != pos && y <= lh) {
             moveCursorTo(pos);
-
             setRotator();
         }
 	if (cursor!=oldCursor) {

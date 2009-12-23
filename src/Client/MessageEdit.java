@@ -49,8 +49,7 @@ public class MessageEdit
 //#endif
     private Display display;
     private Displayable parentView;
-
-    private String body;
+    
     private String subj;
     
     public Contact to;
@@ -120,7 +119,7 @@ public class MessageEdit
         
         if (to.lastSendedMessage!=null)
             addCommand(cmdLastMessage);
-                
+        if (Config.getInstance().phoneManufacturer == Config.SONYE) System.gc(); // prevent flickering on Sony Ericcsson C510
         setCommandListener(this);
 //#ifdef RUNNING_MESSAGE
 //#         if (thread==null) (thread=new Thread(this)).start() ; // composing

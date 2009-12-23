@@ -27,6 +27,7 @@
 
 package Archive;
 
+import Client.Config;
 import Client.Msg;
 import javax.microedition.lcdui.*;
 import locale.SR;
@@ -88,9 +89,9 @@ public class archiveEdit
         super.removeCommand(cmdPaste);
 //#endif
 //#if TEMPLATES
-        super.removeCommand(cmdTemplate);
+//#         super.removeCommand(cmdTemplate);
 //#endif
-        
+        if (Config.getInstance().phoneManufacturer == Config.SONYE) System.gc(); // prevent flickering on Sony Ericcsson C510
         setCommandListener(this);
         
         display.setCurrent(this);

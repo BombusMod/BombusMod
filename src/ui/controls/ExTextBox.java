@@ -64,7 +64,7 @@ public class ExTextBox
     protected Command cmdPaste=new Command(SR.MS_ARCHIVE, Command.SCREEN, 6);    
 //#endif
 //#if TEMPLATES
-    protected Command cmdTemplate=new Command(SR.MS_TEMPLATE, Command.SCREEN, 7); 
+//#     protected Command cmdTemplate=new Command(SR.MS_TEMPLATE, Command.SCREEN, 7); 
 //#endif  
 //#ifdef CLIPBOARD
 //#     protected Command cmdPasteText=new Command(SR.MS_PASTE, Command.SCREEN, 8);  
@@ -99,15 +99,17 @@ public class ExTextBox
 //#ifdef CLIPBOARD
 //#         if (cf.useClipBoard) {
 //#             clipboard=ClipBoard.getInstance();
-//#             if (!clipboard.isEmpty())
+//#             if (!clipboard.isEmpty()) {
 //#                 addCommand(cmdPasteText);
+//#                 if (Config.getInstance().phoneManufacturer == Config.SONYE) System.gc(); // prevent flickering on Sony Ericcsson C510
+//#             }
 //#         }
 //#endif
 //#if TEMPLATES
 //#ifdef PLUGINS
 //#         if (StaticData.getInstance().Archive)
 //#endif
-            addCommand(cmdTemplate);
+//#             addCommand(cmdTemplate);
 //#endif
         setInitialCaps(cf.capsState);
         this.parentView=pView;
@@ -149,7 +151,7 @@ public class ExTextBox
 //#         if (c==cmdPasteText) { insert(clipboard.getClipBoard(), getCaretPos()); return true; }
 //#endif
 //#if TEMPLATES
-        if (c==cmdTemplate) { new ArchiveList(display, this, caretPos, 2, this); return true; }
+//#         if (c==cmdTemplate) { new ArchiveList(display, this, caretPos, 2, this); return true; }
 //#endif
 
         return false;

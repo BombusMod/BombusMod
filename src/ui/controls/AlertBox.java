@@ -107,7 +107,7 @@ public abstract class AlertBox
     public AlertBox(String mainbar, String text, Display display, Displayable nextDisplayable) {
         this.display=display;
         
-        setFullScreenMode(Config.getInstance().fullscreen);
+        setFullScreenMode(Config.fullscreen);
 
         messageFont=FontCache.getFont(false, FontCache.msg);
         barFont=FontCache.getFont(false, FontCache.bar);
