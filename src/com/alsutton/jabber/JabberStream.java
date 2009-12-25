@@ -126,7 +126,7 @@ public class JabberStream extends XmppParser implements Runnable {
             if (name.equals( "stream:stream" ) ) {
                 dispatcher.halt();
                 iostream.close();
-                if (Config.getInstance().phoneManufacturer!=Config.NOKIA && Config.getInstance().phoneManufacturer!=Config.NOKIA_9XXX)
+                if (Config.getInstance().oldNokiaS60)
                     iostream=null;
                 throw new XMLException("Normal stream shutdown");
             }
@@ -139,7 +139,7 @@ public class JabberStream extends XmppParser implements Runnable {
 
                 dispatcher.halt();
                 iostream.close();
-                if (Config.getInstance().phoneManufacturer!=Config.NOKIA && Config.getInstance().phoneManufacturer!=Config.NOKIA_9XXX)
+                if (Config.getInstance().oldNokiaS60)
                     iostream=null;
                 throw new XMLException("Stream error: "+xe.toString());
                 
@@ -214,8 +214,8 @@ public class JabberStream extends XmppParser implements Runnable {
              //connection.close();
         } catch( IOException e ) { }
         dispatcher.halt();
-        iostream.close();
-        if (Config.getInstance().phoneManufacturer!=Config.NOKIA && Config.getInstance().phoneManufacturer!=Config.NOKIA_9XXX)
+        iostream.close();        
+        if (Config.getInstance().oldNokiaS60) // hangs on second-third reconnect
             iostream=null;
     }
     

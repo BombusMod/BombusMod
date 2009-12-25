@@ -239,7 +239,10 @@ public static boolean fullscreen=
     public boolean adhoc=false;
     public boolean saveHistory=false;
     
-    public boolean oldSE=false;    
+    public boolean oldSE=false;
+
+    public boolean oldNokiaS60 = false;
+    public boolean NokiaS40 = false;
     
     public boolean showTimeTraffic=false;
     
@@ -797,6 +800,14 @@ public static boolean fullscreen=
                 return;
             } else if (platform.startsWith("Nokia")) {
                 phoneManufacturer=NOKIA;
+                int firstDotIndex = platform.indexOf('.');
+                 if ((-1 != firstDotIndex) && (-1 == platform.indexOf('.', firstDotIndex + 1))) {
+                    // s40
+                    NokiaS40 = true;
+                    return;
+                }
+                if (platform.indexOf("java_build_version") == 0)
+                     oldNokiaS60 = true; // buggy S60 3.1 or older
                 return;
             } else if (platform.startsWith("Intent")) {
                 phoneManufacturer=INTENT;
