@@ -34,6 +34,8 @@ import Messages.MessageList;
 import java.util.Vector;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
+import locale.SR;
+import ui.MainBar;
 
 /**
  *
@@ -47,19 +49,22 @@ public class HistoryReader extends MessageList {
     private HistoryLoader hl;
     Command cmdNext, cmdPrev;
 
-    /** Creates a new instance of HistoryReader */
+    /** Creates a new instance of HistoryReader
+     * @param display
+     * @param c 
+     */
     public HistoryReader(Display display, Contact c) {
         super(display);
         cmdNext = new Command("Next", 0, 0);
         cmdPrev = new Command("Previous", 0, 0);
         hl = new HistoryLoader(c.bareJid);
-
-	//MainBar mainbar=new MainBar("HistoryReader");
-	//mainbar.addElement(null);
-	//mainbar.addRAlign();
-	//mainbar.addElement(null);
-	//mainbar.addElement(SR.MS_FREE /*"free "*/);
-        //setMainBarItem(mainbar);
+        String cname = (c.nick == null) ? c.bareJid : c.nick;
+	MainBar mb=new MainBar("History - " + cname);
+	mb.addElement(null);
+	mb.addRAlign();
+	mb.addElement(null);
+	//mb.addElement(SR.MS_FREE /*"free "*/);
+        setMainBarItem(mb);
 
         removeAllMessages();
         hl.getNext();
@@ -67,6 +72,7 @@ public class HistoryReader extends MessageList {
         addCommand(cmdPrev);
         addCommand(cmdNext);
 	addCommand(cmdBack);
+        moveCursorTo(1);
     }
 
     public void keyPressed(int keyCode) {
@@ -77,7 +83,7 @@ public class HistoryReader extends MessageList {
            } else if (cursor == (getItemCount()-1)) {
                removeAllMessages();
                hl.getNext();
-           }
+           }           
         }
         super.keyPressed(keyCode);
     }
@@ -89,7 +95,7 @@ public class HistoryReader extends MessageList {
         } else if (c == cmdPrev) {
             removeAllMessages();
             hl.getPrev();
-        }
+        }        
     }
 
     private void removeAllMessages() {

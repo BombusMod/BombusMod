@@ -62,15 +62,14 @@ public final class MessageParser {
     boolean wordsWrap;
     private static String wrapSeparators=" .,-=/\\;:+*()[]<>~!@#%^_&";
     
-//#ifdef ANISMILES
-//#     private static String res= "/smiles/smiles.txt";
-//#else
-    private static String res= "/images/smiles.txt";
-//#endif
+    private static String anires= "/smiles/smiles.txt";
+    private static String staticres= "/images/smiles.txt";
     
     public static MessageParser getInstance() {
-        if (instance==null) 
-            instance=new MessageParser(res);
+        if (instance==null) {
+            instance=new MessageParser();
+            }
+
         return instance;
     }
 
@@ -128,7 +127,7 @@ public final class MessageParser {
         return;
     }
 
-    private MessageParser(String resource) {
+    private MessageParser() {
         smileTable=null;
         smileTable=new Vector();
         root=new Leaf();
@@ -139,7 +138,8 @@ public final class MessageParser {
             boolean strhaschars=false;
             boolean endline=false;
             
-            InputStream in=this.getClass().getResourceAsStream(resource);
+            InputStream in=this.getClass().getResourceAsStream(anires);
+            if (in == null) in=this.getClass().getResourceAsStream(staticres);
             
             boolean firstSmile=true;
             

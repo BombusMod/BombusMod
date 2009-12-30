@@ -38,11 +38,8 @@ import ui.ImageList;
 public class SmilesIcons {
     
     private static String res= "/images/smiles.png";
-//#ifdef ANISMILES
-//#     private static String restxt= "/smiles/smiles.txt";
-//#else
-    private static String restxt= "/images/smiles.txt";
-//#endif
+    private static String anitxt= "/smiles/smiles.txt";
+    private static String statictxt= "/images/smiles.txt";
     
     private final static int SMILES_IN_ROW=16;
     private static int cols;
@@ -56,19 +53,14 @@ public class SmilesIcons {
                  int smilesCount = MessageParser.getInstance().getSmileTable().size();
                  cols = ceil(SMILES_IN_ROW, smilesCount);
              } catch (Exception e) {
-                 System.out.print("Can't load ");
-                 System.out.println(restxt);
+                 System.out.println("Can't load smiles");
              }
-//#ifdef ANISMILES
-//#             instance=new AniImageList();
-//#             ((AniImageList)instance).load("/smiles");
-//# 
-//#             if (0 == instance.getWidth()) {
-//#                 instance=new ImageList(res, cols, SMILES_IN_ROW);
-//#             }
-//#else
-            instance=new ImageList(res, cols, SMILES_IN_ROW);
-//#endif
+            instance=new AniImageList();
+            ((AniImageList)instance).load("/smiles");
+
+            if (instance.getWidth() == 0) {
+                instance=new ImageList(res, cols, SMILES_IN_ROW);
+            }
         }
 //#endif
         return instance;
