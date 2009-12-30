@@ -89,7 +89,6 @@ import VCard.VCardEdit;
 import VCard.VCardView;
 import com.alsutton.jabber.*;
 import com.alsutton.jabber.datablocks.*;
-import com.sun.kvem.midp.pim.LineReader.Matcher;
 import java.util.*;
 import ui.*;
 import xmpp.EntityCaps;
@@ -854,8 +853,7 @@ public class Roster
 //#         synchronized (hContacts) {
 //#             for (Enumeration e = hContacts.elements(); e.hasMoreElements();) {
 //#                 Contact c = (Contact) e.nextElement();
-//#                 if (c.bareJid.equals("juick@juick.com")
-//#                  || c.bareJid.startsWith("juick%juick.com@"))
+//#                 if (isJuickContact(c))
 //#                     juickContacts.addElement(c.bareJid);
 //#             }
 //#         }
@@ -869,17 +867,19 @@ public class Roster
 //#                 Contact c = (Contact) e.nextElement();
 //#                 if (cf.juickJID != null) {
 //#                     matched = c.bareJid.equals(cf.juickJID);
-//#                     if (matched)
-//#                         cf.juickJID = c.bareJid;
 //#                 } else {
-//#                     matched = (c.bareJid.equals("juick@juick.com")
-//#                             || c.bareJid.startsWith("juick%juick.com@"));
+//#                     matched = isJuickContact(c);
 //#                 }
 //#                 if (matched)
 //#                     return c;
 //#             }
 //#         }
 //#         return null;
+//#     }
+//# 
+//#     public boolean isJuickContact(Contact c) {
+//#         return (c.bareJid.equals("juick@juick.com")
+//#          || c.bareJid.startsWith("juick%juick.com@"));
 //#     }
 //#endif
 

@@ -28,7 +28,6 @@ package History;
 
 import Client.Config;
 import Client.Msg;
-import com.sun.cldc.i18n.j2me.ISO8859_1_Reader;
 import io.file.FileIO;
 import java.io.IOException;
 import java.io.InputStream;

@@ -60,8 +60,6 @@ import Archive.MessageArchive;
 //#endif
 //#ifdef JUICK
 //# import Menu.JuickThingsMenu;
-//# import ui.controls.PopUp;
-//# import ui.VirtualList;
 //#endif
 
 public class ContactMessageList extends MessageList {
@@ -99,7 +97,7 @@ public class ContactMessageList extends MessageList {
     StaticData sd = StaticData.getInstance();
 
 //#ifdef JUICK
-//#     Contact mainJuickContact = sd.roster.getMainJuickContact();
+//#     Contact mainJuickContact;
 //#     Command cmdSendJuickPostReply=new Command(SR.MS_SEND_JUICK_POST_REPLY, Command.SCREEN, 15);
 //#     Command cmdSendJuickCommentReply=new Command(SR.MS_SEND_JUICK_COMMENT_REPLY, Command.SCREEN, 16);
 //#     Command cmdSendJuickPrivateReply;
@@ -245,6 +243,7 @@ public class ContactMessageList extends MessageList {
 //#         if(sd.Juick) {
 //#endif
 //#         // http://code.google.com/p/bm2/issues/detail?id=94#c1
+//#         mainJuickContact = sd.roster.getMainJuickContact();
 //#         addCommand(cmdJuickThings);
 //#         if (isJuickContact(contact) || isJuBoContact(contact)) {
 //#             Msg msg = getMessage(cursor);
@@ -624,8 +623,7 @@ public void showNotify(){
 //# 
 //# 
 //#     public boolean isJuickContact(Contact c) {
-//#         return (c.bareJid.equals("juick@juick.com")
-//#          || c.bareJid.startsWith("juick%juick.com@"));
+//#         return sd.roster.isJuickContact(c);
 //#     }
 //# 
 //#     public boolean isJuBoContact(Contact c) {

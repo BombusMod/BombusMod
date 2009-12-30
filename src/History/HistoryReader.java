@@ -27,17 +27,13 @@
 
 package History;
 
-import Client.Config;
 import Client.Contact;
 import Client.Msg;
 import Menu.Command;
 import Messages.MessageList;
 import java.util.Vector;
 import javax.microedition.lcdui.Display;
-import ui.MainBar;
-import java.util.Enumeration;
 import javax.microedition.lcdui.Displayable;
-import locale.SR;
 
 /**
  *

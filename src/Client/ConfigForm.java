@@ -150,7 +150,7 @@ public class ConfigForm
     private Vector langs[];
 
 //#ifdef JUICK
-//#     private DropChoiceBox juickContactsBox;
+//#     private DropChoiceBox juickContactsBox = null;
 //#endif
 
     StaticData sd=StaticData.getInstance();
@@ -390,7 +390,7 @@ public class ConfigForm
 //#endif
 //#         Vector juickContacts = sd.roster.getJuickContacts();
 //#         if (juickContacts.size()>1) {
-//#             juickContactsBox = new DropChoiceBox(display, "Juick main contact.");
+//#             juickContactsBox = new DropChoiceBox(display, "Main Juick-contact.");
 //#             juickContactsBox.items = juickContacts;
 //#             if (cf.juickJID != null)
 //#                 juickContactsBox.setSelectedIndex(juickContacts.indexOf(cf.juickJID));
@@ -530,7 +530,7 @@ public class ConfigForm
 //#             if (sd.Juick)
 //#endif
 //#         if (juickContactsBox != null) {
-//#            cf.juickJID=juickContactsBox.toString();
+//#            cf.juickJID=(String) juickContactsBox.items.elementAt(juickContactsBox.getSelectedIndex());
 //#         } else {
 //#             cf.juickJID = null;
 //#         }
