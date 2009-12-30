@@ -270,9 +270,6 @@ public class InfoWindow
 //#endif
 //#             abilitiesList.addElement((String)"IMPORT_EXPORT");
 //#endif
-//#ifdef JUICK
-//#             abilitiesList.addElement((String)"JUICK");
-//#endif
 //#ifdef LAST_MESSAGES
 //#ifdef PLUGINS
 //#         if (sd.History)
@@ -342,7 +339,7 @@ public class InfoWindow
 //#ifdef SMILES
         abilitiesList.addElement((String)"SMILES");
 //#ifdef ANISMILES
-        abilitiesList.addElement((String)"ANISMILES");
+//#         abilitiesList.addElement((String)"ANISMILES");
 //#endif
 //#endif
 //#ifdef STATS
@@ -368,6 +365,12 @@ public class InfoWindow
 //#endif
 //#ifdef ZLIB
         abilitiesList.addElement((String)"ZLIB");
+//#endif
+//#ifdef JUICK
+//#ifdef PLUGINS
+//#         if (sd.Juick)
+//#endif
+//#         abilitiesList.addElement((String)"JUICK");
 //#endif
         
         StringBuffer abilities=new StringBuffer();

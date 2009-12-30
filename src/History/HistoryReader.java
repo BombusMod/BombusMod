@@ -27,124 +27,92 @@
 
 package History;
 
+import Client.Config;
 import Client.Contact;
 import Client.Msg;
+import Menu.Command;
 import Messages.MessageList;
 import java.util.Vector;
 import javax.microedition.lcdui.Display;
 import ui.MainBar;
+import java.util.Enumeration;
+import javax.microedition.lcdui.Displayable;
+import locale.SR;
 
 /**
  *
  * @author ad
  */
-public class HistoryReader
-    extends MessageList {
+public class HistoryReader extends MessageList {
 //#ifdef PLUGINS
 //#     public static String plugin = new String("PLUGIN_HISTORY");
 //#endif
     
-    public int thisIndex=-1;
-
     private HistoryLoader hl;
-    
-    private boolean parsing=false;
-    
-    private Msg thisMsg=null;
-    
-    private int listSize=0;
-    
+    Command cmdNext, cmdPrev;
+
     /** Creates a new instance of HistoryReader */
     public HistoryReader(Display display, Contact c) {
-        super();
-
-        setMainBarItem(new MainBar("History reader"));
-        
+        super(display);
+        cmdNext = new Command("Next", 0, 0);
+        cmdPrev = new Command("Previous", 0, 0);
         hl = new HistoryLoader(c.bareJid);
-        
-        listSize=hl.getSize();
-        
-        if (listSize>0)
-            loadMessage(0);
-        else
-            return;
-        
+
+	//MainBar mainbar=new MainBar("HistoryReader");
+	//mainbar.addElement(null);
+	//mainbar.addRAlign();
+	//mainbar.addElement(null);
+	//mainbar.addElement(SR.MS_FREE /*"free "*/);
+        //setMainBarItem(mainbar);
+
+        removeAllMessages();
+        hl.getNext();
         setCommandListener(this);
-        
+        addCommand(cmdPrev);
+        addCommand(cmdNext);
 	addCommand(cmdBack);
-        
-        attachDisplay(display);
-    }
-    
-    protected void beginPaint() {
-        StringBuffer str = new StringBuffer()
-        .append(" (")
-        .append(thisIndex+1)
-        .append("/")
-        .append(listSize)
-        .append(")");
-        
-        getMainBarItem().setElementAt(str.toString(),1);
-    }    
-
-    public int getItemCount() {
-        return (listSize>0)?1:0;
     }
 
-    public Msg getMessage(int index) {
-	return thisMsg;
-    }
-    
     public void keyPressed(int keyCode) {
-        //kHold=0;
-        if (parsing) return;
-        
-        switch (keyCode) {
-            case KEY_NUM4:
-                loadPrev();
-                return;
-            case KEY_NUM6:
-                loadNext();
-                return;
-        default:
-            try {
-                switch (getGameAction(keyCode)){
-                    case LEFT:
-                        loadPrev();
-                        break;
-                    case RIGHT:
-                        loadNext();
-                        break;
-                }
-            } catch (Exception e) {/* IllegalArgumentException @ getGameAction */}
+        if ((keyCode == KEY_NUM5) || (getGameAction(keyCode) == FIRE)) {
+           if (cursor == 0) {
+               removeAllMessages();
+               hl.getPrev();
+           } else if (cursor == (getItemCount()-1)) {
+               removeAllMessages();
+               hl.getNext();
+           }
         }
         super.keyPressed(keyCode);
     }
-    
-    public void loadNext() {
-        loadMessage ((thisIndex<listSize-1)?thisIndex+1:0);
-    }
-    
-    public void loadPrev() {
-        loadMessage ((thisIndex>0)?thisIndex-1:listSize-1);
-    }
-    
-    public void loadMessage (final int index) {
-        if (thisIndex==index) return;
-        
-        parsing=true;
-        new Thread(new Runnable() {
-            public void run() {
-                messages=null;
-                messages=new Vector();
-                thisMsg=hl.getMessage(index);
-                thisMsg.itemCollapsed=false;
-                thisIndex=index;
-                parsing=false;
 
-                repaint();
-            }
-        }).start();
-        //redraw();
+    public void commandAction(Command c, Displayable d) {
+        if(c==cmdNext) {
+            removeAllMessages();
+            hl.getNext();
+        } else if (c == cmdPrev) {
+            removeAllMessages();
+            hl.getPrev();
+        }
+    }
+
+    private void removeAllMessages() {
+        messages = null;
+        messages = new Vector();
+    }
+
+    public int getItemCount() {
+        if (hl != null)
+           return hl.listMessages.size()+2;
+        else return 0;
+    }
+
+    public Msg getMessage(int i) {
+        
+        if (i==0)
+            return new Msg(Msg.MESSAGE_TYPE_SYSTEM, null, null, "<---");
+        if (i==(getItemCount()-1))
+            return new Msg(Msg.MESSAGE_TYPE_SYSTEM, null, null, "--->");
+        return (Msg) hl.listMessages.elementAt(i-1);
     }
 }

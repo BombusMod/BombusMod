@@ -18,6 +18,9 @@ import java.util.*;
  * @author Totktonada
  */
 public class JuickThingsMenu extends Menu {
+//#ifdef PLUGINS
+//#     public static String plugin = new String("PLUGIN_JUICK");
+//#endif
     //MenuIcons menuIcons=MenuIcons.getInstance();
     private Display display;
     private Displayable parentView;

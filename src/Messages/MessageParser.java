@@ -78,8 +78,8 @@ public final class MessageParser {
     public Vector getSmileTable() { return smileTable; }
 //#endif
     private class Leaf {
-        public int smile=NOSMILE;   // ??? ???????? ? ????
-        public String smileChars;     // ??????? ?????????
+        public int smile=NOSMILE;   // нет смайлика в узле
+        public String smileChars;     // символы смайликов
         public Vector child;
 
         public Leaf() {
@@ -184,6 +184,7 @@ public final class MessageParser {
         addSmile(root, "ftp://",URL);
         addSmile(root, "https://",URL);
         addSmile(root, "native:",URL);
+//        addSmile(root, "@",URL);
 //#if NICK_COLORS
         addSmile(root, "\01", ComplexString.NICK_ON);
         addSmile(root, "\02", ComplexString.NICK_OFF);
@@ -402,7 +403,7 @@ public final class MessageParser {
     public Font getFont(boolean bold) {
         return FontCache.getFont(bold, FontCache.msg);
     }
-    
+
     public interface MessageParserNotify {
         void notifyRepaint(Vector v, Msg parsedMsg, boolean finalized);
     }

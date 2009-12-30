@@ -28,6 +28,7 @@ package History;
 
 import Client.Config;
 import Client.Msg;
+import com.sun.cldc.i18n.j2me.ISO8859_1_Reader;
 import io.file.FileIO;
 import java.io.IOException;
 import java.io.InputStream;
@@ -49,8 +50,9 @@ public class HistoryLoader {
 //#endif
 
     private String fileName="";
-
-    private Vector fileMap;
+    public Vector listMessages;
+    private Vector indexes;
+    private int nextIndex = 0;
 
     public final static int MESSAGE_MARKER_OUT=1;
     public final static int MESSAGE_MARKER_PRESENCE=2;
@@ -65,53 +67,121 @@ public class HistoryLoader {
 //#ifdef HISTORY
 //#        fileName=cf.msgPath+StringUtils.replaceBadChars(file)+".txt";
 //#endif
-       fileMap = getFileMap();
+       listMessages = new Vector();
+       indexes = new Vector();
+    }
+
+    private int processMessage(int pos) {
+        System.out.println("Called. pos=" + pos);
+        FileIO f = FileIO.createConnection(fileName);
+        Vector listMessages = new Vector();
+        byte[] b = readFile(pos);
+
+        if (b == null) {
+            System.out.println("Вероятно, EOF.");
+            return pos;
+        }
+
+        String str = getStrFromBytes(b);
+
+        String current = findBlock(str, "m");
+        while (current != null) {
+            String type = findBlock(current, "t");
+            String date = findBlock(current, "d");
+            String from = findBlock(current, "f");
+            String subj = findBlock(current, "s");
+            String body = findBlock(current, "b");
+            listMessages.addElement(processMessage(type, date, from, subj, body));
+
+            str = str.substring(str.indexOf("</m>") + 4);
+            current = findBlock(str, "m");
+        }
+
+        if ((listMessages.size() < 1) && (str.indexOf("<m>") > -1)) {
+            String largeMessage = "";
+            do {
+                largeMessage += str;
+                pos += 4096;
+                b = readFile(pos);
+                if (b == null) {
+                    System.out.println("WARNING! Неожиданный конец лог-файла.");
+                    return pos; // Или что тут вообще делать?
+                    } else {
+                    str = getStrFromBytes(b);
+                }
+            } while (str.indexOf("</m>") < 0);
+
+            largeMessage = findBlock(largeMessage+str, "m");
+            String type = findBlock(largeMessage, "t");
+            String date = findBlock(largeMessage, "d");
+            String from = findBlock(largeMessage, "f");
+            String subj = findBlock(largeMessage, "s");
+            String body = findBlock(largeMessage, "b");
+            listMessages.addElement(processMessage(type, date, from, subj, body));
+        }
+
+        if (listMessages.size() > 0) {
+            pos += getNextMessagePos(b);
+            this.listMessages = listMessages;
+
+        }
+        return pos;
+    }
+
+    private byte[] readFile(int pos) {
+        FileIO f=FileIO.createConnection(fileName);
+        byte[] b = new byte[4096];
+        try {
+            InputStream is=f.openInputStream();
+            is.skip(pos);
+            is.read(b);
+            is.close();
+
+        } catch (IOException e) {
+            try { f.close();
+                  return null;
+                } catch (IOException ex2) {/*No messages*/}
+        } catch (Exception e) { return null; }
+
+        try {
+            f.close();
+        } catch (Exception e) {/*No messages*/}
+        return b;
+    }
+
+    private String getStrFromBytes(byte[] b) {
+        String str = new String(b).trim();
+        if (cf.cp1251) {
+            str = Strconv.convCp1251ToUnicode(str);
+        }
+        return str;
     }
     
-    public Msg getMessage(int index) {
-        FileIO f=FileIO.createConnection(fileName);
-        try {
-            InputStream is=f.openInputStream(); 
-            String str="";
-            
-            int blockSize=0;
-            
-            int pos=((posItem)fileMap.elementAt(index)).getPos();
-            if (index<getSize()-2) {
-                blockSize=((posItem)fileMap.elementAt(index+1)).getPos()-pos;
-            } else {
-                blockSize=(int)f.fileSize()-pos;
-            }
-            is.skip(pos);
-            
-            byte[] b = new byte[blockSize];
-            is.read(b);
-            
-            is.close();  f.close();
-                
-            if (b!=null) {
-                str = new String(b, 0, blockSize).trim();
-                b=null; is.close(); f.close();
-                String type=null; String date=null; String from=null; String subj=null; String body=null;
-                int start_pos=str.indexOf("<m>",0);
-                int end_pos=str.indexOf("</m>",start_pos);
+    private int getNextMessagePos(byte[] b) {
+        int ost = 4096;
+        while (!(b[ost - 4] == '<' && b[ost - 3] == '/' && b[ost - 2] == 'm' && b[ost - 1] == '>')) {
+            ost--;
 
-                if (start_pos>-1) {
-                    str=str.substring(start_pos+3, end_pos);
-                    if (cf.cp1251) {
-                        str=Strconv.convCp1251ToUnicode(str);
-                    }
-                    type=findBlock(str,"t"); date=findBlock(str,"d");  from=findBlock(str,"f");  subj=findBlock(str,"s");  body=findBlock(str,"b");
-                    
-                    //System.out.println(type+" ["+date+"]"+from+": "+subj+" "+body+"\r\n");
-                    return processMessage (type, date, from, subj, body);
-                }
-            }                
-        } catch (IOException e) { try { f.close(); } catch (IOException ex2) { } }
-        return null;
+        }
+        return ost;
+    }
+    
+    public void getNext() {
+        int oldIndex = nextIndex;
+        nextIndex = processMessage(oldIndex);
+        if (oldIndex != nextIndex)
+            indexes.addElement(new Integer(oldIndex));
     }
 
-    private Msg processMessage (String marker, String date, String from, String subj, String body) {
+    public void getPrev() {
+        int size = indexes.size();
+        if (size<2)
+            return;
+        indexes.removeElementAt(size-1);
+        nextIndex=processMessage(((Integer)indexes.lastElement()).intValue());
+    }
+
+    private Msg processMessage(String marker, String date, String from, String subj, String body) {
         int msgType=Msg.MESSAGE_TYPE_HISTORY;
 
         int mrk = Integer.parseInt(marker);
@@ -134,74 +204,11 @@ public class HistoryLoader {
         return msg;
     }
 
-    private String findBlock(String source, String needle){
-        String block = "";
-        int start =source.indexOf("<"+needle+">"); int end = source.indexOf("</"+needle+">");
+    private String findBlock(String source, String needle) {
+        int start = source.indexOf("<"+needle+">");
+        int end = source.indexOf("</"+needle+">");
         if (start<0 || end<0)
-            return block;
-
-        return source.substring(start+3, end);
-    }
-    
-    public int getSize() {
-        return fileMap.size();
-    }
-
-    public Vector getFileMap() {
-        Vector vector=new Vector();
-
-        FileIO f=FileIO.createConnection(fileName);
-        try {
-            InputStream is=f.openInputStream(); 
-            int fileSize = (int)f.fileSize();
-
-            int pos=0;
-            int pos2=0;
-            int blockSize=4096;
-
-            byte[] b; 
-            String str;
-            boolean process=true;
-            boolean process2=true;
-
-            while (process) {
-                if (pos>0) is.skip(blockSize);
-                b = new byte[blockSize];
-                is.read(b);
-                
-                if (b!=null) {
-                    str = new String(b, 0, blockSize).trim();
-
-                    pos2=0;
-                    process2=true;
-                    
-                    while (process2) {
-                        int mpos=str.indexOf("<m", pos2);
-
-                        if (mpos>-1) {
-                            vector.addElement(new posItem(pos+mpos));
-                            pos2=mpos+1;
-                        } else process2=false;
-                    }
-                    str=null;
-                }
-                pos+=blockSize;
-                if (pos>fileSize) {
-                    process=false;
-                }
-            }
-            b=null;
-            is.close(); f.close();
-        } catch (IOException e) { try { f.close(); } catch (IOException ex2) { } }
-
-        System.out.println("found messages: "+vector.size());
-        return vector;
-    }
-    
-    class posItem {
-        int pos=0;
-        
-        public posItem(int pos) { this.pos=pos; }
-        public int getPos() { return pos; }
+            return null;
+        return source.substring(start+needle.length()+2, end);
     }
 }

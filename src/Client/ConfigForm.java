@@ -149,6 +149,10 @@ public class ConfigForm
 
     private Vector langs[];
 
+//#ifdef JUICK
+//#     private DropChoiceBox juickContactsBox;
+//#endif
+
     StaticData sd=StaticData.getInstance();
     
     Config cf;
@@ -379,7 +383,26 @@ public class ConfigForm
             }
             itemsList.addElement(langFiles);
         }
-        
+
+//#ifdef JUICK
+//#ifdef PLUGINS
+//#         if (sd.Juick) {
+//#endif
+//#         Vector juickContacts = sd.roster.getJuickContacts();
+//#         if (juickContacts.size()>1) {
+//#             juickContactsBox = new DropChoiceBox(display, "Juick main contact.");
+//#             juickContactsBox.items = juickContacts;
+//#             if (cf.juickJID != null)
+//#                 juickContactsBox.setSelectedIndex(juickContacts.indexOf(cf.juickJID));
+//#             else juickContactsBox.setSelectedIndex(0);
+//#             itemsList.addElement(juickContactsBox);
+//#         }
+//#ifdef PLUGINS
+//#         }
+//#endif
+//#endif
+
+
         enableListWrapping(false);
         attachDisplay(display);
         this.parentView=pView;
@@ -501,6 +524,18 @@ public class ConfigForm
         if (langs[0].size()>1) {
             cf.lang=(String) langs[0].elementAt( langFiles.getSelectedIndex() );
         }
+
+//#ifdef JUICK
+//#ifdef PLUGINS
+//#             if (sd.Juick)
+//#endif
+//#         if (juickContactsBox != null) {
+//#            cf.juickJID=juickContactsBox.toString();
+//#         } else {
+//#             cf.juickJID = null;
+//#         }
+//#endif
+
 //#ifdef AUTOSTATUS
 //#             cf.useMyStatusMessages=awayStatus.getValue();
 //#             cf.autoAwayDelay=Integer.parseInt(fieldAwayDelay.getValue());

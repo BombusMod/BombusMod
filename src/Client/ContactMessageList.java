@@ -60,6 +60,8 @@ import Archive.MessageArchive;
 //#endif
 //#ifdef JUICK
 //# import Menu.JuickThingsMenu;
+//# import ui.controls.PopUp;
+//# import ui.VirtualList;
 //#endif
 
 public class ContactMessageList extends MessageList {
@@ -97,7 +99,7 @@ public class ContactMessageList extends MessageList {
     StaticData sd = StaticData.getInstance();
 
 //#ifdef JUICK
-//#     Contact juickContact = sd.roster.getJuickContact();
+//#     Contact mainJuickContact = sd.roster.getMainJuickContact();
 //#     Command cmdSendJuickPostReply=new Command(SR.MS_SEND_JUICK_POST_REPLY, Command.SCREEN, 15);
 //#     Command cmdSendJuickCommentReply=new Command(SR.MS_SEND_JUICK_COMMENT_REPLY, Command.SCREEN, 16);
 //#     Command cmdSendJuickPrivateReply;
@@ -239,9 +241,12 @@ public class ContactMessageList extends MessageList {
 //#endif
         
 //#ifdef JUICK
+//#ifdef PLUGINS
+//#         if(sd.Juick) {
+//#endif
 //#         // http://code.google.com/p/bm2/issues/detail?id=94#c1
 //#         addCommand(cmdJuickThings);
-//#         if (contact.equals(juickContact)) {
+//#         if (isJuickContact(contact) || isJuBoContact(contact)) {
 //#             Msg msg = getMessage(cursor);
 //#             String body;
 //# 
@@ -274,6 +279,9 @@ public class ContactMessageList extends MessageList {
 //#                 }
 //#             }
 //#         }
+//#ifdef PLUGINS
+//#         }
+//#endif
 //#endif
 
         addCommand(cmdBack);
@@ -470,7 +478,12 @@ public void showNotify(){
 //#             body = "";
 //#         } msg = null;
 //# 
-//#         if (c == cmdSendJuickCommentReply || c == cmdSendJuickPostReply) {
+//#         //mainJuickContact = sd.roster.getMainJuickContact();
+//#         if (getActualJuickContact() == null) {
+//#ifdef POPUPS
+//#             setWobble(popup.TYPE_SYSTEM, "Juick", SR.MS_JUICK_CONTACT_NOT_FOUND);
+//#endif
+//#         } else if (c == cmdSendJuickCommentReply || c == cmdSendJuickPostReply) {
 //#             juickReply(body);
 //#         } else if (c == cmdSendJuickPrivateReply) {
 //#             juickAction("PM", body);
@@ -505,13 +518,17 @@ public void showNotify(){
 //#                             thing = thing + valueChars[i];
 //#                         while(thing.charAt(thing.length()-1) == '.')
 //#                             thing = thing.substring(0, thing.length()-1);
-//#                         if ((thing.length()>1) && (things.indexOf(thing)<0))
+//#                         if ((thing.length()>1) && (things.indexOf(thing)<0)) {
+//#                             if (i<msg_length && ((firstSymbol == '*') && (valueChars[i] == '*')))
+//#                                 continue;
 //#                             things.addElement(thing);
+//#                         }
 //#                         if(i>0) i--;
 //#                         break;
 //#                 }
 //#             }
-//#         if (things.isEmpty() && contact.equals(juickContact)) {
+//# 
+//#         if (things.isEmpty() && (isJuickContact(contact) || isJuBoContact(contact))) {
 //#             things.addElement("#");
 //#             things.addElement("#+");
 //#             things.addElement("*");
@@ -519,7 +536,7 @@ public void showNotify(){
 //#         }
 //# 
 //#         if (!things.isEmpty()) {
-//#             new JuickThingsMenu(things, display, contact.equals(juickContact) ? this : new ContactMessageList(juickContact, display), juickContact);
+//#             new JuickThingsMenu(things, display, getActualJuickContactMessageList(), getActualJuickContact());
 //#         }
 //#     }
 //# 
@@ -543,10 +560,10 @@ public void showNotify(){
 //#                 result = (ch>46) && (ch<58); // [0-9/]
 //#                 break;
 //#             case '@': // @username
-//#                 result = ((ch>47)&&(ch<58)) || ((ch>63)&&(ch<91)) || ((ch>96)&&(ch<123)) || ((ch=='_')||(ch=='|')||(ch=='.')) || ((ch>44)&&(ch<47)); // [a-zA-Z0-9-.@_|]
+//#                 result = ((ch>47)&&(ch<58)) || ((ch>63)&&(ch<91)) || ((ch>96)&&(ch<123)) || ((ch=='_')||(ch=='|')) || ((ch>44)&&(ch<47)); // [a-zA-Z0-9-.@_|]
 //#                 break;
 //#             case '*': // *tag
-//#                 result = ((ch>47)&&(ch<58)) || ((ch>64)&&(ch<91)) || ((ch>96)&&(ch<123)) || ((ch>1039)&&(ch<1104)) || ((ch=='_')||(ch=='|')||(ch=='.')) || ((ch>44)&&(ch<47)); // [a-zA-ZА-Яа-я0-9-._|])
+//#                 result = ((ch>42)&&(ch<58)) || ((ch>64)&&(ch<91)) || ((ch>96)&&(ch<123)) || ((ch>1039)&&(ch<1104)) || ((ch=='_')||(ch=='|')||(ch=='?')||(ch=='!')||(ch==39)) || ((ch>44)&&(ch<47)); // [a-zA-ZА-Яа-я0-9-.,/+_|?!'])
 //#                 break;
 //#         }
 //#         return result;
@@ -574,9 +591,9 @@ public void showNotify(){
 //#     public void juickReply(String str) {
 //#           try {
 //#ifdef RUNNING_MESSAGE
-//#                 sd.roster.me=new MessageEdit(display, this, juickContact, getTargetForJuickReply(str)+" ");
+//#                 sd.roster.me=new MessageEdit(display, getActualJuickContactMessageList(), getActualJuickContact(), getTargetForJuickReply(str)+" ");
 //#else
-//#             new MessageEdit(display, this, juickContact, getTargetForJuickReply(str)+" ");
+//#             new MessageEdit(display, getActualJuickContactMessageList(), getActualJuickContact(), getTargetForJuickReply(str)+" ");
 //#endif
 //#             } catch (Exception e) {/*no messages*/}
 //#     }
@@ -598,11 +615,34 @@ public void showNotify(){
 //#         }
 //#         try {
 //#ifdef RUNNING_MESSAGE
-//#                 sd.roster.me=new MessageEdit(display, this, juickContact, resultAction);
+//#                 sd.roster.me=new MessageEdit(display, getActualJuickContactMessageList(), getActualJuickContact(), resultAction);
 //#else
-//#             new MessageEdit(display, this, juickContact, resultAction);
+//#             new MessageEdit(display, getActualJuickContactMessageList(), getActualJuickContact(), resultAction);
 //#endif
 //#             } catch (Exception e) {/*no messages*/}
+//#     }
+//# 
+//# 
+//#     public boolean isJuickContact(Contact c) {
+//#         return (c.bareJid.equals("juick@juick.com")
+//#          || c.bareJid.startsWith("juick%juick.com@"));
+//#     }
+//# 
+//#     public boolean isJuBoContact(Contact c) {
+//#         return (c.bareJid.equals("jubo@nologin.ru")
+//#          || c.bareJid.startsWith("jubo%jubo.ru@"));
+//#     }
+//# 
+//#     private Contact getActualJuickContact() {
+//#         if (isJuickContact(contact))
+//#             return contact;
+//#         else return mainJuickContact;
+//#     }
+//# 
+//#     private ContactMessageList getActualJuickContactMessageList() {
+//#         if (isJuickContact(contact))
+//#             return this;
+//#         else return new ContactMessageList(mainJuickContact, display);
 //#     }
 //#endif
 
@@ -659,7 +699,10 @@ public void showNotify(){
             }
 //#endif
 //#ifdef JUICK
-//#             if (contact.equals(juickContact)) {
+//#ifdef PLUGINS
+//#             if (sd.Juick)
+//#endif
+//#             if (isJuickContact(contact) || isJuBoContact(contact)) {
 //#                 Msg msg = getMessage(cursor);
 //#                 String body;
 //# 

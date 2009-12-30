@@ -88,5 +88,6 @@ public class StaticData {
 //#     public boolean ClientsIcons=true;
 //#     public boolean UserKeys=true;
 //#     public boolean Upgrade=true;
+//#     public boolean Juick=true;
 //#endif
 }

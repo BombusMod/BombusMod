@@ -89,6 +89,7 @@ import VCard.VCardEdit;
 import VCard.VCardView;
 import com.alsutton.jabber.*;
 import com.alsutton.jabber.datablocks.*;
+import com.sun.kvem.midp.pim.LineReader.Matcher;
 import java.util.*;
 import ui.*;
 import xmpp.EntityCaps;
@@ -848,16 +849,37 @@ public class Roster
     }
 
 //#ifdef JUICK
-//#     public Contact getJuickContact() {
+//#         public Vector getJuickContacts() {
+//#         Vector juickContacts = new Vector();
 //#         synchronized (hContacts) {
 //#             for (Enumeration e = hContacts.elements(); e.hasMoreElements();) {
 //#                 Contact c = (Contact) e.nextElement();
 //#                 if (c.bareJid.equals("juick@juick.com")
 //#                  || c.bareJid.startsWith("juick%juick.com@"))
+//#                     juickContacts.addElement(c.bareJid);
+//#             }
+//#         }
+//#         return juickContacts;
+//#     }
+//# 
+//#     public Contact getMainJuickContact() {
+//#         boolean matched;
+//#         synchronized (hContacts) {
+//#             for (Enumeration e = hContacts.elements(); e.hasMoreElements();) {
+//#                 Contact c = (Contact) e.nextElement();
+//#                 if (cf.juickJID != null) {
+//#                     matched = c.bareJid.equals(cf.juickJID);
+//#                     if (matched)
+//#                         cf.juickJID = c.bareJid;
+//#                 } else {
+//#                     matched = (c.bareJid.equals("juick@juick.com")
+//#                             || c.bareJid.startsWith("juick%juick.com@"));
+//#                 }
+//#                 if (matched)
 //#                     return c;
 //#             }
 //#         }
-//#         return null;//new Contact("Juick", "juick@juick.com", Presence.PRESENCE_UNKNOWN, "none");
+//#         return null;
 //#     }
 //#endif
 
@@ -1673,7 +1695,7 @@ public class Roster
                             
                             String lang=pr.getAttribute("xml:lang");
 //#if DEBUG
-//#                             System.out.println(lang);
+//#                             //System.out.println("xml:lang="+lang); // Very much output!
 //#endif
                             c.lang=lang; lang=null;
 

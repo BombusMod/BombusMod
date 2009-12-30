@@ -33,9 +33,9 @@ import ui.MainBar;
 import Messages.MessageList;
 import java.util.Vector;
 //#ifndef MENU_LISTENER
-import javax.microedition.lcdui.Command;
+//# import javax.microedition.lcdui.Command;
 //#else
-//# import Menu.Command;
+import Menu.Command;
 //#endif
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
@@ -94,7 +94,7 @@ public class ArchiveList
 
     public void commandState() {
 //#ifdef MENU_LISTENER
-//#         menuCommands.removeAllElements();
+        menuCommands.removeAllElements();
 //#endif
 
         if (getItemCount()>0) {
@@ -111,7 +111,7 @@ public class ArchiveList
         addCommand(cmdNew);
         
 //#ifdef MENU_LISTENER
-//#         super.addCommands();
+        super.addCommands();
 //#endif
     }
 

@@ -1014,7 +1014,7 @@ public abstract class VirtualList
      */
     private void key(int keyCode) {
 //#if DEBUG
-//#         System.out.println(keyCode);
+//#         //System.out.println(keyCode); // Только мешает.
 //#endif
 //#ifdef POPUPS
         if (keyCode==greenKeyCode) {
@@ -1179,7 +1179,7 @@ public abstract class VirtualList
         if (getItemCount()==0)
             return;
 //#ifdef DEBUG
-//# 	System.out.println("keyUp");
+//# 	//System.out.println("keyUp");
 //#endif
         if (cursor==0) {
             if (wrapping) {
@@ -1208,7 +1208,7 @@ public abstract class VirtualList
         if (getItemCount()==0)
             return;
 //#ifdef DEBUG
-//#         System.out.println("keyDwn");
+//#         //System.out.println("keyDwn");
 //#endif
 	if (cursor==(getItemCount()-1)) {
             if (wrapping) {
@@ -1311,7 +1311,7 @@ public abstract class VirtualList
         if (getItemCount()==0)
             return;
 //#ifdef DEBUG
-//#         System.out.println("keyLeft");
+//#         //System.out.println("keyLeft");
 //#endif
         try {
             stickyWindow=false;
@@ -1334,7 +1334,7 @@ public abstract class VirtualList
         if (getItemCount()==0)
             return;
 //#ifdef DEBUG
-//#         System.out.println("keyRight");
+//#         //System.out.println("keyRight");
 //#endif
         try {
             stickyWindow=false;

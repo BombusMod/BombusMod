@@ -148,45 +148,48 @@ public class BombusMod extends MIDlet implements Runnable{
     }
 
 //#ifdef PLUGINS
-//#     private void getPlugins () {
-//# 	Vector defs[]=new StringLoader().stringLoader("/modules.txt", 2);
-//#         if (defs!=null) {
-//#             for (int i=0; i<defs[0].size(); i++) {
-//#                 String name      =(String) defs[0].elementAt(i);
-//#                 String value     =(String) defs[1].elementAt(i);
 //# 
-//#                 boolean state=value.equals("true");
+//#     private void getPlugins() {
+//#         Vector defs[] = new StringLoader().stringLoader("/modules.txt", 2);
+//#         if (defs != null) {
+//#             for (int i = 0; i < defs[0].size(); i++) {
+//#                 String name = (String) defs[0].elementAt(i);
+//#                 String value = (String) defs[1].elementAt(i);
+//# 
+//#                 boolean state = value.equals("true");
 //# 
 //#                 if (name.equals("Archive")) {
-//#                     sd.Archive=state;
-//#                 } else if(name.equals("ChangeTransport")) {
-//#                     sd.ChangeTransport=state;
-//#                 } else if(name.equals("Console")) {
-//#                     sd.Console=state;
-//#                 } else if(name.equals("FileTransfer")) {
-//#                     sd.FileTransfer=state;
-//#                 } else if(name.equals("History")) {
-//#                     sd.History=state;
-//#                 } else if(name.equals("ImageTransfer")) {
-//#                     sd.ImageTransfer=state;
-//#                 } else if(name.equals("PEP")) {
-//#                     sd.PEP=state;
-//#                 } else if(name.equals("Privacy")) {
-//#                     sd.Privacy=state;
-//#                 } else if(name.equals("IE")) {
-//#                     sd.IE=state;
-//#                 } else if(name.equals("Colors")) {
-//#                     sd.Colors=state;
-//#                 } else if(name.equals("Adhoc")) {
-//#                     sd.Adhoc=state;
-//#                 } else if(name.equals("Stats")) {
-//#                     sd.Stats=state;
+//#                     sd.Archive = state;
+//#                 } else if (name.equals("ChangeTransport")) {
+//#                     sd.ChangeTransport = state;
+//#                 } else if (name.equals("Console")) {
+//#                     sd.Console = state;
+//#                 } else if (name.equals("FileTransfer")) {
+//#                     sd.FileTransfer = state;
+//#                 } else if (name.equals("History")) {
+//#                     sd.History = state;
+//#                 } else if (name.equals("ImageTransfer")) {
+//#                     sd.ImageTransfer = state;
+//#                 } else if (name.equals("PEP")) {
+//#                     sd.PEP = state;
+//#                 } else if (name.equals("Privacy")) {
+//#                     sd.Privacy = state;
+//#                 } else if (name.equals("IE")) {
+//#                     sd.IE = state;
+//#                 } else if (name.equals("Colors")) {
+//#                     sd.Colors = state;
+//#                 } else if (name.equals("Adhoc")) {
+//#                     sd.Adhoc = state;
+//#                 } else if (name.equals("Stats")) {
+//#                     sd.Stats = state;
 //#                 } else if (name.equals("ClientsIcons")) {
-//#                     sd.ClientsIcons=state;
+//#                     sd.ClientsIcons = state;
 //#                 } else if (name.equals("UserKeys")) {
-//#                     sd.UserKeys=state;
+//#                     sd.UserKeys = state;
 //#                 } else if (name.equals("Upgrade")) {
-//#                     sd.Upgrade=state;
+//#                     sd.Upgrade = state;
+//#                 } else if (name.equals("Juick")) {
+//#                     sd.Juick = state;
 //#                 }
 //#             }
 //#         }

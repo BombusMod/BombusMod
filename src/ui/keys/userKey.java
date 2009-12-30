@@ -118,7 +118,9 @@ public class userKey extends IconTextElement {
 //#             SR.MS_APP_MINIMIZE,
 //#             SR.MS_INVERT,
 //#             SR.MS_XML_CONSOLE, 
-//#             SR.MS_FULLSCREEN
+//#             SR.MS_FULLSCREEN,
+//#             SR.MS_JUICK_THINGS,
+//#             SR.MS_JUICK_POST_SHOW
 //#endif
     };
     

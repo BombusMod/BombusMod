@@ -228,7 +228,11 @@ public static boolean fullscreen=
 //#ifdef CLIENTS_ICONS
     public boolean showClientIcon=true;
 //#endif
-    
+
+//#ifdef JUICK
+//#     public String juickJID=null; // Undefined.
+//#endif
+
     public int reconnectCount=10;
     public int reconnectTime=15;
 
@@ -505,7 +509,11 @@ public static boolean fullscreen=
             swapSendAndSuspend=inputStream.readBoolean();
             widthScroll2=inputStream.readInt();
             widthSystemgc=inputStream.readBoolean();
-
+//#ifdef JUICK
+//#             juickJID=inputStream.readUTF();
+//#             if (sd.roster.getJuickContacts().size()<2)
+//#                 juickJID=null;
+//#endif
 	    inputStream.close();
             inputStream=null;
 	} catch (Exception e) {
@@ -749,7 +757,9 @@ public static boolean fullscreen=
             outputStream.writeBoolean(swapSendAndSuspend);
             outputStream.writeInt(widthScroll2);
             outputStream.writeBoolean(widthSystemgc);
-            
+//#ifdef JUICK
+//#             outputStream.writeUTF(juickJID);
+//#endif
 	} catch (Exception e) { }
 	
 	NvStorage.writeFileRecord(outputStream, "config", 0, true);

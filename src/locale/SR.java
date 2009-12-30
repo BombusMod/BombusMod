@@ -707,6 +707,7 @@ public class SR {
     public static String MS_JUICK_POST_UNSUBSCRIBE = loadString("[J] Unsubscribe from comments");
     public static String MS_JUICK_POST_RECOMMEND = loadString("[J] Recommend post");
     public static String MS_JUICK_POST_SHOW = loadString("[J] Show post and comments");
+    public static String MS_JUICK_CONTACT_NOT_FOUND = loadString("For work this command you need contact juick@juick.com in you roster. For more information see http://juick.com/help/");
 
     private SR() { }
     
@@ -731,7 +732,7 @@ public class SR {
     private static String loadString(String key) {
         if (lang==null) loadLang();
         String value=(String)lang.get(key);
-//#if LOCALE_DEBUG
+//#ifdef DEBUG
 //#         if (value==null) {
 //#             if (!lang.isEmpty()) {
 //#                 System.out.print("-----> Can't find local string for <");
