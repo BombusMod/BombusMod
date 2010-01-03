@@ -479,9 +479,9 @@ public void showNotify(){
 //# 
 //#         //mainJuickContact = sd.roster.getMainJuickContact();
 //#         if (getActualJuickContact() == null) {
-//#ifdef POPUPS
-//#             setWobble(popup.TYPE_SYSTEM, "Juick", SR.MS_JUICK_CONTACT_NOT_FOUND);
-//#endif
+//# // //#ifdef POPUPS
+//# //             setWobble(popup.TYPE_SYSTEM, "Juick", SR.MS_JUICK_CONTACT_NOT_FOUND); // За такие вещи надо отрывать яйца!
+//# // //#endif
 //#         } else if (c == cmdSendJuickCommentReply || c == cmdSendJuickPostReply) {
 //#             juickReply(body);
 //#         } else if (c == cmdSendJuickPrivateReply) {
