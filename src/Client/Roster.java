@@ -1741,7 +1741,6 @@ public class Roster
 //#endif
                         if ((ti==Presence.PRESENCE_ONLINE || ti==Presence.PRESENCE_CHAT || ti==Presence.PRESENCE_OFFLINE) && (c.getGroupType()!=Groups.TYPE_TRANSP) && (c.getGroupType()!=Groups.TYPE_IGNORE)) 
                             playNotify(ti);
-                        }
                     }
 
 //#ifndef WMUC
