@@ -249,6 +249,9 @@ public class Roster
 //#         if (myStatus<2)
 //#             messageActivity();
 //#endif
+//#ifdef CLIENTS_ICONS
+        ClientsIconsData.getInstance();
+//#endif
     }
     
     public void setLight(boolean state) {
@@ -1738,7 +1741,11 @@ public class Roster
 //#endif
                         if ((ti==Presence.PRESENCE_ONLINE || ti==Presence.PRESENCE_CHAT || ti==Presence.PRESENCE_OFFLINE) && (c.getGroupType()!=Groups.TYPE_TRANSP) && (c.getGroupType()!=Groups.TYPE_IGNORE)) 
                             playNotify(ti);
+                        if (ti == Presence.PRESENCE_OFFLINE) {
+                            c = null; // !!! check
+                        }
                     }
+
 //#ifndef WMUC
                 }
 //#endif

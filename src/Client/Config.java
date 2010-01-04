@@ -39,6 +39,7 @@ import java.io.*;
 import java.util.*;
 import midlet.BombusMod;
 import Fonts.FontCache;
+import images.ClientsIcons;
 import util.StringLoader;
 import ui.Time;
 import ui.VirtualList;
@@ -287,6 +288,10 @@ public static boolean fullscreen=
 //#ifdef SMILES
                 if (smiles) SmilesIcons.getInstance();
 //#endif
+//#ifdef CLIENTS_ICONS
+                if (showClientIcon) ClientsIcons.getInstance();
+//#endif
+
 
 //                if (widthSystemgc) { _vt
                     System.gc();
