@@ -1678,12 +1678,12 @@ public class Roster
                             if (cf.showClientIcon) if (ti<Presence.PRESENCE_OFFLINE)
                                 if (pr.hasEntityCaps()) {
                                     if (pr.getEntityNode()!=null) {
-                                        ClientsIconsData.getInstance().processData(c, pr.getEntityNode());
+                                        ClientsIconsData.processData(c, pr.getEntityNode());
                                         if (pr.getEntityVer()!=null)
                                             c.version=pr.getEntityVer();
                                     }
                                 } else if (c.jid.hasResource()) {
-                                    ClientsIconsData.getInstance().processData(c, c.getResource().substring(1));
+                                    ClientsIconsData.processData(c, c.getResource().substring(1));
                                 }
 //#endif
                             JabberDataBlock j2j=pr.findNamespace("x", "j2j:history");
@@ -1757,7 +1757,7 @@ public class Roster
     }
 //#ifdef CLIENTS_ICONS
     private void getClientIcon(Contact c, String data) {
-        ClientsIconsData.getInstance().processData(c, data);
+        ClientsIconsData.processData(c, data);
     }
 //#endif
 
@@ -2464,6 +2464,12 @@ public class Roster
                         .append(": ");
                 }
                 mess.append(cntact.statusString);
+
+            if (cntact.priority!=0) {
+                    mess.append(" [")
+                        .append(cntact.priority)
+                        .append("]");
+                }
             }
             
             VirtualList.setWobble(1, null, mess.toString());

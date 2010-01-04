@@ -71,13 +71,17 @@ public class HistoryLoader {
     }
 
     private int processMessage(int pos) {
-        System.out.println("Called. pos=" + pos);
+//#ifdef DEBUG
+//#         System.out.println("Called. pos=" + pos);
+//#endif
         FileIO f = FileIO.createConnection(fileName);
-        Vector listMessages = new Vector();
+        Vector lm = new Vector();
         byte[] b = readFile(pos);
 
         if (b == null) {
-            System.out.println("Вероятно, EOF.");
+//#ifdef DEBUG
+//#             System.out.println("Вероятно, EOF.");
+//#endif
             return pos;
         }
 
@@ -90,20 +94,22 @@ public class HistoryLoader {
             String from = findBlock(current, "f");
             String subj = findBlock(current, "s");
             String body = findBlock(current, "b");
-            listMessages.addElement(processMessage(type, date, from, subj, body));
+            lm.addElement(processMessage(type, date, from, subj, body));
 
             str = str.substring(str.indexOf("</m>") + 4);
             current = findBlock(str, "m");
         }
 
-        if ((listMessages.size() < 1) && (str.indexOf("<m>") > -1)) {
+        if ((lm.size() < 1) && (str.indexOf("<m>") > -1)) {
             String largeMessage = "";
             do {
                 largeMessage += str;
                 pos += 4096;
                 b = readFile(pos);
                 if (b == null) {
-                    System.out.println("WARNING! Неожиданный конец лог-файла.");
+//#ifdef DEBUG
+//#                     System.out.println("WARNING! Неожиданный конец лог-файла.");
+//#endif
                     return pos; // Или что тут вообще делать?
                     } else {
                     str = getStrFromBytes(b);
@@ -116,12 +122,12 @@ public class HistoryLoader {
             String from = findBlock(largeMessage, "f");
             String subj = findBlock(largeMessage, "s");
             String body = findBlock(largeMessage, "b");
-            listMessages.addElement(processMessage(type, date, from, subj, body));
+            lm.addElement(processMessage(type, date, from, subj, body));
         }
 
-        if (listMessages.size() > 0) {
+        if (lm.size() > 0) {
             pos += getNextMessagePos(b);
-            this.listMessages = listMessages;
+            this.listMessages = lm;
 
         }
         return pos;

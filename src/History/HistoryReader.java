@@ -67,6 +67,8 @@ public class HistoryReader extends MessageList {
         setMainBarItem(mb);
 
         removeAllMessages();
+        addCommands(); 
+        removeCommand(cmdxmlSkin);
         hl.getNext();
         setCommandListener(this);
         addCommand(cmdPrev);
@@ -89,6 +91,7 @@ public class HistoryReader extends MessageList {
     }
 
     public void commandAction(Command c, Displayable d) {
+        super.commandAction(c, d);
         if(c==cmdNext) {
             removeAllMessages();
             hl.getNext();
