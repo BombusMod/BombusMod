@@ -123,7 +123,6 @@ public final class MessageParser {
 //#endif
             this.width=width;
             parseMessage(messageItem);
-            messageItem.notifyRepaint(messageItem.msgLines, messageItem.msg, false);
         return;
     }
 
@@ -317,7 +316,7 @@ public final class MessageParser {
                     s.setLength(0);
                     int iw=(smileIndex<0x01000000)? smileImages.getWidth() : 0;
                     if (w+iw>width) {
-                        //task.notifyRepaint(lines, task.msg, false);
+                        task.notifyRepaint(lines, task.msg, false);
                         l=new ComplexString(smileImages);
                         lines.addElement(l);
 
@@ -357,7 +356,7 @@ public final class MessageParser {
 //#                             l=new ComplexString();
 //#endif
                             lines.addElement(l);
-                           // task.notifyRepaint(lines, task.msg, false);
+                            task.notifyRepaint(lines, task.msg, false);
 
                             if (singleLine) return;
 
@@ -394,7 +393,7 @@ public final class MessageParser {
             if (l.isEmpty())
                 lines.removeElementAt(lines.size()-1);
 
-            //task.notifyRepaint(lines, task.msg, true);
+            task.notifyRepaint(lines, task.msg, true);
             state++;
             s.setLength(0);
         }
