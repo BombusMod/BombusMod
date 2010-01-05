@@ -196,6 +196,7 @@ public abstract class MessageList extends VirtualList
             try {
                 ((MessageItem)getFocusedObject()).toggleSmiles();
             } catch (Exception e){}
+            repaint();
 //        if (cf.widthSystemgc) {  _vt
             System.gc();
             try { Thread.sleep(50); } catch (InterruptedException ex) { }

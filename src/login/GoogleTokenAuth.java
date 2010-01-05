@@ -93,10 +93,11 @@ public class GoogleTokenAuth {
             c = (HttpConnection) Connector.open(secondUrl);
             is = c.openInputStream();
             //str = readLine(dis);
-            String token = "\0"+Strconv.unicodeToUTF(account.getUserName())+"\0"+readLine(is);
+            StringBuffer token = new StringBuffer();
+            token.append((char)0).append(Strconv.unicodeToUTF(account.getUserName())).append((char)0).append(readLine(is));
             is.close();
-            c.close();
-            return Strconv.toBase64(token);
+            c.close();            
+            return Strconv.toBase64(token.toString());
             
         } catch (javax.microedition.pki.CertificateException e) {
             throw new SecurityException(e.getMessage());

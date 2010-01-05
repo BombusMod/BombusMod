@@ -65,9 +65,9 @@ public class InfoWindow
     
 //#ifdef CLIPBOARD
 //#ifndef MENU
-    public Command cmdOk = new Command(SR.MS_COPY, Command.OK, 1);
+//#     public Command cmdOk = new Command(SR.MS_COPY, Command.OK, 1);
 //#endif
-    private ClipBoard clipboard=ClipBoard.getInstance();
+//#     private ClipBoard clipboard=ClipBoard.getInstance();
 //#endif
     
     /**
@@ -81,7 +81,7 @@ public class InfoWindow
         name.selectable=true;
         itemsList.addElement(name);
 
-        description=new MultiLine("Copyright (c) 2005-2009", "Eugene Stahov (evgs),\nDaniel Apatin (ad)\n \nDistributed under GNU Public License (GPL) v2.0", super.superWidth);
+        description=new MultiLine("Copyright (c) 2005-2010", "Eugene Stahov (evgs),\nDaniel Apatin (ad)\n \nDistributed under GNU Public License (GPL) v2.0", super.superWidth);
         description.selectable=true;
         itemsList.addElement(description);
         
@@ -107,9 +107,9 @@ public class InfoWindow
         abilities.selectable=true;
         itemsList.addElement(abilities);
 //#ifdef CLIPBOARD
-        if (Config.getInstance().useClipBoard) {
-            clipboard=ClipBoard.getInstance(); 
-        }
+//#         if (Config.getInstance().useClipBoard) {
+//#             clipboard=ClipBoard.getInstance(); 
+//#         }
 //#endif
 
         commandStateTest();
@@ -119,14 +119,14 @@ public class InfoWindow
 
 //#ifdef CLIPBOARD
 //#ifdef MENU_LISTENER
-    public String touchLeftCommand(){ return SR.MS_COPY; }
-    public void touchLeftPressed(){ showMenu(); }
+//#     public String touchLeftCommand(){ return SR.MS_COPY; }
+//#     public void touchLeftPressed(){ showMenu(); }
 //#endif
-    
-    public void cmdOk(){
-        clipboard.setClipBoard(name.toString()+"\n"+memory.toString()+"\n"+abilities.toString());
-        destroyView();
-    }
+//#     
+//#     public void cmdOk(){
+//#         clipboard.setClipBoard(name.toString()+"\n"+memory.toString()+"\n"+abilities.toString());
+//#         destroyView();
+//#     }
 //#endif
 
     public void commandStateTest() {
@@ -138,10 +138,10 @@ public class InfoWindow
         super.removeCommand(super.cmdOk);
         super.removeCommand(super.cmdCancel);
 //#ifdef CLIPBOARD
-        if (Config.getInstance().useClipBoard) {
-            addCommand(cmdOk);
-            addCommand(cmdCancel);
-        }
+//#         if (Config.getInstance().useClipBoard) {
+//#             addCommand(cmdOk);
+//#             addCommand(cmdCancel);
+//#         }
 //#endif
 //#endif
     }
@@ -193,7 +193,7 @@ public class InfoWindow
 //#         abilitiesList.addElement((String)"BACK_IMAGE");
 //#endif
 //#ifdef CAPTCHA
-        abilitiesList.addElement((String)"CAPTCHA");
+//#         abilitiesList.addElement((String)"CAPTCHA");
 //#endif
 //#ifdef CHANGE_TRANSPORT
 //#ifdef PLUGINS
@@ -214,7 +214,7 @@ public class InfoWindow
             abilitiesList.addElement((String)"CLIENTS_ICONS");
 //#endif
 //#ifdef CLIPBOARD
-        abilitiesList.addElement((String)"CLIPBOARD");
+//#         abilitiesList.addElement((String)"CLIPBOARD");
 //#endif
 //#ifdef CONSOLE
 //#ifdef PLUGINS
@@ -244,7 +244,7 @@ public class InfoWindow
             abilitiesList.addElement((String)"FILE_TRANSFER");
 //#endif
 //#ifdef GRADIENT
-        abilitiesList.addElement((String)"GRADIENT");
+//#         abilitiesList.addElement((String)"GRADIENT");
 //#endif
 //#ifdef HISTORY
 //#ifdef PLUGINS
