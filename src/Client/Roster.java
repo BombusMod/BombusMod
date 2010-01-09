@@ -49,6 +49,7 @@ import Archive.ArchiveList;
 import Menu.RosterItemActions;
 import Menu.RosterToolsMenu;
 //#ifdef CLIENTS_ICONS
+import Menu.SieNatMenu;
 import images.ClientsIconsData;
 //#endif
 import images.RosterIcons;
@@ -2320,17 +2321,22 @@ public class Roster
         else if (keyCode==KEY_NUM7)
             new RosterToolsMenu(display, this);
         else if (keyCode==KEY_NUM9) {
+            
+            
             if (cf.allowMinimize)
                 BombusMod.getInstance().hideApp(true);
-            else if (phoneManufacturer==Config.SIEMENS2)//SIEMENS: MYMENU call. Possible Main Menu for capable phones
+            else if (phoneManufacturer==Config.SIEMENS2)
+              new SieNatMenu(display, this); /*
                  try {
+                     //SIEMENS: MYMENU call. Possible Main Menu for capable phones
                       BombusMod.getInstance().platformRequest("native:ELSE_STR_MYMENU");
-                 } catch (Exception e) { }     
+                 } catch (Exception e) { }  */
             else if (phoneManufacturer==Config.SIEMENS)//SIEMENS-NSG: MYMENU call. Possible Native Menu for capable phones
                  try {
                     BombusMod.getInstance().platformRequest("native:NAT_MAIN_MENU");
-                 } catch (Exception e) { }   
-        }
+                 } catch (Exception e) { }
+             
+                     }
     }
 
 //#ifdef AUTOSTATUS

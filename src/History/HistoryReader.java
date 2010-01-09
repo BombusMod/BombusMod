@@ -29,7 +29,11 @@ package History;
 
 import Client.Contact;
 import Client.Msg;
+//#ifdef MENU_LISTENER
 import Menu.Command;
+//#else
+//# import javax.microedition.lcdui.Command;
+//#endif
 import Messages.MessageList;
 import java.util.Vector;
 import javax.microedition.lcdui.Display;
@@ -42,6 +46,7 @@ import ui.MainBar;
  * @author ad
  */
 public class HistoryReader extends MessageList {
+
 //#ifdef PLUGINS
 //#     public static String plugin = new String("PLUGIN_HISTORY");
 //#endif
@@ -55,11 +60,11 @@ public class HistoryReader extends MessageList {
      */
     public HistoryReader(Display display, Contact c) {
         super(display);
-        cmdNext = new Command("Next", 0, 0);
-        cmdPrev = new Command("Previous", 0, 0);
+        cmdNext = new Command("Next", Command.ITEM, 1);
+        cmdPrev = new Command("Previous", Command.ITEM, 1);
         hl = new HistoryLoader(c.bareJid);
         String cname = (c.nick == null) ? c.bareJid : c.nick;
-	MainBar mb=new MainBar("History - " + cname);
+	MainBar mb=new MainBar(SR.MS_HISTORY + cname);
 	mb.addElement(null);
 	mb.addRAlign();
 	mb.addElement(null);
