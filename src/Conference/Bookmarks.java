@@ -257,8 +257,10 @@ public class Bookmarks
                 pageLeft(); break;
             case KEY_NUM6:
                 pageRight(); break;
+//#ifdef SERVICE_DISCOVERY
             case KEY_POUND:
                 new ServiceDiscovery(display, ((BookmarkItem)getFocusedObject()).getJid(), null, false);
+//#endif
         }
     }
     

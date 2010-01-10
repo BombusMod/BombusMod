@@ -39,7 +39,9 @@ import java.io.*;
 import java.util.*;
 import midlet.BombusMod;
 import Fonts.FontCache;
+//#ifdef CLIENTS_ICONS
 import images.ClientsIcons;
+//#endif
 import util.StringLoader;
 import ui.Time;
 import ui.VirtualList;
@@ -184,6 +186,7 @@ public static boolean fullscreen=
     public int messageLimit=512;
     public int widthScroll2=10;
     public boolean widthSystemgc=false;
+    public boolean advTouch=true;
     public boolean eventDelivery=true;
 //#ifdef DETRANSLIT
 //#     public boolean transliterateFilenames=false;
@@ -518,7 +521,10 @@ public static boolean fullscreen=
 //#             juickJID=inputStream.readUTF();
 //#             if (sd.roster.getJuickContacts().size()<2)
 //#                 juickJID=null;
+//#else
+            inputStream.readUTF();
 //#endif
+            advTouch = inputStream.readBoolean();
 	    inputStream.close();
             inputStream=null;
 	} catch (Exception e) {
@@ -764,7 +770,10 @@ public static boolean fullscreen=
             outputStream.writeBoolean(widthSystemgc);
 //#ifdef JUICK
 //#             outputStream.writeUTF(juickJID);
+//#else
+            outputStream.writeUTF("");
 //#endif
+            outputStream.writeBoolean(advTouch);
 	} catch (Exception e) { }
 	
 	NvStorage.writeFileRecord(outputStream, "config", 0, true);

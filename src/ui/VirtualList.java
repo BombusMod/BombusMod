@@ -292,7 +292,7 @@ public abstract class VirtualList
     public static int startGPRS=-1;
     public static int offGPRS=0;
 
-    //private int itemBorder[];
+    private int itemBorder[]; // TODO: remove
 
     /** обработка doubleclick */
     private int lastClickX;
@@ -356,7 +356,8 @@ public abstract class VirtualList
         changeOrient(cf.panelsState);
 
         setFullScreenMode(fullscreen);
-        
+
+        itemBorder = new int[32]; // TODO: remove
 
         scrollbar=new ScrollBar();
         scrollbar.setHasPointerEvents(hasPointerEvents());
@@ -496,11 +497,13 @@ public abstract class VirtualList
                 if (infobar!=null) {
                     iHeight=infobar.getVHeight();                    
                     list_top = iHeight;
-                    drawInfoPanel(g);
+                    itemBorder[0] = list_top; // TODO: remove
+                     drawInfoPanel(g);
                 }
             } else {
                 if (mainbar!=null) {                    
                     list_top = mHeight;
+                    itemBorder[0] = list_top; // TODO: remove
                     drawMainPanel(g);
                 }
             }
@@ -569,6 +572,7 @@ public abstract class VirtualList
                 
                 itemIndex++;
 		displayedBottom=list_top+itemYpos+lh;
+                itemBorder[++displayedIndex] = displayedBottom; // TODO: remove
             }
         } catch (Exception e) { }
 
@@ -864,21 +868,40 @@ public abstract class VirtualList
             stickyWindow=false;
             return;
         }
-	
+        int oldCursor = 0;
+        int i = 0;
+        if (!Config.getInstance().advTouch) { // TODO: remove when fixed
+        
+	while (i<32) {            
+	    if (y<itemBorder[i]) break;
+	    i++;
+	}
+	if (i==0 || i==32) return;
+        } else {
         if (y < list_top) return;
-        int oldCursor = cursor;
+         oldCursor = cursor;
+        }
+        if (Config.getInstance().advTouch) {
         int pos = getElementIndexAt(win_top+y-list_top);
         int lh = listHeight + getItemRef(pos).getVHeight();
         if (cursor >= 0 && cursor != pos && y <= lh) {
             moveCursorTo(pos);
             setRotator();
         }
+        } else {
+         if (cursor >= 0) {             
+            moveCursorTo(getElementIndexAt(win_top) + i - 1);
+            setRotator();
+        }
+        }
+        if (Config.getInstance().advTouch) {
 	if (cursor!=oldCursor) {
             // сделаем элемент максимально видимым
             int il=itemLayoutY[cursor+1]-winHeight;
             if (il>win_top) win_top=il;
             il=itemLayoutY[cursor];
             if (il<win_top) win_top=il;
+        }
         }
 	long clickTime=System.currentTimeMillis();
 	if (cursor==lastClickItem) {
@@ -894,7 +917,12 @@ public abstract class VirtualList
         lastClickX=x;
 	lastClickY=y;
 	lastClickItem=cursor;
-
+        if (!Config.getInstance().advTouch) {
+        int il=itemLayoutY[cursor+1]-winHeight;
+        if (il>win_top) win_top=il;
+        il=itemLayoutY[cursor];
+        if (il<win_top) win_top=il;
+        }
         
         repaint();
     }
@@ -904,7 +932,7 @@ public abstract class VirtualList
             stickyWindow=false;
             return;
         }
-
+        if (Config.getInstance().advTouch) {
         int dy = y-yPointerPos;
 
         yPointerPos=y;
@@ -923,17 +951,19 @@ public abstract class VirtualList
         }
 
         repaint();
+        }
     }
     protected void pointerReleased(int x, int y) { 
         scrollbar.pointerReleased(x, y, this); 
-        /*
+        if (!Config.getInstance().advTouch) {
 	long clickTime=System.currentTimeMillis();
         if (lastClickY-y<5 && y-lastClickY<5) {
             if (clickTime-lastClickTime>500) {
                 y=0;
                 eventLongOk();
             }
-        }*/
+        }
+        }
     }
     
 //#ifdef USER_KEYS

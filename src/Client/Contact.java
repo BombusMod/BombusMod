@@ -42,10 +42,10 @@ import javax.microedition.lcdui.Graphics;
 import ui.ImageList;
 //#ifdef PEP
 //# import images.MoodIcons;
+//# import Mood.Moods;
 //#endif
 import images.RosterIcons;
 import Colors.ColorTheme;
-import Mood.Moods;
 import VCard.VCard;
 import ui.IconTextElement;
 import com.alsutton.jabber.datablocks.Presence;

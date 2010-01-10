@@ -36,7 +36,9 @@ package midlet;
 import Account.Account;
 import Account.AccountSelect;
 import Colors.ColorTheme;
+//#ifdef CLIENTS_ICONS
 import images.ClientsIconsData;
+//#endif
 import javax.microedition.midlet.*;
 import javax.microedition.lcdui.*;
 import locale.SR;

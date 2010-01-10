@@ -43,9 +43,8 @@ import com.alsutton.jabber.datablocks.Presence;
 import xmpp.EntityCaps;
 
 public class ConfigForm
-        extends DefForm {
+        extends DefForm {  
     
-    private Display display;
     
     private CheckBox showOfflineContacts;
     private CheckBox selfContact;
@@ -127,7 +126,7 @@ public class ConfigForm
     private CheckBox lightState;
     private CheckBox popupFromMinimized;
     private CheckBox widthSystemgc;
-
+    private CheckBox advTouch;
     private NumberInput fieldGmt; 
     
     private DropChoiceBox textWrap;
@@ -256,8 +255,13 @@ public class ConfigForm
         itemsList.addElement(new SpacerItem(10));
         messageLimit=new NumberInput(display, SR.MS_MESSAGE_COLLAPSE_LIMIT, Integer.toString(cf.messageLimit), 200, 1000);
         itemsList.addElement(messageLimit);
-        widthScroll2=new NumberInput(display, SR.MS_MESSAGE_WIDTH_SCROLL_2, Integer.toString(cf.widthScroll2), 1, 50);
-        itemsList.addElement(widthScroll2);
+
+        if (StaticData.getInstance().roster.hasPointerEvents()) {
+            widthScroll2=new NumberInput(display, SR.MS_MESSAGE_WIDTH_SCROLL_2, Integer.toString(cf.widthScroll2), 1, 50);
+            itemsList.addElement(widthScroll2);
+            advTouch = new CheckBox("Advanced touchscreen support", cf.advTouch);
+            itemsList.addElement(advTouch);
+        }
         
         itemsList.addElement(new SpacerItem(10));
         itemsList.addElement(new SimpleString(SR.MS_STARTUP_ACTIONS, true));
@@ -515,6 +519,7 @@ public class ConfigForm
             cf.popupFromMinimized=popupFromMinimized.getValue();
 
         cf.widthSystemgc=widthSystemgc.getValue();
+        cf.advTouch = advTouch.getValue();
         cf.swapSendAndSuspend=swapSendAndSuspend.getValue();
         
         cf.gmtOffset=Integer.parseInt(fieldGmt.getValue());
