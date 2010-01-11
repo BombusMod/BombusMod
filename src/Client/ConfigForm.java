@@ -519,7 +519,9 @@ public class ConfigForm
             cf.popupFromMinimized=popupFromMinimized.getValue();
 
         cf.widthSystemgc=widthSystemgc.getValue();
-        cf.advTouch = advTouch.getValue();
+        if (StaticData.getInstance().roster.hasPointerEvents())
+            cf.advTouch = advTouch.getValue();
+
         cf.swapSendAndSuspend=swapSendAndSuspend.getValue();
         
         cf.gmtOffset=Integer.parseInt(fieldGmt.getValue());
@@ -547,7 +549,9 @@ public class ConfigForm
 //#             cf.autoAwayType=autoAwayType.getSelectedIndex();
 //#endif
         cf.messageLimit=Integer.parseInt(messageLimit.getValue());
-        cf.widthScroll2=Integer.parseInt(widthScroll2.getValue());
+        if (StaticData.getInstance().roster.hasPointerEvents())
+            cf.widthScroll2=Integer.parseInt(widthScroll2.getValue());
+
 //#if LOGROTATE
 //#             cf.msglistLimit=Integer.parseInt(messageCountLimit.getValue());
 //#endif
