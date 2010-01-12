@@ -519,8 +519,10 @@ public static boolean fullscreen=
             widthSystemgc=inputStream.readBoolean();
 //#ifdef JUICK
 //#             juickJID=inputStream.readUTF();
+//#             try {
 //#             if (sd.roster.getJuickContacts().size()<2)
 //#                 juickJID=null;
+//#             } catch (Exception ex) {}
 //#else
             inputStream.readUTF();
 //#endif
@@ -769,6 +771,7 @@ public static boolean fullscreen=
             outputStream.writeInt(widthScroll2);
             outputStream.writeBoolean(widthSystemgc);
 //#ifdef JUICK
+//#             if (juickJID == null) juickJID = "";
 //#             outputStream.writeUTF(juickJID);
 //#else
             outputStream.writeUTF("");

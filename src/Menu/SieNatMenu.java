@@ -16,29 +16,36 @@ import midlet.BombusMod;
  * @author Vitaly
  */
 public class SieNatMenu extends Menu {
-    private static Hashtable commandsList = new Hashtable();
+    private final static String[] items = new String[]{
+        "Phonebook", "Records", "Internet", 
+        "Camera", "Messages", "Organizer", 
+        "Extras", "My own", "Setup", 
+        "Card-explorer", "My menu" 
+    };
+    private final static String[] commands = new String[]{
+          "CNCT_PREFRDBOOK"
+        , "RECD_RECORDMENU"
+        , "ELSE_SUFFUNUMNU"
+        , "ELSE_INTRCAMERA"
+        , "MESG_MESSGEMENU"
+        , "ORGZ_ORGANIZMNU"
+        , "ELSE_EXTRASMENU"
+        , "FLSH_MYOWNSTUFF"
+        , "STUP_SETPUPMENU"
+        , "FLSH_FLEXPLORER"
+        , "ELSE_STR_MYMENU"
+    };
 
     public SieNatMenu(Display display, Displayable parent) {
         super("Native Commands", null);
-        commandsList.put("Phonebook", "CNCT_PREFRDBOOK");
-        commandsList.put("Records", "RECD_RECORDMENU");
-        commandsList.put("Internet", "ELSE_SUFFUNUMNU");
-        commandsList.put("Camera", "ELSE_INTRCAMERA");
-        commandsList.put("Messages", "MESG_MESSGEMENU");
-        commandsList.put("Organizer", "ORGZ_ORGANIZMNU");
-        commandsList.put("Extras", "ELSE_EXTRASMENU");
-        commandsList.put("My own", "FLSH_MYOWNSTUFF");
-        commandsList.put("Setup", "STUP_SETPUPMENU");
-        commandsList.put("Card-explorer", "FLSH_FLEXPLORER");
-        commandsList.put("My menu", "ELSE_STR_MYMENU");
+        
 
         this.display = display;
         this.parentView = parent;
         
-        int count = commandsList.size();
-        int i = 0;
-        for (Enumeration e = commandsList.keys(); e.hasMoreElements();) {
-         addItem((String)e.nextElement(), i++); 
+        int count = commands.length;        
+        for (int i = 0; i < count; i++) {
+         addItem((String)items[i], i);
         }
         attachDisplay(display);
     }
@@ -48,7 +55,7 @@ public class SieNatMenu extends Menu {
         MenuItem me=(MenuItem) getFocusedObject();
         if (me==null) return;        
         try {
-            String requestString = "native:" + commandsList.get(me.toString());
+            String requestString = "native:" + commands[me.index];
             //System.out.println(requestString);
             BombusMod.getInstance().platformRequest(requestString);
         } catch (Exception e) {}

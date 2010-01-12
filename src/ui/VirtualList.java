@@ -954,16 +954,14 @@ public abstract class VirtualList
         }
     }
     protected void pointerReleased(int x, int y) { 
-        scrollbar.pointerReleased(x, y, this); 
-        if (!Config.getInstance().advTouch) {
+        scrollbar.pointerReleased(x, y, this);         
 	long clickTime=System.currentTimeMillis();
         if (lastClickY-y<5 && y-lastClickY<5) {
             if (clickTime-lastClickTime>500) {
                 y=0;
                 eventLongOk();
             }
-        }
-        }
+        }        
     }
     
 //#ifdef USER_KEYS
