@@ -114,7 +114,7 @@ public class AffiliationModify
             .append(SR.MS_FROM_OWNER_TO/*" from OWNER to "*/)
             .append(AffiliationItem.getAffiliationName((short)affiliationItem.getSelectedIndex()));
             
-            new AlertBox(SR.MS_MODIFY_AFFILIATION, warn.toString(), display, null) {
+            new AlertBox(SR.MS_MODIFY_AFFILIATION, warn.toString(), display, StaticData.getInstance().roster) {
                     public void yes() {
                         modify();
                         destroyView();

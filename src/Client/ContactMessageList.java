@@ -257,7 +257,7 @@ public class ContactMessageList extends MessageList {
 //# 
 //# 
 //#             String target = getTargetForJuickReply(body);
-//#             System.out.println(target);
+//# 
 //#             if (!target.equals("toThings")) {
 //#                 switch (target.charAt(0)) {
 //#                     case '#':
@@ -654,13 +654,14 @@ public void showNotify(){
     }
     
     public void eventLongOk(){
-        super.eventLongOk();
+        super.eventLongOk();        
 //#ifndef WMUC
         if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT) {
             Reply();
             return;
         }
 //#endif
+        juickState();
         keyGreen();
     }
     
@@ -686,16 +687,9 @@ public void showNotify(){
 	else 
             super.keyRepeated(keyCode);
     }
+    
+    public void juickState() {
 
-    public void keyPressed(int keyCode) {
-        //kHold=0;
-        if (keyCode==KEY_POUND) {
-//#ifndef WMUC
-            if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT) {
-                Reply();
-                return;
-            }
-//#endif
 //#ifdef JUICK
 //#ifdef PLUGINS
 //#             if (sd.Juick)
@@ -726,6 +720,18 @@ public void showNotify(){
 //#                 return;
 //#             }
 //#endif
+    }
+
+    public void keyPressed(int keyCode) {
+        //kHold=0;
+        if (keyCode==KEY_POUND) {
+//#ifndef WMUC
+            if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT) {
+                Reply();
+                return;
+            }
+//#endif
+            juickState();
             keyGreen();
             return;
         }

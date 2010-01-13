@@ -93,7 +93,7 @@ public class TransferImage
     
     public void cmdOk() {
         try {
-            TransferTask task=new TransferTask(to, String.valueOf(System.currentTimeMillis()), "photo.png", description.getValue(), true, photo);
+            TransferTask task=new TransferTask(to, String.valueOf(System.currentTimeMillis()), "photo.jpg", description.getValue(), true, photo);
             TransferDispatcher.getInstance().sendFile(task);
             //switch to file transfer manager
             (new io.file.transfer.TransferManager(display)).setParentView(parentView);

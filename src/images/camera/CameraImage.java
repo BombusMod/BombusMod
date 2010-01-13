@@ -61,7 +61,7 @@ public class CameraImage implements CommandListener{
     CameraImageListener imgListener;
 
     //private String sizes="encoding=jpeg&width=320&height=240"; //"width=800&height=600"
-
+    private final String mode="encoding=jpeg";
     /** Creates a new instance of CameraImage */
     public CameraImage(Display display, CameraImageListener imgListener/*, String sizes*/) {
         this.display=display;
@@ -99,7 +99,7 @@ public class CameraImage implements CommandListener{
     public void commandAction(Command command, Displayable displayable) {
         if (command==cmdShot) {
             try {
-                byte photo[]=videoControl.getSnapshot(null/*sizes*/);
+                byte photo[]=videoControl.getSnapshot(mode);
                 imgListener.cameraImageNotify(photo);
                 photo=null;
             } catch (Exception e) { e.printStackTrace(); }
