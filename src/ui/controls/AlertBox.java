@@ -44,6 +44,7 @@ import javax.microedition.lcdui.Image;
 //#endif
 import locale.SR;
 import Fonts.FontCache;
+import midlet.BombusMod;
 import util.StringUtils;
 //#ifdef GRADIENT
 //# import ui.Gradient;
@@ -141,7 +142,7 @@ public abstract class AlertBox
         isShowing=false;
 
         if (display==null) {
-            display.setCurrent(StaticData.getInstance().roster);
+            Display.getDisplay(BombusMod.getInstance()).setCurrent(StaticData.getInstance().roster);
         } else {
             display.setCurrent(next);
         }

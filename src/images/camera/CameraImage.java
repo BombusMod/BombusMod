@@ -61,7 +61,7 @@ public class CameraImage implements CommandListener{
     CameraImageListener imgListener;
 
     //private String sizes="encoding=jpeg&width=320&height=240"; //"width=800&height=600"
-    private final String mode="encoding=jpeg";
+    private final static String mode="encoding=jpeg";
     /** Creates a new instance of CameraImage */
     public CameraImage(Display display, CameraImageListener imgListener/*, String sizes*/) {
         this.display=display;

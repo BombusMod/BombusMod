@@ -76,14 +76,14 @@ public final class MessageParser {
 //#ifdef SMILES 
     public Vector getSmileTable() { return smileTable; }
 //#endif
-    private class Leaf {
+    private static class Leaf {
         public int smile=NOSMILE;   // нет смайлика в узле
         public String smileChars;     // символы смайликов
         public Vector child;
 
         public Leaf() {
             child=new Vector();
-            smileChars=new String();
+            smileChars = "";
         }
         
         public Leaf findChild(char c){

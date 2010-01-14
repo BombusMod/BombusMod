@@ -202,7 +202,7 @@ public final class ContactEdit
     
     protected void beginPaint(){
         if (tGrpList!=null) {
-            if (tGrpList.toString()==SR.MS_NEWGROUP) {
+            if (tGrpList.toString().equals(SR.MS_NEWGROUP)) {
                 if (!newGroup) {
                     itemsList.insertElementAt(tGroup, newGroupPos);
                     newGroup=true;

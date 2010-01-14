@@ -260,7 +260,7 @@ public class AutoTask
         this.removeCommand(cmdCancel);
         
         if (display==null) {
-            display.setCurrent(parentView);
+            Display.getDisplay(BombusMod.getInstance()).setCurrent(parentView);
         } else {
             display.setCurrent(next);
         }

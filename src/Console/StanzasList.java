@@ -54,8 +54,7 @@ public class StanzasList {
     
     public Msg msg(int index){
 	try {
-            Msg msg=(Msg)stanzas.elementAt(index);
-	    return msg;
+            return (Msg)stanzas.elementAt(index);
 	} catch (Exception e) {}
 	return null;
     }

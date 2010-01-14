@@ -215,7 +215,7 @@ public class VCardEdit
         itemsList.addElement(publish);
      }
      
-    public void commandState() {
+    public final void commandState() {
         super.commandState();
         removeCommand(cmdOk);
         removeCommand(cmdCancel);

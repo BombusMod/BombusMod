@@ -301,7 +301,7 @@ public class PopUp {
     }
 //paint
     
-    class PopUpElement {
+    static class PopUpElement {
         private int type;
         private String from;
         private Vector message;
