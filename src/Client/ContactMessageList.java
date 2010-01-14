@@ -661,7 +661,7 @@ public void showNotify(){
             return;
         }
 //#endif
-        juickState();
+        if (juickState()) return;
         keyGreen();
     }
     
@@ -688,7 +688,7 @@ public void showNotify(){
             super.keyRepeated(keyCode);
     }
     
-    public void juickState() {
+    public boolean juickState() {
 
 //#ifdef JUICK
 //#ifdef PLUGINS
@@ -717,9 +717,11 @@ public void showNotify(){
 //#                             break;
 //#                     }
 //#                 }
-//#                 return;
+//#                 return true;
 //#             }
+//#             
 //#endif
+        return false;
     }
 
     public void keyPressed(int keyCode) {
@@ -731,7 +733,7 @@ public void showNotify(){
                 return;
             }
 //#endif
-            juickState();
+            if (juickState()) return;
             keyGreen();
             return;
         }
