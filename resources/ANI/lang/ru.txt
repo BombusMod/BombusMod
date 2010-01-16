@@ -93,7 +93,7 @@ Authorize	Авторизовать
 Nicknames	Ники
 to Archive	В архив
 Back	Назад
-heap monitor	монитор памяти(heap)
+heap monitor	монитор памяти (heap)
 keys for old SE	поменять местами софт-кнопки
 Message	Сообщение
 <Other>	<Другой>
@@ -407,7 +407,7 @@ key	кнопка
 Reconnect	Переподключение
 Sort list	Сортировать список
 Turn on light	поддерживать подсветку
-show time and traffic	показывать время и траффик
+show time and traffic	показывать время и трафик
 Clear popups	Очистить попапы
 Chat history length	Длина списка истории
 This user wants to subscribe to your presence	Запрос подписки на присутствие
@@ -459,7 +459,7 @@ Import/Export	Импорт/Экспорт данных
 bold font for contacts	жирный шрифт для контактов ростера
 running message	бегущая строка в заголовке
 Composing message to you	Пишет сообщение
-compression	сжатие траффика
+compression	сжатие трафика
 New room created	Создана новая комната, не забудьте настроить её в конфигураторе!
 IRC-like conference nick-status	смена ника при смене статуса в конференции как в IRC
 user moods send/receive	получение и отправка настроений
