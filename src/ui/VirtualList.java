@@ -878,7 +878,10 @@ public abstract class VirtualList
 	}
 	if (i==0 || i==32) return;
         } else {
-        if (y < list_top) return;
+        if (y < list_top) {
+            captionPressed();
+            return;
+        }
          oldCursor = cursor;
         }
         if (Config.getInstance().advTouch) {
@@ -1531,6 +1534,7 @@ public abstract class VirtualList
     public void touchLeftPressed(){
         showMenu();
     }
+    public abstract void captionPressed();
 
     public void setCommandListener(MenuListener menuListener) { }
 

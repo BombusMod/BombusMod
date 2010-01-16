@@ -863,7 +863,7 @@ public class Roster
 //#         }
 //#         return juickContacts;
 //#     }
-//#
+//# 
 //#     public Contact getMainJuickContact() {
 //#         boolean matched;
 //#         synchronized (hContacts) {
@@ -880,7 +880,7 @@ public class Roster
 //#         }
 //#         return null;
 //#     }
-//#
+//# 
 //#     public boolean isJuickContact(Contact c) {
 //#         return (c.bareJid.equals("juick@juick.com")
 //#          || c.bareJid.startsWith("juick%juick.com@"));
@@ -2808,6 +2808,7 @@ public class Roster
 
     public void touchRightPressed(){ if (cf.oldSE) showMenu(); else cmdActions(); }
     public void touchLeftPressed(){ if (cf.oldSE) cmdActions(); else showMenu(); }
+    public void captionPressed() {new ActiveContacts(display, this, null);}
 
 //#endif
     
