@@ -130,10 +130,10 @@ public class IEMenu
                 new IE.ArchiveTemplates(1, 0, pathSelected);
                 break;
             case 6: //load Accounts
-                new IE.Accounts(pathSelected, 0);
+                new IE.Accounts(pathSelected, 0, false);
                 break;
             case 7: //save Accounts
-                new IE.Accounts(pathSelected, 1);
+                new IE.Accounts(pathSelected, 1, false);
                 break;
         }
     }

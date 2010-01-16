@@ -35,16 +35,19 @@ import ui.*;
 import java.io.*;
 import java.util.*;
 //#ifndef MENU_LISTENER
-import javax.microedition.lcdui.CommandListener;
-import javax.microedition.lcdui.Command;
+//# import javax.microedition.lcdui.CommandListener;
+//# import javax.microedition.lcdui.Command;
 //#else
-//# import Menu.MenuListener;
-//# import Menu.Command;
-//# import Menu.MyMenu;
+import Menu.MenuListener;
+import Menu.Command;
+import Menu.MyMenu;
 //#endif
 import ui.MainBar;
 import io.NvStorage;
 import ui.controls.AlertBox;
+//#ifdef IMPORT_EXPORT
+//# import IE.*;
+//#endif
 
 
 /**
@@ -55,9 +58,9 @@ public class AccountSelect
     extends VirtualList 
     implements
 //#ifndef MENU_LISTENER
-        CommandListener
+//#         CommandListener
 //#else
-//#         MenuListener
+        MenuListener
 //#endif
     {
 
@@ -90,25 +93,24 @@ public class AccountSelect
             VirtualList.canBack=false;
         }
         accountList=null;
-        accountList=new Vector();
-        Account a;
-        
-        int index=0;
+        accountList=new Vector();        
+                
         activeAccount=cf.accountIndex;
-        do {
-            a=Account.createFromStorage(index);
-            if (a!=null) {
-                a.setActive(activeAccount==index);
-                accountList.addElement(a);
-                index++;
-             }
-       } while (a!=null);
+        loadAccounts();
         
         if (!accountList.isEmpty()) {
             moveCursorTo(activeAccount);
         } else {
+//#ifdef IMPORT_EXPORT
+//#             new IE.Accounts("/def_accounts.txt", 0,  true);
+//#             loadAccounts();
+//#         if (accountList.isEmpty()) {
+//#endif
             new AccountForm(display, this, this, null);
             return;
+//#ifdef IMPORT_EXPORT
+//#         }
+//#endif
         }
         commandState();
         setCommandListener(this);
@@ -117,10 +119,23 @@ public class AccountSelect
 
         this.parentView=pView;
     }
+
+    public void loadAccounts() {
+        Account a;
+        int index=0;
+        do {
+            a=Account.createFromStorage(index);
+            if (a!=null) {
+                a.setActive(activeAccount==index);
+                accountList.addElement(a);
+                index++;
+             }
+       } while (a!=null);
+    }
     
     public void commandState(){
 //#ifdef MENU_LISTENER
-//#         menuCommands.removeAllElements();
+        menuCommands.removeAllElements();
 //#endif
         if (!accountList.isEmpty()) {
             addCommand(cmdLogin);
@@ -221,10 +236,10 @@ public class AccountSelect
         NvStorage.writeFileRecord(outputStream, "accnt_db", 0, true); //Account.storage
     }
 //#ifdef MENU_LISTENER
-//#     public void showMenu() {
-//#         commandState();
-//#         new MyMenu(display, parentView, this, SR.MS_DISCO, null, menuCommands);
-//#    }
+    public void showMenu() {
+        commandState();
+        new MyMenu(display, parentView, this, SR.MS_DISCO, null, menuCommands);
+   }
 //#endif
     
     protected void keyRepeated(int keyCode) {
@@ -233,10 +248,10 @@ public class AccountSelect
         kHold=keyCode;
         
         if (keyCode==KEY_NUM6) {
-            cf.fullscreen=!cf.fullscreen;
+            Config.fullscreen=!Config.fullscreen;
             cf.saveToStorage();
-            VirtualList.fullscreen=cf.fullscreen;
-            StaticData.getInstance().roster.setFullScreenMode(cf.fullscreen);
+            VirtualList.fullscreen=Config.fullscreen;
+            StaticData.getInstance().roster.setFullScreenMode(Config.fullscreen);
         }
     }
 }

@@ -863,7 +863,7 @@ public class Roster
 //#         }
 //#         return juickContacts;
 //#     }
-//# 
+//#
 //#     public Contact getMainJuickContact() {
 //#         boolean matched;
 //#         synchronized (hContacts) {
@@ -880,7 +880,7 @@ public class Roster
 //#         }
 //#         return null;
 //#     }
-//# 
+//#
 //#     public boolean isJuickContact(Contact c) {
 //#         return (c.bareJid.equals("juick@juick.com")
 //#          || c.bareJid.startsWith("juick%juick.com@"));
@@ -2829,7 +2829,7 @@ public class Roster
 	
 	Object desiredFocus;
         
-        public synchronized void queueEnum(Object focusTo, boolean force) {
+        public void queueEnum(Object focusTo, boolean force) {
 	    desiredFocus=focusTo;
 	    this.force=force;
 	    queueEnum();
@@ -2841,7 +2841,7 @@ public class Roster
             new Thread(this).start();
         }
         
-        public synchronized void run(){
+        public void run(){
             //try {
                 while (pendingRepaints>0) {
                     pendingRepaints=0;

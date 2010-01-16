@@ -31,6 +31,8 @@ import Account.Account;
 import io.NvStorage;
 import io.file.FileIO;
 import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Vector;
 
 /**
@@ -44,7 +46,7 @@ public class Accounts {
     
     private final static String userName = "userName"; 
     private final static String server = "server"; 
-    private final static String password = ""; 
+    private final static String password = "password";  // only in import
     private final static String hostAddr = "hostAddr"; 
     private final static String port = "port"; 
     private final static String nick = "nick"; 
@@ -61,13 +63,13 @@ public class Accounts {
     private String file;
 
     /** Creates a new instance of Accounts */
-    public Accounts(String path, int direction) {
+    public Accounts(String path, int direction, boolean fromResource) {
         accountList=null;
         accountList=new Vector();
         this.file=path;
         
         if (direction==0) {
-            importData();
+            importData(fromResource);
         } else {
             exportData();
         }
@@ -75,11 +77,24 @@ public class Accounts {
     }
     
     
-    public void importData() {
+    public void importData(boolean fromResource) {
         String accounts="";
-        
+
+        byte[] bodyMessage = null;
+
+        if (!fromResource) {
         FileIO fileIO=FileIO.createConnection(file);
-        byte[] bodyMessage = fileIO.fileRead();
+        bodyMessage = fileIO.fileRead();
+        } else {
+            bodyMessage = new byte[4096];
+            try {
+                InputStream in = this.getClass().getResourceAsStream("/def_accounts.txt");
+                if (in != null )
+                    in.read(bodyMessage);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
 
         if (bodyMessage!=null) {
             accounts=new String(bodyMessage, 0, bodyMessage.length);
