@@ -1534,7 +1534,7 @@ public abstract class VirtualList
     public void touchLeftPressed(){
         showMenu();
     }
-    public abstract void captionPressed();
+    public void captionPressed() {};
 
     public void setCommandListener(MenuListener menuListener) { }
 
