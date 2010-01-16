@@ -1,6 +1,6 @@
 	NICKNAME	Ник
 	FN	Полное имя
-N	PREFIX	Префикс (mr.,mrs.)
+N	PREFIX	Префикс (mr., mrs.)
 N	GIVEN	Имя
 N	MIDDLE	Отчество
 N	FAMILY	Фамилия
@@ -16,7 +16,7 @@ GEO	LON	Долгота
 ADR	REGION	Область, регион
 ADR	PCODE	Почтовый индекс
 ADR	CTRY	Страна
-	TZ	Часовая зона/GMT
+	TZ	Часовой пояс/GMT
 TEL	NUMBER	Телефон
 EMAIL	USERID	E-Mail
 	JABBERID	JID

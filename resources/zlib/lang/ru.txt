@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2005-2008, Eugene Stahov (evgs), http://bombus-im.org
+﻿// Copyright (c) 2005-2010, Eugene Stahov (evgs), http://bombus-im.org
 // All rights reserved.
 
 // ask server to send us localized messages
@@ -7,7 +7,7 @@ online	в сети
 chat	хочу поговорить
 away	отсутствую
 xa	давно отсутствую
-invisible	невидимка
+invisible	невидимый
 dnd	занят
 offline	не в сети
 Jid	Jid
@@ -148,7 +148,7 @@ New Jid	Новый Jid
 plain-text password	пароль откр. текстом
 Paste Nickname	Вставить ник
 Kick	Выгнать (kick)
-Remove readed	Удалить сообщения
+Remove readed	Удалить прочтённые сообщения
 Grant Voice	Дать право голоса
 Move Down	Сместить вниз
 Quote	Цитировать
@@ -237,26 +237,26 @@ Accept file	Принять файл
 File	Файл
 Save To	Сохранить в
 Sender	Отправитель
-Rejected	Отменено
+Rejected	Отклонено
 Send file	Послать файл
 Can't open file	Невозможно открыть файл
 New	Новый
 New Template	Новый шаблон
 Save photo	Сохранить фото
-balloon ink	Шрифт баллона
-balloon background	Фон баллона
+balloon ink	Шрифт баллуна
+balloon background	Фон баллуна
 messagelist & roster background	Цвет фона, общий
 messagelist & roster even lines	Цвет фона, чередование
 messagelist & roster & common font	Общий шрифт
 message subject	Тема сообщения
 message highlight	Подсвеченное сообщение
-service discovery commands	Команды диско
+service discovery commands	Команды Service Discovery
 panels background	Цвет панелей
 header font	Шрифт панелей
 contact default	Шрифт контакта
 contact chat	Контакт "Хочу пообщаться"
 contact away	Контакт "Отсутствую"
-contact extended away	Контакта "Давно отсутствую"
+contact extended away	Контакт "Недоступен"
 contact do not disturb	Контакт "Не беспокоить"
 group color	Шрифт групп
 keylock font	Шрифт при блоке кнопок
@@ -269,20 +269,20 @@ message history	Шрифт истории сообщений
 progress bar remained	Осталось прогресса
 progress bar complete	Сделано прогресса
 progress bar font	Шрифт прогресса
-Heap mon total	Всего кучи
-Heap mon free	Свободно кучи
+Heap mon total	Всего памяти
+Heap mon free	Свободно памяти
 Cursor background	Фон курсора
-Cursor ink & outline	Цвет шрифта курсора и ободка
-Scroll border	Цвет ободка скролла
+Cursor ink & outline	Цвет шрифта курсора и контура
+Scroll border	Цвет контура скролла
 Scroll bar	Цвет бегунка скролла
 Scroll back	Цвет фона скролла
 other message incoming	Выделенное входящее сообщение
 other message outgoing	Выделенное исходящее сообщение
 other message presence	Выделенное статусное сообщение
-Popup font	Шрифт всплывающего окошка
-Popup background	Фон всплывающего окошка
-Popup system font	Шрифт системного окошка
-Popup system background	Фон системного окошка
+Popup font	Шрифт всплывающего окна
+Popup background	Фон всплывающего окна
+Popup system font	Шрифт системного окна
+Popup system background	Фон системного окна
 Contact status font	Шрифт статуса контакта
 Control color	Цвет контролов
 Color tune	Настройка цветов
@@ -333,7 +333,7 @@ Initiating session	Создание сессии
 Text wrapping	Перенос текста
 by chars	по буквам
 by words	по словам
-Info	Инфо
+Info	Информация
 Reply	Ответить
 Send status	Установить статус
 Are you sure want to BAN this person?	Запретить входить в комнату?
@@ -353,21 +353,20 @@ Decline	Отклонить
 Authorize new contacts	Автоматическая авторизация
 [auto-subscribe]	[автоподписка]
 Keep-Alive	Тип Keep-Alive
- has been unaffiliated and kicked from members-only room	 выгнали, так комната закрыта для гостей
+ has been unaffiliated and kicked from members-only room	 выгнали, так как комната закрыта для гостей
 Rename	Переименовать
 Move	Переместить
 Save	Сохранить
 Translit	Транслит
 ReTranslit	ДеТранслит
 Auto translit2Cyr	Автоотправка транслита кириллицей
-Check Updates	Проверка обновления
+Check Updates	Проверка обновлений
 Show Resources	показывать ресурсы контактов
 Collapsed groups	сворачивать группы при запуске
 Send Buffer	Послать текст из буфера
 Change nickname	Сменить ник
-Message collapse limit	Сворачивать сообщения, если больше(символов)
-Scroll width	Ширина полосы прокрутки
-Memory cleaning Очистка памяти
+Message collapse limit	Сворачивать сообщения, если больше (символов)
+Width scroll	Ширина скролла
 No client info	Невозможно получить информацию
 Delete all messages	Удалить все сообщения
 Join marked (auto)	Подключ. к отмеч. для автовхода
@@ -385,7 +384,7 @@ Filenames transliterate	Имена файлов транслитом
 Save chat	Сохранить сообщения
 show statuses	показывать статусные сообщения в ростере
 shared platform info	показывать информацию о платформе
-delivery events	уведомление о доставке
+delivery events	уведомления о доставке
 drop all	отбрасывать все
 receive messages	получать сообщения
 messages & presences	сообщения и статусы
@@ -408,7 +407,7 @@ key	кнопка
 Reconnect	Переподключение
 Sort list	Сортировать список
 Turn on light	поддерживать подсветку
-show time and traffic	показывать время и трафик
+show time and traffic	показывать время и траффик
 Clear popups	Очистить попапы
 Chat history length	Длина списка истории
 This user wants to subscribe to your presence	Запрос подписки на присутствие
@@ -429,17 +428,17 @@ Drop subscription	отклонять
 Deny subscription	запрещать
 Search	Поиск
 Register	Регистрация
-Check Google mail	Проверить GMail
-Blink	миганием
+Check Google mail	Проверить почту GMail
+Blink	мигание
 Notices options	Настройка уведомлений
-Message sound	Звук сообщений
+Message sound	Звук для сообщений
 Online sound	Звук для подключившихся
 Offline sound	Звук для отключившихся
 "Message for me" sound	Звук при обращении
-Composing sound	Звук при наборе
+Composing sound	Звук при наборе текста
 Conference sound	Звук для конференции
-StartUP sound	Звук при запуске
-Outgoing sound	Звук при отправке
+StartUP sound	Звук при запуске приложения
+Outgoing sound	Звук при отправке сообщения
 Vip sound	Звук для VIP
 Copy JID	Копировать JID
 Ping request	Время отклика
@@ -447,7 +446,7 @@ Online time	Время в сети
 Break connection	Переподключение
 autoScroll	автопрокрутка списка сообщений
 emulate tabs	(4/6) быстрое переключение между окнами сообщений
-show balloons	показывать подсказки(баллуны)
+show balloons	показывать подсказки (баллуны)
 popUps	всплывающие окна
 use my status messages	использовать свои статусные сообщения
 Memory:	Память:
@@ -460,12 +459,12 @@ Import/Export	Импорт/Экспорт данных
 bold font for contacts	жирный шрифт для контактов ростера
 running message	бегущая строка в заголовке
 Composing message to you	Пишет сообщение
-compression	сжатие трафика
+compression	сжатие траффика
 New room created	Создана новая комната, не забудьте настроить её в конфигураторе!
 IRC-like conference nick-status	смена ника при смене статуса в конференции как в IRC
 user moods send/receive	получение и отправка настроений
 Simulated break	Ручное переподключение
-Build new version on constructor	Собрать новую версию на конструкторе
+Build new version on constructor	Собрать новую версию в конструкторе
 Auto tasks	Планировщик
 Auto task type	Тип срабатывания
 by timer 	По таймеру
@@ -482,15 +481,15 @@ Min	Минут
 Browse rooms	Обзор комнат
 Autorespond	Автоответчик
 Invert colors	Инверсия цвета
-XML console	XML консоль
+XML console	XML-консоль
 Clipboard	буфер обмена
 User moods	Настроение
 User activity	Действие
 Personal events not supported	PEP не поддерживается
 User tune	Музыка
-user tune receive	инфо о музыке
+user tune receive	информация о музыке
 Bar font	Шрифт панелей
-Popup & ballon font	Шрифт попапов и баллунов
+Popup & balloon font	Шрифт попапов и баллунов
 Fonts options	Настройка шрифтов
 Load history	Подгружать историю
 Connect to	Подключиться к
@@ -500,17 +499,17 @@ vibrate only highlited	Вибрировать только при обращен
 Extended settings	Расширенные настройки
 Save to file	Сохранить в файл
 Load from file	Загрузить из файла
-Show IQ requests	Отображать запросы IQ
+Show iq requests	Отображать iq-запросы
 Show clients icons	показывать иконки клиентов
 Action	Действие
 Value	Значение
 Quantity of attempts	Количество попыток
-Delay before reconnect(sec.)	Задержка между попытками(сек.)
+Delay before reconnect (sec.)	Задержка между попытками (сек.)
 Menu	Меню
 Previous	Предыдущее
 Previous: 	Пред.: 
-[End of vCard]	Конец вКард
-[No vCard available]	вКард не доступна
+[End of vCard]	Конец vCard
+[No vCard available]	vCard недоступен
 [No photo available]	Фото недоступно
 [Unsupported format]	Неподдерживаемый формат
 [large photo was dropped]	[большое фото]
@@ -520,12 +519,12 @@ Panels	Панели
 [main bar]	[основная]
 [info bar]	[инфо]
 Flash backlight	Мигать подсветкой
-execute menu by numkey	выполнение команд меню цифровыми кнопоками
+execute menu by numkey	выполнение команд меню цифровыми кнопками
 show nicknames	показывать ник отправителя
 Send photo	Отправить фото
 enable autorespond	включить автоответчик
 File manager	Менеджер файлов
-remote control	удаленное управление
+remote control	удалённое управление
 Version	Версия
 Use	Использует
 [J] New comment	[J] Новый комментарий
@@ -535,4 +534,4 @@ Use	Использует
 [J] Subscribe to comments	[J] Подписаться на комментарии
 [J] Unsubscribe from comments	[J] Отписаться от комментариев
 [J] Recommend post	[J] Порекомендовать пост
-[J] Show post and comments	[J] Просмотреть пост и комментарии
+[J] Show post and comments	[J] Показать пост и комментарии к нему
