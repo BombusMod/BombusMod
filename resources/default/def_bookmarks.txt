@@ -1,5 +1,5 @@
-﻿bombusmod@conference.jabber.ru			Комната техподдержки BombusMod
-bombus-talks@conference.jabber.ru			Поболтать о Bombus здесь :)
-bombus-english@conference.jabber.ru			Bombus support for English-speaking
-bombusmod-indo@conference.jabber.ru			BombusMod support for Indonesian
-talks@conference.jabber.ru			Поболтать здесь :)
+﻿bombusmod@conference.jabber.ru			Конференция техподдержки BombusMod
+bombus-talks@conference.jabber.ru			Конференция для болтовни пользователей Bombus :)
+bombus-english@conference.jabber.ru			Bombus support conference for English-speaking
+bombusmod-indo@conference.jabber.ru			BombusMod support conference for Indonesian
+talks@conference.jabber.ru			Общая конференция для болтовни :)
