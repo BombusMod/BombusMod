@@ -13,7 +13,7 @@ dnd	не беспокоить
 offline	отключен
 Jid	Jid
 Privacy Lists	Списки приватности
-Message font	Шрифт сообщения
+Message font	Шрифт сообщений
 Roster font	Шрифт ростера
 Paste Body	Встав. тело сообщения
 Configure Room	Конфигуратор комнаты
@@ -49,7 +49,7 @@ Activate	Активировать
 Affiliation	Членство
 Accounts	Аккаунты
 Delete list	Удалить список
-Account >	Аккаунт >
+Account >	Аккаунты >
 Select	Выбрать
 Subject	Тема
 Quit	Выход
@@ -117,7 +117,7 @@ Smiles	Вкл/выкл смайлики
 Contact >	Контакт >
 offline contacts	показывать отключенных
 Transport	Транспорт
-composing events	уведомление о наборе текста
+composing events	уведомления о наборе текста
 Add Smile	Встав. смайлик
 Nickname	Ник
 Revoke Voice	Отнять право голоса
@@ -177,8 +177,8 @@ vCard	vCard
 Set Subject	Установить тему
 Tools	Инструменты
 Port	Порт
-Resume Message	Черновик
-Are You sure want to discard 	Вы действительно собираетесь понизить у 
+Resume Message	Возобновить
+Are You sure want to discard 	Вы действительно хотите понизить у 
  from OWNER to 	 право OWNER до 
 Modify affiliation	Изменение членства
 Clear	Очистить
@@ -201,7 +201,7 @@ room presences	статусы в конференции
  is now known as 	 меняет ник на 
  was banned 	 запретили входить в комнату 
  was kicked 	 выгнали из комнаты 
- has been kicked because room became members-only	 выгнали, т.к. комната закрылась
+ has been kicked because room became members-only	 выгнали, т.к. комната закрылась для гостей
  has left the channel	 выходит из комнаты
  has joined the channel as 	 заходит как 
  and 	 и 
@@ -214,7 +214,7 @@ Save history	Сохранять историю
 Save presences	Сохранять статусы
 Save conference history	Сохранять историю конференции
 Save conference presences	Сохранять статусы конференции
-convert to cp1251	Сохранять в windows-1251
+convert to cp1251	Сохранять в Windows-1251
 History folder	Папка истории
 Copy	Копировать
 Paste	Вставить
@@ -232,14 +232,14 @@ Make BackUp	Сохранить копию на диск
 Import from BackUp	Восстановить из файла
 View	Просмотр
 Stop	Остановить
-File transfers	передача файлов
+File transfers	Передача файлов
 Path	Путь
 Accept file	Принять файл
 File	Файл
 Save To	Сохранить в
 Sender	Отправитель
 Rejected	Отклонено
-Send file	Послать файл
+Send file	Отправить файл
 Can't open file	Невозможно открыть файл
 New	Новый
 New Template	Новый шаблон
@@ -248,10 +248,10 @@ balloon ink	Шрифт подсказки
 balloon background	Фон подсказки
 messagelist & roster background	Цвет фона, общий
 messagelist & roster even lines	Цвет фона, чередование
-messagelist & roster & common font	Общий шрифт
+messagelist & roster & common font	Основной шрифт
 message subject	Тема сообщения
 message highlight	Подсвеченное сообщение
-service discovery commands	Команды Service Discovery
+service discovery commands	Команды в обзоре сервисов
 panels background	Цвет панелей
 header font	Шрифт панелей
 contact default	Шрифт контакта
@@ -267,9 +267,9 @@ message outgoing	Исходящее сообщение
 message presence	Статусное сообщение
 message auth	Сообщение авторизации
 message history	Шрифт истории сообщений
-progress bar remained	Осталось прогресса
-progress bar complete	Сделано прогресса
-progress bar font	Шрифт прогресса
+progress bar remained	Осталось на индикаторе выполнения
+progress bar complete	Сделано на индикаторе выполнения
+progress bar font	Шрифт индикатора выполнения
 Heap mon total	Всего памяти
 Heap mon free	Свободно памяти
 Cursor background	Фон курсора
@@ -309,25 +309,25 @@ hour	час
 day's	дней
 days	дня
 day	день
-Minutes before away	Таймер автостатуса (минуты)
+Minutes before away	Таймер автостатуса (в минутах)
 Automatic Away	Автостатус
 disabled	выключен
 keyblock	при блокировке кнопок
 by message	при отсутствии исх. сообщений
 AutoStatus	Автостатус
-AutoStatus time (min)	Автостатус через(мин)
+AutoStatus time (min)	Автостатус через (мин.)
 Auto xa since %t	Автостатус "Недоступен" сработал в %t
-Auto away since %t	Автостатус "Отсутствую" сработал в %t
+Auto away since %t	Автостатус "Отсутствует" сработал в %t
 autofocus	автофокус на контакт с новым сообщением
 Grant Membership	Дать членство
 Are You sure want to clear messagelist?	Очистить список сообщений
-Google token request	Запрос гуглепожатия
+Google token request	Запрос рукопожатия у Google
 Features	Возможности
 Show password	Показать пароль
 No client version available	Версия клиента недоступна
 Message limit	Количество сообщений
 Opening stream	Подключение
-Using compression	Включение компрессии
+Using compression	Включение сжатия
 Authenticating	Авторизация
 Resource binding	Назначение ресурса
 Initiating session	Создание сессии
@@ -354,7 +354,7 @@ Decline	Отклонить
 Authorize new contacts	Автоматическая авторизация
 [auto-subscribe]	[автоподписка]
 Keep-Alive	Тип Keep-Alive
- has been unaffiliated and kicked from members-only room	 выгнали, так как комната закрыта для гостей
+ has been unaffiliated and kicked from members-only room	 лишили полномочий и выгнали из закрытой для гостей комнаты
 Rename	Переименовать
 Move	Переместить
 Save	Сохранить
@@ -366,7 +366,7 @@ Show Resources	показывать ресурсы контактов
 Collapsed groups	сворачивать группы при запуске
 Send Buffer	Послать текст из буфера
 Change nickname	Сменить ник
-Message collapse limit	Сворачивать сообщение, если оно больше (символов)
+Message collapse limit	Сворачивать сообщение больше (символов)
 Width scroll	Ширина скролла
 No client info	Невозможно получить информацию
 Delete all messages	Удалить все сообщения
@@ -377,7 +377,7 @@ Traffic stats: 	Статистика:
 All: 	Всего: 
 Current: 	Текущая сессия: 
 Last Messages	Последние сообщения
-Edit/join	Редактировать/Подключиться
+Edit/join	Редактировать/Присоединиться
 Use this Color scheme	Использовать схему
 Delete All	Очистить архив
 History options	Настройка истории
@@ -386,8 +386,8 @@ Save chat	Сохранить сообщения
 show statuses	показывать статусные сообщения в ростере
 shared platform info	показывать информацию о платформе
 delivery events	уведомления о доставке
-drop all	отбрасывать все
-receive messages	получать сообщения
+drop all	не принимать ничего
+receive messages	принимать сообщения
 messages & presences	сообщения и статусы
 normal	средний
 small	мелкий
@@ -395,11 +395,11 @@ large	крупный
 All signals	Все сигналы
 Vibra	Вибрация
 No signals	Без сигналов
- (default)	 (по-умолчанию)
+ (default)	 (по умолчанию)
 Quit?	Выйти?
 Are you sure want to Quit?	Вы действительно хотите выйти?
 exit confirmation	подтверждение выхода
-show last appeared contacts	показывать недавно подключившихся
+show last appeared contacts	Показывать недавно подключившихся:
 custom keys	сочетания кнопок
 Add custom key	Добавить сочетание кнопок
 keys action	действие
@@ -430,7 +430,7 @@ Deny subscription	запрещать
 Search	Поиск
 Register	Регистрация
 Check Google mail	Проверить почту GMail
-Blink	мигание
+Blink	Мигание
 Notices options	Настройка уведомлений
 Message sound	Звук для сообщений
 Online sound	Звук для подключившихся
@@ -446,8 +446,8 @@ Ping request	Время отклика
 Online time	Время в сети
 Break connection	Переподключиться
 autoScroll	автопрокрутка списка сообщений
-emulate tabs	(4/6) быстрое переключение между окнами сообщений
-show balloons	показывать подсказки (баллоны)
+emulate tabs	(4/6) быстрое переключение между окнами с сообщениями
+show balloons	показывать подсказки (balloons)
 popUps	всплывающие окна
 use my status messages	использовать свои статусные сообщения
 Memory:	Память:
@@ -459,17 +459,17 @@ User	Пользователь
 Import/Export	Импорт/Экспорт данных
 bold font for contacts	жирный шрифт для контактов ростера
 running message	бегущая строка в заголовке
-Composing message to you	Пишет сообщение
+Composing message to you	Контакт пишет сообщение
 compression	сжатие трафика
 New room created	Создана новая комната, не забудьте настроить её в конфигураторе!
 IRC-like conference nick-status	смена ника при смене статуса в конференции как в IRC
-user moods send/receive	получение и отправка настроений
+user moods send/receive	приём и отправка настроений
 Simulated break	Ручное переподключение
 Build new version on constructor	Собрать новую версию в конструкторе
 Auto tasks	Планировщик
 Auto task type	Тип срабатывания
-by timer 	По таймеру
-by time 	По часам
+by timer 	по таймеру
+by time 	по часам
 Auto task action type	Действие
 Quit BombusMod	Выход из BombusMod
 Quit conferences	Выход из конференций
