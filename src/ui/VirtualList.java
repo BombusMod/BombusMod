@@ -1534,7 +1534,6 @@ public abstract class VirtualList
     public void touchLeftPressed(){
         showMenu();
     }
-    public void captionPressed() {};
 
     public void setCommandListener(MenuListener menuListener) { }
 
@@ -1550,6 +1549,7 @@ public abstract class VirtualList
         if (canBack) destroyView();
     }
 //#endif
+    public void captionPressed() {};
     
     public String touchLeftCommand(){ return SR.MS_MENU; }
     public String touchRightCommand(){ return SR.MS_BACK; }
