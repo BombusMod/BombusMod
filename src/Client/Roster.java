@@ -522,6 +522,7 @@ public class Roster
             };
         } else {
             cleanAllMessages();
+            cleanAllGroups();
         }
     }
     
@@ -536,12 +537,20 @@ public class Roster
         }
         highliteMessageCount=0;
         messageCount=0;
+        cleanAllGroups();
         //reEnumRoster();
         redraw();
     }
+
+    public void cleanAllGroups() {
+        for (Enumeration e = groups.elements(); e.hasMoreElements();) {
+            Group group = (Group)e.nextElement();
+            cleanupGroup(group);
+        }
+    }
     
-    public void cleanupGroup(){
-        Group g=(Group)getFocusedObject();
+    public void cleanupGroup(Group g){
+        /*Group g=(Group)getFocusedObject();*/
         if (g==null) return;
         if (!g.collapsed) return;
 //#ifndef WMUC
@@ -2096,7 +2105,7 @@ public class Roster
     public void eventOk(){
         super.eventOk();
         if (createMsgList()==null) {
-            cleanupGroup();
+            cleanupGroup((Group)getFocusedObject());
             reEnumRoster();
         }
     }
