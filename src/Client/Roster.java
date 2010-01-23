@@ -246,7 +246,7 @@ public class Roster
 //#ifdef AUTOSTATUS
 //#         if (cf.autoAwayType==Config.AWAY_IDLE || cf.autoAwayType==Config.AWAY_MESSAGE)
 //#             autostatus=new AutoStatusTask();
-//#
+//# 
 //#         if (myStatus<2)
 //#             messageActivity();
 //#endif
@@ -547,12 +547,13 @@ public class Roster
             Group group = (Group)e.nextElement();
             cleanupGroup(group);
         }
+        reEnumRoster();
     }
     
     public void cleanupGroup(Group g){
         /*Group g=(Group)getFocusedObject();*/
         if (g==null) return;
-        if (!g.collapsed) return;
+        //if (!g.collapsed) return;
 //#ifndef WMUC
         if (g instanceof ConferenceGroup) {
             ConferenceGroup cg= (ConferenceGroup) g;
@@ -716,7 +717,7 @@ public class Roster
 //#             autoAway=false;
 //#             autoXa=false;
 //#             myStatus=oldStatus;
-//#
+//# 
 //#             messageActivity();
 //#         }
 //#endif
@@ -2351,7 +2352,7 @@ public class Roster
 //#ifdef AUTOSTATUS
 //#     private void userActivity() {
 //#         if (autostatus==null) return;
-//#
+//# 
 //#         if (cf.autoAwayType==Config.AWAY_IDLE) {
 //#             if (!autoAway) {
 //#                 autostatus.setTimeEvent(cf.autoAwayDelay* 60*1000);
@@ -2363,10 +2364,10 @@ public class Roster
 //#         autostatus.setTimeEvent(0);
 //#         setAutoStatus(Presence.PRESENCE_ONLINE);
 //#     }
-//#
+//# 
 //#     public void messageActivity() {
 //#         if (autostatus==null) return;
-//#
+//# 
 //#         if (cf.autoAwayType==Config.AWAY_MESSAGE) {
 //#              //System.out.println("messageActivity "+myStatus.getImageIndex());
 //#              if (myStatus<2)
@@ -2763,7 +2764,7 @@ public class Roster
 //#             }
 //#         }
 //#     }
-//#
+//# 
 //#     public void setAutoXa() {
 //#         if (autoAway && !autoXa) {
 //#             autoXa=true;
@@ -2774,7 +2775,7 @@ public class Roster
 //#             }
 //#         }
 //#     }
-//#
+//# 
 //#     public void setAutoStatus(int status) {
 //#         if (!isLoggedIn())
 //#             return;
