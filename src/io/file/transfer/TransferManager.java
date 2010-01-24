@@ -69,6 +69,9 @@ public class TransferManager
     Command cmdDel=new Command(SR.MS_DECLINE, Command.SCREEN, 10);
     Command cmdClrF=new Command(SR.MS_HIDE_FINISHED, Command.SCREEN, 11);
     Command cmdInfo=new Command(SR.MS_INFO, Command.SCREEN, 12);
+//#ifdef BYTESTREAMS
+//#     Command cmdSettings=new Command("Transfer settings", Command.SCREEN, 12);
+//#endif
     
     /** Creates a new instance of TransferManager */
     public TransferManager(Display display) {
@@ -94,6 +97,9 @@ public class TransferManager
     public void commandState(){
 //#ifdef MENU_LISTENER
         menuCommands.removeAllElements();
+//#endif
+//#ifdef BYTESTREAMS
+//#         addCommand(cmdSettings);
 //#endif
         addCommand(cmdBack);
         if (getItemCount()>0) {
@@ -142,6 +148,9 @@ public class TransferManager
         if (c==cmdDel) keyClear();
         if (c==cmdBack) cmdBack();
         if (c==cmdInfo) cmdInfo();
+//#ifdef BYTESTREAMS
+//#         if (c==cmdSettings) new TransferSetupForm(display, this);
+//#endif
         
     }
     private void cmdBack() {

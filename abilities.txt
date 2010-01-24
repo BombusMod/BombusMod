@@ -7,6 +7,7 @@ ARCHIVE - архив сообщений [почти то же, что и TEMPLAT
 AUTOSTATUS - автостатус (например, статус "away" через 5 минут и "extended away" через 10 бездействия).
 AUTOTASK - планировщик задач (например, возможность автоматического выхода из конференции или клиента через определённое время).
 BACK_IMAGE - возможность установить фоновую картинку для ростера и прочих окон.
+BYTESTREAMS - использование прокси для передачи файлов [XEP-0065: SOCKS5 Bytestreams]
 CAPTCHA - поддержка капчи [XEP-0158: CAPTCHA Forms].
 CHANGE_TRANSPORT - смена транспорта (перенос контактов с одного транспорта на другой).
 CHECK_VERSION - проверка обновлений клиента.
@@ -34,6 +35,7 @@ MENU_LISTENER - новый тип меню, графическое (заменя
 NEW_SKIN - иконки visitors объединены с skin, иконки menu объединены с actions.
 NICK_COLORS - раскрашивание ников.
 NON_SASL_AUTH - использование pre-xmpp способа авторизации для серверов, сообщающих что они xmpp-compliant.
+NOSOUND - отключение поддержки воспроизведения звука
 PEP - pubsub (поддержка в общем) + настроения (user mood) [XEP-0163: Personal Eventing Protocol, XEP-0060: Publish-Subscribe, XEP-0107: User Mood].
 PEP_ACTIVITY - получение инфо состоянии контакта (требует PEP) [XEP-0108: User Activity].
 PEP_TUNE - получение инфо о музыке играющей у контактов (требует PEP) [XEP-0118: User Tune].
