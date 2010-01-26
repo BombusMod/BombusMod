@@ -192,8 +192,9 @@ public class TransferManager
                 info.append("\nFinished: ").append(Time.dateTimeLocalString(t.finished));
             if (t.errMsg!=null)
                 info.append("\nError: ").append(t.errMsg);
-
+//#ifdef POPUPS
             VirtualList.setWobble(1, null, info.toString());
+//#endif
         }
     }
 }

@@ -27,7 +27,6 @@
 
 package io.file.transfer;
 
-import Client.StaticData;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
 import images.RosterIcons;
@@ -47,6 +46,10 @@ import xmpp.XmppError;
 //# import com.ssttr.crypto.SHA1;
 //# import javax.microedition.io.Connector;
 //# import javax.microedition.io.StreamConnection;
+//# import Client.StaticData;
+//#else
+import com.alsutton.jabber.datablocks.Message;
+import util.Strconv;
 //#endif
 /**
  *
@@ -331,15 +334,15 @@ public class TransferTask
 //#         state = PROXYOPEN;
 //#     }
 //# 
-//#     
+//# 
 //#     public boolean openStreams(final String host, int port) {
 //#         try {
-//#             final StreamConnection connection = (StreamConnection) Connector.open("socket://" + host + ":" + port);
+//#             StreamConnection connection = (StreamConnection) Connector.open("socket://" + host + ":" + port);
 //#             socks5Input = connection.openInputStream();
 //#             socks5Output = connection.openOutputStream();
 //#             return true;
-//#         } catch (IOException e) {
-//#             System.err.println(e);
+//#         } catch (Exception e) {
+//#             System.out.println(e);
 //#         }
 //#         return false;
 //#     }
@@ -362,7 +365,7 @@ public class TransferTask
 //# 
 //#                 byte[] readbuf = new byte[4];
 //#                 socks5Input.read(readbuf); // Waiting for response;
-//#                  
+//# 
 //#                 byte[] socks5CommandStart = {
 //#                     0x05, // VER
 //#                     0x01, // CMD = CONNECT
@@ -373,7 +376,7 @@ public class TransferTask
 //#                 Command.init();
 //#                 Command.updateASCII(sid + StaticData.getInstance().account.getJid() + jid);
 //#                 Command.finish();
-//#                 
+//# 
 //#                 byte[] socks5CommandHost = Command.getDigestHex().getBytes();
 //#                 byte[] socks5CommandFinish = {0x00, 0x00};
 //# 
@@ -385,14 +388,14 @@ public class TransferTask
 //#                 socks5Output.write(socks5Command);
 //#                 socks5Output.flush();
 //# 
-//#                 socks5Input.read(readbuf); // Waiting for response;                
+//#                 socks5Input.read(readbuf); // Waiting for response;
 //#                 return true;
 //#     }
 //#endif
 
-    public void run() {
-        byte buf[]=new byte[20480];
+    public void run() {        
 //#ifndef BYTESTREAMS
+        byte buf[]=new byte[2048];
         int seq=0;
         try {
             while (true) {
@@ -432,8 +435,9 @@ public class TransferTask
         close.setAttribute("sid", sid);
         TransferDispatcher.getInstance().send(iq, false);
 //#else
+//#         byte buf[]=new byte[20480];
 //#         try {
-//#             int cnt;            
+//#             int cnt;
 //#             while ((cnt = readFile(buf)) > 0) {
 //#                 socks5Output.write(buf, 0, cnt);
 //#                 TransferDispatcher.getInstance().repaintNotify();
@@ -441,7 +445,7 @@ public class TransferTask
 //#             }
 //#             socks5Output.flush();
 //#             closeFile();
-//#             closeStreams();            
+//#             closeStreams();
 //# 
 //#         }  catch (Exception ex) {
 //#             ex.printStackTrace();

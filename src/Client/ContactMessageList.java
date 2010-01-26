@@ -810,8 +810,7 @@ public void showNotify(){
 //#     public void loadRecentList() {
 //#         contact.setHistoryLoaded(true);
 //#         HistoryStorage hs = new HistoryStorage(contact.bareJid);
-//#         Vector history=hs.importData();
-//# 
+//#         Vector history=hs.importData();        
 //#         for (Enumeration messages2=history.elements(); messages2.hasMoreElements(); )  {
 //#             Msg message=(Msg) messages2.nextElement();
 //#             if (!isMsgExists(message)) {
@@ -824,8 +823,9 @@ public void showNotify(){
 //#     }
 //# 
 //#     private boolean isMsgExists(Msg msg) {
-//#          for (Enumeration messages=contact.msgs.elements(); messages.hasMoreElements(); )  {
-//#             Msg message=(Msg) messages.nextElement();
+//#         if (msg == null) return true;
+//#          for (Enumeration contactMsgs=contact.msgs.elements(); contactMsgs.hasMoreElements(); )  {
+//#             Msg message=(Msg) contactMsgs.nextElement();
 //#             if (message.body.equals(msg.body)) {
 //#                 return true;
 //#             }

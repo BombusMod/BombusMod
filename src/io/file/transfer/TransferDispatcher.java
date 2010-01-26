@@ -33,6 +33,10 @@ import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
 import java.util.Enumeration;
 import java.util.Vector;
+//#ifndef BYTESTREAMS
+import com.alsutton.jabber.datablocks.Message;
+import util.Strconv;
+//#endif
 
 /**
  *
@@ -45,7 +49,7 @@ public class TransferDispatcher implements JabberBlockListener{
 
 //#ifdef BYTESTREAMS
 //#     public String ProxyJID = "socks5.juick.com"; // default value for test
-//#     public int ProxyPort = 7777; 
+//#     public int ProxyPort = 7777;
 //#endif
     /** Singleton */
     private static TransferDispatcher instance;
@@ -106,7 +110,7 @@ public class TransferDispatcher implements JabberBlockListener{
 //#ifndef BYTESTREAMS
                     task.initIBB();
 //#else
-//#                         task.initBytestreams();                    
+//#                         task.initBytestreams();
 //#endif
                     eventNotify();
                     }
@@ -152,10 +156,10 @@ public class TransferDispatcher implements JabberBlockListener{
 //#                             }
 //#                             task.ProxyActivate();
 //#                             break;
-//#                         case (TransferTask.PROXYOPEN):                            
+//#                         case (TransferTask.PROXYOPEN):
 //#                             task.startTransfer();
 //#                             break;
-//#                     } 
+//#                     }
 //#else
                     task.startTransfer();
 //#endif

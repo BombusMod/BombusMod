@@ -88,6 +88,7 @@ public class Groups implements JabberBlockListener{
     
     public void addToVector(Vector d, int index){
         Group gr=(Group)groups.elementAt(index);
+        if (gr == null) return;
         if (!gr.visible) return;
         if (gr.contacts.size()>0){
             d.addElement(gr);
