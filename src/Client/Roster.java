@@ -1757,6 +1757,7 @@ public class Roster
 //#ifndef WMUC
                 }
 //#endif
+                if (cf.autoClean) cleanAllGroups();
 		sort(hContacts);
                 reEnumRoster();
                 return JabberBlockListener.BLOCK_PROCESSED;                

@@ -127,6 +127,7 @@ public class ConfigForm
     private CheckBox popupFromMinimized;
     private CheckBox widthSystemgc;
     private CheckBox advTouch;
+    private CheckBox autoClean;
     private NumberInput fieldGmt; 
     
     private DropChoiceBox textWrap;
@@ -319,6 +320,8 @@ public class ConfigForm
         }
         widthSystemgc = new CheckBox(SR.MS_WITH_SYSTEM_GC, cf.widthSystemgc);
         itemsList.addElement(widthSystemgc);
+        autoClean = new CheckBox("Auto clean", cf.autoClean);
+        itemsList.addElement(autoClean);
 //#ifdef MENU_LISTENER
         executeByNum = new CheckBox(SR.MS_EXECUTE_MENU_BY_NUMKEY, cf.executeByNum); itemsList.addElement(executeByNum);
 //#endif
@@ -519,6 +522,7 @@ public class ConfigForm
             cf.popupFromMinimized=popupFromMinimized.getValue();
 
         cf.widthSystemgc=widthSystemgc.getValue();
+        cf.autoClean=autoClean.getValue();
         if (StaticData.getInstance().roster.hasPointerEvents())
             cf.advTouch = advTouch.getValue();
 

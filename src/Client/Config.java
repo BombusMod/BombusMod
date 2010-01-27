@@ -187,6 +187,7 @@ public static boolean fullscreen=
     public int widthScroll2=10;
     public boolean widthSystemgc=false;
     public boolean advTouch=true;
+    public boolean autoClean=false;
     public boolean eventDelivery=true;
 //#ifdef DETRANSLIT
 //#     public boolean transliterateFilenames=false;
@@ -528,6 +529,7 @@ public static boolean fullscreen=
             inputStream.readUTF();
 //#endif
             advTouch = inputStream.readBoolean();
+            autoClean = inputStream.readBoolean();
 	    inputStream.close();
             inputStream=null;
 	} catch (Exception e) {
@@ -779,6 +781,7 @@ public static boolean fullscreen=
             outputStream.writeUTF("");
 //#endif
             outputStream.writeBoolean(advTouch);
+            outputStream.writeBoolean(autoClean);
 	} catch (Exception e) { }
 	
 	NvStorage.writeFileRecord(outputStream, "config", 0, true);
