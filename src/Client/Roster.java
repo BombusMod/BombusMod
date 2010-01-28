@@ -565,7 +565,7 @@ public class Roster
                     while (index<hContacts.size()) {
                         Contact contact=(Contact)hContacts.elementAt(index);
                         if (contact.group==g) {
-                            if (contact.getNewMsgsCount()==0) {
+                            if (contact.msgs.size()==0) {
                                 contact.msgs=null;
                                 contact=null;
                                 hContacts.removeElementAt(index);
@@ -592,7 +592,7 @@ public class Roster
                 if (contact.group==g) {
                     if ( contact.origin>Contact.ORIGIN_ROSTERRES
                       && contact.status>=Presence.PRESENCE_OFFLINE
-                      && contact.getNewMsgsCount()==0
+                      && contact.msgs.size()==0
                       && contact.origin!=Contact.ORIGIN_GROUPCHAT) {
                         
                         contact.msgs=null;
@@ -1757,9 +1757,13 @@ public class Roster
 //#ifndef WMUC
                 }
 //#endif
-                if (cf.autoClean) cleanAllGroups();
-		sort(hContacts);
-                reEnumRoster();
+                if (cf.autoClean) {
+                    cleanAllGroups();
+                }
+                else {
+		    sort(hContacts);
+                    reEnumRoster();
+                }
                 return JabberBlockListener.BLOCK_PROCESSED;                
             } // if presence
         } catch(OutOfMemoryError eom){

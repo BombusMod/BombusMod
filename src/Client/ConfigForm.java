@@ -320,7 +320,7 @@ public class ConfigForm
         }
         widthSystemgc = new CheckBox(SR.MS_WITH_SYSTEM_GC, cf.widthSystemgc);
         itemsList.addElement(widthSystemgc);
-        autoClean = new CheckBox("Auto clean", cf.autoClean);
+        autoClean = new CheckBox("Auto clean groups", cf.autoClean);
         itemsList.addElement(autoClean);
 //#ifdef MENU_LISTENER
         executeByNum = new CheckBox(SR.MS_EXECUTE_MENU_BY_NUMKEY, cf.executeByNum); itemsList.addElement(executeByNum);
