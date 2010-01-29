@@ -242,6 +242,14 @@ public class Contact extends IconTextElement{
         }
         return ColorTheme.getColor(ColorTheme.CONTACT_DEFAULT);
     }
+    public boolean haveChatMessages() {
+        for (Enumeration e = msgs.elements(); e.hasMoreElements();) {
+            Msg msg = (Msg)e.nextElement();
+            if (msg.messageType == Msg.MESSAGE_TYPE_IN || msg.messageType == Msg.MESSAGE_TYPE_OUT)
+                return true;
+        }
+        return false;
+    }
 
     public int getNewMsgsCount() {
         if (newMsgCnt>0) return newMsgCnt;

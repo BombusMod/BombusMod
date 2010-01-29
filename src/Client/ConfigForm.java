@@ -318,13 +318,16 @@ public class ConfigForm
             popupFromMinimized = new CheckBox(SR.MS_ENABLE_POPUP, cf.popupFromMinimized);
             itemsList.addElement(popupFromMinimized);
         }
+//#ifdef MENU_LISTENER
+        executeByNum = new CheckBox(SR.MS_EXECUTE_MENU_BY_NUMKEY, cf.executeByNum); itemsList.addElement(executeByNum);
+//#endif
+
+        itemsList.addElement(new SpacerItem(10));
+        itemsList.addElement(new SimpleString("Memory usage", true));
         widthSystemgc = new CheckBox(SR.MS_WITH_SYSTEM_GC, cf.widthSystemgc);
         itemsList.addElement(widthSystemgc);
         autoClean = new CheckBox("Auto clean groups", cf.autoClean);
         itemsList.addElement(autoClean);
-//#ifdef MENU_LISTENER
-        executeByNum = new CheckBox(SR.MS_EXECUTE_MENU_BY_NUMKEY, cf.executeByNum); itemsList.addElement(executeByNum);
-//#endif
         
         itemsList.addElement(new SpacerItem(10));
         itemsList.addElement(new SimpleString(SR.MS_TIME_SETTINGS, true));

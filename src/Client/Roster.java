@@ -553,7 +553,7 @@ public class Roster
     public void cleanupGroup(Group g){
         /*Group g=(Group)getFocusedObject();*/
         if (g==null) return;
-        //if (!g.collapsed) return;
+        if (!g.collapsed && !Config.getInstance().autoClean) return;
 //#ifndef WMUC
         if (g instanceof ConferenceGroup) {
             ConferenceGroup cg= (ConferenceGroup) g;
@@ -565,7 +565,7 @@ public class Roster
                     while (index<hContacts.size()) {
                         Contact contact=(Contact)hContacts.elementAt(index);
                         if (contact.group==g) {
-                            if (contact.msgs.size()==0) {
+                            if (contact.getNewMsgsCount() == 0) {
                                 contact.msgs=null;
                                 contact=null;
                                 hContacts.removeElementAt(index);
@@ -592,7 +592,7 @@ public class Roster
                 if (contact.group==g) {
                     if ( contact.origin>Contact.ORIGIN_ROSTERRES
                       && contact.status>=Presence.PRESENCE_OFFLINE
-                      && contact.msgs.size()==0
+                      && !contact.haveChatMessages()
                       && contact.origin!=Contact.ORIGIN_GROUPCHAT) {
                         
                         contact.msgs=null;
@@ -1759,9 +1759,10 @@ public class Roster
 //#endif
                 if (cf.autoClean) {
                     cleanAllGroups();
+                    sort(hContacts);
                 }
                 else {
-		    sort(hContacts);
+                    sort(hContacts);
                     reEnumRoster();
                 }
                 return JabberBlockListener.BLOCK_PROCESSED;                

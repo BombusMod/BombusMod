@@ -315,7 +315,7 @@ public static boolean fullscreen=
             case NOKIA:
                 KEY_BACK=VirtualList.NOKIA_PEN;
                 greenKeyCode=-10;
-                allowMinimize=true;
+                if (!NokiaS40) allowMinimize=true;
                 break;
             case SIEMENS:
             case SIEMENS2:
