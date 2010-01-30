@@ -63,11 +63,14 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
     private int py;
     private int ph;
 
+    private ColorsList list;
+
     Command cmdCancel = new Command(SR.MS_CANCEL /*"Back"*/, Command.CANCEL, 99);
 
-    public ColorSelector(Display display, int paramName) {
+    public ColorSelector(Display display, ColorsList list, int paramName) {
         super();
         this.display=display;
+        this.list= list;
         parentView=display.getCurrent();
         this.paramName=paramName;
 
@@ -261,7 +264,7 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
     public void setValue(int vall) {
         this.value=vall;
         ColorTheme.setColor(paramName, value);
-        ColorsList.setColor(paramName, value);
+        list.setColor(paramName, value);
 //#ifdef COLOR_TUNE
 //#         ColorTheme.saveToStorage();
 //#endif

@@ -53,7 +53,6 @@ public class ColorConfigForm
 //#endif
     {
     
-    private Display display;
 
 //#ifdef COLOR_TUNE
 //#     private LinkString configureColors;
@@ -82,7 +81,7 @@ public class ColorConfigForm
 //#ifdef PLUGINS
 //#             if (StaticData.getInstance().Colors) {
 //#endif
-//#         configureColors=new LinkString(SR.MS_COLOR_TUNE) { public void doAction() { new ColorsList(display); } };
+//#         configureColors=new LinkString(SR.MS_COLOR_TUNE) { public void doAction() { new ColorsList(display, StaticData.getInstance().roster); } };
 //#         itemsList.addElement(configureColors);
 //#ifdef PLUGINS
 //#             }

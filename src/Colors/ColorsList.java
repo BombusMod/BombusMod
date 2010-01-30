@@ -26,93 +26,73 @@
  */
 
 package Colors;
+
 import java.util.Enumeration;
-import java.util.Vector;
-import javax.microedition.lcdui.Command;
-import javax.microedition.lcdui.CommandListener;
+
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
-import ui.MainBar;
 import ui.VirtualElement;
-import ui.VirtualList;
+import ui.controls.form.DefForm;
 
 /**
  *
  * @author ad
  */
-public class ColorsList
-        extends VirtualList
-        implements CommandListener
+public class ColorsList extends DefForm
     {
 //#ifdef PLUGINS
 //#     public static String plugin = new String("PLUGIN_COLORS");
 //#endif
     
 
-    static void setColor(int paramName, int value) {
+    public void setColor(int paramName, int value) {
         ((ColorVisualItem)itemsList.elementAt(paramName)).setColor(value);
-    }
-    
-    public Display display;
-    public Displayable parentView;
-    
-    static Vector itemsList;
-
-    public Command cmdOk = new Command(SR.MS_EDIT, Command.OK, 1);
-    public Command cmdCancel = new Command(SR.MS_BACK, Command.BACK, 99);
+    }    
     
     /**
      * Creates a new instance of ColorsList
      */
-    public ColorsList(Display display) {
-        itemsList=new Vector();
+    public ColorsList(Display display, Displayable pView) {
+        super(display, pView, SR.MS_COLOR_TUNE);       
         
         int cnt=0;
-        for (Enumeration r=ColorTheme.colorsContainer.elements(); r.hasMoreElements();) {
-            ColorItem c=(ColorItem)r.nextElement();
-//#ifdef COLOR_TUNE
+        itemsList.removeAllElements();
+        for (Enumeration r = ColorTheme.colorsContainer.elements(); r.hasMoreElements();) {
+            ColorItem c = (ColorItem) r.nextElement();
+            //#ifdef COLOR_TUNE
 //#             itemsList.addElement(new ColorVisualItem(c.name, NAMES[cnt], c.color));
-//#endif
+            //#endif
             cnt++;
         }
-        
         this.display=display;
-	parentView=display.getCurrent();
-        
-        setMainBarItem(new MainBar(SR.MS_COLOR_TUNE));
-        
-	addCommand(cmdOk);
-	addCommand(cmdCancel);
 
         setCommandListener(this);
         attachDisplay(display);
+        this.parentView=pView;
     }
 
+    private void loadColors() {
+        
+    }
+    
     protected int getItemCount() { return itemsList.size(); }
 
     protected VirtualElement getItemRef(int index) {
         return (VirtualElement)itemsList.elementAt(index);
-    }
-
-    public void commandAction(Command c, Displayable displayable) {
-        if (c==cmdCancel) {
-            //for (Enumeration r=ColorTheme.colorsContainer.elements(); r.hasMoreElements();) {
-            //    ColorItem ci=(ColorItem)r.nextElement();
-            //    ci.locale=null; // clean locale
-            //}
-            //itemsList=null;
-            destroyView();
-            return;
-        }
-        if (c==cmdOk) { eventOk(); }
-    }
+    }    
     
-    public void eventOk() {
+    public void cmdOk() {
 //#ifdef COLOR_TUNE
-//#         new ColorSelector(display, cursor);
+//#         new ColorSelector(display, this, cursor);
+//#         
 //#endif
     }
+//#ifdef MENU_LISTENER
+    public String touchLeftCommand() {
+        return SR.MS_EDIT;
+    }
+//#endif
 
 //#ifdef COLOR_TUNE
 //#     public static final String[] NAMES = {
