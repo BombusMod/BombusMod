@@ -77,11 +77,13 @@ public class ColorConfigForm
         super(display, pView, SR.MS_COLOR_TUNE);
         this.display=display;
 
+
 //#ifdef COLOR_TUNE
 //#ifdef PLUGINS
 //#             if (StaticData.getInstance().Colors) {
 //#endif
-//#         configureColors=new LinkString(SR.MS_COLOR_TUNE) { public void doAction() { new ColorsList(display, StaticData.getInstance().roster); } };
+//#         final Displayable returnTo = this;
+//#         configureColors=new LinkString(SR.MS_COLOR_TUNE) { public void doAction() { new ColorsList(display, returnTo); } };
 //#         itemsList.addElement(configureColors);
 //#ifdef PLUGINS
 //#             }

@@ -23,21 +23,21 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-package Colors;
+package ui.controls.form;
 
+import Colors.ColorTheme;
+import Colors.ColorsList;
 import javax.microedition.lcdui.*;
-import locale.SR;
+import ui.VirtualElement;
 
-public class ColorSelector extends Canvas implements Runnable, CommandListener {
+public class ColorSelector implements VirtualElement
+    {
 //#ifdef PLUGINS
 //#     public static String plugin = new String("PLUGIN_COLORS");
 //#endif
 
-    static Font mfont = Font.getFont(Font.FACE_SYSTEM, Font.STYLE_BOLD, Font.SIZE_SMALL);
-    static int w, h;
+    static Font mfont = Font.getFont(Font.FACE_SYSTEM, Font.STYLE_BOLD, Font.SIZE_SMALL);    
 
-    private Display display;
-    Displayable parentView;
     Graphics G;
 
     int cpos;
@@ -55,8 +55,7 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
     private int value;
     int paramName;
     int ncolor;
-
-    Command cmdOk = new Command(SR.MS_OK, Command.OK, 1);
+    
 
     private int color;
 
@@ -64,23 +63,16 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
     private int ph;
 
     private ColorsList list;
+    
 
-    Command cmdCancel = new Command(SR.MS_CANCEL /*"Back"*/, Command.CANCEL, 99);
-
-    public ColorSelector(Display display, ColorsList list, int paramName) {
-        super();
-        this.display=display;
-        this.list= list;
-        parentView=display.getCurrent();
+    public ColorSelector(ColorsList list, int paramName) {        
+        
+        this.list= list;        
         this.paramName=paramName;
 
         this.color=ColorTheme.getColor(paramName);
         
-        w = getWidth();
-        h = getHeight();
-
-        //System.out.println(color+" "+cl.getColorString(color));
-
+        
         red=ColorTheme.getRed(color);
         green=ColorTheme.getGreen(color);
         blue=ColorTheme.getBlue(color);
@@ -89,21 +81,14 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
 
         cpos = 0;
 
-        exit = false;
-        (new Thread(this)).start();
-
-        this.addCommand(cmdOk);
-        this.addCommand(cmdCancel);
-
-        this.setCommandListener(this);
-        display.setCurrent(this);
+        exit = false;                
     }
 
-    protected void paint(Graphics g) {
-        py = h - 20;
-        ph = h - 50;
+    public void drawItem(Graphics g, int ofs, boolean sel) {
+        py = g.getClipHeight() - 20;
+        ph = g.getClipHeight() - 50;
         g.setColor(0xffffff);
-        g.fillRect(0, 0, w, h);
+        g.fillRect(0, 0, g.getClipWidth(), g.getClipHeight());
         g.setFont(mfont);
         String s = ColorTheme.ColorToString(red, green, blue);
 
@@ -118,7 +103,7 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
 //#endif
 
         //draw red
-        int pxred = w/3-10;
+        int pxred = g.getClipWidth()/3-10;
         int psred = (ph*red)/255;
         g.setColor(0);
         g.setStrokeStyle(Graphics.SOLID);
@@ -133,7 +118,7 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
         }
         
         //draw green
-        int pxgreen = w/2;
+        int pxgreen = g.getClipWidth()/2;
         int psgreen = (ph*green)/255;
         g.setColor(0);
         g.setStrokeStyle(Graphics.SOLID);
@@ -148,7 +133,7 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
         }
         
         //draw blue
-        int pxblue = w-(w/3-10);
+        int pxblue = g.getClipWidth()-(g.getClipWidth()/3-10);
         int psblue = (ph*blue)/255;
         g.setColor(0);
         g.setStrokeStyle(Graphics.SOLID);
@@ -183,83 +168,17 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
         return -1;
     }
 */
-    protected void keyPressed(int key) {
-        switch (key) {
-            case KEY_NUM2:
-                timer = 7;
-                dy = 1;
-                movePoint();
-                break;
-            case KEY_NUM8:
-                timer = 7;
-                dy = -1;
-                movePoint();
-                break;
-            case KEY_NUM4:
-                cpos -= 1; if (cpos < 0) cpos = 2;
-                break;
-            case KEY_NUM6:
-                cpos += 1; if (cpos > 2) cpos = 0;
-                break;
-            case KEY_NUM5:
-                eventOk();
-                exit = true;
-                destroyView();
-                break;
-            case KEY_NUM0:
-                exit = true;
-                display.setCurrent(parentView);
-                break;
-            default:
-                try {
-                    switch (getGameAction(key)){
-                        case UP:
-                            timer = 7;
-                            dy = 1;
-                            movePoint();
-                            break;
-                        case DOWN:
-                            timer = 7;
-                            dy = -1;
-                            movePoint();
-                            break;
-                        case LEFT:
-                            cpos -= 1; if (cpos < 0) cpos = 2;
-                            break;
-                        case RIGHT:
-                            cpos += 1; if (cpos > 2) cpos = 0;
-                            break;
-                        case FIRE:
-                            eventOk();
-                            exit = true;
-                            destroyView();
-                            break;
-                        default:
-                            if (key=='5') {
-                                eventOk();
-                                exit = true;
-                                destroyView();
-                                break;
-                            }
-                    }
-                } catch (Exception e) {/* IllegalArgumentException @ getGameAction */}
-                repaint();
-                serviceRepaints();
-        }
-    }
 
-    protected void keyReleased(int key) {
-            dy = 0;
+    public boolean handleEvent(int key) {
+        return false;
     }
-
-    public void run() {
-        while (! exit) {
-            try { Thread.sleep(35); } catch (Exception e) { }
-            if (--timer > 0) continue;
-            movePoint();
-            movePoint();
-        }
+    public void selectNext() {
+        cpos += 1; if (cpos > 2) cpos = 0;
     }
+    public void selectPrev() {
+        cpos -= 1; if (cpos < 0) cpos = 2;
+    }
+        
 
     public void setValue(int vall) {
         this.value=vall;
@@ -270,7 +189,7 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
 //#endif
     }
 
-    private void movePoint() {
+    public void movePoint(int dy) {
         if (dy == 0) return;
         switch (cpos) {
             case 0:
@@ -288,24 +207,10 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
                 if (blue>255) blue=0;
                 if (blue<0) blue=255;
                 break;
-        }
-        repaint();
-    }
+        }        
+    }    
 
-    public void commandAction(Command c, Displayable d) {
-        if (c==cmdCancel) {
-            exit = true;
-            destroyView();
-            return;
-        }
-        if (c==cmdOk) {
-            eventOk();
-            destroyView();
-            return;
-        }
-    }
-
-    private void eventOk () {
+    public void eventOk () {
 //#if COLOR_TUNE
 //#         String val = ColorTheme.ColorToString(red, green, blue);
 //# 
@@ -315,9 +220,26 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
 //#         setValue(finalColor);
 //#endif
         exit = true;
+    }    
+
+    public int getVHeight() {
+        return 100;
     }
 
-    public void destroyView()	{
-        if (display!=null)   display.setCurrent(parentView);
+    public int getVWidth() {
+        return 100;
     }
+
+    public int getColorBGnd(){ return ColorTheme.getColor(ColorTheme.LIST_BGND);}
+    public int getColor(){ return ColorTheme.getColor(ColorTheme.LIST_INK);}
+    
+    public String getTipString() { return null; }
+
+    public void onSelect() {
+    }
+
+    public boolean isSelectable() {
+        return false;
+    }    
+    
 }
