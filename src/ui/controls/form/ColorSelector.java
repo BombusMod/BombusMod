@@ -25,6 +25,7 @@
 
 package ui.controls.form;
 
+import Client.StaticData;
 import Colors.ColorTheme;
 import Colors.ColorsList;
 import javax.microedition.lcdui.*;
@@ -40,7 +41,7 @@ public class ColorSelector implements VirtualElement
 
     Graphics G;
 
-    int cpos;
+    public int cpos;
     String nowcolor;
     int red;
     int green;
@@ -63,6 +64,9 @@ public class ColorSelector implements VirtualElement
     private int ph;
 
     private ColorsList list;
+    public int pxred;
+    public int pxgreen;
+    public int pxblue;
     
 
     public ColorSelector(ColorsList list, int paramName) {        
@@ -103,7 +107,7 @@ public class ColorSelector implements VirtualElement
 //#endif
 
         //draw red
-        int pxred = g.getClipWidth()/3-10;
+        pxred = g.getClipWidth()/3-10;
         int psred = (ph*red)/255;
         g.setColor(0);
         g.setStrokeStyle(Graphics.SOLID);
@@ -118,7 +122,7 @@ public class ColorSelector implements VirtualElement
         }
         
         //draw green
-        int pxgreen = g.getClipWidth()/2;
+        pxgreen = g.getClipWidth()/2;
         int psgreen = (ph*green)/255;
         g.setColor(0);
         g.setStrokeStyle(Graphics.SOLID);
@@ -133,7 +137,7 @@ public class ColorSelector implements VirtualElement
         }
         
         //draw blue
-        int pxblue = g.getClipWidth()-(g.getClipWidth()/3-10);
+        pxblue = g.getClipWidth()-(g.getClipWidth()/3-10);
         int psblue = (ph*blue)/255;
         g.setColor(0);
         g.setStrokeStyle(Graphics.SOLID);
@@ -223,7 +227,7 @@ public class ColorSelector implements VirtualElement
     }    
 
     public int getVHeight() {
-        return 100;
+        return StaticData.getInstance().roster.getListHeight();
     }
 
     public int getVWidth() {

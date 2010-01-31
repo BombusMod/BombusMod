@@ -266,11 +266,9 @@ public class VCardView
     public void clearVcard() {
         new AlertBox(SR.MS_ACTION, SR.MS_DELETE+" "+SR.MS_VCARD+"?", display, StaticData.getInstance().roster) {
             public void yes() {
-                c.vcard=null;
-                cmdExit();
+                c.vcard=null;                
             }
-            public void no() {
-                cmdExit();
+            public void no() {                
             }
         };
     }

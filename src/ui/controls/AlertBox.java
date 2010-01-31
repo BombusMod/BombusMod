@@ -44,7 +44,8 @@ public abstract class AlertBox extends DefForm {
         MultiLine lines = new MultiLine("", text, super.superWidth);
         lines.selectable = false;
         itemsList.addElement(lines);
-        attachDisplay(display);        
+        attachDisplay(display);
+        parentView = nextDisplayable;
     }
     
     public void cmdOk() {

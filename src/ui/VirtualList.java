@@ -265,6 +265,9 @@ public abstract class VirtualList
         listHeight=y;
         itemLayoutY=layout;
     }
+    public int getListHeight() {
+        return winHeight;
+    }
     
     protected int getElementIndexAt(int yPos){
         int end=getItemCount()-1;
