@@ -885,6 +885,7 @@ public abstract class VirtualList
             captionPressed();
             return;
         }
+        if (y > list_top + winHeight) return;
          oldCursor = cursor;
         }
         if (Config.getInstance().advTouch) {

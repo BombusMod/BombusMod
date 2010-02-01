@@ -86,7 +86,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
     
     /** Creates a new instance of SplashScreen */
     private SplashScreen(Display display) {
-        setFullScreenMode(cf.fullscreen);
+        setFullScreenMode(Config.fullscreen);
         this.display = display; // http://code.google.com/p/bm2/issues/detail?id=93
         display.setCurrent(this);
     }
@@ -107,7 +107,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         
         tc=new TimerTaskClock();
         
-        setFullScreenMode(cf.fullscreen);
+        setFullScreenMode(Config.fullscreen);
 
 //        if (cf.widthSystemgc) { _vt
             System.gc();
@@ -140,7 +140,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         } else {
             int filled=pos*width/100;
             if (pb==null) pb=new Progress(0, height, width);
-            pb.draw(g, filled, capt);
+            Progress.draw(g, filled, capt);
         }
     }
     
@@ -241,7 +241,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
 //#ifdef AUTOSTATUS
 //#         StaticData sd=StaticData.getInstance();
 //#         if (sd.roster.autoAway && cf.autoAwayType==Config.AWAY_LOCK) {
-//#             int newStatus=sd.roster.oldStatus;
+//#             int newStatus=Roster.oldStatus;
 //#             ExtendedStatus es=StatusList.getInstance().getStatus(newStatus);
 //#             String ms=es.getMessage();
 //#             sd.roster.autoAway=false;

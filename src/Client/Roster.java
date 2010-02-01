@@ -554,10 +554,11 @@ public class Roster
         /*Group g=(Group)getFocusedObject();*/
         if (g==null) return;
         if (!g.collapsed && !Config.getInstance().autoClean) return;
+        String groupSelfContact = "";
 //#ifndef WMUC
         if (g instanceof ConferenceGroup) {
             ConferenceGroup cg= (ConferenceGroup) g;
-
+            groupSelfContact = cg.selfContact.bareJid;
             if (!cg.inRoom) {
                 int index=0;
                 boolean removeGroup=true;
@@ -593,6 +594,7 @@ public class Roster
                     if ( contact.origin>Contact.ORIGIN_ROSTERRES
                       && contact.status>=Presence.PRESENCE_OFFLINE
                       && !contact.haveChatMessages()
+                      && !contact.bareJid.equals(groupSelfContact)
                       && contact.origin!=Contact.ORIGIN_GROUPCHAT) {
                         
                         contact.msgs=null;
