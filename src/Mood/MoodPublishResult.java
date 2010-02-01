@@ -35,6 +35,7 @@ import javax.microedition.lcdui.Display;
 import locale.SR;
 import ui.controls.AlertBox;
 import xmpp.XmppError;
+import Client.StaticData;
 
 public class MoodPublishResult implements JabberBlockListener {
 //#ifdef PLUGINS
@@ -59,7 +60,7 @@ public class MoodPublishResult implements JabberBlockListener {
         
         XmppError e=XmppError.findInStanza(data);
 //#ifdef PEP
-//#         new AlertBox(SR.MS_ERROR_, SR.MS_PEP_NOT_SUPPORTED+"("+e.toString()+")", display, null) {
+//#         new AlertBox(SR.MS_ERROR_, SR.MS_PEP_NOT_SUPPORTED+"("+e.toString()+")", display, StaticData.getInstance().roster) {
 //#             public void yes() { }
 //#             public void no() { }
 //#         };

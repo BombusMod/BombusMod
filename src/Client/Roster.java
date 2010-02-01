@@ -2563,7 +2563,7 @@ public class Roster
 //menu actions
     public void cmdQuit() { 
         if (cf.queryExit) {
-            new AlertBox(SR.MS_QUIT_ASK, SR.MS_SURE_QUIT, display, null) {
+            new AlertBox(SR.MS_QUIT_ASK, SR.MS_SURE_QUIT, display, StaticData.getInstance().roster) {
                 public void yes() { quit(); }
                 public void no() { }
             };

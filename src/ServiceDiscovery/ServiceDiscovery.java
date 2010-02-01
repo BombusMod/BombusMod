@@ -346,7 +346,7 @@ public class ServiceDiscovery
             if (text.equals(SR.MS_DONE) && id.endsWith("Search") ) {
                 new SearchResult(display, data);
             } else {
-                new AlertBox(mainbar, text, display, null) {
+                new AlertBox(mainbar, text, display, StaticData.getInstance().roster) {
                     public void yes() { }
                     public void no() { }
                 };
