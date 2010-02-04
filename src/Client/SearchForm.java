@@ -39,7 +39,6 @@ import locale.SR;
 import ui.MIDPTextBox;
 import ui.MainBar;
 import ui.VirtualElement;
-import ui.VirtualList;
 import ui.controls.form.ListItem;
 import util.StringLoader;
 
@@ -47,33 +46,23 @@ import util.StringLoader;
 import ServiceDiscovery.ServiceDiscovery;
 //#endif
 //#ifndef MENU_LISTENER
-//# import javax.microedition.lcdui.CommandListener;
 //# import javax.microedition.lcdui.Command;
 //#else
-import Menu.MenuListener;
 import Menu.Command;
-import Menu.MyMenu;
 //#endif
+import ui.controls.form.DefForm;
 
 /**
  *
  * @author ad
  */
 public class SearchForm
-        extends VirtualList 
-        implements
-//#ifndef MENU_LISTENER
-//#         CommandListener
-//#else
-        MenuListener
-//#endif
-        , MIDPTextBox.TextBoxNotify
+        extends DefForm
+        implements MIDPTextBox.TextBoxNotify
     { 
     
-    private Command cmdOk = new Command(SR.MS_SEARCH, Command.OK, 1);
     private Command cmdAddServer = new Command(SR.MS_ADD, Command.SCREEN, 2);
     private Command cmdDel=new Command (SR.MS_DELETE, Command.SCREEN, 3);
-    private Command cmdCancel=new Command (SR.MS_CANCEL, Command.BACK, 99);
     
     Vector servers = new Vector();
     
@@ -81,17 +70,20 @@ public class SearchForm
      * Creates a new instance of SearchForm
      */
     public SearchForm(Display display, Displayable pView) {
-        super();
+        super(display, pView, SR.MS_SEARCH);
         this.display=display;
         loadRecentList();
 
         if (getItemCount()<1) loadDefaults();
 
         updateMainBar();
-        
-        commandState();
+//#ifndef MENU_LISTENER
+//#         addCommand(cmdOk);
+//#         addCommand(cmdAddServer);
+//#         addCommand(cmdDel);
+//#         addCommand(cmdCancel);
+//#endif
         setCommandListener(this);
-        
         attachDisplay(display);
         this.parentView=pView;
     }
@@ -99,28 +91,24 @@ public class SearchForm
     private void updateMainBar() {
         setMainBarItem(new MainBar(2, null, SR.MS_USERS_SEARCH+" ("+getItemCount()+") ", false));
     }
-    
-    public void commandState() {
+
 //#ifdef MENU_LISTENER
+    public void commandState() {
         menuCommands.removeAllElements();
-//#endif
-        addCommand(cmdOk);
         addCommand(cmdAddServer);
         addCommand(cmdDel);
-        addCommand(cmdCancel);
     }
 
-
-//#ifdef MENU_LISTENER
     public String touchLeftCommand(){ return SR.MS_MENU; }
-        public void cmdOk(){ showMenu(); }
+    public void touchLeftPressed(){
+        showMenu();
+    }
 //#endif
     
-    public void commandAction(Command c, Displayable displayable) {
-        if (c==cmdCancel) {
-            exitSearchForm();
-        } else if (c==cmdAddServer) {
-            new MIDPTextBox(display, SR.MS_SERVER, null, this, TextField.ANY);
+    public void commandAction(Command c, Displayable d) {
+        super.commandAction(c, d);     
+     if (c==cmdAddServer) {
+            new MIDPTextBox(display, this, SR.MS_SERVER, null, this, TextField.ANY);
 	} else if (c==cmdDel) {
             delServer();
         }
@@ -128,11 +116,7 @@ public class SearchForm
     
     public void OkNotify(String server) {
         addServer(server);
-    }
-    
-    private void exitSearchForm(){
-        display.setCurrent(StaticData.getInstance().roster);
-    }
+    }    
     
     private void loadDefaults() {
 	Vector defs[]=new StringLoader().stringLoader("/def_search.txt", 1);
@@ -184,11 +168,15 @@ public class SearchForm
         redraw();
     }
 
+    public void cmdOk() {
+        eventOk();
+    }
+
     public void eventOk(){
 //#ifdef SERVICE_DISCOVERY
-        if (getItemCount()==0) 
+        if (getItemCount()==0)
             return;
-        
+
         ListItem join=(ListItem)getFocusedObject();
         new ServiceDiscovery(display, join.toString(), null, true);
 //#endif
@@ -200,13 +188,6 @@ public class SearchForm
 
     protected VirtualElement getItemRef(int index) {
         return new ListItem((String) servers.elementAt(index)); 
-    }
-    
-//#ifdef MENU_LISTENER
-    public void showMenu() {
-        commandState();
-        new MyMenu(display, parentView, this, SR.MS_BOOKMARKS, null, menuCommands);
-    }
-//#endif
+    }   
 }
 

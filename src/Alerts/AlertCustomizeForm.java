@@ -143,7 +143,7 @@ public class AlertCustomizeForm
         IQNotify=new CheckBox(SR.MS_SHOW_IQ_REQUESTS, cf.IQNotify); itemsList.addElement(IQNotify);
 
 //#ifndef MENU_LISTENER        
-//# 
+//#
 //#         if (playable()>-1)
 //#             addCommand(cmdTest);
 //#         addCommand(cmdSave);
@@ -230,8 +230,7 @@ public class AlertCustomizeForm
         
         if (playable()>-1)
             addCommand(cmdTest);
-        addCommand(cmdSave);
-        addCommand(cmdCancel);
+        addCommand(cmdSave);        
     }
     
 

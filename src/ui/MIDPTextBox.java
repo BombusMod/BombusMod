@@ -54,7 +54,7 @@ public class MIDPTextBox implements CommandListener {
         void OkNotify(String text_return);
     }
    
-    public MIDPTextBox(Display display, String mainbar, String text, TextBoxNotify tbn , int constraints) {
+    public MIDPTextBox(Display display, Displayable pView, String mainbar, String text, TextBoxNotify tbn , int constraints) {
         t=new TextBox(mainbar, text, 150, constraints);
         
         this.display=display;
@@ -66,7 +66,7 @@ public class MIDPTextBox implements CommandListener {
         t.setCommandListener(this);
             
 
-        parentView=display.getCurrent();
+        parentView=pView;
         display.setCurrent(t);
     }
     

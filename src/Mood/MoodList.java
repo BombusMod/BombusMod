@@ -16,35 +16,33 @@ import Client.StaticData;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
 import java.util.Vector;
-import javax.microedition.lcdui.Command;
-import javax.microedition.lcdui.CommandListener;
+//#ifndef MENU_LISTENER
+//# import javax.microedition.lcdui.Command;
+//#else
+import Menu.Command;
+//#endif
+
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
 import ui.VirtualElement;
-import ui.VirtualList;
+import ui.controls.form.DefForm;
 
 /**
  *
  * @author evgs
  */
-public class MoodList extends VirtualList implements CommandListener, MIDPTextBox.TextBoxNotify {
+public class MoodList extends DefForm implements MIDPTextBox.TextBoxNotify {
 //#ifdef PLUGINS
 //#     public static String plugin = new String("PLUGIN_PEP");
 //#endif
     
     /** Creates a new instance of MoodList */
-    Command cmdBack=new Command(SR.MS_BACK,Command.BACK,99);
-    Command cmdOk=new Command(SR.MS_OK,Command.OK,1);
 
     Vector moods;
     public MoodList(Display display) {
-        super();
-//#ifdef PEP
-//#         setMainBarItem(new MainBar(SR.MS_USERMOOD));
-//#endif
-        addCommand(cmdBack);
-        addCommand(cmdOk);
+        super(display, StaticData.getInstance().roster, SR.MS_USERMOOD);
+
         setCommandListener(this);
         
         moods=new Vector();
@@ -62,6 +60,10 @@ public class MoodList extends VirtualList implements CommandListener, MIDPTextBo
     protected int getItemCount() { return moods.size(); }
 
     protected VirtualElement getItemRef(int index) { return (VirtualElement)moods.elementAt(index); }
+
+    public void cmdOk() {
+        eventOk();
+    }
 
 //#ifdef PEP
 //#     public void eventOk() {
@@ -100,9 +102,5 @@ public class MoodList extends VirtualList implements CommandListener, MIDPTextBo
             StaticData.getInstance().roster.theStream.send(setMood);
         } catch (Exception e) {e.printStackTrace(); }
     }
-
-    public void commandAction(Command command, Displayable displayable) {
-        if (command==cmdBack) destroyView();
-        else eventOk();
-    }    
+        
 }

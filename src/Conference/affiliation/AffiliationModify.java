@@ -45,8 +45,6 @@ import ui.controls.form.TextInput;
 public class AffiliationModify
         extends DefForm {
     
-    private Display display;
-
     private TextInput jidItem;
     private DropChoiceBox affiliationItem;
     private TextInput reasonItem;

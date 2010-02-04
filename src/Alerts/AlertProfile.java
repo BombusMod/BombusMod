@@ -34,25 +34,17 @@ import javax.microedition.lcdui.Displayable;
 import locale.SR;
 import ui.*;
 //#ifndef MENU_LISTENER
-//# import javax.microedition.lcdui.CommandListener;
 //# import javax.microedition.lcdui.Command;
 //#else
-import Menu.MenuListener;
 import Menu.Command;
-import Menu.MyMenu;
 //#endif
-import ui.MainBar;
+import ui.controls.form.DefForm;
 
 /**
  *
  * @author Eugene Stahov
  */
-public class AlertProfile extends VirtualList implements
-//#ifndef MENU_LISTENER
-//#         CommandListener
-//#else
-        MenuListener
-//#endif
+public class AlertProfile extends DefForm
     {
     
     private final static int ALERT_COUNT=4;
@@ -69,18 +61,19 @@ public class AlertProfile extends VirtualList implements
     
     /** Creates a new instance of Profile */
     
-    private Command cmdOk=new Command(SR.MS_SELECT,Command.OK,1);
-    private Command cmdDef=new Command(SR.MS_SETDEFAULT,Command.OK,2);
-    private Command cmdCancel=new Command(SR.MS_BACK,Command.BACK,99);
+    private Command cmdDef=new Command(SR.MS_SETDEFAULT,Command.SCREEN,3);
+    private Command cmdSel=new Command(SR.MS_SELECT,Command.SCREEN,2);
     /** Creates a new instance of SelectStatus */
     public AlertProfile(Display d, Displayable pView) {
-        super();
+        super(d, pView, SR.MS_ALERT_PROFILE);
         
         cf=Config.getInstance();
-        
-        setMainBarItem(new MainBar(SR.MS_ALERT_PROFILE));
-        
-        commandState();
+                
+//#ifndef MENU_LISTENER
+//#         addCommand(cmdDef);
+//#         addCommand(cmdSel);
+//#         removeCommand(cmdOk);
+//#endif
 
         setCommandListener(this);
         
@@ -92,19 +85,15 @@ public class AlertProfile extends VirtualList implements
         this.parentView=pView;
     }
 
+//#ifdef MENU_LISTENER
     public void commandState() {
-//#ifdef MENU_LISTENER
         menuCommands.removeAllElements();
-//#endif
-        addCommand(cmdOk);
+        addCommand(cmdSel);
         addCommand(cmdDef);
-        addCommand(cmdCancel);
     }
-    
-//#ifdef MENU_LISTENER
-    public void showMenu() {
-        commandState();
-        new MyMenu(display, parentView, this, SR.MS_STATUS, null, menuCommands);
+    public String touchLeftCommand(){ return SR.MS_MENU; }
+    public void touchLeftPressed(){
+        showMenu();
     }
 //#endif
     
@@ -136,13 +125,12 @@ public class AlertProfile extends VirtualList implements
     }
     
     public void commandAction(Command c, Displayable d){
-        if (c==cmdOk) eventOk(); 
+        if (c==cmdSel) eventOk();
         if (c==cmdDef) { 
             cf.def_profile=defp=cursor;
 	    cf.saveToStorage();
             redraw();
-        }
-        if (c==cmdCancel) destroyView();
+        }        
     }
     
     public void eventOk(){

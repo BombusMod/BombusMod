@@ -98,7 +98,7 @@ public class MessageUrl extends DefForm implements TextBoxNotify{
 
 	}
     private void EditURL() {
-        new MIDPTextBox(display, "Edit URL", (String)urlList.elementAt(cursor), this, TextField.ANY);
+        new MIDPTextBox(display, this, "Edit URL", (String)urlList.elementAt(cursor), this, TextField.ANY);
     }
 
     public void OkNotify(String text_return) {
@@ -109,8 +109,7 @@ public class MessageUrl extends DefForm implements TextBoxNotify{
     public void commandState(){
         menuCommands.removeAllElements();
         addCommand(cmdGoto);
-        addCommand(cmdEdit);
-        addCommand(cmdCancel);
+        addCommand(cmdEdit);        
     }
 
     public String touchLeftCommand(){ return SR.MS_MENU; }

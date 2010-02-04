@@ -66,6 +66,7 @@ import Menu.MyMenu;
 //#if FILE_TRANSFER
 import io.file.transfer.TransferDispatcher;
 //#endif
+import java.io.IOException;
 
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
@@ -246,7 +247,7 @@ public class Roster
 //#ifdef AUTOSTATUS
 //#         if (cf.autoAwayType==Config.AWAY_IDLE || cf.autoAwayType==Config.AWAY_MESSAGE)
 //#             autostatus=new AutoStatusTask();
-//# 
+//#
 //#         if (myStatus<2)
 //#             messageActivity();
 //#endif
@@ -719,7 +720,7 @@ public class Roster
 //#             autoAway=false;
 //#             autoXa=false;
 //#             myStatus=oldStatus;
-//# 
+//#
 //#             messageActivity();
 //#         }
 //#endif
@@ -1179,8 +1180,8 @@ public class Roster
 //# 	    if (k.jid.isTransport()) continue;
 //#             int grpType=k.getGroupType();
 //#             if (k.jid.getServer().equals(srcTransport) &&
-//#                     (grpType==Groups.TYPE_COMMON || grpType==Groups.TYPE_NO_GROUP || 
-//#                     grpType==Groups.TYPE_VISIBLE || grpType==Groups.TYPE_VIP || 
+//#                     (grpType==Groups.TYPE_COMMON || grpType==Groups.TYPE_NO_GROUP ||
+//#                     grpType==Groups.TYPE_VISIBLE || grpType==Groups.TYPE_VIP ||
 //#                     grpType==Groups.TYPE_IGNORE)) {
 //#                 String jid=k.getJid();
 //#                 jid=StringUtils.stringReplace(jid, srcTransport, dstTransport);
@@ -1826,7 +1827,7 @@ public class Roster
         if (activeContact==null)
             return true;
         return(!c.equals(activeContact));
-    }
+        }
 //#endif
     
 //#ifdef FILE_TRANSFER
@@ -2296,20 +2297,20 @@ public class Roster
         if (kHold==keyCode) return;
         kHold=keyCode;
         
-        if (keyCode==cf.keyLock) {
-//#ifdef AUTOSTATUS
-//#             if (cf.autoAwayType==Config.AWAY_LOCK) {
-//#                 if (!autoAway) {
-//#                     autoAway=true;
-//#                     if (cf.useMyStatusMessages) {
-//#                         sendPresence(Presence.PRESENCE_AWAY, null);
-//#                     } else {
-//#                         sendPresence(Presence.PRESENCE_AWAY, "Auto Status on KeyLock since %t");
-//#                     }
-//#                 }
-//#             }
-//#endif
-            new SplashScreen(display, getMainBarItem(), cf.keyLock);
+        if (keyCode==cf.keyLock) {            
+                //#ifdef AUTOSTATUS
+//#                             if (cf.autoAwayType==Config.AWAY_LOCK) {
+//#                                 if (!autoAway) {
+//#                                     autoAway=true;
+//#                                     if (cf.useMyStatusMessages) {
+//#                                         sendPresence(Presence.PRESENCE_AWAY, null);
+//#                                     } else {
+//#                                         sendPresence(Presence.PRESENCE_AWAY, "Auto Status on KeyLock since %t");
+//#                                     }
+//#                                 }
+//#                             }
+                //#endif
+            new SplashScreen(display, getMainBarItem(), cf.keyLock);            
             return;
         } else if (keyCode==cf.keyVibra || keyCode==MOTOE680_FMRADIO /* TODO: redefine keyVibra*/) {
             // swap profiles
@@ -2360,7 +2361,7 @@ public class Roster
 //#ifdef AUTOSTATUS
 //#     private void userActivity() {
 //#         if (autostatus==null) return;
-//# 
+//#
 //#         if (cf.autoAwayType==Config.AWAY_IDLE) {
 //#             if (!autoAway) {
 //#                 autostatus.setTimeEvent(cf.autoAwayDelay* 60*1000);
@@ -2372,10 +2373,10 @@ public class Roster
 //#         autostatus.setTimeEvent(0);
 //#         setAutoStatus(Presence.PRESENCE_ONLINE);
 //#     }
-//# 
+//#
 //#     public void messageActivity() {
 //#         if (autostatus==null) return;
-//# 
+//#
 //#         if (cf.autoAwayType==Config.AWAY_MESSAGE) {
 //#              //System.out.println("messageActivity "+myStatus.getImageIndex());
 //#              if (myStatus<2)
@@ -2772,7 +2773,7 @@ public class Roster
 //#             }
 //#         }
 //#     }
-//# 
+//#
 //#     public void setAutoXa() {
 //#         if (autoAway && !autoXa) {
 //#             autoXa=true;
@@ -2783,7 +2784,7 @@ public class Roster
 //#             }
 //#         }
 //#     }
-//# 
+//#
 //#     public void setAutoStatus(int status) {
 //#         if (!isLoggedIn())
 //#             return;
@@ -2860,7 +2861,7 @@ public class Roster
             new Thread(this).start();
         }
         
-        public void run(){
+        public synchronized void run(){
             //try {
                 while (pendingRepaints>0) {
                     pendingRepaints=0;

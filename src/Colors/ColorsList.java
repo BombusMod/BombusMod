@@ -80,7 +80,10 @@ public class ColorsList extends DefForm
 
     protected VirtualElement getItemRef(int index) {
         return (VirtualElement)itemsList.elementAt(index);
-    }    
+    }
+    public void eventOk() {
+        cmdOk();
+    }
     
     public void cmdOk() {
 //#ifdef COLOR_TUNE
