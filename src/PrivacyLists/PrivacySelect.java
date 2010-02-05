@@ -156,7 +156,7 @@ public class PrivacySelect
             }
         }
         if (c==cmdNewList)
-            new MIDPTextBox(display, SR.MS_NEW, "", this, TextField.ANY);
+            new MIDPTextBox(display, this, SR.MS_NEW, "", this, TextField.ANY);
     }
     
 //#ifdef MENU_LISTENER
@@ -226,7 +226,7 @@ public class PrivacySelect
     }
     
     public void keyGreen() {
-        new MIDPTextBox(display, SR.MS_NEW, "", this, TextField.ANY);
+        new MIDPTextBox(display, this, SR.MS_NEW, "", this, TextField.ANY);
     }
         
     protected void keyClear(){

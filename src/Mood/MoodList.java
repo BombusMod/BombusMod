@@ -68,7 +68,7 @@ public class MoodList extends DefForm implements MIDPTextBox.TextBoxNotify {
 //#ifdef PEP
 //#     public void eventOk() {
 //#         if (cursor==0) OkNotify(null); 
-//#         else new MIDPTextBox(display, SR.MS_USERMOOD, Moods.getInstance().myMoodText, this, TextField.ANY);
+//#             else new MIDPTextBox(display, this, SR.MS_USERMOOD, Moods.getInstance().myMoodText, this, TextField.ANY);
 //#     }
 //#endif
     
