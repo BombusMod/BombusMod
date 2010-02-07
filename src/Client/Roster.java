@@ -2861,7 +2861,7 @@ public class Roster
             new Thread(this).start();
         }
         
-        public synchronized void run(){
+        public void run(){
             //try {
                 while (pendingRepaints>0) {
                     pendingRepaints=0;

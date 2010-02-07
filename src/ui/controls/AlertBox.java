@@ -49,12 +49,12 @@ public abstract class AlertBox extends DefForm {
     }
     
     public void cmdOk() {
-        yes();
         destroyView();
+        yes();        
     }
     public void cmdCancel() {
-        no();
         destroyView();
+        no();        
     }
     public void drawCursor(Graphics g, int width, int height) {
         // prevent text selection

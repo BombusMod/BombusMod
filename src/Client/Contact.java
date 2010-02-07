@@ -245,7 +245,7 @@ public class Contact extends IconTextElement{
     public boolean haveChatMessages() {
         for (Enumeration e = msgs.elements(); e.hasMoreElements();) {
             Msg msg = (Msg)e.nextElement();
-            if (msg.messageType == Msg.MESSAGE_TYPE_IN || msg.messageType == Msg.MESSAGE_TYPE_OUT)
+            if (msg.messageType == Msg.MESSAGE_TYPE_IN || msg.messageType == Msg.MESSAGE_TYPE_OUT || msg.messageType == Msg.MESSAGE_TYPE_AUTH)
                 return true;
         }
         return false;
