@@ -247,7 +247,7 @@ public class Roster
 //#ifdef AUTOSTATUS
 //#         if (cf.autoAwayType==Config.AWAY_IDLE || cf.autoAwayType==Config.AWAY_MESSAGE)
 //#             autostatus=new AutoStatusTask();
-//#
+//# 
 //#         if (myStatus<2)
 //#             messageActivity();
 //#endif
@@ -720,7 +720,7 @@ public class Roster
 //#             autoAway=false;
 //#             autoXa=false;
 //#             myStatus=oldStatus;
-//#
+//# 
 //#             messageActivity();
 //#         }
 //#endif
@@ -2153,7 +2153,7 @@ public class Roster
     
     protected void keyClear(){
         if (isLoggedIn()) {
-            Contact c=(Contact) getFocusedObject();
+            final Contact c=(Contact) getFocusedObject();
             try { 
                 boolean isContact=( getFocusedObject() instanceof Contact );
 //#ifndef WMUC
@@ -2162,9 +2162,9 @@ public class Roster
 //#                 boolean isMucContact=false;
 //#endif
                 if (isContact && !isMucContact) {
-                   new AlertBox(SR.MS_DELETE_ASK, c.getNickJid(), display, this) {
+                   new AlertBox(SR.MS_DELETE_ASK, c.getNickJid(), display, sd.roster) {
                         public void yes() {
-                            deleteContact((Contact)getFocusedObject());
+                            deleteContact(c);
                         }
                         public void no() {}
                     };
@@ -2361,7 +2361,7 @@ public class Roster
 //#ifdef AUTOSTATUS
 //#     private void userActivity() {
 //#         if (autostatus==null) return;
-//#
+//# 
 //#         if (cf.autoAwayType==Config.AWAY_IDLE) {
 //#             if (!autoAway) {
 //#                 autostatus.setTimeEvent(cf.autoAwayDelay* 60*1000);
@@ -2373,10 +2373,10 @@ public class Roster
 //#         autostatus.setTimeEvent(0);
 //#         setAutoStatus(Presence.PRESENCE_ONLINE);
 //#     }
-//#
+//# 
 //#     public void messageActivity() {
 //#         if (autostatus==null) return;
-//#
+//# 
 //#         if (cf.autoAwayType==Config.AWAY_MESSAGE) {
 //#              //System.out.println("messageActivity "+myStatus.getImageIndex());
 //#              if (myStatus<2)
@@ -2773,7 +2773,7 @@ public class Roster
 //#             }
 //#         }
 //#     }
-//#
+//# 
 //#     public void setAutoXa() {
 //#         if (autoAway && !autoXa) {
 //#             autoXa=true;
@@ -2784,7 +2784,7 @@ public class Roster
 //#             }
 //#         }
 //#     }
-//#
+//# 
 //#     public void setAutoStatus(int status) {
 //#         if (!isLoggedIn())
 //#             return;
