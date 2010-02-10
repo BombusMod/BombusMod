@@ -5,7 +5,6 @@
 
 package Colors;
 
-import java.util.Enumeration;
 import ui.controls.form.ColorSelector;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
@@ -72,6 +71,28 @@ import ui.controls.form.DefForm;
 //#                 serviceRepaints();
 //#         }
 //#         super.keyPressed(key);
+//#     }
+//#     protected void keyRepeated(int key) {
+//#         try {
+//#                     switch (getGameAction(key)){
+//#                         case UP:
+//#                             selector.movePoint(1);
+//#                             break;
+//#                         case DOWN:
+//#                             selector.movePoint(-1);
+//#                             break;
+//#                         case LEFT:
+//#                             selector.selectPrev();
+//#                             break;
+//#                         case RIGHT:
+//#                             selector.selectNext();
+//#                             break;
+//#                         case FIRE:
+//#                             cmdOk();
+//#                             break;
+//#                     }
+//#                 } catch (Exception e) {/* IllegalArgumentException @ getGameAction */ }
+//# 
 //#     }
 //#     protected void pointerPressed(int x, int y) {
 //#         checkBarPointed(x, y, selector.pxred, 0);

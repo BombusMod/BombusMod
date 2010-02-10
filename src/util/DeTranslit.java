@@ -42,7 +42,7 @@ public class DeTranslit {
     public static DeTranslit getInstance(){
 	if (instance==null) {
 	    instance=new DeTranslit();
-	    instance.fill();
+	    DeTranslit.fill();
 	}
 	return instance;
     }
