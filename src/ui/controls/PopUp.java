@@ -37,6 +37,7 @@ import Fonts.FontCache;
 import util.StringUtils;
 
 public class PopUp {
+    private static PopUp instance;
     public final static int TYPE_SYSTEM = 1;
     public final static int TYPE_MESSAGE = 2;
     public final static int TYPE_ALERT = 3;
@@ -79,10 +80,15 @@ public class PopUp {
 //#endif
     }
 
-    public PopUp() {
+    private PopUp() {
          popUps = new Vector();
          font=FontCache.getFont(false, FontCache.baloon);
          ri=RosterIcons.getInstance();
+    }
+    public static PopUp getInstance() {
+        if (instance == null)
+            instance = new PopUp();
+        return instance;
     }
     
     public void init(Graphics g, int width, int height) {

@@ -43,6 +43,7 @@ import locale.SR;
 import ui.MainBar;
 import ui.VirtualElement;
 import ui.VirtualList;
+import ui.controls.PopUp;
 
 /**
  *
@@ -129,7 +130,7 @@ public class ActiveContacts
     public void keyPressed(int keyCode) {
         kHold=0;
 //#ifdef POPUPS
-        VirtualList.popup.next();
+        PopUp.getInstance().next();
 //#endif
 	if (keyCode==KEY_NUM3) {
             destroyView();

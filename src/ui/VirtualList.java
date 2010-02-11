@@ -131,11 +131,10 @@ public abstract class VirtualList
 //#     private int additionKeyState = USER_OTHER_KEY_PRESSED;
 //#endif
 
-//#ifdef POPUPS
-    public static PopUp popup;
+//#ifdef POPUPS    
 
     public static void setWobble(int type, String contact, String txt){
-        popup.addPopup(type, contact, txt);
+        PopUp.getInstance().addPopup(type, contact, txt);
     }
 //#endif
     protected int getMainBarRGB() {return ColorTheme.getColor(ColorTheme.BAR_INK);}
@@ -349,7 +348,7 @@ public abstract class VirtualList
         height=getHeight();
 
 //#ifdef POPUPS
-        popup = new PopUp();
+        PopUp.getInstance();
 //#endif
 
         if (phoneManufacturer==Config.WINDOWS) {
@@ -466,7 +465,7 @@ public abstract class VirtualList
         Graphics g=(offscreen==null)? graphics: offscreen.getGraphics();
         
 //#ifdef POPUPS
-        popup.init(g, width, height);
+        PopUp.getInstance().init(g, width, height);
 //#endif
         beginPaint();
         
@@ -709,7 +708,7 @@ public abstract class VirtualList
     
 //#ifdef POPUPS
     protected void drawPopUp(final Graphics g) {
-        popup.paintCustom(g);
+        PopUp.getInstance().paintCustom(g);
     }
 //#endif
     
@@ -851,7 +850,7 @@ public abstract class VirtualList
     protected void pointerPressed(int x, int y) {
         //System.out.println("pointerPressed("+x+", "+y+")");
 //#ifdef POPUPS
-        popup.next();
+        PopUp.getInstance().next();
 //#endif        
 //#ifdef MENU_LISTENER
         int act=ar.pointerPressed(x, y);
@@ -961,7 +960,10 @@ public abstract class VirtualList
         }
     }
     protected void pointerReleased(int x, int y) { 
-        scrollbar.pointerReleased(x, y, this);         
+        scrollbar.pointerReleased(x, y, this);
+        if (Config.getInstance().advTouch) {
+            if (y > list_top + winHeight) return;
+        }
 	long clickTime=System.currentTimeMillis();
         if (lastClickY-y<5 && y-lastClickY<5) {
             if (clickTime-lastClickTime>500) {
@@ -975,47 +977,47 @@ public abstract class VirtualList
 //#     private void additionKeyPressed(int keyCode) {
 //#         switch (keyCode) {
 //#             case KEY_NUM0:
-//#             case 'R': // Issue 117
+//#             case 'm': // Issue 117
 //#                 userKeyExec.getInstance().commandExecute(display, 0);
 //#                 break;
 //#             case KEY_NUM1:
-//#             case 'T':
+//#             case 'r':
 //#                 userKeyExec.getInstance().commandExecute(display, 1);
 //#                 break;
 //#             case KEY_NUM2:
-//#             case 'Y':
+//#             case 't':
 //#                 userKeyExec.getInstance().commandExecute(display, 2);
 //#                 break;
 //#             case KEY_NUM3:
-//#             case 'F':
+//#             case 'y':
 //#                 userKeyExec.getInstance().commandExecute(display, 3);
 //#                 break;
 //#             case KEY_NUM4:
-//#             case 'G':
+//#             case 'f':
 //#                 userKeyExec.getInstance().commandExecute(display, 4);
 //#                 break;
 //#             case KEY_NUM5:
-//#             case 'H':
+//#             case 'g':
 //#                 userKeyExec.getInstance().commandExecute(display, 5);
 //#                 break;
 //#             case KEY_NUM6:
-//#             case 'V':
+//#             case 'h':
 //#                 userKeyExec.getInstance().commandExecute(display, 6);
 //#                 break;
 //#             case KEY_NUM7:
-//#             case 'B':
+//#             case 'v':
 //#                 userKeyExec.getInstance().commandExecute(display, 7);
 //#                 break;
 //#             case KEY_NUM8:
-//#             case 'N':
+//#             case 'b':
 //#                 userKeyExec.getInstance().commandExecute(display, 8);
 //#                 break;
 //#             case KEY_NUM9:
-//#             case 'M':
+//#             case 'n':
 //#                 userKeyExec.getInstance().commandExecute(display, 9);
 //#                 break;
 //#             case KEY_POUND:
-//#             case 'U':
+//#             case 'j':
 //#                 userKeyExec.getInstance().commandExecute(display, 10);
 //#                 break;
 //#         }
@@ -1052,8 +1054,8 @@ public abstract class VirtualList
          
         if (key>-1) {
 //#ifdef POPUPS
-            if (popup.size()>0) {
-                return popup.handleEvent(key);
+            if (PopUp.getInstance().size()>0) {
+                return PopUp.getInstance().handleEvent(key);
             } else  
 //#endif
             if (getFocusedObject()!=null)
@@ -1086,9 +1088,9 @@ public abstract class VirtualList
 //#endif
 //#ifdef POPUPS
         if (keyCode==greenKeyCode) {
-            if (popup.getContact()!=null) {
-                new ContactMessageList(sd.roster.getContact(popup.getContact(), false),display);
-                popup.next();
+            if (PopUp.getInstance().getContact()!=null) {
+                new ContactMessageList(sd.roster.getContact(PopUp.getInstance().getContact(), false),display);
+                PopUp.getInstance().next();
                 return;
             } else if (phoneManufacturer==Config.MOTO || phoneManufacturer==Config.NOKIA || phoneManufacturer==Config.NOKIA_9XXX) {
                 keyGreen();
@@ -1155,31 +1157,31 @@ public abstract class VirtualList
         case 0: 
             break;
         case KEY_NUM1:
-        case 'T':    // Issue 117
+        case 'r':    // Issue 117
             moveCursorHome();    
             break;
         case KEY_NUM2:
-        case 'Y':
+        case 't':
             keyUp();    
             break; 
         case KEY_NUM4:
-        case 'G':
+        case 'y':
             userKeyPressed(keyCode);
             break; 
         case KEY_NUM6:
-        case 'V':
+        case 'h':
             userKeyPressed(keyCode);
             break;
         case KEY_NUM7:
-        case 'B':
+        case 'v':
             moveCursorEnd();     
             break;
         case KEY_NUM8:
-        case 'N':
+        case 'b':
             keyDwn();    
             break;
         case KEY_STAR:
-        case 'U':
+        case 'u':
 //            if (cf.widthSystemgc) { _vt
                 System.gc();
                 try { Thread.sleep(50); } catch (InterruptedException e){}
@@ -1202,6 +1204,7 @@ public abstract class VirtualList
             break;
 //#ifdef POPUPS
         case KEY_POUND:
+        case 'j':
             if (cf.popUps) {
                 try {
                     String text=((VirtualElement)getFocusedObject()).getTipString();
@@ -1234,7 +1237,7 @@ public abstract class VirtualList
                 default:
                     if (keyCode==keyClear) { keyClear(); break; }
                     if (keyCode==keyVolDown) { moveCursorEnd(); break; }
-                    if (keyCode=='5') {  eventOk(); break; }
+                    if (keyCode=='5' || keyCode == 'g') {  eventOk(); break; }
                     if (keyCode==Config.KEY_BACK && canBack==true) { destroyView(); }
                     if (keyCode==greenKeyCode) { keyGreen(); }
 

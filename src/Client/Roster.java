@@ -93,6 +93,7 @@ import com.alsutton.jabber.*;
 import com.alsutton.jabber.datablocks.*;
 import java.util.*;
 import ui.*;
+import ui.controls.PopUp;
 import xmpp.EntityCaps;
 
 import xmpp.XmppError;
@@ -2393,7 +2394,7 @@ public class Roster
             return;
 
         try {
-            VirtualList.popup.next();
+            PopUp.getInstance().next();
             if (getFocusedObject() instanceof Group
 //#ifndef WMUC
                     || getFocusedObject() instanceof ConferenceGroup
@@ -2586,7 +2587,7 @@ public class Roster
     public void cmdInfo() { new Info.InfoWindow(display, this); }
     public void cmdTools() { new RosterToolsMenu(display, this); }
 //#ifdef POPUPS
-    public void cmdClearPopups() { VirtualList.popup.clear(); }
+    public void cmdClearPopups() { PopUp.getInstance().clear(); }
 //#endif
 //#ifndef WMUC
    public void cmdConference() { if (isLoggedIn()) new Bookmarks(display, this, null); }
