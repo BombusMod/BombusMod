@@ -941,6 +941,11 @@ public abstract class VirtualList
         if (Config.getInstance().advTouch) {
         int dy = y-yPointerPos;
 
+        if (Math.abs(dy) < 10) {
+            stickyWindow = false;
+            return;
+        }
+
         yPointerPos=y;
 
         win_top-=dy;
@@ -978,46 +983,57 @@ public abstract class VirtualList
 //#         switch (keyCode) {
 //#             case KEY_NUM0:
 //#             case 'm': // Issue 117
+//#             case 'ь':
 //#                 userKeyExec.getInstance().commandExecute(display, 0);
 //#                 break;
 //#             case KEY_NUM1:
 //#             case 'r':
+//#             case 'к':
 //#                 userKeyExec.getInstance().commandExecute(display, 1);
 //#                 break;
 //#             case KEY_NUM2:
 //#             case 't':
+//#             case 'е':
 //#                 userKeyExec.getInstance().commandExecute(display, 2);
 //#                 break;
 //#             case KEY_NUM3:
 //#             case 'y':
+//#             case 'н':
 //#                 userKeyExec.getInstance().commandExecute(display, 3);
 //#                 break;
 //#             case KEY_NUM4:
 //#             case 'f':
+//#             case 'а':
 //#                 userKeyExec.getInstance().commandExecute(display, 4);
 //#                 break;
 //#             case KEY_NUM5:
 //#             case 'g':
+//#             case 'п':
 //#                 userKeyExec.getInstance().commandExecute(display, 5);
 //#                 break;
 //#             case KEY_NUM6:
 //#             case 'h':
+//#             case 'р':
 //#                 userKeyExec.getInstance().commandExecute(display, 6);
 //#                 break;
 //#             case KEY_NUM7:
 //#             case 'v':
+//#             case 'м':
 //#                 userKeyExec.getInstance().commandExecute(display, 7);
 //#                 break;
 //#             case KEY_NUM8:
 //#             case 'b':
+//#             case 'и':
 //#                 userKeyExec.getInstance().commandExecute(display, 8);
 //#                 break;
 //#             case KEY_NUM9:
 //#             case 'n':
+//#             case 'т':
 //#                 userKeyExec.getInstance().commandExecute(display, 9);
 //#                 break;
 //#             case KEY_POUND:
 //#             case 'j':
+//#             case 'о':
 //#                 userKeyExec.getInstance().commandExecute(display, 10);
 //#                 break;
 //#         }
@@ -1157,31 +1173,38 @@ public abstract class VirtualList
         case 0: 
             break;
         case KEY_NUM1:
-        case 'r':    // Issue 117
+        case 'r':
+        case 'к':    // Issue 117
             moveCursorHome();    
             break;
         case KEY_NUM2:
         case 't':
+        case 'е':
             keyUp();    
             break; 
         case KEY_NUM4:
-        case 'y':
+        case 'f':
+        case 'а':
             userKeyPressed(keyCode);
             break; 
         case KEY_NUM6:
         case 'h':
+        case 'р':
             userKeyPressed(keyCode);
             break;
         case KEY_NUM7:
         case 'v':
+        case 'м':
             moveCursorEnd();     
             break;
         case KEY_NUM8:
         case 'b':
+        case 'и':
             keyDwn();    
             break;
         case KEY_STAR:
         case 'u':
+        case 'г':
 //            if (cf.widthSystemgc) { _vt
                 System.gc();
                 try { Thread.sleep(50); } catch (InterruptedException e){}
@@ -1205,6 +1228,7 @@ public abstract class VirtualList
 //#ifdef POPUPS
         case KEY_POUND:
         case 'j':
+        case 'о':
             if (cf.popUps) {
                 try {
                     String text=((VirtualElement)getFocusedObject()).getTipString();
@@ -1237,7 +1261,7 @@ public abstract class VirtualList
                 default:
                     if (keyCode==keyClear) { keyClear(); break; }
                     if (keyCode==keyVolDown) { moveCursorEnd(); break; }
-                    if (keyCode=='5' || keyCode == 'g') {  eventOk(); break; }
+                    if (keyCode=='5' || keyCode == 'g' || keyCode == 'п') {  eventOk(); break; }
                     if (keyCode==Config.KEY_BACK && canBack==true) { destroyView(); }
                     if (keyCode==greenKeyCode) { keyGreen(); }
 
@@ -1698,3 +1722,5 @@ class TimerTaskRotate extends Thread{
     }*/
 }
 //#endif
+
+

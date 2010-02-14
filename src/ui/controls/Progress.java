@@ -58,16 +58,16 @@ public class Progress {
 
     /** Creates a new instance of progress */
     public Progress(int x, int y, int width) {
-        this.x=x;
-        this.width=width;
-        this.font=FontCache.getFont(false, FontCache.bar);
-        this.height=font.getHeight();
-        this.y=y-height;
-        this.topColor=ColorTheme.getColor(ColorTheme.PGS_COMPLETE_TOP);
+        Progress.x=x;
+        Progress.width=width;
+        Progress.font=FontCache.getFont(false, FontCache.bar);
+        Progress.height=font.getHeight();
+        Progress.y=y-height;
+        Progress.topColor=ColorTheme.getColor(ColorTheme.PGS_COMPLETE_TOP);
 //#ifdef GRADIENT
-//#         this.bottomColor=ColorTheme.getColor(ColorTheme.PGS_COMPLETE_BOTTOM);
+//#         Progress.bottomColor=ColorTheme.getColor(ColorTheme.PGS_COMPLETE_BOTTOM);
 //#         if (topColor!=bottomColor)
-//#             this.gr=new Gradient(x, y-height, x+width, y, topColor, bottomColor, false);
+//#             Progress.gr=new Gradient(x, y-height, x+width, y, topColor, bottomColor, false);
 //#endif
     }
     
@@ -80,7 +80,7 @@ public class Progress {
 //#         } else {
 //#endif
             g.setColor(topColor);
-            g.fillRect(x, y+1, filled, height);
+            g.fillRect(x, y+1, filled, height - 1);
 //#ifdef GRADIENT
 //#         }
 //#endif
