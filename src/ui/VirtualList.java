@@ -889,8 +889,7 @@ public abstract class VirtualList
         }
         if (Config.getInstance().advTouch) {
         int pos = getElementIndexAt(win_top+y-list_top);
-        int lh = listHeight + getItemRef(pos).getVHeight();
-        if (cursor >= 0 && cursor != pos && y <= lh) {
+        if (cursor >= 0 && cursor != pos) {
             moveCursorTo(pos);
             setRotator();
         }

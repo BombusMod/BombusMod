@@ -28,8 +28,8 @@
 package Statistic;
 
 import Client.Config;
+import Client.Roster;
 import Client.StaticData;
-import Info.Version;
 //#ifndef MENU_LISTENER
 //# import javax.microedition.lcdui.Command;
 //#else
@@ -66,8 +66,7 @@ public class StatsWindow
 //#     private ClipBoard clipboard=ClipBoard.getInstance();
 //#endif
     
-    MultiLine item=null;
-    private Display display;
+    MultiLine item=null;    
 
     /**
      * Creates a new instance of StatsWindow
@@ -79,7 +78,7 @@ public class StatsWindow
 
         item=new MultiLine(SR.MS_PREVIOUS_, StringUtils.getSizeString(st.getLatest()), super.superWidth); item.selectable=true; itemsList.addElement(item);
         
-        item=new MultiLine(SR.MS_CURRENT, StringUtils.getSizeString(st.getCurrentTraffic()), super.superWidth); item.selectable=true; itemsList.addElement(item);
+        item=new MultiLine(SR.MS_CURRENT, StringUtils.getSizeString(Stats.getCurrentTraffic()), super.superWidth); item.selectable=true; itemsList.addElement(item);
 //#if ZLIB
         if (StaticData.getInstance().roster.isLoggedIn()) {
             item=new MultiLine(SR.MS_COMPRESSION, StaticData.getInstance().roster.theStream.getStreamStats(), super.superWidth); item.selectable=true; itemsList.addElement(item);
@@ -91,7 +90,8 @@ public class StatsWindow
 //#endif
         item=new MultiLine(SR.MS_CONN, Integer.toString(st.getSessionsCount()), super.superWidth); item.selectable=true; itemsList.addElement(item);
                 
-        item=new MultiLine(SR.MS_STARTED, StaticData.getInstance().roster.startTime, super.superWidth); item.selectable=true; itemsList.addElement(item);
+        item=new MultiLine(SR.MS_STARTED, Roster.startTime, super.superWidth); item.selectable=true; itemsList.addElement(item);
+        
         
 //        removeCommand(cmdOk);
         //setCommandListener(this);

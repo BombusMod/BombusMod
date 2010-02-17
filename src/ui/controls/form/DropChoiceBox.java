@@ -127,9 +127,9 @@ public class DropChoiceBox
     public int getSelectedIndex() { return index; }
     
     public void drawItem(Graphics g, int ofs, boolean sel) {
-        colorItem=ColorTheme.getInstance().getColor(ColorTheme.CONTROL_ITEM);
-        colorBorder=ColorTheme.getInstance().getColor(ColorTheme.CURSOR_OUTLINE);
-        colorBGnd=ColorTheme.getInstance().getColor(ColorTheme.LIST_BGND);
+        colorItem=ColorTheme.getColor(ColorTheme.CONTROL_ITEM);
+        colorBorder=ColorTheme.getColor(ColorTheme.CURSOR_OUTLINE);
+        colorBGnd=ColorTheme.getColor(ColorTheme.LIST_BGND);
 
         int width=g.getClipWidth();
         int height=fontHeight;

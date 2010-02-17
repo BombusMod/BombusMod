@@ -47,6 +47,9 @@ import ServiceDiscovery.ServiceDiscovery;
 //#ifdef PEP
 //# import Mood.MoodList;
 //#endif
+//#ifdef PEP_ACTIVITY
+//# import Activity.ActivitiesForm;
+//#endif
 import Statistic.StatsWindow;
 import VCard.VCard;
 import VCard.VCardEdit;
@@ -94,6 +97,9 @@ public class RosterToolsMenu extends Menu {
 //#             if (sd.PEP)
 //#endif
 //#                 addItem(SR.MS_USERMOOD, 2, MenuIcons.ICON_MOOD);
+//#ifdef PEP_ACTIVITY
+//#                 addItem("Activity", 21, MenuIcons.ICON_MOOD);
+//#endif
 //#endif
         if (connected)
             addItem(SR.MS_MY_VCARD, 3, MenuIcons.ICON_VCARD);
@@ -271,6 +277,11 @@ public class RosterToolsMenu extends Menu {
                 //reconnectWindow.getInstance().startReconnect();
                 sd.roster.doReconnect();//connectionTerminated(new Exception(SR.MS_SIMULATED_BREAK));
                 return;
+//#ifdef PEP_ACTIVITY
+//#             case 21:
+//#                 new ActivitiesForm(display, StaticData.getInstance().roster);
+//#                 return;
+//#endif
         }
     }
 }

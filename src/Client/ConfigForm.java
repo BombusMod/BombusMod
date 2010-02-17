@@ -276,13 +276,13 @@ public class ConfigForm
         
         itemsList.addElement(new SpacerItem(10));
         itemsList.addElement(new SimpleString(SR.MS_APPLICATION, true));
-        fullscreen = new CheckBox(SR.MS_FULLSCREEN, cf.fullscreen); itemsList.addElement(fullscreen);
+        fullscreen = new CheckBox(SR.MS_FULLSCREEN, Config.fullscreen); itemsList.addElement(fullscreen);
         memMonitor = new CheckBox(SR.MS_HEAP_MONITOR, cf.memMonitor); itemsList.addElement(memMonitor);
         enableVersionOs = new CheckBox(SR.MS_SHOW_HARDWARE, cf.enableVersionOs); itemsList.addElement(enableVersionOs);
         queryExit = new CheckBox(SR.MS_CONFIRM_EXIT, cf.queryExit); itemsList.addElement(queryExit);
 //#ifdef MENU_LISTENER
         oldSE = new CheckBox(SR.MS_KEYS_FOR_OLD_SE, cf.oldSE);
-        if (phoneManufacturer==cf.SONYE) itemsList.addElement(oldSE);
+        if (phoneManufacturer==Config.SONYE) itemsList.addElement(oldSE);
 //#endif
 //#ifdef USER_KEYS
 //#         userKeys = new CheckBox(SR.MS_CUSTOM_KEYS, cf.userKeys); 
@@ -512,7 +512,7 @@ public class ConfigForm
         cf.enableVersionOs=enableVersionOs.getValue();
         cf.queryExit=queryExit.getValue();
 //#ifdef MENU_LISTENER
-        if (phoneManufacturer==cf.SONYE) cf.oldSE=oldSE.getValue();
+        if (phoneManufacturer==Config.SONYE) cf.oldSE=oldSE.getValue();
 //#endif
 //#ifdef USER_KEYS
 //#ifdef PLUGINS

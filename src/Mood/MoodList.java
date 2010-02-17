@@ -11,19 +11,12 @@ package Mood;
 
 import javax.microedition.lcdui.TextField;
 import ui.MIDPTextBox;
-import ui.MainBar;
 import Client.StaticData;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
 import java.util.Vector;
-//#ifndef MENU_LISTENER
-//# import javax.microedition.lcdui.Command;
-//#else
-import Menu.Command;
-//#endif
 
 import javax.microedition.lcdui.Display;
-import javax.microedition.lcdui.Displayable;
 import locale.SR;
 import ui.VirtualElement;
 import ui.controls.form.DefForm;
@@ -98,7 +91,7 @@ public class MoodList extends DefForm implements MIDPTextBox.TextBoxNotify {
         }
         try {
             //todo: refactor theStream call; send notification to JabberBlockListener if stream was terminated
-            StaticData.getInstance().roster.theStream.addBlockListener(new MoodPublishResult(display, sid));
+            StaticData.getInstance().roster.theStream.addBlockListener(new PepPublishResult(display, sid));
             StaticData.getInstance().roster.theStream.send(setMood);
         } catch (Exception e) {e.printStackTrace(); }
     }

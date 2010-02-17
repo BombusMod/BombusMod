@@ -37,7 +37,7 @@ import ui.controls.AlertBox;
 import xmpp.XmppError;
 import Client.StaticData;
 
-public class MoodPublishResult implements JabberBlockListener {
+public class PepPublishResult implements JabberBlockListener {
 //#ifdef PLUGINS
 //#     public static String plugin = new String("PLUGIN_PEP");
 //#endif
@@ -46,7 +46,7 @@ public class MoodPublishResult implements JabberBlockListener {
     private String id;
     
     /** Creates a new instance of MoodPublishResult */
-    public MoodPublishResult(Display display, String id) {
+    public PepPublishResult(Display display, String id) {
         this.display=display;
         this.id=id;
     }
