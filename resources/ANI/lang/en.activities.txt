@@ -5,7 +5,7 @@ cooking	cooking
 doing_maintenance	doing maintenance
 doing_the_dishes	doing the dishes
 doing_the_laundry	doing the laundry
-gardening	gardering
+gardening	gardening
 running_an_errand	running an errand
 walking_the_dog	walking the dog
 drinking	drinking
@@ -47,7 +47,7 @@ thinking	thinking
 relaxing	relaxing
 fishing	fishing
 gaming	gaming
-going_out	going_out
+going_out	going out
 partying	partying
 reading	reading
 rehearsing	rehearsing

@@ -27,6 +27,7 @@
 
 package xmpp.extensions;
 
+import Activity.Activities;
 import Client.*;
 import Mood.Moods;
 import com.alsutton.jabber.*;
@@ -83,9 +84,9 @@ public class PepListener implements JabberBlockListener{
 //#                         JabberDataBlock child=(JabberDataBlock)e.nextElement();
 //#                         tag=child.getTagName();
 //#                         if (tag.equals("text")) continue;
-//#                         result.append(tag);
+//#                         result.append(Activities.getInstance().getLabel(tag));
 //#                         if (child.getChildBlocks()!=null)
-//#                             result.append(": ").append(((JabberDataBlock) child.getChildBlocks().elementAt(0)).getTagName());
+//#                             result.append(": ").append(Activities.getInstance().getLabel(((JabberDataBlock) child.getChildBlocks().elementAt(0)).getTagName()));
 //#                         id=activity.getParent().getAttribute("id");
 //#                     }
 //#                 } catch (Exception ex) { }

@@ -68,7 +68,7 @@ public class Activities {
     public String myActName="";
     public String myActText="";
     public String myActId="bactivity";
-    private int[] gen =  {1, 11, 15, 20, 29, 36, 37, 43, 54, 58, 68};
+    private int[] gen =  { 1, 11, 15, 20, 30, 37, 38, 47, 60, 64, 74};
 
     private static Activities instance;
 
@@ -77,7 +77,7 @@ public class Activities {
         return instance;
     }
     
-    public int getActIngex(String act) {
+    public int getActIndex(String act) {
         for (int i=0; i<actKey.size(); i++) {
             if (act.equals((String)actKey.elementAt(i))) return i;
         }
@@ -94,12 +94,12 @@ public class Activities {
         if (value <= 0 || value > getCount()) return 0;
         for(int i = 0; i < gen.length ; i++) {
             int min = gen[i];
-            int max = (i==(gen.length-1))? gen[i + 1] : 100;
+            int max = (i==(gen.length-1))? 100: gen[i + 1];
             if ((value > min) && (value < max)) return min;
         }
         return 0;
-    }    
-   
+    }   
+
 
     public String[] getActName(int index) {
         String[] names = new String[2];
@@ -113,5 +113,9 @@ public class Activities {
     }
     public int getCount() {
         return actKey.size();
+    }
+    public String getLabel(String tag) {
+        int index = getActIndex(tag);
+        return (String)actValue.elementAt(index);
     }
 }

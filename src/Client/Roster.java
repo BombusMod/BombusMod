@@ -66,7 +66,6 @@ import Menu.MyMenu;
 //#if FILE_TRANSFER
 import io.file.transfer.TransferDispatcher;
 //#endif
-import java.io.IOException;
 
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
