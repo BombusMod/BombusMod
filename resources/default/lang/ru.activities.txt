@@ -1,0 +1,78 @@
+doing_chores	занимаюсь хозяйством
+buying_groceries	покупаю продукты
+cleaning	делаю уборку
+cooking	готовлю еду
+doing_maintenance	делаю ремонт
+doing_the_dishes	мою посуду
+doing_the_laundry	стираю
+gardening	работаю в саду
+running_an_errand	выполняю поручения
+walking_the_dog	выгуливаю собаку
+drinking	пью
+having_a_beer	пиво
+having_coffee	кофе
+having_tea	чай
+eating	ем
+having_a_snack	перекусываю
+having_breakfast	завтракаю
+having_dinner	обедаю
+having_lunch	ланч
+exercising	занимаюсь спортом
+cycling	катаюсь на велосипеде
+dancing	танцую
+hiking	в походе
+jogging	пробежка
+playing_sports	спортивные игры
+running	бегаю
+skiing	катаюсь на лыжах
+swimming	плаваю
+working_out	на тренировке
+grooming	ухаживаю за собой
+at_the_spa	в spa-салоне
+brushing_teeth	чищу зубы
+getting_a_haircut	причесываюсь
+shaving	бреюсь
+taking_a_bath	принимаю ванну
+taking_a_shower	принимаю душ
+having_appointment	встреча
+inactive	неактивен
+day_off	выходной
+hanging_out	гуляю
+hiding	скрываюсь
+on_vacation	каникулы
+praying	молюсь
+scheduled_holiday	отпуск
+sleeping	сплю
+thinking	размышляю
+relaxing	отдыхаю
+fishing	рыбачу
+gaming	играю
+going_out	вышел
+partying	на вечеринке
+reading	читаю
+rehearsing	репетирую
+shopping	хожу по магазинам
+smoking	курю
+socializing	общаюсь
+sunbathing	загораю
+watching_tv	смотрю телевизор
+watching_a_movie	смотрю фильм
+talking	разговариваю
+in_real_life	в реальной жизни
+on_the_phone	по телефону
+on_video_phone	по видеофону
+traveling	путешествую
+commuting	на работу/с работы
+cycling	на велосипеде
+driving	за рулем
+in_a_car	на машине
+on_a_bus	на автобусе
+on_a_plane	на самолете
+on_a_train	на поезде
+on_a_trip	в поездке
+walking	пешком
+working	работаю
+coding	пишу программу
+in_a_meeting	на встрече
+studying	учусь
+writing	пишу

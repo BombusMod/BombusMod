@@ -5,7 +5,7 @@ cooking	cooking
 doing_maintenance	doing maintenance
 doing_the_dishes	doing the dishes
 doing_the_laundry	doing the laundry
-gardening	gardening
+gardening	gardering
 running_an_errand	running an errand
 walking_the_dog	walking the dog
 drinking	drinking
@@ -19,6 +19,7 @@ having_dinner	having dinner
 having_lunch	having lunch
 exercising	exercising
 cycling	cycling
+dancing	dancing
 hiking	hiking
 jogging	jogging
 playing_sports	playing sports
@@ -37,16 +38,21 @@ having_appointment	having appointment
 inactive	inactive
 day_off	day off
 hanging_out	hanging out
+hiding	hiding
 on_vacation	on vacation
+praying	praying
 scheduled_holiday	scheduled holiday
 sleeping	sleeping
+thinking	thinking
 relaxing	relaxing
+fishing	fishing
 gaming	gaming
-going_out	going out
+going_out	going_out
 partying	partying
 reading	reading
 rehearsing	rehearsing
 shopping	shopping
+smoking	smoking
 socializing	socializing
 sunbathing	sunbathing
 watching_tv	watching tv
