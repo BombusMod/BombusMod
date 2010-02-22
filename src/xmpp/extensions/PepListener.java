@@ -58,13 +58,12 @@ public class PepListener implements JabberBlockListener{
     }
 
     public int blockArrived(JabberDataBlock data) {
-        if (!(data instanceof Message)) return BLOCK_REJECTED;
-        if (data.getTypeAttribute().equals("error")) return BLOCK_PROCESSED;
+        if (!(data instanceof Message)) return BLOCK_REJECTED;        
         //if (!data.getTypeAttribute().equals("headline")) return BLOCK_REJECTED;
         
         JabberDataBlock event=data.findNamespace("event", "http://jabber.org/protocol/pubsub#event");
         if (event==null) return BLOCK_REJECTED;
-        
+        if (data.getTypeAttribute().equals("error")) return BLOCK_PROCESSED;
         String from=data.getAttribute("from");
 
         String id=null;
