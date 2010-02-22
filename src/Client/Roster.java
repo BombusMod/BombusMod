@@ -2865,7 +2865,7 @@ public class Roster
 	
 	Object desiredFocus;
         
-        public void queueEnum(Object focusTo, boolean force) {
+        public synchronized void queueEnum(Object focusTo, boolean force) {
 	    desiredFocus=focusTo;
 	    this.force=force;
 	    queueEnum();
@@ -2877,7 +2877,7 @@ public class Roster
             new Thread(this).start();
         }
         
-        public void run(){
+        public synchronized void run(){
             //try {
                 while (pendingRepaints>0) {
                     pendingRepaints=0;
