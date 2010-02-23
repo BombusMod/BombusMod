@@ -30,11 +30,7 @@ package io.file.transfer;
 import io.file.FileIO;
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
-//#ifndef MENU_LISTENER
-//# import javax.microedition.lcdui.Command;
-//#else
-import Menu.Command;
-//#endif
+
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.TextField;
@@ -56,8 +52,6 @@ public class TransferAcceptFile
 //#     public static String plugin = new String("PLUGIN_FILE_TRANSFER");
 //#endif
     
-    private Display display;
-
     TransferTask t;
     TextInput fileName;
     TextInput path;

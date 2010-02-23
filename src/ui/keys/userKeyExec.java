@@ -40,7 +40,7 @@ import Colors.ColorTheme;
 import PrivacyLists.PrivacySelect;
 //#endif
 //#ifdef SERVICE_DISCOVERY
-import ServiceDiscovery.ServiceDiscovery;
+import ServiceDiscovery.*;
 import Statistic.StatsWindow;
 //#endif
 import java.util.Enumeration;
@@ -134,7 +134,7 @@ public class userKeyExec {
                 break;
             case 6: 
 //#if FILE_TRANSFER
-                new io.file.transfer.TransferManager(display);
+                new io.file.transfer.TransferManager(display, sd.roster);
 //#endif
                 break;
             case 7: 
@@ -191,10 +191,10 @@ public class userKeyExec {
 //#endif
                 break;
             case 17:
-                cf.fullscreen=!cf.fullscreen;
+                Config.fullscreen=!Config.fullscreen;
                 cf.saveToStorage();
-                VirtualList.fullscreen=cf.fullscreen;
-                sd.roster.setFullScreenMode(cf.fullscreen);
+                VirtualList.fullscreen=Config.fullscreen;
+                sd.roster.setFullScreenMode(Config.fullscreen);
                 break;
         }
     }

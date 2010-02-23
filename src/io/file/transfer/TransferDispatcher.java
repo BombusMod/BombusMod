@@ -63,6 +63,8 @@ public class TransferDispatcher implements JabberBlockListener{
     
     private Vector taskList;
     public Vector getTaskList() { return taskList;  }
+
+    public int getTasksCount() { return taskList.size(); }
     
     /** Creates a new instance of TransferDispatcher */
     private TransferDispatcher() {

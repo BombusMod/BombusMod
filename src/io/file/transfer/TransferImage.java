@@ -27,6 +27,7 @@
 
 package io.file.transfer;
 
+import Client.StaticData;
 import images.camera.CameraImage;
 import images.camera.CameraImageListener;
 import javax.microedition.lcdui.Display;
@@ -96,7 +97,7 @@ public class TransferImage
             TransferTask task=new TransferTask(to, String.valueOf(System.currentTimeMillis()), "photo.jpg", description.getValue(), true, photo);
             TransferDispatcher.getInstance().sendFile(task);
             //switch to file transfer manager
-            (new io.file.transfer.TransferManager(display)).setParentView(parentView);
+            new io.file.transfer.TransferManager(display, StaticData.getInstance().roster);
             photo=null;
             return;
         } catch (Exception e) { photo=null; }

@@ -29,7 +29,7 @@ package Conference;
 import Client.*;
 import Conference.affiliation.Affiliations;
 //#ifdef SERVICE_DISCOVERY
-import ServiceDiscovery.ServiceDiscovery;
+import ServiceDiscovery.*;
 //#endif
 //#ifndef MENU_LISTENER
 //# import javax.microedition.lcdui.CommandListener;

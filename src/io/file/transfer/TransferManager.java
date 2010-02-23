@@ -28,44 +28,32 @@
 package io.file.transfer;
 
 import Client.StaticData;
-import ui.MainBar;
-import java.util.Vector;
-import Client.Config;
 //#ifndef MENU_LISTENER
-//# import javax.microedition.lcdui.CommandListener;
 //# import javax.microedition.lcdui.Command;
 //#else
-import Menu.MenuListener;
 import Menu.Command;
-import Menu.MyMenu;
 //#endif
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
 import ui.Time;
-import ui.VirtualElement;
-import ui.VirtualList;
+//#ifdef POPUPS
+import ui.controls.PopUp;
+//#endif
+import ui.controls.form.DefForm;
 
 /**
  *
  * @author Evg_S
  */
 public class TransferManager
-    extends VirtualList
-    implements
-//#ifndef MENU_LISTENER
-//#         CommandListener
-//#else
-        MenuListener
-//#endif
+    extends DefForm
     {
 //#ifdef PLUGINS
 //#     public static String plugin = new String("PLUGIN_FILE_TRANSFER");
-//#endif
+//#endif    
     
-    private Vector taskList=new Vector();;
     
-    Command cmdBack=new Command(SR.MS_BACK, Command.BACK, 99);
     Command cmdDel=new Command(SR.MS_DECLINE, Command.SCREEN, 10);
     Command cmdClrF=new Command(SR.MS_HIDE_FINISHED, Command.SCREEN, 11);
     Command cmdInfo=new Command(SR.MS_INFO, Command.SCREEN, 12);
@@ -74,44 +62,40 @@ public class TransferManager
 //#endif
     
     /** Creates a new instance of TransferManager */
-    public TransferManager(Display display) {
-        super(display);
-
-        commandState();
+    public TransferManager(Display display, Displayable pView) {
+        super(display, pView, SR.MS_TRANSFERS);        
+        itemsList=TransferDispatcher.getInstance().getTaskList();
+        // TODO: add classic menu
         setCommandListener(this);
-        setMainBarItem(new MainBar(2, null, SR.MS_TRANSFERS, false));
-        
-        taskList=TransferDispatcher.getInstance().getTaskList();
-    }
+        attachDisplay(display);
+        parentView = pView;
+    }    
     
-    public void showNotify(){
-        super.showNotify();
-//#ifndef MENU_LISTENER
-//#         removeCommand(cmdDel);
-//#         removeCommand(cmdClrF);
-//#         removeCommand(cmdInfo);
-//#         commandState();
-//#endif
-    }
-    
-    public void commandState(){
 //#ifdef MENU_LISTENER
-        menuCommands.removeAllElements();
-//#endif
+    public void commandState(){
+        super.commandState();
 //#ifdef BYTESTREAMS
-//#         addCommand(cmdSettings);
-//#endif
-        addCommand(cmdBack);
-        if (getItemCount()>0) {
-            addCommand(cmdDel);
-            addCommand(cmdClrF);
-            addCommand(cmdInfo);
+//#          removeCommand(cmdOk);
+//#          addCommand(cmdSettings);
+//#endif        
+        if (TransferDispatcher.getInstance().getTasksCount()>0) {
+            removeCommand(cmdOk);
         }
+        addCommand(cmdDel);
+        addCommand(cmdClrF);
+        addCommand(cmdInfo);          
+    }   
+    public String touchLeftCommand(){ return (TransferDispatcher.getInstance().getTasksCount()>0) ? SR.MS_MENU : SR.MS_OK; }
+    public void touchLeftPressed(){ 
+        if (TransferDispatcher.getInstance().getTasksCount()>0) {
+            showMenu();
+        } else {
+            cmdOk();
+        } 
     }
+//#endif
 
-    protected int getItemCount() { return taskList.size(); }
-
-    protected VirtualElement getItemRef(int index) { return (VirtualElement) taskList.elementAt(index); }
+    
 
     public void eventOk() {
         TransferTask t=(TransferTask) getFocusedObject();
@@ -121,22 +105,23 @@ public class TransferManager
     
     protected void keyClear() {
         if (getItemCount()>0) {
-            synchronized (taskList) {
-                TransferTask task=(TransferTask) taskList.elementAt(cursor);
+            synchronized (TransferDispatcher.getInstance().getTaskList()) {
+                TransferTask task=(TransferTask) TransferDispatcher.getInstance().getTaskList().elementAt(cursor);
                 task.cancel();
-                taskList.removeElementAt(cursor);
+                TransferDispatcher.getInstance().getTaskList().removeElementAt(cursor);
             }
         }
     }
 
     public void commandAction(Command c, Displayable d) {
+        super.commandAction(c, d);
         if (c==cmdClrF) {
-            synchronized (taskList) {
+            synchronized (TransferDispatcher.getInstance().getTaskList()) {
                 int i=0;
-                while (i<taskList.size()) {
-                    TransferTask task=(TransferTask) taskList.elementAt(i);
+                while (i<TransferDispatcher.getInstance().getTaskList().size()) {
+                    TransferTask task=(TransferTask)TransferDispatcher.getInstance().getTaskList().elementAt(i);
                     if (task.isStopped()) 
-                        taskList.removeElementAt(i);
+                        TransferDispatcher.getInstance().getTaskList().removeElementAt(i);
                     else 
                         i++;
                 }
@@ -145,15 +130,14 @@ public class TransferManager
                 StaticData.getInstance().roster.setEventIcon(null);
             redraw();
         }
-        if (c==cmdDel) keyClear();
-        if (c==cmdBack) cmdBack();
+        if (c==cmdDel) keyClear();        
         if (c==cmdInfo) cmdInfo();
 //#ifdef BYTESTREAMS
 //#         if (c==cmdSettings) new TransferSetupForm(display, this);
 //#endif
         
     }
-    private void cmdBack() {
+    public void cmdOk() {
         TransferDispatcher.getInstance().eventNotify();
         destroyView();
     }
@@ -166,12 +150,7 @@ public class TransferManager
             return;
         }
         super.keyPressed(keyCode);
-    }
-
-    public void showMenu() {
-        commandState();
-        new MyMenu(display, parentView, this, SR.MS_DISCO, null, menuCommands);
-    }
+    }    
 //#endif
 
     private void cmdInfo() {
@@ -193,7 +172,8 @@ public class TransferManager
             if (t.errMsg!=null)
                 info.append("\nError: ").append(t.errMsg);
 //#ifdef POPUPS
-            VirtualList.setWobble(1, null, info.toString());
+            PopUp.getInstance().addPopup(1, null, info.toString());
+            redraw();
 //#endif
         }
     }

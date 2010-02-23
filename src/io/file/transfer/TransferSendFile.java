@@ -27,6 +27,7 @@
 
 package io.file.transfer;
 
+import Client.StaticData;
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
 import javax.microedition.lcdui.Display;
@@ -45,8 +46,6 @@ public class TransferSendFile
 //#     public static String plugin = new String("PLUGIN_FILE_TRANSFER");
 //#endif
     
-    private Display display;
-
     private String to;
     
     private LinkString selectFile;
@@ -89,7 +88,7 @@ public class TransferSendFile
             TransferTask task=new TransferTask(to, String.valueOf(System.currentTimeMillis()), fileName.getValue(), description.getValue(), false, null);
             TransferDispatcher.getInstance().sendFile(task);
             //switch to file transfer manager
-            (new io.file.transfer.TransferManager(display)).setParentView(parentView);
+            new io.file.transfer.TransferManager(display, StaticData.getInstance().roster);
             return;
         } catch (Exception e) {}
     }

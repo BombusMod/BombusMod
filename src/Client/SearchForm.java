@@ -43,7 +43,7 @@ import ui.controls.form.ListItem;
 import util.StringLoader;
 
 //#ifdef SERVICE_DISCOVERY
-import ServiceDiscovery.ServiceDiscovery;
+import ServiceDiscovery.*;
 //#endif
 //#ifndef MENU_LISTENER
 //# import javax.microedition.lcdui.Command;

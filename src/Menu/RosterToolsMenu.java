@@ -39,7 +39,7 @@ import PrivacyLists.PrivacySelect;
 //#endif
 import Fonts.ConfigFonts;
 //#ifdef SERVICE_DISCOVERY
-import ServiceDiscovery.ServiceDiscovery;
+import ServiceDiscovery.*;
 //#endif
 //#if HISTORY
 //# import History.HistoryConfig;
@@ -224,8 +224,8 @@ public class RosterToolsMenu extends Menu {
                 return;
 //#endif
 //#if (FILE_TRANSFER)
-            case 9:
-                new io.file.transfer.TransferManager(display);
+            case 9:                
+                new io.file.transfer.TransferManager(display, sd.roster);
                 return;
 //#endif
             case 10:
@@ -234,7 +234,7 @@ public class RosterToolsMenu extends Menu {
 //#if IMPORT_EXPORT
 //#             case 11:
 //#                 new IE.IEMenu(display, sd.roster);
-//#                 return; 
+//#                 return;
 //#endif
             case 12:
                 new AlertCustomizeForm(display, parentView);
@@ -260,7 +260,7 @@ public class RosterToolsMenu extends Menu {
 //#if SASL_XGOOGLETOKEN
 //#             case 17: //mail check
 //#                 sd.roster.theStream.send(IqGmail.query());
-//# 		return; 
+//# 		return;
 //#endif
 //#if AUTOTASK
 //#             case 18:

@@ -330,13 +330,26 @@ public class ServiceDiscovery
             }
         } else if (id.startsWith ("discoreg")) {
             discoIcon=0;
+//#ifndef NEW_DISCO
             new DiscoForm(display, data, stream, "discoResult", "query");
+//#else
+//#             new MyDiscoForm(display, data, stream, "discoResult", "query");
+//#endif
         } else if (id.startsWith("discocmd")) {
             discoIcon=0;
+//#ifndef NEW_DISCO
             new DiscoForm(display, data, stream, "discocmd", "command");
+//#else
+//#             new MyDiscoForm(display, data, stream, "discocmd", "command");
+//#endif
+
         } else if (id.startsWith("discosrch")) {
             discoIcon=0;
+//#ifndef NEW_DISCO
             new DiscoForm(display, data, stream, "discoRSearch", "query");
+//#else
+//#             new MyDiscoForm(display, data, stream, "discoRSearch", "query");
+//#endif          
         } else if (id.startsWith("discoR")) {
             String text=SR.MS_DONE;
             String mainbar=data.getTypeAttribute();

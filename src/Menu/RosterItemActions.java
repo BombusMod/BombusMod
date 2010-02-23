@@ -40,7 +40,7 @@ import Conference.affiliation.ConferenceQuickPrivelegeModify;
 import Conference.affiliation.Affiliations;
 //#endif
 //#ifdef SERVICE_DISCOVERY
-import ServiceDiscovery.ServiceDiscovery;
+import ServiceDiscovery.*;
 //#endif
 
 import images.ActionsIcons;
@@ -70,6 +70,7 @@ import locale.SR;
 import VCard.VCard;
 import VCard.VCardEdit;
 import VCard.VCardView;
+
 
 /**
  *
@@ -506,7 +507,7 @@ public class RosterItemActions extends Menu {
                     new StatusSelect(display, sd.roster, c);
                     return;
 //#if (FILE_IO && FILE_TRANSFER)
-                case 50: //send file
+                case 50: //send file                    
                     new TransferSendFile(display, sd.roster, c.getJid());
                     return;
 //#endif
