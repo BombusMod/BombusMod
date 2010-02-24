@@ -32,12 +32,6 @@ import Client.StaticData;
 import java.util.Enumeration;
 import java.util.Vector;
 import javax.microedition.io.ConnectionNotFoundException;
-//#ifndef MENU_LISTENER
-//# import javax.microedition.lcdui.Command;
-//#else
-import Menu.Command;
-import Menu.MyMenu;
-//#endif
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
@@ -64,9 +58,6 @@ public class InfoWindow
     StaticData sd=StaticData.getInstance();
     
 //#ifdef CLIPBOARD
-//#ifndef MENU
-//#     public Command cmdOk = new Command(SR.MS_COPY, Command.OK, 1);
-//#endif
 //#     private ClipBoard clipboard=ClipBoard.getInstance();
 //#endif
     
@@ -75,96 +66,64 @@ public class InfoWindow
      */
     public InfoWindow(Display display, Displayable pView) {
         super(display, pView, SR.MS_ABOUT);
-        this.display=display;
+        this.display = display;
 
-        name=new MultiLine(Version.getName(), Version.getVersionNumber()+"\n"+Config.getOs()+"\nMobile Jabber client", super.superWidth);
-        name.selectable=true;
+        name = new MultiLine(Version.getName(), Version.getVersionNumber() + "\n" + Config.getOs() + "\nMobile Jabber client", super.superWidth);
+        name.selectable = true;
         itemsList.addElement(name);
 
-        description=new MultiLine("Copyright (c) 2005-2010", "Eugene Stahov (evgs),\nDaniel Apatin (ad)\n \nDistributed under GNU Public License (GPL) v2.0", super.superWidth);
-        description.selectable=true;
+        description = new MultiLine("Copyright (c) 2005-2010", "Eugene Stahov (evgs),\nDaniel Apatin (ad)\n \nDistributed under GNU Public License (GPL) v2.0", super.superWidth);
+        description.selectable = true;
         itemsList.addElement(description);
-        
-        siteUrl=new LinkString("http://bombusmod.net.ru"){ public void doAction() { try { BombusMod.getInstance().platformRequest("http://bombusmod.net.ru"); } catch (ConnectionNotFoundException ex) { }}};
+
+        siteUrl = new LinkString("http://bombusmod.net.ru") {
+
+            public void doAction() {
+                try {
+                    BombusMod.getInstance().platformRequest("http://bombusmod.net.ru");
+                } catch (ConnectionNotFoundException ex) {
+                }
+            }
+        };
         itemsList.addElement(siteUrl);
-        
+
         itemsList.addElement(new SpacerItem(10));
-        
-        StringBuffer memInfo=new StringBuffer(SR.MS_FREE);
+
+        StringBuffer memInfo = new StringBuffer(SR.MS_FREE);
 //        if (Config.getInstance().widthSystemgc) { _vt
-            System.gc();
+        System.gc();
 //        } _vt
-        memInfo.append(Runtime.getRuntime().freeMemory()>>10)
-               .append("\n")
-               .append(SR.MS_TOTAL)
-               .append(Runtime.getRuntime().totalMemory()>>10);
-        memory=new MultiLine(SR.MS_MEMORY, memInfo.toString(), super.superWidth);
-        memory.selectable=true;
+        memInfo.append(Runtime.getRuntime().freeMemory() >> 10).append("\n").append(SR.MS_TOTAL).append(Runtime.getRuntime().totalMemory() >> 10);
+        memory = new MultiLine(SR.MS_MEMORY, memInfo.toString(), super.superWidth);
+        memory.selectable = true;
         itemsList.addElement(memory);
-        memInfo=null;
-        
-        abilities=new MultiLine("Abilities", getAbilities(), super.superWidth);
-        abilities.selectable=true;
+        memInfo = null;
+
+        abilities = new MultiLine("Abilities", getAbilities(), super.superWidth);
+        abilities.selectable = true;
         itemsList.addElement(abilities);
 //#ifdef CLIPBOARD
 //#         if (Config.getInstance().useClipBoard) {
 //#             clipboard=ClipBoard.getInstance(); 
 //#         }
-//#endif
-
-        commandStateTest();
+//#endif        
         attachDisplay(display);
-        this.parentView=pView;
+        this.parentView = pView;
     }
 
 //#ifdef CLIPBOARD
 //#ifdef MENU_LISTENER
-//#     public String touchLeftCommand(){ return SR.MS_COPY; }
-//#     public void touchLeftPressed(){ showMenu(); }
+//#     public String touchLeftCommand(){ return Config.getInstance().useClipBoard ? SR.MS_COPY : SR.MS_OK; }
 //#endif
 //#     
 //#     public void cmdOk(){
-//#         clipboard.setClipBoard(name.toString()+"\n"+memory.toString()+"\n"+abilities.toString());
+//#         if (Config.getInstance().useClipBoard) {
+//#             clipboard.setClipBoard(name.toString()+"\n"+memory.toString()+"\n"+abilities.toString());
+//#         }
 //#         destroyView();
 //#     }
 //#endif
-
-    public void commandStateTest() {
-//#ifdef MENU_LISTENER
-        menuCommands.removeAllElements();
-//#endif
-
-//#ifndef MENU
-        super.removeCommand(super.cmdOk);
-        super.removeCommand(super.cmdCancel);
-//#ifdef CLIPBOARD
-//#         if (Config.getInstance().useClipBoard) {
-//#             addCommand(cmdOk);
-//#             addCommand(cmdCancel);
-//#         }
-//#endif
-//#endif
-    }
-
-//#ifdef MENU_LISTENER
-    public void showMenu() {
-        commandStateTest();
-        if (menuCommands.size()==2) {
-        if (menuCommands.elementAt(0).equals(cmdOk) && menuCommands.elementAt(1).equals(cmdCancel)) {
-            cmdOk();
-            return;
-            }
-        }
-        new MyMenu(display, parentView, this, "", null, menuCommands);
-    }
-//#endif
-
-    public void commandAction(Command command, Displayable displayable) {
-	if (command==cmdOk) {
-	    cmdOk();
-	}
-        super.commandAction(command, displayable);
-    }
+        
     
     private String getAbilities() {
         Vector abilitiesList=new Vector();
@@ -181,7 +140,7 @@ public class InfoWindow
 //#ifdef PLUGINS
 //#         if (sd.Archive)
 //#endif
-            abilitiesList.addElement((String)"ARCHIVE");
+            abilitiesList.addElement("ARCHIVE");
 //#endif
 //#ifdef AUTOSTATUS
 //#         abilitiesList.addElement((String)"AUTOSTATUS");
@@ -205,16 +164,16 @@ public class InfoWindow
 //#ifdef PLUGINS
 //#         if (sd.Upgrade)
 //#endif
-//#             abilitiesList.addElement((String)"CHECK_VERSION");
+//#             abilitiesList.addElement("CHECK_VERSION");
 //#endif
 //#ifdef CLIENTS_ICONS
 //#ifdef PLUGINS
 //#         if (sd.ClientsIcons)
 //#endif
-            abilitiesList.addElement((String)"CLIENTS_ICONS");
+            abilitiesList.addElement("CLIENTS_ICONS");
 //#endif
 //#ifdef CLIPBOARD
-//#         abilitiesList.addElement((String)"CLIPBOARD");
+//#         abilitiesList.addElement("CLIPBOARD");
 //#endif
 //#ifdef CONSOLE
 //#ifdef PLUGINS
@@ -235,13 +194,13 @@ public class InfoWindow
 //#         abilitiesList.addElement((String)"ELF");
 //#endif
 //#ifdef FILE_IO
-        abilitiesList.addElement((String)"FILE_IO");
+        abilitiesList.addElement("FILE_IO");
 //#endif
 //#ifdef FILE_TRANSFER
 //#ifdef PLUGINS
 //#         if (sd.FileTransfer)
 //#endif
-            abilitiesList.addElement((String)"FILE_TRANSFER");
+            abilitiesList.addElement("FILE_TRANSFER");
 //#endif
 //#ifdef GRADIENT
 //#         abilitiesList.addElement((String)"GRADIENT");
@@ -286,13 +245,13 @@ public class InfoWindow
 //#         abilitiesList.addElement((String)"LOGROTATE");
 //#endif
 //#ifdef MENU_LISTENER
-        abilitiesList.addElement((String)"MENU_LISTENER");
+        abilitiesList.addElement("MENU_LISTENER");
 //#endif
 //#ifdef NEW_SKIN
 //#         abilitiesList.addElement((String)"NEW_SKIN");
 //#endif
 //#ifdef NICK_COLORS
-        abilitiesList.addElement((String)"NICK_COLORS");
+        abilitiesList.addElement("NICK_COLORS");
 //#endif
 //#ifdef NON_SASL_AUTH
 //#         abilitiesList.addElement((String)"NON_SASL_AUTH");
@@ -319,7 +278,7 @@ public class InfoWindow
 //#         abilitiesList.addElement((String)"PLUGINS");
 //#endif
 //#ifdef POPUPS
-        abilitiesList.addElement((String)"POPUPS");
+        abilitiesList.addElement("POPUPS");
 //#endif
 //#ifdef REQUEST_VOICE
 //#         abilitiesList.addElement((String)"REQUEST_VOICE");
@@ -331,7 +290,7 @@ public class InfoWindow
 //#ifdef PLUGINS
 //#         if (sd.Privacy)
 //#endif
-            abilitiesList.addElement((String)"PRIVACY");
+            abilitiesList.addElement("PRIVACY");
 //#endif
 //#ifdef SASL_XGOOGLETOKEN
 //#         abilitiesList.addElement((String)"SASL_XGOOGLETOKEN");
@@ -340,10 +299,10 @@ public class InfoWindow
 //#         abilitiesList.addElement((String)"SE_LIGHT");
 //#endif
 //#ifdef SERVICE_DISCOVERY
-        abilitiesList.addElement((String)"SERVICE_DISCOVERY");
+        abilitiesList.addElement("SERVICE_DISCOVERY");
 //#endif
 //#ifdef SMILES
-        abilitiesList.addElement((String)"SMILES");
+        abilitiesList.addElement("SMILES");
 //#endif
 //#ifdef STATS
 //#ifdef PLUGINS
@@ -361,23 +320,23 @@ public class InfoWindow
 //#         abilitiesList.addElement((String)"USER_KEYS");
 //#endif
 //#ifdef USE_ROTATOR
-        abilitiesList.addElement((String)"USE_ROTATOR");
+        abilitiesList.addElement("USE_ROTATOR");
 //#endif
 //#ifdef WMUC
 //#         abilitiesList.addElement((String)"WMUC");
 //#endif
 //#ifdef ZLIB
-        abilitiesList.addElement((String)"ZLIB");
+        abilitiesList.addElement("ZLIB");
 //#endif
         
-        StringBuffer abilities=new StringBuffer();
+        StringBuffer ablist=new StringBuffer();
         
 	for (Enumeration ability=abilitiesList.elements(); ability.hasMoreElements(); ) {
-            abilities.append((String)ability.nextElement());
-            abilities.append(", ");
+            ablist.append((String)ability.nextElement());
+            ablist.append(", ");
 	}
-        String ab=abilities.toString();
-        abilities=null;
+        String ab=ablist.toString();
+        ablist=null;
         abilitiesList=null;
         return ab.substring(0, ab.length()-2);
     }

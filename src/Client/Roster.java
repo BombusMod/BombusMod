@@ -1303,10 +1303,10 @@ public class Roster
     public int blockArrived( JabberDataBlock data ) {
         try {
             if( data instanceof Iq ) {
-                String from=data.getAttribute("from");
-                String type = (String) data.getTypeAttribute();
-                String id=(String) data.getAttribute("id");
-                
+                String from = data.getAttribute("from");
+                String type = data.getTypeAttribute();
+                String id = data.getAttribute("id");
+
                 if (id!=null) {
                     if (id.startsWith("nickvc")) {
                         if (type.equals("get") || type.equals("set")) return JabberBlockListener.BLOCK_REJECTED;
@@ -2046,8 +2046,10 @@ public class Roster
             g.collapsed=false;
             reEnumerator.queueEnum(c, force);
         }
-        int index=vContacts.indexOf(c);
-        if (index>=0) moveCursorTo(index);
+        synchronized (hContacts) {
+         int index=hContacts.indexOf(c);
+         if (index>=0) moveCursorTo(index);
+        }
     }
 
     public void beginConversation() { //todo: verify xmpp version
@@ -2188,17 +2190,13 @@ public class Roster
         
         switch (keyCode) {
 //#ifdef POPUPS
-            case KEY_POUND:
-            case 'j':
-            case 'о':
+            case KEY_POUND:            
                 if (getItemCount()==0)
                     return;
                 showInfo();
                 return;
 //#endif
-            case KEY_NUM1:
-            case 'r':
-            case 'к':    // Issue 117
+            case KEY_NUM1:            
                 if (cf.collapsedGroups) { //collapse all groups
                     for (Enumeration e=groups.elements(); e.hasMoreElements();) {
                         Group grp=(Group)e.nextElement();
@@ -2207,14 +2205,10 @@ public class Roster
                     reEnumRoster();
                 }
                 break;
-            case KEY_NUM4:
-            case 'f':
-            case 'а':
+            case KEY_NUM4:            
                 super.pageLeft();
                 return;
-            case KEY_NUM6:
-            case 'h':
-            case 'р':
+            case KEY_NUM6:            
                 super.pageRight();
                 return;
 //#ifdef AUTOSTATUS
@@ -2236,9 +2230,7 @@ public class Roster
 //#                         autostatus.setTimeEvent(cf.autoAwayDelay* 60*1000);
 //#                 break;
 //#endif
-            case KEY_NUM0:
-            case 'm':
-            case 'ь':
+            case KEY_NUM0:            
                 if (getItemCount()==0)
                     return;
                 synchronized(hContacts) {
@@ -2271,9 +2263,7 @@ public class Roster
                     if (p==c) pass++;
                 }
                 break;
-            case KEY_NUM3:
-            case 'y':
-            case 'н':
+            case KEY_NUM3:            
                 if (getItemCount()==0)
                     return;
                 int newpos=searchGroup(-1);
@@ -2282,9 +2272,7 @@ public class Roster
                     setRotator();
                 }
                 break;
-            case KEY_NUM9:
-            case 'n':
-            case 'т':
+            case KEY_NUM9:            
                 if (getItemCount()==0)
                     return;
                 int newpos2=searchGroup(1);
@@ -2293,9 +2281,7 @@ public class Roster
                     setRotator();
                 }
                 break;
-            case KEY_STAR:
-            case 'u':
-            case 'г':
+            case KEY_STAR:            
                 if (cf.ghostMotor) {
                     // backlight management
                     blState=(blState==1)? Integer.MAX_VALUE : 1;
@@ -2337,25 +2323,25 @@ public class Roster
             updateMainBar();
             redraw();
             return;
-        } else if (keyCode==KEY_NUM0 || keyCode == 'm' || keyCode == 'ь') {
+        } else if (keyCode==KEY_NUM0) {
             cf.showOfflineContacts=!cf.showOfflineContacts;
             reEnumRoster();
             return;
         }
 //#ifndef WMUC
-        else if ((keyCode==KEY_NUM1  || keyCode == 'к' || keyCode == 'r' )&& isLoggedIn()) new Bookmarks(display, this, null);
+        else if ((keyCode==KEY_NUM1)&& isLoggedIn()) new Bookmarks(display, this, null);
 //#endif
-       	else if (keyCode==KEY_NUM3 || keyCode == 'н' || keyCode == 'y') new ActiveContacts(display, this, null);
-       	else if (keyCode==KEY_NUM4 || keyCode == 'f' || keyCode == 'а') new ConfigForm(display, this);
-        else if (keyCode==KEY_NUM6 || keyCode == 'h' || keyCode == 'р') {
+       	else if (keyCode==KEY_NUM3) new ActiveContacts(display, this, null);
+       	else if (keyCode==KEY_NUM4) new ConfigForm(display, this);
+        else if (keyCode==KEY_NUM6) {
             Config.fullscreen=!Config.fullscreen;
             cf.saveToStorage();
             VirtualList.fullscreen=Config.fullscreen;
             StaticData.getInstance().roster.setFullScreenMode(Config.fullscreen);
         }
-        else if (keyCode==KEY_NUM7 || keyCode == 'м' || keyCode == 'v')
+        else if (keyCode==KEY_NUM7)
             new RosterToolsMenu(display, this);
-        else if (keyCode==KEY_NUM9 || keyCode == 'n' || keyCode == 'т') {
+        else if (keyCode==KEY_NUM9) {
             
             
             if (cf.allowMinimize)
@@ -2730,7 +2716,7 @@ public class Roster
             if (currentContact==nowContact) return;
             
             Contact c=(Contact)activeContacts.elementAt(nowContact);
-            new ContactMessageList((Contact)c,display);
+            new ContactMessageList(c, display);
         } catch (Exception e) { }
     }
 

@@ -203,11 +203,7 @@ public class Affiliations
 //#             addCommand(cmdCopy);
 //#         }
 //#endif
-    }
-
-
-    public String touchLeftCommand(){ return SR.MS_MENU; }
-    public void touchLeftPressed(){ showMenu(); }
+    }    
 //#endif
 
 }
