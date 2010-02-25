@@ -12,6 +12,7 @@ import com.alsutton.jabber.datablocks.Iq;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.TextField;
+import locale.SR;
 import ui.controls.form.DefForm;
 import ui.controls.form.DropChoiceBox;
 import ui.controls.form.TextInput;
@@ -28,12 +29,12 @@ public class ActivitiesForm extends DefForm {
     DropChoiceBox activity;
     TextInput ti;
     public ActivitiesForm(Display display, Displayable pView) {
-        super(display, pView, "Activity");
+        super(display, pView, SR.MS_USERACTIVITY);
         this.display = display;
-        activity = new DropChoiceBox(display, "Select activity");
+        activity = new DropChoiceBox(display, SR.MS_SELECT + " " + (SR.MS_USERACTIVITY).toLowerCase());
         activity.items = Activities.getInstance().actValue;
         itemsList.addElement(activity);
-        ti = new TextInput(display, "Description", "", "pep_act", TextField.ANY);
+        ti = new TextInput(display, SR.MS_DESCRIPTION, "", "pep_act", TextField.ANY);
         itemsList.addElement(ti);
         attachDisplay(display);
     }

@@ -54,4 +54,7 @@ public class DiscoFeatures extends DefForm {
         this.display = display;
         attachDisplay(display);
     }
+    public void cmdOk() {
+        destroyView();
+    }
 }

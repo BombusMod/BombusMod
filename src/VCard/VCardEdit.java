@@ -98,7 +98,22 @@ public class VCardEdit
         
         setPhoto();
 
-        commandState();
+//#ifndef MENU_LISTENER
+//#         removeCommand(cmdOk);
+//#         addCommand(cmdPublish);
+//#         addCommand(cmdRefresh);
+//#if FILE_IO
+//#         addCommand(cmdLoadPhoto);
+//#         addCommand(cmdSavePhoto);
+//#endif
+//#         String cameraAvailable=System.getProperty("supports.video.capture");
+//#         if (cameraAvailable!=null) if (cameraAvailable.startsWith("true"))
+//#             addCommand(cmdCamera);
+//#         addCommand(cmdDelPhoto);
+//# 
+//#         addCommand(cmdCancel);
+//#         setCommandListener(this);
+//#endif       
 
         attachDisplay(display);
         this.parentView=pView;
@@ -117,8 +132,7 @@ public class VCardEdit
         destroyView();
     }
 
-    public void commandAction(Command c, Displayable d) {
-        if (c==cmdCancel) destroyView();
+    public void commandAction(Command c, Displayable d) {        
         if (c==cmdRefresh) {
             VCard.request(vcard.getJid(), vcard.getId().substring(5));
             destroyView();
@@ -214,12 +228,10 @@ public class VCardEdit
         
         itemsList.addElement(publish);
      }
-     
+
+//#ifdef MENU_LISTENER
     public final void commandState() {
-        super.commandState();
-        removeCommand(cmdOk);
-        removeCommand(cmdCancel);
-        
+        menuCommands.removeAllElements();
         addCommand(cmdPublish);
         addCommand(cmdRefresh);
 //#if FILE_IO
@@ -230,15 +242,10 @@ public class VCardEdit
         if (cameraAvailable!=null) if (cameraAvailable.startsWith("true"))
             addCommand(cmdCamera);
         addCommand(cmdDelPhoto);
-        
 
         addCommand(cmdCancel);
     }
-//#ifdef MENU_LISTENER
     public String touchLeftCommand() { return SR.MS_MENU; }
-    
-    public void cmdOk() {
-        showMenu();
-    }
+    public void touchLeftPressed() { showMenu(); }
 //#endif
-}
+ }

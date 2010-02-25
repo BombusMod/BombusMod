@@ -2041,14 +2041,15 @@ public class Roster
     }
 
     private void focusToContact(final Contact c, boolean force) {
-	Group g=c.group;
+        Group g = c.group;
         if (g.collapsed) {
-            g.collapsed=false;
+            g.collapsed = false;
             reEnumerator.queueEnum(c, force);
         }
-        synchronized (hContacts) {
-         int index=hContacts.indexOf(c);
-         if (index>=0) moveCursorTo(index);
+
+        int index = vContacts.indexOf(c);
+        if (index >= 0) {
+            moveCursorTo(index);
         }
     }
 
