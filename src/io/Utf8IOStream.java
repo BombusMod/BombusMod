@@ -49,12 +49,12 @@ public class Utf8IOStream {
     private StreamConnection connection;
     private InputStream inpStream;
     private OutputStream outStream;
-
+    
     private boolean iStreamWaiting;
-
+    
     private long bytesRecv;
     private long bytesSent;
-
+    
 //#if (ZLIB)
     public void setStreamCompression(){
         inpStream=new ZInputStream(inpStream);
@@ -65,37 +65,32 @@ public class Utf8IOStream {
     
     /** Creates a new instance of Utf8IOStream */
     public Utf8IOStream(StreamConnection connection) throws IOException {
-	this.connection=connection;
+        this.connection=connection;
         try {
             SocketConnection sc=(SocketConnection)connection;
             sc.setSocketOption(SocketConnection.KEEPALIVE, 1);
             sc.setSocketOption(SocketConnection.LINGER, 300);
         } catch (Exception e) {}
-
-	inpStream = connection.openInputStream();
-	outStream = connection.openOutputStream();	
-
+        
+        inpStream = connection.openInputStream();
+        outStream = connection.openOutputStream();
+        
         length=0;
         pbyte=0;
     }
     
-    public void send( StringBuffer data ) throws IOException {
-	synchronized (outStream) {
+    public void send(String data) throws IOException {
+        synchronized (outStream) {
             StaticData.getInstance().updateTrafficOut();
-            StringBuffer outbuf=Strconv.toUTFSb(data);
-            int outLen=outbuf.length();
-            byte bytes[]=new byte[outLen];
-            for (int i=0; i<outLen; i++) {
-                bytes[i]=(byte)outbuf.charAt(i);
-            }
-	    outStream.write(bytes);
-            setSent(bytesSent+outLen);
-
-	    outStream.flush();
-            outbuf=null;
+            byte bytes[] = Strconv.toUTFArray(data);
+            outStream.write(bytes);
+            setSent(bytesSent + bytes.length);
+            
+            outStream.flush();
+            bytes = null;
             updateTraffic();
-	}
-//#if (XML_STREAM_DEBUG)        
+        }
+//#if (XML_STREAM_DEBUG)
 //#         System.out.println(">> "+data);
 //#endif
     }
@@ -103,18 +98,18 @@ public class Utf8IOStream {
     byte cbuf[]=new byte[512];
     int length;
     int pbyte;
-
+    
     public int read(byte buf[]) throws IOException {
-        int avail=inpStream.available();
-
-        if (avail==0) 
+        int avail = inpStream.available();
+        
+        if (avail==0)
 //#if !ZLIB
 //#             //trying to fix phillips 9@9
 //#             if (!Config.getInstance().istreamWaiting) avail=1;
 //#             else
-//#endif            
+//#endif
             return 0;
-
+        
         if (avail>buf.length) avail=buf.length;
         
         avail=inpStream.read(buf, 0, avail);
@@ -125,7 +120,7 @@ public class Utf8IOStream {
         updateTraffic();
         return avail;
     }
-
+    
     private void updateTraffic() {
         StaticData.getInstance().traffic=getBytes();
     }
@@ -136,22 +131,22 @@ public class Utf8IOStream {
     
     private void setSent(long bytes) {
         bytesSent=bytes;
-    }    
+    }
     
     public void close() {
-	try { outStream.close(); outStream=null; }  catch (Exception e) {}
-	try { inpStream.close(); inpStream=null; }  catch (Exception e) {}
+        try { outStream.close(); outStream=null; }  catch (Exception e) {}
+        try { inpStream.close(); inpStream=null; }  catch (Exception e) {}
     }
-
+    
 //#if ZLIB
     private void appendZlibStats(StringBuffer s, long packed, long unpacked, boolean read){
         s.append(packed).append(read?"->":"<-").append(unpacked);
         String ratio=Long.toString((10*unpacked)/packed);
         int dotpos=ratio.length()-1;
-
+        
         s.append(" (").append( (dotpos==0)? "0":ratio.substring(0, dotpos)).append('.').append(ratio.substring(dotpos)).append('x').append(")");
     }
-
+    
     public String getStreamStats() {
         StringBuffer stats=new StringBuffer();
         try {
@@ -166,9 +161,9 @@ public class Utf8IOStream {
                 stats.append("\nout: "); appendZlibStats(stats, zo.getTotalOut(), zo.getTotalIn(), false);
             }
             stats.append("\nin: ")
-                 .append(recv)
-                 .append("\nout: ")
-                 .append(sent);
+            .append(recv)
+            .append("\nout: ")
+            .append(sent);
         } catch (Exception e) {
             stats=null;
             return "";
@@ -180,32 +175,32 @@ public class Utf8IOStream {
         StringBuffer stats=new StringBuffer();
         try {
             stats.append(((SocketConnection)connection).getLocalAddress())
-                 .append(":")
-                 .append(((SocketConnection)connection).getLocalPort())
-                 .append("->")
-                 .append(((SocketConnection)connection).getAddress())
-                 .append(":")
-                 .append(((SocketConnection)connection).getPort());
+            .append(":")
+            .append(((SocketConnection)connection).getLocalPort())
+            .append("->")
+            .append(((SocketConnection)connection).getAddress())
+            .append(":")
+            .append(((SocketConnection)connection).getPort());
         } catch (Exception ex) {
             stats.append("unknown");
         }
         return stats.toString();
     }
-
+    
     public long getBytes() {
         long startBytes=bytesSent+bytesRecv;
         try {
             if (inpStream instanceof ZInputStream) {
                 ZOutputStream zo = (ZOutputStream) outStream;
                 ZInputStream z = (ZInputStream) inpStream;
-                return (long)zo.getTotalOut()+(long)z.getTotalIn();
+                return zo.getTotalOut()+z.getTotalIn();
             }
             return startBytes;
         } catch (Exception e) { }
         return 0;
     }
 //#else
-//#     
+//#
 //#      public String getStreamStats() {
 //#          StringBuffer stats=new StringBuffer();
 //#          try {
@@ -218,7 +213,7 @@ public class Utf8IOStream {
 //#          }
 //#          return stats.toString();
 //#      }
-//#      
+//#
 //#      public long getBytes() {
 //#          try {
 //#              return bytesSent+bytesRecv;

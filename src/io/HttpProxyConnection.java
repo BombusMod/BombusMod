@@ -16,6 +16,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import javax.microedition.io.Connector;
 import javax.microedition.io.StreamConnection;
+import util.Strconv;
 
 /**
  *
@@ -30,15 +31,23 @@ public class HttpProxyConnection implements StreamConnection {
     
     private HttpProxyConnection() {}
     
-    public static HttpProxyConnection open(String hostAddr, String proxyAddr) throws IOException{
+    public static HttpProxyConnection open(String hostAddr, String proxyAddr, String userName, String userPass) throws IOException{
         HttpProxyConnection pconn=new HttpProxyConnection();
         
         pconn.conn = (StreamConnection) Connector.open(proxyAddr);
         pconn.is=pconn.conn.openInputStream();
         pconn.os=pconn.conn.openOutputStream();
+        String auth = "Proxy-Authorization: Basic ";
+        String req = "";
+        if (userName != null && userPass != null) {
+            auth += Strconv.toBase64(userName + ":" + userPass);            
+            req = "CONNECT " + hostAddr + " HTTP/1.0 \r\nHOST " + hostAddr
+                + "\r\n" + auth + "\r\nPragma: no-cache\r\n\r\n";
+        } else {
         
-        String req= "CONNECT " + hostAddr + " HTTP/1.0 \r\nHOST " + hostAddr 
+        req= "CONNECT " + hostAddr + " HTTP/1.0 \r\nHOST " + hostAddr 
                 + "\r\nPragma: no-cache\r\n\r\n";
+        }
         pconn.os.write(req.getBytes());
         
         String inpLine=pconn.readLine();
@@ -57,7 +66,7 @@ public class HttpProxyConnection implements StreamConnection {
 	while (true) {
             
             while (is.available()==0) 
-                try { Thread.sleep(100); } catch (Exception e) { };
+                try { Thread.sleep(100); } catch (Exception e) { }
                 
 	    int c = is.read();
 	    if (c<0) { 

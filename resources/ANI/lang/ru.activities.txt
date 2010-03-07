@@ -30,7 +30,7 @@ working_out	на тренировке
 grooming	ухаживаю за собой
 at_the_spa	в spa-салоне
 brushing_teeth	чищу зубы
-getting_a_haircut	причесываюсь
+getting_a_haircut	в парикмахерской
 shaving	бреюсь
 taking_a_bath	принимаю ванну
 taking_a_shower	принимаю душ

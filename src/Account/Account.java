@@ -61,6 +61,10 @@ public class Account extends IconTextElement{
 //#     private String proxyHostAddr="";
 //#     private int proxyPort;
 //#endif
+//#ifdef HTTPCONNECT
+//#     private String proxyUser="";
+//#     private String proxyPass="";
+//#endif
 	
     private int keepAlivePeriod=200;
     private int keepAliveType=1;
@@ -161,6 +165,10 @@ public class Account extends IconTextElement{
             a.keepAlivePeriod=inputStream.readInt();
             
             a.dnsResolver=inputStream.readBoolean(); //firstrun
+//#ifdef HTTPCONNECT
+//#             a.proxyUser = inputStream.readUTF();
+//#             a.proxyPass = inputStream.readUTF();
+//#endif
             
         } catch (IOException e) { /*e.printStackTrace();*/ }
             
@@ -205,7 +213,12 @@ public class Account extends IconTextElement{
             outputStream.writeInt(keepAliveType);
             outputStream.writeInt(keepAlivePeriod);
             
-            outputStream.writeBoolean(dnsResolver);  //firstrun    
+            outputStream.writeBoolean(dnsResolver);  //firstrun
+//#ifdef HTTPCONNECT
+//#             outputStream.writeUTF(proxyUser);
+//#             outputStream.writeUTF(proxyPass);
+//#endif
+
         } catch (IOException e) {
             //e.printStackTrace();
         }
@@ -305,6 +318,20 @@ public class Account extends IconTextElement{
 //# 
 //#     public void setProxyPort(int proxyPort) {
 //#         this.proxyPort = proxyPort;
+//#     }
+//#     public String getProxyUser() {
+//#         return proxyUser;
+//#     }
+//# 
+//#     public void setProxyUser(String UserName) {
+//#         this.proxyUser = UserName;
+//#     }
+//#     public String getProxyPass() {
+//#         return proxyPass;
+//#     }
+//# 
+//#     public void setProxyPass(String Password) {
+//#         this.proxyPass = Password;
 //#     }
 //#endif 
 

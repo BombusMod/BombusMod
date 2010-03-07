@@ -793,7 +793,7 @@ public static boolean fullscreen=
     }
 
     
-    private final void getPhoneManufacturer() {
+    private void getPhoneManufacturer() {
         if (phoneManufacturer==NOT_DETECTED) {
             String platform=getPlatformName();
             phoneManufacturer=NONE;
@@ -833,10 +833,20 @@ public static boolean fullscreen=
             } else if (platform.startsWith("Nokia")) {
                 phoneManufacturer=NOKIA;
                 int firstDotIndex = platform.indexOf('.');
-                 if ((-1 != firstDotIndex) && (-1 == platform.indexOf('.', firstDotIndex + 1))) {
-                    // s40
-                    NokiaS40 = true;
-                    return;
+                if (firstDotIndex != -1) {
+                    try {
+                        String dir = System.getProperty("fileconn.dir.private");
+                        // s40 (6233) does not have this property
+                        if (-1 != dir.indexOf("/private/")) {
+                            // it is s60 v3 fp1
+                            return;
+                        }
+                    } catch (Exception e) {
+                    }
+                    if (-1 == platform.indexOf('.', firstDotIndex + 1)) {
+                        NokiaS40 = true;
+                        return;
+                    }
                 }
                 if (platform.indexOf("java_build_version") == 0)
                      oldNokiaS60 = true; // buggy S60 3.1 or older

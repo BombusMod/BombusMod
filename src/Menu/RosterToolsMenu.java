@@ -94,12 +94,14 @@ public class RosterToolsMenu extends Menu {
 //#ifdef PEP
 //#         if (cf.sndrcvmood && connected)
 //#ifdef PLUGINS
-//#             if (sd.PEP)
+//#             if (sd.PEP) {
 //#endif
 //#                 addItem(SR.MS_USERMOOD, 2, MenuIcons.ICON_MOOD);
 //#ifdef PEP_ACTIVITY
+//#         if (cf.rcvactivity && connected)
 //#                 addItem("Activity", 21, MenuIcons.ICON_MOOD);
 //#endif
+//#             }
 //#endif
         if (connected)
             addItem(SR.MS_MY_VCARD, 3, MenuIcons.ICON_VCARD);

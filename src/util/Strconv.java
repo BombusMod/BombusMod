@@ -134,7 +134,7 @@ public class Strconv {
          for(int i=0; i < srcLen; i++) {
              int c = (int)str.charAt(i);
 
-            //TODO: ��������� ���� <0x20
+            //TODO: эскейпить коды <0x20
             if ((c >= 1) && (c <= 0x7f)) {
                  outbuf.append( (char) c);
                 
@@ -151,6 +151,29 @@ public class Strconv {
          }
          return outbuf;
      }
+     public static byte[] toUTFArray(String str) {
+        int srcLen = str.length();
+        // srcLen * 2 because russian utf8 character is 2 bytes length and we are russian.
+        ByteArrayOutputStream out = new ByteArrayOutputStream(srcLen * 2);
+        for(int i=0; i < srcLen; ++i) {
+            int c = (int)str.charAt(i);
+
+            //TODO: эскейпить коды <0x20
+            if ((c >= 1) && (c <= 0x7f)) {
+                out.write(c);
+
+            } else if (((c >= 0x80) && (c <= 0x7ff)) || (c==0)) {
+                out.write((char)(0xc0 | (0x1f & (c >> 6))));
+                out.write((char)(0x80 | (0x3f & c)));
+
+            } else if ((c >= 0x800) && (c <= 0xffff)) {
+                out.write(((char)(0xe0 | (0x0f & (c >> 12)))));
+                out.write((char)(0x80 | (0x3f & (c >>  6))));
+                out.write(((char)(0x80 | (0x3f & c))));
+            }
+        }
+        return out.toByteArray();
+    }
     
      public static byte[] fromBase64(String s) {
         return baosFromBase64(s).toByteArray();

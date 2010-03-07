@@ -78,6 +78,8 @@ public class AccountForm
 //#if HTTPPOLL || HTTPCONNECT  
 //#     private TextInput proxyHost;
 //#     private TextInput proxyPort;
+//#     private TextInput proxyUser;
+//#     private TextInput proxyPass;
 //#endif
 
     Account account;
@@ -179,6 +181,8 @@ public class AccountForm
 //#if HTTPCONNECT
 //# 	proxyHost = new TextInput(display, /*SR.MS_PROXY_HOST*/"Proxy name/IP", account.getProxyHostAddr(), null, TextField.URL);//32, TextField.URL
 //# 	proxyPort = new NumberInput(display, /*SR.MS_PROXY_PORT*/"Proxy port", Integer.toString(account.getProxyPort()), 0, 65535);//, 0, 65535
+//#         proxyUser = new TextInput(display, /*SR.MS_PROXY_HOST*/"Proxy user", account.getProxyUser(), null, TextField.URL);//32, TextField.URL
+//#         proxyPass = new TextInput(display, /*SR.MS_PROXY_HOST*/"Proxy pass", account.getProxyPass(), null, TextField.URL);//32, TextField.URL
 //#elif HTTPPOLL        
 //# 	proxyHost = new TextInput(display, "HTTP Polling URL (http://)", account.getProxyHostAddr(), null, TextField.URL);//32, TextField.URL
 //#endif
@@ -192,6 +196,8 @@ public class AccountForm
 //#if HTTPCONNECT
 //# 	itemsList.addElement(proxyHost);
 //# 	itemsList.addElement(proxyPort);
+//#         itemsList.addElement(proxyUser);
+//#         itemsList.addElement(proxyPass);
 //#elif HTTPPOLL        
 //# 	itemsList.addElement(proxyHost);
 //#endif
@@ -240,6 +246,8 @@ public class AccountForm
 //#if HTTPPOLL || HTTPCONNECT            
 //#             account.setProxyHostAddr(proxyHost.getValue());
 //#             account.setProxyPort(Integer.parseInt(proxyPort.getValue()));
+//#             account.setProxyUser(proxyUser.getValue());
+//#             account.setProxyPass(proxyPass.getValue());
 //#endif
         
             account.setKeepAlivePeriod(Integer.parseInt(keepAlive.getValue()));
@@ -284,10 +292,10 @@ public class AccountForm
         
         if (keyCode==KEY_NUM6) {
             Config cf=Config.getInstance();
-            cf.fullscreen=!cf.fullscreen;
+            Config.fullscreen=!Config.fullscreen;
             cf.saveToStorage();
-            VirtualList.fullscreen=cf.fullscreen;
-            StaticData.getInstance().roster.setFullScreenMode(cf.fullscreen);
+            VirtualList.fullscreen=Config.fullscreen;
+            StaticData.getInstance().roster.setFullScreenMode(Config.fullscreen);
         }
     }
 }

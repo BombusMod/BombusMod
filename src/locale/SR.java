@@ -676,7 +676,7 @@ public class SR {
     public static String MS_USERS_SEARCH=loadString( "Users search" );
     
 //#ifdef PEP
-//#     public static String MS_PEP=loadString( "Pubsub events" );
+//#     public static String MS_PEP=loadString( "Personal events" );
 //#     public static String MS_USERMOOD=loadString( "User moods" );
 //#     public static String MS_USERTUNE=loadString( "User tune" );
 //#     public static String MS_USERACTIVITY=loadString( "User activity" );
