@@ -1,19 +1,20 @@
+/* -*-mode:java; c-basic-offset:2; indent-tabs-mode:nil -*- */
 /*
 Copyright (c) 2001 Lapo Luchini.
- 
+
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
- 
+
   1. Redistributions of source code must retain the above copyright notice,
      this list of conditions and the following disclaimer.
- 
-  2. Redistributions in binary form must reproduce the above copyright
-     notice, this list of conditions and the following disclaimer in
+
+  2. Redistributions in binary form must reproduce the above copyright 
+     notice, this list of conditions and the following disclaimer in 
      the documentation and/or other materials provided with the distribution.
- 
+
   3. The names of the authors may not be used to endorse or promote products
      derived from this software without specific prior written permission.
- 
+
 THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES,
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
 FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHORS
@@ -32,127 +33,138 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 package com.jcraft.jzlib;
-
 import java.io.*;
 
-public final class ZInputStream  extends InputStream {
-    
-    private InputStream in;
-    private ZStream z = new ZStream();
-    private final int bufsize = 512;
-    private int flush = JZlib.Z_NO_FLUSH;
-    private byte[] buf = new byte[bufsize];
-    
-    public ZInputStream(InputStream in) {
-        this(in, false);
-    }
+public class ZInputStream extends FilterInputStream {
 
-    public ZInputStream(InputStream in, boolean nowrap) {
-        this.in = in;
-        z.inflateInit(nowrap);
-        z.next_in = buf;
-        z.next_in_index = 0;
-        z.avail_in = 0;
-    }
-    
-    public int read() throws IOException {
-        byte[] b = new byte[1];
-        if(-1 == read(b, 0, 1)) {
-            return -1;
-        }
-        return (b[0] & 0xFF);
-    }
-    
-    private boolean nomoreinput = false;
-    
-    public int read(byte[] b) throws IOException {
-        return read(b, 0, b.length);
-    }
-    private int readBuf(int size) throws IOException {
-        return in.read(buf, 0, size);
-    }
-    public int read(byte[] b, int off, int len) throws IOException {
-        if(0 == len) {
-            return 0;
-        }
-        int err;
-        z.next_out = b;
-        z.next_out_index = off;
-        z.avail_out = len;
-        do {
-            if ((0 == z.avail_in) && !nomoreinput) { // if buffer is empty and more input is avaiable, refill it
-                z.next_in_index = 0;
-                
-                int avail = in.available();
-                while (0 == avail) {
-                    try { Thread.sleep(70); } catch (Exception e) {};
-                    avail = in.available();
-                }
-                z.avail_in = readBuf(Math.min(avail, buf.length));
-                
-                
-                if(-1 == z.avail_in) {
-                    z.avail_in = 0;
-                    nomoreinput = true;
-                }
-            }
-            err = z.inflate(flush);
-            
-            if(nomoreinput && (JZlib.Z_BUF_ERROR == err)) {
-                return -1;
-            }
-            if ((JZlib.Z_OK != err) && (JZlib.Z_STREAM_END != err)) {
-                throw new IOException("inflating error #" + err);
-            }
-            if((nomoreinput || JZlib.Z_STREAM_END == err) && (z.avail_out == len)) {
-                return -1;
-            }
-        } while (z.avail_out == len && JZlib.Z_OK == err);
+  protected ZStream z=new ZStream();
+  protected int bufsize=512;
+  protected int flush=JZlib.Z_NO_FLUSH;
+  protected byte[] buf=new byte[bufsize],
+                   buf1=new byte[1];
+  protected boolean compress;
+  
 
-        return len - z.avail_out;
-    }
-    
-    public long skip(long n) throws IOException {
-        return (long)read(new byte[(int)Math.min(512, n)]);
-    }
-    
-    public int getFlushMode() {
-        return flush;
-    }
-    
-    public void setFlushMode(int flush) {
-        this.flush = flush;
-    }
-    
-    /**
-     * We can't count available data size after zlib processing
-     * so available() always returns internal buffer size
-     */
-    public int available() throws IOException {
-        return (0 < in.available()) ? bufsize : 0;
-    }
-    
-    
-    /**
-     * Returns the total number of bytes input so far.
-     */
-    public long getTotalIn() {
-        return z.total_in;
-    }
-    
-    /**
-     * Returns the total number of bytes output so far.
-     */
-    public long getTotalOut() {
-        return z.total_out;
-    }
+  public ZInputStream(InputStream in) {
+    this(in, false);
+  }
+  public ZInputStream(InputStream in, boolean nowrap) {
+    super(in);
+    this.in=in;
+    z.inflateInit(nowrap);
+    compress=false;
+    z.next_in=buf;
+    z.next_in_index=0;
+    z.avail_in=0;
+  }
 
-    public void close() throws IOException { in.close(); }
-    
-    public void mark(int readlimit) { in.mark(readlimit); }
-    
-    public boolean markSupported() { return in.markSupported(); }
-    
-    public void reset() throws IOException { in.reset(); }
+  public ZInputStream(InputStream in, int level) {
+    super(in);
+    this.in=in;
+    z.deflateInit(level);
+    compress=true;
+    z.next_in=buf;
+    z.next_in_index=0;
+    z.avail_in=0;
+  }
 
+  /*public int available() throws IOException {
+    return inf.finished() ? 0 : 1;
+  }*/
+
+  public int read() throws IOException {
+    if(read(buf1, 0, 1)==-1)
+      return(-1);
+    return(buf1[0]&0xFF);
+  }
+
+  private boolean nomoreinput=false;
+
+  public int read(byte[] b, int off, int len) throws IOException {
+    if(len==0)
+      return(0);
+    int err;
+    z.next_out=b;
+    z.next_out_index=off;
+    z.avail_out=len;
+    do {
+      if((z.avail_in==0)&&(!nomoreinput)) { // if buffer is empty and more input is avaiable, refill it
+	z.next_in_index=0;
+        
+        int avail=in.available();
+
+        if (avail==0) return 0;        
+
+	z.avail_in=in.read(buf, 0, (avail<bufsize)?avail:bufsize);//(bufsize<z.avail_out ? bufsize : z.avail_out));
+        
+	if(z.avail_in==-1) {
+	  z.avail_in=0;
+	  nomoreinput=true;
+	}
+      }
+      if(compress)
+	err=z.deflate(flush);
+      else
+ 	err=z.inflate(flush);
+      if(nomoreinput&&(err==JZlib.Z_BUF_ERROR))
+         return(-1);
+      if(err!=JZlib.Z_OK && err!=JZlib.Z_STREAM_END)
+ 	throw new ZStreamException((compress ? "de" : "in")+"flating: "+z.msg);
+      if((nomoreinput||err==JZlib.Z_STREAM_END)&&(z.avail_out==len))
+ 	return(-1);
+     } 
+    while(z.avail_out==len&&err==JZlib.Z_OK);
+     //System.err.print("("+(len-z.avail_out)+")");
+     /*    for (int i=0; i<len-z.avail_out; i++) {
+             System.out.print((char) b[i]);
+         }
+        System.out.println();
+      */
+     return(len-z.avail_out);
+  }
+
+  public long skip(long n) throws IOException {
+    int len=512;
+    if(n<len)
+      len=(int)n;
+    byte[] tmp=new byte[len];
+    return((long)read(tmp));
+  }
+
+  public int getFlushMode() {
+    return(flush);
+  }
+
+  public void setFlushMode(int flush) {
+    this.flush=flush;
+  }
+
+  /**
+   * We can't count available data size after zlib processing
+   * so available() always returns internal buffer size
+   */
+  public int available() throws IOException {
+      return bufsize;
+  }
+
+
+  /**
+   * Returns the total number of bytes input so far.
+   */
+  public long getTotalIn() {
+    return z.total_in;
+  }
+
+  /**
+   * Returns the total number of bytes output so far.
+   */
+  public long getTotalOut() {
+    return z.total_out;
+  }
+
+  public void close() throws IOException{
+    z.free();
+    in.close();
+    in=null;
+  }
 }

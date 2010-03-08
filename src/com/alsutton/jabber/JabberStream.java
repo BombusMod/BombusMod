@@ -214,7 +214,8 @@ public class JabberStream extends XmppParser implements Runnable {
         } catch( IOException e ) { }
         dispatcher.halt();
         iostream.close();
-        iostream = null;
+        if (!Config.getInstance().oldNokiaS60)
+            iostream = null; // may hang device
     }
     
     /**
@@ -285,7 +286,7 @@ public class JabberStream extends XmppParser implements Runnable {
     
 //#ifdef CONSOLE
 //#     private int canLog=0;
-//#     
+//#
 //#     public void addLog (String data, int type) {
 //#ifdef PLUGINS
 //#         if (canLog<1) {

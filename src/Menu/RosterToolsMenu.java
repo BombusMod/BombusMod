@@ -101,7 +101,9 @@ public class RosterToolsMenu extends Menu {
 //#         if (cf.rcvactivity && connected)
 //#                 addItem("Activity", 21, MenuIcons.ICON_MOOD);
 //#endif
+//#ifdef PLUGINS
 //#             }
+//#endif
 //#endif
         if (connected)
             addItem(SR.MS_MY_VCARD, 3, MenuIcons.ICON_VCARD);
