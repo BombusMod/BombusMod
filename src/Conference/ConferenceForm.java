@@ -283,6 +283,6 @@ public class ConferenceForm
 
         grp.inRoom=true;
 
-        sd.roster.reEnumRoster();
+        //sd.roster.reEnumRoster();
     }
 }

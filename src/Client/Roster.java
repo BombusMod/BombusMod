@@ -944,6 +944,7 @@ public class Roster
             if (!sd.account.isMucOnly() )
 		theStream.send( presence );
 //#ifndef WMUC
+            reEnumerator = null;
             multicastConferencePresence(myStatus, myMessage, myPriority);
 //#endif
         }
