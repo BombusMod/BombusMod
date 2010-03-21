@@ -26,6 +26,7 @@
 
 package com.alsutton.jabber;
 //#ifdef CONSOLE
+//# import Client.StaticData;
 //# import Console.StanzasList;
 //#endif
 import com.alsutton.jabber.datablocks.Iq;
@@ -164,7 +165,10 @@ public class JabberDataBlockDispatcher extends Thread
                     //TODO: reject iq stansas where type =="get" | "set"
                 }
 //#ifdef CONSOLE
-//#                 if (StanzasList.getInstance().enabled) stream.addLog(dataBlock.toString(), 10);
+//#ifdef PLUGINS
+//#                 if (StaticData.getInstance().Console)
+//#endif
+//#                     if (StanzasList.getInstance().enabled) stream.addLog(dataBlock.toString(), 10);
 //#endif
             } catch (Exception e) { }
         }

@@ -674,6 +674,9 @@ public class Contact extends IconTextElement{
     
 //#ifdef CLIENTS_ICONS
     boolean hasClientIcon() {
+//#ifdef PLUGINS
+//#                 if (!sd.ClientsIcons) return false;
+//#endif
         return (client>-1);
     }
 //#endif

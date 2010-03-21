@@ -35,12 +35,9 @@ import ui.*;
 import java.io.*;
 import java.util.*;
 //#ifndef MENU_LISTENER
-//# import javax.microedition.lcdui.CommandListener;
 //# import javax.microedition.lcdui.Command;
 //#else
-import Menu.MenuListener;
 import Menu.Command;
-import Menu.MyMenu;
 //#endif
 import ui.MainBar;
 import io.NvStorage;
@@ -48,6 +45,7 @@ import ui.controls.AlertBox;
 //#ifdef IMPORT_EXPORT
 //# import IE.*;
 //#endif
+import ui.controls.form.DefForm;
 
 
 /**
@@ -55,13 +53,8 @@ import ui.controls.AlertBox;
  * @author Eugene Stahov
  */
 public class AccountSelect 
-    extends VirtualList 
-    implements
-//#ifndef MENU_LISTENER
-//#         CommandListener
-//#else
-        MenuListener
-//#endif
+    extends DefForm
+    
     {
 
     public Vector accountList;
@@ -74,21 +67,18 @@ public class AccountSelect
     Command cmdEdit=new Command(SR.MS_EDIT,Command.ITEM,3);
     Command cmdDel=new Command(SR.MS_DELETE,Command.ITEM,4);
     Command cmdConfig=new Command(SR.MS_OPTIONS,Command.ITEM,5);
-    Command cmdCancel=new Command(SR.MS_BACK,Command.BACK,99);
     Command cmdQuit=new Command(SR.MS_APP_QUIT,Command.SCREEN,10);
     
     private Config cf;
     
     /** Creates a new instance of AccountPicker */
     public AccountSelect(Display display, Displayable pView, boolean enableQuit) {
-        super();
+        super(display, pView, SR.MS_ACCOUNTS);
         this.enableQuit=enableQuit;
         this.display=display;
         
-        cf=Config.getInstance();
+        cf=Config.getInstance();        
         
-        setMainBarItem(new MainBar(SR.MS_ACCOUNTS));
-
         if (enableQuit) {
             VirtualList.canBack=false;
         }
@@ -102,7 +92,13 @@ public class AccountSelect
             moveCursorTo(activeAccount);
         } else {
 //#ifdef IMPORT_EXPORT
+//#ifdef PLUGINS
+//#             if (StaticData.getInstance().IE) {
+//#endif     
 //#             new IE.Accounts("/def_accounts.txt", 0,  true);
+//#ifdef PLUGINS                              
+//#             }
+//#endif
 //#             loadAccounts();
 //#         if (accountList.isEmpty()) {
 //#endif
@@ -112,7 +108,22 @@ public class AccountSelect
 //#         }
 //#endif
         }
-        commandState();
+//#ifndef MENU_LISTENER
+//#        removeCommand(cmdOk);
+//#        if ((accountList != null) && !accountList.isEmpty()) {
+//#             addCommand(cmdLogin);
+//#             addCommand(cmdSelect);
+//# 
+//#             addCommand(cmdEdit);
+//#             addCommand(cmdDel);
+//#         }
+//#         addCommand(cmdAdd);
+//#         addCommand(cmdConfig);
+//#         if (activeAccount<0 && enableQuit)
+//#             removeCommand(cmdCancel);  // нельз�? выйти без активного аккаунта
+//#         if (enableQuit)
+//#             addCommand(cmdQuit);
+//#endif
         setCommandListener(this);
         
         attachDisplay(display);
@@ -120,7 +131,7 @@ public class AccountSelect
         this.parentView=pView;
     }
 
-    public void loadAccounts() {
+    public final void loadAccounts() {
         Account a;
         int index=0;
         do {
@@ -132,12 +143,13 @@ public class AccountSelect
              }
        } while (a!=null);
     }
-    
-    public void commandState(){
+
+//#ifdef MENU_LISTENER
+    public final void commandState(){
 //#ifdef MENU_LISTENER
         menuCommands.removeAllElements();
 //#endif
-        if (!accountList.isEmpty()) {
+        if ((accountList != null) && !accountList.isEmpty()) {
             addCommand(cmdLogin);
             addCommand(cmdSelect);
             
@@ -146,13 +158,25 @@ public class AccountSelect
         }
         addCommand(cmdAdd);
         addCommand(cmdConfig);
-        
-        if (activeAccount>=0 && !enableQuit)
-            addCommand(cmdCancel);  // нельз�? выйти без активного аккаунта
-
+//#ifndef MENU_LISTENER
+//#         if (activeAccount>=0 && !enableQuit)
+//#             addCommand(cmdCancel);  // нельз�? выйти без активного аккаунта
+//#endif
         if (enableQuit) 
             addCommand(cmdQuit);
     }
+
+
+    public void touchRightPressed(){
+        if (!canBack)
+            return;
+        destroyView();
+    }
+    public String touchLeftCommand() { return SR.MS_MENU; }
+    public void touchLeftPressed() {
+        showMenu();
+    }
+//#endif
 
     public VirtualElement getItemRef(int Index) { return (VirtualElement)accountList.elementAt(Index); }
     protected int getItemCount() { return accountList.size();  }
@@ -186,12 +210,7 @@ public class AccountSelect
             };
         }
     }
-
-    public void touchRightPressed(){
-        if (!canBack) 
-            return;
-        destroyView();
-    }
+    
 
     public void destroyView(){
         if(accountList.size()>0) {
@@ -235,12 +254,6 @@ public class AccountSelect
             ((Account)accountList.elementAt(i)).saveToDataOutputStream(outputStream);
         NvStorage.writeFileRecord(outputStream, "accnt_db", 0, true); //Account.storage
     }
-//#ifdef MENU_LISTENER
-    public void showMenu() {
-        commandState();
-        new MyMenu(display, parentView, this, SR.MS_DISCO, null, menuCommands);
-   }
-//#endif
     
     protected void keyRepeated(int keyCode) {
         super.keyRepeated(keyCode);

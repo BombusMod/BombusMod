@@ -56,11 +56,14 @@ public class RosterIcons extends ImageList{
 	super("/images/skin.png", ICONS_IN_COL, ICONS_IN_ROW);
         
         transports=new StringLoader().hashtableLoader("/images/transports.txt"); //new Hashtable();
-        transpSkins=new Vector(transports.size());
-        transports.put("conference", new Integer(ICON_GROUPCHAT_INDEX));
+        if (transports != null) { // without skin
+            transpSkins=new Vector(transports.size());
+            transports.put("conference", new Integer(ICON_GROUPCHAT_INDEX));
+        }
     }
     
     public int getTransportIndex(String name){
+        if (transports == null) return 0;
         Object o=transports.get(name);
         if (o instanceof String) {
             int index=(transpSkins.size()+1)<<24;
@@ -80,6 +83,7 @@ public class RosterIcons extends ImageList{
    
 
     public void drawImage(Graphics g, int index, int x, int y) {
+        if (transports == null) return;
         if (index>66000) { //draw transport icons
             ((ImageList)transpSkins.elementAt( (index>>24) -1 )).drawImage(g, index & 0xff, x, y);
         } else super.drawImage(g, index, x, y);

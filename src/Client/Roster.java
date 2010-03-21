@@ -252,6 +252,9 @@ public class Roster
 //#             messageActivity();
 //#endif
 //#ifdef CLIENTS_ICONS
+//#ifdef PLUGINS
+//# 	if (sd.ClientsIcons)
+//#endif
         ClientsIconsData.getInstance();
 //#endif
     }
@@ -2047,7 +2050,6 @@ public class Roster
             g.collapsed = false;
             reEnumerator.queueEnum(c, force);
         }
-
         int index = vContacts.indexOf(c);
         if (index >= 0) {
             moveCursorTo(index);
@@ -2865,61 +2867,62 @@ public class Roster
             new Thread(this).start();
         }
         
-        public synchronized void run(){
+        public synchronized void run() {
             //try {
-                while (pendingRepaints>0) {
-                    pendingRepaints=0;
-                    
-                    int locCursor=cursor;
-                    Object focused=(desiredFocus==null)?getFocusedObject():desiredFocus;
-		    desiredFocus=null;
-                    Vector tContacts=new Vector(vContacts.size());
+            while (pendingRepaints > 0) {
+                pendingRepaints = 0;
 
-                    groups.resetCounters();
-                    
-                    synchronized (hContacts) {
-                        for (Enumeration e=hContacts.elements(); e.hasMoreElements();){
-                            Contact c=(Contact)e.nextElement();
-                            Group grp=c.group;
-			    grp.addContact(c);
-                        }
-                    }                
-                    // self-contact group
-                    Group selfContactGroup=groups.getGroup(Groups.TYPE_SELF);
-                    selfContactGroup.visible=(cf.selfContact || selfContactGroup.tonlines>1 || selfContactGroup.unreadMessages>0 );
-                    
-                    // hiddens
-                    groups.getGroup(Groups.TYPE_IGNORE).visible= cf.ignore ;
-                    
-                    // transports
-                    Group transpGroup=groups.getGroup(Groups.TYPE_TRANSP);
-                    transpGroup.visible= (cf.showTransports || transpGroup.unreadMessages>0);
-                    
-                    // adding groups
-                    for (int i=0; i<groups.getCount(); i++)
-                        groups.addToVector(tContacts,i);
-                    
-                    vContacts=tContacts;
-                    tContacts=null;
-                    StringBuffer onl=new StringBuffer()
-                    .append("(")
-                    .append(groups.getRosterOnline())
-                    .append("/")
-                    .append(groups.getRosterContacts())
-                    .append(")");
-                    setRosterMainBar(onl.toString());
-                    onl=null;
-                    
-                    if (cursor<0) cursor=0;
+                int locCursor = cursor;
+                Object focused = (desiredFocus == null) ? getFocusedObject() : desiredFocus;
+                desiredFocus = null;
+                Vector tContacts = new Vector(vContacts.size());
 
-                    if ( locCursor==cursor && focused!=null ) {
-                        int c=vContacts.indexOf(focused);
-                        if (c>=0) moveCursorTo(c);
-			force=false;
+                groups.resetCounters();
+
+                synchronized (hContacts) {
+                    for (Enumeration e = hContacts.elements(); e.hasMoreElements();) {
+                        Contact c = (Contact) e.nextElement();
+                        Group grp = c.group;
+                        grp.addContact(c);
                     }
-                    focusedItem(cursor);
-                    redraw();
                 }
+                // self-contact group
+                Group selfContactGroup = groups.getGroup(Groups.TYPE_SELF);
+                selfContactGroup.visible = (cf.selfContact || selfContactGroup.tonlines > 1 || selfContactGroup.unreadMessages > 0);
+
+                // hiddens
+                groups.getGroup(Groups.TYPE_IGNORE).visible = cf.ignore;
+
+                // transports
+                Group transpGroup = groups.getGroup(Groups.TYPE_TRANSP);
+                transpGroup.visible = (cf.showTransports || transpGroup.unreadMessages > 0);
+
+                // adding groups
+                for (int i = 0; i < groups.getCount(); i++) {
+                    groups.addToVector(tContacts, i);
+                }
+
+                vContacts = tContacts;
+                tContacts = null;
+                StringBuffer onl = new StringBuffer().append("(").append(groups.getRosterOnline()).append("/").append(groups.getRosterContacts()).append(")");
+                setRosterMainBar(onl.toString());
+                onl = null;
+
+                if (cursor < 0) {
+                    cursor = 0;
+                }
+
+                if (locCursor == cursor && focused != null) {
+                    paintVContacts = vContacts;
+                    int c = vContacts.indexOf(focused);
+                    if (c >= 0) {
+                        moveCursorTo(c);
+                    }
+                    force = false;
+                }
+                focusedItem(cursor);
+                redraw();
+            }
             //} catch (Exception e) {
 //#ifdef DEBUG
 //#                 //e.printStackTrace();

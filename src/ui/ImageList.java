@@ -41,6 +41,7 @@ public class ImageList {
     protected Image resImage;
     protected int height;
     protected int width;
+    public boolean isLoaded = false;
     protected ImageList() {
     }
     /** Creates a new instance of ImageList */
@@ -49,6 +50,7 @@ public class ImageList {
             resImage = Image.createImage(resource);
             width = resImage.getWidth()/columns;
             height = (rows==0)? width : resImage.getHeight()/rows;
+            isLoaded = true;
         } catch (Exception e) { 
             System.out.print("Can't load ");
             System.out.println(resource);
@@ -56,12 +58,13 @@ public class ImageList {
     }
     
     public void drawImage(Graphics g, int index, int x, int y){
+        if (!isLoaded) return;
         int ho=g.getClipHeight();
         int wo=g.getClipWidth();
         int xo=g.getClipX();
         int yo=g.getClipY();
         
-        int iy=y-height*(int)(index>>4);
+        int iy=y-height*(index >> 4);
         int ix=x-width*(index&0x0f);
         g.clipRect(x,y, width,height);
         try {

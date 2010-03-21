@@ -30,46 +30,34 @@ package Client;
 import java.util.Enumeration;
 import java.util.Vector;
 //#ifndef MENU_LISTENER
-//# import javax.microedition.lcdui.CommandListener;
 //# import javax.microedition.lcdui.Command;
 //#else
-import Menu.MenuListener;
 import Menu.Command;
-import Menu.MyMenu;
 //#endif
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
 import ui.MainBar;
 import ui.VirtualElement;
-import ui.VirtualList;
 import ui.controls.PopUp;
+import ui.controls.form.DefForm;
 
 /**
  *
  * @author EvgS
  */
 public class ActiveContacts 
-    extends VirtualList
-    implements
-//#ifndef MENU_LISTENER
-//#         CommandListener
-//#else
-        MenuListener
-//#endif
+    extends DefForm
 {
     
     Vector activeContacts;
     
     StaticData sd = StaticData.getInstance();
 
-    private Command cmdCancel=new Command(SR.MS_BACK, Command.BACK, 99);
-    private Command cmdOk=new Command(SR.MS_SELECT, Command.SCREEN, 1);
-    
     /** Creates a new instance of ActiveContacts */
     public ActiveContacts(Display display, Displayable pView, Contact current) {
-	super();
-	this.parentView=pView;
+	super(display, pView, SR.MS_ACTIVE_CONTACTS);
+	parentView=pView;
         activeContacts=null;
 	activeContacts=new Vector();
         //synchronized (sd.roster.getHContacts()) {
@@ -84,9 +72,6 @@ public class ActiveContacts
         MainBar mainbar=new MainBar(2, String.valueOf(getItemCount()), " ", false);
         mainbar.addElement(SR.MS_ACTIVE_CONTACTS);
         setMainBarItem(mainbar);
-
-	commandState();
-
 	try {
             int focus=activeContacts.indexOf(current);
             moveCursorTo(focus);
@@ -95,22 +80,6 @@ public class ActiveContacts
 	attachDisplay(display);
     }
     
-    public void commandState() {
-//#ifdef MENU_LISTENER
-        menuCommands.removeAllElements();
-//#endif
-        addCommand(cmdOk);
-        addCommand(cmdCancel);
-//#ifndef MENU_LISTENER
-//#         setCommandListener(this);
-//#endif
-
-    }
-    
-//#ifdef MENU_LISTENER
-    public void showMenu(){ eventOk(); }
-//#endif
-
     protected int getItemCount() { return activeContacts.size(); }
     protected VirtualElement getItemRef(int index) { 
 	return (VirtualElement) activeContacts.elementAt(index);
@@ -118,7 +87,7 @@ public class ActiveContacts
 
     public void eventOk() {
 	Contact c=(Contact)getFocusedObject();
-	new ContactMessageList((Contact)c,display).setParentView(sd.roster);
+	new ContactMessageList(c, display).setParentView(sd.roster);
         //c.msgSuspended=null; // clear suspended message for selected contact
     }
 
@@ -180,7 +149,6 @@ public class ActiveContacts
         display.setCurrent(parentView);
     }
 //#ifdef MENU_LISTENER
-    public String touchLeftCommand(){ return SR.MS_SELECT; }
-    public String touchRightCommand(){ return SR.MS_BACK; }
+    public String touchLeftCommand(){ return SR.MS_SELECT; }    
 //#endif
 }

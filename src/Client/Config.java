@@ -259,18 +259,8 @@ public static boolean fullscreen=
     
     public static Config getInstance(){
 	if (instance==null) {
-	    instance=new Config();
-	    instance.loadFromStorage();
-
-            FontCache.roster=instance.rosterFont;
-            FontCache.msg=instance.msgFont;
-            
-            FontCache.bar=instance.barFont;
-            FontCache.baloon=instance.baloonFont;
-            //FontCache.resetCache();
-	}
-        if (instance.firstRun)
-            VirtualList.canBack = true; 
+	    instance=new Config();	    
+	}        
 	return instance;
     }
     
@@ -293,7 +283,13 @@ public static boolean fullscreen=
                 if (smiles) SmilesIcons.getInstance();
 //#endif
 //#ifdef CLIENTS_ICONS
+//#ifdef PLUGINS
+//#                 if (sd.ClientsIcons) {
+//#endif
                 if (showClientIcon) ClientsIcons.getInstance();
+//#ifdef PLUGINS
+//#                 }
+//#endif
 //#endif
 
 
@@ -345,9 +341,17 @@ public static boolean fullscreen=
 //#endif
         }
 	VirtualList.greenKeyCode=greenKeyCode;
+        loadFromStorage();
+
+        FontCache.roster = rosterFont;
+        FontCache.msg = msgFont;
+
+        FontCache.bar = barFont;
+        FontCache.baloon = baloonFont;
+        if (firstRun) VirtualList.canBack = true;
     }
     
-    protected void loadFromStorage(){
+    protected final void loadFromStorage(){
         DataInputStream inputStream=NvStorage.ReadFileRecord("config", 0);
 	try {
 	    accountIndex = inputStream.readInt();

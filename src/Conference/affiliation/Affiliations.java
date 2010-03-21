@@ -45,10 +45,10 @@ import ui.controls.form.DefForm;
 import Menu.Command;
 //#endif
 //#ifdef CLIPBOARD
-//# import javax.microedition.lcdui.Display;
-//# import javax.microedition.lcdui.Displayable;
 //# import util.ClipBoard;
 //#endif
+import javax.microedition.lcdui.Display;
+import javax.microedition.lcdui.Displayable;
 
 /**
  *

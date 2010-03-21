@@ -50,6 +50,8 @@ abstract public class IconTextElement implements VirtualElement {
     public boolean handleEvent(int keyCode) { return false; }
     
     public int getImageIndex() { return -1; };
+    
+    public String getImgAlt() { return ""; }; // if image not loaded
 
     public int getFontIndex() { return 0; }
     
@@ -57,23 +59,26 @@ abstract public class IconTextElement implements VirtualElement {
         return FontCache.getFont((getFontIndex()==0)?false:true, FontCache.roster);
     }
 
-    public void drawItem(Graphics g, int ofs, boolean sel){
-       g.setFont(getFont());
-       
-       String str=toString();
-       int offset=4;
-       
-       if (il!=null) {
-            if (getImageIndex()!=-1) {
-                offset+=ilImageSize;
+    public void drawItem(Graphics g, int ofs, boolean sel) {
+        g.setFont(getFont());
+
+        String str = toString();
+        int offset = 4;
+
+        if (il != null) {
+            if (getImageIndex() != -1) {
+                offset += ilImageSize;
                 il.drawImage(g, getImageIndex(), 2, imageYOfs);
             }
-       }
-           
-       g.clipRect(offset, 0, g.getClipWidth(), itemHeight);
-       
-       if (str!=null)
-        g.drawString(str, offset-ofs, fontYOfs, Graphics.TOP|Graphics.LEFT);
+            if (!il.isLoaded) {
+                str = getImgAlt() + toString();
+            }
+        }
+        g.clipRect(offset, 0, g.getClipWidth(), itemHeight);
+
+        if (str != null) {
+            g.drawString(str, offset - ofs, fontYOfs, Graphics.TOP | Graphics.LEFT);
+        }
     }
 
     public int getVWidth(){ 

@@ -253,10 +253,16 @@ public class JabberStream extends XmppParser implements Runnable {
     private void sendPacket(String data) throws IOException {
         iostream.send(data);
 //#ifdef CONSOLE
+//#ifdef PLUGINS
+//#         if (StaticData.getInstance().Console) {
+//#endif
 //#         if (StanzasList.getInstance().enabled) {
 //#             if (data.equals("</iq") || data.equals(" ")) addLog("Ping myself", 1);
 //#             else addLog(data, 1);
 //#         }
+//#ifdef PLUGINS
+//#         }
+//#endif
 //#endif
     }
 
@@ -286,7 +292,7 @@ public class JabberStream extends XmppParser implements Runnable {
     
 //#ifdef CONSOLE
 //#     private int canLog=0;
-//#
+//# 
 //#     public void addLog (String data, int type) {
 //#ifdef PLUGINS
 //#         if (canLog<1) {

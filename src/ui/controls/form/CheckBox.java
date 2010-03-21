@@ -29,6 +29,7 @@ package ui.controls.form;
 
 import Colors.ColorTheme;
 import images.RosterIcons;
+import javax.microedition.lcdui.Graphics;
 import ui.IconTextElement;
 
 /**
@@ -62,10 +63,11 @@ public class CheckBox
     }
 
     public int getImageIndex(){ return state?0x57:0x56; }
+    public String getImgAlt(){ return state?"+ ":"  "; }
     
     public boolean getValue() { return state; }
     
-    public boolean isSelectable() { return selectable; }
+    public boolean isSelectable() { return selectable; }   
     
     public boolean handleEvent(int keyCode) {
          switch (keyCode) {
@@ -75,5 +77,5 @@ public class CheckBox
                 return true;
          }
         return false;
-    }
+    }     
 }
