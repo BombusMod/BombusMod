@@ -48,19 +48,19 @@ import util.ClipBoard;
  */
 public class InfoWindow
         extends DefForm {
-    
+
     LinkString siteUrl;
     MultiLine description;
     MultiLine name;
     MultiLine memory;
     MultiLine abilities;
-    
+
     StaticData sd=StaticData.getInstance();
-    
+
 //#ifdef CLIPBOARD
 //#     private ClipBoard clipboard=ClipBoard.getInstance();
 //#endif
-    
+
     /**
      * Creates a new instance of InfoWindow
      */
@@ -87,7 +87,13 @@ public class InfoWindow
         };
         itemsList.addElement(siteUrl);
 
-        itemsList.addElement(new SpacerItem(10));
+        itemsList.addElement(new SpacerItem(20));
+
+        abilities = new MultiLine("Special thanks", "Advice, aspro, BrennendeR_Komet, 6yp4uk, den_po, disabler, fregl24, lgs, m, Masy, Muxa, NoNameZ, radiance, Sash, spine, spirtamne, Tasha, TiLan, Totktonada28, van, vitalyster, vladimir.shelukhin, voffk, westsibe. \nWithout you none of this would not have!", super.superWidth);
+        abilities.selectable = true;
+        itemsList.addElement(abilities);
+
+        itemsList.addElement(new SpacerItem(20));
 
         StringBuffer memInfo = new StringBuffer(SR.MS_FREE);
 //        if (Config.getInstance().widthSystemgc) { _vt
@@ -99,14 +105,16 @@ public class InfoWindow
         itemsList.addElement(memory);
         memInfo = null;
 
+        itemsList.addElement(new SpacerItem(10));
+
         abilities = new MultiLine("Abilities", getAbilities(), super.superWidth);
         abilities.selectable = true;
         itemsList.addElement(abilities);
 //#ifdef CLIPBOARD
 //#         if (Config.getInstance().useClipBoard) {
-//#             clipboard=ClipBoard.getInstance(); 
+//#             clipboard=ClipBoard.getInstance();
 //#         }
-//#endif        
+//#endif
         attachDisplay(display);
         this.parentView = pView;
     }
@@ -115,7 +123,7 @@ public class InfoWindow
 //#ifdef MENU_LISTENER
 //#     public String touchLeftCommand(){ return Config.getInstance().useClipBoard ? SR.MS_COPY : SR.MS_OK; }
 //#endif
-//#     
+//# 
 //#     public void cmdOk(){
 //#         if (Config.getInstance().useClipBoard) {
 //#             clipboard.setClipBoard(name.toString()+"\n"+memory.toString()+"\n"+abilities.toString());
@@ -123,8 +131,8 @@ public class InfoWindow
 //#         destroyView();
 //#     }
 //#endif
-        
-    
+
+
     private String getAbilities() {
         Vector abilitiesList=new Vector();
 //#ifdef ADHOC
@@ -147,7 +155,7 @@ public class InfoWindow
 //#endif
 //#ifdef AUTOTASK
 //#         abilitiesList.addElement((String)"AUTOTASK");
-//#endif 
+//#endif
 //#ifdef BACK_IMAGE
 //#         abilitiesList.addElement((String)"BACK_IMAGE");
 //#endif
@@ -328,9 +336,9 @@ public class InfoWindow
 //#ifdef ZLIB
         abilitiesList.addElement("ZLIB");
 //#endif
-        
+
         StringBuffer ablist=new StringBuffer();
-        
+
 	for (Enumeration ability=abilitiesList.elements(); ability.hasMoreElements(); ) {
             ablist.append((String)ability.nextElement());
             ablist.append(", ");
