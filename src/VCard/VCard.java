@@ -45,8 +45,8 @@ import ui.Time;
  */
 public class VCard {
 
-    public final static int NICK_INDEX=1;
-    public final static int FN_INDEX=0;
+    public final static int NICK_INDEX=0;
+    public final static int FN_INDEX=1;
     
     public static Vector vCardFields;
     public static Vector vCardFields2;

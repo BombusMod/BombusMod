@@ -160,7 +160,7 @@ public class AccountSelect
         addCommand(cmdConfig);
 //#ifndef MENU_LISTENER
 //#         if (activeAccount>=0 && !enableQuit)
-//#             addCommand(cmdCancel);  // нельз�? выйти без активного аккаунта
+//#             addCommand(cmdCancel);  // нельзя выйти без активного аккаунта
 //#endif
         if (enableQuit) 
             addCommand(cmdQuit);

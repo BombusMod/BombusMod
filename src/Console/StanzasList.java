@@ -36,12 +36,12 @@ import java.util.Vector;
  */
 public class StanzasList {
 //#ifdef PLUGINS
-//#     public static String plugin = new String("PLUGIN_CONSOLE");
+//#     public static String plugin = "PLUGIN_CONSOLE";
 //#endif
     
     Vector stanzas=new Vector();
     
-    public boolean enabled = false;
+    protected boolean enabled = false;
     
     private static StanzasList instance;
     

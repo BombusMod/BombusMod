@@ -25,10 +25,6 @@
 */
 
 package com.alsutton.jabber;
-//#ifdef CONSOLE
-//# import Client.StaticData;
-//# import Console.StanzasList;
-//#endif
 import com.alsutton.jabber.datablocks.Iq;
 import java.util.*;
 import xmpp.XmppError;
@@ -109,12 +105,10 @@ public class JabberDataBlockDispatcher extends Thread
   public void broadcastJabberDataBlock( JabberDataBlock dataBlock )
   {
     waitingQueue.addElement( dataBlock );
-        if(Runtime.getRuntime().freeMemory()<128*1024) {
-        while( waitingQueue.size() != 0 ) {
+        while( !waitingQueue.isEmpty() ) {
             try {
                 Thread.sleep( 50L );
             } catch( InterruptedException e ) { }
-  }
     }
   }
 
@@ -125,7 +119,7 @@ public class JabberDataBlockDispatcher extends Thread
     public void run(){
         dispatcherActive = true;
         while( dispatcherActive ) {
-            while( waitingQueue.size() == 0 ) {
+            while( waitingQueue.isEmpty() ) {
                 try {
                     Thread.sleep( 100L );
                 } catch( InterruptedException e ) { }
@@ -165,10 +159,7 @@ public class JabberDataBlockDispatcher extends Thread
                     //TODO: reject iq stansas where type =="get" | "set"
                 }
 //#ifdef CONSOLE
-//#ifdef PLUGINS
-//#                 if (StaticData.getInstance().Console)
-//#endif
-//#                     if (StanzasList.getInstance().enabled) stream.addLog(dataBlock.toString(), 10);
+//#                 stream.addLog(dataBlock.toString(), 10);
 //#endif
             } catch (Exception e) { }
         }

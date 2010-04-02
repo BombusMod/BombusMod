@@ -2728,10 +2728,17 @@ public class Roster
         synchronized (hContacts) {
             for (Enumeration e=hContacts.elements();e.hasMoreElements();) {
                 Contact c2=(Contact)e. nextElement();
-                if (c.jid.equals(c2. jid,false)) {
+                if (c.jid.equals(c2.jid,false)) {
                     c2.setStatus(Presence.PRESENCE_TRASH);
                     c2.offline_type=Presence.PRESENCE_TRASH;
                 }
+            }
+            if (c.jid.isTransport()) {
+                // automatically remove registration
+                JabberDataBlock unreg = new Iq(c.bareJid, Iq.TYPE_SET, "unreg" + System.currentTimeMillis());
+				JabberDataBlock query = unreg.addChildNs("query", "jabber:iq:register");
+				query.addChild("remove", null);
+				theStream.send(unreg);
             }
 
             if (c.getGroupType()==Groups.TYPE_NOT_IN_LIST) {

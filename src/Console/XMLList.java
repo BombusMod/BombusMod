@@ -33,9 +33,9 @@ import Client.StaticData;
 import Messages.MessageList;
 import java.util.Vector;
 //#ifndef MENU_LISTENER
-import javax.microedition.lcdui.Command;
+//# import javax.microedition.lcdui.Command;
 //#else
-//# import Menu.Command;
+import Menu.Command;
 //#endif
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
@@ -51,10 +51,10 @@ import locale.SR;
  *
  * @author ad
  */
-public class XMLList 
+public final class XMLList
     extends MessageList {
 //#ifdef PLUGINS
-//#     public static String plugin = new String("PLUGIN_CONSOLE");
+//#     public static String plugin = "PLUGIN_CONSOLE";
 //#endif
     
     StanzasList stanzas;
@@ -92,7 +92,7 @@ public class XMLList
     
     public void commandState() {
 //#ifdef MENU_LISTENER
-//#         menuCommands.removeAllElements();
+        menuCommands.removeAllElements();
 //#endif
 	addCommand(cmdBack);
         addCommand(cmdNew);
