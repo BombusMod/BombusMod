@@ -104,12 +104,7 @@ public class JabberDataBlockDispatcher extends Thread
 
   public void broadcastJabberDataBlock( JabberDataBlock dataBlock )
   {
-    waitingQueue.addElement( dataBlock );
-        while( !waitingQueue.isEmpty() ) {
-            try {
-                Thread.sleep( 50L );
-            } catch( InterruptedException e ) { }
-    }
+    waitingQueue.addElement( dataBlock );       
   }
 
   /**

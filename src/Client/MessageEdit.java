@@ -83,7 +83,8 @@ public class MessageEdit
 
     /** Creates a new instance of MessageEdit */
     public MessageEdit(Display display, Displayable pView, Contact to, String body) {
-        super(display, pView, body, to.toString(), TextField.ANY);
+        super(display, pView, "", to.toString(), TextField.ANY);
+        insert(body, 0); // workaround for Nokia S40
         this.to=to;
         this.display=display;
 

@@ -52,7 +52,7 @@ import Menu.Command;
  *
  * @author EvgS
  */
-public class AppendNick         
+public final class AppendNick
         extends VirtualList 
         implements
 //#ifndef MENU_LISTENER
