@@ -187,7 +187,6 @@ public class AccountSelect
             BombusMod.getInstance().notifyDestroyed();
             return;
         }
-        VirtualList.canBack=true;
         if (c==cmdCancel) {
             destroyView();
         }
@@ -243,7 +242,7 @@ public class AccountSelect
     
     public void eventOk(){
         if (getItemCount()>0) {
-            VirtualList.canBack=true;
+            canBack = true;
             switchAccount(true);
         }
     }

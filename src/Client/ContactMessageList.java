@@ -592,7 +592,7 @@ public void showNotify(){
 //#ifdef RUNNING_MESSAGE
 //#                 sd.roster.me=new MessageEdit(display, getActualJuickContactMessageList(), getActualJuickContact(), getTargetForJuickReply(str)+" ");
 //#else
-//#             new MessageEdit(display, getActualJuickContactMessageList(), getActualJuickContact(), getTargetForJuickReply(str)+" ");
+//#             new MessageEdit(display, getActualJuickContactMessageList(), getActualJuickContact(), getTargetForJuickReply(str));
 //#endif
 //#             } catch (Exception e) {/*no messages*/}
 //#     }

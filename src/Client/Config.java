@@ -347,8 +347,7 @@ public static boolean fullscreen=
         FontCache.msg = msgFont;
 
         FontCache.bar = barFont;
-        FontCache.baloon = baloonFont;
-        if (firstRun) VirtualList.canBack = true;
+        FontCache.baloon = baloonFont;        
     }
     
     protected final void loadFromStorage(){

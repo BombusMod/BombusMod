@@ -44,8 +44,8 @@ import Archive.ArchiveList;
  *
  * @author Eugene Stahov
  */
-public class MessageEdit         
-        implements CommandListener, Runnable {
+public final class MessageEdit
+        implements CommandListener {
 //#ifdef RUNNING_MESSAGE
 //#     Thread thread;
 //#endif
@@ -66,36 +66,35 @@ public class MessageEdit
 //#ifdef DETRANSLIT
 //#     private boolean sendInTranslit=false;
 //#     private boolean sendInDeTranslit=false;
-//#     DeTranslit dt;
 //#endif
 //#ifdef CLIPBOARD
 //#     private ClipBoard clipboard;
 //#endif
 
 //#ifdef ARCHIVE
-    protected Command cmdPaste=new Command(SR.MS_ARCHIVE, Command.SCREEN, 6);
+    private Command cmdPaste=new Command(SR.MS_ARCHIVE, Command.ITEM, 6);
 //#endif
 //#if TEMPLATES
-//#     protected Command cmdTemplate=new Command(SR.MS_TEMPLATE, Command.SCREEN, 7);
+//#     private Command cmdTemplate=new Command(SR.MS_TEMPLATE, Command.ITEM, 7);
 //#endif
 //#ifdef CLIPBOARD
-//#     protected Command cmdPasteText=new Command(SR.MS_PASTE, Command.SCREEN, 8);
+//#     private Command cmdPasteText=new Command(SR.MS_PASTE, Command.ITEM, 8);
 //#endif
     
     private Command cmdSend;//=new Command(SR.MS_SEND, Command.OK, 1);
 //#ifdef SMILES
-    private Command cmdSmile=new Command(SR.MS_ADD_SMILE, Command.SCREEN,2);
+    private Command cmdSmile=new Command(SR.MS_ADD_SMILE, Command.ITEM,2);
 //#endif
-    private Command cmdInsNick=new Command(SR.MS_NICKNAMES,Command.SCREEN,3);
-    private Command cmdInsMe=new Command(SR.MS_SLASHME, Command.SCREEN, 4); ; // /me
+    private Command cmdInsNick=new Command(SR.MS_NICKNAMES,Command.ITEM,3);
+    private Command cmdInsMe=new Command(SR.MS_SLASHME, Command.ITEM, 4); ; // /me
 //#ifdef DETRANSLIT
-//#     private Command cmdSendInTranslit=new Command(SR.MS_TRANSLIT, Command.SCREEN, 5);
-//#     private Command cmdSendInDeTranslit=new Command(SR.MS_DETRANSLIT, Command.SCREEN, 5);
+//#     private Command cmdSendInTranslit=new Command(SR.MS_TRANSLIT, Command.ITEM, 5);
+//#     private Command cmdSendInDeTranslit=new Command(SR.MS_DETRANSLIT, Command.ITEM, 5);
 //#endif
-    private Command cmdLastMessage=new Command(SR.MS_PREVIOUS, Command.SCREEN, 9);
-    private Command cmdSubj=new Command(SR.MS_SET_SUBJECT, Command.SCREEN, 10);
+    private Command cmdLastMessage=new Command(SR.MS_PREVIOUS, Command.ITEM, 9);
+    private Command cmdSubj=new Command(SR.MS_SET_SUBJECT, Command.ITEM, 10);
     private Command cmdSuspend;//=new Command(SR.MS_SUSPEND, Command.BACK,90);
-    private Command cmdCancel=new Command(SR.MS_CANCEL, Command.SCREEN,99);
+    private Command cmdCancel=new Command(SR.MS_CANCEL, Command.ITEM,99);
     private final TextBox t;
     int maxSize = 500;
 
@@ -114,7 +113,7 @@ public class MessageEdit
 
         cf=Config.getInstance();
 //#ifdef DETRANSLIT
-//#         dt=DeTranslit.getInstance();
+//#         DeTranslit.getInstance();
 //#endif
         
         if (!cf.swapSendAndSuspend) {
@@ -124,7 +123,27 @@ public class MessageEdit
             cmdSuspend=new Command(SR.MS_SUSPEND, Command.OK, 1);
             cmdSend=new Command(SR.MS_SEND, Command.BACK, 90);
         }
-        
+        //#ifdef ARCHIVE
+//#ifdef PLUGINS
+//#         if (StaticData.getInstance().Archive)
+//#endif
+            t.addCommand(cmdPaste);
+//#endif
+//#ifdef CLIPBOARD
+//#         if (cf.useClipBoard) {
+//#             clipboard=ClipBoard.getInstance();
+//#             if (!clipboard.isEmpty()) {
+//#                 t.addCommand(cmdPasteText);
+//#             }
+//#         }
+//#endif
+//#if TEMPLATES
+//#ifdef PLUGINS
+//#         if (StaticData.getInstance().Archive)
+//#endif
+//#             t.addCommand(cmdTemplate);
+//#endif
+
         t.addCommand(cmdSend);
         t.addCommand(cmdInsMe);
 //#ifdef SMILES
@@ -143,16 +162,16 @@ public class MessageEdit
             t.addCommand(cmdSubj);
         
         if (to.lastSendedMessage!=null)
-            t.addCommand(cmdLastMessage);
-        if (Config.getInstance().phoneManufacturer == Config.SONYE) System.gc(); // prevent flickering on Sony Ericcsson C510
-        t.setCommandListener(this);
+            t.addCommand(cmdLastMessage);        
 //#ifdef RUNNING_MESSAGE
 //#         if (thread==null) (thread=new Thread(this)).start() ; // composing
 //#else
-        new Thread(this).start() ; // composing
+        send() ; // composing
 //#endif
-
-        display.setCurrent(t);
+        setInitialCaps(cf.capsState);
+        if (Config.getInstance().phoneManufacturer == Config.SONYE) System.gc(); // prevent flickering on Sony Ericcsson C510
+        t.setCommandListener(this);
+        display.setCurrent(t);        
         this.parentView=pView;
     }
     
@@ -201,7 +220,7 @@ public class MessageEdit
 //#         if (c==cmdSendInTranslit) {
 //#             sendInTranslit=true;
 //#         }
-//#  
+//#
 //#         if (c==cmdSendInDeTranslit) {
 //#             sendInDeTranslit=true;
 //#         }
@@ -217,7 +236,7 @@ public class MessageEdit
 //#ifdef RUNNING_MESSAGE
 //#         runState=3;
 //#else
-        new Thread(this).start();
+        send();
 //#endif
     }
 //#ifdef RUNNING_MESSAGE
@@ -306,7 +325,7 @@ public class MessageEdit
 //#         strPos=0;
 //#     }
 //#else
-    public void run(){
+    public void send(){
         //Roster r=StaticData.getInstance().roster;
         String comp=null; // composing event off
         
@@ -404,6 +423,9 @@ public class MessageEdit
                 body=body.substring(0, maxSize-1);
             t.setString(body);
         }
+    }
+    private void setInitialCaps(boolean state) {
+        t.setConstraints(state?TextField.INITIAL_CAPS_SENTENCE:TextField.ANY);
     }
 }
 

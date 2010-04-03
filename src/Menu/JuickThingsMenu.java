@@ -22,8 +22,6 @@ public class JuickThingsMenu extends Menu {
 //#     public static String plugin = new String("PLUGIN_JUICK");
 //#endif
     //MenuIcons menuIcons=MenuIcons.getInstance();
-    private Display display;
-    private Displayable parentView;
     private Contact contact;
     private Vector things;
 
@@ -49,7 +47,7 @@ public class JuickThingsMenu extends Menu {
 //#ifdef RUNNING_MESSAGE
 //#                 Client.Roster.me=new MessageEdit(display, parentView, contact, things.elementAt(index)+" ");
 //#else
-        new MessageEdit(display, parentView, contact, things.elementAt(index)+" "); // To chat
+        new MessageEdit(display, parentView, contact, things.elementAt(index).toString()); // To chat
 //        new MessageEdit(display, this, contact, things.elementAt(index)+" "); // Previons menu
 //#endif
         } catch (Exception e) {/*no messages*/}

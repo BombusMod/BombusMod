@@ -212,7 +212,7 @@ public abstract class VirtualList
 //#ifdef USER_KEYS
 //#     public static boolean userKeys;
 //#endif
-    public static boolean canBack=true;
+    public boolean canBack = true;
 
     /** метрика экрана */
     int width;
@@ -1584,7 +1584,7 @@ public abstract class VirtualList
     public void captionPressed() {};
     
     public String touchLeftCommand(){ return SR.MS_MENU; }
-    public String touchRightCommand(){ return SR.MS_BACK; }
+    public String touchRightCommand(){ return canBack? SR.MS_BACK : ""; }
     
     public void cmdCancel() { if (canBack) destroyView(); }
 }

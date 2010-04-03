@@ -284,14 +284,14 @@ blue 0x0000ff
        StringBuffer body=new StringBuffer();
        body.append("xmlSkin\t");
 //#ifdef DETRANSLIT
-//#        body.append(DeTranslit.getInstance().translit(StaticData.getInstance().account.getNickName()));
+//#        body.append(DeTranslit.translit(StaticData.getInstance().account.getNickName()));
 //#else
        body.append(StaticData.getInstance().account.getNickName());
 //#endif
         body.append("\r\n");
         for (Enumeration r=colorsContainer.elements(); r.hasMoreElements();) {
             ColorItem c=(ColorItem)r.nextElement();
-            body.append(c.name+"\t"+getColorString(c.color)+"\r\n");
+            body.append(c.name).append("\t").append(getColorString(c.color)).append("\r\n");
         }
         return body.toString();
     }
