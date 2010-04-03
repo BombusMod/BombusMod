@@ -780,7 +780,7 @@ public void showNotify(){
 //#ifdef RUNNING_MESSAGE
 //#                 sd.roster.me=new MessageEdit(display, this, contact, msg.from+": ");
 //#else
-                new MessageEdit(display, this, contact, msg.from+": ");
+                new MessageEdit(display, this, contact, msg.from + ":");
 //#endif
             }
         } catch (Exception e) {/*no messages*/}

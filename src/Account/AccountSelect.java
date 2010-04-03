@@ -80,7 +80,7 @@ public class AccountSelect
         cf=Config.getInstance();        
         
         if (enableQuit) {
-            VirtualList.canBack=false;
+            canBack = false;
         }
         accountList=null;
         accountList=new Vector();        
