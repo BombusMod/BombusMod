@@ -45,7 +45,7 @@ public class JuickThingsMenu extends Menu {
         int index=me.index;
         try {
 //#ifdef RUNNING_MESSAGE
-//#                 Client.Roster.me=new MessageEdit(display, parentView, contact, things.elementAt(index)+" ");
+//#                 Client.Roster.me=new MessageEdit(display, parentView, contact, things.elementAt(index).toString());
 //#else
         new MessageEdit(display, parentView, contact, things.elementAt(index).toString()); // To chat
 //        new MessageEdit(display, this, contact, things.elementAt(index)+" "); // Previons menu

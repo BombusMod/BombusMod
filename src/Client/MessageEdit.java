@@ -40,14 +40,20 @@ import locale.SR;
 //#ifdef ARCHIVE
 import Archive.ArchiveList;
 //#endif
+//#ifdef RUNNING_MESSAGE
+//# import ui.VirtualList;
+//#endif
 /**
  *
  * @author Eugene Stahov
  */
 public final class MessageEdit
-        implements CommandListener {
+        implements CommandListener
 //#ifdef RUNNING_MESSAGE
+//#         , Runnable {
 //#     Thread thread;
+//#else
+    {
 //#endif
     private Display display;
     private Displayable parentView;
@@ -97,7 +103,9 @@ public final class MessageEdit
     private Command cmdCancel=new Command(SR.MS_CANCEL, Command.ITEM,99);
     private final TextBox t;
     int maxSize = 500;
-
+//#ifdef RUNNING_MESSAGE
+//#     Ticker ticker = new Ticker("");
+//#endif
     /** Creates a new instance of MessageEdit */
     public MessageEdit(Display display, Displayable pView, Contact to, String body) {
         t = new TextBox(to.toString(), "", 500, TextField.ANY);
@@ -164,6 +172,11 @@ public final class MessageEdit
         if (to.lastSendedMessage!=null)
             t.addCommand(cmdLastMessage);        
 //#ifdef RUNNING_MESSAGE
+//#         if (cf.notifyWhenMessageType == 1) {
+//#             t.setTicker(ticker);
+//#         } else {
+//#             t.setTicker(null);
+//#         }
 //#         if (thread==null) (thread=new Thread(this)).start() ; // composing
 //#else
         send() ; // composing
@@ -204,17 +217,18 @@ public final class MessageEdit
 //#endif
         if (c==cmdCancel) {
             composing=false;
-            body=null;
+            body = null;
         }
         if (c==cmdSuspend) {
-                composing=false; 
-                to.msgSuspended=body; 
-                body=null;
+                composing = false;
+                if (body != null) {
+                    to.msgSuspended = body.trim();
+                    body = null;
+                }
         }
         
         if (c==cmdSend && body==null) {
-            composing=false;
-            body=null;
+            composing = false;
         }
 //#ifdef DETRANSLIT
 //#         if (c==cmdSendInTranslit) {
@@ -248,7 +262,7 @@ public final class MessageEdit
 //#      4 - end cycle
 //#      * 
 //#      */
-//#     int runState=2;
+//#     int runState=2;    
 //# 
 //#     int strPos=0;
 //#     public void run(){
@@ -258,8 +272,15 @@ public final class MessageEdit
 //#             if (runState==3) { runState=4; send(); thread=null; ((VirtualList) parentView).redraw(); break; }
 //#             
 //#             if (runState==1) {
-//#                 setTitle(notifyMessage.substring(strPos++));
+//#                 if (cf.notifyWhenMessageType == 1) {
+//#                  t.setTitle(notifyMessage.substring(strPos++));
 //#                 if ((notifyMessage.length()-strPos)<0) strPos=0;
+//#             }
+//#                 if (cf.notifyWhenMessageType == 2) {
+//#                 if (notifyMessage != null)
+//#                     ticker.setString(notifyMessage);
+//#                     runState = 4;
+//#                 }
 //#             }
 //#             try { Thread.sleep(250); } catch (Exception e) { break; }
 //#         }
@@ -318,7 +339,12 @@ public final class MessageEdit
 //#             msg=out.toString();
 //#             runState=1;
 //#         } else {
-//#             setTitle(to.toString());
+//#             if (cf.notifyWhenMessageType == 1) {
+//#                 t.setTitle(to.toString());
+//#             }
+//#             if (cf.notifyWhenMessageType == 2) {
+//#                     ticker.setString("");
+//#             }
 //#             runState=0;
 //#         }
 //#         notifyMessage=msg;
@@ -328,9 +354,9 @@ public final class MessageEdit
     public void send(){
         //Roster r=StaticData.getInstance().roster;
         String comp=null; // composing event off
-        
+
         String id=String.valueOf((int) System.currentTimeMillis());
-        
+
         if (body!=null || subj!=null ) {
 //#ifdef DETRANSLIT
 //#         if (sendInTranslit==true) {
@@ -354,18 +380,18 @@ public final class MessageEdit
                 to.addMessage(msg);
                 comp="active"; // composing event in message
             }
-            
+
         } else if (to.acceptComposing) comp=(composing)? "composing":"paused";
-        
+
         if (!cf.eventComposing) comp=null;
-        
+
         try {
             if (body!=null || subj!=null || comp!=null) {
                 to.lastSendedMessage=body;
                 sd.roster.sendMessage(to, id, body, subj, comp);
             }
         } catch (Exception e) { }
-        
+
         try {
             ((ContactMessageList)parentView).forceScrolling();
         } catch (Exception e) { }
@@ -373,7 +399,7 @@ public final class MessageEdit
     }
 //#endif
 
-    private void insert(String s, int caretPos) {
+    public void insert(String s, int caretPos) {
 
         if (s == null) return;
 

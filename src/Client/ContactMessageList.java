@@ -590,7 +590,7 @@ public void showNotify(){
 //#     public void juickReply(String str) {
 //#           try {
 //#ifdef RUNNING_MESSAGE
-//#                 sd.roster.me=new MessageEdit(display, getActualJuickContactMessageList(), getActualJuickContact(), getTargetForJuickReply(str)+" ");
+//#                 sd.roster.me=new MessageEdit(display, getActualJuickContactMessageList(), getActualJuickContact(), getTargetForJuickReply(str));
 //#else
 //#             new MessageEdit(display, getActualJuickContactMessageList(), getActualJuickContact(), getTargetForJuickReply(str));
 //#endif
@@ -778,7 +778,7 @@ public void showNotify(){
                 keyGreen();
             } else {
 //#ifdef RUNNING_MESSAGE
-//#                 sd.roster.me=new MessageEdit(display, this, contact, msg.from+": ");
+//#                 sd.roster.me=new MessageEdit(display, this, contact, msg.from+":");
 //#else
                 new MessageEdit(display, this, contact, msg.from + ":");
 //#endif

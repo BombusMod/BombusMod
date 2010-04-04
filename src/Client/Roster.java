@@ -2846,7 +2846,7 @@ public class Roster
     
 //#ifdef RUNNING_MESSAGE
 //#     void setTicker(Contact c, String message) {
-//#         if (cf.notifyWhenMessageType) {
+//#         if (cf.notifyWhenMessageType > 0) {
 //#             if (me!=null)
 //#                 if (me.to==c)
 //#                     me.setMyTicker(message);

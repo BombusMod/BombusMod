@@ -218,7 +218,7 @@ public static boolean fullscreen=
     public boolean notifyPicture=false;
     public boolean useBoldFont=false;
 //#ifdef RUNNING_MESSAGE
-//#     public boolean notifyWhenMessageType = false;
+//#     public int notifyWhenMessageType = 0;
 //#endif
 //#ifdef CLIPBOARD
 //#     public boolean useClipBoard = true;
@@ -461,7 +461,7 @@ public static boolean fullscreen=
             autoSubscribe=inputStream.readInt();
             useBoldFont=inputStream.readBoolean();
 //#ifdef RUNNING_MESSAGE
-//#             notifyWhenMessageType = inputStream.readBoolean();
+//#             notifyWhenMessageType = inputStream.readInt();
 //#else
             inputStream.readBoolean();
 //#endif
@@ -716,7 +716,7 @@ public static boolean fullscreen=
             outputStream.writeInt(autoSubscribe);
             outputStream.writeBoolean(useBoldFont);
 //#ifdef RUNNING_MESSAGE
-//#             outputStream.writeBoolean(notifyWhenMessageType);
+//#             outputStream.writeInt(notifyWhenMessageType);
 //#else
             outputStream.writeBoolean(false);
 //#endif

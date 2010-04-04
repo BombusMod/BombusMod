@@ -139,10 +139,10 @@ public class InfoWindow
 //#ifdef PLUGINS
 //#         if (sd.Adhoc)
 //#endif
-//#             abilitiesList.addElement((String)"ADHOC");
+//#             abilitiesList.addElement("ADHOC");
 //#endif
 //#ifdef ANTISPAM
-//#             abilitiesList.addElement((String)"ANTISPAM");
+//#             abilitiesList.addElement("ANTISPAM");
 //#endif
 //#ifdef ARCHIVE
 //#ifdef PLUGINS
@@ -151,22 +151,22 @@ public class InfoWindow
             abilitiesList.addElement("ARCHIVE");
 //#endif
 //#ifdef AUTOSTATUS
-//#         abilitiesList.addElement((String)"AUTOSTATUS");
+//#         abilitiesList.addElement("AUTOSTATUS");
 //#endif
 //#ifdef AUTOTASK
-//#         abilitiesList.addElement((String)"AUTOTASK");
+//#         abilitiesList.addElement("AUTOTASK");
 //#endif
 //#ifdef BACK_IMAGE
-//#         abilitiesList.addElement((String)"BACK_IMAGE");
+//#         abilitiesList.addElement("BACK_IMAGE");
 //#endif
 //#ifdef CAPTCHA
-//#         abilitiesList.addElement((String)"CAPTCHA");
+//#         abilitiesList.addElement("CAPTCHA");
 //#endif
 //#ifdef CHANGE_TRANSPORT
 //#ifdef PLUGINS
 //#         if (sd.ChangeTransport)
 //#endif
-//#             abilitiesList.addElement((String)"CHANGE_TRANSPORT");
+//#             abilitiesList.addElement("CHANGE_TRANSPORT");
 //#endif
 //#ifdef CHECK_VERSION
 //#ifdef PLUGINS
@@ -187,19 +187,19 @@ public class InfoWindow
 //#ifdef PLUGINS
 //#         if (sd.Console)
 //#endif
-//#             abilitiesList.addElement((String)"CONSOLE");
+//#             abilitiesList.addElement("CONSOLE");
 //#endif
 //#ifdef COLOR_TUNE
 //#ifdef PLUGINS
 //#         if (sd.Colors)
 //#endif
-//#             abilitiesList.addElement((String)"COLOR_TUNE");
+//#             abilitiesList.addElement("COLOR_TUNE");
 //#endif
 //#ifdef DETRANSLIT
-//#         abilitiesList.addElement((String)"DETRANSLIT");
+//#         abilitiesList.addElement("DETRANSLIT");
 //#endif
 //#ifdef ELF
-//#         abilitiesList.addElement((String)"ELF");
+//#         abilitiesList.addElement("ELF");
 //#endif
 //#ifdef FILE_IO
         abilitiesList.addElement("FILE_IO");
@@ -211,88 +211,88 @@ public class InfoWindow
             abilitiesList.addElement("FILE_TRANSFER");
 //#endif
 //#ifdef GRADIENT
-//#         abilitiesList.addElement((String)"GRADIENT");
+//#         abilitiesList.addElement("GRADIENT");
 //#endif
 //#ifdef HISTORY
 //#ifdef PLUGINS
 //#         if (sd.History)
 //#endif
-//#             abilitiesList.addElement((String)"HISTORY");
+//#             abilitiesList.addElement("HISTORY");
 //#endif
 //#ifdef HISTORY_READER
 //#ifdef PLUGINS
 //#         if (sd.History)
 //#endif
-//#             abilitiesList.addElement((String)"HISTORY_READER");
+//#             abilitiesList.addElement("HISTORY_READER");
 //#endif
 //#ifdef HTTPCONNECT
-//#         abilitiesList.addElement((String)"HTTPCONNECT");
+//#         abilitiesList.addElement("HTTPCONNECT");
 //#endif
 //#ifdef HTTPPOLL
-//#         abilitiesList.addElement((String)"HTTPPOLL");
+//#         abilitiesList.addElement("HTTPPOLL");
 //#endif
 //#ifdef IMPORT_EXPORT
 //#ifdef PLUGINS
 //#         if (sd.IE)
 //#endif
-//#             abilitiesList.addElement((String)"IMPORT_EXPORT");
+//#             abilitiesList.addElement("IMPORT_EXPORT");
 //#endif
 //#ifdef JUICK
 //#ifdef PLUGINS
 //#         if (sd.Juick)
 //#endif
-//#         abilitiesList.addElement((String)"JUICK");
+//#         abilitiesList.addElement("JUICK");
 //#endif
 //#ifdef LAST_MESSAGES
 //#ifdef PLUGINS
 //#         if (sd.History)
 //#endif
-//#             abilitiesList.addElement((String)"LAST_MESSAGES");
+//#             abilitiesList.addElement("LAST_MESSAGES");
 //#endif
 //#ifdef LOGROTATE
-//#         abilitiesList.addElement((String)"LOGROTATE");
+//#         abilitiesList.addElement("LOGROTATE");
 //#endif
 //#ifdef MENU_LISTENER
         abilitiesList.addElement("MENU_LISTENER");
 //#endif
 //#ifdef NEW_SKIN
-//#         abilitiesList.addElement((String)"NEW_SKIN");
+//#         abilitiesList.addElement("NEW_SKIN");
 //#endif
 //#ifdef NICK_COLORS
         abilitiesList.addElement("NICK_COLORS");
 //#endif
 //#ifdef NON_SASL_AUTH
-//#         abilitiesList.addElement((String)"NON_SASL_AUTH");
+//#         abilitiesList.addElement("NON_SASL_AUTH");
 //#endif
 //#ifdef PEP
 //#ifdef PLUGINS
 //#         if (sd.PEP)
 //#endif
-//#             abilitiesList.addElement((String)"PEP");
+//#             abilitiesList.addElement("PEP");
 //#endif
 //#ifdef PEP_ACTIVITY
 //#ifdef PLUGINS
 //#         if (sd.PEP)
 //#endif
-//#             abilitiesList.addElement((String)"PEP_ACTIVITY");
+//#             abilitiesList.addElement("PEP_ACTIVITY");
 //#endif
 //#ifdef PEP_TUNE
 //#ifdef PLUGINS
 //#         if (sd.PEP)
 //#endif
-//#             abilitiesList.addElement((String)"PEP_TUNE");
+//#             abilitiesList.addElement("PEP_TUNE");
 //#endif
 //#ifdef PLUGINS
-//#         abilitiesList.addElement((String)"PLUGINS");
+//#         abilitiesList.addElement("PLUGINS");
 //#endif
 //#ifdef POPUPS
         abilitiesList.addElement("POPUPS");
 //#endif
 //#ifdef REQUEST_VOICE
-//#         abilitiesList.addElement((String)"REQUEST_VOICE");
+//#         abilitiesList.addElement("REQUEST_VOICE");
 //#endif
 //#ifdef RUNNING_MESSAGE
-//#         abilitiesList.addElement((String)"RUNNING_MESSAGE");
+//#         abilitiesList.addElement("RUNNING_MESSAGE");
 //#endif
 //#ifdef PRIVACY
 //#ifdef PLUGINS
@@ -301,10 +301,10 @@ public class InfoWindow
             abilitiesList.addElement("PRIVACY");
 //#endif
 //#ifdef SASL_XGOOGLETOKEN
-//#         abilitiesList.addElement((String)"SASL_XGOOGLETOKEN");
+//#         abilitiesList.addElement("SASL_XGOOGLETOKEN");
 //#endif
 //#ifdef SE_LIGHT
-//#         abilitiesList.addElement((String)"SE_LIGHT");
+//#         abilitiesList.addElement("SE_LIGHT");
 //#endif
 //#ifdef SERVICE_DISCOVERY
         abilitiesList.addElement("SERVICE_DISCOVERY");
@@ -316,22 +316,22 @@ public class InfoWindow
 //#ifdef PLUGINS
 //#         if (sd.Stats)
 //#endif
-//#             abilitiesList.addElement((String)"STATS");
+//#             abilitiesList.addElement("STATS");
 //#endif
 //#ifdef TEMPLATES
 //#ifdef PLUGINS
 //#         if (sd.Archive)
 //#endif
-//#         abilitiesList.addElement((String)"TEMPLATES");
+//#         abilitiesList.addElement("TEMPLATES");
 //#endif
 //#ifdef USER_KEYS
-//#         abilitiesList.addElement((String)"USER_KEYS");
+//#         abilitiesList.addElement("USER_KEYS");
 //#endif
 //#ifdef USE_ROTATOR
         abilitiesList.addElement("USE_ROTATOR");
 //#endif
 //#ifdef WMUC
-//#         abilitiesList.addElement((String)"WMUC");
+//#         abilitiesList.addElement("WMUC");
 //#endif
 //#ifdef ZLIB
         abilitiesList.addElement("ZLIB");

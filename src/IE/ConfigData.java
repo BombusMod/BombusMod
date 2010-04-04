@@ -144,7 +144,7 @@ public class ConfigData {
         array.addElement(new keyValue(notInListDropLevel, Integer.toString(cf.notInListDropLevel)));
         array.addElement(new keyValue(useBoldFont, (cf.useBoldFont)?"1":"0"));
 //#ifdef RUNNING_MESSAGE
-//#         array.addElement(new keyValue(notifyWhenMessageType, (cf.notifyWhenMessageType)?"1":"0"));
+//#         array.addElement(new keyValue(notifyWhenMessageType, Integer.toString(cf.notifyWhenMessageType)));
 //#endif
 //#ifdef PEP
 //#         array.addElement(new keyValue(sndrcvmood, (cf.sndrcvmood)?"1":"0"));
@@ -291,7 +291,7 @@ public class ConfigData {
         cf.notInListDropLevel=cf.getIntProperty(getValue(notInListDropLevel), NotInListFilter.ALLOW_ALL);
         cf.useBoldFont=cf.getBooleanProperty(getValue(useBoldFont),false);
 //#ifdef RUNNING_MESSAGE
-//#         cf.notifyWhenMessageType=cf.getBooleanProperty(getValue(notifyWhenMessageType),false);
+//#         cf.notifyWhenMessageType=cf.getIntProperty(getValue(notifyWhenMessageType), 0);
 //#endif
 //#ifdef PEP
 //#         cf.sndrcvmood=cf.getBooleanProperty(getValue(sndrcvmood),true);
