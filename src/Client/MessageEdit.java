@@ -234,7 +234,7 @@ public final class MessageEdit
 //#         if (c==cmdSendInTranslit) {
 //#             sendInTranslit=true;
 //#         }
-//#
+//# 
 //#         if (c==cmdSendInDeTranslit) {
 //#             sendInDeTranslit=true;
 //#         }
@@ -272,11 +272,11 @@ public final class MessageEdit
 //#             if (runState==3) { runState=4; send(); thread=null; ((VirtualList) parentView).redraw(); break; }
 //#             
 //#             if (runState==1) {
-//#                 if (cf.notifyWhenMessageType == 1) {
+//#                 if (cf.notifyWhenMessageType == 2) {
 //#                  t.setTitle(notifyMessage.substring(strPos++));
 //#                 if ((notifyMessage.length()-strPos)<0) strPos=0;
 //#             }
-//#                 if (cf.notifyWhenMessageType == 2) {
+//#                 if (cf.notifyWhenMessageType == 1) {
 //#                 if (notifyMessage != null)
 //#                     ticker.setString(notifyMessage);
 //#                     runState = 4;
@@ -295,15 +295,15 @@ public final class MessageEdit
 //#ifdef DETRANSLIT
 //#         if (sendInTranslit==true) {
 //#             if (body!=null)
-//#                body=dt.translit(body);
+//#                body=DeTranslit.translit(body);
 //#             if (subj!=null )
-//#                subj=dt.translit(subj);
+//#                subj=DeTranslit.translit(subj);
 //#         }
 //#         if (sendInDeTranslit==true || cf.autoDeTranslit) {
 //#             if (body!=null)
-//#                body=dt.deTranslit(body);
+//#                body=DeTranslit.deTranslit(body);
 //#             if (subj!=null )
-//#                subj=dt.deTranslit(subj);
+//#                subj=DeTranslit.deTranslit(subj);
 //#         }
 //#endif
 //#         if (body!=null || subj!=null ) {
@@ -340,10 +340,10 @@ public final class MessageEdit
 //#             runState=1;
 //#         } else {
 //#             if (cf.notifyWhenMessageType == 1) {
-//#                 t.setTitle(to.toString());
+//#                 ticker.setString("");
 //#             }
 //#             if (cf.notifyWhenMessageType == 2) {
-//#                     ticker.setString("");
+//#                 t.setTitle(to.toString());
 //#             }
 //#             runState=0;
 //#         }
