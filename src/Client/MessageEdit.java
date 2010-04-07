@@ -210,7 +210,7 @@ public final class MessageEdit
         if (c==cmdInsMe) { insert("/me", 0); return; }
         if (c==cmdLastMessage) { setText(to.lastSendedMessage); return; }
 //#ifdef SMILES
-        if (c==cmdSmile) { new SmilePicker(display, t, caretPos, t); return; }
+        if (c==cmdSmile) { new SmilePicker(display, t, caretPos, this); return; }
 //#endif
 //#ifndef WMUC
         if (c==cmdInsNick) { new AppendNick(display, t, to, caretPos, t); return; }
@@ -270,7 +270,6 @@ public final class MessageEdit
 //#             //System.out.println(runState+" "+notifyMessage);
 //#             if (runState==2) { runState=0; send(); }
 //#             if (runState==3) { runState=4; send(); thread=null; ((VirtualList) parentView).redraw(); break; }
-//#             
 //#             if (runState==1) {
 //#                 if (cf.notifyWhenMessageType == 2) {
 //#                  t.setTitle(notifyMessage.substring(strPos++));

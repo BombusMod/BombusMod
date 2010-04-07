@@ -58,6 +58,7 @@ public class ActiveContacts
     public ActiveContacts(Display display, Displayable pView, Contact current) {
 	super(display, pView, SR.MS_ACTIVE_CONTACTS);
 	parentView=pView;
+        enableListWrapping(true);
         activeContacts=null;
 	activeContacts=new Vector();
         //synchronized (sd.roster.getHContacts()) {

@@ -82,14 +82,14 @@ public class SmilePicker
      
     private Vector smileTable;
 
-    private TextBox t;
+    private MessageEdit me;
  
      /** Creates a new instance of SmilePicker */
-    public SmilePicker(Display display, Displayable pView, int caretPos, TextBox tbox) {
+    public SmilePicker(Display display, Displayable pView, int caretPos, MessageEdit me) {
          super(display);
          this.caretPos=caretPos;
 
-         this.t=tbox;
+         this.me = me;
          
          il = SmilesIcons.getInstance();
 //#ifdef SMILES 
@@ -136,7 +136,7 @@ public class SmilePicker
     public int getColorBGnd(){ return ColorTheme.getColor(ColorTheme.LIST_BGND); }
     public void onSelect(){
         try {
-            t.insert(getTipString() , caretPos);
+            me.insert(getTipString() , caretPos);
         } catch (Exception e) { /*e.printStackTrace();*/  }
         destroyView();
     }
