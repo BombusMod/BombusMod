@@ -96,16 +96,23 @@ public class JabberDataBlockDispatcher extends Thread
       }
   }
   
-  /**
-   * Method to add a datablock to the dispatch queue
-   *
-   * @param datablock The block to add
-   */
+    /**
+     * Method to add a datablock to the dispatch queue
+     *
+     * @param datablock The block to add
+     */
+    public void broadcastJabberDataBlock(JabberDataBlock dataBlock) {
+        waitingQueue.addElement(dataBlock);
+        if (Runtime.getRuntime().freeMemory() < 128 * 1024) {
+            while (!waitingQueue.isEmpty()) {
+                try {
+                    Thread.sleep(50L);
+                } catch (InterruptedException e) {
+                }
+            }
+        }
+    }
 
-  public void broadcastJabberDataBlock( JabberDataBlock dataBlock )
-  {
-    waitingQueue.addElement( dataBlock );       
-  }
 
   /**
    * The thread loop that handles dispatching any waiting datablocks

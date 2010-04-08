@@ -172,11 +172,13 @@ public final class MessageEdit
         if (to.lastSendedMessage!=null)
             t.addCommand(cmdLastMessage);        
 //#ifdef RUNNING_MESSAGE
-//#         if (cf.notifyWhenMessageType == 1) {
+//#ifdef MIDP_TICKER
+//#         if (cf.notifyWhenMessageType) {
 //#             t.setTicker(ticker);
 //#         } else {
 //#             t.setTicker(null);
 //#         }
+//#endif
 //#         if (thread==null) (thread=new Thread(this)).start() ; // composing
 //#else
         send() ; // composing
@@ -271,15 +273,18 @@ public final class MessageEdit
 //#             if (runState==2) { runState=0; send(); }
 //#             if (runState==3) { runState=4; send(); thread=null; ((VirtualList) parentView).redraw(); break; }
 //#             if (runState==1) {
-//#                 if (cf.notifyWhenMessageType == 2) {
-//#                  t.setTitle(notifyMessage.substring(strPos++));
-//#                 if ((notifyMessage.length()-strPos)<0) strPos=0;
-//#             }
-//#                 if (cf.notifyWhenMessageType == 1) {
+//#ifdef MIDP_TICKER
+//#                 if (cf.notifyWhenMessageType) {
 //#                 if (notifyMessage != null)
 //#                     ticker.setString(notifyMessage);
 //#                     runState = 4;
 //#                 }
+//#else
+//#                 if (cf.notifyWhenMessageType) {
+//#                  t.setTitle(notifyMessage.substring(strPos++));
+//#                 if ((notifyMessage.length()-strPos)<0) strPos=0;
+//#             }
+//#endif
 //#             }
 //#             try { Thread.sleep(250); } catch (Exception e) { break; }
 //#         }
@@ -338,12 +343,15 @@ public final class MessageEdit
 //#             msg=out.toString();
 //#             runState=1;
 //#         } else {
-//#             if (cf.notifyWhenMessageType == 1) {
+//#ifdef MIDP_TICKER
+//#             if (cf.notifyWhenMessageType) {
 //#                 ticker.setString("");
 //#             }
-//#             if (cf.notifyWhenMessageType == 2) {
+//#else
+//#             if (cf.notifyWhenMessageType) {
 //#                 t.setTitle(to.toString());
 //#             }
+//#endif
 //#             runState=0;
 //#         }
 //#         notifyMessage=msg;

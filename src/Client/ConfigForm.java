@@ -80,7 +80,7 @@ public class ConfigForm
 //#endif
 //#endif
 //#ifdef RUNNING_MESSAGE
-//#      private DropChoiceBox notifyWhenMessageType;
+//#      private CheckBox notifyWhenMessageType;
 //#endif
 //#ifdef POPUPS
     private CheckBox popUps;
@@ -231,6 +231,9 @@ public class ConfigForm
         storeConfPresence = new CheckBox(SR.MS_STORE_PRESENCE, cf.storeConfPresence); itemsList.addElement(storeConfPresence);
         autoScroll = new CheckBox(SR.MS_AUTOSCROLL, cf.autoScroll); itemsList.addElement(autoScroll);
         useTabs = new CheckBox(SR.MS_EMULATE_TABS, cf.useTabs); itemsList.addElement(useTabs);
+//#ifdef RUNNING_MESSAGE
+//#         notifyWhenMessageType = new CheckBox(SR.MS_RUNNING_MESSAGE, cf.notifyWhenMessageType); itemsList.addElement(notifyWhenMessageType);
+//#endif
 //#ifdef POPUPS
         popUps = new CheckBox(SR.MS_POPUPS, cf.popUps); itemsList.addElement(popUps);
 //#endif
@@ -248,14 +251,6 @@ public class ConfigForm
 //#if LOGROTATE
 //#         messageCountLimit=new NumberInput(display, SR.MS_MESSAGE_COUNT_LIMIT, Integer.toString(cf.msglistLimit), 3, 1000);
 //#         itemsList.addElement(messageCountLimit);
-//#endif
-//#ifdef RUNNING_MESSAGE
-//#         notifyWhenMessageType = new DropChoiceBox(display, SR.MS_RUNNING_MESSAGE);
-//#         notifyWhenMessageType.append(SR.MS_NO);
-//#         notifyWhenMessageType.append("Classic");
-//#         notifyWhenMessageType.append("In title");
-//#         notifyWhenMessageType.setSelectedIndex(cf.notifyWhenMessageType);
-//#         itemsList.addElement(notifyWhenMessageType);
 //#endif
 
         itemsList.addElement(new SpacerItem(10));
@@ -468,7 +463,7 @@ public class ConfigForm
 //#endif
 //#endif       
 //#ifdef RUNNING_MESSAGE
-//#         cf.notifyWhenMessageType=notifyWhenMessageType.getSelectedIndex();
+//#         cf.notifyWhenMessageType=notifyWhenMessageType.getValue();
 //#endif
 //#ifdef POPUPS
         cf.popUps=popUps.getValue();
