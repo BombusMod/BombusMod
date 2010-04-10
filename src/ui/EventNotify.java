@@ -27,20 +27,21 @@
 
 package ui;
 import javax.microedition.lcdui.*;
+//#ifndef NOMMEDIA
 import java.io.InputStream;
 import javax.microedition.media.Manager;
 import javax.microedition.media.Player;
 import javax.microedition.media.PlayerListener;
 import javax.microedition.media.control.VolumeControl;
+//#endif
 
 /**
  *
  * @author Eugene Stahov
  */
 public class EventNotify 
-        implements Runnable
-//#ifndef NOSOUND
-	, PlayerListener
+//#ifndef NOMMEDIA
+        implements Runnable, PlayerListener
 //#endif
 {
     
@@ -50,8 +51,9 @@ public class EventNotify
     private String soundType;
     
     private Display display;
-
+//#ifndef NOMMEDIA
     private static Player player;
+//#endif
     
     private final static String tone="A6E6J6";
     private int sndVolume;
@@ -79,34 +81,36 @@ public class EventNotify
     public void startNotify (){
         release();
         //try { if (flashBackLight) display.flashBacklight(1000); } catch (Exception e2) { /* e.printStackTrace(); */}
-//#ifndef NOSOUND
-//#         if (soundName!=null) {
-//#             try {
-//#                 InputStream is = getClass().getResourceAsStream(soundName);
-//#                 player = Manager.createPlayer(is, soundType);
-//#
-//#                 player.addPlayerListener(this);
-//#                 player.realize();
-//#                 player.prefetch();
-//#
-//#                 try {
-//#                     VolumeControl vol=(VolumeControl) player.getControl("VolumeControl");
-//#                     vol.setLevel(sndVolume);
-//#                 } catch (Exception e) { /* e.printStackTrace(); */}
-//#
-//#                 player.start();
-//#             } catch (Exception e) { }
-//#         }
+//#ifndef NOMMEDIA
+        if (soundName!=null) {
+            try {
+                InputStream is = getClass().getResourceAsStream(soundName);
+                player = Manager.createPlayer(is, soundType);
+
+                player.addPlayerListener(this);
+                player.realize();
+                player.prefetch();
+
+                try {
+                    VolumeControl vol=(VolumeControl) player.getControl("VolumeControl");
+                    vol.setLevel(sndVolume);
+                } catch (Exception e) { /* e.printStackTrace(); */}
+
+                player.start();
+            } catch (Exception e) { }
+        }
 //#endif
 
         if (vibraLength>0) {
             display.vibrate(vibraLength);
         }
-
+//#ifndef NOMMEDIA
 	if (toneSequence)
             new Thread(this).start();
+//#endif
     }
-    
+
+//#ifndef NOMMEDIA
     public void run(){
         try {
             for (int i=0; i<tone.length(); ) {
@@ -117,18 +121,19 @@ public class EventNotify
             }
         } catch (Exception e) { }
     }
-    
+//#endif
     public synchronized void release(){
-//#ifndef NOSOUND
-//#         if (player!=null) {
-//# 	    player.removePlayerListener(this);
-//# 	    player.close();
-//# 	}
-//#         player=null;
+//#ifndef NOMMEDIA
+        if (player!=null) {
+	    player.removePlayerListener(this);
+	    player.close();
+	}
+        player=null;
 //#endif
     }
-    
+//#ifndef NOMMEDIA
     public void playerUpdate(Player player, String string, Object object) {
 	if (string.equals(PlayerListener.END_OF_MEDIA)) {    release(); }
     }
+//#endif
 }

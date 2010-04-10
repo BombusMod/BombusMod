@@ -15,9 +15,9 @@ import io.file.FileIO;
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
 //#endif
-
+//#ifndef NOMMEDIA
 import images.camera.*;
-
+//#endif
 import java.util.*;
 //#ifndef MENU_LISTENER
 //# import javax.microedition.lcdui.Command;
@@ -48,7 +48,9 @@ public class VCardEdit
 //#if (FILE_IO)
         , BrowserListener
 //#endif
+//#ifndef NOMMEDIA
         , CameraImageListener
+//#endif
 {
     
     private Display display;
@@ -60,7 +62,9 @@ public class VCardEdit
     Command cmdSavePhoto=new Command(SR.MS_SAVE_PHOTO, Command.SCREEN,4);
 //#endif
     Command cmdDelPhoto=new Command(SR.MS_CLEAR_PHOTO, Command.SCREEN,5);
+//#ifndef NOMMEDIA
     Command cmdCamera=new Command(SR.MS_CAMERA, Command.SCREEN,6);
+//#endif
 
     private Vector items=new Vector();
     private VCard vcard;
@@ -106,11 +110,12 @@ public class VCardEdit
 //#         addCommand(cmdLoadPhoto);
 //#         addCommand(cmdSavePhoto);
 //#endif
+//#ifndef NOMMEDIA
 //#         String cameraAvailable=System.getProperty("supports.video.capture");
 //#         if (cameraAvailable!=null) if (cameraAvailable.startsWith("true"))
 //#             addCommand(cmdCamera);
 //#         addCommand(cmdDelPhoto);
-//# 
+//#endif
 //#         addCommand(cmdCancel);
 //#         setCommandListener(this);
 //#endif       
@@ -148,10 +153,10 @@ public class VCardEdit
             new Browser(null, display, this, this, true);
         }
 //#endif
-
+//#ifndef NOMMEDIA
         if (c==cmdCamera)
             new CameraImage(display, this);
-
+//#endif
         if (c==cmdDelPhoto) {
             vcard.dropPhoto();
             setPhoto();
@@ -238,9 +243,11 @@ public class VCardEdit
         addCommand(cmdLoadPhoto);
         addCommand(cmdSavePhoto);
 //#endif
+//#ifndef NOMMEDIA
         String cameraAvailable=System.getProperty("supports.video.capture");
         if (cameraAvailable!=null) if (cameraAvailable.startsWith("true"))
             addCommand(cmdCamera);
+//#endif  
         addCommand(cmdDelPhoto);
 
         addCommand(cmdCancel);

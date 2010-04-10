@@ -36,7 +36,8 @@ MIDP_TICKER - используется стандартный класс Ticker 
 NEW_SKIN - иконки visitors объединены с skin, иконки menu объединены с actions.
 NICK_COLORS - раскрашивание ников.
 NON_SASL_AUTH - использование pre-xmpp способа авторизации для серверов, сообщающих что они xmpp-compliant.
-NOSOUND - отключение поддержки воспроизведения звука
+NOMMEDIA - не использовать MMAPI (JSR-135)
+NOLEGACY - не использовать MIDP1-классы производителей (Siemens, Moto)
 PEP - pubsub (поддержка в общем) + настроения (user mood) [XEP-0163: Personal Eventing Protocol, XEP-0060: Publish-Subscribe, XEP-0107: User Mood].
 PEP_ACTIVITY - получение инфо состоянии контакта (требует PEP) [XEP-0108: User Activity].
 PEP_TUNE - получение инфо о музыке играющей у контактов (требует PEP) [XEP-0118: User Tune].

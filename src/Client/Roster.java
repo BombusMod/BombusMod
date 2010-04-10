@@ -99,6 +99,7 @@ import xmpp.XmppError;
 //#ifdef CAPTCHA
 //# import xmpp.extensions.Captcha;
 //#endif
+
 import xmpp.extensions.IqQueryRoster;
 //#if SASL_XGOOGLETOKEN
 //# import xmpp.extensions.IqGmail;
@@ -260,6 +261,7 @@ public class Roster
     }
     
     public void setLight(boolean state) {
+//#ifndef NOLEGACY
         if (phoneManufacturer==Config.SIEMENS || phoneManufacturer==Config.SIEMENS2) {
             try {
                 if (state) com.siemens.mp.game.Light.setLightOn();
@@ -267,6 +269,7 @@ public class Roster
             } catch( Exception e ) { }
             return;
         }
+//#endif
         if (!state) return;
 //#ifdef SE_LIGHT
 //#         if (phoneManufacturer==Config.SONYE || phoneManufacturer==Config.NOKIA) {

@@ -13,16 +13,16 @@
             <param name="config.active" value="full_ver_newmenu"/>
         </antcall>
         <antcall inheritrefs="false" inheritall="false" target="${target.to.call}">
-            <param name="config.active" value="full_ver"/>
+            <param name="config.active" value="plugins_new_menu"/>
         </antcall>
         <antcall inheritrefs="false" inheritall="false" target="${target.to.call}">
-            <param name="config.active" value="adsky"/>
+            <param name="config.active" value="plugins_old_menu"/>
         </antcall>
     </target>
 
-    <target name="rebuild-fullver">
-	    <antcall inheritrefs="false" inheritall="false" target="rebuild">
-		    <param name="config.active" value="full_ver"/>
+    <target name="rebuild-release">
+	    <antcall inheritrefs="false" inheritall="false" target="for-release-configs">
+		    <param name="target.to.call" value="rebuild"/>
 	    </antcall>
     </target>
 	
