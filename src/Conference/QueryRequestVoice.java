@@ -1,7 +1,7 @@
 /*
  * QueryRequestVoice.java
  *
- * Created on 18 Θώνό 2007 γ., 12:55
+ * Created on 18 ΠΡΠ½Ρ 2007 Π³., 12:55
  *
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.

@@ -193,7 +193,11 @@ public class Roster
 //#if SASL_XGOOGLETOKEN
 //#     private String token;
 //#endif
-    
+
+//#ifdef JUICK
+//#     public Vector juickContacts = new Vector();
+//#     public int indexMainJuickContact = -1; // Т.е. считаем, что жуйкоконтактов нет вообще.
+//#endif
     public long lastMessageTime=Time.utcTimeMillis();
 
     public static String startTime=Time.dispLocalTime();
@@ -417,7 +421,13 @@ public class Roster
 	synchronized (hContacts) {
             hContacts=null;
 	    hContacts=new Vector();
-            
+
+//#ifdef JUICK
+//#             juickContacts = null;
+//#             juickContacts = new Vector();
+//#             indexMainJuickContact = -1;
+//#endif
+
             groups=null;
 	    groups=new Groups();
             
@@ -644,6 +654,9 @@ public class Roster
         if (c==null) {
             c=new Contact(nick, jid, Presence.PRESENCE_OFFLINE, null);
             addContact(c);
+//#ifdef JUICK
+//#             addJuickContact(c);
+//#endif
         }
         
         boolean firstInstance=true; //FS#712 workaround
@@ -661,6 +674,9 @@ public class Roster
                     
                     if (status<0) {
                         hContacts.removeElementAt(index);
+//#ifdef JUICK
+//#                         deleteJuickContact(c);
+//#endif
                         continue;
                     }
                     
@@ -871,38 +887,89 @@ public class Roster
     }
 
 //#ifdef JUICK
-//#         public Vector getJuickContacts() {
+//# /*        public Vector getJuickContacts(boolean str) {
 //#         Vector juickContacts = new Vector();
 //#         synchronized (hContacts) {
 //#             for (Enumeration e = hContacts.elements(); e.hasMoreElements();) {
 //#                 Contact c = (Contact) e.nextElement();
 //#                 if (isJuickContact(c))
-//#                     juickContacts.addElement(c.bareJid);
+//#                     if (str)
+//#                         juickContacts.addElement(c.bareJid);
+//#                     else juickContacts.addElement(c);
 //#             }
 //#         }
 //#         return juickContacts;
-//#     }
-//# 
+//#     }*/
+//#
 //#     public Contact getMainJuickContact() {
-//#         boolean matched;
-//#         synchronized (hContacts) {
-//#             for (Enumeration e = hContacts.elements(); e.hasMoreElements();) {
-//#                 Contact c = (Contact) e.nextElement();
-//#                 if (cf.juickJID != null) {
-//#                     matched = c.bareJid.equals(cf.juickJID);
-//#                 } else {
-//#                     matched = isJuickContact(c);
-//#                 }
-//#                 if (matched)
-//#                     return c;
+//#         if (indexMainJuickContact > -1)
+//#             return (Contact) juickContacts.elementAt(indexMainJuickContact);
+//#         else return null;
+//#     }
+//#
+//# /*    public void updateMainJuickContact() {
+//#         System.out.println("1. juickJID: "+cf.juickJID);
+//#         mainJuickContact = null;
+//#         int index = -1;
+//#         if (!cf.juickJID.equals("")) {
+//#             index = hContacts.indexOf(new Contact("Juick", cf.juickJID, Presence.PRESENCE_OFFLINE, null));
+//#             System.out.println("index: "+index);
+//#             if (index < 0) { // Если не нашли, то считаем, что не указан.
+//#                cf.juickJID = "";
 //#             }
 //#         }
-//#         return null;
-//#     }
+//#         if (index > -1) {
+//#             mainJuickContact = (Contact) hContacts.elementAt(index);
+//#         } else {
+//#             Vector juickContacts = getJuickContacts(false);
+//#             if (juickContacts.size() > 0) {
+//#                 mainJuickContact = (Contact) juickContacts.elementAt(0);
+//#             }
+//#         }
+//#         System.out.println("2. juickJID: "+cf.juickJID);
+//#     }*/
 //# 
 //#     public boolean isJuickContact(Contact c) {
 //#         return (c.bareJid.equals("juick@juick.com")
 //#          || c.bareJid.startsWith("juick%juick.com@"));
+//#     }
+//# 
+//#     public void addJuickContact(Contact c) {
+//#         if (isJuickContact(c)) {
+//#             juickContacts.addElement(c);
+//#             // Далее урезаный аналог updateMainJuickContact(). Побыстрее него, работает *только* при добавлении контакта.
+//#             if (isMainJuickContact(c)) {
+//#                 indexMainJuickContact = juickContacts.size() - 1;
+//#             } else if (indexMainJuickContact < 0) {
+//#                 indexMainJuickContact = 0;
+//#             }
+//#         }
+//#     }
+//# 
+//#     public void deleteJuickContact(Contact c) {
+//#         if (juickContacts.removeElement(c)) {
+//#             updateMainJuickContact();
+//#         }
+//#     }
+//# 
+//#     public boolean isMainJuickContact(Contact c) {
+//#         return c.bareJid.equals((new JuickConfig(display, parentView)).getJuickJID());
+//#     }
+//# 
+//#     public void updateMainJuickContact() {
+//#         JuickConfig juickConfig = new JuickConfig(display, parentView);
+//#         int size = juickContacts.size();
+//#         if (size < 1) {
+//#             indexMainJuickContact = -1;
+//#         } else if ((size == 1) || (juickConfig.getJuickJID().equals(""))) {
+//#             indexMainJuickContact = 0;
+//#         } else {
+//#             indexMainJuickContact = juickContacts.indexOf(new Contact("Juick", juickConfig.getJuickJID(), Presence.PRESENCE_OFFLINE, null));
+//#             if (indexMainJuickContact < 0) {
+//#                 juickConfig.setJuickJID("", false);
+//#                 indexMainJuickContact = 0; // Можно сделать это присваивание через рекурсию, но вроде пока не надо.
+//#             }
+//#         }
 //#     }
 //#endif
 
@@ -2047,7 +2114,7 @@ public class Roster
         blockNotify(event, 2000);
     }
 
-    private void focusToContact(final Contact c, boolean force) {
+    public void focusToContact(final Contact c, boolean force) {
         Group g = c.group;
         if (g.collapsed) {
             g.collapsed = false;

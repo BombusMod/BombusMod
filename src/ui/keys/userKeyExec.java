@@ -49,6 +49,12 @@ import javax.microedition.lcdui.Display;
 import locale.SR;
 import midlet.BombusMod;
 import ui.VirtualList;
+//#ifdef JUICK
+//# import Client.Contact;
+//# import Client.ContactMessageList;
+//# import Client.Roster;
+//# import javax.microedition.lcdui.Displayable;
+//#endif
 
 public class userKeyExec {
 //#ifdef PLUGINS
@@ -196,6 +202,32 @@ public class userKeyExec {
                 VirtualList.fullscreen=Config.fullscreen;
                 sd.roster.setFullScreenMode(Config.fullscreen);
                 break;
+            case 18:
+//#ifdef JUICK
+//#ifdef PLUGINS
+//#                 if(sd.Juick) {
+//#endif
+//#                 Displayable current = display.getCurrent();
+//#                 if (current instanceof ContactMessageList) {
+//# //TODO: make!!!!
+//#                     ContactMessageList current_cml = (ContactMessageList) current;
+//#                     current_cml.commandAction(current_cml.cmdJuickCommands, current);
+//#                     System.out.println("current instanceof ContactMessageList");
+//#                 } else if (current instanceof Roster) {
+//#                     Contact jContact = sd.roster.getMainJuickContact();
+//#                     if (jContact != null)
+//#                         sd.roster.focusToContact(jContact, false);
+//#                 } else {
+//#ifdef DEBUG
+//#                     System.out.println("Current Displayable are not instance of ContactMessageList or Roster.");
+//#endif
+//#                 }
+//#endif
+//#ifdef PLUGINS
+//#                 }
+//#endif
+                break;
+
         }
     }
 }

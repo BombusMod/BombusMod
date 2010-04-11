@@ -201,7 +201,7 @@ public abstract class MessageList extends VirtualList
             System.gc();
             try { Thread.sleep(50); } catch (InterruptedException ex) { }
 //        } _vt
-            return;
+            //return; // Закомментарил, чтобы userKey работал.
         }
 //#endif
         super.keyPressed(keyCode);

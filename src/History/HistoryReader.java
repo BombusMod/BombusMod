@@ -60,11 +60,10 @@ public class HistoryReader extends MessageList {
      */
     public HistoryReader(Display display, Contact c) {
         super(display);
-        cmdNext = new Command("Next", Command.ITEM, 1);
-        cmdPrev = new Command("Previous", Command.ITEM, 1);
+        cmdNext = new Command(SR.MS_NEXT, Command.ITEM, 1);
+        cmdPrev = new Command(SR.MS_PREVIOUS, Command.ITEM, 1);
         hl = new HistoryLoader(c.bareJid);
-        String cname = (c.nick == null) ? c.bareJid : c.nick;
-	MainBar mb=new MainBar(SR.MS_HISTORY + cname);
+	MainBar mb=new MainBar(c.getName() + ": " + SR.MS_HISTORY);
 	mb.addElement(null);
 	mb.addRAlign();
 	mb.addElement(null);
@@ -74,11 +73,11 @@ public class HistoryReader extends MessageList {
         removeAllMessages();
         addCommands(); 
         removeCommand(cmdxmlSkin);
-        hl.getNext();
         setCommandListener(this);
         addCommand(cmdPrev);
         addCommand(cmdNext);
 	addCommand(cmdBack);
+        hl.getNext();
         moveCursorTo(1);
     }
 
@@ -96,14 +95,16 @@ public class HistoryReader extends MessageList {
     }
 
     public void commandAction(Command c, Displayable d) {
-        super.commandAction(c, d);
         if(c==cmdNext) {
             removeAllMessages();
             hl.getNext();
+            return;
         } else if (c == cmdPrev) {
             removeAllMessages();
             hl.getPrev();
-        }        
+            return;
+        }
+        super.commandAction(c, d);
     }
 
     private void removeAllMessages() {
@@ -118,7 +119,6 @@ public class HistoryReader extends MessageList {
     }
 
     public Msg getMessage(int i) {
-        
         if (i==0)
             return new Msg(Msg.MESSAGE_TYPE_SYSTEM, null, null, "<---");
         if (i==(getItemCount()-1))

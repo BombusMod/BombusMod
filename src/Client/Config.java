@@ -234,10 +234,6 @@ public static boolean fullscreen=
     public boolean showClientIcon=true;
 //#endif
 
-//#ifdef JUICK
-//#     public String juickJID=null; // Undefined.
-//#endif
-
     public int reconnectCount=10;
     public int reconnectTime=15;
 
@@ -350,7 +346,10 @@ public static boolean fullscreen=
         FontCache.baloon = baloonFont;        
     }
     
-    protected final void loadFromStorage(){
+    protected final void loadFromStorage() {
+//#ifdef DEBUG
+//#         System.out.println("LoadFromStorage config");
+//#endif
         DataInputStream inputStream=NvStorage.ReadFileRecord("config", 0);
 	try {
 	    accountIndex = inputStream.readInt();
@@ -521,21 +520,14 @@ public static boolean fullscreen=
             swapSendAndSuspend=inputStream.readBoolean();
             widthScroll2=inputStream.readInt();
             widthSystemgc=inputStream.readBoolean();
-//#ifdef JUICK
-//#             juickJID=inputStream.readUTF();
-//#             if (juickJID.equals("")) juickJID = null;
-//#             try {
-//#             if (sd.roster.getJuickContacts().size()<2)
-//#                 juickJID=null;
-//#             } catch (Exception ex) {}
-//#else
-            inputStream.readUTF();
-//#endif
+
+            inputStream.readUTF(); // ранее здесь был juickJID
+
             advTouch = inputStream.readBoolean();
             autoClean = inputStream.readBoolean();
 	    inputStream.close();
             inputStream=null;
-	} catch (Exception e) {
+	} catch (IOException e) { // Левые Exception'ы должны обрабатываться не здесь (поэтому ловим только IOException).
             try {
                 if (inputStream!=null) {
                     inputStream.close();
@@ -776,13 +768,9 @@ public static boolean fullscreen=
             outputStream.writeBoolean(swapSendAndSuspend);
             outputStream.writeInt(widthScroll2);
             outputStream.writeBoolean(widthSystemgc);
-//#ifdef JUICK
-//#              if (juickJID == null)
-//#                     outputStream.writeUTF("");
-//#         else outputStream.writeUTF(juickJID);
-//#else
-            outputStream.writeUTF("");
-//#endif
+
+            outputStream.writeUTF(""); // ранее здесь был juickJID
+
             outputStream.writeBoolean(advTouch);
             outputStream.writeBoolean(autoClean);
 	} catch (Exception e) { }

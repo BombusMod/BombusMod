@@ -694,4 +694,15 @@ public class Contact extends IconTextElement{
 //#     }
 //#endif
 //#endif
+    public boolean equals(Object o) {
+        if (o == null) {
+            return false;
+        } else if (o instanceof Contact) {
+            return bareJid.equals(((Contact) o).bareJid);
+        } else if (o instanceof String) {
+            return bareJid.equals(o);
+        } else {
+            return false;
+        }
+    }
 }

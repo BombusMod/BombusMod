@@ -88,6 +88,8 @@ public final class MessageEdit
 //#endif
     
     private Command cmdSend;//=new Command(SR.MS_SEND, Command.OK, 1);
+    private Command cmdSendAndStepBack;
+
 //#ifdef SMILES
     private Command cmdSmile=new Command(SR.MS_ADD_SMILE, Command.ITEM,2);
 //#endif
@@ -115,7 +117,8 @@ public final class MessageEdit
 
          } catch (Exception e) {}
 
-        insert(body, 0); // workaround for Nokia S40
+        //insert(body, 0); // workaround for Nokia S40
+        t.setString(body);
         this.to=to;
         this.display=display;
 
@@ -123,15 +126,18 @@ public final class MessageEdit
 //#ifdef DETRANSLIT
 //#         DeTranslit.getInstance();
 //#endif
-        
+
         if (!cf.swapSendAndSuspend) {
             cmdSuspend=new Command(SR.MS_SUSPEND, Command.BACK, 90);
             cmdSend=new Command(SR.MS_SEND, Command.OK, 1);
+            cmdSendAndStepBack=new Command(SR.MS_SEND+" & "+SR.MS_STEP_BACK, Command.OK, 2);
         } else {
             cmdSuspend=new Command(SR.MS_SUSPEND, Command.OK, 1);
+            cmdSendAndStepBack=new Command(SR.MS_SEND+" & "+SR.MS_STEP_BACK, Command.BACK, 99);
             cmdSend=new Command(SR.MS_SEND, Command.BACK, 90);
         }
-        //#ifdef ARCHIVE
+
+//#ifdef ARCHIVE
 //#ifdef PLUGINS
 //#         if (StaticData.getInstance().Archive)
 //#endif
@@ -151,6 +157,13 @@ public final class MessageEdit
 //#endif
 //#             t.addCommand(cmdTemplate);
 //#endif
+
+        boolean viewSendAndBackCmd = true;
+        if (pView instanceof ContactMessageList)
+            viewSendAndBackCmd = !((ContactMessageList) pView).contact.equals(to);
+        if (viewSendAndBackCmd) {
+            t.addCommand(cmdSendAndStepBack);
+        }
 
         t.addCommand(cmdSend);
         t.addCommand(cmdInsMe);
@@ -186,10 +199,10 @@ public final class MessageEdit
         setInitialCaps(cf.capsState);
         if (Config.getInstance().phoneManufacturer == Config.SONYE) System.gc(); // prevent flickering on Sony Ericcsson C510
         t.setCommandListener(this);
-        display.setCurrent(t);        
-        this.parentView=pView;
+        display.setCurrent(t);
+        this.parentView = pView;
     }
-    
+
     public void commandAction(Command c, Displayable d){
         
         body = t.getString();
@@ -247,8 +260,10 @@ public final class MessageEdit
             body=null; //"/me "+SR.MS_HAS_SET_TOPIC_TO+": "+subj;
         }
         // message/composing sending
+        if (c == cmdSend)
+            parentView = new ContactMessageList(to, display);
         display.setCurrent(parentView);
-        
+
 //#ifdef RUNNING_MESSAGE
 //#         runState=3;
 //#else
@@ -271,7 +286,13 @@ public final class MessageEdit
 //#         while (runState<4) {
 //#             //System.out.println(runState+" "+notifyMessage);
 //#             if (runState==2) { runState=0; send(); }
-//#             if (runState==3) { runState=4; send(); thread=null; ((VirtualList) parentView).redraw(); break; }
+//#             if (runState==3) {
+//#                 runState=4;
+//#                 send();
+//#                 thread=null;
+//#                 ((VirtualList) parentView).redraw();
+//#                 break;
+//#             }
 //#             if (runState==1) {
 //#ifdef MIDP_TICKER
 //#                 if (cf.notifyWhenMessageType) {
@@ -400,9 +421,9 @@ public final class MessageEdit
         } catch (Exception e) { }
 
         try {
-            ((ContactMessageList)parentView).forceScrolling();
+            ((VirtualList) parentView).forceScrolling();
         } catch (Exception e) { }
-        //((VirtualList)parentView).redraw();
+        //((VirtualList) parentView).redraw();
     }
 //#endif
 

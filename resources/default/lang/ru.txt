@@ -98,7 +98,7 @@ heap monitor	монитор памяти (heap)
 keys for old SE	поменять местами софт-кнопки
 Message	Сообщение
 <Other>	<Другой>
-history -	история -
+History	История сообщений
 Append	Добавить
 Active Contacts	Актив. контакты
 Select nickname	Выбрать ник
@@ -528,6 +528,7 @@ File manager	Менеджер файлов
 remote control	удалённое управление
 Version	Версия
 Use	Использует
+Juick (Focus & Commands)	Juick (Фокус и Команды
 [J] New comment	[J] Новый комментарий
 [J] Reply to comment	[J] Ответ на комментарий
 [J] Reply to	[J] Ответить
@@ -536,5 +537,8 @@ Use	Использует
 [J] Unsubscribe from comments	[J] Отписаться от комментариев
 [J] Recommend post	[J] Порекомендовать пост
 [J] Show post and comments	[J] Показать пост и комментарии к нему
+step back	перейти назад
+For work this command you need contact juick@juick.com in you roster. For more information see http://juick.com/help/	Для работы этой команды Вам нужен контакт juick@juick.com в ростере. Больше информации об этом сервисе можно найти по адресу http://juick.com/help/
+Next	Далее
 Users search	Поиск пользователей
 Memory cleaning	очистка памяти

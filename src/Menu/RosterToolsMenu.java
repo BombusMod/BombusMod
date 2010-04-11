@@ -99,7 +99,7 @@ public class RosterToolsMenu extends Menu {
 //#                 addItem(SR.MS_USERMOOD, 2, MenuIcons.ICON_MOOD);
 //#ifdef PEP_ACTIVITY
 //#         if (cf.rcvactivity && connected)
-//#                 addItem("Activity", 21, MenuIcons.ICON_MOOD);
+//#                 addItem("Activity", 22, MenuIcons.ICON_MOOD);
 //#endif
 //#ifdef PLUGINS
 //#             }
@@ -169,6 +169,12 @@ public class RosterToolsMenu extends Menu {
 //#         if (sd.Console)
 //#endif
 //#             addItem(SR.MS_XML_CONSOLE, 19, MenuIcons.ICON_CONCOLE);
+//#endif
+//#ifdef JUICK
+//#ifdef PLUGINS
+//#         if (sd.Juick)
+//#endif
+//#             addItem("Tools for Juick.Com", 20, MenuIcons.ICON_JUICK);
 //#endif
         addItem(SR.MS_BREAK_CONECTION, 20, MenuIcons.ICON_RECONNECT);
         attachDisplay(display);
@@ -276,13 +282,18 @@ public class RosterToolsMenu extends Menu {
 //#                 new XMLList(display, parentView);
 //#                 return;
 //#endif
-            case 20:
+//#ifdef JUICK
+//#             case 20:
+//#                 new JuickConfig(display, parentView, me.toString());
+//#                 return;
+//#endif
+            case 21:
                 sd.roster.errorLog(SR.MS_SIMULATED_BREAK);
                 //reconnectWindow.getInstance().startReconnect();
                 sd.roster.doReconnect();//connectionTerminated(new Exception(SR.MS_SIMULATED_BREAK));
                 return;
 //#ifdef PEP_ACTIVITY
-//#             case 21:
+//#             case 22:
 //#                 new ActivitiesForm(display, StaticData.getInstance().roster);
 //#                 return;
 //#endif

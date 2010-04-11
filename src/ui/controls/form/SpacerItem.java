@@ -1,7 +1,7 @@
 /*
  * SpacerItem.java
  *
- * Created on 19 Ã‡È 2008 „., 23:41
+ * Created on 19 –ú–∞–π 2008 –≥., 23:41
  *
  * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
  *

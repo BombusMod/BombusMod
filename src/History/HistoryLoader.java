@@ -51,14 +51,15 @@ public class HistoryLoader {
     private String fileName="";
     public Vector listMessages;
     private Vector indexes;
-    private int nextIndex = 0;
+    private long nextIndex;
+    public long fileSize;
 
     public final static int MESSAGE_MARKER_OUT=1;
     public final static int MESSAGE_MARKER_PRESENCE=2;
     public final static int MESSAGE_MARKER_IN=3;
     public final static int MESSAGE_MARKER_OTHER=0;
 
-    public HistoryLoader(String file){
+    public HistoryLoader(String file) {
        cf=Config.getInstance();
 //#ifdef DETRANSLIT
 //#         file=(cf.transliterateFilenames)?DeTranslit.getInstance().translit(file):file;
@@ -68,9 +69,45 @@ public class HistoryLoader {
 //#endif
        listMessages = new Vector();
        indexes = new Vector();
+       nextIndex = fileSize = getFileSize();
+       if (nextIndex > 4096)
+           nextIndex-=4096;
+       else nextIndex = 0;
     }
 
-    private int processMessage(int pos) {
+    private long getFileSize() {
+        long size = -1;
+        try {
+            FileIO file = FileIO.createConnection(fileName);
+            try {
+                size = file.fileSize();
+            } catch (Exception e) { }
+
+            try {
+                InputStream is = file.openInputStream();
+
+                if (size < 1)
+                    try {
+                        size = file.openInputStream().available();
+                    } catch (Exception e) { }
+
+                if (size < 1)
+                    try {
+                        size = is.skip(Long.MAX_VALUE);
+                        if (size < 1)
+                            size = -1;
+                        is.close();
+                        file.close();
+                    } catch (Exception e) { }
+            } catch (Exception e) { }
+        } catch (Exception e) { }
+//#ifdef DEBUG
+//#             System.out.println("Size of \""+fileName+"\" is "+size);
+//#endif
+        return size;
+    }
+
+    private long processMessage(long pos) {
 //#ifdef DEBUG
 //#         System.out.println("Called. pos=" + pos);
 //#endif
@@ -133,7 +170,7 @@ public class HistoryLoader {
         return pos;
     }
 
-    private byte[] readFile(int pos) {
+    private byte[] readFile(long pos) {
         FileIO f=FileIO.createConnection(fileName);
         byte[] b = new byte[4096];
         try {
@@ -170,12 +207,12 @@ public class HistoryLoader {
         }
         return ost;
     }
-    
+    // TODO: выпилить indexes и сделать навигацию по +4096 и -4096.
     public void getNext() {
-        int oldIndex = nextIndex;
+        long oldIndex = nextIndex;
         nextIndex = processMessage(oldIndex);
         if (oldIndex != nextIndex)
-            indexes.addElement(new Integer(oldIndex));
+            indexes.addElement(new Long(oldIndex));
     }
 
     public void getPrev() {
@@ -183,7 +220,7 @@ public class HistoryLoader {
         if (size<2)
             return;
         indexes.removeElementAt(size-1);
-        nextIndex=processMessage(((Integer)indexes.lastElement()).intValue());
+        nextIndex=processMessage(((Long)indexes.lastElement()).longValue());
     }
 
     private Msg processMessage(String marker, String date, String from, String subj, String body) {
@@ -211,7 +248,7 @@ public class HistoryLoader {
 
     private String findBlock(String source, String needle) {
         int start = source.indexOf("<"+needle+">");
-        int end = source.indexOf("</"+needle+">");
+        int end = source.indexOf("</"+needle+">",start);
         if (start<0 || end<0)
             return null;
         return source.substring(start+needle.length()+2, end);

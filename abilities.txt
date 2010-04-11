@@ -1,7 +1,6 @@
 Фишечки :)
 
 ADHOC - удаленное управление клиентом [XEP-0050: Ad-Hoc Commands, XEP-0146: Remote Controlling Clients].
-ANISMILES - поддержка анимированных смайлов.
 ANTISPAM - антиспам.
 ARCHIVE - архив сообщений [почти то же, что и TEMPLATES].
 AUTOSTATUS - автостатус (например, статус "away" через 5 минут и "extended away" через 10 бездействия).

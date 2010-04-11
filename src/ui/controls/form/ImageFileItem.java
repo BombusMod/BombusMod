@@ -1,7 +1,7 @@
 /*
  * ImageFileItem.java
  *
- * Created on 25 Ã‡È 2008 „., 21:43
+ * Created on 25 –ú–∞–π 2008 –≥., 21:43
  *
  * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
  *

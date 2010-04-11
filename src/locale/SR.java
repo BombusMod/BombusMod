@@ -34,7 +34,7 @@ import util.StringLoader;
 public class SR {
 
     private static Hashtable lang;
-    
+
     public   static String MS_JID = loadString( "Jid" );
     public   static String MS_PRIVACY_LISTS = loadString( "Privacy Lists" );
     public   static String MS_MESSAGE_FONT = loadString( "Message font" );
@@ -122,7 +122,7 @@ public class SR {
     public   static String MS_HEAP_MONITOR = loadString( "heap monitor" );
     public   static String MS_MESSAGE = loadString( "Message" );
     public   static String MS_OTHER = loadString( "<Other>" );
-    public   static String MS_HISTORY = loadString( "history -" );
+    public   static String MS_HISTORY = loadString( "History" );
     public   static String MS_APPEND = loadString( "Append" );
     public   static String MS_ACTIVE_CONTACTS = loadString( "Active Contacts" );
     public   static String MS_SELECT_NICKNAME = loadString( "Select nickname" );
@@ -230,7 +230,7 @@ public class SR {
     public   static String MS_HAS_LEFT_CHANNEL=loadString( " has left the channel" );
     public   static String MS_HAS_JOINED_THE_CHANNEL_AS=loadString( " has joined the channel as " );
     public   static String MS_AND=loadString( " and " );
-    public   static String MS_IS_NOW=loadString( " is now " );    
+    public   static String MS_IS_NOW=loadString( " is now " );
     public  static String MS_ERROR=loadString( "error" );
     public static String MS_SELECT_HISTORY_FOLDER=loadString( "Select history folder" );
     //public static String MS_NEW_MENU=loadString("show new menu");
@@ -245,7 +245,7 @@ public class SR {
 
     public static String MS_COPY=loadString( "Copy" );
     public static String MS_PASTE=loadString( "Paste" );
-    
+
     public static String MS_SAVE_TEMPLATE=loadString( "Save template" );
     public static String MS_TEMPLATE=loadString( "Template" );
 
@@ -281,7 +281,7 @@ public class SR {
     public static String MS_NEW_TEMPLATE=loadString( "New Template" );
 
     public static String MS_SAVE_PHOTO=loadString( "Save photo" );
-    
+
 //#ifdef COLOR_TUNE
 //#     public static String MS_BALLOON_INK=loadString("balloon ink");
 //#     public static String MS_BALLOON_BGND=loadString("balloon background");
@@ -330,31 +330,31 @@ public class SR {
     public static String MS_LOAD_SKIN=loadString( "Load Scheme" );
 
     public static String MS_SOUNDS_OPTIONS=loadString( "Sounds options" );
-    
+
     public static String MS_TIME=loadString( "Time" );
-    
+
     public  static String MS_ROLE_PARTICIPANT=loadString( "participant" );
     public  static String MS_ROLE_MODERATOR=loadString( "moderator" );
     public  static String MS_ROLE_VISITOR=loadString( "visitor" );
-    
+
     public  static String MS_AFFILIATION_NONE=loadString( "none" );
     public  static String MS_AFFILIATION_MEMBER=loadString( "member" );
     public  static String MS_AFFILIATION_ADMIN=loadString( "admin" );
     public  static String MS_AFFILIATION_OWNER=loadString( "owner" );
-    
+
     public  static String MS_SEC3=loadString( "second's" );
     public  static String MS_SEC2=loadString( "seconds" );
     public  static String MS_SEC1=loadString( "second" );
-    
+
     public  static String MS_MIN3=loadString( "minute's" );
     public  static String MS_MIN2=loadString( "minutes" );
     public  static String MS_MIN1=loadString( "minute" );
-    
-    public  static String MS_HOUR3=loadString( "hour's" );    
+
+    public  static String MS_HOUR3=loadString( "hour's" );
     public  static String MS_HOUR2=loadString( "hours" );
     public  static String MS_HOUR1=loadString( "hour" );
-    
-    public  static String MS_DAY3=loadString( "day's" );  
+
+    public  static String MS_DAY3=loadString( "day's" );
     public  static String MS_DAY2=loadString( "days" );
     public  static String MS_DAY1=loadString( "day" );
 
@@ -369,7 +369,7 @@ public class SR {
 //#     public static String MS_AUTO_XA=loadString( "Auto xa since %t" );
 //#     public static String MS_AUTO_AWAY=loadString( "Auto away since %t" );
 //#endif
-    
+
     public   static String MS_AUTOFOCUS = loadString( "autofocus" );
     public   static String MS_GRANT_MEMBERSHIP = loadString( "Grant Membership" );
     public   static String MS_SURE_CLEAR = loadString( "Are You sure want to clear messagelist?" );
@@ -417,7 +417,7 @@ public class SR {
     public   static String MS_RENAME = loadString( "Rename" );
     public   static String MS_MOVE = loadString( "Move" );
     public static String MS_SAVE = loadString( "Save" );
-    
+
 //#ifdef DETRANSLIT
 //#     public static String MS_TRANSLIT = loadString( "Translit" );
 //#     public static String MS_DETRANSLIT = loadString( "ReTranslit" );
@@ -434,7 +434,7 @@ public class SR {
     public static String MS_NO_CLIENT_INFO = loadString( "No client info" );
     public static String MS_CLEAN_ALL_MESSAGES = loadString( "Delete all messages" );
     public static String MS_DO_AUTOJOIN = loadString( "Join marked (auto)" );
-    
+
     public static String MS_STATS = loadString( "Statistics" );
 
     public static String MS_STARTED=loadString( "Started: " );
@@ -446,7 +446,7 @@ public class SR {
     public static String MS_EDIT_JOIN = loadString( "Edit/join" );
     public static String MS_USE_COLOR_SCHEME = loadString( "Use this Color scheme" );
     public static String MS_DELETE_ALL = loadString( "Delete All" );
-    
+
 //#ifdef FILE_IO
     public static String MS_HISTORY_OPTIONS = loadString( "History options" );
 //#ifdef DETRANSLIT
@@ -506,21 +506,21 @@ public class SR {
     public static String MS_THU = loadString( "Thu" );
     public static String MS_FRI = loadString( "Fri" );
     public static String MS_SAT = loadString( "Sat" );
-    
+
 //2007-11-04
     public static String MS_SUBSCR_AUTO=loadString( "Automatic subscription" );
     public static String MS_SUBSCR_ASK=loadString( "Ask me" );
     public static String MS_SUBSCR_DROP=loadString( "Drop subscription" );
     public static String MS_SUBSCR_REJECT=loadString( "Deny subscription" );  //TODO: correct according to RFC
-    
+
     public static String MS_VISIBLE_GROUP="Visible";
-    
+
 //2007-11-07
     public static String MS_SEARCH=loadString( "Search" );
     public static String MS_REGISTER=loadString( "Register" );
 
     public static String MS_CHECK_GOOGLE_MAIL=loadString( "Check Google mail" );
-   
+
 //2008-01-18
     public static String MS_BLINKING=loadString( "Blink" );
     public static String MS_NOTICES_OPTIONS=loadString( "Notices options" );
@@ -554,13 +554,13 @@ public class SR {
 
     public static String MS_CONN=loadString( "Session(s): " );
     public static String MS_DESCRIPTION=loadString( "Description" );
-    
+
 //2008-01-24
     public static String MS_USER = loadString( "User" );
 //#if IMPORT_EXPORT
 //#     public static String MS_IMPORT_EXPORT=loadString( "Import/Export" );
 //#endif
-    
+
 //2008-02-03
     public static String MS_BOLD_FONT=loadString( "bold font for contacts" );
     public static String MS_RUNNING_MESSAGE=loadString( "running message" );
@@ -570,7 +570,7 @@ public class SR {
     public static String MS_IRCLIKESTATUS = loadString( "IRC-like conference nick-status" );
     public static String MS_SIMULATED_BREAK=loadString( "Simulated break" );
     public static String MS_BUILD_NEW=loadString( "Build new version on constructor" );
-    
+
 //2008-03-20
 //#ifdef AUTOTASK
 //#     public static String MS_AUTOTASKS=loadString( "Auto tasks" );
@@ -660,34 +660,34 @@ public class SR {
     public static String MS_SHOW_NACKNAMES=loadString( "show nicknames" );
 
     public static String MS_SEND_PHOTO=loadString( "Send photo" );
-    
+
     public static String MS_ENABLE_AUTORESPOND=loadString( "enable autorespond" );
 
     public static String MS_FILE_MANAGER=loadString( "File manager" );
-    
+
     public static String MS_ADHOC=loadString( "remote control" );
-    
+
     public static String MS_USE_DNS_SRV_RESOLVER=loadString( "resolve hostname" );
-    
+
     public static String MS_SHOW_TIME_TRAFFIC=loadString( "show time and traffic" );
-    
+
     public static String MS_KEYS_FOR_OLD_SE=loadString( "keys for old SE" );
 
     public static String MS_USERS_SEARCH=loadString( "Users search" );
-    
+
 //#ifdef PEP
 //#     public static String MS_PEP=loadString( "Personal events" );
 //#     public static String MS_USERMOOD=loadString( "User moods" );
 //#     public static String MS_USERTUNE=loadString( "User tune" );
 //#     public static String MS_USERACTIVITY=loadString( "User activity" );
 //#     public static String MS_SEND_RECEIVE_USERMOODS=loadString( "user moods send/receive" );
-//#     
+//# 
 //#     public static String MS_PEP_NOT_SUPPORTED = loadString( "Personal events not supported" );
 //#endif
-    
+
     public static String MS_VIP_GROUP = loadString( "VIP" );
     public static String MS_ENABLE_DISABLE = loadString( "Enable/Disable" );
-    
+
     public static String MS_ONLINE = loadString( "online" );
     public static String MS_CHAT = loadString( "chat" );
     public static String MS_AWAY = loadString( "away" );
@@ -699,28 +699,37 @@ public class SR {
     public static String MS_USE = loadString( "Use" );
     public static String MS_VERSION = loadString( "Version" );
 
-    public static String MS_SEND_JUICK_POST_REPLY = loadString( "[J] New comment" );
-    public static String MS_SEND_JUICK_COMMENT_REPLY = loadString( "[J] Reply to comment" );
-    public static String MS_SEND_JUICK_PRIVATE_REPLY = loadString( "[J] Reply to " );
-    public static String MS_JUICK_THINGS = loadString( "[J] Things" );
-    public static String MS_JUICK_POST_SUBSCRIBE = loadString( "[J] Subscribe to comments" );
-    public static String MS_JUICK_POST_UNSUBSCRIBE = loadString( "[J] Unsubscribe from comments" );
-    public static String MS_JUICK_POST_RECOMMEND = loadString( "[J] Recommend post" );
-    public static String MS_JUICK_POST_SHOW = loadString( "[J] Show post and comments" );
-    public static String MS_JUICK_CONTACT_NOT_FOUND = loadString( "For work this command you need contact juick@juick.com in you roster. For more information see http://juick.com/help/" );
+//#ifdef JUICK
+//#      public static String MS_JUICK_FOCUS_COMMANDS = loadString( "Juick (Focus & Commands)" );
+//#      public static String MS_SEND_JUICK_POST_REPLY = loadString( "[J] New comment" );
+//#      public static String MS_SEND_JUICK_COMMENT_REPLY = loadString( "[J] Reply to comment" );
+//#      public static String MS_SEND_JUICK_PRIVATE_REPLY = loadString( "[J] Reply to " );
+//#      public static String MS_JUICK_THINGS = loadString( "[J] Things" );
+//#      public static String MS_JUICK_POST_SUBSCRIBE = loadString( "[J] Subscribe to comments" );
+//#      public static String MS_JUICK_POST_UNSUBSCRIBE = loadString( "[J] Unsubscribe from comments" );
+//#      public static String MS_JUICK_POST_RECOMMEND = loadString( "[J] Recommend post" );
+//#      public static String MS_JUICK_POST_SHOW = loadString( "[J] Show post and comments" );
+//#      public static String MS_JUICK_CONTACT_NOT_FOUND = loadString( "For work this command you need contact juick@juick.com in you roster. For more information see http://juick.com/help/" );
+//#endif
+
+    public static String MS_STEP_BACK = loadString( "step back" );
+
+//#ifdef HISTORY_READER
+//#     public static String MS_NEXT = loadString( "Next" );
+//#endif
 
     private SR() { }
-    
+
     public static String MS_XMLLANG;
     public static String MS_IFACELANG;
-    
+
     private static void loadLang() {
         if (lang==null) {
             String langFile=Config.getInstance().langFileName();
             if (langFile!=null) lang=new StringLoader().hashtableLoader(langFile);
             if (lang==null) lang=new Hashtable();
             MS_XMLLANG=(String)lang.get("xmlLang");
-            
+
             MS_IFACELANG=MS_XMLLANG;
             if (MS_IFACELANG==null) {
                 MS_IFACELANG="en";
@@ -747,7 +756,7 @@ public class SR {
 //#endif
         return (value==null)?key:value;
     }
-    
+
     public static String getPresence(String presenceName) {
         if (presenceName.equals("online"))       return MS_ONLINE;
    else if (presenceName.equals("chat"))         return MS_CHAT;

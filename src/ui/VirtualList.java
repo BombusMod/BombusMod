@@ -346,7 +346,6 @@ public abstract class VirtualList
     public VirtualList() {
         width=getWidth();
         height=getHeight();
-
 //#ifdef POPUPS
         PopUp.getInstance();
 //#endif
@@ -1437,18 +1436,20 @@ public abstract class VirtualList
     protected  void setRotator(){
 //#if (USE_ROTATOR)
         try {
-            if (getItemCount()<1) return;
+            if (getItemCount() < 1)
+                return;
             focusedItem(cursor);
-        } catch (Exception e) { return; }
-        
-        if (cursor>=0) {
-            int itemWidth=getItemRef(cursor).getVWidth();
-            if (itemWidth>=width-scrollbar.getScrollWidth()) 
-                itemWidth-=width/2; 
-            else 
-                itemWidth=0;
-            TimerTaskRotate.startRotate(itemWidth, this);
-        }
+
+            if (cursor >= 0) {
+                int itemWidth = getItemRef(cursor).getVWidth();
+                if (itemWidth >= width - scrollbar.getScrollWidth()) {
+                    itemWidth -= width / 2;
+                } else {
+                    itemWidth = 0;
+                }
+                TimerTaskRotate.startRotate(itemWidth, this);
+            }
+        } catch (Exception e) { }
  //#endif
     }
     

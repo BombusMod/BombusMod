@@ -101,7 +101,8 @@ public class HistoryStorage {
                         break;
                     pos=end_pos+4;
                 }                
-                vector.setSize(5);
+                if(vector.size()>5)
+                   vector.setSize(5);
             } catch (Exception e) { }
         }
         

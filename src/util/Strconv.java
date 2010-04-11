@@ -134,7 +134,7 @@ public class Strconv {
          for(int i=0; i < srcLen; i++) {
              int c = (int)str.charAt(i);
 
-            //TODO: эскейпить коды <0x20
+            //TODO: ескэйпить коды <0x20
             if ((c >= 1) && (c <= 0x7f)) {
                  outbuf.append( (char) c);
                 
