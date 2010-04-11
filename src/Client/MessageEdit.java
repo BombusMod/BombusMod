@@ -277,10 +277,10 @@ public final class MessageEdit
 //#      2 - send
 //#      3 - send and close
 //#      4 - end cycle
-//#      * 
+//#      *
 //#      */
-//#     int runState=2;    
-//# 
+//#     int runState=2;
+//#
 //#     int strPos=0;
 //#     public void run(){
 //#         while (runState<4) {
@@ -310,10 +310,10 @@ public final class MessageEdit
 //#             try { Thread.sleep(250); } catch (Exception e) { break; }
 //#         }
 //#     }
-//#     
+//#
 //#     private void send() {
 //#         String comp=null; // composing event off
-//# 
+//#
 //#         String id=String.valueOf((int) System.currentTimeMillis());
 //#         if (body!=null)
 //#             body=body.trim();
@@ -335,15 +335,15 @@ public final class MessageEdit
 //#             String from=sd.account.toString();
 //#             Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,body);
 //#             msg.id=id;
-//# 
+//#
 //#             if (to.origin!=Contact.ORIGIN_GROUPCHAT) {
 //#                 to.addMessage(msg);
 //#                 comp="active"; // composing event in message
 //#             }
 //#         } else if (to.acceptComposing) comp=(composing)? "composing":"paused";
-//#         
+//#
 //#         if (!cf.eventComposing) comp=null;
-//#         
+//#
 //#         try {
 //#             if (body!=null || subj!=null || comp!=null) {
 //#                 to.lastSendedMessage=body;
@@ -351,7 +351,7 @@ public final class MessageEdit
 //#             }
 //#         } catch (Exception e) { }
 //#     }
-//#     
+//#
 //#     private String notifyMessage;
 //#     public void setMyTicker(String msg) {
 //#         if (msg!=null && !msg.equals("")) {
@@ -420,8 +420,9 @@ public final class MessageEdit
             }
         } catch (Exception e) { }
 
-        try {
-            ((VirtualList) parentView).forceScrolling();
+        try { //TODO: forceScrolling() не выбрасывает исключений. try нужен?
+            if (parentView instanceof ContactMessageList)
+               ((ContactMessageList) parentView).forceScrolling();
         } catch (Exception e) { }
         //((VirtualList) parentView).redraw();
     }

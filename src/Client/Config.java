@@ -534,7 +534,7 @@ public static boolean fullscreen=
                     inputStream=null;
                 }
             } catch (IOException ex) { }
-	}
+	} catch (NullPointerException e) { /* Сюда мы попадём, если Storage нет */ }
 	
 	lastProfile=profile=def_profile;
         if (lastProfile==AlertProfile.VIBRA) lastProfile=0;

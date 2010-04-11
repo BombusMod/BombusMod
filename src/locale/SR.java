@@ -637,6 +637,7 @@ public class SR {
 
     //public static String MS_CHANGE=loadString("Change");
 
+    public static String MS_NEXT = loadString( "Next" );
     public static String MS_PREVIOUS=loadString( "Previous" );
     public static String MS_PREVIOUS_=loadString( "Previous: " );
 
@@ -713,10 +714,6 @@ public class SR {
 //#endif
 
     public static String MS_STEP_BACK = loadString( "step back" );
-
-//#ifdef HISTORY_READER
-//#     public static String MS_NEXT = loadString( "Next" );
-//#endif
 
     private SR() { }
 
