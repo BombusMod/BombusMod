@@ -209,7 +209,6 @@ public class userKeyExec {
 //#endif
 //#                 Displayable current = display.getCurrent();
 //#                 if (current instanceof ContactMessageList) {
-//# //TODO: make!!!!
 //#                     ContactMessageList current_cml = (ContactMessageList) current;
 //#                     current_cml.commandAction(current_cml.cmdJuickCommands, current);
 //#                     System.out.println("current instanceof ContactMessageList");

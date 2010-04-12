@@ -1140,7 +1140,7 @@ public abstract class VirtualList
 //#                 case USER_STAR_KEY_PRESSED:
 //#                     additionKeyState=(keyCode!=KEY_STAR)?USER_KEY_EXECUTED:USER_STAR_KEY_PRESSED;
 //#                     additionKeyPressed(keyCode);
-//#                     break;
+//#                     return;
 //#             }
 //#         }
 //#endif

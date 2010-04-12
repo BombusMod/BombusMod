@@ -68,7 +68,7 @@ public final class MessageEdit
     
     private Config cf;
     public String body;
-    
+
 //#ifdef DETRANSLIT
 //#     private boolean sendInTranslit=false;
 //#     private boolean sendInDeTranslit=false;
@@ -117,8 +117,7 @@ public final class MessageEdit
 
          } catch (Exception e) {}
 
-        //insert(body, 0); // workaround for Nokia S40
-        t.setString(body);
+        insert(body, 0, false); // workaround for Nokia S40
         this.to=to;
         this.display=display;
 
@@ -280,7 +279,7 @@ public final class MessageEdit
 //#      *
 //#      */
 //#     int runState=2;
-//#
+//# 
 //#     int strPos=0;
 //#     public void run(){
 //#         while (runState<4) {
@@ -310,10 +309,10 @@ public final class MessageEdit
 //#             try { Thread.sleep(250); } catch (Exception e) { break; }
 //#         }
 //#     }
-//#
+//# 
 //#     private void send() {
 //#         String comp=null; // composing event off
-//#
+//# 
 //#         String id=String.valueOf((int) System.currentTimeMillis());
 //#         if (body!=null)
 //#             body=body.trim();
@@ -335,15 +334,15 @@ public final class MessageEdit
 //#             String from=sd.account.toString();
 //#             Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,body);
 //#             msg.id=id;
-//#
+//# 
 //#             if (to.origin!=Contact.ORIGIN_GROUPCHAT) {
 //#                 to.addMessage(msg);
 //#                 comp="active"; // composing event in message
 //#             }
 //#         } else if (to.acceptComposing) comp=(composing)? "composing":"paused";
-//#
+//# 
 //#         if (!cf.eventComposing) comp=null;
-//#
+//# 
 //#         try {
 //#             if (body!=null || subj!=null || comp!=null) {
 //#                 to.lastSendedMessage=body;
@@ -351,7 +350,7 @@ public final class MessageEdit
 //#             }
 //#         } catch (Exception e) { }
 //#     }
-//#
+//# 
 //#     private String notifyMessage;
 //#     public void setMyTicker(String msg) {
 //#         if (msg!=null && !msg.equals("")) {
@@ -427,29 +426,49 @@ public final class MessageEdit
         //((VirtualList) parentView).redraw();
     }
 //#endif
+/* Пролистывание команд по страницам, для SE C510
+    private void addCommand(Command cmd) {
+       Commands.addElement(cmd);
+       // А вообще здесь insert надо, в соответствие с приоритетом.
+    }
 
+    private int getCommandPages() {
+        int count_pages = ((int) (Commands.size()/8))+1;
+        if ((Commands.size() % 8) < 3)
+            count_pages--;
+        return count_pages;
+    }
+
+    private void nextPage() {
+    }
+*/
     public void insert(String s, int caretPos) {
+        insert(s, caretPos, true);
+    }
 
+    public void insert(String s, int caretPos, boolean writespaces) {
         if (s == null) return;
 
         String src = t.getString();
 
         StringBuffer sb = new StringBuffer(s);
 
-        if (caretPos > 0) {
-            if (src.charAt(caretPos - 1) != ' ') {
-                sb.insert(0, ' ');
+        if (writespaces) {
+            if (caretPos > 0) {
+                if (src.charAt(caretPos - 1) != ' ') {
+                    sb.insert(0, ' ');
+                }
             }
-        }
 
-        if (caretPos < src.length()) {
-            if (src.charAt(caretPos) != ' ') {
+            if (caretPos < src.length()) {
+                if (src.charAt(caretPos) != ' ') {
+                    sb.append(' ');
+                }
+            }
+
+            if (caretPos == src.length()) {
                 sb.append(' ');
             }
-        }
-
-        if (caretPos == src.length()) {
-            sb.append(' ');
         }
 
         try {

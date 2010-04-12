@@ -528,11 +528,11 @@ File manager	Менеджер файлов
 remote control	удалённое управление
 Version	Версия
 Use	Использует
-Juick (Focus & Commands)	Juick (Фокус и Команды
-[J] New comment	[J] Новый комментарий
-[J] Reply to comment	[J] Ответ на комментарий
+Juick (Focus & Commands)	Juick (Фокус и Команды)
+[J] Reply to message	[J] Ответить на сообщение
 [J] Reply to	[J] Ответить
 [J] Things	[J] Сущности
+[J] Delete message	[J] Удалить сообщение
 [J] Subscribe to comments	[J] Подписаться на комментарии
 [J] Unsubscribe from comments	[J] Отписаться от комментариев
 [J] Recommend post	[J] Порекомендовать пост
