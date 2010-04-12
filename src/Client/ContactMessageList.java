@@ -301,7 +301,7 @@ public void showNotify(){
 //#             removeCommand(cmdResume);
 //#         else
 //#             addCommand(cmdResume);
-//#
+//# 
 //#         if (cmdSubscribe==null) return;
 //#         try {
 //#             Msg msg=(Msg) contact.msgs.elementAt(cursor);
@@ -490,7 +490,7 @@ public void showNotify(){
 //#             viewJuickThings(body, d);
 //#         } else if (c == cmdJuickCommands) {
 //#             updateJuickCommands();
-//#             new MyMenu(display, parentView, this, SR.MS_COMMANDS, null, currentJuickCommands);
+//#             new MyMenu(display, parentView, (Menu.MenuListener) this, SR.MS_COMMANDS, null, currentJuickCommands);
 //#         }
 //#endif
     }
@@ -648,7 +648,15 @@ public void showNotify(){
 //#     }
 //# 
 //#     public boolean noRedirrectToJuickContact(Contact c) {
-//#         return (isJuickContact(c) || (c.bareJid.indexOf("twitter") >= 0));
+//#         return (isJuickContact(c)
+//#          || c.bareJid.equals("implusplus@gmail.com")
+//#          || c.bareJid.startsWith("implusplus%gmail.com@")
+//#          || c.bareJid.equals("tweet@excla.im")
+//#          || c.bareJid.startsWith("tweet%excla.im@")
+//#          || c.bareJid.endsWith("@twitter.tweet.im")
+//#          || (c.bareJid.indexOf("%twitter.tweet.im@") >= 0)
+//#          || c.bareJid.equals("twitter@t2p.me")
+//#          || c.bareJid.startsWith("twitter%t2p.me@")); // Not tested (2010-04-12)
 //#     }
 //# 
 //#     private Contact getActualJuickContact() {
@@ -663,7 +671,7 @@ public void showNotify(){
         messages=null;
         messages=new Vector();
         cursor=0;
-        moveCursorHome();getTarget
+        moveCursorHome();
         redraw();
     }
     

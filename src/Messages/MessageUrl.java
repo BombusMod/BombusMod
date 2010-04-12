@@ -37,41 +37,49 @@ import ui.MIDPTextBox;
 import ui.MIDPTextBox.TextBoxNotify;
 import ui.controls.form.DefForm;
 import ui.controls.form.ListItem;
+import locale.SR;
 //#ifndef MENU_LISTENER
 //# import javax.microedition.lcdui.Command;
 //#else
 import Menu.Command;
-import locale.SR;
+//#endif
+//#ifdef CLIPBOARD
+//# import util.ClipBoard;
+//# import Client.Msg;
 //#endif
 
 /**
  *
  * @author EvgS
  */
-public class MessageUrl extends DefForm implements TextBoxNotify{
-    
+public class MessageUrl extends DefForm implements TextBoxNotify {
+
+//#ifdef CLIPBOARD
+//#     private ClipBoard clipboard=ClipBoard.getInstance();
+//# 
+//#     protected Command cmdCopy = new Command(SR.MS_COPY, Command.SCREEN, 20);
+//#     protected Command cmdCopyPlus = new Command("+ "+SR.MS_COPY, Command.SCREEN, 30);
+//#endif
     private Vector urlList;
     Command cmdGoto=new Command("Goto", Command.OK, 1);
     Command cmdEdit=new Command("Edit", Command.SCREEN, 2);
+
     /** Creates a new instance of MessageUrl */
     public MessageUrl(Display display, Displayable pView, Vector urlList) {
 	super(display, pView, "URLs");
         this.display = display;        
 	this.urlList=urlList;
-	
+
 	for (int i=0; i<urlList.size(); i++) { // throws exception
 	    itemsList.addElement(new ListItem((String)urlList.elementAt(i)));
 	}
-//#ifndef MENU_LISTENER
-//#         addCommand(cmdGoto);
-//#         addCommand(cmdEdit);
-//#        addCommand(cmdCancel);
-//#         removeCommand(cmdOk);
-//#endif        
-        setCommandListener(this);        
+
+        commandStateForThis();
+        setCommandListener(this);
 	attachDisplay(display);
         this.parentView = pView;
     }
+    
     public void commandAction(Command c, Displayable d) {
         super.commandAction(c, d);
         if (c==cmdGoto)
@@ -79,6 +87,20 @@ public class MessageUrl extends DefForm implements TextBoxNotify{
         else if (c==cmdEdit) {
             EditURL();
         }
+//#ifdef CLIPBOARD
+//#         if (c == cmdCopy)
+//#         {
+//#             try {
+//#                 clipboard.add(new Msg(Msg.MESSAGE_TYPE_IN, "url", null, (String) urlList.elementAt(cursor)));
+//#             } catch (Exception e) {/*no messages*/}
+//#         }
+//# 
+//#         if (c==cmdCopyPlus) {
+//#             try {
+//#                 clipboard.append(new Msg(Msg.MESSAGE_TYPE_IN, "url", null, (String) urlList.elementAt(cursor)));
+//#             } catch (Exception e) {/*no messages*/}
+//#         }
+//#endif
     }
     
     public void eventOk() {
@@ -105,13 +127,30 @@ public class MessageUrl extends DefForm implements TextBoxNotify{
         destroyView();
         Display.getDisplay(BombusMod.getInstance()).setCurrent(parentView);
     }
-//#ifdef MENU_LISTENER
-    public void commandState(){
-        menuCommands.removeAllElements();
-        addCommand(cmdGoto);
-        addCommand(cmdEdit);        
-    }
 
+     public void commandState() {
+//#ifdef MENU_LISTENER
+        menuCommands.removeAllElements();
+//#else
+//#          super.commandState();
+//#          addCommand(cmdCancel);
+//#          removeCommand(cmdOk);
+//#endif
+     }
+
+     public void commandStateForThis() {
+        addCommand(cmdGoto);
+        addCommand(cmdEdit);
+
+//#ifdef CLIPBOARD
+//#         if (Client.Config.getInstance().useClipBoard) {
+//#             addCommand(cmdCopy);
+//#             addCommand(cmdCopyPlus);
+//#         }
+//#endif
+     }
+
+//#ifdef MENU_LISTENER
     public String touchLeftCommand(){ return SR.MS_MENU; }
 
     public void touchLeftPressed(){
