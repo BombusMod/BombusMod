@@ -40,7 +40,10 @@
  
     <!-- prepare version patch -->
     <target name="post-init">
-	<exec executable="svnversion" output="resources/.svnrev" />
+	<exec executable="svnversion" output="resources/.svnrev">
+		<!-- ignore config and resources modification -->
+		<arg value = "src"/>  
+	</exec>
 	<loadfile srcFile="resources/.svnrev" property="bombus.svnrev"/>
 	<copy file="resources/version.properties" tofile="resources/.version" overwrite="true" />
 	<replace 

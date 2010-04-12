@@ -29,11 +29,11 @@ package Conference;
 
 import Client.Contact;
 import Client.StaticData;
+import Client.MessageEdit;
 import locale.SR;
 import ui.MainBar;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
-import javax.microedition.lcdui.TextBox;
 import com.alsutton.jabber.datablocks.Presence;
 import java.util.Enumeration;
 import java.util.Vector;
@@ -68,13 +68,13 @@ public final class AppendNick
     Command cmdOk=new Command(SR.MS_APPEND, Command.OK, 1);
     Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 99);
 
-    private TextBox t;
+    private MessageEdit me;
     
-    public AppendNick(Display display, Displayable pView, Contact to, int caretPos, TextBox t) {
+    public AppendNick(Display display, Displayable pView, Contact to, int caretPos, MessageEdit me) {
         super(display);
         this.caretPos=caretPos;
         
-        this.t=t;
+        this.me = me;
         
         setMainBarItem(new MainBar(SR.MS_SELECT_NICKNAME));
         
@@ -120,7 +120,7 @@ public final class AppendNick
 //#ifdef RUNNING_MESSAGE
 //#             StaticData.getInstance().roster.me.insert(b.toString(), caretPos);
 //#else
-            t.insert(b.toString(), caretPos);
+            me.insert(b.toString(), caretPos);
 //#endif
             b=null;
          } catch (Exception e) {}
