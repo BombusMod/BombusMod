@@ -318,8 +318,9 @@ public void showNotify(){
     }
     
     public void forceScrolling() { //by voffk
+        System.out.println(contact.moveToLatest);
         if (contact.moveToLatest) {
-            if (cursor==(messages.size()-1)) {
+            if (cursor<(messages.size()-1)) {
                 contact.moveToLatest=false;
                 moveCursorEnd();
             }
@@ -362,7 +363,7 @@ public void showNotify(){
     }
     
     public void focusedItem(int index){ 
-        markRead(index); 
+        markRead(index);
     }
     
     public void commandAction(Command c, Displayable d){
@@ -831,7 +832,7 @@ public void showNotify(){
 //#     public void loadRecentList() {
 //#         contact.setHistoryLoaded(true);
 //#         HistoryStorage hs = new HistoryStorage(contact.bareJid);
-//#         Vector history=hs.importData();        
+//#         Vector history=hs.importData();
 //#         for (Enumeration messages2=history.elements(); messages2.hasMoreElements(); )  {
 //#             Msg message=(Msg) messages2.nextElement();
 //#             if (!isMsgExists(message)) {
@@ -842,7 +843,7 @@ public void showNotify(){
 //#         }
 //#         history=null;
 //#     }
-//# 
+//#
 //#     private boolean isMsgExists(Msg msg) {
 //#         if (msg == null) return true;
 //#          for (Enumeration contactMsgs=contact.msgs.elements(); contactMsgs.hasMoreElements(); )  {

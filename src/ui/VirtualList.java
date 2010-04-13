@@ -1440,7 +1440,14 @@ public abstract class VirtualList
             if (getItemCount() < 1)
                 return;
             focusedItem(cursor);
+            } catch (Exception e) {
+//#ifdef DEBUG
+//#             System.out.println("setRotator() in VirtialList in one try{} block catch exception:");
+//#             System.out.println(e);
+//#endif
+            }
 
+        try {
             if (cursor >= 0) {
                 int itemWidth = getItemRef(cursor).getVWidth();
                 if (itemWidth >= width - scrollbar.getScrollWidth()) {
@@ -1450,7 +1457,12 @@ public abstract class VirtualList
                 }
                 TimerTaskRotate.startRotate(itemWidth, this);
             }
-        } catch (Exception e) { }
+        } catch (Exception e) {
+//#ifdef DEBUG
+//#             System.out.println("setRotator() in VirtialList in two try{} block catch exception:");
+//#             System.out.println(e);
+//#endif
+        }
  //#endif
     }
     
