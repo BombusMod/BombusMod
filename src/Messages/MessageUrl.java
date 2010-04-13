@@ -61,8 +61,8 @@ public class MessageUrl extends DefForm implements TextBoxNotify {
 //#     protected Command cmdCopyPlus = new Command("+ "+SR.MS_COPY, Command.SCREEN, 30);
 //#endif
     private Vector urlList;
-    Command cmdGoto=new Command("Goto", Command.OK, 1);
-    Command cmdEdit=new Command("Edit", Command.SCREEN, 2);
+    Command cmdGoto=new Command("Goto", Command.OK, 2);
+    Command cmdEdit=new Command("Edit", Command.SCREEN, 3);
 
     /** Creates a new instance of MessageUrl */
     public MessageUrl(Display display, Displayable pView, Vector urlList) {
@@ -70,11 +70,15 @@ public class MessageUrl extends DefForm implements TextBoxNotify {
         this.display = display;        
 	this.urlList=urlList;
 
+//#ifndef MENU_LISTENER
+//#         commandStateForClassicMenu();
+//#endif
+        commandStateCommon();
+
 	for (int i=0; i<urlList.size(); i++) { // throws exception
 	    itemsList.addElement(new ListItem((String)urlList.elementAt(i)));
 	}
 
-        commandStateForThis();
         setCommandListener(this);
 	attachDisplay(display);
         this.parentView = pView;
@@ -127,29 +131,36 @@ public class MessageUrl extends DefForm implements TextBoxNotify {
         destroyView();
         Display.getDisplay(BombusMod.getInstance()).setCurrent(parentView);
     }
-
-     public void commandState() {
+//#ifndef MENU_LISTENER
+//#     public void commandStateForClassicMenu() {
+//#         addCommand(cmdGoto);
+//#         addCommand(cmdEdit);
+//#         addCommand(cmdCancel);
+//#         removeCommand(cmdOk);
+//#         commandStateCommon();
+//#     }
+//#endif
+    
 //#ifdef MENU_LISTENER
-        menuCommands.removeAllElements();
-//#else
-//#          super.commandState();
-//#          addCommand(cmdCancel);
-//#          removeCommand(cmdOk);
-//#endif
+     public void commandState() {
+         menuCommands.removeAllElements();
+         addCommand(cmdOk);
+         addCommand(cmdGoto);
+         addCommand(cmdEdit);
+         addCommand(cmdCancel);
+         commandStateCommon();
      }
-
-     public void commandStateForThis() {
-        addCommand(cmdGoto);
-        addCommand(cmdEdit);
-
+//#endif
+     
+     public void commandStateCommon() {
 //#ifdef CLIPBOARD
-//#         if (Client.Config.getInstance().useClipBoard) {
-//#             addCommand(cmdCopy);
-//#             addCommand(cmdCopyPlus);
-//#         }
+//#          if (Client.Config.getInstance().useClipBoard) {
+//#              addCommand(cmdCopy);
+//#              addCommand(cmdCopyPlus);
+//#          }
 //#endif
      }
-
+     
 //#ifdef MENU_LISTENER
     public String touchLeftCommand(){ return SR.MS_MENU; }
 
