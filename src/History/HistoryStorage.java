@@ -146,7 +146,7 @@ public class HistoryStorage {
         int maxSize=2048; byte[] b = new byte[maxSize]; 
         FileIO f=FileIO.createConnection(arhPath);
         try {
-            InputStream is=f.openInputStream(); 
+            InputStream is=f.openInputStream();
             int fileSize = (int)f.fileSize();
             if (fileSize>maxSize){
                 is.skip(fileSize-maxSize);
