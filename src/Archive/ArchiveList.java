@@ -149,14 +149,10 @@ public class ArchiveList
     
     public void reFresh() {
         archive=new MessageArchive(where);
-        messages=null;
-        messages=new Vector();
     }
 
     private void deleteMessage() {
         archive.delete(cursor);
-        messages=null;
-        messages=new Vector();
         if (cursor>0)
             cursor--;
         setRotator();
@@ -167,8 +163,6 @@ public class ArchiveList
         new AlertBox(SR.MS_ACTION, SR.MS_DELETE_ALL+"?", display, this) {
             public void yes() {
                 archive.deleteAll();
-                messages=null;
-                messages=new Vector();
             }
             public void no() { }
         };

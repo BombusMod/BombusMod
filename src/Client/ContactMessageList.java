@@ -318,9 +318,8 @@ public void showNotify(){
     }
     
     public void forceScrolling() { //by voffk
-        System.out.println(contact.moveToLatest);
         if (contact.moveToLatest) {
-            if (cursor<(messages.size()-1)) {
+            if (cursor<(getItemCount()-1)) {
                 contact.moveToLatest=false;
                 moveCursorEnd();
             }
@@ -346,15 +345,14 @@ public void showNotify(){
 //#         if (!redraw) return;
 //#         
 //#         contact.redraw=false;
-//#         messages=null;
-//#         messages=new Vector();
 //#         redraw();
 //#     }
 //#endif
     public int getItemCount(){ return contact.msgs.size(); }
 
     public Msg getMessage(int index) {
-        if (index> getItemCount()-1) return null;
+        if (index > (getItemCount()-1))
+            return null;
         
 	Msg msg=(Msg) contact.msgs.elementAt(index);
 	if (msg.unread) contact.resetNewMsgCnt();
@@ -385,7 +383,7 @@ public void showNotify(){
 //#         }
 //#endif
         if (c==cmdPurge) {
-            if (messages.isEmpty()) return;
+            if (getItemCount()<=0) return;
             
             if (startSelection) {
                 for (Enumeration select=contact.msgs.elements(); select.hasMoreElements(); ) {
@@ -395,9 +393,6 @@ public void showNotify(){
                     }
                 }
                 startSelection = false;
-                
-                messages=null;
-                messages=new Vector();
             } else {
                 clearReadedMessageList();
             }
@@ -669,8 +664,6 @@ public void showNotify(){
 
     public void clearReadedMessageList() {
         smartPurge();
-        messages=null;
-        messages=new Vector();
         cursor=0;
         moveCursorHome();
         redraw();
@@ -706,7 +699,7 @@ public void showNotify(){
     }
     
     protected void keyClear(){
-        if (!messages.isEmpty())
+        if (getItemCount()>0)
             clearReadedMessageList();
     }
     

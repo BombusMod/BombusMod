@@ -89,7 +89,7 @@ public class MessageItem
         g.translate(2,0);
         if (msgLines==null) {
             MessageParser.getInstance().parseMsg(this, view.getListWidth());
-            return;
+            //return;
         }
         //int y=0;
         for (Enumeration e=msgLines.elements(); e.hasMoreElements(); ) {

@@ -161,13 +161,11 @@ public final class XMLList
         try {
             if (cursor+1==stanzas.size()) {
                 stanzas.stanzas.removeAllElements();
-                messages=null;
             }
             else {
                 for (int i=0; i<cursor+1; i++)
                     stanzas.stanzas.removeElementAt(0);
             }
-            messages=new Vector();
         } catch (Exception e) { }
         moveCursorHome();
         redraw(); 
