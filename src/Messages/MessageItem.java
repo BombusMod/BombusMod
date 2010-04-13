@@ -57,6 +57,8 @@ public class MessageItem
 	this.view=view;
         this.smiles=showSmiles;
         //this.font=FontCache.getFont(false, FontCache.msg);
+
+        MessageParser.getInstance().parseMsg(this, view.getListWidth());
     }
 
     public int getVHeight() { 
@@ -88,7 +90,7 @@ public class MessageItem
         int yorg=g.getTranslateY();
         g.translate(2,0);
         if (msgLines==null) {
-            MessageParser.getInstance().parseMsg(this, view.getListWidth());
+            //MessageParser.getInstance().parseMsg(this, view.getListWidth());
             //return;
         }
         //int y=0;
@@ -123,20 +125,20 @@ public class MessageItem
     public void onSelect() {
         msg.itemCollapsed=!msg.itemCollapsed;
         updateHeight();
-        if (partialParse) {
-            partialParse=false;
+//        if (partialParse) {
+//            partialParse=false;
             MessageParser.getInstance().parseMsg(this, view.getListWidth());
-        }
+//        }
     }
     
     byte repaintCounter;
     public void notifyRepaint(Vector v, Msg parsedMsg, boolean finalized) {
         msgLines=v;
         updateHeight();
-        partialParse=!finalized;
-        if (!finalized && !msg.itemCollapsed) if ((--repaintCounter)>=0) return;
-        repaintCounter=5;
-        view.redraw();
+        //partialParse=!finalized;
+        //if (!finalized && !msg.itemCollapsed) if ((--repaintCounter)>=0) return;
+        //repaintCounter=5;
+        //view.redraw();
     }
     
     private void updateHeight() {

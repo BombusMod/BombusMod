@@ -123,7 +123,7 @@ public final class MessageParser {
 //#endif
             this.width=width;
             parseMessage(messageItem);
-            //messageItem.notifyRepaint(messageItem.msgLines, messageItem.msg, false);
+            messageItem.notifyRepaint(messageItem.msgLines, messageItem.msg, false);
     }
 
     private MessageParser() {
