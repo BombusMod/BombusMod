@@ -28,6 +28,7 @@ package History;
 
 import Client.Config;
 import Client.Msg;
+import com.sun.midp.io.SystemOutputStream;
 import io.file.FileIO;
 import java.io.IOException;
 import java.io.InputStream;
@@ -79,26 +80,55 @@ public class HistoryLoader {
         long size = -1;
         try {
             FileIO file = FileIO.createConnection(fileName);
+//#ifdef DEBUG
+//#             System.out.println("getFileSize(): Try 1");
+//#endif
             try {
                 size = file.fileSize();
             } catch (Exception e) { }
+//#ifdef DEBUG
+//#             System.out.println("FileSize (try 1): "+size);
+//#endif
 
             try {
                 InputStream is = file.openInputStream();
 
-                if (size < 1)
+                if (size < 1) {
+//#ifdef DEBUG
+//#                     System.out.println("getFileSize(): Try 2");
+//#endif
                     try {
-                        size = file.openInputStream().available();
+                        size = is.available();
                     } catch (Exception e) { }
+//#ifdef DEBUG
+//#                     System.out.println("FileSize (try 2): "+size);
+//#endif
+                }
 
-                if (size < 1)
+                if (size < 1) {
+//#ifdef DEBUG
+//#                     System.out.println("getFileSize(): Try 3");
+//#endif
                     try {
-                        size = is.skip(Long.MAX_VALUE);
+                        long skipped;
+                        size = 0;
+                        do {
+                           skipped = is.skip(4096);
+                           size+=skipped;
+//#ifdef DEBUG
+//#                            System.out.println("> size: "+size+"; skipped: "+skipped);
+//#endif
+                        } while (skipped == 4096);
+//#ifdef DEBUG
+//#                         System.out.println("FileSize (try 3): "+size);
+//#endif
+
                         if (size < 1)
                             size = -1;
                         is.close();
                         file.close();
                     } catch (Exception e) { }
+                }
             } catch (Exception e) { }
         } catch (Exception e) { }
 //#ifdef DEBUG
