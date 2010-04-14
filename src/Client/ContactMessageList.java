@@ -318,7 +318,6 @@ public void showNotify(){
     }
     
     public void forceScrolling() { //by voffk
-        System.out.println(contact.moveToLatest);
         if (contact.moveToLatest) {
             if (cursor<(messages.size()-1)) {
                 contact.moveToLatest=false;

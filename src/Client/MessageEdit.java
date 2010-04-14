@@ -88,7 +88,7 @@ public final class MessageEdit
 //#endif
     
     private Command cmdSend;//=new Command(SR.MS_SEND, Command.OK, 1);
-    private Command cmdSendAndStepBack;
+    private Command cmdSendAndStepBack = new Command(SR.MS_SEND+" & "+SR.MS_STEP_BACK, Command.ITEM, 80);
 
 //#ifdef SMILES
     private Command cmdSmile=new Command(SR.MS_ADD_SMILE, Command.ITEM,2);
@@ -129,10 +129,8 @@ public final class MessageEdit
         if (!cf.swapSendAndSuspend) {
             cmdSuspend=new Command(SR.MS_SUSPEND, Command.BACK, 90);
             cmdSend=new Command(SR.MS_SEND, Command.OK, 1);
-            cmdSendAndStepBack=new Command(SR.MS_SEND+" & "+SR.MS_STEP_BACK, Command.OK, 2);
         } else {
             cmdSuspend=new Command(SR.MS_SUSPEND, Command.OK, 1);
-            cmdSendAndStepBack=new Command(SR.MS_SEND+" & "+SR.MS_STEP_BACK, Command.BACK, 99);
             cmdSend=new Command(SR.MS_SEND, Command.BACK, 90);
         }
 
@@ -157,6 +155,8 @@ public final class MessageEdit
 //#             t.addCommand(cmdTemplate);
 //#endif
 
+        t.addCommand(cmdSend);
+
         boolean viewSendAndBackCmd = true;
         if (pView instanceof ContactMessageList)
             viewSendAndBackCmd = !((ContactMessageList) pView).contact.equals(to);
@@ -164,7 +164,6 @@ public final class MessageEdit
             t.addCommand(cmdSendAndStepBack);
         }
 
-        t.addCommand(cmdSend);
         t.addCommand(cmdInsMe);
 //#ifdef SMILES
         t.addCommand(cmdSmile);
