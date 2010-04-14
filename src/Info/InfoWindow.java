@@ -126,7 +126,8 @@ public class InfoWindow
 //# 
 //#     public void cmdOk(){
 //#         if (Config.getInstance().useClipBoard) {
-//#             clipboard.setClipBoard(name.toString()+"\n"+memory.toString()+"\n"+abilities.toString());
+//#             clipboard.setClipBoard(getFocusedObject().toString());
+//#             //clipboard.setClipBoard(name.toString()+"\n"+memory.toString()+"\n"+abilities.toString());
 //#         }
 //#         destroyView();
 //#     }
