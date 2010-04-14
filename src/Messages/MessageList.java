@@ -60,8 +60,8 @@ public abstract class MessageList extends VirtualList
     {
     
     private Config cf;
-    private MessageItem current_message;
     
+    protected Vector messages;
 //#ifdef CLIPBOARD
 //#     private ClipBoard clipboard=ClipBoard.getInstance();
 //#     
@@ -77,6 +77,8 @@ public abstract class MessageList extends VirtualList
   
     public MessageList() {
         super();
+        messages=null;
+	messages=new Vector();
 //#ifdef MENU_LISTENER
         menuCommands.removeAllElements();
 //#endif
@@ -103,7 +105,6 @@ public abstract class MessageList extends VirtualList
     public abstract int getItemCount(); // из protected �?делали public
 
     protected VirtualElement getItemRef(int index) {
-        /*
 	if (messages.size()<getItemCount()) messages.setSize(getItemCount());
 	MessageItem mi=(MessageItem) messages.elementAt(index);
 	if (mi==null) {
@@ -113,17 +114,6 @@ public abstract class MessageList extends VirtualList
 	    messages.setElementAt(mi, index);
 	}
         return mi;
-        */
-        boolean smile = smiles;
-        if (current_message != null)
-            smile = current_message.smilesEnabled();
-        current_message = new MessageItem(getMessage(index), this, smiles);
-        current_message.setEven((index & 1) == 0); // Это определение делимости числа на 2 и соотв. раскраска.
-
-        if ((current_message != null) && (smile!=smiles))
-            current_message.toggleSmiles();
-        
-        return current_message;
     }
     
     public abstract Msg getMessage(int index);

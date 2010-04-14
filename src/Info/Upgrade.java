@@ -171,6 +171,8 @@ public class Upgrade
     private void clearList() {
         if (getItemCount()>0) {
             news.removeAllElements();
+            messages=null;
+            messages=new Vector();
         }
         redraw(); 
     }

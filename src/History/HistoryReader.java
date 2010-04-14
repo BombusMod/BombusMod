@@ -70,6 +70,7 @@ public class HistoryReader extends MessageList {
 	//mb.addElement(SR.MS_FREE /*"free "*/);
         setMainBarItem(mb);
 
+        removeAllMessages();
         addCommands(); 
         removeCommand(cmdxmlSkin);
         setCommandListener(this);
@@ -83,8 +84,10 @@ public class HistoryReader extends MessageList {
     public void keyPressed(int keyCode) {
         if ((keyCode == KEY_NUM5) || (getGameAction(keyCode) == FIRE)) {
            if (cursor == 0) {
+               removeAllMessages();
                hl.getPrev();
            } else if (cursor == (getItemCount()-1)) {
+               removeAllMessages();
                hl.getNext();
            }           
         }
@@ -93,13 +96,20 @@ public class HistoryReader extends MessageList {
 
     public void commandAction(Command c, Displayable d) {
         if(c==cmdNext) {
+            removeAllMessages();
             hl.getNext();
             return;
         } else if (c == cmdPrev) {
+            removeAllMessages();
             hl.getPrev();
             return;
         }
         super.commandAction(c, d);
+    }
+
+    private void removeAllMessages() {
+        messages = null;
+        messages = new Vector();
     }
 
     public int getItemCount() {

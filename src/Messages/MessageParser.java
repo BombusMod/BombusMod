@@ -123,6 +123,7 @@ public final class MessageParser {
 //#endif
             this.width=width;
             parseMessage(messageItem);
+            messageItem.notifyRepaint(messageItem.msgLines, messageItem.msg, false);
     }
 
     private MessageParser() {
@@ -400,5 +401,9 @@ public final class MessageParser {
     
     public Font getFont(boolean bold) {
         return FontCache.getFont(bold, FontCache.msg);
+    }
+
+    public interface MessageParserNotify {
+        void notifyRepaint(Vector v, Msg parsedMsg, boolean finalized);
     }
 }
