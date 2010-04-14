@@ -364,7 +364,7 @@ Auto translit2Cyr	Автоотправка транслита кириллице
 Check Updates	Проверка обновлений
 Show Resources	показывать ресурсы контактов
 Collapsed groups	сворачивать группы при запуске
-Send Buffer	Послать текст из буфера
+Send Buffer	Отправить текст из буфера
 Change nickname	Сменить ник
 Message collapse limit	Сворачивать сообщение больше (символов)
 Width scroll	Ширина скролла
