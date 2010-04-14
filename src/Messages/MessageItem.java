@@ -41,14 +41,14 @@ import ui.VirtualElement;
 import ui.VirtualList;
 
 public class MessageItem
-    implements VirtualElement, MessageParser.MessageParserNotify {
+    implements VirtualElement {
     
     public Msg msg;
     Vector msgLines;
     private VirtualList view;
     private boolean even;
     private boolean smiles;
-    private boolean partialParse=false;
+
     //private Font font;
     
     /** Creates a new instance of MessageItem */
@@ -57,8 +57,7 @@ public class MessageItem
 	this.view=view;
         this.smiles=showSmiles;
         //this.font=FontCache.getFont(false, FontCache.msg);
-
-        MessageParser.getInstance().parseMsg(this, view.getListWidth());
+        reparse();
     }
 
     public int getVHeight() { 
@@ -70,7 +69,12 @@ public class MessageItem
         }
         return msg.itemHeight; 
     }
-    
+
+    public void reparse() {
+        MessageParser.getInstance().parseMsg(this, view.getListWidth());
+        updateHeight();
+    }
+
     public Font getFont() {
         return FontCache.getFont(false, FontCache.msg);
     }
@@ -89,10 +93,6 @@ public class MessageItem
         int xorg=g.getTranslateX();
         int yorg=g.getTranslateY();
         g.translate(2,0);
-        if (msgLines==null) {
-            //MessageParser.getInstance().parseMsg(this, view.getListWidth());
-            //return;
-        }
         //int y=0;
         for (Enumeration e=msgLines.elements(); e.hasMoreElements(); ) {
             ComplexString line=(ComplexString) e.nextElement();
@@ -124,21 +124,7 @@ public class MessageItem
     
     public void onSelect() {
         msg.itemCollapsed=!msg.itemCollapsed;
-        updateHeight();
-//        if (partialParse) {
-//            partialParse=false;
-            MessageParser.getInstance().parseMsg(this, view.getListWidth());
-//        }
-    }
-    
-    byte repaintCounter;
-    public void notifyRepaint(Vector v, Msg parsedMsg, boolean finalized) {
-        msgLines=v;
-        updateHeight();
-        //partialParse=!finalized;
-        //if (!finalized && !msg.itemCollapsed) if ((--repaintCounter)>=0) return;
-        //repaintCounter=5;
-        //view.redraw();
+        reparse();
     }
     
     private void updateHeight() {
@@ -192,7 +178,7 @@ public class MessageItem
 //#ifdef SMILES
     void toggleSmiles() {
         smiles=!smiles;
-        MessageParser.getInstance().parseMsg(this, view.getListWidth());  
+        reparse();
     }
     
     boolean smilesEnabled() { return smiles; }

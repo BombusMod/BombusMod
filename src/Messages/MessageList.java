@@ -60,6 +60,7 @@ public abstract class MessageList extends VirtualList
     {
     
     private Config cf;
+    private MessageItem current_message;
     
 //#ifdef CLIPBOARD
 //#     private ClipBoard clipboard=ClipBoard.getInstance();
@@ -113,9 +114,16 @@ public abstract class MessageList extends VirtualList
 	}
         return mi;
         */
-        MessageItem mi = new MessageItem(getMessage(index), this, smiles);
-        mi.setEven((index & 1) == 0); // Это определение делимости числа на 2 и соотв. раскраска.
-        return mi;
+        boolean smile = smiles;
+        if (current_message != null)
+            smile = current_message.smilesEnabled();
+        current_message = new MessageItem(getMessage(index), this, smiles);
+        current_message.setEven((index & 1) == 0); // Это определение делимости числа на 2 и соотв. раскраска.
+
+        if ((current_message != null) && (smile!=smiles))
+            current_message.toggleSmiles();
+        
+        return current_message;
     }
     
     public abstract Msg getMessage(int index);
