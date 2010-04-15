@@ -126,7 +126,7 @@ public class ContactMessageList extends MessageList {
 
     /** Creates a new instance of MessageList */
     public ContactMessageList(Contact contact, Display display) {
-        super(display);
+        super();
         this.contact=contact;
         sd.roster.activeContact=contact;
 
@@ -150,6 +150,7 @@ public class ContactMessageList extends MessageList {
 //#endif
         if (contact.msgs.size()>0)
             moveCursorTo(firstUnread());
+        attachDisplay(display);
     }
     
     public int firstUnread(){
