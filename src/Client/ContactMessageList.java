@@ -291,6 +291,7 @@ public class ContactMessageList extends MessageList {
 
 public void showNotify(){
         sd.roster.activeContact=contact;
+        contact.moveToLatest = false;
 //#ifdef LOGROTATE
 //#         getRedraw(true);
 //#endif

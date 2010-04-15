@@ -34,7 +34,6 @@ import Fonts.FontCache;
 //#ifdef CLIENTS_ICONS
 import images.ClientsIcons;
 //#endif
-import javax.microedition.lcdui.Font;
 //#if HISTORY
 //# import History.HistoryAppend;
 //#endif
@@ -392,7 +391,8 @@ public class Contact extends IconTextElement{
             return;
         }
 
-        if (cf.autoScroll) moveToLatest=true;
+        if (cf.autoScroll)
+            moveToLatest=true;
         
         if (m.messageType!=Msg.MESSAGE_TYPE_HISTORY && m.messageType!=Msg.MESSAGE_TYPE_PRESENCE)
             activeMessage=msgs.size()+1;
