@@ -42,7 +42,7 @@ import javax.microedition.lcdui.Graphics;
 import ui.ImageList;
 //#ifdef PEP
 //# import images.MoodIcons;
-//# import Mood.Moods;
+//# import PEP.Moods;
 //#endif
 import images.RosterIcons;
 import Colors.ColorTheme;

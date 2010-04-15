@@ -41,7 +41,7 @@ public class SimpleString
 
     private String text;
     
-    private boolean selectable=false;
+    public boolean selectable=false;
 
     private boolean bold;
     

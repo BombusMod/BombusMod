@@ -27,9 +27,9 @@
 
 package xmpp.extensions;
 
-import Activity.Activities;
+import PEP.Activities;
 import Client.*;
-import Mood.Moods;
+import PEP.Moods;
 import com.alsutton.jabber.*;
 import com.alsutton.jabber.datablocks.*;
 import java.util.*;

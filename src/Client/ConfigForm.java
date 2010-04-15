@@ -70,21 +70,6 @@ public class ConfigForm
     private CheckBox storeConfPresence;
     private CheckBox autoScroll;
     private CheckBox useTabs;
-//#ifdef PEP
-//#     private CheckBox sndrcvmood;
-//#ifdef PEP_TUNE
-//#    private CheckBox rcvtune;
-//#endif
-//#ifdef PEP_ACTIVITY
-//#    private CheckBox rcvactivity;
-//#endif
-//#endif
-//#ifdef RUNNING_MESSAGE
-//#      private CheckBox notifyWhenMessageType;
-//#endif
-//#ifdef POPUPS
-    private CheckBox popUps;
-//#endif
     private CheckBox showBalloons;     
     private CheckBox eventDelivery;
     private CheckBox executeByNum;
@@ -138,6 +123,14 @@ public class ConfigForm
 //#     private CheckBox awayStatus;
 //#endif
     
+//#ifdef RUNNING_MESSAGE
+//#      private CheckBox notifyWhenMessageType;
+//#endif
+//#ifdef POPUPS
+    private CheckBox popUps;
+//#endif
+    
+
     private DropChoiceBox panels;
     private CheckBox drawMenuCommand;
     
@@ -195,27 +188,6 @@ public class ConfigForm
         nil.setSelectedIndex((cf.notInListDropLevel>NotInListFilter.ALLOW_ALL)? NotInListFilter.ALLOW_ALL: cf.notInListDropLevel);
         itemsList.addElement(nil);
         
-//#ifdef PEP
-//#ifdef PLUGINS
-//#         if (sd.PEP) {
-//#endif
-//#             itemsList.addElement(new SpacerItem(10));
-//#             itemsList.addElement(new SimpleString(SR.MS_PEP, true));
-//# 
-//#             sndrcvmood = new CheckBox(SR.MS_USERMOOD, cf.sndrcvmood);
-//#             itemsList.addElement(sndrcvmood);
-//#ifdef PEP_TUNE
-//#             rcvtune = new CheckBox(SR.MS_USERTUNE, cf.rcvtune); 
-//#             itemsList.addElement(rcvtune);
-//#endif
-//#ifdef PEP_ACTIVITY
-//#             rcvactivity = new CheckBox(SR.MS_USERACTIVITY, cf.rcvactivity);
-//#             itemsList.addElement(rcvactivity);
-//#endif
-//#ifdef PLUGINS
-//#         }
-//#endif
-//#endif
 
         itemsList.addElement(new SpacerItem(10));
         itemsList.addElement(new SimpleString(SR.MS_MESSAGES, true));
@@ -424,21 +396,6 @@ public class ConfigForm
         cf.autoScroll=autoScroll.getValue();
         cf.useTabs=useTabs.getValue();
         
-//#ifdef PEP
-//#ifdef PLUGINS
-//#         if (sd.PEP) {
-//#endif
-//#             cf.sndrcvmood=sndrcvmood.getValue();
-//#ifdef PEP_TUNE
-//#             cf.rcvtune=rcvtune.getValue();
-//#endif
-//#ifdef PEP_ACTIVITY
-//#             cf.rcvactivity=rcvactivity.getValue();
-//#endif
-//#ifdef PLUGINS
-//#         }
-//#endif
-//#endif       
 //#ifdef RUNNING_MESSAGE
 //#         cf.notifyWhenMessageType=notifyWhenMessageType.getValue();
 //#endif

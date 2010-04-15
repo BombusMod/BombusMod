@@ -7,7 +7,7 @@
  * and open the template in the editor.
  */
 
-package Mood;
+package PEP;
 
 import javax.microedition.lcdui.TextField;
 import ui.MIDPTextBox;

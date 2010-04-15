@@ -26,7 +26,7 @@
  *
  */
 
-package Mood;
+package PEP;
 
 import com.alsutton.jabber.JabberBlockListener;
 import com.alsutton.jabber.JabberDataBlock;

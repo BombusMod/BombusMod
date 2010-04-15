@@ -45,10 +45,7 @@ import ServiceDiscovery.*;
 //# import History.HistoryConfig;
 //#endif
 //#ifdef PEP
-//# import Mood.MoodList;
-//#endif
-//#ifdef PEP_ACTIVITY
-//# import Activity.ActivitiesForm;
+//# import PEP.PepForm;
 //#endif
 import Statistic.StatsWindow;
 import VCard.VCard;
@@ -92,15 +89,11 @@ public class RosterToolsMenu extends Menu {
                 addItem(SR.MS_PRIVACY_LISTS, 1, MenuIcons.ICON_PRIVACY);
 //#endif
 //#ifdef PEP
-//#         if (cf.sndrcvmood && connected)
+//#         if (connected)
 //#ifdef PLUGINS
 //#             if (sd.PEP) {
 //#endif
-//#                 addItem(SR.MS_USERMOOD, 2, MenuIcons.ICON_MOOD);
-//#ifdef PEP_ACTIVITY
-//#         if (cf.rcvactivity && connected)
-//#                 addItem("Activity", 22, MenuIcons.ICON_MOOD);
-//#endif
+//#                 addItem(SR.MS_PEP, 2, MenuIcons.ICON_MOOD);
 //#ifdef PLUGINS
 //#             }
 //#endif
@@ -201,7 +194,7 @@ public class RosterToolsMenu extends Menu {
 //#ifdef PEP
 //#             case 2:
 //#                 if (connected)
-//#                     new MoodList(display);
+//#                     new PepForm(display, StaticData.getInstance().roster);
 //#                 return;
 //#endif   
             case 3: {
@@ -292,11 +285,6 @@ public class RosterToolsMenu extends Menu {
                 //reconnectWindow.getInstance().startReconnect();
                 sd.roster.doReconnect();//connectionTerminated(new Exception(SR.MS_SIMULATED_BREAK));
                 return;
-//#ifdef PEP_ACTIVITY
-//#             case 22:
-//#                 new ActivitiesForm(display, StaticData.getInstance().roster);
-//#                 return;
-//#endif
         }
     }
 }
