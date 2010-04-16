@@ -52,11 +52,7 @@ import ui.controls.form.DefForm;
  *
  * @author Eugene Stahov
  */
-public class AccountSelect 
-    extends DefForm
-    
-    {
-
+public class AccountSelect extends DefForm {
     public Vector accountList;
     int activeAccount;
     boolean enableQuit;
@@ -76,7 +72,8 @@ public class AccountSelect
         super(display, pView, SR.MS_ACCOUNTS);
         this.enableQuit=enableQuit;
         this.display=display;
-        
+
+        enableListWrapping(true);
         cf=Config.getInstance();        
         
         if (enableQuit) {

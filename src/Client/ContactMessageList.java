@@ -152,7 +152,12 @@ public class ContactMessageList extends MessageList {
             moveCursorTo(firstUnread());
         attachDisplay(display);
     }
-    
+
+    public void attachDisplay(Display display) {
+        contact.moveToLatest = false;
+        super.attachDisplay(display);
+    }
+
     public int firstUnread(){
         int unreadIndex=0;
         for (Enumeration e=contact.msgs.elements(); e.hasMoreElements();) {
@@ -290,9 +295,8 @@ public class ContactMessageList extends MessageList {
 //#     }
 //#endif
 
-public void showNotify(){
+public void showNotify() {
         sd.roster.activeContact=contact;
-        contact.moveToLatest = false;
 //#ifdef LOGROTATE
 //#         getRedraw(true);
 //#endif
@@ -328,10 +332,10 @@ public void showNotify(){
         }
     }
 
-    protected void beginPaint(){
+    protected void beginPaint() {
         markRead(cursor);
         forceScrolling();
-    }   
+    }
     
     public void markRead(int msgIndex) {
 	if (msgIndex>=getItemCount()) return;

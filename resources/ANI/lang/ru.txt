@@ -400,7 +400,7 @@ Quit?	Выйти?
 Are you sure want to Quit?	Вы действительно хотите выйти?
 exit confirmation	подтверждение выхода
 show last appeared contacts	Показывать недавно подключившихся:
-custom keys	сочетания кнопок
+Custom keys	Сочетания кнопок
 Add custom key	Добавить сочетание кнопок
 keys action	действие
 enabled	включено

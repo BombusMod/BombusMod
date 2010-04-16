@@ -98,7 +98,7 @@ public class AccountForm
         super(display, pView, null);
 	this.accountSelect = accountSelect;
         this.display=display;
-        enableListWrapping(true);
+
 	newaccount=(account==null);
 	if (newaccount) account=new Account();
 	this.account=account;
