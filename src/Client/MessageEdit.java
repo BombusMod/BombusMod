@@ -258,7 +258,7 @@ public final class MessageEdit
             body=null; //"/me "+SR.MS_HAS_SET_TOPIC_TO+": "+subj;
         }
         // message/composing sending
-        if (c == cmdSend)
+        if (c == cmdSend && !(parentView instanceof ContactMessageList))
             parentView = new ContactMessageList(to, display);
         display.setCurrent(parentView);
 
@@ -309,47 +309,6 @@ public final class MessageEdit
 //#         }
 //#     }
 //#
-//#     private void send() {
-//#         String comp=null; // composing event off
-//#
-//#         String id=String.valueOf((int) System.currentTimeMillis());
-//#         if (body!=null)
-//#             body=body.trim();
-//#ifdef DETRANSLIT
-//#         if (sendInTranslit==true) {
-//#             if (body!=null)
-//#                body=DeTranslit.translit(body);
-//#             if (subj!=null )
-//#                subj=DeTranslit.translit(subj);
-//#         }
-//#         if (sendInDeTranslit==true || cf.autoDeTranslit) {
-//#             if (body!=null)
-//#                body=DeTranslit.deTranslit(body);
-//#             if (subj!=null )
-//#                subj=DeTranslit.deTranslit(subj);
-//#         }
-//#endif
-//#         if (body!=null || subj!=null ) {
-//#             String from=sd.account.toString();
-//#             Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,body);
-//#             msg.id=id;
-//#
-//#             if (to.origin!=Contact.ORIGIN_GROUPCHAT) {
-//#                 to.addMessage(msg);
-//#                 comp="active"; // composing event in message
-//#             }
-//#         } else if (to.acceptComposing) comp=(composing)? "composing":"paused";
-//#
-//#         if (!cf.eventComposing) comp=null;
-//#
-//#         try {
-//#             if (body!=null || subj!=null || comp!=null) {
-//#                 to.lastSendedMessage=body;
-//#                 sd.roster.sendMessage(to, id, body, subj, comp);
-//#             }
-//#         } catch (Exception e) { }
-//#     }
-//#
 //#     private String notifyMessage;
 //#     public void setMyTicker(String msg) {
 //#         if (msg!=null && !msg.equals("")) {
@@ -376,53 +335,53 @@ public final class MessageEdit
 //#         notifyMessage=msg;
 //#         strPos=0;
 //#     }
-//#else
-    public void send(){
-        //Roster r=StaticData.getInstance().roster;
-        String comp=null; // composing event off
+//#endif
 
-        String id=String.valueOf((int) System.currentTimeMillis());
+    private void send() {
+        String comp = null; // composing event off
 
-        if (body!=null || subj!=null ) {
+        String id = String.valueOf((int) System.currentTimeMillis());
+
+        if (body != null)
+            body = body.trim();
+
+         if (body!=null || subj!=null ) {
 //#ifdef DETRANSLIT
-//#         if (sendInTranslit==true) {
-//#             if (body!=null)
-//#                body=DeTranslit.translit(body);
-//#             if (subj!=null )
-//#                subj=DeTranslit.translit(subj);
-//#         }
-//#         if (sendInDeTranslit==true || cf.autoDeTranslit) {
-//#             if (body!=null)
-//#                body=DeTranslit.deTranslit(body);
-//#             if (subj!=null )
-//#                subj=DeTranslit.deTranslit(subj);
-//#         }
+//#              if (sendInTranslit == true) {
+//#                  if (body != null)
+//#                      body = DeTranslit.translit(body);
+//#                  if (subj != null)
+//#                      subj = DeTranslit.translit(subj);
+//#              }
+//#              if (sendInDeTranslit == true || cf.autoDeTranslit) {
+//#                  if (body != null)
+//#                      body = DeTranslit.deTranslit(body);
+//#                  if (subj != null)
+//#                      subj = DeTranslit.deTranslit(subj);
+//#              }
 //#endif
-            String from=sd.account.toString();
-            Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,body);
-            msg.id=id;
+             String from = sd.account.toString();
+             Msg msg = new Msg(Msg.MESSAGE_TYPE_OUT, from, subj, body);
+             msg.id = id;
 
-            if (to.origin!=Contact.ORIGIN_GROUPCHAT) {
-                to.addMessage(msg);
-                comp="active"; // composing event in message
-            }
+             if (to.origin != Contact.ORIGIN_GROUPCHAT) {
+                 to.addMessage(msg);
+                 comp = "active"; // composing event in message
+             }
+         } else if (to.acceptComposing)
+             comp = (composing) ? "composing" : "paused";
 
-        } else if (to.acceptComposing) comp=(composing)? "composing":"paused";
+        if (!cf.eventComposing)
+            comp = null;
 
-        if (!cf.eventComposing) comp=null;
+         try {
+             if (body!=null || subj!=null || comp!=null) {
+                 to.lastSendedMessage=body;
+                 sd.roster.sendMessage(to, id, body, subj, comp);
+             }
+         } catch (Exception e) { }
+     }
 
-        try {
-            if (body!=null || subj!=null || comp!=null) {
-                to.lastSendedMessage=body;
-                sd.roster.sendMessage(to, id, body, subj, comp);
-            }
-        } catch (Exception e) { }
-
-        if (parentView instanceof ContactMessageList)
-            ((ContactMessageList) parentView).forceScrolling();
-        //((VirtualList) parentView).redraw();
-    }
-//#endif
 /* Пролистывание команд по страницам, для SE C510
     private void addCommand(Command cmd) {
        Commands.addElement(cmd);

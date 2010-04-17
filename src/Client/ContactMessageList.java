@@ -154,12 +154,7 @@ public class ContactMessageList extends MessageList {
             moveCursorTo(firstUnread());
         attachDisplay(display);
     }
-/*
-    public void attachDisplay(Display display) {
-        contact.moveToLatest = false;
-        super.attachDisplay(display);
-    }
-*/
+
     public int firstUnread(){
         int unreadIndex=0;
         for (Enumeration e=contact.msgs.elements(); e.hasMoreElements();) {
@@ -327,7 +322,7 @@ public void showNotify() {
     
     public void forceScrolling() { //by voffk
         if (contact.moveToLatest) {
-            contact.moveToLatest=false;
+            contact.moveToLatest = false;
             if (on_end)
                 moveCursorEnd();
         }

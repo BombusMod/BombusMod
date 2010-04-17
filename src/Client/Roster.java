@@ -462,7 +462,7 @@ public class Roster
         return (VirtualElement)paintVContacts.elementAt(Index);
     }
     
-    public int getItemCount(){
+    public int getItemCount() {
         return paintVContacts.size();
     }
     
@@ -900,13 +900,13 @@ public class Roster
 //#         }
 //#         return juickContacts;
 //#     }*/
-//#
+//# 
 //#     public Contact getMainJuickContact() {
 //#         if (indexMainJuickContact > -1)
 //#             return (Contact) juickContacts.elementAt(indexMainJuickContact);
 //#         else return null;
 //#     }
-//#
+//# 
 //# /*    public void updateMainJuickContact() {
 //#         System.out.println("1. juickJID: "+cf.juickJID);
 //#         mainJuickContact = null;
