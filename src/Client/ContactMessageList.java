@@ -120,6 +120,7 @@ public class ContactMessageList extends MessageList {
     
     private Config cf;
     
+    private boolean on_end;
     private boolean composing=true;
 
     private boolean startSelection;
@@ -134,8 +135,9 @@ public class ContactMessageList extends MessageList {
         
         MainBar mainbar=new MainBar(contact);
         setMainBarItem(mainbar);
-        
+
         cursor=0;//activate
+        on_end = false;
         commandState();
         setCommandListener(this);
         
@@ -152,12 +154,12 @@ public class ContactMessageList extends MessageList {
             moveCursorTo(firstUnread());
         attachDisplay(display);
     }
-
+/*
     public void attachDisplay(Display display) {
         contact.moveToLatest = false;
         super.attachDisplay(display);
     }
-
+*/
     public int firstUnread(){
         int unreadIndex=0;
         for (Enumeration e=contact.msgs.elements(); e.hasMoreElements();) {
@@ -325,16 +327,16 @@ public void showNotify() {
     
     public void forceScrolling() { //by voffk
         if (contact.moveToLatest) {
-            if (cursor<(messages.size()-1)) {
-                contact.moveToLatest=false;
+            contact.moveToLatest=false;
+            if (on_end)
                 moveCursorEnd();
-            }
         }
     }
 
     protected void beginPaint() {
         markRead(cursor);
         forceScrolling();
+        on_end = (cursor==(getItemCount()-1));
     }
     
     public void markRead(int msgIndex) {
@@ -349,7 +351,7 @@ public void showNotify() {
 //#ifdef LOGROTATE
 //#     private void getRedraw(boolean redraw) {
 //#         if (!redraw) return;
-//#         
+//#
 //#         contact.redraw=false;
 //#         messages=null;
 //#         messages=new Vector();

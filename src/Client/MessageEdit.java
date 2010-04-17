@@ -418,10 +418,8 @@ public final class MessageEdit
             }
         } catch (Exception e) { }
 
-        try { //TODO: forceScrolling() не выбрасывает исключений. try нужен?
-            if (parentView instanceof ContactMessageList)
-               ((ContactMessageList) parentView).forceScrolling();
-        } catch (Exception e) { }
+        if (parentView instanceof ContactMessageList)
+            ((ContactMessageList) parentView).forceScrolling();
         //((VirtualList) parentView).redraw();
     }
 //#endif
