@@ -45,13 +45,8 @@ public class PepForm extends DefForm {
     
     public PepForm(Display display, Displayable pView) {
         super(display, pView, SR.MS_PEP);
-        this.display = display;/*
-        activity = new DropChoiceBox(display, SR.MS_SELECT + " " + (SR.MS_USERACTIVITY).toLowerCase());
-        activity.items = Activities.getInstance().actValue;
-        itemsList.addElement(activity);
-        ti = new TextInput(display, SR.MS_DESCRIPTION, "", "pep_act", TextField.ANY);
-        itemsList.addElement(ti);
-                                */
+        this.display = display;
+        
 //#ifdef PEP
 //#ifdef PLUGINS
 //#         if (StaticData.getInstance().PEP) {
@@ -80,13 +75,23 @@ public class PepForm extends DefForm {
 //#                 }
 //#             };
 //#endif
-//#ifdef PLUGINS
+//#ifdef PEP
 //#             itemsList.addElement(new SpacerItem(10));
 //#             itemsList.addElement(new SimpleString("Publish events", true));
 //#             itemsList.addElement(updmood);
 //#ifdef PEP_ACTIVITY
 //#             itemsList.addElement(updact);
-//#endif            
+//#endif
+//#ifdef PEP_LOCATION
+//#             if (System.getProperty("microedition.location.version")!=null) {
+//#             LinkString updloc = new LinkString("Location") {
+//#                 public void doAction() {
+//#                      new LocationForm(midlet.BombusMod.getInstance().getDisplay(), StaticData.getInstance().roster);
+//#                 }
+//#             };
+//#             itemsList.addElement(updloc);
+//#             }
+//#endif
 //#         }
 //#endif
 //#endif
