@@ -53,12 +53,15 @@ public class NvStorage {
             istream=new DataInputStream( new ByteArrayInputStream(b) );
             
         } catch (Exception e) { }
-        finally { 
+        finally {
             try { recordStore.closeRecordStore(); } catch (Exception e) {} }
         
         return istream;
     }
-
+    
+    public static DataInputStream ReadFileRecord(String name, int index, int version) {
+        return ReadFileRecord(name+"-"+version, index);
+    }
 
     private static ByteArrayOutputStream baos;
     /** Creates DataOutputStream based on ByteOutputStream  */
@@ -67,7 +70,14 @@ public class NvStorage {
         DataOutputStream ostream=new DataOutputStream( baos=new ByteArrayOutputStream());
         return ostream;
     }
-    
+
+    static public boolean writeFileRecord (
+            DataOutputStream ostream,
+            String name, int index, int version,
+            boolean rewrite) {
+        return writeFileRecord(ostream, name+"-"+version, index, rewrite);
+    }
+
     static public boolean writeFileRecord (
             DataOutputStream ostream, 
             String name, int index, 

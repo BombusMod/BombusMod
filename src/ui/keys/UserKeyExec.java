@@ -55,8 +55,12 @@ import ui.VirtualList;
 //# import Client.Roster;
 //# import javax.microedition.lcdui.Displayable;
 //#endif
+import io.NvStorage;
+import java.io.DataInputStream;
+import java.io.IOException;
+import javax.microedition.rms.RecordStore;
 
-public class userKeyExec {
+public class UserKeyExec {
 //#ifdef PLUGINS
 //#     public static String plugin = new String("PLUGIN_USER_KEYS");
 //#endif
@@ -64,58 +68,96 @@ public class userKeyExec {
     private static Config cf;
     StaticData sd=StaticData.getInstance();
     
-    private static userKeyExec instance;
-    public static userKeyExec getInstance(){
+    private static UserKeyExec instance;
+    public static UserKeyExec getInstance(){
 	if (instance==null) {
-	    instance=new userKeyExec();
+	    instance=new UserKeyExec();
             cf=Config.getInstance();
             instance.initCommands();
 	}
 	return instance;
     }
 
-    private Display display;
-
-    public Vector commandsList;
+    public Vector userKeysList;
     
     private void initCommands() {
-        commandsList=null;
-        commandsList=new Vector();
-        
-        userKey u = null;
+        userKeysList = null;
+        userKeysList = new Vector();
 
-        int index=0;
-        do {
-            u=userKey.createFromStorage(index);
-            if (u!=null) {
-                commandsList.addElement(u);
-                index++;
-             }
-        } while (u!=null);
+        int storage_version = 1;
+        DataInputStream is = NvStorage.ReadFileRecord(UserKey.storage, 0, storage_version);
+        if (is==null)
+            export_from_old_storage(storage_version);
+        is = NvStorage.ReadFileRecord(UserKey.storage, 0, storage_version);
+
+        int size = 0;
+        try {
+            size = is.readInt();
+        } catch (IOException e) { }
+
+        for (int i=0; i<size; i++)
+            userKeysList.addElement(UserKey.createFromDataInputStream(is));
     }
 
-    private int getCommandByKey(int key) {
-        int commandNum = -1;
-         for (Enumeration commands=commandsList.elements(); commands.hasMoreElements(); ) {
-            userKey userKeyItem=(userKey) commands.nextElement();
-            if (userKeyItem.key==key && userKeyItem.active) {
-                commandNum=userKeyItem.commandId;
-                break;
+    private int get_old_key_code(int key_num) {
+        switch(key_num) {
+            case 0: return VirtualList.KEY_NUM0;
+            case 1: return VirtualList.KEY_NUM1;
+            case 2: return VirtualList.KEY_NUM2;
+            case 3: return VirtualList.KEY_NUM3;
+            case 4: return VirtualList.KEY_NUM4;
+            case 5: return VirtualList.KEY_NUM5;
+            case 6: return VirtualList.KEY_NUM6;
+            case 7: return VirtualList.KEY_NUM7;
+            case 8: return VirtualList.KEY_NUM8;
+            case 9: return VirtualList.KEY_NUM9;
+            case 10: return VirtualList.KEY_STAR;
+            default: return -1;
+        }
+    }
+
+    private void export_from_old_storage(int storage_version) {
+        for (int i=(storage_version-1); i>=0; i--)
+            switch(i) {
+                case 0:
+                    DataInputStream is = NvStorage.ReadFileRecord(UserKey.storage, 0);
+                    if (is==null)
+                        continue;
+
+                    Vector old_user_key_list = new Vector();
+                    UserKey u = new UserKey();
+                    do {
+                        try {
+                            u.command_id = is.readInt();
+                            u.previous_key = VirtualList.KEY_STAR;
+                            u.key = get_old_key_code(is.readInt());
+                            u.active = is.readBoolean();
+                        } catch (IOException e) { break; }
+
+                        old_user_key_list.addElement(u);
+                        } while (true);
+
+                    if (old_user_key_list.size()>0) {
+                        UserKeysList.rmsUpdate(old_user_key_list);
+                        // Здесь я хотел дропнуть старое хранилище, но потом подумал: пусть живёт.
+                        return;
+                    }
+                    break;
             }
-         }
-        return commandNum;
     }
-    
-    public void commandExecute(Display display, int command) { //return false if key not executed
-        this.display=display;
 
-        int commandId=getCommandByKey(command);
-        
-        if (commandId<1) return;
-            
-        boolean connected= ( sd.roster.isLoggedIn() );
+    public boolean commandExecute(Display display, int previous_key_code, int key_code) { //return false if key not executed
+        int index_key = userKeysList.indexOf(new UserKey(0, previous_key_code, key_code, true, true));
+        if (index_key<0) // Если нет двухкнопочного сочетания, ищем однокнопочное
+            index_key = userKeysList.indexOf(new UserKey(0, previous_key_code, key_code, true, false));
+        if (index_key<0) // А если нет и его, то тикаем
+            return false;
+        int command_id = ((UserKey) userKeysList.elementAt(index_key)).command_id;
 
-        switch (commandId) {
+        boolean connected = sd.roster.isLoggedIn();
+        Displayable current = display.getCurrent();
+
+        switch (command_id) {
             case 1: 
                 new ConfigForm(display, sd.roster);
                 break;
@@ -162,7 +204,7 @@ public class userKeyExec {
 //#endif
                 break;
             case 10: //key pound
-                new userKeysList(display);
+                new UserKeysList(display);
                 break;
             case 11:
 //#ifdef POPUPS
@@ -207,7 +249,6 @@ public class userKeyExec {
 //#ifdef PLUGINS
 //#                 if(sd.Juick) {
 //#endif
-//#                 Displayable current = display.getCurrent();
 //#                 if (current instanceof ContactMessageList) {
 //#                     ContactMessageList current_cml = (ContactMessageList) current;
 //#                     current_cml.commandAction(current_cml.cmdJuickCommands, current);
@@ -226,7 +267,18 @@ public class userKeyExec {
 //#                 }
 //#endif
                 break;
-
+            case 19:
+//            if (cf.widthSystemgc) { _vt
+                System.gc();
+                try { Thread.sleep(50); } catch (InterruptedException e) { }
+//            } _vt
+                if (current instanceof VirtualList) {
+                    ((VirtualList) current).showHeapInfo();
+                }
+            break;
+            default:
+                return false;
         }
+        return true;
     }
 }

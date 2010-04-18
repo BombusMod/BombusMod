@@ -105,7 +105,7 @@ public class DropChoiceBox
         return (getCaptionLength()>getTextLength())?caption:getTextValue();
     }
 
-    public void onSelect(){
+    public void onSelect() {
         if (items.size()>1)
             new DropListBox(display, items, this);
     }

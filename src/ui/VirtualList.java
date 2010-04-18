@@ -41,7 +41,7 @@ import ui.controls.Progress;
 import ui.controls.ScrollBar;
 import util.StringUtils;
 //#ifdef USER_KEYS
-//# import ui.keys.userKeyExec;
+//# import ui.keys.UserKeyExec;
 //#endif
 
 import java.util.Vector;
@@ -124,11 +124,7 @@ public abstract class VirtualList
     }
     
 //#ifdef USER_KEYS
-//#     private static final int USER_OTHER_KEY_PRESSED = 1;
-//#     private static final int USER_STAR_KEY_PRESSED = 2;
-//#     private static final int USER_KEY_EXECUTED = 3;
-//# 
-//#     private int additionKeyState = USER_OTHER_KEY_PRESSED;
+//#     private int previous_key_code = -1;
 //#endif
 
 //#ifdef POPUPS    
@@ -977,46 +973,6 @@ public abstract class VirtualList
         }        
     }
     
-//#ifdef USER_KEYS
-//#     private void additionKeyPressed(int keyCode) {
-//#         switch (keyCode) {
-//#             case KEY_NUM0:
-//#                 userKeyExec.getInstance().commandExecute(display, 0);
-//#                 break;
-//#             case KEY_NUM1:
-//#                 userKeyExec.getInstance().commandExecute(display, 1);
-//#                 break;
-//#             case KEY_NUM2:
-//#                 userKeyExec.getInstance().commandExecute(display, 2);
-//#                 break;
-//#             case KEY_NUM3:
-//#                 userKeyExec.getInstance().commandExecute(display, 3);
-//#                 break;
-//#             case KEY_NUM4:
-//#                 userKeyExec.getInstance().commandExecute(display, 4);
-//#                 break;
-//#             case KEY_NUM5:
-//#                 userKeyExec.getInstance().commandExecute(display, 5);
-//#                 break;
-//#             case KEY_NUM6:
-//#                 userKeyExec.getInstance().commandExecute(display, 6);
-//#                 break;
-//#             case KEY_NUM7:
-//#                 userKeyExec.getInstance().commandExecute(display, 7);
-//#                 break;
-//#             case KEY_NUM8:
-//#                 userKeyExec.getInstance().commandExecute(display, 8);
-//#                 break;
-//#             case KEY_NUM9:
-//#                 userKeyExec.getInstance().commandExecute(display, 9);
-//#                 break;
-//#             case KEY_POUND:
-//#                 userKeyExec.getInstance().commandExecute(display, 10);
-//#                 break;
-//#         }
-//#     }
-//#endif
-    
     private boolean sendEvent(int keyCode) {
         int key=-1;
         switch (keyCode) {
@@ -1133,16 +1089,10 @@ public abstract class VirtualList
         }
 //#ifdef USER_KEYS
 //#         if (userKeys) {
-//#             switch (additionKeyState) {
-//#                 case USER_OTHER_KEY_PRESSED:
-//#                 case USER_KEY_EXECUTED:
-//#                     additionKeyState=(keyCode==KEY_STAR)?USER_STAR_KEY_PRESSED:USER_OTHER_KEY_PRESSED;
-//#                     break;
-//#                 case USER_STAR_KEY_PRESSED:
-//#                     additionKeyState=(keyCode!=KEY_STAR)?USER_KEY_EXECUTED:USER_STAR_KEY_PRESSED;
-//#                     additionKeyPressed(keyCode);
-//#                     return;
-//#             }
+//#             boolean executed = UserKeyExec.getInstance().commandExecute(display, previous_key_code, keyCode);
+//#             previous_key_code = keyCode;
+//#             if (executed)
+//#                 return;
 //#         }
 //#endif
         
@@ -1167,26 +1117,8 @@ public abstract class VirtualList
         case KEY_NUM8:        
             keyDwn();    
             break;
-        case KEY_STAR:        
-//            if (cf.widthSystemgc) { _vt
-                System.gc();
-                try { Thread.sleep(50); } catch (InterruptedException e){}
-//            } _vt
-//#ifdef POPUPS
-            StringBuffer mem = new StringBuffer();
-            mem.append("Time: ")
-                .append(Time.getTimeWeekDay())
-                .append("\nTraffic: ")
-                .append(getTraffic())
-                .append("\nFree: ")
-                .append(Runtime.getRuntime().freeMemory()>>10)
-                .append(" kb");            
-            if (phoneManufacturer==Config.SONYE)
-                mem.append("\nTotal: ")
-                   .append(Runtime.getRuntime().totalMemory()>>10)
-                   .append(" kb");
-            setWobble(1, null, mem.toString());
-//#endif
+        case KEY_STAR:
+// Здесь была 19-я команда из UserKeyExec.
             break;
 //#ifdef POPUPS
         case KEY_POUND:        
@@ -1559,7 +1491,25 @@ public abstract class VirtualList
         getInfoBarItem().setElementAt((!showTimeTraffic)?touchLeftCommand():Time.getTimeWeekDay(), 1);
         getInfoBarItem().setElementAt((!showTimeTraffic)?touchRightCommand():getTraffic(), 3);
     }
-    
+
+    public void showHeapInfo() {
+//#ifdef POPUPS
+        StringBuffer mem = new StringBuffer();
+        mem.append("Time: ")
+           .append(Time.getTimeWeekDay())
+           .append("\nTraffic: ")
+           .append(getTraffic())
+           .append("\nFree: ")
+           .append(Runtime.getRuntime().freeMemory()>>10)
+           .append(" kb");
+        if (phoneManufacturer == Config.SONYE)
+            mem.append("\nTotal: ")
+               .append(Runtime.getRuntime().totalMemory()>>10)
+               .append(" kb");
+        setWobble(1, null, mem.toString());
+//#endif
+    }
+
     public String getTraffic() {
         long traffic = StaticData.getInstance().traffic;
         return StringUtils.getSizeString((traffic>0)?traffic*2:0);

@@ -46,9 +46,7 @@ import Menu.MyMenu;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 
-public class userKeysList
-        extends VirtualList 
-        implements
+public class UserKeysList extends VirtualList implements
 //#ifndef MENU_LISTENER
 //#         CommandListener
 //#else
@@ -59,7 +57,7 @@ public class userKeysList
 //#     public static String plugin = new String("PLUGIN_USER_KEYS");
 //#endif
 
-    Vector commandsList;
+    Vector userKeysList;
     
     Command cmdOK=new Command(SR.MS_OK, Command.OK,1);
     Command cmdAdd=new Command(
@@ -76,13 +74,13 @@ public class userKeysList
     private Config cf=Config.getInstance();
     
     /** Creates a new instance of AccountPicker */
-    public userKeysList(Display display) {
+    public UserKeysList(Display display) {
         super();
 //#ifdef USER_KEYS
 //#         setMainBarItem(new MainBar(SR.MS_CUSTOM_KEYS));
 //#endif
         
-        commandsList=userKeyExec.getInstance().commandsList;
+        userKeysList=UserKeyExec.getInstance().userKeysList;
 
         commandState();
         setCommandListener(this);
@@ -95,7 +93,7 @@ public class userKeysList
         menuCommands.removeAllElements();
 //#endif
         addCommand(cmdAdd);
-        if (commandsList.isEmpty()) {
+        if (userKeysList.isEmpty()) {
             removeCommand(cmdEdit);
             removeCommand(cmdDel);
         } else {
@@ -106,12 +104,12 @@ public class userKeysList
         addCommand(cmdCancel);
     }
 
-    public VirtualElement getItemRef(int Index) { 
-        return (VirtualElement)commandsList.elementAt(Index); 
+    public VirtualElement getItemRef(int index) {
+        return (VirtualElement)userKeysList.elementAt(index);
     }
     
     protected int getItemCount() {
-        return commandsList.size();
+        return userKeysList.size();
     }
     
     public void commandAction(Command c, Displayable d){
@@ -123,11 +121,11 @@ public class userKeysList
             destroyView();    
         }
         if (c==cmdEdit) 
-            new userKeyEdit(display, this, this, (userKey)getFocusedObject());
+            new UserKeyEdit(display, this, this, (UserKey)getFocusedObject());
         if (c==cmdAdd)
-            new userKeyEdit(display, this, this, null);
+            new UserKeyEdit(display, this, this, null);
         if (c==cmdDel) {
-            userKeyExec.getInstance().commandsList.removeElement(getFocusedObject());
+            UserKeyExec.getInstance().userKeysList.removeElement(getFocusedObject());
             
             rmsUpdate();
             moveCursorHome();
@@ -137,17 +135,27 @@ public class userKeysList
     }
     
     public void eventOk(){
-        new userKeyEdit(display, parentView, this, (userKey)getFocusedObject());
+        new UserKeyEdit(display, parentView, this, (UserKey)getFocusedObject());
     }
     
-    void rmsUpdate(){
+    public static void rmsUpdate(Vector keysList) {
+        int storage_version = 1;
         DataOutputStream outputStream=NvStorage.CreateDataOutputStream();
-        
-        for (int i=0;i<commandsList.size();i++) {
-            ((userKey)commandsList.elementAt(i)).saveToDataOutputStream(outputStream);
+
+        int size = keysList.size();
+        try {
+            outputStream.writeInt(size);
+        } catch (Exception e) { return; }
+
+        for (int i=0;i<size;i++) {
+            ((UserKey) keysList.elementAt(i)).saveToDataOutputStream(outputStream);
         }
         
-        NvStorage.writeFileRecord(outputStream, userKey.storage, 0, true);
+        NvStorage.writeFileRecord(outputStream, UserKey.storage, 0, storage_version, true);
+    }
+    
+    void rmsUpdate() {
+        rmsUpdate(userKeysList);
     }
     
 //#if (MENU_LISTENER && USER_KEYS)

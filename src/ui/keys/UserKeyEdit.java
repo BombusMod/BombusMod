@@ -28,34 +28,36 @@ package ui.keys;
 import locale.SR;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
+import javax.microedition.lcdui.TextField;
 import ui.controls.form.CheckBox;
 import ui.controls.form.DefForm;
 import ui.controls.form.DropChoiceBox;
+import ui.controls.form.KeyInput;
+import ui.controls.form.SpacerItem;
 
 /**
  *
  * @author ad
  */
-class userKeyEdit
-     extends DefForm {
+class UserKeyEdit extends DefForm {
 //#ifdef PLUGINS
 //#     public static String plugin = new String("PLUGIN_USER_KEYS");
 //#endif
 
-    private final userKeysList keysList;
+    private final UserKeysList keysList;
     
     private Display display;
 
     private CheckBox active;
+    private CheckBox two_keys_t;
     private DropChoiceBox keyDesc;
-    private DropChoiceBox keyCode;
+    private KeyInput key_t;
 
-    userKey u;
+    UserKey u;
     
     boolean newKey;
 
-    public userKeyEdit(Display display, Displayable pView, userKeysList keysList, userKey u) {
-
+    public UserKeyEdit(Display display, Displayable pView, UserKeysList keysList, UserKey u) {
         super(display, pView, (u==null)?
 //#ifdef USER_KEYS
 //#             SR.MS_ADD_CUSTOM_KEY:
@@ -69,7 +71,7 @@ class userKeyEdit
 	this.keysList = keysList;
 	
 	newKey=(u==null);
-	if (newKey) u=new userKey();
+	if (newKey) u=new UserKey();
 	this.u=u;
         
 //#ifdef USER_KEYS
@@ -80,15 +82,16 @@ class userKeyEdit
 //#         for (int i=0;i<u.COMMANDS_DESC.length;i++) {
 //#             keyDesc.append(u.COMMANDS_DESC[i]);
 //#         }
-//#         keyDesc.setSelectedIndex(u.commandId);
+//#         keyDesc.setSelectedIndex(u.command_id);
 //#         itemsList.addElement(keyDesc);
 //# 
-//#         keyCode=new DropChoiceBox(display, SR.MS_KEY);
-//#         for (int i=0;i<u.KEYS_NAME.length;i++) {
-//#             keyCode.append(u.KEYS_NAME[i]);
-//#         }
-//#         keyCode.setSelectedIndex((u.key<0)?0:u.key);
-//#         itemsList.addElement(keyCode);
+//#         two_keys_t = new CheckBox("Two keys", u.two_keys);
+//#         itemsList.addElement(two_keys_t);
+//# 
+//#         itemsList.addElement(new SpacerItem(10));
+//# 
+//#         key_t = new KeyInput(u, "Press it");
+//#         itemsList.addElement(key_t);
 //#endif
         
         moveCursorTo(getNextSelectableRef(-1));
@@ -98,11 +101,14 @@ class userKeyEdit
     
     public void cmdOk() {
         u.active=active.getValue();
-        u.commandId=keyDesc.getSelectedIndex();
-        u.key=keyCode.getSelectedIndex();
+        u.command_id=keyDesc.getSelectedIndex();
+
+        u.previous_key = key_t.previous_key;
+        u.key = key_t.key;
+        u.two_keys = two_keys_t.getValue();
 
         if (newKey) {
-            keysList.commandsList.addElement(u);
+            keysList.userKeysList.addElement(u);
         }
 
         keysList.rmsUpdate();
@@ -112,5 +118,16 @@ class userKeyEdit
     
     public void destroyView()	{
 	if (display!=null) display.setCurrent(parentView);
+    }
+
+    public void keyPressed(int keyCode) {
+        if (key_t.selected) {
+            key_t.keyPressed(keyCode);
+            redraw();
+            return;
+        } else {
+            key_t.two_keys = two_keys_t.getValue();
+            super.keyPressed(keyCode);
+        }
     }
 }
