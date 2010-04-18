@@ -47,20 +47,22 @@ public class JuickConfig extends DefForm {
     }
 
     private void addJuickContactsBox() {
-            if (sd.roster.juickContacts.size()>1) {
-            Vector juickContactsNames = new Vector(sd.roster.juickContacts.size());
-            for (Enumeration e = sd.roster.juickContacts.elements(); e.hasMoreElements();) {
-                Contact c = (Contact) e.nextElement();
-                juickContactsNames.addElement(c.getName());
-            }
-            juickContactsBox = new DropChoiceBox(display, "Main Juick-contact");
-            juickContactsBox.items = juickContactsNames;
-            //if (!account.juickJID.equals(""))
-            if (sd.roster.indexMainJuickContact > -1)
-                juickContactsBox.setSelectedIndex(sd.roster.indexMainJuickContact);
-            else juickContactsBox.setSelectedIndex(0);
-            itemsList.addElement(juickContactsBox);
-        }
+//#ifdef JUICK
+//#             if (sd.roster.juickContacts.size()>1) {
+//#             Vector juickContactsNames = new Vector(sd.roster.juickContacts.size());
+//#             for (Enumeration e = sd.roster.juickContacts.elements(); e.hasMoreElements();) {
+//#                 Contact c = (Contact) e.nextElement();
+//#                 juickContactsNames.addElement(c.getName());
+//#             }
+//#             juickContactsBox = new DropChoiceBox(display, "Main Juick-contact");
+//#             juickContactsBox.items = juickContactsNames;
+//#             //if (!account.juickJID.equals(""))
+//#             if (sd.roster.indexMainJuickContact > -1)
+//#                 juickContactsBox.setSelectedIndex(sd.roster.indexMainJuickContact);
+//#             else juickContactsBox.setSelectedIndex(0);
+//#             itemsList.addElement(juickContactsBox);
+//#         }
+//#endif
     }
 
     private void writeToStorage() {
@@ -88,14 +90,16 @@ public class JuickConfig extends DefForm {
         }
 
     public void cmdOk() {
-            if (juickContactsBox != null) {
-                setJuickJID(((Contact) sd.roster.juickContacts.elementAt(juickContactsBox.getSelectedIndex())).bareJid, true);
-            } else {
-                setJuickJID("", true);
-            }
-            sd.roster.updateMainJuickContact();
-            writeToStorage();
-            destroyView();
+//#ifdef JUICK
+//#             if (juickContactsBox != null) {
+//#                 setJuickJID(((Contact) sd.roster.juickContacts.elementAt(juickContactsBox.getSelectedIndex())).bareJid, true);
+//#             } else {
+//#                 setJuickJID("", true);
+//#             }
+//#             sd.roster.updateMainJuickContact();
+//#             writeToStorage();
+//#             destroyView();
+//#endif
     }
 
     public String getJuickJID () {

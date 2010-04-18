@@ -26,6 +26,8 @@
 
 package ui.keys;
 
+import com.sun.kvem.jsr082.bluetooth.SDDBImpl;
+import com.sun.kvem.jsr082.obex.ClientSessionImpl;
 import images.RosterIcons;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -110,26 +112,29 @@ public class UserKey extends IconTextElement {
                 return "[*]";
             case VirtualList.KEY_POUND:
                 return "[#]";
-            case VirtualList.LEFT:
-                return "(<)";
-            case VirtualList.RIGHT:
-                return "(>)";
-            case VirtualList.UP:
-                return "(^)";
-            case VirtualList.DOWN:
-                return "(V)";
-            case VirtualList.FIRE:
-                return "(o)";
-            case VirtualList.GAME_A:
-                return "[Game \"A\"]";
-            case VirtualList.GAME_B:
-                return "[Game \"B\"]";
-            case VirtualList.GAME_C:
-                return "[Game \"C\"]";
-            case VirtualList.GAME_D:
-                return "[Game \"D\"]";
             default:
-                return "[Code \"" + key_code + "\"]";
+                switch (Client.StaticData.getInstance().roster.getGameAction(key_code)) {
+                    case VirtualList.LEFT:
+                        return "(<)";
+                    case VirtualList.RIGHT:
+                        return "(>)";
+                    case VirtualList.UP:
+                        return "(^)";
+                    case VirtualList.DOWN:
+                        return "(V)";
+                    case VirtualList.FIRE:
+                        return "(o)";
+                    case VirtualList.GAME_A:
+                        return "[Game \"A\"]";
+                    case VirtualList.GAME_B:
+                        return "[Game \"B\"]";
+                    case VirtualList.GAME_C:
+                        return "[Game \"C\"]";
+                    case VirtualList.GAME_D:
+                        return "[Game \"D\"]";
+                    default:
+                        return "[Code \"" + key_code + "\"]";
+                }
         }
     }
 

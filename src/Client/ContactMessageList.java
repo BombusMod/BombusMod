@@ -695,13 +695,15 @@ public void showNotify() {
             return;
         }
 //#endif
+//#ifdef JUICK
 //#ifdef PLUGINS
 //#         if (sd.Juick)
 //#endif
-        if (isJuickContact(contact) || isJuBoContact(contact)) {
-            if (juickPoundFork())
-                return;
-        }
+//#         if (isJuickContact(contact) || isJuBoContact(contact)) {
+//#             if (juickPoundFork())
+//#                 return;
+//#         }
+//#endif
         keyGreen();
     }
     
@@ -759,13 +761,15 @@ public void showNotify() {
                 return;
             }
 //#endif
+//#ifdef JUICK
 //#ifdef PLUGINS
 //#         if (sd.Juick)
 //#endif
-            if (isJuickContact(contact) || isJuBoContact(contact)) {
-                if (juickPoundFork())
-                    return;
-            }
+//#             if (isJuickContact(contact) || isJuBoContact(contact)) {
+//#                 if (juickPoundFork())
+//#                     return;
+//#             }
+//#endif
             keyGreen();
             return;
         }

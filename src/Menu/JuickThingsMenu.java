@@ -26,7 +26,11 @@ public class JuickThingsMenu extends Menu {
     private Vector things;
 
     public JuickThingsMenu(Vector things, Display display, Displayable pView, Contact contact) {
-        super(SR.MS_JUICK_THINGS, null); //MenuIcons.getInstance()
+//#ifdef JUICK
+//#         super(SR.MS_JUICK_THINGS, null); //MenuIcons.getInstance()
+//#else
+        super("", null);
+//#endif
         this.things = things;
         this.contact = contact;
 

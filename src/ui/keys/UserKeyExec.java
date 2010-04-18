@@ -53,12 +53,11 @@ import ui.VirtualList;
 //# import Client.Contact;
 //# import Client.ContactMessageList;
 //# import Client.Roster;
-//# import javax.microedition.lcdui.Displayable;
 //#endif
+import javax.microedition.lcdui.Displayable;
 import io.NvStorage;
 import java.io.DataInputStream;
 import java.io.IOException;
-import javax.microedition.rms.RecordStore;
 
 public class UserKeyExec {
 //#ifdef PLUGINS
