@@ -39,7 +39,7 @@ import Client.StaticData;
 
 public class PepPublishResult implements JabberBlockListener {
 //#ifdef PLUGINS
-//#     public static String plugin = new String("PLUGIN_PEP");
+//#     public static String plugin = "PLUGIN_PEP";
 //#endif
 
     private Display display;

@@ -27,6 +27,9 @@ package PEP;
 //#  * @author Vitaly
 //#  */
 //# public class LocationForm extends DefForm implements LocationListener {
+//#ifdef PLUGINS
+//#     public static String plugin = "PLUGIN_PEP";
+//#endif
 //# 
 //#     SimpleString loc;
 //#     Coordinates coord;

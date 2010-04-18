@@ -37,7 +37,7 @@ import ui.IconTextElement;
  */
 public class MoodItem extends IconTextElement {
 //#ifdef PLUGINS
-//#     public static String plugin = new String("PLUGIN_PEP");
+//#     public static String plugin = "PLUGIN_PEP";
 //#endif
     
     private int iconIndex;

@@ -37,7 +37,7 @@ import util.StringLoader;
  */
 public class Activities {
 //#ifdef PLUGINS
-//#     public static String plugin = new String("PLUGIN_PEP");
+//#     public static String plugin = "PLUGIN_PEP";
 //#endif
 
     /** Creates a new instance of Moods */
@@ -53,8 +53,8 @@ public class Activities {
            actValue=null;
            actValue=new Vector();
        } else {
-           actKey=(Vector)vAct[0];
-           actValue=(Vector)vAct[1];
+           actKey=vAct[0];
+           actValue=vAct[1];
            actKey.insertElementAt("<None>", 0);
            actValue.insertElementAt("<None>", 0);
        }

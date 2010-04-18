@@ -36,7 +36,7 @@ import util.StringLoader;
  */
 public class Moods {
 //#ifdef PLUGINS
-//#     public static String plugin = new String("PLUGIN_PEP");
+//#     public static String plugin = "PLUGIN_PEP";
 //#endif
 
     /** Creates a new instance of Moods */

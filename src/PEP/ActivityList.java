@@ -29,7 +29,7 @@ import ui.controls.form.SimpleString;
  */
 public class ActivityList extends DefForm implements MIDPTextBox.TextBoxNotify {
 //#ifdef PLUGINS
-//#     public static String plugin = new String("PLUGIN_PEP");
+//#     public static String plugin = "PLUGIN_PEP";
 //#endif
     
     /** Creates a new instance of MoodList */

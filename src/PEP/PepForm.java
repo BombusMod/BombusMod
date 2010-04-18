@@ -27,7 +27,7 @@ import ui.controls.form.TextInput;
  */
 public class PepForm extends DefForm {
 //#ifdef PLUGINS
-//#     public static String plugin = new String("PLUGIN_PEP");
+//#     public static String plugin = "PLUGIN_PEP";
 //#endif
 
 //#ifdef PEP
