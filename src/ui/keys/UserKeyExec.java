@@ -89,6 +89,8 @@ public class UserKeyExec {
         if (is==null)
             export_from_old_storage(storage_version);
         is = NvStorage.ReadFileRecord(UserKey.storage, 0, storage_version);
+        if (is==null)
+            return;
 
         int size = 0;
         try {
