@@ -276,6 +276,12 @@ public class InfoWindow
 //#endif
 //#             abilitiesList.addElement("PEP_ACTIVITY");
 //#endif
+//#ifdef PEP_LOCATION
+//#ifdef PLUGINS
+//#         if (sd.PEP)
+//#endif
+//#             abilitiesList.addElement("PEP_LOCATION");
+//#endif
 //#ifdef PEP_TUNE
 //#ifdef PLUGINS
 //#         if (sd.PEP)

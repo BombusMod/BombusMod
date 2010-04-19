@@ -146,10 +146,15 @@ public class EntityCaps implements JabberBlockListener{
 //#               features.addElement("http://jabber.org/protocol/tune+notify");
 //#          }
 //#endif
+//#ifdef PEP_LOCATION
+//#         if (System.getProperty("microedition.location.version")!=null)
+//#               features.addElement("http://jabber.org/protocol/geoloc");
+//#               // features.addElement("http://jabber.org/protocol/geoloc+notify"); TODO:
+//#endif
 //#endif
         features.addElement("jabber:iq:time"); //DEPRECATED
         features.addElement("jabber:iq:version");
-        features.addElement("jabber:x:data");
+       // features.addElement("jabber:x:data"); we didn't support direct data forms
          //"jabber:x:event", //DEPRECATED
         features.addElement("urn:xmpp:ping");
         if (cf.eventDelivery)

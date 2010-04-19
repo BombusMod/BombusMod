@@ -59,11 +59,11 @@ package PEP;
 //#         } else {
 //#             this.coord = null;
 //#             value = SR.MS_ERROR;
-//#         }
-//#         itemsList.removeElement(wait);
+//#         }        
 //#         loc = new SimpleString(value, false);
 //#         loc.selectable = true;
-//#         itemsList.addElement(loc);
+//#         itemsList.setElementAt(loc, 1);
+//#         redraw();
 //#     }
 //# 
 //#     public void providerStateChanged(LocationProvider lp, int i) {
@@ -86,7 +86,7 @@ package PEP;
 //#             StaticData.getInstance().roster.theStream.addBlockListener(new PepPublishResult(display, sid));
 //#             StaticData.getInstance().roster.theStream.send(setActivity);
 //#         } catch (Exception e) {e.printStackTrace(); }
-//# 
+//#         destroyView();
 //#     }
 //#ifdef MENU_LISTENER
 //#     public String touchLeftCommand() { return SR.MS_PUBLISH; }
