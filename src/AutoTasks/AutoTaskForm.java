@@ -126,7 +126,7 @@ public class AutoTaskForm
 //#     }
 //#     
 //#     protected void beginPaint(){
-//#         if(typeIndex!=taskType.getSelectedIndex()); {
+//#         if(typeIndex!=taskType.getSelectedIndex()) {
 //#             typeIndex=taskType.getSelectedIndex();       
 //#             update();
 //#         }

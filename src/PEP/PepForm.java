@@ -92,7 +92,9 @@ public class PepForm extends DefForm {
 //#             itemsList.addElement(updloc);
 //#             }
 //#endif
+//#ifdef PLUGINS
 //#         }
+//#endif
 //#endif
 //#endif
         
