@@ -127,10 +127,10 @@ public abstract class VirtualList
 //#     private int previous_key_code = -1;
 //#endif
 
-//#ifdef POPUPS    
-
-    public static void setWobble(int type, String contact, String txt){
+//#ifdef POPUPS
+    public void setWobble(int type, String contact, String txt) {
         PopUp.getInstance().addPopup(type, contact, txt);
+        redraw();
     }
 //#endif
     protected int getMainBarRGB() {return ColorTheme.getColor(ColorTheme.BAR_INK);}
@@ -398,8 +398,8 @@ public abstract class VirtualList
     }
 
     /** запуск отложенной отрисовки активного Canvas */
-    public void redraw(){
-        Displayable d=display.getCurrent();
+    public void redraw() {
+        Displayable d = display.getCurrent();
         if (d instanceof Canvas) {
             ((Canvas)d).repaint();
         }
@@ -844,7 +844,6 @@ public abstract class VirtualList
     private int yPointerPos;
     
     protected void pointerPressed(int x, int y) {
-        //System.out.println("pointerPressed("+x+", "+y+")");
 //#ifdef POPUPS
         PopUp.getInstance().next();
 //#endif        
@@ -1001,16 +1000,15 @@ public abstract class VirtualList
                 if (keyCode==Config.KEY_BACK) key=13;
         }
          
-        if (key>-1) {
 //#ifdef POPUPS
-            if (PopUp.getInstance().size()>0) {
-                return PopUp.getInstance().handleEvent(key);
-            } else  
-//#endif
-            if (getFocusedObject()!=null)
-                return ((VirtualElement)getFocusedObject()).handleEvent(key);
+        if (PopUp.getInstance().size() > 0) {
+            return PopUp.getInstance().handleEvent(key);
         }
-                
+//#endif
+        if ((key > -1) && (getFocusedObject() != null)) {
+            return ((VirtualElement) getFocusedObject()).handleEvent(key);
+        }
+
         return false;
     }
     
@@ -1035,18 +1033,10 @@ public abstract class VirtualList
 //#if DEBUG
 //#         //System.out.println(keyCode); // Только мешает.
 //#endif
-//#ifdef POPUPS
-        if (keyCode==greenKeyCode) {
-            if (PopUp.getInstance().getContact()!=null) {
-                new ContactMessageList(sd.roster.getContact(PopUp.getInstance().getContact(), false),display);
-                PopUp.getInstance().next();
-                return;
-            } else if (phoneManufacturer==Config.MOTO || phoneManufacturer==Config.NOKIA || phoneManufacturer==Config.NOKIA_9XXX) {
-                keyGreen();
-                return;
-            }
+        if (sendEvent(keyCode)) {
+            repaint();
+            return;
         }
-//#endif
 //#ifdef MENU_LISTENER
         if (keyCode==Config.SOFT_LEFT || keyCode=='(') {
             if (reconnectWindow.getInstance().isActive()) {
@@ -1083,10 +1073,7 @@ public abstract class VirtualList
 //#             }
 //#          }
 //#endif
-        if (sendEvent(keyCode)) {
-            repaint();
-            return;
-        }
+
 //#ifdef USER_KEYS
 //#         if (userKeys) {
 //#             boolean executed = UserKeyExec.getInstance().commandExecute(display, previous_key_code, keyCode);
@@ -1510,7 +1497,7 @@ public abstract class VirtualList
 //#endif
     }
 
-    public String getTraffic() {
+    public static String getTraffic() {
         long traffic = StaticData.getInstance().traffic;
         return StringUtils.getSizeString((traffic>0)?traffic*2:0);
     }

@@ -76,7 +76,7 @@ public class PopUp {
             popUps.addElement(new PopUpElement(type, contact, StringUtils.parseMessage(message, width-border-padding, font)));
         }
 //#ifdef DEBUG
-//# //	System.out.println("added message to array = "+message);
+//# 	//System.out.println("added message to array = "+message);
 //#endif
     }
 
@@ -103,7 +103,7 @@ public class PopUp {
     }
 
     public void next() {
-        if(size()>0){
+        if(size()>0) {
             popUps.removeElementAt(0);
             scrollable=SCROLLABLE_NONE;
             startLine=0;
@@ -140,10 +140,7 @@ public class PopUp {
             }
         }
         next();
-        if (keyCode==5)
-            return true;
-        
-        return false;
+        return true;
     }
     
     public void clear() {
@@ -246,7 +243,6 @@ public class PopUp {
     public void paintCustom(Graphics graph) {
 	if(size()<1)
 	    return;
-        
         scrollable=(startLine>0)?SCROLLABLE_UP:SCROLLABLE_NONE;
         
         maxWdth=getMaxWidth();

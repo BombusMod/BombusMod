@@ -2577,10 +2577,10 @@ public class Roster
                 }
             }
 
-            VirtualList.setWobble(1, null, mess.toString());
+            setWobble(1, null, mess.toString());
             mess=null;
         } else {
-            VirtualList.setWobble(type, contact.getJid(), info);
+            setWobble(type, contact.getJid(), info);
         }
 
         redraw();

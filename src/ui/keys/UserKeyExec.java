@@ -273,9 +273,7 @@ public class UserKeyExec {
                 System.gc();
                 try { Thread.sleep(50); } catch (InterruptedException e) { }
 //            } _vt
-                if (current instanceof VirtualList) {
-                    ((VirtualList) current).showHeapInfo();
-                }
+                sd.roster.showHeapInfo();
             break;
             default:
                 return false;
