@@ -43,6 +43,7 @@ import Menu.MenuListener;
 import Menu.Command;
 import Menu.MyMenu;
 //#endif
+import java.util.Enumeration;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 
@@ -80,12 +81,21 @@ public class UserKeysList extends VirtualList implements
 //#         setMainBarItem(new MainBar(SR.MS_CUSTOM_KEYS));
 //#endif
         
-        userKeysList=UserKeyExec.getInstance().userKeysList;
+        userKeysList = copyVector(UserKeyExec.getInstance().userKeysList);
 
         commandState();
         setCommandListener(this);
         
         attachDisplay(display);
+    }
+
+    private Vector copyVector(Vector v1) {
+        int size = v1.size();
+        Vector v2 = new Vector(size);
+        for (Enumeration e = v1.elements(); e.hasMoreElements();) {
+            v2.addElement(new UserKey((UserKey) e.nextElement()));
+        }
+        return v2;
     }
 
     void commandState(){
@@ -105,7 +115,7 @@ public class UserKeysList extends VirtualList implements
     }
 
     public VirtualElement getItemRef(int index) {
-        return (VirtualElement)userKeysList.elementAt(index);
+        return (VirtualElement) userKeysList.elementAt(index);
     }
     
     protected int getItemCount() {
@@ -117,25 +127,25 @@ public class UserKeysList extends VirtualList implements
             destroyView();
         }
         if (c==cmdOK) {
+            UserKeyExec.getInstance().userKeysList = userKeysList;
             rmsUpdate();
             destroyView();    
         }
         if (c==cmdEdit) 
-            new UserKeyEdit(display, this, this, (UserKey)getFocusedObject());
+            new UserKeyEdit(display, this, (UserKey) getFocusedObject());
         if (c==cmdAdd)
-            new UserKeyEdit(display, this, this, null);
+            new UserKeyEdit(display, this, null);
         if (c==cmdDel) {
-            UserKeyExec.getInstance().userKeysList.removeElement(getFocusedObject());
+            userKeysList.removeElement(getFocusedObject());
             
-            rmsUpdate();
             moveCursorHome();
             commandState();
             redraw();
         }
     }
     
-    public void eventOk(){
-        new UserKeyEdit(display, parentView, this, (UserKey)getFocusedObject());
+    public void eventOk() {
+        new UserKeyEdit(display, this, (UserKey) getFocusedObject());
     }
     
     public static void rmsUpdate(Vector keysList) {

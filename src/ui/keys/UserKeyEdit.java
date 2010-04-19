@@ -45,8 +45,6 @@ class UserKeyEdit extends DefForm {
 //#endif
 
     private final UserKeysList keysList;
-    
-    private Display display;
 
     private CheckBox active;
     private CheckBox two_keys_t;
@@ -57,16 +55,14 @@ class UserKeyEdit extends DefForm {
     
     boolean newKey;
 
-    public UserKeyEdit(Display display, Displayable pView, UserKeysList keysList, UserKey u) {
-        super(display, pView, (u==null)?
+    public UserKeyEdit(Display display, UserKeysList keysList, UserKey u) {
+        super(display, keysList, (u==null)?
 //#ifdef USER_KEYS
 //#             SR.MS_ADD_CUSTOM_KEY:
 //#else
                 "":
 //#endif
                 (u.toString()));
-        
-        this.display=display;
         
 	this.keysList = keysList;
 	
@@ -96,7 +92,7 @@ class UserKeyEdit extends DefForm {
         
         moveCursorTo(getNextSelectableRef(-1));
         attachDisplay(display);
-        this.parentView=pView;
+        parentView = keysList;
     }
     
     public void cmdOk() {
@@ -111,13 +107,9 @@ class UserKeyEdit extends DefForm {
             keysList.userKeysList.addElement(u);
         }
 
-        keysList.rmsUpdate();
+        //keysList.rmsUpdate();
         keysList.commandState();
-        destroyView();
-    }
-    
-    public void destroyView()	{
-	if (display!=null) display.setCurrent(parentView);
+        display.setCurrent(keysList);
     }
 
     public void keyPressed(int keyCode) {

@@ -26,8 +26,6 @@
 
 package ui.keys;
 
-import com.sun.kvem.jsr082.bluetooth.SDDBImpl;
-import com.sun.kvem.jsr082.obex.ClientSessionImpl;
 import images.RosterIcons;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -35,6 +33,7 @@ import java.io.IOException;
 import locale.SR;
 import ui.IconTextElement;
 import ui.VirtualList;
+import Client.Config;
 
 /**
  *
@@ -46,12 +45,16 @@ public class UserKey extends IconTextElement {
 //#endif
     
     public final static String storage="keys_db";
-            
+
     public int command_id   = 0;
     public int previous_key;
     public int key;
     public boolean active   = false;
     public boolean two_keys = true;
+
+    public UserKey(UserKey u) {
+        this(u.command_id, u.previous_key, u.key, u.active, u.two_keys);
+    }
 
     public UserKey(int command_id, int previous_key, int key, boolean active, boolean two_keys) {
         this();
@@ -112,30 +115,48 @@ public class UserKey extends IconTextElement {
                 return "[*]";
             case VirtualList.KEY_POUND:
                 return "[#]";
+            case 32:
+                return "[Space]";
+            case 10:
+                return "[Enter]";
+            case 8:
+                return "[BackSpace]";
             default:
-                switch (Client.StaticData.getInstance().roster.getGameAction(key_code)) {
-                    case VirtualList.LEFT:
-                        return "(<)";
-                    case VirtualList.RIGHT:
-                        return "(>)";
-                    case VirtualList.UP:
-                        return "(^)";
-                    case VirtualList.DOWN:
-                        return "(V)";
-                    case VirtualList.FIRE:
-                        return "(o)";
-                    case VirtualList.GAME_A:
-                        return "[Game \"A\"]";
-                    case VirtualList.GAME_B:
-                        return "[Game \"B\"]";
-                    case VirtualList.GAME_C:
-                        return "[Game \"C\"]";
-                    case VirtualList.GAME_D:
-                        return "[Game \"D\"]";
+                if (key_code>=0) {
+                    if (((key_code>64)&&(key_code<91))     // [A-Z]
+                     || ((key_code>96)&&(key_code<123))) { // [a-z]
+                        return "["+(char) key_code+"]";
+                    } // Выше - положительные коды, ниже - отрицательные.
+                } else switch (Client.StaticData.getInstance().roster.getGameAction(key_code)) {
+                        case VirtualList.LEFT:
+                            return "(<)";
+                        case VirtualList.RIGHT:
+                            return "(>)";
+                        case VirtualList.UP:
+                            return "(^)";
+                        case VirtualList.DOWN:
+                            return "(V)";
+                        case VirtualList.FIRE:
+                            return "(o)";
+                        case VirtualList.GAME_A:
+                            return "[Game \"A\"]";
+                        case VirtualList.GAME_B:
+                            return "[Game \"B\"]";
+                        case VirtualList.GAME_C:
+                            return "[Game \"C\"]";
+                        case VirtualList.GAME_D:
+                            return "[Game \"D\"]";
                     default:
-                        return "[Code \"" + key_code + "\"]";
+                        if (key_code == Config.KEY_BACK) {
+                            return "(Key \"Back\")";
+                        } else if (key_code == Config.SOFT_LEFT) {
+                            return "(Soft Left)";
+                        } else if (key_code == Config.SOFT_RIGHT) {
+                            return "(Soft Right)";
+                        }
                 }
         }
+        return "[Code \"" + key_code + "\"]";
     }
 
     public static UserKey createFromDataInputStream(DataInputStream inputStream) {
