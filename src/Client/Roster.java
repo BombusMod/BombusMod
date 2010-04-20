@@ -871,7 +871,13 @@ public class Roster
         sort(hContacts);
         return c;
     }
-    
+
+//#ifdef POPUPS
+    public void showContactMessageList(String jid) {
+        new ContactMessageList(sd.roster.getContact(jid, false), display);
+    }
+//#endif
+
     public void addContact(Contact c) {
         synchronized (hContacts) { hContacts.addElement(c); }
     }

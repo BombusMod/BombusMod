@@ -999,9 +999,14 @@ public abstract class VirtualList
                         case FIRE: key=12; break;
                     }
                 } catch (Exception e) { }
-                if (key_code == Config.KEY_BACK)
-                    key = 13;
         }
+
+        if (key_code == Config.KEY_BACK) {
+            key = 13;
+        } else if (key_code == greenKeyCode) {
+            key = 14;
+        }
+        System.out.println(key);
         return key;
     }
 
@@ -1039,7 +1044,6 @@ public abstract class VirtualList
     private void key(int keyCode) {
 //#if DEBUG
 //#         //System.out.println(keyCode); // Только мешает.
-//#         System.out.println(previous_key_code+":"+keyCode);
 //#endif
 //#ifdef POPUPS
         if (skipPopUp(keyCode)) {
@@ -1102,14 +1106,15 @@ public abstract class VirtualList
         } else if (keyCode == keyVolDown) {
             moveCursorEnd();
             return;
-        } if (keyCode == '5') {
+        } else if (keyCode == '5') {
             eventOk();
             return;
-        } if (keyCode == Config.KEY_BACK && canBack == true) {
+        } else if (keyCode == Config.KEY_BACK && canBack == true) {
             destroyView();
             return;
-        } if (keyCode == greenKeyCode && (phoneManufacturer==Config.MOTO || phoneManufacturer==Config.NOKIA || phoneManufacturer==Config.NOKIA_9XXX)) {
+        } else if (keyCode == greenKeyCode && (phoneManufacturer==Config.MOTO || phoneManufacturer==Config.NOKIA || phoneManufacturer==Config.NOKIA_9XXX)) {
             keyGreen();
+            return;
         }
     switch (keyCode) {
         case KEY_NUM1:        

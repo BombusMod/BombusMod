@@ -34,6 +34,7 @@ import java.util.Vector;
 import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
 import Fonts.FontCache;
+import Client.StaticData;
 import util.StringUtils;
 
 public class PopUp {
@@ -98,7 +99,7 @@ public class PopUp {
 
     public String getContact() {
         if(size()>0)
-            return ((PopUpElement)popUps.elementAt(0)).getContact();
+            return ((PopUpElement) popUps.elementAt(0)).getContact();
         return null;
     }
 
@@ -141,6 +142,16 @@ public class PopUp {
                     return true;
             }
         }
+
+        if (keyCode == 14) {
+            String c = getContact();
+            if (c != null) {
+                StaticData.getInstance().roster.showContactMessageList(c);
+                next();
+                return true;
+            }
+        }
+
         return next();
     }
     
