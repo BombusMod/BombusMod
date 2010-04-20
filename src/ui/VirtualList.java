@@ -124,7 +124,7 @@ public abstract class VirtualList
     }
     
 //#ifdef USER_KEYS
-//#     private int previous_key_code = -1;
+//#     private static int previous_key_code = -1;
 //#endif
 
 //#ifdef POPUPS
@@ -845,8 +845,10 @@ public abstract class VirtualList
     
     protected void pointerPressed(int x, int y) {
 //#ifdef POPUPS
-        PopUp.getInstance().next();
-//#endif        
+        if (PopUp.getInstance().next()) {
+            return;
+        }
+//#endif
 //#ifdef MENU_LISTENER
         int act=ar.pointerPressed(x, y);
         if (act==1) {
@@ -972,9 +974,9 @@ public abstract class VirtualList
         }        
     }
     
-    private boolean sendEvent(int keyCode) {
-        int key=-1;
-        switch (keyCode) {
+    private int getKeyCodeForSendEvent(int key_code) {
+        int key = -1;
+        switch (key_code) {
             case KEY_NUM0: key=0; break;
             case KEY_NUM1: key=1; break;
             case KEY_NUM2: key=2; break;
@@ -989,29 +991,34 @@ public abstract class VirtualList
             case KEY_POUND: key=11; break;
             default:
                 try {
-                    switch (getGameAction(keyCode)){
+                    switch (getGameAction(key_code)) {
                         case UP: key=2; break;
                         case LEFT: key=4; break;
                         case RIGHT: key=6; break;
                         case DOWN: key=8; break;
                         case FIRE: key=12; break;
                     }
-                } catch (Exception e) {}
-                if (keyCode==Config.KEY_BACK) key=13;
+                } catch (Exception e) { }
+                if (key_code == Config.KEY_BACK)
+                    key = 13;
         }
-         
+        return key;
+    }
+
 //#ifdef POPUPS
-        if (PopUp.getInstance().size() > 0) {
-            return PopUp.getInstance().handleEvent(key);
-        }
+    private boolean skipPopUp(int key_code) {
+        int key = getKeyCodeForSendEvent(key_code);
+        return PopUp.getInstance().handleEvent(key);
+    }
 //#endif
+    
+    private boolean sendEvent(int key_code) {
+        int key = getKeyCodeForSendEvent(key_code);
         if ((key > -1) && (getFocusedObject() != null)) {
             return ((VirtualElement) getFocusedObject()).handleEvent(key);
         }
-
         return false;
     }
-    
     
     public void reconnectYes() {
         reconnectWindow.getInstance().reconnect();
@@ -1032,6 +1039,22 @@ public abstract class VirtualList
     private void key(int keyCode) {
 //#if DEBUG
 //#         //System.out.println(keyCode); // Только мешает.
+//#         System.out.println(previous_key_code+":"+keyCode);
+//#endif
+//#ifdef POPUPS
+        if (skipPopUp(keyCode)) {
+            repaint();
+            previous_key_code = keyCode;
+            return;
+        }
+//#endif
+//#ifdef USER_KEYS
+//#         if (userKeys) {
+//#             boolean executed = UserKeyExec.getInstance().commandExecute(display, previous_key_code, keyCode);
+//#             previous_key_code = keyCode;
+//#             if (executed)
+//#                 return;
+//#         }
 //#endif
         if (sendEvent(keyCode)) {
             repaint();
@@ -1072,15 +1095,6 @@ public abstract class VirtualList
 //#                 return;
 //#             }
 //#          }
-//#endif
-
-//#ifdef USER_KEYS
-//#         if (userKeys) {
-//#             boolean executed = UserKeyExec.getInstance().commandExecute(display, previous_key_code, keyCode);
-//#             previous_key_code = keyCode;
-//#             if (executed)
-//#                 return;
-//#         }
 //#endif
         
     switch (keyCode) {

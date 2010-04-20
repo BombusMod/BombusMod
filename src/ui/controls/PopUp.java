@@ -102,12 +102,14 @@ public class PopUp {
         return null;
     }
 
-    public void next() {
+    public boolean next() {
         if(size()>0) {
             popUps.removeElementAt(0);
             scrollable=SCROLLABLE_NONE;
             startLine=0;
+            return true;
         }
+        return false;
     }
     
     private void scrollDown() {
@@ -139,8 +141,7 @@ public class PopUp {
                     return true;
             }
         }
-        next();
-        return true;
+        return next();
     }
     
     public void clear() {
