@@ -100,38 +100,21 @@ public class UserKeyExec {
             userKeysList.addElement(UserKey.createFromDataInputStream(is));
     }
 
-    private int get_old_key_code(int key_num) {
-        switch(key_num) {
-            case 0: return VirtualList.KEY_NUM0;
-            case 1: return VirtualList.KEY_NUM1;
-            case 2: return VirtualList.KEY_NUM2;
-            case 3: return VirtualList.KEY_NUM3;
-            case 4: return VirtualList.KEY_NUM4;
-            case 5: return VirtualList.KEY_NUM5;
-            case 6: return VirtualList.KEY_NUM6;
-            case 7: return VirtualList.KEY_NUM7;
-            case 8: return VirtualList.KEY_NUM8;
-            case 9: return VirtualList.KEY_NUM9;
-            case 10: return VirtualList.KEY_STAR;
-            default: return -1;
-        }
-    }
-
     private void export_from_old_storage(int storage_version) {
         for (int i=(storage_version-1); i>=0; i--)
             switch(i) {
                 case 0:
+                    Vector old_user_key_list = UserKeysList.getDefaultKeysList();
                     DataInputStream is = NvStorage.ReadFileRecord(UserKey.storage, 0);
                     if (is==null)
                         continue;
 
-                    Vector old_user_key_list = new Vector();
                     UserKey u = new UserKey();
                     do {
                         try {
                             u.command_id = is.readInt();
                             u.previous_key = VirtualList.KEY_STAR;
-                            u.key = get_old_key_code(is.readInt());
+                            u.key = UserKey.get_key_code_by_id(is.readInt());
                             u.active = is.readBoolean();
                         } catch (IOException e) { break; }
 

@@ -183,6 +183,23 @@ public class UserKey extends IconTextElement {
 
     public int getImageIndex() {return active?0:5;}
 
+    public static int get_key_code_by_id(int id) {
+        switch(id) {
+            case 0: return VirtualList.KEY_NUM0;
+            case 1: return VirtualList.KEY_NUM1;
+            case 2: return VirtualList.KEY_NUM2;
+            case 3: return VirtualList.KEY_NUM3;
+            case 4: return VirtualList.KEY_NUM4;
+            case 5: return VirtualList.KEY_NUM5;
+            case 6: return VirtualList.KEY_NUM6;
+            case 7: return VirtualList.KEY_NUM7;
+            case 8: return VirtualList.KEY_NUM8;
+            case 9: return VirtualList.KEY_NUM9;
+            case 10: return VirtualList.KEY_STAR;
+            default: return -1;
+        }
+    }
+
     public static final String[] COMMANDS_DESC = {
         SR.MS_NO,
         SR.MS_OPTIONS,

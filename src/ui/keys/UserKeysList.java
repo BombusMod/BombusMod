@@ -46,6 +46,7 @@ import Menu.MyMenu;
 import java.util.Enumeration;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
+import util.StringLoader;
 
 public class UserKeysList extends VirtualList implements
 //#ifndef MENU_LISTENER
@@ -65,6 +66,7 @@ public class UserKeysList extends VirtualList implements
 //#     Command cmdAdd = new Command(SR.MS_ADD_CUSTOM_KEY, Command.SCREEN, 3);
 //#     Command cmdEdit = new Command(SR.MS_EDIT, Command.ITEM, 3);
 //#     Command cmdDel = new Command(SR.MS_DELETE, Command.ITEM, 4);
+//#     Command cmdRestore = new Command(SR.MS_SETDEFAULT, Command.ITEM, 5);
 //#     Command cmdCancel = new Command(SR.MS_BACK, Command.BACK, 99);
 //#endif
 
@@ -94,6 +96,23 @@ public class UserKeysList extends VirtualList implements
         return v2;
     }
 
+    public static Vector getDefaultKeysList() {
+        Vector defKeysList = new Vector();
+        Vector defs[] = new StringLoader().stringLoader("/def_keys.txt", 4);
+        for (int i = 0; i < defs[0].size(); i++) {
+            int command_id = Integer.parseInt((String) defs[0].elementAt(i));
+            int previous_key_code = UserKey.get_key_code_by_id(Integer.parseInt((String) defs[1].elementAt(i)));
+            int key_code = UserKey.get_key_code_by_id(Integer.parseInt((String) defs[2].elementAt(i)));
+            boolean two_keys = ((String) defs[3].elementAt(i)).equals("y");
+            defKeysList.addElement(new UserKey(command_id, previous_key_code, key_code, true, two_keys));
+        }
+        return defKeysList;
+    }
+
+    private void restoreDefault() {
+        userKeysList = getDefaultKeysList();
+    }
+
     void commandState(){
 //#ifdef MENU_LISTENER
         menuCommands.removeAllElements();
@@ -106,6 +125,7 @@ public class UserKeysList extends VirtualList implements
             addCommand(cmdEdit);
             addCommand(cmdDel);
         }
+        addCommand(cmdRestore);
         addCommand(cmdOK);
         addCommand(cmdCancel);
     }
@@ -127,13 +147,18 @@ public class UserKeysList extends VirtualList implements
             rmsUpdate();
             destroyView();    
         }
+        if (c==cmdRestore) {
+            restoreDefault();
+            moveCursorHome();
+            commandState();
+            redraw();
+        }
         if (c==cmdEdit) 
             new UserKeyEdit(display, this, (UserKey) getFocusedObject());
         if (c==cmdAdd)
             new UserKeyEdit(display, this, null);
         if (c==cmdDel) {
             userKeysList.removeElement(getFocusedObject());
-            
             moveCursorHome();
             commandState();
             redraw();
