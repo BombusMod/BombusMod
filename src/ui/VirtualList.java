@@ -1096,10 +1096,22 @@ public abstract class VirtualList
 //#             }
 //#          }
 //#endif
-        
+        if (keyCode == keyClear) {
+            keyClear();
+            return;
+        } else if (keyCode == keyVolDown) {
+            moveCursorEnd();
+            return;
+        } if (keyCode == '5') {
+            eventOk();
+            return;
+        } if (keyCode == Config.KEY_BACK && canBack == true) {
+            destroyView();
+            return;
+        } if (keyCode == greenKeyCode && (phoneManufacturer==Config.MOTO || phoneManufacturer==Config.NOKIA || phoneManufacturer==Config.NOKIA_9XXX)) {
+            keyGreen();
+        }
     switch (keyCode) {
-        case 0: 
-            break;
         case KEY_NUM1:        
             moveCursorHome();    
             break;
@@ -1153,12 +1165,6 @@ public abstract class VirtualList
                         eventOk();
                         break;
                 default:
-                    if (keyCode==keyClear) { keyClear(); break; }
-                    if (keyCode==keyVolDown) { moveCursorEnd(); break; }
-                    if (keyCode=='5') {  eventOk(); break; }
-                    if (keyCode==Config.KEY_BACK && canBack==true) { destroyView(); }
-                    if (keyCode==greenKeyCode) { keyGreen(); }
-
                     userKeyPressed(keyCode);
                 }
             } catch (Exception e) {/* IllegalArgumentException @ getGameAction */}

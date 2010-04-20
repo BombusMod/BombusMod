@@ -542,3 +542,4 @@ For work this command you need contact juick@juick.com in you roster. For more i
 Next	Далее
 Users search	Поиск пользователей
 Memory cleaning	очистка памяти
+Apply	Применить

@@ -485,6 +485,7 @@ public class SR {
 //#     public static String MS_ENABLED = loadString( "enabled" );
 //#     public static String MS_KEY = loadString( "key" );
 //#endif
+    public static String MS_APPLY = loadString( "Apply" );
 
     public static String MS_RECONNECT = loadString( "Reconnect" );
     public static String MS_SORT = loadString( "Sort list" );

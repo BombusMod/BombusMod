@@ -59,19 +59,15 @@ public class UserKeysList extends VirtualList implements
 //#endif
 
     Vector userKeysList;
-    
-    Command cmdOK=new Command(SR.MS_OK, Command.OK,1);
-    Command cmdAdd=new Command(
+
 //#ifdef USER_KEYS
-//#             SR.MS_ADD_CUSTOM_KEY
-//#else
-            ""
+//#     Command cmdOK = new Command(SR.MS_APPLY, Command.OK, 1);
+//#     Command cmdAdd = new Command(SR.MS_ADD_CUSTOM_KEY, Command.SCREEN, 3);
+//#     Command cmdEdit = new Command(SR.MS_EDIT, Command.ITEM, 3);
+//#     Command cmdDel = new Command(SR.MS_DELETE, Command.ITEM, 4);
+//#     Command cmdCancel = new Command(SR.MS_BACK, Command.BACK, 99);
 //#endif
-            , Command.SCREEN,3);
-    Command cmdEdit=new Command(SR.MS_EDIT,Command.ITEM,3);
-    Command cmdDel=new Command(SR.MS_DELETE,Command.ITEM,4);
-    Command cmdCancel=new Command(SR.MS_BACK,Command.BACK,99);
-    
+
     private Config cf=Config.getInstance();
     
     /** Creates a new instance of AccountPicker */
