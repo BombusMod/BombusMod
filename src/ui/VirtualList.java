@@ -1046,10 +1046,9 @@ public abstract class VirtualList
 //#         //System.out.println(keyCode); // Только мешает.
 //#endif
 //#ifdef POPUPS
-        if (skipPopUp(keyCode)) {
+        boolean popupSkipped = skipPopUp(keyCode);
+        if (popupSkipped) {
             repaint();
-            previous_key_code = keyCode;
-            return;
         }
 //#endif
 //#ifdef USER_KEYS
@@ -1059,6 +1058,10 @@ public abstract class VirtualList
 //#             if (executed)
 //#                 return;
 //#         }
+//#endif
+//#ifdef POPUPS
+        if (popupSkipped)
+            return;
 //#endif
         if (sendEvent(keyCode)) {
             repaint();
