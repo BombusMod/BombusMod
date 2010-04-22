@@ -124,7 +124,6 @@ public class ContactMessageList extends MessageList {
     private boolean composing=true;
 
     private boolean startSelection;
-
     /** Creates a new instance of MessageList */
     public ContactMessageList(Contact contact, Display display) {
         super();
@@ -160,8 +159,10 @@ public class ContactMessageList extends MessageList {
         for (Enumeration e=contact.msgs.elements(); e.hasMoreElements();) {
             if (((Msg)e.nextElement()).unread)
                 break;
+            if (contact.mark == unreadIndex)
+                break;            
             unreadIndex++;
-        }
+        }        
         return unreadIndex;
     }
     
@@ -858,7 +859,7 @@ public void showNotify() {
 //#         }
 //#         history=null;
 //#     }
-//#
+//# 
 //#     private boolean isMsgExists(Msg msg) {
 //#         if (msg == null) return true;
 //#          for (Enumeration contactMsgs=contact.msgs.elements(); contactMsgs.hasMoreElements(); )  {
@@ -965,6 +966,7 @@ public void showNotify() {
             startSelection = false;
         }
         */
+        contact.mark = on_end ? -1 : cursor;        
         sd.roster.activeContact=null;
         sd.roster.reEnumRoster(); //to reset unread messages icon for this conference in roster
         if (display!=null) display.setCurrent(sd.roster);

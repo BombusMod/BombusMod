@@ -123,6 +123,7 @@ public class Contact extends IconTextElement{
     private int newHighLitedMsgCnt=0;
     public int unreadType;
     public int lastUnread;
+    public int mark = -1;
 
     public String msgSuspended;
     public String lastSendedMessage;

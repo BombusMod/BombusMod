@@ -58,8 +58,8 @@ public class Config {
     public final int vibraLen=500;
 
     public static int KEY_BACK = -11;
-    public static int SOFT_LEFT = -1000;
-    public static int SOFT_RIGHT = -1000;
+    public static int SOFT_LEFT = -6; // for most MIDP2 phones
+    public static int SOFT_RIGHT = -7;
     
     public final static int SUBSCR_AUTO=0;
     public final static int SUBSCR_ASK=1;
