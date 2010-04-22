@@ -702,7 +702,7 @@ public class SR {
     public static String MS_VERSION = loadString( "Version" );
 
 //#ifdef JUICK
-//#      public static String MS_JUICK_FOCUS_COMMANDS = loadString( "Juick (Focus & Commands)" );
+//#      public static String MS_JUICK_FOCUS = loadString( "Focus to Juick contact" );
 //#      public static String MS_JUICK_MESSAGE_REPLY = loadString( "[J] Reply to message" );
 //#      public static String MS_JUICK_SEND_PRIVATE_REPLY = loadString( "[J] Reply to " );
 //#      public static String MS_JUICK_THINGS = loadString( "[J] Things" );

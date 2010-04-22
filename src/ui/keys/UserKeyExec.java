@@ -58,6 +58,8 @@ import javax.microedition.lcdui.Displayable;
 import io.NvStorage;
 import java.io.DataInputStream;
 import java.io.IOException;
+import Messages.MessageList;
+import Messages.MessageItem;
 
 public class UserKeyExec {
 //#ifdef PLUGINS
@@ -69,25 +71,78 @@ public class UserKeyExec {
     
     private static UserKeyExec instance;
     public static UserKeyExec getInstance(){
-	if (instance==null) {
-	    instance=new UserKeyExec();
-            cf=Config.getInstance();
-            instance.initCommands();
-	}
-	return instance;
+        if (instance == null) {
+            instance = new UserKeyExec();
+            cf = Config.getInstance();
+        }
+        return instance;
+    }
+
+    private UserKeyExec() {
+        init_available_commands();
+        init_commands_from_rms();
     }
 
     public Vector userKeysList;
-    
-    private void initCommands() {
+    public final static UserKeyCommand none_command = new UserKeyCommand(0, SR.MS_NO);
+     // 0 - common, 1 - Roster, 2 - MessageList, 3 - ContactMessageList
+    public final static Vector[] available_commands = { new Vector(), new Vector(), new Vector(), new Vector() };
+
+    public void init_available_commands() {
+        available_commands[0].addElement(new UserKeyCommand(1, SR.MS_OPTIONS));
+        available_commands[0].addElement(new UserKeyCommand(2, SR.MS_CLEAN_ALL_MESSAGES));
+        available_commands[0].addElement(new UserKeyCommand(3, SR.MS_RECONNECT));
+//#ifdef STATS
+//#         available_commands[0].addElement(new UserKeyCommand(4, SR.MS_STATS));
+//#endif
+        available_commands[0].addElement(new UserKeyCommand(5, SR.MS_STATUS_MENU));
+        available_commands[0].addElement(new UserKeyCommand(6, SR.MS_FILE_TRANSFERS));
+//#ifdef ARCHIVE
+        available_commands[0].addElement(new UserKeyCommand(7, SR.MS_ARCHIVE));
+//#endif
+        available_commands[0].addElement(new UserKeyCommand(8, SR.MS_DISCO));
+//#ifdef PRIVACY
+        available_commands[0].addElement(new UserKeyCommand(9, SR.MS_PRIVACY_LISTS));
+//#endif
+//#ifdef USER_KEYS
+//#         available_commands[0].addElement(new UserKeyCommand(10, SR.MS_CUSTOM_KEYS));
+//#endif
+//#ifdef POPUPS
+        available_commands[1].addElement(new UserKeyCommand(11, SR.MS_CLEAR_POPUPS));
+//#endif
+        available_commands[0].addElement(new UserKeyCommand(12, SR.MS_FLASHLIGHT));
+        available_commands[0].addElement(new UserKeyCommand(13, SR.MS_ABOUT));
+        available_commands[0].addElement(new UserKeyCommand(14, SR.MS_APP_MINIMIZE));
+        available_commands[0].addElement(new UserKeyCommand(15, SR.MS_INVERT));
+//#ifdef CONSOLE
+//#         available_commands[0].addElement(new UserKeyCommand(16, SR.MS_XML_CONSOLE));
+//#endif
+        available_commands[0].addElement(new UserKeyCommand(17, SR.MS_FULLSCREEN));
+//#ifdef JUICK
+//#         available_commands[1].addElement(new UserKeyCommand(18, SR.MS_JUICK_FOCUS));
+//#endif
+        available_commands[1].addElement(new UserKeyCommand(19, SR.MS_HEAP_MONITOR));
+//#ifdef SMILES
+        available_commands[2].addElement(new UserKeyCommand(20, SR.MS_SMILES_TOGGLE));
+//#endif
+//#ifdef JUICK
+//#         available_commands[3].addElement(new UserKeyCommand(21, SR.MS_COMMANDS + " Juick"));
+//#endif
+    }
+
+    public static UserKeyCommand get_command_by_id(int command_id, int type) {
+        int cmdIndex = available_commands[type].indexOf(new UserKeyCommand(command_id, null));
+        if (cmdIndex >= 0) {
+            return (UserKeyCommand) available_commands[type].elementAt(cmdIndex);
+        }
+        return none_command;
+    }
+
+    private void init_commands_from_rms() {
         userKeysList = null;
         userKeysList = new Vector();
 
-        int storage_version = 1;
-        DataInputStream is = NvStorage.ReadFileRecord(UserKey.storage, 0, storage_version);
-        if (is==null)
-            export_from_old_storage(storage_version);
-        is = NvStorage.ReadFileRecord(UserKey.storage, 0, storage_version);
+        DataInputStream is = NvStorage.ReadFileRecord(UserKey.storage, 0);
         if (is==null)
             return;
 
@@ -100,44 +155,21 @@ public class UserKeyExec {
             userKeysList.addElement(UserKey.createFromDataInputStream(is));
     }
 
-    private void export_from_old_storage(int storage_version) {
-        for (int i=(storage_version-1); i>=0; i--)
-            switch(i) {
-                case 0:
-                    Vector old_user_key_list = UserKeysList.getDefaultKeysList();
-                    DataInputStream is = NvStorage.ReadFileRecord(UserKey.storage, 0);
-                    if (is==null)
-                        continue;
-
-                    UserKey u = new UserKey();
-                    do {
-                        try {
-                            u.command_id = is.readInt();
-                            u.previous_key = VirtualList.KEY_STAR;
-                            u.key = UserKey.get_key_code_by_id(is.readInt());
-                            u.active = is.readBoolean();
-                        } catch (IOException e) { break; }
-
-                        old_user_key_list.addElement(u);
-                        } while (true);
-
-                    if (old_user_key_list.size()>0) {
-                        UserKeysList.rmsUpdate(old_user_key_list);
-                        // Здесь я хотел дропнуть старое хранилище, но потом подумал: пусть живёт.
-                        return;
-                    }
-                    break;
-            }
-    }
-
     public boolean commandExecute(Display display, int previous_key_code, int key_code) { //return false if key not executed
-        int index_key = userKeysList.indexOf(new UserKey(0, previous_key_code, key_code, true, true));
+        int[] commands_id = {0,0,0};
+        int index_key = userKeysList.indexOf(new UserKey(commands_id, previous_key_code, key_code, true, true));
         if (index_key<0) // Если нет двухкнопочного сочетания, ищем однокнопочное
-            index_key = userKeysList.indexOf(new UserKey(0, previous_key_code, key_code, true, false));
+            index_key = userKeysList.indexOf(new UserKey(commands_id, previous_key_code, key_code, true, false));
         if (index_key<0) // А если нет и его, то тикаем
             return false;
-        int command_id = ((UserKey) userKeysList.elementAt(index_key)).command_id;
+        commands_id = ((UserKey) userKeysList.elementAt(index_key)).commands_id;
+        boolean executed = false;
+        for (int i = 0; i < commands_id.length; i++)
+        executed = executed || commandExecuteByID(display, commands_id[i], i);
+        return executed;
+    }
 
+    public boolean commandExecuteByID(Display display, int command_id, int type) {
         boolean connected = sd.roster.isLoggedIn();
         Displayable current = display.getCurrent();
 
@@ -231,23 +263,14 @@ public class UserKeyExec {
             case 18:
 //#ifdef JUICK
 //#ifdef PLUGINS
-//#                 if(sd.Juick) {
+//#                 if(sd.Juick)
 //#endif
-//#                 if (current instanceof ContactMessageList) {
-//#                     ContactMessageList current_cml = (ContactMessageList) current;
-//#                     current_cml.commandAction(current_cml.cmdJuickCommands, current);
-//#                     System.out.println("current instanceof ContactMessageList");
-//#                 } else if (current instanceof Roster) {
+//#                 if (current instanceof Roster) {
 //#                     Contact jContact = sd.roster.getMainJuickContact();
 //#                     if (jContact != null)
 //#                         sd.roster.focusToContact(jContact, false);
 //#                 } else {
-//#ifdef DEBUG
-//#                     System.out.println("Current Displayable are not instance of ContactMessageList or Roster.");
-//#endif
-//#                 }
-//#endif
-//#ifdef PLUGINS
+//#                     return false;
 //#                 }
 //#endif
                 break;
@@ -256,8 +279,36 @@ public class UserKeyExec {
                 System.gc();
                 try { Thread.sleep(50); } catch (InterruptedException e) { }
 //            } _vt
-                sd.roster.showHeapInfo();
+                if (current instanceof Roster) {
+                    sd.roster.showHeapInfo();
+                } else {
+                    return false;
+                }
             break;
+            case 20:
+//#ifdef SMILES
+                if (current instanceof MessageList) {
+                    MessageList current_ml = (ContactMessageList) current;
+                    ((MessageItem) current_ml.getFocusedObject()).toggleSmiles();
+                    current_ml.repaint();
+                } else {
+                    return false;
+                }
+//#endif
+                break;
+            case 21:
+//#ifdef JUICK
+//#ifdef PLUGINS
+//#                 if(sd.Juick)
+//#endif
+//#                 if (current instanceof ContactMessageList) {
+//#                     ContactMessageList current_cml = (ContactMessageList) current;
+//#                     current_cml.commandAction(current_cml.cmdJuickCommands, current);
+//#                 } else {
+//#                     return false;
+//#                 }
+//#endif
+                break;
             default:
                 return false;
         }

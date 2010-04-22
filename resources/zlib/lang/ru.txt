@@ -528,7 +528,7 @@ File manager	Менеджер файлов
 remote control	удалённое управление
 Version	Версия
 Use	Использует
-Juick (Focus & Commands)	Juick (Фокус и Команды)
+Focus to Juick contact	Фокус на Juick контакте
 [J] Reply to message	[J] Ответить на сообщение
 [J] Reply to	[J] Ответить
 [J] Things	[J] Сущности

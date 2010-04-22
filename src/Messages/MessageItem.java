@@ -188,7 +188,7 @@ public class MessageItem
         return msg.getTime();
     }
 //#ifdef SMILES
-    void toggleSmiles() {
+    public void toggleSmiles() {
         smiles=!smiles;
         MessageParser.getInstance().parseMsg(this, view.getListWidth());  
     }

@@ -98,13 +98,19 @@ public class UserKeysList extends VirtualList implements
 
     public static Vector getDefaultKeysList() {
         Vector defKeysList = new Vector();
-        Vector defs[] = new StringLoader().stringLoader("/def_keys.txt", 4);
+        Vector defs[] = new StringLoader().stringLoader("/def_keys.txt", 8);
         for (int i = 0; i < defs[0].size(); i++) {
-            int command_id = Integer.parseInt((String) defs[0].elementAt(i));
-            int previous_key_code = UserKey.get_key_code_by_id(Integer.parseInt((String) defs[1].elementAt(i)));
-            int key_code = UserKey.get_key_code_by_id(Integer.parseInt((String) defs[2].elementAt(i)));
-            boolean two_keys = ((String) defs[3].elementAt(i)).equals("y");
-            defKeysList.addElement(new UserKey(command_id, previous_key_code, key_code, true, two_keys));
+            int[] commands_id = {
+                Integer.parseInt((String) defs[0].elementAt(i)),
+                Integer.parseInt((String) defs[1].elementAt(i)),
+                Integer.parseInt((String) defs[2].elementAt(i)),
+                Integer.parseInt((String) defs[3].elementAt(i))
+            };
+            int previous_key_code = UserKey.get_key_code_by_id(Integer.parseInt((String) defs[4].elementAt(i)));
+            int key_code = UserKey.get_key_code_by_id(Integer.parseInt((String) defs[5].elementAt(i)));
+            boolean active = ((String) defs[6].elementAt(i)).equals("y");
+            boolean two_keys = ((String) defs[7].elementAt(i)).equals("y");
+            defKeysList.addElement(new UserKey(commands_id, previous_key_code, key_code, active, two_keys));
         }
         return defKeysList;
     }
@@ -170,7 +176,6 @@ public class UserKeysList extends VirtualList implements
     }
     
     public static void rmsUpdate(Vector keysList) {
-        int storage_version = 1;
         DataOutputStream outputStream=NvStorage.CreateDataOutputStream();
 
         int size = keysList.size();
@@ -182,7 +187,7 @@ public class UserKeysList extends VirtualList implements
             ((UserKey) keysList.elementAt(i)).saveToDataOutputStream(outputStream);
         }
         
-        NvStorage.writeFileRecord(outputStream, UserKey.storage, 0, storage_version, true);
+        NvStorage.writeFileRecord(outputStream, UserKey.storage, 0, true);
     }
     
     void rmsUpdate() {

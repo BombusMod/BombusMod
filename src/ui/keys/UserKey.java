@@ -46,19 +46,19 @@ public class UserKey extends IconTextElement {
     
     public final static String storage="keys_db";
 
-    public int command_id   = 0;
+    public int commands_id[] = {0, 0, 0, 0};
     public int previous_key;
     public int key;
     public boolean active   = false;
     public boolean two_keys = true;
 
     public UserKey(UserKey u) {
-        this(u.command_id, u.previous_key, u.key, u.active, u.two_keys);
+        this(u.commands_id, u.previous_key, u.key, u.active, u.two_keys);
     }
 
-    public UserKey(int command_id, int previous_key, int key, boolean active, boolean two_keys) {
+    public UserKey(int[] commands_id, int previous_key, int key, boolean active, boolean two_keys) {
         this();
-        this.command_id = command_id;
+        this.commands_id = commands_id;
         this.previous_key = previous_key;
         this.key = key;
         this.active = active;
@@ -84,8 +84,8 @@ public class UserKey extends IconTextElement {
         if (two_keys)
             s.append(keyToString(previous_key)+" + ");
         s.append(keyToString(key));
-        s.append("; ");
-        s.append(COMMANDS_DESC[command_id]);
+        for (int i = 0; i < UserKeyExec.available_commands.length; i++)
+            s.append("; " + UserKeyExec.get_command_by_id(commands_id[i], i).description);
         return s.toString();
     } 
 
@@ -162,7 +162,8 @@ public class UserKey extends IconTextElement {
     public static UserKey createFromDataInputStream(DataInputStream inputStream) {
         UserKey u=new UserKey();
         try {
-            u.command_id  = inputStream.readInt();
+            for (int i = 0; i < u.commands_id.length; i++)
+                u.commands_id[i] = inputStream.readInt();
             u.previous_key = inputStream.readInt();
             u.key        = inputStream.readInt();
             u.active     = inputStream.readBoolean();
@@ -173,7 +174,8 @@ public class UserKey extends IconTextElement {
     
     public void saveToDataOutputStream(DataOutputStream outputStream){
         try {
-            outputStream.writeInt(command_id);
+            for (int i = 0; i < commands_id.length; i++)
+                outputStream.writeInt(commands_id[i]);
             outputStream.writeInt(previous_key);
             outputStream.writeInt(key);	    
 	    outputStream.writeBoolean(active);
@@ -199,35 +201,4 @@ public class UserKey extends IconTextElement {
             default: return -1;
         }
     }
-
-    public static final String[] COMMANDS_DESC = {
-        SR.MS_NO,
-        SR.MS_OPTIONS,
-        SR.MS_CLEAN_ALL_MESSAGES,
-        SR.MS_RECONNECT,
-        SR.MS_STATS,
-        SR.MS_STATUS_MENU,
-        SR.MS_FILE_TRANSFERS,
-        SR.MS_ARCHIVE,
-        SR.MS_DISCO,
-        SR.MS_PRIVACY_LISTS,
-//#ifdef USER_KEYS
-//#         SR.MS_CUSTOM_KEYS,
-//#else
-        "No action",
-//#endif
-        SR.MS_CLEAR_POPUPS,
-        SR.MS_FLASHLIGHT,
-        SR.MS_ABOUT,
-        SR.MS_APP_MINIMIZE,
-        SR.MS_INVERT,
-        SR.MS_XML_CONSOLE,
-        SR.MS_FULLSCREEN,
-//#ifdef JUICK
-//#         SR.MS_JUICK_FOCUS_COMMANDS,
-//#else
-        "No action",
-//#endif
-        SR.MS_HEAP_MONITOR
-     };
  }

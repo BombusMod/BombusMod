@@ -270,9 +270,7 @@ public abstract class VirtualList
         int begin=0;
         while (end-begin>1) {
             int index=(end+begin)>>>1;
-            if (itemLayoutY.length <= index)                
-                index = itemLayoutY.length - 1;            
-            
+            if (itemLayoutY.length <= index) index--;
             if (yPos<itemLayoutY[index]) end=index; else begin=index;
         }
         return (yPos<itemLayoutY[end])? begin:end;
@@ -848,7 +846,7 @@ public abstract class VirtualList
     protected void pointerPressed(int x, int y) {
 //#ifdef POPUPS
         if (PopUp.getInstance().next()) {
-            redraw();
+            repaint();
             return;
         }
 //#endif
@@ -1009,7 +1007,6 @@ public abstract class VirtualList
         } else if (key_code == greenKeyCode) {
             key = 14;
         }
-        System.out.println(key);
         return key;
     }
 

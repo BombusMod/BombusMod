@@ -191,19 +191,6 @@ public abstract class MessageList extends VirtualList
             }
         }
 //#endif
-//#ifdef SMILES
-        if (keyCode=='*') {
-            try {
-                ((MessageItem)getFocusedObject()).toggleSmiles();
-            } catch (Exception e){}
-            repaint();
-//        if (cf.widthSystemgc) {  _vt
-            System.gc();
-            try { Thread.sleep(50); } catch (InterruptedException ex) { }
-//        } _vt
-            //return; // Закомментарил, чтобы userKey работал.
-        }
-//#endif
         super.keyPressed(keyCode);
     }
    
