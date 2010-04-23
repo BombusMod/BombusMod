@@ -165,7 +165,11 @@ public class ContactMessageList extends MessageList {
         }        
         return unreadIndex;
     }
-    
+
+    public boolean equals(Object obj) {
+        return contact.equals(obj);
+    }
+
     public void commandState(){
 //#ifdef MENU_LISTENER
         menuCommands.removeAllElements();
