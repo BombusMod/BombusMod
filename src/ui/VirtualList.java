@@ -1115,7 +1115,7 @@ public abstract class VirtualList
         } else if (keyCode == Config.KEY_BACK && canBack == true) {
             destroyView();
             return;
-        } else if (keyCode == greenKeyCode && (phoneManufacturer==Config.MOTO || phoneManufacturer==Config.NOKIA || phoneManufacturer==Config.NOKIA_9XXX)) {
+        } else if (keyCode == greenKeyCode) {
             keyGreen();
             return;
         }
