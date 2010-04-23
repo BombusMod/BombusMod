@@ -270,7 +270,7 @@ public abstract class VirtualList
         int begin=0;
         while (end-begin>1) {
             int index=(end+begin)>>>1;
-            if (itemLayoutY.length <= index) index--;
+            if (itemLayoutY.length <= index) index = itemLayoutY.length - 1; 
             if (yPos<itemLayoutY[index]) end=index; else begin=index;
         }
         return (yPos<itemLayoutY[end])? begin:end;

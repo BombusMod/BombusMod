@@ -32,15 +32,17 @@ import io.file.browse.BrowserListener;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
-import Menu.Menu;
-import Menu.MenuItem;
+import ui.controls.form.DefForm;
+import ui.controls.form.LinkString;
+import ui.controls.form.SimpleString;
+import ui.controls.form.SpacerItem;
 
 /**
  *
  * @author ad
  */
 public class IEMenu 
-        extends Menu
+        extends DefForm
         implements BrowserListener {
 //#ifdef PLUGINS
 //#     public static String plugin = new String("PLUGIN_IE");
@@ -49,66 +51,73 @@ public class IEMenu
     private int choice = -1;
     
     public IEMenu(Display display, Displayable pView) {
-        super(
+        super(display, pView, 
 //#if IMPORT_EXPORT
 //#         SR.MS_IMPORT_EXPORT
 //#else
                ""
 //#endif
-                 , null);
-        addItem(SR.MS_OPTIONS+": "+SR.MS_LOAD_FROM_FILE, 0);
-        addItem(SR.MS_OPTIONS+": "+SR.MS_SAVE_TO_FILE, 1);
+                 );
+        itemsList.addElement(new SimpleString(SR.MS_OPTIONS, true));
+        itemsList.addElement(new LinkString(SR.MS_LOAD_FROM_FILE) {
+            public void doAction() {
+                choice = 0;                
+                SelectFile(false);
+            }} );
+        itemsList.addElement(new LinkString(SR.MS_SAVE_TO_FILE) {
+            public void doAction() {
+                choice = 1;                
+                SelectFile(true);
+            }} );            
+        itemsList.addElement(new SpacerItem(10));    
+        itemsList.addElement(new SimpleString(SR.MS_ACCOUNTS, true));
+        itemsList.addElement(new LinkString(SR.MS_LOAD_FROM_FILE) {
+            public void doAction() {
+                choice = 6;
+                SelectFile(false);
+            }} );
+        itemsList.addElement(new LinkString(SR.MS_SAVE_TO_FILE) {
+            public void doAction() {
+                choice = 7;
+                SelectFile(true);                
+            }} );                        
 //#ifdef PLUGINS
 //#         if (StaticData.getInstance().Archive) {
-//#endif
-            addItem(SR.MS_ARCHIVE+": "+SR.MS_LOAD_FROM_FILE, 2);
-            addItem(SR.MS_ARCHIVE+": "+SR.MS_SAVE_TO_FILE, 3);
+//#endif           
+        itemsList.addElement(new SpacerItem(10));
+        itemsList.addElement(new SimpleString(SR.MS_ARCHIVE, true));
+        itemsList.addElement(new LinkString(SR.MS_LOAD_FROM_FILE) {
+            public void doAction() {
+                choice = 2;
+                SelectFile(false);
+            }} );
+        itemsList.addElement(new LinkString(SR.MS_SAVE_TO_FILE) {
+            public void doAction() {
+                choice = 3;
+                SelectFile(true);
+            }} );            
+        itemsList.addElement(new SpacerItem(10));
+        itemsList.addElement(new SimpleString(SR.MS_TEMPLATE, true));
+        itemsList.addElement(new LinkString(SR.MS_LOAD_FROM_FILE) {
+            public void doAction() {
+                choice = 4;                
+                SelectFile(false);                
+            }} );
+        itemsList.addElement(new LinkString(SR.MS_SAVE_TO_FILE) {
+            public void doAction() {
+                choice = 5;
+                SelectFile(true);                
+            }} );                        
 //#ifdef PLUGINS
 //#         }
-//#endif
-        addItem(SR.MS_TEMPLATE+": "+SR.MS_LOAD_FROM_FILE, 4);
-        addItem(SR.MS_TEMPLATE+": "+SR.MS_SAVE_TO_FILE, 5);
-        
-        addItem(SR.MS_ACCOUNTS+": "+SR.MS_LOAD_FROM_FILE, 6);
-        addItem(SR.MS_ACCOUNTS+": "+SR.MS_SAVE_TO_FILE, 7);
-
+//#endif        
         attachDisplay(display);
         this.parentView=pView;
     }
-    public void eventOk(){
-	//destroyView();
-	MenuItem me=(MenuItem) getFocusedObject();
-        
-	if (me==null)
-            return;
-        
-	choice=me.index;
-        
-        if (choice==0)
-            new Browser(null, display, this, this, false);
-        
-        if (choice==1)
-            new Browser(null, display, this, this, true);
-        
-        if (choice==2)
-            new Browser(null, display, this, this, false);
-        
-        if (choice==3)
-            new Browser(null, display, this, this, true);
-        
-        if (choice==4)
-            new Browser(null, display, this, this, false);
-        
-        if (choice==5)
-            new Browser(null, display, this, this, true);
-        
-        if (choice==6)
-            new Browser(null, display, this, this, false);
-        
-        if (choice==7)
-            new Browser(null, display, this, this, true);
+    public void SelectFile(boolean getDir) {
+        new Browser(null, display, this, this, getDir);
     }
-
+    
     public void BrowserFilePathNotify(String pathSelected) {
         switch (choice) {
             case 0: //load Config
