@@ -172,7 +172,7 @@ public class UserKey extends IconTextElement {
         return u;
     }
     
-    public void saveToDataOutputStream(DataOutputStream outputStream){
+    public void saveToDataOutputStream(DataOutputStream outputStream) {
         try {
             for (int i = 0; i < commands_id.length; i++)
                 outputStream.writeInt(commands_id[i]);

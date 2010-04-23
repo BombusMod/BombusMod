@@ -43,7 +43,6 @@ import PrivacyLists.PrivacySelect;
 import ServiceDiscovery.*;
 import Statistic.StatsWindow;
 //#endif
-import java.util.Enumeration;
 import java.util.Vector;
 import javax.microedition.lcdui.Display;
 import locale.SR;
@@ -67,18 +66,17 @@ public class UserKeyExec {
 //#endif
 
     private static Config cf;
-    StaticData sd=StaticData.getInstance();
+    StaticData sd = StaticData.getInstance();
     
     private static UserKeyExec instance;
-    public static UserKeyExec getInstance(){
-        if (instance == null) {
+    public static UserKeyExec getInstance() {
+        if (instance == null)
             instance = new UserKeyExec();
-            cf = Config.getInstance();
-        }
         return instance;
     }
 
     private UserKeyExec() {
+        cf = Config.getInstance();
         init_available_commands();
         init_commands_from_rms();
     }
@@ -144,15 +142,13 @@ public class UserKeyExec {
 //#ifdef USER_KEYS
 //#         if (cf.userKeys) {
 //#             DataInputStream is = NvStorage.ReadFileRecord(UserKey.storage, 0);
-//#             if (is == null)
-//#                 return;
 //# 
 //#             int size = 0;
 //#             try {
 //#                 size = is.readInt();
 //#                 for (int i = 0; i < size; i++)
 //#                     userKeysList.addElement(UserKey.createFromDataInputStream(is));
-//#             } catch (IOException e) {
+//#             } catch (Exception e) {
 //#                 userKeysList = UserKeysList.getDefaultKeysList();
 //#                 UserKeysList.rmsUpdate(userKeysList);
 //#             }
@@ -172,7 +168,7 @@ public class UserKeyExec {
         commands_id = ((UserKey) userKeysList.elementAt(index_key)).commands_id;
         boolean executed = false;
         for (int i = 0; i < commands_id.length; i++)
-        executed = executed || commandExecuteByID(display, commands_id[i], i);
+            executed = executed || commandExecuteByID(display, commands_id[i], i);
         return executed;
     }
 
