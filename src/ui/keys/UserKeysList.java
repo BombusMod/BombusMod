@@ -79,7 +79,9 @@ public class UserKeysList extends VirtualList implements
 //#         setMainBarItem(new MainBar(SR.MS_CUSTOM_KEYS));
 //#endif
         
-        userKeysList = copyVector(UserKeyExec.getInstance().userKeysList);
+        UserKeyExec uexec = UserKeyExec.getInstance();
+        uexec.init_commands_from_rms();
+        userKeysList = copyVector(uexec.userKeysList);
 
         commandState();
         setCommandListener(this);
@@ -119,21 +121,23 @@ public class UserKeysList extends VirtualList implements
         userKeysList = getDefaultKeysList();
     }
 
-    void commandState(){
+    void commandState() {
+//#ifdef USER_KEYS
 //#ifdef MENU_LISTENER
-        menuCommands.removeAllElements();
+//#         menuCommands.removeAllElements();
 //#endif
-        addCommand(cmdAdd);
-        if (userKeysList.isEmpty()) {
-            removeCommand(cmdEdit);
-            removeCommand(cmdDel);
-        } else {
-            addCommand(cmdEdit);
-            addCommand(cmdDel);
-        }
-        addCommand(cmdRestore);
-        addCommand(cmdOK);
-        addCommand(cmdCancel);
+//#         addCommand(cmdAdd);
+//#         if (userKeysList.isEmpty()) {
+//#             removeCommand(cmdEdit);
+//#             removeCommand(cmdDel);
+//#         } else {
+//#             addCommand(cmdEdit);
+//#             addCommand(cmdDel);
+//#         }
+//#         addCommand(cmdRestore);
+//#         addCommand(cmdOK);
+//#         addCommand(cmdCancel);
+//#endif
     }
 
     public VirtualElement getItemRef(int index) {
@@ -144,31 +148,33 @@ public class UserKeysList extends VirtualList implements
         return userKeysList.size();
     }
     
-    public void commandAction(Command c, Displayable d){
-        if (c==cmdCancel) {
-            destroyView();
-        }
-        if (c==cmdOK) {
-            UserKeyExec.getInstance().userKeysList = userKeysList;
-            rmsUpdate();
-            destroyView();    
-        }
-        if (c==cmdRestore) {
-            restoreDefault();
-            moveCursorHome();
-            commandState();
-            redraw();
-        }
-        if (c==cmdEdit) 
-            new UserKeyEdit(display, this, (UserKey) getFocusedObject());
-        if (c==cmdAdd)
-            new UserKeyEdit(display, this, null);
-        if (c==cmdDel) {
-            userKeysList.removeElement(getFocusedObject());
-            moveCursorHome();
-            commandState();
-            redraw();
-        }
+    public void commandAction(Command c, Displayable d) {
+//#ifdef USER_KEYS
+//#         if (c==cmdCancel) {
+//#             destroyView();
+//#         }
+//#         if (c==cmdOK) {
+//#             UserKeyExec.getInstance().userKeysList = userKeysList;
+//#             rmsUpdate();
+//#             destroyView();    
+//#         }
+//#         if (c==cmdRestore) {
+//#             restoreDefault();
+//#             moveCursorHome();
+//#             commandState();
+//#             redraw();
+//#         }
+//#         if (c==cmdEdit) 
+//#             new UserKeyEdit(display, this, (UserKey) getFocusedObject());
+//#         if (c==cmdAdd)
+//#             new UserKeyEdit(display, this, null);
+//#         if (c==cmdDel) {
+//#             userKeysList.removeElement(getFocusedObject());
+//#             moveCursorHome();
+//#             commandState();
+//#             redraw();
+//#         }
+//#endif
     }
     
     public void eventOk() {
