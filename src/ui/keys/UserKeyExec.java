@@ -140,21 +140,23 @@ public class UserKeyExec {
 
     public void init_commands_from_rms() {
         userKeysList = null;
+        userKeysList = new Vector();
 //#ifdef USER_KEYS
-//#         DataInputStream is = NvStorage.ReadFileRecord(UserKey.storage, 0);
-//#         if (is == null)
-//#             return;
-//#
-//#         int size = 0;
-//#         try {
-//#             size = is.readInt();
-//#             userKeysList = new Vector(size);
-//#             for (int i = 0; i < size; i++)
-//#                 userKeysList.addElement(UserKey.createFromDataInputStream(is));
-//#         } catch (IOException e) {
-//#             userKeysList = UserKeysList.getDefaultKeysList();
-//#             UserKeysList.rmsUpdate(userKeysList);
-//#         }
+//#         if (cf.userKeys) {
+//#             DataInputStream is = NvStorage.ReadFileRecord(UserKey.storage, 0);
+//#             if (is == null)
+//#                 return;
+//# 
+//#             int size = 0;
+//#             try {
+//#                 size = is.readInt();
+//#                 for (int i = 0; i < size; i++)
+//#                     userKeysList.addElement(UserKey.createFromDataInputStream(is));
+//#             } catch (IOException e) {
+//#                 userKeysList = UserKeysList.getDefaultKeysList();
+//#                 UserKeysList.rmsUpdate(userKeysList);
+//#             }
+//#         } else userKeysList = UserKeysList.getDefaultKeysList();
 //#else
         userKeysList = UserKeysList.getDefaultKeysList();
 //#endif
