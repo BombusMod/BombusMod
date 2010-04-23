@@ -140,7 +140,6 @@ public class UserKeyExec {
 
     private void init_commands_from_rms() {
         userKeysList = null;
-        userKeysList = new Vector();
 
         DataInputStream is = NvStorage.ReadFileRecord(UserKey.storage, 0);
         if (is==null)
@@ -149,14 +148,17 @@ public class UserKeyExec {
         int size = 0;
         try {
             size = is.readInt();
-        } catch (IOException e) { }
-
-        for (int i=0; i<size; i++)
-            userKeysList.addElement(UserKey.createFromDataInputStream(is));
+            userKeysList = new Vector(size);
+            for (int i = 0; i < size; i++)
+                userKeysList.addElement(UserKey.createFromDataInputStream(is));
+        } catch (IOException e) {
+            userKeysList = UserKeysList.getDefaultKeysList();
+            UserKeysList.rmsUpdate(userKeysList);
+        }
     }
 
     public boolean commandExecute(Display display, int previous_key_code, int key_code) { //return false if key not executed
-        int[] commands_id = {0,0,0};
+        int[] commands_id = {0, 0, 0, 0};
         int index_key = userKeysList.indexOf(new UserKey(commands_id, previous_key_code, key_code, true, true));
         if (index_key<0) // Если нет двухкнопочного сочетания, ищем однокнопочное
             index_key = userKeysList.indexOf(new UserKey(commands_id, previous_key_code, key_code, true, false));

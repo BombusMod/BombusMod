@@ -159,16 +159,16 @@ public class UserKey extends IconTextElement {
         return "[Code \"" + key_code + "\"]";
     }
 
-    public static UserKey createFromDataInputStream(DataInputStream inputStream) {
-        UserKey u=new UserKey();
-        try {
-            for (int i = 0; i < u.commands_id.length; i++)
-                u.commands_id[i] = inputStream.readInt();
-            u.previous_key = inputStream.readInt();
-            u.key        = inputStream.readInt();
-            u.active     = inputStream.readBoolean();
-            u.two_keys     = inputStream.readBoolean();
-        } catch (IOException e) { return null; }
+    public static UserKey createFromDataInputStream(DataInputStream inputStream) throws IOException {
+        UserKey u = new UserKey();
+
+        for (int i = 0; i < u.commands_id.length; i++)
+            u.commands_id[i] = inputStream.readInt();
+        u.previous_key = inputStream.readInt();
+        u.key = inputStream.readInt();
+        u.active = inputStream.readBoolean();
+        u.two_keys = inputStream.readBoolean();
+
         return u;
     }
     
