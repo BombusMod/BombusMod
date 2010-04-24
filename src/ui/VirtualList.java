@@ -40,9 +40,7 @@ import ui.controls.Balloon;
 import ui.controls.Progress;
 import ui.controls.ScrollBar;
 import util.StringUtils;
-//#ifdef USER_KEYS
-//# import ui.keys.UserKeyExec;
-//#endif
+import ui.keys.UserKeyExec;
 
 import java.util.Vector;
 
@@ -123,9 +121,7 @@ public abstract class VirtualList
         }
     }
     
-//#ifdef USER_KEYS
-//#     private static int previous_key_code = -1;
-//#endif
+    private static int previous_key_code = -1;
 
 //#ifdef POPUPS
     public void setWobble(int type, String contact, String txt) {
@@ -205,9 +201,6 @@ public abstract class VirtualList
     public static boolean showBalloons;
     public static boolean showTimeTraffic = true;
     
-//#ifdef USER_KEYS
-//#     public static boolean userKeys;
-//#endif
     public boolean canBack = true;
 
     /** метрика экрана */
@@ -1051,14 +1044,10 @@ public abstract class VirtualList
             repaint();
         }
 //#endif
-//#ifdef USER_KEYS
-//#         if (userKeys) {
-//#             boolean executed = UserKeyExec.getInstance().commandExecute(display, previous_key_code, keyCode);
-//#             previous_key_code = keyCode;
-//#             if (executed)
-//#                 return;
-//#         }
-//#endif
+        boolean executed = UserKeyExec.getInstance().commandExecute(display, previous_key_code, keyCode);
+        previous_key_code = keyCode;
+        if (executed)
+            return;
 //#ifdef POPUPS
         if (popupSkipped)
             return;

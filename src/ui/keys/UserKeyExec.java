@@ -56,16 +56,10 @@ import ui.VirtualList;
 import javax.microedition.lcdui.Displayable;
 import io.NvStorage;
 import java.io.DataInputStream;
-import java.io.IOException;
 import Messages.MessageList;
 import Messages.MessageItem;
 
 public class UserKeyExec {
-//#ifdef PLUGINS
-//#     public static String plugin = new String("PLUGIN_USER_KEYS");
-//#endif
-
-    private static Config cf;
     StaticData sd = StaticData.getInstance();
     
     private static UserKeyExec instance;
@@ -76,15 +70,14 @@ public class UserKeyExec {
     }
 
     private UserKeyExec() {
-        cf = Config.getInstance();
         init_available_commands();
         init_commands_from_rms();
     }
 
     public Vector userKeysList;
     public final static UserKeyCommand none_command = new UserKeyCommand(0, SR.MS_NO);
-     // 0 - common, 1 - Roster, 2 - MessageList, 3 - ContactMessageList
-    public final static Vector[] available_commands = { new Vector(), new Vector(), new Vector(), new Vector() };
+     // 0 - common, 1 - Roster, 2 - ContactMessageList, 3 - none
+    public final static Vector[] available_commands = { new Vector(), new Vector(), new Vector() };
 
     public void init_available_commands() {
         available_commands[0].addElement(new UserKeyCommand(1, SR.MS_OPTIONS));
@@ -124,11 +117,13 @@ public class UserKeyExec {
         available_commands[2].addElement(new UserKeyCommand(20, SR.MS_SMILES_TOGGLE));
 //#endif
 //#ifdef JUICK
-//#         available_commands[3].addElement(new UserKeyCommand(21, SR.MS_COMMANDS + " Juick"));
+//#         available_commands[2].addElement(new UserKeyCommand(21, SR.MS_COMMANDS + " Juick"));
 //#endif
     }
 
     public static UserKeyCommand get_command_by_id(int command_id, int type) {
+        if ((type < 0) || (type > (3-1)))
+            return none_command;
         int cmdIndex = available_commands[type].indexOf(new UserKeyCommand(command_id, null));
         if (cmdIndex >= 0) {
             return (UserKeyCommand) available_commands[type].elementAt(cmdIndex);
@@ -139,8 +134,11 @@ public class UserKeyExec {
     public void init_commands_from_rms() {
         userKeysList = null;
         userKeysList = new Vector();
+        
 //#ifdef USER_KEYS
-//#         if (cf.userKeys) {
+//#ifdef PLUGINS
+//#         if (sd.UserKeys) {
+//#endif
 //#             DataInputStream is = NvStorage.ReadFileRecord(UserKey.storage, 0);
 //# 
 //#             int size = 0;
@@ -152,14 +150,15 @@ public class UserKeyExec {
 //#                 userKeysList = UserKeysList.getDefaultKeysList();
 //#                 UserKeysList.rmsUpdate(userKeysList);
 //#             }
-//#         } else userKeysList = UserKeysList.getDefaultKeysList();
-//#else
-        userKeysList = UserKeysList.getDefaultKeysList();
+//#ifdef PLUGINS
+//#         } else
 //#endif
+//#endif
+            userKeysList = UserKeysList.getDefaultKeysList();
     }
 
     public boolean commandExecute(Display display, int previous_key_code, int key_code) { //return false if key not executed
-        int[] commands_id = {0, 0, 0, 0};
+        int[] commands_id = {0, 0, 0};
         int index_key = userKeysList.indexOf(new UserKey(commands_id, previous_key_code, key_code, true, true));
         if (index_key<0) // Если нет двухкнопочного сочетания, ищем однокнопочное
             index_key = userKeysList.indexOf(new UserKey(commands_id, previous_key_code, key_code, true, false));
@@ -167,12 +166,13 @@ public class UserKeyExec {
             return false;
         commands_id = ((UserKey) userKeysList.elementAt(index_key)).commands_id;
         boolean executed = false;
-        for (int i = 0; i < commands_id.length; i++)
+        for (int i = 0; i < 3; i++)
             executed = executed || commandExecuteByID(display, commands_id[i], i);
         return executed;
     }
 
     public boolean commandExecuteByID(Display display, int command_id, int type) {
+        Config cf = Config.getInstance();
         boolean connected = sd.roster.isLoggedIn();
         Displayable current = display.getCurrent();
 

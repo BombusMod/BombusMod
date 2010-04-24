@@ -133,9 +133,6 @@ public class ConfigData {
         array.addElement(new keyValue(queryExit, (cf.queryExit)?"1":"0"));
         array.addElement(new keyValue(showBalloons, (cf.showBalloons)?"1":"0"));
         array.addElement(new keyValue(notifyPicture, (cf.notifyPicture)?"1":"0"));
-//#ifdef USER_KEYS
-//#         array.addElement(new keyValue(userKeys, (cf.userKeys)?"1":"0"));
-//#endif
 //#ifdef LOGROTATE
 //#         array.addElement(new keyValue(msglistLimit, Integer.toString(cf.msglistLimit)));
 //#endif
@@ -280,9 +277,6 @@ public class ConfigData {
         cf.rosterStatus=cf.getBooleanProperty(getValue(rosterStatus),true);
         cf.queryExit=cf.getBooleanProperty(getValue(queryExit),false);
         VirtualList.showBalloons=cf.showBalloons=cf.getBooleanProperty(getValue(showBalloons),false);
-//#ifdef USER_KEYS
-//#         cf.userKeys=cf.getBooleanProperty(getValue(userKeys),false);
-//#endif
 //#ifdef LOGROTATE
 //#         cf.msglistLimit=cf.getIntProperty(getValue(msglistLimit),100);
 //#endif
@@ -329,9 +323,6 @@ public class ConfigData {
 
         VirtualList.fullscreen=cf.fullscreen;
         VirtualList.memMonitor=cf.memMonitor;
-//#ifdef USER_KEYS
-//#         VirtualList.userKeys=cf.userKeys;
-//#endif
     }
     
     final static int SEARCH_KEY     = 1;
@@ -453,9 +444,6 @@ public class ConfigData {
     private final static String queryExit="queryExit";
     private final static String showBalloons="showBalloons";
     private final static String notifyPicture="notifyPicture";
-//#ifdef USER_KEYS
-//#     private final static String userKeys="userKeys";
-//#endif
 //#ifdef LOGROTATE
 //#     private final static String msglistLimit="msglistLimit";
 //#endif

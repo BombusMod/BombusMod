@@ -105,9 +105,6 @@ public class ConfigForm
     private CheckBox memMonitor;
     private CheckBox enableVersionOs;
     private CheckBox queryExit;
-//#ifdef USER_KEYS
-//#    private CheckBox userKeys;
-//#endif
     private CheckBox lightState;
     private CheckBox popupFromMinimized;
     private CheckBox widthSystemgc;
@@ -252,13 +249,7 @@ public class ConfigForm
         oldSE = new CheckBox(SR.MS_KEYS_FOR_OLD_SE, cf.oldSE);
         if (phoneManufacturer==Config.SONYE) itemsList.addElement(oldSE);
 //#endif
-//#ifdef USER_KEYS
-//#         userKeys = new CheckBox(SR.MS_CUSTOM_KEYS, cf.userKeys); 
-//#ifdef PLUGINS
-//#         if (sd.UserKeys)
-//#endif
-//#             itemsList.addElement(userKeys);
-//#endif
+
         lightState = new CheckBox(SR.MS_FLASHLIGHT, cf.lightState);
         if (phoneManufacturer==Config.SIEMENS || phoneManufacturer==Config.SIEMENS2 || phoneManufacturer==Config.SONYE || phoneManufacturer==Config.NOKIA) itemsList.addElement(lightState);
 //#ifdef FILE_TRANSFER
@@ -448,12 +439,7 @@ public class ConfigForm
 //#ifdef MENU_LISTENER
         if (phoneManufacturer==Config.SONYE) cf.oldSE=oldSE.getValue();
 //#endif
-//#ifdef USER_KEYS
-//#ifdef PLUGINS
-//#             if (sd.UserKeys)
-//#endif
-//#                 cf.userKeys=VirtualList.userKeys=userKeys.getValue();
-//#endif
+
         cf.lightState=lightState.getValue();
         if (cf.allowMinimize)
             cf.popupFromMinimized=popupFromMinimized.getValue();

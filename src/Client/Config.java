@@ -206,9 +206,6 @@ public static boolean fullscreen=
     public boolean queryExit = false;
     public int notInListDropLevel=NotInListFilter.ALLOW_ALL; //enable all
     public boolean showBalloons = true;
-//#ifdef USER_KEYS
-//#     public boolean userKeys = false;
-//#endif
 //#ifdef LOGROTATE
 //#     public int msglistLimit=500;
 //#endif
@@ -446,11 +443,8 @@ public static boolean fullscreen=
             queryExit=inputStream.readBoolean();
             notifyPicture=inputStream.readBoolean();
             showBalloons=inputStream.readBoolean();
-//#ifdef USER_KEYS
-//#             userKeys=inputStream.readBoolean();
-//#else
-            inputStream.readBoolean();
-//#endif
+
+            inputStream.readBoolean(); // Здесь был UserKeys
 //#ifdef LOGROTATE
 //#             msglistLimit=inputStream.readInt();
 //#else
@@ -544,13 +538,6 @@ public static boolean fullscreen=
         VirtualList.showBalloons=showBalloons;
         VirtualList.panelsState=panelsState;
         VirtualList.showTimeTraffic=showTimeTraffic;
-
-//#ifdef USER_KEYS
-//#ifdef PLUGINS
-//#         if(!sd.UserKeys) userKeys=false;
-//#endif
-//#         VirtualList.userKeys=userKeys;
-//#endif
         
 //#ifdef PLUGINS
 //#ifdef FILE_TRANSFER
@@ -694,11 +681,9 @@ public static boolean fullscreen=
             outputStream.writeBoolean(queryExit);
             outputStream.writeBoolean(notifyPicture);
             outputStream.writeBoolean(showBalloons);
-//#ifdef USER_KEYS
-//#             outputStream.writeBoolean(userKeys);
-//#else
-            outputStream.writeBoolean(false);
-//#endif
+
+            outputStream.writeBoolean(false); // Здесь был UserKeys
+
 //#ifdef LOGROTATE
 //#             outputStream.writeInt(msglistLimit);
 //#else

@@ -30,7 +30,6 @@ import images.RosterIcons;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import locale.SR;
 import ui.IconTextElement;
 import ui.VirtualList;
 import Client.Config;
@@ -40,13 +39,9 @@ import Client.Config;
  * @author ad
  */
 public class UserKey extends IconTextElement {
-//#ifdef PLUGINS
-//#     public static String plugin = new String("PLUGIN_USER_KEYS");
-//#endif
-    
     public final static String storage="keys_db";
 
-    public int commands_id[] = {0, 0, 0, 0};
+    public int commands_id[] = {0, 0, 0};
     public int previous_key;
     public int key;
     public boolean active   = false;
@@ -84,7 +79,7 @@ public class UserKey extends IconTextElement {
         if (two_keys)
             s.append(keyToString(previous_key)+" + ");
         s.append(keyToString(key));
-        for (int i = 0; i < UserKeyExec.available_commands.length; i++)
+        for (int i = 0; i < 3; i++)
             s.append("; " + UserKeyExec.get_command_by_id(commands_id[i], i).description);
         return s.toString();
     } 
@@ -162,8 +157,9 @@ public class UserKey extends IconTextElement {
     public static UserKey createFromDataInputStream(DataInputStream inputStream) throws IOException {
         UserKey u = new UserKey();
 
-        for (int i = 0; i < u.commands_id.length; i++)
+        for (int i = 0; i < 3; i++)
             u.commands_id[i] = inputStream.readInt();
+        inputStream.readInt(); // 4-я команда
         u.previous_key = inputStream.readInt();
         u.key = inputStream.readInt();
         u.active = inputStream.readBoolean();
@@ -174,8 +170,9 @@ public class UserKey extends IconTextElement {
     
     public void saveToDataOutputStream(DataOutputStream outputStream) {
         try {
-            for (int i = 0; i < commands_id.length; i++)
+            for (int i = 0; i < 3; i++)
                 outputStream.writeInt(commands_id[i]);
+            outputStream.writeInt(0); // 4-я команда
             outputStream.writeInt(previous_key);
             outputStream.writeInt(key);	    
 	    outputStream.writeBoolean(active);

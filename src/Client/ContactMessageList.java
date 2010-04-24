@@ -797,7 +797,7 @@ public void showNotify() {
                 break;
             case KEY_NUM3:
                 new ActiveContacts(display, this, contact);
-                break;        
+                break;
             case KEY_NUM9:
                 Quote();
                 break;

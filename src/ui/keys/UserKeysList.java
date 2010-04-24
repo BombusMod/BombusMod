@@ -105,8 +105,8 @@ public class UserKeysList extends VirtualList implements
             int[] commands_id = {
                 Integer.parseInt((String) defs[0].elementAt(i)),
                 Integer.parseInt((String) defs[1].elementAt(i)),
-                Integer.parseInt((String) defs[2].elementAt(i)),
-                Integer.parseInt((String) defs[3].elementAt(i))
+                Integer.parseInt((String) defs[2].elementAt(i))//,
+                //Integer.parseInt((String) defs[3].elementAt(i))
             };
             int previous_key_code = UserKey.get_key_code_by_id(Integer.parseInt((String) defs[4].elementAt(i)));
             int key_code = UserKey.get_key_code_by_id(Integer.parseInt((String) defs[5].elementAt(i)));

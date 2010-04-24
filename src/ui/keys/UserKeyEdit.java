@@ -50,7 +50,6 @@ class UserKeyEdit extends DefForm {
     private DropChoiceBox[] commands_t = {
         new DropChoiceBox(display, "Common"),
         new DropChoiceBox(display, "Roster"),
-        new DropChoiceBox(display, "MessageList"),
         new DropChoiceBox(display, "ContactMessageList")
     };
     private KeyInput key_t;
@@ -78,7 +77,7 @@ class UserKeyEdit extends DefForm {
 //#         active=new CheckBox(SR.MS_ENABLED, u.active);
 //#         itemsList.addElement(active);
 //# 
-//#         for (int i = 0; i < UserKeyExec.available_commands.length; i++) {
+//#         for (int i = 0; i < 3; i++) {
 //#             commands_t[i].append(UserKeyExec.none_command.description);
 //#             for (Enumeration e = UserKeyExec.available_commands[i].elements(); e.hasMoreElements();) {
 //#                 commands_t[i].append(((UserKeyCommand) e.nextElement()).description);
@@ -103,7 +102,7 @@ class UserKeyEdit extends DefForm {
     
     public void cmdOk() {
         u.active=active.getValue();
-        for (int i = 0; i < UserKeyExec.available_commands.length; i++) {
+        for (int i = 0; i < 3; i++) {
             int index = commands_t[i].getSelectedIndex() - 1;
             if (index >= 0) {
             u.commands_id[i] = ((UserKeyCommand) UserKeyExec.available_commands[i].elementAt(index)).command_id;

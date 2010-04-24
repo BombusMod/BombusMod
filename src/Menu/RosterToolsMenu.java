@@ -147,7 +147,9 @@ public class RosterToolsMenu extends Menu {
 //#                 addItem(SR.MS_BUILD_NEW, 15, MenuIcons.ICON_BUILD_NEW);
 //#endif
 //#ifdef USER_KEYS
-//#         if (cf.userKeys)
+//#ifdef PLUGINS
+//#         if (sd.UserKeys)
+//#endif
 //#             addItem(SR.MS_CUSTOM_KEYS, 16, MenuIcons.ICON_KEYS);
 //#endif
 //#if SASL_XGOOGLETOKEN

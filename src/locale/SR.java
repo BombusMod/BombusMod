@@ -704,7 +704,7 @@ public class SR {
 //#ifdef JUICK
 //#      public static String MS_JUICK_FOCUS = loadString( "Focus to Juick contact" );
 //#      public static String MS_JUICK_MESSAGE_REPLY = loadString( "[J] Reply to message" );
-//#      public static String MS_JUICK_SEND_PRIVATE_REPLY = loadString( "[J] Reply to " );
+//#      public static String MS_JUICK_SEND_PRIVATE_REPLY = loadString( "[J] Reply to" );
 //#      public static String MS_JUICK_THINGS = loadString( "[J] Things" );
 //#      public static String MS_JUICK_MESSAGE_DELETE = loadString( "[J] Delete message" );
 //#      public static String MS_JUICK_POST_SUBSCRIBE = loadString( "[J] Subscribe to comments" );
