@@ -50,9 +50,9 @@ import midlet.BombusMod;
 import ui.VirtualList;
 //#ifdef JUICK
 //# import Client.Contact;
-//# import Client.ContactMessageList;
-//# import Client.Roster;
 //#endif
+import Client.ContactMessageList;
+import Client.Roster;
 import javax.microedition.lcdui.Displayable;
 import io.NvStorage;
 import java.io.DataInputStream;

@@ -58,12 +58,10 @@ public class StatsWindow
     Stats st=Stats.getInstance();
     
     public Command cmdClear = new Command(SR.MS_CLEAR, Command.SCREEN, 2);
-    
 //#ifdef CLIPBOARD
-//#ifndef MENU
-//#     public Command cmdCopy = new Command(SR.MS_COPY, Command.OK, 1);
-//#endif
-//#     private ClipBoard clipboard=ClipBoard.getInstance();
+//#     ClipBoard clipboard  = ClipBoard.getInstance();
+//#     Command cmdCopy      = new Command(SR.MS_COPY, Command.SCREEN, 1);
+//#     Command cmdCopyPlus  = new Command("+ "+SR.MS_COPY, Command.SCREEN, 2);
 //#endif
     
     MultiLine item=null;    
@@ -99,28 +97,17 @@ public class StatsWindow
         attachDisplay(display);
         this.parentView=pView;
     }
-    
-//#ifdef CLIPBOARD
-//#     public void cmdCopy(){
-//#         StringBuffer copy=new StringBuffer();
-//#         for (int i=0;i<itemsList.size();i++) {
-//#             copy.append(((MultiLine)itemsList.elementAt(i)).toString());
-//#             copy.append("\n");
-//#         }
-//#         clipboard.setClipBoard(copy.toString());
-//#         destroyView();
-//#     }
-//#endif
 
     public void commandStateTest() {
 //#ifdef MENU_LISTENER
         menuCommands.removeAllElements();
 //#endif
-        
 //#ifdef CLIPBOARD
-//#         if (Config.getInstance().useClipBoard) {
-//#             addCommand(cmdCopy);
-//#         }
+//#             if (Config.getInstance().useClipBoard) {
+//#                 addCommand(cmdCopy);
+//#                 if (!clipboard.isEmpty())
+//#                     addCommand(cmdCopyPlus);
+//#             }
 //#endif
         addCommand(cmdClear);
         addCommand(cmdCancel);
@@ -141,9 +128,25 @@ public class StatsWindow
 
     public void commandAction(Command command, Displayable displayable) {
 //#ifdef CLIPBOARD
-//# 	if (command==cmdCopy) {
-//# 	    cmdCopy();
-//# 	} else
+//#         if (command == cmdCopy) {
+//#             try {
+//#                 String str = ((MultiLine) getFocusedObject()).toString();
+//#                 if (str == null)
+//#                     str = "";
+//#                 clipboard.setClipBoard(str);
+//#             } catch (Exception e) {/*no messages*/}
+//#         }
+//# 
+//#         if (command == cmdCopyPlus) {
+//#             try {
+//#                 String str = ((MultiLine) getFocusedObject()).toString();
+//#                 if (str == null)
+//#                     str = "";
+//#                 str  = clipboard.getClipBoard() + "\n\n" + str;
+//# 
+//#                 clipboard.setClipBoard(str);
+//#             } catch (Exception e) {/*no messages*/}
+//#         }
 //#endif
         if (command==cmdClear) {
             st.saveToStorage(true);

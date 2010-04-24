@@ -25,14 +25,11 @@
 
 package Statistic;
 
-import Client.*;
+import Client.StaticData;
 import io.NvStorage;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import locale.SR;
-import ui.VirtualList;
-import util.StringUtils;
 
 public class Stats {
 //#ifdef PLUGINS

@@ -40,6 +40,12 @@ import ui.controls.form.DefForm;
 import ui.controls.form.LinkString;
 import ui.controls.form.MultiLine;
 import ui.controls.form.SpacerItem;
+//#ifndef MENU_LISTENER
+//# import javax.microedition.lcdui.Command;
+//#else
+import Menu.Command;
+import Menu.MyMenu;
+//#endif
 import util.ClipBoard;
 
 /**
@@ -58,7 +64,9 @@ public class InfoWindow
     StaticData sd=StaticData.getInstance();
 
 //#ifdef CLIPBOARD
-//#     private ClipBoard clipboard=ClipBoard.getInstance();
+//#     ClipBoard clipboard  = ClipBoard.getInstance();
+//#     Command cmdCopy      = new Command(SR.MS_COPY, Command.SCREEN, 1);
+//#     Command cmdCopyPlus  = new Command("+ "+SR.MS_COPY, Command.SCREEN, 2);
 //#endif
 
     /**
@@ -89,7 +97,7 @@ public class InfoWindow
 
         itemsList.addElement(new SpacerItem(20));
 
-        abilities = new MultiLine("Special thanks", "Advice, aspro, BrennendeR_Komet, 6yp4uk, den_po, disabler, fregl24, G.L.Fire, gimlet, lgs, m, Masy, Muxa, NoNameZ, radiance, Sash, spine, spirtamne, Tasha, TiLan, Totktonada, van, vitalyster, voffk, westsibe, zet. \nWithout you none of this would not have!", super.superWidth);
+        abilities = new MultiLine("Special thanks", "Advice, aspro, BrennendeR_Komet, 6yp4uk, den_po, disabler, fregl24, G.L.Fire, gimlet, lgs, m, Masy, Muxa, NoNameZ, radiance, Sash, spine, spirtamne, Tasha, TiLan, Totktonada, van, vitalyster, voffk, westsibe, zet. \n \nWithout you none of this would not have!", super.superWidth);
         abilities.selectable = true;
         itemsList.addElement(abilities);
 
@@ -110,28 +118,63 @@ public class InfoWindow
         abilities = new MultiLine("Abilities", getAbilities(), super.superWidth);
         abilities.selectable = true;
         itemsList.addElement(abilities);
-//#ifdef CLIPBOARD
-//#         if (Config.getInstance().useClipBoard) {
-//#             clipboard=ClipBoard.getInstance();
-//#         }
-//#endif
+
+        commandStateTest();
         attachDisplay(display);
         this.parentView = pView;
     }
 
-//#ifdef CLIPBOARD
+    public void commandStateTest() {
 //#ifdef MENU_LISTENER
-//#     public String touchLeftCommand(){ return Config.getInstance().useClipBoard ? SR.MS_COPY : SR.MS_OK; }
+        menuCommands.removeAllElements();
 //#endif
-//# 
-//#     public void cmdOk(){
-//#         if (Config.getInstance().useClipBoard) {
-//#             clipboard.setClipBoard(name.toString()+"\n"+memory.toString()+"\n"+abilities.toString());
-//#         }
-//#         destroyView();
-//#     }
+//#ifdef CLIPBOARD
+//#             if (Config.getInstance().useClipBoard) {
+//#                 addCommand(cmdCopy);
+//#                 if (!clipboard.isEmpty())
+//#                     addCommand(cmdCopyPlus);
+//#             }
+//#endif
+        addCommand(cmdCancel);
+    }
+
+//#ifdef MENU_LISTENER
+    public String touchLeftCommand(){ return SR.MS_MENU; }
+    
+    public void touchLeftPressed(){ cmdOk(); }
+
+    public void cmdOk() { showMenu(); }
+
+    public void showMenu() {
+        commandStateTest();
+        new MyMenu(display, parentView, this, "", null, menuCommands);
+    }
 //#endif
 
+    public void commandAction(Command command, Displayable displayable) {
+//#ifdef CLIPBOARD
+//#         if (command == cmdCopy) {
+//#             try {
+//#                 String str = ((MultiLine) getFocusedObject()).toString();
+//#                 if (str == null)
+//#                     str = "";
+//#                 clipboard.setClipBoard(str);
+//#             } catch (Exception e) {/*no messages*/}
+//#         }
+//# 
+//#         if (command == cmdCopyPlus) {
+//#             try {
+//#                 String str = ((MultiLine) getFocusedObject()).toString();
+//#                 if (str == null)
+//#                     str = "";
+//#                 str  = clipboard.getClipBoard() + "\n\n" + str;
+//# 
+//#                 clipboard.setClipBoard(str);
+//#             } catch (Exception e) {/*no messages*/}
+//#         }
+//#endif
+        super.commandAction(command, displayable);
+    }
 
     private String getAbilities() {
         Vector abilitiesList=new Vector();

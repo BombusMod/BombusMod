@@ -27,7 +27,6 @@
 
 package ui.controls.form;
 
-import Client.Config;
 import Fonts.FontCache;
 import java.util.Vector;
 import javax.microedition.lcdui.Font;
