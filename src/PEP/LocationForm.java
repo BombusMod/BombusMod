@@ -14,13 +14,17 @@ package PEP;
 //# import com.alsutton.jabber.datablocks.Iq;
 //# import javax.microedition.lcdui.Display;
 //# import javax.microedition.lcdui.Displayable;
+//# import javax.microedition.lcdui.TextField;
 //# import javax.microedition.location.Coordinates;
 //# import javax.microedition.location.Location;
 //# import javax.microedition.location.LocationListener;
 //# import javax.microedition.location.LocationProvider;
 //# import locale.SR;
+//# import ui.controls.AlertBox;
 //# import ui.controls.form.DefForm;
+//# import ui.controls.form.LinkString;
 //# import ui.controls.form.SimpleString;
+//# import ui.controls.form.TextInput;
 //# 
 //# /**
 //#  *
@@ -32,37 +36,50 @@ package PEP;
 //#endif
 //# 
 //#     SimpleString loc;
-//#     Coordinates coord;
-//#     SimpleString wait;
+//#     TextInput location, descr;
+//#     TextInput lat, lon;
+//#     LinkString detect;
+//# 
 //#     /** Creates a new instance of Location
 //#      * @param display
 //#      * @param parent
 //#      */
 //#     public LocationForm(Display display, Displayable parent) {
 //#         super(display, parent, "Publish location");
-//#         SimpleString location = new SimpleString("Current location", true);
-//#         wait = new SimpleString("Please, wait...", false);
-//#         wait.selectable = true;
+//#         location = new TextInput(display, "Location name", null, null, TextField.ANY);
+//#         descr = new TextInput(display, "Location description", null, null, TextField.ANY);
+//#         lat = new TextInput(display, "Latitude", null, null, TextField.DECIMAL);
+//#         lon = new TextInput(display, "Longitude", null, null, TextField.DECIMAL);
+//#         detect = new LinkString("Retrieve location") {
+//#             public void doAction() {
+//#                 detectLocation();
+//#             }
+//#         };
+//#         itemsList.addElement(lat);
+//#         itemsList.addElement(lon);
 //#         itemsList.addElement(location);
-//#         itemsList.addElement(wait);
-//#         new GeoRetriever(this).start();
+//#         itemsList.addElement(descr);
+//#         itemsList.addElement(detect);
+//#         
 //#         attachDisplay(display);
 //#         parentView = parent;
 //#     }
 //# 
+//#     public void detectLocation() {
+//#         new GeoRetriever(this).start();
+//#     }
+//# 
 //#     public void locationUpdated(LocationProvider lp, Location lctn) {
 //#         Coordinates c;
-//#         String value = null;
 //#         if (lctn != null && (c = lctn.getQualifiedCoordinates()) != null) {
-//#             this.coord = c;
-//#             value = c.getLatitude() + ", " + c.getLongitude();
+//#             lat.setValue(String.valueOf(c.getLatitude()));
+//#             lon.setValue(String.valueOf(c.getLongitude()));
 //#         } else {
-//#             this.coord = null;
-//#             value = SR.MS_ERROR;
-//#         }        
-//#         loc = new SimpleString(value, false);
-//#         loc.selectable = true;
-//#         itemsList.setElementAt(loc, 1);
+//#             new AlertBox(SR.MS_ERROR, "Error retrieving coordinates", display, this) {
+//#                 public void yes() {}
+//#                 public void no() {}
+//#             };
+//#         }
 //#         redraw();
 //#     }
 //# 
@@ -76,12 +93,9 @@ package PEP;
 //#         action.setAttribute("node", "http://jabber.org/protocol/geoloc");
 //#         JabberDataBlock item=action.addChild("item", null);
 //#         JabberDataBlock geoloc=item.addChildNs("geoloc", "http://jabber.org/protocol/geoloc");
-//#         if (!loc.toString().equals(SR.MS_ERROR)) {
-//#         geoloc.addChild("lat", String.valueOf(coord.getLatitude()));
-//#         geoloc.addChild("lon", String.valueOf(coord.getLongitude()));
-//#         }
-//# 
 //#         try {
+//#             geoloc.addChild("lat", lat.getValue());
+//#             geoloc.addChild("lon", lon.getValue());
 //#             //todo: refactor theStream call; send notification to JabberBlockListener if stream was terminated
 //#             StaticData.getInstance().roster.theStream.addBlockListener(new PepPublishResult(display, sid));
 //#             StaticData.getInstance().roster.theStream.send(setActivity);
