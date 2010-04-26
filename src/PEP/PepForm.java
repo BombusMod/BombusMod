@@ -91,15 +91,13 @@ public class PepForm extends DefForm {
 //#ifdef PEP_ACTIVITY
 //#             itemsList.addElement(updact);
 //#endif
-//#ifdef PEP_LOCATION
-//#             if (System.getProperty("microedition.location.version")!=null) {
+//#ifdef PEP_LOCATION            
 //#             LinkString updloc = new LinkString("Location") {
 //#                 public void doAction() {
 //#                      new LocationForm(midlet.BombusMod.getInstance().getDisplay(), StaticData.getInstance().roster);
 //#                 }
 //#             };
-//#             itemsList.addElement(updloc);
-//#             }
+//#             itemsList.addElement(updloc);            
 //#endif
 //#ifdef PLUGINS
 //#         }

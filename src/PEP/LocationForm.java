@@ -10,15 +10,13 @@
 package PEP;
 //#ifdef PEP_LOCATION
 //# import Client.StaticData;
+//# import PEP.location.LocationImpl;
+//# import PEP.location.LocationListenerImpl;
 //# import com.alsutton.jabber.JabberDataBlock;
 //# import com.alsutton.jabber.datablocks.Iq;
 //# import javax.microedition.lcdui.Display;
 //# import javax.microedition.lcdui.Displayable;
 //# import javax.microedition.lcdui.TextField;
-//# import javax.microedition.location.Coordinates;
-//# import javax.microedition.location.Location;
-//# import javax.microedition.location.LocationListener;
-//# import javax.microedition.location.LocationProvider;
 //# import locale.SR;
 //# import ui.controls.AlertBox;
 //# import ui.controls.form.DefForm;
@@ -30,7 +28,7 @@ package PEP;
 //#  *
 //#  * @author Vitaly
 //#  */
-//# public class LocationForm extends DefForm implements LocationListener {
+//# public class LocationForm extends DefForm implements LocationListenerImpl {
 //#ifdef PLUGINS
 //#     public static String plugin = "PLUGIN_PEP";
 //#endif
@@ -50,6 +48,7 @@ package PEP;
 //#         descr = new TextInput(display, "Location description", null, null, TextField.ANY);
 //#         lat = new TextInput(display, "Latitude", null, null, TextField.DECIMAL);
 //#         lon = new TextInput(display, "Longitude", null, null, TextField.DECIMAL);
+//# 
 //#         detect = new LinkString("Retrieve location") {
 //#             public void doAction() {
 //#                 detectLocation();
@@ -69,11 +68,10 @@ package PEP;
 //#         new GeoRetriever(this).start();
 //#     }
 //# 
-//#     public void locationUpdated(LocationProvider lp, Location lctn) {
-//#         Coordinates c;
-//#         if (lctn != null && (c = lctn.getQualifiedCoordinates()) != null) {
-//#             lat.setValue(String.valueOf(c.getLatitude()));
-//#             lon.setValue(String.valueOf(c.getLongitude()));
+//#     public void locationUpdated(LocationImpl lctn) {
+//#         if (lctn != null) {
+//#             lat.setValue(lctn.getLatitude());
+//#             lon.setValue(lctn.getLongitude());
 //#         } else {
 //#             new AlertBox(SR.MS_ERROR, "Error retrieving coordinates", display, this) {
 //#                 public void yes() {}
@@ -82,10 +80,7 @@ package PEP;
 //#         }
 //#         redraw();
 //#     }
-//# 
-//#     public void providerStateChanged(LocationProvider lp, int i) {
-//#     }
-//# 
+//#     
 //#     public void cmdOk() {
 //#         String sid="publish-location";
 //#         JabberDataBlock setActivity=new Iq(null, Iq.TYPE_SET, sid);
@@ -109,15 +104,12 @@ package PEP;
 //#endif
 //# }
 //# 
-//# /**
-//#  *
-//#  * @author ugnich
-//#  */
+//# 
 //# class GeoRetriever extends Thread {
 //# 
-//#     private LocationListener returnto;
+//#     private LocationListenerImpl returnto;
 //# 
-//#     public GeoRetriever(LocationListener returnto) {
+//#     public GeoRetriever(LocationListenerImpl returnto) {
 //#         this.returnto = returnto;
 //#     }
 //# 
@@ -126,14 +118,14 @@ package PEP;
 //#             retrieveLocation();
 //#         } catch (Exception ex) {
 //#             ex.printStackTrace();
-//#             returnto.locationUpdated(null, null);
+//#             returnto.locationUpdated(null);
 //#         }
 //#     }
 //# 
 //#     public void retrieveLocation() throws Exception {
-//#         LocationProvider lp = LocationProvider.getInstance(null);
-//#         Location l = lp.getLocation(60);
-//#         returnto.locationUpdated(lp, l);
+//#         LocationImpl lp = LocationImpl.getInstance();
+//#         lp.getCoordinates();
+//#         returnto.locationUpdated(lp);
 //#     }
 //# }
 //#endif
