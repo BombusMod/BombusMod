@@ -96,6 +96,8 @@ package PEP;
 //#         try {
 //#             geoloc.addChild("lat", lat.getValue());
 //#             geoloc.addChild("lon", lon.getValue());
+//#             geoloc.addChild("description", location.getValue());
+//#             geoloc.addChild("text", descr.getValue());
 //#             //todo: refactor theStream call; send notification to JabberBlockListener if stream was terminated
 //#             StaticData.getInstance().roster.theStream.addBlockListener(new PepPublishResult(display, sid));
 //#             StaticData.getInstance().roster.theStream.send(setActivity);

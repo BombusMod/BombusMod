@@ -202,6 +202,10 @@ public static boolean fullscreen=
 //#ifdef PEP_ACTIVITY
 //#     public boolean rcvactivity = false;
 //#endif
+//#ifdef PEP_LOCATION
+//#     public boolean rcvloc = false;
+//#endif
+//# 
 //#endif
     public boolean queryExit = false;
     public int notInListDropLevel=NotInListFilter.ALLOW_ALL; //enable all
@@ -519,6 +523,11 @@ public static boolean fullscreen=
 
             advTouch = inputStream.readBoolean();
             autoClean = inputStream.readBoolean();
+//#ifdef PEP_LOCATION
+//#             rcvloc = inputStream.readBoolean();
+//#else
+            inputStream.readBoolean();
+//#endif
 	    inputStream.close();
             inputStream=null;
 	} catch (IOException e) { // Левые Exception'ы должны обрабатываться не здесь (поэтому ловим только IOException).
@@ -758,6 +767,12 @@ public static boolean fullscreen=
 
             outputStream.writeBoolean(advTouch);
             outputStream.writeBoolean(autoClean);
+//#ifdef PEP_LOCATION
+//#             outputStream.writeBoolean(rcvloc);
+//#else
+            outputStream.writeBoolean(false);
+//#endif
+
 	} catch (Exception e) { }
 	
 	NvStorage.writeFileRecord(outputStream, "config", 0, true);

@@ -69,6 +69,10 @@ public class Contact extends IconTextElement{
 //#ifdef PEP_ACTIVITY
 //#     public String activity=null;
 //#endif
+//#ifdef PEP_LOCATION
+//#     public String location = null;
+//#endif
+//# 
 //#endif
     
     public final static short ORIGIN_ROSTER=0;
@@ -216,6 +220,10 @@ public class Contact extends IconTextElement{
 //#ifdef PEP_ACTIVITY
 //#         clone.activity=activity;
 //#endif
+//#ifdef PEP_LOCATION
+//#         clone.location=location;
+//#endif
+//# 
 //#endif
         clone.bareJid=bareJid;
         return clone;
@@ -637,6 +645,13 @@ public class Contact extends IconTextElement{
 //#             il.drawImage(g, RosterIcons.ICON_PROFILE_INDEX, w,imgH);
 //#         }
 //#endif
+//#ifdef PEP_LOCATION
+//#         if (hasLocation()) {
+//#             w-=ilHeight;
+//#             il.drawImage(g, RosterIcons.ICON_PROGRESS_INDEX, w,imgH);
+//#         }
+//#endif
+//# 
 //#endif
 //#endif
         if (vcard!=null) {
@@ -694,6 +709,12 @@ public class Contact extends IconTextElement{
 //#         return false;
 //#     }
 //#endif
+//#ifdef PEP_LOCATION
+//#     boolean hasLocation() {
+//#         return (location != null);
+//#     }
+//#endif
+//# 
 //#endif
     public boolean equals(Object o) {
         if (o == null) {

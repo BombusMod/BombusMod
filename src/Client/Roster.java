@@ -2529,6 +2529,12 @@ public class Roster
 //#                     mess.append("\n").append(SR.MS_USERACTIVITY).append(": ").append(cntact.activity);
 //#                 }
 //#endif
+//#ifdef PEP_LOCATION
+//#                 if (cntact.hasLocation()) {
+//#                     mess.append("\n").append(SR.MS_USERLOCATION).append(": ").append(cntact.location);
+//#                 }
+//#endif
+//# 
 //#ifdef PEP_TUNE
 //#                 if (cntact.pepTune) {
 //#                     mess.append("\n").append(SR.MS_USERTUNE);

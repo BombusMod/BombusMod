@@ -147,9 +147,10 @@ public class EntityCaps implements JabberBlockListener{
 //#          }
 //#endif
 //#ifdef PEP_LOCATION
-//#         if (System.getProperty("microedition.location.version")!=null)
+//#         if (cf.rcvloc) {
 //#               features.addElement("http://jabber.org/protocol/geoloc");
-//#               // features.addElement("http://jabber.org/protocol/geoloc+notify"); TODO:
+//#               features.addElement("http://jabber.org/protocol/geoloc+notify");
+//#         }
 //#endif
 //#endif
         features.addElement("jabber:iq:time"); //DEPRECATED

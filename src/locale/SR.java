@@ -682,6 +682,7 @@ public class SR {
 //#     public static String MS_USERMOOD=loadString( "User moods" );
 //#     public static String MS_USERTUNE=loadString( "User tune" );
 //#     public static String MS_USERACTIVITY=loadString( "User activity" );
+//#     public static String MS_USERLOCATION=loadString( "User location" );
 //#     public static String MS_SEND_RECEIVE_USERMOODS=loadString( "user moods send/receive" );
 //# 
 //#     public static String MS_PEP_NOT_SUPPORTED = loadString( "Personal events not supported" );

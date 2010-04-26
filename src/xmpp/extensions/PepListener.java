@@ -108,6 +108,37 @@ public class PepListener implements JabberBlockListener{
 //#             }
 //#         }
 //#endif
+//#ifdef PEP_LOCATION
+//#         boolean hasLocation=false;
+//#         if (cf.rcvloc) {
+//#             JabberDataBlock location=extractEvent(event, "geoloc", "http://jabber.org/protocol/geoloc");
+//#             if (location!=null) {
+//#                 String tag=null;
+//#                 String lat="", lon="", text="";
+//# 
+//#                 try {
+//#                     for (Enumeration e=location.getChildBlocks().elements(); e.hasMoreElements();) {
+//#                         JabberDataBlock child=(JabberDataBlock)e.nextElement();
+//#                         tag=child.getTagName();
+//#                         if (tag.equals("text"))
+//#                           text = child.getText();
+//#                         if (tag.equals("lat"))
+//#                           lat = child.getText();
+//#                         if (tag.equals("lon"))
+//#                           lon = child.getText();
+//#                     }
+//#                 } catch (Exception ex) { }
+//# 
+//#                 result.append(text).append(" (").append(lat).append(", ").append(lon).append(")");
+//#                 hasLocation=true;
+//# 
+//#ifdef DEBUG
+//#             System.out.println(from+": "+result.toString());
+//#endif
+//#                 type=SR.MS_USERLOCATION;
+//#             }
+//#         }
+//#endif
         
 //#ifdef PEP_TUNE
 //#         boolean  hasTune=false;
@@ -205,6 +236,12 @@ public class PepListener implements JabberBlockListener{
 //#                         c.activity=result.toString();
 //#                     }
 //#endif
+//#ifdef PEP_LOCATION
+//#                     if (hasLocation) {
+//#                         c.location=result.toString();
+//#                     }
+//#endif
+
 //#ifdef PEP_TUNE
 //#                     if (hasTune) {
 //#                         c.pepTune=true;
