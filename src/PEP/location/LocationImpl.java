@@ -27,6 +27,7 @@ public abstract class LocationImpl {
 
         } catch (Exception e) {
             try {
+                e.printStackTrace();
                 Class c = Class.forName("PEP.location.CellIDLocation");
                 provider = (LocationImpl) (c.newInstance());
 //#ifdef DEBUG

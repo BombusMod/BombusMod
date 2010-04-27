@@ -5,7 +5,6 @@
 
 package PEP.location;
 import javax.microedition.location.Coordinates;
-import javax.microedition.location.Criteria;
 import javax.microedition.location.Location;
 import javax.microedition.location.LocationException;
 import javax.microedition.location.LocationProvider;
@@ -19,7 +18,6 @@ public class JSR179Location extends LocationImpl {
     private Location location;
     private LocationProvider locationProvider;
     private Coordinates coordinates;
-    private Criteria criteria;
     double lat, lon;
 
 
@@ -32,10 +30,9 @@ public class JSR179Location extends LocationImpl {
     }
 
     public void getCoordinates() {
-        criteria = new Criteria();
-        criteria.setHorizontalAccuracy(500);
+        
         try {
-            locationProvider = LocationProvider.getInstance(criteria);
+            locationProvider = LocationProvider.getInstance(null);
         }
          catch (LocationException e) {
              //TODO: Handle location exception.
@@ -45,7 +42,7 @@ public class JSR179Location extends LocationImpl {
             location = locationProvider.getLocation(60);
         }
         catch (Exception e) {
-            //TODO: Handle exception.
+            e.printStackTrace();
             return;
         }
         coordinates = location.getQualifiedCoordinates();
