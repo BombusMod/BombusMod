@@ -49,7 +49,13 @@ public class Account extends IconTextElement{
     private int port=5222;
     private boolean active;
     private boolean useSSL;
-    private boolean compression=true;
+    private boolean compression=
+//#if (superSmall)
+//#             false
+//#else
+            true
+//#endif
+            ;
     private boolean plainAuth;
     private boolean mucOnly;
     

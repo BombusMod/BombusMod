@@ -146,7 +146,9 @@ public class PopUp {
         if (keyCode == 14) {
             String c = getContact();
             if (c != null) {
+//#ifdef POPUPS
                 StaticData.getInstance().roster.showContactMessageList(c);
+//#endif
                 next();
                 return true;
             }

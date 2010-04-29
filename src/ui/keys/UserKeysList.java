@@ -178,7 +178,9 @@ public class UserKeysList extends VirtualList implements
     }
     
     public void eventOk() {
-        new UserKeyEdit(display, this, (UserKey) getFocusedObject());
+//#ifdef USER_KEYS
+//#         new UserKeyEdit(display, this, (UserKey) getFocusedObject());
+//#endif
     }
     
     public static void rmsUpdate(Vector keysList) {
