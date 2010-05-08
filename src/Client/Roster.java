@@ -115,6 +115,7 @@ import xmpp.extensions.IqTimeReply;
 //#ifdef PEP
 //# import xmpp.extensions.PepListener;
 //#endif
+import xmpp.extensions.RosterXListener;
 
 public class Roster
         extends VirtualList
@@ -459,7 +460,8 @@ public class Roster
     }
     
     public VirtualElement getItemRef(int Index){
-        return (VirtualElement)paintVContacts.elementAt(Index);
+        paintVContacts=vContacts;
+        return (VirtualElement)vContacts.elementAt(Index);
     }
     
     public int getItemCount() {
@@ -481,13 +483,13 @@ public class Roster
         int s=querysign?RosterIcons.ICON_PROGRESS_INDEX:myStatus;
         int profile=cf.profile;
         Object en=(profile>0)? new Integer(profile+RosterIcons.ICON_PROFILE_INDEX+1):null;
-        MainBar mainbar=(MainBar) getMainBarItem();
+        MainBar mb=(MainBar) getMainBarItem();
 
-        mainbar.setElementAt((messageCount==0)?null:new Integer(RosterIcons.ICON_MESSAGE_INDEX), 0);
+        mb.setElementAt((messageCount==0)?null:new Integer(RosterIcons.ICON_MESSAGE_INDEX), 0);
         
-        mainbar.setElementAt((messageCount==0)?null:getHeaderString(),1);
-        mainbar.setElementAt(new Integer(s), 2);
-        mainbar.setElementAt(en, 5);
+        mb.setElementAt((messageCount==0)?null:getHeaderString(),1);
+        mb.setElementAt(new Integer(s), 2);
+        mb.setElementAt(en, 5);
         
         if (phoneManufacturer==Config.WINDOWS) {
             if (messageCount==0) {
@@ -1308,6 +1310,7 @@ public class Roster
         
         theStream.addBlockListener(new IqLast());
         theStream.addBlockListener(new IqTimeReply());
+        theStream.addBlockListener(new RosterXListener());
 //#ifdef ADHOC
 //#         if (cf.adhoc)
 //#ifdef PLUGINS

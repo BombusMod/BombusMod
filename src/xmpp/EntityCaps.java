@@ -153,6 +153,7 @@ public class EntityCaps implements JabberBlockListener{
 //#         }
 //#endif
 //#endif
+        features.addElement("http://jabber.org/protocol/rosterx"); // XEP-0144
         features.addElement("jabber:iq:time"); //DEPRECATED
         features.addElement("jabber:iq:version");
        // features.addElement("jabber:x:data"); we didn't support direct data forms
