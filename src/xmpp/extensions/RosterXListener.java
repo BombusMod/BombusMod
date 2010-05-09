@@ -26,20 +26,20 @@ public class RosterXListener implements JabberBlockListener {
 
     public RosterXListener() {};
 
-    Vector items;
-    Vector newcontacts = new Vector();
+    Vector items;    
     String sender;
 
     public int blockArrived(JabberDataBlock data) {
-        JabberDataBlock item;
-        String action;
-        Contact newcontact;
         if (data instanceof Presence)
             return BLOCK_REJECTED;
         JabberDataBlock x=data.findNamespace("x", "http://jabber.org/protocol/rosterx");
-        if (x == null) return BLOCK_REJECTED;
-        System.out.println(data.toString());
+        if (x == null) return BLOCK_REJECTED;        
+        Vector newcontacts = null;
+        newcontacts = new Vector();
         sender = data.getAttribute("from");
+        JabberDataBlock item;
+        String action;
+        Contact newcontact;
         for (Enumeration e=x.getChildBlocks().elements(); e.hasMoreElements();)  {
             item = null;
             item = (JabberDataBlock)e.nextElement();
@@ -48,12 +48,11 @@ public class RosterXListener implements JabberBlockListener {
                 action = item.getAttribute("action");
                 if (action != null && action.equals("add")) {
                     // add contact to list of new contacts
-                    System.out.println("Add: " + item.getAttribute("jid"));
                     newcontact = null;
                     newcontact = new Contact(item.getAttribute("name"), item.getAttribute("jid"), Presence.PRESENCE_OFFLINE, null);
                     newcontact.group = new Group(item.getChildBlockText("group"));
                     newcontacts.addElement(newcontact);
-                }
+                } 
             }
         }
         if (!newcontacts.isEmpty())

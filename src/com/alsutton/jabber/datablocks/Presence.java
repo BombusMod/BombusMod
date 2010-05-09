@@ -200,6 +200,8 @@ public class Presence extends JabberDataBlock {
         if (cc!=null){
             if (cc.isJabberNameSpace("http://jabber.org/protocol/caps")) {
                 String ver = cc.getAttribute("ver");
+                if (ver == null) // buggy clients
+                    return null;
                 return (ver.endsWith("=")?null:ver);
             }
         }
