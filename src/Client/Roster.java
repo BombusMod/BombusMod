@@ -972,7 +972,11 @@ public class Roster
 //#         } else if ((size == 1) || (juickConfig.getJuickJID().equals(""))) {
 //#             indexMainJuickContact = 0;
 //#         } else {
-//#             indexMainJuickContact = juickContacts.indexOf(new Contact("Juick", juickConfig.getJuickJID(), Presence.PRESENCE_OFFLINE, null));
+//#             //indexMainJuickContact = juickContacts.indexOf(new Contact("Juick", juickConfig.getJuickJID(), Presence.PRESENCE_OFFLINE, null));
+//#             for (int i=0; i<juickContacts.size(); i++) {
+//#                 if (((Contact)juickContacts.elementAt(i)).bareJid.equals( juickConfig.getJuickJID()))
+//#                     indexMainJuickContact = i;
+//#             }
 //#             if (indexMainJuickContact < 0) {
 //#                 juickConfig.setJuickJID("", false);
 //#                 indexMainJuickContact = 0; // Можно сделать это присваивание через рекурсию, но вроде пока не надо.
