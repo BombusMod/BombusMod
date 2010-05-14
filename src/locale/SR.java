@@ -430,7 +430,9 @@ public class SR {
     public static String MS_CHANGE_NICKNAME = loadString( "Change nickname" );
     public static String MS_MESSAGE_COLLAPSE_LIMIT = loadString( "Message collapse limit" );
     public static String MS_MESSAGE_WIDTH_SCROLL_2 = loadString( "Scroll width" );
+	public static String MS_MEMORY_USAGE = loadString( "Memory usage" );
     public static String MS_WITH_SYSTEM_GC = loadString( "Memory cleaning" );
+	public static String MS_AUTOCLEAN_GROUPS = loadString( "Auto clean groups" );
     public static String MS_NO_CLIENT_INFO = loadString( "No client info" );
     public static String MS_CLEAN_ALL_MESSAGES = loadString( "Delete all messages" );
     public static String MS_DO_AUTOJOIN = loadString( "Join marked (auto)" );
@@ -679,10 +681,17 @@ public class SR {
 
 //#ifdef PEP
 //#     public static String MS_PEP=loadString( "Personal events" );
+//#     public static String MS_RECEIVE_PEP=loadString( "Receive events" );
+//#     public static String MS_PUBLISH_PEP=loadString( "Publish events" );
 //#     public static String MS_USERMOOD=loadString( "User moods" );
 //#     public static String MS_USERTUNE=loadString( "User tune" );
 //#     public static String MS_USERACTIVITY=loadString( "User activity" );
 //#     public static String MS_USERLOCATION=loadString( "User location" );
+//#     public static String MS_LATITUDE=loadString( "Latitude" );
+//#     public static String MS_LONGITUDE=loadString( "Longitude" );
+//#     public static String MS_LOCATION_NAME=loadString( "Location name" );
+//#     public static String MS_LOCATION_DESCRIPTION=loadString( "Location description" );
+//#     public static String MS_RETRIEVE_LOCATION=loadString( "Retrieve location" );
 //#     public static String MS_SEND_RECEIVE_USERMOODS=loadString( "user moods send/receive" );
 //# 
 //#     public static String MS_PEP_NOT_SUPPORTED = loadString( "Personal events not supported" );

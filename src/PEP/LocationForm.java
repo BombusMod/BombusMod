@@ -43,13 +43,13 @@ package PEP;
 //#      * @param parent
 //#      */
 //#     public LocationForm(Display display, Displayable parent) {
-//#         super(display, parent, "Publish location");
-//#         location = new TextInput(display, "Location name", null, null, TextField.ANY);
-//#         descr = new TextInput(display, "Location description", null, null, TextField.ANY);
-//#         lat = new TextInput(display, "Latitude", null, null, TextField.DECIMAL);
-//#         lon = new TextInput(display, "Longitude", null, null, TextField.DECIMAL);
+//#         super(display, parent, SR.MS_USERLOCATION);
+//#         location = new TextInput(display, SR.MS_LOCATION_NAME, null, null, TextField.ANY);
+//#         descr = new TextInput(display, SR.MS_LOCATION_DESCRIPTION, null, null, TextField.ANY);
+//#         lat = new TextInput(display, SR.MS_LATITUDE, null, null, TextField.DECIMAL);
+//#         lon = new TextInput(display, SR.MS_LONGITUDE, null, null, TextField.DECIMAL);
 //# 
-//#         detect = new LinkString("Retrieve location") {
+//#         detect = new LinkString(SR.MS_RETRIEVE_LOCATION) {
 //#             public void doAction() {
 //#                 detectLocation();
 //#             }

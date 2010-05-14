@@ -55,7 +55,7 @@ public class PepForm extends DefForm {
 //#ifdef PLUGINS
 //#         if (StaticData.getInstance().PEP) {
 //#endif            
-//#             itemsList.addElement(new SimpleString("Receive events", true));
+//#             itemsList.addElement(new SimpleString(SR.MS_RECEIVE_PEP, true));
 //#             sndrcvmood = new CheckBox(SR.MS_USERMOOD, Config.getInstance().sndrcvmood);
 //#             itemsList.addElement(sndrcvmood);
 //#             updmood = new LinkString(SR.MS_USERMOOD) {
@@ -81,18 +81,18 @@ public class PepForm extends DefForm {
 //#endif
 //#ifdef PEP
 //#ifdef PEP_LOCATION
-//#             rcvlocation = new CheckBox("User location", Config.getInstance().rcvloc);
+//#             rcvlocation = new CheckBox(SR.MS_USERLOCATION, Config.getInstance().rcvloc);
 //#             itemsList.addElement(rcvlocation);
 //#endif
 //# 
 //#             itemsList.addElement(new SpacerItem(10));
-//#             itemsList.addElement(new SimpleString("Publish events", true));
+//#             itemsList.addElement(new SimpleString(SR.MS_PUBLISH_PEP, true));
 //#             itemsList.addElement(updmood);
 //#ifdef PEP_ACTIVITY
 //#             itemsList.addElement(updact);
 //#endif
 //#ifdef PEP_LOCATION            
-//#             LinkString updloc = new LinkString("Location") {
+//#             LinkString updloc = new LinkString(SR.MS_USERLOCATION) {
 //#                 public void doAction() {
 //#                      new LocationForm(midlet.BombusMod.getInstance().getDisplay(), StaticData.getInstance().roster);
 //#                 }

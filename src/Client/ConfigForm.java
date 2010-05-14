@@ -282,10 +282,10 @@ public class ConfigForm
 //#endif
 
         itemsList.addElement(new SpacerItem(10));
-        itemsList.addElement(new SimpleString("Memory usage", true));
+        itemsList.addElement(new SimpleString(SR.MS_MEMORY_USAGE, true));
         widthSystemgc = new CheckBox(SR.MS_WITH_SYSTEM_GC, cf.widthSystemgc);
         itemsList.addElement(widthSystemgc);
-        autoClean = new CheckBox("Auto clean groups", cf.autoClean);
+        autoClean = new CheckBox(SR.MS_AUTOCLEAN_GROUPS, cf.autoClean);
         itemsList.addElement(autoClean);
         
         itemsList.addElement(new SpacerItem(10));
