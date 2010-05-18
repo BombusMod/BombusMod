@@ -78,31 +78,31 @@ public final class MessageEdit
 //#endif
 
 //#ifdef ARCHIVE
-    private Command cmdPaste=new Command(SR.MS_ARCHIVE, Command.ITEM, 6);
+    private Command cmdPaste=new Command(SR.MS_ARCHIVE, Command.SCREEN, 6);
 //#endif
 //#if TEMPLATES
-//#     private Command cmdTemplate=new Command(SR.MS_TEMPLATE, Command.ITEM, 7);
+//#     private Command cmdTemplate=new Command(SR.MS_TEMPLATE, Command.SCREEN, 7);
 //#endif
 //#ifdef CLIPBOARD
-//#     private Command cmdPasteText=new Command(SR.MS_PASTE, Command.ITEM, 8);
+//#     private Command cmdPasteText=new Command(SR.MS_PASTE, Command.SCREEN, 8);
 //#endif
     
     private Command cmdSend;//=new Command(SR.MS_SEND, Command.OK, 1);
-    private Command cmdSendAndStepBack = new Command(SR.MS_SEND+" & "+SR.MS_STEP_BACK, Command.ITEM, 80);
+    private Command cmdSendAndStepBack = new Command(SR.MS_SEND+" & "+SR.MS_STEP_BACK, Command.SCREEN, 80);
 
 //#ifdef SMILES
-    private Command cmdSmile=new Command(SR.MS_ADD_SMILE, Command.ITEM,2);
+    private Command cmdSmile=new Command(SR.MS_ADD_SMILE, Command.SCREEN,2);
 //#endif
-    private Command cmdInsNick=new Command(SR.MS_NICKNAMES,Command.ITEM,3);
-    private Command cmdInsMe=new Command(SR.MS_SLASHME, Command.ITEM, 4); ; // /me
+    private Command cmdInsNick=new Command(SR.MS_NICKNAMES,Command.SCREEN,3);
+    private Command cmdInsMe=new Command(SR.MS_SLASHME, Command.SCREEN, 4); ; // /me
 //#ifdef DETRANSLIT
-//#     private Command cmdSendInTranslit=new Command(SR.MS_TRANSLIT, Command.ITEM, 5);
-//#     private Command cmdSendInDeTranslit=new Command(SR.MS_DETRANSLIT, Command.ITEM, 5);
+//#     private Command cmdSendInTranslit=new Command(SR.MS_TRANSLIT, Command.SCREEN, 5);
+//#     private Command cmdSendInDeTranslit=new Command(SR.MS_DETRANSLIT, Command.SCREEN, 5);
 //#endif
-    private Command cmdLastMessage=new Command(SR.MS_PREVIOUS, Command.ITEM, 9);
-    private Command cmdSubj=new Command(SR.MS_SET_SUBJECT, Command.ITEM, 10);
+    private Command cmdLastMessage=new Command(SR.MS_PREVIOUS, Command.SCREEN, 9);
+    private Command cmdSubj=new Command(SR.MS_SET_SUBJECT, Command.SCREEN, 10);
     private Command cmdSuspend;//=new Command(SR.MS_SUSPEND, Command.BACK,90);
-    private Command cmdCancel=new Command(SR.MS_CANCEL, Command.ITEM,99);
+    private Command cmdCancel=new Command(SR.MS_CANCEL, Command.SCREEN,99);
     private final TextBox t;
     int maxSize = 500;
 //#ifdef RUNNING_MESSAGE

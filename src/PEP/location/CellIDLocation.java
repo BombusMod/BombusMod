@@ -14,7 +14,7 @@ import javax.microedition.io.HttpConnection;
  *
  * @author Vitaly
  */
-public class CellIDLocation extends LocationImpl {
+public class CellIDLocation extends LocationIO {
 
     private String lat, lon;
 

@@ -13,7 +13,7 @@ import javax.microedition.location.LocationProvider;
  *
  * @author Vitaly
  */
-public class JSR179Location extends LocationImpl {
+public class JSR179Location extends LocationIO {
 
     private Location location;
     private LocationProvider locationProvider;

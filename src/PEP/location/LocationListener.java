@@ -9,6 +9,6 @@ package PEP.location;
  *
  * @author Vitaly
  */
-public interface LocationListenerImpl {
-    public void locationUpdated(LocationImpl location);
+public interface LocationListener {
+    public void locationUpdated(LocationIO location);
 }

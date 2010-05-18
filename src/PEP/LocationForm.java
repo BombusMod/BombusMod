@@ -10,8 +10,8 @@
 package PEP;
 //#ifdef PEP_LOCATION
 //# import Client.StaticData;
-//# import PEP.location.LocationImpl;
-//# import PEP.location.LocationListenerImpl;
+//# import PEP.location.LocationIO;
+//# import PEP.location.LocationListener;
 //# import com.alsutton.jabber.JabberDataBlock;
 //# import com.alsutton.jabber.datablocks.Iq;
 //# import javax.microedition.lcdui.Display;
@@ -28,7 +28,7 @@ package PEP;
 //#  *
 //#  * @author Vitaly
 //#  */
-//# public class LocationForm extends DefForm implements LocationListenerImpl {
+//# public class LocationForm extends DefForm implements LocationListener {
 //#ifdef PLUGINS
 //#     public static String plugin = "PLUGIN_PEP";
 //#endif
@@ -68,7 +68,7 @@ package PEP;
 //#         new GeoRetriever(this).start();
 //#     }
 //# 
-//#     public void locationUpdated(LocationImpl lctn) {
+//#     public void locationUpdated(LocationIO lctn) {
 //#         if (lctn != null) {
 //#             lat.setValue(lctn.getLatitude());
 //#             lon.setValue(lctn.getLongitude());
@@ -109,9 +109,9 @@ package PEP;
 //# 
 //# class GeoRetriever extends Thread {
 //# 
-//#     private LocationListenerImpl returnto;
+//#     private LocationListener returnto;
 //# 
-//#     public GeoRetriever(LocationListenerImpl returnto) {
+//#     public GeoRetriever(LocationListener returnto) {
 //#         this.returnto = returnto;
 //#     }
 //# 
@@ -125,8 +125,13 @@ package PEP;
 //#     }
 //# 
 //#     public void retrieveLocation() throws Exception {
-//#         LocationImpl lp = LocationImpl.getInstance();
+//#         LocationIO lp = LocationIO.getInstance();
 //#         lp.getCoordinates();
+//#         if (lp.getLatitude().equals("0.0")) { // if generic JSR-179
+//#             lp = null;
+//#             lp = LocationIO.fallback();
+//#             lp.getCoordinates();
+//#         }
 //#         returnto.locationUpdated(lp);
 //#     }
 //# }
