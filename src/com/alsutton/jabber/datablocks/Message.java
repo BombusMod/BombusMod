@@ -112,7 +112,10 @@ public class Message extends JabberDataBlock {
 	    JabberDataBlock addresses=getChildBlock("addresses");
 	    for (Enumeration e=addresses.getChildBlocks().elements(); e.hasMoreElements(); ) {
 		JabberDataBlock adr=(JabberDataBlock) e.nextElement();
-		if (adr.getTypeAttribute().equals("ofrom")) return adr.getAttribute("jid");
+		if (adr.getTypeAttribute().equals("ofrom")) {
+                    String xfrom = adr.getAttribute("jid");
+                    return xfrom.equals("") ? getFrom() : xfrom; // workaround for Tkabber
+                }
 	    }
 	} catch (Exception e) { /* normal case if not forwarded message */ }
 	

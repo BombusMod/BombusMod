@@ -1217,7 +1217,7 @@ public class Roster
         if (!cf.eventDelivery) return;
         if (myStatus==Presence.PRESENCE_INVISIBLE) return;
         Message message=new Message(c.jid.getJid());
-
+        // FIXME: no need to send <received /> to forwarded messages
         //xep-0184
         message.setAttribute("id", id);
         message.addChildNs("received", "urn:xmpp:receipts");
@@ -2823,8 +2823,9 @@ public class Roster
                 }
             }
             if (c.jid.isTransport()) {
-                // TODO: find why our jid may fall there
-                if (c.jid.getBareJid().equals(myJid.getBareJid())) return;
+                // double-check for empty jid or our server jid
+                 if (c.bareJid.equals("")) return;
+                 if (c.bareJid.equals(myJid.getServer())) return;
                 // automatically remove registration
                 JabberDataBlock unreg = new Iq(c.bareJid, Iq.TYPE_SET, "unreg" + System.currentTimeMillis());
 				JabberDataBlock query = unreg.addChildNs("query", "jabber:iq:register");
