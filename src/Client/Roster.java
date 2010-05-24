@@ -2823,6 +2823,8 @@ public class Roster
                 }
             }
             if (c.jid.isTransport()) {
+                // TODO: find why our jid may fall there
+                if (c.jid.getBareJid().equals(myJid.getBareJid())) return;
                 // automatically remove registration
                 JabberDataBlock unreg = new Iq(c.bareJid, Iq.TYPE_SET, "unreg" + System.currentTimeMillis());
 				JabberDataBlock query = unreg.addChildNs("query", "jabber:iq:register");
