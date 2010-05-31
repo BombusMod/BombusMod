@@ -78,20 +78,28 @@ public class XDataForm implements CommandListener {
     
     public void fetchMediaElements(Vector bobCache) {
         //TODO: fetch external http bobs and non-cached in-band bobs
+        byte [] bytes = null;
+        Image img = null;
+        String cid = null;
+        XDataField field = null;
+        JabberDataBlock data = null;
         for (int i=0; i<items.size(); i++) {
-            XDataField field=(XDataField)items.elementAt(i);
+            field=(XDataField)items.elementAt(i);
             if (field.mediaUri==null) continue;
             if (!(field.media instanceof StringItem)) continue;
 
             if (field.mediaUri.startsWith("cid:")) {
-                String cid=field.mediaUri.substring(4);
+                cid = field.mediaUri.substring(4);
                 if (bobCache==null) continue; //TODO: in-band bob request
 
                 for (int bob=0; bob<bobCache.size(); bob++) {
-                    JabberDataBlock data=(JabberDataBlock) bobCache.elementAt(bob);
+                    data = null;
+                    data = (JabberDataBlock) bobCache.elementAt(bob);
                     if (data.isJabberNameSpace("urn:xmpp:bob") && cid.equals(data.getAttribute("cid"))) {
-                        byte[] bytes=Strconv.fromBase64(data.getText());
-                        Image img=Image.createImage(bytes, 0, bytes.length);
+                        bytes = null;
+                        bytes = Strconv.fromBase64(data.getText());
+                        img = null;
+                        img = Image.createImage(bytes, 0, bytes.length);
                         
                         //workaround for SE
                         f.delete(field.mediaIndex);

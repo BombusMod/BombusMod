@@ -76,6 +76,9 @@ public class PepListener implements JabberBlockListener{
 //#         if (cf.rcvactivity) {
 //#             JabberDataBlock activity=extractEvent(event, "activity", "http://jabber.org/protocol/activity");
 //#             if (activity!=null) {
+//#                 if (activity.getChildBlocks() == null)
+//#                    // user cancel activity publishing
+//#                    return BLOCK_PROCESSED;
 //#                 String tag=null;
 //#                 String activityText=null;
 //#                 //String activityString=null;
@@ -113,6 +116,9 @@ public class PepListener implements JabberBlockListener{
 //#         if (cf.rcvloc) {
 //#             JabberDataBlock location=extractEvent(event, "geoloc", "http://jabber.org/protocol/geoloc");
 //#             if (location!=null) {
+//#                 if (location.getChildBlocks() == null)
+//#                     // user cancel location publishing
+//#                     return BLOCK_PROCESSED;
 //#                 String tag=null;
 //#                 String lat="", lon="", text="";
 //# 
@@ -146,7 +152,8 @@ public class PepListener implements JabberBlockListener{
 //#             JabberDataBlock tune=extractEvent(event, "tune", "http://jabber.org/protocol/tune");
 //#             if (tune!=null) {
 //#                 if (tune.getChildBlocks()==null)
-//#                     result.append("(silence)");
+//#                     // user cancel tune publishing                 
+//#                     return BLOCK_PROCESSED;
 //#                 else {
 //#                     String src=tune.getChildBlockText("source");
 //# 
@@ -178,6 +185,10 @@ public class PepListener implements JabberBlockListener{
 //#             mood=extractEvent(event, "mood", "http://jabber.org/protocol/mood");
 //# 
 //#             if (mood!=null) {
+//#                 if (mood.getChildBlocks() == null) {
+//#                     // user cancel mood publishing
+//#                     return BLOCK_PROCESSED;
+//#                 }
 //#                 try {
 //#                     for (Enumeration e=mood.getChildBlocks().elements(); e.hasMoreElements();) {
 //#                         JabberDataBlock child=(JabberDataBlock)e.nextElement();

@@ -143,6 +143,7 @@ public abstract class VirtualList
             ((VirtualElement)getFocusedObject()).onSelect();
             updateLayout();
             fitCursorByTop();
+            redraw();
         } catch (Exception e) {} 
     }
     
