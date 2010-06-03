@@ -247,7 +247,7 @@ public class ContactMessageList extends MessageList {
 //#                     if (contact.msgs.size()>0)
 //#                         addCommand(cmdSaveChat);
 //#ifdef HISTORY_READER
-//#         if (cf.saveHistory && cf.lastMessages)
+//#         if (cf.saveHistory) // && cf.lastMessages)
 //#             addCommand(cmdReadHistory);
 //#endif
 //#endif
@@ -871,7 +871,7 @@ public void showNotify() {
 //#         }
 //#         history=null;
 //#     }
-//# 
+//#
 //#     private boolean isMsgExists(Msg msg) {
 //#         if (msg == null) return true;
 //#          for (Enumeration contactMsgs=contact.msgs.elements(); contactMsgs.hasMoreElements(); )  {

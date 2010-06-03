@@ -46,7 +46,6 @@ import ui.MainBar;
  * @author ad
  */
 public class HistoryReader extends MessageList {
-
 //#ifdef PLUGINS
 //#     public static String plugin = new String("PLUGIN_HISTORY");
 //#endif
@@ -77,7 +76,6 @@ public class HistoryReader extends MessageList {
         addCommand(cmdPrev);
         addCommand(cmdNext);
 	addCommand(cmdBack);
-        hl.getNext();
         moveCursorTo(1);
     }
 
@@ -85,10 +83,10 @@ public class HistoryReader extends MessageList {
         if ((keyCode == KEY_NUM5) || (getGameAction(keyCode) == FIRE)) {
            if (cursor == 0) {
                removeAllMessages();
-               hl.getPrev();
+               hl.stepBack();
            } else if (cursor == (getItemCount()-1)) {
                removeAllMessages();
-               hl.getNext();
+               hl.stepNext();
            }           
         }
         super.keyPressed(keyCode);
@@ -97,11 +95,15 @@ public class HistoryReader extends MessageList {
     public void commandAction(Command c, Displayable d) {
         if(c==cmdNext) {
             removeAllMessages();
-            hl.getNext();
+            hl.stepNext();
+            moveCursorHome();
+            redraw();
             return;
         } else if (c == cmdPrev) {
             removeAllMessages();
-            hl.getPrev();
+            hl.stepBack();
+            moveCursorEnd();
+            redraw();
             return;
         }
         super.commandAction(c, d);

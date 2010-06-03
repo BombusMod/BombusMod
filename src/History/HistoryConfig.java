@@ -78,8 +78,6 @@ public class HistoryConfig
 //#if HISTORY
 //#ifdef LAST_MESSAGES
 //#         loadHistory = new CheckBox(SR.MS_LAST_MESSAGES, cf.lastMessages); itemsList.addElement(loadHistory);
-//#elifdef HISTORY_READER
-//#         loadHistory = new CheckBox("Format for reading", cf.lastMessages); itemsList.addElement(loadHistory);
 //#endif
 //#         saveHistory = new CheckBox(SR.MS_SAVE_HISTORY, cf.msgLog); itemsList.addElement(saveHistory);
 //#         savePres = new CheckBox(SR.MS_SAVE_PRESENCES, cf.msgLogPresence); itemsList.addElement(savePres);
@@ -118,8 +116,6 @@ public class HistoryConfig
 //#if HISTORY
 //#ifdef LAST_MESSAGES
 //#         cf.lastMessages=loadHistory.getValue();
-//#elifdef HISTORY_READER
-//#         cf.lastMessages=loadHistory.getValue();
 //#endif
 //#         cf.msgLog=saveHistory.getValue();
 //#         cf.msgLogPresence=savePres.getValue();
@@ -138,7 +134,7 @@ public class HistoryConfig
         super.commandState();
         removeCommand(cmdCancel);
         addCommand(cmdPath);
-        addCommand(cmdCancel);        
+        addCommand(cmdCancel);
     }
     
     public void touchLeftPressed(){ showMenu(); }
