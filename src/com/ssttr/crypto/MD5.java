@@ -278,7 +278,7 @@ extends MessageDigest
      * digest is stored. After calling final you will need to call
      * init() again to do another digest.
      */
-    public void finish() {
+    public synchronized void finish() {
         byte	bits[] = new byte[8];
         byte	padding[];
         int	i, index, padLen;

@@ -90,6 +90,7 @@ public class Groups implements JabberBlockListener{
         Group gr=(Group)groups.elementAt(index);
         if (gr == null) return;
         if (!gr.visible) return;
+        if (gr.contacts == null) return;
         if (gr.contacts.size()>0){
             d.addElement(gr);
             if (!gr.collapsed) 

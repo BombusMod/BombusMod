@@ -222,9 +222,11 @@ public class UserKeyExec {
                 if (connected) new PrivacySelect(display, sd.roster);
 //#endif
                 break;
-            case 10: //key pound
-                new UserKeysList(display);
-                break;
+//#ifdef USER_KEYS                
+//#             case 10: //key pound
+//#                 new UserKeysList(display);
+//#                 break;
+//#endif                
             case 11:
 //#ifdef POPUPS
                 sd.roster.cmdClearPopups();

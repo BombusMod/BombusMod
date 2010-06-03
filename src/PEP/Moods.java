@@ -81,7 +81,7 @@ public class Moods {
     }
     
     public String getMoodLabel(int index) { 
-        if (index<0) return "Unknown";
+        if (index<0) return null;
         return (String)moodValue.elementAt(index); 
     }
 

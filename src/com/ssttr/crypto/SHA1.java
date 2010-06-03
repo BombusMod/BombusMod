@@ -223,7 +223,7 @@ public final class SHA1 extends MessageDigest {
     /**
      * Complete processing on the message digest.
      */
-    public void finish() {
+    public synchronized void finish() {
         byte bits[] = new byte[8];
         int i;
 

@@ -128,6 +128,12 @@ public class JabberDataBlockDispatcher extends Thread
             }
 
             JabberDataBlock dataBlock = (JabberDataBlock) waitingQueue.elementAt(0);
+            if (dataBlock instanceof Iq) {
+                // verify id attribute
+                if (dataBlock.getAttribute("id") == null) {
+                    dataBlock.setAttribute("id", "");
+                }
+            }
             waitingQueue.removeElementAt( 0 );
 
             try {
@@ -163,7 +169,12 @@ public class JabberDataBlockDispatcher extends Thread
 //#ifdef CONSOLE
 //#                 stream.addLog(dataBlock.toString(), 10);
 //#endif
-            } catch (Exception e) { }
+            } catch (Exception e) { 
+                Client.StaticData.getInstance().roster.errorLog("JabberDataBlockDispatcher exception\ndataBlock: " + dataBlock.toString());
+//#ifdef DEBUG                
+//#                 e.printStackTrace(); 
+//#endif                
+            }
         }
     }
     

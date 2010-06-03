@@ -183,7 +183,7 @@ public class JabberStream extends XmppParser implements Runnable {
                 
                 int length = iostream.read(cbuf);
                 if (length==0) {
-                    try { Thread.sleep(100); } catch (Exception e) {}; 
+                    try { Thread.sleep(100); } catch (Exception e) {} 
                     continue; 
                 }
                 parser.parse(cbuf, length);
@@ -194,7 +194,7 @@ public class JabberStream extends XmppParser implements Runnable {
             System.out.println("Exception in parser:");
             e.printStackTrace();
             dispatcher.broadcastTerminatedConnection(e);
-        };
+        }
         closeConnection();
     }
     private void closeConnection() {

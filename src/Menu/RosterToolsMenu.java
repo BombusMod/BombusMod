@@ -47,7 +47,9 @@ import ServiceDiscovery.*;
 //#ifdef PEP
 //# import PEP.PepForm;
 //#endif
-import Statistic.StatsWindow;
+//#ifdef STATS
+//# import Statistic.StatsWindow;
+//#endif
 import VCard.VCard;
 import VCard.VCardEdit;
 import images.MenuIcons;
