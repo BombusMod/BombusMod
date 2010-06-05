@@ -36,7 +36,6 @@ import javax.microedition.lcdui.Graphics;
 import Colors.ColorTheme;
 import ui.ComplexString;
 import Fonts.FontCache;
-import ui.Time;
 import ui.VirtualElement;
 import ui.VirtualList;
 
@@ -183,8 +182,7 @@ public class MessageItem
         this.even = even;
     }
 
-    public String getTipString() {
-        if (Time.utcTimeMillis() - msg.dateGmt> (24*60*60*1000)) return msg.getDayTime();
+    public String getTipString() {        
         return msg.getTime();
     }
 //#ifdef SMILES

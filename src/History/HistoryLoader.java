@@ -65,7 +65,7 @@ public class HistoryLoader {
     public HistoryLoader(String file) {
        cf=Config.getInstance();
 //#ifdef DETRANSLIT
-//#         file=(cf.transliterateFilenames)?DeTranslit.getInstance().translit(file):file;
+//#         file=(cf.transliterateFilenames)?DeTranslit.translit(file):file;
 //#endif
 //#ifdef HISTORY
 //#        fileName=cf.msgPath+StringUtils.replaceBadChars(file)+".txt";
@@ -128,7 +128,7 @@ public class HistoryLoader {
     private String getStrFromBytes(byte[] b, int off, int length) {
         String str = new String(b, off, length).trim();
         if (cf.cp1251) {
-            str = Strconv.convCp1251ToUnicode(str);
+            return Strconv.convCp1251ToUnicode(str);
         }
         return str;
     }

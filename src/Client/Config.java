@@ -410,7 +410,7 @@ public static boolean fullscreen=
 
             lightState=inputStream.readBoolean();
             notifySound=inputStream.readBoolean();
-//#ifdef HISTORY
+//#ifdef LAST_MESSAGES
 //#             lastMessages=inputStream.readBoolean();
 //#else
             inputStream.readBoolean();
@@ -653,7 +653,7 @@ public static boolean fullscreen=
 
             outputStream.writeBoolean(lightState);
             outputStream.writeBoolean(notifySound);
-//#ifdef HISTORY
+//#ifdef LAST_MESSAGES
 //#             outputStream.writeBoolean(lastMessages);
 //#else
             outputStream.writeBoolean(false);

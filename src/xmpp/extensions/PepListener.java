@@ -237,10 +237,13 @@ public class PepListener implements JabberBlockListener {
         if (result != null) {
             m = new Msg(Msg.MESSAGE_TYPE_PRESENCE, from, type, result.toString());
         }
+        Vector hContacts=sd.roster.getHContacts(); 
+        synchronized (hContacts) {  
         Jid j = new Jid(from);
-        Contact c = null;
-        c = sd.roster.findContact(j, false);
-        if (c.jid.equals(j, false)) {
+        Contact c = null;        
+        for (Enumeration e=hContacts.elements();e.hasMoreElements();){ 
+            c=(Contact)e.nextElement(); 
+            if (c.jid.equals(j, false)) {  
             if (hasMood) {
 //#ifdef PEP
 //#                 c.pepMood = moodIndex;
@@ -277,6 +280,8 @@ public class PepListener implements JabberBlockListener {
             if (m != null) {
                 c.addMessage(m);
             }
+        }
+        }
         }
 
 

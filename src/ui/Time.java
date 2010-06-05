@@ -27,7 +27,9 @@
 
 package ui;
 import Client.Config;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
 import locale.SR;
 
 /**
@@ -224,7 +226,7 @@ public class Time {
             if ((d>0) || (h>0) || (m>0))  result+=", ";
             result+= s + " " + goodWordForm (s, 0);
         }
-        if (result=="" && s==0)
+        if (result.equals("") && s==0)
             result=s + " " + goodWordForm (s, 0);
         return result;
     }

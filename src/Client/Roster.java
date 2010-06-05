@@ -1019,7 +1019,7 @@ public class Roster
             // send presence
             ExtendedStatus es= sl.getStatus(myStatus);
             if (message==null)
-                myMessage=StringUtils.toExtendedString(es.getMessage());;
+                myMessage=StringUtils.toExtendedString(es.getMessage());
 
             myMessage=StringUtils.toExtendedString(myMessage);
             int myPriority=es.getPriority();

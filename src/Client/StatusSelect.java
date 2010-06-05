@@ -40,12 +40,12 @@ import ui.controls.form.SimpleString;
 import ui.controls.form.SpacerItem;
 import ui.controls.form.TextInput;
 //#ifndef MENU_LISTENER
-import javax.microedition.lcdui.CommandListener;
-import javax.microedition.lcdui.Command;
+//# import javax.microedition.lcdui.CommandListener;
+//# import javax.microedition.lcdui.Command;
 //#else
-//# import Menu.MenuListener;
-//# import Menu.Command;
-//# import Menu.MyMenu;
+import Menu.MenuListener;
+import Menu.Command;
+import Menu.MyMenu;
 //#endif
 
 /**
@@ -56,9 +56,9 @@ public class StatusSelect
         extends VirtualList
         implements
 //#ifndef MENU_LISTENER
-        CommandListener,
+//#         CommandListener,
 //#else
-//#         MenuListener,
+        MenuListener,
 //#endif
         Runnable{
     
@@ -99,7 +99,7 @@ public class StatusSelect
     
     public void commandState() {
 //#ifdef MENU_LISTENER
-//#         menuCommands.removeAllElements();
+        menuCommands.removeAllElements();
 //#endif
         addCommand(cmdOk);
         addCommand(cmdEdit);
@@ -136,8 +136,8 @@ public class StatusSelect
     public void run(){
         int status=getSel().getImageIndex();
 //#ifdef AUTOSTATUS
-//#         sd.roster.autoAway=false;
-//#         sd.roster.autoXa=false;
+//#         Roster.autoAway=false;
+//#         Roster.autoXa=false;
 //#         sd.roster.messageActivity();
 //#endif
         try {
@@ -156,10 +156,10 @@ public class StatusSelect
     }
     
 //#ifdef MENU_LISTENER
-//#     public void showMenu() {
-//#         commandState();
-//#         new MyMenu(display, parentView, this, SR.MS_STATUS, null, menuCommands);
-//#     }
+    public void showMenu() {
+        commandState();
+        new MyMenu(display, parentView, this, SR.MS_STATUS, null, menuCommands);
+    }
 //#endif
     
     class StatusForm 
