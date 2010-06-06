@@ -23,7 +23,7 @@ public class XDataField {
     private String name;        
     private String label;        
     private String type;
-    private String value;
+    public String value;
     private boolean required;   
     boolean hidden;
 
@@ -34,7 +34,7 @@ public class XDataField {
     
     Item media;
     
-    private Vector optionsList;
+    public Vector optionsList;
     
     
     /** Creates a new instance of XDataField */

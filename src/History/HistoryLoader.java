@@ -126,7 +126,7 @@ public class HistoryLoader {
     }
 
     private String getStrFromBytes(byte[] b, int off, int length) {
-        String str = new String(b, off, length).trim();
+        String str = new String(b, off, length);
         if (cf.cp1251) {
             return Strconv.convCp1251ToUnicode(str);
         }

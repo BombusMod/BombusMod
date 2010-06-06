@@ -76,6 +76,7 @@ public class HistoryReader extends MessageList {
         addCommand(cmdPrev);
         addCommand(cmdNext);
 	addCommand(cmdBack);
+        attachDisplay(display);
         moveCursorTo(1);
     }
 

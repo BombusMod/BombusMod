@@ -57,9 +57,7 @@ public class TransferManager
     Command cmdDel=new Command(SR.MS_DECLINE, Command.SCREEN, 10);
     Command cmdClrF=new Command(SR.MS_HIDE_FINISHED, Command.SCREEN, 11);
     Command cmdInfo=new Command(SR.MS_INFO, Command.SCREEN, 12);
-//#ifdef BYTESTREAMS
-//#     Command cmdSettings=new Command("Transfer settings", Command.SCREEN, 12);
-//#endif
+    Command cmdSettings=new Command("Transfer settings", Command.SCREEN, 12);
     
     /** Creates a new instance of TransferManager */
     public TransferManager(Display display, Displayable pView) {
@@ -74,10 +72,7 @@ public class TransferManager
 //#ifdef MENU_LISTENER
     public void commandState(){
         super.commandState();
-//#ifdef BYTESTREAMS
-//#          removeCommand(cmdOk);
-//#          addCommand(cmdSettings);
-//#endif        
+        addCommand(cmdSettings);
         if (TransferDispatcher.getInstance().getTasksCount()>0) {
             removeCommand(cmdOk);
         }
@@ -85,13 +80,9 @@ public class TransferManager
         addCommand(cmdClrF);
         addCommand(cmdInfo);          
     }   
-    public String touchLeftCommand(){ return (TransferDispatcher.getInstance().getTasksCount()>0) ? SR.MS_MENU : SR.MS_OK; }
+    public String touchLeftCommand(){ return SR.MS_MENU; }
     public void touchLeftPressed(){ 
-        if (TransferDispatcher.getInstance().getTasksCount()>0) {
-            showMenu();
-        } else {
-            cmdOk();
-        } 
+            showMenu();         
     }
 //#endif
 
@@ -132,10 +123,7 @@ public class TransferManager
         }
         if (c==cmdDel) keyClear();        
         if (c==cmdInfo) cmdInfo();
-//#ifdef BYTESTREAMS
-//#         if (c==cmdSettings) new TransferSetupForm(display, this);
-//#endif
-        
+        if (c==cmdSettings) new TransferSetupForm(display, this);       
     }
     public void cmdOk() {
         TransferDispatcher.getInstance().eventNotify();

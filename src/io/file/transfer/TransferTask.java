@@ -42,15 +42,14 @@ import Colors.ColorTheme;
 import ui.IconTextElement;
 import xmpp.XmppError;
 
-//#ifdef BYTESTREAMS
-//# import com.ssttr.crypto.SHA1;
-//# import javax.microedition.io.Connector;
-//# import javax.microedition.io.StreamConnection;
-//# import Client.StaticData;
-//#else
+import com.ssttr.crypto.SHA1;
+import javax.microedition.io.Connector;
+import javax.microedition.io.StreamConnection;
+import Client.StaticData;
 import com.alsutton.jabber.datablocks.Message;
+import io.SOCKS5Stream;
 import util.Strconv;
-//#endif
+
 /**
  *
  * @author Evg_S
@@ -69,10 +68,8 @@ public class TransferTask
     public final static int NONE=5;
     public final static int HANDSHAKE=6;
     public final static int IN_ASK=7;
-//#ifdef BYTESTREAMS
-//#     public final static int PROXYACTIVATE=8;
-//#     public final static int PROXYOPEN=9;
-//#endif
+    public final static int PROXYACTIVATE=8;
+    public final static int PROXYOPEN=9;
     public int state=NONE;
     private boolean sending;
     boolean showEvent;
@@ -93,6 +90,7 @@ public class TransferTask
     private OutputStream os;
     private InputStream is;
     
+    private String method;
     private Vector methods;
 
     long started;
@@ -205,11 +203,9 @@ public class TransferTask
         
         JabberDataBlock field=x.addChild("field", null);
         field.setAttribute("var","stream-method");
-//#ifndef BYTESTREAMS
         field.addChild("value", "http://jabber.org/protocol/ibb");
-//#else
-//#         field.addChild("value", "http://jabber.org/protocol/bytestreams");
-//#endif
+        // TODO: SOCKS5 receive
+        // field.addChild("value", "http://jabber.org/protocol/bytestreams");
         
         TransferDispatcher.getInstance().send(accept, true);
         state=HANDSHAKE;
@@ -278,11 +274,11 @@ public class TransferTask
         si.setAttribute("mime-type","text/plain");
         si.setAttribute("profile", "http://jabber.org/protocol/si/profile/file-transfer");
 
-        JabberDataBlock file=si.addChildNs("file", "http://jabber.org/protocol/si/profile/file-transfer");
-        file.setAttribute("name", fileName);
-        file.setAttribute("size", String.valueOf(fileSize));
+        JabberDataBlock f=si.addChildNs("file", "http://jabber.org/protocol/si/profile/file-transfer");
+        f.setAttribute("name", fileName);
+        f.setAttribute("size", String.valueOf(fileSize));
 
-        file.addChild("desc", description);
+        f.addChild("desc", description);
 
         JabberDataBlock feature=si.addChildNs("feature", "http://jabber.org/protocol/feature-neg");
 
@@ -292,166 +288,161 @@ public class TransferTask
         JabberDataBlock field=x.addChild("field", null);
         field.setTypeAttribute("list-single");
         field.setAttribute("var", "stream-method");
-//#ifndef BYTESTREAMS
         field.addChild("option", null).addChild("value", "http://jabber.org/protocol/ibb");
-//#else
-//#         field.addChild("option", null).addChild("value", "http://jabber.org/protocol/bytestreams");
-//#endif
+        field.addChild("option", null).addChild("value", "http://jabber.org/protocol/bytestreams");
         TransferDispatcher.getInstance().send(iq, true);
 
 }
     void initIBB() {
+        method = TransferDispatcher.NS_IBB;
         JabberDataBlock iq=new Iq(jid, Iq.TYPE_SET, sid);
         JabberDataBlock open=iq.addChildNs("open", "http://jabber.org/protocol/ibb");
         open.setAttribute("sid", sid);
         open.setAttribute("block-size","2048");
         TransferDispatcher.getInstance().send(iq, false);
     }
-//#ifdef BYTESTREAMS
-//#     protected InputStream socks5Input;
-//#     protected OutputStream socks5Output;
-//# 
-//# 
-//#     void initBytestreams() {
-//#         JabberDataBlock iq=new Iq(jid, Iq.TYPE_SET, sid);
-//#         JabberDataBlock query=iq.addChildNs("query", "http://jabber.org/protocol/bytestreams");
-//#         query.setAttribute("sid", sid);
-//#         query.setAttribute("mode", "tcp");
-//#         JabberDataBlock streamhost = query.addChild("streamhost", null);
-//#         streamhost.setAttribute("jid", TransferDispatcher.getInstance().ProxyJID);
-//#         streamhost.setAttribute("host", TransferDispatcher.getInstance().ProxyJID);
-//#         streamhost.setAttribute("port", Integer.toString(TransferDispatcher.getInstance().ProxyPort));
-//#         TransferDispatcher.getInstance().send(iq, false);
-//#         state = PROXYACTIVATE;
-//#     }
-//#     void ProxyActivate() {
-//#         JabberDataBlock iq=new Iq(TransferDispatcher.getInstance().ProxyJID, Iq.TYPE_SET, "activate"+sid);
-//#         JabberDataBlock query=iq.addChildNs("query", "http://jabber.org/protocol/bytestreams");
-//#         query.setAttribute("sid", sid);
-//#         query.addChild("activate", jid);
-//#         System.out.println(iq.toString());
-//#         TransferDispatcher.getInstance().send(iq, false);
-//#         state = PROXYOPEN;
-//#     }
-//# 
-//# 
-//#     public boolean openStreams(final String host, int port) {
-//#         try {
-//#             StreamConnection connection = (StreamConnection) Connector.open("socket://" + host + ":" + port);
-//#             socks5Input = connection.openInputStream();
-//#             socks5Output = connection.openOutputStream();
-//#             return true;
-//#         } catch (Exception e) {
-//#             System.out.println(e);
-//#         }
-//#         return false;
-//#     }
-//#     public void closeStreams() {
-//#         try {
-//#             socks5Output.close();
-//#             socks5Input.close();
-//#         } catch (IOException e) {
-//#             System.err.println(e);
-//#         }
-//#     }
-//#     public boolean connectStream() throws IOException {
-//#         byte[] socks5Connect = {
-//#                     0x05, // VER
-//#                     0x01, // 1 method
-//#                     0x00, // No authentication
-//#                 };
-//#                 socks5Output.write(socks5Connect);
-//#                 socks5Output.flush();
-//# 
-//#                 byte[] readbuf = new byte[4];
-//#                 socks5Input.read(readbuf); // Waiting for response;
-//# 
-//#                 byte[] socks5CommandStart = {
-//#                     0x05, // VER
-//#                     0x01, // CMD = CONNECT
-//#                     0x00, // RSV
-//#                     0x03, // ATYP = domain
-//#                 };
-//#                 SHA1 Command = new SHA1();
-//#                 Command.init();
-//#                 Command.updateASCII(sid + StaticData.getInstance().account.getJid() + jid);
-//#                 Command.finish();
-//# 
-//#                 byte[] socks5CommandHost = Command.getDigestHex().getBytes();
-//#                 byte[] socks5CommandFinish = {0x00, 0x00};
-//# 
-//#                 byte[] socks5Command = new byte[socks5CommandStart.length + 1 + socks5CommandHost.length + socks5CommandFinish.length];
-//#                 System.arraycopy(socks5CommandStart, 0, socks5Command, 0, socks5CommandStart.length);
-//#                 socks5Command[socks5CommandStart.length] = (byte) socks5CommandHost.length;
-//#                 System.arraycopy(socks5CommandHost, 0, socks5Command, socks5CommandStart.length + 1, socks5CommandHost.length);
-//#                 System.arraycopy(socks5CommandFinish, 0, socks5Command, socks5CommandStart.length + 1 + socks5CommandHost.length, socks5CommandFinish.length);
-//#                 socks5Output.write(socks5Command);
-//#                 socks5Output.flush();
-//# 
-//#                 socks5Input.read(readbuf); // Waiting for response;
-//#                 return true;
-//#     }
-//#endif
+    protected SOCKS5Stream proxystream;
 
-    public void run() {        
-//#ifndef BYTESTREAMS
-        byte buf[]=new byte[2048];
-        int seq=0;
-        try {
-            while (true) {
-                int sz=readFile(buf);
-                if (sz==0) break;
 
-                JabberDataBlock msg=new Message(jid);
-
-                JabberDataBlock data=msg.addChildNs("data", "http://jabber.org/protocol/ibb");
-                data.setAttribute("sid", sid);
-                data.setAttribute("seq", String.valueOf(seq));   seq++;
-                data.setText(Strconv.toBase64(buf, sz));
-
-                JabberDataBlock amp=msg.addChildNs("amp", "http://jabber.org/protocol/amp");
-
-                JabberDataBlock rule;
-
-                rule=amp.addChild("rule", null);
-                rule.setAttribute("condition", "deliver-at");
-                rule.setAttribute("value", "stored");
-                rule.setAttribute("action", "error");
-
-                rule=amp.addChild("rule", null);
-                rule.setAttribute("condition", "match-resource");
-                rule.setAttribute("value", "exact");
-                rule.setAttribute("action", "error");
-
-                TransferDispatcher.getInstance().send(msg, false);
-                TransferDispatcher.getInstance().repaintNotify();
-
-                Thread.sleep( 1500L ); //shaping traffic
-            }
-        } catch (Exception e) { /*null pointer exception if terminated*/}
-        closeFile();
-        JabberDataBlock iq=new Iq(jid, Iq.TYPE_SET, "close");
-        JabberDataBlock close=iq.addChildNs("close", "http://jabber.org/protocol/ibb");
-        close.setAttribute("sid", sid);
+    void initBytestreams() {
+        method = TransferDispatcher.NS_BYTESTREAMS;
+        JabberDataBlock iq=new Iq(jid, Iq.TYPE_SET, sid);
+        JabberDataBlock query=iq.addChildNs("query", "http://jabber.org/protocol/bytestreams");
+        query.setAttribute("sid", sid);
+        query.setAttribute("mode", "tcp");
+        JabberDataBlock streamhost = query.addChild("streamhost", null);
+        streamhost.setAttribute("jid", TransferDispatcher.getInstance().ProxyJID);
+        streamhost.setAttribute("host", TransferDispatcher.getInstance().ProxyJID);
+        streamhost.setAttribute("port", Integer.toString(TransferDispatcher.getInstance().ProxyPort));
         TransferDispatcher.getInstance().send(iq, false);
-//#else
-//#         byte buf[]=new byte[20480];
-//#         try {
-//#             int cnt;
-//#             while ((cnt = readFile(buf)) > 0) {
-//#                 socks5Output.write(buf, 0, cnt);
-//#                 TransferDispatcher.getInstance().repaintNotify();
-//#                 //Thread.sleep( 500L ); //shaping traffic
-//#             }
-//#             socks5Output.flush();
-//#             closeFile();
-//#             closeStreams();
-//# 
-//#         }  catch (Exception ex) {
-//#             ex.printStackTrace();
-//#         }
-//#endif
-        TransferDispatcher.getInstance().eventNotify();
+        state = PROXYACTIVATE;
+    }
+    void ProxyActivate() {
+        JabberDataBlock iq=new Iq(TransferDispatcher.getInstance().ProxyJID, Iq.TYPE_SET, "activate"+sid);
+        JabberDataBlock query=iq.addChildNs("query", "http://jabber.org/protocol/bytestreams");
+        query.setAttribute("sid", sid);
+        query.addChild("activate", jid);
+        TransferDispatcher.getInstance().send(iq, false);
+        state = PROXYOPEN;
+    }
+
+
+    public boolean openStreams(final String host, int port) {
+        try {
+            StreamConnection connection = (StreamConnection) Connector.open("socket://" + host + ":" + port);
+            proxystream = new SOCKS5Stream(connection);
+            return true;
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return false;
+    }
+    
+    public boolean connectStream() throws IOException {
+        new Thread(this).start();
+        return true;
+    }
+
+    public void run() {
+        if (method.equals(TransferDispatcher.NS_IBB)) {
+            byte buf[] = new byte[2048];
+            int seq = 0;
+            try {
+                while (true) {
+                    int sz = readFile(buf);
+                    if (sz == 0) {
+                        break;
+                    }
+                    JabberDataBlock msg = new Message(jid);
+
+                    JabberDataBlock data = msg.addChildNs("data", "http://jabber.org/protocol/ibb");
+                    data.setAttribute("sid", sid);
+                    data.setAttribute("seq", String.valueOf(seq));
+                    seq++;
+                    data.setText(Strconv.toBase64(buf, sz));
+
+                    JabberDataBlock amp = msg.addChildNs("amp", "http://jabber.org/protocol/amp");
+
+                    JabberDataBlock rule;
+
+                    rule = amp.addChild("rule", null);
+                    rule.setAttribute("condition", "deliver-at");
+                    rule.setAttribute("value", "stored");
+                    rule.setAttribute("action", "error");
+
+                    rule = amp.addChild("rule", null);
+                    rule.setAttribute("condition", "match-resource");
+                    rule.setAttribute("value", "exact");
+                    rule.setAttribute("action", "error");
+
+                    TransferDispatcher.getInstance().send(msg, false);
+                    TransferDispatcher.getInstance().repaintNotify();
+
+                    Thread.sleep(1500L); //shaping traffic
+                }
+            } catch (Exception e) { /*null pointer exception if terminated*/
+
+            }
+            closeFile();
+            JabberDataBlock iq = new Iq(jid, Iq.TYPE_SET, "close");
+            JabberDataBlock close = iq.addChildNs("close", "http://jabber.org/protocol/ibb");
+            close.setAttribute("sid", sid);
+            TransferDispatcher.getInstance().send(iq, false);
+        } else {
+            if (state == PROXYACTIVATE) {
+                try {
+                byte[] socks5Connect = {
+                    0x05, // VER
+                    0x01, // 1 method
+                    0x00, // No authentication
+                };
+                proxystream.send(socks5Connect);
+                
+                byte[] readbuf = new byte[4];
+                proxystream.read(readbuf); // Waiting for response;
+                System.out.println("Response received!");
+                byte[] socks5CommandStart = {
+                    0x05, // VER
+                    0x01, // CMD = CONNECT
+                    0x00, // RSV
+                    0x03, // ATYP = domain
+                };
+                SHA1 Command = new SHA1();
+                Command.init();
+                Command.updateASCII(sid + StaticData.getInstance().account.getJid() + jid);
+                Command.finish();
+
+                byte[] socks5CommandHost = Command.getDigestHex().getBytes();
+                byte[] socks5CommandFinish = {0x00, 0x00};
+
+                byte[] socks5Command = new byte[socks5CommandStart.length + 1 + socks5CommandHost.length + socks5CommandFinish.length];
+                System.arraycopy(socks5CommandStart, 0, socks5Command, 0, socks5CommandStart.length);
+                socks5Command[socks5CommandStart.length] = (byte) socks5CommandHost.length;
+                System.arraycopy(socks5CommandHost, 0, socks5Command, socks5CommandStart.length + 1, socks5CommandHost.length);
+                System.arraycopy(socks5CommandFinish, 0, socks5Command, socks5CommandStart.length + 1 + socks5CommandHost.length, socks5CommandFinish.length);
+                proxystream.send(socks5Command);
+                proxystream.read(readbuf); // Waiting for response;             
+                } catch (IOException e) {
+                    cancel();                    
+                }
+            } else {
+            byte buf[] = new byte[20480];
+            try {
+                int cnt;
+                while ((cnt = readFile(buf)) > 0) {
+                    proxystream.send(buf, 0, cnt);
+                    TransferDispatcher.getInstance().repaintNotify();
+                //Thread.sleep( 500L ); //shaping traffic
+                }                
+                closeFile();
+                proxystream.close();
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            TransferDispatcher.getInstance().eventNotify();
+            }
+        }
     }
 
     void startTransfer() {

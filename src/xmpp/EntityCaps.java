@@ -1,7 +1,7 @@
 /*
  * EntityCaps.java
  *
- * Created on 17 �?юнь 2007 г., 2:58
+ * Created on 17 Июнь 2007 г., 2:58
  *
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
@@ -129,6 +129,7 @@ public class EntityCaps implements JabberBlockListener{
 //#ifdef FILE_TRANSFER
         if (cf.fileTransfer) {
             features.addElement("http://jabber.org/protocol/ibb");
+            features.addElement("http://jabber.org/protocol/bytestreams");
         }
  //#endif
 //#ifdef PEP

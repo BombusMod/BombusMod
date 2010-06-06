@@ -293,9 +293,8 @@ public class UserKeyExec {
             case 20:
 //#ifdef SMILES
                 if (current instanceof MessageList) {
-                    MessageList current_ml = (ContactMessageList) current;
-                    ((MessageItem) current_ml.getFocusedObject()).toggleSmiles();
-                    current_ml.repaint();
+                    ((MessageItem)((MessageList)current).getFocusedObject()).toggleSmiles();
+                    ((MessageList)current).redraw();
                 } else {
                     return false;
                 }
