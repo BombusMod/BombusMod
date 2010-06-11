@@ -9,6 +9,7 @@
 
 package xmpp.extensions;
 
+import Client.Config;
 import com.alsutton.jabber.JabberDataBlock;
 import java.util.*;
 import javax.microedition.lcdui.*;
@@ -83,7 +84,8 @@ public class XDataForm implements CommandListener {
         String cid = null;
         XDataField field = null;
         JabberDataBlock data = null;
-        for (int i=0; i<items.size(); i++) {
+        int formItems = items.size();
+        for (int i=0; i<formItems; i++) {
             field=(XDataField)items.elementAt(i);
             if (field.mediaUri==null) continue;
             if (!(field.media instanceof StringItem)) continue;

@@ -98,7 +98,7 @@ public abstract class MessageList extends VirtualList
 
     public MessageList(Display display) {
         this();
-        // attachDisplay(display);
+        attachDisplay(display);
     }
     
     

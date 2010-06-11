@@ -170,9 +170,7 @@ public class Roster
     
     public Vector bookmarks;
     
-//#ifdef RUNNING_MESSAGE
-//#     public static MessageEdit me=null;
-//#endif
+    public static MessageEdit me = null;
     
     private StatusList sl;
     public int myStatus=cf.loginstatus;
@@ -2231,11 +2229,8 @@ public class Roster
         Displayable pview=createMsgList();
         if (pview!=null) {
             Contact c=(Contact)getFocusedObject();
-//#ifdef RUNNING_MESSAGE
-//#             me = new MessageEdit(display, pview, c, c.msgSuspended);
-//#else
-            new MessageEdit(display, pview, c, c.msgSuspended);
-//#endif
+            me = null; me = new MessageEdit(display, pview, c, c.msgSuspended);
+            me.show(this);
             c.msgSuspended=null;
         }
     }

@@ -28,6 +28,7 @@ package ui.controls;
 
 import Client.Config;
 import javax.microedition.lcdui.Command;
+import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.TextBox;
@@ -39,22 +40,22 @@ import locale.SR;
 //#ifdef ARCHIVE
 import Archive.ArchiveList;
 //#endif
-import Client.StaticData;
 
 /**
  *
  * @author ad
  */
-public class ExTextBox
-    extends TextBox {
-
-    private Display display;
-    private Displayable parentView;
+public class ExTextBox {
+    
+    protected final TextBox textbox = new TextBox("", "", 500, TextField.ANY);
+    protected Display display;
+    protected Displayable parentView;    
     
     public String body;
     private String subj;
+    protected int caretPos;
 
-    private Config cf;
+    protected Config cf;
     
 //#ifdef CLIPBOARD
 //#     private ClipBoard clipboard;
@@ -73,35 +74,109 @@ public class ExTextBox
     int maxSize=500;
             
     /** Creates a new instance of UniTextEdit */
-    public ExTextBox(Display display, Displayable pView, String body, String subj, int type) {
-        super(subj, "", 500, type);
+    public ExTextBox(Display display, Displayable pView, String body, String subj) {
         
-        this.display=display;
+        this.display = display;
 
-        cf=Config.getInstance();
+        cf = Config.getInstance();
         
-        this.subj=subj;
+        textbox.setTitle(subj);
 		
         try {
             //expanding buffer as much as possible
-            maxSize=setMaxSize(4096); //must not trow
-
-            setText(body);
+            maxSize = textbox.setMaxSize(4096); //must not trow            
+            insert(body, 0);
          } catch (Exception e) {}
+        
+        commandState();
 
+    }
+    
+     public void show(Displayable pView, CommandListener listener) {
+        setInitialCaps(cf.capsState);
+        if (Config.getInstance().phoneManufacturer == Config.SONYE) 
+            System.gc(); // prevent flickering on Sony Ericcsson C510
+        textbox.setCommandListener(listener);
+        display.setCurrent(textbox);
+        this.parentView = pView;
+    }
+        
+    public void destroyView(){
+        display.setCurrent(parentView);
+    }   
+    
+    public void insert(String s, int caretPos) {
+        insert(s, caretPos, true);
+    }
 
+    public void insert(String s, int caretPos, boolean writespaces) {
+        if (s == null) return;
+
+        String src = textbox.getString();
+
+        StringBuffer sb = new StringBuffer(s);
+
+        if (writespaces) {
+            if (caretPos > 0) {
+                if (src.charAt(caretPos - 1) != ' ') {
+                    sb.insert(0, ' ');
+                }
+            }
+
+            if (caretPos < src.length()) {
+                if (src.charAt(caretPos) != ' ') {
+                    sb.append(' ');
+                }
+            }
+
+            if (caretPos == src.length()) {
+                sb.append(' ');
+            }
+        }
+
+        try {
+            int freeSz = textbox.getMaxSize() - textbox.size();
+            if (freeSz < sb.length()) {
+                sb.delete(freeSz, sb.length());
+            }
+        } catch (Exception e) {
+        }
+
+        textbox.insert(sb.toString(), caretPos);
+        sb = null;        
+    }
+    public int getCaretPos() {
+        int pos = textbox.getCaretPosition();
+        // +MOTOROLA STUB
+        if (cf.phoneManufacturer == Config.MOTO)
+            pos = -1;
+        if (pos < 0)
+            pos = textbox.getString().length();
+        return pos;
+    }
+    public void setText(String body) {
+        if (body != null) {
+            if (body.length() > maxSize)
+                body = body.substring(0, maxSize - 1);
+            textbox.setString(body);
+        }
+    }
+    private void setInitialCaps(boolean state) {
+        textbox.setConstraints(state?TextField.INITIAL_CAPS_SENTENCE:TextField.ANY);
+    }
+    
+    public void commandState() {
 //#ifdef ARCHIVE
 //#ifdef PLUGINS
 //#         if (StaticData.getInstance().Archive)
 //#endif
-            addCommand(cmdPaste);
+            textbox.addCommand(cmdPaste);
 //#endif
 //#ifdef CLIPBOARD
 //#         if (cf.useClipBoard) {
-//#             clipboard=ClipBoard.getInstance();
+//#             clipboard = ClipBoard.getInstance();
 //#             if (!clipboard.isEmpty()) {
-//#                 addCommand(cmdPasteText);
-//#                 if (Config.getInstance().phoneManufacturer == Config.SONYE) System.gc(); // prevent flickering on Sony Ericcsson C510
+//#                 textbox.addCommand(cmdPasteText);                
 //#             }
 //#         }
 //#endif
@@ -109,82 +184,27 @@ public class ExTextBox
 //#ifdef PLUGINS
 //#         if (StaticData.getInstance().Archive)
 //#endif
-//#             addCommand(cmdTemplate);
-//#endif
-        setInitialCaps(cf.capsState);
-        this.parentView=pView;
+//#             textbox.addCommand(cmdTemplate);
+//#endif        
     }
     
-    public void setText(String body) {
-        if (body!=null) {
-            if (body.length()>maxSize)
-                body=body.substring(0, maxSize-1);
-            setString(body);
-        }
-    }
-    
-    public void destroyView(){
-        display.setCurrent(parentView);
-    }
-
-    public int getCaretPos() {     
-        int caretPos=getCaretPosition();
-        // +MOTOROLA STUB
-        if (cf.phoneManufacturer==Config.MOTO)
-            caretPos=-1;
-        if (caretPos<0)
-            caretPos=getString().length();
-        return caretPos;
-    }
-    
-    public boolean executeCommand(Command c, Displayable displayable) {
-        body=getString();
+    public boolean executeCommand(Command c, Displayable displayable) { 
         
-        int caretPos=getCaretPos();
-		
-        if (body.length()==0) body=null;
-
+        body = textbox.getString();
+        caretPos = getCaretPos();
+        
+        if (body.length() == 0)
+            body = null;
+        
 //#ifdef ARCHIVE
-	if (c==cmdPaste) { new ArchiveList(display, this, caretPos, 1, this); return true; }
+        if (c==cmdPaste) { new ArchiveList(display, textbox, caretPos, 1, textbox); return true; }
 //#endif
 //#ifdef CLIPBOARD
 //#         if (c==cmdPasteText) { insert(clipboard.getClipBoard(), getCaretPos()); return true; }
 //#endif
 //#if TEMPLATES
-//#         if (c==cmdTemplate) { new ArchiveList(display, this, caretPos, 2, this); return true; }
+//#         if (c==cmdTemplate) { new ArchiveList(display, textbox, caretPos, 2, textbox); return true; }
 //#endif
-
         return false;
-    }
-    
-    
-    public void insert(String s, int caretPos) {
-        String src=getString();
-
-        StringBuffer sb=new StringBuffer(s);
-        
-        if (caretPos>0) 
-            if (src.charAt(caretPos-1)!=' ')   
-                sb.insert(0, ' ');
-        
-        if (caretPos<src.length())
-            if (src.charAt(caretPos)!=' ')
-                sb.append(' ');
-        
-        if (caretPos==src.length())
-            sb.append(' ');
-        
-        try {
-            int freeSz=getMaxSize()-size();
-            if (freeSz<sb.length())
-                sb.delete(freeSz, sb.length());
-        } catch (Exception e) {}
-       
-        super.insert(sb.toString(), caretPos);
-        sb=null;
-    }
-    
-    private void setInitialCaps(boolean state) {
-        setConstraints(state?TextField.INITIAL_CAPS_SENTENCE:TextField.ANY);
     }
 }

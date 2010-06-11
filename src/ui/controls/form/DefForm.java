@@ -69,7 +69,8 @@ public class DefForm
      * Creates a new instance of DefForm
      */
     public DefForm(final Display display, Displayable pView, String caption) {
-	this.display=display;
+        
+        this.display=display;
         
 	setMainBarItem(new MainBar(caption));
         

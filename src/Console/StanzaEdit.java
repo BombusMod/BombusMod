@@ -24,17 +24,14 @@
  * along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-
 package Console;
 
-import Client.Config;
 import Client.StaticData;
 import java.io.IOException;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
-import javax.microedition.lcdui.TextField;
 import locale.SR;
 import ui.controls.ExTextBox;
 
@@ -42,78 +39,89 @@ import ui.controls.ExTextBox;
  *
  * @author ad
  */
-public class StanzaEdit 
+public class StanzaEdit
         extends ExTextBox
         implements CommandListener {
 //#ifdef PLUGINS
 //#     public static String plugin = new String("PLUGIN_CONSOLE");
 //#endif
-
-    private Display display;
-    private Displayable parentView;
-
-    private String body;
-
-    private Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK,99);
-    private Command cmdSend=new Command(SR.MS_SEND, Command.OK,1);
-
-    private Command cmdPasteIQDisco=new Command("disco#info", Command.SCREEN,11);
-    private Command cmdPasteIQVersion=new Command("jabber:iq:version", Command.SCREEN,12);
-    private Command cmdPastePresence=new Command("presence", Command.SCREEN,13);
-    private Command cmdPasteMessage=new Command("message", Command.SCREEN,14);
-    
-    private static final String TEMPLATE_IQ_DISCO="<iq to='???' type='get'>\n<query xmlns='http://jabber.org/protocol/disco#info'/>\n</iq>";
-    private static final String TEMPLATE_IQ_VERSION="<iq to='???' type='get'>\n<query xmlns='jabber:iq:version'/>\n</iq>";
-    private static final String TEMPLATE_PRESENCE="<presence to='???'>\n<show>???</show>\n<status>???</status>\n</presence>";
-    private static final String TEMPLATE_MESSAGE="<message to='???' type='???'>\n<body>???</body>\n</message>";
+    private Command cmdCancel;
+    private Command cmdSend;
+    private Command cmdPasteIQDisco;
+    private Command cmdPasteIQVersion;
+    private Command cmdPastePresence;
+    private Command cmdPasteMessage;
+    private static final String TEMPLATE_IQ_DISCO = "<iq to='???' type='get'>\n<query xmlns='http://jabber.org/protocol/disco#info'/>\n</iq>";
+    private static final String TEMPLATE_IQ_VERSION = "<iq to='???' type='get'>\n<query xmlns='jabber:iq:version'/>\n</iq>";
+    private static final String TEMPLATE_PRESENCE = "<presence to='???'>\n<show>???</show>\n<status>???</status>\n</presence>";
+    private static final String TEMPLATE_MESSAGE = "<message to='???' type='???'>\n<body>???</body>\n</message>";
 
     public StanzaEdit(Display display, Displayable pView, String body) {
-        super(display, pView, body, SR.MS_XML_CONSOLE, TextField.ANY);
-        
-        this.display=display;
-        
-        addCommand(cmdSend);
-
-        addCommand(cmdPasteIQDisco);
-        addCommand(cmdPasteIQVersion);
-        addCommand(cmdPastePresence);
-        addCommand(cmdPasteMessage);
-        
-        addCommand(cmdCancel);
-        if (Config.getInstance().phoneManufacturer == Config.SONYE) System.gc(); // prevent flickering on Sony Ericcsson C510
-        setCommandListener(this);
-        
-        display.setCurrent(this);
-        parentView=pView;
+        super(display, pView, body, SR.MS_XML_CONSOLE);
     }
-    
-    public void setParentView(Displayable parentView){
-        this.parentView=parentView;
+
+    public void setParentView(Displayable parentView) {
+        this.parentView = parentView;
     }
-    
-    public void commandAction(Command c, Displayable d){
-        if (executeCommand(c, d)) return;
-        
-        body=getString();
-        if (body.length()==0) body=null;
 
-        int caretPos=getCaretPos();
+    public void commandState() {
+        cmdCancel = new Command(SR.MS_CANCEL, Command.BACK, 99);
+        cmdSend = new Command(SR.MS_SEND, Command.OK, 1);
 
-        if (c==cmdPasteIQDisco) { insert(TEMPLATE_IQ_DISCO, caretPos); return; }
-        if (c==cmdPasteIQVersion) { insert(TEMPLATE_IQ_VERSION, caretPos); return; }
-        if (c==cmdPastePresence) { insert(TEMPLATE_PRESENCE, caretPos); return; }
-        if (c==cmdPasteMessage) { insert(TEMPLATE_MESSAGE, caretPos); return; }
+        cmdPasteIQDisco = new Command("disco#info", Command.SCREEN, 11);
+        cmdPasteIQVersion = new Command("jabber:iq:version", Command.SCREEN, 12);
+        cmdPastePresence = new Command("presence", Command.SCREEN, 13);
+        cmdPasteMessage = new Command("message", Command.SCREEN, 14);
 
-        if (c==cmdCancel) { 
-            body=null;
+        textbox.addCommand(cmdSend);
+
+        textbox.addCommand(cmdPasteIQDisco);
+        textbox.addCommand(cmdPasteIQVersion);
+        textbox.addCommand(cmdPastePresence);
+        textbox.addCommand(cmdPasteMessage);
+
+        textbox.addCommand(cmdCancel);
+
+        super.commandState();
+
+    }
+
+    public void commandAction(Command c, Displayable d) {
+
+        if (!executeCommand(c, d)) {
+
+            if (body.length() == 0) {
+                body = null;
+            }
+            if (c == cmdPasteIQDisco) {
+                insert(TEMPLATE_IQ_DISCO, caretPos);
+                return;
+            }
+            if (c == cmdPasteIQVersion) {
+                insert(TEMPLATE_IQ_VERSION, caretPos);
+                return;
+            }
+            if (c == cmdPastePresence) {
+                insert(TEMPLATE_PRESENCE, caretPos);
+                return;
+            }
+            if (c == cmdPasteMessage) {
+                insert(TEMPLATE_MESSAGE, caretPos);
+                return;
+            }
+
+            if (c == cmdCancel) {
+                body = null;
+            }
+
+            if (c == cmdSend && body != null) {
+                try {
+                    StaticData.getInstance().roster.theStream.send(body.trim());
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            destroyView();
         }
-
-        if (c==cmdSend && body!=null) {
-            try {
-                StaticData.getInstance().roster.theStream.send(body.trim());
-            } catch (IOException ex) { }
-        }
-
-        destroyView();
     }
 }

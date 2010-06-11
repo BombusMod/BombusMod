@@ -120,7 +120,7 @@ public class TransferDispatcher implements JabberBlockListener {
             }
 // ibb-only
             JabberDataBlock open=data.getChildBlock("open");
-            if (open!=null) if (open.isJabberNameSpace("http://jabber.org/protocol/ibb")) {
+            if (open!=null) if (open.isJabberNameSpace(TransferDispatcher.NS_IBB)) {
                 String sid=open.getAttribute("sid");
                 TransferTask task=getTransferBySid(sid);
 
@@ -178,14 +178,15 @@ public class TransferDispatcher implements JabberBlockListener {
                 TransferTask task=getTransferBySid(id);
                 if (task!=null) {
                     task.cancel();
+                    return BLOCK_PROCESSED;
                 }
-            }
+            }            
         }
 // ibb        
         if (data instanceof Message) {
             JabberDataBlock bdata=data.getChildBlock("data");
             if (bdata==null) return BLOCK_REJECTED;
-            if (!bdata.isJabberNameSpace("http://jabber.org/protocol/ibb")) return BLOCK_REJECTED;
+            if (!bdata.isJabberNameSpace(TransferDispatcher.NS_IBB)) return BLOCK_REJECTED;
             String sid=bdata.getAttribute("sid");
             TransferTask task=getTransferBySid(sid);
 
@@ -195,6 +196,7 @@ public class TransferDispatcher implements JabberBlockListener {
 //#endif
             repaintNotify();
             task.writeFile(b);
+            return BLOCK_PROCESSED;
 
         }
 // //        

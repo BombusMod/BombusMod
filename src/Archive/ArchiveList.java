@@ -70,25 +70,24 @@ public class ArchiveList
     
     /** Creates a new instance of ArchiveList */
     public ArchiveList(Display display, Displayable pView, int caretPos, int where, TextBox t) {
- 	super ();
+ 	super (display);
         this.where=where;
         this.caretPos=caretPos;
         this.t=t;
         
         archive=new MessageArchive(where);
         
-	MainBar mainbar=new MainBar((where==1)?SR.MS_ARCHIVE:SR.MS_TEMPLATE);
-	mainbar.addElement(null);
-	mainbar.addRAlign();
-	mainbar.addElement(null);
-	mainbar.addElement(SR.MS_FREE /*"free "*/);
-        setMainBarItem(mainbar);
+	MainBar mb=new MainBar((where==1)?SR.MS_ARCHIVE:SR.MS_TEMPLATE);
+	mb.addElement(null);
+	mb.addRAlign();
+	mb.addElement(null);
+	mb.addElement(SR.MS_FREE /*"free "*/);
+        setMainBarItem(mb);
         
         commandState();
         addCommands();
-        setCommandListener(this);
+        setCommandListener(this);       
         
-        attachDisplay(display);
         this.parentView=pView;
     }
 

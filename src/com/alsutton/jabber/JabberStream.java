@@ -213,9 +213,11 @@ public class JabberStream extends XmppParser implements Runnable {
             //connection.close();
         } catch( IOException e ) { }
         dispatcher.halt();
+        if (iostream != null) {
         iostream.close();
         if (!Config.getInstance().oldNokiaS60)
             iostream = null; // may hang device
+        }
     }
     
     /**

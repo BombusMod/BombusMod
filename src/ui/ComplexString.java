@@ -28,6 +28,7 @@
 package ui;
 import Client.Config;
 import Fonts.FontCache;
+import images.AniImageList;
 import java.util.*;
 import javax.microedition.lcdui.*;
 import Colors.ColorTheme;
@@ -158,8 +159,11 @@ public class ComplexString extends Vector implements VirtualElement {
                     switch (i&0xff000000) {
                         case IMAGE:
                             if (imageList==null) break;
+                            if (imageList instanceof AniImageList) {
+                                imgWidth = ((AniImageList)imageList).iconAt(i).getWidth();                                
+                            }
                             if (ralign) w-=imgWidth;
-                            imageList.drawImage(g, ((Integer)ob).intValue(), w, imageYOfs);
+                            imageList.drawImage(g, i, w, imageYOfs);
                             if (!ralign) w+=imgWidth;
                             break;
                         case COLOR:
@@ -211,6 +215,9 @@ public class ComplexString extends Vector implements VirtualElement {
                     int i=(((Integer)ob).intValue());
                     switch (i&0xff000000) {
                         case IMAGE:
+                            if (imageList instanceof AniImageList) {
+                                imgWidth = ((AniImageList)imageList).iconAt(i).getWidth();                                
+                            }
                             w+=imgWidth;
                             break;
                     }

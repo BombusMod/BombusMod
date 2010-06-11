@@ -40,13 +40,11 @@ import Conference.MucContact;
 //#endif
 import Menu.RosterItemActions;
 import Messages.MessageList;
-import images.RosterIcons;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
 import ui.MainBar;
 import java.util.*;
-import ui.reconnectWindow;
 //#ifndef MENU_LISTENER
 //# import javax.microedition.lcdui.Command;
 //#else
@@ -126,14 +124,14 @@ public class ContactMessageList extends MessageList {
     private boolean startSelection;
     /** Creates a new instance of MessageList */
     public ContactMessageList(Contact contact, Display display) {
-        super();
+        super(display);
         this.contact=contact;
         sd.roster.activeContact=contact;
 
         cf=Config.getInstance();
         
-        MainBar mainbar=new MainBar(contact);
-        setMainBarItem(mainbar);
+        MainBar mb=new MainBar(contact);
+        setMainBarItem(mb);
 
         cursor=0;//activate
         on_end = false;
@@ -150,8 +148,7 @@ public class ContactMessageList extends MessageList {
 //#endif
 //#endif
         if (contact.msgs.size()>0)
-            moveCursorTo(firstUnread());
-        attachDisplay(display);
+            moveCursorTo(firstUnread());        
     }
 
     public int firstUnread(){
@@ -646,11 +643,8 @@ public void showNotify() {
 //#             resultAction = target+action;
 //#         }
 //#         try {
-//#ifdef RUNNING_MESSAGE
-//#                 sd.roster.me=new MessageEdit(display, this, getActualJuickContact(), resultAction);
-//#else
-//#             new MessageEdit(display, this, getActualJuickContact(), resultAction);
-//#endif
+//#                 Roster.me = null; Roster.me = new MessageEdit(display, this, getActualJuickContact(), resultAction);
+//#                 Roster.me.show(this);
 //#             } catch (Exception e) {/*no messages*/}
 //#     }
 //# 
@@ -713,13 +707,9 @@ public void showNotify() {
     }
     
     public void keyGreen(){
-        if (!sd.roster.isLoggedIn()) return;
-        
-//#ifdef RUNNING_MESSAGE
-//#         sd.roster.me=new MessageEdit(display, this, contact, contact.msgSuspended);
-//#else
-        new MessageEdit(display, this, contact, contact.msgSuspended);
-//#endif
+        if (!sd.roster.isLoggedIn()) return;       
+        Roster.me = null; Roster.me = new MessageEdit(display, this, contact, contact.msgSuspended);
+        Roster.me.show(this);
         contact.msgSuspended=null;
     }
     
@@ -826,11 +816,8 @@ public void showNotify() {
             if (msg==null || msg.messageType == Msg.MESSAGE_TYPE_OUT || msg.messageType == Msg.MESSAGE_TYPE_SUBJ) {
                 keyGreen();
             } else {
-//#ifdef RUNNING_MESSAGE
-//#                 sd.roster.me=new MessageEdit(display, this, contact, msg.from+": ");
-//#else
-                new MessageEdit(display, this, contact, msg.from + ": ");
-//#endif
+                Roster.me = null; Roster.me=new MessageEdit(display, this, contact, msg.from+": ");
+                Roster.me.show(this);
             }
         } catch (Exception e) {/*no messages*/}
     }
@@ -846,11 +833,8 @@ public void showNotify() {
                 .append("\n")
                 .append(" ")
                 .toString();
-//#ifdef RUNNING_MESSAGE
-//#             sd.roster.me=new MessageEdit(display, this, contact, msg);
-//#else
-            new MessageEdit(display, this, contact, msg);
-//#endif
+            Roster.me = null; Roster.me=new MessageEdit(display, this, contact, msg);
+            Roster.me.show(this);
             msg=null;
         } catch (Exception e) {/*no messages*/}
     }
@@ -871,7 +855,7 @@ public void showNotify() {
 //#         }
 //#         history=null;
 //#     }
-//#
+//# 
 //#     private boolean isMsgExists(Msg msg) {
 //#         if (msg == null) return true;
 //#          for (Enumeration contactMsgs=contact.msgs.elements(); contactMsgs.hasMoreElements(); )  {

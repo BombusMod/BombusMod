@@ -28,6 +28,7 @@
 package Conference;
 
 import Client.Contact;
+import Client.Roster;
 import Client.StaticData;
 import Client.MessageEdit;
 import locale.SR;
@@ -67,15 +68,14 @@ public final class AppendNick
     
     Command cmdOk=new Command(SR.MS_APPEND, Command.OK, 1);
     Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 99);
-
-    private MessageEdit me;
     
+    private MessageEdit me = null;
+
     public AppendNick(Display display, Displayable pView, Contact to, int caretPos, MessageEdit me) {
         super(display);
         this.caretPos=caretPos;
-        
         this.me = me;
-        
+                
         setMainBarItem(new MainBar(SR.MS_SELECT_NICKNAME));
         
         nicknames=null;
@@ -117,11 +117,7 @@ public final class AppendNick
              StringBuffer b=new StringBuffer(nick.substring(rp+1));
              
             if (caretPos==0) b.append(':');
-//#ifdef RUNNING_MESSAGE
-//#             StaticData.getInstance().roster.me.insert(b.toString(), caretPos);
-//#else
             me.insert(b.toString(), caretPos);
-//#endif
             b=null;
          } catch (Exception e) {}
          destroyView();

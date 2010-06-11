@@ -27,6 +27,7 @@
 
 package Client;
 import Messages.MessageParser;
+import images.AniImageList;
 import images.SmilesIcons;
 import locale.SR;
 import Colors.ColorTheme;
@@ -143,9 +144,13 @@ public class SmilePicker
     
         
     public void drawItem(Graphics g, int ofs, boolean selected){
-        int max=(lineIndex==lines-1)? xLastCnt:xCnt;
+        int max=(lineIndex==lines-1)? xLastCnt:xCnt;   
+        int x;
         for (int i=0;i<max;i++) {
-            il.drawImage(g, lineIndex*xCnt + i, xBorder+(i*imgWidth+CURSOR_HOFFSET), CURSOR_VOFFSET);
+            x = xBorder+(i*imgWidth+CURSOR_HOFFSET);            
+            if (il instanceof AniImageList)                
+                x += (imgWidth - ((AniImageList)il).iconAt(lineIndex*xCnt + i).getWidth())/2;                                                       
+            il.drawImage(g, lineIndex*xCnt + i, x, CURSOR_VOFFSET);            
         }
     }
 

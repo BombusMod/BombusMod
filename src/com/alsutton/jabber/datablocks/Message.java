@@ -78,6 +78,7 @@ public class Message extends JabberDataBlock {
   
   public String getOOB() {
       JabberDataBlock oobData=findNamespace("x", "jabber:x:oob");
+      if (oobData == null) return null;
       StringBuffer oob=new StringBuffer();
       try {
           oob.append("\n").append(oobData.getChildBlockText("desc"));

@@ -5,6 +5,7 @@
 
 package Menu;
 
+import Client.Roster;
 import locale.SR;
 //import images.MenuIcons;
 import javax.microedition.lcdui.Display;
@@ -45,16 +46,16 @@ public class JuickThingsMenu extends Menu {
 
     public void eventOk() {
         destroyView();
-        MenuItem me=(MenuItem) getFocusedObject();
-        if (me==null) return;
-        int index=me.index;
+        MenuItem me = (MenuItem) getFocusedObject();
+        if (me == null) {
+            return;
+        }
+        int index = me.index;
         try {
-//#ifdef RUNNING_MESSAGE
-//#                 Client.Roster.me=new MessageEdit(display, parentView, contact, things.elementAt(index)+" ");
-//#else
-        new MessageEdit(display, parentView, contact, things.elementAt(index)+" "); // To chat
-//        new MessageEdit(display, this, contact, things.elementAt(index)+" "); // Previons menu
-//#endif
-        } catch (Exception e) {/*no messages*/}
+            Roster.me = null; Roster.me = new MessageEdit(display, parentView, contact, things.elementAt(index) + " ");
+            Roster.me.show(this);
+        } catch (Exception e) {/*no messages*/
+
+        }
     }
 }

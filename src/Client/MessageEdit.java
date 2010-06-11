@@ -24,22 +24,21 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-
 package Client;
 //#ifndef WMUC
 import Conference.AppendNick;
 //#endif
+import javax.microedition.lcdui.Command;
+import javax.microedition.lcdui.CommandListener;
+import javax.microedition.lcdui.Display;
+import javax.microedition.lcdui.Displayable;
+import javax.microedition.lcdui.Ticker;
+import ui.controls.ExTextBox;
+
 //#ifdef DETRANSLIT
 //# import util.DeTranslit;
 //#endif
-import javax.microedition.lcdui.*;
 import locale.SR;
-//#ifdef CLIPBOARD
-//# import util.ClipBoard;
-//#endif
-//#ifdef ARCHIVE
-import Archive.ArchiveList;
-//#endif
 //#ifdef RUNNING_MESSAGE
 //# import ui.VirtualList;
 //#endif
@@ -48,250 +47,229 @@ import Archive.ArchiveList;
  * @author Eugene Stahov
  */
 public final class MessageEdit
-        implements CommandListener
+        extends ExTextBox implements CommandListener 
 //#ifdef RUNNING_MESSAGE
 //#         , Runnable {
 //#     Thread thread;
 //#else
     {
-//#endif
-    private Display display;
-    private Displayable parentView;
-    
+//#endif    
     private String subj;
-    
     public Contact to;
-    
-    private boolean composing=true;
-    
+    private boolean composing = true;
     StaticData sd = StaticData.getInstance();
-    
-    private Config cf;
-    public String body;
-
 //#ifdef DETRANSLIT
-//#     private boolean sendInTranslit=false;
-//#     private boolean sendInDeTranslit=false;
+//#     private boolean sendInTranslit = false;
+//#     private boolean sendInDeTranslit = false;
 //#endif
-//#ifdef CLIPBOARD
-//#     private ClipBoard clipboard;
-//#endif
-
-//#ifdef ARCHIVE
-    private Command cmdPaste=new Command(SR.MS_ARCHIVE, Command.SCREEN, 6);
-//#endif
-//#if TEMPLATES
-//#     private Command cmdTemplate=new Command(SR.MS_TEMPLATE, Command.SCREEN, 7);
-//#endif
-//#ifdef CLIPBOARD
-//#     private Command cmdPasteText=new Command(SR.MS_PASTE, Command.SCREEN, 8);
-//#endif
-    
     private Command cmdSend;//=new Command(SR.MS_SEND, Command.OK, 1);
-    private Command cmdSendAndStepBack = new Command(SR.MS_SEND+" & "+SR.MS_STEP_BACK, Command.SCREEN, 80);
+    // private Command cmdSendAndStepBack = new Command(SR.MS_SEND+" & "+SR.MS_STEP_BACK, Command.SCREEN, 80);
 
 //#ifdef SMILES
-    private Command cmdSmile=new Command(SR.MS_ADD_SMILE, Command.SCREEN,2);
+    private Command cmdSmile;
 //#endif
-    private Command cmdInsNick=new Command(SR.MS_NICKNAMES,Command.SCREEN,3);
-    private Command cmdInsMe=new Command(SR.MS_SLASHME, Command.SCREEN, 4); ; // /me
+//#ifndef WMUC    
+    private Command cmdInsNick;
+//#endif    
+    private Command cmdInsMe; // /me
 //#ifdef DETRANSLIT
-//#     private Command cmdSendInTranslit=new Command(SR.MS_TRANSLIT, Command.SCREEN, 5);
-//#     private Command cmdSendInDeTranslit=new Command(SR.MS_DETRANSLIT, Command.SCREEN, 5);
+//#     private Command cmdSendInTranslit;
+//#     private Command cmdSendInDeTranslit;
 //#endif
-    private Command cmdLastMessage=new Command(SR.MS_PREVIOUS, Command.SCREEN, 9);
-    private Command cmdSubj=new Command(SR.MS_SET_SUBJECT, Command.SCREEN, 10);
+    private Command cmdLastMessage;
+    private Command cmdSubj;
     private Command cmdSuspend;//=new Command(SR.MS_SUSPEND, Command.BACK,90);
-    private Command cmdCancel=new Command(SR.MS_CANCEL, Command.SCREEN,99);
-    private final TextBox t;
-    int maxSize = 500;
-//#ifdef RUNNING_MESSAGE
+    private Command cmdCancel;
+//#ifdef MIDP_TICKER
 //#     Ticker ticker = new Ticker("");
 //#endif
     /** Creates a new instance of MessageEdit */
     public MessageEdit(Display display, Displayable pView, Contact to, String body) {
-        t = new TextBox(to.toString(), "", 500, TextField.ANY);
-        try {
-            //expanding buffer as much as possible
-            maxSize = t.setMaxSize(4096); //must not trow
 
-         } catch (Exception e) {}
+        super(display, pView, body, to.toString());
 
-        insert(body, 0, false); // workaround for Nokia S40
-        this.to=to;
-        this.display=display;
+        this.to = to;
+        this.display = display;
+        
+        if (to != null) {
+//#ifndef WMUC            
+            if (to.origin >= Contact.ORIGIN_GROUPCHAT) {
+                textbox.addCommand(cmdInsNick);
+            }
+            if (to.origin == Contact.ORIGIN_GROUPCHAT) {
+                textbox.addCommand(cmdSubj);
+//#endif        
+            }
+            if (to.lastSendedMessage != null) {
+                textbox.addCommand(cmdLastMessage);
+            }
+        }
 
-        cf=Config.getInstance();
 //#ifdef DETRANSLIT
 //#         DeTranslit.getInstance();
 //#endif
 
-        if (!cf.swapSendAndSuspend) {
-            cmdSuspend=new Command(SR.MS_SUSPEND, Command.BACK, 90);
-            cmdSend=new Command(SR.MS_SEND, Command.OK, 1);
-        } else {
-            cmdSuspend=new Command(SR.MS_SUSPEND, Command.OK, 1);
-            cmdSend=new Command(SR.MS_SEND, Command.BACK, 90);
-        }
+    }
 
-//#ifdef ARCHIVE
-//#ifdef PLUGINS
-//#         if (StaticData.getInstance().Archive)
-//#endif
-            t.addCommand(cmdPaste);
-//#endif
-//#ifdef CLIPBOARD
-//#         if (cf.useClipBoard) {
-//#             clipboard=ClipBoard.getInstance();
-//#             if (!clipboard.isEmpty()) {
-//#                 t.addCommand(cmdPasteText);
-//#             }
-//#         }
-//#endif
-//#if TEMPLATES
-//#ifdef PLUGINS
-//#         if (StaticData.getInstance().Archive)
-//#endif
-//#             t.addCommand(cmdTemplate);
-//#endif
-
-        t.addCommand(cmdSend);
-
-        boolean viewSendAndBackCmd = true;
-        if (pView instanceof ContactMessageList)
-            viewSendAndBackCmd = !((ContactMessageList) pView).contact.equals(to);
-        if (viewSendAndBackCmd) {
-            t.addCommand(cmdSendAndStepBack);
-        }
-
-        t.addCommand(cmdInsMe);
-//#ifdef SMILES
-        t.addCommand(cmdSmile);
-//#endif
-        if (to.origin>=Contact.ORIGIN_GROUPCHAT)
-            t.addCommand(cmdInsNick);
-//#ifdef DETRANSLIT
-//#         t.addCommand(cmdSendInTranslit);
-//#         t.addCommand(cmdSendInDeTranslit);
-//#endif
-        t.addCommand(cmdSuspend);
-        t.addCommand(cmdCancel);
-        
-        if (to.origin==Contact.ORIGIN_GROUPCHAT)
-            t.addCommand(cmdSubj);
-        
-        if (to.lastSendedMessage!=null)
-            t.addCommand(cmdLastMessage);        
+    public void show(Displayable pView) {
 //#ifdef RUNNING_MESSAGE
 //#ifdef MIDP_TICKER
 //#         if (cf.notifyWhenMessageType) {
-//#             t.setTicker(ticker);
+//#             textbox.setTicker(ticker);
 //#         } else {
-//#             t.setTicker(null);
+//#             textbox.setTicker(null);
 //#         }
 //#endif
-//#         if (thread==null) (thread=new Thread(this)).start() ; // composing
+//#         if (thread == null) 
+//#             (thread = new Thread(this)).start(); // composing
 //#else
         send() ; // composing
 //#endif
-        setInitialCaps(cf.capsState);
-        if (Config.getInstance().phoneManufacturer == Config.SONYE) System.gc(); // prevent flickering on Sony Ericcsson C510
-        t.setCommandListener(this);
-        display.setCurrent(t);
-        this.parentView = pView;
+        super.show(pView, this);
     }
 
-    public void commandAction(Command c, Displayable d){
-        
-        body = t.getString();
+    public void commandState() {
 
-        int caretPos=getCaretPos();
+        super.commandState();
 
-        if (body.length()==0) body=null;
-
-//#ifdef ARCHIVE
-	if (c==cmdPaste) { new ArchiveList(display, t, caretPos, 1, t); return; }
-//#endif
-//#ifdef CLIPBOARD
-//#         if (c==cmdPasteText) { insert(clipboard.getClipBoard(), getCaretPos()); return; }
-//#endif
-//#if TEMPLATES
-//#         if (c==cmdTemplate) { new ArchiveList(display, t, caretPos, 2, t); return; }
-//#endif
-        
-
-        if (c==cmdInsMe) { insert("/me", 0); return; }
-        if (c==cmdLastMessage) { setText(to.lastSendedMessage); return; }
 //#ifdef SMILES
-        if (c==cmdSmile) { new SmilePicker(display, t, caretPos, this); return; }
+        cmdSmile = new Command(SR.MS_ADD_SMILE, Command.SCREEN, 2);
+//#endif
+        cmdInsNick = new Command(SR.MS_NICKNAMES, Command.SCREEN, 3);
+        cmdInsMe = new Command(SR.MS_SLASHME, Command.SCREEN, 4);  // /me
+//#ifdef DETRANSLIT
+//#         cmdSendInTranslit = new Command(SR.MS_TRANSLIT, Command.SCREEN, 5);
+//#         cmdSendInDeTranslit = new Command(SR.MS_DETRANSLIT, Command.SCREEN, 5);
+//#endif
+        cmdLastMessage = new Command(SR.MS_PREVIOUS, Command.SCREEN, 9);
+        cmdSubj = new Command(SR.MS_SET_SUBJECT, Command.SCREEN, 10);
+        cmdCancel = new Command(SR.MS_CANCEL, Command.SCREEN, 99);
+
+
+        if (!Config.getInstance().swapSendAndSuspend) {
+            cmdSuspend = new Command(SR.MS_SUSPEND, Command.BACK, 90);
+            cmdSend = new Command(SR.MS_SEND, Command.OK, 1);
+        } else {
+            cmdSuspend = new Command(SR.MS_SUSPEND, Command.OK, 1);
+            cmdSend = new Command(SR.MS_SEND, Command.BACK, 90);
+        }
+
+
+        /*   boolean viewSendAndBackCmd = true;
+        if (parentView instanceof ContactMessageList)
+        viewSendAndBackCmd = !((ContactMessageList) parentView).contact.equals(to);
+        if (viewSendAndBackCmd) {
+        textbox.addCommand(cmdSendAndStepBack);
+        }
+         */
+        textbox.addCommand(cmdInsMe);
+//#ifdef SMILES
+        textbox.addCommand(cmdSmile);
+//#endif
+//#ifdef DETRANSLIT
+//#         textbox.addCommand(cmdSendInTranslit);
+//#         textbox.addCommand(cmdSendInDeTranslit);
+//#endif
+        textbox.addCommand(cmdSuspend);
+        textbox.addCommand(cmdCancel);        
+
+        textbox.addCommand(cmdSend);
+    }
+
+    public void commandAction(Command c, Displayable d) {
+
+        if (!executeCommand(c, d)) {
+
+            if (c == cmdInsMe) {
+                insert("/me", 0);
+                return;
+            }
+            if (c == cmdLastMessage) {
+                setText(to.lastSendedMessage);
+            }
+//#ifdef SMILES
+            if (c == cmdSmile) {
+                new SmilePicker(display, textbox, caretPos, this);
+                return;
+            }
 //#endif
 //#ifndef WMUC
-        if (c==cmdInsNick) { new AppendNick(display, t, to, caretPos, this); return; }
+            if (c == cmdInsNick) {
+                new AppendNick(display, textbox, to, caretPos, this);
+                return;
+            }
 //#endif
-        if (c==cmdCancel) {
-            composing=false;
-            body = null;
-        }
-        if (c==cmdSuspend) {
+            if (c == cmdCancel) {
+                composing = false;
+                body = null;
+            }
+            if (c == cmdSuspend) {
                 composing = false;
                 if (body != null) {
                     to.msgSuspended = body.trim();
                     body = null;
                 }
-        }
-        
-        if (c==cmdSend && body==null) {
-            composing = false;
-        }
+            }
+
+            if (c == cmdSend && body == null) {
+                composing = false;
+            }
 //#ifdef DETRANSLIT
-//#         if (c==cmdSendInTranslit) {
-//#             sendInTranslit=true;
-//#         }
+//#             if (c == cmdSendInTranslit) {
+//#                 sendInTranslit = true;
+//#             }
 //# 
-//#         if (c==cmdSendInDeTranslit) {
-//#             sendInDeTranslit=true;
-//#         }
+//#             if (c == cmdSendInDeTranslit) {
+//#                 sendInDeTranslit = true;
+//#             }
 //#endif
-        if (c==cmdSubj) {
-            if (body==null) return;
-            subj=body;
-            body=null; //"/me "+SR.MS_HAS_SET_TOPIC_TO+": "+subj;
-        }
-        // message/composing sending
-        if (c == cmdSend && !((parentView instanceof ContactMessageList) && ((ContactMessageList) parentView).equals(to)))
-            parentView = new ContactMessageList(to, display);
-        display.setCurrent(parentView);
+            if (c == cmdSubj) {
+                if (body == null) {
+                    return;
+                }
+                subj = body;
+                body = null; //"/me "+SR.MS_HAS_SET_TOPIC_TO+": "+subj;
+            }
+            // message/composing sending
+            if (c == cmdSend && !((parentView instanceof ContactMessageList) && ((ContactMessageList) parentView).equals(to))) {
+                parentView = new ContactMessageList(to, display);
+            }
+            display.setCurrent(parentView);
 
 //#ifdef RUNNING_MESSAGE
-//#         runState=3;
+//#             runState = 3;
 //#else
         send();
 //#endif
+        }
     }
 //#ifdef RUNNING_MESSAGE
 //#     /*
-//#      0 - do nothing
-//#      1 - scroll
-//#      2 - send
-//#      3 - send and close
-//#      4 - end cycle
+//#     0 - do nothing
+//#     1 - scroll
+//#     2 - send
+//#     3 - send and close
+//#     4 - end cycle
 //#      *
 //#      */
-//#     int runState=2;
-//#
-//#     int strPos=0;
-//#     public void run(){
-//#         while (runState<4) {
+//#     int runState = 2;
+//#     int strPos = 0;
+//# 
+//#     public void run() {
+//#         while (runState < 4) {
 //#             //System.out.println(runState+" "+notifyMessage);
-//#             if (runState==2) { runState=0; send(); }
-//#             if (runState==3) {
-//#                 runState=4;
+//#             if (runState == 2) {
+//#                 runState = 0;
 //#                 send();
-//#                 thread=null;
+//#             }
+//#             if (runState == 3) {
+//#                 runState = 4;
+//#                 send();
+//#                 thread = null;
 //#                 ((VirtualList) parentView).redraw();
 //#                 break;
 //#             }
-//#             if (runState==1) {
+//#             if (runState == 1) {
 //#ifdef MIDP_TICKER
 //#                 if (cf.notifyWhenMessageType) {
 //#                 if (notifyMessage != null)
@@ -300,26 +278,35 @@ public final class MessageEdit
 //#                 }
 //#else
 //#                 if (cf.notifyWhenMessageType) {
-//#                  t.setTitle(notifyMessage.substring(strPos++));
-//#                 if ((notifyMessage.length()-strPos)<0) strPos=0;
-//#             }
+//#                     textbox.setTitle(notifyMessage.substring(strPos++));
+//#                     if ((notifyMessage.length() - strPos) < 0) {
+//#                         strPos = 0;
+//#                     }
+//#                 }
 //#endif
 //#             }
-//#             try { Thread.sleep(250); } catch (Exception e) { break; }
+//#             try {
+//#                 Thread.sleep(250);
+//#             } catch (Exception e) {
+//#                 break;
+//#             }
 //#         }
 //#     }
-//#
 //#     private String notifyMessage;
+//# 
 //#     public void setMyTicker(String msg) {
-//#         if (msg!=null && !msg.equals("")) {
-//#             StringBuffer out=new StringBuffer(msg);
-//#             int i=0;
-//#             while (i<out.length()) {
-//#                 if (out.charAt(i)<0x03) out.deleteCharAt(i);
-//#                 else i++;
+//#         if (msg != null && !msg.equals("")) {
+//#             StringBuffer out = new StringBuffer(msg);
+//#             int i = 0;
+//#             while (i < out.length()) {
+//#                 if (out.charAt(i) < 0x03) {
+//#                     out.deleteCharAt(i);
+//#                 } else {
+//#                     i++;
+//#                 }
 //#             }
-//#             msg=out.toString();
-//#             runState=1;
+//#             msg = out.toString();
+//#             runState = 1;
 //#         } else {
 //#ifdef MIDP_TICKER
 //#             if (cf.notifyWhenMessageType) {
@@ -327,135 +314,81 @@ public final class MessageEdit
 //#             }
 //#else
 //#             if (cf.notifyWhenMessageType) {
-//#                 t.setTitle(to.toString());
+//#                 textbox.setTitle(to.toString());
 //#             }
 //#endif
-//#             runState=0;
+//#             runState = 0;
 //#         }
-//#         notifyMessage=msg;
-//#         strPos=0;
+//#         notifyMessage = msg;
+//#         strPos = 0;
 //#     }
 //#endif
-
     private void send() {
         String comp = null; // composing event off
 
         String id = String.valueOf((int) System.currentTimeMillis());
 
-        if (body != null)
+        if (body != null) {
             body = body.trim();
-
-         if (body!=null || subj!=null ) {
-//#ifdef DETRANSLIT
-//#              if (sendInTranslit == true) {
-//#                  if (body != null)
-//#                      body = DeTranslit.translit(body);
-//#                  if (subj != null)
-//#                      subj = DeTranslit.translit(subj);
-//#              }
-//#              if (sendInDeTranslit == true || cf.autoDeTranslit) {
-//#                  if (body != null)
-//#                      body = DeTranslit.deTranslit(body);
-//#                  if (subj != null)
-//#                      subj = DeTranslit.deTranslit(subj);
-//#              }
-//#endif
-             String from = sd.account.toString();
-             Msg msg = new Msg(Msg.MESSAGE_TYPE_OUT, from, subj, body);
-             msg.id = id;
-
-             if (to.origin != Contact.ORIGIN_GROUPCHAT) {
-                 to.addMessage(msg);
-                 comp = "active"; // composing event in message
-             }
-         } else if (to.acceptComposing)
-             comp = (composing) ? "composing" : "paused";
-
-        if (!cf.eventComposing)
-            comp = null;
-
-         try {
-             if (body!=null || subj!=null || comp!=null) {
-                 to.lastSendedMessage=body;
-                 sd.roster.sendMessage(to, id, body, subj, comp);
-             }
-         } catch (Exception e) { }
-     }
-
-/* Пролистывание команд по страницам, для SE C510
-    private void addCommand(Command cmd) {
-       Commands.addElement(cmd);
-       // А вообще здесь insert надо, в соответствие с приоритетом.
-    }
-
-    private int getCommandPages() {
-        int count_pages = ((int) (Commands.size()/8))+1;
-        if ((Commands.size() % 8) < 3)
-            count_pages--;
-        return count_pages;
-    }
-
-    private void nextPage() {
-    }
-*/
-    public void insert(String s, int caretPos) {
-        insert(s, caretPos, true);
-    }
-
-    public void insert(String s, int caretPos, boolean writespaces) {
-        if (s == null) return;
-
-        String src = t.getString();
-
-        StringBuffer sb = new StringBuffer(s);
-
-        if (writespaces) {
-            if (caretPos > 0) {
-                if (src.charAt(caretPos - 1) != ' ') {
-                    sb.insert(0, ' ');
-                }
-            }
-
-            if (caretPos < src.length()) {
-                if (src.charAt(caretPos) != ' ') {
-                    sb.append(' ');
-                }
-            }
-
-            if (caretPos == src.length()) {
-                sb.append(' ');
-            }
         }
+        if (body != null || subj != null) {
+//#ifdef DETRANSLIT
+//#             if (sendInTranslit == true) {
+//#                 if (body != null) {
+//#                     body = DeTranslit.translit(body);
+//#                 }
+//#                 if (subj != null) {
+//#                     subj = DeTranslit.translit(subj);
+//#                 }
+//#             }
+//#             if (sendInDeTranslit == true || cf.autoDeTranslit) {
+//#                 if (body != null) {
+//#                     body = DeTranslit.deTranslit(body);
+//#                 }
+//#                 if (subj != null) {
+//#                     subj = DeTranslit.deTranslit(subj);
+//#                 }
+//#             }
+//#endif
+            String from = sd.account.toString();
+            Msg msg = new Msg(Msg.MESSAGE_TYPE_OUT, from, subj, body);
+            msg.id = id;
 
+            if (to.origin != Contact.ORIGIN_GROUPCHAT) {
+                to.addMessage(msg);
+                comp = "active"; // composing event in message
+            }
+        } else if (to.acceptComposing) {
+            comp = (composing) ? "composing" : "paused";
+        }
+        if (!cf.eventComposing) {
+            comp = null;
+        }
         try {
-            int freeSz = t.getMaxSize() - t.size();
-            if (freeSz < sb.length()) {
-                sb.delete(freeSz, sb.length());
+            if (body != null || subj != null || comp != null) {
+                to.lastSendedMessage = body;
+                sd.roster.sendMessage(to, id, body, subj, comp);
             }
         } catch (Exception e) {
+            sd.roster.errorLog(e.getMessage());
         }
+    }
 
-        t.insert(sb.toString(), caretPos);
-        sb = null;        
+    /* Пролистывание команд по страницам, для SE C510
+    private void addCommand(Command cmd) {
+    Commands.addElement(cmd);
+    // А вообще здесь insert надо, в соответствие с приоритетом.
     }
-    public int getCaretPos() {
-        int caretPos = t.getCaretPosition();
-        // +MOTOROLA STUB
-        if (cf.phoneManufacturer==Config.MOTO)
-            caretPos=-1;
-        if (caretPos<0)
-            caretPos = t.getString().length();
-        return caretPos;
+    
+    private int getCommandPages() {
+    int count_pages = ((int) (Commands.size()/8))+1;
+    if ((Commands.size() % 8) < 3)
+    count_pages--;
+    return count_pages;
     }
-    public void setText(String body) {
-        if (body!=null) {
-            if (body.length()>maxSize)
-                body=body.substring(0, maxSize-1);
-            t.setString(body);
-        }
+    
+    private void nextPage() {
     }
-    private void setInitialCaps(boolean state) {
-        t.setConstraints(state?TextField.INITIAL_CAPS_SENTENCE:TextField.ANY);
-    }
+     */
 }
 

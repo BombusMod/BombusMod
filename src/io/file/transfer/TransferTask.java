@@ -203,7 +203,7 @@ public class TransferTask
         
         JabberDataBlock field=x.addChild("field", null);
         field.setAttribute("var","stream-method");
-        field.addChild("value", "http://jabber.org/protocol/ibb");
+        field.addChild("value", TransferDispatcher.NS_IBB);
         // TODO: SOCKS5 receive
         // field.addChild("value", "http://jabber.org/protocol/bytestreams");
         
@@ -288,15 +288,15 @@ public class TransferTask
         JabberDataBlock field=x.addChild("field", null);
         field.setTypeAttribute("list-single");
         field.setAttribute("var", "stream-method");
-        field.addChild("option", null).addChild("value", "http://jabber.org/protocol/ibb");
-        field.addChild("option", null).addChild("value", "http://jabber.org/protocol/bytestreams");
+        field.addChild("option", null).addChild("value", TransferDispatcher.NS_BYTESTREAMS);
+        field.addChild("option", null).addChild("value", TransferDispatcher.NS_IBB);
         TransferDispatcher.getInstance().send(iq, true);
 
 }
     void initIBB() {
         method = TransferDispatcher.NS_IBB;
         JabberDataBlock iq=new Iq(jid, Iq.TYPE_SET, sid);
-        JabberDataBlock open=iq.addChildNs("open", "http://jabber.org/protocol/ibb");
+        JabberDataBlock open=iq.addChildNs("open", TransferDispatcher.NS_IBB);
         open.setAttribute("sid", sid);
         open.setAttribute("block-size","2048");
         TransferDispatcher.getInstance().send(iq, false);
@@ -307,7 +307,7 @@ public class TransferTask
     void initBytestreams() {
         method = TransferDispatcher.NS_BYTESTREAMS;
         JabberDataBlock iq=new Iq(jid, Iq.TYPE_SET, sid);
-        JabberDataBlock query=iq.addChildNs("query", "http://jabber.org/protocol/bytestreams");
+        JabberDataBlock query=iq.addChildNs("query", TransferDispatcher.NS_BYTESTREAMS);
         query.setAttribute("sid", sid);
         query.setAttribute("mode", "tcp");
         JabberDataBlock streamhost = query.addChild("streamhost", null);
@@ -319,7 +319,7 @@ public class TransferTask
     }
     void ProxyActivate() {
         JabberDataBlock iq=new Iq(TransferDispatcher.getInstance().ProxyJID, Iq.TYPE_SET, "activate"+sid);
-        JabberDataBlock query=iq.addChildNs("query", "http://jabber.org/protocol/bytestreams");
+        JabberDataBlock query=iq.addChildNs("query", TransferDispatcher.NS_BYTESTREAMS);
         query.setAttribute("sid", sid);
         query.addChild("activate", jid);
         TransferDispatcher.getInstance().send(iq, false);
@@ -338,8 +338,9 @@ public class TransferTask
         return false;
     }
     
-    public boolean connectStream() throws IOException {
+    public boolean connectStream() throws IOException, InterruptedException {
         new Thread(this).start();
+        Thread.sleep(2000); // wait for proxy handshake
         return true;
     }
 
@@ -355,7 +356,7 @@ public class TransferTask
                     }
                     JabberDataBlock msg = new Message(jid);
 
-                    JabberDataBlock data = msg.addChildNs("data", "http://jabber.org/protocol/ibb");
+                    JabberDataBlock data = msg.addChildNs("data", TransferDispatcher.NS_IBB);
                     data.setAttribute("sid", sid);
                     data.setAttribute("seq", String.valueOf(seq));
                     seq++;
@@ -385,7 +386,7 @@ public class TransferTask
             }
             closeFile();
             JabberDataBlock iq = new Iq(jid, Iq.TYPE_SET, "close");
-            JabberDataBlock close = iq.addChildNs("close", "http://jabber.org/protocol/ibb");
+            JabberDataBlock close = iq.addChildNs("close", TransferDispatcher.NS_IBB);
             close.setAttribute("sid", sid);
             TransferDispatcher.getInstance().send(iq, false);
         } else {
@@ -400,7 +401,6 @@ public class TransferTask
                 
                 byte[] readbuf = new byte[4];
                 proxystream.read(readbuf); // Waiting for response;
-                System.out.println("Response received!");
                 byte[] socks5CommandStart = {
                     0x05, // VER
                     0x01, // CMD = CONNECT
@@ -432,7 +432,7 @@ public class TransferTask
                 while ((cnt = readFile(buf)) > 0) {
                     proxystream.send(buf, 0, cnt);
                     TransferDispatcher.getInstance().repaintNotify();
-                //Thread.sleep( 500L ); //shaping traffic
+                    // Thread.sleep( 500L ); //shaping traffic
                 }                
                 closeFile();
                 proxystream.close();

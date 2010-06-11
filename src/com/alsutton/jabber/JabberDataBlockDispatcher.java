@@ -25,6 +25,7 @@
 */
 
 package com.alsutton.jabber;
+import Client.Msg;
 import com.alsutton.jabber.datablocks.Iq;
 import java.util.*;
 import xmpp.XmppError;
@@ -167,7 +168,7 @@ public class JabberDataBlockDispatcher extends Thread
                     //TODO: reject iq stansas where type =="get" | "set"
                 }
 //#ifdef CONSOLE
-//#                 stream.addLog(dataBlock.toString(), 10);
+//#                 stream.addLog(dataBlock.toString(), Msg.MESSAGE_TYPE_IN);
 //#endif
             } catch (Exception e) { 
                 Client.StaticData.getInstance().roster.errorLog("JabberDataBlockDispatcher exception\ndataBlock: " + dataBlock.toString());

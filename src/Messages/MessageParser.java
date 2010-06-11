@@ -28,6 +28,7 @@
 package Messages;
 
 //#ifdef SMILES
+import images.AniImageList;
 import images.SmilesIcons;
 //#endif
 import Fonts.FontCache;
@@ -57,13 +58,14 @@ public final class MessageParser {
     private int width; // window width
 //#ifdef SMILES 
     private ImageList smileImages;
+    private static String anires= "/smiles/smiles.txt";
+    private static String staticres= "/images/smiles.txt";  
+    
 //#endif
     
     boolean wordsWrap;
-    private static String wrapSeparators=" .,-=/\\;:+*()[]<>~!@#%^_&";
+    private static String wrapSeparators=" .,-=/\\;:+*()[]<>~!@#%^_&";    
     
-    private static String anires= "/smiles/smiles.txt";
-    private static String staticres= "/images/smiles.txt";
     
     public static MessageParser getInstance() {
         if (instance==null) {
@@ -139,7 +141,7 @@ public final class MessageParser {
             
             InputStream in=this.getClass().getResourceAsStream(anires);
             if (in == null) in=this.getClass().getResourceAsStream(staticres);
-            
+                
             boolean firstSmile=true;
             
             int c;
@@ -314,7 +316,13 @@ public final class MessageParser {
                         l.addElement(s.toString());
                     }
                     s.setLength(0);
-                    int iw=(smileIndex<0x01000000)? smileImages.getWidth() : 0;
+                    int iw = 0;
+                    if (smileIndex<0x01000000) {
+                        iw = smileImages.getWidth();
+                        if (smileImages instanceof AniImageList) {
+                            iw = ((AniImageList)smileImages).iconAt(smileIndex).getWidth();
+                        }
+                    }
                     if (w+iw>width) {
                         //task.notifyRepaint(lines, task.msg, false);
                         l=new ComplexString(smileImages);

@@ -36,6 +36,7 @@ public class TransferSetupForm extends DefForm {
     public void cmdOk() {
         TransferDispatcher.getInstance().ProxyJID = streamhost.getValue();
         TransferDispatcher.getInstance().ProxyPort = Integer.parseInt(port.getValue());
+        destroyView();
     }
 
 }
