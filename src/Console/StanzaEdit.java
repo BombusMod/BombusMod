@@ -83,6 +83,7 @@ public class StanzaEdit
         textbox.addCommand(cmdCancel);
 
         super.commandState();
+        super.show(parentView, this);
 
     }
 

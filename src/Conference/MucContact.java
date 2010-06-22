@@ -132,7 +132,7 @@ public class MucContact extends Contact {
 
         if (statusCode==201) {
             //todo: fix this nasty hack, it will not work if multiple status codes are nested in presence)
-            b.setLength(0);
+            b=new StringBuffer();
             b.append(SR.MS_NEW_ROOM_CREATED);
         } else if (presenceType==Presence.PRESENCE_OFFLINE) {
             key0=3;

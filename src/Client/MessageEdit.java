@@ -186,6 +186,7 @@ public final class MessageEdit
             }
             if (c == cmdLastMessage) {
                 setText(to.lastSendedMessage);
+                return;
             }
 //#ifdef SMILES
             if (c == cmdSmile) {
@@ -231,7 +232,7 @@ public final class MessageEdit
                 body = null; //"/me "+SR.MS_HAS_SET_TOPIC_TO+": "+subj;
             }
             // message/composing sending
-            if (c == cmdSend && !((parentView instanceof ContactMessageList) && ((ContactMessageList) parentView).equals(to))) {
+            if (c == cmdSend && !(parentView instanceof ContactMessageList)) {
                 parentView = new ContactMessageList(to, display);
             }
             display.setCurrent(parentView);

@@ -198,8 +198,8 @@ public class JabberDataBlock
 
   public JabberDataBlock findNamespace(String tagName, String xmlns) {
       if (childBlocks==null) return null;
-      for (Enumeration e=childBlocks.elements(); e.hasMoreElements();){
-          JabberDataBlock d=(JabberDataBlock)e.nextElement();
+      for (int i=0; i<childBlocks.size(); i++){
+          JabberDataBlock d=(JabberDataBlock)childBlocks.elementAt(i);
           
           if (tagName!=null) if (! tagName.equals(d.tagName)) continue;
           if (! d.isJabberNameSpace(xmlns)) continue;
@@ -272,8 +272,8 @@ public class JabberDataBlock
   public JabberDataBlock getChildBlock(String byTagName)
   {
     if (childBlocks==null) return null;
-    for (Enumeration e=childBlocks.elements(); e.hasMoreElements();){
-        JabberDataBlock d=(JabberDataBlock)e.nextElement();
+    for (int i=0; i<childBlocks.size(); i++){
+        JabberDataBlock d=(JabberDataBlock)childBlocks.elementAt(i);
         if (d.getTagName().equals(byTagName)) return d;
     }
     return null;
@@ -287,8 +287,8 @@ public class JabberDataBlock
   public JabberDataBlock getChildBlockByText(String text)
   {
     if (childBlocks==null) return null;
-    for (Enumeration e=childBlocks.elements(); e.hasMoreElements();){
-        JabberDataBlock d=(JabberDataBlock)e.nextElement();
+    for (int i=0; i<childBlocks.size(); i++){
+        JabberDataBlock d=(JabberDataBlock)childBlocks.elementAt(i);
         if (text.equals(d.getText()) ) return d;
     }
     return null;
@@ -351,14 +351,16 @@ public class JabberDataBlock
       
       
       appendXML(data, textData);
-      
+	
+	if (!getTagName().equals("BINVAL")) {      
       if( childBlocks != null ) {
-          Enumeration e = childBlocks.elements();
-          while( e.hasMoreElements() ) {
-              JabberDataBlock thisBlock = (JabberDataBlock) e.nextElement();
+          for(int i=0; i<childBlocks.size(); i++)
+          {
+              JabberDataBlock thisBlock = (JabberDataBlock) childBlocks.elementAt(i);
               thisBlock.constructXML(data);
           }
       }
+	}
       
       // end tag
       data.append( "</" ).append( getTagName() ).append( '>' );

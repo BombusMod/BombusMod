@@ -158,7 +158,7 @@ public final class MessageParser {
 
                         addSmile(root, smile, strnumber);
 
-                        s.setLength(0);
+                        s=new StringBuffer();
                         firstSmile=false;
 
                         break;
@@ -172,11 +172,11 @@ public final class MessageParser {
                     firstSmile=true;
                 }
             }
-            s.setLength(0);
+            s=new StringBuffer();
             in.close();
             in=null;
         } catch (Exception e) {
-            s.setLength(0);
+            s=new StringBuffer();
         }
 //#endif
         
@@ -281,7 +281,7 @@ public final class MessageParser {
                                     l.addUnderline();
                                     l.addElement(s.toString());
                                 }
-                                s.setLength(0);
+                                s=new StringBuffer();
                         }
                         break;
                     }
@@ -299,7 +299,7 @@ public final class MessageParser {
                 
                 if (smileIndex==URL) {
                     if (s.length()>0) l.addElement(s.toString());
-                    s.setLength(0);
+                    s=new StringBuffer();
                     underline=true;
                 }
 //**************************
@@ -315,7 +315,7 @@ public final class MessageParser {
                             l.addUnderline();
                         l.addElement(s.toString());
                     }
-                    s.setLength(0);
+                    s=new StringBuffer();
                     int iw = 0;
                     if (smileIndex<0x01000000) {
                         iw = smileImages.getWidth();
@@ -355,7 +355,7 @@ public final class MessageParser {
                         if (w+wordWidth+cw>width || newline) {
                             if (underline) l.addUnderline();
                             l.addElement(s.toString());
-                            s.setLength(0); w=0;
+                            s=new StringBuffer(); w=0;
 
                             if (c==0xa0) l.setColor(ColorTheme.getColor(ColorTheme.MSG_HIGHLIGHT));
 //#ifdef SMILES
@@ -403,7 +403,7 @@ public final class MessageParser {
 
             //task.notifyRepaint(lines, task.msg, true);
             state++;
-            s.setLength(0);
+            s=new StringBuffer();
         }
     }
     

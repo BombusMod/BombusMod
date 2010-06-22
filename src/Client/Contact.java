@@ -264,8 +264,8 @@ public class Contact extends IconTextElement{
         int nm=0;
         if (getGroupType()!=Groups.TYPE_IGNORE) {
             unreadType=Msg.MESSAGE_TYPE_IN;
-            for (Enumeration e=msgs.elements(); e.hasMoreElements(); ) {
-                Msg m=(Msg)e.nextElement();
+            for (int i=0; i<msgs.size(); i++ ) {
+                Msg m=(Msg)msgs.elementAt(i);
                 if (m.unread) {
                     nm++;
                     if (m.messageType==Msg.MESSAGE_TYPE_AUTH) 
@@ -280,8 +280,8 @@ public class Contact extends IconTextElement{
         if (newHighLitedMsgCnt>0) return newHighLitedMsgCnt;
         int nm=0;
         if (getGroupType()!=Groups.TYPE_IGNORE) {
-            for (Enumeration e=msgs.elements(); e.hasMoreElements(); ) {
-                Msg m=(Msg)e.nextElement();
+            for (int i=0; i<msgs.size(); i++) {
+                Msg m=(Msg)msgs.elementAt(i);
                 if (m.unread && m.highlite) { 
                     nm++;
                 }

@@ -191,8 +191,9 @@ public class JabberStream extends XmppParser implements Runnable {
             
             //dispatcher.broadcastTerminatedConnection( null );
         } catch( Exception e ) {
-            System.out.println("Exception in parser:");
-            e.printStackTrace();
+            if (Client.StaticData.getInstance().roster != null)
+                Client.StaticData.getInstance().roster.errorLog("Exception in parser: "+ e.getMessage());
+            //e.printStackTrace();
             dispatcher.broadcastTerminatedConnection(e);
         }
         closeConnection();
@@ -355,8 +356,10 @@ public class JabberStream extends XmppParser implements Runnable {
                  //System.out.println("Keep-Alive");
                  if (loggedIn) sendKeepAlive(type);
             } catch (Exception e) { 
+                if (Client.StaticData.getInstance().roster != null)
+                Client.StaticData.getInstance().roster.errorLog("Exception in keep-alive task: "+ e.getMessage());
                 dispatcher.broadcastTerminatedConnection(e);
-                //e.printStackTrace(); 
+                
             }
         }
 	

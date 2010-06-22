@@ -480,8 +480,8 @@ public class SR {
 
     public static String MS_SHOW_LAST_APPEARED_CONTACTS = loadString( "show last appeared contacts" );
 
+    public static String MS_CUSTOM_KEYS = loadString( "Custom keys" );
 //#ifdef USER_KEYS
-//#     public static String MS_CUSTOM_KEYS = loadString( "Custom keys" );
 //#     public static String MS_ADD_CUSTOM_KEY = loadString( "Add custom key" );
 //#     public static String MS_KEYS_ACTION = loadString( "keys action" );
 //#     public static String MS_ENABLED = loadString( "enabled" );

@@ -155,9 +155,9 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
     
     public void setProgress(String caption, int progress){
         capt=caption;
-////#if DEBUG
-        System.out.println(capt);
-////#endif
+//#if DEBUG
+//#         System.out.println(capt);
+//#endif
 	setProgress(progress);
     }
     
@@ -275,6 +275,10 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         if (pm==Config.MOTOEZX) {
             Config.SOFT_LEFT=-21;
             Config.SOFT_RIGHT=-22;
+            return;
+        } 
+         if (pm==Config.MICROEMU) {
+            Config.SOFT_LEFT=-82; // map android menu button as left softkey
             return;
         } 
         try {

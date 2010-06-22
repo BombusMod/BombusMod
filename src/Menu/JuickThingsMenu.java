@@ -52,7 +52,7 @@ public class JuickThingsMenu extends Menu {
         }
         int index = me.index;
         try {
-            Roster.me = null; Roster.me = new MessageEdit(display, parentView, contact, things.elementAt(index) + " ");
+            Roster.me = null; Roster.me = new MessageEdit(display, parentView, contact, (String)things.elementAt(index));
             Roster.me.show(this);
         } catch (Exception e) {/*no messages*/
 

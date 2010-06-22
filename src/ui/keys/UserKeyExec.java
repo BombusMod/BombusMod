@@ -151,10 +151,12 @@ public class UserKeyExec {
 //#                 UserKeysList.rmsUpdate(userKeysList);
 //#             }
 //#ifdef PLUGINS
-//#         } else
+//#         } else {
+//#             userKeysList = UserKeysList.getDefaultKeysList();
+//#             }
 //#endif
 //#endif
-            userKeysList = UserKeysList.getDefaultKeysList();
+            
     }
 
     public boolean commandExecute(Display display, int previous_key_code, int key_code) { //return false if key not executed

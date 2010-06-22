@@ -114,7 +114,7 @@ class UserKeyEdit extends DefForm {
         u.two_keys = two_keys_t.getValue();
 
         if (newKey) {
-            keysList.userKeysList.addElement(u);
+            keysList.itemsList.addElement(u);
         }
 
         //keysList.rmsUpdate();

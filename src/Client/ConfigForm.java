@@ -284,7 +284,11 @@ public class ConfigForm
         itemsList.addElement(new SpacerItem(10));
         itemsList.addElement(new SimpleString(SR.MS_MEMORY_USAGE, true));
         widthSystemgc = new CheckBox(SR.MS_WITH_SYSTEM_GC, cf.widthSystemgc);
-        itemsList.addElement(widthSystemgc);
+        if (Config.getInstance().phoneManufacturer != Config.NOKIA) {            
+            itemsList.addElement(widthSystemgc);
+        } else {
+            cf.widthSystemgc = false;
+        }
         autoClean = new CheckBox(SR.MS_AUTOCLEAN_GROUPS, cf.autoClean);
         itemsList.addElement(autoClean);
         
@@ -443,8 +447,10 @@ public class ConfigForm
         cf.lightState=lightState.getValue();
         if (cf.allowMinimize)
             cf.popupFromMinimized=popupFromMinimized.getValue();
-
-        cf.widthSystemgc=widthSystemgc.getValue();
+        if (Config.getInstance().phoneManufacturer != Config.NOKIA)
+            cf.widthSystemgc=widthSystemgc.getValue();
+        else 
+            cf.widthSystemgc = false;
         cf.autoClean=autoClean.getValue();
         if (StaticData.getInstance().roster.hasPointerEvents())
             cf.advTouch = advTouch.getValue();

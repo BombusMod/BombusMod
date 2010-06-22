@@ -506,8 +506,8 @@ public class Roster
         int m=0;
         int h=0;
         synchronized (hContacts) {
-            for (Enumeration e=hContacts.elements();e.hasMoreElements();){
-                Contact c=(Contact)e.nextElement();
+            for (int i=0; i<hContacts.size(); i++){
+                Contact c=(Contact)hContacts.elementAt(i);
                 m+=c.getNewMsgsCount();
                 h+=c.getNewHighliteMsgsCount();
             }
@@ -545,8 +545,8 @@ public class Roster
     
     public void cleanAllMessages(){
         synchronized (hContacts) {
-            for (Enumeration e=hContacts.elements();e.hasMoreElements();) {
-                Contact c=(Contact)e.nextElement();
+            for (int i=0; i<hContacts.size(); i++) {
+                Contact c=(Contact)hContacts.elementAt(i);
                 try {
                     c.purge();
                 } catch (Exception ex) { }
@@ -634,9 +634,6 @@ public class Roster
     public void reEnumRoster(){
         if (reEnumerator==null) reEnumerator=new ReEnumerator();
         reEnumerator.queueEnum();
-        if (Config.getInstance().widthSystemgc) {
-            System.gc(); // issue 87 workaround
-        }
     }
     
     
@@ -662,8 +659,8 @@ public class Roster
         boolean firstInstance=true; //FS#712 workaround
         int index=0;
         synchronized (hContacts) {
-            for (Enumeration e=hContacts.elements();e.hasMoreElements();) {
-                c=(Contact)e.nextElement();
+            for (int i=0; i<hContacts.size(); i++) {
+                c=(Contact)hContacts.elementAt(i);
                 if (c.jid.equals(J,false)) {
                     Group group= (c.jid.isTransport())? 
                         groups.getGroup(Groups.TYPE_TRANSP) :
@@ -884,8 +881,8 @@ public class Roster
 
     public final Contact findContact(final Jid j, final boolean compareResources) {
         synchronized (hContacts) {
-            for (Enumeration e=hContacts.elements();e.hasMoreElements();){
-                Contact c=(Contact)e.nextElement();
+            for (int i=0; i<hContacts.size(); i++){
+                Contact c=(Contact)hContacts.elementAt(i);
                 if (c.jid.equals(j,compareResources)) return c;
             }
         }
@@ -1039,8 +1036,8 @@ public class Roster
             } catch (Exception e) { /*e.printStackTrace();*/ }
 
             synchronized(hContacts) {
-                for (Enumeration e=hContacts.elements(); e.hasMoreElements();){
-                    ((Contact)e.nextElement()).setStatus(Presence.PRESENCE_OFFLINE); // keep error & unknown
+                for (int i=0; i<hContacts.size(); i++){
+                    ((Contact)hContacts.elementAt(i)).setStatus(Presence.PRESENCE_OFFLINE); // keep error & unknown
                  }
             }
             theStream=null;
@@ -1102,8 +1099,8 @@ public class Roster
          if (myStatus==Presence.PRESENCE_INVISIBLE) return; //block multicasting presence invisible
          
          synchronized (hContacts) {
-             for (Enumeration e=hContacts.elements(); e.hasMoreElements();) {
-                Contact c=(Contact) e.nextElement();
+             for (int i=0; i<hContacts.size(); i++) {
+                Contact c=(Contact) hContacts.elementAt(i);
                 if (c.origin!=Contact.ORIGIN_GROUPCHAT) continue;
                 if (!((MucContact)c).commonPresence) continue; // stop if room left manually
                 ConferenceGroup confGroup=(ConferenceGroup)c.group;
@@ -1228,8 +1225,8 @@ public class Roster
         vCardQueue=null;
 	vCardQueue=new Vector();
         synchronized (hContacts) {
-            for (Enumeration e=hContacts.elements(); e.hasMoreElements();){
-                Contact k=(Contact) e.nextElement();
+            for (int i=0; i<hContacts.size(); i++){
+                Contact k=(Contact) hContacts.elementAt(i);
                 if (k.jid.isTransport()) 
                     continue;
                 int grpType=k.getGroupType();
@@ -1259,8 +1256,8 @@ public class Roster
 //#if CHANGE_TRANSPORT
 //#     public void contactChangeTransport(String srcTransport, String dstTransport){ //voffk
 //# 	setQuerySign(true);
-//#         for (Enumeration e=hContacts.elements(); e.hasMoreElements(); ) {
-//# 	    Contact k=(Contact) e.nextElement();
+//#         for (int i=0; i<hContacts.size(); i++) {
+//# 	    Contact k=(Contact) hContacts.elementAt(i);
 //# 	    if (k.jid.isTransport()) continue;
 //#             int grpType=k.getGroupType();
 //#             if (k.jid.getServer().equals(srcTransport) &&
@@ -1886,8 +1883,8 @@ public class Roster
         Vector cont=(q!=null)?q.getChildBlocks():null;
         
         if (cont!=null)
-            for (Enumeration e=cont.elements(); e.hasMoreElements();){
-                JabberDataBlock i=(JabberDataBlock)e.nextElement();
+            for (int ii=0; ii<cont.size(); ii++){
+                JabberDataBlock i=(JabberDataBlock)cont.elementAt(ii);
                 if (i.getTagName().equals("item")) {
                     String name=i.getAttribute("name");
                     String jid=i.getAttribute("jid");
@@ -2316,8 +2313,8 @@ public class Roster
                 if (getItemCount()==0)
                     return;
                 synchronized(hContacts) {
-                    for (Enumeration e=hContacts.elements(); e.hasMoreElements();){
-                        Contact c=(Contact)e.nextElement();
+                    for (int i=0; i<hContacts.size(); i++){
+                        Contact c=(Contact)hContacts.elementAt(i);
                         c.setIncoming(Contact.INC_NONE);
                         c=null;
                     }
@@ -2725,8 +2722,8 @@ public class Roster
     }
     
     public void roomOffline(final Group group) {
-         for (Enumeration e=hContacts.elements(); e.hasMoreElements();) {
-            Contact contact=(Contact)e.nextElement();
+         for (int i=0; i<hContacts.size(); i++) {
+            Contact contact=(Contact)hContacts.elementAt(i);
             if (contact.group==group) {
                 contact.setStatus(Presence.PRESENCE_OFFLINE);
             }
@@ -2779,8 +2776,8 @@ public class Roster
 	Vector activeContacts=new Vector();
         int nowContact = -1, contacts=-1, currentContact=-1;
         synchronized (hContacts) {
-            for (Enumeration r=hContacts.elements(); r.hasMoreElements(); ){
-                Contact c=(Contact)r.nextElement();
+            for (int i=0; i<hContacts.size(); i++){
+                Contact c=(Contact)hContacts.elementAt(i);
                 if (c.active()) {
                     activeContacts.addElement(c);
                     contacts=contacts+1;
@@ -2810,8 +2807,8 @@ public class Roster
 
     public void deleteContact(Contact c) {
         synchronized (hContacts) {
-            for (Enumeration e=hContacts.elements();e.hasMoreElements();) {
-                Contact c2=(Contact)e. nextElement();
+            for (int i=0; i<hContacts.size(); i++) {
+                Contact c2=(Contact)hContacts. elementAt(i);
                 if (c.jid.equals(c2.jid,false)) {
                     c2.setStatus(Presence.PRESENCE_TRASH);
                     c2.offline_type=Presence.PRESENCE_TRASH;
@@ -2907,8 +2904,8 @@ public class Roster
 
     public void deleteGroup(Group deleteGroup) {
         synchronized (hContacts) {
-            for (Enumeration e=hContacts.elements(); e.hasMoreElements();){
-                Contact cr=(Contact)e.nextElement();
+            for (int i=0; i<hContacts.size(); i++){
+                Contact cr=(Contact)hContacts.elementAt(i);
                 if (cr.group==deleteGroup)
                     deleteContact(cr);                
             }
@@ -2943,7 +2940,7 @@ public class Roster
     
 
     private class ReEnumerator implements Runnable{
-        //Thread thread;
+        Thread thread=null;
         int pendingRepaints=0;
 	boolean force;
 	
@@ -2957,8 +2954,7 @@ public class Roster
 	
         synchronized public void queueEnum() {
             pendingRepaints++;
-            //if (thread==null) (thread=new Thread(this)).start();
-            new Thread(this).start();
+            if (thread==null || thread.isAlive() == false) (thread=new Thread(this)).start();
         }
         
         public synchronized void run() {
@@ -2974,8 +2970,8 @@ public class Roster
                 groups.resetCounters();
 
                 synchronized (hContacts) {
-                    for (Enumeration e = hContacts.elements(); e.hasMoreElements();) {
-                        Contact c = (Contact) e.nextElement();
+                    for (int i=0; i<hContacts.size(); i++) {
+                        Contact c = (Contact) hContacts.elementAt(i);
                         Group grp = c.group;
                         grp.addContact(c);
                     }
@@ -3023,6 +3019,7 @@ public class Roster
 //#endif
             //}
             //thread=null;
+			systemGC();
         }
     }
 }

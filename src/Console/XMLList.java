@@ -70,7 +70,7 @@ public final class XMLList
     
     /** Creates a new instance of XMLList */
     public XMLList(Display display, Displayable pView) {
-        super ();
+        super (display);
         
         super.smiles=false;
         
@@ -83,11 +83,10 @@ public final class XMLList
         moveCursorHome();
 
 //#ifdef CONSOLE        
-//# 	MainBar mainbar=new MainBar(SR.MS_XML_CONSOLE);
-//#         setMainBarItem(mainbar);
-//#endif
-        attachDisplay(display);
-        this.parentView=pView;
+//# 	MainBar mb=new MainBar(SR.MS_XML_CONSOLE);
+//#         setMainBarItem(mb);
+//#endif        
+        this.parentView=pView;        
     }
     
     public void commandState() {

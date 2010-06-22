@@ -104,14 +104,12 @@ public class JabberDataBlockDispatcher extends Thread
      */
     public void broadcastJabberDataBlock(JabberDataBlock dataBlock) {
         waitingQueue.addElement(dataBlock);
-        if (Runtime.getRuntime().freeMemory() < 128 * 1024) {
-            while (!waitingQueue.isEmpty()) {
+        while (!waitingQueue.isEmpty()) {
                 try {
                     Thread.sleep(50L);
                 } catch (InterruptedException e) {
                 }
             }
-        }
     }
 
 
@@ -132,7 +130,7 @@ public class JabberDataBlockDispatcher extends Thread
             if (dataBlock instanceof Iq) {
                 // verify id attribute
                 if (dataBlock.getAttribute("id") == null) {
-                    dataBlock.setAttribute("id", "");
+                    dataBlock.setAttribute("id", "666");
                 }
             }
             waitingQueue.removeElementAt( 0 );

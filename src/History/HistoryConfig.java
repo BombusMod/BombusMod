@@ -41,6 +41,7 @@ import javax.microedition.lcdui.TextField;
 import locale.SR;
 import ui.controls.form.CheckBox;
 import ui.controls.form.DefForm;
+import ui.controls.form.LinkString;
 import ui.controls.form.TextInput;
 
 /**
@@ -64,6 +65,7 @@ public class HistoryConfig
     private CheckBox saveConfHistory;
     private CheckBox saveConfPres;
     private CheckBox win1251;
+    private LinkString selectFolder;
 //#ifdef DETRANSLIT
 //#     private CheckBox translit;
 //#endif
@@ -89,6 +91,8 @@ public class HistoryConfig
 //#endif
 //# 
 //# 	historyFolder = new TextInput(display, SR.MS_HISTORY_FOLDER, cf.msgPath, null, TextField.ANY); itemsList.addElement(historyFolder);
+//#         selectFolder=new LinkString(SR.MS_SELECT_HISTORY_FOLDER) { public void doAction() { selectFolder(); } };
+//#         itemsList.addElement(selectFolder);
 //#endif
         addCommand(cmdPath);
         commandState();
@@ -105,11 +109,15 @@ public class HistoryConfig
 
     public void commandAction(Command command, Displayable displayable) {
         if (command==cmdPath) {
-            new Browser(null, display, this, this, true);
+            selectFolder();
             return;
         }
         super.commandAction(command, displayable);
         destroyView();
+    }
+    
+    public void selectFolder() {
+        new Browser(null, display, this, this, true);
     }
 
     public void cmdOk() {

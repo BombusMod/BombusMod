@@ -28,7 +28,7 @@ public class SOCKS5Stream {
     
     public void send(byte[] data, int ofs, int length) throws IOException {        
         synchronized (outStream) {
-            outStream.write(data, ofs, length);
+            outStream.write(data, ofs, length);            
             outStream.flush();
         }
     }
@@ -42,14 +42,14 @@ public class SOCKS5Stream {
         if (avail==0) return 0;        
         if (avail>buf.length) avail=buf.length;        
         return inpStream.read(buf, 0, avail);
-    }
+    }   
     
     public void close() {
         try {
             inpStream.close(); inpStream = null;
             outStream.close(); outStream = null;
         } catch (IOException e) {
-            System.err.println(e);
+            Client.StaticData.getInstance().roster.errorLog(e.getMessage());
         }
     }
 

@@ -151,7 +151,7 @@ public class ContactMessageList extends MessageList {
             moveCursorTo(firstUnread());        
     }
 
-    public int firstUnread(){
+    public final int firstUnread(){
         int unreadIndex=0;
         for (Enumeration e=contact.msgs.elements(); e.hasMoreElements();) {
             if (((Msg)e.nextElement()).unread)
@@ -161,11 +161,7 @@ public class ContactMessageList extends MessageList {
             unreadIndex++;
         }        
         return unreadIndex;
-    }
-
-    public boolean equals(Object obj) {
-        return contact.equals(obj);
-    }
+    }    
 
     public void commandState(){
 //#ifdef MENU_LISTENER
@@ -634,9 +630,9 @@ public void showNotify() {
 //#         String target = getTargetForJuickReply(body);
 //#         if ((action.equals("S") || action.equals("U")) && (target.indexOf("/") > 0)) {
 //#             target = target.substring(0, target.indexOf("/"));
-//#         } else if (action.equals("PM") || action.equals("")) {
+//#         } /*else if (action.equals("PM") || action.equals("")) {
 //#             target+=" ";
-//#         }
+//#         }*/ //TODO: fix
 //#         String resultAction = action + " " + target;
 //# 
 //#         if (action.equals("+") || action.equals("")) {
@@ -816,7 +812,7 @@ public void showNotify() {
             if (msg==null || msg.messageType == Msg.MESSAGE_TYPE_OUT || msg.messageType == Msg.MESSAGE_TYPE_SUBJ) {
                 keyGreen();
             } else {
-                Roster.me = null; Roster.me=new MessageEdit(display, this, contact, msg.from+": ");
+                Roster.me = null; Roster.me=new MessageEdit(display, this, contact, msg.from+":");
                 Roster.me.show(this);
             }
         } catch (Exception e) {/*no messages*/}
@@ -841,7 +837,7 @@ public void showNotify() {
     
 //#ifdef HISTORY
 //#ifdef LAST_MESSAGES
-//#     public void loadRecentList() {
+//#     public final void loadRecentList() {
 //#         contact.setHistoryLoaded(true);
 //#         HistoryStorage hs = new HistoryStorage(contact.bareJid);
 //#         Vector history=hs.importData();

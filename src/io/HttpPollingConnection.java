@@ -178,7 +178,7 @@ public class HttpPollingConnection implements StreamConnection {
 
                 if (outData.length()>0) httpPostRequest(outData.toString());
 
-                outData.setLength(0);
+                outData=new StringBuffer();
             }
         }
     }

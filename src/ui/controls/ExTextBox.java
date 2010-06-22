@@ -27,6 +27,7 @@
 package ui.controls;
 
 import Client.Config;
+import Client.StaticData;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;

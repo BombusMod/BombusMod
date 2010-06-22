@@ -85,7 +85,8 @@ public class Config {
     public final static int SAMSUNG=14;
     public final static int LG=15;
     public final static int JBED=16;
-    public final static int WTK=50;
+    public final static int MICROEMU=17;
+    public final static int WTK=50;    
     public final static int OTHER=99;
 
     StaticData sd = StaticData.getInstance();
@@ -264,87 +265,92 @@ public static boolean fullscreen=
     /** Creates a new instance of Config */
     private Config() {
         getPhoneManufacturer();
-        VirtualList.phoneManufacturer=phoneManufacturer;
-        
-	int gmtloc=TimeZone.getDefault().getRawOffset()/3600000;
-	gmtOffset=gmtloc;
-	
-	short greenKeyCode=-1000;
-        
-        switch (phoneManufacturer) {
-            case SONYE:
-                //prefetch images
-                RosterIcons.getInstance();
-                ActionsIcons.getInstance();
+        VirtualList.phoneManufacturer = phoneManufacturer;
+
+        int gmtloc = TimeZone.getDefault().getRawOffset() / 3600000;
+        gmtOffset = gmtloc;
+
+        short greenKeyCode = -1000;
+        //prefetch images
+        RosterIcons.getInstance();
+        ActionsIcons.getInstance();
 //#ifdef SMILES
-                if (smiles) SmilesIcons.getInstance();
+        if (smiles) {
+            SmilesIcons.getInstance();
 //#endif
 //#ifdef CLIENTS_ICONS
 //#ifdef PLUGINS
 //#                 if (sd.ClientsIcons) {
 //#endif
-                if (showClientIcon) ClientsIcons.getInstance();
+        }
+        if (showClientIcon) {
+            ClientsIcons.getInstance();
 //#ifdef PLUGINS
 //#                 }
 //#endif
 //#endif
+        }
+        System.gc();
+        try {
+            Thread.sleep(50);
+        } catch (InterruptedException e) {
+        }
 
-
-//                if (widthSystemgc) { _vt
-                    System.gc();
-                    try { Thread.sleep(50); } catch (InterruptedException e){}
-//                } _vt
-                
-                allowMinimize=true;
-                greenKeyCode=-10;
+        switch (phoneManufacturer) {
+            case SONYE:
+                allowMinimize = true;
+                greenKeyCode = -10;
                 break;
             case SONYE_M600:
-                KEY_BACK=-11;
-                greenKeyCode=13;
+                KEY_BACK = -11;
+                greenKeyCode = 13;
                 break;
             case WTK:
-                greenKeyCode=-10;
+                greenKeyCode = -10;
                 break;
             case NOKIA:
-                KEY_BACK=VirtualList.NOKIA_PEN;
-                greenKeyCode=-10;
-                if (!NokiaS40) allowMinimize=true;
+                KEY_BACK = VirtualList.NOKIA_PEN;
+                greenKeyCode = -10;
+                allowMinimize = true;                
                 break;
             case SIEMENS:
             case SIEMENS2:
-                keyLock='#';
-                keyVibra='*';
-                KEY_BACK=-4;
-                greenKeyCode=VirtualList.SIEMENS_GREEN;
+                keyLock = '#';
+                keyVibra = '*';
+                KEY_BACK = -4;
+                greenKeyCode = VirtualList.SIEMENS_GREEN;
                 break;
             case WINDOWS:
-                greenKeyCode=-5;
-                VirtualList.keyClear=8;
+                greenKeyCode = -5;
+                VirtualList.keyClear = 8;
                 break;
             case MOTO:
-                ghostMotor=true;
-                istreamWaiting=true;
-                greenKeyCode=-10;
+                ghostMotor = true;
+                istreamWaiting = true;
+                greenKeyCode = -10;
                 break;
             case MOTOEZX:
-                VirtualList.keyVolDown=VirtualList.MOTOE680_VOL_DOWN;
-                KEY_BACK=VirtualList.MOTOE680_REALPLAYER;
-		greenKeyCode=-31;
-                break;  
+                VirtualList.keyVolDown = VirtualList.MOTOE680_VOL_DOWN;
+                KEY_BACK = VirtualList.MOTOE680_REALPLAYER;
+                greenKeyCode = -31;
+                break;
+            case MICROEMU:
+                KEY_BACK = -4; // for android sdk
+                break;
 //#if !ZLIB
 //#             case XENIUM99:
 //#                 istreamWaiting=false; //is it critical for phillips xenium?
 //#                 break;
 //#endif
         }
-	VirtualList.greenKeyCode=greenKeyCode;
+        VirtualList.greenKeyCode = greenKeyCode;
         loadFromStorage();
 
         FontCache.roster = rosterFont;
         FontCache.msg = msgFont;
 
         FontCache.bar = barFont;
-        FontCache.baloon = baloonFont;        
+        FontCache.baloon = baloonFont;
     }
     
     protected final void loadFromStorage() {
@@ -863,7 +869,9 @@ public static boolean fullscreen=
                 try { FileIO f=FileIO.createConnection(""); } catch (Exception ex) { }
 //#endif
                 return;
-            }else {
+            }else if (platform.startsWith("microemu")) {
+                phoneManufacturer = MICROEMU;
+            } else {
                 phoneManufacturer=OTHER;
             }
         }
