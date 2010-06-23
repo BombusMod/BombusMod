@@ -2292,21 +2292,22 @@ public class Roster
                 return;
 //#ifdef AUTOSTATUS
 //#             case SE_FLIPCLOSE_JP6:
-//#             case SIEMENS_FLIPCLOSE:
-//#             case MOTOROLA_FLIP:
-//#                 if (phoneManufacturer!=Config.SONYE) { //workaround for SE JP6 - enabling vibra in closed state
+//#                 if (phoneManufacturer==Config.SONYE) { //workaround for SE JP6 - enabling vibra in closed state
 //#                     display.setCurrent(null);
 //#                     try {
 //#                         Thread.sleep(300);
 //#                     } catch (Exception ex) {}
 //#                     display.setCurrent(this);
-//#                 }
-//#if DEBUG
-//#             System.out.println("Flip closed");
-//#endif
-//#                 if (cf.autoAwayType==Config.AWAY_LOCK)
-//#                     if (!autoAway)
-//#                         autostatus.setTimeEvent(cf.autoAwayDelay* 60*1000);
+//#                     keyLock();
+//#                 }                
+//#                 break;
+//#             case SIEMENS_FLIPCLOSE:
+//#                 if (cf.phoneManufacturer == Config.SIEMENS) // verify platform because SIEMENS_FLIPCLOSE maybe MOTOROLA_FLIP
+//#                     keyLock();
+//#                 break;              
+//#             case MOTOROLA_FLIP:
+//#                 if (cf.phoneManufacturer == Config.MOTO) 
+//#                     keyLock();
 //#                 break;
 //#endif
             case KEY_NUM0:            
@@ -2372,7 +2373,13 @@ public class Roster
 //#         userActivity();
 //#endif
      }
- 
+//#ifdef AUTOSTATUS
+//#     private void keyLock() {
+//#         if (cf.autoAwayType==Config.AWAY_LOCK) 
+//#             if (!autoAway) 
+//#                 autostatus.setTimeEvent(cf.autoAwayDelay* 60*1000);
+//#     } 
+//#endif    
     protected void keyRepeated(int keyCode) {
         super.keyRepeated(keyCode);
         if (kHold==keyCode) return;
