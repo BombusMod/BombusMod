@@ -98,7 +98,6 @@ public class ContactMessageList extends MessageList {
 //#ifdef JUICK
 //#     Command cmdJuickMessageReply=new Command(SR.MS_JUICK_MESSAGE_REPLY, Command.SCREEN, 1);
 //#     Command cmdJuickSendPrivateReply;
-//#     Command cmdJuickThings=new Command(SR.MS_JUICK_THINGS, Command.SCREEN, 3);
 //#     Command cmdJuickMessageDelete=new Command(SR.MS_JUICK_MESSAGE_DELETE, Command.SCREEN, 4);
 //#     Command cmdJuickPostSubscribe=new Command(SR.MS_JUICK_POST_SUBSCRIBE, Command.SCREEN, 5);
 //#     Command cmdJuickPostUnsubscribe=new Command(SR.MS_JUICK_POST_UNSUBSCRIBE, Command.SCREEN, 6);
@@ -106,6 +105,7 @@ public class ContactMessageList extends MessageList {
 //#     Command cmdJuickPostShow=new Command(SR.MS_JUICK_POST_SHOW, Command.SCREEN, 8);
 //# 
 //#     public Command cmdJuickCommands=new Command(SR.MS_COMMANDS+" Juick", Command.SCREEN, 15);
+//#     Command cmdJuickThings=new Command(SR.MS_JUICK_THINGS, Command.SCREEN, 16);
 //#     Vector currentJuickCommands = new Vector();
 //# 
 //#     public ContactMessageList() {
@@ -251,6 +251,7 @@ public class ContactMessageList extends MessageList {
 //#endif
 //#         // http://code.google.com/p/bm2/issues/detail?id=94
 //#         addCommand(cmdJuickCommands);
+//#         addCommand(cmdJuickThings);
 //#ifdef PLUGINS
 //#         }
 //#endif
@@ -263,7 +264,6 @@ public class ContactMessageList extends MessageList {
 //#     private void updateJuickCommands() {
 //#         currentJuickCommands = null;
 //#         currentJuickCommands = new Vector();
-//#         currentJuickCommands.addElement(cmdJuickThings);
 //#         if (isJuickContact(contact) || isJuBoContact(contact)) {
 //#             String body = getBodyFromCurrentMsg();
 //#             String target = getTargetForJuickReply(body);
@@ -491,7 +491,8 @@ public void showNotify() {
 //#             viewJuickThings(body, d);
 //#         } else if (c == cmdJuickCommands) {
 //#             updateJuickCommands();
-//#             new MyMenu(display, parentView, (Menu.MenuListener) this, SR.MS_COMMANDS, null, currentJuickCommands);
+//#             if (currentJuickCommands.size() > 0)
+//#                 new MyMenu(display, parentView, (Menu.MenuListener) this, SR.MS_COMMANDS, null, currentJuickCommands);
 //#         }
 //#endif
     }

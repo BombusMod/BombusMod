@@ -1429,7 +1429,7 @@ public class Roster
                     
                 } // id!=null
                 if ( type.equals( "result" ) ) {
-                    if (id.equals("getros")){
+                    if (id.equals("getros")) {
                         //theStream.enableRosterNotify(false); //voffk
 
                         processRoster(data);
@@ -1501,7 +1501,7 @@ public class Roster
                 String oob=message.getOOB();
                 if (oob!=null) body+=oob;
                 if (body.length()==0)
-                    body=null; 
+                    body=null;
                 String subj=message.getSubject().trim(); 
                 if (subj.length()==0) 
                     subj=null;
@@ -1867,7 +1867,7 @@ public class Roster
     }
 //#endif
 
-    boolean  processRoster(JabberDataBlock data){
+    boolean  processRoster(JabberDataBlock data) {
         JabberDataBlock q=data.findNamespace("query", "jabber:iq:roster");
         if (q==null) return false;
         int type=0;
@@ -1881,6 +1881,7 @@ public class Roster
          }
         
         Vector cont=(q!=null)?q.getChildBlocks():null;
+        q = null;
         
         if (cont!=null)
             for (int ii=0; ii<cont.size(); ii++){
@@ -2232,17 +2233,18 @@ public class Roster
         }
     }
     
-    protected void keyClear(){
-        if (isLoggedIn()) {
-            final Contact c=(Contact) getFocusedObject();
-            try { 
-                boolean isContact=( getFocusedObject() instanceof Contact );
+    protected void keyClear() {
+        Object focusedObject = getFocusedObject();
+        if (isLoggedIn() && (focusedObject instanceof Contact)) {
+            final Contact c = (Contact) getFocusedObject();
+            try {
 //#ifndef WMUC
-                boolean isMucContact=( getFocusedObject() instanceof MucContact );
+                boolean isMucContact = (focusedObject instanceof MucContact);
 //#else
-//#                 boolean isMucContact=false;
+//#                 boolean isMucContact = false;
 //#endif
-                if (isContact && !isMucContact) {
+                focusedObject = null;
+                if (!isMucContact) {
                    new AlertBox(SR.MS_DELETE_ASK, c.getNickJid(), display, sd.roster) {
                         public void yes() {
                             deleteContact(c);
@@ -2251,7 +2253,7 @@ public class Roster
                     };
                 }
 //#ifndef WMUC
-                else if (isContact && isMucContact && c.origin!=Contact.ORIGIN_GROUPCHAT) {
+                else if (isMucContact && c.origin!=Contact.ORIGIN_GROUPCHAT) {
                     ConferenceGroup mucGrp=(ConferenceGroup)c.group;
                     if (mucGrp.selfContact.roleCode==MucContact.ROLE_MODERATOR) {
                         String myNick=mucGrp.selfContact.getName();

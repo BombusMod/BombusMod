@@ -34,10 +34,10 @@ import Menu.Command;
 //#else
 //# import javax.microedition.lcdui.Command;
 //#endif
+import Messages.MessageItem;
 import Messages.MessageList;
-import java.util.Vector;
+import ui.VirtualElement;
 import javax.microedition.lcdui.Display;
-import javax.microedition.lcdui.Displayable;
 import locale.SR;
 import ui.MainBar;
 
@@ -51,81 +51,58 @@ public class HistoryReader extends MessageList {
 //#endif
     
     private HistoryLoader hl;
-    Command cmdNext, cmdPrev;
+    static MessageItem MIPrev, MINext, MILarge;
 
     /** Creates a new instance of HistoryReader
      * @param display
      * @param c 
      */
     public HistoryReader(Display display, Contact c) {
-        super(display);
-        cmdNext = new Command(SR.MS_NEXT, Command.ITEM, 1);
-        cmdPrev = new Command(SR.MS_PREVIOUS, Command.ITEM, 1);
-        hl = new HistoryLoader(c.bareJid);
-	MainBar mb=new MainBar(c.getName() + ": " + SR.MS_HISTORY);
-	mb.addElement(null);
-	mb.addRAlign();
-	mb.addElement(null);
-	//mb.addElement(SR.MS_FREE /*"free "*/);
-        setMainBarItem(mb);
+        super();
+        MIPrev = new MessageItem(new Msg(Msg.MESSAGE_TYPE_SYSTEM, null, null, "<---"), this, smiles);
+        MINext = new MessageItem(new Msg(Msg.MESSAGE_TYPE_SYSTEM, null, null, "--->"), this, smiles);
+        MILarge = new MessageItem(new Msg(Msg.MESSAGE_TYPE_SYSTEM, null, null,
+                "Size of message is larger then " + hl.BLOCK_SIZE), this, smiles);
 
-        removeAllMessages();
-        addCommands(); 
+        setMainBarItem(new MainBar(c.getName() + ": " + SR.MS_HISTORY));
+        addCommands();
         removeCommand(cmdxmlSkin);
+
+        hl = new HistoryLoader(c.bareJid, this, smiles);
+        messages = hl.stepBack();
+
         setCommandListener(this);
-        addCommand(cmdPrev);
-        addCommand(cmdNext);
-	addCommand(cmdBack);
         attachDisplay(display);
-        moveCursorTo(1);
+
+        moveCursorEnd();
     }
 
     public void keyPressed(int keyCode) {
         if ((keyCode == KEY_NUM5) || (getGameAction(keyCode) == FIRE)) {
-           if (cursor == 0) {
-               removeAllMessages();
-               hl.stepBack();
-           } else if (cursor == (getItemCount()-1)) {
-               removeAllMessages();
-               hl.stepNext();
-           }           
+           if (getItemRef(cursor)==MIPrev) {
+               messages = hl.stepBack();
+               moveCursorEnd();
+               return;
+           } else if (getItemRef(cursor)==MINext) {
+               messages = hl.stepNext();
+               moveCursorHome();
+               return;
+           }
         }
         super.keyPressed(keyCode);
     }
 
-    public void commandAction(Command c, Displayable d) {
-        if(c==cmdNext) {
-            removeAllMessages();
-            hl.stepNext();
-            moveCursorHome();
-            redraw();
-            return;
-        } else if (c == cmdPrev) {
-            removeAllMessages();
-            hl.stepBack();
-            moveCursorEnd();
-            redraw();
-            return;
-        }
-        super.commandAction(c, d);
-    }
-
-    private void removeAllMessages() {
-        messages = null;
-        messages = new Vector();
-    }
-
     public int getItemCount() {
-        if (hl != null)
-           return hl.listMessages.size()+2;
+        if (messages != null)
+           return messages.size();
         else return 0;
     }
 
     public Msg getMessage(int i) {
-        if (i==0)
-            return new Msg(Msg.MESSAGE_TYPE_SYSTEM, null, null, "<---");
-        if (i==(getItemCount()-1))
-            return new Msg(Msg.MESSAGE_TYPE_SYSTEM, null, null, "--->");
-        return (Msg) hl.listMessages.elementAt(i-1);
+        return ((MessageItem) messages.elementAt(i)).msg;
     }
+/*
+    public VirtualElement getItemRef(int i) {
+        return (VirtualElement) messages.elementAt(i);
+    }*/
 }

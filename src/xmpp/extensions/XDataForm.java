@@ -9,7 +9,6 @@
 
 package xmpp.extensions;
 
-import Client.Config;
 import com.alsutton.jabber.JabberDataBlock;
 import java.util.*;
 import javax.microedition.lcdui.*;
@@ -61,12 +60,13 @@ public class XDataForm implements CommandListener {
             if (!ch.getTagName().equals("field")) continue;
             
             XDataField field=new XDataField(ch);
+            ch = null;
             
             items.addElement(field);
             
             if (field.hidden) continue;
             
-            if (field.media!=null)
+            if (field.media != null)
                 field.mediaIndex = f.append(field.media);
             field.formIndex=f.append(field.formItem);
         }
@@ -102,10 +102,15 @@ public class XDataForm implements CommandListener {
                         bytes = Strconv.fromBase64(data.getText());
                         img = null;
                         img = Image.createImage(bytes, 0, bytes.length);
+                        bytes = null;
+                        data = null;
                         
                         //workaround for SE
-                        f.delete(field.mediaIndex);
-                        f.insert(field.mediaIndex, new ImageItem(null, img, Item.LAYOUT_CENTER, null));
+                        if (field.media != null) {
+                            f.delete(field.mediaIndex);
+                            f.insert(field.mediaIndex, new ImageItem(null, img, Item.LAYOUT_CENTER, null));
+                        }
+                        img = null;
                     }
                 }
             }
@@ -118,9 +123,12 @@ public class XDataForm implements CommandListener {
             resultForm.setNameSpace("jabber:x:data");
             resultForm.setTypeAttribute("submit");
             
-            for (Enumeration e=items.elements(); e.hasMoreElements(); ) {
-                JabberDataBlock ch=((XDataField)e.nextElement()).constructJabberDataBlock();
-                if (ch!=null) resultForm.addChild(ch);
+            for (Enumeration e = items.elements(); e.hasMoreElements();) {
+                JabberDataBlock ch = ((XDataField) e.nextElement()).constructJabberDataBlock();
+                if (ch != null) {
+                    resultForm.addChild(ch);
+                }
+                ch = null;
             }
             notifyListener.XDataFormSubmit(resultForm);
         }

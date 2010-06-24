@@ -27,6 +27,7 @@
 
 package util;
 
+import Client.Config;
 import java.util.Vector;
 
 /**
@@ -65,7 +66,17 @@ public class DeTranslit {
 	}
         return src;
     }
-    
+
+//#ifdef DETRANSLIT
+//#     public static String get_actual_filename(String filename) {
+//#         if (Config.getInstance().transliterateFilenames) {
+//#             return translit(filename);
+//#         } else {
+//#             return filename;
+//#         }
+//#     }
+//#endif
+
     private static void fill() {
         translit=new Vector[2];
         translit[0]=new Vector();

@@ -66,9 +66,13 @@ public class StaticData {
     /** Creates a new instance of StaticData */
     private StaticData() { }
     
-    public static StaticData getInstance(){
-        if (sd==null) 
-            sd=new StaticData();
+    public static StaticData getInstance() {
+        if (sd == null) {
+            sd = new StaticData();
+//#ifdef DETRANSLIT
+//#             util.DeTranslit.getInstance();
+//#endif
+        }
         return sd;
     }
 

@@ -55,7 +55,7 @@ public class HistoryStorage {
     public HistoryStorage(String filename) {
         cf=Config.getInstance();
 //#ifdef DETRANSLIT
-//#        filename=(cf.transliterateFilenames)?DeTranslit.translit(filename):filename;
+//#         filename = DeTranslit.get_actual_filename(filename);
 //#endif
 //#ifdef HISTORY
 //#        filename=cf.msgPath+StringUtils.replaceBadChars(filename)+".txt";

@@ -56,14 +56,13 @@ public class XDataField {
             media=extractMedia(field);
             formItem=new TextField(label, value, 200,  TextField.ANY);
             return;
-        } 
+        }
         
         hidden = type.equals("hidden"); 
         
         if (type.equals("fixed")) {
             formItem=new StringItem(label, value);
-        } 
-        else if (type.equals("boolean")) {
+        } else if (type.equals("boolean")) {
             ChoiceGroup ch=new ChoiceGroup(null,ChoiceGroup.MULTIPLE);
             formItem=ch;
             ch.append(label, null);
@@ -72,12 +71,9 @@ public class XDataField {
             if (value.equals("1")) set=true;
             if (value.equals("true")) set=true;
                 ch.setSelectedIndex(0, set);
-            }
-        
-        else if (type.equals("list-single") || type.equals("list-multi")) {
-            
-            int choiceType=(type.equals("list-single"))? 
-                Choice.POPUP : ChoiceGroup.MULTIPLE;
+        } else if (type.equals("list-single") || type.equals("list-multi")) {
+            int choiceType = (type.equals("list-single"))
+                    ? Choice.POPUP : ChoiceGroup.MULTIPLE;
             
             ChoiceGroup ch=new ChoiceGroup(label, choiceType);
             formItem=ch;
@@ -99,20 +95,16 @@ public class XDataField {
                         if (value.equals(opValue)) ch.setSelectedIndex(index, true);
                     }
                 }
-            }
-	    // text-single, text-private
-        else {
+            } else { // text-single, text-private
             if (value.length()>=200) {
                 value=value.substring(0,198);
             }
             int constrains=(type.equals("text-private"))? TextField.PASSWORD: TextField.ANY;
             formItem=new TextField(label, value, 200, constrains);
         }
-    
     }
 
     private Item extractMedia(JabberDataBlock field) {
-        
         try {
             JabberDataBlock m=field.findNamespace("media", "urn:xmpp:media-element");
         if (m==null) return null;

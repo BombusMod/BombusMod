@@ -1371,7 +1371,7 @@ public abstract class VirtualList
     protected void keyClear() {}
     protected void keyGreen() { eventOk(); }
     
-    protected  void setRotator(){
+    protected void setRotator() {
 //#if (USE_ROTATOR)
         try {
             if (getItemCount() < 1)

@@ -95,7 +95,7 @@ public class HistoryAppend {
        byte[] bodyMessage=createBody(m, formatted).getBytes();
 
 //#ifdef DETRANSLIT
-//#        filename=(cf.transliterateFilenames)?DeTranslit.translit(filename):filename;
+//#        filename = DeTranslit.get_actual_filename(filename);
 //#endif
 //#ifdef HISTORY
 //#        filename = cf.msgPath+StringUtils.replaceBadChars(filename)+".txt";
@@ -126,7 +126,7 @@ public class HistoryAppend {
        byte[] bodyMessage=messages.getBytes();
 
 //#ifdef DETRANSLIT
-//#        filename=(cf.transliterateFilenames)?DeTranslit.translit(filename):filename;
+//#         filename = DeTranslit.get_actual_filename(filename);
 //#endif
 //#ifdef HISTORY
 //#        filename = cf.msgPath+StringUtils.replaceBadChars(filename)+".txt";

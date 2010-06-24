@@ -121,7 +121,7 @@ public class Config {
 //#      public boolean msgLogConfPresence=false;
 //#      public boolean lastMessages=false;
 //#endif
-    public boolean cp1251=true;     
+    public boolean cp1251=true;
 //#ifndef WMUC
     public String defGcRoom="bombusmod@conference.jabber.ru";
     public boolean storeConfPresence=true;   
