@@ -90,9 +90,9 @@ public class HistoryAppend {
     private OutputStream os;
 //#endif
     
-    public void addMessage(Msg m, boolean formatted, String filename) {
+    public void addMessage(Msg m, String filename) {
        convertToWin1251=cf.cp1251;
-       byte[] bodyMessage=createBody(m, formatted).getBytes();
+       byte[] bodyMessage=createBody(m).getBytes();
 
 //#ifdef DETRANSLIT
 //#        filename = DeTranslit.get_actual_filename(filename);
@@ -150,60 +150,46 @@ public class HistoryAppend {
         bodyMessage=null;
     }
     
-    private String createBody(Msg m, boolean formatted) {
-        String fromName=StaticData.getInstance().account.getUserName();
-        if (m.messageType!=Msg.MESSAGE_TYPE_OUT)
-            fromName=m.from;
+    private String createBody(Msg m) {
+        String fromName = StaticData.getInstance().account.getUserName();
+        if (m.messageType != Msg.MESSAGE_TYPE_OUT)
+            fromName = m.from;
 
-        StringBuffer body=new StringBuffer();
+        StringBuffer body = new StringBuffer();
         
-        int marker=MESSAGE_MARKER_OTHER;
-        switch (m.messageType){
+        int marker = MESSAGE_MARKER_OTHER;
+        switch (m.messageType) {
             case Msg.MESSAGE_TYPE_IN:
-                marker=MESSAGE_MARKER_IN;
+                marker = MESSAGE_MARKER_IN;
                 break;
             case Msg.MESSAGE_TYPE_PRESENCE:
-                marker=MESSAGE_MARKER_PRESENCE;
+                marker = MESSAGE_MARKER_PRESENCE;
                 break;
-           case Msg.MESSAGE_TYPE_OUT:
-                marker=MESSAGE_MARKER_OUT;
+            case Msg.MESSAGE_TYPE_OUT:
+                marker = MESSAGE_MARKER_OUT;
         }
-        if (!formatted) {
-            body.append("[")
-                .append(m.getDayTime())
-                .append("] ")
-                .append(fromName)
-                .append(":")
-                .append(RN);
-            if (m.subject!=null) {
-                body.append(m.subject)
-                    .append(RN);
-            }
-            body.append(m.body)
-                .append(RN)
-                .append(RN);
-        } else {
-            body.append(MS)
-                .append(TS)
-                .append(marker)
-                .append(TE)
-                .append(DS)
-                .append(m.getDayTime())
-                .append(DE)
-                .append(FS)
-                .append(fromName)
-                .append(FE);
-            if (m.subject!=null) {
-                body.append(SS)
-                    .append(m.subject)
-                    .append(SE);
-            }
-            body.append(BS)
-                .append(m.body)
-                .append(BE)
-                .append(ME)
-                .append(RN);
+
+        body.append(MS)
+            .append(TS)
+            .append(marker)
+            .append(TE)
+            .append(DS)
+            .append(m.getDayTime())
+            .append(DE)
+            .append(FS)
+            .append(StringUtils.escapeTags(fromName))
+            .append(FE);
+        if (m.subject != null) {
+            body.append(SS)
+                .append(StringUtils.escapeTags(m.subject))
+                .append(SE);
         }
+        body.append(BS)
+            .append(StringUtils.escapeTags(m.body))
+            .append(BE)
+            .append(ME)
+            .append(RN);
+
         return (convertToWin1251)?Strconv.convUnicodeToCp1251(body.toString()):body.toString();
     }
 }

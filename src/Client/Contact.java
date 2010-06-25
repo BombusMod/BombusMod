@@ -390,7 +390,7 @@ public class Contact extends IconTextElement{
 //#endif
 //#                 
 //#                 if (allowLog) {
-//#                         HistoryAppend.getInstance().addMessage(m, true, bareJid);
+//#                         HistoryAppend.getInstance().addMessage(m, bareJid);
 //#                 }
 //#             }
 //#        }

@@ -836,7 +836,7 @@ public abstract class VirtualList
     protected void keyReleased(int keyCode) { kHold=0; }
     protected void keyPressed(int keyCode) { kHold=0; key(keyCode);  }
     private int yPointerPos;
-    
+
     protected void pointerPressed(int x, int y) {
 //#ifdef POPUPS
         if (PopUp.getInstance().next()) {
@@ -923,8 +923,8 @@ public abstract class VirtualList
         
         repaint();
     }
+    
     protected void pointerDragged(int x, int y) { 
-
         if (scrollbar.pointerDragged(x, y, this)) {
             stickyWindow=false;
             return;
@@ -963,8 +963,11 @@ public abstract class VirtualList
 	long clickTime=System.currentTimeMillis();
         if (lastClickY-y<5 && y-lastClickY<5) {
             if (clickTime-lastClickTime>500) {
-                y=0;
+                y = 0;
                 eventLongOk();
+            } else if (clickTime-lastClickTime<200) {
+                y = 0;
+                eventOk();
             }
         }        
     }

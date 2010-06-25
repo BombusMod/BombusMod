@@ -83,7 +83,25 @@ public class StringUtils {
         }
         return src;
     }
+
+    public static String escapeTags(String src) {
+        if (src == null)
+            return null;
+        src = stringReplace(src, "&", "&amp;");
+        src = stringReplace(src, "<", "&lt;");
+        src = stringReplace(src, ">", "&gt;");
+        return src;
+    }
     
+    public static String unescapeTags(String src) {
+        if (src == null)
+            return null;
+        src = stringReplace(src, "&gt;", ">");
+        src = stringReplace(src, "&lt;", "<");
+        src = stringReplace(src, "&amp;", "&");
+        return src;
+    }
+
     public static String urlPrep(String src){
         String mask=" #$%&/:;<=>?@[\\]^'{|}";
         StringBuffer out=new StringBuffer();

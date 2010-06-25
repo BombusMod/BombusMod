@@ -80,7 +80,24 @@ public class HistoryLoader {
 //#endif
 
         fileSize = getFileSize();
-        current_index = fileSize - first_m + 1; // for correct first stepBack()
+    }
+
+    public Vector stepBegin() {
+        current_index = -last_m-4;
+        return getMIVector(true);
+    }
+
+    public Vector stepEnd() {
+        current_index = fileSize - first_m + 1;
+        return getMIVector(false);
+    }
+
+    public Vector stepBack() {
+        return getMIVector(false);
+    }
+
+    public Vector stepNext() {
+        return getMIVector(true);
     }
 
     private long getFileSize() {
@@ -157,20 +174,74 @@ public class HistoryLoader {
     public boolean inEnd() {
         return ((current_index+BLOCK_SIZE) >= fileSize)?true:false;
     }
+    
+    private void readBlock(boolean forward) {
+        if (forward) {
+            readByteBlock(getCorrectIndex(current_index+last_m+4));
+        } else readByteBlock(getCorrectIndex(current_index+first_m-1-BLOCK_SIZE));
+    }
 
-    private Vector bytesToMIVector() {
+    private Vector getMIVector(boolean forward) {
+        readBlock(forward);
+
         Vector listMessages = new Vector();
         int pos = 0;
-        first_m = -1;
+        first_m = last_m = -1;
+
         do {
             int start = findOpenStr(current_block, pos, true, 'm');
             int end = findCloseStr(current_block, start + 3, true, 'm');
 
             if (start < 0 || end < 0) {
                 if ((first_m < 0) || (last_m < 0)) {
-                    first_m = 0;
-                    last_m = BLOCK_SIZE-3;
-                    listMessages.addElement(HistoryReader.MILarge);
+                    boolean can_step_back = true;
+                    boolean can_step_next = true;
+                    if (forward)
+                        can_step_back = !inBegin();
+                    else can_step_next = !inEnd();
+
+                    StringBuffer bigMessage = new StringBuffer();
+
+                    do {
+                        System.out.println("do");
+                        if (forward) {
+                            bigMessage.append(getStrFromBytes(start, current_block.length-start));
+                            readBlock(forward);
+                            end = findCloseStr(current_block, 0, true, 'm');
+                        } else {
+                            bigMessage.insert(0, getStrFromBytes(0, end));
+                            readBlock(forward);
+                            start = findOpenStr(current_block, current_block.length-3, false, 'm');
+                        }
+                        first_m = 0;
+                        last_m = current_block.length - 3;
+                    } while (start < 0 || end < 0);
+
+                    if (forward) {
+                        bigMessage.append(getStrFromBytes(start + 3, end - start - 3));
+                        can_step_next = !inEnd();
+                    } else {
+                        bigMessage.insert(0, getStrFromBytes(start + 3, end - start - 3));
+                        can_step_back = !inBegin();
+                    }
+
+                    current_block = null;
+
+                    String current = bigMessage.toString();
+                    bigMessage = null;
+                    listMessages.addElement(getMessageItem(processMessage(
+                            findBlock(current, "t"),
+                            findBlock(current, "d"),
+                            findBlock(current, "f"),
+                            findBlock(current, "s"),
+                            findBlock(current, "b"))));
+
+                    if (can_step_back)
+                        listMessages.insertElementAt(HistoryReader.MIPrev, 0);
+                    if (can_step_next)
+                        listMessages.addElement(HistoryReader.MINext);
+
+                    return listMessages;
                 }
 
                 current_block = null;
@@ -188,12 +259,12 @@ public class HistoryLoader {
             last_m = end;
 
             String current = getStrFromBytes(start + 3, end - start - 3);
-            listMessages.addElement(processMessage(
+            listMessages.addElement(getMessageItem(processMessage(
                     findBlock(current, "t"),
                     findBlock(current, "d"),
                     findBlock(current, "f"),
                     findBlock(current, "s"),
-                    findBlock(current, "b")));
+                    findBlock(current, "b"))));
             pos = end + 4;
         } while (true);
     }
@@ -218,36 +289,33 @@ public class HistoryLoader {
         return -1;
     }
 
-    public Vector stepBack() {
-        readByteBlock(getCorrectIndex(current_index+first_m-1-BLOCK_SIZE));
-        return bytesToMIVector();
-    }
-
-    public Vector stepNext() {
-        readByteBlock(getCorrectIndex(current_index+last_m+4));
-        return bytesToMIVector();
-    }
-
-    private MessageItem processMessage(String marker, String date, String from, String subj, String body) {
-        int msgType=Msg.MESSAGE_TYPE_HISTORY;
+    static Msg processMessage(String marker, String date, String from, String subj, String body) {
+        int msgType = Msg.MESSAGE_TYPE_HISTORY;
 
         int mrk = Integer.parseInt(marker);
 
         switch (mrk) {
             case MESSAGE_MARKER_IN:
-                msgType=Msg.MESSAGE_TYPE_IN;
+                msgType = Msg.MESSAGE_TYPE_IN;
                 break;
             case MESSAGE_MARKER_OUT:
-                msgType=Msg.MESSAGE_TYPE_OUT;
+                msgType = Msg.MESSAGE_TYPE_OUT;
                 break;
             case MESSAGE_MARKER_PRESENCE:
-                msgType=Msg.MESSAGE_TYPE_PRESENCE;
+                msgType = Msg.MESSAGE_TYPE_PRESENCE;
                 break;
         }
 
-        Msg msg=new Msg(msgType,from,subj,body);
+        Msg msg = new Msg(msgType,
+                StringUtils.unescapeTags(from),
+                StringUtils.unescapeTags(subj),
+                StringUtils.unescapeTags(body));
         msg.setDayTime(date);
 
+        return msg;
+    }
+
+    private MessageItem getMessageItem(Msg msg) {
         return new MessageItem(msg, view, smiles);
     }
 

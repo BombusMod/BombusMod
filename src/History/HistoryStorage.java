@@ -95,7 +95,7 @@ public class HistoryStorage {
                         
                         if (Integer.parseInt(type)!=MESSAGE_MARKER_PRESENCE) {
                             //System.out.println(type+" ["+date+"]"+from+": "+subj+" "+body+"\r\n");
-                            vector.insertElementAt(processMessage (type, date, from, subj, body),0);
+                            vector.insertElementAt(HistoryLoader.processMessage(type, date, from, subj, body), 0);
                         }
                     } else
                         break;
@@ -110,35 +110,12 @@ public class HistoryStorage {
         return vector;
     }
     
-    private Msg processMessage (String marker, String date, String from, String subj, String body) {
-        int msgType=Msg.MESSAGE_TYPE_HISTORY;
-        
-        int mrk = Integer.parseInt(marker);
-        
-        switch (mrk) {
-            case MESSAGE_MARKER_IN:
-                msgType=Msg.MESSAGE_TYPE_IN;
-                break;
-            case MESSAGE_MARKER_OUT:
-                msgType=Msg.MESSAGE_TYPE_OUT;
-                break;
-            case MESSAGE_MARKER_PRESENCE:
-                msgType=Msg.MESSAGE_TYPE_PRESENCE;
-                break;
-        }
-        
-        Msg msg=new Msg(msgType,from,subj,body);
-        msg.setDayTime(date);
-        
-        return msg;
-    }
-    
     private String findBlock(String source, String needle){
         String block = "";
-        int start =source.indexOf("<"+needle+">"); int end = source.indexOf("</"+needle+">");
+        int start =source.indexOf("<"+needle+">");
+        int end = source.indexOf("</"+needle+">");
         if (start<0 || end<0)
             return block;
-        
         return source.substring(start+3, end);
     }
         

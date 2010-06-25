@@ -51,7 +51,7 @@ public class HistoryReader extends MessageList {
 //#endif
     
     private HistoryLoader hl;
-    static MessageItem MIPrev, MINext, MILarge;
+    static MessageItem MIPrev, MINext;
 
     /** Creates a new instance of HistoryReader
      * @param display
@@ -61,15 +61,13 @@ public class HistoryReader extends MessageList {
         super();
         MIPrev = new MessageItem(new Msg(Msg.MESSAGE_TYPE_SYSTEM, null, null, "<---"), this, smiles);
         MINext = new MessageItem(new Msg(Msg.MESSAGE_TYPE_SYSTEM, null, null, "--->"), this, smiles);
-        MILarge = new MessageItem(new Msg(Msg.MESSAGE_TYPE_SYSTEM, null, null,
-                "Size of message is larger then " + hl.BLOCK_SIZE), this, smiles);
 
         setMainBarItem(new MainBar(c.getName() + ": " + SR.MS_HISTORY));
         addCommands();
         removeCommand(cmdxmlSkin);
 
         hl = new HistoryLoader(c.bareJid, this, smiles);
-        messages = hl.stepBack();
+        messages = hl.stepEnd();
 
         setCommandListener(this);
         attachDisplay(display);
@@ -77,19 +75,31 @@ public class HistoryReader extends MessageList {
         moveCursorEnd();
     }
 
-    public void keyPressed(int keyCode) {
-        if ((keyCode == KEY_NUM5) || (getGameAction(keyCode) == FIRE)) {
-           if (getItemRef(cursor)==MIPrev) {
-               messages = hl.stepBack();
-               moveCursorEnd();
-               return;
-           } else if (getItemRef(cursor)==MINext) {
-               messages = hl.stepNext();
-               moveCursorHome();
-               return;
-           }
+    public void eventOk() {
+        if (getItemRef(cursor) == MIPrev) {
+            messages = hl.stepBack();
+            moveCursorEnd();
+            return;
+        } else if (getItemRef(cursor) == MINext) {
+            messages = hl.stepNext();
+            moveCursorHome();
+            return;
         }
-        super.keyPressed(keyCode);
+        super.eventOk();
+    }
+
+    public void keyPressed(int key_code) {
+        switch(key_code) {
+            case KEY_NUM1:
+                messages = hl.stepBegin();
+                moveCursorEnd();
+                return;
+            case KEY_NUM7:
+                messages = hl.stepEnd();
+                moveCursorHome();
+                return;
+        }
+        super.keyPressed(key_code);
     }
 
     public int getItemCount() {
