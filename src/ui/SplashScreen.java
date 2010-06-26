@@ -48,7 +48,7 @@ import ui.controls.Progress;
  *
  * @author Eugene Stahov
  */
-public class SplashScreen extends Canvas implements Runnable, CommandListener {
+public final class SplashScreen extends Canvas implements Runnable, CommandListener {
     
     private Display display;
     private Displayable parentView;
@@ -116,8 +116,8 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
     }
 
     public void paint(Graphics g){
-        width=g.getClipWidth();
-        height=g.getClipHeight();
+        width = g.getClipWidth();
+        height = g.getClipHeight();
         
         g.setColor(ColorTheme.getColor(ColorTheme.BLK_BGND));
         g.fillRect(0,0, width, height);

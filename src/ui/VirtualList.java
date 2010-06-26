@@ -308,7 +308,7 @@ public abstract class VirtualList
     public void setMainBarItem(ComplexString mainbar) { this.mainbar=mainbar; }
     
     public ComplexString getInfoBarItem() {return (ComplexString)infobar;}
-    public void setInfoBarItem(ComplexString infobar) { this.infobar=infobar; }    
+    public final void setInfoBarItem(ComplexString infobar) { this.infobar=infobar; }
 
 //#ifdef ELF    
 //#     private static boolean sie_accu=true;
@@ -354,7 +354,7 @@ public abstract class VirtualList
         scrollbar=new ScrollBar();
         scrollbar.setHasPointerEvents(hasPointerEvents());
 
-        MainBar secondBar=new MainBar("", true);
+        MainBar secondBar=new MainBar("", true, hasPointerEvents() && cf.advTouch);
         secondBar.addElement(null); //1
         secondBar.addRAlign();
         secondBar.addElement(null); //3
@@ -384,7 +384,7 @@ public abstract class VirtualList
      * дисплея и подключение к дисплею виртуального списка (this)
      * @param display менеджер дисплея мобильного устройства {@link }
      */
-    public void attachDisplay (Display display) {
+    public final void attachDisplay (Display display) {
         this.display=display;
         parentView=display.getCurrent();
         display.setCurrent(this);
@@ -736,12 +736,24 @@ public abstract class VirtualList
 //#             g.fillRect(0, 0, width, h);
 //#         }
 //#else
-            g.setColor(getMainBarBGnd());
-            g.fillRect(0, 0, width, h);
+//#ifdef BACK_IMAGE
+//#         if (MainBar.bg != null) {
 //#endif
 
-        g.setColor(getMainBarRGB());
+            g.setColor(getMainBarBGnd());
+            g.fillRect(0, 0, width, h);
+//#ifdef BACK_IMAGE
+//#         }
+//#endif
 
+//#endif
+//#ifdef BACK_IMAGE
+//#         if (MainBar.bg != null) {
+//#endif
+        g.setColor(getMainBarRGB());
+//#ifdef BACK_IMAGE
+//#         }
+//#endif
         infobar.drawItem(g,(phoneManufacturer==Config.NOKIA && reverse)?17:0,false);
     }
 //#endif
@@ -761,11 +773,22 @@ public abstract class VirtualList
 //#             g.fillRect(0, 0, width, h);
 //#         }
 //#else
-            g.setColor(getMainBarBGnd());
-            g.fillRect(0, 0, width, h);
+//#ifdef BACK_IMAGE
+//#         if (MainBar.bg != null) {
 //#endif
-        
+        g.setColor(getMainBarBGnd());
+        g.fillRect(0, 0, width, h);
+//#ifdef BACK_IMAGE
+//#         }
+//#endif
+//#endif
+//#ifdef BACK_IMAGE
+//#         if (MainBar.bg != null) {
+//#endif
         g.setColor(getMainBarRGB());
+//#ifdef BACK_IMAGE
+//#         }
+//#endif
         mainbar.drawItem(g,(phoneManufacturer==Config.NOKIA && !reverse)?17:0,false);
     }
 

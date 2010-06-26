@@ -203,7 +203,9 @@ public class HistoryLoader {
                     StringBuffer bigMessage = new StringBuffer();
 
                     do {
-                        System.out.println("do");
+//#ifdef DEBUG
+//#                         System.out.println("do");
+//#endif
                         if (forward) {
                             bigMessage.append(getStrFromBytes(start, current_block.length-start));
                             readBlock(forward);

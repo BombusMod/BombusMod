@@ -27,6 +27,7 @@
 
 package xmpp.extensions;
 
+import Client.Config;
 import Client.Contact;
 import Client.Msg;
 import Client.Roster;
@@ -57,9 +58,10 @@ public class IqLast implements JabberBlockListener {
         if (type.equals("get")) {
             JabberDataBlock query=data.findNamespace("query", "jabber:iq:last");
             if (query==null) return BLOCK_REJECTED;
-            
-            Contact c=StaticData.getInstance().roster.getContact( data.getAttribute("from"), false);
-            c.setIncoming(Contact.INC_VIEWING);
+
+            Contact c=StaticData.getInstance().roster.getContact( data.getAttribute("from"), Config.getInstance().IQNotify);
+            if (c != null)
+                c.setIncoming(Contact.INC_VIEWING);
             
             long last=(Time.utcTimeMillis() - StaticData.getInstance().roster.lastMessageTime)/1000;
 

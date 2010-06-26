@@ -91,7 +91,7 @@ public class ArchiveList
         this.parentView=pView;
     }
 
-    public void commandState() {
+    public final void commandState() {
 //#ifdef MENU_LISTENER
         menuCommands.removeAllElements();
 //#endif
@@ -123,7 +123,7 @@ public class ArchiveList
 	return archive.size();
     }
     
-    public Msg getMessage(int index) {
+    protected Msg getMessage(int index) {
 	return archive.msg(index);
     }
 

@@ -26,9 +26,14 @@ package ui;
 
 import Fonts.FontCache;
 import images.RosterIcons;
-import javax.microedition.lcdui.Font;
+import javax.microedition.lcdui.Graphics;
+import javax.microedition.lcdui.Image;
 
 public class MainBar extends ComplexString{
+
+//#ifdef BACK_IMAGE
+//#     public static Image bg;
+//#endif
     
     public MainBar(int size, Object first, Object second, boolean bold) {
         this (size);
@@ -36,6 +41,12 @@ public class MainBar extends ComplexString{
         if (second!=null) setElementAt(second,1);
         
         font = FontCache.getFont(bold, FontCache.bar);
+//#ifdef BACK_IMAGE
+//#         try {
+//#             if (bg==null)
+//#                 bg=Image.createImage("/images/panelbg.png");
+//#         } catch (Exception e) { }
+//#endif        
     }
     
     public MainBar(Object obj) {
@@ -45,9 +56,30 @@ public class MainBar extends ComplexString{
     public MainBar(Object obj, boolean bold) {
         this(1, obj, null, bold);
     }
+    public MainBar(Object obj, boolean bold, boolean centered) {
+        this(1, obj, null, bold);
+        this.centered = centered;
+    }
     
     public MainBar(int size) {
         super (RosterIcons.getInstance());
         setSize(size);
-    }   
+    }
+    public int getVHeight() {
+//#ifdef BACK_IMAGE
+//#         if (bg != null)
+//#             return Math.max(super.getVHeight(), bg.getHeight());
+//#endif        
+        return super.getVHeight();
+    }
+    public void drawItem(Graphics g, int offset, boolean selected) {
+//#ifdef BACK_IMAGE
+//#         if (bg != null) {
+//#             for (int i=0; i < g.getClipWidth(); i++)
+//#                 g.drawImage(bg, i, 0, Graphics.TOP|Graphics.LEFT);
+//#         }
+//#endif
+
+        super.drawItem(g, offset, selected);
+    }
 }

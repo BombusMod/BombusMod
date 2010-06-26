@@ -116,7 +116,7 @@ public abstract class MessageList extends VirtualList
         return mi;
     }
     
-    public abstract Msg getMessage(int index);
+    protected abstract Msg getMessage(int index);
     
     public void markRead(int msgIndex) {}
     

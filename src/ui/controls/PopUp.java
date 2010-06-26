@@ -233,8 +233,8 @@ public class PopUp {
     }
     
 //paint
-    private static int[] alphaBuffer = null;
-/*    
+    //private static int[] alphaBuffer = null;
+    
     private void fillSemiTransRect(Graphics graph, int color, int alpha, int xPos, int yPos, int rectWidth, int rectHeight) {
         int r1 = ((color & 0xFF0000) >> 16);
         int g1 = ((color & 0x00FF00) >> 8);
@@ -253,7 +253,7 @@ public class PopUp {
 
         alphaBuffer = null;
     }
-*/
+
     public void paintCustom(Graphics graph) {
 	if(size()<1)
 	    return;
@@ -279,16 +279,16 @@ public class PopUp {
         //graph.translate(widthBorder, heightBorder);
 
         //graph.setClip(0,0,popUpWidth+1,popUpHeight+1);
-/*
+
         int alpha = 200;
        
         if (alpha<255) {
             fillSemiTransRect(graph, getColorBgnd(), alpha, widthBorder+1, heightBorder+1, popUpWidth-1, popUpHeight-1);
         } else {
- */
+ 
             graph.setColor(getColorBgnd());
             graph.fillRect(widthBorder+1,heightBorder+1,popUpWidth-1,popUpHeight-1);             //fill
-//        }
+        }
         
         graph.setColor(getColorInk());
         graph.drawRect(widthBorder,heightBorder,popUpWidth,popUpHeight);                 //border

@@ -29,14 +29,8 @@ package History;
 
 import Client.Contact;
 import Client.Msg;
-//#ifdef MENU_LISTENER
-import Menu.Command;
-//#else
-//# import javax.microedition.lcdui.Command;
-//#endif
 import Messages.MessageItem;
 import Messages.MessageList;
-import ui.VirtualElement;
 import javax.microedition.lcdui.Display;
 import locale.SR;
 import ui.MainBar;
@@ -58,7 +52,7 @@ public class HistoryReader extends MessageList {
      * @param c 
      */
     public HistoryReader(Display display, Contact c) {
-        super();
+        super(display);
         MIPrev = new MessageItem(new Msg(Msg.MESSAGE_TYPE_SYSTEM, null, null, "<---"), this, smiles);
         MINext = new MessageItem(new Msg(Msg.MESSAGE_TYPE_SYSTEM, null, null, "--->"), this, smiles);
 
@@ -70,8 +64,6 @@ public class HistoryReader extends MessageList {
         messages = hl.stepEnd();
 
         setCommandListener(this);
-        attachDisplay(display);
-
         moveCursorEnd();
     }
 
@@ -87,16 +79,16 @@ public class HistoryReader extends MessageList {
         }
         super.eventOk();
     }
-
+    
     public void keyPressed(int key_code) {
         switch(key_code) {
             case KEY_NUM1:
                 messages = hl.stepBegin();
-                moveCursorEnd();
+                moveCursorHome();
                 return;
             case KEY_NUM7:
                 messages = hl.stepEnd();
-                moveCursorHome();
+                moveCursorEnd();
                 return;
         }
         super.keyPressed(key_code);
@@ -109,6 +101,7 @@ public class HistoryReader extends MessageList {
     }
 
     public Msg getMessage(int i) {
+        if (messages == null) return null;
         return ((MessageItem) messages.elementAt(i)).msg;
     }
 /*

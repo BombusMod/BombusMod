@@ -32,6 +32,7 @@ import Colors.ColorTheme;
 import Fonts.FontCache;
 import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
+import javax.microedition.lcdui.Image;
 //#ifdef GRADIENT
 //# import ui.Gradient;
 //#endif
@@ -55,6 +56,9 @@ public class Progress {
 //#     private static int bottomColor;
 //#endif
     private static int topColor;
+//#ifdef BACK_IMAGE
+//#     private static Image img;
+//#endif
 
     /** Creates a new instance of progress */
     public Progress(int x, int y, int width) {
@@ -69,6 +73,17 @@ public class Progress {
 //#         if (topColor!=bottomColor)
 //#             Progress.gr=new Gradient(x, y-height, x+width, y, topColor, bottomColor, false);
 //#endif
+//#ifdef BACK_IMAGE
+//#         try {
+//#             if (img==null)
+//#                 img=Image.createImage("/images/progress.png");
+//#         } catch (Exception e) { }
+//#         if (img != null) {
+//#             Progress.height = img.getHeight();
+//#             Progress.y=y - height;
+//#         }
+//#endif
+        
     }
     
     public static void draw(Graphics g, int filled, String text) {
@@ -79,15 +94,25 @@ public class Progress {
 //#             gr.paintWidth(g, x+filled);
 //#         } else {
 //#endif
+//#ifdef BACK_IMAGE
+//#         if (img != null) {
+//#             for (int i = x; i <= x + filled; i++ )
+//#                 g.drawImage(img, i, y + 1, Graphics.LEFT| Graphics.TOP);
+//#         } else {
+//#endif
             g.setColor(topColor);
             g.fillRect(x, y+1, filled, height - 1);
+//#ifdef BACK_IMAGE
+//#         }
+//#endif
+
 //#ifdef GRADIENT
 //#         }
 //#endif
        
         g.setColor(ColorTheme.getColor(ColorTheme.PGS_INK));
         g.setFont(font);
-        g.drawString(text, x+(width/2), y, Graphics.TOP|Graphics.HCENTER);
+        g.drawString(text, x+(width/2), y + (height - font.getHeight())/2, Graphics.TOP|Graphics.HCENTER);
         g.drawRect(x, y, width-1, height-1);
         //g.drawLine(x,y,width,y);
         g.drawLine(x+filled,y+1,x+filled,y+height-1);
