@@ -27,7 +27,6 @@
 
 package PrivacyLists;
 
-import Client.Config;
 import Client.StaticData;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
@@ -64,6 +63,7 @@ public class PrivacyModifyList
 //#endif
     
     private PrivacyList plist;
+    private PrivacySelect pselector;
     
     private Command cmdCancel=new Command (SR.MS_CANCEL, Command.BACK, 99);
     private Command cmdAdd=new Command (SR.MS_ADD_RULE, Command.SCREEN, 10);
@@ -76,14 +76,15 @@ public class PrivacyModifyList
     JabberStream stream=StaticData.getInstance().roster.theStream;
     
     /** Creates a new instance of PrivacySelect */
-    public PrivacyModifyList(Display display, Displayable pView, PrivacyList privacyList, boolean newList) {
+    public PrivacyModifyList(Display display, Displayable pView, PrivacyList privacyList, boolean newList, PrivacySelect privacySelect) {
         super(display);
         setMainBarItem(new MainBar(2, null, privacyList.name, false));
 
         commandState();
         setCommandListener(this);
 
-        plist=privacyList;
+        plist = privacyList;
+        pselector = privacySelect;
         
         if (!newList) {
             processIcon(true);
@@ -139,7 +140,9 @@ public class PrivacyModifyList
         if (c==cmdAdd) {
             new PrivacyForm(display, this, new PrivacyItem(), plist);
         }
-        if (c==cmdEdit) eventOk();
+        if (c==cmdEdit) {
+            eventOk();
+        }
         if (c==cmdDel) {
             Object del=getFocusedObject();
             if (del!=null) plist.rules.removeElement(del);
@@ -147,7 +150,8 @@ public class PrivacyModifyList
         if (c==cmdSave) {
             plist.generateList();
             stream.cancelBlockListener(this);
-            PrivacyList.privacyListRq(false, null, "setplists");
+            pselector.getLists();
+            //PrivacyList.privacyListRq(false, null, "setplists");
             destroyView();
         }
         

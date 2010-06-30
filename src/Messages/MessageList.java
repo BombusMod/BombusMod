@@ -105,7 +105,8 @@ public abstract class MessageList extends VirtualList
     public abstract int getItemCount(); // из protected �?делали public
 
     protected VirtualElement getItemRef(int index) {
-	if (messages.size()<getItemCount()) messages.setSize(getItemCount());
+	if (messages.size()<getItemCount())
+            messages.setSize(getItemCount());
 	MessageItem mi=(MessageItem) messages.elementAt(index);
 	if (mi==null) {
 	    mi=new MessageItem(getMessage(index), this, smiles);

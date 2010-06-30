@@ -27,7 +27,6 @@
 
 package PrivacyLists;
 
-import Client.Config;
 import Client.StaticData;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
@@ -112,7 +111,7 @@ public class PrivacySelect
         redraw();
     }
    
-    private void getLists(){
+    protected void getLists() {
         try {
             Thread.sleep(500);
         } catch (Exception e) { }
@@ -148,12 +147,7 @@ public class PrivacySelect
             getLists();
         }
         if (c==cmdDelete) {
-            PrivacyList pl=(PrivacyList) getFocusedObject();
-            if (pl!=null) {
-                if (pl.name!=null)
-                        pl.deleteList();
-                getLists();
-            }
+            cmdDelete();
         }
         if (c==cmdNewList)
             new MIDPTextBox(display, this, SR.MS_NEW, "", this, TextField.ANY);
@@ -169,10 +163,10 @@ public class PrivacySelect
     // MIDPTextBox interface
     public void OkNotify(String listName) {
         if (listName.length()>0)
-            new PrivacyModifyList(display, this, new PrivacyList(listName), true);
+            new PrivacyModifyList(display, this, new PrivacyList(listName), true, this);
     }
     
-    public int blockArrived(JabberDataBlock data){
+    public int blockArrived(JabberDataBlock data) {
         try {
             if (data.getTypeAttribute().equals("result"))
                 if (data.getAttribute("id").equals("getplists")) {
@@ -211,12 +205,14 @@ public class PrivacySelect
         return JabberBlockListener.BLOCK_REJECTED;
     }
 
-    public void eventOk(){
-        PrivacyList pl=(PrivacyList) getFocusedObject();
-        if (pl!=null) {
-            if (pl.name!=null) new PrivacyModifyList(display, this, pl, false);
+    public void eventOk() {
+        PrivacyList pl = (PrivacyList) getFocusedObject();
+        if (pl != null) {
+            if (pl.name != null)
+                new PrivacyModifyList(display, this, pl, false, this);
         }
     }
+
     private void generateIgnoreList(){
         JabberDataBlock ignoreList=new JabberDataBlock("list", null, null);
         ignoreList.setAttribute("name", SR.MS_IGNORE_LIST);
@@ -228,16 +224,24 @@ public class PrivacySelect
     public void keyGreen() {
         new MIDPTextBox(display, this, SR.MS_NEW, "", this, TextField.ANY);
     }
-        
-    protected void keyClear(){
-        new AlertBox(SR.MS_DELETE, getFocusedObject().toString(), display, this) {
+    
+    private void cmdDelete() {
+        PrivacyList pl = (PrivacyList) getFocusedObject();
+        if (pl != null) {
+            if (pl.name != null)
+                pl.deleteList();
+            getLists();
+        }
+    }
+    
+    protected void keyClear() {
+        String name = getFocusedObject().toString();
+        new AlertBox(name, SR.MS_DELETE + " \"" + name + "\"?", display, this) {
+
             public void yes() {
-                PrivacyList pl=(PrivacyList) getFocusedObject();
-                if (pl!=null) {
-                    if (pl.name!=null) pl.deleteList();
-                    getLists();
-                }
+                cmdDelete();
             }
+
             public void no() {}
         };
     }

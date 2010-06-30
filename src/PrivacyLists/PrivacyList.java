@@ -28,10 +28,11 @@
 package PrivacyLists;
 import com.alsutton.jabber.datablocks.Iq;
 import images.RosterIcons;
-import java.util.*;
-import ui.*;
-import Client.*;
-import com.alsutton.jabber.*;
+import java.util.Vector;
+import java.util.Enumeration;
+import ui.IconTextElement;
+import Client.StaticData;
+import com.alsutton.jabber.JabberDataBlock;
 
 /**
  *
@@ -65,17 +66,16 @@ public class PrivacyList extends IconTextElement {
     }
     
     
-    public void generateList(){
-        int index=0;
-        
+    public void generateList() {
+        int index = 0;
         JabberDataBlock list = listBlock();
-        for (Enumeration e=rules.elements(); e.hasMoreElements(); ) {
-            
-            PrivacyItem item=(PrivacyItem)e.nextElement();
-            item.order=index++;
-                        
+
+        for (Enumeration e = rules.elements(); e.hasMoreElements();) {
+            PrivacyItem item = (PrivacyItem) e.nextElement();
+            item.order = index++;
             list.addChild( item.constructBlock() );
         }
+        
         PrivacyList.privacyListRq(true, list, "storelst");
     }
 
@@ -85,12 +85,12 @@ public class PrivacyList extends IconTextElement {
         return list;
     }
     
-    public void deleteList(){
+    public void deleteList() {
         JabberDataBlock list=listBlock();
         PrivacyList.privacyListRq(true, list, "storelst");
     }
   
-    public void activate (String atr) {
+    public void activate(String atr) {
         JabberDataBlock a=new JabberDataBlock(atr, null, null);
         a.setAttribute("name", name);
         privacyListRq(true, a, "plset");

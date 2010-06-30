@@ -1523,7 +1523,7 @@ public class Roster
                         highlite=true;
                         mType=Msg.MESSAGE_TYPE_SUBJ;
                     }
-                } else if (type!=null){
+                } else if (type!=null) {
                     if (type.equals("error")) {
                         body=SR.MS_ERROR_ + XmppError.findInStanza(message).toString();
                     } else if (type.equals("headline")) {
@@ -1546,7 +1546,7 @@ public class Roster
                                 String room=from+'/'+sd.account.getNickName();
                                 
                                 ConferenceGroup invConf=initMuc(room, xmlns.getChildBlockText("password"));
-                                
+
                                 invConf.confContact.commonPresence=false; //FS#761
                                 
                                 if (invConf.selfContact.status==Presence.PRESENCE_OFFLINE)

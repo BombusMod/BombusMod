@@ -122,7 +122,8 @@ public class ScrollBar {
         this.hasPointerEvents = hasPointerEvents;
 	scrollWidth=(hasPointerEvents)? WIDTH_SCROLL_2: WIDTH_SCROLL_1;
 //#ifdef BACK_IMAGE
-//#         scrollWidth = Math.max(scrollWidth, imgH.getWidth());
+//#         if (imgH != null)
+//#             scrollWidth = Math.max(scrollWidth, imgH.getWidth());
 //#endif
     }
 

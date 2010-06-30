@@ -62,9 +62,9 @@ public class HistoryReader extends MessageList {
 
         hl = new HistoryLoader(c.bareJid, this, smiles);
         messages = hl.stepEnd();
+        moveCursorEnd();
 
         setCommandListener(this);
-        moveCursorEnd();
     }
 
     public void eventOk() {
