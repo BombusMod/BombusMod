@@ -96,8 +96,10 @@ public class Progress {
 //#endif
 //#ifdef BACK_IMAGE
 //#         if (img != null) {
-//#             for (int i = x; i <= x + filled; i++ )
-//#                 g.drawImage(img, i, y + 1, Graphics.LEFT| Graphics.TOP);
+//#             int size = img.getWidth();
+//#             int count = filled / size;
+//#             for (int i = x; i <= (x + count); i++ )
+//#                 g.drawImage(img, i * size, y + 1, Graphics.LEFT| Graphics.TOP);
 //#         } else {
 //#endif
             g.setColor(topColor);

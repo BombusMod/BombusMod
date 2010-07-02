@@ -75,8 +75,11 @@ public class MainBar extends ComplexString{
     public void drawItem(Graphics g, int offset, boolean selected) {
 //#ifdef BACK_IMAGE
 //#         if (bg != null) {
+//#             int ofs = 0;
+//#             if (getVHeight() > bg.getHeight())
+//#                 ofs =  (getVHeight() - bg.getHeight()) >> 1;
 //#             for (int i=0; i < g.getClipWidth(); i++)
-//#                 g.drawImage(bg, i, 0, Graphics.TOP|Graphics.LEFT);
+//#                 g.drawImage(bg, i, ofs , Graphics.TOP|Graphics.LEFT);
 //#         }
 //#endif
 

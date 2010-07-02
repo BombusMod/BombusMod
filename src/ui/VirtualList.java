@@ -736,24 +736,10 @@ public abstract class VirtualList
 //#             g.fillRect(0, 0, width, h);
 //#         }
 //#else
-//#ifdef BACK_IMAGE
-//#         if (MainBar.bg != null) {
-//#endif
-
             g.setColor(getMainBarBGnd());
             g.fillRect(0, 0, width, h);
-//#ifdef BACK_IMAGE
-//#         }
-//#endif
-
-//#endif
-//#ifdef BACK_IMAGE
-//#         if (MainBar.bg != null) {
 //#endif
         g.setColor(getMainBarRGB());
-//#ifdef BACK_IMAGE
-//#         }
-//#endif
         infobar.drawItem(g,(phoneManufacturer==Config.NOKIA && reverse)?17:0,false);
     }
 //#endif
@@ -773,22 +759,10 @@ public abstract class VirtualList
 //#             g.fillRect(0, 0, width, h);
 //#         }
 //#else
-//#ifdef BACK_IMAGE
-//#         if (MainBar.bg != null) {
-//#endif
         g.setColor(getMainBarBGnd());
         g.fillRect(0, 0, width, h);
-//#ifdef BACK_IMAGE
-//#         }
-//#endif
-//#endif
-//#ifdef BACK_IMAGE
-//#         if (MainBar.bg != null) {
 //#endif
         g.setColor(getMainBarRGB());
-//#ifdef BACK_IMAGE
-//#         }
-//#endif
         mainbar.drawItem(g,(phoneManufacturer==Config.NOKIA && !reverse)?17:0,false);
     }
 

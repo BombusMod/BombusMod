@@ -192,7 +192,7 @@ public class ScrollBar {
         scrollerX-=scrollWidth;
 //#ifdef BACK_IMAGE
 //#         if (ScrollBar.imgB != null && ScrollBar.imgB != null) {
-//#             g.drawImage(imgH, 1, scrollerPos - 3, Graphics.LEFT|Graphics.TOP);
+//#             g.drawImage(imgH, 1, scrollerPos - imgH.getHeight(), Graphics.LEFT|Graphics.TOP);
 //#             for (int i = scrollerPos; i < scrollerPos + scrollerSize; i++) {
 //#                 g.drawImage(imgB, 1, i, Graphics.LEFT|Graphics.TOP);
 //#             }
