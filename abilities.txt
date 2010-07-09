@@ -6,7 +6,6 @@ ARCHIVE - архив сообщений [почти то же, что и TEMPLAT
 AUTOSTATUS - автостатус (например, статус "away" через 5 минут и "extended away" через 10 бездействия).
 AUTOTASK - планировщик задач (например, возможность автоматического выхода из конференции или клиента через определённое время).
 BACK_IMAGE - возможность установить фоновую картинку для ростера и прочих окон.
-BYTESTREAMS - использование прокси для передачи файлов [XEP-0065: SOCKS5 Bytestreams]
 CAPTCHA - поддержка капчи [XEP-0158: CAPTCHA Forms].
 CHANGE_TRANSPORT - смена транспорта (перенос контактов с одного транспорта на другой).
 CHECK_VERSION - проверка обновлений клиента.
@@ -22,8 +21,7 @@ FILE_TRANSFER - передача файлов (SOCKS5 & IBB).
 GRADIENT - возможность установить градиент в качестве цвета панелей окон (заголовок сверху и инфо-панель снизу).
 HISTORY - сохранение истории сообщений.
 HISTORY_READER - чтение истории сообщений в клиенте [похоже на LAST_MESSAGES].
-#HTTPCONNECT - соединение через прокси или HTTPPOLL [XEP-0124: Bidirectional-streams Over Synchronous HTTP (BOSH)].
-HTTPCONNECT - соединение через HTTP-прокси (требует HTTPPOOL).
+HTTPCONNECT - соединение через HTTP-прокси
 HTTPPOLL - использование метода HTTPPOLL для подключения к серверу [XEP-0025: Jabber HTTP Polling].
 IMPORT_EXPORT - импорт/экспорт пользовательских данных (настройки, архив итп...).
 JUICK - удобное использование бота juick@juick.com.
@@ -36,7 +34,6 @@ NEW_SKIN - иконки visitors объединены с skin, иконки menu
 NICK_COLORS - раскрашивание ников.
 NON_SASL_AUTH - использование pre-xmpp способа авторизации для серверов, сообщающих что они xmpp-compliant.
 NOMMEDIA - не использовать MMAPI (JSR-135)
-NOLEGACY - не использовать MIDP1-классы производителей (Siemens, Moto)
 PEP - pubsub (поддержка в общем) + настроения (user mood) [XEP-0163: Personal Eventing Protocol, XEP-0060: Publish-Subscribe, XEP-0107: User Mood].
 PEP_ACTIVITY - получение инфо состоянии контакта (требует PEP) [XEP-0108: User Activity].
 PEP_TUNE - получение инфо о музыке играющей у контактов (требует PEP) [XEP-0118: User Tune].

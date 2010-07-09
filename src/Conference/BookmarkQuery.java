@@ -99,7 +99,8 @@ public class BookmarkQuery implements JabberBlockListener{
 
     private void loadDefaults(Vector bookmarks) {
 	Vector defs[]=new StringLoader().stringLoader("/def_bookmarks.txt", 4);
-        for (int i=0; i<defs[0].size(); i++) {
+        int j=defs[0].size();
+        for (int i=0; i<j; i++) {
             String jid      =(String) defs[0].elementAt(i);
             String nick     =(String) defs[1].elementAt(i);
             String pass     =(String) defs[2].elementAt(i);

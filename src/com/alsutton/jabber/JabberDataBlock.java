@@ -198,7 +198,8 @@ public class JabberDataBlock
 
   public JabberDataBlock findNamespace(String tagName, String xmlns) {
       if (childBlocks==null) return null;
-      for (int i=0; i<childBlocks.size(); i++){
+      int j=childBlocks.size();
+      for (int i=0; i<j; i++){
           JabberDataBlock d=(JabberDataBlock)childBlocks.elementAt(i);
           
           if (tagName!=null) if (! tagName.equals(d.tagName)) continue;
@@ -230,13 +231,15 @@ public class JabberDataBlock
       }
       
       int index=0;
-      while (index<attributes.size()) {
+      int j=attributes.size();
+      while (index<j) {
           if ( ((String)attributes.elementAt(index)).equals(attributeName) ) {
               if (value!=null) {
                   attributes.setElementAt(value, index+1);
               } else {
                   attributes.removeElementAt(index);
                   attributes.removeElementAt(index);
+                  j-=2;
               }
               return;
           }
@@ -272,7 +275,8 @@ public class JabberDataBlock
   public JabberDataBlock getChildBlock(String byTagName)
   {
     if (childBlocks==null) return null;
-    for (int i=0; i<childBlocks.size(); i++){
+    int j=childBlocks.size();
+    for (int i=0; i<j; i++){
         JabberDataBlock d=(JabberDataBlock)childBlocks.elementAt(i);
         if (d.getTagName().equals(byTagName)) return d;
     }
@@ -287,7 +291,8 @@ public class JabberDataBlock
   public JabberDataBlock getChildBlockByText(String text)
   {
     if (childBlocks==null) return null;
-    for (int i=0; i<childBlocks.size(); i++){
+    int j=childBlocks.size();
+    for (int i=0; i<j; i++){
         JabberDataBlock d=(JabberDataBlock)childBlocks.elementAt(i);
         if (text.equals(d.getText()) ) return d;
     }
@@ -354,7 +359,8 @@ public class JabberDataBlock
 	
 	if (!getTagName().equals("BINVAL")) {      
       if( childBlocks != null ) {
-          for(int i=0; i<childBlocks.size(); i++)
+          int j=childBlocks.size();
+          for(int i=0; i<j; i++)
           {
               JabberDataBlock thisBlock = (JabberDataBlock) childBlocks.elementAt(i);
               thisBlock.constructXML(data);
@@ -375,7 +381,8 @@ public class JabberDataBlock
   protected void addAttributeToStringBuffer( StringBuffer buffer )  {
       int index=0;
       
-      while (index<attributes.size()) {
+      int j=attributes.size();
+      while (index<j) {
           String nextKey = (String) attributes.elementAt(index);
           String nextValue = (String) attributes.elementAt(index+1);
           index+=2;

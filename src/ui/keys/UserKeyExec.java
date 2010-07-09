@@ -101,7 +101,7 @@ public class UserKeyExec {
 //#ifdef POPUPS
         available_commands[1].addElement(new UserKeyCommand(11, SR.MS_CLEAR_POPUPS));
 //#endif
-        available_commands[0].addElement(new UserKeyCommand(12, SR.MS_FLASHLIGHT));
+      //  available_commands[0].addElement(new UserKeyCommand(12, SR.MS_FLASHLIGHT));
         available_commands[0].addElement(new UserKeyCommand(13, SR.MS_ABOUT));
         available_commands[0].addElement(new UserKeyCommand(14, SR.MS_APP_MINIMIZE));
         available_commands[0].addElement(new UserKeyCommand(15, SR.MS_INVERT));
@@ -234,11 +234,11 @@ public class UserKeyExec {
                 sd.roster.cmdClearPopups();
 //#endif
                 break;
-            case 12:
+            /*case 12:
                 cf.lightState=!cf.lightState;
                 sd.roster.setLight(cf.lightState);
                 cf.saveToStorage();
-                break;
+                break;*/
             case 13:
                 sd.roster.cmdInfo();
                 break;

@@ -250,7 +250,7 @@ public class ConfigForm
         if (phoneManufacturer==Config.SONYE) itemsList.addElement(oldSE);
 //#endif
 
-        lightState = new CheckBox(SR.MS_FLASHLIGHT, cf.lightState);
+        lightState = new CheckBox(SR.L_CONFIG, cf.lightState);
         if (phoneManufacturer==Config.SIEMENS || phoneManufacturer==Config.SIEMENS2 || phoneManufacturer==Config.SONYE || phoneManufacturer==Config.NOKIA) itemsList.addElement(lightState);
 //#ifdef FILE_TRANSFER
         fileTransfer = new CheckBox(SR.MS_FILE_TRANSFERS, cf.fileTransfer); 
@@ -482,7 +482,7 @@ public class ConfigForm
             VirtualList.changeOrient(cf.panelsState);
         }       
 
-        sd.roster.setLight(cf.lightState);   
+        //sd.roster.setLight(cf.lightState);   TODO: correct for new light control
 
         sd.roster.setFullScreenMode(Config.fullscreen);
 

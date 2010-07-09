@@ -32,6 +32,9 @@ import Colors.ColorTheme;
 import Fonts.FontCache;
 import javax.microedition.lcdui.*;
 import Client.*;
+//#ifdef LIGHT_CONFIG
+//# import LightControl.CustomLight;
+//#endif
 import locale.SR;
 //#ifdef POPUPS
 import ui.controls.PopUp;
@@ -829,9 +832,26 @@ public abstract class VirtualList
 
     protected int kHold;
     
-    protected void keyRepeated(int keyCode){ key(keyCode); }
+    protected void keyRepeated(int keyCode){ 
+        key(keyCode); 
+//#ifdef LIGHT_CONFIG      
+//#ifdef PLUGINS                
+//#         if (StaticData.getInstance().lightConfig)
+//#endif            
+//#             CustomLight.keyPressed();
+//#endif        
+    }
     protected void keyReleased(int keyCode) { kHold=0; }
-    protected void keyPressed(int keyCode) { kHold=0; key(keyCode);  }
+    protected void keyPressed(int keyCode) { 
+        kHold=0; 
+        key(keyCode); 
+//#ifdef LIGHT_CONFIG      
+//#ifdef PLUGINS                
+//#         if (StaticData.getInstance().lightConfig)
+//#endif            
+//#             CustomLight.keyPressed();
+//#endif        
+    }
     private int yPointerPos;
 
     protected void pointerPressed(int x, int y) {
@@ -1464,7 +1484,8 @@ public abstract class VirtualList
                 int f, i;
                 IconTextElement left, right;
                 
-                for (f = 1; f < sortVector.size(); f++) {
+                int j=sortVector.size();
+                for (f = 1; f < j; f++) {
                     left=(IconTextElement)sortVector.elementAt(f);
                     right=(IconTextElement)sortVector.elementAt(f-1);
                     if ( left.compare(right) >=0 ) continue;

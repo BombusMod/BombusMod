@@ -246,7 +246,8 @@ public class AccountSelect extends DefForm {
     
     public void rmsUpdate(){
         DataOutputStream outputStream=NvStorage.CreateDataOutputStream();
-        for (int i=0;i<accountList.size();i++) 
+        int j=accountList.size();
+        for (int i=0;i<j;i++) 
             ((Account)accountList.elementAt(i)).saveToDataOutputStream(outputStream);
         NvStorage.writeFileRecord(outputStream, "accnt_db", 0, true); //Account.storage
     }

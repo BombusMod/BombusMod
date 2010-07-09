@@ -95,9 +95,10 @@ public class ColorConfigForm
         itemsList.addElement(new SpacerItem(10));
         try {
             files=new StringLoader().stringLoader("/skins/res.txt",2);
-            if (files[0].size()>0) {
+            int j=files[0].size();
+            if (j>0) {
                 skinFiles=new DropChoiceBox(display, SR.MS_SELECT);
-                for (int i=0; i<files[0].size(); i++) {
+                for (int i=0; i<j; i++) {
                     skinFiles.append((String)files[1].elementAt(i));
                 }
                 skinFiles.setSelectedIndex(0);

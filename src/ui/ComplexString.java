@@ -200,7 +200,7 @@ public class ComplexString extends Vector implements VirtualElement {
                 } /* Integer*/ else if (ob instanceof VirtualElement) { 
                     int clipw=g.getClipWidth(); 
                     int cliph=g.getClipHeight();
-                    ((VirtualElement)ob).drawItem(g,0,false);
+                    ((VirtualElement)ob).drawItem(g, offset,false);
                     g.setClip(g.getTranslateX(), g.getTranslateY(), clipw, cliph);
                 }
             } // if ob!=null

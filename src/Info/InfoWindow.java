@@ -292,6 +292,12 @@ public class InfoWindow
 //#endif
 //#             abilitiesList.addElement("LAST_MESSAGES");
 //#endif
+//#ifdef LIGHT_CONFIG
+//#ifdef PLUGINS        
+//#         if (sd.lightConfig)
+//#endif            
+//#             abilitiesList.addElement("LIGHT_CONFIG");
+//#endif  
 //#ifdef LOGROTATE
 //#         abilitiesList.addElement("LOGROTATE");
 //#endif

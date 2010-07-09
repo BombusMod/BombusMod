@@ -78,7 +78,8 @@ public class Activities {
     }
     
     public int getActIndex(String act) {
-        for (int i=0; i<actKey.size(); i++) {
+        int j=actKey.size();
+        for (int i=0; i<j; i++) {
             if (act.equals((String)actKey.elementAt(i))) return i;
         }
         return -1;

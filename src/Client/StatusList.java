@@ -89,7 +89,8 @@ public class StatusList {
         try {
             DataOutputStream outputStream=NvStorage.CreateDataOutputStream();
             
-            for (int i=0;i<statusList.size();i++) {
+            int j=statusList.size();
+            for (int i=0;i<j;i++) {
                 ExtendedStatus e=(ExtendedStatus)statusList.elementAt(i);
                 outputStream.writeInt(e.getPriority());
                 outputStream.writeUTF(e.getMessage());

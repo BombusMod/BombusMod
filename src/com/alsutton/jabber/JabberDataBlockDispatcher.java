@@ -133,10 +133,12 @@ public class JabberDataBlockDispatcher extends Thread
                 int processResult=JabberBlockListener.BLOCK_REJECTED;
                 synchronized (blockListeners) {
                     int i=0;
-                    while (i<blockListeners.size()) {
+                    int j=blockListeners.size();
+                    while (i<j) {
                         processResult=((JabberBlockListener)blockListeners.elementAt(i)).blockArrived(dataBlock);
                         if (processResult==JabberBlockListener.BLOCK_PROCESSED) break;
                         if (processResult==JabberBlockListener.NO_MORE_BLOCKS) {
+                            j--;
                             blockListeners.removeElementAt(i); break;
                         }
                         i++;
@@ -174,9 +176,13 @@ public class JabberDataBlockDispatcher extends Thread
   public void cancelBlockListenerByClass(Class removeClass){
       synchronized (blockListeners) {
           int index=0;
-          while (index<blockListeners.size()) {
+          int j=blockListeners.size();
+          while (index<j) {
               Object list=blockListeners.elementAt(index);
-              if (list.getClass().equals(removeClass)) blockListeners.removeElementAt(index); 
+              if (list.getClass().equals(removeClass)) {
+                  blockListeners.removeElementAt(index); 
+                  j--;
+              }
               else index++;
           }
       }

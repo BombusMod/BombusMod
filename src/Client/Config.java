@@ -793,8 +793,8 @@ public static boolean fullscreen=
     private void getPhoneManufacturer() {
         if (phoneManufacturer==NOT_DETECTED) {
             String platform=getPlatformName();
-            phoneManufacturer=NONE;
-
+            phoneManufacturer=NONE;           
+            
             if (platform.endsWith("(NSG)")) {
                 phoneManufacturer=SIEMENS;
                 return;

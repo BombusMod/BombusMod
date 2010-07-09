@@ -42,6 +42,9 @@ import java.util.TimerTask;
 import javax.microedition.lcdui.*;
 import midlet.BombusMod;
 import Colors.ColorTheme;
+//#ifdef LIGHT_CONFIG
+//# import LightControl.CustomLight;
+//#endif
 import ui.controls.Progress;
 
 /**
@@ -128,7 +131,7 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
         if (pos==-1) {
             g.setColor(ColorTheme.getColor(ColorTheme.BLK_INK));
 
-            status.drawItem(g, 0, false);
+            status.drawItem(g, (Config.getInstance().phoneManufacturer==Config.NOKIA)?17:0, false);
 
             g.setFont(clockFont);
             int h=clockFont.getHeight()+1;
@@ -224,6 +227,12 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
         if (pos>=20)
             close();
         kHold=0;
+//#ifdef LIGHT_CONFIG       
+//#ifdef PLUGINS                
+//#         if (StaticData.getInstance().lightConfig)
+//#endif            
+//#             CustomLight.keyPressed();
+//#endif        
     }
 
     protected void keyRepeated(int keyCode) { 

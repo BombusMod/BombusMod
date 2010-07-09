@@ -67,6 +67,9 @@ import Colors.ColorConfigForm;
 //#if SASL_XGOOGLETOKEN
 //# import xmpp.extensions.IqGmail;
 //#endif
+//#ifdef LIGHT_CONFIG
+//# import LightControl.LightConfigForm;
+//#endif
 
 public class RosterToolsMenu extends Menu {
     Config cf;
@@ -173,7 +176,15 @@ public class RosterToolsMenu extends Menu {
 //#endif
 //#             addItem("Tools for Juick.Com", 20, MenuIcons.ICON_JUICK);
 //#endif
-        addItem(SR.MS_BREAK_CONECTION, 21, MenuIcons.ICON_RECONNECT);
+//#ifdef LIGHT_CONFIG
+//#ifdef PLUGINS        
+//#         if (sd.lightConfig)
+//#endif        
+//#             if (cf.lightState)
+//#                 addItem(SR.L_CONFIG, 21, MenuIcons.ICON_SETTINGS);
+//#endif        
+
+        addItem(SR.MS_BREAK_CONECTION, 22, MenuIcons.ICON_RECONNECT);
         attachDisplay(display);
         this.parentView=pView;
     }
@@ -284,10 +295,19 @@ public class RosterToolsMenu extends Menu {
 //#                 new JuickConfig(display, parentView, me.toString());
 //#                 return;
 //#endif
-            case 21:
+            case 22:
                 sd.roster.errorLog(SR.MS_SIMULATED_BREAK);
                 //reconnectWindow.getInstance().startReconnect();
                 sd.roster.doReconnect();//connectionTerminated(new Exception(SR.MS_SIMULATED_BREAK));
+                return;
+            case 21:
+//#ifdef LIGHT_CONFIG
+//#ifdef PLUGINS        
+//#         if (sd.lightConfig)
+//#endif            
+//#                 
+//#                 new LightConfigForm(display, this);
+//#endif                
                 return;
         }
     }

@@ -47,6 +47,9 @@ import Client.*;
 import Info.Version;
 import java.util.Vector;
 import util.StringLoader;
+//#ifdef LIGHT_CONFIG
+//# import LightControl.*;
+//#endif
 
 /** Entry point class
  *
@@ -60,21 +63,32 @@ public class BombusMod extends MIDlet implements Runnable{
     private boolean isMinimized;
     StaticData sd=StaticData.getInstance();
     ColorTheme ct=ColorTheme.getInstance();
+//#ifdef LIGHT_CONFIG
+//#     LightConfig lcf;
+//#endif    
     SplashScreen s;
 
     public static Image splash;
     
-    private static BombusMod instance; 
-
+    private static BombusMod instance;
+    
     public BombusMod() {
-        instance=this; 
-        display = Display.getDisplay(this);
-        s = SplashScreen.getInstance(display);
-        s.setProgress("Loading", 3); // this message will not be localized
+        
     }
     
     /** Entry point  */
     public void startApp() {
+        instance=this; 
+        display = Display.getDisplay(this);
+        s = SplashScreen.getInstance(display);
+        s.setProgress("Loading", 3); // this message will not be localized
+//#ifdef LIGHT_CONFIG        
+//#ifdef PLUGINS        
+//#     if (StaticData.getInstance().lightConfig)        
+//#endif               
+//#         lcf = LightConfig.getInstance();
+//#endif    
+
         if (isRunning) {
             hideApp(false);
             return;
@@ -91,6 +105,13 @@ public class BombusMod extends MIDlet implements Runnable{
     public void pauseApp() { }
 
     public void run(){
+//#ifdef LIGHT_CONFIG        
+//#ifdef PLUGINS        
+//#     if (StaticData.getInstance().lightConfig)        
+//#endif                       
+//#         CustomLight.setLight(lcf.light_control);
+//#endif    
+
         try {
             s.img=Image.createImage("/images/splash.png");
         } catch (Exception e) {
@@ -132,6 +153,12 @@ public class BombusMod extends MIDlet implements Runnable{
         } catch (Exception e) {
             e.printStackTrace();
         }
+//#ifdef LIGHT_CONFIG        
+//#ifdef PLUGINS        
+//#     if (StaticData.getInstance().lightConfig)        
+//#endif                       
+//#         CustomLight.keyPressed();
+//#endif        
     }
 
     public void destroyApp(boolean unconditional) { }
@@ -154,7 +181,8 @@ public class BombusMod extends MIDlet implements Runnable{
 //#     private void getPlugins() {
 //#         Vector defs[] = new StringLoader().stringLoader("/modules.txt", 2);
 //#         if (defs != null) {
-//#             for (int i = 0; i < defs[0].size(); i++) {
+//#             int j = defs[0].size();
+//#             for (int i = 0; i < j; i++) {
 //#                 String name = (String) defs[0].elementAt(i);
 //#                 String value = (String) defs[1].elementAt(i);
 //# 

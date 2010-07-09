@@ -78,8 +78,12 @@ public class Groups implements JabberBlockListener{
     private int rosterOnline;
     
     public void resetCounters(){
-        for (Enumeration e=groups.elements();e.hasMoreElements();){
-            Group grp=(Group)e.nextElement();
+        //for (Enumeration e=groups.elements();e.hasMoreElements();){
+        //    Group grp=(Group)e.nextElement();
+        int j=groups.size();
+        for(int i=0; i<j; i++)
+        {
+            Group grp = (Group)groups.elementAt(i);
 	    grp.startCount();
         }
 	rosterContacts=0;
@@ -141,7 +145,8 @@ public class Groups implements JabberBlockListener{
 
     public Vector getRosterGroupNames(){
         Vector s=new Vector();
-        for (int i=0; i<groups.size(); i++) {
+        int j=groups.size();
+        for (int i=0; i<j; i++) {
 	    Group grp=(Group) groups.elementAt(i);
             if (grp.type<TYPE_NO_GROUP) continue;
             if (grp.type>TYPE_IGNORE) continue;

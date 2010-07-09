@@ -65,7 +65,8 @@ public class ClientsIconsData {
     private static int getClientIDByCaps(String caps) {
         if (clients.length==0) return -1;
         caps=caps.toLowerCase();
-        for (int i=0; i<clients[0].size(); i++) {
+        int j = clients[0].size();
+        for (int i=0; i<j; i++) {
             String client=((String) clients[0].elementAt(i)).toLowerCase();
             if (client.indexOf(",")>-1) {
                 boolean parse = true;

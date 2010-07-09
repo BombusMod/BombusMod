@@ -117,6 +117,10 @@ import xmpp.extensions.IqTimeReply;
 //#endif
 import xmpp.extensions.RosterXListener;
 
+//#ifdef LIGHT_CONFIG
+//# import LightControl.CustomLight;
+//#endif
+
 public class Roster
         extends VirtualList
         implements
@@ -224,7 +228,7 @@ public class Roster
          
         sl=StatusList.getInstance();
 
-        setLight(cf.lightState);
+        // setLight(cf.lightState);
         
         MainBar mainbar=new MainBar(4, null, null, false);
         setMainBarItem(mainbar);
@@ -261,27 +265,9 @@ public class Roster
 //#endif
         ClientsIconsData.getInstance();
 //#endif
-    }
+    }       
     
-    public void setLight(boolean state) {
-//#ifndef NOLEGACY
-        if (phoneManufacturer==Config.SIEMENS || phoneManufacturer==Config.SIEMENS2) {
-            try {
-                if (state) com.siemens.mp.game.Light.setLightOn();
-                else com.siemens.mp.game.Light.setLightOff();  
-            } catch( Exception e ) { }
-            return;
-        }
-//#endif
-        if (!state) return;
-//#ifdef SE_LIGHT
-//#         if (phoneManufacturer==Config.SONYE || phoneManufacturer==Config.NOKIA) {
-//#             new KeepLightTask().start();
-//#          }
-//#endif
-    }
-    
-    public void commandState(){
+    public final void commandState(){
 //#ifdef MENU_LISTENER
         menuCommands.removeAllElements();
 //#endif
@@ -506,7 +492,8 @@ public class Roster
         int m=0;
         int h=0;
         synchronized (hContacts) {
-            for (int i=0; i<hContacts.size(); i++){
+            int j=hContacts.size();
+            for (int i=0; i<j; i++){
                 Contact c=(Contact)hContacts.elementAt(i);
                 m+=c.getNewMsgsCount();
                 h+=c.getNewHighliteMsgsCount();
@@ -522,9 +509,12 @@ public class Roster
     public void cleanupSearch(){
         int index=0;
         synchronized (hContacts) {
-            while (index<hContacts.size()) {
-                if ( ((Contact) hContacts.elementAt(index)).getGroupType()==Groups.TYPE_SEARCH_RESULT )
+            int j=hContacts.size();
+            while (index<j) {
+                if ( ((Contact) hContacts.elementAt(index)).getGroupType()==Groups.TYPE_SEARCH_RESULT ) {
                     hContacts.removeElementAt(index);
+                    j--;
+                }
                 else index++;
             }
         }
@@ -545,7 +535,8 @@ public class Roster
     
     public void cleanAllMessages(){
         synchronized (hContacts) {
-            for (int i=0; i<hContacts.size(); i++) {
+            int j=hContacts.size();
+            for (int i=0; i<j; i++) {
                 Contact c=(Contact)hContacts.elementAt(i);
                 try {
                     c.purge();
@@ -580,13 +571,15 @@ public class Roster
                 int index=0;
                 boolean removeGroup=true;
                 synchronized (hContacts) {
-                    while (index<hContacts.size()) {
+                    int j=hContacts.size();
+                    while (index<j) {
                         Contact contact=(Contact)hContacts.elementAt(index);
                         if (contact.group==g) {
                             if (contact.getNewMsgsCount() == 0) {
                                 contact.msgs=null;
                                 contact=null;
-                                hContacts.removeElementAt(index);
+                                hContacts.removeElementAt(index); 
+                                j--;
                             } else {
                                 removeGroup=false;
                                 index++;
@@ -605,7 +598,8 @@ public class Roster
         int index=0;
 
         synchronized (hContacts) {
-            while (index<hContacts.size()) {
+            int j=hContacts.size();
+            while (index<j) {
                 Contact contact=(Contact)hContacts.elementAt(index);
                 if (contact.group==g) {
                     if ( contact.origin>Contact.ORIGIN_ROSTERRES
@@ -617,6 +611,7 @@ public class Roster
                         contact.msgs=null;
                         contact=null;
                         hContacts.removeElementAt(index);
+                        j--;
                     } else {
                         index++;
                     } 
@@ -659,7 +654,8 @@ public class Roster
         boolean firstInstance=true; //FS#712 workaround
         int index=0;
         synchronized (hContacts) {
-            for (int i=0; i<hContacts.size(); i++) {
+            int j=hContacts.size();
+            for (int i=0; i<j; i++) {
                 c=(Contact)hContacts.elementAt(i);
                 if (c.jid.equals(J,false)) {
                     Group group= (c.jid.isTransport())? 
@@ -671,6 +667,7 @@ public class Roster
                     
                     if (status<0) {
                         hContacts.removeElementAt(index);
+                        j--;
 //#ifdef JUICK
 //#                         deleteJuickContact(c);
 //#endif
@@ -707,10 +704,12 @@ public class Roster
     private final void removeTrash(){
         int index=0;
         synchronized (hContacts) {
-            while (index<hContacts.size()) {
+            int j=hContacts.size();
+            while (index<j) {
                 Contact c=(Contact)hContacts.elementAt(index);
                 if (c.offline_type<0) {
                     hContacts.removeElementAt(index);
+                    j--;
                 } else index++;
             }
             countNewMsgs();
@@ -881,7 +880,8 @@ public class Roster
 
     public final Contact findContact(final Jid j, final boolean compareResources) {
         synchronized (hContacts) {
-            for (int i=0; i<hContacts.size(); i++){
+            int j2=hContacts.size();
+            for (int i=0; i<j2; i++){
                 Contact c=(Contact)hContacts.elementAt(i);
                 if (c.jid.equals(j,compareResources)) return c;
             }
@@ -968,7 +968,8 @@ public class Roster
 //#             indexMainJuickContact = 0;
 //#         } else {
 //#             //indexMainJuickContact = juickContacts.indexOf(new Contact("Juick", juickConfig.getJuickJID(), Presence.PRESENCE_OFFLINE, null));
-//#             for (int i=0; i<juickContacts.size(); i++) {
+//#             int j=juickContacts.size();
+//#             for (int i=0; i<j; i++) {
 //#                 if (((Contact)juickContacts.elementAt(i)).bareJid.equals( juickConfig.getJuickJID()))
 //#                     indexMainJuickContact = i;
 //#             }
@@ -1036,7 +1037,8 @@ public class Roster
             } catch (Exception e) { /*e.printStackTrace();*/ }
 
             synchronized(hContacts) {
-                for (int i=0; i<hContacts.size(); i++){
+                int j=hContacts.size();
+                for (int i=0; i<j; i++){
                     ((Contact)hContacts.elementAt(i)).setStatus(Presence.PRESENCE_OFFLINE); // keep error & unknown
                  }
             }
@@ -1099,7 +1101,8 @@ public class Roster
          if (myStatus==Presence.PRESENCE_INVISIBLE) return; //block multicasting presence invisible
          
          synchronized (hContacts) {
-             for (int i=0; i<hContacts.size(); i++) {
+             int j=hContacts.size();
+             for (int i=0; i<j; i++) {
                 Contact c=(Contact) hContacts.elementAt(i);
                 if (c.origin!=Contact.ORIGIN_GROUPCHAT) continue;
                 if (!((MucContact)c).commonPresence) continue; // stop if room left manually
@@ -1225,7 +1228,8 @@ public class Roster
         vCardQueue=null;
 	vCardQueue=new Vector();
         synchronized (hContacts) {
-            for (int i=0; i<hContacts.size(); i++){
+            int j=hContacts.size();
+            for (int i=0; i<j; i++){
                 Contact k=(Contact) hContacts.elementAt(i);
                 if (k.jid.isTransport()) 
                     continue;
@@ -1256,7 +1260,8 @@ public class Roster
 //#if CHANGE_TRANSPORT
 //#     public void contactChangeTransport(String srcTransport, String dstTransport){ //voffk
 //# 	setQuerySign(true);
-//#         for (int i=0; i<hContacts.size(); i++) {
+//#         int j=hContacts.size();
+//#         for (int i=0; i<j; i++) {
 //# 	    Contact k=(Contact) hContacts.elementAt(i);
 //# 	    if (k.jid.isTransport()) continue;
 //#             int grpType=k.getGroupType();
@@ -1587,6 +1592,12 @@ public class Roster
                         body=b.toString();
                         b=null;
                     }
+//#ifdef LIGHT_CONFIG        
+//#ifdef PLUGINS        
+//#     if (StaticData.getInstance().lightConfig)        
+//#endif                                   
+//#                     if (type.equals("chat")) CustomLight.message();
+//#endif                    
                 }
                 //boolean compose=false;
                 if (type.equals("chat") && myStatus!=Presence.PRESENCE_INVISIBLE) {
@@ -1635,6 +1646,12 @@ public class Roster
                         m.messageType=Msg.MESSAGE_TYPE_OUT;
                         m.unread=false;
                     } else {
+//#ifdef LIGHT_CONFIG        
+//#ifdef PLUGINS        
+//#     if (StaticData.getInstance().lightConfig)        
+//#endif                                       
+//#                         CustomLight.message();
+//#endif    
                         if (m.dateGmt<= ((ConferenceGroup)c.group).conferenceJoinTime)
                             m.messageType=Msg.MESSAGE_TYPE_HISTORY;
                         // highliting messages with myNick substring
@@ -1884,7 +1901,9 @@ public class Roster
         q = null;
         
         if (cont!=null)
-            for (int ii=0; ii<cont.size(); ii++){
+        {
+            int j=cont.size();
+            for (int ii=0; ii<j; ii++){
                 JabberDataBlock i=(JabberDataBlock)cont.elementAt(ii);
                 if (i.getTagName().equals("item")) {
                     String name=i.getAttribute("name");
@@ -1899,6 +1918,7 @@ public class Roster
                     //sort(hContacts);
                 }
             }
+        }
 	sort(hContacts);
         return true;
     }
@@ -2316,7 +2336,8 @@ public class Roster
                 if (getItemCount()==0)
                     return;
                 synchronized(hContacts) {
-                    for (int i=0; i<hContacts.size(); i++){
+                    int j=hContacts.size();
+                    for (int i=0; i<j; i++){
                         Contact c=(Contact)hContacts.elementAt(i);
                         c.setIncoming(Contact.INC_NONE);
                         c=null;
@@ -2371,6 +2392,12 @@ public class Roster
                 }
                 break;
         }
+//#ifdef LIGHT_CONFIG        
+//#ifdef PLUGINS        
+//#         if (StaticData.getInstance().lightConfig)        
+//#endif            
+//#             CustomLight.keyPressed();
+//#endif        
 //#ifdef AUTOSTATUS
 //#         userActivity();
 //#endif
@@ -2446,6 +2473,12 @@ public class Roster
                  } catch (Exception e) { }
              
                      }
+//#ifdef LIGHT_CONFIG        
+//#ifdef PLUGINS        
+//#         if (StaticData.getInstance().lightConfig)        
+//#endif                    
+//#         CustomLight.keyPressed();
+//#endif        
     }
 
 //#ifdef AUTOSTATUS
@@ -2464,7 +2497,7 @@ public class Roster
 //#         setAutoStatus(Presence.PRESENCE_ONLINE);
 //#     }
 //# 
-//#     public void messageActivity() {
+//#     public final void messageActivity() {
 //#         if (autostatus==null) return;
 //# 
 //#         if (cf.autoAwayType==Config.AWAY_MESSAGE) {
@@ -2731,7 +2764,8 @@ public class Roster
     }
     
     public void roomOffline(final Group group) {
-         for (int i=0; i<hContacts.size(); i++) {
+         int j=hContacts.size();
+         for (int i=0; i<j; i++) {
             Contact contact=(Contact)hContacts.elementAt(i);
             if (contact.group==group) {
                 contact.setStatus(Presence.PRESENCE_OFFLINE);
@@ -2785,7 +2819,8 @@ public class Roster
 	Vector activeContacts=new Vector();
         int nowContact = -1, contacts=-1, currentContact=-1;
         synchronized (hContacts) {
-            for (int i=0; i<hContacts.size(); i++){
+            int j=hContacts.size();
+            for (int i=0; i<j; i++){
                 Contact c=(Contact)hContacts.elementAt(i);
                 if (c.active()) {
                     activeContacts.addElement(c);
@@ -2816,7 +2851,8 @@ public class Roster
 
     public void deleteContact(Contact c) {
         synchronized (hContacts) {
-            for (int i=0; i<hContacts.size(); i++) {
+            int j=hContacts.size();
+            for (int i=0; i<j; i++) {
                 Contact c2=(Contact)hContacts. elementAt(i);
                 if (c.jid.equals(c2.jid,false)) {
                     c2.setStatus(Presence.PRESENCE_TRASH);
@@ -2913,7 +2949,8 @@ public class Roster
 
     public void deleteGroup(Group deleteGroup) {
         synchronized (hContacts) {
-            for (int i=0; i<hContacts.size(); i++){
+            int j=hContacts.size();
+            for (int i=0; i<j; i++){
                 Contact cr=(Contact)hContacts.elementAt(i);
                 if (cr.group==deleteGroup)
                     deleteContact(cr);                
@@ -2979,7 +3016,8 @@ public class Roster
                 groups.resetCounters();
 
                 synchronized (hContacts) {
-                    for (int i=0; i<hContacts.size(); i++) {
+                    int j=hContacts.size();
+                    for (int i=0; i<j; i++) {
                         Contact c = (Contact) hContacts.elementAt(i);
                         Group grp = c.group;
                         grp.addContact(c);

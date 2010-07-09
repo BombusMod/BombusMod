@@ -725,6 +725,14 @@ public class SR {
 //#endif
 
     public static String MS_STEP_BACK = loadString( "step back" );
+    
+    public static String L_CONFIG = loadString( "Light config" );
+    public static String L_ENABLED = loadString("Light enabled");
+    public static String L_IDLE_VALUE = loadString("Light idle value");
+    public static String L_KEYPRESS_VALUE = loadString("Light keypress value");
+    public static String L_KEYPRESS_TIMEOUT = loadString("Keypress timeout");
+    public static String L_MESSAGE_VALUE = loadString("Message value");
+    public static String L_MESSAGE_TIMEOUT = loadString("Message timeout");
 
     private SR() { }
 

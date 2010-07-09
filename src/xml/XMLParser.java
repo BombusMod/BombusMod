@@ -319,7 +319,8 @@ public class XMLParser {
     public final static String extractAttribute(String attributeName, Vector attributes) {
       if (attributes==null) return null;
       int index=0;
-      while (index<attributes.size()) {
+      int j=attributes.size();
+      while (index<j) {
           if ( ((String)attributes.elementAt(index)).equals(attributeName) )
               return (String)attributes.elementAt(index+1);
           

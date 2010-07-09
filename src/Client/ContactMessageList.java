@@ -163,7 +163,7 @@ public class ContactMessageList extends MessageList {
         return unreadIndex;
     }    
 
-    public void commandState(){
+    public final void commandState(){
 //#ifdef MENU_LISTENER
         menuCommands.removeAllElements();
 //#endif
