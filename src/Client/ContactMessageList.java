@@ -129,7 +129,6 @@ public class ContactMessageList extends MessageList {
         sd.roster.activeContact=contact;
 
         cf=Config.getInstance();
-        
         MainBar mb=new MainBar(contact);
         setMainBarItem(mb);
 

@@ -98,7 +98,7 @@ public class ComplexString extends Vector implements VirtualElement {
 	boolean nick=false;
 //#endif
         
-        int w=offset;
+        int w = g.getClipX() + offset;
         int dw;
         int imageYOfs=(( getVHeight()-imgHeight() )>>1);
 
@@ -200,8 +200,8 @@ public class ComplexString extends Vector implements VirtualElement {
                 } /* Integer*/ else if (ob instanceof VirtualElement) { 
                     int clipw=g.getClipWidth(); 
                     int cliph=g.getClipHeight();
-                    ((VirtualElement)ob).drawItem(g, offset,false);
-                    g.setClip(g.getTranslateX(), g.getTranslateY(), clipw, cliph);
+                    ((VirtualElement)ob).drawItem(g, g.getClipX(), false);
+                   // g.setClip(g.getTranslateX(), g.getTranslateY(), clipw, cliph);
                 }
             } // if ob!=null
         } // for

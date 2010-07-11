@@ -164,8 +164,8 @@ public class Contact extends IconTextElement{
     
     private int fontHeight;
     int ilHeight;
-    int maxImgHeight;
-
+    int maxImgHeight;   
+    
     protected Contact (){
         super(RosterIcons.getInstance());
         cf=Config.getInstance();
@@ -611,13 +611,13 @@ public class Contact extends IconTextElement{
         int xo=g.getClipX();
         int yo=g.getClipY();
         
-        int offset=4;
+        int offset= xo + 4;
 
         int imgH=(h-ilHeight)/2;
         
         if (getImageIndex()>-1) {
             offset+=ilHeight;
-            il.drawImage(g, getImageIndex(), ofs + 2, imgH);
+            il.drawImage(g, getImageIndex(), xo + 2, imgH);
         }
 //#ifdef CLIENTS_ICONS
         if (hasClientIcon()) {
@@ -675,18 +675,19 @@ public class Contact extends IconTextElement{
         
         g.setClip(offset, yo, w-offset, h);
 
-        thisOfs= offset + ofs;
+        thisOfs=(getFirstLength()>w)?-ofs+offset:offset;
+        if ((thisOfs+getFirstLength())<0) thisOfs=offset;
         g.setFont(getFont());
         g.drawString(getFirstString(), thisOfs, 0, Graphics.TOP|Graphics.LEFT);
 
         if (getSecondString()!=null) {
             int y=getFont().getHeight()-3;
-            //thisOfs=(getSecondLength()>w)?-ofs+offset:offset;
+            thisOfs=(getSecondLength()>w)?-ofs+offset:offset;
             g.setFont(FontCache.getFont(false, FontCache.baloon));
             g.setColor(ColorTheme.getColor(ColorTheme.SECOND_LINE));
             g.drawString(getSecondString(), thisOfs, y, Graphics.TOP|Graphics.LEFT);
         }
-        g.setClip(xo, yo, w, h);
+        g.setClip(xo, yo, w, h);        
     }
     
 //#ifdef CLIENTS_ICONS

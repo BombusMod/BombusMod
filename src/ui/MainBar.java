@@ -35,6 +35,9 @@ public class MainBar extends ComplexString{
 //#     public static Image bg;
 //#endif
     
+    public boolean lShift = false;
+    public boolean rShift = false;
+    
     public MainBar(int size, Object first, Object second, boolean bold) {
         this (size);
         if (first!=null) setElementAt(first,0);
@@ -81,8 +84,8 @@ public class MainBar extends ComplexString{
 //#             for (int i=0; i < g.getClipWidth(); i++)
 //#                 g.drawImage(bg, i, ofs , Graphics.TOP|Graphics.LEFT);
 //#         }
-//#endif
-
-        super.drawItem(g, offset, selected);
+//#endif        
+        g.setClip((lShift)? 17: 0, 0, g.getClipWidth() - ((rShift)? 17: 0), g.getClipHeight());
+        super.drawItem(g, offset, selected);        
     }
 }

@@ -743,7 +743,9 @@ public abstract class VirtualList
             g.fillRect(0, 0, width, h);
 //#endif
         g.setColor(getMainBarRGB());
-        infobar.drawItem(g,(phoneManufacturer==Config.NOKIA && reverse)?17:0,false);
+        ((MainBar)infobar).lShift = (Config.getInstance().phoneManufacturer == Config.NOKIA && reverse && fullscreen);
+        ((MainBar)infobar).rShift = (Config.getInstance().phoneManufacturer == Config.SONYE && reverse && fullscreen);
+        infobar.drawItem(g, 0, false);
     }
 //#endif
     
@@ -766,7 +768,9 @@ public abstract class VirtualList
         g.fillRect(0, 0, width, h);
 //#endif
         g.setColor(getMainBarRGB());
-        mainbar.drawItem(g,(phoneManufacturer==Config.NOKIA && !reverse)?17:0,false);
+        ((MainBar)mainbar).lShift = (Config.getInstance().phoneManufacturer == Config.NOKIA && !reverse && fullscreen);
+        ((MainBar)mainbar).rShift = (Config.getInstance().phoneManufacturer == Config.SONYE && !reverse && fullscreen);
+        mainbar.drawItem(g, 0, false);
     }
 
     /**
@@ -1663,7 +1667,7 @@ class TimerTaskRotate extends Thread{
             attachedList.showBalloon=(balloon<8 && balloon>0);
             return true;
         }
-    }
+    } 
     /*
     public void destroyTask(){
         synchronized (this) { 

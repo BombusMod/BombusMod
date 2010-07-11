@@ -150,7 +150,7 @@ public static boolean fullscreen=
     public int loginstatus=0;//loginstatus
     public int gmtOffset;
     public boolean popupFromMinimized=true;
-    public boolean memMonitor=true;
+    public boolean memMonitor = false;
 
     public int rosterFont=0;
     public int msgFont=0;
@@ -793,7 +793,7 @@ public static boolean fullscreen=
     private void getPhoneManufacturer() {
         if (phoneManufacturer==NOT_DETECTED) {
             String platform=getPlatformName();
-            phoneManufacturer=NONE;           
+            phoneManufacturer=NONE;    
             
             if (platform.endsWith("(NSG)")) {
                 phoneManufacturer=SIEMENS;
