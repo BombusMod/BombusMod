@@ -31,13 +31,18 @@ package io;
 import com.jcraft.jzlib.JZlib;
 import com.jcraft.jzlib.ZInputStream;
 import com.jcraft.jzlib.ZOutputStream;
+//#else
+//# import Client.Config;    
+//#endif
+//#if TLS
+//# import bwmorg.bouncycastle.crypto.tls.TlsProtocolHandler;
+//# import bwmorg.bouncycastle.crypto.tls.AlwaysValidVerifyer;
 //#endif
 import Client.StaticData;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import javax.microedition.io.*;
-import Client.Config;
 import util.Strconv;
 
 /**
@@ -55,6 +60,11 @@ public class Utf8IOStream {
     private long bytesRecv;
     private long bytesSent;
     
+//#if TLS
+//#     private TlsProtocolHandler tls;
+//#     public boolean tlsExclusive = false;
+ //#endif    
+    
 //#if (ZLIB)
     public void setStreamCompression(){
         inpStream=new ZInputStream(inpStream);
@@ -62,6 +72,17 @@ public class Utf8IOStream {
         ((ZOutputStream)outStream).setFlushMode(JZlib.Z_SYNC_FLUSH);
     }
 //#endif
+//#if TLS
+//#     public void setTls() throws IOException {
+//#         tlsExclusive=true;
+//#         tls=new TlsProtocolHandler(inpStream, outStream);
+//#         tls.connect(new AlwaysValidVerifyer());
+//#         inpStream=tls.getTlsInputStream();
+//#         outStream=tls.getTlsOuputStream();
+//#         tlsExclusive=false;
+//#         length=pbyte=0;
+//#     }
+//#endif    
     
     /** Creates a new instance of Utf8IOStream */
     public Utf8IOStream(StreamConnection connection) throws IOException {
@@ -100,16 +121,20 @@ public class Utf8IOStream {
     int pbyte;
     
     public int read(byte buf[]) throws IOException {
+//#ifdef TLS        
+//#         if (tlsExclusive)
+//#             return 0;
+//#endif        
         int avail = inpStream.available();
         
-        if (avail==0)
+        if (avail==0) {
 //#if !ZLIB
 //#             //trying to fix phillips 9@9
 //#             if (!Config.getInstance().istreamWaiting) avail=1;
 //#             else
-//#endif
+//#endif            
             return 0;
-        
+        }
         if (avail>buf.length) avail=buf.length;
         
         avail=inpStream.read(buf, 0, avail);
@@ -200,7 +225,7 @@ public class Utf8IOStream {
         return 0;
     }
 //#else
-//#
+//# 
 //#      public String getStreamStats() {
 //#          StringBuffer stats=new StringBuffer();
 //#          try {
@@ -213,7 +238,7 @@ public class Utf8IOStream {
 //#          }
 //#          return stats.toString();
 //#      }
-//#
+//# 
 //#      public long getBytes() {
 //#          try {
 //#              return bytesSent+bytesRecv;

@@ -379,6 +379,9 @@ public class InfoWindow
 //#endif
 //#         abilitiesList.addElement("TEMPLATES");
 //#endif
+//#ifdef TLS        
+//#         abilitiesList.addElement("TLS");
+//#endif        
 //#ifdef USER_KEYS
 //#         abilitiesList.addElement("USER_KEYS");
 //#endif

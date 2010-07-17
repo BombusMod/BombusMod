@@ -2523,7 +2523,7 @@ public class Roster
 //#endif
                     )
                 return;
-            setWobbler(1, (Contact) null, null);
+                setWobbler(1, (Contact) null, null);
         } catch (Exception e) { }
     }
 
@@ -2579,7 +2579,7 @@ public class Roster
 //#ifdef PEP_TUNE
 //#                 if (cntact.pepTune) {
 //#                     mess.append("\n").append(SR.MS_USERTUNE);
-//#                     if (cntact.pepTuneText!="") {
+//#                     if (!cntact.pepTuneText.equals("")) {
 //#                         mess.append(": ").append(cntact.pepTuneText);
 //#                     }
 //#                 }

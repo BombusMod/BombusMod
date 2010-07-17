@@ -67,6 +67,27 @@ public class SASLAuth implements JabberBlockListener{
     public int blockArrived(JabberDataBlock data) {
         //System.out.println(data.toString());
         if (data.getTagName().equals("stream:features")) {
+//#if TLS
+//#             JabberDataBlock starttls=data.getChildBlock("starttls");
+//#             if (starttls!=null && starttls.isJabberNameSpace("urn:ietf:params:xml:ns:xmpp-tls")) {                
+//#                 
+//#               /*  if (starttls.getChildBlock("required") != null) {
+//#                     listener.loginFailed("TLS required");                    
+//#                 }*/ 
+//#                 
+//#                 JabberDataBlock askTls=new JabberDataBlock("starttls", null, null);
+//#                 askTls.setNameSpace("urn:ietf:params:xml:ns:xmpp-tls");
+//#                 stream.send(askTls);
+//#                 StaticData.getInstance().roster.setProgress("TLS negotiation", 39);
+//#                 return JabberBlockListener.BLOCK_PROCESSED;    
+//#                  //if
+//#                 
+//#                 /*
+//#                  * tls avaiable from server, but user does not want to use it.
+//#                  * just ignore this feature and allow auth to take place
+//#                  */
+//#             }
+//#endif            
 //#if ZLIB
             JabberDataBlock compr=data.getChildBlock("compression");
             if (compr!=null && account.useCompression()) {
@@ -193,6 +214,22 @@ public class SASLAuth implements JabberBlockListener{
             stream.send(resp);
             return JabberBlockListener.BLOCK_PROCESSED;
         }
+//#if TLS
+//#         else if ( data.getTagName().equals("proceed")) {
+//#             //todo: investigate why the namespace attribute is not set
+//#             try {
+//#                 stream.setTls();
+//#                 stream.initiateStream();
+//#             } catch (IOException ex) { 
+//#                 ex.printStackTrace();
+//#                 listener.loginFailed("TLS negotiation failed: " + ex.getMessage()); 
+//#             } 
+//#             return JabberBlockListener.NO_MORE_BLOCKS;
+//#         }
+//#         else if ( data.getTagName().equals("failure") && data.isJabberNameSpace("urn:ietf:params:xml:ns:xmpp-tls")) {
+//#             listener.loginFailed("TLS failed");
+//#         }
+//#endif                
 //#if ZLIB
         else if ( data.getTagName().equals("compressed")) {
             stream.setZlibCompression();

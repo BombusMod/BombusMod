@@ -107,7 +107,7 @@ public class PopUp {
         if(size()>0) {
             popUps.removeElementAt(0);
             scrollable=SCROLLABLE_NONE;
-            startLine=0;
+            startLine=0;            
             return true;
         }
         return false;

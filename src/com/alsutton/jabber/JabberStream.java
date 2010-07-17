@@ -184,7 +184,7 @@ public class JabberStream extends XmppParser implements Runnable {
                 int length = iostream.read(cbuf);
                 if (length==0) {
                     try { Thread.sleep(100); } catch (Exception e) {} 
-                    continue; 
+                        continue; 
                 }
                 parser.parse(cbuf, length);
             }
@@ -331,6 +331,14 @@ public class JabberStream extends XmppParser implements Runnable {
         return iostream.getConnectionData();
     }
 //#endif
+//#if TLS
+//#     public void setTls() throws IOException {
+//#ifdef DEBUG        
+//#         System.out.println("iostream setTls");
+//#endif        
+//#         iostream.setTls();
+//#     }
+//#endif        
 
     public long getBytes() {
         return iostream.getBytes();

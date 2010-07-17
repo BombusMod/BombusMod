@@ -24,6 +24,7 @@
 
 package ui;
 
+import Client.Config;
 import Fonts.FontCache;
 import images.RosterIcons;
 import javax.microedition.lcdui.Graphics;
@@ -72,7 +73,10 @@ public class MainBar extends ComplexString{
 //#ifdef BACK_IMAGE
 //#         if (bg != null)
 //#             return Math.max(super.getVHeight(), bg.getHeight());
-//#endif        
+//#         else
+//#endif    
+            if (centered && Config.getInstance().advTouch)
+                return super.getVHeight() << 1;
         return super.getVHeight();
     }
     public void drawItem(Graphics g, int offset, boolean selected) {
@@ -85,7 +89,7 @@ public class MainBar extends ComplexString{
 //#                 g.drawImage(bg, i, ofs , Graphics.TOP|Graphics.LEFT);
 //#         }
 //#endif        
-        g.setClip((lShift)? 17: 0, 0, g.getClipWidth() - ((rShift)? 17: 0), g.getClipHeight());
+        g.setClip((lShift)? 20: 0, 0, g.getClipWidth() - ((rShift)? 20: 0), g.getClipHeight());
         super.drawItem(g, offset, selected);        
     }
 }
