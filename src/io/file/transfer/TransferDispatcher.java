@@ -48,8 +48,9 @@ public class TransferDispatcher implements JabberBlockListener {
 
     public final static String NS_BYTESTREAMS = "http://jabber.org/protocol/bytestreams";
     public final static String NS_IBB = "http://jabber.org/protocol/ibb";
-    public String ProxyJID = "socks5.juick.com"; // default value for test
-    public int ProxyPort = 7777;
+    
+    TransferConfig ft = TransferConfig.getInstance();
+    
     /** Singleton */
     private static TransferDispatcher instance;
     private TransferTask proxyTask = null;
@@ -147,7 +148,7 @@ public class TransferDispatcher implements JabberBlockListener {
                 if (task!=null) {
                      switch (task.state) {
                         case (TransferTask.PROXYACTIVATE):
-                            boolean success = task.openStreams(ProxyJID, ProxyPort);
+                            boolean success = task.openStreams(ft.ftProxy, ft.ftProxyPort);
                             if (!success) {
                                 task.cancel();
                                 break;
@@ -221,6 +222,16 @@ public class TransferDispatcher implements JabberBlockListener {
             for (Enumeration e=taskList.elements(); e.hasMoreElements(); ){
                 TransferTask task=(TransferTask)e.nextElement();
                  if (id.endsWith(task.sid)) return task;
+            }
+        }
+        return null;
+    }
+    
+    public TransferTask getTransferByJid(String jid) {
+        synchronized (taskList) {
+            for (Enumeration e=taskList.elements(); e.hasMoreElements(); ){
+                TransferTask task=(TransferTask)e.nextElement();
+                 if (jid.equals(task.jid)) return task;
             }
         }
         return null;

@@ -48,6 +48,9 @@ public class Msg {
     public final static int MESSAGE_TYPE_SUBJ=13;
     public final static int MESSAGE_TYPE_AUTH=14;
     public final static int MESSAGE_TYPE_SYSTEM=15;
+//#ifdef FILE_TRANSFER    
+    public final static int MESSAGE_TYPE_FILE_REQ=16;
+//#endif    
 
     public boolean highlite;
     public boolean history;

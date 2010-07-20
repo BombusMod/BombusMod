@@ -155,7 +155,7 @@ public class MessageItem
         addUrls(msg.body, "tel:", urlList);
         addUrls(msg.body, "ftp://", urlList);
         addUrls(msg.body, "native:", urlList);
-        return (urlList.size()==0)? null: urlList;
+        return (urlList.isEmpty())? null: urlList;
     }
     
     private void addUrls(String text, String addString, Vector urlList) {

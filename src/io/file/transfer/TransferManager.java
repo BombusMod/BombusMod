@@ -123,7 +123,7 @@ public class TransferManager
         }
         if (c==cmdDel) keyClear();        
         if (c==cmdInfo) cmdInfo();
-        if (c==cmdSettings) new TransferSetupForm(display, this);       
+        if (c==cmdSettings) new TransferConfigForm(display, this);       
     }
     public void cmdOk() {
         TransferDispatcher.getInstance().eventNotify();

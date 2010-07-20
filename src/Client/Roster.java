@@ -1937,7 +1937,7 @@ public class Roster
     public void addFileQuery(String from, String message) {
         Contact c=getContact(from, true);
         c.fileQuery=true;
-        messageStore(c, new Msg(Msg.MESSAGE_TYPE_SYSTEM, from, SR.MS_FILE, message));
+        messageStore(c, new Msg(Msg.MESSAGE_TYPE_FILE_REQ, from, SR.MS_FILE, message));
     }
 //#endif
     

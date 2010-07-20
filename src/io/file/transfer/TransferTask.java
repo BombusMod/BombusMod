@@ -311,14 +311,14 @@ public class TransferTask
         query.setAttribute("sid", sid);
         query.setAttribute("mode", "tcp");
         JabberDataBlock streamhost = query.addChild("streamhost", null);
-        streamhost.setAttribute("jid", TransferDispatcher.getInstance().ProxyJID);
-        streamhost.setAttribute("host", TransferDispatcher.getInstance().ProxyJID);
-        streamhost.setAttribute("port", Integer.toString(TransferDispatcher.getInstance().ProxyPort));
+        streamhost.setAttribute("jid", TransferConfig.getInstance().ftProxy);
+        streamhost.setAttribute("host", TransferConfig.getInstance().ftProxy);
+        streamhost.setAttribute("port", Integer.toString(TransferConfig.getInstance().ftProxyPort));
         TransferDispatcher.getInstance().send(iq, false);
         state = PROXYACTIVATE;
     }
     void ProxyActivate() {
-        JabberDataBlock iq=new Iq(TransferDispatcher.getInstance().ProxyJID, Iq.TYPE_SET, "activate"+sid);
+        JabberDataBlock iq=new Iq(TransferConfig.getInstance().ftProxy, Iq.TYPE_SET, "activate"+sid);
         JabberDataBlock query=iq.addChildNs("query", TransferDispatcher.NS_BYTESTREAMS);
         query.setAttribute("sid", sid);
         query.addChild("activate", jid);

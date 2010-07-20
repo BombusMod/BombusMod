@@ -96,9 +96,13 @@ public class TransferAcceptFile
         itemsList.addElement(new MultiLine(SR.MS_SENDER, t.jid, super.superWidth));
 
         itemsList.addElement(new MultiLine(SR.MS_DESCRIPTION, t.description, super.superWidth));
-
-        attachDisplay(display);
-        this.parentView=pView;
+        if (TransferConfig.getInstance().ftFolder.equals("")) {
+            attachDisplay(display);       
+            this.parentView=pView;
+        } else {
+            cmdOk();
+        }
+        
     }
 
     
@@ -106,12 +110,14 @@ public class TransferAcceptFile
 
     public void BrowserFilePathNotify(String pathSelected) { path.setValue(pathSelected); }
     
-    public void cmdOk() {
+    public final void cmdOk() {
+        boolean auto = !TransferConfig.getInstance().ftFolder.equals("");
         t.fileName=fileName.getValue().trim();
-        t.filePath=path.getValue();
+        t.filePath= (auto) ? TransferConfig.getInstance().ftFolder : path.getValue();        
         t.accept();
+        if (auto) destroyView();
         
-        destroyView();
+        
     }
     
     public void cmdCancel() {

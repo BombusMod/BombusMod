@@ -59,6 +59,8 @@ import Archive.MessageArchive;
 //#ifdef JUICK
 //# import Menu.JuickThingsMenu;
 //# import Menu.MyMenu;
+//# import io.file.transfer.TransferAcceptFile;
+//# import io.file.transfer.TransferDispatcher;
 //#endif
 
 public class ContactMessageList extends MessageList {
@@ -68,6 +70,8 @@ public class ContactMessageList extends MessageList {
     Command cmdUnsubscribed=new Command(SR.MS_DECLINE, Command.SCREEN, 2);
     Command cmdMessage=new Command(SR.MS_NEW_MESSAGE,Command.SCREEN,3);
     Command cmdResume=new Command(SR.MS_RESUME,Command.SCREEN,1);
+    Command cmdFileAcc=new Command("Accept",Command.SCREEN,1);
+    Command cmdFileDec=new Command(SR.MS_DECLINE,Command.SCREEN, 2);
     Command cmdReply=new Command(SR.MS_REPLY,Command.SCREEN,4);
     Command cmdQuote=new Command(SR.MS_QUOTE,Command.SCREEN,5);
 //#ifdef ARCHIVE
@@ -179,6 +183,15 @@ public class ContactMessageList extends MessageList {
                 addCommand(cmdUnsubscribed);
             }
         } catch (Exception e) {}
+//#ifdef FILE_TRANSFER        
+        try {
+            Msg msg=(Msg) contact.msgs.elementAt(cursor);
+            if (msg.messageType==Msg.MESSAGE_TYPE_FILE_REQ) {
+                addCommand(cmdFileAcc);
+                addCommand(cmdFileDec);
+            }
+        } catch (Exception e) {}
+//#endif        
         
         addCommand(cmdMessage);
         
@@ -421,6 +434,12 @@ public void showNotify() {
 //#if (FILE_IO && HISTORY)
 //#         if (c==cmdSaveChat) saveMessages();
 //#endif
+//#ifdef FILE_TRANSFER
+        if (c == cmdFileAcc)
+            new TransferAcceptFile(display, this, TransferDispatcher.getInstance().getTransferByJid(contact.jid.getJid()));
+        if (c == cmdFileDec)
+            TransferDispatcher.getInstance().getTransferByJid(contact.jid.getJid()).cancel();
+//#endif        
         /** login-critical section */
         if (!sd.roster.isLoggedIn()) return;
 

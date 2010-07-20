@@ -113,7 +113,11 @@ public class EntityCaps implements JabberBlockListener{
 //#             features.addElement("http://jabber.org/protocol/activity+notify");
 //#         }
 //#endif
-        
+//#ifdef FILE_TRANSFER
+        if (cf.fileTransfer) {
+            features.addElement("http://jabber.org/protocol/bytestreams");
+        }
+ //#endif        
         if (cf.eventComposing)
             features.addElement("http://jabber.org/protocol/chatstates"); //xep-0085
 //#ifdef ADHOC
@@ -130,8 +134,7 @@ public class EntityCaps implements JabberBlockListener{
 
 //#ifdef FILE_TRANSFER
         if (cf.fileTransfer) {
-            features.addElement("http://jabber.org/protocol/ibb");
-            features.addElement("http://jabber.org/protocol/bytestreams");
+            features.addElement("http://jabber.org/protocol/ibb");            
         }
  //#endif
 //#ifdef PEP
