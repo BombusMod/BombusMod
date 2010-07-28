@@ -132,7 +132,7 @@ public class Presence extends JabberDataBlock {
             text.append(" [").append(getPriority()).append(']');
     }
 
-    public void setType( String type ) {
+    public final void setType( String type ) {
         setAttribute("type", type);
     }
 
@@ -148,7 +148,7 @@ public class Presence extends JabberDataBlock {
         }
     }
 
-    public void setShow(String text){
+    public final void setShow(String text){
         addChild("show", text);
     }
 

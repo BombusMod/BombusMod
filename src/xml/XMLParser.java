@@ -316,7 +316,7 @@ public class XMLParser {
         }
     }
 
-    public final static String extractAttribute(String attributeName, Vector attributes) {
+    public static String extractAttribute(String attributeName, Vector attributes) {
       if (attributes==null) return null;
       int index=0;
       int j=attributes.size();

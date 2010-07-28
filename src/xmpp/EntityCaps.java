@@ -70,13 +70,13 @@ public class EntityCaps implements JabberBlockListener{
         sha1.init();
         
         //indentity
-        sha1.update(BOMBUS_ID_CATEGORY+"/"+BOMBUS_ID_TYPE+"//");
-        sha1.update(Version.getName());
-        sha1.update("<");
+        sha1.updateASCII(BOMBUS_ID_CATEGORY+"/"+BOMBUS_ID_TYPE+"//");
+        sha1.updateASCII(Version.getName());
+        sha1.updateASCII("<");
         
         for (int i=0; i<j; i++) {
-            sha1.update((String) features.elementAt(i));
-            sha1.update("<");
+            sha1.updateASCII((String) features.elementAt(i));
+            sha1.updateASCII("<");
         }
         
         sha1.finish();
@@ -125,6 +125,7 @@ public class EntityCaps implements JabberBlockListener{
 //#             features.addElement("http://jabber.org/protocol/commands"); //xep-0050
 //#endif
         features.addElement("http://jabber.org/protocol/disco#info");
+        features.addElement("http://jabber.org/protocol/disco#items");
 //#ifdef PEP_LOCATION
 //#         if (cf.rcvloc) {
 //#               features.addElement("http://jabber.org/protocol/geoloc");
@@ -161,10 +162,14 @@ public class EntityCaps implements JabberBlockListener{
 //#          }
 //#endif
 //#endif
+        features.addElement("jabber:iq:last");
+        features.addElement("jabber:iq:privacy");
+        features.addElement("jabber:iq:roster");
         features.addElement("jabber:iq:time"); //DEPRECATED
-        features.addElement("jabber:iq:version");
+        features.addElement("jabber:iq:version");        
        // features.addElement("jabber:x:data"); we didn't support direct data forms
          //"jabber:x:event", //DEPRECATED
+        features.addElement("jabber:x:oob");
         features.addElement("urn:xmpp:ping");
         if (cf.eventDelivery)
             features.addElement("urn:xmpp:receipts"); //xep-0184
