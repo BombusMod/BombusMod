@@ -72,22 +72,22 @@ public class JabberStream extends XmppParser implements Runnable {
 
         boolean waiting=Config.getInstance().istreamWaiting;
         
-         StreamConnection connection;
-         if (proxy==null) {
-             connection = (StreamConnection) Connector.open(hostAddr);
-          } else {
+        StreamConnection connection;
+        if (proxy == null) {
+            connection = (StreamConnection) Connector.open(hostAddr);
+        } else {
 //#if HTTPCONNECT
 //#             connection = io.HttpProxyConnection.open(hostAddr, proxy, StaticData.getInstance().account.getProxyUser(), StaticData.getInstance().account.getProxyPass());
-//#elif HTTPPOLL  
+//#elif HTTPPOLL
 //#             connection = new io.HttpPollingConnection(hostAddr, proxy);
 //#else            
             throw new IllegalArgumentException ("no proxy supported");
 //#endif            
-         }
- 
+        }
+        
         iostream = new Utf8IOStream(connection);
-        dispatcher = new JabberDataBlockDispatcher(this);        
-     
+        dispatcher = new JabberDataBlockDispatcher(this);
+        
         new Thread( this ). start();
     }
 

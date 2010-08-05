@@ -131,20 +131,23 @@ public class DnsSrvResolver {
             HttpConnection c = (HttpConnection) Connector.open(url.toString());
 
             //System.out.println(url.toString());
-            
-            if (c.getResponseCode()!=HttpConnection.HTTP_OK) 
+
+            if (c.getResponseCode() != HttpConnection.HTTP_OK)
                 return false;
             
-            Hashtable ht=new util.StringLoader().hashtableLoader(c.openInputStream());
+            Hashtable ht = new util.StringLoader().hashtableLoader(c.openInputStream());
             
             c.close();
-            c=null;
+            c = null;
             
-            resolvedHost=(String)ht.get("host");
-            resolvedPort=Integer.parseInt((String)ht.get("port"));
-            ttl=Integer.parseInt((String)ht.get("ttl"))*1000+ Time.utcTimeMillis();
+            resolvedHost = (String) ht.get("host");
+            resolvedPort = Integer.parseInt((String) ht.get("port"));
+            ttl = Integer.parseInt((String) ht.get("ttl")) * 1000 + Time.utcTimeMillis();
             
             //System.out.println(resolvedHost+":"+resolvedPort);
+
+            if (resolvedHost == null) // Uncorrect response
+                return false;
             
             cf.verHash=shaVer.getDigestHex();
             cf.resolvedHost=resolvedHost;
@@ -152,7 +155,7 @@ public class DnsSrvResolver {
             cf.saveToStorage();
 
             return true;
-        } catch (Exception e) { 
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

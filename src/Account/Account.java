@@ -268,7 +268,7 @@ public class Account extends IconTextElement{
     public boolean isMucOnly() { return mucOnly; }
     public void setMucOnly(boolean mucOnly) {  this.mucOnly = mucOnly; }
 
-    public JabberStream openJabberStream() throws java.io.IOException{
+    public JabberStream openJabberStream() throws java.io.IOException {
         String proxy=null;
         String host=this.server;
         int tempPort=port;

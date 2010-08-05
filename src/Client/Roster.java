@@ -2414,7 +2414,7 @@ public class Roster
         if (kHold==keyCode) return;
         kHold=keyCode;
         
-        if (keyCode==cf.keyLock) {            
+        if (keyCode==cf.keyLock) {
                 //#ifdef AUTOSTATUS
 //#                             if (cf.autoAwayType==Config.AWAY_LOCK) {
 //#                                 if (!autoAway) {
