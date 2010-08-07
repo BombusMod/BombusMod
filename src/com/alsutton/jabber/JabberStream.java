@@ -88,7 +88,7 @@ public class JabberStream extends XmppParser implements Runnable {
         iostream = new Utf8IOStream(connection);
         dispatcher = new JabberDataBlockDispatcher(this);
         
-        new Thread( this ). start();
+        new Thread( this ).start();
     }
 
     public void initiateStream() throws IOException {

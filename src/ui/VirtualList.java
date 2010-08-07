@@ -141,7 +141,7 @@ public abstract class VirtualList
      * базовая реализация VirtualList вызывает функцию onSelect для выбранного элемента;
      * необходимо переопределить (override) функцию для реализации желаемых действий
      */
-    public void eventOk(){
+    public void eventOk() {
         try {
             ((VirtualElement)getFocusedObject()).onSelect();
             updateLayout();
@@ -150,7 +150,7 @@ public abstract class VirtualList
         } catch (Exception e) {} 
     }
     
-    public void eventLongOk(){
+    public void eventLongOk() {
 //#ifdef TEST
 //#         drawTest = true;
 //#endif
@@ -866,14 +866,14 @@ public abstract class VirtualList
         }
 //#endif
 //#ifdef MENU_LISTENER
-        int act=ar.pointerPressed(x, y);
-        if (act==1) {
-             touchLeftPressed();
-             stickyWindow=false;
-             return;
-        } else if (act==2) {
-            touchRightPressed();
-            stickyWindow=false;
+        int act = ar.pointerPressed(x, y);
+        if (act == 1) {
+            key(Config.SOFT_LEFT);
+            stickyWindow = false;
+            return;
+        } else if (act == 2) {
+            key(Config.SOFT_RIGHT);
+            stickyWindow = false;
             return;
         }
 //#endif

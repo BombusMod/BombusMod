@@ -122,14 +122,16 @@ class UserKeyEdit extends DefForm {
         display.setCurrent(keysList);
     }
 
+    public void eventOk() {
+        super.eventOk();
+        key_t.two_keys = two_keys_t.getValue();
+    }
+
     public void keyPressed(int keyCode) {
         if (key_t.selected) {
             key_t.keyPressed(keyCode);
             redraw();
             return;
-        } else {
-            key_t.two_keys = two_keys_t.getValue();
-            super.keyPressed(keyCode);
-        }
+        } else super.keyPressed(keyCode);
     }
 }

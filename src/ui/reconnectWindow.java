@@ -56,7 +56,7 @@ public class reconnectWindow implements Runnable {
 		new Thread(this).start() ;
 	}
 
-	public void reconnect() { 
+	public void reconnect() {
 		stopReconnect();
 		StaticData.getInstance().roster.doReconnect();
 	}
