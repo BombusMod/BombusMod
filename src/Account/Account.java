@@ -174,6 +174,9 @@ public class Account extends IconTextElement{
 //#ifdef HTTPCONNECT
 //#             a.proxyUser = inputStream.readUTF();
 //#             a.proxyPass = inputStream.readUTF();
+//#else
+            inputStream.readUTF();
+            inputStream.readUTF();
 //#endif
             
         } catch (IOException e) { /*e.printStackTrace();*/ }
@@ -223,6 +226,9 @@ public class Account extends IconTextElement{
 //#ifdef HTTPCONNECT
 //#             outputStream.writeUTF(proxyUser);
 //#             outputStream.writeUTF(proxyPass);
+//#else             
+            outputStream.writeUTF("");
+            outputStream.writeUTF("");
 //#endif
 
         } catch (IOException e) {
