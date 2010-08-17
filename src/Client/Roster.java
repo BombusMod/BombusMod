@@ -1420,7 +1420,8 @@ public class Roster
                         if (c!=null) {
                             c.vcard=vcard;
                             if (display.getCurrent() instanceof VirtualList) {
-                                if (c.getGroupType()==Groups.TYPE_SELF) {
+//                                if (c.getGroupType()==Groups.TYPE_SELF) { // Not able to edit VCard if self contact in roster
+                                if (c.getJid().equals(myJid.getJid())) {
                                     new VCardEdit(display, this, vcard);
                                 } else {
                                     new VCardView(display, this, c);

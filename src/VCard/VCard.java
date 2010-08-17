@@ -158,7 +158,7 @@ public class VCard {
     }
     
     public static void request(String jid, String id) {
-        StaticData.getInstance().roster.setQuerySign(true); 
+        StaticData.getInstance().roster.setQuerySign(true);
         StaticData.getInstance().roster.theStream.send(getQueryVCard(jid, "getvc"+id));
     }
     

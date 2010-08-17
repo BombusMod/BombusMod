@@ -145,7 +145,7 @@ public class ColorConfigForm
     }
 //#endif
     
-    public void userThemeFromJar(){
+    public void userThemeFromJar() {
         try {
             if (skinFiles.getSelectedIndex()>-1) {
                 ColorTheme.loadSkin((String)files[0].elementAt(skinFiles.getSelectedIndex()), 1);
