@@ -31,10 +31,9 @@ import io.file.FileIO;
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
 
-import javax.microedition.lcdui.Display;
-import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
+import ui.VirtualList;
 import ui.controls.form.LinkString;
 import ui.controls.form.SimpleString;
 import ui.controls.form.DefForm;
@@ -58,11 +57,12 @@ public class TransferAcceptFile
     
     LinkString selectFile;
 
-    /** Creates a new instance of TransferAcceptFile */
-    public TransferAcceptFile(Display display, Displayable pView, TransferTask transferTask) {
-        super(display, pView, SR.MS_ACCEPT_FILE);
-        
-        this.display=display;
+    /** Creates a new instance of TransferAcceptFile
+     * @param pView 
+     * @param transferTask
+     */
+    public TransferAcceptFile(VirtualList pView, TransferTask transferTask) {
+        super(SR.MS_ACCEPT_FILE);
         
         t=transferTask;
         
@@ -83,11 +83,11 @@ public class TransferAcceptFile
             }
         }
         
-        fileName=new TextInput(display, SR.MS_FILE, name, "", TextField.ANY);
+        fileName=new TextInput(SR.MS_FILE, name, "", TextField.ANY);
         itemsList.addElement(fileName);
         itemsList.addElement(new SimpleString(SR.MS_FILE_SIZE+" "+String.valueOf(t.fileSize)+" bytes", true));
 
-        path=new TextInput(display, SR.MS_SAVE_TO, t.filePath, "recvPath", TextField.ANY);
+        path=new TextInput(SR.MS_SAVE_TO, t.filePath, "recvPath", TextField.ANY);
         itemsList.addElement(path);
         
         selectFile=new LinkString(SR.MS_PATH) { public void doAction() { initBrowser(); } };
@@ -97,8 +97,7 @@ public class TransferAcceptFile
 
         itemsList.addElement(new MultiLine(SR.MS_DESCRIPTION, t.description, super.superWidth));
         if (TransferConfig.getInstance().ftFolder.equals("")) {
-            attachDisplay(display);       
-            this.parentView=pView;
+            show(pView);
         } else {
             cmdOk();
         }
@@ -106,7 +105,7 @@ public class TransferAcceptFile
     }
 
     
-    public void initBrowser() { new Browser(path.getValue(), display, this, this, true); }
+    public void initBrowser() { new Browser(path.getValue(),  this, this, true); }
 
     public void BrowserFilePathNotify(String pathSelected) { path.setValue(pathSelected); }
     

@@ -26,8 +26,8 @@
  */
 
 package Client;
-import javax.microedition.lcdui.*;
 import locale.SR;
+import ui.VirtualList;
 import ui.controls.form.DefForm;
 import ui.controls.form.DropChoiceBox;
 import ui.controls.form.SimpleString;
@@ -40,16 +40,16 @@ import ui.controls.form.SpacerItem;
 public class SubscriptionEdit 
         extends DefForm {
     
-    private Display display;
-    
     private DropChoiceBox action;
 
     String to;
-    /** Creates a new instance of YesNoAlert */
-    public SubscriptionEdit(Display display, Displayable pView, Contact c) {
-        super(display, pView, SR.MS_SUBSCRIPTION);
+    /** Creates a new instance of YesNoAlert
+     * @param pView
+     * @param c
+     */
+    public SubscriptionEdit(VirtualList pView, Contact c) {
+        super(SR.MS_SUBSCRIPTION);      
         
-        this.display=display;
         
         to=c.bareJid;
 
@@ -58,7 +58,7 @@ public class SubscriptionEdit
 
         itemsList.addElement(new SpacerItem(10));
 
-        action=new DropChoiceBox(display, SR.MS_ACTION);
+        action=new DropChoiceBox(SR.MS_ACTION);
         action.append(SR.MS_NO);
         action.append(SR.MS_ASK_SUBSCRIPTION);
         action.append(SR.MS_GRANT_SUBSCRIPTION);
@@ -67,8 +67,7 @@ public class SubscriptionEdit
         itemsList.addElement(action);
 
         moveCursorTo(getNextSelectableRef(-1));
-        attachDisplay(display);
-        this.parentView=pView;
+        show(StaticData.getInstance().roster);
     }
     
     public void cmdOk() {
@@ -91,11 +90,6 @@ public class SubscriptionEdit
             if (presence!=null) StaticData.getInstance().roster.sendPresence(to, presence, null, false);
         }
         destroyView();
-    }
-
-    public void destroyView(){
-        if (display!=null)
-            display.setCurrent(StaticData.getInstance().roster);
-    }
+    }   
 
 }

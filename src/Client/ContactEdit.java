@@ -33,6 +33,7 @@ import VCard.VCard;
 import javax.microedition.lcdui.*;
 import java.util.*;
 import locale.SR;
+import ui.VirtualList;
 import ui.controls.form.LinkString;
 import ui.controls.form.SimpleString;
 import ui.controls.form.CheckBox;
@@ -46,8 +47,6 @@ import ui.controls.form.TextInput;
  */
 public final class ContactEdit
         extends DefForm {
-    private Display display;
-
     private LinkString vCardReq;
     private TextInput tJid;
     private TextInput tNick;
@@ -67,18 +66,17 @@ public final class ContactEdit
 
     StaticData sd=StaticData.getInstance();
     
-    public ContactEdit(Display display, Displayable pView, Contact c) {
-        super(display, pView, SR.MS_ADD_CONTACT);
-        this.display=display;
+    public ContactEdit(VirtualList pView, Contact c) {
+        super(SR.MS_ADD_CONTACT);
         cf=Config.getInstance();
         
-        tJid=new TextInput(display, SR.MS_USER_JID, null, null, TextField.ANY); 
+        tJid=new TextInput(SR.MS_USER_JID, null, null, TextField.ANY); 
         
-        tNick=new TextInput(display, SR.MS_NAME, null, null, TextField.ANY);
+        tNick=new TextInput(SR.MS_NAME, null, null, TextField.ANY);
         
-        tGroup=new TextInput(display, SR.MS_NEWGROUP, (c==null)?"":c.group.name, null, TextField.ANY);
+        tGroup=new TextInput(SR.MS_NEWGROUP, (c==null)?"":c.group.name, null, TextField.ANY);
 
-        tTranspList=new DropChoiceBox(display, SR.MS_TRANSPORT);
+        tTranspList=new DropChoiceBox(SR.MS_TRANSPORT);
         // Transport droplist
         tTranspList.append(sd.account.getServer());
         for (Enumeration e=sd.roster.getHContacts().elements(); e.hasMoreElements(); ){
@@ -128,7 +126,7 @@ public final class ContactEdit
         
         Vector groups=sd.roster.groups.getRosterGroupNames();
         if (groups!=null) {
-            tGrpList=new DropChoiceBox(display, SR.MS_GROUP);
+            tGrpList=new DropChoiceBox(SR.MS_GROUP);
             ngroups=groups.size();
             for (int i=0;i<ngroups; i++) {
                 String gn=(String)groups.elementAt(i);
@@ -162,8 +160,7 @@ public final class ContactEdit
         }
         
         moveCursorTo(getNextSelectableRef(-1));
-        attachDisplay(display);
-        this.parentView=pView;
+        show(parentView);
     }
     
     private void requestVCard() {
@@ -221,9 +218,6 @@ public final class ContactEdit
         if (index==tGrpList.size()-1) return "";
         return (String) tGrpList.items.elementAt(index);
     }
- 
-    public void destroyView(){
-        if (display!=null)   display.setCurrent(parentView/*roster*/);
-    }
+    
 
 }

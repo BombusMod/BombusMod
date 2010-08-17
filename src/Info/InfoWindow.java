@@ -32,21 +32,18 @@ import Client.StaticData;
 import java.util.Enumeration;
 import java.util.Vector;
 import javax.microedition.io.ConnectionNotFoundException;
-import javax.microedition.lcdui.Display;
-import javax.microedition.lcdui.Displayable;
 import locale.SR;
 import midlet.BombusMod;
 import ui.controls.form.DefForm;
 import ui.controls.form.LinkString;
 import ui.controls.form.MultiLine;
 import ui.controls.form.SpacerItem;
-//#ifndef MENU_LISTENER
-//# import javax.microedition.lcdui.Command;
-//#else
-import Menu.Command;
+import Menu.MenuCommand;
 import Menu.MyMenu;
-//#endif
+import ui.VirtualList;
+//#ifdef CLIPBOARD
 import util.ClipBoard;
+//#endif
 
 /**
  *
@@ -64,18 +61,17 @@ public class InfoWindow
     StaticData sd=StaticData.getInstance();
 
 //#ifdef CLIPBOARD
-//#     ClipBoard clipboard  = ClipBoard.getInstance();
-//#     Command cmdCopy      = new Command(SR.MS_COPY, Command.SCREEN, 1);
-//#     Command cmdCopyPlus  = new Command("+ "+SR.MS_COPY, Command.SCREEN, 2);
+    ClipBoard clipboard  = ClipBoard.getInstance();
+    MenuCommand cmdCopy      = new MenuCommand(SR.MS_COPY, MenuCommand.SCREEN, 1);
+    MenuCommand cmdCopyPlus  = new MenuCommand("+ "+SR.MS_COPY, MenuCommand.SCREEN, 2);
 //#endif
 
     /**
      * Creates a new instance of InfoWindow
      */
-    public InfoWindow(Display display, Displayable pView) {
-        super(display, pView, SR.MS_ABOUT);
-        this.display = display;
-
+    public InfoWindow(VirtualList pView) {
+        super(SR.MS_ABOUT);
+        
         name = new MultiLine(Version.getName(), Version.getVersionNumber() + "\n" + Config.getOs() + "\nMobile Jabber client", super.superWidth);
         name.selectable = true;
         itemsList.addElement(name);
@@ -110,8 +106,7 @@ public class InfoWindow
         memInfo.append(Runtime.getRuntime().freeMemory() >> 10).append("\n").append(SR.MS_TOTAL).append(Runtime.getRuntime().totalMemory() >> 10);
         memory = new MultiLine(SR.MS_MEMORY, memInfo.toString(), super.superWidth);
         memory.selectable = true;
-        itemsList.addElement(memory);
-        memInfo = null;
+        itemsList.addElement(memory);        
 
         itemsList.addElement(new SpacerItem(10));
 
@@ -119,61 +114,51 @@ public class InfoWindow
         abilities.selectable = true;
         itemsList.addElement(abilities);
 
-        commandStateTest();
-        attachDisplay(display);
+        show(parentView);
         this.parentView = pView;
     }
 
-    public void commandStateTest() {
-//#ifdef MENU_LISTENER
+    public void commandState() {
         menuCommands.removeAllElements();
-//#endif
 //#ifdef CLIPBOARD
-//#             if (Config.getInstance().useClipBoard) {
-//#                 addCommand(cmdCopy);
-//#                 if (!clipboard.isEmpty())
-//#                     addCommand(cmdCopyPlus);
-//#             }
+            if (Config.getInstance().useClipBoard) {
+                ClipBoard clipboard  = ClipBoard.getInstance();
+                addMenuCommand(cmdCopy);
+                if (clipboard.isEmpty())
+                    addMenuCommand(cmdCopyPlus);
+            }
 //#endif
-        addCommand(cmdCancel);
+        addMenuCommand(cmdCancel);
     }
 
-//#ifdef MENU_LISTENER
     public String touchLeftCommand(){ return SR.MS_MENU; }
     
-    public void touchLeftPressed(){ cmdOk(); }
-
-    public void cmdOk() { showMenu(); }
-
-    public void showMenu() {
-        commandStateTest();
-        new MyMenu(display, parentView, this, "", null, menuCommands);
-    }
-//#endif
-
-    public void commandAction(Command command, Displayable displayable) {
+    public void touchLeftPressed(){ showMenu(); }
+    
+    
+    public void menuAction(MenuCommand command, VirtualList displayable) {
 //#ifdef CLIPBOARD
-//#         if (command == cmdCopy) {
-//#             try {
-//#                 String str = ((MultiLine) getFocusedObject()).toString();
-//#                 if (str == null)
-//#                     str = "";
-//#                 clipboard.setClipBoard(str);
-//#             } catch (Exception e) {/*no messages*/}
-//#         }
-//# 
-//#         if (command == cmdCopyPlus) {
-//#             try {
-//#                 String str = ((MultiLine) getFocusedObject()).toString();
-//#                 if (str == null)
-//#                     str = "";
-//#                 str  = clipboard.getClipBoard() + "\n\n" + str;
-//# 
-//#                 clipboard.setClipBoard(str);
-//#             } catch (Exception e) {/*no messages*/}
-//#         }
+        if (command == cmdCopy) {
+            try {
+                String str = ((MultiLine) getFocusedObject()).toString();
+                if (str == null)
+                    str = "";
+                clipboard.setClipBoard(str);
+            } catch (Exception e) {/*no messages*/}
+        }
+
+        if (command == cmdCopyPlus) {
+            try {
+                String str = ((MultiLine) getFocusedObject()).toString();
+                if (str == null)
+                    str = "";
+                str  = clipboard.getClipBoard() + "\n\n" + str;
+
+                clipboard.setClipBoard(str);
+            } catch (Exception e) {/*no messages*/}
+        }
 //#endif
-        super.commandAction(command, displayable);
+        super.menuAction(command, displayable);
     }
 
     private String getAbilities() {
@@ -194,7 +179,7 @@ public class InfoWindow
             abilitiesList.addElement("ARCHIVE");
 //#endif
 //#ifdef AUTOSTATUS
-//#         abilitiesList.addElement("AUTOSTATUS");
+        abilitiesList.addElement("AUTOSTATUS");
 //#endif
 //#ifdef AUTOTASK
 //#         abilitiesList.addElement("AUTOTASK");
@@ -224,21 +209,24 @@ public class InfoWindow
             abilitiesList.addElement("CLIENTS_ICONS");
 //#endif
 //#ifdef CLIPBOARD
-//#         abilitiesList.addElement("CLIPBOARD");
+        abilitiesList.addElement("CLIPBOARD");
 //#endif
 //#ifdef CONSOLE
 //#ifdef PLUGINS
 //#         if (sd.Console)
 //#endif
-//#             abilitiesList.addElement("CONSOLE");
+            abilitiesList.addElement("CONSOLE");
 //#endif
 //#ifdef COLOR_TUNE
 //#ifdef PLUGINS
 //#         if (sd.Colors)
 //#endif
-//#             abilitiesList.addElement("COLOR_TUNE");
+            abilitiesList.addElement("COLOR_TUNE");
 //#endif
 //#ifdef DETRANSLIT
+//#ifdef PLUGINS
+//#         if (sd.DeTranslit)
+//#endif
 //#         abilitiesList.addElement("DETRANSLIT");
 //#endif
 //#ifdef ELF
@@ -254,37 +242,37 @@ public class InfoWindow
             abilitiesList.addElement("FILE_TRANSFER");
 //#endif
 //#ifdef GRADIENT
-//#         abilitiesList.addElement("GRADIENT");
+        abilitiesList.addElement("GRADIENT");
 //#endif
 //#ifdef HISTORY
 //#ifdef PLUGINS
 //#         if (sd.History)
 //#endif
-//#             abilitiesList.addElement("HISTORY");
+            abilitiesList.addElement("HISTORY");
 //#endif
 //#ifdef HISTORY_READER
 //#ifdef PLUGINS
 //#         if (sd.History)
 //#endif
-//#             abilitiesList.addElement("HISTORY_READER");
+            abilitiesList.addElement("HISTORY_READER");
 //#endif
 //#ifdef HTTPCONNECT
 //#         abilitiesList.addElement("HTTPCONNECT");
 //#endif
 //#ifdef HTTPPOLL
-//#         abilitiesList.addElement("HTTPPOLL");
+        abilitiesList.addElement("HTTPPOLL");
 //#endif
 //#ifdef IMPORT_EXPORT
 //#ifdef PLUGINS
 //#         if (sd.IE)
 //#endif
-//#             abilitiesList.addElement("IMPORT_EXPORT");
+            abilitiesList.addElement("IMPORT_EXPORT");
 //#endif
 //#ifdef JUICK
 //#ifdef PLUGINS
 //#         if (sd.Juick)
 //#endif
-//#         abilitiesList.addElement("JUICK");
+        abilitiesList.addElement("JUICK");
 //#endif
 //#ifdef LAST_MESSAGES
 //#ifdef PLUGINS
@@ -299,11 +287,12 @@ public class InfoWindow
 //#             abilitiesList.addElement("LIGHT_CONFIG");
 //#endif  
 //#ifdef LOGROTATE
-//#         abilitiesList.addElement("LOGROTATE");
+        abilitiesList.addElement("LOGROTATE");
 //#endif
-//#ifdef MENU_LISTENER
-        abilitiesList.addElement("MENU_LISTENER");
+//#ifdef NEW_DISCO
+//#         abilitiesList.addElement("NEW_DISCO");
 //#endif
+
 //#ifdef NEW_SKIN
 //#         abilitiesList.addElement("NEW_SKIN");
 //#endif
@@ -317,25 +306,25 @@ public class InfoWindow
 //#ifdef PLUGINS
 //#         if (sd.PEP)
 //#endif
-//#             abilitiesList.addElement("PEP");
+            abilitiesList.addElement("PEP");
 //#endif
 //#ifdef PEP_ACTIVITY
 //#ifdef PLUGINS
 //#         if (sd.PEP)
 //#endif
-//#             abilitiesList.addElement("PEP_ACTIVITY");
+            abilitiesList.addElement("PEP_ACTIVITY");
 //#endif
 //#ifdef PEP_LOCATION
 //#ifdef PLUGINS
 //#         if (sd.PEP)
 //#endif
-//#             abilitiesList.addElement("PEP_LOCATION");
+            abilitiesList.addElement("PEP_LOCATION");
 //#endif
 //#ifdef PEP_TUNE
 //#ifdef PLUGINS
 //#         if (sd.PEP)
 //#endif
-//#             abilitiesList.addElement("PEP_TUNE");
+            abilitiesList.addElement("PEP_TUNE");
 //#endif
 //#ifdef PLUGINS
 //#         abilitiesList.addElement("PLUGINS");
@@ -356,10 +345,10 @@ public class InfoWindow
             abilitiesList.addElement("PRIVACY");
 //#endif
 //#ifdef SASL_XGOOGLETOKEN
-//#         abilitiesList.addElement("SASL_XGOOGLETOKEN");
+        abilitiesList.addElement("SASL_XGOOGLETOKEN");
 //#endif
 //#ifdef SE_LIGHT
-//#         abilitiesList.addElement("SE_LIGHT");
+        abilitiesList.addElement("SE_LIGHT");
 //#endif
 //#ifdef SERVICE_DISCOVERY
         abilitiesList.addElement("SERVICE_DISCOVERY");
@@ -371,19 +360,19 @@ public class InfoWindow
 //#ifdef PLUGINS
 //#         if (sd.Stats)
 //#endif
-//#             abilitiesList.addElement("STATS");
+            abilitiesList.addElement("STATS");
 //#endif
 //#ifdef TEMPLATES
 //#ifdef PLUGINS
 //#         if (sd.Archive)
 //#endif
-//#         abilitiesList.addElement("TEMPLATES");
+        abilitiesList.addElement("TEMPLATES");
 //#endif
 //#ifdef TLS        
 //#         abilitiesList.addElement("TLS");
 //#endif        
 //#ifdef USER_KEYS
-//#         abilitiesList.addElement("USER_KEYS");
+        abilitiesList.addElement("USER_KEYS");
 //#endif
 //#ifdef USE_ROTATOR
         abilitiesList.addElement("USE_ROTATOR");

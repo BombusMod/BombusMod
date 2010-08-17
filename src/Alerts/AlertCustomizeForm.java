@@ -29,8 +29,6 @@
 package Alerts;
 
 import Client.*;
-import javax.microedition.lcdui.Display;
-import javax.microedition.lcdui.Displayable;
 import locale.SR;
 import java.util.Vector;
 import ui.EventNotify;
@@ -42,11 +40,8 @@ import ui.controls.form.SpacerItem;
 import ui.controls.form.TrackItem;
 import util.StringLoader;
 import java.util.Enumeration;
-//#ifndef MENU_LISTENER
-//# import javax.microedition.lcdui.Command;
-//#else
-import Menu.Command;
-//#endif
+import Menu.MenuCommand;
+import ui.VirtualList;
 
 
 public class AlertCustomizeForm
@@ -79,13 +74,14 @@ public class AlertCustomizeForm
     Vector files[];
     Vector fileNames;
 
-    Command cmdSave=new Command(SR.MS_SAVE, Command.OK, 1);
-    Command cmdTest=new Command(SR.MS_TEST_SOUND, Command.SCREEN, 2);
+    MenuCommand cmdSave=new MenuCommand(SR.MS_SAVE, MenuCommand.OK, 1);
+    MenuCommand cmdTest=new MenuCommand(SR.MS_TEST_SOUND, MenuCommand.SCREEN, 2);
 
-    /** Creates a new instance of ConfigForm */
-    public AlertCustomizeForm(Display display, Displayable pView) {
-        super(display, pView, SR.MS_NOTICES_OPTIONS);
-        this.display=display;
+    /** Creates a new instance of ConfigForm
+     * @param pView
+     */
+    public AlertCustomizeForm(VirtualList pView) {
+        super(SR.MS_NOTICES_OPTIONS);
         
         ac=AlertCustomize.getInstance();
         cf=Config.getInstance();
@@ -97,31 +93,31 @@ public class AlertCustomizeForm
             fileNames.addElement((String)file.nextElement());
 	}
 
-        MessageFile=new DropChoiceBox(display, SR.MS_MESSAGE_SOUND); MessageFile.items=fileNames; 
+        MessageFile=new DropChoiceBox(SR.MS_MESSAGE_SOUND); MessageFile.items=fileNames; 
         MessageFile.setSelectedIndex(ac.soundsMsgIndex); itemsList.addElement(MessageFile);
 
-        OnlineFile=new DropChoiceBox(display, SR.MS_ONLINE_SOUND); OnlineFile.items=fileNames; 
+        OnlineFile=new DropChoiceBox(SR.MS_ONLINE_SOUND); OnlineFile.items=fileNames; 
         OnlineFile.setSelectedIndex(ac.soundOnlineIndex); itemsList.addElement(OnlineFile);
 
-        OfflineFile=new DropChoiceBox(display, SR.MS_OFFLINE_SOUND); OfflineFile.items=fileNames; 
+        OfflineFile=new DropChoiceBox(SR.MS_OFFLINE_SOUND); OfflineFile.items=fileNames; 
         OfflineFile.setSelectedIndex(ac.soundOfflineIndex); itemsList.addElement(OfflineFile);
 
-        ForYouFile=new DropChoiceBox(display, SR.MS_MESSAGE_FOR_ME_SOUND); ForYouFile.items=fileNames; 
+        ForYouFile=new DropChoiceBox(SR.MS_MESSAGE_FOR_ME_SOUND); ForYouFile.items=fileNames; 
         ForYouFile.setSelectedIndex(ac.soundForYouIndex); itemsList.addElement(ForYouFile);
 
-        ComposingFile=new DropChoiceBox(display, SR.MS_COMPOSING_SOUND); ComposingFile.items=fileNames; 
+        ComposingFile=new DropChoiceBox(SR.MS_COMPOSING_SOUND); ComposingFile.items=fileNames; 
         ComposingFile.setSelectedIndex(ac.soundComposingIndex); itemsList.addElement(ComposingFile);
 
-        ConferenceFile=new DropChoiceBox(display, SR.MS_CONFERENCE_SOUND); ConferenceFile.items=fileNames; 
+        ConferenceFile=new DropChoiceBox(SR.MS_CONFERENCE_SOUND); ConferenceFile.items=fileNames; 
         ConferenceFile.setSelectedIndex(ac.soundConferenceIndex); itemsList.addElement(ConferenceFile);
 
-        StartUpFile=new DropChoiceBox(display, SR.MS_STARTUP_SOUND); StartUpFile.items=fileNames; 
+        StartUpFile=new DropChoiceBox(SR.MS_STARTUP_SOUND); StartUpFile.items=fileNames; 
         StartUpFile.setSelectedIndex(ac.soundStartUpIndex); itemsList.addElement(StartUpFile);
 
-        OutgoingFile=new DropChoiceBox(display, SR.MS_OUTGOING_SOUND); OutgoingFile.items=fileNames; 
+        OutgoingFile=new DropChoiceBox(SR.MS_OUTGOING_SOUND); OutgoingFile.items=fileNames; 
         OutgoingFile.setSelectedIndex(ac.soundOutgoingIndex); itemsList.addElement(OutgoingFile);
 
-        VIPFile=new DropChoiceBox(display, SR.MS_VIP_SOUND); VIPFile.items=fileNames; 
+        VIPFile=new DropChoiceBox(SR.MS_VIP_SOUND); VIPFile.items=fileNames; 
         VIPFile.setSelectedIndex(ac.soundVIPIndex); itemsList.addElement(VIPFile);
 
         itemsList.addElement(new SimpleString(SR.MS_SHOW_LAST_APPEARED_CONTACTS, true));
@@ -142,19 +138,9 @@ public class AlertCustomizeForm
         itemsList.addElement(new SpacerItem(10));
         IQNotify=new CheckBox(SR.MS_SHOW_IQ_REQUESTS, cf.IQNotify); itemsList.addElement(IQNotify);
 
-//#ifndef MENU_LISTENER        
-//#
-//#         if (playable()>-1)
-//#             addCommand(cmdTest);
-//#         addCommand(cmdSave);
-//#         addCommand(cmdCancel);
-//#         removeCommand(cmdOk);
-//#endif
-
-        setCommandListener(this);        
-
-        attachDisplay(display);
-        this.parentView=pView;
+        setMenuListener(this);
+        
+        show(parentView);
     }
     
     public void cmdSave() {
@@ -195,8 +181,8 @@ public class AlertCustomizeForm
         destroyView();
     }
     
-    public void commandAction(Command c, Displayable d) {
-        super.commandAction(c, d);
+    public void menuAction(MenuCommand c, VirtualList d) {
+        super.menuAction(c, d);
         if (c==cmdTest)
             PlaySound();
         else if (c==cmdSave) {
@@ -219,22 +205,20 @@ public class AlertCustomizeForm
         String soundType=(String)files[0].elementAt(selectedSound);
         int soundVol=sndVol.getValue()*10;
 //#ifdef DEBUG
-//#         System.out.println(cursor+": "+sound+" "+soundFile+" "+soundType+" "+soundVol);
+        System.out.println(cursor+": "+sound+" "+soundFile+" "+soundType+" "+soundVol);
 //#endif
-        new EventNotify(display, soundType, soundFile, soundVol, 0).startNotify();
+        new EventNotify( soundType, soundFile, soundVol, 0).startNotify();
     }
 
-//#ifdef MENU_LISTENER
     public void commandState(){
         menuCommands.removeAllElements();
         
         if (playable()>-1)
-            addCommand(cmdTest);
-        addCommand(cmdSave);        
+            addMenuCommand(cmdTest);
+        addMenuCommand(cmdSave);
     }
     
 
     public String touchLeftCommand(){ return SR.MS_MENU; }
     public void touchLeftPressed(){ showMenu(); }
-//#endif
 }

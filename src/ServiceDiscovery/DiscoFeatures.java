@@ -28,7 +28,6 @@ package ServiceDiscovery;
 
 import java.util.Enumeration;
 import java.util.Vector;
-import javax.microedition.lcdui.Display;
 import locale.SR;
 import ui.controls.form.DefForm;
 import ui.controls.form.SimpleString;
@@ -39,20 +38,23 @@ import ui.controls.form.SimpleString;
  */
 public class DiscoFeatures extends DefForm {
 
-    /** Creates a new instance of DiscoFeatures */
-    public DiscoFeatures(Display display, String entity, Vector features) {
-        super(display, display.getCurrent(), entity);
+    /** Creates a new instance of DiscoFeatures
+     * @param entity
+     * @param features
+     */
+    public DiscoFeatures(String entity, Vector features) {
+        super(entity);
         if (features.isEmpty()) {
             itemsList.addElement(new SimpleString(SR.MS_ERROR, true));
         } else {
             for (Enumeration i = features.elements(); i.hasMoreElements();) {
                 String feature = (String) (i.nextElement());
-                itemsList.addElement(new SimpleString(feature, true));
+                SimpleString item = new SimpleString(feature, true);
+                item.selectable = true;
+                itemsList.addElement(item);
             }
         }
-        parentView = display.getCurrent();
-        this.display = display;
-        attachDisplay(display);
+        show();
     }
     public void cmdOk() {
         destroyView();

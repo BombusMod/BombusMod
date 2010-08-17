@@ -5,9 +5,6 @@
 
 package Menu;
 
-import java.util.Enumeration;
-import java.util.Hashtable;
-import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import midlet.BombusMod;
 
@@ -36,18 +33,17 @@ public class SieNatMenu extends Menu {
         , "ELSE_STR_MYMENU"
     };
 
-    public SieNatMenu(Display display, Displayable parent) {
+    public SieNatMenu(Displayable parent) {
         super("Native Commands", null);
         
 
-        this.display = display;
         this.parentView = parent;
         
         int count = commands.length;        
         for (int i = 0; i < count; i++) {
-         addItem((String)items[i], i);
+         addItem(items[i], i);
         }
-        attachDisplay(display);
+        show(parentView);
     }
 
     public void eventOk() {

@@ -31,10 +31,10 @@ import Client.Config;
 import Client.StaticData;
 import Fonts.FontCache;
 //#ifdef AUTOSTATUS
-//# import Client.ExtendedStatus;
-//# import Client.Roster;
-//# import Client.StaticData;
-//# import Client.StatusList;
+import Client.ExtendedStatus;
+import Client.Roster;
+import Client.StaticData;
+import Client.StatusList;
 //#endif
 import images.RosterIcons;
 import java.util.Timer;
@@ -53,14 +53,13 @@ import ui.controls.Progress;
  */
 public final class SplashScreen extends Canvas implements Runnable, CommandListener {
     
-    private Display display;
     private Displayable parentView;
     
     private String capt;
     private int pos=-1;
     
-    private int width;
-    private int height;
+   // private int width;
+   // private int height;
     
     public Image img;
     
@@ -81,28 +80,29 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
     
     private Progress pb;
     
-    public static SplashScreen getInstance(Display display){
+    public static SplashScreen getInstance(){
         if (instance==null) 
-            instance=new SplashScreen(display);
+            instance=new SplashScreen();
         return instance;
     }
     
     /** Creates a new instance of SplashScreen */
-    private SplashScreen(Display display) {
+    private SplashScreen() {
         setFullScreenMode(Config.fullscreen);
-        this.display = display; // http://code.google.com/p/bm2/issues/detail?id=93
-        display.setCurrent(this);
+        midlet.BombusMod.getInstance().setDisplayable(this);
     }
     
-    public SplashScreen(Display display, ComplexString status, char exitKey) {
+    public SplashScreen(ComplexString status, char exitKey) {
         this.status=status;
-        this.display=display;
         this.exitKey=exitKey;
         kHold=exitKey;
         
-        parentView=display.getCurrent();
+        parentView=midlet.BombusMod.getInstance().getCurrentDisplayable();
 
         status.setElementAt(new Integer(RosterIcons.ICON_KEYBLOCK_INDEX),6);
+        show();
+    }
+    public void show() {
         repaint();
         //serviceRepaints();
 
@@ -119,8 +119,11 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
     }
 
     public void paint(Graphics g){
-        width = g.getClipWidth();
-        height = g.getClipHeight();
+        int width=getWidth();
+        int offs = 0;
+        if (Config.getInstance().phoneManufacturer == Config.MICROEMU)
+            offs = 25;
+        int height = getHeight() - offs;
         
         g.setColor(ColorTheme.getColor(ColorTheme.BLK_BGND));
         g.fillRect(0,0, width, height);
@@ -130,8 +133,8 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
 
         if (pos==-1) {
             g.setColor(ColorTheme.getColor(ColorTheme.BLK_INK));
-
-            status.drawItem(g, (Config.getInstance().phoneManufacturer==Config.NOKIA)?17:0, false);
+            if (status != null)
+                status.drawItem(g, 0, false);            
 
             g.setFont(clockFont);
             int h=clockFont.getHeight()+1;
@@ -142,7 +145,7 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
             g.drawString(time, width/2, height, Graphics.BOTTOM | Graphics.HCENTER);
         } else {
             int filled=pos*width/100;
-            if (pb==null) pb=new Progress(0, height, width);
+            if (pb==null) pb=new Progress(0, height , width);
             Progress.draw(g, filled, capt);
         }
     }
@@ -171,8 +174,7 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
     // close splash
     private Command cmdExit=new Command("Hide Splash", Command.BACK, 99);
     
-    public void setExit(Display display, Displayable nextDisplayable){
-        this.display=display;
+    public void setExit(Displayable nextDisplayable){
         parentView=nextDisplayable;
         setCommandListener(this);
         addCommand(cmdExit);
@@ -185,7 +187,7 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
     
     public void close(){
         //if (parentView!=null)
-        display.setCurrent(StaticData.getInstance().roster);
+        midlet.BombusMod.getInstance().setDisplayable(StaticData.getInstance().roster);
         //parentView=null;
         //repaint();
         //serviceRepaints();
@@ -203,7 +205,7 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
                 img=Image.createImage("/images/splash.png");
         } catch (Exception e) {}
         
-        display.setCurrent(this);
+        midlet.BombusMod.getInstance().setDisplayable(this);
     }
 
     private class TimerTaskClock extends TimerTask {
@@ -243,20 +245,19 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
 
     private void destroyView(){
         status.setElementAt(null,6);
-        if (display!=null) 
-            display.setCurrent(parentView);
+        midlet.BombusMod.getInstance().setDisplayable(StaticData.getInstance().roster);
         img=null;
         tc.stop();
 //#ifdef AUTOSTATUS
-//#         StaticData sd=StaticData.getInstance();
-//#         if (Roster.autoAway && cf.autoAwayType==Config.AWAY_LOCK) {
-//#             int newStatus=Roster.oldStatus;
-//#             ExtendedStatus es=StatusList.getInstance().getStatus(newStatus);
-//#             String ms=es.getMessage();
-//#             Roster.autoAway=false;
-//#             Roster.autoXa=false;
-//#             sd.roster.sendPresence(newStatus, ms);
-//#         }
+        StaticData sd=StaticData.getInstance();
+        if (Roster.autoAway && cf.autoAwayType==Config.AWAY_LOCK) {
+            int newStatus=Roster.oldStatus;
+            ExtendedStatus es=StatusList.getInstance().getStatus(newStatus);
+            String ms=es.getMessage();
+            Roster.autoAway=false;
+            Roster.autoXa=false;
+            sd.roster.sendPresence(newStatus, ms);
+        }
 //#endif
 //        if (cf.widthSystemgc) { _vt
             System.gc();

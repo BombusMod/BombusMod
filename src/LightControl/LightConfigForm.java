@@ -4,7 +4,6 @@
 
 package LightControl;
 
-import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
 import java.util.Vector;
@@ -34,42 +33,31 @@ public class LightConfigForm
     Vector fileNames;
 
     /** Creates a new instance of ConfigForm */
-    public LightConfigForm(Display display, Displayable pView)
+    public LightConfigForm(Displayable pView)
     {
-        super(display, pView, SR.L_CONFIG);
-        this.display=display;
-
+        super(SR.L_CONFIG);
         light=LightConfig.getInstance();
 
         config_enabled=new CheckBox(SR.L_ENABLED, light.light_control);
         itemsList.addElement(config_enabled);
 
-        light_idle=new NumberInput(display, SR.L_IDLE_VALUE, Integer.toString(light.light_idle), 0, 100);
+        light_idle=new NumberInput(SR.L_IDLE_VALUE, Integer.toString(light.light_idle), 0, 100);
         itemsList.addElement(light_idle);
 
-        light_keypressed=new NumberInput(display, SR.L_KEYPRESS_VALUE, Integer.toString(light.light_keypress), 0, 100);
+        light_keypressed=new NumberInput(SR.L_KEYPRESS_VALUE, Integer.toString(light.light_keypress), 0, 100);
         itemsList.addElement(light_keypressed);
         
-        light_keypressed_time=new NumberInput(display, SR.L_KEYPRESS_TIMEOUT, Integer.toString(light.light_keypressed_time), 0, 600);
+        light_keypressed_time=new NumberInput(SR.L_KEYPRESS_TIMEOUT, Integer.toString(light.light_keypressed_time), 0, 600);
         itemsList.addElement(light_keypressed_time);
 
-        light_message=new NumberInput(display, SR.L_MESSAGE_VALUE, Integer.toString(light.light_message), 0, 101);
+        light_message=new NumberInput(SR.L_MESSAGE_VALUE, Integer.toString(light.light_message), 0, 101);
         itemsList.addElement(light_message);
         
-        light_message_time=new NumberInput(display, SR.L_MESSAGE_TIMEOUT, Integer.toString(light.light_message_time), 0, 600);
+        light_message_time=new NumberInput(SR.L_MESSAGE_TIMEOUT, Integer.toString(light.light_message_time), 0, 600);
         itemsList.addElement(light_message_time);
-
-        commandState();
-
-        attachDisplay(display);
-        this.parentView=pView;
+        show(pView);        
     }
     
-    public final void commandState() {
-        addCommand(cmdOk);
-        addCommand(cmdCancel);
-    }
-   
     public void cmdOk() {
         light.light_control=config_enabled.getValue();
         light.light_idle=Integer.parseInt(light_idle.getValue());

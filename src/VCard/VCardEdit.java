@@ -19,16 +19,11 @@ import io.file.browse.BrowserListener;
 import images.camera.*;
 //#endif
 import java.util.*;
-//#ifndef MENU_LISTENER
-//# import javax.microedition.lcdui.Command;
-//#else
-import Menu.Command;
-//#endif
-import javax.microedition.lcdui.Display;
-import javax.microedition.lcdui.Displayable;
+import Menu.MenuCommand;
 import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
+import ui.VirtualList;
 
 import util.StringUtils;
 
@@ -53,17 +48,15 @@ public class VCardEdit
 //#endif
 {
     
-    private Display display;
-
-    Command cmdPublish=new Command(SR.MS_PUBLISH, Command.OK, 1);
-    Command cmdRefresh=new Command(SR.MS_REFRESH, Command.SCREEN, 2);
+    MenuCommand cmdPublish=new MenuCommand(SR.MS_PUBLISH, MenuCommand.OK, 1);
+    MenuCommand cmdRefresh=new MenuCommand(SR.MS_REFRESH, MenuCommand.SCREEN, 2);
 //#if FILE_IO
-    Command cmdLoadPhoto=new Command(SR.MS_LOAD_PHOTO, Command.SCREEN,3);
-    Command cmdSavePhoto=new Command(SR.MS_SAVE_PHOTO, Command.SCREEN,4);
+    MenuCommand cmdLoadPhoto=new MenuCommand(SR.MS_LOAD_PHOTO, MenuCommand.SCREEN,3);
+    MenuCommand cmdSavePhoto=new MenuCommand(SR.MS_SAVE_PHOTO, MenuCommand.SCREEN,4);
 //#endif
-    Command cmdDelPhoto=new Command(SR.MS_CLEAR_PHOTO, Command.SCREEN,5);
+    MenuCommand cmdDelPhoto=new MenuCommand(SR.MS_CLEAR_PHOTO, MenuCommand.SCREEN,5);
 //#ifndef NOMMEDIA
-    Command cmdCamera=new Command(SR.MS_CAMERA, Command.SCREEN,6);
+    MenuCommand cmdCamera=new MenuCommand(SR.MS_CAMERA, MenuCommand.SCREEN,6);
 //#endif
 
     private Vector items=new Vector();
@@ -80,10 +73,12 @@ public class VCardEdit
     
     private LinkString publish;
 
-    /** Creates a new instance of vCardForm */
-    public VCardEdit(Display display, Displayable pView, VCard vcard) {
-        super(display, pView, SR.MS_VCARD+" "+StaticData.getInstance().account.getBareJid());
-        this.display=display;
+    /** Creates a new instance of vCardForm
+     * @param pView
+     * @param vcard
+     */
+    public VCardEdit(VirtualList pView, VCard vcard) {
+        super(SR.MS_VCARD+" "+StaticData.getInstance().account.getBareJid());
         this.vcard=vcard;
 
         for (int index=0; index<vcard.getCount(); index++) {
@@ -95,33 +90,15 @@ public class VCardEdit
                 if (data.length()>500)
                     data=data.substring(0, 494)+"<...>";
             } 
-            itemsList.addElement(new TextInput(display, name, data, null, TextField.ANY));
+            itemsList.addElement(new TextInput(name, data, null, TextField.ANY));
         }
 
         publish=new LinkString(SR.MS_PUBLISH) { public void doAction() { publish(); } };
         
         setPhoto();
 
-//#ifndef MENU_LISTENER
-//#         removeCommand(cmdOk);
-//#         addCommand(cmdPublish);
-//#         addCommand(cmdRefresh);
-//#if FILE_IO
-//#         addCommand(cmdLoadPhoto);
-//#         addCommand(cmdSavePhoto);
-//#endif
-//#ifndef NOMMEDIA
-//#         String cameraAvailable=System.getProperty("supports.video.capture");
-//#         if (cameraAvailable!=null) if (cameraAvailable.startsWith("true"))
-//#             addCommand(cmdCamera);
-//#         addCommand(cmdDelPhoto);
-//#endif
-//#         addCommand(cmdCancel);
-//#         setCommandListener(this);
-//#endif       
 
-        attachDisplay(display);
-        this.parentView=pView;
+        show(pView);        
     }
     
     public void publish() {
@@ -137,7 +114,7 @@ public class VCardEdit
         destroyView();
     }
 
-    public void commandAction(Command c, Displayable d) {        
+    public void menuAction(MenuCommand c, VirtualList d) {        
         if (c==cmdRefresh) {
             VCard.request(vcard.getJid(), vcard.getId().substring(5));
             destroyView();
@@ -146,16 +123,16 @@ public class VCardEdit
 //#if FILE_IO
         if (c==cmdLoadPhoto) {
             st=1;
-            new Browser(null, display, this, this, false);
+            new Browser(null, this, this, false);
         }
         if (c==cmdSavePhoto) {
             st=2;
-            new Browser(null, display, this, this, true);
+            new Browser(null, this, this, true);
         }
 //#endif
 //#ifndef NOMMEDIA
         if (c==cmdCamera)
-            new CameraImage(display, this);
+            new CameraImage( this);
 //#endif
         if (c==cmdDelPhoto) {
             vcard.dropPhoto();
@@ -164,7 +141,7 @@ public class VCardEdit
         if (c==cmdPublish)
             publish();
 
-        super.commandAction(c, d);
+        super.menuAction(c, d);
     }
 
     
@@ -234,25 +211,23 @@ public class VCardEdit
         itemsList.addElement(publish);
      }
 
-//#ifdef MENU_LISTENER
     public final void commandState() {
         menuCommands.removeAllElements();
-        addCommand(cmdPublish);
-        addCommand(cmdRefresh);
+        addMenuCommand(cmdPublish);
+        addMenuCommand(cmdRefresh);
 //#if FILE_IO
-        addCommand(cmdLoadPhoto);
-        addCommand(cmdSavePhoto);
+        addMenuCommand(cmdLoadPhoto);
+        addMenuCommand(cmdSavePhoto);
 //#endif
 //#ifndef NOMMEDIA
         String cameraAvailable=System.getProperty("supports.video.capture");
         if (cameraAvailable!=null) if (cameraAvailable.startsWith("true"))
-            addCommand(cmdCamera);
+            addMenuCommand(cmdCamera);
 //#endif  
-        addCommand(cmdDelPhoto);
+        addMenuCommand(cmdDelPhoto);
 
-        addCommand(cmdCancel);
+        addMenuCommand(cmdCancel);
     }
     public String touchLeftCommand() { return SR.MS_MENU; }
     public void touchLeftPressed() { showMenu(); }
-//#endif
  }

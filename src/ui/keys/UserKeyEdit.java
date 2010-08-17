@@ -27,7 +27,6 @@
 package ui.keys;
 import java.util.Enumeration;
 import locale.SR;
-import javax.microedition.lcdui.Display;
 import ui.controls.form.CheckBox;
 import ui.controls.form.DefForm;
 import ui.controls.form.DropChoiceBox;
@@ -48,9 +47,9 @@ class UserKeyEdit extends DefForm {
     private CheckBox active;
     private CheckBox two_keys_t;
     private DropChoiceBox[] commands_t = {
-        new DropChoiceBox(display, "Common"),
-        new DropChoiceBox(display, "Roster"),
-        new DropChoiceBox(display, "ContactMessageList")
+        new DropChoiceBox("Common"),
+        new DropChoiceBox("Roster"),
+        new DropChoiceBox("ContactMessageList")
     };
     private KeyInput key_t;
 
@@ -58,12 +57,12 @@ class UserKeyEdit extends DefForm {
     
     boolean newKey;
 
-    public UserKeyEdit(Display display, UserKeysList keysList, UserKey u) {
-        super(display, keysList, (u==null)?
+    public UserKeyEdit(UserKeysList keysList, UserKey u) {
+        super((u==null)?
 //#ifdef USER_KEYS
-//#             SR.MS_ADD_CUSTOM_KEY:
+            SR.MS_ADD_CUSTOM_KEY:
 //#else
-                "":
+//#                 "":
 //#endif
                 (u.toString()));
         
@@ -74,29 +73,29 @@ class UserKeyEdit extends DefForm {
 	this.u=u;
 
 //#ifdef USER_KEYS
-//#         active=new CheckBox(SR.MS_ENABLED, u.active);
-//#         itemsList.addElement(active);
-//# 
-//#         for (int i = 0; i < 3; i++) {
-//#             commands_t[i].append(UserKeyExec.none_command.description);
-//#             for (Enumeration e = UserKeyExec.available_commands[i].elements(); e.hasMoreElements();) {
-//#                 commands_t[i].append(((UserKeyCommand) e.nextElement()).description);
-//#             }
-//#             commands_t[i].setSelectedIndex(UserKeyExec.available_commands[i].indexOf(new UserKeyCommand(u.commands_id[i], null)) + 1);
-//#             itemsList.addElement(commands_t[i]);
-//#         }
-//# 
-//#         two_keys_t = new CheckBox("Two keys", u.two_keys);
-//#         itemsList.addElement(two_keys_t);
-//# 
-//#         itemsList.addElement(new SpacerItem(10));
-//# 
-//#         key_t = new KeyInput(u, "Press it");
-//#         itemsList.addElement(key_t);
+        active=new CheckBox(SR.MS_ENABLED, u.active);
+        itemsList.addElement(active);
+
+        for (int i = 0; i < 3; i++) {
+            commands_t[i].append(UserKeyExec.none_command.description);
+            for (Enumeration e = UserKeyExec.available_commands[i].elements(); e.hasMoreElements();) {
+                commands_t[i].append(((UserKeyCommand) e.nextElement()).description);
+            }
+            commands_t[i].setSelectedIndex(UserKeyExec.available_commands[i].indexOf(new UserKeyCommand(u.commands_id[i], null)) + 1);
+            itemsList.addElement(commands_t[i]);
+        }
+
+        two_keys_t = new CheckBox("Two keys", u.two_keys);
+        itemsList.addElement(two_keys_t);
+
+        itemsList.addElement(new SpacerItem(10));
+
+        key_t = new KeyInput(u, "Press it");
+        itemsList.addElement(key_t);
 //#endif
         
         moveCursorTo(getNextSelectableRef(-1));
-        attachDisplay(display);
+        show(parentView);
         parentView = keysList;
     }
     
@@ -119,7 +118,7 @@ class UserKeyEdit extends DefForm {
 
         //keysList.rmsUpdate();
         keysList.commandState();
-        display.setCurrent(keysList);
+        midlet.BombusMod.getInstance().setDisplayable(keysList);
     }
 
     public void eventOk() {

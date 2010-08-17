@@ -11,7 +11,14 @@ package xmpp.extensions;
 
 import com.alsutton.jabber.JabberDataBlock;
 import java.util.*;
-import javax.microedition.lcdui.*;
+import javax.microedition.lcdui.Command;
+import javax.microedition.lcdui.CommandListener;
+import javax.microedition.lcdui.Displayable;
+import javax.microedition.lcdui.Form;
+import javax.microedition.lcdui.Image;
+import javax.microedition.lcdui.ImageItem;
+import javax.microedition.lcdui.Item;
+import javax.microedition.lcdui.StringItem;
 import locale.SR;
 import util.Strconv;
 
@@ -25,7 +32,6 @@ public class XDataForm implements CommandListener {
         void XDataFormSubmit(JabberDataBlock form);
     }
     
-    private Display display;
     private Displayable parentView;
     private NotifyListener notifyListener;
     
@@ -35,10 +41,11 @@ public class XDataForm implements CommandListener {
     Vector items;
     
     Form f;
-    /** Creates a new instance of XDataForm */
-    public XDataForm(Display display, JabberDataBlock form, NotifyListener notifyListener) {
-        this.display=display;
-        this.parentView=display.getCurrent();
+    /** Creates a new instance of XDataForm
+     * @param form
+     * @param notifyListener
+     */
+    public XDataForm(JabberDataBlock form, NotifyListener notifyListener) {
         this.notifyListener=notifyListener;
 
         String title=form.getChildBlockText("title");
@@ -74,7 +81,7 @@ public class XDataForm implements CommandListener {
         f.setCommandListener(this);
         f.addCommand(cmdOk);
         f.addCommand(cmdCancel);
-        display.setCurrent(f);
+        midlet.BombusMod.getInstance().setDisplayable(f);
     }
     
     public void fetchMediaElements(Vector bobCache) {
@@ -132,7 +139,7 @@ public class XDataForm implements CommandListener {
             }
             notifyListener.XDataFormSubmit(resultForm);
         }
-        display.setCurrent(parentView);
+        midlet.BombusMod.getInstance().setDisplayable(parentView);
     }
     
 }

@@ -26,9 +26,11 @@
  */
 package Archive;
 
+import Client.Config;
 import Client.Msg;
 import javax.microedition.lcdui.*;
 import locale.SR;
+import ui.VirtualList;
 import ui.controls.ExTextBox;
 
 /**
@@ -48,12 +50,10 @@ public class archiveEdit
     private int where = 1;
     private int pos;
     private ArchiveList al;
+    
+    public archiveEdit(VirtualList pView, int pos, int where, ArchiveList al) {
 
-    public archiveEdit(Display display, Displayable pView, int pos, int where, ArchiveList al) {
-
-        super(display, pView, null, (pos > -1) ? SR.MS_EDIT : SR.MS_NEW);
-
-        this.display = display;
+        super(null, (pos > -1) ? SR.MS_EDIT : SR.MS_NEW);
 
         archive = new MessageArchive(where);
 
@@ -86,15 +86,19 @@ public class archiveEdit
         textbox.removeCommand(cmdPaste);
 //#endif
 //#if TEMPLATES
-//#         textbox.removeCommand(cmdTemplate);
-//#endif        
+        textbox.removeCommand(cmdTemplate);
+//#endif
+        if (Config.getInstance().phoneManufacturer == Config.SONYE) System.gc(); // prevent flickering on Sony Ericcsson C510
+        textbox.setCommandListener(this);        
+        
     }
-
-    public void commandAction(Command c, Displayable d) {
-
+    
+    public void commandAction(Command c, Displayable d){
+        //if (executeCommand(c, d)) return;
+        
         if (!executeCommand(c, d)) {
-
-            if (c == cmdOk) {
+		
+        if (c == cmdOk) {
                 int type = Msg.MESSAGE_TYPE_OUT;
                 String from = "";
                 String subj = "";
@@ -111,6 +115,7 @@ public class archiveEdit
                 al.reFresh();
             }
             destroyView();
+
         }
     }
 }

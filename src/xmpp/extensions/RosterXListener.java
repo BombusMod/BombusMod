@@ -14,8 +14,6 @@ import com.alsutton.jabber.datablocks.Iq;
 import com.alsutton.jabber.datablocks.Presence;
 import java.util.Enumeration;
 import java.util.Vector;
-import javax.microedition.lcdui.Display;
-import javax.microedition.lcdui.Displayable;
 import ui.controls.form.DefForm;
 import ui.controls.form.MultiLine;
 
@@ -61,7 +59,7 @@ public class RosterXListener implements JabberBlockListener {
             }
         }
         if (!newcontacts.isEmpty())
-            new RosterAddForm(midlet.BombusMod.getInstance().getDisplay(), midlet.BombusMod.getInstance().getDisplay().getCurrent(), sender, newcontacts);        
+            new RosterAddForm(sender, newcontacts);
         return BLOCK_PROCESSED;
     }
 
@@ -71,12 +69,11 @@ class RosterAddForm extends DefForm {
 
     Vector contacts;
 
-    public RosterAddForm (Display display, Displayable pView, String sender, Vector items) {
-        super(display, pView, sender);
+    public RosterAddForm (String sender, Vector items) {
+        super(sender);
         contacts = items;
         itemsList.addElement(new MultiLine("Add contacts", "Add " + contacts.size() + " contacts to your roster?", super.getWidth()));
-        attachDisplay(display);
-        parentView = pView;
+        show();
     }
     public void cmdOk() {
         Contact c;

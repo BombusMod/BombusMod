@@ -29,9 +29,9 @@ package Menu;
 
 import java.util.Enumeration;
 import java.util.Vector;
-import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import ui.ImageList;
+import ui.VirtualList;
 
 /**
  *
@@ -43,8 +43,14 @@ public class MyMenu extends Menu {
     private Vector commands;
 
     
-    /** Creates a new instance of MyMenu */
-    public MyMenu(Display display, Displayable parentView, MenuListener menuListener, String caption, ImageList il, Vector menuCommands) {
+    /** Creates a new instance of MyMenu
+     * @param parentView
+     * @param menuListener 
+     * @param menuCommands
+     * @param caption
+     * @param il
+     */
+    public MyMenu(Displayable parentView, MenuListener menuListener, String caption, ImageList il, Vector menuCommands) {
         super(caption, il);
         this.ml=menuListener;
         this.commands=menuCommands;
@@ -52,11 +58,11 @@ public class MyMenu extends Menu {
         this.parentView=parentView;
         
         for (int i=0; i<commands.size(); i++) {
-            Command c=(Command)commands.elementAt(i);
+            MenuCommand c=(MenuCommand)commands.elementAt(i);
             addItem(c.getName(), i, c.getImg());
         }
 
-        attachDisplay(display);
+        show(parentView);
     }
     
     public void eventOk(){
@@ -65,12 +71,12 @@ public class MyMenu extends Menu {
         
 	if (me==null)  return;
 
-        ml.commandAction(getCommand(me.index), parentView);
+        ml.menuAction(getCommand(me.index), (VirtualList)parentView);
     }
     
-    public Command getCommand(int index) {
+    public MenuCommand getCommand(int index) {
         for (Enumeration command=commands.elements(); command.hasMoreElements();) {
-            Command cmd =(Command)command.nextElement();
+            MenuCommand cmd =(MenuCommand)command.nextElement();
             if (cmd.getName().equals(getFocusedObject().toString()))
                 return cmd;
         }

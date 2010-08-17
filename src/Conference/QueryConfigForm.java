@@ -48,9 +48,8 @@ import javax.microedition.lcdui.Display;
 public class QueryConfigForm implements JabberBlockListener{
     
     private final static String OWNER_XMLNS="http://jabber.org/protocol/muc#owner";
-    private Display display;
     /** Creates a new instance of QueryConfigForm */
-    public QueryConfigForm(Display display, String roomJid) {
+    public QueryConfigForm( String roomJid) {
         JabberDataBlock getform=new Iq(roomJid, Iq.TYPE_GET, "confform");
         getform.addChildNs("query", OWNER_XMLNS);
         
@@ -58,7 +57,7 @@ public class QueryConfigForm implements JabberBlockListener{
         stream.addBlockListener(this);
         stream.send(getform);
         StaticData.getInstance().roster.setQuerySign(true);
-        this.display=display;
+        
     }
     
     public int blockArrived(JabberDataBlock data) {
@@ -68,9 +67,9 @@ public class QueryConfigForm implements JabberBlockListener{
 //#ifdef SERVICE_DISCOVERY
             if (data.getTypeAttribute().equals("result")) {
 //#ifdef NEW_DISCO
-//#                 new MyDiscoForm(display, data, StaticData.getInstance().roster.theStream, "muc_owner", "query");
+//#                 new MyDiscoForm(data, StaticData.getInstance().roster.theStream, "muc_owner", "query");
 //#else 
-                new DiscoForm(display, data, StaticData.getInstance().roster.theStream, "muc_owner", "query");
+                new DiscoForm(data, StaticData.getInstance().roster.theStream, "muc_owner", "query");
 //#endif
             }
 //#endif

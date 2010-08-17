@@ -27,23 +27,17 @@
 
 package Account;
 import Client.*;
-import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
 import midlet.BombusMod;
 import ui.*;
 import java.io.*;
 import java.util.*;
-//#ifndef MENU_LISTENER
-//# import javax.microedition.lcdui.Command;
-//#else
-import Menu.Command;
-//#endif
-import ui.MainBar;
+import Menu.MenuCommand;
 import io.NvStorage;
 import ui.controls.AlertBox;
 //#ifdef IMPORT_EXPORT
-//# import IE.*;
+import IE.*;
 //#endif
 import ui.controls.form.DefForm;
 
@@ -57,22 +51,21 @@ public class AccountSelect extends DefForm {
     int activeAccount;
     boolean enableQuit;
     
-    Command cmdLogin=new Command(SR.MS_SELLOGIN, Command.OK,1);
-    Command cmdSelect=new Command(SR.MS_NOLOGIN, Command.SCREEN,2);
-    Command cmdAdd=new Command(SR.MS_NEW_ACCOUNT, Command.SCREEN,3);
-    Command cmdEdit=new Command(SR.MS_EDIT,Command.ITEM,3);
-    Command cmdDel=new Command(SR.MS_DELETE,Command.ITEM,4);
-    Command cmdConfig=new Command(SR.MS_OPTIONS,Command.ITEM,5);
-    Command cmdQuit=new Command(SR.MS_APP_QUIT,Command.SCREEN,10);
+    MenuCommand cmdLogin=new MenuCommand(SR.MS_SELLOGIN, MenuCommand.OK,1);
+    MenuCommand cmdSelect=new MenuCommand(SR.MS_NOLOGIN, MenuCommand.SCREEN,2);
+    MenuCommand cmdAdd=new MenuCommand(SR.MS_NEW_ACCOUNT, MenuCommand.SCREEN,3);
+    MenuCommand cmdEdit=new MenuCommand(SR.MS_EDIT,MenuCommand.ITEM,3);
+    MenuCommand cmdDel=new MenuCommand(SR.MS_DELETE,MenuCommand.ITEM,4);
+    MenuCommand cmdConfig=new MenuCommand(SR.MS_OPTIONS,MenuCommand.ITEM,5);
+    MenuCommand cmdQuit=new MenuCommand(SR.MS_APP_QUIT,MenuCommand.SCREEN,10);
     
     private Config cf;
     
     /** Creates a new instance of AccountPicker */
-    public AccountSelect(Display display, Displayable pView, boolean enableQuit) {
-        super(display, pView, SR.MS_ACCOUNTS);
+    public AccountSelect(boolean enableQuit) {
+        super(SR.MS_ACCOUNTS);
         this.enableQuit=enableQuit;
-        this.display=display;
-
+        
         enableListWrapping(true);
         cf=Config.getInstance();        
         
@@ -84,7 +77,10 @@ public class AccountSelect extends DefForm {
                 
         activeAccount=cf.accountIndex;
         loadAccounts();
-        
+        show(StaticData.getInstance().roster);
+    }
+    public final void show(VirtualList pView) {
+        super.show(pView);
         if (!accountList.isEmpty()) {
             moveCursorTo(activeAccount);
         } else {
@@ -92,40 +88,21 @@ public class AccountSelect extends DefForm {
 //#ifdef PLUGINS
 //#             if (StaticData.getInstance().IE) {
 //#endif     
-//#             new IE.Accounts("/def_accounts.txt", 0,  true);
+            new IE.Accounts("/def_accounts.txt", 0,  true);
 //#ifdef PLUGINS                              
 //#             }
 //#endif
-//#             loadAccounts();
-//#         if (accountList.isEmpty()) {
+            loadAccounts();
+        if (accountList.isEmpty()) {
 //#endif
-            new AccountForm(display, this, this, null);
+            new AccountForm(this, null).show(pView);
             return;
 //#ifdef IMPORT_EXPORT
-//#         }
-//#endif
         }
-//#ifndef MENU_LISTENER
-//#        removeCommand(cmdOk);
-//#        if ((accountList != null) && !accountList.isEmpty()) {
-//#             addCommand(cmdLogin);
-//#             addCommand(cmdSelect);
-//# 
-//#             addCommand(cmdEdit);
-//#             addCommand(cmdDel);
-//#         }
-//#         addCommand(cmdAdd);
-//#         addCommand(cmdConfig);
-//#         if (activeAccount<0 && enableQuit)
-//#             removeCommand(cmdCancel);  // нельз�? выйти без активного аккаунта
-//#         if (enableQuit)
-//#             addCommand(cmdQuit);
 //#endif
-        setCommandListener(this);
-        
-        attachDisplay(display);
+        }  
 
-        this.parentView=pView;
+        
     }
 
     public final void loadAccounts() {
@@ -141,26 +118,19 @@ public class AccountSelect extends DefForm {
        } while (a!=null);
     }
 
-//#ifdef MENU_LISTENER
     public final void commandState(){
-//#ifdef MENU_LISTENER
         menuCommands.removeAllElements();
-//#endif
         if ((accountList != null) && !accountList.isEmpty()) {
-            addCommand(cmdLogin);
-            addCommand(cmdSelect);
+            addMenuCommand(cmdLogin);
+            addMenuCommand(cmdSelect);
             
-            addCommand(cmdEdit);
-            addCommand(cmdDel);
+            addMenuCommand(cmdEdit);
+            addMenuCommand(cmdDel);
         }
-        addCommand(cmdAdd);
-        addCommand(cmdConfig);
-//#ifndef MENU_LISTENER
-//#         if (activeAccount>=0 && !enableQuit)
-//#             addCommand(cmdCancel);  // нельзя выйти без активного аккаунта
-//#endif
+        addMenuCommand(cmdAdd);
+        addMenuCommand(cmdConfig);
         if (enableQuit) 
-            addCommand(cmdQuit);
+            addMenuCommand(cmdQuit);
     }
 
 
@@ -173,12 +143,15 @@ public class AccountSelect extends DefForm {
     public void touchLeftPressed() {
         showMenu();
     }
-//#endif
 
-    public VirtualElement getItemRef(int Index) { return (VirtualElement)accountList.elementAt(Index); }
+    public VirtualElement getItemRef(int Index) {
+        if (Index > accountList.size())
+            Index = accountList.size() - 1;
+        return (VirtualElement)accountList.elementAt(Index);
+    }
     protected int getItemCount() { return accountList.size();  }
 
-    public void commandAction(Command c, Displayable d){
+    public void menuAction(MenuCommand c, VirtualList d){
         if (c==cmdQuit) {
             destroyView();
             BombusMod.getInstance().notifyDestroyed();
@@ -187,18 +160,18 @@ public class AccountSelect extends DefForm {
         if (c==cmdCancel) {
             destroyView();
         }
-        if (c==cmdConfig) new ConfigForm(display, this);
+        if (c==cmdConfig) new ConfigForm(this);
         if (c==cmdLogin) switchAccount(true);
         if (c==cmdSelect) switchAccount(false);
-        if (c==cmdEdit) new AccountForm(display, this, this, (Account)getFocusedObject());
+        if (c==cmdEdit) new AccountForm(this, (Account)getFocusedObject()).show(this);
         if (c==cmdAdd) {
-            new AccountForm(display, this, this, null);
+            new AccountForm(this, null).show(this);
         }
         if (c==cmdDel) {
             if (cursor==cf.accountIndex && StaticData.getInstance().roster.isLoggedIn()) return;
             //if (((Account)getFocusedObject()).equals(StaticData.getInstance().account)) return;
             
-            new AlertBox(SR.MS_DELETE, getFocusedObject().toString(), display, this) {
+            new AlertBox(SR.MS_DELETE, getFocusedObject().toString()) {
                 public void yes() {
                     delAccount();
                 }
@@ -212,7 +185,7 @@ public class AccountSelect extends DefForm {
         if(accountList.size()>0) {
             if (StaticData.getInstance().account==null)
                 Account.loadAccount(false, cf.accountIndex);
-            display.setCurrent(StaticData.getInstance().roster);
+            midlet.BombusMod.getInstance().setDisplayable(StaticData.getInstance().roster);
         }
     }
 

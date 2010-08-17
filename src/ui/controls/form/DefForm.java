@@ -29,16 +29,9 @@ package ui.controls.form;
 
 //import Client.Config;
 import java.util.Vector;
-//#ifndef MENU_LISTENER
-//# import javax.microedition.lcdui.CommandListener;
-//# import javax.microedition.lcdui.Command;
-//#else
 import Menu.MenuListener;
-import Menu.Command;
+import Menu.MenuCommand;
 import Menu.MyMenu;
-//#endif
-import javax.microedition.lcdui.Display;
-import javax.microedition.lcdui.Displayable;
 import locale.SR;
 import ui.MainBar;
 import ui.VirtualElement;
@@ -50,27 +43,21 @@ import ui.VirtualList;
  */
 public class DefForm 
         extends VirtualList
-        implements
-//#ifndef MENU_LISTENER
-//#         CommandListener
-//#else
-        MenuListener
-//#endif
+        implements MenuListener
     {
 
     
     public Vector itemsList=new Vector();
 
-    public Command cmdOk = new Command(SR.MS_OK, Command.OK, 1);
-    public Command cmdCancel = new Command(SR.MS_BACK, Command.BACK, 99);
+    public MenuCommand cmdOk = new MenuCommand(SR.MS_OK, MenuCommand.OK, 1);
+    public MenuCommand cmdCancel = new MenuCommand(SR.MS_BACK, MenuCommand.BACK, 99);
 
     public int superWidth;
     /**
      * Creates a new instance of DefForm
+     * @param caption
      */
-    public DefForm(final Display display, Displayable pView, String caption) {
-        
-        this.display=display;
+    public DefForm(String caption) {	
         
 	setMainBarItem(new MainBar(caption));
         
@@ -78,11 +65,10 @@ public class DefForm
         
         commandState();
         
-	setCommandListener(this);
+	setMenuListener(this);
         
-        enableListWrapping(false);
+        enableListWrapping(false);        
         
-        this.parentView=pView;
     }
 
     protected int getItemCount() { return itemsList.size(); }
@@ -95,7 +81,7 @@ public class DefForm
 
     public void touchRightPressed(){ cmdCancel(); }
     
-    public void commandAction(Command command, Displayable displayable) {
+    public void menuAction(MenuCommand command, VirtualList displayable) {
 	if (command==cmdCancel) {
 	    cmdCancel();
 	}
@@ -105,8 +91,7 @@ public class DefForm
     }
 
     public void destroyView()	{
-	if (display!=null)
-            display.setCurrent(parentView);
+	midlet.BombusMod.getInstance().setDisplayable(parentView);
     }
 
     public void cmdCancel() {
@@ -116,14 +101,11 @@ public class DefForm
     public void cmdOk() { }
     
     public void commandState() {
-//#ifdef MENU_LISTENER
         menuCommands.removeAllElements();
-//#endif
-	addCommand(cmdOk);
-	addCommand(cmdCancel);
+	addMenuCommand(cmdOk);
+	addMenuCommand(cmdCancel);
     }
     
-//#ifdef MENU_LISTENER
     public void showMenu() {
         commandState();
         if (menuCommands.size()==2) {
@@ -132,9 +114,9 @@ public class DefForm
                 return;
             }
         }
-        new MyMenu(display, parentView, this, "", null, menuCommands);
+        MyMenu menu = new MyMenu(this, this, "", null, menuCommands);
+        menu.show(this);
     }
     
     public String touchLeftCommand(){ return SR.MS_OK; }
-//#endif
 }

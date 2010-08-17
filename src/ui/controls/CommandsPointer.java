@@ -27,19 +27,23 @@ package ui.controls;
 public class CommandsPointer {
     static int cHeight = 0;
     static int cWidth = 0;   
+    public boolean enabled = false;
     public CommandsPointer() { }
     
     public void init(int width, int height, int lineHeight) {
+        enabled = true;
         CommandsPointer.cWidth=width/2;
         CommandsPointer.cHeight=height-lineHeight;
     }
     
     public int pointerPressed(int x, int y) {
-        if (x<cWidth && y>cHeight) //System.out.println("isClickOnLeftCommand");
+        if (x<cWidth && y>cHeight) {
             return 1; 
+        }
                    
-        if (x>cWidth && y>cHeight) //System.out.println("isClickOnRightCommand");
+        if (x>cWidth && y>cHeight) {
             return 2;
+        }
             
 	return 0;
     }

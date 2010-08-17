@@ -43,7 +43,6 @@ import util.Strconv;
  */
 public class ShowFile implements CommandListener{
     
-    private Display display;
     private Displayable parentView;
     
     private Command back = new Command(SR.MS_BACK, Command.BACK, 2);
@@ -57,9 +56,7 @@ public class ShowFile implements CommandListener{
     
     private Config cf;
     
-    public ShowFile(Display display, String fileName, int type) {
-        this.display=display;
-        parentView=display.getCurrent();
+    public ShowFile(String fileName, int type) {
         cf=Config.getInstance();
         
         load(fileName);
@@ -86,7 +83,7 @@ public class ShowFile implements CommandListener{
 
         form.addCommand(back);
         form.setCommandListener(this);
-        display.setCurrent(form);
+        midlet.BombusMod.getInstance().setDisplayable(form);
     }
     
     private void read(String file) {
@@ -116,7 +113,7 @@ public class ShowFile implements CommandListener{
         }
 
        tb.setCommandListener(this);
-       display.setCurrent(tb);
+       midlet.BombusMod.getInstance().setDisplayable(tb);
     }
     
     private void play(String file) {
@@ -134,11 +131,11 @@ public class ShowFile implements CommandListener{
         a.addCommand(stop);
         a.addCommand(back);
         a.setCommandListener(this);
-        display.setCurrent(a);
+        midlet.BombusMod.getInstance().setDisplayable(a);
     }
     
     public void commandAction(Command c, Displayable d) {
-        if (c==back) display.setCurrent(parentView);
+        if (c==back) midlet.BombusMod.getInstance().setDisplayable(parentView);
         if (c==stop) {
             try {
                 pl.stop();

@@ -30,9 +30,9 @@ import Client.StaticData;
 import java.io.IOException;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
-import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
+import ui.VirtualList;
 import ui.controls.ExTextBox;
 
 /**
@@ -56,8 +56,8 @@ public class StanzaEdit
     private static final String TEMPLATE_PRESENCE = "<presence to='???'>\n<show>???</show>\n<status>???</status>\n</presence>";
     private static final String TEMPLATE_MESSAGE = "<message to='???' type='???'>\n<body>???</body>\n</message>";
 
-    public StanzaEdit(Display display, Displayable pView, String body) {
-        super(display, pView, body, SR.MS_XML_CONSOLE);
+    public StanzaEdit(Displayable pView, String body) {
+        super(body, SR.MS_XML_CONSOLE);
     }
 
     public void setParentView(Displayable parentView) {

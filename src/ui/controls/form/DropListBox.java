@@ -10,13 +10,8 @@
 package ui.controls.form;
 
 import java.util.Vector;
-//#ifndef MENU_LISTENER
-//# import javax.microedition.lcdui.CommandListener;
-//# import javax.microedition.lcdui.Command;
-//#else
 import Menu.MenuListener;
-import Menu.Command;
-//#endif
+import Menu.MenuCommand;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
@@ -31,39 +26,32 @@ import ui.VirtualList;
 public class DropListBox 
         extends VirtualList 
         implements
-//#ifndef MENU_LISTENER
-//#         CommandListener
-//#else
         MenuListener
-//#endif
     {
-//#ifndef MENU
-    private Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK,99);
-    private Command cmdOk=new Command(SR.MS_OK, Command.OK,1);
-//#endif
+    private MenuCommand cmdCancel=new MenuCommand(SR.MS_CANCEL, MenuCommand.BACK,99);
+    private MenuCommand cmdOk=new MenuCommand(SR.MS_OK, MenuCommand.OK,1);
     private Vector listItems;
 
     private DropChoiceBox cb;
 
-    public DropListBox(Display display, Vector listItems, DropChoiceBox cb) {
-        super(display);
+    public DropListBox(Vector listItems, DropChoiceBox cb) {
+        super();
         this.listItems=listItems;
         this.cb=cb;
         
         setMainBarItem(new MainBar(SR.MS_SELECT));
         
         commandState();
-        setCommandListener(this);
+        setMenuListener(this);
         
         moveCursorTo(cb.getSelectedIndex());
+        show(parentView);
     }
     
     public void commandState() {
-//#ifdef MENU_LISTENER
         menuCommands.removeAllElements();
-//#endif
-        addCommand(cmdOk);
-        addCommand(cmdCancel);
+        addMenuCommand(cmdOk);
+        addMenuCommand(cmdCancel);
     }
     
     public void eventOk() {
@@ -72,29 +60,20 @@ public class DropListBox
         destroyView();
     }
 
-//#ifdef MENU_LISTENER
     public String touchLeftCommand() { return SR.MS_OK; }
     public void touchLeftPressed(){ eventOk(); }
 
     public String touchRightCommand() { return SR.MS_CANCEL; }
     public void touchRightPressed(){ destroyView(); }
-//#endif
-    
-    public void destroyView()	{
-	if (display!=null)
-            display.setCurrent(parentView);
-    }
-
+        
     public VirtualElement getItemRef(int index){ 
         return new ListItem((String) listItems.elementAt(index)); 
     }
     
     public int getItemCount() { return listItems.size(); }
 
-    public void commandAction(Command c, Displayable displayable) {
-//#ifndef MENU_LISTENER
-//#         if (c==cmdOk) eventOk();
-//#         else if (c==cmdCancel) destroyView();
-//#endif
+    public void menuAction(MenuCommand command, VirtualList displayable) {
+        
     }
+
 }

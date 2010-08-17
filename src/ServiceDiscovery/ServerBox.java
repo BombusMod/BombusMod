@@ -31,6 +31,7 @@ import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
+import ui.VirtualList;
 import ui.controls.form.DefForm;
 import ui.controls.form.TextInput;
 
@@ -41,23 +42,24 @@ import ui.controls.form.TextInput;
 public class ServerBox 
     extends DefForm {
     
-    private Display display;
     private TextInput serverName;
     private ServiceDiscovery sd;
 
     /**
      * Creates a new instance of ServerBox
+     * @param pView 
+     * @param service
+     * @param sd
      */
-    public ServerBox(Display display, Displayable pView, String service, ServiceDiscovery sd) {
-        super(display, pView, SR.MS_DISCO);
+    public ServerBox(VirtualList pView, String service, ServiceDiscovery sd) {
+        super(SR.MS_DISCO);
         
-        this.display=display;
         this.sd=sd;
-        serverName=new TextInput(display, SR.MS_ADRESS, service, "disco", TextField.ANY);
+        serverName=new TextInput(SR.MS_ADRESS, service, "disco", TextField.ANY);
         itemsList.addElement(serverName);
         
         moveCursorTo(getNextSelectableRef(-1));
-        attachDisplay(display);
+        show(parentView);
         this.parentView=pView;
     }
 
@@ -67,6 +69,6 @@ public class ServerBox
         if (server!=null) sd.browse(server, null);
         
         //destroyView();
-        display.setCurrent(sd);
+        sd.show();
     }
 }

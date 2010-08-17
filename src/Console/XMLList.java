@@ -32,19 +32,14 @@ import Client.Msg;
 import Client.StaticData;
 import Messages.MessageList;
 import java.util.Vector;
-//#ifndef MENU_LISTENER
-//# import javax.microedition.lcdui.Command;
-//#else
-import Menu.Command;
-//#endif
-import javax.microedition.lcdui.Display;
-import javax.microedition.lcdui.Displayable;
+import Menu.MenuCommand;
 import locale.SR;
 //#ifdef CLIPBOARD   
-//# import util.ClipBoard;
+import ui.VirtualList;
+import util.ClipBoard;
 //#endif
 //#ifdef CONSOLE 
-//# import ui.MainBar;
+import ui.MainBar;
 //#endif
 
 /**
@@ -60,49 +55,49 @@ public final class XMLList
     StanzasList stanzas;
     private StaticData sd=StaticData.getInstance();
     
-    private Command cmdNew=new Command(SR.MS_NEW, Command.SCREEN, 5);
-    private Command cmdEnableDisable=new Command(SR.MS_ENABLE_DISABLE, Command.SCREEN, 6);
-    private Command cmdPurge=new Command(SR.MS_CLEAR_LIST, Command.SCREEN, 10);
+    private MenuCommand cmdNew=new MenuCommand(SR.MS_NEW, MenuCommand.SCREEN, 5);
+    private MenuCommand cmdEnableDisable=new MenuCommand(SR.MS_ENABLE_DISABLE, MenuCommand.SCREEN, 6);
+    private MenuCommand cmdPurge=new MenuCommand(SR.MS_CLEAR_LIST, MenuCommand.SCREEN, 10);
     
 //#ifdef CLIPBOARD    
-//#     private ClipBoard clipboard=ClipBoard.getInstance();
+    private ClipBoard clipboard=ClipBoard.getInstance();
 //#endif
     
-    /** Creates a new instance of XMLList */
-    public XMLList(Display display, Displayable pView) {
-        super (display);
+    /** Creates a new instance of XMLList
+     * @param pView
+     */
+    public XMLList() {
+        super ();
         
         super.smiles=false;
         
         stanzas=StanzasList.getInstance();
         
         commandState();
-        addCommands();
-        setCommandListener(this);
+        addMenuCommands();
+        setMenuListener(this);
 
         moveCursorHome();
 
 //#ifdef CONSOLE        
-//# 	MainBar mb=new MainBar(SR.MS_XML_CONSOLE);
-//#         setMainBarItem(mb);
-//#endif        
-        this.parentView=pView;        
+	MainBar mb=new MainBar(SR.MS_XML_CONSOLE);
+        setMainBarItem(mb);
+//#endif
+        show(parentView);        
     }
     
     public void commandState() {
-//#ifdef MENU_LISTENER
         menuCommands.removeAllElements();
-//#endif
-	addCommand(cmdBack);
-        addCommand(cmdNew);
+	addMenuCommand(cmdBack);
+        addMenuCommand(cmdNew);
 //#ifdef CLIPBOARD
-//#             if (Config.getInstance().useClipBoard) {
-//#                 addCommand(cmdCopy);
-//#                 if (!clipboard.isEmpty()) addCommand(cmdCopyPlus);
-//#             }
+            if (Config.getInstance().useClipBoard) {
+                addMenuCommand(cmdCopy);
+                if (!clipboard.isEmpty()) addMenuCommand(cmdCopyPlus);
+            }
 //#endif
-        addCommand(cmdEnableDisable);
-        addCommand(cmdPurge);
+        addMenuCommand(cmdEnableDisable);
+        addMenuCommand(cmdPurge);
     }
     
     protected void beginPaint() {
@@ -135,11 +130,11 @@ public final class XMLList
         try {
             stanza =  m.toString();
         } catch (Exception e) {}
-        new StanzaEdit(display, this, stanza).setParentView(this);
+        new StanzaEdit(this, stanza);
     }
     
-    public void commandAction(Command c, Displayable d) {
-        super.commandAction(c,d);
+    public void menuAction(MenuCommand c, VirtualList d) {
+        super.menuAction(c,d);
         
 	Msg m=getMessage(cursor);
         if (c==cmdNew) {

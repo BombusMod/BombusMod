@@ -32,8 +32,9 @@ import Client.Contact;
 import Client.Group;
 import Client.StaticData;
 import java.util.Vector;
-import javax.microedition.lcdui.*;
+import javax.microedition.lcdui.TextField;
 import locale.SR;
+import ui.VirtualList;
 import ui.controls.form.SimpleString;
 import ui.controls.form.CheckBox;
 import ui.controls.form.DefForm;
@@ -49,8 +50,6 @@ public class PrivacyForm
 //#ifdef PLUGINS
 //#     public static String plugin = new String("PLUGIN_PRIVACY");
 //#endif
-    
-    private Display display;
     
     private PrivacyList targetList;
     private PrivacyItem item;
@@ -69,11 +68,13 @@ public class PrivacyForm
     int typeIndex;
     String tValue="";
 
-    /** Creates a new instance of PrivacyForm */
-    public PrivacyForm(Display display, Displayable pView, PrivacyItem item, PrivacyList plist) {
-        super(display, pView, SR.MS_PRIVACY_RULE);
-        this.display=display;
-        
+    /** Creates a new instance of PrivacyForm
+     * @param pView
+     * @param item
+     * @param plist
+     */
+    public PrivacyForm(VirtualList pView, PrivacyItem item, PrivacyList plist) {
+        super(SR.MS_PRIVACY_RULE);
         this.item=item;
         targetList=plist;
         
@@ -82,21 +83,21 @@ public class PrivacyForm
         itemsList=null;
         itemsList=new Vector();
 
-        choiceAction=new DropChoiceBox(display, SR.MS_PRIVACY_ACTION);
+        choiceAction=new DropChoiceBox(SR.MS_PRIVACY_ACTION);
         for(int i=0; i<PrivacyItem.actions.length; i++){
             choiceAction.append(PrivacyItem.actions[i]);
         }
         choiceAction.setSelectedIndex(item.action);
         itemsList.addElement(choiceAction);
 
-        choiceType=new DropChoiceBox(display, SR.MS_PRIVACY_TYPE);
+        choiceType=new DropChoiceBox(SR.MS_PRIVACY_TYPE);
         for(int i=0; i<PrivacyItem.types.length; i++){
             choiceType.append(PrivacyItem.types[i]);
         }
         choiceType.setSelectedIndex(item.type);
         itemsList.addElement(choiceType);
         
-        textValue=new TextInput(display, SR.MS_VALUE, tValue, "", TextField.ANY);//64, TextField.ANY);
+        textValue=new TextInput(SR.MS_VALUE, tValue, "", TextField.ANY);//64, TextField.ANY);
         
         switchType();
         
@@ -108,8 +109,9 @@ public class PrivacyForm
         iqStz=new CheckBox(PrivacyItem.stanzas[3], item.iqStz); itemsList.addElement(iqStz);
         
         moveCursorTo(getNextSelectableRef(-1));
-        attachDisplay(display);
         this.parentView=pView;
+        show(parentView);
+        
     }
     
     protected void beginPaint(){
@@ -142,7 +144,7 @@ public class PrivacyForm
                 itemsList.insertElementAt(textValue, 2);
                 break;
             case 2: //subscription
-                choiceSubscr=new DropChoiceBox(display, SR.MS_SUBSCRIPTION);
+                choiceSubscr=new DropChoiceBox(SR.MS_SUBSCRIPTION);
                 for(int i=0; i<PrivacyItem.subscrs.length; i++){
                     choiceSubscr.append(PrivacyItem.subscrs[i]);
                 }

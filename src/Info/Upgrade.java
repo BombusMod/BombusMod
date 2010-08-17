@@ -34,17 +34,11 @@ import java.io.InputStream;
 import java.util.Vector;
 import javax.microedition.io.Connector;
 import javax.microedition.io.HttpConnection;
-//#ifndef MENU_LISTENER
-//# import javax.microedition.lcdui.CommandListener;
-//# import javax.microedition.lcdui.Command;
-//#else
 import Menu.MenuListener;
-import Menu.Command;
-//#endif
-import javax.microedition.lcdui.Display;
-import javax.microedition.lcdui.Displayable;
+import Menu.MenuCommand;
 import locale.SR;
 import ui.MainBar;
+import ui.VirtualList;
 
 /**
  *
@@ -53,17 +47,13 @@ import ui.MainBar;
 public class Upgrade 
         extends MessageList 
         implements Runnable,
-//#ifndef MENU_LISTENER
-//#         CommandListener
-//#else
         MenuListener
-//#endif
     {
 //#ifdef PLUGINS
-//#     public static String plugin = new String("PLUGIN_VERSION_UPGRADE");
+    public static String plugin = new String("PLUGIN_VERSION_UPGRADE");
 //#endif
    
-    //private Command cmdBack=new Command(SR.MS_BACK, Command.BACK, 99);
+    //private MenuCommand cmdBack=new MenuCommand(SR.MS_BACK, Command.BACK, 99);
     private final static String VERSION_URL="http://bombusmod.net.ru/checkupdate/check.php";
 
     Vector news;
@@ -76,29 +66,31 @@ public class Upgrade
     private boolean wait=true;
     private boolean error=false;
     
-    /** Creates a new instance of Upgrade */
-    public Upgrade(Display display, Displayable pView, boolean build) {
+    /** Creates a new instance of Upgrade
+     * @param pView
+     * @param build
+     */
+    public Upgrade(VirtualList pView, boolean build) {
         super ();
-        this.display=display;
         this.build=build;
         
         news=new Vector();
         
-        setCommandListener(this);
-	addCommand(cmdBack);
-        addCommand(cmdUrl);
+        setMenuListener(this);
+	addMenuCommand(cmdBack);
+        addMenuCommand(cmdUrl);
         
         try {
             focusedItem(0);
         } catch (Exception e) {}
         
-	MainBar mainbar=new MainBar(SR.MS_CHECK_UPDATE);
-        setMainBarItem(mainbar);
-        mainbar.addElement(null);
-        mainbar.addRAlign();
-        mainbar.addElement(null);
+	MainBar mb=new MainBar(SR.MS_CHECK_UPDATE);
+        setMainBarItem(mb);
+        mb.addElement(null);
+        mb.addRAlign();
+        mb.addElement(null);
 
-        attachDisplay(display);
+        show(parentView);
         this.parentView=pView;
         
         new Thread(this).start();
@@ -133,8 +125,8 @@ public class Upgrade
         redraw();
     }
 
-    public void commandAction(Command c, Displayable d) {
-        super.commandAction(c,d);
+    public void menuAction(MenuCommand c, VirtualList d) {
+        super.menuAction(c,d);
         /*try {
             if (BombusMod.getInstance().platformRequest((String) versions[2].elementAt(index))) System.exit(0);
         } catch (Exception e) { e.printStackTrace(); }*/

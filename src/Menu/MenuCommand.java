@@ -1,7 +1,7 @@
 /*
- * XMLException.java
+ * MenuCommand.java
  *
- * Created on 22.03.2008 г., 1:27
+ * Created on 9.07.2008, 18:25
  *
  * Copyright (c) 2005-2008, Eugene Stahov (evgs), http://bombus-im.org
  *
@@ -25,12 +25,43 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-package xml;
+package Menu;
 
-public class XMLException extends Exception {
+import ui.IconTextElement;
+
+/**
+ *
+ * @author ad
+ */
+public class MenuCommand extends IconTextElement {
+    String name="";
+    int pos;
+    int map;
+    int img;
+
+    public static int OK        = 1;
+    public static int SCREEN    = 2;
+    public static int BACK      = 3;
+    public static int EXIT      = 4;
+    public static int CANCEL    = 5;
+    public static int ITEM      = 6;
+
+    public MenuCommand(String name, int map, int pos) {
+        super(null);
+        this.name=name;
+        this.map=map;
+        this.pos=pos;
+    }
     
-    /** Creates a new instance of XMLException */
-    public XMLException(String text) {
-        super(text);
+    public void setImg(int img) {
+        this.img=img;
+    }
+    
+    public int getImg() {
+        return img;
+    }   
+    
+    public String getName() {
+        return name;
     }
 }

@@ -27,7 +27,6 @@
 package AutoTasks;
 
 import Client.StaticData;
-import com.alsutton.jabber.datablocks.Presence;
 import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
@@ -36,8 +35,9 @@ import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
 import locale.SR;
-import midlet.BombusMod;
 import Fonts.FontCache;
+import com.alsutton.jabber.datablocks.Presence;
+import midlet.BombusMod;
 import ui.Time;
 
 /**
@@ -151,29 +151,29 @@ public class AutoTask
     
     public void doAction() {
 //#ifdef AUTOTASK
-//#         String caption=SR.MS_AUTOTASKS+": ";
-//#         switch (taskAction) {
-//#             case TASK_ACTION_QUIT:
-//#                 BombusMod.getInstance().notifyDestroyed();
-//#                 break;
+        String caption=SR.MS_AUTOTASKS+": ";
+        switch (taskAction) {
+            case TASK_ACTION_QUIT:
+                BombusMod.getInstance().notifyDestroyed();
+                break;
 //#ifndef WMUC
-//#             case TASK_ACTION_CONFERENCE_QUIT:
-//#                 caption+=SR.MS_AUTOTASK_QUIT_CONFERENCES;
-//#                 sd.roster.multicastConferencePresence(Presence.PRESENCE_OFFLINE, caption, 0);
-//#                 break;
+            case TASK_ACTION_CONFERENCE_QUIT:
+                caption+=SR.MS_AUTOTASK_QUIT_CONFERENCES;
+                sd.roster.multicastConferencePresence(Presence.PRESENCE_OFFLINE, caption, 0);
+                break;
 //#endif
-//#             case TASK_ACTION_LOGOFF:
-//#                 caption+=SR.MS_AUTOTASK_LOGOFF;
-//#                 sd.roster.logoff(caption);
-//#                 break;
-//#            case TASK_ACTION_RECONNECT:
-//#                 caption+=SR.MS_RECONNECT;
-//#                 taskType=TASK_TYPE_TIMER;
-//#                 initTime=System.currentTimeMillis();
-//#                 startTask();
-//#                 sd.roster.connectionTerminated(new Exception(caption));
-//#                 break;
-//#         }
+            case TASK_ACTION_LOGOFF:
+                caption+=SR.MS_AUTOTASK_LOGOFF;
+                sd.roster.logoff(caption);
+                break;
+           case TASK_ACTION_RECONNECT:
+                caption+=SR.MS_RECONNECT;
+                taskType=TASK_TYPE_TIMER;
+                initTime=System.currentTimeMillis();
+                startTask();
+                sd.roster.connectionTerminated(new Exception(caption));
+                break;
+        }
 //#endif
     }
     
@@ -186,7 +186,7 @@ public class AutoTask
 
         this.setCommandListener(this);
 
-        display.setCurrent(this);
+        midlet.BombusMod.getInstance().setDisplayable(this);
         isShowing=true;
     }
     
@@ -204,52 +204,52 @@ public class AutoTask
     protected void paint(Graphics g) {
         if (isShowing) {
 //#if AUTOTASK
-//#             String caption=SR.MS_AUTOTASKS+": ";
-//#             
-//#             switch (taskAction) {
-//#                 case TASK_ACTION_QUIT:
-//#                     caption=SR.MS_AUTOTASK_QUIT_BOMBUSMOD;
-//#                     break;
-//#                 case TASK_ACTION_CONFERENCE_QUIT:
-//#                     caption=SR.MS_AUTOTASK_QUIT_CONFERENCES;
-//#                     break;
-//#                 case TASK_ACTION_LOGOFF:
-//#                     caption=SR.MS_AUTOTASK_LOGOFF;
-//#                     break;
-//#                 case TASK_ACTION_RECONNECT:
-//#                     caption=SR.MS_RECONNECT;
-//#                     break;
-//#             }
-//#             caption+=" - "+(WAITTIME-value);
-//#             
-//#             int width=getWidth();
-//#             int height=getHeight();
-//# 
-//#             int border=10;
-//#             int y=height/2;
-//#             int xt=(width/2);
-//#             
-//#             int itemWidth=width-(border*2);
-//#             int itemHeight=5;
-//#             
-//#             int filled=(itemWidth*value)/WAITTIME;
-//# 
-//#             int oldColor=g.getColor();
-//#             g.setColor(0xffffff);
-//#             
-//#             g.fillRect(0,0, width, height); //fill back
-//#             
-//#             g.fillRect(border, y, itemWidth, itemHeight);
-//#             g.setColor(0x668866);
-//#             g.drawRect(border, y, itemWidth, itemHeight);
-//#             g.fillRect(border, y, filled, itemHeight);
-//#             
-//#             int yt=y-f.getHeight();
-//#             g.setColor(0x668866);
-//#             g.setFont(f);
-//#             g.drawString(caption, xt, yt, Graphics.TOP|Graphics.HCENTER);
-//#             
-//#             g.setColor(oldColor);
+            String caption=SR.MS_AUTOTASKS+": ";
+            
+            switch (taskAction) {
+                case TASK_ACTION_QUIT:
+                    caption=SR.MS_AUTOTASK_QUIT_BOMBUSMOD;
+                    break;
+                case TASK_ACTION_CONFERENCE_QUIT:
+                    caption=SR.MS_AUTOTASK_QUIT_CONFERENCES;
+                    break;
+                case TASK_ACTION_LOGOFF:
+                    caption=SR.MS_AUTOTASK_LOGOFF;
+                    break;
+                case TASK_ACTION_RECONNECT:
+                    caption=SR.MS_RECONNECT;
+                    break;
+            }
+            caption+=" - "+(WAITTIME-value);
+            
+            int width=getWidth();
+            int height=getHeight();
+
+            int border=10;
+            int y=height/2;
+            int xt=(width/2);
+            
+            int itemWidth=width-(border*2);
+            int itemHeight=5;
+            
+            int filled=(itemWidth*value)/WAITTIME;
+
+            int oldColor=g.getColor();
+            g.setColor(0xffffff);
+            
+            g.fillRect(0,0, width, height); //fill back
+            
+            g.fillRect(border, y, itemWidth, itemHeight);
+            g.setColor(0x668866);
+            g.drawRect(border, y, itemWidth, itemHeight);
+            g.fillRect(border, y, filled, itemHeight);
+            
+            int yt=y-f.getHeight();
+            g.setColor(0x668866);
+            g.setFont(f);
+            g.drawString(caption, xt, yt, Graphics.TOP|Graphics.HCENTER);
+            
+            g.setColor(oldColor);
 //#endif
         }
     }
@@ -260,9 +260,9 @@ public class AutoTask
         this.removeCommand(cmdCancel);
         
         if (display==null) {
-            Display.getDisplay(BombusMod.getInstance()).setCurrent(parentView);
+            midlet.BombusMod.getInstance().setDisplayable(parentView);
         } else {
-            display.setCurrent(next);
+            midlet.BombusMod.getInstance().setDisplayable(next);
         }
     }
 }

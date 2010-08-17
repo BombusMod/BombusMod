@@ -103,23 +103,23 @@ public class Config {
     public char keyVibra='#';
     
 //#ifdef AUTOSTATUS
-//#     public final static int AWAY_OFF=0;
-//#     public final static int AWAY_LOCK=1;
-//#     public final static int AWAY_MESSAGE=2;
-//#     public final static int AWAY_IDLE=3;
-//#     
-//#     public int autoAwayType=0;
-//#     public int autoAwayDelay=5; //5 minutes
-//#     public boolean useMyStatusMessages=true;
+    public final static int AWAY_OFF=0;
+    public final static int AWAY_LOCK=1;
+    public final static int AWAY_MESSAGE=2;
+    public final static int AWAY_IDLE=3;
+    
+    public int autoAwayType=0;
+    public int autoAwayDelay=5; //5 minutes
+    public boolean useMyStatusMessages=true;
 //#endif
     
 //#ifdef HISTORY
-//#      public String msgPath="";
-//#      public boolean msgLog=false;
-//#      public boolean msgLogPresence=false;
-//#      public boolean msgLogConf=false;
-//#      public boolean msgLogConfPresence=false;
-//#      public boolean lastMessages=false;
+     public String msgPath="";
+     public boolean msgLog=false;
+     public boolean msgLogPresence=false;
+     public boolean msgLogConf=false;
+     public boolean msgLogConfPresence=false;
+     public boolean lastMessages=false;
 //#endif
     public boolean cp1251=true;
 //#ifndef WMUC
@@ -130,12 +130,7 @@ public class Config {
 //#endif
     // non-volatile values
     public int accountIndex=-1;
-public static boolean fullscreen=
-//#ifdef MENU_LISTENER
-            true;
-//#else
-//#             false;
-//#endif    
+public static boolean fullscreen = true;
     public int def_profile=0;
 //#ifdef SMILES
     public boolean smiles=true;
@@ -150,7 +145,7 @@ public static boolean fullscreen=
     public int loginstatus=0;//loginstatus
     public int gmtOffset;
     public boolean popupFromMinimized=true;
-    public boolean memMonitor = false;
+    public boolean memMonitor=false;
 
     public int rosterFont=0;
     public int msgFont=0;
@@ -169,12 +164,7 @@ public static boolean fullscreen=
     public boolean istreamWaiting;
     public int phoneManufacturer=NOT_DETECTED;
 
-    public int panelsState=
-//#ifdef MENU_LISTENER
-            2; //default state both panels show, reverse disabled
-//#else
-//#             1; // for old menu - show only top panel
-//#endif
+    public int panelsState = 2;
 
     public boolean lightState=false;
     public boolean autoScroll=true;
@@ -196,23 +186,23 @@ public static boolean fullscreen=
 //#endif
     public boolean rosterStatus=true;
 //#ifdef PEP
-//#     public boolean sndrcvmood = false;
+    public boolean sndrcvmood = false;
 //#ifdef PEP_TUNE
-//#     public boolean rcvtune = false;
+    public boolean rcvtune = false;
 //#endif
 //#ifdef PEP_ACTIVITY
-//#     public boolean rcvactivity = false;
+    public boolean rcvactivity = false;
 //#endif
 //#ifdef PEP_LOCATION
-//#     public boolean rcvloc = false;
+    public boolean rcvloc = false;
 //#endif
-//# 
+
 //#endif
     public boolean queryExit = false;
     public int notInListDropLevel=NotInListFilter.ALLOW_ALL; //enable all
     public boolean showBalloons = true;
 //#ifdef LOGROTATE
-//#     public int msglistLimit=500;
+    public int msglistLimit=500;
 //#endif
     public boolean useTabs=true;
     public boolean notifyBlink=false;
@@ -223,7 +213,7 @@ public static boolean fullscreen=
 //#     public boolean notifyWhenMessageType = false;
 //#endif
 //#ifdef CLIPBOARD
-//#     public boolean useClipBoard = true;
+    public boolean useClipBoard = true;
 //#endif
     public boolean firstRun = true;
     
@@ -275,21 +265,21 @@ public static boolean fullscreen=
         RosterIcons.getInstance();
         ActionsIcons.getInstance();
 //#ifdef SMILES
-        if (smiles) {
+        if (smiles) 
             SmilesIcons.getInstance();
 //#endif
 //#ifdef CLIENTS_ICONS
 //#ifdef PLUGINS
-//#                 if (sd.ClientsIcons) {
+//#                 if (sd.ClientsIcons) 
 //#endif
-        }
-        if (showClientIcon) {
+        
+        if (showClientIcon) 
             ClientsIcons.getInstance();
 //#ifdef PLUGINS
-//#                 }
+//#                 
 //#endif
 //#endif
-        }
+        
         System.gc();
         try {
             Thread.sleep(50);
@@ -335,6 +325,7 @@ public static boolean fullscreen=
                 greenKeyCode = -31;
                 break;
             case MICROEMU:
+                greenKeyCode = -5;
                 KEY_BACK = -4; // for android sdk
                 break;
 //#if !ZLIB
@@ -376,7 +367,11 @@ public static boolean fullscreen=
 	    gmtOffset=inputStream.readInt();
 	    inputStream.readInt(); //locOffset
 	    autoLogin=inputStream.readBoolean();
+//#ifndef WMUC            
 	    autoJoinConferences=inputStream.readBoolean();
+//#else
+//#             inputStream.readBoolean();
+//#endif            
 	    popupFromMinimized=inputStream.readBoolean();
 	    notifyBlink=inputStream.readBoolean();
 	    memMonitor=inputStream.readBoolean();
@@ -384,34 +379,45 @@ public static boolean fullscreen=
             msgFont=inputStream.readInt();
             autoFocus=inputStream.readBoolean();
             notInListDropLevel=inputStream.readInt();
+//#ifndef WMUC                  
             storeConfPresence=inputStream.readBoolean();
+//#else
+//#             inputStream.readBoolean();
+//#endif                        
             capsState=inputStream.readBoolean();
 	    textWrap=inputStream.readInt();
             loginstatus=inputStream.readInt();
 //#ifdef HISTORY
-//#             msgPath=inputStream.readUTF();
-//#             msgLog=inputStream.readBoolean();
-//#             msgLogPresence=inputStream.readBoolean();
-//#             msgLogConfPresence=inputStream.readBoolean();
-//#             msgLogConf=inputStream.readBoolean();
+            msgPath=inputStream.readUTF();
+            msgLog=inputStream.readBoolean();
+            msgLogPresence=inputStream.readBoolean();
+            msgLogConfPresence=inputStream.readBoolean();
+            msgLogConf=inputStream.readBoolean();
 //#else
-            inputStream.readUTF();
-            inputStream.readBoolean();
-            inputStream.readBoolean();
-            inputStream.readBoolean();
-            inputStream.readBoolean();
+//#             inputStream.readUTF();
+//#             inputStream.readBoolean();
+//#             inputStream.readBoolean();
+//#             inputStream.readBoolean();
+//#             inputStream.readBoolean();
 //#endif
             cp1251=inputStream.readBoolean();
 //#ifdef AUTOSTATUS
-//#             autoAwayDelay=inputStream.readInt();
+            autoAwayDelay=inputStream.readInt();
 //#else
-            inputStream.readInt();
+//#             inputStream.readInt();
 //#endif
+//#ifndef WMUC                  
             defGcRoom=inputStream.readUTF();
+//#else
+//#             inputStream.readUTF();
+//#endif                                    
             firstRun=inputStream.readBoolean();
             panelsState=inputStream.readInt();
+//#ifndef WMUC                             
             confMessageCount=inputStream.readInt();
-
+//#else
+//#             inputStream.readInt();
+//#endif                                    
             fileTransfer=inputStream.readBoolean(); //newMenu
 
             lightState=inputStream.readBoolean();
@@ -422,11 +428,11 @@ public static boolean fullscreen=
             inputStream.readBoolean();
 //#endif
 //#ifdef AUTOSTATUS
-//#             useMyStatusMessages=inputStream.readBoolean();
-//#             autoAwayType=inputStream.readInt();
+            useMyStatusMessages=inputStream.readBoolean();
+            autoAwayType=inputStream.readInt();
 //#else
-            inputStream.readBoolean();
-            inputStream.readInt();
+//#             inputStream.readBoolean();
+//#             inputStream.readInt();
 //#endif
             autoScroll=inputStream.readBoolean();
 //#ifdef POPUPS
@@ -456,9 +462,9 @@ public static boolean fullscreen=
 
             inputStream.readBoolean(); // Здесь был UserKeys
 //#ifdef LOGROTATE
-//#             msglistLimit=inputStream.readInt();
+            msglistLimit=inputStream.readInt();
 //#else
-            inputStream.readInt();
+//#             inputStream.readInt();
 //#endif
             useTabs=inputStream.readBoolean();
             autoSubscribe=inputStream.readInt();
@@ -470,21 +476,21 @@ public static boolean fullscreen=
 //#endif
             IQNotify=inputStream.readBoolean(); //IRC_LIKE
 //#ifdef PEP
-//#             sndrcvmood = inputStream.readBoolean();
+            sndrcvmood = inputStream.readBoolean();
 //#else
-            inputStream.readBoolean();
+//#             inputStream.readBoolean();
 //#endif
             inputStream.readUTF(); //scheme
 
 //#ifdef CLIPBOARD
-//#             useClipBoard = inputStream.readBoolean();
+            useClipBoard = inputStream.readBoolean();
 //#else
-            inputStream.readBoolean();
+//#             inputStream.readBoolean();
 //#endif
 //#ifdef PEP_TUNE
-//#             rcvtune = inputStream.readBoolean();
+            rcvtune = inputStream.readBoolean();
 //#else
-            inputStream.readBoolean();
+//#             inputStream.readBoolean();
 //#endif
             barFont=inputStream.readInt();
             baloonFont=inputStream.readInt();
@@ -513,9 +519,9 @@ public static boolean fullscreen=
             
             adhoc=inputStream.readBoolean();
 //#ifdef PEP_ACTIVITY
-//#             rcvactivity = inputStream.readBoolean();
+            rcvactivity = inputStream.readBoolean();
 //#else
-            inputStream.readBoolean();
+//#             inputStream.readBoolean();
 //#endif
             oldSE=inputStream.readBoolean();
             
@@ -530,9 +536,9 @@ public static boolean fullscreen=
             advTouch = inputStream.readBoolean();
             autoClean = inputStream.readBoolean();
 //#ifdef PEP_LOCATION
-//#             rcvloc = inputStream.readBoolean();
+            rcvloc = inputStream.readBoolean();
 //#else
-            inputStream.readBoolean();
+//#             inputStream.readBoolean();
 //#endif
 	    inputStream.close();
             inputStream=null;
@@ -619,7 +625,11 @@ public static boolean fullscreen=
 	    outputStream.writeInt(gmtOffset);
 	    outputStream.writeInt(0); //locOffset
 	    outputStream.writeBoolean(autoLogin);
+//#ifndef WMUC                             
 	    outputStream.writeBoolean(autoJoinConferences);
+//#else 
+//#             outputStream.writeBoolean(false);
+//#endif            
             outputStream.writeBoolean(popupFromMinimized);
 	    outputStream.writeBoolean(notifyBlink);
 	    outputStream.writeBoolean(memMonitor);
@@ -627,34 +637,45 @@ public static boolean fullscreen=
             outputStream.writeInt(msgFont);
             outputStream.writeBoolean(autoFocus);
             outputStream.writeInt(notInListDropLevel);
+//#ifndef WMUC            
             outputStream.writeBoolean(storeConfPresence); 
+//#else 
+//#             outputStream.writeBoolean(false);
+//#endif                        
             outputStream.writeBoolean(capsState); 
 	    outputStream.writeInt(textWrap);
             outputStream.writeInt(loginstatus);
 //#ifdef HISTORY
-//#             outputStream.writeUTF(msgPath);
-//#             outputStream.writeBoolean(msgLog);
-//#             outputStream.writeBoolean(msgLogPresence);
-//#             outputStream.writeBoolean(msgLogConfPresence);
-//#             outputStream.writeBoolean(msgLogConf);
+            outputStream.writeUTF(msgPath);
+            outputStream.writeBoolean(msgLog);
+            outputStream.writeBoolean(msgLogPresence);
+            outputStream.writeBoolean(msgLogConfPresence);
+            outputStream.writeBoolean(msgLogConf);
 //#else
-            outputStream.writeUTF("");
-            outputStream.writeBoolean(false);
-            outputStream.writeBoolean(false);
-            outputStream.writeBoolean(false);
-            outputStream.writeBoolean(false);
+//#             outputStream.writeUTF("");
+//#             outputStream.writeBoolean(false);
+//#             outputStream.writeBoolean(false);
+//#             outputStream.writeBoolean(false);
+//#             outputStream.writeBoolean(false);
 //#endif
             outputStream.writeBoolean(cp1251);
 //#ifdef AUTOSTATUS
-//#             outputStream.writeInt(autoAwayDelay);
+            outputStream.writeInt(autoAwayDelay);
 //#else
-            outputStream.writeInt(5);
+//#             outputStream.writeInt(5);
 //#endif
+//#ifndef WMUC            
             outputStream.writeUTF(defGcRoom);
+//#else 
+//#             outputStream.writeUTF("");
+//#endif                        
             outputStream.writeBoolean(firstRun);
             outputStream.writeInt(panelsState);
+//#ifndef WMUC            
             outputStream.writeInt(confMessageCount);
-
+//#else 
+//#             outputStream.writeInt(0);
+//#endif            
             outputStream.writeBoolean(fileTransfer); //newMenu
 
             outputStream.writeBoolean(lightState);
@@ -665,11 +686,11 @@ public static boolean fullscreen=
             outputStream.writeBoolean(false);
 //#endif
 //#ifdef AUTOSTATUS
-//#             outputStream.writeBoolean(useMyStatusMessages);
-//#             outputStream.writeInt(autoAwayType);
+            outputStream.writeBoolean(useMyStatusMessages);
+            outputStream.writeInt(autoAwayType);
 //#else
-            outputStream.writeBoolean(false);
-            outputStream.writeInt(0);
+//#             outputStream.writeBoolean(false);
+//#             outputStream.writeInt(0);
 //#endif
             outputStream.writeBoolean(autoScroll);
 //#ifdef POPUPS
@@ -700,9 +721,9 @@ public static boolean fullscreen=
             outputStream.writeBoolean(false); // Здесь был UserKeys
 
 //#ifdef LOGROTATE
-//#             outputStream.writeInt(msglistLimit);
+            outputStream.writeInt(msglistLimit);
 //#else
-            outputStream.writeInt(512);
+//#             outputStream.writeInt(512);
 //#endif
             outputStream.writeBoolean(useTabs);
             outputStream.writeInt(autoSubscribe);
@@ -714,20 +735,20 @@ public static boolean fullscreen=
 //#endif
             outputStream.writeBoolean(IQNotify); //IRC_LIKE
 //#ifdef PEP
-//#             outputStream.writeBoolean(sndrcvmood);
+            outputStream.writeBoolean(sndrcvmood);
 //#else
-            outputStream.writeBoolean(false);
+//#             outputStream.writeBoolean(false);
 //#endif
             outputStream.writeUTF("");//scheme
 //#ifdef CLIPBOARD
-//#             outputStream.writeBoolean(useClipBoard);
+            outputStream.writeBoolean(useClipBoard);
 //#else
-            outputStream.writeBoolean(false);
+//#             outputStream.writeBoolean(false);
 //#endif
 //#ifdef PEP_TUNE
-//#             outputStream.writeBoolean(rcvtune);
+            outputStream.writeBoolean(rcvtune);
 //#else
-            outputStream.writeBoolean(false);
+//#             outputStream.writeBoolean(false);
 //#endif
             outputStream.writeInt(barFont);
             outputStream.writeInt(baloonFont);
@@ -757,9 +778,9 @@ public static boolean fullscreen=
             outputStream.writeBoolean(adhoc);
             
 //#ifdef PEP_ACTIVITY
-//#             outputStream.writeBoolean(rcvactivity);
+            outputStream.writeBoolean(rcvactivity);
 //#else
-            outputStream.writeBoolean(false);
+//#             outputStream.writeBoolean(false);
 //#endif
             outputStream.writeBoolean(oldSE);
             
@@ -774,9 +795,9 @@ public static boolean fullscreen=
             outputStream.writeBoolean(advTouch);
             outputStream.writeBoolean(autoClean);
 //#ifdef PEP_LOCATION
-//#             outputStream.writeBoolean(rcvloc);
+            outputStream.writeBoolean(rcvloc);
 //#else
-            outputStream.writeBoolean(false);
+//#             outputStream.writeBoolean(false);
 //#endif
 
 	} catch (Exception e) { }

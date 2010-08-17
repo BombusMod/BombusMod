@@ -29,7 +29,7 @@ import ui.controls.form.SimpleString;
  */
 public class ActivityList extends DefForm implements MIDPTextBox.TextBoxNotify {
 //#ifdef PLUGINS
-//#     public static String plugin = "PLUGIN_PEP";
+    public static String plugin = "PLUGIN_PEP";
 //#endif
     
     /** Creates a new instance of MoodList */
@@ -37,9 +37,15 @@ public class ActivityList extends DefForm implements MIDPTextBox.TextBoxNotify {
     String acttext;
             
     public ActivityList(Display display) {
-        super(display, StaticData.getInstance().roster, SR.MS_USERACTIVITY);
+        super(
+//#ifdef PEP_ACTIVITY
+                SR.MS_USERACTIVITY
+//#else
+//#                 ""
+//#endif
+                );
 
-        setCommandListener(this);
+        setMenuListener(this);
         
         for (Enumeration e = Activities.getInstance().actValue.elements(); e.hasMoreElements();) {
               SimpleString item = new SimpleString((String)e.nextElement(), false);
@@ -47,7 +53,7 @@ public class ActivityList extends DefForm implements MIDPTextBox.TextBoxNotify {
               itemsList.addElement(item);
         }
                 
-        attachDisplay(display);
+        show(parentView);
     }
 
     public void cmdOk() {
@@ -55,17 +61,17 @@ public class ActivityList extends DefForm implements MIDPTextBox.TextBoxNotify {
     }
 
 //#ifdef PEP
-//#     public void eventOk() {
-//#         if (cursor==0) OkNotify(null); 
-//#             else new MIDPTextBox(display, this, SR.MS_USERACTIVITY, acttext, this, TextField.ANY);
-//#     }
+    public void eventOk() {
+        if (cursor==0) OkNotify(null); 
+            else new MIDPTextBox( this, SR.MS_USERACTIVITY, acttext, this, TextField.ANY);
+    }
 //#endif
     
     public void OkNotify(String actText) {
         //String moodName=((MoodItem)getFocusedObject()).getTipString();
         publish(cursor, actText);
         destroyView();
-        display.setCurrent(StaticData.getInstance().roster);
+        midlet.BombusMod.getInstance().setDisplayable(StaticData.getInstance().roster);
     }
 
      public void publish(int activity, String text) {
@@ -85,7 +91,7 @@ public class ActivityList extends DefForm implements MIDPTextBox.TextBoxNotify {
          
         try {
             //todo: refactor theStream call; send notification to JabberBlockListener if stream was terminated
-            StaticData.getInstance().roster.theStream.addBlockListener(new PepPublishResult(display, sid));
+            StaticData.getInstance().roster.theStream.addBlockListener(new PepPublishResult( sid));
             StaticData.getInstance().roster.theStream.send(setActivity);
         } catch (Exception e) {e.printStackTrace(); }
     }

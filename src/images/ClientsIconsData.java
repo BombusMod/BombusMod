@@ -52,8 +52,10 @@ public class ClientsIconsData {
 
                 clients=new StringLoader().stringLoader(restxt, 2);
             } catch (Exception e) {
-                System.out.print("ClientsIcons: Can't load ");
-                System.out.println(restxt);
+//#ifdef DEBUG
+//#                 System.out.print("ClientsIcons: Can't load ");
+//#                 System.out.println(restxt);
+//#endif
             }
             instance=new ClientsIconsData();
         }
@@ -64,9 +66,8 @@ public class ClientsIconsData {
 
     private static int getClientIDByCaps(String caps) {
         if (clients.length==0) return -1;
-        caps=caps.toLowerCase();
-        int j = clients[0].size();
-        for (int i=0; i<j; i++) {
+        String lcaps=caps.toLowerCase();
+        for (int i=0; i<clients[0].size(); i++) {
             String client=((String) clients[0].elementAt(i)).toLowerCase();
             if (client.indexOf(",")>-1) {
                 boolean parse = true;
@@ -75,14 +76,14 @@ public class ClientsIconsData {
                     if (pos>-1) {
                         int endpos=client.indexOf(",", pos);
                         String eqStr=(endpos<0)?client.substring(pos):client.substring(pos, endpos);
-                        if (caps.indexOf(eqStr)>-1) return i;
+                        if (lcaps.indexOf(eqStr)>-1) return i;
                         
                         pos=client.indexOf(",", pos+1);
                         if (pos<0) parse=false; else pos=pos+1;
                     } else parse=false;
                 }
             } else {
-                if (caps.indexOf(client)>-1)
+                if (lcaps.indexOf(client)>-1)
                     return i;
             }
 	}
@@ -92,7 +93,7 @@ public class ClientsIconsData {
     public static void processData(Contact c, String data) {
 //#ifdef CLIENTS_ICONS
         c.client=getClientIDByCaps(data);
-        c.clientName=(c.client>-1)?c.clientName=getClientNameByID(c.client):"";
+        c.clientName=(c.client>-1)?getClientNameByID(c.client):"";
 //#endif
     }
     

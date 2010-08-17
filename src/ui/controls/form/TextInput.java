@@ -27,13 +27,11 @@
 
 package ui.controls.form;
 
-import Client.Config;
 import Colors.ColorTheme;
 import Fonts.FontCache;
 import io.NvStorage;
 import java.io.DataInputStream;
 import java.io.EOFException;
-import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
 import ui.IconTextElement;
@@ -50,8 +48,6 @@ public class TextInput
     
     private boolean selectable=true;
 
-    private Display display;
-    
     public String id;
 
     private int boxType;
@@ -70,10 +66,13 @@ public class TextInput
     
     /**
      * Creates a new instance of TextInput
+     * @param caption 
+     * @param boxType
+     * @param id
+     * @param text
      */
-    public TextInput(Display display, String caption, String text, String id, int boxType) {
+    public TextInput(String caption, String text, String id, int boxType) {
         super(null);
-        this.display=display;
         this.caption=(caption==null)?"":caption;
         this.id=id;
         this.boxType=boxType;
@@ -119,7 +118,7 @@ public class TextInput
     
     public String toString() { return (getCaptionLength()>getTextLength())?caption:getValue(); }
     
-    public void onSelect(){ new EditBox(display, caption, text, this, boxType); }
+    public void onSelect(){ new EditBox(caption, text, this, boxType); }
     
     public String getValue() { return (text==null)?"":text; }
 

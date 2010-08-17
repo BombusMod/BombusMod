@@ -28,36 +28,23 @@
 package PrivacyLists;
 
 import Client.StaticData;
-import javax.microedition.lcdui.Display;
-import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.TextField;
 import images.RosterIcons;
-//#ifndef MENU_LISTENER
-//# import javax.microedition.lcdui.CommandListener;
-//# import javax.microedition.lcdui.Command;
-//#else
-import Menu.MenuListener;
-import Menu.Command;
-import Menu.MyMenu;
-//#endif
+import Menu.MenuCommand;
 import locale.SR;
 import ui.*;
 import ui.controls.AlertBox;
 import java.util.*;
 import com.alsutton.jabber.*;
+import ui.controls.form.DefForm;
 
 /**
  *
  * @author EvgS
  */
 public class PrivacySelect 
-        extends VirtualList 
+        extends DefForm
         implements
-//#ifndef MENU_LISTENER
-//#         CommandListener,
-//#else
-        MenuListener,
-//#endif
         JabberBlockListener,
         MIDPTextBox.TextBoxNotify
 {
@@ -67,43 +54,40 @@ public class PrivacySelect
     
     private Vector list=new Vector();
     
-    private Command cmdCancel=new Command (SR.MS_BACK, Command.BACK, 99);
-    private Command cmdActivate=new Command (SR.MS_ACTIVATE, Command.SCREEN, 10);
-    private Command cmdDefault=new Command (SR.MS_SETDEFAULT, Command.SCREEN, 11);
-    private Command cmdNewList=new Command (SR.MS_NEW_LIST, Command.SCREEN, 12);
-    private Command cmdDelete=new Command (SR.MS_DELETE_LIST, Command.SCREEN, 13);
-    //private Command cmdEdit=new Command (SR.MS_EDIT_LIST, Command.SCREEN, 14);
-    private Command cmdIL=new Command (SR.MS_MK_ILIST, Command.SCREEN, 16);
+    private MenuCommand cmdActivate=new MenuCommand (SR.MS_ACTIVATE, MenuCommand.SCREEN, 10);
+    private MenuCommand cmdDefault=new MenuCommand (SR.MS_SETDEFAULT, MenuCommand.SCREEN, 11);
+    private MenuCommand cmdNewList=new MenuCommand (SR.MS_NEW_LIST, MenuCommand.SCREEN, 12);
+    private MenuCommand cmdDelete=new MenuCommand (SR.MS_DELETE_LIST, MenuCommand.SCREEN, 13);
+    //private MenuCommand cmdEdit=new MenuCommand (SR.MS_EDIT_LIST, Command.SCREEN, 14);
+    private MenuCommand cmdIL=new MenuCommand (SR.MS_MK_ILIST, MenuCommand.SCREEN, 16);
     
     JabberStream stream=StaticData.getInstance().roster.theStream;
     
-    /** Creates a new instance of PrivacySelect */
-    public PrivacySelect(Display display, Displayable pView) {
-        super(display);
+    /** Creates a new instance of PrivacySelect
+     * @param pView
+     */
+    public PrivacySelect(VirtualList pView) {
+        super(null);
         this.parentView=pView;
 
         setMainBarItem(new MainBar(2, null, SR.MS_PRIVACY_LISTS, false));
 
         list.addElement(new PrivacyList(null));//none
         
-        commandState();
-        setCommandListener(this);
+        setMenuListener(this);
         
         getLists();
         
-        //attachDisplay(display);        
+        show(parentView);        
     }
     
     public void commandState() {
-//#ifdef MENU_LISTENER
         menuCommands.removeAllElements();
-//#endif
-        addCommand(cmdActivate);
-        addCommand(cmdDefault);
-        addCommand(cmdCancel);
-        addCommand(cmdNewList);
-        addCommand(cmdDelete);
-        addCommand(cmdIL);
+        addMenuCommand(cmdActivate);
+        addMenuCommand(cmdDefault);
+        addMenuCommand(cmdNewList);
+        addMenuCommand(cmdDelete);
+        addMenuCommand(cmdIL);
     }
 
     private void processIcon(boolean processing){
@@ -111,7 +95,7 @@ public class PrivacySelect
         redraw();
     }
    
-    protected void getLists() {
+    protected final void getLists() {
         try {
             Thread.sleep(500);
         } catch (Exception e) { }
@@ -123,7 +107,7 @@ public class PrivacySelect
     protected int getItemCount() { return list.size(); }
     protected VirtualElement getItemRef(int index) { return (VirtualElement) list.elementAt(index); }
     
-    public void commandAction(Command c, Displayable d) {
+    public void menuAction(MenuCommand c, VirtualList d) {
         if (c==cmdCancel) {
             destroyView();
             stream.cancelBlockListener(this);
@@ -150,20 +134,14 @@ public class PrivacySelect
             cmdDelete();
         }
         if (c==cmdNewList)
-            new MIDPTextBox(display, this, SR.MS_NEW, "", this, TextField.ANY);
+            new MIDPTextBox( this, SR.MS_NEW, "", this, TextField.ANY);
+        super.menuAction(c, d);
     }
-    
-//#ifdef MENU_LISTENER
-    public void showMenu() {
-        commandState();
-        new MyMenu(display, parentView, this, SR.MS_STATUS, null, menuCommands);
-    }
-//#endif
     
     // MIDPTextBox interface
     public void OkNotify(String listName) {
         if (listName.length()>0)
-            new PrivacyModifyList(display, this, new PrivacyList(listName), true, this);
+            new PrivacyModifyList(this, new PrivacyList(listName), true, this);
     }
     
     public int blockArrived(JabberDataBlock data) {
@@ -209,7 +187,7 @@ public class PrivacySelect
         PrivacyList pl = (PrivacyList) getFocusedObject();
         if (pl != null) {
             if (pl.name != null)
-                new PrivacyModifyList(display, this, pl, false, this);
+                new PrivacyModifyList(this, pl, false, this);
         }
     }
 
@@ -222,7 +200,7 @@ public class PrivacySelect
     }
     
     public void keyGreen() {
-        new MIDPTextBox(display, this, SR.MS_NEW, "", this, TextField.ANY);
+        new MIDPTextBox( this, SR.MS_NEW, "", this, TextField.ANY);
     }
     
     private void cmdDelete() {
@@ -236,7 +214,7 @@ public class PrivacySelect
     
     protected void keyClear() {
         String name = getFocusedObject().toString();
-        new AlertBox(name, SR.MS_DELETE + " \"" + name + "\"?", display, this) {
+        new AlertBox(name, SR.MS_DELETE + " \"" + name + "\"?") {
 
             public void yes() {
                 cmdDelete();
@@ -245,4 +223,6 @@ public class PrivacySelect
             public void no() {}
         };
     }
+    public void touchLeftPressed() { showMenu(); }
+    public String touchLeftCommand() {return SR.MS_MENU; }
 }

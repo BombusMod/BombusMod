@@ -54,10 +54,9 @@ public class MIDPTextBox implements CommandListener {
         void OkNotify(String text_return);
     }
    
-    public MIDPTextBox(Display display, Displayable pView, String mainbar, String text, TextBoxNotify tbn , int constraints) {
+    public MIDPTextBox(VirtualList pView, String mainbar, String text, TextBoxNotify tbn , int constraints) {
         t=new TextBox(mainbar, text, 150, constraints);
         
-        this.display=display;
         this.tbn=tbn;
         
         t.addCommand(cmdOK);
@@ -67,11 +66,13 @@ public class MIDPTextBox implements CommandListener {
             
 
         parentView=pView;
-        display.setCurrent(t);
+        midlet.BombusMod.getInstance().setDisplayable(t);
     }
     
     /**
      * Called when action should be handled
+     * @param command 
+     * @param displayable
      */
     public void commandAction(Command command, Displayable displayable) {
         if (command==cmdCancel) { destroyView(); return;}
@@ -79,6 +80,6 @@ public class MIDPTextBox implements CommandListener {
     }
 
     public void destroyView(){
-        if (display!=null)   display.setCurrent(parentView);
+        midlet.BombusMod.getInstance().setDisplayable(parentView);
     }
 }

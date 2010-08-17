@@ -12,7 +12,6 @@ package Conference;
 import Client.StaticData;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Message;
-import javax.microedition.lcdui.Display;
 
 /**
  *
@@ -22,12 +21,10 @@ public class QueryRequestVoice {
 
     private MucContact admin;
     private int action;
-    private Display display;
-
-    public QueryRequestVoice(Display display, MucContact admin, int action) {
+    
+    public QueryRequestVoice(MucContact admin, int action) {
         this.admin=admin;
         this.action=action;
-        this.display=display;
         
         JabberDataBlock msg=new Message(admin.getJid());
         JabberDataBlock x=msg.addChildNs("x", "jabber:x:data"); 

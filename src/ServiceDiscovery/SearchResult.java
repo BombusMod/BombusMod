@@ -27,47 +27,38 @@
 
 package ServiceDiscovery;
 import java.util.*;
-import javax.microedition.lcdui.*;
 import locale.SR;
-import ui.*;
 import com.alsutton.jabber.*;
 import com.alsutton.jabber.datablocks.*;
 import Client.*;
 import ui.MainBar;
+import ui.controls.form.DefForm;
 
 /**
  *
  * @author EvgS
  */
 public class SearchResult
-        extends VirtualList
-        implements CommandListener {
+        extends DefForm {
     
     StaticData sd=StaticData.getInstance();
-    private Command cmdBack=new Command(SR.MS_BACK, Command.BACK, 98);
-    private Command cmdAdd=new Command(SR.MS_ADD, Command.SCREEN, 1);
-    
-    private Vector items;
     boolean xData;
     
-    /** Creates a new instance of SearchResult */
-    public SearchResult(Display display, JabberDataBlock result) {
-        super(display);
+    /** Creates a new instance of SearchResult
+     * @param result
+     */
+    public SearchResult(JabberDataBlock result) {
+        super(null);
         
         String service=result.getAttribute("from");
         
         setMainBarItem(new MainBar(2, null, service, false));
         
-        setCommandListener(this);
-        addCommand(cmdBack);
-        
-        items=new Vector();
+        setMenuListener(this);
         
         JabberDataBlock query=result.getChildBlock("query");
         if (query==null) return;
         
-        addCommand(cmdAdd);
-
         JabberDataBlock x=query.getChildBlock("x");
         if (x!=null) { query=x; xData=true; }
         
@@ -115,7 +106,7 @@ public class SearchResult
                 m.unread=false;
                 serv.addMessage(m);
                 
-                items.addElement(serv);
+                itemsList.addElement(serv);
                 sd.roster.addContact(serv);
                 vcard=null;
             }
@@ -123,24 +114,17 @@ public class SearchResult
         sd.roster.reEnumRoster();
     }
     
-    public int getItemCount(){ return items.size();}
-    public VirtualElement getItemRef(int index) { return (VirtualElement) items.elementAt(index);}
+    public void cmdOk() {
+        destroyView();
+        new ContactEdit(sd.roster, (Contact) getFocusedObject());
 
-    public void commandAction(Command c, Displayable d){
-        if (c==cmdAdd){
-            destroyView();
-            new ContactEdit(display, sd.roster, (Contact)getFocusedObject());
-            return;
-        }
-        
-        if (c==cmdBack) destroyView(); 
     }
-    
     public void eventOk(){
         try {
             Contact c=(Contact)getFocusedObject();
             if (c==null) return;
-            new ContactMessageList((Contact) getFocusedObject(), display);
+            new ContactMessageList((Contact) getFocusedObject());
         } catch (Exception e) {}
     }
+    public String touchLeftCommand() {return SR.MS_ADD; }
 }

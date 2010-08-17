@@ -27,16 +27,22 @@ import ui.controls.form.DefForm;
  */
 public class MoodList extends DefForm implements MIDPTextBox.TextBoxNotify {
 //#ifdef PLUGINS
-//#     public static String plugin = "PLUGIN_PEP";
+    public static String plugin = "PLUGIN_PEP";
 //#endif
     
     /** Creates a new instance of MoodList */
 
     Vector moods;
     public MoodList(Display display) {
-        super(display, StaticData.getInstance().roster, SR.MS_USERMOOD);
+        super(
+//#ifdef PEP
+                SR.MS_USERMOOD
+//#else
+//#                 ""
+//#endif
+                );
 
-        setCommandListener(this);
+        setMenuListener(this);
         
         moods=new Vector();
         int count=Moods.getInstance().moodValue.size();
@@ -47,7 +53,7 @@ public class MoodList extends DefForm implements MIDPTextBox.TextBoxNotify {
         
         sort(moods);
         
-        attachDisplay(display);
+        show(parentView);
     }
 
     protected int getItemCount() { return moods.size(); }
@@ -59,17 +65,17 @@ public class MoodList extends DefForm implements MIDPTextBox.TextBoxNotify {
     }
 
 //#ifdef PEP
-//#     public void eventOk() {
-//#         if (cursor==0) OkNotify(null); 
-//#             else new MIDPTextBox(display, this, SR.MS_USERMOOD, Moods.getInstance().myMoodText, this, TextField.ANY);
-//#     }
+    public void eventOk() {
+        if (cursor==0) OkNotify(null); 
+            else new MIDPTextBox( this, SR.MS_USERMOOD, Moods.getInstance().myMoodText, this, TextField.ANY);
+    }
 //#endif
     
     public void OkNotify(String moodText) {
         String moodName=((MoodItem)getFocusedObject()).getTipString();
         publishTune(moodText, moodName);
         destroyView();
-        display.setCurrent(StaticData.getInstance().roster);
+        midlet.BombusMod.getInstance().setDisplayable(StaticData.getInstance().roster);
     }
 
     private void publishTune(final String moodText, final String moodName) {
@@ -91,7 +97,7 @@ public class MoodList extends DefForm implements MIDPTextBox.TextBoxNotify {
         }
         try {
             //todo: refactor theStream call; send notification to JabberBlockListener if stream was terminated
-            StaticData.getInstance().roster.theStream.addBlockListener(new PepPublishResult(display, sid));
+            StaticData.getInstance().roster.theStream.addBlockListener(new PepPublishResult( sid));
             StaticData.getInstance().roster.theStream.send(setMood);
         } catch (Exception e) {e.printStackTrace(); }
     }

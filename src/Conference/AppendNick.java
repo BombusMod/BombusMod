@@ -32,101 +32,56 @@ import Client.Roster;
 import Client.StaticData;
 import Client.MessageEdit;
 import locale.SR;
-import ui.MainBar;
-import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import com.alsutton.jabber.datablocks.Presence;
 import java.util.Enumeration;
 import java.util.Vector;
-import ui.VirtualElement;
-import ui.VirtualList;
 
-//#ifndef MENU_LISTENER
-//# import javax.microedition.lcdui.CommandListener;
-//# import javax.microedition.lcdui.Command;
-//#else
-import Menu.MenuListener;
-import Menu.Command;
-//#endif
+import ui.controls.form.DefForm;
 
 /**
  *
  * @author EvgS
  */
 public final class AppendNick
-        extends VirtualList 
-        implements
-//#ifndef MENU_LISTENER
-//#         CommandListener
-//#else
-        MenuListener
-//#endif
+        extends DefForm
 {
 
     Vector nicknames;
     int caretPos; 
     
-    Command cmdOk=new Command(SR.MS_APPEND, Command.OK, 1);
-    Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 99);
+    private MessageEdit me;
     
-    private MessageEdit me = null;
-
-    public AppendNick(Display display, Displayable pView, Contact to, int caretPos, MessageEdit me) {
-        super(display);
+    public AppendNick(Displayable pView, Contact to, int caretPos, MessageEdit me) {
+        super(SR.MS_SELECT_NICKNAME);
         this.caretPos=caretPos;
-        this.me = me;
+        this.me = me;      
                 
-        setMainBarItem(new MainBar(SR.MS_SELECT_NICKNAME));
         
-        nicknames=null;
-        nicknames=new Vector();
         for (Enumeration e=StaticData.getInstance().roster.getHContacts().elements(); e.hasMoreElements(); ) {
             Contact c=(Contact)e.nextElement();
             if (c.group==to.group && c.origin>Contact.ORIGIN_GROUPCHAT && c.status<Presence.PRESENCE_OFFLINE)
-                nicknames.addElement(c);
+                itemsList.addElement(c);
         }
-        commandState();
-
-        this.parentView=pView;
-    }
-    
-    public void commandState() {
-//#ifdef MENU_LISTENER
-        menuCommands.removeAllElements();
-//#endif
-        addCommand(cmdOk);
-        addCommand(cmdCancel);
+        show(parentView);
+        parentView = pView;
+    }    
         
-        setCommandListener(this);
-    }
-    
-    public VirtualElement getItemRef(int Index) { return (VirtualElement)nicknames.elementAt(Index); }
-    protected int getItemCount() { return nicknames.size();  }
-
-    public void commandAction(Command c, Displayable d){
-        if (c==cmdOk)
-            eventOk();
-        else
-            destroyView();
-    }
-    
-     public void eventOk(){
+    public void eventOk(){
          try {
              String nick=((Contact)getFocusedObject()).getJid();
              int rp=nick.indexOf('/');
              StringBuffer b=new StringBuffer(nick.substring(rp+1));
              
             if (caretPos==0) b.append(':');
-            me.insert(b.toString(), caretPos);
+//#             me.insert(b.toString(), caretPos);
             b=null;
          } catch (Exception e) {}
          destroyView();
     }
      
-//#ifdef MENU_LISTENER
-    public void showMenu(){ eventOk(); }
+    public void cmdOk() { eventOk(); }
      
     public String touchLeftCommand(){ return SR.MS_SELECT; }
     public String touchRightCommand(){ return SR.MS_BACK; }
-//#endif
 }

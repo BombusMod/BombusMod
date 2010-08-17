@@ -31,16 +31,9 @@ import Conference.ConferenceForm;
 //#endif
 import images.RosterIcons;
 import java.util.*;
-//#ifndef MENU_LISTENER
-//# import javax.microedition.lcdui.CommandListener;
-//# import javax.microedition.lcdui.Command;
-//#else
 import Menu.MenuListener;
-import Menu.Command;
+import Menu.MenuCommand;
 import Menu.MyMenu;
-//#endif
-import javax.microedition.lcdui.Display;
-import javax.microedition.lcdui.Displayable;
 import locale.SR;
 import Colors.ColorTheme;
 import ui.*;
@@ -61,11 +54,7 @@ import xmpp.XmppError;
 public class ServiceDiscovery 
         extends VirtualList
         implements
-//#ifndef MENU_LISTENER
-//#         CommandListener,
-//#else
         MenuListener,
-//#endif
         JabberBlockListener
 {
     private final static String NS_ITEMS="http://jabber.org/protocol/disco#items";
@@ -79,13 +68,13 @@ public class ServiceDiscovery
    /* private final static String strCmds="Execute";
     private final int AD_HOC_INDEX=17;*/
     
-    private Command cmdOk=new Command(SR.MS_BROWSE, Command.SCREEN, 1);
-    private Command cmdRfsh=new Command(SR.MS_REFRESH, Command.SCREEN, 2);
-    private Command cmdFeatures=new Command(SR.MS_FEATURES, Command.SCREEN, 3);
-    private Command cmdSrv=new Command(SR.MS_SERVER, Command.SCREEN, 10);
-    //private Command cmdAdd=new Command(SR.MS_ADD_TO_ROSTER, Command.SCREEN, 11); //FS#464 => this string is commented in SR.java'
-    private Command cmdBack=new Command(SR.MS_BACK, Command.BACK, 98);
-    private Command cmdCancel=new Command(SR.MS_CANCEL, Command.EXIT, 99);
+    private MenuCommand cmdOk=new MenuCommand(SR.MS_BROWSE, MenuCommand.SCREEN, 1);
+    private MenuCommand cmdRfsh=new MenuCommand(SR.MS_REFRESH, MenuCommand.SCREEN, 2);
+    private MenuCommand cmdFeatures=new MenuCommand(SR.MS_FEATURES, MenuCommand.SCREEN, 3);
+    private MenuCommand cmdSrv=new MenuCommand(SR.MS_SERVER, MenuCommand.SCREEN, 10);
+    //private MenuCommand cmdAdd=new MenuCommand(SR.MS_ADD_TO_ROSTER, Command.SCREEN, 11); //FS#464 => this string is commented in SR.java'
+    private MenuCommand cmdBack=new MenuCommand(SR.MS_BACK, MenuCommand.BACK, 98);
+    private MenuCommand cmdCancel=new MenuCommand(SR.MS_CANCEL, MenuCommand.EXIT, 99);
 
     private StaticData sd=StaticData.getInstance();
     
@@ -105,8 +94,8 @@ public class ServiceDiscovery
 
     
     /** Creates a new instance of ServiceDiscovery */
-    public ServiceDiscovery(Display display, String service, String node, boolean search) {
-        super(display);
+    public ServiceDiscovery(String service, String node, boolean search) {
+        super();
 
         setMainBarItem(new MainBar(3, null, null, false));
         getMainBarItem().addRAlign();
@@ -117,17 +106,13 @@ public class ServiceDiscovery
         stream.addBlockListener(this);
         //sd.roster.discoveryListener=this;
         
-//#ifdef MENU_LISTENER
         menuCommands.removeAllElements();
-//#else
-//#         addCommand(cmdBack);
-//#endif
-        setCommandListener(this);
-        addCommand(cmdRfsh);
-        addCommand(cmdSrv);
-        addCommand(cmdFeatures);
+        setMenuListener(this);
+        addMenuCommand(cmdRfsh);
+        addMenuCommand(cmdSrv);
+        addMenuCommand(cmdFeatures);
         //addCommand(cmdAdd);
-        addCommand(cmdCancel);
+        addMenuCommand(cmdCancel);
 
         items=new Vector();
         features=new Vector();
@@ -165,6 +150,7 @@ public class ServiceDiscovery
             moveCursorHome();
             redraw();
         }
+        show(parentView);
     }
     
     private String discoId(String id) {
@@ -186,14 +172,10 @@ public class ServiceDiscovery
 	try { size=items.size(); } catch (Exception e) {}
 	String count=null;
         
-	removeCommand(cmdOk);
+	removeMenuCommand(cmdOk);
         
 	if (size>0) {
-//#ifdef MENU_LISTENER
 	    menuCommands.insertElementAt(cmdOk, 0); 
-//#else
-//#             addCommand(cmdOk);
-//#endif
 	    count=" ("+size+") ";
 	}
         getMainBarItem().setElementAt(count,1);
@@ -241,7 +223,7 @@ public class ServiceDiscovery
             
             XmppError xe=XmppError.findInStanza(data);
             
-            new AlertBox(data.getAttribute("from"), xe.toString(), display, this) {
+            new AlertBox(data.getAttribute("from"), xe.toString()) {
                 public void yes() { };
                 public void no() { };
             };
@@ -254,10 +236,10 @@ public class ServiceDiscovery
             if (command2!=null) {
                 command1=command2;
             }
-            String node = command1.getAttribute("node");
-            if ((node!=null) && (node.startsWith("http://jabber.org/protocol/rc#")))
+            String node1 = command1.getAttribute("node");
+            if ((node1!=null) && (node1.startsWith("http://jabber.org/protocol/rc#")))
                 id="discocmd"; //hack
-            node=null;
+            node1=null;
         }
         
         JabberDataBlock query=data.getChildBlock((id.equals("discocmd"))?"command":"query");
@@ -265,30 +247,30 @@ public class ServiceDiscovery
         //System.out.println(id);
 
         if (id.equals(discoId("disco2"))) {
-            Vector items=new Vector();
+            Vector items1=new Vector();
             if (childs!=null)
             for (Enumeration e=childs.elements(); e.hasMoreElements(); ){
                 JabberDataBlock i=(JabberDataBlock)e.nextElement();
                 if (i.getTagName().equals("item")){
                     String name=i.getAttribute("name");
                     String jid=i.getAttribute("jid");
-                    String node=i.getAttribute("node");
+                    String node1=i.getAttribute("node");
                     Object serv=null;
-                    if (node==null) {
+                    if (node1==null) {
                         int resourcePos=jid.indexOf('/');
                         if (resourcePos>-1)
                             jid=jid.substring(0, resourcePos);
                         serv=new DiscoContact(name, jid, 0);
                     } else {
-                        serv=new Node(name, node);
+                        serv=new Node(name, node1);
                     }
-                    items.addElement(serv);
+                    items1.addElement(serv);
                 }
             }
             
-            showResults(items);
+            showResults(items1);
         } else if (id.equals(discoId("disco"))) {
-            Vector cmds=new Vector();
+            Vector cmds1=new Vector();
             boolean showPartialResults=false;
             boolean loadItems=true;
             boolean client=false;
@@ -302,11 +284,11 @@ public class ServiceDiscovery
                         requestCommand(NODE_CMDS, "discocmd");
                     }
                     if (category.equals("conference")) {
-                        cmds.addElement(new DiscoCommand(RosterIcons.ICON_GCJOIN_INDEX, SR.MS_JOIN_CONFERENCE));
+                        cmds1.addElement(new DiscoCommand(RosterIcons.ICON_GCJOIN_INDEX, SR.MS_JOIN_CONFERENCE));
                         if (service.indexOf('@')<=0) {
                             loadItems=false;
                             showPartialResults=true;
-                            cmds.addElement(new DiscoCommand(RosterIcons.ICON_ROOMLIST, SR.MS_LOAD_ROOMLIST));
+                            cmds1.addElement(new DiscoCommand(RosterIcons.ICON_ROOMLIST, SR.MS_LOAD_ROOMLIST));
                         }
                     }
                  }
@@ -316,50 +298,50 @@ public class ServiceDiscovery
                         String var=i.getAttribute("var");
                         features.addElement(var);
                         //if (var.equals(NS_MUC)) { cmds.addElement(new DiscoCommand(RosterIcons.ICON_GCJOIN_INDEX, strJoin)); }
-                        if (var.equals(NS_SRCH)) { cmds.addElement(new DiscoCommand(RosterIcons.ICON_SEARCH_INDEX, SR.MS_SEARCH)); }
-                        if (var.equals(NS_REGS)) { cmds.addElement(new DiscoCommand(RosterIcons.ICON_REGISTER_INDEX, SR.MS_REGISTER)); }
+                        if (var.equals(NS_SRCH)) { cmds1.addElement(new DiscoCommand(RosterIcons.ICON_SEARCH_INDEX, SR.MS_SEARCH)); }
+                        if (var.equals(NS_REGS)) { cmds1.addElement(new DiscoCommand(RosterIcons.ICON_REGISTER_INDEX, SR.MS_REGISTER)); }
                         if (var.equals(NS_GATE)) { showPartialResults=true; }
                         //if (var.equals(NODE_CMDS)) { cmds.addElement(new DiscoCommand(AD_HOC_INDEX,strCmds)); }
                     }
                 }
              }
             /*if (data.getAttribute("from").equals(service)) */ { //FIXME!!!
-                this.cmds=cmds;
+                this.cmds=cmds1;
                 if (loadItems) requestQuery(NS_ITEMS, "disco2");
                 if (showPartialResults) showResults(new Vector());
             }
         } else if (id.startsWith ("discoreg")) {
             discoIcon=0;
 //#ifndef NEW_DISCO
-            new DiscoForm(display, data, stream, "discoResult", "query");
+//#             new DiscoForm( data, stream, "discoResult", "query");
 //#else
-//#             new MyDiscoForm(display, data, stream, "discoResult", "query");
+            new MyDiscoForm( data, stream, "discoResult", "query");
 //#endif
         } else if (id.startsWith("discocmd")) {
             discoIcon=0;
 //#ifndef NEW_DISCO
-            new DiscoForm(display, data, stream, "discocmd", "command");
+//#             new DiscoForm( data, stream, "discocmd", "command");
 //#else
-//#             new MyDiscoForm(display, data, stream, "discocmd", "command");
+            new MyDiscoForm( data, stream, "discocmd", "command");
 //#endif
 
         } else if (id.startsWith("discosrch")) {
             discoIcon=0;
 //#ifndef NEW_DISCO
-            new DiscoForm(display, data, stream, "discoRSearch", "query");
+//#             new DiscoForm( data, stream, "discoRSearch", "query");
 //#else
-//#             new MyDiscoForm(display, data, stream, "discoRSearch", "query");
+            new MyDiscoForm( data, stream, "discoRSearch", "query");
 //#endif          
         } else if (id.startsWith("discoR")) {
             String text=SR.MS_DONE;
-            String mainbar=data.getTypeAttribute();
-            if (mainbar.equals("error")) {
+            String mb=data.getTypeAttribute();
+            if (mb.equals("error")) {
                 text=XmppError.findInStanza(data).toString();
             }
             if (text.equals(SR.MS_DONE) && id.endsWith("Search") ) {
-                new SearchResult(display, data);
+                new SearchResult( data);
             } else {
-                new AlertBox(mainbar, text, display, StaticData.getInstance().roster) {
+                new AlertBox(mb, text) {
                     public void yes() { }
                     public void no() { }
                 };
@@ -410,27 +392,26 @@ public class ServiceDiscovery
             
             items=new Vector();
             features=new Vector();
-            removeCommand(cmdBack);
-            addCommand(cmdBack);
+            removeMenuCommand(cmdBack);
+            addMenuCommand(cmdBack);
             this.service=service;
             this.node=node;
             requestQuery(NS_INFO,"disco");
     }
     
-    public void commandAction(Command c, Displayable d){
+    public void menuAction(MenuCommand c, VirtualList d){
 	if (c==cmdOk) eventOk();
         if (c==cmdBack) exitDiscovery(false);            
         if (c==cmdRfsh) { if (service!=null) requestQuery(NS_INFO, "disco"); }
-        if (c==cmdSrv) { new ServerBox(display, this, service, this); }
-        if (c==cmdFeatures) { new DiscoFeatures(display, service, features); }
+        if (c==cmdSrv) { new ServerBox( this, service, this); }
+        if (c==cmdFeatures) { new DiscoFeatures( service, features); }
         if (c==cmdCancel) exitDiscovery(true);
     }
     
     private void exitDiscovery(boolean cancel){
         if (cancel || stackItems.isEmpty()) {
             stream.cancelBlockListener(this);
-            if (display!=null && parentView!=null /*prevents potential app hiding*/ )   
-                display.setCurrent(parentView);
+            midlet.BombusMod.getInstance().setDisplayable(parentView);
         } else {
             State st=(State)stackItems.lastElement();
             stackItems.removeElement(st);
@@ -449,6 +430,7 @@ public class ServiceDiscovery
     
     public void destroyView()	{
         exitDiscovery(false);
+        super.destroyView();
     }
     
     public void userKeyPressed(int keyCode) {
@@ -485,7 +467,7 @@ public class ServiceDiscovery
                         room=service.substring(0,rp);
                         server=service.substring(rp+1);
                     }
-                    new ConferenceForm(display, parentView, room, service, null, false);
+                    new ConferenceForm( (VirtualList)parentView, room, service, null, false);
                     break;
                 }
 //#endif
@@ -509,7 +491,6 @@ public class ServiceDiscovery
         destroyView();
     }
 
-//#ifdef MENU_LISTENER
     protected void keyPressed(int keyCode) {
         //kHold=0;
         if (keyCode==Config.SOFT_RIGHT || keyCode==Config.KEY_BACK) {
@@ -522,9 +503,8 @@ public class ServiceDiscovery
     }
 
     public void showMenu() {
-        new MyMenu(display, parentView, this, SR.MS_DISCO, null, menuCommands);
+        new MyMenu( this, this, SR.MS_DISCO, null, menuCommands);
     }
-//#endif
 
 }
 class State{

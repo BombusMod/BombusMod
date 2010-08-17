@@ -30,15 +30,9 @@ package Statistic;
 import Client.Config;
 import Client.Roster;
 import Client.StaticData;
-//#ifndef MENU_LISTENER
-//# import javax.microedition.lcdui.Command;
-//#else
-import Menu.Command;
-import Menu.MyMenu;
-//#endif
-import javax.microedition.lcdui.Display;
-import javax.microedition.lcdui.Displayable;
+import Menu.MenuCommand;
 import locale.SR;
+import ui.VirtualList;
 import ui.controls.form.DefForm;
 import ui.controls.form.MultiLine;
 //#ifdef CLIPBOARD
@@ -59,21 +53,21 @@ public class StatsWindow
     
     Stats st=Stats.getInstance();
     
-    public Command cmdClear = new Command(SR.MS_CLEAR, Command.SCREEN, 2);
+    public MenuCommand cmdClear = new MenuCommand(SR.MS_CLEAR, MenuCommand.SCREEN, 2);
 //#ifdef CLIPBOARD
-//#     ClipBoard clipboard  = ClipBoard.getInstance();
-//#     Command cmdCopy      = new Command(SR.MS_COPY, Command.SCREEN, 1);
-//#     Command cmdCopyPlus  = new Command("+ "+SR.MS_COPY, Command.SCREEN, 2);
+    ClipBoard clipboard = null;
+    MenuCommand cmdCopy      = new MenuCommand(SR.MS_COPY, MenuCommand.SCREEN, 1);
+    MenuCommand cmdCopyPlus  = new MenuCommand("+ "+SR.MS_COPY, MenuCommand.SCREEN, 2);
 //#endif
     
     MultiLine item=null;    
 
     /**
      * Creates a new instance of StatsWindow
+     * @param pView
      */
-    public StatsWindow(Display display, Displayable pView) {
-        super(display, pView, SR.MS_STATS);
-        this.display=display;
+    public StatsWindow(VirtualList pView) {
+        super(SR.MS_STATS);
         item=new MultiLine(SR.MS_ALL, StringUtils.getSizeString(st.getAllTraffic()), super.superWidth); item.selectable=true; itemsList.addElement(item);
 
         item=new MultiLine(SR.MS_PREVIOUS_, StringUtils.getSizeString(st.getLatest()), super.superWidth); item.selectable=true; itemsList.addElement(item);
@@ -90,69 +84,53 @@ public class StatsWindow
 //#endif
         item=new MultiLine(SR.MS_CONN, Integer.toString(st.getSessionsCount()), super.superWidth); item.selectable=true; itemsList.addElement(item);
                 
-        item=new MultiLine(SR.MS_STARTED, Roster.startTime, super.superWidth); item.selectable=true; itemsList.addElement(item);
-        
-        
-//        removeCommand(cmdOk);
-        //setCommandListener(this);
-        commandStateTest();
-        attachDisplay(display);
-        this.parentView=pView;
+        item=new MultiLine(SR.MS_STARTED, Roster.startTime, super.superWidth); item.selectable=true; itemsList.addElement(item);        
+
+        show(pView);        
     }
 
-    public void commandStateTest() {
-//#ifdef MENU_LISTENER
+    public void commandState() {
         menuCommands.removeAllElements();
-//#endif
+        addMenuCommand(cmdClear);
 //#ifdef CLIPBOARD
-//#             if (Config.getInstance().useClipBoard) {
-//#                 addCommand(cmdCopy);
-//#                 if (!clipboard.isEmpty())
-//#                     addCommand(cmdCopyPlus);
-//#             }
-//#endif
-        addCommand(cmdClear);
-        addCommand(cmdCancel);
+            if (Config.getInstance().useClipBoard) {
+                clipboard = ClipBoard.getInstance();
+                addMenuCommand(cmdCopy);
+                if (!clipboard.isEmpty())
+                    addMenuCommand(cmdCopyPlus);
+            }
+//#endif        
     }
 
-//#ifdef MENU_LISTENER
     public String touchLeftCommand(){ return SR.MS_MENU; }
-    public void touchLeftPressed(){ cmdOk(); }
-    public void cmdOk() { showMenu(); }
-//#endif
-
-//#ifdef MENU_LISTENER
-    public void showMenu() {
-        commandStateTest();
-        new MyMenu(display, parentView, this, "", null, menuCommands);
-    }
-//#endif
-
-    public void commandAction(Command command, Displayable displayable) {
+    public void touchLeftPressed(){ showMenu(); }
+    
+    public void menuAction(MenuCommand command, VirtualList displayable) {
 //#ifdef CLIPBOARD
-//#         if (command == cmdCopy) {
-//#             try {
-//#                 String str = ((MultiLine) getFocusedObject()).toString();
-//#                 if (str == null)
-//#                     str = "";
-//#                 clipboard.setClipBoard(str);
-//#             } catch (Exception e) {/*no messages*/}
-//#         }
-//# 
-//#         if (command == cmdCopyPlus) {
-//#             try {
-//#                 String str = ((MultiLine) getFocusedObject()).toString();
-//#                 if (str == null)
-//#                     str = "";
-//#                 str  = clipboard.getClipBoard() + "\n\n" + str;
-//# 
-//#                 clipboard.setClipBoard(str);
-//#             } catch (Exception e) {/*no messages*/}
-//#         }
+        if (command == cmdCopy) {
+            try {
+                String str = ((MultiLine) getFocusedObject()).toString();
+                if (str == null)
+                    str = "";
+                clipboard.setClipBoard(str);
+            } catch (Exception e) {/*no messages*/}
+        }
+
+        if (command == cmdCopyPlus) {
+            try {
+                String str = ((MultiLine) getFocusedObject()).toString();
+                if (str == null)
+                    str = "";
+                str  = clipboard.getClipBoard() + "\n\n" + str;
+
+                clipboard.setClipBoard(str);
+            } catch (Exception e) {/*no messages*/}
+        }
 //#endif
         if (command==cmdClear) {
             st.saveToStorage(true);
             cmdCancel();
-        } else super.commandAction(command, displayable);
+        }
+        super.menuAction(command, displayable);
     }
 }

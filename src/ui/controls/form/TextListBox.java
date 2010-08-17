@@ -27,98 +27,63 @@
 
 package ui.controls.form;
 
-import javax.microedition.lcdui.Display;
-import javax.microedition.lcdui.Displayable;
 import ui.MainBar;
-import ui.VirtualElement;
 import ui.VirtualList;
 
-import java.util.Vector;
 import locale.SR;
 
-//#ifndef MENU_LISTENER
-import javax.microedition.lcdui.CommandListener;
-import javax.microedition.lcdui.Command;
-//#else
-//# import Menu.MenuListener;
-//# import Menu.Command;
-//# import Menu.MyMenu;
-//#endif
+import Menu.MenuCommand;
+import java.util.Enumeration;
 
 /**
  *
  * @author ad
  */
 public class TextListBox 
-        extends VirtualList 
-        implements
-//#ifndef MENU_LISTENER
-        CommandListener
-//#else
-//#         MenuListener
-//#endif
+        extends DefForm
     {
 
-    private Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK,99);
-    private Command cmdOk=new Command(SR.MS_OK, Command.OK,1);
-    private Command cmdClear=new Command(SR.MS_CLEAR, Command.SCREEN, 2);
+    private MenuCommand cmdClear=new MenuCommand(SR.MS_CLEAR, MenuCommand.SCREEN, 2);
 
-    private Vector recentList;
+    private EditBox ti;    
 
-    private EditBox ti;
-
-    public TextListBox(Display display, EditBox ti) {
-        super(display);
+    public TextListBox(EditBox ti) {
+        super(null);
         this.ti=ti;
-        this.recentList=ti.recentList;
+        SimpleString item = null;
         setMainBarItem(new MainBar(SR.MS_SELECT));
-
-        commandState();
+        for (Enumeration e = ti.recentList.elements(); e.hasMoreElements();) {
+            item = new SimpleString((String)e.nextElement(), false);
+            item.selectable = true;
+            itemsList.addElement(item);
+        }
+        show(ti.t);
     }
     
     public void commandState() {
-//#ifdef MENU_LISTENER
-//#         menuCommands.removeAllElements();
-//#endif
-        addCommand(cmdOk);
-        addCommand(cmdClear);
-        addCommand(cmdCancel);
-        setCommandListener(this);
+        super.commandState();
+        addMenuCommand(cmdClear);
     }
     
     public void eventOk() {
-        if (recentList.size()>0)
-            ti.setValue((String) recentList.elementAt(cursor));
+        if (itemsList.size()>0)
+            ti.setValue(itemsList.elementAt(cursor).toString());
         
-        display.setCurrent(parentView);
+        midlet.BombusMod.getInstance().setDisplayable(ti.t);
     }
 
-    public void commandAction(Command c, Displayable d){
+    public void menuAction(MenuCommand c, VirtualList d){
         if (c==cmdClear) {
             ti.recentList.removeAllElements();
             ti.saveRecentList();
-        }
-        if (c==cmdOk) {
-            eventOk();
-            return;
-        }
-        
-        display.setCurrent(parentView);
+        }        
+        super.menuAction(c, d);
     }
 
-    public VirtualElement getItemRef(int index){ 
-        return new ListItem((String) recentList.elementAt(index)); 
+    public void cmdOk() {
+        eventOk();
     }
-    public int getItemCount() { return recentList.size(); }
-    
-//#ifdef MENU_LISTENER
-//#     public void showMenu() {
-//#         commandState();
-//#         String capt="";
-//#         try {
-//#             capt=getMainBarItem().elementAt(0).toString();
-//#         } catch (Exception ex){ }
-//#         new MyMenu(display, parentView, this, capt, null, menuCommands);
-//#    }
-//#endif
+
+    public String touchLeftCommand() {return SR.MS_MENU; }
+    public void touchLeftPressed() { showMenu(); }
 }

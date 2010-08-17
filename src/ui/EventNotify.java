@@ -26,7 +26,6 @@
  */
 
 package ui;
-import javax.microedition.lcdui.*;
 //#ifndef NOMMEDIA
 import java.io.InputStream;
 import javax.microedition.media.Manager;
@@ -50,7 +49,7 @@ public class EventNotify
     private String soundName;
     private String soundType;
     
-    private Display display;
+    
 //#ifndef NOMMEDIA
     private static Player player;
 //#endif
@@ -62,13 +61,12 @@ public class EventNotify
     
     /** Creates a new instance of EventNotify */
     public EventNotify(
-	Display display, 
+	 
 	String soundMediaType, 
 	String soundFileName, 
 	int sndVolume,
 	int vibraLength)
     {
-        this.display=display;
         this.soundName=soundFileName;
         this.soundType=soundMediaType;
         this.vibraLength=vibraLength;
@@ -102,7 +100,7 @@ public class EventNotify
 //#endif
 
         if (vibraLength>0) {
-            display.vibrate(vibraLength);
+            midlet.BombusMod.getInstance().getDisplay().vibrate(vibraLength);
         }
 //#ifndef NOMMEDIA
 	if (toneSequence)

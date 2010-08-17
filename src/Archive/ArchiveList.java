@@ -32,14 +32,10 @@ import javax.microedition.lcdui.TextBox;
 import ui.MainBar;
 import Messages.MessageList;
 import java.util.Vector;
-//#ifndef MENU_LISTENER
-//# import javax.microedition.lcdui.Command;
-//#else
-import Menu.Command;
-//#endif
-import javax.microedition.lcdui.Display;
+import Menu.MenuCommand;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
+import ui.VirtualList;
 import ui.controls.AlertBox;
 
 /**
@@ -52,13 +48,13 @@ public class ArchiveList
 //#     public static String plugin = new String("PLUGIN_ARCHIVE");
 //#endif
     
-    Command cmdPaste=new Command(SR.MS_PASTE_BODY, Command.SCREEN, 1);
-    Command cmdJid=new Command(SR.MS_PASTE_JID /*"Paste Jid"*/, Command.SCREEN, 2);
-    Command cmdSubj=new Command(SR.MS_PASTE_SUBJECT, Command.SCREEN, 3);
-    Command cmdEdit=new Command(SR.MS_EDIT, Command.SCREEN, 4);
-    Command cmdNew=new Command(SR.MS_NEW, Command.SCREEN, 5);
-    Command cmdDelete=new Command(SR.MS_DELETE, Command.SCREEN, 9);
-    Command cmdDeleteAll=new Command(SR.MS_DELETE_ALL, Command.SCREEN, 10);
+    MenuCommand cmdPaste=new MenuCommand(SR.MS_PASTE_BODY, MenuCommand.SCREEN, 1);
+    MenuCommand cmdJid=new MenuCommand(SR.MS_PASTE_JID /*"Paste Jid"*/, MenuCommand.SCREEN, 2);
+    MenuCommand cmdSubj=new MenuCommand(SR.MS_PASTE_SUBJECT, MenuCommand.SCREEN, 3);
+    MenuCommand cmdEdit=new MenuCommand(SR.MS_EDIT, MenuCommand.SCREEN, 4);
+    MenuCommand cmdNew=new MenuCommand(SR.MS_NEW, MenuCommand.SCREEN, 5);
+    MenuCommand cmdDelete=new MenuCommand(SR.MS_DELETE, MenuCommand.SCREEN, 9);
+    MenuCommand cmdDeleteAll=new MenuCommand(SR.MS_DELETE_ALL, MenuCommand.SCREEN, 10);
 
     MessageArchive archive;
    
@@ -67,10 +63,15 @@ public class ArchiveList
     private int where=1;
 
     private TextBox t;
+    public Displayable pView; // для выхода из textbox
     
-    /** Creates a new instance of ArchiveList */
-    public ArchiveList(Display display, Displayable pView, int caretPos, int where, TextBox t) {
- 	super (display);
+    /** Creates a new instance of ArchiveList
+     * @param caretPos
+     * @param where
+     * @param t
+     */
+    public ArchiveList(int caretPos, int where, TextBox t) {
+ 	super ();
         this.where=where;
         this.caretPos=caretPos;
         this.t=t;
@@ -85,33 +86,28 @@ public class ArchiveList
         setMainBarItem(mb);
         
         commandState();
-        addCommands();
-        setCommandListener(this);       
-        
-        this.parentView=pView;
+        addMenuCommands();
+        setMenuListener(this);
+        show(parentView);
     }
 
     public final void commandState() {
-//#ifdef MENU_LISTENER
         menuCommands.removeAllElements();
-//#endif
 
         if (getItemCount()>0) {
             if (t!=null) {
-                addCommand(cmdPaste);
-                addCommand(cmdJid);
-                addCommand(cmdSubj);
+                addMenuCommand(cmdPaste);
+                addMenuCommand(cmdJid);
+                addMenuCommand(cmdSubj);
             }
-            addCommand(cmdEdit);
+            addMenuCommand(cmdEdit);
             
-            addCommand(cmdDelete);
-            addCommand(cmdDeleteAll);
+            addMenuCommand(cmdDelete);
+            addMenuCommand(cmdDeleteAll);
         }
-        addCommand(cmdNew);
+        addMenuCommand(cmdNew);
         
-//#ifdef MENU_LISTENER
-        super.addCommands();
-//#endif
+        super.addMenuCommands();
     }
 
     protected void beginPaint() {
@@ -127,11 +123,11 @@ public class ArchiveList
 	return archive.msg(index);
     }
 
-    public void commandAction(Command c, Displayable d) {
-        super.commandAction(c,d);
+    public void menuAction(MenuCommand c, VirtualList d) {
+        super.menuAction(c,d);
         
 	Msg m=getMessage(cursor);
-        if (c==cmdNew) { new archiveEdit(display, this, -1, where, this); }
+        if (c==cmdNew) { new archiveEdit( this, -1, where, this); }
 	if (m==null) return;
         
 	if (c==cmdDelete) { keyClear(); }
@@ -141,7 +137,7 @@ public class ArchiveList
 	if (c==cmdJid) { pasteData(2); }
         if (c==cmdEdit) {
             try {
-                new archiveEdit(display, this, cursor, where, this);
+                new archiveEdit( this, cursor, where, this);
             } catch (Exception e) {/*no messages*/}
         }
     }
@@ -163,7 +159,7 @@ public class ArchiveList
     }
     
     private void deleteAllMessages() {
-        new AlertBox(SR.MS_ACTION, SR.MS_DELETE_ALL+"?", display, this) {
+        new AlertBox(SR.MS_ACTION, SR.MS_DELETE_ALL+"?") {
             public void yes() {
                 archive.deleteAll();
                 messages=null;
@@ -196,7 +192,7 @@ public class ArchiveList
     
     public void keyClear() { 
         if (getItemCount()>0) {
-            new AlertBox(SR.MS_DELETE, SR.MS_SURE_DELETE, display, this) {
+            new AlertBox(SR.MS_DELETE, SR.MS_SURE_DELETE) {
                 public void yes() {
                     deleteMessage();
                 }
@@ -207,8 +203,8 @@ public class ArchiveList
     }
 
     public void destroyView(){
+        archive.close();
         super.destroyView();
-	archive.close();
     }
 
     private int getFreeSpace() {

@@ -44,7 +44,6 @@ public class AccountRegister
             Runnable
 {
     
-    private Display display;
     private Displayable parentView;
     
     private Account raccount;
@@ -53,15 +52,17 @@ public class AccountRegister
     private Command cmdOK=new Command(SR.MS_OK,Command.OK, 1);
     private Command cmdCancel=new Command(SR.MS_BACK,Command.BACK, 2);
     
-    /** Creates a new instance of AccountRegister */
-    public AccountRegister(Account account, Display display, Displayable pView) {
-        this.display=display;
+    /** Creates a new instance of AccountRegister
+     * @param account
+     * @param pView 
+     */
+    public AccountRegister(Account account, VirtualList pView) {
         this.parentView=pView;
 
         raccount=account;
-        splash=SplashScreen.getInstance(display);
+        splash=SplashScreen.getInstance();
         splash.setProgress(SR.MS_STARTUP,5);
-        display.setCurrent(splash);
+        midlet.BombusMod.getInstance().setDisplayable(splash);
         splash.addCommand(cmdCancel);
         splash.setCommandListener(this);
         
@@ -133,7 +134,7 @@ public class AccountRegister
     }
     
     public void destroyView(){
-        if (display!=null) display.setCurrent(parentView);
+        midlet.BombusMod.getInstance().setDisplayable(parentView);
     }
 
 }

@@ -259,10 +259,10 @@ public class VCard {
     public String getFileType() {
         String MIMEtype=getPhotoMIMEType();
         if (MIMEtype!=null) {
-            if (MIMEtype=="image/jpeg") return ".jpg";
-            if (MIMEtype=="image/png") return ".png";
-            if (MIMEtype=="image/gif") return ".gif";
-            if (MIMEtype=="image/x-ms-bmp") return ".bmp";
+            if (MIMEtype.equals("image/jpeg")) return ".jpg";
+            if (MIMEtype.equals("image/png")) return ".png";
+            if (MIMEtype.equals("image/gif")) return ".gif";
+            if (MIMEtype.equals("image/x-ms-bmp")) return ".bmp";
         }
         return ".jpg";
     }

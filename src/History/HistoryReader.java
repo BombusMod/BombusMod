@@ -31,7 +31,6 @@ import Client.Contact;
 import Client.Msg;
 import Messages.MessageItem;
 import Messages.MessageList;
-import javax.microedition.lcdui.Display;
 import locale.SR;
 import ui.MainBar;
 
@@ -51,20 +50,19 @@ public class HistoryReader extends MessageList {
      * @param display
      * @param c 
      */
-    public HistoryReader(Display display, Contact c) {
-        super(display);
+    public HistoryReader(Contact c) {
+        super();
         MIPrev = new MessageItem(new Msg(Msg.MESSAGE_TYPE_SYSTEM, null, null, "<---"), this, smiles);
         MINext = new MessageItem(new Msg(Msg.MESSAGE_TYPE_SYSTEM, null, null, "--->"), this, smiles);
 
         setMainBarItem(new MainBar(c.getName() + ": " + SR.MS_HISTORY));
-        addCommands();
-        removeCommand(cmdxmlSkin);
+        addMenuCommands();
+        removeMenuCommand(cmdxmlSkin);
 
         hl = new HistoryLoader(c.bareJid, this, smiles);
         messages = hl.stepEnd();
         moveCursorEnd();
-
-        setCommandListener(this);
+        show(parentView);
     }
 
     public void eventOk() {

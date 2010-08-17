@@ -130,8 +130,8 @@ public class Utf8IOStream {
         if (avail==0) {
 //#if !ZLIB
 //#             //trying to fix phillips 9@9
-//#             if (!Config.getInstance().istreamWaiting) avail=1;
-//#             else
+//#           //  if (!Config.getInstance().istreamWaiting) avail=1;
+//#           //  else
 //#endif            
             return 0;
         }

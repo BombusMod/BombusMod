@@ -35,27 +35,15 @@ import ui.*;
 import java.util.Vector;
 import ui.controls.Balloon;
 
-//#ifndef MENU_LISTENER
-//# import javax.microedition.lcdui.CommandListener;
-//# import javax.microedition.lcdui.Command;
-//#else
-import Menu.MenuListener;
-import Menu.Command;
-//#endif
+import Menu.MenuCommand;
 
-import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Graphics;
-import javax.microedition.lcdui.TextBox;
+import ui.controls.form.DefForm;
 
 public class SmilePicker 
-        extends VirtualList 
-        implements 
-//#ifndef MENU_LISTENER
-//#         CommandListener,
-//#else
-        MenuListener,
-//#endif
+        extends DefForm
+        implements       
         VirtualElement
 {
 
@@ -78,16 +66,17 @@ public class SmilePicker
     private int realWidth=0;
     private int xBorder = 0;
     
-    Command cmdCancel=new Command(SR.MS_CANCEL,Command.BACK,99);
-    Command cmdOk=new Command(SR.MS_SELECT,Command.OK,1);
-     
     private Vector smileTable;
 
     private MessageEdit me;
  
-     /** Creates a new instance of SmilePicker */
-    public SmilePicker(Display display, Displayable pView, int caretPos, MessageEdit me) {
-         super(display);
+    /** Creates a new instance of SmilePicker
+     * @param pView
+     * @param caretPos
+     * @param me 
+     */
+    public SmilePicker(Displayable pView, int caretPos, MessageEdit me) {
+         super(SR.MS_SELECT);
          this.caretPos=caretPos;
 
          this.me = me;
@@ -111,19 +100,15 @@ public class SmilePicker
         if (xLastCnt>0) lines++; else xLastCnt=xCnt;
 
         xBorder=(realWidth-(xCnt*imgWidth))/2;
+        enableListWrapping(true);
 
-        commandState();
-        this.parentView=pView;
+        show(pView);
     }
     
     public void commandState() {
-//#ifdef MENU_LISTENER
         menuCommands.removeAllElements();
-//#endif
-        addCommand(cmdOk);
-        addCommand(cmdCancel);
-        
-        setCommandListener(this);
+        addMenuCommand(cmdOk);
+        addMenuCommand(cmdCancel);             
     }
     
     int lineIndex;
@@ -200,15 +185,8 @@ public class SmilePicker
             return;
         if (xCursor >= xLastCnt)
             xCursor=xLastCnt-1;
-    }
-    
-    public void commandAction(Command c, Displayable d){
-        if (c==cmdCancel) {
-            destroyView();
-            return;
-        }
-        if (c==cmdOk) { eventOk(); }
-    }
+    }   
+   
 
     public void moveCursorEnd() {
         super.moveCursorEnd();
@@ -251,10 +229,8 @@ public class SmilePicker
     
     public boolean handleEvent(int keyCode) { return false; }
     
-//#ifdef MENU_LISTENER
-    public void showMenu(){ eventOk(); }
+    public void cmdOk(){ eventOk(); }
      
     public String touchLeftCommand(){ return SR.MS_SELECT; }
     public String touchRightCommand(){ return SR.MS_BACK; }
-//#endif
 }

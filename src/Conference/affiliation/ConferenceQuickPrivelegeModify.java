@@ -31,18 +31,13 @@ import Client.StaticData;
 import Conference.*;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
-import javax.microedition.lcdui.Display;
-import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
 import ui.controls.form.DefForm;
 import ui.controls.form.MultiLine;
 import ui.controls.form.TextInput;
-//#ifndef MENU_LISTENER
-import javax.microedition.lcdui.Command;
-//#else
-//# import Menu.Command;
-//#endif
+import Menu.MenuCommand;
+import ui.VirtualList;
 
 /**
  *
@@ -62,14 +57,10 @@ public class ConferenceQuickPrivelegeModify
     public final static int ADMIN=8;
     public final static int OWNER=9;
 
-    private Display display;
-
     private TextInput reason;
     private MucContact victim;
     
-//#ifndef MENU
-    private Command cmdNoReason=new Command(SR.MS_NO_REASON, Command.SCREEN, 2);
-//#endif
+    private MenuCommand cmdNoReason=new MenuCommand(SR.MS_NO_REASON, MenuCommand.SCREEN, 2);
     private int action;
 
     private String myNick;
@@ -77,10 +68,8 @@ public class ConferenceQuickPrivelegeModify
     /**
      * Creates a new instance of ConferenceQuickPrivelegeModify
      */
-    public ConferenceQuickPrivelegeModify(Display display, Displayable pView, MucContact victim, int action, String myNick) {
-        super(display, pView, null);
-        
-        this.display=display;
+    public ConferenceQuickPrivelegeModify(VirtualList pView, MucContact victim, int action, String myNick) {
+        super(null);
         
         this.victim=victim;
         this.action=action;
@@ -111,15 +100,12 @@ public class ConferenceQuickPrivelegeModify
         itemsList.addElement(new MultiLine(SR.MS_USER, user.toString(), super.superWidth));
 
         
-        reason=new TextInput(display, SR.MS_REASON, "", "reason", TextField.ANY);
+        reason=new TextInput(SR.MS_REASON, "", "reason", TextField.ANY);
         itemsList.addElement(reason);
         
-//#ifndef MENU
-        addCommand(cmdNoReason);
-//#endif
+        addMenuCommand(cmdNoReason);
         user=null;
-        attachDisplay(display);
-        this.parentView=pView;
+        show(StaticData.getInstance().roster);
     }
 
     public void cmdOk() {
@@ -127,23 +113,14 @@ public class ConferenceQuickPrivelegeModify
         destroyView();
     }
     
-    public void destroyView(){
-        display.setCurrent(StaticData.getInstance().roster);
-    }
-//#ifndef MENU
-    public void commandAction(Command c, Displayable d) {
+    public void menuAction(MenuCommand c, VirtualList d) {
         if (c==cmdNoReason) { 
             reason.setValue("");
             cmdOk();
             return;
         }
-        super.commandAction(c, d);
+        super.menuAction(c, d);
     }
-//#else
-//#     public String getLeftCommand() { return SR.MS_OK; }
-//#     public String getCenterCommand() { return SR.MS_NO_REASON; }
-//#     public void centerCommand() { reason.setValue(""); cmdOk(); }
-//#endif
     private void setMucMod(){
         JabberDataBlock iq=new Iq(victim.jid.getBareJid(), Iq.TYPE_SET, "itemmuc");
         JabberDataBlock query=iq.addChildNs("query", "http://jabber.org/protocol/muc#admin"); 

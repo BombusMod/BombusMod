@@ -103,7 +103,7 @@ public class ColorSelector implements VirtualElement
         g.fillRect(4, 4, 12, 12);
         g.setColor(0x800000);
 //#ifdef COLOR_TUNE
-//#         g.drawString(s+" "+ColorsList.NAMES[paramName], 20, 5, Graphics.TOP|Graphics.LEFT);
+        g.drawString(s+" "+ColorsList.NAMES[paramName], 20, 5, Graphics.TOP|Graphics.LEFT);
 //#endif
 
         //draw red
@@ -150,6 +150,7 @@ public class ColorSelector implements VirtualElement
             g.setStrokeStyle(Graphics.DOTTED);
             g.drawRect(pxblue-7, py-ph-5, 15, ph+20);
         }
+        g.setStrokeStyle(Graphics.SOLID);
     }
 /*
     protected void pointerPressed(int x, int y) {
@@ -189,7 +190,7 @@ public class ColorSelector implements VirtualElement
         ColorTheme.setColor(paramName, value);
         list.setColor(paramName, value);
 //#ifdef COLOR_TUNE
-//#         ColorTheme.saveToStorage();
+        ColorTheme.saveToStorage();
 //#endif
     }
 
@@ -216,12 +217,12 @@ public class ColorSelector implements VirtualElement
 
     public void eventOk () {
 //#if COLOR_TUNE
-//#         String val = ColorTheme.ColorToString(red, green, blue);
-//# 
-//#         int finalColor=ColorTheme.getColorInt(val);
-//#         //System.out.println(val);
-//# 
-//#         setValue(finalColor);
+        String cval = ColorTheme.ColorToString(red, green, blue);
+
+        int finalColor=ColorTheme.getColorInt(cval);
+        //System.out.println(val);
+
+        setValue(finalColor);
 //#endif
         exit = true;
     }    
@@ -231,7 +232,7 @@ public class ColorSelector implements VirtualElement
     }
 
     public int getVWidth() {
-        return 100;
+        return StaticData.getInstance().roster.getListWidth();
     }
 
     public int getColorBGnd(){ return ColorTheme.getColor(ColorTheme.LIST_BGND);}

@@ -32,14 +32,10 @@ import java.io.DataOutputStream;
 import java.util.Vector;
 import locale.SR;
 
-//#ifndef MENU_LISTENER
-//# import javax.microedition.lcdui.Command;
-//#else
-import Menu.Command;
-//#endif
+import Menu.MenuCommand;
 import java.util.Enumeration;
-import javax.microedition.lcdui.Display;
-import javax.microedition.lcdui.Displayable;
+import ui.MainBar;
+import ui.VirtualList;
 import ui.controls.form.DefForm;
 import util.StringLoader;
 
@@ -50,28 +46,27 @@ public class UserKeysList extends DefForm
 //#endif
     
 //#ifdef USER_KEYS
-//#     Command cmdApply = new Command(SR.MS_APPLY, Command.OK, 1); 
-//#     Command cmdAdd = new Command(SR.MS_ADD_CUSTOM_KEY, Command.SCREEN, 3);
-//#     Command cmdEdit = new Command(SR.MS_EDIT, Command.SCREEN, 3);
-//#     Command cmdDel = new Command(SR.MS_DELETE, Command.SCREEN, 4);
-//#     Command cmdRestore = new Command(SR.MS_SETDEFAULT, Command.SCREEN, 5);    
+    MenuCommand cmdApply = new MenuCommand(SR.MS_APPLY, MenuCommand.OK, 1);
+    MenuCommand cmdAdd = new MenuCommand(SR.MS_ADD_CUSTOM_KEY, MenuCommand.SCREEN, 3);
+    MenuCommand cmdEdit = new MenuCommand(SR.MS_EDIT, MenuCommand.SCREEN, 3);
+    MenuCommand cmdDel = new MenuCommand(SR.MS_DELETE, MenuCommand.SCREEN, 4);
+    MenuCommand cmdRestore = new MenuCommand(SR.MS_SETDEFAULT, MenuCommand.SCREEN, 5);
+
 //#endif
 
     private Config cf=Config.getInstance();
     
     /** Creates a new instance of AccountPicker */
-    public UserKeysList(Display display) {
-        super(display, Client.StaticData.getInstance().roster, SR.MS_CUSTOM_KEYS);
+    public UserKeysList() {
+        super(null);
+//#ifdef USER_KEYS
+        setMainBarItem(new MainBar(SR.MS_CUSTOM_KEYS));
+//#endif
         
         UserKeyExec uexec = UserKeyExec.getInstance();
         uexec.init_commands_from_rms();
         itemsList = copyVector(uexec.userKeysList);
-//#ifndef MENU_LISTENER
-//#         commandState();
-//#endif        
-        attachDisplay(display);
-        setCommandListener(this);      
-        
+        show(parentView);
     }
 
     private Vector copyVector(Vector v1) {
@@ -108,54 +103,55 @@ public class UserKeysList extends DefForm
 
     public void commandState() {
 //#ifdef USER_KEYS
-//#ifdef MENU_LISTENER
-//#         menuCommands.removeAllElements();
+      menuCommands.removeAllElements();
+        addMenuCommand(cmdAdd);
+        if (itemsList.isEmpty()) {
+            removeMenuCommand(cmdEdit);
+            removeMenuCommand(cmdDel);
+        } else {
+            addMenuCommand(cmdEdit);
+            addMenuCommand(cmdDel);
+        }
+        addMenuCommand(cmdRestore);
+        addMenuCommand(cmdApply);
+        
 //#endif
-//#         addCommand(cmdAdd);
-//#         if (itemsList.isEmpty()) {
-//#             removeCommand(cmdEdit);
-//#             removeCommand(cmdDel);
-//#         } else {
-//#             addCommand(cmdEdit);
-//#             addCommand(cmdDel);
-//#         }
-//#         addCommand(cmdApply);
-//#         addCommand(cmdRestore);        
-//#endif
-    }
+        }
     
     public void cmdOk() {
        UserKeyExec.getInstance().userKeysList = itemsList;
        rmsUpdate();
        destroyView();    
     }
-    public void commandAction(Command c, Displayable d) {
+
+    public void menuAction(MenuCommand c, VirtualList d) {
 //#ifdef USER_KEYS
-//#         if (c==cmdRestore) {
-//#             restoreDefault();
-//#             moveCursorHome();
-//#             commandState();
-//#             redraw();
-//#         }
-//#         if (c==cmdEdit) 
-//#             new UserKeyEdit(display, this, (UserKey) getFocusedObject());
-//#         if (c==cmdAdd)
-//#             new UserKeyEdit(display, this, null);
-//#         if (c==cmdDel) {
-//#             itemsList.removeElement(getFocusedObject());
-//#             moveCursorHome();
-//#             commandState();
-//#             redraw();
-//#         }
-//#         if (c==cmdApply) {
-//#             cmdOk();
-//#         }
+        if (c==cmdRestore) {
+            restoreDefault();
+            moveCursorHome();
+            commandState();
+            redraw();
+        }
+        if (c==cmdEdit) 
+            new UserKeyEdit( this, (UserKey) getFocusedObject());
+        if (c==cmdAdd)
+            new UserKeyEdit( this, null);
+        if (c==cmdDel) {
+            itemsList.removeElement(getFocusedObject());
+            moveCursorHome();
+            commandState();
+            redraw();
+        }
+        if (c==cmdApply) {
+            cmdOk();
+        }
 //#endif
+        super.menuAction(c, d);
     }
     
     public void eventOk() {
 //#ifdef USER_KEYS
-//#         new UserKeyEdit(display, this, (UserKey) getFocusedObject());
+        new UserKeyEdit( this, (UserKey) getFocusedObject());
 //#endif
     }
     
@@ -177,9 +173,7 @@ public class UserKeysList extends DefForm
     void rmsUpdate() {
         rmsUpdate(itemsList);
     }
-//#ifdef MENU_LISTENER
-    public String touchLeftCommand() {return SR.MS_MENU;}
-    public void touchLeftPressed() { showMenu(); }
-//#endif    
+     public String touchLeftCommand() {return SR.MS_MENU;}
+     public void touchLeftPressed() { showMenu(); }
 
 }

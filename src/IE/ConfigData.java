@@ -161,7 +161,7 @@ public class ConfigData {
 //#endif
         array.addElement(new keyValue(IQNotify, (cf.IQNotify)?"1":"0")); 
 //#ifdef CLIENTS_ICONS
-        array.addElement(new keyValue(showClientIcon, (cf.showClientIcon)?"1":"0")); 
+//#         array.addElement(new keyValue(showClientIcon, (cf.showClientIcon)?"1":"0")); 
 //#endif
         
         array.addElement(new keyValue(reconnectCount, Integer.toString(cf.reconnectCount)));
@@ -248,12 +248,7 @@ public class ConfigData {
 //#endif
         cf.cp1251=cf.getBooleanProperty(getValue(cp1251),true);
         
-        cf.panelsState=cf.getIntProperty(getValue(panelsState),
-//#ifdef MENU_LISTENER
-            2);
-//#else
-//#             1);
-//#endif    
+        cf.panelsState=cf.getIntProperty(getValue(panelsState), 2);
 
         cf.showTimeTraffic=cf.getBooleanProperty(getValue(showTimeTraffic),false);
 
@@ -304,7 +299,7 @@ public class ConfigData {
 //#endif
         cf.IQNotify=cf.getBooleanProperty(getValue(IQNotify),false);
 //#ifdef CLIENTS_ICONS
-        cf.showClientIcon=cf.getBooleanProperty(getValue(showClientIcon),true);
+//#         cf.showClientIcon=cf.getBooleanProperty(getValue(showClientIcon),true);
 //#endif
         
         cf.reconnectCount=cf.getIntProperty(getValue(reconnectCount), 10);

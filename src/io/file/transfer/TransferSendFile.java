@@ -30,10 +30,9 @@ package io.file.transfer;
 import Client.StaticData;
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
-import javax.microedition.lcdui.Display;
-import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
+import ui.VirtualList;
 import ui.controls.form.DefForm;
 import ui.controls.form.LinkString;
 import ui.controls.form.SimpleString;
@@ -52,31 +51,33 @@ public class TransferSendFile
     private TextInput fileName;
     private TextInput description;
 
-    /** Creates a new instance of TransferAcceptFile */
-    public TransferSendFile(final Display display, Displayable pView, String recipientJid) {
-        super(display, pView, SR.MS_SEND_FILE);
-        this.display=display;
+    /** Creates a new instance of TransferAcceptFile
+     * @param pView
+     * @param recipientJid
+     */
+    public TransferSendFile( VirtualList pView, String recipientJid) {
+        super(SR.MS_SEND_FILE);
         this.to=recipientJid;
 
         itemsList.addElement(new SimpleString(SR.MS_SEND_FILE_TO, true));
         itemsList.addElement(new SimpleString(recipientJid, false));
         
-        fileName = new TextInput(display, SR.MS_FILE, null, "sendfile", TextField.ANY);
+        fileName = new TextInput(SR.MS_FILE, null, "sendfile", TextField.ANY);
         itemsList.addElement(fileName);
         
         selectFile=new LinkString(SR.MS_SELECT_FILE) { public void doAction() { initBrowser(); } };
         itemsList.addElement(selectFile);
         
-        description = new TextInput(display, SR.MS_DESCRIPTION, null, null, TextField.ANY);
+        description = new TextInput(SR.MS_DESCRIPTION, null, null, TextField.ANY);
         itemsList.addElement(description);
         
         moveCursorTo(2);
-        attachDisplay(display);
+        show(parentView);
         this.parentView=pView;
     }
     
     public void initBrowser() {
-        new Browser(null, display, this, this, false);
+        new Browser(null, this, this, false);
     }
 
     public void BrowserFilePathNotify(String pathSelected) { fileName.setValue(pathSelected); redraw(); }
@@ -88,7 +89,7 @@ public class TransferSendFile
             TransferTask task=new TransferTask(to, String.valueOf(System.currentTimeMillis()), fileName.getValue(), description.getValue(), false, null);
             TransferDispatcher.getInstance().sendFile(task);
             //switch to file transfer manager
-            new io.file.transfer.TransferManager(display, StaticData.getInstance().roster);
+            new io.file.transfer.TransferManager(StaticData.getInstance().roster);
             return;
         } catch (Exception e) {}
     }

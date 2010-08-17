@@ -35,6 +35,9 @@ import java.util.Vector;
  * @author ad
  */
 public class DeTranslit {
+//#ifdef PLUGINS
+//#     public static String plugin = "PLUGIN_DT";
+//#endif
     static Vector translit[];
     static boolean filled=false;
     
@@ -48,7 +51,10 @@ public class DeTranslit {
 	return instance;
     }
     
-    /** Creates a new instance of DeTranslit */
+    /** Creates a new instance of DeTranslit
+     * @param src
+     * @return
+     */
     public static String deTranslit(String src) {
         if (translit[0].size()<1) return src;
         if (src==null) return null;
@@ -78,11 +84,13 @@ public class DeTranslit {
 //#endif
 
     private static void fill() {
+        translit = null;
         translit=new Vector[2];
         translit[0]=new Vector();
         translit[1]=new Vector();
-        
-        Vector defs[]=new StringLoader().stringLoader("/translit.txt", 2);
+
+        Vector defs[] = null;
+        defs = new StringLoader().stringLoader("/translit.txt", 2);
         for (int i=0; i<defs[0].size(); i++) {
             translit[0].addElement((String) defs[0].elementAt(i));
             translit[1].addElement((String) defs[1].elementAt(i));

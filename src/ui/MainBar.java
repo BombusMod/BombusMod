@@ -28,7 +28,9 @@ import Client.Config;
 import Fonts.FontCache;
 import images.RosterIcons;
 import javax.microedition.lcdui.Graphics;
-import javax.microedition.lcdui.Image;
+//#ifdef BACK_IMAGE
+//# import javax.microedition.lcdui.Image;
+//#endif
 
 public class MainBar extends ComplexString{
 

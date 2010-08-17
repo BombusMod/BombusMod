@@ -28,18 +28,13 @@
 package io.file.transfer;
 
 import Client.StaticData;
-//#ifndef MENU_LISTENER
-//# import javax.microedition.lcdui.Command;
-//#else
-import Menu.Command;
-//#endif
-import javax.microedition.lcdui.Display;
-import javax.microedition.lcdui.Displayable;
+import Menu.MenuCommand;
 import locale.SR;
 import ui.Time;
 //#ifdef POPUPS
 import ui.controls.PopUp;
 //#endif
+import ui.VirtualList;
 import ui.controls.form.DefForm;
 
 /**
@@ -54,44 +49,44 @@ public class TransferManager
 //#endif    
     
     
-    Command cmdDel=new Command(SR.MS_DECLINE, Command.SCREEN, 10);
-    Command cmdClrF=new Command(SR.MS_HIDE_FINISHED, Command.SCREEN, 11);
-    Command cmdInfo=new Command(SR.MS_INFO, Command.SCREEN, 12);
-    Command cmdSettings=new Command("Transfer settings", Command.SCREEN, 12);
+    MenuCommand cmdDel=new MenuCommand(SR.MS_DECLINE, MenuCommand.SCREEN, 10);
+    MenuCommand cmdClrF=new MenuCommand(SR.MS_HIDE_FINISHED, MenuCommand.SCREEN, 11);
+    MenuCommand cmdInfo=new MenuCommand(SR.MS_INFO, MenuCommand.SCREEN, 12);
+    MenuCommand cmdSettings=new MenuCommand("Transfer settings", MenuCommand.SCREEN, 12);
     
-    /** Creates a new instance of TransferManager */
-    public TransferManager(Display display, Displayable pView) {
-        super(display, pView, SR.MS_TRANSFERS);        
+    /** Creates a new instance of TransferManager
+     * @param pView
+     */
+    public TransferManager( VirtualList pView) {
+        super(SR.MS_TRANSFERS);        
         itemsList=TransferDispatcher.getInstance().getTaskList();
         // TODO: add classic menu
-        setCommandListener(this);
-        attachDisplay(display);
+        setMenuListener(this);
+        show(parentView);
         parentView = pView;
     }    
     
-//#ifdef MENU_LISTENER
     public void commandState(){
         super.commandState();
-        addCommand(cmdSettings);
+        addMenuCommand(cmdSettings);
         if (TransferDispatcher.getInstance().getTasksCount()>0) {
-            removeCommand(cmdOk);
+            removeMenuCommand(cmdOk);
         }
-        addCommand(cmdDel);
-        addCommand(cmdClrF);
-        addCommand(cmdInfo);          
+        addMenuCommand(cmdDel);
+        addMenuCommand(cmdClrF);
+        addMenuCommand(cmdInfo);
     }   
     public String touchLeftCommand(){ return SR.MS_MENU; }
     public void touchLeftPressed(){ 
             showMenu();         
     }
-//#endif
 
     
 
     public void eventOk() {
         TransferTask t=(TransferTask) getFocusedObject();
         if (t!=null)
-            if (t.isAcceptWaiting()) new TransferAcceptFile(display, this, t);
+            if (t.isAcceptWaiting()) new TransferAcceptFile(this, t);
     }
     
     protected void keyClear() {
@@ -104,8 +99,8 @@ public class TransferManager
         }
     }
 
-    public void commandAction(Command c, Displayable d) {
-        super.commandAction(c, d);
+    public void menuAction(MenuCommand c, VirtualList d) {
+        super.menuAction(c, d);
         if (c==cmdClrF) {
             synchronized (TransferDispatcher.getInstance().getTaskList()) {
                 int i=0;
@@ -123,14 +118,13 @@ public class TransferManager
         }
         if (c==cmdDel) keyClear();        
         if (c==cmdInfo) cmdInfo();
-        if (c==cmdSettings) new TransferConfigForm(display, this);       
+        if (c==cmdSettings) new TransferConfigForm(this);       
     }
     public void cmdOk() {
         TransferDispatcher.getInstance().eventNotify();
         destroyView();
     }
     
-//#ifdef MENU_LISTENER
     protected void keyPressed(int keyCode) { // overriding this method to avoid autorepeat
         //kHold=0;
         if (keyCode==KEY_POUND) {
@@ -139,7 +133,6 @@ public class TransferManager
         }
         super.keyPressed(keyCode);
     }    
-//#endif
 
     private void cmdInfo() {
         if (getItemCount()>0) {

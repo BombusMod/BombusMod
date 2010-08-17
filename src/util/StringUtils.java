@@ -8,9 +8,10 @@
  */
 
 package util;
-
+//#ifndef WMUC
 import Conference.ConferenceGroup;
 import Conference.MucContact;
+//#endif
 import com.alsutton.jabber.datablocks.Presence;
 import java.util.Vector;
 import javax.microedition.lcdui.Font;
@@ -185,7 +186,7 @@ public class StringUtils {
         
         return out.toString();
     }
-
+//#ifndef WMUC
     public static String processError(Presence presence, int presenceType, ConferenceGroup group, MucContact muc) {
         XmppError xe=XmppError.findInStanza(presence);
         int errCode=xe.getCondition();
@@ -212,4 +213,5 @@ public class StringUtils {
             default: return xe.getName();
         }
     }
+//#endif    
 }

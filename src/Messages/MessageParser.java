@@ -109,7 +109,7 @@ public final class MessageParser {
 	    p1=p.findChild(c);
 	    if (p1==null) {
 		p1=new Leaf();
-		p.addChild((char)c,p1);
+		p.addChild(c, p1);
 	    }
 	    p=p1;
 	}
@@ -401,7 +401,7 @@ public final class MessageParser {
             if (l.isEmpty())
                 lines.removeElementAt(lines.size()-1);
 
-            //task.notifyRepaint(lines, task.msg, true);
+            task.notifyRepaint(lines, task.msg, true);
             state++;
             s=new StringBuffer();
         }

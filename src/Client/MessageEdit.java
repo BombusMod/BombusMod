@@ -30,8 +30,8 @@ import Conference.AppendNick;
 //#endif
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
-import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
+import javax.microedition.lcdui.TextField;
 import javax.microedition.lcdui.Ticker;
 import ui.controls.ExTextBox;
 
@@ -39,9 +39,7 @@ import ui.controls.ExTextBox;
 //# import util.DeTranslit;
 //#endif
 import locale.SR;
-//#ifdef RUNNING_MESSAGE
-//# import ui.VirtualList;
-//#endif
+import ui.VirtualCanvas;
 /**
  *
  * @author Eugene Stahov
@@ -84,29 +82,31 @@ public final class MessageEdit
 //#     Ticker ticker = new Ticker("");
 //#endif
     /** Creates a new instance of MessageEdit */
-    public MessageEdit(Display display, Displayable pView, Contact to, String body) {
+    public MessageEdit( Displayable pView, Contact to, String body) {
 
-        super(display, pView, body, to.toString());
+        super(body, to.toString());
 
         this.to = to;
-        this.display = display;
         
         if (to != null) {
 //#ifndef WMUC            
-            if (to.origin >= Contact.ORIGIN_GROUPCHAT) {
+            if (to.origin >= Contact.ORIGIN_GROUPCHAT) 
                 textbox.addCommand(cmdInsNick);
-            }
-            if (to.origin == Contact.ORIGIN_GROUPCHAT) {
+            
+            if (to.origin == Contact.ORIGIN_GROUPCHAT) 
                 textbox.addCommand(cmdSubj);
 //#endif        
-            }
+            
             if (to.lastSendedMessage != null) {
                 textbox.addCommand(cmdLastMessage);
             }
         }
 
 //#ifdef DETRANSLIT
-//#         DeTranslit.getInstance();
+//#ifdef PLUGINS
+//#        if (sd.DeTranslit)
+//#endif
+//#             DeTranslit.getInstance();
 //#endif
 
     }
@@ -135,7 +135,9 @@ public final class MessageEdit
 //#ifdef SMILES
         cmdSmile = new Command(SR.MS_ADD_SMILE, Command.SCREEN, 2);
 //#endif
+//#ifndef WMUC        
         cmdInsNick = new Command(SR.MS_NICKNAMES, Command.SCREEN, 3);
+//#endif        
         cmdInsMe = new Command(SR.MS_SLASHME, Command.SCREEN, 4);  // /me
 //#ifdef DETRANSLIT
 //#         cmdSendInTranslit = new Command(SR.MS_TRANSLIT, Command.SCREEN, 5);
@@ -190,13 +192,13 @@ public final class MessageEdit
             }
 //#ifdef SMILES
             if (c == cmdSmile) {
-                new SmilePicker(display, textbox, caretPos, this);
+                new SmilePicker(textbox, caretPos, this);
                 return;
             }
 //#endif
 //#ifndef WMUC
             if (c == cmdInsNick) {
-                new AppendNick(display, textbox, to, caretPos, this);
+                new AppendNick(textbox, to, caretPos, this);
                 return;
             }
 //#endif
@@ -232,11 +234,13 @@ public final class MessageEdit
                 body = null; //"/me "+SR.MS_HAS_SET_TOPIC_TO+": "+subj;
             }
             // message/composing sending
-            if (c == cmdSend && !(parentView instanceof ContactMessageList)) {
-                parentView = new ContactMessageList(to, display);
+            if (c == cmdSend && !(parentView instanceof ContactMessageList))
+                parentView = new ContactMessageList(to);
+         midlet.BombusMod.getInstance().setDisplayable(parentView);
+         if (parentView instanceof ContactMessageList) {             
+                ((ContactMessageList)parentView).forceScrolling();
+                VirtualCanvas.nativeCanvas.repaint();
             }
-            display.setCurrent(parentView);
-
 //#ifdef RUNNING_MESSAGE
 //#             runState = 3;
 //#else

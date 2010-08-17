@@ -34,10 +34,9 @@ import com.alsutton.jabber.datablocks.Message;
 import com.alsutton.jabber.datablocks.Presence;
 import java.util.Enumeration;
 import java.util.Vector;
-import javax.microedition.lcdui.Display;
-import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
+import ui.VirtualList;
 import ui.controls.form.SimpleString;
 import ui.controls.form.DefForm;
 import ui.controls.form.DropChoiceBox;
@@ -46,22 +45,22 @@ import ui.controls.form.TextInput;
 public class InviteForm
         extends DefForm {
     
-    private Display display;
-
     Vector conferences=new Vector();
     
     TextInput reason;
     DropChoiceBox conferenceList;
     Contact contact;
     
-    /** Creates a new instance of InviteForm */
-    public InviteForm(Display display, Displayable pView, Contact contact) {
-        super(display, pView, SR.MS_INVITE);
-        this.display=display;
+    /** Creates a new instance of InviteForm
+     * @param pView 
+     * @param contact
+     */
+    public InviteForm(VirtualList pView, Contact contact) {
+        super(SR.MS_INVITE);
         this.contact=contact;
         
         itemsList.addElement(new SimpleString(contact.getName(), true));
-        conferenceList=new DropChoiceBox(display, SR.MS_CONFERENCE);
+        conferenceList=new DropChoiceBox(SR.MS_CONFERENCE);
         for (Enumeration c=StaticData.getInstance().roster.getHContacts().elements(); c.hasMoreElements(); ) {
             try {
                 MucContact mc=(MucContact)c.nextElement();
@@ -73,12 +72,11 @@ public class InviteForm
         }
         itemsList.addElement(conferenceList);
         
-        reason=new TextInput(display, SR.MS_REASON, null, "", TextField.ANY); //200
+        reason=new TextInput(SR.MS_REASON, null, "", TextField.ANY); //200
         itemsList.addElement(reason);
         
         moveCursorTo(getNextSelectableRef(-1));
-        attachDisplay(display);
-        this.parentView=pView;
+        show(parentView);
     }
 
     public void cmdOk() {
@@ -94,6 +92,6 @@ public class InviteForm
 
         invite.addChild("reason",rs);
         StaticData.getInstance().roster.theStream.send(inviteMsg);
-        display.setCurrent(StaticData.getInstance().roster);
+        midlet.BombusMod.getInstance().setDisplayable(StaticData.getInstance().roster);
     }
 }

@@ -31,7 +31,7 @@ import Client.Config;
 import javax.microedition.lcdui.Graphics;
 import Colors.ColorTheme;
 //#ifdef GRADIENT
-//# //import ui.Gradient;
+//import ui.Gradient;
 //#endif
 import javax.microedition.lcdui.Image;
 import ui.ImageList;
@@ -57,8 +57,8 @@ public class ScrollBar {
     
     private int drawHeight;
 //#ifdef GRADIENT
-//#     //private Gradient gr;
-//#     //private int prevDrawHeight;
+    //private Gradient gr;
+    //private int prevDrawHeight;
 //#endif
     
     private int point_y;    // точка, за которую "держится" указатель
@@ -122,8 +122,7 @@ public class ScrollBar {
         this.hasPointerEvents = hasPointerEvents;
 	scrollWidth=(hasPointerEvents)? WIDTH_SCROLL_2: WIDTH_SCROLL_1;
 //#ifdef BACK_IMAGE
-//#         if (imgH != null)
-//#             scrollWidth = Math.max(scrollWidth, imgH.getWidth());
+//#         scrollWidth = Math.max(scrollWidth, imgH.getWidth());
 //#endif
     }
 
@@ -140,14 +139,14 @@ public class ScrollBar {
             int pos=position-windowSize;
             if (pos<0) pos=0;
             v.win_top=pos;
-            v.repaint(); 
+            v.redraw(); 
             return true; 
         } 
 	if (y>scrollerPos+scrollerSize) { 
             int pos=position+windowSize;
             int listEnd=size-windowSize;
             v.win_top=(pos<listEnd)?pos:listEnd;
-            v.repaint(); 
+            v.redraw(); 
             return true; 
         } // page down
 	point_y=y-scrollerPos;
@@ -161,7 +160,7 @@ public class ScrollBar {
 	if ((position-new_pos)==0) return true;
 	if (new_pos<0) new_pos=0;
 	if (new_pos+windowSize>size) new_pos=size-windowSize;
-	v.win_top=new_pos; v.repaint();
+	v.win_top=new_pos; v.redraw();
 	return true;
     }
     public void pointerReleased(int x, int y, VirtualList v) { point_y=-1; }

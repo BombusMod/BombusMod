@@ -39,16 +39,11 @@ import locale.SR;
 import ui.MainBar;
 import ui.VirtualElement;
 import ui.controls.form.DefForm;
-//#ifndef MENU_LISTENER
-//# import javax.microedition.lcdui.Command;
-//#else
-import Menu.Command;
-//#endif
+import Menu.MenuCommand;
 //#ifdef CLIPBOARD
-//# import util.ClipBoard;
+import util.ClipBoard;
 //#endif
-import javax.microedition.lcdui.Display;
-import javax.microedition.lcdui.Displayable;
+import ui.VirtualList;
 
 /**
  *
@@ -66,20 +61,24 @@ public class Affiliations
 
     private JabberStream stream=StaticData.getInstance().roster.theStream;
     
-    private Command cmdModify = new Command (SR.MS_MODIFY, Command.SCREEN, 1);
-    private Command cmdNew    = new Command (SR.MS_NEW_JID, Command.SCREEN, 2);
+    private MenuCommand cmdModify = new MenuCommand (SR.MS_MODIFY, MenuCommand.SCREEN, 1);
+    private MenuCommand cmdNew    = new MenuCommand (SR.MS_NEW_JID, MenuCommand.SCREEN, 2);
 //#ifdef CLIPBOARD
-//#     private Command cmdCopy   = new Command(SR.MS_COPY, Command.SCREEN, 3);
-//#     private ClipBoard clipboard; 
+    private MenuCommand cmdCopy   = new MenuCommand(SR.MS_COPY, MenuCommand.SCREEN, 3);
+    private ClipBoard clipboard; 
 //#endif
     
     protected VirtualElement getItemRef(int index) { return (VirtualElement) items.elementAt(index); }
     protected int getItemCount() { return items.size(); }
     
     
-    /** Creates a new instance of AffiliationList */
-    public Affiliations(Display display, Displayable pView, String room, short affiliationIndex) {
-        super (display, pView, AffiliationItem.getAffiliationName(affiliationIndex));
+    /** Creates a new instance of AffiliationList
+     * @param pView
+     * @param room
+     * @param affiliationIndex
+     */
+    public Affiliations(VirtualList pView, String room, short affiliationIndex) {
+        super (AffiliationItem.getAffiliationName(affiliationIndex));
         this.room=room;
         
 	//fix for old muc
@@ -96,22 +95,9 @@ public class Affiliations
         
         items=null;
         items=new Vector();
-//#ifndef MENU_LISTENER
-//#         addCommand(cmdCancel);
-//#         addCommand(cmdModify);
-//#         addCommand(cmdNew);
-//#ifdef CLIPBOARD
-//#         if (Config.getInstance().useClipBoard) {
-//#             clipboard=ClipBoard.getInstance();
-//#             addCommand(cmdCopy);
-//#         }
-//#endif
-//#         removeCommand(cmdOk);
-//#endif
         
-        setCommandListener(this);
-        attachDisplay(display);
-        this.parentView=pView;
+        setMenuListener(this);
+        show(parentView);        
         getList();
     }
     
@@ -121,17 +107,17 @@ public class Affiliations
         listRq(false, item, id);
     }
     
-    public void commandAction(Command c, Displayable d){
-        if (c==cmdNew) new AffiliationModify(display, this, room, null, "none", "");
+    public void menuAction(MenuCommand c, VirtualList d){
+        if (c==cmdNew) new AffiliationModify(this, room, null, "none", "");
         if (c==cmdModify) eventOk();
 //#ifdef CLIPBOARD
-//#         if (c==cmdCopy) {
-//#             try {
-//#                 AffiliationItem item=(AffiliationItem)getFocusedObject();
-//#                 if (item.jid!=null)
-//#                     clipboard.setClipBoard(item.jid);
-//#             } catch (Exception e) {/*no messages*/}
-//#         }
+        if (c==cmdCopy) {
+            try {
+                AffiliationItem item=(AffiliationItem)getFocusedObject();
+                if (item.jid!=null)
+                    clipboard.setClipBoard(item.jid);
+            } catch (Exception e) {/*no messages*/}
+        }
 //#endif     
         
     }
@@ -144,7 +130,7 @@ public class Affiliations
     public void eventOk(){
         try {
             AffiliationItem item=(AffiliationItem)getFocusedObject();
-            new AffiliationModify(display, this, room, item.jid, 
+            new AffiliationModify(this, room, item.jid, 
 					AffiliationItem.getAffiliationName( (short)item.affiliation), 
                                         (item.reason==null)? "":item.reason
                     );
@@ -173,7 +159,7 @@ public class Affiliations
                 items=tempItems;
                 tempItems=null;
                 
-                if (display!=null) redraw();
+                redraw();
                 
                 processIcon(false);
                 return JabberBlockListener.NO_MORE_BLOCKS;
@@ -192,16 +178,15 @@ public class Affiliations
         stream.addBlockListener(this);
         stream.send(request);
     }
-//#ifdef MENU_LISTENER
     public void commandState(){
         menuCommands.removeAllElements();
-        addCommand(cmdModify);
-        addCommand(cmdNew);
+        addMenuCommand(cmdModify);
+        addMenuCommand(cmdNew);
 //#ifdef CLIPBOARD
-//#         if (Config.getInstance().useClipBoard) {
-//#             clipboard=ClipBoard.getInstance();
-//#             addCommand(cmdCopy);
-//#         }
+        if (Config.getInstance().useClipBoard) {
+            clipboard=ClipBoard.getInstance();
+            addMenuCommand(cmdCopy);
+        }
 //#endif
     }
     public void touchLeftPressed() {
@@ -210,7 +195,6 @@ public class Affiliations
     public String touchLeftCommand() {
         return SR.MS_MENU;
     }
-//#endif
 
 
 }

@@ -27,8 +27,6 @@
 
 package Client;
 import java.util.Vector;
-import javax.microedition.lcdui.Canvas;
-import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
 import ui.VirtualList;
@@ -78,11 +76,11 @@ public class ConfigForm
 //#     private CheckBox autoDetranslit;
 //#endif
 //#ifdef CLIPBOARD
-//#     private CheckBox useClipBoard;
+    private CheckBox useClipBoard;
 //#endif
     
 //#if LOGROTATE
-//#     private NumberInput messageCountLimit;
+    private NumberInput messageCountLimit;
 //#endif
     private NumberInput messageLimit;
     private NumberInput widthScroll2;
@@ -96,7 +94,7 @@ public class ConfigForm
     private CheckBox fileTransfer;
 //#endif
 //#ifdef HISTORY
-//#     private CheckBox saveHistory;
+    private CheckBox saveHistory;
 //#endif
 //#ifdef ADHOC
 //#     private CheckBox adhoc;
@@ -115,9 +113,9 @@ public class ConfigForm
     private DropChoiceBox textWrap;
     private DropChoiceBox langFiles;
 //#ifdef AUTOSTATUS
-//#     private DropChoiceBox autoAwayType;
-//#     private NumberInput fieldAwayDelay; 
-//#     private CheckBox awayStatus;
+    private DropChoiceBox autoAwayType;
+    private NumberInput fieldAwayDelay; 
+    private CheckBox awayStatus;
 //#endif
     
 //#ifdef RUNNING_MESSAGE
@@ -143,11 +141,12 @@ public class ConfigForm
     
     Config cf;
     
-    /** Creates a new instance of ConfigForm */
-    public ConfigForm(Display display, Displayable pView) {
-        super(display, pView, SR.MS_OPTIONS);
-        this.display=display;
-
+    /** Creates a new instance of ConfigForm
+     * @param pView
+     */
+    public ConfigForm(Displayable pView) {
+        super(SR.MS_OPTIONS);
+        
         cf=Config.getInstance();
 
         itemsList.addElement(new SimpleString(SR.MS_ROSTER_ELEMENTS, true));
@@ -169,7 +168,7 @@ public class ConfigForm
 //#endif
         
         itemsList.addElement(new SpacerItem(10));
-        subscr=new DropChoiceBox(display, SR.MS_AUTH_NEW);
+        subscr=new DropChoiceBox(SR.MS_AUTH_NEW);
         subscr.append(SR.MS_SUBSCR_AUTO);
         subscr.append(SR.MS_SUBSCR_ASK);
         subscr.append(SR.MS_SUBSCR_DROP);
@@ -178,7 +177,7 @@ public class ConfigForm
         itemsList.addElement(subscr);
 
         itemsList.addElement(new SpacerItem(10));
-        nil=new DropChoiceBox(display, SR.MS_NOT_IN_LIST);
+        nil=new DropChoiceBox(SR.MS_NOT_IN_LIST);
         nil.append(SR.MS_NIL_DROP_MP);
         nil.append(SR.MS_NIL_DROP_P);
         nil.append(SR.MS_NIL_ALLOW_ALL);
@@ -193,7 +192,9 @@ public class ConfigForm
 //#endif
         eventComposing = new CheckBox(SR.MS_COMPOSING_EVENTS, cf.eventComposing); itemsList.addElement(eventComposing);
         capsState = new CheckBox(SR.MS_CAPS_STATE, cf.capsState); itemsList.addElement(capsState);
+//#ifndef WMUC        
         storeConfPresence = new CheckBox(SR.MS_STORE_PRESENCE, cf.storeConfPresence); itemsList.addElement(storeConfPresence);
+//#endif        
         autoScroll = new CheckBox(SR.MS_AUTOSCROLL, cf.autoScroll); itemsList.addElement(autoScroll);
         useTabs = new CheckBox(SR.MS_EMULATE_TABS, cf.useTabs); itemsList.addElement(useTabs);
 //#ifdef RUNNING_MESSAGE
@@ -205,25 +206,28 @@ public class ConfigForm
         showBalloons = new CheckBox(SR.MS_SHOW_BALLONS, cf.showBalloons); itemsList.addElement(showBalloons);     
         eventDelivery = new CheckBox(SR.MS_DELIVERY, cf.eventDelivery); itemsList.addElement(eventDelivery);
 //#ifdef CLIPBOARD
-//#         useClipBoard = new CheckBox(SR.MS_CLIPBOARD, cf.useClipBoard); itemsList.addElement(useClipBoard);
+        useClipBoard = new CheckBox(SR.MS_CLIPBOARD, cf.useClipBoard); itemsList.addElement(useClipBoard);
 //#endif
 //#ifdef DETRANSLIT
-//#        autoDetranslit = new CheckBox(SR.MS_AUTODETRANSLIT, cf.autoDeTranslit); itemsList.addElement(autoDetranslit);
+//#ifdef PLUGINS
+//#        if (sd.DeTranslit)
+//#endif
+//#         autoDetranslit = new CheckBox(SR.MS_AUTODETRANSLIT, cf.autoDeTranslit); itemsList.addElement(autoDetranslit);
 //#endif
        showNickNames = new CheckBox(SR.MS_SHOW_NACKNAMES, cf.showNickNames); itemsList.addElement(showNickNames);
        swapSendAndSuspend = new CheckBox("swap \""+SR.MS_SEND+"\" and \""+SR.MS_SUSPEND+"\" commands", cf.swapSendAndSuspend); itemsList.addElement(swapSendAndSuspend);
             
 //#if LOGROTATE
-//#         messageCountLimit=new NumberInput(display, SR.MS_MESSAGE_COUNT_LIMIT, Integer.toString(cf.msglistLimit), 3, 1000);
-//#         itemsList.addElement(messageCountLimit);
+        messageCountLimit=new NumberInput( SR.MS_MESSAGE_COUNT_LIMIT, Integer.toString(cf.msglistLimit), 3, 1000);
+        itemsList.addElement(messageCountLimit);
 //#endif
 
         itemsList.addElement(new SpacerItem(10));
-        messageLimit=new NumberInput(display, SR.MS_MESSAGE_COLLAPSE_LIMIT, Integer.toString(cf.messageLimit), 200, 1000);
+        messageLimit=new NumberInput( SR.MS_MESSAGE_COLLAPSE_LIMIT, Integer.toString(cf.messageLimit), 200, 1000);
         itemsList.addElement(messageLimit);
 
         if (StaticData.getInstance().roster.hasPointerEvents()) {
-            widthScroll2=new NumberInput(display, SR.MS_MESSAGE_WIDTH_SCROLL_2, Integer.toString(cf.widthScroll2), 1, 50);
+            widthScroll2=new NumberInput( SR.MS_MESSAGE_WIDTH_SCROLL_2, Integer.toString(cf.widthScroll2), 1, 50);
             itemsList.addElement(widthScroll2);
             advTouch = new CheckBox("Advanced touchscreen support", cf.advTouch);
             itemsList.addElement(advTouch);
@@ -232,12 +236,14 @@ public class ConfigForm
         itemsList.addElement(new SpacerItem(10));
         itemsList.addElement(new SimpleString(SR.MS_STARTUP_ACTIONS, true));
         autoLogin = new CheckBox(SR.MS_AUTOLOGIN, cf.autoLogin); itemsList.addElement(autoLogin);
+//#ifndef WMUC        
         autoJoinConferences = new CheckBox(SR.MS_AUTO_CONFERENCES, cf.autoJoinConferences); itemsList.addElement(autoJoinConferences);
+//#endif        
         
         itemsList.addElement(new SpacerItem(10));
         itemsList.addElement(new SimpleString(SR.MS_RECONNECT, true));
-	reconnectCount=new NumberInput(display, SR.MS_RECONNECT_COUNT_RETRY, Integer.toString(cf.reconnectCount), 0, 100); itemsList.addElement(reconnectCount);
-        reconnectTime=new NumberInput(display, SR.MS_RECONNECT_WAIT, Integer.toString(cf.reconnectTime), 1, 60 ); itemsList.addElement(reconnectTime);
+	reconnectCount=new NumberInput( SR.MS_RECONNECT_COUNT_RETRY, Integer.toString(cf.reconnectCount), 0, 100); itemsList.addElement(reconnectCount);
+        reconnectTime=new NumberInput( SR.MS_RECONNECT_WAIT, Integer.toString(cf.reconnectTime), 1, 60 ); itemsList.addElement(reconnectTime);
         
         itemsList.addElement(new SpacerItem(10));
         itemsList.addElement(new SimpleString(SR.MS_APPLICATION, true));
@@ -245,10 +251,9 @@ public class ConfigForm
         memMonitor = new CheckBox(SR.MS_HEAP_MONITOR, cf.memMonitor); itemsList.addElement(memMonitor);
         enableVersionOs = new CheckBox(SR.MS_SHOW_HARDWARE, cf.enableVersionOs); itemsList.addElement(enableVersionOs);
         queryExit = new CheckBox(SR.MS_CONFIRM_EXIT, cf.queryExit); itemsList.addElement(queryExit);
-//#ifdef MENU_LISTENER
         oldSE = new CheckBox(SR.MS_KEYS_FOR_OLD_SE, cf.oldSE);
-        if (phoneManufacturer==Config.SONYE) itemsList.addElement(oldSE);
-//#endif
+        if (phoneManufacturer==Config.SONYE)
+            itemsList.addElement(oldSE);
 
         lightState = new CheckBox(SR.L_CONFIG, cf.lightState);
         if (phoneManufacturer==Config.SIEMENS || phoneManufacturer==Config.SIEMENS2 || phoneManufacturer==Config.SONYE || phoneManufacturer==Config.NOKIA) itemsList.addElement(lightState);
@@ -260,11 +265,11 @@ public class ConfigForm
             itemsList.addElement(fileTransfer);
 //#endif
 //#ifdef HISTORY
-//#         saveHistory = new CheckBox(SR.MS_HISTORY, cf.saveHistory); 
+        saveHistory = new CheckBox(SR.MS_HISTORY, cf.saveHistory); 
 //#ifdef PLUGINS
 //#         if (sd.History)
 //#endif
-//#             itemsList.addElement(saveHistory);
+            itemsList.addElement(saveHistory);
 //#endif
 //#ifdef ADHOC
 //#         adhoc = new CheckBox(SR.MS_ADHOC, cf.adhoc); 
@@ -277,9 +282,7 @@ public class ConfigForm
             popupFromMinimized = new CheckBox(SR.MS_ENABLE_POPUP, cf.popupFromMinimized);
             itemsList.addElement(popupFromMinimized);
         }
-//#ifdef MENU_LISTENER
         executeByNum = new CheckBox(SR.MS_EXECUTE_MENU_BY_NUMKEY, cf.executeByNum); itemsList.addElement(executeByNum);
-//#endif
 
         itemsList.addElement(new SpacerItem(10));
         itemsList.addElement(new SimpleString(SR.MS_MEMORY_USAGE, true));
@@ -294,18 +297,18 @@ public class ConfigForm
         
         itemsList.addElement(new SpacerItem(10));
         itemsList.addElement(new SimpleString(SR.MS_TIME_SETTINGS, true));
-	fieldGmt=new NumberInput(display, SR.MS_GMT_OFFSET, Integer.toString(cf.gmtOffset), -12, 12); 
+	fieldGmt=new NumberInput( SR.MS_GMT_OFFSET, Integer.toString(cf.gmtOffset), -12, 12); 
         itemsList.addElement(fieldGmt);
 
         itemsList.addElement(new SpacerItem(10));
-        textWrap=new DropChoiceBox(display, SR.MS_TEXTWRAP);
+        textWrap=new DropChoiceBox(SR.MS_TEXTWRAP);
         textWrap.append(SR.MS_TEXTWRAP_CHARACTER);
         textWrap.append(SR.MS_TEXTWRAP_WORD);
 	textWrap.setSelectedIndex(cf.textWrap);
 	itemsList.addElement(textWrap);
         
         itemsList.addElement(new SpacerItem(10));
-        panels=new DropChoiceBox(display, SR.MS_PANELS);
+        panels=new DropChoiceBox(SR.MS_PANELS);
         panels.append(SR.MS_NO_BAR+" : "+SR.MS_NO_BAR);
         panels.append(SR.MS_MAIN_BAR+" : "+SR.MS_NO_BAR);
         panels.append(SR.MS_MAIN_BAR+" : "+SR.MS_INFO_BAR);
@@ -319,26 +322,26 @@ public class ConfigForm
         itemsList.addElement(drawMenuCommand);
 
 //#ifdef AUTOSTATUS
-//#         itemsList.addElement(new SpacerItem(10));
-//#         autoAwayType=new DropChoiceBox(display, SR.MS_AWAY_TYPE);
-//#         autoAwayType.append(SR.MS_AWAY_OFF);
-//#         autoAwayType.append(SR.MS_AWAY_LOCK);
-//#         autoAwayType.append(SR.MS_MESSAGE_LOCK);
-//#         autoAwayType.append(SR.MS_IDLE);
-//#         autoAwayType.setSelectedIndex(cf.autoAwayType);
-//#         itemsList.addElement(autoAwayType);
-//# 
-//#         fieldAwayDelay=new NumberInput(display, SR.MS_AWAY_PERIOD, Integer.toString(cf.autoAwayDelay), 1, 60);
-//#         itemsList.addElement(fieldAwayDelay);
-//# 
-//#         awayStatus=new CheckBox(SR.MS_USE_MY_STATUS_MESSAGES, cf.useMyStatusMessages);
-//#         itemsList.addElement(awayStatus);
+        itemsList.addElement(new SpacerItem(10));
+        autoAwayType=new DropChoiceBox(SR.MS_AWAY_TYPE);
+        autoAwayType.append(SR.MS_AWAY_OFF);
+        autoAwayType.append(SR.MS_AWAY_LOCK);
+        autoAwayType.append(SR.MS_MESSAGE_LOCK);
+        autoAwayType.append(SR.MS_IDLE);
+        autoAwayType.setSelectedIndex(cf.autoAwayType);
+        itemsList.addElement(autoAwayType);
+
+        fieldAwayDelay=new NumberInput( SR.MS_AWAY_PERIOD, Integer.toString(cf.autoAwayDelay), 1, 60);
+        itemsList.addElement(fieldAwayDelay);
+
+        awayStatus=new CheckBox(SR.MS_USE_MY_STATUS_MESSAGES, cf.useMyStatusMessages);
+        itemsList.addElement(awayStatus);
 //#endif
 
 	langs=new StringLoader().stringLoader("/lang/res.txt",3);
         if (langs[0].size()>1) {
             itemsList.addElement(new SpacerItem(10));
-            langFiles=new DropChoiceBox(display, SR.MS_LANGUAGE);
+            langFiles=new DropChoiceBox(SR.MS_LANGUAGE);
             String tempLang=cf.lang;
             if (tempLang==null) { //not detected
                 String locale=System.getProperty("microedition.locale");  
@@ -358,8 +361,7 @@ public class ConfigForm
         }
 
         enableListWrapping(false);
-        attachDisplay(display);
-        this.parentView=pView;
+        show(sd.roster);
     }
     
     public void cmdOk() {
@@ -387,7 +389,9 @@ public class ConfigForm
 //#endif
         cf.eventComposing=eventComposing.getValue();
         cf.capsState=capsState.getValue();
+//#ifndef WMUC        
         cf.storeConfPresence=storeConfPresence.getValue();
+//#endif        
         cf.autoScroll=autoScroll.getValue();
         cf.useTabs=useTabs.getValue();
         
@@ -401,18 +405,26 @@ public class ConfigForm
         VirtualList.showBalloons=cf.showBalloons;
         cf.eventDelivery=eventDelivery.getValue();
 //#ifdef CLIPBOARD
-//#         cf.useClipBoard=useClipBoard.getValue();
+        cf.useClipBoard=useClipBoard.getValue();
 //#endif
 //#ifdef DETRANSLIT
+//#ifdef PLUGINS
+//#        if (sd.DeTranslit) {
+//#endif
 //#         cf.autoDeTranslit=autoDetranslit.getValue();
+//#ifdef PLUGINS
+//#        } else {
+//#             cf.autoDeTranslit = false;
+//#        }
+//#endif
 //#endif
         cf.showNickNames=showNickNames.getValue();
-//#ifdef MENU_LISTENER
         cf.executeByNum=executeByNum.getValue();
-//#endif
 
         cf.autoLogin=autoLogin.getValue();
+//#ifndef WMUC        
         cf.autoJoinConferences=autoJoinConferences.getValue();
+//#endif        
         
         cf.reconnectCount=Integer.parseInt(reconnectCount.getValue());
         cf.reconnectTime=Integer.parseInt(reconnectTime.getValue());
@@ -426,7 +438,7 @@ public class ConfigForm
 //#ifdef PLUGINS
 //#         if (sd.History)
 //#endif
-//#             cf.saveHistory=saveHistory.getValue();
+            cf.saveHistory=saveHistory.getValue();
 //#endif
 //#ifdef ADHOC
 //#ifdef PLUGINS
@@ -440,9 +452,8 @@ public class ConfigForm
         VirtualList.memMonitor=cf.memMonitor=memMonitor.getValue();
         cf.enableVersionOs=enableVersionOs.getValue();
         cf.queryExit=queryExit.getValue();
-//#ifdef MENU_LISTENER
-        if (phoneManufacturer==Config.SONYE) cf.oldSE=oldSE.getValue();
-//#endif
+        if (phoneManufacturer==Config.SONYE)
+            cf.oldSE=oldSE.getValue();
 
         cf.lightState=lightState.getValue();
         if (cf.allowMinimize)
@@ -466,16 +477,16 @@ public class ConfigForm
         }
 
 //#ifdef AUTOSTATUS
-//#             cf.useMyStatusMessages=awayStatus.getValue();
-//#             cf.autoAwayDelay=Integer.parseInt(fieldAwayDelay.getValue());
-//#             cf.autoAwayType=autoAwayType.getSelectedIndex();
+            cf.useMyStatusMessages=awayStatus.getValue();
+            cf.autoAwayDelay=Integer.parseInt(fieldAwayDelay.getValue());
+            cf.autoAwayType=autoAwayType.getSelectedIndex();
 //#endif
         cf.messageLimit=Integer.parseInt(messageLimit.getValue());
         if (StaticData.getInstance().roster.hasPointerEvents())
             cf.widthScroll2=Integer.parseInt(widthScroll2.getValue());
 
 //#if LOGROTATE
-//#             cf.msglistLimit=Integer.parseInt(messageCountLimit.getValue());
+            cf.msglistLimit=Integer.parseInt(messageCountLimit.getValue());
 //#endif
         if (cf.panelsState!=panels.getSelectedIndex()) {
             cf.panelsState=panels.getSelectedIndex();
@@ -498,11 +509,5 @@ public class ConfigForm
 
         sd.roster.reEnumRoster();
         destroyView();
-    }
-
-    public void destroyView(){
-        if (display!=null)  
-            display.setCurrent(parentView);
-        ((Canvas)parentView).setFullScreenMode(Config.fullscreen);
-    }
+    }    
 }

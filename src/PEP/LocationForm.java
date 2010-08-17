@@ -9,130 +9,121 @@
 
 package PEP;
 //#ifdef PEP_LOCATION
-//# import Client.StaticData;
-//# import PEP.location.LocationIO;
-//# import PEP.location.LocationListener;
-//# import com.alsutton.jabber.JabberDataBlock;
-//# import com.alsutton.jabber.datablocks.Iq;
-//# import javax.microedition.lcdui.Display;
-//# import javax.microedition.lcdui.Displayable;
-//# import javax.microedition.lcdui.TextField;
-//# import locale.SR;
-//# import ui.controls.AlertBox;
-//# import ui.controls.form.DefForm;
-//# import ui.controls.form.LinkString;
-//# import ui.controls.form.SimpleString;
-//# import ui.controls.form.TextInput;
-//# 
-//# /**
-//#  *
-//#  * @author Vitaly
-//#  */
-//# public class LocationForm extends DefForm implements LocationListener {
+import Client.StaticData;
+import PEP.location.LocationIO;
+import PEP.location.LocationListener;
+import com.alsutton.jabber.JabberDataBlock;
+import com.alsutton.jabber.datablocks.Iq;
+import javax.microedition.lcdui.Displayable;
+import javax.microedition.lcdui.TextField;
+import locale.SR;
+import ui.controls.AlertBox;
+import ui.controls.form.DefForm;
+import ui.controls.form.LinkString;
+import ui.controls.form.SimpleString;
+import ui.controls.form.TextInput;
+
+/**
+ *
+ * @author Vitaly
+ */
+public class LocationForm extends DefForm implements LocationListener {
 //#ifdef PLUGINS
 //#     public static String plugin = "PLUGIN_PEP";
 //#endif
-//# 
-//#     SimpleString loc;
-//#     TextInput location, descr;
-//#     TextInput lat, lon;
-//#     LinkString detect;
-//# 
-//#     /** Creates a new instance of Location
-//#      * @param display
-//#      * @param parent
-//#      */
-//#     public LocationForm(Display display, Displayable parent) {
-//#         super(display, parent, SR.MS_USERLOCATION);
-//#         location = new TextInput(display, SR.MS_LOCATION_NAME, null, null, TextField.ANY);
-//#         descr = new TextInput(display, SR.MS_LOCATION_DESCRIPTION, null, null, TextField.ANY);
-//#         lat = new TextInput(display, SR.MS_LATITUDE, null, null, TextField.DECIMAL);
-//#         lon = new TextInput(display, SR.MS_LONGITUDE, null, null, TextField.DECIMAL);
-//# 
-//#         detect = new LinkString(SR.MS_RETRIEVE_LOCATION) {
-//#             public void doAction() {
-//#                 detectLocation();
-//#             }
-//#         };
-//#         itemsList.addElement(lat);
-//#         itemsList.addElement(lon);
-//#         itemsList.addElement(location);
-//#         itemsList.addElement(descr);
-//#         itemsList.addElement(detect);
-//#         
-//#         attachDisplay(display);
-//#         parentView = parent;
-//#     }
-//# 
-//#     public void detectLocation() {
-//#         new GeoRetriever(this).start();
-//#     }
-//# 
-//#     public void locationUpdated(LocationIO lctn) {
-//#         if (lctn != null) {
-//#             lat.setValue(lctn.getLatitude());
-//#             lon.setValue(lctn.getLongitude());
-//#         } else {
-//#             new AlertBox(SR.MS_ERROR, "Error retrieving coordinates", display, this) {
-//#                 public void yes() {}
-//#                 public void no() {}
-//#             };
-//#         }
-//#         redraw();
-//#     }
-//#     
-//#     public void cmdOk() {
-//#         String sid="publish-location";
-//#         JabberDataBlock setActivity=new Iq(null, Iq.TYPE_SET, sid);
-//#         JabberDataBlock action=setActivity.addChildNs("pubsub", "http://jabber.org/protocol/pubsub") .addChild("publish", null);
-//#         action.setAttribute("node", "http://jabber.org/protocol/geoloc");
-//#         JabberDataBlock item=action.addChild("item", null);
-//#         JabberDataBlock geoloc=item.addChildNs("geoloc", "http://jabber.org/protocol/geoloc");
-//#         try {
-//#             if (!lat.getValue().equals("")) {
-//#             geoloc.addChild("lat", lat.getValue());
-//#             geoloc.addChild("lon", lon.getValue());
-//#             geoloc.addChild("description", location.getValue());
-//#             geoloc.addChild("text", descr.getValue());
-//#             }
-//#             //todo: refactor theStream call; send notification to JabberBlockListener if stream was terminated
-//#             StaticData.getInstance().roster.theStream.addBlockListener(new PepPublishResult(display, sid));
-//#             StaticData.getInstance().roster.theStream.send(setActivity);
-//#         } catch (Exception e) {e.printStackTrace(); }
-//#         destroyView();
-//#     }
-//#ifdef MENU_LISTENER
-//#     public String touchLeftCommand() { return SR.MS_PUBLISH; }
-//#endif
-//# }
-//# 
-//# 
-//# class GeoRetriever extends Thread {
-//# 
-//#     private LocationListener returnto;
-//# 
-//#     public GeoRetriever(LocationListener returnto) {
-//#         this.returnto = returnto;
-//#     }
-//# 
-//#     public void run() {
-//#         try {
-//#             retrieveLocation();
-//#         } catch (Exception ex) {
-//#             ex.printStackTrace();
-//#             returnto.locationUpdated(null);
-//#         }
-//#     }
-//# 
-//#     public void retrieveLocation() throws Exception {
-//#         LocationIO lp = LocationIO.getInstance();
-//#         lp.getCoordinates();
-//#         if (lp.getLatitude().equals("0.0")) { // if generic JSR-179
-//#             lp = null;
-//#             lp = LocationIO.fallback();
-//#             lp.getCoordinates();
-//#         }
-//#         returnto.locationUpdated(lp);
-//#     }
-//# }
+
+    SimpleString loc;
+    TextInput location, descr;
+    TextInput lat, lon;
+    LinkString detect;
+
+    /** Creates a new instance of Location
+     * @param parent
+     */
+    public LocationForm(Displayable parent) {
+        super("Publish location");
+        location = new TextInput("Location name", null, null, TextField.ANY);
+        descr = new TextInput("Location description", null, null, TextField.ANY);
+        lat = new TextInput("Latitude", null, null, TextField.DECIMAL);
+        lon = new TextInput("Longitude", null, null, TextField.DECIMAL);
+
+        detect = new LinkString("Retrieve location") {
+            public void doAction() {
+                detectLocation();
+            }
+        };
+        itemsList.addElement(lat);
+        itemsList.addElement(lon);
+        itemsList.addElement(location);
+        itemsList.addElement(descr);
+        itemsList.addElement(detect);
+        
+        show(parentView);
+        parentView = parent;
+    }
+
+    public void detectLocation() {
+        new GeoRetriever(this).start();
+    }
+
+    public void locationUpdated(LocationIO lctn) {
+        if (lctn != null) {
+            lat.setValue(lctn.getLatitude());
+            lon.setValue(lctn.getLongitude());
+        } else {
+            new AlertBox(SR.MS_ERROR, "Error retrieving coordinates") {
+                public void yes() {}
+                public void no() {}
+            };
+        }
+        redraw();
+    }
+    
+    public void cmdOk() {
+        String sid="publish-location";
+        JabberDataBlock setActivity=new Iq(null, Iq.TYPE_SET, sid);
+        JabberDataBlock action=setActivity.addChildNs("pubsub", "http://jabber.org/protocol/pubsub") .addChild("publish", null);
+        action.setAttribute("node", "http://jabber.org/protocol/geoloc");
+        JabberDataBlock item=action.addChild("item", null);
+        JabberDataBlock geoloc=item.addChildNs("geoloc", "http://jabber.org/protocol/geoloc");
+        try {
+            if (!lat.getValue().equals("")) {
+            geoloc.addChild("lat", lat.getValue());
+            geoloc.addChild("lon", lon.getValue());
+            geoloc.addChild("description", location.getValue());
+            geoloc.addChild("text", descr.getValue());
+            }
+            //todo: refactor theStream call; send notification to JabberBlockListener if stream was terminated
+            StaticData.getInstance().roster.theStream.addBlockListener(new PepPublishResult( sid));
+            StaticData.getInstance().roster.theStream.send(setActivity);
+        } catch (Exception e) {e.printStackTrace(); }
+        destroyView();
+    }
+    public String touchLeftCommand() { return SR.MS_PUBLISH; }
+}
+
+
+class GeoRetriever extends Thread {
+
+    private LocationListener returnto;
+
+    public GeoRetriever(LocationListener returnto) {
+        this.returnto = returnto;
+    }
+
+    public void run() {
+        try {
+            retrieveLocation();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            returnto.locationUpdated(null);
+        }
+    }
+
+    public void retrieveLocation() throws Exception {
+        LocationIO lp = LocationIO.getInstance();
+        lp.getCoordinates();
+        returnto.locationUpdated(lp);
+    }
+}
 //#endif

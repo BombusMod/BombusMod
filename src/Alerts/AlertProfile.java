@@ -29,15 +29,9 @@ package Alerts;
 
 import Client.*;
 import images.RosterIcons;
-import javax.microedition.lcdui.Display;
-import javax.microedition.lcdui.Displayable;
 import locale.SR;
 import ui.*;
-//#ifndef MENU_LISTENER
-//# import javax.microedition.lcdui.Command;
-//#else
-import Menu.Command;
-//#endif
+import Menu.MenuCommand;
 import ui.controls.form.DefForm;
 
 /**
@@ -61,41 +55,33 @@ public class AlertProfile extends DefForm
     
     /** Creates a new instance of Profile */
     
-    private Command cmdDef=new Command(SR.MS_SETDEFAULT,Command.SCREEN,3);
-    private Command cmdSel=new Command(SR.MS_SELECT,Command.SCREEN,2);
+    private MenuCommand cmdDef=new MenuCommand(SR.MS_SETDEFAULT,MenuCommand.SCREEN,3);
+    private MenuCommand cmdSel=new MenuCommand(SR.MS_SELECT,MenuCommand.SCREEN,2);
     /** Creates a new instance of SelectStatus */
-    public AlertProfile(Display d, Displayable pView) {
-        super(d, pView, SR.MS_ALERT_PROFILE);
+    public AlertProfile(VirtualList pView) {
+        super(SR.MS_ALERT_PROFILE);
         
         cf=Config.getInstance();
                 
-//#ifndef MENU_LISTENER
-//#         addCommand(cmdDef);
-//#         addCommand(cmdSel);
-//#         removeCommand(cmdOk);
-//#endif
 
-        setCommandListener(this);
+        setMenuListener(this);
         
         int p=cf.profile;
         defp=cf.def_profile;
         
         moveCursorTo(p);
-        attachDisplay(d);
-        this.parentView=pView;
+        show(parentView);
     }
 
-//#ifdef MENU_LISTENER
     public void commandState() {
         menuCommands.removeAllElements();
-        addCommand(cmdSel);
-        addCommand(cmdDef);
+        addMenuCommand(cmdSel);
+        addMenuCommand(cmdDef);
     }
     public String touchLeftCommand(){ return SR.MS_MENU; }
     public void touchLeftPressed(){
         showMenu();
     }
-//#endif
     
     int index;
     public VirtualElement getItemRef(int Index){
@@ -124,7 +110,7 @@ public class AlertProfile extends DefForm
         }
     }
     
-    public void commandAction(Command c, Displayable d){
+    public void menuAction(MenuCommand c, VirtualList d){
         if (c==cmdSel) eventOk();
         if (c==cmdDef) { 
             cf.def_profile=defp=cursor;

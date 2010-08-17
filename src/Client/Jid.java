@@ -38,7 +38,9 @@ public class Jid {
     private String bareJid;
     private String resource;
     
-    /** Creates a new instance of Jid */
+    /** Creates a new instance of Jid
+     * @param s 
+     */
     public Jid(String s) {
         setJid(s);
     }
@@ -50,7 +52,11 @@ public class Jid {
         bareJid=Strconv.toLowerCase(s.substring(0,resourcePos));
     }
     
-    /** Compares two Jids */
+    /** Compares two Jids
+     * @param j
+     * @param compareResource
+     * @return
+     */
     public boolean equals(Jid j, boolean compareResource) {
         if (j==null) return false;
         
@@ -91,7 +97,9 @@ public class Jid {
     
     public static String toBareJid(String jid) { return new Jid(jid).getBareJid(); }
     
-     /** returns server of the JID */
+    /** returns server of the JID
+     * @return
+     */
      public String getServer(){
          try {
              int beginIndex=bareJid.indexOf('@')+1;

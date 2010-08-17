@@ -66,8 +66,8 @@ public class MyDiscoForm extends DefForm{
     //private JabberBlockListener listener;
     
     /** Creates a new instance of RegForm */
-    public MyDiscoForm(Display display, JabberDataBlock regform, JabberStream stream, String resultId, String childName) {
-        super(display, null, regform.getAttribute("from"));
+    public MyDiscoForm(JabberDataBlock regform, JabberStream stream, String resultId, String childName) {
+        super(regform.getAttribute("from"));
         service=regform.getAttribute("from");
         this.childName=childName;
         JabberDataBlock query=regform.getChildBlock(childName);
@@ -112,7 +112,7 @@ public class MyDiscoForm extends DefForm{
             }
         }        
        
-       setCommandListener(this);
+       setMenuListener(this);
         
         if (childName.equals("command")) {
             if (query.getAttribute("status").equals("completed")) {
@@ -121,10 +121,8 @@ public class MyDiscoForm extends DefForm{
             }
         }
         
-        this.display=display;
-        this.parentView=display.getCurrent();
         this.stream=stream;
-        attachDisplay(display);
+        show(parentView);
     }
     
     private void sendForm(String id){
@@ -168,7 +166,5 @@ public class MyDiscoForm extends DefForm{
             destroyView();        
     }
 
-//#ifdef MENU_LISTENER
     public String touchLeftCommand() {return (completed)? SR.MS_OK : SR.MS_SEND; }
-//#endif
 }

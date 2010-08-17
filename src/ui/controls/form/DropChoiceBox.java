@@ -68,9 +68,8 @@ public class DropChoiceBox
     /**
      * Creates a new instance of ChoiceBox
      */
-    public DropChoiceBox(Display display, String caption) {
+    public DropChoiceBox(String caption) {
         super(RosterIcons.getInstance());
-        this.display=display;
         this.caption=(caption==null)?"":caption;
         
         font=FontCache.getFont(false, FontCache.roster);
@@ -107,7 +106,7 @@ public class DropChoiceBox
 
     public void onSelect() {
         if (items.size()>1)
-            new DropListBox(display, items, this);
+            new DropListBox(items, this);
     }
 
     public int getValue() { return index; }

@@ -28,7 +28,6 @@
 package Conference;
 
 import Client.Contact;
-import Client.Roster;
 import Client.StaticData;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Presence;
@@ -36,7 +35,6 @@ import images.RosterIcons;
 import locale.SR;
 import Client.Msg;
 import util.StringUtils;
-import xmpp.XmppError;
 
 /**
  *
@@ -71,7 +69,10 @@ public class MucContact extends Contact {
     
     public long lastMessageTime;
     
-    /** Creates a new instance of MucContact */
+    /** Creates a new instance of MucContact
+     * @param nick
+     * @param jid
+     */
     public MucContact(String nick, String jid) {
         super(nick, jid, Presence.PRESENCE_OFFLINE, "muc");
         offline_type=Presence.PRESENCE_OFFLINE;

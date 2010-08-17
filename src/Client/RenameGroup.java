@@ -30,10 +30,9 @@ package Client;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
 import java.util.Enumeration;
-import javax.microedition.lcdui.Display;
-import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
+import ui.VirtualList;
 import ui.controls.form.DefForm;
 import ui.controls.form.SpacerItem;
 import ui.controls.form.TextInput;
@@ -45,28 +44,28 @@ import ui.controls.form.TextInput;
 public class RenameGroup 
         extends DefForm {
     
-    private Display display;
     private Group group;
     //private Contact contact;
     StaticData sd=StaticData.getInstance();
     
     private TextInput groupName;
     
-    /** Creates a new instance of newRenameGroup */
-    public RenameGroup(Display display, Displayable pView, Group group/*, Contact contact*/) {
-        super(display, pView, SR.MS_RENAME);
+    /** Creates a new instance of newRenameGroup
+     * @param pView
+     * @param group
+     */
+    public RenameGroup(VirtualList pView, Group group/*, Contact contact*/) {
+        super(SR.MS_RENAME);
         //this.contact=contact;
         this.group=group;
-        this.display=display;
         
-        groupName = new TextInput(display, null, /*(contact==null)?*/group.getName()/*:contact.getGroup().getName()*/, "groups", TextField.ANY); // 32, TextField.ANY
+        groupName = new TextInput(null, /*(contact==null)?*/group.getName()/*:contact.getGroup().getName()*/, "groups", TextField.ANY); // 32, TextField.ANY
         itemsList.addElement(groupName);
         
         itemsList.addElement(new SpacerItem(0));
         
         moveCursorTo(getNextSelectableRef(-1));
-        attachDisplay(display);
-        this.parentView=pView;
+        show(pView);
     }
 
     public void  cmdOk() {
@@ -76,11 +75,7 @@ public class RenameGroup
             sd.roster.theStream.send(new IqQueryRoster(contact.getBareJid(), contact.nick, groupName.getValue(), null)); */
 
         destroyView();
-    }
-    
-    public void destroyView() {
-        display.setCurrent(StaticData.getInstance().roster);
-    }
+    }    
     
     
     class IqQueryRenameGroup extends Iq {

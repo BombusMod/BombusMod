@@ -27,8 +27,6 @@
 
 package Client;
 import java.util.*;
-import javax.microedition.lcdui.Display;
-import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
 import ui.*;
@@ -39,34 +37,19 @@ import ui.controls.form.NumberInput;
 import ui.controls.form.SimpleString;
 import ui.controls.form.SpacerItem;
 import ui.controls.form.TextInput;
-//#ifndef MENU_LISTENER
-//# import javax.microedition.lcdui.CommandListener;
-//# import javax.microedition.lcdui.Command;
-//#else
-import Menu.MenuListener;
-import Menu.Command;
-import Menu.MyMenu;
-//#endif
+import Menu.MenuCommand;
 
 /**
  *
  * @author ad
  */
 public class StatusSelect
-        extends VirtualList
-        implements
-//#ifndef MENU_LISTENER
-//#         CommandListener,
-//#else
-        MenuListener,
-//#endif
-        Runnable{
+        extends DefForm
+        implements Runnable{
     
-    private Command cmdOk=new Command(SR.MS_SELECT,Command.OK,1);
-    private Command cmdEdit=new Command(SR.MS_EDIT,Command.SCREEN,2);
-    private Command cmdDef=new Command(SR.MS_SETDEFAULT,Command.OK,3);
-    private Command cmdCancel=new Command(SR.MS_CANCEL,Command.BACK,99);
-
+    private MenuCommand cmdEdit=new MenuCommand(SR.MS_EDIT, MenuCommand.SCREEN,2);
+    private MenuCommand cmdDef=new MenuCommand(SR.MS_SETDEFAULT, MenuCommand.OK,3);
+    
     private Vector statusList;
     private int defp;
     private Contact to;
@@ -74,37 +57,30 @@ public class StatusSelect
     private Config cf;
     private StaticData sd = StaticData.getInstance();
     
-    public StatusSelect(Display d, Displayable pView, Contact to) {
-        super();
+    public StatusSelect(VirtualList pView, Contact to) {
+        super(SR.MS_STATUS);
         
         cf=Config.getInstance();
         statusList=StatusList.getInstance().statusList;
         this.to=to;
-        if (to==null) { 
-            setMainBarItem(new MainBar(SR.MS_STATUS));
-        } else {
-            setMainBarItem(new MainBar(to));
+        if (to!=null) {
+             setMainBarItem(new MainBar(to));
         }
 
-        commandState();
-        
-        setCommandListener(this);
+        setMenuListener(this);
         
         defp=cf.loginstatus;
         moveCursorTo(defp);
-        attachDisplay(d);
-        
-        this.parentView=pView;
+        enableListWrapping(true);
+        show(parentView);
     }
     
     public void commandState() {
-//#ifdef MENU_LISTENER
         menuCommands.removeAllElements();
-//#endif
-        addCommand(cmdOk);
-        addCommand(cmdEdit);
-        addCommand(cmdDef);
-        addCommand(cmdCancel);
+        addMenuCommand(cmdOk);
+        addMenuCommand(cmdEdit);
+        addMenuCommand(cmdDef);
+        addMenuCommand(cmdCancel);
     }
     
     public VirtualElement getItemRef(int Index){
@@ -113,10 +89,10 @@ public class StatusSelect
 
     private ExtendedStatus getSel(){ return (ExtendedStatus)getFocusedObject();}
     
-    public void commandAction(Command c, Displayable d){
+    public void menuAction(MenuCommand c, VirtualList d){
         if (c==cmdOk) eventOk(); 
         if (c==cmdEdit) {
-            new StatusForm( display, this, getSel() );
+            new StatusForm(  this, getSel() );
         }
         
         if (c==cmdDef) {
@@ -154,19 +130,17 @@ public class StatusSelect
     private void save(){
         StatusList.getInstance().saveStatusToStorage();
     }
-    
-//#ifdef MENU_LISTENER
-    public void showMenu() {
-        commandState();
-        new MyMenu(display, parentView, this, SR.MS_STATUS, null, menuCommands);
+    public void touchLeftPressed() {
+        showMenu();
     }
-//#endif
+    public String touchLeftCommand() {
+        return SR.MS_MENU;
+    }
+    
     
     class StatusForm 
         extends DefForm {
         
-        private Display display;
-
         private NumberInput tfPriority;
         private TextInput tfMessage;
         private TextInput tfAutoRespondMessage;
@@ -175,21 +149,20 @@ public class StatusSelect
 
         private CheckBox autoRespond;
         
-        public StatusForm(Display display, Displayable pView, ExtendedStatus status){
-            super(display, pView, SR.MS_STATUS+": "+status.getScreenName());
-            this.display=display;
+        public StatusForm(VirtualList pView, ExtendedStatus status){
+            super(SR.MS_STATUS+": "+status.getScreenName());
             this.status=status;
             
-            tfMessage = new TextInput(display, SR.MS_MESSAGE, status.getMessage(), "ex_status_list", TextField.ANY); //, 100, TextField.ANY "ex_status_list"
+            tfMessage = new TextInput(SR.MS_MESSAGE, status.getMessage(), "ex_status_list", TextField.ANY); //, 100, TextField.ANY "ex_status_list"
             itemsList.addElement(tfMessage);
 
-            tfPriority = new NumberInput(display, SR.MS_PRIORITY, Integer.toString(status.getPriority()), -128, 128); //, 100, TextField.ANY "ex_status_list"
+            tfPriority = new NumberInput( SR.MS_PRIORITY, Integer.toString(status.getPriority()), -128, 128); //, 100, TextField.ANY "ex_status_list"
             itemsList.addElement(tfPriority);
 
             if (status.getImageIndex()<5) {
                 itemsList.addElement(new SpacerItem(10));
                
-                tfAutoRespondMessage=new TextInput(display, SR.MS_AUTORESPOND, status.getAutoRespondMessage(), "autorespond", TextField.ANY);//, 100, 0
+                tfAutoRespondMessage=new TextInput(SR.MS_AUTORESPOND, status.getAutoRespondMessage(), "autorespond", TextField.ANY);//, 100, 0
                 itemsList.addElement(tfAutoRespondMessage);
                 
                 autoRespond = new CheckBox(SR.MS_ENABLE_AUTORESPOND, status.getAutoRespond()); itemsList.addElement(autoRespond);
@@ -201,8 +174,9 @@ public class StatusSelect
             itemsList.addElement(new SimpleString("%dt - date time", false));
             
             moveCursorTo(getNextSelectableRef(-1));
-            attachDisplay(display);
             this.parentView=pView;
+            show(parentView);
+            
         }
         
         public void cmdOk() {

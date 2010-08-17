@@ -32,21 +32,17 @@ import javax.microedition.io.ConnectionNotFoundException;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.TextField;
 import midlet.BombusMod;
-import javax.microedition.lcdui.Displayable;
 import ui.MIDPTextBox;
 import ui.MIDPTextBox.TextBoxNotify;
 import ui.controls.form.DefForm;
 import ui.controls.form.ListItem;
 import locale.SR;
-//#ifndef MENU_LISTENER
-//# import javax.microedition.lcdui.Command;
-//#else
-import Menu.Command;
-//#endif
+import Menu.MenuCommand;
 //#ifdef CLIPBOARD
-//# import util.ClipBoard;
-//# import Client.Msg;
+import util.ClipBoard;
+import Client.Msg;
 //#endif
+import ui.VirtualList;
 
 /**
  *
@@ -55,55 +51,54 @@ import Menu.Command;
 public class MessageUrl extends DefForm implements TextBoxNotify {
 
 //#ifdef CLIPBOARD
-//#     private ClipBoard clipboard=ClipBoard.getInstance();
-//# 
-//#     protected Command cmdCopy = new Command(SR.MS_COPY, Command.SCREEN, 20);
-//#     protected Command cmdCopyPlus = new Command("+ "+SR.MS_COPY, Command.SCREEN, 30);
+    private ClipBoard clipboard=ClipBoard.getInstance();
+
+    protected MenuCommand cmdCopy = new MenuCommand(SR.MS_COPY, MenuCommand.SCREEN, 20);
+    protected MenuCommand cmdCopyPlus = new MenuCommand("+ "+SR.MS_COPY, MenuCommand.SCREEN, 30);
 //#endif
     private Vector urlList;
-    Command cmdGoto=new Command("Goto", Command.OK, 2);
-    Command cmdEdit=new Command("Edit", Command.SCREEN, 3);
+    MenuCommand cmdGoto=new MenuCommand("Goto", MenuCommand.OK, 2);
+    MenuCommand cmdEdit=new MenuCommand("Edit", MenuCommand.SCREEN, 3);
 
-    /** Creates a new instance of MessageUrl */
-    public MessageUrl(Display display, Displayable pView, Vector urlList) {
-	super(display, pView, "URLs");
-        this.display = display;        
-	this.urlList=urlList;
+    /** Creates a new instance of MessageUrl
+     * @param pView
+     * @param urlList
+     */
+    public MessageUrl(VirtualList pView, Vector urlList) {
+	super("URLs");
+        this.urlList=urlList;
 
-//#ifndef MENU_LISTENER
-//#         commandStateForClassicMenu();
-//#endif
         commandStateCommon();
 
 	for (int i=0; i<urlList.size(); i++) { // throws exception
 	    itemsList.addElement(new ListItem((String)urlList.elementAt(i)));
 	}
 
-        setCommandListener(this);
-	attachDisplay(display);
+        setMenuListener(this);
+	show(parentView);
         this.parentView = pView;
     }
     
-    public void commandAction(Command c, Displayable d) {
-        super.commandAction(c, d);
+    public void menuAction(MenuCommand c, VirtualList d) {
+        super.menuAction(c, d);
         if (c==cmdGoto)
             eventOk();
         else if (c==cmdEdit) {
             EditURL();
         }
 //#ifdef CLIPBOARD
-//#         if (c == cmdCopy)
-//#         {
-//#             try {
-//#                 clipboard.add(new Msg(Msg.MESSAGE_TYPE_IN, "url", null, (String) urlList.elementAt(cursor)));
-//#             } catch (Exception e) {/*no messages*/}
-//#         }
-//# 
-//#         if (c==cmdCopyPlus) {
-//#             try {
-//#                 clipboard.append(new Msg(Msg.MESSAGE_TYPE_IN, "url", null, (String) urlList.elementAt(cursor)));
-//#             } catch (Exception e) {/*no messages*/}
-//#         }
+        if (c == cmdCopy)
+        {
+            try {
+                clipboard.add(new Msg(Msg.MESSAGE_TYPE_IN, "url", null, (String) urlList.elementAt(cursor)));
+            } catch (Exception e) {/*no messages*/}
+        }
+
+        if (c==cmdCopyPlus) {
+            try {
+                clipboard.append(new Msg(Msg.MESSAGE_TYPE_IN, "url", null, (String) urlList.elementAt(cursor)));
+            } catch (Exception e) {/*no messages*/}
+        }
 //#endif
     }
     
@@ -124,49 +119,36 @@ public class MessageUrl extends DefForm implements TextBoxNotify {
 
 	}
     private void EditURL() {
-        new MIDPTextBox(display, this, "Edit URL", (String)urlList.elementAt(cursor), this, TextField.ANY);
+        new MIDPTextBox(this, "Edit URL", (String)urlList.elementAt(cursor), this, TextField.ANY);
     }
 
     public void OkNotify(String text_return) {
         destroyView();
         Display.getDisplay(BombusMod.getInstance()).setCurrent(parentView);
     }
-//#ifndef MENU_LISTENER
-//#     public void commandStateForClassicMenu() {
-//#         addCommand(cmdGoto);
-//#         addCommand(cmdEdit);
-//#         addCommand(cmdCancel);
-//#         removeCommand(cmdOk);
-//#         commandStateCommon();
-//#     }
-//#endif
     
-//#ifdef MENU_LISTENER
      public void commandState() {
          menuCommands.removeAllElements();
-         addCommand(cmdOk);
-         addCommand(cmdGoto);
-         addCommand(cmdEdit);
-         addCommand(cmdCancel);
+         addMenuCommand(cmdOk);
+         addMenuCommand(cmdGoto);
+         addMenuCommand(cmdEdit);
+         addMenuCommand(cmdCancel);
          commandStateCommon();
      }
-//#endif
      
      public void commandStateCommon() {
 //#ifdef CLIPBOARD
-//#          if (Client.Config.getInstance().useClipBoard) {
-//#              addCommand(cmdCopy);
-//#              addCommand(cmdCopyPlus);
-//#          }
+         if (Client.Config.getInstance().useClipBoard) {
+             addMenuCommand(cmdCopy);
+             addMenuCommand(cmdCopyPlus);
+         }
 //#endif
      }
      
-//#ifdef MENU_LISTENER
     public String touchLeftCommand(){ return SR.MS_MENU; }
 
     public void touchLeftPressed(){
         showMenu();
     }
-//#endif
     
 }

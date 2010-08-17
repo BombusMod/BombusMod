@@ -32,8 +32,6 @@ import java.io.DataOutputStream;
 import java.io.EOFException;
 import java.util.Enumeration;
 import java.util.Vector;
-import javax.microedition.lcdui.Display;
-import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
 import ui.MIDPTextBox;
@@ -45,11 +43,8 @@ import util.StringLoader;
 //#ifdef SERVICE_DISCOVERY
 import ServiceDiscovery.*;
 //#endif
-//#ifndef MENU_LISTENER
-//# import javax.microedition.lcdui.Command;
-//#else
-import Menu.Command;
-//#endif
+import Menu.MenuCommand;
+import ui.VirtualList;
 import ui.controls.form.DefForm;
 
 /**
@@ -61,54 +56,45 @@ public class SearchForm
         implements MIDPTextBox.TextBoxNotify
     { 
     
-    private Command cmdAddServer = new Command(SR.MS_ADD, Command.SCREEN, 2);
-    private Command cmdDel=new Command (SR.MS_DELETE, Command.SCREEN, 3);
+    private MenuCommand cmdAddServer = new MenuCommand(SR.MS_ADD, MenuCommand.SCREEN, 2);
+    private MenuCommand cmdDel=new MenuCommand (SR.MS_DELETE, MenuCommand.SCREEN, 3);
     
     Vector servers = new Vector();
     
     /**
      * Creates a new instance of SearchForm
+     * @param pView 
      */
-    public SearchForm(Display display, Displayable pView) {
-        super(display, pView, SR.MS_SEARCH);
-        this.display=display;
+    public SearchForm(VirtualList pView) {
+        super(SR.MS_SEARCH);
         loadRecentList();
 
         if (getItemCount()<1) loadDefaults();
 
         updateMainBar();
-//#ifndef MENU_LISTENER
-//#         addCommand(cmdOk);
-//#         addCommand(cmdAddServer);
-//#         addCommand(cmdDel);
-//#         addCommand(cmdCancel);
-//#endif
-        setCommandListener(this);
-        attachDisplay(display);
-        this.parentView=pView;
+        setMenuListener(this);
+        show(parentView);
     }
     
     private void updateMainBar() {
         setMainBarItem(new MainBar(2, null, SR.MS_USERS_SEARCH+" ("+getItemCount()+") ", false));
     }
 
-//#ifdef MENU_LISTENER
     public void commandState() {
         menuCommands.removeAllElements();
-        addCommand(cmdAddServer);
-        addCommand(cmdDel);
+        addMenuCommand(cmdAddServer);
+        addMenuCommand(cmdDel);
     }
 
     public String touchLeftCommand(){ return SR.MS_MENU; }
     public void touchLeftPressed(){
         showMenu();
     }
-//#endif
     
-    public void commandAction(Command c, Displayable d) {
-        super.commandAction(c, d);     
+    public void menuAction(MenuCommand c, VirtualList d) {
+        super.menuAction(c, d);     
      if (c==cmdAddServer) {
-            new MIDPTextBox(display, this, SR.MS_SERVER, null, this, TextField.ANY);
+            new MIDPTextBox( this, SR.MS_SERVER, null, this, TextField.ANY);
 	} else if (c==cmdDel) {
             delServer();
         }
@@ -178,7 +164,7 @@ public class SearchForm
             return;
 
         ListItem join=(ListItem)getFocusedObject();
-        new ServiceDiscovery(display, join.toString(), null, true);
+        new ServiceDiscovery(join.toString(), null, true);
 //#endif
     }
     

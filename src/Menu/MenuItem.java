@@ -26,11 +26,7 @@
  */
 
 package Menu;
-//#ifdef MENU_LISTENER
-//# import Client.Config;
-//# import Fonts.FontCache;
-//# import javax.microedition.lcdui.Graphics;
-//#endif
+import javax.microedition.lcdui.Graphics;
 import Client.Config;
 import Fonts.FontCache;
 import javax.microedition.lcdui.Font;
@@ -61,15 +57,13 @@ public class MenuItem
     public int getImageIndex() { return iconIndex;  }
     public String toString(){ return name; }
     
-//#ifdef MENU_LISTENER
-//#     public void drawItem(Graphics g, int ofs, boolean sel) {
-//#         if (pos<10 && Config.getInstance().executeByNum) {
-//#             int w=g.getClipWidth();
-//#             g.setFont(font);
-//#             g.drawString(Integer.toString((pos<9)?pos+1:0), w, 0, Graphics.TOP|Graphics.RIGHT);
-//#         }
-//#         
-//#         super.drawItem(g, ofs, sel);
-//#     }
-//#endif
+    public void drawItem(Graphics g, int ofs, boolean sel) {
+        if (pos<10 && Config.getInstance().executeByNum) {
+            int w=g.getClipWidth();
+            g.setFont(font);
+            g.drawString(Integer.toString((pos<9)?pos+1:0), w, 0, Graphics.TOP|Graphics.RIGHT);
+        }
+        
+        super.drawItem(g, ofs, sel);
+    }
 }

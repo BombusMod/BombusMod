@@ -31,23 +31,21 @@ package PEP;
 import com.alsutton.jabber.JabberBlockListener;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
-import javax.microedition.lcdui.Display;
 import locale.SR;
 import ui.controls.AlertBox;
 import xmpp.XmppError;
-import Client.StaticData;
 
 public class PepPublishResult implements JabberBlockListener {
 //#ifdef PLUGINS
 //#     public static String plugin = "PLUGIN_PEP";
 //#endif
 
-    private Display display;
     private String id;
     
-    /** Creates a new instance of MoodPublishResult */
-    public PepPublishResult(Display display, String id) {
-        this.display=display;
+    /** Creates a new instance of MoodPublishResult
+     * @param id
+     */
+    public PepPublishResult(String id) {
         this.id=id;
     }
 
@@ -60,10 +58,10 @@ public class PepPublishResult implements JabberBlockListener {
         
         XmppError e=XmppError.findInStanza(data);
 //#ifdef PEP
-//#         new AlertBox(SR.MS_ERROR_, SR.MS_PEP_NOT_SUPPORTED+"("+e.toString()+")", display, StaticData.getInstance().roster) {
-//#             public void yes() { }
-//#             public void no() { }
-//#         };
+        new AlertBox(SR.MS_ERROR_, SR.MS_PEP_NOT_SUPPORTED+"("+e.toString()+")") {
+            public void yes() { }
+            public void no() { }
+        };
 //#endif
         return NO_MORE_BLOCKS;
     }

@@ -39,13 +39,12 @@ import java.util.Enumeration;
 import java.util.Vector;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
-import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.TextBox;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
 //#ifdef CLIPBOARD
-//# import util.ClipBoard;
+import util.ClipBoard;
 //#endif
 
 /**
@@ -53,7 +52,6 @@ import locale.SR;
  * @author ad
  */
 public class EditBox implements CommandListener {
-    private Display display;
     public TextBox t;
     private TextInput ti;
 
@@ -68,27 +66,25 @@ public class EditBox implements CommandListener {
     private String caption;
     
 //#ifdef CLIPBOARD
-//#     private ClipBoard clipboard;
-//#     private Command cmdCopy = new Command(SR.MS_COPY, Command.SCREEN, 3);
-//#     private Command cmdCopyPlus = new Command("+ "+SR.MS_COPY, Command.SCREEN, 4);
-//#     private Command cmdPasteText=new Command(SR.MS_PASTE, Command.SCREEN, 5);
+    private ClipBoard clipboard;
+    private Command cmdCopy = new Command(SR.MS_COPY, Command.SCREEN, 3);
+    private Command cmdCopyPlus = new Command("+ "+SR.MS_COPY, Command.SCREEN, 4);
+    private Command cmdPasteText=new Command(SR.MS_PASTE, Command.SCREEN, 5);
 //#endif
-    public EditBox(Display display, String caption, String text, TextInput ti, int boxType) {
-        this.display=display;
-        parentView=display.getCurrent();
+    public EditBox( String caption, String text, TextInput ti, int boxType) {
         this.ti=ti;
         this.caption=caption;
-
+        parentView = midlet.BombusMod.getInstance().getCurrentDisplayable();
         t=new TextBox(SR.MS_EDIT, text, 500, boxType);
 //#ifdef CLIPBOARD
-//#         if (Config.getInstance().useClipBoard) {
-//#             clipboard=ClipBoard.getInstance();
-//#             t.addCommand(cmdCopy);
-//#             if (!clipboard.isEmpty()) {
-//#                 t.addCommand(cmdCopyPlus);
-//#                 t.addCommand(cmdPasteText);
-//#             }
-//#         }
+        if (Config.getInstance().useClipBoard) {
+            clipboard=ClipBoard.getInstance();
+            t.addCommand(cmdCopy);
+            if (!clipboard.isEmpty()) {
+                t.addCommand(cmdCopyPlus);
+                t.addCommand(cmdPasteText);
+            }
+        }
 //#endif
         t.addCommand(cmdOk);
         if (ti.id!=null) {
@@ -102,40 +98,40 @@ public class EditBox implements CommandListener {
         if (Config.getInstance().capsState)
             t.setConstraints(TextField.INITIAL_CAPS_SENTENCE);
         if (Config.getInstance().phoneManufacturer == Config.SONYE) System.gc(); // prevent flickering on Sony Ericcsson C510
-        display.setCurrent(t);
+        midlet.BombusMod.getInstance().setDisplayable(t);
     }
 
     public void commandAction(Command c, Displayable d){
         String text=t.getString();
         if (text.length()==0) text=null;
         if (c==cmdRecent) {
-            new TextListBox(display, this);
+            new TextListBox(this);
             return;
         }
 //#ifdef CLIPBOARD
-//#         if (c == cmdCopy) {
-//#             try {
-//#                clipboard.setClipBoard(text);
-//#                 if (!clipboard.isEmpty()) {
-//#                     t.addCommand(cmdCopyPlus);
-//#                     if (Config.getInstance().phoneManufacturer == Config.SONYE) System.gc(); // prevent flickering on Sony Ericcsson C510
-//#                 }
-//#             } catch (Exception e) {/*no messages*/}
-//#             return;
-//#         }
-//#         if (c==cmdCopyPlus) {
-//#             try {
-//#                 StringBuffer clipstr=new StringBuffer(clipboard.getClipBoard()).append("\n").append("\n").append(text);
-//#                 
-//#                 clipboard.setClipBoard(clipstr.toString());
-//#                 clipstr=null;
-//#             } catch (Exception e) {/*no messages*/}
-//#             return;
-//#         }
-//#         if (c==cmdPasteText) {
-//#             t.insert(clipboard.getClipBoard(), getCaretPos()); 
-//#             return;
-//#         }
+        if (c == cmdCopy) {
+            try {
+               clipboard.setClipBoard(text);
+                if (!clipboard.isEmpty()) {
+                    t.addCommand(cmdCopyPlus);
+                    if (Config.getInstance().phoneManufacturer == Config.SONYE) System.gc(); // prevent flickering on Sony Ericcsson C510
+                }
+            } catch (Exception e) {/*no messages*/}
+            return;
+        }
+        if (c==cmdCopyPlus) {
+            try {
+                StringBuffer clipstr=new StringBuffer(clipboard.getClipBoard()).append("\n").append("\n").append(text);
+                
+                clipboard.setClipBoard(clipstr.toString());
+                clipstr=null;
+            } catch (Exception e) {/*no messages*/}
+            return;
+        }
+        if (c==cmdPasteText) {
+            t.insert(clipboard.getClipBoard(), getCaretPos()); 
+            return;
+        }
 //#endif
         if (c==cmdOk) {
             ti.setValue(text);
@@ -150,7 +146,7 @@ public class EditBox implements CommandListener {
            }
         }
 
-        display.setCurrent(parentView);
+        midlet.BombusMod.getInstance().setDisplayable(parentView);
     }
 //#if (CLIPBOARD||SMILES)
     public int getCaretPos() {     

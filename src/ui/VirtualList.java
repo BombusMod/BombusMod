@@ -47,11 +47,9 @@ import ui.keys.UserKeyExec;
 
 import java.util.Vector;
 
-//#ifdef MENU_LISTENER
 import ui.controls.CommandsPointer;
-import Menu.Command;
+import Menu.MenuCommand;
 import Menu.MenuListener;
-//#endif
 
 /**
  * Вертикальный список виртуальных элементов.
@@ -61,6 +59,8 @@ import Menu.MenuListener;
  */
 public abstract class VirtualList         
     extends Canvas {
+
+    
     /**
      * событие "Курсор выделил элемент"
      * в классе VirtualList вызываемая функция не выполняет действий, необходимо
@@ -95,16 +95,12 @@ public abstract class VirtualList
     private int mHeight;
     
 //#ifdef GRADIENT
-//#     Gradient grIB;
-//#     Gradient grMB;
+    Gradient grIB;
+    Gradient grMB;
 //#endif
 
-    public static int panelsState=
-//#ifdef MENU_LISTENER
-            2;
-//#else
-//#             1;
-//#endif
+    public static int panelsState = 2;
+
     private static boolean reverse=false;
     private static boolean paintTop=true;
     private static boolean paintBottom=true;
@@ -195,12 +191,7 @@ public abstract class VirtualList
     public static short keyBack=-11;
     public static short greenKeyCode=SIEMENS_GREEN;
 
-    public static boolean fullscreen=
-//#ifdef MENU_LISTENER
-            true;
-//#else
-//#             false;
-//#endif
+    public static boolean fullscreen = true;
     public static boolean memMonitor;
     public static boolean showBalloons;
     public static boolean showTimeTraffic = true;
@@ -210,12 +201,7 @@ public abstract class VirtualList
     /** метрика экрана */
     int width;
     int height;
-
-    /** экранный буфер для скрытой отрисовки. используется, если платформа
-     * не поддерживает двойную буферизацию экрана
-     */
-    private Image offscreen = null;
-
+    
     protected int cursor;
 
     /**
@@ -238,9 +224,7 @@ public abstract class VirtualList
 //#     public Image img;
 //#endif
     
-//#ifdef MENU_LISTENER
     CommandsPointer ar=new CommandsPointer();
-//#endif
 
     protected synchronized void updateLayout(){
         int size=getItemCount();
@@ -255,7 +239,7 @@ public abstract class VirtualList
             layout[index+1]=y;
         }
         listHeight=y;
-        itemLayoutY=layout;
+        itemLayoutY=layout;        
     }
     public int getListHeight() {
         return winHeight;
@@ -331,26 +315,28 @@ public abstract class VirtualList
         return null;
     }    
 
-    protected Display display;
     protected Displayable parentView;
 
     protected ScrollBar scrollbar;
     
     /** Creates a new instance of VirtualList */
     public VirtualList() {
-        width=getWidth();
-        height=getHeight();
+       setFullScreenMode(Config.fullscreen);
+       width=getWidth();
+       int offs = 0;
+       if (Config.getInstance().phoneManufacturer == Config.MICROEMU)
+            offs = 25;
+       height = getHeight() - offs;
 //#ifdef POPUPS
         PopUp.getInstance();
 //#endif
-
         if (phoneManufacturer==Config.WINDOWS) {
             setTitle("BombusMod");
         }
 
         changeOrient(cf.panelsState);
 
-        setFullScreenMode(fullscreen);
+//        setFullScreenMode(fullscreen);
 
         itemBorder = new int[32]; // TODO: remove
 
@@ -364,7 +350,7 @@ public abstract class VirtualList
         setInfoBarItem(secondBar);
 
         stringHeight=FontCache.getFont(false, FontCache.roster).getHeight();
-
+        
 //#ifdef BACK_IMAGE
 //#         try {
 //#             if (img==null)
@@ -376,31 +362,40 @@ public abstract class VirtualList
 //#endif
     }
 
-    /** Creates a new instance of VirtualList */
-    public VirtualList(Display display) {
-        this();
-        attachDisplay(display);
-    }
-
-    /**
-     * Запоминание предыдущего отображаемого объекта, подключенного к менеджеру
-     * дисплея и подключение к дисплею виртуального списка (this)
-     * @param display менеджер дисплея мобильного устройства {@link }
-     */
-    public final void attachDisplay (Display display) {
-        this.display=display;
-        parentView=display.getCurrent();
-        display.setCurrent(this);
-        redraw();
-    }
-
-    /** запуск отложенной отрисовки активного Canvas */
-    public void redraw() {
-        Displayable d = display.getCurrent();
-        if (d instanceof Canvas) {
-            ((Canvas)d).repaint();
+    public final void show() {
+        show(midlet.BombusMod.getInstance().getCurrentDisplayable());
+     }
+    public final void show(Displayable parent) {
+        parentView = parent;
+        if (null == parent) {
+            parentView = midlet.BombusMod.getInstance().getCurrentDisplayable();
         }
+        midlet.BombusMod.getInstance().setDisplayable(this);
+         redraw();
+     }
+
+    public void destroy() {
+        //TODO: this.setCommandListener(null);
+        parentView = null;
+        //TODO: if (null != mainbar) mainbar.destroy();
+        mainbar = null;
+        //TODO: if (null != infobar) infobar.destroy();
+        infobar = null;
     }
+
+    public void redraw() {
+        if (VirtualCanvas.nativeCanvas.getList() == this) {
+            VirtualCanvas.nativeCanvas.repaint();
+            return;
+         }
+     }
+    public boolean isShown() {
+        if (midlet.BombusMod.getInstance().getCurrentDisplayable() == this) {
+            return VirtualCanvas.nativeCanvas.isShown();
+        }
+        return false;
+    }
+
 
     /** Вызывается после скрытия VirtualList. переопределяет наследуемый метод
      * Canvas.hideNotify(). действие по умолчанию - освобождение экранного
@@ -408,7 +403,6 @@ public abstract class VirtualList
      * буферизации
      */
     protected void hideNotify() {
-	offscreen=null;
     }
 
     /** Вызывается перед вызовом отрисовки VirtualList. переопределяет
@@ -417,7 +411,8 @@ public abstract class VirtualList
      * двойной буферизации
      */
     protected void showNotify() {
-	if (!isDoubleBuffered()) offscreen=Image.createImage(width, height);
+        VirtualCanvas.nativeCanvas.setOk(touchLeftCommand());
+        VirtualCanvas.nativeCanvas.setCancel(touchRightCommand());
 //#if (USE_ROTATOR)
         TimerTaskRotate.startRotate(-1, this);
 //#endif
@@ -427,15 +422,16 @@ public abstract class VirtualList
      * Canvas.sizeChanged(int width, int heigth). сохраняет новые размеры области рисования.
      * также создаёт новый экранный буфер offscreen, используемый при работе без автоматической
      * двойной буферизации
+     * @param w
+     * @param h
      */
     protected void sizeChanged(int w, int h) {
         width=w;
         height=h;
 //#ifdef GRADIENT
-//#         iHeight=0;
-//#         mHeight=0;
-//#endif
-        if (!isDoubleBuffered()) offscreen=Image.createImage(width, height);
+        iHeight=0;
+        mHeight=0;
+//#endif        
     }
 
     /**
@@ -448,14 +444,16 @@ public abstract class VirtualList
      */
     protected void beginPaint(){};
 
-    public void paint(Graphics graphics) {
-        width=getWidth();
-        height=getHeight();
+    public void paint(Graphics g) {
+        width = getWidth();
+        int offs = 0;
+        if (Config.getInstance().phoneManufacturer == Config.MICROEMU) // TODO: remove when microemu fixed
+            offs = 25;
+        height = getHeight() - offs;
 
         mHeight=0;
-        iHeight=0;
+        iHeight=0;       
         
-        Graphics g=(offscreen==null)? graphics: offscreen.getGraphics();
         
 //#ifdef POPUPS
         PopUp.getInstance().init(g, width, height);
@@ -615,19 +613,15 @@ public abstract class VirtualList
                 if (mainbar!=null) {
                     setAbsOrg(g, 0, height-mHeight);
                     drawMainPanel(g);
-//#ifdef MENU_LISTENER
                     if (hasPointerEvents())
                         ar.init(width, height, mHeight);
-//#endif
                 }
             } else {
                 if (infobar!=null) {
                     setAbsOrg(g, 0, height-iHeight);
                     drawInfoPanel(g);
-//#ifdef MENU_LISTENER
                     if (hasPointerEvents())
                         ar.init(width, height, iHeight);
-//#endif
                 }
             }
             setAbsClip(g, width, height);
@@ -657,9 +651,8 @@ public abstract class VirtualList
                 g.drawString(SR.MS_RECONNECT, width/2, (height/2)-(popHeight*2), Graphics.TOP | Graphics.HCENTER);
                 Progress.draw(g, reconnectPos*progressWidth/reconnectTimeout, reconnectString);
             }
-        }
+        }       
         
-        if (g != graphics) g.drawImage(offscreen, 0, 0, Graphics.LEFT | Graphics.TOP);
     }
 
     private static int reconnectPos=0;
@@ -722,56 +715,56 @@ public abstract class VirtualList
             g.setColor(ColorTheme.getColor(ColorTheme.HEAP_FREE));  g.fillRect(0,y,ram,1);
         }
     }
-//#ifndef MENU
     private void drawInfoPanel (final Graphics g) {
         int h=infobar.getVHeight()+1;
 
         g.setClip(0,0, width, h);
 //#ifdef GRADIENT
-//#         if (getMainBarBGnd()!=getMainBarBGndBottom()) {
-//#             if (iHeight!=h) {
-//#                 grIB=new Gradient(0, 0, width, h, getMainBarBGnd(), getMainBarBGndBottom(), false);
-//#                 iHeight=h;
-//#             }
-//#             grIB.paint(g);
-//#         } else {
-//#             g.setColor(getMainBarBGnd());
-//#             g.fillRect(0, 0, width, h);
-//#         }
-//#else
+        if (getMainBarBGnd()!=getMainBarBGndBottom()) {
+            if (iHeight!=h) {
+                grIB=new Gradient(0, 0, width, h, getMainBarBGnd(), getMainBarBGndBottom(), false);
+                iHeight=h;
+            }
+            grIB.paint(g);
+        } else {
             g.setColor(getMainBarBGnd());
             g.fillRect(0, 0, width, h);
+        }
+//#else
+//#             g.setColor(getMainBarBGnd());
+//#             g.fillRect(0, 0, width, h);
 //#endif
         g.setColor(getMainBarRGB());
         ((MainBar)infobar).lShift = (Config.getInstance().phoneManufacturer == Config.NOKIA && reverse && fullscreen);
         ((MainBar)infobar).rShift = (Config.getInstance().phoneManufacturer == Config.SONYE && reverse && fullscreen);
         infobar.drawItem(g, 0, false);
+
     }
-//#endif
     
     private void drawMainPanel (final Graphics g) {    
         int h=mainbar.getVHeight()+1;
         g.setClip(0,0, width, h);
 //#ifdef GRADIENT
-//#         if (getMainBarBGnd()!=getMainBarBGndBottom()) {
-//#             if (mHeight!=h) {
-//#                 grMB=new Gradient(0, 0, width, h, getMainBarBGndBottom(), getMainBarBGnd(), false);
-//#                 mHeight=h;
-//#             }
-//#             grMB.paint(g);
-//#         } else {
-//#             g.setColor(getMainBarBGnd());
-//#             g.fillRect(0, 0, width, h);
-//#         }
+        if (getMainBarBGnd()!=getMainBarBGndBottom()) {
+            if (mHeight!=h) {
+                grMB=new Gradient(0, 0, width, h, getMainBarBGndBottom(), getMainBarBGnd(), false);
+                mHeight=h;
+            }
+            grMB.paint(g);
+        } else {
+            g.setColor(getMainBarBGnd());
+            g.fillRect(0, 0, width, h);
+        }
 //#else
-        g.setColor(getMainBarBGnd());
-        g.fillRect(0, 0, width, h);
+//#         g.setColor(getMainBarBGnd());
+//#         g.fillRect(0, 0, width, h);
 //#endif
         g.setColor(getMainBarRGB());
         ((MainBar)mainbar).lShift = (Config.getInstance().phoneManufacturer == Config.NOKIA && !reverse && fullscreen);
         ((MainBar)mainbar).rShift = (Config.getInstance().phoneManufacturer == Config.SONYE && !reverse && fullscreen);
         mainbar.drawItem(g, 0, false);
     }
+    
 
     /**
      * перенос координат (0.0) в абсолютные координаты (x,y)
@@ -794,7 +787,9 @@ public abstract class VirtualList
         stickyWindow=true;
         int count=getItemCount();
         if (cursor>=0) cursor=(count==0)?0:count-1;
+        VirtualCanvas.nativeCanvas.repaint();
         setRotator();
+        
     }
 
     public void moveCursorTo(int index){
@@ -807,7 +802,7 @@ public abstract class VirtualList
         } catch (Exception ex){
         }
         stickyWindow=true;
-        repaint();
+        VirtualCanvas.nativeCanvas.repaint();
     }
     
     protected void fitCursorByTop(){
@@ -835,7 +830,6 @@ public abstract class VirtualList
     }
 
     protected int kHold;
-    
     protected void keyRepeated(int keyCode) {
         key(keyCode); 
 //#ifdef LIGHT_CONFIG      
@@ -861,11 +855,10 @@ public abstract class VirtualList
     protected void pointerPressed(int x, int y) {
 //#ifdef POPUPS
         if (PopUp.getInstance().next()) {
-            repaint();
+            redraw();
             return;
         }
 //#endif
-//#ifdef MENU_LISTENER
         int act = ar.pointerPressed(x, y);
         if (act == 1) {
             key(Config.SOFT_LEFT);
@@ -876,7 +869,7 @@ public abstract class VirtualList
             stickyWindow = false;
             return;
         }
-//#endif
+        
         yPointerPos = y;
 
         if (scrollbar.pointerPressed(x, y, this)) {
@@ -914,11 +907,13 @@ public abstract class VirtualList
         }
         if (Config.getInstance().advTouch) {
 	if (cursor!=oldCursor) {
+            if (cursor < itemLayoutY.length-1) {
             // сделаем элемент максимально видимым
             int il=itemLayoutY[cursor+1]-winHeight;
             if (il>win_top) win_top=il;
             il=itemLayoutY[cursor];
             if (il<win_top) win_top=il;
+            }
         }
         }
 	long clickTime=System.currentTimeMillis();
@@ -942,7 +937,7 @@ public abstract class VirtualList
         if (il<win_top) win_top=il;
         }
         
-        repaint();
+        redraw();
     }
     
     protected void pointerDragged(int x, int y) { 
@@ -973,11 +968,12 @@ public abstract class VirtualList
             setRotator();
         }
 
-        repaint();
+        redraw();
         }
     }
     protected void pointerReleased(int x, int y) { 
         scrollbar.pointerReleased(x, y, this);
+        if (ar.enabled && (ar.pointerPressed(x, y) > 0)) return;
         if (Config.getInstance().advTouch) {
             if (y > list_top + winHeight) return;
         }
@@ -1066,10 +1062,10 @@ public abstract class VirtualList
 //#ifdef POPUPS
         boolean popupSkipped = skipPopUp(keyCode);
         if (popupSkipped) {
-            repaint();
+            redraw();
         }
 //#endif
-        boolean executed = UserKeyExec.getInstance().commandExecute(display, previous_key_code, keyCode);
+        boolean executed = UserKeyExec.getInstance().commandExecute(previous_key_code, keyCode);
         previous_key_code = keyCode;
         if (executed)
             return;
@@ -1078,10 +1074,9 @@ public abstract class VirtualList
             return;
 //#endif
         if (sendEvent(keyCode)) {
-            repaint();
+            redraw();
             return;
         }
-//#ifdef MENU_LISTENER
         if (keyCode==Config.SOFT_LEFT || keyCode=='(') {
             if (reconnectWindow.getInstance().isActive()) {
                 reconnectYes();
@@ -1098,25 +1093,6 @@ public abstract class VirtualList
             touchRightPressed();
             return;
          }
-//#else
-//#         if (keyCode==Config.SOFT_LEFT) {
-//#             if (reconnectWindow.getInstance().isActive()) {
-//#                 reconnectYes();
-//#                 return;
-//#             }
-//#         }
-//#          if (keyCode==Config.SOFT_RIGHT) {
-//#              if (reconnectWindow.getInstance().isActive()) {
-//#                  reconnectNo();
-//#                  return;
-//#              }
-//#             if (phoneManufacturer!=Config.SONYE) { // || phoneManufacturer==Config.SIEMENS || phoneManufacturer==Config.SIEMENS2 || phoneManufacturer==Config.MOTO) {
-//#                if (canBack==true)
-//#                     destroyView();
-//#                 return;
-//#             }
-//#          }
-//#endif
         if (keyCode == keyClear) {
             keyClear();
             return;
@@ -1191,8 +1167,10 @@ public abstract class VirtualList
                 }
             } catch (Exception e) {/* IllegalArgumentException @ getGameAction */}
         }
-        repaint();
+        redraw();
     }
+
+
 
     /**
      * событие "Нажатие кнопки UP"
@@ -1463,19 +1441,16 @@ public abstract class VirtualList
         alphaBuffer = null;
     }
 */
-
-    public void setParentView(Displayable parentView){
-        this.parentView=parentView;
-    }
+    
 
     /**
      * отсоединение от менеджера дисплея текущего виртуального списка,
      * присоединение к менеджеру предыдущего Displayable
      */
     public void destroyView(){
-        sd.roster.activeContact=null;
-        if (display!=null && parentView!=null) /*prevents potential app hiding*/ 
-            display.setCurrent(parentView);
+        sd.roster.activeContact=null;        
+        midlet.BombusMod.getInstance().setDisplayable(parentView);
+        parentView = null;
     }
 
     public int getListWidth() {
@@ -1518,8 +1493,8 @@ public abstract class VirtualList
             getInfoBarItem().setElementAt(SR.MS_CANCEL, 3);
             return;
         }
-        getInfoBarItem().setElementAt((!showTimeTraffic)?touchLeftCommand():Time.getTimeWeekDay(), 1);
-        getInfoBarItem().setElementAt((!showTimeTraffic)?touchRightCommand():getTraffic(), 3);
+        getInfoBarItem().setElementAt((!showTimeTraffic && fullscreen)?touchLeftCommand():Time.getTimeWeekDay(), 1);
+        getInfoBarItem().setElementAt((!showTimeTraffic && fullscreen)?touchRightCommand():getTraffic(), 3);
     }
 
     public void showHeapInfo() {
@@ -1545,42 +1520,44 @@ public abstract class VirtualList
         return StringUtils.getSizeString((traffic>0)?traffic*2:0);
     }
     
-//#ifdef MENU_LISTENER
     public Vector menuCommands=new Vector();
 
-    public void addCommand(Command command) {
+    public void addMenuCommand(MenuCommand command) {
         if (menuCommands.indexOf(command)<0)
             menuCommands.addElement(command);
     }
 
-    public void removeCommand(Command command) {
+    public void removeMenuCommand(MenuCommand command) {
         menuCommands.removeElement(command);
     }
 
-    public void touchLeftPressed(){
-        showMenu();
-    }
+    
+    public void setMenuListener(MenuListener menuListener) { }
 
-    public void setCommandListener(MenuListener menuListener) { }
-
-    public Command getCommand(int index) {
+    public MenuCommand getCommand(int index) {
         if (index>menuCommands.size()-1) return null;
-        return (Command) menuCommands.elementAt(index);
+        return (MenuCommand) menuCommands.elementAt(index);
     }
 
     public void showMenu() {}
 
+    public void touchLeftPressed(){
+        cmdOk();
+    }
 
     public void touchRightPressed(){
-        if (canBack) destroyView();
+        cmdCancel();
     }
-//#endif
     public void captionPressed() {};
     
-    public String touchLeftCommand(){ return SR.MS_MENU; }
+    public String touchLeftCommand(){
+        return SR.MS_MENU;
+    }
     public String touchRightCommand(){ return canBack? SR.MS_BACK : ""; }
     
     public void cmdCancel() { if (canBack) destroyView(); }
+    public void cmdOk() { showMenu(); }
+    
 }
 
 //#if (USE_ROTATOR)    
@@ -1596,7 +1573,7 @@ class TimerTaskRotate extends Thread{
     private static TimerTaskRotate instance;
     
     private TimerTaskRotate() {
-        start();
+        new Thread(this).start();
     }
     
     public static void startRotate(int max, VirtualList list){

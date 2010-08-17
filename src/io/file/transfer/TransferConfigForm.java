@@ -29,19 +29,18 @@ public class TransferConfigForm extends DefForm implements BrowserListener {
     
     private TransferConfig ft = TransferConfig.getInstance();
 
-    public TransferConfigForm(Display display, Displayable parentView) {
-        super (display, parentView, "File transfer");        
-        transferFolder = new TextInput(display, "Save files to", ft.ftFolder, null, TextField.ANY); 
+    public TransferConfigForm(Displayable parentView) {
+        super ("File transfer");        
+        transferFolder = new TextInput("Save files to", ft.ftFolder, null, TextField.ANY); 
         itemsList.addElement(transferFolder);
         selectFolder=new LinkString(SR.MS_SELECT) { public void doAction() { selectFolder(); } };
         itemsList.addElement(selectFolder);
-        streamhost = new TextInput(display, "SOCKS5 proxy", ft.ftProxy, "ft_proxyjid", 0);
-        port = new TextInput(display, "SOCKS5 port", Integer.toString(ft.ftProxyPort), "ft_proxyport", TextField.NUMERIC);
+        streamhost = new TextInput("SOCKS5 proxy", ft.ftProxy, "ft_proxyjid", 0);
+        port = new TextInput("SOCKS5 port", Integer.toString(ft.ftProxyPort), "ft_proxyport", TextField.NUMERIC);
         itemsList.addElement(streamhost);
         itemsList.addElement(port);
-
-        attachDisplay(display);
-        this.parentView = parentView;
+        
+        show(parentView);
     }
 
     public void cmdOk() {
@@ -53,7 +52,7 @@ public class TransferConfigForm extends DefForm implements BrowserListener {
     }
     
      public void selectFolder() {
-        new Browser(null, display, this, this, true);
+        new Browser(null, this, this, true);
     }
 
     public void BrowserFilePathNotify(String pathSelected) {

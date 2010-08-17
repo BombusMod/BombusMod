@@ -40,7 +40,7 @@ import java.util.Hashtable;
 import java.util.Vector;
 import util.StringLoader;
 //#ifdef DETRANSLIT
-//# import util.DeTranslit;
+import util.DeTranslit;
 //#endif
 /**
  *
@@ -284,9 +284,15 @@ blue 0x0000ff
        StringBuffer body=new StringBuffer();
        body.append("xmlSkin\t");
 //#ifdef DETRANSLIT
-//#        body.append(DeTranslit.translit(StaticData.getInstance().account.getNickName()));
+//#ifdef PLUGINS
+       if (StaticData.getInstance().DeTranslit) {
+//#endif
+       body.append(DeTranslit.translit(StaticData.getInstance().account.getNickName()));
+//#ifdef PLUGINS
+       }
+//#endif
 //#else
-       body.append(StaticData.getInstance().account.getNickName());
+//#        body.append(StaticData.getInstance().account.getNickName());
 //#endif
         body.append("\r\n");
         for (Enumeration r=colorsContainer.elements(); r.hasMoreElements();) {

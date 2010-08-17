@@ -28,7 +28,6 @@
 package VCard;
 import Client.Config;
 import Client.Contact;
-import Client.StaticData;
 import javax.microedition.io.ConnectionNotFoundException;
 import midlet.BombusMod;
 import ui.controls.AlertBox;
@@ -39,18 +38,12 @@ import io.file.browse.BrowserListener;
 import util.StringUtils;
 //#endif
 //#ifdef CLIPBOARD
-//# import util.ClipBoard;
+import util.ClipBoard;
 //#endif
-import javax.microedition.lcdui.Displayable;
-//#ifndef MENU_LISTENER
-//# import javax.microedition.lcdui.Command;
-//#else
-import Menu.Command;
-import Menu.MyMenu;
-//#endif
-import javax.microedition.lcdui.Display;
+import Menu.MenuCommand;
 import javax.microedition.lcdui.Image;
 import locale.SR;
+import ui.VirtualList;
 import ui.controls.form.DefForm;
 import ui.controls.form.ImageItem;
 import ui.controls.form.MultiLine;
@@ -85,21 +78,22 @@ public class VCardView
     private String url="";
 
 //#ifdef CLIPBOARD
-//#     ClipBoard clipboard  = ClipBoard.getInstance(); 
-//#     Command cmdCopy      = new Command(SR.MS_COPY, Command.SCREEN, 1);
-//#     Command cmdCopyPlus  = new Command("+ "+SR.MS_COPY, Command.SCREEN, 2);
+    ClipBoard clipboard  = ClipBoard.getInstance(); 
+    MenuCommand cmdCopy      = new MenuCommand(SR.MS_COPY, MenuCommand.SCREEN, 1);
+    MenuCommand cmdCopyPlus  = new MenuCommand("+ "+SR.MS_COPY, MenuCommand.SCREEN, 2);
 //#endif
-    Command cmdRefresh   = new Command(SR.MS_REFRESH, Command.SCREEN, 3);
+    MenuCommand cmdRefresh   = new MenuCommand(SR.MS_REFRESH, MenuCommand.SCREEN, 3);
 //#if FILE_IO
-    Command cmdSavePhoto = new Command(SR.MS_SAVE_PHOTO, Command.SCREEN,4);
+    MenuCommand cmdSavePhoto = new MenuCommand(SR.MS_SAVE_PHOTO, MenuCommand.SCREEN,4);
 //#endif
-    Command cmdDelPhoto  = new Command(SR.MS_CLEAR_PHOTO, Command.SCREEN,5);
+    MenuCommand cmdDelPhoto  = new MenuCommand(SR.MS_CLEAR_PHOTO, MenuCommand.SCREEN,5);
 
-    /** Creates a new instance of VCardView */
-    public VCardView(Display display, Displayable pView, Contact contact) {
-        super(display, pView, contact.getNickJid());
-        this.display = display;
-
+    /** Creates a new instance of VCardView
+     * @param pView
+     * @param contact
+     */
+    public VCardView(VirtualList pView, Contact contact) {
+        super(contact.getNickJid());
         this.vcard=contact.vcard;
         this.c=contact;
         
@@ -132,12 +126,7 @@ public class VCardView
             itemsList.addElement(endVCard);
             itemsList.addElement(refresh);
         }
-
-        //this.commandState();
-        //setCommandListener(this);
-        commandStateTest();
-        attachDisplay(display);
-        this.parentView=pView;
+        show(parentView);
     }
     
     
@@ -169,7 +158,7 @@ public class VCardView
             itemsList.addElement(noPhoto);
         }
      }
-    public void commandAction(Command c, Displayable d) {
+    public void menuAction(MenuCommand c, VirtualList d) {
         if (c==cmdDelPhoto) {
             vcard.dropPhoto(); 
             setPhoto();
@@ -181,28 +170,28 @@ public class VCardView
         }
 //#if FILE_IO
         if (c==cmdSavePhoto) {
-            new Browser(null, display, this, this, true);
+            new Browser(null,  this, this, true);
         }
 //#endif
 //#ifdef CLIPBOARD
-//#         if (c == cmdCopy) {
-//#             try {
-//#                 clipboard.setClipBoard((((MultiLine)getFocusedObject()).getValue()==null)?"":((MultiLine)getFocusedObject()).getValue()+"\n");
-//#             } catch (Exception e) {/*no messages*/}
-//#         }
-//#         
-//#         if (c==cmdCopyPlus) {
-//#             try {
-//#                 StringBuffer clipstr=new StringBuffer(clipboard.getClipBoard())
-//#                 .append("\n\n")
-//#                 .append((((MultiLine)getFocusedObject()).getValue()==null)?"":((MultiLine)getFocusedObject()).getValue()+"\n");
-//#                 
-//#                 clipboard.setClipBoard(clipstr.toString());
-//#                 clipstr=null;
-//#             } catch (Exception e) {/*no messages*/}
-//#         }
+        if (c == cmdCopy) {
+            try {
+                clipboard.setClipBoard((((MultiLine)getFocusedObject()).getValue()==null)?"":((MultiLine)getFocusedObject()).getValue()+"\n");
+            } catch (Exception e) {/*no messages*/}
+        }
+        
+        if (c==cmdCopyPlus) {
+            try {
+                StringBuffer clipstr=new StringBuffer(clipboard.getClipBoard())
+                .append("\n\n")
+                .append((((MultiLine)getFocusedObject()).getValue()==null)?"":((MultiLine)getFocusedObject()).getValue()+"\n");
+                
+                clipboard.setClipBoard(clipstr.toString());
+                clipstr=null;
+            } catch (Exception e) {/*no messages*/}
+        }
 //#endif
-        super.commandAction(c, d);
+        super.menuAction(c, d);
     }
 
 //#if FILE_IO
@@ -216,55 +205,45 @@ public class VCardView
     }
 //#endif
 
-    public void commandStateTest() {
-//#ifdef MENU_LISTENER
+    public void commandState() {
         menuCommands.removeAllElements();
-//#endif
 
         if (vcard!=null) {
             if (vcard.hasPhoto) {
 //#if FILE_IO
-                addCommand(cmdSavePhoto);
+                addMenuCommand(cmdSavePhoto);
 //#endif
-                addCommand(cmdDelPhoto);
+                addMenuCommand(cmdDelPhoto);
             }
 //#ifdef CLIPBOARD
-//#             if (Config.getInstance().useClipBoard) {
-//#                 addCommand(cmdCopy);
-//#                 if (!clipboard.isEmpty())
-//#                     addCommand(cmdCopyPlus);
-//#             }
+            if (Config.getInstance().useClipBoard) {
+                addMenuCommand(cmdCopy);
+                if (!clipboard.isEmpty())
+                    addMenuCommand(cmdCopyPlus);
+            }
 //#endif
         }
 
-        addCommand(cmdRefresh);
-        addCommand(cmdCancel);
+        addMenuCommand(cmdRefresh);
+        addMenuCommand(cmdCancel);
     }
-
-//#ifdef MENU_LISTENER
-    public void showMenu() {
-        commandStateTest();
-        new MyMenu(display, parentView, this, "", null, menuCommands);
-    }
-//#endif
-
-//#ifdef MENU_LISTENER
+    
 
     public String touchLeftCommand() { return SR.MS_MENU; }
+    public void touchLeftPressed() { showMenu(); }
     
     public void cmdOk() { showMenu(); }
     
     public void cmdCancel() {
         clearVcard();
     }
-//#endif
     
     public void cmdExit() {
         super.cmdCancel();
     }
     
     public void clearVcard() {
-        new AlertBox(SR.MS_ACTION, SR.MS_DELETE+" "+SR.MS_VCARD+"?", display, StaticData.getInstance().roster) {
+        new AlertBox(SR.MS_ACTION, SR.MS_DELETE+" "+SR.MS_VCARD+"?") {
             public void yes() {
                 c.vcard=null;                
             }

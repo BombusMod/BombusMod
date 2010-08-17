@@ -30,26 +30,24 @@ import Client.Config;
 import Client.ConfigForm;
 import Client.StaticData;
 //#ifdef STATS
-//# import Statistic.Stats;
+import Statistic.StatsWindow;
 //#endif
 import Colors.ColorTheme;
 //#ifdef CONSOLE
-//# import Console.XMLList;
+import Console.XMLList;
 //#endif
 //#ifdef PRIVACY
 import PrivacyLists.PrivacySelect;
 //#endif
 //#ifdef SERVICE_DISCOVERY
 import ServiceDiscovery.*;
-import Statistic.StatsWindow;
 //#endif
 import java.util.Vector;
-import javax.microedition.lcdui.Display;
 import locale.SR;
 import midlet.BombusMod;
 import ui.VirtualList;
 //#ifdef JUICK
-//# import Client.Contact;
+import Client.Contact;
 //#endif
 import Client.ContactMessageList;
 import Client.Roster;
@@ -84,7 +82,7 @@ public class UserKeyExec {
         available_commands[0].addElement(new UserKeyCommand(2, SR.MS_CLEAN_ALL_MESSAGES));
         available_commands[0].addElement(new UserKeyCommand(3, SR.MS_RECONNECT));
 //#ifdef STATS
-//#         available_commands[0].addElement(new UserKeyCommand(4, SR.MS_STATS));
+        available_commands[0].addElement(new UserKeyCommand(4, SR.MS_STATS));
 //#endif
         available_commands[0].addElement(new UserKeyCommand(5, SR.MS_STATUS_MENU));
         available_commands[0].addElement(new UserKeyCommand(6, SR.MS_FILE_TRANSFERS));
@@ -96,7 +94,7 @@ public class UserKeyExec {
         available_commands[0].addElement(new UserKeyCommand(9, SR.MS_PRIVACY_LISTS));
 //#endif
 //#ifdef USER_KEYS
-//#         available_commands[0].addElement(new UserKeyCommand(10, SR.MS_CUSTOM_KEYS));
+        available_commands[0].addElement(new UserKeyCommand(10, SR.MS_CUSTOM_KEYS));
 //#endif
 //#ifdef POPUPS
         available_commands[1].addElement(new UserKeyCommand(11, SR.MS_CLEAR_POPUPS));
@@ -106,18 +104,18 @@ public class UserKeyExec {
         available_commands[0].addElement(new UserKeyCommand(14, SR.MS_APP_MINIMIZE));
         available_commands[0].addElement(new UserKeyCommand(15, SR.MS_INVERT));
 //#ifdef CONSOLE
-//#         available_commands[0].addElement(new UserKeyCommand(16, SR.MS_XML_CONSOLE));
+        available_commands[0].addElement(new UserKeyCommand(16, SR.MS_XML_CONSOLE));
 //#endif
         available_commands[0].addElement(new UserKeyCommand(17, SR.MS_FULLSCREEN));
 //#ifdef JUICK
-//#         available_commands[1].addElement(new UserKeyCommand(18, SR.MS_JUICK_FOCUS));
+        available_commands[1].addElement(new UserKeyCommand(18, SR.MS_JUICK_FOCUS));
 //#endif
         available_commands[1].addElement(new UserKeyCommand(19, SR.MS_HEAP_MONITOR));
 //#ifdef SMILES
         available_commands[2].addElement(new UserKeyCommand(20, SR.MS_SMILES_TOGGLE));
 //#endif
 //#ifdef JUICK
-//#         available_commands[2].addElement(new UserKeyCommand(21, SR.MS_COMMANDS + " Juick"));
+        available_commands[2].addElement(new UserKeyCommand(21, SR.MS_COMMANDS + " Juick"));
 //#endif
     }
 
@@ -139,17 +137,17 @@ public class UserKeyExec {
 //#ifdef PLUGINS
 //#         if (sd.UserKeys) {
 //#endif
-//#             DataInputStream is = NvStorage.ReadFileRecord(UserKey.storage, 0);
-//# 
-//#             int size = 0;
-//#             try {
-//#                 size = is.readInt();
-//#                 for (int i = 0; i < size; i++)
-//#                     userKeysList.addElement(UserKey.createFromDataInputStream(is));
-//#             } catch (Exception e) {
-//#                 userKeysList = UserKeysList.getDefaultKeysList();
-//#                 UserKeysList.rmsUpdate(userKeysList);
-//#             }
+            DataInputStream is = NvStorage.ReadFileRecord(UserKey.storage, 0);
+
+            int size = 0;
+            try {
+                size = is.readInt();
+                for (int i = 0; i < size; i++)
+                    userKeysList.addElement(UserKey.createFromDataInputStream(is));
+            } catch (Exception e) {
+                userKeysList = UserKeysList.getDefaultKeysList();
+                UserKeysList.rmsUpdate(userKeysList);
+            }
 //#ifdef PLUGINS
 //#         } else {
 //#             userKeysList = UserKeysList.getDefaultKeysList();
@@ -159,7 +157,7 @@ public class UserKeyExec {
             
     }
 
-    public boolean commandExecute(Display display, int previous_key_code, int key_code) { //return false if key not executed
+    public boolean commandExecute(int previous_key_code, int key_code) { //return false if key not executed
         int[] commands_id = {0, 0, 0};
         int index_key = userKeysList.indexOf(new UserKey(commands_id, previous_key_code, key_code, true, true));
         if (index_key<0) // Если нет двухкнопочного сочетания, ищем однокнопочное
@@ -169,18 +167,18 @@ public class UserKeyExec {
         commands_id = ((UserKey) userKeysList.elementAt(index_key)).commands_id;
         boolean executed = false;
         for (int i = 0; i < 3; i++)
-            executed = executed || commandExecuteByID(display, commands_id[i], i);
+            executed = executed || commandExecuteByID( commands_id[i], i);
         return executed;
     }
 
-    public boolean commandExecuteByID(Display display, int command_id, int type) {
+    public boolean commandExecuteByID(int command_id, int type) {
         Config cf = Config.getInstance();
         boolean connected = sd.roster.isLoggedIn();
-        Displayable current = display.getCurrent();
+        Displayable current = midlet.BombusMod.getInstance().getCurrentDisplayable();
 
         switch (command_id) {
             case 1: 
-                new ConfigForm(display, sd.roster);
+                new ConfigForm(sd.roster);
                 break;
             case 2: 
                 sd.roster.cmdCleanAllMessages();
@@ -190,12 +188,12 @@ public class UserKeyExec {
                 break;
 //#ifdef POPUPS
 //#ifdef STATS
-//#             case 4:
+            case 4:
 //#ifdef PLUGINS
 //#                 if (sd.Stats)
 //#endif
-//#                     new StatsWindow(display, sd.roster);
-//#                 break;
+                    new StatsWindow( sd.roster);
+                break;
 //#endif
 //#endif
             case 5:
@@ -203,7 +201,7 @@ public class UserKeyExec {
                 break;
             case 6: 
 //#if FILE_TRANSFER
-                new io.file.transfer.TransferManager(display, sd.roster);
+                new io.file.transfer.TransferManager( sd.roster);
 //#endif
                 break;
             case 7: 
@@ -216,18 +214,18 @@ public class UserKeyExec {
                 break;
             case 8: 
 //#ifdef SERVICE_DISCOVERY
-                if (connected) new ServiceDiscovery(display, null, null, false);
+                if (connected) new ServiceDiscovery( null, null, false);
 //#endif
                 break;
             case 9: 
 //#ifdef PRIVACY
-                if (connected) new PrivacySelect(display, sd.roster);
+                if (connected) new PrivacySelect(sd.roster);
 //#endif
                 break;
 //#ifdef USER_KEYS                
-//#             case 10: //key pound
-//#                 new UserKeysList(display);
-//#                 break;
+            case 10: //key pound
+                new UserKeysList();
+                break;
 //#endif                
             case 11:
 //#ifdef POPUPS
@@ -255,7 +253,7 @@ public class UserKeyExec {
 //#                 try {
 //#                     Class.forName("Console.XMLList");
 //#endif
-//#                     new XMLList(display, display.getCurrent());
+                    new XMLList();
 //#ifdef PLUGINS
 //#                 } catch (ClassNotFoundException ignore3) { }
 //#endif
@@ -272,13 +270,13 @@ public class UserKeyExec {
 //#ifdef PLUGINS
 //#                 if(sd.Juick)
 //#endif
-//#                 if (current instanceof Roster) {
-//#                     Contact jContact = sd.roster.getMainJuickContact();
-//#                     if (jContact != null)
-//#                         sd.roster.focusToContact(jContact, false);
-//#                 } else {
-//#                     return false;
-//#                 }
+                if (current instanceof Roster) {
+                    Contact jContact = sd.roster.getMainJuickContact();
+                    if (jContact != null)
+                        sd.roster.focusToContact(jContact, false);
+                } else {
+                    return false;
+                }
 //#endif
                 break;
             case 19:
@@ -307,12 +305,12 @@ public class UserKeyExec {
 //#ifdef PLUGINS
 //#                 if(sd.Juick)
 //#endif
-//#                 if (current instanceof ContactMessageList) {
-//#                     ContactMessageList current_cml = (ContactMessageList) current;
-//#                     current_cml.commandAction(current_cml.cmdJuickCommands, current);
-//#                 } else {
-//#                     return false;
-//#                 }
+                if (current instanceof ContactMessageList) {
+                    ContactMessageList current_cml = (ContactMessageList) current;
+                    current_cml.menuAction(current_cml.cmdJuickCommands, (VirtualList)current);
+                } else {
+                    return false;
+                }
 //#endif
                 break;
             default:

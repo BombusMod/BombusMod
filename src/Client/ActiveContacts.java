@@ -29,18 +29,14 @@ package Client;
 
 import java.util.Enumeration;
 import java.util.Vector;
-//#ifndef MENU_LISTENER
-//# import javax.microedition.lcdui.Command;
-//#else
-import Menu.Command;
-//#endif
-import javax.microedition.lcdui.Display;
-import javax.microedition.lcdui.Displayable;
 import locale.SR;
 import ui.MainBar;
 import ui.VirtualElement;
-import ui.controls.PopUp;
+import ui.VirtualList;
 import ui.controls.form.DefForm;
+//#ifdef POPUPS
+import ui.controls.PopUp;
+//#endif
 
 /**
  *
@@ -54,9 +50,12 @@ public class ActiveContacts
     
     StaticData sd = StaticData.getInstance();
 
-    /** Creates a new instance of ActiveContacts */
-    public ActiveContacts(Display display, Displayable pView, Contact current) {
-	super(display, pView, SR.MS_ACTIVE_CONTACTS);
+    /** Creates a new instance of ActiveContacts
+     * @param pView
+     * @param current
+     */
+    public ActiveContacts(VirtualList pView, Contact current) {
+	super(SR.MS_ACTIVE_CONTACTS);
 	parentView=pView;
         enableListWrapping(true);
         activeContacts=null;
@@ -70,32 +69,30 @@ public class ActiveContacts
 
 	if (getItemCount()==0) return;
 	
-        MainBar mainbar=new MainBar(2, String.valueOf(getItemCount()), " ", false);
-        mainbar.addElement(SR.MS_ACTIVE_CONTACTS);
-        setMainBarItem(mainbar);
+        MainBar mb=new MainBar(2, String.valueOf(getItemCount()), " ", false);
+        mb.addElement(SR.MS_ACTIVE_CONTACTS);
+        setMainBarItem(mb);
 	try {
             int focus=activeContacts.indexOf(current);
             moveCursorTo(focus);
         } catch (Exception e) {}
 
-	attachDisplay(display);
+	show(parentView);
     }
     
     protected int getItemCount() { return activeContacts.size(); }
     protected VirtualElement getItemRef(int index) { 
 	return (VirtualElement) activeContacts.elementAt(index);
     }
-
+    public void cmdOk() {
+        eventOk();
+    }
     public void eventOk() {
 	Contact c=(Contact)getFocusedObject();
-	new ContactMessageList(c, display).setParentView(sd.roster);
+	new ContactMessageList(c);        
         //c.msgSuspended=null; // clear suspended message for selected contact
     }
-
-    public void commandAction(Command c, Displayable d) {
-	if (c==cmdCancel) destroyView();
-	if (c==cmdOk) eventOk();
-    }
+    
 
     public void keyPressed(int keyCode) {
         kHold=0;
@@ -147,9 +144,7 @@ public class ActiveContacts
     
     public void destroyView(){
         sd.roster.reEnumRoster();
-        display.setCurrent(parentView);
+        super.destroyView();
     }
-//#ifdef MENU_LISTENER
     public String touchLeftCommand(){ return SR.MS_SELECT; }    
-//#endif
 }

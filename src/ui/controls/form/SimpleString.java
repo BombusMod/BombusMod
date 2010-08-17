@@ -27,6 +27,7 @@
 
 package ui.controls.form;
 
+import Client.Config;
 import Fonts.FontCache;
 import javax.microedition.lcdui.Font;
 import ui.IconTextElement;

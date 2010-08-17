@@ -28,10 +28,8 @@
 package images.camera;
 
 import Client.Config;
-import javax.microedition.lcdui.Alert;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
-import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Form;
 import javax.microedition.lcdui.Item;
@@ -51,7 +49,6 @@ public class CameraImage implements CommandListener{
     private Command cmdShot=new Command (SR.MS_CAMERASHOT, Command.OK, 1);
     private Command cmdCancel=new Command (SR.MS_CANCEL, Command.BACK, 99);
     
-    private Display display;
     private Displayable parentView;
     
     private Player player;
@@ -62,10 +59,10 @@ public class CameraImage implements CommandListener{
 
     //private String sizes="encoding=jpeg&width=320&height=240"; //"width=800&height=600"
     private final static String mode="encoding=jpeg";
-    /** Creates a new instance of CameraImage */
-    public CameraImage(Display display, CameraImageListener imgListener/*, String sizes*/) {
-        this.display=display;
-        parentView=display.getCurrent();
+    /** Creates a new instance of CameraImage
+     * @param imgListener
+     */
+    public CameraImage(CameraImageListener imgListener/*, String sizes*/) {
         this.imgListener=imgListener;
 
         //if (sizes!=null) this.sizes=sizes;
@@ -85,13 +82,11 @@ public class CameraImage implements CommandListener{
             form.addCommand(cmdShot);
             form.addCommand(cmdCancel);
             form.setCommandListener(this);
-            display.setCurrent(form);
+            midlet.BombusMod.getInstance().setDisplayable(form);
             
             player.start();
         } catch (Exception e) { 
-            display.setCurrent(
-                    new Alert("Error", e.toString(), null, null), 
-                    parentView);
+            //TODO: alert error
             e.printStackTrace(); 
         }
     }
@@ -109,7 +104,7 @@ public class CameraImage implements CommandListener{
         player = null;
         videoControl = null;
 
-        display.setCurrent(parentView);
+        midlet.BombusMod.getInstance().setDisplayable(parentView);
 
     }
 }
