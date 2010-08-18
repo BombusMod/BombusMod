@@ -75,9 +75,7 @@ public class ActiveContacts
 	try {
             int focus=activeContacts.indexOf(current);
             moveCursorTo(focus);
-        } catch (Exception e) {}
-
-	show(parentView);
+        } catch (Exception e) {}	
     }
     
     protected int getItemCount() { return activeContacts.size(); }

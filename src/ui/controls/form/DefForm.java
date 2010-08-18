@@ -67,7 +67,8 @@ public class DefForm
         
 	setMenuListener(this);
         
-        enableListWrapping(false);        
+        enableListWrapping(false);  
+        show(parentView);
         
     }
 

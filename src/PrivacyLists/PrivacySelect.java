@@ -78,7 +78,7 @@ public class PrivacySelect
         
         getLists();
         
-        show(parentView);        
+                
     }
     
     public void commandState() {

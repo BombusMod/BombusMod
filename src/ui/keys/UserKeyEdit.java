@@ -60,9 +60,9 @@ class UserKeyEdit extends DefForm {
     public UserKeyEdit(UserKeysList keysList, UserKey u) {
         super((u==null)?
 //#ifdef USER_KEYS
-            SR.MS_ADD_CUSTOM_KEY:
+//#             SR.MS_ADD_CUSTOM_KEY:
 //#else
-//#                 "":
+                "":
 //#endif
                 (u.toString()));
         
@@ -73,29 +73,29 @@ class UserKeyEdit extends DefForm {
 	this.u=u;
 
 //#ifdef USER_KEYS
-        active=new CheckBox(SR.MS_ENABLED, u.active);
-        itemsList.addElement(active);
-
-        for (int i = 0; i < 3; i++) {
-            commands_t[i].append(UserKeyExec.none_command.description);
-            for (Enumeration e = UserKeyExec.available_commands[i].elements(); e.hasMoreElements();) {
-                commands_t[i].append(((UserKeyCommand) e.nextElement()).description);
-            }
-            commands_t[i].setSelectedIndex(UserKeyExec.available_commands[i].indexOf(new UserKeyCommand(u.commands_id[i], null)) + 1);
-            itemsList.addElement(commands_t[i]);
-        }
-
-        two_keys_t = new CheckBox("Two keys", u.two_keys);
-        itemsList.addElement(two_keys_t);
-
-        itemsList.addElement(new SpacerItem(10));
-
-        key_t = new KeyInput(u, "Press it");
-        itemsList.addElement(key_t);
+//#         active=new CheckBox(SR.MS_ENABLED, u.active);
+//#         itemsList.addElement(active);
+//# 
+//#         for (int i = 0; i < 3; i++) {
+//#             commands_t[i].append(UserKeyExec.none_command.description);
+//#             for (Enumeration e = UserKeyExec.available_commands[i].elements(); e.hasMoreElements();) {
+//#                 commands_t[i].append(((UserKeyCommand) e.nextElement()).description);
+//#             }
+//#             commands_t[i].setSelectedIndex(UserKeyExec.available_commands[i].indexOf(new UserKeyCommand(u.commands_id[i], null)) + 1);
+//#             itemsList.addElement(commands_t[i]);
+//#         }
+//# 
+//#         two_keys_t = new CheckBox("Two keys", u.two_keys);
+//#         itemsList.addElement(two_keys_t);
+//# 
+//#         itemsList.addElement(new SpacerItem(10));
+//# 
+//#         key_t = new KeyInput(u, "Press it");
+//#         itemsList.addElement(key_t);
 //#endif
         
         moveCursorTo(getNextSelectableRef(-1));
-        show(parentView);
+        
         parentView = keysList;
     }
     

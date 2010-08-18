@@ -76,7 +76,7 @@ public class InviteForm
         itemsList.addElement(reason);
         
         moveCursorTo(getNextSelectableRef(-1));
-        show(parentView);
+        
     }
 
     public void cmdOk() {

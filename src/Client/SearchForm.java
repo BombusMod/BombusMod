@@ -72,8 +72,7 @@ public class SearchForm
         if (getItemCount()<1) loadDefaults();
 
         updateMainBar();
-        setMenuListener(this);
-        show(parentView);
+        setMenuListener(this);        
     }
     
     private void updateMainBar() {
@@ -168,7 +167,7 @@ public class SearchForm
 //#endif
     }
     
-    protected int getItemCount() {
+    protected final int getItemCount() {
         return (servers==null)?0:servers.size();
     }
 

@@ -42,7 +42,7 @@ import Menu.MenuCommand;
 import Menu.MyMenu;
 import ui.VirtualList;
 //#ifdef CLIPBOARD
-import util.ClipBoard;
+//# import util.ClipBoard;
 //#endif
 
 /**
@@ -61,9 +61,9 @@ public class InfoWindow
     StaticData sd=StaticData.getInstance();
 
 //#ifdef CLIPBOARD
-    ClipBoard clipboard  = ClipBoard.getInstance();
-    MenuCommand cmdCopy      = new MenuCommand(SR.MS_COPY, MenuCommand.SCREEN, 1);
-    MenuCommand cmdCopyPlus  = new MenuCommand("+ "+SR.MS_COPY, MenuCommand.SCREEN, 2);
+//#     ClipBoard clipboard  = ClipBoard.getInstance();
+//#     MenuCommand cmdCopy      = new MenuCommand(SR.MS_COPY, MenuCommand.SCREEN, 1);
+//#     MenuCommand cmdCopyPlus  = new MenuCommand("+ "+SR.MS_COPY, MenuCommand.SCREEN, 2);
 //#endif
 
     /**
@@ -114,19 +114,19 @@ public class InfoWindow
         abilities.selectable = true;
         itemsList.addElement(abilities);
 
-        show(parentView);
+        
         this.parentView = pView;
     }
 
     public void commandState() {
         menuCommands.removeAllElements();
 //#ifdef CLIPBOARD
-            if (Config.getInstance().useClipBoard) {
-                ClipBoard clipboard  = ClipBoard.getInstance();
-                addMenuCommand(cmdCopy);
-                if (clipboard.isEmpty())
-                    addMenuCommand(cmdCopyPlus);
-            }
+//#             if (Config.getInstance().useClipBoard) {
+//#                 ClipBoard clipboard  = ClipBoard.getInstance();
+//#                 addMenuCommand(cmdCopy);
+//#                 if (clipboard.isEmpty())
+//#                     addMenuCommand(cmdCopyPlus);
+//#             }
 //#endif
         addMenuCommand(cmdCancel);
     }
@@ -138,25 +138,25 @@ public class InfoWindow
     
     public void menuAction(MenuCommand command, VirtualList displayable) {
 //#ifdef CLIPBOARD
-        if (command == cmdCopy) {
-            try {
-                String str = ((MultiLine) getFocusedObject()).toString();
-                if (str == null)
-                    str = "";
-                clipboard.setClipBoard(str);
-            } catch (Exception e) {/*no messages*/}
-        }
-
-        if (command == cmdCopyPlus) {
-            try {
-                String str = ((MultiLine) getFocusedObject()).toString();
-                if (str == null)
-                    str = "";
-                str  = clipboard.getClipBoard() + "\n\n" + str;
-
-                clipboard.setClipBoard(str);
-            } catch (Exception e) {/*no messages*/}
-        }
+//#         if (command == cmdCopy) {
+//#             try {
+//#                 String str = ((MultiLine) getFocusedObject()).toString();
+//#                 if (str == null)
+//#                     str = "";
+//#                 clipboard.setClipBoard(str);
+//#             } catch (Exception e) {/*no messages*/}
+//#         }
+//# 
+//#         if (command == cmdCopyPlus) {
+//#             try {
+//#                 String str = ((MultiLine) getFocusedObject()).toString();
+//#                 if (str == null)
+//#                     str = "";
+//#                 str  = clipboard.getClipBoard() + "\n\n" + str;
+//# 
+//#                 clipboard.setClipBoard(str);
+//#             } catch (Exception e) {/*no messages*/}
+//#         }
 //#endif
         super.menuAction(command, displayable);
     }
@@ -179,7 +179,7 @@ public class InfoWindow
             abilitiesList.addElement("ARCHIVE");
 //#endif
 //#ifdef AUTOSTATUS
-        abilitiesList.addElement("AUTOSTATUS");
+//#         abilitiesList.addElement("AUTOSTATUS");
 //#endif
 //#ifdef AUTOTASK
 //#         abilitiesList.addElement("AUTOTASK");
@@ -209,19 +209,19 @@ public class InfoWindow
             abilitiesList.addElement("CLIENTS_ICONS");
 //#endif
 //#ifdef CLIPBOARD
-        abilitiesList.addElement("CLIPBOARD");
+//#         abilitiesList.addElement("CLIPBOARD");
 //#endif
 //#ifdef CONSOLE
 //#ifdef PLUGINS
 //#         if (sd.Console)
 //#endif
-            abilitiesList.addElement("CONSOLE");
+//#             abilitiesList.addElement("CONSOLE");
 //#endif
 //#ifdef COLOR_TUNE
 //#ifdef PLUGINS
 //#         if (sd.Colors)
 //#endif
-            abilitiesList.addElement("COLOR_TUNE");
+//#             abilitiesList.addElement("COLOR_TUNE");
 //#endif
 //#ifdef DETRANSLIT
 //#ifdef PLUGINS
@@ -242,37 +242,37 @@ public class InfoWindow
             abilitiesList.addElement("FILE_TRANSFER");
 //#endif
 //#ifdef GRADIENT
-        abilitiesList.addElement("GRADIENT");
+//#         abilitiesList.addElement("GRADIENT");
 //#endif
 //#ifdef HISTORY
 //#ifdef PLUGINS
 //#         if (sd.History)
 //#endif
-            abilitiesList.addElement("HISTORY");
+//#             abilitiesList.addElement("HISTORY");
 //#endif
 //#ifdef HISTORY_READER
 //#ifdef PLUGINS
 //#         if (sd.History)
 //#endif
-            abilitiesList.addElement("HISTORY_READER");
+//#             abilitiesList.addElement("HISTORY_READER");
 //#endif
 //#ifdef HTTPCONNECT
 //#         abilitiesList.addElement("HTTPCONNECT");
 //#endif
 //#ifdef HTTPPOLL
-        abilitiesList.addElement("HTTPPOLL");
+//#         abilitiesList.addElement("HTTPPOLL");
 //#endif
 //#ifdef IMPORT_EXPORT
 //#ifdef PLUGINS
 //#         if (sd.IE)
 //#endif
-            abilitiesList.addElement("IMPORT_EXPORT");
+//#             abilitiesList.addElement("IMPORT_EXPORT");
 //#endif
 //#ifdef JUICK
 //#ifdef PLUGINS
 //#         if (sd.Juick)
 //#endif
-        abilitiesList.addElement("JUICK");
+//#         abilitiesList.addElement("JUICK");
 //#endif
 //#ifdef LAST_MESSAGES
 //#ifdef PLUGINS
@@ -287,7 +287,7 @@ public class InfoWindow
 //#             abilitiesList.addElement("LIGHT_CONFIG");
 //#endif  
 //#ifdef LOGROTATE
-        abilitiesList.addElement("LOGROTATE");
+//#         abilitiesList.addElement("LOGROTATE");
 //#endif
 //#ifdef NEW_DISCO
 //#         abilitiesList.addElement("NEW_DISCO");
@@ -306,25 +306,25 @@ public class InfoWindow
 //#ifdef PLUGINS
 //#         if (sd.PEP)
 //#endif
-            abilitiesList.addElement("PEP");
+//#             abilitiesList.addElement("PEP");
 //#endif
 //#ifdef PEP_ACTIVITY
 //#ifdef PLUGINS
 //#         if (sd.PEP)
 //#endif
-            abilitiesList.addElement("PEP_ACTIVITY");
+//#             abilitiesList.addElement("PEP_ACTIVITY");
 //#endif
 //#ifdef PEP_LOCATION
 //#ifdef PLUGINS
 //#         if (sd.PEP)
 //#endif
-            abilitiesList.addElement("PEP_LOCATION");
+//#             abilitiesList.addElement("PEP_LOCATION");
 //#endif
 //#ifdef PEP_TUNE
 //#ifdef PLUGINS
 //#         if (sd.PEP)
 //#endif
-            abilitiesList.addElement("PEP_TUNE");
+//#             abilitiesList.addElement("PEP_TUNE");
 //#endif
 //#ifdef PLUGINS
 //#         abilitiesList.addElement("PLUGINS");
@@ -345,10 +345,10 @@ public class InfoWindow
             abilitiesList.addElement("PRIVACY");
 //#endif
 //#ifdef SASL_XGOOGLETOKEN
-        abilitiesList.addElement("SASL_XGOOGLETOKEN");
+//#         abilitiesList.addElement("SASL_XGOOGLETOKEN");
 //#endif
 //#ifdef SE_LIGHT
-        abilitiesList.addElement("SE_LIGHT");
+//#         abilitiesList.addElement("SE_LIGHT");
 //#endif
 //#ifdef SERVICE_DISCOVERY
         abilitiesList.addElement("SERVICE_DISCOVERY");
@@ -360,19 +360,19 @@ public class InfoWindow
 //#ifdef PLUGINS
 //#         if (sd.Stats)
 //#endif
-            abilitiesList.addElement("STATS");
+//#             abilitiesList.addElement("STATS");
 //#endif
 //#ifdef TEMPLATES
 //#ifdef PLUGINS
 //#         if (sd.Archive)
 //#endif
-        abilitiesList.addElement("TEMPLATES");
+//#         abilitiesList.addElement("TEMPLATES");
 //#endif
 //#ifdef TLS        
 //#         abilitiesList.addElement("TLS");
 //#endif        
 //#ifdef USER_KEYS
-        abilitiesList.addElement("USER_KEYS");
+//#         abilitiesList.addElement("USER_KEYS");
 //#endif
 //#ifdef USE_ROTATOR
         abilitiesList.addElement("USE_ROTATOR");

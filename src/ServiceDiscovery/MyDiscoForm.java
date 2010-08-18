@@ -122,7 +122,7 @@ public class MyDiscoForm extends DefForm{
         }
         
         this.stream=stream;
-        show(parentView);
+        
     }
     
     private void sendForm(String id){

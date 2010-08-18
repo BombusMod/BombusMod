@@ -72,7 +72,7 @@ public class TransferSendFile
         itemsList.addElement(description);
         
         moveCursorTo(2);
-        show(parentView);
+        
         this.parentView=pView;
     }
     

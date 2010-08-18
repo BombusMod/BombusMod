@@ -38,7 +38,7 @@ import io.file.browse.BrowserListener;
 import util.StringUtils;
 //#endif
 //#ifdef CLIPBOARD
-import util.ClipBoard;
+//# import util.ClipBoard;
 //#endif
 import Menu.MenuCommand;
 import javax.microedition.lcdui.Image;
@@ -78,9 +78,9 @@ public class VCardView
     private String url="";
 
 //#ifdef CLIPBOARD
-    ClipBoard clipboard  = ClipBoard.getInstance(); 
-    MenuCommand cmdCopy      = new MenuCommand(SR.MS_COPY, MenuCommand.SCREEN, 1);
-    MenuCommand cmdCopyPlus  = new MenuCommand("+ "+SR.MS_COPY, MenuCommand.SCREEN, 2);
+//#     ClipBoard clipboard  = ClipBoard.getInstance(); 
+//#     MenuCommand cmdCopy      = new MenuCommand(SR.MS_COPY, MenuCommand.SCREEN, 1);
+//#     MenuCommand cmdCopyPlus  = new MenuCommand("+ "+SR.MS_COPY, MenuCommand.SCREEN, 2);
 //#endif
     MenuCommand cmdRefresh   = new MenuCommand(SR.MS_REFRESH, MenuCommand.SCREEN, 3);
 //#if FILE_IO
@@ -126,7 +126,7 @@ public class VCardView
             itemsList.addElement(endVCard);
             itemsList.addElement(refresh);
         }
-        show(parentView);
+        
     }
     
     
@@ -174,22 +174,22 @@ public class VCardView
         }
 //#endif
 //#ifdef CLIPBOARD
-        if (c == cmdCopy) {
-            try {
-                clipboard.setClipBoard((((MultiLine)getFocusedObject()).getValue()==null)?"":((MultiLine)getFocusedObject()).getValue()+"\n");
-            } catch (Exception e) {/*no messages*/}
-        }
-        
-        if (c==cmdCopyPlus) {
-            try {
-                StringBuffer clipstr=new StringBuffer(clipboard.getClipBoard())
-                .append("\n\n")
-                .append((((MultiLine)getFocusedObject()).getValue()==null)?"":((MultiLine)getFocusedObject()).getValue()+"\n");
-                
-                clipboard.setClipBoard(clipstr.toString());
-                clipstr=null;
-            } catch (Exception e) {/*no messages*/}
-        }
+//#         if (c == cmdCopy) {
+//#             try {
+//#                 clipboard.setClipBoard((((MultiLine)getFocusedObject()).getValue()==null)?"":((MultiLine)getFocusedObject()).getValue()+"\n");
+//#             } catch (Exception e) {/*no messages*/}
+//#         }
+//#         
+//#         if (c==cmdCopyPlus) {
+//#             try {
+//#                 StringBuffer clipstr=new StringBuffer(clipboard.getClipBoard())
+//#                 .append("\n\n")
+//#                 .append((((MultiLine)getFocusedObject()).getValue()==null)?"":((MultiLine)getFocusedObject()).getValue()+"\n");
+//#                 
+//#                 clipboard.setClipBoard(clipstr.toString());
+//#                 clipstr=null;
+//#             } catch (Exception e) {/*no messages*/}
+//#         }
 //#endif
         super.menuAction(c, d);
     }
@@ -216,11 +216,11 @@ public class VCardView
                 addMenuCommand(cmdDelPhoto);
             }
 //#ifdef CLIPBOARD
-            if (Config.getInstance().useClipBoard) {
-                addMenuCommand(cmdCopy);
-                if (!clipboard.isEmpty())
-                    addMenuCommand(cmdCopyPlus);
-            }
+//#             if (Config.getInstance().useClipBoard) {
+//#                 addMenuCommand(cmdCopy);
+//#                 if (!clipboard.isEmpty())
+//#                     addMenuCommand(cmdCopyPlus);
+//#             }
 //#endif
         }
 

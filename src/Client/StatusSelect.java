@@ -72,7 +72,7 @@ public class StatusSelect
         defp=cf.loginstatus;
         moveCursorTo(defp);
         enableListWrapping(true);
-        show(parentView);
+        
     }
     
     public void commandState() {
@@ -174,8 +174,7 @@ public class StatusSelect
             itemsList.addElement(new SimpleString("%dt - date time", false));
             
             moveCursorTo(getNextSelectableRef(-1));
-            this.parentView=pView;
-            show(parentView);
+            this.parentView=pView;           
             
         }
         

@@ -87,7 +87,7 @@ public class ArchiveList
         
         commandState();
         addMenuCommands();
-        setMenuListener(this);
+        setMenuListener(this);        
         show(parentView);
     }
 

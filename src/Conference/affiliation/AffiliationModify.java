@@ -72,10 +72,8 @@ public class AffiliationModify
         itemsList.addElement(affiliationItem);
 
 	reasonItem=new TextInput(SR.MS_REASON, reason, "reason", TextField.ANY);
-	itemsList.addElement(reasonItem);
-
-        show(parentView);
-        this.parentView=pView;
+	itemsList.addElement(reasonItem);       
+        
     }
     
     

@@ -108,7 +108,6 @@ public class AutoTaskForm
 //#         itemsList.addElement(actionType);
 //#         
 //#         update();
-//#         show(parentView);
 //#         this.parentView=pView;
 //#     }
 //# 

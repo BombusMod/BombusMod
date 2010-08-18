@@ -39,8 +39,8 @@ import ui.controls.form.ListItem;
 import locale.SR;
 import Menu.MenuCommand;
 //#ifdef CLIPBOARD
-import util.ClipBoard;
-import Client.Msg;
+//# import util.ClipBoard;
+//# import Client.Msg;
 //#endif
 import ui.VirtualList;
 
@@ -51,10 +51,10 @@ import ui.VirtualList;
 public class MessageUrl extends DefForm implements TextBoxNotify {
 
 //#ifdef CLIPBOARD
-    private ClipBoard clipboard=ClipBoard.getInstance();
-
-    protected MenuCommand cmdCopy = new MenuCommand(SR.MS_COPY, MenuCommand.SCREEN, 20);
-    protected MenuCommand cmdCopyPlus = new MenuCommand("+ "+SR.MS_COPY, MenuCommand.SCREEN, 30);
+//#     private ClipBoard clipboard=ClipBoard.getInstance();
+//# 
+//#     protected MenuCommand cmdCopy = new MenuCommand(SR.MS_COPY, MenuCommand.SCREEN, 20);
+//#     protected MenuCommand cmdCopyPlus = new MenuCommand("+ "+SR.MS_COPY, MenuCommand.SCREEN, 30);
 //#endif
     private Vector urlList;
     MenuCommand cmdGoto=new MenuCommand("Goto", MenuCommand.OK, 2);
@@ -75,7 +75,7 @@ public class MessageUrl extends DefForm implements TextBoxNotify {
 	}
 
         setMenuListener(this);
-	show(parentView);
+	
         this.parentView = pView;
     }
     
@@ -87,18 +87,18 @@ public class MessageUrl extends DefForm implements TextBoxNotify {
             EditURL();
         }
 //#ifdef CLIPBOARD
-        if (c == cmdCopy)
-        {
-            try {
-                clipboard.add(new Msg(Msg.MESSAGE_TYPE_IN, "url", null, (String) urlList.elementAt(cursor)));
-            } catch (Exception e) {/*no messages*/}
-        }
-
-        if (c==cmdCopyPlus) {
-            try {
-                clipboard.append(new Msg(Msg.MESSAGE_TYPE_IN, "url", null, (String) urlList.elementAt(cursor)));
-            } catch (Exception e) {/*no messages*/}
-        }
+//#         if (c == cmdCopy)
+//#         {
+//#             try {
+//#                 clipboard.add(new Msg(Msg.MESSAGE_TYPE_IN, "url", null, (String) urlList.elementAt(cursor)));
+//#             } catch (Exception e) {/*no messages*/}
+//#         }
+//# 
+//#         if (c==cmdCopyPlus) {
+//#             try {
+//#                 clipboard.append(new Msg(Msg.MESSAGE_TYPE_IN, "url", null, (String) urlList.elementAt(cursor)));
+//#             } catch (Exception e) {/*no messages*/}
+//#         }
 //#endif
     }
     
@@ -138,10 +138,10 @@ public class MessageUrl extends DefForm implements TextBoxNotify {
      
      public void commandStateCommon() {
 //#ifdef CLIPBOARD
-         if (Client.Config.getInstance().useClipBoard) {
-             addMenuCommand(cmdCopy);
-             addMenuCommand(cmdCopyPlus);
-         }
+//#          if (Client.Config.getInstance().useClipBoard) {
+//#              addMenuCommand(cmdCopy);
+//#              addMenuCommand(cmdCopyPlus);
+//#          }
 //#endif
      }
      

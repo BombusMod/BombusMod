@@ -62,8 +62,7 @@ public final class AppendNick
             Contact c=(Contact)e.nextElement();
             if (c.group==to.group && c.origin>Contact.ORIGIN_GROUPCHAT && c.status<Presence.PRESENCE_OFFLINE)
                 itemsList.addElement(c);
-        }
-        show(parentView);
+        }        
         parentView = pView;
     }    
         
@@ -74,7 +73,7 @@ public final class AppendNick
              StringBuffer b=new StringBuffer(nick.substring(rp+1));
              
             if (caretPos==0) b.append(':');
-//#             me.insert(b.toString(), caretPos);
+            me.insert(b.toString(), caretPos);
             b=null;
          } catch (Exception e) {}
          destroyView();

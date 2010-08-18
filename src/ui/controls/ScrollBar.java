@@ -31,7 +31,7 @@ import Client.Config;
 import javax.microedition.lcdui.Graphics;
 import Colors.ColorTheme;
 //#ifdef GRADIENT
-//import ui.Gradient;
+//# //import ui.Gradient;
 //#endif
 import javax.microedition.lcdui.Image;
 import ui.ImageList;
@@ -57,8 +57,8 @@ public class ScrollBar {
     
     private int drawHeight;
 //#ifdef GRADIENT
-    //private Gradient gr;
-    //private int prevDrawHeight;
+//#     //private Gradient gr;
+//#     //private int prevDrawHeight;
 //#endif
     
     private int point_y;    // точка, за которую "держится" указатель
@@ -122,7 +122,8 @@ public class ScrollBar {
         this.hasPointerEvents = hasPointerEvents;
 	scrollWidth=(hasPointerEvents)? WIDTH_SCROLL_2: WIDTH_SCROLL_1;
 //#ifdef BACK_IMAGE
-//#         scrollWidth = Math.max(scrollWidth, imgH.getWidth());
+//#         if (imgH != null)
+//#             scrollWidth = Math.max(scrollWidth, imgH.getWidth());
 //#endif
     }
 

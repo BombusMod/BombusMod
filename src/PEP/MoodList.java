@@ -27,7 +27,7 @@ import ui.controls.form.DefForm;
  */
 public class MoodList extends DefForm implements MIDPTextBox.TextBoxNotify {
 //#ifdef PLUGINS
-    public static String plugin = "PLUGIN_PEP";
+//#     public static String plugin = "PLUGIN_PEP";
 //#endif
     
     /** Creates a new instance of MoodList */
@@ -36,9 +36,9 @@ public class MoodList extends DefForm implements MIDPTextBox.TextBoxNotify {
     public MoodList(Display display) {
         super(
 //#ifdef PEP
-                SR.MS_USERMOOD
+//#                 SR.MS_USERMOOD
 //#else
-//#                 ""
+                ""
 //#endif
                 );
 
@@ -53,7 +53,7 @@ public class MoodList extends DefForm implements MIDPTextBox.TextBoxNotify {
         
         sort(moods);
         
-        show(parentView);
+        
     }
 
     protected int getItemCount() { return moods.size(); }
@@ -65,10 +65,10 @@ public class MoodList extends DefForm implements MIDPTextBox.TextBoxNotify {
     }
 
 //#ifdef PEP
-    public void eventOk() {
-        if (cursor==0) OkNotify(null); 
-            else new MIDPTextBox( this, SR.MS_USERMOOD, Moods.getInstance().myMoodText, this, TextField.ANY);
-    }
+//#     public void eventOk() {
+//#         if (cursor==0) OkNotify(null); 
+//#             else new MIDPTextBox( this, SR.MS_USERMOOD, Moods.getInstance().myMoodText, this, TextField.ANY);
+//#     }
 //#endif
     
     public void OkNotify(String moodText) {

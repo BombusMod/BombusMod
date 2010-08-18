@@ -75,7 +75,7 @@ public class TransferImage
         itemsList.addElement(description);
         
         moveCursorTo(1);
-        show(parentView);
+        
         this.parentView=pView;
     }
     

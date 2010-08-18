@@ -62,7 +62,7 @@ public class TransferManager
         itemsList=TransferDispatcher.getInstance().getTaskList();
         // TODO: add classic menu
         setMenuListener(this);
-        show(parentView);
+        
         parentView = pView;
     }    
     

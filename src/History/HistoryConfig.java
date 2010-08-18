@@ -77,25 +77,21 @@ public class HistoryConfig
 //#ifdef LAST_MESSAGES
 //#         loadHistory = new CheckBox(SR.MS_LAST_MESSAGES, cf.lastMessages); itemsList.addElement(loadHistory);
 //#endif
-        saveHistory = new CheckBox(SR.MS_SAVE_HISTORY, cf.msgLog); itemsList.addElement(saveHistory);
-        savePres = new CheckBox(SR.MS_SAVE_PRESENCES, cf.msgLogPresence); itemsList.addElement(savePres);
-        saveConfHistory = new CheckBox(SR.MS_SAVE_HISTORY_CONF, cf.msgLogConf); itemsList.addElement(saveConfHistory);
-        saveConfPres = new CheckBox(SR.MS_SAVE_PRESENCES_CONF, cf.msgLogConfPresence); itemsList.addElement(saveConfPres);
-        win1251 = new CheckBox(SR.MS_1251_CORRECTION, cf.cp1251); itemsList.addElement(win1251);
+//#         saveHistory = new CheckBox(SR.MS_SAVE_HISTORY, cf.msgLog); itemsList.addElement(saveHistory);
+//#         savePres = new CheckBox(SR.MS_SAVE_PRESENCES, cf.msgLogPresence); itemsList.addElement(savePres);
+//#         saveConfHistory = new CheckBox(SR.MS_SAVE_HISTORY_CONF, cf.msgLogConf); itemsList.addElement(saveConfHistory);
+//#         saveConfPres = new CheckBox(SR.MS_SAVE_PRESENCES_CONF, cf.msgLogConfPresence); itemsList.addElement(saveConfPres);
+//#         win1251 = new CheckBox(SR.MS_1251_CORRECTION, cf.cp1251); itemsList.addElement(win1251);
 //#ifdef DETRANSLIT
 //#         translit = new CheckBox(SR.MS_1251_TRANSLITERATE_FILENAMES, cf.transliterateFilenames); itemsList.addElement(translit);
 //#endif
-
-	historyFolder = new TextInput(SR.MS_HISTORY_FOLDER, cf.msgPath, null, TextField.ANY); itemsList.addElement(historyFolder);
-        selectFolder=new LinkString(SR.MS_SELECT_HISTORY_FOLDER) { public void doAction() { selectFolder(); } };
-        itemsList.addElement(selectFolder);
+//# 
+//# 	historyFolder = new TextInput(SR.MS_HISTORY_FOLDER, cf.msgPath, null, TextField.ANY); itemsList.addElement(historyFolder);
+//#         selectFolder=new LinkString(SR.MS_SELECT_HISTORY_FOLDER) { public void doAction() { selectFolder(); } };
+//#         itemsList.addElement(selectFolder);
 //#endif
-        addMenuCommand(cmdPath);
-        commandState();
+        moveCursorTo(0);        
         
-        moveCursorTo(0);
-        
-        show(parentView);
     }
 
     public void BrowserFilePathNotify(String pathSelected) {
@@ -120,28 +116,24 @@ public class HistoryConfig
 //#ifdef LAST_MESSAGES
 //#         cf.lastMessages=loadHistory.getValue();
 //#endif
-        cf.msgLog=saveHistory.getValue();
-        cf.msgLogPresence=savePres.getValue();
-        cf.msgLogConf=saveConfHistory.getValue();
-        cf.msgLogConfPresence=saveConfPres.getValue();
-        cf.cp1251=win1251.getValue();
+//#         cf.msgLog=saveHistory.getValue();
+//#         cf.msgLogPresence=savePres.getValue();
+//#         cf.msgLogConf=saveConfHistory.getValue();
+//#         cf.msgLogConfPresence=saveConfPres.getValue();
+//#         cf.cp1251=win1251.getValue();
 //#ifdef DETRANSLIT
 //#         cf.transliterateFilenames=translit.getValue();
 //#endif
-        cf.msgPath=historyFolder.getValue();
+//#         cf.msgPath=historyFolder.getValue();
 //#endif
         cf.saveToStorage();
     }
-//#ifdef MENU_LISTENER
-//#     public void commandState() {
-//#         super.commandState();
-//#         removeCommand(cmdCancel);
-//#         addCommand(cmdPath);
-//#         addCommand(cmdCancel);
-//#     }
-//#     
-//#     public void touchLeftPressed(){ showMenu(); }
-//# 
-//#     public String touchLeftCommand() { return SR.MS_MENU; }
-//#endif
+    public void commandState() {
+        super.commandState();
+        addMenuCommand(cmdPath);        
+    }
+    
+    public void touchLeftPressed(){ showMenu(); }
+
+    public String touchLeftCommand() { return SR.MS_MENU; }
 }

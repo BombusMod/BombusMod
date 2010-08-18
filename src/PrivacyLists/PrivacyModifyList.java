@@ -78,7 +78,7 @@ public class PrivacyModifyList extends DefForm
             PrivacyList.privacyListRq(false, list, "getlistitems");
         }
         this.parentView=pView;
-        show(parentView);
+        
     }
 
     public void commandState() {

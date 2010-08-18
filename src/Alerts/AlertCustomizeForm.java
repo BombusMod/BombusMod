@@ -140,7 +140,7 @@ public class AlertCustomizeForm
 
         setMenuListener(this);
         
-        show(parentView);
+        
     }
     
     public void cmdSave() {
@@ -205,7 +205,7 @@ public class AlertCustomizeForm
         String soundType=(String)files[0].elementAt(selectedSound);
         int soundVol=sndVol.getValue()*10;
 //#ifdef DEBUG
-        System.out.println(cursor+": "+sound+" "+soundFile+" "+soundType+" "+soundVol);
+//#         System.out.println(cursor+": "+sound+" "+soundFile+" "+soundType+" "+soundVol);
 //#endif
         new EventNotify( soundType, soundFile, soundVol, 0).startNotify();
     }

@@ -70,7 +70,7 @@ public class AlertProfile extends DefForm
         defp=cf.def_profile;
         
         moveCursorTo(p);
-        show(parentView);
+        
     }
 
     public void commandState() {

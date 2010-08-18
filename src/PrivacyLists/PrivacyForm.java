@@ -110,7 +110,7 @@ public class PrivacyForm
         
         moveCursorTo(getNextSelectableRef(-1));
         this.parentView=pView;
-        show(parentView);
+        
         
     }
     

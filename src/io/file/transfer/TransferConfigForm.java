@@ -40,7 +40,7 @@ public class TransferConfigForm extends DefForm implements BrowserListener {
         itemsList.addElement(streamhost);
         itemsList.addElement(port);
         
-        show(parentView);
+        
     }
 
     public void cmdOk() {

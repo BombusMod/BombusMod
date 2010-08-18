@@ -29,7 +29,7 @@ import ui.controls.form.SimpleString;
  */
 public class ActivityList extends DefForm implements MIDPTextBox.TextBoxNotify {
 //#ifdef PLUGINS
-    public static String plugin = "PLUGIN_PEP";
+//#     public static String plugin = "PLUGIN_PEP";
 //#endif
     
     /** Creates a new instance of MoodList */
@@ -39,9 +39,9 @@ public class ActivityList extends DefForm implements MIDPTextBox.TextBoxNotify {
     public ActivityList(Display display) {
         super(
 //#ifdef PEP_ACTIVITY
-                SR.MS_USERACTIVITY
+//#                 SR.MS_USERACTIVITY
 //#else
-//#                 ""
+                ""
 //#endif
                 );
 
@@ -51,9 +51,8 @@ public class ActivityList extends DefForm implements MIDPTextBox.TextBoxNotify {
               SimpleString item = new SimpleString((String)e.nextElement(), false);
               item.selectable = true;
               itemsList.addElement(item);
-        }
-                
-        show(parentView);
+        }               
+        
     }
 
     public void cmdOk() {
@@ -61,10 +60,10 @@ public class ActivityList extends DefForm implements MIDPTextBox.TextBoxNotify {
     }
 
 //#ifdef PEP
-    public void eventOk() {
-        if (cursor==0) OkNotify(null); 
-            else new MIDPTextBox( this, SR.MS_USERACTIVITY, acttext, this, TextField.ANY);
-    }
+//#     public void eventOk() {
+//#         if (cursor==0) OkNotify(null); 
+//#             else new MIDPTextBox( this, SR.MS_USERACTIVITY, acttext, this, TextField.ANY);
+//#     }
 //#endif
     
     public void OkNotify(String actText) {

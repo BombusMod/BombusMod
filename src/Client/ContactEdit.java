@@ -160,7 +160,7 @@ public final class ContactEdit
         }
         
         moveCursorTo(getNextSelectableRef(-1));
-        show(parentView);
+        
     }
     
     private void requestVCard() {

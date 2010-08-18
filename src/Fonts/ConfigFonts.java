@@ -79,7 +79,7 @@ public class ConfigFonts
         font4.setSelectedIndex(cf.baloonFont/8);
         itemsList.addElement(font4);
 
-        show(parentView);
+        
         this.parentView=pView;
     }
     

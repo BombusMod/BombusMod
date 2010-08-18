@@ -58,8 +58,7 @@ public class ServerBox
         serverName=new TextInput(SR.MS_ADRESS, service, "disco", TextField.ANY);
         itemsList.addElement(serverName);
         
-        moveCursorTo(getNextSelectableRef(-1));
-        show(parentView);
+        moveCursorTo(getNextSelectableRef(-1));        
         this.parentView=pView;
     }
 

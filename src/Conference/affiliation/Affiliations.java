@@ -41,7 +41,7 @@ import ui.VirtualElement;
 import ui.controls.form.DefForm;
 import Menu.MenuCommand;
 //#ifdef CLIPBOARD
-import util.ClipBoard;
+//# import util.ClipBoard;
 //#endif
 import ui.VirtualList;
 
@@ -64,8 +64,8 @@ public class Affiliations
     private MenuCommand cmdModify = new MenuCommand (SR.MS_MODIFY, MenuCommand.SCREEN, 1);
     private MenuCommand cmdNew    = new MenuCommand (SR.MS_NEW_JID, MenuCommand.SCREEN, 2);
 //#ifdef CLIPBOARD
-    private MenuCommand cmdCopy   = new MenuCommand(SR.MS_COPY, MenuCommand.SCREEN, 3);
-    private ClipBoard clipboard; 
+//#     private MenuCommand cmdCopy   = new MenuCommand(SR.MS_COPY, MenuCommand.SCREEN, 3);
+//#     private ClipBoard clipboard; 
 //#endif
     
     protected VirtualElement getItemRef(int index) { return (VirtualElement) items.elementAt(index); }
@@ -96,12 +96,11 @@ public class Affiliations
         items=null;
         items=new Vector();
         
-        setMenuListener(this);
-        show(parentView);        
+        setMenuListener(this);                
         getList();
     }
     
-    public void getList() {
+    public final void getList() {
         JabberDataBlock item=new JabberDataBlock("item", null, null);
         item.setAttribute("affiliation", id);
         listRq(false, item, id);
@@ -111,13 +110,13 @@ public class Affiliations
         if (c==cmdNew) new AffiliationModify(this, room, null, "none", "");
         if (c==cmdModify) eventOk();
 //#ifdef CLIPBOARD
-        if (c==cmdCopy) {
-            try {
-                AffiliationItem item=(AffiliationItem)getFocusedObject();
-                if (item.jid!=null)
-                    clipboard.setClipBoard(item.jid);
-            } catch (Exception e) {/*no messages*/}
-        }
+//#         if (c==cmdCopy) {
+//#             try {
+//#                 AffiliationItem item=(AffiliationItem)getFocusedObject();
+//#                 if (item.jid!=null)
+//#                     clipboard.setClipBoard(item.jid);
+//#             } catch (Exception e) {/*no messages*/}
+//#         }
 //#endif     
         
     }
@@ -183,10 +182,10 @@ public class Affiliations
         addMenuCommand(cmdModify);
         addMenuCommand(cmdNew);
 //#ifdef CLIPBOARD
-        if (Config.getInstance().useClipBoard) {
-            clipboard=ClipBoard.getInstance();
-            addMenuCommand(cmdCopy);
-        }
+//#         if (Config.getInstance().useClipBoard) {
+//#             clipboard=ClipBoard.getInstance();
+//#             addMenuCommand(cmdCopy);
+//#         }
 //#endif
     }
     public void touchLeftPressed() {
