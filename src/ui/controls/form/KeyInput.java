@@ -20,12 +20,10 @@ public class KeyInput extends IconTextElement {
 //#     public static String plugin = new String("PLUGIN_USER_KEYS");
 //#endif
 
-    private boolean expected_first_key;
-
-    public boolean two_keys;
     public boolean selected;
-    public int previous_key;
-    public int key;
+
+    private UserKey u;
+    private boolean expected_first_key;
     
     private int colorItem;
     private int colorBorder;
@@ -53,27 +51,33 @@ public class KeyInput extends IconTextElement {
     
     public KeyInput(UserKey u, String caption) {
         this(caption);
-        two_keys = u.two_keys;
-        previous_key = u.previous_key;
-        key = u.key;
+        this.u = u;
     }
 
     public void onSelect() {
         selected = true;
     }
 
+    public void setTwoKeys(boolean two_keys) {
+        u.two_keys = two_keys;
+    }
+
+    public UserKey getUserKey() {
+        return u;
+    }
+
     public void keyPressed(int key_code) {
-        if (two_keys) {
+        if (u.two_keys) {
             if (expected_first_key) {
-                previous_key = key_code;
+                u.previous_key = key_code;
                 expected_first_key = false;
             } else {
-                key = key_code;
+                u.key = key_code;
                 expected_first_key = true;
                 selected = false;
             }
         } else {
-            key = key_code;
+            u.key = key_code;
             selected = false;
         }
     }
@@ -129,21 +133,21 @@ public class KeyInput extends IconTextElement {
     }
 
     public String toString() {
-        if (two_keys) {
+        if (u.two_keys) {
             if (selected) {
                 if (expected_first_key) {
                     return "First key?";
                 } else {
-                    return UserKey.keyToString(previous_key) + " + ?";
+                    return u.getPreviousKeyName() + " + ?";
                 }
             } else {
-                return UserKey.keyToString(previous_key) + " + " + UserKey.keyToString(key);
+                return u.getPreviousKeyName() + " + " + u.getLastKeyName();
             }
         } else {
             if (selected) {
                 return "Key?";
             } else {
-                return UserKey.keyToString(key);
+                return u.getLastKeyName();
             }
         }
     }

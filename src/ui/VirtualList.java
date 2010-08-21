@@ -44,6 +44,7 @@ import ui.controls.Progress;
 import ui.controls.ScrollBar;
 import util.StringUtils;
 import ui.keys.UserKeyExec;
+import ui.keys.UserKey;
 
 import java.util.Vector;
 
@@ -95,8 +96,8 @@ public abstract class VirtualList
     private int mHeight;
     
 //#ifdef GRADIENT
-    Gradient grIB;
-    Gradient grMB;
+//#     Gradient grIB;
+//#     Gradient grMB;
 //#endif
 
     public static int panelsState = 2;
@@ -429,8 +430,8 @@ public abstract class VirtualList
         width=w;
         height=h;
 //#ifdef GRADIENT
-        iHeight=0;
-        mHeight=0;
+//#         iHeight=0;
+//#         mHeight=0;
 //#endif        
     }
 
@@ -720,19 +721,19 @@ public abstract class VirtualList
 
         g.setClip(0,0, width, h);
 //#ifdef GRADIENT
-        if (getMainBarBGnd()!=getMainBarBGndBottom()) {
-            if (iHeight!=h) {
-                grIB=new Gradient(0, 0, width, h, getMainBarBGnd(), getMainBarBGndBottom(), false);
-                iHeight=h;
-            }
-            grIB.paint(g);
-        } else {
-            g.setColor(getMainBarBGnd());
-            g.fillRect(0, 0, width, h);
-        }
-//#else
+//#         if (getMainBarBGnd()!=getMainBarBGndBottom()) {
+//#             if (iHeight!=h) {
+//#                 grIB=new Gradient(0, 0, width, h, getMainBarBGnd(), getMainBarBGndBottom(), false);
+//#                 iHeight=h;
+//#             }
+//#             grIB.paint(g);
+//#         } else {
 //#             g.setColor(getMainBarBGnd());
 //#             g.fillRect(0, 0, width, h);
+//#         }
+//#else
+            g.setColor(getMainBarBGnd());
+            g.fillRect(0, 0, width, h);
 //#endif
         g.setColor(getMainBarRGB());
         ((MainBar)infobar).lShift = (Config.getInstance().phoneManufacturer == Config.NOKIA && reverse && fullscreen);
@@ -745,19 +746,19 @@ public abstract class VirtualList
         int h=mainbar.getVHeight()+1;
         g.setClip(0,0, width, h);
 //#ifdef GRADIENT
-        if (getMainBarBGnd()!=getMainBarBGndBottom()) {
-            if (mHeight!=h) {
-                grMB=new Gradient(0, 0, width, h, getMainBarBGndBottom(), getMainBarBGnd(), false);
-                mHeight=h;
-            }
-            grMB.paint(g);
-        } else {
-            g.setColor(getMainBarBGnd());
-            g.fillRect(0, 0, width, h);
-        }
+//#         if (getMainBarBGnd()!=getMainBarBGndBottom()) {
+//#             if (mHeight!=h) {
+//#                 grMB=new Gradient(0, 0, width, h, getMainBarBGndBottom(), getMainBarBGnd(), false);
+//#                 mHeight=h;
+//#             }
+//#             grMB.paint(g);
+//#         } else {
+//#             g.setColor(getMainBarBGnd());
+//#             g.fillRect(0, 0, width, h);
+//#         }
 //#else
-//#         g.setColor(getMainBarBGnd());
-//#         g.fillRect(0, 0, width, h);
+        g.setColor(getMainBarBGnd());
+        g.fillRect(0, 0, width, h);
 //#endif
         g.setColor(getMainBarRGB());
         ((MainBar)mainbar).lShift = (Config.getInstance().phoneManufacturer == Config.NOKIA && !reverse && fullscreen);
@@ -831,7 +832,8 @@ public abstract class VirtualList
 
     protected int kHold;
     protected void keyRepeated(int keyCode) {
-        key(keyCode); 
+        System.out.println("keyRepeated: "+keyCode);
+        //key(keyCode);
 //#ifdef LIGHT_CONFIG      
 //#ifdef PLUGINS                
 //#         if (StaticData.getInstance().lightConfig)
@@ -839,8 +841,13 @@ public abstract class VirtualList
 //#             CustomLight.keyPressed();
 //#endif        
     }
-    protected void keyReleased(int keyCode) { kHold=0; }
+    protected void keyReleased(int keyCode) {
+        System.out.println("keyReleased: "+keyCode);
+        kHold=0;
+    }
+
     protected void keyPressed(int keyCode) {
+        System.out.println("keyPressed: "+keyCode);
         kHold=0;
         key(keyCode); 
 //#ifdef LIGHT_CONFIG      
@@ -1031,7 +1038,7 @@ public abstract class VirtualList
     }
 //#endif
     
-    private boolean sendEvent(int key_code) {
+    protected boolean sendEvent(int key_code) {
         int key = getKeyCodeForSendEvent(key_code);
         if ((key > -1) && (getFocusedObject() != null)) {
             return ((VirtualElement) getFocusedObject()).handleEvent(key);
@@ -1057,7 +1064,7 @@ public abstract class VirtualList
      */
     private void key(int keyCode) {
 //#if DEBUG
-//#         //System.out.println(keyCode); // Только мешает.
+//#         System.out.println("key: "+getKeyName(keyCode)+", code: "+keyCode); // Только мешает.
 //#endif
 //#ifdef POPUPS
         boolean popupSkipped = skipPopUp(keyCode);
@@ -1065,7 +1072,12 @@ public abstract class VirtualList
             redraw();
         }
 //#endif
-        boolean executed = UserKeyExec.getInstance().commandExecute(previous_key_code, keyCode);
+        UserKey u = new UserKey();
+        u.previous_key_long = false;
+        u.key_long = false;
+        u.previous_key = previous_key_code;
+        u.key = keyCode;
+        boolean executed = UserKeyExec.getInstance().commandExecute(u);
         previous_key_code = keyCode;
         if (executed)
             return;

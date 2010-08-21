@@ -31,7 +31,6 @@ import Conference.AppendNick;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
-import javax.microedition.lcdui.TextField;
 import javax.microedition.lcdui.Ticker;
 import ui.controls.ExTextBox;
 
@@ -271,7 +270,7 @@ public final class MessageEdit
 //#                 runState = 4;
 //#                 send();
 //#                 thread = null;
-//#                 ((VirtualList) parentView).redraw();
+//#                 ((ui.VirtualList) parentView).redraw();
 //#                 break;
 //#             }
 //#             if (runState == 1) {
