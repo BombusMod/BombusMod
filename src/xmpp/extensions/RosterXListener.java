@@ -83,4 +83,7 @@ class RosterAddForm extends DefForm {
         }
         destroyView();
     }
+    public void destroyView() {
+        midlet.BombusMod.getInstance().setDisplayable(sd.roster);
+    }
 }

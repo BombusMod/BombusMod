@@ -270,7 +270,7 @@ public final class MessageEdit
 //#                 runState = 4;
 //#                 send();
 //#                 thread = null;
-//#                 ((ui.VirtualList) parentView).redraw();
+//#                 VirtualCanvas.nativeCanvas.repaint();
 //#                 break;
 //#             }
 //#             if (runState == 1) {

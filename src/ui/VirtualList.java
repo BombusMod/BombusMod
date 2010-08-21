@@ -87,7 +87,7 @@ public abstract class VirtualList
     protected int getMainBarBGnd() { return ColorTheme.getColor(ColorTheme.BAR_BGND);} 
     protected int getMainBarBGndBottom() { return ColorTheme.getColor(ColorTheme.BAR_BGND_BOTTOM);}
     
-    private StaticData sd=StaticData.getInstance();
+    protected StaticData sd=StaticData.getInstance();
 
     private int stringHeight;
     
