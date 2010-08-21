@@ -39,7 +39,7 @@ public abstract class AlertBox extends DefForm {
     
     public AlertBox(String mainbar, String text) {
         super(mainbar);
-        MultiLine lines = new MultiLine("", text, super.superWidth);
+        MultiLine lines = new MultiLine(null, text, super.superWidth);
         lines.selectable = false;
         itemsList.addElement(lines);
         show(StaticData.getInstance().roster);

@@ -37,7 +37,7 @@ import Menu.MenuCommand;
 import io.NvStorage;
 import ui.controls.AlertBox;
 //#ifdef IMPORT_EXPORT
-import IE.*;
+//# import IE.*;
 //#endif
 import ui.controls.form.DefForm;
 
@@ -88,17 +88,17 @@ public class AccountSelect extends DefForm {
 //#ifdef PLUGINS
 //#             if (StaticData.getInstance().IE) {
 //#endif     
-            new IE.Accounts("/def_accounts.txt", 0,  true);
+//#             new IE.Accounts("/def_accounts.txt", 0,  true);
 //#ifdef PLUGINS                              
 //#             }
 //#endif
-            loadAccounts();
-        if (accountList.isEmpty()) {
+//#             loadAccounts();
+//#         if (accountList.isEmpty()) {
 //#endif
             new AccountForm(this, null).show(pView);
             return;
 //#ifdef IMPORT_EXPORT
-        }
+//#         }
 //#endif
         }  
 
@@ -160,7 +160,7 @@ public class AccountSelect extends DefForm {
         if (c==cmdCancel) {
             destroyView();
         }
-        if (c==cmdConfig) new ConfigForm(this);
+        if (c==cmdConfig) new ConfigForm();
         if (c==cmdLogin) switchAccount(true);
         if (c==cmdSelect) switchAccount(false);
         if (c==cmdEdit) new AccountForm(this, (Account)getFocusedObject()).show(this);

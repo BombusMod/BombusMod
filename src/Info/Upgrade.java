@@ -50,7 +50,7 @@ public class Upgrade
         MenuListener
     {
 //#ifdef PLUGINS
-    public static String plugin = new String("PLUGIN_VERSION_UPGRADE");
+//#     public static String plugin = new String("PLUGIN_VERSION_UPGRADE");
 //#endif
    
     //private MenuCommand cmdBack=new MenuCommand(SR.MS_BACK, Command.BACK, 99);
@@ -67,10 +67,9 @@ public class Upgrade
     private boolean error=false;
     
     /** Creates a new instance of Upgrade
-     * @param pView
      * @param build
      */
-    public Upgrade(VirtualList pView, boolean build) {
+    public Upgrade(boolean build) {
         super ();
         this.build=build;
         
@@ -91,7 +90,6 @@ public class Upgrade
         mb.addElement(null);
 
         show(parentView);
-        this.parentView=pView;
         
         new Thread(this).start();
     }
@@ -99,8 +97,6 @@ public class Upgrade
     public void run() {
         wait=true;
         clearList();
-        String result="";
-        StringBuffer b = new StringBuffer();
         String vUrl=(build)?Client.Config.getInstance().getStringProperty("Bombus-Upgrade", VERSION_URL):VERSION_URL;
         if (build) {
             vUrl+="?vers=new";

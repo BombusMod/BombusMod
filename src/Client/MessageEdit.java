@@ -82,8 +82,7 @@ public final class MessageEdit
 //#     Ticker ticker = new Ticker("");
 //#endif
     /** Creates a new instance of MessageEdit */
-    public MessageEdit( Displayable pView, Contact to, String body) {
-
+    public MessageEdit(Contact to, String body) {
         super(body, to.toString());
 
         this.to = to;
@@ -192,13 +191,13 @@ public final class MessageEdit
             }
 //#ifdef SMILES
             if (c == cmdSmile) {
-                new SmilePicker(textbox, caretPos, this);
+                new SmilePicker(caretPos, this);
                 return;
             }
 //#endif
 //#ifndef WMUC
             if (c == cmdInsNick) {
-                new AppendNick(textbox, to, caretPos, this);
+                new AppendNick(to, caretPos, this);
                 return;
             }
 //#endif
@@ -271,7 +270,7 @@ public final class MessageEdit
 //#                 runState = 4;
 //#                 send();
 //#                 thread = null;
-//#                 ((VirtualList) parentView).redraw();
+//#                 ((ui.VirtualList) parentView).redraw();
 //#                 break;
 //#             }
 //#             if (runState == 1) {

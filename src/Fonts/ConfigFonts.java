@@ -45,9 +45,8 @@ public class ConfigFonts
     Config cf;
     
     /** Creates a new instance of ConfigFonts
-     * @param pView 
      */
-    public ConfigFonts(VirtualList pView) {
+    public ConfigFonts() {
         super(SR.MS_FONTS_OPTIONS);
         cf=Config.getInstance();
 
@@ -78,9 +77,6 @@ public class ConfigFonts
         font4.append(SR.MS_FONTSIZE_LARGE);
         font4.setSelectedIndex(cf.baloonFont/8);
         itemsList.addElement(font4);
-
-        
-        this.parentView=pView;
     }
     
     public void cmdOk() {

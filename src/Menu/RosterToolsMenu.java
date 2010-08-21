@@ -27,7 +27,7 @@
 
 package Menu;
 //#ifdef CONSOLE
-import Console.XMLList;
+//# import Console.XMLList;
 //#endif
 import Alerts.AlertCustomizeForm;
 import Client.*;
@@ -42,33 +42,30 @@ import Fonts.ConfigFonts;
 import ServiceDiscovery.*;
 //#endif
 //#if HISTORY
-import History.HistoryConfig;
+//# import History.HistoryConfig;
 //#endif
 //#ifdef PEP
-import PEP.PepForm;
+//# import PEP.PepForm;
 //#endif
 //#ifdef STATS
-import Statistic.StatsWindow;
+//# import Statistic.StatsWindow;
 //#endif
 import VCard.VCard;
 import VCard.VCardEdit;
 import images.MenuIcons;
 import locale.SR;
 //#ifdef COLOR_TUNE
-import Colors.ColorConfigForm;
+//# import Colors.ColorConfigForm;
 //#endif
 //import ui.reconnectWindow;
-import javax.microedition.lcdui.Displayable;
-import ui.VirtualList;
-
 //#ifdef USER_KEYS
-import ui.keys.UserKeysList;
+//# import ui.keys.UserKeysList;
 //#endif
 //#ifdef CHECK_VERSION
 //# import Info.Upgrade;
 //#endif
 //#if SASL_XGOOGLETOKEN
-import xmpp.extensions.IqGmail;
+//# import xmpp.extensions.IqGmail;
 //#endif
 //#ifdef LIGHT_CONFIG
 //# import LightControl.LightConfigForm;
@@ -80,7 +77,7 @@ public class RosterToolsMenu extends Menu {
 
     MenuIcons menuIcons=MenuIcons.getInstance();
 
-    public RosterToolsMenu(Displayable pView) {
+    public RosterToolsMenu() {
         super(SR.MS_TOOLS, MenuIcons.getInstance());
 
         cf=Config.getInstance();
@@ -97,11 +94,11 @@ public class RosterToolsMenu extends Menu {
                 addItem(SR.MS_PRIVACY_LISTS, 1, MenuIcons.ICON_PRIVACY);
 //#endif
 //#ifdef PEP
-        if (connected)
+//#         if (connected)
 //#ifdef PLUGINS
 //#             if (sd.PEP) {
 //#endif
-                addItem(SR.MS_PEP, 2, MenuIcons.ICON_MOOD);
+//#                 addItem(SR.MS_PEP, 2, MenuIcons.ICON_MOOD);
 //#ifdef PLUGINS
 //#             }
 //#endif
@@ -113,8 +110,8 @@ public class RosterToolsMenu extends Menu {
         if (connected)
             addItem(SR.MS_USERS_SEARCH, 5, MenuIcons.ICON_VCARD);
 //#if (HISTORY)
-        if (cf.saveHistory)
-            addItem(SR.MS_HISTORY_OPTIONS, 6, MenuIcons.ICON_HISTORY);
+//#         if (cf.saveHistory)
+//#             addItem(SR.MS_HISTORY_OPTIONS, 6, MenuIcons.ICON_HISTORY);
 //#endif
        addItem(SR.MS_FONTS_OPTIONS, 7, MenuIcons.ICON_FONTS);
 //#if (FILE_IO)
@@ -134,14 +131,14 @@ public class RosterToolsMenu extends Menu {
 //#ifdef PLUGINS
 //#         if (sd.IE)
 //#endif
-            addItem(SR.MS_IMPORT_EXPORT, 11, MenuIcons.ICON_IE);
+//#             addItem(SR.MS_IMPORT_EXPORT, 11, MenuIcons.ICON_IE);
 //#endif
         addItem(SR.MS_NOTICES_OPTIONS, 12, MenuIcons.ICON_NOTIFY);
 //#ifdef STATS
 //#ifdef PLUGINS
 //#         if (sd.Stats)
 //#endif
-            addItem(SR.MS_STATS, 13, MenuIcons.ICON_STAT);
+//#             addItem(SR.MS_STATS, 13, MenuIcons.ICON_STAT);
 //#endif
 //#ifdef CHECK_VERSION
 //#ifdef PLUGINS
@@ -158,11 +155,11 @@ public class RosterToolsMenu extends Menu {
 //#ifdef PLUGINS
 //#         if (sd.UserKeys)
 //#endif
-            addItem(SR.MS_CUSTOM_KEYS, 16, MenuIcons.ICON_KEYS);
+//#             addItem(SR.MS_CUSTOM_KEYS, 16, MenuIcons.ICON_KEYS);
 //#endif
 //#if SASL_XGOOGLETOKEN
-        if (sd.account != null && sd.account.isGmail() && connected)
-            addItem(SR.MS_CHECK_GOOGLE_MAIL, 17, MenuIcons.ICON_GMAIL);
+//#         if (sd.account != null && sd.account.isGmail() && connected)
+//#             addItem(SR.MS_CHECK_GOOGLE_MAIL, 17, MenuIcons.ICON_GMAIL);
 //#endif 
 //#if AUTOTASK
 //#         addItem(SR.MS_AUTOTASKS, 18, MenuIcons.ICON_TASKS);
@@ -171,13 +168,13 @@ public class RosterToolsMenu extends Menu {
 //#ifdef PLUGINS
 //#         if (sd.Console)
 //#endif
-            addItem(SR.MS_XML_CONSOLE, 19, MenuIcons.ICON_CONCOLE);
+//#             addItem(SR.MS_XML_CONSOLE, 19, MenuIcons.ICON_CONCOLE);
 //#endif
 //#ifdef JUICK
 //#ifdef PLUGINS
 //#         if (sd.Juick)
 //#endif
-            addItem("Tools for Juick.Com", 20, MenuIcons.ICON_JUICK);
+//#             addItem("Tools for Juick.Com", 20, MenuIcons.ICON_JUICK);
 //#endif
 //#ifdef LIGHT_CONFIG
 //#ifdef PLUGINS        
@@ -205,97 +202,97 @@ public class RosterToolsMenu extends Menu {
 //#endif
 //#ifdef PRIVACY
             case 1: // Privacy Lists
-                if (connected) new PrivacySelect((VirtualList)parentView);
+                if (connected) new PrivacySelect();
                 break;
 //#endif
 //#ifdef PEP
-            case 2:
-                if (connected)
-                    new PepForm( StaticData.getInstance().roster);
-                return;
+//#             case 2:
+//#                 if (connected)
+//#                     new PepForm();
+//#                 return;
 //#endif   
             case 3: {
                 if (! connected) break;
                 Contact c=sd.roster.selfContact();
                 if (c.vcard!=null) {
-                    new VCardEdit((VirtualList)parentView, c.vcard);
+                    new VCardEdit(c.vcard);
                     return;
                 }
                 VCard.request(c.bareJid, c.getJid());
                 return;
             }
             case 4:
-                new ConfigForm(parentView);
+                new ConfigForm();
                 return;
             case 5: //search
-                new SearchForm( (VirtualList)parentView);
+                new SearchForm();
                 return;
 //#if (HISTORY)
-            case 6: //history
-                new HistoryConfig( (VirtualList)parentView);
-                return;
+//#             case 6: //history
+//#                 new HistoryConfig();
+//#                 return;
 //#endif
             case 7:
-                new ConfigFonts( (VirtualList)parentView);
+                new ConfigFonts();
                 return;
 //#if (FILE_IO)
             case 8:
-                new io.file.browse.Browser(null,  sd.roster, null, false);
+                new io.file.browse.Browser(null, null, false);
                 return;
 //#endif
 //#if (FILE_TRANSFER)
             case 9:                
-                new io.file.transfer.TransferManager( sd.roster);
+                new io.file.transfer.TransferManager();
                 return;
 //#endif
             case 10:
-                new ColorConfigForm(this);
+                new ColorConfigForm();
                 return;
 //#if IMPORT_EXPORT
-            case 11:
-                new IE.IEMenu( sd.roster);
-                return;
+//#             case 11:
+//#                 new IE.IEMenu();
+//#                 return;
 //#endif
             case 12:
-                new AlertCustomizeForm( (VirtualList)parentView);
+                new AlertCustomizeForm();
                 return;
 //#ifdef STATS
-            case 13: //traffic stats
-                new StatsWindow( (VirtualList)parentView);
-                return;
+//#             case 13: //traffic stats
+//#                 new StatsWindow();
+//#                 return;
 //#endif
 //#ifdef CHECK_VERSION
 //#             case 14:
-//#                 new Upgrade( (VirtualList)parentView, false);
+//#                 new Upgrade(false);
 //#                 return;
 //#             case 15:
-//#                 new Upgrade( (VirtualList)parentView, true);
+//#                 new Upgrade(true);
 //#                 return;
 //#endif
 //#ifdef USER_KEYS
-            case 16:
-                new UserKeysList();
-                return;
+//#             case 16:
+//#                 new UserKeysList();
+//#                 return;
 //#endif
 //#if SASL_XGOOGLETOKEN
-            case 17: //mail check
-                sd.roster.theStream.send(IqGmail.query());
-		return;
+//#             case 17: //mail check
+//#                 sd.roster.theStream.send(IqGmail.query());
+//# 		return;
 //#endif
 //#if AUTOTASK
 //#             case 18:
-//#                 new AutoTaskForm( (VirtualList)parentView);
+//#                 new AutoTaskForm();
 //#                 return;
 //#endif
 //#ifdef CONSOLE
-            case 19:
-                new XMLList();
-                return;
+//#             case 19:
+//#                 new XMLList();
+//#                 return;
 //#endif
 //#ifdef JUICK
-            case 20:
-                JuickConfig cfg = new JuickConfig((VirtualList)parentView, me.toString()); cfg.show(this);
-                return;
+//#             case 20:
+//#                 JuickConfig cfg = new JuickConfig(me.toString());// cfg.show(this);
+//#                 return;
 //#endif
             case 22:
                 sd.roster.errorLog(SR.MS_SIMULATED_BREAK);

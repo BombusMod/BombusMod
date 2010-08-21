@@ -52,7 +52,7 @@ public class TransferConfigForm extends DefForm implements BrowserListener {
     }
     
      public void selectFolder() {
-        new Browser(null, this, this, true);
+        new Browser(null, this, true);
     }
 
     public void BrowserFilePathNotify(String pathSelected) {

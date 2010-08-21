@@ -64,11 +64,9 @@ public class PrivacySelect
     JabberStream stream=StaticData.getInstance().roster.theStream;
     
     /** Creates a new instance of PrivacySelect
-     * @param pView
      */
-    public PrivacySelect(VirtualList pView) {
+    public PrivacySelect() {
         super(null);
-        this.parentView=pView;
 
         setMainBarItem(new MainBar(2, null, SR.MS_PRIVACY_LISTS, false));
 
@@ -77,8 +75,6 @@ public class PrivacySelect
         setMenuListener(this);
         
         getLists();
-        
-                
     }
     
     public void commandState() {
@@ -134,14 +130,14 @@ public class PrivacySelect
             cmdDelete();
         }
         if (c==cmdNewList)
-            new MIDPTextBox( this, SR.MS_NEW, "", this, TextField.ANY);
+            new MIDPTextBox(SR.MS_NEW, "", this, TextField.ANY);
         super.menuAction(c, d);
     }
     
     // MIDPTextBox interface
     public void OkNotify(String listName) {
         if (listName.length()>0)
-            new PrivacyModifyList(this, new PrivacyList(listName), true, this);
+            new PrivacyModifyList(new PrivacyList(listName), true, this);
     }
     
     public int blockArrived(JabberDataBlock data) {
@@ -187,7 +183,7 @@ public class PrivacySelect
         PrivacyList pl = (PrivacyList) getFocusedObject();
         if (pl != null) {
             if (pl.name != null)
-                new PrivacyModifyList(this, pl, false, this);
+                new PrivacyModifyList(pl, false, this);
         }
     }
 
@@ -200,7 +196,7 @@ public class PrivacySelect
     }
     
     public void keyGreen() {
-        new MIDPTextBox( this, SR.MS_NEW, "", this, TextField.ANY);
+        new MIDPTextBox(SR.MS_NEW, "", this, TextField.ANY);
     }
     
     private void cmdDelete() {

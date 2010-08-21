@@ -55,15 +55,12 @@ public class TransferManager
     MenuCommand cmdSettings=new MenuCommand("Transfer settings", MenuCommand.SCREEN, 12);
     
     /** Creates a new instance of TransferManager
-     * @param pView
      */
-    public TransferManager( VirtualList pView) {
+    public TransferManager() {
         super(SR.MS_TRANSFERS);        
         itemsList=TransferDispatcher.getInstance().getTaskList();
         // TODO: add classic menu
         setMenuListener(this);
-        
-        parentView = pView;
     }    
     
     public void commandState(){
@@ -86,7 +83,7 @@ public class TransferManager
     public void eventOk() {
         TransferTask t=(TransferTask) getFocusedObject();
         if (t!=null)
-            if (t.isAcceptWaiting()) new TransferAcceptFile(this, t);
+            if (t.isAcceptWaiting()) new TransferAcceptFile(t);
     }
     
     protected void keyClear() {

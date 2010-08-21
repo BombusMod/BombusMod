@@ -61,10 +61,9 @@ public class MessageUrl extends DefForm implements TextBoxNotify {
     MenuCommand cmdEdit=new MenuCommand("Edit", MenuCommand.SCREEN, 3);
 
     /** Creates a new instance of MessageUrl
-     * @param pView
      * @param urlList
      */
-    public MessageUrl(VirtualList pView, Vector urlList) {
+    public MessageUrl(Vector urlList) {
 	super("URLs");
         this.urlList=urlList;
 
@@ -75,8 +74,7 @@ public class MessageUrl extends DefForm implements TextBoxNotify {
 	}
 
         setMenuListener(this);
-	
-        this.parentView = pView;
+
     }
     
     public void menuAction(MenuCommand c, VirtualList d) {
@@ -119,7 +117,7 @@ public class MessageUrl extends DefForm implements TextBoxNotify {
 
 	}
     private void EditURL() {
-        new MIDPTextBox(this, "Edit URL", (String)urlList.elementAt(cursor), this, TextField.ANY);
+        new MIDPTextBox("Edit URL", (String)urlList.elementAt(cursor), this, TextField.ANY);
     }
 
     public void OkNotify(String text_return) {

@@ -74,10 +74,9 @@ public class VCardEdit
     private LinkString publish;
 
     /** Creates a new instance of vCardForm
-     * @param pView
      * @param vcard
      */
-    public VCardEdit(VirtualList pView, VCard vcard) {
+    public VCardEdit(VCard vcard) {
         super(SR.MS_VCARD+" "+StaticData.getInstance().account.getBareJid());
         this.vcard=vcard;
 
@@ -95,10 +94,7 @@ public class VCardEdit
 
         publish=new LinkString(SR.MS_PUBLISH) { public void doAction() { publish(); } };
         
-        setPhoto();
-
-
-        show(pView);        
+        setPhoto();       
     }
     
     public void publish() {
@@ -123,16 +119,16 @@ public class VCardEdit
 //#if FILE_IO
         if (c==cmdLoadPhoto) {
             st=1;
-            new Browser(null, this, this, false);
+            new Browser(null, this, false);
         }
         if (c==cmdSavePhoto) {
             st=2;
-            new Browser(null, this, this, true);
+            new Browser(null, this, true);
         }
 //#endif
 //#ifndef NOMMEDIA
         if (c==cmdCamera)
-            new CameraImage( this);
+            new CameraImage(this);
 //#endif
         if (c==cmdDelPhoto) {
             vcard.dropPhoto();

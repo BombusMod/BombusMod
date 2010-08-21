@@ -69,7 +69,7 @@ public class HistoryConfig
     Config cf;
 
     /** Creates a new instance of HistoryConfig */
-    public HistoryConfig(Displayable pView) {
+    public HistoryConfig() {
         super(SR.MS_HISTORY_OPTIONS);
 
         cf=Config.getInstance();
@@ -108,7 +108,7 @@ public class HistoryConfig
     }
     
     public void selectFolder() {
-        new Browser(null, this, this, true);
+        new Browser(null, this, true);
     }
 
     public void cmdOk() {

@@ -73,11 +73,10 @@ public class Affiliations
     
     
     /** Creates a new instance of AffiliationList
-     * @param pView
      * @param room
      * @param affiliationIndex
      */
-    public Affiliations(VirtualList pView, String room, short affiliationIndex) {
+    public Affiliations(String room, short affiliationIndex) {
         super (AffiliationItem.getAffiliationName(affiliationIndex));
         this.room=room;
         
@@ -107,7 +106,7 @@ public class Affiliations
     }
     
     public void menuAction(MenuCommand c, VirtualList d){
-        if (c==cmdNew) new AffiliationModify(this, room, null, "none", "");
+        if (c==cmdNew) new AffiliationModify(room, null, "none", "");
         if (c==cmdModify) eventOk();
 //#ifdef CLIPBOARD
 //#         if (c==cmdCopy) {
@@ -129,7 +128,7 @@ public class Affiliations
     public void eventOk(){
         try {
             AffiliationItem item=(AffiliationItem)getFocusedObject();
-            new AffiliationModify(this, room, item.jid, 
+            new AffiliationModify(room, item.jid, 
 					AffiliationItem.getAffiliationName( (short)item.affiliation), 
                                         (item.reason==null)? "":item.reason
                     );

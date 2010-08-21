@@ -43,7 +43,7 @@ public class PepForm extends DefForm {
     TextInput ti;
     LinkString updmood, updact;
     
-    public PepForm(VirtualList pView) {
+    public PepForm() {
         super(
 //#ifdef PEP
 //#                 SR.MS_PEP
@@ -62,7 +62,7 @@ public class PepForm extends DefForm {
 //#             updmood = new LinkString(SR.MS_USERMOOD) {
 //#                 public void doAction() {
 //#                      Config.getInstance().sndrcvmood = true;
-//#                      new MoodList(midlet.BombusMod.getInstance().getDisplay());
+//#                      new MoodList();
 //#                 }
 //#             }; 
 //#             

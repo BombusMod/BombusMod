@@ -78,9 +78,8 @@ public class AlertCustomizeForm
     MenuCommand cmdTest=new MenuCommand(SR.MS_TEST_SOUND, MenuCommand.SCREEN, 2);
 
     /** Creates a new instance of ConfigForm
-     * @param pView
      */
-    public AlertCustomizeForm(VirtualList pView) {
+    public AlertCustomizeForm() {
         super(SR.MS_NOTICES_OPTIONS);
         
         ac=AlertCustomize.getInstance();
@@ -139,8 +138,6 @@ public class AlertCustomizeForm
         IQNotify=new CheckBox(SR.MS_SHOW_IQ_REQUESTS, cf.IQNotify); itemsList.addElement(IQNotify);
 
         setMenuListener(this);
-        
-        
     }
     
     public void cmdSave() {

@@ -252,7 +252,7 @@ public class AccountForm
 //#             account.setProxyHostAddr(proxyHost.getValue());
 //#if HTTPCONNECT
 //#             account.setProxyPort(Integer.parseInt(proxyPort.getValue()));
-//#
+//# 
 //#             account.setProxyUser(proxyUser.getValue());
 //#             account.setProxyPass(proxyPass.getValue());
 //#endif
@@ -270,7 +270,7 @@ public class AccountForm
         doConnect=true;
         
         if (registerNew) {
-            new AccountRegister(account,  (VirtualList)parentView);
+            new AccountRegister(account);
         } else {
             destroyView();
         }

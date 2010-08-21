@@ -52,10 +52,9 @@ public class TransferSendFile
     private TextInput description;
 
     /** Creates a new instance of TransferAcceptFile
-     * @param pView
      * @param recipientJid
      */
-    public TransferSendFile( VirtualList pView, String recipientJid) {
+    public TransferSendFile(String recipientJid) {
         super(SR.MS_SEND_FILE);
         this.to=recipientJid;
 
@@ -72,12 +71,10 @@ public class TransferSendFile
         itemsList.addElement(description);
         
         moveCursorTo(2);
-        
-        this.parentView=pView;
     }
     
     public void initBrowser() {
-        new Browser(null, this, this, false);
+        new Browser(null, this, false);
     }
 
     public void BrowserFilePathNotify(String pathSelected) { fileName.setValue(pathSelected); redraw(); }
@@ -89,7 +86,7 @@ public class TransferSendFile
             TransferTask task=new TransferTask(to, String.valueOf(System.currentTimeMillis()), fileName.getValue(), description.getValue(), false, null);
             TransferDispatcher.getInstance().sendFile(task);
             //switch to file transfer manager
-            new io.file.transfer.TransferManager(StaticData.getInstance().roster);
+            new io.file.transfer.TransferManager();
             return;
         } catch (Exception e) {}
     }

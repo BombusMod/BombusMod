@@ -57,7 +57,7 @@ public class StatusSelect
     private Config cf;
     private StaticData sd = StaticData.getInstance();
     
-    public StatusSelect(VirtualList pView, Contact to) {
+    public StatusSelect(Contact to) {
         super(SR.MS_STATUS);
         
         cf=Config.getInstance();
@@ -72,7 +72,6 @@ public class StatusSelect
         defp=cf.loginstatus;
         moveCursorTo(defp);
         enableListWrapping(true);
-        
     }
     
     public void commandState() {
@@ -83,16 +82,17 @@ public class StatusSelect
         addMenuCommand(cmdCancel);
     }
     
-    public VirtualElement getItemRef(int Index){
+    public VirtualElement getItemRef(int Index) {
         return (VirtualElement)statusList.elementAt(Index);
     }
 
-    private ExtendedStatus getSel(){ return (ExtendedStatus)getFocusedObject();}
+    private ExtendedStatus getSel() { return (ExtendedStatus)getFocusedObject(); }
     
-    public void menuAction(MenuCommand c, VirtualList d){
-        if (c==cmdOk) eventOk(); 
+    public void menuAction(MenuCommand c, VirtualList d) {
+        if (c==cmdOk)
+            eventOk();
         if (c==cmdEdit) {
-            new StatusForm(  this, getSel() );
+            new StatusForm(getSel());
         }
         
         if (c==cmdDef) {
@@ -101,15 +101,16 @@ public class StatusSelect
             redraw();
         }
 
-        if (c==cmdCancel) destroyView();
+        if (c==cmdCancel)
+            destroyView();
     }
     
-    public void eventOk(){
+    public void eventOk() {
         destroyView();
         new Thread(this).start();
     }
     
-    public void run(){
+    public void run() {
         int status=getSel().getImageIndex();
 //#ifdef AUTOSTATUS
 //#         Roster.autoAway=false;
@@ -125,9 +126,9 @@ public class StatusSelect
         } catch (Exception e) { }
     }
     
-    public int getItemCount(){   return statusList.size(); }
+    public int getItemCount() {   return statusList.size(); }
     
-    private void save(){
+    private void save() {
         StatusList.getInstance().saveStatusToStorage();
     }
     public void touchLeftPressed() {
@@ -149,7 +150,7 @@ public class StatusSelect
 
         private CheckBox autoRespond;
         
-        public StatusForm(VirtualList pView, ExtendedStatus status){
+        public StatusForm(ExtendedStatus status){
             super(SR.MS_STATUS+": "+status.getScreenName());
             this.status=status;
             
@@ -174,8 +175,6 @@ public class StatusSelect
             itemsList.addElement(new SimpleString("%dt - date time", false));
             
             moveCursorTo(getNextSelectableRef(-1));
-            this.parentView=pView;           
-            
         }
         
         public void cmdOk() {

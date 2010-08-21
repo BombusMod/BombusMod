@@ -32,7 +32,6 @@ package IE;
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
 import locale.SR;
-import ui.VirtualList;
 import ui.controls.form.DefForm;
 import ui.controls.form.LinkString;
 import ui.controls.form.SimpleString;
@@ -51,7 +50,7 @@ public class IEMenu
 
     private int choice = -1;
     
-    public IEMenu(VirtualList pView) {
+    public IEMenu() {
         super(
 //#if IMPORT_EXPORT
 //#         SR.MS_IMPORT_EXPORT
@@ -111,12 +110,10 @@ public class IEMenu
             }} );                        
 //#ifdef PLUGINS
 //#         }
-//#endif        
-        show(parentView);
-        this.parentView=pView;
+//#endif
     }
     public void SelectFile(boolean getDir) {
-        new Browser(null,  this, this, getDir);
+        new Browser(null, this, getDir);
     }
     
     public void BrowserFilePathNotify(String pathSelected) {

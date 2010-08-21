@@ -59,10 +59,9 @@ public class TransferImage
     private TextInput description;
     
     /** Creates a new instance of TransferImage
-     * @param pView
      * @param recipientJid
      */
-    public TransferImage(VirtualList pView, String recipientJid) {
+    public TransferImage(String recipientJid) {
         super(SR.MS_SEND_PHOTO);
         this.to=recipientJid;
 
@@ -75,8 +74,6 @@ public class TransferImage
         itemsList.addElement(description);
         
         moveCursorTo(1);
-        
-        this.parentView=pView;
     }
     
     public void initCamera() {
@@ -98,7 +95,7 @@ public class TransferImage
             TransferTask task=new TransferTask(to, String.valueOf(System.currentTimeMillis()), "photo.jpg", description.getValue(), true, photo);
             TransferDispatcher.getInstance().sendFile(task);
             //switch to file transfer manager
-            new io.file.transfer.TransferManager(StaticData.getInstance().roster);
+            new io.file.transfer.TransferManager();
             photo=null;
             return;
         } catch (Exception e) { photo=null; }

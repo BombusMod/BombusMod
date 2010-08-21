@@ -76,11 +76,11 @@ public class ConfigForm
 //#     private CheckBox autoDetranslit;
 //#endif
 //#ifdef CLIPBOARD
-    private CheckBox useClipBoard;
+//#     private CheckBox useClipBoard;
 //#endif
     
 //#if LOGROTATE
-    private NumberInput messageCountLimit;
+//#     private NumberInput messageCountLimit;
 //#endif
     private NumberInput messageLimit;
     private NumberInput widthScroll2;
@@ -94,7 +94,7 @@ public class ConfigForm
     private CheckBox fileTransfer;
 //#endif
 //#ifdef HISTORY
-    private CheckBox saveHistory;
+//#     private CheckBox saveHistory;
 //#endif
 //#ifdef ADHOC
 //#     private CheckBox adhoc;
@@ -113,9 +113,9 @@ public class ConfigForm
     private DropChoiceBox textWrap;
     private DropChoiceBox langFiles;
 //#ifdef AUTOSTATUS
-    private DropChoiceBox autoAwayType;
-    private NumberInput fieldAwayDelay; 
-    private CheckBox awayStatus;
+//#     private DropChoiceBox autoAwayType;
+//#     private NumberInput fieldAwayDelay; 
+//#     private CheckBox awayStatus;
 //#endif
     
 //#ifdef RUNNING_MESSAGE
@@ -142,9 +142,8 @@ public class ConfigForm
     Config cf;
     
     /** Creates a new instance of ConfigForm
-     * @param pView
      */
-    public ConfigForm(Displayable pView) {
+    public ConfigForm() {
         super(SR.MS_OPTIONS);
         
         cf=Config.getInstance();
@@ -206,7 +205,7 @@ public class ConfigForm
         showBalloons = new CheckBox(SR.MS_SHOW_BALLONS, cf.showBalloons); itemsList.addElement(showBalloons);     
         eventDelivery = new CheckBox(SR.MS_DELIVERY, cf.eventDelivery); itemsList.addElement(eventDelivery);
 //#ifdef CLIPBOARD
-        useClipBoard = new CheckBox(SR.MS_CLIPBOARD, cf.useClipBoard); itemsList.addElement(useClipBoard);
+//#         useClipBoard = new CheckBox(SR.MS_CLIPBOARD, cf.useClipBoard); itemsList.addElement(useClipBoard);
 //#endif
 //#ifdef DETRANSLIT
 //#ifdef PLUGINS
@@ -218,8 +217,8 @@ public class ConfigForm
        swapSendAndSuspend = new CheckBox("swap \""+SR.MS_SEND+"\" and \""+SR.MS_SUSPEND+"\" commands", cf.swapSendAndSuspend); itemsList.addElement(swapSendAndSuspend);
             
 //#if LOGROTATE
-        messageCountLimit=new NumberInput( SR.MS_MESSAGE_COUNT_LIMIT, Integer.toString(cf.msglistLimit), 3, 1000);
-        itemsList.addElement(messageCountLimit);
+//#         messageCountLimit=new NumberInput( SR.MS_MESSAGE_COUNT_LIMIT, Integer.toString(cf.msglistLimit), 3, 1000);
+//#         itemsList.addElement(messageCountLimit);
 //#endif
 
         itemsList.addElement(new SpacerItem(10));
@@ -265,11 +264,11 @@ public class ConfigForm
             itemsList.addElement(fileTransfer);
 //#endif
 //#ifdef HISTORY
-        saveHistory = new CheckBox(SR.MS_HISTORY, cf.saveHistory); 
+//#         saveHistory = new CheckBox(SR.MS_HISTORY, cf.saveHistory); 
 //#ifdef PLUGINS
 //#         if (sd.History)
 //#endif
-            itemsList.addElement(saveHistory);
+//#             itemsList.addElement(saveHistory);
 //#endif
 //#ifdef ADHOC
 //#         adhoc = new CheckBox(SR.MS_ADHOC, cf.adhoc); 
@@ -322,20 +321,20 @@ public class ConfigForm
         itemsList.addElement(drawMenuCommand);
 
 //#ifdef AUTOSTATUS
-        itemsList.addElement(new SpacerItem(10));
-        autoAwayType=new DropChoiceBox(SR.MS_AWAY_TYPE);
-        autoAwayType.append(SR.MS_AWAY_OFF);
-        autoAwayType.append(SR.MS_AWAY_LOCK);
-        autoAwayType.append(SR.MS_MESSAGE_LOCK);
-        autoAwayType.append(SR.MS_IDLE);
-        autoAwayType.setSelectedIndex(cf.autoAwayType);
-        itemsList.addElement(autoAwayType);
-
-        fieldAwayDelay=new NumberInput( SR.MS_AWAY_PERIOD, Integer.toString(cf.autoAwayDelay), 1, 60);
-        itemsList.addElement(fieldAwayDelay);
-
-        awayStatus=new CheckBox(SR.MS_USE_MY_STATUS_MESSAGES, cf.useMyStatusMessages);
-        itemsList.addElement(awayStatus);
+//#         itemsList.addElement(new SpacerItem(10));
+//#         autoAwayType=new DropChoiceBox(SR.MS_AWAY_TYPE);
+//#         autoAwayType.append(SR.MS_AWAY_OFF);
+//#         autoAwayType.append(SR.MS_AWAY_LOCK);
+//#         autoAwayType.append(SR.MS_MESSAGE_LOCK);
+//#         autoAwayType.append(SR.MS_IDLE);
+//#         autoAwayType.setSelectedIndex(cf.autoAwayType);
+//#         itemsList.addElement(autoAwayType);
+//# 
+//#         fieldAwayDelay=new NumberInput( SR.MS_AWAY_PERIOD, Integer.toString(cf.autoAwayDelay), 1, 60);
+//#         itemsList.addElement(fieldAwayDelay);
+//# 
+//#         awayStatus=new CheckBox(SR.MS_USE_MY_STATUS_MESSAGES, cf.useMyStatusMessages);
+//#         itemsList.addElement(awayStatus);
 //#endif
 
 	langs=new StringLoader().stringLoader("/lang/res.txt",3);
@@ -359,9 +358,6 @@ public class ConfigForm
             }
             itemsList.addElement(langFiles);
         }
-
-        enableListWrapping(false);
-        show(sd.roster);
     }
     
     public void cmdOk() {
@@ -405,7 +401,7 @@ public class ConfigForm
         VirtualList.showBalloons=cf.showBalloons;
         cf.eventDelivery=eventDelivery.getValue();
 //#ifdef CLIPBOARD
-        cf.useClipBoard=useClipBoard.getValue();
+//#         cf.useClipBoard=useClipBoard.getValue();
 //#endif
 //#ifdef DETRANSLIT
 //#ifdef PLUGINS
@@ -438,7 +434,7 @@ public class ConfigForm
 //#ifdef PLUGINS
 //#         if (sd.History)
 //#endif
-            cf.saveHistory=saveHistory.getValue();
+//#             cf.saveHistory=saveHistory.getValue();
 //#endif
 //#ifdef ADHOC
 //#ifdef PLUGINS
@@ -477,16 +473,16 @@ public class ConfigForm
         }
 
 //#ifdef AUTOSTATUS
-            cf.useMyStatusMessages=awayStatus.getValue();
-            cf.autoAwayDelay=Integer.parseInt(fieldAwayDelay.getValue());
-            cf.autoAwayType=autoAwayType.getSelectedIndex();
+//#             cf.useMyStatusMessages=awayStatus.getValue();
+//#             cf.autoAwayDelay=Integer.parseInt(fieldAwayDelay.getValue());
+//#             cf.autoAwayType=autoAwayType.getSelectedIndex();
 //#endif
         cf.messageLimit=Integer.parseInt(messageLimit.getValue());
         if (StaticData.getInstance().roster.hasPointerEvents())
             cf.widthScroll2=Integer.parseInt(widthScroll2.getValue());
 
 //#if LOGROTATE
-            cf.msglistLimit=Integer.parseInt(messageCountLimit.getValue());
+//#             cf.msglistLimit=Integer.parseInt(messageCountLimit.getValue());
 //#endif
         if (cf.panelsState!=panels.getSelectedIndex()) {
             cf.panelsState=panels.getSelectedIndex();

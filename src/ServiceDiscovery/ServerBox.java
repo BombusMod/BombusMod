@@ -47,19 +47,17 @@ public class ServerBox
 
     /**
      * Creates a new instance of ServerBox
-     * @param pView 
      * @param service
      * @param sd
      */
-    public ServerBox(VirtualList pView, String service, ServiceDiscovery sd) {
+    public ServerBox(String service, ServiceDiscovery sd) {
         super(SR.MS_DISCO);
         
         this.sd=sd;
         serverName=new TextInput(SR.MS_ADRESS, service, "disco", TextField.ANY);
         itemsList.addElement(serverName);
         
-        moveCursorTo(getNextSelectableRef(-1));        
-        this.parentView=pView;
+        moveCursorTo(getNextSelectableRef(-1));
     }
 
     public void  cmdOk() {

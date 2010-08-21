@@ -40,6 +40,7 @@ public class Menu extends VirtualList
     Vector menuitems;
     private ImageList il;
     private boolean executeByNum;
+
     public Menu(String mainbar, ImageList il) {
         super();
         setMainBarItem(new MainBar(mainbar));

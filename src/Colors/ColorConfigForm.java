@@ -54,7 +54,7 @@ public class ColorConfigForm
     
 
 //#ifdef COLOR_TUNE
-    private LinkString configureColors;
+//#     private LinkString configureColors;
 //#endif
     private LinkString invertColors;
 //#if FILE_IO
@@ -72,19 +72,17 @@ public class ColorConfigForm
     private LinkString reset;
 
     /** Creates a new instance of ColorConfigForm
-     * @param pView
      */
-    public ColorConfigForm(VirtualList pView) {
+    public ColorConfigForm() {
         super(SR.MS_COLOR_TUNE);        
 //#ifdef COLOR_TUNE
 //#ifdef PLUGINS
-            if (StaticData.getInstance().Colors) {
+//#             if (StaticData.getInstance().Colors) {
 //#endif
-        final VirtualList returnTo = this;
-        configureColors=new LinkString(SR.MS_COLOR_TUNE) { public void doAction() { new ColorsList( returnTo); } };
-        itemsList.addElement(configureColors);
+//#         configureColors=new LinkString(SR.MS_COLOR_TUNE) { public void doAction() { new ColorsList(); } };
+//#         itemsList.addElement(configureColors);
 //#ifdef PLUGINS
-            }
+//#             }
 //#endif
 //#endif
         invertColors=new LinkString(SR.MS_INVERT) { public void doAction() { ColorTheme.invertSkin(); } };
@@ -119,8 +117,6 @@ public class ColorConfigForm
         itemsList.addElement(reset);
         
         moveCursorTo(getNextSelectableRef(-1));
-        show(pView);
-        this.parentView=pView;
     }
     
     public void cmdOk() {
@@ -132,9 +128,9 @@ public class ColorConfigForm
     public void initBrowser(int type) {
         loadType=type; 
         if (type==0) {
-            new Browser(null, this, this, true);
+            new Browser(null, this, true);
         } else if(type==1) {
-            new Browser(null,  this, this, false);
+            new Browser(null, this, false);
         }
     }
 //#endif

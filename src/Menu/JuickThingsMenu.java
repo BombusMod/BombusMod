@@ -24,17 +24,16 @@ public class JuickThingsMenu extends Menu {
     private Contact contact;
     private Vector things;
 
-    public JuickThingsMenu(Vector things, VirtualList pView, Contact contact) {
+    public JuickThingsMenu(Vector things, Contact contact) {
 //#ifdef JUICK
-        super(SR.MS_JUICK_THINGS, null); //MenuIcons.getInstance()
+//#         super(SR.MS_JUICK_THINGS, null); //MenuIcons.getInstance()
 //#else
-//#         super("", null);
+        super("", null);
 //#endif
         this.things = things;
         this.contact = contact;
 
         show(parentView);
-        this.parentView = pView;
 
         int quantity = things.size();
         for(int i=0; i<quantity; i++)
@@ -48,7 +47,7 @@ public class JuickThingsMenu extends Menu {
         if (me==null) return;
         int index=me.index;
         try {
-               Client.Roster.me=new MessageEdit(this, contact, (String)things.elementAt(index));
+               Client.Roster.me=new MessageEdit(contact, (String) things.elementAt(index));
                Client.Roster.me.show(this);
         } catch (Exception e) {/*no messages*/}
     }

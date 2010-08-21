@@ -58,7 +58,7 @@ public class AlertProfile extends DefForm
     private MenuCommand cmdDef=new MenuCommand(SR.MS_SETDEFAULT,MenuCommand.SCREEN,3);
     private MenuCommand cmdSel=new MenuCommand(SR.MS_SELECT,MenuCommand.SCREEN,2);
     /** Creates a new instance of SelectStatus */
-    public AlertProfile(VirtualList pView) {
+    public AlertProfile() {
         super(SR.MS_ALERT_PROFILE);
         
         cf=Config.getInstance();
@@ -70,7 +70,6 @@ public class AlertProfile extends DefForm
         defp=cf.def_profile;
         
         moveCursorTo(p);
-        
     }
 
     public void commandState() {

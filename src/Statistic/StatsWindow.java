@@ -55,18 +55,17 @@ public class StatsWindow
     
     public MenuCommand cmdClear = new MenuCommand(SR.MS_CLEAR, MenuCommand.SCREEN, 2);
 //#ifdef CLIPBOARD
-    ClipBoard clipboard = null;
-    MenuCommand cmdCopy      = new MenuCommand(SR.MS_COPY, MenuCommand.SCREEN, 1);
-    MenuCommand cmdCopyPlus  = new MenuCommand("+ "+SR.MS_COPY, MenuCommand.SCREEN, 2);
+//#     ClipBoard clipboard = null;
+//#     MenuCommand cmdCopy      = new MenuCommand(SR.MS_COPY, MenuCommand.SCREEN, 1);
+//#     MenuCommand cmdCopyPlus  = new MenuCommand("+ "+SR.MS_COPY, MenuCommand.SCREEN, 2);
 //#endif
     
     MultiLine item=null;    
 
     /**
      * Creates a new instance of StatsWindow
-     * @param pView
      */
-    public StatsWindow(VirtualList pView) {
+    public StatsWindow() {
         super(SR.MS_STATS);
         item=new MultiLine(SR.MS_ALL, StringUtils.getSizeString(st.getAllTraffic()), super.superWidth); item.selectable=true; itemsList.addElement(item);
 
@@ -84,21 +83,19 @@ public class StatsWindow
 //#endif
         item=new MultiLine(SR.MS_CONN, Integer.toString(st.getSessionsCount()), super.superWidth); item.selectable=true; itemsList.addElement(item);
                 
-        item=new MultiLine(SR.MS_STARTED, Roster.startTime, super.superWidth); item.selectable=true; itemsList.addElement(item);        
-
-        show(pView);        
+        item=new MultiLine(SR.MS_STARTED, Roster.startTime, super.superWidth); item.selectable=true; itemsList.addElement(item);       
     }
 
     public void commandState() {
         menuCommands.removeAllElements();
         addMenuCommand(cmdClear);
 //#ifdef CLIPBOARD
-            if (Config.getInstance().useClipBoard) {
-                clipboard = ClipBoard.getInstance();
-                addMenuCommand(cmdCopy);
-                if (!clipboard.isEmpty())
-                    addMenuCommand(cmdCopyPlus);
-            }
+//#             if (Config.getInstance().useClipBoard) {
+//#                 clipboard = ClipBoard.getInstance();
+//#                 addMenuCommand(cmdCopy);
+//#                 if (!clipboard.isEmpty())
+//#                     addMenuCommand(cmdCopyPlus);
+//#             }
 //#endif        
     }
 
@@ -107,25 +104,25 @@ public class StatsWindow
     
     public void menuAction(MenuCommand command, VirtualList displayable) {
 //#ifdef CLIPBOARD
-        if (command == cmdCopy) {
-            try {
-                String str = ((MultiLine) getFocusedObject()).toString();
-                if (str == null)
-                    str = "";
-                clipboard.setClipBoard(str);
-            } catch (Exception e) {/*no messages*/}
-        }
-
-        if (command == cmdCopyPlus) {
-            try {
-                String str = ((MultiLine) getFocusedObject()).toString();
-                if (str == null)
-                    str = "";
-                str  = clipboard.getClipBoard() + "\n\n" + str;
-
-                clipboard.setClipBoard(str);
-            } catch (Exception e) {/*no messages*/}
-        }
+//#         if (command == cmdCopy) {
+//#             try {
+//#                 String str = ((MultiLine) getFocusedObject()).toString();
+//#                 if (str == null)
+//#                     str = "";
+//#                 clipboard.setClipBoard(str);
+//#             } catch (Exception e) {/*no messages*/}
+//#         }
+//# 
+//#         if (command == cmdCopyPlus) {
+//#             try {
+//#                 String str = ((MultiLine) getFocusedObject()).toString();
+//#                 if (str == null)
+//#                     str = "";
+//#                 str  = clipboard.getClipBoard() + "\n\n" + str;
+//# 
+//#                 clipboard.setClipBoard(str);
+//#             } catch (Exception e) {/*no messages*/}
+//#         }
 //#endif
         if (command==cmdClear) {
             st.saveToStorage(true);

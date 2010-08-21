@@ -68,7 +68,7 @@ public class ConferenceQuickPrivelegeModify
     /**
      * Creates a new instance of ConferenceQuickPrivelegeModify
      */
-    public ConferenceQuickPrivelegeModify(VirtualList pView, MucContact victim, int action, String myNick) {
+    public ConferenceQuickPrivelegeModify(MucContact victim, int action, String myNick) {
         super(null);
         
         this.victim=victim;

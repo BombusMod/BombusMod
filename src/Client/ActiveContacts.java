@@ -51,12 +51,11 @@ public class ActiveContacts
     StaticData sd = StaticData.getInstance();
 
     /** Creates a new instance of ActiveContacts
-     * @param pView
      * @param current
      */
-    public ActiveContacts(VirtualList pView, Contact current) {
+    public ActiveContacts(Contact current) {
 	super(SR.MS_ACTIVE_CONTACTS);
-	parentView=pView;
+
         enableListWrapping(true);
         activeContacts=null;
 	activeContacts=new Vector();

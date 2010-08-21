@@ -51,10 +51,9 @@ public class RenameGroup
     private TextInput groupName;
     
     /** Creates a new instance of newRenameGroup
-     * @param pView
      * @param group
      */
-    public RenameGroup(VirtualList pView, Group group/*, Contact contact*/) {
+    public RenameGroup(Group group/*, Contact contact*/) {
         super(SR.MS_RENAME);
         //this.contact=contact;
         this.group=group;
@@ -65,7 +64,6 @@ public class RenameGroup
         itemsList.addElement(new SpacerItem(0));
         
         moveCursorTo(getNextSelectableRef(-1));
-        show(pView);
     }
 
     public void  cmdOk() {

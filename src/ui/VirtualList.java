@@ -95,8 +95,8 @@ public abstract class VirtualList
     private int mHeight;
     
 //#ifdef GRADIENT
-    Gradient grIB;
-    Gradient grMB;
+//#     Gradient grIB;
+//#     Gradient grMB;
 //#endif
 
     public static int panelsState = 2;
@@ -371,7 +371,7 @@ public abstract class VirtualList
             parentView = midlet.BombusMod.getInstance().getCurrentDisplayable();
         }
         midlet.BombusMod.getInstance().setDisplayable(this);
-         redraw();
+        redraw();
      }
 
     public void destroy() {
@@ -429,8 +429,8 @@ public abstract class VirtualList
         width=w;
         height=h;
 //#ifdef GRADIENT
-        iHeight=0;
-        mHeight=0;
+//#         iHeight=0;
+//#         mHeight=0;
 //#endif        
     }
 
@@ -720,19 +720,19 @@ public abstract class VirtualList
 
         g.setClip(0,0, width, h);
 //#ifdef GRADIENT
-        if (getMainBarBGnd()!=getMainBarBGndBottom()) {
-            if (iHeight!=h) {
-                grIB=new Gradient(0, 0, width, h, getMainBarBGnd(), getMainBarBGndBottom(), false);
-                iHeight=h;
-            }
-            grIB.paint(g);
-        } else {
-            g.setColor(getMainBarBGnd());
-            g.fillRect(0, 0, width, h);
-        }
-//#else
+//#         if (getMainBarBGnd()!=getMainBarBGndBottom()) {
+//#             if (iHeight!=h) {
+//#                 grIB=new Gradient(0, 0, width, h, getMainBarBGnd(), getMainBarBGndBottom(), false);
+//#                 iHeight=h;
+//#             }
+//#             grIB.paint(g);
+//#         } else {
 //#             g.setColor(getMainBarBGnd());
 //#             g.fillRect(0, 0, width, h);
+//#         }
+//#else
+            g.setColor(getMainBarBGnd());
+            g.fillRect(0, 0, width, h);
 //#endif
         g.setColor(getMainBarRGB());
         ((MainBar)infobar).lShift = (Config.getInstance().phoneManufacturer == Config.NOKIA && reverse && fullscreen);
@@ -745,19 +745,19 @@ public abstract class VirtualList
         int h=mainbar.getVHeight()+1;
         g.setClip(0,0, width, h);
 //#ifdef GRADIENT
-        if (getMainBarBGnd()!=getMainBarBGndBottom()) {
-            if (mHeight!=h) {
-                grMB=new Gradient(0, 0, width, h, getMainBarBGndBottom(), getMainBarBGnd(), false);
-                mHeight=h;
-            }
-            grMB.paint(g);
-        } else {
-            g.setColor(getMainBarBGnd());
-            g.fillRect(0, 0, width, h);
-        }
+//#         if (getMainBarBGnd()!=getMainBarBGndBottom()) {
+//#             if (mHeight!=h) {
+//#                 grMB=new Gradient(0, 0, width, h, getMainBarBGndBottom(), getMainBarBGnd(), false);
+//#                 mHeight=h;
+//#             }
+//#             grMB.paint(g);
+//#         } else {
+//#             g.setColor(getMainBarBGnd());
+//#             g.fillRect(0, 0, width, h);
+//#         }
 //#else
-//#         g.setColor(getMainBarBGnd());
-//#         g.fillRect(0, 0, width, h);
+        g.setColor(getMainBarBGnd());
+        g.fillRect(0, 0, width, h);
 //#endif
         g.setColor(getMainBarRGB());
         ((MainBar)mainbar).lShift = (Config.getInstance().phoneManufacturer == Config.NOKIA && !reverse && fullscreen);
