@@ -1376,9 +1376,8 @@ public abstract class VirtualList
     protected void setRotator() {
 //#if (USE_ROTATOR)
         try {
-            if (getItemCount() < 1)
-                return;
-            focusedItem(cursor);
+            if (getItemCount() > 0)
+                focusedItem(cursor);
             } catch (Exception e) {
 //#ifdef DEBUG
 //#             System.out.println("setRotator() in VirtialList in one try{} block catch exception:");
@@ -1386,15 +1385,15 @@ public abstract class VirtualList
 //#endif
             }
 
+        int itemWidth = 0;
         try {
             if (cursor >= 0) {
-                int itemWidth = getItemRef(cursor).getVWidth();
+                itemWidth = getItemRef(cursor).getVWidth();
                 if (itemWidth >= width - scrollbar.getScrollWidth()) {
                     itemWidth -= width / 2;
                 } else {
                     itemWidth = 0;
                 }
-                TimerTaskRotate.startRotate(itemWidth, this);
             }
         } catch (Exception e) {
 //#ifdef DEBUG
@@ -1402,6 +1401,7 @@ public abstract class VirtualList
 //#             System.out.println(e);
 //#endif
         }
+        TimerTaskRotate.startRotate(itemWidth, this);
  //#endif
     }
     
@@ -1561,7 +1561,7 @@ public abstract class VirtualList
 }
 
 //#if (USE_ROTATOR)    
-class TimerTaskRotate extends Thread{
+class TimerTaskRotate extends Thread {
     private int scrollLen;
     private int scroll; //wait before scroll * sleep
     private int balloon; // show balloon time
@@ -1576,7 +1576,7 @@ class TimerTaskRotate extends Thread{
         new Thread(this).start();
     }
     
-    public static void startRotate(int max, VirtualList list){
+    public static void startRotate(int max, VirtualList list) {
         //Windows mobile J9 hanging test
         if (Config.getInstance().phoneManufacturer==Config.WINDOWS) {
             list.showBalloon=true;

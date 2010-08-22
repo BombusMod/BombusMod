@@ -27,7 +27,6 @@
 
 package Account;
 import Client.*;
-import javax.microedition.lcdui.Displayable;
 import locale.SR;
 import midlet.BombusMod;
 import ui.*;
@@ -47,7 +46,6 @@ import ui.controls.form.DefForm;
  * @author Eugene Stahov
  */
 public class AccountSelect extends DefForm {
-    public Vector accountList;
     int activeAccount;
     boolean enableQuit;
     
@@ -64,24 +62,22 @@ public class AccountSelect extends DefForm {
     /** Creates a new instance of AccountPicker */
     public AccountSelect(boolean enableQuit) {
         super(SR.MS_ACCOUNTS);
-        this.enableQuit=enableQuit;
-        
+        this.enableQuit = enableQuit;
+
         enableListWrapping(true);
-        cf=Config.getInstance();        
-        
+        cf = Config.getInstance();
+
         if (enableQuit) {
             canBack = false;
         }
-        accountList=null;
-        accountList=new Vector();        
-                
-        activeAccount=cf.accountIndex;
+
+        activeAccount = cf.accountIndex;
         loadAccounts();
-        show(StaticData.getInstance().roster);
     }
+
     public final void show(VirtualList pView) {
         super.show(pView);
-        if (!accountList.isEmpty()) {
+        if (!itemsList.isEmpty()) {
             moveCursorTo(activeAccount);
         } else {
 //#ifdef IMPORT_EXPORT
@@ -93,7 +89,7 @@ public class AccountSelect extends DefForm {
 //#             }
 //#endif
 //#             loadAccounts();
-//#         if (accountList.isEmpty()) {
+//#         if (itemsList.isEmpty()) {
 //#endif
             new AccountForm(this, null).show(pView);
             return;
@@ -112,7 +108,7 @@ public class AccountSelect extends DefForm {
             a=Account.createFromStorage(index);
             if (a!=null) {
                 a.setActive(activeAccount==index);
-                accountList.addElement(a);
+                itemsList.addElement(a);
                 index++;
              }
        } while (a!=null);
@@ -120,7 +116,7 @@ public class AccountSelect extends DefForm {
 
     public final void commandState(){
         menuCommands.removeAllElements();
-        if ((accountList != null) && !accountList.isEmpty()) {
+        if ((itemsList != null) && !itemsList.isEmpty()) {
             addMenuCommand(cmdLogin);
             addMenuCommand(cmdSelect);
             
@@ -145,11 +141,11 @@ public class AccountSelect extends DefForm {
     }
 
     public VirtualElement getItemRef(int Index) {
-        if (Index > accountList.size())
-            Index = accountList.size() - 1;
-        return (VirtualElement)accountList.elementAt(Index);
+        if (Index > itemsList.size())
+            Index = itemsList.size() - 1;
+        return (VirtualElement) itemsList.elementAt(Index);
     }
-    protected int getItemCount() { return accountList.size();  }
+    protected int getItemCount() { return itemsList.size();  }
 
     public void menuAction(MenuCommand c, VirtualList d){
         if (c==cmdQuit) {
@@ -182,7 +178,7 @@ public class AccountSelect extends DefForm {
     
 
     public void destroyView(){
-        if(accountList.size()>0) {
+        if(itemsList.size()>0) {
             if (StaticData.getInstance().account==null)
                 Account.loadAccount(false, cf.accountIndex);
             midlet.BombusMod.getInstance().setDisplayable(StaticData.getInstance().roster);
@@ -190,13 +186,13 @@ public class AccountSelect extends DefForm {
     }
 
     private void delAccount(){
-        if (accountList.size()==1) 
+        if (itemsList.size()==1)
             cf.accountIndex=-1;
         else if (cf.accountIndex>cursor) cf.accountIndex--;
 
         cf.saveToStorage();
 
-        accountList.removeElement(getFocusedObject());
+        itemsList.removeElement(getFocusedObject());
         rmsUpdate();
         moveCursorHome();
         commandState();
@@ -210,7 +206,7 @@ public class AccountSelect extends DefForm {
         destroyView();
     }
     
-    public void eventOk(){
+    public void eventOk() {
         if (getItemCount()>0) {
             canBack = true;
             switchAccount(true);
@@ -219,9 +215,9 @@ public class AccountSelect extends DefForm {
     
     public void rmsUpdate(){
         DataOutputStream outputStream=NvStorage.CreateDataOutputStream();
-        int j=accountList.size();
+        int j=itemsList.size();
         for (int i=0;i<j;i++) 
-            ((Account)accountList.elementAt(i)).saveToDataOutputStream(outputStream);
+            ((Account) itemsList.elementAt(i)).saveToDataOutputStream(outputStream);
         NvStorage.writeFileRecord(outputStream, "accnt_db", 0, true); //Account.storage
     }
     

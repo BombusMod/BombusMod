@@ -263,7 +263,7 @@ public class AccountForm
         }
 
         if (newaccount) 
-            accountSelect.accountList.addElement(account);
+            accountSelect.itemsList.addElement(account);
         accountSelect.rmsUpdate();
         accountSelect.commandState();
 
@@ -288,7 +288,7 @@ public class AccountForm
     }
     
     private void startLogin(boolean login){
-        Config.getInstance().accountIndex=accountSelect.accountList.size()-1;
+        Config.getInstance().accountIndex=accountSelect.itemsList.size()-1;
         Account.loadAccount(login, Config.getInstance().accountIndex);
         SplashScreen.getInstance().close();
     }

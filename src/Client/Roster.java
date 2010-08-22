@@ -2190,6 +2190,7 @@ public class Roster
         String topBar="("+currentReconnect+"/"+cf.reconnectCount+") Reconnecting";
         errorLog(topBar+"\n"+error.toString());
 
+        setRotator();
         reconnectWindow.getInstance().startReconnect();
      }
     
