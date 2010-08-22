@@ -13,7 +13,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Vector;
-import ui.VirtualList;
 
 /**
  *
@@ -23,25 +22,23 @@ public class JuickConfig extends DefForm {
 //#ifdef PLUGINS
 //#     public static String plugin = new String("PLUGIN_JUICK");
 //#endif
-    StaticData sd=StaticData.getInstance();
+    private static StaticData sd = StaticData.getInstance();
     private DropChoiceBox juickContactsBox = null;
-    Records records;
+    private static Records records = new Records();
 
     public JuickConfig(String caption) {
         super(caption);
-        
-        readFromStorage();
-        addJuickContactsBox();        
-    }
 
-    public JuickConfig() {
-        super(null);
-        readFromStorage();
+        if (records.isEmpty()) {
+            records.readFromStorage();
+        }
+        
+        addJuickContactsBox();        
     }
 
     private void addJuickContactsBox() {
 //#ifdef JUICK
-//#             if (sd.roster.juickContacts.size()>1) {
+//#         if (sd.roster.juickContacts.size() > 1) {
 //#             Vector juickContactsNames = new Vector(sd.roster.juickContacts.size());
 //#             for (Enumeration e = sd.roster.juickContacts.elements(); e.hasMoreElements();) {
 //#                 Contact c = (Contact) e.nextElement();
@@ -58,30 +55,6 @@ public class JuickConfig extends DefForm {
 //#endif
     }
 
-    private void writeToStorage() {
-         DataOutputStream outputStream=NvStorage.CreateDataOutputStream();
-         try{
-             int size = records.size();
-             outputStream.writeInt(size);
-             for (int i=0; i<size; i++) {
-                  outputStream.writeUTF((String) records.AccountsJIDs.elementAt(i));
-                  outputStream.writeUTF((String) records.JuickJIDs.elementAt(i));
-             }
-         } catch (IOException e) { }
-         NvStorage.writeFileRecord(outputStream, "juick_db", 0, true);
-     }
-
-    private void readFromStorage() {
-        records = new Records();
-        DataInputStream inputStream = NvStorage.ReadFileRecord("juick_db", 0);
-        try {
-            int storedAccounts = inputStream.readInt();
-            for (int i=0; i<storedAccounts; i++)
-                records.addRecord(inputStream.readUTF(), inputStream.readUTF());
-            inputStream.close();
-        } catch (Exception e) { /*e.printStackTrace();*/ }
-        }
-
     public void cmdOk() {
 //#ifdef JUICK
 //#             if (juickContactsBox != null) {
@@ -90,31 +63,38 @@ public class JuickConfig extends DefForm {
 //#                 setJuickJID("", true);
 //#             }
 //#             sd.roster.updateMainJuickContact();
-//#             writeToStorage();
 //#             destroyView();
 //#endif
     }
 
-    public String getJuickJID () {
-        if (records == null)
-            readFromStorage();
+    public static String getJuickJID() {
+        if (records.isEmpty()) {
+            records.readFromStorage();
+        }
      return records.getJuickJID(sd.account.getBareJid());
     }
 
-    public void setJuickJID (String JJID, boolean toStorage) {
-     records.setJuickJID(sd.account.getBareJid(), JJID);
-     if (toStorage)
-         writeToStorage();
+    public static void setJuickJID(String JJID, boolean toStorage) {
+        if (records.isEmpty()) {
+            records.readFromStorage();
+        }
+        records.setJuickJID(sd.account.getBareJid(), JJID);
+        if (toStorage) {
+            records.writeToStorage();
+        }
     }
 
-    private class Records {
+    private static class Records {
+        private Vector AccountsJIDs = null;
+        private Vector JuickJIDs = null;
 
-        private Vector AccountsJIDs;
-        private Vector JuickJIDs;
+        private boolean isEmpty() {
+            return (AccountsJIDs == null) || (AccountsJIDs.size() < 1);
+        }
 
         private Records() {
-            AccountsJIDs=new Vector();
-            JuickJIDs=new Vector();
+            AccountsJIDs = new Vector();
+            JuickJIDs = new Vector();
         }
 
         private void addRecord(String AJID, String JJID) {
@@ -136,12 +116,35 @@ public class JuickConfig extends DefForm {
         }
 
         private void setJuickJID(String AJID, String JJID) {
-            int index=AccountsJIDs.indexOf(AJID);
-            if (index>-1) {
+            int index = AccountsJIDs.indexOf(AJID);
+            if (index > -1) {
                 JuickJIDs.setElementAt(JJID, index);
             } else {
                 addRecord(AJID, JJID);
             }
+        }
+
+        private void writeToStorage() {
+            DataOutputStream outputStream = NvStorage.CreateDataOutputStream();
+            try {
+                int size = size();
+                outputStream.writeInt(size);
+                for (int i = 0; i < size; i++) {
+                    outputStream.writeUTF((String) AccountsJIDs.elementAt(i));
+                    outputStream.writeUTF((String) JuickJIDs.elementAt(i));
+                }
+            } catch (IOException e) { e.printStackTrace(); }
+            NvStorage.writeFileRecord(outputStream, "juick_db", 0, true);
+        }
+
+        private void readFromStorage() {
+            DataInputStream inputStream = NvStorage.ReadFileRecord("juick_db", 0);
+            try {
+                int size = inputStream.readInt();
+                for (int i = 0; i < size; i++)
+                    addRecord(inputStream.readUTF(), inputStream.readUTF());
+                inputStream.close();
+            } catch (Exception e) { e.printStackTrace(); }
         }
     }
 }

@@ -47,7 +47,6 @@ public class HistoryReader extends MessageList {
     static MessageItem MIPrev, MINext;
 
     /** Creates a new instance of HistoryReader
-     * @param display
      * @param c 
      */
     public HistoryReader(Contact c) {
@@ -62,7 +61,7 @@ public class HistoryReader extends MessageList {
         hl = new HistoryLoader(c.bareJid, this, smiles);
         messages = hl.stepEnd();
         moveCursorEnd();
-        show(parentView);
+        show();
     }
 
     public void eventOk() {

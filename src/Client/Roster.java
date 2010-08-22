@@ -939,24 +939,23 @@ public class Roster
 //#     }
 //# 
 //#     public boolean isMainJuickContact(Contact c) {
-//#         return c.bareJid.equals((new JuickConfig("Juick")).getJuickJID());
+//#         return c.bareJid.equals(JuickConfig.getJuickJID());
 //#     }
 //# 
 //#     public void updateMainJuickContact() {
-//#         JuickConfig juickConfig = new JuickConfig("Juick");
 //#         int size = juickContacts.size();
 //#         if (size < 1) {
 //#             indexMainJuickContact = -1;
-//#         } else if ((size == 1) || (juickConfig.getJuickJID().equals(""))) {
+//#         } else if ((size == 1) || (JuickConfig.getJuickJID().equals(""))) {
 //#             indexMainJuickContact = 0;
 //#         } else {
 //#             //indexMainJuickContact = juickContacts.indexOf(new Contact("Juick", juickConfig.getJuickJID(), Presence.PRESENCE_OFFLINE, null));
-//#             for (int i=0; i<juickContacts.size(); i++) {
-//#                 if (((Contact)juickContacts.elementAt(i)).bareJid.equals( juickConfig.getJuickJID()))
+//#             for (int i = 0; i < juickContacts.size(); i++) {
+//#                 if (((Contact) juickContacts.elementAt(i)).bareJid.equals(JuickConfig.getJuickJID()))
 //#                     indexMainJuickContact = i;
 //#             }
 //#             if (indexMainJuickContact < 0) {
-//#                 juickConfig.setJuickJID("", false);
+//#                 JuickConfig.setJuickJID("", false);
 //#                 indexMainJuickContact = 0; // Можно сделать это присваивание через рекурсию, но вроде пока не надо.
 //#             }
 //#         }

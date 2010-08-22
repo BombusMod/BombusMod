@@ -239,7 +239,7 @@ public abstract class VirtualList
             layout[index+1]=y;
         }
         listHeight=y;
-        itemLayoutY=layout;        
+        itemLayoutY=layout;
     }
     public int getListHeight() {
         return winHeight;
@@ -859,15 +859,17 @@ public abstract class VirtualList
             return;
         }
 //#endif
-        int act = ar.pointerPressed(x, y);
-        if (act == 1) {
-            key(Config.SOFT_LEFT);
-            stickyWindow = false;
-            return;
-        } else if (act == 2) {
-            key(Config.SOFT_RIGHT);
-            stickyWindow = false;
-            return;
+        if (ar.enabled) {
+            int act = ar.pointerPressed(x, y);
+            if (act == 1) {
+                key(Config.SOFT_LEFT);
+                stickyWindow = false;
+                return;
+            } else if (act == 2) {
+                key(Config.SOFT_RIGHT);
+                stickyWindow = false;
+                return;
+            }
         }
         
         yPointerPos = y;

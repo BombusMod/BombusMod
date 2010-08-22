@@ -174,7 +174,9 @@ public class RosterToolsMenu extends Menu {
 //#ifdef PLUGINS
 //#         if (sd.Juick)
 //#endif
-//#             addItem("Tools for Juick.Com", 20, MenuIcons.ICON_JUICK);
+//#             if (sd.roster.juickContacts.size() > 1) {
+//#                 addItem("Tools for Juick.Com", 20, MenuIcons.ICON_JUICK);
+//#             }
 //#endif
 //#ifdef LIGHT_CONFIG
 //#ifdef PLUGINS        
@@ -291,7 +293,7 @@ public class RosterToolsMenu extends Menu {
 //#endif
 //#ifdef JUICK
 //#             case 20:
-//#                 JuickConfig cfg = new JuickConfig(me.toString());// cfg.show(this);
+//#                 new JuickConfig(me.toString());
 //#                 return;
 //#endif
             case 22:
