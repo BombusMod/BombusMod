@@ -54,9 +54,7 @@ import VCard.VCard;
 import VCard.VCardEdit;
 import images.MenuIcons;
 import locale.SR;
-//#ifdef COLOR_TUNE
-//# import Colors.ColorConfigForm;
-//#endif
+import Colors.ColorConfigForm;
 //import ui.reconnectWindow;
 //#ifdef USER_KEYS
 //# import ui.keys.UserKeysList;
@@ -307,7 +305,7 @@ public class RosterToolsMenu extends Menu {
 //#         if (sd.lightConfig)
 //#endif            
 //#                 
-//#                 new LightConfigForm(this);
+//#                 new LightConfigForm();
 //#endif                
                 return;
         }

@@ -94,5 +94,6 @@ public class StaticData {
 //#     public boolean Upgrade=true;
 //#     public boolean Juick=true;
 //#     public boolean DeTranslit=true;
+//#     public boolean lightConfig=true;
 //#endif
 }

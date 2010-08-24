@@ -87,7 +87,6 @@ Nicknames	Ники
 to Archive	В архив
 Back	Назад
 heap monitor	монитор памяти (heap)
-keys for old SE	поменять местами софт-кнопки
 Message	Сообщение
 <Other>	<Другой>
 History	история сообщений
@@ -519,7 +518,6 @@ File manager	Менеджер файлов
 remote control	удалённое управление
 resolve hostname	преобразовать в имя хоста
 show time and traffic	показывать время и трафик
-keys for old SE	поменять местами софт-кнопки
 Users search	Поиск пользователей
 Personal events	Персональные уведомления
 Receive events	Получать уведомления

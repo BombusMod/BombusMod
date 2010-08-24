@@ -131,8 +131,6 @@ public class ConfigForm
     
     private CheckBox showNickNames;
     
-    private CheckBox oldSE;
-    
     private CheckBox swapSendAndSuspend;
 
     private Vector langs[];
@@ -250,9 +248,6 @@ public class ConfigForm
         memMonitor = new CheckBox(SR.MS_HEAP_MONITOR, cf.memMonitor); itemsList.addElement(memMonitor);
         enableVersionOs = new CheckBox(SR.MS_SHOW_HARDWARE, cf.enableVersionOs); itemsList.addElement(enableVersionOs);
         queryExit = new CheckBox(SR.MS_CONFIRM_EXIT, cf.queryExit); itemsList.addElement(queryExit);
-        oldSE = new CheckBox(SR.MS_KEYS_FOR_OLD_SE, cf.oldSE);
-        if (phoneManufacturer==Config.SONYE)
-            itemsList.addElement(oldSE);
 
         lightState = new CheckBox(SR.L_CONFIG, cf.lightState);
         if (phoneManufacturer==Config.SIEMENS || phoneManufacturer==Config.SIEMENS2 || phoneManufacturer==Config.SONYE || phoneManufacturer==Config.NOKIA) itemsList.addElement(lightState);
@@ -448,8 +443,6 @@ public class ConfigForm
         VirtualList.memMonitor=cf.memMonitor=memMonitor.getValue();
         cf.enableVersionOs=enableVersionOs.getValue();
         cf.queryExit=queryExit.getValue();
-        if (phoneManufacturer==Config.SONYE)
-            cf.oldSE=oldSE.getValue();
 
         cf.lightState=lightState.getValue();
         if (cf.allowMinimize)
