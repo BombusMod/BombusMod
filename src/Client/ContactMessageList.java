@@ -373,7 +373,7 @@ public void showNotify() {
 //#         }
 //#endif
         if (c==cmdPurge) {
-            if (messages.isEmpty()) return;
+            //if (messages.isEmpty()) return;
             
             if (startSelection) {
                 for (Enumeration select=contact.msgs.elements(); select.hasMoreElements(); ) {
@@ -930,7 +930,9 @@ public void showNotify() {
                 }
                 contact.activeMessage=msgs.size()-1; //drop activeMessage count
             }
-        } catch (Exception e) { }
+        } catch (Exception e) { 
+            e.printStackTrace();
+        }
         
         contact.clearVCard();
         
