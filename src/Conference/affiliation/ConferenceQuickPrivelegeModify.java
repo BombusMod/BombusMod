@@ -37,14 +37,14 @@ import ui.controls.form.DefForm;
 import ui.controls.form.MultiLine;
 import ui.controls.form.TextInput;
 import Menu.MenuCommand;
+import midlet.BombusMod;
 import ui.VirtualList;
 
 /**
  *
  * @author Evg_S
  */
-public class ConferenceQuickPrivelegeModify
-        extends DefForm {
+public class ConferenceQuickPrivelegeModify {
     
     public final static int KICK=1;
     public final static int VISITOR=2;
@@ -57,10 +57,10 @@ public class ConferenceQuickPrivelegeModify
     public final static int ADMIN=8;
     public final static int OWNER=9;
 
-    private TextInput reason;
+    protected TextInput reason;
     private MucContact victim;
     
-    private MenuCommand cmdNoReason=new MenuCommand(SR.MS_NO_REASON, MenuCommand.SCREEN, 2);
+    
     private int action;
 
     private String myNick;
@@ -69,7 +69,6 @@ public class ConferenceQuickPrivelegeModify
      * Creates a new instance of ConferenceQuickPrivelegeModify
      */
     public ConferenceQuickPrivelegeModify(MucContact victim, int action, String myNick) {
-        super(null);
         
         this.victim=victim;
         this.action=action;
@@ -89,39 +88,11 @@ public class ConferenceQuickPrivelegeModify
                 return;
         } // switch
 
-        getMainBarItem().setElementAt(okName, 0);
-        
-        StringBuffer user=new StringBuffer(victim.nick);
-        if (victim.jid!=null) {
-            user.append(" (")
-            .append(victim.realJid)
-            .append(")");
-        }
-        itemsList.addElement(new MultiLine(SR.MS_USER, user.toString(), super.superWidth));
-
-        
-        reason=new TextInput(SR.MS_REASON, "", "reason", TextField.ANY);
-        itemsList.addElement(reason);
-        
-        addMenuCommand(cmdNoReason);
-        user=null;
-        show(StaticData.getInstance().roster);
-    }
-
-    public void cmdOk() {
-        setMucMod();
-        destroyView();
+        new PrivelegeModifyForm(this, victim, okName);        
     }
     
-    public void menuAction(MenuCommand c, VirtualList d) {
-        if (c==cmdNoReason) { 
-            reason.setValue("");
-            cmdOk();
-            return;
-        }
-        super.menuAction(c, d);
-    }
-    private void setMucMod(){
+        
+    public final void setMucMod(){
         JabberDataBlock iq=new Iq(victim.jid.getBareJid(), Iq.TYPE_SET, "itemmuc");
         JabberDataBlock query=iq.addChildNs("query", "http://jabber.org/protocol/muc#admin"); 
         //TODO: separate usecases to muc#owner, muc#admin and muc#moderator
@@ -192,4 +163,51 @@ public class ConferenceQuickPrivelegeModify
         //System.out.println(iq);
         StaticData.getInstance().roster.theStream.send(iq);
     }
+    
+}
+
+class PrivelegeModifyForm extends DefForm {
+    
+    private MenuCommand cmdNoReason=new MenuCommand(SR.MS_NO_REASON, MenuCommand.SCREEN, 2);
+    ConferenceQuickPrivelegeModify cq;
+    
+    public PrivelegeModifyForm(ConferenceQuickPrivelegeModify cq, MucContact victim, String okName) {
+        super(okName);
+        this.cq = cq;
+        getMainBarItem().setElementAt(okName, 0);
+        
+        StringBuffer user=new StringBuffer(victim.nick);
+        if (victim.jid!=null) {
+            user.append(" (")
+            .append(victim.realJid)
+            .append(")");
+        }
+        itemsList.addElement(new MultiLine(SR.MS_USER, user.toString(), super.superWidth));        
+        cq.reason=new TextInput(SR.MS_REASON, "", "reason", TextField.ANY);
+        itemsList.addElement(cq.reason);       
+        
+    }
+    public void cmdOk() {
+        cq.setMucMod();
+        BombusMod.getInstance().setDisplayable(sd.roster);
+    }
+    
+    
+    public final void commandState() {
+        menuCommands.removeAllElements();
+        addMenuCommand(cmdOk);
+        addMenuCommand(cmdNoReason);
+    }
+    
+    public void menuAction(MenuCommand c, VirtualList d) {
+        if (c==cmdNoReason) { 
+            cq.reason.setValue("");
+            cmdOk();
+            return;
+        }
+        super.menuAction(c, d);
+    }
+    
+    public String touchLeftCommand() { return SR.MS_MENU; }
+    public void touchLeftPressed() { showMenu(); }
 }
