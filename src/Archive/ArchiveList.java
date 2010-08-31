@@ -33,7 +33,6 @@ import ui.MainBar;
 import Messages.MessageList;
 import java.util.Vector;
 import Menu.MenuCommand;
-import javax.microedition.lcdui.Displayable;
 import locale.SR;
 import ui.VirtualList;
 import ui.controls.AlertBox;

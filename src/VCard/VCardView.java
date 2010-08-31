@@ -233,14 +233,10 @@ public class VCardView
     
     public void cmdOk() { showMenu(); }
     
-    public void cmdCancel() {
-        clearVcard();
-    }
-    
     public void cmdExit() {
         super.cmdCancel();
     }
-    
+    /*
     public void clearVcard() {
         new AlertBox(SR.MS_ACTION, SR.MS_DELETE+" "+SR.MS_VCARD+"?") {
             public void yes() {
@@ -249,5 +245,5 @@ public class VCardView
             public void no() {                
             }
         };
-    }
+    }*/
 }
