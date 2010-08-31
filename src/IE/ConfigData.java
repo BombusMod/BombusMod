@@ -206,7 +206,7 @@ public class ConfigData {
         
         cf.accountIndex=cf.getIntProperty(getValue(accountIndex),-1);
         cf.showOfflineContacts=cf.getBooleanProperty(getValue(showOfflineContacts),false);
-        cf.fullscreen=cf.getBooleanProperty(getValue(fullscreen),true);
+        Config.fullscreen=cf.getBooleanProperty(getValue(fullscreen),true);
         cf.fileTransfer=cf.getBooleanProperty(getValue(fileTransfer),true);
         cf.adhoc=cf.getBooleanProperty(getValue(adhoc),true);
         cf.saveHistory=cf.getBooleanProperty(getValue(saveHistory),true);
@@ -316,7 +316,7 @@ public class ConfigData {
 
         cf.saveToStorage();
 
-        VirtualList.fullscreen=cf.fullscreen;
+        VirtualList.fullscreen=Config.fullscreen;
         VirtualList.memMonitor=cf.memMonitor;
     }
     

@@ -144,7 +144,7 @@ public class JuickConfig extends DefForm {
                 for (int i = 0; i < size; i++)
                     addRecord(inputStream.readUTF(), inputStream.readUTF());
                 inputStream.close();
-            } catch (Exception e) { e.printStackTrace(); }
+            } catch (Exception e) {  }
         }
     }
 }
