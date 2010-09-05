@@ -27,10 +27,8 @@
 package ui.controls;
 
 import Client.Config;
-import Client.StaticData;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
-import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.TextBox;
 import javax.microedition.lcdui.TextField;
@@ -41,7 +39,6 @@ import locale.SR;
 //#ifdef ARCHIVE
 import Archive.ArchiveList;
 //#endif
-import ui.VirtualList;
 
 /**
  *
@@ -102,7 +99,7 @@ public class ExTextBox {
         midlet.BombusMod.getInstance().setDisplayable(textbox);        
     }
         
-    public void destroyView(){
+    public void destroyView() {
         midlet.BombusMod.getInstance().setDisplayable(parentView);
     }   
     

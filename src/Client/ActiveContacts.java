@@ -32,7 +32,6 @@ import java.util.Vector;
 import locale.SR;
 import ui.MainBar;
 import ui.VirtualElement;
-import ui.VirtualList;
 import ui.controls.form.DefForm;
 //#ifdef POPUPS
 import ui.controls.PopUp;
@@ -66,7 +65,10 @@ public class ActiveContacts
             }
         //}
 
-	if (getItemCount()==0) return;
+        if (getItemCount() == 0) {
+            destroyView();
+            return;
+        }
 	
         MainBar mb=new MainBar(2, String.valueOf(getItemCount()), " ", false);
         mb.addElement(SR.MS_ACTIVE_CONTACTS);
@@ -84,9 +86,12 @@ public class ActiveContacts
     public void cmdOk() {
         eventOk();
     }
+
     public void eventOk() {
-	Contact c=(Contact)getFocusedObject();
-	new ContactMessageList(c);        
+        if (getItemCount() > 0) {
+            Contact c = (Contact) getFocusedObject();
+            new ContactMessageList(c);
+        }
         //c.msgSuspended=null; // clear suspended message for selected contact
     }
     
