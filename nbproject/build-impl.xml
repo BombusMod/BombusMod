@@ -51,7 +51,19 @@
         <echo message="Platform profile (platform.profile) is not set. Using default (MIDP-1.0) profile." level="warning"/>
         <property value="MIDP-1.0" name="platform.profile"/>
     </target>
-    <target depends="pre-init,load-properties,exists.platform.active,exists.platform.configuration,exists.platform.profile" name="init">
+        <target name="check.cond.new.netbeans.mobility">
+        <condition property="new.netbeans.mobility">
+        	<contains string="${libs.j2me_ant_ext.classpath}" substring="org-netbeans-modules-mobility-antext.jar" casesensitive="false"/>
+        </condition>
+    </target>
+    <target name="use.new.netbeans.mobility" depends="check.cond.new.netbeans.mobility" if="new.netbeans.mobility">
+        <property name="antextdefprops" value="org/netbeans/mobility/antext/defs.properties"/>
+    </target>
+    <target name="use.old.netbeans.mobility" depends="check.cond.new.netbeans.mobility" unless="new.netbeans.mobility">
+        <property name="antextdefprops" value="org/netbeans/modules/kjava/antext/defs.properties"/>
+    </target>
+    <target name="cond.new.netbeans.mobility" depends="use.new.netbeans.mobility,use.old.netbeans.mobility"/>
+    <target depends="pre-init,load-properties,exists.platform.active,exists.platform.configuration,exists.platform.profile,cond.new.netbeans.mobility" name="init">
         <fail unless="libs.j2me_ant_ext.classpath">Classpath to J2ME Ant extension library (libs.j2me_ant_ext.classpath property) is not set. For example: location of mobility/modules/org-netbeans-modules-kjava-antext.jar file in the IDE installation directory.</fail>
         <fail unless="platform.home">Platform home (platform.home property) is not set. Value of this property should be ${platform.active.description} emulator home directory location.</fail>
         <fail unless="platform.bootclasspath">Platform boot classpath (platform.bootclasspath property) is not set. Value of this property should be ${platform.active.description} emulator boot classpath containing all J2ME classes provided by emulator.</fail>
@@ -95,7 +107,7 @@
             <istrue value="${deployment.override.jarurl}"/>
         </condition>
         <property value="${run.security.domain}" name="evaluated.run.security.domain"/>
-        <taskdef resource="org/netbeans/modules/kjava/antext/defs.properties">
+        <taskdef resource="${antextdefprops}">
             <classpath>
                 <pathelement path="${libs.j2me_ant_ext.classpath}"/>
             </classpath>
