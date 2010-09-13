@@ -31,10 +31,10 @@ import Client.Config;
 import Client.StaticData;
 import Fonts.FontCache;
 //#ifdef AUTOSTATUS
-import Client.ExtendedStatus;
-import Client.Roster;
-import Client.StaticData;
-import Client.StatusList;
+//# import Client.ExtendedStatus;
+//# import Client.Roster;
+//# import Client.StaticData;
+//# import Client.StatusList;
 //#endif
 import images.RosterIcons;
 import java.util.Timer;
@@ -52,8 +52,6 @@ import ui.controls.Progress;
  * @author Eugene Stahov
  */
 public final class SplashScreen extends Canvas implements Runnable, CommandListener {
-    
-    private Displayable parentView;
     
     private String capt;
     private int pos=-1;
@@ -79,6 +77,8 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
     private Font clockFont=FontCache.getFont(true, FontCache.bigSize);
     
     private Progress pb;
+
+    public boolean hidden = false;
     
     public static SplashScreen getInstance(){
         if (instance==null) 
@@ -97,8 +97,6 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
         this.exitKey=exitKey;
         kHold=exitKey;
         
-        parentView=midlet.BombusMod.getInstance().getCurrentDisplayable();
-
         status.setElementAt(new Integer(RosterIcons.ICON_KEYBLOCK_INDEX),6);
         show();
     }
@@ -175,19 +173,18 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
     private Command cmdExit=new Command("Hide Splash", Command.BACK, 99);
     
     public void setExit(Displayable nextDisplayable){
-        parentView=nextDisplayable;
         setCommandListener(this);
         addCommand(cmdExit);
     }
     
     public void commandAction(Command c, Displayable d) {
-        if (c==cmdExit) 
-            close();
+        if (c==cmdExit)
+            close();        
     }
     
     public void close(){
         //if (parentView!=null)
-        midlet.BombusMod.getInstance().setDisplayable(StaticData.getInstance().roster);
+        midlet.BombusMod.getInstance().setDisplayable(VirtualCanvas.getInstance().getList());
         //parentView=null;
         //repaint();
         //serviceRepaints();
@@ -223,6 +220,9 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
             t.cancel();
         }
     }
+    public void pointerPressed(int x, int y) {
+        close();
+    }
 
     public void keyPressed(int keyCode) {
         keypressed=keyCode;
@@ -245,19 +245,19 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
 
     private void destroyView(){
         status.setElementAt(null,6);
-        midlet.BombusMod.getInstance().setDisplayable(StaticData.getInstance().roster);
+        midlet.BombusMod.getInstance().setDisplayable(VirtualCanvas.getInstance().getList());
         img=null;
         tc.stop();
 //#ifdef AUTOSTATUS
-        StaticData sd=StaticData.getInstance();
-        if (Roster.autoAway && cf.autoAwayType==Config.AWAY_LOCK) {
-            int newStatus=Roster.oldStatus;
-            ExtendedStatus es=StatusList.getInstance().getStatus(newStatus);
-            String ms=es.getMessage();
-            Roster.autoAway=false;
-            Roster.autoXa=false;
-            sd.roster.sendPresence(newStatus, ms);
-        }
+//#         StaticData sd=StaticData.getInstance();
+//#         if (Roster.autoAway && cf.autoAwayType==Config.AWAY_LOCK) {
+//#             int newStatus=Roster.oldStatus;
+//#             ExtendedStatus es=StatusList.getInstance().getStatus(newStatus);
+//#             String ms=es.getMessage();
+//#             Roster.autoAway=false;
+//#             Roster.autoXa=false;
+//#             sd.roster.sendPresence(newStatus, ms);
+//#         }
 //#endif
 //        if (cf.widthSystemgc) { _vt
             System.gc();

@@ -384,14 +384,14 @@ public abstract class VirtualList
     }
 
     public void redraw() {
-        if (VirtualCanvas.nativeCanvas.getList() == this) {
-            VirtualCanvas.nativeCanvas.repaint();
+        if (VirtualCanvas.getInstance().getList() == this) {
+            VirtualCanvas.getInstance().repaint();
             return;
          }
      }
     public boolean isShown() {
         if (midlet.BombusMod.getInstance().getCurrentDisplayable() == this) {
-            return VirtualCanvas.nativeCanvas.isShown();
+            return VirtualCanvas.getInstance().isShown();
         }
         return false;
     }
@@ -411,8 +411,8 @@ public abstract class VirtualList
      * двойной буферизации
      */
     protected void showNotify() {
-        VirtualCanvas.nativeCanvas.setOk(touchLeftCommand());
-        VirtualCanvas.nativeCanvas.setCancel(touchRightCommand());
+        VirtualCanvas.getInstance().setOk(touchLeftCommand());
+        VirtualCanvas.getInstance().setCancel(touchRightCommand());
 //#if (USE_ROTATOR)
         TimerTaskRotate.startRotate(-1, this);
 //#endif
@@ -428,6 +428,7 @@ public abstract class VirtualList
     protected void sizeChanged(int w, int h) {
         width=w;
         height=h;
+        redraw();
 //#ifdef GRADIENT
 //#         iHeight=0;
 //#         mHeight=0;
@@ -787,7 +788,7 @@ public abstract class VirtualList
         stickyWindow=true;
         int count=getItemCount();
         if (cursor>=0) cursor=(count==0)?0:count-1;
-        VirtualCanvas.nativeCanvas.repaint();
+        redraw();
         setRotator();
         
     }
@@ -802,7 +803,7 @@ public abstract class VirtualList
         } catch (Exception ex){
         }
         stickyWindow=true;
-        VirtualCanvas.nativeCanvas.repaint();
+        redraw();
     }
     
     protected void fitCursorByTop(){

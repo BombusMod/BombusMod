@@ -1427,7 +1427,6 @@ public class Roster
                             groups.queryGroupState(true);
 
                         setProgress(SR.MS_CONNECTED,100);
-                        midlet.BombusMod.getInstance().setDisplayable(StaticData.getInstance().roster);
                         reEnumRoster();
 
                         querysign=doReconnect=false;
@@ -2438,7 +2437,7 @@ public class Roster
             Config.fullscreen=!Config.fullscreen;
             cf.saveToStorage();
             VirtualList.fullscreen=Config.fullscreen;
-            StaticData.getInstance().roster.setFullScreenMode(Config.fullscreen);
+            VirtualCanvas.getInstance().setFullScreenMode(Config.fullscreen);
         }
         else if (keyCode==KEY_NUM7)
             new RosterToolsMenu();

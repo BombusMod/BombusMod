@@ -310,7 +310,7 @@
             </sequential>
         </parallel>
     </target>
-    <target if="netbeans.home" description="Start NetBeans debugger" name="nbdebug">
+    <target name="nbdebug.old.netbeans" unless="new.netbeans.mobility">
         <nb-kjava-debug period="2000" timeout="30000" name="${app.codename}" address="${jpda.port}">
             <bootclasspath>
                 <path path="${platform.bootclasspath}"/>
@@ -324,6 +324,12 @@
             </sourcepath>
         </nb-kjava-debug>
     </target>
+    <target name="nbdebug.new.netbeans" if="new.netbeans.mobility">
+        <property name="debug.delay" value="5000"/>
+        <nb-mobility-debug address="${jpda.port}" name="${app.codename}" delay="${debug.delay}" timeout="30000" period="2000"/>
+    </target>
+    <target if="netbeans.home" description="Start NetBeans debugger" name="nbdebug" depends="nbdebug.old.netbeans,nbdebug.new.netbeans"/>
+
     <target depends="init,preprocess" name="javadoc">
         <mkdir dir="${dist.javadoc.dir}"/>
         <javadoc private="${javadoc.private}" windowtitle="${javadoc.windowtitle}" version="${javadoc.version}" author="${javadoc.author}" splitindex="${javadoc.splitindex}" noindex="${javadoc.noindex}" nonavbar="${javadoc.nonavbar}" use="${javadoc.use}" notree="${javadoc.notree}" bootclasspath="${platform.bootclasspath}" destdir="${dist.javadoc.dir}" source="${javac.source}">

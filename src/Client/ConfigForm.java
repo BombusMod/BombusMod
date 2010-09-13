@@ -38,6 +38,7 @@ import ui.controls.form.SimpleString;
 import ui.controls.form.SpacerItem;
 import util.StringLoader;
 import com.alsutton.jabber.datablocks.Presence;
+import ui.VirtualCanvas;
 import xmpp.EntityCaps;
 
 public class ConfigForm
@@ -484,7 +485,7 @@ public class ConfigForm
 
         //sd.roster.setLight(cf.lightState);   TODO: correct for new light control
 
-        sd.roster.setFullScreenMode(Config.fullscreen);
+        VirtualCanvas.getInstance().setFullScreenMode(Config.fullscreen);
 
         cf.firstRun=false;
 

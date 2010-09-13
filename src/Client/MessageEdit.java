@@ -238,7 +238,7 @@ public final class MessageEdit
          midlet.BombusMod.getInstance().setDisplayable(parentView);
          if (parentView instanceof ContactMessageList) {             
                 ((ContactMessageList)parentView).forceScrolling();
-                VirtualCanvas.nativeCanvas.repaint();
+                ((ContactMessageList)parentView).redraw();
             }
 //#ifdef RUNNING_MESSAGE
 //#             runState = 3;

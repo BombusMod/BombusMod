@@ -73,34 +73,29 @@ public class AccountSelect extends DefForm {
 
         activeAccount = cf.accountIndex;
         loadAccounts();
-    }
 
-    public final void show(VirtualList pView) {
-        super.show(pView);
         if (!itemsList.isEmpty()) {
             moveCursorTo(activeAccount);
         } else {
 //#ifdef IMPORT_EXPORT
 //#ifdef PLUGINS
 //#             if (StaticData.getInstance().IE) {
-//#endif     
+//#endif
 //#             new IE.Accounts("/def_accounts.txt", 0,  true);
-//#ifdef PLUGINS                              
+//#ifdef PLUGINS
 //#             }
 //#endif
 //#             loadAccounts();
 //#         if (itemsList.isEmpty()) {
 //#endif
-            new AccountForm(this, null).show(pView);
+            new AccountForm(this, null);
             return;
 //#ifdef IMPORT_EXPORT
 //#         }
 //#endif
-        }  
-
-        
+        }
     }
-
+    
     public final void loadAccounts() {
         Account a;
         int index=0;

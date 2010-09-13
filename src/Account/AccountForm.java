@@ -31,6 +31,7 @@ import Client.*;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
 import ui.SplashScreen;
+import ui.VirtualCanvas;
 import ui.VirtualList;
 import ui.controls.AlertBox;
 import ui.controls.form.CheckBox;
@@ -97,14 +98,13 @@ public class AccountForm
      * @param accountSelect
      * @param account
      */
-    public AccountForm(AccountSelect accountSelect, Account account) {
+    public AccountForm(AccountSelect accountSelect, Account acc) {
         super(null);
 	this.accountSelect = accountSelect;
-        
+        account=acc;
 	newaccount=(account==null);
-	if (newaccount) account=new Account();
-	this.account=account;
-	
+        if (newaccount)
+            this.account=new Account();
 	
         getMainBarItem().setElementAt((newaccount)?SR.MS_NEW_ACCOUNT:(account.toString()), 0);
 
@@ -280,9 +280,12 @@ public class AccountForm
     public void destroyView(){
         if (newaccount && doConnect) {
             new AlertBox(SR.MS_CONNECT_TO, account.getBareJid()+"?") {
-                public void yes() { startLogin(true); }
+                public void yes() {
+                    sd.roster.show();
+                    startLogin(true);
+                }
                 public void no() { startLogin(false); }
-            };
+            };            
         } else
             accountSelect.show();
     }
@@ -303,7 +306,7 @@ public class AccountForm
             Config.fullscreen=!Config.fullscreen;
             cf.saveToStorage();
             VirtualList.fullscreen=Config.fullscreen;
-            StaticData.getInstance().roster.setFullScreenMode(Config.fullscreen);
+            VirtualCanvas.getInstance().setFullScreenMode(Config.fullscreen);
         }
     }
 }

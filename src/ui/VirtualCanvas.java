@@ -27,15 +27,18 @@ public class VirtualCanvas extends Canvas implements CommandListener{
     public Command commandOk;
     public Command commandCancel;
 
-    
-    /** Creates a new instance of NativeCanvas */
-    public VirtualCanvas() {
-        setFullScreenMode(Config.fullscreen);
-        setOk(SR.MS_MENU);
-        setCancel(SR.MS_ACTION);
-        setCommandListener(this);
+    static VirtualCanvas instance;
+    public static VirtualCanvas getInstance() {
+        if (instance == null) {
+            instance = new VirtualCanvas();
+            instance.setOk(SR.MS_MENU);
+            instance.setCancel(SR.MS_ACTION);
+            instance.setCommandListener(instance);
+        }
+        return instance;
     }
 
+    
     public void show(VirtualList virtualList) {
         if (this == midlet.BombusMod.getInstance().getDisplay().getCurrent()
                 && isShown()) {
@@ -50,8 +53,7 @@ public class VirtualCanvas extends Canvas implements CommandListener{
         } else {
             list = virtualList;
             midlet.BombusMod.getInstance().getDisplay().setCurrent(this);
-        }
-
+        }        
     }
     public VirtualList getList() {
         return list;
@@ -92,11 +94,16 @@ public class VirtualCanvas extends Canvas implements CommandListener{
 
         
     
-    protected void sizeChanged(int w, int h) {
+    protected void sizeChanged(int w, int h) {        
         if (list != null)
-            list.sizeChanged(w, h);
+        list.sizeChanged(w, h);
     }
-    public static final VirtualCanvas nativeCanvas = new VirtualCanvas();
+
+    public int getHeight() {
+        if (Config.getInstance().phoneManufacturer == Config.MICROEMU)
+            return super.getHeight() - 25;
+        return super.getHeight();
+    }   
 
     public void commandAction(Command c, Displayable d) {
         if (c == commandOk) list.touchLeftPressed();

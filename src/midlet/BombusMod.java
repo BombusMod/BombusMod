@@ -81,7 +81,7 @@ public class BombusMod extends MIDlet implements Runnable{
 //#endif    
 
         instance=this;
-        display = Display.getDisplay(this);
+        display = Display.getDisplay(this);        
         s = SplashScreen.getInstance();
         s.setProgress("Loading", 3); // this message will not be localized
         
@@ -149,7 +149,7 @@ public class BombusMod extends MIDlet implements Runnable{
         if (!selAccount && cf.autoLogin)
             Account.loadAccount(cf.autoLogin, cf.accountIndex); // connect whithout account select
         else
-            new AccountSelect(true).show(sd.roster);
+            new AccountSelect(true);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -238,11 +238,11 @@ public class BombusMod extends MIDlet implements Runnable{
         if (!isLocked) {
             if (d == null) {
                 sd.roster.errorLog(getCurrentDisplayable().getClass().toString() + ": Displayable is null. Compensate.");
-                System.out.println("Displayable is null.");
+                System.out.println(getCurrentDisplayable().getClass().toString() + ": Displayable is null.");
                 d = sd.roster;
             }
             if (d instanceof VirtualList) {
-                VirtualCanvas.nativeCanvas.show((VirtualList)d);
+                VirtualCanvas.getInstance().show((VirtualList)d);
                 return;
             }
             getDisplay().setCurrent(d);
