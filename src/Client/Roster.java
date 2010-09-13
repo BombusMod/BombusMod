@@ -420,6 +420,7 @@ public class Roster
     
     public void beginPaint() {
         paintVContacts=vContacts;
+        setFullScreenMode(Config.fullscreen);
     }
     
     public VirtualElement getItemRef(int Index){

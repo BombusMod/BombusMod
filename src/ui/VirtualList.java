@@ -118,6 +118,10 @@ public abstract class VirtualList
             case 5: paintTop=true;  paintBottom=true;  reverse=true;  break;
             case 6: paintTop=false; paintBottom=true;  reverse=true;  break;
         }
+        if (Config.fullscreen) {
+            paintBottom = !reverse;
+            paintTop = reverse;
+        }
     }
     
     private static int previous_key_code = -1;
@@ -224,8 +228,6 @@ public abstract class VirtualList
 //#     public Image img;
 //#endif
     
-    CommandsPointer ar=new CommandsPointer();
-
     protected synchronized void updateLayout(){
         int size=getItemCount();
         if (size==0) {
@@ -320,7 +322,7 @@ public abstract class VirtualList
     protected ScrollBar scrollbar;
     
     /** Creates a new instance of VirtualList */
-    public VirtualList() {
+    public VirtualList() {       
        setFullScreenMode(Config.fullscreen);
        width=getWidth();
        int offs = 0;
@@ -445,21 +447,16 @@ public abstract class VirtualList
      */
     protected void beginPaint(){};
 
-    public void paint(Graphics g) {
-        width = getWidth();
-        int offs = 0;
-        if (Config.getInstance().phoneManufacturer == Config.MICROEMU) // TODO: remove when microemu fixed
-            offs = 25;
-        height = getHeight() - offs;
+    public void paint(Graphics g) {        
 
         mHeight=0;
         iHeight=0;       
         
         
+        beginPaint();
 //#ifdef POPUPS
         PopUp.getInstance().init(g, width, height);
 //#endif
-        beginPaint();
         
         //StaticData.getInstance().screenWidth=width;
 
@@ -614,15 +611,15 @@ public abstract class VirtualList
                 if (mainbar!=null) {
                     setAbsOrg(g, 0, height-mHeight);
                     drawMainPanel(g);
-                    if (hasPointerEvents())
-                        ar.init(width, height, mHeight);
+                    if (hasPointerEvents() && Config.fullscreen)
+                        CommandsPointer.init(width, height, mHeight);
                 }
             } else {
                 if (infobar!=null) {
                     setAbsOrg(g, 0, height-iHeight);
                     drawInfoPanel(g);
-                    if (hasPointerEvents())
-                        ar.init(width, height, iHeight);
+                    if (hasPointerEvents() && Config.fullscreen)
+                        CommandsPointer.init(width, height, iHeight);
                 }
             }
             setAbsClip(g, width, height);
@@ -859,9 +856,9 @@ public abstract class VirtualList
             redraw();
             return;
         }
-//#endif
-        if (ar.enabled) {
-            int act = ar.pointerPressed(x, y);
+//#endif        
+        if (Config.fullscreen) {
+            int act = CommandsPointer.pointerPressed(x, y);
             if (act == 1) {
                 key(Config.SOFT_LEFT);
                 stickyWindow = false;
@@ -872,6 +869,7 @@ public abstract class VirtualList
                 return;
             }
         }
+        
         
         yPointerPos = y;
 
@@ -943,7 +941,8 @@ public abstract class VirtualList
         redraw();
     }
     
-    protected void pointerDragged(int x, int y) { 
+    protected void pointerDragged(int x, int y) {
+         if (y > list_top + winHeight) return;
         if (scrollbar.pointerDragged(x, y, this)) {
             stickyWindow=false;
             return;
@@ -976,7 +975,8 @@ public abstract class VirtualList
     }
     protected void pointerReleased(int x, int y) { 
         scrollbar.pointerReleased(x, y, this);
-        if (ar.enabled && (ar.pointerPressed(x, y) > 0)) return;
+        if (Config.fullscreen)
+            if (CommandsPointer.pointerPressed(x, y) > 0) return;
         if (Config.getInstance().advTouch) {
             if (y > list_top + winHeight) return;
         }

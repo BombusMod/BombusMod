@@ -273,7 +273,7 @@ public class AccountForm
             new AccountRegister(account);
         } else {
             destroyView();
-        }
+        }        
         account=null;
     }
 
@@ -284,7 +284,10 @@ public class AccountForm
                     sd.roster.show();
                     startLogin(true);
                 }
-                public void no() { startLogin(false); }
+                public void no() { 
+                    startLogin(false);
+                    accountSelect.show();
+                }
             };            
         } else
             accountSelect.show();

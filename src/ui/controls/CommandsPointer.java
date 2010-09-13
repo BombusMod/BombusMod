@@ -27,16 +27,12 @@ package ui.controls;
 public class CommandsPointer {
     static int cHeight = 0;
     static int cWidth = 0;   
-    public boolean enabled = false;
-    public CommandsPointer() { }
-    
-    public void init(int width, int height, int lineHeight) {
-        enabled = true;
+    public static void init(int width, int height, int lineHeight) {
         CommandsPointer.cWidth=width/2;
         CommandsPointer.cHeight=height-lineHeight;
     }
     
-    public int pointerPressed(int x, int y) {
+    public static int pointerPressed(int x, int y) {
         if (x<cWidth && y>cHeight) {
             return 1; 
         }
