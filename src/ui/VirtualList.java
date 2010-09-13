@@ -118,10 +118,11 @@ public abstract class VirtualList
             case 5: paintTop=true;  paintBottom=true;  reverse=true;  break;
             case 6: paintTop=false; paintBottom=true;  reverse=true;  break;
         }
-        if (Config.fullscreen) {
+        // TODO: prevent hide command bar on touch screen device
+      /*  if (Config.fullscreen && hasPointerEvents()) {
             paintBottom = !reverse;
             paintTop = reverse;
-        }
+        }*/
     }
     
     private static int previous_key_code = -1;
