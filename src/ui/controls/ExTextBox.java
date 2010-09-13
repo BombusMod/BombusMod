@@ -27,6 +27,9 @@
 package ui.controls;
 
 import Client.Config;
+//#ifdef PLUGINS
+import Client.StaticData;
+//#endif
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
