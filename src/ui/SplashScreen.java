@@ -78,8 +78,6 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
     
     private Progress pb;
 
-    public boolean hidden = false;
-    
     public static SplashScreen getInstance(){
         if (instance==null) 
             instance=new SplashScreen();
@@ -150,7 +148,7 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
     
     public void setProgress(int progress) {
         pos=progress;
-        repaint();
+            repaint();
     }
 
     public void setFailed(){
@@ -189,7 +187,7 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
         //repaint();
         //serviceRepaints();
         img=null;
-        instance=null;
+       // instance=null;
 //        if (cf.widthSystemgc) { _vt
             System.gc();
 //        } _vt
