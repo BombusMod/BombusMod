@@ -136,7 +136,7 @@ public class BombusMod extends MIDlet implements Runnable{
 //#         sd.autoTask=new AutoTask(display);
 //#         s.setProgress(17);
 //#endif
-
+        VirtualCanvas.getInstance();
         sd.roster=new Roster();
         s.setProgress(20);
         

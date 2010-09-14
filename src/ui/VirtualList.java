@@ -325,11 +325,8 @@ public abstract class VirtualList
     /** Creates a new instance of VirtualList */
     public VirtualList() {       
        setFullScreenMode(Config.fullscreen);
-       width=getWidth();
-       int offs = 0;
-       if (Config.getInstance().phoneManufacturer == Config.MICROEMU)
-            offs = 25;
-       height = getHeight() - offs;
+       width=getWidth();       
+       height = getHeight();
 //#ifdef POPUPS
         PopUp.getInstance();
 //#endif
@@ -397,6 +394,11 @@ public abstract class VirtualList
             return VirtualCanvas.getInstance().isShown();
         }
         return false;
+    }
+    public final int getHeight() {
+       if (Config.getInstance().phoneManufacturer == Config.MICROEMU)
+            return super.getHeight() - 25;
+       return super.getHeight();
     }
 
 
@@ -943,7 +945,8 @@ public abstract class VirtualList
     }
     
     protected void pointerDragged(int x, int y) {
-         if (y > list_top + winHeight) return;
+        if (y < list_top) return;
+        if (y > list_top + winHeight) return;
         if (scrollbar.pointerDragged(x, y, this)) {
             stickyWindow=false;
             return;

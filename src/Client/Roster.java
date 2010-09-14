@@ -144,8 +144,6 @@ public class Roster
     private MenuCommand cmdQuit=new MenuCommand(SR.MS_APP_QUIT, MenuCommand.SCREEN, 99);
 
     private Config cf=Config.getInstance();
-    private StaticData sd=StaticData.getInstance();
-    
     public Contact activeContact = null;
     
     private Jid myJid;
@@ -209,12 +207,10 @@ public class Roster
     private final static int SOUND_COMPOSING=888;
     private final static int SOUND_OUTGOING=999;
     
-    SplashScreen splash;
-    
     public Roster() {
         super();
 
-        splash = SplashScreen.getInstance();
+        //splash = SplashScreen.getInstance();
          
         sl=StatusList.getInstance();
 
@@ -240,7 +236,7 @@ public class Roster
 
         commandState();
         setMenuListener(this);
-        splash.setExit(this);
+        SplashScreen.getInstance().setExit(this);
 //#ifdef AUTOSTATUS
 //#         if (cf.autoAwayType==Config.AWAY_IDLE || cf.autoAwayType==Config.AWAY_MESSAGE)
 //#             autostatus=new AutoStatusTask();
@@ -315,15 +311,13 @@ public class Roster
     }
     
     public void setProgress(String pgs,int percent){
-        if (splash!=null)
-            splash.setProgress(pgs, percent);
+        SplashScreen.getInstance().setProgress(pgs, percent);
         setRosterMainBar(pgs);
         redraw();
     }
     
-    public void setProgress(int percent){
-        if (splash!=null)
-            splash.setProgress(percent);
+    public void setProgress(int percent){        
+        SplashScreen.getInstance().setProgress(percent);
     }
     
     private void setRosterMainBar(String s){
@@ -338,8 +332,7 @@ public class Roster
         if (rscaler<4) return;
         rscaler=0;
         if (rpercent<100) rpercent++;
-        if (splash!=null)
-            splash.setProgress(rpercent);
+        SplashScreen.getInstance().setProgress(rpercent);
     }
 
     // establishing connection process
@@ -419,8 +412,7 @@ public class Roster
     }
     
     public void beginPaint() {
-        paintVContacts=vContacts;
-        setFullScreenMode(Config.fullscreen);
+        paintVContacts=vContacts;        
     }
     
     public VirtualElement getItemRef(int Index){
@@ -1339,16 +1331,14 @@ public class Roster
 
         if (sd.account.isMucOnly()) {
             setProgress(SR.MS_CONNECTED,100);
-            midlet.BombusMod.getInstance().setDisplayable(StaticData.getInstance().roster);
+            show();
             try {
                 reEnumRoster();
             } catch (Exception e) { }
 			
             setQuerySign(false);
             doReconnect=false;
-            if (splash!=null)
-                splash.close(); // midlet.BombusMod.getInstance().setDisplayable(this);
-            splash=null;
+            show();
 //#ifndef WMUC            
             //query bookmarks
             theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
@@ -1437,9 +1427,7 @@ public class Roster
                             sendPresence(cf.loginstatus, null);
                         }
 
-                        if (splash!=null)
-                            splash.close();
-                        splash=null;
+                        SplashScreen.getInstance().close();
 
                         return JabberBlockListener.BLOCK_PROCESSED;
                     }
@@ -3003,7 +2991,8 @@ public class Roster
                     for (int i=0; i<j; i++) {
                         Contact c = (Contact) hContacts.elementAt(i);
                         Group grp = c.group;
-                        grp.addContact(c);
+                        if (c.group != null)
+                            grp.addContact(c);
                     }
                 }
                 // self-contact group

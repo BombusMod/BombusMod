@@ -45,7 +45,7 @@ public class Jid {
         setJid(s);
     }
     
-    public void setJid(String s){
+    public final void setJid(String s){
         int resourcePos=s.indexOf('/');
         if (resourcePos<0) resourcePos=s.length();
         resource=s.substring(resourcePos);
@@ -75,7 +75,9 @@ public class Jid {
 
     public String getNode() {
         int beginIndex = bareJid.indexOf('@');
-        return bareJid.substring(0, beginIndex-1);
+        if (beginIndex > 0)
+            return bareJid.substring(0, beginIndex-1);
+        return bareJid;
     }
 
     public boolean equalsViaJ2J(String jid_str) {
@@ -86,7 +88,7 @@ public class Jid {
 
         return equals(j, false)
          || (node.equals(jnode+"%"+jserver))
-         || (node.equals(jnode+"\40"+jserver));
+         || (node.equals(jnode+"\40"+jserver));        
     }
 
     public boolean equalsServerViaJ2J(String jserver) {

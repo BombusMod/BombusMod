@@ -31,13 +31,9 @@ import locale.SR;
 import midlet.BombusMod;
 import ui.*;
 import java.io.*;
-import java.util.*;
 import Menu.MenuCommand;
 import io.NvStorage;
 import ui.controls.AlertBox;
-//#ifdef IMPORT_EXPORT
-//# import IE.*;
-//#endif
 import ui.controls.form.DefForm;
 
 
