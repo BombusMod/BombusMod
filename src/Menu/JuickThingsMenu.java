@@ -9,8 +9,8 @@ import locale.SR;
 //import images.MenuIcons;
 import Client.MessageEdit;
 import Client.Contact;
-import java.util.*;
-import ui.VirtualList;
+import Client.Roster;
+import java.util.Vector;
 
 /**
  *
@@ -42,13 +42,23 @@ public class JuickThingsMenu extends Menu {
     }
 
     public void eventOk() {
-        destroyView();
-        MenuItem me=(MenuItem) getFocusedObject();
-        if (me==null) return;
-        int index=me.index;
+        MenuItem me = (MenuItem) getFocusedObject();
+        if (me == null) {
+            return;
+        }
+        int index = me.index;
+
+        String body = (String) things.elementAt(index);
+        int start = body.indexOf('[');
+        int end = body.indexOf(']', start);
+        if ((start>=0) || end>start) {
+            body = body.substring(start+1, end);
+        }
+
         try {
-               Client.Roster.me=new MessageEdit(contact, (String) things.elementAt(index));
-               Client.Roster.me.show(this);
+            Roster.me = null;
+            Roster.me = new MessageEdit(contact, body);
+            Roster.me.show(this);
         } catch (Exception e) {/*no messages*/}
     }
 }

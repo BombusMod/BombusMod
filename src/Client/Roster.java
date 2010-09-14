@@ -917,8 +917,7 @@ public class Roster
 //#     }*/
 //# 
 //#     public boolean isJuickContact(Contact c) {
-//#         return (c.bareJid.equals("juick@juick.com")
-//#          || c.bareJid.startsWith("juick%juick.com@"));
+//#         return c.jid.equalsViaJ2J("juick@juick.com");
 //#     }
 //# 
 //#     public void addJuickContact(Contact c) {

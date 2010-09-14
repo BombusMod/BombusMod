@@ -28,7 +28,7 @@ package ui.controls;
 
 import Client.Config;
 //#ifdef PLUGINS
-import Client.StaticData;
+//# import Client.StaticData;
 //#endif
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
@@ -75,27 +75,28 @@ public class ExTextBox {
     int maxSize=500;
             
     /** Creates a new instance of UniTextEdit */
-    public ExTextBox(String body, String subj) {
-
+    public ExTextBox(String body, String subj, boolean writespaces) {
         cf = Config.getInstance();
-        
         textbox.setTitle(subj);
 		
         try {
             //expanding buffer as much as possible
             maxSize = textbox.setMaxSize(4096); //must not trow
             if (cf.phoneManufacturer != Config.MICROEMU)
-                insert(body, 0);
+                insert(body, 0, writespaces);
             else setText(body);
          } catch (Exception e) {}
         
         commandState();
-
     }
-    
-     public void show(Displayable pView, CommandListener listener) {
+
+    public ExTextBox(String body, String subj) {
+        this(body, subj, true);
+    }
+
+    public void show(Displayable pView, CommandListener listener) {
         setInitialCaps(cf.capsState);
-        if (Config.getInstance().phoneManufacturer == Config.SONYE) 
+        if (Config.getInstance().phoneManufacturer == Config.SONYE)
             System.gc(); // prevent flickering on Sony Ericcsson C510
         textbox.setCommandListener(listener);
         parentView = pView;

@@ -82,8 +82,8 @@ public final class MessageEdit
 //#     Ticker ticker = new Ticker("");
 //#endif
     /** Creates a new instance of MessageEdit */
-    public MessageEdit(Contact to, String body) {
-        super(body, to.toString());
+    public MessageEdit(Contact to, String body, boolean writespaces) {
+        super(body, to.toString(), writespaces);
 
         this.to = to;
         
@@ -107,7 +107,10 @@ public final class MessageEdit
 //#endif
 //#             DeTranslit.getInstance();
 //#endif
+    }
 
+    public MessageEdit(Contact to, String body) {
+        this(to, body, true);
     }
 
     public void show(Displayable pView) {
@@ -270,7 +273,7 @@ public final class MessageEdit
 //#                 runState = 4;
 //#                 send();
 //#                 thread = null;
-//#                 VirtualCanvas.nativeCanvas.repaint();
+//#                 VirtualCanvas.getInstance().repaint();
 //#                 break;
 //#             }
 //#             if (runState == 1) {

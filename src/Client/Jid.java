@@ -58,13 +58,43 @@ public class Jid {
      * @return
      */
     public boolean equals(Jid j, boolean compareResource) {
-        if (j==null) return false;
-        
-        if (!bareJid.equals(j.bareJid)) return false;
+        if (j == null) {
+            return false;
+        }
 
-        if (!compareResource) return true;
+        if (!bareJid.equals(j.bareJid)) {
+            return false;
+        }
+
+        if (!compareResource) {
+            return true;
+        }
         
         return (resource.equals(j.resource));
+    }
+
+    public String getNode() {
+        int beginIndex = bareJid.indexOf('@');
+        return bareJid.substring(0, beginIndex-1);
+    }
+
+    public boolean equalsViaJ2J(String jid_str) {
+        Jid j = new Jid(jid_str);
+        String node = getNode();
+        String jnode = j.getNode();
+        String jserver = j.getServer();
+
+        return equals(j, false)
+         || (node.equals(jnode+"%"+jserver))
+         || (node.equals(jnode+"\40"+jserver));
+    }
+
+    public boolean equalsServerViaJ2J(String jserver) {
+        String node = getNode();
+
+        return getServer().equals(jserver)
+         || (node.endsWith("%"+jserver))
+         || (node.endsWith("\40"+jserver));
     }
 
     public boolean isTransport(){

@@ -545,13 +545,13 @@ public void showNotify() {
 //#         }
 //# 
 //#         if (things.isEmpty() && (isJuickContact(contact) || isJuBoContact(contact))) {
-//#             things.addElement("@top+");
-//#             things.addElement("#");
-//#             things.addElement("##");
-//#             things.addElement("###");
-//#             things.addElement("#+");
-//#             things.addElement("*");
-//#             things.addElement("@");
+//#             things.addElement("Popular messages [@top+]");
+//#             things.addElement("First page you feed [#]");
+//#             things.addElement("Second page you feed [##]");
+//#             things.addElement("Third page you feed [###]");
+//#             things.addElement("Last messages [#+]");
+//#             things.addElement("Your tags [*]");
+//#             things.addElement("Recommended personal blogs [@]");
 //#             things.addElement("HELP");
 //#         }
 //# 
@@ -634,9 +634,10 @@ public void showNotify() {
 //#             resultAction = target+action;
 //#         }
 //#         try {
-//#                 Roster.me = null; Roster.me = new MessageEdit(getActualJuickContact(), resultAction);
-//#                 Roster.me.show(this);
-//#             } catch (Exception e) {/*no messages*/}
+//#             Roster.me = null;
+//#             Roster.me = new MessageEdit(getActualJuickContact(), resultAction, false);
+//#             Roster.me.show(this);
+//#         } catch (Exception e) {/*no messages*/}
 //#     }
 //# 
 //# 
@@ -645,20 +646,15 @@ public void showNotify() {
 //#     }
 //# 
 //#     public boolean isJuBoContact(Contact c) {
-//#         return (c.bareJid.equals("jubo@nologin.ru")
-//#          || c.bareJid.startsWith("jubo%jubo.ru@"));
+//#         return c.jid.equalsViaJ2J("jubo@nologin.ru");
 //#     }
 //# 
 //#     public boolean noRedirrectToJuickContact(Contact c) {
 //#         return (isJuickContact(c)
-//#          || c.bareJid.equals("implusplus@gmail.com")
-//#          || c.bareJid.startsWith("implusplus%gmail.com@")
-//#          || c.bareJid.equals("tweet@excla.im")
-//#          || c.bareJid.startsWith("tweet%excla.im@")
-//#          || c.bareJid.endsWith("@twitter.tweet.im")
-//#          || (c.bareJid.indexOf("%twitter.tweet.im@") >= 0)
-//#          || c.bareJid.equals("twitter@t2p.me")
-//#          || c.bareJid.startsWith("twitter%t2p.me@")); // Not tested (2010-04-12)
+//#          || c.jid.equalsViaJ2J("implusplus@gmail.com")
+//#          || c.jid.equalsViaJ2J("tweet@excla.im")
+//#          || c.jid.equalsViaJ2J("twitter@t2p.me")
+//#          || c.jid.equalsServerViaJ2J("twitter.tweet.im"));
 //#     }
 //# 
 //#     private Contact getActualJuickContact() {
@@ -699,7 +695,8 @@ public void showNotify() {
     
     public void keyGreen(){
         if (!sd.roster.isLoggedIn()) return;       
-        Roster.me = null; Roster.me = new MessageEdit(contact, contact.msgSuspended);
+        Roster.me = null;
+        Roster.me = new MessageEdit(contact, contact.msgSuspended);
         Roster.me.show(this);
         contact.msgSuspended=null;
     }
@@ -822,9 +819,10 @@ public void showNotify() {
                 .append("\n")
                 .append(" ")
                 .toString();
-            Roster.me = null; Roster.me=new MessageEdit(contact, msg);
+            Roster.me = null;
+            Roster.me = new MessageEdit(contact, msg);
             Roster.me.show(this);
-            msg=null;
+            msg = null;
         } catch (Exception e) {/*no messages*/}
     }
     

@@ -166,7 +166,7 @@ public class Contact extends IconTextElement{
     int ilHeight;
     int maxImgHeight;   
     
-    protected Contact (){
+    protected Contact() {
         super(RosterIcons.getInstance());
         cf=Config.getInstance();
 
@@ -197,7 +197,7 @@ public class Contact extends IconTextElement{
         //calculating transport
         transport=RosterIcons.getInstance().getTransportIndex(jid.getTransport());
     }
-    
+
     public Contact clone(Jid newjid, final int status) {
         Contact clone=new Contact();
         clone.group=group; 
