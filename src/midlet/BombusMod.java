@@ -72,27 +72,24 @@ public class BombusMod extends MIDlet implements Runnable{
     
     private static BombusMod instance;
     
-    public BombusMod() {
-//#ifdef LIGHT_CONFIG        
-//#ifdef PLUGINS        
-//#     if (StaticData.getInstance().lightConfig)        
-//#endif               
-//#         lcf = LightConfig.getInstance();
-//#endif    
-
-        instance=this;
-        display = Display.getDisplay(this);        
-        s = SplashScreen.getInstance();
-        s.setProgress("Loading", 3); // this message will not be localized
-        
-    }
-    
     /** Entry point  */
     public void startApp() {        
         if (isRunning) {
             hideApp(false);
             return;
         }
+//#ifdef LIGHT_CONFIG
+//#ifdef PLUGINS
+//#     if (StaticData.getInstance().lightConfig)
+//#endif
+//#         lcf = LightConfig.getInstance();
+//#endif
+
+        instance = this;
+        display = Display.getDisplay(this);
+        s = SplashScreen.getInstance();
+        s.setProgress("Loading", 3); // this message will not be localized
+
         isRunning=true;
         new Thread(this).start();
     }
