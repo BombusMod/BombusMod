@@ -99,12 +99,6 @@ public class VirtualCanvas extends Canvas implements CommandListener{
         list.sizeChanged(w, h);
     }
 
-    public int getHeight() {
-        if (Config.getInstance().phoneManufacturer == Config.MICROEMU)
-            return super.getHeight() - 25;
-        return super.getHeight();
-    }   
-
     public void commandAction(Command c, Displayable d) {
         if (c == commandOk) list.touchLeftPressed();
         if (c == commandCancel) list.touchRightPressed();

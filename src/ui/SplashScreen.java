@@ -115,11 +115,8 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
     }
 
     public void paint(Graphics g){
-        int width=getWidth();
-        int offs = 0;
-        if (Config.getInstance().phoneManufacturer == Config.MICROEMU)
-            offs = 25;
-        int height = getHeight() - offs;
+        int width = g.getClipWidth();
+        int height = g.getClipHeight();
         
         g.setColor(ColorTheme.getColor(ColorTheme.BLK_BGND));
         g.fillRect(0,0, width, height);

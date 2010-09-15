@@ -325,8 +325,7 @@ public abstract class VirtualList
     /** Creates a new instance of VirtualList */
     public VirtualList() {       
        setFullScreenMode(Config.fullscreen);
-       width=getWidth();       
-       height = getHeight();
+       
 //#ifdef POPUPS
         PopUp.getInstance();
 //#endif
@@ -394,12 +393,7 @@ public abstract class VirtualList
             return VirtualCanvas.getInstance().isShown();
         }
         return false;
-    }
-    public final int getHeight() {
-       if (Config.getInstance().phoneManufacturer == Config.MICROEMU)
-            return super.getHeight() - 25;
-       return super.getHeight();
-    }
+    }   
 
 
     /** Вызывается после скрытия VirtualList. переопределяет наследуемый метод
@@ -432,8 +426,7 @@ public abstract class VirtualList
      */
     protected void sizeChanged(int w, int h) {
         width=w;
-        height=h;
-        redraw();
+        height=h;        
 //#ifdef GRADIENT
 //#         iHeight=0;
 //#         mHeight=0;
@@ -450,7 +443,9 @@ public abstract class VirtualList
      */
     protected void beginPaint(){};
 
-    public void paint(Graphics g) {        
+    public void paint(Graphics g) {
+        width = g.getClipWidth();
+        height = g.getClipHeight();
 
         mHeight=0;
         iHeight=0;       
