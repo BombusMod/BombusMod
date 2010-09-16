@@ -325,6 +325,10 @@ public abstract class VirtualList
     /** Creates a new instance of VirtualList */
     public VirtualList() {       
        setFullScreenMode(Config.fullscreen);
+       if (Config.getInstance().phoneManufacturer != Config.MICROEMU) {
+           width = getWidth();
+           height = getHeight();
+       }
        
 //#ifdef POPUPS
         PopUp.getInstance();
