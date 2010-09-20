@@ -523,8 +523,8 @@ public static boolean fullscreen = true;
 //#else
 //#             inputStream.readBoolean();
 //#endif
-            oldSE=inputStream.readBoolean();
-            
+            inputStream.readBoolean(); //2kill
+
             showTimeTraffic=inputStream.readBoolean();
             
             swapSendAndSuspend=inputStream.readBoolean();
@@ -782,7 +782,7 @@ public static boolean fullscreen = true;
 //#else
 //#             outputStream.writeBoolean(false);
 //#endif
-            outputStream.writeBoolean(oldSE);
+            outputStream.writeBoolean(false); //2kill
             
             outputStream.writeBoolean(showTimeTraffic);
             
@@ -834,6 +834,10 @@ public static boolean fullscreen = true;
                     return;
                 }
                 phoneManufacturer=SONYE;
+
+                String sonyJava = System.getProperty("com.sonyericsson.java.platform");
+                oldSE = (sonyJava == null) || sonyJava.startsWith("JP-7"); //JP<=7.x
+
                 return;
 //#if !ZLIB
 //#             } else if (platform.indexOf("9@9")>-1) {

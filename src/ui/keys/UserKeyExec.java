@@ -63,9 +63,13 @@ import java.io.InputStream;
 import java.io.DataOutputStream;
 
 public class UserKeyExec {
-    StaticData sd = StaticData.getInstance();
-    
+
     private static UserKeyExec instance;
+    StaticData sd = StaticData.getInstance();
+    public final static String cmds[] = new String[22];
+    public Vector keysList;
+    public UserKey current_key;
+
     public static UserKeyExec getInstance() {
         if (instance == null)
             instance = new UserKeyExec();
@@ -76,10 +80,8 @@ public class UserKeyExec {
         init_cmds();
         if(!loadFromStorage())
             loadDefault();
+        current_key = new UserKey();
     }
-
-    public Vector keysList;
-    public final static String cmds[] = new String[22];
 
     private void init_cmds() {
         cmds[0] = SR.MS_NO;
@@ -124,6 +126,14 @@ public class UserKeyExec {
 //#endif
     }
 
+    public void update_current_key(int key, boolean key_long) {
+        current_key.previous_key_long = current_key.key_long;
+        current_key.key_long = key_long;
+
+        current_key.previous_key = current_key.key;
+        current_key.key = key;
+    }
+
     public static int getCommandID(String str) {
         for (int i = 0; i < cmds.length; i++) {
             if ((cmds[i] != null) && str.equals(cmds[i]))
@@ -141,8 +151,8 @@ public class UserKeyExec {
 //#         if (sd.UserKeys) {
 //#endif
 //#             DataInputStream is = NvStorage.ReadFileRecord(UserKey.storage, 0);
-//#             int size = 0;
 //# 
+//#             int size = 0;
 //#             try {
 //#                 size = is.readInt();
 //#                 for (int i = 0; i < size; i++)
@@ -211,30 +221,38 @@ public class UserKeyExec {
         NvStorage.writeFileRecord(outputStream, UserKey.storage, 0, true);
     }
 
-    public boolean commandExecute(UserKey u) { // return false if key not executed
-        u.two_keys = true;
-        int index = keysList.indexOf(u);
+    public boolean keyExecute(int key, boolean key_long) { // return false if key not executed
+        update_current_key(key, key_long);
+        boolean executed = false;
 
-        if (index < 0) {
-            u.two_keys = false; // Если нет двухкнопочного сочетания, ищем однокнопочное
-            index = keysList.indexOf(u);
-
-            if (index < 0) // А если нет и его, то тикаем
-                return false;
+        current_key.two_keys = true;
+        for (int i = 0; i < keysList.size(); i++) {
+            UserKey u = ((UserKey) keysList.elementAt(i));
+            if (current_key.equals(u))
+                executed = commandExecute(u.command_id) || executed;
         }
 
-        int command_id = ((UserKey) keysList.elementAt(index)).command_id;
-        return commandExecuteByID(command_id);
+        if (executed)
+            return true;
+
+        current_key.two_keys = false;
+        for (int i = 0; i < keysList.size(); i++) {
+            UserKey u = ((UserKey) keysList.elementAt(i));
+            if (current_key.equals(u))
+                executed = commandExecute(u.command_id) || executed;
+        }
+
+        return executed;
     }
 
-    private boolean commandExecuteByID(int command_id) {
+    private boolean commandExecute(int command_id) {
         Config cf = Config.getInstance();
         boolean connected = sd.roster.isLoggedIn();
         Displayable current = midlet.BombusMod.getInstance().getCurrentDisplayable();
 
         switch (command_id) {
             case 1: 
-                new ConfigForm(sd.roster);
+                new ConfigForm();
                 break;
             case 2: 
                 sd.roster.cmdCleanAllMessages();
@@ -248,7 +266,7 @@ public class UserKeyExec {
 //#ifdef PLUGINS
 //#                 if (sd.Stats)
 //#endif
-//#                     new StatsWindow( sd.roster);
+//#                     new StatsWindow();
 //#                 break;
 //#endif
 //#endif
@@ -257,7 +275,7 @@ public class UserKeyExec {
                 break;
             case 6: 
 //#if FILE_TRANSFER
-                new io.file.transfer.TransferManager( sd.roster);
+                new io.file.transfer.TransferManager();
 //#endif
                 break;
             case 7: 
@@ -275,7 +293,7 @@ public class UserKeyExec {
                 break;
             case 9: 
 //#ifdef PRIVACY
-                if (connected) new PrivacySelect(sd.roster);
+                if (connected) new PrivacySelect();
 //#endif
                 break;
 //#ifdef USER_KEYS                

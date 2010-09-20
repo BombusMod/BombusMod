@@ -37,15 +37,12 @@ import xmpp.XmppError;
  *
  * @author Evg_S
  */
-public class AccountRegister 
+public class AccountRegister
         implements         
             JabberListener,
             CommandListener,
             Runnable
 {
-    
-    private Displayable parentView;
-    
     private Account raccount;
     private JabberStream theStream ;
     private SplashScreen splash;
@@ -54,11 +51,8 @@ public class AccountRegister
     
     /** Creates a new instance of AccountRegister
      * @param account
-     * @param pView 
      */
-    public AccountRegister(Account account, VirtualList pView) {
-        this.parentView=pView;
-
+    public AccountRegister(Account account) {
         raccount=account;
         splash=SplashScreen.getInstance();
         splash.setProgress(SR.MS_STARTUP,5);
@@ -130,11 +124,6 @@ public class AccountRegister
         } catch (Exception e) { 
             //e.printStackTrace();
         }
-        destroyView();
+        splash.close();
     }
-    
-    public void destroyView(){
-        midlet.BombusMod.getInstance().setDisplayable(parentView);
-    }
-
 }

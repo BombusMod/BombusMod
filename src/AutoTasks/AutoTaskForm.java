@@ -45,7 +45,7 @@ import ui.VirtualList;
 public class AutoTaskForm
     extends DefForm {
     
-    private Display display;
+    //private Display display;
     
 //#if AUTOTASK    
 //#     int hour =0;
@@ -69,14 +69,12 @@ public class AutoTaskForm
 //#endif
     
     /** Creates a new instance of AutoTaskForm
-     * @param pView
      */
-    public AutoTaskForm( VirtualList pView) {
+    public AutoTaskForm() {
 //#if !AUTOTASK
         super("");
 //#else
 //#         super(SR.MS_AUTOTASKS);
-//#         this.display=display;
 //#         
 //#         typeIndex=at.taskType;
 //#         actionIndex=at.taskAction;
@@ -108,7 +106,6 @@ public class AutoTaskForm
 //#         itemsList.addElement(actionType);
 //#         
 //#         update();
-//#         this.parentView=pView;
 //#     }
 //# 
 //#     public void cmdOk() {
@@ -133,11 +130,6 @@ public class AutoTaskForm
 //#         }
 //#     }
 //#     
-//#     public void destroyView(){
-//#         if (display!=null)  
-//#             midlet.BombusMod.getInstance().setDisplayable(parentView);
-//#     }
-//# 
 //#     public void update(){
 //#         itemsList.removeElement(autoTaskTimeDesc);
 //#         itemsList.removeElement(autoTaskHour);

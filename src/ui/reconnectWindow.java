@@ -37,50 +37,55 @@ import Client.StaticData;
  */
 public class reconnectWindow implements Runnable {
 
-	private int pos;
-	private static int timeout;
-	private boolean active;
-	private static reconnectWindow instance;
+    private int pos;
+    private static int timeout;
+    private boolean active;
+    private static reconnectWindow instance;
 
-	public static reconnectWindow getInstance(){
-		if (instance==null) {
-			instance=new reconnectWindow();
-			timeout = Config.getInstance().reconnectTime*4;
-		}
-		return instance;
-	}
+    public static reconnectWindow getInstance() {
+        if (instance == null) {
+            instance = new reconnectWindow();
+            timeout = Config.getInstance().reconnectTime * 4;
+        }
+        return instance;
+    }
 
-	public void startReconnect() {
-		if (active) return;
-		
-		new Thread(this).start() ;
-	}
+    public void startReconnect() {
+        if (active)
+            return;
 
-	public void reconnect() {
-		stopReconnect();
-		StaticData.getInstance().roster.doReconnect();
-	}
+        new Thread(this).start();
+    }
 
-	public void stopReconnect() {
-		active=false;
-		pos=0;
-	}
+    public void reconnect() {
+        stopReconnect();
+        StaticData.getInstance().roster.doReconnect();
+    }
 
-	public boolean isActive() { return active; }
+    public void stopReconnect() {
+        active = false;
+        pos = 0;
+    }
 
-	public void run() {
-		active=true;
-		while (active) {
-			try { Thread.sleep(250); } catch (Exception e) { break; }
+    public boolean isActive() {
+        return active;
+    }
 
-			VirtualList.drawReconnect(pos*4, timeout*4, Integer.toString(pos/4));
-			
-			pos++;
-			
-			if (pos>timeout) {
-				reconnect();
-				break;
-			}
-		}
-	}
+    public void run() {
+        active = true;
+        while (active) {
+            try {
+                Thread.sleep(250);
+            } catch (Exception e) { break; }
+
+            VirtualList.drawReconnect(pos * 4, timeout * 4, Integer.toString(pos / 4));
+
+            pos++;
+
+            if (pos > timeout) {
+                reconnect();
+                break;
+            }
+        }
+    }
 }

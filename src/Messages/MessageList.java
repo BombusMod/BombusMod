@@ -40,7 +40,7 @@ import ui.VirtualElement;
 import ui.VirtualList;
 import ui.reconnectWindow;
 //#ifdef CLIPBOARD
-import util.ClipBoard;
+//# import util.ClipBoard;
 //#endif
 
 public abstract class MessageList extends VirtualList
@@ -52,10 +52,10 @@ public abstract class MessageList extends VirtualList
     
     protected Vector messages;
 //#ifdef CLIPBOARD
-    private ClipBoard clipboard=ClipBoard.getInstance();
-    
-    protected MenuCommand cmdCopy = new MenuCommand(SR.MS_COPY, MenuCommand.SCREEN, 20);
-    protected MenuCommand cmdCopyPlus = new MenuCommand("+ "+SR.MS_COPY, MenuCommand.SCREEN, 30);
+//#     private ClipBoard clipboard=ClipBoard.getInstance();
+//#     
+//#     protected MenuCommand cmdCopy = new MenuCommand(SR.MS_COPY, MenuCommand.SCREEN, 20);
+//#     protected MenuCommand cmdCopyPlus = new MenuCommand("+ "+SR.MS_COPY, MenuCommand.SCREEN, 30);
 //#endif
     protected MenuCommand cmdxmlSkin = new MenuCommand(SR.MS_USE_COLOR_SCHEME, MenuCommand.SCREEN, 40);
 
@@ -106,10 +106,10 @@ public abstract class MessageList extends VirtualList
 
     public void addMenuCommands() {
 //#ifdef CLIPBOARD
-        if (cf.useClipBoard) {
-            addMenuCommand(cmdCopy);
-            addMenuCommand(cmdCopyPlus);
-        }
+//#         if (cf.useClipBoard) {
+//#             addMenuCommand(cmdCopy);
+//#             addMenuCommand(cmdCopyPlus);
+//#         }
 //#endif
         addMenuCommand(cmdxmlSkin);
         addMenuCommand(cmdUrl);
@@ -117,10 +117,10 @@ public abstract class MessageList extends VirtualList
     }
     public void removeCommands () {
 //#ifdef CLIPBOARD
-        if (cf.useClipBoard) {
-            removeMenuCommand(cmdCopy);
-            removeMenuCommand(cmdCopyPlus);
-        }
+//#         if (cf.useClipBoard) {
+//#             removeMenuCommand(cmdCopy);
+//#             removeMenuCommand(cmdCopyPlus);
+//#         }
 //#endif
         removeMenuCommand(cmdxmlSkin);
         removeMenuCommand(cmdUrl);
@@ -135,7 +135,7 @@ public abstract class MessageList extends VirtualList
         if (c==cmdUrl) {
             try {
                 Vector urls=((MessageItem) getFocusedObject()).getUrlList();
-                new MessageUrl( this, urls); //throws NullPointerException if no urls
+                new MessageUrl(urls); //throws NullPointerException if no urls
             } catch (Exception e) {/* no urls found */}
         }
         if (c==cmdxmlSkin) {
@@ -147,31 +147,33 @@ public abstract class MessageList extends VirtualList
         }
         
 //#ifdef CLIPBOARD
-        if (c == cmdCopy)
-        {
-            try {
-                clipboard.add(((MessageItem)getFocusedObject()).msg);
-            } catch (Exception e) {/*no messages*/}
-        }
-        
-        if (c==cmdCopyPlus) {
-            try {
-                clipboard.append(((MessageItem)getFocusedObject()).msg);
-            } catch (Exception e) {/*no messages*/}
-        }
+//#         if (c == cmdCopy)
+//#         {
+//#             try {
+//#                 clipboard.add(((MessageItem)getFocusedObject()).msg);
+//#             } catch (Exception e) {/*no messages*/}
+//#         }
+//#         
+//#         if (c==cmdCopyPlus) {
+//#             try {
+//#                 clipboard.append(((MessageItem)getFocusedObject()).msg);
+//#             } catch (Exception e) {/*no messages*/}
+//#         }
 //#endif
     }
 
-    protected void keyPressed(int keyCode) { // overriding this method to avoid autorepeat
-        //kHold=0;
-        if (keyCode==Config.SOFT_RIGHT || keyCode==Config.KEY_BACK) {
-            if (!reconnectWindow.getInstance().isActive() && !cf.oldSE) {
-                StaticData.getInstance().roster.activeContact=null;
-                destroyView();
-                return;
+    protected void key(int keyCode, boolean key_long) { // overriding this method to avoid autorepeat
+        if (!key_long) {
+            if (keyCode == Config.SOFT_RIGHT || keyCode == Config.KEY_BACK) {
+                if (!reconnectWindow.getInstance().isActive() && !cf.oldSE) {
+                    StaticData.getInstance().roster.activeContact = null;
+                    destroyView();
+                    return;
+                }
             }
         }
-        super.keyPressed(keyCode);
+
+        super.key(keyCode, key_long);
     }
    
     public void showMenu() {

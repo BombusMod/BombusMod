@@ -63,9 +63,8 @@ public class SearchForm
     
     /**
      * Creates a new instance of SearchForm
-     * @param pView 
      */
-    public SearchForm(VirtualList pView) {
+    public SearchForm() {
         super(SR.MS_SEARCH);
         loadRecentList();
 
@@ -93,7 +92,7 @@ public class SearchForm
     public void menuAction(MenuCommand c, VirtualList d) {
         super.menuAction(c, d);     
      if (c==cmdAddServer) {
-            new MIDPTextBox( this, SR.MS_SERVER, null, this, TextField.ANY);
+            new MIDPTextBox(SR.MS_SERVER, null, this, TextField.ANY);
 	} else if (c==cmdDel) {
             delServer();
         }

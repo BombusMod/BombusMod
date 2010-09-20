@@ -38,7 +38,7 @@ import java.io.IOException;
 import ui.IconTextElement;
 import io.NvStorage;
 
-public class Account extends IconTextElement{
+public class Account extends IconTextElement {
     
     //public final static String storage="accnt_db";
             
@@ -63,9 +63,9 @@ public class Account extends IconTextElement{
     private String resource=Version.NAME;
     
 //#if HTTPPOLL || HTTPCONNECT
-    private boolean enableProxy;
-    private String proxyHostAddr="";
-    private int proxyPort;
+//#     private boolean enableProxy;
+//#     private String proxyHostAddr="";
+//#     private int proxyPort;
 //#endif
 //#ifdef HTTPCONNECT
 //#     private String proxyUser="";
@@ -96,9 +96,7 @@ public class Account extends IconTextElement{
                     sd.roster.sendPresence(Presence.PRESENCE_INVISIBLE, null);    
                 } else {
                     sd.roster.sendPresence(loginstatus, null);
-                }          
-                if (Config.getInstance().phoneManufacturer == Config.MICROEMU)
-                    midlet.BombusMod.getInstance().setDisplayable(StaticData.getInstance().roster);
+                }                
             }
         }
     }
@@ -161,13 +159,13 @@ public class Account extends IconTextElement{
 //#endif            
             
 //#if HTTPPOLL || HTTPCONNECT
-                a.setEnableProxy(inputStream.readBoolean());
-                a.setProxyHostAddr(inputStream.readUTF());
-                a.setProxyPort(inputStream.readInt());
+//#                 a.setEnableProxy(inputStream.readBoolean());
+//#                 a.setProxyHostAddr(inputStream.readUTF());
+//#                 a.setProxyPort(inputStream.readInt());
 //#else
-//#                 inputStream.readBoolean();
-//#                 inputStream.readUTF();
-//#                 inputStream.readInt();
+                inputStream.readBoolean();
+                inputStream.readUTF();
+                inputStream.readInt();
 //#endif
 
             a.compression=inputStream.readBoolean();
@@ -179,8 +177,10 @@ public class Account extends IconTextElement{
 //#ifdef HTTPCONNECT
 //#             a.proxyUser = inputStream.readUTF();
 //#             a.proxyPass = inputStream.readUTF();
+//#else
+            inputStream.readUTF();
+            inputStream.readUTF();
 //#endif
-            
         } catch (IOException e) { /*e.printStackTrace();*/ }
             
         return (a.userName==null)?null:a;
@@ -190,7 +190,7 @@ public class Account extends IconTextElement{
         
         if (hostAddr==null) hostAddr="";
 //#if HTTPPOLL || HTTPCONNECT
-        if (proxyHostAddr==null) proxyHostAddr="";
+//#         if (proxyHostAddr==null) proxyHostAddr="";
 //#endif
         
         try {
@@ -210,13 +210,13 @@ public class Account extends IconTextElement{
 	    outputStream.writeBoolean(mucOnly);
             
 //#if HTTPPOLL || HTTPCONNECT
-            outputStream.writeBoolean(enableProxy);
-            outputStream.writeUTF(proxyHostAddr);
-            outputStream.writeInt(proxyPort);
+//#             outputStream.writeBoolean(enableProxy);
+//#             outputStream.writeUTF(proxyHostAddr);
+//#             outputStream.writeInt(proxyPort);
 //#else
-//#             outputStream.writeBoolean(false);
-//#             outputStream.writeUTF("");
-//#             outputStream.writeInt(0);
+            outputStream.writeBoolean(false);
+            outputStream.writeUTF("");
+            outputStream.writeInt(0);
 //#endif
             
             outputStream.writeBoolean(compression);
@@ -228,6 +228,9 @@ public class Account extends IconTextElement{
 //#ifdef HTTPCONNECT
 //#             outputStream.writeUTF(proxyUser);
 //#             outputStream.writeUTF(proxyPass);
+//#else
+            outputStream.writeUTF("");
+            outputStream.writeUTF("");
 //#endif
 
         } catch (IOException e) {
@@ -291,45 +294,45 @@ public class Account extends IconTextElement{
 	StringBuffer url=new StringBuffer(host).append(':').append(tempPort);
 
 //#if HTTPPOLL || HTTPCONNECT
-        if (!isEnableProxy()) {
-	    url.insert(0, (useSSL)?"ssl://":"socket://");
-        } else {
+//#         if (!isEnableProxy()) {
+//# 	    url.insert(0, (useSSL)?"ssl://":"socket://");
+//#         } else {
 //#ifdef HTTPPOLL
-             proxy=getProxyHostAddr();
+//#              proxy=getProxyHostAddr();
 //#elif HTTPCONNECT
 //#             proxy="socket://" + getProxyHostAddr() + ':' + getProxyPort();
 //#endif
-    }
+//#     }
 //#else
-//#             url.insert(0, (useSSL)?"ssl://":"socket://");
+            url.insert(0, (useSSL)?"ssl://":"socket://");
 //#endif
         return new JabberStream( getServer(), url.toString(), proxy);
     }
 
 //#if HTTPPOLL || HTTPCONNECT
-    public boolean isEnableProxy() {
-        return enableProxy;
-    }
-
-    public void setEnableProxy(boolean enableProxy) {
-        this.enableProxy = enableProxy;
-    }
-
-    public String getProxyHostAddr() {
-        return proxyHostAddr;
-    }
-
-    public void setProxyHostAddr(String proxyHostAddr) {
-        this.proxyHostAddr = proxyHostAddr;
-    }
-
-    public int getProxyPort() {
-        return proxyPort;
-    }
-
-    public void setProxyPort(int proxyPort) {
-        this.proxyPort = proxyPort;
-    }
+//#     public boolean isEnableProxy() {
+//#         return enableProxy;
+//#     }
+//# 
+//#     public void setEnableProxy(boolean enableProxy) {
+//#         this.enableProxy = enableProxy;
+//#     }
+//# 
+//#     public String getProxyHostAddr() {
+//#         return proxyHostAddr;
+//#     }
+//# 
+//#     public void setProxyHostAddr(String proxyHostAddr) {
+//#         this.proxyHostAddr = proxyHostAddr;
+//#     }
+//# 
+//#     public int getProxyPort() {
+//#         return proxyPort;
+//#     }
+//# 
+//#     public void setProxyPort(int proxyPort) {
+//#         this.proxyPort = proxyPort;
+//#     }
 //#ifdef HTTPCONNECT
 //#     public String getProxyUser() {
 //#         return proxyUser;

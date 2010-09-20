@@ -27,21 +27,21 @@
 package ui.controls;
 
 import Client.Config;
-import Client.StaticData;
+//#ifdef PLUGINS
+//# import Client.StaticData;
+//#endif
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
-import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.TextBox;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
 //#ifdef CLIPBOARD
-import util.ClipBoard;
+//# import util.ClipBoard;
 //#endif
 //#ifdef ARCHIVE
 import Archive.ArchiveList;
 //#endif
-import ui.VirtualList;
 
 /**
  *
@@ -59,50 +59,51 @@ public class ExTextBox {
     protected Config cf;
     
 //#ifdef CLIPBOARD
-    private ClipBoard clipboard;
+//#     private ClipBoard clipboard;
 //#endif
     
 //#ifdef ARCHIVE
     protected Command cmdPaste=new Command(SR.MS_ARCHIVE, Command.SCREEN, 6);
 //#endif
 //#if TEMPLATES
-    protected Command cmdTemplate=new Command(SR.MS_TEMPLATE, Command.SCREEN, 7);
+//#     protected Command cmdTemplate=new Command(SR.MS_TEMPLATE, Command.SCREEN, 7);
 //#endif  
 //#ifdef CLIPBOARD
-    protected Command cmdPasteText=new Command(SR.MS_PASTE, Command.SCREEN, 8);
+//#     protected Command cmdPasteText=new Command(SR.MS_PASTE, Command.SCREEN, 8);
 //#endif
     
     int maxSize=500;
             
     /** Creates a new instance of UniTextEdit */
-    public ExTextBox(String body, String subj) {
-
+    public ExTextBox(String body, String subj, boolean writespaces) {
         cf = Config.getInstance();
-        
         textbox.setTitle(subj);
 		
         try {
             //expanding buffer as much as possible
             maxSize = textbox.setMaxSize(4096); //must not trow
             if (cf.phoneManufacturer != Config.MICROEMU)
-                insert(body, 0);
+                insert(body, 0, writespaces);
             else setText(body);
          } catch (Exception e) {}
         
         commandState();
-
     }
-    
-     public void show(Displayable pView, CommandListener listener) {
+
+    public ExTextBox(String body, String subj) {
+        this(body, subj, true);
+    }
+
+    public void show(Displayable pView, CommandListener listener) {
         setInitialCaps(cf.capsState);
-        if (Config.getInstance().phoneManufacturer == Config.SONYE) 
+        if (Config.getInstance().phoneManufacturer == Config.SONYE)
             System.gc(); // prevent flickering on Sony Ericcsson C510
         textbox.setCommandListener(listener);
-        midlet.BombusMod.getInstance().setDisplayable(textbox);
-        this.parentView = pView;
+        parentView = pView;
+        midlet.BombusMod.getInstance().setDisplayable(textbox);        
     }
         
-    public void destroyView(){
+    public void destroyView() {
         midlet.BombusMod.getInstance().setDisplayable(parentView);
     }   
     
@@ -176,18 +177,18 @@ public class ExTextBox {
             textbox.addCommand(cmdPaste);
 //#endif
 //#ifdef CLIPBOARD
-        if (cf.useClipBoard) {
-            clipboard = ClipBoard.getInstance();
-            if (!clipboard.isEmpty()) {
-                textbox.addCommand(cmdPasteText);                
-            }
-        }
+//#         if (cf.useClipBoard) {
+//#             clipboard = ClipBoard.getInstance();
+//#             if (!clipboard.isEmpty()) {
+//#                 textbox.addCommand(cmdPasteText);                
+//#             }
+//#         }
 //#endif
 //#if TEMPLATES
 //#ifdef PLUGINS
 //#         if (StaticData.getInstance().Archive)
 //#endif
-            textbox.addCommand(cmdTemplate);
+//#             textbox.addCommand(cmdTemplate);
 //#endif        
     }
     
@@ -203,10 +204,10 @@ public class ExTextBox {
 	if (c==cmdPaste) { new ArchiveList(caretPos, 1, textbox); return true; }
 //#endif
 //#ifdef CLIPBOARD
-        if (c==cmdPasteText) { insert(clipboard.getClipBoard(), getCaretPos()); return true; }
+//#         if (c==cmdPasteText) { insert(clipboard.getClipBoard(), getCaretPos()); return true; }
 //#endif
 //#if TEMPLATES
-        if (c==cmdTemplate) { new ArchiveList(caretPos, 2, textbox); return true; }
+//#         if (c==cmdTemplate) { new ArchiveList(caretPos, 2, textbox); return true; }
 //#endif
         return false;
     }

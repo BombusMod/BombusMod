@@ -51,9 +51,8 @@ public class ColorsList extends DefForm
     
     /**
      * Creates a new instance of ColorsList
-     * @param pView
      */
-    public ColorsList(VirtualList pView) {
+    public ColorsList() {
         super(SR.MS_COLOR_TUNE);       
         
         int cnt=0;
@@ -65,8 +64,7 @@ public class ColorsList extends DefForm
             //#endif
             cnt++;
         }
-        setMenuListener(this);        
-        this.parentView=pView;
+        setMenuListener(this);
     }
 
     private void loadColors() {

@@ -62,7 +62,7 @@ public class ActivityList extends DefForm implements MIDPTextBox.TextBoxNotify {
 //#ifdef PEP
 //#     public void eventOk() {
 //#         if (cursor==0) OkNotify(null); 
-//#             else new MIDPTextBox( this, SR.MS_USERACTIVITY, acttext, this, TextField.ANY);
+//#             else new MIDPTextBox(SR.MS_USERACTIVITY, acttext, this, TextField.ANY);
 //#     }
 //#endif
     

@@ -33,8 +33,7 @@ public class LightConfigForm
     Vector fileNames;
 
     /** Creates a new instance of ConfigForm */
-    public LightConfigForm(Displayable pView)
-    {
+    public LightConfigForm() {
         super(SR.L_CONFIG);
         light=LightConfig.getInstance();
 
@@ -54,8 +53,7 @@ public class LightConfigForm
         itemsList.addElement(light_message);
         
         light_message_time=new NumberInput(SR.L_MESSAGE_TIMEOUT, Integer.toString(light.light_message_time), 0, 600);
-        itemsList.addElement(light_message_time);
-        show(pView);        
+        itemsList.addElement(light_message_time);       
     }
     
     public void cmdOk() {

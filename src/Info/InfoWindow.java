@@ -69,7 +69,7 @@ public class InfoWindow
     /**
      * Creates a new instance of InfoWindow
      */
-    public InfoWindow(VirtualList pView) {
+    public InfoWindow() {
         super(SR.MS_ABOUT);
         
         name = new MultiLine(Version.getName(), Version.getVersionNumber() + "\n" + Config.getOs() + "\nMobile Jabber client", super.superWidth);
@@ -113,9 +113,6 @@ public class InfoWindow
         abilities = new MultiLine("Abilities", getAbilities(), super.superWidth);
         abilities.selectable = true;
         itemsList.addElement(abilities);
-
-        
-        this.parentView = pView;
     }
 
     public void commandState() {

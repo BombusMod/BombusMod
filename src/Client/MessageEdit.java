@@ -81,9 +81,8 @@ public final class MessageEdit
 //#     Ticker ticker = new Ticker("");
 //#endif
     /** Creates a new instance of MessageEdit */
-    public MessageEdit( Displayable pView, Contact to, String body) {
-
-        super(body, to.toString());
+    public MessageEdit(Contact to, String body, boolean writespaces) {
+        super(body, to.toString(), writespaces);
 
         this.to = to;
         
@@ -107,7 +106,10 @@ public final class MessageEdit
 //#endif
 //#             DeTranslit.getInstance();
 //#endif
+    }
 
+    public MessageEdit(Contact to, String body) {
+        this(to, body, true);
     }
 
     public void show(Displayable pView) {
@@ -191,13 +193,13 @@ public final class MessageEdit
             }
 //#ifdef SMILES
             if (c == cmdSmile) {
-                new SmilePicker(textbox, caretPos, this);
+                new SmilePicker(caretPos, this);
                 return;
             }
 //#endif
 //#ifndef WMUC
             if (c == cmdInsNick) {
-                new AppendNick(textbox, to, caretPos, this);
+                new AppendNick(to, caretPos, this);
                 return;
             }
 //#endif
@@ -238,7 +240,7 @@ public final class MessageEdit
          midlet.BombusMod.getInstance().setDisplayable(parentView);
          if (parentView instanceof ContactMessageList) {             
                 ((ContactMessageList)parentView).forceScrolling();
-                VirtualCanvas.nativeCanvas.repaint();
+                ((ContactMessageList)parentView).redraw();
             }
 //#ifdef RUNNING_MESSAGE
 //#             runState = 3;
@@ -270,7 +272,7 @@ public final class MessageEdit
 //#                 runState = 4;
 //#                 send();
 //#                 thread = null;
-//#                 ((ui.VirtualList) parentView).redraw();
+//#                 VirtualCanvas.getInstance().repaint();
 //#                 break;
 //#             }
 //#             if (runState == 1) {

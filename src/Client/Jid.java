@@ -45,7 +45,7 @@ public class Jid {
         setJid(s);
     }
     
-    public void setJid(String s){
+    public final void setJid(String s){
         int resourcePos=s.indexOf('/');
         if (resourcePos<0) resourcePos=s.length();
         resource=s.substring(resourcePos);
@@ -58,13 +58,45 @@ public class Jid {
      * @return
      */
     public boolean equals(Jid j, boolean compareResource) {
-        if (j==null) return false;
-        
-        if (!bareJid.equals(j.bareJid)) return false;
+        if (j == null) {
+            return false;
+        }
 
-        if (!compareResource) return true;
+        if (!bareJid.equals(j.bareJid)) {
+            return false;
+        }
+
+        if (!compareResource) {
+            return true;
+        }
         
         return (resource.equals(j.resource));
+    }
+
+    public String getNode() {
+        int beginIndex = bareJid.indexOf('@');
+        if (beginIndex > 0)
+            return bareJid.substring(0, beginIndex-1);
+        return bareJid;
+    }
+
+    public boolean equalsViaJ2J(String jid_str) {
+        Jid j = new Jid(jid_str);
+        String node = getNode();
+        String jnode = j.getNode();
+        String jserver = j.getServer();
+
+        return equals(j, false)
+         || (node.equals(jnode+"%"+jserver))
+         || (node.equals(jnode+"\40"+jserver));        
+    }
+
+    public boolean equalsServerViaJ2J(String jserver) {
+        String node = getNode();
+
+        return getServer().equals(jserver)
+         || (node.endsWith("%"+jserver))
+         || (node.endsWith("\40"+jserver));
     }
 
     public boolean isTransport(){

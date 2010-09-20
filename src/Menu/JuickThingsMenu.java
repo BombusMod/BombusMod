@@ -9,8 +9,8 @@ import locale.SR;
 //import images.MenuIcons;
 import Client.MessageEdit;
 import Client.Contact;
-import java.util.*;
-import ui.VirtualList;
+import Client.Roster;
+import java.util.Vector;
 
 /**
  *
@@ -24,17 +24,16 @@ public class JuickThingsMenu extends Menu {
     private Contact contact;
     private Vector things;
 
-    public JuickThingsMenu(Vector things, VirtualList pView, Contact contact) {
+    public JuickThingsMenu(Vector things, Contact contact) {
 //#ifdef JUICK
-        super(SR.MS_JUICK_THINGS, null); //MenuIcons.getInstance()
+//#         super(SR.MS_JUICK_THINGS, null); //MenuIcons.getInstance()
 //#else
-//#         super("", null);
+        super("", null);
 //#endif
         this.things = things;
         this.contact = contact;
 
         show(parentView);
-        this.parentView = pView;
 
         int quantity = things.size();
         for(int i=0; i<quantity; i++)
@@ -43,13 +42,23 @@ public class JuickThingsMenu extends Menu {
     }
 
     public void eventOk() {
-        destroyView();
-        MenuItem me=(MenuItem) getFocusedObject();
-        if (me==null) return;
-        int index=me.index;
+        MenuItem me = (MenuItem) getFocusedObject();
+        if (me == null) {
+            return;
+        }
+        int index = me.index;
+
+        String body = (String) things.elementAt(index);
+        int start = body.indexOf('[');
+        int end = body.indexOf(']', start);
+        if ((start>=0) || end>start) {
+            body = body.substring(start+1, end);
+        }
+
         try {
-               Client.Roster.me=new MessageEdit(this, contact, (String)things.elementAt(index));
-               Client.Roster.me.show(this);
+            Roster.me = null;
+            Roster.me = new MessageEdit(contact, body);
+            Roster.me.show(this);
         } catch (Exception e) {/*no messages*/}
     }
 }

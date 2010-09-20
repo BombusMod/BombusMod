@@ -62,10 +62,10 @@ public class ConfigData {
         array=null;
     }
     
-    public void exportData() {
+    public final void exportData() {
         array.addElement(new keyValue(accountIndex, Integer.toString(cf.accountIndex)));
         array.addElement(new keyValue(showOfflineContacts, (cf.showOfflineContacts)?"1":"0"));
-        array.addElement(new keyValue(fullscreen, (cf.fullscreen)?"1":"0"));
+        array.addElement(new keyValue(fullscreen, (Config.fullscreen)?"1":"0"));
         array.addElement(new keyValue(fileTransfer, (cf.fileTransfer)?"1":"0"));
         array.addElement(new keyValue(adhoc, (cf.adhoc)?"1":"0"));
         array.addElement(new keyValue(saveHistory, (cf.saveHistory)?"1":"0"));
@@ -161,7 +161,7 @@ public class ConfigData {
 //#endif
         array.addElement(new keyValue(IQNotify, (cf.IQNotify)?"1":"0")); 
 //#ifdef CLIENTS_ICONS
-//#         array.addElement(new keyValue(showClientIcon, (cf.showClientIcon)?"1":"0")); 
+        array.addElement(new keyValue(showClientIcon, (cf.showClientIcon)?"1":"0")); 
 //#endif
         
         array.addElement(new keyValue(reconnectCount, Integer.toString(cf.reconnectCount)));
@@ -201,12 +201,12 @@ public class ConfigData {
         return null;
     }
 
-    public void importData() {
+    public final void importData() {
         array = iData();
         
         cf.accountIndex=cf.getIntProperty(getValue(accountIndex),-1);
         cf.showOfflineContacts=cf.getBooleanProperty(getValue(showOfflineContacts),false);
-        cf.fullscreen=cf.getBooleanProperty(getValue(fullscreen),true);
+        Config.fullscreen=cf.getBooleanProperty(getValue(fullscreen),true);
         cf.fileTransfer=cf.getBooleanProperty(getValue(fileTransfer),true);
         cf.adhoc=cf.getBooleanProperty(getValue(adhoc),true);
         cf.saveHistory=cf.getBooleanProperty(getValue(saveHistory),true);
@@ -299,7 +299,7 @@ public class ConfigData {
 //#endif
         cf.IQNotify=cf.getBooleanProperty(getValue(IQNotify),false);
 //#ifdef CLIENTS_ICONS
-//#         cf.showClientIcon=cf.getBooleanProperty(getValue(showClientIcon),true);
+        cf.showClientIcon=cf.getBooleanProperty(getValue(showClientIcon),true);
 //#endif
         
         cf.reconnectCount=cf.getIntProperty(getValue(reconnectCount), 10);
@@ -316,7 +316,7 @@ public class ConfigData {
 
         cf.saveToStorage();
 
-        VirtualList.fullscreen=cf.fullscreen;
+        VirtualList.fullscreen=Config.fullscreen;
         VirtualList.memMonitor=cf.memMonitor;
     }
     

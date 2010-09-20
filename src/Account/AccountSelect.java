@@ -27,18 +27,13 @@
 
 package Account;
 import Client.*;
-import javax.microedition.lcdui.Displayable;
 import locale.SR;
 import midlet.BombusMod;
 import ui.*;
 import java.io.*;
-import java.util.*;
 import Menu.MenuCommand;
 import io.NvStorage;
 import ui.controls.AlertBox;
-//#ifdef IMPORT_EXPORT
-import IE.*;
-//#endif
 import ui.controls.form.DefForm;
 
 
@@ -47,7 +42,6 @@ import ui.controls.form.DefForm;
  * @author Eugene Stahov
  */
 public class AccountSelect extends DefForm {
-    public Vector accountList;
     int activeAccount;
     boolean enableQuit;
     
@@ -64,47 +58,40 @@ public class AccountSelect extends DefForm {
     /** Creates a new instance of AccountPicker */
     public AccountSelect(boolean enableQuit) {
         super(SR.MS_ACCOUNTS);
-        this.enableQuit=enableQuit;
-        
+        this.enableQuit = enableQuit;
+
         enableListWrapping(true);
-        cf=Config.getInstance();        
-        
+        cf = Config.getInstance();
+
         if (enableQuit) {
             canBack = false;
         }
-        accountList=null;
-        accountList=new Vector();        
-                
-        activeAccount=cf.accountIndex;
+
+        activeAccount = cf.accountIndex;
         loadAccounts();
-        show(StaticData.getInstance().roster);
-    }
-    public final void show(VirtualList pView) {
-        super.show(pView);
-        if (!accountList.isEmpty()) {
+
+        if (!itemsList.isEmpty()) {
             moveCursorTo(activeAccount);
         } else {
 //#ifdef IMPORT_EXPORT
 //#ifdef PLUGINS
 //#             if (StaticData.getInstance().IE) {
-//#endif     
-            new IE.Accounts("/def_accounts.txt", 0,  true);
-//#ifdef PLUGINS                              
+//#endif
+//#             new IE.Accounts("/def_accounts.txt", 0,  true);
+//#ifdef PLUGINS
 //#             }
 //#endif
-            loadAccounts();
-        if (accountList.isEmpty()) {
+//#             loadAccounts();
+//#         if (itemsList.isEmpty()) {
 //#endif
-            new AccountForm(this, null).show(pView);
+            new AccountForm(this, null);
             return;
 //#ifdef IMPORT_EXPORT
-        }
+//#         }
 //#endif
-        }  
-
-        
+        }
     }
-
+    
     public final void loadAccounts() {
         Account a;
         int index=0;
@@ -112,7 +99,7 @@ public class AccountSelect extends DefForm {
             a=Account.createFromStorage(index);
             if (a!=null) {
                 a.setActive(activeAccount==index);
-                accountList.addElement(a);
+                itemsList.addElement(a);
                 index++;
              }
        } while (a!=null);
@@ -120,7 +107,7 @@ public class AccountSelect extends DefForm {
 
     public final void commandState(){
         menuCommands.removeAllElements();
-        if ((accountList != null) && !accountList.isEmpty()) {
+        if ((itemsList != null) && !itemsList.isEmpty()) {
             addMenuCommand(cmdLogin);
             addMenuCommand(cmdSelect);
             
@@ -145,11 +132,11 @@ public class AccountSelect extends DefForm {
     }
 
     public VirtualElement getItemRef(int Index) {
-        if (Index > accountList.size())
-            Index = accountList.size() - 1;
-        return (VirtualElement)accountList.elementAt(Index);
+        if (Index > itemsList.size())
+            Index = itemsList.size() - 1;
+        return (VirtualElement) itemsList.elementAt(Index);
     }
-    protected int getItemCount() { return accountList.size();  }
+    protected int getItemCount() { return itemsList.size();  }
 
     public void menuAction(MenuCommand c, VirtualList d){
         if (c==cmdQuit) {
@@ -160,7 +147,7 @@ public class AccountSelect extends DefForm {
         if (c==cmdCancel) {
             destroyView();
         }
-        if (c==cmdConfig) new ConfigForm(this);
+        if (c==cmdConfig) new ConfigForm();
         if (c==cmdLogin) switchAccount(true);
         if (c==cmdSelect) switchAccount(false);
         if (c==cmdEdit) new AccountForm(this, (Account)getFocusedObject()).show(this);
@@ -182,7 +169,7 @@ public class AccountSelect extends DefForm {
     
 
     public void destroyView(){
-        if(accountList.size()>0) {
+        if(itemsList.size()>0) {
             if (StaticData.getInstance().account==null)
                 Account.loadAccount(false, cf.accountIndex);
             midlet.BombusMod.getInstance().setDisplayable(StaticData.getInstance().roster);
@@ -190,13 +177,13 @@ public class AccountSelect extends DefForm {
     }
 
     private void delAccount(){
-        if (accountList.size()==1) 
+        if (itemsList.size()==1)
             cf.accountIndex=-1;
         else if (cf.accountIndex>cursor) cf.accountIndex--;
 
         cf.saveToStorage();
 
-        accountList.removeElement(getFocusedObject());
+        itemsList.removeElement(getFocusedObject());
         rmsUpdate();
         moveCursorHome();
         commandState();
@@ -210,7 +197,7 @@ public class AccountSelect extends DefForm {
         destroyView();
     }
     
-    public void eventOk(){
+    public void eventOk() {
         if (getItemCount()>0) {
             canBack = true;
             switchAccount(true);
@@ -219,22 +206,24 @@ public class AccountSelect extends DefForm {
     
     public void rmsUpdate(){
         DataOutputStream outputStream=NvStorage.CreateDataOutputStream();
-        int j=accountList.size();
+        int j=itemsList.size();
         for (int i=0;i<j;i++) 
-            ((Account)accountList.elementAt(i)).saveToDataOutputStream(outputStream);
+            ((Account) itemsList.elementAt(i)).saveToDataOutputStream(outputStream);
         NvStorage.writeFileRecord(outputStream, "accnt_db", 0, true); //Account.storage
     }
     
-    protected void keyRepeated(int keyCode) {
-        super.keyRepeated(keyCode);
-        if (kHold==keyCode) return;
-        kHold=keyCode;
-        
-        if (keyCode==KEY_NUM6) {
-            Config.fullscreen=!Config.fullscreen;
-            cf.saveToStorage();
-            VirtualList.fullscreen=Config.fullscreen;
-            StaticData.getInstance().roster.setFullScreenMode(Config.fullscreen);
+    protected void key(int keyCode, boolean key_long) {
+        if (key_long) {
+            switch (keyCode) {
+                case KEY_NUM6:
+                    Config.fullscreen = !Config.fullscreen;
+                    cf.saveToStorage();
+                    VirtualList.fullscreen = Config.fullscreen;
+                    StaticData.getInstance().roster.setFullScreenMode(Config.fullscreen);
+                    return;
+            }
         }
+
+        super.key(keyCode, key_long);
     }
 }

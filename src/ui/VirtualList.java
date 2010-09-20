@@ -88,7 +88,7 @@ public abstract class VirtualList
     protected int getMainBarBGnd() { return ColorTheme.getColor(ColorTheme.BAR_BGND);} 
     protected int getMainBarBGndBottom() { return ColorTheme.getColor(ColorTheme.BAR_BGND_BOTTOM);}
     
-    private StaticData sd=StaticData.getInstance();
+    protected StaticData sd=StaticData.getInstance();
 
     private int stringHeight;
     
@@ -119,9 +119,12 @@ public abstract class VirtualList
             case 5: paintTop=true;  paintBottom=true;  reverse=true;  break;
             case 6: paintTop=false; paintBottom=true;  reverse=true;  break;
         }
+        // TODO: prevent hide command bar on touch screen device
+      /*  if (Config.fullscreen && hasPointerEvents()) {
+            paintBottom = !reverse;
+            paintTop = reverse;
+        }*/
     }
-    
-    private static int previous_key_code = -1;
 
 //#ifdef POPUPS
     public void setWobble(int type, String contact, String txt) {
@@ -225,8 +228,6 @@ public abstract class VirtualList
 //#     public Image img;
 //#endif
     
-    CommandsPointer ar=new CommandsPointer();
-
     protected synchronized void updateLayout(){
         int size=getItemCount();
         if (size==0) {
@@ -240,7 +241,7 @@ public abstract class VirtualList
             layout[index+1]=y;
         }
         listHeight=y;
-        itemLayoutY=layout;        
+        itemLayoutY=layout;
     }
     public int getListHeight() {
         return winHeight;
@@ -321,13 +322,13 @@ public abstract class VirtualList
     protected ScrollBar scrollbar;
     
     /** Creates a new instance of VirtualList */
-    public VirtualList() {
+    public VirtualList() {       
        setFullScreenMode(Config.fullscreen);
-       width=getWidth();
-       int offs = 0;
-       if (Config.getInstance().phoneManufacturer == Config.MICROEMU)
-            offs = 25;
-       height = getHeight() - offs;
+       if (Config.getInstance().phoneManufacturer != Config.MICROEMU) {
+           width = getWidth();
+           height = getHeight();
+       }
+       
 //#ifdef POPUPS
         PopUp.getInstance();
 //#endif
@@ -372,7 +373,7 @@ public abstract class VirtualList
             parentView = midlet.BombusMod.getInstance().getCurrentDisplayable();
         }
         midlet.BombusMod.getInstance().setDisplayable(this);
-         redraw();
+        redraw();
      }
 
     public void destroy() {
@@ -385,17 +386,17 @@ public abstract class VirtualList
     }
 
     public void redraw() {
-        if (VirtualCanvas.nativeCanvas.getList() == this) {
-            VirtualCanvas.nativeCanvas.repaint();
+        if (VirtualCanvas.getInstance().getList() == this) {
+            VirtualCanvas.getInstance().repaint();
             return;
          }
      }
     public boolean isShown() {
         if (midlet.BombusMod.getInstance().getCurrentDisplayable() == this) {
-            return VirtualCanvas.nativeCanvas.isShown();
+            return VirtualCanvas.getInstance().isShown();
         }
         return false;
-    }
+    }   
 
 
     /** Вызывается после скрытия VirtualList. переопределяет наследуемый метод
@@ -412,8 +413,8 @@ public abstract class VirtualList
      * двойной буферизации
      */
     protected void showNotify() {
-        VirtualCanvas.nativeCanvas.setOk(touchLeftCommand());
-        VirtualCanvas.nativeCanvas.setCancel(touchRightCommand());
+        VirtualCanvas.getInstance().setOk(touchLeftCommand());
+        VirtualCanvas.getInstance().setCancel(touchRightCommand());
 //#if (USE_ROTATOR)
         TimerTaskRotate.startRotate(-1, this);
 //#endif
@@ -428,7 +429,7 @@ public abstract class VirtualList
      */
     protected void sizeChanged(int w, int h) {
         width=w;
-        height=h;
+        height=h;        
 //#ifdef GRADIENT
 //#         iHeight=0;
 //#         mHeight=0;
@@ -446,20 +447,17 @@ public abstract class VirtualList
     protected void beginPaint(){};
 
     public void paint(Graphics g) {
-        width = getWidth();
-        int offs = 0;
-        if (Config.getInstance().phoneManufacturer == Config.MICROEMU) // TODO: remove when microemu fixed
-            offs = 25;
-        height = getHeight() - offs;
+        width = g.getClipWidth();
+        height = g.getClipHeight();
 
         mHeight=0;
         iHeight=0;       
         
         
+        beginPaint();
 //#ifdef POPUPS
         PopUp.getInstance().init(g, width, height);
 //#endif
-        beginPaint();
         
         //StaticData.getInstance().screenWidth=width;
 
@@ -614,15 +612,15 @@ public abstract class VirtualList
                 if (mainbar!=null) {
                     setAbsOrg(g, 0, height-mHeight);
                     drawMainPanel(g);
-                    if (hasPointerEvents())
-                        ar.init(width, height, mHeight);
+                    if (hasPointerEvents() && Config.fullscreen)
+                        CommandsPointer.init(width, height, mHeight);
                 }
             } else {
                 if (infobar!=null) {
                     setAbsOrg(g, 0, height-iHeight);
                     drawInfoPanel(g);
-                    if (hasPointerEvents())
-                        ar.init(width, height, iHeight);
+                    if (hasPointerEvents() && Config.fullscreen)
+                        CommandsPointer.init(width, height, iHeight);
                 }
             }
             setAbsClip(g, width, height);
@@ -788,7 +786,7 @@ public abstract class VirtualList
         stickyWindow=true;
         int count=getItemCount();
         if (cursor>=0) cursor=(count==0)?0:count-1;
-        VirtualCanvas.nativeCanvas.repaint();
+        redraw();
         setRotator();
         
     }
@@ -803,7 +801,7 @@ public abstract class VirtualList
         } catch (Exception ex){
         }
         stickyWindow=true;
-        VirtualCanvas.nativeCanvas.repaint();
+        redraw();
     }
     
     protected void fitCursorByTop(){
@@ -830,10 +828,19 @@ public abstract class VirtualList
         } catch (Exception e) {}
     }
 
-    protected int kHold;
-    protected void keyRepeated(int keyCode) {
-        System.out.println("keyRepeated: "+keyCode);
-        //key(keyCode);
+    private boolean key_long;
+    protected boolean key_repeat = false;
+    protected final void keyRepeated(int keyCode) {
+//#ifdef DEBUG
+//#         System.out.println("keyRepeated: "+keyCode);
+//#endif
+
+        key_long = true;
+
+        if (key_repeat) {
+            key(keyCode, false);
+        }
+
 //#ifdef LIGHT_CONFIG      
 //#ifdef PLUGINS                
 //#         if (StaticData.getInstance().lightConfig)
@@ -841,21 +848,47 @@ public abstract class VirtualList
 //#             CustomLight.keyPressed();
 //#endif        
     }
-    protected void keyReleased(int keyCode) {
-        System.out.println("keyReleased: "+keyCode);
-        kHold=0;
+    
+    protected final void keyReleased(int keyCode) {
+//#ifdef DEBUG
+//#         System.out.println("keyReleased: "+keyCode);
+//#endif
+
+        if (key_repeat)
+            return;
+
+        if (UserKeyExec.getInstance().keyExecute(keyCode, key_long))
+            return;
+
+//#ifdef POPUPS
+        if (skipPopUp(keyCode)) {
+            redraw();
+            return;
+        }
+//#endif
+
+        if (sendEvent(keyCode)) {
+            redraw();
+            return;
+        }
+
+        key(keyCode, key_long);
+        redraw();
     }
 
-    protected void keyPressed(int keyCode) {
-        System.out.println("keyPressed: "+keyCode);
-        kHold=0;
-        key(keyCode); 
+    protected final void keyPressed(int keyCode) {
+//#ifdef DEBUG
+//#         System.out.println("keyPressed: "+keyCode);
+//#endif
+
+        key_long = false;
+        
 //#ifdef LIGHT_CONFIG      
 //#ifdef PLUGINS                
 //#         if (StaticData.getInstance().lightConfig)
 //#endif            
 //#             CustomLight.keyPressed();
-//#endif        
+//#endif
     }
     private int yPointerPos;
 
@@ -865,17 +898,20 @@ public abstract class VirtualList
             redraw();
             return;
         }
-//#endif
-        int act = ar.pointerPressed(x, y);
-        if (act == 1) {
-            key(Config.SOFT_LEFT);
-            stickyWindow = false;
-            return;
-        } else if (act == 2) {
-            key(Config.SOFT_RIGHT);
-            stickyWindow = false;
-            return;
+//#endif        
+        if (Config.fullscreen) {
+            int act = CommandsPointer.pointerPressed(x, y);
+            if (act == 1) {
+                key(Config.SOFT_LEFT, false);
+                stickyWindow = false;
+                return;
+            } else if (act == 2) {
+                key(Config.SOFT_RIGHT, false);
+                stickyWindow = false;
+                return;
+            }
         }
+        
         
         yPointerPos = y;
 
@@ -947,7 +983,9 @@ public abstract class VirtualList
         redraw();
     }
     
-    protected void pointerDragged(int x, int y) { 
+    protected void pointerDragged(int x, int y) {
+        if (y < list_top) return;
+        if (y > list_top + winHeight) return;
         if (scrollbar.pointerDragged(x, y, this)) {
             stickyWindow=false;
             return;
@@ -980,7 +1018,8 @@ public abstract class VirtualList
     }
     protected void pointerReleased(int x, int y) { 
         scrollbar.pointerReleased(x, y, this);
-        if (ar.enabled && (ar.pointerPressed(x, y) > 0)) return;
+        if (Config.fullscreen)
+            if (CommandsPointer.pointerPressed(x, y) > 0) return;
         if (Config.getInstance().advTouch) {
             if (y > list_top + winHeight) return;
         }
@@ -1062,124 +1101,100 @@ public abstract class VirtualList
      * обработка кодов кнопок
      * @param keyCode код нажатой кнопки
      */
-    private void key(int keyCode) {
-//#if DEBUG
-//#         System.out.println("key: "+getKeyName(keyCode)+", code: "+keyCode); // Только мешает.
-//#endif
-//#ifdef POPUPS
-        boolean popupSkipped = skipPopUp(keyCode);
-        if (popupSkipped) {
-            redraw();
-        }
-//#endif
-        UserKey u = new UserKey();
-        u.previous_key_long = false;
-        u.key_long = false;
-        u.previous_key = previous_key_code;
-        u.key = keyCode;
-        boolean executed = UserKeyExec.getInstance().commandExecute(u);
-        previous_key_code = keyCode;
-        if (executed)
-            return;
-//#ifdef POPUPS
-        if (popupSkipped)
-            return;
-//#endif
-        if (sendEvent(keyCode)) {
-            redraw();
-            return;
-        }
-        if (keyCode==Config.SOFT_LEFT || keyCode=='(') {
-            if (reconnectWindow.getInstance().isActive()) {
-                reconnectYes();
+    protected void key(int keyCode, boolean key_long) {
+        if (!key_long) {
+            if (keyCode == Config.SOFT_LEFT || keyCode == '(') {
+                if (reconnectWindow.getInstance().isActive()) {
+                    reconnectYes();
+                    return;
+                }
+                touchLeftPressed();
                 return;
             }
-            touchLeftPressed();
-            return;
-        }
-         if (keyCode==Config.SOFT_RIGHT || keyCode==')') {
-            if (reconnectWindow.getInstance().isActive()) {
-                reconnectNo();
+            if (keyCode == Config.SOFT_RIGHT || keyCode == ')') {
+                if (reconnectWindow.getInstance().isActive()) {
+                    reconnectNo();
+                    return;
+                }
+                touchRightPressed();
                 return;
             }
-            touchRightPressed();
-            return;
-         }
-        if (keyCode == keyClear) {
-            keyClear();
-            return;
-        } else if (keyCode == keyVolDown) {
-            moveCursorEnd();
-            return;
-        } else if (keyCode == '5') {
-            eventOk();
-            return;
-        } else if (keyCode == Config.KEY_BACK && canBack == true) {
-            destroyView();
-            return;
-        } else if (keyCode == greenKeyCode) {
-            keyGreen();
-            return;
-        }
-    switch (keyCode) {
-        case KEY_NUM1:        
-            moveCursorHome();
-            break;
-        case KEY_NUM2:        
-            keyUp();    
-            break; 
-        case KEY_NUM4:        
-            userKeyPressed(keyCode);
-            break; 
-        case KEY_NUM6:        
-            userKeyPressed(keyCode);
-            break;
-        case KEY_NUM7:        
-            moveCursorEnd();     
-            break;
-        case KEY_NUM8:        
-            keyDwn();    
-            break;
-        case KEY_STAR:
+            if (keyCode == keyClear) {
+                keyClear();
+                return;
+            } else if (keyCode == keyVolDown) {
+                moveCursorEnd();
+                return;
+            } else if (keyCode == '5') {
+                eventOk();
+                return;
+            } else if (keyCode == Config.KEY_BACK && canBack == true) {
+                destroyView();
+                return;
+            } else if (keyCode == greenKeyCode) {
+                keyGreen();
+                return;
+            }
+            switch (keyCode) {
+                case KEY_NUM1:
+                    moveCursorHome();
+                    return;
+                case KEY_NUM2:
+                    keyUp();
+                    return;
+                case KEY_NUM4:
+                    userKeyPressed(keyCode);
+                    return;
+                case KEY_NUM6:
+                    userKeyPressed(keyCode);
+                    return;
+                case KEY_NUM7:
+                    moveCursorEnd();
+                    return;
+                case KEY_NUM8:
+                    keyDwn();
+                    return;
+                case KEY_STAR:
 // Перемещено в UserKeyExec: #19.
-            break;
+                    return;
 //#ifdef POPUPS
-        case KEY_POUND:        
-            if (cf.popUps) {
-                try {
-                    String text=((VirtualElement)getFocusedObject()).getTipString();
-                    if (text!=null) {
-                            setWobble(1, null, text);
+                case KEY_POUND:
+                    if (cf.popUps) {
+                        try {
+                            String text = ((VirtualElement) getFocusedObject()).getTipString();
+                            if (text != null) {
+                                setWobble(1, null, text);
+                            }
+                        } catch (Exception e) { }
                     }
-                } catch (Exception e) { }
-            }
-            break;
+                    return;
 //#endif
 
-        default:
-            try {
-                switch (getGameAction(keyCode)){
-                    case UP:
-                        keyUp();
-                        break;
-                    case DOWN:
-                        keyDwn();
-                        break;
-                    case LEFT:
-                        pageLeft();
-                        break;
-                    case RIGHT:
-                        pageRight();
-                        break;
-                    case FIRE:
-                        eventOk();
-                        break;
                 default:
-                    userKeyPressed(keyCode);
-                }
-            } catch (Exception e) {/* IllegalArgumentException @ getGameAction */}
+                    try {
+                        switch (getGameAction(keyCode)) {
+                            case UP:
+                                keyUp();
+                                return;
+                            case DOWN:
+                                keyDwn();
+                                return;
+                            case LEFT:
+                                pageLeft();
+                                return;
+                            case RIGHT:
+                                pageRight();
+                                return;
+                            case FIRE:
+                                eventOk();
+                                return;
+                            default:
+                                userKeyPressed(keyCode);
+                                return;
+                        }
+                    } catch (Exception e) {/* IllegalArgumentException @ getGameAction */}
+            }
         }
-        redraw();
     }
 
 
@@ -1388,9 +1403,8 @@ public abstract class VirtualList
     protected void setRotator() {
 //#if (USE_ROTATOR)
         try {
-            if (getItemCount() < 1)
-                return;
-            focusedItem(cursor);
+            if (getItemCount() > 0)
+                focusedItem(cursor);
             } catch (Exception e) {
 //#ifdef DEBUG
 //#             System.out.println("setRotator() in VirtialList in one try{} block catch exception:");
@@ -1398,15 +1412,15 @@ public abstract class VirtualList
 //#endif
             }
 
+        int itemWidth = 0;
         try {
             if (cursor >= 0) {
-                int itemWidth = getItemRef(cursor).getVWidth();
+                itemWidth = getItemRef(cursor).getVWidth();
                 if (itemWidth >= width - scrollbar.getScrollWidth()) {
                     itemWidth -= width / 2;
                 } else {
                     itemWidth = 0;
                 }
-                TimerTaskRotate.startRotate(itemWidth, this);
             }
         } catch (Exception e) {
 //#ifdef DEBUG
@@ -1414,6 +1428,7 @@ public abstract class VirtualList
 //#             System.out.println(e);
 //#endif
         }
+        TimerTaskRotate.startRotate(itemWidth, this);
  //#endif
     }
     
@@ -1495,10 +1510,6 @@ public abstract class VirtualList
         }
     }
     
-    public int getCursor() {
-        return cursor;
-    }
-    
     public void setInfo() {
         if (reconnectWindow.getInstance().isActive()) {
             getInfoBarItem().setElementAt(SR.MS_OK, 1);
@@ -1573,7 +1584,7 @@ public abstract class VirtualList
 }
 
 //#if (USE_ROTATOR)    
-class TimerTaskRotate extends Thread{
+class TimerTaskRotate extends Thread {
     private int scrollLen;
     private int scroll; //wait before scroll * sleep
     private int balloon; // show balloon time
@@ -1588,7 +1599,7 @@ class TimerTaskRotate extends Thread{
         new Thread(this).start();
     }
     
-    public static void startRotate(int max, VirtualList list){
+    public static void startRotate(int max, VirtualList list) {
         //Windows mobile J9 hanging test
         if (Config.getInstance().phoneManufacturer==Config.WINDOWS) {
             list.showBalloon=true;

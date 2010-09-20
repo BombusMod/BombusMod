@@ -44,10 +44,9 @@ public class SubscriptionEdit
 
     String to;
     /** Creates a new instance of YesNoAlert
-     * @param pView
      * @param c
      */
-    public SubscriptionEdit(VirtualList pView, Contact c) {
+    public SubscriptionEdit(Contact c) {
         super(SR.MS_SUBSCRIPTION);      
         
         
@@ -67,7 +66,6 @@ public class SubscriptionEdit
         itemsList.addElement(action);
 
         moveCursorTo(getNextSelectableRef(-1));
-        show(StaticData.getInstance().roster);
     }
     
     public void cmdOk() {

@@ -7,6 +7,7 @@ package ui.controls.form;
 import ui.IconTextElement;
 import images.RosterIcons;
 import ui.keys.UserKey;
+import ui.keys.UserKeyExec;
 import javax.microedition.lcdui.*;
 import Fonts.FontCache;
 import Colors.ColorTheme;
@@ -60,13 +61,22 @@ public class KeyInput extends IconTextElement {
 
     public void setTwoKeys(boolean two_keys) {
         u.two_keys = two_keys;
+        expected_first_key = true;
     }
 
     public UserKey getUserKey() {
         return u;
     }
 
-    public void keyPressed(int key_code) {
+    public void key(int key_code, boolean key_long) {
+        boolean two_keys = u.two_keys;
+        u = new UserKey(UserKeyExec.getInstance().current_key);
+        u.two_keys = two_keys;
+        
+        if ((!u.two_keys) || (!expected_first_key))
+            selected = false;
+        expected_first_key = !expected_first_key;
+        /*
         if (u.two_keys) {
             if (expected_first_key) {
                 u.previous_key = key_code;
@@ -80,6 +90,7 @@ public class KeyInput extends IconTextElement {
             u.key = key_code;
             selected = false;
         }
+         */
     }
 
     public void drawItem(Graphics g, int ofs, boolean sel) {
@@ -138,7 +149,7 @@ public class KeyInput extends IconTextElement {
                 if (expected_first_key) {
                     return "First key?";
                 } else {
-                    return u.getPreviousKeyName() + " + ?";
+                    return u.getLastKeyName() + " + ?";
                 }
             } else {
                 return u.getPreviousKeyName() + " + " + u.getLastKeyName();

@@ -40,6 +40,7 @@ public class Menu extends VirtualList
     Vector menuitems;
     private ImageList il;
     private boolean executeByNum;
+
     public Menu(String mainbar, ImageList il) {
         super();
         setMainBarItem(new MainBar(mainbar));
@@ -72,37 +73,50 @@ public class Menu extends VirtualList
         eventOk();
     }
      
-    public void keyPressed(int keyCode) {
-        kHold=0;
-        if (keyCode==Config.SOFT_LEFT) {
-            eventOk();
-            return;
-        }
-        if (executeByNum && getItemCount()>0) {
-            switch (keyCode) {
-                case KEY_NUM0:
-                    executeCommand(9); return;
-                case KEY_NUM1:
-                    executeCommand(0); return;
-                case KEY_NUM2:
-                    executeCommand(1); return;
-                case KEY_NUM3:
-                    executeCommand(2); return;
-                case KEY_NUM4:
-                    executeCommand(3); return;
-                case KEY_NUM5:
-                    executeCommand(4); return;
-                case KEY_NUM6:
-                    executeCommand(5); return;
-                case KEY_NUM7:
-                    executeCommand(6); return;
-                case KEY_NUM8:
-                    executeCommand(7); return;
-                case KEY_NUM9:
-                    executeCommand(8); return;
+    protected void key(int keyCode, boolean key_long) {
+        if (!key_long) {
+            if (keyCode == Config.SOFT_LEFT) {
+                eventOk();
+                return;
+            }
+
+            if (executeByNum && getItemCount() > 0) {
+                switch (keyCode) {
+                    case KEY_NUM0:
+                        executeCommand(9);
+                        return;
+                    case KEY_NUM1:
+                        executeCommand(0);
+                        return;
+                    case KEY_NUM2:
+                        executeCommand(1);
+                        return;
+                    case KEY_NUM3:
+                        executeCommand(2);
+                        return;
+                    case KEY_NUM4:
+                        executeCommand(3);
+                        return;
+                    case KEY_NUM5:
+                        executeCommand(4);
+                        return;
+                    case KEY_NUM6:
+                        executeCommand(5);
+                        return;
+                    case KEY_NUM7:
+                        executeCommand(6);
+                        return;
+                    case KEY_NUM8:
+                        executeCommand(7);
+                        return;
+                    case KEY_NUM9:
+                        executeCommand(8);
+                        return;
+                }
             }
         }
-        super.keyPressed(keyCode);
+
+        super.key(keyCode, key_long);
     }
     
     private void executeCommand(int index) {

@@ -73,7 +73,6 @@ class RosterAddForm extends DefForm {
         super(sender);
         contacts = items;
         itemsList.addElement(new MultiLine("Add contacts", "Add " + contacts.size() + " contacts to your roster?", super.getWidth()));
-        show();
     }
     public void cmdOk() {
         Contact c;

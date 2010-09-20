@@ -31,9 +31,11 @@ import Client.Config;
 import io.file.FileIO;
 import java.io.IOException;
 import javax.microedition.lcdui.*;
+//#ifndef NOMMEDIA
 import javax.microedition.media.Manager;
 import javax.microedition.media.MediaException;
 import javax.microedition.media.Player;
+//#endif
 import locale.SR;
 import util.Strconv;
 
@@ -46,13 +48,16 @@ public class ShowFile implements CommandListener{
     private Displayable parentView;
     
     private Command back = new Command(SR.MS_BACK, Command.BACK, 2);
+//#ifndef NOMMEDIA    
     private Command stop = new Command(SR.MS_STOP, Command.BACK, 3);
+//#endif    
 
     private int len;
 
     private byte[] b;
-
+//#ifndef NOMMEDIA
     private Player pl;
+//#endif    
     
     private Config cf;
     
@@ -60,8 +65,9 @@ public class ShowFile implements CommandListener{
         cf=Config.getInstance();
         
         load(fileName);
-        
+//#ifndef NOMMEDIA        
         if (type==1) play(fileName);
+//#endif        
         if (type==2) view(fileName);
         if (type==3) read(fileName);
     }
@@ -115,7 +121,7 @@ public class ShowFile implements CommandListener{
        tb.setCommandListener(this);
        midlet.BombusMod.getInstance().setDisplayable(tb);
     }
-    
+//#ifndef NOMMEDIA    
     private void play(String file) {
         try {
             pl = Manager.createPlayer("file://" + file);
@@ -133,14 +139,17 @@ public class ShowFile implements CommandListener{
         a.setCommandListener(this);
         midlet.BombusMod.getInstance().setDisplayable(a);
     }
+//#endif    
     
     public void commandAction(Command c, Displayable d) {
         if (c==back) midlet.BombusMod.getInstance().setDisplayable(parentView);
+//#ifndef NOMMEDIA        
         if (c==stop) {
             try {
                 pl.stop();
                 pl.close();
             } catch (Exception e) { }
         }
+//#endif        
     }
 }

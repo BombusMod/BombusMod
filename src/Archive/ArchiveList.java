@@ -33,7 +33,6 @@ import ui.MainBar;
 import Messages.MessageList;
 import java.util.Vector;
 import Menu.MenuCommand;
-import javax.microedition.lcdui.Displayable;
 import locale.SR;
 import ui.VirtualList;
 import ui.controls.AlertBox;
@@ -63,7 +62,6 @@ public class ArchiveList
     private int where=1;
 
     private TextBox t;
-    public Displayable pView; // для выхода из textbox
     
     /** Creates a new instance of ArchiveList
      * @param caretPos
@@ -127,7 +125,7 @@ public class ArchiveList
         super.menuAction(c,d);
         
 	Msg m=getMessage(cursor);
-        if (c==cmdNew) { new archiveEdit( this, -1, where, this); }
+        if (c==cmdNew) { new archiveEdit(this, -1, where, this); }
 	if (m==null) return;
         
 	if (c==cmdDelete) { keyClear(); }
@@ -137,7 +135,7 @@ public class ArchiveList
 	if (c==cmdJid) { pasteData(2); }
         if (c==cmdEdit) {
             try {
-                new archiveEdit( this, cursor, where, this);
+                new archiveEdit(this, cursor, where, this);
             } catch (Exception e) {/*no messages*/}
         }
     }

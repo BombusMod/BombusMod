@@ -56,7 +56,7 @@ public class StanzaEdit
     private static final String TEMPLATE_PRESENCE = "<presence to='???'>\n<show>???</show>\n<status>???</status>\n</presence>";
     private static final String TEMPLATE_MESSAGE = "<message to='???' type='???'>\n<body>???</body>\n</message>";
 
-    public StanzaEdit(Displayable pView, String body) {
+    public StanzaEdit(String body) {
         super(body, SR.MS_XML_CONSOLE);
     }
 

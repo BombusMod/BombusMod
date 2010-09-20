@@ -31,6 +31,7 @@ import Client.*;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
 import ui.SplashScreen;
+import ui.VirtualCanvas;
 import ui.VirtualList;
 import ui.controls.AlertBox;
 import ui.controls.form.CheckBox;
@@ -97,14 +98,13 @@ public class AccountForm
      * @param accountSelect
      * @param account
      */
-    public AccountForm(AccountSelect accountSelect, Account account) {
+    public AccountForm(AccountSelect accountSelect, Account acc) {
         super(null);
 	this.accountSelect = accountSelect;
-        
+        account=acc;
 	newaccount=(account==null);
-	if (newaccount) account=new Account();
-	this.account=account;
-	
+        if (newaccount)
+            this.account=new Account();
 	
         getMainBarItem().setElementAt((newaccount)?SR.MS_NEW_ACCOUNT:(account.toString()), 0);
 
@@ -252,7 +252,7 @@ public class AccountForm
 //#             account.setProxyHostAddr(proxyHost.getValue());
 //#if HTTPCONNECT
 //#             account.setProxyPort(Integer.parseInt(proxyPort.getValue()));
-//#
+//# 
 //#             account.setProxyUser(proxyUser.getValue());
 //#             account.setProxyPass(proxyPass.getValue());
 //#endif
@@ -263,47 +263,55 @@ public class AccountForm
         }
 
         if (newaccount) 
-            accountSelect.accountList.addElement(account);
+            accountSelect.itemsList.addElement(account);
         accountSelect.rmsUpdate();
         accountSelect.commandState();
 
         doConnect=true;
         
         if (registerNew) {
-            new AccountRegister(account,  (VirtualList)parentView);
+            new AccountRegister(account);
         } else {
             destroyView();
-        }
+        }        
         account=null;
     }
 
     public void destroyView(){
         if (newaccount && doConnect) {
             new AlertBox(SR.MS_CONNECT_TO, account.getBareJid()+"?") {
-                public void yes() { startLogin(true); }
-                public void no() { startLogin(false); }
-            };
+                public void yes() {
+                    sd.roster.show();
+                    startLogin(true);
+                }
+                public void no() { 
+                    startLogin(false);
+                    accountSelect.show();
+                }
+            };            
         } else
             accountSelect.show();
     }
     
     private void startLogin(boolean login){
-        Config.getInstance().accountIndex=accountSelect.accountList.size()-1;
+        Config.getInstance().accountIndex=accountSelect.itemsList.size()-1;
         Account.loadAccount(login, Config.getInstance().accountIndex);
         SplashScreen.getInstance().close();
     }
     
-    protected void keyRepeated(int keyCode) {
-        super.keyRepeated(keyCode);
-        if (kHold==keyCode) return;
-        kHold=keyCode;
-        
-        if (keyCode==KEY_NUM6) {
-            Config cf=Config.getInstance();
-            Config.fullscreen=!Config.fullscreen;
-            cf.saveToStorage();
-            VirtualList.fullscreen=Config.fullscreen;
-            StaticData.getInstance().roster.setFullScreenMode(Config.fullscreen);
+    protected void key(int keyCode, boolean key_long) {
+        if (key_long) {
+            switch (keyCode) {
+                case KEY_NUM6:
+                    Config cf = Config.getInstance();
+                    Config.fullscreen = !Config.fullscreen;
+                    cf.saveToStorage();
+                    VirtualList.fullscreen = Config.fullscreen;
+                    VirtualCanvas.getInstance().setFullScreenMode(Config.fullscreen);
+                    return;
+            }
         }
+
+        super.key(keyCode, key_long);
     }
 }

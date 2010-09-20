@@ -31,10 +31,10 @@ import Client.Config;
 import Client.StaticData;
 import Fonts.FontCache;
 //#ifdef AUTOSTATUS
-import Client.ExtendedStatus;
-import Client.Roster;
-import Client.StaticData;
-import Client.StatusList;
+//# import Client.ExtendedStatus;
+//# import Client.Roster;
+//# import Client.StaticData;
+//# import Client.StatusList;
 //#endif
 import images.RosterIcons;
 import java.util.Timer;
@@ -53,8 +53,6 @@ import ui.controls.Progress;
  */
 public final class SplashScreen extends Canvas implements Runnable, CommandListener {
     
-    private Displayable parentView;
-    
     private String capt;
     private int pos=-1;
     
@@ -66,7 +64,6 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
     private ComplexString status;
     
     private char exitKey;
-    private int kHold;
     
     private TimerTaskClock tc;
 
@@ -74,12 +71,12 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
     
     private static SplashScreen instance;
 
-    public int keypressed=0;
+    public boolean keyPressed = false;
 
     private Font clockFont=FontCache.getFont(true, FontCache.bigSize);
     
     private Progress pb;
-    
+
     public static SplashScreen getInstance(){
         if (instance==null) 
             instance=new SplashScreen();
@@ -93,15 +90,13 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
     }
     
     public SplashScreen(ComplexString status, char exitKey) {
-        this.status=status;
-        this.exitKey=exitKey;
-        kHold=exitKey;
+        this.status = status;
+        this.exitKey = exitKey;
         
-        parentView=midlet.BombusMod.getInstance().getCurrentDisplayable();
-
-        status.setElementAt(new Integer(RosterIcons.ICON_KEYBLOCK_INDEX),6);
+        status.setElementAt(new Integer(RosterIcons.ICON_KEYBLOCK_INDEX), 6);
         show();
     }
+
     public void show() {
         repaint();
         //serviceRepaints();
@@ -119,11 +114,8 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
     }
 
     public void paint(Graphics g){
-        int width=getWidth();
-        int offs = 0;
-        if (Config.getInstance().phoneManufacturer == Config.MICROEMU)
-            offs = 25;
-        int height = getHeight() - offs;
+        int width = g.getClipWidth();
+        int height = g.getClipHeight();
         
         g.setColor(ColorTheme.getColor(ColorTheme.BLK_BGND));
         g.fillRect(0,0, width, height);
@@ -152,7 +144,7 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
     
     public void setProgress(int progress) {
         pos=progress;
-        repaint();
+            repaint();
     }
 
     public void setFailed(){
@@ -175,24 +167,23 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
     private Command cmdExit=new Command("Hide Splash", Command.BACK, 99);
     
     public void setExit(Displayable nextDisplayable){
-        parentView=nextDisplayable;
         setCommandListener(this);
         addCommand(cmdExit);
     }
     
     public void commandAction(Command c, Displayable d) {
-        if (c==cmdExit) 
-            close();
+        if (c==cmdExit)
+            close();        
     }
     
     public void close(){
         //if (parentView!=null)
-        midlet.BombusMod.getInstance().setDisplayable(StaticData.getInstance().roster);
+        midlet.BombusMod.getInstance().setDisplayable(VirtualCanvas.getInstance().getList());
         //parentView=null;
         //repaint();
         //serviceRepaints();
         img=null;
-        instance=null;
+       // instance=null;
 //        if (cf.widthSystemgc) { _vt
             System.gc();
 //        } _vt
@@ -223,12 +214,17 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
             t.cancel();
         }
     }
+    public void pointerPressed(int x, int y) {
+        close();
+    }
 
-    public void keyPressed(int keyCode) {
-        keypressed=keyCode;
-        if (pos>=20)
+    protected void keyPressed(int keyCode) {
+        keyPressed = true;
+        
+        if (pos >= 20) {
             close();
-        kHold=0;
+        }
+
 //#ifdef LIGHT_CONFIG       
 //#ifdef PLUGINS                
 //#         if (StaticData.getInstance().lightConfig)
@@ -238,26 +234,26 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
     }
 
     protected void keyRepeated(int keyCode) { 
-        if (kHold==0)
-            if (keyCode==exitKey) 
-                destroyView(); 
+        if (keyCode == exitKey) {
+            destroyView();
+        }
     }
 
     private void destroyView(){
         status.setElementAt(null,6);
-        midlet.BombusMod.getInstance().setDisplayable(StaticData.getInstance().roster);
+        midlet.BombusMod.getInstance().setDisplayable(VirtualCanvas.getInstance().getList());
         img=null;
         tc.stop();
 //#ifdef AUTOSTATUS
-        StaticData sd=StaticData.getInstance();
-        if (Roster.autoAway && cf.autoAwayType==Config.AWAY_LOCK) {
-            int newStatus=Roster.oldStatus;
-            ExtendedStatus es=StatusList.getInstance().getStatus(newStatus);
-            String ms=es.getMessage();
-            Roster.autoAway=false;
-            Roster.autoXa=false;
-            sd.roster.sendPresence(newStatus, ms);
-        }
+//#         StaticData sd=StaticData.getInstance();
+//#         if (Roster.autoAway && cf.autoAwayType==Config.AWAY_LOCK) {
+//#             int newStatus=Roster.oldStatus;
+//#             ExtendedStatus es=StatusList.getInstance().getStatus(newStatus);
+//#             String ms=es.getMessage();
+//#             Roster.autoAway=false;
+//#             Roster.autoXa=false;
+//#             sd.roster.sendPresence(newStatus, ms);
+//#         }
 //#endif
 //        if (cf.widthSystemgc) { _vt
             System.gc();

@@ -66,7 +66,7 @@ public final class ContactEdit
 
     StaticData sd=StaticData.getInstance();
     
-    public ContactEdit(VirtualList pView, Contact c) {
+    public ContactEdit(Contact c) {
         super(SR.MS_ADD_CONTACT);
         cf=Config.getInstance();
         

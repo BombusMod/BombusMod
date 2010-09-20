@@ -105,15 +105,18 @@ class UserKeyEdit extends DefForm {
     }
 
     public void eventOk() {
+        if (key_t.selected)
+            return;
+
         super.eventOk();
         key_t.setTwoKeys(two_keys_t.getValue());
     }
 
-    public void keyPressed(int keyCode) {
+    protected void key(int keyCode, boolean key_long) {
         if (key_t.selected) {
-            key_t.keyPressed(keyCode);
+            key_t.key(keyCode, key_long);
             redraw();
             return;
-        } else super.keyPressed(keyCode);
+        } else super.key(keyCode, key_long);
     }
 }

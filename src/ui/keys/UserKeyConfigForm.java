@@ -85,9 +85,9 @@ public class UserKeyConfigForm extends DefForm
     public void initBrowser(int type) {
         loadType = type;
         if (type == 0) {
-            new Browser(null, this, this, true);
+            new Browser(null, this, true);
         } else if(type == 1) {
-            new Browser(null, this, this, false);
+            new Browser(null, this, false);
         }
     }
 

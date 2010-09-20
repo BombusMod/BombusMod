@@ -47,7 +47,7 @@ public class DefForm
     {
 
     
-    public Vector itemsList=new Vector();
+    public Vector itemsList = new Vector();
 
     public MenuCommand cmdOk = new MenuCommand(SR.MS_OK, MenuCommand.OK, 1);
     public MenuCommand cmdCancel = new MenuCommand(SR.MS_BACK, MenuCommand.BACK, 99);
@@ -57,25 +57,23 @@ public class DefForm
      * Creates a new instance of DefForm
      * @param caption
      */
-    public DefForm(String caption) {	
-        
+    public DefForm(String caption) {
 	setMainBarItem(new MainBar(caption));
         
-        superWidth=super.getWidth();
+        superWidth = super.getWidth();
         
         commandState();
         
 	setMenuListener(this);
         
-        enableListWrapping(false);  
+        enableListWrapping(false);
         show(parentView);
-        
     }
 
     protected int getItemCount() { return itemsList.size(); }
 
     protected VirtualElement getItemRef(int index) {
-        return (VirtualElement)itemsList.elementAt(index);
+        return (VirtualElement) itemsList.elementAt(index);
     }
     
     public void touchLeftPressed(){ cmdOk(); }
@@ -119,5 +117,5 @@ public class DefForm
         menu.show(this);
     }
     
-    public String touchLeftCommand(){ return SR.MS_OK; }
+    public String touchLeftCommand() { return SR.MS_OK; }
 }

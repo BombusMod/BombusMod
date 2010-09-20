@@ -89,10 +89,9 @@ public class VCardView
     MenuCommand cmdDelPhoto  = new MenuCommand(SR.MS_CLEAR_PHOTO, MenuCommand.SCREEN,5);
 
     /** Creates a new instance of VCardView
-     * @param pView
      * @param contact
      */
-    public VCardView(VirtualList pView, Contact contact) {
+    public VCardView(Contact contact) {
         super(contact.getNickJid());
         this.vcard=contact.vcard;
         this.c=contact;
@@ -170,7 +169,7 @@ public class VCardView
         }
 //#if FILE_IO
         if (c==cmdSavePhoto) {
-            new Browser(null,  this, this, true);
+            new Browser(null, this, true);
         }
 //#endif
 //#ifdef CLIPBOARD
@@ -234,14 +233,10 @@ public class VCardView
     
     public void cmdOk() { showMenu(); }
     
-    public void cmdCancel() {
-        clearVcard();
-    }
-    
     public void cmdExit() {
         super.cmdCancel();
     }
-    
+    /*
     public void clearVcard() {
         new AlertBox(SR.MS_ACTION, SR.MS_DELETE+" "+SR.MS_VCARD+"?") {
             public void yes() {
@@ -250,5 +245,5 @@ public class VCardView
             public void no() {                
             }
         };
-    }
+    }*/
 }

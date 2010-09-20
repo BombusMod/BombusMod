@@ -116,7 +116,7 @@ public class SearchResult
     
     public void cmdOk() {
         destroyView();
-        new ContactEdit(sd.roster, (Contact) getFocusedObject());
+        new ContactEdit((Contact) getFocusedObject());
 
     }
     public void eventOk(){

@@ -72,27 +72,24 @@ public class BombusMod extends MIDlet implements Runnable{
     
     private static BombusMod instance;
     
-    public BombusMod() {
-//#ifdef LIGHT_CONFIG        
-//#ifdef PLUGINS        
-//#     if (StaticData.getInstance().lightConfig)        
-//#endif               
-//#         lcf = LightConfig.getInstance();
-//#endif    
-
-        instance=this;
-        display = Display.getDisplay(this);
-        s = SplashScreen.getInstance();
-        s.setProgress("Loading", 3); // this message will not be localized
-        
-    }
-    
     /** Entry point  */
     public void startApp() {        
         if (isRunning) {
             hideApp(false);
             return;
         }
+//#ifdef LIGHT_CONFIG
+//#ifdef PLUGINS
+//#     if (StaticData.getInstance().lightConfig)
+//#endif
+//#         lcf = LightConfig.getInstance();
+//#endif
+
+        instance = this;
+        display = Display.getDisplay(this);
+        s = SplashScreen.getInstance();
+        s.setProgress("Loading", 3); // this message will not be localized
+
         isRunning=true;
         new Thread(this).start();
     }
@@ -136,11 +133,11 @@ public class BombusMod extends MIDlet implements Runnable{
 //#         sd.autoTask=new AutoTask(display);
 //#         s.setProgress(17);
 //#endif
-
+        VirtualCanvas.getInstance();
         sd.roster=new Roster();
         s.setProgress(20);
         
-        boolean selAccount=( (cf.accountIndex<0) || s.keypressed!=0);
+        boolean selAccount=( (cf.accountIndex<0) || s.keyPressed);
         if (selAccount) 
             s.setProgress("Entering setup",22);
         
@@ -149,7 +146,7 @@ public class BombusMod extends MIDlet implements Runnable{
         if (!selAccount && cf.autoLogin)
             Account.loadAccount(cf.autoLogin, cf.accountIndex); // connect whithout account select
         else
-            new AccountSelect(true).show(sd.roster);
+            new AccountSelect(true);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -238,11 +235,11 @@ public class BombusMod extends MIDlet implements Runnable{
         if (!isLocked) {
             if (d == null) {
                 sd.roster.errorLog(getCurrentDisplayable().getClass().toString() + ": Displayable is null. Compensate.");
-                System.out.println("Displayable is null.");
+                System.out.println(getCurrentDisplayable().getClass().toString() + ": Displayable is null.");
                 d = sd.roster;
             }
             if (d instanceof VirtualList) {
-                VirtualCanvas.nativeCanvas.show((VirtualList)d);
+                VirtualCanvas.getInstance().show((VirtualList)d);
                 return;
             }
             getDisplay().setCurrent(d);

@@ -52,10 +52,9 @@ public class InviteForm
     Contact contact;
     
     /** Creates a new instance of InviteForm
-     * @param pView 
      * @param contact
      */
-    public InviteForm(VirtualList pView, Contact contact) {
+    public InviteForm(Contact contact) {
         super(SR.MS_INVITE);
         this.contact=contact;
         
@@ -76,7 +75,6 @@ public class InviteForm
         itemsList.addElement(reason);
         
         moveCursorTo(getNextSelectableRef(-1));
-        
     }
 
     public void cmdOk() {

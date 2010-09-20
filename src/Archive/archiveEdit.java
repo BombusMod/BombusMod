@@ -51,7 +51,7 @@ public class archiveEdit
     private int pos;
     private ArchiveList al;
     
-    public archiveEdit(VirtualList pView, int pos, int where, ArchiveList al) {
+    public archiveEdit(Displayable pView, int pos, int where, ArchiveList al) {
 
         super(null, (pos > -1) ? SR.MS_EDIT : SR.MS_NEW);
 
@@ -69,7 +69,8 @@ public class archiveEdit
         }
 
         setText(body);
-        show(pView, this);
+        parentView = pView;
+        show(parentView, this);
     }
 
     public void commandState() {
@@ -86,7 +87,7 @@ public class archiveEdit
         textbox.removeCommand(cmdPaste);
 //#endif
 //#if TEMPLATES
-        textbox.removeCommand(cmdTemplate);
+//#         textbox.removeCommand(cmdTemplate);
 //#endif
         if (Config.getInstance().phoneManufacturer == Config.SONYE) System.gc(); // prevent flickering on Sony Ericcsson C510
         textbox.setCommandListener(this);        

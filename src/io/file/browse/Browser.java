@@ -69,7 +69,7 @@ public class Browser
     private boolean getDirectory;
     
     /** Creates a new instance of Browser */
-    public Browser(String path, VirtualList pView, BrowserListener browserListener, boolean getDirectory) {
+    public Browser(String path, BrowserListener browserListener, boolean getDirectory) {
         super();
         
         this.browserListener=browserListener;
@@ -108,7 +108,6 @@ public class Browser
         chDir(path);
         
         show(parentView);
-        this.parentView=pView;
     }
     
     protected int getItemCount() { return dir.size(); }

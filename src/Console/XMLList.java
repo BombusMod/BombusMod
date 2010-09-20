@@ -35,11 +35,11 @@ import java.util.Vector;
 import Menu.MenuCommand;
 import locale.SR;
 //#ifdef CLIPBOARD   
-import ui.VirtualList;
-import util.ClipBoard;
+//# import ui.VirtualList;
+//# import util.ClipBoard;
 //#endif
 //#ifdef CONSOLE 
-import ui.MainBar;
+//# import ui.MainBar;
 //#endif
 
 /**
@@ -60,11 +60,10 @@ public final class XMLList
     private MenuCommand cmdPurge=new MenuCommand(SR.MS_CLEAR_LIST, MenuCommand.SCREEN, 10);
     
 //#ifdef CLIPBOARD    
-    private ClipBoard clipboard=ClipBoard.getInstance();
+//#     private ClipBoard clipboard=ClipBoard.getInstance();
 //#endif
     
     /** Creates a new instance of XMLList
-     * @param pView
      */
     public XMLList() {
         super ();
@@ -80,8 +79,8 @@ public final class XMLList
         moveCursorHome();
 
 //#ifdef CONSOLE        
-	MainBar mb=new MainBar(SR.MS_XML_CONSOLE);
-        setMainBarItem(mb);
+//# 	MainBar mb=new MainBar(SR.MS_XML_CONSOLE);
+//#         setMainBarItem(mb);
 //#endif
         show(parentView);        
     }
@@ -91,10 +90,10 @@ public final class XMLList
 	addMenuCommand(cmdBack);
         addMenuCommand(cmdNew);
 //#ifdef CLIPBOARD
-            if (Config.getInstance().useClipBoard) {
-                addMenuCommand(cmdCopy);
-                if (!clipboard.isEmpty()) addMenuCommand(cmdCopyPlus);
-            }
+//#             if (Config.getInstance().useClipBoard) {
+//#                 addMenuCommand(cmdCopy);
+//#                 if (!clipboard.isEmpty()) addMenuCommand(cmdCopyPlus);
+//#             }
 //#endif
         addMenuCommand(cmdEnableDisable);
         addMenuCommand(cmdPurge);
@@ -130,7 +129,7 @@ public final class XMLList
         try {
             stanza =  m.toString();
         } catch (Exception e) {}
-        new StanzaEdit(this, stanza);
+        new StanzaEdit(stanza);
     }
     
     public void menuAction(MenuCommand c, VirtualList d) {

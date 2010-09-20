@@ -75,13 +75,12 @@ public class Bookmarks
 
     JabberStream stream=sd.roster.theStream;
     /** Creates a new instance of Bookmarks
-     * @param pView
      * @param toAdd
      */
-    public Bookmarks(VirtualList pView, BookmarkItem toAdd) {
+    public Bookmarks(BookmarkItem toAdd) {
         super(null);
         if (getItemCount()==0 && toAdd==null) {
-            new ConferenceForm( pView);
+            new ConferenceForm();
             return;
         }
 
@@ -96,7 +95,6 @@ public class Bookmarks
 
         setMenuListener(this);
 	enableListWrapping(true);
-	show(pView);        
     }
     
     public void commandState() {
@@ -163,7 +161,7 @@ public class Bookmarks
     public void menuAction(MenuCommand c, VirtualList d){
         if (c==cmdCancel) sd.roster.show();
         if (c==cmdNew) { 
-            new ConferenceForm( this);
+            new ConferenceForm();
             return;
         }
         if (c==cmdJoin) eventOk();
@@ -173,7 +171,7 @@ public class Bookmarks
 
         if (c==cmdAdvJoin) {
             BookmarkItem join=(BookmarkItem)getFocusedObject();
-            new ConferenceForm( this, join, cursor);
+            new ConferenceForm(join, cursor);
         } else if (c==cmdDel) {
             deleteBookmark();
             setMainBarItem(new MainBar(2, null, SR.MS_BOOKMARKS+" ("+getItemCount()+") ", false));
@@ -183,10 +181,10 @@ public class Bookmarks
         else if (c==cmdDisco) new ServiceDiscovery( roomJid, null, false);
 //#endif
         else if (c==cmdConfigure) new QueryConfigForm( roomJid);
-        else if (c==cmdRoomOwners) new Affiliations( this, roomJid, (short)1);  
-        else if (c==cmdRoomAdmins) new Affiliations( this, roomJid, (short)2);  
-        else if (c==cmdRoomMembers) new Affiliations( this, roomJid, (short)3);  
-        else if (c==cmdRoomBanned) new Affiliations( this, roomJid, (short)4);  
+        else if (c==cmdRoomOwners) new Affiliations(roomJid, (short)1);  
+        else if (c==cmdRoomAdmins) new Affiliations(roomJid, (short)2);  
+        else if (c==cmdRoomMembers) new Affiliations(roomJid, (short)3);  
+        else if (c==cmdRoomBanned) new Affiliations(roomJid, (short)4);  
         else if (c==cmdSort) sort(sd.roster.bookmarks);
         else if (c==cmdDoAutoJoin) {
             for (Enumeration e=sd.roster.bookmarks.elements(); e.hasMoreElements();) {
@@ -235,18 +233,24 @@ public class Bookmarks
         } catch (Exception e) {/* IndexOutOfBounds */}
     }
 
-    public void keyPressed(int keyCode) {
-        super.keyPressed(keyCode);
-        switch (keyCode) {
-            case KEY_NUM4:
-                pageLeft(); break;
-            case KEY_NUM6:
-                pageRight(); break;
+    protected void key(int keyCode, boolean key_long) {
+        if (!key_long) {
+            switch (keyCode) {
+                case KEY_NUM4:
+                    pageLeft();
+                    return;
+                case KEY_NUM6:
+                    pageRight();
+                    return;
 //#ifdef SERVICE_DISCOVERY
-            case KEY_POUND:
-                new ServiceDiscovery(((BookmarkItem)getFocusedObject()).getJid(), null, false);
+                case KEY_POUND:
+                    new ServiceDiscovery(((BookmarkItem) getFocusedObject()).getJid(), null, false);
+                    return;
 //#endif
+            }
         }
+
+        super.key(keyCode, key_long);
     }
 
     public String touchLeftCommand() {return SR.MS_MENU;}

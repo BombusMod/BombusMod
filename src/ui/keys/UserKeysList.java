@@ -97,17 +97,19 @@ public class UserKeysList extends DefForm {
 
     public void menuAction(MenuCommand c, VirtualList d) {
 //#ifdef USER_KEYS
-//#         if (c==cmdEdit) 
-//#             new UserKeyEdit( this, (UserKey) getFocusedObject());
-//#         if (c==cmdAdd)
-//#             new UserKeyEdit( this, null);
-//#         if (c==cmdDel) {
-//#             itemsList.removeElement(getFocusedObject());
+//#         if (c == cmdEdit) {
+//#             new UserKeyEdit(this, (UserKey) getFocusedObject());
+//#         }
+//#         if (c == cmdAdd) {
+//#             new UserKeyEdit(this, null);
+//#         }
+//#         if (c == cmdDel) {
+//#             itemsList.removeElementAt(cursor);
 //#             moveCursorHome();
 //#             commandState();
 //#             redraw();
 //#         }
-//#         if (c==cmdApply) {
+//#         if (c == cmdApply) {
 //#             cmdOk();
 //#         }
 //#endif
@@ -116,11 +118,11 @@ public class UserKeysList extends DefForm {
     
     public void eventOk() {
 //#ifdef USER_KEYS
-//#         new UserKeyEdit( this, (UserKey) getFocusedObject());
+//#         new UserKeyEdit(this, (UserKey) getFocusedObject());
 //#endif
     }
     
-     public String touchLeftCommand() {return SR.MS_MENU;}
+     public String touchLeftCommand() { return SR.MS_MENU; }
      public void touchLeftPressed() { showMenu(); }
 
 }

@@ -62,7 +62,7 @@ import com.alsutton.jabber.datablocks.Presence;
 import java.util.Enumeration;
 import locale.SR;
 //#ifdef CLIPBOARD
-import util.ClipBoard;
+//# import util.ClipBoard;
 //#endif
 
 import VCard.VCard;
@@ -79,7 +79,7 @@ public class RosterItemActions extends Menu {
 
     Object item;
 //#ifdef CLIPBOARD
-    private ClipBoard clipboard=ClipBoard.getInstance();
+//#     private ClipBoard clipboard=ClipBoard.getInstance();
 //#endif
     private int action;
     
@@ -90,11 +90,10 @@ public class RosterItemActions extends Menu {
     Config cf=Config.getInstance();
     
     /** Creates a new instance of RosterItemActions
-     * @param pView
      * @param item
      * @param action
      */
-    public RosterItemActions(VirtualList pView, Object item, int action) {
+    public RosterItemActions(Object item, int action) {
         super(item.toString(), ActionsIcons.getInstance());
 
         this.item=item;
@@ -127,12 +126,12 @@ public class RosterItemActions extends Menu {
 	    addItem(SR.MS_COMMANDS,30, ActionsIcons.ICON_COMMAND);
 //#endif
 //#ifdef CLIPBOARD
-            if (cf.useClipBoard) {
-                if (!clipboard.isEmpty())
-                    addItem(SR.MS_SEND_BUFFER,914, ActionsIcons.ICON_SEND_BUFFER);
-                if (contact.getGroupType()!=Groups.TYPE_SELF)
-                    addItem(SR.MS_COPY_JID,892, ActionsIcons.ICON_COPY_JID);
-            }
+//#             if (cf.useClipBoard) {
+//#                 if (!clipboard.isEmpty())
+//#                     addItem(SR.MS_SEND_BUFFER,914, ActionsIcons.ICON_SEND_BUFFER);
+//#                 if (contact.getGroupType()!=Groups.TYPE_SELF)
+//#                     addItem(SR.MS_COPY_JID,892, ActionsIcons.ICON_COPY_JID);
+//#             }
 //#endif
             addItem(SR.MS_SEND_COLOR_SCHEME, 912, ActionsIcons.ICON_SEND_COLORS);
             if (contact.status<Presence.PRESENCE_OFFLINE) {
@@ -312,7 +311,6 @@ public class RosterItemActions extends Menu {
 	if (getItemCount()>0) {
             if (action<0) {
                 show(parentView);
-                this.parentView = pView;
             } else try {
                 //this.display=display; // to invoke dialog Y/N
                 doAction(action);
@@ -353,18 +351,18 @@ public class RosterItemActions extends Menu {
                 case 1: // vCard
                     if (c.vcard!=null) {
                         if (c.getGroupType()==Groups.TYPE_SELF)
-                            new VCardEdit(sd.roster, c.vcard);
+                            new VCardEdit(c.vcard);
                         else
-                            new VCardView(sd.roster, c);
+                            new VCardView(c);
                         return;
                     }
                     VCard.request(c.bareJid, c.getJid());
                     break;
                 case 2:
-                    new ContactEdit(sd.roster, c );
+                    new ContactEdit(c);
                     return; //break;
                 case 3: //subscription
-                    new SubscriptionEdit(sd.roster, c);
+                    new SubscriptionEdit(c);
                     return; //break;
                 case 4:
                     new AlertBox(SR.MS_DELETE_ASK, c.getNickJid()) {
@@ -425,18 +423,18 @@ public class RosterItemActions extends Menu {
                     sd.roster.theStream.send(IqTimeReply.query(c.getJid()));
                     break;
 //#ifdef CLIPBOARD
-                case 892: //Copy JID
+//#                 case 892: //Copy JID
 //#ifndef WMUC
-                    if (!(c instanceof MucContact)) {
+//#                     if (!(c instanceof MucContact)) {
 //#endif
-                        try {
-                            if (c.bareJid!=null)
-                                clipboard.setClipBoard(c.bareJid);
-                        } catch (Exception e) {/*no messages*/}
+//#                         try {
+//#                             if (c.bareJid!=null)
+//#                                 clipboard.setClipBoard(c.bareJid);
+//#                         } catch (Exception e) {/*no messages*/}
 //#ifndef WMUC
-                    }
+//#                     }
 //#endif
-                    break;
+//#                     break;
 //#endif
                 case 893: //ping
                     try {
@@ -461,34 +459,34 @@ public class RosterItemActions extends Menu {
                     }
                 break;
 //#ifdef CLIPBOARD
-                case 914: //send message from buffer
-                    String body2=clipboard.getClipBoard();
-                    if (body2.length()==0)
-                        return;
-
-                    String from2=sd.account.toString();
-
-                    String id2=String.valueOf((int) System.currentTimeMillis());
-                    Msg msg2=new Msg(Msg.MESSAGE_TYPE_OUT,from2,null,body2);
-                    msg2.id=id2;
-                    msg2.itemCollapsed=true;
-
-                    try {
-                        if (body2!=null && body2.length()>0) {
-                            sd.roster.sendMessage(c, id2, body2, null, null);
-                            
-                            if (c.origin<Contact.ORIGIN_GROUPCHAT) c.addMessage(msg2);
-                        }
-                    } catch (Exception e) {
-                        c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from2,null,"clipboard NOT sended"));
-                    }
-                    break;
+//#                 case 914: //send message from buffer
+//#                     String body2=clipboard.getClipBoard();
+//#                     if (body2.length()==0)
+//#                         return;
+//# 
+//#                     String from2=sd.account.toString();
+//# 
+//#                     String id2=String.valueOf((int) System.currentTimeMillis());
+//#                     Msg msg2=new Msg(Msg.MESSAGE_TYPE_OUT,from2,null,body2);
+//#                     msg2.id=id2;
+//#                     msg2.itemCollapsed=true;
+//# 
+//#                     try {
+//#                         if (body2!=null && body2.length()>0) {
+//#                             sd.roster.sendMessage(c, id2, body2, null, null);
+//#                             
+//#                             if (c.origin<Contact.ORIGIN_GROUPCHAT) c.addMessage(msg2);
+//#                         }
+//#                     } catch (Exception e) {
+//#                         c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from2,null,"clipboard NOT sended"));
+//#                     }
+//#                     break;
 //#endif
 //#ifndef WMUC
                 case 40: //invite
                     //new InviteForm(c, display);
                     if (c.jid!=null) {
-                        new InviteForm(sd.roster, c);
+                        new InviteForm(c);
                     } else {
                         MucContact mcJ=(MucContact) c;
 
@@ -501,22 +499,22 @@ public class RosterItemActions extends Menu {
                                         onlineConferences=true;
                                 } catch (Exception e) {}
                             }
-                            if (onlineConferences) new InviteForm( sd.roster, mcJ);
+                            if (onlineConferences) new InviteForm(mcJ);
                         }
                     }
                     return;
 //#endif
                 case 45: //direct presence
-                    new StatusSelect( sd.roster, c);
+                    new StatusSelect(c);
                     return;
 //#if (FILE_IO && FILE_TRANSFER)
                 case 50: //send file                    
-                    new TransferSendFile( sd.roster, c.getJid());
+                    new TransferSendFile(c.getJid());
                     return;
 //#endif
 //#if FILE_TRANSFER
                 case 51: //send photo
-                    new TransferImage( sd.roster, c.getJid());
+                    new TransferImage(c.getJid());
                     return;
 //#endif
             }
@@ -542,7 +540,7 @@ public class RosterItemActions extends Menu {
                     case 12: // admins
                     case 13: // members
                     case 14: // outcasts
-                        new Affiliations( (VirtualList)parentView, roomJid, (short)(index-10));
+                        new Affiliations(roomJid, (short)(index-10));
                         return;
                     case 22:
                         sd.roster.leaveRoom( g );
@@ -551,34 +549,34 @@ public class RosterItemActions extends Menu {
                         sd.roster.reEnterRoom( g );
                         return; //break;
                     case 46: //conference presence
-                        new StatusSelect( sd.roster, ((ConferenceGroup)g).confContact);
+                        new StatusSelect(((ConferenceGroup)g).confContact);
                         return;
                      case 8: // kick
-                        new ConferenceQuickPrivelegeModify( sd.roster, mc, ConferenceQuickPrivelegeModify.KICK,myNick);
+                        new ConferenceQuickPrivelegeModify(mc, ConferenceQuickPrivelegeModify.KICK,myNick);
                         return;
                      case 9: // ban
-                        new ConferenceQuickPrivelegeModify( sd.roster, mc, ConferenceQuickPrivelegeModify.OUTCAST,myNick);
+                        new ConferenceQuickPrivelegeModify(mc, ConferenceQuickPrivelegeModify.OUTCAST,myNick);
                         return;
                      case 31: //grant voice and revoke moderator
-                        new ConferenceQuickPrivelegeModify( sd.roster, mc, ConferenceQuickPrivelegeModify.PARTICIPANT,null); //
+                        new ConferenceQuickPrivelegeModify(mc, ConferenceQuickPrivelegeModify.PARTICIPANT,null); //
                         return;
                      case 32: //revoke voice
-                        new ConferenceQuickPrivelegeModify( sd.roster, mc, ConferenceQuickPrivelegeModify.VISITOR,null);
+                        new ConferenceQuickPrivelegeModify(mc, ConferenceQuickPrivelegeModify.VISITOR,null);
                         return;
                      case 33: //grant moderator
-                        new ConferenceQuickPrivelegeModify( sd.roster, mc, ConferenceQuickPrivelegeModify.MODERATOR,null); //
+                        new ConferenceQuickPrivelegeModify(mc, ConferenceQuickPrivelegeModify.MODERATOR,null); //
                         return;
                     case 35: //grant membership and revoke admin
-                        new ConferenceQuickPrivelegeModify( sd.roster, mc, ConferenceQuickPrivelegeModify.MEMBER,null); //
+                        new ConferenceQuickPrivelegeModify(mc, ConferenceQuickPrivelegeModify.MEMBER,null); //
                         return;
                     case 36: //revoke membership
-                        new ConferenceQuickPrivelegeModify( sd.roster, mc, ConferenceQuickPrivelegeModify.NONE,null); //
+                        new ConferenceQuickPrivelegeModify(mc, ConferenceQuickPrivelegeModify.NONE,null); //
                          return;
                     case 37: //grant admin and revoke owner
-                        new ConferenceQuickPrivelegeModify( sd.roster, mc, ConferenceQuickPrivelegeModify.ADMIN,null); //
+                        new ConferenceQuickPrivelegeModify(mc, ConferenceQuickPrivelegeModify.ADMIN,null); //
                         return;
                     case 38: //grant owner
-                        new ConferenceQuickPrivelegeModify( sd.roster, mc, ConferenceQuickPrivelegeModify.OWNER,null); //
+                        new ConferenceQuickPrivelegeModify(mc, ConferenceQuickPrivelegeModify.OWNER,null); //
                         return;
 //#ifdef REQUEST_VOICE
 //#                 case 39: //request voice
@@ -586,12 +584,12 @@ public class RosterItemActions extends Menu {
 //#                     return;
 //#endif
 //#ifdef CLIPBOARD
-                    case 892: //Copy JID
-                        try {
-                            if (mc.realJid!=null)
-                                clipboard.setClipBoard(mc.realJid);
-                        } catch (Exception e) {}
-                        break;
+//#                     case 892: //Copy JID
+//#                         try {
+//#                             if (mc.realJid!=null)
+//#                                 clipboard.setClipBoard(mc.realJid);
+//#                         } catch (Exception e) {}
+//#                         break;
 //#endif
              }
         } else {
@@ -606,7 +604,7 @@ public class RosterItemActions extends Menu {
             {
                 switch (index) {
                     case 1001: //rename
-                        new RenameGroup( sd.roster, sg/*, null*/);
+                        new RenameGroup(sg/*, null*/);
                         return;
                     case 1004: //delete
                         new AlertBox(SR.MS_DELETE_GROUP_ASK, sg.getName()) {

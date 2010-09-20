@@ -30,13 +30,14 @@ import ui.controls.form.DefForm;
 //#     }
 //#     public void drawCursor(Graphics g, int width, int height) {
 //#         // prevent text selection
-//#     };
-//#     public void keyPressed(int key) {
-//#         switch (key) {
-//#             case KEY_NUM2:                
+//#     }
+//# 
+//#     protected void key(int keyCode, boolean key_long) {
+//#         switch (keyCode) {
+//#             case KEY_NUM2:
 //#                 selector.movePoint(1);
 //#                 break;
-//#             case KEY_NUM8:                ;
+//#             case KEY_NUM8:
 //#                 selector.movePoint(-1);
 //#                 break;
 //#             case KEY_NUM4:
@@ -47,7 +48,7 @@ import ui.controls.form.DefForm;
 //#                 break;
 //#             default:
 //#                 try {
-//#                     switch (getGameAction(key)){
+//#                     switch (getGameAction(keyCode)) {
 //#                         case UP:
 //#                             selector.movePoint(1);
 //#                             break;
@@ -68,30 +69,10 @@ import ui.controls.form.DefForm;
 //#                 repaint();
 //#                 serviceRepaints();
 //#         }
-//#         super.keyPressed(key);
+//#         
+//#         super.key(keyCode, key_long);
 //#     }
-//#     protected void keyRepeated(int key) {
-//#         try {
-//#                     switch (getGameAction(key)){
-//#                         case UP:
-//#                             selector.movePoint(1);
-//#                             break;
-//#                         case DOWN:
-//#                             selector.movePoint(-1);
-//#                             break;
-//#                         case LEFT:
-//#                             selector.selectPrev();
-//#                             break;
-//#                         case RIGHT:
-//#                             selector.selectNext();
-//#                             break;
-//#                         case FIRE:
-//#                             cmdOk();
-//#                             break;
-//#                     }
-//#                 } catch (Exception e) {/* IllegalArgumentException @ getGameAction */ }
 //# 
-//#     }
 //#     protected void pointerPressed(int x, int y) {
 //#         checkBarPointed(x, y, selector.pxred, 0);
 //#         checkBarPointed(x, y, selector.pxgreen, 1);

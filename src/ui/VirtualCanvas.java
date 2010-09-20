@@ -27,15 +27,18 @@ public class VirtualCanvas extends Canvas implements CommandListener{
     public Command commandOk;
     public Command commandCancel;
 
-    
-    /** Creates a new instance of NativeCanvas */
-    public VirtualCanvas() {
-        setFullScreenMode(Config.fullscreen);
-        setOk(SR.MS_MENU);
-        setCancel(SR.MS_ACTION);
-        setCommandListener(this);
+    static VirtualCanvas instance;
+    public static VirtualCanvas getInstance() {
+        if (instance == null) {
+            instance = new VirtualCanvas();
+            instance.setOk(SR.MS_MENU);
+            instance.setCancel(SR.MS_ACTION);
+            instance.setCommandListener(instance);
+        }
+        return instance;
     }
 
+    
     public void show(VirtualList virtualList) {
         if (this == midlet.BombusMod.getInstance().getDisplay().getCurrent()
                 && isShown()) {
@@ -50,8 +53,7 @@ public class VirtualCanvas extends Canvas implements CommandListener{
         } else {
             list = virtualList;
             midlet.BombusMod.getInstance().getDisplay().setCurrent(this);
-        }
-
+        }        
     }
     public VirtualList getList() {
         return list;
@@ -61,28 +63,28 @@ public class VirtualCanvas extends Canvas implements CommandListener{
         list.paint(graphics);
     }
     protected void keyPressed(int keyCode) {
-        list.keyPressed(keyCode);           
+        list.keyPressed(keyCode);
     }
     protected final void keyRepeated(int keyCode){
-        list.keyRepeated(keyCode);           
+        list.keyRepeated(keyCode);
     }
     protected void keyReleased(int keyCode) {
-        list.keyReleased(keyCode);           
+        list.keyReleased(keyCode);
     }
     
     protected void pointerPressed(int x, int y) {
-        list.pointerPressed(x, y);        
+        list.pointerPressed(x, y);
     }
     protected void pointerDragged(int x, int y) {
-        list.pointerDragged(x, y);         
+        list.pointerDragged(x, y);
     }
     protected void pointerReleased(int x, int y) {
-        list.pointerReleased(x, y);           
+        list.pointerReleased(x, y);
     }
 
     protected void showNotify() {
         setFullScreenMode(Config.fullscreen);
-        list.showNotify();        
+        list.showNotify();
     }
     protected void hideNotify() {
         if (list != null) {
@@ -92,11 +94,10 @@ public class VirtualCanvas extends Canvas implements CommandListener{
 
         
     
-    protected void sizeChanged(int w, int h) {
+    protected void sizeChanged(int w, int h) {        
         if (list != null)
-            list.sizeChanged(w, h);
+        list.sizeChanged(w, h);
     }
-    public static final VirtualCanvas nativeCanvas = new VirtualCanvas();
 
     public void commandAction(Command c, Displayable d) {
         if (c == commandOk) list.touchLeftPressed();

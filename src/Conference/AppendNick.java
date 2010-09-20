@@ -52,7 +52,7 @@ public final class AppendNick
     
     private MessageEdit me;
     
-    public AppendNick(Displayable pView, Contact to, int caretPos, MessageEdit me) {
+    public AppendNick(Contact to, int caretPos, MessageEdit me) {
         super(SR.MS_SELECT_NICKNAME);
         this.caretPos=caretPos;
         this.me = me;      
@@ -62,8 +62,7 @@ public final class AppendNick
             Contact c=(Contact)e.nextElement();
             if (c.group==to.group && c.origin>Contact.ORIGIN_GROUPCHAT && c.status<Presence.PRESENCE_OFFLINE)
                 itemsList.addElement(c);
-        }        
-        parentView = pView;
+        }
     }    
         
     public void eventOk(){

@@ -91,7 +91,7 @@ public class MultiLine extends IconTextElement {
         return caption+"\n"+text;
     }
     
-    public int getVHeight(){
+    public int getVHeight() {
         if (lines==null && width>0) {
             lines=StringUtils.parseMessage(text, width-10, font);
             itemHeight=(fontHeight*lines.size())+2;

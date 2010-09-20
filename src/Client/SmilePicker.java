@@ -71,11 +71,10 @@ public class SmilePicker
     private MessageEdit me;
  
     /** Creates a new instance of SmilePicker
-     * @param pView
      * @param caretPos
      * @param me 
      */
-    public SmilePicker(Displayable pView, int caretPos, MessageEdit me) {
+    public SmilePicker(int caretPos, MessageEdit me) {
          super(SR.MS_SELECT);
          this.caretPos=caretPos;
 
@@ -101,8 +100,6 @@ public class SmilePicker
 
         xBorder=(realWidth-(xCnt*imgWidth))/2;
         enableListWrapping(true);
-
-        show(pView);
     }
     
     public void commandState() {

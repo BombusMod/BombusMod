@@ -32,7 +32,6 @@ import java.util.Vector;
 import locale.SR;
 import ui.MainBar;
 import ui.VirtualElement;
-import ui.VirtualList;
 import ui.controls.form.DefForm;
 //#ifdef POPUPS
 import ui.controls.PopUp;
@@ -51,12 +50,11 @@ public class ActiveContacts
     StaticData sd = StaticData.getInstance();
 
     /** Creates a new instance of ActiveContacts
-     * @param pView
      * @param current
      */
-    public ActiveContacts(VirtualList pView, Contact current) {
+    public ActiveContacts(Contact current) {
 	super(SR.MS_ACTIVE_CONTACTS);
-	parentView=pView;
+
         enableListWrapping(true);
         activeContacts=null;
 	activeContacts=new Vector();
@@ -67,7 +65,10 @@ public class ActiveContacts
             }
         //}
 
-	if (getItemCount()==0) return;
+        if (getItemCount() == 0) {
+            destroyView();
+            return;
+        }
 	
         MainBar mb=new MainBar(2, String.valueOf(getItemCount()), " ", false);
         mb.addElement(SR.MS_ACTIVE_CONTACTS);
@@ -85,44 +86,58 @@ public class ActiveContacts
     public void cmdOk() {
         eventOk();
     }
+
     public void eventOk() {
-	Contact c=(Contact)getFocusedObject();
-	new ContactMessageList(c);        
+        if (getItemCount() > 0) {
+            Contact c = (Contact) getFocusedObject();
+            new ContactMessageList(c);
+        }
         //c.msgSuspended=null; // clear suspended message for selected contact
     }
     
 
-    public void keyPressed(int keyCode) {
-        kHold=0;
-//#ifdef POPUPS
-        PopUp.getInstance().next();
-//#endif
-	if (keyCode==KEY_NUM3) {
-            destroyView();
-        } else if (keyCode==KEY_NUM0) {
-            if (getItemCount()<1)
-                return;
-
-            Contact c=(Contact)getFocusedObject();
-
-            Enumeration i=activeContacts.elements();
-            
-            int pass=0; //
-            while (pass<2) {
-                if (!i.hasMoreElements()) i=activeContacts.elements();
-                Contact p=(Contact)i.nextElement();
-                if (pass==1) 
-                    if (p.getNewMsgsCount()>0) { 
-                        focusToContact(p);
-                        setRotator();
-                        break; 
-                    }
-                if (p==c) pass++; // полный круг пройден
+    protected void key(int keyCode, boolean key_long) {
+        if (!key_long) {
+            switch (keyCode) {
+                case KEY_NUM3:
+                    destroyView();
+                    return;
+                case KEY_NUM0:
+                    focusToNextUnreaded();
+                    return;
             }
-            return;
-        } else super.keyPressed(keyCode);
+        }
+
+        super.key(keyCode, key_long);
     }
-    
+
+    private void focusToNextUnreaded() {
+        if (getItemCount() < 1) {
+            return;
+        }
+
+        Contact c = (Contact) getFocusedObject();
+        Enumeration i = activeContacts.elements();
+
+        int pass = 0; //
+        while (pass < 2) {
+            if (!i.hasMoreElements()) {
+                i = activeContacts.elements();
+            }
+            Contact p = (Contact) i.nextElement();
+            if (pass == 1) {
+                if (p.getNewMsgsCount() > 0) {
+                    focusToContact(p);
+                    setRotator();
+                    break;
+                }
+            }
+            if (p == c) {
+                pass++; // полный круг пройден
+            }
+        }
+    }
+
     private void focusToContact(final Contact c) {
         int index=activeContacts.indexOf(c);
         if (index>=0) 

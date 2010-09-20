@@ -33,7 +33,7 @@ public class MoodList extends DefForm implements MIDPTextBox.TextBoxNotify {
     /** Creates a new instance of MoodList */
 
     Vector moods;
-    public MoodList(Display display) {
+    public MoodList() {
         super(
 //#ifdef PEP
 //#                 SR.MS_USERMOOD
@@ -52,8 +52,6 @@ public class MoodList extends DefForm implements MIDPTextBox.TextBoxNotify {
         }
         
         sort(moods);
-        
-        
     }
 
     protected int getItemCount() { return moods.size(); }
@@ -67,7 +65,7 @@ public class MoodList extends DefForm implements MIDPTextBox.TextBoxNotify {
 //#ifdef PEP
 //#     public void eventOk() {
 //#         if (cursor==0) OkNotify(null); 
-//#             else new MIDPTextBox( this, SR.MS_USERMOOD, Moods.getInstance().myMoodText, this, TextField.ANY);
+//#             else new MIDPTextBox(SR.MS_USERMOOD, Moods.getInstance().myMoodText, this, TextField.ANY);
 //#     }
 //#endif
     

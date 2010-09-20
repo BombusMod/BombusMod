@@ -58,10 +58,9 @@ public class TransferAcceptFile
     LinkString selectFile;
 
     /** Creates a new instance of TransferAcceptFile
-     * @param pView 
      * @param transferTask
      */
-    public TransferAcceptFile(VirtualList pView, TransferTask transferTask) {
+    public TransferAcceptFile(TransferTask transferTask) {
         super(SR.MS_ACCEPT_FILE);
         
         t=transferTask;
@@ -97,7 +96,7 @@ public class TransferAcceptFile
 
         itemsList.addElement(new MultiLine(SR.MS_DESCRIPTION, t.description, super.superWidth));
         if (TransferConfig.getInstance().ftFolder.equals("")) {
-            show(pView);
+            destroyView();
         } else {
             cmdOk();
         }
@@ -105,7 +104,7 @@ public class TransferAcceptFile
     }
 
     
-    public void initBrowser() { new Browser(path.getValue(),  this, this, true); }
+    public void initBrowser() { new Browser(path.getValue(), this, true); }
 
     public void BrowserFilePathNotify(String pathSelected) { path.setValue(pathSelected); }
     

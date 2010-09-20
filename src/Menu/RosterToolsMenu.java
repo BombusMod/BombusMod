@@ -54,13 +54,8 @@ import VCard.VCard;
 import VCard.VCardEdit;
 import images.MenuIcons;
 import locale.SR;
-//#ifdef COLOR_TUNE
 //# import Colors.ColorConfigForm;
-//#endif
 //import ui.reconnectWindow;
-import javax.microedition.lcdui.Displayable;
-import ui.VirtualList;
-
 //#ifdef USER_KEYS
 //# import ui.keys.UserKeyConfigForm;
 //#endif
@@ -80,7 +75,7 @@ public class RosterToolsMenu extends Menu {
 
     MenuIcons menuIcons=MenuIcons.getInstance();
 
-    public RosterToolsMenu(Displayable pView) {
+    public RosterToolsMenu() {
         super(SR.MS_TOOLS, MenuIcons.getInstance());
 
         cf=Config.getInstance();
@@ -177,7 +172,9 @@ public class RosterToolsMenu extends Menu {
 //#ifdef PLUGINS
 //#         if (sd.Juick)
 //#endif
-//#             addItem("Tools for Juick.Com", 20, MenuIcons.ICON_JUICK);
+//#             if (sd.roster.juickContacts.size() > 1) {
+//#                 addItem("Tools for Juick.Com", 20, MenuIcons.ICON_JUICK);
+//#             }
 //#endif
 //#ifdef LIGHT_CONFIG
 //#ifdef PLUGINS        
@@ -205,71 +202,71 @@ public class RosterToolsMenu extends Menu {
 //#endif
 //#ifdef PRIVACY
             case 1: // Privacy Lists
-                if (connected) new PrivacySelect((VirtualList)parentView);
+                if (connected) new PrivacySelect();
                 break;
 //#endif
 //#ifdef PEP
 //#             case 2:
 //#                 if (connected)
-//#                     new PepForm( StaticData.getInstance().roster);
+//#                     new PepForm();
 //#                 return;
 //#endif   
             case 3: {
                 if (! connected) break;
                 Contact c=sd.roster.selfContact();
                 if (c.vcard!=null) {
-                    new VCardEdit((VirtualList)parentView, c.vcard);
+                    new VCardEdit(c.vcard);
                     return;
                 }
                 VCard.request(c.bareJid, c.getJid());
                 return;
             }
             case 4:
-                new ConfigForm(parentView);
+                new ConfigForm();
                 return;
             case 5: //search
-                new SearchForm( (VirtualList)parentView);
+                new SearchForm();
                 return;
 //#if (HISTORY)
 //#             case 6: //history
-//#                 new HistoryConfig( (VirtualList)parentView);
+//#                 new HistoryConfig();
 //#                 return;
 //#endif
             case 7:
-                new ConfigFonts( (VirtualList)parentView);
+                new ConfigFonts();
                 return;
 //#if (FILE_IO)
             case 8:
-                new io.file.browse.Browser(null,  sd.roster, null, false);
+                new io.file.browse.Browser(null, null, false);
                 return;
 //#endif
 //#if (FILE_TRANSFER)
             case 9:                
-                new io.file.transfer.TransferManager( sd.roster);
+                new io.file.transfer.TransferManager();
                 return;
 //#endif
             case 10:
-                new ColorConfigForm(this);
+                new ColorConfigForm();
                 return;
 //#if IMPORT_EXPORT
 //#             case 11:
-//#                 new IE.IEMenu( sd.roster);
+//#                 new IE.IEMenu();
 //#                 return;
 //#endif
             case 12:
-                new AlertCustomizeForm( (VirtualList)parentView);
+                new AlertCustomizeForm();
                 return;
 //#ifdef STATS
 //#             case 13: //traffic stats
-//#                 new StatsWindow( (VirtualList)parentView);
+//#                 new StatsWindow();
 //#                 return;
 //#endif
 //#ifdef CHECK_VERSION
 //#             case 14:
-//#                 new Upgrade( (VirtualList)parentView, false);
+//#                 new Upgrade(false);
 //#                 return;
 //#             case 15:
-//#                 new Upgrade( (VirtualList)parentView, true);
+//#                 new Upgrade(true);
 //#                 return;
 //#endif
 //#ifdef USER_KEYS
@@ -284,7 +281,7 @@ public class RosterToolsMenu extends Menu {
 //#endif
 //#if AUTOTASK
 //#             case 18:
-//#                 new AutoTaskForm( (VirtualList)parentView);
+//#                 new AutoTaskForm();
 //#                 return;
 //#endif
 //#ifdef CONSOLE
@@ -294,13 +291,14 @@ public class RosterToolsMenu extends Menu {
 //#endif
 //#ifdef JUICK
 //#             case 20:
-//#                 JuickConfig cfg = new JuickConfig((VirtualList)parentView, me.toString()); cfg.show(this);
+//#                 new JuickConfig(me.toString());
 //#                 return;
 //#endif
             case 22:
                 sd.roster.errorLog(SR.MS_SIMULATED_BREAK);
                 //reconnectWindow.getInstance().startReconnect();
                 sd.roster.doReconnect();//connectionTerminated(new Exception(SR.MS_SIMULATED_BREAK));
+                destroyView();
                 return;
             case 21:
 //#ifdef LIGHT_CONFIG
@@ -308,7 +306,7 @@ public class RosterToolsMenu extends Menu {
 //#         if (sd.lightConfig)
 //#endif            
 //#                 
-//#                 new LightConfigForm(this);
+//#                 new LightConfigForm();
 //#endif                
                 return;
         }

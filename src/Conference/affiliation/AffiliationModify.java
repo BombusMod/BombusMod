@@ -54,7 +54,7 @@ public class AffiliationModify
     private int recentAffiliation;
     
     /** Creates a new instance of AffiliationModify */
-    public AffiliationModify(VirtualList pView, String room, String jid, String affiliation, String reason) {
+    public AffiliationModify(String room, String jid, String affiliation, String reason) {
         super(SR.MS_AFFILIATION);
         
         this.room=room;
@@ -72,8 +72,7 @@ public class AffiliationModify
         itemsList.addElement(affiliationItem);
 
 	reasonItem=new TextInput(SR.MS_REASON, reason, "reason", TextField.ANY);
-	itemsList.addElement(reasonItem);       
-        
+	itemsList.addElement(reasonItem);
     }
     
     

@@ -69,11 +69,10 @@ public class PrivacyForm
     String tValue="";
 
     /** Creates a new instance of PrivacyForm
-     * @param pView
      * @param item
      * @param plist
      */
-    public PrivacyForm(VirtualList pView, PrivacyItem item, PrivacyList plist) {
+    public PrivacyForm(PrivacyItem item, PrivacyList plist) {
         super(SR.MS_PRIVACY_RULE);
         this.item=item;
         targetList=plist;
@@ -109,9 +108,6 @@ public class PrivacyForm
         iqStz=new CheckBox(PrivacyItem.stanzas[3], item.iqStz); itemsList.addElement(iqStz);
         
         moveCursorTo(getNextSelectableRef(-1));
-        this.parentView=pView;
-        
-        
     }
     
     protected void beginPaint(){
