@@ -34,8 +34,8 @@ import Messages.MessageList;
 import java.util.Vector;
 import Menu.MenuCommand;
 import locale.SR;
+import ui.VirtualList;
 //#ifdef CLIPBOARD   
-//# import ui.VirtualList;
 //# import util.ClipBoard;
 //#endif
 //#ifdef CONSOLE 

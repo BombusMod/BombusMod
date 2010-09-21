@@ -162,18 +162,18 @@ public abstract class MessageList extends VirtualList
 //#endif
     }
 
-    protected void key(int keyCode, boolean key_long) { // overriding this method to avoid autorepeat
+    protected boolean key(int keyCode, boolean key_long) { // overriding this method to avoid autorepeat
         if (!key_long) {
             if (keyCode == Config.SOFT_RIGHT || keyCode == Config.KEY_BACK) {
                 if (!reconnectWindow.getInstance().isActive() && !cf.oldSE) {
                     StaticData.getInstance().roster.activeContact = null;
                     destroyView();
-                    return;
+                    return true;
                 }
             }
         }
 
-        super.key(keyCode, key_long);
+        return super.key(keyCode, key_long);
     }
    
     public void showMenu() {

@@ -55,9 +55,9 @@ class UserKeyEdit extends DefForm {
     public UserKeyEdit(UserKeysList userKeysList, UserKey u) {
         super((u==null)?
 //#ifdef USER_KEYS
-//#             SR.MS_ADD_CUSTOM_KEY:
+            SR.MS_ADD_CUSTOM_KEY:
 //#else
-                "":
+//#                 "":
 //#endif
                 (u.toString()));
         
@@ -68,23 +68,23 @@ class UserKeyEdit extends DefForm {
 	this.u=u;
 
 //#ifdef USER_KEYS
-//#         two_keys_t = new CheckBox("Two keys", u.two_keys);
-//#         itemsList.addElement(two_keys_t);
-//# 
-//#         key_t = new KeyInput(u, "Press it");
-//#         itemsList.addElement(key_t);
-//# 
-//#         itemsList.addElement(new SpacerItem(10));
-//# 
-//#         int selected = 0;
-//#         for (int i = 0; i < UserKeyExec.cmds.length; i++) {
-//#             if (UserKeyExec.cmds[i] != null)
-//#                 commands_t.append(UserKeyExec.cmds[i]);
-//#             if (u.command_id == i)
-//#                 selected = commands_t.size()-1;
-//#         }
-//#         commands_t.setSelectedIndex(selected);
-//#         itemsList.addElement(commands_t);
+        two_keys_t = new CheckBox("Two keys", u.two_keys);
+        itemsList.addElement(two_keys_t);
+
+        key_t = new KeyInput(u, "Press it");
+        itemsList.addElement(key_t);
+
+        itemsList.addElement(new SpacerItem(10));
+
+        int selected = 0;
+        for (int i = 0; i < UserKeyExec.cmds.length; i++) {
+            if (UserKeyExec.cmds[i] != null)
+                commands_t.append(UserKeyExec.cmds[i]);
+            if (u.command_id == i)
+                selected = commands_t.size()-1;
+        }
+        commands_t.setSelectedIndex(selected);
+        itemsList.addElement(commands_t);
 //#endif
         
         moveCursorTo(getNextSelectableRef(-1));
@@ -112,11 +112,13 @@ class UserKeyEdit extends DefForm {
         key_t.setTwoKeys(two_keys_t.getValue());
     }
 
-    protected void key(int keyCode, boolean key_long) {
+    protected boolean key(int keyCode, boolean key_long) {
         if (key_t.selected) {
             key_t.key(keyCode, key_long);
             redraw();
-            return;
-        } else super.key(keyCode, key_long);
+            return true;
+        }
+        
+        return super.key(keyCode, key_long);
     }
 }

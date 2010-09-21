@@ -212,7 +212,7 @@ public class AccountSelect extends DefForm {
         NvStorage.writeFileRecord(outputStream, "accnt_db", 0, true); //Account.storage
     }
     
-    protected void key(int keyCode, boolean key_long) {
+    protected boolean key(int keyCode, boolean key_long) {
         if (key_long) {
             switch (keyCode) {
                 case KEY_NUM6:
@@ -220,10 +220,10 @@ public class AccountSelect extends DefForm {
                     cf.saveToStorage();
                     VirtualList.fullscreen = Config.fullscreen;
                     StaticData.getInstance().roster.setFullScreenMode(Config.fullscreen);
-                    return;
+                    return true;
             }
         }
 
-        super.key(keyCode, key_long);
+        return super.key(keyCode, key_long);
     }
 }

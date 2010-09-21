@@ -122,16 +122,16 @@ public class TransferManager
         destroyView();
     }
     
-    protected void key(int keyCode,  boolean key_long) { // overriding this method to avoid autorepeat
+    protected boolean key(int keyCode,  boolean key_long) { // overriding this method to avoid autorepeat
         if (!key_long) {
             switch (keyCode) {
                 case KEY_POUND:
                     cmdInfo();
-                    return;
+                    return true;
             }
         }
         
-        super.key(keyCode, key_long);
+        return super.key(keyCode, key_long);
     }    
 
     private void cmdInfo() {

@@ -44,7 +44,6 @@ import ui.controls.Progress;
 import ui.controls.ScrollBar;
 import util.StringUtils;
 import ui.keys.UserKeyExec;
-import ui.keys.UserKey;
 
 import java.util.Vector;
 
@@ -828,17 +827,18 @@ public abstract class VirtualList
         } catch (Exception e) {}
     }
 
-    private boolean key_long;
-    protected boolean key_repeat = false;
+    private byte key_long_executed; // 0 - not try, 1 - not executed, 2 - executed.
     protected final void keyRepeated(int keyCode) {
 //#ifdef DEBUG
 //#         System.out.println("keyRepeated: "+keyCode);
 //#endif
 
-        key_long = true;
+        if ((key_long_executed < 1) && UserKeyExec.getInstance().isCurrentKey(keyCode, false)) {
+            key_long_executed = sendKeyAction(keyCode, true) ? (byte) 2 : (byte) 1;
+        }
 
-        if (key_repeat) {
-            key(keyCode, false);
+        if (key_long_executed == 1) {
+            sendKeyAction(keyCode, false);
         }
 
 //#ifdef LIGHT_CONFIG      
@@ -853,27 +853,6 @@ public abstract class VirtualList
 //#ifdef DEBUG
 //#         System.out.println("keyReleased: "+keyCode);
 //#endif
-
-        if (key_repeat)
-            return;
-
-        if (UserKeyExec.getInstance().keyExecute(keyCode, key_long))
-            return;
-
-//#ifdef POPUPS
-        if (skipPopUp(keyCode)) {
-            redraw();
-            return;
-        }
-//#endif
-
-        if (sendEvent(keyCode)) {
-            redraw();
-            return;
-        }
-
-        key(keyCode, key_long);
-        redraw();
     }
 
     protected final void keyPressed(int keyCode) {
@@ -881,8 +860,9 @@ public abstract class VirtualList
 //#         System.out.println("keyPressed: "+keyCode);
 //#endif
 
-        key_long = false;
-        
+        key_long_executed = 0;
+        sendKeyAction(keyCode, false);
+
 //#ifdef LIGHT_CONFIG      
 //#ifdef PLUGINS                
 //#         if (StaticData.getInstance().lightConfig)
@@ -890,6 +870,36 @@ public abstract class VirtualList
 //#             CustomLight.keyPressed();
 //#endif
     }
+
+    private boolean sendKeyAction(int keyCode, boolean key_long) {
+        if (UserKeyExec.getInstance().keyExecute(keyCode, key_long)) {
+            return true;
+        }
+
+        int key = getKeyCodeForSendEvent(keyCode);
+
+//#ifdef POPUPS
+        if (PopUp.getInstance().handleEvent(key)) { // try to skip PopUp
+            redraw();
+            return true;
+        }
+//#endif
+
+        if ((key > -1) && (getFocusedObject() != null)) { // send key to focused object
+            if (((VirtualElement) getFocusedObject()).handleEvent(key)) {
+                redraw();
+                return true;
+            }
+        }
+
+        if (key(keyCode, key_long)) {
+            redraw();
+            return true;
+        }
+
+        return false;
+    }
+
     private int yPointerPos;
 
     protected void pointerPressed(int x, int y) {
@@ -1070,21 +1080,6 @@ public abstract class VirtualList
         return key;
     }
 
-//#ifdef POPUPS
-    private boolean skipPopUp(int key_code) {
-        int key = getKeyCodeForSendEvent(key_code);
-        return PopUp.getInstance().handleEvent(key);
-    }
-//#endif
-    
-    protected boolean sendEvent(int key_code) {
-        int key = getKeyCodeForSendEvent(key_code);
-        if ((key > -1) && (getFocusedObject() != null)) {
-            return ((VirtualElement) getFocusedObject()).handleEvent(key);
-        }
-        return false;
-    }
-    
     public void reconnectYes() {
         reconnectWindow.getInstance().reconnect();
         //reconnectDraw=false;
@@ -1101,62 +1096,59 @@ public abstract class VirtualList
      * обработка кодов кнопок
      * @param keyCode код нажатой кнопки
      */
-    protected void key(int keyCode, boolean key_long) {
+    protected boolean key(int keyCode, boolean key_long) {
         if (!key_long) {
             if (keyCode == Config.SOFT_LEFT || keyCode == '(') {
                 if (reconnectWindow.getInstance().isActive()) {
                     reconnectYes();
-                    return;
+                    return true;
                 }
                 touchLeftPressed();
-                return;
+                return true;
             }
             if (keyCode == Config.SOFT_RIGHT || keyCode == ')') {
                 if (reconnectWindow.getInstance().isActive()) {
                     reconnectNo();
-                    return;
+                    return true;
                 }
                 touchRightPressed();
-                return;
+                return true;
             }
             if (keyCode == keyClear) {
                 keyClear();
-                return;
+                return true;
             } else if (keyCode == keyVolDown) {
                 moveCursorEnd();
-                return;
+                return true;
             } else if (keyCode == '5') {
                 eventOk();
-                return;
+                return true;
             } else if (keyCode == Config.KEY_BACK && canBack == true) {
                 destroyView();
-                return;
+                return true;
             } else if (keyCode == greenKeyCode) {
                 keyGreen();
-                return;
+                return true;
             }
             switch (keyCode) {
                 case KEY_NUM1:
                     moveCursorHome();
-                    return;
+                    return true;
                 case KEY_NUM2:
                     keyUp();
-                    return;
+                    return true;
                 case KEY_NUM4:
                     userKeyPressed(keyCode);
-                    return;
+                    return true;
                 case KEY_NUM6:
                     userKeyPressed(keyCode);
-                    return;
+                    return true;
                 case KEY_NUM7:
                     moveCursorEnd();
-                    return;
+                    return true;
                 case KEY_NUM8:
                     keyDwn();
-                    return;
-                case KEY_STAR:
-// Перемещено в UserKeyExec: #19.
-                    return;
+                    return true;
 //#ifdef POPUPS
                 case KEY_POUND:
                     if (cf.popUps) {
@@ -1164,10 +1156,11 @@ public abstract class VirtualList
                             String text = ((VirtualElement) getFocusedObject()).getTipString();
                             if (text != null) {
                                 setWobble(1, null, text);
+				return true;
                             }
                         } catch (Exception e) { }
                     }
-                    return;
+                    return false;
 //#endif
 
                 default:
@@ -1175,26 +1168,27 @@ public abstract class VirtualList
                         switch (getGameAction(keyCode)) {
                             case UP:
                                 keyUp();
-                                return;
+                                return true;
                             case DOWN:
                                 keyDwn();
-                                return;
+                                return true;
                             case LEFT:
                                 pageLeft();
-                                return;
+                                return true;
                             case RIGHT:
                                 pageRight();
-                                return;
+                                return true;
                             case FIRE:
                                 eventOk();
-                                return;
+                                return true;
                             default:
                                 userKeyPressed(keyCode);
-                                return;
+                                return true;
                         }
                     } catch (Exception e) {/* IllegalArgumentException @ getGameAction */}
             }
         }
+        return false;
     }
 
 

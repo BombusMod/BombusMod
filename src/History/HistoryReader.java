@@ -77,21 +77,21 @@ public class HistoryReader extends MessageList {
         super.eventOk();
     }
     
-    protected void key(int key_code, boolean key_long) {
+    protected boolean key(int key_code, boolean key_long) {
         if (!key_long) {
             switch (key_code) {
                 case KEY_NUM1:
                     messages = hl.stepBegin();
                     moveCursorHome();
-                    return;
+                    return true;
                 case KEY_NUM7:
                     messages = hl.stepEnd();
                     moveCursorEnd();
-                    return;
+                    return true;
             }
         }
         
-        super.key(key_code, key_long);
+        return super.key(key_code, key_long);
     }
 
     public int getItemCount() {

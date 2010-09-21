@@ -32,45 +32,45 @@ import ui.controls.form.DefForm;
 //#         // prevent text selection
 //#     }
 //# 
-//#     protected void key(int keyCode, boolean key_long) {
+//#     protected boolean key(int keyCode, boolean key_long) {
 //#         switch (keyCode) {
 //#             case KEY_NUM2:
 //#                 selector.movePoint(1);
-//#                 break;
+//#                 return true;
 //#             case KEY_NUM8:
 //#                 selector.movePoint(-1);
-//#                 break;
+//#                 return true;
 //#             case KEY_NUM4:
 //#                 selector.selectPrev();
-//#                 break;
+//#                 return true;
 //#             case KEY_NUM6:
 //#                 selector.selectNext();
-//#                 break;
+//#                 return true;
 //#             default:
 //#                 try {
 //#                     switch (getGameAction(keyCode)) {
 //#                         case UP:
 //#                             selector.movePoint(1);
-//#                             break;
+//#                             return true;
 //#                         case DOWN:
 //#                             selector.movePoint(-1);
-//#                             break;
+//#                             return true;
 //#                         case LEFT:
 //#                             selector.selectPrev();
-//#                             break;
+//#                             return true;
 //#                         case RIGHT:
 //#                             selector.selectNext();
-//#                             break;
+//#                             return true;
 //#                         case FIRE:
 //#                             cmdOk();
-//#                             break;
+//#                             return true;
 //#                     }
 //#                 } catch (Exception e) {/* IllegalArgumentException @ getGameAction */ }
 //#                 repaint();
 //#                 serviceRepaints();
 //#         }
 //#         
-//#         super.key(keyCode, key_long);
+//#         return super.key(keyCode, key_long);
 //#     }
 //# 
 //#     protected void pointerPressed(int x, int y) {

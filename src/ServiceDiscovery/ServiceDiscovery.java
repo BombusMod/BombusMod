@@ -491,17 +491,17 @@ public class ServiceDiscovery
         destroyView();
     }
 
-    protected void key(int keyCode, boolean key_long) {
+    protected boolean key(int keyCode, boolean key_long) {
         if (!key_long) {
             if (keyCode == Config.SOFT_RIGHT || keyCode == Config.KEY_BACK) {
                 if (!reconnectWindow.getInstance().isActive()) {
                     exitDiscovery(false);
-                    return;
+                    return true;
                 }
             }
         }
 
-        super.key(keyCode, key_long);
+        return super.key(keyCode, key_long);
     }
 
     public void showMenu() {

@@ -74,26 +74,28 @@ public class DeTranslit {
     }
 
 //#ifdef DETRANSLIT
-//#     public static String get_actual_filename(String filename) {
-//#         if (Config.getInstance().transliterateFilenames) {
-//#             return translit(filename);
-//#         } else {
-//#             return filename;
-//#         }
-//#     }
+    public static String get_actual_filename(String filename) {
+        if (Config.getInstance().transliterateFilenames) {
+            return translit(filename);
+        } else {
+            return filename;
+        }
+    }
 //#endif
 
     private static void fill() {
         translit = null;
-        translit=new Vector[2];
-        translit[0]=new Vector();
-        translit[1]=new Vector();
+        translit = new Vector[2];
+        translit[0] = new Vector();
+        translit[1] = new Vector();
 
         Vector defs[] = null;
         defs = new StringLoader().stringLoader("/translit.txt", 2);
-        for (int i=0; i<defs[0].size(); i++) {
-            translit[0].addElement((String) defs[0].elementAt(i));
-            translit[1].addElement((String) defs[1].elementAt(i));
+        if (defs != null) {
+            for (int i = 0; i < defs[0].size(); i++) {
+                translit[0].addElement((String) defs[0].elementAt(i));
+                translit[1].addElement((String) defs[1].elementAt(i));
+            }
         }
     }
 /*

@@ -2267,7 +2267,7 @@ public class Roster
 //#     } 
 //#endif
 
-    protected void key(int keyCode, boolean key_long) {
+    protected boolean key(int keyCode, boolean key_long) {
         if (key_long) {
             if (keyCode == cf.keyLock) {
 //#ifdef AUTOSTATUS
@@ -2283,7 +2283,7 @@ public class Roster
 //#                 }
 //#endif
                 new SplashScreen(getMainBarItem(), cf.keyLock);
-                return;
+                return true;
             } else if (keyCode == cf.keyVibra || keyCode == MOTOE680_FMRADIO) { /* TODO: redefine keyVibra*/
                 // swap profiles
                 int profile = cf.profile;
@@ -2292,36 +2292,36 @@ public class Roster
 
                 updateMainBar();
                 redraw();
-                return;
+                return true;
             }
 
             switch (keyCode) {
                 case KEY_NUM0:
                     cf.showOfflineContacts = !cf.showOfflineContacts;
                     reEnumRoster();
-                    return;
+                    return true;
 //#ifndef WMUC
                 case KEY_NUM1:
                     if (isLoggedIn()) {
                         new Bookmarks(null);
                     }
-                    return;
+                    return true;
 //#endif
                 case KEY_NUM3:
                     new ActiveContacts(null);
-                    return;
+                    return true;
                 case KEY_NUM4:
                     new ConfigForm();
-                    return;
+                    return true;
                 case KEY_NUM6:
                     Config.fullscreen = !Config.fullscreen;
                     cf.saveToStorage();
                     VirtualList.fullscreen = Config.fullscreen;
                     VirtualCanvas.getInstance().setFullScreenMode(Config.fullscreen);
-                    return;
+                    return true;
                 case KEY_NUM7:
                     new RosterToolsMenu();
-                    return;
+                    return true;
                 case KEY_NUM9:
                     if (cf.allowMinimize) {
                         BombusMod.getInstance().hideApp(true);
@@ -2339,6 +2339,7 @@ public class Roster
                             BombusMod.getInstance().platformRequest("native:NAT_MAIN_MENU");
                         } catch (Exception e) { }
                     }
+                    return true;
             } // switch
         } else {
             switch (keyCode) {
@@ -2347,7 +2348,7 @@ public class Roster
                     if (getItemCount() > 0) {
                         showInfo();
                     }
-                    return;
+                    return true;
 //#endif
                 case KEY_NUM1:
                     if (cf.collapsedGroups) { //collapse all groups
@@ -2357,7 +2358,7 @@ public class Roster
                         }
                         reEnumRoster();
                     }
-                    return;
+                    return true;
 //#ifdef AUTOSTATUS
 //#                 case SE_FLIPCLOSE_JP6:
 //#                     // workaround for SE JP6 - enabling vibra in closed state
@@ -2369,22 +2370,22 @@ public class Roster
 //#                         midlet.BombusMod.getInstance().setDisplayable(this);
 //#                         keyLock();
 //#                     }
-//#                     return;
+//#                     return true;
 //#                 case SIEMENS_FLIPCLOSE:
 //#                     // verify platform because SIEMENS_FLIPCLOSE maybe MOTOROLA_FLIP
 //#                     if (cf.phoneManufacturer == Config.SIEMENS) {
 //#                         keyLock();
 //#                     }
-//#                     return;
+//#                     return true;
 //#                 case MOTOROLA_FLIP:
 //#                     if (cf.phoneManufacturer == Config.MOTO) {
 //#                         keyLock();
 //#                     }
-//#                     return;
+//#                     return true;
 //#endif
                 case KEY_NUM0:
                     focusToNextUnreaded();
-                    return;
+                    return true;
                 case KEY_NUM3:
                     if (getItemCount() > 0) {
                         int newpos = searchGroup(-1);
@@ -2393,7 +2394,7 @@ public class Roster
                             setRotator();
                         }
                     }
-                    return;
+                    return true;
                 case KEY_NUM9:
                     if (getItemCount() > 0) {
                         int newpos2 = searchGroup(1);
@@ -2402,21 +2403,21 @@ public class Roster
                             setRotator();
                         }
                     }
-                    return;
+                    return true;
                 case KEY_STAR:
                     if (cf.ghostMotor) {
                         // backlight management
                         blState = (blState == 1) ? Integer.MAX_VALUE : 1;
                         midlet.BombusMod.getInstance().getDisplay().flashBacklight(blState);
                     }
-                    return;
+                    return true;
             } // switch
 //#ifdef AUTOSTATUS
 //#             userActivity();
 //#endif
         }
 
-        super.key(keyCode, key_long);
+        return super.key(keyCode, key_long);
     }
 
     private void focusToNextUnreaded() {

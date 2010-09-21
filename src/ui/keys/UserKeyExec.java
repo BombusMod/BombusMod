@@ -101,7 +101,7 @@ public class UserKeyExec {
         cmds[9] = SR.MS_PRIVACY_LISTS;
 //#endif
 //#ifdef USER_KEYS
-//#         cmds[10] = SR.MS_CUSTOM_KEYS;
+        cmds[10] = SR.MS_CUSTOM_KEYS;
 //#endif
 //#ifdef POPUPS
         cmds[11] = SR.MS_CLEAR_POPUPS;
@@ -126,12 +126,20 @@ public class UserKeyExec {
 //#endif
     }
 
-    public void update_current_key(int key, boolean key_long) {
-        current_key.previous_key_long = current_key.key_long;
-        current_key.key_long = key_long;
+    private void update_current_key(int key, boolean key_long) {
+//        if ((current_key.key == key) && (!current_key.key_long) && (key_long)) {
+//            current_key.key_long = true;
+//        } else {
+            current_key.previous_key_long = current_key.key_long;
+            current_key.key_long = key_long;
 
-        current_key.previous_key = current_key.key;
-        current_key.key = key;
+            current_key.previous_key = current_key.key;
+            current_key.key = key;
+//        }
+    }
+
+    public boolean isCurrentKey(int key, boolean key_long) {
+        return (current_key.key == key) && (current_key.key_long == key_long);
     }
 
     public static int getCommandID(String str) {
@@ -150,20 +158,20 @@ public class UserKeyExec {
 //#ifdef PLUGINS
 //#         if (sd.UserKeys) {
 //#endif
-//#             DataInputStream is = NvStorage.ReadFileRecord(UserKey.storage, 0);
-//# 
-//#             int size = 0;
-//#             try {
-//#                 size = is.readInt();
-//#                 for (int i = 0; i < size; i++)
-//#                     keysList.addElement(UserKey.createFromDataInputStream(is));
-//#                 return true;
-//#             } catch (Exception e) { return false; }
+            DataInputStream is = NvStorage.ReadFileRecord(UserKey.storage, 0);
+
+            int size = 0;
+            try {
+                size = is.readInt();
+                for (int i = 0; i < size; i++)
+                    keysList.addElement(UserKey.createFromDataInputStream(is));
+                return true;
+            } catch (Exception e) { }
 //#ifdef PLUGINS
 //#            }
 //#endif
 //#endif
-//        return false;
+        return false;
     }
 
     public void loadFromInputStream(String file, boolean fs) {
@@ -297,9 +305,9 @@ public class UserKeyExec {
 //#endif
                 break;
 //#ifdef USER_KEYS                
-//#             case 10: //key pound
-//#                 new UserKeysList();
-//#                 break;
+            case 10: //key pound
+                new UserKeysList();
+                break;
 //#endif                
             case 11:
 //#ifdef POPUPS

@@ -730,12 +730,12 @@ public void showNotify() {
 //#     }
 //#endif
 
-    protected void key(int keyCode, boolean key_long) {
+    protected boolean key(int keyCode, boolean key_long) {
         if (key_long) {
             switch (keyCode) {
                 case KEY_NUM0:
                     clearReadedMessageList();
-                    return;
+                    return true;
             }
         } else {
             switch (keyCode) {
@@ -743,7 +743,7 @@ public void showNotify() {
 //#ifndef WMUC
                     if (contact instanceof MucContact && contact.origin == Contact.ORIGIN_GROUPCHAT) {
                         Reply();
-                        return;
+                        return true;
                     }
 //#endif
 //#ifdef JUICK
@@ -752,16 +752,16 @@ public void showNotify() {
 //#endif
 //#                         if (isJuickContact(contact) || isJuBoContact(contact)) {
 //#                             if (juickPoundFork()) {
-//#                                 return;
+//#                                 return true;
 //#                             }
 //#                         }
 //#endif
                     keyGreen();
-                    return;
+                    return true;
             }
         }
 
-        super.key(keyCode, key_long);
+        return super.key(keyCode, key_long);
     }
 
     public void userKeyPressed(int keyCode) {

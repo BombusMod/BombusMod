@@ -233,24 +233,24 @@ public class Bookmarks
         } catch (Exception e) {/* IndexOutOfBounds */}
     }
 
-    protected void key(int keyCode, boolean key_long) {
+    protected boolean key(int keyCode, boolean key_long) {
         if (!key_long) {
             switch (keyCode) {
                 case KEY_NUM4:
                     pageLeft();
-                    return;
+                    return true;
                 case KEY_NUM6:
                     pageRight();
-                    return;
+                    return true;
 //#ifdef SERVICE_DISCOVERY
                 case KEY_POUND:
                     new ServiceDiscovery(((BookmarkItem) getFocusedObject()).getJid(), null, false);
-                    return;
+                    return true;
 //#endif
             }
         }
 
-        super.key(keyCode, key_long);
+        return super.key(keyCode, key_long);
     }
 
     public String touchLeftCommand() {return SR.MS_MENU;}

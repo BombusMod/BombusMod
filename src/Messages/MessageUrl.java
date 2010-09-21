@@ -109,16 +109,16 @@ public class MessageUrl extends DefForm implements TextBoxNotify {
 	destroyView();
     }
 
-    public void key(int keyCode, boolean key_long) {
+    public boolean key(int keyCode, boolean key_long) {
         if (!key_long) {
             switch (keyCode) {
                 case KEY_POUND:
                     EditURL();
-                    return;
+                    return true;
             }
         }
 
-        super.key(keyCode, key_long);
+        return super.key(keyCode, key_long);
     }
 
     private void EditURL() {
