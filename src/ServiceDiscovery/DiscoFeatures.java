@@ -53,8 +53,7 @@ public class DiscoFeatures extends DefForm {
                 item.selectable = true;
                 itemsList.addElement(item);
             }
-        }
-        show();
+        }        
     }
     public void cmdOk() {
         destroyView();

@@ -31,9 +31,7 @@ import Conference.ConferenceForm;
 //#endif
 import images.RosterIcons;
 import java.util.*;
-import Menu.MenuListener;
 import Menu.MenuCommand;
-import Menu.MyMenu;
 import locale.SR;
 import Colors.ColorTheme;
 import ui.*;
@@ -41,9 +39,6 @@ import com.alsutton.jabber.*;
 import com.alsutton.jabber.datablocks.*;
 import Client.*;
 import ui.MainBar;
-import io.NvStorage;
-import java.io.DataInputStream;
-import java.io.EOFException;
 import ui.controls.AlertBox;
 import ui.controls.form.DefForm;
 import xmpp.XmppError;
@@ -107,33 +102,10 @@ public class ServiceDiscovery
         if (service!=null && search) {
             this.service=service;
             requestQuery(NS_SRCH, "discosrch");
-        } else if (service!=null) {
-            this.service=service;
-            requestQuery(NS_INFO, "disco");
-        } else {
-            this.service=null;
-            
-            String myServer=sd.account.getServer();
-            itemsList.addElement(new DiscoContact(null, myServer, 0));
-
-            try {
-                DataInputStream is=NvStorage.ReadFileRecord("disco", 0);
-           
-                try {
-                    while (true) {
-                        String recent=is.readUTF();
-                        if (myServer.equals(recent)) continue; //only one instance for our service
-                        
-                        itemsList.addElement(new DiscoContact(null, recent, 0));
-                    }
-                } catch (EOFException e) { is.close(); }
-            } catch (Exception e) {}
-            
-            //sort(items);
-            discoIcon=0; 
-            mainbarUpdate(); 
-            moveCursorHome();
-            redraw();
+        } else if (service!=null) {            
+            browse(service, null);
+        } else {            
+            browse(sd.account.getServer(), null);
         }        
     }
     
@@ -364,7 +336,8 @@ public class ServiceDiscovery
         //}
     }
     
-    public void browse(String service, String node){
+    public final void browse(String service, String node){
+            if (this.service != null) {
             State st=new State();
             st.cursor = cursor;
             st.items = new Vector();
@@ -376,6 +349,7 @@ public class ServiceDiscovery
             st.node = this.node;
             st.features=features;
             stackItems.push(st);   
+            }
             itemsList.removeAllElements();
             features.removeAllElements();
             this.service=service;
@@ -392,14 +366,12 @@ public class ServiceDiscovery
         if (c==cmdCancel) exitDiscovery(true);
     }
     
-    private void exitDiscovery(boolean cancel) {
-        State st = (State) stackItems.pop();        
+    private void exitDiscovery(boolean cancel) {        
         if (cancel || stackItems.empty()) {
             stream.cancelBlockListener(this);
             sd.roster.show();
         } else {
-            System.out.println(st.service + " current");
-            System.out.println(((State)stackItems.peek()).service + " at stack peek");
+            State st = (State) stackItems.pop();        
             service = st.service;
             node = st.node;
             features = st.features;

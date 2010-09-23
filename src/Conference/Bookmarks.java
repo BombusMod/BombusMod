@@ -91,8 +91,6 @@ public class Bookmarks
         
         setMainBarItem(new MainBar(2, null, SR.MS_BOOKMARKS+" ("+getItemCount()+") ", false));//for title updating after "add bookmark"
         
-        commandState();
-
         setMenuListener(this);
 	enableListWrapping(true);
     }
