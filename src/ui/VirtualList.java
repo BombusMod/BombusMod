@@ -346,7 +346,7 @@ public abstract class VirtualList
         scrollbar=new ScrollBar();
         scrollbar.setHasPointerEvents(hasPointerEvents());
 
-        MainBar secondBar=new MainBar("", true, hasPointerEvents() && cf.advTouch);
+        MainBar secondBar=new MainBar("", true, hasPointerEvents() && cf.advTouch && Config.fullscreen);
         secondBar.addElement(null); //1
         secondBar.addRAlign();
         secondBar.addElement(null); //3

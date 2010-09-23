@@ -27,11 +27,8 @@
 
 package ServiceDiscovery;
 
-import javax.microedition.lcdui.Display;
-import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
-import ui.VirtualList;
 import ui.controls.form.DefForm;
 import ui.controls.form.TextInput;
 
@@ -43,17 +40,17 @@ public class ServerBox
     extends DefForm {
     
     private TextInput serverName;
-    private ServiceDiscovery sd;
+    private ServiceNotify disco;
 
     /**
      * Creates a new instance of ServerBox
      * @param service
      * @param sd
      */
-    public ServerBox(String service, ServiceDiscovery sd) {
-        super(SR.MS_DISCO);
+    public ServerBox(String service, ServiceNotify sn) {
+        super(SR.MS_DISCO);        
         
-        this.sd=sd;
+        this.disco = sn;
         serverName=new TextInput(SR.MS_ADRESS, service, "disco", TextField.ANY);
         itemsList.addElement(serverName);
         
@@ -63,9 +60,13 @@ public class ServerBox
     public void  cmdOk() {
         String server=serverName.getValue();
         if (server.length()==0) server=null;
-        if (server!=null) sd.browse(server, null);
+        if (server!=null) 
+            disco.OkNotify(server);
         
-        //destroyView();
-        sd.show();
+        destroyView();        
+    }
+    
+    public interface ServiceNotify {
+        void OkNotify(String selectedServer);
     }
 }
