@@ -58,7 +58,11 @@ public class DefForm
      * @param caption
      */
     public DefForm(String caption) {
-	setMainBarItem(new MainBar(caption));
+	this(caption, true);
+    }
+    
+    public DefForm(String caption, boolean show) {
+        setMainBarItem(new MainBar(caption));
         
         superWidth = super.getWidth();
         
@@ -67,7 +71,8 @@ public class DefForm
 	setMenuListener(this);
         
         enableListWrapping(false);
-        show(parentView);
+        if (show)
+            show(parentView);
     }
 
     protected int getItemCount() { return itemsList.size(); }

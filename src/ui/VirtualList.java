@@ -448,8 +448,10 @@ public abstract class VirtualList
     protected void beginPaint(){};
 
     public void paint(Graphics g) {
-        width = g.getClipWidth();
-        height = g.getClipHeight();
+        if (Config.getInstance().phoneManufacturer == Config.MICROEMU) {
+            width = g.getClipWidth();
+            height = g.getClipHeight();
+        }
 
         mHeight=0;
         iHeight=0;       

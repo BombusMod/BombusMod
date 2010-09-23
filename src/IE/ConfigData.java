@@ -273,7 +273,7 @@ public class ConfigData {
         cf.queryExit=cf.getBooleanProperty(getValue(queryExit),false);
         VirtualList.showBalloons=cf.showBalloons=cf.getBooleanProperty(getValue(showBalloons),false);
 //#ifdef LOGROTATE
-//#         cf.msglistLimit=cf.getIntProperty(getValue(msglistLimit),100);
+//#         cf.msglistLimit=cf.getIntProperty(getValue(msglistLimit),500);
 //#endif
         cf.useTabs=cf.getBooleanProperty(getValue(useTabs),true);
         cf.autoSubscribe=cf.getIntProperty(getValue(autoSubscribe), Config.SUBSCR_ASK);

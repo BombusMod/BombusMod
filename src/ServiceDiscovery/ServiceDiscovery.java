@@ -208,6 +208,11 @@ public class ServiceDiscovery
                     String name=i.getAttribute("name");
                     String jid=i.getAttribute("jid");
                     String node1=i.getAttribute("node");
+                    if (name == null) { // workaround for M-Link (jabber.org) and maybe others
+                        int resourcePos=jid.indexOf('/');
+                        if (resourcePos>-1)
+                            name = jid.substring(resourcePos + 1, jid.length());
+                    }
                     Object serv=null;
                     if (node1==null) {
                         int resourcePos=jid.indexOf('/');

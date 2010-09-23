@@ -33,7 +33,6 @@ import io.file.browse.BrowserListener;
 
 import javax.microedition.lcdui.TextField;
 import locale.SR;
-import ui.VirtualList;
 import ui.controls.form.LinkString;
 import ui.controls.form.SimpleString;
 import ui.controls.form.DefForm;
@@ -56,12 +55,14 @@ public class TransferAcceptFile
     TextInput path;
     
     LinkString selectFile;
+    String ftFolder;
+    boolean autoaccept = false;
 
     /** Creates a new instance of TransferAcceptFile
      * @param transferTask
      */
     public TransferAcceptFile(TransferTask transferTask) {
-        super(SR.MS_ACCEPT_FILE);
+        super(SR.MS_ACCEPT_FILE, false);
         
         t=transferTask;
         
@@ -95,12 +96,16 @@ public class TransferAcceptFile
         itemsList.addElement(new MultiLine(SR.MS_SENDER, t.jid, super.superWidth));
 
         itemsList.addElement(new MultiLine(SR.MS_DESCRIPTION, t.description, super.superWidth));
-        if (TransferConfig.getInstance().ftFolder.equals("")) {
+        ftFolder = TransferConfig.getInstance().ftFolder;
+        autoaccept = !(ftFolder == null || ftFolder.equals(""));
+        if (autoaccept) {
+            t.fileName = fileName.getValue().trim();
+            t.filePath = ftFolder;
+            t.accept();
             destroyView();
         } else {
-            cmdOk();
+            show();
         }
-        
     }
 
     
@@ -109,13 +114,11 @@ public class TransferAcceptFile
     public void BrowserFilePathNotify(String pathSelected) { path.setValue(pathSelected); }
     
     public final void cmdOk() {
-        boolean auto = !TransferConfig.getInstance().ftFolder.equals("");
-        t.fileName=fileName.getValue().trim();
-        t.filePath= (auto) ? TransferConfig.getInstance().ftFolder : path.getValue();        
+        
+        t.fileName = fileName.getValue().trim();
+        t.filePath = path.getValue();        
         t.accept();
-        if (auto) destroyView();
-        
-        
+        destroyView();
     }
     
     public void cmdCancel() {

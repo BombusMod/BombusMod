@@ -94,8 +94,6 @@ public class ContactMessageList extends MessageList {
 //#     MenuCommand cmdSendBuffer=new MenuCommand(SR.MS_SEND_BUFFER, MenuCommand.SCREEN, 14);
 //#endif
 
-    StaticData sd = StaticData.getInstance();
-
 //#ifdef JUICK
 //#     MenuCommand cmdJuickMessageReply=new MenuCommand(SR.MS_JUICK_MESSAGE_REPLY, MenuCommand.SCREEN, 1);
 //#     MenuCommand cmdJuickSendPrivateReply;

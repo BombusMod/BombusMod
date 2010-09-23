@@ -57,7 +57,7 @@ public class AccountSelect extends DefForm {
     
     /** Creates a new instance of AccountPicker */
     public AccountSelect(boolean enableQuit) {
-        super(SR.MS_ACCOUNTS);
+        super(SR.MS_ACCOUNTS, false);
         this.enableQuit = enableQuit;
 
         enableListWrapping(true);
@@ -82,13 +82,14 @@ public class AccountSelect extends DefForm {
 //#             }
 //#endif
 //#             loadAccounts();
-//#         if (itemsList.isEmpty()) {
-//#endif
+//#endif            
+        if (itemsList.isEmpty()) {
+
             new AccountForm(this, null);
             return;
-//#ifdef IMPORT_EXPORT
-//#         }
-//#endif
+        } else {
+                show();
+        }
         }
     }
     
