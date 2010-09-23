@@ -24,21 +24,27 @@
  * along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-
 package ServiceDiscovery;
 
+import Client.Contact;
+import io.NvStorage;
+import java.io.DataInputStream;
+import java.io.EOFException;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
 import ui.controls.form.DefForm;
+import ui.controls.form.LinkString;
+import ui.controls.form.SimpleString;
+import ui.controls.form.SpacerItem;
 import ui.controls.form.TextInput;
 
 /**
  *
  * @author ad
  */
-public class ServerBox 
-    extends DefForm {
-    
+public class ServerBox
+        extends DefForm {
+
     private TextInput serverName;
     private ServiceNotify disco;
 
@@ -48,25 +54,70 @@ public class ServerBox
      * @param sd
      */
     public ServerBox(String service, ServiceNotify sn) {
-        super(SR.MS_DISCO);        
-        
+        super(SR.MS_DISCO);
+
         this.disco = sn;
-        serverName=new TextInput(SR.MS_ADRESS, service, "disco", TextField.ANY);
+        serverName = new TextInput(SR.MS_ADRESS, service, "disco", TextField.ANY);
         itemsList.addElement(serverName);
-        
+        itemsList.addElement(new SpacerItem(5));
+        itemsList.addElement(new LinkString(SR.MS_RECENT) {
+
+            public void doAction() {
+                new RecentMenu();
+            }
+        });
+
         moveCursorTo(getNextSelectableRef(-1));
     }
 
-    public void  cmdOk() {
-        String server=serverName.getValue();
-        if (server.length()==0) server=null;
-        if (server!=null) 
+    public void cmdOk() {
+        String server = serverName.getValue();
+        if (server.length() == 0) {
+            server = null;
+        }
+        if (server != null) {
             disco.OkNotify(server);
-        
-        destroyView();        
+        }
+
+        destroyView();
     }
-    
+
     public interface ServiceNotify {
+
         void OkNotify(String selectedServer);
+    }
+
+    class RecentMenu extends DefForm {
+
+        public RecentMenu() {
+            super(SR.MS_RECENT);
+            try {
+                DataInputStream is = NvStorage.ReadFileRecord("disco", 0);
+
+                try {
+                    while (true) {
+                        SimpleString item = new SimpleString(is.readUTF(), false);
+                        item.selectable = true;
+                        itemsList.addElement(item);
+                    }
+                } catch (EOFException e) {
+                    is.close();
+                    is = null;
+                }
+            } catch (Exception e) {
+            }
+        }
+
+        public void eventOk() {
+            Object o = getFocusedObject();
+            if (o != null) {                
+                serverName.setValue(o.toString());                                
+            }
+            destroyView();
+        }
+
+        public void cmdOk() {
+            eventOk();
+        }
     }
 }
