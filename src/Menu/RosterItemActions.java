@@ -68,7 +68,6 @@ import locale.SR;
 import VCard.VCard;
 import VCard.VCardEdit;
 import VCard.VCardView;
-import ui.VirtualList;
 
 
 /**
@@ -83,8 +82,6 @@ public class RosterItemActions extends Menu {
 //#endif
     private int action;
     
-    StaticData sd=StaticData.getInstance();
-
     ActionsIcons menuIcons=ActionsIcons.getInstance();
     
     Config cf=Config.getInstance();
@@ -94,7 +91,7 @@ public class RosterItemActions extends Menu {
      * @param action
      */
     public RosterItemActions(Object item, int action) {
-        super(item.toString(), ActionsIcons.getInstance());
+        super(item, ActionsIcons.getInstance());
 
         this.item=item;
         this.action=action;

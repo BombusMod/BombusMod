@@ -270,7 +270,8 @@ public class AccountForm
         doConnect=true;
         
         if (registerNew) {
-            new AccountRegister(account);
+            AccountRegister ar = new AccountRegister(accountSelect, account);
+            new Thread(ar).start();
         } else {
             destroyView();
         }        

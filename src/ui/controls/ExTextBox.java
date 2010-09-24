@@ -41,6 +41,7 @@ import locale.SR;
 //#endif
 //#ifdef ARCHIVE
 import Archive.ArchiveList;
+import Archive.MessageArchive;
 //#endif
 
 /**
@@ -201,13 +202,13 @@ public class ExTextBox {
             body = null;
         
 //#ifdef ARCHIVE
-	if (c==cmdPaste) { new ArchiveList(caretPos, 1, textbox); return true; }
+	if (c==cmdPaste) { new ArchiveList(new MessageArchive(1), caretPos, 1, textbox); return true; }
 //#endif
 //#ifdef CLIPBOARD
 //#         if (c==cmdPasteText) { insert(clipboard.getClipBoard(), getCaretPos()); return true; }
 //#endif
 //#if TEMPLATES
-//#         if (c==cmdTemplate) { new ArchiveList(caretPos, 2, textbox); return true; }
+//#         if (c==cmdTemplate) { new ArchiveList(new MessageArchive(2), caretPos, 2, textbox); return true; }
 //#endif
         return false;
     }

@@ -48,30 +48,33 @@ public class AccountRegister
     private SplashScreen splash;
     private Command cmdOK=new Command(SR.MS_OK,Command.OK, 1);
     private Command cmdCancel=new Command(SR.MS_BACK,Command.BACK, 2);
+    private AccountSelect as;
     
     /** Creates a new instance of AccountRegister
      * @param account
      */
-    public AccountRegister(Account account) {
+    public AccountRegister(AccountSelect parent, Account account) {        
         raccount=account;
+        as = parent;
         splash=SplashScreen.getInstance();
         splash.setProgress(SR.MS_STARTUP,5);
         midlet.BombusMod.getInstance().setDisplayable(splash);
         splash.addCommand(cmdCancel);
-        splash.setCommandListener(this);
+        splash.setCommandListener(this);       
         
-        new Thread(this).start();
     }
     public void run() {
         try {
             splash.setProgress(SR.MS_CONNECT_TO_+raccount.getServer(),30);
             //give a chance another thread to finish ui
             Thread.sleep(500);
-            theStream= raccount.openJabberStream();
+            theStream = raccount.openJabberStream();
+            new Thread(theStream).start();        
+            new Thread( theStream.dispatcher).start();
+            
             theStream.setJabberListener( this );
             theStream.initiateStream();
         } catch( Exception e ) {
-            e.printStackTrace();
             splash.setFailed();
         }
 
@@ -79,11 +82,8 @@ public class AccountRegister
     
     public void rosterItemNotify(){}
     
-    public void connectionTerminated( Exception e ) {
-        if( e != null ) {
-            e.printStackTrace();
-        }
-    }
+    public void connectionTerminated( Exception e ) {}       
+    
 
     public void beginConversation() {
         splash.setProgress(SR.MS_REGISTERING,60);
@@ -124,6 +124,7 @@ public class AccountRegister
         } catch (Exception e) { 
             //e.printStackTrace();
         }
-        splash.close();
+        as.rmsUpdate();
+        splash.close(as);        
     }
 }

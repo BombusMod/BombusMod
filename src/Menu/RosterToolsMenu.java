@@ -57,6 +57,7 @@ import locale.SR;
 import Colors.ColorConfigForm;
 //import ui.reconnectWindow;
 //#ifdef USER_KEYS
+//# import Console.StanzasList;
 //# import ui.keys.UserKeysList;
 //#endif
 //#ifdef CHECK_VERSION
@@ -263,10 +264,12 @@ public class RosterToolsMenu extends Menu {
 //#endif
 //#ifdef CHECK_VERSION
 //#             case 14:
-//#                 new Upgrade(false);
+//#                 Upgrade up = new Upgrade(false);
+//#                 new Thread(up).start();
 //#                 return;
 //#             case 15:
-//#                 new Upgrade(true);
+//#                 Upgrade up2 = new Upgrade(true);
+//#                 new Thread(up2).start();
 //#                 return;
 //#endif
 //#ifdef USER_KEYS
@@ -286,7 +289,7 @@ public class RosterToolsMenu extends Menu {
 //#endif
 //#ifdef CONSOLE
 //#             case 19:
-//#                 new XMLList();
+//#                 new XMLList(StanzasList.getInstance());
 //#                 return;
 //#endif
 //#ifdef JUICK

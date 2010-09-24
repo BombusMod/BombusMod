@@ -1569,7 +1569,7 @@ public abstract class VirtualList
 }
 
 //#if (USE_ROTATOR)    
-class TimerTaskRotate extends Thread {
+class TimerTaskRotate implements Runnable {
     private int scrollLen;
     private int scroll; //wait before scroll * sleep
     private int balloon; // show balloon time
@@ -1580,10 +1580,6 @@ class TimerTaskRotate extends Thread {
     
     private static TimerTaskRotate instance;
     
-    private TimerTaskRotate() {
-        new Thread(this).start();
-    }
-    
     public static void startRotate(int max, VirtualList list) {
         //Windows mobile J9 hanging test
         if (Config.getInstance().phoneManufacturer==Config.WINDOWS) {
@@ -1591,8 +1587,10 @@ class TimerTaskRotate extends Thread {
             list.offset=0;
             return;
         }
-        if (instance==null) 
+        if (instance==null)  {
             instance=new TimerTaskRotate();
+            new Thread(instance).start();
+        }
         
         if (max<0) {
             //instance.destroyTask();
@@ -1612,7 +1610,7 @@ class TimerTaskRotate extends Thread {
     
     public void run() {
         while (true) {
-            try {  sleep(250);  } catch (Exception e) { instance=null; break; }
+            try {  Thread.sleep(250);  } catch (Exception e) { instance=null; break; }
 
             synchronized (this) {
                 if (scroll==0) {

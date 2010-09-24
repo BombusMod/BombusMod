@@ -68,14 +68,13 @@ public class ArchiveList
      * @param where
      * @param t
      */
-    public ArchiveList(int caretPos, int where, TextBox t) {
- 	super ();
+    public ArchiveList(MessageArchive arch, int caretPos, int where, TextBox t) {
+ 	super (arch.indexes);
+        this.archive = arch;
         this.where=where;
         this.caretPos=caretPos;
-        this.t=t;
-        
-        archive=new MessageArchive(where);
-        
+        this.t=t;       
+                
 	MainBar mb=new MainBar((where==1)?SR.MS_ARCHIVE:SR.MS_TEMPLATE);
 	mb.addElement(null);
 	mb.addRAlign();

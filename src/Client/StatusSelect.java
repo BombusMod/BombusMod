@@ -54,8 +54,7 @@ public class StatusSelect
     private int defp;
     private Contact to;
 
-    private Config cf;
-    private StaticData sd = StaticData.getInstance();
+    private Config cf;    
     
     public StatusSelect(Contact to) {
         super(SR.MS_STATUS);

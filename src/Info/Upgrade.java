@@ -90,8 +90,6 @@ public class Upgrade
         mb.addElement(null);
 
         show(parentView);
-        
-        new Thread(this).start();
     }
 
     public void run() {

@@ -49,8 +49,8 @@ public class HistoryReader extends MessageList {
     /** Creates a new instance of HistoryReader
      * @param c 
      */
-    public HistoryReader(Contact c) {
-        super();
+    public HistoryReader(Contact c, HistoryLoader hl) {
+        super(hl.stepEnd());
         MIPrev = new MessageItem(new Msg(Msg.MESSAGE_TYPE_SYSTEM, null, null, "<---"), this, smiles);
         MINext = new MessageItem(new Msg(Msg.MESSAGE_TYPE_SYSTEM, null, null, "--->"), this, smiles);
 
@@ -58,7 +58,7 @@ public class HistoryReader extends MessageList {
         addMenuCommands();
         removeMenuCommand(cmdxmlSkin);
 
-        hl = new HistoryLoader(c.bareJid, this, smiles);
+        this.hl = hl;
         messages = hl.stepEnd();
         moveCursorEnd();
         show();

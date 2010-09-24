@@ -36,7 +36,7 @@ import xmpp.XmppError;
  * avoid holding up the stream reader.
  */
 
-public class JabberDataBlockDispatcher extends Thread
+public class JabberDataBlockDispatcher implements Runnable
 {
   /**
    * The recipient waiting on this stream
@@ -66,8 +66,7 @@ public class JabberDataBlockDispatcher extends Thread
    */
 
   public JabberDataBlockDispatcher(JabberStream stream)  {
-      this.stream=stream;
-      start();
+      this.stream=stream;      
   }
 
   /**

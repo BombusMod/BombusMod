@@ -63,7 +63,8 @@ package PEP;
 //#     }
 //# 
 //#     public void detectLocation() {
-//#         new GeoRetriever(this).start();
+//#         GeoRetriever geo = new GeoRetriever(this);
+//#         new Thread(geo).start();
 //#     }
 //# 
 //#     public void locationUpdated(LocationIO lctn) {
@@ -96,14 +97,14 @@ package PEP;
 //#             //todo: refactor theStream call; send notification to JabberBlockListener if stream was terminated
 //#             StaticData.getInstance().roster.theStream.addBlockListener(new PepPublishResult( sid));
 //#             StaticData.getInstance().roster.theStream.send(setActivity);
-//#         } catch (Exception e) {e.printStackTrace(); }
+//#         } catch (Exception e) { }
 //#         destroyView();
 //#     }
 //#     public String touchLeftCommand() { return SR.MS_PUBLISH; }
 //# }
 //# 
 //# 
-//# class GeoRetriever extends Thread {
+//# class GeoRetriever implements Runnable {
 //# 
 //#     private LocationListener returnto;
 //# 
@@ -114,8 +115,7 @@ package PEP;
 //#     public void run() {
 //#         try {
 //#             retrieveLocation();
-//#         } catch (Exception ex) {
-//#             ex.printStackTrace();
+//#         } catch (Exception ex) {            
 //#             returnto.locationUpdated(null);
 //#         }
 //#     }

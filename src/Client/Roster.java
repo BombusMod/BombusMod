@@ -46,6 +46,7 @@ import images.MenuIcons;
 //#ifdef ARCHIVE
 import Archive.ArchiveList;
 //#endif
+import Archive.MessageArchive;
 import Menu.RosterItemActions;
 import Menu.RosterToolsMenu;
 import Menu.SieNatMenu;
@@ -238,8 +239,10 @@ public class Roster
         setMenuListener(this);
         SplashScreen.getInstance().setExit(this);
 //#ifdef AUTOSTATUS
-//#         if (cf.autoAwayType==Config.AWAY_IDLE || cf.autoAwayType==Config.AWAY_MESSAGE)
+//#         if (cf.autoAwayType==Config.AWAY_IDLE || cf.autoAwayType==Config.AWAY_MESSAGE) {
 //#             autostatus=new AutoStatusTask();
+//#             new Thread(autostatus).start();
+//#         }
 //# 
 //#         if (myStatus<2)
 //#             messageActivity();
@@ -357,6 +360,8 @@ public class Roster
             setProgress(SR.MS_CONNECT_TO_+a.getServer(), 30);
             
             theStream= a.openJabberStream();
+            new Thread(theStream).start();        
+            new Thread( theStream.dispatcher).start();
             setProgress(SR.MS_OPENING_STREAM, 40);
             theStream.setJabberListener( this );
             theStream.initiateStream();
@@ -2681,7 +2686,7 @@ public class Roster
     public void cmdStatus() { currentReconnect=0; new StatusSelect(null); }
     public void cmdAlert() { new AlertProfile(); }
 //#ifdef ARCHIVE
-    public void cmdArchive() { new ArchiveList( -1, 1, null); }
+    public void cmdArchive() { new ArchiveList( new MessageArchive(1), -1, 1, null); }
 //#endif
     public void cmdInfo() { new Info.InfoWindow(); }
     public void cmdTools() { new RosterToolsMenu(); }
@@ -2751,6 +2756,7 @@ public class Roster
 //#         if (cf.autoAwayType==Config.AWAY_IDLE) {
 //#             if (autostatus == null)  // Issue 107
 //#                 autostatus = new AutoStatusTask();
+//#             new Thread(autostatus).start();
 //#             if (!autostatus.isAwayTimerSet())
 //#                 if (!autoAway)
 //#                     autostatus.setTimeEvent(cf.autoAwayDelay* 60*1000);

@@ -31,10 +31,6 @@ public class AutoStatusTask implements Runnable {
     private long timeAwayEvent=0;
     private long timeXaEvent=0;
     
-    public AutoStatusTask() {
-        new Thread(this).start();
-    }
-    
     public void setTimeEvent(long delay){
         if (delay!=0) {
             timeAwayEvent=delay+System.currentTimeMillis();

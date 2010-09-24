@@ -29,7 +29,7 @@ import Account.Account;
 import Client.Config;
 import Client.StaticData;
 //#ifdef CONSOLE
-import Console.StanzasList;
+//# import Console.StanzasList;
 //#endif
 import com.alsutton.jabber.datablocks.Presence;
 import io.Utf8IOStream;
@@ -50,7 +50,7 @@ public class JabberStream extends XmppParser implements Runnable {
      * The dispatcher thread.
      */
     
-    private JabberDataBlockDispatcher dispatcher;
+    public JabberDataBlockDispatcher dispatcher;
     
     private Vector outgoingPackets = new Vector();
 
@@ -80,16 +80,14 @@ public class JabberStream extends XmppParser implements Runnable {
 //#if HTTPCONNECT
 //#             connection = io.HttpProxyConnection.open(hostAddr, proxy, StaticData.getInstance().account.getProxyUser(), StaticData.getInstance().account.getProxyPass());
 //#elif HTTPPOLL
-            connection = new io.HttpPollingConnection(hostAddr, proxy);
+//#             connection = new io.HttpPollingConnection(hostAddr, proxy);
 //#else            
-//#             throw new IllegalArgumentException ("no proxy supported");
+            throw new IllegalArgumentException ("no proxy supported");
 //#endif            
         }
         
         iostream = new Utf8IOStream(connection);
-        dispatcher = new JabberDataBlockDispatcher(this);
-        
-        new Thread( this ).start();
+        dispatcher = new JabberDataBlockDispatcher(this);        
     }
 
     public void initiateStream() throws IOException {
@@ -257,8 +255,8 @@ public class JabberStream extends XmppParser implements Runnable {
     private void sendPacket(String data) throws IOException {
         iostream.send(data);
 //#ifdef CONSOLE
-            if (data.equals("</iq") || data.equals(" ")) addLog("Ping myself", 1);
-            else addLog(data, 1);
+//#             if (data.equals("</iq") || data.equals(" ")) addLog("Ping myself", 1);
+//#             else addLog(data, 1);
 //#endif
     }
 
@@ -287,12 +285,12 @@ public class JabberStream extends XmppParser implements Runnable {
     }
     
 //#ifdef CONSOLE
-    public void addLog (String data, int type) {
+//#     public void addLog (String data, int type) {
 //#ifdef PLUGINS
 //#             if (StaticData.getInstance().Console)
 //#endif
-        StanzasList.getInstance().add(data, type);
-    }
+//#         StanzasList.getInstance().add(data, type);
+//#     }
 //#endif
 
     /**

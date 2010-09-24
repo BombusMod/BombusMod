@@ -53,7 +53,6 @@ public final class XMLList
 //#endif
     
     StanzasList stanzas;
-    private StaticData sd=StaticData.getInstance();
     
     private MenuCommand cmdNew=new MenuCommand(SR.MS_NEW, MenuCommand.SCREEN, 5);
     private MenuCommand cmdEnableDisable=new MenuCommand(SR.MS_ENABLE_DISABLE, MenuCommand.SCREEN, 6);
@@ -65,12 +64,14 @@ public final class XMLList
     
     /** Creates a new instance of XMLList
      */
-    public XMLList() {
-        super ();
+    public XMLList(StanzasList sl) {
+        super (sl.stanzas);
         
-        super.smiles=false;
+        messages = sl.stanzas;
+        stanzas = sl;
         
-        stanzas=StanzasList.getInstance();
+        super.smiles = false;       
+        
         
         commandState();
         addMenuCommands();
