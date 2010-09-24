@@ -71,6 +71,7 @@ public class AccountSelect extends DefForm {
         loadAccounts();
 
         if (!itemsList.isEmpty()) {
+            show();
             moveCursorTo(activeAccount);
         } else {
 //#ifdef IMPORT_EXPORT

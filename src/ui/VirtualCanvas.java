@@ -31,6 +31,7 @@ public class VirtualCanvas extends Canvas implements CommandListener{
     public static VirtualCanvas getInstance() {
         if (instance == null) {
             instance = new VirtualCanvas();
+            instance.setFullScreenMode(Config.fullscreen);
             instance.setOk(SR.MS_MENU);
             instance.setCancel(SR.MS_ACTION);
             instance.setCommandListener(instance);
