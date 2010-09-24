@@ -99,11 +99,11 @@ public class ServiceDiscovery
         
         this.node=node;
         
-        if (service!=null && search) {
+        if (service != null && search) {
             this.service=service;
             requestQuery(NS_SRCH, "discosrch");
-        } else if (service!=null) {            
-            browse(service, null);
+        } else if (service != null) {            
+            browse(service, node);
         } else {            
             browse(sd.account.getServer(), null);
         }        
