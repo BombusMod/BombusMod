@@ -15,6 +15,10 @@ import java.util.Vector;
  * @author Vitaly
  */
 public class PrivacyList {
+    
+//#ifdef PLUGINS
+//#     public static String plugin = new String("PLUGIN_PRIVACY");
+//#endif    
 
     String name;
     boolean isActive = false;

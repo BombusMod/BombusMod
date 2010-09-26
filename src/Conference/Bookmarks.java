@@ -26,7 +26,6 @@
  */
 
 package Conference;
-import Client.*;
 import Conference.affiliation.Affiliations;
 //#ifdef SERVICE_DISCOVERY
 import ServiceDiscovery.*;
@@ -49,9 +48,6 @@ public class Bookmarks
     {   
     
     private BookmarkItem toAdd;
-    
-    private StaticData sd = StaticData.getInstance();
-    private Config cf=Config.getInstance();
     
     private MenuCommand cmdJoin=new MenuCommand (SR.MS_SELECT, MenuCommand.OK, 1);
     private MenuCommand cmdAdvJoin=new MenuCommand (SR.MS_EDIT_JOIN, MenuCommand.SCREEN, 2);
@@ -117,7 +113,7 @@ public class Bookmarks
         addMenuCommand(cmdCancel);
     }
 
-    protected int getItemCount() { 
+    protected final int getItemCount() { 
         Vector bookmarks=sd.roster.bookmarks;
         return (bookmarks==null)?0: bookmarks.size(); 
     }

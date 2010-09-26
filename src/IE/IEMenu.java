@@ -26,9 +26,7 @@
  */
 package IE;
 
-//#ifdef IMPORT_EXPORT
-//# import Client.StaticData;
-//#endif
+import Client.StaticData;
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
 import locale.SR;

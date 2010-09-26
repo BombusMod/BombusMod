@@ -202,7 +202,7 @@ public class RosterToolsMenu extends Menu {
 //#endif
 //#ifdef PRIVACY
             case 1: // Privacy Lists
-                if (connected) new QuickPrivacy();
+                if (connected) new QuickPrivacy().show();
                 break;
 //#endif
 //#ifdef PEP

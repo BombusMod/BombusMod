@@ -6,8 +6,10 @@
 package PrivacyLists;
 
 import Client.NotInListFilter;
+import Client.StaticData;
 import com.alsutton.jabber.JabberBlockListener;
 import com.alsutton.jabber.JabberDataBlock;
+import java.util.Vector;
 import locale.SR;
 import ui.controls.form.DefForm;
 import ui.controls.form.DropChoiceBox;
@@ -19,12 +21,19 @@ import ui.controls.form.LinkString;
  */
 public class QuickPrivacy extends DefForm implements JabberBlockListener, Runnable {
     
+//#ifdef PLUGINS
+//#     public static String plugin = new String("PLUGIN_PRIVACY");
+//#endif
+    
+    
     public static final String LIST_QUICKPRIVACY = "bm-quickprivacy";
     
     private DropChoiceBox nil;
     
+    public static Vector conferenceList;
+    
     public QuickPrivacy() {
-        super("Privacy");
+        super("Privacy", false);
         nil = new DropChoiceBox(SR.MS_NOT_IN_LIST);
         nil.append(SR.MS_NIL_DROP_MP);
         nil.append(SR.MS_NIL_DROP_P);
@@ -37,12 +46,12 @@ public class QuickPrivacy extends DefForm implements JabberBlockListener, Runnab
                 new PrivacySelect();
             }
         };
-        itemsList.addElement(ed);
+        itemsList.addElement(ed);        
     }
     
     public void cmdOk() {
         cf.notInListDropLevel = nil.getSelectedIndex();
-        generateQuickPrivacyList();
+        updateQuickPrivacyList();
         destroyView();
     }
 
@@ -69,13 +78,13 @@ public class QuickPrivacy extends DefForm implements JabberBlockListener, Runnab
         item action="allow" type=jid" value="{$self}" order="40" 
     */
     
-    private void generateQuickPrivacyList(){
+    public void updateQuickPrivacyList(){
         JabberDataBlock qList=new JabberDataBlock("list", null, null);
         qList.setAttribute("name", LIST_QUICKPRIVACY);
         PrivacyItem item0 = new PrivacyItem();
         item0.type = PrivacyItem.ITEM_ANY;
         item0.action = PrivacyItem.ITEM_BLOCK;
-        item0.order = 30;
+        item0.order = 666;
         qList.addChild(item0.constructBlock());
         PrivacyItem item1 = new PrivacyItem();
         item1.action = PrivacyItem.ITEM_ALLOW;
@@ -92,10 +101,18 @@ public class QuickPrivacy extends DefForm implements JabberBlockListener, Runnab
         PrivacyItem item3 = new PrivacyItem();
         item3.action = PrivacyItem.ITEM_ALLOW;
         item3.type = PrivacyItem.ITEM_JID;
-        item3.value = sd.roster.myJid.getBareJid();
+        item3.value = StaticData.getInstance().roster.myJid.getBareJid();
         item3.order = 0;
         qList.addChild(item3.constructBlock());
-        sd.roster.theStream.addBlockListener(this);
+        for (int i = 0; i < conferenceList.size(); i++) {
+            PrivacyItem item4 = new PrivacyItem();
+            item4.action = PrivacyItem.ITEM_ALLOW;
+            item4.order = 21 + i;
+            item4.type = PrivacyItem.ITEM_JID;
+            item4.value = (String)conferenceList.elementAt(i);
+            qList.addChild(item4.constructBlock());
+        }        
+        StaticData.getInstance().roster.theStream.addBlockListener(this);
         PrivacyList.privacyListRq(true, qList, "quicklst");
     }
 

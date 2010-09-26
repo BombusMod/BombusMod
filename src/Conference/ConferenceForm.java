@@ -26,7 +26,7 @@
  */
 
 package Conference;
-import Client.*;
+import Client.StaticData;
 import com.alsutton.jabber.JabberDataBlock;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
@@ -38,6 +38,8 @@ import ui.controls.form.NumberInput;
 import ui.controls.form.PasswordInput;
 import ui.controls.form.TextInput;
 import Menu.MenuCommand;
+import PrivacyLists.QuickPrivacy;
+import java.util.Vector;
 import ui.VirtualList;
 
 /**
@@ -47,7 +49,6 @@ import ui.VirtualList;
 public class ConferenceForm
     extends DefForm {
     
-    private Config cf=Config.getInstance();
     MenuCommand cmdJoin=new MenuCommand(SR.MS_JOIN, MenuCommand.SCREEN, 1);
     MenuCommand cmdAdd=new MenuCommand(SR.MS_ADD_BOOKMARK, MenuCommand.SCREEN, 5);
     MenuCommand cmdEdit=new MenuCommand(SR.MS_SAVE, MenuCommand.SCREEN, 6);
@@ -64,8 +65,6 @@ public class ConferenceForm
 
     //private static boolean sndprs=false;
     
-    private static StaticData sd=StaticData.getInstance();
-
     /** Creates a new instance of GroupChatForm */
     public ConferenceForm(String name, String confJid, String password, boolean autojoin) {
         super(SR.MS_JOIN_CONFERENCE);
@@ -195,6 +194,19 @@ public class ConferenceForm
         } else if (c==cmdAdd) {
             new Bookmarks(new BookmarkItem(name, gchat.toString(), nick, pass, autojoin));
         } else if (c==cmdJoin) {
+//#ifdef PLUGINS                        
+//#                 if (sd.Privacy) {
+//#ifdef PRIVACY                        
+//#                     if (QuickPrivacy.conferenceList == null)
+//#                         QuickPrivacy.conferenceList = new Vector();
+//#                     QuickPrivacy.conferenceList.addElement(host);
+//#                     new QuickPrivacy().updateQuickPrivacyList();
+//#endif                        
+//#endif                        
+//#ifdef PLUGINS                        
+//#                 }
+//#endif
+            
             try {
                 cf.defGcRoom=room+"@"+host;
                 cf.saveToStorage();
@@ -233,7 +245,7 @@ public class ConferenceForm
     }
 
     public static void join(String name, String jid, String pass, int maxStanzas) {
-        ConferenceGroup grp=sd.roster.initMuc(jid, pass);
+        ConferenceGroup grp = StaticData.getInstance().roster.initMuc(jid, pass);
         grp.desc=name;
 
         JabberDataBlock x=new JabberDataBlock("x", null, null);
@@ -252,10 +264,10 @@ public class ConferenceForm
                 history.setAttribute("seconds",String.valueOf(delay)); // todo: change to since
         } catch (Exception e) {}
         
-        int status=sd.roster.myStatus;
+        int status = StaticData.getInstance().roster.myStatus;
         if (status==Presence.PRESENCE_INVISIBLE) 
             status=Presence.PRESENCE_ONLINE;
-        sd.roster.sendDirectPresence(status, jid, x);
+        StaticData.getInstance().roster.sendDirectPresence(status, jid, x);
 
         grp.inRoom=true;
 
