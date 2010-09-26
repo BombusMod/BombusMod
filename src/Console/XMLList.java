@@ -64,13 +64,11 @@ public final class XMLList
     
     /** Creates a new instance of XMLList
      */
-    public XMLList(StanzasList sl) {
-        super (sl.stanzas);
-        
-        messages = sl.stanzas;
-        stanzas = sl;
-        
+    public XMLList() {
+        super ();
+                       
         super.smiles = false;       
+        stanzas = StanzasList.getInstance();
         
         
         commandState();

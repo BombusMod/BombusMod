@@ -289,7 +289,7 @@ public class RosterToolsMenu extends Menu {
 //#endif
 //#ifdef CONSOLE
 //#             case 19:
-//#                 new XMLList(StanzasList.getInstance());
+//#                 new XMLList();
 //#                 return;
 //#endif
 //#ifdef JUICK

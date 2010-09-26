@@ -64,9 +64,9 @@ public abstract class MessageList extends VirtualList
     
     /** Creates a new instance of MessageList */
   
-    public MessageList(Vector msgs) {
+    public MessageList() {
         super();
-        messages = msgs;
+        messages = new Vector();
         menuCommands.removeAllElements();
         cf=Config.getInstance();
         
@@ -171,12 +171,8 @@ public abstract class MessageList extends VirtualList
             }
         }
         super.keyPressed(keyCode);
-    }
+    }   
     
-    public void sizeChanged(int w, int h) {
-        super.sizeChanged(w, h);
-        redraw();
-    }
    
     public void showMenu() {
         commandState();

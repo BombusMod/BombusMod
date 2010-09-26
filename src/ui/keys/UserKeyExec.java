@@ -51,7 +51,6 @@ import ui.VirtualList;
 //#endif
 import Client.ContactMessageList;
 import Client.Roster;
-import Console.StanzasList;
 import javax.microedition.lcdui.Displayable;
 import io.NvStorage;
 import java.io.DataInputStream;
@@ -254,7 +253,7 @@ public class UserKeyExec {
 //#                 try {
 //#                     Class.forName("Console.XMLList");
 //#endif
-//#                     new XMLList(StanzasList.getInstance());
+//#                     new XMLList();
 //#ifdef PLUGINS
 //#                 } catch (ClassNotFoundException ignore3) { }
 //#endif

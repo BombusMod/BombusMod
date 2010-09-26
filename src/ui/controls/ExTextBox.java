@@ -112,7 +112,7 @@ public class ExTextBox {
         insert(s, caretPos, true);
     }
 
-    public void insert(String s, int caretPos, boolean writespaces) {
+    public final void insert(String s, int caretPos, boolean writespaces) {
         if (s == null) return;
 
         String src = textbox.getString();
@@ -202,13 +202,13 @@ public class ExTextBox {
             body = null;
         
 //#ifdef ARCHIVE
-	if (c==cmdPaste) { new ArchiveList(new MessageArchive(1), caretPos, 1, textbox); return true; }
+	if (c==cmdPaste) { new ArchiveList(caretPos, 1, textbox); return true; }
 //#endif
 //#ifdef CLIPBOARD
 //#         if (c==cmdPasteText) { insert(clipboard.getClipBoard(), getCaretPos()); return true; }
 //#endif
 //#if TEMPLATES
-//#         if (c==cmdTemplate) { new ArchiveList(new MessageArchive(2), caretPos, 2, textbox); return true; }
+//#         if (c==cmdTemplate) { new ArchiveList(caretPos, 2, textbox); return true; }
 //#endif
         return false;
     }

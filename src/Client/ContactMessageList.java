@@ -106,10 +106,10 @@ public class ContactMessageList extends MessageList {
 //# 
 //#     public MenuCommand cmdJuickCommands=new MenuCommand(SR.MS_COMMANDS+" Juick", MenuCommand.SCREEN, 15);
 //#     Vector currentJuickCommands = new Vector();
-//# 
-//#     /*public ContactMessageList() {    
-//#     }*/
+//#     
 //#endif
+    public ContactMessageList() {    
+    }
 
 //#ifdef CLIPBOARD    
 //#     private ClipBoard clipboard=ClipBoard.getInstance();
@@ -125,7 +125,7 @@ public class ContactMessageList extends MessageList {
      * @param c
      */
     public ContactMessageList(Contact c) {
-        super(c.msgs);
+        super();
         this.contact=c;
         sd.roster.activeContact=contact;
 
@@ -147,7 +147,7 @@ public class ContactMessageList extends MessageList {
 //#         if (cf.lastMessages && !contact.isHistoryLoaded()) loadRecentList();
 //#endif
 //#endif
-        if (messages.size()>0)
+        if (contact.msgs.size()>0)
             moveCursorTo(firstUnread());
         show(sd.roster);
     }
@@ -400,7 +400,7 @@ public void showNotify() {
 //#ifdef HISTORY
 //#ifdef HISTORY_READER
 //#         if (c==cmdReadHistory) {
-//#             new HistoryReader(contact, new HistoryLoader(contact.bareJid, ));
+//#             new HistoryReader(contact);
 //#             return;
 //#         }
 //#endif
