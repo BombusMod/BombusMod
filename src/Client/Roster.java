@@ -144,10 +144,9 @@ public class Roster
     private MenuCommand cmdMinimize=new MenuCommand(SR.MS_APP_MINIMIZE, MenuCommand.SCREEN, 90);
     private MenuCommand cmdQuit=new MenuCommand(SR.MS_APP_QUIT, MenuCommand.SCREEN, 99);
 
-    private Config cf=Config.getInstance();
     public Contact activeContact = null;
     
-    private Jid myJid;
+    public Jid myJid;
 
     public JabberStream theStream;
         
@@ -238,15 +237,6 @@ public class Roster
         commandState();
         setMenuListener(this);
         SplashScreen.getInstance().setExit(this);
-//#ifdef AUTOSTATUS
-//#         if (cf.autoAwayType==Config.AWAY_IDLE || cf.autoAwayType==Config.AWAY_MESSAGE) {
-//#             autostatus=new AutoStatusTask();
-//#             new Thread(autostatus).start();
-//#         }
-//# 
-//#         if (myStatus<2)
-//#             messageActivity();
-//#endif
 //#ifdef CLIENTS_ICONS
 //#ifdef PLUGINS
 //# 	if (sd.ClientsIcons)
@@ -398,7 +388,7 @@ public class Roster
             
 	    bookmarks=null;
 	}
-	setMyJid(new Jid(sd.account.getJid()));
+	myJid = new Jid(sd.account.getJid());
 	updateContact(sd.account.getNick(), myJid.getBareJid(), SR.MS_SELF_CONTACT, "self", false);
     }
     
@@ -1281,6 +1271,16 @@ public class Roster
     }
     
     public void loginSuccess() {
+//#ifdef AUTOSTATUS
+//#         if (cf.autoAwayType==Config.AWAY_IDLE || cf.autoAwayType==Config.AWAY_MESSAGE) {
+//#             autostatus=new AutoStatusTask();
+//#             new Thread(autostatus).start();
+//#         }
+//# 
+//#         if (myStatus<2)
+//#             messageActivity();
+//#endif
+        
         theStream.addBlockListener(new EntityCaps());
 
         theStream.addBlockListener(new IqPing());
@@ -2873,10 +2873,7 @@ public class Roster
     public void loginMessage(String msg, int pos) {
         setProgress(msg, pos);
     }
-	
-    public void setMyJid(Jid myJid) {
-        this.myJid = myJid;
-    }
+    
     
 //#ifdef AUTOSTATUS
 //#     public void setAutoAway() {

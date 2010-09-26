@@ -135,7 +135,7 @@ public abstract class VirtualList
 //#endif
     protected int getMainBarRGB() {return ColorTheme.getColor(ColorTheme.BAR_INK);}
     
-    private Config cf=Config.getInstance();
+    protected Config cf=Config.getInstance();
 
     /**
      * событие "Нажатие кнопки ОК"

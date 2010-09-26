@@ -59,7 +59,6 @@ public class ConfigForm
 //#endif
     
     private DropChoiceBox subscr;
-    private DropChoiceBox nil;
     
 //#ifdef SMILES
     private CheckBox smiles;
@@ -136,8 +135,6 @@ public class ConfigForm
 
     private Vector langs[];
 
-    StaticData sd=StaticData.getInstance();
-    
     Config cf;
     
     /** Creates a new instance of ConfigForm
@@ -175,13 +172,7 @@ public class ConfigForm
         itemsList.addElement(subscr);
 
         itemsList.addElement(new SpacerItem(10));
-        nil=new DropChoiceBox(SR.MS_NOT_IN_LIST);
-        nil.append(SR.MS_NIL_DROP_MP);
-        nil.append(SR.MS_NIL_DROP_P);
-        nil.append(SR.MS_NIL_ALLOW_ALL);
-        nil.setSelectedIndex((cf.notInListDropLevel>NotInListFilter.ALLOW_ALL)? NotInListFilter.ALLOW_ALL: cf.notInListDropLevel);
-        itemsList.addElement(nil);
-        
+                
 
         itemsList.addElement(new SpacerItem(10));
         itemsList.addElement(new SimpleString(SR.MS_MESSAGES, true));
@@ -372,9 +363,8 @@ public class ConfigForm
 //#endif
             cf.showClientIcon=showClientIcon.getValue();
 //#endif
-        cf.autoSubscribe=subscr.getSelectedIndex();
+        cf.autoSubscribe=subscr.getSelectedIndex();       
         
-        cf.notInListDropLevel=nil.getSelectedIndex();
 
 //#ifdef SMILES
         cf.smiles=smiles.getValue();

@@ -52,8 +52,6 @@ public class PrivacySelect
 //#     public static String plugin = new String("PLUGIN_PRIVACY");
 //#endif
     
-    private Vector list=new Vector();
-    
     private MenuCommand cmdActivate=new MenuCommand (SR.MS_ACTIVATE, MenuCommand.SCREEN, 10);
     private MenuCommand cmdDefault=new MenuCommand (SR.MS_SETDEFAULT, MenuCommand.SCREEN, 11);
     private MenuCommand cmdNewList=new MenuCommand (SR.MS_NEW_LIST, MenuCommand.SCREEN, 12);
@@ -70,7 +68,7 @@ public class PrivacySelect
 
         setMainBarItem(new MainBar(2, null, SR.MS_PRIVACY_LISTS, false));
 
-        list.addElement(new PrivacyList(null));//none
+        itemsList.addElement(new PrivacyListItem(null));//none
         
         setMenuListener(this);
         
@@ -100,9 +98,6 @@ public class PrivacySelect
         PrivacyList.privacyListRq(false, null, "getplists");
     }
     
-    protected int getItemCount() { return list.size(); }
-    protected VirtualElement getItemRef(int index) { return (VirtualElement) list.elementAt(index); }
-    
     public void menuAction(MenuCommand c, VirtualList d) {
         if (c==cmdCancel) {
             destroyView();
@@ -110,16 +105,16 @@ public class PrivacySelect
             return;
         }
         if (c==cmdActivate || c==cmdDefault) {
-            PrivacyList active=((PrivacyList)getFocusedObject());
-            for (Enumeration e=list.elements(); e.hasMoreElements(); ) {
-                PrivacyList pl=(PrivacyList)e.nextElement();
+            PrivacyListItem active=((PrivacyListItem)getFocusedObject());
+            for (Enumeration e = itemsList.elements(); e.hasMoreElements(); ) {
+                PrivacyListItem pl=(PrivacyListItem)e.nextElement();
                 boolean state=(pl==active);
                 if (c==cmdActivate)
-                    pl.isActive=state;
+                    pl.list.isActive=state;
                 else
-                    pl.isDefault=state;
+                    pl.list.isDefault=state;
             }
-            ((PrivacyList)getFocusedObject()).activate( (c==cmdActivate)? "active":"default" ); 
+            ((PrivacyListItem)getFocusedObject()).list.activate( (c==cmdActivate)? "active":"default" ); 
             getLists();
         }
         if (c==cmdIL) {
@@ -146,8 +141,8 @@ public class PrivacySelect
                 if (data.getAttribute("id").equals("getplists")) {
                 data=data.findNamespace("query", "jabber:iq:privacy");
                 if (data!=null) {
-                    list=null;
-                    list=new Vector();
+                    itemsList = null;
+                    itemsList = new Vector();
                     String activeList="";
                     String defaultList="";
                     try {
@@ -161,14 +156,14 @@ public class PrivacySelect
                                 PrivacyList pl=new PrivacyList(name);
                                 pl.isActive=(name.equals(activeList));
                                 pl.isDefault=(name.equals(defaultList));
-                                list.addElement(pl);
+                                itemsList.addElement(new PrivacyListItem(pl));
                             }
                         }
                     } catch (Exception e) {}
                     PrivacyList nullList=new PrivacyList(null);
                     nullList.isActive=activeList.length()==0;
                     nullList.isDefault=defaultList.length()==0;
-                    list.addElement(nullList);//none
+                    itemsList.addElement(new PrivacyListItem(nullList));//none
                 }
                 
                 processIcon(false);
@@ -180,10 +175,10 @@ public class PrivacySelect
     }
 
     public void eventOk() {
-        PrivacyList pl = (PrivacyList) getFocusedObject();
+        PrivacyListItem pl = (PrivacyListItem) getFocusedObject();
         if (pl != null) {
-            if (pl.name != null)
-                new PrivacyModifyList(pl, false, this);
+            if (pl.list.name != null)
+                new PrivacyModifyList(pl.list, false, this);
         }
     }
 
@@ -200,10 +195,10 @@ public class PrivacySelect
     }
     
     private void cmdDelete() {
-        PrivacyList pl = (PrivacyList) getFocusedObject();
+        PrivacyListItem pl = (PrivacyListItem) getFocusedObject();
         if (pl != null) {
-            if (pl.name != null)
-                pl.deleteList();
+            if (pl.list.name != null)
+                pl.list.deleteList();
             getLists();
         }
     }

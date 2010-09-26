@@ -34,7 +34,6 @@ import Client.StaticData;
 import java.util.Vector;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
-import ui.VirtualList;
 import ui.controls.form.SimpleString;
 import ui.controls.form.CheckBox;
 import ui.controls.form.DefForm;
@@ -74,8 +73,8 @@ public class PrivacyForm
      */
     public PrivacyForm(PrivacyItem item, PrivacyList plist) {
         super(SR.MS_PRIVACY_RULE);
-        this.item=item;
-        targetList=plist;
+        this.item = item;
+        targetList = plist;
         
         tValue=(textValue!=null)?textValue.getValue():item.value;
         

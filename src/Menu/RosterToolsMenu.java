@@ -32,7 +32,7 @@ package Menu;
 import Alerts.AlertCustomizeForm;
 import Client.*;
 //#ifdef PRIVACY
-import PrivacyLists.PrivacySelect;
+import PrivacyLists.QuickPrivacy;
 //#endif
 //#if AUTOTASK
 //# import AutoTasks.AutoTaskForm;
@@ -55,6 +55,7 @@ import VCard.VCardEdit;
 import images.MenuIcons;
 import locale.SR;
 import Colors.ColorConfigForm;
+
 //import ui.reconnectWindow;
 //#ifdef USER_KEYS
 //# import Console.StanzasList;
@@ -71,8 +72,6 @@ import Colors.ColorConfigForm;
 //#endif
 
 public class RosterToolsMenu extends Menu {
-    Config cf;
-    StaticData sd=StaticData.getInstance();
 
     MenuIcons menuIcons=MenuIcons.getInstance();
 
@@ -203,7 +202,7 @@ public class RosterToolsMenu extends Menu {
 //#endif
 //#ifdef PRIVACY
             case 1: // Privacy Lists
-                if (connected) new PrivacySelect();
+                if (connected) new QuickPrivacy();
                 break;
 //#endif
 //#ifdef PEP
