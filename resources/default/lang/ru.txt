@@ -58,7 +58,7 @@ Priority	Приоритет
 Failed	Ошибка соединения
 Set Priority	Установить приоритет
 Delete rule	Удалить правило
-Ignore-List	список игнорируемых
+Ignore-List	Игнорируемые
 Roster request	Получение ростера
 Type	Тип
 Name	Имя
