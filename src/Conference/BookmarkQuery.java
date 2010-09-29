@@ -33,6 +33,7 @@ import com.alsutton.jabber.datablocks.Iq;
 import java.util.Enumeration;
 import java.util.Vector;
 import Client.Config;
+import PrivacyLists.QuickPrivacy;
 import com.alsutton.jabber.datablocks.Presence;
 
 import util.StringLoader;
@@ -77,28 +78,32 @@ public class BookmarkQuery implements JabberBlockListener {
                 JabberDataBlock storage = data.findNamespace("query", "jabber:iq:private").findNamespace("storage", "storage:bookmarks");
                 Vector bookmarks = new Vector();
                 boolean autojoin = cf.autoJoinConferences && sd.roster.myStatus != Presence.PRESENCE_INVISIBLE;
-//#ifdef PLUGINS                        
+//#ifdef PRIVACY 
+//#ifdef PLUGINS
 //#                 if (sd.Privacy) {
-//#ifdef PRIVACY                        
-//#                     QuickPrivacy.conferenceList = new Vector();
-//# 
-//#endif                        
+//#endif    
+                     QuickPrivacy.conferenceList = null;
+                     QuickPrivacy.conferenceList = new Vector(); 
+//#ifdef PLUGINS                
 //#                 }
 //#endif
+//#endif                     
                 try {
                     for (Enumeration e = storage.getChildBlocks().elements(); e.hasMoreElements();) {
                         BookmarkItem bm = new BookmarkItem((JabberDataBlock) e.nextElement());
+//#ifdef PRIVACY                                                
 //#ifdef PLUGINS                        
 //#                         if (sd.Privacy) {
-//#ifdef PRIVACY                        
-//#                             int at = bm.jid.indexOf("@") + 1;
-//#                             String host = bm.jid.substring(at, bm.jid.length());
-//#                             if (!QuickPrivacy.conferenceList.contains(host)) {
-//#                                 QuickPrivacy.conferenceList.addElement(host);
-//#                             }
-//#endif                        
+//#endif
+                             int at = bm.jid.indexOf("@") + 1;
+                             String host = bm.jid.substring(at, bm.jid.length());
+                             if (!QuickPrivacy.conferenceList.contains(host)) {
+                                 QuickPrivacy.conferenceList.addElement(host);
+                             }
+//#ifdef PLUGINS                        
 //#                         }
 //#endif
+//#endif                        
                         bookmarks.addElement(bm);
                         if (bm.autojoin && autojoin) {
                             ConferenceForm.join(bm.desc, bm.jid + '/' + bm.nick, bm.password, cf.confMessageCount);

@@ -194,18 +194,18 @@ public class ConferenceForm
         } else if (c==cmdAdd) {
             new Bookmarks(new BookmarkItem(name, gchat.toString(), nick, pass, autojoin));
         } else if (c==cmdJoin) {
+//#ifdef PRIVACY            
 //#ifdef PLUGINS                        
-//#                 if (sd.Privacy && cf.useQuickPrivacy) {
-//#ifdef PRIVACY                        
-//#                     if (QuickPrivacy.conferenceList == null)
-//#                         QuickPrivacy.conferenceList = new Vector();
-//#                     QuickPrivacy.conferenceList.addElement(host);
-//#                     new QuickPrivacy().updateQuickPrivacyList();
+//#                 if (sd.Privacy) {
 //#endif                        
-//#endif                        
+                    if (QuickPrivacy.conferenceList == null)
+                        QuickPrivacy.conferenceList = new Vector();
+                    QuickPrivacy.conferenceList.addElement(host);
+                    new QuickPrivacy().updateQuickPrivacyList();
 //#ifdef PLUGINS                        
 //#                 }
 //#endif
+//#endif                                    
             
             try {
                 cf.defGcRoom=room+"@"+host;

@@ -147,7 +147,7 @@ public class ArchiveTemplates {
         return source.substring(start+_start.length(), end);
     }
 
-    public void exportData(String arhPath) {
+    public final void exportData(String arhPath) {
         byte[] bodyMessage;
         int items=getItemCount();
         StringBuffer body=new StringBuffer();

@@ -1359,14 +1359,6 @@ public class Roster
         if (bookmarks==null)
             theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
 //#endif
-//#ifdef PRIVACY
-
-//#ifdef PLUGINS
-//#         if (sd.Privacy)
-//#endif        
-            if (Config.getInstance().useQuickPrivacy)
-                new QuickPrivacy().updateQuickPrivacyList();
-//#endif        
 
     }
 
@@ -3007,19 +2999,21 @@ public class Roster
                         if (c.group != null) {
                             grp.addContact(c);
 
-//#ifdef PLUGINS                        
-//#                             if (sd.Privacy && cf.useQuickPrivacy) {
 //#ifdef PRIVACY                        
-//#                                 if (QuickPrivacy.groupsList == null) {
-//#                                     QuickPrivacy.groupsList = new Vector();
-//#                                 }
-//#                                 if (!QuickPrivacy.groupsList.contains(c.group.name))
-//#                                     QuickPrivacy.groupsList.addElement(c.group.name);                                
-//#endif                        
-//#endif                        
 //#ifdef PLUGINS                        
-//#                             }
+//#                              if (sd.Privacy) {
 //#endif                            
+                                 if (QuickPrivacy.groupsList == null) {
+                                     QuickPrivacy.groupsList = new Vector();
+                                 }
+                                 if (!QuickPrivacy.groupsList.contains(c.group.name)) {
+                                     QuickPrivacy.groupsList.addElement(c.group.name); 
+                                     new QuickPrivacy().updateQuickPrivacyList();
+                                 }
+//#ifdef PLUGINS                        
+//#                              }
+//#endif                            
+//#endif                                                        
                         }
                     }
                 }

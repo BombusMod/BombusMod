@@ -57,8 +57,6 @@ public class PrivacySelect
     private MenuCommand cmdNewList=new MenuCommand (SR.MS_NEW_LIST, MenuCommand.SCREEN, 12);
     private MenuCommand cmdDelete=new MenuCommand (SR.MS_DELETE_LIST, MenuCommand.SCREEN, 13);
     //private MenuCommand cmdEdit=new MenuCommand (SR.MS_EDIT_LIST, Command.SCREEN, 14);
-    private MenuCommand cmdIL=new MenuCommand (SR.MS_MK_ILIST, MenuCommand.SCREEN, 16);
-    
     JabberStream stream=StaticData.getInstance().roster.theStream;
     
     /** Creates a new instance of PrivacySelect
@@ -80,8 +78,7 @@ public class PrivacySelect
         addMenuCommand(cmdActivate);
         addMenuCommand(cmdDefault);
         addMenuCommand(cmdNewList);
-        addMenuCommand(cmdDelete);
-        addMenuCommand(cmdIL);
+        addMenuCommand(cmdDelete);        
     }
 
     private void processIcon(boolean processing){
@@ -117,10 +114,7 @@ public class PrivacySelect
             ((PrivacyListItem)getFocusedObject()).list.activate( (c==cmdActivate)? "active":"default" ); 
             getLists();
         }
-        if (c==cmdIL) {
-            generateIgnoreList();
-            getLists();
-        }
+        
         if (c==cmdDelete) {
             cmdDelete();
         }
@@ -180,15 +174,7 @@ public class PrivacySelect
             if (pl.list.name != null)
                 new PrivacyModifyList(pl.list, false, this);
         }
-    }
-
-    private void generateIgnoreList(){
-        JabberDataBlock ignoreList=new JabberDataBlock("list", null, null);
-        ignoreList.setAttribute("name", SR.MS_IGNORE_LIST);
-        JabberDataBlock item=PrivacyItem.itemIgnoreList().constructBlock();
-        ignoreList.addChild(item);
-        PrivacyList.privacyListRq(true, ignoreList, "ignlst");
-    }
+    }    
     
     public void keyGreen() {
         new MIDPTextBox(SR.MS_NEW, "", this, TextField.ANY);

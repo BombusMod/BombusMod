@@ -203,6 +203,22 @@ public final class ContactEdit
             if (group.equals(SR.MS_GENERAL)) {
                 group = "";
             }
+//#ifdef PRIVACY                        
+//#ifdef PLUGINS                        
+//#                              if (sd.Privacy) {
+//#endif                            
+                                 if (QuickPrivacy.groupsList == null) {
+                                     QuickPrivacy.groupsList = new Vector();
+                                 }
+                                 if (!QuickPrivacy.groupsList.contains(group)) {
+                                     QuickPrivacy.groupsList.addElement(group); 
+                                     new QuickPrivacy().updateQuickPrivacyList();
+                                 }
+//#ifdef PLUGINS                        
+//#                              }
+//#endif                            
+//#endif                                                        
+               
 
             int at = jid.indexOf('@');
             if (at < 0 && tTranspList.getSelectedIndex() != tTranspList.size() - 1) {

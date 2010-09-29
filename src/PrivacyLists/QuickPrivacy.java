@@ -59,8 +59,10 @@ public class QuickPrivacy extends DefForm implements JabberBlockListener {
         cf.notInListDropLevel = nil.getSelectedIndex();
         if (cf.useQuickPrivacy)
             updateQuickPrivacyList();
-        else
+        else {
            new PrivacyList(null).activate("active");
+           new PrivacyList(null).activate("default");
+        }
         cf.saveToStorage();
         destroyView();
     }
@@ -70,6 +72,7 @@ public class QuickPrivacy extends DefForm implements JabberBlockListener {
             if (data.getTypeAttribute().equals("result"))
                 if (data.getAttribute("id").equals("quicklst")) {
                     new PrivacyList(LIST_QUICKPRIVACY).activate("active");
+                    new PrivacyList(LIST_QUICKPRIVACY).activate("default");
                     return JabberBlockListener.NO_MORE_BLOCKS;
                 }
         } catch (Exception e) { }
@@ -119,6 +122,8 @@ public class QuickPrivacy extends DefForm implements JabberBlockListener {
                 qList.addChild(item1.constructBlock());
             }
         }
+        JabberDataBlock item2 = PrivacyItem.itemIgnoreList().constructBlock();
+        qList.addChild(item2);
         StaticData.getInstance().roster.theStream.addBlockListener(this);
         PrivacyList.privacyListRq(true, qList, "quicklst");
     }
