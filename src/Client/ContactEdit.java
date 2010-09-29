@@ -28,13 +28,11 @@ package Client;
 //#ifndef WMUC
 import Conference.MucContact;
 //#endif
-import PrivacyLists.PrivacyList;
 import PrivacyLists.QuickPrivacy;
 import VCard.VCard;
 import javax.microedition.lcdui.*;
 import java.util.*;
 import locale.SR;
-import ui.VirtualList;
 import ui.controls.form.LinkString;
 import ui.controls.form.SimpleString;
 import ui.controls.form.CheckBox;
@@ -152,17 +150,7 @@ public final class ContactEdit
         tGrpList.setSelectedIndex(sel);
         itemsList.addElement(tGrpList);
 
-        newGroupPos = itemsList.indexOf(tGrpList) + 1;
-        
-//#ifdef PLUGINS                        
-//#                 if (sd.Privacy) {
-//#ifdef PRIVACY                        
-//#                     new PrivacyList("").activate(""); // deactivate list to add contact
-//# 
-//#endif                        
-//#                 }
-//#endif        
-
+        newGroupPos = itemsList.indexOf(tGrpList) + 1;      
 
         if (newContact) {
             itemsList.addElement(new SimpleString(SR.MS_SUBSCRIPTION, true));
@@ -199,10 +187,6 @@ public final class ContactEdit
             }
 
             boolean ask = tAskSubscrCheckBox.getValue();
-
-            if (group.equals(SR.MS_GENERAL)) {
-                group = "";
-            }
 //#ifdef PRIVACY                        
 //#ifdef PLUGINS                        
 //#                              if (sd.Privacy) {
@@ -218,7 +202,11 @@ public final class ContactEdit
 //#                              }
 //#endif                            
 //#endif                                                        
-               
+            
+
+/*            if (group.equals(SR.MS_GENERAL)) {
+                group = "";
+            }               */
 
             int at = jid.indexOf('@');
             if (at < 0 && tTranspList.getSelectedIndex() != tTranspList.size() - 1) {

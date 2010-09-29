@@ -2980,6 +2980,10 @@ public class Roster
         }
         
         public synchronized void run() {
+//#ifdef PRIVACY
+            boolean needUpdatePrivacy = false;
+//#endif            
+            
             //try {
             while (pendingRepaints > 0) {
                 pendingRepaints = 0;
@@ -3008,7 +3012,7 @@ public class Roster
                                  }
                                  if (!QuickPrivacy.groupsList.contains(c.group.name)) {
                                      QuickPrivacy.groupsList.addElement(c.group.name); 
-                                     new QuickPrivacy().updateQuickPrivacyList();
+                                     needUpdatePrivacy = true;
                                  }
 //#ifdef PLUGINS                        
 //#                              }
@@ -3017,6 +3021,16 @@ public class Roster
                         }
                     }
                 }
+//#ifdef PRIVACY                        
+//#ifdef PLUGINS                        
+//#                              if (sd.Privacy) {
+//#endif         
+                if (needUpdatePrivacy)
+                    new QuickPrivacy().updateQuickPrivacyList();
+//#ifdef PLUGINS                        
+//#                              }
+//#endif                            
+//#endif                                                                        
                 // self-contact group
                 Group selfContactGroup = groups.getGroup(Groups.TYPE_SELF);
                 selfContactGroup.visible = (cf.selfContact || selfContactGroup.tonlines > 1 || selfContactGroup.unreadMessages > 0);

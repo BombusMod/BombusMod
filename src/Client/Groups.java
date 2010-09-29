@@ -79,16 +79,6 @@ public class Groups implements JabberBlockListener{
     private int rosterOnline;
     
     public void resetCounters() {
-//#ifdef PLUGINS                        
-//#         if (sd.Privacy) {
-//#ifdef PRIVACY
-//#             QuickPrivacy.groupsList = null;
-//#             QuickPrivacy.groupsList = new Vector();
-//#endif                        
-//#endif                        
-//#ifdef PLUGINS                        
-//#         }
-//#endif                             
         //for (Enumeration e=groups.elements();e.hasMoreElements();){
         //    Group grp=(Group)e.nextElement();
         int j = groups.size();
