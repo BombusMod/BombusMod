@@ -60,6 +60,7 @@ import Menu.MenuCommand;
 import Menu.MyMenu;
 
 //#if FILE_TRANSFER
+import PrivacyLists.QuickPrivacy;
 import io.file.transfer.TransferDispatcher;
 //#endif
 
@@ -1323,7 +1324,7 @@ public class Roster
 //#ifdef CAPTCHA
 //#         theStream.addBlockListener(new Captcha());
 //#endif
-        
+       
         playNotify(SOUND_CONNECTED);
         if (doReconnect) {
             querysign=doReconnect=false;
@@ -1358,6 +1359,15 @@ public class Roster
         if (bookmarks==null)
             theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
 //#endif
+//#ifdef PRIVACY
+
+//#ifdef PLUGINS
+//#         if (sd.Privacy)
+//#endif        
+            if (Config.getInstance().useQuickPrivacy)
+                new QuickPrivacy().updateQuickPrivacyList();
+//#endif        
+
     }
 
     public void bindResource(String myJid) {
@@ -2990,12 +3000,27 @@ public class Roster
                 groups.resetCounters();
 
                 synchronized (hContacts) {
-                    int j=hContacts.size();
-                    for (int i=0; i<j; i++) {
+                    int j = hContacts.size();
+                    for (int i = 0; i < j; i++) {
                         Contact c = (Contact) hContacts.elementAt(i);
                         Group grp = c.group;
-                        if (c.group != null)
+                        if (c.group != null) {
                             grp.addContact(c);
+
+//#ifdef PLUGINS                        
+//#                             if (sd.Privacy && cf.useQuickPrivacy) {
+//#ifdef PRIVACY                        
+//#                                 if (QuickPrivacy.groupsList == null) {
+//#                                     QuickPrivacy.groupsList = new Vector();
+//#                                 }
+//#                                 if (!QuickPrivacy.groupsList.contains(c.group.name))
+//#                                     QuickPrivacy.groupsList.addElement(c.group.name);                                
+//#endif                        
+//#endif                        
+//#ifdef PLUGINS                        
+//#                             }
+//#endif                            
+                        }
                     }
                 }
                 // self-contact group
@@ -3041,7 +3066,7 @@ public class Roster
 //#endif
             //}
             //thread=null;
-			systemGC();
+            systemGC();
         }
     }
 }

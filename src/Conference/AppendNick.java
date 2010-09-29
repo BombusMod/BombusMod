@@ -28,11 +28,9 @@
 package Conference;
 
 import Client.Contact;
-import Client.Roster;
 import Client.StaticData;
 import Client.MessageEdit;
 import locale.SR;
-import javax.microedition.lcdui.Displayable;
 import com.alsutton.jabber.datablocks.Presence;
 import java.util.Enumeration;
 import java.util.Vector;
@@ -63,6 +61,7 @@ public final class AppendNick
             if (c.group==to.group && c.origin>Contact.ORIGIN_GROUPCHAT && c.status<Presence.PRESENCE_OFFLINE)
                 itemsList.addElement(c);
         }
+        enableListWrapping(true);
     }    
         
     public void eventOk(){

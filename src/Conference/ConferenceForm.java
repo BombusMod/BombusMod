@@ -195,7 +195,7 @@ public class ConferenceForm
             new Bookmarks(new BookmarkItem(name, gchat.toString(), nick, pass, autojoin));
         } else if (c==cmdJoin) {
 //#ifdef PLUGINS                        
-//#                 if (sd.Privacy) {
+//#                 if (sd.Privacy && cf.useQuickPrivacy) {
 //#ifdef PRIVACY                        
 //#                     if (QuickPrivacy.conferenceList == null)
 //#                         QuickPrivacy.conferenceList = new Vector();

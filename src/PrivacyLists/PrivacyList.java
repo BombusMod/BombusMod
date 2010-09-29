@@ -77,7 +77,8 @@ public class PrivacyList {
   
     public void activate(String atr) {
         JabberDataBlock a=new JabberDataBlock(atr, null, null);
-        a.setAttribute("name", name);
+        if (atr != null)
+            a.setAttribute("name", name);
         privacyListRq(true, a, "plset");
     }
 }

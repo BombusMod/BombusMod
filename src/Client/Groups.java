@@ -27,6 +27,7 @@
 
 package Client;
 
+import PrivacyLists.QuickPrivacy;
 import java.util.*;
 import locale.SR;
 
@@ -77,17 +78,26 @@ public class Groups implements JabberBlockListener{
     private int rosterContacts;
     private int rosterOnline;
     
-    public void resetCounters(){
+    public void resetCounters() {
+//#ifdef PLUGINS                        
+//#         if (sd.Privacy) {
+//#ifdef PRIVACY
+//#             QuickPrivacy.groupsList = null;
+//#             QuickPrivacy.groupsList = new Vector();
+//#endif                        
+//#endif                        
+//#ifdef PLUGINS                        
+//#         }
+//#endif                             
         //for (Enumeration e=groups.elements();e.hasMoreElements();){
         //    Group grp=(Group)e.nextElement();
-        int j=groups.size();
-        for(int i=0; i<j; i++)
-        {
-            Group grp = (Group)groups.elementAt(i);
-	    grp.startCount();
+        int j = groups.size();
+        for (int i = 0; i < j; i++) {
+            Group grp = (Group) groups.elementAt(i);
+            grp.startCount();
         }
-	rosterContacts=0;
-        rosterOnline=0;
+        rosterContacts = 0;
+        rosterOnline = 0;
     }
     
     public void addToVector(Vector d, int index){
@@ -131,7 +141,7 @@ public class Groups implements JabberBlockListener{
         return null;
     }
     
-    public Group addGroup(String name, int type) {
+    public final Group addGroup(String name, int type) {
         Group ng=new Group(name);
         ng.type=type;
         return addGroup(ng);

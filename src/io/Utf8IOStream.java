@@ -139,7 +139,8 @@ public class Utf8IOStream {
         
         avail=inpStream.read(buf, 0, avail);
 //#if (XML_STREAM_DEBUG)
-//# 	System.out.println("<< "+new String(buf, 0, avail));
+//#         if (avail > 0)
+//#             System.out.println("<< "+new String(buf, 0, avail));
 //#endif
         setRecv(bytesRecv+avail);
         updateTraffic();

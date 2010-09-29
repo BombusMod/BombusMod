@@ -83,8 +83,6 @@ public class BookmarkQuery implements JabberBlockListener {
 //#                     QuickPrivacy.conferenceList = new Vector();
 //# 
 //#endif                        
-//#endif                        
-//#ifdef PLUGINS                        
 //#                 }
 //#endif
                 try {
@@ -99,8 +97,6 @@ public class BookmarkQuery implements JabberBlockListener {
 //#                                 QuickPrivacy.conferenceList.addElement(host);
 //#                             }
 //#endif                        
-//#endif                        
-//#ifdef PLUGINS                        
 //#                         }
 //#endif
                         bookmarks.addElement(bm);

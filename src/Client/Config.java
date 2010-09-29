@@ -24,8 +24,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-
 package Client;
+
 import Alerts.AlertProfile;
 import images.ActionsIcons;
 import images.RosterIcons;
@@ -53,138 +53,121 @@ import io.NvStorage;
  */
 public class Config {
     // Singleton
-    private static Config instance;
-    
-    public final int vibraLen=500;
 
+    private static Config instance;
+    public final int vibraLen = 500;
     public static int KEY_BACK = -11;
     public static int SOFT_LEFT = -6; // for most MIDP2 phones
     public static int SOFT_RIGHT = -7;
-    
-    public final static int SUBSCR_AUTO=0;
-    public final static int SUBSCR_ASK=1;
-    public final static int SUBSCR_DROP=2;
-    public final static int SUBSCR_REJECT=3;
-    
-    public final static int NOT_DETECTED=0;
-    public final static int NONE=-1;
-    public final static int SONYE=1;
-    public final static int NOKIA=2;
-    public final static int SIEMENS=3;
-    public final static int SIEMENS2=4;
-    public final static int MOTO=5;
-    public final static int MOTOEZX=6;
-    public final static int WINDOWS=7;
-    public final static int INTENT=8;
-    public final static int J2ME=9;
-    public final static int NOKIA_9XXX=10;
-    public final static int SONYE_M600=11;
+    public final static int SUBSCR_AUTO = 0;
+    public final static int SUBSCR_ASK = 1;
+    public final static int SUBSCR_DROP = 2;
+    public final static int SUBSCR_REJECT = 3;
+    public final static int NOT_DETECTED = 0;
+    public final static int NONE = -1;
+    public final static int SONYE = 1;
+    public final static int NOKIA = 2;
+    public final static int SIEMENS = 3;
+    public final static int SIEMENS2 = 4;
+    public final static int MOTO = 5;
+    public final static int MOTOEZX = 6;
+    public final static int WINDOWS = 7;
+    public final static int INTENT = 8;
+    public final static int J2ME = 9;
+    public final static int NOKIA_9XXX = 10;
+    public final static int SONYE_M600 = 11;
 //#if !ZLIB
 //#     public final static int XENIUM99=12;
 //#endif
-    public final static int SAMSUNG=14;
-    public final static int LG=15;
-    public final static int JBED=16;
-    public final static int MICROEMU=17;
-    public final static int WTK=50;    
-    public final static int OTHER=99;
-
+    public final static int SAMSUNG = 14;
+    public final static int LG = 15;
+    public final static int JBED = 16;
+    public final static int MICROEMU = 17;
+    public final static int WTK = 50;
+    public final static int OTHER = 99;
     StaticData sd = StaticData.getInstance();
-    
     private static String platformName;
-    
-    public boolean ghostMotor=false;
+    public boolean ghostMotor = false;
     //public boolean blFlash=!ghostMotor; //true;
-    
-    
-    public boolean muc119=true;	// before muc 1.19 use muc#owner instead of muc#admin
-    
-    public char keyLock='*';
-    public char keyVibra='#';
-    
+    public boolean muc119 = true;	// before muc 1.19 use muc#owner instead of muc#admin
+    public char keyLock = '*';
+    public char keyVibra = '#';
 //#ifdef AUTOSTATUS
-//#     public final static int AWAY_OFF=0;
-//#     public final static int AWAY_LOCK=1;
-//#     public final static int AWAY_MESSAGE=2;
-//#     public final static int AWAY_IDLE=3;
-//#     
-//#     public int autoAwayType=0;
-//#     public int autoAwayDelay=5; //5 minutes
-//#     public boolean useMyStatusMessages=true;
+//#     public final static int AWAY_OFF = 0;
+//#     public final static int AWAY_LOCK = 1;
+//#     public final static int AWAY_MESSAGE = 2;
+//#     public final static int AWAY_IDLE = 3;
+//#     public int autoAwayType = 0;
+//#     public int autoAwayDelay = 5; //5 minutes
+//#     public boolean useMyStatusMessages = true;
 //#endif
-    
 //#ifdef HISTORY
-//#      public String msgPath="";
-//#      public boolean msgLog=false;
-//#      public boolean msgLogPresence=false;
-//#      public boolean msgLogConf=false;
-//#      public boolean msgLogConfPresence=false;
-//#      public boolean lastMessages=false;
+//#     public String msgPath = "";
+//#     public boolean msgLog = false;
+//#     public boolean msgLogPresence = false;
+//#     public boolean msgLogConf = false;
+//#     public boolean msgLogConfPresence = false;
+//#     public boolean lastMessages = false;
 //#endif
-    public boolean cp1251=true;
+    public boolean cp1251 = true;
 //#ifndef WMUC
-    public String defGcRoom="bombusmod@conference.jabber.ru";
-    public boolean storeConfPresence=true;   
-    public boolean autoJoinConferences=true;
-    public int confMessageCount=20;
+    public String defGcRoom = "bombusmod@conference.jabber.ru";
+    public boolean storeConfPresence = true;
+    public boolean autoJoinConferences = true;
+    public int confMessageCount = 20;
 //#endif
     // non-volatile values
-    public int accountIndex=-1;
-public static boolean fullscreen = true;
-    public int def_profile=0;
+    public int accountIndex = -1;
+    public static boolean fullscreen = true;
+    public int def_profile = 0;
 //#ifdef SMILES
-    public boolean smiles=true;
+    public boolean smiles = true;
 //#endif
-    public boolean showOfflineContacts=false;
-    public boolean showTransports=true;
-    public boolean selfContact=false;
-    public boolean ignore=false;
-    public boolean eventComposing=true;   
-    public boolean autoLogin=true;
-    public boolean autoFocus=false;
-    public int loginstatus=0;//loginstatus
+    public boolean showOfflineContacts = false;
+    public boolean showTransports = true;
+    public boolean selfContact = false;
+    public boolean ignore = false;
+    public boolean eventComposing = true;
+    public boolean autoLogin = true;
+    public boolean autoFocus = false;
+    public int loginstatus = 0;//loginstatus
     public int gmtOffset;
-    public boolean popupFromMinimized=true;
-    public boolean memMonitor=false;
-
-    public int rosterFont=0;
-    public int msgFont=0;
-    public int barFont=0;
-    public int baloonFont=0;
-    
+    public boolean popupFromMinimized = true;
+    public boolean memMonitor = false;
+    public int rosterFont = 0;
+    public int msgFont = 0;
+    public int barFont = 0;
+    public int baloonFont = 0;
     public String lang;  //not detected (en)
-    public boolean capsState=false;
-    public int textWrap=0;
-    public int autoSubscribe=SUBSCR_ASK;
-
+    public boolean capsState = false;
+    public int textWrap = 0;
+    public int autoSubscribe = SUBSCR_ASK;
     // runtime values
-    public boolean allowMinimize=false;
-    public int profile=0;
-    public int lastProfile=0;
+    public boolean allowMinimize = false;
+    public int profile = 0;
+    public int lastProfile = 0;
     public boolean istreamWaiting;
-    public int phoneManufacturer=NOT_DETECTED;
-
+    public int phoneManufacturer = NOT_DETECTED;
     public int panelsState = 2;
-
-    public boolean lightState=false;
-    public boolean autoScroll=true;
+    public boolean lightState = false;
+    public boolean autoScroll = true;
 //#ifdef POPUPS
-    public boolean popUps=true;
+    public boolean popUps = true;
 //#endif
-    public boolean showResources=true;
-    public boolean enableVersionOs=true;
-    public boolean collapsedGroups=true;
-    public int messageLimit=512;
-    public int widthScroll2=10;
-    public boolean widthSystemgc=false;
-    public boolean advTouch=true;
-    public boolean autoClean=false;
-    public boolean eventDelivery=true;
+    public boolean showResources = true;
+    public boolean enableVersionOs = true;
+    public boolean collapsedGroups = true;
+    public int messageLimit = 512;
+    public int widthScroll2 = 10;
+    public boolean widthSystemgc = false;
+    public boolean advTouch = true;
+    public boolean autoClean = false;
+    public boolean eventDelivery = true;
 //#ifdef DETRANSLIT
 //#     public boolean transliterateFilenames=false;
 //#     public boolean autoDeTranslit=false;
 //#endif
-    public boolean rosterStatus=true;
+    public boolean rosterStatus = true;
 //#ifdef PEP
 //#     public boolean sndrcvmood = false;
 //#ifdef PEP_TUNE
@@ -196,19 +179,18 @@ public static boolean fullscreen = true;
 //#ifdef PEP_LOCATION
 //#     public boolean rcvloc = false;
 //#endif
-//# 
 //#endif
     public boolean queryExit = false;
-    public int notInListDropLevel=NotInListFilter.ALLOW_ALL; //enable all
+    public int notInListDropLevel = NotInListFilter.ALLOW_ALL; //enable all
     public boolean showBalloons = true;
 //#ifdef LOGROTATE
 //#     public int msglistLimit=500;
 //#endif
-    public boolean useTabs=true;
-    public boolean notifyBlink=false;
-    public boolean notifySound=false;
-    public boolean notifyPicture=false;
-    public boolean useBoldFont=false;
+    public boolean useTabs = true;
+    public boolean notifyBlink = false;
+    public boolean notifySound = false;
+    public boolean notifyPicture = false;
+    public boolean useBoldFont = false;
 //#ifdef RUNNING_MESSAGE
 //#     public boolean notifyWhenMessageType = false;
 //#endif
@@ -216,42 +198,34 @@ public static boolean fullscreen = true;
 //#     public boolean useClipBoard = true;
 //#endif
     public boolean firstRun = true;
-    
-    public String verHash="";
-    public String resolvedHost="";
-    public int resolvedPort=0;
-    
-    public boolean IQNotify=false;
+    public String verHash = "";
+    public String resolvedHost = "";
+    public int resolvedPort = 0;
+    public boolean IQNotify = false;
 //#ifdef CLIENTS_ICONS
-    public boolean showClientIcon=true;
+    public boolean showClientIcon = true;
 //#endif
-
-    public int reconnectCount=10;
-    public int reconnectTime=15;
-
+    public int reconnectCount = 10;
+    public int reconnectTime = 15;
     public boolean executeByNum;
     public boolean showNickNames;
-
-    public boolean fileTransfer=true;
-    public boolean adhoc=false;
-    public boolean saveHistory=false;
-    
-    public boolean oldSE=false;
-
+    public boolean fileTransfer = true;
+    public boolean adhoc = false;
+    public boolean saveHistory = false;
+    public boolean oldSE = false;
     public boolean oldNokiaS60 = false;
     public boolean NokiaS40 = false;
-    
-    public boolean showTimeTraffic=false;
-    
-    public boolean swapSendAndSuspend=false;
-    
-    public static Config getInstance(){
-	if (instance==null) {
-	    instance=new Config();	    
-	}        
-	return instance;
+    public boolean showTimeTraffic = false;
+    public boolean swapSendAndSuspend = false;
+    public boolean useQuickPrivacy = false;
+
+    public static Config getInstance() {
+        if (instance == null) {
+            instance = new Config();
+        }
+        return instance;
     }
-    
+
     /** Creates a new instance of Config */
     private Config() {
         getPhoneManufacturer();
@@ -265,21 +239,19 @@ public static boolean fullscreen = true;
         RosterIcons.getInstance();
         ActionsIcons.getInstance();
 //#ifdef SMILES
-        if (smiles) 
+        if (smiles) {
             SmilesIcons.getInstance();
+        }
 //#endif
 //#ifdef CLIENTS_ICONS
 //#ifdef PLUGINS
-//#                 if (sd.ClientsIcons) 
+//#         if (sd.ClientsIcons) 
+//#endif            
+            if (showClientIcon) {
+                ClientsIcons.getInstance();
+            }
 //#endif
-        
-        if (showClientIcon) 
-            ClientsIcons.getInstance();
-//#ifdef PLUGINS
-//#                 
-//#endif
-//#endif
-        
+
         System.gc();
         try {
             Thread.sleep(50);
@@ -301,7 +273,7 @@ public static boolean fullscreen = true;
             case NOKIA:
                 KEY_BACK = VirtualList.NOKIA_PEN;
                 greenKeyCode = -10;
-                allowMinimize = true;                
+                allowMinimize = true;
                 break;
             case SIEMENS:
             case SIEMENS2:
@@ -343,56 +315,56 @@ public static boolean fullscreen = true;
         FontCache.bar = barFont;
         FontCache.baloon = baloonFont;
     }
-    
+
     protected final void loadFromStorage() {
 //#ifdef DEBUG
 //#         System.out.println("LoadFromStorage config");
 //#endif
-        DataInputStream inputStream=NvStorage.ReadFileRecord("config", 0);
-	try {
-	    accountIndex = inputStream.readInt();
-	    showOfflineContacts=inputStream.readBoolean();
-	    fullscreen=inputStream.readBoolean();
-	    def_profile = inputStream.readInt()%4;
+        DataInputStream inputStream = NvStorage.ReadFileRecord("config", 0);
+        try {
+            accountIndex = inputStream.readInt();
+            showOfflineContacts = inputStream.readBoolean();
+            fullscreen = inputStream.readBoolean();
+            def_profile = inputStream.readInt() % 4;
 //#ifdef SMILES
-	    smiles=inputStream.readBoolean();
+            smiles = inputStream.readBoolean();
 //#else
 //#             inputStream.readBoolean();
 //#endif
-	    showTransports=inputStream.readBoolean();
-	    selfContact=inputStream.readBoolean();
-	    collapsedGroups=inputStream.readBoolean();
-	    ignore=inputStream.readBoolean();
-	    eventComposing=inputStream.readBoolean();
-	    gmtOffset=inputStream.readInt();
-	    inputStream.readInt(); //locOffset
-	    autoLogin=inputStream.readBoolean();
+            showTransports = inputStream.readBoolean();
+            selfContact = inputStream.readBoolean();
+            collapsedGroups = inputStream.readBoolean();
+            ignore = inputStream.readBoolean();
+            eventComposing = inputStream.readBoolean();
+            gmtOffset = inputStream.readInt();
+            inputStream.readInt(); //locOffset
+            autoLogin = inputStream.readBoolean();
 //#ifndef WMUC            
-	    autoJoinConferences=inputStream.readBoolean();
+            autoJoinConferences = inputStream.readBoolean();
 //#else
 //#             inputStream.readBoolean();
 //#endif            
-	    popupFromMinimized=inputStream.readBoolean();
-	    notifyBlink=inputStream.readBoolean();
-	    memMonitor=inputStream.readBoolean();
-            rosterFont=inputStream.readInt();
-            msgFont=inputStream.readInt();
-            autoFocus=inputStream.readBoolean();
-            notInListDropLevel=inputStream.readInt();
+            popupFromMinimized = inputStream.readBoolean();
+            notifyBlink = inputStream.readBoolean();
+            memMonitor = inputStream.readBoolean();
+            rosterFont = inputStream.readInt();
+            msgFont = inputStream.readInt();
+            autoFocus = inputStream.readBoolean();
+            notInListDropLevel = inputStream.readInt();
 //#ifndef WMUC                  
-            storeConfPresence=inputStream.readBoolean();
+            storeConfPresence = inputStream.readBoolean();
 //#else
 //#             inputStream.readBoolean();
 //#endif                        
-            capsState=inputStream.readBoolean();
-	    textWrap=inputStream.readInt();
-            loginstatus=inputStream.readInt();
+            capsState = inputStream.readBoolean();
+            textWrap = inputStream.readInt();
+            loginstatus = inputStream.readInt();
 //#ifdef HISTORY
-//#             msgPath=inputStream.readUTF();
-//#             msgLog=inputStream.readBoolean();
-//#             msgLogPresence=inputStream.readBoolean();
-//#             msgLogConfPresence=inputStream.readBoolean();
-//#             msgLogConf=inputStream.readBoolean();
+//#             msgPath = inputStream.readUTF();
+//#             msgLog = inputStream.readBoolean();
+//#             msgLogPresence = inputStream.readBoolean();
+//#             msgLogConfPresence = inputStream.readBoolean();
+//#             msgLogConf = inputStream.readBoolean();
 //#else
             inputStream.readUTF();
             inputStream.readBoolean();
@@ -400,65 +372,65 @@ public static boolean fullscreen = true;
             inputStream.readBoolean();
             inputStream.readBoolean();
 //#endif
-            cp1251=inputStream.readBoolean();
+            cp1251 = inputStream.readBoolean();
 //#ifdef AUTOSTATUS
-//#             autoAwayDelay=inputStream.readInt();
+//#             autoAwayDelay = inputStream.readInt();
 //#else
             inputStream.readInt();
 //#endif
 //#ifndef WMUC                  
-            defGcRoom=inputStream.readUTF();
+            defGcRoom = inputStream.readUTF();
 //#else
 //#             inputStream.readUTF();
 //#endif                                    
-            firstRun=inputStream.readBoolean();
-            panelsState=inputStream.readInt();
+            firstRun = inputStream.readBoolean();
+            panelsState = inputStream.readInt();
 //#ifndef WMUC                             
-            confMessageCount=inputStream.readInt();
+            confMessageCount = inputStream.readInt();
 //#else
 //#             inputStream.readInt();
 //#endif                                    
-            fileTransfer=inputStream.readBoolean(); //newMenu
+            fileTransfer = inputStream.readBoolean(); //newMenu
 
-            lightState=inputStream.readBoolean();
-            notifySound=inputStream.readBoolean();
+            lightState = inputStream.readBoolean();
+            notifySound = inputStream.readBoolean();
 //#ifdef LAST_MESSAGES
 //#             lastMessages=inputStream.readBoolean();
 //#else
             inputStream.readBoolean();
 //#endif
 //#ifdef AUTOSTATUS
-//#             useMyStatusMessages=inputStream.readBoolean();
-//#             autoAwayType=inputStream.readInt();
+//#             useMyStatusMessages = inputStream.readBoolean();
+//#             autoAwayType = inputStream.readInt();
 //#else
             inputStream.readBoolean();
             inputStream.readInt();
 //#endif
-            autoScroll=inputStream.readBoolean();
+            autoScroll = inputStream.readBoolean();
 //#ifdef POPUPS
-            popUps=inputStream.readBoolean();
+            popUps = inputStream.readBoolean();
 //#else
 //#             inputStream.readBoolean();
 //#endif
-            showResources=inputStream.readBoolean();
-            
-            saveHistory=inputStream.readBoolean(); //antispam
+            showResources = inputStream.readBoolean();
 
-            enableVersionOs=inputStream.readBoolean();
-            messageLimit=inputStream.readInt();
-            lang=inputStream.readUTF();
-            eventDelivery=inputStream.readBoolean();
+            saveHistory = inputStream.readBoolean(); //antispam
+
+            enableVersionOs = inputStream.readBoolean();
+            messageLimit = inputStream.readInt();
+            lang = inputStream.readUTF();
+            eventDelivery = inputStream.readBoolean();
 //#ifdef DETRANSLIT
 //#             transliterateFilenames=inputStream.readBoolean();
 //#else
             inputStream.readBoolean();
 //#endif
-            
-            rosterStatus=inputStream.readBoolean();
-            
-            queryExit=inputStream.readBoolean();
-            notifyPicture=inputStream.readBoolean();
-            showBalloons=inputStream.readBoolean();
+
+            rosterStatus = inputStream.readBoolean();
+
+            queryExit = inputStream.readBoolean();
+            notifyPicture = inputStream.readBoolean();
+            showBalloons = inputStream.readBoolean();
 
             inputStream.readBoolean(); // Здесь был UserKeys
 //#ifdef LOGROTATE
@@ -466,15 +438,15 @@ public static boolean fullscreen = true;
 //#else
             inputStream.readInt();
 //#endif
-            useTabs=inputStream.readBoolean();
-            autoSubscribe=inputStream.readInt();
-            useBoldFont=inputStream.readBoolean();
+            useTabs = inputStream.readBoolean();
+            autoSubscribe = inputStream.readInt();
+            useBoldFont = inputStream.readBoolean();
 //#ifdef RUNNING_MESSAGE
 //#             notifyWhenMessageType = inputStream.readBoolean();
 //#else
             inputStream.readBoolean();
 //#endif
-            IQNotify=inputStream.readBoolean(); //IRC_LIKE
+            IQNotify = inputStream.readBoolean(); //IRC_LIKE
 //#ifdef PEP
 //#             sndrcvmood = inputStream.readBoolean();
 //#else
@@ -492,32 +464,32 @@ public static boolean fullscreen = true;
 //#else
             inputStream.readBoolean();
 //#endif
-            barFont=inputStream.readInt();
-            baloonFont=inputStream.readInt();
-            
-            verHash=inputStream.readUTF();
-            resolvedHost=inputStream.readUTF();
-            resolvedPort=inputStream.readInt();
-            
+            barFont = inputStream.readInt();
+            baloonFont = inputStream.readInt();
+
+            verHash = inputStream.readUTF();
+            resolvedHost = inputStream.readUTF();
+            resolvedPort = inputStream.readInt();
+
 //#ifdef DETRANSLIT
 //#             autoDeTranslit=inputStream.readBoolean();
 //#else
             inputStream.readBoolean();
 //#endif
 //#ifdef CLIENTS_ICONS
-            showClientIcon=inputStream.readBoolean();
+            showClientIcon = inputStream.readBoolean();
 //#else
 //#             inputStream.readBoolean();
 //#endif
-            
-            reconnectCount=inputStream.readInt();
-            reconnectTime=inputStream.readInt();
-            
-            executeByNum=inputStream.readBoolean();
-            
-            showNickNames=inputStream.readBoolean();
-            
-            adhoc=inputStream.readBoolean();
+
+            reconnectCount = inputStream.readInt();
+            reconnectTime = inputStream.readInt();
+
+            executeByNum = inputStream.readBoolean();
+
+            showNickNames = inputStream.readBoolean();
+
+            adhoc = inputStream.readBoolean();
 //#ifdef PEP_ACTIVITY
 //#             rcvactivity = inputStream.readBoolean();
 //#else
@@ -525,11 +497,11 @@ public static boolean fullscreen = true;
 //#endif
             inputStream.readBoolean(); //2kill
 
-            showTimeTraffic=inputStream.readBoolean();
-            
-            swapSendAndSuspend=inputStream.readBoolean();
-            widthScroll2=inputStream.readInt();
-            widthSystemgc=inputStream.readBoolean();
+            showTimeTraffic = inputStream.readBoolean();
+
+            swapSendAndSuspend = inputStream.readBoolean();
+            widthScroll2 = inputStream.readInt();
+            widthSystemgc = inputStream.readBoolean();
 
             inputStream.readUTF(); // ранее здесь был juickJID
 
@@ -540,110 +512,139 @@ public static boolean fullscreen = true;
 //#else
             inputStream.readBoolean();
 //#endif
-	    inputStream.close();
-            inputStream=null;
-	} catch (IOException e) { // Левые Exception'ы должны обрабатываться не здесь (поэтому ловим только IOException).
+//#ifdef PRIVACY
+            useQuickPrivacy = inputStream.readBoolean();            
+//#else
+//#         inputStream.readBoolean();
+//#endif             
+            inputStream.close();
+            inputStream = null;
+        } catch (IOException e) { // Левые Exception'ы должны обрабатываться не здесь (поэтому ловим только IOException).
             try {
-                if (inputStream!=null) {
+                if (inputStream != null) {
                     inputStream.close();
-                    inputStream=null;
+                    inputStream = null;
                 }
-            } catch (IOException ex) { }
-	} catch (NullPointerException e) { /* Сюда мы попадём, если Storage нет */ }
-	
-	lastProfile=profile=def_profile;
-        if (lastProfile==AlertProfile.VIBRA) lastProfile=0;
-	updateTime();
-	VirtualList.fullscreen=fullscreen;
-	VirtualList.memMonitor=memMonitor;
-        VirtualList.showBalloons=showBalloons;
-        VirtualList.panelsState=panelsState;
-        VirtualList.showTimeTraffic=showTimeTraffic;
-        
+            } catch (IOException ex) {
+            }
+        } catch (NullPointerException e) { /* Сюда мы попадём, если Storage нет */ }
+
+        lastProfile = profile = def_profile;
+        if (lastProfile == AlertProfile.VIBRA) {
+            lastProfile = 0;
+        }
+        updateTime();
+        VirtualList.fullscreen = fullscreen;
+        VirtualList.memMonitor = memMonitor;
+        VirtualList.showBalloons = showBalloons;
+        VirtualList.panelsState = panelsState;
+        VirtualList.showTimeTraffic = showTimeTraffic;
+
 //#ifdef PLUGINS
 //#ifdef FILE_TRANSFER
-//#         if(!sd.FileTransfer) fileTransfer=false;
+//#         if (!sd.FileTransfer) {
+//#             fileTransfer = false;
+//#         }
 //#endif
 //#ifdef PEP
-//#         if(!sd.PEP) sndrcvmood=false;
+//#         if (!sd.PEP) {
+//#             sndrcvmood = false;
+//#         }
 //#endif
 //#ifdef PEP_TUNE
-//#         if(!sd.PEP) rcvtune=false;
+//#         if (!sd.PEP) {
+//#             rcvtune = false;
+//#         }
 //#endif
 //#ifdef PEP_ACTIVITY
-//#         if (!sd.PEP) rcvactivity=false;
+//#         if (!sd.PEP) {
+//#             rcvactivity = false;
+//#         }
 //#endif
 //#ifdef ADHOC
-//#         if(!sd.Adhoc) adhoc=false;
+//#         if (!sd.Adhoc) {
+//#             adhoc = false;
+//#         }
 //#endif
 //#ifdef CLIENTS_ICONS
-//#         if(!sd.ClientsIcons) showClientIcon=false;
+//#         if (!sd.ClientsIcons) {
+//#             showClientIcon = false;
+//#         }
 //#endif
 //#ifdef HISTORY
-//#         if(!sd.History) saveHistory=false;
+//#         if (!sd.History) {
+//#             saveHistory = false;
+//#         }
 //#endif
 //#endif
     }
-    
-    public String langFileName(){
-        if (lang==null) {
+
+    public String langFileName() {
+        if (lang == null) {
             //auto-detecting
-            lang=System.getProperty("microedition.locale");
+            lang = System.getProperty("microedition.locale");
             System.out.println(lang);
             //We will use only language code from locale
-            if (lang==null) lang="en"; else lang=lang.substring(0, 2).toLowerCase();
+            if (lang == null) {
+                lang = "en";
+            } else {
+                lang = lang.substring(0, 2).toLowerCase();
+            }
         }
-        
-        if (lang.equals("en")) return null;  //english
-	Vector files[]=new StringLoader().stringLoader("/lang/res.txt", 3);
-        for (int i=0; i<files[0].size(); i++) {
-            String langCode=(String) files[0].elementAt(i);
-            if (lang.equals(langCode))
-        	return (String) files[1].elementAt(i);
+
+        if (lang.equals("en")) {
+            return null;  //english
+        }
+        Vector files[] = new StringLoader().stringLoader("/lang/res.txt", 3);
+        for (int i = 0; i < files[0].size(); i++) {
+            String langCode = (String) files[0].elementAt(i);
+            if (lang.equals(langCode)) {
+                return (String) files[1].elementAt(i);
+            }
         }
         return null; //unknown language ->en
     }
-    
-    public void saveToStorage(){
-	DataOutputStream outputStream=NvStorage.CreateDataOutputStream();
-	
-	try {
-	    outputStream.writeInt(accountIndex);
-	    outputStream.writeBoolean(showOfflineContacts);
-	    outputStream.writeBoolean(fullscreen);
-	    outputStream.writeInt(def_profile);
+
+    public void saveToStorage() {
+        DataOutputStream outputStream = NvStorage.CreateDataOutputStream();
+
+        try {
+            outputStream.writeInt(accountIndex);
+            outputStream.writeBoolean(showOfflineContacts);
+            outputStream.writeBoolean(fullscreen);
+            outputStream.writeInt(def_profile);
 //#ifdef SMILES
-	    outputStream.writeBoolean(smiles);
+            outputStream.writeBoolean(smiles);
 //#else
 //#             outputStream.writeBoolean(false);
 //#endif
-	    outputStream.writeBoolean(showTransports);
-	    outputStream.writeBoolean(selfContact);
-	    outputStream.writeBoolean(collapsedGroups);
-	    outputStream.writeBoolean(ignore);
-	    outputStream.writeBoolean(eventComposing);
-	    outputStream.writeInt(gmtOffset);
-	    outputStream.writeInt(0); //locOffset
-	    outputStream.writeBoolean(autoLogin);
+            outputStream.writeBoolean(showTransports);
+            outputStream.writeBoolean(selfContact);
+            outputStream.writeBoolean(collapsedGroups);
+            outputStream.writeBoolean(ignore);
+            outputStream.writeBoolean(eventComposing);
+            outputStream.writeInt(gmtOffset);
+            outputStream.writeInt(0); //locOffset
+            outputStream.writeBoolean(autoLogin);
 //#ifndef WMUC                             
-	    outputStream.writeBoolean(autoJoinConferences);
+            outputStream.writeBoolean(autoJoinConferences);
 //#else 
 //#             outputStream.writeBoolean(false);
 //#endif            
             outputStream.writeBoolean(popupFromMinimized);
-	    outputStream.writeBoolean(notifyBlink);
-	    outputStream.writeBoolean(memMonitor);
+            outputStream.writeBoolean(notifyBlink);
+            outputStream.writeBoolean(memMonitor);
             outputStream.writeInt(rosterFont);
             outputStream.writeInt(msgFont);
             outputStream.writeBoolean(autoFocus);
             outputStream.writeInt(notInListDropLevel);
 //#ifndef WMUC            
-            outputStream.writeBoolean(storeConfPresence); 
+            outputStream.writeBoolean(storeConfPresence);
 //#else 
 //#             outputStream.writeBoolean(false);
 //#endif                        
-            outputStream.writeBoolean(capsState); 
-	    outputStream.writeInt(textWrap);
+            outputStream.writeBoolean(capsState);
+            outputStream.writeInt(textWrap);
             outputStream.writeInt(loginstatus);
 //#ifdef HISTORY
 //#             outputStream.writeUTF(msgPath);
@@ -704,7 +705,7 @@ public static boolean fullscreen = true;
 
             outputStream.writeBoolean(enableVersionOs);
             outputStream.writeInt(messageLimit);
-            outputStream.writeUTF(lang);      
+            outputStream.writeUTF(lang);
             outputStream.writeBoolean(eventDelivery);
 //#ifdef DETRANSLIT
 //#             outputStream.writeBoolean(transliterateFilenames);
@@ -752,11 +753,11 @@ public static boolean fullscreen = true;
 //#endif
             outputStream.writeInt(barFont);
             outputStream.writeInt(baloonFont);
-            
+
             outputStream.writeUTF(verHash);
             outputStream.writeUTF(resolvedHost);
             outputStream.writeInt(resolvedPort);
-            
+
 //#ifdef DETRANSLIT
 //#             outputStream.writeBoolean(autoDeTranslit);
 //#else
@@ -767,25 +768,25 @@ public static boolean fullscreen = true;
 //#else
 //#             outputStream.writeBoolean(false);
 //#endif
-            
+
             outputStream.writeInt(reconnectCount);
             outputStream.writeInt(reconnectTime);
-            
+
             outputStream.writeBoolean(executeByNum);
-            
+
             outputStream.writeBoolean(showNickNames);
-            
+
             outputStream.writeBoolean(adhoc);
-            
+
 //#ifdef PEP_ACTIVITY
 //#             outputStream.writeBoolean(rcvactivity);
 //#else
             outputStream.writeBoolean(false);
 //#endif
             outputStream.writeBoolean(false); //2kill
-            
+
             outputStream.writeBoolean(showTimeTraffic);
-            
+
             outputStream.writeBoolean(swapSendAndSuspend);
             outputStream.writeInt(widthScroll2);
             outputStream.writeBoolean(widthSystemgc);
@@ -799,41 +800,46 @@ public static boolean fullscreen = true;
 //#else
             outputStream.writeBoolean(false);
 //#endif
-
-	} catch (Exception e) { }
-	
-	NvStorage.writeFileRecord(outputStream, "config", 0, true);
-    }
-
-    
-    public void updateTime(){
-	Time.setOffset(gmtOffset);
-    }
-
-    
-    private void getPhoneManufacturer() {
-        if (phoneManufacturer==NOT_DETECTED) {
-            String platform=getPlatformName();
-            phoneManufacturer=NONE;  
+//#ifdef PRIVACY
+            outputStream.writeBoolean(useQuickPrivacy);            
+//#else
+//#         outputStream.writeBoolean(false);
+//#endif             
             
+
+        } catch (Exception e) {
+        }
+
+        NvStorage.writeFileRecord(outputStream, "config", 0, true);
+    }
+
+    public void updateTime() {
+        Time.setOffset(gmtOffset);
+    }
+
+    private void getPhoneManufacturer() {
+        if (phoneManufacturer == NOT_DETECTED) {
+            String platform = getPlatformName();
+            phoneManufacturer = NONE;
+
             if (platform.endsWith("(NSG)")) {
-                phoneManufacturer=SIEMENS;
+                phoneManufacturer = SIEMENS;
                 return;
             } else if (platform.startsWith("SIE")) {
-                phoneManufacturer=SIEMENS2;
+                phoneManufacturer = SIEMENS2;
                 return;
             } else if (platform.startsWith("Motorola-EZX")) {
-                phoneManufacturer=MOTOEZX;
+                phoneManufacturer = MOTOEZX;
                 return;
             } else if (platform.startsWith("Moto")) {
-                phoneManufacturer=MOTO;
+                phoneManufacturer = MOTO;
                 return;
             } else if (platform.startsWith("SonyE")) {
                 if (platform.startsWith("SonyEricssonM600")) {
-                    phoneManufacturer=SONYE_M600;
+                    phoneManufacturer = SONYE_M600;
                     return;
                 }
-                phoneManufacturer=SONYE;
+                phoneManufacturer = SONYE;
 
                 String sonyJava = System.getProperty("com.sonyericsson.java.platform");
                 oldSE = (sonyJava == null) || sonyJava.startsWith("JP-7"); //JP<=7.x
@@ -845,15 +851,15 @@ public static boolean fullscreen = true;
 //#                 return;
 //#endif
             } else if (platform.startsWith("Windows")) {
-                phoneManufacturer=WINDOWS;
+                phoneManufacturer = WINDOWS;
                 return;
-            } else if (platform.startsWith("Nokia9500") || 
-                platform.startsWith("Nokia9300") || 
-                platform.startsWith("Nokia9300i")) {
-                phoneManufacturer=NOKIA_9XXX;
+            } else if (platform.startsWith("Nokia9500")
+                    || platform.startsWith("Nokia9300")
+                    || platform.startsWith("Nokia9300i")) {
+                phoneManufacturer = NOKIA_9XXX;
                 return;
             } else if (platform.startsWith("Nokia")) {
-                phoneManufacturer=NOKIA;
+                phoneManufacturer = NOKIA;
                 int firstDotIndex = platform.indexOf('.');
                 if (firstDotIndex != -1) {
                     try {
@@ -870,121 +876,139 @@ public static boolean fullscreen = true;
                         return;
                     }
                 }
-                if (platform.indexOf("java_build_version") == 0)
-                     oldNokiaS60 = true; // buggy S60 3.1 or older
+                if (platform.indexOf("java_build_version") == 0) {
+                    oldNokiaS60 = true; // buggy S60 3.1 or older
+                }
                 return;
             } else if (platform.startsWith("Intent")) {
-                phoneManufacturer=INTENT;
+                phoneManufacturer = INTENT;
                 return;
             } else if (platform.startsWith("wtk") || platform.endsWith("wtk")) {
-                phoneManufacturer=WTK;
+                phoneManufacturer = WTK;
                 return;
             } else if (platform.startsWith("Samsung")) {
-                phoneManufacturer=SAMSUNG;
+                phoneManufacturer = SAMSUNG;
                 return;
             } else if (platform.startsWith("LG")) {
-                phoneManufacturer=LG;
+                phoneManufacturer = LG;
                 return;
             } else if (platform.startsWith("j2me")) {
-                phoneManufacturer=J2ME;
+                phoneManufacturer = J2ME;
                 return;
             } else if (platform.startsWith("Jbed")) {
-                phoneManufacturer=JBED;
+                phoneManufacturer = JBED;
 //#ifdef FILE_IO
-                try { FileIO f=FileIO.createConnection(""); } catch (Exception ex) { }
+                try {
+                    FileIO f = FileIO.createConnection("");
+                } catch (Exception ex) {
+                }
 //#endif
                 return;
-            }else if (platform.startsWith("microemu")) {
+            } else if (platform.startsWith("microemu")) {
                 phoneManufacturer = MICROEMU;
             } else {
-                phoneManufacturer=OTHER;
+                phoneManufacturer = OTHER;
             }
         }
     }
-    
+
     public static String getPlatformName() {
-        if (platformName==null) {
-            platformName=System.getProperty("microedition.platform");
-            
-            String sonyJava=System.getProperty("com.sonyericsson.java.platform");
-            if (sonyJava!=null) platformName=platformName+"/"+sonyJava;
-            
-            String device=System.getProperty("device.model");
-            String firmware=System.getProperty("device.software.version");
-                        //detecting Samsung
+        if (platformName == null) {
+            platformName = System.getProperty("microedition.platform");
+
+            String sonyJava = System.getProperty("com.sonyericsson.java.platform");
+            if (sonyJava != null) {
+                platformName = platformName + "/" + sonyJava;
+            }
+
+            String device = System.getProperty("device.model");
+            String firmware = System.getProperty("device.software.version");
+            //detecting Samsung
             try {
                 Class.forName("com.samsung.util.AudioClip");
-                platformName="Samsung-generic";
+                platformName = "Samsung-generic";
             } catch (Throwable t0) {
-                try{
+                try {
                     Class.forName("com.samsung.util.Vibration");
-                    platformName="Samsung-generic";
-                }catch(Throwable t1){}
+                    platformName = "Samsung-generic";
+                } catch (Throwable t1) {
+                }
             }
 
 
-            
-            if (platformName==null) platformName="Motorola";
-            
-             if (platformName.startsWith("j2me")) {
-                if (device!=null) if (device.startsWith("wtk-emulator")) {
-                     platformName=device;
-                }
-                if (device!=null && firmware!=null)
-                    platformName="Motorola"; // buggy v360
-		else {
-		    // Motorola EZX phones
-		    String hostname=System.getProperty("microedition.hostname");
-		    if (hostname!=null) {
-		        platformName="Motorola-EZX";
-		        if (device!=null) {
-		    	    // Motorola EZX ROKR
-			    hostname=device;
-                        }
-                     
-                        if (hostname.indexOf("(none)")<0)
-                         platformName+="/"+hostname;
+
+            if (platformName == null) {
+                platformName = "Motorola";
+            }
+
+            if (platformName.startsWith("j2me")) {
+                if (device != null) {
+                    if (device.startsWith("wtk-emulator")) {
+                        platformName = device;
                     }
-		}
-             }
- 	    //else 
-		if (platformName.startsWith("Moto")) {
-                if (device==null) device=System.getProperty("funlights.product");
-                if (device!=null) platformName="Motorola-"+device;
-                try { // thanks vitalyster
-                   Class.forName("com.nokia.mid.ui.DeviceControl");
-                   platformName="Nokia"; // FS #896
                 }
-                catch (Throwable ex) {}
+                if (device != null && firmware != null) {
+                    platformName = "Motorola"; // buggy v360
+                } else {
+                    // Motorola EZX phones
+                    String hostname = System.getProperty("microedition.hostname");
+                    if (hostname != null) {
+                        platformName = "Motorola-EZX";
+                        if (device != null) {
+                            // Motorola EZX ROKR
+                            hostname = device;
+                        }
+
+                        if (hostname.indexOf("(none)") < 0) {
+                            platformName += "/" + hostname;
+                        }
+                    }
+                }
+            }
+            //else 
+            if (platformName.startsWith("Moto")) {
+                if (device == null) {
+                    device = System.getProperty("funlights.product");
+                }
+                if (device != null) {
+                    platformName = "Motorola-" + device;
+                }
+                try { // thanks vitalyster
+                    Class.forName("com.nokia.mid.ui.DeviceControl");
+                    platformName = "Nokia"; // FS #896
+                } catch (Throwable ex) {
+                }
             }
 
             if (platformName.indexOf("SIE") > -1) {
-                platformName=System.getProperty("microedition.platform")+" (NSG)";
-            } else if (System.getProperty("com.siemens.OSVersion")!=null) {
-                platformName="SIE-"+System.getProperty("microedition.platform")+"/"+System.getProperty("com.siemens.OSVersion");
+                platformName = System.getProperty("microedition.platform") + " (NSG)";
+            } else if (System.getProperty("com.siemens.OSVersion") != null) {
+                platformName = "SIE-" + System.getProperty("microedition.platform") + "/" + System.getProperty("com.siemens.OSVersion");
             }
 
             try {
                 Class.forName("com.samsung.util.Vibration");
-                platformName="Samsung";
-            } catch (Throwable ex) { }
-            
+                platformName = "Samsung";
+            } catch (Throwable ex) {
+            }
+
             try {
                 Class.forName("mmpp.media.MediaPlayer");
-                platformName="LG";
+                platformName = "LG";
             } catch (Throwable ex) {
                 try {
                     Class.forName("mmpp.phone.Phone");
-                    platformName="LG";
+                    platformName = "LG";
                 } catch (Throwable ex1) {
                     try {
                         Class.forName("mmpp.lang.MathFP");
-                        platformName="LG";
+                        platformName = "LG";
                     } catch (Throwable ex2) {
                         try {
                             Class.forName("mmpp.media.BackLight");
-                            platformName="LG";
-                        } catch (Throwable ex3) { }
+                            platformName = "LG";
+                        } catch (Throwable ex3) {
+                        }
                     }
                 }
             }
@@ -995,33 +1019,42 @@ public static boolean fullscreen = true;
     public static String getOs() {
         return getPlatformName();
     }
-    
+
     public final String getStringProperty(final String key, final String defvalue) {
-	try {
-	    String s=BombusMod.getInstance().getAppProperty(key);
-	    return (s==null)?defvalue:s;
-	} catch (Exception e) {	}
+        try {
+            String s = BombusMod.getInstance().getAppProperty(key);
+            return (s == null) ? defvalue : s;
+        } catch (Exception e) {
+        }
         return defvalue;
     }
-    
+
     public final int getIntProperty(final String key, final int defvalue) {
-	try { return Integer.parseInt(key); } catch (Exception e) { }
-	return defvalue;
+        try {
+            return Integer.parseInt(key);
+        } catch (Exception e) {
+        }
+        return defvalue;
     }
-    
+
     /*public final char getCharProperty(final String key, final char defvalue) {
-	try { return key.charAt(0); } catch (Exception e) {	}
-        return defvalue;
+    try { return key.charAt(0); } catch (Exception e) {	}
+    return defvalue;
     }*/
-    
     public final boolean getBooleanProperty(final String key, final boolean defvalue) {
-	try {
-	    if (key.equals("true")) return true;
-	    if (key.equals("yes")) return true;
-	    if (key.equals("1")) return true;
+        try {
+            if (key.equals("true")) {
+                return true;
+            }
+            if (key.equals("yes")) {
+                return true;
+            }
+            if (key.equals("1")) {
+                return true;
+            }
             return false;
-	} catch (Exception e) { }
+        } catch (Exception e) {
+        }
         return defvalue;
     }
-    
 }
