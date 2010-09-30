@@ -21,8 +21,7 @@ import ui.controls.form.DefForm;
 //#         super(ColorsList.NAMES[color]);
 //#         parentView = parent;
 //#         selector = new ColorSelector(list, color);
-//#         itemsList.addElement(selector);
-//#         setMenuListener(this);        
+//#         itemsList.addElement(selector);        
 //#     }
 //#     public void cmdOk() {
 //#         selector.eventOk();

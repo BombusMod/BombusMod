@@ -30,7 +30,6 @@ import Client.Config;
 import Client.Msg;
 import javax.microedition.lcdui.*;
 import locale.SR;
-import ui.VirtualList;
 import ui.controls.ExTextBox;
 
 /**

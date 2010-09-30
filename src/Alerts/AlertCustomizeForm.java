@@ -135,9 +135,7 @@ public class AlertCustomizeForm
         itemsList.addElement(sndVol);
         
         itemsList.addElement(new SpacerItem(10));
-        IQNotify=new CheckBox(SR.MS_SHOW_IQ_REQUESTS, cf.IQNotify); itemsList.addElement(IQNotify);
-
-        setMenuListener(this);
+        IQNotify=new CheckBox(SR.MS_SHOW_IQ_REQUESTS, cf.IQNotify); itemsList.addElement(IQNotify);        
     }
     
     public void cmdSave() {

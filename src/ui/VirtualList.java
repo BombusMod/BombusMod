@@ -1537,10 +1537,8 @@ public abstract class VirtualList
 
     public void removeMenuCommand(MenuCommand command) {
         menuCommands.removeElement(command);
-    }
-
+    }   
     
-    public void setMenuListener(MenuListener menuListener) { }
 
     public MenuCommand getCommand(int index) {
         if (index>menuCommands.size()-1) return null;

@@ -45,8 +45,6 @@ public class ActivityList extends DefForm implements MIDPTextBox.TextBoxNotify {
 //#endif
                 );
 
-        setMenuListener(this);
-        
         for (Enumeration e = Activities.getInstance().actValue.elements(); e.hasMoreElements();) {
               SimpleString item = new SimpleString((String)e.nextElement(), false);
               item.selectable = true;
@@ -92,7 +90,11 @@ public class ActivityList extends DefForm implements MIDPTextBox.TextBoxNotify {
             //todo: refactor theStream call; send notification to JabberBlockListener if stream was terminated
             StaticData.getInstance().roster.theStream.addBlockListener(new PepPublishResult( sid));
             StaticData.getInstance().roster.theStream.send(setActivity);
-        } catch (Exception e) {e.printStackTrace(); }
+        } catch (Exception e) {
+//#ifdef DEBUG            
+//#             e.printStackTrace(); 
+//#endif            
+        }
     }
         
 }

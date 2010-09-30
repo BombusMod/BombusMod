@@ -65,8 +65,6 @@ public class PrivacyModifyList extends DefForm
         setMainBarItem(new MainBar(2, null, privacyList.name, false));
 
         //commandState();
-        setMenuListener(this);
-
         plist = privacyList;
         pselector = privacySelect;
         

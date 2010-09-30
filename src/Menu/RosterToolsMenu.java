@@ -104,9 +104,7 @@ public class RosterToolsMenu extends Menu {
         if (connected)
             addItem(SR.MS_MY_VCARD, 3, MenuIcons.ICON_VCARD);
         addItem(SR.MS_OPTIONS, 4, MenuIcons.ICON_SETTINGS);
-        
-        if (connected)
-            addItem(SR.MS_USERS_SEARCH, 5, MenuIcons.ICON_VCARD);
+                
 //#if (HISTORY)
 //#         if (cf.saveHistory)
 //#             addItem(SR.MS_HISTORY_OPTIONS, 6, MenuIcons.ICON_HISTORY);
@@ -223,10 +221,7 @@ public class RosterToolsMenu extends Menu {
             }
             case 4:
                 new ConfigForm();
-                return;
-            case 5: //search
-                new SearchForm();
-                return;
+                return;            
 //#if (HISTORY)
 //#             case 6: //history
 //#                 new HistoryConfig();

@@ -41,7 +41,6 @@ import ui.controls.form.DefForm;
 public class SearchResult
         extends DefForm {
     
-    StaticData sd=StaticData.getInstance();
     boolean xData;
     
     /** Creates a new instance of SearchResult
@@ -53,8 +52,6 @@ public class SearchResult
         String service=result.getAttribute("from");
         
         setMainBarItem(new MainBar(2, null, service, false));
-        
-        setMenuListener(this);
         
         JabberDataBlock query=result.getChildBlock("query");
         if (query==null) return;

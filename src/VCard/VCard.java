@@ -177,7 +177,7 @@ public class VCard {
         return (String) vCardData.elementAt(index);
     }
 
-    public void setVCardData(int index, String data) {
+    public final void setVCardData(int index, String data) {
         vCardData.setElementAt(data, index);
     }
     
@@ -188,7 +188,7 @@ public class VCard {
     }
 //#endif
     
-    public int getCount(){ return vCardFields.size(); }
+    public final int getCount(){ return vCardFields.size(); }
 
     public String getJid() { return jid; }
 

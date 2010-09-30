@@ -31,7 +31,6 @@ import java.util.Enumeration;
 
 import locale.SR;
 import ui.VirtualElement;
-import ui.VirtualList;
 import ui.controls.form.DefForm;
 
 /**
@@ -63,19 +62,13 @@ public class ColorsList extends DefForm
 //#             itemsList.addElement(new ColorVisualItem(c.name, NAMES[cnt], c.color));
             //#endif
             cnt++;
-        }
-        setMenuListener(this);
+        }        
     }
 
     private void loadColors() {
         
     }
-    
-    protected int getItemCount() { return itemsList.size(); }
-
-    protected VirtualElement getItemRef(int index) {
-        return (VirtualElement)itemsList.elementAt(index);
-    }
+        
     public void eventOk() {
         cmdOk();
     }

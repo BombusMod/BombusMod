@@ -33,15 +33,12 @@ import com.alsutton.jabber.datablocks.Iq;
 import java.util.Enumeration;
 import java.util.Vector;
 import Client.Config;
-import PrivacyLists.QuickPrivacy;
 import com.alsutton.jabber.datablocks.Presence;
 
 import util.StringLoader;
 
-//#ifdef PLUGINS
 //#ifdef PRIVACY
-//# import PrivacyLists.QuickPrivacy;
-//#endif
+import PrivacyLists.QuickPrivacy;
 //#endif
 
 /**

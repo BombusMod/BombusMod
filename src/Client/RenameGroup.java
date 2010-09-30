@@ -32,7 +32,6 @@ import com.alsutton.jabber.datablocks.Iq;
 import java.util.Enumeration;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
-import ui.VirtualList;
 import ui.controls.form.DefForm;
 import ui.controls.form.SpacerItem;
 import ui.controls.form.TextInput;
@@ -46,7 +45,6 @@ public class RenameGroup
     
     private Group group;
     //private Contact contact;
-    StaticData sd=StaticData.getInstance();
     
     private TextInput groupName;
     

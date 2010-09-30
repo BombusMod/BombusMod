@@ -68,8 +68,6 @@ public class PrivacySelect
 
         itemsList.addElement(new PrivacyListItem(null));//none
         
-        setMenuListener(this);
-        
         getLists();
     }
     

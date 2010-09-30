@@ -27,7 +27,6 @@
 
 package Alerts;
 
-import Client.*;
 import images.RosterIcons;
 import locale.SR;
 import ui.*;
@@ -50,8 +49,7 @@ public class AlertProfile extends DefForm
     public final static int NONE=3;
     
     private Profile profile=new Profile();
-    int defp;
-    Config cf;
+    int defp;    
     
     /** Creates a new instance of Profile */
     
@@ -61,13 +59,8 @@ public class AlertProfile extends DefForm
     public AlertProfile() {
         super(SR.MS_ALERT_PROFILE);
         
-        cf=Config.getInstance();
-                
-
-        setMenuListener(this);
-        
-        int p=cf.profile;
-        defp=cf.def_profile;
+        int p = cf.profile;
+        defp = cf.def_profile;
         
         moveCursorTo(p);
     }

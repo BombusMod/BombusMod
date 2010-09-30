@@ -26,9 +26,7 @@
 
 package Fonts;
 import Client.Config;
-import Client.StaticData;
 import locale.SR;
-import ui.VirtualList;
 import ui.controls.form.DropChoiceBox;
 import ui.controls.form.DefForm;
 
@@ -39,10 +37,6 @@ public class ConfigFonts
     private DropChoiceBox font2;
     private DropChoiceBox font3;
     private DropChoiceBox font4;
-    
-    StaticData sd=StaticData.getInstance();
-    
-    Config cf;
     
     /** Creates a new instance of ConfigFonts
      */

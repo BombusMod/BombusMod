@@ -42,6 +42,7 @@ import Fonts.FontCache;
 //#ifdef CLIENTS_ICONS
 import images.ClientsIcons;
 //#endif
+import images.MenuIcons;
 import util.StringLoader;
 import ui.Time;
 import ui.VirtualList;
@@ -236,6 +237,7 @@ public class Config {
 
         short greenKeyCode = -1000;
         //prefetch images
+        MenuIcons.getInstance();
         RosterIcons.getInstance();
         ActionsIcons.getInstance();
 //#ifdef SMILES

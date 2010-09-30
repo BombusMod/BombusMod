@@ -24,7 +24,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
- 
 package Client;
 
 import java.util.Enumeration;
@@ -41,48 +40,40 @@ import ui.controls.PopUp;
  *
  * @author EvgS
  */
-public class ActiveContacts 
-    extends DefForm
-{
-    
-    Vector activeContacts;
-    
-    StaticData sd = StaticData.getInstance();
+public class ActiveContacts
+        extends DefForm {
 
     /** Creates a new instance of ActiveContacts
      * @param current
      */
     public ActiveContacts(Contact current) {
-	super(SR.MS_ACTIVE_CONTACTS);
+        super(SR.MS_ACTIVE_CONTACTS);
 
         enableListWrapping(true);
-        activeContacts=null;
-	activeContacts=new Vector();
         //synchronized (sd.roster.getHContacts()) {
-            for (Enumeration r=sd.roster.getHContacts().elements(); r.hasMoreElements(); )  {
-                Contact c=(Contact)r.nextElement();
-                if (c.active()) activeContacts.addElement(c);
+        for (Enumeration r = sd.roster.getHContacts().elements(); r.hasMoreElements();) {
+            Contact c = (Contact) r.nextElement();
+            if (c.active()) {
+                itemsList.addElement(c);
             }
+        }
         //}
 
         if (getItemCount() == 0) {
             destroyView();
             return;
         }
-	
-        MainBar mb=new MainBar(2, String.valueOf(getItemCount()), " ", false);
+
+        MainBar mb = new MainBar(2, String.valueOf(getItemCount()), " ", false);
         mb.addElement(SR.MS_ACTIVE_CONTACTS);
         setMainBarItem(mb);
-	try {
-            int focus=activeContacts.indexOf(current);
+        try {
+            int focus = itemsList.indexOf(current);
             moveCursorTo(focus);
-        } catch (Exception e) {}	
+        } catch (Exception e) {
+        }
     }
-    
-    protected int getItemCount() { return activeContacts.size(); }
-    protected VirtualElement getItemRef(int index) { 
-	return (VirtualElement) activeContacts.elementAt(index);
-    }
+
     public void cmdOk() {
         eventOk();
     }
@@ -94,59 +85,70 @@ public class ActiveContacts
         }
         //c.msgSuspended=null; // clear suspended message for selected contact
     }
-    
 
     public void keyPressed(int keyCode) {
-        kHold=0;
+        kHold = 0;
 //#ifdef POPUPS
         PopUp.getInstance().next();
 //#endif
-	if (keyCode==KEY_NUM3) {
+        if (keyCode == KEY_NUM3) {
             destroyView();
-        } else if (keyCode==KEY_NUM0) {
-            if (getItemCount()<1)
+        } else if (keyCode == KEY_NUM0) {
+            if (getItemCount() < 1) {
                 return;
+            }
 
-            Contact c=(Contact)getFocusedObject();
+            Contact c = (Contact) getFocusedObject();
 
-            Enumeration i=activeContacts.elements();
-            
-            int pass=0; //
-            while (pass<2) {
-                if (!i.hasMoreElements()) i=activeContacts.elements();
-                Contact p=(Contact)i.nextElement();
-                if (pass==1) 
-                    if (p.getNewMsgsCount()>0) { 
+            Enumeration i = itemsList.elements();
+
+            int pass = 0; //
+            while (pass < 2) {
+                if (!i.hasMoreElements()) {
+                    i = itemsList.elements();
+                }
+                Contact p = (Contact) i.nextElement();
+                if (pass == 1) {
+                    if (p.getNewMsgsCount() > 0) {
                         focusToContact(p);
                         setRotator();
-                        break; 
+                        break;
                     }
-                if (p==c) pass++; // полный круг пройден
+                }
+                if (p == c) {
+                    pass++; // полный круг пройден
+                }
             }
             return;
-        } else super.keyPressed(keyCode);
+        } else {
+            super.keyPressed(keyCode);
+        }
     }
-    
+
     private void focusToContact(final Contact c) {
-        int index=activeContacts.indexOf(c);
-        if (index>=0) 
+        int index = itemsList.indexOf(c);
+        if (index >= 0) {
             moveCursorTo(index);
+        }
     }
-    
-    protected void keyGreen(){
+
+    protected void keyGreen() {
         eventOk();
     }
-    
-    protected void keyClear () {
-        Contact c=(Contact)getFocusedObject();
+
+    protected void keyClear() {
+        Contact c = (Contact) getFocusedObject();
         c.purge();
-        activeContacts.removeElementAt(cursor);
+        itemsList.removeElementAt(cursor);
         getMainBarItem().setElementAt(String.valueOf(getItemCount()), 0);
     }
-    
-    public void destroyView(){
+
+    public final void destroyView() {
         sd.roster.reEnumRoster();
         super.destroyView();
     }
-    public String touchLeftCommand(){ return SR.MS_SELECT; }    
+
+    public String touchLeftCommand() {
+        return SR.MS_SELECT;
+    }
 }

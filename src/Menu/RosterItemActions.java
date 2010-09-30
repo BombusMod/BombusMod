@@ -84,8 +84,6 @@ public class RosterItemActions extends Menu {
     
     ActionsIcons menuIcons=ActionsIcons.getInstance();
     
-    Config cf=Config.getInstance();
-    
     /** Creates a new instance of RosterItemActions
      * @param item
      * @param action
@@ -111,7 +109,7 @@ public class RosterItemActions extends Menu {
 //#ifdef PLUGINS
 //#                 if (sd.ChangeTransport);
 //#endif
-//#                     addItem("Change transport", 915);
+//#                     addItem("Change transport", 915, ActionsIcons.ICON_COMMAND);
 //#endif
 	    }
 	    addItem(SR.MS_VCARD,1, ActionsIcons.ICON_VCARD);
@@ -352,7 +350,7 @@ public class RosterItemActions extends Menu {
                         else
                             new VCardView(c);
                         return;
-                    }
+                    }                    
                     VCard.request(c.bareJid, c.getJid());
                     break;
                 case 2:

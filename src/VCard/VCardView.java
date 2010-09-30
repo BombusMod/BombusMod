@@ -30,7 +30,6 @@ import Client.Config;
 import Client.Contact;
 import javax.microedition.io.ConnectionNotFoundException;
 import midlet.BombusMod;
-import ui.controls.AlertBox;
 //#if FILE_IO
 import io.file.FileIO;
 import io.file.browse.Browser;
@@ -92,7 +91,7 @@ public class VCardView
      * @param contact
      */
     public VCardView(Contact contact) {
-        super(contact.getNickJid());
+        super(contact.getNickJid(), false);
         this.vcard=contact.vcard;
         this.c=contact;
         
@@ -116,7 +115,9 @@ public class VCardView
                         LinkString nData=new LinkString(url) { public void doAction() {
                                 try {BombusMod.getInstance().platformRequest(url);
                                 } catch (ConnectionNotFoundException ex) {
-                                    ex.printStackTrace();
+//#ifdef DEBUG                                    
+//#                                     ex.printStackTrace();
+//#endif                                    
                                 } } };
                         itemsList.addElement(nData);
                     }
@@ -124,6 +125,7 @@ public class VCardView
             }
             itemsList.addElement(endVCard);
             itemsList.addElement(refresh);
+            show();
         }
         
     }
@@ -232,10 +234,8 @@ public class VCardView
     public void touchLeftPressed() { showMenu(); }
     
     public void cmdOk() { showMenu(); }
+
     
-    public void cmdExit() {
-        super.cmdCancel();
-    }
     /*
     public void clearVcard() {
         new AlertBox(SR.MS_ACTION, SR.MS_DELETE+" "+SR.MS_VCARD+"?") {

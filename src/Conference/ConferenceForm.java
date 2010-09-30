@@ -156,12 +156,7 @@ public class ConferenceForm
             }
         };
         itemsList.addElement(linkJoin);
-       
-        
-	setMenuListener(this);
-
         moveCursorTo(getNextSelectableRef(-1));        
-        show(parentView);
     }
 
     public void menuAction(MenuCommand c, VirtualList d){

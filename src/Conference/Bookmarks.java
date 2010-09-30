@@ -75,6 +75,8 @@ public class Bookmarks
      */
     public Bookmarks(BookmarkItem toAdd) {
         super(null);
+        loadBookmarks();
+        
         if (getItemCount()==0 && toAdd==null) {
             new ConferenceForm();
             return;
@@ -86,8 +88,7 @@ public class Bookmarks
             addBookmark();
         
         setMainBarItem(new MainBar(2, null, SR.MS_BOOKMARKS+" ("+getItemCount()+") ", false));//for title updating after "add bookmark"
-        
-        setMenuListener(this);
+                
 	enableListWrapping(true);
     }
     
@@ -112,17 +113,10 @@ public class Bookmarks
         addMenuCommand(cmdConfigure);
         addMenuCommand(cmdCancel);
     }
-
-    protected final int getItemCount() { 
-        Vector bookmarks=sd.roster.bookmarks;
-        return (bookmarks==null)?0: bookmarks.size(); 
-    }
     
-    protected VirtualElement getItemRef(int index) { 
-        return (VirtualElement) sd.roster.bookmarks.elementAt(index); 
-    }
     
-    public void loadBookmarks() {
+    public final void loadBookmarks() {
+        itemsList = sd.roster.bookmarks;
     }
 
     private void addBookmark() {
@@ -146,10 +140,6 @@ public class Bookmarks
         
         ConferenceForm.join(join.desc, join.getJidNick(), join.password, cf.confMessageCount);
         midlet.BombusMod.getInstance().setDisplayable(sd.roster);
-    }
-    
-    public void cmdCancel() {
-        sd.roster.show();
     }
     
     public void menuAction(MenuCommand c, VirtualList d){

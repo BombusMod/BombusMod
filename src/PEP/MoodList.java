@@ -14,11 +14,8 @@ import ui.MIDPTextBox;
 import Client.StaticData;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
-import java.util.Vector;
 
-import javax.microedition.lcdui.Display;
 import locale.SR;
-import ui.VirtualElement;
 import ui.controls.form.DefForm;
 
 /**
@@ -32,7 +29,6 @@ public class MoodList extends DefForm implements MIDPTextBox.TextBoxNotify {
     
     /** Creates a new instance of MoodList */
 
-    Vector moods;
     public MoodList() {
         super(
 //#ifdef PEP
@@ -42,21 +38,14 @@ public class MoodList extends DefForm implements MIDPTextBox.TextBoxNotify {
 //#endif
                 );
 
-        setMenuListener(this);
-        
-        moods=new Vector();
         int count=Moods.getInstance().moodValue.size();
         
         for (int i=0; i<count; i++) {
-            moods.addElement(new MoodItem(i));
+            itemsList.addElement(new MoodItem(i));
         }
         
-        sort(moods);
+        sort(itemsList);
     }
-
-    protected int getItemCount() { return moods.size(); }
-
-    protected VirtualElement getItemRef(int index) { return (VirtualElement)moods.elementAt(index); }
 
     public void cmdOk() {
         eventOk();
@@ -97,7 +86,11 @@ public class MoodList extends DefForm implements MIDPTextBox.TextBoxNotify {
             //todo: refactor theStream call; send notification to JabberBlockListener if stream was terminated
             StaticData.getInstance().roster.theStream.addBlockListener(new PepPublishResult( sid));
             StaticData.getInstance().roster.theStream.send(setMood);
-        } catch (Exception e) {e.printStackTrace(); }
+        } catch (Exception e) {
+//#ifdef DEBUG            
+//#             e.printStackTrace(); 
+//#endif            
+        }
     }
         
 }

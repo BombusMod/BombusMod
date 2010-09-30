@@ -46,7 +46,6 @@ import images.MenuIcons;
 //#ifdef ARCHIVE
 import Archive.ArchiveList;
 //#endif
-import Archive.MessageArchive;
 import Menu.RosterItemActions;
 import Menu.RosterToolsMenu;
 import Menu.SieNatMenu;
@@ -55,7 +54,6 @@ import images.ClientsIconsData;
 //#endif
 import images.RosterIcons;
 
-import Menu.MenuListener;
 import Menu.MenuCommand;
 import Menu.MyMenu;
 
@@ -91,6 +89,7 @@ import ui.*;
 //#ifdef POPUPS
 import ui.controls.PopUp;
 //#endif
+import ui.controls.form.DefForm;
 import xmpp.EntityCaps;
 
 import xmpp.XmppError;
@@ -120,30 +119,30 @@ import xmpp.extensions.RosterXListener;
 //#endif
 
 public class Roster
-        extends VirtualList
+        extends DefForm
         implements
-        JabberListener, MenuListener,
+        JabberListener,
         Runnable,
         LoginListener
 {
 
     private MenuCommand cmdActions;//=new MenuCommand(SR.MS_ITEM_ACTIONS, MenuCommand.SCREEN, 1);
-    private MenuCommand cmdStatus=new MenuCommand(SR.MS_STATUS_MENU, MenuCommand.SCREEN, 4);
-    private MenuCommand cmdActiveContacts=new MenuCommand(SR.MS_ACTIVE_CONTACTS, MenuCommand.SCREEN, 3);
-    private MenuCommand cmdAlert=new MenuCommand(SR.MS_ALERT_PROFILE_CMD, MenuCommand.SCREEN, 8);
+    private MenuCommand cmdStatus;
+    private MenuCommand cmdActiveContacts;
+    private MenuCommand cmdAlert;
 //#ifndef WMUC
-    private MenuCommand cmdConference=new MenuCommand(SR.MS_CONFERENCE, MenuCommand.SCREEN, 10);
+    private MenuCommand cmdConference;
 //#endif
 //#ifdef ARCHIVE
-    private MenuCommand cmdArchive=new MenuCommand(SR.MS_ARCHIVE, MenuCommand.SCREEN, 10);
+    private MenuCommand cmdArchive;
 //#endif
-    private MenuCommand cmdAdd=new MenuCommand(SR.MS_ADD_CONTACT, MenuCommand.SCREEN, 12);
-    private MenuCommand cmdTools=new MenuCommand(SR.MS_TOOLS, MenuCommand.SCREEN, 14);
-    private MenuCommand cmdAccount=new MenuCommand(SR.MS_ACCOUNT_, MenuCommand.SCREEN, 15);
-    private MenuCommand cmdCleanAllMessages=new MenuCommand(SR.MS_CLEAN_ALL_MESSAGES, MenuCommand.SCREEN, 50);
-    private MenuCommand cmdInfo=new MenuCommand(SR.MS_ABOUT, MenuCommand.SCREEN, 80);
-    private MenuCommand cmdMinimize=new MenuCommand(SR.MS_APP_MINIMIZE, MenuCommand.SCREEN, 90);
-    private MenuCommand cmdQuit=new MenuCommand(SR.MS_APP_QUIT, MenuCommand.SCREEN, 99);
+    private MenuCommand cmdAdd;
+    private MenuCommand cmdTools;
+    private MenuCommand cmdAccount;
+    private MenuCommand cmdCleanAllMessages;
+    private MenuCommand cmdInfo;
+    private MenuCommand cmdMinimize;
+    private MenuCommand cmdQuit;
 
     public Contact activeContact = null;
     
@@ -157,8 +156,7 @@ public class Roster
     public Object transferIcon;
     
     public Vector hContacts;
-    private Vector vContacts;
-    private Vector paintVContacts;
+    private Vector vContacts;    
 
     public Groups groups;
     
@@ -209,7 +207,7 @@ public class Roster
     private final static int SOUND_OUTGOING=999;
     
     public Roster() {
-        super();
+        super(null, false);
 
         //splash = SplashScreen.getInstance();
          
@@ -234,9 +232,7 @@ public class Roster
         vContacts=new Vector(); // just for displaying
         
 	updateMainBar();
-
-        commandState();
-        setMenuListener(this);
+        
         SplashScreen.getInstance().setExit(this);
 //#ifdef CLIENTS_ICONS
 //#ifdef PLUGINS
@@ -246,43 +242,69 @@ public class Roster
 //#endif
     }       
     
-    public final void commandState(){
+    public final void commandState() {
         menuCommands.removeAllElements();
-        int activeType=MenuCommand.SCREEN;
-        if (phoneManufacturer==Config.NOKIA) activeType=MenuCommand.BACK;
-        if (phoneManufacturer==Config.INTENT) activeType=MenuCommand.BACK;
-        if (phoneManufacturer==Config.J2ME) activeType=MenuCommand.BACK;
+        int activeType = MenuCommand.SCREEN;
+        if (phoneManufacturer == Config.NOKIA) {
+            activeType = MenuCommand.BACK;
+        }
+        if (phoneManufacturer == Config.INTENT) {
+            activeType = MenuCommand.BACK;
+        }
+        if (phoneManufacturer == Config.J2ME) {
+            activeType = MenuCommand.BACK;
+        }
 
-        cmdActions=new MenuCommand(SR.MS_ITEM_ACTIONS, activeType, 2);
-        
+        cmdActions = new MenuCommand(SR.MS_ITEM_ACTIONS, activeType, 2);
+        cmdStatus = new MenuCommand(SR.MS_STATUS_MENU, MenuCommand.SCREEN, 4);
+        cmdActiveContacts = new MenuCommand(SR.MS_ACTIVE_CONTACTS, MenuCommand.SCREEN, 3);
+        cmdAlert = new MenuCommand(SR.MS_ALERT_PROFILE_CMD, MenuCommand.SCREEN, 8);
+//#ifndef WMUC
+        cmdConference = new MenuCommand(SR.MS_CONFERENCE, MenuCommand.SCREEN, 10);
+//#endif
+//#ifdef ARCHIVE
+        cmdArchive = new MenuCommand(SR.MS_ARCHIVE, MenuCommand.SCREEN, 10);
+//#endif
+        cmdAdd = new MenuCommand(SR.MS_ADD_CONTACT, MenuCommand.SCREEN, 12);
+        cmdTools = new MenuCommand(SR.MS_TOOLS, MenuCommand.SCREEN, 14);
+        cmdAccount = new MenuCommand(SR.MS_ACCOUNT_, MenuCommand.SCREEN, 15);
+        cmdCleanAllMessages = new MenuCommand(SR.MS_CLEAN_ALL_MESSAGES, MenuCommand.SCREEN, 50);
+        cmdInfo = new MenuCommand(SR.MS_ABOUT, MenuCommand.SCREEN, 80);
+        cmdMinimize = new MenuCommand(SR.MS_APP_MINIMIZE, MenuCommand.SCREEN, 90);
+        cmdQuit = new MenuCommand(SR.MS_APP_QUIT, MenuCommand.SCREEN, 99);
+
 
         addMenuCommand(cmdStatus);
         addMenuCommand(cmdActiveContacts);
 //#ifndef WMUC
 
-         if (isLoggedIn())
+        if (isLoggedIn()) {
             addMenuCommand(cmdConference);
+        }
 //#endif
         addMenuCommand(cmdAlert);
 //#ifdef ARCHIVE
 //#ifdef PLUGINS
 //#          if (sd.Archive)
 //#endif
-            addMenuCommand(cmdArchive);
+        addMenuCommand(cmdArchive);
 //#endif
-        if (isLoggedIn())
+        if (isLoggedIn()) {
             addMenuCommand(cmdAdd);
+        }
         addMenuCommand(cmdAccount);
         addMenuCommand(cmdTools);
         addMenuCommand(cmdInfo);
 
-        if (cf.allowMinimize) 
+        if (cf.allowMinimize) {
             addMenuCommand(cmdMinimize);
+        }
 
         addMenuCommand(cmdCleanAllMessages);
-        if (phoneManufacturer!=Config.NOKIA_9XXX)
+        if (phoneManufacturer != Config.NOKIA_9XXX) {
             addMenuCommand(cmdQuit);
-        
+        }
+
         cmdActions.setImg(MenuIcons.ICON_ITEM_ACTIONS);
         cmdStatus.setImg(MenuIcons.ICON_STATUS);
 
@@ -298,8 +320,9 @@ public class Roster
         cmdTools.setImg(MenuIcons.ICON_SETTINGS);
         cmdAccount.setImg(MenuIcons.ICON_VCARD);
         cmdInfo.setImg(MenuIcons.ICON_CHECK_UPD);
-        if (cf.allowMinimize)
+        if (cf.allowMinimize) {
             cmdMinimize.setImg(MenuIcons.ICON_FILEMAN);
+        }
         cmdCleanAllMessages.setImg(MenuIcons.ICON_CLEAN_MESSAGES);
         cmdQuit.setImg(MenuIcons.ICON_BUILD_NEW);
     }
@@ -408,19 +431,9 @@ public class Roster
     }
     
     public void beginPaint() {
-        paintVContacts=vContacts;        
-    }
+        itemsList = vContacts;        
+    }    
     
-    public VirtualElement getItemRef(int Index){
-        paintVContacts=vContacts;
-        if (Index > paintVContacts.size())
-			Index = paintVContacts.size() - 1;
-        return (VirtualElement)vContacts.elementAt(Index);
-    }
-    
-    public int getItemCount() {
-        return paintVContacts.size();
-    }
     
     public void setEventIcon(Object icon){
         transferIcon=icon;
@@ -461,6 +474,8 @@ public class Roster
     boolean countNewMsgs() {
         int m=0;
         int h=0;
+        if (hContacts == null)
+            return false;
         synchronized (hContacts) {
             int j=hContacts.size();
             for (int i=0; i<j; i++){
@@ -625,7 +640,7 @@ public class Roster
         
         boolean firstInstance=true; //FS#712 workaround
         int index=0;
-        synchronized (hContacts) {
+        synchronized (getHContacts()) {
             int j=hContacts.size();
             for (int i=0; i<j; i++) {
                 c=(Contact)hContacts.elementAt(i);
@@ -675,7 +690,7 @@ public class Roster
     
     private void removeTrash(){
         int index=0;
-        synchronized (hContacts) {
+        synchronized (getHContacts()) {
             int j=hContacts.size();
             while (index<j) {
                 Contact c=(Contact)hContacts.elementAt(index);
@@ -694,7 +709,7 @@ public class Roster
             return (MucContact) contact;
         } catch (Exception e) {
             // drop buggy bookmark in roster
-            synchronized (hContacts) {
+            synchronized (getHContacts()) {
                 hContacts.removeElement(contact);
             }
             return null;
@@ -847,11 +862,11 @@ public class Roster
 //#endif
 
     public void addContact(Contact c) {
-        synchronized (hContacts) { hContacts.addElement(c); }
+        synchronized (getHContacts()) { hContacts.addElement(c); }
     }
 
     public final Contact findContact(final Jid j, final boolean compareResources) {
-        synchronized (hContacts) {
+        synchronized (getHContacts()) {
             int j2=hContacts.size();
             for (int i=0; i<j2; i++){
                 Contact c=(Contact)hContacts.elementAt(i);
@@ -967,7 +982,7 @@ public class Roster
         
         // reconnect if disconnected
         if (myStatus!=Presence.PRESENCE_OFFLINE && theStream==null ) {
-            synchronized (hContacts) {
+            synchronized (getHContacts()) {
                 doReconnect=(hContacts.size()>1);
             }
             redraw();
@@ -1174,7 +1189,11 @@ public class Roster
             theStream.send( message );
             lastMessageTime=Time.utcTimeMillis();
             playNotify(SOUND_OUTGOING);
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) {
+//#ifdef DEBUG            
+//#             e.printStackTrace(); 
+//#endif            
+        }
 //#ifdef AUTOSTATUS
 //#         messageActivity();
 //#endif
@@ -1388,11 +1407,25 @@ public class Roster
                         //updateContact( nick, c.rosterJid, group, c.subscr, c.ask_subscribe);
                         sendVCardReq();
                         return JabberBlockListener.BLOCK_PROCESSED;
-                    }
-                    
+                    }                   
+                     
                      if (id.startsWith("getvc")) {
-                        if (type.equals("get") || type.equals("set") || type.equals("error") ) return JabberBlockListener.BLOCK_REJECTED;
-                        
+                         if (type.equals("error")) {
+                             setQuerySign(false);
+                            AlertBox alertBox = new AlertBox(SR.MS_ERROR, XmppError.findInStanza(data).toString()) {
+
+                                                   public void yes() {
+                                                       destroyView();
+                                                   }
+
+                                                   public void no() {
+                                                       destroyView();
+                                                   }
+                                               };
+                             return JabberBlockListener.BLOCK_PROCESSED;
+                         }
+                        if (type.equals("get") || type.equals("set") ) return JabberBlockListener.BLOCK_REJECTED;
+                    
                         setQuerySign(false);
                         VCard vcard=new VCard(data);
                         String jid=id.substring(5);
@@ -1545,7 +1578,11 @@ public class Roster
                             }
                         }
                     }
-                } catch (Exception e) { /*e.printStackTrace();*/ }
+                } catch (Exception e) { 
+//#ifdef DEBUG                    
+//#                     e.printStackTrace();
+//#endif                    
+                }
 //#endif
                 if (name==null) name=c.getName();
                 // /me
@@ -1758,7 +1795,7 @@ public class Roster
                          }
                     } else {
                         // processing presences
-                        boolean enNIL= cf.notInListDropLevel > NotInListFilter.DROP_PRESENCES;
+                        boolean enNIL = cf.notInListDropLevel > NotInListFilter.DROP_PRESENCES;
                         c=getContact(from, enNIL);
                         
                         if (c==null) return JabberBlockListener.BLOCK_REJECTED; //drop not-in-list presence
@@ -1935,7 +1972,8 @@ public class Roster
                       systemGC();
                 }
         }
-        if (countNewMsgs()) reEnumRoster();
+        if (countNewMsgs()) 
+            reEnumRoster();
         
         if (!message.unread) return;
         //TODO: clear unread flag if not-in-list IS HIDDEN
@@ -2559,7 +2597,7 @@ public class Roster
 //#ifdef PEP_TUNE
 //#                 if (cntact.pepTune) {
 //#                     mess.append("\n").append(SR.MS_USERTUNE);
-//#                     if (cntact.pepTuneText!="") {
+//#                     if (!cntact.pepTuneText.equals("")) {
 //#                         mess.append(": ").append(cntact.pepTuneText);
 //#                     }
 //#                 }
@@ -2642,10 +2680,15 @@ public class Roster
 //#                 autostatus.destroyTask();
 //#             } catch (Exception ex) {}
 //#         }
-//#endif
-        destroyView();
+//#endif        
         logoff(null);
-
+        try {
+            Thread.sleep(250L);
+        } catch (InterruptedException ex) {
+//#ifdef DEBUG            
+//#             ex.printStackTrace();
+//#endif            
+        }
         BombusMod.getInstance().notifyDestroyed();
     }
     public void menuAction(MenuCommand c, VirtualList d){
@@ -2934,8 +2977,8 @@ public class Roster
         }
     }
 
-	public void destroyView() {
-	}
+    public void destroyView() {
+    }
     
     public void showMenu() {
         commandState();
@@ -3010,9 +3053,11 @@ public class Roster
                                  if (QuickPrivacy.groupsList == null) {
                                      QuickPrivacy.groupsList = new Vector();
                                  }
-                                 if (!QuickPrivacy.groupsList.contains(c.group.name)) {
-                                     QuickPrivacy.groupsList.addElement(c.group.name); 
-                                     needUpdatePrivacy = true;
+                                 if (c.group.type != Groups.TYPE_MUC) {
+                                    if (!QuickPrivacy.groupsList.contains(c.group.name)) {
+                                        QuickPrivacy.groupsList.addElement(c.group.name); 
+                                        needUpdatePrivacy = true;
+                                    }
                                  }
 //#ifdef PLUGINS                        
 //#                              }
@@ -3058,7 +3103,7 @@ public class Roster
                 }
 
                 if (locCursor == cursor && focused != null) {
-                    paintVContacts = vContacts;
+                    itemsList = vContacts;
                     int c = vContacts.indexOf(focused);
                     if (c >= 0) {
                         moveCursorTo(c);

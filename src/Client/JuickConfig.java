@@ -22,7 +22,7 @@ public class JuickConfig extends DefForm {
 //#ifdef PLUGINS
 //#     public static String plugin = new String("PLUGIN_JUICK");
 //#endif
-    private static StaticData sd = StaticData.getInstance();
+    private static StaticData sdata = StaticData.getInstance();
     private DropChoiceBox juickContactsBox = null;
     private static Records records = new Records();
 
@@ -38,17 +38,17 @@ public class JuickConfig extends DefForm {
 
     private void addJuickContactsBox() {
 //#ifdef JUICK
-//#         if (sd.roster.juickContacts.size() > 1) {
-//#             Vector juickContactsNames = new Vector(sd.roster.juickContacts.size());
-//#             for (Enumeration e = sd.roster.juickContacts.elements(); e.hasMoreElements();) {
+//#         if (sdata.roster.juickContacts.size() > 1) {
+//#             Vector juickContactsNames = new Vector(sdata.roster.juickContacts.size());
+//#             for (Enumeration e = sdata.roster.juickContacts.elements(); e.hasMoreElements();) {
 //#                 Contact c = (Contact) e.nextElement();
 //#                 juickContactsNames.addElement(c.getName());
 //#             }
 //#             juickContactsBox = new DropChoiceBox("Main Juick-contact");
 //#             juickContactsBox.items = juickContactsNames;
 //#             //if (!account.juickJID.equals(""))
-//#             if (sd.roster.indexMainJuickContact > -1)
-//#                 juickContactsBox.setSelectedIndex(sd.roster.indexMainJuickContact);
+//#             if (sdata.roster.indexMainJuickContact > -1)
+//#                 juickContactsBox.setSelectedIndex(sdata.roster.indexMainJuickContact);
 //#             else juickContactsBox.setSelectedIndex(0);
 //#             itemsList.addElement(juickContactsBox);
 //#         }
@@ -58,11 +58,11 @@ public class JuickConfig extends DefForm {
     public void cmdOk() {
 //#ifdef JUICK
 //#             if (juickContactsBox != null) {
-//#                 setJuickJID(((Contact) sd.roster.juickContacts.elementAt(juickContactsBox.getSelectedIndex())).bareJid, true);
+//#                 setJuickJID(((Contact) sdata.roster.juickContacts.elementAt(juickContactsBox.getSelectedIndex())).bareJid, true);
 //#             } else {
 //#                 setJuickJID("", true);
 //#             }
-//#             sd.roster.updateMainJuickContact();
+//#             sdata.roster.updateMainJuickContact();
 //#             destroyView();
 //#endif
     }
@@ -71,14 +71,14 @@ public class JuickConfig extends DefForm {
         if (records.isEmpty()) {
             records.readFromStorage();
         }
-     return records.getJuickJID(sd.account.getBareJid());
+     return records.getJuickJID(sdata.account.getBareJid());
     }
 
     public static void setJuickJID(String JJID, boolean toStorage) {
         if (records.isEmpty()) {
             records.readFromStorage();
         }
-        records.setJuickJID(sd.account.getBareJid(), JJID);
+        records.setJuickJID(sdata.account.getBareJid(), JJID);
         if (toStorage) {
             records.writeToStorage();
         }
@@ -133,7 +133,11 @@ public class JuickConfig extends DefForm {
                     outputStream.writeUTF((String) AccountsJIDs.elementAt(i));
                     outputStream.writeUTF((String) JuickJIDs.elementAt(i));
                 }
-            } catch (IOException e) { e.printStackTrace(); }
+            } catch (IOException e) {
+//#ifdef DEBUG                
+//#                 e.printStackTrace(); 
+//#endif                
+            }
             NvStorage.writeFileRecord(outputStream, "juick_db", 0, true);
         }
 

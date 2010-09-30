@@ -115,8 +115,6 @@ public class ContactMessageList extends MessageList {
 //#     private ClipBoard clipboard=ClipBoard.getInstance();
 //#endif
     
-    private Config cf;
-    
     private boolean on_end;
     private boolean composing=true;
 
@@ -129,14 +127,12 @@ public class ContactMessageList extends MessageList {
         this.contact=c;
         sd.roster.activeContact=contact;
 
-        cf=Config.getInstance();
         MainBar mb=new MainBar(contact);
         setMainBarItem(mb);
 
         cursor=0;//activate
         on_end = false;
-        commandState();
-        setMenuListener(this);
+        commandState();        
         
         contact.setIncoming(0);
 //#ifdef FILE_TRANSFER
@@ -434,7 +430,10 @@ public void showNotify() {
 //#endif
                 new RosterItemActions(contact, -1);
         }
-	if (c==cmdActive) new ActiveContacts(contact);
+	if (c==cmdActive)  {
+            savePosition();
+            new ActiveContacts(contact);
+        }
         
         if (c==cmdSubscribe) sd.roster.doSubscribe(contact);
 		
@@ -776,6 +775,7 @@ public void showNotify() {
                     super.pageRight();
                 break;
             case KEY_NUM3:
+                savePosition();
                 new ActiveContacts(contact);
                 break;
             case KEY_NUM9:
@@ -927,7 +927,9 @@ public void showNotify() {
                 contact.activeMessage=msgs.size()-1; //drop activeMessage count
             }
         } catch (Exception e) { 
-            e.printStackTrace();
+//#ifdef DEBUG            
+//#             e.printStackTrace();
+//#endif            
         }
         
         contact.clearVCard();

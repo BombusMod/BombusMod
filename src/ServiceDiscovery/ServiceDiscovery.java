@@ -463,7 +463,6 @@ public class ServiceDiscovery
     
     public void commandState() {
         menuCommands.removeAllElements();
-        setMenuListener(this);
         addMenuCommand(cmdRfsh);
         addMenuCommand(cmdSrv);
         addMenuCommand(cmdFeatures);

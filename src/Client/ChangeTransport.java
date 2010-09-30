@@ -27,60 +27,49 @@ package Client;
 
 import com.alsutton.jabber.datablocks.Presence;
 import java.util.Enumeration;
-import javax.microedition.lcdui.ChoiceGroup;
-import javax.microedition.lcdui.Command;
-import javax.microedition.lcdui.CommandListener;
-import javax.microedition.lcdui.Displayable;
-import javax.microedition.lcdui.Form;
 import locale.SR;
+import ui.controls.form.DefForm;
+import ui.controls.form.DropChoiceBox;
+import ui.controls.form.MultiLine;
 
-public class ChangeTransport implements CommandListener {
+public class ChangeTransport extends DefForm {
 //#ifdef PLUGINS
-    public static String plugin = new String("PLUGIN_CHANGE_TRANSPORT");
+//#     public static String plugin = new String("PLUGIN_CHANGE_TRANSPORT");
 //#endif
 
-    private Form f;
-    private ChoiceGroup tTranspList;
+    private DropChoiceBox tTranspList;
     private String srcTransport;
     
-    private Command cmdOk=new Command(SR.MS_OK, Command.SCREEN, 1);
-    private Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 99);
-    
-    StaticData sd=StaticData.getInstance();
-    
     public ChangeTransport(String srcTransport) {
+        super(SR.MS_TRANSPORT);
         this.srcTransport=srcTransport;
         
-        f=new Form(SR.MS_TRANSPORT);
+        MultiLine instruction = new MultiLine("Warning", "Gateway "+srcTransport+" will be "
+                + "replaced by one from the list of online gateways for all JIDs in your roster "
+                + "(please logoff old gateway to avoid damaging contact list of your guest IM account)", getWidth());
+        instruction.selectable = true;
+        itemsList.addElement(instruction);
         
-        f.append("Warning!\nGateway "+srcTransport+" will be replaced by one from the list of online gateways for all JIDs in your roster (please logoff old gateway to avoid damaging contact list of your guest IM account)");
-        
-        tTranspList=new ChoiceGroup(SR.MS_TRANSPORT, ChoiceGroup.POPUP);
+        tTranspList=new DropChoiceBox(SR.MS_TRANSPORT);
         for (Enumeration e=sd.roster.getHContacts().elements(); e.hasMoreElements(); ){
             Contact ct=(Contact)e.nextElement();
             if (ct.jid.isTransport() && ct.status<Presence.PRESENCE_OFFLINE) //New transport must be online! If old transport is online and new transport is offline, contact list of guest IM account may be damaged
-                tTranspList.append(ct.bareJid, null);
+                tTranspList.append(ct.bareJid);
         }
         if (tTranspList.size()==0) {
-            tTranspList.append(srcTransport, null); //for avoiding exceptions and for resubscribing to all users of the transport ;)
+            tTranspList.append(srcTransport); //for avoiding exceptions and for resubscribing to all users of the transport ;)
         }
-        f.append(tTranspList);
-        
-        f.addCommand(cmdOk);
-        f.addCommand(cmdCancel);
-        
-        f.setCommandListener(this);
-        
-        midlet.BombusMod.getInstance().setDisplayable(f);
+        itemsList.addElement(tTranspList);
     }
     
-    public void commandAction(Command command, Displayable displayable) {
-        if (command==cmdOk) {
+    public void cmdOk () {
 //#if CHANGE_TRANSPORT            
-            sd.roster.contactChangeTransport(srcTransport, tTranspList.getString(tTranspList.getSelectedIndex()));
-            //System.out.println(srcTransport+"->"+tTranspList.getString(tTranspList.getSelectedIndex()));
-//#endif
-        }
-        midlet.BombusMod.getInstance().setDisplayable(sd.roster);
+//#             sd.roster.contactChangeTransport(srcTransport, tTranspList.toString());
+//#             //System.out.println(srcTransport+"->"+tTranspList.getString(tTranspList.getSelectedIndex()));
+//#endif        
+        destroyView();
+    }
+    public void cmdCancel() {
+        destroyView();
     }
 }

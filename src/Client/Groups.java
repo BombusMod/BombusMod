@@ -27,7 +27,6 @@
 
 package Client;
 
-import PrivacyLists.QuickPrivacy;
 import java.util.*;
 import locale.SR;
 

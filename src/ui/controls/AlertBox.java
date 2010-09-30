@@ -26,7 +26,6 @@
 
 package ui.controls;
 
-import Client.StaticData;
 import javax.microedition.lcdui.Graphics;
 import ui.controls.form.DefForm;
 import ui.controls.form.MultiLine;

@@ -42,25 +42,19 @@ import locale.SR;
 import ui.IconTextElement;
 import ui.VirtualElement;
 import ui.VirtualList;
+import ui.controls.form.DefForm;
 
 /**
  *
  * @author evgs
  */
-public class Browser
-    extends VirtualList
-    implements
-        MenuListener
-    {
+public class Browser extends DefForm {
  
-    private Vector dir;
-
-    MenuCommand cmdOk=new MenuCommand(SR.MS_BROWSE, MenuCommand.OK, 1);
+    MenuCommand cmdBrowse=new MenuCommand(SR.MS_BROWSE, MenuCommand.OK, 1);
     MenuCommand cmdSelect=new MenuCommand(SR.MS_SELECT, MenuCommand.SCREEN, 2);
     MenuCommand cmdView=new MenuCommand(SR.MS_VIEW, MenuCommand.SCREEN, 3);
     MenuCommand cmdRoot=new MenuCommand(SR.MS_ROOT, MenuCommand.SCREEN, 4);
     MenuCommand cmdDelete=new MenuCommand(SR.MS_DELETE, MenuCommand.SCREEN, 5);
-    MenuCommand cmdCancel=new MenuCommand(SR.MS_BACK, MenuCommand.BACK, 98);
     MenuCommand cmdExit=new MenuCommand(SR.MS_CANCEL, MenuCommand.EXIT, 99);
 
     private String path;
@@ -70,7 +64,7 @@ public class Browser
     
     /** Creates a new instance of Browser */
     public Browser(String path, BrowserListener browserListener, boolean getDirectory) {
-        super();
+        super(null);
         
         this.browserListener=browserListener;
 	this.getDirectory=getDirectory;
@@ -85,7 +79,7 @@ public class Browser
         
         menuCommands.removeAllElements();
         
-        addMenuCommand(cmdOk);
+        addMenuCommand(cmdBrowse);
         
         if (getDirectory) {
             addMenuCommand(cmdSelect);
@@ -96,8 +90,7 @@ public class Browser
         addMenuCommand(cmdRoot);
         addMenuCommand(cmdExit);
         addMenuCommand(cmdCancel);
-        setMenuListener(this);
-       
+        
         // trim filename
         int l=path.lastIndexOf('/');
         if (l<0)
@@ -105,14 +98,9 @@ public class Browser
         else
             path=path.substring(0,l+1);
 
-        chDir(path);
+        chDir(path);      
         
-        show(parentView);
     }
-    
-    protected int getItemCount() { return dir.size(); }
-    
-    protected VirtualElement getItemRef(int index) { return (VirtualElement) dir.elementAt(index); }
     
     public void cmdCancel() {
         if (!chDir("../")) {
@@ -130,7 +118,7 @@ public class Browser
             chDir(path);
             return;
         }
-        if (command==cmdOk) eventOk();
+        if (command==cmdBrowse) eventOk();
         if (command==cmdSelect) {
             String f=((FileItem)getFocusedObject()).name;
             if (f.endsWith("/")) {
@@ -178,10 +166,10 @@ public class Browser
              path+=relativePath;
         }
         readDirectory(this.path);
-        sort(dir);
+        sort(itemsList);
 
-        for (int i=0; i<dir.size(); i++) {
-            if ( ((FileItem)dir.elementAt(i)).name.equals(focus) ) {
+        for (int i=0; i<itemsList.size(); i++) {
+            if ( ((FileItem)itemsList.elementAt(i)).name.equals(focus) ) {
                 moveCursorTo(i);
                 return true;
             }
@@ -193,19 +181,20 @@ public class Browser
     private void readDirectory(String name) {
         getMainBarItem().setElementAt((path.endsWith("/"))?path.substring(0, path.length()-1):path, 0);
         
-        dir=new Vector();
-        
+        itemsList.removeAllElements();
         try {
             FileIO f=FileIO.createConnection(name);
             
             Enumeration files=f.fileList(getDirectory).elements();
             
             while (files.hasMoreElements())
-                dir.addElement( new FileItem((String) files.nextElement()) );
+                itemsList.addElement( new FileItem((String) files.nextElement()) );
             
         } catch (Exception ex) {
-            dir.addElement( new FileItem("../(Restricted Access)"));
-            ex.printStackTrace();
+            itemsList.addElement( new FileItem("../(Restricted Access)"));
+//#ifdef DEBUG            
+//#             ex.printStackTrace();
+//#endif            
         }
     }
     
@@ -217,9 +206,13 @@ public class Browser
             FileIO fio=FileIO.createConnection(path+f);
             fio.delete();
             fio.close();
-            dir.removeElement(getFocusedObject());
+            itemsList.removeElement(getFocusedObject());
             redraw();
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) {
+//#ifdef DEBUG            
+//#             e.printStackTrace(); 
+//#endif            
+        }
     }
     
     public void showFile() {
@@ -301,7 +294,6 @@ public class Browser
     }
     public void showMenu() {
         new MyMenu( this, this, SR.MS_DISCO, null, menuCommands);
-    }
+    }   
     
-    public void touchRightPressed() { cmdCancel(); }
 }

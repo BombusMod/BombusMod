@@ -48,8 +48,6 @@ public abstract class MessageList extends VirtualList
         MenuListener
     {
     
-    private Config cf;
-    
     protected Vector messages;
 //#ifdef CLIPBOARD
 //#     private ClipBoard clipboard=ClipBoard.getInstance();
@@ -77,9 +75,7 @@ public abstract class MessageList extends VirtualList
 //#endif
         enableListWrapping(false);
 	
-        cursor=0;//activate
-
-        setMenuListener(this);
+        cursor=0;//activate        
     }    
     
     

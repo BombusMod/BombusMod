@@ -133,6 +133,10 @@ public class MessageArchive {
 	    RecordStore rs=RecordStore.openRecordStore((where==1)?ARCHIVE:TEMPLATES, true);
 	    rs.addRecord(b, 0, b.length);
             rs.closeRecordStore();
-	} catch (Exception e) { e.printStackTrace(); }
+	} catch (Exception e) { 
+//#ifdef DEBUG            
+//#             e.printStackTrace(); 
+//#endif            
+        }
     }
 }

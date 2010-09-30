@@ -77,7 +77,7 @@ public class Accounts {
     }
     
     
-    public void importData(boolean fromResource) {
+    public final void importData(boolean fromResource) {
         String accounts="";
 
         byte[] bodyMessage = null;
@@ -175,7 +175,7 @@ public class Accounts {
         return block.toString();
     }
     
-    public void exportData() {
+    public final void exportData() {
         StringBuffer body=new StringBuffer();
         
         getAccounts();

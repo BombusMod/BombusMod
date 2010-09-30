@@ -66,8 +66,10 @@ public class QuickPrivacy extends DefForm implements JabberBlockListener {
         try {
             if (data.getTypeAttribute().equals("result")) {
                 if (data.getAttribute("id").equals("quicklst")) {
-                    new PrivacyList(LIST_QUICKPRIVACY).activate("active");
-                    new PrivacyList(LIST_QUICKPRIVACY).activate("default");
+                    if (cf.useQuickPrivacy) {
+                        new PrivacyList(LIST_QUICKPRIVACY).activate("active");
+                        new PrivacyList(LIST_QUICKPRIVACY).activate("default");
+                    }
                     return JabberBlockListener.NO_MORE_BLOCKS;
                 }
             }

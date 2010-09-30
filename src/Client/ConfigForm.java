@@ -27,7 +27,6 @@
 
 package Client;
 import java.util.Vector;
-import javax.microedition.lcdui.Displayable;
 import locale.SR;
 import ui.VirtualList;
 import ui.controls.form.CheckBox;
@@ -135,8 +134,6 @@ public class ConfigForm
 
     private Vector langs[];
 
-    Config cf;
-    
     /** Creates a new instance of ConfigForm
      */
     public ConfigForm() {

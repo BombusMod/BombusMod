@@ -68,14 +68,12 @@ public class DefForm
         
         commandState();
         
-	setMenuListener(this);
-        
         enableListWrapping(false);
         if (show)
             show(parentView);
     }
 
-    protected int getItemCount() { return itemsList.size(); }
+    protected int getItemCount() { return (itemsList == null) ? 0 : itemsList.size(); }
 
     protected VirtualElement getItemRef(int index) {
         return (VirtualElement) itemsList.elementAt(index);

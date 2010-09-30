@@ -4,7 +4,6 @@
 
 package LightControl;
 
-import javax.microedition.lcdui.Displayable;
 import locale.SR;
 import java.util.Vector;
 import ui.controls.form.CheckBox;
@@ -14,7 +13,7 @@ import ui.controls.form.NumberInput;
 public class LightConfigForm
         extends DefForm {
 //#ifdef PLUGINS
-//#     public static String plugin = "PLUGIN_LIGHT";
+//#     public static String plugin = new String("PLUGIN_LIGHT");
 //#endif    
     
     private CheckBox config_enabled;
@@ -66,9 +65,5 @@ public class LightConfigForm
         light.saveToStorage();
         destroyView();
         return;
-    }
-  public void cmdCancel() {
-        destroyView();
-        return;
-  }
+    }  
 }

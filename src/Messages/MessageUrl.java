@@ -65,15 +65,11 @@ public class MessageUrl extends DefForm implements TextBoxNotify {
      */
     public MessageUrl(Vector urlList) {
 	super("URLs");
-        this.urlList=urlList;
-
-        commandStateCommon();
+        this.urlList = urlList;       
 
 	for (int i=0; i<urlList.size(); i++) { // throws exception
 	    itemsList.addElement(new ListItem((String)urlList.elementAt(i)));
-	}
-
-        setMenuListener(this);
+	}        
 
     }
     
@@ -104,7 +100,9 @@ public class MessageUrl extends DefForm implements TextBoxNotify {
         try {
             BombusMod.getInstance().platformRequest((String)urlList.elementAt(cursor));
         } catch (ConnectionNotFoundException ex) {
-            ex.printStackTrace();
+//#ifdef DEBUG            
+//#             ex.printStackTrace();
+//#endif            
         }
 	destroyView();
     }
@@ -121,8 +119,8 @@ public class MessageUrl extends DefForm implements TextBoxNotify {
     }
 
     public void OkNotify(String text_return) {
-        destroyView();
-        Display.getDisplay(BombusMod.getInstance()).setCurrent(parentView);
+        // ((ListItem)itemsList.elementAt(cursor)) = text_return; TODO: return edited url
+        destroyView();        
     }
     
      public void commandState() {
@@ -131,18 +129,14 @@ public class MessageUrl extends DefForm implements TextBoxNotify {
          addMenuCommand(cmdGoto);
          addMenuCommand(cmdEdit);
          addMenuCommand(cmdCancel);
-         commandStateCommon();
-     }
-     
-     public void commandStateCommon() {
-//#ifdef CLIPBOARD
-//#          if (Client.Config.getInstance().useClipBoard) {
+         //#ifdef CLIPBOARD
+//#          if (cf.useClipBoard) {
 //#              addMenuCommand(cmdCopy);
 //#              addMenuCommand(cmdCopyPlus);
 //#          }
 //#endif
      }
-     
+        
     public String touchLeftCommand(){ return SR.MS_MENU; }
 
     public void touchLeftPressed(){

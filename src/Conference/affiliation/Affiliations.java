@@ -54,7 +54,6 @@ public class Affiliations
         implements JabberBlockListener
 {
 
-    private Vector items;
     private String id="admin";
     private String namespace="http://jabber.org/protocol/muc#admin";
     private String room;
@@ -67,10 +66,6 @@ public class Affiliations
 //#     private MenuCommand cmdCopy   = new MenuCommand(SR.MS_COPY, MenuCommand.SCREEN, 3);
 //#     private ClipBoard clipboard; 
 //#endif
-    
-    protected VirtualElement getItemRef(int index) { return (VirtualElement) items.elementAt(index); }
-    protected int getItemCount() { return items.size(); }
-    
     
     /** Creates a new instance of AffiliationList
      * @param room
@@ -92,10 +87,6 @@ public class Affiliations
         setMainBarItem(new MainBar(2, null, " ", false));
         getMainBarItem().addElement(id);
         
-        items=null;
-        items=new Vector();
-        
-        setMenuListener(this);                
         getList();
     }
     
@@ -136,7 +127,7 @@ public class Affiliations
     }
     
     private void processIcon(boolean processing){
-        String count=(items==null)? null: String.valueOf(items.size());
+        String count=(itemsList==null)? null: String.valueOf(itemsList.size());
         getMainBarItem().setElementAt((processing)?
             (Object)new Integer(RosterIcons.ICON_PROGRESS_INDEX): 
             (Object)count, 0);
@@ -154,7 +145,7 @@ public class Affiliations
                     }
                 } catch (Exception e) { /* no any items */}
                 sort(tempItems);
-                items=tempItems;
+                itemsList = tempItems;
                 tempItems=null;
                 
                 redraw();

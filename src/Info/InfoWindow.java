@@ -39,7 +39,6 @@ import ui.controls.form.LinkString;
 import ui.controls.form.MultiLine;
 import ui.controls.form.SpacerItem;
 import Menu.MenuCommand;
-import Menu.MyMenu;
 import ui.VirtualList;
 //#ifdef CLIPBOARD
 //# import util.ClipBoard;
@@ -57,8 +56,6 @@ public class InfoWindow
     MultiLine name;
     MultiLine memory;
     MultiLine abilities;
-
-    StaticData sd=StaticData.getInstance();
 
 //#ifdef CLIPBOARD
 //#     ClipBoard clipboard  = ClipBoard.getInstance();
@@ -124,8 +121,7 @@ public class InfoWindow
 //#                 if (clipboard.isEmpty())
 //#                     addMenuCommand(cmdCopyPlus);
 //#             }
-//#endif
-        addMenuCommand(cmdCancel);
+//#endif        
     }
 
     public String touchLeftCommand(){ return SR.MS_MENU; }

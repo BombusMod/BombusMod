@@ -32,7 +32,7 @@ import java.io.IOException;
 
 public class LightConfig {
 //#ifdef PLUGINS
-//#     public static String plugin = "PLUGIN_LIGHT";
+//#     public static String plugin = new String("PLUGIN_LIGHT");
 //#endif    
 
     public boolean light_control=false;

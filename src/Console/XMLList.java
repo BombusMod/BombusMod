@@ -29,7 +29,6 @@ package Console;
 
 import Client.Config;
 import Client.Msg;
-import Client.StaticData;
 import Messages.MessageList;
 import java.util.Vector;
 import Menu.MenuCommand;
@@ -73,8 +72,6 @@ public final class XMLList
         
         commandState();
         addMenuCommands();
-        setMenuListener(this);
-
         moveCursorHome();
 
 //#ifdef CONSOLE        

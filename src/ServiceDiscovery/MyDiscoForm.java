@@ -112,8 +112,6 @@ public class MyDiscoForm extends DefForm{
             }
         }        
        
-       setMenuListener(this);
-        
         if (childName.equals("command")) {
             if (query.getAttribute("status").equals("completed")) {
                 itemsList.addElement(new SimpleString("Complete.", true));

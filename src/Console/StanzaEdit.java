@@ -32,7 +32,6 @@ import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
-import ui.VirtualList;
 import ui.controls.ExTextBox;
 
 /**
@@ -119,7 +118,9 @@ public class StanzaEdit
                 try {
                     StaticData.getInstance().roster.theStream.send(body.trim());
                 } catch (IOException ex) {
-                    ex.printStackTrace();
+//#ifdef DEBUG                    
+//#                     ex.printStackTrace();
+//#endif                    
                 }
             }
             destroyView();

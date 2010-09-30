@@ -54,19 +54,14 @@ public class StatusSelect
     private int defp;
     private Contact to;
 
-    private Config cf;    
-    
     public StatusSelect(Contact to) {
         super(SR.MS_STATUS);
         
-        cf=Config.getInstance();
         statusList=StatusList.getInstance().statusList;
         this.to=to;
         if (to!=null) {
              setMainBarItem(new MainBar(to));
-        }
-
-        setMenuListener(this);
+        }       
         
         defp=cf.loginstatus;
         moveCursorTo(defp);
