@@ -374,7 +374,7 @@ public class ServiceDiscovery
     private void exitDiscovery(boolean cancel) {        
         if (cancel || stackItems.empty()) {
             stream.cancelBlockListener(this);
-            sd.roster.show();
+            super.destroyView();
         } else {
             State st = (State) stackItems.pop();        
             service = st.service;
