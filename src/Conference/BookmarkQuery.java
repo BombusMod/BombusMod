@@ -79,8 +79,8 @@ public class BookmarkQuery implements JabberBlockListener {
 //#ifdef PLUGINS
 //#                 if (sd.Privacy) {
 //#endif    
-                     QuickPrivacy.conferenceList = null;
-                     QuickPrivacy.conferenceList = new Vector(); 
+                     if (QuickPrivacy.conferenceList == null)
+                        QuickPrivacy.conferenceList = new Vector(); 
 //#ifdef PLUGINS                
 //#                 }
 //#endif
@@ -106,6 +106,16 @@ public class BookmarkQuery implements JabberBlockListener {
                             ConferenceForm.join(bm.desc, bm.jid + '/' + bm.nick, bm.password, cf.confMessageCount);
                         }
                     }
+//#ifdef PRIVACY                                                
+//#ifdef PLUGINS                        
+//#                         if (sd.Privacy) {
+//#endif
+                                new QuickPrivacy().updateQuickPrivacyList();
+//#ifdef PLUGINS                        
+//#                         }
+//#endif
+//#endif                        
+                    
                 } catch (Exception e) {
                 } //no any bookmarks
 
