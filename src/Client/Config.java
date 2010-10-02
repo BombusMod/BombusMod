@@ -298,6 +298,10 @@ public class Config {
                 KEY_BACK = VirtualList.MOTOE680_REALPLAYER;
                 greenKeyCode = -31;
                 break;
+            case LG:
+                greenKeyCode = -10;
+                VirtualList.keyClear = -16;
+                break;
             case MICROEMU:
                 greenKeyCode = -5;
                 KEY_BACK = -4; // for android sdk
