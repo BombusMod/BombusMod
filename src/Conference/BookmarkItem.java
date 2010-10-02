@@ -24,9 +24,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-
 package Conference;
-import Client.Config;
+
 import Client.StaticData;
 import com.alsutton.jabber.JabberDataBlock;
 import images.RosterIcons;
@@ -36,75 +35,85 @@ import ui.*;
  *
  * @author EvgS
  */
-public class BookmarkItem extends IconTextElement{
-    
-    String desc;
+public class BookmarkItem extends IconTextElement {
+
+    String name;
     String jid;
     String nick;
     String password;
-    boolean autojoin=false;
+    boolean autojoin = false;
     boolean isUrl;
-    
-    private Config cf;
-    
-    public int getImageIndex(){ 
-        if (isUrl) return RosterIcons.ICON_PRIVACY_ACTIVE;
-        return (autojoin)? RosterIcons.ICON_GCJOIN_INDEX : RosterIcons.ICON_GROUPCHAT_INDEX;
+
+    public int getImageIndex() {
+        if (isUrl) {
+            return RosterIcons.ICON_PRIVACY_ACTIVE;
+        }
+        return (autojoin) ? RosterIcons.ICON_GCJOIN_INDEX : RosterIcons.ICON_GROUPCHAT_INDEX;
     }
 
-    public String toString(){
-        if (desc.length()>0)
-            return desc;
-        
-        return (nick==null)? jid: jid+'/'+nick;
+    public String toString() {
+        if (name.length() > 0) {
+            return name;
+        }
+
+        return (nick == null) ? jid : jid + '/' + nick;
     }
-    
-    public String getJidNick() { return jid+'/'+((nick.length()>0)?nick:StaticData.getInstance().account.getNickName()); }
-    
-    public String getJid() { return jid; }
-    
+
+    public String getJidNick() {
+        return jid + '/' + ((nick.length() > 0) ? nick : StaticData.getInstance().account.getNickName());
+    }
+
+    public String getJid() {
+        return jid;
+    }
+
     /** Creates a new instance of BookmarkItem */
     public BookmarkItem() {
         super(RosterIcons.getInstance());
-        cf=Config.getInstance();
     }
-    
+
     public BookmarkItem(JabberDataBlock data) {
         this();
-        isUrl=!data.getTagName().equals("conference");
-        desc=data.getAttribute("name");
+        isUrl = !data.getTagName().equals("conference");
+        name = data.getAttribute("name");
         try {
-            String ajoin=data.getAttribute("autojoin").trim();
-            autojoin=ajoin.equals("true") || ajoin.equals("1");
-        } catch (Exception e) {}
-        jid=data.getAttribute((isUrl)?"url":"jid");
-        nick=data.getChildBlockText("nick");
-        password=data.getChildBlockText("password");
+            String ajoin = data.getAttribute("autojoin").trim();
+            autojoin = ajoin.equals("true") || ajoin.equals("1");
+        } catch (Exception e) {
+        }
+        jid = data.getAttribute((isUrl) ? "url" : "jid");
+        nick = data.getChildBlockText("nick");
+        password = data.getChildBlockText("password");
     }
-    
-    public BookmarkItem(String desc, String jid, String nick, String password, boolean autojoin){
+
+    public BookmarkItem(String name, String jid, String nick, String password, boolean autojoin) {
         this();
-        this.desc=desc;
-        this.jid=jid;
-        this.nick=nick;
-        this.password=password;
-        this.autojoin=autojoin;
+        this.name = name;
+        this.jid = jid;
+        this.nick = nick;
+        this.password = password;
+        this.autojoin = autojoin;
     }
-    
+
     public JabberDataBlock constructBlock() {
-        JabberDataBlock data=new JabberDataBlock((isUrl)?"url":"conference", null, null);
-        data.setAttribute("name", (desc.equals(""))?jid:desc);
-        data.setAttribute((isUrl)?"url":"jid", jid);
-        data.setAttribute("autojoin", (autojoin)?"true":"false");
-        if (nick!=null) if (nick.length()>0) data.addChild("nick",nick);
-        if (password.length()>0) data.addChild("password",password);
+        JabberDataBlock data = new JabberDataBlock((isUrl) ? "url" : "conference", null, null);
+        data.setAttribute("name", (name.equals("")) ? jid : name);
+        data.setAttribute((isUrl) ? "url" : "jid", jid);
+        data.setAttribute("autojoin", (autojoin) ? "true" : "false");
+        if (nick != null) {
+            if (nick.length() > 0) {
+                data.addChild("nick", nick);
+            }
+        }
+        if (password.length() > 0) {
+            data.addChild("password", password);
+        }
 
         return data;
     }
 
     public int compare(IconTextElement right) {
-        String th=(nick==null)? jid: jid+'/'+nick;
+        String th = (nick == null) ? jid : jid + '/' + nick;
         return th.compareTo(right.toString());
     }
-            
 }

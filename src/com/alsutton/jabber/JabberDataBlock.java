@@ -142,7 +142,7 @@ public class JabberDataBlock
    * @param text The text to add
    */
 
-  public void setText( String text ) { textData=text; }
+  public final void setText( String text ) { textData=text; }
 
   /**
    * Method to get the parent of this block

@@ -103,7 +103,7 @@ public class BookmarkQuery implements JabberBlockListener {
 //#endif                        
                         bookmarks.addElement(bm);
                         if (bm.autojoin && autojoin) {
-                            ConferenceForm.join(bm.desc, bm.jid + '/' + bm.nick, bm.password, cf.confMessageCount);
+                            ConferenceForm.join(bm.name, bm.jid + '/' + bm.nick, bm.password, cf.confMessageCount);
                         }
                     }
 //#ifdef PRIVACY                                                

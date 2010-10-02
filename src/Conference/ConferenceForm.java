@@ -98,7 +98,7 @@ public class ConferenceForm
         int roomEnd=join.getJid().indexOf('@');
         String room="";
         if (roomEnd>0) room=join.getJid().substring(0, roomEnd);
-        createForm(join.desc, room, join.getJid().substring(roomEnd+1), join.nick, join.password, join.autojoin);
+        createForm(join.name, room, join.getJid().substring(roomEnd+1), join.nick, join.password, join.autojoin);
         room=null;
     }
     
@@ -241,7 +241,7 @@ public class ConferenceForm
 
     public static void join(String name, String jid, String pass, int maxStanzas) {
         ConferenceGroup grp = StaticData.getInstance().roster.initMuc(jid, pass);
-        grp.desc=name;
+        grp.name = name;
 
         JabberDataBlock x=new JabberDataBlock("x", null, null);
         x.setNameSpace("http://jabber.org/protocol/muc");

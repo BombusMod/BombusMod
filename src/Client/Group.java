@@ -39,7 +39,7 @@ import ui.*;
  * @author Evg_S
  */
 public class Group extends IconTextElement {
-    String name;
+    public String name;
     public int type; // group index
     public boolean visible=true;
     protected int nContacts;

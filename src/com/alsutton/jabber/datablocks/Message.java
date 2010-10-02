@@ -55,11 +55,11 @@ public class Message extends JabberDataBlock {
     super( _parent, _attributes );
   }
 
-  public void setBodyText( String text ) {
+  public final void setBodyText( String text ) {
     addChild( "body", text );
   }
 
-  public void setSubject( String text ) {
+  public final void setSubject( String text ) {
       addChild( "subject", text );
   }
 

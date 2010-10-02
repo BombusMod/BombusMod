@@ -240,6 +240,7 @@ public class Roster
 //#endif
         ClientsIconsData.getInstance();
 //#endif
+        enableListWrapping(true);
     }       
     
     public final void commandState() {
@@ -740,7 +741,7 @@ public class Roster
 
         // creating room
         if (grp==null) // we hasn't joined this room yet
-            groups.addGroup(grp=new ConferenceGroup(roomJid, room) );
+            groups.addGroup(grp=new ConferenceGroup(room) );
         grp.password=joinPassword;
         
         MucContact c=findMucContact( new Jid(roomJid) );
@@ -1097,7 +1098,7 @@ public class Roster
                 Contact myself=confGroup.selfContact;
 
                 if (c.status==Presence.PRESENCE_OFFLINE){
-                    ConferenceForm.join(confGroup.desc, myself.getJid(), confGroup.password, 20);
+                    ConferenceForm.join(confGroup.name, myself.getJid(), confGroup.password, 20);
                     continue;
                 }
                 Presence presence = new Presence(myStatus, myPriority, myMessage, null);
@@ -2770,7 +2771,7 @@ public class Roster
     public void reEnterRoom(Group group) {
 	ConferenceGroup confGroup=(ConferenceGroup)group;
         String confJid=confGroup.selfContact.getJid();
-        String name=confGroup.desc;
+        String name=confGroup.name;
 	new ConferenceForm(name, confJid, confGroup.password, false);
     }
     

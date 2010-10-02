@@ -215,7 +215,11 @@ public class XMLParser {
                             eventListener.binValueEncountered( baos.toByteArray() );
                         else
                             eventListener.binValueEncountered( new byte[1] );
-                    } catch (Exception ex) { ex.printStackTrace(); }
+                    } catch (Exception ex) { 
+//#ifdef DEBUG                        
+//#                         ex.printStackTrace(); 
+//#endif                        
+                    }
                     
                     baos=null;
                     sbuf=new StringBuffer();
@@ -316,7 +320,7 @@ public class XMLParser {
         }
     }
 
-    public final static String extractAttribute(String attributeName, Vector attributes) {
+    public static String extractAttribute(String attributeName, Vector attributes) {
       if (attributes==null) return null;
       int index=0;
       int j=attributes.size();

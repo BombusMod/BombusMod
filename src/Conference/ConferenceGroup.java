@@ -38,10 +38,9 @@ import images.RosterIcons;
 public class ConferenceGroup extends Group{
     
     /** Creates a new instance of ConferenceGroup */
-    public ConferenceGroup(String name, String label) {
+    public ConferenceGroup(String name) {
 	super(name);
-	this.label=label;
-	imageExpandedIndex=RosterIcons.ICON_GCJOIN_INDEX;
+        imageExpandedIndex=RosterIcons.ICON_GCJOIN_INDEX;
         imageCollapsedIndex=RosterIcons.ICON_GCCOLLAPSED_INDEX; 
         this.type=Groups.TYPE_MUC;
     }
@@ -52,15 +51,10 @@ public class ConferenceGroup extends Group{
     public MucContact confContact;
     
     public String password;
-    public String label;
-    public String desc;
     
     public int getOnlines(){ return (onlines>0)? onlines-1:0; }
-    public int getNContacts(){ return (nContacts>0)? nContacts-1:0; }
+    public int getNContacts(){ return (nContacts>0)? nContacts-1:0; }   
+    
     
     public long conferenceJoinTime;
-    
-    public String toString() {
-        return mainbar((desc==null)?label:desc);
-    }
 }

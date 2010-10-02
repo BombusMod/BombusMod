@@ -138,7 +138,7 @@ public class Bookmarks
         if (join.isUrl) 
             return;
         
-        ConferenceForm.join(join.desc, join.getJidNick(), join.password, cf.confMessageCount);
+        ConferenceForm.join(join.name, join.getJidNick(), join.password, cf.confMessageCount);
         midlet.BombusMod.getInstance().setDisplayable(sd.roster);
     }
     
@@ -174,7 +174,7 @@ public class Bookmarks
             for (Enumeration e=sd.roster.bookmarks.elements(); e.hasMoreElements();) {
                 BookmarkItem bm=(BookmarkItem) e.nextElement();
                 if (bm.autojoin) 
-                    ConferenceForm.join(bm.desc, bm.jid+'/'+bm.nick, bm.password, cf.confMessageCount);
+                    ConferenceForm.join(bm.name, bm.jid+'/'+bm.nick, bm.password, cf.confMessageCount);
             }
             sd.roster.show();
         }

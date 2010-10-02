@@ -24,7 +24,6 @@
  * along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-
 package com.alsutton.jabber;
 
 /**
@@ -32,15 +31,15 @@ package com.alsutton.jabber;
  * @author Evg_S
  */
 public interface JabberBlockListener {
-   public final static int BLOCK_REJECTED=0;
-   public final static int BLOCK_PROCESSED=1;
-   public final static int NO_MORE_BLOCKS=2;
-  /**
-   * Method to handle an incomming block.
-   *
-   * @parameter data The incomming block
-   */
 
-  public int blockArrived(JabberDataBlock data);
-    
+    public final static int BLOCK_REJECTED = 0;
+    public final static int BLOCK_PROCESSED = 1;
+    public final static int NO_MORE_BLOCKS = 2;
+
+    /**
+     * Method to handle an incomming block.
+     *
+     * @parameter data The incomming block
+     */
+    public int blockArrived(JabberDataBlock data);
 }

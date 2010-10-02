@@ -58,7 +58,11 @@ public class ArrayLoader {
                 arrayInt[i]=is.readInt();
             }
             return arrayInt;
-        } catch (Exception ex) { ex.printStackTrace(); }
+        } catch (Exception ex) { 
+//#ifdef DEBUG            
+//#             ex.printStackTrace(); 
+//#endif            
+        }
         
         return null;
     }

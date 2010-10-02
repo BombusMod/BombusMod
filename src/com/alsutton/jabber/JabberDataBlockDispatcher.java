@@ -91,7 +91,9 @@ public class JabberDataBlockDispatcher implements Runnable
       synchronized (blockListeners) { 
           try { blockListeners.removeElement(listener); }
           catch (Exception e) {
-              e.printStackTrace(); 
+//#ifdef DEBUG              
+//#               e.printStackTrace(); 
+//#endif              
           }
       }
   }

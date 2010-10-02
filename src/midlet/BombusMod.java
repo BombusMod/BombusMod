@@ -148,7 +148,9 @@ public class BombusMod extends MIDlet implements Runnable{
         else
             new AccountSelect(true);
         } catch (Exception e) {
-            e.printStackTrace();
+//#ifdef DEBUG            
+//#             e.printStackTrace();
+//#endif            
         }
 //#ifdef LIGHT_CONFIG        
 //#ifdef PLUGINS        
