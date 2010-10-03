@@ -1736,7 +1736,9 @@ public class Roster
                         if (cf.showClientIcon) {
                             if (pr.hasEntityCaps()) {                                
                                 getClientIcon(c, pr.getEntityNode());
-                                c.version = pr.getEntityVer();
+                                String presenceVer = pr.getEntityVer();
+                                if (presenceVer != null)
+                                    c.version = presenceVer;
                             }
                         }
 
