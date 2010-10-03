@@ -28,7 +28,9 @@ package Client;
 //#ifndef WMUC
 import Conference.MucContact;
 //#endif
+//#ifdef PRIVACY
 import PrivacyLists.QuickPrivacy;
+//#endif
 import VCard.VCard;
 import javax.microedition.lcdui.*;
 import java.util.*;

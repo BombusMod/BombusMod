@@ -737,14 +737,14 @@ public class Roster
         String room=from.substring(0,ri);
         String roomJid=from.substring(0,rp).toLowerCase();
 
-        ConferenceGroup grp=(ConferenceGroup)groups.getGroup(roomJid);
+        ConferenceGroup grp = groups.getConfGroup(new Jid(roomJid));
 
         // creating room
         if (grp==null) // we hasn't joined this room yet
-            groups.addGroup(grp=new ConferenceGroup(room) );
+            groups.addGroup(grp = new ConferenceGroup(room, new Jid(roomJid)) );
         grp.password=joinPassword;
         
-        MucContact c=findMucContact( new Jid(roomJid) );
+        MucContact c=findMucContact( new Jid(from) );
         
         if (c==null) {
             c=new MucContact(room, roomJid);
@@ -795,7 +795,7 @@ public class Roster
         c.group=grp;
         c.origin=Contact.ORIGIN_GC_MYSELF;
         
-        grp.collapsed=true; //test
+        grp.collapsed = cf.collapsedGroups;
                
         sort(hContacts);
         return grp;
@@ -805,11 +805,11 @@ public class Roster
         // muc message
         int ri=from.indexOf('@');
         int rp=from.indexOf('/');
-        String room=from.substring(0,ri);
-        String roomJid=from.substring(0,rp).toLowerCase();
+        String room = from.substring(0,ri);
+        String roomJid = from.substring(0,rp).toLowerCase();
 
-        ConferenceGroup grp=(ConferenceGroup)groups.getGroup(roomJid);
-
+        ConferenceGroup grp = groups.getConfGroup(new Jid(roomJid));
+        
         if (grp==null) return null; // we are not joined this room
         
         MucContact c=findMucContact( new Jid(from) );
@@ -1731,11 +1731,9 @@ public class Roster
 //#                     if (sd.ClientsIcons)
 //#endif
                         if (cf.showClientIcon) {
-                            if (pr.hasEntityCaps()) {
-                                if (pr.getEntityNode()!=null)
-                                    getClientIcon(c, pr.getEntityNode());
-                                if (pr.getEntityVer()!=null)
-                                    c.version=pr.getEntityVer();
+                            if (pr.hasEntityCaps()) {                                
+                                getClientIcon(c, pr.getEntityNode());
+                                c.version = pr.getEntityVer();
                             }
                         }
 
@@ -1749,7 +1747,10 @@ public class Roster
                         
                         String chatPres=c.processPresence(xmuc, pr);
                         
-                        if (cf.storeConfPresence || chatPres.indexOf(SR.MS_WAS_BANNED)>-1 || chatPres.indexOf(SR.MS_WAS_KICKED)>-1) {
+                        if (cf.storeConfPresence 
+                                || chatPres.indexOf(SR.MS_WAS_BANNED)>-1
+                                || chatPres.indexOf(SR.MS_WAS_KICKED)>-1 
+                                || xmuc.getTypeAttribute().equals("error")) {
                             int rp=from.indexOf('/');
 
                             String name=from.substring(rp+1);
@@ -1767,7 +1768,11 @@ public class Roster
                         c.priority=pr.getPriority();
                         //System.gc();
                         //Thread.sleep(20);
-                    } catch (Exception e) { }
+                    } catch (Exception e) {
+//#ifdef DEBUG
+//#                         e.printStackTrace();
+//#endif                        
+                    }
                 } else {
 //#endif
                     Contact c=null;
@@ -1778,7 +1783,7 @@ public class Roster
                             return JabberBlockListener.BLOCK_REJECTED;
                         
                         if (cf.autoSubscribe==Config.SUBSCR_REJECT) {
-//#if DEBUG 
+//#ifdef DEBUG 
 //#                             System.out.print(from);
 //#                             System.out.println(": decline subscription");
 //#endif

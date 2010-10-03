@@ -27,6 +27,7 @@
 
 package Client;
 
+import Conference.ConferenceGroup;
 import java.util.*;
 import locale.SR;
 
@@ -129,6 +130,19 @@ public class Groups implements JabberBlockListener{
         }
         return null;
     }
+
+//#ifndef WMUC    
+    public ConferenceGroup getConfGroup (Jid jid) {
+        for (Enumeration e=groups.elements();e.hasMoreElements();){
+            Group grp=(Group)e.nextElement();            
+            if (grp instanceof ConferenceGroup) {                
+                if (jid.equals(((ConferenceGroup)grp).jid, false)) 
+                    return (ConferenceGroup)grp;
+            }
+        }
+        return null;
+    }
+//#endif    
     
     public final Group addGroup(String name, int type) {
         Group ng=new Group(name);

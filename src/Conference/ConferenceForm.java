@@ -38,8 +38,10 @@ import ui.controls.form.NumberInput;
 import ui.controls.form.PasswordInput;
 import ui.controls.form.TextInput;
 import Menu.MenuCommand;
+//#ifdef PRIVACY
 import PrivacyLists.QuickPrivacy;
 import java.util.Vector;
+//#endif
 import ui.VirtualList;
 
 /**

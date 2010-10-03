@@ -29,6 +29,7 @@ package Conference;
 
 import Client.Group;
 import Client.Groups;
+import Client.Jid;
 import images.RosterIcons;
 
 /**
@@ -38,18 +39,20 @@ import images.RosterIcons;
 public class ConferenceGroup extends Group{
     
     /** Creates a new instance of ConferenceGroup */
-    public ConferenceGroup(String name) {
+    public ConferenceGroup(String name, Jid jid) {
 	super(name);
+        this.jid = jid;
         imageExpandedIndex=RosterIcons.ICON_GCJOIN_INDEX;
         imageCollapsedIndex=RosterIcons.ICON_GCCOLLAPSED_INDEX; 
         this.type=Groups.TYPE_MUC;
     }
 
-    public boolean inRoom=true;
+    public boolean inRoom = true;
     
     public MucContact selfContact;
     public MucContact confContact;
     
+    public Jid jid;
     public String password;
     
     public int getOnlines(){ return (onlines>0)? onlines-1:0; }

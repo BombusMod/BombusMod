@@ -88,6 +88,8 @@ public class BookmarkQuery implements JabberBlockListener {
                 try {
                     for (Enumeration e = storage.getChildBlocks().elements(); e.hasMoreElements();) {
                         BookmarkItem bm = new BookmarkItem((JabberDataBlock) e.nextElement());
+                        if (bm.nick == null)
+                            bm.nick = sd.account.getNick();
 //#ifdef PRIVACY                                                
 //#ifdef PLUGINS                        
 //#                         if (sd.Privacy) {
@@ -101,6 +103,8 @@ public class BookmarkQuery implements JabberBlockListener {
 //#                         }
 //#endif
 //#endif                        
+                        if (bm.name == null)
+                            bm.name = bm.jid;
                         bookmarks.addElement(bm);
                         if (bm.autojoin && autojoin) {
                             ConferenceForm.join(bm.name, bm.jid + '/' + bm.nick, bm.password, cf.confMessageCount);
