@@ -1750,7 +1750,7 @@ public class Roster
                         if (cf.storeConfPresence 
                                 || chatPres.indexOf(SR.MS_WAS_BANNED)>-1
                                 || chatPres.indexOf(SR.MS_WAS_KICKED)>-1 
-                                || xmuc.getTypeAttribute().equals("error")) {
+                                || data.getTypeAttribute().equals("error")) {
                             int rp=from.indexOf('/');
 
                             String name=from.substring(rp+1);
