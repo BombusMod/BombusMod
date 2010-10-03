@@ -14,6 +14,7 @@ import ui.controls.form.CheckBox;
 import ui.controls.form.DefForm;
 import ui.controls.form.DropChoiceBox;
 import ui.controls.form.LinkString;
+import ui.controls.form.SpacerItem;
 
 /**
  *
@@ -34,6 +35,7 @@ public class QuickPrivacy extends DefForm implements JabberBlockListener {
         super("Privacy", false);
         usePrivacy = new CheckBox("Enable privacy settings", cf.useQuickPrivacy);
         itemsList.addElement(usePrivacy);
+        itemsList.addElement(new SpacerItem(10));
         nil = new DropChoiceBox(SR.MS_NOT_IN_LIST);
         nil.append(SR.MS_NIL_DROP_MP);
         nil.append(SR.MS_NIL_DROP_P);

@@ -704,14 +704,17 @@ public class Roster
         }
     }
 //#ifndef WMUC
+    
     public MucContact findMucContact(Jid jid) {
-        Contact contact=findContact(jid, true);
-        try {
+        Contact contact = findContact(jid, true);
+        if (contact instanceof MucContact) {
             return (MucContact) contact;
-        } catch (Exception e) {
-            // drop buggy bookmark in roster
-            synchronized (getHContacts()) {
-                hContacts.removeElement(contact);
+        } else {
+            if (contact != null) {
+                // drop buggy bookmark in roster
+                synchronized (getHContacts()) {
+                    hContacts.removeElement(contact);
+                }
             }
             return null;
         }
@@ -744,10 +747,10 @@ public class Roster
             groups.addGroup(grp = new ConferenceGroup(room, new Jid(roomJid)) );
         grp.password=joinPassword;
         
-        MucContact c=findMucContact( new Jid(from) );
+        MucContact c = findMucContact( new Jid(roomJid) );
         
-        if (c==null) {
-            c=new MucContact(room, roomJid);
+        if (c == null) {
+            c = new MucContact(room, roomJid);            
             addContact(c);
         }
 		        

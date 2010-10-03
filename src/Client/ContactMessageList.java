@@ -333,7 +333,7 @@ public void showNotify() {
 //#         redraw();
 //#     }
 //#endif
-    public int getItemCount(){ return (contact == null)? 0 :contact.msgs.size(); }
+    public int getItemCount(){ return (contact == null || contact.msgs == null)? 0 :contact.msgs.size(); }
 
     public Msg getMessage(int index) {
         if (index> getItemCount()-1) return null;

@@ -99,6 +99,8 @@ public class ServiceDiscovery
         
         this.node=node;
         
+        enableListWrapping(true);
+        
         if (service != null && search) {
             this.service=service;
             requestQuery(NS_SRCH, "discosrch");
