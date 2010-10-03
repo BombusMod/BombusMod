@@ -24,7 +24,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-
 package Conference.affiliation;
 
 import Client.StaticData;
@@ -36,86 +35,79 @@ import locale.SR;
 import ui.controls.form.DefForm;
 import ui.controls.form.MultiLine;
 import ui.controls.form.TextInput;
-import Menu.MenuCommand;
 import midlet.BombusMod;
-import ui.VirtualList;
 
 /**
  *
  * @author Evg_S
  */
 public class ConferenceQuickPrivelegeModify {
-    
-    public final static int KICK=1;
-    public final static int VISITOR=2;
-    public final static int PARTICIPANT=3;
-    public final static int MODERATOR=4;
-    
-    public final static int OUTCAST=5;
-    public final static int NONE=6;
-    public final static int MEMBER=7;
-    public final static int ADMIN=8;
-    public final static int OWNER=9;
 
+    public final static int KICK = 1;
+    public final static int VISITOR = 2;
+    public final static int PARTICIPANT = 3;
+    public final static int MODERATOR = 4;
+    public final static int OUTCAST = 5;
+    public final static int NONE = 6;
+    public final static int MEMBER = 7;
+    public final static int ADMIN = 8;
+    public final static int OWNER = 9;
     protected TextInput reason;
     private MucContact victim;
-    
-    
     private int action;
-
     private String myNick;
 
     /**
      * Creates a new instance of ConferenceQuickPrivelegeModify
      */
     public ConferenceQuickPrivelegeModify(MucContact victim, int action, String myNick) {
-        
-        this.victim=victim;
-        this.action=action;
-        this.myNick=myNick;
-        
-	String okName = SR.MS_OK;
-        
+
+        this.victim = victim;
+        this.action = action;
+        this.myNick = myNick;
+
+        String okName = SR.MS_OK;
+
         switch (action) {
-            case KICK: 
-		okName=SR.MS_KICK;
+            case KICK:
+                okName = SR.MS_KICK;
                 break;
             case OUTCAST:
-		okName=SR.MS_BAN;
+                okName = SR.MS_BAN;
                 break;
             default:
                 setMucMod();
                 return;
         } // switch
 
-        new PrivelegeModifyForm(this, victim, okName);        
+        new PrivelegeModifyForm(this, victim, okName);
     }
-    
-        
-    public final void setMucMod(){
-        JabberDataBlock iq=new Iq(victim.jid.getBareJid(), Iq.TYPE_SET, "itemmuc");
-        JabberDataBlock query=iq.addChildNs("query", "http://jabber.org/protocol/muc#admin"); 
+
+    public final void setMucMod() {
+        JabberDataBlock iq = new Iq(victim.jid.getBareJid(), Iq.TYPE_SET, "itemmuc");
+        JabberDataBlock query = iq.addChildNs("query", "http://jabber.org/protocol/muc#admin");
         //TODO: separate usecases to muc#owner, muc#admin and muc#moderator
-        JabberDataBlock item=new JabberDataBlock("item", null, null);
+        JabberDataBlock item = new JabberDataBlock("item", null, null);
         query.addChild(item);
 
         try {
-            String rzn=reason.getValue();
-            String Nick="";
+            String rzn = reason.getValue();
+            String Nick = "";
             if (rzn.startsWith("!")) {
-                rzn=rzn.substring(1);
+                rzn = rzn.substring(1);
             } else {
-                Nick=(myNick==null)?myNick:myNick+": ";                
+                Nick = (myNick == null) ? myNick : myNick + ": ";
             }
-            if (rzn.length()!=0 && myNick!=null) {
-               item.addChild("reason",Nick+rzn);
+            if (rzn.length() != 0 && myNick != null) {
+                item.addChild("reason", Nick + rzn);
             } else {
                 item.addChild("reason", Nick);
             }
-        } catch (Exception e) {}
-        
+        } catch (Exception e) {
+        }
+
         switch (action) {
-            case KICK: 
+            case KICK:
                 item.setAttribute("role", "none");
                 item.setAttribute("nick", victim.nick);
                 break;
@@ -124,37 +116,37 @@ public class ConferenceQuickPrivelegeModify {
                 item.setAttribute("affiliation", "outcast");
                 item.setAttribute("jid", victim.realJid);
                 break;
-                
+
             case PARTICIPANT:
                 item.setAttribute("role", "participant");
                 item.setAttribute("nick", victim.nick);
                 break;
-                
+
             case VISITOR:
                 item.setAttribute("role", "visitor");
                 item.setAttribute("nick", victim.nick);
                 break;
-                
+
             case MODERATOR:
                 item.setAttribute("role", "moderator");
                 item.setAttribute("nick", victim.nick);
                 break;
-                
+
             case MEMBER:
                 item.setAttribute("affiliation", "member");
                 item.setAttribute("jid", victim.realJid);
                 break;
-                
+
             case NONE:
                 item.setAttribute("affiliation", "none");
                 item.setAttribute("jid", victim.realJid);
                 break;
-                
+
             case ADMIN:
                 item.setAttribute("affiliation", "admin");
                 item.setAttribute("jid", victim.realJid);
                 break;
-                
+
             case OWNER:
                 item.setAttribute("affiliation", "owner");
                 item.setAttribute("jid", victim.realJid);
@@ -163,51 +155,29 @@ public class ConferenceQuickPrivelegeModify {
         //System.out.println(iq);
         StaticData.getInstance().roster.theStream.send(iq);
     }
-    
 }
 
 class PrivelegeModifyForm extends DefForm {
-    
-    private MenuCommand cmdNoReason=new MenuCommand(SR.MS_NO_REASON, MenuCommand.SCREEN, 2);
+
     ConferenceQuickPrivelegeModify cq;
-    
+
     public PrivelegeModifyForm(ConferenceQuickPrivelegeModify cq, MucContact victim, String okName) {
         super(okName);
         this.cq = cq;
         getMainBarItem().setElementAt(okName, 0);
-        
-        StringBuffer user=new StringBuffer(victim.nick);
-        if (victim.jid!=null) {
-            user.append(" (")
-            .append(victim.realJid)
-            .append(")");
+
+        StringBuffer user = new StringBuffer(victim.nick);
+        if (victim.jid != null) {
+            user.append(" (").append(victim.realJid).append(")");
         }
-        itemsList.addElement(new MultiLine(SR.MS_USER, user.toString(), super.superWidth));        
-        cq.reason=new TextInput(SR.MS_REASON, "", "reason", TextField.ANY);
-        itemsList.addElement(cq.reason);       
-        
+        itemsList.addElement(new MultiLine(SR.MS_USER, user.toString(), super.superWidth));
+        cq.reason = new TextInput(SR.MS_REASON, "", "reason", TextField.ANY);
+        itemsList.addElement(cq.reason);
+
     }
+
     public void cmdOk() {
         cq.setMucMod();
         BombusMod.getInstance().setDisplayable(sd.roster);
     }
-    
-    
-    public final void commandState() {
-        menuCommands.removeAllElements();
-        addMenuCommand(cmdOk);
-        addMenuCommand(cmdNoReason);
-    }
-    
-    public void menuAction(MenuCommand c, VirtualList d) {
-        if (c==cmdNoReason) { 
-            cq.reason.setValue("");
-            cmdOk();
-            return;
-        }
-        super.menuAction(c, d);
-    }
-    
-    public String touchLeftCommand() { return SR.MS_MENU; }
-    public void touchLeftPressed() { showMenu(); }
 }
