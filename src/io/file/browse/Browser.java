@@ -296,4 +296,12 @@ public class Browser extends DefForm {
         new MyMenu( this, this, SR.MS_DISCO, null, menuCommands);
     }   
     
+    public void touchLeftPressed() {
+        showMenu();
+    }
+    
+    public String touchLeftCommand() {
+        return SR.MS_MENU;
+    }
+    
 }
