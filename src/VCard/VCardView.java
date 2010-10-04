@@ -48,6 +48,7 @@ import ui.controls.form.ImageItem;
 import ui.controls.form.MultiLine;
 import ui.controls.form.SimpleString;
 import ui.controls.form.LinkString;
+import ui.controls.form.SpacerItem;
 
 /**
  *
@@ -74,28 +75,33 @@ public class VCardView
 
     private LinkString refresh;
     
+    private LinkString copy;
+    private LinkString save;
+    
     private String url="";
+    
+    private VCardView vv;
 
 //#ifdef CLIPBOARD
-//#     ClipBoard clipboard  = ClipBoard.getInstance(); 
-//#     MenuCommand cmdCopy      = new MenuCommand(SR.MS_COPY, MenuCommand.SCREEN, 1);
-//#     MenuCommand cmdCopyPlus  = new MenuCommand("+ "+SR.MS_COPY, MenuCommand.SCREEN, 2);
-//#endif
-    MenuCommand cmdRefresh   = new MenuCommand(SR.MS_REFRESH, MenuCommand.SCREEN, 3);
-//#if FILE_IO
-    MenuCommand cmdSavePhoto = new MenuCommand(SR.MS_SAVE_PHOTO, MenuCommand.SCREEN,4);
-//#endif
-    MenuCommand cmdDelPhoto  = new MenuCommand(SR.MS_CLEAR_PHOTO, MenuCommand.SCREEN,5);
+//#     ClipBoard clipboard  = ClipBoard.getInstance();   
+//#     StringBuffer VCardData = new StringBuffer();
+//#endif    
 
     /** Creates a new instance of VCardView
      * @param contact
      */
     public VCardView(Contact contact) {
         super(contact.getNickJid(), false);
-        this.vcard=contact.vcard;
-        this.c=contact;
+        this.vcard = contact.vcard;
+        this.c = contact;
+        vv = this;
         
-        refresh=new LinkString(SR.MS_REFRESH) { public void doAction() { VCard.request(vcard.getJid(), vcard.getId().substring(5)); destroyView(); } };
+        refresh=new LinkString(SR.MS_REFRESH) { 
+            public void doAction() { 
+                VCard.request(vcard.getJid(), vcard.getId().substring(5)); 
+                destroyView();
+            } 
+        };
 
         if (vcard.isEmpty()) {
             itemsList.addElement(noVCard);
@@ -110,6 +116,9 @@ public class VCardView
                         MultiLine nData=new MultiLine(name, data, super.superWidth);
                         nData.selectable=true;
                         itemsList.addElement(nData);
+//#ifdef CLIPBOARD
+//#                         VCardData.append(name).append(":\n").append(data).append("\n");
+//#endif                        
                     } else {
                         url=data;
                         LinkString nData=new LinkString(url) { public void doAction() {
@@ -124,12 +133,35 @@ public class VCardView
                 }
             }
             itemsList.addElement(endVCard);
+            itemsList.addElement(new SpacerItem(10));
             itemsList.addElement(refresh);
+//#ifdef CLIPBOARD
+//#             if (cf.useClipBoard) {
+//#                 copy = new LinkString(SR.MS_COPY) {
+//# 
+//#                     public void doAction() {
+//#                         clipboard.setClipBoard(VCardData.toString());
+//#                         destroyView();
+//#                     }
+//#                 };
+//#                 itemsList.addElement(copy);
+//#             }
+//#endif           
+//#ifdef FILE_IO
+            if (vcard.hasPhoto) {
+                save = new LinkString(SR.MS_SAVE_PHOTO) {
+
+                    public void doAction() {
+                        new Browser(null, vv, true);
+                    }
+                };
+                itemsList.addElement(save);
+            }
+//#endif            
             show();
-        }
-        
-    }
-    
+        }        
+    }    
+
     
     private void setPhoto() {
         try {
@@ -159,41 +191,6 @@ public class VCardView
             itemsList.addElement(noPhoto);
         }
      }
-    public void menuAction(MenuCommand c, VirtualList d) {
-        if (c==cmdDelPhoto) {
-            vcard.dropPhoto(); 
-            setPhoto();
-        }
-        if (c==cmdRefresh) {
-            VCard.request(vcard.getJid(), vcard.getId().substring(5));
-            destroyView();
-            return;
-        }
-//#if FILE_IO
-        if (c==cmdSavePhoto) {
-            new Browser(null, this, true);
-        }
-//#endif
-//#ifdef CLIPBOARD
-//#         if (c == cmdCopy) {
-//#             try {
-//#                 clipboard.setClipBoard((((MultiLine)getFocusedObject()).getValue()==null)?"":((MultiLine)getFocusedObject()).getValue()+"\n");
-//#             } catch (Exception e) {/*no messages*/}
-//#         }
-//#         
-//#         if (c==cmdCopyPlus) {
-//#             try {
-//#                 StringBuffer clipstr=new StringBuffer(clipboard.getClipBoard())
-//#                 .append("\n\n")
-//#                 .append((((MultiLine)getFocusedObject()).getValue()==null)?"":((MultiLine)getFocusedObject()).getValue()+"\n");
-//#                 
-//#                 clipboard.setClipBoard(clipstr.toString());
-//#                 clipstr=null;
-//#             } catch (Exception e) {/*no messages*/}
-//#         }
-//#endif
-        super.menuAction(c, d);
-    }
 
 //#if FILE_IO
     public void BrowserFilePathNotify(String pathSelected) {
@@ -205,45 +202,13 @@ public class VCardView
         }
     }
 //#endif
-
-    public void commandState() {
-        menuCommands.removeAllElements();
-
-        if (vcard!=null) {
-            if (vcard.hasPhoto) {
-//#if FILE_IO
-                addMenuCommand(cmdSavePhoto);
-//#endif
-                addMenuCommand(cmdDelPhoto);
-            }
-//#ifdef CLIPBOARD
-//#             if (Config.getInstance().useClipBoard) {
-//#                 addMenuCommand(cmdCopy);
-//#                 if (!clipboard.isEmpty())
-//#                     addMenuCommand(cmdCopyPlus);
-//#             }
-//#endif
-        }
-
-        addMenuCommand(cmdRefresh);
-        addMenuCommand(cmdCancel);
+    
+    public void cmdOk() {
+        destroyView();
     }
-    
-
-    public String touchLeftCommand() { return SR.MS_MENU; }
-    public void touchLeftPressed() { showMenu(); }
-    
-    public void cmdOk() { showMenu(); }
-
-    
-    /*
-    public void clearVcard() {
-        new AlertBox(SR.MS_ACTION, SR.MS_DELETE+" "+SR.MS_VCARD+"?") {
-            public void yes() {
-                c.vcard=null;                
-            }
-            public void no() {                
-            }
-        };
-    }*/
+   
+    public void cmdCancel() {
+        c.vcard = null;
+        destroyView();
+    }
 }

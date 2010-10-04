@@ -186,7 +186,9 @@ public class ScrollBar {
 
 	drawHeight-=minimumHeight;
         
-	scrollerSize=(drawHeight*windowSize)/size+minimumHeight;
+        int ssize = size+minimumHeight;
+        
+	scrollerSize = (ssize == 0) ? 0 : (drawHeight*windowSize)/ssize ;
 	
 	scrollerPos=(drawHeight*position)/size;
         scrollerX-=scrollWidth;

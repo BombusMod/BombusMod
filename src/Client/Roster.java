@@ -3081,7 +3081,7 @@ public class Roster
 //#ifdef PLUGINS                        
 //#                              if (sd.Privacy) {
 //#endif         
-                if (needUpdatePrivacy)
+                if (needUpdatePrivacy && isLoggedIn())
                     new QuickPrivacy().updateQuickPrivacyList();
 //#ifdef PLUGINS                        
 //#                              }
