@@ -37,8 +37,7 @@ import locale.SR;
  */
 public class MIDPTextBox implements CommandListener {
     
-    private Display display;
-    private Displayable parentView;
+    private VirtualList parentView;
     
     protected Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 99);
     protected Command cmdOK=new Command(SR.MS_OK, Command.OK /*Command.SCREEN*/, 1);
@@ -54,7 +53,8 @@ public class MIDPTextBox implements CommandListener {
         void OkNotify(String text_return);
     }
    
-    public MIDPTextBox(String mainbar, String text, TextBoxNotify tbn , int constraints) {
+    public MIDPTextBox(VirtualList parent, String mainbar, String text, TextBoxNotify tbn , int constraints) {
+        this.parentView = parent;
         t=new TextBox(mainbar, text, 150, constraints);
         
         this.tbn=tbn;

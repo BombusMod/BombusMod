@@ -37,6 +37,7 @@ import ui.controls.form.SimpleString;
 import ui.controls.form.SpacerItem;
 import util.StringLoader;
 import com.alsutton.jabber.datablocks.Presence;
+import ui.SplashScreen;
 import ui.VirtualCanvas;
 import xmpp.EntityCaps;
 
@@ -212,7 +213,7 @@ public class ConfigForm
         messageLimit=new NumberInput( SR.MS_MESSAGE_COLLAPSE_LIMIT, Integer.toString(cf.messageLimit), 200, 1000);
         itemsList.addElement(messageLimit);
 
-        if (StaticData.getInstance().roster.hasPointerEvents()) {
+        if (VirtualCanvas.getInstance().hasPointerEvents()) {
             widthScroll2=new NumberInput( SR.MS_MESSAGE_WIDTH_SCROLL_2, Integer.toString(cf.widthScroll2), 1, 50);
             itemsList.addElement(widthScroll2);
             advTouch = new CheckBox("Advanced touchscreen support", cf.advTouch);
@@ -440,7 +441,7 @@ public class ConfigForm
         else 
             cf.widthSystemgc = false;
         cf.autoClean=autoClean.getValue();
-        if (StaticData.getInstance().roster.hasPointerEvents())
+        if (SplashScreen.getInstance().hasPointerEvents())
             cf.advTouch = advTouch.getValue();
 
         cf.swapSendAndSuspend=swapSendAndSuspend.getValue();
@@ -459,7 +460,7 @@ public class ConfigForm
 //#             cf.autoAwayType=autoAwayType.getSelectedIndex();
 //#endif
         cf.messageLimit=Integer.parseInt(messageLimit.getValue());
-        if (StaticData.getInstance().roster.hasPointerEvents())
+        if (SplashScreen.getInstance().hasPointerEvents())
             cf.widthScroll2=Integer.parseInt(widthScroll2.getValue());
 
 //#if LOGROTATE

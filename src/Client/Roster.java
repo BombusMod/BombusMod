@@ -85,6 +85,7 @@ import VCard.VCardView;
 import com.alsutton.jabber.*;
 import com.alsutton.jabber.datablocks.*;
 import java.util.*;
+import javax.microedition.lcdui.Canvas;
 import ui.*;
 //#ifdef POPUPS
 import ui.controls.PopUp;
@@ -461,9 +462,9 @@ public class Roster
         
         if (phoneManufacturer==Config.WINDOWS) {
             if (messageCount==0) {
-                setTitle("BombusMod");
+                VirtualCanvas.getInstance().setTitle("BombusMod");
             } else {
-                setTitle("BombusMod "+getHeaderString());
+                VirtualCanvas.getInstance().setTitle("BombusMod "+getHeaderString());
             }
         }
     }
@@ -1436,7 +1437,7 @@ public class Roster
                         Contact c=getContact(jid, false); // drop unwanted vcards
                         if (c!=null) {
                             c.vcard=vcard;
-                            if (midlet.BombusMod.getInstance().getCurrentDisplayable() instanceof VirtualList) {
+                            if (VirtualCanvas.getInstance().getList() instanceof VirtualList) {
 //                                if (c.getGroupType()==Groups.TYPE_SELF) { // Not able to edit VCard if self contact in roster
                                 if (c.getJid().equals(myJid.getJid())) {
                                     new VCardEdit(vcard);
@@ -2263,7 +2264,7 @@ public class Roster
 //#endif
     }
 
-    private Displayable createMsgList(){
+    private VirtualList createMsgList(){
         Object e=getFocusedObject();
         if (e instanceof Contact) {
             return new ContactMessageList((Contact)e);
@@ -2273,7 +2274,7 @@ public class Roster
     
     protected void keyGreen(){
         if (!isLoggedIn()) return;
-        Displayable pview=createMsgList();
+        VirtualList pview=createMsgList();
         if (pview!=null) {
             Contact c=(Contact)getFocusedObject();
             me = null; me = new MessageEdit(c, c.msgSuspended);
@@ -2320,13 +2321,13 @@ public class Roster
         
         switch (keyCode) {
 //#ifdef POPUPS
-            case KEY_POUND:            
+            case Canvas.KEY_POUND:            
                 if (getItemCount()==0)
                     return;
                 showInfo();
                 return;
 //#endif
-            case KEY_NUM1:            
+            case Canvas.KEY_NUM1:            
                 if (cf.collapsedGroups) { //collapse all groups
                     for (Enumeration e=groups.elements(); e.hasMoreElements();) {
                         Group grp=(Group)e.nextElement();
@@ -2335,20 +2336,20 @@ public class Roster
                     reEnumRoster();
                 }
                 break;
-            case KEY_NUM4:            
+            case Canvas.KEY_NUM4:            
                 super.pageLeft();
                 return;
-            case KEY_NUM6:            
+            case Canvas.KEY_NUM6:            
                 super.pageRight();
                 return;
 //#ifdef AUTOSTATUS
 //#             case SE_FLIPCLOSE_JP6:
 //#                 if (phoneManufacturer==Config.SONYE) { //workaround for SE JP6 - enabling vibra in closed state
-//#                     midlet.BombusMod.getInstance().setDisplayable(null);
+//#                     midlet.BombusMod.getInstance().setDisplayable((Displayable)null);
 //#                     try {
 //#                         Thread.sleep(300);
 //#                     } catch (Exception ex) {}
-//#                     midlet.BombusMod.getInstance().setDisplayable(this);
+//#                     VirtualCanvas.getInstance().show(this);
 //#                     keyLock();
 //#                 }                
 //#                 break;
@@ -2361,7 +2362,7 @@ public class Roster
 //#                     keyLock();
 //#                 break;
 //#endif
-            case KEY_NUM0:            
+            case Canvas.KEY_NUM0:            
                 if (getItemCount()==0)
                     return;
                 synchronized(hContacts) {
@@ -2395,7 +2396,7 @@ public class Roster
                     if (p==c) pass++;
                 }
                 break;
-            case KEY_NUM3:            
+            case Canvas.KEY_NUM3:            
                 if (getItemCount()==0)
                     return;
                 int newpos=searchGroup(-1);
@@ -2404,7 +2405,7 @@ public class Roster
                     setRotator();
                 }
                 break;
-            case KEY_NUM9:            
+            case Canvas.KEY_NUM9:            
                 if (getItemCount()==0)
                     return;
                 int newpos2=searchGroup(1);
@@ -2413,7 +2414,7 @@ public class Roster
                     setRotator();
                 }
                 break;
-            case KEY_STAR:            
+            case Canvas.KEY_STAR:            
                 if (cf.ghostMotor) {
                     // backlight management
                     blState=(blState==1)? Integer.MAX_VALUE : 1;
@@ -2467,25 +2468,25 @@ public class Roster
             updateMainBar();
             redraw();
             return;
-        } else if (keyCode==KEY_NUM0) {
+        } else if (keyCode==Canvas.KEY_NUM0) {
             cf.showOfflineContacts=!cf.showOfflineContacts;
             reEnumRoster();
             return;
         }
 //#ifndef WMUC
-        else if ((keyCode==KEY_NUM1)&& isLoggedIn()) new Bookmarks(null);
+        else if ((keyCode==Canvas.KEY_NUM1)&& isLoggedIn()) new Bookmarks(null);
 //#endif
-       	else if (keyCode==KEY_NUM3) new ActiveContacts(null);
-       	else if (keyCode==KEY_NUM4) new ConfigForm();
-        else if (keyCode==KEY_NUM6) {
+       	else if (keyCode==Canvas.KEY_NUM3) new ActiveContacts(null);
+       	else if (keyCode==Canvas.KEY_NUM4) new ConfigForm();
+        else if (keyCode==Canvas.KEY_NUM6) {
             Config.fullscreen=!Config.fullscreen;
             cf.saveToStorage();
             VirtualList.fullscreen=Config.fullscreen;
             VirtualCanvas.getInstance().setFullScreenMode(Config.fullscreen);
         }
-        else if (keyCode==KEY_NUM7)
+        else if (keyCode==Canvas.KEY_NUM7)
             new RosterToolsMenu();
-        else if (keyCode==KEY_NUM9) {
+        else if (keyCode==Canvas.KEY_NUM9) {
             
             
             if (cf.allowMinimize)

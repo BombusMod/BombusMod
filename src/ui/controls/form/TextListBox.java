@@ -57,7 +57,7 @@ public class TextListBox
             item.selectable = true;
             itemsList.addElement(item);
         }
-        show(ti.t);
+        midlet.BombusMod.getInstance().setDisplayable(ti.t);
     }
     
     public void commandState() {

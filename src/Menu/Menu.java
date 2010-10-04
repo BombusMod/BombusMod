@@ -28,6 +28,7 @@
 package Menu;
 import Client.Config;
 import java.util.*;
+import javax.microedition.lcdui.Canvas;
 import locale.SR;
 import ui.*;
 
@@ -81,25 +82,25 @@ public class Menu extends VirtualList
         }
         if (executeByNum && getItemCount()>0) {
             switch (keyCode) {
-                case KEY_NUM0:
+                case Canvas.KEY_NUM0:
                     executeCommand(9); return;
-                case KEY_NUM1:
+                case Canvas.KEY_NUM1:
                     executeCommand(0); return;
-                case KEY_NUM2:
+                case Canvas.KEY_NUM2:
                     executeCommand(1); return;
-                case KEY_NUM3:
+                case Canvas.KEY_NUM3:
                     executeCommand(2); return;
-                case KEY_NUM4:
+                case Canvas.KEY_NUM4:
                     executeCommand(3); return;
-                case KEY_NUM5:
+                case Canvas.KEY_NUM5:
                     executeCommand(4); return;
-                case KEY_NUM6:
+                case Canvas.KEY_NUM6:
                     executeCommand(5); return;
-                case KEY_NUM7:
+                case Canvas.KEY_NUM7:
                     executeCommand(6); return;
-                case KEY_NUM8:
+                case Canvas.KEY_NUM8:
                     executeCommand(7); return;
-                case KEY_NUM9:
+                case Canvas.KEY_NUM9:
                     executeCommand(8); return;
             }
         }

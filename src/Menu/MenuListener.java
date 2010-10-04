@@ -35,6 +35,7 @@ import ui.VirtualList;
  */
 public interface MenuListener {
     public void menuAction(MenuCommand command, VirtualList displayable);
+    public void commandState();
     //public void addCommand(Command command);
     //public void removeCommand(Command command);
     //public void setCommandListener(MenuListener menuListener);

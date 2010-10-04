@@ -38,6 +38,7 @@ import ui.*;
 import com.alsutton.jabber.*;
 import com.alsutton.jabber.datablocks.*;
 import Client.*;
+import javax.microedition.lcdui.Canvas;
 import ui.MainBar;
 import ui.controls.AlertBox;
 import ui.controls.form.DefForm;
@@ -406,9 +407,9 @@ public class ServiceDiscovery
         super.userKeyPressed(keyCode);
         
         switch (keyCode) {
-            case KEY_NUM4:
+            case Canvas.KEY_NUM4:
                 pageLeft(); break;
-            case KEY_NUM6:
+            case Canvas.KEY_NUM6:
                 pageRight(); break;
         }
     }

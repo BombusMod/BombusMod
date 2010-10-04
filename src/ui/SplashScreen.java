@@ -167,7 +167,7 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
     // close splash
     private Command cmdExit=new Command("Hide Splash", Command.BACK, 99);
     
-    public void setExit(Displayable nextDisplayable){
+    public void setExit(VirtualList nextDisplayable){
         setCommandListener(this);
         addCommand(cmdExit);
     }
@@ -186,7 +186,7 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
                 list = StaticData.getInstance().roster;
             }
         }
-        midlet.BombusMod.getInstance().setDisplayable(list);
+        VirtualCanvas.getInstance().show(list);
         //parentView=null;
         //repaint();
         //serviceRepaints();
@@ -251,7 +251,7 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
 
     private void destroyView(){
         status.setElementAt(null,6);
-        midlet.BombusMod.getInstance().setDisplayable(VirtualCanvas.getInstance().getList());
+        VirtualCanvas.getInstance().show(VirtualCanvas.getInstance().getList());
         img=null;
         tc.stop();
 //#ifdef AUTOSTATUS

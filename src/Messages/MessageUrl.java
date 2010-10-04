@@ -29,7 +29,6 @@ package Messages;
 
 import java.util.Vector;
 import javax.microedition.io.ConnectionNotFoundException;
-import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.TextField;
 import midlet.BombusMod;
 import ui.MIDPTextBox;
@@ -42,6 +41,7 @@ import Menu.MenuCommand;
 //# import util.ClipBoard;
 //# import Client.Msg;
 //#endif
+import javax.microedition.lcdui.Canvas;
 import ui.VirtualList;
 
 /**
@@ -109,13 +109,13 @@ public class MessageUrl extends DefForm implements TextBoxNotify {
 	public void keyPressed(int keyCode) {
 		super.keyPressed(keyCode);
 		switch (keyCode) {
-			case KEY_POUND:                                
+			case Canvas.KEY_POUND:                                
                             EditURL();
                     }
 
 	}
     private void EditURL() {
-        new MIDPTextBox("Edit URL", (String)urlList.elementAt(cursor), this, TextField.ANY);
+        new MIDPTextBox(this, "Edit URL", (String)urlList.elementAt(cursor), this, TextField.ANY);
     }
 
     public void OkNotify(String text_return) {

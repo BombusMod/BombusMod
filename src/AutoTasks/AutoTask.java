@@ -39,6 +39,8 @@ import Fonts.FontCache;
 import com.alsutton.jabber.datablocks.Presence;
 import midlet.BombusMod;
 import ui.Time;
+import ui.VirtualCanvas;
+import ui.VirtualList;
 
 /**
  *
@@ -73,9 +75,8 @@ public class AutoTask
     boolean vibrate;
     
     StaticData sd = StaticData.getInstance();
-
-    private Display display;
-    private Displayable parentView=sd.roster;
+    
+    private VirtualList parentView = sd.roster;
     
     private int WAITTIME=60;
 
@@ -88,12 +89,9 @@ public class AutoTask
     
     Font f=FontCache.getFont(false, FontCache.msg);
 
-    private Displayable next;
-
-    public AutoTask(Display display) {
-	super();
-        this.display=display;
-    }
+    private VirtualList next;
+    
+    private Display display = midlet.BombusMod.getInstance().getDisplay();
 
     public void startTask() {
         isRunning=true;
@@ -151,35 +149,35 @@ public class AutoTask
     
     public void doAction() {
 //#ifdef AUTOTASK
-        String caption=SR.MS_AUTOTASKS+": ";
-        switch (taskAction) {
-            case TASK_ACTION_QUIT:
-                BombusMod.getInstance().notifyDestroyed();
-                break;
+//#         String caption=SR.MS_AUTOTASKS+": ";
+//#         switch (taskAction) {
+//#             case TASK_ACTION_QUIT:
+//#                 BombusMod.getInstance().notifyDestroyed();
+//#                 break;
 //#ifndef WMUC
-            case TASK_ACTION_CONFERENCE_QUIT:
-                caption+=SR.MS_AUTOTASK_QUIT_CONFERENCES;
-                sd.roster.multicastConferencePresence(Presence.PRESENCE_OFFLINE, caption, 0);
-                break;
+//#             case TASK_ACTION_CONFERENCE_QUIT:
+//#                 caption+=SR.MS_AUTOTASK_QUIT_CONFERENCES;
+//#                 sd.roster.multicastConferencePresence(Presence.PRESENCE_OFFLINE, caption, 0);
+//#                 break;
 //#endif
-            case TASK_ACTION_LOGOFF:
-                caption+=SR.MS_AUTOTASK_LOGOFF;
-                sd.roster.logoff(caption);
-                break;
-           case TASK_ACTION_RECONNECT:
-                caption+=SR.MS_RECONNECT;
-                taskType=TASK_TYPE_TIMER;
-                initTime=System.currentTimeMillis();
-                startTask();
-                sd.roster.connectionTerminated(new Exception(caption));
-                break;
-        }
+//#             case TASK_ACTION_LOGOFF:
+//#                 caption+=SR.MS_AUTOTASK_LOGOFF;
+//#                 sd.roster.logoff(caption);
+//#                 break;
+//#            case TASK_ACTION_RECONNECT:
+//#                 caption+=SR.MS_RECONNECT;
+//#                 taskType=TASK_TYPE_TIMER;
+//#                 initTime=System.currentTimeMillis();
+//#                 startTask();
+//#                 sd.roster.connectionTerminated(new Exception(caption));
+//#                 break;
+//#         }
 //#endif
     }
     
     public void showAlert(int type) {
         //System.out.println("start alert");
-        next=display.getCurrent();
+        next = VirtualCanvas.getInstance().getList();
         
         this.addCommand(cmdOk);
         this.addCommand(cmdCancel);
@@ -204,52 +202,52 @@ public class AutoTask
     protected void paint(Graphics g) {
         if (isShowing) {
 //#if AUTOTASK
-            String caption=SR.MS_AUTOTASKS+": ";
-            
-            switch (taskAction) {
-                case TASK_ACTION_QUIT:
-                    caption=SR.MS_AUTOTASK_QUIT_BOMBUSMOD;
-                    break;
-                case TASK_ACTION_CONFERENCE_QUIT:
-                    caption=SR.MS_AUTOTASK_QUIT_CONFERENCES;
-                    break;
-                case TASK_ACTION_LOGOFF:
-                    caption=SR.MS_AUTOTASK_LOGOFF;
-                    break;
-                case TASK_ACTION_RECONNECT:
-                    caption=SR.MS_RECONNECT;
-                    break;
-            }
-            caption+=" - "+(WAITTIME-value);
-            
-            int width=getWidth();
-            int height=getHeight();
-
-            int border=10;
-            int y=height/2;
-            int xt=(width/2);
-            
-            int itemWidth=width-(border*2);
-            int itemHeight=5;
-            
-            int filled=(itemWidth*value)/WAITTIME;
-
-            int oldColor=g.getColor();
-            g.setColor(0xffffff);
-            
-            g.fillRect(0,0, width, height); //fill back
-            
-            g.fillRect(border, y, itemWidth, itemHeight);
-            g.setColor(0x668866);
-            g.drawRect(border, y, itemWidth, itemHeight);
-            g.fillRect(border, y, filled, itemHeight);
-            
-            int yt=y-f.getHeight();
-            g.setColor(0x668866);
-            g.setFont(f);
-            g.drawString(caption, xt, yt, Graphics.TOP|Graphics.HCENTER);
-            
-            g.setColor(oldColor);
+//#             String caption=SR.MS_AUTOTASKS+": ";
+//#             
+//#             switch (taskAction) {
+//#                 case TASK_ACTION_QUIT:
+//#                     caption=SR.MS_AUTOTASK_QUIT_BOMBUSMOD;
+//#                     break;
+//#                 case TASK_ACTION_CONFERENCE_QUIT:
+//#                     caption=SR.MS_AUTOTASK_QUIT_CONFERENCES;
+//#                     break;
+//#                 case TASK_ACTION_LOGOFF:
+//#                     caption=SR.MS_AUTOTASK_LOGOFF;
+//#                     break;
+//#                 case TASK_ACTION_RECONNECT:
+//#                     caption=SR.MS_RECONNECT;
+//#                     break;
+//#             }
+//#             caption+=" - "+(WAITTIME-value);
+//#             
+//#             int width=getWidth();
+//#             int height=getHeight();
+//# 
+//#             int border=10;
+//#             int y=height/2;
+//#             int xt=(width/2);
+//#             
+//#             int itemWidth=width-(border*2);
+//#             int itemHeight=5;
+//#             
+//#             int filled=(itemWidth*value)/WAITTIME;
+//# 
+//#             int oldColor=g.getColor();
+//#             g.setColor(0xffffff);
+//#             
+//#             g.fillRect(0,0, width, height); //fill back
+//#             
+//#             g.fillRect(border, y, itemWidth, itemHeight);
+//#             g.setColor(0x668866);
+//#             g.drawRect(border, y, itemWidth, itemHeight);
+//#             g.fillRect(border, y, filled, itemHeight);
+//#             
+//#             int yt=y-f.getHeight();
+//#             g.setColor(0x668866);
+//#             g.setFont(f);
+//#             g.drawString(caption, xt, yt, Graphics.TOP|Graphics.HCENTER);
+//#             
+//#             g.setColor(oldColor);
 //#endif
         }
     }
@@ -259,10 +257,6 @@ public class AutoTask
         this.removeCommand(cmdOk);
         this.removeCommand(cmdCancel);
         
-        if (display==null) {
-            midlet.BombusMod.getInstance().setDisplayable(parentView);
-        } else {
-            midlet.BombusMod.getInstance().setDisplayable(next);
-        }
+        VirtualCanvas.getInstance().show(parentView);
     }
 }

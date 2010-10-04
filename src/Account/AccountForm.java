@@ -28,6 +28,7 @@
 package Account;
 
 import Client.*;
+import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
 import ui.SplashScreen;
@@ -305,8 +306,7 @@ public class AccountForm
         if (kHold==keyCode) return;
         kHold=keyCode;
         
-        if (keyCode==KEY_NUM6) {
-            Config cf=Config.getInstance();
+        if (keyCode == Canvas.KEY_NUM6) {
             Config.fullscreen=!Config.fullscreen;
             cf.saveToStorage();
             VirtualList.fullscreen=Config.fullscreen;

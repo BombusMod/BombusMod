@@ -31,6 +31,7 @@ import Client.Contact;
 import Client.Msg;
 import Messages.MessageItem;
 import Messages.MessageList;
+import javax.microedition.lcdui.Canvas;
 import locale.SR;
 import ui.MainBar;
 
@@ -79,11 +80,11 @@ public class HistoryReader extends MessageList {
     
     public void keyPressed(int key_code) {
         switch(key_code) {
-            case KEY_NUM1:
+            case Canvas.KEY_NUM1:
                 messages = hl.stepBegin();
                 moveCursorHome();
                 return;
-            case KEY_NUM7:
+            case Canvas.KEY_NUM7:
                 messages = hl.stepEnd();
                 moveCursorEnd();
                 return;

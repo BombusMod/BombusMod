@@ -16,6 +16,7 @@ import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
 
 import locale.SR;
+import ui.VirtualCanvas;
 import ui.controls.form.DefForm;
 
 /**
@@ -26,6 +27,9 @@ public class MoodList extends DefForm implements MIDPTextBox.TextBoxNotify {
 //#ifdef PLUGINS
 //#     public static String plugin = "PLUGIN_PEP";
 //#endif
+    
+    
+    String moodName;
     
     /** Creates a new instance of MoodList */
 
@@ -53,16 +57,20 @@ public class MoodList extends DefForm implements MIDPTextBox.TextBoxNotify {
 
 //#ifdef PEP
 //#     public void eventOk() {
+//#         moodName = ((MoodItem)getFocusedObject()).getTipString();
 //#         if (cursor==0) OkNotify(null); 
-//#             else new MIDPTextBox(SR.MS_USERMOOD, Moods.getInstance().myMoodText, this, TextField.ANY);
+//#         else 
+//#             new MIDPTextBox(this, SR.MS_USERMOOD, Moods.getInstance().myMoodText, this, TextField.ANY);
 //#     }
 //#endif
     
-    public void OkNotify(String moodText) {
-        String moodName=((MoodItem)getFocusedObject()).getTipString();
+    public void OkNotify(String moodText) {        
         publishTune(moodText, moodName);
-        destroyView();
-        midlet.BombusMod.getInstance().setDisplayable(StaticData.getInstance().roster);
+        destroyView();        
+    }
+    
+    public void destroyView() {
+        VirtualCanvas.getInstance().show(StaticData.getInstance().roster);
     }
 
     private void publishTune(final String moodText, final String moodName) {

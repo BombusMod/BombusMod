@@ -113,7 +113,7 @@ public class VCardView
                 String name=(String)VCard.vCardLabels.elementAt(index);
                 if (data!=null && name!=null) {
                     if (!VCard.vCardFields.elementAt(index).equals("URL")) {
-                        MultiLine nData=new MultiLine(name, data, super.superWidth);
+                        MultiLine nData=new MultiLine(name, data);
                         nData.selectable=true;
                         itemsList.addElement(nData);
 //#ifdef CLIPBOARD

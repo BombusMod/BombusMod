@@ -40,6 +40,7 @@ import ui.controls.ExTextBox;
 //#endif
 import locale.SR;
 import ui.VirtualCanvas;
+import ui.VirtualList;
 /**
  *
  * @author Eugene Stahov
@@ -86,20 +87,7 @@ public final class MessageEdit
         super(body, to.toString(), writespaces);
 
         this.to = to;
-        
-        if (to != null) {
-//#ifndef WMUC            
-            if (to.origin >= Contact.ORIGIN_GROUPCHAT) 
-                textbox.addCommand(cmdInsNick);
-            
-            if (to.origin == Contact.ORIGIN_GROUPCHAT) 
-                textbox.addCommand(cmdSubj);
-//#endif        
-            
-            if (to.lastSendedMessage != null) {
-                textbox.addCommand(cmdLastMessage);
-            }
-        }
+                
 
 //#ifdef DETRANSLIT
 //#ifdef PLUGINS
@@ -113,7 +101,7 @@ public final class MessageEdit
         this(to, body, true);
     }
 
-    public void show(Displayable pView) {
+    public void show(VirtualList pView) {
 //#ifdef RUNNING_MESSAGE
 //#ifdef MIDP_TICKER
 //#         if (cf.notifyWhenMessageType) {
@@ -166,6 +154,19 @@ public final class MessageEdit
         textbox.addCommand(cmdSendAndStepBack);
         }
          */
+        if (to != null) {
+//#ifndef WMUC            
+            if (to.origin >= Contact.ORIGIN_GROUPCHAT) 
+                textbox.addCommand(cmdInsNick);
+            
+            if (to.origin == Contact.ORIGIN_GROUPCHAT) 
+                textbox.addCommand(cmdSubj);
+//#endif        
+            
+            if (to.lastSendedMessage != null) {
+                textbox.addCommand(cmdLastMessage);
+            }
+        }
         textbox.addCommand(cmdInsMe);
 //#ifdef SMILES
         textbox.addCommand(cmdSmile);
@@ -236,13 +237,12 @@ public final class MessageEdit
                 body = null; //"/me "+SR.MS_HAS_SET_TOPIC_TO+": "+subj;
             }
             // message/composing sending
-            if (c == cmdSend && !(parentView instanceof ContactMessageList))
-                parentView = new ContactMessageList(to);
-         midlet.BombusMod.getInstance().setDisplayable(parentView);
-         if (parentView instanceof ContactMessageList) {             
-                ((ContactMessageList)parentView).forceScrolling();
-                ((ContactMessageList)parentView).redraw();
-            }
+            
+            parentView = new ContactMessageList(to);
+            VirtualCanvas.getInstance().show(parentView);         
+            ((ContactMessageList)parentView).forceScrolling();
+            VirtualCanvas.getInstance().getList().redraw();
+            
 //#ifdef RUNNING_MESSAGE
 //#             runState = 3;
 //#else

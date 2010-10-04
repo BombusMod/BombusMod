@@ -32,6 +32,7 @@ import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
+import ui.VirtualList;
 import ui.controls.ExTextBox;
 
 /**
@@ -59,7 +60,7 @@ public class StanzaEdit
         super(body, SR.MS_XML_CONSOLE);
     }
 
-    public void setParentView(Displayable parentView) {
+    public void setParentView(VirtualList parentView) {
         this.parentView = parentView;
     }
 

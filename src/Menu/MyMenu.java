@@ -50,7 +50,7 @@ public class MyMenu extends Menu {
      * @param caption
      * @param il
      */
-    public MyMenu(Displayable parentView, MenuListener menuListener, String caption, ImageList il, Vector menuCommands) {
+    public MyMenu(VirtualList parentView, MenuListener menuListener, String caption, ImageList il, Vector menuCommands) {
         super(caption, il);
         this.ml=menuListener;
         this.commands=menuCommands;

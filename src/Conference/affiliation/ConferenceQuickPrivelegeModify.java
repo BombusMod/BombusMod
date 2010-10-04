@@ -35,7 +35,7 @@ import locale.SR;
 import ui.controls.form.DefForm;
 import ui.controls.form.MultiLine;
 import ui.controls.form.TextInput;
-import midlet.BombusMod;
+import ui.VirtualCanvas;
 
 /**
  *
@@ -170,7 +170,7 @@ class PrivelegeModifyForm extends DefForm {
         if (victim.jid != null) {
             user.append(" (").append(victim.realJid).append(")");
         }
-        itemsList.addElement(new MultiLine(SR.MS_USER, user.toString(), super.superWidth));
+        itemsList.addElement(new MultiLine(SR.MS_USER, user.toString()));
         cq.reason = new TextInput(SR.MS_REASON, "", "reason", TextField.ANY);
         itemsList.addElement(cq.reason);
 
@@ -178,6 +178,6 @@ class PrivelegeModifyForm extends DefForm {
 
     public void cmdOk() {
         cq.setMucMod();
-        BombusMod.getInstance().setDisplayable(sd.roster);
+        VirtualCanvas.getInstance().show(sd.roster);
     }
 }

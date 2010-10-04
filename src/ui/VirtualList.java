@@ -57,8 +57,7 @@ import Menu.MenuListener;
  * вызов отрисовки отображаемых на экране элементов.
  * @author Eugene Stahov
  */
-public abstract class VirtualList         
-    extends Canvas {
+public abstract class VirtualList {
 
     
     /**
@@ -318,23 +317,23 @@ public abstract class VirtualList
         return null;
     }    
 
-    protected Displayable parentView;
+    protected VirtualList parentView;
 
     protected ScrollBar scrollbar;
     
     /** Creates a new instance of VirtualList */
     public VirtualList() {       
-       setFullScreenMode(Config.fullscreen);
+       //setFullScreenMode(Config.fullscreen);
        if (Config.getInstance().phoneManufacturer != Config.MICROEMU) {
-           width = getWidth();
-           height = getHeight();
+           width = VirtualCanvas.getInstance().getWidth();
+           height = VirtualCanvas.getInstance().getHeight();
        }
        
 //#ifdef POPUPS
         PopUp.getInstance();
 //#endif
         if (phoneManufacturer==Config.WINDOWS) {
-            setTitle("BombusMod");
+            VirtualCanvas.getInstance().setTitle("BombusMod");
         }
 
         changeOrient(cf.panelsState);
@@ -344,9 +343,9 @@ public abstract class VirtualList
         itemBorder = new int[32]; // TODO: remove
 
         scrollbar=new ScrollBar();
-        scrollbar.setHasPointerEvents(hasPointerEvents());
+        scrollbar.setHasPointerEvents(VirtualCanvas.getInstance().hasPointerEvents());
 
-        MainBar secondBar=new MainBar("", true, hasPointerEvents() && cf.advTouch && Config.fullscreen);
+        MainBar secondBar=new MainBar("", true, VirtualCanvas.getInstance().hasPointerEvents() && cf.advTouch && Config.fullscreen);
         secondBar.addElement(null); //1
         secondBar.addRAlign();
         secondBar.addElement(null); //3
@@ -365,15 +364,15 @@ public abstract class VirtualList
 //#endif
     }
 
-    public final void show() {
-        show(midlet.BombusMod.getInstance().getCurrentDisplayable());
+    public void show() {
+        show(VirtualCanvas.getInstance().getList());
      }
-    public final void show(Displayable parent) {
+    public void show(VirtualList parent) {
         parentView = parent;
         if (null == parent) {
-            parentView = midlet.BombusMod.getInstance().getCurrentDisplayable();
+            parentView = VirtualCanvas.getInstance().getList();
         }
-        midlet.BombusMod.getInstance().setDisplayable(this);
+        VirtualCanvas.getInstance().show(this);
         redraw();
      }
 
@@ -392,12 +391,7 @@ public abstract class VirtualList
             return;
          }
      }
-    public boolean isShown() {
-        if (midlet.BombusMod.getInstance().getCurrentDisplayable() == this) {
-            return VirtualCanvas.getInstance().isShown();
-        }
-        return false;
-    }   
+      
 
 
     /** Вызывается после скрытия VirtualList. переопределяет наследуемый метод
@@ -615,14 +609,14 @@ public abstract class VirtualList
                 if (mainbar!=null) {
                     setAbsOrg(g, 0, height-mHeight);
                     drawMainPanel(g);
-                    if (hasPointerEvents() && Config.fullscreen)
+                    if (VirtualCanvas.getInstance().hasPointerEvents() && Config.fullscreen)
                         CommandsPointer.init(width, height, mHeight);
                 }
             } else {
                 if (infobar!=null) {
                     setAbsOrg(g, 0, height-iHeight);
                     drawInfoPanel(g);
-                    if (hasPointerEvents() && Config.fullscreen)
+                    if (VirtualCanvas.getInstance().hasPointerEvents() && Config.fullscreen)
                         CommandsPointer.init(width, height, iHeight);
                 }
             }
@@ -1000,26 +994,26 @@ public abstract class VirtualList
     private int getKeyCodeForSendEvent(int key_code) {
         int key = -1;
         switch (key_code) {
-            case KEY_NUM0: key=0; break;
-            case KEY_NUM1: key=1; break;
-            case KEY_NUM2: key=2; break;
-            case KEY_NUM3: key=3; break;
-            case KEY_NUM4: key=4; break;
-            case KEY_NUM5: key=5; break;
-            case KEY_NUM6: key=6; break;
-            case KEY_NUM7: key=7; break;
-            case KEY_NUM8: key=8; break;
-            case KEY_NUM9: key=9; break;
-            case KEY_STAR: key=10; break;
-            case KEY_POUND: key=11; break;
+            case Canvas.KEY_NUM0: key=0; break;
+            case Canvas.KEY_NUM1: key=1; break;
+            case Canvas.KEY_NUM2: key=2; break;
+            case Canvas.KEY_NUM3: key=3; break;
+            case Canvas.KEY_NUM4: key=4; break;
+            case Canvas.KEY_NUM5: key=5; break;
+            case Canvas.KEY_NUM6: key=6; break;
+            case Canvas.KEY_NUM7: key=7; break;
+            case Canvas.KEY_NUM8: key=8; break;
+            case Canvas.KEY_NUM9: key=9; break;
+            case Canvas.KEY_STAR: key=10; break;
+            case Canvas.KEY_POUND: key=11; break;
             default:
                 try {
-                    switch (getGameAction(key_code)) {
-                        case UP: key=2; break;
-                        case LEFT: key=4; break;
-                        case RIGHT: key=6; break;
-                        case DOWN: key=8; break;
-                        case FIRE: key=12; break;
+                    switch (VirtualCanvas.getInstance().getGameAction(key_code)) {
+                        case Canvas.UP: key=2; break;
+                        case Canvas.LEFT: key=4; break;
+                        case Canvas.RIGHT: key=6; break;
+                        case Canvas.DOWN: key=8; break;
+                        case Canvas.FIRE: key=12; break;
                     }
                 } catch (Exception e) { }
         }
@@ -1118,29 +1112,29 @@ public abstract class VirtualList
             return;
         }
     switch (keyCode) {
-        case KEY_NUM1:        
+        case Canvas.KEY_NUM1:        
             moveCursorHome();
             break;
-        case KEY_NUM2:        
+        case Canvas.KEY_NUM2:        
             keyUp();    
             break; 
-        case KEY_NUM4:        
+        case Canvas.KEY_NUM4:        
             userKeyPressed(keyCode);
             break; 
-        case KEY_NUM6:        
+        case Canvas.KEY_NUM6:        
             userKeyPressed(keyCode);
             break;
-        case KEY_NUM7:        
+        case Canvas.KEY_NUM7:        
             moveCursorEnd();     
             break;
-        case KEY_NUM8:        
+        case Canvas.KEY_NUM8:        
             keyDwn();    
             break;
-        case KEY_STAR:
+        case Canvas.KEY_STAR:
 // Перемещено в UserKeyExec: #19.
             break;
 //#ifdef POPUPS
-        case KEY_POUND:        
+        case Canvas.KEY_POUND:        
             if (cf.popUps) {
                 try {
                     String text=((VirtualElement)getFocusedObject()).getTipString();
@@ -1154,20 +1148,20 @@ public abstract class VirtualList
 
         default:
             try {
-                switch (getGameAction(keyCode)){
-                    case UP:
+                switch (VirtualCanvas.getInstance().getGameAction(keyCode)){
+                    case Canvas.UP:
                         keyUp();
                         break;
-                    case DOWN:
+                    case Canvas.DOWN:
                         keyDwn();
                         break;
-                    case LEFT:
+                    case Canvas.LEFT:
                         pageLeft();
                         break;
-                    case RIGHT:
+                    case Canvas.RIGHT:
                         pageRight();
                         break;
-                    case FIRE:
+                    case Canvas.FIRE:
                         eventOk();
                         break;
                 default:
@@ -1457,15 +1451,14 @@ public abstract class VirtualList
      */
     public void destroyView(){
         sd.roster.activeContact=null;        
-        midlet.BombusMod.getInstance().setDisplayable(parentView);
-        parentView = null;
+        VirtualCanvas.getInstance().show(parentView);       
     }
 
     public int getListWidth() {
         return width-scrollbar.getScrollWidth()-2;
     }
 
-    public final static void sort(Vector sortVector){
+    public static void sort(Vector sortVector){
         try {
             synchronized (sortVector) {
                 int f, i;
@@ -1487,7 +1480,9 @@ public abstract class VirtualList
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace(); /* ClassCastException */
+//#ifdef DEBUG            
+//#             e.printStackTrace(); /* ClassCastException */
+//#endif            
         }
     }
     

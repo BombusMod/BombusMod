@@ -36,7 +36,7 @@ import java.util.Enumeration;
 import java.util.Vector;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
-import ui.VirtualList;
+import ui.VirtualCanvas;
 import ui.controls.form.SimpleString;
 import ui.controls.form.DefForm;
 import ui.controls.form.DropChoiceBox;
@@ -90,6 +90,6 @@ public class InviteForm
 
         invite.addChild("reason",rs);
         StaticData.getInstance().roster.theStream.send(inviteMsg);
-        midlet.BombusMod.getInstance().setDisplayable(StaticData.getInstance().roster);
+        VirtualCanvas.getInstance().show(StaticData.getInstance().roster);
     }
 }

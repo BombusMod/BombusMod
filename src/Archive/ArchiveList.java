@@ -200,7 +200,7 @@ public class ArchiveList
 
     public void destroyView(){
         archive.close();
-        super.destroyView();
+        midlet.BombusMod.getInstance().setDisplayable(t);
     }
 
     private int getFreeSpace() {

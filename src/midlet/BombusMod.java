@@ -231,21 +231,27 @@ public class BombusMod extends MIDlet implements Runnable{
     private boolean isLocked = false;
     public Displayable getCurrentDisplayable() {
         Displayable d = getDisplay().getCurrent();
-        return (d instanceof VirtualCanvas) ? ((VirtualCanvas)d).getList() : d;
+        return (d instanceof VirtualCanvas) ? (VirtualCanvas)d : d;
     }
-    public void setDisplayable(Displayable d) {
+    public void setDisplayable(VirtualList d) {
         if (!isLocked) {
             if (d == null) {
-                sd.roster.errorLog(getCurrentDisplayable().getClass().toString() + ": Displayable is null. Compensate.");
-                System.out.println(getCurrentDisplayable().getClass().toString() + ": Displayable is null.");
+                sd.roster.errorLog(getCurrentDisplayable().getClass().toString() + ": VirtualList is null. Compensate.");
+                System.out.println(getCurrentDisplayable().getClass().toString() + ": VirtualList is null.");
                 d = sd.roster;
-            }
-            if (d instanceof VirtualList) {
-                VirtualCanvas.getInstance().show((VirtualList)d);
-                return;
-            }
-            getDisplay().setCurrent(d);
+            }            
+            VirtualCanvas.getInstance().show(d);
+            getDisplay().setCurrent(VirtualCanvas.getInstance());
         }
+    }
+    
+    public void setDisplayable(Displayable d) {
+        if (d == null) {
+                sd.roster.errorLog(getCurrentDisplayable().getClass().toString() + ": VirtualList is null. Compensate.");
+                System.out.println(getCurrentDisplayable().getClass().toString() + ": VirtualList is null.");
+                d = VirtualCanvas.getInstance();
+            }
+        getDisplay().setCurrent(d);
     }
 
 

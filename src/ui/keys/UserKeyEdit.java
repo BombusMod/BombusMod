@@ -27,6 +27,7 @@
 package ui.keys;
 import java.util.Enumeration;
 import locale.SR;
+import ui.VirtualCanvas;
 import ui.controls.form.CheckBox;
 import ui.controls.form.DefForm;
 import ui.controls.form.DropChoiceBox;
@@ -118,7 +119,7 @@ class UserKeyEdit extends DefForm {
 
         //keysList.rmsUpdate();
         keysList.commandState();
-        midlet.BombusMod.getInstance().setDisplayable(keysList);
+        VirtualCanvas.getInstance().show(keysList);
     }
 
     public void eventOk() {

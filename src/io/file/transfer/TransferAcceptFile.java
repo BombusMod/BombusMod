@@ -93,9 +93,9 @@ public class TransferAcceptFile
         selectFile=new LinkString(SR.MS_PATH) { public void doAction() { initBrowser(); } };
         itemsList.addElement(selectFile);
                 
-        itemsList.addElement(new MultiLine(SR.MS_SENDER, t.jid, super.superWidth));
+        itemsList.addElement(new MultiLine(SR.MS_SENDER, t.jid));
 
-        itemsList.addElement(new MultiLine(SR.MS_DESCRIPTION, t.description, super.superWidth));
+        itemsList.addElement(new MultiLine(SR.MS_DESCRIPTION, t.description));
         ftFolder = TransferConfig.getInstance().ftFolder;
         autoaccept = !(ftFolder == null || ftFolder.equals(""));
         if (autoaccept) {

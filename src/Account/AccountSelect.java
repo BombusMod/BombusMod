@@ -33,6 +33,7 @@ import ui.*;
 import java.io.*;
 import Menu.MenuCommand;
 import io.NvStorage;
+import javax.microedition.lcdui.Canvas;
 import ui.controls.AlertBox;
 import ui.controls.form.DefForm;
 
@@ -174,7 +175,7 @@ public class AccountSelect extends DefForm {
         if(itemsList.size()>0) {
             if (StaticData.getInstance().account==null)
                 Account.loadAccount(false, cf.accountIndex);
-            midlet.BombusMod.getInstance().setDisplayable(StaticData.getInstance().roster);
+            VirtualCanvas.getInstance().show(StaticData.getInstance().roster);
         }
     }
 
@@ -219,11 +220,11 @@ public class AccountSelect extends DefForm {
         if (kHold==keyCode) return;
         kHold=keyCode;
         
-        if (keyCode==KEY_NUM6) {
+        if (keyCode == Canvas.KEY_NUM6) {
             Config.fullscreen=!Config.fullscreen;
             cf.saveToStorage();
             VirtualList.fullscreen=Config.fullscreen;
-            StaticData.getInstance().roster.setFullScreenMode(Config.fullscreen);
+            VirtualCanvas.getInstance().setFullScreenMode(Config.fullscreen);
         }
     }
 }

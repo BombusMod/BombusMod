@@ -74,7 +74,7 @@ public final class AppendNick
             me.insert(b.toString(), caretPos);
             b=null;
          } catch (Exception e) {}
-         destroyView();
+         midlet.BombusMod.getInstance().setDisplayable(me.textbox);
     }
      
     public void cmdOk() { eventOk(); }

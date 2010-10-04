@@ -35,9 +35,8 @@ import ui.*;
 import java.util.Vector;
 import ui.controls.Balloon;
 
-import Menu.MenuCommand;
+import javax.microedition.lcdui.Canvas;
 
-import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Graphics;
 import ui.controls.form.DefForm;
 
@@ -87,7 +86,7 @@ public class SmilePicker
         
         imgCnt=smileTable.size();
         
-        realWidth=getWidth()-scrollbar.getScrollWidth();
+        realWidth=SplashScreen.getInstance().getWidth()-scrollbar.getScrollWidth();
         
         imgWidth=il.getWidth()+(CURSOR_HOFFSET*2);
         lineHeight = il.getHeight()+(CURSOR_VOFFSET*2);
@@ -121,8 +120,9 @@ public class SmilePicker
         try {
             me.insert(getTipString() , caretPos);
         } catch (Exception e) { /*e.printStackTrace();*/  }
-        destroyView();
-    }
+        midlet.BombusMod.getInstance().setDisplayable(me.textbox);
+    }   
+    
     
         
     public void drawItem(Graphics g, int ofs, boolean selected){
@@ -210,13 +210,13 @@ public class SmilePicker
     
     public void userKeyPressed(int keyCode) {
         switch (keyCode) {
-            case KEY_NUM3 :
+            case Canvas.KEY_NUM3 :
                 super.pageLeft(); keyDwn(); break;
-            case KEY_NUM9:
+            case Canvas.KEY_NUM9:
                 super.pageRight(); break;
-            case KEY_NUM4:
+            case Canvas.KEY_NUM4:
                 pageLeft(); break;
-            case KEY_NUM6:
+            case Canvas.KEY_NUM6:
                 pageRight(); break;
         }
         super.userKeyPressed(keyCode);

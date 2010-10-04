@@ -42,6 +42,8 @@ import locale.SR;
 //#ifdef ARCHIVE
 import Archive.ArchiveList;
 import Archive.MessageArchive;
+import ui.VirtualCanvas;
+import ui.VirtualList;
 //#endif
 
 /**
@@ -50,8 +52,8 @@ import Archive.MessageArchive;
  */
 public class ExTextBox {
     
-    protected final TextBox textbox = new TextBox("", "", 500, TextField.ANY);
-    protected Displayable parentView;    
+    public final TextBox textbox = new TextBox("", "", 500, TextField.ANY);
+    protected VirtualList parentView;    
     
     public String body;
     private String subj;
@@ -86,16 +88,16 @@ public class ExTextBox {
             if (cf.phoneManufacturer != Config.MICROEMU)
                 insert(body, 0, writespaces);
             else setText(body);
-         } catch (Exception e) {}
+         } catch (Exception e) {}       
         
-        commandState();
     }
 
     public ExTextBox(String body, String subj) {
         this(body, subj, true);
     }
 
-    public void show(Displayable pView, CommandListener listener) {
+    public void show(VirtualList pView, CommandListener listener) {
+        commandState();
         setInitialCaps(cf.capsState);
         if (Config.getInstance().phoneManufacturer == Config.SONYE)
             System.gc(); // prevent flickering on Sony Ericcsson C510
@@ -105,7 +107,7 @@ public class ExTextBox {
     }
         
     public void destroyView() {
-        midlet.BombusMod.getInstance().setDisplayable(parentView);
+        VirtualCanvas.getInstance().show(parentView);
     }   
     
     public final void insert(String s, int caretPos) {

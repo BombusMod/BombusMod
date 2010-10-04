@@ -5,8 +5,8 @@
 
 package Menu;
 
-import javax.microedition.lcdui.Displayable;
 import midlet.BombusMod;
+import ui.VirtualList;
 
 /**
  *
@@ -33,7 +33,7 @@ public class SieNatMenu extends Menu {
         , "ELSE_STR_MYMENU"
     };
 
-    public SieNatMenu(Displayable parent) {
+    public SieNatMenu(VirtualList parent) {
         super("Native Commands", null);
         
 

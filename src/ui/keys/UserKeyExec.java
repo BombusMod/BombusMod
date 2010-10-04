@@ -56,6 +56,7 @@ import io.NvStorage;
 import java.io.DataInputStream;
 import Messages.MessageList;
 import Messages.MessageItem;
+import ui.VirtualCanvas;
 
 public class UserKeyExec {
     StaticData sd = StaticData.getInstance();
@@ -77,7 +78,7 @@ public class UserKeyExec {
      // 0 - common, 1 - Roster, 2 - ContactMessageList, 3 - none
     public final static Vector[] available_commands = { new Vector(), new Vector(), new Vector() };
 
-    public void init_available_commands() {
+    public final void init_available_commands() {
         available_commands[0].addElement(new UserKeyCommand(1, SR.MS_OPTIONS));
         available_commands[0].addElement(new UserKeyCommand(2, SR.MS_CLEAN_ALL_MESSAGES));
         available_commands[0].addElement(new UserKeyCommand(3, SR.MS_RECONNECT));
@@ -129,7 +130,7 @@ public class UserKeyExec {
         return none_command;
     }
 
-    public void init_commands_from_rms() {
+    public final void init_commands_from_rms() {
         userKeysList = null;
         userKeysList = new Vector();
         
@@ -174,7 +175,7 @@ public class UserKeyExec {
     public boolean commandExecuteByID(int command_id, int type) {
         Config cf = Config.getInstance();
         boolean connected = sd.roster.isLoggedIn();
-        Displayable current = midlet.BombusMod.getInstance().getCurrentDisplayable();
+        VirtualList current = VirtualCanvas.getInstance().getList();
 
         switch (command_id) {
             case 1: 
@@ -263,7 +264,7 @@ public class UserKeyExec {
                 Config.fullscreen=!Config.fullscreen;
                 cf.saveToStorage();
                 VirtualList.fullscreen=Config.fullscreen;
-                sd.roster.setFullScreenMode(Config.fullscreen);
+                VirtualCanvas.getInstance().setFullScreenMode(Config.fullscreen);
                 break;
             case 18:
 //#ifdef JUICK

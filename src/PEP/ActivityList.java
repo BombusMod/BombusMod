@@ -15,11 +15,10 @@ import ui.MIDPTextBox;
 import Client.StaticData;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
-import java.util.Vector;
 
 import javax.microedition.lcdui.Display;
 import locale.SR;
-import ui.VirtualElement;
+import ui.VirtualCanvas;
 import ui.controls.form.DefForm;
 import ui.controls.form.SimpleString;
 
@@ -60,15 +59,18 @@ public class ActivityList extends DefForm implements MIDPTextBox.TextBoxNotify {
 //#ifdef PEP
 //#     public void eventOk() {
 //#         if (cursor==0) OkNotify(null); 
-//#             else new MIDPTextBox(SR.MS_USERACTIVITY, acttext, this, TextField.ANY);
+//#             else new MIDPTextBox(this, SR.MS_USERACTIVITY, acttext, this, TextField.ANY);
 //#     }
 //#endif
     
     public void OkNotify(String actText) {
         //String moodName=((MoodItem)getFocusedObject()).getTipString();
         publish(cursor, actText);
-        destroyView();
-        midlet.BombusMod.getInstance().setDisplayable(StaticData.getInstance().roster);
+        destroyView();        
+    }
+    
+    public void destroyView() {
+        VirtualCanvas.getInstance().show(StaticData.getInstance().roster);
     }
 
      public void publish(int activity, String text) {

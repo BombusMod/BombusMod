@@ -32,8 +32,10 @@ import java.util.Vector;
 import Menu.MenuListener;
 import Menu.MenuCommand;
 import Menu.MyMenu;
+import javax.microedition.lcdui.Displayable;
 import locale.SR;
 import ui.MainBar;
+import ui.VirtualCanvas;
 import ui.VirtualElement;
 import ui.VirtualList;
 
@@ -49,10 +51,9 @@ public class DefForm
     
     public Vector itemsList = new Vector();
 
-    public MenuCommand cmdOk = new MenuCommand(SR.MS_OK, MenuCommand.OK, 1);
-    public MenuCommand cmdCancel = new MenuCommand(SR.MS_BACK, MenuCommand.BACK, 99);
-
-    public int superWidth;
+    public static MenuCommand cmdOk = new MenuCommand(SR.MS_OK, MenuCommand.OK, 1);
+    public static MenuCommand cmdCancel = new MenuCommand(SR.MS_BACK, MenuCommand.BACK, 99);
+   
     /**
      * Creates a new instance of DefForm
      * @param caption
@@ -63,10 +64,6 @@ public class DefForm
     
     public DefForm(String caption, boolean show) {
         setMainBarItem(new MainBar(caption));
-        
-        superWidth = super.getWidth();
-        
-        commandState();
         
         enableListWrapping(false);
         if (show)
@@ -93,7 +90,7 @@ public class DefForm
     }
 
     public void destroyView()	{
-	midlet.BombusMod.getInstance().setDisplayable(parentView);
+	VirtualCanvas.getInstance().show(parentView);
     }
 
     public void cmdCancel() {
@@ -105,9 +102,19 @@ public class DefForm
     public void commandState() {
         menuCommands.removeAllElements();
 	addMenuCommand(cmdOk);
-	addMenuCommand(cmdCancel);
+	addMenuCommand(cmdCancel);        
     }
     
+    public final void show() {
+        commandState(); 
+        super.show();                      
+    }
+    
+    public final void show(VirtualList parent) {
+        commandState(); 
+        super.show(parent);                      
+    }
+           
     public void showMenu() {
         commandState();
         if (menuCommands.size()==2) {
@@ -117,7 +124,7 @@ public class DefForm
             }
         }
         MyMenu menu = new MyMenu(this, this, "", null, menuCommands);
-        menu.show(this);
+        VirtualCanvas.getInstance().show(menu);
     }
     
     public String touchLeftCommand() { return SR.MS_OK; }

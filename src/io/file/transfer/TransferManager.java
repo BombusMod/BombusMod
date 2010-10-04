@@ -29,6 +29,7 @@ package io.file.transfer;
 
 import Client.StaticData;
 import Menu.MenuCommand;
+import javax.microedition.lcdui.Canvas;
 import locale.SR;
 import ui.Time;
 //#ifdef POPUPS
@@ -122,7 +123,7 @@ public class TransferManager
     
     protected void keyPressed(int keyCode) { // overriding this method to avoid autorepeat
         //kHold=0;
-        if (keyCode==KEY_POUND) {
+        if (keyCode==Canvas.KEY_POUND) {
             cmdInfo();
             return;
         }

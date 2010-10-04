@@ -27,10 +27,9 @@
 package Client;
 
 import java.util.Enumeration;
-import java.util.Vector;
+import javax.microedition.lcdui.Canvas;
 import locale.SR;
 import ui.MainBar;
-import ui.VirtualElement;
 import ui.controls.form.DefForm;
 //#ifdef POPUPS
 import ui.controls.PopUp;
@@ -91,9 +90,9 @@ public class ActiveContacts
 //#ifdef POPUPS
         PopUp.getInstance().next();
 //#endif
-        if (keyCode == KEY_NUM3) {
+        if (keyCode == Canvas.KEY_NUM3) {
             destroyView();
-        } else if (keyCode == KEY_NUM0) {
+        } else if (keyCode == Canvas.KEY_NUM0) {
             if (getItemCount() < 1) {
                 return;
             }

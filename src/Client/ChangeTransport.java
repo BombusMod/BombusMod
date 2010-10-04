@@ -28,6 +28,7 @@ package Client;
 import com.alsutton.jabber.datablocks.Presence;
 import java.util.Enumeration;
 import locale.SR;
+import ui.VirtualCanvas;
 import ui.controls.form.DefForm;
 import ui.controls.form.DropChoiceBox;
 import ui.controls.form.MultiLine;
@@ -46,7 +47,7 @@ public class ChangeTransport extends DefForm {
         
         MultiLine instruction = new MultiLine("Warning", "Gateway "+srcTransport+" will be "
                 + "replaced by one from the list of online gateways for all JIDs in your roster "
-                + "(please logoff old gateway to avoid damaging contact list of your guest IM account)", getWidth());
+                + "(please logoff old gateway to avoid damaging contact list of your guest IM account)");
         instruction.selectable = true;
         itemsList.addElement(instruction);
         

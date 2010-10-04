@@ -8,6 +8,7 @@ package PEP;
 import Client.Config;
 import Client.StaticData;
 import locale.SR;
+import ui.VirtualCanvas;
 import ui.VirtualList;
 import ui.controls.form.CheckBox;
 import ui.controls.form.DefForm;
@@ -131,7 +132,7 @@ public class PepForm extends DefForm {
 //#         Config.getInstance().saveToStorage();
 //#endif       
         
-        midlet.BombusMod.getInstance().setDisplayable(StaticData.getInstance().roster);
+        VirtualCanvas.getInstance().show(StaticData.getInstance().roster);
     }   
 }
 

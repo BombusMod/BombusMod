@@ -33,6 +33,8 @@ import java.io.IOException;
 import ui.IconTextElement;
 import ui.VirtualList;
 import Client.Config;
+import javax.microedition.lcdui.Canvas;
+import ui.VirtualCanvas;
 
 /**
  *
@@ -86,29 +88,29 @@ public class UserKey extends IconTextElement {
 
     public static String keyToString(int key_code) {
         switch(key_code) {
-            case VirtualList.KEY_NUM0:
+            case Canvas.KEY_NUM0:
                 return "[0]";
-            case VirtualList.KEY_NUM1:
+            case Canvas.KEY_NUM1:
                 return "[1]";
-            case VirtualList.KEY_NUM2:
+            case Canvas.KEY_NUM2:
                 return "[2]";
-            case VirtualList.KEY_NUM3:
+            case Canvas.KEY_NUM3:
                 return "[3]";
-            case VirtualList.KEY_NUM4:
+            case Canvas.KEY_NUM4:
                 return "[4]";
-            case VirtualList.KEY_NUM5:
+            case Canvas.KEY_NUM5:
                 return "[5]";
-            case VirtualList.KEY_NUM6:
+            case Canvas.KEY_NUM6:
                 return "[6]";
-            case VirtualList.KEY_NUM7:
+            case Canvas.KEY_NUM7:
                 return "[7]";
-            case VirtualList.KEY_NUM8:
+            case Canvas.KEY_NUM8:
                 return "[8]";
-            case VirtualList.KEY_NUM9:
+            case Canvas.KEY_NUM9:
                 return "[9]";
-            case VirtualList.KEY_STAR:
+            case Canvas.KEY_STAR:
                 return "[*]";
-            case VirtualList.KEY_POUND:
+            case Canvas.KEY_POUND:
                 return "[#]";
             case 32:
                 return "[Space]";
@@ -122,24 +124,24 @@ public class UserKey extends IconTextElement {
                      || ((key_code>96)&&(key_code<123))) { // [a-z]
                         return "["+(char) key_code+"]";
                     } // Выше - положительные коды, ниже - отрицательные.
-                } else switch (Client.StaticData.getInstance().roster.getGameAction(key_code)) {
-                        case VirtualList.LEFT:
+                } else switch (VirtualCanvas.getInstance().getGameAction(key_code)) {
+                        case Canvas.LEFT:
                             return "(<)";
-                        case VirtualList.RIGHT:
+                        case Canvas.RIGHT:
                             return "(>)";
-                        case VirtualList.UP:
+                        case Canvas.UP:
                             return "(^)";
-                        case VirtualList.DOWN:
+                        case Canvas.DOWN:
                             return "(V)";
-                        case VirtualList.FIRE:
+                        case Canvas.FIRE:
                             return "(o)";
-                        case VirtualList.GAME_A:
+                        case Canvas.GAME_A:
                             return "[Game \"A\"]";
-                        case VirtualList.GAME_B:
+                        case Canvas.GAME_B:
                             return "[Game \"B\"]";
-                        case VirtualList.GAME_C:
+                        case Canvas.GAME_C:
                             return "[Game \"C\"]";
-                        case VirtualList.GAME_D:
+                        case Canvas.GAME_D:
                             return "[Game \"D\"]";
                     default:
                         if (key_code == Config.KEY_BACK) {
@@ -184,17 +186,17 @@ public class UserKey extends IconTextElement {
 
     public static int get_key_code_by_id(int id) {
         switch(id) {
-            case 0: return VirtualList.KEY_NUM0;
-            case 1: return VirtualList.KEY_NUM1;
-            case 2: return VirtualList.KEY_NUM2;
-            case 3: return VirtualList.KEY_NUM3;
-            case 4: return VirtualList.KEY_NUM4;
-            case 5: return VirtualList.KEY_NUM5;
-            case 6: return VirtualList.KEY_NUM6;
-            case 7: return VirtualList.KEY_NUM7;
-            case 8: return VirtualList.KEY_NUM8;
-            case 9: return VirtualList.KEY_NUM9;
-            case 10: return VirtualList.KEY_STAR;
+            case 0: return Canvas.KEY_NUM0;
+            case 1: return Canvas.KEY_NUM1;
+            case 2: return Canvas.KEY_NUM2;
+            case 3: return Canvas.KEY_NUM3;
+            case 4: return Canvas.KEY_NUM4;
+            case 5: return Canvas.KEY_NUM5;
+            case 6: return Canvas.KEY_NUM6;
+            case 7: return Canvas.KEY_NUM7;
+            case 8: return Canvas.KEY_NUM8;
+            case 9: return Canvas.KEY_NUM9;
+            case 10: return Canvas.KEY_STAR;
             default: return -1;
         }
     }

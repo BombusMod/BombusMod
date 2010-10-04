@@ -58,6 +58,7 @@ import ui.VirtualList;
 //#ifdef FILE_TRANSFER
 import io.file.transfer.TransferAcceptFile;
 import io.file.transfer.TransferDispatcher;
+import javax.microedition.lcdui.Canvas;
 //#endif
 
 public class ContactMessageList extends MessageList {
@@ -704,7 +705,7 @@ public void showNotify() {
     }
     
     public void keyRepeated(int keyCode) {
-        if (keyCode==KEY_NUM0) 
+        if (keyCode == Canvas.KEY_NUM0) 
             clearReadedMessageList();
 	else 
             super.keyRepeated(keyCode);
@@ -734,7 +735,7 @@ public void showNotify() {
 
     public void keyPressed(int keyCode) {
         //kHold=0;
-        if (keyCode==KEY_POUND) {
+        if (keyCode==Canvas.KEY_POUND) {
 //#ifndef WMUC
             if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT) {
                 Reply();
@@ -758,7 +759,7 @@ public void showNotify() {
 
     public void userKeyPressed(int keyCode) {
         switch (keyCode) {
-            case KEY_NUM4:
+            case Canvas.KEY_NUM4:
                 if (cf.useTabs) {
                     savePosition();
                     sd.roster.searchActiveContact(-1); //previous contact with messages
@@ -766,7 +767,7 @@ public void showNotify() {
                 else
                     super.pageLeft();
                 break;
-            case KEY_NUM6:
+            case Canvas.KEY_NUM6:
                 if (cf.useTabs) {
                     savePosition();
                     sd.roster.searchActiveContact(1); //next contact with messages
@@ -774,11 +775,11 @@ public void showNotify() {
                 else
                     super.pageRight();
                 break;
-            case KEY_NUM3:
+            case Canvas.KEY_NUM3:
                 savePosition();
                 new ActiveContacts(contact);
                 break;
-            case KEY_NUM9:
+            case Canvas.KEY_NUM9:
                 Quote();
                 break;
         }

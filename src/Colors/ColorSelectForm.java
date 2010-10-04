@@ -5,9 +5,11 @@
 
 package Colors;
 
+import javax.microedition.lcdui.Canvas;
 import ui.controls.form.ColorSelector;
-import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Graphics;
+import ui.VirtualCanvas;
+import ui.VirtualList;
 import ui.controls.form.DefForm;
 
 /**
@@ -17,7 +19,7 @@ import ui.controls.form.DefForm;
 //#ifdef COLOR_TUNE
 //# public class ColorSelectForm extends DefForm {
 //#     private ColorSelector selector;
-//#     public ColorSelectForm( Displayable parent, ColorsList list, int color) {
+//#     public ColorSelectForm( VirtualList parent, ColorsList list, int color) {
 //#         super(ColorsList.NAMES[color]);
 //#         parentView = parent;
 //#         selector = new ColorSelector(list, color);
@@ -32,59 +34,58 @@ import ui.controls.form.DefForm;
 //#     };
 //#     public void keyPressed(int key) {
 //#         switch (key) {
-//#             case KEY_NUM2:                
+//#             case Canvas.KEY_NUM2:                
 //#                 selector.movePoint(1);
 //#                 break;
-//#             case KEY_NUM8:                ;
+//#             case Canvas.KEY_NUM8:                ;
 //#                 selector.movePoint(-1);
 //#                 break;
-//#             case KEY_NUM4:
+//#             case Canvas.KEY_NUM4:
 //#                 selector.selectPrev();
 //#                 break;
-//#             case KEY_NUM6:
+//#             case Canvas.KEY_NUM6:
 //#                 selector.selectNext();
 //#                 break;
 //#             default:
 //#                 try {
-//#                     switch (getGameAction(key)){
-//#                         case UP:
+//#                     switch (VirtualCanvas.getInstance().getGameAction(key)){
+//#                         case Canvas.UP:
 //#                             selector.movePoint(1);
 //#                             break;
-//#                         case DOWN:
+//#                         case Canvas.DOWN:
 //#                             selector.movePoint(-1);
 //#                             break;
-//#                         case LEFT:
+//#                         case Canvas.LEFT:
 //#                             selector.selectPrev();
 //#                             break;
-//#                         case RIGHT:
+//#                         case Canvas.RIGHT:
 //#                             selector.selectNext();
 //#                             break;
-//#                         case FIRE:
+//#                         case Canvas.FIRE:
 //#                             cmdOk();
 //#                             break;
 //#                     }
 //#                 } catch (Exception e) {/* IllegalArgumentException @ getGameAction */ }
-//#                 repaint();
-//#                 serviceRepaints();
+//#                 redraw();
 //#         }
 //#         super.keyPressed(key);
 //#     }
 //#     protected void keyRepeated(int key) {
 //#         try {
-//#                     switch (getGameAction(key)){
-//#                         case UP:
+//#                     switch (VirtualCanvas.getInstance().getGameAction(key)){
+//#                         case Canvas.UP:
 //#                             selector.movePoint(1);
 //#                             break;
-//#                         case DOWN:
+//#                         case Canvas.DOWN:
 //#                             selector.movePoint(-1);
 //#                             break;
-//#                         case LEFT:
+//#                         case Canvas.LEFT:
 //#                             selector.selectPrev();
 //#                             break;
-//#                         case RIGHT:
+//#                         case Canvas.RIGHT:
 //#                             selector.selectNext();
 //#                             break;
-//#                         case FIRE:
+//#                         case Canvas.FIRE:
 //#                             cmdOk();
 //#                             break;
 //#                     }
@@ -114,8 +115,7 @@ import ui.controls.form.DefForm;
 //#                 selector.movePoint(-1);
 //#                 }
 //#             }
-//#         repaint();
-//#         serviceRepaints();
+//#         redraw();        
 //#         }
 //#     }
 //#         

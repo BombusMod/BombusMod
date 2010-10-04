@@ -69,11 +69,11 @@ public class InfoWindow
     public InfoWindow() {
         super(SR.MS_ABOUT);
         
-        name = new MultiLine(Version.getName(), Version.getVersionNumber() + "\n" + Config.getOs() + "\nMobile Jabber client", super.superWidth);
+        name = new MultiLine(Version.getName(), Version.getVersionNumber() + "\n" + Config.getOs() + "\nMobile Jabber client");
         name.selectable = true;
         itemsList.addElement(name);
 
-        description = new MultiLine("Copyright (c) 2005-2010", "Eugene Stahov (evgs),\nDaniel Apatin (ad)\n \nDistributed under GNU Public License (GPL) v2.0", super.superWidth);
+        description = new MultiLine("Copyright (c) 2005-2010", "Eugene Stahov (evgs),\nDaniel Apatin (ad)\n \nDistributed under GNU Public License (GPL) v2.0");
         description.selectable = true;
         itemsList.addElement(description);
 
@@ -90,7 +90,7 @@ public class InfoWindow
 
         itemsList.addElement(new SpacerItem(20));
 
-        abilities = new MultiLine("Special thanks", "Advice, aspro, BrennendeR_Komet, 6yp4uk, den_po, Disabler, fregl24, G.L.Fire, gimlet, lgs, m, Masy, Muxa, NoNameZ, radiance, Sash, spine, spirtamne, Tasha, TiLan, Totktonada, van, vitalyster, voffk, westsibe, zet. \n \nWithout you none of this would not have been!", super.superWidth);
+        abilities = new MultiLine("Special thanks", "Advice, aspro, BrennendeR_Komet, 6yp4uk, den_po, Disabler, fregl24, G.L.Fire, gimlet, lgs, m, Masy, Muxa, NoNameZ, radiance, Sash, spine, spirtamne, Tasha, TiLan, Totktonada, van, vitalyster, voffk, westsibe, zet. \n \nWithout you none of this would not have been!");
         abilities.selectable = true;
         itemsList.addElement(abilities);
 
@@ -101,13 +101,13 @@ public class InfoWindow
         System.gc();
 //        } _vt
         memInfo.append(Runtime.getRuntime().freeMemory() >> 10).append("\n").append(SR.MS_TOTAL).append(Runtime.getRuntime().totalMemory() >> 10);
-        memory = new MultiLine(SR.MS_MEMORY, memInfo.toString(), super.superWidth);
+        memory = new MultiLine(SR.MS_MEMORY, memInfo.toString());
         memory.selectable = true;
         itemsList.addElement(memory);        
 
         itemsList.addElement(new SpacerItem(10));
 
-        abilities = new MultiLine("Abilities", getAbilities(), super.superWidth);
+        abilities = new MultiLine("Abilities", getAbilities());
         abilities.selectable = true;
         itemsList.addElement(abilities);
     }
@@ -115,10 +115,9 @@ public class InfoWindow
     public void commandState() {
         menuCommands.removeAllElements();
 //#ifdef CLIPBOARD
-//#             if (Config.getInstance().useClipBoard) {
-//#                 ClipBoard clipboard  = ClipBoard.getInstance();
+//#             if (Config.getInstance().useClipBoard) {                
 //#                 addMenuCommand(cmdCopy);
-//#                 if (clipboard.isEmpty())
+//#                 if (ClipBoard.getInstance().isEmpty())
 //#                     addMenuCommand(cmdCopyPlus);
 //#             }
 //#endif        

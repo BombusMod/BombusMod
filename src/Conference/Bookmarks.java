@@ -35,6 +35,7 @@ import locale.SR;
 import ui.*;
 import java.util.*;
 import com.alsutton.jabber.*;
+import javax.microedition.lcdui.Canvas;
 import ui.MainBar;
 import ui.controls.AlertBox;
 import ui.controls.form.DefForm;
@@ -139,7 +140,7 @@ public class Bookmarks
             return;
         
         ConferenceForm.join(join.name, join.getJidNick(), join.password, cf.confMessageCount);
-        midlet.BombusMod.getInstance().setDisplayable(sd.roster);
+        VirtualCanvas.getInstance().show(sd.roster);
     }
     
     public void menuAction(MenuCommand c, VirtualList d){
@@ -220,12 +221,12 @@ public class Bookmarks
     public void keyPressed(int keyCode) {
         super.keyPressed(keyCode);
         switch (keyCode) {
-            case KEY_NUM4:
+            case Canvas.KEY_NUM4:
                 pageLeft(); break;
-            case KEY_NUM6:
+            case Canvas.KEY_NUM6:
                 pageRight(); break;
 //#ifdef SERVICE_DISCOVERY
-            case KEY_POUND:
+            case Canvas.KEY_POUND:
                 new ServiceDiscovery(((BookmarkItem)getFocusedObject()).getJid(), null, false);
 //#endif
         }
