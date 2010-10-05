@@ -120,8 +120,12 @@ public class SmilePicker
         try {
             me.insert(getTipString() , caretPos);
         } catch (Exception e) { /*e.printStackTrace();*/  }
-        midlet.BombusMod.getInstance().setDisplayable(me.textbox);
+        destroyView();
     }   
+    
+    public void destroyView() {
+        midlet.BombusMod.getInstance().setDisplayable(me.textbox);
+    }
     
     
         

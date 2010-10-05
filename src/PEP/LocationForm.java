@@ -14,9 +14,9 @@ package PEP;
 //# import PEP.location.LocationListener;
 //# import com.alsutton.jabber.JabberDataBlock;
 //# import com.alsutton.jabber.datablocks.Iq;
-//# import javax.microedition.lcdui.Displayable;
 //# import javax.microedition.lcdui.TextField;
 //# import locale.SR;
+//# import ui.VirtualList;
 //# import ui.controls.AlertBox;
 //# import ui.controls.form.DefForm;
 //# import ui.controls.form.LinkString;
@@ -40,7 +40,7 @@ package PEP;
 //#     /** Creates a new instance of Location
 //#      * @param parent
 //#      */
-//#     public LocationForm(Displayable parent) {
+//#     public LocationForm(VirtualList parent) {
 //#         super("Publish location");
 //#         location = new TextInput("Location name", null, null, TextField.ANY);
 //#         descr = new TextInput("Location description", null, null, TextField.ANY);
