@@ -75,23 +75,18 @@ public class MessageUrl extends DefForm implements TextBoxNotify {
     
     public void menuAction(MenuCommand c, VirtualList d) {
         super.menuAction(c, d);
-        if (c==cmdGoto)
+        if (c == cmdGoto) {
             eventOk();
-        else if (c==cmdEdit) {
+        } else if (c == cmdEdit) {
             EditURL();
         }
 //#ifdef CLIPBOARD
-//#         if (c == cmdCopy)
-//#         {
-//#             try {
-//#                 clipboard.add(new Msg(Msg.MESSAGE_TYPE_IN, "url", null, (String) urlList.elementAt(cursor)));
-//#             } catch (Exception e) {/*no messages*/}
+//#         if (c == cmdCopy) {
+//#             clipboard.set(new Msg(Msg.MESSAGE_TYPE_IN, "url", null, (String) urlList.elementAt(cursor)));
 //#         }
 //# 
-//#         if (c==cmdCopyPlus) {
-//#             try {
-//#                 clipboard.append(new Msg(Msg.MESSAGE_TYPE_IN, "url", null, (String) urlList.elementAt(cursor)));
-//#             } catch (Exception e) {/*no messages*/}
+//#         if (c == cmdCopyPlus) {
+//#             clipboard.append(new Msg(Msg.MESSAGE_TYPE_IN, "url", null, (String) urlList.elementAt(cursor)));
 //#         }
 //#endif
     }

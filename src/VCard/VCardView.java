@@ -81,10 +81,12 @@ public class VCardView
     private String url="";
     
     private VCardView vv;
-
+    
 //#ifdef CLIPBOARD
 //#     ClipBoard clipboard  = ClipBoard.getInstance();   
 //#     StringBuffer VCardData = new StringBuffer();
+//#     MenuCommand cmdCopy      = new MenuCommand(SR.MS_COPY, MenuCommand.SCREEN, 1);
+//#     MenuCommand cmdCopyPlus  = new MenuCommand("+ "+SR.MS_COPY, MenuCommand.SCREEN, 2);
 //#endif    
 
     /** Creates a new instance of VCardView
@@ -137,7 +139,7 @@ public class VCardView
             itemsList.addElement(refresh);
 //#ifdef CLIPBOARD
 //#             if (cf.useClipBoard) {
-//#                 copy = new LinkString(SR.MS_COPY) {
+//#                 copy = new LinkString(SR.MS_COPY + " " + SR.MS_VCARD) {
 //# 
 //#                     public void doAction() {
 //#                         clipboard.setClipBoard(VCardData.toString());
@@ -203,12 +205,53 @@ public class VCardView
     }
 //#endif
     
+    public void commandState() {
+        menuCommands.removeAllElements();
+//#ifdef CLIPBOARD
+//#         if (Config.getInstance().useClipBoard) {
+//#             addMenuCommand(cmdCopy);
+//#             if (!clipboard.isEmpty()) {
+//#                 addMenuCommand(cmdCopyPlus);
+//#             }
+//#         }
+//#endif        
+    }
+    
     public void cmdOk() {
         destroyView();
     }
-   
-    public void cmdCancel() {
-        c.vcard = null;
-        destroyView();
-    }
+
+
+//#ifdef CLIPBOARD
+//#     public void menuAction(MenuCommand c, VirtualList d) {
+//# 
+//#         String value = null;
+//# 
+//#         if (getFocusedObject() instanceof MultiLine) {
+//#             value = ((MultiLine) getFocusedObject()).toString();
+//#         }
+//#         if (value != null || !value.equals("")) {
+//# 
+//#             if (c == cmdCopy) {
+//#                 clipboard.setClipBoard(value);
+//#             }
+//#             if (c == cmdCopyPlus) {
+//#                 clipboard.append(value);
+//#             }
+//#         }
+//# 
+//#         super.menuAction(c, d);
+//#     }
+//#     
+//#     public String touchLeftCommand() {
+//#         return (Config.getInstance().useClipBoard) ? SR.MS_MENU : SR.MS_OK;            
+//#     }
+//#     
+//#     public void touchLeftPressed() {
+//#         if (Config.getInstance().useClipBoard)
+//#             showMenu();
+//#         else
+//#             cmdOk();
+//#     }
+//#endif    
 }

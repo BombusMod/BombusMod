@@ -60,7 +60,7 @@ public class ClipBoard
         return empty;
     }
     
-    public void add(Msg msg) {
+    public void set(Msg msg) {
         try {
             StringBuffer clipstr=new StringBuffer(msg.quoteString());
             setClipBoard(clipstr.toString());
@@ -68,13 +68,17 @@ public class ClipBoard
         } catch (Exception e) {/*no messages*/}
     }
     
-    public void append(Msg msg) {
+    public void append(String str) {
         try {
-            StringBuffer clipstr=new StringBuffer(clipBoard)
+            StringBuffer clipstr = new StringBuffer(clipBoard)
             .append("\n\n")
-            .append(msg.quoteString());
+            .append(str);
             setClipBoard(clipstr.toString());
-            clipstr=null;
+            clipstr = null;
         } catch (Exception e) {/*no messages*/}
+    }
+    
+    public void append(Msg msg) {
+        append(msg.quoteString());        
     }
 }

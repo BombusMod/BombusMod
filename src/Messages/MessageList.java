@@ -123,36 +123,35 @@ public abstract class MessageList extends VirtualList
     }
 
     public void menuAction(MenuCommand c, VirtualList d) {
-        if (c==cmdBack) {
-            StaticData.getInstance().roster.activeContact=null;
+        if (c == cmdBack) {
+            StaticData.getInstance().roster.activeContact = null;
             destroyView();
         }
-        if (c==cmdUrl) {
+        if (c == cmdUrl) {
             try {
-                Vector urls=((MessageItem) getFocusedObject()).getUrlList();
+                Vector urls = ((MessageItem) getFocusedObject()).getUrlList();
                 new MessageUrl(urls); //throws NullPointerException if no urls
-            } catch (Exception e) {/* no urls found */}
+            } catch (Exception e) {/* no urls found */
+
+            }
         }
-        if (c==cmdxmlSkin) {
-           try {
-               if (((MessageItem)getFocusedObject()).msg.body.indexOf("xmlSkin")>-1) {
-                    ColorTheme.loadSkin(((MessageItem)getFocusedObject()).msg.body,2);
-               }
-            } catch (Exception e){}
+        if (c == cmdxmlSkin) {
+            try {
+                if (((MessageItem) getFocusedObject()).msg.body.indexOf("xmlSkin") > -1) {
+                    ColorTheme.loadSkin(((MessageItem) getFocusedObject()).msg.body, 2);
+                }
+            } catch (Exception e) {
+            }
         }
-        
+
 //#ifdef CLIPBOARD
-//#         if (c == cmdCopy)
-//#         {
-//#             try {
-//#                 clipboard.add(((MessageItem)getFocusedObject()).msg);
-//#             } catch (Exception e) {/*no messages*/}
+//#         if (c == cmdCopy) {
+//#             clipboard.set(((MessageItem) getFocusedObject()).msg);
 //#         }
-//#         
-//#         if (c==cmdCopyPlus) {
-//#             try {
-//#                 clipboard.append(((MessageItem)getFocusedObject()).msg);
-//#             } catch (Exception e) {/*no messages*/}
+//# 
+//#         if (c == cmdCopyPlus) {
+//#             clipboard.append(((MessageItem) getFocusedObject()).msg);
+//# 
 //#         }
 //#endif
     }

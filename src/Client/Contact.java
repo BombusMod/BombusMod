@@ -656,10 +656,12 @@ public class Contact extends IconTextElement{
 //# 
 //#endif
 //#endif
+/*         
         if (vcard!=null) {
             w-=ilHeight;
             il.drawImage(g, RosterIcons.ICON_SEARCH_INDEX, w,imgH);
         }
+*/ 
 //#ifdef FILE_TRANSFER
         if (fileQuery) {
             w-=ilHeight;
