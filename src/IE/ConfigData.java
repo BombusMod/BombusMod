@@ -271,7 +271,7 @@ public class ConfigData {
 //#endif
         cf.rosterStatus=cf.getBooleanProperty(getValue(rosterStatus),true);
         cf.queryExit=cf.getBooleanProperty(getValue(queryExit),false);
-        VirtualList.showBalloons=cf.showBalloons=cf.getBooleanProperty(getValue(showBalloons),false);
+        cf.showBalloons = cf.getBooleanProperty(getValue(showBalloons),false);
 //#ifdef LOGROTATE
 //#         cf.msglistLimit=cf.getIntProperty(getValue(msglistLimit),500);
 //#endif

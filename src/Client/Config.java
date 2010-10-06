@@ -541,7 +541,6 @@ public class Config {
         }
         updateTime();        
         VirtualList.memMonitor = memMonitor;
-        VirtualList.showBalloons = showBalloons;
         VirtualList.panelsState = panelsState;
         VirtualList.showTimeTraffic = showTimeTraffic;
 

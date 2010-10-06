@@ -382,7 +382,6 @@ public class ConfigForm
         cf.popUps=popUps.getValue();
 //#endif
         cf.showBalloons=showBalloons.getValue();
-        VirtualList.showBalloons=cf.showBalloons;
         cf.eventDelivery=eventDelivery.getValue();
 //#ifdef CLIPBOARD
 //#         cf.useClipBoard=useClipBoard.getValue();

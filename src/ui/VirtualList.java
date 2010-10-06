@@ -196,7 +196,6 @@ public abstract class VirtualList {
     public static short greenKeyCode=SIEMENS_GREEN;
 
     public static boolean memMonitor;
-    public static boolean showBalloons;
     public static boolean showTimeTraffic = true;
     
     public boolean canBack = true;
@@ -369,7 +368,7 @@ public abstract class VirtualList {
     public void show(VirtualList parent) {
         parentView = parent;
         if (parentView == null) {
-            parentView = sd.roster;
+            parentView = VirtualCanvas.getInstance().getList();
         }
         VirtualCanvas.getInstance().show(this);       
      }
@@ -591,15 +590,18 @@ public abstract class VirtualList {
         drawHeapMonitor(g, list_top); //heap monitor
         
         if (showBalloon) {
-            if (showBalloons) {
-                String text=null;
+            if (cf.showBalloons) {
+                String text = null;
                 try {
-                    text=((VirtualElement)getFocusedObject()).getTipString();
-                } catch (Exception e) { }
-                if (text!=null)
+                    text = ((VirtualElement) getFocusedObject()).getTipString();
+                } catch (Exception e) {
+                }
+                if (text != null) {
                     drawBalloon(g, baloon, text);
+                }
             }
         }
+
         if (paintBottom) {
             if (reverse) {
                 if (mainbar!=null) {

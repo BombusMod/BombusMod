@@ -30,7 +30,6 @@ import Colors.ColorTheme;
 import Fonts.FontCache;
 import images.RosterIcons;
 import java.util.Vector;
-import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
 import ui.IconTextElement;
@@ -48,8 +47,6 @@ public class DropChoiceBox
     
     private boolean selectable=true;
     
-    private Display display;
-
     private int colorItem;
     private int colorBorder;
     private int colorBGnd;
@@ -106,7 +103,7 @@ public class DropChoiceBox
     public void onSelect() {
         if (items.size()>1)
             new DropListBox(items, this);
-    }
+        }
 
     public int getValue() { return index; }
     
