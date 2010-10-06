@@ -195,7 +195,6 @@ public abstract class VirtualList {
     public static short keyBack=-11;
     public static short greenKeyCode=SIEMENS_GREEN;
 
-    public static boolean fullscreen = true;
     public static boolean memMonitor;
     public static boolean showBalloons;
     public static boolean showTimeTraffic = true;
@@ -365,15 +364,14 @@ public abstract class VirtualList {
     }
 
     public void show() {
-        show(VirtualCanvas.getInstance().getList());
+        show(null);
      }
     public void show(VirtualList parent) {
         parentView = parent;
-        if (null == parent) {
-            parentView = VirtualCanvas.getInstance().getList();
+        if (parentView == null) {
+            parentView = sd.roster;
         }
-        VirtualCanvas.getInstance().show(this);
-        redraw();
+        VirtualCanvas.getInstance().show(this);       
      }
 
     public void destroy() {
@@ -407,9 +405,7 @@ public abstract class VirtualList {
      * экранного буфера offscreen, используемого при работе без автоматической
      * двойной буферизации
      */
-    protected void showNotify() {
-        VirtualCanvas.getInstance().setOk(touchLeftCommand());
-        VirtualCanvas.getInstance().setCancel(touchRightCommand());
+    protected void showNotify() {        
 //#if (USE_ROTATOR)
         TimerTaskRotate.startRotate(-1, this);
 //#endif
@@ -731,8 +727,8 @@ public abstract class VirtualList {
             g.fillRect(0, 0, width, h);
 //#endif
         g.setColor(getMainBarRGB());
-        ((MainBar)infobar).lShift = (Config.getInstance().phoneManufacturer == Config.NOKIA && reverse && fullscreen);
-        ((MainBar)infobar).rShift = (Config.getInstance().phoneManufacturer == Config.SONYE && reverse && fullscreen);
+        ((MainBar)infobar).lShift = (Config.getInstance().phoneManufacturer == Config.NOKIA && reverse && Config.fullscreen);
+        ((MainBar)infobar).rShift = (Config.getInstance().phoneManufacturer == Config.SONYE && reverse && Config.fullscreen);
         infobar.drawItem(g, 0, false);
 
     }
@@ -756,8 +752,8 @@ public abstract class VirtualList {
         g.fillRect(0, 0, width, h);
 //#endif
         g.setColor(getMainBarRGB());
-        ((MainBar)mainbar).lShift = (Config.getInstance().phoneManufacturer == Config.NOKIA && !reverse && fullscreen);
-        ((MainBar)mainbar).rShift = (Config.getInstance().phoneManufacturer == Config.SONYE && !reverse && fullscreen);
+        ((MainBar)mainbar).lShift = (Config.getInstance().phoneManufacturer == Config.NOKIA && !reverse && Config.fullscreen);
+        ((MainBar)mainbar).rShift = (Config.getInstance().phoneManufacturer == Config.SONYE && !reverse && Config.fullscreen);
         mainbar.drawItem(g, 0, false);
     }
     
@@ -1496,8 +1492,8 @@ public abstract class VirtualList {
             getInfoBarItem().setElementAt(SR.MS_CANCEL, 3);
             return;
         }
-        getInfoBarItem().setElementAt((!showTimeTraffic && fullscreen)?touchLeftCommand():Time.getTimeWeekDay(), 1);
-        getInfoBarItem().setElementAt((!showTimeTraffic && fullscreen)?touchRightCommand():getTraffic(), 3);
+        getInfoBarItem().setElementAt((!showTimeTraffic && Config.fullscreen)?touchLeftCommand():Time.getTimeWeekDay(), 1);
+        getInfoBarItem().setElementAt((!showTimeTraffic && Config.fullscreen)?touchRightCommand():getTraffic(), 3);
     }
 
     public void showHeapInfo() {

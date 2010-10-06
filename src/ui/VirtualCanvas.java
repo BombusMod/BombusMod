@@ -31,19 +31,33 @@ public class VirtualCanvas extends Canvas implements CommandListener{
     public static VirtualCanvas getInstance() {
         if (instance == null) {
             instance = new VirtualCanvas();
-            instance.setFullScreenMode(Config.fullscreen);
-            instance.setOk(SR.MS_MENU);
-            instance.setCancel(SR.MS_ACTION);
-            instance.setCommandListener(instance);
-        }
+        }        
         return instance;
+    }   
+    
+    public VirtualCanvas() {
+        setFullScreenMode(Config.fullscreen);
     }
+    
+    public final void setFullScreenMode(boolean mode) {
+        super.setFullScreenMode(mode);
+        if (Config.fullscreen) {
+            setCommandListener(null);
+
+        } else {
+            setOk(list.touchLeftCommand());
+            setCancel(list.touchRightCommand());
+            setCommandListener(instance);
+        }
+    }
+    
 
     
     public void show(VirtualList virtualList) {
-        if (this == midlet.BombusMod.getInstance().getDisplay().getCurrent()
+                
+        if (midlet.BombusMod.getInstance().getDisplay().getCurrent() == this
                 && isShown()) {
-            if (null != list) {
+            if (list != null) {
                 list.hideNotify();
             }
             list = virtualList;
@@ -54,12 +68,14 @@ public class VirtualCanvas extends Canvas implements CommandListener{
         } else {
             list = virtualList;
             midlet.BombusMod.getInstance().getDisplay().setCurrent(this);
-        }        
+        }
+        setFullScreenMode(Config.fullscreen);
     }
+    
     public VirtualList getList() {
         return list;
     }
-
+    
     protected void paint(Graphics graphics) {
         list.paint(graphics);
     }
@@ -83,8 +99,7 @@ public class VirtualCanvas extends Canvas implements CommandListener{
         list.pointerReleased(x, y);           
     }
 
-    protected void showNotify() {
-        setFullScreenMode(Config.fullscreen);
+    protected void showNotify() {        
         list.showNotify();        
     }
     protected void hideNotify() {
@@ -101,27 +116,30 @@ public class VirtualCanvas extends Canvas implements CommandListener{
     }
 
     public void commandAction(Command c, Displayable d) {
-        if (c == commandOk) list.touchLeftPressed();
-        if (c == commandCancel) list.touchRightPressed();
+        if (c == commandOk) 
+            list.touchLeftPressed();
+        if (c == commandCancel) 
+            list.touchRightPressed();
     }
 
     public final void setOk(String title) {
         if (!Config.fullscreen) {
-        if (commandOk != null) removeCommand(commandOk);
-        commandOk = null;
-        commandOk = new Command(title, Command.OK, 1);
-        addCommand(commandOk);
-        }
-       // setCommandListener(this);
+            removeCommand(commandOk);        
+            if (title != null ) {
+                commandOk = new Command(title, Command.OK, 1);
+                addCommand(commandOk);
+            }
+        }       
     }
+    
     public final void setCancel(String title) {
         if (!Config.fullscreen) {
-        if (commandCancel != null) removeCommand(commandCancel);
-        commandCancel = null;
-        commandCancel = new Command(title, Command.BACK, 99);
-        addCommand(commandCancel);
-        }
-       // setCommandListener(this);
+            removeCommand(commandCancel);   
+            if (title != null) {
+                commandCancel = new Command(title, Command.BACK, 99);
+                addCommand(commandCancel);        
+            }
+        }       
     }
 
 }

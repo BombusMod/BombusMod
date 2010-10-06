@@ -428,7 +428,7 @@ public class ConfigForm
 //#endif
         
         VirtualList.showTimeTraffic=cf.showTimeTraffic=drawMenuCommand.getValue();
-        VirtualList.fullscreen=Config.fullscreen=fullscreen.getValue();
+        Config.fullscreen = fullscreen.getValue();
         VirtualList.memMonitor=cf.memMonitor=memMonitor.getValue();
         cf.enableVersionOs=enableVersionOs.getValue();
         cf.queryExit=queryExit.getValue();

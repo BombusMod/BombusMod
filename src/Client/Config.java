@@ -539,8 +539,7 @@ public class Config {
         if (lastProfile == AlertProfile.VIBRA) {
             lastProfile = 0;
         }
-        updateTime();
-        VirtualList.fullscreen = fullscreen;
+        updateTime();        
         VirtualList.memMonitor = memMonitor;
         VirtualList.showBalloons = showBalloons;
         VirtualList.panelsState = panelsState;

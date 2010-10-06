@@ -168,8 +168,8 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
     private Command cmdExit=new Command("Hide Splash", Command.BACK, 99);
     
     public void setExit(VirtualList nextDisplayable){
-        setCommandListener(this);
         addCommand(cmdExit);
+        setCommandListener(this);
     }
     
     public void commandAction(Command c, Displayable d) {
@@ -198,7 +198,7 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
     }
     
     public void close() {
-        close(null);
+        close(StaticData.getInstance().roster);
     }
 
     public void run() {

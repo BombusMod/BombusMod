@@ -308,8 +308,7 @@ public class AccountForm
         
         if (keyCode == Canvas.KEY_NUM6) {
             Config.fullscreen=!Config.fullscreen;
-            cf.saveToStorage();
-            VirtualList.fullscreen=Config.fullscreen;
+            cf.saveToStorage();            
             VirtualCanvas.getInstance().setFullScreenMode(Config.fullscreen);
         }
     }

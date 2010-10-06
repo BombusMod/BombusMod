@@ -90,7 +90,7 @@ public class BombusMod extends MIDlet implements Runnable{
         s = SplashScreen.getInstance();
         s.setProgress("Loading", 3); // this message will not be localized
 
-        isRunning=true;
+        isRunning = true;
         new Thread(this).start();
     }
     
@@ -110,9 +110,9 @@ public class BombusMod extends MIDlet implements Runnable{
 //#endif    
 
         try {
-            s.img=Image.createImage("/images/splash.png");
+            s.img = Image.createImage("/images/splash.png");
         } catch (Exception e) {
-            s.img=null;
+            s.img = null;
         }
 //#ifdef PLUGINS
 //#         getPlugins();
@@ -134,7 +134,7 @@ public class BombusMod extends MIDlet implements Runnable{
 //#         s.setProgress(17);
 //#endif
         VirtualCanvas.getInstance();
-        sd.roster=new Roster();
+        sd.roster = new Roster();
         s.setProgress(20);
         
         boolean selAccount=( (cf.accountIndex<0) || s.keypressed!=0);

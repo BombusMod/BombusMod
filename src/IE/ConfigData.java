@@ -315,8 +315,7 @@ public class ConfigData {
         cf.updateTime();
 
         cf.saveToStorage();
-
-        VirtualList.fullscreen=Config.fullscreen;
+        
         VirtualList.memMonitor=cf.memMonitor;
     }
     

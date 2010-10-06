@@ -2479,9 +2479,8 @@ public class Roster
        	else if (keyCode==Canvas.KEY_NUM3) new ActiveContacts(null);
        	else if (keyCode==Canvas.KEY_NUM4) new ConfigForm();
         else if (keyCode==Canvas.KEY_NUM6) {
-            Config.fullscreen=!Config.fullscreen;
-            cf.saveToStorage();
-            VirtualList.fullscreen=Config.fullscreen;
+            Config.fullscreen = !Config.fullscreen;
+            cf.saveToStorage();            
             VirtualCanvas.getInstance().setFullScreenMode(Config.fullscreen);
         }
         else if (keyCode==Canvas.KEY_NUM7)

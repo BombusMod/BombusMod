@@ -262,8 +262,7 @@ public class UserKeyExec {
                 break;
             case 17:
                 Config.fullscreen=!Config.fullscreen;
-                cf.saveToStorage();
-                VirtualList.fullscreen=Config.fullscreen;
+                cf.saveToStorage();                
                 VirtualCanvas.getInstance().setFullScreenMode(Config.fullscreen);
                 break;
             case 18:

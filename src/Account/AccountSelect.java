@@ -54,8 +54,6 @@ public class AccountSelect extends DefForm {
     MenuCommand cmdConfig=new MenuCommand(SR.MS_OPTIONS,MenuCommand.ITEM,5);
     MenuCommand cmdQuit=new MenuCommand(SR.MS_APP_QUIT,MenuCommand.SCREEN,10);
     
-    private Config cf;
-    
     /** Creates a new instance of AccountPicker */
     public AccountSelect(boolean enableQuit) {
         super(SR.MS_ACCOUNTS, false);
@@ -222,8 +220,7 @@ public class AccountSelect extends DefForm {
         
         if (keyCode == Canvas.KEY_NUM6) {
             Config.fullscreen=!Config.fullscreen;
-            cf.saveToStorage();
-            VirtualList.fullscreen=Config.fullscreen;
+            cf.saveToStorage();            
             VirtualCanvas.getInstance().setFullScreenMode(Config.fullscreen);
         }
     }

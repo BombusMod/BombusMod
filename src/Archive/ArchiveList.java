@@ -79,9 +79,8 @@ public class ArchiveList
 	mb.addRAlign();
 	mb.addElement(null);
 	mb.addElement(SR.MS_FREE /*"free "*/);
-        setMainBarItem(mb);
+        setMainBarItem(mb);        
         
-        commandState();
         addMenuCommands();
         
         show(parentView);
@@ -200,7 +199,10 @@ public class ArchiveList
 
     public void destroyView(){
         archive.close();
-        midlet.BombusMod.getInstance().setDisplayable(t);
+        if (t != null)
+            midlet.BombusMod.getInstance().setDisplayable(t);
+        else 
+            super.destroyView();
     }
 
     private int getFreeSpace() {
