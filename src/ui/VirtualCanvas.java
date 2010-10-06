@@ -45,9 +45,11 @@ public class VirtualCanvas extends Canvas implements CommandListener{
             setCommandListener(null);
 
         } else {
-            setOk(list.touchLeftCommand());
-            setCancel(list.touchRightCommand());
-            setCommandListener(instance);
+            if (list != null) {
+                setOk(list.touchLeftCommand());
+                setCancel(list.touchRightCommand());
+                setCommandListener(instance);
+            }
         }
     }
     
@@ -124,22 +126,27 @@ public class VirtualCanvas extends Canvas implements CommandListener{
 
     public final void setOk(String title) {
         if (!Config.fullscreen) {
-            removeCommand(commandOk);        
-            if (title != null ) {
+            if (commandOk != null) {
+                removeCommand(commandOk);
+            }
+            if (title != null) {
                 commandOk = new Command(title, Command.OK, 1);
                 addCommand(commandOk);
             }
-        }       
+
+        }
     }
     
     public final void setCancel(String title) {
         if (!Config.fullscreen) {
-            removeCommand(commandCancel);   
+            if (commandCancel != null) {
+                removeCommand(commandCancel);
+            }
             if (title != null) {
                 commandCancel = new Command(title, Command.BACK, 99);
-                addCommand(commandCancel);        
+                addCommand(commandCancel);
             }
-        }       
+        }
     }
 
 }
