@@ -1665,7 +1665,7 @@ public class Roster
                     ConferenceGroup mucGrp=(ConferenceGroup)c.group;
                     if (mucGrp.selfContact.getJid().equals(message.getFrom())) {
                         m.messageType=Msg.MESSAGE_TYPE_OUT;
-                        m.unread=false;
+                       // m.unread=false;
                     } else {
 //#ifdef LIGHT_CONFIG        
 //#ifdef PLUGINS        
@@ -1752,11 +1752,12 @@ public class Roster
                         c.statusString=pr.getStatus();
                         
                         String chatPres=c.processPresence(xmuc, pr);
+                        String type = data.getTypeAttribute();
                         
                         if (cf.storeConfPresence 
                                 || chatPres.indexOf(SR.MS_WAS_BANNED)>-1
                                 || chatPres.indexOf(SR.MS_WAS_KICKED)>-1 
-                                || data.getTypeAttribute().equals("error")) {
+                                || (type != null && type.equals("error"))) {
                             int rp=from.indexOf('/');
 
                             String name=from.substring(rp+1);
@@ -1897,8 +1898,6 @@ public class Roster
                 }
                 return JabberBlockListener.BLOCK_PROCESSED;                
             } // if presence
-        } catch(OutOfMemoryError eom){
-            System.out.println("error bombusmod\\src\\Client\\Roster.java:12");
         } catch( Exception e ) {
 //#if DEBUG
 //#             e.printStackTrace();
@@ -1979,11 +1978,11 @@ public class Roster
 //#         if (message.messageType==Msg.MESSAGE_TYPE_IN)
 //#             setTicker(c, message.body);
 //#endif
-        if (Config.getInstance().widthSystemgc) {
-                if (cf.ghostMotor) {
-                      systemGC();
-                }
+        
+        if (cf.ghostMotor) {
+            systemGC();
         }
+        
         if (countNewMsgs()) 
             reEnumRoster();
         
@@ -2277,8 +2276,7 @@ public class Roster
         VirtualList pview=createMsgList();
         if (pview!=null) {
             Contact c=(Contact)getFocusedObject();
-            me = null; me = new MessageEdit(c, c.msgSuspended);
-            me.show(this);
+            me = null; me = new MessageEdit(c, c.msgSuspended);            
             c.msgSuspended=null;
         }
     }
@@ -3122,7 +3120,7 @@ public class Roster
                     force = false;
                 }
                 focusedItem(cursor);
-                redraw();
+                VirtualCanvas.getInstance().getList().redraw();
             }
             //} catch (Exception e) {
 //#ifdef DEBUG

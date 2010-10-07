@@ -86,8 +86,7 @@ public final class MessageEdit
     public MessageEdit(Contact to, String body, boolean writespaces) {
         super(body, to.toString(), writespaces);
 
-        this.to = to;
-                
+        this.to = to;        
 
 //#ifdef DETRANSLIT
 //#ifdef PLUGINS
@@ -95,13 +94,14 @@ public final class MessageEdit
 //#endif
 //#             DeTranslit.getInstance();
 //#endif
+        show();
     }
 
     public MessageEdit(Contact to, String body) {
         this(to, body, true);
     }
 
-    public void show(VirtualList pView) {
+    public void show() {
 //#ifdef RUNNING_MESSAGE
 //#ifdef MIDP_TICKER
 //#         if (cf.notifyWhenMessageType) {
@@ -115,7 +115,7 @@ public final class MessageEdit
 //#else
         send() ; // composing
 //#endif
-        super.show(pView, this);
+        super.show(this);
     }
 
     public void commandState() {
@@ -238,10 +238,7 @@ public final class MessageEdit
             }
             // message/composing sending
             
-            parentView = new ContactMessageList(to);
-            VirtualCanvas.getInstance().show(parentView);         
-            ((ContactMessageList)parentView).forceScrolling();
-            VirtualCanvas.getInstance().getList().redraw();
+            destroyView();            
             
 //#ifdef RUNNING_MESSAGE
 //#             runState = 3;
@@ -273,7 +270,7 @@ public final class MessageEdit
 //#                 runState = 4;
 //#                 send();
 //#                 thread = null;
-//#                 VirtualCanvas.getInstance().repaint();
+//#                 VirtualCanvas.getInstance().getList().redraw();
 //#                 break;
 //#             }
 //#             if (runState == 1) {

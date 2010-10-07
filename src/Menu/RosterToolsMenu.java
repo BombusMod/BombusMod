@@ -58,9 +58,9 @@ import Colors.ColorConfigForm;
 
 //import ui.reconnectWindow;
 //#ifdef USER_KEYS
-//# import Console.StanzasList;
 //# import ui.keys.UserKeysList;
 //#endif
+
 //#ifdef CHECK_VERSION
 //# import Info.Upgrade;
 //#endif

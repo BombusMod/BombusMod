@@ -221,7 +221,7 @@ public class BombusMod extends MIDlet implements Runnable{
 //#                     sd.Juick = state;
 //#                 }
 //#             }
-//#         }
+//#         }        
 //#     }
 //#endif
 

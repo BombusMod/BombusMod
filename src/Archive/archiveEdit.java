@@ -30,7 +30,6 @@ import Client.Config;
 import Client.Msg;
 import javax.microedition.lcdui.*;
 import locale.SR;
-import ui.VirtualList;
 import ui.controls.ExTextBox;
 
 /**
@@ -51,7 +50,7 @@ public class archiveEdit
     private int pos;
     private ArchiveList al;
     
-    public archiveEdit(VirtualList pView, int pos, int where, ArchiveList al) {
+    public archiveEdit(int pos, int where, ArchiveList al) {
 
         super(null, (pos > -1) ? SR.MS_EDIT : SR.MS_NEW);
 
@@ -68,9 +67,8 @@ public class archiveEdit
             body = msg.quoteString();
         }
 
-        setText(body);
-        parentView = pView;
-        show(parentView, this);
+        setText(body);        
+        show(this);
     }
 
     public void commandState() {

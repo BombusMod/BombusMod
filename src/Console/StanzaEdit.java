@@ -58,13 +58,11 @@ public class StanzaEdit
 
     public StanzaEdit(String body) {
         super(body, SR.MS_XML_CONSOLE);
-    }
-
-    public void setParentView(VirtualList parentView) {
-        this.parentView = parentView;
+        show(this);
     }
 
     public void commandState() {
+        super.commandState();
         cmdCancel = new Command(SR.MS_CANCEL, Command.BACK, 99);
         cmdSend = new Command(SR.MS_SEND, Command.OK, 1);
 
@@ -80,10 +78,8 @@ public class StanzaEdit
         textbox.addCommand(cmdPastePresence);
         textbox.addCommand(cmdPasteMessage);
 
-        textbox.addCommand(cmdCancel);
-
-        super.commandState();
-        super.show(parentView, this);
+        textbox.addCommand(cmdCancel);       
+        
 
     }
 

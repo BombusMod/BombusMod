@@ -96,13 +96,13 @@ public class ExTextBox {
         this(body, subj, true);
     }
 
-    public void show(VirtualList pView, CommandListener listener) {
+    public void show(CommandListener listener) {
         commandState();
         setInitialCaps(cf.capsState);
         if (Config.getInstance().phoneManufacturer == Config.SONYE)
             System.gc(); // prevent flickering on Sony Ericcsson C510
         textbox.setCommandListener(listener);
-        parentView = pView;
+        parentView = VirtualCanvas.getInstance().getList();
         midlet.BombusMod.getInstance().setDisplayable(textbox);        
     }
         

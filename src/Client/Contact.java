@@ -260,6 +260,8 @@ public class Contact extends IconTextElement{
     }
 
     public int getNewMsgsCount() {
+        if (msgs == null)
+            return 0;
         if (newMsgCnt>0) return newMsgCnt;
         int nm=0;
         if (getGroupType()!=Groups.TYPE_IGNORE) {
@@ -415,7 +417,7 @@ public class Contact extends IconTextElement{
             if (m.messageType>unreadType) unreadType=m.messageType;
             if (newMsgCnt>=0) newMsgCnt++;
             if (m.highlite) if (newHighLitedMsgCnt>=0) newHighLitedMsgCnt++;
-        }
+        }        
     }
 
     public int getFontIndex(){

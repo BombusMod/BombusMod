@@ -55,10 +55,10 @@ import Archive.MessageArchive;
 //# import Menu.MyMenu;
 //#endif
 import ui.VirtualList;
+import javax.microedition.lcdui.Canvas;
 //#ifdef FILE_TRANSFER
 import io.file.transfer.TransferAcceptFile;
 import io.file.transfer.TransferDispatcher;
-import javax.microedition.lcdui.Canvas;
 //#endif
 
 public class ContactMessageList extends MessageList {
@@ -109,7 +109,7 @@ public class ContactMessageList extends MessageList {
 //#     Vector currentJuickCommands = new Vector();
 //#     
 //#endif
-    public ContactMessageList() {    
+    public ContactMessageList() {         
     }
 
 //#ifdef CLIPBOARD    
@@ -125,7 +125,7 @@ public class ContactMessageList extends MessageList {
      */
     public ContactMessageList(Contact c) {
         super();
-        this.contact=c;
+        this.contact = c;
         sd.roster.activeContact=contact;
 
         MainBar mb=new MainBar(contact);
@@ -146,7 +146,7 @@ public class ContactMessageList extends MessageList {
 //#endif
         if (contact.msgs.size()>0)
             moveCursorTo(firstUnread());
-        show(sd.roster);
+        show();
     }
 
     public final int firstUnread(){
@@ -297,7 +297,7 @@ public void showNotify() {
 //#ifdef LOGROTATE
 //#         getRedraw(true);
 //#endif
-        super.showNotify();
+        super.showNotify();      
     }
     
     public void forceScrolling() { //by voffk
@@ -311,7 +311,7 @@ public void showNotify() {
 
     protected void beginPaint() {
         markRead(cursor);
-        forceScrolling();
+        forceScrolling();         
         on_end = (cursor==(getItemCount()-1));
     }
     
@@ -633,8 +633,7 @@ public void showNotify() {
 //#         }
 //#         try {
 //#             Roster.me = null;
-//#             Roster.me = new MessageEdit(getActualJuickContact(), resultAction, false);
-//#             Roster.me.show(this);
+//#             Roster.me = new MessageEdit(getActualJuickContact(), resultAction, false);            
 //#         } catch (Exception e) {/*no messages*/}
 //#     }
 //# 
@@ -694,8 +693,7 @@ public void showNotify() {
     public void keyGreen(){
         if (!sd.roster.isLoggedIn()) return;       
         Roster.me = null;
-        Roster.me = new MessageEdit(contact, contact.msgSuspended);
-        Roster.me.show(this);
+        Roster.me = new MessageEdit(contact, contact.msgSuspended);        
         contact.msgSuspended=null;
     }
     
@@ -801,8 +799,7 @@ public void showNotify() {
             if (msg==null || msg.messageType == Msg.MESSAGE_TYPE_OUT || msg.messageType == Msg.MESSAGE_TYPE_SUBJ) {
                 keyGreen();
             } else {
-                Roster.me = null; Roster.me=new MessageEdit(contact, msg.from+":");
-                Roster.me.show(this);
+                Roster.me = null; Roster.me=new MessageEdit(contact, msg.from+":");                
             }
         } catch (Exception e) {/*no messages*/}
     }
@@ -819,8 +816,7 @@ public void showNotify() {
                 .append(" ")
                 .toString();
             Roster.me = null;
-            Roster.me = new MessageEdit(contact, msg);
-            Roster.me.show(this);
+            Roster.me = new MessageEdit(contact, msg);            
             msg = null;
         } catch (Exception e) {/*no messages*/}
     }
@@ -844,7 +840,7 @@ public void showNotify() {
 //# 
 //#     private boolean isMsgExists(Msg msg) {
 //#         if (msg == null) return true;
-//#          for (Enumeration contactMsgs=contact.msgs.elements(); contactMsgs.hasMoreElements(); )  {
+//#          for (Enumeration contactMsgs = contact.msgs.elements(); contactMsgs.hasMoreElements(); )  {
 //#             Msg message=(Msg) contactMsgs.nextElement();
 //#             if (message.body.equals(msg.body)) {
 //#                 return true;
@@ -896,7 +892,7 @@ public void showNotify() {
 //#     }
 //#endif
     
-    public final void smartPurge() {
+    public final void smartPurge() {        
         Vector msgs=contact.msgs;
         int cur=cursor+1;
         try {

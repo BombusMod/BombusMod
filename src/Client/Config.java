@@ -1025,11 +1025,10 @@ public class Config {
     }
 
     public final String getStringProperty(final String key, final String defvalue) {
-        try {
+        if (key != null) {
             String s = BombusMod.getInstance().getAppProperty(key);
             return (s == null) ? defvalue : s;
-        } catch (Exception e) {
-        }
+        } 
         return defvalue;
     }
 
