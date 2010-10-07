@@ -41,9 +41,6 @@ import locale.SR;
  */
 public class DiscoForm implements CommandListener{
     
-    private Display display;
-    private Displayable parentView;
-    
     private Vector fields;
     private String xmlns;
     private String service;

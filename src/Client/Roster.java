@@ -2266,21 +2266,24 @@ public class Roster
 //#endif
     }
 
-    private VirtualList createMsgList(){
-        Object e=getFocusedObject();
+    private VirtualList createMsgList() {
+        Object e = getFocusedObject();
         if (e instanceof Contact) {
-            return new ContactMessageList((Contact)e);
+            return new ContactMessageList((Contact) e);
         }
         return null;
     }
-    
-    protected void keyGreen(){
-        if (!isLoggedIn()) return;
-        VirtualList pview=createMsgList();
-        if (pview!=null) {
-            Contact c=(Contact)getFocusedObject();
-            me = null; me = new MessageEdit(this, c, c.msgSuspended);            
-            c.msgSuspended=null;
+
+    protected void keyGreen() {
+        if (!isLoggedIn()) {
+            return;
+        }
+        VirtualList pview = createMsgList();
+        if (pview != null) {
+            Contact c = (Contact) getFocusedObject();
+            me = null;
+            me = new MessageEdit(pview, c, c.msgSuspended);
+            c.msgSuspended = null;
         }
     }
     
