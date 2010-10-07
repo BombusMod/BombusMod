@@ -49,7 +49,6 @@ import java.util.Vector;
 
 import ui.controls.CommandsPointer;
 import Menu.MenuCommand;
-import Menu.MenuListener;
 
 /**
  * Вертикальный список виртуальных элементов.

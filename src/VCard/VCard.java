@@ -33,9 +33,6 @@ import java.util.*;
 import util.StringLoader;
 import util.Strconv;
 //#if FILE_IO
-//#ifdef DETRANSLIT
-//# import util.DeTranslit;
-//#endif
 import ui.Time;
 //#endif
 
@@ -272,8 +269,15 @@ public class VCard {
     public String getNickDate() {
         StringBuffer nickDate=new StringBuffer("photo_");
 //#ifdef DETRANSLIT
-//#         String userName = (getNickName() != null) ? getNickName() : getJid();
-//#         nickDate.append(DeTranslit.get_actual_filename(userName));
+ //#ifdef PLUGINS       
+//#        if (StaticData.getInstance().DeTranslit) {
+//#endif                  
+//#             String userName = (getNickName() != null) ? getNickName() : getJid();
+//#             nickDate.append(util.DeTranslit.getInstance().get_actual_filename(userName));
+//#ifdef PLUGINS       
+//#        }
+//#endif           
+//#         
 //#else
          if (getNickName()!=null) {
              nickDate.append(getNickName());

@@ -554,7 +554,7 @@ public void showNotify() {
 //#         }
 //# 
 //#         if (!things.isEmpty()) {
-//#             new JuickThingsMenu(things, getActualJuickContact());
+//#             new JuickThingsMenu(this, things, getActualJuickContact());
 //#         }
 //#     }
 //# 
@@ -633,7 +633,7 @@ public void showNotify() {
 //#         }
 //#         try {
 //#             Roster.me = null;
-//#             Roster.me = new MessageEdit(getActualJuickContact(), resultAction, false);            
+//#             Roster.me = new MessageEdit(this, getActualJuickContact(), resultAction, false);            
 //#         } catch (Exception e) {/*no messages*/}
 //#     }
 //# 
@@ -693,7 +693,7 @@ public void showNotify() {
     public void keyGreen(){
         if (!sd.roster.isLoggedIn()) return;       
         Roster.me = null;
-        Roster.me = new MessageEdit(contact, contact.msgSuspended);        
+        Roster.me = new MessageEdit(this, contact, contact.msgSuspended);        
         contact.msgSuspended=null;
     }
     
@@ -799,7 +799,7 @@ public void showNotify() {
             if (msg==null || msg.messageType == Msg.MESSAGE_TYPE_OUT || msg.messageType == Msg.MESSAGE_TYPE_SUBJ) {
                 keyGreen();
             } else {
-                Roster.me = null; Roster.me=new MessageEdit(contact, msg.from+":");                
+                Roster.me = null; Roster.me=new MessageEdit(this, contact, msg.from+":");                
             }
         } catch (Exception e) {/*no messages*/}
     }
@@ -816,7 +816,7 @@ public void showNotify() {
                 .append(" ")
                 .toString();
             Roster.me = null;
-            Roster.me = new MessageEdit(contact, msg);            
+            Roster.me = new MessageEdit(this, contact, msg);            
             msg = null;
         } catch (Exception e) {/*no messages*/}
     }
@@ -955,6 +955,7 @@ public void showNotify() {
         savePosition();
         sd.roster.activeContact=null;
         sd.roster.reEnumRoster(); //to reset unread messages icon for this conference in roster
+        parentView = sd.roster;
         super.destroyView();
     }
 

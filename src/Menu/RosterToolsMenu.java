@@ -61,9 +61,6 @@ import Colors.ColorConfigForm;
 //# import ui.keys.UserKeysList;
 //#endif
 
-//#ifdef CHECK_VERSION
-//# import Info.Upgrade;
-//#endif
 //#if SASL_XGOOGLETOKEN
 //# import xmpp.extensions.IqGmail;
 //#endif
@@ -258,11 +255,11 @@ public class RosterToolsMenu extends Menu {
 //#endif
 //#ifdef CHECK_VERSION
 //#             case 14:
-//#                 Upgrade up = new Upgrade(false);
+//#                 Info.Upgrade up = new Info.Upgrade(false);
 //#                 new Thread(up).start();
 //#                 return;
 //#             case 15:
-//#                 Upgrade up2 = new Upgrade(true);
+//#                 Info.Upgrade up2 = new Info.Upgrade(true);
 //#                 new Thread(up2).start();
 //#                 return;
 //#endif

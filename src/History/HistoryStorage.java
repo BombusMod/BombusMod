@@ -27,16 +27,15 @@
 package History;
 
 import Client.Config;
-import Client.Msg;
 import io.file.FileIO;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Vector;
 import util.StringUtils;
-//#ifdef DETRANSLIT
-//# import util.DeTranslit;
-//#endif
 import util.Strconv;
+//#ifdef PLUGINS
+//# import Client.StaticData;
+//#endif
 
 public class HistoryStorage {
 //#ifdef PLUGINS
@@ -55,7 +54,10 @@ public class HistoryStorage {
     public HistoryStorage(String filename) {
         cf=Config.getInstance();
 //#ifdef DETRANSLIT
-//#         filename = DeTranslit.get_actual_filename(filename);
+//#ifdef PLUGINS       
+//#        if (StaticData.getInstance().DeTranslit)       
+//#endif            
+//#             filename = util.DeTranslit.getInstance().get_actual_filename(filename);
 //#endif
 //#ifdef HISTORY
 //#        filename=cf.msgPath+StringUtils.replaceBadChars(filename)+".txt";

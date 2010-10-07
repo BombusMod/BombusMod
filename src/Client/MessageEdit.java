@@ -31,15 +31,18 @@ import Conference.AppendNick;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
-import javax.microedition.lcdui.TextField;
-import javax.microedition.lcdui.Ticker;
+//#ifdef RUNNING_MESSAGE
+//# import ui.VirtualCanvas;
+//#endif
+//#ifdef MIDP_TICKER
+//# import javax.microedition.lcdui.TextField;
+//# import javax.microedition.lcdui.Ticker;
+//#endif
+
 import ui.controls.ExTextBox;
 
-//#ifdef DETRANSLIT
-//# import util.DeTranslit;
-//#endif
 import locale.SR;
-import ui.VirtualCanvas;
+
 import ui.VirtualList;
 /**
  *
@@ -83,22 +86,23 @@ public final class MessageEdit
 //#     Ticker ticker = new Ticker("");
 //#endif
     /** Creates a new instance of MessageEdit */
-    public MessageEdit(Contact to, String body, boolean writespaces) {
+    public MessageEdit(VirtualList pView, Contact to, String body, boolean writespaces) {
         super(body, to.toString(), writespaces);
 
-        this.to = to;        
+        this.to = to;
+        this.parentView = pView;
 
 //#ifdef DETRANSLIT
 //#ifdef PLUGINS
 //#        if (sd.DeTranslit)
 //#endif
-//#             DeTranslit.getInstance();
+//#             util.DeTranslit.getInstance();
 //#endif
         show();
     }
 
-    public MessageEdit(Contact to, String body) {
-        this(to, body, true);
+    public MessageEdit(VirtualList pView, Contact to, String body) {
+        this(pView, to, body, true);
     }
 
     public void show() {
@@ -172,8 +176,13 @@ public final class MessageEdit
         textbox.addCommand(cmdSmile);
 //#endif
 //#ifdef DETRANSLIT
-//#         textbox.addCommand(cmdSendInTranslit);
-//#         textbox.addCommand(cmdSendInDeTranslit);
+//#ifdef PLUGINS
+//#        if (sd.DeTranslit)
+//#endif        
+//#         if (util.DeTranslit.filled) {
+//#             textbox.addCommand(cmdSendInTranslit);
+//#             textbox.addCommand(cmdSendInDeTranslit);
+//#         }
 //#endif
         textbox.addCommand(cmdSuspend);
         textbox.addCommand(cmdCancel);        
@@ -336,23 +345,29 @@ public final class MessageEdit
             body = body.trim();
         }
         if (body != null || subj != null) {
-//#ifdef DETRANSLIT
+//#ifdef DETRANSLIT  
+//#ifdef PLUGINS
+//#        if (sd.DeTranslit) {
+//#endif            
 //#             if (sendInTranslit == true) {
 //#                 if (body != null) {
-//#                     body = DeTranslit.translit(body);
+//#                     body = util.DeTranslit.getInstance().translit(body);
 //#                 }
 //#                 if (subj != null) {
-//#                     subj = DeTranslit.translit(subj);
+//#                     subj = util.DeTranslit.getInstance().translit(subj);
 //#                 }
 //#             }
 //#             if (sendInDeTranslit == true || cf.autoDeTranslit) {
 //#                 if (body != null) {
-//#                     body = DeTranslit.deTranslit(body);
+//#                     body = util.DeTranslit.getInstance().deTranslit(body);
 //#                 }
 //#                 if (subj != null) {
-//#                     subj = DeTranslit.deTranslit(subj);
+//#                     subj = util.DeTranslit.getInstance().deTranslit(subj);
 //#                 }
 //#             }
+//#ifdef PLUGINS
+//#        }
+//#endif            
 //#endif
             String from = sd.account.toString();
             Msg msg = new Msg(Msg.MESSAGE_TYPE_OUT, from, subj, body);

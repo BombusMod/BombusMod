@@ -33,9 +33,6 @@ import io.file.FileIO;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Vector;
-//#ifdef DETRANSLIT
-//# import util.DeTranslit;
-//#endif
 import util.Strconv;
 import util.StringUtils;
 import ui.VirtualList;
@@ -73,7 +70,10 @@ public class HistoryLoader {
         this.smiles = smiles;
         cf = Config.getInstance();
 //#ifdef DETRANSLIT
-//#         file = DeTranslit.get_actual_filename(file);
+//#ifdef PLUGINS       
+//#        if (Client.StaticData.getInstance().DeTranslit)       
+//#endif                   
+//#             file = util.DeTranslit.getInstance().get_actual_filename(file);
 //#endif
 //#ifdef HISTORY
 //#         fileName = cf.msgPath + StringUtils.replaceBadChars(file) + ".txt";

@@ -29,7 +29,6 @@ package Menu;
 
 import java.util.Enumeration;
 import java.util.Vector;
-import javax.microedition.lcdui.Displayable;
 import ui.ImageList;
 import ui.VirtualList;
 

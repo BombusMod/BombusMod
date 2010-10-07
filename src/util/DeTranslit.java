@@ -39,24 +39,40 @@ public class DeTranslit {
 //#     public static String plugin = "PLUGIN_DT";
 //#endif
     static Vector translit[];
-    static boolean filled=false;
+    public static boolean filled = false;
     
     private static DeTranslit instance;
     
     public static DeTranslit getInstance(){
 	if (instance==null) {
-	    instance=new DeTranslit();
-	    DeTranslit.fill();
+	    instance=new DeTranslit();	    
 	}
 	return instance;
+    }
+    
+    public DeTranslit() {
+        translit = null;
+        translit = new Vector[2];
+        translit[0] = new Vector();
+        translit[1] = new Vector();
+
+        Vector defs[] = null;
+        defs = new StringLoader().stringLoader("/translit.txt", 2);
+        if (defs != null) {
+            for (int i = 0; i < defs[0].size(); i++) {
+                translit[0].addElement((String) defs[0].elementAt(i));
+                translit[1].addElement((String) defs[1].elementAt(i));
+            }
+            filled = true;
+        }
     }
     
     /** Creates a new instance of DeTranslit
      * @param src
      * @return
      */
-    public static String deTranslit(String src) {
-        if (translit[0].size()<1) return src;
+    public String deTranslit(String src) {
+        if (!filled) return src;
         if (src==null) return null;
         for (int i=0; i<translit[0].size(); i++) {
             src=StringUtils.stringReplace(src, (String) translit[0].elementAt(i), (String) translit[1].elementAt(i));
@@ -64,8 +80,8 @@ public class DeTranslit {
         return src;
     }
     
-    public static String translit(String src) {
-        if (translit[0].size()<1) return src;
+    public String translit(String src) {
+        if (!filled) return src;
         if (src==null) return null;
         for (int i=0; i<translit[0].size(); i++) {
             src=StringUtils.stringReplace(src, (String) translit[1].elementAt(i), (String) translit[0].elementAt(i));
@@ -74,7 +90,7 @@ public class DeTranslit {
     }
 
 //#ifdef DETRANSLIT
-//#     public static String get_actual_filename(String filename) {
+//#     public String get_actual_filename(String filename) {
 //#         if (Config.getInstance().transliterateFilenames) {
 //#             return translit(filename);
 //#         } else {
@@ -82,20 +98,7 @@ public class DeTranslit {
 //#         }
 //#     }
 //#endif
-
-    private static void fill() {
-        translit = null;
-        translit=new Vector[2];
-        translit[0]=new Vector();
-        translit[1]=new Vector();
-
-        Vector defs[] = null;
-        defs = new StringLoader().stringLoader("/translit.txt", 2);
-        for (int i=0; i<defs[0].size(); i++) {
-            translit[0].addElement((String) defs[0].elementAt(i));
-            translit[1].addElement((String) defs[1].elementAt(i));
-        }
-    }
+    
 /*
     public static String stringReplace(String aSearch, String aFind, String aReplace) {
         String result = aSearch;

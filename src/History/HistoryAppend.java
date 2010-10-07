@@ -33,9 +33,6 @@ import io.file.FileIO;
 import java.io.IOException;
 import java.io.OutputStream;
 import util.StringUtils;
-//#ifdef DETRANSLIT
-//# import util.DeTranslit;
-//#endif
 import util.Strconv;
 
 public class HistoryAppend {
@@ -95,7 +92,10 @@ public class HistoryAppend {
        byte[] bodyMessage=createBody(m).getBytes();
 
 //#ifdef DETRANSLIT
-//#        filename = DeTranslit.get_actual_filename(filename);
+//#ifdef PLUGINS       
+//#        if (sd.DeTranslit)       
+//#endif    
+//#             filename = util.DeTranslit.getInstance().get_actual_filename(filename);
 //#endif
 //#ifdef HISTORY
 //#        filename = cf.msgPath+StringUtils.replaceBadChars(filename)+".txt";
@@ -126,7 +126,10 @@ public class HistoryAppend {
        byte[] bodyMessage=messages.getBytes();
 
 //#ifdef DETRANSLIT
-//#         filename = DeTranslit.get_actual_filename(filename);
+//#ifdef PLUGINS       
+//#        if (sd.DeTranslit)       
+//#endif           
+//#             filename = util.DeTranslit.getInstance().get_actual_filename(filename);
 //#endif
 //#ifdef HISTORY
 //#        filename = cf.msgPath+StringUtils.replaceBadChars(filename)+".txt";

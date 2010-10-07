@@ -27,9 +27,7 @@
 package ui.controls;
 
 import Client.Config;
-//#ifdef PLUGINS
-//# import Client.StaticData;
-//#endif
+import Client.StaticData;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
@@ -41,7 +39,6 @@ import locale.SR;
 //#endif
 //#ifdef ARCHIVE
 import Archive.ArchiveList;
-import Archive.MessageArchive;
 import ui.VirtualCanvas;
 import ui.VirtualList;
 //#endif
@@ -101,12 +98,13 @@ public class ExTextBox {
         setInitialCaps(cf.capsState);
         if (Config.getInstance().phoneManufacturer == Config.SONYE)
             System.gc(); // prevent flickering on Sony Ericcsson C510
-        textbox.setCommandListener(listener);
-        parentView = VirtualCanvas.getInstance().getList();
+        textbox.setCommandListener(listener);        
         midlet.BombusMod.getInstance().setDisplayable(textbox);        
     }
         
     public void destroyView() {
+        if (parentView == null)
+            parentView = StaticData.getInstance().roster;
         VirtualCanvas.getInstance().show(parentView);
     }   
     

@@ -57,8 +57,11 @@ import images.RosterIcons;
 import Menu.MenuCommand;
 import Menu.MyMenu;
 
-//#if FILE_TRANSFER
+//#ifdef PRIVACY
 import PrivacyLists.QuickPrivacy;
+//#endif
+
+//#if FILE_TRANSFER
 import io.file.transfer.TransferDispatcher;
 //#endif
 
@@ -2276,7 +2279,7 @@ public class Roster
         VirtualList pview=createMsgList();
         if (pview!=null) {
             Contact c=(Contact)getFocusedObject();
-            me = null; me = new MessageEdit(c, c.msgSuspended);            
+            me = null; me = new MessageEdit(this, c, c.msgSuspended);            
             c.msgSuspended=null;
         }
     }
@@ -3120,7 +3123,9 @@ public class Roster
                     force = false;
                 }
                 focusedItem(cursor);
-                VirtualCanvas.getInstance().getList().redraw();
+                VirtualList list = VirtualCanvas.getInstance().getList();
+                if (list != null)
+                    list.redraw();
             }
             //} catch (Exception e) {
 //#ifdef DEBUG

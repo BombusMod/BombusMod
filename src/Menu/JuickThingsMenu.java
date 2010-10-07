@@ -11,6 +11,7 @@ import Client.MessageEdit;
 import Client.Contact;
 import Client.Roster;
 import java.util.Vector;
+import ui.VirtualList;
 
 /**
  *
@@ -24,7 +25,7 @@ public class JuickThingsMenu extends Menu {
     private Contact contact;
     private Vector things;
 
-    public JuickThingsMenu(Vector things, Contact contact) {
+    public JuickThingsMenu(VirtualList parent, Vector things, Contact contact) {
 //#ifdef JUICK
 //#         super(SR.MS_JUICK_THINGS, null); //MenuIcons.getInstance()
 //#else
@@ -32,7 +33,8 @@ public class JuickThingsMenu extends Menu {
 //#endif
         this.things = things;
         this.contact = contact;
-
+        
+        parentView = parent;
         show(parentView);
 
         int quantity = things.size();
@@ -57,7 +59,7 @@ public class JuickThingsMenu extends Menu {
 
         try {
             Roster.me = null;
-            Roster.me = new MessageEdit(contact, body);            
+            Roster.me = new MessageEdit(parentView, contact, body);            
         } catch (Exception e) {/*no messages*/}
     }
 }

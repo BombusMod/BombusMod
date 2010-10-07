@@ -39,9 +39,6 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
 import util.StringLoader;
-//#ifdef DETRANSLIT
-import util.DeTranslit;
-//#endif
 /**
  *
  * @author ad
@@ -285,14 +282,14 @@ blue 0x0000ff
        body.append("xmlSkin\t");
 //#ifdef DETRANSLIT
 //#ifdef PLUGINS
-       if (StaticData.getInstance().DeTranslit) {
+//#        if (StaticData.getInstance().DeTranslit) {
 //#endif
-       body.append(DeTranslit.translit(StaticData.getInstance().account.getNickName()));
+//#        body.append(util.DeTranslit.getInstance().translit(StaticData.getInstance().account.getNickName()));
 //#ifdef PLUGINS
-       }
+//#        }
 //#endif
 //#else
-//#        body.append(StaticData.getInstance().account.getNickName());
+       body.append(StaticData.getInstance().account.getNickName());
 //#endif
         body.append("\r\n");
         for (Enumeration r=colorsContainer.elements(); r.hasMoreElements();) {
