@@ -1418,6 +1418,11 @@ public class Roster
                     }                   
                      
                      if (id.startsWith("getvc")) {
+                        int index = id.indexOf(data.getAttribute("from"));
+                        String matchedjid = id.substring(index, id.length());
+                        String vcardFrom = data.getAttribute("from");
+                        if (!(vcardFrom.equals(matchedjid) || vcardFrom.equals(new Jid(matchedjid).getBareJid())))
+                            return JabberBlockListener.BLOCK_REJECTED;
                          if (type.equals("error")) {
                              setQuerySign(false);
                             AlertBox alertBox = new AlertBox(SR.MS_ERROR, XmppError.findInStanza(data).toString()) {
@@ -1458,6 +1463,10 @@ public class Roster
                 if ( type.equals( "result" ) ) {
                     if (id.equals("getros")) {
                         //theStream.enableRosterNotify(false); //voffk
+                        if (from != null) {
+                            if (!from.equals(sd.account.getBareJid()))
+                                return JabberBlockListener.BLOCK_REJECTED;
+                        }
 
                         processRoster(data);
 
