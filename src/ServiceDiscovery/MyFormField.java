@@ -66,7 +66,8 @@ public class MyFormField{
             if (label==null) label=name;
             body=field.getChildBlockText("value");
 	    hidden= type.equals("hidden"); 
-            if (type.equals("fixed")) formItems.addElement(new MultiLine(label, body));
+            if (type.equals("fixed")) 
+                formItems.addElement(new MultiLine(label, body, StaticData.getInstance().roster.getListWidth()));
             else if (type.equals("boolean")) {
                 boolean set=false;
                 if (body.equals("1")) set=true;
@@ -125,9 +126,9 @@ public class MyFormField{
         } else {
             // not x-data
             if ( instructions=name.equals("instructions") )
-                formItems.addElement(new MultiLine("Instructions", body));
+                formItems.addElement(new MultiLine("Instructions", body, StaticData.getInstance().roster.getListWidth()));
             else if ( name.equals("title") )
-                formItems.addElement(new MultiLine(null, body));
+                formItems.addElement(new MultiLine(null, body, StaticData.getInstance().roster.getListWidth()));
             else if ( name.equals("registered") ) {
                 formItems.addElement(new CheckBox("Remove registration", false));
                 registered=true;

@@ -178,23 +178,9 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
     }
     
     public void close(VirtualList next) {
-        //if (parentView!=null)
-        VirtualList list = next;
-        if (next == null) {
-            list = VirtualCanvas.getInstance().getList();
-            if (list == null) {
-                list = StaticData.getInstance().roster;
-            }
-        }
-        VirtualCanvas.getInstance().show(list);
-        //parentView=null;
-        //repaint();
-        //serviceRepaints();
+        Client.StaticData.getInstance().canvas.show(next);
         img = null;
-        // instance=null;
-//        if (cf.widthSystemgc) { _vt
         System.gc();
-//        } _vt
     }
     
     public void close() {
@@ -251,7 +237,7 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
 
     private void destroyView(){
         status.setElementAt(null,6);
-        VirtualCanvas.getInstance().show(VirtualCanvas.getInstance().getList());
+        midlet.BombusMod.getInstance().setDisplayable(Client.StaticData.getInstance().canvas);
         img=null;
         tc.stop();
 //#ifdef AUTOSTATUS

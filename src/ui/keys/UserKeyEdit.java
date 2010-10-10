@@ -119,7 +119,7 @@ class UserKeyEdit extends DefForm {
 
         //keysList.rmsUpdate();
         keysList.commandState();
-        VirtualCanvas.getInstance().show(keysList);
+        sd.canvas.show(keysList);
     }
 
     public void eventOk() {

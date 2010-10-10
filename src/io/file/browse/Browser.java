@@ -293,7 +293,7 @@ public class Browser extends DefForm {
         }
     }
     public void showMenu() {
-        new MyMenu( this, this, SR.MS_DISCO, null, menuCommands);
+        new MyMenu(this, SR.MS_DISCO, null, menuCommands);
     }   
     
     public void touchLeftPressed() {

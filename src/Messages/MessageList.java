@@ -38,7 +38,6 @@ import Menu.MyMenu;
 import locale.SR;
 import ui.VirtualElement;
 import ui.VirtualList;
-import ui.reconnectWindow;
 //#ifdef CLIPBOARD
 //# import util.ClipBoard;
 //#endif
@@ -99,32 +98,8 @@ public abstract class MessageList extends VirtualList
     
     protected boolean smiles;
 
-    public void addMenuCommands() {
-//#ifdef CLIPBOARD
-//#         if (cf.useClipBoard) {
-//#             addMenuCommand(cmdCopy);
-//#             addMenuCommand(cmdCopyPlus);
-//#         }
-//#endif
-        addMenuCommand(cmdxmlSkin);
-        addMenuCommand(cmdUrl);
-        addMenuCommand(cmdBack);
-    }
-    public void removeCommands () {
-//#ifdef CLIPBOARD
-//#         if (cf.useClipBoard) {
-//#             removeMenuCommand(cmdCopy);
-//#             removeMenuCommand(cmdCopyPlus);
-//#         }
-//#endif
-        removeMenuCommand(cmdxmlSkin);
-        removeMenuCommand(cmdUrl);
-        removeMenuCommand(cmdBack);
-    }
-
     public void menuAction(MenuCommand c, VirtualList d) {
-        if (c == cmdBack) {
-            StaticData.getInstance().roster.activeContact = null;
+        if (c == cmdBack) {            
             destroyView();
         }
         if (c == cmdUrl) {
@@ -156,27 +131,25 @@ public abstract class MessageList extends VirtualList
 //#endif
     }
 
-    protected void keyPressed(int keyCode) { // overriding this method to avoid autorepeat
-        //kHold=0;
-        if (keyCode==Config.SOFT_RIGHT || keyCode==Config.KEY_BACK) {
-            if (!reconnectWindow.getInstance().isActive() && !cf.oldSE) {
-                StaticData.getInstance().roster.activeContact=null;
-                destroyView();
-                return;
-            }
-        }
-        super.keyPressed(keyCode);
-    }   
-    
-   
-    public void showMenu() {
+   public void showMenu() {
         commandState();
         String capt="";
         try {
             capt=getMainBarItem().elementAt(0).toString();
         } catch (Exception ex){ }
-        new MyMenu( this, this, capt, null, menuCommands);
+        new MyMenu( this, capt, null, menuCommands);
    }
 
-    public void commandState() { }
+    public void commandState() { 
+        menuCommands.removeAllElements();
+//#ifdef CLIPBOARD
+//#         if (cf.useClipBoard) {
+//#             addMenuCommand(cmdCopy);
+//#             addMenuCommand(cmdCopyPlus);
+//#         }
+//#endif
+        addMenuCommand(cmdxmlSkin);
+        addMenuCommand(cmdUrl);
+        addMenuCommand(cmdBack);        
+    }
 }

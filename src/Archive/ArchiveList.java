@@ -79,16 +79,13 @@ public class ArchiveList
 	mb.addRAlign();
 	mb.addElement(null);
 	mb.addElement(SR.MS_FREE /*"free "*/);
-        setMainBarItem(mb);        
-        
-        addMenuCommands();
-        
-        show(parentView);
+        setMainBarItem(mb);      
+        show();
     }
 
     public final void commandState() {
-        menuCommands.removeAllElements();
-
+        super.commandState();
+        
         if (getItemCount()>0) {
             if (t!=null) {
                 addMenuCommand(cmdPaste);
@@ -101,8 +98,6 @@ public class ArchiveList
             addMenuCommand(cmdDeleteAll);
         }
         addMenuCommand(cmdNew);
-        
-        super.addMenuCommands();
     }
 
     protected void beginPaint() {

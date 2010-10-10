@@ -110,7 +110,7 @@ public class MessageUrl extends DefForm implements TextBoxNotify {
 
 	}
     private void EditURL() {
-        new MIDPTextBox(this, "Edit URL", (String)urlList.elementAt(cursor), this, TextField.ANY);
+        new MIDPTextBox("Edit URL", (String)urlList.elementAt(cursor), this, TextField.ANY);
     }
 
     public void OkNotify(String text_return) {

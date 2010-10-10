@@ -55,9 +55,7 @@ public class HistoryReader extends MessageList {
         MIPrev = new MessageItem(new Msg(Msg.MESSAGE_TYPE_SYSTEM, null, null, "<---"), this, smiles);
         MINext = new MessageItem(new Msg(Msg.MESSAGE_TYPE_SYSTEM, null, null, "--->"), this, smiles);
 
-        setMainBarItem(new MainBar(c.getName() + ": " + SR.MS_HISTORY));
-        addMenuCommands();
-        removeMenuCommand(cmdxmlSkin);
+        setMainBarItem(new MainBar(c.getName() + ": " + SR.MS_HISTORY));        
 
         hl = new HistoryLoader(c.bareJid, this, smiles);
         messages = hl.stepEnd();
@@ -101,6 +99,10 @@ public class HistoryReader extends MessageList {
     public Msg getMessage(int i) {
         if (messages == null) return null;
         return ((MessageItem) messages.elementAt(i)).msg;
+    }
+    public void commandState() {
+        super.commandState();
+        removeMenuCommand(cmdxmlSkin);
     }
 /*
     public VirtualElement getItemRef(int i) {

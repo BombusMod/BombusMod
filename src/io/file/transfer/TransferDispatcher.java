@@ -251,7 +251,7 @@ public class TransferDispatcher implements JabberBlockListener {
     }
 
     void repaintNotify() {
-        VirtualCanvas.getInstance().repaint();
+        sd.canvas.repaint();
     }
 
     void sendFile(TransferTask task) {

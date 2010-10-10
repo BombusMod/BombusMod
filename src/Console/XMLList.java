@@ -68,17 +68,13 @@ public final class XMLList
                        
         super.smiles = false;       
         stanzas = StanzasList.getInstance();
-        
-        
-        commandState();
-        addMenuCommands();
         moveCursorHome();
 
 //#ifdef CONSOLE        
 //# 	MainBar mb=new MainBar(SR.MS_XML_CONSOLE);
 //#         setMainBarItem(mb);
 //#endif
-        show(parentView);        
+        show();        
     }
     
     public void commandState() {

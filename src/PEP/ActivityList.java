@@ -12,13 +12,11 @@ package PEP;
 import java.util.Enumeration;
 import javax.microedition.lcdui.TextField;
 import ui.MIDPTextBox;
-import Client.StaticData;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
 
 import javax.microedition.lcdui.Display;
 import locale.SR;
-import ui.VirtualCanvas;
 import ui.controls.form.DefForm;
 import ui.controls.form.SimpleString;
 
@@ -59,21 +57,18 @@ public class ActivityList extends DefForm implements MIDPTextBox.TextBoxNotify {
 //#ifdef PEP
 //#     public void eventOk() {
 //#         if (cursor==0) OkNotify(null); 
-//#             else new MIDPTextBox(this, SR.MS_USERACTIVITY, acttext, this, TextField.ANY);
+//#             else new MIDPTextBox(SR.MS_USERACTIVITY, acttext, this, TextField.ANY);
 //#     }
 //#endif
     
     public void OkNotify(String actText) {
         //String moodName=((MoodItem)getFocusedObject()).getTipString();
         publish(cursor, actText);
+        parentView = sd.roster;
         destroyView();        
     }
     
-    public void destroyView() {
-        VirtualCanvas.getInstance().show(StaticData.getInstance().roster);
-    }
-
-     public void publish(int activity, String text) {
+    public void publish(int activity, String text) {
         String sid="publish-activity";
         JabberDataBlock setActivity=new Iq(null, Iq.TYPE_SET, sid);
         JabberDataBlock action=setActivity.addChildNs("pubsub", "http://jabber.org/protocol/pubsub") .addChild("publish", null);
@@ -90,8 +85,8 @@ public class ActivityList extends DefForm implements MIDPTextBox.TextBoxNotify {
          
         try {
             //todo: refactor theStream call; send notification to JabberBlockListener if stream was terminated
-            StaticData.getInstance().roster.theStream.addBlockListener(new PepPublishResult( sid));
-            StaticData.getInstance().roster.theStream.send(setActivity);
+            sd.roster.theStream.addBlockListener(new PepPublishResult( sid));
+            sd.roster.theStream.send(setActivity);
         } catch (Exception e) {
 //#ifdef DEBUG            
 //#             e.printStackTrace(); 

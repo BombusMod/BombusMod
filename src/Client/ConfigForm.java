@@ -213,7 +213,7 @@ public class ConfigForm
         messageLimit=new NumberInput( SR.MS_MESSAGE_COLLAPSE_LIMIT, Integer.toString(cf.messageLimit), 200, 1000);
         itemsList.addElement(messageLimit);
 
-        if (VirtualCanvas.getInstance().hasPointerEvents()) {
+        if (sd.canvas.hasPointerEvents()) {
             widthScroll2=new NumberInput( SR.MS_MESSAGE_WIDTH_SCROLL_2, Integer.toString(cf.widthScroll2), 1, 50);
             itemsList.addElement(widthScroll2);
             advTouch = new CheckBox("Advanced touchscreen support", cf.advTouch);
@@ -472,7 +472,7 @@ public class ConfigForm
 
         //sd.roster.setLight(cf.lightState);   TODO: correct for new light control
 
-        VirtualCanvas.getInstance().setFullScreenMode(Config.fullscreen);
+        sd.canvas.setFullScreenMode(Config.fullscreen);
 
         cf.firstRun=false;
 

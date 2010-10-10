@@ -13,21 +13,26 @@ import Client.Config;
 import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
+import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Graphics;
-import locale.SR;
+import javax.microedition.midlet.MIDlet;
 
 /**
  *
  * @author Vladimir Krukov
  */
 public class VirtualCanvas extends Canvas implements CommandListener{
+    
     private VirtualList list;
+    private VirtualList homeList;
 
     public Command commandOk;
     public Command commandCancel;
 
     static VirtualCanvas instance;
+    static MIDlet midlet;
+    
     public static VirtualCanvas getInstance() {
         if (instance == null) {
             instance = new VirtualCanvas();
@@ -35,12 +40,19 @@ public class VirtualCanvas extends Canvas implements CommandListener{
         return instance;
     }   
     
-    public VirtualCanvas() {
+    private VirtualCanvas() {
         setFullScreenMode(Config.fullscreen);
     }
     
-    public final void setFullScreenMode(boolean mode) {
-        super.setFullScreenMode(mode);
+    public void setMIDlet(MIDlet midlet) {
+        VirtualCanvas.midlet = midlet;
+    }
+    
+    public void setHome(VirtualList list) {
+        homeList = list;
+    }
+    
+    void commandState() {
         if (Config.fullscreen) {
             setCommandListener(null);
 
@@ -56,26 +68,20 @@ public class VirtualCanvas extends Canvas implements CommandListener{
 
     
     public void show(VirtualList virtualList) {
-                
-        if (midlet.BombusMod.getInstance().getDisplay().getCurrent() == this
-                && isShown()) {
-            if (list != null) {
-                list.hideNotify();
-            }
-            list = virtualList;
-            list.showNotify();
-            repaint();
-            midlet.BombusMod.getInstance().getDisplay().setCurrent(this);
-
+        if (virtualList == null)
+            virtualList = getList();
+        if (isShown()) {            
+            list = virtualList;            
+            repaint();            
         } else {
-            list = virtualList;
-            midlet.BombusMod.getInstance().getDisplay().setCurrent(this);
-        }
-        setFullScreenMode(Config.fullscreen);
+            list = virtualList;            
+            Display.getDisplay(midlet).setCurrent(this);
+        }         
+        commandState();
     }
     
     public VirtualList getList() {
-        return list;
+        return list == null ? homeList : list;
     }
     
     protected void paint(Graphics graphics) {
@@ -101,16 +107,12 @@ public class VirtualCanvas extends Canvas implements CommandListener{
         list.pointerReleased(x, y);           
     }
 
-    protected void showNotify() {        
-        list.showNotify();        
-    }
-    protected void hideNotify() {
-        if (list != null) {
-            list.hideNotify();
-        }
-    }
-
-        
+    protected void showNotify() {
+//#if (USE_ROTATOR)
+        TimerTaskRotate.startRotate(-1, list);
+//#endif
+        setFullScreenMode(Config.fullscreen);
+    }    
     
     protected void sizeChanged(int w, int h) {        
         if (list != null)
@@ -148,6 +150,101 @@ public class VirtualCanvas extends Canvas implements CommandListener{
             }
         }
     }
-
+    
 }
+
+
+    //#if (USE_ROTATOR)    
+class TimerTaskRotate implements Runnable {
+    private int scrollLen;
+    private int scroll; //wait before scroll * sleep
+    private int balloon; // show balloon time
+
+    private boolean scrollline;
+    
+    private VirtualList attachedList;
+    
+    private static TimerTaskRotate instance;
+    
+    public static void startRotate(int max, VirtualList list) {
+        //Windows mobile J9 hanging test
+        if (Config.getInstance().phoneManufacturer==Config.WINDOWS) {
+            list.showBalloon=true;
+            list.offset=0;
+            return;
+        }
+        if (instance==null)  {
+            instance=new TimerTaskRotate();
+            new Thread(instance).start();
+        }
+        
+        if (max<0) {
+            //instance.destroyTask();
+            list.offset=0;
+            return;
+        }
+        
+        synchronized (instance) {
+            list.offset=0;
+            instance.scrollLen=max;
+            instance.scrollline=(max>0);
+            instance.attachedList=list;
+            instance.balloon  = 8;
+            instance.scroll   = 4;
+        }
+    }
+    
+    public void run() {
+        while (true) {
+            try {  Thread.sleep(250);  } catch (Exception e) { instance=null; break; }
+
+            synchronized (this) {
+                if (scroll==0) {
+                    if (        instance.scroll()
+                            ||  instance.balloon()
+                        )
+                        try { attachedList.redraw(); } catch (Exception e) { instance=null; break; }
+                } else {
+                    scroll --;                    
+                }
+                if (VirtualList.reconnectRedraw) {
+                    VirtualList.reconnectRedraw=false;
+                    try { attachedList.redraw(); } catch (Exception e) { instance=null; break; }
+                }
+            }
+        }
+    }
+
+    public boolean scroll() {
+        synchronized (this) {
+            if (scrollline==false || attachedList==null || scrollLen<0)
+                return false;
+            if (attachedList.offset>=scrollLen) {
+                scrollLen=-1; attachedList.offset=0; scrollline = false;
+            } else 
+                attachedList.offset+=14;
+
+            return true;
+        }
+    }
+    
+    public boolean balloon() {
+        synchronized (this) {
+            if (attachedList==null || balloon<0)
+                return false;
+            balloon--;
+            attachedList.showBalloon=(balloon<8 && balloon>0);
+            return true;
+        }
+    } 
+    /*
+    public void destroyTask(){
+        synchronized (this) { 
+            if (attachedList!=null) 
+                attachedList.offset=0;
+        }
+    }*/
+}
+//#endif
+
 

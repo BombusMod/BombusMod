@@ -67,7 +67,7 @@ public class archiveEdit
             body = msg.quoteString();
         }
 
-        setText(body);        
+        setText(body);          
         show(this);
     }
 

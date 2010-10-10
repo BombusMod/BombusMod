@@ -67,23 +67,23 @@ public class StatsWindow
      */
     public StatsWindow() {
         super(SR.MS_STATS);
-        item=new MultiLine(SR.MS_ALL, StringUtils.getSizeString(st.getAllTraffic())); item.selectable=true; itemsList.addElement(item);
+        item=new MultiLine(SR.MS_ALL, StringUtils.getSizeString(st.getAllTraffic()), getListWidth()); item.selectable=true; itemsList.addElement(item);
 
-        item=new MultiLine(SR.MS_PREVIOUS_, StringUtils.getSizeString(st.getLatest())); item.selectable=true; itemsList.addElement(item);
+        item=new MultiLine(SR.MS_PREVIOUS_, StringUtils.getSizeString(st.getLatest()), getListWidth()); item.selectable=true; itemsList.addElement(item);
         
-        item=new MultiLine(SR.MS_CURRENT, StringUtils.getSizeString(Stats.getCurrentTraffic())); item.selectable=true; itemsList.addElement(item);
+        item=new MultiLine(SR.MS_CURRENT, StringUtils.getSizeString(Stats.getCurrentTraffic()), getListWidth()); item.selectable=true; itemsList.addElement(item);
 //#if ZLIB
         if (StaticData.getInstance().roster.isLoggedIn()) {
-            item=new MultiLine(SR.MS_COMPRESSION, StaticData.getInstance().roster.theStream.getStreamStats()); item.selectable=true; itemsList.addElement(item);
+            item=new MultiLine(SR.MS_COMPRESSION, StaticData.getInstance().roster.theStream.getStreamStats(), getListWidth()); item.selectable=true; itemsList.addElement(item);
         }
 
         if (StaticData.getInstance().roster.isLoggedIn()) {
-            item=new MultiLine(SR.MS_CONNECTED, StaticData.getInstance().roster.theStream.getConnectionData()); item.selectable=true; itemsList.addElement(item);
+            item=new MultiLine(SR.MS_CONNECTED, StaticData.getInstance().roster.theStream.getConnectionData(), getListWidth()); item.selectable=true; itemsList.addElement(item);
         }
 //#endif
-        item=new MultiLine(SR.MS_CONN, Integer.toString(st.getSessionsCount())); item.selectable=true; itemsList.addElement(item);
+        item=new MultiLine(SR.MS_CONN, Integer.toString(st.getSessionsCount()), getListWidth()); item.selectable=true; itemsList.addElement(item);
                 
-        item=new MultiLine(SR.MS_STARTED, Roster.startTime); item.selectable=true; itemsList.addElement(item);       
+        item=new MultiLine(SR.MS_STARTED, Roster.startTime, getListWidth()); item.selectable=true; itemsList.addElement(item);       
     }
 
     public void commandState() {

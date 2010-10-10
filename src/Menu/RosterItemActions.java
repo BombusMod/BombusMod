@@ -78,9 +78,8 @@ public class RosterItemActions extends Menu {
 
     Object item;
 //#ifdef CLIPBOARD
-//#     private ClipBoard clipboard=ClipBoard.getInstance();
+//#     private ClipBoard clipboard = ClipBoard.getInstance();
 //#endif
-    private int action;
     
     ActionsIcons menuIcons=ActionsIcons.getInstance();
     
@@ -88,12 +87,10 @@ public class RosterItemActions extends Menu {
      * @param item
      * @param action
      */
-    public RosterItemActions(Object item, int action) {
+    public RosterItemActions(Object item) {
         super(item, ActionsIcons.getInstance());
 
         this.item=item;
-        this.action=action;
-        
         if (!sd.roster.isLoggedIn()) return;
 	
         if (item==null) return;
@@ -304,14 +301,7 @@ public class RosterItemActions extends Menu {
 //#endif
  	}
 	if (getItemCount()>0) {
-            if (action<0) {
-                show(parentView);
-            } else try {
-                //this.display=display; // to invoke dialog Y/N
-                doAction(action);
-            } catch (Exception e) { 
-                //e.printStackTrace();
-            }
+            show();            
         }
      }
      
@@ -320,8 +310,7 @@ public class RosterItemActions extends Menu {
              MenuItem me=(MenuItem) getFocusedObject();
             destroyView();
             if (me==null) return;
-            int index=action=me.index;
-            doAction(index);
+            doAction(me.index);
         } catch (Exception e) { }
     }
 

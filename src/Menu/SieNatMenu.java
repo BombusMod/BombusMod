@@ -43,7 +43,7 @@ public class SieNatMenu extends Menu {
         for (int i = 0; i < count; i++) {
          addItem(items[i], i);
         }
-        show(parentView);
+        show();
     }
 
     public void eventOk() {

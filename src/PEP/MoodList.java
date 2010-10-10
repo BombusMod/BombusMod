@@ -60,19 +60,16 @@ public class MoodList extends DefForm implements MIDPTextBox.TextBoxNotify {
 //#         moodName = ((MoodItem)getFocusedObject()).getTipString();
 //#         if (cursor==0) OkNotify(null); 
 //#         else 
-//#             new MIDPTextBox(this, SR.MS_USERMOOD, Moods.getInstance().myMoodText, this, TextField.ANY);
+//#             new MIDPTextBox(SR.MS_USERMOOD, Moods.getInstance().myMoodText, this, TextField.ANY);
 //#     }
 //#endif
     
     public void OkNotify(String moodText) {        
         publishTune(moodText, moodName);
+        parentView = sd.roster;
         destroyView();        
     }
     
-    public void destroyView() {
-        VirtualCanvas.getInstance().show(StaticData.getInstance().roster);
-    }
-
     private void publishTune(final String moodText, final String moodName) {
         String sid="publish-mood";
         JabberDataBlock setMood=new Iq(null, Iq.TYPE_SET, sid);

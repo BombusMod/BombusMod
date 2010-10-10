@@ -291,15 +291,6 @@ public class ContactMessageList extends MessageList {
 //#     }
 //#endif
 
-public void showNotify() {
-    if (contact != null)
-        sd.roster.activeContact=contact;
-//#ifdef LOGROTATE
-//#         getRedraw(true);
-//#endif
-        super.showNotify();      
-    }
-    
     public void forceScrolling() { //by voffk
         if (contact != null)
         if (contact.moveToLatest) {
@@ -308,8 +299,17 @@ public void showNotify() {
                 moveCursorEnd();
         }
     }
+    
+//#ifdef LOGROTATE 
+//#     public void show() {
+//#         getRedraw(true);
+//#         super.show();
+//#     }
+//#endif    
 
     protected void beginPaint() {
+        if (contact != null)
+            sd.roster.activeContact = contact;
         markRead(cursor);
         forceScrolling();         
         on_end = (cursor==(getItemCount()-1));
@@ -423,13 +423,7 @@ public void showNotify() {
         if (c==cmdReply) Reply();
         
         if (c==cmdActions) {
-//#ifndef WMUC
-            if (contact instanceof MucContact) {
-                MucContact mc=(MucContact) contact;
-                new RosterItemActions(mc, -1);
-            } else
-//#endif
-                new RosterItemActions(contact, -1);
+                new RosterItemActions(contact);
         }
 	if (c==cmdActive)  {
             savePosition();
@@ -484,7 +478,7 @@ public void showNotify() {
 //#         } else if (c == cmdJuickCommands) {
 //#             updateJuickCommands();
 //#             if (currentJuickCommands.size() > 0)
-//#                 new MyMenu(this, (Menu.MenuListener) this, SR.MS_COMMANDS, null, currentJuickCommands);
+//#                 new MyMenu(this, SR.MS_COMMANDS, null, currentJuickCommands);
 //#         }
 //#endif
     }

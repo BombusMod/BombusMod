@@ -31,10 +31,9 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import ui.IconTextElement;
-import ui.VirtualList;
 import Client.Config;
+import Client.StaticData;
 import javax.microedition.lcdui.Canvas;
-import ui.VirtualCanvas;
 
 /**
  *
@@ -66,7 +65,7 @@ public class UserKey extends IconTextElement {
         super(RosterIcons.getInstance());
     }
 
-    public boolean equals(Object ob) {
+    public boolean compareTo (UserKey ob) {
         if (ob instanceof UserKey) {
             UserKey u = (UserKey) ob;
             return ((previous_key == u.previous_key) || (!two_keys))
@@ -79,10 +78,10 @@ public class UserKey extends IconTextElement {
     public String toString(){
         StringBuffer s = new StringBuffer();
         if (two_keys)
-            s.append(keyToString(previous_key)+" + ");
+            s.append(keyToString(previous_key)).append(" + ");
         s.append(keyToString(key));
         for (int i = 0; i < 3; i++)
-            s.append("; " + UserKeyExec.get_command_by_id(commands_id[i], i).description);
+            s.append("; ").append(UserKeyExec.get_command_by_id(commands_id[i], i).description);
         return s.toString();
     } 
 
@@ -124,7 +123,7 @@ public class UserKey extends IconTextElement {
                      || ((key_code>96)&&(key_code<123))) { // [a-z]
                         return "["+(char) key_code+"]";
                     } // Выше - положительные коды, ниже - отрицательные.
-                } else switch (VirtualCanvas.getInstance().getGameAction(key_code)) {
+                } else switch (StaticData.getInstance().canvas.getGameAction(key_code)) {
                         case Canvas.LEFT:
                             return "(<)";
                         case Canvas.RIGHT:

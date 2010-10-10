@@ -46,13 +46,13 @@ public class AutoStatusTask implements Runnable {
     }
 
     public void destroyTask(){
-        stop=false;
+        stop = true;
     }
 
     public void run() {
         while (!stop) {
             try {
-                Thread.sleep(5000);
+                Thread.sleep(500);
             } catch (InterruptedException ex) { stop=true; }
             if (timeAwayEvent==0 && timeXaEvent==0)
                 continue;

@@ -38,10 +38,9 @@ public abstract class AlertBox extends DefForm {
     
     public AlertBox(String mainbar, String text) {
         super(mainbar);
-        MultiLine lines = new MultiLine(null, text);
+        MultiLine lines = new MultiLine(null, text, getListWidth());
         lines.selectable = false;
-        itemsList.addElement(lines);
-        show(parentView);
+        itemsList.addElement(lines);        
     }
     
     public void cmdOk() {
@@ -49,7 +48,7 @@ public abstract class AlertBox extends DefForm {
         yes();        
     }
     public void cmdCancel() {
-        destroyView();
+        super.cmdCancel();
         no();        
     }
     public void drawCursor(Graphics g, int width, int height) {

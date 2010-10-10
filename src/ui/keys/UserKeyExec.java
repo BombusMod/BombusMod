@@ -175,7 +175,7 @@ public class UserKeyExec {
     public boolean commandExecuteByID(int command_id, int type) {
         Config cf = Config.getInstance();
         boolean connected = sd.roster.isLoggedIn();
-        VirtualList current = VirtualCanvas.getInstance().getList();
+        VirtualList current = sd.canvas.getList();
 
         switch (command_id) {
             case 1: 
@@ -263,7 +263,7 @@ public class UserKeyExec {
             case 17:
                 Config.fullscreen=!Config.fullscreen;
                 cf.saveToStorage();                
-                VirtualCanvas.getInstance().setFullScreenMode(Config.fullscreen);
+                sd.canvas.setFullScreenMode(Config.fullscreen);
                 break;
             case 18:
 //#ifdef JUICK
@@ -310,7 +310,7 @@ public class UserKeyExec {
 //#endif
 //#                 if (current instanceof ContactMessageList) {
 //#                     ContactMessageList current_cml = (ContactMessageList) current;
-//#                     current_cml.menuAction(current_cml.cmdJuickCommands, (VirtualList)current);
+//#                     current_cml.menuAction(current_cml.cmdJuickCommands, current);
 //#                 } else {
 //#                     return false;
 //#                 }

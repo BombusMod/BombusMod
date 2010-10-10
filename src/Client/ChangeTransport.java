@@ -47,7 +47,7 @@ public class ChangeTransport extends DefForm {
         
         MultiLine instruction = new MultiLine("Warning", "Gateway "+srcTransport+" will be "
                 + "replaced by one from the list of online gateways for all JIDs in your roster "
-                + "(please logoff old gateway to avoid damaging contact list of your guest IM account)");
+                + "(please logoff old gateway to avoid damaging contact list of your guest IM account)", getListWidth());
         instruction.selectable = true;
         itemsList.addElement(instruction);
         

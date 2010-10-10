@@ -32,8 +32,6 @@ import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
 import ui.SplashScreen;
-import ui.VirtualCanvas;
-import ui.VirtualList;
 import ui.controls.AlertBox;
 import ui.controls.form.CheckBox;
 import ui.controls.form.DropChoiceBox;
@@ -309,7 +307,7 @@ public class AccountForm
         if (keyCode == Canvas.KEY_NUM6) {
             Config.fullscreen=!Config.fullscreen;
             cf.saveToStorage();            
-            VirtualCanvas.getInstance().setFullScreenMode(Config.fullscreen);
+            sd.canvas.setFullScreenMode(Config.fullscreen);
         }
     }
 }

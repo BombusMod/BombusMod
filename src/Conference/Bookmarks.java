@@ -140,11 +140,12 @@ public class Bookmarks
             return;
         
         ConferenceForm.join(join.name, join.getJidNick(), join.password, cf.confMessageCount);
-        VirtualCanvas.getInstance().show(sd.roster);
+        parentView = sd.roster;
+        destroyView();
     }
     
     public void menuAction(MenuCommand c, VirtualList d){
-        if (c==cmdCancel) sd.roster.show();
+        super.menuAction(c, d);
         if (c==cmdNew) { 
             new ConferenceForm();
             return;
@@ -177,7 +178,8 @@ public class Bookmarks
                 if (bm.autojoin) 
                     ConferenceForm.join(bm.name, bm.jid+'/'+bm.nick, bm.password, cf.confMessageCount);
             }
-            sd.roster.show();
+            parentView = sd.roster;
+            destroyView();
         }
         
         else if (c==cmdSave) saveBookmarks();

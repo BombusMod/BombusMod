@@ -177,7 +177,7 @@ public class AutoTask
     
     public void showAlert(int type) {
         //System.out.println("start alert");
-        next = VirtualCanvas.getInstance().getList();
+        next = sd.canvas.getList();
         
         this.addCommand(cmdOk);
         this.addCommand(cmdCancel);
@@ -257,6 +257,6 @@ public class AutoTask
         this.removeCommand(cmdOk);
         this.removeCommand(cmdCancel);
         
-        VirtualCanvas.getInstance().show(parentView);
+        sd.canvas.show(parentView);
     }
 }

@@ -151,9 +151,9 @@ public class AccountSelect extends DefForm {
         if (c==cmdConfig) new ConfigForm();
         if (c==cmdLogin) switchAccount(true);
         if (c==cmdSelect) switchAccount(false);
-        if (c==cmdEdit) new AccountForm(this, (Account)getFocusedObject()).show(this);
+        if (c==cmdEdit) new AccountForm(this, (Account)getFocusedObject()).show();
         if (c==cmdAdd) {
-            new AccountForm(this, null).show(this);
+            new AccountForm(this, null).show();
         }
         if (c==cmdDel) {
             if (cursor==cf.accountIndex && StaticData.getInstance().roster.isLoggedIn()) return;
@@ -173,7 +173,8 @@ public class AccountSelect extends DefForm {
         if(itemsList.size()>0) {
             if (StaticData.getInstance().account==null)
                 Account.loadAccount(false, cf.accountIndex);
-            VirtualCanvas.getInstance().show(StaticData.getInstance().roster);
+            parentView = sd.roster;
+            super.destroyView();
         }
     }
 
@@ -221,7 +222,7 @@ public class AccountSelect extends DefForm {
         if (keyCode == Canvas.KEY_NUM6) {
             Config.fullscreen=!Config.fullscreen;
             cf.saveToStorage();            
-            VirtualCanvas.getInstance().setFullScreenMode(Config.fullscreen);
+            sd.canvas.setFullScreenMode(Config.fullscreen);
         }
     }
 }

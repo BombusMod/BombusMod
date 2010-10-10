@@ -70,7 +70,6 @@ public class AlertCustomizeForm
     private TrackItem sndVol;
     
     AlertCustomize ac;
-    Config cf;
     Vector files[];
     Vector fileNames;
 

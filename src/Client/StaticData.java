@@ -31,6 +31,7 @@ import Account.Account;
 //#ifdef AUTOTASK
 //# import AutoTasks.AutoTask;
 //#endif
+import ui.VirtualCanvas;
 /**
  *
  * @author Eugene Stahov
@@ -40,6 +41,7 @@ public class StaticData {
     private static StaticData sd;
     
     public Roster roster;
+    public VirtualCanvas canvas;
     
     public Account account;
 

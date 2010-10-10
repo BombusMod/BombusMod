@@ -180,7 +180,7 @@ public class RosterToolsMenu extends Menu {
 //#endif        
 
         addItem(SR.MS_BREAK_CONECTION, 22, MenuIcons.ICON_RECONNECT);
-        show(sd.roster);
+        show();
     }
     
     public void eventOk(){

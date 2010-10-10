@@ -119,7 +119,7 @@ public class PrivacySelect
             cmdDelete();
         }
         if (c==cmdNewList)
-            new MIDPTextBox(this, SR.MS_NEW, "", this, TextField.ANY);
+            new MIDPTextBox(SR.MS_NEW, "", this, TextField.ANY);
         super.menuAction(c, d);
     }
     
@@ -177,7 +177,7 @@ public class PrivacySelect
     }    
     
     public void keyGreen() {
-        new MIDPTextBox(this, SR.MS_NEW, "", this, TextField.ANY);
+        new MIDPTextBox(SR.MS_NEW, "", this, TextField.ANY);
     }
     
     private void cmdDelete() {

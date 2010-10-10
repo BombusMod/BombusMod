@@ -435,9 +435,25 @@ public class Roster
         messageStore(selfContact(), m);
     }
     
-    public void beginPaint() {
+    public void beginPaint() {         
         itemsList = vContacts;        
     }    
+    
+    public void show() {
+        super.show();
+        countNewMsgs(); 
+//#ifdef AUTOSTATUS
+//#         if (cf.autoAwayType==Config.AWAY_IDLE) {
+//#             if (autostatus == null) { // Issue 107
+//#                 autostatus = new AutoStatusTask();
+//#                 new Thread(autostatus).start();
+//#             }
+//#             if (!autostatus.isAwayTimerSet())
+//#                 if (!autoAway)
+//#                     autostatus.setTimeEvent(cf.autoAwayDelay* 60*1000);
+//#         }
+//#endif
+    }
     
     
     public void setEventIcon(Object icon){
@@ -465,9 +481,9 @@ public class Roster
         
         if (phoneManufacturer==Config.WINDOWS) {
             if (messageCount==0) {
-                VirtualCanvas.getInstance().setTitle("BombusMod");
+                sd.canvas.setTitle("BombusMod");
             } else {
-                VirtualCanvas.getInstance().setTitle("BombusMod "+getHeaderString());
+                sd.canvas.setTitle("BombusMod "+getHeaderString());
             }
         }
     }
@@ -1038,6 +1054,7 @@ public class Roster
 //#ifdef AUTOSTATUS
 //#             autoAway=false;
 //#             autoXa=false;
+//#             autostatus.destroyTask();
 //#endif
             systemGC();
         }
@@ -1300,6 +1317,8 @@ public class Roster
     
     public void loginSuccess() {
 //#ifdef AUTOSTATUS
+//#         if (autostatus != null)
+//#             autostatus.destroyTask();
 //#         if (cf.autoAwayType==Config.AWAY_IDLE || cf.autoAwayType==Config.AWAY_MESSAGE) {
 //#             autostatus=new AutoStatusTask();
 //#             new Thread(autostatus).start();
@@ -1445,7 +1464,7 @@ public class Roster
                         Contact c=getContact(jid, false); // drop unwanted vcards
                         if (c!=null) {
                             c.vcard=vcard;
-                            if (VirtualCanvas.getInstance().getList() instanceof VirtualList) {
+                            if (sd.canvas.getList() instanceof VirtualList) {
 //                                if (c.getGroupType()==Groups.TYPE_SELF) { // Not able to edit VCard if self contact in roster
                                 if (c.getJid().equals(myJid.getJid())) {
                                     new VCardEdit(vcard);
@@ -2362,7 +2381,7 @@ public class Roster
 //#                     try {
 //#                         Thread.sleep(300);
 //#                     } catch (Exception ex) {}
-//#                     VirtualCanvas.getInstance().show(this);
+//#                     sd.canvas.show(this);
 //#                     keyLock();
 //#                 }                
 //#                 break;
@@ -2494,7 +2513,7 @@ public class Roster
         else if (keyCode==Canvas.KEY_NUM6) {
             Config.fullscreen = !Config.fullscreen;
             cf.saveToStorage();            
-            VirtualCanvas.getInstance().setFullScreenMode(Config.fullscreen);
+            sd.canvas.setFullScreenMode(Config.fullscreen);
         }
         else if (keyCode==Canvas.KEY_NUM7)
             new RosterToolsMenu();
@@ -2572,7 +2591,6 @@ public class Roster
     public void setWobbler(int type, Contact contact, String info) {
         if (info==null) {
             StringBuffer mess=new StringBuffer();
-            boolean isContact=(getFocusedObject() instanceof Contact);
             Contact cntact=(Contact)getFocusedObject();
 //#ifndef WMUC
             boolean isMucContact=(getFocusedObject() instanceof MucContact);
@@ -2768,7 +2786,7 @@ public class Roster
    public void cmdActions() {
        if (isLoggedIn()) {
            try {
-                new RosterItemActions(getFocusedObject(), -1);
+                new RosterItemActions(getFocusedObject());
            } catch (Exception ex) {}
        }
    }
@@ -2817,31 +2835,7 @@ public class Roster
             }
          }
     }
-//#endif
-    protected void showNotify() { 
-        super.showNotify();         
-        countNewMsgs(); 
-//#ifdef AUTOSTATUS
-//#         if (cf.autoAwayType==Config.AWAY_IDLE) {
-//#             if (autostatus == null)  // Issue 107
-//#                 autostatus = new AutoStatusTask();
-//#             new Thread(autostatus).start();
-//#             if (!autostatus.isAwayTimerSet())
-//#                 if (!autoAway)
-//#                     autostatus.setTimeEvent(cf.autoAwayDelay* 60*1000);
-//#         }
-//#endif
-    }
-    
-    protected void hideNotify() {
-        super.hideNotify();
-//#ifdef AUTOSTATUS
-//#         if (cf.autoAwayType==Config.AWAY_IDLE)
-//#             if (kHold==0)
-//#                 autostatus.setTimeEvent(0);
-//#endif
-    }
-    
+//#endif    
     private int searchGroup(int direction){
         int newpos=-1;
 	synchronized (vContacts) {
@@ -3002,11 +2996,17 @@ public class Roster
     }
 
     public void destroyView() {
+//#ifdef AUTOSTATUS
+//#         if (cf.autoAwayType==Config.AWAY_IDLE)
+//#             if (kHold==0)
+//#                 autostatus.setTimeEvent(0);
+//#endif
+        
     }
     
     public void showMenu() {
         commandState();
-        new MyMenu( this, this, SR.MS_MAIN_MENU, MenuIcons.getInstance(), menuCommands);
+        new MyMenu(this, SR.MS_MAIN_MENU, MenuIcons.getInstance(), menuCommands);
     }
 
     public String touchRightCommand(){ return (Config.getInstance().oldSE)?SR.MS_MENU:SR.MS_ACTION; }
@@ -3135,7 +3135,7 @@ public class Roster
                     force = false;
                 }
                 focusedItem(cursor);
-                VirtualList list = VirtualCanvas.getInstance().getList();
+                VirtualList list = sd.canvas.getList();
                 if (list != null)
                     list.redraw();
             }

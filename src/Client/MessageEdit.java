@@ -279,7 +279,7 @@ public final class MessageEdit
 //#                 runState = 4;
 //#                 send();
 //#                 thread = null;
-//#                 VirtualCanvas.getInstance().getList().redraw();
+//#                 sd.canvas.getList().redraw();
 //#                 break;
 //#             }
 //#             if (runState == 1) {

@@ -32,10 +32,8 @@ import java.util.Vector;
 import Menu.MenuListener;
 import Menu.MenuCommand;
 import Menu.MyMenu;
-import javax.microedition.lcdui.Displayable;
 import locale.SR;
 import ui.MainBar;
-import ui.VirtualCanvas;
 import ui.VirtualElement;
 import ui.VirtualList;
 
@@ -67,7 +65,7 @@ public class DefForm
         
         enableListWrapping(false);
         if (show)
-            show(parentView);
+            show();
     }
 
     protected int getItemCount() { return (itemsList == null) ? 0 : itemsList.size(); }
@@ -87,11 +85,7 @@ public class DefForm
 	if (command==cmdOk) {
             cmdOk();
         }
-    }
-
-    public void destroyView()	{
-	VirtualCanvas.getInstance().show(parentView);
-    }
+    }   
 
     public void cmdCancel() {
         destroyView();
@@ -105,16 +99,6 @@ public class DefForm
 	addMenuCommand(cmdCancel);        
     }
     
-    public final void show() {
-        commandState(); 
-        super.show();                      
-    }
-    
-    public final void show(VirtualList parent) {
-        commandState(); 
-        super.show(parent);                      
-    }
-           
     public void showMenu() {
         commandState();
         if (menuCommands.size()==2) {
@@ -123,8 +107,7 @@ public class DefForm
                 return;
             }
         }
-        MyMenu menu = new MyMenu(this, this, "", null, menuCommands);
-        VirtualCanvas.getInstance().show(menu);
+        new MyMenu(this, "", null, menuCommands);        
     }
     
     public String touchLeftCommand() { return SR.MS_OK; }

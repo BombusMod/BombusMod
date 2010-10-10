@@ -108,6 +108,7 @@ public class VCardEdit
         }
         //System.out.println(vcard.constructVCard().toString());
         new Thread(this).start();
+        parentView = sd.roster;
         destroyView();
     }
 

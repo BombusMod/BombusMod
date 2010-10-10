@@ -27,7 +27,6 @@
 
 package Menu;
 
-import java.util.Enumeration;
 import java.util.Vector;
 import ui.ImageList;
 import ui.VirtualList;
@@ -49,36 +48,30 @@ public class MyMenu extends Menu {
      * @param caption
      * @param il
      */
-    public MyMenu(VirtualList parentView, MenuListener menuListener, String caption, ImageList il, Vector menuCommands) {
+    public MyMenu(MenuListener menuListener, String caption, ImageList il, Vector menuCommands) {
         super(caption, il);
         this.ml=menuListener;
-        this.commands=menuCommands;
+        this.commands = menuCommands;
 
-        this.parentView=parentView;
-        
         for (int i=0; i<commands.size(); i++) {
             MenuCommand c=(MenuCommand)commands.elementAt(i);
             addItem(c.getName(), i, c.getImg());
         }
 
-        show(parentView);
+        show();
     }
     
-    public void eventOk(){
-	destroyView();
-        MenuItem me=(MenuItem) getFocusedObject();
-        
+    public void eventOk(){	
+        MenuItem me=(MenuItem) getFocusedObject();        
 	if (me==null)  return;
+        
+        destroyView();
 
         ml.menuAction(getCommand(me.index), (VirtualList)parentView);
     }
     
     public MenuCommand getCommand(int index) {
-        for (Enumeration command=commands.elements(); command.hasMoreElements();) {
-            MenuCommand cmd =(MenuCommand)command.nextElement();
-            if (cmd.getName().equals(getFocusedObject().toString()))
-                return cmd;
-        }
-        return null;
+        if (index > commands.size() - 1) return null;
+        return (MenuCommand) commands.elementAt(index);
     }
 }

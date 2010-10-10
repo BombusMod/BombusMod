@@ -115,7 +115,7 @@ public class VCardView
                 String name=(String)VCard.vCardLabels.elementAt(index);
                 if (data!=null && name!=null) {
                     if (!VCard.vCardFields.elementAt(index).equals("URL")) {
-                        MultiLine nData=new MultiLine(name, data);
+                        MultiLine nData=new MultiLine(name, data, getListWidth());
                         nData.selectable=true;
                         itemsList.addElement(nData);
 //#ifdef CLIPBOARD
@@ -230,13 +230,15 @@ public class VCardView
 //#         if (getFocusedObject() instanceof MultiLine) {
 //#             value = ((MultiLine) getFocusedObject()).toString();
 //#         }
-//#         if (value != null || !value.equals("")) {
+//#         if (value != null) {
+//#             if (!value.equals("")) {
 //# 
-//#             if (c == cmdCopy) {
-//#                 clipboard.setClipBoard(value);
-//#             }
-//#             if (c == cmdCopyPlus) {
-//#                 clipboard.append(value);
+//#                 if (c == cmdCopy) {
+//#                     clipboard.setClipBoard(value);
+//#                 }
+//#                 if (c == cmdCopyPlus) {
+//#                     clipboard.append(value);
+//#                 }
 //#             }
 //#         }
 //# 

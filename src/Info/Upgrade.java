@@ -88,7 +88,7 @@ public class Upgrade
         mb.addRAlign();
         mb.addElement(null);
 
-        show(parentView);
+        show();
     }
 
     public void run() {

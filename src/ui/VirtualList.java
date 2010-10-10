@@ -322,15 +322,15 @@ public abstract class VirtualList {
     public VirtualList() {       
        //setFullScreenMode(Config.fullscreen);
        if (Config.getInstance().phoneManufacturer != Config.MICROEMU) {
-           width = VirtualCanvas.getInstance().getWidth();
-           height = VirtualCanvas.getInstance().getHeight();
+           width = sd.canvas.getWidth();
+           height = sd.canvas.getHeight();
        }
        
 //#ifdef POPUPS
         PopUp.getInstance();
 //#endif
         if (phoneManufacturer==Config.WINDOWS) {
-            VirtualCanvas.getInstance().setTitle("BombusMod");
+            sd.canvas.setTitle("BombusMod");
         }
 
         changeOrient(cf.panelsState);
@@ -340,9 +340,9 @@ public abstract class VirtualList {
         itemBorder = new int[32]; // TODO: remove
 
         scrollbar=new ScrollBar();
-        scrollbar.setHasPointerEvents(VirtualCanvas.getInstance().hasPointerEvents());
+        scrollbar.setHasPointerEvents(sd.canvas.hasPointerEvents());
 
-        MainBar secondBar=new MainBar("", true, VirtualCanvas.getInstance().hasPointerEvents() && cf.advTouch && Config.fullscreen);
+        MainBar secondBar=new MainBar("", true, sd.canvas.hasPointerEvents() && cf.advTouch && Config.fullscreen);
         secondBar.addElement(null); //1
         secondBar.addRAlign();
         secondBar.addElement(null); //3
@@ -360,54 +360,20 @@ public abstract class VirtualList {
         TimerTaskRotate.startRotate(0, this);
 //#endif
     }
-
+    
     public void show() {
-        show(null);
+        parentView = sd.canvas.getList();        
+        sd.canvas.show(this);       
      }
-    public void show(VirtualList parent) {
-        parentView = parent;
-        if (parentView == null) {
-            parentView = VirtualCanvas.getInstance().getList();
-        }
-        VirtualCanvas.getInstance().show(this);       
-     }
-
-    public void destroy() {
-        //TODO: this.setCommandListener(null);
-        parentView = null;
-        //TODO: if (null != mainbar) mainbar.destroy();
-        mainbar = null;
-        //TODO: if (null != infobar) infobar.destroy();
-        infobar = null;
-    }
 
     public void redraw() {
-        if (VirtualCanvas.getInstance().getList() == this) {
-            VirtualCanvas.getInstance().repaint();
+        if (sd.canvas.getList() == this) {
+            sd.canvas.repaint();
             return;
          }
      }
       
 
-
-    /** Вызывается после скрытия VirtualList. переопределяет наследуемый метод
-     * Canvas.hideNotify(). действие по умолчанию - освобождение экранного
-     * буфера offscreen, используемого при работе без автоматической двойной
-     * буферизации
-     */
-    protected void hideNotify() {
-    }
-
-    /** Вызывается перед вызовом отрисовки VirtualList. переопределяет
-     * наследуемый метод Canvas.showNotify(). действие по умолчанию - создание
-     * экранного буфера offscreen, используемого при работе без автоматической
-     * двойной буферизации
-     */
-    protected void showNotify() {        
-//#if (USE_ROTATOR)
-        TimerTaskRotate.startRotate(-1, this);
-//#endif
-    }
 
     /** Вызывается при изменении размера отображаемой области. переопределяет наследуемый метод
      * Canvas.sizeChanged(int width, int heigth). сохраняет новые размеры области рисования.
@@ -429,12 +395,10 @@ public abstract class VirtualList {
      * начало отрисовки списка.
      * функция вызывается перед отрисовкой списка,
      * перед любыми обращениями к элементам списка.
-     *
-     * в классе VirtualList функция не выполняет никаких действий, необходимо
-     * переопределить (override) функцию для реализации необходимых действий
+     *     
      */
     protected void beginPaint(){};
-
+    
     public void paint(Graphics g) {
         if (Config.getInstance().phoneManufacturer == Config.MICROEMU) {
             width = g.getClipWidth();
@@ -606,14 +570,14 @@ public abstract class VirtualList {
                 if (mainbar!=null) {
                     setAbsOrg(g, 0, height-mHeight);
                     drawMainPanel(g);
-                    if (VirtualCanvas.getInstance().hasPointerEvents() && Config.fullscreen)
+                    if (sd.canvas.hasPointerEvents() && Config.fullscreen)
                         CommandsPointer.init(width, height, mHeight);
                 }
             } else {
                 if (infobar!=null) {
                     setAbsOrg(g, 0, height-iHeight);
                     drawInfoPanel(g);
-                    if (VirtualCanvas.getInstance().hasPointerEvents() && Config.fullscreen)
+                    if (sd.canvas.hasPointerEvents() && Config.fullscreen)
                         CommandsPointer.init(width, height, iHeight);
                 }
             }
@@ -644,7 +608,7 @@ public abstract class VirtualList {
                 g.drawString(SR.MS_RECONNECT, width/2, (height/2)-(popHeight*2), Graphics.TOP | Graphics.HCENTER);
                 Progress.draw(g, reconnectPos*progressWidth/reconnectTimeout, reconnectString);
             }
-        }       
+        }    
         
     }
 
@@ -1005,7 +969,7 @@ public abstract class VirtualList {
             case Canvas.KEY_POUND: key=11; break;
             default:
                 try {
-                    switch (VirtualCanvas.getInstance().getGameAction(key_code)) {
+                    switch (sd.canvas.getGameAction(key_code)) {
                         case Canvas.UP: key=2; break;
                         case Canvas.LEFT: key=4; break;
                         case Canvas.RIGHT: key=6; break;
@@ -1145,7 +1109,7 @@ public abstract class VirtualList {
 
         default:
             try {
-                switch (VirtualCanvas.getInstance().getGameAction(keyCode)){
+                switch (sd.canvas.getGameAction(keyCode)){
                     case Canvas.UP:
                         keyUp();
                         break;
@@ -1447,8 +1411,8 @@ public abstract class VirtualList {
      * присоединение к менеджеру предыдущего Displayable
      */
     public void destroyView(){
-        sd.roster.activeContact=null;        
-        VirtualCanvas.getInstance().show(parentView);       
+        sd.roster.activeContact=null; 
+        sd.canvas.show(parentView);       
     }
 
     public int getListWidth() {
@@ -1531,12 +1495,6 @@ public abstract class VirtualList {
         menuCommands.removeElement(command);
     }   
     
-
-    public MenuCommand getCommand(int index) {
-        if (index>menuCommands.size()-1) return null;
-        return (MenuCommand) menuCommands.elementAt(index);
-    }
-
     public void showMenu() {}
 
     public void touchLeftPressed(){
@@ -1557,98 +1515,3 @@ public abstract class VirtualList {
     public void cmdOk() { showMenu(); }
     
 }
-
-//#if (USE_ROTATOR)    
-class TimerTaskRotate implements Runnable {
-    private int scrollLen;
-    private int scroll; //wait before scroll * sleep
-    private int balloon; // show balloon time
-
-    private boolean scrollline;
-    
-    private VirtualList attachedList;
-    
-    private static TimerTaskRotate instance;
-    
-    public static void startRotate(int max, VirtualList list) {
-        //Windows mobile J9 hanging test
-        if (Config.getInstance().phoneManufacturer==Config.WINDOWS) {
-            list.showBalloon=true;
-            list.offset=0;
-            return;
-        }
-        if (instance==null)  {
-            instance=new TimerTaskRotate();
-            new Thread(instance).start();
-        }
-        
-        if (max<0) {
-            //instance.destroyTask();
-            list.offset=0;
-            return;
-        }
-        
-        synchronized (instance) {
-            list.offset=0;
-            instance.scrollLen=max;
-            instance.scrollline=(max>0);
-            instance.attachedList=list;
-            instance.balloon  = 8;
-            instance.scroll   = 4;
-        }
-    }
-    
-    public void run() {
-        while (true) {
-            try {  Thread.sleep(250);  } catch (Exception e) { instance=null; break; }
-
-            synchronized (this) {
-                if (scroll==0) {
-                    if (        instance.scroll()
-                            ||  instance.balloon()
-                        )
-                        try { attachedList.redraw(); } catch (Exception e) { instance=null; break; }
-                } else {
-                    scroll --;                    
-                }
-                if (VirtualList.reconnectRedraw) {
-                    VirtualList.reconnectRedraw=false;
-                    try { attachedList.redraw(); } catch (Exception e) { instance=null; break; }
-                }
-            }
-        }
-    }
-
-    public boolean scroll() {
-        synchronized (this) {
-            if (scrollline==false || attachedList==null || scrollLen<0)
-                return false;
-            if (attachedList.offset>=scrollLen) {
-                scrollLen=-1; attachedList.offset=0; scrollline = false;
-            } else 
-                attachedList.offset+=14;
-
-            return true;
-        }
-    }
-    
-    public boolean balloon() {
-        synchronized (this) {
-            if (attachedList==null || balloon<0)
-                return false;
-            balloon--;
-            attachedList.showBalloon=(balloon<8 && balloon>0);
-            return true;
-        }
-    } 
-    /*
-    public void destroyTask(){
-        synchronized (this) { 
-            if (attachedList!=null) 
-                attachedList.offset=0;
-        }
-    }*/
-}
-//#endif
-
-

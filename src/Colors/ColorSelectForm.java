@@ -48,7 +48,7 @@ import ui.controls.form.DefForm;
 //#                 break;
 //#             default:
 //#                 try {
-//#                     switch (VirtualCanvas.getInstance().getGameAction(key)){
+//#                     switch (sd.canvas.getGameAction(key)){
 //#                         case Canvas.UP:
 //#                             selector.movePoint(1);
 //#                             break;
@@ -72,7 +72,7 @@ import ui.controls.form.DefForm;
 //#     }
 //#     protected void keyRepeated(int key) {
 //#         try {
-//#                     switch (VirtualCanvas.getInstance().getGameAction(key)){
+//#                     switch (sd.canvas.getGameAction(key)){
 //#                         case Canvas.UP:
 //#                             selector.movePoint(1);
 //#                             break;

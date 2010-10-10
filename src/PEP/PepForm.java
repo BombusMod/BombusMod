@@ -8,8 +8,6 @@ package PEP;
 import Client.Config;
 import Client.StaticData;
 import locale.SR;
-import ui.VirtualCanvas;
-import ui.VirtualList;
 import ui.controls.form.CheckBox;
 import ui.controls.form.DefForm;
 import ui.controls.form.DropChoiceBox;
@@ -131,8 +129,8 @@ public class PepForm extends DefForm {
 //#endif
 //#         Config.getInstance().saveToStorage();
 //#endif       
-        
-        VirtualCanvas.getInstance().show(StaticData.getInstance().roster);
+        parentView = sd.roster;
+        destroyView();
     }   
 }
 
