@@ -26,7 +26,6 @@
 
 package ui.keys;
 
-import Client.Config;
 import io.NvStorage;
 import java.io.DataOutputStream;
 import java.util.Vector;
@@ -54,8 +53,6 @@ public class UserKeysList extends DefForm
 //# 
 //#endif
 
-    private Config cf=Config.getInstance();
-    
     /** Creates a new instance of AccountPicker */
     public UserKeysList() {
         super(null);

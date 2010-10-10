@@ -65,14 +65,13 @@ public class UserKey extends IconTextElement {
         super(RosterIcons.getInstance());
     }
 
-    public boolean compareTo (UserKey ob) {
-        if (ob instanceof UserKey) {
-            UserKey u = (UserKey) ob;
-            return ((previous_key == u.previous_key) || (!two_keys))
-                    && (key == u.key)
-                    && (active == u.active)
-                    && (two_keys == u.two_keys);
-        } else return false;
+    public boolean equals(Object ob) {
+        if (!(ob instanceof UserKey)) return false;
+        UserKey u = (UserKey) ob;
+        return ((previous_key == u.previous_key) || (!two_keys))
+                && (key == u.key)
+                && (active == u.active)
+                && (two_keys == u.two_keys);
     }
     
     public String toString(){

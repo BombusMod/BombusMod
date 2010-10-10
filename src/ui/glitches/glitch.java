@@ -119,7 +119,7 @@ public class glitch extends Canvas implements Runnable {
 
     public final void keyPressed(int keyCode) {
         thread = null;
-        midlet.BombusMod.getInstance().setDisplayable(StaticData.getInstance().roster);
+        midlet.BombusMod.getInstance().setDisplayable(StaticData.getInstance().canvas);
         repaint();
     }
 }

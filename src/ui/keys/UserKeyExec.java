@@ -51,12 +51,10 @@ import ui.VirtualList;
 //#endif
 import Client.ContactMessageList;
 import Client.Roster;
-import javax.microedition.lcdui.Displayable;
 import io.NvStorage;
 import java.io.DataInputStream;
 import Messages.MessageList;
 import Messages.MessageItem;
-import ui.VirtualCanvas;
 
 public class UserKeyExec {
     StaticData sd = StaticData.getInstance();

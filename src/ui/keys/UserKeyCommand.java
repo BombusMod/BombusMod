@@ -18,11 +18,8 @@ public class UserKeyCommand {
         this.description = description;
     }
 
-    public boolean equals(Object obj) {
-        if (obj instanceof UserKeyCommand) {
-            UserKeyCommand cmd = (UserKeyCommand) obj;
-            return (command_id == cmd.command_id);
-        }
-        return false;
+    public boolean equals(Object cmd) {        
+        if (!(cmd instanceof UserKeyCommand)) return false;
+        return (command_id == ((UserKeyCommand)cmd).command_id);        
     }
 }
