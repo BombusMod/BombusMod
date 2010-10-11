@@ -33,8 +33,10 @@ import Colors.ColorTheme;
 //#ifdef GRADIENT
 //# //import ui.Gradient;
 //#endif
-import javax.microedition.lcdui.Image;
-import ui.ImageList;
+//#ifdef BACK_IMAGE
+//# import javax.microedition.lcdui.Image;
+//# import ui.ImageList;
+//#endif
 import ui.VirtualList;
 
 /**
@@ -66,9 +68,7 @@ public class ScrollBar {
     private int scrollerSize;
     private int scrollerPos;
     
-    private boolean hasPointerEvents;
-    
-    private int minimumHeight=3;
+    private int minimumHeight = 3;
     private int scrollWidth=WIDTH_SCROLL_1;
     
     private int colorTop;
@@ -119,8 +119,7 @@ public class ScrollBar {
     }
 
     public void setHasPointerEvents(boolean hasPointerEvents) {
-        this.hasPointerEvents = hasPointerEvents;
-	scrollWidth=(hasPointerEvents)? WIDTH_SCROLL_2: WIDTH_SCROLL_1;
+        scrollWidth = (hasPointerEvents)? WIDTH_SCROLL_2: WIDTH_SCROLL_1;
 //#ifdef BACK_IMAGE
 //#         if (imgH != null)
 //#             scrollWidth = Math.max(scrollWidth, imgH.getWidth());
@@ -167,6 +166,8 @@ public class ScrollBar {
     public void pointerReleased(int x, int y, VirtualList v) { point_y=-1; }
     
     public void draw(Graphics g) {
+
+        if (size == 0) return;
 	
 	yTranslate=g.getTranslateY();
 	
@@ -187,9 +188,9 @@ public class ScrollBar {
 	drawHeight-=minimumHeight;
         
                
-	scrollerSize = (size == 0)? 0 : (drawHeight*windowSize)/size+minimumHeight;
+	scrollerSize = (drawHeight*windowSize)/size+minimumHeight;
 	
-	scrollerPos=(drawHeight*position)/size;
+	scrollerPos = (drawHeight*position)/size;
         scrollerX-=scrollWidth;
 //#ifdef BACK_IMAGE
 //#         if (ScrollBar.imgB != null && ScrollBar.imgB != null) {

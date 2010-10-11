@@ -24,103 +24,87 @@
  * along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-
 package io.file.browse;
 
-import Client.Config;
+import Menu.Command;
 import io.file.FileIO;
-import java.io.IOException;
-import javax.microedition.lcdui.*;
 //#ifndef NOMMEDIA
+import java.io.IOException;
 import javax.microedition.media.Manager;
 import javax.microedition.media.MediaException;
 import javax.microedition.media.Player;
 //#endif
+import javax.microedition.lcdui.Image;
 import locale.SR;
+import ui.controls.form.DefForm;
+import ui.controls.form.ImageItem;
+import ui.controls.form.MultiLine;
 import util.Strconv;
 
 /**
  *
  * @author User
  */
-public class ShowFile implements CommandListener{
-    
-    private Displayable parentView;
-    
-    private Command back = new Command(SR.MS_BACK, Command.BACK, 2);
-//#ifndef NOMMEDIA    
-    private Command stop = new Command(SR.MS_STOP, Command.BACK, 3);
-//#endif    
+public class ShowFile extends DefForm {
 
     private int len;
-
     private byte[] b;
 //#ifndef NOMMEDIA
     private Player pl;
-//#endif    
-    
-    private Config cf;
-    
+//#endif
+    int type;
+
     public ShowFile(String fileName, int type) {
-        cf=Config.getInstance();
-        
+        super(fileName);
+        this.type = type;
         load(fileName);
 //#ifndef NOMMEDIA        
-        if (type==1) play(fileName);
+        if (type == 1) {
+            play(fileName);
+        }
 //#endif        
-        if (type==2) view(fileName);
-        if (type==3) read(fileName);
+        if (type == 2) {
+            view(fileName);
+        }
+        if (type == 3) {
+            read(fileName);
+        }
     }
-    
+
     private void load(String file) {
         try {
-            FileIO f=FileIO.createConnection(file);
+            FileIO f = FileIO.createConnection(file);
             b = f.fileRead();
             len = b.length;
             f.close();
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
     }
-        
+
     private void view(String file) {
         Image img = Image.createImage(b, 0, len);
-
-        Form form = new Form(file);
-        form.append(new ImageItem(null, img, ImageItem.LAYOUT_CENTER | ImageItem.LAYOUT_NEWLINE_BEFORE, "[image]"));
-
-        form.addCommand(back);
-        form.setCommandListener(this);
-        midlet.BombusMod.getInstance().setDisplayable(form);
+        itemsList.addElement(new ImageItem(img, "minimized, size: " + String.valueOf(len) + "b."));
     }
-    
+
     private void read(String file) {
-       TextBox tb = new TextBox(file+"("+len+" bytes)", null, len, TextField.ANY | TextField.UNEDITABLE);
-
-       tb.addCommand(back);
-       tb.setCommandListener(this);
-
-
-        if (len > 0) {
-           String s=new String();
-            try {
-                int maxSize=tb.getMaxSize();
-
-                if (maxSize>len){
-                    s=new String(b, 0, len);
-                } else {
-                    s=new String(b, 0, maxSize);
-                }
-            } catch (Exception e) {}
-
-               if (cf.cp1251) {
-                    tb.setString(Strconv.convCp1251ToUnicode(s));
-               } else {
-                    tb.setString(s);
-               }
-        }
-
-       tb.setCommandListener(this);
-       midlet.BombusMod.getInstance().setDisplayable(tb);
+        String text = new String(b, 0, len);
+        itemsList.addElement(new MultiLine(file + "(" + len + " bytes)", cf.cp1251
+                ? Strconv.convCp1251ToUnicode(text) : text, sd.roster.getListWidth()));
     }
+
+    public void cmdOk() {
+//#ifndef NOMMEDIA
+        if (type == 1) {
+            try {
+                pl.stop();
+                pl.close();
+            } catch (Exception e) {
+            }
+        }
+//#endif
+        destroyView();
+    }
+
 //#ifndef NOMMEDIA    
     private void play(String file) {
         try {
@@ -133,23 +117,11 @@ public class ShowFile implements CommandListener{
             //ex.printStackTrace();
         }
 
-        Alert a = new Alert("Play", "Playing" + " " + file, null, null);
-        a.addCommand(stop);
-        a.addCommand(back);
-        a.setCommandListener(this);
-        midlet.BombusMod.getInstance().setDisplayable(a);
+        itemsList.addElement(new MultiLine("Play", "Playing" + " " + file, sd.roster.getListWidth()));
     }
-//#endif    
-    
-    public void commandAction(Command c, Displayable d) {
-        if (c==back) midlet.BombusMod.getInstance().setDisplayable(parentView);
-//#ifndef NOMMEDIA        
-        if (c==stop) {
-            try {
-                pl.stop();
-                pl.close();
-            } catch (Exception e) { }
-        }
+
+    public String touchLeftCommand() {
+        return (type == 1) ? SR.MS_STOP : SR.MS_OK;
+    }
 //#endif        
-    }
 }

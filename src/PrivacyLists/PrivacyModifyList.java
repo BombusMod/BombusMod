@@ -124,6 +124,7 @@ public class PrivacyModifyList extends DefForm
             stream.cancelBlockListener(this);
             pselector.getLists();
             //PrivacyList.privacyListRq(false, null, "setplists");
+            parentView = pselector;
             destroyView();
         }
         

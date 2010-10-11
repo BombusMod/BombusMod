@@ -59,7 +59,7 @@ public final class MessageEdit
     private String subj;
     public Contact to;
     private boolean composing = true;
-    StaticData sd = StaticData.getInstance();
+    
 //#ifdef DETRANSLIT
 //#     private boolean sendInTranslit = false;
 //#     private boolean sendInDeTranslit = false;

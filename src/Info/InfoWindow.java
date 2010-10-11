@@ -69,11 +69,11 @@ public class InfoWindow
     public InfoWindow() {
         super(SR.MS_ABOUT);
         
-        name = new MultiLine(Version.getName(), Version.getVersionNumber() + "\n" + Config.getOs() + "\nMobile Jabber client", getListWidth());
+        name = new MultiLine(Version.getName(), Version.getVersionNumber() + "\n" + Config.getOs() + "\nMobile Jabber client", sd.roster.getListWidth());
         name.selectable = true;
         itemsList.addElement(name);
 
-        description = new MultiLine("Copyright (c) 2005-2010", "Eugene Stahov (evgs),\nDaniel Apatin (ad)\n \nDistributed under GNU Public License (GPL) v2.0", getListWidth());
+        description = new MultiLine("Copyright (c) 2005-2010", "Eugene Stahov (evgs),\nDaniel Apatin (ad)\n \nDistributed under GNU Public License (GPL) v2.0", sd.roster.getListWidth());
         description.selectable = true;
         itemsList.addElement(description);
 
@@ -90,7 +90,7 @@ public class InfoWindow
 
         itemsList.addElement(new SpacerItem(20));
 
-        abilities = new MultiLine("Special thanks", "Advice, aspro, BrennendeR_Komet, 6yp4uk, den_po, Disabler, fregl24, G.L.Fire, gimlet, lgs, m, Masy, Muxa, NoNameZ, radiance, Sash, spine, spirtamne, Tasha, TiLan, Totktonada, van, vitalyster, voffk, westsibe, zet. \n \nWithout you none of this would not have been!", getListWidth());
+        abilities = new MultiLine("Special thanks", "Advice, aspro, BrennendeR_Komet, 6yp4uk, den_po, Disabler, fregl24, G.L.Fire, gimlet, lgs, m, Masy, Muxa, NoNameZ, radiance, Sash, spine, spirtamne, Tasha, TiLan, Totktonada, van, vitalyster, voffk, westsibe, zet. \n \nWithout you none of this would not have been!", sd.roster.getListWidth());
         abilities.selectable = true;
         itemsList.addElement(abilities);
 
@@ -101,7 +101,7 @@ public class InfoWindow
         System.gc();
 //        } _vt
         memInfo.append(Runtime.getRuntime().freeMemory() >> 10).append("\n").append(SR.MS_TOTAL).append(Runtime.getRuntime().totalMemory() >> 10);
-        memory = new MultiLine(SR.MS_MEMORY, memInfo.toString(), getListWidth());
+        memory = new MultiLine(SR.MS_MEMORY, memInfo.toString(), sd.roster.getListWidth());
         memory.selectable = true;
         itemsList.addElement(memory);        
 

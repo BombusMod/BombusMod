@@ -28,7 +28,6 @@
 package io.file.browse;
 
 import Client.StaticData;
-import Menu.MenuListener;
 import Menu.MenuCommand;
 import Menu.MyMenu;
 
@@ -36,11 +35,9 @@ import ui.MainBar;
 import images.RosterIcons;
 import io.file.FileIO;
 import java.util.Enumeration;
-import java.util.Vector;
 
 import locale.SR;
 import ui.IconTextElement;
-import ui.VirtualElement;
 import ui.VirtualList;
 import ui.controls.form.DefForm;
 
@@ -104,10 +101,10 @@ public class Browser extends DefForm {
     
     public void cmdCancel() {
         if (!chDir("../")) {
-            destroyView();
-            return;
+            destroyView();            
+        } else {
+            redraw();
         }
-        redraw();
     }
 
     public void menuAction(MenuCommand command, VirtualList displayable) {
