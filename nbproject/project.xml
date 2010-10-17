@@ -2,6 +2,18 @@
 <project xmlns="http://www.netbeans.org/ns/project/1">
     <type>org.netbeans.modules.kjava.j2meproject</type>
     <configuration>
+        <configurations xmlns="http://www.netbeans.org/ns/project-configurations/1">
+            <configuration>FORYOU</configuration>
+            <configuration>MYTEST</configuration>
+            <configuration>adsky</configuration>
+            <configuration>full_ver_newmenu</configuration>
+            <configuration>lite</configuration>
+            <configuration>plugins_new_menu</configuration>
+            <configuration>plugins_old_menu</configuration>
+            <configuration>standart</configuration>
+            <configuration>superSmall</configuration>
+            <configuration>full_ver</configuration>
+        </configurations>
         <data xmlns="http://www.netbeans.org/ns/j2me-project">
             <name>BombusMod</name>
             <minimum-ant-version>1.6</minimum-ant-version>
