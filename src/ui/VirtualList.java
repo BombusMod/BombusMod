@@ -879,10 +879,10 @@ public abstract class VirtualList {
 	long clickTime=System.currentTimeMillis();
 	if (cursor==lastClickItem) {
 	    if (lastClickY-y<5 && y-lastClickY<5) {
-                if (clickTime-lastClickTime<500){
+                if (clickTime-lastClickTime>500 && clickTime-lastClickTime<1000){
                     //System.out.println("short");
 		    y=0;
-		    eventOk();
+		    eventLongOk();
                 }
             }
         }

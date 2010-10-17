@@ -10,13 +10,13 @@
     <!-- release tasks -->
     <target name="for-release-configs">
         <antcall inheritrefs="false" inheritall="false" target="${target.to.call}">
-            <param name="config.active" value="full_ver_newmenu"/>
-        </antcall>
-        <antcall inheritrefs="false" inheritall="false" target="${target.to.call}">
             <param name="config.active" value="plugins_new_menu"/>
         </antcall>
         <antcall inheritrefs="false" inheritall="false" target="${target.to.call}">
-            <param name="config.active" value="plugins_old_menu"/>
+            <param name="config.active" value="FilinX"/>
+        </antcall>
+        <antcall inheritrefs="false" inheritall="false" target="${target.to.call}">
+            <param name="config.active" value="Big"/>
         </antcall>
     </target>
 
@@ -35,6 +35,12 @@
     <target name="rebuild-adsky">
 	    <antcall inheritrefs="false" inheritall="false" target="rebuild">
 		    <param name="config.active" value="adsky"/>
+	    </antcall>
+    </target>
+ 
+    <target name="rebuild-FilinX">
+	    <antcall inheritrefs="false" inheritall="false" target="rebuild">
+		    <param name="config.active" value="FilinX"/>
 	    </antcall>
     </target>
  
