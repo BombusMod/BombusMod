@@ -56,8 +56,7 @@ public class TextListBox
             item = new SimpleString((String)e.nextElement(), false);
             item.selectable = true;
             itemsList.addElement(item);
-        }
-        midlet.BombusMod.getInstance().setDisplayable(ti.t);
+        }        
     }
     
     public void commandState() {
@@ -67,8 +66,10 @@ public class TextListBox
     
     public void eventOk() {
         if (itemsList.size()>0)
-            ti.setValue(itemsList.elementAt(cursor).toString());
-        
+            ti.setValue(itemsList.elementAt(cursor).toString());        
+        destroyView();
+    }
+    public void destroyView() {
         midlet.BombusMod.getInstance().setDisplayable(ti.t);
     }
 

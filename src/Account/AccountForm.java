@@ -107,16 +107,16 @@ public class AccountForm
 	
         getMainBarItem().setElementAt((newaccount)?SR.MS_NEW_ACCOUNT:(account.toString()), 0);
 
-        userbox = new TextInput(SR.MS_USERNAME, account.getUserName(), null, TextField.ANY); //, 64, TextField.ANY
+        userbox = new TextInput(sd.canvas, SR.MS_USERNAME, account.getUserName(), null, TextField.ANY); //, 64, TextField.ANY
         itemsList.addElement(userbox);
         
-        servbox = new TextInput(SR.MS_SERVER, account.getServer(), null, TextField.ANY);//, 64, TextField.ANY
+        servbox = new TextInput(sd.canvas, SR.MS_SERVER, account.getServer(), null, TextField.ANY);//, 64, TextField.ANY
         itemsList.addElement(servbox);
 
-	passbox = new PasswordInput( SR.MS_PASSWORD, account.getPassword());//, 64, TextField.PASSWORD
+	passbox = new PasswordInput(sd.canvas,  SR.MS_PASSWORD, account.getPassword());//, 64, TextField.PASSWORD
         itemsList.addElement(passbox);
         
-        nickbox = new TextInput(SR.MS_NICKNAME, account.getNick(), null, TextField.ANY);//64, TextField.ANY
+        nickbox = new TextInput(sd.canvas, SR.MS_NICKNAME, account.getNick(), null, TextField.ANY);//64, TextField.ANY
         itemsList.addElement(nickbox);
         
         registerbox = new CheckBox(SR.MS_REGISTER_ACCOUNT, false); 
@@ -139,8 +139,8 @@ public class AccountForm
         if (!newaccount)
             itemsList.addElement(registerbox);
         
-	ipbox = new TextInput(SR.MS_HOST_IP, account.getHostAddr(), null, TextField.ANY);//, 64, TextField.ANY
-        portbox = new NumberInput( SR.MS_PORT, Integer.toString(account.getPort()), 0, 65535);//, 0, 65535
+	ipbox = new TextInput(sd.canvas, SR.MS_HOST_IP, account.getHostAddr(), null, TextField.ANY);//, 64, TextField.ANY
+        portbox = new NumberInput(sd.canvas,  SR.MS_PORT, Integer.toString(account.getPort()), 0, 65535);//, 0, 65535
         
                 
         dnsResolver = new CheckBox(SR.MS_USE_DNS_SRV_RESOLVER, account.getDnsResolver()); 
@@ -170,15 +170,15 @@ public class AccountForm
 //#endif
 
         keepAliveType=new DropChoiceBox(SR.MS_KEEPALIVE);
-        keepAliveType.append("by socket");
-        keepAliveType.append("1 byte");
-        keepAliveType.append("<iq/>");
-        keepAliveType.append("ping");
+        keepAliveType.add("by socket");
+        keepAliveType.add("1 byte");
+        keepAliveType.add("<iq/>");
+        keepAliveType.add("ping");
         keepAliveType.setSelectedIndex(account.getKeepAliveType());
-        keepAlive = new NumberInput( SR.MS_KEEPALIVE_PERIOD, Integer.toString(account.getKeepAlivePeriod()), 10, 2048);//10, 2096
+        keepAlive = new NumberInput(sd.canvas,  SR.MS_KEEPALIVE_PERIOD, Integer.toString(account.getKeepAlivePeriod()), 10, 2048);//10, 2096
         itemsList.addElement(keepAliveType);
         
-        resourcebox = new TextInput(SR.MS_RESOURCE, account.getResource(), null, TextField.ANY);//64, TextField.ANY
+        resourcebox = new TextInput(sd.canvas, SR.MS_RESOURCE, account.getResource(), null, TextField.ANY);//64, TextField.ANY
         
 //#if HTTPCONNECT
 //# 	proxyHost = new TextInput(/*SR.MS_PROXY_HOST*/"Proxy name/IP", account.getProxyHostAddr(), null, TextField.URL);//32, TextField.URL

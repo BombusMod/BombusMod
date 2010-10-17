@@ -37,9 +37,9 @@ public class QuickPrivacy extends DefForm implements JabberBlockListener {
         itemsList.addElement(usePrivacy);
         itemsList.addElement(new SpacerItem(10));
         nil = new DropChoiceBox(SR.MS_NOT_IN_LIST);
-        nil.append(SR.MS_NIL_DROP_MP);
-        nil.append(SR.MS_NIL_DROP_P);
-        nil.append(SR.MS_NIL_ALLOW_ALL);
+        nil.add(SR.MS_NIL_DROP_MP);
+        nil.add(SR.MS_NIL_DROP_P);
+        nil.add(SR.MS_NIL_ALLOW_ALL);
         nil.setSelectedIndex((cf.notInListDropLevel > NotInListFilter.ALLOW_ALL) ? NotInListFilter.ALLOW_ALL : cf.notInListDropLevel);
         itemsList.addElement(nil);
         LinkString ed = new LinkString(SR.MS_PRIVACY_LISTS) {

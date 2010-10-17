@@ -58,7 +58,7 @@ public final class AppendNick
         
         for (Enumeration e=StaticData.getInstance().roster.getHContacts().elements(); e.hasMoreElements(); ) {
             Contact c=(Contact)e.nextElement();
-            if (c.group==to.group && c.origin>Contact.ORIGIN_GROUPCHAT && c.status<Presence.PRESENCE_OFFLINE)
+            if (c.group.name.equals(to.group.name) && c.origin>Contact.ORIGIN_GROUPCHAT && c.status<Presence.PRESENCE_OFFLINE)
                 itemsList.addElement(c);
         }
         enableListWrapping(true);

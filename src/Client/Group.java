@@ -91,8 +91,6 @@ public class Group extends IconTextElement {
         super.drawItem(g, ofs, sel);
     }
 
-    public String getName() { return name; }
-    
     protected String mainbar(String mainbarStart) {
         StringBuffer mb=new StringBuffer(mainbarStart)
         .append(" (")

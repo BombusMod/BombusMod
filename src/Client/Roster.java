@@ -160,7 +160,7 @@ public class Roster
     public Object transferIcon;
     
     public Vector hContacts;
-    private Vector vContacts;    
+    private Vector vContacts;
 
     public Groups groups;
     
@@ -232,9 +232,9 @@ public class Roster
         groups=null;
         groups=new Groups();
         
-        vContacts=null;
+        /*vContacts=null;
         vContacts=new Vector(); // just for displaying
-        
+        */
 	updateMainBar();
         
         SplashScreen.getInstance().setExit(this);
@@ -414,7 +414,7 @@ public class Roster
             
             vContacts=null;
 	    vContacts=new Vector(); // just for displaying
-            
+
 	    bookmarks=null;
 	}
 	myJid = new Jid(sd.account.getJid());
@@ -436,7 +436,8 @@ public class Roster
     }
     
     public void beginPaint() {         
-        itemsList = vContacts;        
+        itemsList = vContacts;
+        updateMainBar();
     }    
     
     public void show() {
@@ -580,7 +581,7 @@ public class Roster
                     int j=hContacts.size();
                     while (index<j) {
                         Contact contact=(Contact)hContacts.elementAt(index);
-                        if (contact.group==g) {
+                        if (contact.group.name.equals(g.name)) {
                             if (contact.getNewMsgsCount() == 0) {
                                 contact.msgs=null;
                                 contact=null;
@@ -607,7 +608,7 @@ public class Roster
             int j=hContacts.size();
             while (index<j) {
                 Contact contact=(Contact)hContacts.elementAt(index);
-                if (contact.group==g) {
+                if (contact.group.name.equals(g.name)) {
                     if ( contact.origin>Contact.ORIGIN_ROSTERRES
                       && contact.status>=Presence.PRESENCE_OFFLINE
                       && !contact.haveChatMessages()
@@ -666,7 +667,7 @@ public class Roster
             for (int i=0; i<j; i++) {
                 c=(Contact)hContacts.elementAt(i);
                 if (c.jid.equals(J,false)) {
-                    Group group= (c.jid.isTransport())? 
+                    Group group= (c.jid.isTransport())?
                         groups.getGroup(Groups.TYPE_TRANSP) :
                         groups.getGroup(grpName);
                     if (group==null) {
@@ -1284,7 +1285,7 @@ public class Roster
 //#                     grpType==Groups.TYPE_IGNORE)) {
 //#                 String jid=k.getJid();
 //#                 jid=StringUtils.stringReplace(jid, srcTransport, dstTransport);
-//#                 storeContact(jid, k.nick, (!k.group.getName().equals(SR.MS_GENERAL))?(k.group.getName()):"", true); //new contact addition
+//#                 storeContact(jid, k.nick, (!k.group.name.equals(SR.MS_GENERAL))?(k.group.name):"", true); //new contact addition
 //#                 try {
 //#                     Thread.sleep(300);
 //#                 } catch (Exception ex) { }
@@ -2848,12 +2849,12 @@ public class Roster
 		    if (pos<0) pos=size-1;
 		    if (pos>=size) pos=0;
 		    if (vContacts.elementAt(pos) instanceof Group) break;
-		}
+        }
 	    } catch (Exception e) { }
             newpos=pos;
-	}
+                }
         return newpos;
-    }
+            }
     
     public void searchActiveContact(int direction){
 	Vector activeContacts=new Vector();
@@ -3026,12 +3027,12 @@ public class Roster
 //#         }
 //#     }
 //#endif
-    
+
 
     private class ReEnumerator implements Runnable{
-        Thread thread=null;
+        Thread thread = null;
         int pendingRepaints=0;
-	boolean force;
+	boolean force;        
 	
 	Object desiredFocus;
         
@@ -3045,12 +3046,12 @@ public class Roster
             pendingRepaints++;
             if (thread==null || thread.isAlive() == false) (thread=new Thread(this)).start();
         }
-        
+
         public synchronized void run() {
 //#ifdef PRIVACY
             boolean needUpdatePrivacy = false;
 //#endif            
-            
+
             //try {
             while (pendingRepaints > 0) {
                 pendingRepaints = 0;
@@ -3070,26 +3071,26 @@ public class Roster
                         if (c.group != null) {
                             grp.addContact(c);
 
-//#ifdef PRIVACY                        
-//#ifdef PLUGINS                        
+//#ifdef PRIVACY
+//#ifdef PLUGINS
 //#                              if (sd.Privacy) {
-//#endif                            
+//#endif
                                  if (QuickPrivacy.groupsList == null) {
                                      QuickPrivacy.groupsList = new Vector();
                                  }
                                  if (c.group.type != Groups.TYPE_MUC) {
                                     if (!QuickPrivacy.groupsList.contains(c.group.name)) {
-                                        QuickPrivacy.groupsList.addElement(c.group.name); 
+                                        QuickPrivacy.groupsList.addElement(c.group.name);
                                         needUpdatePrivacy = true;
                                     }
                                  }
-//#ifdef PLUGINS                        
+//#ifdef PLUGINS
 //#                              }
-//#endif                            
-//#endif                                                        
+//#endif
+//#endif
                         }
                     }
-                }
+                        }
 //#ifdef PRIVACY                        
 //#ifdef PLUGINS                        
 //#                              if (sd.Privacy) {
@@ -3113,11 +3114,11 @@ public class Roster
 
                 // adding groups
                 for (int i = 0; i < groups.getCount(); i++) {
-                    groups.addToVector(tContacts, i);
+                groups.addToVector(tContacts, i);
                 }
 
                 vContacts = tContacts;
-                tContacts = null;
+                tContacts = null;                
                 StringBuffer onl = new StringBuffer().append("(").append(groups.getRosterOnline()).append("/").append(groups.getRosterContacts()).append(")");
                 setRosterMainBar(onl.toString());
                 onl = null;
@@ -3138,7 +3139,7 @@ public class Roster
                 VirtualList list = sd.canvas.getList();
                 if (list != null)
                     list.redraw();
-            }
+                }
             //} catch (Exception e) {
 //#ifdef DEBUG
 //#                 //e.printStackTrace();

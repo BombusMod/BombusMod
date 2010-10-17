@@ -170,7 +170,7 @@ class PrivelegeModifyForm extends DefForm {
             user.append(" (").append(victim.realJid).append(")");
         }
         itemsList.addElement(new MultiLine(SR.MS_USER, user.toString(), sd.roster.getListWidth()));
-        cq.reason = new TextInput(SR.MS_REASON, "", "reason", TextField.ANY);
+        cq.reason = new TextInput(sd.canvas, SR.MS_REASON, "", "reason", TextField.ANY);
         itemsList.addElement(cq.reason);
 
     }

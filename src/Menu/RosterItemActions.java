@@ -591,7 +591,7 @@ public class RosterItemActions extends Menu {
                         new RenameGroup(sg/*, null*/);
                         return;
                     case 1004: //delete
-                        new AlertBox(SR.MS_DELETE_GROUP_ASK, sg.getName()) {
+                        new AlertBox(SR.MS_DELETE_GROUP_ASK, sg.name) {
                             public void yes() {
                                 sd.roster.deleteGroup((Group)item);
                             }

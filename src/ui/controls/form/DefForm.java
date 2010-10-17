@@ -32,6 +32,7 @@ import java.util.Vector;
 import Menu.MenuListener;
 import Menu.MenuCommand;
 import Menu.MyMenu;
+import java.util.Enumeration;
 import locale.SR;
 import ui.MainBar;
 import ui.VirtualElement;
@@ -68,10 +69,38 @@ public class DefForm
             show();
     }
 
-    protected int getItemCount() { return (itemsList == null) ? 0 : itemsList.size(); }
+    protected int getItemCount() {
+        if (getFlatList() == null)
+            return 0;
+        return getFlatList().size();
+    }
+
+    private Vector getFlatList() {
+        Object currentElement;
+
+        if (itemsList == null)
+            return null;
+        Vector flat = new Vector();
+        Vector currentGroup = new Vector();        
+        for (Enumeration e = itemsList.elements(); e.hasMoreElements();) {
+            currentElement = e.nextElement();
+            if (currentElement instanceof ItemsGroup) {
+                currentGroup = ((ItemsGroup)currentElement).getItems();
+                 for (int j = 0; j < currentGroup.size(); j++) {
+                     flat.addElement(currentGroup.elementAt(j)); // TODO: nested groups
+                 }
+            } else {
+                flat.addElement(currentElement);
+            }
+        }
+        return flat;
+    }
 
     protected VirtualElement getItemRef(int index) {
-        return (VirtualElement) itemsList.elementAt(index);
+        return (VirtualElement) getFlatList().elementAt(index);
+    }
+    public int getIndexOf(VirtualElement element) {
+        return getFlatList().indexOf(element);
     }
     
     public void touchLeftPressed(){ cmdOk(); }

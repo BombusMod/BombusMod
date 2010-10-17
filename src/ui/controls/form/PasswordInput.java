@@ -28,6 +28,7 @@
 package ui.controls.form;
 
 import javax.microedition.lcdui.TextField;
+import ui.VirtualCanvas;
 
 /**
  *
@@ -41,8 +42,8 @@ public class PasswordInput
      * @param caption
      * @param text
      */
-    public PasswordInput(String caption, String text) {
-        super(caption, text, null, TextField.PASSWORD);
+    public PasswordInput(VirtualCanvas canvas, String caption, String text) {
+        super(canvas, caption, text, null, TextField.PASSWORD);
     }
     
     public String getText(){

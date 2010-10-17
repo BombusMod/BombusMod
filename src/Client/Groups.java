@@ -215,7 +215,7 @@ public class Groups implements JabberBlockListener{
             for (Enumeration e=groups.elements(); e.hasMoreElements();) {
                 Group grp=(Group)e.nextElement();
                 if (grp.collapsed) {
-                    gs.addChild("item", grp.getName()).setAttribute("state", "collapsed");
+                    gs.addChild("item", grp.name).setAttribute("state", "collapsed");
                 }
             }
         }

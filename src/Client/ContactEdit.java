@@ -65,23 +65,23 @@ public final class ContactEdit
         super(SR.MS_ADD_CONTACT);
         cf = Config.getInstance();
 
-        tJid = new TextInput(SR.MS_USER_JID, null, null, TextField.ANY);
+        tJid = new TextInput(sd.canvas, SR.MS_USER_JID, null, null, TextField.ANY);
 
-        tNick = new TextInput(SR.MS_NAME, null, null, TextField.ANY);
+        tNick = new TextInput(sd.canvas, SR.MS_NAME, null, null, TextField.ANY);
 
-        tGroup = new TextInput(SR.MS_NEWGROUP, (c == null) ? "" : c.group.name, null, TextField.ANY);
+        tGroup = new TextInput(sd.canvas, SR.MS_NEWGROUP, (c == null) ? "" : c.group.name, null, TextField.ANY);
 
         tTranspList = new DropChoiceBox(SR.MS_TRANSPORT);
         // Transport droplist
-        tTranspList.append(sd.account.getServer());
+        tTranspList.add(sd.account.getServer());
         for (Enumeration e = sd.roster.getHContacts().elements(); e.hasMoreElements();) {
             Contact ct = (Contact) e.nextElement();
             Jid transpJid = ct.jid;
             if (transpJid.isTransport()) {
-                tTranspList.append(transpJid.getBareJid());
+                tTranspList.add(transpJid.getBareJid());
             }
         }
-        tTranspList.append(SR.MS_OTHER);
+        tTranspList.add(SR.MS_OTHER);
         tTranspList.setSelectedIndex(tTranspList.size() - 1);
 
         tAskSubscrCheckBox = new CheckBox(SR.MS_ASK_SUBSCRIPTION, false);
@@ -130,7 +130,7 @@ public final class ContactEdit
             ngroups = groups.size();
             for (int i = 0; i < ngroups; i++) {
                 String gn = (String) groups.elementAt(i);
-                tGrpList.append(gn);
+                tGrpList.add(gn);
 
                 if (gn.equals(grpName)) {
                     sel = i;
@@ -148,7 +148,7 @@ public final class ContactEdit
         }
         itemsList.addElement(tNick);
 
-        tGrpList.append(SR.MS_NEWGROUP);
+        tGrpList.add(SR.MS_NEWGROUP);
         tGrpList.setSelectedIndex(sel);
         itemsList.addElement(tGrpList);
 

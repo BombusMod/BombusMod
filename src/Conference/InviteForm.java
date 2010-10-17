@@ -63,14 +63,14 @@ public class InviteForm
             try {
                 MucContact mc=(MucContact)c.nextElement();
                 if (mc.origin==Contact.ORIGIN_GROUPCHAT && mc.status==Presence.PRESENCE_ONLINE) {
-                    conferenceList.append(mc.getJid());
+                    conferenceList.add(mc.getJid());
                     conferences.addElement(mc.getJid());
                 }
             } catch (Exception e) {}
         }
         itemsList.addElement(conferenceList);
         
-        reason=new TextInput(SR.MS_REASON, null, "", TextField.ANY); //200
+        reason=new TextInput(sd.canvas, SR.MS_REASON, null, "", TextField.ANY); //200
         itemsList.addElement(reason);
         
         moveCursorTo(getNextSelectableRef(-1));

@@ -36,17 +36,16 @@ package midlet;
 import Account.Account;
 import Account.AccountSelect;
 import Colors.ColorTheme;
-//#ifdef CLIENTS_ICONS
-import images.ClientsIconsData;
-//#endif
 import javax.microedition.midlet.*;
 import javax.microedition.lcdui.*;
 import locale.SR;
 import ui.*;
 import Client.*;
 import Info.Version;
-import java.util.Vector;
-import util.StringLoader;
+//#ifdef PLUGINS
+//# import java.util.Vector;
+//# import util.StringLoader;
+//#endif
 //#ifdef LIGHT_CONFIG
 //# import LightControl.*;
 //#endif
@@ -137,7 +136,7 @@ public class BombusMod extends MIDlet implements Runnable{
         sd.canvas.setMIDlet(this);
         sd.roster = new Roster();
         sd.canvas.setHome(sd.roster);
-        
+
         s.setProgress(20);
         
         boolean selAccount=( (cf.accountIndex<0) || s.keypressed!=0);

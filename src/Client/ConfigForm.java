@@ -38,7 +38,6 @@ import ui.controls.form.SpacerItem;
 import util.StringLoader;
 import com.alsutton.jabber.datablocks.Presence;
 import ui.SplashScreen;
-import ui.VirtualCanvas;
 import xmpp.EntityCaps;
 
 public class ConfigForm
@@ -162,10 +161,10 @@ public class ConfigForm
         
         itemsList.addElement(new SpacerItem(10));
         subscr=new DropChoiceBox(SR.MS_AUTH_NEW);
-        subscr.append(SR.MS_SUBSCR_AUTO);
-        subscr.append(SR.MS_SUBSCR_ASK);
-        subscr.append(SR.MS_SUBSCR_DROP);
-        subscr.append(SR.MS_SUBSCR_REJECT);
+        subscr.add(SR.MS_SUBSCR_AUTO);
+        subscr.add(SR.MS_SUBSCR_ASK);
+        subscr.add(SR.MS_SUBSCR_DROP);
+        subscr.add(SR.MS_SUBSCR_REJECT);
         subscr.setSelectedIndex(cf.autoSubscribe);
         itemsList.addElement(subscr);
 
@@ -205,16 +204,16 @@ public class ConfigForm
        swapSendAndSuspend = new CheckBox("swap \""+SR.MS_SEND+"\" and \""+SR.MS_SUSPEND+"\" commands", cf.swapSendAndSuspend); itemsList.addElement(swapSendAndSuspend);
             
 //#if LOGROTATE
-//#         messageCountLimit=new NumberInput( SR.MS_MESSAGE_COUNT_LIMIT, Integer.toString(cf.msglistLimit), 3, 1000);
+//#         messageCountLimit=new NumberInput(sd.canvas, SR.MS_MESSAGE_COUNT_LIMIT, Integer.toString(cf.msglistLimit), 3, 1000);
 //#         itemsList.addElement(messageCountLimit);
 //#endif
 
         itemsList.addElement(new SpacerItem(10));
-        messageLimit=new NumberInput( SR.MS_MESSAGE_COLLAPSE_LIMIT, Integer.toString(cf.messageLimit), 200, 1000);
+        messageLimit=new NumberInput(sd.canvas,  SR.MS_MESSAGE_COLLAPSE_LIMIT, Integer.toString(cf.messageLimit), 200, 1000);
         itemsList.addElement(messageLimit);
 
         if (sd.canvas.hasPointerEvents()) {
-            widthScroll2=new NumberInput( SR.MS_MESSAGE_WIDTH_SCROLL_2, Integer.toString(cf.widthScroll2), 1, 50);
+            widthScroll2=new NumberInput(sd.canvas,  SR.MS_MESSAGE_WIDTH_SCROLL_2, Integer.toString(cf.widthScroll2), 1, 50);
             itemsList.addElement(widthScroll2);
             advTouch = new CheckBox("Advanced touchscreen support", cf.advTouch);
             itemsList.addElement(advTouch);
@@ -229,8 +228,8 @@ public class ConfigForm
         
         itemsList.addElement(new SpacerItem(10));
         itemsList.addElement(new SimpleString(SR.MS_RECONNECT, true));
-	reconnectCount=new NumberInput( SR.MS_RECONNECT_COUNT_RETRY, Integer.toString(cf.reconnectCount), 0, 100); itemsList.addElement(reconnectCount);
-        reconnectTime=new NumberInput( SR.MS_RECONNECT_WAIT, Integer.toString(cf.reconnectTime), 1, 60 ); itemsList.addElement(reconnectTime);
+	reconnectCount=new NumberInput(sd.canvas,  SR.MS_RECONNECT_COUNT_RETRY, Integer.toString(cf.reconnectCount), 0, 100); itemsList.addElement(reconnectCount);
+        reconnectTime=new NumberInput(sd.canvas,  SR.MS_RECONNECT_WAIT, Integer.toString(cf.reconnectTime), 1, 60 ); itemsList.addElement(reconnectTime);
         
         itemsList.addElement(new SpacerItem(10));
         itemsList.addElement(new SimpleString(SR.MS_APPLICATION, true));
@@ -281,25 +280,25 @@ public class ConfigForm
         
         itemsList.addElement(new SpacerItem(10));
         itemsList.addElement(new SimpleString(SR.MS_TIME_SETTINGS, true));
-	fieldGmt=new NumberInput( SR.MS_GMT_OFFSET, Integer.toString(cf.gmtOffset), -12, 12); 
+	fieldGmt=new NumberInput(sd.canvas,  SR.MS_GMT_OFFSET, Integer.toString(cf.gmtOffset), -12, 12);
         itemsList.addElement(fieldGmt);
 
         itemsList.addElement(new SpacerItem(10));
         textWrap=new DropChoiceBox(SR.MS_TEXTWRAP);
-        textWrap.append(SR.MS_TEXTWRAP_CHARACTER);
-        textWrap.append(SR.MS_TEXTWRAP_WORD);
+        textWrap.add(SR.MS_TEXTWRAP_CHARACTER);
+        textWrap.add(SR.MS_TEXTWRAP_WORD);
 	textWrap.setSelectedIndex(cf.textWrap);
 	itemsList.addElement(textWrap);
         
         itemsList.addElement(new SpacerItem(10));
         panels=new DropChoiceBox(SR.MS_PANELS);
-        panels.append(SR.MS_NO_BAR+" : "+SR.MS_NO_BAR);
-        panels.append(SR.MS_MAIN_BAR+" : "+SR.MS_NO_BAR);
-        panels.append(SR.MS_MAIN_BAR+" : "+SR.MS_INFO_BAR);
-        panels.append(SR.MS_NO_BAR+" : "+SR.MS_INFO_BAR);
-        panels.append(SR.MS_INFO_BAR+" : "+SR.MS_NO_BAR);
-        panels.append(SR.MS_INFO_BAR+" : "+SR.MS_MAIN_BAR);
-        panels.append(SR.MS_NO_BAR+" : "+SR.MS_MAIN_BAR);
+        panels.add(SR.MS_NO_BAR+" : "+SR.MS_NO_BAR);
+        panels.add(SR.MS_MAIN_BAR+" : "+SR.MS_NO_BAR);
+        panels.add(SR.MS_MAIN_BAR+" : "+SR.MS_INFO_BAR);
+        panels.add(SR.MS_NO_BAR+" : "+SR.MS_INFO_BAR);
+        panels.add(SR.MS_INFO_BAR+" : "+SR.MS_NO_BAR);
+        panels.add(SR.MS_INFO_BAR+" : "+SR.MS_MAIN_BAR);
+        panels.add(SR.MS_NO_BAR+" : "+SR.MS_MAIN_BAR);
 	panels.setSelectedIndex(cf.panelsState);
 	itemsList.addElement(panels);
         drawMenuCommand = new CheckBox(SR.MS_SHOW_TIME_TRAFFIC, cf.showTimeTraffic); 
@@ -308,14 +307,14 @@ public class ConfigForm
 //#ifdef AUTOSTATUS
 //#         itemsList.addElement(new SpacerItem(10));
 //#         autoAwayType=new DropChoiceBox(SR.MS_AWAY_TYPE);
-//#         autoAwayType.append(SR.MS_AWAY_OFF);
-//#         autoAwayType.append(SR.MS_AWAY_LOCK);
-//#         autoAwayType.append(SR.MS_MESSAGE_LOCK);
-//#         autoAwayType.append(SR.MS_IDLE);
+//#         autoAwayType.add(SR.MS_AWAY_OFF);
+//#         autoAwayType.add(SR.MS_AWAY_LOCK);
+//#         autoAwayType.add(SR.MS_MESSAGE_LOCK);
+//#         autoAwayType.add(SR.MS_IDLE);
 //#         autoAwayType.setSelectedIndex(cf.autoAwayType);
 //#         itemsList.addElement(autoAwayType);
 //# 
-//#         fieldAwayDelay=new NumberInput( SR.MS_AWAY_PERIOD, Integer.toString(cf.autoAwayDelay), 1, 60);
+//#         fieldAwayDelay=new NumberInput(sd.canvas, SR.MS_AWAY_PERIOD, Integer.toString(cf.autoAwayDelay), 1, 60);
 //#         itemsList.addElement(fieldAwayDelay);
 //# 
 //#         awayStatus=new CheckBox(SR.MS_USE_MY_STATUS_MESSAGES, cf.useMyStatusMessages);
@@ -337,7 +336,7 @@ public class ConfigForm
             for (int i=0; i<langs[0].size(); i++) {
                 String label=(String) langs[2].elementAt(i);
                 String langCode=(String) langs[0].elementAt(i);
-                langFiles.append(label);
+                langFiles.add(label);
                 if (tempLang.equals(langCode))
                     langFiles.setSelectedIndex(i);
             }

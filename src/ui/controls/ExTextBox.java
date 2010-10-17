@@ -40,7 +40,6 @@ import locale.SR;
 //#ifdef ARCHIVE
 import Archive.ArchiveList;
 //#endif
-import ui.VirtualList;
 
 /**
  *
@@ -49,7 +48,7 @@ import ui.VirtualList;
 public class ExTextBox {
     
     public final TextBox textbox = new TextBox("", "", 500, TextField.ANY);
-    protected VirtualList parentView;  
+    protected Displayable parentView = midlet.BombusMod.getInstance().getCurrentDisplayable();
     protected StaticData sd = StaticData.getInstance();
     
     public String body;
@@ -103,7 +102,7 @@ public class ExTextBox {
     }
         
     public void destroyView() {                
-        sd.canvas.show(parentView);
+        midlet.BombusMod.getInstance().setDisplayable(parentView);
     }   
     
     public final void insert(String s, int caretPos) {

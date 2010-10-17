@@ -28,7 +28,6 @@ package Client;
 import com.alsutton.jabber.datablocks.Presence;
 import java.util.Enumeration;
 import locale.SR;
-import ui.VirtualCanvas;
 import ui.controls.form.DefForm;
 import ui.controls.form.DropChoiceBox;
 import ui.controls.form.MultiLine;
@@ -55,10 +54,10 @@ public class ChangeTransport extends DefForm {
         for (Enumeration e=sd.roster.getHContacts().elements(); e.hasMoreElements(); ){
             Contact ct=(Contact)e.nextElement();
             if (ct.jid.isTransport() && ct.status<Presence.PRESENCE_OFFLINE) //New transport must be online! If old transport is online and new transport is offline, contact list of guest IM account may be damaged
-                tTranspList.append(ct.bareJid);
+                tTranspList.add(ct.bareJid);
         }
         if (tTranspList.size()==0) {
-            tTranspList.append(srcTransport); //for avoiding exceptions and for resubscribing to all users of the transport ;)
+            tTranspList.add(srcTransport); //for avoiding exceptions and for resubscribing to all users of the transport ;)
         }
         itemsList.addElement(tTranspList);
     }

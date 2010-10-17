@@ -78,9 +78,9 @@ class UserKeyEdit extends DefForm {
 //#         itemsList.addElement(active);
 //# 
 //#         for (int i = 0; i < 3; i++) {
-//#             commands_t[i].append(UserKeyExec.none_command.description);
+//#             commands_t[i].add(UserKeyExec.none_command.description);
 //#             for (Enumeration e = UserKeyExec.available_commands[i].elements(); e.hasMoreElements();) {
-//#                 commands_t[i].append(((UserKeyCommand) e.nextElement()).description);
+//#                 commands_t[i].add(((UserKeyCommand) e.nextElement()).description);
 //#             }
 //#             commands_t[i].setSelectedIndex(UserKeyExec.available_commands[i].indexOf(new UserKeyCommand(u.commands_id[i], null)) + 1);
 //#             itemsList.addElement(commands_t[i]);

@@ -76,6 +76,7 @@ public class VirtualCanvas extends Canvas implements CommandListener{
         } else {
             list = virtualList;            
             Display.getDisplay(midlet).setCurrent(this);
+            repaint();
         }         
         commandState();
     }
@@ -117,6 +118,7 @@ public class VirtualCanvas extends Canvas implements CommandListener{
     protected void sizeChanged(int w, int h) {        
         if (list != null)
         list.sizeChanged(w, h);
+        repaint();
     }
 
     public void commandAction(Command c, Displayable d) {

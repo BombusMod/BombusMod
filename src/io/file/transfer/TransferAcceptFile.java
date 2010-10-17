@@ -83,11 +83,11 @@ public class TransferAcceptFile
             }
         }
         
-        fileName=new TextInput(SR.MS_FILE, name, "", TextField.ANY);
+        fileName=new TextInput(sd.canvas, SR.MS_FILE, name, "", TextField.ANY);
         itemsList.addElement(fileName);
         itemsList.addElement(new SimpleString(SR.MS_FILE_SIZE+" "+String.valueOf(t.fileSize)+" bytes", true));
 
-        path=new TextInput(SR.MS_SAVE_TO, t.filePath, "recvPath", TextField.ANY);
+        path=new TextInput(sd.canvas, SR.MS_SAVE_TO, t.filePath, "recvPath", TextField.ANY);
         itemsList.addElement(path);
         
         selectFile=new LinkString(SR.MS_PATH) { public void doAction() { initBrowser(); } };

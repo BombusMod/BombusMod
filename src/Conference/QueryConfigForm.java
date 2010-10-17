@@ -39,7 +39,6 @@ import com.alsutton.jabber.JabberBlockListener;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
 import com.alsutton.jabber.JabberStream;
-import javax.microedition.lcdui.Display;
 
 /**
  *

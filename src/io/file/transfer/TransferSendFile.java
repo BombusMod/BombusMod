@@ -61,13 +61,13 @@ public class TransferSendFile
         itemsList.addElement(new SimpleString(SR.MS_SEND_FILE_TO, true));
         itemsList.addElement(new SimpleString(recipientJid, false));
         
-        fileName = new TextInput(SR.MS_FILE, null, "sendfile", TextField.ANY);
+        fileName = new TextInput(sd.canvas, SR.MS_FILE, null, "sendfile", TextField.ANY);
         itemsList.addElement(fileName);
         
         selectFile=new LinkString(SR.MS_SELECT_FILE) { public void doAction() { initBrowser(); } };
         itemsList.addElement(selectFile);
         
-        description = new TextInput(SR.MS_DESCRIPTION, null, null, TextField.ANY);
+        description = new TextInput(sd.canvas, SR.MS_DESCRIPTION, null, null, TextField.ANY);
         itemsList.addElement(description);
         
         moveCursorTo(2);

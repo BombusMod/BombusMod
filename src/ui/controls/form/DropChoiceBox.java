@@ -107,7 +107,7 @@ public class DropChoiceBox
 
     public int getValue() { return index; }
     
-    public void append(String value) { items.addElement(value); }
+    public void add(String value) { items.addElement(value); }
     
     public void setSelectedIndex(int index) { 
         if (index>items.size()-1)

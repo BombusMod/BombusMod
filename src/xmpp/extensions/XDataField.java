@@ -12,7 +12,6 @@ package xmpp.extensions;
 import com.alsutton.jabber.JabberDataBlock;
 import java.util.*;
 import javax.microedition.lcdui.*;
-import util.Strconv;
 
 /**
  *

@@ -200,7 +200,7 @@ public class IQCommands implements JabberBlockListener {
 
                                         if (!confGroup.inRoom) continue; // don't process leaved leaved
 
-                                        if (confGroup.getName().equals(roomName))
+                                        if (confGroup.name.equals(roomName))
                                             sd.roster.leaveRoom(confGroup);
                                     } catch (Exception ex) {}
                                 }

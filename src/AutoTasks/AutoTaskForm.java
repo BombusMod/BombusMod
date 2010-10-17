@@ -28,15 +28,12 @@
 package AutoTasks;
 //#if AUTOTASK    
 //# import Client.StaticData;
-//# import java.util.Vector;
 //# import ui.controls.form.DropChoiceBox;
 //# import ui.controls.form.NumberInput;
 //# import ui.controls.form.SimpleString;
 //#endif
 import ui.controls.form.DefForm;
-import javax.microedition.lcdui.Display;
 import locale.SR;
-import ui.VirtualList;
 
 /**
  *
@@ -84,23 +81,23 @@ public class AutoTaskForm
 //#         wait = at.waitTime/60000;
 //#         
 //#         taskType=new DropChoiceBox(SR.MS_AUTOTASK_TYPE);
-//#         taskType.append(SR.MS_DISABLED);
-//#         taskType.append(SR.MS_BY_TIME_);
-//#         taskType.append(SR.MS_BY_TIMER_);
+//#         taskType.add(SR.MS_DISABLED);
+//#         taskType.add(SR.MS_BY_TIME_);
+//#         taskType.add(SR.MS_BY_TIMER_);
 //#         taskType.setSelectedIndex(typeIndex);
 //# 
 //#         actionType=new DropChoiceBox(SR.MS_AUTOTASK_ACTION_TYPE);
-//#         actionType.append(SR.MS_AUTOTASK_QUIT_BOMBUSMOD);
-//#         actionType.append(SR.MS_AUTOTASK_QUIT_CONFERENCES);
-//#         actionType.append(SR.MS_AUTOTASK_LOGOFF);
-//#         actionType.append(SR.MS_BREAK_CONECTION);
+//#         actionType.add(SR.MS_AUTOTASK_QUIT_BOMBUSMOD);
+//#         actionType.add(SR.MS_AUTOTASK_QUIT_CONFERENCES);
+//#         actionType.add(SR.MS_AUTOTASK_LOGOFF);
+//#         actionType.add(SR.MS_BREAK_CONECTION);
 //#         actionType.setSelectedIndex(actionIndex);
 //#         
 //#         autoTaskTimeDesc=new SimpleString(SR.MS_AUTOTASK_TIME, true);
 //# 
-//#         autoTaskHour=new NumberInput( SR.MS_AUTOTASK_HOUR, Integer.toString(hour), 0, 23);
-//#         autoTaskMin=new NumberInput( SR.MS_AUTOTASK_MIN, Integer.toString(min), 0, 59);
-//#         autoTaskDelay=new NumberInput( SR.MS_AUTOTASK_DELAY, Integer.toString(wait), 1, 600);
+//#         autoTaskHour=new NumberInput(sd.canvas,  SR.MS_AUTOTASK_HOUR, Integer.toString(hour), 0, 23);
+//#         autoTaskMin=new NumberInput(sd.canvas,  SR.MS_AUTOTASK_MIN, Integer.toString(min), 0, 59);
+//#         autoTaskDelay=new NumberInput(sd.canvas,  SR.MS_AUTOTASK_DELAY, Integer.toString(wait), 1, 600);
 //#         
 //#         itemsList.addElement(taskType);
 //#         itemsList.addElement(actionType);
@@ -130,7 +127,7 @@ public class AutoTaskForm
 //#         }
 //#     }
 //#     
-//#     public void update(){
+//#     public final void update(){
 //#         itemsList.removeElement(autoTaskTimeDesc);
 //#         itemsList.removeElement(autoTaskHour);
 //#         itemsList.removeElement(autoTaskMin);

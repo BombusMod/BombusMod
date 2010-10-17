@@ -179,7 +179,7 @@ public class RosterToolsMenu extends Menu {
 //#                 addItem(SR.L_CONFIG, 21, MenuIcons.ICON_SETTINGS);
 //#endif        
 
-        addItem(SR.MS_BREAK_CONECTION, 22, MenuIcons.ICON_RECONNECT);
+        addItem(SR.MS_BREAK_CONECTION, 22, MenuIcons.ICON_RECONNECT);        
         show();
     }
     
@@ -302,7 +302,7 @@ public class RosterToolsMenu extends Menu {
 //#                 
 //#                 new LightConfigForm();
 //#endif                
-                return;
+                return;            
         }
     }
 }

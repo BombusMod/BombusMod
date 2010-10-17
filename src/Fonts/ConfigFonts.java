@@ -45,30 +45,30 @@ public class ConfigFonts
         cf=Config.getInstance();
 
         font1=new DropChoiceBox(SR.MS_ROSTER_FONT);
-        font1.append(SR.MS_FONTSIZE_NORMAL);
-        font1.append(SR.MS_FONTSIZE_SMALL);
-        font1.append(SR.MS_FONTSIZE_LARGE);
+        font1.add(SR.MS_FONTSIZE_NORMAL);
+        font1.add(SR.MS_FONTSIZE_SMALL);
+        font1.add(SR.MS_FONTSIZE_LARGE);
         font1.setSelectedIndex(cf.rosterFont/8);
         itemsList.addElement(font1);
 
         font2=new DropChoiceBox(SR.MS_MESSAGE_FONT);
-        font2.append(SR.MS_FONTSIZE_NORMAL);
-        font2.append(SR.MS_FONTSIZE_SMALL);
-        font2.append(SR.MS_FONTSIZE_LARGE);
+        font2.add(SR.MS_FONTSIZE_NORMAL);
+        font2.add(SR.MS_FONTSIZE_SMALL);
+        font2.add(SR.MS_FONTSIZE_LARGE);
         font2.setSelectedIndex(cf.msgFont/8);
         itemsList.addElement(font2);
 
         font3=new DropChoiceBox(SR.MS_BAR_FONT);
-        font3.append(SR.MS_FONTSIZE_NORMAL);
-        font3.append(SR.MS_FONTSIZE_SMALL);
-        font3.append(SR.MS_FONTSIZE_LARGE);
+        font3.add(SR.MS_FONTSIZE_NORMAL);
+        font3.add(SR.MS_FONTSIZE_SMALL);
+        font3.add(SR.MS_FONTSIZE_LARGE);
         font3.setSelectedIndex(cf.barFont/8);
         itemsList.addElement(font3);
 
         font4=new DropChoiceBox(SR.MS_POPUP_FONT);
-        font4.append(SR.MS_FONTSIZE_NORMAL);
-        font4.append(SR.MS_FONTSIZE_SMALL);
-        font4.append(SR.MS_FONTSIZE_LARGE);
+        font4.add(SR.MS_FONTSIZE_NORMAL);
+        font4.add(SR.MS_FONTSIZE_SMALL);
+        font4.add(SR.MS_FONTSIZE_LARGE);
         font4.setSelectedIndex(cf.baloonFont/8);
         itemsList.addElement(font4);
     }

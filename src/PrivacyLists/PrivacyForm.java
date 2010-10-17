@@ -83,19 +83,19 @@ public class PrivacyForm
 
         choiceAction=new DropChoiceBox(SR.MS_PRIVACY_ACTION);
         for(int i=0; i<PrivacyItem.actions.length; i++){
-            choiceAction.append(PrivacyItem.actions[i]);
+            choiceAction.add(PrivacyItem.actions[i]);
         }
         choiceAction.setSelectedIndex(item.action);
         itemsList.addElement(choiceAction);
 
         choiceType=new DropChoiceBox(SR.MS_PRIVACY_TYPE);
         for(int i=0; i<PrivacyItem.types.length; i++){
-            choiceType.append(PrivacyItem.types[i]);
+            choiceType.add(PrivacyItem.types[i]);
         }
         choiceType.setSelectedIndex(item.type);
         itemsList.addElement(choiceType);
         
-        textValue=new TextInput(SR.MS_VALUE, tValue, "", TextField.ANY);//64, TextField.ANY);
+        textValue=new TextInput(sd.canvas, SR.MS_VALUE, tValue, "", TextField.ANY);//64, TextField.ANY);
         
         switchType();
         
@@ -135,13 +135,13 @@ public class PrivacyForm
                 break;
             case 1: //group
                 if (targetList!=null)
-                    textValue.setValue(((rfocus instanceof Group)?(Group)rfocus:((Contact)rfocus).group).getName());
+                    textValue.setValue(((rfocus instanceof Group)?(Group)rfocus:((Contact)rfocus).group).name);
                 itemsList.insertElementAt(textValue, 2);
                 break;
             case 2: //subscription
                 choiceSubscr=new DropChoiceBox(SR.MS_SUBSCRIPTION);
                 for(int i=0; i<PrivacyItem.subscrs.length; i++){
-                    choiceSubscr.append(PrivacyItem.subscrs[i]);
+                    choiceSubscr.add(PrivacyItem.subscrs[i]);
                 }
                 for (int i=0; i<PrivacyItem.subscrs.length; i++) {
                     if (item.value.equals(PrivacyItem.subscrs[i])) {

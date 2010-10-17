@@ -70,7 +70,7 @@ public class TransferImage
         shot=new LinkString(SR.MS_CAMERASHOT) { public void doAction() { initCamera(); } };
         itemsList.addElement(shot);
         
-        description = new TextInput(SR.MS_DESCRIPTION, null, null, TextField.ANY);
+        description = new TextInput(sd.canvas, SR.MS_DESCRIPTION, null, null, TextField.ANY);
         itemsList.addElement(description);
         
         moveCursorTo(1);

@@ -56,7 +56,7 @@ public class RenameGroup
         //this.contact=contact;
         this.group=group;
         
-        groupName = new TextInput(null, /*(contact==null)?*/group.getName()/*:contact.getGroup().getName()*/, "groups", TextField.ANY); // 32, TextField.ANY
+        groupName = new TextInput(sd.canvas, null, /*(contact==null)?*/group.name/*:contact.getGroup().getName()*/, "groups", TextField.ANY); // 32, TextField.ANY
         itemsList.addElement(groupName);
         
         itemsList.addElement(new SpacerItem(0));
@@ -66,7 +66,7 @@ public class RenameGroup
 
     public void  cmdOk() {
         //if (contact==null)
-            sd.roster.theStream.send(new IqQueryRenameGroup (group.getName(), groupName.getValue()));
+            sd.roster.theStream.send(new IqQueryRenameGroup (group.name, groupName.getValue()));
         /*else
             sd.roster.theStream.send(new IqQueryRoster(contact.getBareJid(), contact.nick, groupName.getValue(), null)); */
 
@@ -82,7 +82,7 @@ public class RenameGroup
 
             for (Enumeration e=sd.roster.hContacts.elements(); e.hasMoreElements();){
                 Contact cr=(Contact)e.nextElement();
-                if (cr.group.getName().equals(sourceGroup)) {
+                if (cr.group.name.equals(sourceGroup)) {
                     JabberDataBlock item= qB.addChild("item",null);
                     item.setAttribute("jid", cr.bareJid);
                     item.setAttribute("name", cr.nick);

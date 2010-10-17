@@ -29,7 +29,6 @@ package ServiceDiscovery;
 import java.util.*;
 import com.alsutton.jabber.*;
 import com.alsutton.jabber.datablocks.*;
-import javax.microedition.lcdui.Display;
 import locale.SR;
 import ui.controls.form.DefForm;
 import ui.controls.form.SimpleString;
@@ -66,17 +65,20 @@ public class MyDiscoForm extends DefForm{
     //private JabberBlockListener listener;
     
     /** Creates a new instance of RegForm */
-    public MyDiscoForm(JabberDataBlock regform, JabberStream stream, String resultId, String childName) {
-        super(regform.getAttribute("from"));
-        service=regform.getAttribute("from");
+    public MyDiscoForm(JabberDataBlock dataform, JabberStream stream, String resultId, String childName) {
+        super(dataform.getAttribute("from"));
+        service = dataform.getAttribute("from");
         this.childName=childName;
-        JabberDataBlock query=regform.getChildBlock(childName);
+        JabberDataBlock query = dataform.getChildBlock(childName);
         xmlns=query.getAttribute("xmlns");
         node=query.getAttribute("node");
         sessionId=query.getAttribute("sessionid");
         JabberDataBlock x=query.getChildBlock("x");
         this.id=resultId;
         //this.listener=listener;
+
+
+
         // todo: обработать ошибку query
         fields=new Vector();        
 
@@ -87,7 +89,7 @@ public class MyDiscoForm extends DefForm{
 	Enumeration e;        
         
         if (vFields!=null) {
-            for (e=vFields.elements(); e.hasMoreElements(); ){
+         /*   for (e=vFields.elements(); e.hasMoreElements(); ){
                 MyFormField field=new MyFormField((JabberDataBlock)e.nextElement());
                 if (field.instructions) {
                     fields.insertElementAt(field, 0);
@@ -100,24 +102,18 @@ public class MyDiscoForm extends DefForm{
                     MyFormField unreg=new MyFormField(registered);
                     fields.addElement(unreg);
                 }
-            }
+            }*/
             
-            for (e=fields.elements(); e.hasMoreElements(); ){
-                MyFormField field=(MyFormField) e.nextElement();
-                if (!field.hidden) {
-                    for (Enumeration e2=field.formItems.elements();e2.hasMoreElements();) {
-                        itemsList.addElement(e2.nextElement());
-                    }
-                }
-            }
-        }        
-       
+            itemsList = DataForms.getItems(fields);
+        }     
+
         if (childName.equals("command")) {
             if (query.getAttribute("status").equals("completed")) {
                 itemsList.addElement(new SimpleString("Complete.", true));
                 completed = true;
             }
         }
+        
         
         this.stream=stream;
         
@@ -137,11 +133,8 @@ public class MyDiscoForm extends DefForm{
             cform=x;
         }
         
-        for (Enumeration e=fields.elements(); e.hasMoreElements(); ) {
-            MyFormField f=(MyFormField) e.nextElement();
-            if (f==null) continue;
-            JabberDataBlock ch=f.constructJabberDataBlock();
-            if (ch!=null) {
+        JabberDataBlock ch=DataForms.constructJabberDataBlock(fields);
+        /*    if (ch!=null) {
                 if (ch.getTagName().equals("remove")) {
                     cform=qry;
                     Vector cb=cform.getChildBlocks();
@@ -150,9 +143,8 @@ public class MyDiscoForm extends DefForm{
                     break;
                 }
                 cform.addChild(ch);
-            }
-        }
-        
+            }*/
+        cform.addChild(ch);
         //System.out.println(req.toString());
         //if (listener!=null) stream.addBlockListener(listener);
         stream.send(req);

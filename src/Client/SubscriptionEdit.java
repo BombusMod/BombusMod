@@ -58,10 +58,10 @@ public class SubscriptionEdit
         itemsList.addElement(new SpacerItem(10));
 
         action=new DropChoiceBox(SR.MS_ACTION);
-        action.append(SR.MS_NO);
-        action.append(SR.MS_ASK_SUBSCRIPTION);
-        action.append(SR.MS_GRANT_SUBSCRIPTION);
-        action.append(SR.MS_SUBSCR_REMOVE);
+        action.add(SR.MS_NO);
+        action.add(SR.MS_ASK_SUBSCRIPTION);
+        action.add(SR.MS_GRANT_SUBSCRIPTION);
+        action.add(SR.MS_SUBSCR_REMOVE);
         action.setSelectedIndex(0);
         itemsList.addElement(action);
 

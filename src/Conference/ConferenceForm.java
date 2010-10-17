@@ -129,23 +129,23 @@ public class ConferenceForm
     }
     
      private void createForm(String name, String room, String server, String nick, final String password, boolean autojoin) {
-        roomField=new TextInput(SR.MS_ROOM, room, null, TextField.ANY);//, 64, TextField.ANY);
+        roomField=new TextInput(sd.canvas, SR.MS_ROOM, room, null, TextField.ANY);//, 64, TextField.ANY);
         itemsList.addElement(roomField);
 
-        hostField=new TextInput(SR.MS_AT_HOST, server, "muc-host", TextField.ANY);//, 64, TextField.ANY, "muc-host", display);
+        hostField=new TextInput(sd.canvas, SR.MS_AT_HOST, server, "muc-host", TextField.ANY);//, 64, TextField.ANY, "muc-host", display);
         itemsList.addElement(hostField);
         
         if (nick==null) nick=sd.account.getNickName();
-        nickField=new TextInput(SR.MS_NICKNAME, nick, "roomnick", TextField.ANY);//, 32, TextField.ANY, "roomnick", display);
+        nickField=new TextInput(sd.canvas, SR.MS_NICKNAME, nick, "roomnick", TextField.ANY);//, 32, TextField.ANY, "roomnick", display);
         itemsList.addElement(nickField);
 
-        msgLimitField=new NumberInput( SR.MS_MSG_LIMIT, Integer.toString(cf.confMessageCount), 0, 100);
+        msgLimitField=new NumberInput(sd.canvas,  SR.MS_MSG_LIMIT, Integer.toString(cf.confMessageCount), 0, 100);
         itemsList.addElement(msgLimitField);
 
-        nameField=new TextInput(SR.MS_DESCRIPTION, name, null, TextField.ANY);//, 128, TextField.ANY);
+        nameField=new TextInput(sd.canvas, SR.MS_DESCRIPTION, name, null, TextField.ANY);//, 128, TextField.ANY);
         itemsList.addElement(nameField);
 
-        passField=new PasswordInput( SR.MS_PASSWORD, password);//, 32, TextField.ANY | TextField.SENSITIVE );
+        passField=new PasswordInput(sd.canvas,  SR.MS_PASSWORD, password);//, 32, TextField.ANY | TextField.SENSITIVE );
         itemsList.addElement(passField);
 
         autoJoin=new CheckBox(SR.MS_AUTOLOGIN, autojoin);

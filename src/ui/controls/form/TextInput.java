@@ -35,6 +35,8 @@ import java.io.EOFException;
 import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
 import ui.IconTextElement;
+import ui.VirtualCanvas;
+import ui.VirtualList;
 
 /**
  *
@@ -63,6 +65,8 @@ public class TextInput
     private int colorItem;
     private int colorBorder;
     private int colorBGnd;
+
+    private VirtualList homeList;
     
     /**
      * Creates a new instance of TextInput
@@ -71,11 +75,12 @@ public class TextInput
      * @param id
      * @param text
      */
-    public TextInput(String caption, String text, String id, int boxType) {
+    public TextInput(VirtualCanvas canvas, String caption, String text, String id, int boxType) {
         super(null);
         this.caption=(caption==null)?"":caption;
         this.id=id;
         this.boxType=boxType;
+        this.homeList = canvas.getList();
 
         colorItem=ColorTheme.getColor(ColorTheme.CONTROL_ITEM);
         colorBorder=ColorTheme.getColor(ColorTheme.CURSOR_OUTLINE);
@@ -118,7 +123,7 @@ public class TextInput
     
     public String toString() { return (getCaptionLength()>getTextLength())?caption:getValue(); }
     
-    public void onSelect(){ new EditBox(caption, text, this, boxType); }
+    public void onSelect(){ new EditBox(homeList, caption, text, this, boxType); }
     
     public String getValue() { return (text==null)?"":text; }
 

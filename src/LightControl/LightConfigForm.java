@@ -39,19 +39,19 @@ public class LightConfigForm
         config_enabled=new CheckBox(SR.L_ENABLED, light.light_control);
         itemsList.addElement(config_enabled);
 
-        light_idle=new NumberInput(SR.L_IDLE_VALUE, Integer.toString(light.light_idle), 0, 100);
+        light_idle=new NumberInput(sd.canvas, SR.L_IDLE_VALUE, Integer.toString(light.light_idle), 0, 100);
         itemsList.addElement(light_idle);
 
-        light_keypressed=new NumberInput(SR.L_KEYPRESS_VALUE, Integer.toString(light.light_keypress), 0, 100);
+        light_keypressed=new NumberInput(sd.canvas, SR.L_KEYPRESS_VALUE, Integer.toString(light.light_keypress), 0, 100);
         itemsList.addElement(light_keypressed);
         
-        light_keypressed_time=new NumberInput(SR.L_KEYPRESS_TIMEOUT, Integer.toString(light.light_keypressed_time), 0, 600);
+        light_keypressed_time=new NumberInput(sd.canvas, SR.L_KEYPRESS_TIMEOUT, Integer.toString(light.light_keypressed_time), 0, 600);
         itemsList.addElement(light_keypressed_time);
 
-        light_message=new NumberInput(SR.L_MESSAGE_VALUE, Integer.toString(light.light_message), 0, 101);
+        light_message=new NumberInput(sd.canvas, SR.L_MESSAGE_VALUE, Integer.toString(light.light_message), 0, 101);
         itemsList.addElement(light_message);
         
-        light_message_time=new NumberInput(SR.L_MESSAGE_TIMEOUT, Integer.toString(light.light_message_time), 0, 600);
+        light_message_time=new NumberInput(sd.canvas, SR.L_MESSAGE_TIMEOUT, Integer.toString(light.light_message_time), 0, 600);
         itemsList.addElement(light_message_time);       
     }
     

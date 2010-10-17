@@ -78,7 +78,7 @@ class RosterAddForm extends DefForm {
         Contact c;
         for (Enumeration e = contacts.elements(); e.hasMoreElements();) {
             c = (Contact)e.nextElement();
-            StaticData.getInstance().roster.storeContact(c.bareJid.toString(), c.nick, (c.group.getName() == null) ? "" : c.group.getName(), true);
+            StaticData.getInstance().roster.storeContact(c.bareJid.toString(), c.nick, (c.group.name == null) ? "" : c.group.name, true);
         }
         destroyView();
     }

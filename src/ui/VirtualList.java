@@ -225,10 +225,10 @@ public abstract class VirtualList {
 //#     public Image img;
 //#endif
     
-    protected synchronized void updateLayout(){
-        int size=getItemCount();
-        if (size==0) {
-            listHeight=0;
+    protected synchronized void updateLayout() {
+        int size = getItemCount();
+        if (size == 0) {
+            listHeight = 0;
             return;
         }
         int layout[]=new int[size+1];
@@ -250,11 +250,11 @@ public abstract class VirtualList {
         int begin=0;
         while (end-begin>1) {
             int index=(end+begin)>>>1;
-            if (itemLayoutY.length <= index) index = itemLayoutY.length - 1; 
+            if (itemLayoutY.length <= index) index = itemLayoutY.length - 1;
             if (yPos<itemLayoutY[index]) end=index; else begin=index;
         }
         return (yPos<itemLayoutY[end])? begin:end;
-    }
+            }
     
     public int win_top; // верхняя граница окна относительно списка
     private int winHeight; // отображаемый размер списка

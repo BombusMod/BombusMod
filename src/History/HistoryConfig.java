@@ -86,7 +86,7 @@ public class HistoryConfig
 //#         translit = new CheckBox(SR.MS_1251_TRANSLITERATE_FILENAMES, cf.transliterateFilenames); itemsList.addElement(translit);
 //#endif
 //# 
-//# 	historyFolder = new TextInput(SR.MS_HISTORY_FOLDER, cf.msgPath, null, TextField.ANY); itemsList.addElement(historyFolder);
+//# 	historyFolder = new TextInput(sd.canvas, SR.MS_HISTORY_FOLDER, cf.msgPath, null, TextField.ANY); itemsList.addElement(historyFolder);
 //#         selectFolder=new LinkString(SR.MS_SELECT_HISTORY_FOLDER) { public void doAction() { selectFolder(); } };
 //#         itemsList.addElement(selectFolder);
 //#endif

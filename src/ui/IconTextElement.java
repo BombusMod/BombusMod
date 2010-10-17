@@ -85,10 +85,10 @@ abstract public class IconTextElement implements VirtualElement {
         return getFont().stringWidth(toString())+ilImageSize+4;
     }
     
-    public int getVHeight(){ 
-        itemHeight=(ilImageSize>getFont().getHeight())?ilImageSize:getFont().getHeight();
-        fontYOfs=(itemHeight-getFont().getHeight())/2;
-        imageYOfs=(itemHeight-ilImageSize)/2;
+    public int getVHeight() {
+        itemHeight = (ilImageSize > getFont().getHeight()) ? ilImageSize : getFont().getHeight();
+        fontYOfs = (itemHeight - getFont().getHeight()) >> 1;
+        imageYOfs = (itemHeight - ilImageSize) >> 1;
         return itemHeight;
     }
     

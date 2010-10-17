@@ -95,7 +95,7 @@ public class ColorConfigForm
             if (j>0) {
                 skinFiles=new DropChoiceBox(SR.MS_SELECT);
                 for (int i=0; i<j; i++) {
-                    skinFiles.append((String)files[1].elementAt(i));
+                    skinFiles.add((String)files[1].elementAt(i));
                 }
                 skinFiles.setSelectedIndex(0);
                 itemsList.addElement(skinFiles);
