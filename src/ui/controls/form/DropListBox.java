@@ -29,6 +29,7 @@ public class DropListBox
             itemsList.addElement(item);
         }
         this.cb = cb;
+        enableListWrapping(true);
         moveCursorTo(cb.getSelectedIndex());        
     }
 

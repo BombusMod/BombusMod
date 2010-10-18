@@ -46,8 +46,8 @@ public class ActivityList extends DefForm implements MIDPTextBox.TextBoxNotify {
               SimpleString item = new SimpleString((String)e.nextElement(), false);
               item.selectable = true;
               itemsList.addElement(item);
-        }               
-        
+        }
+        enableListWrapping(true);
     }
 
     public void cmdOk() {

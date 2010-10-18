@@ -363,7 +363,7 @@ public abstract class VirtualList {
     
     public void show() {
         parentView = sd.canvas.getList();        
-        sd.canvas.show(this);       
+        sd.canvas.show(this);
      }
 
     public void redraw() {

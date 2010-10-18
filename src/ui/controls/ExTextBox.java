@@ -39,7 +39,9 @@ import locale.SR;
 //#endif
 //#ifdef ARCHIVE
 import Archive.ArchiveList;
+import ui.VirtualList;
 //#endif
+
 
 /**
  *
@@ -70,13 +72,16 @@ public class ExTextBox {
 //#ifdef CLIPBOARD
 //#     protected Command cmdPasteText=new Command(SR.MS_PASTE, Command.SCREEN, 8);
 //#endif
+
+    private VirtualList parentList;
     
     int maxSize=500;
             
     /** Creates a new instance of UniTextEdit */
-    public ExTextBox(String body, String subj, boolean writespaces) {
+    public ExTextBox(VirtualList parent, String body, String subj, boolean writespaces) {
         cf = Config.getInstance();
         textbox.setTitle(subj);
+        parentList = parent;
 		
         try {
             //expanding buffer as much as possible
@@ -88,8 +93,8 @@ public class ExTextBox {
         
     }
 
-    public ExTextBox(String body, String subj) {
-        this(body, subj, true);
+    public ExTextBox(VirtualList parent, String body, String subj) {
+        this(parent, body, subj, true);
     }
 
     public void show(CommandListener listener) {
@@ -103,6 +108,7 @@ public class ExTextBox {
         
     public void destroyView() {                
         midlet.BombusMod.getInstance().setDisplayable(parentView);
+        sd.canvas.show(parentList);
     }   
     
     public final void insert(String s, int caretPos) {

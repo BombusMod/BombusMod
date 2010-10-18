@@ -88,7 +88,6 @@ public class StatsWindow
 
     public void commandState() {
         menuCommands.removeAllElements();
-        addMenuCommand(cmdClear);
 //#ifdef CLIPBOARD
 //#             if (Config.getInstance().useClipBoard) {
 //#                 clipboard = ClipBoard.getInstance();
@@ -97,6 +96,7 @@ public class StatsWindow
 //#                     addMenuCommand(cmdCopyPlus);
 //#             }
 //#endif        
+        addMenuCommand(cmdClear);
     }
 
     public String touchLeftCommand(){ return SR.MS_MENU; }

@@ -121,7 +121,7 @@ public final class XMLList
         try {
             stanza =  m.toString();
         } catch (Exception e) {}
-        new StanzaEdit(stanza);
+        new StanzaEdit(this, stanza);
     }
     
     public void menuAction(MenuCommand c, VirtualList d) {
@@ -153,8 +153,8 @@ public final class XMLList
                     stanzas.stanzas.removeElementAt(0);
             }
             messages=new Vector();
-        } catch (Exception e) { }
-        moveCursorHome();
+            moveCursorHome();
+        } catch (Exception e) { }        
         redraw(); 
     }
     

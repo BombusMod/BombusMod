@@ -49,6 +49,7 @@ public class MoodList extends DefForm implements MIDPTextBox.TextBoxNotify {
         }
         
         sort(itemsList);
+        enableListWrapping(true);
     }
 
     public void cmdOk() {

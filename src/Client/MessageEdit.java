@@ -84,15 +84,13 @@ public final class MessageEdit
     private Command cmdCancel;
 //#ifdef MIDP_TICKER
 //#     Ticker ticker = new Ticker("");
-//#endif
-    private VirtualList parentList;
+//#endif    
 
     /** Creates a new instance of MessageEdit */
     public MessageEdit(VirtualList pView, Contact to, String body, boolean writespaces) {
-        super(body, to.toString(), writespaces);
+        super(pView, body, to.toString(), writespaces);
 
         this.to = to;
-        this.parentList = pView;
 
 //#ifdef DETRANSLIT
 //#ifdef PLUGINS
@@ -393,12 +391,7 @@ public final class MessageEdit
         } catch (Exception e) {
             sd.roster.errorLog(e.getMessage());
         }
-    }
-
-    public void destroyView() {
-        super.destroyView();
-        sd.canvas.show(parentList);
-    }
+    }    
 
     /* Пролистывание команд по страницам, для SE C510
     private void addCommand(Command cmd) {
