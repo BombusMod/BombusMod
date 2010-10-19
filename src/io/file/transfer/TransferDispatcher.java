@@ -111,7 +111,7 @@ public class TransferDispatcher implements JabberBlockListener {
                 if (type.equals("result")) {
                     // our file were accepted                    
                     TransferTask task=getTransferBySid(id);
-                    if (field.value.equals(NS_IBB)) {
+                    if (field.body.equals(NS_IBB)) {
                      task.initIBB();
                     } else {
                         task.initBytestreams();

@@ -49,6 +49,7 @@ import Client.StaticData;
 import com.alsutton.jabber.datablocks.Message;
 import io.SOCKS5Stream;
 import util.Strconv;
+import xmpp.extensions.XDataForm;
 
 /**
  *
@@ -198,7 +199,7 @@ public class TransferTask
         
         JabberDataBlock feature=si.addChildNs("feature", "http://jabber.org/protocol/feature-neg");
         
-        JabberDataBlock x=feature.addChildNs("x", "jabber:x:data");
+        JabberDataBlock x=feature.addChildNs("x", XDataForm.NS_XDATA);
         x.setTypeAttribute("submit");
         
         JabberDataBlock field=x.addChild("field", null);
@@ -282,7 +283,7 @@ public class TransferTask
 
         JabberDataBlock feature=si.addChildNs("feature", "http://jabber.org/protocol/feature-neg");
 
-        JabberDataBlock x=feature.addChildNs("x", "jabber:x:data");
+        JabberDataBlock x=feature.addChildNs("x", XDataForm.NS_XDATA);
         x.setTypeAttribute("form");
 
         JabberDataBlock field=x.addChild("field", null);

@@ -238,14 +238,14 @@ public class RosterItemActions extends Menu {
             }
 //#endif
 //#if (FILE_IO && FILE_TRANSFER)
-            if (contact.getGroupType()!=Groups.TYPE_TRANSP && cf.fileTransfer) 
+            if (contact.getGroupType()!=Groups.TYPE_TRANSP && cf.fileTransfer)
                 if (contact!=sd.roster.selfContact()) {
 //#ifdef PLUGINS
 //#                     if (sd.FileTransfer)
 //#endif
                         addItem(SR.MS_SEND_FILE, 50, ActionsIcons.ICON_SEND_FILE);
                 }
-            
+
 //#endif
 //#if FILE_TRANSFER
             if (contact.getGroupType()!=Groups.TYPE_TRANSP && cf.fileTransfer) {
@@ -492,7 +492,7 @@ public class RosterItemActions extends Menu {
                     new StatusSelect(c);
                     return;
 //#if (FILE_IO && FILE_TRANSFER)
-                case 50: //send file                    
+                case 50: //send file
                     new TransferSendFile(c.getJid());
                     return;
 //#endif
@@ -518,7 +518,7 @@ public class RosterItemActions extends Menu {
                 
                 switch (index) { // muc contact actions
                     case 10: // room config
-                        new QueryConfigForm( roomJid);
+                        new QueryConfigForm(roomJid);
                         break;
                     case 11: // owners
                     case 12: // admins

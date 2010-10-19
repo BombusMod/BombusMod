@@ -24,56 +24,58 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-
 package Conference;
 
 import Client.StaticData;
-//#ifdef SERVICE_DISCOVERY
-//#ifdef NEW_DISCO
-//# import ServiceDiscovery.MyDiscoForm;
-//#else
-import ServiceDiscovery.DiscoForm;
-//#endif
-//#endif
 import com.alsutton.jabber.JabberBlockListener;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
 import com.alsutton.jabber.JabberStream;
+import xmpp.extensions.XDataForm;
+import xmpp.extensions.XDataForm.NotifyListener;
 
 /**
  *
  * @author EvgS
  */
-public class QueryConfigForm implements JabberBlockListener{
-    
-    private final static String OWNER_XMLNS="http://jabber.org/protocol/muc#owner";
+public class QueryConfigForm implements JabberBlockListener, NotifyListener {
+
+    private final static String OWNER_XMLNS = "http://jabber.org/protocol/muc#owner";
+
+    public String roomJid;
+
     /** Creates a new instance of QueryConfigForm */
-    public QueryConfigForm( String roomJid) {
-        JabberDataBlock getform=new Iq(roomJid, Iq.TYPE_GET, "confform");
+    public QueryConfigForm(String roomJid) {
+        this.roomJid = roomJid;
+        JabberDataBlock getform = new Iq(roomJid, Iq.TYPE_GET, "confform");
         getform.addChildNs("query", OWNER_XMLNS);
-        
-        JabberStream stream=StaticData.getInstance().roster.theStream;
+
+        JabberStream stream = StaticData.getInstance().roster.theStream;
         stream.addBlockListener(this);
         stream.send(getform);
         StaticData.getInstance().roster.setQuerySign(true);
-        
+
     }
-    
+
     public int blockArrived(JabberDataBlock data) {
-        JabberDataBlock query=data.findNamespace("query", OWNER_XMLNS);
-        if (query!=null) {
+        JabberDataBlock query = data.findNamespace("query", OWNER_XMLNS);
+        if (query != null) {
             StaticData.getInstance().roster.setQuerySign(false);
-//#ifdef SERVICE_DISCOVERY
             if (data.getTypeAttribute().equals("result")) {
-//#ifdef NEW_DISCO
-//#                 new MyDiscoForm(data, StaticData.getInstance().roster.theStream, "muc_owner", "query");
-//#else 
-                new DiscoForm(data, StaticData.getInstance().roster.theStream, "muc_owner", "query");
-//#endif
+                JabberDataBlock xdata = query.getChildBlock("x");
+                System.out.println("Source form: " + xdata.toString());
+                new XDataForm(xdata, this);
             }
-//#endif
             return JabberBlockListener.NO_MORE_BLOCKS;
         }
         return JabberBlockListener.BLOCK_REJECTED;
+    }
+
+    public void XDataFormSubmit(JabberDataBlock form) {
+        JabberDataBlock setform = new Iq(roomJid, Iq.TYPE_SET, "setform");
+        JabberDataBlock query = setform.addChildNs("query", OWNER_XMLNS);
+        query.addChild(form);
+        System.out.println("Destination form: " + form.toString());
+        StaticData.getInstance().roster.theStream.send(setform);
     }
 }

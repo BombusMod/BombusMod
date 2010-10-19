@@ -46,7 +46,7 @@ public class TextInput
         extends IconTextElement {
 
     private String text="";
-    private String caption="";
+    public String caption="";
     
     private boolean selectable=true;
 

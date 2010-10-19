@@ -43,6 +43,7 @@ import ui.MainBar;
 import ui.controls.AlertBox;
 import ui.controls.form.DefForm;
 import xmpp.XmppError;
+import xmpp.extensions.IqRegister;
 
 /**
  *
@@ -55,7 +56,6 @@ public class ServiceDiscovery
 {
     private final static String NS_ITEMS="http://jabber.org/protocol/disco#items";
     private final static String NS_INFO="http://jabber.org/protocol/disco#info";
-    private final static String NS_REGS="jabber:iq:register";
     private final static String NS_SRCH="jabber:iq:search";
     private final static String NS_GATE="jabber:iq:gateway";
     private final static String NS_MUC="http://jabber.org/protocol/muc";
@@ -260,7 +260,7 @@ public class ServiceDiscovery
                         features.addElement(var);
                         //if (var.equals(NS_MUC)) { cmds.addElement(new DiscoCommand(RosterIcons.ICON_GCJOIN_INDEX, strJoin)); }
                         if (var.equals(NS_SRCH)) { cmds1.addElement(new DiscoCommand(RosterIcons.ICON_SEARCH_INDEX, SR.MS_SEARCH)); }
-                        if (var.equals(NS_REGS)) { cmds1.addElement(new DiscoCommand(RosterIcons.ICON_REGISTER_INDEX, SR.MS_REGISTER)); }
+                        if (var.equals(IqRegister.NS_REGS)) { cmds1.addElement(new DiscoCommand(RosterIcons.ICON_REGISTER_INDEX, SR.MS_REGISTER)); }
                         if (var.equals(NS_GATE)) { showPartialResults=true; }
                         //if (var.equals(NODE_CMDS)) { cmds.addElement(new DiscoCommand(AD_HOC_INDEX,strCmds)); }
                     }
@@ -273,26 +273,14 @@ public class ServiceDiscovery
             }
         } else if (id.startsWith ("discoreg")) {
             discoIcon=0;
-//#ifndef NEW_DISCO
             new DiscoForm( data, stream, "discoResult", "query");
-//#else
-//#             new MyDiscoForm( data, stream, "discoResult", "query");
-//#endif
         } else if (id.startsWith("discocmd")) {
             discoIcon=0;
-//#ifndef NEW_DISCO
             new DiscoForm( data, stream, "discocmd", "command");
-//#else
-//#             new MyDiscoForm( data, stream, "discocmd", "command");
-//#endif
 
         } else if (id.startsWith("discosrch")) {
             discoIcon=0;
-//#ifndef NEW_DISCO
             new DiscoForm( data, stream, "discoRSearch", "query");
-//#else
-//#             new MyDiscoForm( data, stream, "discoRSearch", "query");
-//#endif          
         } else if (id.startsWith("discoR")) {
             String text=SR.MS_DONE;
             String mb=data.getTypeAttribute();
@@ -447,7 +435,7 @@ public class ServiceDiscovery
                     requestQuery(NS_SRCH, "discosrch");
                     break;
                 case RosterIcons.ICON_REGISTER_INDEX:
-                    requestQuery(NS_REGS, "discoreg");
+                    requestQuery(IqRegister.NS_REGS, "discoreg");
                     break;
                 case RosterIcons.ICON_ROOMLIST:
                     requestQuery(NS_ITEMS, "disco2");

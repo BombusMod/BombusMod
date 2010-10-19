@@ -68,7 +68,7 @@ public class AccountForm
 //#elif HTTPPOLL        
 //#       private CheckBox pollingbox;
 //#endif
-    private CheckBox registerbox;
+    private LinkString linkRegister;
     
     private CheckBox dnsResolver;
 	
@@ -97,7 +97,7 @@ public class AccountForm
      * @param accountSelect
      * @param account
      */
-    public AccountForm(AccountSelect accountSelect, Account acc) {
+    public AccountForm(final AccountSelect accountSelect, Account acc) {
         super(null);
 	this.accountSelect = accountSelect;
         account=acc;
@@ -119,10 +119,15 @@ public class AccountForm
         nickbox = new TextInput(sd.canvas, SR.MS_NICKNAME, account.getNick(), null, TextField.ANY);//64, TextField.ANY
         itemsList.addElement(nickbox);
         
-        registerbox = new CheckBox(SR.MS_REGISTER_ACCOUNT, false); 
+        linkRegister = new LinkString(SR.MS_REGISTER_ACCOUNT) {
+
+            public void doAction() {
+                new AccountRegister(accountSelect);
+            }
+        };
         
         if (newaccount)
-            itemsList.addElement(registerbox);
+            itemsList.addElement(linkRegister);
         
         linkShowExtended = new LinkString(SR.MS_EXTENDED_SETTINGS) { public void doAction() { showExtended(); } };
         itemsList.addElement(linkShowExtended);
@@ -137,7 +142,7 @@ public class AccountForm
         itemsList.removeElement(linkSave);
         
         if (!newaccount)
-            itemsList.addElement(registerbox);
+            itemsList.addElement(linkRegister);
         
 	ipbox = new TextInput(sd.canvas, SR.MS_HOST_IP, account.getHostAddr(), null, TextField.ANY);//, 64, TextField.ANY
         portbox = new NumberInput(sd.canvas,  SR.MS_PORT, Integer.toString(account.getPort()), 0, 65535);//, 0, 65535
@@ -224,13 +229,7 @@ public class AccountForm
         account.setPassword(pass);
         account.setNick(nickbox.getValue());
         
-        boolean registerNew = false;
-        
-        if (newaccount)
-            registerNew=registerbox.getValue();
-        
         if (showExtended) {
-            registerNew=registerbox.getValue();
             account.setDnsResolver(dnsResolver.getValue());
             account.setPort(Integer.parseInt(portbox.getValue()));
             account.setHostAddr(ipbox.getValue());
@@ -266,14 +265,8 @@ public class AccountForm
         accountSelect.rmsUpdate();
         accountSelect.commandState();
 
-        doConnect=true;
-        
-        if (registerNew) {
-            AccountRegister ar = new AccountRegister(accountSelect, account);
-            new Thread(ar).start();
-        } else {
-            destroyView();
-        }        
+        doConnect=true;        
+        destroyView();
         account=null;
     }
 

@@ -36,7 +36,7 @@ public class Captcha implements JabberBlockListener, XDataForm.NotifyListener{
             if (challenge==null) return BLOCK_REJECTED;
 
             JabberDataBlock xdata = null;
-            xdata = challenge.findNamespace("x","jabber:x:data");
+            xdata = challenge.findNamespace("x", XDataForm.NS_XDATA);
 
             from=data.getAttribute("from");
             id=data.getAttribute("id");

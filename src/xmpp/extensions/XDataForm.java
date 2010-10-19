@@ -10,78 +10,71 @@
 package xmpp.extensions;
 
 import com.alsutton.jabber.JabberDataBlock;
-import java.util.*;
-import javax.microedition.lcdui.Command;
-import javax.microedition.lcdui.CommandListener;
-import javax.microedition.lcdui.Displayable;
-import javax.microedition.lcdui.Form;
+import java.util.Enumeration;
+import java.util.Vector;
 import javax.microedition.lcdui.Image;
-import javax.microedition.lcdui.ImageItem;
-import javax.microedition.lcdui.Item;
-import javax.microedition.lcdui.StringItem;
 import locale.SR;
+import ui.MainBar;
+import ui.controls.form.DefForm;
+import ui.controls.form.ImageItem;
+import ui.controls.form.MultiLine;
 import util.Strconv;
 
 /**
  *
  * @author root
  */
-public class XDataForm implements CommandListener {
-    
-    public interface NotifyListener {
-        void XDataFormSubmit(JabberDataBlock form);
+
+public class XDataForm extends DefForm {
+
+    public final static String NS_XDATA = "jabber:x:data";
+
+    public NotifyListener listener;
+
+    private Vector xDataItems;
+
+    public XDataForm(JabberDataBlock form, NotifyListener listener) {
+        super(null);
+        this.listener = listener;
+        xDataItems = new Vector();
+        parse(form);
+        for (Enumeration e = xDataItems.elements(); e.hasMoreElements();) {
+            XDataField item = (XDataField)e.nextElement();
+            if (!item.hidden)
+                itemsList.addElement(item.formItem);
+        }
     }
-    
-    private Displayable parentView;
-    private NotifyListener notifyListener;
-    
-    private Command cmdOk=new Command(SR.MS_SEND, Command.OK /*Command.SCREEN*/, 1);
-    private Command cmdCancel=new Command(SR.MS_BACK, Command.BACK, 99);
-    
-    Vector items;
-    
-    Form f;
-    /** Creates a new instance of XDataForm
-     * @param form
-     * @param notifyListener
-     */
-    public XDataForm(JabberDataBlock form, NotifyListener notifyListener) {
-        this.notifyListener=notifyListener;
-
-        String title=form.getChildBlockText("title");
-        f=new Form(title);
-
-        items=null;
-        items=new Vector();
-        
-        for (Enumeration e=form.getChildBlocks().elements(); e.hasMoreElements(); ) {
             
-            JabberDataBlock ch=(JabberDataBlock)e.nextElement();
-            
-            if (ch.getTagName().equals("instructions")) {
-                f.append(ch.getText());
-                f.append("\n");
+    final void parse(JabberDataBlock form) {
+
+        for (Enumeration e = form.getChildBlocks().elements(); e.hasMoreElements();) {
+
+            JabberDataBlock ch = (JabberDataBlock) e.nextElement();
+
+            String tagName = ch.getTagName();
+
+            if (tagName.equals("title"))
+                setMainBarItem(new MainBar(ch.getText()));
+            if (tagName.equals("instructions"))
+                itemsList.addElement(new MultiLine("Instructions", ch.getText(), sd.roster.getListWidth()));
+
+            if (!tagName.equals("field")) {
                 continue;
             }
-            
-            if (!ch.getTagName().equals("field")) continue;
-            
-            XDataField field=new XDataField(ch);
+
+            XDataField field = new XDataField(ch);
             ch = null;
-            
-            items.addElement(field);
-            
-            if (field.hidden) continue;
-            
-            if (field.media != null)
-                field.mediaIndex = f.append(field.media);
-            field.formIndex=f.append(field.formItem);
-        }
-        
-        f.setCommandListener(this);
-        f.addCommand(cmdOk);
-        f.addCommand(cmdCancel);
-        midlet.BombusMod.getInstance().setDisplayable(f);
+
+            xDataItems.addElement(field);
+
+            if (field.hidden) {
+                continue;
+            }
+
+            /*   if (field.media != null)
+            field.mediaIndex = f.append(field.media);
+            field.formIndex=f.append(field.formItem);*/
+        }        
     }
     
     public void fetchMediaElements(Vector bobCache) {
@@ -91,55 +84,57 @@ public class XDataForm implements CommandListener {
         String cid = null;
         XDataField field = null;
         JabberDataBlock data = null;
-        int formItems = items.size();
+        int formItems = xDataItems.size();
         for (int i=0; i<formItems; i++) {
-            field=(XDataField)items.elementAt(i);
+            field=(XDataField)xDataItems.elementAt(i);
             if (field.mediaUri==null) continue;
-            if (!(field.media instanceof StringItem)) continue;
+            if (!(field.media instanceof ImageItem)) continue;
 
             if (field.mediaUri.startsWith("cid:")) {
                 cid = field.mediaUri.substring(4);
                 if (bobCache==null) continue; //TODO: in-band bob request
 
                 for (int bob=0; bob<bobCache.size(); bob++) {
-                    data = null;
                     data = (JabberDataBlock) bobCache.elementAt(bob);
                     if (data.isJabberNameSpace("urn:xmpp:bob") && cid.equals(data.getAttribute("cid"))) {
-                        bytes = null;
                         bytes = Strconv.fromBase64(data.getText());
-                        img = null;
                         img = Image.createImage(bytes, 0, bytes.length);
-                        bytes = null;
-                        data = null;
-                        
-                        //workaround for SE
                         if (field.media != null) {
-                            f.delete(field.mediaIndex);
-                            f.insert(field.mediaIndex, new ImageItem(null, img, Item.LAYOUT_CENTER, null));
-                        }
-                        img = null;
+                            ((ImageItem)field.media).img = img;
+                            itemsList.addElement(field.media);
+                        }                        
                     }
                 }
             }
         }
     }
 
-    public void commandAction(Command command, Displayable displayable) {
-        if (command==cmdOk) {
-            JabberDataBlock resultForm=new JabberDataBlock("x", null, null);
-            resultForm.setNameSpace("jabber:x:data");
-            resultForm.setTypeAttribute("submit");
-            
-            for (Enumeration e = items.elements(); e.hasMoreElements();) {
-                JabberDataBlock ch = ((XDataField) e.nextElement()).constructJabberDataBlock();
-                if (ch != null) {
-                    resultForm.addChild(ch);
-                }
-                ch = null;
+    public final JabberDataBlock construct(Vector items) {
+        JabberDataBlock resultForm = new JabberDataBlock("x", null, null);
+        resultForm.setNameSpace(NS_XDATA);
+        resultForm.setTypeAttribute("submit");
+
+        for (Enumeration e = items.elements(); e.hasMoreElements();) {
+            JabberDataBlock ch = ((XDataField) e.nextElement()).constructJabberDataBlock();
+            if (ch != null) {
+                resultForm.addChild(ch);
             }
-            notifyListener.XDataFormSubmit(resultForm);
+            ch = null;
         }
-        midlet.BombusMod.getInstance().setDisplayable(parentView);
+        return resultForm;
     }
     
+    public interface NotifyListener {
+        public void XDataFormSubmit(JabberDataBlock form);
+    }
+    
+    public void cmdOk() {
+        JabberDataBlock submitForm = construct(xDataItems);
+        listener.XDataFormSubmit(submitForm);
+        destroyView();
+    }
+
+    public String touchLeftCommand() {
+        return SR.MS_SEND;
+    }
 }
