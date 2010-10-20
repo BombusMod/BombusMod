@@ -191,7 +191,7 @@ public class IQCommands implements JabberBlockListener {
                                 JabberDataBlock value=(JabberDataBlock) e2.nextElement();
                                 String roomName=value.getText();
                                 
-                                for (Enumeration c=sd.roster.getHContacts().elements(); c.hasMoreElements(); ) {
+                                for (Enumeration c=sd.roster.hContacts.elements(); c.hasMoreElements(); ) {
                                     try {
                                         Contact cl=(Contact) c.nextElement();
                                         if (cl.origin!=Contact.ORIGIN_GROUPCHAT) continue;
@@ -293,7 +293,7 @@ public class IQCommands implements JabberBlockListener {
         fieldGroupchats.addChild("value", "online");
         fieldGroupchats.addChild("required", "");
 
-        for (Enumeration c=sd.roster.getHContacts().elements(); c.hasMoreElements(); ) {
+        for (Enumeration c=sd.roster.hContacts.elements(); c.hasMoreElements(); ) {
             try {
                 MucContact mc=(MucContact)c.nextElement();
                 if (mc.origin==Contact.ORIGIN_GROUPCHAT && mc.status==0) {

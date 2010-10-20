@@ -15,7 +15,7 @@ import java.util.Vector;
 import javax.microedition.lcdui.Image;
 import locale.SR;
 import ui.MainBar;
-import ui.controls.form.DefForm;
+import ui.controls.form.ComplexForm;
 import ui.controls.form.ImageItem;
 import ui.controls.form.MultiLine;
 import util.Strconv;
@@ -25,7 +25,7 @@ import util.Strconv;
  * @author root
  */
 
-public class XDataForm extends DefForm {
+public class XDataForm extends ComplexForm {
 
     public final static String NS_XDATA = "jabber:x:data";
 

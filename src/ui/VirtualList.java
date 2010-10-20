@@ -677,7 +677,7 @@ public abstract class VirtualList {
 
         g.setClip(0,0, width, h);
 //#ifdef GRADIENT
-//#         if (getMainBarBGnd()!=getMainBarBGndBottom()) {
+//#         if (getMainBarBGnd()!=getMainBarBGndBottom() && h > 1) {
 //#             if (iHeight!=h) {
 //#                 grIB=new Gradient(0, 0, width, h, getMainBarBGnd(), getMainBarBGndBottom(), false);
 //#                 iHeight=h;
@@ -702,7 +702,7 @@ public abstract class VirtualList {
         int h=mainbar.getVHeight()+1;
         g.setClip(0,0, width, h);
 //#ifdef GRADIENT
-//#         if (getMainBarBGnd()!=getMainBarBGndBottom()) {
+//#         if (getMainBarBGnd()!=getMainBarBGndBottom() && h > 1) {
 //#             if (mHeight!=h) {
 //#                 grMB=new Gradient(0, 0, width, h, getMainBarBGndBottom(), getMainBarBGnd(), false);
 //#                 mHeight=h;

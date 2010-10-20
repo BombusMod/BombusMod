@@ -31,7 +31,6 @@ import Client.StaticData;
 //#ifdef CONSOLE
 //# import Console.StanzasList;
 //#endif
-import com.alsutton.jabber.datablocks.Presence;
 import io.Utf8IOStream;
 import java.io.*;
 import java.util.*;
@@ -189,9 +188,7 @@ public class JabberStream extends XmppParser implements Runnable {
             }
             
             //dispatcher.broadcastTerminatedConnection( null );
-        } catch( Exception e ) {
-            if (Client.StaticData.getInstance().roster != null)
-                Client.StaticData.getInstance().roster.errorLog("Exception in parser: "+ e.getMessage());
+        } catch( Exception e ) {            
             //e.printStackTrace();
             dispatcher.broadcastTerminatedConnection(e);
         }

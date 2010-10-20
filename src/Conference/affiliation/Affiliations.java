@@ -138,16 +138,14 @@ public class Affiliations
         try {
             if (data.getAttribute("id").equals(id)) {
                 JabberDataBlock query=data.findNamespace("query", namespace);
-                Vector tempItems=new Vector();
+                itemsList.removeAllElements();
                 try {
                     for (Enumeration e=query.getChildBlocks().elements(); e.hasMoreElements(); ){
-                        tempItems.addElement(new AffiliationItem((JabberDataBlock)e.nextElement()));
+                        itemsList.addElement(new AffiliationItem((JabberDataBlock)e.nextElement()));
                     }
                 } catch (Exception e) { /* no any items */}
-                sort(tempItems);
-                itemsList = tempItems;
-                tempItems=null;
-                
+                sort(itemsList);
+
                 redraw();
                 
                 processIcon(false);

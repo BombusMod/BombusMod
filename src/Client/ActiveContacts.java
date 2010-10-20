@@ -46,26 +46,24 @@ public class ActiveContacts
      * @param current
      */
     public ActiveContacts(Contact current) {
-        super(SR.MS_ACTIVE_CONTACTS);
+        super(SR.MS_ACTIVE_CONTACTS, false);
 
         enableListWrapping(true);
-        //synchronized (sd.roster.getHContacts()) {
-        for (Enumeration r = sd.roster.getHContacts().elements(); r.hasMoreElements();) {
+        for (Enumeration r = sd.roster.hContacts.elements(); r.hasMoreElements();) {
             Contact c = (Contact) r.nextElement();
             if (c.active()) {
                 itemsList.addElement(c);
             }
-        }
-        //}
+        }        
 
         if (getItemCount() == 0) {
-            destroyView();
             return;
         }
 
         MainBar mb = new MainBar(2, String.valueOf(getItemCount()), " ", false);
         mb.addElement(SR.MS_ACTIVE_CONTACTS);
         setMainBarItem(mb);
+        show();
         try {
             int focus = itemsList.indexOf(current);
             moveCursorTo(focus);

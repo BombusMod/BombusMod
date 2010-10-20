@@ -186,10 +186,10 @@ public class AccountForm
         resourcebox = new TextInput(sd.canvas, SR.MS_RESOURCE, account.getResource(), null, TextField.ANY);//64, TextField.ANY
         
 //#if HTTPCONNECT
-//# 	proxyHost = new TextInput(/*SR.MS_PROXY_HOST*/"Proxy name/IP", account.getProxyHostAddr(), null, TextField.URL);//32, TextField.URL
-//# 	proxyPort = new NumberInput( /*SR.MS_PROXY_PORT*/"Proxy port", Integer.toString(account.getProxyPort()), 0, 65535);//, 0, 65535
-//#         proxyUser = new TextInput(/*SR.MS_PROXY_HOST*/"Proxy user", account.getProxyUser(), null, TextField.URL);//32, TextField.URL
-//#         proxyPass = new TextInput(/*SR.MS_PROXY_HOST*/"Proxy pass", account.getProxyPass(), null, TextField.URL);//32, TextField.URL
+//# 	proxyHost = new TextInput(sd.canvas,/*SR.MS_PROXY_HOST*/"Proxy name/IP", account.getProxyHostAddr(), null, TextField.URL);//32, TextField.URL
+//# 	proxyPort = new NumberInput(sd.canvas, /*SR.MS_PROXY_PORT*/"Proxy port", Integer.toString(account.getProxyPort()), 0, 65535);//, 0, 65535
+//#         proxyUser = new TextInput(sd.canvas,/*SR.MS_PROXY_HOST*/"Proxy user", account.getProxyUser(), null, TextField.URL);//32, TextField.URL
+//#         proxyPass = new TextInput(sd.canvas,/*SR.MS_PROXY_HOST*/"Proxy pass", account.getProxyPass(), null, TextField.URL);//32, TextField.URL
 //#elif HTTPPOLL        
 //# 	proxyHost = new TextInput("HTTP Polling URL (http://server.tld:port)", account.getProxyHostAddr(), null, TextField.URL);//32, TextField.URL
 //#endif

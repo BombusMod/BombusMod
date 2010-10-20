@@ -78,8 +78,7 @@ public class PrivacyForm
         
         tValue=(textValue!=null)?textValue.getValue():item.value;
         
-        itemsList=null;
-        itemsList=new Vector();
+        itemsList.removeAllElements();
 
         choiceAction=new DropChoiceBox(SR.MS_PRIVACY_ACTION);
         for(int i=0; i<PrivacyItem.actions.length; i++){

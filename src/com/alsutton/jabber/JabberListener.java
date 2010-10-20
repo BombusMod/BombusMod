@@ -50,5 +50,5 @@ public interface JabberListener {
      */
     public void connectionTerminated(Exception e);
 
-    public void rosterItemNotify();
+    public void dispatcherException(Exception e, JabberDataBlock data);
 }

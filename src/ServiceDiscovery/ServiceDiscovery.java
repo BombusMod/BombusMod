@@ -323,9 +323,9 @@ public class ServiceDiscovery
         }
         
         /*if (data.getAttribute("from").equals(service)) - jid hashed in id attribute*/ //{
+            itemsList.removeAllElements();
             for (Enumeration e=cmds.elements(); e.hasMoreElements();) 
-                items.insertElementAt(e.nextElement(),0);
-            itemsList = items;
+                itemsList.insertElementAt(e.nextElement(),0);
             moveCursorHome();
             discoIcon=0; 
             mainbarUpdate(); 

@@ -117,13 +117,13 @@ public class Bookmarks
     
     
     public final void loadBookmarks() {
-        itemsList = sd.roster.bookmarks;
+        itemsList.removeAllElements();        
+        loadItemsFrom(sd.roster.bookmarks);
     }
 
     private void addBookmark() {
-        if (toAdd!=null) {
-            Vector bm=sd.roster.bookmarks;
-            bm.addElement(toAdd);
+        if (toAdd!=null) {            
+            sd.roster.bookmarks.addElement(toAdd);
             //sort(bm);
             saveBookmarks();
         }

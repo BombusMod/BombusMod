@@ -159,8 +159,8 @@ public class Roster
 
     public Object transferIcon;
     
-    public Vector hContacts;
-    private Vector vContacts;
+    public final Vector hContacts = new Vector();
+    //private Vector vContacts;
 
     public Groups groups;
     
@@ -226,9 +226,6 @@ public class Roster
         mb.addElement(null);
         mb.addElement(null); //ft
 
-        hContacts=null;
-        hContacts=new Vector();
-        
         groups=null;
         groups=new Groups();
         
@@ -400,8 +397,7 @@ public class Roster
 
     public void resetRoster() {
 	synchronized (hContacts) {
-            hContacts=null;
-	    hContacts=new Vector();
+            hContacts.removeAllElements();
 
 //#ifdef JUICK
 //#             juickContacts = null;
@@ -412,10 +408,7 @@ public class Roster
             groups=null;
 	    groups=new Groups();
             
-            vContacts=null;
-	    vContacts=new Vector(); // just for displaying
-
-	    bookmarks=null;
+            bookmarks=null;
 	}
 	myJid = new Jid(sd.account.getJid());
 	updateContact(sd.account.getNick(), myJid.getBareJid(), SR.MS_SELF_CONTACT, "self", false);
@@ -435,8 +428,7 @@ public class Roster
         messageStore(selfContact(), m);
     }
     
-    public void beginPaint() {         
-        itemsList = vContacts;
+    public void beginPaint() {                 
         updateMainBar();
     }    
     
@@ -641,8 +633,6 @@ public class Roster
     }
     
     
-    public Vector getHContacts() {return hContacts;}
-    
     public void updateContact(String nick, String jid, String grpName, String subscr, boolean ask) {
         // called only on roster read
         int status=Presence.PRESENCE_OFFLINE;
@@ -662,7 +652,7 @@ public class Roster
         
         boolean firstInstance=true; //FS#712 workaround
         int index=0;
-        synchronized (getHContacts()) {
+        synchronized (hContacts) {
             int j=hContacts.size();
             for (int i=0; i<j; i++) {
                 c=(Contact)hContacts.elementAt(i);
@@ -712,7 +702,7 @@ public class Roster
     
     private void removeTrash(){
         int index=0;
-        synchronized (getHContacts()) {
+        synchronized (hContacts) {
             int j=hContacts.size();
             while (index<j) {
                 Contact c=(Contact)hContacts.elementAt(index);
@@ -733,7 +723,7 @@ public class Roster
         } else {
             if (contact != null) {
                 // drop buggy bookmark in roster
-                synchronized (getHContacts()) {
+                synchronized (hContacts) {
                     hContacts.removeElement(contact);
                 }
             }
@@ -887,11 +877,13 @@ public class Roster
 //#endif
 
     public void addContact(Contact c) {
-        synchronized (getHContacts()) { hContacts.addElement(c); }
+        synchronized (hContacts) {
+            hContacts.addElement(c);
+        }
     }
 
     public final Contact findContact(final Jid j, final boolean compareResources) {
-        synchronized (getHContacts()) {
+        synchronized (hContacts) {
             int j2=hContacts.size();
             for (int i=0; i<j2; i++){
                 Contact c=(Contact)hContacts.elementAt(i);
@@ -1007,7 +999,7 @@ public class Roster
         
         // reconnect if disconnected
         if (myStatus!=Presence.PRESENCE_OFFLINE && theStream==null ) {
-            synchronized (getHContacts()) {
+            synchronized (hContacts) {
                 doReconnect=(hContacts.size()>1);
             }
             redraw();
@@ -2209,7 +2201,7 @@ public class Roster
             g.collapsed = false;
             reEnumerator.queueEnum(c, force);
         }
-        int index = vContacts.indexOf(c);
+        int index = itemsList.indexOf(c);
         if (index >= 0) {
             moveCursorTo(index);
         }
@@ -2227,8 +2219,9 @@ public class Roster
 //#endif
     }
 
-    public void connectionTerminated( Exception e ) {
-         if( e!=null ) {
+    public void connectionTerminated(Exception e) {
+        if (e != null) {
+            errorLog("Exception in parser: " + e.getMessage());
             askReconnect(e);
         } else {
             setProgress(SR.MS_DISCONNECTED, 0);
@@ -2239,8 +2232,12 @@ public class Roster
 //#                 e2.printStackTrace();
 //#endif
             }
-         }
+        }
         redraw();
+    }
+
+    public void dispatcherException(Exception e, JabberDataBlock dataBlock) {
+        errorLog("JabberDataBlockDispatcher exception\ndataBlock: " + dataBlock.toString());
     }
 
     private void askReconnect(final Exception e) {
@@ -2837,24 +2834,32 @@ public class Roster
          }
     }
 //#endif    
-    private int searchGroup(int direction){
-        int newpos=-1;
-	synchronized (vContacts) {
-	    int size=vContacts.size();
-	    int pos=cursor;
-	    int count=size;
-	    try {
-		while (count>0) {
-		    pos+=direction;
-		    if (pos<0) pos=size-1;
-		    if (pos>=size) pos=0;
-		    if (vContacts.elementAt(pos) instanceof Group) break;
-        }
-	    } catch (Exception e) { }
-            newpos=pos;
+   
+    private int searchGroup(int direction) {
+        int newpos = -1;
+        synchronized (itemsList) {
+            int size = itemsList.size();
+            int pos = cursor;
+            int count = size;
+            try {
+                while (count > 0) {
+                    pos += direction;
+                    if (pos < 0) {
+                        pos = size - 1;
+                    }
+                    if (pos >= size) {
+                        pos = 0;
+                    }
+                    if (itemsList.elementAt(pos) instanceof Group) {
+                        break;
+                    }
                 }
-        return newpos;
+            } catch (Exception e) {
             }
+            newpos = pos;
+        }
+        return newpos;
+    }
     
     public void searchActiveContact(int direction){
 	Vector activeContacts=new Vector();
@@ -3059,7 +3064,7 @@ public class Roster
                 int locCursor = cursor;
                 Object focused = (desiredFocus == null) ? getFocusedObject() : desiredFocus;
                 desiredFocus = null;
-                Vector tContacts = new Vector(vContacts.size());
+                //Vector tContacts = new Vector(itemsList.size());
 
                 groups.resetCounters();
 
@@ -3112,13 +3117,14 @@ public class Roster
                 Group transpGroup = groups.getGroup(Groups.TYPE_TRANSP);
                 transpGroup.visible = (cf.showTransports || transpGroup.unreadMessages > 0);
 
+                itemsList.removeAllElements();
                 // adding groups
                 for (int i = 0; i < groups.getCount(); i++) {
-                groups.addToVector(tContacts, i);
+                groups.addToVector(itemsList, i);
                 }
 
-                vContacts = tContacts;
-                tContacts = null;                
+                //vContacts = tContacts;
+                //tContacts = null;
                 StringBuffer onl = new StringBuffer().append("(").append(groups.getRosterOnline()).append("/").append(groups.getRosterContacts()).append(")");
                 setRosterMainBar(onl.toString());
                 onl = null;
@@ -3128,8 +3134,8 @@ public class Roster
                 }
 
                 if (locCursor == cursor && focused != null) {
-                    itemsList = vContacts;
-                    int c = vContacts.indexOf(focused);
+                  //  itemsList = vContacts;
+                    int c = itemsList.indexOf(focused);
                     if (c >= 0) {
                         moveCursorTo(c);
                     }

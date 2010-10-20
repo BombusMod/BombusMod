@@ -59,7 +59,7 @@ public class InviteForm
         
         itemsList.addElement(new SimpleString(contact.getName(), true));
         conferenceList=new DropChoiceBox(SR.MS_CONFERENCE);
-        for (Enumeration c=StaticData.getInstance().roster.getHContacts().elements(); c.hasMoreElements(); ) {
+        for (Enumeration c=StaticData.getInstance().roster.hContacts.elements(); c.hasMoreElements(); ) {
             try {
                 MucContact mc=(MucContact)c.nextElement();
                 if (mc.origin==Contact.ORIGIN_GROUPCHAT && mc.status==Presence.PRESENCE_ONLINE) {

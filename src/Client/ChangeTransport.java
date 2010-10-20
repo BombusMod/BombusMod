@@ -51,7 +51,7 @@ public class ChangeTransport extends DefForm {
         itemsList.addElement(instruction);
         
         tTranspList=new DropChoiceBox(SR.MS_TRANSPORT);
-        for (Enumeration e=sd.roster.getHContacts().elements(); e.hasMoreElements(); ){
+        for (Enumeration e=sd.roster.hContacts.elements(); e.hasMoreElements(); ){
             Contact ct=(Contact)e.nextElement();
             if (ct.jid.isTransport() && ct.status<Presence.PRESENCE_OFFLINE) //New transport must be online! If old transport is online and new transport is offline, contact list of guest IM account may be damaged
                 tTranspList.add(ct.bareJid);

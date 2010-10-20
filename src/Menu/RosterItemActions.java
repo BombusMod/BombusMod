@@ -150,7 +150,7 @@ public class RosterItemActions extends Menu {
                 return;
 //#ifndef WMUC
             boolean onlineConferences=false;
-            for (Enumeration cI=sd.roster.getHContacts().elements(); cI.hasMoreElements(); ) {
+            for (Enumeration cI=sd.roster.hContacts.elements(); cI.hasMoreElements(); ) {
                 try {
                     MucContact mcI=(MucContact)cI.nextElement();
                     if (mcI.origin==Contact.ORIGIN_GROUPCHAT && mcI.status==Presence.PRESENCE_ONLINE)
@@ -476,7 +476,7 @@ public class RosterItemActions extends Menu {
 
                         if (mcJ.realJid!=null) {
                             boolean onlineConferences=false;
-                            for (Enumeration cJ=sd.roster.getHContacts().elements(); cJ.hasMoreElements(); ) {
+                            for (Enumeration cJ=sd.roster.hContacts.elements(); cJ.hasMoreElements(); ) {
                                 try {
                                     MucContact mcN=(MucContact)cJ.nextElement();
                                     if (mcN.origin==Contact.ORIGIN_GROUPCHAT && mcN.status==Presence.PRESENCE_ONLINE)

@@ -29,6 +29,7 @@ package io.file.transfer;
 
 import Client.StaticData;
 import Menu.MenuCommand;
+import java.util.Vector;
 import javax.microedition.lcdui.Canvas;
 import locale.SR;
 import ui.Time;
@@ -59,7 +60,7 @@ public class TransferManager
      */
     public TransferManager() {
         super(SR.MS_TRANSFERS);        
-        itemsList = TransferDispatcher.getInstance().getTaskList();                
+        loadItemsFrom(TransferDispatcher.getInstance().getTaskList());
     }    
     
     public void commandState(){

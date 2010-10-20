@@ -237,11 +237,11 @@ public class PepListener implements JabberBlockListener {
         if (result != null) {
             m = new Msg(Msg.MESSAGE_TYPE_PRESENCE, from, type, result.toString());
         }
-        Vector hContacts=sd.roster.getHContacts(); 
-        synchronized (hContacts) {  
+        
+        synchronized (sd.roster.hContacts) {
         Jid j = new Jid(from);
         Contact c = null;        
-        for (Enumeration e=hContacts.elements();e.hasMoreElements();){ 
+        for (Enumeration e=sd.roster.hContacts.elements();e.hasMoreElements();){
             c=(Contact)e.nextElement(); 
             if (c.jid.equals(j, false)) {  
             if (hasMood) {

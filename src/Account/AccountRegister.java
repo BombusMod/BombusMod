@@ -132,8 +132,6 @@ public class AccountRegister
 
     }
     
-    public void rosterItemNotify(){}
-    
     public void connectionTerminated( Exception e ) {}       
     
 
@@ -234,5 +232,8 @@ public class AccountRegister
             }
         }
         return result;
+    }
+
+    public void dispatcherException(Exception e, JabberDataBlock data) {
     }
 }

@@ -24,7 +24,6 @@
  * along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-
 package ui.controls.form;
 
 //import Client.Config;
@@ -32,7 +31,6 @@ import java.util.Vector;
 import Menu.MenuListener;
 import Menu.MenuCommand;
 import Menu.MyMenu;
-import java.util.Enumeration;
 import locale.SR;
 import ui.MainBar;
 import ui.VirtualElement;
@@ -42,102 +40,89 @@ import ui.VirtualList;
  *
  * @author ad
  */
-public class DefForm 
+public class DefForm
         extends VirtualList
-        implements MenuListener
-    {
+        implements MenuListener {
 
-    
-    public Vector itemsList = new Vector();
-
+    public final Vector itemsList = new Vector();
     public static MenuCommand cmdOk = new MenuCommand(SR.MS_OK, MenuCommand.OK, 1);
     public static MenuCommand cmdCancel = new MenuCommand(SR.MS_BACK, MenuCommand.BACK, 99);
-   
+
     /**
      * Creates a new instance of DefForm
      * @param caption
      */
     public DefForm(String caption) {
-	this(caption, true);
+        this(caption, true);
     }
-    
+
     public DefForm(String caption, boolean show) {
         setMainBarItem(new MainBar(caption));
-        
+
         enableListWrapping(false);
-        if (show)
+        if (show) {
             show();
+        }
     }
 
     protected int getItemCount() {
-        if (getFlatList() == null)
-            return 0;
-        return getFlatList().size();
-    }
-
-    private Vector getFlatList() {
-        Object currentElement;
-
-        if (itemsList == null)
-            return null;
-        Vector flat = new Vector();
-        Vector currentGroup = new Vector();        
-        for (Enumeration e = itemsList.elements(); e.hasMoreElements();) {
-            currentElement = e.nextElement();
-            if (currentElement instanceof ItemsGroup) {
-                currentGroup = ((ItemsGroup)currentElement).getItems();
-                 for (int j = 0; j < currentGroup.size(); j++) {
-                     flat.addElement(currentGroup.elementAt(j)); // TODO: nested groups
-                 }
-            } else {
-                flat.addElement(currentElement);
-            }
-        }
-        return flat;
+        return itemsList.size();
     }
 
     protected VirtualElement getItemRef(int index) {
-        return (VirtualElement) getFlatList().elementAt(index);
+        return (VirtualElement) itemsList.elementAt(index);
     }
-    public int getIndexOf(VirtualElement element) {
-        return getFlatList().indexOf(element);
-    }
-    
-    public void touchLeftPressed(){ cmdOk(); }
 
-    public void touchRightPressed(){ cmdCancel(); }
-    
+    public void touchLeftPressed() {
+        cmdOk();
+    }
+
+    public void touchRightPressed() {
+        cmdCancel();
+    }
+
     public void menuAction(MenuCommand command, VirtualList displayable) {
-	if (command==cmdCancel) {
-	    cmdCancel();
-	}
-	if (command==cmdOk) {
+        if (command == cmdCancel) {
+            cmdCancel();
+        }
+        if (command == cmdOk) {
             cmdOk();
         }
-    }   
+    }
+
+    public final void loadItemsFrom(Vector items) {
+        int count = items.size();
+        itemsList.removeAllElements();
+        for (int i = 0; i < count; i++) {
+            itemsList.addElement(sd.roster.bookmarks.elementAt(i));
+        };
+    }
 
     public void cmdCancel() {
         destroyView();
     }
 
-    public void cmdOk() { }
-    
+    public void cmdOk() {
+    }
+
     public void commandState() {
         menuCommands.removeAllElements();
-	addMenuCommand(cmdOk);
-	addMenuCommand(cmdCancel);        
+        addMenuCommand(cmdOk);
+        addMenuCommand(cmdCancel);
     }
-    
+
     public void showMenu() {
         commandState();
-        if (menuCommands.size()==2) {
+        if (menuCommands.size() == 2) {
             if (menuCommands.elementAt(0).equals(cmdOk) && menuCommands.elementAt(1).equals(cmdCancel)) {
                 cmdOk();
                 return;
             }
         }
-        new MyMenu(this, "", null, menuCommands);        
+        new MyMenu(this, "", null, menuCommands);
     }
-    
-    public String touchLeftCommand() { return SR.MS_OK; }
+
+    public String touchLeftCommand() {
+        return SR.MS_OK;
+    }
 }

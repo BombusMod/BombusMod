@@ -62,18 +62,9 @@ public class UserKeysList extends DefForm
         
         UserKeyExec uexec = UserKeyExec.getInstance();
         uexec.init_commands_from_rms();
-        itemsList = copyVector(uexec.userKeysList);
+        loadItemsFrom(uexec.userKeysList);
         
-    }
-
-    private Vector copyVector(Vector v1) {
-        int size = v1.size();
-        Vector v2 = new Vector(size);
-        for (Enumeration e = v1.elements(); e.hasMoreElements();) {
-            v2.addElement(new UserKey((UserKey) e.nextElement()));
-        }
-        return v2;
-    }
+    }    
 
     public static Vector getDefaultKeysList() {
         Vector defKeysList = new Vector();
@@ -95,7 +86,7 @@ public class UserKeysList extends DefForm
     }
 
     private void restoreDefault() {
-        itemsList = getDefaultKeysList();
+        loadItemsFrom(getDefaultKeysList());
     }
 
     public void commandState() {
