@@ -26,12 +26,12 @@
  */
 
 package ServiceDiscovery;
-import Client.StaticData;
 import java.util.*;
-import javax.microedition.lcdui.*;
 import com.alsutton.jabber.*;
 import com.alsutton.jabber.datablocks.*;
 import locale.SR;
+import ui.controls.form.ComplexForm;
+import ui.controls.form.SimpleString;
 //import Client.*;
 
 
@@ -39,7 +39,7 @@ import locale.SR;
  *
  * @author Evg_S
  */
-public class DiscoForm implements CommandListener{
+public class DiscoForm extends ComplexForm{
     
     private Vector fields;
     private String xmlns;
@@ -54,10 +54,9 @@ public class DiscoForm implements CommandListener{
     
     private boolean xData;
     
-    private Command cmdOk=new Command(SR.MS_SEND, Command.OK /*Command.SCREEN*/, 1);
-    private Command cmdCancel=new Command(SR.MS_BACK, Command.BACK, 99);
-    
     private String id;
+
+    private boolean complete = false;
     
     //Roster roster=StaticData.getInstance().roster;
     JabberStream stream;
@@ -71,6 +70,7 @@ public class DiscoForm implements CommandListener{
      * @param childName
      */
     public DiscoForm( JabberDataBlock regform, JabberStream stream, String resultId, String childName) {
+        super(regform.getAttribute("from"));
         service=regform.getAttribute("from");
         this.childName=childName;
         JabberDataBlock query=regform.getChildBlock(childName);
@@ -82,8 +82,7 @@ public class DiscoForm implements CommandListener{
         //this.listener=listener;
         // todo: обработать ошибку query
         fields=new Vector();
-        Form form=new Form(service);
-
+        
         // for instructions
         
         Vector vFields=(xData=(x!=null))? x.getChildBlocks() : query.getChildBlocks();
@@ -108,22 +107,19 @@ public class DiscoForm implements CommandListener{
             
             for (e=fields.elements(); e.hasMoreElements(); ){
                 FormField field=(FormField) e.nextElement();
-                if (!field.hidden) form.append(field.formItem);
+                if (!field.hidden) 
+                    itemsList.addElement(field.formItem);
             }
         }
         
        
-        form.setCommandListener(this);
-        
         if (childName.equals("command")) {
             if (query.getAttribute("status").equals("completed")) {
-                form.append("Complete.");
-            } else form.addCommand(cmdOk);
-        } else form.addCommand(cmdOk);
-        form.addCommand(cmdCancel);
-        
-        this.stream=stream;
-        midlet.BombusMod.getInstance().setDisplayable(form);
+                itemsList.addElement(new SimpleString("Complete.", false));
+                complete = true;
+            } 
+        }
+        this.stream=stream;        
     }
     
     private void sendForm(String id){
@@ -162,15 +158,12 @@ public class DiscoForm implements CommandListener{
     }
 
     
-    public void commandAction(Command c, Displayable d){
-        if (c==cmdCancel) destroyView();
-        if (c==cmdOk) { 
+    public void cmdOk() {
+        if (!complete) {
             sendForm(id);
-            destroyView();
         }
+        destroyView();
     }
 
-    public void destroyView(){
-        StaticData.getInstance().roster.show();
-    }
+    public String touchLeftCommand() { return (complete) ? "" : SR.MS_SEND;}
 }

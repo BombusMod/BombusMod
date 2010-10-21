@@ -26,9 +26,16 @@
  */
 
 package ServiceDiscovery;
-import javax.microedition.lcdui.*;
+import Client.StaticData;
 import com.alsutton.jabber.*;
 import java.util.*;
+import javax.microedition.lcdui.TextField;
+import ui.controls.form.CheckBox;
+import ui.controls.form.DropChoiceBox;
+import ui.controls.form.ItemsGroup;
+import ui.controls.form.MultiLine;
+import ui.controls.form.PasswordInput;
+import ui.controls.form.TextInput;
 /**
  *
  * @author Evg_S
@@ -38,7 +45,7 @@ public class FormField {
     public String label;
     public String type;
     public String name;
-    public Item formItem;
+    public Object formItem;
     boolean hidden;
     //TODO: boolean required;
     public boolean instructions;
@@ -58,21 +65,18 @@ public class FormField {
             if (label==null) label=name;
             body=field.getChildBlockText("value");
 	    hidden= type.equals("hidden"); 
-            if (type.equals("fixed")) formItem=new StringItem(label, body); 
+            if (type.equals("fixed")) formItem=new MultiLine(label, body, StaticData.getInstance().roster.getListWidth());
             else if (type.equals("boolean")) {
-                ChoiceGroup ch=new ChoiceGroup(null,ChoiceGroup.MULTIPLE);
-                formItem=ch;
-                ch.append(label, null);
                 boolean set=false;
                 if (body.equals("1")) set=true;
                 if (body.equals("true")) set=true;
                 numericBoolean=body.length()==1;
-                ch.setSelectedIndex(0, set);
+                CheckBox ch = new CheckBox(label, set);
+                formItem = ch;
             }
             else if (type.equals("list-single")) {
-                ChoiceGroup ch=new ChoiceGroup(label, ChoiceGroup.POPUP);
-                formItem=ch;
-                
+                DropChoiceBox ch = new DropChoiceBox(label);
+                                
                 optionsList=null;
                 optionsList=new Vector();
                 for (Enumeration e=field.getChildBlocks().elements(); e.hasMoreElements();) {
@@ -82,14 +86,18 @@ public class FormField {
                         String label=option.getAttribute("label");
                         if (label==null) label=value;
                         optionsList.addElement(value);
-                        int index=ch.append(label, null);
-                        if (body.equals(value)) ch.setSelectedIndex(index, true);
+                        ch.items.addElement(label);
+                        if (body.equals(value)) {
+                            int index = ch.items.size() - 1;
+                            ((DropChoiceBox)ch).setSelectedIndex(index);
+                        }
+
                     }
                 }
-            }else if (type.equals("list-multi")) {
-                ChoiceGroup ch=new ChoiceGroup(label, ChoiceGroup.MULTIPLE);
-                formItem=ch;
-                
+                formItem = ch;
+            } else if (type.equals("list-multi")) {
+                ItemsGroup ch = new ItemsGroup(label);
+                                
                 optionsList=new Vector();
                 for (Enumeration e=field.getChildBlocks().elements(); e.hasMoreElements();) {
                     JabberDataBlock option=(JabberDataBlock)e.nextElement();
@@ -98,34 +106,36 @@ public class FormField {
                         String label=option.getAttribute("label");
                         if (label==null) label=value;
                         optionsList.addElement(value);
-                        int index=ch.append(label, null);
-                        boolean check=field.getChildBlockByText(value)!=null;
-                        if (check) ch.setSelectedIndex(index, true);
+                        boolean check = field.getChildBlockByText(value)!=null;
+                        ch.items.addElement(new CheckBox(label, check));
                     }
                 }
+                formItem = ch;
             }
 	    // text-single, text-private
             else {
-                if (body.length()>=200) {
+               /* if (body.length()>=200) {
                     body=body.substring(0,198);
+                }*/
+                if (type.equals("text-private")) { // password field
+                    formItem = new PasswordInput(StaticData.getInstance().canvas, label, body);
+                } else {
+                    formItem = new TextInput(StaticData.getInstance().canvas, label, body, "", TextField.ANY);
                 }
-                int constrains=(type.equals("text-private"))? TextField.PASSWORD: TextField.ANY;
-                formItem=new TextField(label, body, 200, constrains);
             }
         } else {
             // not x-data
             if ( instructions=name.equals("instructions") )
-                formItem=new StringItem("Instructions", body);
+                formItem=new MultiLine("Instructions", body, StaticData.getInstance().roster.getListWidth());
             else if ( name.equals("title") )
-                formItem=new StringItem(null, body);
+                formItem=new MultiLine(null, body, StaticData.getInstance().roster.getListWidth());
             else if ( name.equals("registered") ) {
-                ChoiceGroup cg=new ChoiceGroup("Registration", ChoiceGroup.MULTIPLE);
-                cg.append("Remove registration", null);
-                formItem=cg;
+                CheckBox cg=new CheckBox("Remove registration", false);
+                formItem = cg;
                 registered=true;
             }
             else
-                formItem=new TextField(label, body, 64, 0);
+                formItem=new TextInput(StaticData.getInstance().canvas, label, body, "", TextField.ANY);
         }
         
         if (name!=null)
@@ -133,46 +143,59 @@ public class FormField {
     }
     JabberDataBlock constructJabberDataBlock(){
         JabberDataBlock j=null;
-        if (formItem instanceof TextField) {
-            String value=((TextField)formItem).getString();
+        if (formItem instanceof TextInput) {
+            String value=((TextInput)formItem).getValue();
             if (type==null) {
-                j=new JabberDataBlock(null, name, value);
-            } else {
-                // x:data
-                j=new JabberDataBlock("field", null, null);
-                j.setAttribute("var", name);
-                j.setAttribute("type", type);
-                j.addChild("value", value);
-            }
+                j = new JabberDataBlock(null, name, value);
+                return j;
+            } 
         }
-        if (formItem instanceof ChoiceGroup) {
+        j = new JabberDataBlock("field", null, null);
+        j.setAttribute("var", name);
+        if (type != null) {
+            j.setAttribute("type", type);
+        }
+
+        if (formItem instanceof TextInput) {
+            String value = ((TextInput) formItem).getValue();
+
+            j.addChild("value", value);
+        }
+
+        if (formItem instanceof CheckBox) {
             if (registered) {
-                boolean unregister=((ChoiceGroup)formItem).isSelected(0);
-                if (unregister) return new JabberDataBlock("remove", null, null);
+                boolean unregister = ((CheckBox) formItem).getValue();
+                if (unregister) {
+                    return new JabberDataBlock("remove", null, null);
+                }
                 return null;
             }
-                
+
             //only x:data
-                j=new JabberDataBlock("field", null, null);
-                j.setAttribute("var", name);
-                j.setAttribute("type", type);
-                if (optionsList==null) {
-                    boolean set=((ChoiceGroup)formItem).isSelected(0);
-                    String result=String.valueOf(set);
-                    if (numericBoolean) result=set?"1":"0";
-                    j.addChild("value", result);
-                } else 
-                if (type.equals("list-multi")) {
-                    ChoiceGroup ch=(ChoiceGroup) formItem;
-                    int count=ch.size();
-                    for (int i=0; i<count; i++) {
-                        if (ch.isSelected(i))  
-                            j.addChild("value", (String)optionsList.elementAt(i));                    
-                    }
-                } else /* list-single */ {
-                    int index=((ChoiceGroup) formItem).getSelectedIndex();
-                    if (index>=0)  j.addChild("value", (String)optionsList.elementAt(index));
+            if (type.equals("boolean")) {
+                boolean set = ((CheckBox) formItem).getValue();
+                String result = String.valueOf(set);
+                if (numericBoolean) {
+                    result = set ? "1" : "0";
                 }
+
+                j.addChild("value", result);
+            }
+        } else if (type != null) {
+            if (type.equals("list-multi")) {
+                ItemsGroup ch = (ItemsGroup) formItem;
+                int count = ch.items.size();
+                for (int i = 0; i < count; i++) {
+                    if (((CheckBox) ch.items.elementAt(i)).getValue()) {
+                        j.addChild("value", (String) optionsList.elementAt(i));
+                    }
+                }
+            } else if (type.equals("list-single")) {
+                DropChoiceBox item = (DropChoiceBox) formItem;
+                int index = item.getValue();
+                j.addChild("value", (String) optionsList.elementAt(index));
+
+            }
         }
         return j;
     }

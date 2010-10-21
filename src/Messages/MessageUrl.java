@@ -34,7 +34,6 @@ import midlet.BombusMod;
 import ui.MIDPTextBox;
 import ui.MIDPTextBox.TextBoxNotify;
 import ui.controls.form.DefForm;
-import ui.controls.form.ListItem;
 import locale.SR;
 import Menu.MenuCommand;
 //#ifdef CLIPBOARD
@@ -56,7 +55,6 @@ public class MessageUrl extends DefForm implements TextBoxNotify {
 //#     protected MenuCommand cmdCopy = new MenuCommand(SR.MS_COPY, MenuCommand.SCREEN, 20);
 //#     protected MenuCommand cmdCopyPlus = new MenuCommand("+ "+SR.MS_COPY, MenuCommand.SCREEN, 30);
 //#endif
-    private Vector urlList;
     MenuCommand cmdGoto=new MenuCommand("Goto", MenuCommand.OK, 2);
     MenuCommand cmdEdit=new MenuCommand("Edit", MenuCommand.SCREEN, 3);
 
@@ -65,11 +63,9 @@ public class MessageUrl extends DefForm implements TextBoxNotify {
      */
     public MessageUrl(Vector urlList) {
 	super("URLs");
-        this.urlList = urlList;       
-
-	for (int i=0; i<urlList.size(); i++) { // throws exception
-	    itemsList.addElement(new ListItem((String)urlList.elementAt(i)));
-	}        
+    
+	loadItemsFrom(urlList);
+        enableListWrapping(true);
 
     }
     
@@ -82,18 +78,18 @@ public class MessageUrl extends DefForm implements TextBoxNotify {
         }
 //#ifdef CLIPBOARD
 //#         if (c == cmdCopy) {
-//#             clipboard.set(new Msg(Msg.MESSAGE_TYPE_IN, "url", null, (String) urlList.elementAt(cursor)));
+//#             clipboard.set(new Msg(Msg.MESSAGE_TYPE_IN, "url", null, (String) itemsList.elementAt(cursor)));
 //#         }
 //# 
 //#         if (c == cmdCopyPlus) {
-//#             clipboard.append(new Msg(Msg.MESSAGE_TYPE_IN, "url", null, (String) urlList.elementAt(cursor)));
+//#             clipboard.append(new Msg(Msg.MESSAGE_TYPE_IN, "url", null, (String) itemsList.elementAt(cursor)));
 //#         }
 //#endif
     }
     
     public void eventOk() {
         try {
-            BombusMod.getInstance().platformRequest((String)urlList.elementAt(cursor));
+            BombusMod.getInstance().platformRequest((String)itemsList.elementAt(cursor));
         } catch (ConnectionNotFoundException ex) {
 //#ifdef DEBUG            
 //#             ex.printStackTrace();
@@ -110,7 +106,7 @@ public class MessageUrl extends DefForm implements TextBoxNotify {
 
 	}
     private void EditURL() {
-        new MIDPTextBox("Edit URL", (String)urlList.elementAt(cursor), this, TextField.ANY);
+        new MIDPTextBox("Edit URL", (String)itemsList.elementAt(cursor), this, TextField.ANY);
     }
 
     public void OkNotify(String text_return) {

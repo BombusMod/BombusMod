@@ -115,11 +115,12 @@ public class XDataField {
                     }                    
                     boolean set = body.equals(opValue);
                     if (formItem instanceof ItemsGroup) {
-                        optionsList.addElement(opLabel);
-                        ((ItemsGroup)formItem).items.addElement(new CheckBox(opValue, set));
+                        optionsList.addElement(opValue);
+                        ((ItemsGroup)formItem).items.addElement(new CheckBox(opLabel, set));
                     }
                     if (formItem instanceof DropChoiceBox) {
-                        ((DropChoiceBox)formItem).items.addElement(opValue);
+                        optionsList.addElement(opValue);
+                        ((DropChoiceBox)formItem).items.addElement(opLabel);
                         if (set) {
                             int index = ((DropChoiceBox)formItem).items.size() - 1;
                             ((DropChoiceBox)formItem).setSelectedIndex(index);
@@ -217,7 +218,7 @@ public class XDataField {
             } else if (type.equals("list-single")) {
                 DropChoiceBox item = (DropChoiceBox) formItem;
                 int index = item.getValue();
-                j.addChild("value", (String) item.items.elementAt(index));
+                j.addChild("value", (String) optionsList.elementAt(index));
 
             }
         }
