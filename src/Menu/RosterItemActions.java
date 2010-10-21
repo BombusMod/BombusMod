@@ -98,7 +98,7 @@ public class RosterItemActions extends Menu {
 
 	if (isContact) {
 	    Contact contact=(Contact)item;
-	    if (contact.getGroupType()==Groups.TYPE_TRANSP) {
+	    if (contact.jid.isTransport()) {
 		addItem(SR.MS_LOGON,5, ActionsIcons.ICON_ON);
 		addItem(SR.MS_LOGOFF,6, ActionsIcons.ICON_OFF);
                 addItem(SR.MS_RESOLVE_NICKNAMES, 7, ActionsIcons.ICON_NICK_RESOLVE);
@@ -138,7 +138,7 @@ public class RosterItemActions extends Menu {
                 } else {
                     addItem(SR.MS_SEEN,894, ActionsIcons.ICON_ONLINE);
                 }
-                if (contact.getGroupType()!=Groups.TYPE_TRANSP) {
+                if (!contact.jid.isTransport()) {
                     addItem(SR.MS_EDIT,2, ActionsIcons.ICON_RENAME);
                 }
 		addItem(SR.MS_SUBSCRIPTION,3, ActionsIcons.ICON_SUBSCR);
@@ -238,7 +238,7 @@ public class RosterItemActions extends Menu {
             }
 //#endif
 //#if (FILE_IO && FILE_TRANSFER)
-            if (contact.getGroupType()!=Groups.TYPE_TRANSP && cf.fileTransfer)
+            if (!contact.jid.isTransport() && cf.fileTransfer)
                 if (contact!=sd.roster.selfContact()) {
 //#ifdef PLUGINS
 //#                     if (sd.FileTransfer)
@@ -248,7 +248,7 @@ public class RosterItemActions extends Menu {
 
 //#endif
 //#if FILE_TRANSFER
-            if (contact.getGroupType()!=Groups.TYPE_TRANSP && cf.fileTransfer) {
+            if (!contact.jid.isTransport() && cf.fileTransfer) {
                 if (contact!=sd.roster.selfContact()) {
                     String cameraAvailable=System.getProperty("supports.video.capture");
                     if (cameraAvailable!=null) if (cameraAvailable.startsWith("true")) {

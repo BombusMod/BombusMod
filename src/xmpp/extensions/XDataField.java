@@ -115,11 +115,11 @@ public class XDataField {
                     }                    
                     boolean set = body.equals(opValue);
                     if (formItem instanceof ItemsGroup) {
-                        optionsList.addElement(opValue);
-                        ((ItemsGroup)formItem).items.addElement(new CheckBox(opLabel, set));
+                        optionsList.addElement(opLabel);
+                        ((ItemsGroup)formItem).items.addElement(new CheckBox(opValue, set));
                     }
                     if (formItem instanceof DropChoiceBox) {
-                        ((DropChoiceBox)formItem).items.addElement(opLabel);
+                        ((DropChoiceBox)formItem).items.addElement(opValue);
                         if (set) {
                             int index = ((DropChoiceBox)formItem).items.size() - 1;
                             ((DropChoiceBox)formItem).setSelectedIndex(index);

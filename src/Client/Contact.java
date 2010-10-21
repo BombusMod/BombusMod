@@ -370,7 +370,7 @@ public class Contact extends IconTextElement{
 //#     if(cf.saveHistory)
 //#endif
 //#         if (!m.history) {
-//#             if (!cf.msgPath.equals("") && group.type!=Groups.TYPE_TRANSP && group.type!=Groups.TYPE_SEARCH_RESULT) {
+//#             if (!cf.msgPath.equals("") && !jid.isTransport() && group.type!=Groups.TYPE_SEARCH_RESULT) {
 //#                 boolean allowLog=false;
 //#                 switch (m.messageType) {
 //#                     case Msg.MESSAGE_TYPE_PRESENCE:

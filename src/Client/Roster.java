@@ -65,8 +65,6 @@ import PrivacyLists.QuickPrivacy;
 import io.file.transfer.TransferDispatcher;
 //#endif
 
-import javax.microedition.lcdui.Displayable;
-
 import locale.SR;
 
 import login.LoginListener;
@@ -740,7 +738,7 @@ public class Roster
 //#             autoAway=false;
 //#             autoXa=false;
 //#             myStatus=oldStatus;
-//# 
+//#
 //#             messageActivity();
 //#         }
 //#endif
@@ -1316,7 +1314,7 @@ public class Roster
 //#             autostatus=new AutoStatusTask();
 //#             new Thread(autostatus).start();
 //#         }
-//# 
+//#
 //#         if (myStatus<2)
 //#             messageActivity();
 //#endif
@@ -1759,7 +1757,7 @@ public class Roster
 //#                     if (sd.ClientsIcons)
 //#endif
                         if (cf.showClientIcon) {
-                            if (pr.hasEntityCaps()) {                                
+                            if (pr.hasEntityCaps()) {
                                 getClientIcon(c, pr.getEntityNode());
                                 String presenceVer = pr.getEntityVer();
                                 if (presenceVer != null)
@@ -1905,7 +1903,7 @@ public class Roster
 //#                         else if (ti==Presence.PRESENCE_ONLINE)
 //#                             setTicker(c, SR.MS_ONLINE);
 //#endif
-                        if ((ti==Presence.PRESENCE_ONLINE || ti==Presence.PRESENCE_CHAT || ti==Presence.PRESENCE_OFFLINE) && (c.getGroupType()!=Groups.TYPE_TRANSP) && (c.getGroupType()!=Groups.TYPE_IGNORE)) 
+                        if ((ti==Presence.PRESENCE_ONLINE || ti==Presence.PRESENCE_CHAT || ti==Presence.PRESENCE_OFFLINE) && (!c.jid.isTransport()) && (c.getGroupType()!=Groups.TYPE_IGNORE))
                             playNotify(ti);
                     }
 
@@ -2381,14 +2379,14 @@ public class Roster
 //#                     } catch (Exception ex) {}
 //#                     sd.canvas.show(this);
 //#                     keyLock();
-//#                 }                
+//#                 }
 //#                 break;
 //#             case SIEMENS_FLIPCLOSE:
 //#                 if (cf.phoneManufacturer == Config.SIEMENS) // verify platform because SIEMENS_FLIPCLOSE maybe MOTOROLA_FLIP
 //#                     keyLock();
-//#                 break;              
+//#                 break;
 //#             case MOTOROLA_FLIP:
-//#                 if (cf.phoneManufacturer == Config.MOTO) 
+//#                 if (cf.phoneManufacturer == Config.MOTO)
 //#                     keyLock();
 //#                 break;
 //#endif
@@ -2464,10 +2462,10 @@ public class Roster
      }
 //#ifdef AUTOSTATUS
 //#     private void keyLock() {
-//#         if (cf.autoAwayType==Config.AWAY_LOCK) 
-//#             if (!autoAway) 
+//#         if (cf.autoAwayType==Config.AWAY_LOCK)
+//#             if (!autoAway)
 //#                 autostatus.setTimeEvent(cf.autoAwayDelay* 60*1000);
-//#     } 
+//#     }
 //#endif    
     protected void keyRepeated(int keyCode) {
         super.keyRepeated(keyCode);
@@ -2543,7 +2541,7 @@ public class Roster
 //#ifdef AUTOSTATUS
 //#     private void userActivity() {
 //#         if (autostatus==null) return;
-//# 
+//#
 //#         if (cf.autoAwayType==Config.AWAY_IDLE) {
 //#             if (!autoAway) {
 //#                 autostatus.setTimeEvent(cf.autoAwayDelay* 60*1000);
@@ -2555,10 +2553,10 @@ public class Roster
 //#         autostatus.setTimeEvent(0);
 //#         setAutoStatus(Presence.PRESENCE_ONLINE);
 //#     }
-//# 
+//#
 //#     public final void messageActivity() {
 //#         if (autostatus==null) return;
-//# 
+//#
 //#         if (cf.autoAwayType==Config.AWAY_MESSAGE) {
 //#              //System.out.println("messageActivity "+myStatus.getImageIndex());
 //#              if (myStatus<2)
@@ -2633,7 +2631,7 @@ public class Roster
 //#                     mess.append("\n").append(SR.MS_USERLOCATION).append(": ").append(cntact.location);
 //#                 }
 //#endif
-//# 
+//#
 //#ifdef PEP_TUNE
 //#                 if (cntact.pepTune) {
 //#                     mess.append("\n").append(SR.MS_USERTUNE);
@@ -2958,7 +2956,7 @@ public class Roster
 //#             }
 //#         }
 //#     }
-//# 
+//#
 //#     public void setAutoXa() {
 //#         if (autoAway && !autoXa) {
 //#             autoXa=true;
@@ -2969,7 +2967,7 @@ public class Roster
 //#             }
 //#         }
 //#     }
-//# 
+//#
 //#     public void setAutoStatus(int status) {
 //#         if (!isLoggedIn())
 //#             return;
@@ -3064,7 +3062,7 @@ public class Roster
                 int locCursor = cursor;
                 Object focused = (desiredFocus == null) ? getFocusedObject() : desiredFocus;
                 desiredFocus = null;
-                //Vector tContacts = new Vector(itemsList.size());
+                Vector tContacts = new Vector(itemsList.size());
 
                 groups.resetCounters();
 
@@ -3116,12 +3114,13 @@ public class Roster
                 // transports
                 Group transpGroup = groups.getGroup(Groups.TYPE_TRANSP);
                 transpGroup.visible = (cf.showTransports || transpGroup.unreadMessages > 0);
-
-                itemsList.removeAllElements();
+                
                 // adding groups
                 for (int i = 0; i < groups.getCount(); i++) {
-                groups.addToVector(itemsList, i);
+                    groups.addToVector(tContacts, i);
                 }
+
+                loadItemsFrom(tContacts);
 
                 //vContacts = tContacts;
                 //tContacts = null;
