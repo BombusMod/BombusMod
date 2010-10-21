@@ -94,8 +94,8 @@ public class DefForm
         int count = items.size();
         itemsList.removeAllElements();
         for (int i = 0; i < count; i++) {
-            itemsList.addElement(sd.roster.bookmarks.elementAt(i));
-        };
+            itemsList.addElement(items.elementAt(i));
+        }
     }
 
     public void cmdCancel() {
