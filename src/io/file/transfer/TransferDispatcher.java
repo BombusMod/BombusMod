@@ -34,7 +34,6 @@ import com.alsutton.jabber.datablocks.Iq;
 import java.util.Enumeration;
 import java.util.Vector;
 import com.alsutton.jabber.datablocks.Message;
-import ui.VirtualCanvas;
 import util.Strconv;
 import xmpp.extensions.XDataField;
 

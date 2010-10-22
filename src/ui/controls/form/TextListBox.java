@@ -52,6 +52,7 @@ public class TextListBox
         this.ti=ti;
         SimpleString item = null;
         setMainBarItem(new MainBar(SR.MS_SELECT));
+        enableListWrapping(true);
         for (Enumeration e = ti.recentList.elements(); e.hasMoreElements();) {
             item = new SimpleString((String)e.nextElement(), false);
             item.selectable = true;

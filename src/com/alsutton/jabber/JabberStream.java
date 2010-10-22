@@ -31,6 +31,7 @@ import Client.StaticData;
 //#ifdef CONSOLE
 //# import Console.StanzasList;
 //#endif
+import com.alsutton.jabber.datablocks.Iq;
 import io.Utf8IOStream;
 import java.io.*;
 import java.util.*;
@@ -62,6 +63,8 @@ public class JabberStream extends XmppParser implements Runnable {
     private boolean xmppV1;
     
     private String sessionId;
+
+    public Vector outgoingQueries = new Vector();
     
     /**
      * Constructor. Connects to the server and sends the jabber welcome message.
@@ -273,6 +276,11 @@ public class JabberStream extends XmppParser implements Runnable {
      */
     
     public void send( JabberDataBlock block )  {
+        if (block instanceof Iq) {
+            String type = block.getTypeAttribute();
+            if (type.equals("set") || type.equals("get"))
+                outgoingQueries.addElement(block.getAttribute("id"));
+        }
         try {
             StringBuffer buf = new StringBuffer();
             block.constructXML(buf);

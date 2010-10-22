@@ -410,7 +410,7 @@ public class TransferTask
                 };
                 SHA1 Command = new SHA1();
                 Command.init();
-                Command.updateASCII(sid + StaticData.getInstance().account.getJid() + jid);
+                Command.updateASCII(sid + StaticData.getInstance().account.getJid().toLowerCase() + jid.toLowerCase());
                 Command.finish();
 
                 byte[] socks5CommandHost = Command.getDigestHex().getBytes();

@@ -86,6 +86,7 @@ public class MessageItem
     public void drawItem(Graphics g, int ofs, boolean selected) {
         int xorg=g.getTranslateX();
         int yorg=g.getTranslateY();
+        int iconOffset = 0;
         g.translate(2,0);
         if (msgLines==null) {
             MessageParser.getInstance().parseMsg(this, view.getListWidth());
@@ -102,8 +103,9 @@ public class MessageItem
                 if (msg.itemCollapsed) if (msgLines.size()>1) {
                     RosterIcons.getInstance().drawImage(g, RosterIcons.ICON_MSGCOLLAPSED_INDEX, 0,0);
                     g.translate(8,0);
+                    iconOffset = 2 + RosterIcons.getInstance().getWidth() >> 1;
                 }
-                line.drawItem(g, 0, selected);
+                line.drawItem(g, iconOffset, selected);
             }
             g.translate(0, h);
             if (msg.itemCollapsed) break;

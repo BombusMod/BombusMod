@@ -59,6 +59,7 @@ public class UserKeysList extends DefForm
 //#ifdef USER_KEYS
 //#         setMainBarItem(new MainBar(SR.MS_CUSTOM_KEYS));
 //#endif
+        enableListWrapping(true);
         
         UserKeyExec uexec = UserKeyExec.getInstance();
         uexec.init_commands_from_rms();

@@ -128,14 +128,23 @@ public class JabberDataBlockDispatcher implements Runnable {
                 }
             }
             if (dataBlock != null) {
-                if (dataBlock instanceof Iq) {
-                    // verify id attribute
-                    if (dataBlock.getAttribute("id") == null) {
-                        dataBlock.setAttribute("id", "666");
-                    }
-                }
-
                 try {
+                    if (dataBlock instanceof Iq) {
+                        // verify id attribute
+                        if (dataBlock.getAttribute("id") == null) {
+                            dataBlock.setAttribute("id", "666");
+                        }
+                        // verify is it our query
+                        if (dataBlock.getTypeAttribute().equals("result")) {
+                            String id = dataBlock.getAttribute("id");
+                            if (stream.outgoingQueries.indexOf(id) >= 0) {
+                                stream.outgoingQueries.removeElement(id);
+                            } else {
+                                throw new Exception("Bad IQ result");
+                            }
+                        }
+                    }
+
                     int processResult = JabberBlockListener.BLOCK_REJECTED;
                     synchronized (blockListeners) {
                         int i = 0;
