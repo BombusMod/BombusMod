@@ -62,7 +62,7 @@ public class StanzasList {
     public void add(String msg, int type) {
 	try {
             if (enabled) {
-                Msg stanza=new Msg(type, "local", null, msg.toString());
+                Msg stanza=new Msg(type, "local", null, msg);
                 stanza.itemCollapsed=true;
                 stanzas.addElement(stanza);
             }

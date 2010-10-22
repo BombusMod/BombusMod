@@ -87,6 +87,7 @@ import com.alsutton.jabber.*;
 import com.alsutton.jabber.datablocks.*;
 import java.util.*;
 import javax.microedition.lcdui.Canvas;
+
 import ui.*;
 //#ifdef POPUPS
 import ui.controls.PopUp;
@@ -109,6 +110,9 @@ import xmpp.extensions.IqVersionReply;
 import xmpp.extensions.IqTimeReply;
 //#ifdef ADHOC
 //# import xmpp.extensions.IQCommands;
+//#endif
+//#ifdef AUTOSTATUS
+//# import javax.microedition.lcdui.Displayable;
 //#endif
 
 //#ifdef PEP
@@ -738,7 +742,7 @@ public class Roster
 //#             autoAway=false;
 //#             autoXa=false;
 //#             myStatus=oldStatus;
-//#
+//# 
 //#             messageActivity();
 //#         }
 //#endif
@@ -1314,7 +1318,7 @@ public class Roster
 //#             autostatus=new AutoStatusTask();
 //#             new Thread(autostatus).start();
 //#         }
-//#
+//# 
 //#         if (myStatus<2)
 //#             messageActivity();
 //#endif
@@ -2541,7 +2545,7 @@ public class Roster
 //#ifdef AUTOSTATUS
 //#     private void userActivity() {
 //#         if (autostatus==null) return;
-//#
+//# 
 //#         if (cf.autoAwayType==Config.AWAY_IDLE) {
 //#             if (!autoAway) {
 //#                 autostatus.setTimeEvent(cf.autoAwayDelay* 60*1000);
@@ -2553,10 +2557,10 @@ public class Roster
 //#         autostatus.setTimeEvent(0);
 //#         setAutoStatus(Presence.PRESENCE_ONLINE);
 //#     }
-//#
+//# 
 //#     public final void messageActivity() {
 //#         if (autostatus==null) return;
-//#
+//# 
 //#         if (cf.autoAwayType==Config.AWAY_MESSAGE) {
 //#              //System.out.println("messageActivity "+myStatus.getImageIndex());
 //#              if (myStatus<2)
@@ -2631,7 +2635,7 @@ public class Roster
 //#                     mess.append("\n").append(SR.MS_USERLOCATION).append(": ").append(cntact.location);
 //#                 }
 //#endif
-//#
+//# 
 //#ifdef PEP_TUNE
 //#                 if (cntact.pepTune) {
 //#                     mess.append("\n").append(SR.MS_USERTUNE);
@@ -2956,7 +2960,7 @@ public class Roster
 //#             }
 //#         }
 //#     }
-//#
+//# 
 //#     public void setAutoXa() {
 //#         if (autoAway && !autoXa) {
 //#             autoXa=true;
@@ -2967,7 +2971,7 @@ public class Roster
 //#             }
 //#         }
 //#     }
-//#
+//# 
 //#     public void setAutoStatus(int status) {
 //#         if (!isLoggedIn())
 //#             return;

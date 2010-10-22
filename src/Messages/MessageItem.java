@@ -38,6 +38,7 @@ import ui.ComplexString;
 import Fonts.FontCache;
 import ui.VirtualElement;
 import ui.VirtualList;
+import ui.controls.form.ListItem;
 
 public class MessageItem
     implements VirtualElement, MessageParser.MessageParserNotify {
@@ -172,7 +173,7 @@ public class MessageItem
                         break;
                     pos++;
                 }
-                urlList.addElement(text.substring(head, pos));
+                urlList.addElement(new ListItem(text.substring(head, pos)));
                 
             } else break;
         }

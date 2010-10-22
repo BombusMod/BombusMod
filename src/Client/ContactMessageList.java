@@ -133,8 +133,6 @@ public class ContactMessageList extends MessageList {
 
         cursor=0;//activate
         on_end = false;
-        commandState();        
-        
         contact.setIncoming(0);
 //#ifdef FILE_TRANSFER
         contact.fileQuery=false;
@@ -197,18 +195,9 @@ public class ContactMessageList extends MessageList {
             addMenuCommand(cmdQuote);
             addMenuCommand(cmdPurge);
             
-            if (!startSelection) addMenuCommand(cmdSelect);
-        
-//#ifdef CLIPBOARD
-//#             if (cf.useClipBoard) {
-//#                 addMenuCommand(cmdCopy);
-//#                 if (!clipboard.isEmpty()) addMenuCommand(cmdCopyPlus);
-//#             }
-//#endif
-            if (isHasScheme())
-                addMenuCommand(cmdxmlSkin);
-            if (isHasUrl())
-                addMenuCommand(cmdUrl);
+            if (!startSelection) 
+                addMenuCommand(cmdSelect);
+            super.commandState();
         }
         
         if (contact.origin!=Contact.ORIGIN_GROUPCHAT)
@@ -301,7 +290,7 @@ public class ContactMessageList extends MessageList {
     }
     
 //#ifdef LOGROTATE 
-//#     public void show() {
+//#     public final void show() {
 //#         getRedraw(true);
 //#         super.show();
 //#     }
@@ -350,6 +339,7 @@ public class ContactMessageList extends MessageList {
     }
     
     public void menuAction(MenuCommand c, VirtualList d){
+        commandState();
         super.menuAction(c,d);
 		
         /** login-insensitive commands */
@@ -958,29 +948,7 @@ public class ContactMessageList extends MessageList {
          commandState();
          super.showMenu();
     }
-
-    public boolean isHasScheme() {
-        if (contact.msgs.size()<1) {
-            return false;
-        }
-        String body=((Msg) contact.msgs.elementAt(cursor)).body;
-
-        if (body.indexOf("xmlSkin")>-1) return true;
-        return false;
-    }
-
-    public boolean isHasUrl() {
-        if (contact.msgs.size()<1) {
-            return false;
-        }
-        String body=((Msg) contact.msgs.elementAt(cursor)).body;
-        if (body.indexOf("http://")>-1) return true;
-        if (body.indexOf("https://")>-1) return true;
-        if (body.indexOf("ftp://")>-1) return true;
-        if (body.indexOf("tel:")>-1) return true;
-        if (body.indexOf("native:")>-1) return true;
-        return false;
-    }
+    
 
     public String touchLeftCommand(){ return (Config.getInstance().oldSE)?((contact.msgSuspended!=null)?SR.MS_RESUME:SR.MS_NEW):SR.MS_MENU; }
     public String touchRightCommand(){ return (Config.getInstance().oldSE)?SR.MS_MENU:SR.MS_BACK; }

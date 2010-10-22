@@ -27,16 +27,12 @@
 
 package Console;
 
-import Client.Config;
 import Client.Msg;
 import Messages.MessageList;
 import java.util.Vector;
 import Menu.MenuCommand;
 import locale.SR;
-//#ifdef CLIPBOARD   
-//# import ui.VirtualList;
-//# import util.ClipBoard;
-//#endif
+import ui.VirtualList;
 //#ifdef CONSOLE 
 //# import ui.MainBar;
 //#endif
@@ -56,11 +52,8 @@ public final class XMLList
     private MenuCommand cmdNew=new MenuCommand(SR.MS_NEW, MenuCommand.SCREEN, 5);
     private MenuCommand cmdEnableDisable=new MenuCommand(SR.MS_ENABLE_DISABLE, MenuCommand.SCREEN, 6);
     private MenuCommand cmdPurge=new MenuCommand(SR.MS_CLEAR_LIST, MenuCommand.SCREEN, 10);
-    
-//#ifdef CLIPBOARD    
-//#     private ClipBoard clipboard=ClipBoard.getInstance();
-//#endif
-    
+   
+   
     /** Creates a new instance of XMLList
      */
     public XMLList() {
@@ -81,14 +74,9 @@ public final class XMLList
         menuCommands.removeAllElements();
 	addMenuCommand(cmdBack);
         addMenuCommand(cmdNew);
-//#ifdef CLIPBOARD
-//#             if (Config.getInstance().useClipBoard) {
-//#                 addMenuCommand(cmdCopy);
-//#                 if (!clipboard.isEmpty()) addMenuCommand(cmdCopyPlus);
-//#             }
-//#endif
         addMenuCommand(cmdEnableDisable);
         addMenuCommand(cmdPurge);
+        super.commandState();
     }
     
     protected void beginPaint() {
@@ -165,9 +153,5 @@ public final class XMLList
     public void userKeyPressed(int keyCode) {
         if (keyCode=='0')
             clearReadedMessageList();
-    }
-    
-    public void destroyView(){
-	super.destroyView();
     }
 }

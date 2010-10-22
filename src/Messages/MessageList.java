@@ -29,7 +29,6 @@ package Messages;
 
 import Client.Config;
 import Client.Msg;
-import Client.StaticData;
 import Colors.ColorTheme;
 import java.util.Vector;
 import Menu.MenuListener;
@@ -64,8 +63,7 @@ public abstract class MessageList extends VirtualList
     public MessageList() {
         super();
         messages = new Vector();
-        menuCommands.removeAllElements();
-        cf=Config.getInstance();
+        cf = Config.getInstance();
         
 //#ifdef SMILES
         smiles=cf.smiles;
@@ -132,7 +130,9 @@ public abstract class MessageList extends VirtualList
     }
 
    public void showMenu() {
-        commandState();
+       commandState();
+       if (menuCommands.isEmpty())
+           return;
         String capt="";
         try {
             capt=getMainBarItem().elementAt(0).toString();
@@ -140,16 +140,56 @@ public abstract class MessageList extends VirtualList
         new MyMenu( this, capt, null, menuCommands);
    }
 
-    public void commandState() { 
-        menuCommands.removeAllElements();
+    public void commandState() {         
 //#ifdef CLIPBOARD
 //#         if (cf.useClipBoard) {
 //#             addMenuCommand(cmdCopy);
-//#             addMenuCommand(cmdCopyPlus);
+//#             if (!clipboard.isEmpty())
+//#                 addMenuCommand(cmdCopyPlus);
 //#         }
 //#endif
-        addMenuCommand(cmdxmlSkin);
-        addMenuCommand(cmdUrl);
-        addMenuCommand(cmdBack);        
+        if (isHasScheme())
+            addMenuCommand(cmdxmlSkin);
+        if (isHasUrl())
+            addMenuCommand(cmdUrl);
+    }
+
+    public boolean isHasScheme() {
+        if (getItemCount() < 1) {
+            return false;
+        }
+        String body = ((MessageItem) getFocusedObject()).msg.body;
+
+        if (body.indexOf("xmlSkin") > -1) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isHasUrl() {
+        if (getItemCount() < 1) {
+            return false;
+        }
+        String body = ((MessageItem) getFocusedObject()).msg.body;
+        if (body.indexOf("http://") > -1) {
+            return true;
+        }
+        if (body.indexOf("https://") > -1) {
+            return true;
+        }
+        if (body.indexOf("ftp://") > -1) {
+            return true;
+        }
+        if (body.indexOf("tel:") > -1) {
+            return true;
+        }
+        if (body.indexOf("native:") > -1) {
+            return true;
+        }
+        return false;
+    }
+
+    public void touchLeftPressed() {
+        showMenu();
     }
 }

@@ -84,8 +84,8 @@ public class ArchiveList
     }
 
     public final void commandState() {
-        super.commandState();
         
+        menuCommands.removeAllElements();
         if (getItemCount()>0) {
             if (t!=null) {
                 addMenuCommand(cmdPaste);
@@ -98,6 +98,7 @@ public class ArchiveList
             addMenuCommand(cmdDeleteAll);
         }
         addMenuCommand(cmdNew);
+        super.commandState();
     }
 
     protected void beginPaint() {

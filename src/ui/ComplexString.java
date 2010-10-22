@@ -26,8 +26,6 @@
  */
 
 package ui;
-import Client.Config;
-import Client.StaticData;
 import Fonts.FontCache;
 import images.AniImageList;
 import java.util.*;
@@ -91,8 +89,7 @@ public class ComplexString extends Vector implements VirtualElement {
     
     public void drawItem(Graphics g, int offset, boolean selected){
         boolean ralign=false;
-        boolean calign=false;
-	boolean underline=false;
+        boolean underline=false;
         
 //#if NICK_COLORS
 	boolean nick=false;

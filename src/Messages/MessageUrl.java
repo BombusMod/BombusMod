@@ -42,6 +42,7 @@ import Menu.MenuCommand;
 //#endif
 import javax.microedition.lcdui.Canvas;
 import ui.VirtualList;
+import ui.controls.form.ListItem;
 
 /**
  *
@@ -68,7 +69,7 @@ public class MessageUrl extends DefForm implements TextBoxNotify {
         enableListWrapping(true);
 
     }
-    
+
     public void menuAction(MenuCommand c, VirtualList d) {
         super.menuAction(c, d);
         if (c == cmdGoto) {
@@ -78,18 +79,18 @@ public class MessageUrl extends DefForm implements TextBoxNotify {
         }
 //#ifdef CLIPBOARD
 //#         if (c == cmdCopy) {
-//#             clipboard.set(new Msg(Msg.MESSAGE_TYPE_IN, "url", null, (String) itemsList.elementAt(cursor)));
+//#             clipboard.set(new Msg(Msg.MESSAGE_TYPE_IN, "url", null, itemsList.elementAt(cursor).toString()));
 //#         }
 //# 
 //#         if (c == cmdCopyPlus) {
-//#             clipboard.append(new Msg(Msg.MESSAGE_TYPE_IN, "url", null, (String) itemsList.elementAt(cursor)));
+//#             clipboard.append(new Msg(Msg.MESSAGE_TYPE_IN, "url", null, itemsList.elementAt(cursor).toString()));
 //#         }
 //#endif
     }
     
     public void eventOk() {
         try {
-            BombusMod.getInstance().platformRequest((String)itemsList.elementAt(cursor));
+            BombusMod.getInstance().platformRequest(itemsList.elementAt(cursor).toString());
         } catch (ConnectionNotFoundException ex) {
 //#ifdef DEBUG            
 //#             ex.printStackTrace();
@@ -106,20 +107,17 @@ public class MessageUrl extends DefForm implements TextBoxNotify {
 
 	}
     private void EditURL() {
-        new MIDPTextBox("Edit URL", (String)itemsList.elementAt(cursor), this, TextField.ANY);
+        new MIDPTextBox("Edit URL", itemsList.elementAt(cursor).toString(), this, TextField.ANY);
     }
 
     public void OkNotify(String text_return) {
-        // ((ListItem)itemsList.elementAt(cursor)) = text_return; TODO: return edited url
-        destroyView();        
+        itemsList.setElementAt(new ListItem(text_return), cursor);               
     }
     
      public void commandState() {
          menuCommands.removeAllElements();
-         addMenuCommand(cmdOk);
          addMenuCommand(cmdGoto);
          addMenuCommand(cmdEdit);
-         addMenuCommand(cmdCancel);
          //#ifdef CLIPBOARD
 //#          if (cf.useClipBoard) {
 //#              addMenuCommand(cmdCopy);

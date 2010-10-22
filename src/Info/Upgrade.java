@@ -34,11 +34,8 @@ import java.io.InputStream;
 import java.util.Vector;
 import javax.microedition.io.Connector;
 import javax.microedition.io.HttpConnection;
-import Menu.MenuListener;
-import Menu.MenuCommand;
 import locale.SR;
 import ui.MainBar;
-import ui.VirtualList;
 
 /**
  *
@@ -46,8 +43,7 @@ import ui.VirtualList;
  */
 public class Upgrade 
         extends MessageList 
-        implements Runnable,
-        MenuListener
+        implements Runnable        
     {
 //#ifdef PLUGINS
 //#     public static String plugin = new String("PLUGIN_VERSION_UPGRADE");
@@ -74,9 +70,6 @@ public class Upgrade
         this.build=build;
         
         news=new Vector();
-        
-        addMenuCommand(cmdBack);
-        addMenuCommand(cmdUrl);
         
         try {
             focusedItem(0);
@@ -118,13 +111,6 @@ public class Upgrade
         redraw();
     }
 
-    public void menuAction(MenuCommand c, VirtualList d) {
-        super.menuAction(c,d);
-        /*try {
-            if (BombusMod.getInstance().platformRequest((String) versions[2].elementAt(index))) System.exit(0);
-        } catch (Exception e) { e.printStackTrace(); }*/
-    }
-    
     protected void beginPaint() {
         StringBuffer str = new StringBuffer();
         Object pic = null;
@@ -140,11 +126,7 @@ public class Upgrade
         getMainBarItem().setElementAt(str.toString(),1);
         getMainBarItem().setElementAt(pic, 3);
     }
-
-    public void destroyView() {
-        super.destroyView();
-    }
-
+    
     public int getItemCount() {
         return news.size();
     }
