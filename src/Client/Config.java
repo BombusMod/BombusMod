@@ -938,6 +938,13 @@ public class Config {
                 } catch (Throwable t1) {
                 }
             }
+            // detecting Sun Java Wireless Client (JavaFX for WM)
+            try {
+                Class.forName("com.sun.midp.chameleon.MIDPWindow");
+                platformName = "JavaFX";
+            } catch (Throwable t2) {
+                
+            }
 
 
 

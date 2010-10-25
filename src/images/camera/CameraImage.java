@@ -28,6 +28,7 @@
 package images.camera;
 
 import Client.Config;
+import Client.StaticData;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
@@ -39,31 +40,33 @@ import javax.microedition.media.control.GUIControl;
 import javax.microedition.media.control.VideoControl;
 
 import locale.SR;
+import ui.VirtualList;
 
 /**
  *
  * @author Evg_S
  */
-public class CameraImage implements CommandListener{
+public class CameraImage implements CommandListener, Runnable{
     
     private Command cmdShot=new Command (SR.MS_CAMERASHOT, Command.OK, 1);
     private Command cmdCancel=new Command (SR.MS_CANCEL, Command.BACK, 99);
     
-    private Displayable parentView;
-    
+    protected Displayable parentView = midlet.BombusMod.getInstance().getCurrentDisplayable();
     private Player player;
     private VideoControl videoControl;
     
     //Form f;
     CameraImageListener imgListener;
+    VirtualList parentList;
 
     //private String sizes="encoding=jpeg&width=320&height=240"; //"width=800&height=600"
     private final static String mode="encoding=jpeg";
     /** Creates a new instance of CameraImage
      * @param imgListener
      */
-    public CameraImage(CameraImageListener imgListener/*, String sizes*/) {
-        this.imgListener=imgListener;
+    public CameraImage(VirtualList parentList, CameraImageListener imgListener/*, String sizes*/) {
+        this.imgListener = imgListener;
+        this.parentList = parentList;
 
         //if (sizes!=null) this.sizes=sizes;
         
@@ -93,18 +96,22 @@ public class CameraImage implements CommandListener{
     
     public void commandAction(Command command, Displayable displayable) {
         if (command==cmdShot) {
-            try {
-                byte photo[]=videoControl.getSnapshot(mode);
-                imgListener.cameraImageNotify(photo);
-                photo=null;
-            } catch (Exception e) { e.printStackTrace(); }
+            new Thread(this).start();            
+        }        
+
+        midlet.BombusMod.getInstance().setDisplayable(parentView);
+        StaticData.getInstance().canvas.show(parentList);
+
+    }
+
+    public void run() {
+        try {
+            byte photo[] = videoControl.getSnapshot(mode);
+            imgListener.cameraImageNotify(photo);            
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         // Shut down the player.
         player.close();
-        player = null;
-        videoControl = null;
-
-        midlet.BombusMod.getInstance().setDisplayable(parentView);
-
     }
 }

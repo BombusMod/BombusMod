@@ -44,6 +44,7 @@ import ui.controls.AlertBox;
 import ui.controls.form.DefForm;
 import xmpp.XmppError;
 import xmpp.extensions.IqRegister;
+import xmpp.extensions.XDataForm;
 
 /**
  *
@@ -61,8 +62,8 @@ public class ServiceDiscovery
     private final static String NS_MUC="http://jabber.org/protocol/muc";
     private final static String NODE_CMDS="http://jabber.org/protocol/commands";
 
-   /* private final static String strCmds="Execute";
-    private final int AD_HOC_INDEX=17;*/
+    private final static String strCmds="Execute";
+    private final int AD_HOC_INDEX=17;
     
     private MenuCommand cmdBrowse=new MenuCommand(SR.MS_BROWSE, MenuCommand.SCREEN, 1);
     private MenuCommand cmdRfsh=new MenuCommand(SR.MS_REFRESH, MenuCommand.SCREEN, 2);
@@ -84,7 +85,7 @@ public class ServiceDiscovery
 
     private JabberStream stream;
 
-    
+
     /** Creates a new instance of ServiceDiscovery */
     public ServiceDiscovery(String service, String node, boolean search) {
         super(null);
@@ -241,8 +242,8 @@ public class ServiceDiscovery
                     String category=identity.getAttribute("category");
                     String type=identity.getTypeAttribute();
                     if (category.equals("automation") && type.equals("command-node"))  {
-                     //   cmds.addElement(new DiscoCommand(RosterIcons.ICON_AD_HOC, strCmds));
-                        requestCommand(NODE_CMDS, "discocmd");
+                        cmds1.addElement(new DiscoCommand(RosterIcons.ICON_AD_HOC, strCmds));
+                     //   requestCommand(NODE_CMDS, "discocmd");
                     }
                     if (category.equals("conference")) {
                         cmds1.addElement(new DiscoCommand(RosterIcons.ICON_GCJOIN_INDEX, SR.MS_JOIN_CONFERENCE));
@@ -273,7 +274,7 @@ public class ServiceDiscovery
             }
         } else if (id.startsWith ("discoreg")) {
             discoIcon=0;
-            new DiscoForm( data, stream, "discoResult", "query");
+            new DiscoForm( data, stream, "discoResult", "query").fetchMediaElements(query.getChildBlocks());
         } else if (id.startsWith("discocmd")) {
             discoIcon=0;
             new DiscoForm( data, stream, "discocmd", "command");
@@ -405,7 +406,7 @@ public class ServiceDiscovery
     public void OkNotify(String selectedServer) {
         browse(selectedServer, null);
     }
-    
+
     private class DiscoCommand extends IconTextElement {
         String name;
         int index;
@@ -421,15 +422,14 @@ public class ServiceDiscovery
         public void onSelect(){
             switch (icon) {
 //#ifndef WMUC
-                case RosterIcons.ICON_GCJOIN_INDEX: {
+                case RosterIcons.ICON_GCJOIN_INDEX: 
                     int rp=service.indexOf('@');
                     String room = null; 
                     if (rp > 0) {
                         room = service.substring(0, rp);                        
                     }
                     new ConferenceForm(room, service, null, false);
-                    break;
-                }
+                    break;                
 //#endif
                 case RosterIcons.ICON_SEARCH_INDEX:
                     requestQuery(NS_SRCH, "discosrch");
@@ -440,8 +440,8 @@ public class ServiceDiscovery
                 case RosterIcons.ICON_ROOMLIST:
                     requestQuery(NS_ITEMS, "disco2");
                     break;
-               /* case RosterIcons.ICON_AD_HOC:
-                    requestCommand(NODE_CMDS, "discocmd");*/
+                case RosterIcons.ICON_AD_HOC:
+                    requestCommand(NODE_CMDS, "discocmd");
                 default:
             }
         }

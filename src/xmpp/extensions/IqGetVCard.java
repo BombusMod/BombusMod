@@ -27,6 +27,7 @@
 
 package xmpp.extensions;
 
+import VCard.VCard;
 import com.alsutton.jabber.datablocks.*;
 
 /**
@@ -37,6 +38,6 @@ public class IqGetVCard extends Iq
 {
     public IqGetVCard(String to, String id ) {
         super(to, Iq.TYPE_GET, id );
-        addChildNs("vCard", "vcard-temp" );
+        addChildNs("vCard", VCard.NS_VCARD );
     }
 }

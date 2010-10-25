@@ -24,72 +24,100 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-
 package ServiceDiscovery;
+
 import Client.StaticData;
 import com.alsutton.jabber.*;
 import java.util.*;
 import javax.microedition.lcdui.TextField;
+import ui.VirtualElement;
 import ui.controls.form.CheckBox;
 import ui.controls.form.DropChoiceBox;
+import ui.controls.form.ImageItem;
 import ui.controls.form.ItemsGroup;
 import ui.controls.form.MultiLine;
 import ui.controls.form.PasswordInput;
 import ui.controls.form.TextInput;
+
 /**
  *
  * @author Evg_S
  */
 public class FormField {
-    
+
     public String label;
     public String type;
     public String name;
     public Object formItem;
     boolean hidden;
-    //TODO: boolean required;
+    private boolean required;
     public boolean instructions;
     private Vector optionsList;
     private boolean numericBoolean;
     private boolean registered;
+    int formIndex = -1;
+    int mediaIndex = -1;
+    String mediaUri;
+    VirtualElement media;
+
     /** Creates a new instance of FormField */
     public FormField(JabberDataBlock field) {
-        name=field.getTagName();
-        label=name;
-        String body=field.getText();
+        name = field.getTagName();
+        label = name;
+        String body = field.getText();
         if (name.equals("field")) {
             // x:data
-            type=field.getTypeAttribute();
-            name=field.getAttribute("var");
-            label=field.getAttribute("label");
-            if (label==null) label=name;
-            body=field.getChildBlockText("value");
-	    hidden= type.equals("hidden"); 
-            if (type.equals("fixed")) formItem=new MultiLine(label, body, StaticData.getInstance().roster.getListWidth());
-            else if (type.equals("boolean")) {
-                boolean set=false;
-                if (body.equals("1")) set=true;
-                if (body.equals("true")) set=true;
-                numericBoolean=body.length()==1;
+            type = field.getTypeAttribute();
+            name = field.getAttribute("var");
+            label = field.getAttribute("label");
+            if (label == null) {
+                label = name;
+            }
+            body = field.getChildBlockText("value");
+            if (type == null) {
+                media = extractMedia(field);
+                formItem = new TextInput(StaticData.getInstance().canvas, label, body, null, TextField.ANY);
+                return;
+            }
+
+            required = field.getChildBlock("required") != null;
+            if (required) {
+                label = label + " *";
+            }
+
+            hidden = type.equals("hidden");
+
+            if (type.equals("fixed")) {
+                formItem = new MultiLine(label, body, StaticData.getInstance().roster.getListWidth());
+            } else if (type.equals("boolean")) {
+                boolean set = false;
+                if (body.equals("1")) {
+                    set = true;
+                }
+                if (body.equals("true")) {
+                    set = true;
+                }
+                numericBoolean = body.length() == 1;
                 CheckBox ch = new CheckBox(label, set);
                 formItem = ch;
-            }
-            else if (type.equals("list-single")) {
+            } else if (type.equals("list-single")) {
                 DropChoiceBox ch = new DropChoiceBox(label);
-                                
-                optionsList=null;
-                optionsList=new Vector();
-                for (Enumeration e=field.getChildBlocks().elements(); e.hasMoreElements();) {
-                    JabberDataBlock option=(JabberDataBlock)e.nextElement();
+
+                optionsList = null;
+                optionsList = new Vector();
+                for (Enumeration e = field.getChildBlocks().elements(); e.hasMoreElements();) {
+                    JabberDataBlock option = (JabberDataBlock) e.nextElement();
                     if (option.getTagName().equals("option")) {
-                        String value=option.getChildBlockText("value");
-                        String label=option.getAttribute("label");
-                        if (label==null) label=value;
+                        String value = option.getChildBlockText("value");
+                        String label = option.getAttribute("label");
+                        if (label == null) {
+                            label = value;
+                        }
                         optionsList.addElement(value);
                         ch.items.addElement(label);
                         if (body.equals(value)) {
                             int index = ch.items.size() - 1;
-                            ((DropChoiceBox)ch).setSelectedIndex(index);
+                            ((DropChoiceBox) ch).setSelectedIndex(index);
                         }
 
                     }
@@ -97,25 +125,26 @@ public class FormField {
                 formItem = ch;
             } else if (type.equals("list-multi")) {
                 ItemsGroup ch = new ItemsGroup(label);
-                                
-                optionsList=new Vector();
-                for (Enumeration e=field.getChildBlocks().elements(); e.hasMoreElements();) {
-                    JabberDataBlock option=(JabberDataBlock)e.nextElement();
+
+                optionsList = new Vector();
+                for (Enumeration e = field.getChildBlocks().elements(); e.hasMoreElements();) {
+                    JabberDataBlock option = (JabberDataBlock) e.nextElement();
                     if (option.getTagName().equals("option")) {
-                        String value=option.getChildBlockText("value");
-                        String label=option.getAttribute("label");
-                        if (label==null) label=value;
+                        String value = option.getChildBlockText("value");
+                        String label = option.getAttribute("label");
+                        if (label == null) {
+                            label = value;
+                        }
                         optionsList.addElement(value);
-                        boolean check = field.getChildBlockByText(value)!=null;
+                        boolean check = field.getChildBlockByText(value) != null;
                         ch.items.addElement(new CheckBox(label, check));
                     }
                 }
                 formItem = ch;
-            }
-	    // text-single, text-private
+            } // text-single, text-private
             else {
-               /* if (body.length()>=200) {
-                    body=body.substring(0,198);
+                /* if (body.length()>=200) {
+                body=body.substring(0,198);
                 }*/
                 if (type.equals("text-private")) { // password field
                     formItem = new PasswordInput(StaticData.getInstance().canvas, label, body);
@@ -125,30 +154,36 @@ public class FormField {
             }
         } else {
             // not x-data
-            if ( instructions=name.equals("instructions") )
-                formItem=new MultiLine("Instructions", body, StaticData.getInstance().roster.getListWidth());
-            else if ( name.equals("title") )
-                formItem=new MultiLine(null, body, StaticData.getInstance().roster.getListWidth());
-            else if ( name.equals("registered") ) {
-                CheckBox cg=new CheckBox("Remove registration", false);
+            if (instructions = name.equals("instructions")) {
+                formItem = new MultiLine("Instructions", body, StaticData.getInstance().roster.getListWidth());
+            } else if (name.equals("title")) {
+                formItem = new MultiLine(null, body, StaticData.getInstance().roster.getListWidth());
+            } else if (name.equals("registered")) {
+                CheckBox cg = new CheckBox("Remove registration", false);
                 formItem = cg;
-                registered=true;
+                registered = true;
+            } else {
+                formItem = new TextInput(StaticData.getInstance().canvas, label, body, "", TextField.ANY);
             }
-            else
-                formItem=new TextInput(StaticData.getInstance().canvas, label, body, "", TextField.ANY);
         }
-        
-        if (name!=null)
-        if ( name.equals("key") ) hidden=true; 
+
+        if (name != null) {
+            if (name.equals("key")) {
+                hidden = true;
+            }
+        }
     }
-    JabberDataBlock constructJabberDataBlock(){
-        JabberDataBlock j=null;
+
+    JabberDataBlock constructJabberDataBlock() {
+        JabberDataBlock j = null;
         if (formItem instanceof TextInput) {
-            String value=((TextInput)formItem).getValue();
-            if (type==null) {
-                j = new JabberDataBlock(null, name, value);
-                return j;
-            } 
+            if (media == null) {
+                String value = ((TextInput) formItem).getValue();
+                if (type == null) {
+                    j = new JabberDataBlock(null, name, value);
+                    return j;
+                }
+            }
         }
         j = new JabberDataBlock("field", null, null);
         j.setAttribute("var", name);
@@ -198,5 +233,29 @@ public class FormField {
             }
         }
         return j;
+    }
+
+    private VirtualElement extractMedia(JabberDataBlock field) {
+        // XEP-0221
+        try {
+            JabberDataBlock m = field.findNamespace("media", "urn:xmpp:media-element");
+            if (m == null) {
+                return null;
+            }
+
+            for (Enumeration e = m.getChildBlocks().elements(); e.hasMoreElements();) {
+                JabberDataBlock u = (JabberDataBlock) e.nextElement();
+                if (u.getTagName().equals("uri")) {
+                    if (!u.getTypeAttribute().startsWith("image")) {
+                        continue;
+                    }
+                    mediaUri = u.getText();
+                    return new ImageItem(null, "[Loading Image]");
+                }
+            }
+
+        } catch (Exception e) {
+        }
+        return null;
     }
 }

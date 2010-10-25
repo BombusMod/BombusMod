@@ -26,7 +26,6 @@
  */
 package io.file.browse;
 
-import Menu.Command;
 import io.file.FileIO;
 //#ifndef NOMMEDIA
 import java.io.IOException;

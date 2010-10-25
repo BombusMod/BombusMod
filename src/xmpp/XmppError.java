@@ -55,11 +55,15 @@ public class XmppError {
     public final static int TYPE_WAIT=4; 
     /** Creates a new instance of XmppError */
     public XmppError(int condition, String text) {
-        int errorType=TYPE_UNDEFINED;
-        textCondition="undefined-condition";
+        errorType = TYPE_UNDEFINED;
+        textCondition = "undefined-condition";
         switch (condition) {
             case NONE:                      
                 errorType=TYPE_UNDEFINED; 
+                break;
+            case BAD_REQUEST:
+                errorType = TYPE_MODIFY;
+                textCondition = "bad-request";
                 break;
             case CONFLICT:           
                 errorType=TYPE_CANCEL; 

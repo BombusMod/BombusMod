@@ -105,7 +105,7 @@ public class VCardView
             } 
         };
 
-        if (vcard.isEmpty()) {
+        if (vcard == null || vcard.isEmpty()) {
             itemsList.addElement(noVCard);
             itemsList.addElement(refresh);
         } else {
@@ -160,8 +160,8 @@ public class VCardView
                 itemsList.addElement(save);
             }
 //#endif            
-            show();
-        }        
+        }
+        show();
     }    
 
     

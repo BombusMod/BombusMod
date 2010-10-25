@@ -130,7 +130,7 @@ public class VCardEdit
 //#endif
 //#ifndef NOMMEDIA
         if (c==cmdCamera)
-            new CameraImage(this);
+            new CameraImage(this, this);
 //#endif
         if (c==cmdDelPhoto) {
             vcard.dropPhoto();

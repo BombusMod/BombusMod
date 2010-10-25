@@ -58,6 +58,8 @@ public class VCard {
     private boolean empty=true;
 
     private String photoType=null;
+
+    public static String NS_VCARD = "vcard-temp";
     
     public boolean hasPhoto;
 
@@ -77,7 +79,7 @@ public class VCard {
         
         if (data==null) return; 
         if (data.getTypeAttribute().equals("error")) return;
-        JabberDataBlock vcard=data.findNamespace("vCard", "vcard-temp");
+        JabberDataBlock vcard=data.findNamespace("vCard", NS_VCARD);
         if (vcard==null) return; //"No vCard available" 
 		
 	empty=false;
@@ -107,7 +109,7 @@ public class VCard {
 
     public JabberDataBlock constructVCard(){
         JabberDataBlock vcardIq=new Iq(null, Iq.TYPE_SET, "vcard-set");
-        JabberDataBlock vcardTemp=vcardIq.addChildNs("vCard", "vcard-temp");
+        JabberDataBlock vcardTemp=vcardIq.addChildNs("vCard", NS_VCARD);
         
         int itemsCount=getCount();
         
@@ -149,7 +151,7 @@ public class VCard {
     public static JabberDataBlock getQueryVCard(String to, String id ) 
     {
         JabberDataBlock req=new Iq(to, Iq.TYPE_GET, id);
-        req.addChildNs("vCard", "vcard-temp" );
+        req.addChildNs("vCard", NS_VCARD );
 
         return req;
     }

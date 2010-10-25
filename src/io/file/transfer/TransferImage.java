@@ -27,13 +27,11 @@
 
 package io.file.transfer;
 
-import Client.StaticData;
 import images.camera.CameraImage;
 import images.camera.CameraImageListener;
 import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
-import ui.VirtualList;
 import ui.controls.form.DefForm;
 import ui.controls.form.ImageItem;
 import ui.controls.form.LinkString;
@@ -77,7 +75,7 @@ public class TransferImage
     }
     
     public void initCamera() {
-        new CameraImage(this);
+        new CameraImage(this, this);
     }
 
     public void cameraImageNotify(byte[] capturedPhoto) {

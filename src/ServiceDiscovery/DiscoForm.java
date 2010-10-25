@@ -29,9 +29,12 @@ package ServiceDiscovery;
 import java.util.*;
 import com.alsutton.jabber.*;
 import com.alsutton.jabber.datablocks.*;
+import javax.microedition.lcdui.Image;
 import locale.SR;
 import ui.controls.form.ComplexForm;
+import ui.controls.form.ImageItem;
 import ui.controls.form.SimpleString;
+import util.Strconv;
 //import Client.*;
 
 
@@ -161,8 +164,40 @@ public class DiscoForm extends ComplexForm{
     public void cmdOk() {
         if (!complete) {
             sendForm(id);
+            destroyView();
+        }        
+    }
+
+     public void fetchMediaElements(Vector bobCache) {
+        //TODO: fetch external http bobs and non-cached in-band bobs
+        byte [] bytes = null;
+        Image img = null;
+        String cid = null;
+        FormField field = null;
+        JabberDataBlock data = null;
+        int formItems = fields.size();
+        for (int i=0; i<formItems; i++) {
+            field=(FormField)fields.elementAt(i);
+            if (field.mediaUri==null) continue;
+            if (!(field.media instanceof ImageItem)) continue;
+
+            if (field.mediaUri.startsWith("cid:")) {
+                cid = field.mediaUri.substring(4);
+                if (bobCache==null) continue; //TODO: in-band bob request
+
+                for (int bob=0; bob<bobCache.size(); bob++) {
+                    data = (JabberDataBlock) bobCache.elementAt(bob);
+                    if (data.isJabberNameSpace("urn:xmpp:bob") && cid.equals(data.getAttribute("cid"))) {
+                        bytes = Strconv.fromBase64(data.getText());
+                        img = Image.createImage(bytes, 0, bytes.length);
+                        if (field.media != null) {
+                            ((ImageItem)field.media).img = img;
+                            itemsList.addElement(field.media);
+                        }
+                    }
+                }
+            }
         }
-        destroyView();
     }
 
     public String touchLeftCommand() { return (complete) ? "" : SR.MS_SEND;}
