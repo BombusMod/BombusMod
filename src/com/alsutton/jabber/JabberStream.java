@@ -174,9 +174,9 @@ public class JabberStream extends XmppParser implements Runnable {
             connected = true;
             
             byte cbuf[] = new byte[512];
-            
+
             while (connected) {
-                
+
                 while (!outgoingPackets.isEmpty()) {
                     sendPacket((String)outgoingPackets.elementAt(0));
                     outgoingPackets.removeElementAt(0);

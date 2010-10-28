@@ -78,6 +78,8 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
     
     private Progress pb;
 
+    VirtualList next;
+
     public static SplashScreen getInstance(){
         if (instance==null) 
             instance=new SplashScreen();
@@ -115,8 +117,8 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
     }
 
     public void paint(Graphics g){
-        int width = g.getClipWidth();
-        int height = g.getClipHeight();
+        int width = getWidth();
+        int height = getHeight();
         
         g.setColor(ColorTheme.getColor(ColorTheme.BLK_BGND));
         g.fillRect(0,0, width, height);
@@ -168,6 +170,7 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
     private Command cmdExit=new Command("Hide Splash", Command.BACK, 99);
     
     public void setExit(VirtualList nextDisplayable){
+        next = nextDisplayable;
         addCommand(cmdExit);
         setCommandListener(this);
     }
@@ -184,7 +187,7 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
     }
     
     public void close() {
-        close(StaticData.getInstance().roster);
+        close(next);
     }
 
     public void run() {

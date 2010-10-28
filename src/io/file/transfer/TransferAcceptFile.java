@@ -102,7 +102,8 @@ public class TransferAcceptFile
             t.fileName = fileName.getValue().trim();
             t.filePath = ftFolder;
             t.accept();
-            destroyView();
+            //switch to file transfer manager
+            new TransferManager();
         } else {
             show();
         }
@@ -118,7 +119,8 @@ public class TransferAcceptFile
         t.fileName = fileName.getValue().trim();
         t.filePath = path.getValue();        
         t.accept();
-        destroyView();
+        //switch to file transfer manager
+        new TransferManager();
     }
     
     public void cmdCancel() {

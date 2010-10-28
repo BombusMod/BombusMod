@@ -92,6 +92,7 @@ public class TransferManager
                 TransferTask task=(TransferTask) TransferDispatcher.getInstance().getTaskList().elementAt(cursor);
                 task.cancel();
                 TransferDispatcher.getInstance().getTaskList().removeElementAt(cursor);
+                loadItemsFrom(TransferDispatcher.getInstance().getTaskList());
             }
         }
     }
@@ -103,9 +104,10 @@ public class TransferManager
                 int i=0;
                 while (i<TransferDispatcher.getInstance().getTaskList().size()) {
                     TransferTask task=(TransferTask)TransferDispatcher.getInstance().getTaskList().elementAt(i);
-                    if (task.isStopped()) 
+                    if (task.isStopped()) {
                         TransferDispatcher.getInstance().getTaskList().removeElementAt(i);
-                    else 
+                        loadItemsFrom(TransferDispatcher.getInstance().getTaskList());
+                    } else
                         i++;
                 }
             }

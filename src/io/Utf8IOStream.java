@@ -32,7 +32,7 @@ import com.jcraft.jzlib.JZlib;
 import com.jcraft.jzlib.ZInputStream;
 import com.jcraft.jzlib.ZOutputStream;
 //#else
-//# import Client.Config;    
+//# import Client.Config;
 //#endif
 //#if TLS
 //# import bwmorg.bouncycastle.crypto.tls.TlsProtocolHandler;
@@ -103,7 +103,7 @@ public class Utf8IOStream {
     public void send(String data) throws IOException {
         synchronized (outStream) {
             StaticData.getInstance().updateTrafficOut();
-            byte bytes[] = Strconv.toUTFArray(data);
+            byte bytes[] = Strconv.toUTFArray(data);            
             outStream.write(bytes);
             setSent(bytesSent + bytes.length);
             
@@ -226,7 +226,7 @@ public class Utf8IOStream {
         return 0;
     }
 //#else
-//# 
+//#
 //#      public String getStreamStats() {
 //#          StringBuffer stats=new StringBuffer();
 //#          try {
@@ -239,7 +239,7 @@ public class Utf8IOStream {
 //#          }
 //#          return stats.toString();
 //#      }
-//# 
+//#
 //#      public long getBytes() {
 //#          try {
 //#              return bytesSent+bytesRecv;

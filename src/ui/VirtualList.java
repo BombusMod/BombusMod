@@ -401,8 +401,8 @@ public abstract class VirtualList {
     
     public void paint(Graphics g) {
         if (Config.getInstance().phoneManufacturer == Config.MICROEMU) {
-            width = g.getClipWidth();
-            height = g.getClipHeight();
+            width = VirtualCanvas.getInstance().getWidth();
+            height = VirtualCanvas.getInstance().getHeight();
         }
 
         mHeight=0;

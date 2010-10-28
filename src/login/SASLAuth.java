@@ -183,7 +183,8 @@ public class SASLAuth implements JabberBlockListener{
             listener.loginFailed("No known authentication methods");
 
             return JabberBlockListener.NO_MORE_BLOCKS; 
-        } else if (data.getTagName().equals("challenge")) {
+        }
+        else if (data.getTagName().equals("challenge")) {
             // first stream - step 2,3. reaction to challenges
             
             String challenge=decodeBase64(data.getText());

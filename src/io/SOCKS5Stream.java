@@ -42,7 +42,11 @@ public class SOCKS5Stream {
         if (avail==0) return 0;        
         if (avail>buf.length) avail=buf.length;        
         return inpStream.read(buf, 0, avail);
-    }   
+    }
+
+    public void flush() throws IOException {
+        outStream.flush();
+    }
     
     public void close() {
         try {

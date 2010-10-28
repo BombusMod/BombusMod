@@ -8,7 +8,6 @@ package xmpp.extensions;
 import com.alsutton.jabber.JabberBlockListener;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
-import java.util.Vector;
 import xmpp.XmppError;
 import xmpp.extensions.XDataForm.NotifyListener;
 
@@ -33,36 +32,12 @@ public class IqRegister implements JabberBlockListener, NotifyListener {
             if (query.isJabberNameSpace(NS_REGS)) {
                 String type = data.getTypeAttribute();
                 if (type.equals("result")) {
-                    // trying to find jabber:x:data
-                    JabberDataBlock xData = query.findNamespace("x", XDataForm.NS_XDATA);
-                    if (xData != null) {
-                        // modern DataForms registration form
-                        new XDataForm(xData, this);
-                        
+                    String id = data.getAttribute("id");
+                    if (id.startsWith("regac")) {
+                        notifier.registrationFormNotify(data);
                     } else {
-                        // plain In-Band Registration
-                        Vector childs = query.getChildBlocks();
-                        Vector formItems = new Vector();
-                        if (childs != null) {
-                            int size = childs.size();
-                            String title = null, instructions = null;
-                            for (int i = 0; i < size; i++) {
-                                JabberDataBlock current = (JabberDataBlock) childs.elementAt(i);
-                                String label = current.getTagName();
-                                // TODO: check field names with XML Schema
-                                if (label.equals("title")) {
-                                    title = current.getText();
-                                } else if (label.equals("instructions")) {
-                                    instructions = current.getText();
-                                } else {
-                                    formItems.addElement(label);
-                                }
-                            }
-                            if (size > 0) {
-                                notifier.registrationFormNotify(title, instructions, formItems);
-                            }
-                        }
-                    }                    
+                        //notifier.registrationSuccess();
+                    }
                 } else if (type.equals("error")) {
                     notifier.registrationFailed(XmppError.findInStanza(data).toString());
                 }
@@ -76,8 +51,8 @@ public class IqRegister implements JabberBlockListener, NotifyListener {
     }
 
     public interface RegistrationListener {
-        public void registrationFormNotify(String title, String instructions, Vector registrationFields);
-        public void registrationSuccess();
+        public void registrationFormNotify(JabberDataBlock data);
+        public void registrationSuccess(String userName, String pass);
         public void registrationFailed(String errorText);
     };
 }

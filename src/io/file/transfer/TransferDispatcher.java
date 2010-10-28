@@ -48,6 +48,7 @@ public class TransferDispatcher implements JabberBlockListener {
 
     public final static String NS_BYTESTREAMS = "http://jabber.org/protocol/bytestreams";
     public final static String NS_IBB = "http://jabber.org/protocol/ibb";
+    public final static String NS_SI = "http://jabber.org/protocol/si";
     
     TransferConfig ft = TransferConfig.getInstance();
     
@@ -78,17 +79,17 @@ public class TransferDispatcher implements JabberBlockListener {
     
     public int blockArrived(JabberDataBlock data) {
         if (data instanceof Iq) {
-            String id=data.getAttribute("id");            
-            JabberDataBlock si=data.getChildBlock("si");
+            String id = data.getAttribute("id");
+            JabberDataBlock si = data.getChildBlock("si");
+            String type = data.getTypeAttribute();
             if (si!=null) {
                 // stream initiating
                 String sid=si.getAttribute("id");                
                 JabberDataBlock file=si.getChildBlock("file");
                 JabberDataBlock feature=si.getChildBlock("feature");                              
                 JabberDataBlock form = feature.getChildBlock("x");
-                XDataField field = new XDataField(form.getChildBlock("field"));        
-               
-                String type=data.getTypeAttribute();
+                XDataField field = new XDataField(form.getChildBlock("field"));                       
+                
                 if (type.equals("set")) {
                     
                     // sender initiates file sending process
@@ -142,6 +143,27 @@ public class TransferDispatcher implements JabberBlockListener {
                 return BLOCK_PROCESSED;
             }
 // //
+
+            JabberDataBlock query = data.findNamespace("query", NS_BYTESTREAMS);
+            if (query != null) {
+                if (type.equals("set")) { // incoming file
+                    String sid = query.getAttribute("sid");
+                    if (sid != null) {
+                        TransferTask task = getTransferBySid(sid);
+                        if (task != null) {
+                            // existing task
+                            task.method = NS_BYTESTREAMS;
+                            JabberDataBlock proxy = query.getChildBlock("streamhost");
+                            if (proxy != null) {
+                                task.streamhosts = query.getChildBlocks();
+                                task.state = TransferTask.PROXYACTIVATE;
+                                task.startTransfer();
+                                return BLOCK_PROCESSED;
+                            }
+                        }
+                    }
+                }                
+            }
             
             if (data.getTypeAttribute().equals("result")) {
                 TransferTask task = getTransferBySid(id);
@@ -239,6 +261,7 @@ public class TransferDispatcher implements JabberBlockListener {
         }
         Integer icon=(event<0)? null:new Integer(event);
         sd.roster.setEventIcon(icon);
+        sd.canvas.repaint();
     }
 
     void repaintNotify() {

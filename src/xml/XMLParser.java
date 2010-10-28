@@ -94,8 +94,8 @@ public class XMLParser {
                 if (c=='?') continue;
                 if (c==' ') continue;
                 if (c=='=') continue;
-                if (c=='\'') { state=ATRVALQS; atrName=sbuf.toString(); sbuf=new StringBuffer(); continue; }
-                if (c=='\"') { state=ATRVALQD; atrName=sbuf.toString(); sbuf=new StringBuffer(); continue; }
+                if (c=='\'') { state=ATRVALQS; atrName=parsePlainText(sbuf); sbuf=new StringBuffer(); continue; }
+                if (c=='\"') { state=ATRVALQD; atrName=parsePlainText(sbuf); sbuf=new StringBuffer(); continue; }
 
                 if (c!='>' && c!='/') { 
                     sbuf.append(c);
@@ -113,7 +113,7 @@ public class XMLParser {
                     state=ENDTAGNAME; 
                     sbuf=new StringBuffer();
                     if (tagName.length()>0) {
-                        String tn=tagName.toString();
+                        String tn= parsePlainText(tagName);
                         eventListener.tagStart(tn, attr); 
                         sbuf.append(tn);
                     }
@@ -122,7 +122,7 @@ public class XMLParser {
                 if (c==' ') { state=ATRNAME; continue; }
                 if (c=='>') { 
                     state=PLAIN_TEXT; 
-                    if (eventListener.tagStart(tagName.toString(), attr))
+                    if (eventListener.tagStart(parsePlainText(tagName), attr))
                         state=BASE64_INIT; 
                     continue; 
                 }
@@ -170,7 +170,7 @@ public class XMLParser {
                 if (c=='\'') { 
                     state=ATRNAME; 
                     attr.addElement(atrName);
-                    attr.addElement(parsePlainText(sbuf)); 
+                    attr.addElement(parsePlainText(sbuf));
                     sbuf=new StringBuffer(); 
                     continue; 
                 }
@@ -182,7 +182,7 @@ public class XMLParser {
                 if (c=='\"') { 
                     state=ATRNAME; 
                     attr.addElement(atrName);
-                    attr.addElement(parsePlainText(sbuf)); 
+                    attr.addElement(parsePlainText(sbuf));
                     sbuf=new StringBuffer(); 
                     continue; 
                 }
@@ -305,7 +305,7 @@ public class XMLParser {
             sb.setCharAt(opos++, '?'); // java char type contains only 16-bit symbols
             continue;
             
-        }
+        }        
 
         sb.setLength(opos);
         return sb.toString();

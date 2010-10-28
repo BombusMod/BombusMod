@@ -117,7 +117,6 @@ public class Bookmarks
     
     
     public final void loadBookmarks() {
-        itemsList.removeAllElements();        
         loadItemsFrom(sd.roster.bookmarks);
     }
 
@@ -201,6 +200,7 @@ public class Bookmarks
         if (getItemCount()<=cursor) 
             moveCursorEnd();
         saveBookmarks();
+        loadBookmarks();
         redraw();
     }
     
@@ -218,6 +218,7 @@ public class Bookmarks
             sd.roster.bookmarks.setElementAt(p1, index+offset);
             sd.roster.bookmarks.setElementAt(p2, index);
         } catch (Exception e) {/* IndexOutOfBounds */}
+        loadBookmarks();
     }
 
     public void keyPressed(int keyCode) {

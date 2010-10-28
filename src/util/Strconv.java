@@ -40,7 +40,7 @@ public class Strconv {
     private Strconv() {
     }
 
-    public static final String convCp1251ToUnicode(final String s){
+    public static String convCp1251ToUnicode(final String s){
         if (s==null) return null;
         StringBuffer b=new StringBuffer(s.length());
         for (int i=0;i<s.length();i++){
@@ -54,7 +54,7 @@ public class Strconv {
         return b.toString();
     }
     
-    public static final String convUnicodeToCp1251(final String s){
+    public static String convUnicodeToCp1251(final String s){
         if (s==null) return null;
         StringBuffer b=new StringBuffer(s.length());
         for (int i=0;i<s.length();i++){
@@ -68,7 +68,7 @@ public class Strconv {
         return b.toString();
     }
     
-    public final static String toBase64( String source) {
+    public static String toBase64( String source) {
         String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
         
         int len=source.length();
@@ -97,8 +97,8 @@ public class Strconv {
         }
         return new String(out);
     }
-    
-    public final static String toBase64( byte source[], int len) {
+
+    public static String toBase64( byte source[], int len) {
         String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
         
         if (len<0) len=source.length;
