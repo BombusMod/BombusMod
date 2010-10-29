@@ -35,7 +35,7 @@ import xml.XMLParser;
 
 public class JabberDataBlock
 {
-    private final static int MAX_CHILDS=400;
+    private final static int MAX_CHILDS = 800;
   /**
    * The name of this tag
    */

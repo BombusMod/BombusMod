@@ -135,7 +135,8 @@ public class JabberDataBlockDispatcher implements Runnable {
                             dataBlock.setAttribute("id", "666");
                         }
                         // verify is it our query
-                        if (dataBlock.getTypeAttribute().equals("result")) {
+                        String type = dataBlock.getTypeAttribute();
+                        if (type.equals("result") || type.equals("error")) {
                             String id = dataBlock.getAttribute("id");
                             if (stream.outgoingQueries.indexOf(id) >= 0) {
                                 stream.outgoingQueries.removeElement(id);

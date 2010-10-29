@@ -42,9 +42,9 @@ import javax.microedition.lcdui.TextBox;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
 //#ifdef CLIPBOARD
-//# import ui.VirtualList;
 //# import util.ClipBoard;
 //#endif
+import ui.VirtualList;
 
 /**
  *

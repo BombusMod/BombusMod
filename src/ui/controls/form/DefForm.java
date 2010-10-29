@@ -96,6 +96,7 @@ public class DefForm
         for (int i = 0; i < count; i++) {
             itemsList.addElement(items.elementAt(i));
         }
+        redraw();
     }
 
     public void cmdCancel() {

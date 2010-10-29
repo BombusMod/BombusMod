@@ -77,7 +77,7 @@ public class VCardEdit
      * @param vcard
      */
     public VCardEdit(VCard vcard) {
-        super(SR.MS_VCARD+" "+StaticData.getInstance().account.getBareJid(), false);
+        super(SR.MS_VCARD+" "+StaticData.getInstance().account.getBareJid());
         this.vcard=vcard;
 
         for (int index=0; index<vcard.getCount(); index++) {
@@ -94,8 +94,7 @@ public class VCardEdit
 
         publish=new LinkString(SR.MS_PUBLISH) { public void doAction() { publish(); } };
         
-        setPhoto();     
-        show();
+        setPhoto();             
     }
     
     public void publish() {

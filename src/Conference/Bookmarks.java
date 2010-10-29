@@ -85,7 +85,7 @@ public class Bookmarks
 
         this.toAdd=toAdd;
 
-        if (toAdd!=null) 
+        if (toAdd!=null)
             addBookmark();
         
         setMainBarItem(new MainBar(2, null, SR.MS_BOOKMARKS+" ("+getItemCount()+") ", false));//for title updating after "add bookmark"
@@ -125,6 +125,7 @@ public class Bookmarks
             sd.roster.bookmarks.addElement(toAdd);
             //sort(bm);
             saveBookmarks();
+            loadBookmarks();
         }
     }
     

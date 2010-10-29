@@ -1464,8 +1464,7 @@ public abstract class VirtualList {
     public void showHeapInfo() {
 //#ifdef POPUPS
         StringBuffer mem = new StringBuffer();
-        mem.append("Time: ")
-           .append(Time.getTimeWeekDay())
+        mem.append(Time.localDate()).append(" ").append(Time.getTimeWeekDay())
            .append("\nTraffic: ")
            .append(getTraffic())
            .append("\nFree: ")
