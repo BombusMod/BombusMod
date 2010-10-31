@@ -1540,7 +1540,11 @@ public class Roster
                     if (rp>0) from=from.substring(0, rp);
                 }
                 
-                Contact c=getContact(from, (cf.notInListDropLevel != NotInListFilter.DROP_MESSAGES_PRESENCES || groupchat));
+                Contact c=getContact(from, (cf.notInListDropLevel != NotInListFilter.DROP_MESSAGES_PRESENCES || groupchat
+//#ifndef WMUC
+                        || message.getMucInvitation() != null
+//#endif
+                        ));
                 if (c==null) return JabberBlockListener.BLOCK_REJECTED; //not-in-list message dropped
 
                 boolean highlite=false;
@@ -1583,8 +1587,7 @@ public class Roster
 //#ifndef WMUC
                  try {
                     JabberDataBlock xmlns=message.findNamespace("x", "http://jabber.org/protocol/muc#user");
-                    if (xmlns!=null) {
-                        JabberDataBlock invite=xmlns.getChildBlock("invite");
+                    JabberDataBlock invite=message.getMucInvitation();
                         if (invite!=null) {
                             if (message.getTypeAttribute().equals("error")) {
                                 ConferenceGroup invConf=(ConferenceGroup)groups.getGroup(from);
@@ -1596,6 +1599,8 @@ public class Roster
                                 ConferenceGroup invConf=initMuc(room, xmlns.getChildBlockText("password"));
                                 
                                 invConf.confContact.commonPresence=false; //FS#761
+
+                                c = invConf.confContact;
                                 
                                 if (invConf.selfContact.status==Presence.PRESENCE_OFFLINE)
                                     invConf.confContact.status=Presence.PRESENCE_OFFLINE;
@@ -1607,8 +1612,7 @@ public class Roster
                                 
                                 reEnumRoster();
                             }
-                        }
-                    }
+                        }                    
                 } catch (Exception e) { 
 //#ifdef DEBUG                    
 //#                     e.printStackTrace();

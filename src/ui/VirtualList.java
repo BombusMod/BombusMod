@@ -1492,7 +1492,7 @@ public abstract class VirtualList {
         return StringUtils.getSizeString((traffic>0)?traffic*2:0);
     }
     
-    public Vector menuCommands=new Vector();
+    public final Vector menuCommands = new Vector();
 
     public void addMenuCommand(MenuCommand command) {
         if (menuCommands.indexOf(command)<0)

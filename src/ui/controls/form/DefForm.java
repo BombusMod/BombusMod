@@ -66,11 +66,15 @@ public class DefForm
     }
 
     protected int getItemCount() {
-        return itemsList.size();
+        synchronized (itemsList) {
+            return itemsList.size();
+        }
     }
 
     protected VirtualElement getItemRef(int index) {
-        return (VirtualElement) itemsList.elementAt(index);
+        synchronized (itemsList) {
+            return (VirtualElement) itemsList.elementAt(index);
+        }
     }
 
     public void touchLeftPressed() {

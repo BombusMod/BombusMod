@@ -126,4 +126,13 @@ public class Message extends JabberDataBlock {
     public String getFrom() {
         return getAttribute("from");
     }
+//#ifndef WMUC
+    public JabberDataBlock getMucInvitation() {
+        JabberDataBlock xmlns = findNamespace("x", "http://jabber.org/protocol/muc#user");
+        if (xmlns != null) {
+            return xmlns.getChildBlock("invite");
+        }
+        return null;
+    }
+//#endif
 }
