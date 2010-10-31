@@ -56,7 +56,7 @@ public class ActiveContacts
             }
         }        
 
-        if (getItemCount() == 0) {
+    if (getItemCount() == 0) {
             return;
         }
 

@@ -225,7 +225,7 @@ public abstract class VirtualList {
 //#     public Image img;
 //#endif
     
-    protected synchronized void updateLayout() {
+    protected void updateLayout() {
         int size = getItemCount();
         if (size == 0) {
             listHeight = 0;
@@ -655,7 +655,6 @@ public abstract class VirtualList {
         g.drawLine(pos-1, pos2, pos+1, pos2);       
         g.fillRect(pos-2, height-3, 1, 1);
         g.fillRect(pos+2, height-3, 1, 1);
-        redraw();
     }
     
 //#ifdef POPUPS
