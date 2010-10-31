@@ -141,7 +141,7 @@ public class JabberDataBlockDispatcher implements Runnable {
                             if (stream.outgoingQueries.indexOf(id) >= 0) {
                                 stream.outgoingQueries.removeElement(id);
                             } else {
-                                throw new Exception("Bad IQ result");
+                                continue; // ignore bad iq result/error
                             }
                         }
                     }

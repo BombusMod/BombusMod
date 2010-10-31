@@ -34,10 +34,8 @@ import com.alsutton.jabber.JabberStream;
 import com.alsutton.jabber.datablocks.Iq;
 import images.RosterIcons;
 import java.util.Enumeration;
-import java.util.Vector;
 import locale.SR;
 import ui.MainBar;
-import ui.VirtualElement;
 import ui.controls.form.DefForm;
 import Menu.MenuCommand;
 //#ifdef CLIPBOARD

@@ -91,12 +91,16 @@ public class DefForm
     }
 
     public final void loadItemsFrom(Vector items) {
-        int count = items.size();
-        itemsList.removeAllElements();
-        for (int i = 0; i < count; i++) {
-            itemsList.addElement(items.elementAt(i));
+        synchronized (items) {
+            if (items != null) {
+                int count = items.size();
+                itemsList.removeAllElements();
+                for (int i = 0; i < count; i++) {
+                    itemsList.addElement(items.elementAt(i));
+                }
+                redraw();
+            }
         }
-        redraw();
     }
 
     public void cmdCancel() {

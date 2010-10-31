@@ -103,6 +103,7 @@ public class TransferAcceptFile
             t.filePath = ftFolder;
             t.accept();
             //switch to file transfer manager
+            parentView = sd.roster;
             new TransferManager();
         } else {
             show();
@@ -120,6 +121,7 @@ public class TransferAcceptFile
         t.filePath = path.getValue();        
         t.accept();
         //switch to file transfer manager
+        parentView = sd.roster;
         new TransferManager();
     }
     

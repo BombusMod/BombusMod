@@ -24,7 +24,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-
 package Conference;
 import Conference.affiliation.Affiliations;
 //#ifdef SERVICE_DISCOVERY
@@ -44,55 +43,52 @@ import ui.controls.form.DefForm;
  *
  * @author EvgS
  */
-public class Bookmarks 
-        extends DefForm
-    {   
-    
+public class Bookmarks extends DefForm {
+
     private BookmarkItem toAdd;
-    
-    private MenuCommand cmdJoin=new MenuCommand (SR.MS_SELECT, MenuCommand.OK, 1);
-    private MenuCommand cmdAdvJoin=new MenuCommand (SR.MS_EDIT_JOIN, MenuCommand.SCREEN, 2);
-    private MenuCommand cmdNew=new MenuCommand (SR.MS_NEW_BOOKMARK, MenuCommand.SCREEN, 3);
-    private MenuCommand cmdDoAutoJoin=new MenuCommand(SR.MS_DO_AUTOJOIN, MenuCommand.SCREEN, 4);
-    private MenuCommand cmdConfigure=new MenuCommand (SR.MS_CONFIG_ROOM, MenuCommand.SCREEN, 5);
+    private MenuCommand cmdJoin = new MenuCommand(SR.MS_SELECT, MenuCommand.OK, 1);
+    private MenuCommand cmdAdvJoin = new MenuCommand(SR.MS_EDIT_JOIN, MenuCommand.SCREEN, 2);
+    private MenuCommand cmdNew = new MenuCommand(SR.MS_NEW_BOOKMARK, MenuCommand.SCREEN, 3);
+    private MenuCommand cmdDoAutoJoin = new MenuCommand(SR.MS_DO_AUTOJOIN, MenuCommand.SCREEN, 4);
+    private MenuCommand cmdConfigure = new MenuCommand(SR.MS_CONFIG_ROOM, MenuCommand.SCREEN, 5);
 //#ifdef SERVICE_DISCOVERY
-    private MenuCommand cmdDisco=new MenuCommand (SR.MS_DISCO_ROOM, MenuCommand.SCREEN, 6);
+    private MenuCommand cmdDisco = new MenuCommand(SR.MS_DISCO_ROOM, MenuCommand.SCREEN, 6);
 //#endif
-    private MenuCommand cmdUp=new MenuCommand (SR.MS_MOVE_UP, MenuCommand.SCREEN, 7);
-    private MenuCommand cmdDwn=new MenuCommand (SR.MS_MOVE_DOWN, MenuCommand.SCREEN, 8);
-    private MenuCommand cmdSort=new MenuCommand (SR.MS_SORT, MenuCommand.SCREEN, 9);
-    private MenuCommand cmdSave=new MenuCommand (SR.MS_SAVE_LIST, MenuCommand.SCREEN, 10);
+    private MenuCommand cmdUp = new MenuCommand(SR.MS_MOVE_UP, MenuCommand.SCREEN, 7);
+    private MenuCommand cmdDwn = new MenuCommand(SR.MS_MOVE_DOWN, MenuCommand.SCREEN, 8);
+    private MenuCommand cmdSort = new MenuCommand(SR.MS_SORT, MenuCommand.SCREEN, 9);
+    private MenuCommand cmdSave = new MenuCommand(SR.MS_SAVE_LIST, MenuCommand.SCREEN, 10);
+    private MenuCommand cmdRoomOwners = new MenuCommand(SR.MS_OWNERS, MenuCommand.SCREEN, 11);
+    private MenuCommand cmdRoomAdmins = new MenuCommand(SR.MS_ADMINS, MenuCommand.SCREEN, 12);
+    private MenuCommand cmdRoomMembers = new MenuCommand(SR.MS_MEMBERS, MenuCommand.SCREEN, 13);
+    private MenuCommand cmdRoomBanned = new MenuCommand(SR.MS_BANNED, MenuCommand.SCREEN, 14);
+    private MenuCommand cmdDel = new MenuCommand(SR.MS_DELETE, MenuCommand.SCREEN, 15);
+    JabberStream stream = sd.roster.theStream;
 
-    private MenuCommand cmdRoomOwners=new MenuCommand (SR.MS_OWNERS, MenuCommand.SCREEN, 11);
-    private MenuCommand cmdRoomAdmins=new MenuCommand (SR.MS_ADMINS, MenuCommand.SCREEN, 12);
-    private MenuCommand cmdRoomMembers=new MenuCommand (SR.MS_MEMBERS, MenuCommand.SCREEN, 13);
-    private MenuCommand cmdRoomBanned=new MenuCommand (SR.MS_BANNED, MenuCommand.SCREEN, 14);
-    
-    private MenuCommand cmdDel=new MenuCommand (SR.MS_DELETE, MenuCommand.SCREEN, 15);
-
-    JabberStream stream=sd.roster.theStream;
     /** Creates a new instance of Bookmarks
      * @param toAdd
      */
     public Bookmarks(BookmarkItem toAdd) {
-        super(null);
+        super(null, false);
         loadBookmarks();
-        
-        if (getItemCount()==0 && toAdd==null) {
+
+        if (getItemCount() == 0 && toAdd == null) {
             new ConferenceForm();
             return;
         }
 
-        this.toAdd=toAdd;
+        this.toAdd = toAdd;
 
-        if (toAdd!=null)
+        if (toAdd != null) {
             addBookmark();
-        
-        setMainBarItem(new MainBar(2, null, SR.MS_BOOKMARKS+" ("+getItemCount()+") ", false));//for title updating after "add bookmark"
-                
-	enableListWrapping(true);
+        }
+
+        setMainBarItem(new MainBar(2, null, SR.MS_BOOKMARKS + " (" + getItemCount() + ") ", false));//for title updating after "add bookmark"
+
+        enableListWrapping(true);
+        show();
     }
-    
+
     public void commandState() {
         menuCommands.removeAllElements();
         addMenuCommand(cmdJoin);
@@ -112,140 +108,164 @@ public class Bookmarks
         addMenuCommand(cmdRoomMembers);
         addMenuCommand(cmdRoomBanned);
         addMenuCommand(cmdConfigure);
-        addMenuCommand(cmdCancel);
     }
-    
-    
+
     public final void loadBookmarks() {
         loadItemsFrom(sd.roster.bookmarks);
     }
 
     private void addBookmark() {
-        if (toAdd!=null) {            
-            sd.roster.bookmarks.addElement(toAdd);
+        if (toAdd != null) {
+            itemsList.addElement(toAdd);
             //sort(bm);
             saveBookmarks();
-            loadBookmarks();
         }
     }
-    
-    public void eventOk(){
-        if (getItemCount()==0) 
+
+    public void eventOk() {
+        if (getItemCount() == 0) {
             return;
-        
-        BookmarkItem join=(BookmarkItem)getFocusedObject();
-        if (join==null) 
+        }
+
+        BookmarkItem join = (BookmarkItem) getFocusedObject();
+        if (join == null) {
             return;
-        if (join.isUrl) 
+        }
+        if (join.isUrl) {
             return;
-        
+        }
+
         ConferenceForm.join(join.name, join.getJidNick(), join.password, cf.confMessageCount);
         parentView = sd.roster;
         destroyView();
     }
-    
-    public void menuAction(MenuCommand c, VirtualList d){
-        super.menuAction(c, d);
-        if (c==cmdNew) { 
+
+    public void menuAction(MenuCommand c, VirtualList d) {
+        if (c == cmdNew) {
             new ConferenceForm();
             return;
         }
-        if (c==cmdJoin) eventOk();
-        
-	if (getItemCount()==0) return;
-        String roomJid=((BookmarkItem)getFocusedObject()).getJid();
+        if (c == cmdJoin) {
+            eventOk();
+        }
 
-        if (c==cmdAdvJoin) {
-            BookmarkItem join=(BookmarkItem)getFocusedObject();
-            new ConferenceForm(join, cursor);
-        } else if (c==cmdDel) {
-            deleteBookmark();
-            setMainBarItem(new MainBar(2, null, SR.MS_BOOKMARKS+" ("+getItemCount()+") ", false));
+        if (getItemCount() == 0) {
             return;
         }
-//#ifdef SERVICE_DISCOVERY
-        else if (c==cmdDisco) new ServiceDiscovery( roomJid, null, false);
-//#endif
-        else if (c==cmdConfigure) new QueryConfigForm( roomJid);
-        else if (c==cmdRoomOwners) new Affiliations(roomJid, (short)1);  
-        else if (c==cmdRoomAdmins) new Affiliations(roomJid, (short)2);  
-        else if (c==cmdRoomMembers) new Affiliations(roomJid, (short)3);  
-        else if (c==cmdRoomBanned) new Affiliations(roomJid, (short)4);  
-        else if (c==cmdSort) sort(sd.roster.bookmarks);
-        else if (c==cmdDoAutoJoin) {
-            for (Enumeration e=sd.roster.bookmarks.elements(); e.hasMoreElements();) {
-                BookmarkItem bm=(BookmarkItem) e.nextElement();
-                if (bm.autojoin) 
-                    ConferenceForm.join(bm.name, bm.jid+'/'+bm.nick, bm.password, cf.confMessageCount);
+        String roomJid = ((BookmarkItem) getFocusedObject()).getJid();
+
+        if (c == cmdAdvJoin) {
+            BookmarkItem join = (BookmarkItem) getFocusedObject();
+            new ConferenceForm(join, cursor);
+        } else if (c == cmdDel) {
+            deleteBookmark();
+            setMainBarItem(new MainBar(2, null, SR.MS_BOOKMARKS + " (" + getItemCount() + ") ", false));
+            return;
+        } //#ifdef SERVICE_DISCOVERY
+        else if (c == cmdDisco) {
+            new ServiceDiscovery(roomJid, null, false);
+        } //#endif
+        else if (c == cmdConfigure) {
+            new QueryConfigForm(roomJid);
+        } else if (c == cmdRoomOwners) {
+            new Affiliations(roomJid, (short) 1);
+        } else if (c == cmdRoomAdmins) {
+            new Affiliations(roomJid, (short) 2);
+        } else if (c == cmdRoomMembers) {
+            new Affiliations(roomJid, (short) 3);
+        } else if (c == cmdRoomBanned) {
+            new Affiliations(roomJid, (short) 4);
+        } else if (c == cmdSort) {
+            sort(itemsList);
+        } else if (c == cmdDoAutoJoin) {
+            for (Enumeration e = itemsList.elements(); e.hasMoreElements();) {
+                BookmarkItem bm = (BookmarkItem) e.nextElement();
+                if (bm.autojoin) {
+                    ConferenceForm.join(bm.name, bm.jid + '/' + bm.nick, bm.password, cf.confMessageCount);
+                }
             }
             parentView = sd.roster;
             destroyView();
+        } else if (c == cmdSave) {
+            saveBookmarks();
+        } else if (c == cmdUp) {
+            move(-1);
+            keyUp();
+        } else if (c == cmdDwn) {
+            move(+1);
+            keyDwn();
         }
-        
-        else if (c==cmdSave) saveBookmarks();
-        else if (c==cmdUp) { move(-1); keyUp(); }
-        else if (c==cmdDwn) { move(+1); keyDwn(); }
-        super.menuAction(c, d);
-        redraw();
-
     }
-    
-    private void deleteBookmark(){
-        BookmarkItem del=(BookmarkItem)getFocusedObject();
-        if (del==null) 
-            return;
-        if (del.isUrl) 
-            return;
 
-        sd.roster.bookmarks.removeElement(del);
-        if (getItemCount()<=cursor) 
+    private void deleteBookmark() {
+        BookmarkItem del = (BookmarkItem) getFocusedObject();
+        if (del == null) {
+            return;
+        }
+        if (del.isUrl) {
+            return;
+        }
+
+        itemsList.removeElement(del);
+        if (getItemCount() <= cursor) {
             moveCursorEnd();
+        }
         saveBookmarks();
-        loadBookmarks();
         redraw();
     }
-    
+
     private void saveBookmarks() {
-        new BookmarkQuery(BookmarkQuery.SAVE);
+        sd.roster.bookmarks = itemsList;
+        sd.roster.theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.SAVE));
     }
 
-    
-    public void move(int offset){
+    public void move(int offset) {
         try {
-            int index=cursor;
-            BookmarkItem p1=(BookmarkItem)getItemRef(index);
-            BookmarkItem p2=(BookmarkItem)getItemRef(index+offset);
-            
-            sd.roster.bookmarks.setElementAt(p1, index+offset);
-            sd.roster.bookmarks.setElementAt(p2, index);
-        } catch (Exception e) {/* IndexOutOfBounds */}
-        loadBookmarks();
+            int index = cursor;
+            BookmarkItem p1 = (BookmarkItem) getItemRef(index);
+            BookmarkItem p2 = (BookmarkItem) getItemRef(index + offset);
+
+            itemsList.setElementAt(p1, index + offset);
+            itemsList.setElementAt(p2, index);
+            saveBookmarks();
+        } catch (Exception e) {/* IndexOutOfBounds */
+
+        }
     }
 
     public void keyPressed(int keyCode) {
         super.keyPressed(keyCode);
         switch (keyCode) {
             case Canvas.KEY_NUM4:
-                pageLeft(); break;
+                pageLeft();
+                break;
             case Canvas.KEY_NUM6:
-                pageRight(); break;
+                pageRight();
+                break;
 //#ifdef SERVICE_DISCOVERY
             case Canvas.KEY_POUND:
-                new ServiceDiscovery(((BookmarkItem)getFocusedObject()).getJid(), null, false);
+                new ServiceDiscovery(((BookmarkItem) getFocusedObject()).getJid(), null, false);
 //#endif
         }
     }
 
-    public String touchLeftCommand() {return SR.MS_MENU;}
-    public void touchLeftPressed() {showMenu();}
-    
-    protected void keyClear(){
-        new AlertBox(SR.MS_DELETE_ASK, ((BookmarkItem)getFocusedObject()).getJid()) {
+    public String touchLeftCommand() {
+        return SR.MS_MENU;
+    }
+
+    public void touchLeftPressed() {
+        showMenu();
+    }
+
+    protected void keyClear() {
+        new AlertBox(SR.MS_DELETE_ASK, ((BookmarkItem) getFocusedObject()).getJid()) {
+
             public void yes() {
                 deleteBookmark();
             }
-            public void no() {}
+
+            public void no() {
+            }
         };
-    }        
-    
+    }
 }

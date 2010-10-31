@@ -398,7 +398,7 @@ public class Roster
     }
 
     public void resetRoster() {
-	synchronized (hContacts) {
+        synchronized (hContacts) {
             hContacts.removeAllElements();
 
 //#ifdef JUICK
@@ -407,13 +407,14 @@ public class Roster
 //#             indexMainJuickContact = -1;
 //#endif
 
-            groups=null;
-	    groups=new Groups();
-            
-            bookmarks=null;
-	}
-	myJid = new Jid(sd.account.getJid());
-	updateContact(sd.account.getNick(), myJid.getBareJid(), SR.MS_SELF_CONTACT, "self", false);
+            groups = null;
+            groups = new Groups();
+
+            bookmarks = null;
+            bookmarks = new Vector();
+        }
+        myJid = new Jid(sd.account.getJid());
+        updateContact(sd.account.getNick(), myJid.getBareJid(), SR.MS_SELF_CONTACT, "self", false);
     }
     
     public void systemGC() {
@@ -1397,8 +1398,7 @@ public class Roster
         }
 //#ifndef WMUC
         //query bookmarks
-        if (bookmarks==null)
-            theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
+        theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
 //#endif
 
     }

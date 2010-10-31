@@ -40,7 +40,6 @@ import util.StringLoader;
 //#ifdef PRIVACY
 import PrivacyLists.QuickPrivacy;
 //#endif
-
 /**
  *
  * @author Evg_S
@@ -51,9 +50,11 @@ public class BookmarkQuery implements JabberBlockListener {
     public final static boolean LOAD = false;
     private StaticData sd = StaticData.getInstance();
     private Config cf = Config.getInstance();
+    boolean queryType;
 
     /** Creates a new instance of BookmarkQurery */
     public BookmarkQuery(boolean saveBookmarks) {
+        this.queryType = saveBookmarks;
         JabberDataBlock request = new Iq(null, (saveBookmarks) ? Iq.TYPE_SET : Iq.TYPE_GET, "getbookmarks");
         JabberDataBlock query = request.addChildNs("query", "jabber:iq:private");
 
@@ -67,14 +68,16 @@ public class BookmarkQuery implements JabberBlockListener {
     }
 
     public int blockArrived(JabberDataBlock data) {
-        try {
-            if (!(data instanceof Iq)) {
-                return JabberBlockListener.BLOCK_REJECTED;
-            }
+        if (data instanceof Iq) {
             if (data.getAttribute("id").equals("getbookmarks")) {
-                JabberDataBlock storage = data.findNamespace("query", "jabber:iq:private").findNamespace("storage", "storage:bookmarks");
-                Vector bookmarks = new Vector();
-                boolean autojoin = cf.autoJoinConferences && sd.roster.myStatus != Presence.PRESENCE_INVISIBLE;
+                String type = data.getTypeAttribute();
+                if (type.equals("result")) {
+                    JabberDataBlock query = data.findNamespace("query", "jabber:iq:private");
+                    if (query != null) {
+                        JabberDataBlock storage = query.findNamespace("storage", "storage:bookmarks");
+                        if (storage != null) {
+                            Vector bookmarks = new Vector();
+                            boolean autojoin = cf.autoJoinConferences && sd.roster.myStatus != Presence.PRESENCE_INVISIBLE;
 //#ifdef PRIVACY 
 //#ifdef PLUGINS
 //#                 if (sd.Privacy) {
@@ -85,11 +88,13 @@ public class BookmarkQuery implements JabberBlockListener {
 //#                 }
 //#endif
 //#endif                     
-                try {
-                    for (Enumeration e = storage.getChildBlocks().elements(); e.hasMoreElements();) {
-                        BookmarkItem bm = new BookmarkItem((JabberDataBlock) e.nextElement());
-                        if (bm.nick == null)
-                            bm.nick = sd.account.getNick();
+                            Vector items = storage.getChildBlocks();
+                            if (items != null) {
+                                for (Enumeration e = items.elements(); e.hasMoreElements();) {
+                                    BookmarkItem bm = new BookmarkItem((JabberDataBlock) e.nextElement());
+                                    if (bm.nick == null) {
+                                        bm.nick = sd.account.getNick();
+                                    }
 //#ifdef PRIVACY                                                
 //#ifdef PLUGINS                        
 //#                         if (sd.Privacy) {
@@ -103,13 +108,16 @@ public class BookmarkQuery implements JabberBlockListener {
 //#                         }
 //#endif
 //#endif                        
-                        if (bm.name == null)
-                            bm.name = bm.jid;
-                        bookmarks.addElement(bm);
-                        if (bm.autojoin && autojoin) {
-                            ConferenceForm.join(bm.name, bm.jid + '/' + bm.nick, bm.password, cf.confMessageCount);
-                        }
-                    }
+                                    if (bm.name == null) {
+                                        bm.name = bm.jid;
+                                    }
+                                    bookmarks.addElement(bm);
+                                    if (queryType == LOAD) {
+                                        if (bm.autojoin && autojoin) {
+                                            ConferenceForm.join(bm.name, bm.jid + '/' + bm.nick, bm.password, cf.confMessageCount);
+                                        }
+                                    }
+                                }
 //#ifdef PRIVACY                                                
 //#ifdef PLUGINS                        
 //#                         if (sd.Privacy) {
@@ -119,20 +127,19 @@ public class BookmarkQuery implements JabberBlockListener {
 //#                         }
 //#endif
 //#endif                        
-                    
-                } catch (Exception e) {
-                } //no any bookmarks
+                            }
 
-                if (bookmarks.isEmpty()) {
-                    loadDefaults(bookmarks);
+                            if (bookmarks.isEmpty()) {
+                                loadDefaults(bookmarks);
+                            }
+                            for (Enumeration e = bookmarks.elements(); e.hasMoreElements();) {
+                                sd.roster.bookmarks.addElement((BookmarkItem) e.nextElement());
+                            }
+                            return JabberBlockListener.NO_MORE_BLOCKS;
+                        }
+                    }
                 }
-
-                sd.roster.bookmarks = bookmarks;
-                sd.roster.redraw();
-
-                return JabberBlockListener.NO_MORE_BLOCKS;
             }
-        } catch (Exception e) {
         }
         return JabberBlockListener.BLOCK_REJECTED;
     }
@@ -157,5 +164,5 @@ public class BookmarkQuery implements JabberBlockListener {
             BookmarkItem bm = new BookmarkItem(desc, jid, nick, pass, false);
             bookmarks.addElement(bm);
         }
-    }
+    }    
 }

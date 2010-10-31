@@ -185,8 +185,12 @@ public class ConferenceForm
             
         if (c==cmdEdit) {
             sd.roster.bookmarks.removeElement(editConf);
-            sd.roster.bookmarks.insertElementAt(new BookmarkItem(name, gchat.toString(), nick, pass, autojoin), cursor);
-            new BookmarkQuery(BookmarkQuery.SAVE);
+            BookmarkItem item = new BookmarkItem(name, gchat.toString(), nick, pass, autojoin);
+            if (cursor < sd.roster.bookmarks.size())
+                sd.roster.bookmarks.insertElementAt(item, cursor);
+            else
+                sd.roster.bookmarks.addElement(item);
+            sd.roster.theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.SAVE));
             destroyView();
         } else if (c==cmdAdd) {
             new Bookmarks(new BookmarkItem(name, gchat.toString(), nick, pass, autojoin));

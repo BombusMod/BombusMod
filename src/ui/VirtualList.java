@@ -244,17 +244,25 @@ public abstract class VirtualList {
         return winHeight;
     }
     
-    protected int getElementIndexAt(int yPos){
-        int end=getItemCount()-1;
-        if (end<0) return -1;
-        int begin=0;
-        while (end-begin>1) {
-            int index=(end+begin)>>>1;
-            if (itemLayoutY.length <= index) index = itemLayoutY.length - 1;
-            if (yPos<itemLayoutY[index]) end=index; else begin=index;
+    protected int getElementIndexAt(int yPos) {
+        int end = getItemCount() - 1;
+        if (end < 0) {
+            return -1;
         }
-        return (yPos<itemLayoutY[end])? begin:end;
+        int begin = 0;
+        while (end - begin > 1) {
+            int index = (end + begin) >> 1;
+            if (itemLayoutY.length <= index) {
+                index = itemLayoutY.length - 1;
             }
+            if (yPos < itemLayoutY[index]) {
+                end = index;
+            } else {
+                begin = index;
+            }
+        }
+        return (yPos < itemLayoutY[end]) ? begin : end;
+    }
     
     public int win_top; // верхняя граница окна относительно списка
     private int winHeight; // отображаемый размер списка
@@ -398,7 +406,7 @@ public abstract class VirtualList {
      *     
      */
     protected void beginPaint(){};
-    
+
     public void paint(Graphics g) {
         if (Config.getInstance().phoneManufacturer == Config.MICROEMU) {
             width = VirtualCanvas.getInstance().getWidth();
@@ -481,7 +489,7 @@ public abstract class VirtualList {
         
         int itemMaxWidth=(scroll) ?(width-scrollbar.getScrollWidth()) : (width);
 
-        int itemIndex=getElementIndexAt(win_top);
+        int itemIndex = win_top > 0 ? getElementIndexAt(win_top) : 0;
         int displayedIndex=0;
         int displayedBottom=list_top;
    
@@ -647,6 +655,7 @@ public abstract class VirtualList {
         g.drawLine(pos-1, pos2, pos+1, pos2);       
         g.fillRect(pos-2, height-3, 1, 1);
         g.fillRect(pos+2, height-3, 1, 1);
+        redraw();
     }
     
 //#ifdef POPUPS
