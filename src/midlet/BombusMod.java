@@ -42,6 +42,7 @@ import locale.SR;
 import ui.*;
 import Client.*;
 import Info.Version;
+import ui.controls.AlertBox;
 //#ifdef PLUGINS
 //# import java.util.Vector;
 //# import util.StringLoader;
@@ -150,9 +151,16 @@ public class BombusMod extends MIDlet implements Runnable{
         else
             new AccountSelect(true);
         } catch (Exception e) {
-//#ifdef DEBUG            
-//#             e.printStackTrace();
-//#endif            
+             e.printStackTrace();
+		AlertBox error = new AlertBox(SR.MS_ERROR, e.toString() + ": " + e.getMessage()) {
+
+				public void yes() {
+					notifyDestroyed();
+				}
+
+				public void no() {					
+				}
+			};
         }
 //#ifdef LIGHT_CONFIG        
 //#ifdef PLUGINS        

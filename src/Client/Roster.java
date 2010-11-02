@@ -234,9 +234,8 @@ public class Roster
         /*vContacts=null;
         vContacts=new Vector(); // just for displaying
         */
-	updateMainBar();
+	updateMainBar();       
         
-        SplashScreen.getInstance().setExit(this);
 //#ifdef CLIENTS_ICONS
 //#ifdef PLUGINS
 //# 	if (sd.ClientsIcons)
@@ -2214,6 +2213,7 @@ public class Roster
     }
 
     public void beginConversation() { //todo: verify xmpp version
+	SplashScreen.getInstance().setExit(this);
         if (theStream.isXmppV1())
             new SASLAuth(sd.account, this, theStream)
 //#if SASL_XGOOGLETOKEN
@@ -3063,7 +3063,7 @@ public class Roster
             boolean needUpdatePrivacy = false;
 //#endif            
 
-            //try {
+            try {
             while (pendingRepaints > 0) {
                 pendingRepaints = 0;
 
@@ -3153,11 +3153,11 @@ public class Roster
                 if (list != null)
                     list.redraw();
                 }
-            //} catch (Exception e) {
+            } catch (Exception e) {
 //#ifdef DEBUG
 //#                 //e.printStackTrace();
 //#endif
-            //}
+            }
             //thread=null;
             systemGC();
         }

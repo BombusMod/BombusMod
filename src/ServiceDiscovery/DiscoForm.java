@@ -63,6 +63,8 @@ public class DiscoForm extends ComplexForm{
     
     //Roster roster=StaticData.getInstance().roster;
     JabberStream stream;
+
+    FormSubmitListener listener;
     
     //private JabberBlockListener listener;
     
@@ -72,10 +74,11 @@ public class DiscoForm extends ComplexForm{
      * @param stream
      * @param childName
      */
-    public DiscoForm( JabberDataBlock regform, JabberStream stream, String resultId, String childName) {
+    public DiscoForm(FormSubmitListener listener, JabberDataBlock regform, JabberStream stream, String resultId, String childName) {
         super(regform.getAttribute("from"));
         service=regform.getAttribute("from");
         this.childName=childName;
+	this.listener = listener;
         JabberDataBlock query=regform.getChildBlock(childName);
         xmlns=query.getAttribute("xmlns");
         node=query.getAttribute("node");
@@ -138,7 +141,7 @@ public class DiscoForm extends ComplexForm{
             x.setAttribute("type", "submit");
             cform=x;
         }
-        
+        listener.formSubmit(fields);
         for (Enumeration e=fields.elements(); e.hasMoreElements(); ) {
             FormField f=(FormField) e.nextElement();
             if (f==null) continue;
@@ -199,6 +202,9 @@ public class DiscoForm extends ComplexForm{
             }
         }
     }
-
     public String touchLeftCommand() { return (complete) ? "" : SR.MS_SEND;}
+
+    public interface FormSubmitListener {
+	    public void formSubmit(Vector fields);
+    }
 }

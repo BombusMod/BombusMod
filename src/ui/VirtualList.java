@@ -225,7 +225,7 @@ public abstract class VirtualList {
 //#     public Image img;
 //#endif
     
-    protected void updateLayout() {
+    protected synchronized void updateLayout() {
         int size = getItemCount();
         if (size == 0) {
             listHeight = 0;
@@ -765,6 +765,7 @@ public abstract class VirtualList {
         try {
         if (getItemRef(index).isSelectable()) cursor=index;
         } catch (Exception ex){
+		ex.printStackTrace();
         }
         stickyWindow=true;
         redraw();

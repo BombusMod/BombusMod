@@ -70,7 +70,7 @@ public class AlertCustomize {
     public String soundVIP="";
     public String soundVIPType="tone sequence";
     
-    public boolean vibrateOnlyHighlited;
+    public boolean vibrateOnlyHighlited = true;
 
     public int soundVol=100;
     

@@ -1,1 +1,6 @@
-/skins/vesna.txt	vesna
+/skins/skin.txt	Revolt
+/skins/skin2.txt	Ultimate
+/skins/skin3.txt	Positive
+/skins/skin4.txt	Classic
+/skins/skin5.txt	Heaven
+/skins/vesna.txt	Vesna

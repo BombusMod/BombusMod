@@ -95,7 +95,7 @@ public class DefForm
     }
 
     public final void loadItemsFrom(Vector items) {
-        synchronized (items) {
+        synchronized (itemsList) {
             if (items != null) {
                 int count = items.size();
                 itemsList.removeAllElements();

@@ -274,14 +274,14 @@ public class ServiceDiscovery
             }
         } else if (id.startsWith ("discoreg")) {
             discoIcon=0;
-            new DiscoForm( data, stream, "discoResult", "query").fetchMediaElements(query.getChildBlocks());
+            new DiscoForm(null, data, stream, "discoResult", "query").fetchMediaElements(query.getChildBlocks());
         } else if (id.startsWith("discocmd")) {
             discoIcon=0;
-            new DiscoForm( data, stream, "discocmd", "command");
+            new DiscoForm(null, data, stream, "discocmd", "command");
 
         } else if (id.startsWith("discosrch")) {
             discoIcon=0;
-            new DiscoForm( data, stream, "discoRSearch", "query");
+            new DiscoForm(null, data, stream, "discoRSearch", "query");
         } else if (id.startsWith("discoR")) {
             String text=SR.MS_DONE;
             String mb=data.getTypeAttribute();

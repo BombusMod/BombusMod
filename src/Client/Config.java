@@ -183,7 +183,7 @@ public class Config {
 //#endif
     public boolean queryExit = false;
     public int notInListDropLevel = NotInListFilter.ALLOW_ALL; //enable all
-    public boolean showBalloons = true;
+    public boolean showBalloons = false;
 //#ifdef LOGROTATE
 //#     public int msglistLimit=500;
 //#endif
@@ -209,7 +209,7 @@ public class Config {
     public int reconnectCount = 10;
     public int reconnectTime = 15;
     public boolean executeByNum;
-    public boolean showNickNames;
+    public boolean showNickNames = true;
     public boolean fileTransfer = true;
     public boolean adhoc = false;
     public boolean saveHistory = false;

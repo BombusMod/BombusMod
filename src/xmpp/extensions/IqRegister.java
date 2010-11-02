@@ -36,7 +36,7 @@ public class IqRegister implements JabberBlockListener, NotifyListener {
                     if (id.startsWith("regac")) {
                         notifier.registrationFormNotify(data);
                     } else {
-                        //notifier.registrationSuccess();
+                        notifier.registrationSuccess();
                     }
                 } else if (type.equals("error")) {
                     notifier.registrationFailed(XmppError.findInStanza(data).toString());
@@ -52,7 +52,7 @@ public class IqRegister implements JabberBlockListener, NotifyListener {
 
     public interface RegistrationListener {
         public void registrationFormNotify(JabberDataBlock data);
-        public void registrationSuccess(String userName, String pass);
+        public void registrationSuccess();
         public void registrationFailed(String errorText);
     };
 }
