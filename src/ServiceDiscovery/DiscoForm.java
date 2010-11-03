@@ -141,7 +141,8 @@ public class DiscoForm extends ComplexForm{
             x.setAttribute("type", "submit");
             cform=x;
         }
-        listener.formSubmit(fields);
+        if (listener != null)
+	        listener.formSubmit(fields);
         for (Enumeration e=fields.elements(); e.hasMoreElements(); ) {
             FormField f=(FormField) e.nextElement();
             if (f==null) continue;
