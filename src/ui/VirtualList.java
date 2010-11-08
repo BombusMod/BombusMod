@@ -818,7 +818,7 @@ public abstract class VirtualList {
             redraw();
             return;
         }
-//#endif        
+//#endif
         if (Config.fullscreen) {
             int act = CommandsPointer.pointerPressed(x, y);
             if (act == 1) {
@@ -878,6 +878,8 @@ public abstract class VirtualList {
         redraw();
     }
 
+    boolean itemDragged = false;
+
     protected void pointerDragged(int x, int y) {
         if (y < list_top) {
             return;
@@ -896,6 +898,8 @@ public abstract class VirtualList {
             stickyWindow = false;
             return;
         }
+
+        itemDragged = true;
 
         yPointerPos = y;
 
@@ -930,6 +934,10 @@ public abstract class VirtualList {
         }
         
         if (y > list_top + winHeight) {
+            return;
+        }
+        if (itemDragged) {
+            itemDragged = false;
             return;
         }
         long clickTime = System.currentTimeMillis();
