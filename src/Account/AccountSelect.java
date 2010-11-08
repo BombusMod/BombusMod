@@ -67,32 +67,16 @@ public class AccountSelect extends DefForm {
         }
 
         activeAccount = cf.accountIndex;
-        loadAccounts();
+        loadAccounts();        
+    }
 
+    public void show() {
+        super.show();
         if (!itemsList.isEmpty()) {
-            show();
             moveCursorTo(activeAccount);
-        } else {
-//#ifdef IMPORT_EXPORT
-//#ifdef PLUGINS
-//#             if (StaticData.getInstance().IE) {
-//#endif
-//#             new IE.Accounts("/def_accounts.txt", 0,  true);
-//#ifdef PLUGINS
-//#             }
-//#endif
-//#             loadAccounts();
-//#endif            
-        if (itemsList.isEmpty()) {
-
-            new AccountForm(this, null);
-            return;
-        } else {
-                show();
-        }
         }
     }
-    
+
     public final void loadAccounts() {
         Account a;
         int index=0;
@@ -131,13 +115,6 @@ public class AccountSelect extends DefForm {
     public void touchLeftPressed() {
         showMenu();
     }
-
-    public VirtualElement getItemRef(int Index) {
-        if (Index > itemsList.size())
-            Index = itemsList.size() - 1;
-        return (VirtualElement) itemsList.elementAt(Index);
-    }
-    protected int getItemCount() { return itemsList.size();  }
 
     public void menuAction(MenuCommand c, VirtualList d){
         if (c==cmdQuit) {

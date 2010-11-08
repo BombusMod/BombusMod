@@ -286,6 +286,7 @@ public abstract class VirtualList {
     private int lastClickY;
     private int lastClickItem;
     private long lastClickTime;
+    private int lastCursor;
 
     /**
      * Разрешает заворачивание списка в кольцо (перенос курсора через конец списка)
@@ -329,18 +330,15 @@ public abstract class VirtualList {
     /** Creates a new instance of VirtualList */
     public VirtualList() {       
        //setFullScreenMode(Config.fullscreen);
-       if (Config.getInstance().phoneManufacturer != Config.MICROEMU) {
+      /* if (phoneManufacturer != Config.MICROEMU) {
            width = sd.canvas.getWidth();
            height = sd.canvas.getHeight();
-       }
+       }*/
        
 //#ifdef POPUPS
         PopUp.getInstance();
 //#endif
-        if (phoneManufacturer==Config.WINDOWS) {
-            sd.canvas.setTitle("BombusMod");
-        }
-
+        
         changeOrient(cf.panelsState);
 
 //        setFullScreenMode(fullscreen);
@@ -391,8 +389,8 @@ public abstract class VirtualList {
      * @param h
      */
     protected void sizeChanged(int w, int h) {
-        width=w;
-        height=h;        
+        width = w;
+        height = h;
 //#ifdef GRADIENT
 //#         iHeight=0;
 //#         mHeight=0;
@@ -408,10 +406,6 @@ public abstract class VirtualList {
     protected void beginPaint(){};
 
     public void paint(Graphics g) {
-        if (Config.getInstance().phoneManufacturer == Config.MICROEMU) {
-            width = VirtualCanvas.getInstance().getWidth();
-            height = VirtualCanvas.getInstance().getHeight();
-        }
 
         mHeight=0;
         iHeight=0;       
@@ -836,131 +830,120 @@ public abstract class VirtualList {
                 stickyWindow = false;
                 return;
             }
-        }
-        
+        }        
         
         yPointerPos = y;
 
         if (scrollbar.pointerPressed(x, y, this)) {
-            stickyWindow=false;
+            stickyWindow = false;
             return;
         }
-        int oldCursor = 0;
-        int i = 0;
-        if (!Config.getInstance().advTouch) { // TODO: remove when fixed
         
-	while (i<32) {            
-	    if (y<itemBorder[i]) break;
-	    i++;
-	}
-	if (i==0 || i==32) return;
-        } else {
+
         if (y < list_top) {
             captionPressed();
             return;
         }
-        if (y > list_top + winHeight) return;
-         oldCursor = cursor;
+        if (y > list_top + winHeight) {
+            return;
         }
-        if (Config.getInstance().advTouch) {
-        int pos = getElementIndexAt(win_top+y-list_top);
+        lastCursor = cursor;
+        long clickTime = System.currentTimeMillis();
+
+        int pos = getElementIndexAt(win_top + y - list_top);
         if (cursor >= 0 && cursor != pos) {
             moveCursorTo(pos);
             setRotator();
         }
-        } else {
-         if (cursor >= 0) {             
-            moveCursorTo(getElementIndexAt(win_top) + i - 1);
-            setRotator();
-        }
-        }
-        if (Config.getInstance().advTouch) {
-	if (cursor!=oldCursor) {
-            if (cursor < itemLayoutY.length-1) {
-            // сделаем элемент максимально видимым
-            int il=itemLayoutY[cursor+1]-winHeight;
-            if (il>win_top) win_top=il;
-            il=itemLayoutY[cursor];
-            if (il<win_top) win_top=il;
-            }
-        }
-        }
-	long clickTime=System.currentTimeMillis();
-	if (cursor==lastClickItem) {
-	    if (lastClickY-y<5 && y-lastClickY<5) {
-                if (clickTime-lastClickTime>500 && clickTime-lastClickTime<1000){
-                    //System.out.println("short");
-		    y=0;
-		    eventLongOk();
+
+        if (cursor != lastCursor) {
+            if (cursor < itemLayoutY.length - 1) {
+                // сделаем элемент максимально видимым
+                int il = itemLayoutY[cursor + 1] - winHeight;
+                if (il > win_top) {
+                    win_top = il;
+                }
+                il = itemLayoutY[cursor];
+                if (il < win_top) {
+                    win_top = il;
                 }
             }
         }
-	lastClickTime=clickTime;
-        lastClickX=x;
-	lastClickY=y;
-	lastClickItem=cursor;
-        if (!Config.getInstance().advTouch) {
-        int il=itemLayoutY[cursor+1]-winHeight;
-        if (il>win_top) win_top=il;
-        il=itemLayoutY[cursor];
-        if (il<win_top) win_top=il;
-        }
         
+        lastClickTime = clickTime;
+        lastClickX = x;
+        lastClickY = y;
+        lastClickItem = cursor;        
+
         redraw();
     }
-    
+
     protected void pointerDragged(int x, int y) {
-        if (y < list_top) return;
-        if (y > list_top + winHeight) return;
-        if (scrollbar.pointerDragged(x, y, this)) {
-            stickyWindow=false;
+        if (y < list_top) {
             return;
         }
-        if (Config.getInstance().advTouch) {
-        int dy = y-yPointerPos;
+        if (y > list_top + winHeight) {
+            return;
+        }
+        if (scrollbar.pointerDragged(x, y, this)) {
+            stickyWindow = false;
+            return;
+        }
+
+        int dy = y - yPointerPos;
 
         if (Math.abs(dy) < 10) {
             stickyWindow = false;
             return;
         }
 
-        yPointerPos=y;
+        yPointerPos = y;
 
-        win_top-=dy;
+        win_top -= dy;
 
-        if (win_top+winHeight>listHeight) win_top=listHeight-winHeight;
-        if (win_top<0) win_top=0;
+        if (win_top + winHeight > listHeight) {
+            win_top = listHeight - winHeight;
+        }
+        if (win_top < 0) {
+            win_top = 0;
+        }
 
-        stickyWindow=false;
-	if (cursor>=0) {
-            int pos = getElementIndexAt(win_top+y-list_top);
-            if ((pos >= 0) && getItemRef(pos).isSelectable())
+        stickyWindow = false;
+        if (cursor >= 0) {
+            int pos = getElementIndexAt(win_top + y - list_top);
+            if ((pos >= 0) && getItemRef(pos).isSelectable()) {
                 cursor = pos;
+            }
             setRotator();
         }
 
         redraw();
-        }
+
     }
-    protected void pointerReleased(int x, int y) { 
+
+    protected void pointerReleased(int x, int y) {
         scrollbar.pointerReleased(x, y, this);
-        if (Config.fullscreen)
-            if (CommandsPointer.pointerPressed(x, y) > 0) return;
-        if (Config.getInstance().advTouch) {
-            if (y > list_top + winHeight) return;
-        }
-	long clickTime=System.currentTimeMillis();
-        if (lastClickY-y<5 && y-lastClickY<5) {
-            if (clickTime-lastClickTime>500) {
-                y = 0;
-                eventLongOk();
-            } else if (clickTime-lastClickTime<200) {
-                y = 0;
-                eventOk();
+        if (Config.fullscreen) {
+            if (CommandsPointer.pointerPressed(x, y) > 0) {
+                return;
             }
-        }        
+        }
+        
+        if (y > list_top + winHeight) {
+            return;
+        }
+        long clickTime = System.currentTimeMillis();
+
+        long dTime = clickTime - lastClickTime;
+        if (dTime > 500 && dTime < 1000) {
+                eventLongOk();
+        } else if (dTime <= 200) {
+            if (cursor == lastCursor || cf.advTouch)
+                eventOk();
+        }
+        y = 0;
     }
-    
+  
     private int getKeyCodeForSendEvent(int key_code) {
         int key = -1;
         switch (key_code) {
@@ -1104,7 +1087,7 @@ public abstract class VirtualList {
 // Перемещено в UserKeyExec: #19.
             break;
 //#ifdef POPUPS
-        case Canvas.KEY_POUND:        
+        case Canvas.KEY_POUND:
             if (cf.popUps) {
                 try {
                     String text=((VirtualElement)getFocusedObject()).getTipString();

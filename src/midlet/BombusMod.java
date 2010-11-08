@@ -24,7 +24,6 @@
  * along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-
 /**
  *
  * @author Eugene Stahov
@@ -34,6 +33,7 @@ package midlet;
 //# import AutoTasks.AutoTask;
 //#endif
 import Account.Account;
+import Account.AccountForm;
 import Account.AccountSelect;
 import Colors.ColorTheme;
 import javax.microedition.midlet.*;
@@ -56,24 +56,22 @@ import ui.controls.AlertBox;
  * @author  Eugene Stahov
  * @version
  */
-public class BombusMod extends MIDlet implements Runnable{
-    
+public class BombusMod extends MIDlet implements Runnable {
+
     private Display display;    // The display for this MIDlet
     private boolean isRunning;
     private boolean isMinimized;
-    StaticData sd=StaticData.getInstance();
-    ColorTheme ct=ColorTheme.getInstance();
+    StaticData sd = StaticData.getInstance();
+    ColorTheme ct = ColorTheme.getInstance();
 //#ifdef LIGHT_CONFIG
 //#     LightConfig lcf;
 //#endif    
     SplashScreen s;
-
     public static Image splash;
-    
     private static BombusMod instance;
-    
+
     /** Entry point  */
-    public void startApp() {        
+    public void startApp() {
         if (isRunning) {
             hideApp(false);
             return;
@@ -93,15 +91,15 @@ public class BombusMod extends MIDlet implements Runnable{
         isRunning = true;
         new Thread(this).start();
     }
-    
-    
+
     /**
      * Pause is a no-op since there are no background activities or
      * record stores that need to be closed.
      */
-    public void pauseApp() { }
+    public void pauseApp() {
+    }
 
-    public void run(){
+    public void run() {
 //#ifdef LIGHT_CONFIG        
 //#ifdef PLUGINS        
 //#     if (StaticData.getInstance().lightConfig)        
@@ -119,16 +117,16 @@ public class BombusMod extends MIDlet implements Runnable{
 //#endif
         s.setProgress(3);
         s.getKeys();
-        
+
         s.setProgress(7);
-        s.setProgress(Version.getVersionNumber(),10);
-        
+        s.setProgress(Version.getVersionNumber(), 10);
+
         SR.loaded();
         s.setProgress(12);
 
-        Config cf=Config.getInstance();
+        Config cf = Config.getInstance();
         s.setProgress(15);
-        
+
 //#ifdef AUTOTASK
 //#         sd.autoTask = new AutoTask();
 //#         s.setProgress(17);
@@ -136,31 +134,49 @@ public class BombusMod extends MIDlet implements Runnable{
         sd.canvas = VirtualCanvas.getInstance();
         sd.canvas.setMIDlet(this);
         sd.roster = new Roster();
-        sd.canvas.setHome(sd.roster);
+        sd.canvas.homeList = sd.roster;
 
         s.setProgress(20);
-        
-        boolean selAccount=( (cf.accountIndex<0) || s.keypressed!=0);
-        if (selAccount) 
-            s.setProgress("Entering setup",22);
-        
+
+        boolean selAccount = ((cf.accountIndex < 0) || s.keypressed != 0);
+        if (selAccount) {
+            s.setProgress("Entering setup", 22);
+        }
+
         try {
-        s.setProgress(24);
-        if (!selAccount && cf.autoLogin)
-            Account.loadAccount(cf.autoLogin, cf.accountIndex); // connect whithout account select
-        else
-            new AccountSelect(true);
+            s.setProgress(24);
+            if (!selAccount && cf.autoLogin) {
+                Account.loadAccount(cf.autoLogin, cf.accountIndex); // connect whithout account select
+            } else {
+                AccountSelect as = new AccountSelect(true);
+                if (as.itemsList.isEmpty()) {
+//#ifdef IMPORT_EXPORT
+//#ifdef PLUGINS
+//#             if (StaticData.getInstance().IE) {
+//#endif
+//#                     new IE.Accounts("/def_accounts.txt", 0, true);
+//#ifdef PLUGINS
+//#             }
+//#endif
+//#                     as.loadAccounts();
+//#endif
+
+                }
+                VirtualList next = as.itemsList.isEmpty() ? (VirtualList) new AccountForm(as, null) : as;                
+                s.setExit(next);
+                s.close();                
+            }
         } catch (Exception e) {
-             e.printStackTrace();
-		AlertBox error = new AlertBox(SR.MS_ERROR, e.toString() + ": " + e.getMessage()) {
+            e.printStackTrace();
+            AlertBox error = new AlertBox(SR.MS_ERROR, e.toString() + ": " + e.getMessage()) {
 
-				public void yes() {
-					notifyDestroyed();
-				}
+                public void yes() {
+                    notifyDestroyed();
+                }
 
-				public void no() {					
-				}
-			};
+                public void no() {
+                }
+            };
         }
 //#ifdef LIGHT_CONFIG        
 //#ifdef PLUGINS        
@@ -170,17 +186,18 @@ public class BombusMod extends MIDlet implements Runnable{
 //#endif        
     }
 
-    public void destroyApp(boolean unconditional) { }
+    public void destroyApp(boolean unconditional) {
+    }
 
     public void hideApp(boolean hide) {
-        if (hide)
+        if (hide) {
             display.setCurrent(null);
-        else if (isMinimized) {
+        } else if (isMinimized) {
             midlet.BombusMod.getInstance().setDisplayable(display.getCurrent());
         }
-        isMinimized=hide;
+        isMinimized = hide;
     }
-    
+
     public static BombusMod getInstance() {
         return instance;
     }
@@ -234,20 +251,18 @@ public class BombusMod extends MIDlet implements Runnable{
 //#         }        
 //#     }
 //#endif
-
     public Display getDisplay() {
         return display;
     }
+
     public Displayable getCurrentDisplayable() {
-        return getDisplay().getCurrent();        
-    }    
-    
-    public void setDisplayable(Displayable d) {
-        if (d == null) {
-                d = sd.canvas;
-            }
-        getDisplay().setCurrent(d);
+        return getDisplay().getCurrent();
     }
 
-
+    public void setDisplayable(Displayable d) {
+        if (d == null) {
+            d = sd.canvas;
+        }
+        getDisplay().setCurrent(d);
+    }
 }

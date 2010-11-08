@@ -412,8 +412,10 @@ public class Roster
             bookmarks = null;
             bookmarks = new Vector();
         }
-        myJid = new Jid(sd.account.getJid());
-        updateContact(sd.account.getNick(), myJid.getBareJid(), SR.MS_SELF_CONTACT, "self", false);
+        if (sd.account != null) {
+            myJid = new Jid(sd.account.getJid());
+            updateContact(sd.account.getNick(), myJid.getBareJid(), SR.MS_SELF_CONTACT, "self", false);
+        }
     }
     
     public void systemGC() {
@@ -577,8 +579,8 @@ public class Roster
                         Contact contact=(Contact)hContacts.elementAt(index);
                         if (contact.group.name.equals(g.name)) {
                             if (contact.getNewMsgsCount() == 0) {
-                                contact.msgs=null;
-                                contact=null;
+                                contact.msgs.removeAllElements();
+                                contact = null;
                                 hContacts.removeElementAt(index); 
                                 j--;
                             } else {
@@ -609,8 +611,8 @@ public class Roster
                       && !contact.bareJid.equals(groupSelfContact)
                       && contact.origin!=Contact.ORIGIN_GROUPCHAT) {
                         
-                        contact.msgs=null;
-                        contact=null;
+                        contact.msgs.removeAllElements();
+                        contact = null;
                         hContacts.removeElementAt(index);
                         j--;
                     } else {
@@ -1096,7 +1098,7 @@ public class Roster
     }
 
     public Contact selfContact() {
-	return getContact(myJid.getJid(), false);
+	return myJid == null ? null : getContact(myJid.getJid(), false);
     }
 
 //#ifndef WMUC
@@ -1329,8 +1331,8 @@ public class Roster
         theStream.addBlockListener(new IqVersionReply());
         theStream.startKeepAliveTask(); //enable keep-alive packets
         
-	theStream.loggedIn=true;
-	currentReconnect=0;
+        theStream.loggedIn=true;
+        currentReconnect=0;
         
         theStream.addBlockListener(new IqLast());
         theStream.addBlockListener(new IqTimeReply());
@@ -1378,14 +1380,16 @@ public class Roster
 
         if (sd.account.isMucOnly()) {
             setProgress(SR.MS_CONNECTED,100);
-            show();
+            if (sd.canvas.isShown() && sd.canvas.getList() == this)
+                show();
+            else
+                sd.canvas.setList(this);
             try {
                 reEnumRoster();
             } catch (Exception e) { }
 			
             setQuerySign(false);
-            doReconnect=false;
-            show();
+            doReconnect=false;            
 //#ifndef WMUC            
             //query bookmarks
             theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
@@ -1496,8 +1500,10 @@ public class Roster
                         } else {
                             sendPresence(cf.loginstatus, null);
                         }
-
-                        SplashScreen.getInstance().close();
+                        if (!sd.canvas.isShown())
+                            SplashScreen.getInstance().close(sd.canvas.getList());
+                        else
+                            sd.canvas.setList(this);
 
                         return JabberBlockListener.BLOCK_PROCESSED;
                     }
@@ -2773,7 +2779,7 @@ public class Roster
 
     public void cmdMinimize() { BombusMod.getInstance().hideApp(true);  }
     public void cmdActiveContacts() { new ActiveContacts(null); }
-    public void cmdAccount(){ new AccountSelect( false); }
+    public void cmdAccount(){ new AccountSelect( false).show(); }
     public void cmdStatus() { currentReconnect=0; new StatusSelect(null); }
     public void cmdAlert() { new AlertProfile(); }
 //#ifdef ARCHIVE

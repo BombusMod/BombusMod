@@ -25,7 +25,7 @@ import javax.microedition.midlet.MIDlet;
 public class VirtualCanvas extends Canvas implements CommandListener{
     
     private VirtualList list;
-    private VirtualList homeList;
+    public VirtualList homeList;
 
     public Command commandOk;
     public Command commandCancel;
@@ -42,14 +42,13 @@ public class VirtualCanvas extends Canvas implements CommandListener{
     
     private VirtualCanvas() {
         setFullScreenMode(Config.fullscreen);
+        if (VirtualList.phoneManufacturer==Config.WINDOWS) {
+            setTitle("BombusMod");
+        }
     }
     
     public void setMIDlet(MIDlet midlet) {
         VirtualCanvas.midlet = midlet;
-    }
-    
-    public void setHome(VirtualList list) {
-        homeList = list;
     }
     
     void commandState() {
@@ -84,8 +83,14 @@ public class VirtualCanvas extends Canvas implements CommandListener{
     public VirtualList getList() {
         return list == null ? homeList : list;
     }
+
+    public void setList(VirtualList list) {
+        this.list = list;
+    }
     
     protected void paint(Graphics graphics) {
+        list.width = getWidth();
+        list.height = getHeight();
         list.paint(graphics);
     }
     protected void keyPressed(int keyCode) {
@@ -97,15 +102,15 @@ public class VirtualCanvas extends Canvas implements CommandListener{
     protected void keyReleased(int keyCode) {
         list.keyReleased(keyCode);           
     }
-    
+
     protected void pointerPressed(int x, int y) {
-        list.pointerPressed(x, y);        
+        list.pointerPressed(x, y);
     }
     protected void pointerDragged(int x, int y) {
-        list.pointerDragged(x, y);         
+        list.pointerDragged(x, y);
     }
     protected void pointerReleased(int x, int y) {
-        list.pointerReleased(x, y);           
+        list.pointerReleased(x, y);
     }
 
     protected void showNotify() {
@@ -115,10 +120,10 @@ public class VirtualCanvas extends Canvas implements CommandListener{
         setFullScreenMode(Config.fullscreen);
     }    
     
-    protected void sizeChanged(int w, int h) {        
-        if (list != null)
-        list.sizeChanged(w, h);
-        repaint();
+    protected void sizeChanged(int w, int h) {
+        if (list != null) {
+            list.sizeChanged(w, h);            
+        }
     }
 
     public void commandAction(Command c, Displayable d) {

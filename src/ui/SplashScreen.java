@@ -165,7 +165,9 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
     public int getProgress(){
         return pos;
     }
-    
+    public void sizeChanged(int w, int h) {
+        repaint();
+    }
     // close splash
     private Command cmdExit=new Command("Hide Splash", Command.BACK, 99);
     
@@ -181,7 +183,10 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
     }
     
     public void close(VirtualList next) {
-        Client.StaticData.getInstance().canvas.show(next);
+        if (next == null)
+            next = Client.StaticData.getInstance().canvas.homeList;
+        Client.StaticData.getInstance().canvas.setList(next);
+        midlet.BombusMod.getInstance().setDisplayable(Client.StaticData.getInstance().canvas);        
         img = null;
         System.gc();
     }

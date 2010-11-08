@@ -274,7 +274,7 @@ public class AccountForm
         if (newaccount && doConnect) {
             new AlertBox(SR.MS_CONNECT_TO, account.getBareJid()+"?") {
                 public void yes() {
-                    sd.roster.show();
+                    SplashScreen.getInstance().setExit(sd.roster);
                     startLogin(true);
                 }
                 public void no() { 

@@ -27,11 +27,9 @@
 
 package History;
 
-import Client.Config;
 import Menu.MenuCommand;
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
-import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
 import ui.VirtualList;
@@ -66,13 +64,10 @@ public class HistoryConfig
 //#     private CheckBox translit;
 //#endif
     
-    Config cf;
-
     /** Creates a new instance of HistoryConfig */
     public HistoryConfig() {
         super(SR.MS_HISTORY_OPTIONS);
-
-        cf=Config.getInstance();
+        
 //#if HISTORY
 //#ifdef LAST_MESSAGES
 //#         loadHistory = new CheckBox(SR.MS_LAST_MESSAGES, cf.lastMessages); itemsList.addElement(loadHistory);

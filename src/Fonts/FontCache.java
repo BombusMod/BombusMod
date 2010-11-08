@@ -58,34 +58,34 @@ public class FontCache {
     public static int baloon=0;
 
     
-    private final static Font getSmallFont() {
+    private static Font getSmallFont() {
         if (small==null) small=Font.getFont(face, plain, smallSize);
         return small;
     }
-    private final static Font getSmallBoldFont() {
+    private static Font getSmallBoldFont() {
         if (smallBold==null) smallBold=Font.getFont(face, bold, smallSize);
         return smallBold;
     }
     
-    private final static Font getMiddleFont() {
+    private static Font getMiddleFont() {
         if (middle==null) middle=Font.getFont(face, plain, middleSize);
         return middle;
     }
-    private final static Font getMiddleBoldFont() {
+    private static Font getMiddleBoldFont() {
         if (middleBold==null) middleBold=Font.getFont(face, bold, middleSize);
         return middleBold;
     }
     
-    private final static Font getBigFont() {
+    private static Font getBigFont() {
         if (big==null) big=Font.getFont(face, plain, bigSize);
         return big;
     }
-    private final static Font getBigBoldFont() {
+    private static Font getBigBoldFont() {
         if (bigBold==null) bigBold=Font.getFont(face, bold, bigSize);
         return bigBold;
     }
     
-    public final static Font getFont(boolean isBold, int size) {
+    public static Font getFont(boolean isBold, int size) {
         switch (size) {
             case smallSize:
                 return (isBold)?getSmallBoldFont():getSmallFont();

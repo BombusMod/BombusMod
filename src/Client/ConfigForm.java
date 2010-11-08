@@ -215,7 +215,7 @@ public class ConfigForm
         if (sd.canvas.hasPointerEvents()) {
             widthScroll2=new NumberInput(sd.canvas,  SR.MS_MESSAGE_WIDTH_SCROLL_2, Integer.toString(cf.widthScroll2), 1, 50);
             itemsList.addElement(widthScroll2);
-            advTouch = new CheckBox("Advanced touchscreen support", cf.advTouch);
+            advTouch = new CheckBox("Single click interface", cf.advTouch);
             itemsList.addElement(advTouch);
         }
         

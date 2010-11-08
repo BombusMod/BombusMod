@@ -120,7 +120,7 @@ public class Contact extends IconTextElement{
     public int offline_type=Presence.PRESENCE_UNKNOWN;
     public boolean ask_subscribe;
 
-    public Vector msgs;
+    public final Vector msgs;
     public int activeMessage=-1;
     
     private int newMsgCnt=0;
@@ -170,7 +170,6 @@ public class Contact extends IconTextElement{
         super(RosterIcons.getInstance());
         cf=Config.getInstance();
 
-        msgs=null;
         msgs=new Vector();
         
         key1="";
@@ -260,32 +259,35 @@ public class Contact extends IconTextElement{
     }
 
     public int getNewMsgsCount() {
-        if (msgs == null)
+        if (msgs == null) {
             return 0;
-        if (newMsgCnt>0) return newMsgCnt;
-        int nm=0;
-        if (getGroupType()!=Groups.TYPE_IGNORE) {
-            unreadType=Msg.MESSAGE_TYPE_IN;
-            int j=msgs.size();
-            for (int i=0; i<j; i++ ) {
-                Msg m=(Msg)msgs.elementAt(i);
+        }
+        if (newMsgCnt > 0) {
+            return newMsgCnt;
+        }
+        int nm = 0;
+        if (getGroupType() != Groups.TYPE_IGNORE) {
+            unreadType = Msg.MESSAGE_TYPE_IN;
+
+            for (Enumeration e = msgs.elements(); e.hasMoreElements();) {
+                Msg m = (Msg) e.nextElement();
                 if (m.unread) {
                     nm++;
-                    if (m.messageType==Msg.MESSAGE_TYPE_AUTH) 
-                        unreadType=m.messageType;
+                    if (m.messageType == Msg.MESSAGE_TYPE_AUTH) {
+                        unreadType = m.messageType;
+                    }
                 }
             }
         }
-        return newMsgCnt=nm;
+        return newMsgCnt = nm;
     }
-    
+
     public int getNewHighliteMsgsCount() {
         if (newHighLitedMsgCnt>0) return newHighLitedMsgCnt;
         int nm=0;
         if (getGroupType()!=Groups.TYPE_IGNORE) {
-            int j=msgs.size();
-            for (int i=0; i<j; i++) {
-                Msg m=(Msg)msgs.elementAt(i);
+            for (Enumeration e = msgs.elements(); e.hasMoreElements();) {
+                Msg m = (Msg) e.nextElement();
                 if (m.unread && m.highlite) { 
                     nm++;
                 }
@@ -444,9 +446,7 @@ public class Contact extends IconTextElement{
     }
     
     public final void purge() {
-        msgs=null;
-        msgs=new Vector();
-        
+        msgs.removeAllElements();
         lastSendedMessage=null;
         activeMessage=-1; //drop activeMessage num
         

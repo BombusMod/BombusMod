@@ -275,7 +275,7 @@ public class Config {
             case NOKIA:
                 KEY_BACK = VirtualList.NOKIA_PEN;
                 greenKeyCode = -10;
-                allowMinimize = true;
+                allowMinimize = !NokiaS40;
                 break;
             case SIEMENS:
             case SIEMENS2:

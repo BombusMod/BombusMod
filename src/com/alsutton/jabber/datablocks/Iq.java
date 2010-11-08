@@ -51,19 +51,26 @@ public class Iq extends JabberDataBlock
     super( _parent, _attributes );
   }
   
-  public Iq( String to, int typeSet, String id) {
-      super();
-      setAttribute("to", to);
-      String type;
-      switch (typeSet) {
-          case TYPE_SET: type="set"; break;
-          case TYPE_GET: type="get"; break;
-          case TYPE_ERROR: type="error";
-          default: type="result";
-      }
-      setAttribute("type", type);
-      setAttribute("id", id);
-  }
+    public Iq(String to, int typeSet, String id) {
+        super();
+        setAttribute("to", to);
+        String type;
+        switch (typeSet) {
+            case TYPE_SET:
+                type = "set";
+                break;
+            case TYPE_GET:
+                type = "get";
+                break;
+            case TYPE_ERROR:
+                type = "error";
+                break;
+            default:
+                type = "result";
+        }
+        setAttribute("type", type);
+        setAttribute("id", id);
+    }
 
 
   /**

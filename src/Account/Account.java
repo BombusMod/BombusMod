@@ -83,20 +83,18 @@ public class Account extends IconTextElement {
         super(RosterIcons.getInstance());
     }
     
-    public static void loadAccount(boolean launch, int accountIndex){
-	Account a=sd.account=Account.createFromStorage(accountIndex);
-	if (a!=null) {
-            if (sd.roster.isLoggedIn())
-                sd.roster.logoff(null);
-            
-	    sd.roster.resetRoster();
+    public static void loadAccount(boolean launch, int accountIndex) {
+        Account a = sd.account = Account.createFromStorage(accountIndex);
+        if (a != null) {
+            sd.roster.logoff(null);
+            sd.roster.resetRoster();
             if (launch) {
-                int loginstatus=Config.getInstance().loginstatus;
-                if (loginstatus>=Presence.PRESENCE_OFFLINE) {
-                    sd.roster.sendPresence(Presence.PRESENCE_INVISIBLE, null);    
+                int loginstatus = Config.getInstance().loginstatus;
+                if (loginstatus >= Presence.PRESENCE_OFFLINE) {
+                    sd.roster.sendPresence(Presence.PRESENCE_INVISIBLE, null);
                 } else {
                     sd.roster.sendPresence(loginstatus, null);
-                }                
+                }
             }
         }
     }
