@@ -107,7 +107,7 @@ public class InfoWindow
 
         itemsList.addElement(new SpacerItem(10));
 
-        abilities = new MultiLine("Abilities", getAbilities(), getListWidth());
+        abilities = new MultiLine("Abilities", getAbilities(), sd.roster.getListWidth());
         abilities.selectable = true;
         itemsList.addElement(abilities);
     }

@@ -185,8 +185,7 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
     public void close(VirtualList next) {
         if (next == null)
             next = Client.StaticData.getInstance().canvas.homeList;
-        Client.StaticData.getInstance().canvas.setList(next);
-        midlet.BombusMod.getInstance().setDisplayable(Client.StaticData.getInstance().canvas);        
+        Client.StaticData.getInstance().canvas.show(next);
         img = null;
         System.gc();
     }

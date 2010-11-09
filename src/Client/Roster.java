@@ -1380,16 +1380,13 @@ public class Roster
 
         if (sd.account.isMucOnly()) {
             setProgress(SR.MS_CONNECTED,100);
-            if (sd.canvas.isShown() && sd.canvas.getList() == this)
-                show();
-            else
-                sd.canvas.setList(this);
+            show();
             try {
                 reEnumRoster();
             } catch (Exception e) { }
 			
             setQuerySign(false);
-            doReconnect=false;            
+            doReconnect=false;
 //#ifndef WMUC            
             //query bookmarks
             theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
@@ -1398,6 +1395,7 @@ public class Roster
             JabberDataBlock qr=new IqQueryRoster();
             setProgress(SR.MS_ROSTER_REQUEST, 49);
             theStream.send( qr );
+            show();
         }
 //#ifndef WMUC
         //query bookmarks
@@ -2779,7 +2777,7 @@ public class Roster
 
     public void cmdMinimize() { BombusMod.getInstance().hideApp(true);  }
     public void cmdActiveContacts() { new ActiveContacts(null); }
-    public void cmdAccount(){ new AccountSelect( false).show(); }
+    public void cmdAccount(){ new AccountSelect( false); }
     public void cmdStatus() { currentReconnect=0; new StatusSelect(null); }
     public void cmdAlert() { new AlertProfile(); }
 //#ifdef ARCHIVE

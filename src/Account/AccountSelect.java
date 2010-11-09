@@ -67,16 +67,12 @@ public class AccountSelect extends DefForm {
         }
 
         activeAccount = cf.accountIndex;
-        loadAccounts();        
-    }
-
-    public void show() {
-        super.show();
+        loadAccounts();
         if (!itemsList.isEmpty()) {
             moveCursorTo(activeAccount);
         }
     }
-
+    
     public final void loadAccounts() {
         Account a;
         int index=0;
