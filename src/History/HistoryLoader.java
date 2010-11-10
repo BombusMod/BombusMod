@@ -318,7 +318,7 @@ public class HistoryLoader {
     }
 
     private MessageItem getMessageItem(Msg msg) {
-        return new MessageItem(msg, view, smiles);
+        return new MessageItem(msg, smiles);
     }
 
     private String findBlock(String source, String needle) {

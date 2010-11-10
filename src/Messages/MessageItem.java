@@ -28,8 +28,8 @@
 package Messages;
 
 import Client.Msg;
+import Client.StaticData;
 import images.RosterIcons;
-import java.util.Enumeration;
 import java.util.Vector;
 import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
@@ -40,33 +40,35 @@ import ui.VirtualElement;
 import ui.VirtualList;
 import ui.controls.form.ListItem;
 
-public class MessageItem
-    implements VirtualElement, MessageParser.MessageParserNotify {
+public class MessageItem implements VirtualElement {//, MessageParser.MessageParserNotify {
     
     public Msg msg;
     Vector msgLines;
-    private VirtualList view;
     private boolean even;
     private boolean smiles;
     private boolean partialParse=false;
+    
+    private int itemHeight = -1;
     //private Font font;
     
     /** Creates a new instance of MessageItem */
-    public MessageItem(Msg msg, VirtualList view, boolean showSmiles) {
-	this.msg=msg;
-	this.view=view;
+    public MessageItem(Msg msg, boolean showSmiles) {
+        this.msg=msg;
         this.smiles=showSmiles;
         //this.font=FontCache.getFont(false, FontCache.msg);
+        partialParse = msg.itemCollapsed;
     }
 
     public int getVHeight() { 
         if (msg==null) return 0;
-        if (msg.itemHeight<0) msg.itemHeight=getFont().getHeight();
+        if (itemHeight<0) {
+            itemHeight=getFont().getHeight();
+        }
         if (msg.delivered) {
             int rh=RosterIcons.getInstance().getHeight();
-            if (msg.itemHeight<rh) return rh;
+            if (itemHeight<rh) return rh;
         }
-        return msg.itemHeight; 
+        return itemHeight; 
     }
     
     public Font getFont() {
@@ -76,11 +78,12 @@ public class MessageItem
     public int getVWidth() { return 0; }
     
     public int getColorBGnd() {
-        return (even)?
-            ColorTheme.getColor(ColorTheme.LIST_BGND_EVEN):
-            ColorTheme.getColor(ColorTheme.LIST_BGND);
+        return ColorTheme.getColor(even ? ColorTheme.LIST_BGND_EVEN : ColorTheme.LIST_BGND);
     }
-    
+    public void parse() {
+        MessageParser.getInstance().parseMsg(this, StaticData.getInstance().canvas.getList().getListWidth());
+        updateHeight();
+    }
     public int getColor() { return msg.getColor(); }
     
     public void drawItem(Graphics g, int ofs, boolean selected) {
@@ -89,18 +92,21 @@ public class MessageItem
         int iconOffset = 0;
         g.translate(2,0);
         if (msgLines==null) {
-            MessageParser.getInstance().parseMsg(this, view.getListWidth());
+            parse();
+        }
+        if (msgLines==null) {
             return;
         }
         //int y=0;
-        for (Enumeration e=msgLines.elements(); e.hasMoreElements(); ) {
-            ComplexString line=(ComplexString) e.nextElement();
+        int lineCount = msg.itemCollapsed ? 1 : msgLines.size();
+        for (int index = 0; index < lineCount; ++index) {
+            ComplexString line = (ComplexString)msgLines.elementAt(index);
             if (line.isEmpty()) break;
             int h=line.getVHeight();
             int cy=g.getClipY();
             //clipping
             if (cy <= h && cy+g.getClipHeight()>0 ) {
-                if (msg.itemCollapsed) if (msgLines.size()>1) {
+                if (msg.itemCollapsed && (msgLines.size()>1)) {
                     RosterIcons.getInstance().drawImage(g, RosterIcons.ICON_MSGCOLLAPSED_INDEX, 0,0);
                     g.translate(8,0);
                     iconOffset = 2 + RosterIcons.getInstance().getWidth() >> 1;
@@ -108,7 +114,6 @@ public class MessageItem
                 line.drawItem(g, iconOffset, selected);
             }
             g.translate(0, h);
-            if (msg.itemCollapsed) break;
         }
         
         g.translate(xorg-g.getTranslateX(), yorg-g.getTranslateY());
@@ -123,32 +128,23 @@ public class MessageItem
     }
     
     public void onSelect() {
-        msg.itemCollapsed=!msg.itemCollapsed;
-        updateHeight();
+        msg.itemCollapsed = !msg.itemCollapsed;
         if (partialParse) {
             partialParse=false;
-            MessageParser.getInstance().parseMsg(this, view.getListWidth());
+            parse();
         }
-    }
-    
-    byte repaintCounter;
-    public void notifyRepaint(Vector v, Msg parsedMsg, boolean finalized) {
-        msgLines=v;
         updateHeight();
-        partialParse=!finalized;
-        if (!finalized && !msg.itemCollapsed) if ((--repaintCounter)>=0) return;
-        repaintCounter=5;
-        view.redraw();
+        StaticData.getInstance().canvas.repaint();
     }
     
     private void updateHeight() {
-        int height=0;
-        for (Enumeration e=msgLines.elements(); e.hasMoreElements(); ) {
-            ComplexString line=(ComplexString) e.nextElement();
-            height+=line.getVHeight();
-            if (msg.itemCollapsed) break;
+        int height = 0;
+        int size = msg.itemCollapsed ? Math.min(msgLines.size(), 1) : msgLines.size();
+        for (int i = 0; i < size; ++i) {
+            ComplexString line=(ComplexString) msgLines.elementAt(i);
+            height += line.getVHeight();
         }
-        msg.itemHeight=height;
+        itemHeight = height;
     }
 
     public Vector getUrlList() { 
@@ -185,16 +181,17 @@ public class MessageItem
         this.even = even;
     }
 
-    public String getTipString() {        
+    public String getTipString() {
         return msg.getTime();
     }
 //#ifdef SMILES
-    public void toggleSmiles() {
-        smiles=!smiles;
-        MessageParser.getInstance().parseMsg(this, view.getListWidth());  
+    public void toggleSmiles(VirtualList view) {
+        smiles = !smiles;
+        parse();
+        view.redraw();
     }
     
-    boolean smilesEnabled() { return smiles; }
+    final boolean smilesEnabled() { return smiles; }
 //#endif
 
     public boolean isSelectable() { return true; }

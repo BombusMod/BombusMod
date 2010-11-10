@@ -2777,7 +2777,7 @@ public class Roster
 
     public void cmdMinimize() { BombusMod.getInstance().hideApp(true);  }
     public void cmdActiveContacts() { new ActiveContacts(null); }
-    public void cmdAccount(){ new AccountSelect( false); }
+    public void cmdAccount(){ new AccountSelect( false).show(); }
     public void cmdStatus() { currentReconnect=0; new StatusSelect(null); }
     public void cmdAlert() { new AlertProfile(); }
 //#ifdef ARCHIVE

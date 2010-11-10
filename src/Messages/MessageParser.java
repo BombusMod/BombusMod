@@ -28,7 +28,6 @@
 package Messages;
 
 //#ifdef SMILES
-import images.AniImageList;
 import images.SmilesIcons;
 //#endif
 import Fonts.FontCache;
@@ -38,7 +37,6 @@ import javax.microedition.lcdui.Font;
 import Colors.ColorTheme;
 
 import ui.*;
-import Client.Msg;
 import Client.Config;
 import util.Strconv;
 
@@ -46,94 +44,93 @@ public final class MessageParser {
     
     private final static int URL=-2;
     private final static int NOSMILE=-1;
-
+    
     private Vector smileTable;
-
+    
     private Leaf root;
     private Leaf emptyRoot;
     
-    // Singleton
-    private static MessageParser instance=null;
     
-    private int width; // window width
-//#ifdef SMILES 
+//#ifdef SMILES
     private ImageList smileImages;
     private static String anires= "/smiles/smiles.txt";
-    private static String staticres= "/images/smiles.txt";  
-    
+    private static String staticres= "/images/smiles.txt";
+
 //#endif
     
     boolean wordsWrap;
-    private static String wrapSeparators=" .,-=/\\;:+*()[]<>~!@#%^_&";    
+    private static final String wrapSeparators=" .,-=/\\;:+*()[]<>~!@#%^_&";
     
+    private static final MessageParser instance = new MessageParser();
     
     public static MessageParser getInstance() {
-        if (instance==null) {
-            instance=new MessageParser();
-            }
-
         return instance;
     }
-
-//#ifdef SMILES 
+    
+//#ifdef SMILES
     public Vector getSmileTable() { return smileTable; }
 //#endif
-    private static class Leaf {
-        public int smile=NOSMILE;   // нет смайлика в узле
+    private class Leaf {
+        public int smile = NOSMILE;   // нет смайлика в узле
         public String smileChars;     // символы смайликов
         public Vector child;
-
+        
         public Leaf() {
-            child=new Vector();
+            child = new Vector();
             smileChars = "";
         }
         
         public Leaf findChild(char c){
             int index=smileChars.indexOf(c);
-            return (index==-1)?null:(Leaf)child.elementAt(index);
+            return (index==-1)? null : (Leaf)child.elementAt(index);
         }
-
+        
         private void addChild(char c, Leaf child){
             this.child.addElement(child);
-            smileChars=smileChars+c;
+            smileChars = smileChars + c;
         }
     }
-  
+    
     private void addSmile(Leaf rootSmile, String smile, int index) {
-	Leaf p=rootSmile;
-	Leaf p1;
-	
-	int len=smile.length();
-	for (int i=0; i<len; i++) {
-	    char c=smile.charAt(i);
-	    p1=p.findChild(c);
-	    if (p1==null) {
-		p1=new Leaf();
-		p.addChild(c, p1);
-	    }
-	    p=p1;
-	}
-	p.smile=index;
+        Leaf p=rootSmile;
+        Leaf p1;
+        
+        int len=smile.length();
+        for (int i=0; i<len; i++) {
+            char c=smile.charAt(i);
+            p1=p.findChild(c);
+            if (p1==null) {
+                p1=new Leaf();
+                p.addChild((char)c,p1);
+            }
+            p=p1;
+        }
+        p.smile=index;
     }
-
-    public void parseMsg(MessageItem messageItem,  int width) {
-
-            wordsWrap=Config.getInstance().textWrap==1;
-            messageItem.msgLines=new Vector();
+    
+    public void parseMsg(MessageItem message,  int windowWidth) {
+        wordsWrap = (1 == Config.getInstance().textWrap);
+        message.msgLines=new Vector();
 //#ifdef SMILES
-            this.smileImages=SmilesIcons.getInstance();
+        this.smileImages=SmilesIcons.getInstance();
 //#endif
-            this.width=width;
-            parseMessage(messageItem);
-            messageItem.notifyRepaint(messageItem.msgLines, messageItem.msg, false);
-    }
+        long start = 0;
+        if (null != message.msg.subject) {
+            start = System.currentTimeMillis();
+            parseMessage_state(message, windowWidth, message.msg.subject, true);
+            System.out.println("Subject parsed");
+        }
+        parseMessage_state(message, windowWidth, message.msg.toString(), false);
+        System.out.println("Message parsed");
 
+    }
+    
     private MessageParser() {
         smileTable=null;
         smileTable=new Vector();
         root=new Leaf();
 //#ifdef SMILES
-        StringBuffer s=new StringBuffer(10);
+        StringBuffer s = new StringBuffer(10);
         try { // generic errors
             int strnumber=0;
             boolean strhaschars=false;
@@ -141,7 +138,7 @@ public final class MessageParser {
             
             InputStream in=this.getClass().getResourceAsStream(anires);
             if (in == null) in=this.getClass().getResourceAsStream(staticres);
-                
+            
             boolean firstSmile=true;
             
             int c;
@@ -155,12 +152,12 @@ public final class MessageParser {
                     case 0x09:
                         String smile=Strconv.convCp1251ToUnicode(s.toString());
                         if (firstSmile) smileTable.addElement(smile);
-
+                        
                         addSmile(root, smile, strnumber);
-
-                        s=new StringBuffer();
-                        firstSmile=false;
-
+                        
+                        s = new StringBuffer();
+                        firstSmile = false;
+                        
                         break;
                     default:
                         s.append((char)c);
@@ -180,19 +177,18 @@ public final class MessageParser {
         }
 //#endif
         
- 	addSmile(root, "http://", URL);
+        addSmile(root, "http://", URL);
         addSmile(root, "tel:",URL);
         addSmile(root, "ftp://",URL);
         addSmile(root, "https://",URL);
         addSmile(root, "native:",URL);
-//        addSmile(root, "@",URL);
 //#if NICK_COLORS
         addSmile(root, "\01", ComplexString.NICK_ON);
         addSmile(root, "\02", ComplexString.NICK_OFF);
 //#endif
         
         emptyRoot=new Leaf();
-	addSmile(emptyRoot, "http://", URL);
+        addSmile(emptyRoot, "http://", URL);
         addSmile(emptyRoot, "tel:",URL);
         addSmile(emptyRoot, "ftp://",URL);
         addSmile(emptyRoot, "https://",URL);
@@ -203,215 +199,193 @@ public final class MessageParser {
 //#endif
     }
     
-    private void parseMessage(final MessageItem task) {
+    private void parseMessage_state(final MessageItem task, final int windowWidth, String txt, boolean isSubj) {
+        if (null == txt) return;
+
         Vector lines=task.msgLines;
         boolean singleLine=task.msg.itemCollapsed;
         
         boolean underline=false;
         
-        Leaf smileRoot=(
+        Leaf smileRoot=emptyRoot;
 //#ifdef SMILES
-                task.smilesEnabled()
-//#else
-//#                 false
+        if (task.smilesEnabled() && !isSubj) smileRoot = root;
 //#endif
-                )? root: emptyRoot;
-        
-        int state=0;
-        if (task.msg.subject==null) state=1;
-        while (state<2) {
+
+        int w=0;
+        StringBuffer s=new StringBuffer();
+        int wordWidth=0;
+        int wordStartPos=0;
 //#ifdef SMILES
-            if (task.smilesEnabled())
-                smileRoot=(state==0)?emptyRoot:root;
-//#else
-//#             smileRoot=emptyRoot;
-//#endif
-            int w=0;
-            StringBuffer s=new StringBuffer();
-	    int wordWidth=0;
-	    int wordStartPos=0;
-//#ifdef SMILES
-            ComplexString l=new ComplexString(smileImages);
+        ComplexString l=new ComplexString(smileImages);
 //#else
 //#             ComplexString l=new ComplexString();
 //#endif
-            lines.addElement(l);
+        lines.addElement(l);
+        
+        Font f=getFont((task.msg.highlite || isSubj));
+        l.setFont(f);
+        
+        int color=ColorTheme.getColor(isSubj ? ColorTheme.MSG_SUBJ : ColorTheme.LIST_INK);
+        l.setColor(color);
+        
+        int pos=0;
+        int textLength = txt.length();
+        while (pos < textLength) {
+            int smileIndex=-1;
+            int smileStartPos=pos;
+            int smileEndPos=pos;
+            char c = txt.charAt(pos);
             
-            Font f=getFont((task.msg.highlite || state==0));
-            l.setFont(f);
-            
-            String txt=(state==0)? task.msg.subject: task.msg.toString();
-            
-            int color=(state==0)?
-                ColorTheme.getColor(ColorTheme.MSG_SUBJ):
-                ColorTheme.getColor(ColorTheme.LIST_INK);
-            l.setColor(color);
-           
-            if (txt==null) {
-                state++;
-                continue;
-            }
-            
-            int pos=0;
-            while (pos<txt.length()) {
-                Leaf smileLeaf=smileRoot;
-                int smileIndex=-1;
-                int smileStartPos=pos;
-                int smileEndPos=pos;
-                
-                while (pos<txt.length()) {
-                    char c=txt.charAt(pos);
-                    
-                    if (underline) {
-                        switch (c) {
-                            case ' ':
-                            case 0x09:
-                            case 0x0d:
-                            case 0x0a:
-                            case 0xa0:
-                            case ')':
-                                underline=false;
-                                if (wordStartPos!=pos) {
-                                    s.append(txt.substring(wordStartPos,pos));
-                                    wordStartPos=pos;
-				    w+=wordWidth;
-                                    wordWidth=0;
-                                }
-                                if (s.length()>0) {
-                                    l.addUnderline();
-                                    l.addElement(s.toString());
-                                }
-                                s=new StringBuffer();
+            if (underline) {
+                switch (c) {
+                    case ' ':
+                    case 0x09:
+                    case 0x0d:
+                    case 0x0a:
+                    case 0xa0:
+                    case ')':
+                        underline=false;
+                        if (wordStartPos!=pos) {
+                            s.append(txt.substring(wordStartPos, pos));
+                            wordStartPos = pos;
+                            w += wordWidth;
+                            wordWidth=0;
                         }
-                        break;
-                    }
-                    smileLeaf=smileLeaf.findChild(c);
-                    if (smileLeaf==null) {
-                        break;
-                    }
-                    if (smileLeaf.smile!=-1) {
-                        smileIndex=smileLeaf.smile;
-                        smileEndPos=pos;
-                    }
+                        if (s.length()>0) {
+                            l.addUnderline();
+                            l.addElement(s.toString());
+                            s = new StringBuffer();
+                        }
+                }
+
+            } else {
+                Leaf smileLeaf = smileRoot.findChild(c);
+                if (null != smileLeaf) {
+                    smileIndex = smileLeaf.smile;
+                    smileEndPos = pos;
                     pos++;
-                    
+                    while (pos < textLength) {
+                        char ch = txt.charAt(pos);
+
+                        smileLeaf = smileLeaf.findChild(ch);
+                        if (null == smileLeaf) {
+                            break;
+                        }
+                        if (-1 != smileLeaf.smile) {
+                            smileIndex = smileLeaf.smile;
+                            smileEndPos = pos;
+                        }
+                        pos++;
+                    }
+                    if (-1 == smileIndex) {
+                        pos = smileStartPos;
+                    }
                 }
                 
-                if (smileIndex==URL) {
-                    if (s.length()>0) l.addElement(s.toString());
-                    s=new StringBuffer();
-                    underline=true;
-                }
-//**************************
-//#ifdef SMILES
-                if (smileIndex>=0) {
+                if (-1 == smileIndex) {
+                } else if (0 <= smileIndex) {
                     if (wordStartPos!=smileStartPos) {
                         s.append(txt.substring(wordStartPos, smileStartPos));
-                        w+=wordWidth;
-                        wordWidth=0;
+                        w += wordWidth;
+                        wordWidth = 0;
                     }
-                    if (s.length()>0) {
+                    if (s.length() > 0) {
                         if (underline)
                             l.addUnderline();
                         l.addElement(s.toString());
                     }
-                    s=new StringBuffer();
-                    int iw = 0;
-                    if (smileIndex<0x01000000) {
-                        iw = smileImages.getWidth();
-                        if (smileImages instanceof AniImageList) {
-                            iw = ((AniImageList)smileImages).iconAt(smileIndex).getWidth();
-                        }
+                    s = new StringBuffer();
+                    if (0x01000000 < smileIndex) {
+                        l.addImage(smileIndex);
+                        pos = smileEndPos + 1;
+                        wordStartPos = pos;
+                        continue;
                     }
-                    if (w+iw>width) {
-                        //task.notifyRepaint(lines, task.msg, false);
+//#ifdef SMILES
+                    int iw = smileImages.getWidth();
+                    if (w+iw>windowWidth) {
+                        if (singleLine) return;
                         l=new ComplexString(smileImages);
                         lines.addElement(l);
-
-                        if (singleLine) return;
-
                         l.setColor(color);
                         l.setFont(f);
                         w=0;
                     }
                     l.addImage(smileIndex); w+=iw;
-                    pos=smileEndPos;
-                    wordStartPos=pos+1;
-                 } else {
+                    pos = smileEndPos + 1;
+                    wordStartPos = pos;
+                    continue;
 //#endif
-                    pos=smileStartPos;
-                    char c=txt.charAt(pos);
-
-                    int cw=f.charWidth(c);
-                    if (c!=0x20) {
-                        boolean newline= ( c==0x0d || c==0x0a );
-                        if (wordWidth+cw>width || newline) {
-                            s.append(txt.substring(wordStartPos,pos));
-                            w+=wordWidth;
-                            wordWidth=0;
-                            wordStartPos=pos;
-                            if (newline) wordStartPos++;
-                        }
-                        if (w+wordWidth+cw>width || newline) {
-                            if (underline) l.addUnderline();
-                            l.addElement(s.toString());
-                            s=new StringBuffer(); w=0;
-
-                            if (c==0xa0) l.setColor(ColorTheme.getColor(ColorTheme.MSG_HIGHLIGHT));
-//#ifdef SMILES
-                            l=new ComplexString(smileImages);
-//#else
-//#                             l=new ComplexString();
-//#endif
-                            lines.addElement(l);
-                            //task.notifyRepaint(lines, task.msg, false);
-
-                            if (singleLine) return;
-
-                            l.setColor(color);
-                            l.setFont(f);
-                        }
+                } else if (smileIndex == URL) {
+                    if (s.length()>0) {
+                        l.addElement(s.toString());
+                        s = new StringBuffer();
                     }
-//****************************
-                    if (c==0x09)
-                        c=0x20;
-
-                    if (c>0x1f)
-                        wordWidth+=cw;
-                    if (wrapSeparators.indexOf(c)>=0 || !wordsWrap) {
-                        if (pos>wordStartPos) 
-                            s.append(txt.substring(wordStartPos,pos));
-                        if (c>0x1f) s.append(c);
-                        w+=wordWidth;
-                        wordStartPos=pos+1;
-                        wordWidth=0;
-//#ifdef SMILES
-                    }
-//#endif
+                    underline = true;
+                    pos = smileStartPos;
                 }
-		pos++;
             }
- 	    if (wordStartPos!=pos)
-                s.append(txt.substring(wordStartPos,pos));
-            if (s.length()>0) {
-                if (underline) l.addUnderline();
-                l.addElement(s.toString());
-            }
-             
-            if (l.isEmpty())
-                lines.removeElementAt(lines.size()-1);
+            
+            
+            int cw = f.charWidth(c);
+            if (0x20 != c) {
+                boolean newline = ( c==0x0d || c==0x0a );
+                if (newline || wordWidth + cw > windowWidth) {
+                    s.append(txt.substring(wordStartPos,pos));
+                    w += wordWidth;
+                    wordWidth = 0;
+                    wordStartPos = pos;
+                    if (newline) wordStartPos++;
+                }
+                if (newline || w + wordWidth + cw > windowWidth) {
+                    if (underline) l.addUnderline();
+                    l.addElement(s.toString());
+                    s = new StringBuffer();
+                    w = 0;
+                    
+                    
+                    if (c == 0xa0) l.setColor(ColorTheme.getColor(ColorTheme.MSG_HIGHLIGHT));
 
-            task.notifyRepaint(lines, task.msg, true);
-            state++;
-            s=new StringBuffer();
+
+//#ifdef SMILES
+                    l=new ComplexString(smileImages);
+//#else
+//#                    l=new ComplexString();
+//#endif
+                    lines.addElement(l);
+                    
+                    l.setColor(color);
+                    if (singleLine) return;
+                    l.setFont(f);
+                }
+            }
+            if (c > 0x1f) wordWidth += cw;
+            if (c == 0x09) c  = 0x20;
+//****************************
+            
+
+            if (-1 != wrapSeparators.indexOf(c) || !wordsWrap) {
+                if (pos > wordStartPos)
+                    s.append(txt.substring(wordStartPos,pos));
+                if (c>0x1f) s.append(c);
+                w+=wordWidth;
+                wordStartPos=pos+1;
+                wordWidth=0;
+            }
+            pos++;
         }
+        if (wordStartPos!=pos)
+            s.append(txt.substring(wordStartPos,pos));
+        if (s.length()>0) {
+            if (underline) l.addUnderline();
+            l.addElement(s.toString());
+        }
+        if (l.isEmpty())
+            lines.removeElementAt(lines.size()-1);
     }
     
     public Font getFont(boolean bold) {
         return FontCache.getFont(bold, FontCache.msg);
-    }
-
-    public interface MessageParserNotify {
-        void notifyRepaint(Vector v, Msg parsedMsg, boolean finalized);
     }
 }

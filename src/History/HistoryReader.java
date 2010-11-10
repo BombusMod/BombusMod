@@ -52,8 +52,8 @@ public class HistoryReader extends MessageList {
      */
     public HistoryReader(Contact c) {
         super();
-        MIPrev = new MessageItem(new Msg(Msg.MESSAGE_TYPE_SYSTEM, null, null, "<---"), this, smiles);
-        MINext = new MessageItem(new Msg(Msg.MESSAGE_TYPE_SYSTEM, null, null, "--->"), this, smiles);
+        MIPrev = new MessageItem(new Msg(Msg.MESSAGE_TYPE_SYSTEM, null, null, "<---"), smiles);
+        MINext = new MessageItem(new Msg(Msg.MESSAGE_TYPE_SYSTEM, null, null, "--->"), smiles);
 
         setMainBarItem(new MainBar(c.getName() + ": " + SR.MS_HISTORY));        
 

@@ -82,8 +82,9 @@ public abstract class MessageList extends VirtualList
 	if (messages.size()<getItemCount()) messages.setSize(getItemCount());
 	MessageItem mi=(MessageItem) messages.elementAt(index);
 	if (mi==null) {
-	    mi=new MessageItem(getMessage(index), this, smiles);
+	    mi=new MessageItem(getMessage(index), smiles);
         mi.setEven( (index & 1) == 0);
+        mi.parse();
         //mi.getColor();
         messages.setElementAt(mi, index);
 	}

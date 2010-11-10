@@ -293,8 +293,7 @@ public class UserKeyExec {
                 if (current instanceof MessageList) {
                     MessageItem mi = (MessageItem)((MessageList)current).getFocusedObject();
                     if (mi != null) {
-                        mi.toggleSmiles();
-                        ((MessageList)current).redraw();
+                        mi.toggleSmiles(current);
                     }
                 } else {
                     return false;
