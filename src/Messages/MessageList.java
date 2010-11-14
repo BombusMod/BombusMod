@@ -84,10 +84,11 @@ public abstract class MessageList extends VirtualList
 	if (mi==null) {
 	    mi=new MessageItem(getMessage(index), smiles);
         mi.setEven( (index & 1) == 0);
-        mi.parse();
+        if (mi.msgLines == null)
+            mi.parse();
         //mi.getColor();
         messages.setElementAt(mi, index);
-	}
+    }
         return mi;
     }
     

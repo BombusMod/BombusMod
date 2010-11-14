@@ -326,7 +326,7 @@ public class ContactMessageList extends MessageList {
     public int getItemCount(){ return (contact == null || contact.msgs == null)? 0 :contact.msgs.size(); }
 
     public Msg getMessage(int index) {
-        if (index> getItemCount()-1) return null;
+        if (index >= getItemCount()) return null;
         
 	Msg msg=(Msg) contact.msgs.elementAt(index);
 	if (msg.unread) contact.resetNewMsgCnt();

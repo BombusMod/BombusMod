@@ -114,15 +114,10 @@ public final class MessageParser {
 //#ifdef SMILES
         this.smileImages=SmilesIcons.getInstance();
 //#endif
-        long start = 0;
         if (null != message.msg.subject) {
-            start = System.currentTimeMillis();
-            parseMessage_state(message, windowWidth, message.msg.subject, true);
-            System.out.println("Subject parsed");
+            parseMessage(message, windowWidth, message.msg.subject, true);            
         }
-        parseMessage_state(message, windowWidth, message.msg.toString(), false);
-        System.out.println("Message parsed");
-
+        parseMessage(message, windowWidth, message.msg.toString(), false);
     }
     
     private MessageParser() {
@@ -199,7 +194,7 @@ public final class MessageParser {
 //#endif
     }
     
-    private void parseMessage_state(final MessageItem task, final int windowWidth, String txt, boolean isSubj) {
+    private void parseMessage(final MessageItem task, final int windowWidth, String txt, boolean isSubj) {
         if (null == txt) return;
 
         Vector lines=task.msgLines;

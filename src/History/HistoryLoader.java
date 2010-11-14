@@ -318,7 +318,10 @@ public class HistoryLoader {
     }
 
     private MessageItem getMessageItem(Msg msg) {
-        return new MessageItem(msg, smiles);
+        MessageItem item =  new MessageItem(msg, smiles);
+        if (item.msgLines == null)
+            item.parse();
+        return item;
     }
 
     private String findBlock(String source, String needle) {

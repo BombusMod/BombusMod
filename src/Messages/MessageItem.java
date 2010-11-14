@@ -43,7 +43,7 @@ import ui.controls.form.ListItem;
 public class MessageItem implements VirtualElement {//, MessageParser.MessageParserNotify {
     
     public Msg msg;
-    Vector msgLines;
+    public Vector msgLines;
     private boolean even;
     private boolean smiles;
     private boolean partialParse=false;
