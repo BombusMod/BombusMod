@@ -54,6 +54,7 @@ import Archive.MessageArchive;
 //# import Menu.JuickThingsMenu;
 //# import Menu.MyMenu;
 //#endif
+import Messages.MessageItem;
 import ui.VirtualList;
 import javax.microedition.lcdui.Canvas;
 //#ifdef FILE_TRANSFER
@@ -108,10 +109,7 @@ public class ContactMessageList extends MessageList {
 //#     public MenuCommand cmdJuickCommands=new MenuCommand(SR.MS_COMMANDS+" Juick", MenuCommand.SCREEN, 15);
 //#     Vector currentJuickCommands = new Vector();
 //#     
-//#endif
-    public ContactMessageList() {         
-    }
-
+//#endif    
 //#ifdef CLIPBOARD    
 //#     private ClipBoard clipboard=ClipBoard.getInstance();
 //#endif
@@ -150,7 +148,8 @@ public class ContactMessageList extends MessageList {
     public final int firstUnread(){
         int unreadIndex=0;
         for (Enumeration e=contact.msgs.elements(); e.hasMoreElements();) {
-            if (((Msg)e.nextElement()).unread)
+            Msg msg = ((MessageItem)e.nextElement()).msg;
+            if (msg.unread && (msg.messageType != Msg.MESSAGE_TYPE_OUT))
                 break;
             if (contact.mark == unreadIndex)
                 break;            
@@ -168,7 +167,7 @@ public class ContactMessageList extends MessageList {
         if (cmdSubscribe==null) return;
         
         try {
-            Msg msg=(Msg) contact.msgs.elementAt(cursor);
+            Msg msg = ((MessageItem) contact.msgs.elementAt(cursor)).msg;
             if (msg.messageType==Msg.MESSAGE_TYPE_AUTH) {
                 addMenuCommand(cmdSubscribe);
                 addMenuCommand(cmdDecline);
@@ -176,7 +175,7 @@ public class ContactMessageList extends MessageList {
         } catch (Exception e) {}
 //#ifdef FILE_TRANSFER        
         try {
-            Msg msg=(Msg) contact.msgs.elementAt(cursor);
+            Msg msg = ((MessageItem) contact.msgs.elementAt(cursor)).msg;
             if (msg.messageType==Msg.MESSAGE_TYPE_FILE_REQ) {
                 addMenuCommand(cmdAcceptFile);
                 addMenuCommand(cmdDeclineFile);
@@ -186,7 +185,7 @@ public class ContactMessageList extends MessageList {
         
         addMenuCommand(cmdMessage);
         
-        if (contact.msgs.size()>0) {
+        if (!contact.msgs.isEmpty()) {
 //#ifndef WMUC
             if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT) {
                 addMenuCommand(cmdReply);
@@ -314,26 +313,33 @@ public class ContactMessageList extends MessageList {
 //#endif
     }
 //#ifdef LOGROTATE
-//#     private void getRedraw(boolean redraw) {
-//#         if (!redraw) return;
 //# 
-//#         contact.redraw=false;
-//#         messages=null;
-//#         messages=new Vector();
+//#     private void getRedraw(boolean redraw) {
+//#         if (!redraw) {
+//#             return;
+//#         }
+//# 
+//#         if (contact != null)
+//#             contact.redraw = false;
+//#         messages.removeAllElements();
 //#         redraw();
 //#     }
 //#endif
     public int getItemCount(){ return (contact == null || contact.msgs == null)? 0 :contact.msgs.size(); }
 
     public Msg getMessage(int index) {
-        if (index >= getItemCount()) return null;
-        
-	Msg msg=(Msg) contact.msgs.elementAt(index);
-	if (msg.unread) contact.resetNewMsgCnt();
-	msg.unread=false;
-	return msg;
+        if (index >= getItemCount()) {
+            return null;
+        }
+
+        Msg msg = ((MessageItem) contact.msgs.elementAt(index)).msg;
+        if (msg.unread) {
+            contact.resetNewMsgCnt();
+        }
+        msg.unread = false;
+        return msg;
     }
-    
+
     public void focusedItem(int index){ 
         markRead(index);
     }
@@ -362,22 +368,21 @@ public class ContactMessageList extends MessageList {
             
             if (startSelection) {
                 for (Enumeration select=contact.msgs.elements(); select.hasMoreElements(); ) {
-                    Msg mess=(Msg) select.nextElement();
+                    Msg mess = ((MessageItem) select.nextElement()).msg;
                     if (mess.selected) {
                         contact.msgs.removeElement(mess);
                     }
                 }
                 startSelection = false;
                 
-                messages=null;
-                messages=new Vector();
+                messages.removeAllElements();
             } else {
                 clearReadedMessageList();
             }
         }
         if (c==cmdSelect) {
             startSelection=true;
-            Msg mess=((Msg) contact.msgs.elementAt(cursor));
+            Msg mess=((MessageItem) contact.msgs.elementAt(cursor)).msg;
             mess.selected = !mess.selected;
             mess.oldHighlite = mess.highlite;
             mess.highlite = mess.selected;
@@ -475,7 +480,9 @@ public class ContactMessageList extends MessageList {
     
 //#ifdef JUICK
 //#     private String getBodyFromCurrentMsg() {
-//#         Msg msg = getMessage(cursor);
+//#         if (cursor > messages.size() - 1)
+//#             return "";
+//#         Msg msg = ((MessageItem)messages.elementAt(cursor)).msg;
 //# 
 //#         if (msg != null) {
 //#             return msg.body;
@@ -647,8 +654,7 @@ public class ContactMessageList extends MessageList {
 
     public void clearReadedMessageList() {
         smartPurge();
-        messages=null;
-        messages=new Vector();
+        messages.removeAllElements();
         cursor=0;
         moveCursorHome();
         redraw();
@@ -890,7 +896,7 @@ public class ContactMessageList extends MessageList {
                     if (i<cur) {
                         if (!delete) {
                             //System.out.println("not found else");
-                            if (((Msg)msgs.elementAt(virtCursor)).dateGmt+1000<System.currentTimeMillis()) {
+                            if (((MessageItem)msgs.elementAt(virtCursor)).msg.dateGmt+1000<System.currentTimeMillis()) {
                                 //System.out.println("can delete: "+ delPos);
                                 msgs.removeElementAt(virtCursor);
                                 //delPos--;
@@ -943,12 +949,6 @@ public class ContactMessageList extends MessageList {
         super.destroyView();
     }
 
-
-    public void showMenu() {
-         commandState();
-         super.showMenu();
-    }
-    
 
     public String touchLeftCommand(){ return (Config.getInstance().oldSE)?((contact.msgSuspended!=null)?SR.MS_RESUME:SR.MS_NEW):SR.MS_MENU; }
     public String touchRightCommand(){ return (Config.getInstance().oldSE)?SR.MS_MENU:SR.MS_BACK; }

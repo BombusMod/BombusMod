@@ -46,7 +46,7 @@ public abstract class MessageList extends VirtualList
         MenuListener
     {
     
-    protected Vector messages;
+    protected final Vector messages;
 //#ifdef CLIPBOARD
 //#     private ClipBoard clipboard=ClipBoard.getInstance();
 //#     
@@ -84,7 +84,7 @@ public abstract class MessageList extends VirtualList
 	if (mi==null) {
 	    mi=new MessageItem(getMessage(index), smiles);
         mi.setEven( (index & 1) == 0);
-        if (mi.msgLines == null)
+        if (mi.msgLines.isEmpty())
             mi.parse();
         //mi.getColor();
         messages.setElementAt(mi, index);

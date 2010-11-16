@@ -45,6 +45,7 @@ import ui.ImageList;
 //#endif
 import images.RosterIcons;
 import Colors.ColorTheme;
+import Messages.MessageItem;
 import VCard.VCard;
 import ui.IconTextElement;
 import com.alsutton.jabber.datablocks.Presence;
@@ -251,7 +252,7 @@ public class Contact extends IconTextElement{
     }
     public boolean haveChatMessages() {
         for (Enumeration e = msgs.elements(); e.hasMoreElements();) {
-            Msg msg = (Msg)e.nextElement();
+            Msg msg = ((MessageItem)e.nextElement()).msg;
             if (msg.messageType == Msg.MESSAGE_TYPE_IN || msg.messageType == Msg.MESSAGE_TYPE_OUT || msg.messageType == Msg.MESSAGE_TYPE_AUTH)
                 return true;
         }
@@ -259,7 +260,7 @@ public class Contact extends IconTextElement{
     }
 
     public int getNewMsgsCount() {
-        if (msgs == null) {
+        if (msgs.isEmpty()) {
             return 0;
         }
         if (newMsgCnt > 0) {
@@ -270,7 +271,7 @@ public class Contact extends IconTextElement{
             unreadType = Msg.MESSAGE_TYPE_IN;
 
             for (Enumeration e = msgs.elements(); e.hasMoreElements();) {
-                Msg m = (Msg) e.nextElement();
+                Msg m = ((MessageItem)e.nextElement()).msg;
                 if (m.unread) {
                     nm++;
                     if (m.messageType == Msg.MESSAGE_TYPE_AUTH) {
@@ -287,7 +288,7 @@ public class Contact extends IconTextElement{
         int nm=0;
         if (getGroupType()!=Groups.TYPE_IGNORE) {
             for (Enumeration e = msgs.elements(); e.hasMoreElements();) {
-                Msg m = (Msg) e.nextElement();
+                Msg m = ((MessageItem)e.nextElement()).msg;
                 if (m.unread && m.highlite) { 
                     nm++;
                 }
@@ -334,7 +335,7 @@ public class Contact extends IconTextElement{
             if (m.isPresence()) {
                 presence=m.body;
                 if (msgs.size()==1)
-                    if (((Msg)msgs.firstElement()).isPresence())
+                    if (((MessageItem)msgs.firstElement()).msg.isPresence())
                         first_replace=true;
             } else {
                 if (cf.showNickNames) {
@@ -402,7 +403,7 @@ public class Contact extends IconTextElement{
 //#        }
 //#endif
         if (first_replace) {
-            msgs.setElementAt(m,0);
+            msgs.setElementAt(new MessageItem(m, cf.smiles), 0);
             return;
         }
 
@@ -412,15 +413,15 @@ public class Contact extends IconTextElement{
         if (m.messageType!=Msg.MESSAGE_TYPE_HISTORY && m.messageType!=Msg.MESSAGE_TYPE_PRESENCE)
             activeMessage=msgs.size()+1;
 
-        msgs.addElement(m);
+        msgs.addElement(new MessageItem(m, cf.smiles));
         
         if (m.unread) {
             lastUnread=msgs.size()-1;
             if (m.messageType>unreadType) unreadType=m.messageType;
             if (newMsgCnt>=0) newMsgCnt++;
             if (m.highlite) if (newHighLitedMsgCnt>=0) newHighLitedMsgCnt++;
-        }        
-    }
+        }
+        }
 
     public int getFontIndex(){
         if (cf.showResources) return (cf.useBoldFont && status<5)?1:0;
@@ -506,7 +507,7 @@ public class Contact extends IconTextElement{
     void markDelivered(String id) {
         if (id==null) return;
         for (Enumeration e=msgs.elements(); e.hasMoreElements();) {
-            Msg m=(Msg)e.nextElement();
+            Msg m = ((MessageItem)e.nextElement()).msg;
             if (m.id!=null)
                 if (m.id.equals(id)) 
                     m.delivered=true;

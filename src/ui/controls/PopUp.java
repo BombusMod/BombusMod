@@ -27,6 +27,7 @@
 
 package ui.controls;
 
+import Client.ContactMessageList;
 import Colors.ColorTheme;
 import images.RosterIcons;
 import java.util.Enumeration;
@@ -35,6 +36,7 @@ import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
 import Fonts.FontCache;
 import Client.StaticData;
+import ui.VirtualList;
 import util.StringUtils;
 
 public class PopUp {
@@ -147,6 +149,9 @@ public class PopUp {
             String c = getContact();
             if (c != null) {
 //#ifdef POPUPS
+                VirtualList current = StaticData.getInstance().canvas.getList();
+                if (current instanceof ContactMessageList)
+                    ((ContactMessageList)current).savePosition();
                 StaticData.getInstance().roster.showContactMessageList(c);
 //#endif
                 next();

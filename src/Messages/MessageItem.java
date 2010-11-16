@@ -43,7 +43,7 @@ import ui.controls.form.ListItem;
 public class MessageItem implements VirtualElement {//, MessageParser.MessageParserNotify {
     
     public Msg msg;
-    public Vector msgLines;
+    public final Vector msgLines;
     private boolean even;
     private boolean smiles;
     private boolean partialParse=false;
@@ -53,10 +53,12 @@ public class MessageItem implements VirtualElement {//, MessageParser.MessagePar
     
     /** Creates a new instance of MessageItem */
     public MessageItem(Msg msg, boolean showSmiles) {
+        msgLines = new Vector();
         this.msg=msg;
         this.smiles=showSmiles;
         //this.font=FontCache.getFont(false, FontCache.msg);
         partialParse = msg.itemCollapsed;
+        parse();
     }
 
     public int getVHeight() { 
@@ -80,8 +82,8 @@ public class MessageItem implements VirtualElement {//, MessageParser.MessagePar
     public int getColorBGnd() {
         return ColorTheme.getColor(even ? ColorTheme.LIST_BGND_EVEN : ColorTheme.LIST_BGND);
     }
-    public void parse() {
-        MessageParser.getInstance().parseMsg(this, StaticData.getInstance().canvas.getList().getListWidth());
+    public final void parse() {
+        MessageParser.getInstance().parseMsg(this, StaticData.getInstance().roster.getListWidth());
         updateHeight();
     }
     public int getColor() { return msg.getColor(); }
@@ -91,10 +93,10 @@ public class MessageItem implements VirtualElement {//, MessageParser.MessagePar
         int yorg=g.getTranslateY();
         int iconOffset = 0;
         g.translate(2,0);
-        if (msgLines==null) {
+        if (msgLines.isEmpty()) {
             parse();
         }
-        if (msgLines==null) {
+        if (msgLines.isEmpty()) {
             return;
         }
         //int y=0;

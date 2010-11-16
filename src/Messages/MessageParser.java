@@ -110,7 +110,7 @@ public final class MessageParser {
     
     public void parseMsg(MessageItem message,  int windowWidth) {
         wordsWrap = (1 == Config.getInstance().textWrap);
-        message.msgLines=new Vector();
+        message.msgLines.removeAllElements();
 //#ifdef SMILES
         this.smileImages=SmilesIcons.getInstance();
 //#endif

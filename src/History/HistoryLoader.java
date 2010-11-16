@@ -319,7 +319,7 @@ public class HistoryLoader {
 
     private MessageItem getMessageItem(Msg msg) {
         MessageItem item =  new MessageItem(msg, smiles);
-        if (item.msgLines == null)
+        if (item.msgLines.isEmpty())
             item.parse();
         return item;
     }

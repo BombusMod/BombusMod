@@ -31,7 +31,6 @@ import Client.Msg;
 import javax.microedition.lcdui.TextBox;
 import ui.MainBar;
 import Messages.MessageList;
-import java.util.Vector;
 import Menu.MenuCommand;
 import locale.SR;
 import ui.VirtualList;
@@ -135,14 +134,12 @@ public class ArchiveList
     
     public void reFresh() {
         archive=new MessageArchive(where);
-        messages=null;
-        messages=new Vector();
+        messages.removeAllElements();
     }
 
     private void deleteMessage() {
         archive.delete(cursor);
-        messages=null;
-        messages=new Vector();
+        messages.removeAllElements();
         if (cursor>0)
             cursor--;
         setRotator();
@@ -153,8 +150,7 @@ public class ArchiveList
         new AlertBox(SR.MS_ACTION, SR.MS_DELETE_ALL+"?") {
             public void yes() {
                 archive.deleteAll();
-                messages=null;
-                messages=new Vector();
+                messages.removeAllElements();
             }
             public void no() { }
         };

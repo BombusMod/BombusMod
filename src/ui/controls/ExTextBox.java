@@ -39,8 +39,8 @@ import locale.SR;
 //#endif
 //#ifdef ARCHIVE
 import Archive.ArchiveList;
-import ui.VirtualList;
 //#endif
+import ui.VirtualList;
 
 
 /**
