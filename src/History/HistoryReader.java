@@ -31,6 +31,8 @@ import Client.Contact;
 import Client.Msg;
 import Messages.MessageItem;
 import Messages.MessageList;
+import java.util.Enumeration;
+import java.util.Vector;
 import javax.microedition.lcdui.Canvas;
 import locale.SR;
 import ui.MainBar;
@@ -58,32 +60,40 @@ public class HistoryReader extends MessageList {
         setMainBarItem(new MainBar(c.getName() + ": " + SR.MS_HISTORY));        
 
         hl = new HistoryLoader(c.bareJid, this, smiles);
-        messages = hl.stepEnd();
+
+        loadFrom(hl.stepEnd());
         moveCursorEnd();
         show();
     }
 
     public void eventOk() {
         if (getItemRef(cursor) == MIPrev) {
-            messages = hl.stepBack();
+            loadFrom(hl.stepBack());
             moveCursorEnd();
             return;
         } else if (getItemRef(cursor) == MINext) {
-            messages = hl.stepNext();
+            loadFrom(hl.stepNext());
             moveCursorHome();
             return;
         }
         super.eventOk();
     }
+
+    public final void loadFrom(final Vector items) {
+        messages.removeAllElements();
+        for (Enumeration e = items.elements(); e.hasMoreElements(); ) {
+            messages.addElement((MessageItem)e.nextElement());
+        }
+    }
     
     public void keyPressed(int key_code) {
         switch(key_code) {
             case Canvas.KEY_NUM1:
-                messages = hl.stepBegin();
+                loadFrom(hl.stepBegin());
                 moveCursorHome();
                 return;
             case Canvas.KEY_NUM7:
-                messages = hl.stepEnd();
+                loadFrom(hl.stepEnd());
                 moveCursorEnd();
                 return;
         }

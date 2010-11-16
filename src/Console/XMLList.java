@@ -134,13 +134,13 @@ public final class XMLList
         try {
             if (cursor+1==stanzas.size()) {
                 stanzas.stanzas.removeAllElements();
-                messages=null;
+                messages.removeAllElements();
             }
             else {
                 for (int i=0; i<cursor+1; i++)
                     stanzas.stanzas.removeElementAt(0);
             }
-            messages=new Vector();
+            messages.removeAllElements();
             moveCursorHome();
         } catch (Exception e) { }        
         redraw(); 
