@@ -821,7 +821,7 @@ public class ContactMessageList extends MessageList {
 //#             Msg message=(Msg) messages2.nextElement();
 //#             if (!isMsgExists(message)) {
 //#                 message.history=true;
-//#                 contact.msgs.insertElementAt(message, 0);
+//#                 contact.msgs.insertElementAt(new MessageItem(message, cf.smiles), 0);
 //#             }
 //#             message=null;
 //#         }
@@ -831,7 +831,7 @@ public class ContactMessageList extends MessageList {
 //#     private boolean isMsgExists(Msg msg) {
 //#         if (msg == null) return true;
 //#          for (Enumeration contactMsgs = contact.msgs.elements(); contactMsgs.hasMoreElements(); )  {
-//#             Msg message=(Msg) contactMsgs.nextElement();
+//#             Msg message=((MessageItem) contactMsgs.nextElement()).msg;
 //#             if (message.body.equals(msg.body)) {
 //#                 return true;
 //#             }
@@ -862,7 +862,7 @@ public class ContactMessageList extends MessageList {
 //#         StringBuffer messageList=new StringBuffer();
 //#         if (startSelection) {
 //#             for (Enumeration select=contact.msgs.elements(); select.hasMoreElements(); ) {
-//#                 Msg mess=(Msg) select.nextElement();
+//#                 Msg mess=((MessageItem) select.nextElement()).msg;
 //#                 if (mess.selected) {
 //#                     messageList.append(mess.quoteString()).append("\n").append("\n");
 //#                     mess.selected=false;
@@ -872,7 +872,7 @@ public class ContactMessageList extends MessageList {
 //#             startSelection = false;
 //#         } else {
 //#             for (Enumeration cmessages=contact.msgs.elements(); cmessages.hasMoreElements(); ) {
-//#                 Msg message=(Msg) cmessages.nextElement();
+//#                 Msg message=((MessageItem) cmessages.nextElement()).msg;
 //#                 messageList.append(message.quoteString()).append("\n").append("\n");
 //#             }
 //#         }
