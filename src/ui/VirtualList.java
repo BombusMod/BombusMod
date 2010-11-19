@@ -1223,6 +1223,8 @@ public abstract class VirtualList {
     }
 
     public int getNextSelectableRef(int curRef) {
+        if (getItemCount() == 0)
+            return 0;
         int nextRef=curRef;
         boolean process=true;
         while (process) {

@@ -658,7 +658,7 @@ public class ContactMessageList extends MessageList {
 
     public void clearReadedMessageList() {
         smartPurge();
-        messages.removeAllElements();
+        //messages.removeAllElements();
         moveCursorHome();
         redraw();
     }
@@ -915,7 +915,7 @@ public class ContactMessageList extends MessageList {
                     virtCursor--;
                     i--;
                 }
-                contact.activeMessage=msgs.size()-1; //drop activeMessage count
+                contact.activeMessage = msgs.size() - 1; //drop activeMessage count
             }
         } catch (Exception e) { 
 //#ifdef DEBUG            
