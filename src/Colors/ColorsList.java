@@ -75,7 +75,7 @@ public class ColorsList extends DefForm
     
     public void cmdOk() {
 //#ifdef COLOR_TUNE
-//#         new ColorSelectForm( this, this, cursor);
+//#         new ColorSelectForm( this, this, getCursor());
 //#         
 //#endif
     }

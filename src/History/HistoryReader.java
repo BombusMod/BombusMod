@@ -53,7 +53,7 @@ public class HistoryReader extends MessageList {
      * @param c 
      */
     public HistoryReader(Contact c) {
-        super();
+        super(new Vector());
         MIPrev = new MessageItem(new Msg(Msg.MESSAGE_TYPE_SYSTEM, null, null, "<---"), smiles);
         MINext = new MessageItem(new Msg(Msg.MESSAGE_TYPE_SYSTEM, null, null, "--->"), smiles);
 
@@ -67,11 +67,11 @@ public class HistoryReader extends MessageList {
     }
 
     public void eventOk() {
-        if (getItemRef(cursor) == MIPrev) {
+        if (getItemRef(getCursor()) == MIPrev) {
             loadFrom(hl.stepBack());
             moveCursorEnd();
             return;
-        } else if (getItemRef(cursor) == MINext) {
+        } else if (getItemRef(getCursor()) == MINext) {
             loadFrom(hl.stepNext());
             moveCursorHome();
             return;

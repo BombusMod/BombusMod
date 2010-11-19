@@ -90,7 +90,7 @@ public class StatusSelect
         }
         
         if (c==cmdDef) {
-            cf.loginstatus=cursor;
+            cf.loginstatus=getCursor();
 	    cf.saveToStorage();
             redraw();
         }

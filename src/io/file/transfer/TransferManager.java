@@ -88,9 +88,9 @@ public class TransferManager
     protected void keyClear() {
         if (getItemCount()>0) {
             synchronized (TransferDispatcher.getInstance().getTaskList()) {
-                TransferTask task=(TransferTask) TransferDispatcher.getInstance().getTaskList().elementAt(cursor);
+                TransferTask task=(TransferTask) TransferDispatcher.getInstance().getTaskList().elementAt(getCursor());
                 task.cancel();
-                TransferDispatcher.getInstance().getTaskList().removeElementAt(cursor);
+                TransferDispatcher.getInstance().getTaskList().removeElementAt(getCursor());
                 loadItemsFrom(TransferDispatcher.getInstance().getTaskList());
             }
         }

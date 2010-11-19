@@ -60,6 +60,7 @@ import javax.microedition.lcdui.Canvas;
 //#ifdef FILE_TRANSFER
 import io.file.transfer.TransferAcceptFile;
 import io.file.transfer.TransferDispatcher;
+import ui.VirtualElement;
 //#endif
 
 public class ContactMessageList extends MessageList {
@@ -122,14 +123,13 @@ public class ContactMessageList extends MessageList {
      * @param c
      */
     public ContactMessageList(Contact c) {
-        super();
+        super(c.msgs);
         this.contact = c;
         sd.roster.activeContact=contact;
 
         MainBar mb=new MainBar(contact);
         setMainBarItem(mb);
-
-        cursor=0;//activate
+        
         on_end = false;
         contact.setIncoming(0);
 //#ifdef FILE_TRANSFER
@@ -149,12 +149,13 @@ public class ContactMessageList extends MessageList {
         int unreadIndex=0;
         for (Enumeration e=contact.msgs.elements(); e.hasMoreElements();) {
             Msg msg = ((MessageItem)e.nextElement()).msg;
-            if (msg.unread && (msg.messageType != Msg.MESSAGE_TYPE_OUT))
+            if (msg.unread)
                 break;
             if (contact.mark == unreadIndex)
                 break;            
             unreadIndex++;
-        }        
+        }
+        System.out.println("first unread: " + unreadIndex);
         return unreadIndex;
     }    
 
@@ -167,7 +168,7 @@ public class ContactMessageList extends MessageList {
         if (cmdSubscribe==null) return;
         
         try {
-            Msg msg = ((MessageItem) contact.msgs.elementAt(cursor)).msg;
+            Msg msg = ((MessageItem) contact.msgs.elementAt(getCursor())).msg;
             if (msg.messageType==Msg.MESSAGE_TYPE_AUTH) {
                 addMenuCommand(cmdSubscribe);
                 addMenuCommand(cmdDecline);
@@ -175,7 +176,7 @@ public class ContactMessageList extends MessageList {
         } catch (Exception e) {}
 //#ifdef FILE_TRANSFER        
         try {
-            Msg msg = ((MessageItem) contact.msgs.elementAt(cursor)).msg;
+            Msg msg = ((MessageItem) contact.msgs.elementAt(getCursor())).msg;
             if (msg.messageType==Msg.MESSAGE_TYPE_FILE_REQ) {
                 addMenuCommand(cmdAcceptFile);
                 addMenuCommand(cmdDeclineFile);
@@ -298,14 +299,14 @@ public class ContactMessageList extends MessageList {
     protected void beginPaint() {
         if (contact != null)
             sd.roster.activeContact = contact;
-        markRead(cursor);
+        markRead(getCursor());
         forceScrolling();         
-        on_end = (cursor==(getItemCount()-1));
+        on_end = (getCursor()==(getItemCount() - 1));
     }
     
     public void markRead(int msgIndex) {
-	if (msgIndex>=getItemCount()) return;
-        if (msgIndex<contact.lastUnread) return;
+	if (msgIndex>getItemCount()) return;
+       // if (msgIndex<contact.lastUnread) return;
 
         sd.roster.countNewMsgs();
 //#ifdef LOGROTATE
@@ -327,6 +328,17 @@ public class ContactMessageList extends MessageList {
 //#endif
     public int getItemCount(){ return (contact == null || contact.msgs == null)? 0 :contact.msgs.size(); }
 
+    public VirtualElement getItemRef(int index) {
+        MessageItem mi = (MessageItem) messages.elementAt(index);
+        mi.setEven( (index & 1) == 0);
+        if (mi.msg.unread) {
+            if (contact != null)
+                contact.resetNewMsgCnt();
+        }
+        mi.msg.unread = false;
+        return mi;
+    }
+
     public Msg getMessage(int index) {
         if (index >= getItemCount()) {
             return null;
@@ -334,13 +346,14 @@ public class ContactMessageList extends MessageList {
 
         Msg msg = ((MessageItem) contact.msgs.elementAt(index)).msg;
         if (msg.unread) {
+            System.out.println("Unread: " + msg.toString());
             contact.resetNewMsgCnt();
         }
         msg.unread = false;
         return msg;
     }
 
-    public void focusedItem(int index){ 
+    public void focusedItem(int index){
         markRead(index);
     }
     
@@ -352,14 +365,14 @@ public class ContactMessageList extends MessageList {
 //#ifdef ARCHIVE
         if (c==cmdArch) {
             try {
-                MessageArchive.store(getMessage(cursor),1);
+                MessageArchive.store(getMessage(getCursor()),1);
             } catch (Exception e) {/*no messages*/}
         }
 //#endif
 //#if TEMPLATES
 //#         if (c==cmdTemplate) {
 //#             try {
-//#                 MessageArchive.store(getMessage(cursor),2);
+//#                 MessageArchive.store(getMessage(getCursor()),2);
 //#             } catch (Exception e) {/*no messages*/}
 //#         }
 //#endif
@@ -382,7 +395,7 @@ public class ContactMessageList extends MessageList {
         }
         if (c==cmdSelect) {
             startSelection=true;
-            Msg mess=((MessageItem) contact.msgs.elementAt(cursor)).msg;
+            Msg mess=((MessageItem) contact.msgs.elementAt(getCursor())).msg;
             mess.selected = !mess.selected;
             mess.oldHighlite = mess.highlite;
             mess.highlite = mess.selected;
@@ -480,9 +493,9 @@ public class ContactMessageList extends MessageList {
     
 //#ifdef JUICK
 //#     private String getBodyFromCurrentMsg() {
-//#         if (cursor > messages.size() - 1)
+//#         if (getCursor() > messages.size() - 1)
 //#             return "";
-//#         Msg msg = ((MessageItem)messages.elementAt(cursor)).msg;
+//#         Msg msg = ((MessageItem)messages.elementAt(getCursor())).msg;
 //# 
 //#         if (msg != null) {
 //#             return msg.body;
@@ -655,7 +668,6 @@ public class ContactMessageList extends MessageList {
     public void clearReadedMessageList() {
         smartPurge();
         messages.removeAllElements();
-        cursor=0;
         moveCursorHome();
         redraw();
     }
@@ -784,7 +796,7 @@ public class ContactMessageList extends MessageList {
         if (!sd.roster.isLoggedIn()) return;
         
         try {
-            Msg msg=getMessage(cursor);
+            Msg msg=getMessage(getCursor());
             
             if (msg==null || msg.messageType == Msg.MESSAGE_TYPE_OUT || msg.messageType == Msg.MESSAGE_TYPE_SUBJ) {
                 keyGreen();
@@ -801,7 +813,7 @@ public class ContactMessageList extends MessageList {
             String msg=new StringBuffer()
                 .append((char)0xbb) //
                 .append(" ")
-                .append(getMessage(cursor).quoteString())
+                .append(getMessage(getCursor()).quoteString())
                 .append("\n")
                 .append(" ")
                 .toString();
@@ -884,7 +896,8 @@ public class ContactMessageList extends MessageList {
     
     public final void smartPurge() {        
         Vector msgs=contact.msgs;
-        int cur=cursor+1;
+        int cur = getCursor() + 1;
+        moveCursorTo(cur);
         try {
             if (msgs.size()>0){
                 int virtCursor=msgs.size();
@@ -927,7 +940,9 @@ public class ContactMessageList extends MessageList {
     }
 
     public void savePosition() {
-        contact.mark = on_end ? -1 : cursor;
+        contact.mark = on_end ? -1 : getCursor();
+        System.out.println("Marked: " + contact.mark);
+        System.out.println("lastUnread: " + contact.lastUnread);
     }
 
     public void destroyView(){

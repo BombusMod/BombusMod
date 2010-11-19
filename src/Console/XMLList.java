@@ -48,7 +48,7 @@ public final class XMLList
 //#endif
     
     StanzasList stanzas;
-    
+
     private MenuCommand cmdNew=new MenuCommand(SR.MS_NEW, MenuCommand.SCREEN, 5);
     private MenuCommand cmdEnableDisable=new MenuCommand(SR.MS_ENABLE_DISABLE, MenuCommand.SCREEN, 6);
     private MenuCommand cmdPurge=new MenuCommand(SR.MS_CLEAR_LIST, MenuCommand.SCREEN, 10);
@@ -57,7 +57,7 @@ public final class XMLList
     /** Creates a new instance of XMLList
      */
     public XMLList() {
-        super ();
+        super (new Vector());
                        
         super.smiles = false;       
         stanzas = StanzasList.getInstance();
@@ -84,7 +84,7 @@ public final class XMLList
         .append(getItemCount())
         .append(")");
         
-        if (!stanzas.enabled)
+        if (!StanzasList.getInstance().enabled)
             str.append(" - Disabled");
         
         getMainBarItem().setElementAt(str.toString(),1);
@@ -92,19 +92,19 @@ public final class XMLList
     
 
     public int getItemCount() {
-        return stanzas.size();
+        return StanzasList.getInstance().stanzas.size();
     }
     
     public Msg getMessage(int index) {
         Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT, "local", null, null);
         try {
-            msg=stanzas.msg(index);
+            msg=StanzasList.getInstance().msg(index);
         } catch (Exception e) {}
 	return msg;
     }
 
     public void keyGreen(){
-	Msg m=getMessage(cursor);
+	Msg m=getMessage(getCursor());
         String stanza = "";
         try {
             stanza =  m.toString();
@@ -115,12 +115,12 @@ public final class XMLList
     public void menuAction(MenuCommand c, VirtualList d) {
         super.menuAction(c,d);
         
-	Msg m=getMessage(cursor);
+	Msg m=getMessage(getCursor());
         if (c==cmdNew) {
             keyGreen();
         }
         if (c==cmdEnableDisable) {
-            stanzas.enabled=!stanzas.enabled;
+            StanzasList.getInstance().enabled = !StanzasList.getInstance().enabled;
             redraw();
         }
 	if (m==null) return;
@@ -132,13 +132,13 @@ public final class XMLList
     
     private void clearReadedMessageList() {
         try {
-            if (cursor+1==stanzas.size()) {
-                stanzas.stanzas.removeAllElements();
+            if (getCursor()+1==StanzasList.getInstance().size()) {
+                StanzasList.getInstance().stanzas.removeAllElements();
                 messages.removeAllElements();
             }
             else {
-                for (int i=0; i<cursor+1; i++)
-                    stanzas.stanzas.removeElementAt(0);
+                for (int i=0; i<getCursor()+1; i++)
+                    StanzasList.getInstance().stanzas.removeElementAt(0);
             }
             messages.removeAllElements();
             moveCursorHome();

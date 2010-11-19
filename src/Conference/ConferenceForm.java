@@ -95,7 +95,7 @@ public class ConferenceForm
         if (join.isUrl) return;
         
         this.editConf=join;
-        this.cursor=cursor;
+        moveCursorTo(cursor);
 
         int roomEnd=join.getJid().indexOf('@');
         String room="";
@@ -186,8 +186,8 @@ public class ConferenceForm
         if (c==cmdEdit) {
             sd.roster.bookmarks.removeElement(editConf);
             BookmarkItem item = new BookmarkItem(name, gchat.toString(), nick, pass, autojoin);
-            if (cursor < sd.roster.bookmarks.size())
-                sd.roster.bookmarks.insertElementAt(item, cursor);
+            if (getCursor() < sd.roster.bookmarks.size())
+                sd.roster.bookmarks.insertElementAt(item, getCursor());
             else
                 sd.roster.bookmarks.addElement(item);
             sd.roster.theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.SAVE));

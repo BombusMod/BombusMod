@@ -60,9 +60,9 @@ public abstract class MessageList extends VirtualList
     
     /** Creates a new instance of MessageList */
   
-    public MessageList() {
+    public MessageList(Vector messages) {
         super();
-        messages = new Vector();
+        this.messages = messages;
         cf = Config.getInstance();
         
 //#ifdef SMILES
@@ -72,7 +72,7 @@ public abstract class MessageList extends VirtualList
 //#endif
         enableListWrapping(false);
 	
-        cursor=0;//activate        
+        moveCursorTo(0);//activate
     }    
     
     

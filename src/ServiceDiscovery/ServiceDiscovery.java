@@ -336,7 +336,7 @@ public class ServiceDiscovery
     public final void browse(String service, String node){
             if (this.service != null) {
             State st=new State();
-            st.cursor = cursor;
+            st.cursor = getCursor();
             st.items = new Vector();
             int size = itemsList.size();
             for (int i = 0; i < size; i++) {
@@ -372,7 +372,7 @@ public class ServiceDiscovery
             service = st.service;
             node = st.node;
             features = st.features;
-            cursor = st.cursor;
+            moveCursorTo(st.cursor);
             itemsList.removeAllElements();   
             int size = st.items.size();
             for (int i = 0; i < size; i++) {

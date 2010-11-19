@@ -150,7 +150,7 @@ public class SmilePicker
     } 
 
     protected void drawBalloon(final Graphics g, int balloon, final String text) {
-        if (cursor==0) balloon+=lineHeight+Balloon.getHeight();
+        if (getCursor()==0) balloon+=lineHeight+Balloon.getHeight();
         int x=xBorder+(xCursor*imgWidth);
         g.translate(x, balloon);
         Balloon.draw(g, text);
@@ -160,7 +160,7 @@ public class SmilePicker
         if (xCursor>0) 
             xCursor--; 
         else {
-            if (cursor==0) {
+            if (getCursor()==0) {
                 keyDwn();
                 pageLeft();
                 return;
@@ -171,18 +171,18 @@ public class SmilePicker
         }
     }
     public void pageRight(){ 
-        if ( xCursor < ( (cursor<lines-1)?(xCnt-1):(xLastCnt-1) ) ) {
+        if ( xCursor < ( (getCursor()<lines-1)?(xCnt-1):(xLastCnt-1) ) ) {
             xCursor++;
             setRotator();
         } else {
-            if (cursor==lines-1) return;
+            if (getCursor()==lines-1) return;
             xCursor=0;
             keyDwn();
         }
     }
     public void keyDwn(){
         super.keyDwn();
-        if (cursor!=lines-1)
+        if (getCursor()!=lines-1)
             return;
         if (xCursor >= xLastCnt)
             xCursor=xLastCnt-1;
@@ -200,7 +200,7 @@ public class SmilePicker
     }
 
     public String getTipString() {
-        return (String) smileTable.elementAt(cursor*xCnt+xCursor);
+        return (String) smileTable.elementAt(getCursor()*xCnt+xCursor);
     }
 
     protected void pointerPressed(int x, int y) { 
@@ -208,7 +208,7 @@ public class SmilePicker
         if (x>=xCnt*imgWidth) return;
         xCursor=x/imgWidth;
         setRotator();
-        if (cursor!=lines-1) return;
+        if (getCursor()!=lines-1) return;
         if (xCursor >= xLastCnt) xCursor=xLastCnt-1;
     }
     

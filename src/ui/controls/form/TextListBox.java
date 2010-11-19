@@ -67,7 +67,7 @@ public class TextListBox
     
     public void eventOk() {
         if (itemsList.size()>0)
-            ti.setValue(itemsList.elementAt(cursor).toString());        
+            ti.setValue(itemsList.elementAt(getCursor()).toString());
         destroyView();
     }
     public void destroyView() {

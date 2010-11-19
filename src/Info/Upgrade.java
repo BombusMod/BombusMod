@@ -28,6 +28,7 @@
 package Info;
 
 import Client.Msg;
+import Messages.MessageItem;
 import Messages.MessageList;
 import images.RosterIcons;
 import java.io.InputStream;
@@ -52,7 +53,6 @@ public class Upgrade
     //private MenuCommand cmdBack=new MenuCommand(SR.MS_BACK, Command.BACK, 99);
     private final static String VERSION_URL="http://bombusmod.net.ru/checkupdate/check.php";
 
-    Vector news;
     Vector versions[];
     boolean build;
     
@@ -66,10 +66,8 @@ public class Upgrade
      * @param build
      */
     public Upgrade(boolean build) {
-        super ();
+        super (new Vector());
         this.build=build;
-        
-        news=new Vector();
         
         try {
             focusedItem(0);
@@ -99,13 +97,13 @@ public class Upgrade
             for (int i=0; i<versions[0].size(); i++) {
                 if (versions[0].elementAt(i)==null) continue;
                 String name=(String)versions[0].elementAt(i);
-                news.addElement(new Msg(Msg.MESSAGE_TYPE_IN, null, null, name)); 
+                messages.addElement(new MessageItem(new Msg(Msg.MESSAGE_TYPE_IN, null, null, name), false));
             }
 
             if(is!= null) is.close();
             if(c != null) c.close();
         } catch (Exception e) {
-            news.addElement(new Msg(Msg.MESSAGE_TYPE_IN, null, null, SR.MS_ERROR));
+            messages.addElement(new MessageItem(new Msg(Msg.MESSAGE_TYPE_IN, null, null, SR.MS_ERROR), false));
         }
         wait=false;
         redraw();
@@ -128,16 +126,15 @@ public class Upgrade
     }
     
     public int getItemCount() {
-        return news.size();
+        return messages.size();
     }
 
     public Msg getMessage(int index) {
-	return (Msg)news.elementAt(index);
+	return ((MessageItem)messages.elementAt(index)).msg;
     }
     
     private void clearList() {
         if (getItemCount()>0) {
-            news.removeAllElements();
             messages.removeAllElements();
         }
         redraw(); 

@@ -136,7 +136,7 @@ public class ActiveContacts
     protected void keyClear() {
         Contact c = (Contact) getFocusedObject();
         c.purge();
-        itemsList.removeElementAt(cursor);
+        itemsList.removeElementAt(getCursor());
         getMainBarItem().setElementAt(String.valueOf(getItemCount()), 0);
     }
 

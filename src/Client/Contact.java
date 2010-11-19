@@ -263,9 +263,9 @@ public class Contact extends IconTextElement{
         if (msgs.isEmpty()) {
             return 0;
         }
-        if (newMsgCnt > 0) {
+      /*  if (newMsgCnt > 0) {
             return newMsgCnt;
-        }
+        }*/
         int nm = 0;
         if (getGroupType() != Groups.TYPE_IGNORE) {
             unreadType = Msg.MESSAGE_TYPE_IN;
@@ -416,7 +416,7 @@ public class Contact extends IconTextElement{
         msgs.addElement(new MessageItem(m, cf.smiles));
         
         if (m.unread) {
-            lastUnread=msgs.size()-1;
+            lastUnread=msgs.size();
             if (m.messageType>unreadType) unreadType=m.messageType;
             if (newMsgCnt>=0) newMsgCnt++;
             if (m.highlite) if (newHighLitedMsgCnt>=0) newHighLitedMsgCnt++;

@@ -156,7 +156,7 @@ public class Bookmarks extends DefForm {
 
         if (c == cmdAdvJoin) {
             BookmarkItem join = (BookmarkItem) getFocusedObject();
-            new ConferenceForm(join, cursor);
+            new ConferenceForm(join, getCursor());
         } else if (c == cmdDel) {
             deleteBookmark();
             setMainBarItem(new MainBar(2, null, SR.MS_BOOKMARKS + " (" + getItemCount() + ") ", false));
@@ -207,7 +207,7 @@ public class Bookmarks extends DefForm {
         }
 
         itemsList.removeElement(del);
-        if (getItemCount() <= cursor) {
+        if (getItemCount() <= getCursor()) {
             moveCursorEnd();
         }
         saveBookmarks();
@@ -221,7 +221,7 @@ public class Bookmarks extends DefForm {
 
     public void move(int offset) {
         try {
-            int index = cursor;
+            int index = getCursor();
             BookmarkItem p1 = (BookmarkItem) getItemRef(index);
             BookmarkItem p2 = (BookmarkItem) getItemRef(index + offset);
 

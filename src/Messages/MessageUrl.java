@@ -79,18 +79,18 @@ public class MessageUrl extends DefForm implements TextBoxNotify {
         }
 //#ifdef CLIPBOARD
 //#         if (c == cmdCopy) {
-//#             clipboard.set(new Msg(Msg.MESSAGE_TYPE_IN, "url", null, itemsList.elementAt(cursor).toString()));
+//#             clipboard.set(new Msg(Msg.MESSAGE_TYPE_IN, "url", null, itemsList.elementAt(getCursor()).toString()));
 //#         }
 //# 
 //#         if (c == cmdCopyPlus) {
-//#             clipboard.append(new Msg(Msg.MESSAGE_TYPE_IN, "url", null, itemsList.elementAt(cursor).toString()));
+//#             clipboard.append(new Msg(Msg.MESSAGE_TYPE_IN, "url", null, itemsList.elementAt(getCursor()).toString()));
 //#         }
 //#endif
     }
     
     public void eventOk() {
         try {
-            BombusMod.getInstance().platformRequest(itemsList.elementAt(cursor).toString());
+            BombusMod.getInstance().platformRequest(itemsList.elementAt(getCursor()).toString());
         } catch (ConnectionNotFoundException ex) {
 //#ifdef DEBUG            
 //#             ex.printStackTrace();
@@ -107,11 +107,11 @@ public class MessageUrl extends DefForm implements TextBoxNotify {
 
 	}
     private void EditURL() {
-        new MIDPTextBox("Edit URL", itemsList.elementAt(cursor).toString(), this, TextField.ANY);
+        new MIDPTextBox("Edit URL", itemsList.elementAt(getCursor()).toString(), this, TextField.ANY);
     }
 
     public void OkNotify(String text_return) {
-        itemsList.setElementAt(new ListItem(text_return), cursor);               
+        itemsList.setElementAt(new ListItem(text_return), getCursor());
     }
     
      public void commandState() {

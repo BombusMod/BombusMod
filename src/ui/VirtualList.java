@@ -203,7 +203,7 @@ public abstract class VirtualList {
     int width;
     int height;
     
-    protected int cursor;
+    private int cursor;
 
     /**
      * окно приклеено к позиции курсора
@@ -752,17 +752,18 @@ public abstract class VirtualList {
     }
 
     public void moveCursorTo(int index){
-        int count=getItemCount();
-        if (index<0) index=0;
-        if (index>=count) index=count-1; 
+        int count = getItemCount();
+        if (index <= 0)
+            index = 0;
+        else if (index >= count)
+            index = count - 1;
 
-        try {
-        if (getItemRef(index).isSelectable()) cursor=index;
-        } catch (Exception ex){
-		ex.printStackTrace();
-        }
+        if (getItemRef(index).isSelectable()) 
+            cursor = index;
+        
         stickyWindow=true;
         redraw();
+        setRotator();
     }
     
     protected void fitCursorByTop(){
@@ -943,7 +944,7 @@ public abstract class VirtualList {
         long clickTime = System.currentTimeMillis();
 
         long dTime = clickTime - lastClickTime;
-        if (dTime > 500 && dTime < 1000) {
+        if (dTime > 500 && dTime < 5000) {
                 eventLongOk();
         } else if (dTime <= 200) {
             if (cursor == lastCursor || cf.advTouch)

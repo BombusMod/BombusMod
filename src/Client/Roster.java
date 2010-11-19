@@ -492,8 +492,6 @@ public class Roster
     boolean countNewMsgs() {
         int m=0;
         int h=0;
-        if (hContacts == null)
-            return false;
         synchronized (hContacts) {
             int j=hContacts.size();
             for (int i=0; i<j; i++){
@@ -2849,7 +2847,7 @@ public class Roster
         int newpos = -1;
         synchronized (itemsList) {
             int size = itemsList.size();
-            int pos = cursor;
+            int pos = getCursor();
             int count = size;
             try {
                 while (count > 0) {
@@ -3071,7 +3069,7 @@ public class Roster
             while (pendingRepaints > 0) {
                 pendingRepaints = 0;
 
-                int locCursor = cursor;
+                int locCursor = getCursor();
                 Object focused = (desiredFocus == null) ? getFocusedObject() : desiredFocus;
                 desiredFocus = null;
                 Vector tContacts = new Vector(itemsList.size());
@@ -3140,11 +3138,11 @@ public class Roster
                 setRosterMainBar(onl.toString());
                 onl = null;
 
-                if (cursor < 0) {
-                    cursor = 0;
+                if (getCursor() < 0) {
+                    moveCursorTo(0);
                 }
 
-                if (locCursor == cursor && focused != null) {
+                if (locCursor == getCursor() && focused != null) {
                   //  itemsList = vContacts;
                     int c = itemsList.indexOf(focused);
                     if (c >= 0) {
@@ -3152,7 +3150,7 @@ public class Roster
                     }
                     force = false;
                 }
-                focusedItem(cursor);
+                focusedItem(getCursor());
                 VirtualList list = sd.canvas.getList();
                 if (list != null)
                     list.redraw();

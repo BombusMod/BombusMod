@@ -32,6 +32,7 @@ import javax.microedition.lcdui.TextBox;
 import ui.MainBar;
 import Messages.MessageList;
 import Menu.MenuCommand;
+import java.util.Vector;
 import locale.SR;
 import ui.VirtualList;
 import ui.controls.AlertBox;
@@ -68,17 +69,17 @@ public class ArchiveList
      * @param t
      */
     public ArchiveList(int caretPos, int where, TextBox t) {
- 	super ();
+        super(new Vector());
         this.where = where;
         this.caretPos = caretPos;
-        this.t = t;     
-        archive = new MessageArchive(where);                
-	MainBar mb=new MainBar((where==1)?SR.MS_ARCHIVE:SR.MS_TEMPLATE);
-	mb.addElement(null);
-	mb.addRAlign();
-	mb.addElement(null);
-	mb.addElement(SR.MS_FREE /*"free "*/);
-        setMainBarItem(mb);      
+        this.t = t;
+        archive = new MessageArchive(where);
+        MainBar mb = new MainBar((where == 1) ? SR.MS_ARCHIVE : SR.MS_TEMPLATE);
+        mb.addElement(null);
+        mb.addRAlign();
+        mb.addElement(null);
+        mb.addElement(SR.MS_FREE /*"free "*/);
+        setMainBarItem(mb);
         show();
     }
 
@@ -116,7 +117,7 @@ public class ArchiveList
     public void menuAction(MenuCommand c, VirtualList d) {
         super.menuAction(c,d);
         
-	Msg m=getMessage(cursor);
+	Msg m=getMessage(getCursor());
         if (c==cmdNew) { new archiveEdit(this, -1, where, this); }
 	if (m==null) return;
         
@@ -127,7 +128,7 @@ public class ArchiveList
 	if (c==cmdJid) { pasteData(2); }
         if (c==cmdEdit) {
             try {
-                new archiveEdit(this, cursor, where, this);
+                new archiveEdit(this, getCursor(), where, this);
             } catch (Exception e) {/*no messages*/}
         }
     }
@@ -138,10 +139,10 @@ public class ArchiveList
     }
 
     private void deleteMessage() {
-        archive.delete(cursor);
+        archive.delete(getCursor());
         messages.removeAllElements();
-        if (cursor>0)
-            cursor--;
+        if (getCursor()>0)
+            moveCursorTo(getCursor() - 1);
         setRotator();
         redraw();
     }
@@ -158,7 +159,7 @@ public class ArchiveList
     
     private void pasteData(int field) {
 	if (t==null) return;
-	Msg m=getMessage(cursor);
+	Msg m=getMessage(getCursor());
 	if (m==null) return;
 	String data;
 	switch (field) {

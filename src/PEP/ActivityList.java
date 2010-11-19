@@ -56,14 +56,14 @@ public class ActivityList extends DefForm implements MIDPTextBox.TextBoxNotify {
 
 //#ifdef PEP
 //#     public void eventOk() {
-//#         if (cursor==0) OkNotify(null); 
+//#         if (getCursor()==0) OkNotify(null);
 //#             else new MIDPTextBox(SR.MS_USERACTIVITY, acttext, this, TextField.ANY);
 //#     }
 //#endif
     
     public void OkNotify(String actText) {
         //String moodName=((MoodItem)getFocusedObject()).getTipString();
-        publish(cursor, actText);
+        publish(getCursor(), actText);
         parentView = sd.roster;
         destroyView();        
     }
