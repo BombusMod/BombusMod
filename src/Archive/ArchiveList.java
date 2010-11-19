@@ -107,11 +107,11 @@ public class ArchiveList
     }
     
     public int getItemCount() {
-	return archive.size();
+        return archive == null ? 0 : archive.size();
     }
     
     protected Msg getMessage(int index) {
-	return archive.msg(index);
+        return archive.msg(index);
     }
 
     public void menuAction(MenuCommand c, VirtualList d) {

@@ -233,9 +233,12 @@ public abstract class VirtualList {
         }
         int layout[]=new int[size+1];
         int y=0;
-        for (int index=0; index<size; index++){
-            y+=getItemRef(index).getVHeight();
-            layout[index+1]=y;
+        for (int index = 0; index < size; index++) {
+            VirtualElement item = getItemRef(index);
+            if (item != null) {
+                y += item.getVHeight();
+                layout[index + 1] = y;
+            }
         }
         listHeight=y;
         itemLayoutY=layout;
@@ -753,17 +756,19 @@ public abstract class VirtualList {
 
     public void moveCursorTo(int index){
         int count = getItemCount();
+        if (count == 0)
+            return;
         if (index <= 0)
             index = 0;
         else if (index >= count)
             index = count - 1;
-
-        if (getItemRef(index).isSelectable()) 
+        VirtualElement item = getItemRef(index);
+        if (item != null && item.isSelectable())
             cursor = index;
         
         stickyWindow=true;
         redraw();
-        setRotator();
+        //setRotator();
     }
     
     protected void fitCursorByTop(){
@@ -814,12 +819,6 @@ public abstract class VirtualList {
     private int yPointerPos;
 
     protected void pointerPressed(int x, int y) {
-//#ifdef POPUPS
-        if (PopUp.getInstance().next()) {
-            redraw();
-            return;
-        }
-//#endif
         if (Config.fullscreen) {
             int act = CommandsPointer.pointerPressed(x, y);
             if (act == 1) {
@@ -915,11 +914,13 @@ public abstract class VirtualList {
 
         stickyWindow = false;
         if (cursor >= 0) {
-            int pos = getElementIndexAt(win_top + y - list_top);
-            if ((pos >= 0) && getItemRef(pos).isSelectable()) {
-                cursor = pos;
+            if (getItemCount() != 0) {
+                int pos = getElementIndexAt(win_top + y - list_top);
+                if ((pos >= 0) && getItemRef(pos).isSelectable()) {
+                    cursor = pos;
+                }
+                setRotator();
             }
-            setRotator();
         }
 
         redraw();
@@ -927,31 +928,41 @@ public abstract class VirtualList {
     }
 
     protected void pointerReleased(int x, int y) {
+//#ifdef POPUPS
+        if (PopUp.getInstance().next()) {
+            redraw();
+            return;
+        }
+//#endif
+
         scrollbar.pointerReleased(x, y, this);
+
         if (Config.fullscreen) {
             if (CommandsPointer.pointerPressed(x, y) > 0) {
                 return;
             }
         }
-        
+
         if (y > list_top + winHeight) {
             return;
         }
-        if (itemDragged) {
-            itemDragged = false;
-            return;
-        }
-        long clickTime = System.currentTimeMillis();
+        if (!itemDragged) {            
 
-        long dTime = clickTime - lastClickTime;
-        if (dTime > 500 && dTime < 5000) {
+            long clickTime = System.currentTimeMillis();
+
+            long dTime = clickTime - lastClickTime;
+            if (dTime > 500 && dTime < 5000) {
                 eventLongOk();
-        } else if (dTime <= 200) {
-            if (cursor == lastCursor || cf.advTouch)
-                eventOk();
+            } else if (dTime <= 200) {
+                if (cursor == lastCursor || cf.advTouch) {                    
+                    eventOk();
+                }
+            }
+            lastClickTime = clickTime;
+            y = 0;
         }
-        y = 0;
-    }
+        itemDragged = false;
+}
   
     private int getKeyCodeForSendEvent(int key_code) {
         int key = -1;

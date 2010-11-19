@@ -72,7 +72,7 @@ public final class XMLList
     
     public void commandState() {
         menuCommands.removeAllElements();
-	addMenuCommand(cmdBack);
+        addMenuCommand(cmdBack);
         addMenuCommand(cmdNew);
         addMenuCommand(cmdEnableDisable);
         addMenuCommand(cmdPurge);
@@ -84,7 +84,7 @@ public final class XMLList
         .append(getItemCount())
         .append(")");
         
-        if (!StanzasList.getInstance().enabled)
+        if (!stanzas.enabled)
             str.append(" - Disabled");
         
         getMainBarItem().setElementAt(str.toString(),1);
@@ -92,15 +92,11 @@ public final class XMLList
     
 
     public int getItemCount() {
-        return StanzasList.getInstance().stanzas.size();
+        return stanzas == null ? 0 : stanzas.size();
     }
     
-    public Msg getMessage(int index) {
-        Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT, "local", null, null);
-        try {
-            msg=StanzasList.getInstance().msg(index);
-        } catch (Exception e) {}
-	return msg;
+    public Msg getMessage(int index) {        
+        return stanzas.msg(index);
     }
 
     public void keyGreen(){
@@ -113,19 +109,21 @@ public final class XMLList
     }
     
     public void menuAction(MenuCommand c, VirtualList d) {
-        super.menuAction(c,d);
-        
-	Msg m=getMessage(getCursor());
-        if (c==cmdNew) {
+        super.menuAction(c, d);
+
+        Msg m = getMessage(getCursor());
+        if (c == cmdNew) {
             keyGreen();
         }
-        if (c==cmdEnableDisable) {
+        if (c == cmdEnableDisable) {
             StanzasList.getInstance().enabled = !StanzasList.getInstance().enabled;
             redraw();
         }
-	if (m==null) return;
+        if (m == null) {
+            return;
+        }
 
-        if (c==cmdPurge) { 
+        if (c == cmdPurge) {
             clearReadedMessageList();
         }
     }

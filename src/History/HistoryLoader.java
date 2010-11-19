@@ -47,7 +47,6 @@ public class HistoryLoader {
 //#     public static String plugin = new String("PLUGIN_HISTORY");
 //#endif
 
-    private VirtualList view;
     private boolean smiles;
 
     private String fileName="";
@@ -65,8 +64,7 @@ public class HistoryLoader {
     public final static int MESSAGE_MARKER_IN=3;
     public final static int MESSAGE_MARKER_OTHER=0;
 
-    public HistoryLoader(String file, VirtualList view, boolean smiles) {
-        this.view = view;
+    public HistoryLoader(String file, boolean smiles) {
         this.smiles = smiles;
         cf = Config.getInstance();
 //#ifdef DETRANSLIT

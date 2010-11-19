@@ -59,7 +59,7 @@ public class HistoryReader extends MessageList {
 
         setMainBarItem(new MainBar(c.getName() + ": " + SR.MS_HISTORY));        
 
-        hl = new HistoryLoader(c.bareJid, this, smiles);
+        hl = new HistoryLoader(c.bareJid, smiles);
 
         loadFrom(hl.stepEnd());
         moveCursorEnd();
@@ -101,13 +101,10 @@ public class HistoryReader extends MessageList {
     }
 
     public int getItemCount() {
-        if (messages != null)
-           return messages.size();
-        else return 0;
+        return messages == null ? 0 : messages.size();
     }
 
     public Msg getMessage(int i) {
-        if (messages == null) return null;
         return ((MessageItem) messages.elementAt(i)).msg;
     }
     public void commandState() {

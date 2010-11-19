@@ -155,7 +155,6 @@ public class ContactMessageList extends MessageList {
                 break;            
             unreadIndex++;
         }
-        System.out.println("first unread: " + unreadIndex);
         return unreadIndex;
     }    
 
@@ -287,14 +286,7 @@ public class ContactMessageList extends MessageList {
             if (on_end)
                 moveCursorEnd();
         }
-    }
-    
-//#ifdef LOGROTATE 
-//#     public final void show() {
-//#         getRedraw(true);
-//#         super.show();
-//#     }
-//#endif    
+    }   
 
     protected void beginPaint() {
         if (contact != null)
@@ -322,7 +314,7 @@ public class ContactMessageList extends MessageList {
 //# 
 //#         if (contact != null)
 //#             contact.redraw = false;
-//#         messages.removeAllElements();
+//#        // messages.removeAllElements();
 //#         redraw();
 //#     }
 //#endif
@@ -346,7 +338,6 @@ public class ContactMessageList extends MessageList {
 
         Msg msg = ((MessageItem) contact.msgs.elementAt(index)).msg;
         if (msg.unread) {
-            System.out.println("Unread: " + msg.toString());
             contact.resetNewMsgCnt();
         }
         msg.unread = false;
@@ -940,9 +931,7 @@ public class ContactMessageList extends MessageList {
     }
 
     public void savePosition() {
-        contact.mark = on_end ? -1 : getCursor();
-        System.out.println("Marked: " + contact.mark);
-        System.out.println("lastUnread: " + contact.lastUnread);
+        contact.mark = on_end ? -1 : getCursor();        
     }
 
     public void destroyView(){
