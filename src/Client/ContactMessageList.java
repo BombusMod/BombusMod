@@ -60,8 +60,8 @@ import javax.microedition.lcdui.Canvas;
 //#ifdef FILE_TRANSFER
 import io.file.transfer.TransferAcceptFile;
 import io.file.transfer.TransferDispatcher;
-import ui.VirtualElement;
 //#endif
+import ui.VirtualElement;
 
 public class ContactMessageList extends MessageList {
     Contact contact;
@@ -282,7 +282,7 @@ public class ContactMessageList extends MessageList {
     public void forceScrolling() { //by voffk
         if (contact != null)
         if (contact.moveToLatest) {
-            contact.moveToLatest = false;
+            contact.moveToLatest = false;            
             if (on_end)
                 moveCursorEnd();
         }
@@ -292,7 +292,7 @@ public class ContactMessageList extends MessageList {
         if (contact != null)
             sd.roster.activeContact = contact;
         markRead(getCursor());
-        forceScrolling();         
+        forceScrolling();                 
         on_end = (getCursor()==(getItemCount() - 1));
     }
     
@@ -429,9 +429,15 @@ public class ContactMessageList extends MessageList {
             new ActiveContacts(contact);
         }
         
-        if (c==cmdSubscribe) sd.roster.doSubscribe(contact);
+        if (c == cmdSubscribe) {
+            sd.roster.doSubscribe(contact);
+            contact.addMessage(new Msg(Msg.MESSAGE_TYPE_SYSTEM, contact.bareJid, null, "Subscribed"));
+        }
 		
-        if (c==cmdDecline) sd.roster.sendPresence(contact.bareJid, "unsubscribed", null, false);
+        if (c==cmdDecline) {
+            sd.roster.sendPresence(contact.bareJid, "unsubscribed", null, false);
+            contact.addMessage(new Msg(Msg.MESSAGE_TYPE_SYSTEM, contact.bareJid, null, "Unsubscribed"));
+        }
 
 //#ifdef CLIPBOARD
 //#         if (c==cmdSendBuffer) {

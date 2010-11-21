@@ -1695,8 +1695,8 @@ public class Roster
                 if (groupchat) {
                     ConferenceGroup mucGrp=(ConferenceGroup)c.group;
                     if (mucGrp.selfContact.getJid().equals(message.getFrom())) {
-                        m.messageType=Msg.MESSAGE_TYPE_OUT;
-                        m.unread=false;
+                        m.messageType = Msg.MESSAGE_TYPE_OUT;
+                        m.unread = false;
                     } else {
 //#ifdef LIGHT_CONFIG        
 //#ifdef PLUGINS        
@@ -2013,12 +2013,15 @@ public class Roster
         if (cf.ghostMotor) {
             systemGC();
         }
-        
-        if (countNewMsgs()) 
+
+        if (countNewMsgs())
             reEnumRoster();
         if (message.messageType == Msg.MESSAGE_TYPE_OUT) {
-            if (cf.autoFocus)
-            focusToContact(c, false);
+            if (cf.autoScroll) {
+                VirtualList list = sd.canvas.getList();
+                if (list instanceof ContactMessageList)
+                    list.moveCursorEnd();
+            }
         }
         
         if (!message.unread) return;
@@ -2363,7 +2366,7 @@ public class Roster
         
         switch (keyCode) {
 //#ifdef POPUPS
-            case Canvas.KEY_POUND:            
+            case Canvas.KEY_POUND:
                 if (getItemCount()==0)
                     return;
                 showInfo();

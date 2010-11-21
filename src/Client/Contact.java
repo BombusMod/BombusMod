@@ -165,11 +165,16 @@ public class Contact extends IconTextElement{
     
     private int fontHeight;
     int ilHeight;
-    int maxImgHeight;   
+    int maxImgHeight;
+
+    private boolean smiles = false;
     
     protected Contact() {
         super(RosterIcons.getInstance());
         cf=Config.getInstance();
+//#ifdef SMILES
+        smiles  = cf.smiles;
+//#endif
 
         msgs=new Vector();
         
@@ -395,7 +400,7 @@ public class Contact extends IconTextElement{
 //#                 if (origin!=ORIGIN_GROUPCHAT && this instanceof MucContact)
 //#                      allowLog=false;
 //#endif
-//#                 
+//# 
 //#                 if (allowLog) {
 //#                         HistoryAppend.getInstance().addMessage(m, bareJid);
 //#                 }
@@ -403,7 +408,7 @@ public class Contact extends IconTextElement{
 //#        }
 //#endif
         if (first_replace) {
-            msgs.setElementAt(new MessageItem(m, cf.smiles), 0);
+            msgs.setElementAt(new MessageItem(m, smiles), 0);
             return;
         }
 
@@ -413,9 +418,9 @@ public class Contact extends IconTextElement{
         if (m.messageType!=Msg.MESSAGE_TYPE_HISTORY && m.messageType!=Msg.MESSAGE_TYPE_PRESENCE)
             activeMessage=msgs.size();
 
-        msgs.addElement(new MessageItem(m, cf.smiles));
+        msgs.addElement(new MessageItem(m, smiles));
         
-        if (m.unread) {
+        if (m.unread || m.messageType == Msg.MESSAGE_TYPE_OUT) {
             lastUnread=msgs.size();
             if (m.messageType>unreadType) unreadType=m.messageType;
             if (newMsgCnt>=0) newMsgCnt++;
@@ -470,11 +475,11 @@ public class Contact extends IconTextElement{
 //#         int limit=cf.msglistLimit;
 //#         if (msgs.size()<limit)
 //#             return false;
-//#         
+//# 
 //#         int trash = msgs.size()-limit;
 //#         for (int i=0; i<trash; i++)
 //#             msgs.removeElementAt(0);
-//#         
+//# 
 //#         return true;
 //#     }
 //#endif
@@ -517,7 +522,7 @@ public class Contact extends IconTextElement{
 //#ifdef HISTORY
 //#ifdef LAST_MESSAGES
 //#     public boolean isHistoryLoaded () { return loaded; }
-//#     
+//# 
 //#     public void setHistoryLoaded (boolean state) { loaded=state; }
 //#endif
 //#endif

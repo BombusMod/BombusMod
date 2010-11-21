@@ -387,7 +387,7 @@ public final class MessageEdit
             if (body != null || subj != null || comp != null) {
                 to.lastSendedMessage = body;
                 sd.roster.sendMessage(to, id, body, subj, comp);
-            }
+                }
         } catch (Exception e) {
             sd.roster.errorLog(e.getMessage());
         }
