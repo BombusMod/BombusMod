@@ -64,7 +64,7 @@ import io.file.transfer.TransferDispatcher;
 import ui.VirtualElement;
 
 public class ContactMessageList extends MessageList {
-    Contact contact;
+    public Contact contact;
 
     MenuCommand cmdSubscribe=new MenuCommand(SR.MS_SUBSCRIBE, MenuCommand.SCREEN, 1);
     MenuCommand cmdDecline = new MenuCommand(SR.MS_DECLINE, MenuCommand.SCREEN, 2);

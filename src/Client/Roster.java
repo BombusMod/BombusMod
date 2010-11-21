@@ -2020,7 +2020,8 @@ public class Roster
             if (cf.autoScroll) {
                 VirtualList list = sd.canvas.getList();
                 if (list instanceof ContactMessageList)
-                    list.moveCursorEnd();
+                    if (((ContactMessageList)list).contact.compare(c) == 0)
+                        list.moveCursorEnd();
             }
         }
         

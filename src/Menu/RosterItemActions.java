@@ -121,8 +121,7 @@ public class RosterItemActions extends Menu {
 //#             if (cf.useClipBoard) {
 //#                 if (!clipboard.isEmpty())
 //#                     addItem(SR.MS_SEND_BUFFER,914, ActionsIcons.ICON_SEND_BUFFER);
-//#                 if (contact.getGroupType()!=Groups.TYPE_SELF)
-//#                     addItem(SR.MS_COPY_JID,892, ActionsIcons.ICON_COPY_JID);
+//#                 addItem(SR.MS_COPY_JID,892, ActionsIcons.ICON_COPY_JID);
 //#             }
 //#endif
             addItem(SR.MS_SEND_COLOR_SCHEME, 912, ActionsIcons.ICON_SEND_COLORS);
@@ -267,6 +266,12 @@ public class RosterItemActions extends Menu {
 //#ifndef WMUC
 	    if (group instanceof ConferenceGroup) {
 		MucContact self=((ConferenceGroup)group).selfContact;
+//#ifdef CLIPBOARD
+//#             if (cf.useClipBoard) {
+//#                 addItem(SR.MS_COPY_JID,892, ActionsIcons.ICON_COPY_JID);
+//#                 addItem("Copy topic",993, ActionsIcons.ICON_COPY_JID);
+//#             }
+//#endif
                 
 		addItem(SR.MS_LEAVE_ROOM,22, ActionsIcons.ICON_LEAVE);
                 
@@ -408,9 +413,16 @@ public class RosterItemActions extends Menu {
                     break;
 //#ifdef CLIPBOARD
 //#                 case 892: //Copy JID
-//#                     String jid = c.getJid();
+//#                     String jid = ((ConferenceGroup)g).jid.getJid();
+//# 
 //#                     if (jid != null) {
 //#                         clipboard.setClipBoard(jid);
+//#                     }
+//#                     break;
+//#                 case 993:
+//#                     String topic = ((ConferenceGroup)g).confContact.statusString;
+//#                     if (topic != null) {
+//#                         clipboard.setClipBoard(topic);
 //#                     }
 //#                     break;
 //#endif
