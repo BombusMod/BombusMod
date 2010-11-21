@@ -413,7 +413,11 @@ public class RosterItemActions extends Menu {
                     break;
 //#ifdef CLIPBOARD
 //#                 case 892: //Copy JID
-//#                     String jid = ((ConferenceGroup)g).jid.getJid();
+//#                     String jid = null;
+//#                     if (isContact)
+//#                         jid = c.getJid();
+//#                     else
+//#                      ((ConferenceGroup)g).jid.getJid();
 //# 
 //#                     if (jid != null) {
 //#                         clipboard.setClipBoard(jid);

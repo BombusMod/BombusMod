@@ -40,7 +40,7 @@ public class ColorVisualItem
 //#     public static String plugin = new String("PLUGIN_COLORS");
 //#endif
     
-    private String name;
+    public String name;
     private int color;
     private String locale="";
 
@@ -54,6 +54,10 @@ public class ColorVisualItem
     //public String getName() { return name; }
     //public int getValue() { return color; }
     public void setColor(int color) { this.color=color; }
+
+    public int getItemColor() {
+        return color;
+    }
     
     public String toString() { return (locale==null)?name:locale; }
     

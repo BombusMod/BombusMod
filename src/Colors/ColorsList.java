@@ -27,10 +27,11 @@
 
 package Colors;
 
+import Menu.MenuCommand;
 import java.util.Enumeration;
 
 import locale.SR;
-import ui.VirtualElement;
+import ui.VirtualList;
 import ui.controls.form.DefForm;
 
 /**
@@ -42,7 +43,11 @@ public class ColorsList extends DefForm
 //#ifdef PLUGINS
 //#     public static String plugin = new String("PLUGIN_COLORS");
 //#endif
-    
+
+    MenuCommand cmdCopyColor = new MenuCommand("Copy color", MenuCommand.SCREEN, 10);
+    MenuCommand cmdPasteColor = new MenuCommand("Color from buffer", MenuCommand.SCREEN, 20);
+
+    int colorBuffer = -1;
 
     public void setColor(int paramName, int value) {
         ((ColorVisualItem)itemsList.elementAt(paramName)).setColor(value);
@@ -65,8 +70,26 @@ public class ColorsList extends DefForm
         }        
     }
 
-    private void loadColors() {
-        
+    public void commandState() {
+        menuCommands.removeAllElements();
+        menuCommands.addElement(cmdOk);
+        menuCommands.addElement(cmdCopyColor);
+        if (colorBuffer >= 0)
+            menuCommands.addElement(cmdPasteColor);
+    }
+
+    public void menuAction(MenuCommand c, VirtualList d) {
+        commandState();
+        super.menuAction(c, d);
+        if (c == cmdCopyColor) {
+            colorBuffer = ((ColorVisualItem) getFocusedObject()).getItemColor();
+        }
+        if (c == cmdPasteColor) {
+            ColorTheme.setColor(getCursor(), colorBuffer);
+            ((ColorVisualItem) getFocusedObject()).setColor(colorBuffer);
+            ColorTheme.saveToStorage();
+            redraw();
+        }
     }
         
     public void eventOk() {
@@ -80,7 +103,10 @@ public class ColorsList extends DefForm
 //#endif
     }
     public String touchLeftCommand() {
-        return SR.MS_EDIT;
+        return SR.MS_MENU;
+    }
+    public void touchLeftPressed() {
+        showMenu();
     }
 
 //#ifdef COLOR_TUNE

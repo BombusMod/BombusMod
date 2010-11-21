@@ -8,7 +8,6 @@ package Colors;
 import javax.microedition.lcdui.Canvas;
 import ui.controls.form.ColorSelector;
 import javax.microedition.lcdui.Graphics;
-import ui.VirtualCanvas;
 import ui.VirtualList;
 import ui.controls.form.DefForm;
 
@@ -17,28 +16,44 @@ import ui.controls.form.DefForm;
  * @author Vitaly
  */
 //#ifdef COLOR_TUNE
-//# public class ColorSelectForm extends DefForm {
+//# public final class ColorSelectForm extends DefForm implements Runnable {
+//# 
 //#     private ColorSelector selector;
+//#     
+//#     boolean exit;
+//#     int timer;
+//# 
 //#     public ColorSelectForm( VirtualList parent, ColorsList list, int color) {
 //#         super(ColorsList.NAMES[color]);
 //#         parentView = parent;
 //#         selector = new ColorSelector(list, color);
-//#         itemsList.addElement(selector);        
+//#         itemsList.addElement(selector);
+//#         new Thread(this).start();
 //#     }
 //#     public void cmdOk() {
+//#         exit = true;
 //#         selector.eventOk();
 //#         destroyView();
+//#     }
+//# 
+//#     public void destroyView() {
+//#         exit = true;
+//#         super.destroyView();
 //#     }
 //#     public void drawCursor(Graphics g, int width, int height) {
 //#         // prevent text selection
 //#     };
 //#     public void keyPressed(int key) {
 //#         switch (key) {
-//#             case Canvas.KEY_NUM2:                
-//#                 selector.movePoint(1);
+//#             case Canvas.KEY_NUM2:
+//#                 selector.dy = 1;
+//#                 timer = 7;
+//#                 selector.movePoint();
 //#                 break;
-//#             case Canvas.KEY_NUM8:                ;
-//#                 selector.movePoint(-1);
+//#             case Canvas.KEY_NUM8:
+//#                 selector.dy = -1;
+//#                 timer = 7;
+//#                 selector.movePoint();
 //#                 break;
 //#             case Canvas.KEY_NUM4:
 //#                 selector.selectPrev();
@@ -50,10 +65,14 @@ import ui.controls.form.DefForm;
 //#                 try {
 //#                     switch (sd.canvas.getGameAction(key)){
 //#                         case Canvas.UP:
-//#                             selector.movePoint(1);
+//#                             selector.dy = 1;
+//#                             timer = 7;
+//#                             selector.movePoint();
 //#                             break;
 //#                         case Canvas.DOWN:
-//#                             selector.movePoint(-1);
+//#                             selector.dy = -1;
+//#                             timer = 7;
+//#                             selector.movePoint();
 //#                             break;
 //#                         case Canvas.LEFT:
 //#                             selector.selectPrev();
@@ -67,56 +86,43 @@ import ui.controls.form.DefForm;
 //#                     }
 //#                 } catch (Exception e) {/* IllegalArgumentException @ getGameAction */ }
 //#                 redraw();
+//#                 sd.canvas.serviceRepaints();
 //#         }
 //#         super.keyPressed(key);
 //#     }
-//#     protected void keyRepeated(int key) {
-//#         try {
-//#                     switch (sd.canvas.getGameAction(key)){
-//#                         case Canvas.UP:
-//#                             selector.movePoint(1);
-//#                             break;
-//#                         case Canvas.DOWN:
-//#                             selector.movePoint(-1);
-//#                             break;
-//#                         case Canvas.LEFT:
-//#                             selector.selectPrev();
-//#                             break;
-//#                         case Canvas.RIGHT:
-//#                             selector.selectNext();
-//#                             break;
-//#                         case Canvas.FIRE:
-//#                             cmdOk();
-//#                             break;
-//#                     }
-//#                 } catch (Exception e) {/* IllegalArgumentException @ getGameAction */ }
 //# 
+//#     protected void keyReleased(int key) {
+//#             selector.dy = 0;
+//#     }
+//#     
+//#     public void run() {
+//#         while (! exit) {
+//#             try { Thread.sleep(35); } catch (Exception e) { }
+//#             if (--timer > 0) continue;
+//#             selector.movePoint();
+//#             selector.movePoint();
+//#         }
 //#     }
 //#     protected void pointerPressed(int x, int y) {
-//#         checkBarPointed(x, y, selector.pxred, 0);
-//#         checkBarPointed(x, y, selector.pxgreen, 1);
-//#         checkBarPointed(x, y, selector.pxblue, 2);
+//#         int action = -1;
+//#         if ((action = selector.pointerPressed(x, y)) >= 0) {
+//#             switch (action) {
+//#                 case 1:
+//#                 case 2:
+//#                 case 3:
+//#                     keyPressed(Canvas.KEY_NUM2);
+//#                     break;
+//#                 case 4:
+//#                 case 5:
+//#                 case 6:
+//#                     selector.cpos = action - 4;
+//#                     break;
+//#             }
+//#         }
 //#         super.pointerPressed(x, y);
 //#     }
-//#     private boolean checkPointer(int x, int y, int pos) {
-//#         if ((x>=pos-5) && (x <= pos+10) && (y >= 0) && y <= (getListHeight() - 50)) {
-//#             return true;
-//#         }
-//#         return false;
-//#     }
-//#     private void checkBarPointed(int x, int y, int px, int pos) {
-//#         if (checkPointer(x, y, px)) {
-//#             if (selector.cpos != pos) {
-//#                 selector.cpos = pos;
-//#             } else {
-//#                 if (y < ((getListHeight()-50)/2)) {
-//#                 selector.movePoint(1);
-//#                 } else {
-//#                 selector.movePoint(-1);
-//#                 }
-//#             }
-//#         redraw();        
-//#         }
+//#     public void pointerReleased(int x, int y) {
+//#         selector.dy = 0;
 //#     }
 //#         
 //# }

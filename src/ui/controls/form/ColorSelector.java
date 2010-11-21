@@ -49,7 +49,7 @@ public class ColorSelector implements VirtualElement
 
     String val;
 
-    int dy;
+    public int dy;
     int timer;
     boolean exit;
 
@@ -103,7 +103,7 @@ public class ColorSelector implements VirtualElement
         g.fillRect(4, 4, 12, 12);
         g.setColor(0x800000);
 //#ifdef COLOR_TUNE
-        g.drawString(s+" "+ColorsList.NAMES[paramName], 20, 5, Graphics.TOP|Graphics.LEFT);
+//#         g.drawString(s+" "+ColorsList.NAMES[paramName], 20, 5, Graphics.TOP|Graphics.LEFT);
 //#endif
 
         //draw red
@@ -173,6 +173,25 @@ public class ColorSelector implements VirtualElement
         return -1;
     }
 */
+    public int pointerPressed(int x, int y) {
+        // red
+        int x1 = pxred - 10;
+        int x2 = x1 + 20;
+        if (x2 > x && x > x1)
+            return (cpos == 0) ? 1 : 4;
+        // green
+        x1 = pxgreen - 10;
+        x2 = x1 + 20;
+        if (x2 > x && x > x1)
+            return (cpos == 1) ? 2 : 5;
+        // blue
+        x1 = pxblue - 10;
+        x2 = x1 + 20;
+        if (x2 > x && x > x1)
+            return (cpos == 2) ? 3 : 6;
+
+        return -1;
+    }
 
     public boolean handleEvent(int key) {
         return false;
@@ -190,11 +209,11 @@ public class ColorSelector implements VirtualElement
         ColorTheme.setColor(paramName, value);
         list.setColor(paramName, value);
 //#ifdef COLOR_TUNE
-        ColorTheme.saveToStorage();
+//#         ColorTheme.saveToStorage();
 //#endif
     }
 
-    public void movePoint(int dy) {
+    public void movePoint() {
         if (dy == 0) return;
         switch (cpos) {
             case 0:
@@ -217,12 +236,12 @@ public class ColorSelector implements VirtualElement
 
     public void eventOk () {
 //#if COLOR_TUNE
-        String cval = ColorTheme.ColorToString(red, green, blue);
-
-        int finalColor=ColorTheme.getColorInt(cval);
-        //System.out.println(val);
-
-        setValue(finalColor);
+//#         String cval = ColorTheme.ColorToString(red, green, blue);
+//# 
+//#         int finalColor=ColorTheme.getColorInt(cval);
+//#         //System.out.println(val);
+//# 
+//#         setValue(finalColor);
 //#endif
         exit = true;
     }    
