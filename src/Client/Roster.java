@@ -1696,7 +1696,7 @@ public class Roster
                     ConferenceGroup mucGrp=(ConferenceGroup)c.group;
                     if (mucGrp.selfContact.getJid().equals(message.getFrom())) {
                         m.messageType=Msg.MESSAGE_TYPE_OUT;
-                       // m.unread=false;
+                        m.unread=false;
                     } else {
 //#ifdef LIGHT_CONFIG        
 //#ifdef PLUGINS        
@@ -2016,6 +2016,10 @@ public class Roster
         
         if (countNewMsgs()) 
             reEnumRoster();
+        if (message.messageType == Msg.MESSAGE_TYPE_OUT) {
+            if (cf.autoFocus)
+            focusToContact(c, false);
+        }
         
         if (!message.unread) return;
         //TODO: clear unread flag if not-in-list IS HIDDEN
