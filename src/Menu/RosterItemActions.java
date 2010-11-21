@@ -408,16 +408,10 @@ public class RosterItemActions extends Menu {
                     break;
 //#ifdef CLIPBOARD
 //#                 case 892: //Copy JID
-//#ifndef WMUC
-//#                     if (!(c instanceof MucContact)) {
-//#endif
-//#                         try {
-//#                             if (c.bareJid!=null)
-//#                                 clipboard.setClipBoard(c.bareJid);
-//#                         } catch (Exception e) {/*no messages*/}
-//#ifndef WMUC
+//#                     String jid = c.getJid();
+//#                     if (jid != null) {
+//#                         clipboard.setClipBoard(jid);
 //#                     }
-//#endif
 //#                     break;
 //#endif
                 case 893: //ping

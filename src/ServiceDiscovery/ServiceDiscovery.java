@@ -177,15 +177,15 @@ public class ServiceDiscovery
             mainbarUpdate();
             //redraw();
             
-            XmppError xe=XmppError.findInStanza(data);
+            /*XmppError xe=XmppError.findInStanza(data);
             
-            new AlertBox(data.getAttribute("from"), xe.toString()) {
+            /*new AlertBox(data.getAttribute("from"), xe.toString()) {
                 public void yes() { };
                 public void no() { };           
                 public void destroyView() {exitDiscovery(false); super.destroyView();}
-            };
+            };*/
 
-            return JabberBlockListener.BLOCK_PROCESSED;
+        //    return JabberBlockListener.BLOCK_PROCESSED;
         }
         JabberDataBlock command1=data.getChildBlock("query");
         JabberDataBlock command2=data.getChildBlock("command");
