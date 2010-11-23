@@ -183,14 +183,16 @@ public class AccountRegister
 	}
 
 	public void formSubmit(Vector fields) {
-		for (Enumeration e = fields.elements(); e.hasMoreElements();) {
-			FormField field = (FormField) e.nextElement();
-			if (field.name.equals("username")) {
-				raccount.setUserName(((TextInput) field.formItem).getValue());
-			}
-			if (field.name.equals("password")) {
-				raccount.setPassword(((TextInput) field.formItem).getValue());
-			}
-		}
-	}
+        for (Enumeration e = fields.elements(); e.hasMoreElements();) {
+            FormField field = (FormField) e.nextElement();
+            if (field != null && field.name != null) {
+                if (field.name.equals("username")) {
+                    raccount.setUserName(((TextInput) field.formItem).getValue());
+                }
+                if (field.name.equals("password")) {
+                    raccount.setPassword(((TextInput) field.formItem).getValue());
+                }
+            }
+        }
+    }
 }

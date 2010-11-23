@@ -9,14 +9,13 @@ import com.alsutton.jabber.JabberBlockListener;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
 import xmpp.XmppError;
-import xmpp.extensions.XDataForm.NotifyListener;
 
 /**
  * Implementation of XEP-0077: In-Band Registration with bits of
  *                   XEP-0158, 4. Extended In-Band Registration
  * @author Vitaly
  */
-public class IqRegister implements JabberBlockListener, NotifyListener {
+public class IqRegister implements JabberBlockListener {
 
     public final static String NS_REGS = "jabber:iq:register";
 
@@ -45,9 +44,6 @@ public class IqRegister implements JabberBlockListener, NotifyListener {
             }
         }
         return BLOCK_REJECTED;
-    }
-
-    public void XDataFormSubmit(JabberDataBlock form) {
     }
 
     public interface RegistrationListener {

@@ -417,7 +417,7 @@ public class RosterItemActions extends Menu {
 //#                     if (isContact)
 //#                         jid = c.getJid();
 //#                     else
-//#                      ((ConferenceGroup)g).jid.getJid();
+//#                      jid = ((ConferenceGroup)g).jid.getJid();
 //# 
 //#                     if (jid != null) {
 //#                         clipboard.setClipBoard(jid);
