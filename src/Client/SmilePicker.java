@@ -147,6 +147,7 @@ public class SmilePicker
         g.translate(x,0);
         super.drawCursor(g, imgWidth, lineHeight);
         g.translate(-x,0);
+        getMainBarItem().setElementAt(getTipString(), 0);
     } 
 
     protected void drawBalloon(final Graphics g, int balloon, final String text) {

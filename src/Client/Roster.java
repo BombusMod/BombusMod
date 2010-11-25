@@ -939,7 +939,7 @@ public class Roster
 //#     }*/
 //# 
 //#     public boolean isJuickContact(Contact c) {
-//#         return c.jid.equalsViaJ2J("juick@juick.com");
+//#         return c.jid.equalsViaJ2J("juick@juick.com") || c.jid.equalsViaJ2J("psto@psto.net");
 //#     }
 //# 
 //#     public void addJuickContact(Contact c) {
@@ -2038,7 +2038,10 @@ public class Roster
 //#endif
 
 	if (cf.popupFromMinimized)
-	    BombusMod.getInstance().hideApp(false);
+        if (AlertCustomize.getInstance().vibrateOnlyHighlited && message.highlite)
+            BombusMod.getInstance().hideApp(false);
+        else
+            BombusMod.getInstance().hideApp(false);
         
         if (cf.autoFocus) 
             focusToContact(c, false);
@@ -3154,14 +3157,12 @@ public class Roster
                   //  itemsList = vContacts;
                     int c = itemsList.indexOf(focused);
                     if (c >= 0) {
-                        moveCursorTo(c);
+                            moveCursorTo(c);
+                        }
+                        force = false;
                     }
-                    force = false;
-                }
-                focusedItem(getCursor());
-                VirtualList list = sd.canvas.getList();
-                if (list != null)
-                    list.redraw();
+                    focusedItem(getCursor());
+                    sd.canvas.repaint();
                 }
             } catch (Exception e) {
 //#ifdef DEBUG

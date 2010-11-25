@@ -576,7 +576,9 @@ public class ContactMessageList extends MessageList {
 //#         boolean result = false;
 //#         switch(type) {
 //#             case '#': // #number
-//#                 result = (ch>46) && (ch<58); // '/', [0-9]
+//#                 result = (ch>46) && (ch<58) // '/', [0-9]
+//#                         || ((ch>63)&&(ch<91)) // '@', [A-Z]
+//#                         || ((ch>96)&&(ch<123)); // [a-z]
 //#                 break;
 //#             case '@': // @username
 //#                 result = ((ch>47)&&(ch<58)) // [0-9]
@@ -609,6 +611,9 @@ public class ContactMessageList extends MessageList {
 //#         if (lastStrStartIndex < 0)
 //#             return "toThings";
 //#         int numberEndsIndex = str.indexOf(" http://juick.com/", lastStrStartIndex);
+//#         if (numberEndsIndex<0) {
+//#             numberEndsIndex = str.indexOf(" http://psto.net/", lastStrStartIndex);
+//#         }
 //#         if (numberEndsIndex>0) {
 //#             numberEndsIndex = str.indexOf(' ', lastStrStartIndex);
 //#             return str.substring(lastStrStartIndex, numberEndsIndex);
