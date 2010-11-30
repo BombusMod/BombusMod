@@ -908,7 +908,7 @@ public class Config {
                 }
 //#endif
                 return;
-            } else if (platform.startsWith("microemu")) {
+            } else if (platform.indexOf("Android") > 0) {
                 phoneManufacturer = MICROEMU;
             } else {
                 phoneManufacturer = OTHER;
@@ -927,6 +927,11 @@ public class Config {
 
             String device = System.getProperty("device.model");
             String firmware = System.getProperty("device.software.version");
+
+            if (platformName.startsWith("microemu")) {
+                platformName = device + "/Android " + firmware;
+            }
+
             //detecting Samsung
             try {
                 Class.forName("com.samsung.util.AudioClip");

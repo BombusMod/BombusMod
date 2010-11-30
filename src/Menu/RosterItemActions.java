@@ -264,32 +264,32 @@ public class RosterItemActions extends Menu {
 	    if (group.type==Groups.TYPE_SEARCH_RESULT)
 		addItem(SR.MS_DISCARD,21, ActionsIcons.ICON_BAN);
 //#ifndef WMUC
-	    if (group instanceof ConferenceGroup) {
-		MucContact self=((ConferenceGroup)group).selfContact;
+        if (group instanceof ConferenceGroup) {
+            MucContact self = ((ConferenceGroup) group).selfContact;
+
+            addItem(SR.MS_LEAVE_ROOM, 22, ActionsIcons.ICON_LEAVE);
 //#ifdef CLIPBOARD
 //#             if (cf.useClipBoard) {
-//#                 addItem(SR.MS_COPY_JID,892, ActionsIcons.ICON_COPY_JID);
-//#                 addItem("Copy topic",993, ActionsIcons.ICON_COPY_JID);
+//#                 addItem(SR.MS_COPY_JID, 892, ActionsIcons.ICON_COPY_JID);
+//#                 addItem("Copy topic", 993, ActionsIcons.ICON_COPY_JID);
 //#             }
 //#endif
-                
-		addItem(SR.MS_LEAVE_ROOM,22, ActionsIcons.ICON_LEAVE);
-                
-                if (self.status>=Presence.PRESENCE_OFFLINE) {// offline or error
-		    addItem(SR.MS_REENTER,23, ActionsIcons.ICON_CHANGE_NICK);
-                } else {
-                    addItem(SR.MS_DIRECT_PRESENCE,46, ActionsIcons.ICON_SET_STATUS);
-                    addItem(SR.MS_CHANGE_NICKNAME,23, ActionsIcons.ICON_CHANGE_NICK);
-		    if (self.affiliationCode>=MucContact.AFFILIATION_OWNER) {
-			addItem(SR.MS_CONFIG_ROOM,10, ActionsIcons.ICON_CONFIGURE);
-                    }
-		    if (self.affiliationCode>=MucContact.AFFILIATION_ADMIN) {
-			addItem(SR.MS_OWNERS,11, ActionsIcons.ICON_OWNERS);
-			addItem(SR.MS_ADMINS,12, ActionsIcons.ICON_ADMINS);
-			addItem(SR.MS_MEMBERS,13, ActionsIcons.ICON_MEMBERS);
-			addItem(SR.MS_BANNED,14, ActionsIcons.ICON_OUTCASTS);
- 		    }
- 		}
+
+            if (self.status >= Presence.PRESENCE_OFFLINE) {// offline or error
+                addItem(SR.MS_REENTER, 23, ActionsIcons.ICON_CHANGE_NICK);
+            } else {
+                addItem(SR.MS_DIRECT_PRESENCE, 46, ActionsIcons.ICON_SET_STATUS);
+                addItem(SR.MS_CHANGE_NICKNAME, 23, ActionsIcons.ICON_CHANGE_NICK);
+                if (self.affiliationCode >= MucContact.AFFILIATION_OWNER) {
+                    addItem(SR.MS_CONFIG_ROOM, 10, ActionsIcons.ICON_CONFIGURE);
+                }
+                if (self.affiliationCode >= MucContact.AFFILIATION_ADMIN) {
+                    addItem(SR.MS_OWNERS, 11, ActionsIcons.ICON_OWNERS);
+                    addItem(SR.MS_ADMINS, 12, ActionsIcons.ICON_ADMINS);
+                    addItem(SR.MS_MEMBERS, 13, ActionsIcons.ICON_MEMBERS);
+                    addItem(SR.MS_BANNED, 14, ActionsIcons.ICON_OUTCASTS);
+                }
+            }
 	    } else {
 //#endif
                 if (    group.type!=Groups.TYPE_IGNORE

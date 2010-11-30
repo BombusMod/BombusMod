@@ -480,8 +480,9 @@ public class ConfigForm
 
         String oldVerHash=EntityCaps.calcVerHash();
         EntityCaps.initCaps();
-        if (!oldVerHash.equals(EntityCaps.calcVerHash())) 
-            sd.roster.sendPresence(Presence.PRESENCE_SAME, null);
+        if (!oldVerHash.equals(EntityCaps.calcVerHash()))
+            if (sd.roster.isLoggedIn())
+                sd.roster.sendPresence(Presence.PRESENCE_SAME, null);
 
         sd.roster.reEnumRoster();
         destroyView();

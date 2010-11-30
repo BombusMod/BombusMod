@@ -397,7 +397,8 @@ public abstract class VirtualList {
 //#ifdef GRADIENT
 //#         iHeight=0;
 //#         mHeight=0;
-//#endif        
+//#endif
+        redraw();
     }
 
     /**

@@ -2037,11 +2037,15 @@ public class Roster
                 setWobbler(2, c, message.from+"\n"+message.body);
 //#endif
 
-	if (cf.popupFromMinimized)
-        if (AlertCustomize.getInstance().vibrateOnlyHighlited && message.highlite)
-            BombusMod.getInstance().hideApp(false);
-        else
-            BombusMod.getInstance().hideApp(false);
+	if (cf.popupFromMinimized) {
+            if (AlertCustomize.getInstance().vibrateOnlyHighlited) {
+                if (message.highlite) {
+                    BombusMod.getInstance().hideApp(false);
+                }
+            } else {
+                BombusMod.getInstance().hideApp(false);
+            }
+        }
         
         if (cf.autoFocus) 
             focusToContact(c, false);
