@@ -48,26 +48,21 @@ class UserKeyEdit extends DefForm {
     private KeyInput key_t;
     private DropChoiceBox commands_t = new DropChoiceBox(SR.MS_ACTION);
 
+    UserKey origin_key;
     UserKey u;
     
-    boolean newKey;
-
-    public UserKeyEdit(UserKeysList userKeysList, UserKey u) {
-        super((u==null)?
+    public UserKeyEdit(UserKeysList originUserKeysList, UserKey origin_key) {
+        super((origin_key == null) ?
 //#ifdef USER_KEYS
             SR.MS_ADD_CUSTOM_KEY:
 //#else
 //#                 "":
 //#endif
-                (u.toString()));
+                (origin_key.toString()));
         
-	this.userKeysList = userKeysList;
-	
-	newKey = (u == null);
-	if (newKey) {
-        u = new UserKey();
-	}
-	this.u = u;
+        userKeysList = originUserKeysList;
+        u = new UserKey(origin_key);
+        this.origin_key = origin_key;
 
 //#ifdef USER_KEYS
         two_keys_t = new CheckBox("Two keys", u.two_keys);
@@ -97,8 +92,10 @@ class UserKeyEdit extends DefForm {
     public void cmdOk() {
         u.command_id = UserKeyExec.getCommandID((String) commands_t.items.elementAt(commands_t.getSelectedIndex()));
 
-        if (newKey) {
+        if (origin_key == null) {
             userKeysList.itemsList.addElement(u);
+        } else {
+            origin_key.copyFrom(u);
         }
 
         userKeysList.commandState();

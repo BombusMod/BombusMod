@@ -65,6 +65,8 @@ public class UserKey extends IconTextElement {
     }
 
 	public void copyFrom(UserKey u) {
+        if (u == null)
+            return;
         command_id = u.command_id;
         previous_key_long = u.previous_key_long;
         key_long = u.key_long;
