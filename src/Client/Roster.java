@@ -2369,201 +2369,214 @@ public class Roster
         }
     }
 
-    public void keyPressed(int keyCode){
-        super.keyPressed(keyCode);
-        
-        switch (keyCode) {
-//#ifdef POPUPS
-            case Canvas.KEY_POUND:
-                if (getItemCount()==0)
-                    return;
-                showInfo();
-                return;
-//#endif
-            case Canvas.KEY_NUM1:            
-                if (cf.collapsedGroups) { //collapse all groups
-                    for (Enumeration e=groups.elements(); e.hasMoreElements();) {
-                        Group grp=(Group)e.nextElement();
-                        grp.collapsed=true;
-                    }
-                    reEnumRoster();
-                }
-                break;
-            case Canvas.KEY_NUM4:            
-                super.pageLeft();
-                return;
-            case Canvas.KEY_NUM6:            
-                super.pageRight();
-                return;
+    protected boolean key(int keyCode, boolean key_long) {
+        if (key_long) {
+            if (keyCode == cf.keyLock) {
 //#ifdef AUTOSTATUS
-//#             case SE_FLIPCLOSE_JP6:
-//#                 if (phoneManufacturer==Config.SONYE) { //workaround for SE JP6 - enabling vibra in closed state
-//#                     midlet.BombusMod.getInstance().setDisplayable((Displayable)null);
-//#                     try {
-//#                         Thread.sleep(300);
-//#                     } catch (Exception ex) {}
-//#                     sd.canvas.show(this);
-//#                     keyLock();
+//#                 if (cf.autoAwayType == Config.AWAY_LOCK) {
+//#                     if (!autoAway) {
+//#                         autoAway = true;
+//#                         if (cf.useMyStatusMessages) {
+//#                             sendPresence(Presence.PRESENCE_AWAY, null);
+//#                         } else {
+//#                             sendPresence(Presence.PRESENCE_AWAY, "Auto Status on KeyLock since %t");
+//#                         }
+//#                     }
 //#                 }
-//#                 break;
-//#             case SIEMENS_FLIPCLOSE:
-//#                 if (cf.phoneManufacturer == Config.SIEMENS) // verify platform because SIEMENS_FLIPCLOSE maybe MOTOROLA_FLIP
-//#                     keyLock();
-//#                 break;
-//#             case MOTOROLA_FLIP:
-//#                 if (cf.phoneManufacturer == Config.MOTO)
-//#                     keyLock();
-//#                 break;
 //#endif
-            case Canvas.KEY_NUM0:            
-                if (getItemCount()==0)
-                    return;
-                synchronized(hContacts) {
-                    int j=hContacts.size();
-                    for (int i=0; i<j; i++){
-                        Contact c=(Contact)hContacts.elementAt(i);
-                        c.setIncoming(Contact.INC_NONE);
-                        c=null;
-                    }
-                }
+                new SplashScreen(getMainBarItem(), cf.keyLock);
+                return true;
+            } else if (keyCode == cf.keyVibra || keyCode == MOTOE680_FMRADIO) { /* TODO: redefine keyVibra*/
+                // swap profiles
+                int profile = cf.profile;
+                cf.profile = (profile == AlertProfile.VIBRA) ? cf.lastProfile : AlertProfile.VIBRA;
+                cf.lastProfile = profile;
+
+                updateMainBar();
                 redraw();
+                return true;
+            }
 
-                systemGC();
-                
-                if (messageCount==0) return;
-                Object atcursor=getFocusedObject();
-                
-                Contact c=(atcursor instanceof Contact)?(Contact)atcursor:(Contact)hContacts.firstElement();
-
-                Enumeration i=hContacts.elements();
-
-                int pass=0; //
-                while (pass<2) {
-                    if (!i.hasMoreElements()) i=hContacts.elements();
-                    Contact p=(Contact)i.nextElement();
-                    if (pass==1) if (p.getNewMsgsCount()>0) { 
-                        focusToContact(p, true);
-                        setRotator();
-                        break; 
+            switch (keyCode) {
+                case Canvas.KEY_NUM0:
+                    cf.showOfflineContacts = !cf.showOfflineContacts;
+                    reEnumRoster();
+                    return true;
+//#ifndef WMUC
+                case Canvas.KEY_NUM1:
+                    if (isLoggedIn()) {
+                        new Bookmarks(null);
                     }
-                    if (p==c) pass++;
-                }
-                break;
-            case Canvas.KEY_NUM3:            
-                if (getItemCount()==0)
-                    return;
-                int newpos=searchGroup(-1);
-                if (newpos>-1) {
-                    moveCursorTo(newpos);
-                    setRotator();
-                }
-                break;
-            case Canvas.KEY_NUM9:            
-                if (getItemCount()==0)
-                    return;
-                int newpos2=searchGroup(1);
-                if (newpos2>-1) {
-                    moveCursorTo(newpos2);
-                    setRotator();
-                }
-                break;
-            case Canvas.KEY_STAR:            
-                if (cf.ghostMotor) {
-                    // backlight management
-                    blState=(blState==1)? Integer.MAX_VALUE : 1;
-                    midlet.BombusMod.getInstance().getDisplay().flashBacklight(blState);
-                }
-                break;
-        }
-//#ifdef LIGHT_CONFIG        
-//#ifdef PLUGINS        
-//#         if (StaticData.getInstance().lightConfig)        
-//#endif            
-//#             CustomLight.keyPressed();
-//#endif        
-//#ifdef AUTOSTATUS
-//#         userActivity();
+                    return true;
 //#endif
-     }
+                case Canvas.KEY_NUM3:
+                    new ActiveContacts(null);
+                    return true;
+                case Canvas.KEY_NUM4:
+                    new ConfigForm();
+                    return true;
+                case Canvas.KEY_NUM6:
+                    Config.fullscreen = !Config.fullscreen;
+                    cf.saveToStorage();            
+                    sd.canvas.setFullScreenMode(Config.fullscreen);
+                    return true;
+                case Canvas.KEY_NUM7:
+                    new RosterToolsMenu();
+                    return true;
+                case Canvas.KEY_NUM9:
+                    if (cf.allowMinimize) {
+                        BombusMod.getInstance().hideApp(true);
+                    } else if (phoneManufacturer == Config.SIEMENS2) {
+                        new SieNatMenu(this);
+                    /*
+                        try {
+                        //SIEMENS: MYMENU call. Possible Main Menu for capable phones
+                        BombusMod.getInstance().platformRequest("native:ELSE_STR_MYMENU");
+                        } catch (Exception e) { }
+                    */
+                    } else if (phoneManufacturer == Config.SIEMENS) {
+                        // SIEMENS-NSG: MYMENU call. Possible Native Menu for capable phones
+                        try {
+                            BombusMod.getInstance().platformRequest("native:NAT_MAIN_MENU");
+                        } catch (Exception e) { }
+                    }
+                    return true;
+            } // switch
+        } else {
+            switch (keyCode) {
+//#ifdef POPUPS
+                case Canvas.KEY_POUND:
+                    if (getItemCount() > 0) {
+                        showInfo();
+                    }
+                    return true;
+//#endif
+                case Canvas.KEY_NUM1:
+                    if (cf.collapsedGroups) { //collapse all groups
+                        for (Enumeration e = groups.elements(); e.hasMoreElements();) {
+                            Group grp = (Group) e.nextElement();
+                            grp.collapsed = true;
+                        }
+                        reEnumRoster();
+                    }
+                    return true;
+//#ifdef AUTOSTATUS
+//#                 case SE_FLIPCLOSE_JP6:
+//#                     // workaround for SE JP6 - enabling vibra in closed state
+//#                     if (phoneManufacturer == Config.SONYE) {
+//#                         midlet.BombusMod.getInstance().setDisplayable((Displayable) null);
+//#                         try {
+//#                             Thread.sleep(300);
+//#                         } catch (Exception ex) { }
+//#                         sd.canvas.show(this);
+//#                         keyLock();
+//#                     }
+//#                     return true;
+//#                 case SIEMENS_FLIPCLOSE:
+//#                     // verify platform because SIEMENS_FLIPCLOSE maybe MOTOROLA_FLIP
+//#                     if (cf.phoneManufacturer == Config.SIEMENS) {
+//#                         keyLock();
+//#                     }
+//#                     return true;
+//#                 case MOTOROLA_FLIP:
+//#                     if (cf.phoneManufacturer == Config.MOTO) {
+//#                         keyLock();
+//#                     }
+//#                     return true;
+//#endif
+                case Canvas.KEY_NUM0:
+                    focusToNextUnreaded();
+                    return true;
+                case Canvas.KEY_NUM3:
+                    if (getItemCount() > 0) {
+                        int newpos = searchGroup(-1);
+						if (newpos > -1) {
+                            moveCursorTo(newpos);
+                            setRotator();
+                        }
+                    }
+                    return true;
+                case Canvas.KEY_NUM9:
+                    if (getItemCount() > 0) {
+                        int newpos2 = searchGroup(1);
+                        if (newpos2 > -1) {
+                            moveCursorTo(newpos2);
+                            setRotator();
+                        }
+                    }
+                    return true;
+                case Canvas.KEY_NUM4:            
+                    pageLeft();
+                    return true;
+                case Canvas.KEY_NUM6:            
+                    pageRight();
+                    return true;
+                case Canvas.KEY_STAR:
+                    if (cf.ghostMotor) {
+                        // backlight management
+                        blState = (blState == 1) ? Integer.MAX_VALUE : 1;
+                        midlet.BombusMod.getInstance().getDisplay().flashBacklight(blState);
+                    }
+                    return true;
+            } // switch
+//#ifdef AUTOSTATUS
+//#             userActivity();
+//#endif
+        }
+
+        return super.key(keyCode, key_long);
+    }
+
+    private void focusToNextUnreaded() {
+        if (getItemCount() == 0) {
+            return;
+        }
+        synchronized (hContacts) {
+            int j = hContacts.size();
+            for (int i = 0; i < j; i++) {
+                Contact c = (Contact) hContacts.elementAt(i);
+                c.setIncoming(Contact.INC_NONE);
+                c = null;
+            }
+        }
+        
+        redraw();
+        systemGC();
+
+        if (messageCount == 0) {
+            return;
+        }
+
+        Object atcursor = getFocusedObject();
+        Contact c = (Contact) ((atcursor instanceof Contact) ? atcursor : hContacts.firstElement());
+        Enumeration i = hContacts.elements();
+
+        int pass = 0; //
+        while (pass < 2) {
+            if (!i.hasMoreElements()) {
+                i = hContacts.elements();
+            }
+            Contact p = (Contact) i.nextElement();
+            if (pass == 1) {
+                if (p.getNewMsgsCount() > 0) {
+                    focusToContact(p, true);
+                    setRotator();
+                    break;
+                }
+            }
+            if (p == c) {
+                pass++;
+            }
+        }
+    }
+
 //#ifdef AUTOSTATUS
 //#     private void keyLock() {
 //#         if (cf.autoAwayType==Config.AWAY_LOCK)
 //#             if (!autoAway)
 //#                 autostatus.setTimeEvent(cf.autoAwayDelay* 60*1000);
 //#     }
-//#endif    
-    protected void keyRepeated(int keyCode) {
-        super.keyRepeated(keyCode);
-        if (kHold==keyCode) return;
-        kHold=keyCode;
-        
-        if (keyCode==cf.keyLock) {
-                //#ifdef AUTOSTATUS
-//#                             if (cf.autoAwayType==Config.AWAY_LOCK) {
-//#                                 if (!autoAway) {
-//#                                     autoAway=true;
-//#                                     if (cf.useMyStatusMessages) {
-//#                                         sendPresence(Presence.PRESENCE_AWAY, null);
-//#                                     } else {
-//#                                         sendPresence(Presence.PRESENCE_AWAY, "Auto Status on KeyLock since %t");
-//#                                     }
-//#                                 }
-//#                             }
-                //#endif
-            new SplashScreen( getMainBarItem(), cf.keyLock);            
-            return;
-        } else if (keyCode==cf.keyVibra || keyCode==MOTOE680_FMRADIO /* TODO: redefine keyVibra*/) {
-            // swap profiles
-            int profile=cf.profile;
-            cf.profile=(profile==AlertProfile.VIBRA)?cf.lastProfile : AlertProfile.VIBRA;
-            cf.lastProfile=profile;
-            
-            updateMainBar();
-            redraw();
-            return;
-        } else if (keyCode==Canvas.KEY_NUM0) {
-            cf.showOfflineContacts=!cf.showOfflineContacts;
-            reEnumRoster();
-            return;
-        }
-//#ifndef WMUC
-        else if ((keyCode==Canvas.KEY_NUM1)&& isLoggedIn()) new Bookmarks(null);
-//#endif
-       	else if (keyCode==Canvas.KEY_NUM3) new ActiveContacts(null);
-       	else if (keyCode==Canvas.KEY_NUM4) new ConfigForm();
-        else if (keyCode==Canvas.KEY_NUM6) {
-            Config.fullscreen = !Config.fullscreen;
-            cf.saveToStorage();            
-            sd.canvas.setFullScreenMode(Config.fullscreen);
-        }
-        else if (keyCode==Canvas.KEY_NUM7)
-            new RosterToolsMenu();
-        else if (keyCode==Canvas.KEY_NUM9) {
-            
-            
-            if (cf.allowMinimize)
-                BombusMod.getInstance().hideApp(true);
-            else if (phoneManufacturer==Config.SIEMENS2)
-              new SieNatMenu( this); /*
-                 try {
-                     //SIEMENS: MYMENU call. Possible Main Menu for capable phones
-                      BombusMod.getInstance().platformRequest("native:ELSE_STR_MYMENU");
-                 } catch (Exception e) { }  */
-            else if (phoneManufacturer==Config.SIEMENS)//SIEMENS-NSG: MYMENU call. Possible Native Menu for capable phones
-                 try {
-                    BombusMod.getInstance().platformRequest("native:NAT_MAIN_MENU");
-                 } catch (Exception e) { }
-             
-                     }
-//#ifdef LIGHT_CONFIG        
-//#ifdef PLUGINS        
-//#         if (StaticData.getInstance().lightConfig)        
-//#endif                    
-//#         CustomLight.keyPressed();
-//#endif        
-    }
-
-//#ifdef AUTOSTATUS
+//#
 //#     private void userActivity() {
 //#         if (autostatus==null) return;
 //# 
@@ -3027,10 +3040,8 @@ public class Roster
     public void destroyView() {
 //#ifdef AUTOSTATUS
 //#         if (cf.autoAwayType==Config.AWAY_IDLE)
-//#             if (kHold==0)
-//#                 autostatus.setTimeEvent(0);
+//#             autostatus.setTimeEvent(0);
 //#endif
-        
     }
     
     public void showMenu() {

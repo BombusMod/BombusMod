@@ -7,6 +7,7 @@ package ui.controls.form;
 import ui.IconTextElement;
 import images.RosterIcons;
 import ui.keys.UserKey;
+import ui.keys.UserKeyExec;
 import javax.microedition.lcdui.*;
 import Fonts.FontCache;
 import Colors.ColorTheme;
@@ -20,12 +21,10 @@ public class KeyInput extends IconTextElement {
 //#     public static String plugin = new String("PLUGIN_USER_KEYS");
 //#endif
 
-    private boolean expected_first_key;
-
-    public boolean two_keys;
     public boolean selected;
-    public int previous_key;
-    public int key;
+
+    private UserKey u;
+    private boolean expected_first_key;
     
     private int colorItem;
     private int colorBorder;
@@ -53,29 +52,45 @@ public class KeyInput extends IconTextElement {
     
     public KeyInput(UserKey u, String caption) {
         this(caption);
-        two_keys = u.two_keys;
-        previous_key = u.previous_key;
-        key = u.key;
+        this.u = u;
     }
 
     public void onSelect() {
         selected = true;
     }
 
-    public void keyPressed(int key_code) {
-        if (two_keys) {
+    public void setTwoKeys(boolean two_keys) {
+        u.two_keys = two_keys;
+        expected_first_key = true;
+    }
+
+    public UserKey getUserKey() {
+        return u;
+    }
+
+    public void key(int key_code, boolean key_long) {
+        boolean two_keys = u.two_keys;
+        u = new UserKey(UserKeyExec.getInstance().current_key);
+        u.two_keys = two_keys;
+        
+        if ((!u.two_keys) || (!expected_first_key))
+            selected = false;
+        expected_first_key = !expected_first_key;
+        /*
+        if (u.two_keys) {
             if (expected_first_key) {
-                previous_key = key_code;
+                u.previous_key = key_code;
                 expected_first_key = false;
             } else {
-                key = key_code;
+                u.key = key_code;
                 expected_first_key = true;
                 selected = false;
             }
         } else {
-            key = key_code;
+            u.key = key_code;
             selected = false;
         }
+         */
     }
 
     public void drawItem(Graphics g, int ofs, boolean sel) {
@@ -129,21 +144,21 @@ public class KeyInput extends IconTextElement {
     }
 
     public String toString() {
-        if (two_keys) {
+        if (u.two_keys) {
             if (selected) {
                 if (expected_first_key) {
                     return "First key?";
                 } else {
-                    return UserKey.keyToString(previous_key) + " + ?";
+                    return u.getLastKeyName() + " + ?";
                 }
             } else {
-                return UserKey.keyToString(previous_key) + " + " + UserKey.keyToString(key);
+                return u.getPreviousKeyName() + " + " + u.getLastKeyName();
             }
         } else {
             if (selected) {
                 return "Key?";
             } else {
-                return UserKey.keyToString(key);
+                return u.getLastKeyName();
             }
         }
     }

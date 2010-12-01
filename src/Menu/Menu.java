@@ -68,45 +68,60 @@ public class Menu extends VirtualList
         addItem(new MenuItem(label, index, -1, il));
     }
     
-    public String touchLeftCommand(){ return SR.MS_OK; }
+    public String touchLeftCommand() {
+        return SR.MS_OK;
+    }
     
-    public void touchLeftPressed(){
+    public void touchLeftPressed() {
         eventOk();
     }
-     
-    public void keyPressed(int keyCode) {
-        kHold=0;
-        if (keyCode==Config.SOFT_LEFT) {
-            eventOk();
-            return;
-        }
-        if (executeByNum && getItemCount()>0) {
-            switch (keyCode) {
-                case Canvas.KEY_NUM0:
-                    executeCommand(9); return;
-                case Canvas.KEY_NUM1:
-                    executeCommand(0); return;
-                case Canvas.KEY_NUM2:
-                    executeCommand(1); return;
-                case Canvas.KEY_NUM3:
-                    executeCommand(2); return;
-                case Canvas.KEY_NUM4:
-                    executeCommand(3); return;
-                case Canvas.KEY_NUM5:
-                    executeCommand(4); return;
-                case Canvas.KEY_NUM6:
-                    executeCommand(5); return;
-                case Canvas.KEY_NUM7:
-                    executeCommand(6); return;
-                case Canvas.KEY_NUM8:
-                    executeCommand(7); return;
-                case Canvas.KEY_NUM9:
-                    executeCommand(8); return;
+
+    protected boolean key(int keyCode, boolean key_long) {
+        if (!key_long) {
+            if (keyCode == Config.SOFT_LEFT) {
+                eventOk();
+                return true;
+            }
+
+            if (executeByNum && getItemCount() > 0) {
+                switch (keyCode) {
+                    case Canvas.KEY_NUM0:
+                        executeCommand(9);
+                        return true;
+                    case Canvas.KEY_NUM1:
+                        executeCommand(0);
+                        return true;
+                    case Canvas.KEY_NUM2:
+                        executeCommand(1);
+                        return true;
+                    case Canvas.KEY_NUM3:
+                        executeCommand(2);
+                        return true;
+                    case Canvas.KEY_NUM4:
+                        executeCommand(3);
+                        return true;
+                    case Canvas.KEY_NUM5:
+                        executeCommand(4);
+                        return true;
+                    case Canvas.KEY_NUM6:
+                        executeCommand(5);
+                        return true;
+                    case Canvas.KEY_NUM7:
+                        executeCommand(6);
+                        return true;
+                    case Canvas.KEY_NUM8:
+                        executeCommand(7);
+                        return true;
+                    case Canvas.KEY_NUM9:
+                        executeCommand(8);
+                        return true;
+                }
             }
         }
-        super.keyPressed(keyCode);
+
+        return super.key(keyCode, key_long);
     }
-    
+
     private void executeCommand(int index) {
         moveCursorTo(index);
         eventOk();

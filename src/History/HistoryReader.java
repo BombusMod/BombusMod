@@ -85,19 +85,22 @@ public class HistoryReader extends MessageList {
             messages.addElement((MessageItem)e.nextElement());
         }
     }
-    
-    public void keyPressed(int key_code) {
-        switch(key_code) {
-            case Canvas.KEY_NUM1:
-                loadFrom(hl.stepBegin());
-                moveCursorHome();
-                return;
-            case Canvas.KEY_NUM7:
-                loadFrom(hl.stepEnd());
-                moveCursorEnd();
-                return;
+
+    protected boolean key(int key_code, boolean key_long) {
+        if (!key_long) {
+            switch (key_code) {
+                case Canvas.KEY_NUM1:
+                    loadFrom(hl.stepBegin());
+                    moveCursorHome();
+                    return true;
+                case Canvas.KEY_NUM7:
+                    loadFrom(hl.stepEnd());
+                    moveCursorEnd();
+                    return true;
+            }
         }
-        super.keyPressed(key_code);
+     
+        return super.key(key_code, key_long);
     }
 
     public int getItemCount() {

@@ -32,7 +32,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import ui.IconTextElement;
 import Client.Config;
-import Client.StaticData;
 import javax.microedition.lcdui.Canvas;
 
 /**
@@ -40,162 +39,230 @@ import javax.microedition.lcdui.Canvas;
  * @author ad
  */
 public class UserKey extends IconTextElement {
-    public final static String storage="keys_db";
+    public final static String storage = "keys_db";
+    public final static String def_keys = "/userkeys/bombusmod.txt";
+    
+    private final static int COUNT_KEY_NAMES = 27;
+    private int current_index;
+    private static int[] someCodes = null;
+    private static String[] someNames = null;
 
-    public int commands_id[] = {0, 0, 0};
+    public int command_id = 0;
+    public boolean previous_key_long;
+    public boolean key_long;
     public int previous_key;
     public int key;
-    public boolean active   = false;
-    public boolean two_keys = true;
-
-    public UserKey(UserKey u) {
-        this(u.commands_id, u.previous_key, u.key, u.active, u.two_keys);
-    }
-
-    public UserKey(int[] commands_id, int previous_key, int key, boolean active, boolean two_keys) {
-        this();
-        this.commands_id = commands_id;
-        this.previous_key = previous_key;
-        this.key = key;
-        this.active = active;
-        this.two_keys = two_keys;
-    }
+    public boolean two_keys;
 
     public UserKey() {
         super(RosterIcons.getInstance());
+        initSomeKeyNames();
+    }
+
+    public UserKey(UserKey u) {
+        this();
+        command_id = u.command_id;
+        previous_key_long = u.previous_key_long;
+        key_long = u.key_long;
+        previous_key = u.previous_key;
+        key = u.key;
+        two_keys = u.two_keys;
+    }
+
+    private void initSomeKeyNames() { // TODO: подумать как и когда обнулять
+        someCodes = new int[COUNT_KEY_NAMES];
+        someNames = new String[COUNT_KEY_NAMES];
+
+        current_index = 0;
+
+        // Цифровые клавишы
+        addKeyName(Canvas.KEY_NUM0, "(0)");
+        addKeyName(Canvas.KEY_NUM1, "(1)");
+        addKeyName(Canvas.KEY_NUM2, "(2)");
+        addKeyName(Canvas.KEY_NUM3, "(3)");
+        addKeyName(Canvas.KEY_NUM4, "(4)");
+        addKeyName(Canvas.KEY_NUM5, "(5)");
+        addKeyName(Canvas.KEY_NUM6, "(6)");
+        addKeyName(Canvas.KEY_NUM7, "(7)");
+        addKeyName(Canvas.KEY_NUM8, "(8)");
+        addKeyName(Canvas.KEY_NUM9, "(9)");
+        addKeyName(Canvas.KEY_STAR, "*");
+        addKeyName(Canvas.KEY_POUND, "#");
+
+        // QWERTY-клавиатура
+        addKeyName(8, "BackSpace");
+        addKeyName(10, "Enter");
+        addKeyName(32, "Space");
+        
+        // Misc
+        addKeyName(Config.KEY_BACK, "Back");
+        addKeyName(Config.SOFT_LEFT, "Soft_Left");
+        addKeyName(Config.SOFT_RIGHT, "Soft_Right");
+
+        // Game Action
+        Canvas display = (Canvas) Client.StaticData.getInstance().canvas;
+        addKeyName(display.getKeyCode(Canvas.LEFT), "(<)");
+        addKeyName(display.getKeyCode(Canvas.RIGHT), "(>)");
+        addKeyName(display.getKeyCode(Canvas.UP), "(^)");
+        addKeyName(display.getKeyCode(Canvas.DOWN), "(V)");
+        addKeyName(display.getKeyCode(Canvas.FIRE), "(o)");
+        addKeyName(display.getKeyCode(Canvas.GAME_A), "Game_A");
+        addKeyName(display.getKeyCode(Canvas.GAME_B), "Game_B");
+        addKeyName(display.getKeyCode(Canvas.GAME_C), "Game_C");
+        addKeyName(display.getKeyCode(Canvas.GAME_D), "Game_D");
+        display = null;
+    }
+    
+    private void addKeyName(int code, String name) {
+        someCodes[current_index] = code;
+        someNames[current_index] = name;
+        current_index++;
+    }
+
+    private static String getKeyName(int code, boolean long_key) {
+        String prefix = long_key ? "L" : "";
+
+        for (int i = 0; i < COUNT_KEY_NAMES; i++)
+            if (someCodes[i] == code)
+                return prefix + someNames[i];
+
+        if (((code > 64) && (code < 91))   // [A-Z]
+         || ((code > 96) && (code < 123))) // [a-z]
+             return prefix + (char) code;
+
+        return prefix + code;
+    }
+
+    public String getPreviousKeyName() {
+        return two_keys ? getKeyName(previous_key, previous_key_long) : "OFF";
+    }
+
+    public String getLastKeyName() {
+        return getKeyName(key, key_long);
+    }
+/*
+    private void setPreviousKey(String name) {
+        previous_key_long = isLongKey(name);
+        if (previous_key_long)
+            name.substring(1);
+        previous_key = getKeyCode(name);
+    }
+
+    private void setLastKey(String name) {
+        key_long = isLongKey(name);
+        if (key_long)
+            name.substring(1);
+        key = getKeyCode(name);
+    }
+*/
+    public static UserKey createFromStrings(String id, String name1, String name2) {
+        UserKey u = new UserKey();
+
+        u.command_id = Integer.parseInt(id);
+
+        u.two_keys = !name1.equals("OFF");
+        if (u.two_keys) {
+            u.previous_key_long = isLongKey(name1);
+            if (u.previous_key_long)
+                name1 = name1.substring(1);
+            u.previous_key = getKeyCode(name1);
+        }
+
+        u.key_long = isLongKey(name2);
+        if (u.key_long)
+            name2 = name2.substring(1);
+        u.key = getKeyCode(name2);
+
+        return u;
+    }
+
+    private static int getKeyCode(String name) {
+        for (int i = 0; i < COUNT_KEY_NAMES; i++)
+            if (name.equals(someNames[i]))
+                return someCodes[i];
+
+        if (name.length() == 1) {
+            char ch = name.charAt(0);
+            if (((ch > 64) && (ch < 91))   // [A-Z]
+             || ((ch > 96) && (ch < 123))) // [a-z]
+                 return (int) ch;
+        }
+
+        return Integer.parseInt(name);
+    }
+
+    private static boolean isLongKey(String name) {
+        if ((name.length() > 1) && (name.charAt(0) == 'L'))
+            return true;
+
+        return false;
     }
 
     public boolean equals(Object ob) {
-        if (!(ob instanceof UserKey)) return false;
+        if (!(ob instanceof UserKey))
+			return false;
+
         UserKey u = (UserKey) ob;
-        return ((previous_key == u.previous_key) || (!two_keys))
+        boolean result = (key_long == u.key_long)
                 && (key == u.key)
-                && (active == u.active)
                 && (two_keys == u.two_keys);
+        if (two_keys)
+            result = result
+                    && (previous_key_long == u.previous_key_long)
+                    && (previous_key == u.previous_key);
+        return result;
     }
     
-    public String toString(){
+    public String toString() {
         StringBuffer s = new StringBuffer();
-        if (two_keys)
-            s.append(keyToString(previous_key)).append(" + ");
-        s.append(keyToString(key));
-        for (int i = 0; i < 3; i++)
-            s.append("; ").append(UserKeyExec.get_command_by_id(commands_id[i], i).description);
-        return s.toString();
-    } 
 
-    public static String keyToString(int key_code) {
-        switch(key_code) {
-            case Canvas.KEY_NUM0:
-                return "[0]";
-            case Canvas.KEY_NUM1:
-                return "[1]";
-            case Canvas.KEY_NUM2:
-                return "[2]";
-            case Canvas.KEY_NUM3:
-                return "[3]";
-            case Canvas.KEY_NUM4:
-                return "[4]";
-            case Canvas.KEY_NUM5:
-                return "[5]";
-            case Canvas.KEY_NUM6:
-                return "[6]";
-            case Canvas.KEY_NUM7:
-                return "[7]";
-            case Canvas.KEY_NUM8:
-                return "[8]";
-            case Canvas.KEY_NUM9:
-                return "[9]";
-            case Canvas.KEY_STAR:
-                return "[*]";
-            case Canvas.KEY_POUND:
-                return "[#]";
-            case 32:
-                return "[Space]";
-            case 10:
-                return "[Enter]";
-            case 8:
-                return "[BackSpace]";
-            default:
-                if (key_code>=0) {
-                    if (((key_code>64)&&(key_code<91))     // [A-Z]
-                     || ((key_code>96)&&(key_code<123))) { // [a-z]
-                        return "["+(char) key_code+"]";
-                    } // Выше - положительные коды, ниже - отрицательные.
-                } else switch (StaticData.getInstance().canvas.getGameAction(key_code)) {
-                        case Canvas.LEFT:
-                            return "(<)";
-                        case Canvas.RIGHT:
-                            return "(>)";
-                        case Canvas.UP:
-                            return "(^)";
-                        case Canvas.DOWN:
-                            return "(V)";
-                        case Canvas.FIRE:
-                            return "(o)";
-                        case Canvas.GAME_A:
-                            return "[Game \"A\"]";
-                        case Canvas.GAME_B:
-                            return "[Game \"B\"]";
-                        case Canvas.GAME_C:
-                            return "[Game \"C\"]";
-                        case Canvas.GAME_D:
-                            return "[Game \"D\"]";
-                    default:
-                        if (key_code == Config.KEY_BACK) {
-                            return "(Key \"Back\")";
-                        } else if (key_code == Config.SOFT_LEFT) {
-                            return "(Soft Left)";
-                        } else if (key_code == Config.SOFT_RIGHT) {
-                            return "(Soft Right)";
-                        }
-                }
-        }
-        return "[Code \"" + key_code + "\"]";
+        if (two_keys)
+            s.append(getPreviousKeyName())
+             .append(" + ");
+
+        s.append(getLastKeyName());
+
+//        if (command_id > 0)
+        s.append("; ")
+         .append(UserKeyExec.cmds[command_id]);
+        return s.toString();
+    }
+
+    public String toLine() {
+        return new StringBuffer()
+                .append(command_id)
+                .append((char) 0x09)
+                .append(getPreviousKeyName())
+                .append((char) 0x09)
+                .append(getLastKeyName())
+                .toString();
     }
 
     public static UserKey createFromDataInputStream(DataInputStream inputStream) throws IOException {
         UserKey u = new UserKey();
 
-        for (int i = 0; i < 3; i++)
-            u.commands_id[i] = inputStream.readInt();
-        inputStream.readInt(); // 4-я команда
+        u.command_id = inputStream.readInt();
+        u.previous_key_long = inputStream.readBoolean();
+        u.key_long = inputStream.readBoolean();
         u.previous_key = inputStream.readInt();
         u.key = inputStream.readInt();
-        u.active = inputStream.readBoolean();
         u.two_keys = inputStream.readBoolean();
 
         return u;
     }
-    
-    public void saveToDataOutputStream(DataOutputStream outputStream) {
+
+    public void saveMyToDataOutputStream(DataOutputStream outputStream) {
         try {
-            for (int i = 0; i < 3; i++)
-                outputStream.writeInt(commands_id[i]);
-            outputStream.writeInt(0); // 4-я команда
+            outputStream.writeInt(command_id);
+            outputStream.writeBoolean(previous_key_long);
+            outputStream.writeBoolean(key_long);
             outputStream.writeInt(previous_key);
-            outputStream.writeInt(key);	    
-	    outputStream.writeBoolean(active);
+            outputStream.writeInt(key);
             outputStream.writeBoolean(two_keys);
         } catch (IOException e) { }
     }
 
-    public int getImageIndex() {return active?0:5;}
-
-    public static int get_key_code_by_id(int id) {
-        switch(id) {
-            case 0: return Canvas.KEY_NUM0;
-            case 1: return Canvas.KEY_NUM1;
-            case 2: return Canvas.KEY_NUM2;
-            case 3: return Canvas.KEY_NUM3;
-            case 4: return Canvas.KEY_NUM4;
-            case 5: return Canvas.KEY_NUM5;
-            case 6: return Canvas.KEY_NUM6;
-            case 7: return Canvas.KEY_NUM7;
-            case 8: return Canvas.KEY_NUM8;
-            case 9: return Canvas.KEY_NUM9;
-            case 10: return Canvas.KEY_STAR;
-            default: return -1;
-        }
+    public int getImageIndex() {
+        return 0;
     }
  }

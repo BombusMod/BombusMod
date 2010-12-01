@@ -123,8 +123,6 @@ public abstract class VirtualList {
         }*/
     }
     
-    private static int previous_key_code = -1;
-
 //#ifdef POPUPS
     public void setWobble(int type, String contact, String txt) {
         PopUp.getInstance().addPopup(type, contact, txt);
@@ -796,9 +794,21 @@ public abstract class VirtualList {
         } catch (Exception e) {}
     }
 
-    protected int kHold;
-    protected void keyRepeated(int keyCode) {
-        key(keyCode); 
+    private byte key_long_executed; // 0 - not try, 1 - not executed, 2 - executed.
+
+    protected final void keyRepeated(int keyCode) {
+//#ifdef DEBUG
+//#         System.out.println("keyRepeated: " + keyCode);
+//#endif
+
+        if ((key_long_executed < 1) && UserKeyExec.getInstance().isCurrentKey(keyCode, false)) {
+            key_long_executed = sendKeyAction(keyCode, true) ? (byte) 2 : (byte) 1;
+        }
+
+        if (key_long_executed == 1) {
+            sendKeyAction(keyCode, false);
+        }
+
 //#ifdef LIGHT_CONFIG      
 //#ifdef PLUGINS                
 //#         if (StaticData.getInstance().lightConfig)
@@ -806,28 +816,69 @@ public abstract class VirtualList {
 //#             CustomLight.keyPressed();
 //#endif        
     }
-    protected void keyReleased(int keyCode) { kHold=0; }
-    protected void keyPressed(int keyCode) {
-        kHold=0;
-        key(keyCode); 
+
+    protected final void keyReleased(int keyCode) {
+//#ifdef DEBUG
+//#         System.out.println("keyReleased: " + keyCode);
+//#endif
+    }
+
+    protected final void keyPressed(int keyCode) {
+//#ifdef DEBUG
+//#         System.out.println("keyPressed: " + keyCode);
+//#endif
+
+        key_long_executed = 0;
+        sendKeyAction(keyCode, false);
+
 //#ifdef LIGHT_CONFIG      
 //#ifdef PLUGINS                
 //#         if (StaticData.getInstance().lightConfig)
 //#endif            
 //#             CustomLight.keyPressed();
-//#endif        
+//#endif
     }
+
+    private boolean sendKeyAction(int keyCode, boolean key_long) {
+        int key = getKeyCodeForSendEvent(keyCode);
+
+//#ifdef POPUPS
+        if (PopUp.getInstance().handleEvent(key)) { // try to skip PopUp
+            redraw();
+            return true;
+        }
+//#endif
+
+        if (UserKeyExec.getInstance().keyExecute(keyCode, key_long)) {
+            return true;
+        }
+
+        if ((key > -1) && (getFocusedObject() != null)) { // send key to focused object
+            if (((VirtualElement) getFocusedObject()).handleEvent(key)) {
+                redraw();
+                return true;
+            }
+        }
+
+        if (key(keyCode, key_long)) {
+            redraw();
+            return true;
+        }
+
+        return false;
+    }
+
     private int yPointerPos;
 
     protected void pointerPressed(int x, int y) {
         if (Config.fullscreen) {
             int act = CommandsPointer.pointerPressed(x, y);
             if (act == 1) {
-                key(Config.SOFT_LEFT);
+                key(Config.SOFT_LEFT, false);
                 stickyWindow = false;
                 return;
             } else if (act == 2) {
-                key(Config.SOFT_RIGHT);
+                key(Config.SOFT_RIGHT, false);
                 stickyWindow = false;
                 return;
             }
@@ -1000,21 +1051,6 @@ public abstract class VirtualList {
         return key;
     }
 
-//#ifdef POPUPS
-    private boolean skipPopUp(int key_code) {
-        int key = getKeyCodeForSendEvent(key_code);
-        return PopUp.getInstance().handleEvent(key);
-    }
-//#endif
-    
-    private boolean sendEvent(int key_code) {
-        int key = getKeyCodeForSendEvent(key_code);
-        if ((key > -1) && (getFocusedObject() != null)) {
-            return ((VirtualElement) getFocusedObject()).handleEvent(key);
-        }
-        return false;
-    }
-    
     public void reconnectYes() {
         reconnectWindow.getInstance().reconnect();
         //reconnectDraw=false;
@@ -1031,122 +1067,100 @@ public abstract class VirtualList {
      * обработка кодов кнопок
      * @param keyCode код нажатой кнопки
      */
-    private void key(int keyCode) {
-//#if DEBUG
-//#         //System.out.println(keyCode); // Только мешает.
-//#endif
-//#ifdef POPUPS
-        boolean popupSkipped = skipPopUp(keyCode);
-        if (popupSkipped) {
-            redraw();
-        }
-//#endif
-        boolean executed = UserKeyExec.getInstance().commandExecute(previous_key_code, keyCode);
-        previous_key_code = keyCode;
-        if (executed)
-            return;
-//#ifdef POPUPS
-        if (popupSkipped)
-            return;
-//#endif
-        if (sendEvent(keyCode)) {
-            redraw();
-            return;
-        }
-        if (keyCode==Config.SOFT_LEFT || keyCode=='(') {
-            if (reconnectWindow.getInstance().isActive()) {
-                reconnectYes();
-                return;
-            }
-            touchLeftPressed();
-            return;
-        }
-         if (keyCode==Config.SOFT_RIGHT || keyCode==')') {
-            if (reconnectWindow.getInstance().isActive()) {
-                reconnectNo();
-                return;
-            }
-            touchRightPressed();
-            return;
-         }
-        if (keyCode == keyClear) {
-            keyClear();
-            return;
-        } else if (keyCode == keyVolDown) {
-            moveCursorEnd();
-            return;
-        } else if (keyCode == '5') {
-            eventOk();
-            return;
-        } else if (keyCode == Config.KEY_BACK && canBack == true) {
-            destroyView();
-            return;
-        } else if (keyCode == greenKeyCode) {
-            keyGreen();
-            return;
-        }
-    switch (keyCode) {
-        case Canvas.KEY_NUM1:        
-            moveCursorHome();
-            break;
-        case Canvas.KEY_NUM2:        
-            keyUp();    
-            break; 
-        case Canvas.KEY_NUM4:        
-            userKeyPressed(keyCode);
-            break; 
-        case Canvas.KEY_NUM6:        
-            userKeyPressed(keyCode);
-            break;
-        case Canvas.KEY_NUM7:        
-            moveCursorEnd();     
-            break;
-        case Canvas.KEY_NUM8:        
-            keyDwn();    
-            break;
-        case Canvas.KEY_STAR:
-// Перемещено в UserKeyExec: #19.
-            break;
-//#ifdef POPUPS
-        case Canvas.KEY_POUND:
-            if (cf.popUps) {
-                try {
-                    String text=((VirtualElement)getFocusedObject()).getTipString();
-                    if (text!=null) {
-                            setWobble(1, null, text);
-                    }
-                } catch (Exception e) { }
-            }
-            break;
-//#endif
-
-        default:
-            try {
-                switch (sd.canvas.getGameAction(keyCode)){
-                    case Canvas.UP:
-                        keyUp();
-                        break;
-                    case Canvas.DOWN:
-                        keyDwn();
-                        break;
-                    case Canvas.LEFT:
-                        pageLeft();
-                        break;
-                    case Canvas.RIGHT:
-                        pageRight();
-                        break;
-                    case Canvas.FIRE:
-                        eventOk();
-                        break;
-                default:
-                    userKeyPressed(keyCode);
+    protected boolean key(int keyCode, boolean key_long) {
+        if (!key_long) {
+            if (keyCode == Config.SOFT_LEFT || keyCode == '(') {
+                if (reconnectWindow.getInstance().isActive()) {
+                    reconnectYes();
+                    return true;
                 }
-            } catch (Exception e) {/* IllegalArgumentException @ getGameAction */}
+                touchLeftPressed();
+                return true;
+            }
+            if (keyCode == Config.SOFT_RIGHT || keyCode == ')') {
+                if (reconnectWindow.getInstance().isActive()) {
+                    reconnectNo();
+                    return true;
+                }
+                touchRightPressed();
+                return true;
+            }
+            if (keyCode == keyClear) {
+                keyClear();
+                return true;
+            } else if (keyCode == keyVolDown) {
+                moveCursorEnd();
+                return true;
+            } else if (keyCode == '5') {
+                eventOk();
+                return true;
+            } else if (keyCode == Config.KEY_BACK && canBack == true) {
+                destroyView();
+                return true;
+            } else if (keyCode == greenKeyCode) {
+                keyGreen();
+                return true;
+            }
+            switch (keyCode) {
+                case Canvas.KEY_NUM1:
+                    moveCursorHome();
+                    return true;
+                case Canvas.KEY_NUM2:
+                    keyUp();
+                    return true;
+                case Canvas.KEY_NUM4:
+                    userKeyPressed(keyCode);
+                    return true;
+                case Canvas.KEY_NUM6:
+                    userKeyPressed(keyCode);
+                    return true;
+                case Canvas.KEY_NUM7:
+                    moveCursorEnd();
+                    return true;
+                case Canvas.KEY_NUM8:
+                    keyDwn();
+                    return true;
+//#ifdef POPUPS
+                case Canvas.KEY_POUND:
+                    if (cf.popUps) {
+                        try {
+                            String text = ((VirtualElement) getFocusedObject()).getTipString();
+                            if (text != null) {
+                                setWobble(1, null, text);
+                                return true;
+                            }
+                        } catch (Exception e) { }
+                    }
+                    return false;
+//#endif
+
+                default:
+                    try {
+                        switch (sd.canvas.getGameAction(keyCode)) {
+                            case Canvas.UP:
+                                keyUp();
+                                return true;
+                            case Canvas.DOWN:
+                                keyDwn();
+                                return true;
+                            case Canvas.LEFT:
+                                pageLeft();
+                                return true;
+                            case Canvas.RIGHT:
+                                pageRight();
+                                return true;
+                            case Canvas.FIRE:
+                                eventOk();
+                                return true;
+                            default:
+                                userKeyPressed(keyCode);
+                                return true;
+                        }
+                    } catch (Exception e) {/* IllegalArgumentException @ getGameAction */}
+            }
         }
-        redraw();
+        return false;
     }
-
-
 
     /**
      * событие "Нажатие кнопки UP"

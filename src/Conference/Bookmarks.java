@@ -233,21 +233,26 @@ public class Bookmarks extends DefForm {
         }
     }
 
-    public void keyPressed(int keyCode) {
-        super.keyPressed(keyCode);
-        switch (keyCode) {
-            case Canvas.KEY_NUM4:
-                pageLeft();
-                break;
-            case Canvas.KEY_NUM6:
-                pageRight();
-                break;
+    protected boolean key(int keyCode, boolean key_long) {
+        if (!key_long) {
+            switch (keyCode) {
+                case Canvas.KEY_NUM4:
+                    pageLeft();
+                    return true;
+                case Canvas.KEY_NUM6:
+                    pageRight();
+                    return true;
 //#ifdef SERVICE_DISCOVERY
-            case Canvas.KEY_POUND:
-                new ServiceDiscovery(((BookmarkItem) getFocusedObject()).getJid(), null, false);
+                case Canvas.KEY_POUND:
+                    new ServiceDiscovery(((BookmarkItem) getFocusedObject()).getJid(), null, false);
+                    return true;
 //#endif
+            }
         }
+
+        return super.key(keyCode, key_long);
     }
+
 
     public String touchLeftCommand() {
         return SR.MS_MENU;

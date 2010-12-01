@@ -55,11 +55,20 @@ import io.NvStorage;
 import java.io.DataInputStream;
 import Messages.MessageList;
 import Messages.MessageItem;
+import io.file.FileIO;
+import java.io.IOException;
+import util.StringLoader;
+import java.io.InputStream;
+import java.io.DataOutputStream;
 
 public class UserKeyExec {
-    StaticData sd = StaticData.getInstance();
-    
+
     private static UserKeyExec instance;
+    StaticData sd = StaticData.getInstance();
+    public final static String cmds[] = new String[22];
+    public Vector keysList;
+    public UserKey current_key;
+
     public static UserKeyExec getInstance() {
         if (instance == null)
             instance = new UserKeyExec();
@@ -67,113 +76,186 @@ public class UserKeyExec {
     }
 
     private UserKeyExec() {
-        init_available_commands();
-        init_commands_from_rms();
+        init_cmds();
+        if(!loadFromStorage())
+            loadDefault();
+        current_key = new UserKey();
     }
 
-    public Vector userKeysList;
-    public final static UserKeyCommand none_command = new UserKeyCommand(0, SR.MS_NO);
-     // 0 - common, 1 - Roster, 2 - ContactMessageList, 3 - none
-    public final static Vector[] available_commands = { new Vector(), new Vector(), new Vector() };
-
-    public final void init_available_commands() {
-        available_commands[0].addElement(new UserKeyCommand(1, SR.MS_OPTIONS));
-        available_commands[0].addElement(new UserKeyCommand(2, SR.MS_CLEAN_ALL_MESSAGES));
-        available_commands[0].addElement(new UserKeyCommand(3, SR.MS_RECONNECT));
+    private void init_cmds() {
+        cmds[0] = SR.MS_NO;
+        cmds[1] = SR.MS_OPTIONS;
+        cmds[2] = SR.MS_CLEAN_ALL_MESSAGES;
+        cmds[3] = SR.MS_RECONNECT;
 //#ifdef STATS
-//#         available_commands[0].addElement(new UserKeyCommand(4, SR.MS_STATS));
+//#         cmds[4] = SR.MS_STATS;
 //#endif
-        available_commands[0].addElement(new UserKeyCommand(5, SR.MS_STATUS_MENU));
-        available_commands[0].addElement(new UserKeyCommand(6, SR.MS_FILE_TRANSFERS));
+        cmds[5] = SR.MS_STATUS_MENU;
+        cmds[6] = SR.MS_FILE_TRANSFERS;
 //#ifdef ARCHIVE
-        available_commands[0].addElement(new UserKeyCommand(7, SR.MS_ARCHIVE));
+        cmds[7] = SR.MS_ARCHIVE;
 //#endif
-        available_commands[0].addElement(new UserKeyCommand(8, SR.MS_DISCO));
+        cmds[8] = SR.MS_DISCO;
 //#ifdef PRIVACY
-        available_commands[0].addElement(new UserKeyCommand(9, SR.MS_PRIVACY_LISTS));
+        cmds[9] = SR.MS_PRIVACY_LISTS;
 //#endif
 //#ifdef USER_KEYS
-//#         available_commands[0].addElement(new UserKeyCommand(10, SR.MS_CUSTOM_KEYS));
+        cmds[10] = SR.MS_CUSTOM_KEYS;
 //#endif
 //#ifdef POPUPS
-        available_commands[1].addElement(new UserKeyCommand(11, SR.MS_CLEAR_POPUPS));
+        cmds[11] = SR.MS_CLEAR_POPUPS;
 //#endif
-      //  available_commands[0].addElement(new UserKeyCommand(12, SR.MS_FLASHLIGHT));
-        available_commands[0].addElement(new UserKeyCommand(13, SR.MS_ABOUT));
-        available_commands[0].addElement(new UserKeyCommand(14, SR.MS_APP_MINIMIZE));
-        available_commands[0].addElement(new UserKeyCommand(15, SR.MS_INVERT));
+      //  cmds[12] = SR.MS_FLASHLIGHT;
+        cmds[13] = SR.MS_ABOUT;
+        cmds[14] = SR.MS_APP_MINIMIZE;
+        cmds[15] = SR.MS_INVERT;
 //#ifdef CONSOLE
-//#         available_commands[0].addElement(new UserKeyCommand(16, SR.MS_XML_CONSOLE));
+//#         cmds[16] = SR.MS_XML_CONSOLE;
 //#endif
-        available_commands[0].addElement(new UserKeyCommand(17, SR.MS_FULLSCREEN));
+        cmds[17] = SR.MS_FULLSCREEN;
 //#ifdef JUICK
-//#         available_commands[1].addElement(new UserKeyCommand(18, SR.MS_JUICK_FOCUS));
+//#         cmds[18] = SR.MS_JUICK_FOCUS;
 //#endif
-        available_commands[1].addElement(new UserKeyCommand(19, SR.MS_HEAP_MONITOR));
+        cmds[19] = SR.MS_HEAP_MONITOR;
 //#ifdef SMILES
-        available_commands[2].addElement(new UserKeyCommand(20, SR.MS_SMILES_TOGGLE));
+        cmds[20] = SR.MS_SMILES_TOGGLE;
 //#endif
 //#ifdef JUICK
-//#         available_commands[2].addElement(new UserKeyCommand(21, SR.MS_COMMANDS + " Juick"));
+//#         cmds[21] = SR.MS_COMMANDS + " Juick";
 //#endif
     }
 
-    public static UserKeyCommand get_command_by_id(int command_id, int type) {
-        if ((type < 0) || (type > (3-1)))
-            return none_command;
-        int cmdIndex = available_commands[type].indexOf(new UserKeyCommand(command_id, null));
-        if (cmdIndex >= 0) {
-            return (UserKeyCommand) available_commands[type].elementAt(cmdIndex);
-        }
-        return none_command;
+    private void update_current_key(int key, boolean key_long) {
+//        if ((current_key.key == key) && (!current_key.key_long) && (key_long)) {
+//            current_key.key_long = true;
+//        } else {
+            current_key.previous_key_long = current_key.key_long;
+            current_key.key_long = key_long;
+
+            current_key.previous_key = current_key.key;
+            current_key.key = key;
+//        }
     }
 
-    public final void init_commands_from_rms() {
-        userKeysList = null;
-        userKeysList = new Vector();
+    public boolean isCurrentKey(int key, boolean key_long) {
+        return (current_key.key == key) && (current_key.key_long == key_long);
+    }
+
+    public static int getCommandID(String str) {
+        for (int i = 0; i < cmds.length; i++) {
+            if ((cmds[i] != null) && str.equals(cmds[i]))
+                return i;
+        }
+        return 0;
+    }
+
+    public final boolean loadFromStorage() {
+        keysList = null;
+        keysList = new Vector();
         
 //#ifdef USER_KEYS
 //#ifdef PLUGINS
 //#         if (sd.UserKeys) {
 //#endif
-//#             DataInputStream is = NvStorage.ReadFileRecord(UserKey.storage, 0);
-//# 
-//#             int size = 0;
-//#             try {
-//#                 size = is.readInt();
-//#                 for (int i = 0; i < size; i++)
-//#                     userKeysList.addElement(UserKey.createFromDataInputStream(is));
-//#             } catch (Exception e) {
-//#                 userKeysList = UserKeysList.getDefaultKeysList();
-//#                 UserKeysList.rmsUpdate(userKeysList);
-//#             }
+            DataInputStream is = NvStorage.ReadFileRecord(UserKey.storage, 0);
+
+            int size = 0;
+            try {
+                size = is.readInt();
+                for (int i = 0; i < size; i++)
+                    keysList.addElement(UserKey.createFromDataInputStream(is));
+                return true;
+            } catch (Exception e) { }
 //#ifdef PLUGINS
-//#         } else {
-//#             userKeysList = UserKeysList.getDefaultKeysList();
-//#             }
+//#            }
 //#endif
 //#endif
-            
+        return false;
     }
 
-    public boolean commandExecute(int previous_key_code, int key_code) { //return false if key not executed
-        int[] commands_id = {0, 0, 0};
-        int index_key = userKeysList.indexOf(new UserKey(commands_id, previous_key_code, key_code, true, true));
-        if (index_key<0) // Если нет двухкнопочного сочетания, ищем однокнопочное
-            index_key = userKeysList.indexOf(new UserKey(commands_id, previous_key_code, key_code, true, false));
-        if (index_key<0) // А если нет и его, то тикаем
-            return false;
-        commands_id = ((UserKey) userKeysList.elementAt(index_key)).commands_id;
+    public final void loadFromInputStream(String file, boolean fs) {
+        keysList = null;
+        keysList = new Vector();
+
+        Vector[] table = null;
+        if (fs) {
+            FileIO f = FileIO.createConnection(file);
+            try {
+                InputStream in = f.openInputStream();
+                table = new StringLoader().stringLoader(in, 3);
+                f.close();
+            } catch (IOException e) { e.printStackTrace(); }
+        } else table = new StringLoader().stringLoader(file, 3);
+
+        for (int i = 0; i < table[0].size(); i++) {
+            keysList.addElement(UserKey.createFromStrings(
+                    (String) table[0].elementAt(i),
+                    (String) table[1].elementAt(i),
+                    (String) table[2].elementAt(i)));
+        }
+
+        rmsUpdate();
+    }
+
+    private void loadDefault() {
+        loadFromInputStream(UserKey.def_keys, false);
+    }
+
+    public final void writeToFile(String directory) {
+        FileIO file = FileIO.createConnection(directory + "userkeys.txt");
+
+        StringBuffer keyScheme = new StringBuffer("//UserKeys");
+        for (int i = 0; i < keysList.size(); i++) {
+            keyScheme.append("\n")
+                     .append(((UserKey) keysList.elementAt(i)).toLine());
+            }
+
+        file.fileWrite(keyScheme.toString().getBytes());
+    }
+
+    public final void rmsUpdate() {
+        DataOutputStream outputStream = NvStorage.CreateDataOutputStream();
+
+        int size = keysList.size();
+        try {
+            outputStream.writeInt(size);
+        } catch (Exception e) { return; }
+
+        for (int i = 0; i < size; i++) {
+            ((UserKey) keysList.elementAt(i)).saveMyToDataOutputStream(outputStream);
+        }
+
+        NvStorage.writeFileRecord(outputStream, UserKey.storage, 0, true);
+    }
+
+    public boolean keyExecute(int key, boolean key_long) { // return false if key not executed
+        update_current_key(key, key_long);
         boolean executed = false;
-        for (int i = 0; i < 3; i++)
-            executed = executed || commandExecuteByID( commands_id[i], i);
+
+        current_key.two_keys = true;
+        for (int i = 0; i < keysList.size(); i++) {
+            UserKey u = ((UserKey) keysList.elementAt(i));
+            if (current_key.equals(u))
+                executed = commandExecute(u.command_id) || executed;
+        }
+
+        if (executed)
+            return true;
+
+        current_key.two_keys = false;
+        for (int i = 0; i < keysList.size(); i++) {
+            UserKey u = ((UserKey) keysList.elementAt(i));
+            if (current_key.equals(u))
+                executed = commandExecute(u.command_id) || executed;
+        }
+
         return executed;
     }
 
-    public boolean commandExecuteByID(int command_id, int type) {
+    private boolean commandExecute(int command_id) {
         Config cf = Config.getInstance();
         boolean connected = sd.roster.isLoggedIn();
-        VirtualList current = sd.canvas.getList();
+		VirtualList current = sd.canvas.getList();
 
         switch (command_id) {
             case 1: 
@@ -222,9 +304,9 @@ public class UserKeyExec {
 //#endif
                 break;
 //#ifdef USER_KEYS                
-//#             case 10: //key pound
-//#                 new UserKeysList();
-//#                 break;
+            case 10: //key pound
+                new UserKeysList();
+                break;
 //#endif                
             case 11:
 //#ifdef POPUPS

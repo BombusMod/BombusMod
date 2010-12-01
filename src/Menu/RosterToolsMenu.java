@@ -57,8 +57,9 @@ import locale.SR;
 import Colors.ColorConfigForm;
 
 //import ui.reconnectWindow;
+
 //#ifdef USER_KEYS
-//# import ui.keys.UserKeysList;
+//# import ui.keys.UserKeyConfigForm;
 //#endif
 
 //#if SASL_XGOOGLETOKEN
@@ -265,7 +266,7 @@ public class RosterToolsMenu extends Menu {
 //#endif
 //#ifdef USER_KEYS
 //#             case 16:
-//#                 new UserKeysList();
+//#                 new UserKeyConfigForm();
 //#                 return;
 //#endif
 //#if SASL_XGOOGLETOKEN

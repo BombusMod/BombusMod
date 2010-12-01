@@ -138,7 +138,7 @@ public class BombusMod extends MIDlet implements Runnable {
 
         s.setProgress(20);
 
-        boolean selAccount = ((cf.accountIndex < 0) || s.keypressed != 0);
+        boolean selAccount = ((cf.accountIndex < 0) || s.keypressed);
         if (selAccount) {
             s.setProgress("Entering setup", 22);
         }

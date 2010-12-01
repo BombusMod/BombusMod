@@ -94,13 +94,13 @@ public class VirtualCanvas extends Canvas implements CommandListener{
         list.paint(graphics);
     }
     protected void keyPressed(int keyCode) {
-        list.keyPressed(keyCode);           
+        list.keyPressed(keyCode);
     }
     protected final void keyRepeated(int keyCode){
-        list.keyRepeated(keyCode);           
+        list.keyRepeated(keyCode);
     }
     protected void keyReleased(int keyCode) {
-        list.keyReleased(keyCode);           
+        list.keyReleased(keyCode);
     }
 
     protected void pointerPressed(int x, int y) {
@@ -118,8 +118,8 @@ public class VirtualCanvas extends Canvas implements CommandListener{
         TimerTaskRotate.startRotate(-1, list);
 //#endif
         setFullScreenMode(Config.fullscreen);
-    }    
-    
+    }
+
     protected void sizeChanged(int w, int h) {
         if (list != null) {
             list.sizeChanged(w, h);            

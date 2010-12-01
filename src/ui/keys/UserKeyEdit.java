@@ -27,7 +27,6 @@
 package ui.keys;
 import java.util.Enumeration;
 import locale.SR;
-import ui.VirtualCanvas;
 import ui.controls.form.CheckBox;
 import ui.controls.form.DefForm;
 import ui.controls.form.DropChoiceBox;
@@ -43,95 +42,83 @@ class UserKeyEdit extends DefForm {
 //#     public static String plugin = new String("PLUGIN_USER_KEYS");
 //#endif
 
-    private final UserKeysList keysList;
+    private final UserKeysList userKeysList;
 
-    private CheckBox active;
     private CheckBox two_keys_t;
-    private DropChoiceBox[] commands_t = {
-        new DropChoiceBox("Common"),
-        new DropChoiceBox("Roster"),
-        new DropChoiceBox("ContactMessageList")
-    };
     private KeyInput key_t;
+    private DropChoiceBox commands_t = new DropChoiceBox(SR.MS_ACTION);
 
     UserKey u;
     
     boolean newKey;
 
-    public UserKeyEdit(UserKeysList keysList, UserKey u) {
+    public UserKeyEdit(UserKeysList userKeysList, UserKey u) {
         super((u==null)?
 //#ifdef USER_KEYS
-//#             SR.MS_ADD_CUSTOM_KEY:
+            SR.MS_ADD_CUSTOM_KEY:
 //#else
-                "":
+//#                 "":
 //#endif
                 (u.toString()));
         
-	this.keysList = keysList;
+	this.userKeysList = userKeysList;
 	
 	newKey=(u==null);
 	if (newKey) u=new UserKey();
 	this.u=u;
 
 //#ifdef USER_KEYS
-//#         active=new CheckBox(SR.MS_ENABLED, u.active);
-//#         itemsList.addElement(active);
-//# 
-//#         for (int i = 0; i < 3; i++) {
-//#             commands_t[i].add(UserKeyExec.none_command.description);
-//#             for (Enumeration e = UserKeyExec.available_commands[i].elements(); e.hasMoreElements();) {
-//#                 commands_t[i].add(((UserKeyCommand) e.nextElement()).description);
-//#             }
-//#             commands_t[i].setSelectedIndex(UserKeyExec.available_commands[i].indexOf(new UserKeyCommand(u.commands_id[i], null)) + 1);
-//#             itemsList.addElement(commands_t[i]);
-//#         }
-//# 
-//#         two_keys_t = new CheckBox("Two keys", u.two_keys);
-//#         itemsList.addElement(two_keys_t);
-//# 
-//#         itemsList.addElement(new SpacerItem(10));
-//# 
-//#         key_t = new KeyInput(u, "Press it");
-//#         itemsList.addElement(key_t);
+        two_keys_t = new CheckBox("Two keys", u.two_keys);
+        itemsList.addElement(two_keys_t);
+
+        key_t = new KeyInput(u, "Press it");
+        itemsList.addElement(key_t);
+
+        itemsList.addElement(new SpacerItem(10));
+
+        int selected = 0;
+        for (int i = 0; i < UserKeyExec.cmds.length; i++) {
+            if (UserKeyExec.cmds[i] != null)
+                commands_t.add(UserKeyExec.cmds[i]);
+            if (u.command_id == i)
+                selected = commands_t.size()-1;
+        }
+        commands_t.setSelectedIndex(selected);
+        itemsList.addElement(commands_t);
 //#endif
         
         moveCursorTo(getNextSelectableRef(-1));
         
-        parentView = keysList;
+        parentView = userKeysList;
     }
     
     public void cmdOk() {
-        u.active=active.getValue();
-        for (int i = 0; i < 3; i++) {
-            int index = commands_t[i].getSelectedIndex() - 1;
-            if (index >= 0) {
-            u.commands_id[i] = ((UserKeyCommand) UserKeyExec.available_commands[i].elementAt(index)).command_id;
-            } else u.commands_id[i] = UserKeyExec.none_command.command_id;
-        }
-
-        u.previous_key = key_t.previous_key;
-        u.key = key_t.key;
-        u.two_keys = two_keys_t.getValue();
+        u = key_t.getUserKey();
+        u.command_id = UserKeyExec.getCommandID((String) commands_t.items.elementAt(commands_t.getSelectedIndex()));
 
         if (newKey) {
-            keysList.itemsList.addElement(u);
+            userKeysList.itemsList.addElement(u);
         }
 
-        //keysList.rmsUpdate();
-        keysList.commandState();
-        sd.canvas.show(keysList);
+        userKeysList.commandState();
+		sd.canvas.show(userKeysList);
     }
 
     public void eventOk() {
+        if (key_t.selected)
+            return;
+
         super.eventOk();
-        key_t.two_keys = two_keys_t.getValue();
+        key_t.setTwoKeys(two_keys_t.getValue());
     }
 
-    public void keyPressed(int keyCode) {
+    protected boolean key(int keyCode, boolean key_long) {
         if (key_t.selected) {
-            key_t.keyPressed(keyCode);
+            key_t.key(keyCode, key_long);
             redraw();
-            return;
-        } else super.keyPressed(keyCode);
+            return true;
+        }
+        
+        return super.key(keyCode, key_long);
     }
 }

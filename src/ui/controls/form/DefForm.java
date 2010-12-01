@@ -98,14 +98,15 @@ public class DefForm
 
     public final void loadItemsFrom(Vector items) {
         synchronized (itemsList) {
-            if (items != null) {
-                int count = items.size();
-                itemsList.removeAllElements();
-                for (int i = 0; i < count; i++) {
-                    itemsList.addElement(items.elementAt(i));
-                }
-                redraw();
+            if (items == null) {
+                return;
             }
+            int count = items.size();
+            itemsList.removeAllElements();
+            for (int i = 0; i < count; i++) {
+                itemsList.addElement(items.elementAt(i));
+            }
+            redraw();
         }
     }
 

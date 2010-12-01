@@ -301,20 +301,19 @@ public class ServiceDiscovery
         redraw();
         return JabberBlockListener.BLOCK_PROCESSED;
     }
-    
-    public void eventOk(){
+
+    public void eventOk() {
         super.eventOk();
-        Object o= getFocusedObject();
-        if (o!=null) {
-        if (o instanceof Contact) {
-            browse( ((Contact) o).jid.getJid(), null );
-        }
-        if (o instanceof Node) {
-            browse( service, ((Node) o).getNode() );
-        }
+        Object o = getFocusedObject();
+        if (o != null) {
+            if (o instanceof Contact) {
+                browse(((Contact) o).jid.getJid(), null);
+            }
+			if (o instanceof Node) {
+                browse(service, ((Node) o).getNode());
+            }
         }
     }
-	
 
     private void showResults(final Vector items) {
         try {
@@ -397,9 +396,11 @@ public class ServiceDiscovery
         
         switch (keyCode) {
             case Canvas.KEY_NUM4:
-                pageLeft(); break;
+                pageLeft();
+                break;
             case Canvas.KEY_NUM6:
-                pageRight(); break;
+                pageRight();
+                break;
         }
     }
 

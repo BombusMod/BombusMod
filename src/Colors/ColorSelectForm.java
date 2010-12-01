@@ -40,9 +40,12 @@ import ui.controls.form.DefForm;
 //#         exit = true;
 //#         super.destroyView();
 //#     }
+//# 
 //#     public void drawCursor(Graphics g, int width, int height) {
 //#         // prevent text selection
 //#     };
+//# 
+//# /*
 //#     public void keyPressed(int key) {
 //#         switch (key) {
 //#             case Canvas.KEY_NUM2:
@@ -84,7 +87,7 @@ import ui.controls.form.DefForm;
 //#                             cmdOk();
 //#                             break;
 //#                     }
-//#                 } catch (Exception e) {/* IllegalArgumentException @ getGameAction */ }
+//#                 } catch (Exception e) { / * IllegalArgumentException @ getGameAction * / }
 //#                 redraw();
 //#                 sd.canvas.serviceRepaints();
 //#         }
@@ -94,7 +97,8 @@ import ui.controls.form.DefForm;
 //#     protected void keyReleased(int key) {
 //#             selector.dy = 0;
 //#     }
-//#     
+//# */
+//# 
 //#     public void run() {
 //#         while (! exit) {
 //#             try { Thread.sleep(35); } catch (Exception e) { }
@@ -103,6 +107,8 @@ import ui.controls.form.DefForm;
 //#             selector.movePoint();
 //#         }
 //#     }
+//# 
+//# /*
 //#     protected void pointerPressed(int x, int y) {
 //#         int action = -1;
 //#         if ((action = selector.pointerPressed(x, y)) >= 0) {
@@ -124,7 +130,6 @@ import ui.controls.form.DefForm;
 //#     public void pointerReleased(int x, int y) {
 //#         selector.dy = 0;
 //#     }
-//#         
+//# */
 //# }
 //#endif
-

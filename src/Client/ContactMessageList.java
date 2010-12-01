@@ -694,25 +694,22 @@ public class ContactMessageList extends MessageList {
         keyGreen();
     }
     
-    public void keyGreen(){
-        if (!sd.roster.isLoggedIn()) return;       
-        Roster.me = null;
-        Roster.me = new MessageEdit(this, contact, contact.msgSuspended);        
-        contact.msgSuspended=null;
-    }
-    
-    protected void keyClear(){
-        if (!messages.isEmpty())
-            clearReadedMessageList();
-    }
-    
-    public void keyRepeated(int keyCode) {
-        if (keyCode == Canvas.KEY_NUM0) 
-            clearReadedMessageList();
-	else 
-            super.keyRepeated(keyCode);
-    }
+    public void keyGreen() {
+        if (!sd.roster.isLoggedIn()) {
+            return;
+		}
 
+        Roster.me = null;
+        Roster.me = new MessageEdit(this, contact, contact.msgSuspended);
+        contact.msgSuspended = null;
+    }
+    
+    protected void keyClear() {
+        if (!messages.isEmpty()) {
+            clearReadedMessageList();
+		}
+    }
+    
 //#ifdef JUICK    
 //#     public boolean juickPoundFork() { // Fork — это развилка.
 //#         String body = getBodyFromCurrentMsg();
@@ -735,28 +732,38 @@ public class ContactMessageList extends MessageList {
 //#     }
 //#endif
 
-    public void keyPressed(int keyCode) {
-        //kHold=0;
-        if (keyCode==Canvas.KEY_POUND) {
-//#ifndef WMUC
-            if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT) {
-                Reply();
-                return;
+    protected boolean key(int keyCode, boolean key_long) {
+        if (key_long) {
+            switch (keyCode) {
+                case Canvas.KEY_NUM0:
+                    clearReadedMessageList();
+                    return true;
             }
+        } else {
+            switch (keyCode) {
+                case Canvas.KEY_POUND:
+//#ifndef WMUC
+                    if (contact instanceof MucContact && contact.origin == Contact.ORIGIN_GROUPCHAT) {
+                        Reply();
+                        return true;
+                    }
 //#endif
 //#ifdef JUICK
 //#ifdef PLUGINS
-//#         if (sd.Juick)
+//#                 if (sd.Juick)
 //#endif
-//#             if (isJuickContact(contact) || isJuBoContact(contact)) {
-//#                 if (juickPoundFork())
-//#                     return;
-//#             }
+//#                         if (isJuickContact(contact) || isJuBoContact(contact)) {
+//#                             if (juickPoundFork()) {
+//#                                 return true;
+//#                             }
+//#                         }
 //#endif
-            keyGreen();
-            return;
+                    keyGreen();
+                    return true;
+            }
         }
-        super.keyPressed(keyCode);
+
+        return super.key(keyCode, key_long);
     }
 
     public void userKeyPressed(int keyCode) {

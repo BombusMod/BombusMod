@@ -43,11 +43,12 @@ public class DeTranslit {
     
     private static DeTranslit instance;
     
-    public static DeTranslit getInstance(){
-	if (instance==null) {
-	    instance=new DeTranslit();	    
-	}
-	return instance;
+    public static DeTranslit getInstance() {
+        if (instance == null) {
+            instance = new DeTranslit();	    
+        }
+
+	    return instance;
     }
     
     public DeTranslit() {

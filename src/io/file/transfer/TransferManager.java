@@ -118,19 +118,24 @@ public class TransferManager
         if (c==cmdInfo) cmdInfo();
         if (c==cmdSettings) new TransferConfigForm(this);       
     }
+
     public void cmdOk() {
         TransferDispatcher.getInstance().eventNotify();
         destroyView();
     }
-    
-    protected void keyPressed(int keyCode) { // overriding this method to avoid autorepeat
-        //kHold=0;
-        if (keyCode==Canvas.KEY_POUND) {
-            cmdInfo();
-            return;
+
+    // overriding this method to avoid autorepeat
+    protected boolean key(int keyCode,  boolean key_long) {
+        if (!key_long) {
+            switch (keyCode) {
+                case Canvas.KEY_POUND:
+                    cmdInfo();
+                    return true;
+            }
         }
-        super.keyPressed(keyCode);
-    }    
+    
+        return super.key(keyCode, key_long);
+    }
 
     private void cmdInfo() {
         if (getItemCount()>0) {

@@ -83,42 +83,45 @@ public class ActiveContacts
         //c.msgSuspended=null; // clear suspended message for selected contact
     }
 
-    public void keyPressed(int keyCode) {
-        kHold = 0;
-//#ifdef POPUPS
-        PopUp.getInstance().next();
-//#endif
-        if (keyCode == Canvas.KEY_NUM3) {
-            destroyView();
-        } else if (keyCode == Canvas.KEY_NUM0) {
-            if (getItemCount() < 1) {
-                return;
+    protected boolean key(int keyCode, boolean key_long) {
+        if (!key_long) {
+            switch (keyCode) {
+                case Canvas.KEY_NUM3:
+                    destroyView();
+                    return true;
+                case Canvas.KEY_NUM0:
+                    focusToNextUnreaded();
+                    return true;
             }
+        }
 
-            Contact c = (Contact) getFocusedObject();
+        return super.key(keyCode, key_long);
+    }
 
-            Enumeration i = itemsList.elements();
-
-            int pass = 0; //
-            while (pass < 2) {
-                if (!i.hasMoreElements()) {
-                    i = itemsList.elements();
-                }
-                Contact p = (Contact) i.nextElement();
-                if (pass == 1) {
-                    if (p.getNewMsgsCount() > 0) {
-                        focusToContact(p);
-                        setRotator();
-                        break;
-                    }
-                }
-                if (p == c) {
-                    pass++; // полный круг пройден
-                }
-            }
+    private void focusToNextUnreaded() {
+        if (getItemCount() < 1) {
             return;
-        } else {
-            super.keyPressed(keyCode);
+        }
+
+        Contact c = (Contact) getFocusedObject();
+        Enumeration i = itemsList.elements();
+
+        int pass = 0; //
+        while (pass < 2) {
+            if (!i.hasMoreElements()) {
+                i = itemsList.elements();
+            }
+            Contact p = (Contact) i.nextElement();
+            if (pass == 1) {
+                if (p.getNewMsgsCount() > 0) {
+                    focusToContact(p);
+                    setRotator();
+                    break;
+                }
+            }
+            if (p == c) {
+                pass++; // полный круг пройден
+            }
         }
     }
 

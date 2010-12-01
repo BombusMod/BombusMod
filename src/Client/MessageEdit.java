@@ -35,7 +35,6 @@ import javax.microedition.lcdui.Displayable;
 //# import ui.VirtualCanvas;
 //#endif
 //#ifdef MIDP_TICKER
-//# import javax.microedition.lcdui.TextField;
 //# import javax.microedition.lcdui.Ticker;
 //#endif
 

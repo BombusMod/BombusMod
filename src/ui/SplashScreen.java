@@ -64,7 +64,6 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
     private ComplexString status;
     
     private char exitKey;
-    private int kHold;
     
     private TimerTaskClock tc;
 
@@ -72,7 +71,7 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
     
     private static SplashScreen instance;
 
-    public int keypressed=0;
+    public boolean keypressed = false;
 
     private Font clockFont=FontCache.getFont(true, FontCache.bigSize);
     
@@ -93,13 +92,13 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
     }
     
     public SplashScreen(ComplexString status, char exitKey) {
-        this.status=status;
-        this.exitKey=exitKey;
-        kHold=exitKey;
+        this.status = status;
+        this.exitKey = exitKey;
         
-        status.setElementAt(new Integer(RosterIcons.ICON_KEYBLOCK_INDEX),6);
+        status.setElementAt(new Integer(RosterIcons.ICON_KEYBLOCK_INDEX), 6);
         show();
     }
+
     public void show() {
         repaint();
         //serviceRepaints();
@@ -224,10 +223,12 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
     }
 
     public void keyPressed(int keyCode) {
-        keypressed=keyCode;
-        if (pos>=20)
+        keypressed = true;
+
+        if (pos >= 20) {
             close();
-        kHold=0;
+		}
+
 //#ifdef LIGHT_CONFIG       
 //#ifdef PLUGINS                
 //#         if (StaticData.getInstance().lightConfig)
@@ -237,9 +238,9 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
     }
 
     protected void keyRepeated(int keyCode) { 
-        if (kHold==0)
-            if (keyCode==exitKey) 
-                destroyView(); 
+        if (keyCode == exitKey) {
+            destroyView();
+		}
     }
 
     private void destroyView(){
