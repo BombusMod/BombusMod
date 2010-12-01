@@ -50,8 +50,6 @@ public class ColorSelector implements VirtualElement
     String val;
 
     public int dy;
-    int timer;
-    boolean exit;
 
     private int value;
     int paramName;
@@ -84,8 +82,6 @@ public class ColorSelector implements VirtualElement
         //String s = cl.ColorToString(red, green, blue);
 
         cpos = 0;
-
-        exit = false;                
     }
 
     public void drawItem(Graphics g, int ofs, boolean sel) {
@@ -205,7 +201,7 @@ public class ColorSelector implements VirtualElement
         
 
     public void setValue(int vall) {
-        this.value=vall;
+        this.value = vall;
         ColorTheme.setColor(paramName, value);
         list.setColor(paramName, value);
 //#ifdef COLOR_TUNE
@@ -214,36 +210,45 @@ public class ColorSelector implements VirtualElement
     }
 
     public void movePoint() {
-        if (dy == 0) return;
+        if (dy == 0)
+            return;
         switch (cpos) {
             case 0:
-                red=dy+red;
-                if (red>255) red=0;
-                if (red<0) red=255;
+                red = dy + red;
+                if (red > 255)
+                    red = 0;
+                if (red < 0)
+                    red = 255;
                 break;
             case 1:
-                green=dy+green;
-                if (green>255) green=0;
-                if (green<0) green=255;
+                green = dy + green;
+                if (green > 255)
+                    green = 0;
+                if (green < 0)
+                    green = 255;
                 break;
             case 2:
-                blue=dy+blue;
-                if (blue>255) blue=0;
-                if (blue<0) blue=255;
+                blue = dy + blue;
+                if (blue > 255)
+                    blue = 0;
+                if (blue < 0)
+                    blue = 255;
                 break;
-        }        
-    }    
+        }
+    }
 
-    public void eventOk () {
+    public void movePointAt(int new_dy) {
+        dy = new_dy;
+        movePoint();
+        dy = 0;
+    }
+
+    public void eventOk() {
 //#if COLOR_TUNE
 //#         String cval = ColorTheme.ColorToString(red, green, blue);
-//# 
-//#         int finalColor=ColorTheme.getColorInt(cval);
-//#         //System.out.println(val);
-//# 
+//#         int finalColor = ColorTheme.getColorInt(cval);
 //#         setValue(finalColor);
 //#endif
-        exit = true;
     }    
 
     public int getVHeight() {

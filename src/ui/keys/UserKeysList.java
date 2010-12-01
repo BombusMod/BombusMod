@@ -94,7 +94,7 @@ public class UserKeysList extends DefForm {
     
     public void cmdOk() {
        UserKeyExec uexec = UserKeyExec.getInstance();
-       copyKeysFrom(uexec.keysList);
+       uexec.keysList = itemsList;
        uexec.rmsUpdate();
        destroyView();
     }

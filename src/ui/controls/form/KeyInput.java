@@ -70,27 +70,12 @@ public class KeyInput extends IconTextElement {
 
     public void key(int key_code, boolean key_long) {
         boolean two_keys = u.two_keys;
-        u = new UserKey(UserKeyExec.getInstance().current_key);
+        u.copyFrom(UserKeyExec.getInstance().current_key);
         u.two_keys = two_keys;
         
         if ((!u.two_keys) || (!expected_first_key))
             selected = false;
         expected_first_key = !expected_first_key;
-        /*
-        if (u.two_keys) {
-            if (expected_first_key) {
-                u.previous_key = key_code;
-                expected_first_key = false;
-            } else {
-                u.key = key_code;
-                expected_first_key = true;
-                selected = false;
-            }
-        } else {
-            u.key = key_code;
-            selected = false;
-        }
-         */
     }
 
     public void drawItem(Graphics g, int ofs, boolean sel) {

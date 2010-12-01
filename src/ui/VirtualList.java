@@ -802,7 +802,7 @@ public abstract class VirtualList {
 //#endif
 
         if ((key_long_executed < 1) && UserKeyExec.getInstance().isCurrentKey(keyCode, false)) {
-            key_long_executed = sendKeyAction(keyCode, true) ? (byte) 2 : (byte) 1;
+            key_long_executed = (byte) (sendKeyAction(keyCode, true) ? 2 : 1);
         }
 
         if (key_long_executed == 1) {

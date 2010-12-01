@@ -61,6 +61,10 @@ public class UserKey extends IconTextElement {
 
     public UserKey(UserKey u) {
         this();
+        copyFrom(u);
+    }
+
+	public void copyFrom(UserKey u) {
         command_id = u.command_id;
         previous_key_long = u.previous_key_long;
         key_long = u.key_long;

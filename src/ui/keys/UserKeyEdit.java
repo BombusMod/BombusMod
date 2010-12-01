@@ -63,9 +63,11 @@ class UserKeyEdit extends DefForm {
         
 	this.userKeysList = userKeysList;
 	
-	newKey=(u==null);
-	if (newKey) u=new UserKey();
-	this.u=u;
+	newKey = (u == null);
+	if (newKey) {
+        u = new UserKey();
+	}
+	this.u = u;
 
 //#ifdef USER_KEYS
         two_keys_t = new CheckBox("Two keys", u.two_keys);
@@ -93,7 +95,6 @@ class UserKeyEdit extends DefForm {
     }
     
     public void cmdOk() {
-        u = key_t.getUserKey();
         u.command_id = UserKeyExec.getCommandID((String) commands_t.items.elementAt(commands_t.getSelectedIndex()));
 
         if (newKey) {
