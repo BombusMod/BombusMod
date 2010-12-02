@@ -1225,8 +1225,8 @@ public class Roster
         Message message=new Message(c.jid.getJid());
         // FIXME: no need to send <received /> to forwarded messages
         //xep-0184
-        message.setAttribute("id", id);
-        message.addChildNs("received", "urn:xmpp:receipts");
+        message.setAttribute("id", id); // FIXME: should be new id by XEP-0184 version 1.1
+        message.addChildNs("received", "urn:xmpp:receipts").setAttribute("id", id);
         theStream.send( message );
     }    
 
@@ -1656,8 +1656,10 @@ public class Roster
                     if (message.findNamespace("request", "urn:xmpp:receipts")!=null) {
                         sendDeliveryMessage(c, data.getAttribute("id"));
                     }
-                    if (message.findNamespace("received", "urn:xmpp:receipts")!=null) {
-                         c.markDelivered(data.getAttribute("id"));
+                    JabberDataBlock received = message.findNamespace("received", "urn:xmpp:receipts");
+                    if (received!=null) {
+                         c.markDelivered(data.getAttribute("id")); //FIXME: compatibilty with XEP-0184 version 1.0
+                         c.markDelivered(received.getAttribute("id")); // XEP-0184 Version 1.1
                     }
                     if (message.findNamespace("active", "http://jabber.org/protocol/chatstates")!=null) {
                         c.acceptComposing=true;
@@ -2576,7 +2578,7 @@ public class Roster
 //#             if (!autoAway)
 //#                 autostatus.setTimeEvent(cf.autoAwayDelay* 60*1000);
 //#     }
-//#
+//# 
 //#     private void userActivity() {
 //#         if (autostatus==null) return;
 //# 
