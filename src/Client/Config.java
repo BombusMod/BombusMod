@@ -160,6 +160,7 @@ public class Config {
     public boolean collapsedGroups = true;
     public int messageLimit = 512;
     public int widthScroll2 = 10;
+    public int minItemHeight = 0;
     public boolean widthSystemgc = false;
     public boolean advTouch = true;
     public boolean autoClean = false;
@@ -522,7 +523,9 @@ public class Config {
             useQuickPrivacy = inputStream.readBoolean();            
 //#else
 //#         inputStream.readBoolean();
-//#endif             
+//#endif
+            minItemHeight = inputStream.readInt();
+
             inputStream.close();
             inputStream = null;
         } catch (IOException e) { // Левые Exception'ы должны обрабатываться не здесь (поэтому ловим только IOException).
@@ -809,7 +812,7 @@ public class Config {
 //#else
 //#         outputStream.writeBoolean(false);
 //#endif             
-            
+        outputStream.writeInt(minItemHeight);
 
         } catch (Exception e) {
         }

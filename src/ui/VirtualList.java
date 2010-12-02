@@ -802,11 +802,11 @@ public abstract class VirtualList {
 //#endif
 
         if ((key_long_executed < 1) && UserKeyExec.getInstance().isCurrentKey(keyCode, false)) {
-            key_long_executed = (byte) (sendKeyAction(keyCode, true) ? 2 : 1);
+            key_long_executed = (byte) (sendKeyAction(keyCode, true, false) ? 2 : 1);
         }
 
         if (key_long_executed == 1) {
-            sendKeyAction(keyCode, false);
+            sendKeyAction(keyCode, false, true);
         }
 
 //#ifdef LIGHT_CONFIG      
@@ -829,7 +829,7 @@ public abstract class VirtualList {
 //#endif
 
         key_long_executed = 0;
-        sendKeyAction(keyCode, false);
+        sendKeyAction(keyCode, false, true);
 
 //#ifdef LIGHT_CONFIG      
 //#ifdef PLUGINS                
@@ -839,11 +839,11 @@ public abstract class VirtualList {
 //#endif
     }
 
-    private boolean sendKeyAction(int keyCode, boolean key_long) {
+    private boolean sendKeyAction(int keyCode, boolean key_long, boolean try_to_skip_popup) {
         int key = getKeyCodeForSendEvent(keyCode);
 
 //#ifdef POPUPS
-        if (PopUp.getInstance().handleEvent(key)) { // try to skip PopUp
+        if (try_to_skip_popup && PopUp.getInstance().handleEvent(key)) {
             redraw();
             return true;
         }

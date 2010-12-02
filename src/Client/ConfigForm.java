@@ -83,6 +83,7 @@ public class ConfigForm
 //#endif
     private NumberInput messageLimit;
     private NumberInput widthScroll2;
+    private NumberInput minItemHeight;
     
     private CheckBox autoLogin;
     private CheckBox autoJoinConferences;
@@ -211,6 +212,9 @@ public class ConfigForm
         itemsList.addElement(new SpacerItem(10));
         messageLimit=new NumberInput(sd.canvas,  SR.MS_MESSAGE_COLLAPSE_LIMIT, Integer.toString(cf.messageLimit), 200, 1000);
         itemsList.addElement(messageLimit);
+
+        minItemHeight = new NumberInput(sd.canvas, "Min item height", Integer.toString(cf.minItemHeight), 0, 100);
+        itemsList.addElement(minItemHeight);
 
         if (sd.canvas.hasPointerEvents()) {
             widthScroll2=new NumberInput(sd.canvas,  SR.MS_MESSAGE_WIDTH_SCROLL_2, Integer.toString(cf.widthScroll2), 1, 50);
@@ -460,6 +464,7 @@ public class ConfigForm
         cf.messageLimit=Integer.parseInt(messageLimit.getValue());
         if (SplashScreen.getInstance().hasPointerEvents())
             cf.widthScroll2=Integer.parseInt(widthScroll2.getValue());
+        cf.minItemHeight = Integer.parseInt(minItemHeight.getValue());
 
 //#if LOGROTATE
 //#             cf.msglistLimit=Integer.parseInt(messageCountLimit.getValue());

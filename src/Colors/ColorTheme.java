@@ -54,16 +54,17 @@ green 0x008000
 blue 0x0000ff
      */
     
-    public static ColorTheme getInstance(){
-	if (instance==null) {
-	    instance=new ColorTheme();
+    public static ColorTheme getInstance() {
+        if (instance==null) {
+            instance = new ColorTheme();
             init();
-	    loadFromStorage();
-	}
-	return instance;
+            loadFromStorage();
+        }
+        return instance;
     }
+
     public static Vector colorsContainer;
-    
+
     public static void init() {
         colorsContainer=null;
         colorsContainer=new Vector();
@@ -151,13 +152,14 @@ blue 0x0000ff
         return 0;
     }
     
-    public static void invertSkin(){
+    public static void invertSkin() {
         for (Enumeration r=colorsContainer.elements(); r.hasMoreElements();) {
             ColorItem c=(ColorItem)r.nextElement();
             if (c.color!=0x010101)
                 c.color=0xFFFFFF-c.color;
         }
         saveToStorage();
+        StaticData.getInstance().canvas.repaint();
     }
     
 //#if NICK_COLORS

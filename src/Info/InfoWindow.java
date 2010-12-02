@@ -291,6 +291,9 @@ public class InfoWindow
 //#ifdef NICK_COLORS
         abilitiesList.addElement("NICK_COLORS");
 //#endif
+//#ifdef NOMMEDIA
+//#         abilitiesList.addElement("NOMMEDIA");
+//#endif
 //#ifdef NON_SASL_AUTH
 //#         abilitiesList.addElement("NON_SASL_AUTH");
 //#endif

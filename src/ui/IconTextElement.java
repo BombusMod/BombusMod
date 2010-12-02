@@ -29,8 +29,11 @@ package ui;
 import Fonts.FontCache;
 import javax.microedition.lcdui.*;
 import Colors.ColorTheme;
+import Client.Config;
 
 abstract public class IconTextElement implements VirtualElement {
+    Config cf = Config.getInstance();
+
     int itemHeight;
     int imageYOfs;
     int fontYOfs;
@@ -87,6 +90,8 @@ abstract public class IconTextElement implements VirtualElement {
     
     public int getVHeight() {
         itemHeight = (ilImageSize > getFont().getHeight()) ? ilImageSize : getFont().getHeight();
+        if (itemHeight < cf.minItemHeight)
+            itemHeight = cf.minItemHeight;
         fontYOfs = (itemHeight - getFont().getHeight()) >> 1;
         imageYOfs = (itemHeight - ilImageSize) >> 1;
         return itemHeight;

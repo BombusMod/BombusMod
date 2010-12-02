@@ -162,15 +162,16 @@ public class UserKeyExec {
             int size = 0;
             try {
                 size = is.readInt();
-                for (int i = 0; i < size; i++)
-                    keysList.addElement(UserKey.createFromDataInputStream(is));
-                return true;
-            } catch (Exception e) { }
+                for (int i = 0; i < size; i++) {
+                    UserKey u = UserKey.createFromDataInputStream(is);
+                    keysList.addElement(u);
+                }
+            } catch (Exception e) { return false; }
 //#ifdef PLUGINS
 //#            }
 //#endif
 //#endif
-        return false;
+        return true;
     }
 
     public final void loadFromInputStream(String file, boolean fs) {

@@ -39,7 +39,7 @@ import javax.microedition.lcdui.Canvas;
  * @author ad
  */
 public class UserKey extends IconTextElement {
-    public final static String storage = "keys_db";
+    public final static String storage = "keys_db_r926";
     public final static String def_keys = "/userkeys/bombusmod.txt";
     
     private final static int COUNT_KEY_NAMES = 27;
