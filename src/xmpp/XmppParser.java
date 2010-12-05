@@ -14,6 +14,7 @@ import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
 import com.alsutton.jabber.datablocks.Message;
 import com.alsutton.jabber.datablocks.Presence;
+import java.util.Enumeration;
 import java.util.Vector;
 import xml.XMLEventListener;
 import xml.XMLException;
@@ -37,18 +38,35 @@ public abstract class XmppParser implements XMLEventListener {
      */
     
     public void tagEnd(String name) throws XMLException {
-        
-        Vector childs=currentBlock.getChildBlocks();
-        if (childs!=null) childs.trimToSize();
+
+        Vector childs = currentBlock.getChildBlocks();
+        if (childs != null) {
+            childs.trimToSize();
+        }
 
         JabberDataBlock parent = currentBlock.getParent();
-        if (parent == null) {
-            
-            dispatchXmppStanza(currentBlock);
-            //dispatcher.broadcastJabberDataBlock( currentBlock );
-            //System.out.println(currentBlock.toString());
-        }  else
-            parent.addChild( currentBlock );
+
+//#ifdef HTTPBIND
+//#         if (currentBlock.isJabberNameSpace("http://jabber.org/protocol/httpbind")) {
+//#             Vector blocks = currentBlock.getChildBlocks();
+//#             if (blocks == null) {
+//#                 return;
+//#             }
+//#             for (Enumeration e = blocks.elements(); e.hasMoreElements();) {
+//#                 dispatchXmppStanza((JabberDataBlock) e.nextElement());
+//#             }
+//#         } else {
+//#endif
+            if (parent == null) {
+                dispatchXmppStanza(currentBlock);
+            } else {
+                parent.addChild(currentBlock);
+            }
+//#ifdef HTTPBIND
+//#         }
+//#endif
+        //dispatcher.broadcastJabberDataBlock( currentBlock );
+        //System.out.println(currentBlock.toString());
         currentBlock = parent;
     }
 
@@ -64,21 +82,8 @@ public abstract class XmppParser implements XMLEventListener {
     public boolean tagStart(String name, Vector attributes) {
         StaticData.getInstance().updateTrafficIn();
         
-        if (currentBlock != null){
-            
-            currentBlock = new JabberDataBlock(name, currentBlock, attributes);
-            // TODO: remove stub
-            // M55 STUB
-//#if !(MIDP1)
-            // photo reading
-            if ( name.equals("BINVAL") ){
-                return true;
-            }            
-            //#endif
-                        
-        //                if (rosterNotify)                if (name.equals("item"))                    dispatcher.rosterNotify();
-            
-        } else  if (name.equals( "message" ) )
+
+        if (name.equals( "message" ) )
             currentBlock = new Message(currentBlock, attributes);
         else    if (name.equals("iq") ) 
             currentBlock = new Iq(currentBlock, attributes); 
@@ -86,8 +91,11 @@ public abstract class XmppParser implements XMLEventListener {
             currentBlock = new Presence(currentBlock, attributes); 
         else    if (name.equals("xml") )
             return false; 
-        else    currentBlock = new JabberDataBlock(name, null, attributes);
+        else    currentBlock = new JabberDataBlock(name, currentBlock, attributes);
         
+        if ( name.equals("BINVAL") ){
+                return true;
+            }
         return false;
     }
 

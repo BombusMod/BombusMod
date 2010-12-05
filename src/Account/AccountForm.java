@@ -63,11 +63,7 @@ public class AccountForm
 //#ifndef WMUC    
     private CheckBox confOnlybox;
 //#endif    
-//#if HTTPCONNECT
-//#       private CheckBox proxybox;
-//#elif HTTPPOLL        
-//#       private CheckBox pollingbox;
-//#endif
+
     private LinkString linkRegister;
     
     private CheckBox dnsResolver;
@@ -75,11 +71,12 @@ public class AccountForm
     private NumberInput keepAlive;
     private DropChoiceBox keepAliveType;
     
-//#if HTTPPOLL || HTTPCONNECT  
+//#if HTTPPOLL || HTTPCONNECT || HTTPBIND
 //#     private TextInput proxyHost;
 //#     private TextInput proxyPort;
 //#     private TextInput proxyUser;
 //#     private TextInput proxyPass;
+//#     private CheckBox proxybox;
 //#endif
 
     Account account;
@@ -144,7 +141,7 @@ public class AccountForm
         if (!newaccount)
             itemsList.addElement(linkRegister);
         
-	ipbox = new TextInput(sd.canvas, SR.MS_HOST_IP, account.getHostAddr(), null, TextField.ANY);//, 64, TextField.ANY
+        ipbox = new TextInput(sd.canvas, SR.MS_HOST_IP, account.getHostAddr(), null, TextField.ANY);//, 64, TextField.ANY
         portbox = new NumberInput(sd.canvas,  SR.MS_PORT, Integer.toString(account.getPort()), 0, 65535);//, 0, 65535
         
                 
@@ -158,7 +155,9 @@ public class AccountForm
 //#if HTTPCONNECT
 //#        proxybox = new CheckBox(/*SR.MS_PROXY_ENABLE*/"Proxy connect", account.isEnableProxy());
 //#elif HTTPPOLL        
-//#        pollingbox = new CheckBox("HTTP Polling", account.isEnableProxy());
+//#        proxybox = new CheckBox("HTTP Polling", account.isEnableProxy());
+//#elif HTTPBIND
+//#         proxybox = new CheckBox("XMPP BOSH", account.isEnableProxy());
 //#endif
         
         itemsList.addElement(dnsResolver);
@@ -168,12 +167,12 @@ public class AccountForm
 //#ifndef WMUC        
         itemsList.addElement(confOnlybox);
 //#endif        
-//#if HTTPCONNECT
-//#        itemsList.addElement(proxybox);
-//#elif HTTPPOLL        
-//#        itemsList.addElement(pollingbox);
+//#if HTTPCONNECT || HTTPBIND || HTTPPOLL
+//#         itemsList.addElement(proxybox);
 //#endif
 
+//#ifndef HTTPBIND
+        // TODO: make available when "XMPP BOSH" is unchecked
         keepAliveType=new DropChoiceBox(SR.MS_KEEPALIVE);
         keepAliveType.add("by socket");
         keepAliveType.add("1 byte");
@@ -182,7 +181,7 @@ public class AccountForm
         keepAliveType.setSelectedIndex(account.getKeepAliveType());
         keepAlive = new NumberInput(sd.canvas,  SR.MS_KEEPALIVE_PERIOD, Integer.toString(account.getKeepAlivePeriod()), 10, 2048);//10, 2096
         itemsList.addElement(keepAliveType);
-        
+//#endif
         resourcebox = new TextInput(sd.canvas, SR.MS_RESOURCE, account.getResource(), null, TextField.ANY);//64, TextField.ANY
         
 //#if HTTPCONNECT
@@ -191,13 +190,16 @@ public class AccountForm
 //#         proxyUser = new TextInput(sd.canvas,/*SR.MS_PROXY_HOST*/"Proxy user", account.getProxyUser(), null, TextField.URL);//32, TextField.URL
 //#         proxyPass = new TextInput(sd.canvas,/*SR.MS_PROXY_HOST*/"Proxy pass", account.getProxyPass(), null, TextField.URL);//32, TextField.URL
 //#elif HTTPPOLL        
-//# 	proxyHost = new TextInput("HTTP Polling URL (http://server.tld:port)", account.getProxyHostAddr(), null, TextField.URL);//32, TextField.URL
+//# 	proxyHost = new TextInput(sd.canvas, "HTTP Polling URL (http://server.tld:port)", account.getProxyHostAddr(), null, TextField.URL);//32, TextField.URL
+//#elif HTTPBIND
+//#         proxyHost = new TextInput(sd.canvas, "BOSH CM (http://server.tld:port)", account.getProxyHostAddr(), null, TextField.URL);//32, TextField.URL
 //#endif
         
         itemsList.addElement(ipbox);
         itemsList.addElement(portbox);
-        
+//#ifndef HTTPBIND
         itemsList.addElement(keepAlive);
+//#endif
         itemsList.addElement(resourcebox);
         
 //#if HTTPCONNECT
@@ -205,8 +207,8 @@ public class AccountForm
 //# 	itemsList.addElement(proxyPort);
 //#         itemsList.addElement(proxyUser);
 //#         itemsList.addElement(proxyPass);
-//#elif HTTPPOLL        
-//# 	itemsList.addElement(proxyHost);
+//#elif HTTPPOLL || HTTPBIND
+//#         itemsList.addElement(proxyHost);
 //#endif
         itemsList.addElement(linkSave);
     }
@@ -240,24 +242,23 @@ public class AccountForm
 //#ifndef WMUC            
             account.setMucOnly(confOnlybox.getValue());
 //#endif            
-//#if HTTPCONNECT
+//#if HTTPCONNECT || HTTPPOLL || HTTPBIND
 //#             account.setEnableProxy(proxybox.getValue());
-//#elif HTTPPOLL
-//#             account.setEnableProxy(pollingbox.getValue());
 //#endif
             
-//#if HTTPPOLL || HTTPCONNECT
+//#if HTTPPOLL || HTTPCONNECT || HTTPBIND
 //#             account.setProxyHostAddr(proxyHost.getValue());
 //#if HTTPCONNECT
 //#             account.setProxyPort(Integer.parseInt(proxyPort.getValue()));
-//# 
+//#
 //#             account.setProxyUser(proxyUser.getValue());
 //#             account.setProxyPass(proxyPass.getValue());
 //#endif
 //#endif
-        
+//#ifndef HTTPBIND
             account.setKeepAlivePeriod(Integer.parseInt(keepAlive.getValue()));
             account.setKeepAliveType(keepAliveType.getValue());
+//#endif
         }
 
         if (newaccount) 

@@ -32,6 +32,7 @@ import Client.StaticData;
 //# import Console.StanzasList;
 //#endif
 import com.alsutton.jabber.datablocks.Iq;
+import io.HttpBindConnection;
 import io.Utf8IOStream;
 import java.io.*;
 import java.util.*;
@@ -65,6 +66,8 @@ public class JabberStream extends XmppParser implements Runnable {
     private String sessionId;
 
     public Vector outgoingQueries = new Vector();
+
+    private StreamConnection connection;
     
     /**
      * Constructor. Connects to the server and sends the jabber welcome message.
@@ -74,15 +77,16 @@ public class JabberStream extends XmppParser implements Runnable {
         this.server=server;
 
         boolean waiting=Config.getInstance().istreamWaiting;
-        
-        StreamConnection connection;
+                
         if (proxy == null) {
             connection = (StreamConnection) Connector.open(hostAddr);
         } else {
 //#if HTTPCONNECT
 //#             connection = io.HttpProxyConnection.open(hostAddr, proxy, StaticData.getInstance().account.getProxyUser(), StaticData.getInstance().account.getProxyPass());
 //#elif HTTPPOLL
-//#             connection = new io.HttpPollingConnection(hostAddr, proxy);
+//#             connection = new io.HttpPollConnection(hostAddr, proxy);
+//#elif HTTPBIND
+//#             connection = new io.HttpBindConnection(hostAddr, proxy);
 //#else            
             throw new IllegalArgumentException ("no proxy supported");
 //#endif            
@@ -93,14 +97,38 @@ public class JabberStream extends XmppParser implements Runnable {
     }
 
     public void initiateStream() throws IOException {
+//#ifdef HTTPBIND
+//#         if (connection instanceof HttpBindConnection) {
+//#             JabberDataBlock body = new JabberDataBlock("body", null, null);
+//#             body.setAttribute("to", server);
+//#             body.setNameSpace("http://jabber.org/protocol/httpbind");
+//#             body.setAttribute("xmpp:version", "1.0");
+//#             body.setAttribute("xmlns:xmpp", "urn:xmpp:xbosh");
+//#             body.setAttribute("rid", ((HttpBindConnection)connection).nextRid());
+//#             if (((HttpBindConnection)connection).sid == null) // first stream
+//#             {
+//#                 //body.setAttribute("from", Account.);
+//#                 body.setAttribute("wait", "200");
+//#                 body.setAttribute("hold", "1");                
+//#             }
+//#             else // stream restarts
+//#             {
+//#                 body.setAttribute("sid", ((HttpBindConnection)connection).sid);
+//#                 body.setAttribute("xmpp:restart", "true");
+//#             }
+//#             send(body);            
+//#         } else {
+//#endif
         StringBuffer header=new StringBuffer("<stream:stream to='" ).append( server ).append( "' xmlns='jabber:client' xmlns:stream='http://etherx.jabber.org/streams'" );
         header.append(" version='1.0'");
         if (SR.MS_XMLLANG!=null) {
             header.append(" xml:lang='").append(SR.MS_XMLLANG).append("'");
         }
         header.append( '>' );
-        send(header.toString());
-        header=null;
+        send(header.toString());        
+//#ifdef HTTPBIND
+//#         }
+//#endif
     }
     
      public boolean tagStart(String name, Vector attributes) {
@@ -112,6 +140,22 @@ public class JabberStream extends XmppParser implements Runnable {
             dispatcher.broadcastBeginConversation();
             return false;
         }
+//#ifdef HTTPBIND
+//#         if (connection instanceof HttpBindConnection) {
+//#              if (name.equals("body")) {
+//#                  if (((HttpBindConnection) connection).sid == null) {
+//#                      xmppV1 = true;
+//#                      ((HttpBindConnection) connection).sid = XMLParser.extractAttribute("sid", attributes);
+//#                      dispatcher.broadcastBeginConversation();
+//#                  }
+//#                  String wait = XMLParser.extractAttribute("wait", attributes);
+//#                  if (wait != null) { // on restart stream
+//#                      ((HttpBindConnection) connection).waitPeriod = Integer.parseInt(wait);
+//#                      dispatcher.broadcastBeginConversation();
+//#                  }
+//#              }
+//#          }
+//#endif
         
         return super.tagStart(name, attributes);
     }
@@ -149,15 +193,26 @@ public class JabberStream extends XmppParser implements Runnable {
     }
 
     protected void dispatchXmppStanza(JabberDataBlock currentBlock) {
-        dispatcher.broadcastJabberDataBlock( currentBlock );
-    }
+                    dispatcher.broadcastJabberDataBlock( currentBlock );
+                }
     
     public void startKeepAliveTask(){
         Account account=StaticData.getInstance().account;
-        int keepAliveType=account.getKeepAliveType();
-        if (keepAliveType==0) return;
-        int keepAlivePeriod=account.getKeepAlivePeriod();
-
+        int keepAliveType = account.getKeepAliveType();
+        if (keepAliveType == 0)
+            return;
+        int keepAlivePeriod;
+//#ifdef HTTPBIND
+//#         if (connection instanceof HttpBindConnection) {
+//#             keepAliveType = 4;
+//#             keepAlivePeriod = 5; // ((HttpBindConnection)connection).waitPeriod * 1000 >> 1;
+//#         } else {
+//#endif         
+         keepAlivePeriod=account.getKeepAlivePeriod();
+//#ifdef HTTPBIND
+//#         }
+//#endif
+        System.out.println("Keep-alive: " + keepAlivePeriod + " seconds" );
         if (keepAlive!=null) { keepAlive.destroyTask(); keepAlive=null; }
         
         keepAlive=new TimerTaskKeepAlive(keepAlivePeriod, keepAliveType);
@@ -236,6 +291,12 @@ public class JabberStream extends XmppParser implements Runnable {
      */
     public void sendKeepAlive(int type) throws IOException {
         switch (type) {
+//#ifdef HTTPBIND
+//#             case 4: // BOSH "keep-alive"
+//#                 if (((HttpBindConnection)connection).threadsCount < 2)
+//#                     send("");
+//#                 break;
+//#endif
             case 3:
                 if (pingSent) {
                     dispatcher.broadcastTerminatedConnection(new Exception("Ping Timeout"));
@@ -255,7 +316,7 @@ public class JabberStream extends XmppParser implements Runnable {
     private void sendPacket(String data) throws IOException {
         iostream.send(data);
 //#ifdef CONSOLE
-//#             if (data.equals("</iq") || data.equals(" ")) addLog("Ping myself", 1);
+//#             if (data.equals("</iq") || data.equals(" ") || data.equals("")) addLog("Ping myself", 1);
 //#             else addLog(data, 1);
 //#endif
     }
@@ -265,7 +326,7 @@ public class JabberStream extends XmppParser implements Runnable {
     }
     
     
-    public void sendBuf( StringBuffer data ) throws IOException {
+    private void sendBuf( StringBuffer data ) throws IOException {
         outgoingPackets.addElement(data.toString());
     }
     
@@ -364,8 +425,7 @@ public class JabberStream extends XmppParser implements Runnable {
         }
         
         public void run() {
-            try {
-                 //System.out.println("Keep-Alive");
+            try {                 
                  if (loggedIn) sendKeepAlive(type);
             } catch (Exception e) { 
                 if (Client.StaticData.getInstance().roster != null)

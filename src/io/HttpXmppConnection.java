@@ -9,8 +9,6 @@
 
 package io;
 
-import com.ssttr.crypto.MessageDigest;
-import com.ssttr.crypto.SHA1;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -25,25 +23,11 @@ import javax.microedition.io.StreamConnection;
  *
  * @author evgs
  */
-public class HttpPollingConnection implements StreamConnection {
-    
-    /** Creates a new instance of HttpPollingStream */
-    public HttpPollingConnection(String host, String pollingUrl) {
-        this.host=host;
-        this.pollingUrl=pollingUrl;
-        outData=new StringBuffer();
-        inStack=new Vector();
-        
-        his=new HttpPollInputStream();
-        hos=new HttpPollOutputStream();
-        
-        ps=0;
-
-        opened=true;
-    }
+public class HttpXmppConnection implements StreamConnection {
+       
     
     String host;
-    String pollingUrl;
+    String connectionUrl;
     String sessionId;
     
     Vector inStack;
@@ -56,33 +40,37 @@ public class HttpPollingConnection implements StreamConnection {
     
     Vector keys;
 
-    private boolean opened;
-    private String error;
+    protected boolean opened;
+    protected String error;
+
+    protected String contentType;
+
+    public int threadsCount;
+
+    /** Creates a new instance of HttpStream */
+    public HttpXmppConnection(String host, String connectionUrl) {
+        this.host=host;
+        this.connectionUrl = connectionUrl;
+        outData=new StringBuffer();
+        inStack=new Vector();        
+
+        his=new HttpXmppInputStream();
+        hos=new HttpXmppOutputStream();
+
+        ps=0;
+        threadsCount = 0;
+        opened=true;
+    }
     
-    synchronized private void httpPostRequest(String postData) throws IOException {
+    private void httpPostRequest(String postData) throws IOException {        
         try {
-            HttpConnection hc=(HttpConnection)Connector.open(pollingUrl);
+            HttpConnection hc=(HttpConnection)Connector.open(connectionUrl);
             hc.setRequestMethod(HttpConnection.POST);
-            hc.setRequestProperty("Content-Type", "application/x-www-form-urlencoded" );
+            hc.setRequestProperty("Content-Type", contentType );
             hc.setRequestProperty("Host", "host");
             
-            StringBuffer out=new StringBuffer();
-            if (sessionId==null) { 
-                out.append("0");
-                keys=new Vector();
-            } else out.append(sessionId);
-
-            do {
-                if (keys.size()==0) {
-                    initKeys();
-                }
-                out.append(";").append((String)keys.lastElement());
-                keys.removeElementAt(keys.size()-1);
-            } while (keys.size()==0);
-            
-            
-            out.append(",").append(postData);
-            
+            String out = wrap(postData);
+            System.out.println("HTTP POST: " + out);
             int outLen=out.length();
             //hc.setRequestProperty("Content-Length", String.valueOf(outLen));
 
@@ -98,21 +86,9 @@ public class HttpPollingConnection implements StreamConnection {
             int resp=hc.getResponseCode();
             
             if (resp!=HttpConnection.HTTP_OK) throw new IOException("HTTP Error code"+resp);
-            
-            InputStream is=hc.openInputStream();
-            
-            String cookie=hc.getHeaderField("Set-Cookie");
-            int expires=cookie.indexOf(';');
-            if (expires>0) cookie=cookie.substring(3, expires);
-            
-            if (cookie.endsWith(":0")) {
-                opened=false;
-                error=cookie;
-            }
-            
-            if (sessionId==null) { 
-                sessionId=cookie;
-            }
+            System.out.println("Got response");
+            InputStream is=hc.openInputStream();            
+            parseCookies(hc.getHeaderField("Set-Cookie"));
             
             byte data[];
             int inLen=(int)hc.getLength();
@@ -134,17 +110,19 @@ public class HttpPollingConnection implements StreamConnection {
             hc.close();
         } catch (Exception e) {
             opened=false;
-            error=e.toString();
-            e.printStackTrace();
+            error=e.toString();            
         }
     }
 
+    protected String wrap(String xmppData) { return xmppData; };
+
+    protected void parseCookies(String cookie) {};
     
-    private class HttpPollInputStream extends InputStream {
+    protected class HttpXmppInputStream extends InputStream {
 
         public int read() throws IOException {
             if (!opened) throw new IOException("Connection closed");
-            if (inStack.size()==0) return -1;
+            if (inStack.isEmpty()) return -1;
             
             int llen;
             byte[] inb;
@@ -152,7 +130,7 @@ public class HttpPollingConnection implements StreamConnection {
                 inb=(byte[])inStack.firstElement();
                 llen=inb.length - ps;
                 if (llen==0) { inStack.removeElementAt(0); ps=0; }
-                if (inStack.size()==0) return -1;
+                if (inStack.isEmpty()) return -1;
             } while (llen==0);
             
             return inb[ps++];
@@ -160,26 +138,35 @@ public class HttpPollingConnection implements StreamConnection {
 
         public int available() throws IOException {
             if (!opened) throw new IOException("Connection closed: "+error);
-            if (inStack.size()==0) return 0;
+            if (inStack.isEmpty()) return 0;
             int avail=((byte[])inStack.firstElement()).length - ps;
             if (avail==0) { inStack.removeElementAt(0); ps=0; return available(); }
             return avail;
         }
     }
 
-    private class HttpPollOutputStream extends OutputStream {
+    protected class HttpXmppOutputStream extends OutputStream implements Runnable {
         public void write(int i) throws IOException {
             outData.append((char) i);
         }
         
-        public void flush() throws  IOException {
-            synchronized (outData) {
-                if (!opened) throw new IOException("Connection closed");
+        public void flush() throws IOException {
 
-                if (outData.length()>0) httpPostRequest(outData.toString());
-
-                outData=new StringBuffer();
+            if (!opened) {
+                throw new IOException("Connection closed");
             }
+            threadsCount++;
+            new Thread(this).start();
+        }
+
+        public void run() {
+            try {
+                httpPostRequest(outData.toString());
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            outData = new StringBuffer();
+            threadsCount--;
         }
     }
     
@@ -201,19 +188,6 @@ public class HttpPollingConnection implements StreamConnection {
 
     public void close() throws IOException {
         opened=false;
-    }
-
-    private void initKeys() {
-        String k0="magick";
-        while (keys.size()<6) {
-            MessageDigest sha1=new SHA1();
-            sha1.init();
-            sha1.updateASCII(k0);
-            sha1.finish();
-            k0=sha1.getDigestBase64();
-            
-            keys.addElement(k0);
-        }
-    }
+    }    
 
 }

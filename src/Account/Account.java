@@ -62,7 +62,7 @@ public class Account extends IconTextElement {
     private String nick="";
     private String resource=Version.NAME;
     
-//#if HTTPPOLL || HTTPCONNECT
+//#if HTTPPOLL || HTTPCONNECT || HTTPBIND
 //#     private boolean enableProxy;
 //#     private String proxyHostAddr="";
 //#     private int proxyPort;
@@ -156,7 +156,7 @@ public class Account extends IconTextElement {
 //#             inputStream.readBoolean();
 //#endif            
             
-//#if HTTPPOLL || HTTPCONNECT
+//#if HTTPPOLL || HTTPCONNECT || HTTPBIND
 //#                 a.setEnableProxy(inputStream.readBoolean());
 //#                 a.setProxyHostAddr(inputStream.readUTF());
 //#                 a.setProxyPort(inputStream.readInt());
@@ -187,7 +187,7 @@ public class Account extends IconTextElement {
     public void saveToDataOutputStream(DataOutputStream outputStream){
         
         if (hostAddr==null) hostAddr="";
-//#if HTTPPOLL || HTTPCONNECT
+//#if HTTPPOLL || HTTPCONNECT || HTTPBIND
 //#         if (proxyHostAddr==null) proxyHostAddr="";
 //#endif
         
@@ -207,7 +207,7 @@ public class Account extends IconTextElement {
 	    
 	    outputStream.writeBoolean(mucOnly);
             
-//#if HTTPPOLL || HTTPCONNECT
+//#if HTTPPOLL || HTTPCONNECT || HTTPBIND
 //#             outputStream.writeBoolean(enableProxy);
 //#             outputStream.writeUTF(proxyHostAddr);
 //#             outputStream.writeInt(proxyPort);
@@ -291,11 +291,11 @@ public class Account extends IconTextElement {
 
 	StringBuffer url=new StringBuffer(host).append(':').append(tempPort);
 
-//#if HTTPPOLL || HTTPCONNECT
+//#if HTTPPOLL || HTTPCONNECT || HTTPBIND
 //#         if (!isEnableProxy()) {
 //# 	    url.insert(0, (useSSL)?"ssl://":"socket://");
 //#         } else {
-//#ifdef HTTPPOLL
+//#if HTTPPOLL || HTTPBIND
 //#              proxy=getProxyHostAddr();
 //#elif HTTPCONNECT
 //#             proxy="socket://" + getProxyHostAddr() + ':' + getProxyPort();
@@ -307,7 +307,7 @@ public class Account extends IconTextElement {
         return new JabberStream( getServer(), url.toString(), proxy);
     }
 
-//#if HTTPPOLL || HTTPCONNECT
+//#if HTTPPOLL || HTTPCONNECT || HTTPBIND
 //#     public boolean isEnableProxy() {
 //#         return enableProxy;
 //#     }
