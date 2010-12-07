@@ -46,25 +46,11 @@ public abstract class XmppParser implements XMLEventListener {
 
         JabberDataBlock parent = currentBlock.getParent();
 
-//#ifdef HTTPBIND
-//#         if (currentBlock.isJabberNameSpace("http://jabber.org/protocol/httpbind")) {
-//#             Vector blocks = currentBlock.getChildBlocks();
-//#             if (blocks == null) {
-//#                 return;
-//#             }
-//#             for (Enumeration e = blocks.elements(); e.hasMoreElements();) {
-//#                 dispatchXmppStanza((JabberDataBlock) e.nextElement());
-//#             }
-//#         } else {
-//#endif
-            if (parent == null) {
-                dispatchXmppStanza(currentBlock);
-            } else {
-                parent.addChild(currentBlock);
-            }
-//#ifdef HTTPBIND
-//#         }
-//#endif
+        if (parent == null) {
+            dispatchXmppStanza(currentBlock);
+        } else {
+            parent.addChild(currentBlock);
+        }
         //dispatcher.broadcastJabberDataBlock( currentBlock );
         //System.out.println(currentBlock.toString());
         currentBlock = parent;

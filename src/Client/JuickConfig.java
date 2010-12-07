@@ -42,7 +42,7 @@ public class JuickConfig extends DefForm {
 //#             Vector juickContactsNames = new Vector(sdata.roster.juickContacts.size());
 //#             for (Enumeration e = sdata.roster.juickContacts.elements(); e.hasMoreElements();) {
 //#                 Contact c = (Contact) e.nextElement();
-//#                 juickContactsNames.addElement(c.getName());
+//#                 juickContactsNames.addElement(c.bareJid);
 //#             }
 //#             juickContactsBox = new DropChoiceBox("Main Juick-contact");
 //#             juickContactsBox.items = juickContactsNames;

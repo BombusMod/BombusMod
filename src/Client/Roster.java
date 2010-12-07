@@ -1019,20 +1019,20 @@ public class Roster
             ExtendedStatus es= sl.getStatus(myStatus);
             if (message==null)
                 myMessage=StringUtils.toExtendedString(es.getMessage());
-
+            
             myMessage=StringUtils.toExtendedString(myMessage);
             int myPriority=es.getPriority();
 
             Presence presence = new Presence(myStatus, myPriority, myMessage, sd.account.getNick());
-            
+
             if (!sd.account.isMucOnly() )
-		theStream.send( presence );
+                theStream.send( presence );
 //#ifndef WMUC
             reEnumerator = null;
             multicastConferencePresence(myStatus, myMessage, myPriority);
 //#endif
-        }
-        
+            }
+            
         // disconnect
         if (myStatus==Presence.PRESENCE_OFFLINE) {
             try {
@@ -1049,7 +1049,8 @@ public class Roster
 //#ifdef AUTOSTATUS
 //#             autoAway=false;
 //#             autoXa=false;
-//#             autostatus.destroyTask();
+//#             if (autostatus != null)
+//#                 autostatus.destroyTask();
 //#endif
             systemGC();
         }
@@ -1059,35 +1060,37 @@ public class Roster
         
         reEnumRoster();
     }
-    
+        
     public void sendDirectPresence(int status, String to, JabberDataBlock x) {
-        if (to==null) { 
+        if (to==null) {
             sendPresence(status, null);
             return;
         }
 
         ExtendedStatus es= sl.getStatus(status);
         myMessage=es.getMessage();
- 
+
         myMessage=StringUtils.toExtendedString(myMessage);
 
         Presence presence = new Presence(status, es.getPriority(), myMessage, sd.account.getNick());
-        
+
         presence.setTo(to);
-        
+
         if (x!=null) presence.addChild(x);
 
         if (theStream!=null) {
             theStream.send( presence );
         }
-    }
-    
+        }
+
     public void sendDirectPresence(int status, Contact to, JabberDataBlock x) {
         sendDirectPresence(status, (to==null)? null: to.getJid(), x);
+        if (to != null) {
         if (to.jid.isTransport()) blockNotify(-111,10000);
 //#ifndef WMUC
         if (to instanceof MucContact) ((MucContact)to).commonPresence=false;
 //#endif
+        }
     }
 	
     public boolean isLoggedIn() {

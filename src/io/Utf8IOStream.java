@@ -199,6 +199,19 @@ public class Utf8IOStream {
     
     public String getConnectionData() {
         StringBuffer stats=new StringBuffer();
+//#if HTTPBIND || HTTPPOLL || HTTPCONNECT
+//#         String http = StaticData.getInstance().account.getProxyHostAddr();
+//#         if (http != null) {
+//#             if (StaticData.getInstance().account.isEnableProxy())
+//#                 stats.append("HTTP: ").append(http);
+//#ifdef HTTPBIND
+//#             if (connection instanceof HttpBindConnection) {
+//#                 stats.append("\nSID: ").append(((HttpBindConnection)connection).sid);
+//#                 stats.append("\nWait: ").append(((HttpBindConnection)connection).waitPeriod);
+//#             }
+//#endif
+//#         } else {
+//#endif
         try {
             stats.append(((SocketConnection)connection).getLocalAddress())
             .append(":")
@@ -210,6 +223,9 @@ public class Utf8IOStream {
         } catch (Exception ex) {
             stats.append("unknown");
         }
+//#if HTTPBIND || HTTPPOLL || HTTPCONNECT
+//#         }
+//#endif
         return stats.toString();
     }
     

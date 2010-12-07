@@ -76,7 +76,7 @@ public class Jid {
     public String getNode() {
         int beginIndex = bareJid.indexOf('@');
         if (beginIndex > 0)
-            return bareJid.substring(0, beginIndex-1);
+            return bareJid.substring(0, beginIndex);
         return bareJid;
     }
 
@@ -88,7 +88,7 @@ public class Jid {
 
         return equals(j, false)
          || (node.equals(jnode+"%"+jserver))
-         || (node.equals(jnode+"\40"+jserver));        
+         || (node.equals(jnode+"\\40"+jserver));
     }
 
     public boolean equalsServerViaJ2J(String jserver) {
@@ -96,7 +96,7 @@ public class Jid {
 
         return getServer().equals(jserver)
          || (node.endsWith("%"+jserver))
-         || (node.endsWith("\40"+jserver));
+         || (node.endsWith("\\40"+jserver));
     }
 
     public boolean isTransport(){

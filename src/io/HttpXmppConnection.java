@@ -43,7 +43,7 @@ public class HttpXmppConnection implements StreamConnection {
     protected boolean opened;
     protected String error;
 
-    protected String contentType;
+    protected String contentType;    
 
     public int threadsCount;
 
@@ -70,7 +70,6 @@ public class HttpXmppConnection implements StreamConnection {
             hc.setRequestProperty("Host", "host");
             
             String out = wrap(postData);
-            System.out.println("HTTP POST: " + out);
             int outLen=out.length();
             //hc.setRequestProperty("Content-Length", String.valueOf(outLen));
 
@@ -86,7 +85,6 @@ public class HttpXmppConnection implements StreamConnection {
             int resp=hc.getResponseCode();
             
             if (resp!=HttpConnection.HTTP_OK) throw new IOException("HTTP Error code"+resp);
-            System.out.println("Got response");
             InputStream is=hc.openInputStream();            
             parseCookies(hc.getHeaderField("Set-Cookie"));
             
