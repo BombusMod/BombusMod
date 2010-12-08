@@ -57,14 +57,19 @@ public class HistoryReader extends MessageList {
         MIPrev = new MessageItem(new Msg(Msg.MESSAGE_TYPE_SYSTEM, null, null, "<---"), smiles);
         MINext = new MessageItem(new Msg(Msg.MESSAGE_TYPE_SYSTEM, null, null, "--->"), smiles);
 
-        setMainBarItem(new MainBar(c.getName() + ": " + SR.MS_HISTORY));        
+        setMainBarItem(new MainBar(c.getName() + ": " + SR.MS_HISTORY));
 
         hl = new HistoryLoader(c.bareJid, smiles);
 
-        loadFrom(hl.stepEnd());
-        moveCursorEnd();
+        gotoEnd();
         show();
     }
+
+/* TODO: menu command for gotoBegin()/gotoEnd()
+    public void commandState() {
+        addMenuCommand();
+    }
+*/
 
     public void eventOk() {
         if (getItemRef(getCursor()) == MIPrev) {
@@ -86,21 +91,14 @@ public class HistoryReader extends MessageList {
         }
     }
 
-    protected boolean key(int key_code, boolean key_long) {
-        if (!key_long) {
-            switch (key_code) {
-                case Canvas.KEY_NUM1:
-                    loadFrom(hl.stepBegin());
-                    moveCursorHome();
-                    return true;
-                case Canvas.KEY_NUM7:
-                    loadFrom(hl.stepEnd());
-                    moveCursorEnd();
-                    return true;
-            }
-        }
-     
-        return super.key(key_code, key_long);
+    public void gotoBegin() {
+        loadFrom(hl.stepBegin());
+        moveCursorHome();
+    }
+
+    public void gotoEnd() {
+        loadFrom(hl.stepEnd());
+        moveCursorEnd();
     }
 
     public int getItemCount() {
@@ -110,12 +108,4 @@ public class HistoryReader extends MessageList {
     public Msg getMessage(int i) {
         return ((MessageItem) messages.elementAt(i)).msg;
     }
-    public void commandState() {
-        super.commandState();
-        removeMenuCommand(cmdxmlSkin);
-    }
-/*
-    public VirtualElement getItemRef(int i) {
-        return (VirtualElement) messages.elementAt(i);
-    }*/
 }

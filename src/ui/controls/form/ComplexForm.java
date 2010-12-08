@@ -96,7 +96,7 @@ public class ComplexForm
         return flat;
     }
 
-    protected VirtualElement getItemRef(int index) {
+    public VirtualElement getItemRef(int index) {
         return (VirtualElement) getFlatList().elementAt(index);
     }
     public int getIndexOf(VirtualElement element) {

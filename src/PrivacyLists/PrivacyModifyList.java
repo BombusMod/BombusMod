@@ -102,7 +102,7 @@ public class PrivacyModifyList extends DefForm
     }*/
     
     protected int getItemCount() { return plist.rules.size(); }
-    protected VirtualElement getItemRef(int index) { return (VirtualElement) plist.rules.elementAt(index); }
+    public VirtualElement getItemRef(int index) { return (VirtualElement) plist.rules.elementAt(index); }
     
     public void menuAction(MenuCommand c, VirtualList d) {
         if (c==cmdCancel) {
@@ -110,14 +110,13 @@ public class PrivacyModifyList extends DefForm
             super.cmdCancel();
         }
         if (c==cmdAdd) {
-            new PrivacyForm(new PrivacyItem(), plist);
+            addNewElement();
         }
         if (c==cmdEdit) {
             eventOk();
         }
         if (c==cmdDel) {
-            Object del=getFocusedObject();
-            if (del!=null) plist.rules.removeElement(del);
+            deleteFocused();
         }
         if (c==cmdSave) {
             plist.generateList();
@@ -186,14 +185,21 @@ public class PrivacyModifyList extends DefForm
         redraw();
     }
     
-    public void keyGreen() {
+    public void addNewElement() {
         new PrivacyForm(new PrivacyItem(), plist);
     }
-    
-    public void keyClear() {
-        Object del=getFocusedObject();
-        if (del!=null) plist.rules.removeElement(del);
+   
+    public boolean canDeleteFocused() {
+        return (getFocusedObject() != null);
     }
+
     public String touchLeftCommand() {return SR.MS_MENU; }
     public void touchLeftPressed() { showMenu(); }
+
+    public void deleteFocused() {
+        if (!canDeleteFocused())
+            return;
+
+        plist.rules.removeElement(getFocusedObject());
+    }
 }

@@ -76,13 +76,8 @@ public class Menu extends VirtualList
         eventOk();
     }
 
+/* to userkeys */ /*
     protected boolean key(int keyCode, boolean key_long) {
-        if (!key_long) {
-            if (keyCode == Config.SOFT_LEFT) {
-                eventOk();
-                return true;
-            }
-
             if (executeByNum && getItemCount() > 0) {
                 switch (keyCode) {
                     case Canvas.KEY_NUM0:
@@ -121,7 +116,7 @@ public class Menu extends VirtualList
 
         return super.key(keyCode, key_long);
     }
-
+*/
     private void executeCommand(int index) {
         moveCursorTo(index);
         eventOk();

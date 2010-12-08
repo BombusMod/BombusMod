@@ -292,18 +292,4 @@ public class AccountForm
         Account.loadAccount(login, Config.getInstance().accountIndex);
         SplashScreen.getInstance().close();
     }
-    
-    protected boolean key(int keyCode, boolean key_long) {
-        if (key_long) {
-            switch (keyCode) {
-                case Canvas.KEY_NUM6:
-                    Config.fullscreen = !Config.fullscreen;
-                    cf.saveToStorage();
-                    sd.canvas.setFullScreenMode(Config.fullscreen);
-                    return true;
-            }
-        }
-
-        return super.key(keyCode, key_long);
-    }
 }

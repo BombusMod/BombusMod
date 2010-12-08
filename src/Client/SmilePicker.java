@@ -100,7 +100,7 @@ public class SmilePicker
         xBorder=(realWidth-(xCnt*imgWidth))/2;
         enableListWrapping(true);
     }
-    
+
     public void commandState() {
         menuCommands.removeAllElements();
         addMenuCommand(cmdOk);
@@ -126,9 +126,7 @@ public class SmilePicker
     public void destroyView() {
         midlet.BombusMod.getInstance().setDisplayable(me.textbox);
     }
-    
-    
-        
+
     public void drawItem(Graphics g, int ofs, boolean selected){
         int max=(lineIndex==lines-1)? xLastCnt:xCnt;   
         int x;
@@ -206,33 +204,21 @@ public class SmilePicker
 
     protected void pointerPressed(int x, int y) { 
         super.pointerPressed(x,y);
-        if (x>=xCnt*imgWidth) return;
-        xCursor=x/imgWidth;
+        if (x >= xCnt*imgWidth)
+            return;
+        xCursor = x/imgWidth;
         setRotator();
-        if (getCursor()!=lines-1) return;
+        if (getCursor() != lines-1)
+            return;
         if (xCursor >= xLastCnt) xCursor=xLastCnt-1;
     }
     
-    public void userKeyPressed(int keyCode) {
-        switch (keyCode) {
-            case Canvas.KEY_NUM3 :
-                super.pageLeft(); keyDwn(); break;
-            case Canvas.KEY_NUM9:
-                super.pageRight(); break;
-            case Canvas.KEY_NUM4:
-                pageLeft(); break;
-            case Canvas.KEY_NUM6:
-                pageRight(); break;
-        }
-        super.userKeyPressed(keyCode);
-    }
-
     public boolean isSelectable() { return true; }
     
     public boolean handleEvent(int keyCode) { return false; }
-    
+
     public void cmdOk(){ eventOk(); }
-     
+  
     public String touchLeftCommand(){ return SR.MS_SELECT; }
     public String touchRightCommand(){ return SR.MS_BACK; }
 }

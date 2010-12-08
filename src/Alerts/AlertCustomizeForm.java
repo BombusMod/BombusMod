@@ -184,7 +184,7 @@ public class AlertCustomizeForm
         }        
     }
     
-    private int playable() {
+    private final int playable() {
         if (getCursor()<9) return getCursor();
         return -1;
     }

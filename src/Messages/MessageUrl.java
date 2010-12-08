@@ -67,7 +67,6 @@ public class MessageUrl extends DefForm implements TextBoxNotify {
     
 	loadItemsFrom(urlList);
         enableListWrapping(true);
-
     }
 
     public void menuAction(MenuCommand c, VirtualList d) {
@@ -100,19 +99,7 @@ public class MessageUrl extends DefForm implements TextBoxNotify {
         destroyView();
     }
 
-    public boolean key(int keyCode, boolean key_long) {
-        if (!key_long) {
-            switch (keyCode) {
-                case Canvas.KEY_POUND:
-                    EditURL();
-                    return true;
-            }
-        }
-
-        return super.key(keyCode, key_long);
-    }
-
-    private void EditURL() {
+    public void EditURL() {
         new MIDPTextBox("Edit URL", itemsList.elementAt(getCursor()).toString(), this, TextField.ANY);
     }
 
@@ -124,18 +111,17 @@ public class MessageUrl extends DefForm implements TextBoxNotify {
          menuCommands.removeAllElements();
          addMenuCommand(cmdGoto);
          addMenuCommand(cmdEdit);
-         //#ifdef CLIPBOARD
+//#ifdef CLIPBOARD
 //#          if (cf.useClipBoard) {
 //#              addMenuCommand(cmdCopy);
 //#              addMenuCommand(cmdCopyPlus);
 //#          }
 //#endif
      }
-        
+
     public String touchLeftCommand(){ return SR.MS_MENU; }
 
     public void touchLeftPressed(){
         showMenu();
     }
-    
 }

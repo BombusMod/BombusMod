@@ -78,7 +78,8 @@ public final class AppendNick
     }
      
     public void cmdOk() { eventOk(); }
-    public void cmdCancel() {
+
+    public void destroyView() {
         midlet.BombusMod.getInstance().setDisplayable(me.textbox);
     }
      

@@ -78,7 +78,7 @@ public class DiscoForm extends ComplexForm{
         super(regform.getAttribute("from"));
         service=regform.getAttribute("from");
         this.childName=childName;
-	this.listener = listener;
+        this.listener = listener;
         JabberDataBlock query=regform.getChildBlock(childName);
         xmlns=query.getAttribute("xmlns");
         node=query.getAttribute("node");

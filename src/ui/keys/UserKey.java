@@ -39,10 +39,10 @@ import javax.microedition.lcdui.Canvas;
  * @author ad
  */
 public class UserKey extends IconTextElement {
-    public final static String storage = "keys_db_r926";
+    public final static String storage = "keys_db_r935";
     public final static String def_keys = "/userkeys/bombusmod.txt";
     
-    private final static int COUNT_KEY_NAMES = 27;
+    private final static int COUNT_KEY_NAMES = 33;
     private int current_index;
     private static int[] someCodes = null;
     private static String[] someNames = null;
@@ -102,8 +102,14 @@ public class UserKey extends IconTextElement {
         
         // Misc
         addKeyName(Config.KEY_BACK, "Back");
-        addKeyName(Config.SOFT_LEFT, "Soft_Left");
-        addKeyName(Config.SOFT_RIGHT, "Soft_Right");
+        addKeyName(Config.KEY_GREEN, "Green");
+        addKeyName(Config.KEY_CLEAR, "Clear");
+        addKeyName(Config.KEY_VOL_UP, "Volume_Up");
+        addKeyName(Config.KEY_VOL_DOWN, "Volume_Down");
+        addKeyName(Config.KEY_FLIP_OPEN, "Flip_Open");
+        addKeyName(Config.KEY_FLIP_CLOSE, "Flip_Close");
+        addKeyName(Config.KEY_SOFT_LEFT, "Soft_Left");
+        addKeyName(Config.KEY_SOFT_RIGHT, "Soft_Right");
 
         // Game Action
         Canvas display = (Canvas) Client.StaticData.getInstance().canvas;

@@ -78,7 +78,7 @@ public final class XMLList
         addMenuCommand(cmdPurge);
         super.commandState();
     }
-    
+ 
     protected void beginPaint() {
         StringBuffer str = new StringBuffer(" (")
         .append(getItemCount())
@@ -99,12 +99,14 @@ public final class XMLList
         return stanzas.msg(index);
     }
 
-    public void keyGreen(){
-	Msg m=getMessage(getCursor());
+    public void stanzaEdit() {
+        Msg m = getMessage(getCursor());
         String stanza = "";
+
         try {
-            stanza =  m.toString();
-        } catch (Exception e) {}
+            stanza = m.toString();
+        } catch (Exception e) { }
+
         new StanzaEdit(this, stanza);
     }
     
@@ -113,7 +115,7 @@ public final class XMLList
 
         Msg m = getMessage(getCursor());
         if (c == cmdNew) {
-            keyGreen();
+            stanzaEdit();
         }
         if (c == cmdEnableDisable) {
             StanzasList.getInstance().enabled = !StanzasList.getInstance().enabled;
@@ -128,7 +130,7 @@ public final class XMLList
         }
     }
     
-    private void clearReadedMessageList() {
+    public void clearReadedMessageList() {
         try {
             if (getCursor()+1==StanzasList.getInstance().size()) {
                 StanzasList.getInstance().stanzas.removeAllElements();
@@ -142,14 +144,5 @@ public final class XMLList
             moveCursorHome();
         } catch (Exception e) { }        
         redraw(); 
-    }
-    
-    public void keyClear() { 
-        clearReadedMessageList();
-    }
-    
-    public void userKeyPressed(int keyCode) {
-        if (keyCode=='0')
-            clearReadedMessageList();
     }
 }

@@ -57,13 +57,22 @@ public class Config {
 
     private static Config instance;
     public final int vibraLen = 500;
+
     public static int KEY_BACK = -11;
-    public static int SOFT_LEFT = -6; // for most MIDP2 phones
-    public static int SOFT_RIGHT = -7;
+    public static int KEY_GREEN = -11;
+    public static int KEY_CLEAR = -8;
+    public static int KEY_SOFT_LEFT = -6;
+    public static int KEY_SOFT_RIGHT = -7;
+    public static int KEY_VOL_UP = 0;
+    public static int KEY_VOL_DOWN = 0;
+    public static int KEY_FLIP_OPEN = 0;
+    public static int KEY_FLIP_CLOSE = 0;
+
     public final static int SUBSCR_AUTO = 0;
     public final static int SUBSCR_ASK = 1;
     public final static int SUBSCR_DROP = 2;
     public final static int SUBSCR_REJECT = 3;
+
     public final static int NOT_DETECTED = 0;
     public final static int NONE = -1;
     public final static int SONYE = 1;
@@ -86,13 +95,12 @@ public class Config {
     public final static int MICROEMU = 17;
     public final static int WTK = 50;
     public final static int OTHER = 99;
+
     StaticData sd = StaticData.getInstance();
     private static String platformName;
     public boolean ghostMotor = false;
     //public boolean blFlash=!ghostMotor; //true;
     public boolean muc119 = true;	// before muc 1.19 use muc#owner instead of muc#admin
-    public char keyLock = '*';
-    public char keyVibra = '#';
 //#ifdef AUTOSTATUS
 //#     public final static int AWAY_OFF = 0;
 //#     public final static int AWAY_LOCK = 1;
@@ -236,7 +244,6 @@ public class Config {
         int gmtloc = TimeZone.getDefault().getRawOffset() / 3600000;
         gmtOffset = gmtloc;
 
-        short greenKeyCode = -1000;
         //prefetch images
         MenuIcons.getInstance();
         RosterIcons.getInstance();
@@ -264,48 +271,70 @@ public class Config {
         switch (phoneManufacturer) {
             case SONYE:
                 allowMinimize = true;
-                greenKeyCode = -10;
+
+                KEY_GREEN = -10;
+                KEY_VOL_UP = -36;
+                KEY_VOL_DOWN = -37;
+                KEY_FLIP_OPEN = -30;
+                KEY_FLIP_CLOSE = -31;
                 break;
             case SONYE_M600:
-                KEY_BACK = -11;
-                greenKeyCode = 13;
+                KEY_VOL_UP = 165;
+                KEY_VOL_DOWN = 166;
                 break;
             case WTK:
-                greenKeyCode = -10;
+                KEY_GREEN = -10;
                 break;
             case NOKIA:
-                KEY_BACK = VirtualList.NOKIA_PEN;
-                greenKeyCode = -10;
                 allowMinimize = !NokiaS40;
+
+                KEY_GREEN = -10;
+                KEY_VOL_UP = -63582;
+                KEY_VOL_DOWN = -63583;
                 break;
             case SIEMENS:
             case SIEMENS2:
-                keyLock = '#';
-                keyVibra = '*';
                 KEY_BACK = -4;
-                greenKeyCode = VirtualList.SIEMENS_GREEN;
+                KEY_GREEN = -11;
+                KEY_SOFT_LEFT = -1;
+                KEY_SOFT_RIGHT = -4;
+                KEY_VOL_UP = -13;
+                KEY_VOL_DOWN = -14;
+                KEY_FLIP_OPEN = -24;
+                KEY_FLIP_CLOSE = -22;
                 break;
             case WINDOWS:
-                greenKeyCode = -5;
-                VirtualList.keyClear = 8;
+                KEY_GREEN = -5;
+                KEY_CLEAR = 8;
+                KEY_SOFT_LEFT = 40;
+                KEY_SOFT_RIGHT = 41;
                 break;
             case MOTO:
                 ghostMotor = true;
                 istreamWaiting = true;
-                greenKeyCode = -10;
+
+                KEY_GREEN = -10;
+                KEY_FLIP_OPEN = -200;
+                KEY_FLIP_CLOSE = -200;
                 break;
             case MOTOEZX:
-                VirtualList.keyVolDown = VirtualList.MOTOE680_VOL_DOWN;
-                KEY_BACK = VirtualList.MOTOE680_REALPLAYER;
-                greenKeyCode = -31;
+                KEY_BACK = -6;
+                KEY_GREEN = -31;
+                KEY_SOFT_LEFT = -21;
+                KEY_SOFT_RIGHT = -22;
+                KEY_VOL_UP = -9;
+                KEY_VOL_DOWN = -8;
                 break;
             case LG:
-                greenKeyCode = -10;
-                VirtualList.keyClear = -16;
+                KEY_GREEN = -10;
+                KEY_CLEAR = -16;
+                KEY_VOL_UP = -13;
+                KEY_VOL_DOWN = -14;
                 break;
             case MICROEMU:
-                greenKeyCode = -5;
                 KEY_BACK = -4; // for android sdk
+                KEY_GREEN = -5;
+                KEY_SOFT_LEFT = -82;
                 break;
 //#if !ZLIB
 //#             case XENIUM99:
@@ -313,7 +342,6 @@ public class Config {
 //#                 break;
 //#endif
         }
-        VirtualList.greenKeyCode = greenKeyCode;
         loadFromStorage();
 
         FontCache.roster = rosterFont;

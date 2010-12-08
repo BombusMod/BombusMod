@@ -1,0 +1,67 @@
+Основные типы окон в BombusMod.
+Текущее состояние дел лучше отражать в файле Lists.txt.
+
+
+= 1 =========================================================
+Название: ???; // VirtualViewer?
+Суть: просмотрщик;
+Возможности (1): просмотреть элементы и уйти;
+Доступные команды (1): "Назад".
+Примеры:
+* ShowFile (команда "стоп" - это тот же "назад");
+* DiscoFeatures;
+
+= 2 =========================================================
+Название: Menu; // Может, по-аналогии, VirtualMenu?
+Суть: меню выбора элемента;
+Возможности (2): выбрать элемент или уйти без выбора;
+Доступные команды (2): "Выбрать элемент", "Назад";
+Примеры:
+* AlertProfile(убрать setdefault в настройки);
+* ActiveContacts, SmilePicker, AppendNick;
+* ActivityList, MoodList;
+* DropListBox;
+
+= 3 =========================================================
+Название: DefForm; // VirtualForm?
+Суть: форма с разнообразными переключалками и полями ввода.
+Возможности (3): переключить/передать фокус/изменить значение элемента, сохранить
+и уйти, отменить и уйти;
+Команды (2): "Сохранить", "Назад";
+Примеры:
+* AccountForm, AccountRegister;
+* AlertCustomizeForm (тест звука сделать кнопочкой справа от элемента выбора этого звука);
+* AutoTaskForm, ChangeTransport, ConfigForm, ContactEdit, JuickConfig;
+* RenameGroup, SubscriptionEdit, ColorConfigForm, ColorSelectForm;
+* AffiliationModify, ConferenceQuickPrivelegeModify.PrivelegeModifyForm;
+* ConferenceForm (убрать cmdSave [есть в предыдущем меню] и cmdEdit [есть как LinkString]);
+* InviteForm, ConfigFonts;
+* HistoryConfig (убрать или сделать LinkString'ом выбор директории);
+* IEMenu, TransferAcceptFile, TransferConfigForm;
+* TransferImage, TransferSendFile, LightConfigForm;
+* PepForm, LocationForm, PrivacyForm, QuickPrivacy;
+* AlertBox, UserKeyConfigForm, UserKeyEdit;
+* VCardEdit (MenuCommand -> LinkString);
+
+= 4 =========================================================
+Название: ???; // Virtual...
+Суть: список некоторых элементов, к которым можно применять действия, можно
+создавать, удалять эти элементы... Что-то ещё?
+Примечание: действия двух типов: относятся к текущему элементу или не
+относятся.
+Действия над элементом (2): "Редактировать", "Удалить";
+Действия общие (2): "Новый", "Назад";
+Примеры:
+* AccountSelect, StatusSelect, ColorsList, Bookmarks;
+* Browser, TransferManager, MessageUrl;
+* PrivacyModifyList, PrivacySelect;
+* TextListBox, UserKeysList;
+
+= 5 =========================================================
+Название: MessageList; // VirtualMessageList?
+Суть: список сообщений. наследник предыдущего;
+Примечание: добавляются команды для работы с текстовыми сообщениями;
+Действия над элементом (4): "URLs/JIDs/Things...", "Применить цв. схему",
+"Копировать", "Копировать+";
+Примеры:
+* InfoWindow, StatsWindow;

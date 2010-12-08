@@ -78,14 +78,13 @@ class UserKeyEdit extends DefForm {
             if (UserKeyExec.cmds[i] != null)
                 commands_t.add(UserKeyExec.cmds[i]);
             if (u.command_id == i)
-                selected = commands_t.size()-1;
+                selected = commands_t.size() - 1;
         }
         commands_t.setSelectedIndex(selected);
         itemsList.addElement(commands_t);
 //#endif
         
         moveCursorTo(getNextSelectableRef(-1));
-        
         parentView = userKeysList;
     }
     
@@ -110,13 +109,12 @@ class UserKeyEdit extends DefForm {
         key_t.setTwoKeys(two_keys_t.getValue());
     }
 
-    protected boolean key(int keyCode, boolean key_long) {
-        if (key_t.selected) {
-            key_t.key(keyCode, key_long);
-            redraw();
-            return true;
-        }
-        
-        return super.key(keyCode, key_long);
+    public boolean key(int keyCode, boolean key_long) {
+        if (!key_t.selected)
+            return false;
+
+        key_t.key(keyCode, key_long);
+        redraw();
+        return true;
     }
 }

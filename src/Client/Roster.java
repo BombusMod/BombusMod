@@ -1715,7 +1715,9 @@ public class Roster
 	                String myNick=mucGrp.selfContact.getName();
                         String myNick_=myNick+" ";
                         String _myNick=" "+myNick;
-			if (body.indexOf(myNick)>-1) {
+			if (body.indexOf(myNick) >= 0) {
+                highlite = true;
+/*
                             if (body.indexOf("> "+myNick+": ")>-1)
                                 highlite=true;
                             else if (body.indexOf(_myNick+",")>-1)
@@ -1734,6 +1736,7 @@ public class Roster
                                 highlite=true;
                             else if (body.indexOf(_myNick+".")>-1) 
                                 highlite=true;
+*/
 			}
 	                myNick=null; myNick_=null; _myNick=null;
                         //TODO: custom highliting dictionary
@@ -2328,10 +2331,11 @@ public class Roster
         return null;
     }
 
-    protected void keyGreen() {
+    public void messageEditResume() {
         if (!isLoggedIn()) {
             return;
         }
+
         VirtualList pview = createMsgList();
         if (pview != null) {
             Contact c = (Contact) getFocusedObject();
@@ -2340,199 +2344,99 @@ public class Roster
             c.msgSuspended = null;
         }
     }
-    
-    protected void keyClear() {
+   
+    public boolean canDeleteFocused() {
         Object focusedObject = getFocusedObject();
-        if (isLoggedIn() && (focusedObject instanceof Contact)) {
-            final Contact c = (Contact) getFocusedObject();
-            try {
+
+        return isLoggedIn()
+            && (focusedObject instanceof Contact)
+            && !(focusedObject instanceof MucContact);
+    }
+
+    public void deleteFocused() {
+        if (!canDeleteFocused())
+            return;
+
+        deleteContact((Contact) getFocusedObject());
+    }
+
 //#ifndef WMUC
-                boolean isMucContact = (focusedObject instanceof MucContact);
-//#else
-//#                 boolean isMucContact = false;
-//#endif
-                focusedObject = null;
-                if (!isMucContact) {
-                   new AlertBox(SR.MS_DELETE_ASK, c.getNickJid()) {
-                        public void yes() {
-                            deleteContact(c);
-                        }
-                        public void no() {}
-                    };
-                }
-//#ifndef WMUC
-                else if (isMucContact && c.origin!=Contact.ORIGIN_GROUPCHAT) {
-                    ConferenceGroup mucGrp=(ConferenceGroup)c.group;
-                    if (mucGrp.selfContact.roleCode==MucContact.ROLE_MODERATOR) {
-                        String myNick=mucGrp.selfContact.getName();
-                        MucContact mc=(MucContact) c;
-                        new ConferenceQuickPrivelegeModify(mc, ConferenceQuickPrivelegeModify.KICK,myNick);
-                    }
-                }
+    public void kickFocused() {
+        Object focusedObject = getFocusedObject();
+
+	    if (!(focusedObject instanceof MucContact))
+            return;
+
+        MucContact c = (MucContact) focusedObject;
+
+        if (c.origin == Contact.ORIGIN_GROUPCHAT || c.roleCode == MucContact.ROLE_MODERATOR)
+            return;
+
+        ConferenceGroup mucGrp = (ConferenceGroup) c.group;
+        if (mucGrp.selfContact.roleCode == MucContact.ROLE_MODERATOR) {
+            String myNick = mucGrp.selfContact.getName();
+            new ConferenceQuickPrivelegeModify(c, ConferenceQuickPrivelegeModify.KICK, myNick);
+        }
+    }
 //#endif 
-            } catch (Exception e) { /* NullPointerException */ }
+
+    public void collapseAllGroup() {
+        if (!cf.collapsedGroups)
+            return;
+
+        for (Enumeration e = groups.elements(); e.hasMoreElements();) {
+            Group grp = (Group) e.nextElement();
+            grp.collapsed = true;
         }
+
+        reEnumRoster();
     }
 
-    protected boolean key(int keyCode, boolean key_long) {
-        if (key_long) {
-            if (keyCode == cf.keyLock) {
-//#ifdef AUTOSTATUS
-//#                 if (cf.autoAwayType == Config.AWAY_LOCK) {
-//#                     if (!autoAway) {
-//#                         autoAway = true;
-//#                         if (cf.useMyStatusMessages) {
-//#                             sendPresence(Presence.PRESENCE_AWAY, null);
-//#                         } else {
-//#                             sendPresence(Presence.PRESENCE_AWAY, "Auto Status on KeyLock since %t");
-//#                         }
-//#                     }
-//#                 }
-//#endif
-                new SplashScreen(getMainBarItem(), cf.keyLock);
-                return true;
-            } else if (keyCode == cf.keyVibra || keyCode == MOTOE680_FMRADIO) { /* TODO: redefine keyVibra*/
-                // swap profiles
-                int profile = cf.profile;
-                cf.profile = (profile == AlertProfile.VIBRA) ? cf.lastProfile : AlertProfile.VIBRA;
-                cf.lastProfile = profile;
-
-                updateMainBar();
-                redraw();
-                return true;
+    public void moveFocusToGroup(int direction) {
+        if (getItemCount() > 0) {
+            int newpos = searchGroup(direction);
+            if (newpos > -1) {
+                moveCursorTo(newpos);
+                setRotator();
             }
-
-            switch (keyCode) {
-                case Canvas.KEY_NUM0:
-                    cf.showOfflineContacts = !cf.showOfflineContacts;
-                    reEnumRoster();
-                    return true;
-//#ifndef WMUC
-                case Canvas.KEY_NUM1:
-                    if (isLoggedIn()) {
-                        new Bookmarks(null);
-                    }
-                    return true;
-//#endif
-                case Canvas.KEY_NUM3:
-                    new ActiveContacts(null);
-                    return true;
-                case Canvas.KEY_NUM4:
-                    new ConfigForm();
-                    return true;
-                case Canvas.KEY_NUM6:
-                    Config.fullscreen = !Config.fullscreen;
-                    cf.saveToStorage();            
-                    sd.canvas.setFullScreenMode(Config.fullscreen);
-                    return true;
-                case Canvas.KEY_NUM7:
-                    new RosterToolsMenu();
-                    return true;
-                case Canvas.KEY_NUM9:
-                    if (cf.allowMinimize) {
-                        BombusMod.getInstance().hideApp(true);
-                    } else if (phoneManufacturer == Config.SIEMENS2) {
-                        new SieNatMenu(this);
-                    /*
-                        try {
-                        //SIEMENS: MYMENU call. Possible Main Menu for capable phones
-                        BombusMod.getInstance().platformRequest("native:ELSE_STR_MYMENU");
-                        } catch (Exception e) { }
-                    */
-                    } else if (phoneManufacturer == Config.SIEMENS) {
-                        // SIEMENS-NSG: MYMENU call. Possible Native Menu for capable phones
-                        try {
-                            BombusMod.getInstance().platformRequest("native:NAT_MAIN_MENU");
-                        } catch (Exception e) { }
-                    }
-                    return true;
-            } // switch
-        } else {
-            switch (keyCode) {
-//#ifdef POPUPS
-                case Canvas.KEY_POUND:
-                    if (getItemCount() > 0) {
-                        showInfo();
-                    }
-                    return true;
-//#endif
-                case Canvas.KEY_NUM1:
-                    if (cf.collapsedGroups) { //collapse all groups
-                        for (Enumeration e = groups.elements(); e.hasMoreElements();) {
-                            Group grp = (Group) e.nextElement();
-                            grp.collapsed = true;
-                        }
-                        reEnumRoster();
-                    }
-                    return true;
-//#ifdef AUTOSTATUS
-//#                 case SE_FLIPCLOSE_JP6:
-//#                     // workaround for SE JP6 - enabling vibra in closed state
-//#                     if (phoneManufacturer == Config.SONYE) {
-//#                         midlet.BombusMod.getInstance().setDisplayable((Displayable) null);
-//#                         try {
-//#                             Thread.sleep(300);
-//#                         } catch (Exception ex) { }
-//#                         sd.canvas.show(this);
-//#                         keyLock();
-//#                     }
-//#                     return true;
-//#                 case SIEMENS_FLIPCLOSE:
-//#                     // verify platform because SIEMENS_FLIPCLOSE maybe MOTOROLA_FLIP
-//#                     if (cf.phoneManufacturer == Config.SIEMENS) {
-//#                         keyLock();
-//#                     }
-//#                     return true;
-//#                 case MOTOROLA_FLIP:
-//#                     if (cf.phoneManufacturer == Config.MOTO) {
-//#                         keyLock();
-//#                     }
-//#                     return true;
-//#endif
-                case Canvas.KEY_NUM0:
-                    focusToNextUnreaded();
-                    return true;
-                case Canvas.KEY_NUM3:
-                    if (getItemCount() > 0) {
-                        int newpos = searchGroup(-1);
-						if (newpos > -1) {
-                            moveCursorTo(newpos);
-                            setRotator();
-                        }
-                    }
-                    return true;
-                case Canvas.KEY_NUM9:
-                    if (getItemCount() > 0) {
-                        int newpos2 = searchGroup(1);
-                        if (newpos2 > -1) {
-                            moveCursorTo(newpos2);
-                            setRotator();
-                        }
-                    }
-                    return true;
-                case Canvas.KEY_NUM4:            
-                    pageLeft();
-                    return true;
-                case Canvas.KEY_NUM6:            
-                    pageRight();
-                    return true;
-                case Canvas.KEY_STAR:
-                    if (cf.ghostMotor) {
-                        // backlight management
-                        blState = (blState == 1) ? Integer.MAX_VALUE : 1;
-                        midlet.BombusMod.getInstance().getDisplay().flashBacklight(blState);
-                    }
-                    return true;
-            } // switch
-//#ifdef AUTOSTATUS
-//#             userActivity();
-//#endif
         }
-
-        return super.key(keyCode, key_long);
     }
 
-    private void focusToNextUnreaded() {
+    public void blockScreen() {
+//#ifdef AUTOSTATUS
+//#     if (cf.autoAwayType == Config.AWAY_LOCK) {
+//#         if (!autoAway) {
+//#         autoAway = true;
+//#         if (cf.useMyStatusMessages)
+//#             sendPresence(Presence.PRESENCE_AWAY, null);
+//#         else
+//#             sendPresence(Presence.PRESENCE_AWAY, "Auto Status on KeyLock since %t");
+//#         }
+//#     }
+//#endif
+        new SplashScreen(getMainBarItem());
+    }
+
+    public void vibraOnly() {
+        // swap profiles
+        int profile = cf.profile;
+        cf.profile = (profile == AlertProfile.VIBRA) ? cf.lastProfile : AlertProfile.VIBRA;
+        cf.lastProfile = profile;
+
+        updateMainBar();
+        redraw(); // Need?
+    }
+
+    public void changeMotoBacklightState() {
+        if (!cf.ghostMotor)
+            return;
+
+        // backlight management
+        blState = (blState == 1) ? Integer.MAX_VALUE : 1;
+        midlet.BombusMod.getInstance().getDisplay().flashBacklight(blState);
+    }
+
+    public void focusToNextUnreaded() {
         if (getItemCount() == 0) {
             return;
         }
@@ -2576,13 +2480,13 @@ public class Roster
     }
 
 //#ifdef AUTOSTATUS
-//#     private void keyLock() {
-//#         if (cf.autoAwayType==Config.AWAY_LOCK)
+//#     public void setAutoAwayTimer() {
+//#         if (cf.autoAwayType == Config.AWAY_LOCK)
 //#             if (!autoAway)
 //#                 autostatus.setTimeEvent(cf.autoAwayDelay* 60*1000);
 //#     }
 //# 
-//#     private void userActivity() {
+//#     public void userActivity() {
 //#         if (autostatus==null) return;
 //# 
 //#         if (cf.autoAwayType==Config.AWAY_IDLE) {
@@ -2612,7 +2516,7 @@ public class Roster
 
 //#ifdef POPUPS
     public void showInfo() {
-        if (getFocusedObject()==null)
+        if (getItemCount() <= 0 || getFocusedObject() == null)
             return;
 
         try {
@@ -2806,7 +2710,25 @@ public class Roster
         }
     }
 
-    public void cmdMinimize() { BombusMod.getInstance().hideApp(true);  }
+    public void cmdMinimize() {
+        if (cf.allowMinimize) {
+            BombusMod.getInstance().hideApp(true);
+        } else if (phoneManufacturer == Config.SIEMENS2) {
+            new SieNatMenu(this);
+        /*
+            try {
+                 // SIEMENS: MYMENU call. Possible Main Menu for capable phones
+                 BombusMod.getInstance().platformRequest("native:ELSE_STR_MYMENU");
+            } catch (Exception e) { }
+        */
+        } else if (phoneManufacturer == Config.SIEMENS) {
+            try {
+                 // SIEMENS-NSG: MYMENU call. Possible Native Menu for capable phones
+                 BombusMod.getInstance().platformRequest("native:NAT_MAIN_MENU");
+            } catch (Exception e) { }
+        }
+    }
+
     public void cmdActiveContacts() { new ActiveContacts(null); }
     public void cmdAccount(){ new AccountSelect( false).show(); }
     public void cmdStatus() { currentReconnect=0; new StatusSelect(null); }
@@ -3048,7 +2970,8 @@ public class Roster
 //#             autostatus.setTimeEvent(0);
 //#endif
     }
-    
+
+
     public void showMenu() {
         commandState();
         new MyMenu(this, SR.MS_MAIN_MENU, MenuIcons.getInstance(), menuCommands);
@@ -3059,6 +2982,7 @@ public class Roster
 
     public void touchRightPressed(){ if (Config.getInstance().oldSE) showMenu(); else cmdActions(); }
     public void touchLeftPressed(){ if (Config.getInstance().oldSE) cmdActions(); else showMenu(); }
+
     public void captionPressed() {new ActiveContacts(null);}
 
     

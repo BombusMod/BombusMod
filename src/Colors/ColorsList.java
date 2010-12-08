@@ -72,10 +72,10 @@ public class ColorsList extends DefForm
 
     public void commandState() {
         menuCommands.removeAllElements();
-        menuCommands.addElement(cmdOk);
-        menuCommands.addElement(cmdCopyColor);
+        addMenuCommand(cmdOk);
+        addMenuCommand(cmdCopyColor);
         if (colorBuffer >= 0)
-            menuCommands.addElement(cmdPasteColor);
+            addMenuCommand(cmdPasteColor);
     }
 
     public void menuAction(MenuCommand c, VirtualList d) {
@@ -102,6 +102,7 @@ public class ColorsList extends DefForm
 //#         
 //#endif
     }
+
     public String touchLeftCommand() {
         return SR.MS_MENU;
     }

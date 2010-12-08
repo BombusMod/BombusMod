@@ -50,7 +50,7 @@ public class TransferManager
 //#endif    
     
     
-    MenuCommand cmdDel=new MenuCommand(SR.MS_DECLINE, MenuCommand.SCREEN, 10);
+    MenuCommand cmdDecline=new MenuCommand(SR.MS_DECLINE, MenuCommand.SCREEN, 10);
     MenuCommand cmdClrF=new MenuCommand(SR.MS_HIDE_FINISHED, MenuCommand.SCREEN, 11);
     MenuCommand cmdInfo=new MenuCommand(SR.MS_INFO, MenuCommand.SCREEN, 12);
     MenuCommand cmdSettings=new MenuCommand("Transfer settings", MenuCommand.SCREEN, 12);
@@ -62,22 +62,21 @@ public class TransferManager
         loadItemsFrom(TransferDispatcher.getInstance().getTaskList());
     }    
     
-    public void commandState(){
+    public void commandState() {
         super.commandState();
         addMenuCommand(cmdSettings);
         if (TransferDispatcher.getInstance().getTasksCount()>0) {
             removeMenuCommand(cmdOk);
         }
-        addMenuCommand(cmdDel);
+        addMenuCommand(cmdDecline);
         addMenuCommand(cmdClrF);
         addMenuCommand(cmdInfo);
-    }   
+    }
+
     public String touchLeftCommand(){ return SR.MS_MENU; }
     public void touchLeftPressed(){ 
             showMenu();         
     }
-
-    
 
     public void eventOk() {
         TransferTask t=(TransferTask) getFocusedObject();
@@ -85,8 +84,8 @@ public class TransferManager
             if (t.isAcceptWaiting()) new TransferAcceptFile(t);
     }
     
-    protected void keyClear() {
-        if (getItemCount()>0) {
+    protected void declineCurrent() {
+        if (getItemCount() > 0) {
             synchronized (TransferDispatcher.getInstance().getTaskList()) {
                 TransferTask task=(TransferTask) TransferDispatcher.getInstance().getTaskList().elementAt(getCursor());
                 task.cancel();
@@ -114,8 +113,9 @@ public class TransferManager
                 StaticData.getInstance().roster.setEventIcon(null);
             redraw();
         }
-        if (c==cmdDel) keyClear();        
-        if (c==cmdInfo) cmdInfo();
+        if (c == cmdDecline)
+            declineCurrent();
+        if (c==cmdInfo) showInfo();
         if (c==cmdSettings) new TransferConfigForm(this);       
     }
 
@@ -124,20 +124,7 @@ public class TransferManager
         destroyView();
     }
 
-    // overriding this method to avoid autorepeat
-    protected boolean key(int keyCode,  boolean key_long) {
-        if (!key_long) {
-            switch (keyCode) {
-                case Canvas.KEY_POUND:
-                    cmdInfo();
-                    return true;
-            }
-        }
-    
-        return super.key(keyCode, key_long);
-    }
-
-    private void cmdInfo() {
+    public void showInfo() {
         if (getItemCount()>0) {
             TransferTask t=(TransferTask) getFocusedObject();
             StringBuffer info=new StringBuffer();

@@ -158,12 +158,12 @@ public class Bookmarks extends DefForm {
             BookmarkItem join = (BookmarkItem) getFocusedObject();
             new ConferenceForm(join, getCursor());
         } else if (c == cmdDel) {
-            deleteBookmark();
+            deleteFocused();
             setMainBarItem(new MainBar(2, null, SR.MS_BOOKMARKS + " (" + getItemCount() + ") ", false));
             return;
         } //#ifdef SERVICE_DISCOVERY
         else if (c == cmdDisco) {
-            new ServiceDiscovery(roomJid, null, false);
+            discoCurrent();
         } //#endif
         else if (c == cmdConfigure) {
             new QueryConfigForm(roomJid);
@@ -197,21 +197,24 @@ public class Bookmarks extends DefForm {
         }
     }
 
-    private void deleteBookmark() {
+    public boolean canDeleteFocused() {
         BookmarkItem del = (BookmarkItem) getFocusedObject();
-        if (del == null) {
-            return;
-        }
-        if (del.isUrl) {
-            return;
-        }
 
-        itemsList.removeElement(del);
+        return (del == null) || (del.isUrl);
+    }
+
+    public void deleteFocused() {
+        if (!canDeleteFocused())
+            return;
+
+        itemsList.removeElement(getFocusedObject());
+
         if (getItemCount() <= getCursor()) {
             moveCursorEnd();
         }
+
         saveBookmarks();
-        redraw();
+        redraw(); // TODO: need?
     }
 
     private void saveBookmarks() {
@@ -233,26 +236,11 @@ public class Bookmarks extends DefForm {
         }
     }
 
-    protected boolean key(int keyCode, boolean key_long) {
-        if (!key_long) {
-            switch (keyCode) {
-                case Canvas.KEY_NUM4:
-                    pageLeft();
-                    return true;
-                case Canvas.KEY_NUM6:
-                    pageRight();
-                    return true;
 //#ifdef SERVICE_DISCOVERY
-                case Canvas.KEY_POUND:
-                    new ServiceDiscovery(((BookmarkItem) getFocusedObject()).getJid(), null, false);
-                    return true;
-//#endif
-            }
-        }
-
-        return super.key(keyCode, key_long);
+    public void discoCurrent() {
+        new ServiceDiscovery(((BookmarkItem) getFocusedObject()).getJid(), null, false);
     }
-
+//#endif
 
     public String touchLeftCommand() {
         return SR.MS_MENU;
@@ -260,17 +248,5 @@ public class Bookmarks extends DefForm {
 
     public void touchLeftPressed() {
         showMenu();
-    }
-
-    protected void keyClear() {
-        new AlertBox(SR.MS_DELETE_ASK, ((BookmarkItem) getFocusedObject()).getJid()) {
-
-            public void yes() {
-                deleteBookmark();
-            }
-
-            public void no() {
-            }
-        };
     }
 }

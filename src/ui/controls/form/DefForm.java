@@ -71,7 +71,7 @@ public class DefForm
         }
     }
 
-    protected VirtualElement getItemRef(int index) {
+    public VirtualElement getItemRef(int index) {
         synchronized (itemsList) {
             if (index > itemsList.size())
                 return null;

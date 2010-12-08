@@ -142,6 +142,7 @@ public class ContactMessageList extends MessageList {
 //#endif
         if (contact.msgs.size()>0)
             moveCursorTo(firstUnread());
+
         show();
     }
 
@@ -158,7 +159,7 @@ public class ContactMessageList extends MessageList {
         return unreadIndex;
     }    
 
-    public final void commandState(){
+    public final void commandState() {
         menuCommands.removeAllElements();
         if (startSelection) addMenuCommand(cmdSelect);
         
@@ -348,7 +349,7 @@ public class ContactMessageList extends MessageList {
         markRead(index);
     }
     
-    public void menuAction(MenuCommand c, VirtualList d){
+    public void menuAction(MenuCommand c, VirtualList d) {
         commandState();
         super.menuAction(c,d);
 		
@@ -414,10 +415,10 @@ public class ContactMessageList extends MessageList {
         if (!sd.roster.isLoggedIn()) return;
 
         if (c==cmdMessage) { 
-            contact.msgSuspended=null; 
-            keyGreen(); 
+            contact.msgSuspended = null; 
+            messageEditResume(); 
         }
-        if (c==cmdResume) keyGreen();
+        if (c==cmdResume) messageEditResume();
         if (c==cmdQuote) Quote();
         if (c==cmdReply) Reply();
         
@@ -603,7 +604,13 @@ public class ContactMessageList extends MessageList {
 //#         if ((str == null) || (str.equals("")))
 //#             return "toThings";
 //#         if (str.startsWith("Private message from @")) {
-//#             return str.substring(21, str.indexOf('\n')-1);
+//#             return str.substring(21, str.indexOf('\n') - 1);
+//#         }
+//#         if (isJuBoContact(contact)) {
+//#             int secondStrIndex = str.indexOf('\n') + 1;
+//#             if (secondStrIndex < 0)
+//#                 return "toThings";
+//#             str = str.substring(secondStrIndex);
 //#         }
 //#         if ((str.charAt(0) != '@') && !str.startsWith("Recommended by @") && !str.startsWith("Reply by @"))
 //#             return "toThings";
@@ -611,10 +618,10 @@ public class ContactMessageList extends MessageList {
 //#         if (lastStrStartIndex < 0)
 //#             return "toThings";
 //#         int numberEndsIndex = str.indexOf(" http://juick.com/", lastStrStartIndex);
-//#         if (numberEndsIndex<0) {
+//#         if (numberEndsIndex < 0) {
 //#             numberEndsIndex = str.indexOf(" http://psto.net/", lastStrStartIndex);
 //#         }
-//#         if (numberEndsIndex>0) {
+//#         if (numberEndsIndex > 0) {
 //#             numberEndsIndex = str.indexOf(' ', lastStrStartIndex);
 //#             return str.substring(lastStrStartIndex, numberEndsIndex);
 //#         }
@@ -676,146 +683,74 @@ public class ContactMessageList extends MessageList {
     
     public void eventLongOk() {
         super.eventLongOk();
-//#ifndef WMUC
-        if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT) {
-            Reply();
-            return;
-        }
-//#endif
-//#ifdef JUICK
-//#ifdef PLUGINS
-//#         if (sd.Juick)
-//#endif
-//#         if (isJuickContact(contact) || isJuBoContact(contact)) {
-//#             if (juickPoundFork())
-//#                 return;
-//#         }
-//#endif
-        keyGreen();
+        Reply();
     }
     
-    public void keyGreen() {
-        if (!sd.roster.isLoggedIn()) {
+    public void messageEditResume() {
+        if (!sd.roster.isLoggedIn())
             return;
-		}
 
         Roster.me = null;
         Roster.me = new MessageEdit(this, contact, contact.msgSuspended);
         contact.msgSuspended = null;
     }
-    
-    protected void keyClear() {
-        if (!messages.isEmpty()) {
-            clearReadedMessageList();
-		}
-    }
-    
-//#ifdef JUICK    
-//#     public boolean juickPoundFork() { // Fork — это развилка.
-//#         String body = getBodyFromCurrentMsg();
-//#         String target = getTargetForJuickReply(body);
-//#         if (target.equals("toThings")) {
-//#             viewJuickThings(body);
-//#         } else {
-//#             switch (target.charAt(0)) {
-//#                 case '#':
-//#                     if (getActualJuickContact() == null)
-//#                         return false;
-//#                     juickAction("", body);
-//#                     break;
-//#                 case '@':
-//#                     juickAction("PM", body);
-//#                     break;
-//#             }
-//#         }
-//#         return true;
-//#     }
+
+    public void Reply() {
+        if (!sd.roster.isLoggedIn())
+            return;
+
+//#ifndef WMUC
+        if (contact instanceof MucContact && contact.origin == Contact.ORIGIN_GROUPCHAT) {
+            try {
+                Msg msg = getMessage(getCursor());
+
+                if (msg != null
+                 && msg.messageType != Msg.MESSAGE_TYPE_OUT
+                 && msg.messageType != Msg.MESSAGE_TYPE_SUBJ) {
+                    Roster.me = null;
+                    Roster.me = new MessageEdit(this, contact, msg.from + ":");
+                    return;
+                }
+            } catch (Exception e) { /* no messages */ }
+        }
 //#endif
 
-    protected boolean key(int keyCode, boolean key_long) {
-        if (key_long) {
-            switch (keyCode) {
-                case Canvas.KEY_NUM0:
-                    clearReadedMessageList();
-                    return true;
-            }
-        } else {
-            switch (keyCode) {
-                case Canvas.KEY_POUND:
-//#ifndef WMUC
-                    if (contact instanceof MucContact && contact.origin == Contact.ORIGIN_GROUPCHAT) {
-                        Reply();
-                        return true;
-                    }
-//#endif
 //#ifdef JUICK
 //#ifdef PLUGINS
-//#                 if (sd.Juick)
+        if (sd.Juick)
 //#endif
-//#                         if (isJuickContact(contact) || isJuBoContact(contact)) {
-//#                             if (juickPoundFork()) {
-//#                                 return true;
-//#                             }
-//#                         }
+            if (isJuickContact(contact) || isJuBoContact(contact)) {
+                String body = getBodyFromCurrentMsg();
+                String target = getTargetForJuickReply(body);
+
+                if (target.equals("toThings")) {
+                    viewJuickThings(body);
+                    return;
+                }
+
+                switch (target.charAt(0)) {
+                    case '#':
+                        juickAction("", body);
+                        return;
+                    case '@':
+                        juickAction("PM", body);
+                        return;
+                }
+			}
 //#endif
-                    keyGreen();
-                    return true;
-            }
-        }
 
-        return super.key(keyCode, key_long);
-    }
-
-    public void userKeyPressed(int keyCode) {
-        switch (keyCode) {
-            case Canvas.KEY_NUM4:
-                if (cf.useTabs) {
-                    savePosition();
-                    sd.roster.searchActiveContact(-1); //previous contact with messages
-                }
-                else
-                    super.pageLeft();
-                break;
-            case Canvas.KEY_NUM6:
-                if (cf.useTabs) {
-                    savePosition();
-                    sd.roster.searchActiveContact(1); //next contact with messages
-                }
-                else
-                    super.pageRight();
-                break;
-            case Canvas.KEY_NUM3:
-                savePosition();
-                new ActiveContacts(contact);
-                break;
-            case Canvas.KEY_NUM9:
-                Quote();
-                break;
-        }
+        messageEditResume();
     }
 
     public void touchRightPressed(){ if (cf.oldSE) showMenu(); else destroyView(); }
-    public void touchLeftPressed(){ if (cf.oldSE) keyGreen(); else showMenu(); }
+    public void touchLeftPressed(){ if (cf.oldSE) messageEditResume(); else showMenu(); }
+
     public void captionPressed() {
          savePosition();
          sd.roster.searchActiveContact(1); //next contact with messages
     }
-    
-    private void Reply() {
-        if (!sd.roster.isLoggedIn()) return;
-        
-        try {
-            Msg msg=getMessage(getCursor());
-            
-            if (msg==null || msg.messageType == Msg.MESSAGE_TYPE_OUT || msg.messageType == Msg.MESSAGE_TYPE_SUBJ) {
-                keyGreen();
-            } else {
-                Roster.me = null; Roster.me=new MessageEdit(this, contact, msg.from+":");                
-            }
-        } catch (Exception e) {/*no messages*/}
-    }
-    
-    private void Quote() {
+
+    public void Quote() {
         if (!sd.roster.isLoggedIn()) return;
         
         try {
@@ -971,8 +906,6 @@ public class ContactMessageList extends MessageList {
         super.destroyView();
     }
 
-
     public String touchLeftCommand(){ return (Config.getInstance().oldSE)?((contact.msgSuspended!=null)?SR.MS_RESUME:SR.MS_NEW):SR.MS_MENU; }
     public String touchRightCommand(){ return (Config.getInstance().oldSE)?SR.MS_MENU:SR.MS_BACK; }
-
 }

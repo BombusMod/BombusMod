@@ -391,19 +391,6 @@ public class ServiceDiscovery
         super.destroyView();
     }
     
-    public void userKeyPressed(int keyCode) {
-        super.userKeyPressed(keyCode);
-        
-        switch (keyCode) {
-            case Canvas.KEY_NUM4:
-                pageLeft();
-                break;
-            case Canvas.KEY_NUM6:
-                pageRight();
-                break;
-        }
-    }
-
     public void OkNotify(String selectedServer) {
         browse(selectedServer, null);
     }
@@ -461,10 +448,10 @@ public class ServiceDiscovery
         //addCommand(cmdAdd);
         addMenuCommand(cmdCancel);        
     }
-    
+
     public String touchLeftCommand(){ return SR.MS_MENU; }
     public void touchLeftPressed(){ showMenu(); }
-    public void touchRightPressed() { exitDiscovery(false); }
+    public void touchRightPressed() { exitDiscovery(false); } 
 
 }
 class State{

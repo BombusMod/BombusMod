@@ -65,7 +65,7 @@ public abstract class VirtualList {
      * переопределить (override) функцию для реализации необходимых действий
      * @param index индекс выделенного элемента
      */
-    public void focusedItem(int index) {}
+    public void focusedItem(int index) { }
 
     /**
      * число элементов виртуального списка
@@ -80,7 +80,7 @@ public abstract class VirtualList {
      * @param index номер элемента списка. не превосходит значение, возвращённое getItemCount()
      * @return ссылка на элемент с номером index.
      */
-    abstract protected VirtualElement getItemRef(int index);
+    abstract public VirtualElement getItemRef(int index);
 
     protected int getMainBarBGnd() { return ColorTheme.getColor(ColorTheme.BAR_BGND);} 
     protected int getMainBarBGndBottom() { return ColorTheme.getColor(ColorTheme.BAR_BGND_BOTTOM);}
@@ -153,44 +153,7 @@ public abstract class VirtualList {
 //#endif
     }
 
-    /**
-     * Обработчик дополнительных кнопок. Вызывается в случае, если код кнопки
-     * не был обработан функцией key(keyCode)
-     * необходимо переопределить (override) функцию для реализации необходимых действий
-     * @param keyCode код клавиши
-     */
-    public void userKeyPressed(int keyCode){}
-    
     public void userAdditionKeyPressed(int keyCode){}
-
-    public static final short SIEMENS_GREEN=-11;
-    
-    public static final short NOKIA_PEN=-50;
-
-    public static final short MOTOE680_VOL_UP=-9;
-    public static final short MOTOE680_VOL_DOWN=-8;
-    public static final short MOTOE680_REALPLAYER=-6;
-    public static final short MOTOE680_FMRADIO=-7;
-    
-    public static final short MOTOROLA_FLIP=-200;
-    
-    public static final short SE_FLIPOPEN_JP6=-30;
-    public static final short SE_FLIPCLOSE_JP6=-31;
-    public static final short SE_GREEN=-10;
-    
-    public static final short SIEMENS_FLIPOPEN=-24;
-    public static final short SIEMENS_FLIPCLOSE=-22;
-    
-    public static final short SIEMENS_VOLUP=-13;
-    public static final short SIEMENS_VOLDOWN=-14;
-    
-    public static final short SIEMENS_CAMERA=-20;
-    public static final short SIEMENS_MPLAYER=-21;
-
-    public static short keyClear=-8;
-    public static short keyVolDown=0x1000;
-    public static short keyBack=-11;
-    public static short greenKeyCode=SIEMENS_GREEN;
 
     public static boolean memMonitor;
     public static boolean showTimeTraffic = true;
@@ -369,7 +332,7 @@ public abstract class VirtualList {
     }
     
     public void show() {
-        parentView = sd.canvas.getList();        
+        parentView = sd.canvas.getList();
         sd.canvas.show(this);
      }
 
@@ -405,10 +368,9 @@ public abstract class VirtualList {
      * перед любыми обращениями к элементам списка.
      *     
      */
-    protected void beginPaint(){};
+    protected void beginPaint() { }
 
     public void paint(Graphics g) {
-
         mHeight=0;
         iHeight=0;       
         
@@ -814,12 +776,18 @@ public abstract class VirtualList {
 //#         if (StaticData.getInstance().lightConfig)
 //#endif            
 //#             CustomLight.keyPressed();
-//#endif        
+//#endif
+//#ifdef AUTOSTATUS
+//#     sd.roster.userActivity();
+//#endif
     }
 
     protected final void keyReleased(int keyCode) {
 //#ifdef DEBUG
 //#         System.out.println("keyReleased: " + keyCode);
+//#endif
+//#ifdef AUTOSTATUS
+//#     sd.roster.userActivity();
 //#endif
     }
 
@@ -836,6 +804,22 @@ public abstract class VirtualList {
 //#         if (StaticData.getInstance().lightConfig)
 //#endif            
 //#             CustomLight.keyPressed();
+//#endif
+//#ifdef AUTOSTATUS
+//#     sd.roster.userActivity();
+//#endif
+
+        // workaround for SE JP6 - enabling vibra in closed state
+        if (phoneManufacturer == Config.SONYE) {
+            midlet.BombusMod.getInstance().setDisplayable((Displayable) null);
+            try {
+                 Thread.sleep(300);
+            } catch (Exception ex) { }
+            sd.canvas.show(this);
+        }
+
+//#ifdef AUTOSTATUS
+//#     sd.roster.setAutoAwayTimer();
 //#endif
     }
 
@@ -860,11 +844,6 @@ public abstract class VirtualList {
             }
         }
 
-        if (key(keyCode, key_long)) {
-            redraw();
-            return true;
-        }
-
         return false;
     }
 
@@ -874,11 +853,11 @@ public abstract class VirtualList {
         if (Config.fullscreen) {
             int act = CommandsPointer.pointerPressed(x, y);
             if (act == 1) {
-                key(Config.SOFT_LEFT, false);
+                touchLeftPressed();
                 stickyWindow = false;
                 return;
             } else if (act == 2) {
-                key(Config.SOFT_RIGHT, false);
+                touchRightPressed();
                 stickyWindow = false;
                 return;
             }
@@ -1045,7 +1024,7 @@ public abstract class VirtualList {
 
         if (key_code == Config.KEY_BACK) {
             key = 13;
-        } else if (key_code == greenKeyCode) {
+        } else if (key_code == Config.KEY_GREEN) {
             key = 14;
         }
         return key;
@@ -1061,105 +1040,6 @@ public abstract class VirtualList {
         reconnectWindow.getInstance().stopReconnect();
         //reconnectDraw=false;
         redraw();
-    }
-
-    /**
-     * обработка кодов кнопок
-     * @param keyCode код нажатой кнопки
-     */
-    protected boolean key(int keyCode, boolean key_long) {
-        if (!key_long) {
-            if (keyCode == Config.SOFT_LEFT || keyCode == '(') {
-                if (reconnectWindow.getInstance().isActive()) {
-                    reconnectYes();
-                    return true;
-                }
-                touchLeftPressed();
-                return true;
-            }
-            if (keyCode == Config.SOFT_RIGHT || keyCode == ')') {
-                if (reconnectWindow.getInstance().isActive()) {
-                    reconnectNo();
-                    return true;
-                }
-                touchRightPressed();
-                return true;
-            }
-            if (keyCode == keyClear) {
-                keyClear();
-                return true;
-            } else if (keyCode == keyVolDown) {
-                moveCursorEnd();
-                return true;
-            } else if (keyCode == '5') {
-                eventOk();
-                return true;
-            } else if (keyCode == Config.KEY_BACK && canBack == true) {
-                destroyView();
-                return true;
-            } else if (keyCode == greenKeyCode) {
-                keyGreen();
-                return true;
-            }
-            switch (keyCode) {
-                case Canvas.KEY_NUM1:
-                    moveCursorHome();
-                    return true;
-                case Canvas.KEY_NUM2:
-                    keyUp();
-                    return true;
-                case Canvas.KEY_NUM4:
-                    userKeyPressed(keyCode);
-                    return true;
-                case Canvas.KEY_NUM6:
-                    userKeyPressed(keyCode);
-                    return true;
-                case Canvas.KEY_NUM7:
-                    moveCursorEnd();
-                    return true;
-                case Canvas.KEY_NUM8:
-                    keyDwn();
-                    return true;
-//#ifdef POPUPS
-                case Canvas.KEY_POUND:
-                    if (cf.popUps) {
-                        try {
-                            String text = ((VirtualElement) getFocusedObject()).getTipString();
-                            if (text != null) {
-                                setWobble(1, null, text);
-                                return true;
-                            }
-                        } catch (Exception e) { }
-                    }
-                    return false;
-//#endif
-
-                default:
-                    try {
-                        switch (sd.canvas.getGameAction(keyCode)) {
-                            case Canvas.UP:
-                                keyUp();
-                                return true;
-                            case Canvas.DOWN:
-                                keyDwn();
-                                return true;
-                            case Canvas.LEFT:
-                                pageLeft();
-                                return true;
-                            case Canvas.RIGHT:
-                                pageRight();
-                                return true;
-                            case Canvas.FIRE:
-                                eventOk();
-                                return true;
-                            default:
-                                userKeyPressed(keyCode);
-                                return true;
-                        }
-                    } catch (Exception e) {/* IllegalArgumentException @ getGameAction */}
-            }
-        }
-        return false;
     }
 
     /**
@@ -1362,9 +1242,6 @@ public abstract class VirtualList {
         return false;
     }
     
-    protected void keyClear() {}
-    protected void keyGreen() { eventOk(); }
-    
     protected void setRotator() {
 //#if (USE_ROTATOR)
         try {
@@ -1393,6 +1270,8 @@ public abstract class VirtualList {
 //#             System.out.println(e);
 //#endif
         }
+
+
         TimerTaskRotate.startRotate(itemWidth, this);
  //#endif
     }
@@ -1515,31 +1394,89 @@ public abstract class VirtualList {
     public final Vector menuCommands = new Vector();
 
     public void addMenuCommand(MenuCommand command) {
-        if (menuCommands.indexOf(command)<0)
+        if (menuCommands.indexOf(command) < 0)
             menuCommands.addElement(command);
     }
 
     public void removeMenuCommand(MenuCommand command) {
         menuCommands.removeElement(command);
-    }   
-    
-    public void showMenu() {}
-
-    public void touchLeftPressed(){
-        cmdOk();
     }
 
-    public void touchRightPressed(){
-        cmdCancel();
+    protected void showMenu() { }
+
+    public void touchLeftPressed() {
+       if (reconnectWindow.getInstance().isActive())
+           reconnectYes();
+        else /*if (isHasMenu())
+           showMenu();
+        else if (menuCommands.size() > 0 && this instanceof Menu.MenuListener)
+            ((Menu.MenuListener) this).menuAction((MenuCommand) menuCommands.elementAt(0), this);
+        else*/
+            cmdOk();
     }
-    public void captionPressed() {};
-    
-    public String touchLeftCommand(){
+
+    public void touchRightPressed() {
+        if (reconnectWindow.getInstance().isActive())
+            reconnectNo();
+         else /*{
+            int size = menuCommands.size();
+            if (size > 1 && this instanceof Menu.MenuListener)
+                ((Menu.MenuListener) this).menuAction((MenuCommand) menuCommands.elementAt(size - 1), this);
+            else
+                cmdCancel();
+		 }*/
+            cmdCancel();
+    }
+
+    public void captionPressed() { }
+
+    public String touchLeftCommand() {
+/*        if (isHasMenu())
+		    return SR.MS_MENU;
+        else if (menuCommands.size() > 0)
+            return ((MenuCommand) menuCommands.elementAt(0)).getName();
+
+        return SR.MS_OK;
+*/
         return SR.MS_MENU;
     }
-    public String touchRightCommand(){ return canBack? SR.MS_BACK : ""; }
-    
-    public void cmdCancel() { if (canBack) destroyView(); }
+
+    public String touchRightCommand() {
+/*        int size = menuCommands.size();
+        if (size > 1)
+            return ((MenuCommand) menuCommands.elementAt(size - 1)).getName();
+        else*/ if (canBack)
+            return SR.MS_BACK;
+
+        return "";
+    }
+
+    public void cmdCancel() {
+        if (canBack)
+            destroyView();
+    }
+
+
     public void cmdOk() { showMenu(); }
-    
+//    public void cmdOk() { }
+
+
+    public boolean canDeleteFocused() {
+        return false;
+    }
+    public void deleteFocused() { }
+
+	public void showInfo() {
+//#ifdef POPUPS
+        if (!cf.popUps)
+            return;
+
+        try {
+            String text = ((VirtualElement) getFocusedObject()).getTipString();
+            if (text != null) {
+                setWobble(1, null, text);
+            }
+        } catch (Exception e) { }
+//#endif
+    }
 }

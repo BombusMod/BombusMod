@@ -41,48 +41,22 @@ import ui.controls.form.DefForm;
 //# 
 //#     public void drawCursor(Graphics g, int width, int height) {
 //#         // prevent text selection
-//#     };
+//#     }
 //# 
-//#     public boolean key(int keyCode, boolean key_long) {
-//#         if (key_long)
-//#             return super.key(keyCode, key_long);
+//#     public void keyUp() {
+//#         selector.movePointAt(1);
+//#     }
 //# 
-//#         switch (keyCode) {
-//#             case Canvas.KEY_NUM2:
-//#                 selector.movePointAt(1);
-//#                 return true;
-//#             case Canvas.KEY_NUM8:
-//#                 selector.movePointAt(-1);
-//#                 return true;
-//#             case Canvas.KEY_NUM4:
-//#                 selector.selectPrev();
-//#                 return true;
-//#             case Canvas.KEY_NUM6:
-//#                 selector.selectNext();
-//#                 return true;
-//#             default:
-//#                 try {
-//#                     switch (sd.canvas.getGameAction(keyCode)){
-//#                         case Canvas.UP:
-//#                             selector.movePointAt(1);
-//#                             return true;
-//#                         case Canvas.DOWN:
-//#                             selector.movePointAt(-1);
-//#                             return true;
-//#                         case Canvas.LEFT:
-//#                             selector.selectPrev();
-//#                             return true;
-//#                         case Canvas.RIGHT:
-//#                             selector.selectNext();
-//#                             return true;
-//#                         case Canvas.FIRE:
-//#                             cmdOk();
-//#                             return true;
-//#                     }
-//#                 } catch (Exception e) { /* IllegalArgumentException @ getGameAction */ }
-//#         }
+//#     public void keyDwn() {
+//#         selector.movePointAt(-1);
+//#     }
 //# 
-//#         return super.key(keyCode, key_long);
+//#     public void pageLeft() {
+//#         selector.selectPrev();
+//#     }
+//# 
+//#     public void pageRight() {
+//#         selector.selectNext();
 //#     }
 //# 
 //#     public void run() {

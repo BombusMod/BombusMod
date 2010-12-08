@@ -55,17 +55,29 @@ import io.NvStorage;
 import java.io.DataInputStream;
 import Messages.MessageList;
 import Messages.MessageItem;
+import Messages.MessageUrl;
 import io.file.FileIO;
 import java.io.IOException;
 import util.StringLoader;
 import java.io.InputStream;
 import java.io.DataOutputStream;
+import ui.controls.AlertBox;
+import Conference.Bookmarks;
+import Client.ActiveContacts;
+import ui.VirtualElement;
+import Menu.RosterToolsMenu;
+import ui.SplashScreen;
+import javax.microedition.lcdui.Displayable;
+import PrivacyLists.PrivacyModifyList;
+import PrivacyLists.PrivacySelect;
+import Archive.ArchiveList;
+import History.HistoryReader;
 
 public class UserKeyExec {
 
     private static UserKeyExec instance;
     StaticData sd = StaticData.getInstance();
-    public final static String cmds[] = new String[22];
+    public final static String cmds[] = new String[59];
     public Vector keysList;
     public UserKey current_key;
 
@@ -84,11 +96,11 @@ public class UserKeyExec {
 
     private void init_cmds() {
         cmds[0] = SR.MS_NO;
-        cmds[1] = SR.MS_OPTIONS;
+        cmds[1] = "[Roster]" + SR.MS_OPTIONS;
         cmds[2] = SR.MS_CLEAN_ALL_MESSAGES;
         cmds[3] = SR.MS_RECONNECT;
 //#ifdef STATS
-//#         cmds[4] = SR.MS_STATS;
+//#         cmds[4] = "[Roster]" + SR.MS_STATS;
 //#endif
         cmds[5] = SR.MS_STATUS_MENU;
         cmds[6] = SR.MS_FILE_TRANSFERS;
@@ -123,6 +135,43 @@ public class UserKeyExec {
 //#ifdef JUICK
 //#         cmds[21] = SR.MS_COMMANDS + " Juick";
 //#endif
+        cmds[22] = "Move cursor home";
+        cmds[23] = "Move cursor end";
+        cmds[24] = "Move cursor next";
+        cmds[25] = "Move cursor previous";
+        cmds[26] = "Move cursor left";
+        cmds[27] = "Move cursor right";
+        cmds[28] = "Go to previous window";
+        cmds[29] = "Delete current item";
+        cmds[30] = "[Chat] " + "Quote";
+        cmds[31] = "[Chat] " + "Active contacts";
+        cmds[32] = "[Roster] " + SR.MS_BOOKMARKS;
+        cmds[33] = "[Roster] Collapse all group";
+        cmds[34] = "Show info";
+        cmds[35] = "Action Ok";
+        cmds[36] = "Left_Soft std action";
+        cmds[37] = "Right_Soft stc action";
+        cmds[38] = "[Roster] " + "Show offline contacts";
+        cmds[39] = "[Roster] " + SR.MS_TOOLS;
+        cmds[40] = "[Roster] " + SR.MS_APP_MINIMIZE;
+        cmds[41] = "[Roster + ActiveContacts] " + "Focus to next unreaded";
+        cmds[42] = "[Roster] " + "Previous group";
+        cmds[43] = "[Roster] " + "Next group";
+        cmds[44] = "Block keyboard";
+        cmds[45] = "[Roster] " + "Vibra/Sound";
+        cmds[46] = "Moto backlight";
+        cmds[47] = "[Roster] " + "Active contacts";
+        cmds[48] = "[Chat]" + "Previous contact with messages";
+        cmds[49] = "[Chat]" + "Next contact with messages";
+        cmds[50] = "[Chat + XMLList + ActiveContacts]" + SR.MS_CLEAR_LIST;
+        cmds[51] = "[Chat]" + SR.MS_REPLY;
+        cmds[52] = "[Chat + Roster + ActiveContacts + XMLList + MessageUrl]" + SR.MS_RESUME;
+        cmds[53] = "["+SR.MS_ARCHIVE+"]" + SR.MS_PASTE_BODY;
+        cmds[54] = "["+SR.MS_PRIVACY_LISTS+"]" + "Add new item";
+        cmds[55] = "["+SR.MS_HISTORY+"]" + "Begin of file";
+        cmds[56] = "["+SR.MS_HISTORY+"]" + "End of file";
+        cmds[57] = "["+SR.MS_BOOKMARKS+"]" + SR.MS_DISCO_ROOM;
+        cmds[58] = "[Roster]" + "Kick from groupchat";
     }
 
     private void update_current_key(int key, boolean key_long) {
@@ -233,6 +282,11 @@ public class UserKeyExec {
         update_current_key(key, key_long);
         boolean executed = false;
 
+		final VirtualList current = sd.canvas.getList();
+        if (current instanceof UserKeyEdit)
+            if (((UserKeyEdit) current).key(key, key_long))
+                return true;
+
         current_key.two_keys = true;
         for (int i = 0; i < keysList.size(); i++) {
             UserKey u = ((UserKey) keysList.elementAt(i));
@@ -240,8 +294,10 @@ public class UserKeyExec {
                 executed = commandExecute(u.command_id) || executed;
         }
 
-        if (executed)
+        if (executed) {
+            sd.canvas.repaint();
             return true;
+        }
 
         current_key.two_keys = false;
         for (int i = 0; i < keysList.size(); i++) {
@@ -250,17 +306,21 @@ public class UserKeyExec {
                 executed = commandExecute(u.command_id) || executed;
         }
 
+        sd.canvas.repaint();
         return executed;
     }
 
     private boolean commandExecute(int command_id) {
         Config cf = Config.getInstance();
         boolean connected = sd.roster.isLoggedIn();
-		VirtualList current = sd.canvas.getList();
+		final VirtualList current = sd.canvas.getList();
 
         switch (command_id) {
-            case 1: 
-                new ConfigForm();
+            case 1:
+                if (current instanceof Roster)
+                    new ConfigForm();
+                else if (current instanceof ConfigForm)
+                    current.destroyView();
                 break;
             case 2: 
                 sd.roster.cmdCleanAllMessages();
@@ -274,7 +334,10 @@ public class UserKeyExec {
 //#ifdef PLUGINS
 //#                 if (sd.Stats)
 //#endif
-//#                     new StatsWindow();
+//#                     if (current instanceof Roster)
+//#                         new StatsWindow();
+//#                     else if (current instanceof StatsWindow)
+//#                         current.destroyView();
 //#                 break;
 //#endif
 //#endif
@@ -296,12 +359,14 @@ public class UserKeyExec {
                 break;
             case 8: 
 //#ifdef SERVICE_DISCOVERY
-                if (connected) new ServiceDiscovery( null, null, false);
+                if (connected)
+                    new ServiceDiscovery(null, null, false);
 //#endif
                 break;
             case 9: 
 //#ifdef PRIVACY
-                if (connected) new PrivacySelect();
+                if (connected)
+                    new PrivacySelect();
 //#endif
                 break;
 //#ifdef USER_KEYS                
@@ -342,7 +407,7 @@ public class UserKeyExec {
 //#endif
                 break;
             case 17:
-                Config.fullscreen=!Config.fullscreen;
+                Config.fullscreen = !Config.fullscreen;
                 cf.saveToStorage();                
                 sd.canvas.setFullScreenMode(Config.fullscreen);
                 break;
@@ -370,7 +435,7 @@ public class UserKeyExec {
                 } else {
                     return false;
                 }
-            break;
+                break;
             case 20:
 //#ifdef SMILES
                 if (current instanceof MessageList) {
@@ -396,6 +461,191 @@ public class UserKeyExec {
 //#                 }
 //#endif
                 break;
+            case 22:
+                current.moveCursorHome();
+                break;
+            case 23:
+                current.moveCursorEnd();
+                break;
+            case 24:
+                current.keyUp();
+                break;
+            case 25:
+                current.keyDwn();
+                break;
+            case 26:
+                current.pageLeft();
+                break;
+            case 27:
+                current.pageRight();
+                break;
+			case 28:
+                if (current.canBack == true)
+                    current.destroyView();
+                break;
+            case 29:
+                VirtualElement item = current.getItemRef(current.getCursor());
+                if (item == null)
+                    return false;
+                if (current.canDeleteFocused())
+                    new AlertBox("Delete current item", "Are you sure to delete \""+ item.getTipString() +"\"?") {
+                        public void yes() {
+                            current.deleteFocused();
+                        }
+                        public void no() { }
+                    };
+                break;
+            case 30:
+                if (current instanceof ContactMessageList)
+                    ((ContactMessageList) current).Quote();
+                break;
+            case 31:
+                if (current instanceof ContactMessageList) {
+                    ContactMessageList cml = (ContactMessageList) current;
+                    cml.savePosition();
+                    new ActiveContacts(cml.contact);
+				} else if (current instanceof ActiveContacts)
+                    current.destroyView();
+                break;
+            case 32:
+//#ifndef WMUC
+                if (current instanceof Roster && sd.roster.isLoggedIn())
+                    new Bookmarks(null);
+//#endif
+                break;
+            case 33:
+                if (current instanceof Roster)
+                    ((Roster) current).collapseAllGroup();
+                break;
+            case 34:
+                current.showInfo();
+                break;
+            case 35:
+                current.eventOk();
+                break;
+            case 36:
+                current.touchLeftPressed();
+				break;
+            case 37:
+                current.touchRightPressed();
+                break;
+            case 38:
+                if (current instanceof Roster) {
+                    cf.showOfflineContacts = !cf.showOfflineContacts;
+                    sd.roster.reEnumRoster();
+                }
+                break;
+            case 39:
+                if (current instanceof Roster)
+                    new RosterToolsMenu();
+                break;
+            case 40:
+                if (current instanceof Roster)
+                    sd.roster.cmdMinimize();
+                 break;
+            case 41:
+                if (current instanceof Roster)
+                    sd.roster.focusToNextUnreaded();
+                else if (current instanceof ActiveContacts)
+                    ((ActiveContacts) current).focusToNextUnreaded();
+                break;
+			case 42:
+                if (current instanceof Roster)
+                    sd.roster.moveFocusToGroup(-1);
+                break;
+			case 43:
+                if (current instanceof Roster)
+                    sd.roster.moveFocusToGroup(1);
+                break;
+            case 44:
+                Displayable current_d = BombusMod.getInstance().getCurrentDisplayable();
+
+                if (current_d instanceof SplashScreen)
+                    ((SplashScreen) current_d).destroyView();
+				else
+                    sd.roster.blockScreen();
+                break;
+            case 45:
+                if (current instanceof Roster)
+                    sd.roster.vibraOnly();
+                break;
+            case 46:
+                sd.roster.changeMotoBacklightState();
+                break;
+            case 47:
+                if (current instanceof Roster)
+                    new ActiveContacts(null);
+				else if (current instanceof ActiveContacts)
+                    current.destroyView();
+                break;
+            case 48:
+                if (current instanceof ContactMessageList && cf.useTabs) {
+                    ((ContactMessageList) current).savePosition();
+                    sd.roster.searchActiveContact(-1); //previous contact with messages
+				} else
+                    current.pageLeft();
+                break;
+            case 49:
+                if (current instanceof ContactMessageList && cf.useTabs) {
+                    ((ContactMessageList) current).savePosition();
+                    sd.roster.searchActiveContact(1); //next contact with messages
+				} else
+                    current.pageRight();
+                break;
+            case 50:
+                if (current instanceof ContactMessageList)
+                    ((ContactMessageList) current).clearReadedMessageList();
+                else if (current instanceof XMLList)
+                    ((XMLList) current).clearReadedMessageList();
+                else if (current instanceof ActiveContacts)
+                    ((ActiveContacts) current).clearReadedInFocused();
+                break;
+            case 51:
+                if (current instanceof ContactMessageList)
+                    ((ContactMessageList) current).Reply();
+                break;
+            case 52:
+                if (current instanceof ContactMessageList)
+                    ((ContactMessageList) current).messageEditResume();
+                else if (current instanceof Roster)
+                    ((Roster) current).messageEditResume();
+                else if (current instanceof ActiveContacts)
+                    ((ActiveContacts) current).messageEditResume();
+                else if (current instanceof XMLList)
+                    ((XMLList) current).stanzaEdit();
+                else if (current instanceof MessageUrl)
+                    ((MessageUrl) current).EditURL();
+                break;
+            case 53:
+                if (current instanceof ArchiveList)
+                    ((ArchiveList) current).pasteData(0);
+                break;
+            case 54:
+                if (current instanceof PrivacyModifyList)
+                    ((PrivacyModifyList) current).addNewElement();
+				else if (current instanceof PrivacySelect)
+                    ((PrivacySelect) current).addNewElement();
+                break;
+            case 55:
+                if(current instanceof HistoryReader)
+                   ((HistoryReader) current).gotoBegin();
+                break;
+            case 56:
+                if(current instanceof HistoryReader)
+                   ((HistoryReader) current).gotoEnd();
+                break;
+//#ifdef SERVICE_DISCOVERY
+            case 57:
+                if(current instanceof Bookmarks)
+                   ((Bookmarks) current).discoCurrent();
+                break;
+//#endif
+//#ifndef WMUC
+            case 58:
+                if (current instanceof Roster)
+                    sd.roster.kickFocused();
+                break;
+//#endif
             default:
                 return false;
         }

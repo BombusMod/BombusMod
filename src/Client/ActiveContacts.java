@@ -39,8 +39,7 @@ import ui.controls.PopUp;
  *
  * @author EvgS
  */
-public class ActiveContacts
-        extends DefForm {
+public class ActiveContacts extends DefForm {
 
     /** Creates a new instance of ActiveContacts
      * @param current
@@ -67,8 +66,7 @@ public class ActiveContacts
         try {
             int focus = itemsList.indexOf(current);
             moveCursorTo(focus);
-        } catch (Exception e) {
-        }
+        } catch (Exception e) { }
     }
 
     public void cmdOk() {
@@ -83,22 +81,7 @@ public class ActiveContacts
         //c.msgSuspended=null; // clear suspended message for selected contact
     }
 
-    protected boolean key(int keyCode, boolean key_long) {
-        if (!key_long) {
-            switch (keyCode) {
-                case Canvas.KEY_NUM3:
-                    destroyView();
-                    return true;
-                case Canvas.KEY_NUM0:
-                    focusToNextUnreaded();
-                    return true;
-            }
-        }
-
-        return super.key(keyCode, key_long);
-    }
-
-    private void focusToNextUnreaded() {
+    public void focusToNextUnreaded() {
         if (getItemCount() < 1) {
             return;
         }
@@ -132,11 +115,15 @@ public class ActiveContacts
         }
     }
 
-    protected void keyGreen() {
-        eventOk();
+    public void messageEditResume() {
+        Contact c = (Contact) getFocusedObject();
+        ui.VirtualList pview = new ContactMessageList(c);
+        Roster.me = null;
+        Roster.me = new MessageEdit(pview, c, c.msgSuspended);
+        c.msgSuspended = null;
     }
 
-    protected void keyClear() {
+    public void clearReadedInFocused() {
         Contact c = (Contact) getFocusedObject();
         c.purge();
         itemsList.removeElementAt(getCursor());

@@ -1,0 +1,102 @@
+Список всех окон BombusMod (кроме некоторых простых MyMenu с командами 
+"Ok" и "назал"). Цифра после имени файла означает то, какому из типов 
+(см. файл ListTypes.txt) наиболее соотвестсвует данное окно. Две цифры
+через стрелочку означают, что окно похоже скорее на тип до стрелочки, но его
+было бы желательно изменить до соответствия типу после стрелочки (обычно на
+этот счёт есть комментарий в ListTypes.txt). Этот список
+составлен так, чтобы его было просто парсить и отмечать проделанные
+изменения.
+
+
+==============================================
+Наследованные от DefForm:
+
+src/Account/AccountForm.java 3
+src/Account/AccountRegister.java 3
+src/Account/AccountSelect.java 4
+src/Alerts/AlertCustomizeForm.java 4->3
+src/Alerts/AlertProfile.java 4->2
+src/AutoTasks/AutoTaskForm.java 3
+src/Client/ActiveContacts.java 2
+src/Client/ChangeTransport.java 3
+src/Client/ConfigForm.java 3
+src/Client/ContactEdit.java 3
+src/Client/JuickConfig.java 3
+src/Client/RenameGroup.java 3
+src/Client/Roster.java !!!
+src/Client/SmilePicker.java 2
+src/Client/StatusSelect.java 4
+src/Client/SubscriptionEdit.java 3
+src/Colors/ColorConfigForm.java 3
+src/Colors/ColorSelectForm.java 3
+src/Colors/ColorsList.java 4
+src/Conference/affiliation/AffiliationModify.java 3
+src/Conference/affiliation/Affiliations.java ???
+src/Conference/affiliation/ConferenceQuickPrivelegeModify.java 3
+src/Conference/AppendNick.java 2
+src/Conference/Bookmarks.java 4
+src/Conference/ConferenceForm.java 3
+src/Conference/InviteForm.java 3
+src/Fonts/ConfigFonts.java 3
+src/History/HistoryConfig.java 3
+src/IE/IEMenu.java 3
+src/Info/InfoWindow.java 5
+src/io/file/browse/Browser.java 4
+src/io/file/browse/ShowFile.java 1
+src/io/file/transfer/TransferAcceptFile.java 2
+src/io/file/transfer/TransferConfigForm.java 2
+src/io/file/transfer/TransferImage.java 2
+src/io/file/transfer/TransferManager.java 4
+src/io/file/transfer/TransferSendFile.java 2
+src/LightControl/LightConfigForm.java 2
+src/Messages/MessageUrl.java 4
+src/PEP/ActivityList.java 2
+src/PEP/LocationForm.java 3
+src/PEP/MoodList.java 2
+src/PEP/PepForm.java 3
+src/PrivacyLists/PrivacyForm.java 3
+src/PrivacyLists/PrivacyModifyList.java 4
+src/PrivacyLists/PrivacySelect.java 4
+src/PrivacyLists/QuickPrivacy.java 3
+src/ServiceDiscovery/DiscoFeatures.java 1
+src/ServiceDiscovery/SearchResult.java
+src/ServiceDiscovery/ServerBox.java
+src/ServiceDiscovery/ServiceDiscovery.java
+src/Statistic/StatsWindow.java 5
+src/ui/controls/AlertBox.java 3
+src/ui/controls/form/DropListBox.java 2
+src/ui/controls/form/TextListBox.java 4
+src/ui/keys/UserKeyConfigForm.java 3
+src/ui/keys/UserKeyEdit.java 3
+src/ui/keys/UserKeysList.java 4
+src/VCard/VCardEdit.java 4->3
+src/VCard/VCardView.java
+src/xmpp/extensions/RosterXListener.java
+
+
+==============================================
+Наследованные от Menu:
+
+src/Menu/JuickThingsMenu.java
+src/Menu/MyMenu.java
+src/Menu/RosterItemActions.java
+src/Menu/RosterToolsMenu.java
+src/Menu/SieNatMenu.java
+
+
+
+==============================================
+Наследованные от ComplexForm:
+
+src/ServiceDiscovery/DiscoForm.java
+src/xmpp/extensions/XDataForm.java
+
+
+==============================================
+Наследованные от MessageList:
+
+src/Archive/ArchiveList.java
+src/Client/ContactMessageList.java
+src/Console/XMLList.java
+src/History/HistoryReader.java
+src/Info/Upgrade.java

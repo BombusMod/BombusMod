@@ -48,7 +48,7 @@ public class ArchiveList
 //#endif
     
     MenuCommand cmdPaste=new MenuCommand(SR.MS_PASTE_BODY, MenuCommand.SCREEN, 1);
-    MenuCommand cmdJid=new MenuCommand(SR.MS_PASTE_JID /*"Paste Jid"*/, MenuCommand.SCREEN, 2);
+    MenuCommand cmdJid=new MenuCommand(SR.MS_PASTE_JID , MenuCommand.SCREEN, 2);
     MenuCommand cmdSubj=new MenuCommand(SR.MS_PASTE_SUBJECT, MenuCommand.SCREEN, 3);
     MenuCommand cmdEdit=new MenuCommand(SR.MS_EDIT, MenuCommand.SCREEN, 4);
     MenuCommand cmdNew=new MenuCommand(SR.MS_NEW, MenuCommand.SCREEN, 5);
@@ -84,10 +84,10 @@ public class ArchiveList
     }
 
     public final void commandState() {
-        
         menuCommands.removeAllElements();
-        if (getItemCount()>0) {
-            if (t!=null) {
+
+        if (getItemCount() > 0) {
+            if (t != null) {
                 addMenuCommand(cmdPaste);
                 addMenuCommand(cmdJid);
                 addMenuCommand(cmdSubj);
@@ -103,7 +103,7 @@ public class ArchiveList
 
     protected void beginPaint() {
         getMainBarItem().setElementAt(" ("+getItemCount()+")",1);
-	getMainBarItem().setElementAt(String.valueOf(getFreeSpace()),3);
+        getMainBarItem().setElementAt(String.valueOf(getFreeSpace()),3);
     }
     
     public int getItemCount() {
@@ -121,7 +121,7 @@ public class ArchiveList
         if (c==cmdNew) { new archiveEdit(this, -1, where, this); }
 	if (m==null) return;
         
-	if (c==cmdDelete) { keyClear(); }
+	if (c==cmdDelete) { deleteFocused(); }
         if (c==cmdDeleteAll) { deleteAllMessages(); redraw(); }
 	if (c==cmdPaste) { pasteData(0); }
 	if (c==cmdSubj) { pasteData(1); }
@@ -138,13 +138,17 @@ public class ArchiveList
         messages.removeAllElements();
     }
 
-    private void deleteMessage() {
+    public boolean canDeleteFocused() {
+        return true;
+    }
+
+    public void deleteFocused() {
         archive.delete(getCursor());
         messages.removeAllElements();
-        if (getCursor()>0)
+        if (getCursor() > 0)
             moveCursorTo(getCursor() - 1);
         setRotator();
-        redraw();
+        redraw(); // Need?
     }
     
     private void deleteAllMessages() {
@@ -157,7 +161,7 @@ public class ArchiveList
         };
     }
     
-    private void pasteData(int field) {
+    public void pasteData(int field) {
 	if (t==null) return;
 	Msg m=getMessage(getCursor());
 	if (m==null) return;
@@ -176,20 +180,6 @@ public class ArchiveList
 	destroyView();
     }
     
-    public void keyGreen() { pasteData(0); }
-    
-    public void keyClear() { 
-        if (getItemCount()>0) {
-            new AlertBox(SR.MS_DELETE, SR.MS_SURE_DELETE) {
-                public void yes() {
-                    deleteMessage();
-                }
-                public void no() { }
-            };
-            redraw();
-        }
-    }
-
     public void destroyView(){
         archive.close();
         if (t != null)

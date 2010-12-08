@@ -186,18 +186,4 @@ public class AccountSelect extends DefForm {
             ((Account) itemsList.elementAt(i)).saveToDataOutputStream(outputStream);
         NvStorage.writeFileRecord(outputStream, "accnt_db", 0, true); //Account.storage
     }
-    
-    protected boolean key(int keyCode, boolean key_long) {
-        if (key_long) {
-            switch (keyCode) {
-                case Canvas.KEY_NUM6:
-                    Config.fullscreen = !Config.fullscreen;
-                    cf.saveToStorage();            
-                    sd.canvas.setFullScreenMode(Config.fullscreen);
-                    return true;
-            }
-        }
-
-        return super.key(keyCode, key_long);
-    }
 }

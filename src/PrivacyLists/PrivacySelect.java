@@ -116,10 +116,10 @@ public class PrivacySelect
         }
         
         if (c==cmdDelete) {
-            cmdDelete();
+            deleteFocused();
         }
         if (c==cmdNewList)
-            new MIDPTextBox(SR.MS_NEW, "", this, TextField.ANY);
+            addNewElement();
         super.menuAction(c, d);
     }
     
@@ -175,30 +175,22 @@ public class PrivacySelect
         }
     }    
     
-    public void keyGreen() {
+    public void addNewElement() {
         new MIDPTextBox(SR.MS_NEW, "", this, TextField.ANY);
     }
-    
-    private void cmdDelete() {
+
+    public boolean canDeleteFocused() {
         PrivacyListItem pl = (PrivacyListItem) getFocusedObject();
-        if (pl != null) {
-            if (pl.list.name != null)
-                pl.list.deleteList();
-            getLists();
-        }
-    }
-    
-    protected void keyClear() {
-        String name = getFocusedObject().toString();
-        new AlertBox(name, SR.MS_DELETE + " \"" + name + "\"?") {
 
-            public void yes() {
-                cmdDelete();
-            }
-
-            public void no() {}
-        };
+        return (pl != null) && (pl.list.name != null);
     }
-    public void touchLeftPressed() { showMenu(); }
-    public String touchLeftCommand() {return SR.MS_MENU; }
+ 
+    public void deleteFocused() {
+        if (!canDeleteFocused())
+            return;
+
+        PrivacyListItem pl = (PrivacyListItem) getFocusedObject();
+        pl.list.deleteList();
+        getLists();
+    }
 }

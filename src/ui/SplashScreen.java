@@ -63,8 +63,6 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
     
     private ComplexString status;
     
-    private char exitKey;
-    
     private TimerTaskClock tc;
 
     private Config cf=Config.getInstance();
@@ -91,9 +89,8 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
         midlet.BombusMod.getInstance().setDisplayable(this);
     }
     
-    public SplashScreen(ComplexString status, char exitKey) {
+    public SplashScreen(ComplexString status) {
         this.status = status;
-        this.exitKey = exitKey;
         
         status.setElementAt(new Integer(RosterIcons.ICON_KEYBLOCK_INDEX), 6);
         show();
@@ -222,28 +219,72 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
         close();
     }
 
-    public void keyPressed(int keyCode) {
+    public boolean key(int keyCode, boolean key_long) {
         keypressed = true;
 
         if (pos >= 20) {
             close();
+            return true;
 		}
 
-//#ifdef LIGHT_CONFIG       
+        return ui.keys.UserKeyExec.getInstance().keyExecute(keyCode, key_long);
+    }
+
+
+// ======================================== //
+// ======= From VirtualList =============== //
+
+
+    private byte key_long_executed; // 0 - not try, 1 - not executed, 2 - executed.
+
+    protected final void keyRepeated(int keyCode) {
+//#ifdef DEBUG
+//#         System.out.println("keyRepeated: " + keyCode);
+//#endif
+
+        if ((key_long_executed < 1) && ui.keys.UserKeyExec.getInstance().isCurrentKey(keyCode, false)) {
+            key_long_executed = (byte) (key(keyCode, true) ? 2 : 1);
+        }
+
+        if (key_long_executed == 1) {
+            key(keyCode, false);
+        }
+
+//#ifdef LIGHT_CONFIG      
 //#ifdef PLUGINS                
 //#         if (StaticData.getInstance().lightConfig)
 //#endif            
 //#             CustomLight.keyPressed();
-//#endif        
+//#endif
     }
 
-    protected void keyRepeated(int keyCode) { 
-        if (keyCode == exitKey) {
-            destroyView();
-		}
+    protected final void keyReleased(int keyCode) {
+//#ifdef DEBUG
+//#         System.out.println("keyReleased: " + keyCode);
+//#endif
     }
 
-    private void destroyView(){
+    protected final void keyPressed(int keyCode) {
+//#ifdef DEBUG
+//#         System.out.println("keyPressed: " + keyCode);
+//#endif
+
+        key_long_executed = 0;
+        key(keyCode, false);
+
+//#ifdef LIGHT_CONFIG      
+//#ifdef PLUGINS                
+//#         if (StaticData.getInstance().lightConfig)
+//#endif            
+//#             CustomLight.keyPressed();
+//#endif
+    }
+
+
+// ==================================================== //
+
+
+    public void destroyView(){
         status.setElementAt(null,6);
         midlet.BombusMod.getInstance().setDisplayable(Client.StaticData.getInstance().canvas);
         img=null;
@@ -265,6 +306,7 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
     }
 
     public void getKeys() {
+			/*
         int pm=cf.phoneManufacturer;
         if (pm==Config.SIEMENS || pm==Config.SIEMENS2) {
              Config.SOFT_LEFT=-1;
@@ -322,6 +364,6 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
                    }
                 } catch(Exception e){ }
             }
-        }
+        }*/
     }
 }

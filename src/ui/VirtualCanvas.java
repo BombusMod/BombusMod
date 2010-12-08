@@ -54,29 +54,24 @@ public class VirtualCanvas extends Canvas implements CommandListener{
     void commandState() {
         if (Config.fullscreen) {
             setCommandListener(null);
-
-        } else {
-            if (list != null) {
-                setOk(list.touchLeftCommand());
-                setCancel(list.touchRightCommand());
-                setCommandListener(instance);
-            }
+		} else if (list != null) {
+            setOk(list.touchLeftCommand());
+            setCancel(list.touchRightCommand());
+            setCommandListener(instance);
         }
     }
-    
-
     
     public void show(VirtualList virtualList) {
         if (virtualList == null)
             virtualList = getList();
-        if (isShown()) {            
-            list = virtualList;            
-            repaint();            
+        if (isShown()) {
+            list = virtualList;
+            repaint();
         } else {
-            list = virtualList;            
+            list = virtualList;
             Display.getDisplay(midlet).setCurrent(this);
             repaint();
-        }         
+        }
         commandState();
     }
     
@@ -161,7 +156,7 @@ public class VirtualCanvas extends Canvas implements CommandListener{
 }
 
 
-    //#if (USE_ROTATOR)    
+//#if (USE_ROTATOR)    
 class TimerTaskRotate implements Runnable {
     private int scrollLen;
     private int scroll; //wait before scroll * sleep

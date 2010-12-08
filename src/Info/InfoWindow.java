@@ -90,7 +90,7 @@ public class InfoWindow
 
         itemsList.addElement(new SpacerItem(20));
 
-        abilities = new MultiLine("Special thanks", "Advice, aspro, BrennendeR_Komet, 6yp4uk, den_po, Disabler, fregl24, G.L.Fire, gimlet, lgs, m, Masy, Muxa, NoNameZ, radiance, Sash, spine, spirtamne, Tasha, TiLan, Totktonada, van, vitalyster, voffk, westsibe, zet. \n \nWithout you none of this would not have been!", sd.roster.getListWidth());
+        abilities = new MultiLine("Special thanks", "Advice, aspro, BrennendeR_Komet, 6yp4uk, den_po, Disabler, fregl24, G.L.Fire, gimlet, lgs, m, MaSy, Muxa, NoNameZ, radiance, Sash, spine, spirtamne, Tasha, TiLan, Totktonada, van, vitalyster, voffk, westsibe, zet. \n \nWithout you none of this would not have been!", sd.roster.getListWidth());
         abilities.selectable = true;
         itemsList.addElement(abilities);
 
@@ -117,7 +117,7 @@ public class InfoWindow
 //#ifdef CLIPBOARD
 //#             if (Config.getInstance().useClipBoard) {                
 //#                 addMenuCommand(cmdCopy);
-//#                 if (ClipBoard.getInstance().isEmpty())
+//#                 if (!ClipBoard.getInstance().isEmpty())
 //#                     addMenuCommand(cmdCopyPlus);
 //#             }
 //#endif        
@@ -126,17 +126,17 @@ public class InfoWindow
     public String touchLeftCommand(){ return SR.MS_MENU; }
     
     public void touchLeftPressed(){ showMenu(); }
-    
-    
+
     public void menuAction(MenuCommand command, VirtualList displayable) {
 //#ifdef CLIPBOARD
 //#         if (command == cmdCopy) {
 //#             try {
 //#                 String str = ((MultiLine) getFocusedObject()).toString();
 //#                 if (str == null)
+//a
 //#                     str = "";
 //#                 clipboard.setClipBoard(str);
-//#             } catch (Exception e) {/*no messages*/}
+//#             } catch (Exception e) {}
 //#         }
 //# 
 //#         if (command == cmdCopyPlus) {
@@ -147,7 +147,7 @@ public class InfoWindow
 //#                 str  = clipboard.getClipBoard() + "\n\n" + str;
 //# 
 //#                 clipboard.setClipBoard(str);
-//#             } catch (Exception e) {/*no messages*/}
+//#             } catch (Exception e) {}
 //#         }
 //#endif
         super.menuAction(command, displayable);
