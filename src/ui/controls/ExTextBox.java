@@ -86,9 +86,7 @@ public class ExTextBox {
         try {
             //expanding buffer as much as possible
             maxSize = textbox.setMaxSize(4096); //must not trow
-            if (cf.phoneManufacturer != Config.MICROEMU)
-                insert(body, 0, writespaces);
-            else setText(body);
+            insert(body, 0, writespaces);            
          } catch (Exception e) {}       
         
     }

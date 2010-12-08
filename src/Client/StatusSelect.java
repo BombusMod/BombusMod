@@ -120,7 +120,7 @@ public class StatusSelect
         } catch (Exception e) { }
     }
     
-    public int getItemCount() {   return statusList.size(); }
+    public int getItemCount() {   return statusList == null ? 0 : statusList.size(); }
     
     private void save() {
         StatusList.getInstance().saveStatusToStorage();
