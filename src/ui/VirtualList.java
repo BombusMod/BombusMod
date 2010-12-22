@@ -791,7 +791,7 @@ public abstract class VirtualList {
 //#endif
     }
 
-    protected final void keyPressed(int keyCode) {
+    protected void keyPressed(int keyCode) {
 //#ifdef DEBUG
 //#         System.out.println("keyPressed: " + keyCode);
 //#endif
@@ -810,14 +810,14 @@ public abstract class VirtualList {
 //#endif
 
         // workaround for SE JP6 - enabling vibra in closed state
-        if (phoneManufacturer == Config.SONYE) {
+    /*    if (phoneManufacturer == Config.SONYE) {
             midlet.BombusMod.getInstance().setDisplayable((Displayable) null);
             try {
                  Thread.sleep(300);
             } catch (Exception ex) { }
             sd.canvas.show(this);
         }
-
+*/
 //#ifdef AUTOSTATUS
 //#     sd.roster.setAutoAwayTimer();
 //#endif

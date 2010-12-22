@@ -76,51 +76,49 @@ public class Menu extends VirtualList
         eventOk();
     }
 
-/* to userkeys */ /*
-    protected boolean key(int keyCode, boolean key_long) {
+    public void keyPressed(int keyCode) {
             if (executeByNum && getItemCount() > 0) {
                 switch (keyCode) {
                     case Canvas.KEY_NUM0:
                         executeCommand(9);
-                        return true;
+                        return;
                     case Canvas.KEY_NUM1:
                         executeCommand(0);
-                        return true;
+                        return;
                     case Canvas.KEY_NUM2:
                         executeCommand(1);
-                        return true;
+                        return;
                     case Canvas.KEY_NUM3:
                         executeCommand(2);
-                        return true;
+                        return;
                     case Canvas.KEY_NUM4:
                         executeCommand(3);
-                        return true;
+                        return;
                     case Canvas.KEY_NUM5:
                         executeCommand(4);
-                        return true;
+                        return;
                     case Canvas.KEY_NUM6:
                         executeCommand(5);
-                        return true;
+                        return;
                     case Canvas.KEY_NUM7:
                         executeCommand(6);
-                        return true;
+                        return;
                     case Canvas.KEY_NUM8:
                         executeCommand(7);
-                        return true;
+                        return;
                     case Canvas.KEY_NUM9:
                         executeCommand(8);
-                        return true;
-                }
-            }
+                        return;
+                }            
         }
 
-        return super.key(keyCode, key_long);
+        super.keyPressed(keyCode);
     }
-*/
+
     private void executeCommand(int index) {
         moveCursorTo(index);
         eventOk();
-        /*int pos=0;
+        int pos=0;
         for (Enumeration mi=menuitems.elements(); mi.hasMoreElements(); ) {
             MenuItem mit=(MenuItem)mi.nextElement();
             if (mit.index==index) {
@@ -128,7 +126,7 @@ public class Menu extends VirtualList
                 eventOk();
             }
             pos++;  
-        }*/
+        }
     }
     
 }
