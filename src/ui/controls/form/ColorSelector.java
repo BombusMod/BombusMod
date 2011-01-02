@@ -28,6 +28,7 @@ package ui.controls.form;
 import Client.StaticData;
 import Colors.ColorTheme;
 import Colors.ColorsList;
+import Fonts.FontCache;
 import javax.microedition.lcdui.*;
 import ui.VirtualElement;
 
@@ -99,7 +100,7 @@ public class ColorSelector implements VirtualElement
         g.fillRect(4, 4, 12, 12);
         g.setColor(0x800000);
 //#ifdef COLOR_TUNE
-//#         g.drawString(s+" "+ColorsList.NAMES[paramName], 20, 5, Graphics.TOP|Graphics.LEFT);
+//#         FontCache.drawString(g, s+" "+ColorsList.NAMES[paramName], 20, 5, Graphics.TOP|Graphics.LEFT);
 //#endif
 
         //draw red
@@ -108,7 +109,7 @@ public class ColorSelector implements VirtualElement
         g.setColor(0);
         g.setStrokeStyle(Graphics.SOLID);
         g.fillRect(pxred-2, py-ph, 5, ph);
-        g.drawString("R", pxred, py+2, Graphics.TOP|Graphics.HCENTER);
+        FontCache.drawString(g, "R", pxred, py+2, Graphics.TOP|Graphics.HCENTER);
         g.setColor(0xff2020);
         g.fillRect(pxred-2, py-psred, 5, psred);
         if (cpos == 0) {
@@ -123,7 +124,7 @@ public class ColorSelector implements VirtualElement
         g.setColor(0);
         g.setStrokeStyle(Graphics.SOLID);
         g.fillRect(pxgreen-2, py-ph, 5, ph);
-        g.drawString("G", pxgreen, py+2, Graphics.TOP|Graphics.HCENTER);
+        FontCache.drawString(g,"G", pxgreen, py+2, Graphics.TOP|Graphics.HCENTER);
         g.setColor(0x00ff00);
         g.fillRect(pxgreen-2, py-psgreen, 5, psgreen);
         if (cpos == 1) {
@@ -138,7 +139,7 @@ public class ColorSelector implements VirtualElement
         g.setColor(0);
         g.setStrokeStyle(Graphics.SOLID);
         g.fillRect(pxblue-2, py-ph, 5, ph);
-        g.drawString("B", pxblue, py+2, Graphics.TOP|Graphics.HCENTER);
+        FontCache.drawString(g, "B", pxblue, py+2, Graphics.TOP|Graphics.HCENTER);
         g.setColor(0x4848ff);
         g.fillRect(pxblue-2, py-psblue, 5, psblue);
         if (cpos == 2) {

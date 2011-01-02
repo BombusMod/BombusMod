@@ -26,7 +26,9 @@
 
 package Fonts;
 
+import Client.Config;
 import javax.microedition.lcdui.Font;
+import javax.microedition.lcdui.Graphics;
 
 /**
  *
@@ -95,6 +97,16 @@ public class FontCache {
                 return (isBold)?getBigBoldFont():getBigFont();
         }
         return getSmallFont();
+    }
+
+    public static void drawString(Graphics g, String text, int x, int y, int anchor) {
+        if (Config.getInstance().shadowed) {
+            int color = g.getColor();
+            g.setColor((color) / 3 > 0x7f ? 0x333333 : 0xcccccc);
+            g.drawString(text, x + 1, y + 1, anchor);
+            g.setColor(color);
+        }        
+        g.drawString(text, x, y, anchor);
     }
 
     //public final static void resetCache() { roster=msg=bar=baloon=0; }

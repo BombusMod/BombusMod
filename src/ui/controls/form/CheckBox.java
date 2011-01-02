@@ -29,7 +29,6 @@ package ui.controls.form;
 
 import Colors.ColorTheme;
 import images.RosterIcons;
-import javax.microedition.lcdui.Graphics;
 import ui.IconTextElement;
 
 /**

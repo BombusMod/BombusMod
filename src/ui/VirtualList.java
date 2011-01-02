@@ -571,7 +571,7 @@ public abstract class VirtualList {
                 g.fillRoundRect(progressX-2, (height/2)-(popHeight*2), progressWidth+4, (popHeight*2)+1, 6, 6);
                 g.setColor(ColorTheme.getColor(ColorTheme.POPUP_SYSTEM_INK));
                 g.drawRoundRect(progressX-2, (height/2)-(popHeight*2), progressWidth+4, (popHeight*2)+1, 6, 6);
-                g.drawString(SR.MS_RECONNECT, width/2, (height/2)-(popHeight*2), Graphics.TOP | Graphics.HCENTER);
+                FontCache.drawString(g,SR.MS_RECONNECT, width/2, (height/2)-(popHeight*2), Graphics.TOP | Graphics.HCENTER);
                 Progress.draw(g, reconnectPos*progressWidth/reconnectTimeout, reconnectString);
             }
         }    
@@ -833,9 +833,11 @@ public abstract class VirtualList {
         }
 //#endif
 
-        if (UserKeyExec.getInstance().keyExecute(keyCode, key_long)) {
-            return true;
-        }
+//#ifdef USER_KEYS
+//#         if (UserKeyExec.getInstance().keyExecute(keyCode, key_long)) {
+//#             return true;
+//#         }
+//#endif
 
         if ((key > -1) && (getFocusedObject() != null)) { // send key to focused object
             if (((VirtualElement) getFocusedObject()).handleEvent(key)) {

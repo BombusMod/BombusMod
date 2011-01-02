@@ -178,7 +178,7 @@ public class PopUp {
         for (Enumeration stringLine=lines.elements(); stringLine.hasMoreElements(); ) {
             String str=(String)stringLine.nextElement();
             if (pos>=startLine) {
-                g.drawString(str, x, y, Graphics.TOP|Graphics.LEFT);
+                FontCache.drawString(g,str, x, y, Graphics.TOP|Graphics.LEFT);
                 y += fh;
             }
             pos++;

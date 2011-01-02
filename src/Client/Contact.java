@@ -694,14 +694,14 @@ public class Contact extends IconTextElement{
 		int offset_y = (h - getFont().getHeight()) >> 1;
         if (getSecondString() != null)
             offset_y -= (getFont().getHeight()) >> 1;
-        g.drawString(getFirstString(), thisOfs, offset_y, Graphics.TOP|Graphics.LEFT);
+        FontCache.drawString(g, getFirstString(), thisOfs, offset_y, Graphics.TOP|Graphics.LEFT);
 
         if (getSecondString() != null) {
             int y=getFont().getHeight()-3;
             thisOfs=(getSecondLength()>w)?-ofs+offset:offset;
             g.setFont(FontCache.getFont(false, FontCache.baloon));
             g.setColor(ColorTheme.getColor(ColorTheme.SECOND_LINE));
-            g.drawString(getSecondString(), thisOfs, offset_y + y, Graphics.TOP|Graphics.LEFT);
+            FontCache.drawString(g,getSecondString(), thisOfs, offset_y + y, Graphics.TOP|Graphics.LEFT);
         }
         g.setClip(xo, yo, w, h);        
     }

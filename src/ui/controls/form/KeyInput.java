@@ -93,7 +93,7 @@ public class KeyInput extends IconTextElement {
         int y = 0;
         thisOfs = (getCaptionLength() > width) ? -ofs : 2;
         g.setFont(captionFont);
-        g.drawString(caption, thisOfs, y, Graphics.TOP | Graphics.LEFT);
+        FontCache.drawString(g,caption, thisOfs, y, Graphics.TOP | Graphics.LEFT);
         y = captionFontHeight;
 
         g.setColor(colorBGnd);
@@ -107,7 +107,7 @@ public class KeyInput extends IconTextElement {
         if (getTextLength()>0) {
             thisOfs=(getTextLength()>width)?-ofs+4:4;
             g.setFont(font);
-            g.drawString(toString(), thisOfs, y, Graphics.TOP|Graphics.LEFT);
+            FontCache.drawString(g,toString(), thisOfs, y, Graphics.TOP|Graphics.LEFT);
         }
     }
     

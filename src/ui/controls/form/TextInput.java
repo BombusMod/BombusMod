@@ -149,7 +149,7 @@ public class TextInput
         if (caption!=null) {
             thisOfs=(getCaptionLength()>width)?-ofs:2;
             g.setFont(captionFont);
-            g.drawString(caption, thisOfs, y, Graphics.TOP|Graphics.LEFT);
+            FontCache.drawString(g,caption, thisOfs, y, Graphics.TOP|Graphics.LEFT);
             y=captionFontHeight;
         }
 
@@ -164,7 +164,7 @@ public class TextInput
         if (getTextLength()>0) {
             thisOfs=(getTextLength()>width)?-ofs+4:4;
             g.setFont(font);
-            g.drawString(getText(), thisOfs, y, Graphics.TOP|Graphics.LEFT); 
+            FontCache.drawString(g,getText(), thisOfs, y, Graphics.TOP|Graphics.LEFT); 
         }
     }
 

@@ -137,7 +137,7 @@ public class DropChoiceBox
         if (caption!=null) {
             thisOfs=(getCaptionLength()>width)?-ofs:2;
             g.setFont(captionFont);
-            g.drawString(caption, thisOfs, y, Graphics.TOP|Graphics.LEFT);
+            FontCache.drawString(g,caption, thisOfs, y, Graphics.TOP|Graphics.LEFT);
             y=captionFontHeight;
         }
 
@@ -152,7 +152,7 @@ public class DropChoiceBox
         if (getTextLength()>0) {
             thisOfs=(getTextLength()>width)?-ofs+4:4;
             g.setFont(font);
-            g.drawString(getTextValue(), thisOfs, y, Graphics.TOP|Graphics.LEFT); 
+            FontCache.drawString(g,getTextValue(), thisOfs, y, Graphics.TOP|Graphics.LEFT); 
         }
         
         if (size()>1)

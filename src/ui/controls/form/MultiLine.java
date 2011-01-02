@@ -108,14 +108,14 @@ public class MultiLine extends IconTextElement {
         int y=0;
         if (caption!=null) {
             g.setFont(captionFont);
-            g.drawString(caption, 2, y, Graphics.TOP|Graphics.LEFT);
+            FontCache.drawString(g,caption, 2, y, Graphics.TOP|Graphics.LEFT);
             y=captionFontHeight;
         }
 
         g.setFont(font);
 
 	for (int line=0; line<lines.size(); ){
-            g.drawString((String) lines.elementAt(line), 2, y, Graphics.TOP|Graphics.LEFT);
+            FontCache.drawString(g,(String) lines.elementAt(line), 2, y, Graphics.TOP|Graphics.LEFT);
             line=line+1;
             y += fontHeight;
 	}

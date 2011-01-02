@@ -27,8 +27,10 @@
 package Fonts;
 import Client.Config;
 import locale.SR;
+import ui.controls.form.CheckBox;
 import ui.controls.form.DropChoiceBox;
 import ui.controls.form.DefForm;
+import ui.controls.form.SpacerItem;
 
 public class ConfigFonts 
         extends DefForm {
@@ -37,6 +39,8 @@ public class ConfigFonts
     private DropChoiceBox font2;
     private DropChoiceBox font3;
     private DropChoiceBox font4;
+
+    CheckBox shadowbox;
     
     /** Creates a new instance of ConfigFonts
      */
@@ -71,6 +75,9 @@ public class ConfigFonts
         font4.add(SR.MS_FONTSIZE_LARGE);
         font4.setSelectedIndex(cf.baloonFont/8);
         itemsList.addElement(font4);
+        itemsList.addElement(new SpacerItem(10));
+        shadowbox = new CheckBox("Shadowed font", cf.shadowed);
+        itemsList.addElement(shadowbox);
     }
     
     public void cmdOk() {
@@ -78,6 +85,7 @@ public class ConfigFonts
         FontCache.msg=cf.msgFont=font2.getValue()*8; //msg
         FontCache.bar=cf.barFont=font3.getValue()*8; //bar
         FontCache.baloon=cf.baloonFont=font4.getValue()*8; //balloon
+        cf.shadowed = shadowbox.getValue();
 
         cf.saveToStorage();
         

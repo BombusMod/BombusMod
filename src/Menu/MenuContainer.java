@@ -24,6 +24,7 @@
 
 package Menu;
 
+import Fonts.FontCache;
 import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
@@ -82,21 +83,21 @@ public class MenuContainer {
         g.setColor(0xffffff);
         g.setFont(getBoldFont());
         int tw = getBoldFont().stringWidth(val);
-        g.drawString(val, scWidth/2, scHeight, Graphics.HCENTER | Graphics.BOTTOM);
+        FontCache.drawString(g,val, scWidth/2, scHeight, Graphics.HCENTER | Graphics.BOTTOM);
     }
     
     public static void drawLeftCommand(Graphics g, String val){
         g.setColor(0xffffff);
         g.setFont(getBoldFont());
         int tw = getBoldFont().stringWidth(val);
-        g.drawString(val, 2, scHeight, Graphics.LEFT | Graphics.BOTTOM);
+        FontCache.drawString(g,val, 2, scHeight, Graphics.LEFT | Graphics.BOTTOM);
     }
     
     public static void drawRightCommand(Graphics g, String val){
         g.setColor(0xffffff);
         g.setFont(getBoldFont());
         int tw = getBoldFont().stringWidth(val);
-        g.drawString(val, scWidth-tw-2, scHeight, Graphics.LEFT | Graphics.BOTTOM);
+        FontCache.drawString(g,val, scWidth-tw-2, scHeight, Graphics.LEFT | Graphics.BOTTOM);
     }
     
     public static Font getBoldFont() {

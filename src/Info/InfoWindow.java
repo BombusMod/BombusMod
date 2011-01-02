@@ -73,7 +73,7 @@ public class InfoWindow
         name.selectable = true;
         itemsList.addElement(name);
 
-        description = new MultiLine("Copyright (c) 2005-2010", "Eugene Stahov (evgs),\nDaniel Apatin (ad)\n \nDistributed under GNU Public License (GPL) v2.0", sd.roster.getListWidth());
+        description = new MultiLine("Copyright (c) 2005-2011", "Eugene Stahov (evgs),\nDaniel Apatin (ad)\n \nDistributed under GNU Public License (GPL) v2.0", sd.roster.getListWidth());
         description.selectable = true;
         itemsList.addElement(description);
 
@@ -133,7 +133,7 @@ public class InfoWindow
 //#             try {
 //#                 String str = ((MultiLine) getFocusedObject()).toString();
 //#                 if (str == null)
-//a
+//# //a
 //#                     str = "";
 //#                 clipboard.setClipBoard(str);
 //#             } catch (Exception e) {}

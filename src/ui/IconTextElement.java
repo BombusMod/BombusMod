@@ -80,7 +80,7 @@ abstract public class IconTextElement implements VirtualElement {
         g.clipRect(offset, 0, g.getClipWidth(), itemHeight);
 
         if (str != null) {
-            g.drawString(str, offset - ofs, fontYOfs, Graphics.TOP | Graphics.LEFT);
+            FontCache.drawString(g, str, offset - ofs, fontYOfs, Graphics.TOP | Graphics.LEFT);
         }
     }
 

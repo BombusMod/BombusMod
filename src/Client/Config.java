@@ -143,10 +143,10 @@ public class Config {
     public int gmtOffset;
     public boolean popupFromMinimized = true;
     public boolean memMonitor = false;
-    public int rosterFont = 0;
-    public int msgFont = 0;
-    public int barFont = 0;
-    public int baloonFont = 0;
+    public int rosterFont = 8;
+    public int msgFont = 8;
+    public int barFont = 8;
+    public int baloonFont = 8;
     public String lang;  //not detected (en)
     public boolean capsState = false;
     public int textWrap = 0;
@@ -201,6 +201,7 @@ public class Config {
     public boolean notifySound = false;
     public boolean notifyPicture = false;
     public boolean useBoldFont = false;
+    public boolean shadowed = true;
 //#ifdef RUNNING_MESSAGE
 //#     public boolean notifyWhenMessageType = false;
 //#endif
@@ -530,7 +531,7 @@ public class Config {
 //#else
             inputStream.readBoolean();
 //#endif
-            inputStream.readBoolean(); //2kill
+            shadowed = inputStream.readBoolean(); 
 
             showTimeTraffic = inputStream.readBoolean();
 
@@ -818,7 +819,7 @@ public class Config {
 //#else
             outputStream.writeBoolean(false);
 //#endif
-            outputStream.writeBoolean(false); //2kill
+            outputStream.writeBoolean(shadowed); 
 
             outputStream.writeBoolean(showTimeTraffic);
 

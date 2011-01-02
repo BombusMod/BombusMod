@@ -3,4 +3,5 @@
 /skins/skin3.txt	Positive
 /skins/skin4.txt	Classic
 /skins/skin5.txt	Heaven
+/skins/skin6.txt	Starpyoram
 /skins/vesna.txt	Vesna

@@ -245,7 +245,7 @@ public class AutoTask
 //#             int yt=y-f.getHeight();
 //#             g.setColor(0x668866);
 //#             g.setFont(f);
-//#             g.drawString(caption, xt, yt, Graphics.TOP|Graphics.HCENTER);
+//#             FontCache.drawString(g, caption, xt, yt, Graphics.TOP|Graphics.HCENTER);
 //#             
 //#             g.setColor(oldColor);
 //#endif

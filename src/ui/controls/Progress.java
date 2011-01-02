@@ -114,7 +114,7 @@ public class Progress {
        
         g.setColor(ColorTheme.getColor(ColorTheme.PGS_INK));
         g.setFont(font);
-        g.drawString(text, x+(width/2), y + (height - font.getHeight())/2, Graphics.TOP|Graphics.HCENTER);
+        FontCache.drawString(g,text, x+(width/2), y + (height - font.getHeight())/2, Graphics.TOP|Graphics.HCENTER);
         g.drawRect(x, y, width-1, height-1);
         //g.drawLine(x,y,width,y);
         g.drawLine(x+filled,y+1,x+filled,y+height-1);

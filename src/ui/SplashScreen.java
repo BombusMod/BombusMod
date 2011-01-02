@@ -133,7 +133,7 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
             String time=Time.localTime();
             int tw=clockFont.stringWidth(time);
 
-            g.drawString(time, width/2, height, Graphics.BOTTOM | Graphics.HCENTER);
+            FontCache.drawString(g,time, width/2, height, Graphics.BOTTOM | Graphics.HCENTER);
         } else {
             int filled=pos*width/100;
             if (pb==null) pb=new Progress(0, height , width);

@@ -151,7 +151,7 @@ public class ComplexString extends Vector implements VirtualElement {
                             if (dw > 0)
                                 w += ((g.getClipWidth() >> 1) - dw) >> 1;
                         }
-                        g.drawString(s,w,fontYOfs,Graphics.LEFT|Graphics.TOP);
+                        FontCache.drawString(g,s,w,fontYOfs,Graphics.LEFT|Graphics.TOP);
                         if (underline) {
                             int y=getVHeight()-1;
                             g.drawLine(w, y, w+dw, y);

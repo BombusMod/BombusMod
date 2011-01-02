@@ -27,7 +27,6 @@
 
 package ui.controls;
 
-import Client.Config;
 import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
 import Colors.ColorTheme;
@@ -56,6 +55,6 @@ public class Balloon {
         
         g.setColor(ColorTheme.getColor(ColorTheme.BALLOON_INK));
         g.drawRect(2, 0, width-1, height-1);
-        g.drawString(text, 5, 1, Graphics.TOP | Graphics.LEFT);
+        FontCache.drawString(g, text, 5, 1, Graphics.TOP | Graphics.LEFT);
     }
 }
