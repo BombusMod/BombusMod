@@ -174,7 +174,7 @@ public class UserKeyExec {
         cmds[58] = "[Roster]" + "Kick from groupchat";
     }
 
-    private void update_current_key(int key, boolean key_long) {
+    public void update_current_key(int key, boolean key_long) {
 //        if ((current_key.key == key) && (!current_key.key_long) && (key_long)) {
 //            current_key.key_long = true;
 //        } else {
@@ -314,6 +314,16 @@ public class UserKeyExec {
         Config cf = Config.getInstance();
         boolean connected = sd.roster.isLoggedIn();
 		final VirtualList current = sd.canvas.getList();
+
+        Displayable current_d = BombusMod.getInstance().getCurrentDisplayable();
+        if (current_d instanceof SplashScreen) {
+            if (command_id == 44) {
+                ((SplashScreen) current_d).destroyView();
+                return true;
+            }
+
+            return false;
+		}
 
         switch (command_id) {
             case 1:
@@ -558,12 +568,7 @@ public class UserKeyExec {
                     sd.roster.moveFocusToGroup(1);
                 break;
             case 44:
-                Displayable current_d = BombusMod.getInstance().getCurrentDisplayable();
-
-                if (current_d instanceof SplashScreen)
-                    ((SplashScreen) current_d).destroyView();
-				else
-                    sd.roster.blockScreen();
+                sd.roster.blockScreen();
                 break;
             case 45:
                 if (current instanceof Roster)

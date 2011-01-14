@@ -797,6 +797,9 @@ public abstract class VirtualList {
 //#endif
 
         key_long_executed = 0;
+
+        UserKeyExec.getInstance().update_current_key(keyCode, false);
+
         sendKeyAction(keyCode, false, true);
 
 //#ifdef LIGHT_CONFIG      
@@ -824,10 +827,14 @@ public abstract class VirtualList {
     }
 
     private boolean sendKeyAction(int keyCode, boolean key_long, boolean try_to_skip_popup) {
-        int key = getKeyCodeForSendEvent(keyCode);
+        int key = getKeyCodeForSendEvent(keyCode, key_long);
 
 //#ifdef POPUPS
-        if (try_to_skip_popup && PopUp.getInstance().handleEvent(key)) {
+        if (PopUp.getInstance().handleEvent(key)) {
+            redraw();
+            return true;
+        }
+        if (try_to_skip_popup && PopUp.getInstance().next()) {
             redraw();
             return true;
         }
@@ -839,7 +846,7 @@ public abstract class VirtualList {
 //#         }
 //#endif
 
-        if ((key > -1) && (getFocusedObject() != null)) { // send key to focused object
+        if ((key >= 0) && (getFocusedObject() != null)) { // send key to focused object
             if (((VirtualElement) getFocusedObject()).handleEvent(key)) {
                 redraw();
                 return true;
@@ -997,8 +1004,10 @@ public abstract class VirtualList {
         itemDragged = false;
 }
   
-    private int getKeyCodeForSendEvent(int key_code) {
+    private int getKeyCodeForSendEvent(int key_code, boolean key_long) {
         int key = -1;
+        if (key_long)
+            return key;
         switch (key_code) {
             case Canvas.KEY_NUM0: key=0; break;
             case Canvas.KEY_NUM1: key=1; break;
@@ -1035,13 +1044,13 @@ public abstract class VirtualList {
     public void reconnectYes() {
         reconnectWindow.getInstance().reconnect();
         //reconnectDraw=false;
-        redraw();
+        //redraw(); // Need?
     }
     
     public void reconnectNo() {
         reconnectWindow.getInstance().stopReconnect();
         //reconnectDraw=false;
-        redraw();
+        //redraw(); // Need?
     }
 
     /**

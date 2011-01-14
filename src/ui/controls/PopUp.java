@@ -159,7 +159,7 @@ public class PopUp {
             }
         }
 
-        return next();
+        return false; //next();
     }
     
     public void clear() {

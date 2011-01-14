@@ -118,7 +118,7 @@ public class Menu extends VirtualList
     private void executeCommand(int index) {
         moveCursorTo(index);
         eventOk();
-        int pos=0;
+/*        int pos=0;
         for (Enumeration mi=menuitems.elements(); mi.hasMoreElements(); ) {
             MenuItem mit=(MenuItem)mi.nextElement();
             if (mit.index==index) {
@@ -126,7 +126,7 @@ public class Menu extends VirtualList
                 eventOk();
             }
             pos++;  
-        }
+        }*/
     }
     
 }

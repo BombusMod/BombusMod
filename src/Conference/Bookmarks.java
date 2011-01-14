@@ -200,7 +200,7 @@ public class Bookmarks extends DefForm {
     public boolean canDeleteFocused() {
         BookmarkItem del = (BookmarkItem) getFocusedObject();
 
-        return (del == null) || (del.isUrl);
+        return (del != null) && (!del.isUrl);
     }
 
     public void deleteFocused() {
