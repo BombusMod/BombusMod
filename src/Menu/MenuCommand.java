@@ -52,7 +52,11 @@ public class MenuCommand extends IconTextElement {
         this.map=map;
         this.pos=pos;
     }
-    
+    public MenuCommand(String name, int map, int pos, int img) {
+        this(name, map, pos);
+        this.img = img;
+    }
+
     public void setImg(int img) {
         this.img=img;
     }

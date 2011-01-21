@@ -42,6 +42,7 @@ import Fonts.FontCache;
 //#ifdef CLIENTS_ICONS
 import images.ClientsIcons;
 //#endif
+import images.ChatIcons;
 import images.MenuIcons;
 import util.StringLoader;
 import ui.Time;
@@ -249,6 +250,7 @@ public class Config {
         MenuIcons.getInstance();
         RosterIcons.getInstance();
         ActionsIcons.getInstance();
+        ChatIcons.getInstance();
 //#ifdef SMILES
         if (smiles) {
             SmilesIcons.getInstance();
