@@ -157,7 +157,7 @@ public class TransferDispatcher implements JabberBlockListener {
                             if (proxy != null) {
                                 task.streamhosts = query.getChildBlocks();
                                 task.state = TransferTask.PROXYACTIVATE;
-                                task.startTransfer();
+                                task.startTransfer(data.getAttribute("id"));
                                 return BLOCK_PROCESSED;
                             }
                         }
@@ -185,10 +185,10 @@ public class TransferDispatcher implements JabberBlockListener {
                             task.ProxyActivate();
                             break;
                         case (TransferTask.PROXYOPEN):
-                            task.startTransfer();
+                            task.startTransfer(id);
                             break;
                         default: // ibb
-                            task.startTransfer();
+                            task.startTransfer(id);
                     }
                     return BLOCK_PROCESSED;
                 }           

@@ -431,6 +431,7 @@ public class TransferTask
                                 try {
                                     openStreams(proxyhost, Integer.parseInt(proxyport));
                                     success = true;
+                                    System.out.println("Opened: " + proxyhost + ":" + proxyport);
                                     break;
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -494,19 +495,16 @@ public class TransferTask
                         cancel();
                         return;
                     }
-                    byte buf[] = new byte[2048];
-                    System.out.println("Start receiving");
+                    byte buf[] = new byte[512];
                     try {
                         int readed;
                         Thread.sleep(1000L);
-                        while ((readed = proxystream.read(buf)) >= 0) {
-                            System.out.println("Received " + readed + " bytes");
+                        while ((readed = proxystream.read(buf)) > 0) {
                             byte buf2[] = new byte[readed];
                             System.arraycopy(buf, 0, buf2, 0, buf2.length);
                             writeFile(buf2);
                             TransferDispatcher.getInstance().repaintNotify();
                         }
-                        System.out.println("Received " + readed + " bytes");
                         closeFile();
                         proxystream.close();
                     } catch (Exception e) {
@@ -537,7 +535,8 @@ public class TransferTask
         }
     }
 
-    void startTransfer() {
+    void startTransfer(String id) {
+        this.id = id;
         new Thread(this).start();
     }
 
