@@ -355,17 +355,10 @@ public class Account extends IconTextElement {
         this.compression = value;
     }
     
-    public boolean isGmail() {
-        return server.startsWith("gmail.com");
-    }
+    public boolean isGoogle = false;
     
     public String getTipString() { return getJid(); }
-    
-    public boolean useGoogleToken() {
-        if (useSSL) return false;
-        return isGmail();
-    }
-
+        
     public void setActive(boolean b) {
         active=b;
     }
