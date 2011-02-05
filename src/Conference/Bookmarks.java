@@ -234,6 +234,26 @@ public class Bookmarks extends DefForm {
     }
 //#endif
 
+    public void userKeyPressed(int keyCode) {
+        switch (keyCode) {
+            case 1:
+                moveCursorHome();
+                return;
+            case 4:
+                pageLeft();
+                return;
+            case 6:
+                pageRight();
+                return;
+            case 7:
+                moveCursorEnd();
+                return;
+            case VirtualCanvas._KEY_POUND:
+                discoCurrent();
+                return;
+        }
+    }
+
     public String touchLeftCommand() {
         return SR.MS_MENU;
     }

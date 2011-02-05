@@ -909,6 +909,7 @@ public class ContactMessageList extends MessageList {
     public void userKeyPressed(int keyCode) {
         switch (keyCode) {
             case 3:
+                savePosition();
                 new ActiveContacts(null);
                 return;
             case 4:
