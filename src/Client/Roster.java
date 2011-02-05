@@ -2997,10 +2997,8 @@ public class Roster
     public void userKeyPressed(int keyCode) {
         switch (keyCode) {
             case 1:
-                moveCursorHome();
-                redraw();
                 collapseAllGroup();
-                return;
+                break; // also make super action
             case 3:
                 moveFocusToGroup(-1);
                 return;
@@ -3012,8 +3010,7 @@ public class Roster
                 return;
             case VirtualCanvas._KEY_POUND:
                 changeMotoBacklightState();
-                return;
-
+                break;
         }
         super.userKeyPressed(keyCode);
     }
