@@ -52,17 +52,11 @@ public class SASLAuth implements JabberBlockListener{
 
     /** Creates a new instance of SASLAuth */
     public SASLAuth(Account account, LoginListener listener, JabberStream stream) {
-        this.listener=listener;
-        this.account=account;
-        this.stream=stream;
-        if (stream!=null) stream.addBlockListener(this);
+        this.listener = listener;
+        this.account = account;
+        this.stream = stream;
         //listener.loginMessage(SR.MS_SASL_STREAM);
     }
-    
-//#if SASL_XGOOGLETOKEN
-//#     private String token;
-//#     public void setToken(String token) { this.token=token; }
-//#endif
 
     public int blockArrived(JabberDataBlock data) {
         //System.out.println(data.toString());
@@ -122,7 +116,12 @@ public class SASLAuth implements JabberBlockListener{
                 
 //#if SASL_XGOOGLETOKEN
 //#                 // X-GOOGLE-TOKEN mechanism
-//#                 if (mech.getChildBlockByText("X-GOOGLE-TOKEN")!=null  && token!=null) {
+//#                 if (mech.getChildBlockByText("X-GOOGLE-TOKEN")!=null) {
+//# 
+//#                     listener.loginMessage(SR.MS_TOKEN, 40);
+//#                     String token = new GoogleTokenAuth(account).responseXGoogleToken();
+//#                     if (token==null) throw new SecurityException("Can't get Google token");
+//#                     account.isGoogle = true;
 //#                     auth.setAttribute("mechanism", "X-GOOGLE-TOKEN");
 //#                     auth.setText(token);
 //#                     

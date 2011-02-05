@@ -36,6 +36,7 @@ import Menu.MenuCommand;
 import Menu.MyMenu;
 import images.ChatIcons;
 import locale.SR;
+import ui.VirtualCanvas;
 import ui.VirtualElement;
 import ui.VirtualList;
 //#ifdef CLIPBOARD
@@ -194,6 +195,16 @@ public abstract class MessageList extends VirtualList
             return true;
         }
         return false;
+    }
+
+    public void userKeyPressed(int key) {
+        switch(key) {
+            case VirtualCanvas._KEY_STAR:
+                if (getItemCount() == 0) return;
+                ((MessageItem)getFocusedObject()).toggleSmiles(this);
+                return;
+        }
+        super.userKeyPressed(key);
     }
 
     public void touchLeftPressed() {

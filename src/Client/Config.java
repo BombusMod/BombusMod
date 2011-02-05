@@ -59,16 +59,6 @@ public class Config {
     private static Config instance;
     public final int vibraLen = 500;
 
-    public static int KEY_BACK = -11;
-    public static int KEY_GREEN = -11;
-    public static int KEY_CLEAR = -8;
-    public static int KEY_SOFT_LEFT = -6;
-    public static int KEY_SOFT_RIGHT = -7;
-    public static int KEY_VOL_UP = 0;
-    public static int KEY_VOL_DOWN = 0;
-    public static int KEY_FLIP_OPEN = 0;
-    public static int KEY_FLIP_CLOSE = 0;
-
     public final static int SUBSCR_AUTO = 0;
     public final static int SUBSCR_ASK = 1;
     public final static int SUBSCR_DROP = 2;
@@ -273,72 +263,15 @@ public class Config {
 
         switch (phoneManufacturer) {
             case SONYE:
-                allowMinimize = true;
-
-                KEY_GREEN = -10;
-                KEY_VOL_UP = -36;
-                KEY_VOL_DOWN = -37;
-                KEY_FLIP_OPEN = -30;
-                KEY_FLIP_CLOSE = -31;
-                break;
-            case SONYE_M600:
-                KEY_VOL_UP = 165;
-                KEY_VOL_DOWN = 166;
-                break;
-            case WTK:
-                KEY_GREEN = -10;
+                allowMinimize = true;                
                 break;
             case NOKIA:
                 allowMinimize = !NokiaS40;
-
-                KEY_GREEN = -10;
-                KEY_VOL_UP = -63582;
-                KEY_VOL_DOWN = -63583;
-                break;
-            case SIEMENS:
-            case SIEMENS2:
-                KEY_BACK = -4;
-                KEY_GREEN = -11;
-                KEY_SOFT_LEFT = -1;
-                KEY_SOFT_RIGHT = -4;
-                KEY_VOL_UP = -13;
-                KEY_VOL_DOWN = -14;
-                KEY_FLIP_OPEN = -24;
-                KEY_FLIP_CLOSE = -22;
-                break;
-            case WINDOWS:
-                KEY_GREEN = -5;
-                KEY_CLEAR = 8;
-                KEY_SOFT_LEFT = 40;
-                KEY_SOFT_RIGHT = 41;
                 break;
             case MOTO:
                 ghostMotor = true;
                 istreamWaiting = true;
-
-                KEY_GREEN = -10;
-                KEY_FLIP_OPEN = -200;
-                KEY_FLIP_CLOSE = -200;
-                break;
-            case MOTOEZX:
-                KEY_BACK = -6;
-                KEY_GREEN = -31;
-                KEY_SOFT_LEFT = -21;
-                KEY_SOFT_RIGHT = -22;
-                KEY_VOL_UP = -9;
-                KEY_VOL_DOWN = -8;
-                break;
-            case LG:
-                KEY_GREEN = -10;
-                KEY_CLEAR = -16;
-                KEY_VOL_UP = -13;
-                KEY_VOL_DOWN = -14;
-                break;
-            case MICROEMU:
-                KEY_BACK = -4; // for android sdk
-                KEY_GREEN = -5;
-                KEY_SOFT_LEFT = -82;
-                break;
+                break;            
 //#if !ZLIB
 //#             case XENIUM99:
 //#                 istreamWaiting=false; //is it critical for phillips xenium?

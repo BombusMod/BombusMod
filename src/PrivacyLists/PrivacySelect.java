@@ -116,7 +116,7 @@ public class PrivacySelect
         }
         
         if (c==cmdDelete) {
-            deleteFocused();
+            keyClear();
         }
         if (c==cmdNewList)
             addNewElement();
@@ -179,18 +179,17 @@ public class PrivacySelect
         new MIDPTextBox(SR.MS_NEW, "", this, TextField.ANY);
     }
 
-    public boolean canDeleteFocused() {
+    public void keyClear() {
         PrivacyListItem pl = (PrivacyListItem) getFocusedObject();
-
-        return (pl != null) && (pl.list.name != null);
-    }
- 
-    public void deleteFocused() {
-        if (!canDeleteFocused())
+        if ((pl == null) || (pl.list.name == null))
             return;
-
-        PrivacyListItem pl = (PrivacyListItem) getFocusedObject();
         pl.list.deleteList();
         getLists();
+    }
+    public void touchLeftPressed() {
+        showMenu();
+    }
+    public String touchLeftCommand() {
+        return SR.MS_MENU;
     }
 }

@@ -72,9 +72,6 @@ import login.LoginListener;
 //#ifdef NON_SASL_AUTH
 //# import login.NonSASLAuth;
 //#endif
-//#if SASL_XGOOGLETOKEN
-//# import login.GoogleTokenAuth;
-//#endif
 import login.SASLAuth;
 
 import midlet.BombusMod;
@@ -86,7 +83,6 @@ import VCard.VCardView;
 import com.alsutton.jabber.*;
 import com.alsutton.jabber.datablocks.*;
 import java.util.*;
-import javax.microedition.lcdui.Canvas;
 
 import ui.*;
 //#ifdef POPUPS
@@ -367,13 +363,6 @@ public class Roster
         }
         try {
             Account a=sd.account;
-//#if SASL_XGOOGLETOKEN
-//#             if (a.useGoogleToken()) {
-//#                 setProgress(SR.MS_TOKEN, 30);
-//#                 token=new GoogleTokenAuth(a).responseXGoogleToken();
-//#                 if (token==null) throw new SecurityException("Can't get Google token");
-//#             }
-//#endif
             setProgress(SR.MS_CONNECT_TO_+a.getServer(), 30);
             
             theStream= a.openJabberStream();
@@ -968,7 +957,7 @@ public class Roster
 //#         int size = juickContacts.size();
 //#         if (size < 1) {
 //#             indexMainJuickContact = -1;
-//#         } else if ((size == 1) || (JuickConfig.getJuickJID().equals(""))) {
+//#         } else if ((size == 1) || (JuickConfig.getJuickJID().length() == 0)) {
 //#             indexMainJuickContact = 0;
 //#         } else {
 //#             //indexMainJuickContact = juickContacts.indexOf(new Contact("Juick", juickConfig.getJuickJID(), Presence.PRESENCE_OFFLINE, null));
@@ -1354,7 +1343,7 @@ public class Roster
 //#                 PepListener.getInstance().addBlockListener();
 //#endif
 //#if SASL_XGOOGLETOKEN
-//#         if (StaticData.getInstance().account.isGmail())
+//#         if (StaticData.getInstance().account.isGoogle)
 //#             theStream.addBlockListener(new IqGmail());
 //#endif
 //#if FILE_TRANSFER
@@ -2240,11 +2229,7 @@ public class Roster
     public void beginConversation() { //todo: verify xmpp version
 	SplashScreen.getInstance().setExit(this);
         if (theStream.isXmppV1())
-            new SASLAuth(sd.account, this, theStream)
-//#if SASL_XGOOGLETOKEN
-//#              .setToken(token)
-//#endif
-             ;
+            theStream.addBlockListener(new SASLAuth(sd.account, this, theStream));
 //#if NON_SASL_AUTH
 //#         else new NonSASLAuth(sd.account, this, theStream);
 //#endif
@@ -2343,22 +2328,7 @@ public class Roster
             me = new MessageEdit(pview, c, c.msgSuspended);
             c.msgSuspended = null;
         }
-    }
-   
-    public boolean canDeleteFocused() {
-        Object focusedObject = getFocusedObject();
-
-        return isLoggedIn()
-            && (focusedObject instanceof Contact)
-            && !(focusedObject instanceof MucContact);
-    }
-
-    public void deleteFocused() {
-        if (!canDeleteFocused())
-            return;
-
-        deleteContact((Contact) getFocusedObject());
-    }
+    }    
 
 //#ifndef WMUC
     public void kickFocused() {
@@ -2414,10 +2384,10 @@ public class Roster
 //#         }
 //#     }
 //#endif
-        new SplashScreen(getMainBarItem());
+        new SplashScreen(getMainBarItem(), VirtualCanvas.keyLock);
     }
 
-    public void vibraOnly() {
+    public void toggleVibra() {
         // swap profiles
         int profile = cf.profile;
         cf.profile = (profile == AlertProfile.VIBRA) ? cf.lastProfile : AlertProfile.VIBRA;
@@ -2870,7 +2840,7 @@ public class Roster
             }
             if (c.jid.isTransport()) {
                 // double-check for empty jid or our server jid
-                 if (c.bareJid.equals("")) return;
+                 if (c.bareJid.length() == 0) return;
                  if (c.bareJid.equals(myJid.getServer())) return;
                 // automatically remove registration
                 JabberDataBlock unreg = new Iq(c.bareJid, Iq.TYPE_SET, "unreg" + System.currentTimeMillis());
@@ -2977,6 +2947,120 @@ public class Roster
         new MyMenu(this, SR.MS_MAIN_MENU, MenuIcons.getInstance(), menuCommands);
     }
 
+    public void keyGreen(){
+        if (!isLoggedIn()) return;
+        VirtualList pview=createMsgList();
+        if (pview!=null) {
+            Contact c=(Contact)getFocusedObject();
+            Roster.me = new MessageEdit(pview, c, c.msgSuspended);
+            c.msgSuspended=null;
+        }
+    }
+
+    public void keyClear(){
+        if (isLoggedIn()) {
+            final Contact c=(Contact) getFocusedObject();
+            try {
+                boolean isContact=( getFocusedObject() instanceof Contact );
+//#ifndef WMUC
+                boolean isMucContact=( getFocusedObject() instanceof MucContact );
+//#else
+//#                 boolean isMucContact=false;
+//#endif
+                if (isContact && !isMucContact) {
+                   new AlertBox(SR.MS_DELETE_ASK, c.getNickJid()) {
+                        public void yes() {
+                            deleteContact(c);
+                        }
+                        public void no() {}
+                    };
+                }
+//#ifndef WMUC
+                else if (isContact && isMucContact && c.origin!=Contact.ORIGIN_GROUPCHAT) {
+                    ConferenceGroup mucGrp=(ConferenceGroup)c.group;
+                    if (mucGrp.selfContact.roleCode==MucContact.ROLE_MODERATOR) {
+                        String myNick=mucGrp.selfContact.getName();
+                        MucContact mc=(MucContact) c;
+                        new ConferenceQuickPrivelegeModify(mc, ConferenceQuickPrivelegeModify.KICK, myNick);
+                    }
+                }
+//#endif
+            } catch (Exception e) { /* NullPointerException */ }
+        }
+    }
+
+    public void toggleOfflines() {
+        cf.showOfflineContacts = !cf.showOfflineContacts;
+        sd.roster.reEnumRoster();
+    }
+
+    public void userKeyPressed(int keyCode) {
+        switch (keyCode) {
+            case 1:
+                moveCursorHome();
+                redraw();
+                collapseAllGroup();
+                return;
+            case 3:
+                moveFocusToGroup(-1);
+                return;
+            case 9:
+                moveFocusToGroup(1);
+                return;
+            case 0:
+                focusToNextUnreaded();
+                return;
+            case VirtualCanvas._KEY_POUND:
+                changeMotoBacklightState();
+                return;
+
+        }
+        super.userKeyPressed(keyCode);
+    }
+
+    public void longKey(int keyCode) {
+        switch (keyCode) {
+            case 0:
+                toggleOfflines();
+                return;
+            case 1:
+                if (isLoggedIn())
+                    new Bookmarks(null);
+		return;
+            case 3:
+                cmdActiveContacts();
+                return;
+            case 6:
+                Config.fullscreen = !Config.fullscreen;
+                sd.canvas.setFullScreenMode(Config.fullscreen);
+                return;
+            case 4:
+                new ConfigForm();
+                return;
+            case 7:
+                new RosterToolsMenu();
+                return;
+            case 9:
+                cmdMinimize();
+                return;
+            case VirtualCanvas._KEY_STAR:
+                if (cf.phoneManufacturer == Config.SIEMENS || cf.phoneManufacturer == Config.SIEMENS2) {
+                    toggleVibra();
+                } else {
+                    blockScreen();
+                }
+                return;
+            case VirtualCanvas._KEY_POUND:
+                if (cf.phoneManufacturer == Config.SIEMENS || cf.phoneManufacturer == Config.SIEMENS2) {
+                    blockScreen();
+                } else {
+                    toggleVibra();
+                }
+                return;
+        }
+    }
+
+
     public String touchRightCommand(){ return (Config.getInstance().oldSE)?SR.MS_MENU:SR.MS_ACTION; }
     public String touchLeftCommand(){ return (Config.getInstance().oldSE)?SR.MS_ACTION:SR.MS_MENU; }
 
@@ -3043,6 +3127,7 @@ public class Roster
 //#ifdef PLUGINS
 //#                              if (sd.Privacy) {
 //#endif
+                            if (!sd.account.isGoogle) {
                                  if (QuickPrivacy.groupsList == null) {
                                      QuickPrivacy.groupsList = new Vector();
                                  }
@@ -3052,6 +3137,7 @@ public class Roster
                                         needUpdatePrivacy = true;
                                     }
                                  }
+                            }
 //#ifdef PLUGINS
 //#                              }
 //#endif
@@ -3062,9 +3148,11 @@ public class Roster
 //#ifdef PRIVACY                        
 //#ifdef PLUGINS                        
 //#                              if (sd.Privacy) {
-//#endif         
+//#endif
+                if (!sd.account.isGoogle) {
                 if (needUpdatePrivacy && isLoggedIn())
                     new QuickPrivacy().updateQuickPrivacyList();
+                }
 //#ifdef PLUGINS                        
 //#                              }
 //#endif                            

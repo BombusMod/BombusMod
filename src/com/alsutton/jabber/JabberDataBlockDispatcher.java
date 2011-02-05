@@ -74,6 +74,7 @@ public class JabberDataBlockDispatcher implements Runnable {
     }
 
     public void addBlockListener(JabberBlockListener listener) {
+        if (listener == null) return;
         synchronized (blockListeners) {
             if (blockListeners.indexOf(listener) > 0) {
                 return;

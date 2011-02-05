@@ -129,7 +129,14 @@ public final class XMLList
             clearReadedMessageList();
         }
     }
-    
+    public void longKey(int key) {
+        switch(key) {
+            case 0:
+                clearReadedMessageList();
+                return;
+        }
+        super.longKey(key);
+    }
     public void clearReadedMessageList() {
         try {
             if (getCursor()+1==StanzasList.getInstance().size()) {

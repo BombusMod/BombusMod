@@ -36,6 +36,7 @@ import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
 import Fonts.FontCache;
 import Client.StaticData;
+import ui.VirtualCanvas;
 import ui.VirtualList;
 import util.StringUtils;
 
@@ -132,7 +133,7 @@ public class PopUp {
     }
     
     public boolean handleEvent(int keyCode) {
-        if (scrollable>-1) {
+        if (scrollable > -1) {
             switch (keyCode) {
                 case 2:
                 case 4:
@@ -144,22 +145,7 @@ public class PopUp {
                     return true;
             }
         }
-
-        if (keyCode == 14) {
-            String c = getContact();
-            if (c != null) {
-//#ifdef POPUPS
-                VirtualList current = StaticData.getInstance().canvas.getList();
-                if (current instanceof ContactMessageList)
-                    ((ContactMessageList)current).savePosition();
-                StaticData.getInstance().roster.showContactMessageList(c);
-//#endif
-                next();
-                return true;
-            }
-        }
-
-        return false; //next();
+        return next() || keyCode == 5;
     }
     
     public void clear() {

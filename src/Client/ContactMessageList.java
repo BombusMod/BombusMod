@@ -57,11 +57,11 @@ import Archive.MessageArchive;
 import Messages.MessageItem;
 import images.ChatIcons;
 import ui.VirtualList;
-import javax.microedition.lcdui.Canvas;
 //#ifdef FILE_TRANSFER
 import io.file.transfer.TransferAcceptFile;
 import io.file.transfer.TransferDispatcher;
 //#endif
+import ui.VirtualCanvas;
 import ui.VirtualElement;
 
 public class ContactMessageList extends MessageList {
@@ -75,6 +75,7 @@ public class ContactMessageList extends MessageList {
     MenuCommand cmdResume=new MenuCommand(SR.MS_RESUME,MenuCommand.SCREEN,1, ChatIcons.ICON_RESUME);
     MenuCommand cmdReply=new MenuCommand(SR.MS_REPLY,MenuCommand.SCREEN,4, ChatIcons.ICON_REPLY);
     MenuCommand cmdQuote=new MenuCommand(SR.MS_QUOTE,MenuCommand.SCREEN,5, ChatIcons.ICON_QUOTE);
+    
 //#ifdef ARCHIVE
     MenuCommand cmdArch=new MenuCommand(SR.MS_ADD_ARCHIVE,MenuCommand.SCREEN,6, ChatIcons.ICON_ARCHIVE);
 //#endif
@@ -228,7 +229,7 @@ public class ContactMessageList extends MessageList {
 //#ifdef HISTORY
 //#         if (cf.saveHistory)
 //#             if (cf.msgPath!=null)
-//#                 if (!cf.msgPath.equals(""))
+//#                 if (cf.msgPath.length() != 0)
 //#                     if (contact.msgs.size()>0)
 //#                         addMenuCommand(cmdSaveChat);
 //#ifdef HISTORY_READER
@@ -743,10 +744,7 @@ public class ContactMessageList extends MessageList {
 
         messageEditResume();
     }
-
-    public void touchRightPressed(){ if (cf.oldSE) showMenu(); else destroyView(); }
-    public void touchLeftPressed(){ if (cf.oldSE) messageEditResume(); else showMenu(); }
-
+    
     public void captionPressed() {
          savePosition();
          sd.roster.searchActiveContact(1); //next contact with messages
@@ -908,6 +906,62 @@ public class ContactMessageList extends MessageList {
         super.destroyView();
     }
 
+    public void userKeyPressed(int keyCode) {
+        switch (keyCode) {
+            case 3:
+                new ActiveContacts(null);
+                return;
+            case 4:
+                if (cf.useTabs) {
+                    savePosition();
+                    sd.roster.searchActiveContact(-1);
+                    return;
+                }
+                break;
+            case 6:
+                if (cf.useTabs) {
+                    savePosition();
+                    sd.roster.searchActiveContact(1);
+                    return;
+                }
+                break;
+            case VirtualCanvas._KEY_POUND:
+                Reply();
+                return;
+            case 9:
+                Quote();
+                return;
+        }
+        super.userKeyPressed(keyCode);
+    }
+    public void longKey(int key) {
+        switch(key) {
+            case 0:
+                clearReadedMessageList();
+                return;
+        }
+        super.longKey(key);
+    }
+
+     public void keyGreen() {
+        if (!sd.roster.isLoggedIn()) {
+            return;
+        }
+        Roster.me = new MessageEdit(this, contact, contact.msgSuspended);
+        contact.msgSuspended = null;
+    }
+
+    public void keyClear() {
+        if (!messages.isEmpty()) {
+            clearReadedMessageList();
+        }
+    }
+
+
     public String touchLeftCommand(){ return (Config.getInstance().oldSE)?((contact.msgSuspended!=null)?SR.MS_RESUME:SR.MS_NEW):SR.MS_MENU; }
     public String touchRightCommand(){ return (Config.getInstance().oldSE)?SR.MS_MENU:SR.MS_BACK; }
+    public void touchRightPressed(){ if (cf.oldSE) showMenu(); else destroyView(); }
+    public void touchLeftPressed(){ if (cf.oldSE) messageEditResume(); else showMenu(); }
+
+
 }

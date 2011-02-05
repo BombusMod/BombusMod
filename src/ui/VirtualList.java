@@ -43,7 +43,9 @@ import ui.controls.Balloon;
 import ui.controls.Progress;
 import ui.controls.ScrollBar;
 import util.StringUtils;
-import ui.keys.UserKeyExec;
+//#ifdef USER_KEYS
+//# import ui.keys.UserKeyExec;
+//#endif
 
 import java.util.Vector;
 
@@ -153,7 +155,51 @@ public abstract class VirtualList {
 //#endif
     }
 
-    public void userAdditionKeyPressed(int keyCode){}
+    public void userKeyPressed(int keyCode){
+        switch(keyCode) {
+            case 1:
+            case VirtualCanvas.KEY_VOL_UP:
+                moveCursorHome();
+                redraw();
+                return;
+            case 2:
+                keyUp();
+                redraw();
+                return;
+            case 8:
+                keyDwn();
+                redraw();
+                return;
+            case 4:
+                pageLeft();
+                redraw();
+                return;
+            case 6:
+                pageRight();
+                redraw();
+                return;            
+            case 5:
+                eventOk();
+                return;
+            case 7:
+            case VirtualCanvas.KEY_VOL_DOWN:
+                moveCursorEnd();
+                redraw();
+                return;
+            case VirtualCanvas._KEY_STAR:
+//#ifdef POPUPS
+                showHeapInfo();
+//#endif
+                return;
+            case VirtualCanvas._KEY_POUND:
+//#ifdef POPUPS
+                showInfo();
+//#endif
+                return;
+        }
+    }
+
+    public void longKey(int keyCode) {};
 
     public static boolean memMonitor;
     public static boolean showTimeTraffic = true;
@@ -757,7 +803,7 @@ public abstract class VirtualList {
     }
 
     private byte key_long_executed; // 0 - not try, 1 - not executed, 2 - executed.
-
+/*
     protected final void keyRepeated(int keyCode) {
 //#ifdef DEBUG
 //#         System.out.println("keyRepeated: " + keyCode);
@@ -790,7 +836,7 @@ public abstract class VirtualList {
 //#     sd.roster.userActivity();
 //#endif
     }
-
+*//*
     protected void keyPressed(int keyCode) {
 //#ifdef DEBUG
 //#         System.out.println("keyPressed: " + keyCode);
@@ -800,8 +846,8 @@ public abstract class VirtualList {
 
         UserKeyExec.getInstance().update_current_key(keyCode, false);
 
-        sendKeyAction(keyCode, false, true);
-
+        sendKeyAction(keyCode, false, true);*/
+    protected void keyPressed(int keyCode) {
 //#ifdef LIGHT_CONFIG      
 //#ifdef PLUGINS                
 //#         if (StaticData.getInstance().lightConfig)
@@ -826,35 +872,9 @@ public abstract class VirtualList {
 //#endif
     }
 
-    private boolean sendKeyAction(int keyCode, boolean key_long, boolean try_to_skip_popup) {
-        int key = getKeyCodeForSendEvent(keyCode, key_long);
-
-//#ifdef POPUPS
-        if (PopUp.getInstance().handleEvent(key)) {
-            redraw();
-            return true;
-        }
-        if (try_to_skip_popup && PopUp.getInstance().next()) {
-            redraw();
-            return true;
-        }
-//#endif
-
-//#ifdef USER_KEYS
-//#         if (UserKeyExec.getInstance().keyExecute(keyCode, key_long)) {
-//#             return true;
-//#         }
-//#endif
-
-        if ((key >= 0) && (getFocusedObject() != null)) { // send key to focused object
-            if (((VirtualElement) getFocusedObject()).handleEvent(key)) {
-                redraw();
-                return true;
-            }
-        }
-
-        return false;
-    }
+    public void keyGreen() {}
+    public void keyClear() {}
+    
 
     private int yPointerPos;
 
@@ -1003,44 +1023,7 @@ public abstract class VirtualList {
         }
         itemDragged = false;
 }
-  
-    private int getKeyCodeForSendEvent(int key_code, boolean key_long) {
-        int key = -1;
-        if (key_long)
-            return key;
-        switch (key_code) {
-            case Canvas.KEY_NUM0: key=0; break;
-            case Canvas.KEY_NUM1: key=1; break;
-            case Canvas.KEY_NUM2: key=2; break;
-            case Canvas.KEY_NUM3: key=3; break;
-            case Canvas.KEY_NUM4: key=4; break;
-            case Canvas.KEY_NUM5: key=5; break;
-            case Canvas.KEY_NUM6: key=6; break;
-            case Canvas.KEY_NUM7: key=7; break;
-            case Canvas.KEY_NUM8: key=8; break;
-            case Canvas.KEY_NUM9: key=9; break;
-            case Canvas.KEY_STAR: key=10; break;
-            case Canvas.KEY_POUND: key=11; break;
-            default:
-                try {
-                    switch (sd.canvas.getGameAction(key_code)) {
-                        case Canvas.UP: key=2; break;
-                        case Canvas.LEFT: key=4; break;
-                        case Canvas.RIGHT: key=6; break;
-                        case Canvas.DOWN: key=8; break;
-                        case Canvas.FIRE: key=12; break;
-                    }
-                } catch (Exception e) { }
-        }
-
-        if (key_code == Config.KEY_BACK) {
-            key = 13;
-        } else if (key_code == Config.KEY_GREEN) {
-            key = 14;
-        }
-        return key;
-    }
-
+    
     public void reconnectYes() {
         reconnectWindow.getInstance().reconnect();
         //reconnectDraw=false;
@@ -1472,12 +1455,7 @@ public abstract class VirtualList {
 //    public void cmdOk() { }
 
 
-    public boolean canDeleteFocused() {
-        return false;
-    }
-    public void deleteFocused() { }
-
-	public void showInfo() {
+    public void showInfo() {
 //#ifdef POPUPS
         if (!cf.popUps)
             return;

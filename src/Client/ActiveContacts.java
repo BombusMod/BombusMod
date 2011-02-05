@@ -27,13 +27,9 @@
 package Client;
 
 import java.util.Enumeration;
-import javax.microedition.lcdui.Canvas;
 import locale.SR;
 import ui.MainBar;
 import ui.controls.form.DefForm;
-//#ifdef POPUPS
-import ui.controls.PopUp;
-//#endif
 
 /**
  *
@@ -133,6 +129,14 @@ public class ActiveContacts extends DefForm {
     public final void destroyView() {
         sd.roster.reEnumRoster();
         super.destroyView();
+    }
+
+    public void userKeyPressed(int key) {
+        switch(key) {
+            case 0:
+                focusToNextUnreaded();
+        }
+        super.userKeyPressed(key);
     }
 
     public String touchLeftCommand() {

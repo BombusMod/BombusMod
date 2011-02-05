@@ -121,7 +121,7 @@ public class ArchiveList
         if (c==cmdNew) { new archiveEdit(this, -1, where, this); }
 	if (m==null) return;
         
-	if (c==cmdDelete) { deleteFocused(); }
+	if (c==cmdDelete) { keyClear(); }
         if (c==cmdDeleteAll) { deleteAllMessages(); redraw(); }
 	if (c==cmdPaste) { pasteData(0); }
 	if (c==cmdSubj) { pasteData(1); }
@@ -138,19 +138,20 @@ public class ArchiveList
         messages.removeAllElements();
     }
 
-    public boolean canDeleteFocused() {
-        return true;
+    public void keyGreen() {
+        pasteData(0);
     }
 
-    public void deleteFocused() {
+    public void keyClear() {
         archive.delete(getCursor());
         messages.removeAllElements();
-        if (getCursor() > 0)
+        if (getCursor() > 0) {
             moveCursorTo(getCursor() - 1);
+        }
         setRotator();
         redraw(); // Need?
     }
-    
+
     private void deleteAllMessages() {
         new AlertBox(SR.MS_ACTION, SR.MS_DELETE_ALL+"?") {
             public void yes() {

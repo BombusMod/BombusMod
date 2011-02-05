@@ -28,7 +28,6 @@
 package ui;
 
 import Client.Config;
-import Client.StaticData;
 import Fonts.FontCache;
 //#ifdef AUTOSTATUS
 //# import Client.ExtendedStatus;
@@ -43,6 +42,7 @@ import javax.microedition.lcdui.*;
 import midlet.BombusMod;
 import Colors.ColorTheme;
 //#ifdef LIGHT_CONFIG
+//# import Client.StaticData;
 //# import LightControl.CustomLight;
 //#endif
 import ui.controls.Progress;
@@ -51,6 +51,7 @@ import ui.controls.Progress;
  *
  * @author Eugene Stahov
  */
+// TODO: implement as VirtualList
 public final class SplashScreen extends Canvas implements Runnable, CommandListener {
     
     private String capt;
@@ -69,13 +70,17 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
     
     private static SplashScreen instance;
 
-    public boolean keypressed = false;
+    public int keypressed = 0;
 
     private Font clockFont=FontCache.getFont(true, FontCache.bigSize);
     
     private Progress pb;
 
     VirtualList next;
+
+    private char exitKey;
+
+    private int kHold;
 
     public static SplashScreen getInstance(){
         if (instance==null) 
@@ -89,8 +94,10 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
         midlet.BombusMod.getInstance().setDisplayable(this);
     }
     
-    public SplashScreen(ComplexString status) {
+    public SplashScreen(ComplexString status, char exitKey) {
         this.status = status;
+        this.exitKey = exitKey;
+        this.kHold = exitKey;
         
         status.setElementAt(new Integer(RosterIcons.ICON_KEYBLOCK_INDEX), 6);
         show();
@@ -219,37 +226,13 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
         close();
     }
 
-    public boolean key(int keyCode, boolean key_long) {
-        keypressed = true;
-
-        if (pos >= 20) {
-            close();
-            return true;
-		}
-
-        return ui.keys.UserKeyExec.getInstance().keyExecute(keyCode, key_long);
-    }
-
-
-// ======================================== //
-// ======= From VirtualList =============== //
-
-
-    private byte key_long_executed; // 0 - not try, 1 - not executed, 2 - executed.
-
+    
     protected final void keyRepeated(int keyCode) {
-//#ifdef DEBUG
-//#         System.out.println("keyRepeated: " + keyCode);
-//#endif
-
-        if ((key_long_executed < 1) && ui.keys.UserKeyExec.getInstance().isCurrentKey(keyCode, false)) {
-            key_long_executed = (byte) (key(keyCode, true) ? 2 : 1);
+        if (kHold == 0) {
+            if (keyCode == exitKey) {
+                destroyView();
+            }
         }
-
-        if (key_long_executed == 1) {
-            key(keyCode, false);
-        }
-
 //#ifdef LIGHT_CONFIG      
 //#ifdef PLUGINS                
 //#         if (StaticData.getInstance().lightConfig)
@@ -258,19 +241,13 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
 //#endif
     }
 
-    protected final void keyReleased(int keyCode) {
-//#ifdef DEBUG
-//#         System.out.println("keyReleased: " + keyCode);
-//#endif
-    }
-
     protected final void keyPressed(int keyCode) {
-//#ifdef DEBUG
-//#         System.out.println("keyPressed: " + keyCode);
-//#endif
+        keypressed = keyCode;        
 
-        key_long_executed = 0;
-        key(keyCode, false);
+        if (pos >= 20) {
+            close();
+        }
+        kHold = 0;
 
 //#ifdef LIGHT_CONFIG      
 //#ifdef PLUGINS                
@@ -303,67 +280,5 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
 //        if (cf.widthSystemgc) { _vt
             System.gc();
 //        } _vt
-    }
-
-    public void getKeys() {
-			/*
-        int pm=cf.phoneManufacturer;
-        if (pm==Config.SIEMENS || pm==Config.SIEMENS2) {
-             Config.SOFT_LEFT=-1;
-             Config.SOFT_RIGHT=-4;
-             Config.KEY_BACK=-12;
-             return;
-        }
-        if (pm==Config.WINDOWS) {
-             Config.SOFT_LEFT=40;
-             Config.SOFT_RIGHT=41;
-             return;     
-        }
-        if (pm==Config.NOKIA || pm==Config.SONYE) {
-            Config.SOFT_LEFT=-6;
-            Config.SOFT_RIGHT=-7;
-            return;
-        } 
-        if (pm==Config.MOTOEZX) {
-            Config.SOFT_LEFT=-21;
-            Config.SOFT_RIGHT=-22;
-            return;
-        } 
-         if (pm==Config.MICROEMU) {
-            Config.SOFT_LEFT=-82; // map android menu button as left softkey
-            return;
-        } 
-        try {
-            // Set Motorola specific keycodes
-            Class.forName("com.motorola.phonebook.PhoneBookRecord");
-            if (getKeyName(-21).toUpperCase().indexOf("SOFT")>=0) {
-                Config.SOFT_LEFT=-21;
-                Config.SOFT_RIGHT=-22;
-            } else {
-                Config.SOFT_LEFT=21;
-                Config.SOFT_RIGHT=22;
-            }
-        } catch (ClassNotFoundException ignore2) {
-            try {   
-                if (getKeyName(21).toUpperCase().indexOf("SOFT")>=0) {
-                    Config.SOFT_LEFT=21;
-                    Config.SOFT_RIGHT=22;
-                }
-                if (getKeyName(-6).toUpperCase().indexOf("SOFT")>=0) {
-                    Config.SOFT_LEFT=-6;
-                    Config.SOFT_RIGHT=-7;
-                }
-            } catch(Exception e) {}
-
-            for (int i=-127;i<127;i++) {
-            // run thru all the keys
-                try {
-                   if (getKeyName(i).toUpperCase().indexOf("SOFT")>=0) {         // Check for "SOFT" in name description
-                      if (getKeyName(i).indexOf("1")>=0) Config.SOFT_LEFT=i;         // check for the 1st softkey
-                      if (getKeyName(i).indexOf("2")>=0) Config.SOFT_RIGHT=i;         // check for 2nd softkey
-                   }
-                } catch(Exception e){ }
-            }
-        }*/
-    }
+    }    
 }

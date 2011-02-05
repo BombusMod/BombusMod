@@ -115,8 +115,7 @@ public class BombusMod extends MIDlet implements Runnable {
 //#ifdef PLUGINS
 //#         getPlugins();
 //#endif
-        s.setProgress(3);
-        s.getKeys();
+        s.setProgress(3);        
 
         s.setProgress(7);
         s.setProgress(Version.getVersionNumber(), 10);
@@ -138,7 +137,7 @@ public class BombusMod extends MIDlet implements Runnable {
 
         s.setProgress(20);
 
-        boolean selAccount = ((cf.accountIndex < 0) || s.keypressed);
+        boolean selAccount = ((cf.accountIndex < 0) || s.keypressed !=0);
         if (selAccount) {
             s.setProgress("Entering setup", 22);
         }

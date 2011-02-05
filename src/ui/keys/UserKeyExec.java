@@ -61,10 +61,8 @@ import java.io.IOException;
 import util.StringLoader;
 import java.io.InputStream;
 import java.io.DataOutputStream;
-import ui.controls.AlertBox;
 import Conference.Bookmarks;
 import Client.ActiveContacts;
-import ui.VirtualElement;
 import Menu.RosterToolsMenu;
 import ui.SplashScreen;
 import javax.microedition.lcdui.Displayable;
@@ -112,7 +110,7 @@ public class UserKeyExec {
         cmds[9] = SR.MS_PRIVACY_LISTS;
 //#endif
 //#ifdef USER_KEYS
-        cmds[10] = SR.MS_CUSTOM_KEYS;
+//#         cmds[10] = SR.MS_CUSTOM_KEYS;
 //#endif
 //#ifdef POPUPS
         cmds[11] = SR.MS_CLEAR_POPUPS;
@@ -206,16 +204,16 @@ public class UserKeyExec {
 //#ifdef PLUGINS
 //#         if (sd.UserKeys) {
 //#endif
-            DataInputStream is = NvStorage.ReadFileRecord(UserKey.storage, 0);
-
-            int size = 0;
-            try {
-                size = is.readInt();
-                for (int i = 0; i < size; i++) {
-                    UserKey u = UserKey.createFromDataInputStream(is);
-                    keysList.addElement(u);
-                }
-            } catch (Exception e) { return false; }
+//#             DataInputStream is = NvStorage.ReadFileRecord(UserKey.storage, 0);
+//# 
+//#             int size = 0;
+//#             try {
+//#                 size = is.readInt();
+//#                 for (int i = 0; i < size; i++) {
+//#                     UserKey u = UserKey.createFromDataInputStream(is);
+//#                     keysList.addElement(u);
+//#                 }
+//#             } catch (Exception e) { return false; }
 //#ifdef PLUGINS
 //#            }
 //#endif
@@ -248,7 +246,7 @@ public class UserKeyExec {
     }
 
     private void loadDefault() {
-        loadFromInputStream(UserKey.def_keys, false);
+       // loadFromInputStream(UserKey.def_keys, false);
     }
 
     public final void writeToFile(String directory) {
@@ -380,9 +378,9 @@ public class UserKeyExec {
 //#endif
                 break;
 //#ifdef USER_KEYS                
-            case 10: //key pound
-                new UserKeysList();
-                break;
+//#             case 10: //key pound
+//#                 new UserKeysList();
+//#                 break;
 //#endif                
             case 11:
 //#ifdef POPUPS
@@ -494,16 +492,7 @@ public class UserKeyExec {
                     current.destroyView();
                 break;
             case 29:
-                VirtualElement item = current.getItemRef(current.getCursor());
-                if (item == null)
-                    return false;
-                if (current.canDeleteFocused())
-                    new AlertBox("Delete current item", "Are you sure to delete \""+ item.getTipString() +"\"?") {
-                        public void yes() {
-                            current.deleteFocused();
-                        }
-                        public void no() { }
-                    };
+                current.keyClear();
                 break;
             case 30:
                 if (current instanceof ContactMessageList)
@@ -572,7 +561,7 @@ public class UserKeyExec {
                 break;
             case 45:
                 if (current instanceof Roster)
-                    sd.roster.vibraOnly();
+                    sd.roster.toggleVibra();
                 break;
             case 46:
                 sd.roster.changeMotoBacklightState();

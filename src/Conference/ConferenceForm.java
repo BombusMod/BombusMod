@@ -198,11 +198,13 @@ public class ConferenceForm
 //#ifdef PRIVACY            
 //#ifdef PLUGINS                        
 //#                 if (sd.Privacy) {
-//#endif                        
+//#endif
+            if (!sd.account.isGoogle) {
                     if (QuickPrivacy.conferenceList == null)
                         QuickPrivacy.conferenceList = new Vector();
                     QuickPrivacy.conferenceList.addElement(host);
                     new QuickPrivacy().updateQuickPrivacyList();
+            }
 //#ifdef PLUGINS                        
 //#                 }
 //#endif

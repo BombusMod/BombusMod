@@ -38,13 +38,11 @@ import ui.*;
 import com.alsutton.jabber.*;
 import com.alsutton.jabber.datablocks.*;
 import Client.*;
-import javax.microedition.lcdui.Canvas;
 import ui.MainBar;
 import ui.controls.AlertBox;
 import ui.controls.form.DefForm;
 import xmpp.XmppError;
 import xmpp.extensions.IqRegister;
-import xmpp.extensions.XDataForm;
 
 /**
  *

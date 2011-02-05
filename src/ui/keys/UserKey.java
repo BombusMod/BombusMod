@@ -31,15 +31,14 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import ui.IconTextElement;
-import Client.Config;
-import javax.microedition.lcdui.Canvas;
+import ui.VirtualCanvas;
 
 /**
  *
  * @author ad
  */
 public class UserKey extends IconTextElement {
-    public final static String storage = "keys_db_r935";
+    public final static String storage = "keys_db_r941";
     public final static String def_keys = "/userkeys/bombusmod.txt";
     
     private final static int COUNT_KEY_NAMES = 33;
@@ -64,7 +63,7 @@ public class UserKey extends IconTextElement {
         copyFrom(u);
     }
 
-	public void copyFrom(UserKey u) {
+	public final void copyFrom(UserKey u) {
         if (u == null)
             return;
         command_id = u.command_id;
@@ -79,50 +78,7 @@ public class UserKey extends IconTextElement {
         someCodes = new int[COUNT_KEY_NAMES];
         someNames = new String[COUNT_KEY_NAMES];
 
-        current_index = 0;
-
-        // Цифровые клавишы
-        addKeyName(Canvas.KEY_NUM0, "(0)");
-        addKeyName(Canvas.KEY_NUM1, "(1)");
-        addKeyName(Canvas.KEY_NUM2, "(2)");
-        addKeyName(Canvas.KEY_NUM3, "(3)");
-        addKeyName(Canvas.KEY_NUM4, "(4)");
-        addKeyName(Canvas.KEY_NUM5, "(5)");
-        addKeyName(Canvas.KEY_NUM6, "(6)");
-        addKeyName(Canvas.KEY_NUM7, "(7)");
-        addKeyName(Canvas.KEY_NUM8, "(8)");
-        addKeyName(Canvas.KEY_NUM9, "(9)");
-        addKeyName(Canvas.KEY_STAR, "*");
-        addKeyName(Canvas.KEY_POUND, "#");
-
-        // QWERTY-клавиатура
-        addKeyName(8, "BackSpace");
-        addKeyName(10, "Enter");
-        addKeyName(32, "Space");
-        
-        // Misc
-        addKeyName(Config.KEY_BACK, "Back");
-        addKeyName(Config.KEY_GREEN, "Green");
-        addKeyName(Config.KEY_CLEAR, "Clear");
-        addKeyName(Config.KEY_VOL_UP, "Volume_Up");
-        addKeyName(Config.KEY_VOL_DOWN, "Volume_Down");
-        addKeyName(Config.KEY_FLIP_OPEN, "Flip_Open");
-        addKeyName(Config.KEY_FLIP_CLOSE, "Flip_Close");
-        addKeyName(Config.KEY_SOFT_LEFT, "Soft_Left");
-        addKeyName(Config.KEY_SOFT_RIGHT, "Soft_Right");
-
-        // Game Action
-        Canvas display = (Canvas) Client.StaticData.getInstance().canvas;
-        addKeyName(display.getKeyCode(Canvas.LEFT), "(<)");
-        addKeyName(display.getKeyCode(Canvas.RIGHT), "(>)");
-        addKeyName(display.getKeyCode(Canvas.UP), "(^)");
-        addKeyName(display.getKeyCode(Canvas.DOWN), "(V)");
-        addKeyName(display.getKeyCode(Canvas.FIRE), "(o)");
-        addKeyName(display.getKeyCode(Canvas.GAME_A), "Game_A");
-        addKeyName(display.getKeyCode(Canvas.GAME_B), "Game_B");
-        addKeyName(display.getKeyCode(Canvas.GAME_C), "Game_C");
-        addKeyName(display.getKeyCode(Canvas.GAME_D), "Game_D");
-        display = null;
+        current_index = 0;        
     }
     
     private void addKeyName(int code, String name) {

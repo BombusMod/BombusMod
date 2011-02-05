@@ -116,7 +116,7 @@ public class PrivacyModifyList extends DefForm
             eventOk();
         }
         if (c==cmdDel) {
-            deleteFocused();
+            keyClear();
         }
         if (c==cmdSave) {
             plist.generateList();
@@ -189,17 +189,11 @@ public class PrivacyModifyList extends DefForm
         new PrivacyForm(new PrivacyItem(), plist);
     }
    
-    public boolean canDeleteFocused() {
-        return (getFocusedObject() != null);
-    }
-
     public String touchLeftCommand() {return SR.MS_MENU; }
     public void touchLeftPressed() { showMenu(); }
 
-    public void deleteFocused() {
-        if (!canDeleteFocused())
-            return;
-
-        plist.rules.removeElement(getFocusedObject());
+    public void keyClear() {
+        if (getFocusedObject() != null)
+            plist.rules.removeElement(getFocusedObject());
     }
 }

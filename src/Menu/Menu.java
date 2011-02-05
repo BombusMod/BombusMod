@@ -28,7 +28,6 @@
 package Menu;
 import Client.Config;
 import java.util.*;
-import javax.microedition.lcdui.Canvas;
 import locale.SR;
 import ui.*;
 
@@ -76,57 +75,15 @@ public class Menu extends VirtualList
         eventOk();
     }
 
-    public void keyPressed(int keyCode) {
-            if (executeByNum && getItemCount() > 0) {
-                switch (keyCode) {
-                    case Canvas.KEY_NUM0:
-                        executeCommand(9);
-                        return;
-                    case Canvas.KEY_NUM1:
-                        executeCommand(0);
-                        return;
-                    case Canvas.KEY_NUM2:
-                        executeCommand(1);
-                        return;
-                    case Canvas.KEY_NUM3:
-                        executeCommand(2);
-                        return;
-                    case Canvas.KEY_NUM4:
-                        executeCommand(3);
-                        return;
-                    case Canvas.KEY_NUM5:
-                        executeCommand(4);
-                        return;
-                    case Canvas.KEY_NUM6:
-                        executeCommand(5);
-                        return;
-                    case Canvas.KEY_NUM7:
-                        executeCommand(6);
-                        return;
-                    case Canvas.KEY_NUM8:
-                        executeCommand(7);
-                        return;
-                    case Canvas.KEY_NUM9:
-                        executeCommand(8);
-                        return;
-                }            
+    public void userKeyPressed(int keyCode) {
+        if (executeByNum && getItemCount() > 0 && keyCode >=0 && keyCode <= 9) {
+            executeCommand(keyCode);
         }
-
-        super.keyPressed(keyCode);
+        super.userKeyPressed(keyCode);
     }
 
     private void executeCommand(int index) {
-        moveCursorTo(index);
+        moveCursorTo(index == 0 ? 9 : index - 1);
         eventOk();
-/*        int pos=0;
-        for (Enumeration mi=menuitems.elements(); mi.hasMoreElements(); ) {
-            MenuItem mit=(MenuItem)mi.nextElement();
-            if (mit.index==index) {
-                moveCursorTo(pos);
-                eventOk();
-            }
-            pos++;  
-        }*/
-    }
-    
+    }    
 }

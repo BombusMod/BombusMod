@@ -25,96 +25,95 @@
  */
 
 package ui.keys;
-import java.util.Enumeration;
-import locale.SR;
-import ui.controls.form.CheckBox;
-import ui.controls.form.DefForm;
-import ui.controls.form.DropChoiceBox;
-import ui.controls.form.KeyInput;
-import ui.controls.form.SpacerItem;
-
-/**
- *
- * @author ad
- */
-class UserKeyEdit extends DefForm {
+//#ifdef USER_KEYS
+//# import locale.SR;
+//# import ui.controls.form.CheckBox;
+//# import ui.controls.form.DefForm;
+//# import ui.controls.form.DropChoiceBox;
+//# import ui.controls.form.KeyInput;
+//# import ui.controls.form.SpacerItem;
+//# 
+//# /**
+//#  *
+//#  * @author ad
+//#  */
+//# 
+//# 
+//# class UserKeyEdit extends DefForm {
 //#ifdef PLUGINS
 //#     public static String plugin = new String("PLUGIN_USER_KEYS");
 //#endif
-
-    private final UserKeysList userKeysList;
-
-    private CheckBox two_keys_t;
-    private KeyInput key_t;
-    private DropChoiceBox commands_t = new DropChoiceBox(SR.MS_ACTION);
-
-    UserKey origin_key;
-    UserKey u;
-    
-    public UserKeyEdit(UserKeysList originUserKeysList, UserKey origin_key) {
-        super((origin_key == null) ?
-//#ifdef USER_KEYS
-            SR.MS_ADD_CUSTOM_KEY:
-//#else
-//#                 "":
+//# 
+//#     private final UserKeysList userKeysList;
+//# 
+//#     private CheckBox two_keys_t;
+//#     private KeyInput key_t;
+//#     private DropChoiceBox commands_t = new DropChoiceBox(SR.MS_ACTION);
+//# 
+//#     UserKey origin_key;
+//#     UserKey u;
+//# 
+//#     public UserKeyEdit(UserKeysList originUserKeysList, UserKey origin_key) {
+//#         super((origin_key == null) ?
+//#              SR.MS_ADD_CUSTOM_KEY :
+//#                 (origin_key.toString()));
+//# 
+//#         userKeysList = originUserKeysList;
+//#         u = new UserKey(origin_key);
+//#         this.origin_key = origin_key;
+//# 
+//# 
+//#         two_keys_t = new CheckBox("Two keys", u.two_keys);
+//#         itemsList.addElement(two_keys_t);
+//# 
+//#         key_t = new KeyInput(u, "Press it");
+//#         itemsList.addElement(key_t);
+//# 
+//#         itemsList.addElement(new SpacerItem(10));
+//# 
+//#         int selected = 0;
+//#         for (int i = 0; i < UserKeyExec.cmds.length; i++) {
+//#             if (UserKeyExec.cmds[i] != null)
+//#                 commands_t.add(UserKeyExec.cmds[i]);
+//#             if (u.command_id == i)
+//#                 selected = commands_t.size() - 1;
+//#         }
+//#         commands_t.setSelectedIndex(selected);
+//#         itemsList.addElement(commands_t);
+//# 
+//# 
+//#         moveCursorTo(getNextSelectableRef(-1));
+//#         parentView = userKeysList;
+//#     }
+//# 
+//#     public void cmdOk() {
+//#         u.command_id = UserKeyExec.getCommandID((String) commands_t.items.elementAt(commands_t.getSelectedIndex()));
+//# 
+//#         if (origin_key == null) {
+//#             userKeysList.itemsList.addElement(u);
+//#         } else {
+//#             origin_key.copyFrom(u);
+//#         }
+//# 
+//#         userKeysList.commandState();
+//# 		sd.canvas.show(userKeysList);
+//#     }
+//# 
+//#     public void eventOk() {
+//#         if (key_t.selected)
+//#             return;
+//# 
+//#         super.eventOk();
+//#         key_t.setTwoKeys(two_keys_t.getValue());
+//#     }
+//# 
+//#     public boolean key(int keyCode, boolean key_long) {
+//#         if (!key_t.selected)
+//#             return false;
+//# 
+//#         key_t.key(keyCode, key_long);
+//#         redraw();
+//#         return true;
+//#     }
+//# }
 //#endif
-                (origin_key.toString()));
-        
-        userKeysList = originUserKeysList;
-        u = new UserKey(origin_key);
-        this.origin_key = origin_key;
-
-//#ifdef USER_KEYS
-        two_keys_t = new CheckBox("Two keys", u.two_keys);
-        itemsList.addElement(two_keys_t);
-
-        key_t = new KeyInput(u, "Press it");
-        itemsList.addElement(key_t);
-
-        itemsList.addElement(new SpacerItem(10));
-
-        int selected = 0;
-        for (int i = 0; i < UserKeyExec.cmds.length; i++) {
-            if (UserKeyExec.cmds[i] != null)
-                commands_t.add(UserKeyExec.cmds[i]);
-            if (u.command_id == i)
-                selected = commands_t.size() - 1;
-        }
-        commands_t.setSelectedIndex(selected);
-        itemsList.addElement(commands_t);
-//#endif
-        
-        moveCursorTo(getNextSelectableRef(-1));
-        parentView = userKeysList;
-    }
-    
-    public void cmdOk() {
-        u.command_id = UserKeyExec.getCommandID((String) commands_t.items.elementAt(commands_t.getSelectedIndex()));
-
-        if (origin_key == null) {
-            userKeysList.itemsList.addElement(u);
-        } else {
-            origin_key.copyFrom(u);
-        }
-
-        userKeysList.commandState();
-		sd.canvas.show(userKeysList);
-    }
-
-    public void eventOk() {
-        if (key_t.selected)
-            return;
-
-        super.eventOk();
-        key_t.setTwoKeys(two_keys_t.getValue());
-    }
-
-    public boolean key(int keyCode, boolean key_long) {
-        if (!key_t.selected)
-            return false;
-
-        key_t.key(keyCode, key_long);
-        redraw();
-        return true;
-    }
-}

@@ -34,9 +34,7 @@ import locale.SR;
 import ui.*;
 import java.util.*;
 import com.alsutton.jabber.*;
-import javax.microedition.lcdui.Canvas;
 import ui.MainBar;
-import ui.controls.AlertBox;
 import ui.controls.form.DefForm;
 
 /**
@@ -158,7 +156,7 @@ public class Bookmarks extends DefForm {
             BookmarkItem join = (BookmarkItem) getFocusedObject();
             new ConferenceForm(join, getCursor());
         } else if (c == cmdDel) {
-            deleteFocused();
+            keyClear();
             setMainBarItem(new MainBar(2, null, SR.MS_BOOKMARKS + " (" + getItemCount() + ") ", false));
             return;
         } //#ifdef SERVICE_DISCOVERY
@@ -196,17 +194,11 @@ public class Bookmarks extends DefForm {
             keyDwn();
         }
     }
-
-    public boolean canDeleteFocused() {
+    
+    public void keyClear() {
         BookmarkItem del = (BookmarkItem) getFocusedObject();
-
-        return (del != null) && (!del.isUrl);
-    }
-
-    public void deleteFocused() {
-        if (!canDeleteFocused())
-            return;
-
+        if (del == null || del.isUrl) return;
+        
         itemsList.removeElement(getFocusedObject());
 
         if (getItemCount() <= getCursor()) {

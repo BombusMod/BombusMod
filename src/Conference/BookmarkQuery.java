@@ -81,9 +81,10 @@ public class BookmarkQuery implements JabberBlockListener {
 //#ifdef PRIVACY 
 //#ifdef PLUGINS
 //#                 if (sd.Privacy) {
-//#endif    
-                     if (QuickPrivacy.conferenceList == null)
-                        QuickPrivacy.conferenceList = new Vector(); 
+//#endif
+                     if (!sd.account.isGoogle)
+                        if (QuickPrivacy.conferenceList == null)
+                            QuickPrivacy.conferenceList = new Vector();
 //#ifdef PLUGINS                
 //#                 }
 //#endif
@@ -99,11 +100,13 @@ public class BookmarkQuery implements JabberBlockListener {
 //#ifdef PLUGINS                        
 //#                         if (sd.Privacy) {
 //#endif
+                           if (!sd.account.isGoogle) {
                              int at = bm.jid.indexOf("@") + 1;
                              String host = bm.jid.substring(at, bm.jid.length());
                              if (!QuickPrivacy.conferenceList.contains(host)) {
                                  QuickPrivacy.conferenceList.addElement(host);
                              }
+                                    }
 //#ifdef PLUGINS                        
 //#                         }
 //#endif
@@ -122,7 +125,8 @@ public class BookmarkQuery implements JabberBlockListener {
 //#ifdef PLUGINS                        
 //#                         if (sd.Privacy) {
 //#endif
-                                new QuickPrivacy().updateQuickPrivacyList();
+                                if (!sd.account.isGoogle)
+                                    new QuickPrivacy().updateQuickPrivacyList();
 //#ifdef PLUGINS                        
 //#                         }
 //#endif

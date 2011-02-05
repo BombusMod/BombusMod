@@ -59,7 +59,7 @@ import Colors.ColorConfigForm;
 //import ui.reconnectWindow;
 
 //#ifdef USER_KEYS
-//# import ui.keys.UserKeyConfigForm;
+//# import ui.keys.UserKeysList;
 //#endif
 
 //#if SASL_XGOOGLETOKEN
@@ -87,6 +87,7 @@ public class RosterToolsMenu extends Menu {
 //#ifdef PLUGINS
 //#             if (sd.Privacy)
 //#endif
+            if (!sd.account.isGoogle)
                 addItem(SR.MS_PRIVACY_LISTS, 1, MenuIcons.ICON_PRIVACY);
 //#endif
 //#ifdef PEP
@@ -152,7 +153,7 @@ public class RosterToolsMenu extends Menu {
 //#             addItem(SR.MS_CUSTOM_KEYS, 16, MenuIcons.ICON_KEYS);
 //#endif
 //#if SASL_XGOOGLETOKEN
-//#         if (sd.account != null && sd.account.isGmail() && connected)
+//#         if (sd.account != null && sd.account.isGoogle && connected)
 //#             addItem(SR.MS_CHECK_GOOGLE_MAIL, 17, MenuIcons.ICON_GMAIL);
 //#endif 
 //#if AUTOTASK
@@ -266,11 +267,12 @@ public class RosterToolsMenu extends Menu {
 //#endif
 //#ifdef USER_KEYS
 //#             case 16:
-//#                 new UserKeyConfigForm();
+//#                 new UserKeysList();
 //#                 return;
 //#endif
 //#if SASL_XGOOGLETOKEN
 //#             case 17: //mail check
+//#                 destroyView();
 //#                 sd.roster.theStream.send(IqGmail.query());
 //# 		return;
 //#endif

@@ -192,7 +192,8 @@ public final class ContactEdit
 //#ifdef PRIVACY                        
 //#ifdef PLUGINS                        
 //#                              if (sd.Privacy) {
-//#endif                            
+//#endif
+            if (!sd.account.isGoogle) {
                                  if (QuickPrivacy.groupsList == null) {
                                      QuickPrivacy.groupsList = new Vector();
                                  }
@@ -200,6 +201,7 @@ public final class ContactEdit
                                      QuickPrivacy.groupsList.addElement(group); 
                                      new QuickPrivacy().updateQuickPrivacyList();
                                  }
+            }
 //#ifdef PLUGINS                        
 //#                              }
 //#endif                            

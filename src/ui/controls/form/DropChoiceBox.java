@@ -38,7 +38,7 @@ import ui.IconTextElement;
  *
  * @author ad
  */
-public class DropChoiceBox 
+public class DropChoiceBox
         extends IconTextElement {
     
     public int index=0;
@@ -175,4 +175,6 @@ public class DropChoiceBox
     }
     
     public boolean isSelectable() { return selectable; }
+    
+    public void afterSelect() {};
 }

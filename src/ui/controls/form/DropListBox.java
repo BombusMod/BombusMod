@@ -36,6 +36,7 @@ public class DropListBox
     public void eventOk() {
         if (itemsList.size() > 0) {
             cb.setSelectedIndex(getCursor());
+            cb.afterSelect();
         }
         destroyView();
     }
