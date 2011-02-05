@@ -592,7 +592,7 @@ public class UserKeyExec {
                 else if (current instanceof XMLList)
                     ((XMLList) current).clearReadedMessageList();
                 else if (current instanceof ActiveContacts)
-                    ((ActiveContacts) current).clearReadedInFocused();
+                    ((ActiveContacts) current).keyClear();
                 break;
             case 51:
                 if (current instanceof ContactMessageList)
@@ -604,7 +604,7 @@ public class UserKeyExec {
                 else if (current instanceof Roster)
                     ((Roster) current).messageEditResume();
                 else if (current instanceof ActiveContacts)
-                    ((ActiveContacts) current).messageEditResume();
+                    ((ActiveContacts) current).keyGreen();
                 else if (current instanceof XMLList)
                     ((XMLList) current).stanzaEdit();
                 else if (current instanceof MessageUrl)

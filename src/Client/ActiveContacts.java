@@ -111,7 +111,7 @@ public class ActiveContacts extends DefForm {
         }
     }
 
-    public void messageEditResume() {
+    public void keyGreen() {
         Contact c = (Contact) getFocusedObject();
         ui.VirtualList pview = new ContactMessageList(c);
         Roster.me = null;
@@ -119,7 +119,7 @@ public class ActiveContacts extends DefForm {
         c.msgSuspended = null;
     }
 
-    public void clearReadedInFocused() {
+    public void keyClear() {
         Contact c = (Contact) getFocusedObject();
         c.purge();
         itemsList.removeElementAt(getCursor());
