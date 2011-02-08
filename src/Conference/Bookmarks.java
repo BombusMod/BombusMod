@@ -160,10 +160,12 @@ public class Bookmarks extends DefForm {
             keyClear();
             setMainBarItem(new MainBar(2, null, SR.MS_BOOKMARKS + " (" + getItemCount() + ") ", false));
             return;
-        } //#ifdef SERVICE_DISCOVERY
+        }
+//#ifdef SERVICE_DISCOVERY
         else if (c == cmdDisco) {
             discoCurrent();
-        } //#endif
+        }
+//#endif
         else if (c == cmdConfigure) {
             new QueryConfigForm(roomJid);
         } else if (c == cmdRoomOwners) {
@@ -265,6 +267,7 @@ public class Bookmarks extends DefForm {
                 discoCurrent();
                 return;
         }
+        super.userKeyPressed(keyCode);
     }
 
     public String touchLeftCommand() {
