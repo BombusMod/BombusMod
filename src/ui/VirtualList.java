@@ -43,9 +43,6 @@ import ui.controls.Balloon;
 import ui.controls.Progress;
 import ui.controls.ScrollBar;
 import util.StringUtils;
-//#ifdef USER_KEYS
-//# import ui.keys.UserKeyExec;
-//#endif
 
 import java.util.Vector;
 
@@ -582,14 +579,14 @@ public abstract class VirtualList {
                 if (mainbar!=null) {
                     setAbsOrg(g, 0, height-mHeight);
                     drawMainPanel(g);
-                    if (sd.canvas.hasPointerEvents() && Config.fullscreen)
+                    if (sd.canvas.hasPointerEvents())
                         CommandsPointer.init(width, height, mHeight);
                 }
             } else {
                 if (infobar!=null) {
                     setAbsOrg(g, 0, height-iHeight);
                     drawInfoPanel(g);
-                    if (sd.canvas.hasPointerEvents() && Config.fullscreen)
+                    if (sd.canvas.hasPointerEvents())
                         CommandsPointer.init(width, height, iHeight);
                 }
             }
@@ -879,19 +876,16 @@ public abstract class VirtualList {
     private int yPointerPos;
 
     protected void pointerPressed(int x, int y) {
-        if (Config.fullscreen) {
-            int act = CommandsPointer.pointerPressed(x, y);
-            if (act == 1) {
-                touchLeftPressed();
-                stickyWindow = false;
-                return;
-            } else if (act == 2) {
-                touchRightPressed();
-                stickyWindow = false;
-                return;
-            }
-        }        
-        
+        int act = CommandsPointer.pointerPressed(x, y);
+        if (act == 1) {
+            touchLeftPressed();
+            stickyWindow = false;
+            return;
+        } else if (act == 2) {
+            touchRightPressed();
+            stickyWindow = false;
+            return;
+        }
         yPointerPos = y;
 
         if (scrollbar.pointerPressed(x, y, this)) {

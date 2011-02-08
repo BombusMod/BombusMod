@@ -82,6 +82,8 @@ public class VirtualCanvas extends Canvas implements CommandListener{
     }
     
     void commandState() {
+        if (hasPointerEvents())
+            return;
         if (Config.fullscreen) {
             setCommandListener(null);
 		} else if (list != null) {
@@ -435,7 +437,7 @@ public class VirtualCanvas extends Canvas implements CommandListener{
      * обработка кодов кнопок
      * @param keyCode код нажатой кнопки
      */
-    protected void doKeyAction(int keyCode) {   
+    protected void doKeyAction(int keyCode) {  
         switch (keyCode) {
             case KEY_GREEN:
                 list.keyGreen();

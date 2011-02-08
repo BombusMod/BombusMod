@@ -78,6 +78,7 @@ public class Menu extends VirtualList
     public void userKeyPressed(int keyCode) {
         if (executeByNum && getItemCount() > 0 && keyCode >=0 && keyCode <= 9) {
             executeCommand(keyCode);
+            return;
         }
         super.userKeyPressed(keyCode);
     }
