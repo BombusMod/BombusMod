@@ -42,7 +42,6 @@ import Conference.ConferenceForm;
 //#ifdef STATS
 //# import Statistic.Stats;
 //#endif
-import images.MenuIcons;
 //#ifdef ARCHIVE
 import Archive.ArchiveList;
 //#endif
@@ -304,26 +303,26 @@ public class Roster
             addMenuCommand(cmdQuit);
         }
 
-        cmdActions.setImg(MenuIcons.ICON_ITEM_ACTIONS);
-        cmdStatus.setImg(MenuIcons.ICON_STATUS);
+     //   cmdActions.setImg(MenuIcons.ICON_ITEM_ACTIONS);
+        cmdStatus.setImg(RosterIcons.ICON_STATUS);
 
-        cmdActiveContacts.setImg(MenuIcons.ICON_CONFERENCE);
-        cmdAlert.setImg(MenuIcons.ICON_NOTIFY);
+        cmdActiveContacts.setImg(RosterIcons.ICON_ACTIVE);
+        cmdAlert.setImg(RosterIcons.ICON_ALERTS);
 //#ifndef WMUC
-        cmdConference.setImg(MenuIcons.ICON_CONFERENCE);
+        cmdConference.setImg(RosterIcons.ICON_CONFERENCE);
 //#endif
 //#ifdef ARCHIVE
-        cmdArchive.setImg(MenuIcons.ICON_ARCHIVE);
+        cmdArchive.setImg(RosterIcons.ICON_ARCHIVE);
 //#endif
-        cmdAdd.setImg(MenuIcons.ICON_ADD_CONTACT);
-        cmdTools.setImg(MenuIcons.ICON_SETTINGS);
-        cmdAccount.setImg(MenuIcons.ICON_VCARD);
-        cmdInfo.setImg(MenuIcons.ICON_CHECK_UPD);
+        cmdAdd.setImg(RosterIcons.ICON_ADD_CONTACT);
+        cmdTools.setImg(RosterIcons.ICON_TOOLS);
+        cmdAccount.setImg(RosterIcons.ICON_ACCOUNTS);
+        cmdInfo.setImg(RosterIcons.ICON_ABOUT);
         if (cf.allowMinimize) {
-            cmdMinimize.setImg(MenuIcons.ICON_FILEMAN);
+            cmdMinimize.setImg(RosterIcons.ICON_MINIMIZE);
         }
-        cmdCleanAllMessages.setImg(MenuIcons.ICON_CLEAN_MESSAGES);
-        cmdQuit.setImg(MenuIcons.ICON_BUILD_NEW);
+        cmdCleanAllMessages.setImg(RosterIcons.ICON_CLEAN_MESSAGES);
+        cmdQuit.setImg(RosterIcons.ICON_BUILD_NEW);
     }
     
     public void setProgress(String pgs,int percent){
@@ -1468,12 +1467,9 @@ public class Roster
                 if ( type.equals( "result" ) ) {
                     if (id.equals("getros")) {
                         //theStream.enableRosterNotify(false); //voffk
-                        if (from != null) {
-                            if (!from.equals(sd.account.getBareJid()))
-                                return JabberBlockListener.BLOCK_REJECTED;
-                        }
-
-                        processRoster(data);
+                        
+                        if (!processRoster(data))
+                            return JabberBlockListener.BLOCK_REJECTED;
 
                         if(!cf.collapsedGroups)
                             groups.queryGroupState(true);
@@ -2324,8 +2320,8 @@ public class Roster
         VirtualList pview = createMsgList();
         if (pview != null) {
             Contact c = (Contact) getFocusedObject();
-            me = null;
             me = new MessageEdit(pview, c, c.msgSuspended);
+            me.show();
             c.msgSuspended = null;
         }
     }    
@@ -2944,7 +2940,7 @@ public class Roster
 
     public void showMenu() {
         commandState();
-        new MyMenu(this, SR.MS_MAIN_MENU, MenuIcons.getInstance(), menuCommands);
+        new MyMenu(this, SR.MS_MAIN_MENU, RosterIcons.getInstance(), menuCommands);
     }
 
     public void keyGreen(){
@@ -2953,6 +2949,7 @@ public class Roster
         if (pview!=null) {
             Contact c=(Contact)getFocusedObject();
             Roster.me = new MessageEdit(pview, c, c.msgSuspended);
+            Roster.me.show();
             c.msgSuspended=null;
         }
     }

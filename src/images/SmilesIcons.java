@@ -27,7 +27,6 @@
 
 package images;
 
-import Client.Config;
 import Messages.MessageParser;
 import ui.ImageList;
 
@@ -53,7 +52,9 @@ public class SmilesIcons {
                  int smilesCount = MessageParser.getInstance().getSmileTable().size();
                  cols = ceil(SMILES_IN_ROW, smilesCount);
              } catch (Exception e) {
-                 System.out.println("Can't load smiles");
+//#ifdef DEBUG
+//#                  System.out.println("Can't load smiles");
+//#endif
              }
             instance=new AniImageList();
             ((AniImageList)instance).load("/smiles");

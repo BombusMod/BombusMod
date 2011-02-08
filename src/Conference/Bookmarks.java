@@ -35,6 +35,7 @@ import ui.*;
 import java.util.*;
 import com.alsutton.jabber.*;
 import ui.MainBar;
+import ui.controls.AlertBox;
 import ui.controls.form.DefForm;
 
 /**
@@ -195,7 +196,7 @@ public class Bookmarks extends DefForm {
         }
     }
     
-    public void keyClear() {
+    public void deleteBookmark() {
         BookmarkItem del = (BookmarkItem) getFocusedObject();
         if (del == null || del.isUrl) return;
         
@@ -207,6 +208,18 @@ public class Bookmarks extends DefForm {
 
         saveBookmarks();
         redraw(); // TODO: need?
+    }
+
+    public void keyClear() {
+        new AlertBox(SR.MS_DELETE_ASK, ((BookmarkItem) getFocusedObject()).getJid()) {
+
+            public void yes() {
+                deleteBookmark();
+            }
+
+            public void no() {
+            }
+        };
     }
 
     private void saveBookmarks() {

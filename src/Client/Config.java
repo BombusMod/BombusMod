@@ -27,7 +27,6 @@
 package Client;
 
 import Alerts.AlertProfile;
-import images.ActionsIcons;
 import images.RosterIcons;
 //#ifdef SMILES
 import images.SmilesIcons;
@@ -42,8 +41,6 @@ import Fonts.FontCache;
 //#ifdef CLIENTS_ICONS
 import images.ClientsIcons;
 //#endif
-import images.ChatIcons;
-import images.MenuIcons;
 import util.StringLoader;
 import ui.Time;
 import ui.VirtualList;
@@ -237,10 +234,8 @@ public class Config {
         gmtOffset = gmtloc;
 
         //prefetch images
-        MenuIcons.getInstance();
         RosterIcons.getInstance();
-        ActionsIcons.getInstance();
-        ChatIcons.getInstance();
+        
 //#ifdef SMILES
         if (smiles) {
             SmilesIcons.getInstance();

@@ -118,8 +118,7 @@ public final class XMLList
             stanzaEdit();
         }
         if (c == cmdEnableDisable) {
-            StanzasList.getInstance().enabled = !StanzasList.getInstance().enabled;
-            redraw();
+            toggle();
         }
         if (m == null) {
             return;
@@ -151,5 +150,17 @@ public final class XMLList
             moveCursorHome();
         } catch (Exception e) { }        
         redraw(); 
+    }
+    public void toggle() {
+        StanzasList.getInstance().enabled = !StanzasList.getInstance().enabled;
+        redraw();
+    }
+
+    public void keyClear() {
+        clearReadedMessageList();
+    }
+
+    public void keyGreen() {
+        toggle();
     }
 }

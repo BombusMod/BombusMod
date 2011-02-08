@@ -55,7 +55,7 @@ import Archive.MessageArchive;
 //# import Menu.MyMenu;
 //#endif
 import Messages.MessageItem;
-import images.ChatIcons;
+import images.RosterIcons;
 import ui.VirtualList;
 //#ifdef FILE_TRANSFER
 import io.file.transfer.TransferAcceptFile;
@@ -67,36 +67,36 @@ import ui.VirtualElement;
 public class ContactMessageList extends MessageList {
     public Contact contact;
 
-    MenuCommand cmdSubscribe=new MenuCommand(SR.MS_SUBSCRIBE, MenuCommand.SCREEN, 1, ChatIcons.ICON_ACCEPTAUTH);
-    MenuCommand cmdDecline = new MenuCommand(SR.MS_DECLINE, MenuCommand.SCREEN, 2, ChatIcons.ICON_DECLINEAUTH);
-    MenuCommand cmdAcceptFile = new MenuCommand("Accept", MenuCommand.SCREEN, 1, ChatIcons.ICON_ACCEPTFILE);
-    MenuCommand cmdDeclineFile = new MenuCommand(SR.MS_DECLINE, MenuCommand.SCREEN, 2, ChatIcons.ICON_DECLINEFILE);
-    MenuCommand cmdMessage=new MenuCommand(SR.MS_NEW_MESSAGE,MenuCommand.SCREEN,3, ChatIcons.ICON_NEW);
-    MenuCommand cmdResume=new MenuCommand(SR.MS_RESUME,MenuCommand.SCREEN,1, ChatIcons.ICON_RESUME);
-    MenuCommand cmdReply=new MenuCommand(SR.MS_REPLY,MenuCommand.SCREEN,4, ChatIcons.ICON_REPLY);
-    MenuCommand cmdQuote=new MenuCommand(SR.MS_QUOTE,MenuCommand.SCREEN,5, ChatIcons.ICON_QUOTE);
+    MenuCommand cmdSubscribe=new MenuCommand(SR.MS_SUBSCRIBE, MenuCommand.SCREEN, 1, RosterIcons.ICON_ACCEPTAUTH);
+    MenuCommand cmdDecline = new MenuCommand(SR.MS_DECLINE, MenuCommand.SCREEN, 2, RosterIcons.ICON_DECLINEAUTH);
+    MenuCommand cmdAcceptFile = new MenuCommand("Accept", MenuCommand.SCREEN, 1, RosterIcons.ICON_ACCEPTFILE);
+    MenuCommand cmdDeclineFile = new MenuCommand(SR.MS_DECLINE, MenuCommand.SCREEN, 2, RosterIcons.ICON_DECLINEFILE);
+    MenuCommand cmdMessage=new MenuCommand(SR.MS_NEW_MESSAGE,MenuCommand.SCREEN,3, RosterIcons.ICON_NEW);
+    MenuCommand cmdResume=new MenuCommand(SR.MS_RESUME,MenuCommand.SCREEN,1, RosterIcons.ICON_RESUME);
+    MenuCommand cmdReply=new MenuCommand(SR.MS_REPLY,MenuCommand.SCREEN,4, RosterIcons.ICON_REPLY);
+    MenuCommand cmdQuote=new MenuCommand(SR.MS_QUOTE,MenuCommand.SCREEN,5, RosterIcons.ICON_QUOTE);
     
 //#ifdef ARCHIVE
-    MenuCommand cmdArch=new MenuCommand(SR.MS_ADD_ARCHIVE,MenuCommand.SCREEN,6, ChatIcons.ICON_ARCHIVE);
+    MenuCommand cmdArch=new MenuCommand(SR.MS_ADD_ARCHIVE,MenuCommand.SCREEN,6, RosterIcons.ICON_ARCHIVE);
 //#endif
-    MenuCommand cmdPurge=new MenuCommand(SR.MS_CLEAR_LIST, MenuCommand.SCREEN, 7, ChatIcons.ICON_CLEAR);
-    MenuCommand cmdSelect=new MenuCommand(SR.MS_SELECT, MenuCommand.SCREEN, 8, ChatIcons.ICON_SELECT);
-    MenuCommand cmdActions=new MenuCommand(SR.MS_CONTACT,MenuCommand.SCREEN,9, ChatIcons.ICON_CONTACT);
-    MenuCommand cmdActive=new MenuCommand(SR.MS_ACTIVE_CONTACTS,MenuCommand.SCREEN,10, ChatIcons.ICON_ACTIVECONTACTS);
+    MenuCommand cmdPurge=new MenuCommand(SR.MS_CLEAR_LIST, MenuCommand.SCREEN, 7, RosterIcons.ICON_CLEAR);
+    MenuCommand cmdSelect=new MenuCommand(SR.MS_SELECT, MenuCommand.SCREEN, 8, RosterIcons.ICON_SELECT);
+    MenuCommand cmdActions=new MenuCommand(SR.MS_CONTACT,MenuCommand.SCREEN,9, RosterIcons.ICON_CONTACT);
+    MenuCommand cmdActive=new MenuCommand(SR.MS_ACTIVE_CONTACTS,MenuCommand.SCREEN,10, RosterIcons.ICON_ACTIVECONTACTS);
 //#if TEMPLATES
-//#     MenuCommand cmdTemplate=new MenuCommand(SR.MS_SAVE_TEMPLATE,MenuCommand.SCREEN,11, ChatIcons.ICON_TEMPLATES);
+//#     MenuCommand cmdTemplate=new MenuCommand(SR.MS_SAVE_TEMPLATE,MenuCommand.SCREEN,11, RosterIcons.ICON_TEMPLATES);
 //#endif
 //#ifdef FILE_IO
-    MenuCommand cmdSaveChat=new MenuCommand(SR.MS_SAVE_CHAT, MenuCommand.SCREEN, 12, ChatIcons.ICON_SAVECHAT);
+    MenuCommand cmdSaveChat=new MenuCommand(SR.MS_SAVE_CHAT, MenuCommand.SCREEN, 12, RosterIcons.ICON_SAVECHAT);
 //#endif
 //#ifdef HISTORY
 //#ifdef HISTORY_READER
-//#          MenuCommand cmdReadHistory=new MenuCommand(SR.MS_HISTORY, MenuCommand.SCREEN, 13, ChatIcons.ICON_HISTORY);
+//#          MenuCommand cmdReadHistory=new MenuCommand(SR.MS_HISTORY, MenuCommand.SCREEN, 13, RosterIcons.ICON_HISTORY);
 //#endif
 //# //        if (cf.lastMessages && !contact.isHistoryLoaded()) loadRecentList();
 //#endif
 //#ifdef CLIPBOARD
-//#     MenuCommand cmdSendBuffer=new MenuCommand(SR.MS_SEND_BUFFER, MenuCommand.SCREEN, 14, ChatIcons.ICON_SENDBUF);
+//#     MenuCommand cmdSendBuffer=new MenuCommand(SR.MS_SEND_BUFFER, MenuCommand.SCREEN, 14, RosterIcons.ICON_SENDBUF);
 //#endif
 
 
@@ -639,17 +639,17 @@ public class ContactMessageList extends MessageList {
 //#         String target = getTargetForJuickReply(body);
 //#         if ((action.equals("S") || action.equals("U")) && (target.indexOf("/") > 0)) {
 //#             target = target.substring(0, target.indexOf("/"));
-//#         } else if (action.equals("PM") || action.equals("")) {
+//#         } else if (action.equals("PM") || action.length() == 0) {
 //#             target+=" ";
 //#         }
 //#         String resultAction = action + " " + target;
 //# 
-//#         if (action.equals("+") || action.equals("")) {
+//#         if (action.equals("+") || action.length() == 0) {
 //#             resultAction = target+action;
 //#         }
 //#         try {
-//#             Roster.me = null;
-//#             Roster.me = new MessageEdit(this, getActualJuickContact(), resultAction, false);            
+//#             Roster.me = new MessageEdit(this, getActualJuickContact(), resultAction, false);
+//#             Roster.me.show();
 //#         } catch (Exception e) {/*no messages*/}
 //#     }
 //# 
@@ -693,8 +693,8 @@ public class ContactMessageList extends MessageList {
         if (!sd.roster.isLoggedIn())
             return;
 
-        Roster.me = null;
         Roster.me = new MessageEdit(this, contact, contact.msgSuspended);
+        Roster.me.show();
         contact.msgSuspended = null;
     }
 
@@ -710,8 +710,8 @@ public class ContactMessageList extends MessageList {
                 if (msg != null
                  && msg.messageType != Msg.MESSAGE_TYPE_OUT
                  && msg.messageType != Msg.MESSAGE_TYPE_SUBJ) {
-                    Roster.me = null;
                     Roster.me = new MessageEdit(this, contact, msg.from + ":");
+                    Roster.me.show();
                     return;
                 }
             } catch (Exception e) { /* no messages */ }
@@ -761,8 +761,8 @@ public class ContactMessageList extends MessageList {
                 .append("\n")
                 .append(" ")
                 .toString();
-            Roster.me = null;
-            Roster.me = new MessageEdit(this, contact, msg);            
+            Roster.me = new MessageEdit(this, contact, msg);
+            Roster.me.show();
             msg = null;
         } catch (Exception e) {/*no messages*/}
     }
@@ -949,6 +949,7 @@ public class ContactMessageList extends MessageList {
             return;
         }
         Roster.me = new MessageEdit(this, contact, contact.msgSuspended);
+        Roster.me.show();
         contact.msgSuspended = null;
     }
 

@@ -58,8 +58,8 @@ public class JuickThingsMenu extends Menu {
         }
 
         try {
-            Roster.me = null;
-            Roster.me = new MessageEdit(parentView, contact, body);            
+            Roster.me = new MessageEdit(parentView, contact, body);
+            Roster.me.show();
         } catch (Exception e) {/*no messages*/}
     }
 }

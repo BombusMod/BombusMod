@@ -179,13 +179,25 @@ public class PrivacySelect
         new MIDPTextBox(SR.MS_NEW, "", this, TextField.ANY);
     }
 
-    public void keyClear() {
+    public void cmdDelete() {
         PrivacyListItem pl = (PrivacyListItem) getFocusedObject();
         if ((pl == null) || (pl.list.name == null))
             return;
         pl.list.deleteList();
         getLists();
     }
+    public void keyClear() {
+        String name = getFocusedObject().toString();
+        new AlertBox(name, SR.MS_DELETE + " \"" + name + "\"?") {
+
+            public void yes() {
+                cmdDelete();
+            }
+
+            public void no() {}
+        };
+    }
+    
     public void touchLeftPressed() {
         showMenu();
     }

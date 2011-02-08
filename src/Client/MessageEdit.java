@@ -96,8 +96,7 @@ public final class MessageEdit
 //#        if (sd.DeTranslit)
 //#endif
 //#             util.DeTranslit.getInstance();
-//#endif
-        show();
+//#endif        
     }
 
     public MessageEdit(VirtualList pView, Contact to, String body) {
@@ -307,7 +306,7 @@ public final class MessageEdit
 //#     private String notifyMessage;
 //# 
 //#     public void setMyTicker(String msg) {
-//#         if (msg != null && !msg.equals("")) {
+//#         if (msg != null && msg.length() != 0) {
 //#             StringBuffer out = new StringBuffer(msg);
 //#             int i = 0;
 //#             while (i < out.length()) {

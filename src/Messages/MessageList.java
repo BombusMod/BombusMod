@@ -34,7 +34,7 @@ import java.util.Vector;
 import Menu.MenuListener;
 import Menu.MenuCommand;
 import Menu.MyMenu;
-import images.ChatIcons;
+import images.RosterIcons;
 import locale.SR;
 import ui.VirtualCanvas;
 import ui.VirtualElement;
@@ -52,13 +52,13 @@ public abstract class MessageList extends VirtualList
 //#ifdef CLIPBOARD
 //#     private ClipBoard clipboard=ClipBoard.getInstance();
 //#     
-//#     protected MenuCommand cmdCopy = new MenuCommand(SR.MS_COPY, MenuCommand.SCREEN, 20, ChatIcons.ICON_COPY);
-//#     protected MenuCommand cmdCopyPlus = new MenuCommand("+ "+SR.MS_COPY, MenuCommand.SCREEN, 30, ChatIcons.ICON_COPYPLUS);
+//#     protected MenuCommand cmdCopy = new MenuCommand(SR.MS_COPY, MenuCommand.SCREEN, 20, RosterIcons.ICON_COPY);
+//#     protected MenuCommand cmdCopyPlus = new MenuCommand("+ "+SR.MS_COPY, MenuCommand.SCREEN, 30, RosterIcons.ICON_COPYPLUS);
 //#endif
-    protected MenuCommand cmdxmlSkin = new MenuCommand(SR.MS_USE_COLOR_SCHEME, MenuCommand.SCREEN, 40, ChatIcons.ICON_USESKIN);
+    protected MenuCommand cmdxmlSkin = new MenuCommand(SR.MS_USE_COLOR_SCHEME, MenuCommand.SCREEN, 40, RosterIcons.ICON_USESKIN);
 
-    protected MenuCommand cmdUrl = new MenuCommand(SR.MS_GOTO_URL, MenuCommand.SCREEN, 80, ChatIcons.ICON_GOTOURL);
-    protected MenuCommand cmdBack = new MenuCommand(SR.MS_BACK, MenuCommand.BACK, 99, ChatIcons.ICON_BACK);
+    protected MenuCommand cmdUrl = new MenuCommand(SR.MS_GOTO_URL, MenuCommand.SCREEN, 80, RosterIcons.ICON_GOTOURL);
+    protected MenuCommand cmdBack = new MenuCommand(SR.MS_BACK, MenuCommand.BACK, 99, RosterIcons.ICON_BACK);
 
     
     /** Creates a new instance of MessageList */
@@ -145,7 +145,7 @@ public abstract class MessageList extends VirtualList
         try {
             capt=getMainBarItem().elementAt(0).toString();
         } catch (Exception ex){ }
-        new MyMenu( this, capt, ChatIcons.getInstance(), menuCommands);
+        new MyMenu( this, capt, RosterIcons.getInstance(), menuCommands);
    }
 
     public void commandState() {         
