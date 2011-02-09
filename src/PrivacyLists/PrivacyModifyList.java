@@ -34,6 +34,7 @@ import locale.SR;
 import ui.*;
 import java.util.*;
 import com.alsutton.jabber.*;
+import ui.controls.AlertBox;
 import ui.controls.form.DefForm;
 
 /**
@@ -188,12 +189,23 @@ public class PrivacyModifyList extends DefForm
     public void addNewElement() {
         new PrivacyForm(new PrivacyItem(), plist);
     }
-   
-    public String touchLeftCommand() {return SR.MS_MENU; }
-    public void touchLeftPressed() { showMenu(); }
 
-    public void keyClear() {
+    public void delRule() {
         if (getFocusedObject() != null)
             plist.rules.removeElement(getFocusedObject());
     }
+    public void keyClear() {
+        String name = getFocusedObject().toString();
+        new AlertBox(name, SR.MS_DELETE_RULE + " \"" + name + "\"?") {
+            public void yes() {
+                delRule();
+            }
+            public void no() {
+            }
+        };
+    }
+   
+    public String touchLeftCommand() {return SR.MS_MENU; }
+    public void touchLeftPressed() { showMenu(); }
+   
 }

@@ -82,6 +82,10 @@ public class MainBar extends ComplexString{
         return super.getVHeight();
     }
     public void drawItem(Graphics g, int offset, boolean selected) {
+        int xo = g.getClipX();
+        int yo = g.getClipY();
+        int wo = g.getClipWidth();
+        int ho = g.getClipHeight();
 //#ifdef BACK_IMAGE
 //#         if (bg != null) {
 //#             int ofs = 0;
@@ -91,7 +95,8 @@ public class MainBar extends ComplexString{
 //#                 g.drawImage(bg, i, ofs , Graphics.TOP|Graphics.LEFT);
 //#         }
 //#endif        
-        g.setClip((lShift)? 20: 0, 0, g.getClipWidth() - ((rShift)? 20: 0), g.getClipHeight());
-        super.drawItem(g, offset, selected);        
+        g.clipRect((lShift)? 20: 0, 0, g.getClipWidth() - ((rShift)? 20: 0), g.getClipHeight());
+        super.drawItem(g, offset, selected);
+        g.setClip(xo, yo, wo, ho);
     }
 }

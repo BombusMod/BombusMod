@@ -91,7 +91,7 @@ public class MessageItem implements VirtualElement {//, MessageParser.MessagePar
     public void drawItem(Graphics g, int ofs, boolean selected) {
         int xorg=g.getTranslateX();
         int yorg=g.getTranslateY();
-        int iconOffset = 0;
+        int iconOffset = 2;
         g.translate(2,0);
         if (msgLines.isEmpty()) {
             parse();
@@ -115,7 +115,7 @@ public class MessageItem implements VirtualElement {//, MessageParser.MessagePar
                 }
                 line.drawItem(g, iconOffset, selected);
             }
-            g.translate(0, h);
+            g.translate(g.getTranslateX(), h);
         }
         
         g.translate(xorg-g.getTranslateX(), yorg-g.getTranslateY());

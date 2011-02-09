@@ -504,7 +504,7 @@ public class VirtualCanvas extends Canvas implements CommandListener{
 class KeyRepeatTimer extends TimerTask {
         private static Timer timer = new Timer();
         private int key;
-        private int slowlyIterations = 8;
+       // private int slowlyIterations = 8;
 
 
         public static void start(int key) {
@@ -526,12 +526,12 @@ class KeyRepeatTimer extends TimerTask {
         }
 
         public void run() {
-            if (0 < slowlyIterations) {
+         /*   if (0 < slowlyIterations) {
                 slowlyIterations--;
                 if (0 != slowlyIterations % 2) {
                     return;
                 }
-            }
+            }*/
             if (!VirtualCanvas.getInstance().isShown()) {
                 KeyRepeatTimer.stop();
                 return;

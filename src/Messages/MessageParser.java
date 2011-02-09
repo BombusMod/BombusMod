@@ -45,9 +45,9 @@ public final class MessageParser {
     private final static int URL=-2;
     private final static int NOSMILE=-1;
     
-    private Vector smileTable;
+    private final Vector smileTable = new Vector();
     
-    private Leaf root;
+    private final Leaf root = new Leaf();
     private Leaf emptyRoot;
     
     
@@ -120,10 +120,7 @@ public final class MessageParser {
         parseMessage(message, windowWidth, message.msg.toString(), false);
     }
     
-    private MessageParser() {
-        smileTable=null;
-        smileTable=new Vector();
-        root=new Leaf();
+    private MessageParser() {        
 //#ifdef SMILES
         StringBuffer s = new StringBuffer(10);
         try { // generic errors

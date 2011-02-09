@@ -538,13 +538,13 @@ public class Contact extends IconTextElement{
 
     public int getSecondLength() {
         if (getSecondString()==null) return 0;
-        if (getSecondString().equals("")) return 0;
+        if (getSecondString().length() == 0) return 0;
         return FontCache.getFont(false, FontCache.baloon).stringWidth(getSecondString());
     }
 
     public int getFirstLength() {
         if (getFirstString()==null) return 0;
-        if (getFirstString().equals("")) return 0;
+        if (getFirstString().length() == 0) return 0;
         return getFont().stringWidth(getFirstString());
     }
     
@@ -698,7 +698,7 @@ public class Contact extends IconTextElement{
 
         if (getSecondString() != null) {
             int y=getFont().getHeight()-3;
-            thisOfs=(getSecondLength()>w)?-ofs+offset:offset;
+            //thisOfs=(getSecondLength()>w)?-ofs+offset:offset;
             g.setFont(FontCache.getFont(false, FontCache.baloon));
             g.setColor(ColorTheme.getColor(ColorTheme.SECOND_LINE));
             FontCache.drawString(g,getSecondString(), thisOfs, offset_y + y, Graphics.TOP|Graphics.LEFT);

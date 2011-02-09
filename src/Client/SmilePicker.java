@@ -35,7 +35,6 @@ import ui.*;
 import java.util.Vector;
 import ui.controls.Balloon;
 
-import javax.microedition.lcdui.Canvas;
 
 import javax.microedition.lcdui.Graphics;
 import ui.controls.form.DefForm;

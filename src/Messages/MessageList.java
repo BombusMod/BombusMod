@@ -196,7 +196,7 @@ public abstract class MessageList extends VirtualList
         }
         return false;
     }
-
+//#ifdef SMILES
     public void userKeyPressed(int key) {
         switch(key) {
             case VirtualCanvas._KEY_STAR:
@@ -206,6 +206,7 @@ public abstract class MessageList extends VirtualList
         }
         super.userKeyPressed(key);
     }
+//#endif
 
     public void touchLeftPressed() {
         showMenu();

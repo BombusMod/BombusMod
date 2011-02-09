@@ -189,7 +189,7 @@ public class Config {
     public boolean notifySound = false;
     public boolean notifyPicture = false;
     public boolean useBoldFont = false;
-    public boolean shadowed = true;
+    public boolean shadowed = false;
 //#ifdef RUNNING_MESSAGE
 //#     public boolean notifyWhenMessageType = false;
 //#endif
@@ -893,7 +893,9 @@ public class Config {
             String firmware = System.getProperty("device.software.version");
 
             if (platformName.startsWith("microemu")) {
-                platformName = device + "/Android " + firmware;
+                if (device != null) {
+                    platformName = device + "/Android " + firmware;
+                } 
             }
 
             //detecting Samsung

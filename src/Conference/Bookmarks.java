@@ -213,7 +213,7 @@ public class Bookmarks extends DefForm {
     }
 
     public void keyClear() {
-        new AlertBox(SR.MS_DELETE_ASK, ((BookmarkItem) getFocusedObject()).getJid()) {
+        new AlertBox(SR.MS_DELETE, ((BookmarkItem) getFocusedObject()).getJid()) {
 
             public void yes() {
                 deleteBookmark();
