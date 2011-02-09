@@ -28,6 +28,7 @@
 package ui.controls;
 
 import Client.ContactMessageList;
+import Client.StaticData;
 import Colors.ColorTheme;
 import images.RosterIcons;
 import java.util.Enumeration;
@@ -35,7 +36,6 @@ import java.util.Vector;
 import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
 import Fonts.FontCache;
-import Client.StaticData;
 import ui.VirtualCanvas;
 import ui.VirtualList;
 import util.StringUtils;
@@ -145,7 +145,20 @@ public class PopUp {
                     return true;
             }
         }
-        return next() || keyCode == 5;
+        if (keyCode == VirtualCanvas.KEY_GREEN) {
+            String c = getContact();
+            if (c != null) {
+//#ifdef POPUPS
+                VirtualList current = StaticData.getInstance().canvas.getList();
+                if (current instanceof ContactMessageList)
+                    ((ContactMessageList)current).savePosition();
+                StaticData.getInstance().roster.showContactMessageList(c);
+//#endif
+                next();
+                return true;
+            }
+        }
+        return next();
     }
     
     public void clear() {

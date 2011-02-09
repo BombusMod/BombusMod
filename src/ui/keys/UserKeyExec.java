@@ -232,7 +232,11 @@ public class UserKeyExec {
                 InputStream in = f.openInputStream();
                 table = new StringLoader().stringLoader(in, 3);
                 f.close();
-            } catch (IOException e) { e.printStackTrace(); }
+            } catch (IOException e) { 
+//#ifdef DEBUG
+//#                 e.printStackTrace();
+//#endif
+            }
         } else table = new StringLoader().stringLoader(file, 3);
 
         for (int i = 0; i < table[0].size(); i++) {

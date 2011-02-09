@@ -138,7 +138,9 @@ public class TransferTask
 
                 fileSize=(int)file.fileSize();
             } catch (Exception e) {
-                e.printStackTrace();
+//#ifdef DEBUG
+//#                 e.printStackTrace();
+//#endif
                 state=ERROR;
                 errMsg=SR.MS_CANT_OPEN_FILE;
                 showEvent=true;
@@ -197,13 +199,15 @@ public class TransferTask
                 break;
             }
         }
-        if (!selectedMethod.equals("")) {
+        if (selectedMethod.length() != 0) {
             started = System.currentTimeMillis();
             try {
                 file = FileIO.createConnection(filePath + fileName);
                 os = file.openOutputStream();
             } catch (Exception e) {
-                e.printStackTrace();
+//#ifdef DEBUG
+//#                 e.printStackTrace();
+//#endif
                 decline();
                 return;
             }
@@ -242,7 +246,9 @@ public class TransferTask
             filePos+=b.length;
             state=PROGRESS;
         } catch (IOException ex) {
-            ex.printStackTrace();
+//#ifdef DEBUG
+//#             ex.printStackTrace();
+//#endif
             state=ERROR;
             errMsg="Write error";
             showEvent=true;
@@ -258,7 +264,9 @@ public class TransferTask
             state=PROGRESS;
             return len;
         } catch (IOException ex) {
-            ex.printStackTrace();
+//#ifdef DEBUG
+//#             ex.printStackTrace();
+//#endif
             state=ERROR;
             errMsg="Read error";
             showEvent=true;
@@ -280,7 +288,9 @@ public class TransferTask
                 file.close();
             if (state!=ERROR) state=COMPLETE;
         } catch (Exception ex) {
-            ex.printStackTrace();
+//#ifdef DEBUG
+//#             ex.printStackTrace();
+//#endif
             errMsg="File close error";
             state=ERROR;
         }
@@ -359,7 +369,9 @@ public class TransferTask
             proxystream = new SOCKS5Stream(connection);
             return true;
         } catch (Exception e) {
-            System.out.println(e);
+//#ifdef DEBUG
+//#             e.printStackTrace();
+//#endif
         }
         return false;
     }
@@ -431,10 +443,12 @@ public class TransferTask
                                 try {
                                     openStreams(proxyhost, Integer.parseInt(proxyport));
                                     success = true;
-                                    System.out.println("Opened: " + proxyhost + ":" + proxyport);
+                                    //System.out.println("Opened: " + proxyhost + ":" + proxyport);
                                     break;
                                 } catch (Exception e) {
-                                    e.printStackTrace();
+//#ifdef DEBUG
+//#                                     e.printStackTrace();
+//#endif
                                 }
                             }
                         }
@@ -491,7 +505,9 @@ public class TransferTask
                         //method = TransferDispatcher.NS_BYTESTREAMS;
                         Thread.sleep(2000L);
                     } catch (InterruptedException ex) {
-                        ex.printStackTrace();
+//#ifdef DEBUG
+//#                         ex.printStackTrace();
+//#endif
                         cancel();
                         return;
                     }
@@ -508,7 +524,9 @@ public class TransferTask
                         closeFile();
                         proxystream.close();
                     } catch (Exception e) {
-                        e.printStackTrace();
+//#ifdef DEBUG
+//#                         e.printStackTrace();
+//#endif
                         cancel();                        
                     }
                     TransferDispatcher.getInstance().eventNotify();
@@ -528,7 +546,9 @@ public class TransferTask
                 proxystream.close();
 
             } catch (Exception ex) {
-                ex.printStackTrace();
+//#ifdef DEBUG
+//#                 ex.printStackTrace();
+//#endif
             }
             TransferDispatcher.getInstance().eventNotify();
             }

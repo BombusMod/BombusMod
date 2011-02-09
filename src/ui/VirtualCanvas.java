@@ -124,7 +124,7 @@ public class VirtualCanvas extends Canvas implements CommandListener{
     protected final void keyPressed(int keyCode) {
         kHold = false;        
 //#ifdef POPUPS
-        if (PopUp.getInstance().handleEvent(keyCode)) {
+        if (PopUp.getInstance().handleEvent(getKey(keyCode))) {
             list.redraw();
             return;
         }

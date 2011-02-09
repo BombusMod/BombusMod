@@ -166,8 +166,10 @@ public class BombusMod extends MIDlet implements Runnable {
                 s.close();                
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            AlertBox error = new AlertBox(SR.MS_ERROR, e.toString() + ": " + e.getMessage()) {
+//#ifdef DEBUG
+//#             e.printStackTrace();
+//#endif
+            new AlertBox(SR.MS_ERROR, e.toString() + ": " + e.getMessage()) {
 
                 public void yes() {
                     notifyDestroyed();

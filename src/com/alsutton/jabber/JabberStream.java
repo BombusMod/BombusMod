@@ -326,7 +326,9 @@ public class JabberStream extends XmppParser implements Runnable {
         try {
             Thread.sleep(100L);
         } catch (InterruptedException ex) {
-            ex.printStackTrace();
+//#ifdef DEBUG
+//#             ex.printStackTrace();
+//#endif
         }
     }
     

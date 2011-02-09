@@ -42,7 +42,9 @@ public class JSR179Location extends LocationIO {
             location = locationProvider.getLocation(60);
         }
         catch (Exception e) {
-            e.printStackTrace();
+//#ifdef DEBUG
+//#             e.printStackTrace();
+//#endif
             return;
         }
         coordinates = location.getQualifiedCoordinates();

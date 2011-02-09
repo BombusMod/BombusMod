@@ -32,7 +32,9 @@ public abstract class LocationIO {
 
         } catch (Exception e) {
             try {
-                e.printStackTrace();
+//#ifdef DEBUG
+//#                 e.printStackTrace();
+//#endif
                 Class c = Class.forName("PEP.location.CellIDLocation");
                 providerType = LocationIO.CELLID;
 //#ifdef DEBUG
@@ -40,7 +42,9 @@ public abstract class LocationIO {
 //#endif
 
             } catch (Exception ex) {
-                ex.printStackTrace();
+//#ifdef DEBUG
+//#                 ex.printStackTrace();
+//#endif
             }
         }
         }

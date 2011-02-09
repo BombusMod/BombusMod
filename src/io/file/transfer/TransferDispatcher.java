@@ -177,7 +177,11 @@ public class TransferDispatcher implements JabberBlockListener {
                             }
                             try {
                             success = task.connectStream();
-                            } catch (Exception e) { e.printStackTrace();}
+                            } catch (Exception e) { 
+//#ifdef DEBUG
+//#                                 e.printStackTrace();
+//#endif
+                            }
                             if (!success) {
                                 task.cancel();
                                 break;

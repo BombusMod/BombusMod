@@ -78,7 +78,11 @@ public class ArrayLoader {
                 arrayShort[i]=is.readShort();
             }
             return arrayShort;
-        } catch (Exception ex) { ex.printStackTrace(); }
+        } catch (Exception ex) { 
+//#ifdef DEBUG
+//#             ex.printStackTrace();
+//#endif
+        }
         
         return null;
     }
@@ -91,7 +95,11 @@ public class ArrayLoader {
 
             is.read(arrayByte, 0, len);
             return arrayByte;
-        } catch (Exception ex) { ex.printStackTrace(); }
+        } catch (Exception ex) { 
+//#ifdef DEBUG
+//#             ex.printStackTrace();
+//#endif
+        }
         
         return null;
     }

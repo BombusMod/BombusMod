@@ -549,7 +549,9 @@ public class Config {
         if (lang == null) {
             //auto-detecting
             lang = System.getProperty("microedition.locale");
-            System.out.println(lang);
+//#ifdef DEBUG
+//#             System.out.println(lang);
+//#endif
             //We will use only language code from locale
             if (lang == null) {
                 lang = "en";

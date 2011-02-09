@@ -74,11 +74,15 @@ public class AniIcon {
             resImage = Image.createImage(resource);
             width = resImage.getWidth() / imageCount;
             height = resImage.getHeight();
-        } catch (OutOfMemoryError memory) { 
-            System.out.println("Memory error on " + resource);
-        } catch (Exception e) { 
-            System.out.println("Can't load " + resource);
-            e.printStackTrace();
+        } catch (OutOfMemoryError memory) {
+//#ifdef DEBUG
+//#             System.out.println("Memory error on " + resource);
+//#endif
+        } catch (Exception e) {
+//#ifdef DEBUG
+//#             System.out.println("Can't load " + resource);
+//#             e.printStackTrace();
+//#endif
         }
     }
     void addFrame(int num, int iconIndex, int dalay) {

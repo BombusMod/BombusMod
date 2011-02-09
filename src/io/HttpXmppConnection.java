@@ -161,7 +161,9 @@ public class HttpXmppConnection implements StreamConnection {
             try {
                 httpPostRequest(outData.toString());
             } catch (IOException ex) {
-                ex.printStackTrace();
+//#ifdef DEBUG
+//#                 ex.printStackTrace();
+//#endif
             }
             outData = new StringBuffer();
             threadsCount--;

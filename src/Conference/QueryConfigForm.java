@@ -63,7 +63,7 @@ public class QueryConfigForm implements JabberBlockListener, NotifyListener {
             StaticData.getInstance().roster.setQuerySign(false);
             if (data.getTypeAttribute().equals("result")) {
                 JabberDataBlock xdata = query.getChildBlock("x");
-                System.out.println("Source form: " + xdata.toString());
+                //System.out.println("Source form: " + xdata.toString());
                 new XDataForm(xdata, this);
             }
             return JabberBlockListener.NO_MORE_BLOCKS;
@@ -75,7 +75,7 @@ public class QueryConfigForm implements JabberBlockListener, NotifyListener {
         JabberDataBlock setform = new Iq(roomJid, Iq.TYPE_SET, "setform");
         JabberDataBlock query = setform.addChildNs("query", OWNER_XMLNS);
         query.addChild(form);
-        System.out.println("Destination form: " + form.toString());
+        //System.out.println("Destination form: " + form.toString());
         StaticData.getInstance().roster.theStream.send(setform);
     }
 }

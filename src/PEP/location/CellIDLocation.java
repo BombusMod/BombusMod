@@ -36,7 +36,9 @@ public class CellIDLocation extends LocationIO {
    try {             
 	GoogleLatLon(getLAC(), getCellId());
    } catch(Exception e) {
-	e.printStackTrace();
+//#ifdef DEBUG
+//# 	e.printStackTrace();
+//#endif
    }
   }
 
@@ -61,7 +63,9 @@ public class CellIDLocation extends LocationIO {
         } catch (Exception e) {
             // no data
             lat = "-1"; lon = "-1";
-                e.printStackTrace();
+//#ifdef DEBUG
+//#                 e.printStackTrace();
+//#endif
         }
 
     }
@@ -70,25 +74,25 @@ public class CellIDLocation extends LocationIO {
         String out = "";
         try {
             out = System.getProperty("Cell-ID");
-            if (out == null || out.equals("null") || out.equals("")) {
+            if (out == null || out.equals("null") || out.length() == 0) {
                 out = System.getProperty("CellID");
             }
-            if (out == null || out.equals("null") || out.equals("")) {
+            if (out == null || out.equals("null") || out.length() == 0) {
                 System.getProperty("phone.cid");
             }
-            if (out == null || out.equals("null") || out.equals("")) {
+            if (out == null || out.equals("null") || out.length() == 0) {
                 out = System.getProperty("com.nokia.mid.cellid");
             }
-            if (out == null || out.equals("null") || out.equals("")) {
+            if (out == null || out.equals("null") || out.length() == 0) {
                 out = System.getProperty("com.sonyericsson.net.cellid");
             }
-            if (out == null || out.equals("null") || out.equals("")) {
+            if (out == null || out.equals("null") || out.length() == 0) {
                 out = System.getProperty("com.samsung.cellid");
             }
-            if (out == null || out.equals("null") || out.equals("")) {
+            if (out == null || out.equals("null") || out.length() == 0) {
                 out = System.getProperty("com.siemens.cellid");
             }
-            if (out == null || out.equals("null") || out.equals("")) {
+            if (out == null || out.equals("null") || out.length() == 0) {
                 out = System.getProperty("cid");
             }
         } catch (Exception e) {
@@ -109,22 +113,22 @@ public class CellIDLocation extends LocationIO {
 
             out = System.getProperty("phone.lac");
 
-            if (out == null || out.equals("null") || out.equals("")) {
+            if (out == null || out.equals("null") || out.length() == 0) {
                 out = System.getProperty("com.nokia.mid.lac");
             }
-            if (out == null || out.equals("null") || out.equals("")) {
+            if (out == null || out.equals("null") || out.length() == 0) {
                 out = System.getProperty("com.sonyericsson.net.lac");
             }
-            if (out == null || out.equals("null") || out.equals("")) {
+            if (out == null || out.equals("null") || out.length() == 0) {
                 out = System.getProperty("LocAreaCode");
             }
-            if (out == null || out.equals("null") || out.equals("")) {
+            if (out == null || out.equals("null") || out.length() == 0) {
                 out = System.getProperty("com.samsung.cellid");
             }
-            if (out == null || out.equals("null") || out.equals("")) {
+            if (out == null || out.equals("null") || out.length() == 0) {
                 out = System.getProperty("com.siemens.cellid");
             }
-            if (out == null || out.equals("null") || out.equals("")) {
+            if (out == null || out.equals("null") || out.length() == 0) {
                 out = System.getProperty("cid");
             }
 

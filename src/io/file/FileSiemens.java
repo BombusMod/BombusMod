@@ -135,7 +135,9 @@ class FileSiemensOutputStream extends OutputStream {
         try {
             this.f.seek(fd, f.length(fd));
         } catch (IOException ex) {
-            ex.printStackTrace();
+//#ifdef DEBUG
+//#             ex.printStackTrace();
+//#endif
         }
     }
     
