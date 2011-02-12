@@ -40,7 +40,6 @@ import Menu.MenuCommand;
 //# import util.ClipBoard;
 //# import Client.Msg;
 //#endif
-import javax.microedition.lcdui.Canvas;
 import ui.VirtualList;
 import ui.controls.form.ListItem;
 

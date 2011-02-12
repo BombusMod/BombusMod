@@ -142,7 +142,7 @@ public class ArchiveList
         pasteData(0);
     }
 
-    public void keyClear() {
+    public void deleteMessage() {
         archive.delete(getCursor());
         messages.removeAllElements();
         if (getCursor() > 0) {
@@ -150,6 +150,21 @@ public class ArchiveList
         }
         setRotator();
         redraw(); // Need?
+    }
+    
+    public void keyClear() {
+        if (getItemCount() > 0) {
+            new AlertBox(SR.MS_DELETE, SR.MS_SURE_DELETE) {
+
+                public void yes() {
+                    deleteMessage();
+                }
+
+                public void no() {
+                }
+            };
+            redraw();
+        }
     }
 
     private void deleteAllMessages() {

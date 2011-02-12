@@ -443,7 +443,7 @@ public class VirtualCanvas extends Canvas implements CommandListener{
                 list.keyGreen();
                 return;
             case KEY_SOFT_LEFT:
-            case '(':
+                KeyRepeatTimer.stop();
                 if (reconnectWindow.getInstance().isActive()) {
                     list.reconnectYes();
                     return;
@@ -451,7 +451,7 @@ public class VirtualCanvas extends Canvas implements CommandListener{
                 list.touchLeftPressed();
                 return;
             case KEY_SOFT_RIGHT:
-            case ')':
+                KeyRepeatTimer.stop();
                 if (reconnectWindow.getInstance().isActive()) {
                     list.reconnectNo();
                     return;

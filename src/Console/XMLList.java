@@ -72,7 +72,6 @@ public final class XMLList
     
     public void commandState() {
         menuCommands.removeAllElements();
-        addMenuCommand(cmdBack);
         addMenuCommand(cmdNew);
         addMenuCommand(cmdEnableDisable);
         addMenuCommand(cmdPurge);

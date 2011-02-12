@@ -37,7 +37,7 @@ public class MenuCommand extends IconTextElement {
     String name="";
     int pos;
     int map;
-    int img;
+    int img = -1;
 
     public static int OK        = 1;
     public static int SCREEN    = 2;
