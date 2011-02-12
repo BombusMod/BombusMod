@@ -211,6 +211,24 @@ public class SmilePicker
             return;
         if (xCursor >= xLastCnt) xCursor=xLastCnt-1;
     }
+    public void userKeyPressed(int keyCode) {
+        switch (keyCode) {
+            case 3:
+                super.pageLeft();
+                keyDwn();
+                break;
+            case 9:
+                super.pageRight();
+                break;
+            case 4:
+                pageLeft();
+                break;
+            case 6:
+                pageRight();
+                break;
+        }
+        super.userKeyPressed(keyCode);
+    }
     
     public boolean isSelectable() { return true; }
     

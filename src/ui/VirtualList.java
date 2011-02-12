@@ -1041,7 +1041,7 @@ public abstract class VirtualList {
 //#ifdef DEBUG
 //# 	//System.out.println("keyUp");
 //#endif
-        if (cursor==0) {
+        if (cursor==0 || (!getItemRef(0).isSelectable() && cursor == 1)) {
             if (wrapping) {
                 if (getItemRef(getItemCount()-1).isSelectable())
                     moveCursorEnd();

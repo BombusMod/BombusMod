@@ -156,7 +156,7 @@ public class Config {
     public boolean collapsedGroups = true;
     public int messageLimit = 512;
     public int widthScroll2 = 10;
-    public int minItemHeight = 0;
+    public int minItemHeight = rosterFont*3;
     public boolean widthSystemgc = false;
     public boolean advTouch = true;
     public boolean autoClean = false;

@@ -346,6 +346,7 @@ public class ConfigForm
             }
             itemsList.addElement(langFiles);
         }
+        moveCursorTo(getNextSelectableRef(-1));        
     }
     
     public void cmdOk() {
