@@ -83,7 +83,9 @@ public class MessageItem implements VirtualElement {//, MessageParser.MessagePar
         return ColorTheme.getColor(even ? ColorTheme.LIST_BGND_EVEN : ColorTheme.LIST_BGND);
     }
     public final void parse() {
-        MessageParser.getInstance().parseMsg(this, StaticData.getInstance().roster.getListWidth());
+        MessageParser.getInstance().parseMsg(this, 
+                Math.min(StaticData.getInstance().roster.getListWidth(),
+                        StaticData.getInstance().roster.getMessagesHeight()));
         updateHeight();
     }
     public int getColor() { return msg.getColor(); }

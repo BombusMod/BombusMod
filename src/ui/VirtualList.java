@@ -251,6 +251,10 @@ public abstract class VirtualList {
         return winHeight;
     }
     
+    public int getMessagesHeight() {
+        return height-scrollbar.getScrollWidth()-2;
+    }
+    
     protected int getElementIndexAt(int yPos) {
         int end = getItemCount() - 1;
         if (end < 0) {
