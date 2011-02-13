@@ -82,14 +82,18 @@ public class VirtualCanvas extends Canvas implements CommandListener{
     }
     
     void commandState() {
-        if (hasPointerEvents())
-            return;
-        if (Config.fullscreen) {
-            setCommandListener(null);
-		} else if (list != null) {
-            setOk(list.touchLeftCommand());
-            setCancel(list.touchRightCommand());
-            setCommandListener(instance);
+        // TODO: play with enabled CommandListener for all + filter soft keys
+        if (Config.getInstance().phoneManufacturer == Config.NOKIA) {
+            if (hasPointerEvents()) {
+                return;
+            }
+            if (Config.fullscreen) {
+                setCommandListener(null);
+            } else if (list != null) {
+                setOk(list.touchLeftCommand());
+                setCancel(list.touchRightCommand());
+                setCommandListener(instance);
+            }
         }
     }
     
@@ -441,7 +445,6 @@ public class VirtualCanvas extends Canvas implements CommandListener{
                 list.keyGreen();
                 return;
             case KEY_SOFT_LEFT:
-                KeyRepeatTimer.stop();
                 if (reconnectWindow.getInstance().isActive()) {
                     list.reconnectYes();
                     return;
@@ -449,7 +452,6 @@ public class VirtualCanvas extends Canvas implements CommandListener{
                 list.touchLeftPressed();
                 return;
             case KEY_SOFT_RIGHT:
-                KeyRepeatTimer.stop();
                 if (reconnectWindow.getInstance().isActive()) {
                     list.reconnectNo();
                     return;
@@ -541,7 +543,7 @@ class KeyRepeatTimer extends TimerTask {
 
 
 //#if (USE_ROTATOR)    
-class TimerTaskRotate implements Runnable {
+class TimerTaskRotate extends TimerTask {
     private int scrollLen;
     private int scroll; //wait before scroll * sleep
     private int balloon; // show balloon time
@@ -551,6 +553,13 @@ class TimerTaskRotate implements Runnable {
     private VirtualList attachedList;
     
     private static TimerTaskRotate instance;
+
+    private static Timer timer;
+
+    public TimerTaskRotate() {
+        timer = new Timer();
+        timer.schedule(this, 250, 250);
+    }
     
     public static void startRotate(int max, VirtualList list) {
         //Windows mobile J9 hanging test
@@ -560,8 +569,7 @@ class TimerTaskRotate implements Runnable {
             return;
         }
         if (instance==null)  {
-            instance=new TimerTaskRotate();
-            new Thread(instance).start();
+            instance=new TimerTaskRotate();            
         }
         
         if (max<0) {
@@ -581,24 +589,30 @@ class TimerTaskRotate implements Runnable {
     }
     
     public void run() {
-        while (true) {
-            try {  Thread.sleep(250);  } catch (Exception e) { instance=null; break; }
 
-            synchronized (this) {
-                if (scroll==0) {
-                    if (        instance.scroll()
-                            ||  instance.balloon()
-                        )
-                        try { attachedList.redraw(); } catch (Exception e) { instance=null; break; }
-                } else {
-                    scroll --;                    
+        synchronized (this) {
+            if (scroll == 0) {
+                if (instance.scroll()
+                        || instance.balloon()) {
+                    try {
+                        attachedList.redraw();
+                    } catch (Exception e) {
+                        instance = null;
+                    }
                 }
-                if (VirtualList.reconnectRedraw) {
-                    VirtualList.reconnectRedraw=false;
-                    try { attachedList.redraw(); } catch (Exception e) { instance=null; break; }
+            } else {
+                scroll--;
+            }
+            if (VirtualList.reconnectRedraw) {
+                VirtualList.reconnectRedraw = false;
+                try {
+                    attachedList.redraw();
+                } catch (Exception e) {
+                    instance = null;
                 }
             }
         }
+
     }
 
     public boolean scroll() {
