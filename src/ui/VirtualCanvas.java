@@ -373,11 +373,9 @@ public class VirtualCanvas extends Canvas implements CommandListener{
                         return KEY_SOFT_RIGHT;
                     case -6:
                         return KEY_BACK;
-                    case -31:
-                        return KEY_GREEN;
-                    case -9:
+                    case -30:
                         return KEY_VOL_UP;
-                    case -8:
+                    case -31:
                         return KEY_VOL_DOWN;
                 }
                 break;
