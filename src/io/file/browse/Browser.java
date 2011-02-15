@@ -260,12 +260,12 @@ public class Browser extends DefForm {
                 return;
             }
             if (imgs.indexOf(ext)>=0) {
-                iconIndex=0x57;
+                iconIndex=RosterIcons.ICON_IMAGES_INDEX;
                 type=2;
                 return;
             }
             if (snds.indexOf(ext)>=0) {
-                iconIndex=0x33;
+                iconIndex=RosterIcons.ICON_SOUNDS_INDEX;
                 type=1;
                 return;
             }

@@ -705,7 +705,7 @@ public abstract class VirtualList {
             g.fillRect(0, 0, width, h);
 //#endif
         g.setColor(getMainBarRGB());
-        ((MainBar)infobar).lShift = (Config.getInstance().phoneManufacturer == Config.WTK && reverse && Config.fullscreen);
+        ((MainBar)infobar).lShift = (Config.getInstance().phoneManufacturer == Config.NOKIA && reverse && Config.fullscreen);
         ((MainBar)infobar).rShift = (Config.getInstance().phoneManufacturer == Config.SONYE && reverse && Config.fullscreen);
         infobar.drawItem(g, 0, false);
 

@@ -89,37 +89,61 @@ public class RosterIcons extends ImageList{
         } else super.drawImage(g, index, x, y);
     }
 
-    public static final int ICON_INVISIBLE_INDEX = 0x10;
-    public static final int ICON_ERROR_INDEX = 0x11;
-    public static final int ICON_TRASHCAN_INDEX = 0x12;
-    public static final int ICON_PROGRESS_INDEX = 0x13;
-    public static final int ICON_MODERATOR_INDEX = 0x50;
-    public static final int ICON_PRIVACY_ACTIVE = 0x46;
-    public static final int ICON_ROOMLIST=ICON_PRIVACY_ACTIVE;
-    public static final int ICON_PRIVACY_PASSIVE = 0x47;
-    public static final int ICON_GROUPCHAT_INDEX = 0x40;
-    public static final int ICON_GCJOIN_INDEX = 0x41;   
-    public static final int ICON_GCCOLLAPSED_INDEX = 0x42;
-    public static final int ICON_SEARCH_INDEX = 0x14;
-    public static final int ICON_REGISTER_INDEX = 0x15;
-    public static final int ICON_MSGCOLLAPSED_INDEX = 0x16;
-    public static final int ICON_MESSAGE_INDEX = 0x20;
-    public static final int ICON_AUTHRQ_INDEX = 0x21;
-    public static final int ICON_COMPOSING_INDEX = 0x22;    
-    public static final int ICON_AD_HOC=ICON_COMPOSING_INDEX;
-    public static final int ICON_EXPANDED_INDEX = 0x23;
-    public static final int ICON_COLLAPSED_INDEX = 0x24;
-    public static final int ICON_MESSAGE_BUTTONS = 0x25;
-    public static final int ICON_PROFILE_INDEX = 0x30;
-    public static final int ICON_PRIVACY_ALLOW = 0x36;
-    public static final int ICON_PRIVACY_BLOCK = 0x37;
-    public static final int ICON_KEYBLOCK_INDEX = 0x17;
+    public final static int ICON_PRESENCE_ONLINE = 0x00; //1. Контакт 'Доступен'.
+    public final static int ICON_PRESENCE_CHAT = 0x01; //2. Контакт 'Готов поболтать'.
+    public final static int ICON_PRESENCE_AWAY = 0x02; //3. Контакт 'Отсутствую'.
+    public final static int ICON_PRESENCE_XA = 0x03; //4. Контакт 'Недоступен'.
+    public final static int ICON_PRESENCE_DND = 0x04; //5. Контакт 'Не беспокоить'.
+    public final static int ICON_PRESENCE_OFFLINE = 0x05; //6. Контакт 'Отключенный'.
+    public final static int ICON_PRESENCE_ASK = 0x06; //7. Контакт, у которого вы запросили подписку (подписка ask).
+    public final static int ICON_PRESENCE_UNKNOWN = 0x07; //8. Неизвестный контакт.
+
+    public static final int ICON_INVISIBLE_INDEX = 0x10; //1. Невидимый контакт.
+    public static final int ICON_ERROR_INDEX = 0x11; // 2. Контакт с ошибкой.
+    public static final int ICON_TRASHCAN_INDEX = 0x12; // 3. Удалённый контакт.
+    public static final int ICON_PROGRESS_INDEX = 0x13; // 4. Иконка, которая находится вверху при подключении.
+    public static final int ICON_SEARCH_INDEX = 0x14; // 5. Поиск.
     public static final int ICON_VIEWING_INDEX = 0x14;
-    public static final int ICON_APPEARING_INDEX = 0x36;
     public static Integer iconHasVcard=new Integer(ICON_SEARCH_INDEX);
-    public static final int ICON_DELIVERED_INDEX = 0x27;
+    public static final int ICON_REGISTER_INDEX = 0x15; // 6. Иконка 'Зарегистрировать новый аккаунт'.
+    public static final int ICON_MSGCOLLAPSED_INDEX = 0x16; // Иконка свёрнутого сообщения.
+    public static final int ICON_KEYBLOCK_INDEX = 0x17; // Иконка блокировки.
+
+    public static final int ICON_MESSAGE_INDEX = 0x20; //1. Иконка сообщения.
+    public static final int ICON_AUTHRQ_INDEX = 0x21; //2. Иконка сообщения авторизации.
+    public static final int ICON_COMPOSING_INDEX = 0x22; //3. Иконка 'Контакт набирает сообщение'.
+    public static final int ICON_AD_HOC=ICON_COMPOSING_INDEX;
+    public static final int ICON_EXPANDED_INDEX = 0x23; //4. Иконка развёрнутой группы ростера.
+    public static final int ICON_COLLAPSED_INDEX = 0x24; //5. Иконка свёрнутой группы ростера.
+    public static final int ICON_SCROLLABLE_BOTH = 0x25; // 6. Иконка прокрутки в обе стороны в всплывающем окне.
+    public static final int ICON_SCROLLABLE_DOWN = 0x26; // 7. Иконка прокрутки вниз в всплывающем окне.
+    public static final int ICON_DELIVERED_INDEX = 0x27; //8. Иконка доставленного сообщения
+    public static final int ICON_SCROLLABLE_UP = 0x27; // 8. Иконка  конца прокрутки в всплывающем окне.
+
+    public static final int ICON_PROFILE_INDEX = 0x30; // 1. Профили.
+                                                       // 2. Иконка 'Все сигналы'.
+                                                       // 3. Иконка 'Только вибрация'.
+    public static final int ICON_SOUNDS_INDEX = 0x33;  // 4. Иконка 'Только звуки'.
+                                                       // 5. Иконка 'Без сигналов'.
+    public static final int ICON_PRIVACY_ALLOW = 0x36; // 7. Иконка 'Разрешить', в списках приватности.
+    public static final int ICON_APPEARING_INDEX = 0x36; // 7. Иконка 'появился в сети' (уведомление картинкой)
+    public static final int ICON_PRIVACY_BLOCK = 0x37; // 8. Иконка 'Запретить', в списках приватности.
+
+    public static final int ICON_GROUPCHAT_INDEX = 0x40; // 1. Иконка конференции.
+    public static final int ICON_GCJOIN_INDEX = 0x41; // 2. Иконка развёрнутой группы конференции в ростере.
+    public static final int ICON_GCCOLLAPSED_INDEX = 0x42; // 3. Иконка свёрнутой группы конференции в ростере.
     public static final int ICON_TRANSPARENT = 0x44;
     public static Integer iconTransparent =new Integer(ICON_TRANSPARENT);
+    public static final int ICON_PRIVACY_ACTIVE = 0x46; // 7. Иконка активного списка приватности.
+    public static final int ICON_ROOMLIST=ICON_PRIVACY_ACTIVE; // Конференция в списке конференций.
+    public static final int ICON_PRIVACY_PASSIVE = 0x47; // 8. Иконка неактивного списка приватности.
+
+
+    public static final int ICON_MODERATOR_INDEX = 0x50;
+    public static final int ICON_CHECKBOX_UNCHECKED = 0x56;
+    public static final int ICON_CHECKBOX_CHECKED = 0x57;
+    public static final int ICON_IMAGES_INDEX = 0x57;
+
 
     // was ActionIcons
 
@@ -150,7 +174,7 @@ public class RosterIcons extends ImageList{
     public static final int ICON_ADMINS         = 0x86; //Администраторы
     public static final int ICON_MEMBERS        = 0x87; //Члены
 
-    public static final int ICON_OUTCASTS       = 0x90; //�?згои(Ban)
+    public static final int ICON_OUTCASTS       = 0x90; //Изгои(Ban)
     public static final int ICON_KICK           = 0x91; //Выгнать (kick)
     public static final int ICON_BAN            = 0x92; //Бан (ban)
     public static final int ICON_DEVOICE        = 0x93; //Отнять право голоса

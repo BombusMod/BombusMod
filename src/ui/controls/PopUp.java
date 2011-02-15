@@ -300,13 +300,13 @@ public class PopUp {
         graph.setFont(font);
         switch (scrollable) {
             case SCROLLABLE_UP:
-                ri.drawImage(graph, 0x27, widthBorder+maxWdth-ri.getWidth(), heightBorder+popUpHeight-ri.getHeight());
+                ri.drawImage(graph, RosterIcons.ICON_SCROLLABLE_UP, widthBorder+maxWdth-ri.getWidth(), heightBorder+popUpHeight-ri.getHeight());
                 break;
             case SCROLLABLE_BOTH:
-                ri.drawImage(graph, 0x25, widthBorder+maxWdth-ri.getWidth(), heightBorder+popUpHeight-ri.getHeight());
+                ri.drawImage(graph, RosterIcons.ICON_SCROLLABLE_BOTH, widthBorder+maxWdth-ri.getWidth(), heightBorder+popUpHeight-ri.getHeight());
                 break;
             case SCROLLABLE_DOWN:
-                ri.drawImage(graph, 0x26, widthBorder+maxWdth-ri.getWidth(), heightBorder+popUpHeight-ri.getHeight());
+                ri.drawImage(graph, RosterIcons.ICON_SCROLLABLE_DOWN, widthBorder+maxWdth-ri.getWidth(), heightBorder+popUpHeight-ri.getHeight());
                 break;
         }
         

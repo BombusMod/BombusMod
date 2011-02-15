@@ -61,7 +61,7 @@ public class CheckBox
         state=!state;
     }
 
-    public int getImageIndex(){ return state?0x57:0x56; }
+    public int getImageIndex(){ return state?RosterIcons.ICON_CHECKBOX_CHECKED:RosterIcons.ICON_CHECKBOX_UNCHECKED; }
     public String getImgAlt(){ return state?"+ ":"  "; }
     
     public boolean getValue() { return state; }

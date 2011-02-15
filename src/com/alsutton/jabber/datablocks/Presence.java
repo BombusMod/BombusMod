@@ -209,20 +209,20 @@ public class Presence extends JabberDataBlock {
     }
 //#endif
     
-    public final static int PRESENCE_ONLINE=0;
-    public final static int PRESENCE_CHAT=1;
-    public final static int PRESENCE_AWAY=2;
-    public final static int PRESENCE_XA=3;
-    public final static int PRESENCE_DND=4;
-    public final static int PRESENCE_OFFLINE=5;
-    public final static int PRESENCE_ASK=6;
-    public final static int PRESENCE_UNKNOWN=7;
-    public final static int PRESENCE_INVISIBLE=RosterIcons.ICON_INVISIBLE_INDEX;
-    public final static int PRESENCE_ERROR=RosterIcons.ICON_ERROR_INDEX;
-    public final static int PRESENCE_TRASH=RosterIcons.ICON_TRASHCAN_INDEX;
-    public final static int PRESENCE_AUTH=-1;
-    public final static int PRESENCE_AUTH_ASK=-2;
-    public final static int PRESENCE_SAME=-100;
+    public final static int PRESENCE_ONLINE = RosterIcons.ICON_PRESENCE_ONLINE;
+    public final static int PRESENCE_CHAT = RosterIcons.ICON_PRESENCE_CHAT;
+    public final static int PRESENCE_AWAY = RosterIcons.ICON_PRESENCE_AWAY;
+    public final static int PRESENCE_XA = RosterIcons.ICON_PRESENCE_XA;
+    public final static int PRESENCE_DND = RosterIcons.ICON_PRESENCE_DND;
+    public final static int PRESENCE_OFFLINE = RosterIcons.ICON_PRESENCE_OFFLINE;
+    public final static int PRESENCE_ASK = RosterIcons.ICON_PRESENCE_ASK;
+    public final static int PRESENCE_UNKNOWN = RosterIcons.ICON_PRESENCE_UNKNOWN;
+    public final static int PRESENCE_INVISIBLE = RosterIcons.ICON_INVISIBLE_INDEX;
+    public final static int PRESENCE_ERROR = RosterIcons.ICON_ERROR_INDEX;
+    public final static int PRESENCE_TRASH = RosterIcons.ICON_TRASHCAN_INDEX;
+    public final static int PRESENCE_AUTH = -1;
+    public final static int PRESENCE_AUTH_ASK = -2;
+    public final static int PRESENCE_SAME = -100;
 
     public final static String PRS_OFFLINE="unavailable";
     public final static String PRS_ERROR="error";

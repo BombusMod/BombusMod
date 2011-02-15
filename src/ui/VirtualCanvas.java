@@ -132,10 +132,8 @@ public class VirtualCanvas extends Canvas implements CommandListener{
             list.redraw();
             return;
         }
-//#endif        
-        // TODO: comment next line to check moto
-        KeyRepeatTimer.start(getKey(keyCode));
-        doKeyAction(getKey(keyCode));        
+//#endif
+        checkKey(getKey(keyCode));
      }
 
     protected final void keyRepeated(int keyCode){
@@ -435,11 +433,26 @@ public class VirtualCanvas extends Canvas implements CommandListener{
 
             return key_code; // undefined key as is
     }
+
+    protected void checkKey(int keyCode) {
+        switch (keyCode) {
+            case KEY_SOFT_LEFT:
+            case KEY_SOFT_RIGHT:
+            case KEY_GREEN:
+            case KEY_BACK:
+            case KEY_CLEAR:
+                KeyRepeatTimer.stop();
+                break;
+            default:
+                KeyRepeatTimer.start(keyCode);
+        }
+        doKeyAction(keyCode);
+    }
      /**
      * обработка кодов кнопок
      * @param keyCode код нажатой кнопки
      */
-    protected void doKeyAction(int keyCode) {  
+    protected void doKeyAction(int keyCode) {
         switch (keyCode) {
             case KEY_GREEN:
                 list.keyGreen();
@@ -484,7 +497,7 @@ public class VirtualCanvas extends Canvas implements CommandListener{
                 if (list.canBack)
                     list.destroyView();
                 return;
-        }        
+        }                
 //#ifdef USER_KEYS
 //#         if (UserKeyExec.getInstance().keyExecute(keyCode, kHold))
 //#             return;

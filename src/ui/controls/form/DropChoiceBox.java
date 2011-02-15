@@ -156,7 +156,7 @@ public class DropChoiceBox
         }
         
         if (size()>1)
-            il.drawImage(g, 0x24, (width-il.getHeight())-1, ((y)+height/2)-il.getHeight()/2);
+            il.drawImage(g, RosterIcons.ICON_COLLAPSED_INDEX, (width-il.getHeight())-1, ((y)+height/2)-il.getHeight()/2);
     }
     
     public int getVHeight(){
