@@ -14,7 +14,6 @@ import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
 import com.alsutton.jabber.datablocks.Message;
 import com.alsutton.jabber.datablocks.Presence;
-import java.util.Enumeration;
 import java.util.Vector;
 import xml.XMLEventListener;
 import xml.XMLException;
@@ -73,8 +72,8 @@ public abstract class XmppParser implements XMLEventListener {
             currentBlock = new Message(currentBlock, attributes);
         else    if (name.equals("iq") ) 
             currentBlock = new Iq(currentBlock, attributes); 
-        else    if (name.equals("presence") ) 
-            currentBlock = new Presence(currentBlock, attributes); 
+        else    if (name.equals("presence") )
+                    currentBlock = new Presence(currentBlock, attributes);
         else    if (name.equals("xml") )
             return false; 
         else    currentBlock = new JabberDataBlock(name, currentBlock, attributes);

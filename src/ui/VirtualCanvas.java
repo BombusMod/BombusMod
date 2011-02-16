@@ -440,6 +440,7 @@ public class VirtualCanvas extends Canvas implements CommandListener{
             case KEY_SOFT_RIGHT:
             case KEY_GREEN:
             case KEY_BACK:
+            case KEY_FIRE:
             case KEY_CLEAR:
                 KeyRepeatTimer.stop();
                 break;

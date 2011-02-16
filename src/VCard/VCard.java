@@ -29,6 +29,7 @@ package VCard;
 import Client.StaticData;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
+import xmpp.extensions.IqVCard;
 import java.util.*;
 import util.StringLoader;
 import util.Strconv;
@@ -146,19 +147,11 @@ public class VCard {
         String name=getVCardData(NICK_INDEX);
         if (name!=null) return name;
         return getVCardData(FN_INDEX);
-    }
-    
-    public static JabberDataBlock getQueryVCard(String to, String id ) 
-    {
-        JabberDataBlock req=new Iq(to, Iq.TYPE_GET, id);
-        req.addChildNs("vCard", NS_VCARD );
-
-        return req;
-    }
+    }      
     
     public static void request(String jid, String id) {
         StaticData.getInstance().roster.setQuerySign(true);
-        StaticData.getInstance().roster.theStream.send(getQueryVCard(jid, "getvc"+id));
+        StaticData.getInstance().roster.theStream.send(IqVCard.query(jid, "getvc"+id));
     }
     
     private void fieldsLoader(){

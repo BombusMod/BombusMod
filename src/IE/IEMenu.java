@@ -26,7 +26,9 @@
  */
 package IE;
 
-import Client.StaticData;
+//#ifdef PLUGINS
+//# import Client.StaticData;
+//#endif
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
 import locale.SR;

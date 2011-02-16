@@ -27,7 +27,6 @@
 
 package Client;
 import locale.SR;
-import ui.VirtualList;
 import ui.controls.form.DefForm;
 import ui.controls.form.DropChoiceBox;
 import ui.controls.form.SimpleString;

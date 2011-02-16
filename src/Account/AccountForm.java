@@ -28,7 +28,6 @@
 package Account;
 
 import Client.*;
-import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
 import ui.SplashScreen;

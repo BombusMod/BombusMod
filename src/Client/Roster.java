@@ -77,8 +77,6 @@ import midlet.BombusMod;
 import ui.controls.AlertBox;
 import util.StringUtils;
 import VCard.VCard;
-import VCard.VCardEdit;
-import VCard.VCardView;
 import com.alsutton.jabber.*;
 import com.alsutton.jabber.datablocks.*;
 import java.util.*;
@@ -114,6 +112,7 @@ import xmpp.extensions.IqTimeReply;
 //# import xmpp.extensions.PepListener;
 //#endif
 import xmpp.extensions.RosterXListener;
+import xmpp.extensions.IqVCard;
 
 //#ifdef LIGHT_CONFIG
 //# import LightControl.CustomLight;
@@ -1219,30 +1218,30 @@ public class Roster
         message.setAttribute("id", id); // FIXME: should be new id by XEP-0184 version 1.1
         message.addChildNs("received", "urn:xmpp:receipts").setAttribute("id", id);
         theStream.send( message );
-    }    
-
+    }               
+    
     private Vector vCardQueue;
     
     public void resolveNicknames(String transport){
         vCardQueue=null;
 	vCardQueue=new Vector();
         synchronized (hContacts) {
-            int j=hContacts.size();
+        int j=hContacts.size();
             for (int i=0; i<j; i++){
-                Contact k=(Contact) hContacts.elementAt(i);
-                if (k.jid.isTransport()) 
+	    Contact k=(Contact) hContacts.elementAt(i);
+                if (k.jid.isTransport())
                     continue;
-                int grpType=k.getGroupType();
+            int grpType=k.getGroupType();
                 if (k.jid.getServer().equals(transport) && k.nick==null && (grpType==Groups.TYPE_COMMON || grpType==Groups.TYPE_NO_GROUP))
-                    vCardQueue.addElement(VCard.getQueryVCard(k.getJid(), "nickvc"+k.bareJid));
-            }
-        }
+                    vCardQueue.addElement(IqVCard.query(k.getJid(), "nickvc"+k.bareJid));
+	    }
+	}
 	setQuerySign(true);
 	sendVCardReq();
-	
+
     }
-        
-    private void sendVCardReq(){
+
+    public void sendVCardReq(){
         querysign=false;
         if (vCardQueue!=null) {
             if (!vCardQueue.isEmpty()) {
@@ -1255,7 +1254,7 @@ public class Roster
         }
         updateMainBar();
     }
-    
+
 //#if CHANGE_TRANSPORT
 //#     public void contactChangeTransport(String srcTransport, String dstTransport){ //voffk
 //# 	setQuerySign(true);
@@ -1315,6 +1314,7 @@ public class Roster
 //#endif
         
         theStream.addBlockListener(new EntityCaps());
+        theStream.addBlockListener(new IqVCard());
 
         theStream.addBlockListener(new IqPing());
         theStream.addBlockListener(new IqVersionReply());
@@ -1405,65 +1405,6 @@ public class Roster
                 String type = data.getTypeAttribute();
                 String id = data.getAttribute("id");
 
-                if (id!=null) {
-                    if (id.startsWith("nickvc")) {
-                        if (type.equals("get") || type.equals("set")) return JabberBlockListener.BLOCK_REJECTED;
-                        
-                        VCard vc=new VCard(data);//.getNickName();
-                        String nick=vc.getNickName();
-                        
-                        Contact c=findContact(new Jid(from), false);
-                        
-                        String group=(c.getGroupType()==Groups.TYPE_NO_GROUP)? null: c.group.name;
-                        if (nick!=null)  storeContact(from,nick,group, false);
-                        //updateContact( nick, c.rosterJid, group, c.subscr, c.ask_subscribe);
-                        sendVCardReq();
-                        return JabberBlockListener.BLOCK_PROCESSED;
-                    }                   
-                     
-                     if (id.startsWith("getvc")) {
-                        int index = id.indexOf(data.getAttribute("from"));
-                        String matchedjid = id.substring(index, id.length());
-                        String vcardFrom = data.getAttribute("from");
-                        if (!(vcardFrom.equals(matchedjid) || vcardFrom.equals(new Jid(matchedjid).getBareJid())))
-                            return JabberBlockListener.BLOCK_REJECTED;
-                         if (type.equals("error")) {
-                             setQuerySign(false);
-                            AlertBox alertBox = new AlertBox(SR.MS_ERROR, XmppError.findInStanza(data).toString()) {
-
-                                                   public void yes() {
-                                                       destroyView();
-                                                   }
-
-                                                   public void no() {
-                                                       destroyView();
-                                                   }
-                                               };
-                             return JabberBlockListener.BLOCK_PROCESSED;
-                         }
-                        if (type.equals("get") || type.equals("set") ) return JabberBlockListener.BLOCK_REJECTED;
-                    
-                        setQuerySign(false);
-                        VCard vcard=new VCard(data);
-                        String jid=id.substring(5);
-                        Contact c=getContact(jid, false); // drop unwanted vcards
-                        if (c!=null) {
-                            c.vcard=vcard;
-                            if (sd.canvas.getList() instanceof VirtualList) {
-//                                if (c.getGroupType()==Groups.TYPE_SELF) { // Not able to edit VCard if self contact in roster
-                                if (c.getJid().equals(myJid.getJid())) {
-                                    new VCardEdit(vcard);
-                                } else {
-                                    new VCardView(c);
-                                }
-                            }
-                        } else {
-                            new VCardView(c);
-                        }
-                        return JabberBlockListener.BLOCK_PROCESSED;
-                    }
-                    
-                } // id!=null
                 if ( type.equals( "result" ) ) {
                     if (id.equals("getros")) {
                         //theStream.enableRosterNotify(false); //voffk
