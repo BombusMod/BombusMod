@@ -154,8 +154,7 @@ public class Bookmarks extends DefForm {
         String roomJid = ((BookmarkItem) getFocusedObject()).getJid();
 
         if (c == cmdAdvJoin) {
-            BookmarkItem join = (BookmarkItem) getFocusedObject();
-            new ConferenceForm(join, getCursor());
+			keyGreen();            
         } else if (c == cmdDel) {
             keyClear();
             setMainBarItem(new MainBar(2, null, SR.MS_BOOKMARKS + " (" + getItemCount() + ") ", false));
@@ -211,7 +210,12 @@ public class Bookmarks extends DefForm {
         saveBookmarks();
         redraw(); // TODO: need?
     }
-
+	
+	public void keyGreen() {
+		BookmarkItem join = (BookmarkItem) getFocusedObject();
+        new ConferenceForm(join, getCursor());
+	}
+	
     public void keyClear() {
         new AlertBox(SR.MS_DELETE, ((BookmarkItem) getFocusedObject()).getJid()) {
 

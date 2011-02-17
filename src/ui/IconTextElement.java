@@ -32,7 +32,7 @@ import Colors.ColorTheme;
 import Client.Config;
 
 abstract public class IconTextElement implements VirtualElement {
-    Config cf = Config.getInstance();
+    public Config cf = Config.getInstance();
 
     int itemHeight;
     int imageYOfs;

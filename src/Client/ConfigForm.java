@@ -100,7 +100,9 @@ public class ConfigForm
 //#     private CheckBox adhoc;
 //#endif
     private CheckBox fullscreen;
-    private CheckBox memMonitor;
+//#ifdef MEMORY_USAGE
+//#     private CheckBox memMonitor;
+//#endif
     private CheckBox enableVersionOs;
     private CheckBox queryExit;
     private CheckBox lightState;
@@ -159,6 +161,8 @@ public class ConfigForm
 //#endif
             itemsList.addElement(showClientIcon);
 //#endif
+        autoClean = new CheckBox(SR.MS_AUTOCLEAN_GROUPS, cf.autoClean);
+        itemsList.addElement(autoClean);
         
         itemsList.addElement(new SpacerItem(10));
         subscr=new DropChoiceBox(SR.MS_AUTH_NEW);
@@ -238,11 +242,14 @@ public class ConfigForm
         itemsList.addElement(new SpacerItem(10));
         itemsList.addElement(new SimpleString(SR.MS_APPLICATION, true));
         fullscreen = new CheckBox(SR.MS_FULLSCREEN, Config.fullscreen); itemsList.addElement(fullscreen);
-        memMonitor = new CheckBox(SR.MS_HEAP_MONITOR, cf.memMonitor); itemsList.addElement(memMonitor);
+//#ifdef MEMORY_USAGE
+//#         memMonitor = new CheckBox(SR.MS_HEAP_MONITOR, cf.memMonitor); itemsList.addElement(memMonitor);
+//#endif
         enableVersionOs = new CheckBox(SR.MS_SHOW_HARDWARE, cf.enableVersionOs); itemsList.addElement(enableVersionOs);
         queryExit = new CheckBox(SR.MS_CONFIRM_EXIT, cf.queryExit); itemsList.addElement(queryExit);
-
-        lightState = new CheckBox(SR.L_CONFIG, cf.lightState);
+//#ifdef LIGHT_CONFIG
+//#         lightState = new CheckBox(SR.L_CONFIG, cf.lightState);
+//#endif
         if (phoneManufacturer==Config.SIEMENS || phoneManufacturer==Config.SIEMENS2 || phoneManufacturer==Config.SONYE || phoneManufacturer==Config.NOKIA) itemsList.addElement(lightState);
 //#ifdef FILE_TRANSFER
         fileTransfer = new CheckBox(SR.MS_FILE_TRANSFERS, cf.fileTransfer); 
@@ -270,17 +277,6 @@ public class ConfigForm
             itemsList.addElement(popupFromMinimized);
         }
         executeByNum = new CheckBox(SR.MS_EXECUTE_MENU_BY_NUMKEY, cf.executeByNum); itemsList.addElement(executeByNum);
-
-        itemsList.addElement(new SpacerItem(10));
-        itemsList.addElement(new SimpleString(SR.MS_MEMORY_USAGE, true));
-        widthSystemgc = new CheckBox(SR.MS_WITH_SYSTEM_GC, cf.widthSystemgc);
-        if (Config.getInstance().phoneManufacturer != Config.NOKIA) {            
-            itemsList.addElement(widthSystemgc);
-        } else {
-            cf.widthSystemgc = false;
-        }
-        autoClean = new CheckBox(SR.MS_AUTOCLEAN_GROUPS, cf.autoClean);
-        itemsList.addElement(autoClean);
         
         itemsList.addElement(new SpacerItem(10));
         itemsList.addElement(new SimpleString(SR.MS_TIME_SETTINGS, true));
@@ -432,17 +428,16 @@ public class ConfigForm
         
         VirtualList.showTimeTraffic=cf.showTimeTraffic=drawMenuCommand.getValue();
         Config.fullscreen = fullscreen.getValue();
-        VirtualList.memMonitor=cf.memMonitor=memMonitor.getValue();
+//#ifdef MEMORY_USAGE
+//#         VirtualList.memMonitor=cf.memMonitor=memMonitor.getValue();
+//#endif
         cf.enableVersionOs=enableVersionOs.getValue();
         cf.queryExit=queryExit.getValue();
-
-        cf.lightState=lightState.getValue();
+//#ifdef LIGHT_CONFIG
+//#         cf.lightState=lightState.getValue();
+//#endif
         if (cf.allowMinimize)
             cf.popupFromMinimized=popupFromMinimized.getValue();
-        if (Config.getInstance().phoneManufacturer != Config.NOKIA)
-            cf.widthSystemgc=widthSystemgc.getValue();
-        else 
-            cf.widthSystemgc = false;
         cf.autoClean=autoClean.getValue();
         if (SplashScreen.getInstance().hasPointerEvents())
             cf.advTouch = advTouch.getValue();

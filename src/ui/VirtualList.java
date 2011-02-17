@@ -185,7 +185,7 @@ public abstract class VirtualList {
                 return;
             case VirtualCanvas._KEY_STAR:
 //#ifdef POPUPS
-                showHeapInfo();
+                showTimeTrafficInfo();
 //#endif
                 return;
             case VirtualCanvas._KEY_POUND:
@@ -197,8 +197,9 @@ public abstract class VirtualList {
     }
 
     public void longKey(int keyCode) {};
-
-    public static boolean memMonitor;
+//#ifdef MEMORY_USAGE
+//#     public static boolean memMonitor;
+//#endif
     public static boolean showTimeTraffic = true;
     
     public boolean canBack = true;
@@ -550,20 +551,30 @@ public abstract class VirtualList {
         }
 
         if (scroll) {
-            int correct=(memMonitor)?1:0;
-            setAbsOrg(g, 0, list_top+correct);
+//#ifdef MEMORY_USAGE
+//#         int correct=(memMonitor)?1:0;
+//#         setAbsOrg(g, 0, list_top+correct);
+//#         g.setClip(0, 0, width, winHeight);
+//#
+//# 	    scrollbar.setPostion(win_top-correct);
+//# 	    scrollbar.setSize(listHeight-correct);
+//# 	    scrollbar.setWindowSize(winHeight-correct);
+//#else
+            setAbsOrg(g, 0, list_top);
             g.setClip(0, 0, width, winHeight);
 
-	    scrollbar.setPostion(win_top-correct);
-	    scrollbar.setSize(listHeight-correct);
-	    scrollbar.setWindowSize(winHeight-correct);
+	    scrollbar.setPostion(win_top);
+	    scrollbar.setSize(listHeight);
+	    scrollbar.setWindowSize(winHeight);
+//#endif
 	    
 	    scrollbar.draw(g);
         } else scrollbar.setSize(0);
 
         setAbsClip(g, width, height);
-        
-        drawHeapMonitor(g, list_top); //heap monitor
+//#ifdef MEMORY_USAGE
+//#         drawHeapMonitor(g, list_top); //heap monitor
+//#endif
         
         if (showBalloon) {
             if (cf.showBalloons) {
@@ -677,14 +688,15 @@ public abstract class VirtualList {
         setAbsOrg(g,0,balloon);
         Balloon.draw(g, text);
     }
-
-    private void drawHeapMonitor(final Graphics g, int y) {
-        if (memMonitor) {
-            int ram=(int)((Runtime.getRuntime().freeMemory()*width)/Runtime.getRuntime().totalMemory());
-            g.setColor(ColorTheme.getColor(ColorTheme.HEAP_TOTAL));  g.fillRect(0,y,width,1);
-            g.setColor(ColorTheme.getColor(ColorTheme.HEAP_FREE));  g.fillRect(0,y,ram,1);
-        }
-    }
+//#ifdef MEMORY_USAGE
+//#     private void drawHeapMonitor(final Graphics g, int y) {
+//#         if (memMonitor) {
+//#             int ram=(int)((Runtime.getRuntime().freeMemory()*width)/Runtime.getRuntime().totalMemory());
+//#             g.setColor(ColorTheme.getColor(ColorTheme.HEAP_TOTAL));  g.fillRect(0,y,width,1);
+//#             g.setColor(ColorTheme.getColor(ColorTheme.HEAP_FREE));  g.fillRect(0,y,ram,1);
+//#         }
+//#     }
+//#endif
     private void drawInfoPanel (final Graphics g) {
         int h=infobar.getVHeight()+1;
 
@@ -1361,19 +1373,22 @@ public abstract class VirtualList {
         getInfoBarItem().setElementAt((!showTimeTraffic && Config.fullscreen)?touchRightCommand():getTraffic(), 3);
     }
 
-    public void showHeapInfo() {
+    public void showTimeTrafficInfo() {
 //#ifdef POPUPS
         StringBuffer mem = new StringBuffer();
         mem.append(Time.localDate()).append(" ").append(Time.getTimeWeekDay())
            .append("\nTraffic: ")
            .append(getTraffic())
-           .append("\nFree: ")
-           .append(Runtime.getRuntime().freeMemory()>>10)
-           .append(" kb");
-        if (phoneManufacturer == Config.SONYE)
-            mem.append("\nTotal: ")
-               .append(Runtime.getRuntime().totalMemory()>>10)
-               .append(" kb");
+//#ifdef MEMORY_USAGE
+//#            .append("\nFree: ")
+//#            .append(Runtime.getRuntime().freeMemory()>>10)
+//#            .append(" kb");
+//#         if (phoneManufacturer == Config.SONYE)
+//#             mem.append("\nTotal: ")
+//#                .append(Runtime.getRuntime().totalMemory()>>10)
+//#                .append(" kb")
+//#endif
+           ;
         setWobble(1, null, mem.toString());
 //#endif
     }

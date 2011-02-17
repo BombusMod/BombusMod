@@ -443,7 +443,7 @@ public class UserKeyExec {
                 try { Thread.sleep(50); } catch (InterruptedException e) { }
 //            } _vt
                 if (current instanceof Roster) {
-                    sd.roster.showHeapInfo();
+                    sd.roster.showTimeTrafficInfo();
                 } else {
                     return false;
                 }

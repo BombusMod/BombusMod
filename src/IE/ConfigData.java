@@ -88,7 +88,9 @@ public class ConfigData {
 //#endif
         array.addElement(new keyValue(popupFromMinimized, (cf.popupFromMinimized)?"1":"0"));
         array.addElement(new keyValue(notifyBlink, (cf.notifyBlink)?"1":"0"));
-        array.addElement(new keyValue(memMonitor, (cf.memMonitor)?"1":"0"));
+//#ifdef MEMORY_USAGE
+//#         array.addElement(new keyValue(memMonitor, (cf.memMonitor)?"1":"0"));
+//#endif
         array.addElement(new keyValue(font1, Integer.toString(cf.rosterFont)));
         array.addElement(new keyValue(font2, Integer.toString(cf.msgFont)));
         array.addElement(new keyValue(font3, Integer.toString(cf.barFont)));
@@ -110,8 +112,9 @@ public class ConfigData {
         
         array.addElement(new keyValue(panelsState, Integer.toString(cf.panelsState)));
         array.addElement(new keyValue(showTimeTraffic, (cf.showTimeTraffic)?"1":"0"));
-
-        array.addElement(new keyValue(lightState, (cf.lightState)?"1":"0"));
+//#ifdef LIGHT_CONFIG
+//#         array.addElement(new keyValue(lightState, (cf.lightState)?"1":"0"));
+//#endif
         array.addElement(new keyValue(notifySound, (cf.notifySound)?"1":"0"));
 //#ifdef AUTOSTATUS
 //#         array.addElement(new keyValue(autoAwayDelay, Integer.toString(cf.autoAwayDelay)));
@@ -228,7 +231,9 @@ public class ConfigData {
         cf.confMessageCount=cf.getIntProperty(getValue(confMessageCount),20);
 //#endif
         cf.popupFromMinimized=cf.getBooleanProperty(getValue(popupFromMinimized),true);
-        cf.memMonitor=cf.getBooleanProperty(getValue(memMonitor),true);
+//#ifdef MEMORY_USAGE
+//#         cf.memMonitor=cf.getBooleanProperty(getValue(memMonitor),true);
+//#endif
         cf.rosterFont=cf.getIntProperty(getValue(font1),0);
         cf.msgFont=cf.getIntProperty(getValue(font2),0);
         cf.barFont=cf.getIntProperty(getValue(font3),0);
@@ -251,8 +256,9 @@ public class ConfigData {
         cf.panelsState=cf.getIntProperty(getValue(panelsState), 2);
 
         cf.showTimeTraffic=cf.getBooleanProperty(getValue(showTimeTraffic),false);
-
-        cf.lightState=cf.getBooleanProperty(getValue(lightState),true);
+//#ifdef CONFIG_FORM
+//#         cf.lightState=cf.getBooleanProperty(getValue(lightState),true);
+//#endif
 //#ifdef AUTOSTATUS
 //#         cf.autoAwayDelay=cf.getIntProperty(getValue(autoAwayDelay),5);
 //#         cf.useMyStatusMessages=cf.getBooleanProperty(getValue(useMyStatusMessages),false);
@@ -315,8 +321,9 @@ public class ConfigData {
         cf.updateTime();
 
         cf.saveToStorage();
-        
-        VirtualList.memMonitor=cf.memMonitor;
+//#ifdef MEMORY_USAGE
+//#         VirtualList.memMonitor=cf.memMonitor;
+//#endif
     }
     
     final static int SEARCH_KEY     = 1;

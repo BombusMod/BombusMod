@@ -76,7 +76,6 @@ import login.SASLAuth;
 import midlet.BombusMod;
 import ui.controls.AlertBox;
 import util.StringUtils;
-import VCard.VCard;
 import com.alsutton.jabber.*;
 import com.alsutton.jabber.datablocks.*;
 import java.util.*;
@@ -402,13 +401,6 @@ public class Roster
         if (sd.account != null) {
             myJid = new Jid(sd.account.getJid());
             updateContact(sd.account.getNick(), myJid.getBareJid(), SR.MS_SELF_CONTACT, "self", false);
-        }
-    }
-    
-    public void systemGC() {
-        if (Config.getInstance().widthSystemgc) {
-            System.gc();
-            try { Thread.sleep(50); } catch (InterruptedException e){}
         }
     }
     
@@ -1038,8 +1030,7 @@ public class Roster
 //#             autoXa=false;
 //#             if (autostatus != null)
 //#                 autostatus.destroyTask();
-//#endif
-            systemGC();
+//#endif            
         }
         Contact c=selfContact();
         c.setStatus(myStatus);
@@ -1292,8 +1283,6 @@ public class Roster
             //e.printStackTrace();
         }
         theStream=null;
-        
-        systemGC();
         
         doReconnect=false;
         setQuerySign(false);
@@ -1944,10 +1933,6 @@ public class Roster
 //#             setTicker(c, message.body);
 //#endif
         
-        if (cf.ghostMotor) {
-            systemGC();
-        }
-
         if (countNewMsgs())
             reEnumRoster();
         if (message.messageType == Msg.MESSAGE_TYPE_OUT) {
@@ -2357,8 +2342,7 @@ public class Roster
         }
         
         redraw();
-        systemGC();
-
+        
         if (messageCount == 0) {
             return;
         }
@@ -3136,8 +3120,7 @@ public class Roster
 //#                 //e.printStackTrace();
 //#endif
             }
-            //thread=null;
-            systemGC();
+            //thread=null;            
         }
     }
 }

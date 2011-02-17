@@ -130,7 +130,9 @@ public class Config {
     public int loginstatus = 0;//loginstatus
     public int gmtOffset;
     public boolean popupFromMinimized = true;
-    public boolean memMonitor = false;
+//#ifdef MEMORY_USAGE
+//#     public boolean memMonitor = false;
+//#endif
     public int rosterFont = 8;
     public int msgFont = 8;
     public int barFont = 8;
@@ -146,7 +148,9 @@ public class Config {
     public boolean istreamWaiting;
     public int phoneManufacturer = NOT_DETECTED;
     public int panelsState = 2;
-    public boolean lightState = false;
+//#ifdef LIGHT_CONFIG
+//#     public boolean lightState = false;
+//#endif
     public boolean autoScroll = true;
 //#ifdef POPUPS
     public boolean popUps = true;
@@ -157,9 +161,8 @@ public class Config {
     public int messageLimit = 512;
     public int widthScroll2 = 10;
     public int minItemHeight = rosterFont*3;
-    public boolean widthSystemgc = false;
     public boolean advTouch = true;
-    public boolean autoClean = false;
+    public boolean autoClean = true;
     public boolean eventDelivery = true;
 //#ifdef DETRANSLIT
 //#     public boolean transliterateFilenames=false;
@@ -312,7 +315,11 @@ public class Config {
 //#endif            
             popupFromMinimized = inputStream.readBoolean();
             notifyBlink = inputStream.readBoolean();
-            memMonitor = inputStream.readBoolean();
+//#ifdef MEMORY_USAGE
+//#             memMonitor = inputStream.readBoolean();
+//#else
+            inputStream.readBoolean();
+//#endif
             rosterFont = inputStream.readInt();
             msgFont = inputStream.readInt();
             autoFocus = inputStream.readBoolean();
@@ -357,8 +364,11 @@ public class Config {
 //#             inputStream.readInt();
 //#endif                                    
             fileTransfer = inputStream.readBoolean(); //newMenu
-
-            lightState = inputStream.readBoolean();
+//#ifdef LIGHT_CONFIG
+//#         lightState = inputStream.readBoolean();
+//#else
+        inputStream.readBoolean();
+//#endif
             notifySound = inputStream.readBoolean();
 //#ifdef LAST_MESSAGES
 //#             lastMessages=inputStream.readBoolean();
@@ -467,7 +477,7 @@ public class Config {
 
             swapSendAndSuspend = inputStream.readBoolean();
             widthScroll2 = inputStream.readInt();
-            widthSystemgc = inputStream.readBoolean();
+            inputStream.readBoolean(); // wsystemgc
 
             inputStream.readUTF(); // ранее здесь был juickJID
 
@@ -501,8 +511,10 @@ public class Config {
         if (lastProfile == AlertProfile.VIBRA) {
             lastProfile = 0;
         }
-        updateTime();        
-        VirtualList.memMonitor = memMonitor;
+        updateTime();
+//#ifdef MEMORY_USAGE
+//#         VirtualList.memMonitor = memMonitor;
+//#endif
         VirtualList.panelsState = panelsState;
         VirtualList.showTimeTraffic = showTimeTraffic;
 
@@ -601,7 +613,11 @@ public class Config {
 //#endif            
             outputStream.writeBoolean(popupFromMinimized);
             outputStream.writeBoolean(notifyBlink);
-            outputStream.writeBoolean(memMonitor);
+//#ifdef MEMORY_USAGE
+//#             outputStream.writeBoolean(memMonitor);
+//#else
+            outputStream.writeBoolean(false);
+//#endif
             outputStream.writeInt(rosterFont);
             outputStream.writeInt(msgFont);
             outputStream.writeBoolean(autoFocus);
@@ -646,8 +662,11 @@ public class Config {
 //#             outputStream.writeInt(0);
 //#endif            
             outputStream.writeBoolean(fileTransfer); //newMenu
-
-            outputStream.writeBoolean(lightState);
+//#ifdef LIGHT_CONFIG
+//#             outputStream.writeBoolean(lightState);
+//#else
+            outputStream.writeBoolean(false);
+//#endif
             outputStream.writeBoolean(notifySound);
 //#ifdef LAST_MESSAGES
 //#             outputStream.writeBoolean(lastMessages);
@@ -757,7 +776,7 @@ public class Config {
 
             outputStream.writeBoolean(swapSendAndSuspend);
             outputStream.writeInt(widthScroll2);
-            outputStream.writeBoolean(widthSystemgc);
+            outputStream.writeBoolean(false); // wsystemgc
 
             outputStream.writeUTF(""); // ранее здесь был juickJID
 
