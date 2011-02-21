@@ -29,30 +29,17 @@ package ui.controls.form;
 
 //import Client.Config;
 import java.util.Vector;
-import Menu.MenuListener;
-import Menu.MenuCommand;
-import Menu.MyMenu;
 import java.util.Enumeration;
-import locale.SR;
-import ui.MainBar;
 import ui.VirtualElement;
-import ui.VirtualList;
 
 /**
  *
  * @author ad
  */
 public class ComplexForm 
-        extends VirtualList
-        implements MenuListener
+        extends DefForm        
     {
-
-    
-    public Vector itemsList = new Vector();
-
-    public static MenuCommand cmdOk = new MenuCommand(SR.MS_OK, MenuCommand.OK, 1);
-    public static MenuCommand cmdCancel = new MenuCommand(SR.MS_BACK, MenuCommand.BACK, 99);
-   
+        
     /**
      * Creates a new instance of DefForm
      * @param caption
@@ -62,7 +49,7 @@ public class ComplexForm
     }
     
     public ComplexForm(String caption, boolean show) {
-        setMainBarItem(new MainBar(caption));
+        super(caption);
         
         enableListWrapping(false);
         if (show)
@@ -102,42 +89,4 @@ public class ComplexForm
     public int getIndexOf(VirtualElement element) {
         return getFlatList().indexOf(element);
     }
-    
-    public void touchLeftPressed(){ cmdOk(); }
-
-    public void touchRightPressed(){ cmdCancel(); }
-    
-    public void menuAction(MenuCommand command, VirtualList displayable) {
-	if (command==cmdCancel) {
-	    cmdCancel();
-	}
-	if (command==cmdOk) {
-            cmdOk();
-        }
-    }   
-
-    public void cmdCancel() {
-        destroyView();
-    }
-
-    public void cmdOk() { }
-    
-    public void commandState() {
-        menuCommands.removeAllElements();
-	addMenuCommand(cmdOk);
-	addMenuCommand(cmdCancel);        
-    }
-    
-    public void showMenu() {
-        commandState();
-        if (menuCommands.size()==2) {
-            if (menuCommands.elementAt(0).equals(cmdOk) && menuCommands.elementAt(1).equals(cmdCancel)) {
-                cmdOk();
-                return;
-            }
-        }
-        new MyMenu(this, "", null, menuCommands);        
-    }
-    
-    public String touchLeftCommand() { return SR.MS_OK; }
 }

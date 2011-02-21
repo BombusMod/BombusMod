@@ -31,6 +31,7 @@ import java.util.Vector;
 import Menu.MenuListener;
 import Menu.MenuCommand;
 import Menu.MyMenu;
+import images.RosterIcons;
 import locale.SR;
 import ui.MainBar;
 import ui.VirtualElement;
@@ -72,19 +73,11 @@ public class DefForm
     }
 
     public VirtualElement getItemRef(int index) {
+        if (index >= getItemCount())
+            return null;
         synchronized (itemsList) {
-            if (index > itemsList.size())
-                return null;
             return (VirtualElement) itemsList.elementAt(index);
         }
-    }
-
-    public void touchLeftPressed() {
-        cmdOk();
-    }
-
-    public void touchRightPressed() {
-        cmdCancel();
     }
 
     public void menuAction(MenuCommand command, VirtualList displayable) {
@@ -110,31 +103,71 @@ public class DefForm
         }
     }
 
-    public void cmdCancel() {
+    public void cmdOk() {
         destroyView();
     }
 
-    public void cmdOk() {
+    public final Vector menuCommands = new Vector();
+    public String menuName = "";
+
+    public void addMenuCommand(MenuCommand command) {
+        if (menuCommands.indexOf(command) < 0)
+            menuCommands.addElement(command);
+    }
+
+    public void removeMenuCommand(MenuCommand command) {
+        menuCommands.removeElement(command);
     }
 
     public void commandState() {
         menuCommands.removeAllElements();
         addMenuCommand(cmdOk);
-        addMenuCommand(cmdCancel);
+        if (!cf.swapMenu)
+            addMenuCommand(cmdCancel);
     }
 
     public void showMenu() {
-        commandState();
-        if (menuCommands.size() == 2) {
-            if (menuCommands.elementAt(0).equals(cmdOk) && menuCommands.elementAt(1).equals(cmdCancel)) {
-                cmdOk();
-                return;
-            }
-        }
-        new MyMenu(this, "", null, menuCommands);
+        new MyMenu(this, menuName, RosterIcons.getInstance(), menuCommands);
     }
 
-    public String touchLeftCommand() {
-        return SR.MS_OK;
+    MenuCommand findCommand(int type) {        
+        for (int i = 0; i < menuCommands.size(); i++) {
+            if (((MenuCommand)menuCommands.elementAt(i)).map == type)
+                return (MenuCommand)menuCommands.elementAt(i);
+        }
+        return null;
     }
+
+    public void captionPressed() {}
+    
+    public String selectCommand() {
+        MenuCommand commandOk = findCommand(MenuCommand.OK);
+        return commandOk == null ? SR.MS_OK : commandOk.name;
+    }
+
+    public String menuCommand() {
+            if (menuCommands.size() > 2) {
+                return SR.MS_MENU;
+            }
+            if (menuCommands.size() == 2) {
+                return ((MenuCommand)menuCommands.elementAt(1)).name;
+            }
+            return "";
+    }
+
+    public void menuPressed() {
+        if (menuCommands.size() > 2) {
+            showMenu();
+            return;
+        }
+        if (menuCommands.size() == 2) {
+            menuAction((MenuCommand) menuCommands.elementAt(1), this);
+        } else {
+            cmdOk();
+        }
+    }
+    public void selectPressed() {
+        MenuCommand commandOk = findCommand(MenuCommand.OK);
+        menuAction(commandOk == null ? cmdOk : commandOk, this);
+    }    
 }

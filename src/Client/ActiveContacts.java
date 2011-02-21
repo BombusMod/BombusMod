@@ -138,9 +138,5 @@ public class ActiveContacts extends DefForm {
                 focusToNextUnreaded();
         }
         super.userKeyPressed(key);
-    }
-
-    public String touchLeftCommand() {
-        return SR.MS_SELECT;
-    }
+    }   
 }

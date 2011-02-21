@@ -43,7 +43,6 @@ import util.StringUtils;
 import java.util.Vector;
 
 import ui.controls.CommandsPointer;
-import Menu.MenuCommand;
 
 /**
  * Вертикальный список виртуальных элементов.
@@ -1111,8 +1110,9 @@ public abstract class VirtualList {
         boolean process=true;
         while (process) {
             nextRef++;
-            if (nextRef==getItemCount() && wrapping)
-                nextRef=0;
+            if (nextRef >= getItemCount()) {
+                nextRef = wrapping ? 0 : curRef;
+            }
             if (getItemRef(nextRef).isSelectable())
                 break;
         }
@@ -1305,9 +1305,11 @@ public abstract class VirtualList {
      * отсоединение от менеджера дисплея текущего виртуального списка,
      * присоединение к менеджеру предыдущего Displayable
      */
-    public void destroyView(){
-        sd.roster.activeContact=null; 
-        sd.canvas.show(parentView);       
+    public void destroyView() {
+        if (canBack) {
+            sd.roster.activeContact = null;
+            sd.canvas.show(parentView);
+        }
     }
 
     public int getListWidth() {
@@ -1356,6 +1358,7 @@ public abstract class VirtualList {
         }
         if (Config.getInstance().phoneManufacturer == Config.NOKIA && !Config.fullscreen)
             showTimeTraffic = true;
+        commandState();
         getInfoBarItem().setElementAt((!showTimeTraffic) ? touchLeftCommand() : Time.getTimeWeekDay(), 1);
         getInfoBarItem().setElementAt((!showTimeTraffic) ? touchRightCommand() : getTraffic(), 3);
     }
@@ -1384,76 +1387,43 @@ public abstract class VirtualList {
         long traffic = StaticData.getInstance().traffic;
         return StringUtils.getSizeString((traffic>0)?traffic*2:0);
     }
+        
+    public abstract void captionPressed();
     
-    public final Vector menuCommands = new Vector();
+    public abstract void commandState();
 
-    public void addMenuCommand(MenuCommand command) {
-        if (menuCommands.indexOf(command) < 0)
-            menuCommands.addElement(command);
-    }
+    public abstract void selectPressed();
+    public abstract void menuPressed();
 
-    public void removeMenuCommand(MenuCommand command) {
-        menuCommands.removeElement(command);
-    }
-
-    protected void showMenu() { }
+    public abstract String selectCommand();
+    public abstract String menuCommand();
 
     public void touchLeftPressed() {
-       if (reconnectWindow.getInstance().isActive())
-           reconnectYes();
-        else /*if (isHasMenu())
-           showMenu();
-        else if (menuCommands.size() > 0 && this instanceof Menu.MenuListener)
-            ((Menu.MenuListener) this).menuAction((MenuCommand) menuCommands.elementAt(0), this);
-        else*/
-            cmdOk();
+        if (cf.swapMenu) {
+            selectPressed();
+        } else {
+            menuPressed();
+        }
     }
-
     public void touchRightPressed() {
-        if (reconnectWindow.getInstance().isActive())
-            reconnectNo();
-         else /*{
-            int size = menuCommands.size();
-            if (size > 1 && this instanceof Menu.MenuListener)
-                ((Menu.MenuListener) this).menuAction((MenuCommand) menuCommands.elementAt(size - 1), this);
-            else
-                cmdCancel();
-		 }*/
+        if (cf.swapMenu) {
+           menuPressed();
+        } else {
             cmdCancel();
+        }
     }
-
-    public void captionPressed() { }
 
     public String touchLeftCommand() {
-/*        if (isHasMenu())
-		    return SR.MS_MENU;
-        else if (menuCommands.size() > 0)
-            return ((MenuCommand) menuCommands.elementAt(0)).getName();
-
-        return SR.MS_OK;
-*/
-        return SR.MS_MENU;
+        return cf.swapMenu ? selectCommand() : menuCommand();
     }
-
     public String touchRightCommand() {
-/*        int size = menuCommands.size();
-        if (size > 1)
-            return ((MenuCommand) menuCommands.elementAt(size - 1)).getName();
-        else*/ if (canBack)
-            return SR.MS_BACK;
-
-        return "";
+        return cf.swapMenu ? menuCommand() : (canBack ? SR.MS_BACK : "");
     }
 
     public void cmdCancel() {
         if (canBack)
             destroyView();
     }
-
-
-    public void cmdOk() { showMenu(); }
-//    public void cmdOk() { }
-
 
     public void showInfo() {
 //#ifdef POPUPS

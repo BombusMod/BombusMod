@@ -33,7 +33,6 @@ import ui.*;
 import java.io.*;
 import Menu.MenuCommand;
 import io.NvStorage;
-import javax.microedition.lcdui.Canvas;
 import ui.controls.AlertBox;
 import ui.controls.form.DefForm;
 
@@ -101,25 +100,13 @@ public class AccountSelect extends DefForm {
             addMenuCommand(cmdQuit);
     }
 
-
-    public void touchRightPressed(){
-        if (!canBack)
-            return;
-        destroyView();
-    }
-    public String touchLeftCommand() { return SR.MS_MENU; }
-    public void touchLeftPressed() {
-        showMenu();
-    }
+  
 
     public void menuAction(MenuCommand c, VirtualList d){
         if (c==cmdQuit) {
             destroyView();
             BombusMod.getInstance().notifyDestroyed();
             return;
-        }
-        if (c==cmdCancel) {
-            destroyView();
         }
         if (c==cmdConfig) new ConfigForm();
         if (c==cmdLogin) switchAccount(true);
@@ -139,6 +126,7 @@ public class AccountSelect extends DefForm {
                 public void no() { }
             };
         }
+        super.menuAction(c, d);
     }
     
 

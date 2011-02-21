@@ -214,7 +214,7 @@ public class Config {
     public boolean fileTransfer = true;
     public boolean adhoc = false;
     public boolean saveHistory = false;
-    public boolean oldSE = false;
+    public boolean swapMenu = false;
     public boolean oldNokiaS60 = false;
     public boolean NokiaS40 = false;
     public boolean showTimeTraffic = false;
@@ -811,9 +811,11 @@ public class Config {
 
             if (platform.endsWith("(NSG)")) {
                 phoneManufacturer = SIEMENS;
+                swapMenu = true;
                 return;
             } else if (platform.startsWith("SIE")) {
                 phoneManufacturer = SIEMENS2;
+                swapMenu = true;
                 return;
             } else if (platform.startsWith("Motorola-EZX")) {
                 phoneManufacturer = MOTOEZX;
@@ -829,7 +831,7 @@ public class Config {
                 phoneManufacturer = SONYE;
 
                 String sonyJava = System.getProperty("com.sonyericsson.java.platform");
-                oldSE = (sonyJava == null) || sonyJava.startsWith("JP-7"); //JP<=7.x
+                swapMenu = (sonyJava == null) || sonyJava.startsWith("JP-7"); //JP<=7.x
 
                 return;
 //#if !ZLIB

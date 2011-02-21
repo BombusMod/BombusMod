@@ -53,8 +53,8 @@ public class AlertProfile extends DefForm
     
     /** Creates a new instance of Profile */
     
-    private MenuCommand cmdDef=new MenuCommand(SR.MS_SETDEFAULT,MenuCommand.SCREEN,3);
-    private MenuCommand cmdSel=new MenuCommand(SR.MS_SELECT,MenuCommand.SCREEN,2);
+    private MenuCommand cmdDef = new MenuCommand(SR.MS_SETDEFAULT, MenuCommand.SCREEN, 3);
+
     /** Creates a new instance of SelectStatus */
     public AlertProfile() {
         super(SR.MS_ALERT_PROFILE);
@@ -67,17 +67,12 @@ public class AlertProfile extends DefForm
 
     public void commandState() {
         menuCommands.removeAllElements();
-        addMenuCommand(cmdSel);
+        addMenuCommand(cmdOk);
         addMenuCommand(cmdDef);
-    }
-    public String touchLeftCommand(){ return SR.MS_MENU; }
-    public void touchLeftPressed(){
-        showMenu();
     }
     
     int index;
     public VirtualElement getItemRef(int Index){
-        if (Index>=ALERT_COUNT) throw new IndexOutOfBoundsException();
         index=Index;
         return profile;
     }
@@ -103,14 +98,15 @@ public class AlertProfile extends DefForm
     }
     
     public void menuAction(MenuCommand c, VirtualList d){
-        if (c==cmdSel) eventOk();
         if (c==cmdDef) { 
             cf.def_profile=defp=getCursor();
 	    cf.saveToStorage();
             redraw();
-        }        
+        }
     }
-    
+
+    public void cmdOk() {eventOk();}
+
     public void eventOk(){
         cf.profile=getCursor();
         destroyView();

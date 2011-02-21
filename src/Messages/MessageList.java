@@ -31,21 +31,21 @@ import Client.Config;
 import Client.Msg;
 import Colors.ColorTheme;
 import java.util.Vector;
-import Menu.MenuListener;
 import Menu.MenuCommand;
 import Menu.MyMenu;
 import images.RosterIcons;
 import locale.SR;
+import ui.ComplexString;
+import ui.MainBar;
 import ui.VirtualCanvas;
 import ui.VirtualElement;
 import ui.VirtualList;
+import ui.controls.form.DefForm;
 //#ifdef CLIPBOARD
 //# import util.ClipBoard;
 //#endif
 
-public abstract class MessageList extends VirtualList
-    implements
-        MenuListener
+public abstract class MessageList extends DefForm
     {
     
     protected final Vector messages;
@@ -64,7 +64,7 @@ public abstract class MessageList extends VirtualList
     /** Creates a new instance of MessageList */
   
     public MessageList(Vector messages) {
-        super();
+        super("");
         this.messages = messages;
         cf = Config.getInstance();
         
@@ -136,18 +136,7 @@ public abstract class MessageList extends VirtualList
 //#         }
 //#endif
     }
-
-   public void showMenu() {
-       commandState();
-       if (menuCommands.isEmpty())
-           return;
-        String capt="";
-        try {
-            capt=getMainBarItem().elementAt(0).toString();
-        } catch (Exception ex){ }
-        new MyMenu( this, capt, RosterIcons.getInstance(), menuCommands);
-   }
-
+   
     public void commandState() {         
 //#ifdef CLIPBOARD
 //#         if (cf.useClipBoard) {
@@ -206,9 +195,5 @@ public abstract class MessageList extends VirtualList
         }
         super.userKeyPressed(key);
     }
-//#endif
-
-    public void touchLeftPressed() {
-        showMenu();
-    }
+//#endif   
 }

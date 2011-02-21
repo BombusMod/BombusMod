@@ -158,7 +158,9 @@ public class VCardEdit
                     setPhoto();
                     redraw();
                 } catch (Exception e) {
-                    System.out.println("error on load");
+//#ifdef DEBUG
+//#                     System.out.println("error on load");
+//#endif
                 }
             }
             if (st==2 & vcard.hasPhoto) {
@@ -224,7 +226,5 @@ public class VCardEdit
         addMenuCommand(cmdDelPhoto);
 
         addMenuCommand(cmdCancel);
-    }
-    public String touchLeftCommand() { return SR.MS_MENU; }
-    public void touchLeftPressed() { showMenu(); }
+    }    
  }

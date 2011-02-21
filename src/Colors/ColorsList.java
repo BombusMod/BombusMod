@@ -93,21 +93,13 @@ public class ColorsList extends DefForm
     }
         
     public void eventOk() {
-        cmdOk();
+//#ifdef COLOR_TUNE
+//#         new ColorSelectForm( this, this, getCursor());
+//#endif
     }
     
     public void cmdOk() {
-//#ifdef COLOR_TUNE
-//#         new ColorSelectForm( this, this, getCursor());
-//#         
-//#endif
-    }
-
-    public String touchLeftCommand() {
-        return SR.MS_MENU;
-    }
-    public void touchLeftPressed() {
-        showMenu();
+        eventOk();
     }
 
 //#ifdef COLOR_TUNE

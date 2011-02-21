@@ -197,12 +197,5 @@ public class PrivacySelect
 
             public void no() {}
         };
-    }
-
-    public void touchLeftPressed() {
-        showMenu();
-    }
-    public String touchLeftCommand() {
-        return SR.MS_MENU;
-    }
+    }    
 }

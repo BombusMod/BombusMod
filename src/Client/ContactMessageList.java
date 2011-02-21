@@ -163,6 +163,7 @@ public class ContactMessageList extends MessageList {
     }    
 
     public final void commandState() {
+        menuName = contact.toString();
         menuCommands.removeAllElements();
         if (startSelection) addMenuCommand(cmdSelect);
         
@@ -604,7 +605,7 @@ public class ContactMessageList extends MessageList {
 //#     }
 //# 
 //#     public String getTargetForJuickReply(String str) {
-//#         if ((str == null) || (str.equals("")))
+//#         if ((str == null) || (str.length() == 0))
 //#             return "toThings";
 //#         if (str.startsWith("Private message from @")) {
 //#             return str.substring(21, str.indexOf('\n') - 1);
@@ -959,11 +960,11 @@ public class ContactMessageList extends MessageList {
         }
     }
 
-
-    public String touchLeftCommand(){ return (Config.getInstance().oldSE)?((contact.msgSuspended!=null)?SR.MS_RESUME:SR.MS_NEW):SR.MS_MENU; }
-    public String touchRightCommand(){ return (Config.getInstance().oldSE)?SR.MS_MENU:SR.MS_BACK; }
-    public void touchRightPressed(){ if (cf.oldSE) showMenu(); else destroyView(); }
-    public void touchLeftPressed(){ if (cf.oldSE) messageEditResume(); else showMenu(); }
+    // TODO: fix this shit
+    public String touchLeftCommand(){ return (Config.getInstance().swapMenu)?((contact.msgSuspended!=null)?SR.MS_RESUME:SR.MS_NEW):SR.MS_MENU; }
+    public String touchRightCommand(){ return (Config.getInstance().swapMenu)?SR.MS_MENU:SR.MS_BACK; }
+    public void touchRightPressed(){ if (cf.swapMenu) showMenu(); else destroyView(); }
+    public void touchLeftPressed(){ if (cf.swapMenu) messageEditResume(); else showMenu(); }
 
 
 }

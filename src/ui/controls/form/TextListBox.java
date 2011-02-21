@@ -85,7 +85,4 @@ public class TextListBox
     public void cmdOk() {
         eventOk();
     }
-
-    public String touchLeftCommand() {return SR.MS_MENU; }
-    public void touchLeftPressed() { showMenu(); }
 }

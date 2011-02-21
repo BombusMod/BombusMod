@@ -72,11 +72,6 @@ public class TransferManager
         addMenuCommand(cmdInfo);
     }
 
-    public String touchLeftCommand(){ return SR.MS_MENU; }
-    public void touchLeftPressed(){ 
-            showMenu();         
-    }
-
     public void eventOk() {
         TransferTask t=(TransferTask) getFocusedObject();
         if (t!=null)

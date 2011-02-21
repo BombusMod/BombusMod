@@ -134,7 +134,7 @@ public class XDataForm extends ComplexForm {
         destroyView();
     }
 
-    public String touchLeftCommand() {
+    public String selectCommand() {
         return SR.MS_SEND;
     }
 }

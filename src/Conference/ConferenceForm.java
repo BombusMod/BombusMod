@@ -233,13 +233,7 @@ public class ConferenceForm
         addMenuCommand(cmdEdit);
         addMenuCommand(cmdCancel);
     }
-
-    public String touchLeftCommand(){ return SR.MS_MENU; }
     
-    public void touchLeftPressed(){
-        showMenu();
-    }
-
     private void saveMsgCount(int msgLimit) {
         if (cf.confMessageCount!=msgLimit) {
             cf.confMessageCount=msgLimit;

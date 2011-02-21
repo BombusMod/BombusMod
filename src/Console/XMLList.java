@@ -49,7 +49,7 @@ public final class XMLList
     
     StanzasList stanzas;
 
-    private MenuCommand cmdNew=new MenuCommand(SR.MS_NEW, MenuCommand.SCREEN, 5);
+    private MenuCommand cmdNew=new MenuCommand(SR.MS_NEW, MenuCommand.OK, 1);
     private MenuCommand cmdEnableDisable=new MenuCommand(SR.MS_ENABLE_DISABLE, MenuCommand.SCREEN, 6);
     private MenuCommand cmdPurge=new MenuCommand(SR.MS_CLEAR_LIST, MenuCommand.SCREEN, 10);
    
@@ -74,8 +74,7 @@ public final class XMLList
         menuCommands.removeAllElements();
         addMenuCommand(cmdNew);
         addMenuCommand(cmdEnableDisable);
-        addMenuCommand(cmdPurge);
-        super.commandState();
+        addMenuCommand(cmdPurge);        
     }
  
     protected void beginPaint() {
@@ -161,5 +160,9 @@ public final class XMLList
 
     public void keyGreen() {
         toggle();
+    }
+    public void destroyView() {
+        parentView = sd.roster;
+        super.destroyView();
     }
 }

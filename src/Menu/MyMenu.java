@@ -55,9 +55,11 @@ public class MyMenu extends Menu {
 
         for (int i=0; i<commands.size(); i++) {
             MenuCommand c=(MenuCommand)commands.elementAt(i);
-            addItem(c.getName(), i, c.getImg());
-        }
-
+            if (c.map == MenuCommand.OK)
+                continue;
+            // TODO: map BACK command
+            addItem(c.name, i, c.img);
+        }        
         show();
     }
     

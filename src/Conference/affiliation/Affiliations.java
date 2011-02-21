@@ -173,13 +173,5 @@ public class Affiliations
 //#             addMenuCommand(cmdCopy);
 //#         }
 //#endif
-    }
-    public void touchLeftPressed() {
-        showMenu();
-    }
-    public String touchLeftCommand() {
-        return SR.MS_MENU;
-    }
-
-
+    }    
 }

@@ -67,13 +67,23 @@ public class Menu extends VirtualList
         addItem(new MenuItem(label, index, -1, il));
     }
     
-    public String touchLeftCommand() {
-        return SR.MS_OK;
+    public String selectCommand() {
+        return SR.MS_SELECT;
     }
     
-    public void touchLeftPressed() {
+    public String menuCommand() {
+        return "";
+    }
+    
+    public void selectPressed() {
         eventOk();
     }
+    public void menuPressed() {}
+
+    public void commandState() {}
+    
+    
+    public void captionPressed() {}
 
     public void userKeyPressed(int keyCode) {
         if (executeByNum && getItemCount() > 0 && keyCode >=0 && keyCode <= 9) {

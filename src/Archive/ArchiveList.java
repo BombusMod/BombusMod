@@ -46,12 +46,12 @@ public class ArchiveList
 //#ifdef PLUGINS
 //#     public static String plugin = new String("PLUGIN_ARCHIVE");
 //#endif
-    
-    MenuCommand cmdPaste=new MenuCommand(SR.MS_PASTE_BODY, MenuCommand.SCREEN, 1);
+
+    MenuCommand cmdNew=new MenuCommand(SR.MS_NEW, MenuCommand.OK, 1);
+    MenuCommand cmdPaste=new MenuCommand(SR.MS_PASTE_BODY, MenuCommand.SCREEN, 2);
     MenuCommand cmdJid=new MenuCommand(SR.MS_PASTE_JID , MenuCommand.SCREEN, 2);
     MenuCommand cmdSubj=new MenuCommand(SR.MS_PASTE_SUBJECT, MenuCommand.SCREEN, 3);
-    MenuCommand cmdEdit=new MenuCommand(SR.MS_EDIT, MenuCommand.SCREEN, 4);
-    MenuCommand cmdNew=new MenuCommand(SR.MS_NEW, MenuCommand.SCREEN, 5);
+    MenuCommand cmdEdit=new MenuCommand(SR.MS_EDIT, MenuCommand.SCREEN, 4);    
     MenuCommand cmdDelete=new MenuCommand(SR.MS_DELETE, MenuCommand.SCREEN, 9);
     MenuCommand cmdDeleteAll=new MenuCommand(SR.MS_DELETE_ALL, MenuCommand.SCREEN, 10);
 
@@ -85,7 +85,7 @@ public class ArchiveList
 
     public final void commandState() {
         menuCommands.removeAllElements();
-
+        addMenuCommand(cmdNew);
         if (getItemCount() > 0) {
             if (t != null) {
                 addMenuCommand(cmdPaste);
@@ -96,8 +96,8 @@ public class ArchiveList
             
             addMenuCommand(cmdDelete);
             addMenuCommand(cmdDeleteAll);
-        }
-        addMenuCommand(cmdNew);
+            addMenuCommand(cmdCancel);
+        }        
         super.commandState();
     }
 
@@ -196,12 +196,14 @@ public class ArchiveList
 	destroyView();
     }
     
-    public void destroyView(){
+    public void destroyView() {
         archive.close();
-        if (t != null)
+        if (t != null) {
             midlet.BombusMod.getInstance().setDisplayable(t);
-        else 
+        } else {
+            parentView = sd.roster;
             super.destroyView();
+        }
     }
 
     private int getFreeSpace() {

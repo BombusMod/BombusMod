@@ -127,8 +127,4 @@ public class HistoryConfig
         super.commandState();
         addMenuCommand(cmdPath);        
     }
-    
-    public void touchLeftPressed(){ showMenu(); }
-
-    public String touchLeftCommand() { return SR.MS_MENU; }
 }

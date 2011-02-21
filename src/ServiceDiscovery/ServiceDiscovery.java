@@ -63,7 +63,7 @@ public class ServiceDiscovery
     private final static String strCmds="Execute";
     private final int AD_HOC_INDEX=17;
     
-    private MenuCommand cmdBrowse=new MenuCommand(SR.MS_BROWSE, MenuCommand.SCREEN, 1);
+    private MenuCommand cmdBrowse=new MenuCommand(SR.MS_BROWSE, MenuCommand.OK, 1);
     private MenuCommand cmdRfsh=new MenuCommand(SR.MS_REFRESH, MenuCommand.SCREEN, 2);
     private MenuCommand cmdFeatures=new MenuCommand(SR.MS_FEATURES, MenuCommand.SCREEN, 3);
     private MenuCommand cmdSrv=new MenuCommand(SR.MS_SERVER, MenuCommand.SCREEN, 10);
@@ -440,16 +440,14 @@ public class ServiceDiscovery
     
     public void commandState() {
         menuCommands.removeAllElements();
+        addMenuCommand(cmdBrowse);
         addMenuCommand(cmdRfsh);
         addMenuCommand(cmdSrv);
         addMenuCommand(cmdFeatures);
         //addCommand(cmdAdd);
         addMenuCommand(cmdCancel);        
     }
-
-    public String touchLeftCommand(){ return SR.MS_MENU; }
-    public void touchLeftPressed(){ showMenu(); }
-    public void touchRightPressed() { exitDiscovery(false); } 
+   
 
 }
 class State{

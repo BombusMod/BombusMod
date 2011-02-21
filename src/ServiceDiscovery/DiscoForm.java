@@ -203,7 +203,7 @@ public class DiscoForm extends ComplexForm{
             }
         }
     }
-    public String touchLeftCommand() { return (complete) ? "" : SR.MS_SEND;}
+    public String selectCommand() { return (complete) ? "" : SR.MS_SEND;}
 
     public interface FormSubmitListener {
 	    public void formSubmit(Vector fields);

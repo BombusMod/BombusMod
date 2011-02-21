@@ -28,7 +28,9 @@
 package Info;
 
 import Client.Config;
-import Client.StaticData;
+//#ifdef PLUGINS
+//# import Client.StaticData;
+//#endif
 import java.util.Enumeration;
 import java.util.Vector;
 import javax.microedition.io.ConnectionNotFoundException;
@@ -114,6 +116,7 @@ public class InfoWindow
 
     public void commandState() {
         menuCommands.removeAllElements();
+        addMenuCommand(cmdOk);
 //#ifdef CLIPBOARD
 //#             if (Config.getInstance().useClipBoard) {                
 //#                 addMenuCommand(cmdCopy);
@@ -122,10 +125,6 @@ public class InfoWindow
 //#             }
 //#endif        
     }
-
-    public String touchLeftCommand(){ return SR.MS_MENU; }
-    
-    public void touchLeftPressed(){ showMenu(); }
 
     public void menuAction(MenuCommand command, VirtualList displayable) {
 //#ifdef CLIPBOARD
@@ -153,6 +152,10 @@ public class InfoWindow
         super.menuAction(command, displayable);
     }
 
+    public void cmdOk() {
+        destroyView();
+    }
+    
     private String getAbilities() {
         Vector abilitiesList=new Vector();
 //#ifdef ADHOC

@@ -74,20 +74,7 @@ public class Browser extends DefForm {
 
         setMainBarItem(new MainBar(2, null, null, false));
         
-        menuCommands.removeAllElements();
-        
-        addMenuCommand(cmdBrowse);
-        
-        if (getDirectory) {
-            addMenuCommand(cmdSelect);
-        } else {
-            addMenuCommand(cmdView);
-        }
-	addMenuCommand(cmdDelete);
-        addMenuCommand(cmdRoot);
-        addMenuCommand(cmdExit);
-        addMenuCommand(cmdCancel);
-        
+               
         // trim filename
         int l=path.lastIndexOf('/');
         if (l<0)
@@ -289,16 +276,18 @@ public class Browser extends DefForm {
             return type;
         }
     }
-    public void showMenu() {
-        new MyMenu(this, SR.MS_DISCO, null, menuCommands);
-    }   
-    
-    public void touchLeftPressed() {
-        showMenu();
+    public void commandState() {
+        menuName = SR.MS_DISCO;
+        menuCommands.removeAllElements();
+        addMenuCommand(cmdBrowse);
+        if (getDirectory) {
+            addMenuCommand(cmdSelect);
+        } else {
+            addMenuCommand(cmdView);
+        }
+	addMenuCommand(cmdDelete);
+        addMenuCommand(cmdRoot);
+        addMenuCommand(cmdExit);
+        addMenuCommand(cmdCancel);
     }
-    
-    public String touchLeftCommand() {
-        return SR.MS_MENU;
-    }
-    
 }

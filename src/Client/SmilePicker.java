@@ -235,7 +235,4 @@ public class SmilePicker
     public boolean handleEvent(int keyCode) { return false; }
 
     public void cmdOk(){ eventOk(); }
-  
-    public String touchLeftCommand(){ return SR.MS_SELECT; }
-    public String touchRightCommand(){ return SR.MS_BACK; }
 }

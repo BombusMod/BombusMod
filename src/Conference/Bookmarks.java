@@ -272,13 +272,5 @@ public class Bookmarks extends DefForm {
                 return;
         }
         super.userKeyPressed(keyCode);
-    }
-
-    public String touchLeftCommand() {
-        return SR.MS_MENU;
-    }
-
-    public void touchLeftPressed() {
-        showMenu();
-    }
+    }    
 }

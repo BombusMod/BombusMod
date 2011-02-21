@@ -99,9 +99,6 @@ public class StatsWindow
         addMenuCommand(cmdClear);
     }
 
-    public String touchLeftCommand(){ return SR.MS_MENU; }
-    public void touchLeftPressed(){ showMenu(); }
-    
     public void menuAction(MenuCommand command, VirtualList displayable) {
 //#ifdef CLIPBOARD
 //#         if (command == cmdCopy) {

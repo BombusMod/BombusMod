@@ -82,7 +82,4 @@ public final class AppendNick
     public void destroyView() {
         midlet.BombusMod.getInstance().setDisplayable(me.textbox);
     }
-     
-    public String touchLeftCommand(){ return SR.MS_SELECT; }
-    public String touchRightCommand(){ return SR.MS_BACK; }
 }

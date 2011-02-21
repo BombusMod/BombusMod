@@ -184,7 +184,7 @@ public class AlertCustomizeForm
         }        
     }
     
-    private final int playable() {
+    private int playable() {
         if (getCursor()<9) return getCursor();
         return -1;
     }
@@ -206,13 +206,9 @@ public class AlertCustomizeForm
 
     public void commandState(){
         menuCommands.removeAllElements();
-        
+        addMenuCommand(cmdSave);
         if (playable()>-1)
             addMenuCommand(cmdTest);
-        addMenuCommand(cmdSave);
+        
     }
-    
-
-    public String touchLeftCommand(){ return SR.MS_MENU; }
-    public void touchLeftPressed(){ showMenu(); }
 }

@@ -54,7 +54,6 @@ import images.ClientsIconsData;
 import images.RosterIcons;
 
 import Menu.MenuCommand;
-import Menu.MyMenu;
 
 //#ifdef PRIVACY
 import PrivacyLists.QuickPrivacy;
@@ -122,23 +121,23 @@ public class Roster
         LoginListener
 {
 
-    private MenuCommand cmdActions;//=new MenuCommand(SR.MS_ITEM_ACTIONS, MenuCommand.SCREEN, 1);
-    private MenuCommand cmdStatus;
-    private MenuCommand cmdActiveContacts;
-    private MenuCommand cmdAlert;
+    private MenuCommand cmdActions = new MenuCommand(SR.MS_ITEM_ACTIONS, MenuCommand.OK, 2);
+    private MenuCommand cmdStatus = new MenuCommand(SR.MS_STATUS_MENU, MenuCommand.SCREEN, 4, RosterIcons.ICON_STATUS);
+    private MenuCommand cmdActiveContacts = new MenuCommand(SR.MS_ACTIVE_CONTACTS, MenuCommand.SCREEN, 3, RosterIcons.ICON_ACTIVE);
+    private MenuCommand cmdAlert = new MenuCommand(SR.MS_ALERT_PROFILE_CMD, MenuCommand.SCREEN, 8, RosterIcons.ICON_ALERTS);
 //#ifndef WMUC
-    private MenuCommand cmdConference;
+    private MenuCommand cmdConference = new MenuCommand(SR.MS_CONFERENCE, MenuCommand.SCREEN, 10, RosterIcons.ICON_CONFERENCE);
 //#endif
 //#ifdef ARCHIVE
-    private MenuCommand cmdArchive;
+    private MenuCommand cmdArchive = new MenuCommand(SR.MS_ARCHIVE, MenuCommand.SCREEN, 10, RosterIcons.ICON_ARCHIVE);
 //#endif
-    private MenuCommand cmdAdd;
-    private MenuCommand cmdTools;
-    private MenuCommand cmdAccount;
-    private MenuCommand cmdCleanAllMessages;
-    private MenuCommand cmdInfo;
-    private MenuCommand cmdMinimize;
-    private MenuCommand cmdQuit;
+    private MenuCommand cmdAdd = new MenuCommand(SR.MS_ADD_CONTACT, MenuCommand.SCREEN, 12, RosterIcons.ICON_ADD_CONTACT);
+    private MenuCommand cmdTools = new MenuCommand(SR.MS_TOOLS, MenuCommand.SCREEN, 14, RosterIcons.ICON_TOOLS);
+    private MenuCommand cmdAccount = new MenuCommand(SR.MS_ACCOUNT_, MenuCommand.SCREEN, 15, RosterIcons.ICON_ACCOUNTS);
+    private MenuCommand cmdCleanAllMessages = new MenuCommand(SR.MS_CLEAN_ALL_MESSAGES, MenuCommand.SCREEN, 50, RosterIcons.ICON_CLEAN_MESSAGES);
+    private MenuCommand cmdInfo = new MenuCommand(SR.MS_ABOUT, MenuCommand.SCREEN, 80, RosterIcons.ICON_ABOUT);
+    private MenuCommand cmdMinimize = new MenuCommand(SR.MS_APP_MINIMIZE, MenuCommand.SCREEN, 90, RosterIcons.ICON_MINIMIZE);
+    private MenuCommand cmdQuit = new MenuCommand(SR.MS_APP_QUIT, MenuCommand.SCREEN, 99, RosterIcons.ICON_BUILD_NEW);
 
     public Contact activeContact = null;
     
@@ -236,37 +235,9 @@ public class Roster
     }       
     
     public final void commandState() {
+        menuName = SR.MS_MAIN_MENU;
         menuCommands.removeAllElements();
-        int activeType = MenuCommand.SCREEN;
-        if (phoneManufacturer == Config.NOKIA) {
-            activeType = MenuCommand.BACK;
-        }
-        if (phoneManufacturer == Config.INTENT) {
-            activeType = MenuCommand.BACK;
-        }
-        if (phoneManufacturer == Config.J2ME) {
-            activeType = MenuCommand.BACK;
-        }
-
-        cmdActions = new MenuCommand(SR.MS_ITEM_ACTIONS, activeType, 2);
-        cmdStatus = new MenuCommand(SR.MS_STATUS_MENU, MenuCommand.SCREEN, 4);
-        cmdActiveContacts = new MenuCommand(SR.MS_ACTIVE_CONTACTS, MenuCommand.SCREEN, 3);
-        cmdAlert = new MenuCommand(SR.MS_ALERT_PROFILE_CMD, MenuCommand.SCREEN, 8);
-//#ifndef WMUC
-        cmdConference = new MenuCommand(SR.MS_CONFERENCE, MenuCommand.SCREEN, 10);
-//#endif
-//#ifdef ARCHIVE
-        cmdArchive = new MenuCommand(SR.MS_ARCHIVE, MenuCommand.SCREEN, 10);
-//#endif
-        cmdAdd = new MenuCommand(SR.MS_ADD_CONTACT, MenuCommand.SCREEN, 12);
-        cmdTools = new MenuCommand(SR.MS_TOOLS, MenuCommand.SCREEN, 14);
-        cmdAccount = new MenuCommand(SR.MS_ACCOUNT_, MenuCommand.SCREEN, 15);
-        cmdCleanAllMessages = new MenuCommand(SR.MS_CLEAN_ALL_MESSAGES, MenuCommand.SCREEN, 50);
-        cmdInfo = new MenuCommand(SR.MS_ABOUT, MenuCommand.SCREEN, 80);
-        cmdMinimize = new MenuCommand(SR.MS_APP_MINIMIZE, MenuCommand.SCREEN, 90);
-        cmdQuit = new MenuCommand(SR.MS_APP_QUIT, MenuCommand.SCREEN, 99);
-
-
+        addMenuCommand(cmdActions);
         addMenuCommand(cmdStatus);
         addMenuCommand(cmdActiveContacts);
 //#ifndef WMUC
@@ -296,28 +267,7 @@ public class Roster
         addMenuCommand(cmdCleanAllMessages);
         if (phoneManufacturer != Config.NOKIA_9XXX) {
             addMenuCommand(cmdQuit);
-        }
-
-     //   cmdActions.setImg(MenuIcons.ICON_ITEM_ACTIONS);
-        cmdStatus.setImg(RosterIcons.ICON_STATUS);
-
-        cmdActiveContacts.setImg(RosterIcons.ICON_ACTIVE);
-        cmdAlert.setImg(RosterIcons.ICON_ALERTS);
-//#ifndef WMUC
-        cmdConference.setImg(RosterIcons.ICON_CONFERENCE);
-//#endif
-//#ifdef ARCHIVE
-        cmdArchive.setImg(RosterIcons.ICON_ARCHIVE);
-//#endif
-        cmdAdd.setImg(RosterIcons.ICON_ADD_CONTACT);
-        cmdTools.setImg(RosterIcons.ICON_TOOLS);
-        cmdAccount.setImg(RosterIcons.ICON_ACCOUNTS);
-        cmdInfo.setImg(RosterIcons.ICON_ABOUT);
-        if (cf.allowMinimize) {
-            cmdMinimize.setImg(RosterIcons.ICON_MINIMIZE);
-        }
-        cmdCleanAllMessages.setImg(RosterIcons.ICON_CLEAN_MESSAGES);
-        cmdQuit.setImg(RosterIcons.ICON_BUILD_NEW);
+        }   
     }
     
     public void setProgress(String pgs,int percent){
@@ -2609,6 +2559,7 @@ public class Roster
 //#endif
         else if (c==cmdQuit) { cmdQuit(); }
         else if (c==cmdAdd) { cmdAdd(); }
+        super.menuAction(c, d);
     }
 //menu actions
     public void cmdQuit() { 
@@ -2884,11 +2835,6 @@ public class Roster
     }
 
 
-    public void showMenu() {
-        commandState();
-        new MyMenu(this, SR.MS_MAIN_MENU, RosterIcons.getInstance(), menuCommands);
-    }
-
     public void keyGreen(){
         if (!isLoggedIn()) return;
         VirtualList pview=createMsgList();
@@ -2935,6 +2881,22 @@ public class Roster
     public void toggleOfflines() {
         cf.showOfflineContacts = !cf.showOfflineContacts;
         sd.roster.reEnumRoster();
+    }
+
+    // TODO: fix this shit
+    public String touchRightCommand() {
+        if (cf.swapMenu)
+            return super.touchRightCommand();
+        else
+            return selectCommand();
+    }
+
+    public void touchRightPressed() {
+        if (cf.swapMenu) {
+            super.touchRightPressed();
+        } else {
+            selectPressed();
+        }
     }
 
     public void userKeyPressed(int keyCode) {
@@ -3011,14 +2973,7 @@ public class Roster
 //#         CustomLight.keyPressed();
 //#endif 
     }
-
-
-    public String touchRightCommand(){ return (Config.getInstance().oldSE)?SR.MS_MENU:SR.MS_ACTION; }
-    public String touchLeftCommand(){ return (Config.getInstance().oldSE)?SR.MS_ACTION:SR.MS_MENU; }
-
-    public void touchRightPressed(){ if (Config.getInstance().oldSE) showMenu(); else cmdActions(); }
-    public void touchLeftPressed(){ if (Config.getInstance().oldSE) cmdActions(); else showMenu(); }
-
+    
     public void captionPressed() {new ActiveContacts(null);}
 
     

@@ -116,11 +116,5 @@ public class MessageUrl extends DefForm implements TextBoxNotify {
 //#              addMenuCommand(cmdCopyPlus);
 //#          }
 //#endif
-     }
-
-    public String touchLeftCommand(){ return SR.MS_MENU; }
-
-    public void touchLeftPressed(){
-        showMenu();
-    }
+     }    
 }

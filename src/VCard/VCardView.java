@@ -231,7 +231,7 @@ public class VCardView
 //#             value = ((MultiLine) getFocusedObject()).toString();
 //#         }
 //#         if (value != null) {
-//#             if (!value.equals("")) {
+//#             if (value.length() != 0) {
 //# 
 //#                 if (c == cmdCopy) {
 //#                     clipboard.setClipBoard(value);
@@ -243,17 +243,7 @@ public class VCardView
 //#         }
 //# 
 //#         super.menuAction(c, d);
-//#     }
+//#     }   
 //#     
-//#     public String touchLeftCommand() {
-//#         return (Config.getInstance().useClipBoard) ? SR.MS_MENU : SR.MS_OK;            
-//#     }
-//#     
-//#     public void touchLeftPressed() {
-//#         if (Config.getInstance().useClipBoard)
-//#             showMenu();
-//#         else
-//#             cmdOk();
-//#     }
 //#endif    
 }

@@ -96,6 +96,7 @@ public class VirtualCanvas extends Canvas implements CommandListener{
             if (Config.fullscreen) {
                 setCommandListener(null);
             } else if (list != null) {
+                list.commandState();
                 setOk(list.touchLeftCommand());
                 setCancel(list.touchRightCommand());
                 setCommandListener(instance);
@@ -531,8 +532,7 @@ public class VirtualCanvas extends Canvas implements CommandListener{
                 list.keyClear();
                 return;
             case KEY_BACK:
-                if (list.canBack)
-                    list.destroyView();
+                list.cmdCancel();
                 return;
         }                
 //#ifdef USER_KEYS

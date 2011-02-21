@@ -47,9 +47,9 @@ public class StatusSelect
         extends DefForm
         implements Runnable{
     
-    private MenuCommand cmdEdit=new MenuCommand(SR.MS_EDIT, MenuCommand.SCREEN,2);
-    private MenuCommand cmdDef=new MenuCommand(SR.MS_SETDEFAULT, MenuCommand.OK,3);
-    
+    private MenuCommand cmdEdit = new MenuCommand(SR.MS_EDIT, MenuCommand.SCREEN, 2);
+    private MenuCommand cmdDef = new MenuCommand(SR.MS_SETDEFAULT, MenuCommand.ITEM, 3);
+
     private Vector statusList;
     private int defp;
     private Contact to;
@@ -57,7 +57,7 @@ public class StatusSelect
     public StatusSelect(Contact to) {
         super(SR.MS_STATUS);
         
-        statusList=StatusList.getInstance().statusList;
+        statusList=StatusList.getInstance().statusList; 
         this.to=to;
         if (to!=null) {
              setMainBarItem(new MainBar(to));
@@ -72,8 +72,7 @@ public class StatusSelect
         menuCommands.removeAllElements();
         addMenuCommand(cmdOk);
         addMenuCommand(cmdEdit);
-        addMenuCommand(cmdDef);
-        addMenuCommand(cmdCancel);
+        addMenuCommand(cmdDef);        
     }
     
     public VirtualElement getItemRef(int Index) {
@@ -83,8 +82,6 @@ public class StatusSelect
     private ExtendedStatus getSel() { return (ExtendedStatus)getFocusedObject(); }
     
     public void menuAction(MenuCommand c, VirtualList d) {
-        if (c==cmdOk)
-            eventOk();
         if (c==cmdEdit) {
             new StatusForm(getSel());
         }
@@ -95,8 +92,11 @@ public class StatusSelect
             redraw();
         }
 
-        if (c==cmdCancel)
-            destroyView();
+        super.menuAction(c, d);
+    }
+
+    public void cmdOk() {
+        eventOk();
     }
     
     public void eventOk() {
@@ -124,13 +124,7 @@ public class StatusSelect
     
     private void save() {
         StatusList.getInstance().saveStatusToStorage();
-    }
-    public void touchLeftPressed() {
-        showMenu();
-    }
-    public String touchLeftCommand() {
-        return SR.MS_MENU;
-    }
+    }   
     
     
     class StatusForm 
@@ -182,10 +176,6 @@ public class StatusSelect
             save();
 
             destroyView();
-        }
-        
-        public void touchLeftPressed(){
-            cmdOk();
         }
     }
 }

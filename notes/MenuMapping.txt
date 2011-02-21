@@ -1,0 +1,28 @@
+1) Menu: 
+	Hardware back (old SE, Siemens): "Select" " "
+	Menu key + Back key (Android): " " "Select"
+	3 selection keys (SE JP8, Nokia S40): " " "Select" "Back"
+	standard 2 selection key(other phones):	"Select" "Back"
+
+2) DefForm(menuElements == 2):
+	Hardware back (old SE, Siemens): "Select" "$element(1)"
+	Menu key + Back key (Android): "$element(1)" "Select"
+	3 selection keys (SE JP8, Nokia S40): "$element(1)" "Select" "Back"
+	standard 2 selection key(other phones):	"Select" "$element(1)"
+
+3) DefForm (menuElements > 2):	
+	Hardware back (old SE, Siemens): "Select" "Menu"
+	Menu key + Back key (Android): "Menu" "Select"
+	3 selection keys (SE JP8, Nokia S40): "Menu" "Select" "Back"
+	standard 2 selection key(other phones):	"Menu" "Back"
+
+4) Roster (DefForm with 2 elements?):
+	Hardware back (old SE, Siemens): "Actions" "Menu"
+	Menu key + Back key (Android): "Menu" "Actions"
+	3 selection keys (SE JP8, Nokia S40): "Menu" "Select" "Actions"
+	standard 2 selection key(other phones):	"Menu" "Actions"
+
+5) MessageList(DefForm with >2 elements?):
+	Hardware back (old SE, Siemens): "Select" => "New Message"
+	3 selection keys (SE JP8, Nokia S40): "Select" => "Expand/Collapse", keyGreen() => "New Message"
+	standard 2 selection key(other phones):	"Select" => "Expand/Collapse", keyGreen() => "New Message"
