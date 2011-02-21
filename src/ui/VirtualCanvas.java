@@ -10,6 +10,7 @@
 package ui;
 
 import Client.Config;
+import Client.StaticData;
 import java.util.Timer;
 import java.util.TimerTask;
 import javax.microedition.lcdui.Canvas;
@@ -24,6 +25,9 @@ import ui.controls.PopUp;
 //#endif
 //#ifdef USER_KEYS
 //# import ui.keys.UserKeyExec;
+//#endif
+//#ifdef LIGHT_CONFIG
+//# import LightControl.CustomLight;
 //#endif
 
 /**
@@ -62,6 +66,8 @@ public class VirtualCanvas extends Canvas implements CommandListener{
     static MIDlet midlet;
 
     boolean kHold = false;
+	
+    protected StaticData sd = StaticData.getInstance();
     
     public static VirtualCanvas getInstance() {
         if (instance == null) {
@@ -121,11 +127,14 @@ public class VirtualCanvas extends Canvas implements CommandListener{
     }
     
     protected void paint(Graphics graphics) {
-        list.width = getWidth();
-        list.height = getHeight();
+        list.width = graphics.getClipWidth();
+        list.height = graphics.getClipHeight();
         list.paint(graphics);
     }
     protected final void keyPressed(int keyCode) {
+//#ifdef AUTOSTATUS
+//#     sd.roster.userActivity();
+//#endif
         kHold = false;        
 //#ifdef POPUPS
         if (PopUp.getInstance().handleEvent(getKey(keyCode))) {
@@ -134,15 +143,42 @@ public class VirtualCanvas extends Canvas implements CommandListener{
         }
 //#endif
         checkKey(getKey(keyCode));
+//#ifdef LIGHT_CONFIG      
+//#ifdef PLUGINS                
+//#         if (StaticData.getInstance().lightConfig)
+//#endif            
+//#             CustomLight.keyPressed();
+//#endif 
+//#ifdef AUTOSTATUS
+//#     sd.roster.setAutoAwayTimer();
+//#endif
      }
 
     protected final void keyRepeated(int keyCode){
         // TODO: uncomment to check motorola
         //kHold = true;
         //doKeyAction(getKey(keyCode));
+//#ifdef LIGHT_CONFIG      
+//#ifdef PLUGINS                
+//#         if (StaticData.getInstance().lightConfig)
+//#endif            
+//#             CustomLight.keyPressed();
+//#endif 
+//#ifdef AUTOSTATUS
+//#     sd.roster.userActivity();
+//#endif
     }
     protected final void keyReleased(int keyCode) {
         //list.keyReleased(keyCode);
+//#ifdef LIGHT_CONFIG      
+//#ifdef PLUGINS                
+//#         if (StaticData.getInstance().lightConfig)
+//#endif            
+//#             CustomLight.keyPressed();
+//#endif
+//#ifdef AUTOSTATUS
+//#     sd.roster.userActivity();
+//#endif
         KeyRepeatTimer.stop();
     }
 

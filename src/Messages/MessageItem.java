@@ -28,6 +28,7 @@
 package Messages;
 
 import Client.Msg;
+import Client.Roster;
 import Client.StaticData;
 import images.RosterIcons;
 import java.util.Vector;
@@ -83,9 +84,7 @@ public class MessageItem implements VirtualElement {//, MessageParser.MessagePar
         return ColorTheme.getColor(even ? ColorTheme.LIST_BGND_EVEN : ColorTheme.LIST_BGND);
     }
     public final void parse() {
-        MessageParser.getInstance().parseMsg(this, 
-                Math.min(StaticData.getInstance().roster.getListWidth(),
-                        StaticData.getInstance().roster.getMessagesHeight()));
+        MessageParser.getInstance().parseMsg(this, VirtualList.messagesWidth);
         updateHeight();
     }
     public int getColor() { return msg.getColor(); }

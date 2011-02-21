@@ -124,6 +124,7 @@ public class ActiveContacts extends DefForm {
         c.purge();
         itemsList.removeElementAt(getCursor());
         getMainBarItem().setElementAt(String.valueOf(getItemCount()), 0);
+		redraw();
     }
 
     public final void destroyView() {

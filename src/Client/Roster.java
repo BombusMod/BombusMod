@@ -103,9 +103,6 @@ import xmpp.extensions.IqTimeReply;
 //#ifdef ADHOC
 //# import xmpp.extensions.IQCommands;
 //#endif
-//#ifdef AUTOSTATUS
-//# import javax.microedition.lcdui.Displayable;
-//#endif
 
 //#ifdef PEP
 //# import xmpp.extensions.PepListener;
@@ -151,7 +148,7 @@ public class Roster
         
     public int messageCount;
     int highliteMessageCount;
-
+    
     public Object transferIcon;
     
     public final Vector hContacts = new Vector();
@@ -1562,12 +1559,7 @@ public class Roster
                         body=b.toString();
                         b=null;
                     }
-//#ifdef LIGHT_CONFIG        
-//#ifdef PLUGINS        
-//#     if (StaticData.getInstance().lightConfig)        
-//#endif                                   
-//#                     if (type.equals("chat")) CustomLight.message();
-//#endif                    
+                   
                 }
                 //boolean compose=false;
                 if (type.equals("chat") && myStatus!=Presence.PRESENCE_INVISIBLE) {
@@ -1617,13 +1609,7 @@ public class Roster
                     if (mucGrp.selfContact.getJid().equals(message.getFrom())) {
                         m.messageType = Msg.MESSAGE_TYPE_OUT;
                         m.unread = false;
-                    } else {
-//#ifdef LIGHT_CONFIG        
-//#ifdef PLUGINS        
-//#     if (StaticData.getInstance().lightConfig)        
-//#endif                                       
-//#                         CustomLight.message();
-//#endif    
+                    } else {   
                         if (m.dateGmt<= ((ConferenceGroup)c.group).conferenceJoinTime)
                             m.messageType=Msg.MESSAGE_TYPE_HISTORY;
                         // highliting messages with myNick substring
@@ -1964,10 +1950,7 @@ public class Roster
             } else {
                 BombusMod.getInstance().hideApp(false);
             }
-        }
-        
-        if (cf.autoFocus) 
-            focusToContact(c, false);
+        }      
 
         if (message.highlite) {
             playNotify(SOUND_FOR_ME);
@@ -1976,6 +1959,14 @@ public class Roster
                 setWobbler(2, c, message.body);
 //#endif
             autorespond = true;
+//#ifdef LIGHT_CONFIG        
+//#ifdef PLUGINS        
+//#     if (StaticData.getInstance().lightConfig)        
+//#endif                                       
+//#                         CustomLight.message();
+//#endif 
+		if (cf.autoFocus) 
+            focusToContact(c, false);
         } else if (message.messageType==Msg.MESSAGE_TYPE_IN || message.messageType==Msg.MESSAGE_TYPE_HEADLINE) {
             if (c.origin<Contact.ORIGIN_GROUPCHAT) {
 //#ifndef WMUC
@@ -1990,9 +1981,25 @@ public class Roster
                 if (c.group.type==Groups.TYPE_VIP) {
                     playNotify(SOUND_FOR_VIP);
                     autorespond = true;
+//#ifdef LIGHT_CONFIG        
+//#ifdef PLUGINS        
+//#     if (StaticData.getInstance().lightConfig)        
+//#endif                                       
+//#                         CustomLight.message();
+//#endif 
+		if (cf.autoFocus) 
+            focusToContact(c, false);
                 } else {
                     playNotify(SOUND_MESSAGE);
                     autorespond = true;
+//#ifdef LIGHT_CONFIG        
+//#ifdef PLUGINS        
+//#     if (StaticData.getInstance().lightConfig)        
+//#endif                                       
+//#                         CustomLight.message();
+//#endif 
+		if (cf.autoFocus) 
+            focusToContact(c, false);
                 }
             }
 //#ifndef WMUC
@@ -2000,6 +2007,14 @@ public class Roster
                 if (c.origin!=Contact.ORIGIN_GROUPCHAT && c instanceof MucContact) {
                      playNotify(SOUND_MESSAGE); //private message
                      autorespond = true;
+//#ifdef LIGHT_CONFIG        
+//#ifdef PLUGINS        
+//#     if (StaticData.getInstance().lightConfig)        
+//#endif                                       
+//#                         CustomLight.message();
+//#endif 
+		if (cf.autoFocus) 
+            focusToContact(c, false);
                 } else {
                     playNotify(SOUND_FOR_CONFERENCE);
                 }
@@ -2372,17 +2387,20 @@ public class Roster
 
 //#ifdef AUTOSTATUS
 //#     public void setAutoAwayTimer() {
+//#         if (autostatus == null) return;
 //#         if (cf.autoAwayType == Config.AWAY_LOCK)
 //#             if (!autoAway)
 //#                 autostatus.setTimeEvent(cf.autoAwayDelay* 60*1000);
 //#     }
 //# 
 //#     public void userActivity() {
-//#         if (autostatus==null) return;
+//#         if (autostatus == null) {
+//#             return;
+//#         }
 //# 
-//#         if (cf.autoAwayType==Config.AWAY_IDLE) {
+//#         if (cf.autoAwayType == Config.AWAY_IDLE) {
 //#             if (!autoAway) {
-//#                 autostatus.setTimeEvent(cf.autoAwayDelay* 60*1000);
+//#                 autostatus.setTimeEvent(cf.autoAwayDelay * 60 * 1000);
 //#                 return;
 //#             }
 //#         } else {
@@ -2393,14 +2411,17 @@ public class Roster
 //#     }
 //# 
 //#     public final void messageActivity() {
-//#         if (autostatus==null) return;
+//#         if (autostatus == null) {
+//#             return;
+//#         }
 //# 
-//#         if (cf.autoAwayType==Config.AWAY_MESSAGE) {
-//#              //System.out.println("messageActivity "+myStatus.getImageIndex());
-//#              if (myStatus<2)
-//#                 autostatus.setTimeEvent(cf.autoAwayDelay* 60*1000);
-//#              else if (!autoAway)
+//#         if (cf.autoAwayType == Config.AWAY_MESSAGE) {
+//#             //System.out.println("messageActivity "+myStatus.getImageIndex());
+//#             if (myStatus < 2) {
+//#                 autostatus.setTimeEvent(cf.autoAwayDelay * 60 * 1000);
+//#             } else if (!autoAway) {
 //#                 autostatus.setTimeEvent(0);
+//#             }
 //#         }
 //#     }
 //#endif
@@ -2935,6 +2956,12 @@ public class Roster
                 break;
         }
         super.userKeyPressed(keyCode);
+//#ifdef LIGHT_CONFIG        
+//#ifdef PLUGINS        
+//#         if (StaticData.getInstance().lightConfig)        
+//#endif            
+//#             CustomLight.keyPressed();
+//#endif  
     }
 
     public void longKey(int keyCode) {
@@ -2977,6 +3004,12 @@ public class Roster
                 }
                 return;
         }
+//#ifdef LIGHT_CONFIG        
+//#ifdef PLUGINS        
+//#         if (StaticData.getInstance().lightConfig)        
+//#endif                    
+//#         CustomLight.keyPressed();
+//#endif 
     }
 
 

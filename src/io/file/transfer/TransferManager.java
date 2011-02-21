@@ -29,7 +29,6 @@ package io.file.transfer;
 
 import Client.StaticData;
 import Menu.MenuCommand;
-import javax.microedition.lcdui.Canvas;
 import locale.SR;
 import ui.Time;
 //#ifdef POPUPS
@@ -134,7 +133,7 @@ public class TransferManager
                 .append("\n")
                 .append(t.fileSize)
                 .append(" bytes");
-            if (!t.description.equals(""))
+            if (t.description.length() != 0)
                 info.append("\n").append(t.description);
             if (t.isStarted() && t.started!=0)
                 info.append("\nStarted: ").append(Time.dateTimeLocalString(t.started));

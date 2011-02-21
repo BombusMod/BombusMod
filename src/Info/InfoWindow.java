@@ -281,10 +281,9 @@ public class InfoWindow
 //#ifdef LOGROTATE
 //#         abilitiesList.addElement("LOGROTATE");
 //#endif
-//#ifdef NEW_DISCO
-//#         abilitiesList.addElement("NEW_DISCO");
+//#ifdef MEMORY_USAGE
+//#         abilitiesList.addElement("MEMORY_USAGE");
 //#endif
-
 //#ifdef NEW_SKIN
 //#         abilitiesList.addElement("NEW_SKIN");
 //#endif

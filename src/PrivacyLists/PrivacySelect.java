@@ -186,9 +186,10 @@ public class PrivacySelect
         pl.list.deleteList();
         getLists();
     }
-    public void keyClear() {
+	
+	public void keyClear() {
         String name = getFocusedObject().toString();
-        new AlertBox(name, SR.MS_DELETE + " \"" + name + "\"?") {
+        new AlertBox(name, SR.MS_DELETE_LIST + " \"" + name + "\"?") {
 
             public void yes() {
                 cmdDelete();
@@ -197,7 +198,7 @@ public class PrivacySelect
             public void no() {}
         };
     }
-    
+
     public void touchLeftPressed() {
         showMenu();
     }

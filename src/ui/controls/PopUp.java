@@ -137,10 +137,14 @@ public class PopUp {
             switch (keyCode) {
                 case 2:
                 case 4:
+				case VirtualCanvas.KEY_UP:
+				case VirtualCanvas.KEY_LEFT:
                     scrollUp();
                     return true;
                 case 6:
                 case 8:
+				case VirtualCanvas.KEY_DOWN:
+				case VirtualCanvas.KEY_RIGHT:
                     scrollDown();
                     return true;
             }

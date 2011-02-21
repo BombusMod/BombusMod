@@ -33,7 +33,9 @@ import Client.StaticData;
 //#endif
 import com.alsutton.jabber.datablocks.Iq;
 import com.alsutton.jabber.datablocks.Presence;
-import io.HttpBindConnection;
+//#ifdef HTTPBIND
+//# import io.HttpBindConnection;
+//#endif
 import io.Utf8IOStream;
 import java.io.*;
 import java.util.*;
@@ -46,7 +48,7 @@ import xmpp.extensions.IqPing;
 
 public class JabberStream extends XmppParser implements Runnable {
     
-    private Utf8IOStream iostream;
+    private final Utf8IOStream iostream;
 
     /**
      * The dispatcher thread.
@@ -192,8 +194,8 @@ public class JabberStream extends XmppParser implements Runnable {
             if (name.equals( "stream:stream" ) ) {
                 dispatcher.halt();
                 iostream.close();
-                if (!Config.getInstance().oldNokiaS60)
-                    iostream=null;
+                /*if (!Config.getInstance().oldNokiaS60)
+                    iostream=null;*/
                 throw new XMLException("Normal stream shutdown");
             }
             return;
@@ -205,8 +207,8 @@ public class JabberStream extends XmppParser implements Runnable {
 
                 dispatcher.halt();
                 iostream.close();
-                if (!Config.getInstance().oldNokiaS60)
-                    iostream=null;
+                /*if (!Config.getInstance().oldNokiaS60)
+                    iostream=null;*/
                 throw new XMLException("Stream error: "+xe.toString());                
             }
 
@@ -310,8 +312,8 @@ public class JabberStream extends XmppParser implements Runnable {
         dispatcher.halt();
         if (iostream != null) {
         iostream.close();
-        if (!Config.getInstance().oldNokiaS60)
-            iostream = null; // may hang device
+       /* if (!Config.getInstance().oldNokiaS60)
+            iostream = null; // may hang device*/
         }
     }
     
@@ -364,7 +366,7 @@ public class JabberStream extends XmppParser implements Runnable {
     private void sendPacket(String data) throws IOException {
         iostream.send(data);
 //#ifdef CONSOLE
-//#             if (data.equals("</iq") || data.equals(" ") || data.equals("")) addLog("Ping myself", 1);
+//#             if (data.equals("</iq") || data.equals(" ") || data.length() == 0) addLog("Ping myself", 1);
 //#             else addLog(data, 1);
 //#endif
     }

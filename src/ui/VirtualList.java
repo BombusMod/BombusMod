@@ -32,9 +32,6 @@ import Colors.ColorTheme;
 import Fonts.FontCache;
 import javax.microedition.lcdui.*;
 import Client.*;
-//#ifdef LIGHT_CONFIG
-//# import LightControl.CustomLight;
-//#endif
 import locale.SR;
 //#ifdef POPUPS
 import ui.controls.PopUp;
@@ -43,7 +40,6 @@ import ui.controls.Balloon;
 import ui.controls.Progress;
 import ui.controls.ScrollBar;
 import util.StringUtils;
-
 import java.util.Vector;
 
 import ui.controls.CommandsPointer;
@@ -251,11 +247,7 @@ public abstract class VirtualList {
     public int getListHeight() {
         return winHeight;
     }
-    
-    public int getMessagesHeight() {
-        return height-scrollbar.getScrollWidth()-2;
-    }
-    
+        
     protected int getElementIndexAt(int yPos) {
         int end = getItemCount() - 1;
         if (end < 0) {
@@ -403,6 +395,8 @@ public abstract class VirtualList {
     protected void sizeChanged(int w, int h) {
         width = w;
         height = h;
+        if (messagesWidth == 0)
+            messagesWidth = getListWidth();
 //#ifdef GRADIENT
 //#         iHeight=0;
 //#         mHeight=0;
@@ -860,16 +854,8 @@ public abstract class VirtualList {
         UserKeyExec.getInstance().update_current_key(keyCode, false);
 
         sendKeyAction(keyCode, false, true);*/
+		
     protected void keyPressed(int keyCode) {
-//#ifdef LIGHT_CONFIG      
-//#ifdef PLUGINS                
-//#         if (StaticData.getInstance().lightConfig)
-//#endif            
-//#             CustomLight.keyPressed();
-//#endif
-//#ifdef AUTOSTATUS
-//#     sd.roster.userActivity();
-//#endif
 
         // workaround for SE JP6 - enabling vibra in closed state
     /*    if (phoneManufacturer == Config.SONYE) {
@@ -880,9 +866,6 @@ public abstract class VirtualList {
             sd.canvas.show(this);
         }
 */
-//#ifdef AUTOSTATUS
-//#     sd.roster.setAutoAwayTimer();
-//#endif
     }
 
     public void keyGreen() {}
@@ -1330,6 +1313,8 @@ public abstract class VirtualList {
     public int getListWidth() {
         return width-scrollbar.getScrollWidth()-2;
     }
+    public static int messagesWidth = 0;
+
 
     public static void sort(Vector sortVector){
         try {
@@ -1369,8 +1354,10 @@ public abstract class VirtualList {
             getInfoBarItem().setElementAt(SR.MS_CANCEL, 3);
             return;
         }
-        getInfoBarItem().setElementAt((!showTimeTraffic && Config.fullscreen)?touchLeftCommand():Time.getTimeWeekDay(), 1);
-        getInfoBarItem().setElementAt((!showTimeTraffic && Config.fullscreen)?touchRightCommand():getTraffic(), 3);
+        if (Config.getInstance().phoneManufacturer == Config.NOKIA && !Config.fullscreen)
+            showTimeTraffic = true;
+        getInfoBarItem().setElementAt((!showTimeTraffic) ? touchLeftCommand() : Time.getTimeWeekDay(), 1);
+        getInfoBarItem().setElementAt((!showTimeTraffic) ? touchRightCommand() : getTraffic(), 3);
     }
 
     public void showTimeTrafficInfo() {

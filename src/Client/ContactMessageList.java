@@ -77,7 +77,7 @@ public class ContactMessageList extends MessageList {
     MenuCommand cmdQuote=new MenuCommand(SR.MS_QUOTE,MenuCommand.SCREEN,5, RosterIcons.ICON_QUOTE);
     
 //#ifdef ARCHIVE
-    MenuCommand cmdArch=new MenuCommand(SR.MS_ADD_ARCHIVE,MenuCommand.SCREEN,6, RosterIcons.ICON_ARCHIVE);
+    MenuCommand cmdArch=new MenuCommand(SR.MS_ADD_ARCHIVE,MenuCommand.SCREEN,6, RosterIcons.ICON_CHATARCHIVE);
 //#endif
     MenuCommand cmdPurge=new MenuCommand(SR.MS_CLEAR_LIST, MenuCommand.SCREEN, 7, RosterIcons.ICON_CLEAR);
     MenuCommand cmdSelect=new MenuCommand(SR.MS_SELECT, MenuCommand.SCREEN, 8, RosterIcons.ICON_SELECT);

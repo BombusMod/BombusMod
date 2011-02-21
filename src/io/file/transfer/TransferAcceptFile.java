@@ -97,7 +97,7 @@ public class TransferAcceptFile
 
         itemsList.addElement(new MultiLine(SR.MS_DESCRIPTION, t.description, sd.roster.getListWidth()));
         ftFolder = TransferConfig.getInstance().ftFolder;
-        autoaccept = !(ftFolder == null || ftFolder.equals(""));
+        autoaccept = !(ftFolder == null || ftFolder.length() == 0);
         if (autoaccept) {
             t.fileName = fileName.getValue().trim();
             t.filePath = ftFolder;
