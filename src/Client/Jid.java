@@ -100,7 +100,7 @@ public class Jid {
     }
 
     public boolean isTransport(){
-        if (bareJid.equals("")) return false;
+        if (bareJid.length() == 0) return false;
         return bareJid.indexOf('@')==-1;
     }
 

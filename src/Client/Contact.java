@@ -606,14 +606,11 @@ public class Contact extends IconTextElement{
 //#endif
     
     public int getVHeight(){ 
-        int itemVHeight = (maxImgHeight > fontHeight) ? maxImgHeight : fontHeight;
+        int itemVHeight = Math.max(maxImgHeight, fontHeight);
         if (getSecondString() != null)
             itemVHeight += FontCache.getFont(false, FontCache.baloon).getHeight() - 3;
-
-        if (itemVHeight < cf.minItemHeight)
-            itemVHeight = cf.minItemHeight;
         
-        return itemVHeight;
+        return Math.max(itemVHeight, cf.minItemHeight);
     }
 
     public void drawItem(Graphics g, int ofs, boolean sel) {
@@ -691,17 +688,14 @@ public class Contact extends IconTextElement{
         thisOfs=(getFirstLength()>w)?-ofs+offset:offset;
         if ((thisOfs+getFirstLength())<0) thisOfs=offset;
         g.setFont(getFont());
-		int offset_y = (h - getFont().getHeight()) >> 1;
-        if (getSecondString() != null)
-            offset_y -= (getFont().getHeight()) >> 1;
-        FontCache.drawString(g, getFirstString(), thisOfs, offset_y, Graphics.TOP|Graphics.LEFT);
+	g.drawString(getFirstString(), thisOfs, 0, Graphics.TOP|Graphics.LEFT);
 
-        if (getSecondString() != null) {
+        if (getSecondString()!=null) {
             int y=getFont().getHeight()-3;
-            //thisOfs=(getSecondLength()>w)?-ofs+offset:offset;
+            thisOfs=(getSecondLength()>w)?-ofs+offset:offset;
             g.setFont(FontCache.getFont(false, FontCache.baloon));
             g.setColor(ColorTheme.getColor(ColorTheme.SECOND_LINE));
-            FontCache.drawString(g,getSecondString(), thisOfs, offset_y + y, Graphics.TOP|Graphics.LEFT);
+            g.drawString(getSecondString(), thisOfs, y, Graphics.TOP|Graphics.LEFT);
         }
         g.setClip(xo, yo, w, h);        
     }

@@ -223,7 +223,7 @@ public class Strconv {
         for (int i=0; i<len; i++) {
             char c=dst.charAt(i);
             if (c>'A'-1 && c<'Z'+1) c+='a'-'A';         // default latin chars
-            if (c>0x40f && c<0x430) c+=0x430-0x410;     // cyrillic chars
+           // if (c>0x40f && c<0x430) c+=0x430-0x410;     // cyrillic chars
             // TODO: other schemes by request
             dst.setCharAt(i, c);
         }

@@ -77,9 +77,9 @@ public class MainBar extends ComplexString{
 //#             return Math.max(super.getVHeight(), bg.getHeight());
 //#         else
 //#endif    
-            if (centered && Config.getInstance().advTouch)
-                return super.getVHeight() << 1;
-        return super.getVHeight();
+       /*     if (centered && Config.getInstance().advTouch)
+                return super.getVHeight() << 1;*/
+        return Math.max(Config.getInstance().minItemHeight, super.getVHeight());
     }
     public void drawItem(Graphics g, int offset, boolean selected) {
         int xo = g.getClipX();
