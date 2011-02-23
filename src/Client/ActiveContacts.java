@@ -26,9 +26,11 @@
  */
 package Client;
 
+import Menu.MenuCommand;
 import java.util.Enumeration;
 import locale.SR;
 import ui.MainBar;
+import ui.VirtualList;
 import ui.controls.form.DefForm;
 
 /**
@@ -37,6 +39,8 @@ import ui.controls.form.DefForm;
  */
 public class ActiveContacts extends DefForm {
 
+    // TODO: extends Menu ?
+    MenuCommand cmdSelect = new MenuCommand(SR.MS_SELECT, MenuCommand.OK, 1);
     /** Creates a new instance of ActiveContacts
      * @param current
      */
@@ -64,11 +68,7 @@ public class ActiveContacts extends DefForm {
             moveCursorTo(focus);
         } catch (Exception e) { }
     }
-
-    public void cmdOk() {
-        eventOk();
-    }
-
+    
     public void eventOk() {
         if (getItemCount() > 0) {
             Contact c = (Contact) getFocusedObject();
@@ -130,6 +130,19 @@ public class ActiveContacts extends DefForm {
     public final void destroyView() {
         sd.roster.reEnumRoster();
         super.destroyView();
+    }
+
+    // TODO: fix this shit
+    public void commandState() {
+        menuCommands.removeAllElements();
+        addMenuCommand(cmdSelect);
+    }
+    public void menuAction(MenuCommand c, VirtualList v) {
+        if (c == cmdSelect) {
+                eventOk();
+        } else {
+            super.menuAction(c, v);
+        }
     }
 
     public void userKeyPressed(int key) {

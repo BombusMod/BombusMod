@@ -9,12 +9,14 @@
 
 package xmpp.extensions;
 
+import Menu.MenuCommand;
 import com.alsutton.jabber.JabberDataBlock;
 import java.util.Enumeration;
 import java.util.Vector;
 import javax.microedition.lcdui.Image;
 import locale.SR;
 import ui.MainBar;
+import ui.VirtualList;
 import ui.controls.form.ComplexForm;
 import ui.controls.form.ImageItem;
 import ui.controls.form.MultiLine;
@@ -32,6 +34,8 @@ public class XDataForm extends ComplexForm {
     public NotifyListener listener;
 
     private Vector xDataItems;
+
+    MenuCommand cmdSend = new MenuCommand(SR.MS_SEND, MenuCommand.OK, 1);
 
     public XDataForm(JabberDataBlock form, NotifyListener listener) {
         super(null);
@@ -132,9 +136,21 @@ public class XDataForm extends ComplexForm {
         JabberDataBlock submitForm = construct(xDataItems);
         listener.XDataFormSubmit(submitForm);
         destroyView();
+    }    
+
+    // TODO: fix this shit
+    public void commandState() {
+        menuCommands.removeAllElements();
+        addMenuCommand(cmdSend);
     }
 
-    public String selectCommand() {
-        return SR.MS_SEND;
+    public void menuAction(MenuCommand c, VirtualList v) {
+        if (c == cmdSend) {
+            JabberDataBlock submitForm = construct(xDataItems);
+            listener.XDataFormSubmit(submitForm);
+            destroyView();
+        } else {
+            super.menuAction(c, v);
+        }
     }
 }

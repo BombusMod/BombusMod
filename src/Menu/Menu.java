@@ -67,19 +67,17 @@ public class Menu extends VirtualList
         addItem(new MenuItem(label, index, -1, il));
     }
     
-    public String selectCommand() {
-        return SR.MS_SELECT;
-    }
-    
-    public String menuCommand() {
-        return "";
-    }
-    
-    public void selectPressed() {
+    public String touchLeftCommand() { return SR.MS_SELECT; }
+    public String touchRightCommand() { return cf.swapMenu ? "" : SR.MS_BACK; }
+
+    public void touchLeftPressed() {
         eventOk();
     }
-    public void menuPressed() {}
-
+    public void touchRightPressed() {
+        if (!cf.swapMenu)
+            cmdCancel();
+    }
+    
     public void commandState() {}
     
     
@@ -96,5 +94,5 @@ public class Menu extends VirtualList
     private void executeCommand(int index) {
         moveCursorTo(index == 0 ? 9 : index - 1);
         eventOk();
-    }    
+    }
 }

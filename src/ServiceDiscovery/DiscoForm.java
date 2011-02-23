@@ -26,11 +26,13 @@
  */
 
 package ServiceDiscovery;
+import Menu.MenuCommand;
 import java.util.*;
 import com.alsutton.jabber.*;
 import com.alsutton.jabber.datablocks.*;
 import javax.microedition.lcdui.Image;
 import locale.SR;
+import ui.VirtualList;
 import ui.controls.form.ComplexForm;
 import ui.controls.form.ImageItem;
 import ui.controls.form.SimpleString;
@@ -65,6 +67,7 @@ public class DiscoForm extends ComplexForm{
     JabberStream stream;
 
     FormSubmitListener listener;
+    MenuCommand cmdSend = new MenuCommand(SR.MS_SEND, MenuCommand.OK, 1);
     
     //private JabberBlockListener listener;
     
@@ -165,11 +168,9 @@ public class DiscoForm extends ComplexForm{
     }
 
     
-    public void cmdOk() {
-        if (!complete) {
-            sendForm(id);
+    public void cmdCancel() {
+            parentView = sd.roster;
             destroyView();
-        }        
     }
 
      public void fetchMediaElements(Vector bobCache) {
@@ -203,7 +204,23 @@ public class DiscoForm extends ComplexForm{
             }
         }
     }
-    public String selectCommand() { return (complete) ? "" : SR.MS_SEND;}
+
+     // TODO: fix this shit
+    public void commandState() {
+        menuCommands.removeAllElements();
+        addMenuCommand(cmdSend);
+    }
+    public void menuAction(MenuCommand c, VirtualList v) {
+        if (c == cmdSend) {
+            if (!complete) {
+                sendForm(id);
+                parentView = sd.roster;
+                destroyView();
+            }
+        } else {
+            super.menuAction(c, v);
+        }
+    }
 
     public interface FormSubmitListener {
 	    public void formSubmit(Vector fields);

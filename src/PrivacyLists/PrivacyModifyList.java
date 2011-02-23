@@ -204,8 +204,4 @@ public class PrivacyModifyList extends DefForm
             }
         };
     }
-   
-    public String touchLeftCommand() {return SR.MS_MENU; }
-    public void touchLeftPressed() { showMenu(); }
-   
 }

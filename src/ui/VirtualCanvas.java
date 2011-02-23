@@ -368,13 +368,13 @@ public class VirtualCanvas extends Canvas implements CommandListener{
                 switch (key_code) {
                     case -1:
                         return KEY_SOFT_LEFT;
-                    case -2:
+                    case -4:
                         return KEY_SOFT_RIGHT;
                     case -24:
                         return KEY_FLIP_OPEN;
                     case -22:
                         return KEY_FLIP_CLOSE;
-                    case -4:
+                    case -12:
                         return KEY_BACK;
                     case -11:
                         return KEY_GREEN;
@@ -532,7 +532,8 @@ public class VirtualCanvas extends Canvas implements CommandListener{
                 list.keyClear();
                 return;
             case KEY_BACK:
-                list.cmdCancel();
+                if (list.canBack)
+                    list.cmdCancel();
                 return;
         }                
 //#ifdef USER_KEYS

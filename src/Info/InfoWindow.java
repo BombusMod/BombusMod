@@ -61,7 +61,7 @@ public class InfoWindow
 
 //#ifdef CLIPBOARD
 //#     ClipBoard clipboard  = ClipBoard.getInstance();
-//#     MenuCommand cmdCopy      = new MenuCommand(SR.MS_COPY, MenuCommand.SCREEN, 1);
+//#     MenuCommand cmdCopy      = new MenuCommand(SR.MS_COPY, MenuCommand.OK, 1);
 //#     MenuCommand cmdCopyPlus  = new MenuCommand("+ "+SR.MS_COPY, MenuCommand.SCREEN, 2);
 //#endif
 
@@ -115,8 +115,7 @@ public class InfoWindow
     }
 
     public void commandState() {
-        menuCommands.removeAllElements();
-        addMenuCommand(cmdOk);
+        menuCommands.removeAllElements();        
 //#ifdef CLIPBOARD
 //#             if (Config.getInstance().useClipBoard) {                
 //#                 addMenuCommand(cmdCopy);

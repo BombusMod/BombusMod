@@ -55,9 +55,6 @@ public class MyMenu extends Menu {
 
         for (int i=0; i<commands.size(); i++) {
             MenuCommand c=(MenuCommand)commands.elementAt(i);
-            if (c.map == MenuCommand.OK)
-                continue;
-            // TODO: map BACK command
             addItem(c.name, i, c.img);
         }        
         show();
@@ -73,7 +70,8 @@ public class MyMenu extends Menu {
     }
     
     public MenuCommand getCommand(int index) {
-        if (index > commands.size() - 1) return null;
+        if (index > commands.size() - 1)
+            return null;       
         return (MenuCommand) commands.elementAt(index);
     }
 }

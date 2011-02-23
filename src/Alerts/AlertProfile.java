@@ -53,7 +53,7 @@ public class AlertProfile extends DefForm
     
     /** Creates a new instance of Profile */
     
-    private MenuCommand cmdDef = new MenuCommand(SR.MS_SETDEFAULT, MenuCommand.SCREEN, 3);
+    private MenuCommand cmdDef = new MenuCommand(SR.MS_DEFAULT, MenuCommand.OK, 1);
 
     /** Creates a new instance of SelectStatus */
     public AlertProfile() {
@@ -67,7 +67,6 @@ public class AlertProfile extends DefForm
 
     public void commandState() {
         menuCommands.removeAllElements();
-        addMenuCommand(cmdOk);
         addMenuCommand(cmdDef);
     }
     
@@ -104,9 +103,7 @@ public class AlertProfile extends DefForm
             redraw();
         }
     }
-
-    public void cmdOk() {eventOk();}
-
+    
     public void eventOk(){
         cf.profile=getCursor();
         destroyView();

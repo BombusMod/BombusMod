@@ -48,7 +48,7 @@ public class StatusSelect
         implements Runnable{
     
     private MenuCommand cmdEdit = new MenuCommand(SR.MS_EDIT, MenuCommand.SCREEN, 2);
-    private MenuCommand cmdDef = new MenuCommand(SR.MS_SETDEFAULT, MenuCommand.ITEM, 3);
+    private MenuCommand cmdDef = new MenuCommand(SR.MS_DEFAULT, MenuCommand.ITEM, 3);
 
     private Vector statusList;
     private int defp;

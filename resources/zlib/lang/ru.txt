@@ -13,9 +13,9 @@ Paste Subject	Встав. тему сообщения
 Service Discovery	Обзор сервисов
 User JID	JID пользователя
 New list	Новый список
-Select (no login)	Выбрать (без подключения)
+Default	По умолчанию	
 Privacy rule	Правило приватности
-use SSL	использовать SSL
+Use SSL	Использовать SSL
 Modify	Изменить
 Update	Обновить
 Account name	Имя аккаунта
@@ -63,9 +63,9 @@ Roster request	Получение ростера
 Type	Тип
 Name	Имя
 Username	Имя пользователя
-fullscreen	полноэкранный режим
+Fullscreen	Полноэкранный режим
 Add bookmark	Добав. закладку
-conferences only	только конференции
+Conferences only	Только конференции
 Client Version	Версия клиента
 Discard Search	Сбросить результаты
 Search Results	Результаты поиска
@@ -84,12 +84,12 @@ Delete	Удалить
 Delete contact?	Удалить контакт?
 Authorize	Авторизовать
 Nicknames	Ники
-to Archive	В архив
+To archive	В архив
 Back	Назад
-heap monitor	монитор памяти (heap)
+Heap monitor	Монитор памяти (heap)
 Message	Сообщение
 <Other>	<Другой>
-History	история сообщений
+History	История сообщений
 Append	Добавить
 Active Contacts	Актив. контакты
 Select nickname	Выбрать ник
@@ -102,24 +102,23 @@ Add	Добавить
 Logon	Подключить
 Stanzas	Stanzas
 at Host	Сервер
-join conferences	автоматически входить в отмеченные конференции
+Join conferences	Автоматически входить в отмеченные конференции
 Status	Статус
 Smiles	Вкл/выкл смайлики
 Contact >	Контакт >
-offline contacts	показывать отключенных
+Offline contacts	Показывать отключенных
 Transport	Транспорт
-composing events	уведомления о наборе текста
-Add Smile	Встав. смайлик
+Composing events	Уведомления о наборе текста
+Add Smile	Смайлики
 Nickname	Ник
 Revoke Voice	Отнять право голоса
 Not-in-list	Не в списке
 Commands	Команды
 - (Sign)	- (знак)
-Set default	Уст. по умолчанию
 Outcasts (Ban)	Изгои (Ban)
 Set affiliation to	Изменить членство на
 Register Account	Зарегистрировать аккаунт
-autologin	автосоединение
+Autologin	Автосоединение
 Logoff	Отключить
 Publish	Опубликовать
 Remove subscription	Удалить подписку
@@ -137,7 +136,7 @@ Sound	Звук
 Login failed	Ошибка авторизации
 Browse	Обзор
 New Jid	Новый Jid
-plain-text password	пароль откр. текстом
+Plain-text password	Пароль откр. текстом
 Paste Nickname	Вставить ник
 Kick	Выгнать (kick)
 Remove readed	Удалить прочитанные сообщения
@@ -145,15 +144,14 @@ Grant Voice	Дать право голоса
 Move Down	Сместить вниз
 Quote	Цитировать
 Roster elements	Элементы ростера
-popup from background	всплывать из фона
-smiles	показывать смайлы
+Popup from background	Всплывать из фона
+Smiles	Показывать смайлы
 About	О программе
 Resource	Ресурс
 Disconnected	Соединение разорвано
 Edit	Редактировать
 Host name/IP (optional)	Имя хоста/IP (необязательно)
 Add rule	Добавить правило
-for all status types	для всех статусов
 Paste Jid	Вставить Jid
 Goto URL	Перейти к URL
 Clock offset	Смещение часов
@@ -161,14 +159,14 @@ Yes	Да
 Suspend	Отложить
 Alert Profile >	Сигналы >
 My vCard	Личная vCard
-transports	Транспорты
+Transports	Транспорты
 New Account	Новый аккаунт
-self-contact	Свои контакты
+Self-contact	Свои контакты
 vCard	vCard
 Set Subject	Установить тему
 Tools	Инструменты
 Port	Порт
-Resume Message	Возобновить
+Resume	Возобновить
 Are You sure want to discard 	Вы действительно хотите понизить у 
  from OWNER to 	 право OWNER до 
 Modify affiliation	Изменение членства
@@ -188,7 +186,7 @@ Reason	Причина
 You have been invited to 	Вы были приглашены в 
 Participants	Участники
 Abc	Абв
-room presences	статусы в конференции
+Room presences	статусы в конференции
  is now known as 	 меняет ник на 
  was banned 	 запретили входить в комнату 
  was kicked 	 выгнали из комнаты 
@@ -197,15 +195,15 @@ room presences	статусы в конференции
  has joined the channel as 	 заходит как 
  and 	 и 
  is now 	 теперь 
-error	ошибка
-Select history folder	Выбор папки истории
+Error	ошибка
+Choose folder	Выбор папки истории
 Sound volume	Громкость звука
 Language	Язык
 Save history	Сохранять историю
 Save presences	Сохранять статусы
 Save conference history	Сохранять историю конференции
 Save conference presences	Сохранять статусы конференции
-convert to cp1251	Сохранять в Windows-1251
+Convert to cp1251	Сохранять в Windows-1251
 History folder	Папка истории
 Copy	Копировать
 Paste	Вставить
@@ -309,7 +307,7 @@ AutoStatus	Автостатус
 AutoStatus time (min)	Автостатус через (мин.)
 Auto xa since %t	Автостатус "Недоступен" сработал в %t
 Auto away since %t	Автостатус "Отсутствует" сработал в %t
-autofocus	автофокус на контакт с новым сообщением
+Autofocus	автофокус на контакт с новым сообщением
 Grant Membership	Дать членство
 Are You sure want to clear messagelist?	Очистить список сообщений
 Google token request	Запрос рукопожатия у Google
@@ -377,28 +375,28 @@ Delete All	Очистить архив
 History options	Настройка истории
 Filenames transliterate	Имена файлов транслитом
 Save chat	Сохранить сообщения
-show statuses	показывать статусные сообщения в ростере
-shared platform info	показывать информацию о платформе
-delivery events	уведомления о доставке
-drop all	не принимать ничего
-receive messages	принимать сообщения
-messages & presences	сообщения и статусы
-normal	средний
-small	мелкий
-large	крупный
+Show statuses	показывать статусные сообщения в ростере
+Shared platform info	показывать информацию о платформе
+Delivery events	уведомления о доставке
+Drop all	не принимать ничего
+Receive messages	принимать сообщения
+Messages & presences	сообщения и статусы
+Normal	средний
+Small	мелкий
+Large	крупный
 All signals	Все сигналы
 Vibra	Вибрация
 No signals	Без сигналов
  (default)	 (по умолчанию)
 Quit?	Выйти?
 Are you sure want to Quit?	Вы действительно хотите выйти?
-exit confirmation	подтверждение выхода
-show last appeared contacts	Показывать недавно подключившихся:
+Exit confirmation	подтверждение выхода
+Show last appeared contacts	Показывать недавно подключившихся:
 Custom keys	Сочетания кнопок
 Add custom key	Добавить сочетание кнопок
-keys action	действие
-enabled	включено
-key	кнопка
+Keys action	действие
+Enabled	включено
+Key	кнопка
 Apply	Применить
 Reconnect	Переподключение
 Sort list	Сортировать список
@@ -409,7 +407,7 @@ This user wants to subscribe to your presence	Запрос подписки на
 You are now authorized	Вы получили подписку
 Your authorization has been removed!	Ваша подписка была удалена!
 To: 	Кому: 
-size:	размер:
+Size:	размер:
 Sun	Вс
 Mon	Пн
 Tue	Вт
@@ -440,11 +438,11 @@ Copy JID	Копировать JID
 Ping request	Время отклика
 Online time	Время в сети
 Break connection	Переподключиться
-autoScroll	автопрокрутка списка сообщений
-emulate tabs	(4/6) быстрое переключение между окнами с сообщениями
-show balloons	показывать подсказки (balloons)
-popUps	всплывающие окна
-use my status messages	использовать свои статусные сообщения
+AutoScroll	автопрокрутка списка сообщений
+Emulate tabs	(4/6) быстрое переключение между окнами с сообщениями
+Show balloons	показывать подсказки (balloons)
+PopUps	всплывающие окна
+Use my status messages	использовать свои статусные сообщения
 Memory:	Память:
 Free: 	Своб.: 
 Total: 	Всего: 
@@ -452,10 +450,10 @@ Session(s): 	Сессий:
 Description	Описание
 User	Пользователь
 Import/Export	Импорт/Экспорт данных
-bold font for contacts	жирный шрифт для контактов ростера
-running message	бегущая строка в заголовке
+Bold font for contacts	жирный шрифт для контактов ростера
+Running message	бегущая строка в заголовке
 Composing message to you	Контакт пишет сообщение
-compression	сжатие трафика
+Compression	сжатие трафика
 New room created	Создана новая комната, не забудьте настроить её в конфигураторе!
 IRC-like conference nick-status	смена ника при смене статуса в конференции как в IRC
 Simulated break	Ручное переподключение
@@ -468,7 +466,7 @@ Auto task action type	Действие
 Quit BombusMod	Выход из BombusMod
 Quit conferences	Выход из конференций
 Disconnection	Отключениe
-disabled	выключено
+Disabled	выключено
 Delay (min.)	Выполнить через (мин.)
 Start time	Выполнить в
 Hour	Часов
@@ -485,7 +483,7 @@ Load history	Подгружать историю
 Connect to	Подключиться к
 Send my color scheme	Отправить мою цветовую схему
 Unread messages	Непрочитанные сообщения
-vibrate only highlited	Вибрировать только при обращении ко мне
+Vibrate only highlited	Вибрировать только при обращении ко мне
 Extended settings	Расширенные настройки
 Save to file	Сохранить в файл
 Load from file	Загрузить из файла
@@ -503,21 +501,21 @@ Previous: 	Предыдущая сессия:
 [No vCard available]	vCard недоступна
 [No photo available]	Фото недоступно
 [Unsupported format]	Неподдерживаемый формат
-[large photo was dropped]	[большое фото]
+[Large photo was dropped]	[большое фото]
 Delete group?	Удалить группу?
 Panels	Панели
 [ ]	[нет]
-[main bar]	[основная]
-[info bar]	[инфо]
+[Main bar]	[основная]
+[Info bar]	[инфо]
 Flash backlight	Мигать подсветкой
-execute menu by numkey	выполнение команд меню цифровыми кнопками
-show nicknames	показывать ник отправителя
+Execute menu by numkey	Выполнение команд меню цифровыми кнопками
+Show nicknames	Показывать ник отправителя
 Send photo	Отправить фото
-enable autorespond	включить автоответчик
+Enable autorespond	Включить автоответчик
 File manager	Менеджер файлов
-remote control	удалённое управление
-resolve hostname	преобразовать в имя хоста
-show time and traffic	показывать время и трафик
+Remote control	Удалённое управление
+Resolve hostname	Ареобразовать в имя хоста
+Show time and traffic	Аоказывать время и трафик
 Users search	Поиск пользователей
 Personal events	Персональные уведомления
 Receive events	Получать уведомления
@@ -535,13 +533,13 @@ user moods send/receive	приём и отправка настроений
 Personal events not supported	Персональные уведомления не поддерживаются
 VIP	VIP
 Enable/Disable	Включить/Выключить
-online	доступен
-chat	готов поболтать
-away	отсутствую
+Online	доступен
+Chat	готов поболтать
+Away	отсутствую
 xa	недоступен
-invisible	невидимый
-dnd	не беспокоить
-offline	отключён
+Invisible	невидимый
+DND	не беспокоить
+Offline	отключён
 Use	Использует
 Version	Версия
 Focus to Juick contact	Фокус на Juick контакте
@@ -554,4 +552,4 @@ Focus to Juick contact	Фокус на Juick контакте
 [J] Recommend post	[J] Порекомендовать пост
 [J] Show post and comments	[J] Показать пост и комментарии к нему
 For work this command you need contact juick@juick.com in you roster. For more information see http://juick.com/help/	Для работы этой команды Вам нужен контакт juick@juick.com в ростере. Больше информации об этом сервисе можно найти по адресу http://juick.com/help/
-step back	перейти назад
+Step back	перейти назад

@@ -415,7 +415,8 @@ public abstract class VirtualList {
         mHeight=0;
         iHeight=0;       
         
-        
+        if (messagesWidth == 0)
+            messagesWidth = getListWidth();
         beginPaint();
 //#ifdef POPUPS
         PopUp.getInstance().init(g, width, height);
@@ -1388,37 +1389,16 @@ public abstract class VirtualList {
         return StringUtils.getSizeString((traffic>0)?traffic*2:0);
     }
         
-    public abstract void captionPressed();
+    public void captionPressed() {};
+    public void commandState() {};
+
     
-    public abstract void commandState();
+    public abstract void touchLeftPressed();   
+    public abstract void touchRightPressed();
+        
 
-    public abstract void selectPressed();
-    public abstract void menuPressed();
-
-    public abstract String selectCommand();
-    public abstract String menuCommand();
-
-    public void touchLeftPressed() {
-        if (cf.swapMenu) {
-            selectPressed();
-        } else {
-            menuPressed();
-        }
-    }
-    public void touchRightPressed() {
-        if (cf.swapMenu) {
-           menuPressed();
-        } else {
-            cmdCancel();
-        }
-    }
-
-    public String touchLeftCommand() {
-        return cf.swapMenu ? selectCommand() : menuCommand();
-    }
-    public String touchRightCommand() {
-        return cf.swapMenu ? menuCommand() : (canBack ? SR.MS_BACK : "");
-    }
+    public abstract String touchLeftCommand();
+    public abstract String touchRightCommand();
 
     public void cmdCancel() {
         if (canBack)

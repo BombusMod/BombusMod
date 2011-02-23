@@ -26,6 +26,7 @@
  */
 package Account;
 
+import Menu.MenuCommand;
 import ServiceDiscovery.DiscoForm;
 import ServiceDiscovery.DiscoForm.FormSubmitListener;
 import ServiceDiscovery.FormField;
@@ -60,6 +61,7 @@ public class AccountRegister
 	private AccountSelect as;
 	private DropChoiceBox serverChoice;
 	Vector defs[];
+        MenuCommand cmdSend = new MenuCommand(SR.MS_SEND, MenuCommand.OK, 1);
 
 	/** Creates a new instance of AccountRegister
 	 * @param account
@@ -103,12 +105,6 @@ public class AccountRegister
 		serverChoice.items.addElement("jabber.ru");
 		serverChoice.items.addElement("xmpp.ru");
 		itemsList.addElement(serverChoice);
-	}
-
-	public void cmdOk() {
-		String serverName = (String) serverChoice.items.elementAt(serverChoice.getSelectedIndex());
-		raccount.setServer(serverName);
-		new Thread(this).start();
 	}
 
 	public void run() {
@@ -166,9 +162,21 @@ public class AccountRegister
 		theStream.close();
 	}
 
-	public String touchLeftCommand() {
-		return SR.MS_SEND;
-	}
+	   // TODO: fix this shit
+    public void commandState() {
+        menuCommands.removeAllElements();
+        addMenuCommand(cmdSend);
+    }
+
+    public void menuAction(MenuCommand c, VirtualList v) {
+        if (c == cmdSend) {
+            String serverName = (String) serverChoice.items.elementAt(serverChoice.getSelectedIndex());
+            raccount.setServer(serverName);
+            new Thread(this).start();
+        } else {
+            super.menuAction(c, v);
+        }
+    }
 
 	public void registrationSuccess() {
 		as.itemsList.addElement(raccount);

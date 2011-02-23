@@ -74,7 +74,8 @@ public final class XMLList
         menuCommands.removeAllElements();
         addMenuCommand(cmdNew);
         addMenuCommand(cmdEnableDisable);
-        addMenuCommand(cmdPurge);        
+        addMenuCommand(cmdPurge);
+        super.commandState();
     }
  
     protected void beginPaint() {
@@ -99,13 +100,7 @@ public final class XMLList
 
     public void stanzaEdit() {
         Msg m = getMessage(getCursor());
-        String stanza = "";
-
-        try {
-            stanza = m.toString();
-        } catch (Exception e) { }
-
-        new StanzaEdit(this, stanza);
+        new StanzaEdit(this, m == null? "" : m.toString());
     }
     
     public void menuAction(MenuCommand c, VirtualList d) {

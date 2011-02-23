@@ -122,8 +122,8 @@ public class DefForm
     public void commandState() {
         menuCommands.removeAllElements();
         addMenuCommand(cmdOk);
-        if (!cf.swapMenu)
-            addMenuCommand(cmdCancel);
+        /*if (!cf.swapMenu)
+            addMenuCommand(cmdCancel);*/
     }
 
     public void showMenu() {
@@ -141,33 +141,78 @@ public class DefForm
     public void captionPressed() {}
     
     public String selectCommand() {
-        MenuCommand commandOk = findCommand(MenuCommand.OK);
-        return commandOk == null ? SR.MS_OK : commandOk.name;
+        if (cf.swapMenu) {
+            MenuCommand commandOk = findCommand(MenuCommand.OK);
+            return commandOk == null ? SR.MS_OK : commandOk.name;
+        } else {
+            return canBack ? SR.MS_BACK : "";
+        }
     }
 
     public String menuCommand() {
-            if (menuCommands.size() > 2) {
+        int size = menuCommands.size();
+        if (cf.swapMenu) {
+            if (size == 2) {
+                MenuCommand commandScreen = findCommand(MenuCommand.SCREEN);
+                return commandScreen == null ? SR.MS_CANCEL : commandScreen.name;
+            } else if (size > 1) {
                 return SR.MS_MENU;
+            } else {
+                return "";
             }
-            if (menuCommands.size() == 2) {
-                return ((MenuCommand)menuCommands.elementAt(1)).name;
+        } else {
+            if (size > 1) {
+                return SR.MS_MENU;
+            } else {
+                MenuCommand commandOk = findCommand(MenuCommand.OK);
+                return commandOk == null ? SR.MS_OK : commandOk.name;
             }
-            return "";
+        }
     }
 
     public void menuPressed() {
-        if (menuCommands.size() > 2) {
+        if (menuCommand().equals(SR.MS_MENU)) {
             showMenu();
-            return;
-        }
-        if (menuCommands.size() == 2) {
-            menuAction((MenuCommand) menuCommands.elementAt(1), this);
         } else {
-            cmdOk();
+            if (!cf.swapMenu) {
+                MenuCommand commandOk = findCommand(MenuCommand.OK);
+                menuAction(commandOk == null ? cmdOk : commandOk, this);
+            } else {
+                if (menuCommands.size() == 2) {
+                    MenuCommand commandScreen = findCommand(MenuCommand.SCREEN);
+                    menuAction(commandScreen == null ? cmdOk : commandScreen, this);
+                }
+            }
         }
     }
+
     public void selectPressed() {
-        MenuCommand commandOk = findCommand(MenuCommand.OK);
-        menuAction(commandOk == null ? cmdOk : commandOk, this);
-    }    
+        if (cf.swapMenu) {
+            MenuCommand commandOk = findCommand(MenuCommand.OK);
+            menuAction(commandOk == null ? cmdOk : commandOk, this);
+        } else {
+            cmdCancel();
+        }
+    }
+    public void touchLeftPressed() {
+        if (cf.swapMenu) {
+            selectPressed();
+        } else {
+            menuPressed();
+        }
+    }
+    public void touchRightPressed() {
+        if (cf.swapMenu) {
+            menuPressed();
+        } else {
+            selectPressed();
+        }
+    }
+
+    public String touchLeftCommand() {
+        return cf.swapMenu ? selectCommand() : menuCommand();
+    }
+    public String touchRightCommand() {
+        return cf.swapMenu ? menuCommand() : selectCommand();
+    }
 }

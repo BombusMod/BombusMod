@@ -46,7 +46,7 @@ public class AccountSelect extends DefForm {
     boolean enableQuit;
     
     MenuCommand cmdLogin=new MenuCommand(SR.MS_SELLOGIN, MenuCommand.OK,1);
-    MenuCommand cmdSelect=new MenuCommand(SR.MS_NOLOGIN, MenuCommand.SCREEN,2);
+    MenuCommand cmdSelect=new MenuCommand(SR.MS_DEFAULT, MenuCommand.SCREEN,2);
     MenuCommand cmdAdd=new MenuCommand(SR.MS_NEW_ACCOUNT, MenuCommand.SCREEN,3);
     MenuCommand cmdEdit=new MenuCommand(SR.MS_EDIT,MenuCommand.ITEM,3);
     MenuCommand cmdDel=new MenuCommand(SR.MS_DELETE,MenuCommand.ITEM,4);
@@ -156,8 +156,8 @@ public class AccountSelect extends DefForm {
     private void switchAccount(boolean login){
         cf.accountIndex=getCursor();
         cf.saveToStorage();
-        Account.loadAccount(login, getCursor());
-        destroyView();
+        if (login) destroyView();
+        Account.loadAccount(login, getCursor());        
     }
     
     public void eventOk() {

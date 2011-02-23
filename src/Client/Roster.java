@@ -120,8 +120,6 @@ public class Roster
         Runnable,
         LoginListener
 {
-
-    private MenuCommand cmdActions = new MenuCommand(SR.MS_ITEM_ACTIONS, MenuCommand.OK, 2);
     private MenuCommand cmdStatus = new MenuCommand(SR.MS_STATUS_MENU, MenuCommand.SCREEN, 4, RosterIcons.ICON_STATUS);
     private MenuCommand cmdActiveContacts = new MenuCommand(SR.MS_ACTIVE_CONTACTS, MenuCommand.SCREEN, 3, RosterIcons.ICON_ACTIVE);
     private MenuCommand cmdAlert = new MenuCommand(SR.MS_ALERT_PROFILE_CMD, MenuCommand.SCREEN, 8, RosterIcons.ICON_ALERTS);
@@ -236,8 +234,7 @@ public class Roster
     
     public final void commandState() {
         menuName = SR.MS_MAIN_MENU;
-        menuCommands.removeAllElements();
-        addMenuCommand(cmdActions);
+        menuCommands.removeAllElements();        
         addMenuCommand(cmdStatus);
         addMenuCommand(cmdActiveContacts);
 //#ifndef WMUC
@@ -2542,8 +2539,7 @@ public class Roster
 //#ifdef AUTOSTATUS
 //#         userActivity();
 //#endif
-        if (c==cmdActions) { cmdActions(); }
-        else if (c==cmdMinimize) { cmdMinimize();  }
+        if (c==cmdMinimize) { cmdMinimize();  }
         else if (c==cmdActiveContacts) { cmdActiveContacts(); }
         else if (c==cmdAccount){ cmdAccount(); }
         else if (c==cmdStatus) { cmdStatus(); }
@@ -2883,22 +2879,14 @@ public class Roster
         sd.roster.reEnumRoster();
     }
 
-    // TODO: fix this shit
-    public String touchRightCommand() {
-        if (cf.swapMenu)
-            return super.touchRightCommand();
-        else
-            return selectCommand();
+    public String selectCommand() {
+        return SR.MS_ITEM_ACTIONS;
     }
 
-    public void touchRightPressed() {
-        if (cf.swapMenu) {
-            super.touchRightPressed();
-        } else {
-            selectPressed();
-        }
+    public void selectPressed() {
+        cmdActions();
     }
-
+    
     public void userKeyPressed(int keyCode) {
         switch (keyCode) {
             case 1:

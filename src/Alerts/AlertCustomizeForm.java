@@ -205,10 +205,9 @@ public class AlertCustomizeForm
     }
 
     public void commandState(){
-        menuCommands.removeAllElements();
-        addMenuCommand(cmdSave);
+        menuCommands.removeAllElements();        
         if (playable()>-1)
             addMenuCommand(cmdTest);
-        
+        addMenuCommand(cmdSave);
     }
 }
