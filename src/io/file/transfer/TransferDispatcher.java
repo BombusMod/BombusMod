@@ -210,7 +210,7 @@ public class TransferDispatcher implements JabberBlockListener {
             }            
         }
 // ibb        
-        if (data instanceof Message) {
+        
             JabberDataBlock bdata=data.getChildBlock("data");
             if (bdata==null) return BLOCK_REJECTED;
             if (!bdata.isJabberNameSpace(TransferDispatcher.NS_IBB)) return BLOCK_REJECTED;
@@ -221,13 +221,15 @@ public class TransferDispatcher implements JabberBlockListener {
 //#ifdef DEBUG
 //#             System.out.println("data chunk received");
 //#endif
+            if (data instanceof Iq) {
+                Iq progress = new Iq(task.jid, Iq.TYPE_RESULT, data.getAttribute("id"));
+                send(progress, true);
+            }
             repaintNotify();
             task.writeFile(b);
-            return BLOCK_PROCESSED;
-
-        }
-// //        
-        return BLOCK_REJECTED;
+            return BLOCK_PROCESSED;        
+// //       
+        
     }
 	
     // send shortcut

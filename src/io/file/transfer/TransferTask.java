@@ -335,6 +335,7 @@ public class TransferTask
         JabberDataBlock open=iq.addChildNs("open", TransferDispatcher.NS_IBB);
         open.setAttribute("sid", sid);
         open.setAttribute("block-size","2048");
+        open.setAttribute("stanza", "message");
         TransferDispatcher.getInstance().send(iq, false);
     }
     protected SOCKS5Stream proxystream;
