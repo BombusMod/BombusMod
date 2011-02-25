@@ -875,6 +875,13 @@ public abstract class VirtualList {
     private int yPointerPos;
 
     protected void pointerPressed(int x, int y) {
+//#ifdef POPUPS
+        if (PopUp.getInstance().next()) {
+            redraw();
+            lastClickTime = 5000;
+            return;
+        }
+//#endif
         int act = CommandsPointer.pointerPressed(x, y);
         if (act == 1) {
             touchLeftPressed();
@@ -981,14 +988,9 @@ public abstract class VirtualList {
     }
 
     protected void pointerReleased(int x, int y) {
-//#ifdef POPUPS
-        if (PopUp.getInstance().next()) {
-            redraw();
-            return;
-        }
-//#endif
 
-        scrollbar.pointerReleased(x, y, this);
+        if (scrollbar.pointerReleased(x, y, this))
+            return;
 
         if (Config.fullscreen) {
             if (CommandsPointer.pointerPressed(x, y) > 0) {

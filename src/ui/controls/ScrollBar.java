@@ -163,7 +163,15 @@ public class ScrollBar {
 	v.win_top=new_pos; v.redraw();
 	return true;
     }
-    public void pointerReleased(int x, int y, VirtualList v) { point_y=-1; }
+    public boolean pointerReleased(int x, int y, VirtualList v) {
+        if (size == 0)
+            return false;
+        if (x < scrollerX) {
+            return false;
+        }
+        point_y = -1;
+        return true;
+    }
     
     public void draw(Graphics g) {
 
