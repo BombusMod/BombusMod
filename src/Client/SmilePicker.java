@@ -219,13 +219,8 @@ public class SmilePicker
                 break;
             case 9:
                 super.pageRight();
-                break;
-            case 4:
-                pageLeft();
-                break;
-            case 6:
-                pageRight();
-                break;
+                keyUp();
+                break;            
         }
         super.userKeyPressed(keyCode);
     }

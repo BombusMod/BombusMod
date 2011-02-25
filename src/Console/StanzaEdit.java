@@ -87,9 +87,6 @@ public class StanzaEdit
 
         if (!executeCommand(c, d)) {
 
-            if (body.length() == 0) {
-                body = null;
-            }
             if (c == cmdPasteIQDisco) {
                 insert(TEMPLATE_IQ_DISCO, caretPos);
                 return;
@@ -111,7 +108,7 @@ public class StanzaEdit
                 body = null;
             }
 
-            if (c == cmdSend && body != null) {
+            if (c == cmdSend && body != null && body.length() > 0) {
                 try {
                     StaticData.getInstance().roster.theStream.send(body.trim());
                 } catch (IOException ex) {

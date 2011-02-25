@@ -63,15 +63,15 @@ public class TransferTask
 //#     public static String plugin = new String("PLUGIN_FILE_TRANSFER");
 //#endif
     
-    public final static int COMPLETE=1;
-    public final static int PROGRESS=3;
-    public final static int ERROR=4;
-    public final static int NONE=5;
-    public final static int HANDSHAKE=6;
-    public final static int IN_ASK=7;
-    public final static int PROXYACTIVATE=8;
-    public final static int PROXYOPEN=9;
-    public int state=NONE;
+    public final static int COMPLETE = 1;
+    public final static int PROGRESS = 3;
+    public final static int ERROR = 4;
+    public final static int NONE = 5;
+    public final static int HANDSHAKE = 6;
+    public final static int IN_ASK = 7;
+    public final static int PROXYACTIVATE = 8;
+    public final static int PROXYOPEN = 9;
+    public int state = NONE;
     private boolean sending;
     boolean showEvent;
     boolean isBytes;
@@ -95,22 +95,22 @@ public class TransferTask
     private Vector methods;
 
     public Vector streamhosts;
-
+    
     long started;
     long finished;
     
     /** Creates TransferTask for incoming file */
     public TransferTask(String jid, String id, String sid, String name, String description, int size, Vector methods) {
         super(RosterIcons.getInstance());
-        state=IN_ASK;
-        showEvent=true;
-        this.jid=jid;
-        this.id=id;
-        this.sid=sid;
-        this.fileName=name;
-        this.description=description;
-        this.fileSize=size;
-        this.methods=methods;
+        state = IN_ASK;
+        showEvent = true;
+        this.jid = jid;
+        this.id = id;
+        this.sid = sid;
+        this.fileName = name;
+        this.description = description;
+        this.fileSize = size;
+        this.methods = methods;
     }
     
     /**
@@ -118,37 +118,37 @@ public class TransferTask
      */
     public TransferTask(String jid, String sid, String fileName, String description, boolean isBytes, byte[] bytes) {
         super(RosterIcons.getInstance());
-        state=HANDSHAKE;
-        sending=true;
+        state = HANDSHAKE;
+        sending = true;
         //showEvent=true;
-        this.jid=jid;
-        this.sid=sid;
-        this.fileName=fileName.substring( fileName.lastIndexOf('/')+1 );
-        this.description=description;
-        
-        this.isBytes=isBytes;
-        this.bytes=bytes;
-        
+        this.jid = jid;
+        this.sid = sid;
+        this.fileName = fileName.substring(fileName.lastIndexOf('/') + 1);
+        this.description = description;
+
+        this.isBytes = isBytes;
+        this.bytes = bytes;
+
         //this.fileSize=size;
         //this.methods=methods;
         if (!isBytes) {
             try {
-                file=FileIO.createConnection(fileName);
-                is=file.openInputStream();
+                file = FileIO.createConnection(fileName);
+                is = file.openInputStream();
 
-                fileSize=(int)file.fileSize();
+                fileSize = (int) file.fileSize();
             } catch (Exception e) {
 //#ifdef DEBUG
 //#                 e.printStackTrace();
 //#endif
-                state=ERROR;
-                errMsg=SR.MS_CANT_OPEN_FILE;
-                showEvent=true;
+                state = ERROR;
+                errMsg = SR.MS_CANT_OPEN_FILE;
+                showEvent = true;
             }
         } else {
-            is=new ByteArrayInputStream(bytes);
-            fileSize=bytes.length;
-            
+            is = new ByteArrayInputStream(bytes);
+            fileSize = bytes.length;
+
         }
     }
 
@@ -187,45 +187,20 @@ public class TransferTask
         showEvent=true;
     }
 
-    void accept() {
-        String selectedMethod = "";
+    void accept() {        
         String[] methodNames = new String[2];
         methodNames[0] = TransferDispatcher.NS_BYTESTREAMS;
         methodNames[1] = TransferDispatcher.NS_IBB;
         for (int i = 0; i < methodNames.length; i++) {
             String nextMethod = methodNames[i];
             if (methods.indexOf(nextMethod) >= 0) {
-                selectedMethod = nextMethod;
+                method = nextMethod;
                 break;
             }
         }
-        if (selectedMethod.length() != 0) {
+        if (method.length() != 0) {
             started = System.currentTimeMillis();
-            try {
-                file = FileIO.createConnection(filePath + fileName);
-                os = file.openOutputStream();
-            } catch (Exception e) {
-//#ifdef DEBUG
-//#                 e.printStackTrace();
-//#endif
-                decline();
-                return;
-            }
-            JabberDataBlock accept = new Iq(jid, Iq.TYPE_RESULT, id);
-
-            JabberDataBlock si = accept.addChildNs("si", TransferDispatcher.NS_SI);
-
-            JabberDataBlock feature = si.addChildNs("feature", "http://jabber.org/protocol/feature-neg");
-
-            JabberDataBlock x = feature.addChildNs("x", XDataForm.NS_XDATA);
-            x.setTypeAttribute("submit");
-
-            JabberDataBlock field = x.addChild("field", null);
-            field.setAttribute("var", "stream-method");
-            field.addChild("value", selectedMethod);
-
-            TransferDispatcher.getInstance().send(accept, false);
-            state = HANDSHAKE;
+            new Thread(this).start();
         } else {
             JabberDataBlock badreq = new Iq(jid, Iq.TYPE_ERROR, id);
             JabberDataBlock err = new XmppError(XmppError.BAD_REQUEST, "no known methods").construct();
@@ -384,6 +359,37 @@ public class TransferTask
     }
 
     public void run() {
+        if (state == IN_ASK) {
+            try {
+                file = FileIO.createConnection(filePath + fileName);
+                os = file.openOutputStream();
+            } catch (Exception e) {
+//#ifdef DEBUG
+//#                 e.printStackTrace();
+//#endif
+                decline();
+                return;
+            }
+
+            JabberDataBlock accept = new Iq(jid, Iq.TYPE_RESULT, id);
+
+            JabberDataBlock si = accept.addChildNs("si", TransferDispatcher.NS_SI);
+
+            JabberDataBlock feature = si.addChildNs("feature", "http://jabber.org/protocol/feature-neg");
+
+            JabberDataBlock x = feature.addChildNs("x", XDataForm.NS_XDATA);
+            x.setTypeAttribute("submit");
+
+            JabberDataBlock field = x.addChild("field", null);
+            field.setAttribute("var", "stream-method");
+            field.addChild("value", method);
+
+            TransferDispatcher.getInstance().send(accept, false);
+
+            state = HANDSHAKE;
+            return;
+            
+        }
         if (method.equals(TransferDispatcher.NS_IBB)) {
             byte buf[] = new byte[2048];
             int seq = 0;
@@ -440,6 +446,9 @@ public class TransferTask
                             String proxyhost = nexthost.getAttribute("host");
                             String proxyport = nexthost.getAttribute("port");
                             proxyjid = nexthost.getAttribute("jid");
+                            if (proxyhost.startsWith("192.168.")) continue;
+                            if (proxyhost.startsWith("10.")) continue;
+                            if (proxyhost.startsWith("172.16.")) continue;
                             if (proxyhost != null && proxyport != null) {
                                 try {
                                     openStreams(proxyhost, Integer.parseInt(proxyport));
@@ -476,10 +485,9 @@ public class TransferTask
                 };
                 SHA1 Command = new SHA1();
                 Command.init();
-                String verifyString = (sending) ? StaticData.getInstance().account.getJid() + jid : jid + StaticData.getInstance().account.getJid();
+                String verifyString = (sending) ? StaticData.getInstance().roster.myJid.getJid() + jid : jid + StaticData.getInstance().roster.myJid.getJid();
                 Command.updateASCII(sid + verifyString);
                 Command.finish();
-
                 byte[] socks5CommandHost = Command.getDigestHex().getBytes();
                 byte[] socks5CommandFinish = {0x00, 0x00};
 
@@ -501,21 +509,10 @@ public class TransferTask
                     JabberDataBlock streamused = query.addChild("streamhost-used", null);
                     streamused.setAttribute("jid", proxyjid);
                     TransferDispatcher.getInstance().send(notify, false);
-                    state = TransferTask.PROXYOPEN;
-                    try {
-                        //method = TransferDispatcher.NS_BYTESTREAMS;
-                        Thread.sleep(2000L);
-                    } catch (InterruptedException ex) {
-//#ifdef DEBUG
-//#                         ex.printStackTrace();
-//#endif
-                        cancel();
-                        return;
-                    }
+                    state = TransferTask.PROXYOPEN;                    
                     byte buf[] = new byte[512];
                     try {
                         int readed;
-                        Thread.sleep(1000L);
                         while ((readed = proxystream.read(buf)) > 0) {
                             byte buf2[] = new byte[readed];
                             System.arraycopy(buf, 0, buf2, 0, buf2.length);

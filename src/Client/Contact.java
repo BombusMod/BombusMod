@@ -621,7 +621,7 @@ public class Contact extends IconTextElement{
         
         int offset= xo + 4;
 
-        int imgH=(h-ilHeight)/2;
+        int imgH=(h-ilHeight) >> 1;
         
         if (getImageIndex()>-1) {
             offset+=ilHeight;
@@ -688,14 +688,19 @@ public class Contact extends IconTextElement{
         thisOfs=(getFirstLength()>w)?-ofs+offset:offset;
         if ((thisOfs+getFirstLength())<0) thisOfs=offset;
         g.setFont(getFont());
-	g.drawString(getFirstString(), thisOfs, 0, Graphics.TOP|Graphics.LEFT);
+
+        int thisYOfs  = 0;
+        if (getSecondString() == null) {
+            thisYOfs = (h - getFont().getHeight()) >> 1;
+        }
+	FontCache.drawString(g, getFirstString(), thisOfs, thisYOfs, Graphics.TOP|Graphics.LEFT);
 
         if (getSecondString()!=null) {
             int y=getFont().getHeight()-3;
             thisOfs=(getSecondLength()>w)?-ofs+offset:offset;
             g.setFont(FontCache.getFont(false, FontCache.baloon));
             g.setColor(ColorTheme.getColor(ColorTheme.SECOND_LINE));
-            g.drawString(getSecondString(), thisOfs, y, Graphics.TOP|Graphics.LEFT);
+            FontCache.drawString(g, getSecondString(), thisOfs, y, Graphics.TOP|Graphics.LEFT);
         }
         g.setClip(xo, yo, w, h);        
     }

@@ -27,12 +27,10 @@
 
 package io.file.transfer;
 
-import Client.StaticData;
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
-import ui.VirtualList;
 import ui.controls.form.DefForm;
 import ui.controls.form.LinkString;
 import ui.controls.form.SimpleString;

@@ -98,6 +98,8 @@ public class TransferManager
                     TransferTask task=(TransferTask)TransferDispatcher.getInstance().getTaskList().elementAt(i);
                     if (task.isStopped()) {
                         TransferDispatcher.getInstance().getTaskList().removeElementAt(i);
+                        task.showEvent = false;
+                        TransferDispatcher.getInstance().eventNotify();
                         loadItemsFrom(TransferDispatcher.getInstance().getTaskList());
                     } else
                         i++;
