@@ -79,8 +79,7 @@ public class ArchiveList
         mb.addRAlign();
         mb.addElement(null);
         mb.addElement(SR.MS_FREE /*"free "*/);
-        setMainBarItem(mb);
-        show();
+        setMainBarItem(mb);        
     }
 
     public final void commandState() {
@@ -201,7 +200,6 @@ public class ArchiveList
         if (t != null) {
             midlet.BombusMod.getInstance().setDisplayable(t);
         } else {
-            parentView = sd.roster;
             super.destroyView();
         }
     }

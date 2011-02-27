@@ -77,9 +77,7 @@ public class Upgrade
         setMainBarItem(mb);
         mb.addElement(null);
         mb.addRAlign();
-        mb.addElement(null);
-
-        show();
+        mb.addElement(null);        
     }
 
     public void run() {

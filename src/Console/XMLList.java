@@ -66,8 +66,7 @@ public final class XMLList
 //#ifdef CONSOLE        
 //# 	MainBar mb=new MainBar(SR.MS_XML_CONSOLE);
 //#         setMainBarItem(mb);
-//#endif
-        show();        
+//#endif             
     }
     
     public void commandState() {
@@ -155,9 +154,5 @@ public final class XMLList
 
     public void keyGreen() {
         toggle();
-    }
-    public void destroyView() {
-        parentView = sd.roster;
-        super.destroyView();
-    }
+    }    
 }

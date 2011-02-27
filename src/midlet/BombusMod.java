@@ -60,7 +60,7 @@ public class BombusMod extends MIDlet implements Runnable {
 
     private Display display;    // The display for this MIDlet
     private boolean isRunning;
-    private boolean isMinimized;
+    private boolean isMinimized = true;
     StaticData sd = StaticData.getInstance();
     ColorTheme ct = ColorTheme.getInstance();
 //#ifdef LIGHT_CONFIG

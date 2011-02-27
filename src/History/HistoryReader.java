@@ -33,7 +33,6 @@ import Messages.MessageItem;
 import Messages.MessageList;
 import java.util.Enumeration;
 import java.util.Vector;
-import javax.microedition.lcdui.Canvas;
 import locale.SR;
 import ui.MainBar;
 
@@ -61,8 +60,7 @@ public class HistoryReader extends MessageList {
 
         hl = new HistoryLoader(c.bareJid, smiles);
 
-        gotoEnd();
-        show();
+        gotoEnd();        
     }
 
 /* TODO: menu command for gotoBegin()/gotoEnd()
@@ -96,7 +94,7 @@ public class HistoryReader extends MessageList {
         moveCursorHome();
     }
 
-    public void gotoEnd() {
+    public final void gotoEnd() {
         loadFrom(hl.stepEnd());
         moveCursorEnd();
     }
