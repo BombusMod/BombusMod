@@ -142,7 +142,7 @@ public class SR {
     public final static String MS_SLASHME = "/me";
     public   static String MS_OFFLINE_CONTACTS = loadString( "Offline contacts" );
     public   static String MS_TRANSPORT = loadString( "Transport" );
-    public   static String MS_COMPOSING_EVENTS = loadString( "composing events" );
+    public   static String MS_COMPOSING_EVENTS = loadString( "Composing events" );
     public   static String MS_ADD_SMILE = loadString( "Add Smile" );
     public   static String MS_NICKNAME = loadString( "Nickname" );
     public   static String MS_REVOKE_VOICE = loadString( "Revoke Voice" );
@@ -498,7 +498,7 @@ public class SR {
     public static String MS_SUBSCRIPTION_RECEIVED = loadString ( "You are now authorized" );
     public static String MS_SUBSCRIPTION_DELETED = loadString ( "Your authorization has been removed!" );
     public static String MS_SEND_FILE_TO = loadString ( "To: " );
-    public static String MS_FILE_SIZE = loadString( "size:" );  
+    public static String MS_FILE_SIZE = loadString( "Size:" );
 
     public static String MS_SUN = loadString( "Sun" );
     public static String MS_MON = loadString( "Mon" );
@@ -615,7 +615,7 @@ public class SR {
 
     public static String MS_UNREAD_MESSAGES=loadString( "Unread messages" );
 
-    public static String MS_VIBRATE_ONLY_HIGHLITED=loadString( "vibrate only highlited" );
+    public static String MS_VIBRATE_ONLY_HIGHLITED=loadString( "Vibrate only highlited" );
 
     public static String MS_EXTENDED_SETTINGS=loadString( "Extended settings" );
 
@@ -646,7 +646,7 @@ public class SR {
     public static String MS_NO_VCARD=loadString( "[No vCard available]" );
     public static String MS_NO_PHOTO=loadString( "[No photo available]" );
     public static String MS_UNSUPPORTED_FORMAT=loadString( "[Unsupported format]" );
-    public static String MS_PHOTO_TOO_LARGE=loadString( "[large photo was dropped]" );
+    public static String MS_PHOTO_TOO_LARGE=loadString( "[Large photo was dropped]" );
 
     public static String MS_DELETE_GROUP_ASK=loadString( "Delete group?" );
 
@@ -721,7 +721,8 @@ public class SR {
 //#endif
 
     public static String MS_STEP_BACK = loadString( "Step back" );
-    
+    public static String MS_ITEM_HEIGHT = loadString("Minimal item height");
+    public static String MS_SINGLE_CLICK = loadString("Single-click interface");
     public static String L_CONFIG = loadString( "Light config" );
     public static String L_ENABLED = loadString("Light enabled");
     public static String L_IDLE_VALUE = loadString("Light idle value");
@@ -729,7 +730,9 @@ public class SR {
     public static String L_KEYPRESS_TIMEOUT = loadString("Keypress timeout");
     public static String L_MESSAGE_VALUE = loadString("Message value");
     public static String L_MESSAGE_TIMEOUT = loadString("Message timeout");
+    public static String MS_COPY_TOPIC = loadString("Copy topic");
 
+    
     private SR() { }
 
     public static String MS_XMLLANG;

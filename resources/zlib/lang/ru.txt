@@ -100,14 +100,14 @@ Re-Enter Room	Перезайти в комнату
 New Message	Новое сообщение
 Add	Добавить
 Logon	Подключить
-Stanzas	Stanzas
+Stanzas	Станзы
 at Host	Сервер
 Join conferences	Автоматически входить в отмеченные конференции
 Status	Статус
 Smiles	Вкл/выкл смайлики
 Contact >	Контакт >
 Offline contacts	Показывать отключенных
-Transport	Транспорт
+Transport	Транспорты
 Composing events	Уведомления о наборе текста
 Add Smile	Смайлики
 Nickname	Ник
@@ -196,7 +196,7 @@ Room presences	статусы в конференции
  and 	 и 
  is now 	 теперь 
 Error	ошибка
-Choose folder	Выбор папки истории
+Choose folder	Выбор папки
 Sound volume	Громкость звука
 Language	Язык
 Save history	Сохранять историю
@@ -266,6 +266,7 @@ Cursor ink & outline	Цвет шрифта курсора и контура
 Scroll border	Цвет контура скролла
 Scroll bar	Цвет бегунка скролла
 Scroll back	Цвет фона скролла
+Scroll width	Ширина прокрутки
 other message incoming	Выделенное входящее сообщение
 other message outgoing	Выделенное исходящее сообщение
 other message presence	Выделенное статусное сообщение
@@ -394,7 +395,7 @@ Exit confirmation	подтверждение выхода
 Show last appeared contacts	Показывать недавно подключившихся:
 Custom keys	Сочетания кнопок
 Add custom key	Добавить сочетание кнопок
-Keys action	действие
+Keys action	Действие
 Enabled	включено
 Key	кнопка
 Apply	Применить
@@ -433,8 +434,6 @@ Composing sound	Звук при наборе текста
 Conference sound	Звук для конференции
 StartUP sound	Звук при запуске приложения
 Outgoing sound	Звук при отправке сообщения
-Vip sound	Звук для VIP
-Copy JID	Копировать JID
 Ping request	Время отклика
 Online time	Время в сети
 Break connection	Переподключиться
@@ -514,8 +513,8 @@ Send photo	Отправить фото
 Enable autorespond	Включить автоответчик
 File manager	Менеджер файлов
 Remote control	Удалённое управление
-Resolve hostname	Ареобразовать в имя хоста
-Show time and traffic	Аоказывать время и трафик
+Resolve hostname	Преобразовать в имя хоста
+Show time and traffic	Показывать время и трафик
 Users search	Поиск пользователей
 Personal events	Персональные уведомления
 Receive events	Получать уведомления
@@ -542,6 +541,12 @@ DND	не беспокоить
 Offline	отключён
 Use	Использует
 Version	Версия
+Step back	Перейти назад
+Single-click interface	Действия в одно нажатие
+Minimal item height	Высота элементов
+Vip sound	Звук для VIP
+Copy JID	Копировать JID
+Copy topic	Копировать тему
 Focus to Juick contact	Фокус на Juick контакте
 [J] Reply to message	[J] Ответить на сообщение
 [J] Reply to	[J] Ответить
@@ -552,4 +557,3 @@ Focus to Juick contact	Фокус на Juick контакте
 [J] Recommend post	[J] Порекомендовать пост
 [J] Show post and comments	[J] Показать пост и комментарии к нему
 For work this command you need contact juick@juick.com in you roster. For more information see http://juick.com/help/	Для работы этой команды Вам нужен контакт juick@juick.com в ростере. Больше информации об этом сервисе можно найти по адресу http://juick.com/help/
-Step back	перейти назад

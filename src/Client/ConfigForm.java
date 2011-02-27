@@ -217,13 +217,13 @@ public class ConfigForm
         messageLimit=new NumberInput(sd.canvas,  SR.MS_MESSAGE_COLLAPSE_LIMIT, Integer.toString(cf.messageLimit), 200, 1000);
         itemsList.addElement(messageLimit);
 
-        minItemHeight = new NumberInput(sd.canvas, "Min item height", Integer.toString(cf.minItemHeight), 0, 100);
+        minItemHeight = new NumberInput(sd.canvas, SR.MS_ITEM_HEIGHT, Integer.toString(cf.minItemHeight), 0, 100);
         itemsList.addElement(minItemHeight);
 
         if (sd.canvas.hasPointerEvents()) {
             widthScroll2=new NumberInput(sd.canvas,  SR.MS_MESSAGE_WIDTH_SCROLL_2, Integer.toString(cf.widthScroll2), 1, 50);
             itemsList.addElement(widthScroll2);
-            advTouch = new CheckBox("Single click interface", cf.advTouch);
+            advTouch = new CheckBox(SR.MS_SINGLE_CLICK, cf.advTouch);
             itemsList.addElement(advTouch);
         }
         

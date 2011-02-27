@@ -271,7 +271,7 @@ public class RosterItemActions extends Menu {
 //#ifdef CLIPBOARD
 //#             if (cf.useClipBoard) {
 //#                 addItem(SR.MS_COPY_JID, 892, RosterIcons.ICON_COPY_JID);
-//#                 addItem("Copy topic", 993, RosterIcons.ICON_COPY_TOPIC);
+//#                 addItem(SR.MS_COPY_TOPIC, 993, RosterIcons.ICON_COPY_TOPIC);
 //#             }
 //#endif
 
