@@ -153,7 +153,7 @@ public class AccountRegister
 	splash.close(as);
 	}*/
 	public void registrationFormNotify(JabberDataBlock data) {
-		new DiscoForm(this, data, theStream, "register" + System.currentTimeMillis(), "query").fetchMediaElements(data.getChildBlock("query").getChildBlocks());
+		new DiscoForm(null, this, data, theStream, "register" + System.currentTimeMillis(), "query").fetchMediaElements(data.getChildBlock("query").getChildBlocks());
 	}
 
 	public void registrationFailed(String errorText) {

@@ -81,9 +81,9 @@ public class TransferManager
     protected void declineCurrent() {
         if (getItemCount() > 0) {
             synchronized (TransferDispatcher.getInstance().getTaskList()) {
-                TransferTask task=(TransferTask) TransferDispatcher.getInstance().getTaskList().elementAt(getCursor());
+                TransferTask task=(TransferTask) TransferDispatcher.getInstance().getTaskList().elementAt(cursor);
                 task.cancel();
-                TransferDispatcher.getInstance().getTaskList().removeElementAt(getCursor());
+                TransferDispatcher.getInstance().getTaskList().removeElementAt(cursor);
                 loadItemsFrom(TransferDispatcher.getInstance().getTaskList());
             }
         }

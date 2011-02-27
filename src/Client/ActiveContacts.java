@@ -122,7 +122,7 @@ public class ActiveContacts extends DefForm {
     public void keyClear() {
         Contact c = (Contact) getFocusedObject();
         c.purge();
-        itemsList.removeElementAt(getCursor());
+        itemsList.removeElementAt(cursor);
         getMainBarItem().setElementAt(String.valueOf(getItemCount()), 0);
 		redraw();
     }

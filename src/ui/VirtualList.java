@@ -203,7 +203,7 @@ public abstract class VirtualList {
     int width;
     int height;
     
-    private int cursor;
+    public int cursor;
 
     /**
      * окно приклеено к позиции курсора
@@ -1246,20 +1246,23 @@ public abstract class VirtualList {
 
         int itemWidth = 0;
         try {
-            if (cursor >= 0) {
-                itemWidth = getItemRef(cursor).getVWidth();
-                if (itemWidth >= width - scrollbar.getScrollWidth()) {
-                    itemWidth -= width / 2;
-                } else {
-                    itemWidth = 0;
-                }
-            }
-        } catch (Exception e) {
+	    if (cursor >= 0) {
+		VirtualElement item = getItemRef(cursor);
+		if (item != null) {
+		    itemWidth = item.getVWidth();
+		    if (itemWidth >= getListWidth()) {
+			itemWidth -= width / 2;
+		    } else {
+			itemWidth = 0;
+		    }
+		}
+	    }
+	} catch (Exception e) {
 //#ifdef DEBUG
-//#             System.out.println("setRotator() in VirtialList in two try{} block catch exception:");
-//#             System.out.println(e);
+//# 	    System.out.println("setRotator() in VirtialList in two try{} block catch exception:");
+//# 	    System.out.println(e);
 //#endif
-        }
+	}
 
 
         TimerTaskRotate.startRotate(itemWidth, this);
@@ -1348,11 +1351,7 @@ public abstract class VirtualList {
 //#endif            
         }
     }
-    
-    public int getCursor() {
-        return cursor;
-    }
-    
+        
     public void setInfo() {
         if (reconnectWindow.getInstance().isActive()) {
             getInfoBarItem().setElementAt(SR.MS_OK, 1);

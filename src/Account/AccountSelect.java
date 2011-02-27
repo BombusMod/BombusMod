@@ -116,7 +116,7 @@ public class AccountSelect extends DefForm {
             new AccountForm(this, null).show();
         }
         if (c==cmdDel) {
-            if (getCursor()==cf.accountIndex && StaticData.getInstance().roster.isLoggedIn()) return;
+            if (cursor == cf.accountIndex && StaticData.getInstance().roster.isLoggedIn()) return;
             //if (((Account)getFocusedObject()).equals(StaticData.getInstance().account)) return;
             
             new AlertBox(SR.MS_DELETE, getFocusedObject().toString()) {
@@ -142,7 +142,8 @@ public class AccountSelect extends DefForm {
     private void delAccount(){
         if (itemsList.size()==1)
             cf.accountIndex=-1;
-        else if (cf.accountIndex>getCursor()) cf.accountIndex--;
+        else if (cf.accountIndex > cursor)
+	    cf.accountIndex--;
 
         cf.saveToStorage();
 
@@ -154,10 +155,10 @@ public class AccountSelect extends DefForm {
     }
     
     private void switchAccount(boolean login){
-        cf.accountIndex=getCursor();
+        cf.accountIndex = cursor;
         cf.saveToStorage();
         if (login) destroyView();
-        Account.loadAccount(login, getCursor());        
+        Account.loadAccount(login, cursor);
     }
     
     public void eventOk() {

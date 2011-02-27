@@ -172,7 +172,7 @@ public class ContactMessageList extends MessageList {
         if (cmdSubscribe==null) return;
         
         try {
-            Msg msg = ((MessageItem) contact.msgs.elementAt(getCursor())).msg;
+            Msg msg = ((MessageItem) contact.msgs.elementAt(cursor)).msg;
             if (msg.messageType==Msg.MESSAGE_TYPE_AUTH) {
                 addMenuCommand(cmdSubscribe);
                 addMenuCommand(cmdDecline);
@@ -180,7 +180,7 @@ public class ContactMessageList extends MessageList {
         } catch (Exception e) {}
 //#ifdef FILE_TRANSFER        
         try {
-            Msg msg = ((MessageItem) contact.msgs.elementAt(getCursor())).msg;
+            Msg msg = ((MessageItem) contact.msgs.elementAt(cursor)).msg;
             if (msg.messageType==Msg.MESSAGE_TYPE_FILE_REQ) {
                 addMenuCommand(cmdAcceptFile);
                 addMenuCommand(cmdDeclineFile);
@@ -296,9 +296,9 @@ public class ContactMessageList extends MessageList {
     protected void beginPaint() {
         if (contact != null)
             sd.roster.activeContact = contact;
-        markRead(getCursor());
+        markRead(cursor);
         forceScrolling();                 
-        on_end = (getCursor()==(getItemCount() - 1));
+        on_end = (cursor==(getItemCount() - 1));
     }
     
     public void markRead(int msgIndex) {
@@ -361,14 +361,14 @@ public class ContactMessageList extends MessageList {
 //#ifdef ARCHIVE
         if (c==cmdArch) {
             try {
-                MessageArchive.store(getMessage(getCursor()),1);
+                MessageArchive.store(getMessage(cursor),1);
             } catch (Exception e) {/*no messages*/}
         }
 //#endif
 //#if TEMPLATES
 //#         if (c==cmdTemplate) {
 //#             try {
-//#                 MessageArchive.store(getMessage(getCursor()),2);
+//#                 MessageArchive.store(getMessage(cursor),2);
 //#             } catch (Exception e) {/*no messages*/}
 //#         }
 //#endif
@@ -391,7 +391,7 @@ public class ContactMessageList extends MessageList {
         }
         if (c==cmdSelect) {
             startSelection=true;
-            Msg mess=((MessageItem) contact.msgs.elementAt(getCursor())).msg;
+            Msg mess=((MessageItem) contact.msgs.elementAt(cursor)).msg;
             mess.selected = !mess.selected;
             mess.oldHighlite = mess.highlite;
             mess.highlite = mess.selected;
@@ -495,9 +495,9 @@ public class ContactMessageList extends MessageList {
     
 //#ifdef JUICK
 //#     private String getBodyFromCurrentMsg() {
-//#         if (getCursor() > messages.size() - 1)
+//#         if (cursor > messages.size() - 1)
 //#             return "";
-//#         Msg msg = ((MessageItem)messages.elementAt(getCursor())).msg;
+//#         Msg msg = ((MessageItem)messages.elementAt(cursor)).msg;
 //# 
 //#         if (msg != null) {
 //#             return msg.body;
@@ -706,7 +706,7 @@ public class ContactMessageList extends MessageList {
 //#ifndef WMUC
         if (contact instanceof MucContact && contact.origin == Contact.ORIGIN_GROUPCHAT) {
             try {
-                Msg msg = getMessage(getCursor());
+                Msg msg = getMessage(cursor);
 
                 if (msg != null
                  && msg.messageType != Msg.MESSAGE_TYPE_OUT
@@ -758,7 +758,7 @@ public class ContactMessageList extends MessageList {
             String msg=new StringBuffer()
                 .append((char)0xbb) //
                 .append(" ")
-                .append(getMessage(getCursor()).quoteString())
+                .append(getMessage(cursor).quoteString())
                 .append("\n")
                 .append(" ")
                 .toString();
@@ -841,7 +841,7 @@ public class ContactMessageList extends MessageList {
     
     public final void smartPurge() {        
         Vector msgs=contact.msgs;
-        int cur = getCursor() + 1;
+        int cur = cursor + 1;
         moveCursorTo(cur);
         try {
             if (msgs.size()>0){
@@ -885,7 +885,7 @@ public class ContactMessageList extends MessageList {
     }
 
     public void savePosition() {
-        contact.mark = on_end ? -1 : getCursor();        
+        contact.mark = on_end ? -1 : cursor;        
     }
 
     public void destroyView(){

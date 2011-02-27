@@ -99,14 +99,14 @@ public final class XMLList
     }
 
     public void stanzaEdit() {
-        Msg m = getMessage(getCursor());
+        Msg m = getMessage(cursor);
         new StanzaEdit(this, m == null? "" : m.toString());
     }
     
     public void menuAction(MenuCommand c, VirtualList d) {
         super.menuAction(c, d);
 
-        Msg m = getMessage(getCursor());
+        Msg m = getMessage(cursor);
         if (c == cmdNew) {
             stanzaEdit();
         }
@@ -131,12 +131,12 @@ public final class XMLList
     }
     public void clearReadedMessageList() {
         try {
-            if (getCursor()+1==StanzasList.getInstance().size()) {
+            if (cursor+1==StanzasList.getInstance().size()) {
                 StanzasList.getInstance().stanzas.removeAllElements();
                 messages.removeAllElements();
             }
             else {
-                for (int i=0; i<getCursor()+1; i++)
+                for (int i=0; i<cursor+1; i++)
                     StanzasList.getInstance().stanzas.removeElementAt(0);
             }
             messages.removeAllElements();

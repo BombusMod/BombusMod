@@ -186,8 +186,8 @@ public class ConferenceForm
         if (c==cmdEdit) {
             sd.roster.bookmarks.removeElement(editConf);
             BookmarkItem item = new BookmarkItem(name, gchat.toString(), nick, pass, autojoin);
-            if (getCursor() < sd.roster.bookmarks.size())
-                sd.roster.bookmarks.insertElementAt(item, getCursor());
+            if (cursor < sd.roster.bookmarks.size())
+                sd.roster.bookmarks.insertElementAt(item, cursor);
             else
                 sd.roster.bookmarks.addElement(item);
             sd.roster.theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.SAVE));

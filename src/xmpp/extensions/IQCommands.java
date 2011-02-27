@@ -34,6 +34,7 @@ import Client.Jid;
 import Client.StaticData;
 import Conference.ConferenceGroup;
 import Conference.MucContact;
+import ServiceDiscovery.DiscoForm;
 import com.alsutton.jabber.JabberBlockListener;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
@@ -92,7 +93,7 @@ public class IQCommands implements JabberBlockListener {
                         JabberDataBlock feature1=replyChild.addChild("feature", "");
                             feature1.setAttribute("var", "http://jabber.org/protocol/commands");
                         JabberDataBlock feature2=replyChild.addChild("feature", "");
-                            feature2.setAttribute("var", XDataForm.NS_XDATA);
+                            feature2.setAttribute("var", DiscoForm.NS_XDATA);
                     }
                 sd.roster.theStream.send(reply);
                 return BLOCK_PROCESSED;
@@ -136,7 +137,7 @@ public class IQCommands implements JabberBlockListener {
                     return BLOCK_PROCESSED;
                 } else /*if (!command.getAttribute("action").equals("cancel"))*/ {
                     //parsing task
-                    JabberDataBlock x=command.findNamespace("x", XDataForm.NS_XDATA);
+                    JabberDataBlock x=command.findNamespace("x", DiscoForm.NS_XDATA);
                     if (!x.getTypeAttribute().equals("submit"))
                         return BLOCK_REJECTED;
 
@@ -180,7 +181,7 @@ public class IQCommands implements JabberBlockListener {
                     return BLOCK_PROCESSED;
                 } else /*if (!command.getAttribute("action").equals("cancel"))*/ {
                     //parsing task
-                    JabberDataBlock x=command.findNamespace("x", XDataForm.NS_XDATA);
+                    JabberDataBlock x=command.findNamespace("x", DiscoForm.NS_XDATA);
                     if (!x.getTypeAttribute().equals("submit"))
                         return BLOCK_REJECTED;
                     
@@ -230,7 +231,7 @@ public class IQCommands implements JabberBlockListener {
         cmd.setAttribute("node", "set-status");
         cmd.setAttribute("sessionid", "set-status:"+Time.utcTime());
 
-        JabberDataBlock x=cmd.addChildNs("x", XDataForm.NS_XDATA);
+        JabberDataBlock x=cmd.addChildNs("x", DiscoForm.NS_XDATA);
         x.setTypeAttribute("form");
         x.addChild("title", "Change Status");
         x.addChild("instructions", "Choose the status and status message");
@@ -276,7 +277,7 @@ public class IQCommands implements JabberBlockListener {
         cmd.setAttribute("node", "leave-groupchats");
         cmd.setAttribute("sessionid", "leave-groupchats:"+Time.utcTime());
 
-        JabberDataBlock x=cmd.addChildNs("x", XDataForm.NS_XDATA);
+        JabberDataBlock x=cmd.addChildNs("x", DiscoForm.NS_XDATA);
         x.setTypeAttribute("form");
         x.addChild("title", "Leave Groupchats");
         x.addChild("instructions", "Choose the groupchats you want to leave");

@@ -136,7 +136,7 @@ public class PrivacyModifyList extends DefForm
     
     public void move(int offset){
         try {
-            int index=getCursor();
+            int index=cursor;
             PrivacyItem p1=(PrivacyItem)plist.rules.elementAt(index);
             PrivacyItem p2=(PrivacyItem)plist.rules.elementAt(index+offset);
             

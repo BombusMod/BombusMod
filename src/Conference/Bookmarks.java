@@ -203,7 +203,7 @@ public class Bookmarks extends DefForm {
         
         itemsList.removeElement(getFocusedObject());
 
-        if (getItemCount() <= getCursor()) {
+        if (getItemCount() <= cursor) {
             moveCursorEnd();
         }
 
@@ -213,7 +213,7 @@ public class Bookmarks extends DefForm {
 	
 	public void keyGreen() {
 		BookmarkItem join = (BookmarkItem) getFocusedObject();
-        new ConferenceForm(join, getCursor());
+        new ConferenceForm(join, cursor);
 	}
 	
     public void keyClear() {
@@ -235,7 +235,7 @@ public class Bookmarks extends DefForm {
 
     public void move(int offset) {
         try {
-            int index = getCursor();
+            int index = cursor;
             BookmarkItem p1 = (BookmarkItem) getItemRef(index);
             BookmarkItem p2 = (BookmarkItem) getItemRef(index + offset);
 

@@ -27,18 +27,17 @@
 package Conference;
 
 import Client.StaticData;
+import ServiceDiscovery.DiscoForm;
 import com.alsutton.jabber.JabberBlockListener;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
 import com.alsutton.jabber.JabberStream;
-import xmpp.extensions.XDataForm;
-import xmpp.extensions.XDataForm.NotifyListener;
 
 /**
  *
  * @author EvgS
  */
-public class QueryConfigForm implements JabberBlockListener, NotifyListener {
+public class QueryConfigForm implements JabberBlockListener {
 
     private final static String OWNER_XMLNS = "http://jabber.org/protocol/muc#owner";
 
@@ -64,7 +63,7 @@ public class QueryConfigForm implements JabberBlockListener, NotifyListener {
             if (data.getTypeAttribute().equals("result")) {
                 JabberDataBlock xdata = query.getChildBlock("x");
                 //System.out.println("Source form: " + xdata.toString());
-                new XDataForm(xdata, this);
+                new DiscoForm(null, null, data, StaticData.getInstance().roster.theStream, "setform", "query");
             }
             return JabberBlockListener.NO_MORE_BLOCKS;
         }

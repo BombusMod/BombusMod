@@ -10,9 +10,9 @@
 package Conference;
 
 import Client.StaticData;
+import ServiceDiscovery.DiscoForm;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Message;
-import xmpp.extensions.XDataForm;
 
 /**
  *
@@ -28,7 +28,7 @@ public class QueryRequestVoice {
         this.action=action;
         
         JabberDataBlock msg=new Message(admin.getJid());
-        JabberDataBlock x=msg.addChildNs("x", XDataForm.NS_XDATA);
+        JabberDataBlock x=msg.addChildNs("x", DiscoForm.NS_XDATA);
         x.setTypeAttribute("submit");
         
         JabberDataBlock fieldType=new JabberDataBlock("field", null, null);

@@ -46,10 +46,10 @@ import com.ssttr.crypto.SHA1;
 import javax.microedition.io.Connector;
 import javax.microedition.io.StreamConnection;
 import Client.StaticData;
+import ServiceDiscovery.DiscoForm;
 import com.alsutton.jabber.datablocks.Message;
 import io.SOCKS5Stream;
 import util.Strconv;
-import xmpp.extensions.XDataForm;
 
 /**
  *
@@ -293,7 +293,7 @@ public class TransferTask
 
         JabberDataBlock feature=si.addChildNs("feature", "http://jabber.org/protocol/feature-neg");
 
-        JabberDataBlock x=feature.addChildNs("x", XDataForm.NS_XDATA);
+        JabberDataBlock x=feature.addChildNs("x", DiscoForm.NS_XDATA);
         x.setTypeAttribute("form");
 
         JabberDataBlock field=x.addChild("field", null);
@@ -377,7 +377,7 @@ public class TransferTask
 
             JabberDataBlock feature = si.addChildNs("feature", "http://jabber.org/protocol/feature-neg");
 
-            JabberDataBlock x = feature.addChildNs("x", XDataForm.NS_XDATA);
+            JabberDataBlock x = feature.addChildNs("x", DiscoForm.NS_XDATA);
             x.setTypeAttribute("submit");
 
             JabberDataBlock field = x.addChild("field", null);

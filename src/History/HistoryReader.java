@@ -72,11 +72,11 @@ public class HistoryReader extends MessageList {
 */
 
     public void eventOk() {
-        if (getItemRef(getCursor()) == MIPrev) {
+        if (getItemRef(cursor) == MIPrev) {
             loadFrom(hl.stepBack());
             moveCursorEnd();
             return;
-        } else if (getItemRef(getCursor()) == MINext) {
+        } else if (getItemRef(cursor) == MINext) {
             loadFrom(hl.stepNext());
             moveCursorHome();
             return;

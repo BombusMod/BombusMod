@@ -185,7 +185,7 @@ public class AlertCustomizeForm
     }
     
     private int playable() {
-        if (getCursor()<9) return getCursor();
+        if (cursor<9) return cursor;
         return -1;
     }
     
@@ -199,7 +199,7 @@ public class AlertCustomizeForm
         String soundType=(String)files[0].elementAt(selectedSound);
         int soundVol=sndVol.getValue()*10;
 //#ifdef DEBUG
-//#         System.out.println(getCursor()+": "+sound+" "+soundFile+" "+soundType+" "+soundVol);
+//#         System.out.println(cursor+": "+sound+" "+soundFile+" "+soundType+" "+soundVol);
 //#endif
         new EventNotify( soundType, soundFile, soundVol, 0).startNotify();
     }

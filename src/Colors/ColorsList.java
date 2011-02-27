@@ -85,7 +85,7 @@ public class ColorsList extends DefForm
             colorBuffer = ((ColorVisualItem) getFocusedObject()).getItemColor();
         }
         if (c == cmdPasteColor) {
-            ColorTheme.setColor(getCursor(), colorBuffer);
+            ColorTheme.setColor(cursor, colorBuffer);
             ((ColorVisualItem) getFocusedObject()).setColor(colorBuffer);
             ColorTheme.saveToStorage();
             redraw();
@@ -94,7 +94,7 @@ public class ColorsList extends DefForm
         
     public void eventOk() {
 //#ifdef COLOR_TUNE
-//#         new ColorSelectForm( this, this, getCursor());
+//#         new ColorSelectForm( this, this, cursor);
 //#endif
     }
     

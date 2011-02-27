@@ -38,6 +38,7 @@ import ui.controls.form.ItemsGroup;
 import ui.controls.form.MultiLine;
 import ui.controls.form.PasswordInput;
 import ui.controls.form.TextInput;
+import util.Strconv;
 
 /**
  *
@@ -52,7 +53,8 @@ public class FormField {
     boolean hidden;
     private boolean required;
     public boolean instructions;
-    private Vector optionsList;
+    public Vector optionsList;
+    public String body;
     private boolean numericBoolean;
     private boolean registered;
     int formIndex = -1;
@@ -64,7 +66,7 @@ public class FormField {
     public FormField(JabberDataBlock field) {
         name = field.getTagName();
         label = name;
-        String body = field.getText();
+        body = field.getText();
         if (name.equals("field")) {
             // x:data
             type = field.getTypeAttribute();
@@ -141,7 +143,16 @@ public class FormField {
                     }
                 }
                 formItem = ch;
-            } // text-single, text-private
+            } else if (type.equals("jid-multi")) {
+		Vector values = field.getChildBlocks();
+		int size = values.size();
+		StringBuffer jids = new StringBuffer();
+		for (int i = 0; i < size; i++) {
+		    jids.append(((JabberDataBlock) values.elementAt(i)).getText()).append('\n');
+		}
+		formItem = new TextInput(StaticData.getInstance().canvas, label, jids.toString().trim(), "", TextField.ANY);
+	    }
+	    // text-single, text-private
             else {
                 /* if (body.length()>=200) {
                 body=body.substring(0,198);
@@ -175,6 +186,7 @@ public class FormField {
     }
 
     JabberDataBlock constructJabberDataBlock() {
+	if (formItem instanceof MultiLine) return null;
         JabberDataBlock j = null;
         if (formItem instanceof TextInput) {
             if (media == null) {
@@ -192,10 +204,17 @@ public class FormField {
         }
 
         if (formItem instanceof TextInput) {
-            String value = ((TextInput) formItem).getValue();
+	    String value = ((TextInput) formItem).getValue();
+	    if (type.equals("jid-multi")) {
+		String jids[] = Strconv.split(value, '\n');
+		for (int i = 0; i < jids.length; i++) {
+		    j.addChild("value", jids[i]);
+		}
+	    } else {
+		j.addChild("value", value);
+	    }
+	}
 
-            j.addChild("value", value);
-        }
 
         if (formItem instanceof CheckBox) {
             if (registered) {

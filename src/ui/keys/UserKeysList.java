@@ -80,7 +80,7 @@ package ui.keys;
 //#             new UserKeyEdit(this, null);
 //#         }
 //#         if (c == cmdDel) {
-//#             itemsList.removeElementAt(getCursor());
+//#             itemsList.removeElementAt(cursor);
 //#             moveCursorHome();
 //#             commandState();
 //#             redraw();

@@ -66,6 +66,9 @@ public class DiscoForm extends ComplexForm{
     //Roster roster=StaticData.getInstance().roster;
     JabberStream stream;
 
+    public final static String NS_XDATA = "jabber:x:data";
+
+    ServiceDiscovery disco;
     FormSubmitListener listener;
     MenuCommand cmdSend = new MenuCommand(SR.MS_SEND, MenuCommand.OK, 1);
     
@@ -77,10 +80,11 @@ public class DiscoForm extends ComplexForm{
      * @param stream
      * @param childName
      */
-    public DiscoForm(FormSubmitListener listener, JabberDataBlock regform, JabberStream stream, String resultId, String childName) {
-        super(regform.getAttribute("from"));
+    public DiscoForm(ServiceDiscovery disco, FormSubmitListener listener, JabberDataBlock regform, JabberStream stream, String resultId, String childName) {
+        super(regform.getAttribute("from"), false);
         service=regform.getAttribute("from");
-        this.childName=childName;
+        this.childName = childName;
+	this.disco = disco;
         this.listener = listener;
         JabberDataBlock query=regform.getChildBlock(childName);
         xmlns=query.getAttribute("xmlns");
@@ -128,7 +132,9 @@ public class DiscoForm extends ComplexForm{
                 complete = true;
             } 
         }
-        this.stream=stream;        
+        this.stream=stream;
+	moveCursorTo(getNextSelectableRef(-1));
+	sd.canvas.show(this);
     }
     
     private void sendForm(String id){
@@ -169,8 +175,9 @@ public class DiscoForm extends ComplexForm{
 
     
     public void cmdCancel() {
-            parentView = sd.roster;
-            destroyView();
+	    destroyView();
+	    if (disco != null)
+		disco.popState();
     }
 
      public void fetchMediaElements(Vector bobCache) {
@@ -208,7 +215,9 @@ public class DiscoForm extends ComplexForm{
      // TODO: fix this shit
     public void commandState() {
         menuCommands.removeAllElements();
-        addMenuCommand(cmdSend);
+	if (!complete) {
+	    addMenuCommand(cmdSend);
+	}
     }
     public void menuAction(MenuCommand c, VirtualList v) {
         if (c == cmdSend) {

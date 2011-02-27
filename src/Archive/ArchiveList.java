@@ -117,7 +117,7 @@ public class ArchiveList
     public void menuAction(MenuCommand c, VirtualList d) {
         super.menuAction(c,d);
         
-	Msg m=getMessage(getCursor());
+	Msg m=getMessage(cursor);
         if (c==cmdNew) { new archiveEdit(this, -1, where, this); }
 	if (m==null) return;
         
@@ -128,7 +128,7 @@ public class ArchiveList
 	if (c==cmdJid) { pasteData(2); }
         if (c==cmdEdit) {
             try {
-                new archiveEdit(this, getCursor(), where, this);
+                new archiveEdit(this, cursor, where, this);
             } catch (Exception e) {/*no messages*/}
         }
     }
@@ -143,10 +143,10 @@ public class ArchiveList
     }
 
     public void deleteMessage() {
-        archive.delete(getCursor());
+        archive.delete(cursor);
         messages.removeAllElements();
-        if (getCursor() > 0) {
-            moveCursorTo(getCursor() - 1);
+        if (cursor > 0) {
+            moveCursorTo(cursor - 1);
         }
         setRotator();
         redraw(); // Need?
@@ -179,7 +179,7 @@ public class ArchiveList
     
     public void pasteData(int field) {
 	if (t==null) return;
-	Msg m=getMessage(getCursor());
+	Msg m=getMessage(cursor);
 	if (m==null) return;
 	String data;
 	switch (field) {

@@ -98,14 +98,14 @@ public class AlertProfile extends DefForm
     
     public void menuAction(MenuCommand c, VirtualList d){
         if (c==cmdDef) { 
-            cf.def_profile=defp=getCursor();
+            cf.def_profile=defp=cursor;
 	    cf.saveToStorage();
             redraw();
         }
     }
     
     public void eventOk(){
-        cf.profile=getCursor();
+        cf.profile=cursor;
         destroyView();
     }
     

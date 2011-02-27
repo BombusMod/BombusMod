@@ -28,13 +28,13 @@
 package io.file.transfer;
 
 import Client.StaticData;
+import ServiceDiscovery.FormField;
 import com.alsutton.jabber.JabberBlockListener;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
 import java.util.Enumeration;
 import java.util.Vector;
 import util.Strconv;
-import xmpp.extensions.XDataField;
 
 /**
  *
@@ -87,7 +87,7 @@ public class TransferDispatcher implements JabberBlockListener {
                 JabberDataBlock file=si.getChildBlock("file");
                 JabberDataBlock feature=si.getChildBlock("feature");                              
                 JabberDataBlock form = feature.getChildBlock("x");
-                XDataField field = new XDataField(form.getChildBlock("field"));                       
+                FormField field = new FormField(form.getChildBlock("field"));
                 
                 if (type.equals("set")) {
                     
