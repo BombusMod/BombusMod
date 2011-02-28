@@ -64,25 +64,26 @@ public class AccountSelect extends DefForm {
         if (enableQuit) {
             canBack = false;
         }
-
-        activeAccount = cf.accountIndex;
-        loadAccounts();
-        if (!itemsList.isEmpty()) {
-            moveCursorTo(activeAccount);
-        }
+        
+        loadAccounts();        
     }
     
     public final void loadAccounts() {
-        Account a;
-        int index=0;
-        do {
-            a=Account.createFromStorage(index);
-            if (a!=null) {
-                a.setActive(activeAccount==index);
-                itemsList.addElement(a);
-                index++;
-             }
-       } while (a!=null);
+	Account a;
+	int index = 0;
+	itemsList.removeAllElements();
+	activeAccount = cf.accountIndex;
+	do {
+	    a = Account.createFromStorage(index);
+	    if (a != null) {
+		a.setActive(activeAccount == index);
+		itemsList.addElement(a);
+		index++;
+	    }
+	} while (a != null);
+	if (!itemsList.isEmpty()) {
+	    moveCursorTo(activeAccount);
+	}
     }
 
     public final void commandState(){
@@ -157,6 +158,7 @@ public class AccountSelect extends DefForm {
     private void switchAccount(boolean login){
         cf.accountIndex = cursor;
         cf.saveToStorage();
+	loadAccounts();
         if (login) destroyView();
         Account.loadAccount(login, cursor);
     }

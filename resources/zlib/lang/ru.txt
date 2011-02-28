@@ -13,7 +13,7 @@ Paste Subject	Встав. тему сообщения
 Service Discovery	Обзор сервисов
 User JID	JID пользователя
 New list	Новый список
-Default	По умолчанию	
+Default	По умолчанию
 Privacy rule	Правило приватности
 Use SSL	Использовать SSL
 Modify	Изменить

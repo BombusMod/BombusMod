@@ -105,18 +105,8 @@ public class DiscoForm extends ComplexForm{
         if (vFields!=null) {
             for (e=vFields.elements(); e.hasMoreElements(); ){
                 FormField field=new FormField((JabberDataBlock)e.nextElement());
-                if (field.instructions) {
-                    fields.insertElementAt(field, 0);
-                } else { fields.addElement(field); }
-            }
-
-            if (x!=null) {
-                JabberDataBlock registered = query.getChildBlock("registered");
-                if (registered!=null) {
-                    FormField unreg=new FormField(registered);
-                    fields.addElement(unreg);
-                }
-            }
+                fields.addElement(field); 
+            }           
             
             for (e=fields.elements(); e.hasMoreElements(); ){
                 FormField field=(FormField) e.nextElement();
@@ -132,9 +122,9 @@ public class DiscoForm extends ComplexForm{
                 complete = true;
             } 
         }
-        this.stream=stream;
-	sd.canvas.show(this);
-	moveCursorTo(getNextSelectableRef(-1));	
+        this.stream = stream;
+	//moveCursorTo(getNextSelectableRef(-1));
+	show();	
     }
     
     private void sendForm(String id){
@@ -172,11 +162,8 @@ public class DiscoForm extends ComplexForm{
 
     
     public void destroyView() {
-	if (disco != null) {
-	    disco.exitDiscovery(true);
-	} else {
-	    super.destroyView();
-	}
+	parentView = sd.roster;
+	super.destroyView();
     }
 
      public void fetchMediaElements(Vector bobCache) {

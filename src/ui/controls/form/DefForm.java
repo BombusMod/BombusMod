@@ -130,12 +130,17 @@ public class DefForm
         new MyMenu(this, menuName, RosterIcons.getInstance(), menuCommands);
     }
 
-    MenuCommand findCommand(int type) {        
-        for (int i = 0; i < menuCommands.size(); i++) {
-            if (((MenuCommand)menuCommands.elementAt(i)).map == type)
-                return (MenuCommand)menuCommands.elementAt(i);
-        }
-        return null;
+    MenuCommand findCommand(int type) {
+	int size = menuCommands.size();
+	for (int i = 0; i < size; i++) {
+	    MenuCommand item = (MenuCommand) menuCommands.elementAt(i);
+	    if (item != null) {
+		if (item.map == type) {
+		    return (MenuCommand) menuCommands.elementAt(i);
+		}
+	    }
+	}
+	return null;
     }
 
     public void captionPressed() {}

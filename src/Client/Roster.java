@@ -2138,6 +2138,10 @@ public class Roster
 
     public void dispatcherException(Exception e, JabberDataBlock dataBlock) {
         errorLog("JabberDataBlockDispatcher exception\ndataBlock: " + dataBlock.toString());
+//#ifdef DEBUG
+//# 	System.out.println("JabberDataBlockDispatcher exception\ndataBlock: " + dataBlock.toString());
+//# 	e.printStackTrace();
+//#endif
     }
 
     private void askReconnect(final Exception e) {
