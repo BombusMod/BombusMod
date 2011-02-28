@@ -105,9 +105,9 @@ public class ServiceDiscovery
             this.service=service;
             requestQuery(NS_SRCH, "discosrch");
         } else if (service != null) {            
-            browse(service, node);
+            browse(service, node, true);
         } else {            
-            browse(sd.account.getServer(), null);
+            browse(sd.account.getServer(), null, true);
         }        
     }
     
@@ -272,17 +272,14 @@ public class ServiceDiscovery
             }
         } else if (id.startsWith ("discoreg")) {
             discoIcon=0;
-	    pushState();
-            new DiscoForm(this, null, data, stream, "discoResult", "query").fetchMediaElements(query.getChildBlocks());
+            new DiscoForm(this, null, null, data, stream, "discoResult", "query").fetchMediaElements(query.getChildBlocks());
         } else if (id.startsWith("discocmd")) {
             discoIcon=0;
-	    pushState();
-            new DiscoForm(this, null, data, stream, "discocmd", "command");
+	    new DiscoForm(this, null, null, data, stream, "discocmd", "command");
 
         } else if (id.startsWith("discosrch")) {
-            discoIcon=0;
-	    pushState();
-            new DiscoForm(this, null, data, stream, "discoRSearch", "query");
+            discoIcon=0;	    
+	    new DiscoForm(this, null, null, data, stream, "discoRSearch", "query");
         } else if (id.startsWith("discoR")) {
             String text=SR.MS_DONE;
             String mb=data.getTypeAttribute();
@@ -308,10 +305,10 @@ public class ServiceDiscovery
         Object o = getFocusedObject();
         if (o != null) {
             if (o instanceof Contact) {
-                browse(((Contact) o).jid.getJid(), null);
+                browse(((Contact) o).jid.getJid(), null, false);
             }
 			if (o instanceof Node) {
-                browse(service, ((Node) o).getNode());
+                browse(service, ((Node) o).getNode(), false);
             }
         }
     }
@@ -334,10 +331,13 @@ public class ServiceDiscovery
     }
     State st=new State();
     
-    public final void browse(String service, String node) {
-	if (this.service != null) {
-	    pushState();
+    public final void browse(String service, String node, boolean start) {
+	if (!start) {
+	    if (node == null || !node.equals(NODE_CMDS)) {
+		pushState();
+	    }
 	}
+	    
 	itemsList.removeAllElements();
 	features.removeAllElements();
 	this.service = service;
@@ -361,13 +361,13 @@ public class ServiceDiscovery
 	st = (State) stackItems.pop();
 	service = st.service;
 	node = st.node;
-	features = st.features;
-	moveCursorTo(st.cursor);
+	features = st.features;	
 	itemsList.removeAllElements();
 	int size = st.items.size();
 	for (int i = 0; i < size; i++) {
 	    itemsList.addElement(st.items.elementAt(i));
 	}
+	moveCursorTo(st.cursor);
     }
     
     public void menuAction(MenuCommand c, VirtualList d){
@@ -379,18 +379,18 @@ public class ServiceDiscovery
         if (c==cmdCancel) exitDiscovery(true);
     }
     
-    private void exitDiscovery(boolean cancel) {        
-        if (cancel || stackItems.empty()) {
-            stream.cancelBlockListener(this);
-            super.destroyView();
-        } else {
-            popState();
-            discoIcon = 0;
-            //requestQuery(NS_INFO,"disco");
-            mainbarUpdate();
-            moveCursorTo(st.cursor);
-            redraw();
-        }
+    public void exitDiscovery(boolean cancel) {
+	if (cancel || stackItems.empty()) {
+	    stream.cancelBlockListener(this);
+	    super.destroyView();
+	} else {
+	    popState();
+	    discoIcon = 0;
+	    //requestQuery(NS_INFO,"disco");
+	    mainbarUpdate();
+	    moveCursorTo(st.cursor);
+	    redraw();
+	}
     }
 
     
@@ -399,7 +399,7 @@ public class ServiceDiscovery
     }
     
     public void OkNotify(String selectedServer) {
-        browse(selectedServer, null);
+        browse(selectedServer, null, false);
     }
 
     private class DiscoCommand extends IconTextElement {

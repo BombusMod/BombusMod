@@ -144,15 +144,16 @@ public class FormField {
                 }
                 formItem = ch;
             } else if (type.equals("jid-multi")) {
-		Vector values = field.getChildBlocks();
-		int size = values.size();
 		StringBuffer jids = new StringBuffer();
-		for (int i = 0; i < size; i++) {
-		    jids.append(((JabberDataBlock) values.elementAt(i)).getText()).append('\n');
+		Vector values = field.getChildBlocks();
+		if (values != null) {
+		    int size = values.size();
+		    for (int i = 0; i < size; i++) {
+			jids.append(((JabberDataBlock) values.elementAt(i)).getText()).append('\n');
+		    }
 		}
 		formItem = new TextInput(StaticData.getInstance().canvas, label, jids.toString().trim(), "", TextField.ANY);
-	    }
-	    // text-single, text-private
+	    } // text-single, text-private
             else {
                 /* if (body.length()>=200) {
                 body=body.substring(0,198);
@@ -205,14 +206,19 @@ public class FormField {
 
         if (formItem instanceof TextInput) {
 	    String value = ((TextInput) formItem).getValue();
-	    if (type.equals("jid-multi")) {
-		String jids[] = Strconv.split(value, '\n');
-		for (int i = 0; i < jids.length; i++) {
-		    j.addChild("value", jids[i]);
+	    if (type != null) {
+		if (type.equals("jid-multi")) {
+		    String jids[] = Strconv.split(value, '\n');
+		    for (int i = 0; i < jids.length; i++) {
+			j.addChild("value", jids[i]);
+		    }
+		} else {
+		    j.addChild("value", value);
 		}
 	    } else {
 		j.addChild("value", value);
 	    }
+
 	}
 
 

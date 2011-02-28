@@ -20,29 +20,28 @@ import com.alsutton.jabber.datablocks.*;
  * @author root
  */
 public class Captcha implements JabberBlockListener{
-
-    private String from = null;
-    private String id = null;
     
+    private String from;
+    private String id;
+
     /** Creates a new instance of Captcha */
     public Captcha() {
-        
+
     }
+
+    public static String NS_CAPTCHA = "urn:xmpp:captcha";
 
     public int blockArrived(JabberDataBlock data) {
         if (data instanceof Message) {
      
-            JabberDataBlock challenge = null;
-            challenge = data.findNamespace("captcha", "urn:xmpp:captcha");
-            if (challenge==null) return BLOCK_REJECTED;
+            JabberDataBlock challenge = data.findNamespace("captcha", NS_CAPTCHA);
+            if (challenge==null) return BLOCK_REJECTED;            
 
-            JabberDataBlock xdata = null;
-            xdata = challenge.findNamespace("x", DiscoForm.NS_XDATA);
+            from = data.getAttribute("from");
+            id = data.getAttribute("id");
 
-            from=data.getAttribute("from");
-            id=data.getAttribute("id");
-
-            new DiscoForm(null, null, data, StaticData.getInstance().roster.theStream, id, "x").fetchMediaElements(data.getChildBlocks());
+            DiscoForm f = new DiscoForm(null, null, from, challenge, StaticData.getInstance().roster.theStream, id, null);
+	    f.fetchMediaElements(data.getChildBlocks());
 
             return BLOCK_PROCESSED;
         }
@@ -56,13 +55,5 @@ public class Captcha implements JabberBlockListener{
         }
         
         return BLOCK_REJECTED;
-    }
-/*
-    public void XDataFormSubmit(JabberDataBlock form) {
-        JabberDataBlock reply=new Iq(from, Iq.TYPE_SET, id);
-        reply.addChildNs("captcha", "urn:xmpp:captcha").addChild(form);
-        
-        StaticData.getInstance().roster.theStream.send(reply);
-    }*/
-    
+    }    
 }

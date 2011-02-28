@@ -61,9 +61,7 @@ public class QueryConfigForm implements JabberBlockListener {
         if (query != null) {
             StaticData.getInstance().roster.setQuerySign(false);
             if (data.getTypeAttribute().equals("result")) {
-                JabberDataBlock xdata = query.getChildBlock("x");
-                //System.out.println("Source form: " + xdata.toString());
-                new DiscoForm(null, null, data, StaticData.getInstance().roster.theStream, "setform", "query");
+                new DiscoForm(null, null, null, data, StaticData.getInstance().roster.theStream, "setform", "query");
             }
             return JabberBlockListener.NO_MORE_BLOCKS;
         }

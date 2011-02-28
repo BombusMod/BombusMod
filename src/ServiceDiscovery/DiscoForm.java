@@ -80,18 +80,18 @@ public class DiscoForm extends ComplexForm{
      * @param stream
      * @param childName
      */
-    public DiscoForm(ServiceDiscovery disco, FormSubmitListener listener, JabberDataBlock regform, JabberStream stream, String resultId, String childName) {
+    public DiscoForm(ServiceDiscovery disco, FormSubmitListener listener, String to, JabberDataBlock regform, JabberStream stream, String resultId, String childName) {
         super(regform.getAttribute("from"), false);
-        service=regform.getAttribute("from");
-        this.childName = childName;
+        service = (to == null) ? regform.getAttribute("from") : to;
 	this.disco = disco;
         this.listener = listener;
-        JabberDataBlock query=regform.getChildBlock(childName);
-        xmlns=query.getAttribute("xmlns");
-        node=query.getAttribute("node");
-        sessionId=query.getAttribute("sessionid");
-        JabberDataBlock x=query.getChildBlock("x");
-        this.id=resultId;
+        JabberDataBlock query = (childName == null)? regform : regform.getChildBlock(childName);
+	this.childName = query.getTagName();
+        xmlns = query.getAttribute("xmlns");
+        node = query.getAttribute("node");
+        sessionId = query.getAttribute("sessionid");
+        JabberDataBlock x = query.findNamespace("x", NS_XDATA);
+        this.id = resultId;
         //this.listener=listener;
         // todo: обработать ошибку query
         fields=new Vector();
@@ -111,7 +111,7 @@ public class DiscoForm extends ComplexForm{
             }
 
             if (x!=null) {
-                JabberDataBlock registered=query.getChildBlock("registered");
+                JabberDataBlock registered = query.getChildBlock("registered");
                 if (registered!=null) {
                     FormField unreg=new FormField(registered);
                     fields.addElement(unreg);
@@ -126,15 +126,15 @@ public class DiscoForm extends ComplexForm{
         }
         
        
-        if (childName.equals("command")) {
+        if (this.childName.equals("command")) {
             if (query.getAttribute("status").equals("completed")) {
                 itemsList.addElement(new SimpleString("Complete.", false));
                 complete = true;
             } 
         }
         this.stream=stream;
-	moveCursorTo(getNextSelectableRef(-1));
 	sd.canvas.show(this);
+	moveCursorTo(getNextSelectableRef(-1));	
     }
     
     private void sendForm(String id){
@@ -142,11 +142,11 @@ public class DiscoForm extends ComplexForm{
         JabberDataBlock qry=req.addChildNs(childName, xmlns);
         //qry.setAttribute("action", "complete");
         qry.setAttribute("node", node);
-        qry.setAttribute("sessionid", sessionId);
+        qry.setAttribute("sessionid", sessionId);	
         
         JabberDataBlock cform=qry;
-        if (xData) {
-            JabberDataBlock x=qry.addChildNs("x", "jabber:x:data");
+        if (xData) {            
+            JabberDataBlock x=qry.addChildNs("x", DiscoForm.NS_XDATA);
             x.setAttribute("type", "submit");
             cform=x;
         }
@@ -167,17 +167,16 @@ public class DiscoForm extends ComplexForm{
                 cform.addChild(ch);
             }
         }
-        
-        //System.out.println(req.toString());
-        //if (listener!=null) stream.addBlockListener(listener);
-        stream.send(req);
+	stream.send(req);	
     }
 
     
-    public void cmdCancel() {
-	    destroyView();
-	    if (disco != null)
-		disco.popState();
+    public void destroyView() {
+	if (disco != null) {
+	    disco.exitDiscovery(true);
+	} else {
+	    super.destroyView();
+	}
     }
 
      public void fetchMediaElements(Vector bobCache) {
@@ -223,7 +222,6 @@ public class DiscoForm extends ComplexForm{
         if (c == cmdSend) {
             if (!complete) {
                 sendForm(id);
-                parentView = sd.roster;
                 destroyView();
             }
         } else {

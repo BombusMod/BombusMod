@@ -48,159 +48,159 @@ import xmpp.extensions.IqRegister.RegistrationListener;
  * @author Evg_S
  */
 public class AccountRegister
-    extends DefForm
-    implements
-    JabberListener,
-    RegistrationListener,
-    FormSubmitListener,
-    Runnable {
+	extends DefForm
+	implements
+	JabberListener,
+	RegistrationListener,
+	FormSubmitListener,
+	Runnable {
 
-	private Account raccount;
-	private JabberStream theStream;
-	private SplashScreen splash;
-	private AccountSelect as;
-	private DropChoiceBox serverChoice;
-	Vector defs[];
-        MenuCommand cmdSend = new MenuCommand(SR.MS_SEND, MenuCommand.OK, 1);
+    private Account raccount;
+    private JabberStream theStream;
+    private SplashScreen splash;
+    private AccountSelect as;
+    private DropChoiceBox serverChoice;
+    Vector defs[];
+    MenuCommand cmdSend = new MenuCommand(SR.MS_SEND, MenuCommand.OK, 1);
 
-	/** Creates a new instance of AccountRegister
-	 * @param account
-	 */
-	public AccountRegister(AccountSelect parent) {
-		super(SR.MS_REGISTER, false);
-		as = parent;
-		splash = SplashScreen.getInstance();
-		splash.setExit(as);
-		splash.setProgress(SR.MS_STARTUP, 5);
+    /** Creates a new instance of AccountRegister
+     * @param account
+     */
+    public AccountRegister(AccountSelect parent) {
+	super(SR.MS_REGISTER, false);
+	as = parent;
+	splash = SplashScreen.getInstance();
+	splash.setExit(as);
+	splash.setProgress(SR.MS_STARTUP, 5);
 
-		raccount = new Account();
+	raccount = new Account();
 
-		defs = new StringLoader().stringLoader("/def_servers.txt", 1);
-		serverChoice = new DropChoiceBox("Select server for registration");
-		if (defs == null) {
-			loadDefaults();
-			show();
-		} else {
-			int serversCount = defs[0].size();
-			if (serversCount == 0) {
-				serverChoice.items.addElement("jabber.ru");
-				serverChoice.items.addElement("xmpp.ru");
-				itemsList.addElement(serverChoice);
-				show();
-			} else if (serversCount == 1) {
-				raccount.setServer((String) defs[0].elementAt(0));
-				new Thread(this).start();
-			} else {
-				for (int i = 0; i < serversCount; i++) {
-					serverChoice.items.addElement((String) defs[0].elementAt(i));
-				}
-				itemsList.addElement(serverChoice);
-				show();
-			}
-		}
-
-	}
-
-	final void loadDefaults() {
+	defs = new StringLoader().stringLoader("/def_servers.txt", 1);
+	serverChoice = new DropChoiceBox("Select server for registration");
+	if (defs == null) {
+	    loadDefaults();
+	    show();
+	} else {
+	    int serversCount = defs[0].size();
+	    if (serversCount == 0) {
 		serverChoice.items.addElement("jabber.ru");
 		serverChoice.items.addElement("xmpp.ru");
 		itemsList.addElement(serverChoice);
-	}
-
-	public void run() {
-		midlet.BombusMod.getInstance().setDisplayable(splash);
-		try {
-			splash.setProgress(SR.MS_CONNECT_TO_ + raccount.getServer(), 30);
-			//give a chance another thread to finish ui
-			Thread.sleep(500);
-			theStream = raccount.openJabberStream();
-			new Thread(theStream).start();
-			new Thread(theStream.dispatcher).start();
-
-			theStream.setJabberListener(this);
-			theStream.initiateStream();
-		} catch (Exception e) {
-			splash.setFailed();
+		show();
+	    } else if (serversCount == 1) {
+		raccount.setServer((String) defs[0].elementAt(0));
+		new Thread(this).start();
+	    } else {
+		for (int i = 0; i < serversCount; i++) {
+		    serverChoice.items.addElement((String) defs[0].elementAt(i));
 		}
-
+		itemsList.addElement(serverChoice);
+		show();
+	    }
 	}
 
-	public void connectionTerminated(Exception e) {
-	}
+    }
 
-	public void beginConversation() {
-		splash.setProgress(SR.MS_REGISTERING, 60);
-		theStream.addBlockListener(new IqRegister(this));
-		Iq iqreg = new Iq(null, Iq.TYPE_GET, "regac" + System.currentTimeMillis());
-		JabberDataBlock query = iqreg.addChild("query", null);
-		query.setNameSpace(IqRegister.NS_REGS);
-		theStream.send(iqreg);
-	}
+    final void loadDefaults() {
+	serverChoice.items.addElement("jabber.ru");
+	serverChoice.items.addElement("xmpp.ru");
+	itemsList.addElement(serverChoice);
+    }
 
-	public int blockArrived(JabberDataBlock data) {
-		return JabberBlockListener.BLOCK_REJECTED;
-	}
-
-	/*public void commandAction(Command c, Displayable d) {
-	splash.setCommandListener(null);
-	splash.removeCommand(cmdCancel);
+    public void run() {
+	midlet.BombusMod.getInstance().setDisplayable(splash);
 	try {
-	theStream.close();
+	    splash.setProgress(SR.MS_CONNECT_TO_ + raccount.getServer(), 30);
+	    //give a chance another thread to finish ui
+	    Thread.sleep(500);
+	    theStream = raccount.openJabberStream();
+	    new Thread(theStream).start();
+	    new Thread(theStream.dispatcher).start();
+
+	    theStream.setJabberListener(this);
+	    theStream.initiateStream();
 	} catch (Exception e) {
-	//e.printStackTrace();
-	}
-	as.rmsUpdate();
-	splash.close(as);
-	}*/
-	public void registrationFormNotify(JabberDataBlock data) {
-		new DiscoForm(null, this, data, theStream, "register" + System.currentTimeMillis(), "query").fetchMediaElements(data.getChildBlock("query").getChildBlocks());
+	    splash.setFailed();
 	}
 
-	public void registrationFailed(String errorText) {
-		splash.setProgress(errorText, 100);
-		midlet.BombusMod.getInstance().setDisplayable(splash);
-		theStream.close();
-	}
+    }
 
-	   // TODO: fix this shit
+    public void connectionTerminated(Exception e) {
+    }
+
+    public void beginConversation() {
+	splash.setProgress(SR.MS_REGISTERING, 60);
+	theStream.addBlockListener(new IqRegister(this));
+	Iq iqreg = new Iq(null, Iq.TYPE_GET, "regac" + System.currentTimeMillis());
+	JabberDataBlock query = iqreg.addChild("query", null);
+	query.setNameSpace(IqRegister.NS_REGS);
+	theStream.send(iqreg);
+    }
+
+    public int blockArrived(JabberDataBlock data) {
+	return JabberBlockListener.BLOCK_REJECTED;
+    }
+
+    /*public void commandAction(Command c, Displayable d) {
+    splash.setCommandListener(null);
+    splash.removeCommand(cmdCancel);
+    try {
+    theStream.close();
+    } catch (Exception e) {
+    //e.printStackTrace();
+    }
+    as.rmsUpdate();
+    splash.close(as);
+    }*/
+    public void registrationFormNotify(JabberDataBlock data) {
+		new DiscoForm(null, this, null, data, theStream, "register" + System.currentTimeMillis(), "query").fetchMediaElements(data.getChildBlock("query").getChildBlocks());
+    }
+
+    public void registrationFailed(String errorText) {
+	splash.setProgress(errorText, 100);
+	midlet.BombusMod.getInstance().setDisplayable(splash);
+	theStream.close();
+    }
+
+    // TODO: fix this shit
     public void commandState() {
-        menuCommands.removeAllElements();
-        addMenuCommand(cmdSend);
+	menuCommands.removeAllElements();
+	addMenuCommand(cmdSend);
     }
 
     public void menuAction(MenuCommand c, VirtualList v) {
-        if (c == cmdSend) {
-            String serverName = (String) serverChoice.items.elementAt(serverChoice.getSelectedIndex());
-            raccount.setServer(serverName);
-            new Thread(this).start();
-        } else {
-            super.menuAction(c, v);
-        }
+	if (c == cmdSend) {
+	    String serverName = (String) serverChoice.items.elementAt(serverChoice.getSelectedIndex());
+	    raccount.setServer(serverName);
+	    new Thread(this).start();
+	} else {
+	    super.menuAction(c, v);
+	}
     }
 
-	public void registrationSuccess() {
-		as.itemsList.addElement(raccount);
-		as.rmsUpdate();
-		String success = SR.MS_DONE;
-		splash.setProgress(success, 100);
-		midlet.BombusMod.getInstance().setDisplayable(splash);
-		theStream.close();
-	}
-
-	public void dispatcherException(Exception e, JabberDataBlock data) {
-	}
-
-	public void formSubmit(Vector fields) {
-        for (Enumeration e = fields.elements(); e.hasMoreElements();) {
-            FormField field = (FormField) e.nextElement();
-            if (field != null && field.name != null) {
-                if (field.name.equals("username")) {
-                    raccount.setUserName(((TextInput) field.formItem).getValue());
-                }
-                if (field.name.equals("password")) {
-                    raccount.setPassword(((TextInput) field.formItem).getValue());
-                }
-            }
-        }
+    public void registrationSuccess() {
+	as.itemsList.addElement(raccount);
+	as.rmsUpdate();
+	String success = SR.MS_DONE;
+	splash.setProgress(success, 100);
+	midlet.BombusMod.getInstance().setDisplayable(splash);
+	theStream.close();
     }
-}
+
+    public void dispatcherException(Exception e, JabberDataBlock data) {
+    }
+
+    public void formSubmit(Vector fields) {
+	for (Enumeration e = fields.elements(); e.hasMoreElements();) {
+	    FormField field = (FormField) e.nextElement();
+	    if (field != null && field.name != null) {
+		if (field.name.equals("username")) {
+		    raccount.setUserName(((TextInput) field.formItem).getValue());
+		}
+		if (field.name.equals("password")) {
+		    raccount.setPassword(((TextInput) field.formItem).getValue());
+		}
+	    }
+	}
+    }
+    }

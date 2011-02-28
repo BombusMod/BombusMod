@@ -106,7 +106,7 @@ Join conferences	Автоматически входить в отмеченны
 Status	Статус
 Smiles	Вкл/выкл смайлики
 Contact >	Контакт >
-Offline contacts	Показывать отключенных
+Offline contacts	Показывать отключённых
 Transport	Транспорты
 Composing events	Уведомления о наборе текста
 Add Smile	Смайлики
@@ -450,9 +450,9 @@ Description	Описание
 User	Пользователь
 Import/Export	Импорт/Экспорт данных
 Bold font for contacts	жирный шрифт для контактов ростера
-Running message	бегущая строка в заголовке
+Running message	Бегущая строка в заголовке
 Composing message to you	Контакт пишет сообщение
-Compression	сжатие трафика
+Compression	Сжатие трафика
 New room created	Создана новая комната, не забудьте настроить её в конфигураторе!
 IRC-like conference nick-status	смена ника при смене статуса в конференции как в IRC
 Simulated break	Ручное переподключение
@@ -474,7 +474,7 @@ Browse rooms	Обзор комнат
 Autorespond	Автоответчик
 Invert colors	Инверсия цвета
 XML console	XML-консоль
-Clipboard	буфер обмена
+Clipboard	Буфер обмена
 Bar font	Шрифт панелей
 Popup & balloon font	Шрифт всплывающих окон и подсказок
 Fonts options	Настройка шрифтов
@@ -539,7 +539,7 @@ xa	недоступен
 Invisible	невидимый
 DND	не беспокоить
 Offline	отключён
-Use	Использует
+Use	Клиент
 Version	Версия
 Step back	Перейти назад
 Single-click interface	Действия в одно нажатие
