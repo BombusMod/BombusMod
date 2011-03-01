@@ -83,8 +83,8 @@ public class Group extends IconTextElement {
         }
 */
         if (collapsed && unreadMessages>0) {
-            w-=il.getWidth();
-            il.drawImage(g, RosterIcons.ICON_MESSAGE_INDEX, w,0);
+            w -= il.getWidth();
+            il.drawImage(g, RosterIcons.ICON_MESSAGE_INDEX, w, (getVHeight() - il.getWidth()) >> 1);
         }
         g.setClip(xo, yo, w, h);
         

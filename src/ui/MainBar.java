@@ -97,6 +97,6 @@ public class MainBar extends ComplexString{
 //#endif        
         g.clipRect((lShift)? 20: 0, 0, g.getClipWidth() - ((rShift)? 20: 0), g.getClipHeight());
         super.drawItem(g, offset, selected);
-        g.setClip(xo, yo, wo, ho);
+        //g.setClip(xo, yo, wo, ho);
     }
 }

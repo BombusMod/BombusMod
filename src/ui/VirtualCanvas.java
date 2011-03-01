@@ -128,8 +128,8 @@ public class VirtualCanvas extends Canvas implements CommandListener{
     }
     
     protected void paint(Graphics graphics) {
-        list.width = graphics.getClipWidth();
-        list.height = graphics.getClipHeight();
+        list.width = getWidth();
+        list.height = getHeight();
         list.paint(graphics);
     }
     protected final void keyPressed(int keyCode) {
