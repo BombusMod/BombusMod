@@ -154,8 +154,12 @@ public abstract class MessageList extends DefForm
         if (isHasUrl())
             addMenuCommand(cmdUrl);
 //#ifdef JUICK
-//# 	if (Juick.haveJuickThings(((MessageItem) getFocusedObject()).msg))
-//# 	    addMenuCommand(Juick.cmdJuickThings);
+//# 	MessageItem mi = (MessageItem) getFocusedObject();
+//# 	if (mi != null) {
+//# 	    if (Juick.haveJuickThings(mi.msg)) {
+//# 		addMenuCommand(Juick.cmdJuickThings);
+//# 	    }
+//# 	}
 //#endif
     }
 
