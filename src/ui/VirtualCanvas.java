@@ -96,7 +96,6 @@ public class VirtualCanvas extends Canvas implements CommandListener{
             if (Config.fullscreen) {
                 setCommandListener(null);
             } else if (list != null) {
-                list.commandState();
                 setOk(list.touchLeftCommand());
                 setCancel(list.touchRightCommand());
                 setCommandListener(instance);
