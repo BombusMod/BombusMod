@@ -114,9 +114,17 @@ public class RosterItemActions extends Menu {
             addItem(SR.MS_INFO,86, RosterIcons.ICON_INFO);
 //#endif
             addItem(SR.MS_CLIENT_INFO,0, RosterIcons.ICON_VERSION);
+	    int iconCommandsIndex = -1;
+//#ifdef JUICK
+//# 	    if (Juick.isJuickContact(contact))
+//# 		iconCommandsIndex = RosterIcons.ICON_JUICK;
+//#endif	    
 //#ifdef SERVICE_DISCOVERY
-	    addItem(SR.MS_COMMANDS,30, RosterIcons.ICON_COMMAND);
+	    if (iconCommandsIndex < 0)
+		iconCommandsIndex  = RosterIcons.ICON_COMMAND;
 //#endif
+	    if (iconCommandsIndex >= 0)
+		addItem(SR.MS_COMMANDS,30, iconCommandsIndex);
 //#ifdef CLIPBOARD
 //#             if (cf.useClipBoard) {
 //#                 if (!clipboard.isEmpty())
@@ -386,11 +394,19 @@ public class RosterItemActions extends Menu {
                 case 21:
                     sd.roster.cleanupSearch();
                     break;
-//#ifdef SERVICE_DISCOVERY
+
                 case 30:
-                    new ServiceDiscovery(c.getJid(), "http://jabber.org/protocol/commands", false);
-                    return;
+//#ifdef JUICK
+//# 		    if (Juick.isJuickContact(c)) {
+//# 			Juick.viewCommands();
+//# 			return;
+//# 		    }
 //#endif
+//#ifdef SERVICE_DISCOVERY
+                    new ServiceDiscovery(c.getJid(), "http://jabber.org/protocol/commands", false);
+//#endif
+                    return;
+
 /*                case 1003: 
                     new RenameGroup( null, c);
                     return;

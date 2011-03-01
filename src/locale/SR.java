@@ -711,9 +711,9 @@ public class SR {
 //#      public static String MS_JUICK_FOCUS = loadString( "Focus to Juick contact" );
 //#      public static String MS_JUICK_MESSAGE_REPLY = loadString( "[J] Reply to message" );
 //#      public static String MS_JUICK_SEND_PRIVATE_REPLY = loadString( "[J] Reply to" );
-//#      public static String MS_JUICK_THINGS = loadString( "[J] Things" );
+//#      public static String MS_JUICK_THINGS = loadString( "Things" );
 //#      public static String MS_JUICK_MESSAGE_DELETE = loadString( "[J] Delete message" );
-//#      public static String MS_JUICK_POST_SUBSCRIBE = loadString( "[J] Subscribe to comments" );
+//#      public static String MS_JUICK_POST_SUBSCRIBE = loadString( "[J] Subscribe" );
 //#      public static String MS_JUICK_POST_UNSUBSCRIBE = loadString( "[J] Unsubscribe from comments" );
 //#      public static String MS_JUICK_POST_RECOMMEND = loadString( "[J] Recommend post" );
 //#      public static String MS_JUICK_POST_SHOW = loadString( "[J] Show post and comments" );

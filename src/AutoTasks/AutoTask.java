@@ -169,7 +169,8 @@ public class AutoTask
 //#                 taskType=TASK_TYPE_TIMER;
 //#                 initTime=System.currentTimeMillis();
 //#                 startTask();
-//#                 sd.roster.connectionTerminated(new Exception(caption));
+//# 		sd.roster.errorLog(caption);
+//#                 sd.roster.doReconnect();
 //#                 break;
 //#         }
 //#endif

@@ -38,17 +38,17 @@ public class JuickConfig extends DefForm {
 
     private void addJuickContactsBox() {
 //#ifdef JUICK
-//#         if (sdata.roster.juickContacts.size() > 1) {
-//#             Vector juickContactsNames = new Vector(sdata.roster.juickContacts.size());
-//#             for (Enumeration e = sdata.roster.juickContacts.elements(); e.hasMoreElements();) {
+//#         if (Juick.juickContacts.size() > 1) {
+//#             Vector juickContactsNames = new Vector(Juick.juickContacts.size());
+//#             for (Enumeration e = Juick.juickContacts.elements(); e.hasMoreElements();) {
 //#                 Contact c = (Contact) e.nextElement();
 //#                 juickContactsNames.addElement(c.bareJid);
 //#             }
 //#             juickContactsBox = new DropChoiceBox("Main Juick-contact");
 //#             juickContactsBox.items = juickContactsNames;
 //#             //if (!account.juickJID.equals(""))
-//#             if (sdata.roster.indexMainJuickContact > -1)
-//#                 juickContactsBox.setSelectedIndex(sdata.roster.indexMainJuickContact);
+//#             if (Juick.indexMainJuickContact > -1)
+//#                 juickContactsBox.setSelectedIndex(Juick.indexMainJuickContact);
 //#             else juickContactsBox.setSelectedIndex(0);
 //#             itemsList.addElement(juickContactsBox);
 //#         }
@@ -58,11 +58,11 @@ public class JuickConfig extends DefForm {
     public void cmdOk() {
 //#ifdef JUICK
 //#             if (juickContactsBox != null) {
-//#                 setJuickJID(((Contact) sdata.roster.juickContacts.elementAt(juickContactsBox.getSelectedIndex())).bareJid, true);
+//#                 setJuickJID(((Contact) Juick.juickContacts.elementAt(juickContactsBox.getSelectedIndex())).bareJid, true);
 //#             } else {
 //#                 setJuickJID("", true);
 //#             }
-//#             sdata.roster.updateMainJuickContact();
+//#             Juick.updateMainJuickContact();
 //#             destroyView();
 //#endif
     }

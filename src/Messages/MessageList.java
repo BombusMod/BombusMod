@@ -28,8 +28,10 @@
 package Messages;
 
 import Client.Config;
+import Client.Juick;
 import Client.Msg;
 import Colors.ColorTheme;
+import Menu.JuickThingsMenu;
 import java.util.Vector;
 import Menu.MenuCommand;
 import images.RosterIcons;
@@ -132,6 +134,11 @@ public abstract class MessageList extends DefForm
 //# 
 //#         }
 //#endif
+//#ifdef JUICK
+//# 	if (c == Juick.cmdJuickThings) {
+//# 	    new JuickThingsMenu(this, Juick.getMainJuickContact());
+//# 	}
+//#endif
     }
    
     public void commandState() {         
@@ -146,6 +153,10 @@ public abstract class MessageList extends DefForm
             addMenuCommand(cmdxmlSkin);
         if (isHasUrl())
             addMenuCommand(cmdUrl);
+//#ifdef JUICK
+//# 	if (Juick.haveJuickThings(((MessageItem) getFocusedObject()).msg))
+//# 	    addMenuCommand(Juick.cmdJuickThings);
+//#endif
     }
 
     public boolean isHasScheme() {
