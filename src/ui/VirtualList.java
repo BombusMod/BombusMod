@@ -177,17 +177,7 @@ public abstract class VirtualList {
             case VirtualCanvas.KEY_VOL_DOWN:
                 moveCursorEnd();
                 redraw();
-                return;
-            case VirtualCanvas._KEY_STAR:
-//#ifdef POPUPS
-                showTimeTrafficInfo();
-//#endif
-                return;
-            case VirtualCanvas._KEY_POUND:
-//#ifdef POPUPS
-                showInfo();
-//#endif
-                return;
+                return;            
         }
     }
 
@@ -1408,15 +1398,16 @@ public abstract class VirtualList {
 
     public void showInfo() {
 //#ifdef POPUPS
-        if (!cf.popUps)
-            return;
-
-        try {
-            String text = ((VirtualElement) getFocusedObject()).getTipString();
-            if (text != null) {
-                setWobble(1, null, text);
-            }
-        } catch (Exception e) { }
+	if (!cf.popUps) {
+	    return;
+	}
+	VirtualElement item = (VirtualElement) getFocusedObject();
+	if (item != null) {
+	    String text = item.getTipString();
+	    if (text != null) {
+		setWobble(1, null, text);
+	    }
+	}
 //#endif
     }
 }

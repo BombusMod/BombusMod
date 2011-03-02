@@ -137,7 +137,7 @@ public class VirtualCanvas extends Canvas implements CommandListener{
 //#endif
         kHold = false;        
 //#ifdef POPUPS
-        if (PopUp.getInstance().handleEvent(getKey(keyCode))) {
+        if (PopUp.getInstance().handlePressed(getKey(keyCode))) {
             list.redraw();
             return;
         }
@@ -180,6 +180,21 @@ public class VirtualCanvas extends Canvas implements CommandListener{
 //#     sd.roster.userActivity();
 //#endif
         KeyRepeatTimer.stop();
+//#ifdef POPUPS
+        if (PopUp.getInstance().handleReleased(getKey(keyCode))) {
+            list.redraw();
+            return;
+        } else {
+	    switch (getKey(keyCode)) {
+		case VirtualCanvas._KEY_STAR:
+		    list.showTimeTrafficInfo();
+                return;
+		case VirtualCanvas._KEY_POUND:
+		    list.showInfo();
+	    }
+	}
+//#endif
+
     }
 
     protected final void pointerPressed(int x, int y) {
@@ -541,6 +556,9 @@ public class VirtualCanvas extends Canvas implements CommandListener{
 //#endif
          if (kHold) {
              list.longKey(keyCode);
+//#ifdef POPUPS
+	     PopUp.getInstance().handled = true;
+//#endif
              KeyRepeatTimer.stop();
              kHold = false;
          }

@@ -72,6 +72,8 @@ public class PopUp {
     public int scrollable=SCROLLABLE_NONE;
     
     private RosterIcons ri;
+
+    public boolean handled = false;
     
     synchronized public void addPopup(int type, String contact, String message){
         if (message!=null) {
@@ -132,37 +134,44 @@ public class PopUp {
         }
     }
     
-    public boolean handleEvent(int keyCode) {
-        if (scrollable > -1) {
-            switch (keyCode) {
-                case 2:
-                case 4:
-				case VirtualCanvas.KEY_UP:
-				case VirtualCanvas.KEY_LEFT:
-                    scrollUp();
-                    return true;
-                case 6:
-                case 8:
-				case VirtualCanvas.KEY_DOWN:
-				case VirtualCanvas.KEY_RIGHT:
-                    scrollDown();
-                    return true;
-            }
-        }
-        if (keyCode == VirtualCanvas.KEY_GREEN) {
-            String c = getContact();
-            if (c != null) {
+    public boolean handlePressed(int keyCode) {
+	handled = false;
+	if (scrollable > -1) {
+	    switch (keyCode) {
+		case 2:
+		case 4:
+		case VirtualCanvas.KEY_UP:
+		case VirtualCanvas.KEY_LEFT:
+		    scrollUp();
+		    return handled = true;
+		case 6:
+		case 8:
+		case VirtualCanvas.KEY_DOWN:
+		case VirtualCanvas.KEY_RIGHT:
+		    scrollDown();
+		    return handled = true;
+	    }
+	}
+	if (keyCode == VirtualCanvas.KEY_GREEN) {
+	    String c = getContact();
+	    if (c != null) {
 //#ifdef POPUPS
-                VirtualList current = StaticData.getInstance().canvas.getList();
-                if (current instanceof ContactMessageList)
-                    ((ContactMessageList)current).savePosition();
-                StaticData.getInstance().roster.showContactMessageList(c);
+		VirtualList current = StaticData.getInstance().canvas.getList();
+		if (current instanceof ContactMessageList) {
+		    ((ContactMessageList) current).savePosition();
+		}
+		StaticData.getInstance().roster.showContactMessageList(c);
 //#endif
-                next();
-                return true;
-            }
-        }
-        return next();
+		return handled = next();
+	    }
+	}
+	return handled = next();
+    }
+
+    public boolean handleReleased(int keyCode) {
+	if (!handled)
+	    return next();
+	return popUps.isEmpty();
     }
     
     public void clear() {
