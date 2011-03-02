@@ -1104,7 +1104,12 @@ public abstract class VirtualList {
         while (process) {
             nextRef++;
             if (nextRef >= getItemCount()) {
-                nextRef = wrapping ? 0 : curRef;
+                if (wrapping) {
+		    nextRef = 0;
+		} else {
+		    nextRef = curRef;
+		    process = false;
+		}
             }
             if (getItemRef(nextRef).isSelectable())
                 break;

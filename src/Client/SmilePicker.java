@@ -99,12 +99,6 @@ public class SmilePicker
         xBorder=(realWidth-(xCnt*imgWidth))/2;
         enableListWrapping(true);
     }
-
-    public void commandState() {
-        menuCommands.removeAllElements();
-        addMenuCommand(cmdOk);
-        addMenuCommand(cmdCancel);             
-    }
     
     int lineIndex;
     
@@ -229,5 +223,17 @@ public class SmilePicker
     
     public boolean handleEvent(int keyCode) { return false; }
 
-    public void cmdOk(){ eventOk(); }
+    // TODO: fix this shit
+    public String touchLeftCommand() { return SR.MS_SELECT; }
+    public String touchRightCommand() { return cf.swapMenu ? "" : SR.MS_BACK; }
+
+    public void touchLeftPressed() {
+        eventOk();
+    }
+    public void touchRightPressed() {
+        if (!cf.swapMenu)
+            cmdCancel();
+    }
+
+    public void commandState() {}
 }

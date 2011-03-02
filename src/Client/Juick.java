@@ -177,6 +177,7 @@ public class Juick {
 //#     public static Vector things;
 //# 
 //#     public static boolean haveJuickThings(Msg msg) {
+//# 	if (msg == null) return false;
 //# 	char[] valueChars = msg.body.toCharArray();
 //#         int msg_length = valueChars.length;
 //#         things = new Vector();
