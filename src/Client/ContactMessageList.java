@@ -697,6 +697,9 @@ public class ContactMessageList extends MessageList {
         super.longKey(key);
     }
 
+    public void showTimeTrafficInfo() {}
+    public void showInfo() {}
+
      public void keyGreen() {
         if (!sd.roster.isLoggedIn()) {
             return;
