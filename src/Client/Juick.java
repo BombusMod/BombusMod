@@ -106,7 +106,7 @@ public class Juick {
 	    msg.JuickRid = juick.getAttribute("rid");
 	    msg.JuickUid = juick.getAttribute("uname");
 	}
-	getJuickThings(msg);
+	getJuickThings(msg);	
     }
 
     public static Vector juickContacts  = new Vector();
@@ -176,10 +176,12 @@ public class Juick {
 //#     }
 //# 
 //#     public static void getJuickThings(Msg msg) {
-//# 	if (msg == null || !msg.things.isEmpty()) return;
-//# 	char[] valueChars = msg.body.toCharArray();
+//#         if (msg == null || !msg.things.isEmpty()) {
+//#             return;
+//#         }
+//#         char[] valueChars = msg.body.toCharArray();
 //#         int msg_length = valueChars.length;
-//# 	Vector things = new Vector();
+//#         Vector things = new Vector();
 //#         for (int i = 0; i < msg_length; i++) {
 //#             if ((i == 0) || isCharBeforeJuickThing(valueChars[i - 1])) {
 //#                 switch (valueChars[i]) {
@@ -188,8 +190,9 @@ public class Juick {
 //#                     case '*':
 //#                         char firstSymbol = valueChars[i];
 //#                         String thing = "" + firstSymbol;
-//#                         while (i < (msg_length - 1) && isCharFromJuickThing(valueChars[++i], firstSymbol)) {
-//#                             thing = thing + valueChars[i];
+//#                         int pos = i + 1;
+//#                         while (pos < (msg_length - 1) && isCharFromJuickThing(valueChars[pos], firstSymbol)) {
+//#                             thing = thing + valueChars[pos++];
 //#                         }
 //#                         while (thing.charAt(thing.length() - 1) == '.') {
 //#                             thing = thing.substring(0, thing.length() - 1);
@@ -199,9 +202,6 @@ public class Juick {
 //#                                 continue;
 //#                             }
 //#                             things.addElement(thing);
-//#                         }
-//#                         if (i > 0) {
-//#                             i--;
 //#                         }
 //#                         break;
 //#                 }
