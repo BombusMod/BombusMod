@@ -106,6 +106,7 @@ public class Juick {
 	    msg.JuickRid = juick.getAttribute("rid");
 	    msg.JuickUid = juick.getAttribute("uname");
 	}
+	getJuickThings(msg);
     }
 
     public static Vector juickContacts  = new Vector();
@@ -174,13 +175,11 @@ public class Juick {
 //#endif
 //#     }
 //# 
-//#     public static Vector things;
-//# 
-//#     public static boolean haveJuickThings(Msg msg) {
-//# 	if (msg == null) return false;
+//#     public static void getJuickThings(Msg msg) {
+//# 	if (msg == null || !msg.things.isEmpty()) return;
 //# 	char[] valueChars = msg.body.toCharArray();
 //#         int msg_length = valueChars.length;
-//#         things = new Vector();
+//# 	Vector things = new Vector();
 //#         for (int i = 0; i < msg_length; i++) {
 //#             if ((i == 0) || isCharBeforeJuickThing(valueChars[i - 1])) {
 //#                 switch (valueChars[i]) {
@@ -208,7 +207,7 @@ public class Juick {
 //#                 }
 //#             }
 //#         }
-//#         return (!things.isEmpty());
+//#         msg.things = things;
 //#     }
 //# 
 //#     public static void viewCommands() {

@@ -475,11 +475,11 @@ public class ContactMessageList extends MessageList {
 //#ifdef PLUGINS
 //#         if (sd.Juick)
 //#endif            
-//# 	if (Juick.haveJuickThings(msg)) {
+//# 	if (!msg.things.isEmpty()) {
 //# 	    String target = Juick.getTargetForJuickReply(msg);
 //# 
 //# 	    if (target.length() == 0) {
-//# 		new JuickThingsMenu((VirtualList)this, contact);
+//# 		new JuickThingsMenu((VirtualList)this, msg.things, contact);
 //# 		return;
 //# 	    }
 //# 

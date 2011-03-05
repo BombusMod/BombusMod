@@ -107,36 +107,33 @@ public abstract class MessageList extends DefForm
         if (c == cmdBack) {            
             destroyView();
         }
-        if (c == cmdUrl) {
-            try {
-                Vector urls = ((MessageItem) getFocusedObject()).getUrlList();
-                new MessageUrl(urls); //throws NullPointerException if no urls
-            } catch (Exception e) {/* no urls found */
+	MessageItem mi = (MessageItem) getFocusedObject();
+	if (mi == null) return;
 
-            }
+        if (c == cmdUrl) {
+	    Vector urls = mi.getUrlList();
+	    if (urls != null)
+		new MessageUrl(urls);
         }
         if (c == cmdxmlSkin) {
-            try {
-                if (((MessageItem) getFocusedObject()).msg.body.indexOf("xmlSkin") > -1) {
-                    ColorTheme.loadSkin(((MessageItem) getFocusedObject()).msg.body, 2);
-                }
-            } catch (Exception e) {
-            }
-        }
+	    if (mi.msg.body.indexOf("xmlSkin") > -1) {
+		ColorTheme.loadSkin(((MessageItem) getFocusedObject()).msg.body, 2);
+	    }
+	}
 
 //#ifdef CLIPBOARD
 //#         if (c == cmdCopy) {
-//#             clipboard.set(((MessageItem) getFocusedObject()).msg);
+//#             clipboard.set(mi.msg);
 //#         }
 //# 
 //#         if (c == cmdCopyPlus) {
-//#             clipboard.append(((MessageItem) getFocusedObject()).msg);
+//#             clipboard.append(mi.msg);
 //# 
 //#         }
 //#endif
 //#ifdef JUICK
 //# 	if (c == Juick.cmdJuickThings) {
-//# 	    new JuickThingsMenu(this, Juick.getMainJuickContact());
+//# 	    new JuickThingsMenu(this, mi.msg.things, Juick.getMainJuickContact());
 //# 	}
 //#endif
     }
@@ -156,7 +153,7 @@ public abstract class MessageList extends DefForm
 //#ifdef JUICK
 //# 	MessageItem mi = (MessageItem) getFocusedObject();
 //# 	if (mi != null) {
-//# 	    if (Juick.haveJuickThings(mi.msg)) {
+//# 	    if (!mi.msg.things.isEmpty()) {
 //# 		addMenuCommand(Juick.cmdJuickThings);
 //# 	    }
 //# 	}

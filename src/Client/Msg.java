@@ -30,6 +30,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import Colors.ColorTheme;
+import java.util.Vector;
 import ui.Time;
 
 /**
@@ -77,6 +78,7 @@ public class Msg {
 //#ifdef JUICK
 //#     public boolean isJuickMsg = false;
 //#     public String JuickMid, JuickUid, JuickRid;
+//#     public Vector things = new Vector();
 //#endif
     
     /** Creates a new instance of msg */
