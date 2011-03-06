@@ -85,7 +85,7 @@ public class VCardView
 //#ifdef CLIPBOARD
 //#     ClipBoard clipboard  = ClipBoard.getInstance();   
 //#     StringBuffer VCardData = new StringBuffer();
-//#     MenuCommand cmdCopy      = new MenuCommand(SR.MS_COPY, MenuCommand.SCREEN, 1);
+//#     MenuCommand cmdCopy      = new MenuCommand(SR.MS_COPY, MenuCommand.OK, 1);
 //#     MenuCommand cmdCopyPlus  = new MenuCommand("+ "+SR.MS_COPY, MenuCommand.SCREEN, 2);
 //#endif    
 
@@ -215,11 +215,7 @@ public class VCardView
 //#             }
 //#         }
 //#endif        
-    }
-    
-    public void cmdOk() {
-        destroyView();
-    }
+    }  
 
 
 //#ifdef CLIPBOARD

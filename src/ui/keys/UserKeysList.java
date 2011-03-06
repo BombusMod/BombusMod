@@ -27,31 +27,31 @@
 package ui.keys;
 //#ifdef USER_KEYS
 //# import locale.SR;
-//#
+//# 
 //# import Menu.MenuCommand;
 //# import ui.VirtualList;
 //# import ui.controls.form.DefForm;
-//#
-//#
-//#
+//# 
+//# 
+//# 
 //# public class UserKeysList extends DefForm {
-//#
+//# 
 //#ifdef PLUGINS
 //#     public static String plugin = new String("PLUGIN_USER_KEYS");
 //#endif
-//#
+//# 
 //#      MenuCommand cmdApply = new MenuCommand(SR.MS_APPLY, MenuCommand.OK, 1);
-//#      MenuCommand cmdAdd = new MenuCommand(SR.MS_ADD_CUSTOM_KEY, MenuCommand.SCREEN, 2);
+//#      MenuCommand cmdAdd = new MenuCommand(SR.MS_ADD, MenuCommand.SCREEN, 2);
 //#      MenuCommand cmdEdit = new MenuCommand(SR.MS_EDIT, MenuCommand.SCREEN, 3);
 //#      MenuCommand cmdDel = new MenuCommand(SR.MS_DELETE, MenuCommand.SCREEN, 4);
-//#
+//# 
 //#     /** Creates a new instance of AccountPicker */
 //#     public UserKeysList() {
 //#         super(SR.MS_CUSTOM_KEYS);
 //#         enableListWrapping(true);
 //#         loadItemsFrom(UserKeyExec.getInstance().keysList);
 //#     }
-//#
+//# 
 //#     public void commandState() {
 //#       menuCommands.removeAllElements();
 //#         addMenuCommand(cmdAdd);
@@ -64,14 +64,14 @@ package ui.keys;
 //#         }
 //#         addMenuCommand(cmdApply);
 //#         }
-//#
+//# 
 //#     public void cmdOk() {
 //#        UserKeyExec uexec = UserKeyExec.getInstance();
 //#        uexec.keysList = itemsList;
 //#        uexec.rmsUpdate();
 //#        destroyView();
 //#     }
-//#
+//# 
 //#     public void menuAction(MenuCommand c, VirtualList d) {
 //#         if (c == cmdEdit) {
 //#             new UserKeyEdit(this, (UserKey) getFocusedObject());
@@ -90,14 +90,14 @@ package ui.keys;
 //#         }
 //#         super.menuAction(c, d);
 //#     }
-//#
+//# 
 //#     public void eventOk() {
 //#         new UserKeyEdit(this, (UserKey) getFocusedObject());
 //#     }
-//#
+//# 
 //#      public String touchLeftCommand() { return SR.MS_MENU; }
 //#      public void touchLeftPressed() { showMenu(); }
-//#
+//# 
 //# }
-//#
+//# 
 //#endif

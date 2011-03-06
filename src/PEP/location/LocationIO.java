@@ -5,6 +5,8 @@
 
 package PEP.location;
 
+import Client.Config;
+
 /**
  *
  * @author Vitaly
@@ -22,6 +24,11 @@ public abstract class LocationIO {
     public static LocationIO getInstance() throws ClassNotFoundException {
         if (providerType == LocationIO.NONE) {
         try {
+            // Sony-Ericsson supports JSR-179 only since JP8
+            if (Config.getInstance().phoneManufacturer == Config.SONYE && Config.getInstance().swapMenu) {
+                providerType = LocationIO.CELLID;
+                return new CellIDLocation();
+            }
             // this will throw an exception if JSR-179 is missing
             Class.forName("javax.microedition.location.Location");
             Class c = Class.forName("PEP.location.JSR179Location");

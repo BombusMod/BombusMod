@@ -55,7 +55,7 @@ package ui.keys;
 //# 
 //#     public UserKeyEdit(UserKeysList originUserKeysList, UserKey origin_key) {
 //#         super((origin_key == null) ?
-//#              SR.MS_ADD_CUSTOM_KEY :
+//#              SR.MS_ADD :
 //#                 (origin_key.toString()));
 //# 
 //#         userKeysList = originUserKeysList;

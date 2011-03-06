@@ -4,17 +4,19 @@
  */
 package Client;
 
-import Menu.JuickThingsMenu;
-import Menu.MenuCommand;
-import Menu.MyMenu;
-import com.alsutton.jabber.JabberDataBlock;
-import com.alsutton.jabber.datablocks.Message;
-import images.RosterIcons;
-import java.util.Hashtable;
-import java.util.Vector;
-import locale.SR;
-import ui.VirtualList;
-import ui.controls.form.DefForm;
+//#ifdef JUICK
+//# import Menu.JuickThingsMenu;
+//# import Menu.MenuCommand;
+//# import Menu.MyMenu;
+//# import com.alsutton.jabber.JabberDataBlock;
+//# import com.alsutton.jabber.datablocks.Message;
+//# import images.RosterIcons;
+//# import java.util.Hashtable;
+//# import java.util.Vector;
+//# import locale.SR;
+//# import ui.VirtualList;
+//# import ui.controls.form.DefForm;
+//#endif
 
 /**
  *
@@ -37,36 +39,34 @@ public class Juick {
 //#     public static MenuCommand cmdJuickCommands=new MenuCommand(SR.MS_COMMANDS+" Juick", MenuCommand.SCREEN, 15, RosterIcons.ICON_JUICK);
 //#     static Vector currentJuickCommands = new Vector();
 //# 
-//#endif
-
-    public static void commandState(DefForm form) {
-	form.addMenuCommand(cmdJuickCommands);
-    }
-
-    public static void menuAction(MenuCommand c, ContactMessageList d) {
-        Msg body = d.getMessage(d.cursor);
-        if (c == cmdJuickMessageReply) {
-            juickAction(d, "", body);
-        } else if (c == cmdJuickSendPrivateReply) {
-            juickAction(d, "PM", body);
-        } else if (c == cmdJuickMessageDelete) {
-            juickAction(d, "D", body);
-        } else if (c == cmdJuickPostSubscribe) {
-            juickAction(d, "S", body);
-        } else if (c == cmdJuickPostUnsubscribe) {
-            juickAction(d, "U", body);
-        } else if (c == cmdJuickPostRecommend) {
-            juickAction(d, "!", body);
-        } else if (c == cmdJuickPostShow) {
-            juickAction(d, "+", body);
-        } else if (c == cmdJuickCommands) {
-            updateJuickCommands(body);
-            if (currentJuickCommands.size() > 0)
-                new MyMenu(d, SR.MS_COMMANDS, null, currentJuickCommands);
-        }
-    }
-
-//#ifdef JUICK
+//#     public static void commandState(DefForm form) {
+//#         form.addMenuCommand(cmdJuickCommands);
+//#     }
+//#
+//#     public static void menuAction(MenuCommand c, ContactMessageList d) {
+//#         Msg body = d.getMessage(d.cursor);
+//#         if (c == cmdJuickMessageReply) {
+//#             juickAction(d, "", body);
+//#         } else if (c == cmdJuickSendPrivateReply) {
+//#             juickAction(d, "PM", body);
+//#         } else if (c == cmdJuickMessageDelete) {
+//#             juickAction(d, "D", body);
+//#         } else if (c == cmdJuickPostSubscribe) {
+//#             juickAction(d, "S", body);
+//#         } else if (c == cmdJuickPostUnsubscribe) {
+//#             juickAction(d, "U", body);
+//#         } else if (c == cmdJuickPostRecommend) {
+//#             juickAction(d, "!", body);
+//#         } else if (c == cmdJuickPostShow) {
+//#             juickAction(d, "+", body);
+//#         } else if (c == cmdJuickCommands) {
+//#             updateJuickCommands(body);
+//#             if (currentJuickCommands.size() > 0) {
+//#                 new MyMenu(d, SR.MS_COMMANDS, null, currentJuickCommands);
+//#             }
+//#         }
+//#     }
+//#
 //#     public static void updateJuickCommands(Msg msg) {
 //# 	currentJuickCommands.removeAllElements();
 //# 	String target = getTargetForJuickReply(msg);
@@ -94,80 +94,72 @@ public class Juick {
 //# 	}
 //# 
 //#     }
-//#endif
-
-
-
-    public static void processMessage(Message message, Msg msg) {
-	JabberDataBlock juick = message.findNamespace("juick", NS_MESSAGE);
-	if (juick != null) {
-	    msg.isJuickMsg = true;
-	    msg.JuickMid = juick.getAttribute("mid");
-	    msg.JuickRid = juick.getAttribute("rid");
-	    msg.JuickUid = juick.getAttribute("uname");
-	}
-	getJuickThings(msg);	
-    }
-
-    public static Vector juickContacts  = new Vector();
-    static int indexMainJuickContact  = -1;
-
-    
-    public static Contact getMainJuickContact() {
-	if (indexMainJuickContact > -1) {
-	    return (Contact) juickContacts.elementAt(indexMainJuickContact);
-	} else {
-	    return null;
-	}
-    }
-
-    public static boolean isJuickContact(Contact c) {
-	return c.jid.equalsViaJ2J("juick@juick.com") || c.jid.equalsViaJ2J("psto@psto.net");
-    }
-
-    public static void addJuickContact(Contact c) {
-	if (isJuickContact(c)) {
-	    juickContacts.addElement(c);
-	    // Далее урезаный аналог updateMainJuickContact(). Побыстрее него, работает *только* при добавлении контакта.
-	    if (isMainJuickContact(c)) {
-		indexMainJuickContact = juickContacts.size() - 1;
-	    } else if (indexMainJuickContact < 0) {
-		indexMainJuickContact = 0;
-	    }
-	}
-    }
-
-    public static void deleteJuickContact(Contact c) {
-	if (juickContacts.removeElement(c)) {
-	    updateMainJuickContact();
-	}
-    }
-
-    public static boolean isMainJuickContact(Contact c) {
-	return c.bareJid.equals(JuickConfig.getJuickJID());
-    }
-
-    public static void updateMainJuickContact() {
-	int size = juickContacts.size();
-	if (size < 1) {
-	    indexMainJuickContact = -1;
-	} else if ((size == 1) || (JuickConfig.getJuickJID().length() == 0)) {
-	    indexMainJuickContact = 0;
-	} else {
-	    //indexMainJuickContact = juickContacts.indexOf(new Contact("Juick", juickConfig.getJuickJID(), Presence.PRESENCE_OFFLINE, null));
-	    for (int i = 0; i < juickContacts.size(); i++) {
-		if (((Contact) juickContacts.elementAt(i)).bareJid.equals(JuickConfig.getJuickJID())) {
-		    indexMainJuickContact = i;
-		}
-	    }
-	    if (indexMainJuickContact < 0) {
-		JuickConfig.setJuickJID("", false);
-		indexMainJuickContact = 0; // Можно сделать это присваивание через рекурсию, но вроде пока не надо.
-	    }
-	}
-    }
-
-//#ifdef JUICK    
+//#     public static void processMessage(Message message, Msg msg) {
+//#         JabberDataBlock juick = message.findNamespace("juick", NS_MESSAGE);
+//#         if (juick != null) {
+//#             msg.isJuickMsg = true;
+//#             msg.JuickMid = juick.getAttribute("mid");
+//#             msg.JuickRid = juick.getAttribute("rid");
+//#             msg.JuickUid = juick.getAttribute("uname");
+//#         }
+//#         getJuickThings(msg);
+//#     }
+//#     public static Vector juickContacts = new Vector();
+//#     static int indexMainJuickContact = -1;
+//#
+//#     public static Contact getMainJuickContact() {
+//#         if (indexMainJuickContact > -1) {
+//#             return (Contact) juickContacts.elementAt(indexMainJuickContact);
+//#         } else {
+//#             return null;
+//#         }
+//#     }
+//#
+//#     public static boolean isJuickContact(Contact c) {
+//#         return c.jid.equalsViaJ2J("juick@juick.com") || c.jid.equalsViaJ2J("psto@psto.net");
+//#     }
+//#
+//#     public static void addJuickContact(Contact c) {
+//#         if (isJuickContact(c)) {
+//#             juickContacts.addElement(c);
+//#             // Далее урезаный аналог updateMainJuickContact(). Побыстрее него, работает *только* при добавлении контакта.
+//#             if (isMainJuickContact(c)) {
+//#                 indexMainJuickContact = juickContacts.size() - 1;
+//#             } else if (indexMainJuickContact < 0) {
+//#                 indexMainJuickContact = 0;
+//#             }
+//#         }
+//#     }
+//#
+//#     public static void deleteJuickContact(Contact c) {
+//#         if (juickContacts.removeElement(c)) {
+//#             updateMainJuickContact();
+//#         }
+//#     }
+//#
+//#     public static boolean isMainJuickContact(Contact c) {
+//#         return c.bareJid.equals(JuickConfig.getJuickJID());
+//#     }
+//#
+//#     public static void updateMainJuickContact() {
+//#         int size = juickContacts.size();
+//#         if (size < 1) {
+//#             indexMainJuickContact = -1;
+//#         } else if ((size == 1) || (JuickConfig.getJuickJID().length() == 0)) {
+//#             indexMainJuickContact = 0;
+//#         } else {
+//#             //indexMainJuickContact = juickContacts.indexOf(new Contact("Juick", juickConfig.getJuickJID(), Presence.PRESENCE_OFFLINE, null));
+//#             for (int i = 0; i < juickContacts.size(); i++) {
+//#                 if (((Contact) juickContacts.elementAt(i)).bareJid.equals(JuickConfig.getJuickJID())) {
+//#                     indexMainJuickContact = i;
+//#                 }
+//#             }
+//#             if (indexMainJuickContact < 0) {
+//#                 JuickConfig.setJuickJID("", false);
+//#                 indexMainJuickContact = 0; // Можно сделать это присваивание через рекурсию, но вроде пока не надо.
+//#             }
+//#         }
+//#     }
 //# 
 //#     private static void juickContactNotFound() {
 //#ifdef POPUPS
@@ -334,7 +326,4 @@ public class Juick {
 //#         else return Juick.getMainJuickContact();
 //#     }*/
 //#endif
-
-
-
 }

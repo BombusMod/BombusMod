@@ -17,10 +17,10 @@ package PEP;
 //# import javax.microedition.lcdui.TextField;
 //# import locale.SR;
 //# import ui.VirtualList;
-//# import ui.controls.AlertBox;
 //# import ui.controls.form.DefForm;
 //# import ui.controls.form.LinkString;
-//# import ui.controls.form.SimpleString;
+//# import ui.controls.form.ListItem;
+//# import ui.controls.form.SpacerItem;
 //# import ui.controls.form.TextInput;
 //# 
 //# /**
@@ -32,7 +32,7 @@ package PEP;
 //#     public static String plugin = "PLUGIN_PEP";
 //#endif
 //# 
-//#     SimpleString loc;
+//#     ListItem loc;
 //#     TextInput location, descr;
 //#     TextInput lat, lon;
 //#     LinkString detect;
@@ -56,6 +56,9 @@ package PEP;
 //#         itemsList.addElement(lon);
 //#         itemsList.addElement(location);
 //#         itemsList.addElement(descr);
+//#         itemsList.addElement(new SpacerItem(5));
+//#         loc = new ListItem(" ");
+//#         itemsList.addElement(loc);
 //#         itemsList.addElement(detect);
 //#         
 //#     
@@ -63,6 +66,8 @@ package PEP;
 //#     }
 //# 
 //#     public void detectLocation() {
+//#         loc.setText("Retrieving...");
+//#         redraw();
 //#         GeoRetriever geo = new GeoRetriever(this);
 //#         new Thread(geo).start();
 //#     }
@@ -71,11 +76,9 @@ package PEP;
 //#         if (lctn != null) {
 //#             lat.setValue(lctn.getLatitude());
 //#             lon.setValue(lctn.getLongitude());
+//#             loc.setText("Retrieving... " + SR.MS_DONE);
 //#         } else {
-//#             new AlertBox(SR.MS_ERROR, "Error retrieving coordinates") {
-//#                 public void yes() {}
-//#                 public void no() {}
-//#             };
+//#             loc.setText("Retrieving... " + SR.MS_ERROR);
 //#         }
 //#         redraw();
 //#     }

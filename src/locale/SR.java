@@ -480,7 +480,6 @@ public class SR {
 
     public static String MS_CUSTOM_KEYS = loadString( "Custom keys" );
 //#ifdef USER_KEYS
-//#     public static String MS_ADD_CUSTOM_KEY = loadString( "Add custom key" );
 //#     public static String MS_KEYS_ACTION = loadString( "Keys action" );
 //#     public static String MS_ENABLED = loadString( "Enabled" );
 //#     public static String MS_KEY = loadString( "Key" );
