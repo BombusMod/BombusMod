@@ -6,7 +6,6 @@
 package PEP.location;
 import javax.microedition.location.Coordinates;
 import javax.microedition.location.Location;
-import javax.microedition.location.LocationException;
 import javax.microedition.location.LocationProvider;
 
 /**
@@ -29,24 +28,10 @@ public class JSR179Location extends LocationIO {
         return String.valueOf(lon);
     }
 
-    public void getCoordinates() {
+    public void getCoordinates() throws Exception {
         
-        try {
-            locationProvider = LocationProvider.getInstance(null);
-        }
-         catch (LocationException e) {
-             //TODO: Handle location exception.
-             return;
-         }
-        try {
-            location = locationProvider.getLocation(60);
-        }
-        catch (Exception e) {
-//#ifdef DEBUG
-//#             e.printStackTrace();
-//#endif
-            return;
-        }
+        locationProvider = LocationProvider.getInstance(null);
+        location = locationProvider.getLocation(60);
         coordinates = location.getQualifiedCoordinates();
         if (coordinates != null) {
             // Use coordinate information

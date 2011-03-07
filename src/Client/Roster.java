@@ -54,7 +54,10 @@ import images.ClientsIconsData;
 import images.RosterIcons;
 
 import Menu.MenuCommand;
-
+//#ifdef SYSTEM_NOTIFY
+//# import Messages.notification.Notification;
+//# import Messages.notification.Notificator;
+//#endif
 //#ifdef PRIVACY
 import PrivacyLists.QuickPrivacy;
 //#endif
@@ -1326,17 +1329,30 @@ public class Roster
 //#endif
 
 	if (cf.popupFromMinimized) {
-            if (AlertCustomize.getInstance().vibrateOnlyHighlited) {
+//#ifdef SYSTEM_NOTIFY
+//#             Notificator notify = Notification.getNotificator();
+//#endif
+            if (AlertCustomize.getInstance().vibrateOnlyHighlited) {                
                 if (message.highlite) {
-                    BombusMod.getInstance().hideApp(false);
+//#ifdef SYSTEM_NOTIFY
+//#                     if (notify != null)
+//#                         notify.sendNotify(message.from, message.body);
+//#                     else
+//#endif
+                        BombusMod.getInstance().hideApp(false);
                 }
             } else {
-                BombusMod.getInstance().hideApp(false);
+//#ifdef SYSTEM_NOTIFY
+//#                 if (notify != null)
+//#                     notify.sendNotify(message.from, message.body);
+//#                 else
+//#endif
+                    BombusMod.getInstance().hideApp(false);
             }
         }      
 
         if (message.highlite) {
-            playNotify(SOUND_FOR_ME);
+            playNotify(SOUND_FOR_ME);            
 //#ifdef POPUPS
             if (showWobbler(c))
                 setWobbler(2, c, message.body);

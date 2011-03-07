@@ -26,8 +26,7 @@ public abstract class LocationIO {
         try {
             // Sony-Ericsson supports JSR-179 only since JP8
             if (Config.getInstance().phoneManufacturer == Config.SONYE && Config.getInstance().swapMenu) {
-                providerType = LocationIO.CELLID;
-                return new CellIDLocation();
+                return fallback();
             }
             // this will throw an exception if JSR-179 is missing
             Class.forName("javax.microedition.location.Location");
@@ -36,23 +35,13 @@ public abstract class LocationIO {
 //#ifdef DEBUG
 //#         System.out.println("JSR-179 presents");
 //#endif
+            // Sony-Ericsson JP8 should throw exception if GPS is absent
+            if (Config.getInstance().phoneManufacturer == Config.SONYE) {
+                new JSR179Location().getCoordinates();
+            }
 
         } catch (Exception e) {
-            try {
-//#ifdef DEBUG
-//#                 e.printStackTrace();
-//#endif
-                Class c = Class.forName("PEP.location.CellIDLocation");
-                providerType = LocationIO.CELLID;
-//#ifdef DEBUG
-//#         System.out.println("CellID will be used");
-//#endif
-
-            } catch (Exception ex) {
-//#ifdef DEBUG
-//#                 ex.printStackTrace();
-//#endif
-            }
+           return fallback();
         }
         }
         switch (providerType) {
@@ -62,8 +51,9 @@ public abstract class LocationIO {
                 return new CellIDLocation();
         }
     }
-    public abstract void getCoordinates();
+    public abstract void getCoordinates() throws Exception;
     public static LocationIO fallback() {
+        providerType = LocationIO.CELLID;
         return new CellIDLocation();
     }
         

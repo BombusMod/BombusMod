@@ -358,6 +358,9 @@ public class InfoWindow
 //#endif
 //#             abilitiesList.addElement("STATS");
 //#endif
+//#ifdef SYSTEM_NOTIFY
+//#             abilitiesList.addElement("SYSTEM_NOTIFY");
+//#endif
 //#ifdef TEMPLATES
 //#ifdef PLUGINS
 //#         if (sd.Archive)
