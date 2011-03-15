@@ -99,7 +99,7 @@ public class IqVCard implements JabberBlockListener
                         StaticData.getInstance().roster.setQuerySign(false);
                         VCard vcard=new VCard(data);
                         String jid=id.substring(5);
-                        Contact c=StaticData.getInstance().roster.getContact(jid, false); // drop unwanted vcards
+                        Contact c=StaticData.getInstance().roster.getContact(jid, true); // test
                         if (c!=null) {
                             c.vcard=vcard;
                             if (StaticData.getInstance().canvas.getList() instanceof VirtualList) {
