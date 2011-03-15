@@ -2052,30 +2052,31 @@ public class Roster
 
 //#ifndef WMUC
     public void reEnterRoom(Group group) {
-	ConferenceGroup confGroup=(ConferenceGroup)group;
-        String confJid=confGroup.selfContact.getJid();
-        String name=confGroup.name;
-	new ConferenceForm(name, confJid, confGroup.password, false);
+        leaveRoom(group);
+        ConferenceGroup confGroup = (ConferenceGroup) group;
+        String confJid = confGroup.selfContact.getJid();
+        String name = confGroup.name;
+        new ConferenceForm(name, confJid, confGroup.password, false);
     }
     
-    public void leaveRoom(Group group){
-	ConferenceGroup confGroup=(ConferenceGroup)group;
-	Contact myself=confGroup.selfContact;
-	confGroup.confContact.commonPresence=false; //disable reenter after reconnect
+    public void leaveRoom(Group group) {
+        ConferenceGroup confGroup = (ConferenceGroup) group;
+        Contact myself = confGroup.selfContact;
+        confGroup.confContact.commonPresence = false; //disable reenter after reconnect
         sendPresence(myself.getJid(), "unavailable", null, true);
-        
-        confGroup.inRoom=false;
-	roomOffline(group);
+
+        confGroup.inRoom = false;
+        roomOffline(group);
     }
-    
+
     public void roomOffline(final Group group) {
-         int j=hContacts.size();
-         for (int i=0; i<j; i++) {
-            Contact contact=(Contact)hContacts.elementAt(i);
-            if (contact.group==group) {
+        int j = hContacts.size();
+        for (int i = 0; i < j; i++) {
+            Contact contact = (Contact) hContacts.elementAt(i);
+            if (contact.group == group) {
                 contact.setStatus(Presence.PRESENCE_OFFLINE);
             }
-         }
+        }
     }
 //#endif    
    
