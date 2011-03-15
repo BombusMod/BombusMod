@@ -14,7 +14,6 @@ package Client;
 //# import java.util.Hashtable;
 //# import java.util.Vector;
 //# import locale.SR;
-//# import ui.VirtualList;
 //# import ui.controls.form.DefForm;
 //#endif
 

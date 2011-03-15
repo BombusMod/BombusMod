@@ -47,19 +47,22 @@ public abstract class LinkString
     }
     
     public void drawItem(Graphics g, int ofs, boolean sel) {
-        int width=g.getClipWidth();
-        int height=super.getVHeight();
+        int fontHeight = getFont().getHeight();
 
-        int oldColor=g.getColor();
-        
-        int stringWidth=getFont().stringWidth(toString());
+        int oldColor = g.getColor();
+
+        int stringWidth = getFont().stringWidth(toString());
 
         g.setColor(getColor());
-        g.drawLine(4, height-1, stringWidth+4, height-1);
+        g.drawLine(4, fontYOfs + fontHeight + 1, stringWidth + 4, fontYOfs + fontHeight + 1);
 
         g.setColor(oldColor);
 
         super.drawItem(g, ofs, sel);
+    }
+
+    public int getVHeight() {
+        return Math.max(super.getVHeight(), getFont().getHeight() + 3);
     }
     
     public boolean isSelectable() { return true; }

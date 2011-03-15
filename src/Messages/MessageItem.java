@@ -27,8 +27,8 @@
 
 package Messages;
 
+import Client.Config;
 import Client.Msg;
-import Client.Roster;
 import Client.StaticData;
 import images.RosterIcons;
 import java.util.Vector;
@@ -69,9 +69,9 @@ public class MessageItem implements VirtualElement {//, MessageParser.MessagePar
         }
         if (msg.delivered) {
             int rh=RosterIcons.getInstance().getHeight();
-            if (itemHeight<rh) return rh;
+            Math.max(rh, Math.max(itemHeight, Config.getInstance().minItemHeight));
         }
-        return itemHeight; 
+        return Math.max(itemHeight, Config.getInstance().minItemHeight);
     }
     
     public Font getFont() {
@@ -110,7 +110,11 @@ public class MessageItem implements VirtualElement {//, MessageParser.MessagePar
             //clipping
             if (cy <= h && cy+g.getClipHeight()>0 ) {
                 if (msg.itemCollapsed && (msgLines.size()>1)) {
-                    RosterIcons.getInstance().drawImage(g, RosterIcons.ICON_MSGCOLLAPSED_INDEX, 0,0);
+                    RosterIcons.getInstance().drawImage(g, 
+                            RosterIcons.ICON_MSGCOLLAPSED_INDEX,
+                            0,
+                            (getVHeight()
+                            - RosterIcons.getInstance().getHeight()) >> 1 );
                     g.translate(8,0);
                     iconOffset = 2 + RosterIcons.getInstance().getWidth() >> 1;
                 }

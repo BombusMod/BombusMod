@@ -36,7 +36,7 @@ abstract public class IconTextElement implements VirtualElement {
 
     int itemHeight;
     int imageYOfs;
-    int fontYOfs;
+    protected int fontYOfs;
     
     protected ImageList il;
     private int ilImageSize=0;
