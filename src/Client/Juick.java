@@ -42,7 +42,7 @@ public class Juick {
 //#     public static void commandState(DefForm form) {
 //#         form.addMenuCommand(cmdJuickCommands);
 //#     }
-//#
+//# 
 //#     public static void menuAction(MenuCommand c, ContactMessageList d) {
 //#         Msg body = d.getMessage(d.cursor);
 //#         if (c == cmdJuickMessageReply) {
@@ -66,7 +66,7 @@ public class Juick {
 //#             }
 //#         }
 //#     }
-//#
+//# 
 //#     public static void updateJuickCommands(Msg msg) {
 //# 	currentJuickCommands.removeAllElements();
 //# 	String target = getTargetForJuickReply(msg);
@@ -106,7 +106,7 @@ public class Juick {
 //#     }
 //#     public static Vector juickContacts = new Vector();
 //#     static int indexMainJuickContact = -1;
-//#
+//# 
 //#     public static Contact getMainJuickContact() {
 //#         if (indexMainJuickContact > -1) {
 //#             return (Contact) juickContacts.elementAt(indexMainJuickContact);
@@ -114,11 +114,11 @@ public class Juick {
 //#             return null;
 //#         }
 //#     }
-//#
+//# 
 //#     public static boolean isJuickContact(Contact c) {
 //#         return c.jid.equalsViaJ2J("juick@juick.com") || c.jid.equalsViaJ2J("psto@psto.net");
 //#     }
-//#
+//# 
 //#     public static void addJuickContact(Contact c) {
 //#         if (isJuickContact(c)) {
 //#             juickContacts.addElement(c);
@@ -130,17 +130,17 @@ public class Juick {
 //#             }
 //#         }
 //#     }
-//#
+//# 
 //#     public static void deleteJuickContact(Contact c) {
 //#         if (juickContacts.removeElement(c)) {
 //#             updateMainJuickContact();
 //#         }
 //#     }
-//#
+//# 
 //#     public static boolean isMainJuickContact(Contact c) {
 //#         return c.bareJid.equals(JuickConfig.getJuickJID());
 //#     }
-//#
+//# 
 //#     public static void updateMainJuickContact() {
 //#         int size = juickContacts.size();
 //#         if (size < 1) {
@@ -183,7 +183,7 @@ public class Juick {
 //#                         char firstSymbol = valueChars[i];
 //#                         String thing = "" + firstSymbol;
 //#                         int pos = i + 1;
-//#                         while (pos < (msg_length - 1) && isCharFromJuickThing(valueChars[pos], firstSymbol)) {
+//#                         while ((pos < msg_length) && isCharFromJuickThing(valueChars[pos], firstSymbol)) {
 //#                             thing = thing + valueChars[pos++];
 //#                         }
 //#                         while (thing.charAt(thing.length() - 1) == '.') {
@@ -285,7 +285,7 @@ public class Juick {
 //#         return "";
 //#     }
 //# 
-//#     public static void juickAction(VirtualList d, String action, Msg msg) {
+//#     public static void juickAction(ContactMessageList d, String action, Msg msg) {
 //#         if (Juick.getMainJuickContact() == null) {
 //#             juickContactNotFound();
 //#             return;
@@ -302,7 +302,10 @@ public class Juick {
 //#             resultAction = target+action;
 //#         }
 //#         try {
-//#             Roster.me = new MessageEdit(d, getMainJuickContact(), resultAction, false);
+//#             Contact c = msg.isJuickMsg ? 
+//#                 getMainJuickContact() // redirect only juickapi messages
+//#                 : d.contact;
+//#             Roster.me = new MessageEdit(d, c, resultAction, false);
 //#             Roster.me.show();
 //#         } catch (Exception e) {/*no messages*/}
 //#     }

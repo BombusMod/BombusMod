@@ -335,22 +335,23 @@ public class Contact extends IconTextElement{
     }
     
     public void addMessage(Msg m) {
-        boolean first_replace=false;
-        if (origin!=ORIGIN_GROUPCHAT) {
-            if (m.isPresence()) {
-                presence=m.body;
-                if (msgs.size()==1)
-                    if (((MessageItem)msgs.firstElement()).msg.isPresence())
-                        first_replace=true;
+        boolean last_replace = false;
+        if (origin != ORIGIN_GROUPCHAT) {
+            if (msgs.size() > 0 && m.isPresence()) {
+                Object item = msgs.lastElement();
+                if (item != null) {
+                    if (((MessageItem) item).msg.isPresence()) {
+                        last_replace = true;
+                    }
+                }
             } else {
                 if (cf.showNickNames) {
-                    StringBuffer who=new StringBuffer();
-                    who.append((m.messageType==Msg.MESSAGE_TYPE_OUT)?sd.account.getNickName():getName())
-                       .append(" (")
-                       .append(m.getTime())
-                       .append(") ");
-                    if (m.subject!=null) who.append("\n").append(m.subject);
-                    m.subject=who.toString();
+                    StringBuffer who = new StringBuffer();
+                    who.append((m.messageType == Msg.MESSAGE_TYPE_OUT) ? sd.account.getNickName() : getName()).append(" (").append(m.getTime()).append(") ");
+                    if (m.subject != null) {
+                        who.append("\n").append(m.subject);
+                    }
+                    m.subject = who.toString();
                 }
                 if (m.body.startsWith("/me ")) {
                     StringBuffer b=new StringBuffer();
@@ -407,8 +408,8 @@ public class Contact extends IconTextElement{
 //#             }
 //#        }
 //#endif
-        if (first_replace) {
-            msgs.setElementAt(new MessageItem(m, smiles), 0);
+        if (last_replace) {
+            msgs.setElementAt(new MessageItem(m, smiles), msgs.size() - 1);
             return;
         }
 
