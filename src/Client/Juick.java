@@ -59,16 +59,16 @@ public class Juick {
 //#         } else if (c == cmdJuickPostShow) {
 //#             juickAction(d, "+", body);
 //#         } else if (c == cmdJuickCommands) {
-//#             updateJuickCommands(body);
+//#             updateJuickCommands(body, d);
 //#             if (currentJuickCommands.size() > 0) {
 //#                 new MyMenu(d, SR.MS_COMMANDS, null, currentJuickCommands);
 //#             }
 //#         }
 //#     }
 //# 
-//#     public static void updateJuickCommands(Msg msg) {
+//#     public static void updateJuickCommands(Msg msg, ContactMessageList d) {
 //# 	currentJuickCommands.removeAllElements();
-//# 	String target = getTargetForJuickReply(msg);
+//# 	String target = getTargetForJuickReply(msg, d.contact);
 //# 
 //# 	if (!(target.length() == 0)) {
 //# 	    switch (target.charAt(0)) {
@@ -100,7 +100,9 @@ public class Juick {
 //#             msg.JuickMid = juick.getAttribute("mid");
 //#             msg.JuickRid = juick.getAttribute("rid");
 //#             msg.JuickUid = juick.getAttribute("uname");
-//#         }
+//#         } /*else {
+//#             parseJuickAttributes(msg);
+//#         }*/
 //#         getJuickThings(msg);
 //#     }
 //#     public static Vector juickContacts = new Vector();
@@ -253,34 +255,59 @@ public class Juick {
 //#         }
 //#         return result;
 //#     }
+
+//#     public static String getTargetForJuickReply(Msg msg, Contact current) {
+//#         String str = msg.body;
 //# 
-//#     public static String getTargetForJuickReply(Msg msg) {
-//# 	String str = msg.body;
 //#         if ((str == null) || (str.length() == 0))
 //#             return "";
+//#
+//#         // Try to use juick-xmpp-api
 //# 
-//# 	if (msg.JuickMid != null) {
-//# 	    String mid = msg.JuickMid;
-//# 	    if (msg.JuickRid != null)
-//# 		mid += ("/" + msg.JuickRid);
-//# 	    return "#" + mid;
-//# 	}
-//# 	if (msg.JuickUid != null) {
-//# 	    return "@" + msg.JuickUid;
-//# 	}
+//#         if (msg.isJuickMsg) {
+//#             if (msg.JuickMid != null) {
+//#                 String mid = "#" + msg.JuickMid;
+//#                 if (msg.JuickRid != null)
+//#                     mid += ("/" + msg.JuickRid);
+//#                 return mid;
+//#             }
 //# 
+//#             if (msg.JuickUid != null) {
+//#                 return "@" + msg.JuickUid;
+//#             }
+//#         }
 //# 
-//# 	// dummy parsing for psto.net
+//#         // TODO: подумать о переносе парсинга в processMessage(...)
+//#         // Parsing
 //# 
-//# 	int lastStrStartIndex = str.lastIndexOf('\n')+1;
+//#         if (str.startsWith("Private message from @")) {
+//#             return str.substring(21, str.indexOf('\n') - 1);
+//#         }
+//# 
+//#         if (isJuBoContact(current)) {
+//#             int secondStrIndex = str.indexOf('\n') + 1;
+//#             if (secondStrIndex < 0)
+//#                 return "";
+//#             str = str.substring(secondStrIndex);
+//#         }
+//# 
+//#         if ((str.charAt(0) != '@') && !str.startsWith("Recommended by @") && !str.startsWith("Reply by @"))
+//#             return "";
+//# 
+//#         int lastStrStartIndex = str.lastIndexOf('\n')+1;
 //#         if (lastStrStartIndex < 0)
 //#             return "";
-//#         int numberEndsIndex = str.indexOf(" http://psto.net/", lastStrStartIndex);
-//#         
+//# 
+//#         int numberEndsIndex = str.indexOf(" http://juick.com/", lastStrStartIndex);
+//#         if (numberEndsIndex < 0) {
+//#             numberEndsIndex = str.indexOf(" http://psto.net/", lastStrStartIndex);
+//#         }
+//# 
 //#         if (numberEndsIndex > 0) {
 //#             numberEndsIndex = str.indexOf(' ', lastStrStartIndex);
 //#             return str.substring(lastStrStartIndex, numberEndsIndex);
 //#         }
+//# 
 //#         return "";
 //#     }
 //# 
@@ -289,7 +316,7 @@ public class Juick {
 //#             juickContactNotFound();
 //#             return;
 //#         }
-//#         String target = getTargetForJuickReply(msg);
+//#         String target = getTargetForJuickReply(msg, d.contact);
 //#         if ((action.equals("S") || action.equals("U")) && (target.indexOf("/") > 0)) {
 //#             target = target.substring(0, target.indexOf("/"));
 //#         } else if (action.equals("PM") || action.length() == 0) {
@@ -301,9 +328,7 @@ public class Juick {
 //#             resultAction = target+action;
 //#         }
 //#         try {
-//#             Contact c = msg.isJuickMsg ? 
-//#                 getMainJuickContact() // redirect only juickapi messages
-//#                 : d.contact;
+//#             Contact c = getActualJuickContact(d.contact);
 //#             Roster.me = new MessageEdit(d, c, resultAction, false);
 //#             Roster.me.show();
 //#         } catch (Exception e) {/*no messages*/}
@@ -313,7 +338,7 @@ public class Juick {
 //#     public static boolean isJuBoContact(Contact c) {
 //#         return c.jid.equalsViaJ2J("jubo@nologin.ru");
 //#     }
-//# /*
+//# 
 //#     public static boolean noRedirrectToJuickContact(Contact c) {
 //#         return (isJuickContact(c)
 //#          || c.jid.equalsViaJ2J("implusplus@gmail.com")
@@ -322,10 +347,10 @@ public class Juick {
 //#          || c.jid.equalsServerViaJ2J("twitter.tweet.im"));
 //#     }
 //# 
-//#     private static Contact getActualJuickContact(Contact contact) {
-//#         if (noRedirrectToJuickContact(contact))
-//#             return contact;
+//#     private static Contact getActualJuickContact(Contact current) {
+//#         if (noRedirrectToJuickContact(current))
+//#             return current;
 //#         else return Juick.getMainJuickContact();
-//#     }*/
+//#     }
 //#endif
 }

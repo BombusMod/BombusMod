@@ -238,14 +238,14 @@ public class RosterListener implements JabberListener {
                         c.acceptComposing=true;
                         c.showComposing=false;
 //#ifdef RUNNING_MESSAGE
-//#                         setTicker(c, "");
+//#                         sd.roster.setTicker(c, "");
 //#endif
                     }
                     if (message.findNamespace("paused", "http://jabber.org/protocol/chatstates")!=null) {
                         c.acceptComposing=true;
                         c.showComposing=false;
 //#ifdef RUNNING_MESSAGE
-//#                         setTicker(c, "");
+//#                         sd.roster.setTicker(c, "");
 //#endif
                     }
                     if (message.findNamespace("composing", "http://jabber.org/protocol/chatstates")!=null) {
@@ -253,7 +253,7 @@ public class RosterListener implements JabberListener {
                         c.acceptComposing=true;
                         c.showComposing=true;
 //#ifdef RUNNING_MESSAGE
-//#                         setTicker(c, SR.MS_COMPOSING_NOTIFY);
+//#                         sd.roster.setTicker(c, SR.MS_COMPOSING_NOTIFY);
 //#endif
                     }
                 }
@@ -483,9 +483,9 @@ public class RosterListener implements JabberListener {
                     if (ti>=0) {
 //#ifdef RUNNING_MESSAGE
 //#                         if (ti==Presence.PRESENCE_OFFLINE)
-//#                             setTicker(c, SR.MS_OFFLINE);
+//#                             sd.roster.setTicker(c, SR.MS_OFFLINE);
 //#                         else if (ti==Presence.PRESENCE_ONLINE)
-//#                             setTicker(c, SR.MS_ONLINE);
+//#                             sd.roster.setTicker(c, SR.MS_ONLINE);
 //#endif
                         if ((ti==Presence.PRESENCE_ONLINE || ti==Presence.PRESENCE_CHAT || ti==Presence.PRESENCE_OFFLINE) && (!c.jid.isTransport()) && (c.getGroupType()!=Groups.TYPE_IGNORE))
                             roster.playNotify(ti);

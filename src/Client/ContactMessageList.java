@@ -476,7 +476,7 @@ public class ContactMessageList extends MessageList {
 //#         if (sd.Juick)
 //#endif            
 //# 	if (!msg.things.isEmpty()) {
-//# 	    String target = Juick.getTargetForJuickReply(msg);
+//# 	    String target = Juick.getTargetForJuickReply(msg, contact);
 //# 
 //# 	    if (target.length() == 0) {
 //# 		new JuickThingsMenu((VirtualList)this, msg.things, contact);
