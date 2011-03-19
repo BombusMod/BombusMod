@@ -57,7 +57,7 @@ public class IqPing implements JabberBlockListener {
         String from=data.getAttribute("from");
         String id=data.getAttribute("id");
         
-        if (type.equals("get") || type.equals("error")) {
+        if (type.equals("result") || type.equals("error")) {
             if (id.equals(PING)) {
                 StaticData.getInstance().roster.theStream.pingSent=false;
                 return BLOCK_PROCESSED;
