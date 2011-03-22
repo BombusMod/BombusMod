@@ -126,7 +126,7 @@ public class DnsSrvResolver {
         
         SHA1 sha=new SHA1();
         sha.init();
-        sha.updateASCII(StaticData.getInstance().account.getServer()); // test
+        sha.updateASCII(server); // test
         sha.finish();
         
         url.append("&name=").append(StringUtils.urlPrep(Version.NAME));

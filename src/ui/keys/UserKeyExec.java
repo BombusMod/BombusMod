@@ -593,12 +593,14 @@ public class UserKeyExec {
                     current.pageRight();
                 break;
             case 50:
-                if (current instanceof ContactMessageList)
-                    ((ContactMessageList) current).clearReadedMessageList();
-                else if (current instanceof XMLList)
-                    ((XMLList) current).clearReadedMessageList();
-                else if (current instanceof ActiveContacts)
-                    ((ActiveContacts) current).keyClear();
+//#ifdef CONSOLE
+//#                 if (current instanceof ContactMessageList)
+//#                     ((ContactMessageList) current).clearReadedMessageList();
+//#                 else if (current instanceof XMLList)
+//#                     ((XMLList) current).clearReadedMessageList();
+//#                 else if (current instanceof ActiveContacts)
+//#                     ((ActiveContacts) current).keyClear();
+//#endif
                 break;
             case 51:
                 if (current instanceof ContactMessageList)
@@ -611,8 +613,10 @@ public class UserKeyExec {
                     ((Roster) current).messageEditResume();
                 else if (current instanceof ActiveContacts)
                     ((ActiveContacts) current).keyGreen();
-                else if (current instanceof XMLList)
-                    ((XMLList) current).stanzaEdit();
+//#ifdef CONSOLE
+//#                 else if (current instanceof XMLList)
+//#                     ((XMLList) current).stanzaEdit();
+//#endif
                 else if (current instanceof MessageUrl)
                     ((MessageUrl) current).EditURL();
                 break;
