@@ -83,10 +83,10 @@ public class DiscoForm extends ComplexForm{
     public DiscoForm(ServiceDiscovery disco, FormSubmitListener listener, String to, JabberDataBlock regform, JabberStream stream, String resultId, String childName) {
         super(regform.getAttribute("from"), false);
         service = (to == null) ? regform.getAttribute("from") : to;
-	this.disco = disco;
+        this.disco = disco;
         this.listener = listener;
-        JabberDataBlock query = (childName == null)? regform : regform.getChildBlock(childName);
-	this.childName = query.getTagName();
+        JabberDataBlock query = (childName == null) ? regform : regform.getChildBlock(childName);
+        this.childName = query.getTagName();
         xmlns = query.getAttribute("xmlns");
         node = query.getAttribute("node");
         sessionId = query.getAttribute("sessionid");
@@ -94,7 +94,7 @@ public class DiscoForm extends ComplexForm{
         this.id = resultId;
         //this.listener=listener;
         // todo: обработать ошибку query
-        fields=new Vector();
+        fields = new Vector();
         
         // for instructions
         

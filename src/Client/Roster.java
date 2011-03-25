@@ -2284,12 +2284,14 @@ public class Roster
                     };
                 }
 //#ifndef WMUC
-                else if (isContact && isMucContact && c.origin!=Contact.ORIGIN_GROUPCHAT) {
-                    ConferenceGroup mucGrp=(ConferenceGroup)c.group;
-                    if (mucGrp.selfContact.roleCode==MucContact.ROLE_MODERATOR) {
-                        String myNick=mucGrp.selfContact.getName();
-                        MucContact mc=(MucContact) c;
-                        new ConferenceQuickPrivelegeModify(mc, ConferenceQuickPrivelegeModify.KICK, myNick);
+                else if (isContact && isMucContact && c.origin != Contact.ORIGIN_GROUPCHAT) {
+                    ConferenceGroup mucGrp = (ConferenceGroup) c.group;
+                    if (mucGrp.selfContact.roleCode == MucContact.ROLE_MODERATOR) {
+                        if (((MucContact) c).roleCode < MucContact.ROLE_MODERATOR) {
+                            String myNick = mucGrp.selfContact.getName();
+                            MucContact mc = (MucContact) c;
+                            new ConferenceQuickPrivelegeModify(mc, ConferenceQuickPrivelegeModify.KICK, myNick);
+                        }
                     }
                 }
 //#endif

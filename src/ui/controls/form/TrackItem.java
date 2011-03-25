@@ -30,6 +30,7 @@ package ui.controls.form;
 import Colors.ColorTheme;
 import javax.microedition.lcdui.Graphics;
 import ui.IconTextElement;
+import ui.VirtualCanvas;
 
 /**
  *

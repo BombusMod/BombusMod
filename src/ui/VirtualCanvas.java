@@ -549,23 +549,34 @@ public class VirtualCanvas extends Canvas implements CommandListener{
                 if (list.canBack)
                     list.cmdCancel();
                 return;
-        }                
+        }
+        if (!sendEvent(keyCode)) {
 //#ifdef USER_KEYS
-//#         if (UserKeyExec.getInstance().keyExecute(keyCode, kHold))
-//#             return;
+//#             if (UserKeyExec.getInstance().keyExecute(keyCode, kHold)) {
+//#                 return;
+//#             }
 //#endif
-         if (kHold) {
-             list.longKey(keyCode);
+            if (kHold) {
+                list.longKey(keyCode);
 //#ifdef POPUPS
-	     PopUp.getInstance().handled = true;
+                PopUp.getInstance().handled = true;
 //#endif
-             KeyRepeatTimer.stop();
-             kHold = false;
-         }
- 
-         else
-             list.userKeyPressed(keyCode);
+                KeyRepeatTimer.stop();
+                kHold = false;
+            } else {
+                list.userKeyPressed(keyCode);
+            }
+        } else {
+            repaint();
+        }
 
+    }
+    private boolean sendEvent(int key_code) {
+        int key = getKey(key_code);
+        if ((key > -1) && (list.getFocusedObject() != null)) {
+            return ((VirtualElement) list.getFocusedObject()).handleEvent(key);
+        }
+        return false;
     }
 }
 

@@ -53,12 +53,12 @@ public class ServiceDiscovery
         implements        
         JabberBlockListener, ServerBox.ServiceNotify
 {
-    private final static String NS_ITEMS="http://jabber.org/protocol/disco#items";
-    private final static String NS_INFO="http://jabber.org/protocol/disco#info";
+    public final static String NS_ITEMS="http://jabber.org/protocol/disco#items";
+    public final static String NS_INFO="http://jabber.org/protocol/disco#info";
     private final static String NS_SRCH="jabber:iq:search";
     private final static String NS_GATE="jabber:iq:gateway";
     private final static String NS_MUC="http://jabber.org/protocol/muc";
-    private final static String NODE_CMDS="http://jabber.org/protocol/commands";
+    public final static String NS_CMDS="http://jabber.org/protocol/commands";
 
     /*private final static String strCmds="Execute";
     private final int AD_HOC_INDEX=17;*/
@@ -185,18 +185,21 @@ public class ServiceDiscovery
 
         //    return JabberBlockListener.BLOCK_PROCESSED;
         }
-        JabberDataBlock command1=data.getChildBlock("query");
-        JabberDataBlock command2=data.getChildBlock("command");
-        if (command1==null) {
-            if (command2!=null) {
-                command1=command2;
+        if (!data.getTypeAttribute().equals("result")) {
+            JabberDataBlock command1 = data.getChildBlock("query");
+            JabberDataBlock command2 = data.getChildBlock("command");
+            if (command1 == null) {
+                if (command2 != null) {
+                    command1 = command2;
+                }
+                String node1 = command1.getAttribute("node");
+                if ((node1 != null) && (node1.startsWith("http://jabber.org/protocol/rc#"))) {
+                    id = "discocmd"; //hack
+                }
+                node1 = null;
             }
-            String node1 = command1.getAttribute("node");
-            if ((node1!=null) && (node1.startsWith("http://jabber.org/protocol/rc#")))
-                id="discocmd"; //hack
-            node1=null;
         }
-        
+
         JabberDataBlock query=data.getChildBlock((id.equals("discocmd"))?"command":"query");
         Vector childs=query.getChildBlocks();
         //System.out.println(id);
@@ -241,7 +244,7 @@ public class ServiceDiscovery
                     String type=identity.getTypeAttribute();
                     if (category.equals("automation") && type.equals("command-node"))  {
                       //  cmds1.addElement(new DiscoCommand(RosterIcons.ICON_AD_HOC, strCmds));
-                        requestCommand(NODE_CMDS, "discocmd");
+                        requestCommand(NS_CMDS, "discocmd");
                     }
                     if (category.equals("conference")) {
                         cmds1.addElement(new DiscoCommand(RosterIcons.ICON_GCJOIN_INDEX, SR.MS_JOIN_CONFERENCE));
@@ -333,7 +336,7 @@ public class ServiceDiscovery
     
     public final void browse(String service, String node, boolean start) {
 	if (!start) {
-	    if (node == null || !node.equals(NODE_CMDS)) {
+	    if (node == null || !node.equals(NS_CMDS)) {
 		pushState();
 	    }
 	}

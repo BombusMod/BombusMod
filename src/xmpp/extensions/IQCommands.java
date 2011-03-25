@@ -35,6 +35,7 @@ import Client.StaticData;
 import Conference.ConferenceGroup;
 import Conference.MucContact;
 import ServiceDiscovery.DiscoForm;
+import ServiceDiscovery.ServiceDiscovery;
 import com.alsutton.jabber.JabberBlockListener;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
@@ -81,27 +82,27 @@ public class IQCommands implements JabberBlockListener {
         
         if (type.equals("get")) {
             JabberDataBlock query=data.getChildBlock("query");
-            if (query.isJabberNameSpace("http://jabber.org/protocol/disco#info")) {
+            if (query.isJabberNameSpace(ServiceDiscovery.NS_INFO)) {
                 Iq reply=new Iq(data.getAttribute("from"), Iq.TYPE_RESULT, data.getAttribute("id"));
-                JabberDataBlock replyChild=reply.addChildNs("query", "http://jabber.org/protocol/disco#info");
+                JabberDataBlock replyChild=reply.addChildNs("query", ServiceDiscovery.NS_INFO);
                 if (query.getAttribute("node")!=null)
-                    if (!query.getAttribute("node").equals("http://jabber.org/protocol/commands")) {
+                    if (!query.getAttribute("node").equals(ServiceDiscovery.NS_CMDS)) {
                         replyChild.setAttribute("node", query.getAttribute("node"));
                         JabberDataBlock identity=replyChild.addChild("identity", "");
                             identity.setAttribute("category", "automation");
                             identity.setTypeAttribute("command-node");
                         JabberDataBlock feature1=replyChild.addChild("feature", "");
-                            feature1.setAttribute("var", "http://jabber.org/protocol/commands");
+                            feature1.setAttribute("var", ServiceDiscovery.NS_CMDS);
                         JabberDataBlock feature2=replyChild.addChild("feature", "");
                             feature2.setAttribute("var", DiscoForm.NS_XDATA);
                     }
                 sd.roster.theStream.send(reply);
                 return BLOCK_PROCESSED;
                 
-            } else if (query.isJabberNameSpace("http://jabber.org/protocol/disco#items")) {
-                if (!query.getAttribute("node").equals("http://jabber.org/protocol/commands")) {
+            } else if (query.isJabberNameSpace(ServiceDiscovery.NS_ITEMS)) {
+                if (!query.getAttribute("node").equals(ServiceDiscovery.NS_CMDS)) {
                     Iq reply=new Iq(data.getAttribute("from"), Iq.TYPE_RESULT, data.getAttribute("id"));
-                    JabberDataBlock replyChild=reply.addChildNs("query", "http://jabber.org/protocol/disco#items");
+                    JabberDataBlock replyChild=reply.addChildNs("query", ServiceDiscovery.NS_ITEMS);
                     if (query.getAttribute("node")!=null)
                         replyChild.setAttribute("node", query.getAttribute("node"));
                     sd.roster.theStream.send(reply);
@@ -128,7 +129,7 @@ public class IQCommands implements JabberBlockListener {
                 }
             }
         } else if (type.equals("set")) {
-            JabberDataBlock command=data.findNamespace("command", "http://jabber.org/protocol/commands");
+            JabberDataBlock command=data.findNamespace("command", ServiceDiscovery.NS_CMDS);
             if (command==null) return BLOCK_REJECTED;
             
             if (command.getAttribute("node").equals("set-status")) {
@@ -167,7 +168,7 @@ public class IQCommands implements JabberBlockListener {
                     sd.roster.sendPresence(newStatus, message);
 
                     Iq reply=new Iq(data.getAttribute("from"), Iq.TYPE_RESULT, data.getAttribute("id"));
-                    JabberDataBlock cmd=reply.addChildNs("command", "http://jabber.org/protocol/commands");
+                    JabberDataBlock cmd=reply.addChildNs("command", ServiceDiscovery.NS_CMDS);
                     cmd.setAttribute("status", "completed");
                     cmd.setAttribute("node", "set-status");
                     cmd.setAttribute("sessionid", command.getAttribute("sessionid"));
@@ -210,7 +211,7 @@ public class IQCommands implements JabberBlockListener {
                     }
                     
                     Iq reply=new Iq(data.getAttribute("from"), Iq.TYPE_RESULT, data.getAttribute("id"));
-                    JabberDataBlock cmd=reply.addChildNs("command", "http://jabber.org/protocol/commands");
+                    JabberDataBlock cmd=reply.addChildNs("command", ServiceDiscovery.NS_CMDS);
                     cmd.setAttribute("status", "completed");
                     cmd.setAttribute("node", "leave-groupchats");
                     cmd.setAttribute("sessionid", command.getAttribute("sessionid"));
@@ -226,7 +227,7 @@ public class IQCommands implements JabberBlockListener {
     private void processStatusRequest(JabberDataBlock data) {
         Iq reply=new Iq(data.getAttribute("from"), Iq.TYPE_RESULT, data.getAttribute("id"));
 
-        JabberDataBlock cmd=reply.addChildNs("command", "http://jabber.org/protocol/commands");
+        JabberDataBlock cmd=reply.addChildNs("command", ServiceDiscovery.NS_CMDS);
         cmd.setAttribute("status", "executing");
         cmd.setAttribute("node", "set-status");
         cmd.setAttribute("sessionid", "set-status:"+Time.utcTime());
@@ -272,7 +273,7 @@ public class IQCommands implements JabberBlockListener {
     private void processGCRequest(JabberDataBlock data) {
         Iq reply=new Iq(data.getAttribute("from"), Iq.TYPE_RESULT, data.getAttribute("id"));
 
-        JabberDataBlock cmd=reply.addChildNs("command", "http://jabber.org/protocol/commands");
+        JabberDataBlock cmd=reply.addChildNs("command", ServiceDiscovery.NS_CMDS);
         cmd.setAttribute("status", "executing");
         cmd.setAttribute("node", "leave-groupchats");
         cmd.setAttribute("sessionid", "leave-groupchats:"+Time.utcTime());

@@ -1083,38 +1083,50 @@ public abstract class VirtualList {
     }
     
     public int getPrevSelectableRef(int curRef) {
-        int prevRef=curRef;
-        boolean process=true;
+        if (getItemCount() == 0) {
+            return 0;
+        }
+        int prevRef = curRef;
+        boolean process = true;
         while (process) {
             prevRef--;
-            if (getItemRef(prevRef).isSelectable())
+            if (prevRef <= 0) {
+                if (wrapping) {
+                    prevRef = getItemCount();
+                } else {
+                    prevRef = 0;
+                    process = false;
+                }
+            }
+            if (getItemRef(prevRef).isSelectable()) {
                 break;
-            if (prevRef==0 && wrapping)
-                prevRef=getItemCount();
+            }            
         }
-        
+
         return prevRef;
     }
 
     public int getNextSelectableRef(int curRef) {
-        if (getItemCount() == 0)
+        if (getItemCount() == 0) {
             return 0;
-        int nextRef=curRef;
-        boolean process=true;
+        }
+        int nextRef = curRef;
+        boolean process = true;
         while (process) {
             nextRef++;
             if (nextRef >= getItemCount()) {
                 if (wrapping) {
-		    nextRef = 0;
-		} else {
-		    nextRef = curRef;
-		    process = false;
-		}
+                    nextRef = 0;
+                } else {
+                    nextRef = curRef;
+                    process = false;
+                }
             }
-            if (getItemRef(nextRef).isSelectable())
+            if (getItemRef(nextRef).isSelectable()) {
                 break;
+            }
         }
-        
+
         return nextRef;
     }
 
