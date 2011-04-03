@@ -76,6 +76,17 @@ public class BombusMod extends MIDlet implements Runnable {
             hideApp(false);
             return;
         }
+        new Thread(this).start();
+    }
+
+    /**
+     * Pause is a no-op since there are no background activities or
+     * record stores that need to be closed.
+     */
+    public void pauseApp() {
+    }
+
+    public void run() {
 //#ifdef LIGHT_CONFIG
 //#ifdef PLUGINS
 //#     if (StaticData.getInstance().lightConfig)
@@ -89,17 +100,7 @@ public class BombusMod extends MIDlet implements Runnable {
         s.setProgress("Loading", 3); // this message will not be localized
 
         isRunning = true;
-        new Thread(this).start();
-    }
 
-    /**
-     * Pause is a no-op since there are no background activities or
-     * record stores that need to be closed.
-     */
-    public void pauseApp() {
-    }
-
-    public void run() {
 //#ifdef LIGHT_CONFIG        
 //#ifdef PLUGINS        
 //#     if (StaticData.getInstance().lightConfig)        

@@ -783,7 +783,9 @@ public class SR {
     }
 
     public static void loaded() {
-        lang.clear();
-        lang=null;
+        if (lang != null) {
+            lang.clear();
+            lang = null;
+        }
     }
 }

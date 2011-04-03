@@ -486,40 +486,46 @@ public abstract class VirtualList {
         int baloon=-1;
         int itemYpos;
         try {
-            while ((itemYpos=itemLayoutY[itemIndex]-win_top)<winHeight) {
-                
-                VirtualElement el=getItemRef(itemIndex);
-                
-                boolean sel=(itemIndex==cursor);
-                
-                int lh=el.getVHeight();
+            while ((itemYpos = itemLayoutY[itemIndex] - win_top) < winHeight) {
+
+                VirtualElement el = getItemRef(itemIndex);
+
+                boolean sel = (itemIndex == cursor);
+
+                int lh = el.getVHeight();
 
                 setAbsOrg(g, 0, list_top);
-                g.setClip(0,0, itemMaxWidth, winHeight);    
-                
+                g.setClip(0, 0, itemMaxWidth, winHeight);
+
                 g.translate(0, itemYpos);
-                
+
                 g.setColor(el.getColorBGnd());
 
                 if (sel) {
-                    drawCursor(g, itemMaxWidth, lh); 
-                    baloon=g.getTranslateY();
+                    drawCursor(g, itemMaxWidth, lh);
+                    baloon = g.getTranslateY();
                 } else {
 //#ifdef BACK_IMAGE
-//#                     if (img==null)
+//#                     if (img == null)
 //#endif
-                        g.fillRect(0,0, itemMaxWidth, lh); //clear field
+                    {
+                        g.fillRect(0, 0, itemMaxWidth, lh); //clear field
+                    }
                 }
                 g.setColor(el.getColor());
-                
+
                 g.clipRect(0, 0, itemMaxWidth, lh);
-                el.drawItem(g, (sel)?offset:0, sel);
-                
+                el.drawItem(g, (sel) ? offset : 0, sel);
+
                 itemIndex++;
-		displayedBottom=list_top+itemYpos+lh;
+                displayedBottom = list_top + itemYpos + lh;
                 itemBorder[++displayedIndex] = displayedBottom; // TODO: remove
             }
-        } catch (Exception e) { }
+        } catch (Exception e) {
+//#ifdef DEBUG
+//#             e.printStackTrace();
+//#endif
+        }
 
         int clrH=height-displayedBottom;
 

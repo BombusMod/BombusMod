@@ -448,9 +448,9 @@ public class VirtualCanvas extends Canvas implements CommandListener{
                 switch (key_code) {
                     case -82:
                         return KEY_SOFT_LEFT;
-                    case -4:
+                    case -8:
                         return KEY_BACK;
-                    case -5:
+                    case -10:
                         return KEY_GREEN;
                 }
                 break;

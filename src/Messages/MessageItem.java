@@ -102,6 +102,13 @@ public class MessageItem implements VirtualElement {//, MessageParser.MessagePar
         }
         //int y=0;
         int lineCount = msg.itemCollapsed ? 1 : msgLines.size();
+        int messageHeight = 0;
+        for (int i = 0; i < lineCount; i++) {
+            messageHeight += ((ComplexString) msgLines.elementAt(i)).getVHeight();
+        }
+        if (messageHeight < Config.getInstance().minItemHeight) {
+            g.translate(g.getTranslateX(), (Config.getInstance().minItemHeight - messageHeight) >> 1);
+        }
         for (int index = 0; index < lineCount; ++index) {
             ComplexString line = (ComplexString)msgLines.elementAt(index);
             if (line.isEmpty()) break;
@@ -114,10 +121,10 @@ public class MessageItem implements VirtualElement {//, MessageParser.MessagePar
                             RosterIcons.ICON_MSGCOLLAPSED_INDEX,
                             0,
                             (getVHeight()
-                            - RosterIcons.getInstance().getHeight()) >> 1 );
+                            - RosterIcons.getInstance().getHeight()) >> 1  - g.getTranslateY());
                     g.translate(8,0);
                     iconOffset = 2 + RosterIcons.getInstance().getWidth() >> 1;
-                }
+                } 
                 line.drawItem(g, iconOffset, selected);
             }
             g.translate(g.getTranslateX(), h);
