@@ -186,6 +186,7 @@ public class VCardView
                         photoItem.collapsed=true;
                     itemsList.insertElementAt(photoItem, 0);
                 }
+            } catch (OutOfMemoryError eom) {
             } catch (Exception e) {
                 itemsList.addElement(badFormat);
             }

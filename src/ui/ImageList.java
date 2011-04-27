@@ -51,7 +51,8 @@ public class ImageList {
             width = resImage.getWidth()/columns;
             height = (rows==0)? width : resImage.getHeight()/rows;
             isLoaded = true;
-        } catch (Exception e) {
+        }  catch(OutOfMemoryError eom) {
+            } catch (Exception e) {
 //#ifdef DEBUG
 //#             System.out.print("Can't load ");
 //#             System.out.println(resource);

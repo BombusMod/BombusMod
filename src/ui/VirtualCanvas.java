@@ -81,6 +81,10 @@ public class VirtualCanvas extends Canvas implements CommandListener{
         if (VirtualList.phoneManufacturer==Config.WINDOWS) {
             setTitle("BombusMod");
         }
+        if (hasPointerEvents() && Config.getInstance().swapMenu) {
+            // silly china phones
+            Config.getInstance().swapMenu = false;
+        }
     }
     
     public void setMIDlet(MIDlet midlet) {
