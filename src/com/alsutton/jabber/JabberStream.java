@@ -185,6 +185,11 @@ public class JabberStream extends XmppParser implements Runnable {
 //#                     for (Enumeration e = blocks.elements(); e.hasMoreElements();) {                                                
 //#                         dispatchXmppStanza((JabberDataBlock) e.nextElement());
 //#                     }
+//#                     try {
+//#                         sendKeepAlive(4);
+//#                     } catch (IOException ex) {
+//#                         throw new XMLException("http keep-alive exception: " + ex.getMessage());
+//#                     }
 //#                 }
 //#             }
 //#         }
@@ -230,7 +235,7 @@ public class JabberStream extends XmppParser implements Runnable {
 //#ifdef HTTPBIND
 //#         if (connection instanceof HttpBindConnection) {
 //#             keepAliveType = 4;
-//#             keepAlivePeriod = ((HttpBindConnection)connection).waitPeriod;
+//#             keepAlivePeriod = ((HttpBindConnection)connection).waitPeriod - 3;
 //#         } else {
 //#endif         
          keepAlivePeriod=account.getKeepAlivePeriod();
