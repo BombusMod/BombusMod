@@ -113,14 +113,22 @@ public class SASLAuth implements JabberBlockListener{
                     listener.loginMessage(SR.MS_AUTH, 42);
                     return JabberBlockListener.BLOCK_PROCESSED;
                 }
-                
-//#if SASL_XGOOGLETOKEN
+//#ifdef SASL_XGOOGLETOKEN
 //#                 // X-GOOGLE-TOKEN mechanism
 //#                 if (mech.getChildBlockByText("X-GOOGLE-TOKEN")!=null) {
 //# 
 //#                     listener.loginMessage(SR.MS_TOKEN, 40);
-//#                     String token = new GoogleTokenAuth(account).responseXGoogleToken();
-//#                     if (token==null) throw new SecurityException("Can't get Google token");
+//#                     String token;
+//#                     try {
+//#                         token = new GoogleTokenAuth(account).responseXGoogleToken();
+//#                     } catch (Exception e) {
+//#                         listener.loginFailed("Can't get Google token: " + e.getMessage());
+//#                         return JabberBlockListener.NO_MORE_BLOCKS;
+//#                     }
+//#                     if (token==null)  {
+//#                         listener.loginFailed("Can't get Google token");
+//#                         return JabberBlockListener.NO_MORE_BLOCKS;
+//#                     }
 //#                     account.isGoogle = true;
 //#                     auth.setAttribute("mechanism", "X-GOOGLE-TOKEN");
 //#                     auth.setText(token);

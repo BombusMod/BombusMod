@@ -28,10 +28,8 @@
 package Messages;
 
 import Client.Config;
-import Client.Juick;
 import Client.Msg;
 import Colors.ColorTheme;
-import Menu.JuickThingsMenu;
 import java.util.Vector;
 import Menu.MenuCommand;
 import images.RosterIcons;
@@ -107,34 +105,32 @@ public abstract class MessageList extends DefForm
         if (c == cmdBack) {            
             destroyView();
         }
-	MessageItem mi = (MessageItem) getFocusedObject();
-	if (mi == null) return;
-
         if (c == cmdUrl) {
-	    Vector urls = mi.getUrlList();
-	    if (urls != null)
-		new MessageUrl(urls);
+            try {
+                Vector urls = ((MessageItem) getFocusedObject()).getUrlList();
+                new MessageUrl(urls); //throws NullPointerException if no urls
+            } catch (Exception e) {/* no urls found */
+
+            }
         }
         if (c == cmdxmlSkin) {
-	    if (mi.msg.body.indexOf("xmlSkin") > -1) {
-		ColorTheme.loadSkin(((MessageItem) getFocusedObject()).msg.body, 2);
-	    }
-	}
+            try {
+                if (((MessageItem) getFocusedObject()).msg.body.indexOf("xmlSkin") > -1) {
+                    ColorTheme.loadSkin(((MessageItem) getFocusedObject()).msg.body, 2);
+                }
+            } catch (Exception e) {
+            }
+        }
 
 //#ifdef CLIPBOARD
 //#         if (c == cmdCopy) {
-//#             clipboard.set(mi.msg);
+//#             clipboard.set(((MessageItem) getFocusedObject()).msg);
 //#         }
 //# 
 //#         if (c == cmdCopyPlus) {
-//#             clipboard.append(mi.msg);
+//#             clipboard.append(((MessageItem) getFocusedObject()).msg);
 //# 
 //#         }
-//#endif
-//#ifdef JUICK
-//# 	if (c == Juick.cmdJuickThings) {
-//# 	    new JuickThingsMenu(this, mi.msg.things, Juick.getMainJuickContact());
-//# 	}
 //#endif
     }
    
@@ -150,14 +146,6 @@ public abstract class MessageList extends DefForm
             addMenuCommand(cmdxmlSkin);
         if (isHasUrl())
             addMenuCommand(cmdUrl);
-//#ifdef JUICK
-//# 	MessageItem mi = (MessageItem) getFocusedObject();
-//# 	if (mi != null) {
-//# 	    if (!mi.msg.things.isEmpty()) {
-//# 		addMenuCommand(Juick.cmdJuickThings);
-//# 	    }
-//# 	}
-//#endif
     }
 
     public boolean isHasScheme() {

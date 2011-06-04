@@ -69,7 +69,6 @@ import javax.microedition.lcdui.Displayable;
 import PrivacyLists.PrivacyModifyList;
 import PrivacyLists.PrivacySelect;
 import Archive.ArchiveList;
-import Client.Juick;
 import History.HistoryReader;
 
 public class UserKeyExec {
@@ -339,8 +338,7 @@ public class UserKeyExec {
                 sd.roster.cmdCleanAllMessages();
                 break;
             case 3: 
-                sd.roster.errorLog(SR.MS_SIMULATED_BREAK);
-		sd.roster.doReconnect();
+                sd.roster.connectionTerminated(new Exception(SR.MS_SIMULATED_BREAK));
                 break;
 //#ifdef POPUPS
 //#ifdef STATS
@@ -431,7 +429,7 @@ public class UserKeyExec {
 //#                 if(sd.Juick)
 //#endif
 //#                 if (current instanceof Roster) {
-//#                     Contact jContact = Juick.getMainJuickContact();
+//#                     Contact jContact = sd.roster.getMainJuickContact();
 //#                     if (jContact != null)
 //#                         sd.roster.focusToContact(jContact, false);
 //#                 } else {
@@ -469,7 +467,7 @@ public class UserKeyExec {
 //#endif
 //#                 if (current instanceof ContactMessageList) {
 //#                     ContactMessageList current_cml = (ContactMessageList) current;
-//#                     current_cml.menuAction(Juick.cmdJuickCommands, current);
+//#                     current_cml.menuAction(current_cml.cmdJuickCommands, current);
 //#                 } else {
 //#                     return false;
 //#                 }

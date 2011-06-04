@@ -169,7 +169,7 @@ public class RosterToolsMenu extends Menu {
 //#ifdef PLUGINS
 //#         if (sd.Juick)
 //#endif
-//#             if (Juick.juickContacts.size() > 1) {
+//#             if (sd.roster.juickContacts.size() > 1) {
 //#                 addItem("Tools for Juick.Com", 20, RosterIcons.ICON_JUICK);
 //#             }
 //#endif
