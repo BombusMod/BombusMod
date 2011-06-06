@@ -282,11 +282,25 @@ public class JabberDataBlock
     }
     return null;
   }
+  
+    public JabberDataBlock getChildBlockChild(String byTagName) {
+        if (childBlocks==null) return null;
+        int j = childBlocks.size();
+        for (int i = 0; i < j; ++i) {
+            JabberDataBlock d = (JabberDataBlock)childBlocks.elementAt(i);
+            if (d.getTagName().equals(byTagName)) return d;
+            JabberDataBlock result = d.getChildBlockChild(byTagName);
+            if (result != null) {
+                return result;
+            }
+        }
+        return null;
+    }
 
   /**
    * Returns a child block by text
    *
-   */
+   */   
 
   public JabberDataBlock getChildBlockByText(String text)
   {

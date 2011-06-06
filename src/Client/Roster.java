@@ -1744,10 +1744,18 @@ public class Roster
                     if (ti>=0) 
                         c.setStatus(ti);
                     
-                    if (c.nick==null && c.status<=Presence.PRESENCE_DND) {
+                    if (c.nick == null && c.status <= Presence.PRESENCE_DND) {
                         JabberDataBlock nick = pr.findNamespace("nick", "http://jabber.org/protocol/nick");
-                        if (nick!=null) c.nick=nick.getText();
-                        
+                        if (nick != null) {
+                            c.nick = nick.getText();
+                        } else {
+                            nick = pr.getChildBlockChild("nickname"); // PyICQ-t workaround
+                            if (nick != null) {
+                                System.out.println("Received pyicqt nick: " + nick.getText());
+                                c.nick = nick.getText();
+
+                            }
+                        }
                     }
 
                     if ((ti==Presence.PRESENCE_ONLINE || ti==Presence.PRESENCE_CHAT) && notifyReady(-111)) {
