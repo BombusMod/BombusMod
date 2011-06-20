@@ -59,8 +59,11 @@ public class HistoryReader extends MessageList {
         setMainBarItem(new MainBar(c.getName() + ": " + SR.MS_HISTORY));
 
         hl = new HistoryLoader(c.bareJid, smiles);
-
-        gotoEnd();        
+        if (hl.fileSize > 0) {
+            gotoEnd();        
+        } else {
+            destroyView();
+        }
     }
 
 /* TODO: menu command for gotoBegin()/gotoEnd()

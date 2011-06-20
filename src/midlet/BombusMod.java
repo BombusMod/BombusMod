@@ -96,6 +96,12 @@ public class BombusMod extends MIDlet implements Runnable {
 
         instance = this;
         display = Display.getDisplay(this);
+
+        sd.canvas = VirtualCanvas.getInstance();
+        sd.canvas.setMIDlet(this);
+        sd.roster = new Roster();
+        sd.canvas.homeList = sd.roster;
+
         s = SplashScreen.getInstance();
         s.setProgress("Loading", 3); // this message will not be localized
 
@@ -131,10 +137,6 @@ public class BombusMod extends MIDlet implements Runnable {
 //#         sd.autoTask = new AutoTask();
 //#         s.setProgress(17);
 //#endif
-        sd.canvas = VirtualCanvas.getInstance();
-        sd.canvas.setMIDlet(this);
-        sd.roster = new Roster();
-        sd.canvas.homeList = sd.roster;
 
         s.setProgress(20);
 
