@@ -880,11 +880,11 @@ public abstract class VirtualList {
 //#endif
         int act = CommandsPointer.pointerPressed(x, y);
         if (act == 1) {
-            touchLeftPressed();
+            doLeftAction();
             stickyWindow = false;
             return;
         } else if (act == 2) {
-            touchRightPressed();
+            doRightAction();
             stickyWindow = false;
             return;
         }
@@ -1406,7 +1406,22 @@ public abstract class VirtualList {
     public void captionPressed() {};
     public void commandState() {};
 
-    
+    public void doLeftAction() {
+        if (reconnectWindow.getInstance().isActive()) {
+            reconnectYes();
+        } else {
+            touchLeftPressed();
+        }
+    }
+
+    public void doRightAction() {
+        if (reconnectWindow.getInstance().isActive()) {
+            reconnectNo();
+        } else {
+            touchRightPressed();
+        }
+    }
+   
     public abstract void touchLeftPressed();   
     public abstract void touchRightPressed();
         

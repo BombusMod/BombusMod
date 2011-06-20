@@ -514,18 +514,10 @@ public class VirtualCanvas extends Canvas implements CommandListener{
                 list.keyGreen();
                 return;
             case KEY_SOFT_LEFT:
-                if (reconnectWindow.getInstance().isActive()) {
-                    list.reconnectYes();
-                    return;
-                }
-                list.touchLeftPressed();
+                list.doLeftAction();
                 return;
             case KEY_SOFT_RIGHT:
-                if (reconnectWindow.getInstance().isActive()) {
-                    list.reconnectNo();
-                    return;
-                }
-                list.touchRightPressed();
+                list.doRightAction();
                 return;
             case KEY_UP:
                 list.keyUp();
