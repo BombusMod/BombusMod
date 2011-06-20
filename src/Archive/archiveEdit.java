@@ -88,7 +88,9 @@ public class archiveEdit
 //#if TEMPLATES
 //#         textbox.removeCommand(cmdTemplate);
 //#endif
-        if (Config.getInstance().phoneManufacturer == Config.SONYE) System.gc(); // prevent flickering on Sony Ericcsson C510
+        if (Config.getInstance().phoneManufacturer == Config.SONYE) 
+            if (Config.getPlatformName().indexOf("JP-8.4") > -1)
+                System.gc(); // prevent flickering on Sony Ericcsson C510
         textbox.setCommandListener(this);        
         
     }

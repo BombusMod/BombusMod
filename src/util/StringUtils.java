@@ -13,6 +13,8 @@ import Conference.ConferenceGroup;
 import Conference.MucContact;
 //#endif
 import com.alsutton.jabber.datablocks.Presence;
+import java.io.DataInputStream;
+import java.io.IOException;
 import java.util.Vector;
 import javax.microedition.lcdui.Font;
 import ui.Time;
@@ -186,6 +188,36 @@ public class StringUtils {
         
         return out.toString();
     }
+    // Puts the specified word (val) into the buffer (buf) at position off using big endian byte ordering
+    public static void putWordBE(byte[] buf, int off, int val) {
+        buf[off]   = (byte) ((val >> 8) & 0x000000FF);
+        buf[++off] = (byte) ((val)      & 0x000000FF);
+    }   
+    
+    public static int getWordBE(byte[] buf, int off) {
+        int val = (((int) buf[off]) << 8) & 0x0000FF00;
+        return val | (((int) buf[++off])) & 0x000000FF;
+    }
+    
+    /* Divide text to array of parts using separator character */
+    static public String[] explode(String text, char separator) {
+        if (text.equals("")) {
+            return new String[0];
+        }
+        Vector tmp = new Vector();
+        int start = 0;
+        int end = text.indexOf(separator, start);
+        while (end >= start) {
+            tmp.addElement(text.substring(start, end));
+            start = end + 1;
+            end = text.indexOf(separator, start);
+        }
+        tmp.addElement(text.substring(start));
+        String[] result = new String[tmp.size()];
+        tmp.copyInto(result);
+        return result; 
+    }
+    
 //#ifndef WMUC
     public static String processError(Presence presence, int presenceType, ConferenceGroup group, MucContact muc) {
         XmppError xe=XmppError.findInStanza(presence);

@@ -96,7 +96,9 @@ public class EditBox implements CommandListener {
         t.setCommandListener(this);
         if (Config.getInstance().capsState)
             t.setConstraints(TextField.INITIAL_CAPS_SENTENCE);
-        if (Config.getInstance().phoneManufacturer == Config.SONYE) System.gc(); // prevent flickering on Sony Ericcsson C510
+        if (Config.getInstance().phoneManufacturer == Config.SONYE)
+            if (Config.getPlatformName().indexOf("JP-8.4") > -1)
+                System.gc(); // prevent flickering on Sony Ericcsson C510
         midlet.BombusMod.getInstance().setDisplayable(t);
     }
 
@@ -113,7 +115,9 @@ public class EditBox implements CommandListener {
 //#                clipboard.setClipBoard(text);
 //#                 if (!clipboard.isEmpty()) {
 //#                     t.addCommand(cmdCopyPlus);
-//#                     if (Config.getInstance().phoneManufacturer == Config.SONYE) System.gc(); // prevent flickering on Sony Ericcsson C510
+//#                     if (Config.getInstance().phoneManufacturer == Config.SONYE) 
+//#                         if (Config.getPlatformName().indexOf("JP-8.4") > -1)
+//#                             System.gc(); // prevent flickering on Sony Ericcsson C510
 //#                 }
 //#             } catch (Exception e) {/*no messages*/}
 //#             return;

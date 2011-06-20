@@ -550,7 +550,7 @@ Copy topic	Копировать тему
 Focus to Juick contact	Фокус на Juick контакте
 [J] Reply to message	[J] Ответить на сообщение
 [J] Reply to	[J] Ответить
-Things	Сущности
+[J] Things	[J] Сущности
 [J] Delete message	[J] Удалить сообщение
 [J] Subscribe	[J] Подписаться
 [J] Unsubscribe from comments	[J] Отписаться от комментариев

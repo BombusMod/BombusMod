@@ -1690,12 +1690,11 @@ public class Roster
                         
                         c=getContact(from, true);
                         
-                        messageStore(c, m);
-
-                        if (cf.autoSubscribe==Config.SUBSCR_AUTO) {
-                             doSubscribe(c);
-                             messageStore(c, new Msg(Msg.MESSAGE_TYPE_AUTH, from, null, SR.MS_AUTH_AUTO));
-                         }
+                        if (cf.autoSubscribe!=Config.SUBSCR_AUTO) 
+                            messageStore(c, m); 
+                        else
+                             doSubscribe(c);                             
+                           
                     } else {
                         // processing presences
                         boolean enNIL = cf.notInListDropLevel > NotInListFilter.DROP_PRESENCES;
@@ -1705,7 +1704,7 @@ public class Roster
 
                         if (pr.getAttribute("ver")!=null) c.version=pr.getAttribute("ver");  // for bombusmod only
                         
-                        if (pr.getTypeIndex()!=Presence.PRESENCE_ERROR) {
+                        if (ti != Presence.PRESENCE_ERROR) {
 //#ifdef CLIENTS_ICONS
 //#ifdef PLUGINS
 //#                         if (sd.ClientsIcons)
@@ -1736,8 +1735,12 @@ public class Roster
 
                             c.statusString=pr.getStatus();
                         }
-                      
+                        if (ti == Presence.PRESENCE_AUTH)
+                            if (cf.autoSubscribe==Config.SUBSCR_AUTO)
+                                return JabberBlockListener.BLOCK_PROCESSED;
+                        
                         messageStore(c, m);
+                         
                      }
                     
                     c.priority=pr.getPriority();
@@ -1748,12 +1751,12 @@ public class Roster
                         JabberDataBlock nick = pr.findNamespace("nick", "http://jabber.org/protocol/nick");
                         if (nick != null) {
                             c.nick = nick.getText();
+                            storeContact(from, c.nick, c.group.name, false);
                         } else {
                             nick = pr.getChildBlockChild("nickname"); // PyICQ-t workaround
                             if (nick != null) {
-                                System.out.println("Received pyicqt nick: " + nick.getText());
-                                c.nick = nick.getText();
-
+                               c.nick = nick.getText();
+                               storeContact(from, c.nick, c.group.name, false);
                             }
                         }
                     }
