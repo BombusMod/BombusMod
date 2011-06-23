@@ -936,13 +936,13 @@ public class ContactMessageList extends MessageList {
         }
         super.userKeyPressed(keyCode);
     }
-    public void longKey(int key) {
+    public boolean longKey(int key) {
         switch(key) {
             case 0:
                 clearReadedMessageList();
-                return;
+                return true;
         }
-        super.longKey(key);
+        return super.longKey(key);
     }
 
     public void showTimeTrafficInfo() {}

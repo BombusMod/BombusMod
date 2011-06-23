@@ -180,7 +180,10 @@ public abstract class VirtualList {
         }
     }
 
-    public void longKey(int keyCode) {};
+    public boolean longKey(int keyCode) {
+        return false;
+    }
+
 //#ifdef MEMORY_USAGE
 //#     public static boolean memMonitor;
 //#endif
@@ -483,14 +486,19 @@ public abstract class VirtualList {
         int displayedBottom=list_top;
    
         int baloon=-1;
-        int itemYpos;
-        try {
-            while ((itemYpos = itemLayoutY[itemIndex] - win_top) < winHeight) {
-
+//        try { // TODO: remove, if testing been succefully
+            while (itemIndex < getItemCount()) {
+                int itemYpos = itemLayoutY[itemIndex] - win_top;
+                if (itemYpos >= winHeight) {
+                    break;
+                }
                 VirtualElement el = getItemRef(itemIndex);
-
+/* if NPE — uncomment, else — remove.
+                if (el == null) {
+                    break;
+                }
+*/
                 boolean sel = (itemIndex == cursor);
-
                 int lh = el.getVHeight();
 
                 setAbsOrg(g, 0, list_top);
@@ -520,12 +528,13 @@ public abstract class VirtualList {
                 displayedBottom = list_top + itemYpos + lh;
                 itemBorder[++displayedIndex] = displayedBottom; // TODO: remove
             }
+/* TODO: remove, if testing been succefully
         } catch (Exception e) {
 //#ifdef DEBUG
 //#             e.printStackTrace();
 //#endif
         }
-
+*/
         int clrH=height-displayedBottom;
 
         if (clrH>0

@@ -2959,45 +2959,45 @@ public class Roster
 //#endif  
     }
 
-    public void longKey(int keyCode) {
+    public boolean longKey(int keyCode) {
         switch (keyCode) {
             case 0:
                 toggleOfflines();
-                return;
+                return true;
             case 1:
                 if (isLoggedIn())
                     new Bookmarks(null);
-		return;
+		return true;
             case 3:
                 cmdActiveContacts();
-                return;
+                return true;
             case 6:
                 Config.fullscreen = !Config.fullscreen;
                 sd.canvas.setFullScreenMode(Config.fullscreen);
-                return;
+                return true;
             case 4:
                 new ConfigForm();
-                return;
+                return true;
             case 7:
                 new RosterToolsMenu();
-                return;
+                return true;
             case 9:
                 cmdMinimize();
-                return;
+                return true;
             case VirtualCanvas._KEY_STAR:
                 if (cf.phoneManufacturer == Config.SIEMENS || cf.phoneManufacturer == Config.SIEMENS2) {
                     toggleVibra();
                 } else {
                     blockScreen();
                 }
-                return;
+                return true;
             case VirtualCanvas._KEY_POUND:
                 if (cf.phoneManufacturer == Config.SIEMENS || cf.phoneManufacturer == Config.SIEMENS2) {
                     blockScreen();
                 } else {
                     toggleVibra();
                 }
-                return;
+                return true;
         }
 //#ifdef LIGHT_CONFIG        
 //#ifdef PLUGINS        
@@ -3005,6 +3005,7 @@ public class Roster
 //#endif                    
 //#         CustomLight.keyPressed();
 //#endif 
+        return super.longKey(keyCode);
     }
     
     public void captionPressed() {new ActiveContacts(null);}

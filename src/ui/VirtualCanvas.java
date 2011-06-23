@@ -551,8 +551,7 @@ public class VirtualCanvas extends Canvas implements CommandListener{
 //#                 return;
 //#             }
 //#endif
-            if (kHold) {
-                list.longKey(keyCode);
+            if (kHold && list.longKey(keyCode)) {
 //#ifdef POPUPS
                 PopUp.getInstance().handled = true;
 //#endif

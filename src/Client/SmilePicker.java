@@ -131,6 +131,11 @@ public class SmilePicker
         }
     }
 
+    protected synchronized void updateLayout() {
+        super.updateLayout();
+        getMainBarItem().setElementAt(getTipString(), 0);
+    }
+
     public void drawCursor(Graphics g, int width, int height){
         int x=xBorder+(xCursor*imgWidth);
         g.setColor(getColorBGnd());
@@ -138,7 +143,6 @@ public class SmilePicker
         g.translate(x,0);
         super.drawCursor(g, imgWidth, lineHeight);
         g.translate(-x,0);
-        getMainBarItem().setElementAt(getTipString(), 0);
     } 
 
     protected void drawBalloon(final Graphics g, int balloon, final String text) {
@@ -178,7 +182,7 @@ public class SmilePicker
             return;
         if (xCursor >= xLastCnt)
             xCursor=xLastCnt-1;
-    }   
+    }
    
 
     public void moveCursorEnd() {
