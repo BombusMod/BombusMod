@@ -552,7 +552,7 @@ Focus to Juick contact	Фокус на Juick контакте
 [J] Reply to	[J] Ответить
 [J] Things	[J] Сущности
 [J] Delete message	[J] Удалить сообщение
-[J] Subscribe	[J] Подписаться
+[J] Subscribe to comments	[J] Подписаться на комментарии
 [J] Unsubscribe from comments	[J] Отписаться от комментариев
 [J] Recommend post	[J] Порекомендовать пост
 [J] Show post and comments	[J] Показать пост и комментарии к нему

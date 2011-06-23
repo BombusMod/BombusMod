@@ -135,6 +135,7 @@ public class VirtualCanvas extends Canvas implements CommandListener{
         list.height = getHeight();
         list.paint(graphics);
     }
+
     protected final void keyPressed(int keyCode) {
 //#ifdef AUTOSTATUS
 //#     sd.roster.userActivity();
@@ -147,6 +148,7 @@ public class VirtualCanvas extends Canvas implements CommandListener{
         }
 //#endif
         checkKey(getKey(keyCode));
+        list.redraw();
 //#ifdef LIGHT_CONFIG      
 //#ifdef PLUGINS                
 //#         if (StaticData.getInstance().lightConfig)
@@ -503,6 +505,7 @@ public class VirtualCanvas extends Canvas implements CommandListener{
                 KeyRepeatTimer.start(keyCode);
         }
         doKeyAction(keyCode);
+        repaint();
     }
      /**
      * обработка кодов кнопок
@@ -521,19 +524,15 @@ public class VirtualCanvas extends Canvas implements CommandListener{
                 return;
             case KEY_UP:
                 list.keyUp();
-                list.redraw();
                 return;
             case KEY_DOWN:
                 list.keyDwn();
-                list.redraw();
                 return;
             case KEY_LEFT:
                 list.pageLeft();
-                list.redraw();
                 return;
             case KEY_RIGHT:
                 list.pageRight();
-                list.redraw();
                 return;
             case KEY_FIRE:
                 list.eventOk();
@@ -562,11 +561,9 @@ public class VirtualCanvas extends Canvas implements CommandListener{
             } else {
                 list.userKeyPressed(keyCode);
             }
-        } else {
-            repaint();
         }
-
     }
+
     private boolean sendEvent(int key_code) {
         int key = getKey(key_code);
         if ((key > -1) && (list.getFocusedObject() != null)) {
@@ -613,6 +610,7 @@ class KeyRepeatTimer extends TimerTask {
             }
             VirtualCanvas.getInstance().kHold = true;
             VirtualCanvas.getInstance().doKeyAction(key);
+            VirtualCanvas.getInstance().getList().redraw();
         }
     }
 
@@ -678,6 +676,7 @@ class TimerTaskRotate extends TimerTask {
             } else {
                 scroll--;
             }
+/* TODO: remove
             if (VirtualList.reconnectRedraw) {
                 VirtualList.reconnectRedraw = false;
                 try {
@@ -686,6 +685,7 @@ class TimerTaskRotate extends TimerTask {
                     instance = null;
                 }
             }
+*/
         }
 
     }

@@ -319,12 +319,6 @@ public class Roster
 //#ifdef DEBUG
 //#             e.printStackTrace();
 //#endif
-            //SplashScreen.getInstance().close();
-            setProgress(SR.MS_FAILED, 100);
-            doReconnect=false;
-            myStatus=Presence.PRESENCE_OFFLINE;
-            setQuerySign(false);
-            redraw();
             askReconnect(e);
         }
     }
@@ -912,7 +906,7 @@ public class Roster
 
     public void sendPresence(int newStatus, String message) {
         if (newStatus!=Presence.PRESENCE_SAME) 
-            myStatus=newStatus;
+            myStatus = newStatus;
 //#ifdef AUTOSTATUS
 //#         messageActivity();
 //#endif
@@ -920,11 +914,11 @@ public class Roster
             myMessage=message;
          
         setQuerySign(false);
-	
+
         if (myStatus!=Presence.PRESENCE_OFFLINE) {
              lastOnlineStatus=myStatus;
         }
-        
+
         // reconnect if disconnected
         if (myStatus!=Presence.PRESENCE_OFFLINE && theStream==null ) {
             synchronized (hContacts) {
@@ -979,6 +973,7 @@ public class Roster
 //#                 autostatus.destroyTask();
 //#endif            
         }
+
         Contact c=selfContact();
         c.setStatus(myStatus);
         sort(hContacts);
@@ -2172,6 +2167,17 @@ public class Roster
     }
 
     private void askReconnect(final Exception e) {
+        //SplashScreen.getInstance().close();
+        try {
+            theStream.close(); // sends </stream:stream> and closes socket
+        } catch (Exception e1) { /*e1.printStackTrace();*/ }
+        theStream = null;
+        setProgress(SR.MS_FAILED, 100);
+        doReconnect=false;
+        myStatus=Presence.PRESENCE_OFFLINE;
+        setQuerySign(false);
+        redraw();
+
         StringBuffer error=new StringBuffer();
         if (e.getClass().getName().indexOf("java.lang.Exception")<0) {
             error.append(e.getClass().getName());

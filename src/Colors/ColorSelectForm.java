@@ -16,13 +16,14 @@ import ui.controls.form.DefForm;
  * @author Vitaly
  */
 //#ifdef COLOR_TUNE
-//# public final class ColorSelectForm extends DefForm implements Runnable {
+//# public final class ColorSelectForm extends DefForm {
+//# // implements Runnable {
 //# 
 //#     private ColorSelector selector;
 //#     
 //#     boolean move_point;
 //# 
-//#     public ColorSelectForm( VirtualList parent, ColorsList list, int color) {
+//#     public ColorSelectForm(VirtualList parent, ColorsList list, int color) {
 //#         super(ColorsList.NAMES[color]);
 //#         parentView = parent;
 //#         selector = new ColorSelector(list, color);
@@ -59,6 +60,23 @@ import ui.controls.form.DefForm;
 //#         selector.selectNext();
 //#     }
 //# 
+//#     protected void pointerPressed(int x, int y) {
+//#         if (selector.pointerPressed(x, y)) {
+//#             redraw();
+//#             return;
+//#         }
+//#         super.pointerPressed(x, y);
+//#     }
+//# 
+//#     protected void pointerDragged(int x, int y) {
+//#         if (selector.pointerDragged(x, y)) {
+//#             redraw();
+//#             return;
+//#         }
+//#         super.pointerDragged(x, y);
+//#     }
+//# 
+//# /*
 //#     public void run() {
 //#         while (move_point) {
 //#             try {
@@ -95,5 +113,6 @@ import ui.controls.form.DefForm;
 //#         selector.dy = 0;
 //#         move_point = false;
 //#     }
+//# */
 //# }
 //#endif

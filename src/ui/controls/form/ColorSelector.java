@@ -42,6 +42,7 @@ public class ColorSelector implements VirtualElement
 
     Graphics G;
 
+    private int yTranslate;
     public int cpos;
     String nowcolor;
     int red;
@@ -86,6 +87,7 @@ public class ColorSelector implements VirtualElement
     }
 
     public void drawItem(Graphics g, int ofs, boolean sel) {
+        yTranslate = g.getTranslateY();
         py = g.getClipHeight() - 20;
         ph = g.getClipHeight() - 50;
         g.setColor(0xffffff);
@@ -149,43 +151,69 @@ public class ColorSelector implements VirtualElement
         }
         g.setStrokeStyle(Graphics.SOLID);
     }
-/*
-    protected void pointerPressed(int x, int y) {
-        int r=checkPressed((w/3)-12, x, y);
-        int g=checkPressed(w/2-2, x, y);
-        int b=checkPressed(w-(w/3-8), x, y);
-        if (r>-1) red=r;
-        if (g>-1) green=g;
-        if (b>-1) blue=b;
 
-        repaint();
+    public boolean pointerPressed(int x, int y) {
+        y -= yTranslate;
+        int itemIndex = getItemIndex(x, y);
+        if (cpos == itemIndex) {
+            return setColor(getColor(x, y));
+        } else {
+            if (itemIndex > -1) {
+                cpos = itemIndex;
+                return true;
+            }
+        }
+
+        return false;
     }
 
-    private int checkPressed(int w, int x, int y) {
-        if (x>=w && x<(w+5))
-            if (y<=py && y>=py-ph) {
-                int val=py*(py-y)/255;
-                return val;
+    public boolean pointerDragged(int x, int y) {
+        y -= yTranslate;
+        return setColor(getColor(x, y));
+    }
+
+    private boolean setColor(int val) {
+        if (val > -1) {
+            switch (cpos) {
+            case 0:
+                red = val;
+                return true;
+            case 1:
+                green = val;
+                return true;
+            case 2:
+                blue = val;
+                return true;
             }
+	}
+
+        return false;
+    }
+
+    private int getColor(int x, int y) {
+        if (y>=py-ph && y<=py)  {
+            return (int) ((py-y)*255 + 0.5)/ph;
+        }
         return -1;
     }
-*/
-    public int pointerPressed(int x, int y) {
+
+
+    public int getItemIndex(int x, int y) {
         // red
         int x1 = pxred - 10;
         int x2 = x1 + 20;
         if (x2 > x && x > x1)
-            return (cpos == 0) ? 1 : 4;
+            return 0;
         // green
         x1 = pxgreen - 10;
         x2 = x1 + 20;
         if (x2 > x && x > x1)
-            return (cpos == 1) ? 2 : 5;
+            return 1;
         // blue
         x1 = pxblue - 10;
         x2 = x1 + 20;
         if (x2 > x && x > x1)
-            return (cpos == 2) ? 3 : 6;
+            return 2;
 
         return -1;
     }

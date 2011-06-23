@@ -811,7 +811,6 @@ public class Config {
 
             if (platform.endsWith("(NSG)")) {
                 phoneManufacturer = SIEMENS;
-                swapMenu = true;
                 return;
             } else if (platform.startsWith("SIE")) {
                 phoneManufacturer = SIEMENS2;

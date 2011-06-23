@@ -30,17 +30,23 @@ package ui;
 
 import Client.Config;
 import Client.StaticData;
+import ui.controls.Progress;
+import Fonts.FontCache;
+import javax.microedition.lcdui.*;
+import locale.SR;
+import Colors.ColorTheme;
 
 /**
  *
  * @author ad
  */
 public class reconnectWindow implements Runnable {
-
     private int pos;
     private static int timeout;
     private boolean active;
     private static reconnectWindow instance;
+    private static String reconnectString="";
+    private Progress pb;
 
     public static reconnectWindow getInstance() {
         if (instance == null) {
@@ -48,6 +54,33 @@ public class reconnectWindow implements Runnable {
             timeout = Config.getInstance().reconnectTime * 4;
         }
         return instance;
+    }
+
+    public void draw(Graphics g, int width, int height) {
+        int reconnectPos = pos * 4;
+        int reconnectTimeout = timeout * 4;
+
+        if (!isActive())
+            return;
+        if (!(reconnectTimeout>reconnectPos && reconnectPos!=0))
+            return;
+
+        int strWidth=g.getFont().stringWidth(SR.MS_RECONNECT);
+        int progressWidth=(width/3)*2;
+        progressWidth=(strWidth>progressWidth)?strWidth:progressWidth;
+        int progressX=(width-progressWidth)/2;
+        if (pb==null) pb=new Progress(progressX, height/2, progressWidth);
+        int popHeight=Progress.getHeight();
+        g.setColor(ColorTheme.getColor(ColorTheme.POPUP_SYSTEM_BGND));
+        g.fillRoundRect(progressX-2, (height/2)-(popHeight*2), progressWidth+4, (popHeight*2)+1, 6, 6);
+        g.setColor(ColorTheme.getColor(ColorTheme.POPUP_SYSTEM_INK));
+        g.drawRoundRect(progressX-2, (height/2)-(popHeight*2), progressWidth+4, (popHeight*2)+1, 6, 6);
+        FontCache.drawString(g,SR.MS_RECONNECT, width/2, (height/2)-(popHeight*2), Graphics.TOP | Graphics.HCENTER);
+        Progress.draw(g, reconnectPos*progressWidth/reconnectTimeout, reconnectString);
+    }
+
+    private void redraw() {
+        VirtualCanvas.getInstance().repaint();
     }
 
     public void startReconnect() {
@@ -65,6 +98,7 @@ public class reconnectWindow implements Runnable {
     public void stopReconnect() {
         active = false;
         pos = 0;
+        redraw();
     }
 
     public boolean isActive() {
@@ -74,11 +108,12 @@ public class reconnectWindow implements Runnable {
     public void run() {
         active = true;
         while (active) {
+            reconnectString=Integer.toString(pos / 4);
+            redraw();
+
             try {
                 Thread.sleep(250);
             } catch (Exception e) { break; }
-
-            VirtualList.drawReconnect(pos * 4, timeout * 4, Integer.toString(pos / 4));
 
             pos++;
 

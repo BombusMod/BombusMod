@@ -164,12 +164,15 @@ public class ScrollBar {
 	return true;
     }
     public boolean pointerReleased(int x, int y, VirtualList v) {
+        if (point_y >= 0) {
+            point_y = -1;
+            return true;
+        }
         if (size == 0)
             return false;
         if (x < scrollerX) {
             return false;
         }
-        point_y = -1;
         return true;
     }
     

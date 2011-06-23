@@ -131,7 +131,7 @@ public class SmilePicker
         }
     }
 
-    public void drawCursor (Graphics g, int width, int height){
+    public void drawCursor(Graphics g, int width, int height){
         int x=xBorder+(xCursor*imgWidth);
         g.setColor(getColorBGnd());
         g.fillRect(0,0,width, height);
@@ -195,16 +195,29 @@ public class SmilePicker
         return (String) smileTable.elementAt(cursor*xCnt+xCursor);
     }
 
-    protected void pointerPressed(int x, int y) { 
-        super.pointerPressed(x,y);
+    private void set_xCursor(int x) {
         if (x >= xCnt*imgWidth)
             return;
         xCursor = x/imgWidth;
         setRotator();
         if (cursor != lines-1)
             return;
-        if (xCursor >= xLastCnt) xCursor=xLastCnt-1;
+        if (xCursor >= xLastCnt)
+            xCursor=xLastCnt-1;
     }
+
+    protected void pointerPressed(int x, int y) { 
+        super.pointerPressed(x,y);
+        set_xCursor(x);
+        redraw();
+    }
+
+    protected void pointerDragged(int x, int y) { 
+        super.pointerDragged(x,y);
+        set_xCursor(x);
+        redraw();
+    }
+
     public void userKeyPressed(int keyCode) {
         switch (keyCode) {
             case 3:

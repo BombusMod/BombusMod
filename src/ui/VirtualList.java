@@ -37,7 +37,6 @@ import locale.SR;
 import ui.controls.PopUp;
 //#endif
 import ui.controls.Balloon;
-import ui.controls.Progress;
 import ui.controls.ScrollBar;
 import util.StringUtils;
 import java.util.Vector;
@@ -606,38 +605,10 @@ public abstract class VirtualList {
         setAbsClip(g, width, height);
         drawPopUp(g);
 //#endif
-        
-        if (reconnectWindow.getInstance().isActive()) {
-            if (reconnectTimeout>reconnectPos && reconnectPos!=0) {
-                int strWidth=g.getFont().stringWidth(SR.MS_RECONNECT);
-                int progressWidth=(width/3)*2;
-                progressWidth=(strWidth>progressWidth)?strWidth:progressWidth;
-                int progressX=(width-progressWidth)/2;
-                if (pb==null) pb=new Progress(progressX, height/2, progressWidth);
-                int popHeight=Progress.getHeight();
-                g.setColor(ColorTheme.getColor(ColorTheme.POPUP_SYSTEM_BGND));
-                g.fillRoundRect(progressX-2, (height/2)-(popHeight*2), progressWidth+4, (popHeight*2)+1, 6, 6);
-                g.setColor(ColorTheme.getColor(ColorTheme.POPUP_SYSTEM_INK));
-                g.drawRoundRect(progressX-2, (height/2)-(popHeight*2), progressWidth+4, (popHeight*2)+1, 6, 6);
-                FontCache.drawString(g,SR.MS_RECONNECT, width/2, (height/2)-(popHeight*2), Graphics.TOP | Graphics.HCENTER);
-                Progress.draw(g, reconnectPos*progressWidth/reconnectTimeout, reconnectString);
-            }
-        }    
-        
+
+        reconnectWindow.getInstance().draw(g, width, height);
     }
 
-    private static int reconnectPos=0;
-    private static int reconnectTimeout=0;
-    public static boolean reconnectRedraw=false;
-    private static String reconnectString="";
-    
-    private Progress pb;
-    public static void drawReconnect(int pos, int timeout, String reconnect) {
-        reconnectPos=pos;
-        reconnectTimeout=timeout;
-        reconnectRedraw=true;
-        reconnectString=reconnect;
-    }
 
     private void drawEnvelop(final Graphics g) {
         g.setColor(getMainBarRGB());
@@ -1017,14 +988,10 @@ public abstract class VirtualList {
     
     public void reconnectYes() {
         reconnectWindow.getInstance().reconnect();
-        //reconnectDraw=false;
-        //redraw(); // Need?
     }
     
     public void reconnectNo() {
         reconnectWindow.getInstance().stopReconnect();
-        //reconnectDraw=false;
-        //redraw(); // Need?
     }
 
     /**
