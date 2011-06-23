@@ -301,9 +301,11 @@ public class Roster
         //if (cf.firstRun) setWobbler(1, (Contact) null, SR.MS_ENTER_SETTINGS);
 //#endif
         setQuerySign(true);
-	if (!doReconnect) {
+        if (!doReconnect) {
             setProgress(25);
             resetRoster();
+        } else {
+            makeRosterOffline();
         }
         try {
             Account a=sd.account;
@@ -311,7 +313,7 @@ public class Roster
             
             theStream= a.openJabberStream();
             new Thread(theStream).start();        
-            new Thread( theStream.dispatcher).start();
+            new Thread(theStream.dispatcher).start();
             setProgress(SR.MS_OPENING_STREAM, 40);
             theStream.setJabberListener( this );
             theStream.initiateStream();
@@ -920,7 +922,7 @@ public class Roster
         }
 
         // reconnect if disconnected
-        if (myStatus!=Presence.PRESENCE_OFFLINE && theStream==null ) {
+        if (myStatus!=Presence.PRESENCE_OFFLINE && theStream==null) {
             synchronized (hContacts) {
                 doReconnect=(hContacts.size()>1);
             }
@@ -958,13 +960,7 @@ public class Roster
             try {
                 theStream.close(); // sends </stream:stream> and closes socket
             } catch (Exception e) { /*e.printStackTrace();*/ }
-
-            synchronized(hContacts) {
-                int j=hContacts.size();
-                for (int i=0; i<j; i++){
-                    ((Contact)hContacts.elementAt(i)).setStatus(Presence.PRESENCE_OFFLINE); // keep error & unknown
-                 }
-            }
+            makeRosterOffline();
             theStream=null;
 //#ifdef AUTOSTATUS
 //#             autoAway=false;
@@ -976,11 +972,20 @@ public class Roster
 
         Contact c=selfContact();
         c.setStatus(myStatus);
-        sort(hContacts);
-        
-        reEnumRoster();
     }
-        
+
+    private void makeRosterOffline() {
+        synchronized(hContacts) {
+            int j = hContacts.size();
+            for (int i = 0; i < j; i++) {
+                ((Contact) hContacts.elementAt(i)).setStatus(Presence.PRESENCE_OFFLINE); // keep error & unknown
+            }
+	}
+        sort(hContacts);
+        reEnumRoster();
+        redraw();
+    }
+
     public void sendDirectPresence(int status, String to, JabberDataBlock x) {
         if (to==null) {
             sendPresence(status, null);
@@ -2155,7 +2160,7 @@ public class Roster
 //#endif
             }
         }
-        redraw();
+        makeRosterOffline();
     }
 
     public void dispatcherException(Exception e, JabberDataBlock dataBlock) {

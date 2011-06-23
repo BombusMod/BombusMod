@@ -1,0 +1,68 @@
+Index: microemulator/microemu-android/src/org/microemu/android/device/AndroidInputMethod.java
+===================================================================
+--- microemulator/microemu-android/src/org/microemu/android/device/AndroidInputMethod.java	(revision 2504)
++++ microemulator/microemu-android/src/org/microemu/android/device/AndroidInputMethod.java	(working copy)
+@@ -284,6 +284,12 @@
+ 		
+ 		int resultKeyCode;
+ 		switch (deviceKeyCode) {
++		case KeyEvent.KEYCODE_CALL :
++			resultKeyCode = -10;
++			break;
++		case KeyEvent.KEYCODE_BACK :
++			resultKeyCode = -8;
++			break;
+ 		case KeyEvent.KEYCODE_DPAD_CENTER :
+ 			resultKeyCode = -5;
+ 			break;
+Index: microemulator/microemu-android/src/org/microemu/android/MicroEmulatorActivity.java
+===================================================================
+--- microemulator/microemu-android/src/org/microemu/android/MicroEmulatorActivity.java	(revision 2504)
++++ microemulator/microemu-android/src/org/microemu/android/MicroEmulatorActivity.java	(working copy)
+@@ -168,7 +168,7 @@
+                         }
+                     }
+                 } catch (IOException e) {
+-                    Logger.debug(e);
++                    //Logger.debug(e); // large output with BombusMod
+                     return null;
+                 }
+             }
+Index: microemulator/microemu-android/src/org/microemu/android/MicroEmulator.java
+===================================================================
+--- microemulator/microemu-android/src/org/microemu/android/MicroEmulator.java	(revision 2504)
++++ microemulator/microemu-android/src/org/microemu/android/MicroEmulator.java	(working copy)
+@@ -147,6 +147,8 @@
+         common.initParams(params, null, AndroidDevice.class);
+                
+         System.setProperty("microedition.platform", "microemulator-android");
++        System.setProperty("device.model", android.os.Build.MODEL);
++        System.setProperty("device.software.version", android.os.Build.VERSION.RELEASE);
+         System.setProperty("microedition.locale", Locale.getDefault().toString());
+ 
+ 
+@@ -336,7 +338,7 @@
+ 	
+     private boolean ignoreKey(int keyCode) {
+         switch (keyCode) {
+-        case KeyEvent.KEYCODE_MENU:
++//        case KeyEvent.KEYCODE_MENU:
+         case KeyEvent.KEYCODE_VOLUME_DOWN:
+         case KeyEvent.KEYCODE_VOLUME_UP:
+         case KeyEvent.KEYCODE_HEADSETHOOK: 
+@@ -362,7 +364,7 @@
+     	
+     private final static KeyEvent KEY_UP_UP_EVENT = new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DPAD_UP);
+ 
+-    private final static float TRACKBALL_THRESHOLD = 0.4f; 
++    private final static float TRACKBALL_THRESHOLD = 1f; 
+ 	
+ 	private float accumulatedTrackballX = 0;
+ 	
+@@ -474,4 +476,4 @@
+ 		return false;
+ 	}
+ 
+-}
+\ No newline at end of file
++}
