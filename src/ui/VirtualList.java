@@ -132,12 +132,14 @@ public abstract class VirtualList {
      * необходимо переопределить (override) функцию для реализации желаемых действий
      */
     public void eventOk() {
-        try {
-            ((VirtualElement)getFocusedObject()).onSelect();
-            updateLayout();
-            fitCursorByTop();
-            redraw();
-        } catch (Exception e) {} 
+        Object o = getFocusedObject();
+        if (o != null) {
+            ((VirtualElement) o).onSelect();
+        }
+
+        updateLayout();
+        fitCursorByTop();
+        redraw();
     }
     
     public void eventLongOk() {
@@ -146,7 +148,7 @@ public abstract class VirtualList {
 //#endif
     }
 
-    public void userKeyPressed(int keyCode){
+    public void userKeyPressed(int keyCode) {
         switch(keyCode) {
             case 1:
             case VirtualCanvas.KEY_VOL_UP:
@@ -312,9 +314,9 @@ public abstract class VirtualList {
      * @return ссылка на объект в фокусе.
      */
     public Object getFocusedObject() { 
-        try {
+        if (cursor < getItemCount()) {
             return getItemRef(cursor);
-        } catch (Exception e) { }
+        }
         return null;
     }    
 
@@ -486,55 +488,43 @@ public abstract class VirtualList {
         int displayedBottom=list_top;
    
         int baloon=-1;
-//        try { // TODO: remove, if testing been succefully
-            while (itemIndex < getItemCount()) {
-                int itemYpos = itemLayoutY[itemIndex] - win_top;
-                if (itemYpos >= winHeight) {
-                    break;
-                }
-                VirtualElement el = getItemRef(itemIndex);
-/* if NPE — uncomment, else — remove.
-                if (el == null) {
-                    break;
-                }
-*/
-                boolean sel = (itemIndex == cursor);
-                int lh = el.getVHeight();
-
-                setAbsOrg(g, 0, list_top);
-                g.setClip(0, 0, itemMaxWidth, winHeight);
-
-                g.translate(0, itemYpos);
-
-                g.setColor(el.getColorBGnd());
-
-                if (sel) {
-                    drawCursor(g, itemMaxWidth, lh);
-                    baloon = g.getTranslateY();
-                } else {
-//#ifdef BACK_IMAGE
-//#                     if (img == null)
-//#endif
-                    {
-                        g.fillRect(0, 0, itemMaxWidth, lh); //clear field
-                    }
-                }
-                g.setColor(el.getColor());
-
-                g.clipRect(0, 0, itemMaxWidth, lh);
-                el.drawItem(g, (sel) ? offset : 0, sel);
-
-                itemIndex++;
-                displayedBottom = list_top + itemYpos + lh;
-                itemBorder[++displayedIndex] = displayedBottom; // TODO: remove
+        while (itemIndex < count) {
+            int itemYpos = itemLayoutY[itemIndex] - win_top;
+            if (itemYpos >= winHeight) {
+                break;
             }
-/* TODO: remove, if testing been succefully
-        } catch (Exception e) {
-//#ifdef DEBUG
-//#             e.printStackTrace();
+            VirtualElement el = getItemRef(itemIndex);
+            boolean sel = (itemIndex == cursor);
+            int lh = el.getVHeight();
+
+            setAbsOrg(g, 0, list_top);
+            g.setClip(0, 0, itemMaxWidth, winHeight);
+
+            g.translate(0, itemYpos);
+
+            g.setColor(el.getColorBGnd());
+
+            if (sel) {
+                drawCursor(g, itemMaxWidth, lh);
+                baloon = g.getTranslateY();
+            } else {
+//#ifdef BACK_IMAGE
+//#                 if (img == null)
 //#endif
-        }
-*/
+                {
+                    g.fillRect(0, 0, itemMaxWidth, lh); //clear field
+                }
+            }
+            g.setColor(el.getColor());
+
+            g.clipRect(0, 0, itemMaxWidth, lh);
+            el.drawItem(g, (sel) ? offset : 0, sel);
+
+            itemIndex++;
+            displayedBottom = list_top + itemYpos + lh;
+            itemBorder[++displayedIndex] = displayedBottom; // TODO: remove
+        } // while
+
         int clrH=height-displayedBottom;
 
         if (clrH>0
@@ -576,11 +566,8 @@ public abstract class VirtualList {
         
         if (showBalloon) {
             if (cf.showBalloons) {
-                String text = null;
-                try {
-                    text = ((VirtualElement) getFocusedObject()).getTipString();
-                } catch (Exception e) {
-                }
+                Object o = getFocusedObject();
+                String text = (o == null) ? null : ((VirtualElement) o).getTipString();
                 if (text != null) {
                     drawBalloon(g, baloon, text);
                 }
@@ -761,28 +748,50 @@ public abstract class VirtualList {
         //setRotator();
     }
     
-    protected void fitCursorByTop(){
-        try {
-            int top=itemLayoutY[cursor];
-            if (top<win_top) win_top=top;   
-            if (((VirtualElement)getFocusedObject()).getVHeight()<=winHeight) {
-                int bottom=itemLayoutY[cursor+1]-winHeight;
-                if (bottom>win_top) win_top=bottom;  
+    protected void fitCursorByTop() {
+        int top = itemLayoutY[cursor];
+        if (top < win_top) {
+            win_top = top;
+        }
+
+        Object o = getFocusedObject();
+        if (o == null) {
+            return;
+        }
+
+        if (((VirtualElement) o).getVHeight() <= winHeight) {
+            int bottom = itemLayoutY[cursor + 1] - winHeight;
+            if (bottom > win_top) {
+                win_top = bottom;
             }
-            if (top>=win_top+winHeight) win_top=top; 
-        } catch (Exception e) { }
+        }
+
+        if (top >= win_top + winHeight) {
+            win_top = top;
+        }
     }
     
-    protected void fitCursorByBottom(){
-        try {
-            int bottom=itemLayoutY[cursor+1]-winHeight;
-            if (bottom>win_top) win_top=bottom;
-            if (((VirtualElement)getFocusedObject()).getVHeight()<=winHeight) {
-                int top=itemLayoutY[cursor];
-                if (top<win_top) win_top=top;
+    protected void fitCursorByBottom() {
+        int bottom = itemLayoutY[cursor + 1] - winHeight;
+        if (bottom > win_top) {
+            win_top = bottom;
+        }
+
+        Object o = getFocusedObject();
+        if (o == null) {
+            return;
+        }
+
+        if (((VirtualElement) o).getVHeight() <= winHeight) {
+            int top = itemLayoutY[cursor];
+            if (top < win_top) {
+                win_top = top;
             }
-            if (itemLayoutY[cursor+1]<=win_top) win_top=bottom;
-        } catch (Exception e) {}
+        }
+
+        if (itemLayoutY[cursor + 1] <= win_top) {
+            win_top = bottom;
+        }
     }
 
     private byte key_long_executed; // 0 - not try, 1 - not executed, 2 - executed.
@@ -1113,51 +1122,61 @@ public abstract class VirtualList {
     }
 
     private boolean itemPageDown() {
-        try {
-            stickyWindow=false;
-            if (((VirtualElement)getFocusedObject()).getVHeight()<=winHeight) {
-                stickyWindow=true;
-                return false;
-            }
+        stickyWindow = false;
+        Object o = getFocusedObject();
+	if (o == null) {
+            return false;
+        }
 
-            if (!cursorInWindow()) {
-                return false;
-            }
+        if (((VirtualElement) o).getVHeight() <= winHeight) {
+            stickyWindow = true;
+            return false;
+        }
+
+        if (!cursorInWindow()) {
+            return false;
+        }
             
-            int remainder=itemLayoutY[cursor+1]-win_top;
-            if (remainder<=winHeight) {
-                return false;
-            }
-            if (remainder<=2*winHeight) {
-                win_top=remainder-winHeight+win_top+8;
-                return true;
-            }
-            win_top+=winHeight-stringHeight;//-stringHeight;
+        int remainder = itemLayoutY[cursor + 1] - win_top;
+        if (remainder <= winHeight) {
+            return false;
+        }
+        if (remainder <= 2 * winHeight) {
+            win_top = remainder - winHeight + win_top + 8;
             return true;
-        } catch (Exception e) {}
-        return false;
+        }
+
+        win_top += winHeight - stringHeight;//-stringHeight;
+        return true;
     }
     
     private boolean itemPageUp() {
-        try {
-            stickyWindow=false;
-            if (((VirtualElement)getFocusedObject()).getVHeight()<=winHeight) {
-                //stickyWindow=true;
-                return false;
-            }
+        stickyWindow=false;
+        Object o = getFocusedObject();
+	if (o == null) {
+            return false;
+        }
 
-            if (!cursorInWindow()) { return false; }
-            
-            int remainder=win_top-itemLayoutY[cursor];
-            if (remainder<=0) return false;
-            if (remainder<=winHeight) {
-                win_top=itemLayoutY[cursor];
-                return true;
-            }
-            win_top-=winHeight-stringHeight;//-stringHeight;
+        if (((VirtualElement) o).getVHeight() <= winHeight) {
+            //stickyWindow=true;
+            return false;
+        }
+
+        if (!cursorInWindow()) {
+            return false;
+        }
+        
+        int remainder = win_top - itemLayoutY[cursor];
+        if (remainder <= 0) {
+            return false;
+        }
+        if (remainder <= winHeight) {
+            win_top = itemLayoutY[cursor];
             return true;
-        } catch (Exception e) {}
-        return false;
+        }
+
+        win_top -= winHeight - stringHeight;//-stringHeight;
+        return true;
     }
 
     public void pageLeft() {
@@ -1166,21 +1185,29 @@ public abstract class VirtualList {
 //#ifdef DEBUG
 //#         //System.out.println("keyLeft");
 //#endif
-        try {
-            stickyWindow=false;
-            win_top-=winHeight;
-            if (win_top<0) {
-                win_top=0;
-                //if (!getItemRef(0).isSelectable()) cursor=getNextSelectableRef(-1); else cursor=0;
-                cursor=getNextSelectableRef(-1);
+
+        stickyWindow = false;
+        win_top -= winHeight;
+        if (win_top < 0) {
+            win_top = 0;
+            /*
+            if (!getItemRef(0).isSelectable()) {
+	        cursor = getNextSelectableRef(-1);
+            } else {
+                cursor = 0;
             }
-            if (!cursorInWindow()) {
-                cursor=getElementIndexAt(itemLayoutY[cursor]-winHeight);
-                if (((VirtualElement)getFocusedObject()).getVHeight()<=winHeight) 
-                    fitCursorByTop();
+            */
+            cursor = getNextSelectableRef(-1);
+        }
+        if (!cursorInWindow()) {
+            cursor = getElementIndexAt(itemLayoutY[cursor] - winHeight);
+            Object o = getFocusedObject();
+            if (o != null && ((VirtualElement) o).getVHeight() <= winHeight) {
+                fitCursorByTop();
             }
-            setRotator();
-        } catch (Exception e) { }
+        }
+
+        setRotator();
     }
 
     public void pageRight() {
@@ -1189,70 +1216,58 @@ public abstract class VirtualList {
 //#ifdef DEBUG
 //#         //System.out.println("keyRight");
 //#endif
-        try {
-            stickyWindow=false;
-            win_top+=winHeight;
-            int endTop=listHeight-winHeight;
-            if (endTop<win_top) {
-                win_top= (listHeight<winHeight)? 0 : endTop;
-                int lastItemNum=getItemCount()-1;
-                if (!getItemRef(lastItemNum).isSelectable())
-                    cursor=getPrevSelectableRef(lastItemNum);
-                else
-                    cursor=lastItemNum;
+
+        stickyWindow = false;
+        win_top += winHeight;
+        int endTop = listHeight - winHeight;
+        if (endTop < win_top) {
+            win_top = (listHeight < winHeight) ? 0 : endTop;
+            int lastItemNum = getItemCount() - 1;
+            if (!getItemRef(lastItemNum).isSelectable()) {
+                cursor = getPrevSelectableRef(lastItemNum);
             } else {
-                if (!cursorInWindow()) {
-                    cursor=getElementIndexAt(itemLayoutY[cursor]+winHeight);
-                    if (((VirtualElement)getFocusedObject()).getVHeight()<=winHeight) 
-                        fitCursorByTop();
-                }
+                cursor = lastItemNum;
             }
-            setRotator();
-        } catch (Exception e) {}
+        } else if (!cursorInWindow()) {
+            cursor = getElementIndexAt(itemLayoutY[cursor] + winHeight);
+            Object o = getFocusedObject();
+            if (o != null && ((VirtualElement) o).getVHeight() <= winHeight) {
+                fitCursorByTop();
+            }
+        }
+
+        setRotator();
     }
     
     public boolean cursorInWindow(){
-        try {
-            int y1=itemLayoutY[cursor]-win_top;
-            int y2=itemLayoutY[cursor+1]-win_top;
-            if (y1>=winHeight) return false;
-            if (y2>=0) return true;
-        } catch (Exception e) { }
+        int y1 = itemLayoutY[cursor] - win_top;
+        int y2 = itemLayoutY[cursor + 1] - win_top;
+        if (y1 >= winHeight) {
+            return false;
+        }
+        if (y2 >= 0) {
+            return true;
+        }
         return false;
     }
     
     protected void setRotator() {
 //#if (USE_ROTATOR)
-        try {
-            if (getItemCount() > 0)
-                focusedItem(cursor);
-            } catch (Exception e) {
-//#ifdef DEBUG
-//#             System.out.println("setRotator() in VirtialList in one try{} block catch exception:");
-//#             System.out.println(e);
-//#endif
-            }
+        if (cursor < getItemCount())
+            focusedItem(cursor);
 
         int itemWidth = 0;
-        try {
-	    if (cursor >= 0) {
-		VirtualElement item = getItemRef(cursor);
-		if (item != null) {
-		    itemWidth = item.getVWidth();
-		    if (itemWidth >= getListWidth()) {
-			itemWidth -= width / 2;
-		    } else {
-			itemWidth = 0;
-		    }
-		}
-	    }
-	} catch (Exception e) {
-//#ifdef DEBUG
-//# 	    System.out.println("setRotator() in VirtialList in two try{} block catch exception:");
-//# 	    System.out.println(e);
-//#endif
-	}
-
+        if (cursor < getItemCount()) {
+            VirtualElement item = getItemRef(cursor);
+            if (item != null) {
+                itemWidth = item.getVWidth();
+                if (itemWidth >= getListWidth()) {
+                    itemWidth -= width / 2;
+                } else {
+                    itemWidth = 0;
+                }
+            }
+        }
 
         TimerTaskRotate.startRotate(itemWidth, this);
  //#endif

@@ -102,10 +102,14 @@ public abstract class FileIO {
     public void fileWrite(byte[] bytes) {
         try { delete(); } catch (IOException ex) { }
         OutputStream os = null;
-        try { os = openOutputStream(0); } catch (IOException ex) { }
-        try { os.write(bytes); } catch (IOException ex) { }
-        try { os.close(); os.flush(); } catch (IOException ex) { }
-        try { close(); } catch (IOException ex) { }
+        try { os = openOutputStream(0); }
+            catch (IOException ex) { }
+        try { if (os != null) os.write(bytes); }
+            catch (IOException ex) { }
+        try { if (os != null) { os.close(); os.flush(); } }
+            catch (IOException ex) { }
+        try { close(); }
+            catch (IOException ex) { }
     }
     
     public abstract OutputStream openOutputStream() throws IOException;
