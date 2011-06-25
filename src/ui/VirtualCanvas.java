@@ -129,11 +129,17 @@ public class VirtualCanvas extends Canvas implements CommandListener{
     public void setList(VirtualList list) {
         this.list = list;
     }
-    
+
     protected void paint(Graphics graphics) {
         list.width = getWidth();
         list.height = getHeight();
-        list.paint(graphics);
+        try {
+            list.paint(graphics);
+        } catch(Exception e) {
+//#ifdef DEBUG
+            e.printStackTrace();
+//#endif
+        }
     }
 
     protected final void keyPressed(int keyCode) {
@@ -143,12 +149,12 @@ public class VirtualCanvas extends Canvas implements CommandListener{
         kHold = false;        
 //#ifdef POPUPS
         if (PopUp.getInstance().handlePressed(getKey(keyCode))) {
-            list.redraw();
+            repaint();
             return;
         }
 //#endif
         checkKey(getKey(keyCode));
-        list.redraw();
+        repaint();
 //#ifdef LIGHT_CONFIG      
 //#ifdef PLUGINS                
 //#         if (StaticData.getInstance().lightConfig)
@@ -188,9 +194,9 @@ public class VirtualCanvas extends Canvas implements CommandListener{
         KeyRepeatTimer.stop();
 //#ifdef POPUPS
         if (PopUp.getInstance().handleReleased(getKey(keyCode))) {
-            list.redraw();
+            repaint();
             return;
-        } else {
+        } else try {
 	    switch (getKey(keyCode)) {
 		case VirtualCanvas._KEY_STAR:
 		    list.showTimeTrafficInfo();
@@ -198,19 +204,43 @@ public class VirtualCanvas extends Canvas implements CommandListener{
 		case VirtualCanvas._KEY_POUND:
 		    list.showInfo();
 	    }
-	}
+	} catch(Exception e) {
+//#ifdef DEBUG
+            e.printStackTrace();
+//#endif
+        }
 //#endif
 
     }
 
     protected final void pointerPressed(int x, int y) {
-        list.pointerPressed(x, y);
+        try {
+            list.pointerPressed(x, y);
+        } catch(Exception e) {
+//#ifdef DEBUG
+            e.printStackTrace();
+//#endif
+        }
     }
+
     protected final void pointerDragged(int x, int y) {
-        list.pointerDragged(x, y);
+        try {
+            list.pointerDragged(x, y);
+        } catch(Exception e) {
+//#ifdef DEBUG
+            e.printStackTrace();
+//#endif
+        }
     }
+
     protected final void pointerReleased(int x, int y) {
-        list.pointerReleased(x, y);
+        try {
+            list.pointerReleased(x, y);
+        } catch(Exception e) {
+//#ifdef DEBUG
+            e.printStackTrace();
+//#endif
+        }
     }
 
     protected void showNotify() {
@@ -504,7 +534,13 @@ public class VirtualCanvas extends Canvas implements CommandListener{
             default:
                 KeyRepeatTimer.start(keyCode);
         }
-        doKeyAction(keyCode);
+        try {
+            doKeyAction(keyCode);
+        } catch(Exception e) {
+//#ifdef DEBUG
+            e.printStackTrace();
+//#endif
+        }
         repaint();
     }
      /**
@@ -608,8 +644,14 @@ class KeyRepeatTimer extends TimerTask {
                 return;
             }
             VirtualCanvas.getInstance().kHold = true;
-            VirtualCanvas.getInstance().doKeyAction(key);
-            VirtualCanvas.getInstance().getList().redraw();
+            try { 
+                VirtualCanvas.getInstance().doKeyAction(key);
+            } catch(Exception e) {
+//#ifdef DEBUG
+                e.printStackTrace();
+//#endif
+            }
+            VirtualCanvas.getInstance().repaint();
         }
     }
 

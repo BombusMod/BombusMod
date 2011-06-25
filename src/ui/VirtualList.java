@@ -447,7 +447,7 @@ public abstract class VirtualList {
                     iHeight=infobar.getVHeight();                    
                     list_top = iHeight;
                     itemBorder[0] = list_top; // TODO: remove
-                     drawInfoPanel(g);
+                    drawInfoPanel(g);
                 }
             } else {
                 if (mainbar!=null) {                    

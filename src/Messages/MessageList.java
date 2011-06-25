@@ -105,31 +105,36 @@ public abstract class MessageList extends DefForm
         if (c == cmdBack) {            
             destroyView();
         }
-        if (c == cmdUrl) {
-            try {
-                Vector urls = ((MessageItem) getFocusedObject()).getUrlList();
-                new MessageUrl(urls); //throws NullPointerException if no urls
-            } catch (Exception e) {/* no urls found */
 
+        Object o = getFocusedObject();
+        if (o == null) {
+            return;
+        }
+        MessageItem mi = (MessageItem) o;
+        if (mi.msg == null || mi.msg.body == null) {
+            return;
+        }
+
+        if (c == cmdUrl) {
+            Vector urls = mi.getUrlList();
+            if (urls != null) {
+                new MessageUrl(urls);
             }
         }
+
         if (c == cmdxmlSkin) {
-            try {
-                if (((MessageItem) getFocusedObject()).msg.body.indexOf("xmlSkin") > -1) {
-                    ColorTheme.loadSkin(((MessageItem) getFocusedObject()).msg.body, 2);
-                }
-            } catch (Exception e) {
+            if (mi.msg.body.indexOf("xmlSkin") > -1) {
+                ColorTheme.loadSkin(mi.msg.body, 2);
             }
         }
 
 //#ifdef CLIPBOARD
 //#         if (c == cmdCopy) {
-//#             clipboard.set(((MessageItem) getFocusedObject()).msg);
+//#             clipboard.set(mi.msg);
 //#         }
 //# 
 //#         if (c == cmdCopyPlus) {
-//#             clipboard.append(((MessageItem) getFocusedObject()).msg);
-//# 
+//#             clipboard.append(mi.msg);
 //#         }
 //#endif
     }
@@ -186,8 +191,10 @@ public abstract class MessageList extends DefForm
     public void userKeyPressed(int key) {
         switch(key) {
             case VirtualCanvas._KEY_STAR:
-                if (getItemCount() == 0) return;
-                ((MessageItem)getFocusedObject()).toggleSmiles(this);
+                Object o = getFocusedObject();
+                if (o != null) {
+                    ((MessageItem) o).toggleSmiles(this);
+                }
                 return;
         }
         super.userKeyPressed(key);

@@ -3021,6 +3021,17 @@ public class Roster
 //#     }
 //#endif
 
+/* TODO: debug with collapse group: I get NPE in VirtualList.paint().
+    public void paint(javax.microedition.lcdui.Graphics g) {
+        try { // NPE and (possibility) ArrayIndexOutOfBoundsException with uncomplete reenum Roster.
+            super.paint(g);
+        } catch (Exception e) {
+//#ifdef DEBUG
+            e.printStackTrace();
+//#endif
+        }
+    }
+*/
 
     private class ReEnumerator implements Runnable{
         Thread thread = null;
