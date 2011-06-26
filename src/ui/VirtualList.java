@@ -370,7 +370,7 @@ public abstract class VirtualList {
      }
 
     public void redraw() {
-        if (sd.canvas.getList() == this) {
+        if (sd.canvas.isShown()) {
             sd.canvas.repaint();
             return;
          }

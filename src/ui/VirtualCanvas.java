@@ -137,7 +137,8 @@ public class VirtualCanvas extends Canvas implements CommandListener{
             list.paint(graphics);
         } catch(Exception e) {
 //#ifdef DEBUG
-            e.printStackTrace();
+//#             if (sd.roster != null)
+//#                 sd.roster.errorLog("list.paint exception: " + e.getMessage());
 //#endif
         }
     }
@@ -206,7 +207,8 @@ public class VirtualCanvas extends Canvas implements CommandListener{
 	    }
 	} catch(Exception e) {
 //#ifdef DEBUG
-            e.printStackTrace();
+//#             if (sd.roster != null)
+//#                 sd.roster.errorLog("keyreleased exception: " + e.getMessage());
 //#endif
         }
 //#endif
@@ -218,7 +220,8 @@ public class VirtualCanvas extends Canvas implements CommandListener{
             list.pointerPressed(x, y);
         } catch(Exception e) {
 //#ifdef DEBUG
-            e.printStackTrace();
+//#             if (sd.roster != null)
+//#                 sd.roster.errorLog("pointerpressed exception: " + e.getMessage());
 //#endif
         }
     }
@@ -228,7 +231,9 @@ public class VirtualCanvas extends Canvas implements CommandListener{
             list.pointerDragged(x, y);
         } catch(Exception e) {
 //#ifdef DEBUG
-            e.printStackTrace();
+//#               if (sd.roster != null)
+//#                 sd.roster.errorLog("pointerdragged exception: " + e.getMessage());
+//# 
 //#endif
         }
     }
@@ -238,7 +243,9 @@ public class VirtualCanvas extends Canvas implements CommandListener{
             list.pointerReleased(x, y);
         } catch(Exception e) {
 //#ifdef DEBUG
-            e.printStackTrace();
+//#                         if (sd.roster != null)
+//#                 sd.roster.errorLog("pointerreleased exception: " + e.getMessage());
+//# 
 //#endif
         }
     }
@@ -538,7 +545,7 @@ public class VirtualCanvas extends Canvas implements CommandListener{
             doKeyAction(keyCode);
         } catch(Exception e) {
 //#ifdef DEBUG
-            e.printStackTrace();
+//#             e.printStackTrace();
 //#endif
         }
         repaint();
@@ -648,7 +655,7 @@ class KeyRepeatTimer extends TimerTask {
                 VirtualCanvas.getInstance().doKeyAction(key);
             } catch(Exception e) {
 //#ifdef DEBUG
-                e.printStackTrace();
+//#                 e.printStackTrace();
 //#endif
             }
             VirtualCanvas.getInstance().repaint();

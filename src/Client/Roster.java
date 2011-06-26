@@ -2671,9 +2671,9 @@ public class Roster
    }
 
 //#ifndef WMUC
-    public void reEnterRoom(Group group) {
-        leaveRoom(group);
+    public void reEnterRoom(Group group) {        
         ConferenceGroup confGroup = (ConferenceGroup) group;
+        confGroup.inRoom = false;
         String confJid = confGroup.selfContact.getJid();
         String name = confGroup.name;
         new ConferenceForm(name, confJid, confGroup.password, false);
@@ -3027,7 +3027,7 @@ public class Roster
             super.paint(g);
         } catch (Exception e) {
 //#ifdef DEBUG
-            e.printStackTrace();
+//#             e.printStackTrace();
 //#endif
         }
     }
@@ -3146,7 +3146,7 @@ public class Roster
                         force = false;
                     }
                     focusedItem(cursor);
-                    sd.canvas.repaint();
+                    redraw();
                 }
             } catch (Exception e) {
 //#ifdef DEBUG
