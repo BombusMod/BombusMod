@@ -49,7 +49,8 @@ public class Menu extends VirtualList
         executeByNum=Config.getInstance().executeByNum;
     }
     
-    public VirtualElement getItemRef(int index){ 
+    public VirtualElement getItemRef(int index){
+        if (index >= menuitems.size()) return null;
         return (VirtualElement)menuitems.elementAt(index); 
     }
     public int getItemCount() { return menuitems.size(); }

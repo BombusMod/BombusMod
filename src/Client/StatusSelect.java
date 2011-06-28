@@ -76,6 +76,7 @@ public class StatusSelect
     }
     
     public VirtualElement getItemRef(int Index) {
+        if (Index >= statusList.size()) return null;
         return (VirtualElement)statusList.elementAt(Index);
     }
 

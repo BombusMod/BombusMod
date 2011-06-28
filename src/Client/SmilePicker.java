@@ -131,9 +131,10 @@ public class SmilePicker
         }
     }
 
-    protected synchronized void updateLayout() {
-        super.updateLayout();
+    protected synchronized int updateLayout() {
+        int res = super.updateLayout();
         getMainBarItem().setElementAt(getTipString(), 0);
+        return res;
     }
 
     public void drawCursor(Graphics g, int width, int height){

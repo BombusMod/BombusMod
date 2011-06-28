@@ -136,9 +136,10 @@ public class VirtualCanvas extends Canvas implements CommandListener{
         try {
             list.paint(graphics);
         } catch(Exception e) {
+            if (sd.roster != null)
+                sd.roster.errorLog("list.paint exception: " + e.getMessage());
 //#ifdef DEBUG
-//#             if (sd.roster != null)
-//#                 sd.roster.errorLog("list.paint exception: " + e.getMessage());
+//#             e.printStackTrace();
 //#endif
         }
     }
@@ -206,9 +207,10 @@ public class VirtualCanvas extends Canvas implements CommandListener{
 		    list.showInfo();
 	    }
 	} catch(Exception e) {
+            if (sd.roster != null)
+                sd.roster.errorLog("keyreleased exception: " + e.getMessage());
 //#ifdef DEBUG
-//#             if (sd.roster != null)
-//#                 sd.roster.errorLog("keyreleased exception: " + e.getMessage());
+//#             e.printStackTrace();
 //#endif
         }
 //#endif
@@ -218,10 +220,12 @@ public class VirtualCanvas extends Canvas implements CommandListener{
     protected final void pointerPressed(int x, int y) {
         try {
             list.pointerPressed(x, y);
-        } catch(Exception e) {
+        } catch (Exception e) {
+            if (sd.roster != null) {
+                sd.roster.errorLog("pointerpressed exception: " + e.getMessage());
+            }
 //#ifdef DEBUG
-//#             if (sd.roster != null)
-//#                 sd.roster.errorLog("pointerpressed exception: " + e.getMessage());
+//#             e.printStackTrace();
 //#endif
         }
     }
@@ -229,11 +233,13 @@ public class VirtualCanvas extends Canvas implements CommandListener{
     protected final void pointerDragged(int x, int y) {
         try {
             list.pointerDragged(x, y);
-        } catch(Exception e) {
+        } catch (Exception e) {
+            if (sd.roster != null) {
+                sd.roster.errorLog("pointerdragged exception: " + e.getMessage());
+            }
+
 //#ifdef DEBUG
-//#               if (sd.roster != null)
-//#                 sd.roster.errorLog("pointerdragged exception: " + e.getMessage());
-//# 
+//#             e.printStackTrace();
 //#endif
         }
     }
@@ -241,10 +247,12 @@ public class VirtualCanvas extends Canvas implements CommandListener{
     protected final void pointerReleased(int x, int y) {
         try {
             list.pointerReleased(x, y);
-        } catch(Exception e) {
+        } catch (Exception e) {
+            if (sd.roster != null) {
+                sd.roster.errorLog("pointerreleased exception: " + e.getMessage());
+            }
 //#ifdef DEBUG
-//#                         if (sd.roster != null)
-//#                 sd.roster.errorLog("pointerreleased exception: " + e.getMessage());
+//#             e.printStackTrace();
 //# 
 //#endif
         }

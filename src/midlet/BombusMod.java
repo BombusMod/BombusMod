@@ -56,7 +56,7 @@ import ui.controls.AlertBox;
  * @author  Eugene Stahov
  * @version
  */
-public class BombusMod extends MIDlet implements Runnable {
+public class BombusMod extends MIDlet {
 
     private Display display;    // The display for this MIDlet
     private boolean isRunning;
@@ -76,17 +76,7 @@ public class BombusMod extends MIDlet implements Runnable {
             hideApp(false);
             return;
         }
-        new Thread(this).start();
-    }
-
-    /**
-     * Pause is a no-op since there are no background activities or
-     * record stores that need to be closed.
-     */
-    public void pauseApp() {
-    }
-
-    public void run() {
+        
 //#ifdef LIGHT_CONFIG
 //#ifdef PLUGINS
 //#     if (StaticData.getInstance().lightConfig)
@@ -188,6 +178,9 @@ public class BombusMod extends MIDlet implements Runnable {
 //#endif                       
 //#         CustomLight.keyPressed();
 //#endif        
+    }
+
+    public void pauseApp() {
     }
 
     public void destroyApp(boolean unconditional) {

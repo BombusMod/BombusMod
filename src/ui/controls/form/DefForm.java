@@ -67,17 +67,14 @@ public class DefForm
     }
 
     protected int getItemCount() {
-        synchronized (itemsList) {
-            return itemsList.size();
-        }
+        return itemsList.size();
     }
 
     public VirtualElement getItemRef(int index) {
-        if (index >= getItemCount())
+        if (index >= getItemCount()) {
             return null;
-        synchronized (itemsList) {
-            return (VirtualElement) itemsList.elementAt(index);
         }
+        return (VirtualElement) itemsList.elementAt(index);
     }
 
     public void menuAction(MenuCommand command, VirtualList displayable) {
