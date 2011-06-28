@@ -66,7 +66,7 @@ public class PrivacySelect
 
         setMainBarItem(new MainBar(2, null, SR.MS_PRIVACY_LISTS, false));
 
-        itemsList.addElement(new PrivacyListItem(null));//none
+        itemsList.addElement(new PrivacyListItem(new PrivacyList(null)));//none
         
         enableListWrapping(true);
         
