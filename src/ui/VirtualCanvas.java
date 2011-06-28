@@ -108,7 +108,10 @@ public class VirtualCanvas extends Canvas implements CommandListener{
     }
     
     public void show(VirtualList virtualList) {
-        KeyRepeatTimer.stop();
+        if (Config.getInstance().phoneManufacturer == Config.NOKIA)
+            KeyRepeatTimer.stop();
+        else
+            kHold = false;
         if (virtualList == null)
             virtualList = getList();
         if (isShown()) {
@@ -169,9 +172,11 @@ public class VirtualCanvas extends Canvas implements CommandListener{
      }
 
     protected final void keyRepeated(int keyCode){
-        // TODO: uncomment to check motorola
-        //kHold = true;
-        //doKeyAction(getKey(keyCode));
+        if (Config.getInstance().phoneManufacturer != Config.NOKIA) {
+            kHold = true;
+            checkKey(getKey(keyCode));
+
+        }
 //#ifdef LIGHT_CONFIG      
 //#ifdef PLUGINS                
 //#         if (StaticData.getInstance().lightConfig)
@@ -193,7 +198,10 @@ public class VirtualCanvas extends Canvas implements CommandListener{
 //#ifdef AUTOSTATUS
 //#     sd.roster.userActivity();
 //#endif
+    if (Config.getInstance().phoneManufacturer == Config.NOKIA)
         KeyRepeatTimer.stop();
+    else
+        kHold = false;
 //#ifdef POPUPS
         if (PopUp.getInstance().handleReleased(getKey(keyCode))) {
             repaint();
@@ -544,14 +552,24 @@ public class VirtualCanvas extends Canvas implements CommandListener{
             case KEY_BACK:
             case KEY_FIRE:
             case KEY_CLEAR:
-                KeyRepeatTimer.stop();
+                if (Config.getInstance().phoneManufacturer == Config.NOKIA) {
+                    KeyRepeatTimer.stop();
+                } else {
+                    if (kHold) {
+                        kHold = false;
+                        return;
+                    }
+                    
+                }
                 break;
             default:
-                KeyRepeatTimer.start(keyCode);
+                if (Config.getInstance().phoneManufacturer == Config.NOKIA) {
+                    KeyRepeatTimer.start(keyCode);
+                }
         }
         try {
             doKeyAction(keyCode);
-        } catch(Exception e) {
+        } catch (Exception e) {
 //#ifdef DEBUG
 //#             e.printStackTrace();
 //#endif
@@ -606,7 +624,8 @@ public class VirtualCanvas extends Canvas implements CommandListener{
 //#ifdef POPUPS
                 PopUp.getInstance().handled = true;
 //#endif
-                KeyRepeatTimer.stop();
+                if (Config.getInstance().phoneManufacturer == Config.NOKIA)
+                    KeyRepeatTimer.stop();
                 kHold = false;
             } else {
                 list.userKeyPressed(keyCode);
@@ -648,18 +667,18 @@ class KeyRepeatTimer extends TimerTask {
         }
 
         public void run() {
-         /*   if (0 < slowlyIterations) {
-                slowlyIterations--;
-                if (0 != slowlyIterations % 2) {
-                    return;
-                }
-            }*/
+        /*   if (0 < slowlyIterations) {
+        slowlyIterations--;
+        if (0 != slowlyIterations % 2) {
+        return;
+        }
+        }*/
             if (!VirtualCanvas.getInstance().isShown()) {
                 KeyRepeatTimer.stop();
                 return;
             }
-            VirtualCanvas.getInstance().kHold = true;
-            try { 
+           VirtualCanvas.getInstance().kHold = true;
+            try {
                 VirtualCanvas.getInstance().doKeyAction(key);
             } catch(Exception e) {
 //#ifdef DEBUG

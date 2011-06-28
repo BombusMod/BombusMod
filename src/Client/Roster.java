@@ -2250,6 +2250,7 @@ public class Roster
         VirtualList pview = createMsgList();
         if (pview != null) {
             Contact c = (Contact) getFocusedObject();
+            me = null;
             me = new MessageEdit(pview, c, c.msgSuspended);
             me.show();
             c.msgSuspended = null;
@@ -2674,6 +2675,7 @@ public class Roster
     public void reEnterRoom(Group group) {        
         ConferenceGroup confGroup = (ConferenceGroup) group;
         confGroup.inRoom = false;
+        roomOffline(confGroup);
         String confJid = confGroup.selfContact.getJid();
         String name = confGroup.name;
         new ConferenceForm(name, confJid, confGroup.password, false);
@@ -2879,6 +2881,7 @@ public class Roster
         VirtualList pview=createMsgList();
         if (pview!=null) {
             Contact c=(Contact)getFocusedObject();
+            Roster.me = null;
             Roster.me = new MessageEdit(pview, c, c.msgSuspended);
             Roster.me.show();
             c.msgSuspended=null;

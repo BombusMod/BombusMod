@@ -83,7 +83,10 @@ public class MucContact extends Contact {
         
         int presenceType=presence.getTypeIndex();
         
-        if (presenceType==Presence.PRESENCE_ERROR) return StringUtils.processError(presence, presenceType, (ConferenceGroup) group, this);
+        if (presenceType==Presence.PRESENCE_ERROR) {
+            StaticData.getInstance().roster.roomOffline(group);
+            return StringUtils.processError(presence, presenceType, (ConferenceGroup) group, this);
+        }
         
         JabberDataBlock item=xmuc.getChildBlock("item");   
 

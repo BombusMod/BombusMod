@@ -112,7 +112,7 @@ public class ContactMessageList extends MessageList {
 //# 
 //#     public MenuCommand cmdJuickCommands=new MenuCommand(SR.MS_COMMANDS+" Juick", MenuCommand.SCREEN, 15, RosterIcons.ICON_JUICK);
 //#     Vector currentJuickCommands = new Vector();
-//#     
+//# 
 //#endif    
 //#ifdef CLIPBOARD    
 //#     private ClipBoard clipboard=ClipBoard.getInstance();
@@ -426,7 +426,7 @@ public class ContactMessageList extends MessageList {
         if (c==cmdResume) messageEditResume();
         if (c==cmdQuote) Quote();
         if (c==cmdReply) Reply();
-        
+
         if (c==cmdActions) {
                 new RosterItemActions(contact);
         }
@@ -577,7 +577,7 @@ public class ContactMessageList extends MessageList {
 //#         }
 //#         return false;
 //#     }
-//#     
+//# 
 //#     public boolean isCharFromJuickThing(char ch, char type) {
 //#         boolean result = false;
 //#         switch(type) {
@@ -650,6 +650,7 @@ public class ContactMessageList extends MessageList {
 //#             resultAction = target+action;
 //#         }
 //#         try {
+//#             Roster.me = null;
 //#             Roster.me = new MessageEdit(this, getActualJuickContact(), resultAction, false);
 //#             Roster.me.show();
 //#         } catch (Exception e) {/*no messages*/}
@@ -695,6 +696,7 @@ public class ContactMessageList extends MessageList {
         if (!sd.roster.isLoggedIn())
             return;
 
+        Roster.me = null;
         Roster.me = new MessageEdit(this, contact, contact.msgSuspended);
         Roster.me.show();
         contact.msgSuspended = null;
@@ -717,7 +719,7 @@ public class ContactMessageList extends MessageList {
                     return;
                 }
             } catch (Exception e) { /* no messages */ }
-        }
+            }
 //#endif
 
 //#ifdef JUICK
@@ -727,12 +729,12 @@ public class ContactMessageList extends MessageList {
 //#             if (isJuickContact(contact) || isJuBoContact(contact)) {
 //#                 String body = getBodyFromCurrentMsg();
 //#                 String target = getTargetForJuickReply(body);
-//# 
+//#
 //#                 if (target.equals("toThings")) {
 //#                     viewJuickThings(body);
 //#                     return;
 //#                 }
-//# 
+//#
 //#                 switch (target.charAt(0)) {
 //#                     case '#':
 //#                         juickAction("", body);
@@ -763,6 +765,7 @@ public class ContactMessageList extends MessageList {
                 .append("\n")
                 .append(" ")
                 .toString();
+            Roster.me = null;
             Roster.me = new MessageEdit(this, contact, msg);
             Roster.me.show();
             msg = null;
@@ -953,6 +956,7 @@ public class ContactMessageList extends MessageList {
         if (!sd.roster.isLoggedIn()) {
             return;
         }
+        Roster.me = null;
         Roster.me = new MessageEdit(this, contact, contact.msgSuspended);
         Roster.me.show();
         contact.msgSuspended = null;
