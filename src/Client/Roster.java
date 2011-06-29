@@ -690,7 +690,7 @@ public class Roster
         }
 		        
         // change nick if already in room
-        if (c.status==Presence.PRESENCE_ONLINE) return grp;
+        if(grp.selfContact!=null && grp.selfContact.status<Presence.PRESENCE_OFFLINE) return grp;
 
         c.setStatus(Presence.PRESENCE_ONLINE);
         
@@ -2675,7 +2675,6 @@ public class Roster
     public void reEnterRoom(Group group) {        
         ConferenceGroup confGroup = (ConferenceGroup) group;
         confGroup.inRoom = false;
-        roomOffline(confGroup);
         String confJid = confGroup.selfContact.getJid();
         String name = confGroup.name;
         new ConferenceForm(name, confJid, confGroup.password, false);
