@@ -729,12 +729,12 @@ public class ContactMessageList extends MessageList {
 //#             if (isJuickContact(contact) || isJuBoContact(contact)) {
 //#                 String body = getBodyFromCurrentMsg();
 //#                 String target = getTargetForJuickReply(body);
-//#
+//# 
 //#                 if (target.equals("toThings")) {
 //#                     viewJuickThings(body);
 //#                     return;
 //#                 }
-//#
+//# 
 //#                 switch (target.charAt(0)) {
 //#                     case '#':
 //#                         juickAction("", body);

@@ -79,7 +79,8 @@ public abstract class MessageList extends DefForm
     public abstract int getItemCount();
 
     public VirtualElement getItemRef(int index) {
-        if (messages.size() < getItemCount()) {
+        if (index >= getItemCount()) return null;
+        if (messages.size() <= getItemCount()) {
             messages.setSize(getItemCount());
         }
         MessageItem mi = (MessageItem) messages.elementAt(index);
