@@ -92,6 +92,7 @@ public final class SplashScreen extends DefForm implements VirtualElement {
         this.status = status;
         this.exitKey = exitKey;
         infobar = null;
+        mainbar = null;
         status.setElementAt(new Integer(RosterIcons.ICON_KEYBLOCK_INDEX), 6);
         try {
             img = BombusMod.splash;

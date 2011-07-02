@@ -51,7 +51,6 @@ public class AccountForm
 
     private TextInput userbox;
     private PasswordInput passbox;
-    private TextInput servbox;
     private TextInput ipbox;
     private NumberInput portbox;
     private TextInput resourcebox;
@@ -65,8 +64,6 @@ public class AccountForm
 
     private LinkString linkRegister;
     
-    private CheckBox dnsResolver;
-	
     private NumberInput keepAlive;
     private DropChoiceBox keepAliveType;
     
@@ -103,13 +100,10 @@ public class AccountForm
 	
         getMainBarItem().setElementAt((newaccount)?SR.MS_NEW_ACCOUNT:(account.toString()), 0);
 
-        userbox = new TextInput(sd.canvas, SR.MS_USERNAME, account.getUserName(), null, TextField.ANY); //, 64, TextField.ANY
+        userbox = new TextInput(sd.canvas, SR.MS_JID, account.getBareJid(), null, TextField.ANY); //, 64, TextField.ANY
         itemsList.addElement(userbox);
         
-        servbox = new TextInput(sd.canvas, SR.MS_SERVER, account.getServer(), null, TextField.ANY);//, 64, TextField.ANY
-        itemsList.addElement(servbox);
-
-	passbox = new PasswordInput(sd.canvas,  SR.MS_PASSWORD, account.getPassword());//, 64, TextField.PASSWORD
+        passbox = new PasswordInput(sd.canvas,  SR.MS_PASSWORD, account.getPassword());//, 64, TextField.PASSWORD
         itemsList.addElement(passbox);
         
         nickbox = new TextInput(sd.canvas, SR.MS_NICKNAME, account.getNick(), null, TextField.ANY);//64, TextField.ANY
@@ -144,7 +138,6 @@ public class AccountForm
         portbox = new NumberInput(sd.canvas,  SR.MS_PORT, Integer.toString(account.getPort()), 0, 65535);//, 0, 65535
         
                 
-        dnsResolver = new CheckBox(SR.MS_USE_DNS_SRV_RESOLVER, account.getDnsResolver()); 
         sslbox = new CheckBox(SR.MS_SSL, account.getUseSSL());
         plainPwdbox = new CheckBox(SR.MS_PLAIN_PWD, account.getPlainAuth());
         compressionBox = new CheckBox(SR.MS_COMPRESSION, account.useCompression());
@@ -159,7 +152,6 @@ public class AccountForm
 //#         proxybox = new CheckBox("XMPP BOSH", account.isEnableProxy());
 //#endif
         
-        itemsList.addElement(dnsResolver);
         itemsList.addElement(sslbox);
         itemsList.addElement(plainPwdbox);
         itemsList.addElement(compressionBox);
@@ -214,9 +206,8 @@ public class AccountForm
     
     public void cmdOk() {
         String user = userbox.getValue().trim().toLowerCase();
-        String server = servbox.getValue().trim().toLowerCase();
         String pass = passbox.getValue();
-
+        String server = "";
         int at = user.indexOf('@');
         if (at>-1) {
             server=user.substring(at+1);
@@ -231,9 +222,10 @@ public class AccountForm
         account.setNick(nickbox.getValue());
         
         if (showExtended) {
-            account.setDnsResolver(dnsResolver.getValue());
+            String hostname = ipbox.getValue();
+            account.setDnsResolver(hostname.equals("") ? true : false);
             account.setPort(Integer.parseInt(portbox.getValue()));
-            account.setHostAddr(ipbox.getValue());
+            account.setHostAddr(hostname);
             account.setResource(resourcebox.getValue());
             account.setUseSSL(sslbox.getValue());
             account.setPlainAuth(plainPwdbox.getValue());

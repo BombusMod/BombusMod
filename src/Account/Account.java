@@ -115,6 +115,8 @@ public class Account extends IconTextElement {
     }
     
     public String getBareJid(){
+        if (userName.equals(""))
+            return "";
         return userName+'@'+server;
     }
     
