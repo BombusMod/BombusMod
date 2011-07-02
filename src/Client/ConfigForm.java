@@ -194,7 +194,7 @@ public class ConfigForm
 //#ifdef POPUPS
         popUps = new CheckBox(SR.MS_POPUPS, cf.popUps); itemsList.addElement(popUps);
 //#endif
-        showBalloons = new CheckBox(SR.MS_SHOW_BALLONS, cf.showBalloons); itemsList.addElement(showBalloons);     
+        showBalloons = new CheckBox(SR.MS_SHOW_TIMESTAMPS, cf.showTimestamps); itemsList.addElement(showBalloons);
         eventDelivery = new CheckBox(SR.MS_DELIVERY, cf.eventDelivery); itemsList.addElement(eventDelivery);
 //#ifdef CLIPBOARD
 //#         useClipBoard = new CheckBox(SR.MS_CLIPBOARD, cf.useClipBoard); itemsList.addElement(useClipBoard);
@@ -382,7 +382,7 @@ public class ConfigForm
 //#ifdef POPUPS
         cf.popUps=popUps.getValue();
 //#endif
-        cf.showBalloons=showBalloons.getValue();
+        cf.showTimestamps=showBalloons.getValue();
         cf.eventDelivery=eventDelivery.getValue();
 //#ifdef CLIPBOARD
 //#         cf.useClipBoard=useClipBoard.getValue();

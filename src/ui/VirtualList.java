@@ -36,7 +36,6 @@ import locale.SR;
 //#ifdef POPUPS
 import ui.controls.PopUp;
 //#endif
-import ui.controls.Balloon;
 import ui.controls.ScrollBar;
 import util.StringUtils;
 import java.util.Vector;
@@ -562,16 +561,7 @@ public abstract class VirtualList {
 //#ifdef MEMORY_USAGE
 //#         drawHeapMonitor(g, list_top); //heap monitor
 //#endif
-
-        if (showBalloon) {
-            if (cf.showBalloons) {
-                Object o = getFocusedObject();
-                String text = (o == null) ? null : ((VirtualElement) o).getTipString();
-                if (text != null) {
-                    drawBalloon(g, baloon, text);
-                }
-            }
-        }
+        
 
         if (paintBottom) {
             if (reverse) {
@@ -647,11 +637,7 @@ public abstract class VirtualList {
         setAbsOrg(g, 0, 0);
         g.setClip(0,0, w, h);
     }
-    
-    protected void drawBalloon(final Graphics g, int balloon, final String text) {
-        setAbsOrg(g,0,balloon);
-        Balloon.draw(g, text);
-    }
+        
 //#ifdef MEMORY_USAGE
 //#     private void drawHeapMonitor(final Graphics g, int y) {
 //#         if (memMonitor) {

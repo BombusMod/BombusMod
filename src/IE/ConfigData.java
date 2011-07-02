@@ -143,7 +143,7 @@ public class ConfigData {
         array.addElement(new keyValue(rosterStatus, (cf.rosterStatus)?"1":"0"));
         array.addElement(new keyValue(queryExit, (cf.queryExit)?"1":"0"));
         array.addElement(new keyValue(notifyPicture, (cf.notifyPicture)?"1":"0"));
-        array.addElement(new keyValue(showBalloons, (cf.showBalloons)?"1":"0"));
+        array.addElement(new keyValue(showBalloons, (cf.showTimestamps)?"1":"0"));
 //#ifdef LOGROTATE
 //#         array.addElement(new keyValue(msglistLimit, Integer.toString(cf.msglistLimit)));
 //#endif
@@ -170,7 +170,7 @@ public class ConfigData {
 //#         array.addElement(new keyValue(autoDeTranslit, (cf.autoDeTranslit)?"1":"0")); 
 //#endif
 //#ifdef CLIENTS_ICONS
-//#         array.addElement(new keyValue(showClientIcon, (cf.showClientIcon)?"1":"0")); 
+        array.addElement(new keyValue(showClientIcon, (cf.showClientIcon)?"1":"0")); 
 //#endif
         array.addElement(new keyValue(reconnectCount, Integer.toString(cf.reconnectCount)));
         array.addElement(new keyValue(reconnectTime, Integer.toString(cf.reconnectTime)));
@@ -308,7 +308,7 @@ public class ConfigData {
         cf.rosterStatus=cf.getBooleanProperty(getValue(rosterStatus),true);
         cf.queryExit=cf.getBooleanProperty(getValue(queryExit),false);
         cf.notifyPicture=cf.getBooleanProperty(getValue(notifyPicture),false);
-        cf.showBalloons = cf.getBooleanProperty(getValue(showBalloons),false);
+        cf.showTimestamps = cf.getBooleanProperty(getValue(showBalloons),false);
 //#ifdef LOGROTATE
 //#         cf.msglistLimit=cf.getIntProperty(getValue(msglistLimit),500);
 //#endif
@@ -335,7 +335,7 @@ public class ConfigData {
 //#         cf.autoDeTranslit=cf.getBooleanProperty(getValue(autoDeTranslit),false);
 //#endif
 //#ifdef CLIENTS_ICONS
-//#         cf.showClientIcon=cf.getBooleanProperty(getValue(showClientIcon),true);
+        cf.showClientIcon=cf.getBooleanProperty(getValue(showClientIcon),true);
 //#endif
         cf.reconnectCount=cf.getIntProperty(getValue(reconnectCount), 10);
         cf.reconnectTime=cf.getIntProperty(getValue(reconnectTime), 15);
@@ -353,7 +353,7 @@ public class ConfigData {
         cf.advTouch=cf.getBooleanProperty(getValue(advTouch),true);
         cf.autoClean=cf.getBooleanProperty(getValue(autoClean),true);
 //#ifdef PEP_LOCATION
-        cf.rcvloc=cf.getBooleanProperty(getValue(rcvloc),false);
+//#         cf.rcvloc=cf.getBooleanProperty(getValue(rcvloc),false);
 //#endif
 //#ifdef PRIVACY
         cf.useQuickPrivacy=cf.getBooleanProperty(getValue(useQuickPrivacy),false);
@@ -441,7 +441,7 @@ public class ConfigData {
     private final static String popupFromMinimized="popupFromMinimized";
     private final static String notifyBlink="notifyBlink";
 //#ifdef MEMORY_USAGE
-    private final static String memMonitor="memMonitor";
+//#     private final static String memMonitor="memMonitor";
 //#endif
     private final static String font1="font1"; // rosterFont
     private final static String font2="font2"; // msgFont
@@ -525,7 +525,7 @@ public class ConfigData {
 //#     private final static String autoDeTranslit="autoDeTranslit"; 
 //#endif
 //#ifdef CLIENTS_ICONS
-//#     private final static String showClientIcon="showClientIcon";
+    private final static String showClientIcon="showClientIcon";
 //#endif
     private final static String reconnectCount="reconnectCount";
     private final static String reconnectTime="reconnectTime";
@@ -542,7 +542,7 @@ public class ConfigData {
     private final static String advTouch="advTouch";
     private final static String autoClean="autoClean";
 //#ifdef PEP_LOCATION
-    private final static String rcvloc="rcvloc";
+//#     private final static String rcvloc="rcvloc";
 //#endif
 //#ifdef PRIVACY
     private final static String useQuickPrivacy="useQuickPrivacy";

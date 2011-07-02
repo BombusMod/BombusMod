@@ -183,7 +183,7 @@ public class Config {
 //#endif
     public boolean queryExit = false;
     public int notInListDropLevel = NotInListFilter.ALLOW_ALL; //enable all
-    public boolean showBalloons = false;
+    public boolean showTimestamps = false;
 //#ifdef LOGROTATE
 //#     public int msglistLimit=500;
 //#endif
@@ -406,7 +406,7 @@ public class Config {
 
             queryExit = inputStream.readBoolean();
             notifyPicture = inputStream.readBoolean();
-            showBalloons = inputStream.readBoolean();
+            showTimestamps = inputStream.readBoolean();
 
             inputStream.readBoolean(); // Здесь был UserKeys
 //#ifdef LOGROTATE
@@ -704,7 +704,7 @@ public class Config {
 
             outputStream.writeBoolean(queryExit);
             outputStream.writeBoolean(notifyPicture);
-            outputStream.writeBoolean(showBalloons);
+            outputStream.writeBoolean(showTimestamps);
 
             outputStream.writeBoolean(false); // Здесь был UserKeys
 

@@ -121,7 +121,7 @@ public class Msg {
     
     public String toString() {
         StringBuffer time=new StringBuffer();
-        if (messageType==MESSAGE_TYPE_PRESENCE || !(Config.getInstance().showBalloons || (Config.getInstance().showNickNames && subject!=null))) {
+        if (messageType==MESSAGE_TYPE_PRESENCE || !(Config.getInstance().showTimestamps || (Config.getInstance().showNickNames && subject!=null))) {
             time.append("[").append(getTime()).append("] ");
         }
         time.append(body);
@@ -159,7 +159,7 @@ public class Msg {
         if (subject!=null)
             if (subject.length()>0)
                 out.append(subject).append("\n");
-        if (Config.getInstance().showBalloons)
+        if (Config.getInstance().showTimestamps)
             out.append(toString());
         else
             out.append(body);

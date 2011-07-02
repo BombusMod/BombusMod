@@ -33,7 +33,6 @@ import locale.SR;
 import Colors.ColorTheme;
 import ui.*;
 import java.util.Vector;
-import ui.controls.Balloon;
 
 
 import javax.microedition.lcdui.Graphics;
@@ -145,13 +144,7 @@ public class SmilePicker
         super.drawCursor(g, imgWidth, lineHeight);
         g.translate(-x,0);
     } 
-
-    protected void drawBalloon(final Graphics g, int balloon, final String text) {
-        if (cursor==0) balloon+=lineHeight+Balloon.getHeight();
-        int x=xBorder+(xCursor*imgWidth);
-        g.translate(x, balloon);
-        Balloon.draw(g, text);
-    }
+   
     
     public void pageLeft(){ 
         if (xCursor>0) 

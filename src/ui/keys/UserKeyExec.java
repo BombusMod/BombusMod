@@ -315,17 +315,16 @@ public class UserKeyExec {
     private boolean commandExecute(int command_id) {
         Config cf = Config.getInstance();
         boolean connected = sd.roster.isLoggedIn();
-		final VirtualList current = sd.canvas.getList();
+        final VirtualList current = sd.canvas.getList();
 
-        Displayable current_d = BombusMod.getInstance().getCurrentDisplayable();
-        if (current_d instanceof SplashScreen) {
+        if (current instanceof SplashScreen) {
             if (command_id == 44) {
-                ((SplashScreen) current_d).destroyView();
+                ((SplashScreen) current).destroyView();
                 return true;
             }
 
             return false;
-		}
+        }
 
         switch (command_id) {
             case 1:

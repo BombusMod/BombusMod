@@ -1500,7 +1500,7 @@ public class Roster
                         b.append("\02");
 //#endif
                         if (start_me==0) {
-                            if (!cf.showBalloons) b.insert(0,"<");
+                            if (!cf.showTimestamps) b.insert(0,"<");
                             b.append("> ");
                         }
                         else 
@@ -1900,7 +1900,7 @@ public class Roster
 //#ifdef POPUPS
         if (cf.popUps)
             if (message.messageType==Msg.MESSAGE_TYPE_AUTH && showWobbler(c))
-                setWobbler(2, c, message.from+"\n"+message.body);
+                setWobble(2, c.toString(), message.from+"\n"+message.body);
 //#endif
 
 	if (cf.popupFromMinimized) {
@@ -1930,7 +1930,7 @@ public class Roster
             playNotify(SOUND_FOR_ME);            
 //#ifdef POPUPS
             if (showWobbler(c))
-                setWobbler(2, c, message.body);
+                setWobble(2, c.toString(), message.body);
 //#endif
             autorespond = true;
 //#ifdef LIGHT_CONFIG        
@@ -1948,7 +1948,7 @@ public class Roster
 //#endif
 //#ifdef POPUPS
                     if (showWobbler(c)) {
-                        setWobbler(2, c, c.toString()+": "+message.body);
+                        setWobble(2, c.toString(), c.toString()+": "+message.body);
                         autorespond = true;
                     }
 //#endif
@@ -2414,135 +2414,6 @@ public class Roster
 //#             }
 //#         }
 //#     }
-//#endif
-
-//#ifdef POPUPS
-    public void showInfo() {
-        if (getItemCount() <= 0 || getFocusedObject() == null)
-            return;
-
-        try {
-            PopUp.getInstance().next();
-            if (getFocusedObject() instanceof Group
-//#ifndef WMUC
-                    || getFocusedObject() instanceof ConferenceGroup
-//#endif
-                    )
-                return;
-                setWobbler(1, (Contact) null, null);
-        } catch (Exception e) { }
-    }
-
-    public void setWobbler(int type, Contact contact, String info) {
-        if (info==null) {
-            StringBuffer mess=new StringBuffer();
-            Contact cntact=(Contact)getFocusedObject();
-//#ifndef WMUC
-            boolean isMucContact=(getFocusedObject() instanceof MucContact);
-            if (isMucContact) {
-                MucContact mucContact=(MucContact)getFocusedObject();
-
-                if (mucContact.origin!=Contact.ORIGIN_GROUPCHAT){
-                    mess.append((mucContact.realJid==null)?"":"jid: "+mucContact.realJid+"\n");
-
-                    if (mucContact.affiliationCode>MucContact.AFFILIATION_NONE)
-                        mess.append(MucContact.getAffiliationLocale(mucContact.affiliationCode));
-
-                    if (!(mucContact.roleCode==MucContact.ROLE_PARTICIPANT && mucContact.affiliationCode==MucContact.AFFILIATION_MEMBER)) {
-                        if (mucContact.affiliationCode>MucContact.AFFILIATION_NONE)
-                            mess.append(SR.MS_AND);
-                        mess.append(MucContact.getRoleLocale(mucContact.roleCode));
-                    }
-                }
-            } else {
-//#endif
-                mess.append("jid: ")
-                    .append(cntact.bareJid)
-                    .append(cntact.jid.getResource())
-                    .append("\n")
-                    .append(SR.MS_SUBSCRIPTION)
-                    .append(": ")
-                    .append(cntact.subscr);
-//#ifdef PEP
-//#                 if (cntact.hasMood()) {
-//#                     mess.append("\n")
-//#                         .append(SR.MS_USERMOOD)
-//#                         .append(": ")
-//#                         .append(cntact.getMoodString());
-//#                 }
-//#ifdef PEP_ACTIVITY
-//#                 if (cntact.hasActivity()) {
-//#                     mess.append("\n").append(SR.MS_USERACTIVITY).append(": ").append(cntact.activity);
-//#                 }
-//#endif
-//#ifdef PEP_LOCATION
-//#                 if (cntact.hasLocation()) {
-//#                     mess.append("\n").append(SR.MS_USERLOCATION).append(": ").append(cntact.location);
-//#                 }
-//#endif
-//# 
-//#ifdef PEP_TUNE
-//#                 if (cntact.pepTune) {
-//#                     mess.append("\n").append(SR.MS_USERTUNE);
-//#                     if (!cntact.pepTuneText.equals("")) {
-//#                         mess.append(": ").append(cntact.pepTuneText);
-//#                     }
-//#                 }
-//#endif
-//#endif
-//#ifndef WMUC
-            }
-//#endif
-            if (cntact.origin!=Contact.ORIGIN_GROUPCHAT){
-                mess.append((cntact.j2j!=null)?"\nJ2J: "+cntact.j2j:"");
-//#ifdef CLIENTS_ICONS
-//#ifdef PLUGINS
-//#                 if (cf.showClientIcon)
-//#endif
-                    if (cntact.client>-1) {
-                        mess.append("\n")
-                            .append(SR.MS_USE)
-                            .append(": ")
-                            .append(cntact.clientName);
-                    }
-//#endif
-                if (cntact.version!=null) {
-                    mess.append("\n")
-                        .append(SR.MS_VERSION)
-                        .append(": ")
-                        .append(cntact.version);
-                }
-                if (cntact.lang!=null) {
-                    mess.append("\n")
-                        .append(SR.MS_LANGUAGE)
-                        .append(": ")
-                        .append(cntact.lang);
-                }
-            }
-
-            if (cntact.statusString!=null) {
-                if (cntact.origin!=Contact.ORIGIN_GROUPCHAT){
-                    mess.append("\n")
-                        .append(SR.MS_STATUS)
-                        .append(": ");
-                }
-                mess.append(cntact.statusString);
-
-            if (cntact.priority!=0) {
-                    mess.append(" [")
-                        .append(cntact.priority)
-                        .append("]");
-                }
-            }
-
-            setWobble(1, null, mess.toString());
-            mess=null;
-        } else {
-            setWobble(type, contact.getJid(), info);
-        }
-
-        redraw();
-    }
 //#endif
     
     public void logoff(String mess){
