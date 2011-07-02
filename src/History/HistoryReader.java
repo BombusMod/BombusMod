@@ -41,9 +41,6 @@ import ui.MainBar;
  * @author ad
  */
 public class HistoryReader extends MessageList {
-//#ifdef PLUGINS
-//#     public static String plugin = new String("PLUGIN_HISTORY");
-//#endif
     
     private HistoryLoader hl;
     static MessageItem MIPrev, MINext;

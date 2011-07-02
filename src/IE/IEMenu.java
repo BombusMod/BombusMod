@@ -26,9 +26,6 @@
  */
 package IE;
 
-//#ifdef PLUGINS
-//# import Client.StaticData;
-//#endif
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
 import locale.SR;
@@ -44,9 +41,6 @@ import ui.controls.form.SpacerItem;
 public class IEMenu 
         extends DefForm
         implements BrowserListener {
-//#ifdef PLUGINS
-//#     public static String plugin = new String("PLUGIN_IE");
-//#endif
 
     private int choice = -1;
     
@@ -81,9 +75,6 @@ public class IEMenu
                 choice = 7;
                 SelectFile(true);                
             }} );                        
-//#ifdef PLUGINS
-//#         if (StaticData.getInstance().Archive) {
-//#endif           
         itemsList.addElement(new SpacerItem(10));
         itemsList.addElement(new SimpleString(SR.MS_ARCHIVE, true));
         itemsList.addElement(new LinkString(SR.MS_LOAD_FROM_FILE) {
@@ -108,9 +99,6 @@ public class IEMenu
                 choice = 5;
                 SelectFile(true);                
             }} );                        
-//#ifdef PLUGINS
-//#         }
-//#endif
     }
     public void SelectFile(boolean getDir) {
         new Browser(null, this, getDir);

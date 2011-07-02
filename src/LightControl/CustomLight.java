@@ -29,9 +29,6 @@ import java.util.*;
  * @author Vladimir Krukov
  */
 public final class CustomLight extends TimerTask {
-//#ifdef PLUGINS
-//#     public static String plugin = new String("PLUGIN_LIGHT");
-//#endif    
     private static CustomLight instance = new CustomLight(null);
     private Timer timer;
     LightConfig cf = LightConfig.getInstance();

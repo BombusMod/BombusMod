@@ -24,37 +24,40 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-
 package Info;
 
 import Client.Config;
 import locale.SR;
 
 public class Version {
-    public final static String version="$BOMBUSVERSION$";
-    
-    public final static String NAME="BombusMod";
-    
-    public final static String BOMBUS_SITE_URL="http://bombusmod.net.ru";
-    
-//#ifdef PLUGINS
-//#     private static String plugins="P";
-//#else
-    private static String plugins="";
-//#endif
-    
-    public static String getBuildNum () {
-        String build=Config.getInstance().getStringProperty("Bombus-Build", "0");
-        
-        return (build!="0" && build!=null)?" ["+build+"]":"";
-    }
-    
-    public static String getVersionLang() { return version+plugins+" ("+SR.MS_IFACELANG+")"+getBuildNum(); }
-    
-    public static String getVersionNumber() { return version; }
-    public static String getName() { return NAME; }
-    public static String getNameVersion() { return NAME+" "+version; }
-    
-    public static String getUrl() { return BOMBUS_SITE_URL; }
 
+    public final static String version = "$BOMBUSVERSION$";
+    public final static String NAME = "BombusMod";
+    public final static String BOMBUS_SITE_URL = "http://bombusmod.net.ru";
+
+    public static String getBuildNum() {
+        String build = Config.getInstance().getStringProperty("Bombus-Build", "0");
+
+        return (!build.equals("0") && build != null) ? " [" + build + "]" : "";
+    }
+
+    public static String getVersionLang() {
+        return version + " (" + SR.MS_IFACELANG + ")" + getBuildNum();
+    }
+
+    public static String getVersionNumber() {
+        return version;
+    }
+
+    public static String getName() {
+        return NAME;
+    }
+
+    public static String getNameVersion() {
+        return NAME + " " + version;
+    }
+
+    public static String getUrl() {
+        return BOMBUS_SITE_URL;
+    }
 }

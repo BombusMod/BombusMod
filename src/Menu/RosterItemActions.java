@@ -103,9 +103,6 @@ public class RosterItemActions extends Menu {
 		addItem(SR.MS_LOGOFF,6, RosterIcons.ICON_OFF);
                 addItem(SR.MS_RESOLVE_NICKNAMES, 7, RosterIcons.ICON_NICK_RESOLVE);
 //#if CHANGE_TRANSPORT
-//#ifdef PLUGINS
-//#                 if (sd.ChangeTransport);
-//#endif
 //#                     addItem("Change transport", 915, RosterIcons.ICON_COMMAND);
 //#endif
 	    }
@@ -239,9 +236,6 @@ public class RosterItemActions extends Menu {
 //#if (FILE_IO && FILE_TRANSFER)
             if (!contact.jid.isTransport() && cf.fileTransfer)
                 if (contact!=sd.roster.selfContact()) {
-//#ifdef PLUGINS
-//#                     if (sd.FileTransfer)
-//#endif
                         addItem(SR.MS_SEND_FILE, 50, RosterIcons.ICON_SEND_FILE);
                 }
 
@@ -251,9 +245,6 @@ public class RosterItemActions extends Menu {
                 if (contact!=sd.roster.selfContact()) {
                     String cameraAvailable=System.getProperty("supports.video.capture");
                     if (cameraAvailable!=null) if (cameraAvailable.startsWith("true")) {
-//#ifdef PLUGINS
-//#                         if (sd.ImageTransfer)
-//#endif
                             addItem(SR.MS_SEND_PHOTO, 51, RosterIcons.ICON_SENDPHOTO);
                     }
                 }

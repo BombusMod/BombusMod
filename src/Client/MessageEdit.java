@@ -92,9 +92,6 @@ public final class MessageEdit
         this.to = to;
 
 //#ifdef DETRANSLIT
-//#ifdef PLUGINS
-//#        if (sd.DeTranslit)
-//#endif
 //#             util.DeTranslit.getInstance();
 //#endif        
     }
@@ -174,9 +171,6 @@ public final class MessageEdit
         textbox.addCommand(cmdSmile);
 //#endif
 //#ifdef DETRANSLIT
-//#ifdef PLUGINS
-//#        if (sd.DeTranslit)
-//#endif        
 //#         if (util.DeTranslit.filled) {
 //#             textbox.addCommand(cmdSendInTranslit);
 //#             textbox.addCommand(cmdSendInDeTranslit);
@@ -344,9 +338,6 @@ public final class MessageEdit
         }
         if (body != null || subj != null) {
 //#ifdef DETRANSLIT  
-//#ifdef PLUGINS
-//#        if (sd.DeTranslit) {
-//#endif            
 //#             if (sendInTranslit == true) {
 //#                 if (body != null) {
 //#                     body = util.DeTranslit.getInstance().translit(body);
@@ -363,9 +354,6 @@ public final class MessageEdit
 //#                     subj = util.DeTranslit.getInstance().deTranslit(subj);
 //#                 }
 //#             }
-//#ifdef PLUGINS
-//#        }
-//#endif            
 //#endif
             String from = sd.account.toString();
             Msg msg = new Msg(Msg.MESSAGE_TYPE_OUT, from, subj, body);

@@ -40,9 +40,6 @@ public class MessageArchive {
     
     RecordStore rs;
     Vector indexes;
-//#ifdef PLUGINS
-//#     public static String plugin = new String("PLUGIN_ARCHIVE");
-//#endif
     
     private final static String ARCHIVE="archive";
     private final static String TEMPLATES="ad_templates";

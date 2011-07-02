@@ -264,14 +264,8 @@ public class VCard {
     public String getNickDate() {
         StringBuffer nickDate=new StringBuffer("photo_");
 //#ifdef DETRANSLIT
- //#ifdef PLUGINS       
-//#        if (StaticData.getInstance().DeTranslit) {
-//#endif                  
 //#             String userName = (getNickName() != null) ? getNickName() : getJid();
 //#             nickDate.append(util.DeTranslit.getInstance().get_actual_filename(userName));
-//#ifdef PLUGINS       
-//#        }
-//#endif           
 //#         
 //#else
          if (getNickName()!=null) {

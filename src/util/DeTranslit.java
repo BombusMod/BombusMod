@@ -35,9 +35,6 @@ import java.util.Vector;
  * @author ad
  */
 public class DeTranslit {
-//#ifdef PLUGINS
-//#     public static String plugin = new String("PLUGIN_DT");
-//#endif
     static Vector translit[];
     public static boolean filled = false;
     

@@ -803,9 +803,6 @@ public abstract class VirtualList {
         }
 
 //#ifdef LIGHT_CONFIG      
-//#ifdef PLUGINS                
-//#         if (StaticData.getInstance().lightConfig)
-//#endif            
 //#             CustomLight.keyPressed();
 //#endif
 //#ifdef AUTOSTATUS

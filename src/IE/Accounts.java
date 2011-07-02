@@ -40,9 +40,6 @@ import java.util.Vector;
  * @author ad
  */
 public class Accounts {
-//#ifdef PLUGINS
-//#     public static String plugin = new String("PLUGIN_IE");
-//#endif
     
     private final static String userName = "userName"; 
     private final static String server = "server"; 

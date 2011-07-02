@@ -227,9 +227,6 @@ public class Roster
 	updateMainBar();       
         
 //#ifdef CLIENTS_ICONS
-//#ifdef PLUGINS
-//# 	if (sd.ClientsIcons)
-//#endif
         ClientsIconsData.getInstance();
 //#endif
         enableListWrapping(true);
@@ -248,9 +245,6 @@ public class Roster
 //#endif
         addMenuCommand(cmdAlert);
 //#ifdef ARCHIVE
-//#ifdef PLUGINS
-//#          if (sd.Archive)
-//#endif
         addMenuCommand(cmdArchive);
 //#endif
         if (isLoggedIn()) {
@@ -1264,17 +1258,11 @@ public class Roster
         theStream.addBlockListener(new RosterXListener());
 //#ifdef ADHOC
 //#         if (cf.adhoc)
-//#ifdef PLUGINS
-//#             if (sd.Adhoc)
-//#endif
 //#                 IQCommands.getInstance().addBlockListener();
 //#endif
 
 //#ifdef PEP
 //#         if (cf.sndrcvmood)
-//#ifdef PLUGINS
-//#             if (sd.PEP)
-//#endif
 //#                 PepListener.getInstance().addBlockListener();
 //#endif
 //#if SASL_XGOOGLETOKEN
@@ -1283,9 +1271,6 @@ public class Roster
 //#endif
 //#if FILE_TRANSFER
         if (cf.fileTransfer) // enable File transfers
-//#ifdef PLUGINS
-//#             if (sd.FileTransfer)
-//#endif
                 TransferDispatcher.getInstance().addBlockListener();
 //#endif
      
@@ -1621,9 +1606,6 @@ public class Roster
                         
                         if (pr.getAttribute("ver")!=null) c.version=pr.getAttribute("ver"); // for bombusmod only
 //#ifdef CLIENTS_ICONS
-//#ifdef PLUGINS
-//#                     if (sd.ClientsIcons)
-//#endif
                         if (cf.showClientIcon) {
                             if (pr.hasEntityCaps()) {
                                 getClientIcon(c, pr.getEntityNode());
@@ -1706,9 +1688,6 @@ public class Roster
                         
                         if (ti != Presence.PRESENCE_ERROR) {
 //#ifdef CLIENTS_ICONS
-//#ifdef PLUGINS
-//#                         if (sd.ClientsIcons)
-//#endif
                             if (cf.showClientIcon) if (ti<Presence.PRESENCE_OFFLINE)
                                 if (pr.hasEntityCaps()) {
                                     if (pr.getEntityNode()!=null) {
@@ -1934,9 +1913,6 @@ public class Roster
 //#endif
             autorespond = true;
 //#ifdef LIGHT_CONFIG        
-//#ifdef PLUGINS        
-//#     if (StaticData.getInstance().lightConfig)        
-//#endif                                       
 //#                         CustomLight.message();
 //#endif 
 		if (cf.autoFocus) 
@@ -1956,9 +1932,6 @@ public class Roster
                     playNotify(SOUND_FOR_VIP);
                     autorespond = true;
 //#ifdef LIGHT_CONFIG        
-//#ifdef PLUGINS        
-//#     if (StaticData.getInstance().lightConfig)        
-//#endif                                       
 //#                         CustomLight.message();
 //#endif 
 		if (cf.autoFocus) 
@@ -1967,9 +1940,6 @@ public class Roster
                     playNotify(SOUND_MESSAGE);
                     autorespond = true;
 //#ifdef LIGHT_CONFIG        
-//#ifdef PLUGINS        
-//#     if (StaticData.getInstance().lightConfig)        
-//#endif                                       
 //#                         CustomLight.message();
 //#endif 
 		if (cf.autoFocus) 
@@ -1982,9 +1952,6 @@ public class Roster
                      playNotify(SOUND_MESSAGE); //private message
                      autorespond = true;
 //#ifdef LIGHT_CONFIG        
-//#ifdef PLUGINS        
-//#     if (StaticData.getInstance().lightConfig)        
-//#endif                                       
 //#                         CustomLight.message();
 //#endif 
 		if (cf.autoFocus) 
@@ -2424,9 +2391,6 @@ public class Roster
             } catch (Exception e) { }
         }
 //#ifdef STATS
-//#ifdef PLUGINS
-//#         if (sd.Stats)
-//#endif
 //#             Stats.getInstance().saveToStorage(false);
 //#endif
     }
@@ -2825,9 +2789,6 @@ public class Roster
         }
         super.userKeyPressed(keyCode);
 //#ifdef LIGHT_CONFIG        
-//#ifdef PLUGINS        
-//#         if (StaticData.getInstance().lightConfig)        
-//#endif            
 //#             CustomLight.keyPressed();
 //#endif  
     }
@@ -2873,9 +2834,6 @@ public class Roster
                 return true;
         }
 //#ifdef LIGHT_CONFIG        
-//#ifdef PLUGINS        
-//#         if (StaticData.getInstance().lightConfig)        
-//#endif                    
 //#         CustomLight.keyPressed();
 //#endif 
         return super.longKey(keyCode);
@@ -2949,9 +2907,6 @@ public class Roster
                             grp.addContact(c);
 
 //#ifdef PRIVACY
-//#ifdef PLUGINS
-//#                              if (sd.Privacy) {
-//#endif
                             if (!sd.account.isGoogle) {
                                  if (QuickPrivacy.groupsList == null) {
                                      QuickPrivacy.groupsList = new Vector();
@@ -2963,24 +2918,15 @@ public class Roster
                                     }
                                  }
                             }
-//#ifdef PLUGINS
-//#                              }
-//#endif
 //#endif
                         }
                     }
                         }
 //#ifdef PRIVACY                        
-//#ifdef PLUGINS                        
-//#                              if (sd.Privacy) {
-//#endif
                 if (!sd.account.isGoogle) {
                 if (needUpdatePrivacy && isLoggedIn())
                     new QuickPrivacy().updateQuickPrivacyList();
                 }
-//#ifdef PLUGINS                        
-//#                              }
-//#endif                            
 //#endif                                                                        
                 // self-contact group
                 Group selfContactGroup = groups.getGroup(Groups.TYPE_SELF);

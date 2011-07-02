@@ -214,9 +214,6 @@ public final class SplashScreen extends DefForm implements VirtualElement {
 
     public boolean longKey(int key) {
 //#ifdef LIGHT_CONFIG
-//#ifdef PLUGINS
-//#         if (StaticData.getInstance().lightConfig)
-//#endif
 //#             CustomLight.keyPressed();
 //#endif
        if (key == exitKey) {
@@ -232,9 +229,6 @@ public final class SplashScreen extends DefForm implements VirtualElement {
             destroyView();
         }
 //#ifdef LIGHT_CONFIG      
-//#ifdef PLUGINS                
-//#         if (StaticData.getInstance().lightConfig)
-//#endif            
 //#             CustomLight.keyPressed();
 //#endif
     }

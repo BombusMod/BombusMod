@@ -377,9 +377,6 @@ public class Contact extends IconTextElement {
 //#endif
         }
 //#if HISTORY
-//#ifdef PLUGINS
-//#     if(cf.saveHistory)
-//#endif
 //#         if (!m.history) {
 //#             if (!cf.msgPath.equals("") && !jid.isTransport() && group.type != Groups.TYPE_SEARCH_RESULT) {
 //#                 boolean allowLog = false;
@@ -573,9 +570,6 @@ public class Contact extends IconTextElement {
         if (origin != Contact.ORIGIN_GROUPCHAT) {
             mess.append((j2j != null) ? "\nJ2J: " + j2j : "");
 //#ifdef CLIENTS_ICONS
-//#ifdef PLUGINS
-//#                 if (cf.showClientIcon)
-//#endif
             if (client > -1) {
                 mess.append("\n").append(SR.MS_USE).append(": ").append(clientName);
             }
@@ -847,9 +841,6 @@ public class Contact extends IconTextElement {
 
 //#ifdef CLIENTS_ICONS
     boolean hasClientIcon() {
-//#ifdef PLUGINS
-//#                 if (!sd.ClientsIcons) return false;
-//#endif
         return (client > -1);
     }
 //#endif

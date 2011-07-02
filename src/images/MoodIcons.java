@@ -34,9 +34,6 @@ import ui.ImageList;
  * @author EvgS
  */
 public class MoodIcons extends ImageList {
-//#ifdef PLUGINS
-//#     public static String plugin = new String("PLUGIN_PEP");
-//#endif
     
     private final static int SMILES_IN_ROW=16;
 

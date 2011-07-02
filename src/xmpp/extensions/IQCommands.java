@@ -47,9 +47,6 @@ import ui.Time;
  * @author ad
  */
 public class IQCommands implements JabberBlockListener {
-//#ifdef PLUGINS
-//#     public static String plugin = new String("PLUGIN_ADHOC");
-//#endif
     
     /** Singleton */
     private static IQCommands instance;

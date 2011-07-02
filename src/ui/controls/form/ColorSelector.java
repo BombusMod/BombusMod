@@ -34,9 +34,6 @@ import ui.VirtualElement;
 
 public class ColorSelector implements VirtualElement
     {
-//#ifdef PLUGINS
-//#     public static String plugin = new String("PLUGIN_COLORS");
-//#endif
 
     static Font mfont = Font.getFont(Font.FACE_SYSTEM, Font.STYLE_BOLD, Font.SIZE_SMALL);    
 

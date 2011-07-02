@@ -59,9 +59,6 @@ public class TransferTask
         extends IconTextElement
         implements Runnable
 {
-//#ifdef PLUGINS
-//#     public static String plugin = new String("PLUGIN_FILE_TRANSFER");
-//#endif
     
     public final static int COMPLETE = 1;
     public final static int PROGRESS = 3;

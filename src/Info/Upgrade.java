@@ -46,9 +46,6 @@ public class Upgrade
         extends MessageList 
         implements Runnable        
     {
-//#ifdef PLUGINS
-//#     public static String plugin = new String("PLUGIN_VERSION_UPGRADE");
-//#endif
    
     //private MenuCommand cmdBack=new MenuCommand(SR.MS_BACK, Command.BACK, 99);
     private final static String VERSION_URL="http://bombusmod.net.ru/checkupdate/check.php";

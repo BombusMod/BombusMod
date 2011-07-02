@@ -407,9 +407,6 @@ public class JabberStream extends XmppParser implements Runnable {
     
 //#ifdef CONSOLE
 //#     public void addLog (String data, int type) {
-//#ifdef PLUGINS
-//#             if (StaticData.getInstance().Console)
-//#endif
 //#         StanzasList.getInstance().add(data, type);
 //#     }
 //#endif

@@ -33,14 +33,8 @@ import java.io.InputStream;
 import java.util.Vector;
 import util.StringUtils;
 import util.Strconv;
-//#ifdef PLUGINS
-//# import Client.StaticData;
-//#endif
 
 public class HistoryStorage {
-//#ifdef PLUGINS
-//#     public static String plugin = new String("PLUGIN_HISTORY");
-//#endif
     
     private String history;
     
@@ -54,9 +48,6 @@ public class HistoryStorage {
     public HistoryStorage(String filename) {
         cf=Config.getInstance();
 //#ifdef DETRANSLIT
-//#ifdef PLUGINS       
-//#        if (StaticData.getInstance().DeTranslit)       
-//#endif            
 //#             filename = util.DeTranslit.getInstance().get_actual_filename(filename);
 //#endif
 //#ifdef HISTORY

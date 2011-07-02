@@ -42,9 +42,6 @@ import ui.controls.ExTextBox;
 public class StanzaEdit
         extends ExTextBox
         implements CommandListener {
-//#ifdef PLUGINS
-//#     public static String plugin = new String("PLUGIN_CONSOLE");
-//#endif
     private Command cmdCancel;
     private Command cmdSend;
     private Command cmdPasteIQDisco;

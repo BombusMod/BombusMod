@@ -12,9 +12,6 @@ import ui.controls.form.NumberInput;
 
 public class LightConfigForm
         extends DefForm {
-//#ifdef PLUGINS
-//#     public static String plugin = new String("PLUGIN_LIGHT");
-//#endif    
     
     private CheckBox config_enabled;
 

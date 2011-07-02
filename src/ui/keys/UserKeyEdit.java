@@ -40,9 +40,6 @@ package ui.keys;
 //# 
 //# 
 //# class UserKeyEdit extends DefForm {
-//#ifdef PLUGINS
-//#     public static String plugin = new String("PLUGIN_USER_KEYS");
-//#endif
 //# 
 //#     private final UserKeysList userKeysList;
 //# 

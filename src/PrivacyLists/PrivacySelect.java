@@ -48,9 +48,6 @@ public class PrivacySelect
         JabberBlockListener,
         MIDPTextBox.TextBoxNotify
 {
-//#ifdef PLUGINS
-//#     public static String plugin = new String("PLUGIN_PRIVACY");
-//#endif
     
     private MenuCommand cmdActivate=new MenuCommand (SR.MS_ACTIVATE, MenuCommand.OK, 1);
     private MenuCommand cmdDefault=new MenuCommand (SR.MS_DEFAULT, MenuCommand.SCREEN, 11);

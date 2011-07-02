@@ -21,9 +21,6 @@ import ui.controls.form.TextInput;
  * @author Vitaly
  */
 public class PepForm extends DefForm {
-//#ifdef PLUGINS
-//#     public static String plugin = "PLUGIN_PEP";
-//#endif
 
 //#ifdef PEP
 //#     private CheckBox sndrcvmood;
@@ -52,9 +49,6 @@ public class PepForm extends DefForm {
                 );
         
 //#ifdef PEP
-//#ifdef PLUGINS
-//#         if (StaticData.getInstance().PEP) {
-//#endif            
 //#             itemsList.addElement(new SimpleString("Receive events", true));
 //#             sndrcvmood = new CheckBox(SR.MS_USERMOOD, Config.getInstance().sndrcvmood);
 //#             itemsList.addElement(sndrcvmood);
@@ -99,9 +93,6 @@ public class PepForm extends DefForm {
 //#             };
 //#             itemsList.addElement(updloc);            
 //#endif
-//#ifdef PLUGINS
-//#         }
-//#endif
 //#endif
 //#endif
         
@@ -110,9 +101,6 @@ public class PepForm extends DefForm {
     public void cmdOk() {        
         //publish(activity.getSelectedIndex(), ti.getText());
 //#ifdef PEP
-//#ifdef PLUGINS
-//#         if (StaticData.getInstance().PEP) {
-//#endif
 //#             Config.getInstance().sndrcvmood=sndrcvmood.getValue();
 //#ifdef PEP_TUNE
 //#             Config.getInstance().rcvtune=rcvtune.getValue();
@@ -124,9 +112,6 @@ public class PepForm extends DefForm {
 //#             Config.getInstance().rcvloc = rcvlocation.getValue();
 //#endif
 //# 
-//#ifdef PLUGINS
-//#         }
-//#endif
 //#         Config.getInstance().saveToStorage();
 //#endif       
         parentView = sd.roster;

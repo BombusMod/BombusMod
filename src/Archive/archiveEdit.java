@@ -40,9 +40,6 @@ import ui.controls.ExTextBox;
 public class archiveEdit
         extends ExTextBox
         implements CommandListener {
-//#ifdef PLUGINS
-//#     public static String plugin = new String("PLUGIN_ARCHIVE");
-//#endif
     private Command cmdCancel;
     private Command cmdOk;
     private Msg msg;

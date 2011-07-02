@@ -33,9 +33,6 @@ import ui.controls.form.DropChoiceBox;
 import ui.controls.form.MultiLine;
 
 public class ChangeTransport extends DefForm {
-//#ifdef PLUGINS
-//#     public static String plugin = new String("PLUGIN_CHANGE_TRANSPORT");
-//#endif
 
     private DropChoiceBox tTranspList;
     private String srcTransport;

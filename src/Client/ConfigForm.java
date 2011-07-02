@@ -156,9 +156,6 @@ public class ConfigForm
         rosterStatus = new CheckBox(SR.MS_SHOW_STATUSES, cf.rosterStatus); itemsList.addElement(rosterStatus);
 //#ifdef CLIENTS_ICONS
         showClientIcon = new CheckBox(SR.MS_SHOW_CLIENTS_ICONS, cf.showClientIcon);
-//#ifdef PLUGINS
-//#         if (sd.ClientsIcons)
-//#endif
             itemsList.addElement(showClientIcon);
 //#endif
         autoClean = new CheckBox(SR.MS_AUTOCLEAN_GROUPS, cf.autoClean);
@@ -200,9 +197,6 @@ public class ConfigForm
 //#         useClipBoard = new CheckBox(SR.MS_CLIPBOARD, cf.useClipBoard); itemsList.addElement(useClipBoard);
 //#endif
 //#ifdef DETRANSLIT
-//#ifdef PLUGINS
-//#        if (sd.DeTranslit)
-//#endif
 //#         autoDetranslit = new CheckBox(SR.MS_AUTODETRANSLIT, cf.autoDeTranslit); itemsList.addElement(autoDetranslit);
 //#endif
        showNickNames = new CheckBox(SR.MS_SHOW_NACKNAMES, cf.showNickNames); itemsList.addElement(showNickNames);
@@ -254,24 +248,15 @@ public class ConfigForm
         
 //#ifdef FILE_TRANSFER
         fileTransfer = new CheckBox(SR.MS_FILE_TRANSFERS, cf.fileTransfer); 
-//#ifdef PLUGINS
-//#         if (sd.FileTransfer)
-//#endif
             itemsList.addElement(fileTransfer);
 //#endif
 //#ifdef HISTORY
 //#         saveHistory = new CheckBox(SR.MS_HISTORY, cf.saveHistory); 
-//#ifdef PLUGINS
-//#         if (sd.History)
-//#endif
-//#             itemsList.addElement(saveHistory);
+//#         itemsList.addElement(saveHistory);
 //#endif
 //#ifdef ADHOC
 //#         adhoc = new CheckBox(SR.MS_ADHOC, cf.adhoc); 
-//#ifdef PLUGINS
-//#         if (sd.Adhoc)
-//#endif
-//#             itemsList.addElement(adhoc);
+//#         itemsList.addElement(adhoc);
 //#endif
         if (cf.allowMinimize) {
             popupFromMinimized = new CheckBox(SR.MS_ENABLE_POPUP, cf.popupFromMinimized);
@@ -357,10 +342,7 @@ public class ConfigForm
         cf.useBoldFont=useBoldFont.getValue();
         cf.rosterStatus=rosterStatus.getValue();
 //#ifdef CLIENTS_ICONS
-//#ifdef PLUGINS
-//#         if (sd.ClientsIcons)
-//#endif
-            cf.showClientIcon=showClientIcon.getValue();
+        cf.showClientIcon=showClientIcon.getValue();
 //#endif
         cf.autoSubscribe=subscr.getSelectedIndex();       
         
@@ -388,15 +370,7 @@ public class ConfigForm
 //#         cf.useClipBoard=useClipBoard.getValue();
 //#endif
 //#ifdef DETRANSLIT
-//#ifdef PLUGINS
-//#        if (sd.DeTranslit) {
-//#endif
 //#         cf.autoDeTranslit=autoDetranslit.getValue();
-//#ifdef PLUGINS
-//#        } else {
-//#             cf.autoDeTranslit = false;
-//#        }
-//#endif
 //#endif
         cf.showNickNames=showNickNames.getValue();
         cf.executeByNum=executeByNum.getValue();
@@ -409,22 +383,13 @@ public class ConfigForm
         cf.reconnectCount=Integer.parseInt(reconnectCount.getValue());
         cf.reconnectTime=Integer.parseInt(reconnectTime.getValue());
 //#ifdef FILE_TRANSFER
-//#ifdef PLUGINS
-//#         if (sd.FileTransfer)
-//#endif
-            cf.fileTransfer=fileTransfer.getValue();
+        cf.fileTransfer=fileTransfer.getValue();
 //#endif
 //#ifdef HISTORY
-//#ifdef PLUGINS
-//#         if (sd.History)
-//#endif
-//#             cf.saveHistory=saveHistory.getValue();
+//#         cf.saveHistory=saveHistory.getValue();
 //#endif
 //#ifdef ADHOC
-//#ifdef PLUGINS
-//#         if (sd.Adhoc)
-//#endif
-//#             cf.adhoc=adhoc.getValue();
+//#    cf.adhoc=adhoc.getValue();
 //#endif
         
         VirtualList.showTimeTraffic=cf.showTimeTraffic=drawMenuCommand.getValue();

@@ -44,9 +44,6 @@ import ui.controls.form.DefForm;
 public class TransferManager
     extends DefForm
     {
-//#ifdef PLUGINS
-//#     public static String plugin = new String("PLUGIN_FILE_TRANSFER");
-//#endif    
     
     
     MenuCommand cmdDecline=new MenuCommand(SR.MS_DECLINE, MenuCommand.SCREEN, 10);

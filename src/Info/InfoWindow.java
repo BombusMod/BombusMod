@@ -28,9 +28,6 @@
 package Info;
 
 import Client.Config;
-//#ifdef PLUGINS
-//# import Client.StaticData;
-//#endif
 import java.util.Enumeration;
 import java.util.Vector;
 import javax.microedition.io.ConnectionNotFoundException;
@@ -158,19 +155,13 @@ public class InfoWindow
     private String getAbilities() {
         Vector abilitiesList=new Vector();
 //#ifdef ADHOC
-//#ifdef PLUGINS
-//#         if (sd.Adhoc)
-//#endif
 //#             abilitiesList.addElement("ADHOC");
 //#endif
 //#ifdef ANTISPAM
 //#             abilitiesList.addElement("ANTISPAM");
 //#endif
 //#ifdef ARCHIVE
-//#ifdef PLUGINS
-//#         if (sd.Archive)
-//#endif
-            abilitiesList.addElement("ARCHIVE");
+        abilitiesList.addElement("ARCHIVE");
 //#endif
 //#ifdef AUTOSTATUS
 //#         abilitiesList.addElement("AUTOSTATUS");
@@ -185,42 +176,24 @@ public class InfoWindow
 //#         abilitiesList.addElement("CAPTCHA");
 //#endif
 //#ifdef CHANGE_TRANSPORT
-//#ifdef PLUGINS
-//#         if (sd.ChangeTransport)
-//#endif
 //#             abilitiesList.addElement("CHANGE_TRANSPORT");
 //#endif
 //#ifdef CHECK_VERSION
-//#ifdef PLUGINS
-//#         if (sd.Upgrade)
-//#endif
 //#             abilitiesList.addElement("CHECK_VERSION");
 //#endif
 //#ifdef CLIENTS_ICONS
-//#ifdef PLUGINS
-//#         if (sd.ClientsIcons)
-//#endif
             abilitiesList.addElement("CLIENTS_ICONS");
 //#endif
 //#ifdef CLIPBOARD
 //#         abilitiesList.addElement("CLIPBOARD");
 //#endif
 //#ifdef CONSOLE
-//#ifdef PLUGINS
-//#         if (sd.Console)
-//#endif
 //#             abilitiesList.addElement("CONSOLE");
 //#endif
 //#ifdef COLOR_TUNE
-//#ifdef PLUGINS
-//#         if (sd.Colors)
-//#endif
 //#             abilitiesList.addElement("COLOR_TUNE");
 //#endif
 //#ifdef DETRANSLIT
-//#ifdef PLUGINS
-//#         if (sd.DeTranslit)
-//#endif
 //#         abilitiesList.addElement("DETRANSLIT");
 //#endif
 //#ifdef ELF
@@ -230,24 +203,15 @@ public class InfoWindow
         abilitiesList.addElement("FILE_IO");
 //#endif
 //#ifdef FILE_TRANSFER
-//#ifdef PLUGINS
-//#         if (sd.FileTransfer)
-//#endif
             abilitiesList.addElement("FILE_TRANSFER");
 //#endif
 //#ifdef GRADIENT
 //#         abilitiesList.addElement("GRADIENT");
 //#endif
 //#ifdef HISTORY
-//#ifdef PLUGINS
-//#         if (sd.History)
-//#endif
 //#             abilitiesList.addElement("HISTORY");
 //#endif
 //#ifdef HISTORY_READER
-//#ifdef PLUGINS
-//#         if (sd.History)
-//#endif
 //#             abilitiesList.addElement("HISTORY_READER");
 //#endif
 //#ifdef HTTPCONNECT
@@ -257,27 +221,15 @@ public class InfoWindow
 //#         abilitiesList.addElement("HTTPPOLL");
 //#endif
 //#ifdef IMPORT_EXPORT
-//#ifdef PLUGINS
-//#         if (sd.IE)
-//#endif
 //#             abilitiesList.addElement("IMPORT_EXPORT");
 //#endif
 //#ifdef JUICK
-//#ifdef PLUGINS
-//#         if (sd.Juick)
-//#endif
 //#         abilitiesList.addElement("JUICK");
 //#endif
 //#ifdef LAST_MESSAGES
-//#ifdef PLUGINS
-//#         if (sd.History)
-//#endif
 //#             abilitiesList.addElement("LAST_MESSAGES");
 //#endif
 //#ifdef LIGHT_CONFIG
-//#ifdef PLUGINS        
-//#         if (sd.lightConfig)
-//#endif            
 //#             abilitiesList.addElement("LIGHT_CONFIG");
 //#endif  
 //#ifdef LOGROTATE
@@ -299,31 +251,16 @@ public class InfoWindow
 //#         abilitiesList.addElement("NON_SASL_AUTH");
 //#endif
 //#ifdef PEP
-//#ifdef PLUGINS
-//#         if (sd.PEP)
-//#endif
 //#             abilitiesList.addElement("PEP");
 //#endif
 //#ifdef PEP_ACTIVITY
-//#ifdef PLUGINS
-//#         if (sd.PEP)
-//#endif
 //#             abilitiesList.addElement("PEP_ACTIVITY");
 //#endif
 //#ifdef PEP_LOCATION
-//#ifdef PLUGINS
-//#         if (sd.PEP)
-//#endif
 //#             abilitiesList.addElement("PEP_LOCATION");
 //#endif
 //#ifdef PEP_TUNE
-//#ifdef PLUGINS
-//#         if (sd.PEP)
-//#endif
 //#             abilitiesList.addElement("PEP_TUNE");
-//#endif
-//#ifdef PLUGINS
-//#         abilitiesList.addElement("PLUGINS");
 //#endif
 //#ifdef POPUPS
         abilitiesList.addElement("POPUPS");
@@ -335,9 +272,6 @@ public class InfoWindow
 //#         abilitiesList.addElement("RUNNING_MESSAGE");
 //#endif
 //#ifdef PRIVACY
-//#ifdef PLUGINS
-//#         if (sd.Privacy)
-//#endif
             abilitiesList.addElement("PRIVACY");
 //#endif
 //#ifdef SASL_XGOOGLETOKEN
@@ -353,18 +287,12 @@ public class InfoWindow
         abilitiesList.addElement("SMILES");
 //#endif
 //#ifdef STATS
-//#ifdef PLUGINS
-//#         if (sd.Stats)
-//#endif
 //#             abilitiesList.addElement("STATS");
 //#endif
 //#ifdef SYSTEM_NOTIFY
 //#             abilitiesList.addElement("SYSTEM_NOTIFY");
 //#endif
 //#ifdef TEMPLATES
-//#ifdef PLUGINS
-//#         if (sd.Archive)
-//#endif
 //#         abilitiesList.addElement("TEMPLATES");
 //#endif
 //#ifdef TLS        

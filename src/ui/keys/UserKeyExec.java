@@ -201,9 +201,6 @@ public class UserKeyExec {
         keysList = new Vector();
         
 //#ifdef USER_KEYS
-//#ifdef PLUGINS
-//#         if (sd.UserKeys) {
-//#endif
 //#             DataInputStream is = NvStorage.ReadFileRecord(UserKey.storage, 0);
 //# 
 //#             int size = 0;
@@ -214,9 +211,6 @@ public class UserKeyExec {
 //#                     keysList.addElement(u);
 //#                 }
 //#             } catch (Exception e) { return false; }
-//#ifdef PLUGINS
-//#            }
-//#endif
 //#endif
         return true;
     }
@@ -342,9 +336,6 @@ public class UserKeyExec {
 //#ifdef POPUPS
 //#ifdef STATS
 //#             case 4:
-//#ifdef PLUGINS
-//#                 if (sd.Stats)
-//#endif
 //#                     if (current instanceof Roster)
 //#                         new StatsWindow();
 //#                     else if (current instanceof StatsWindow)
@@ -362,9 +353,6 @@ public class UserKeyExec {
                 break;
             case 7: 
 //#ifdef ARCHIVE
-//#ifdef PLUGINS
-//#                 if (sd.Archive)
-//#endif
                     sd.roster.cmdArchive();
 //#endif
                 break;
@@ -407,14 +395,7 @@ public class UserKeyExec {
                 break;
             case 16:
 //#ifdef CONSOLE
-//#ifdef PLUGINS
-//#                 try {
-//#                     Class.forName("Console.XMLList");
-//#endif
 //#                     new XMLList();
-//#ifdef PLUGINS
-//#                 } catch (ClassNotFoundException ignore3) { }
-//#endif
 //#endif
                 break;
             case 17:
@@ -424,9 +405,6 @@ public class UserKeyExec {
                 break;
             case 18:
 //#ifdef JUICK
-//#ifdef PLUGINS
-//#                 if(sd.Juick)
-//#endif
 //#                 if (current instanceof Roster) {
 //#                     Contact jContact = sd.roster.getMainJuickContact();
 //#                     if (jContact != null)
@@ -461,9 +439,6 @@ public class UserKeyExec {
                 break;
             case 21:
 //#ifdef JUICK
-//#ifdef PLUGINS
-//#                 if(sd.Juick)
-//#endif
 //#                 if (current instanceof ContactMessageList) {
 //#                     ContactMessageList current_cml = (ContactMessageList) current;
 //#                     current_cml.menuAction(current_cml.cmdJuickCommands, current);

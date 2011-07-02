@@ -41,9 +41,6 @@ import util.Strconv;
  * @author Evg_S
  */
 public class TransferDispatcher implements JabberBlockListener {
-//#ifdef PLUGINS
-//#     public static String plugin = new String("PLUGIN_FILE_TRANSFER");
-//#endif
 
     public final static String NS_BYTESTREAMS = "http://jabber.org/protocol/bytestreams";
     public final static String NS_IBB = "http://jabber.org/protocol/ibb";

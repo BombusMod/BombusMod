@@ -44,9 +44,6 @@ import ui.controls.form.DefForm;
 public class PrivacyModifyList extends DefForm
         implements JabberBlockListener
 {
-//#ifdef PLUGINS
-//#     public static String plugin = new String("PLUGIN_PRIVACY");
-//#endif
     
     private PrivacyList plist;
     private PrivacySelect pselector;

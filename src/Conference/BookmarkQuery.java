@@ -79,15 +79,9 @@ public class BookmarkQuery implements JabberBlockListener {
                             Vector bookmarks = new Vector();
                             boolean autojoin = cf.autoJoinConferences && sd.roster.myStatus != Presence.PRESENCE_INVISIBLE;
 //#ifdef PRIVACY 
-//#ifdef PLUGINS
-//#                 if (sd.Privacy) {
-//#endif
                      if (!sd.account.isGoogle)
                         if (QuickPrivacy.conferenceList == null)
                             QuickPrivacy.conferenceList = new Vector();
-//#ifdef PLUGINS                
-//#                 }
-//#endif
 //#endif                     
                             Vector items = storage.getChildBlocks();
                             if (items != null) {
@@ -97,9 +91,6 @@ public class BookmarkQuery implements JabberBlockListener {
                                         bm.nick = sd.account.getNick();
                                     }
 //#ifdef PRIVACY                                                
-//#ifdef PLUGINS                        
-//#                         if (sd.Privacy) {
-//#endif
                            if (!sd.account.isGoogle) {
                              int at = bm.jid.indexOf("@") + 1;
                              String host = bm.jid.substring(at, bm.jid.length());
@@ -107,9 +98,6 @@ public class BookmarkQuery implements JabberBlockListener {
                                  QuickPrivacy.conferenceList.addElement(host);
                              }
                                     }
-//#ifdef PLUGINS                        
-//#                         }
-//#endif
 //#endif                        
                                     if (bm.name == null) {
                                         bm.name = bm.jid;
@@ -122,14 +110,8 @@ public class BookmarkQuery implements JabberBlockListener {
                                     }
                                 }
 //#ifdef PRIVACY                                                
-//#ifdef PLUGINS                        
-//#                         if (sd.Privacy) {
-//#endif
                                 if (!sd.account.isGoogle)
                                     new QuickPrivacy().updateQuickPrivacyList();
-//#ifdef PLUGINS                        
-//#                         }
-//#endif
 //#endif                        
                             }
 

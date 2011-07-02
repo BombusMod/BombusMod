@@ -41,9 +41,6 @@ import ui.Time;
  * @author ad
  */
 public class ConfigData {
-//#ifdef PLUGINS
-//#     public static String plugin = new String("PLUGIN_IE");
-//#endif
     
     private Config cf;
     private Vector array;

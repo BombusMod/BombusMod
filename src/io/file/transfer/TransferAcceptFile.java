@@ -46,9 +46,6 @@ import ui.controls.form.TextInput;
 public class TransferAcceptFile
         extends DefForm
         implements BrowserListener {
-//#ifdef PLUGINS
-//#     public static String plugin = new String("PLUGIN_FILE_TRANSFER");
-//#endif
     
     TransferTask t;
     TextInput fileName;

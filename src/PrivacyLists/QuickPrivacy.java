@@ -22,9 +22,6 @@ import ui.controls.form.SpacerItem;
  */
 public class QuickPrivacy extends DefForm implements JabberBlockListener {
 
-//#ifdef PLUGINS
-//#     public static String plugin = new String("PLUGIN_PRIVACY");
-//#endif
     public static final String LIST_QUICKPRIVACY = "bm-quickprivacy";
     private DropChoiceBox nil;
     private CheckBox usePrivacy;
@@ -65,6 +62,9 @@ public class QuickPrivacy extends DefForm implements JabberBlockListener {
     }
 
     public int blockArrived(JabberDataBlock data) {
+        if (!cf.useQuickPrivacy)
+            return BLOCK_REJECTED;
+
         try {
             if (data.getTypeAttribute().equals("result")) {
                 if (data.getAttribute("id").equals("quicklst")) {
@@ -87,6 +87,8 @@ public class QuickPrivacy extends DefForm implements JabberBlockListener {
     item action="allow" type=jid" value="{$self}" order="0" 
      */
     public void updateQuickPrivacyList() {
+        if (!cf.useQuickPrivacy)
+            return;
         JabberDataBlock qList = new JabberDataBlock("list", null, null);
         qList.setAttribute("name", LIST_QUICKPRIVACY);
         PrivacyItem item0 = new PrivacyItem();

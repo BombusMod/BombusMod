@@ -36,9 +36,6 @@ import util.StringLoader;
  * @author evgs
  */
 public class Activities {
-//#ifdef PLUGINS
-//#     public static String plugin = "PLUGIN_PEP";
-//#endif
 
     /** Creates a new instance of Moods */
     private Activities() {

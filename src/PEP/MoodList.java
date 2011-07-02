@@ -24,9 +24,6 @@ import ui.controls.form.DefForm;
  * @author evgs
  */
 public class MoodList extends DefForm implements MIDPTextBox.TextBoxNotify {
-//#ifdef PLUGINS
-//#     public static String plugin = "PLUGIN_PEP";
-//#endif
     
     
     String moodName;

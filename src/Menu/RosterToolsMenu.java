@@ -84,21 +84,12 @@ public class RosterToolsMenu extends Menu {
 //#endif
 //#ifdef PRIVACY
         if (connected)
-//#ifdef PLUGINS
-//#             if (sd.Privacy)
-//#endif
             if (!sd.account.isGoogle)
                 addItem(SR.MS_PRIVACY_LISTS, 1, RosterIcons.ICON_PRIVACY);
 //#endif
 //#ifdef PEP
 //#         if (connected)
-//#ifdef PLUGINS
-//#             if (sd.PEP) {
-//#endif
 //#                 addItem(SR.MS_PEP, 2, RosterIcons.ICON_MOOD);
-//#ifdef PLUGINS
-//#             }
-//#endif
 //#endif
         if (connected)
             addItem(SR.MS_MY_VCARD, 3, RosterIcons.ICON_VCARD);
@@ -114,42 +105,24 @@ public class RosterToolsMenu extends Menu {
 //#endif
 //#if (FILE_IO && FILE_TRANSFER)
         if (connected && cf.fileTransfer)
-//#ifdef PLUGINS
-//#             if (sd.FileTransfer)
-//#endif
             addItem(SR.MS_FILE_TRANSFERS, 9, RosterIcons.ICON_FT);
 //#endif
         
         addItem(SR.MS_COLOR_TUNE, 10, RosterIcons.ICON_COLOR_TUNE);
 
 //#if IMPORT_EXPORT
-//#ifdef PLUGINS
-//#         if (sd.IE)
-//#endif
 //#             addItem(SR.MS_IMPORT_EXPORT, 11, RosterIcons.ICON_IE);
 //#endif
         addItem(SR.MS_NOTICES_OPTIONS, 12, RosterIcons.ICON_NOTIFY);
 //#ifdef STATS
-//#ifdef PLUGINS
-//#         if (sd.Stats)
-//#endif
 //#             addItem(SR.MS_STATS, 13, RosterIcons.ICON_STAT);
 //#endif
 //#ifdef CHECK_VERSION
-//#ifdef PLUGINS
-//#         if (sd.Upgrade)
-//#endif
 //#             addItem(SR.MS_CHECK_UPDATE, 14, RosterIcons.ICON_CHECK_UPD);
-//#ifdef PLUGINS
-//#         if (sd.Upgrade)
-//#endif
 //#             if (!cf.getStringProperty("Bombus-Upgrade", "123").equals("123"))
 //#                 addItem(SR.MS_BUILD_NEW, 15, RosterIcons.ICON_BUILD_NEW);
 //#endif
 //#ifdef USER_KEYS
-//#ifdef PLUGINS
-//#         if (sd.UserKeys)
-//#endif
 //#             addItem(SR.MS_CUSTOM_KEYS, 16, RosterIcons.ICON_KEYS);
 //#endif
 //#if SASL_XGOOGLETOKEN
@@ -160,23 +133,14 @@ public class RosterToolsMenu extends Menu {
 //#         addItem(SR.MS_AUTOTASKS, 18, RosterIcons.ICON_TASKS);
 //#endif
 //#ifdef CONSOLE
-//#ifdef PLUGINS
-//#         if (sd.Console)
-//#endif
 //#             addItem(SR.MS_XML_CONSOLE, 19, RosterIcons.ICON_CONSOLE);
 //#endif
 //#ifdef JUICK
-//#ifdef PLUGINS
-//#         if (sd.Juick)
-//#endif
 //#             if (sd.roster.juickContacts.size() > 1) {
 //#                 addItem("Tools for Juick.Com", 20, RosterIcons.ICON_JUICK);
 //#             }
 //#endif
 //#ifdef LIGHT_CONFIG
-//#ifdef PLUGINS        
-//#         if (sd.lightConfig)
-//#endif        
 //#             if (cf.lightState)
 //#                 addItem(SR.L_CONFIG, 21, RosterIcons.ICON_SETTINGS);
 //#endif        
@@ -299,10 +263,6 @@ public class RosterToolsMenu extends Menu {
                 return;
             case 21:
 //#ifdef LIGHT_CONFIG
-//#ifdef PLUGINS        
-//#         if (sd.lightConfig)
-//#endif            
-//#                 
 //#                 new LightConfigForm();
 //#endif                
                 return;            

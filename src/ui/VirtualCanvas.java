@@ -161,9 +161,6 @@ public class VirtualCanvas extends Canvas implements CommandListener{
         checkKey(getKey(keyCode));
         repaint();
 //#ifdef LIGHT_CONFIG      
-//#ifdef PLUGINS                
-//#         if (StaticData.getInstance().lightConfig)
-//#endif            
 //#             CustomLight.keyPressed();
 //#endif 
 //#ifdef AUTOSTATUS
@@ -178,9 +175,6 @@ public class VirtualCanvas extends Canvas implements CommandListener{
 
         }
 //#ifdef LIGHT_CONFIG      
-//#ifdef PLUGINS                
-//#         if (StaticData.getInstance().lightConfig)
-//#endif            
 //#             CustomLight.keyPressed();
 //#endif 
 //#ifdef AUTOSTATUS
@@ -190,9 +184,6 @@ public class VirtualCanvas extends Canvas implements CommandListener{
     protected final void keyReleased(int keyCode) {
         //list.keyReleased(keyCode);
 //#ifdef LIGHT_CONFIG      
-//#ifdef PLUGINS                
-//#         if (StaticData.getInstance().lightConfig)
-//#endif            
 //#             CustomLight.keyPressed();
 //#endif
 //#ifdef AUTOSTATUS

@@ -34,9 +34,6 @@ import ui.IconTextElement;
  * @author EvgS
  */
 public class PrivacyListItem extends IconTextElement {
-//#ifdef PLUGINS
-//#     public static String plugin = new String("PLUGIN_PRIVACY");
-//#endif
     
     PrivacyList list;
     

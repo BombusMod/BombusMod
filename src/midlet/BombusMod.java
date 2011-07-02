@@ -43,10 +43,6 @@ import ui.*;
 import Client.*;
 import Info.Version;
 import ui.controls.AlertBox;
-//#ifdef PLUGINS
-//# import java.util.Vector;
-//# import util.StringLoader;
-//#endif
 //#ifdef LIGHT_CONFIG
 //# import LightControl.*;
 //#endif
@@ -78,9 +74,6 @@ public class BombusMod extends MIDlet {
         }
         
 //#ifdef LIGHT_CONFIG
-//#ifdef PLUGINS
-//#     if (StaticData.getInstance().lightConfig)
-//#endif
 //#         lcf = LightConfig.getInstance();
 //#endif
 
@@ -98,9 +91,6 @@ public class BombusMod extends MIDlet {
         isRunning = true;
 
 //#ifdef LIGHT_CONFIG        
-//#ifdef PLUGINS        
-//#     if (StaticData.getInstance().lightConfig)        
-//#endif                       
 //#         CustomLight.setLight(lcf.light_control);
 //#endif    
 
@@ -109,9 +99,6 @@ public class BombusMod extends MIDlet {
         } catch (Exception e) {
             s.img = null;
         }
-//#ifdef PLUGINS
-//#         getPlugins();
-//#endif
         s.setProgress(3);        
 
         s.setProgress(7);
@@ -143,13 +130,7 @@ public class BombusMod extends MIDlet {
                 AccountSelect as = new AccountSelect(true);
                 if (as.itemsList.isEmpty()) {
 //#ifdef IMPORT_EXPORT
-//#ifdef PLUGINS
-//#             if (StaticData.getInstance().IE) {
-//#endif
 //#                     new IE.Accounts("/def_accounts.txt", 0, true);
-//#ifdef PLUGINS
-//#             }
-//#endif
 //#                     as.loadAccounts();
 //#endif
 
@@ -173,9 +154,6 @@ public class BombusMod extends MIDlet {
             };
         }
 //#ifdef LIGHT_CONFIG        
-//#ifdef PLUGINS        
-//#     if (StaticData.getInstance().lightConfig)        
-//#endif                       
 //#         CustomLight.keyPressed();
 //#endif        
     }
@@ -199,55 +177,6 @@ public class BombusMod extends MIDlet {
         return instance;
     }
 
-//#ifdef PLUGINS
-//# 
-//#     private void getPlugins() {
-//#         Vector defs[] = new StringLoader().stringLoader("/modules.txt", 2);
-//#         if (defs != null) {
-//#             int j = defs[0].size();
-//#             for (int i = 0; i < j; i++) {
-//#                 String name = (String) defs[0].elementAt(i);
-//#                 String value = (String) defs[1].elementAt(i);
-//# 
-//#                 boolean state = value.equals("true");
-//# 
-//#                 if (name.equals("Archive")) {
-//#                     sd.Archive = state;
-//#                 } else if (name.equals("ChangeTransport")) {
-//#                     sd.ChangeTransport = state;
-//#                 } else if (name.equals("Console")) {
-//#                     sd.Console = state;
-//#                 } else if (name.equals("FileTransfer")) {
-//#                     sd.FileTransfer = state;
-//#                 } else if (name.equals("History")) {
-//#                     sd.History = state;
-//#                 } else if (name.equals("ImageTransfer")) {
-//#                     sd.ImageTransfer = state;
-//#                 } else if (name.equals("PEP")) {
-//#                     sd.PEP = state;
-//#                 } else if (name.equals("Privacy")) {
-//#                     sd.Privacy = state;
-//#                 } else if (name.equals("IE")) {
-//#                     sd.IE = state;
-//#                 } else if (name.equals("Colors")) {
-//#                     sd.Colors = state;
-//#                 } else if (name.equals("Adhoc")) {
-//#                     sd.Adhoc = state;
-//#                 } else if (name.equals("Stats")) {
-//#                     sd.Stats = state;
-//#                 } else if (name.equals("ClientsIcons")) {
-//#                     sd.ClientsIcons = state;
-//#                 } else if (name.equals("UserKeys")) {
-//#                     sd.UserKeys = state;
-//#                 } else if (name.equals("Upgrade")) {
-//#                     sd.Upgrade = state;
-//#                 } else if (name.equals("Juick")) {
-//#                     sd.Juick = state;
-//#                 }
-//#             }
-//#         }        
-//#     }
-//#endif
     public Display getDisplay() {
         return display;
     }

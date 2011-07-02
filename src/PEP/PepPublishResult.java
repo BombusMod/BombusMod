@@ -36,9 +36,6 @@ import ui.controls.AlertBox;
 import xmpp.XmppError;
 
 public class PepPublishResult implements JabberBlockListener {
-//#ifdef PLUGINS
-//#     public static String plugin = "PLUGIN_PEP";
-//#endif
 
     private String id;
     
@@ -58,10 +55,10 @@ public class PepPublishResult implements JabberBlockListener {
         
         XmppError e=XmppError.findInStanza(data);
 //#ifdef PEP
-        new AlertBox(SR.MS_ERROR_, SR.MS_PEP_NOT_SUPPORTED+"("+e.toString()+")") {
-            public void yes() { }
-            public void no() { }
-        };
+//#         new AlertBox(SR.MS_ERROR_, SR.MS_PEP_NOT_SUPPORTED+"("+e.toString()+")") {
+//#             public void yes() { }
+//#             public void no() { }
+//#         };
 //#endif
         return NO_MORE_BLOCKS;
     }

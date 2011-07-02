@@ -210,15 +210,9 @@ public class ContactMessageList extends MessageList {
 	addMenuCommand(cmdActive);
         if (contact.msgs.size()>0) {
 //#ifdef ARCHIVE
-//#ifdef PLUGINS
-//#          if (sd.Archive)
-//#endif
             addMenuCommand(cmdArch);
 //#endif
 //#if TEMPLATES
-//#ifdef PLUGINS         
-//#          if (sd.Archive)
-//#endif
 //#             addMenuCommand(cmdTemplate);
 //#endif
         }
@@ -240,14 +234,8 @@ public class ContactMessageList extends MessageList {
 //#endif
         
 //#ifdef JUICK
-//#ifdef PLUGINS
-//#         if(sd.Juick) {
-//#endif
 //#         // http://code.google.com/p/bm2/issues/detail?id=94
 //#         addMenuCommand(cmdJuickCommands);
-//#ifdef PLUGINS
-//#         }
-//#endif
 //#endif
 
         addMenuCommand(cmdBack);
@@ -723,9 +711,6 @@ public class ContactMessageList extends MessageList {
 //#endif
 
 //#ifdef JUICK
-//#ifdef PLUGINS
-//#         if (sd.Juick)
-//#endif
 //#             if (isJuickContact(contact) || isJuBoContact(contact)) {
 //#                 String body = getBodyFromCurrentMsg();
 //#                 String target = getTargetForJuickReply(body);

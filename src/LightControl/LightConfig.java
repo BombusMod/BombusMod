@@ -31,9 +31,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 public class LightConfig {
-//#ifdef PLUGINS
-//#     public static String plugin = new String("PLUGIN_LIGHT");
-//#endif    
 
     public boolean light_control=false;
     

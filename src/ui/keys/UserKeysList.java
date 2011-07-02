@@ -36,9 +36,6 @@ package ui.keys;
 //# 
 //# public class UserKeysList extends DefForm {
 //# 
-//#ifdef PLUGINS
-//#     public static String plugin = new String("PLUGIN_USER_KEYS");
-//#endif
 //# 
 //#      MenuCommand cmdApply = new MenuCommand(SR.MS_APPLY, MenuCommand.OK, 1);
 //#      MenuCommand cmdAdd = new MenuCommand(SR.MS_ADD, MenuCommand.SCREEN, 2);

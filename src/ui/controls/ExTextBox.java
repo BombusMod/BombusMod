@@ -174,9 +174,6 @@ public class ExTextBox {
     
     public void commandState() {
 //#ifdef ARCHIVE
-//#ifdef PLUGINS
-//#         if (StaticData.getInstance().Archive)
-//#endif
             textbox.addCommand(cmdPaste);
 //#endif
 //#ifdef CLIPBOARD
@@ -188,9 +185,6 @@ public class ExTextBox {
 //#         }
 //#endif
 //#if TEMPLATES
-//#ifdef PLUGINS
-//#         if (StaticData.getInstance().Archive)
-//#endif
 //#             textbox.addCommand(cmdTemplate);
 //#endif        
     }

@@ -43,9 +43,6 @@ import ui.VirtualList;
  */
 public class HistoryLoader {
     Config cf;
-//#ifdef PLUGINS
-//#     public static String plugin = new String("PLUGIN_HISTORY");
-//#endif
 
     private boolean smiles;
 
@@ -68,9 +65,6 @@ public class HistoryLoader {
         this.smiles = smiles;
         cf = Config.getInstance();
 //#ifdef DETRANSLIT
-//#ifdef PLUGINS       
-//#        if (Client.StaticData.getInstance().DeTranslit)       
-//#endif                   
 //#             file = util.DeTranslit.getInstance().get_actual_filename(file);
 //#endif
 //#ifdef HISTORY

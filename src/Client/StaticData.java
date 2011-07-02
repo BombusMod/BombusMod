@@ -75,24 +75,4 @@ public class StaticData {
         return sd;
     }
 
-//#ifdef PLUGINS
-//#     public boolean Archive=true;
-//#     public boolean ChangeTransport=true;
-//#     public boolean Console=true;
-//#     public boolean FileTransfer=true;
-//#     public boolean History=true;
-//#     public boolean ImageTransfer=true;
-//#     public boolean PEP=true;
-//#     public boolean Privacy=true;
-//#     public boolean IE=true;
-//#     public boolean Colors=true;
-//#     public boolean Adhoc=true;
-//#     public boolean Stats=true;
-//#     public boolean ClientsIcons=true;
-//#     public boolean UserKeys=true;
-//#     public boolean Upgrade=true;
-//#     public boolean Juick=true;
-//#     public boolean DeTranslit=true;
-//#     public boolean lightConfig=true;
-//#endif
 }

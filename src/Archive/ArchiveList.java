@@ -43,9 +43,6 @@ import ui.controls.AlertBox;
  */
 public class ArchiveList 
     extends MessageList {
-//#ifdef PLUGINS
-//#     public static String plugin = new String("PLUGIN_ARCHIVE");
-//#endif
 
     MenuCommand cmdNew=new MenuCommand(SR.MS_NEW, MenuCommand.OK, 1);
     MenuCommand cmdPaste=new MenuCommand(SR.MS_PASTE_BODY, MenuCommand.SCREEN, 2);

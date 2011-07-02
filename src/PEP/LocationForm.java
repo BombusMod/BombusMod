@@ -28,9 +28,6 @@ package PEP;
 //#  * @author Vitaly
 //#  */
 //# public class LocationForm extends DefForm implements LocationListener {
-//#ifdef PLUGINS
-//#     public static String plugin = "PLUGIN_PEP";
-//#endif
 //# 
 //#     ListItem loc;
 //#     TextInput location, descr;

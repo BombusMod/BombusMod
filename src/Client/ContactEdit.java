@@ -190,9 +190,6 @@ public final class ContactEdit
 
             boolean ask = tAskSubscrCheckBox.getValue();
 //#ifdef PRIVACY                        
-//#ifdef PLUGINS                        
-//#                              if (sd.Privacy) {
-//#endif
             if (!sd.account.isGoogle) {
                                  if (QuickPrivacy.groupsList == null) {
                                      QuickPrivacy.groupsList = new Vector();
@@ -202,9 +199,6 @@ public final class ContactEdit
                                      new QuickPrivacy().updateQuickPrivacyList();
                                  }
             }
-//#ifdef PLUGINS                        
-//#                              }
-//#endif                            
 //#endif                                                        
             
 

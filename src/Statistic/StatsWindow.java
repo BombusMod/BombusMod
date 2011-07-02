@@ -47,9 +47,6 @@ import util.StringUtils;
 public class StatsWindow
         extends DefForm {
 
-//#ifdef PLUGINS
-//#     public static String plugin = new String("PLUGIN_STATS");
-//#endif
     
     Stats st=Stats.getInstance();
     

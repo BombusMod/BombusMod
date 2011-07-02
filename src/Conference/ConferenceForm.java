@@ -196,18 +196,12 @@ public class ConferenceForm
             new Bookmarks(new BookmarkItem(name, gchat.toString(), nick, pass, autojoin));
         } else if (c==cmdJoin) {
 //#ifdef PRIVACY            
-//#ifdef PLUGINS                        
-//#                 if (sd.Privacy) {
-//#endif
             if (!sd.account.isGoogle) {
                     if (QuickPrivacy.conferenceList == null)
                         QuickPrivacy.conferenceList = new Vector();
                     QuickPrivacy.conferenceList.addElement(host);
                     new QuickPrivacy().updateQuickPrivacyList();
             }
-//#ifdef PLUGINS                        
-//#                 }
-//#endif
 //#endif                                    
             
             try {

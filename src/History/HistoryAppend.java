@@ -36,9 +36,6 @@ import util.StringUtils;
 import util.Strconv;
 
 public class HistoryAppend {
-//#ifdef PLUGINS
-//#     public static String plugin = new String("PLUGIN_HISTORY");
-//#endif
     
     /** Singleton */
     private static HistoryAppend instance;
@@ -92,9 +89,6 @@ public class HistoryAppend {
        byte[] bodyMessage=createBody(m).getBytes();
 
 //#ifdef DETRANSLIT
-//#ifdef PLUGINS       
-//#        if (sd.DeTranslit)       
-//#endif    
 //#             filename = util.DeTranslit.getInstance().get_actual_filename(filename);
 //#endif
 //#ifdef HISTORY
@@ -126,9 +120,6 @@ public class HistoryAppend {
        byte[] bodyMessage=messages.getBytes();
 
 //#ifdef DETRANSLIT
-//#ifdef PLUGINS       
-//#        if (sd.DeTranslit)       
-//#endif           
 //#             filename = util.DeTranslit.getInstance().get_actual_filename(filename);
 //#endif
 //#ifdef HISTORY

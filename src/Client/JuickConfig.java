@@ -19,9 +19,6 @@ import java.util.Vector;
  * @author Totktonada
  */
 public class JuickConfig extends DefForm {
-//#ifdef PLUGINS
-//#     public static String plugin = new String("PLUGIN_JUICK");
-//#endif
     private static StaticData sdata = StaticData.getInstance();
     private DropChoiceBox juickContactsBox = null;
     private static Records records = new Records();

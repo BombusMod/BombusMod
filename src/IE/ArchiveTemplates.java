@@ -41,9 +41,6 @@ import util.Strconv;
  * @author ad
  */
 public class ArchiveTemplates {
-//#ifdef PLUGINS
-//#     public static String plugin = new String("PLUGIN_IE");
-//#endif
  
     String filePath;
 

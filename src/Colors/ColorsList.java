@@ -40,9 +40,6 @@ import ui.controls.form.DefForm;
  */
 public class ColorsList extends DefForm
     {
-//#ifdef PLUGINS
-//#     public static String plugin = new String("PLUGIN_COLORS");
-//#endif
 
     MenuCommand cmdCopyColor = new MenuCommand("Copy color", MenuCommand.SCREEN, 10);
     MenuCommand cmdPasteColor = new MenuCommand("Color from buffer", MenuCommand.SCREEN, 20);

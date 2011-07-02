@@ -245,9 +245,6 @@ public class Config {
         }
 //#endif
 //#ifdef CLIENTS_ICONS
-//#ifdef PLUGINS
-//#         if (sd.ClientsIcons) 
-//#endif            
             if (showClientIcon) {
                 ClientsIcons.getInstance();
             }
@@ -517,44 +514,6 @@ public class Config {
 //#endif
         VirtualList.panelsState = panelsState;
         VirtualList.showTimeTraffic = showTimeTraffic;
-
-//#ifdef PLUGINS
-//#ifdef FILE_TRANSFER
-//#         if (!sd.FileTransfer) {
-//#             fileTransfer = false;
-//#         }
-//#endif
-//#ifdef PEP
-//#         if (!sd.PEP) {
-//#             sndrcvmood = false;
-//#         }
-//#endif
-//#ifdef PEP_TUNE
-//#         if (!sd.PEP) {
-//#             rcvtune = false;
-//#         }
-//#endif
-//#ifdef PEP_ACTIVITY
-//#         if (!sd.PEP) {
-//#             rcvactivity = false;
-//#         }
-//#endif
-//#ifdef ADHOC
-//#         if (!sd.Adhoc) {
-//#             adhoc = false;
-//#         }
-//#endif
-//#ifdef CLIENTS_ICONS
-//#         if (!sd.ClientsIcons) {
-//#             showClientIcon = false;
-//#         }
-//#endif
-//#ifdef HISTORY
-//#         if (!sd.History) {
-//#             saveHistory = false;
-//#         }
-//#endif
-//#endif
     }
 
     public String langFileName() {

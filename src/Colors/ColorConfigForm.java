@@ -76,14 +76,8 @@ public class ColorConfigForm
     public ColorConfigForm() {
         super(SR.MS_COLOR_TUNE);        
 //#ifdef COLOR_TUNE
-//#ifdef PLUGINS
-//#             if (StaticData.getInstance().Colors) {
-//#endif
 //#         configureColors=new LinkString(SR.MS_COLOR_TUNE) { public void doAction() { new ColorsList(); } };
 //#         itemsList.addElement(configureColors);
-//#ifdef PLUGINS
-//#             }
-//#endif
 //#endif
         invertColors=new LinkString(SR.MS_INVERT) { public void doAction() { ColorTheme.invertSkin(); } };
         itemsList.addElement(invertColors);

@@ -19,9 +19,6 @@ package ui.controls.form;
 //#  * @author Totktonada
 //#  */
 //# public class KeyInput extends IconTextElement {
-//#ifdef PLUGINS
-//#     public static String plugin = new String("PLUGIN_USER_KEYS");
-//#endif
 //# 
 //#     public boolean selected;
 //# 
