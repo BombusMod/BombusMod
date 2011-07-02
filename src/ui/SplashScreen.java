@@ -75,7 +75,7 @@ public final class SplashScreen extends DefForm implements VirtualElement {
     private SplashScreen() {
         super(null, false);
         infobar = null;
-        
+        mainbar = null;
         try {
             img = BombusMod.splash;
             if (img == null) {
@@ -91,7 +91,7 @@ public final class SplashScreen extends DefForm implements VirtualElement {
         super(null, false);
         this.status = status;
         this.exitKey = exitKey;
-        panelsState = 0;
+        infobar = null;
         status.setElementAt(new Integer(RosterIcons.ICON_KEYBLOCK_INDEX), 6);
         try {
             img = BombusMod.splash;
@@ -240,7 +240,8 @@ public final class SplashScreen extends DefForm implements VirtualElement {
 
 // ==================================================== //
     public void destroyView() {
-        status.setElementAt(null, 6);
+        if (status != null)
+            status.setElementAt(null, 6);
         img = null;
 //#ifdef AUTOSTATUS
 //#         if (Roster.autoAway && cf.autoAwayType == Config.AWAY_LOCK) {

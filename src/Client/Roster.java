@@ -1362,7 +1362,7 @@ public class Roster
                             sendPresence(cf.loginstatus, null);
                         }
                         if (!sd.canvas.isShown())
-                            SplashScreen.getInstance().close(sd.canvas.getList());
+                            SplashScreen.getInstance().destroyView();
                         else
                             sd.canvas.setList(this);
 

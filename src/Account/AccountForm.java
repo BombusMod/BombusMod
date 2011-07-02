@@ -289,6 +289,6 @@ public class AccountForm
     private void startLogin(boolean login){
         Config.getInstance().accountIndex=accountSelect.itemsList.size()-1;
         Account.loadAccount(login, Config.getInstance().accountIndex);
-        SplashScreen.getInstance().close();
+        SplashScreen.getInstance().destroyView();
     }
 }

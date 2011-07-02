@@ -156,7 +156,7 @@ public class BombusMod extends MIDlet {
                 }
                 VirtualList next = as.itemsList.isEmpty() ? (VirtualList) new AccountForm(as, null) : as;                
                 s.setExit(next);
-                s.close();                
+                s.destroyView();
             }
         } catch (Exception e) {
 //#ifdef DEBUG
