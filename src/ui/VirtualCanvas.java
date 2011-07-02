@@ -685,8 +685,7 @@ class KeyRepeatTimer extends TimerTask {
 class TimerTaskRotate extends TimerTask {
     private int scrollLen;
     private int scroll; //wait before scroll * sleep
-    private int balloon; // show balloon time
-
+    
     private boolean scrollline;
     
     private VirtualList attachedList;
@@ -701,12 +700,7 @@ class TimerTaskRotate extends TimerTask {
     }
     
     public static void startRotate(int max, VirtualList list) {
-        //Windows mobile J9 hanging test
-        if (Config.getInstance().phoneManufacturer==Config.WINDOWS) {
-            list.showBalloon=true;
-            list.offset=0;
-            return;
-        }
+        
         if (instance==null)  {
             instance=new TimerTaskRotate();            
         }
@@ -722,7 +716,6 @@ class TimerTaskRotate extends TimerTask {
             instance.scrollLen=max;
             instance.scrollline=(max>0);
             instance.attachedList=list;
-            instance.balloon  = 8;
             instance.scroll   = 4;
         }
     }
@@ -731,8 +724,7 @@ class TimerTaskRotate extends TimerTask {
 
         synchronized (this) {
             if (scroll == 0) {
-                if (instance.scroll()
-                        || instance.balloon()) {
+                if (instance.scroll()) {
                     try {
                         attachedList.redraw();
                     } catch (Exception e) {
@@ -768,16 +760,7 @@ class TimerTaskRotate extends TimerTask {
             return true;
         }
     }
-    
-    public boolean balloon() {
-        synchronized (this) {
-            if (attachedList==null || balloon<0)
-                return false;
-            balloon--;
-            attachedList.showBalloon=(balloon<8 && balloon>0);
-            return true;
-        }
-    } 
+        
     /*
     public void destroyTask(){
         synchronized (this) { 

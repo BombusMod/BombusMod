@@ -140,7 +140,7 @@ public class ConfigData {
         array.addElement(new keyValue(rosterStatus, (cf.rosterStatus)?"1":"0"));
         array.addElement(new keyValue(queryExit, (cf.queryExit)?"1":"0"));
         array.addElement(new keyValue(notifyPicture, (cf.notifyPicture)?"1":"0"));
-        array.addElement(new keyValue(showBalloons, (cf.showTimestamps)?"1":"0"));
+        array.addElement(new keyValue(showBalloons, (cf.hideTimestamps)?"1":"0"));
 //#ifdef LOGROTATE
 //#         array.addElement(new keyValue(msglistLimit, Integer.toString(cf.msglistLimit)));
 //#endif
@@ -305,7 +305,7 @@ public class ConfigData {
         cf.rosterStatus=cf.getBooleanProperty(getValue(rosterStatus),true);
         cf.queryExit=cf.getBooleanProperty(getValue(queryExit),false);
         cf.notifyPicture=cf.getBooleanProperty(getValue(notifyPicture),false);
-        cf.showTimestamps = cf.getBooleanProperty(getValue(showBalloons),false);
+        cf.hideTimestamps = cf.getBooleanProperty(getValue(showBalloons),false);
 //#ifdef LOGROTATE
 //#         cf.msglistLimit=cf.getIntProperty(getValue(msglistLimit),500);
 //#endif

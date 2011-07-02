@@ -1485,7 +1485,7 @@ public class Roster
                         b.append("\02");
 //#endif
                         if (start_me==0) {
-                            if (!cf.showTimestamps) b.insert(0,"<");
+                            if (!cf.hideTimestamps) b.insert(0,"<");
                             b.append("> ");
                         }
                         else 

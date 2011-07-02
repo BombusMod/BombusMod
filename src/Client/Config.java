@@ -183,7 +183,7 @@ public class Config {
 //#endif
     public boolean queryExit = false;
     public int notInListDropLevel = NotInListFilter.ALLOW_ALL; //enable all
-    public boolean showTimestamps = false;
+    public boolean hideTimestamps = false;
 //#ifdef LOGROTATE
 //#     public int msglistLimit=500;
 //#endif
@@ -403,7 +403,7 @@ public class Config {
 
             queryExit = inputStream.readBoolean();
             notifyPicture = inputStream.readBoolean();
-            showTimestamps = inputStream.readBoolean();
+            hideTimestamps = inputStream.readBoolean();
 
             inputStream.readBoolean(); // Здесь был UserKeys
 //#ifdef LOGROTATE
@@ -663,7 +663,7 @@ public class Config {
 
             outputStream.writeBoolean(queryExit);
             outputStream.writeBoolean(notifyPicture);
-            outputStream.writeBoolean(showTimestamps);
+            outputStream.writeBoolean(hideTimestamps);
 
             outputStream.writeBoolean(false); // Здесь был UserKeys
 

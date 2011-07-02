@@ -544,7 +544,7 @@ public class SR {
     public static String MS_BREAK_CONECTION=loadString( "Break connection" );
     public static String MS_AUTOSCROLL=loadString( "AutoScroll" );
     public static String MS_EMULATE_TABS=loadString( "Emulate tabs" );
-    public static String MS_SHOW_TIMESTAMPS=loadString( "Timestamps in messages" );
+    public static String MS_HIDE_TIMESTAMPS=loadString( "Hide timestamps in messages" );
     public static String MS_POPUPS=loadString( "PopUps" );
     public static String MS_USE_MY_STATUS_MESSAGES=loadString( "Use my status messages" );
 

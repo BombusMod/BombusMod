@@ -439,7 +439,7 @@ Online time	Время в сети
 Break connection	Переподключиться
 AutoScroll	автопрокрутка списка сообщений
 Emulate tabs	(4/6) быстрое переключение между окнами с сообщениями
-Timestamps in messages	Показывать время сообщений в чате
+Hide timestamps in messages	Скрыть время сообщений в чате
 PopUps	всплывающие окна
 Use my status messages	использовать свои статусные сообщения
 Memory:	Память:
