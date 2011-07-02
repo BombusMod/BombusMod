@@ -85,7 +85,7 @@ public class SmilePicker
         
         imgCnt=smileTable.size();
         
-        realWidth=SplashScreen.getInstance().getWidth()-scrollbar.getScrollWidth();
+        realWidth=VirtualCanvas.getInstance().getWidth()-scrollbar.getScrollWidth();
         
         imgWidth=Math.max(il.getWidth()+(CURSOR_HOFFSET*2), cf.minItemHeight);
         lineHeight = il.getHeight()+(CURSOR_VOFFSET*2);

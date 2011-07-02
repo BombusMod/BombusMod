@@ -5,7 +5,6 @@
 
 package Colors;
 
-import javax.microedition.lcdui.Canvas;
 import ui.controls.form.ColorSelector;
 import javax.microedition.lcdui.Graphics;
 import ui.VirtualList;

@@ -37,7 +37,7 @@ import ui.controls.form.SimpleString;
 import ui.controls.form.SpacerItem;
 import util.StringLoader;
 import com.alsutton.jabber.datablocks.Presence;
-import ui.SplashScreen;
+import ui.VirtualCanvas;
 import xmpp.EntityCaps;
 
 public class ConfigForm
@@ -440,7 +440,7 @@ public class ConfigForm
         if (cf.allowMinimize)
             cf.popupFromMinimized=popupFromMinimized.getValue();
         cf.autoClean=autoClean.getValue();
-        if (SplashScreen.getInstance().hasPointerEvents())
+        if (VirtualCanvas.getInstance().hasPointerEvents())
             cf.advTouch = advTouch.getValue();
 
         cf.swapSendAndSuspend=swapSendAndSuspend.getValue();
@@ -459,7 +459,7 @@ public class ConfigForm
 //#             cf.autoAwayType=autoAwayType.getSelectedIndex();
 //#endif
         cf.messageLimit=Integer.parseInt(messageLimit.getValue());
-        if (SplashScreen.getInstance().hasPointerEvents())
+        if (VirtualCanvas.getInstance().hasPointerEvents())
             cf.widthScroll2=Integer.parseInt(widthScroll2.getValue());
         cf.minItemHeight = Integer.parseInt(minItemHeight.getValue());
 

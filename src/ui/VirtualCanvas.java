@@ -53,8 +53,8 @@ public class VirtualCanvas extends Canvas implements CommandListener{
     public static final int KEY_FLIP_OPEN = 24;
     public static final int KEY_FLIP_CLOSE = 25;
 
-    public static char keyLock = '*';
-    public static char keyVibra = '#';
+    public static int keyLock = VirtualCanvas._KEY_STAR;
+    public static int keyVibra = VirtualCanvas._KEY_POUND;
     
     private VirtualList list;
     public VirtualList homeList;
@@ -436,8 +436,8 @@ public class VirtualCanvas extends Canvas implements CommandListener{
                 break;
             case Config.SIEMENS:
             case Config.SIEMENS2:
-                keyLock = '#';
-                keyVibra = '*';
+                keyLock = VirtualCanvas._KEY_POUND;
+                keyVibra = VirtualCanvas._KEY_STAR;
                 switch (key_code) {
                     case -1:
                         return KEY_SOFT_LEFT;

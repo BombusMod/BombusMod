@@ -24,7 +24,6 @@
  * along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-
 package ui;
 
 import Client.Config;
@@ -32,223 +31,205 @@ import Fonts.FontCache;
 //#ifdef AUTOSTATUS
 //# import Client.ExtendedStatus;
 //# import Client.Roster;
-//# import Client.StaticData;
 //# import Client.StatusList;
 //#endif
 import images.RosterIcons;
-import java.util.Timer;
-import java.util.TimerTask;
-import javax.microedition.lcdui.*;
 import midlet.BombusMod;
 import Colors.ColorTheme;
 //#ifdef LIGHT_CONFIG
 //# import Client.StaticData;
 //# import LightControl.CustomLight;
 //#endif
+import javax.microedition.lcdui.Font;
+import javax.microedition.lcdui.Graphics;
+import javax.microedition.lcdui.Image;
 import ui.controls.Progress;
+import ui.controls.form.DefForm;
 
 /**
  *
  * @author Eugene Stahov
  */
-// TODO: implement as VirtualList
-public final class SplashScreen extends Canvas implements Runnable, CommandListener {
-    
+public final class SplashScreen extends DefForm implements VirtualElement {
+
     private String capt;
-    private int pos=-1;
-    
-   // private int width;
-   // private int height;
-    
+    private int pos = -1;
+    // private int width;
+    // private int height;
     public Image img;
-    
     private ComplexString status;
-    
-    private TimerTaskClock tc;
-
-    private Config cf=Config.getInstance();
-    
     private static SplashScreen instance;
-
     public int keypressed = 0;
-
-    private Font clockFont=FontCache.getFont(true, FontCache.bigSize);
-    
+    private Font clockFont = FontCache.getFont(true, FontCache.bigSize);
     private Progress pb;
+    private int exitKey;
 
-    VirtualList next;
-
-    private char exitKey;
-
-    private int kHold;
-
-    public static SplashScreen getInstance(){
-        if (instance==null) 
-            instance=new SplashScreen();
+    public static SplashScreen getInstance() {
+        if (instance == null) {
+            instance = new SplashScreen();
+        }
         return instance;
     }
-    
+
     /** Creates a new instance of SplashScreen */
     private SplashScreen() {
-        setFullScreenMode(Config.fullscreen);
-        midlet.BombusMod.getInstance().setDisplayable(this);
-    }
-    
-    public SplashScreen(ComplexString status, char exitKey) {
-        this.status = status;
-        this.exitKey = exitKey;
-        this.kHold = exitKey;
+        super(null, false);
+        infobar = null;
         
-        status.setElementAt(new Integer(RosterIcons.ICON_KEYBLOCK_INDEX), 6);
+        try {
+            img = BombusMod.splash;
+            if (img == null) {
+                img = Image.createImage("/images/splash.png");
+            }
+        } catch (Exception e) {
+        }
+
         show();
     }
 
-    public void show() {
-        repaint();
-        //serviceRepaints();
-
-        new Thread(this).start();
-        
-        tc=new TimerTaskClock();
-        
-        setFullScreenMode(Config.fullscreen);
-
-//        if (cf.widthSystemgc) { _vt
-            System.gc();
-            try { Thread.sleep(50); } catch (InterruptedException ex) { }
-//        } _vt
-    }
-
-    public void paint(Graphics g){
-        int width = getWidth();
-        int height = getHeight();
-        
-        g.setColor(ColorTheme.getColor(ColorTheme.BLK_BGND));
-        g.fillRect(0,0, width, height);
-
-        if (img!=null) 
-            g.drawImage(img, width/2, height/2, Graphics.VCENTER|Graphics.HCENTER);
-
-        if (pos==-1) {
-            g.setColor(ColorTheme.getColor(ColorTheme.BLK_INK));
-            if (status != null)
-                status.drawItem(g, 0, false);            
-
-            g.setFont(clockFont);
-            int h=clockFont.getHeight()+1;
-            
-            String time=Time.localTime();
-            int tw=clockFont.stringWidth(time);
-
-            FontCache.drawString(g,time, width/2, height, Graphics.BOTTOM | Graphics.HCENTER);
-        } else {
-            int filled=pos*width/100;
-            if (pb==null) pb=new Progress(0, height , width);
-            Progress.draw(g, filled, capt);
+    public SplashScreen(ComplexString status, int exitKey) {
+        super(null, false);
+        this.status = status;
+        this.exitKey = exitKey;
+        panelsState = 0;
+        status.setElementAt(new Integer(RosterIcons.ICON_KEYBLOCK_INDEX), 6);
+        try {
+            img = BombusMod.splash;
+            if (img == null) {
+                img = Image.createImage("/images/splash.png");
+            }
+        } catch (Exception e) {
         }
-    }
-    
-    public void setProgress(int progress) {
-        pos=progress;
-            repaint();
+        show();
     }
 
-    public void setFailed(){
+    public void commandState() {
+        menuCommands.removeAllElements();
+    }
+
+    public void setProgress(int progress) {
+        pos = progress;
+        redraw();
+    }
+
+    public void setFailed() {
         setProgress("Failed", 100);
     }
-    
-    public void setProgress(String caption, int progress){
-        capt=caption;
+
+    public void setProgress(String caption, int progress) {
+        capt = caption;
 //#if DEBUG
 //#         System.out.println(capt);
 //#endif
-	setProgress(progress);
+        setProgress(progress);
     }
-    
-    public int getProgress(){
+
+    public int getProgress() {
         return pos;
     }
+
     public void sizeChanged(int w, int h) {
-        repaint();
+        redraw();
     }
-    // close splash
-    private Command cmdExit=new Command("Hide Splash", Command.BACK, 99);
-    
-    public void setExit(VirtualList nextDisplayable){
-        next = nextDisplayable;
-        addCommand(cmdExit);
-        setCommandListener(this);
+    public void setExit(VirtualList nextDisplayable) {
+        parentView = nextDisplayable;
     }
     
-    public void commandAction(Command c, Displayable d) {
-        if (c==cmdExit)
-            close();        
-    }
-    
-    public void close(VirtualList next) {
-        if (next == null)
-            next = Client.StaticData.getInstance().canvas.homeList;
-        Client.StaticData.getInstance().canvas.show(next);
-        img = null;
-        System.gc();
-    }
-    
-    public void close() {
-        close(next);
+    public int getVHeight() {
+        return getListHeight();
     }
 
-    public void run() {
-        try {
-            img=BombusMod.splash;
-            if (img==null)
-                img=Image.createImage("/images/splash.png");
-        } catch (Exception e) {}
-        
-        midlet.BombusMod.getInstance().setDisplayable(this);
+    public int getVWidth() {
+        return 0;
     }
 
-    private class TimerTaskClock extends TimerTask {
-        private Timer t;
-        public TimerTaskClock(){
-            t=new Timer();
-            t.schedule(this, 10, 20000);
-        }
-        public void run() {
-            repaint();
-            //serviceRepaints();
-        }
-        public void stop(){
-            cancel();
-            t.cancel();
-        }
-    }
-    public void pointerPressed(int x, int y) {
-        close();
+    public int getColorBGnd() {
+        return ColorTheme.getColor(ColorTheme.LIST_BGND);
     }
 
-    
-    protected final void keyRepeated(int keyCode) {
-        if (kHold == 0) {
-            if (keyCode == exitKey) {
-                destroyView();
+    public int getColor() {
+        return ColorTheme.getColor(ColorTheme.LIST_INK);
+    }
+
+    public int getItemCount() {
+        return 1;
+    }
+
+    public VirtualElement getItemRef(int index) {
+        return this;
+    }
+
+    public void drawItem(Graphics g, int ofs, boolean selected) {
+        int width = g.getClipWidth();
+        int height = g.getClipHeight();
+
+        g.setColor(ColorTheme.getColor(ColorTheme.BLK_BGND));
+        g.fillRect(0, 0, width, height);
+
+        if (img != null) {
+            g.drawImage(img, width / 2, height / 2, Graphics.VCENTER | Graphics.HCENTER);
+        }
+
+        if (pos == -1) {
+            g.setColor(ColorTheme.getColor(ColorTheme.BLK_INK));
+            if (status != null) {
+                status.drawItem(g, 0, false);
             }
+
+            g.setFont(clockFont);
+            int h = clockFont.getHeight() + 1;
+
+            String time = Time.localTime();
+            int tw = clockFont.stringWidth(time);
+
+            FontCache.drawString(g, time, width / 2, height, Graphics.BOTTOM | Graphics.HCENTER);
+        } else {
+            int filled = pos * width / 100;
+            if (pb == null) {
+                pb = new Progress(0, height, width);
+            }
+            Progress.draw(g, filled, capt);
         }
-//#ifdef LIGHT_CONFIG      
-//#ifdef PLUGINS                
+    }
+
+    public String getTipString() {
+        return null;
+    }
+
+    public void onSelect() {
+    }
+
+    public boolean isSelectable() {
+        return true;
+    }
+
+    public boolean handleEvent(int keyCode) {
+        return false;
+    }
+
+    public void pointerPressed(int x, int y) {
+        destroyView();
+    }
+
+    public boolean longKey(int key) {
+//#ifdef LIGHT_CONFIG
+//#ifdef PLUGINS
 //#         if (StaticData.getInstance().lightConfig)
-//#endif            
+//#endif
 //#             CustomLight.keyPressed();
 //#endif
+       if (key == exitKey) {
+            destroyView();
+        }
+        return true;
     }
 
-    protected final void keyPressed(int keyCode) {
-        keypressed = keyCode;        
+    protected final void userkeyPressed(int keyCode) {
+        keypressed = keyCode;
 
         if (pos >= 20) {
-            close();
+            destroyView();
         }
-        kHold = 0;
-
 //#ifdef LIGHT_CONFIG      
 //#ifdef PLUGINS                
 //#         if (StaticData.getInstance().lightConfig)
@@ -257,28 +238,37 @@ public final class SplashScreen extends Canvas implements Runnable, CommandListe
 //#endif
     }
 
-
 // ==================================================== //
-
-
-    public void destroyView(){
-        status.setElementAt(null,6);
-        midlet.BombusMod.getInstance().setDisplayable(Client.StaticData.getInstance().canvas);
-        img=null;
-        tc.stop();
+    public void destroyView() {
+        status.setElementAt(null, 6);
+        img = null;
 //#ifdef AUTOSTATUS
-//#         StaticData sd=StaticData.getInstance();
-//#         if (Roster.autoAway && cf.autoAwayType==Config.AWAY_LOCK) {
-//#             int newStatus=Roster.oldStatus;
-//#             ExtendedStatus es=StatusList.getInstance().getStatus(newStatus);
-//#             String ms=es.getMessage();
-//#             Roster.autoAway=false;
-//#             Roster.autoXa=false;
+//#         if (Roster.autoAway && cf.autoAwayType == Config.AWAY_LOCK) {
+//#             int newStatus = Roster.oldStatus;
+//#             ExtendedStatus es = StatusList.getInstance().getStatus(newStatus);
+//#             String ms = es.getMessage();
+//#             Roster.autoAway = false;
+//#             Roster.autoXa = false;
 //#             sd.roster.sendPresence(newStatus, ms);
 //#         }
 //#endif
 //        if (cf.widthSystemgc) { _vt
-            System.gc();
+        System.gc();
 //        } _vt
-    }    
+        super.destroyView();
+    }
+
+    public void touchLeftPressed() {
+    }
+
+    public void touchRightPressed() {
+    }
+
+    public String touchLeftCommand() {
+        return "";
+    }
+
+    public String touchRightCommand() {
+        return "";
+    }
 }

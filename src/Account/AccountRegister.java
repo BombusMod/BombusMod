@@ -108,7 +108,7 @@ public class AccountRegister
     }
 
     public void run() {
-	midlet.BombusMod.getInstance().setDisplayable(splash);
+	VirtualCanvas.getInstance().show(splash);
 	try {
 	    splash.setProgress(SR.MS_CONNECT_TO_ + raccount.getServer(), 30);
 	    //give a chance another thread to finish ui
@@ -158,7 +158,7 @@ public class AccountRegister
 
     public void registrationFailed(String errorText) {
 	splash.setProgress(errorText, 100);
-	midlet.BombusMod.getInstance().setDisplayable(splash);
+	VirtualCanvas.getInstance().show(splash);
 	theStream.close();
     }
 
@@ -183,7 +183,7 @@ public class AccountRegister
 	as.rmsUpdate();
 	String success = SR.MS_DONE;
 	splash.setProgress(success, 100);
-	midlet.BombusMod.getInstance().setDisplayable(splash);
+	VirtualCanvas.getInstance().show(splash);
 	theStream.close();
     }
 
