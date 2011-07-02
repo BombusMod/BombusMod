@@ -1417,9 +1417,6 @@ public abstract class VirtualList {
 
     public void showInfo() {
 //#ifdef POPUPS
-	if (!cf.popUps) {
-	    return;
-	}
 	VirtualElement item = (VirtualElement) getFocusedObject();
 	if (item != null) {
 	    String text = item.getTipString();
