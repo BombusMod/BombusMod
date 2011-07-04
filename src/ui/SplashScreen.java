@@ -56,7 +56,6 @@ public final class SplashScreen extends DefForm implements VirtualElement {
     private int pos = -1;
     // private int width;
     // private int height;
-    public Image img;
     private ComplexString status;
     private static SplashScreen instance;
     public int keypressed = 0;
@@ -213,9 +212,6 @@ public final class SplashScreen extends DefForm implements VirtualElement {
     }
 
     public boolean longKey(int key) {
-//#ifdef LIGHT_CONFIG
-//#             CustomLight.keyPressed();
-//#endif
        if (key == exitKey) {
             destroyView();
         }
@@ -228,9 +224,6 @@ public final class SplashScreen extends DefForm implements VirtualElement {
         if (pos >= 20) {
             destroyView();
         }
-//#ifdef LIGHT_CONFIG      
-//#             CustomLight.keyPressed();
-//#endif
     }
 
 // ==================================================== //
@@ -238,33 +231,7 @@ public final class SplashScreen extends DefForm implements VirtualElement {
         if (status != null)
             status.setElementAt(null, 6);
         img = null;
-//#ifdef AUTOSTATUS
-//#         if (Roster.autoAway && cf.autoAwayType == Config.AWAY_LOCK) {
-//#             int newStatus = Roster.oldStatus;
-//#             ExtendedStatus es = StatusList.getInstance().getStatus(newStatus);
-//#             String ms = es.getMessage();
-//#             Roster.autoAway = false;
-//#             Roster.autoXa = false;
-//#             sd.roster.sendPresence(newStatus, ms);
-//#         }
-//#endif
-//        if (cf.widthSystemgc) { _vt
         System.gc();
-//        } _vt
         super.destroyView();
-    }
-
-    public void touchLeftPressed() {
-    }
-
-    public void touchRightPressed() {
-    }
-
-    public String touchLeftCommand() {
-        return "";
-    }
-
-    public String touchRightCommand() {
-        return "";
-    }
+    }    
 }

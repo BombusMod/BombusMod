@@ -136,8 +136,7 @@ public class TransferManager
             if (t.errMsg!=null)
                 info.append("\nError: ").append(t.errMsg);
 //#ifdef POPUPS
-            PopUp.getInstance().addPopup(1, null, info.toString());
-            redraw();
+            setWobble(1, null, info.toString());
 //#endif
         }
     }

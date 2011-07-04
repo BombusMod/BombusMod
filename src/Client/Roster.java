@@ -1908,8 +1908,10 @@ public class Roster
         if (message.highlite) {
             playNotify(SOUND_FOR_ME);            
 //#ifdef POPUPS
-            if (showWobbler(c))
-                setWobble(2, c.toString(), message.body);
+            if (showWobbler(c)) {
+                String from = (c.origin == Contact.ORIGIN_GROUPCHAT) ? c.getJid() : c.toString();
+                setWobble(2, from, message.body);
+            }
 //#endif
             autorespond = true;
 //#ifdef LIGHT_CONFIG        

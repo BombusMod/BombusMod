@@ -497,7 +497,7 @@ public class ContactMessageList extends MessageList {
 //# 
 //#     private void juickContactNotFound() {
 //#ifdef POPUPS
-//#             setWobble(ui.controls.PopUp.TYPE_SYSTEM, "Juick", SR.MS_JUICK_CONTACT_NOT_FOUND);
+//#             setWobble(ui.controls.PopUp.TYPE_SYSTEM, null, SR.MS_JUICK_CONTACT_NOT_FOUND);
 //#endif
 //#     }
 //# 
