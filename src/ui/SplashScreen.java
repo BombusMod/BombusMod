@@ -26,13 +26,8 @@
  */
 package ui;
 
-import Client.Config;
 import Fonts.FontCache;
-//#ifdef AUTOSTATUS
-//# import Client.ExtendedStatus;
-//# import Client.Roster;
-//# import Client.StatusList;
-//#endif
+
 import images.RosterIcons;
 import midlet.BombusMod;
 import Colors.ColorTheme;
@@ -56,6 +51,7 @@ public final class SplashScreen extends DefForm implements VirtualElement {
     private int pos = -1;
     // private int width;
     // private int height;
+    public Image splashimg;
     private ComplexString status;
     private static SplashScreen instance;
     public int keypressed = 0;
@@ -76,9 +72,9 @@ public final class SplashScreen extends DefForm implements VirtualElement {
         infobar = null;
         mainbar = null;
         try {
-            img = BombusMod.splash;
-            if (img == null) {
-                img = Image.createImage("/images/splash.png");
+            splashimg = BombusMod.splash;
+            if (splashimg == null) {
+                splashimg = Image.createImage("/images/splash.png");
             }
         } catch (Exception e) {
         }
@@ -94,14 +90,19 @@ public final class SplashScreen extends DefForm implements VirtualElement {
         mainbar = null;
         status.setElementAt(new Integer(RosterIcons.ICON_KEYBLOCK_INDEX), 6);
         try {
-            img = BombusMod.splash;
-            if (img == null) {
-                img = Image.createImage("/images/splash.png");
+            splashimg = BombusMod.splash;
+            if (splashimg == null) {
+                splashimg = Image.createImage("/images/splash.png");
             }
         } catch (Exception e) {
         }
         show();
     }
+
+    protected void drawTraffic(final Graphics g, boolean up) { }
+//#ifdef MEMORY_USAGE	
+//# protected void drawHeapMonitor(final Graphics g, int y) {}
+//#endif
 
     public void commandState() {
         menuCommands.removeAllElements();
@@ -131,10 +132,11 @@ public final class SplashScreen extends DefForm implements VirtualElement {
     public void sizeChanged(int w, int h) {
         redraw();
     }
+
     public void setExit(VirtualList nextDisplayable) {
         parentView = nextDisplayable;
     }
-    
+
     public int getVHeight() {
         return getListHeight();
     }
@@ -166,8 +168,8 @@ public final class SplashScreen extends DefForm implements VirtualElement {
         g.setColor(ColorTheme.getColor(ColorTheme.BLK_BGND));
         g.fillRect(0, 0, width, height);
 
-        if (img != null) {
-            g.drawImage(img, width / 2, height / 2, Graphics.VCENTER | Graphics.HCENTER);
+        if (splashimg != null) {
+            g.drawImage(splashimg, width / 2, height / 2, Graphics.VCENTER | Graphics.HCENTER);
         }
 
         if (pos == -1) {
@@ -212,7 +214,7 @@ public final class SplashScreen extends DefForm implements VirtualElement {
     }
 
     public boolean longKey(int key) {
-       if (key == exitKey) {
+        if (key == exitKey) {
             destroyView();
         }
         return true;
@@ -226,12 +228,12 @@ public final class SplashScreen extends DefForm implements VirtualElement {
         }
     }
 
-// ==================================================== //
-    public void destroyView() {
-        if (status != null)
+   public void destroyView() {
+        if (status != null) {
             status.setElementAt(null, 6);
-        img = null;
+        }
+        splashimg = null;
         System.gc();
         super.destroyView();
-    }    
+    }
 }

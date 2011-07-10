@@ -95,9 +95,9 @@ public class BombusMod extends MIDlet {
 //#endif    
 
         try {
-            s.img = Image.createImage("/images/splash.png");
+            s.splashimg = Image.createImage("/images/splash.png");
         } catch (Exception e) {
-            s.img = null;
+            s.splashimg = null;
         }
         s.setProgress(3);        
 

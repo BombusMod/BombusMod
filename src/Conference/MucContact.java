@@ -158,7 +158,7 @@ public class MucContact extends Contact {
                     b.append((statusCode==301)? SR.MS_WAS_BANNED : SR.MS_WAS_KICKED );
 //#ifdef POPUPS
                     if (((ConferenceGroup)group).selfContact == this ) {
-                        StaticData.getInstance().roster.setWobble(3, this.toString(), ((statusCode==301)? SR.MS_WAS_BANNED : SR.MS_WAS_KICKED)+((!reason.equals(""))?"\n"+reason:""));
+                        StaticData.getInstance().roster.setWobble(3, this.getJid(), ((statusCode==301)? SR.MS_WAS_BANNED : SR.MS_WAS_KICKED)+((!reason.equals(""))?"\n"+reason:""));
                     }
 //#endif
                     if (!reason.equals(""))

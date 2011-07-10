@@ -615,7 +615,7 @@ public abstract class VirtualList {
         g.drawLine(wpos+2,	hpos+4,	wpos+3,	hpos+5);
     }
     
-    private void drawTraffic(final Graphics g, boolean up) {
+    protected void drawTraffic(final Graphics g, boolean up) {
         int pos=(up)?(width/2)+3:(width/2)-3;
         int pos2=(up)?height-4:height-2;
         
@@ -639,7 +639,7 @@ public abstract class VirtualList {
     }
         
 //#ifdef MEMORY_USAGE
-//#     private void drawHeapMonitor(final Graphics g, int y) {
+//#     protected void drawHeapMonitor(final Graphics g, int y) {
 //#         if (memMonitor) {
 //#             int ram=(int)((Runtime.getRuntime().freeMemory()*width)/Runtime.getRuntime().totalMemory());
 //#             g.setColor(ColorTheme.getColor(ColorTheme.HEAP_TOTAL));  g.fillRect(0,y,width,1);

@@ -1879,7 +1879,7 @@ public class Roster
 //#ifdef POPUPS
         if (cf.popUps)
             if (message.messageType==Msg.MESSAGE_TYPE_AUTH && showWobbler(c))
-                setWobble(2, c.toString(), message.from+"\n"+message.body);
+                setWobble(2, c.getJid(), message.from+"\n"+message.body);
 //#endif
 
 	if (cf.popupFromMinimized) {
@@ -1909,8 +1909,7 @@ public class Roster
             playNotify(SOUND_FOR_ME);            
 //#ifdef POPUPS
             if (showWobbler(c)) {
-                String from = (c.origin == Contact.ORIGIN_GROUPCHAT) ? c.getJid() : c.toString();
-                setWobble(2, from, message.body);
+                setWobble(2, c.getJid(), message.body);
             }
 //#endif
             autorespond = true;
@@ -1926,7 +1925,7 @@ public class Roster
 //#endif
 //#ifdef POPUPS
                     if (showWobbler(c)) {
-                        setWobble(2, c.toString(), c.toString()+": "+message.body);
+                        setWobble(2, c.getJid(), c.toString()+": "+message.body);
                         autorespond = true;
                     }
 //#endif

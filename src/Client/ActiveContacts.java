@@ -53,9 +53,9 @@ public class ActiveContacts extends DefForm {
             if (c.active()) {
                 itemsList.addElement(c);
             }
-        }        
+        }
 
-    if (getItemCount() == 0) {
+        if (getItemCount() == 0) {
             return;
         }
 
@@ -63,10 +63,7 @@ public class ActiveContacts extends DefForm {
         mb.addElement(SR.MS_ACTIVE_CONTACTS);
         setMainBarItem(mb);
         show();
-        try {
-            int focus = itemsList.indexOf(current);
-            moveCursorTo(focus);
-        } catch (Exception e) { }
+        focusToContact(sd.roster.activeContact);
     }
     
     public void eventOk() {
@@ -147,10 +144,14 @@ public class ActiveContacts extends DefForm {
     }
 
     public void userKeyPressed(int key) {
-        switch(key) {
+        switch (key) {
             case 0:
                 focusToNextUnreaded();
+                return;
+            case 3:
+                destroyView();
+                return;
         }
         super.userKeyPressed(key);
-    }   
+    }
 }
