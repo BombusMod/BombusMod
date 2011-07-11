@@ -51,16 +51,9 @@ import ui.VirtualList;
 //#endif
 import Client.ContactMessageList;
 import Client.Roster;
-import io.NvStorage;
-import java.io.DataInputStream;
 import Messages.MessageList;
 import Messages.MessageItem;
 import Messages.MessageUrl;
-import io.file.FileIO;
-import java.io.IOException;
-import util.StringLoader;
-import java.io.InputStream;
-import java.io.DataOutputStream;
 import Conference.Bookmarks;
 import Client.ActiveContacts;
 import Menu.RosterToolsMenu;
@@ -87,8 +80,13 @@ public class UserKeyExec {
 
     private UserKeyExec() {
         init_cmds();
-        if(!loadFromStorage())
-            loadDefault();
+        final Vector keysFromStorage = IE.UserKeys.loadFromStorage();
+        if (keysFromStorage != null) {
+            keysList = keysFromStorage;
+        } else {
+            keysList = IE.UserKeys.loadFromFile(UserKey.def_keys, true);
+            IE.UserKeys.rmsUpdate(keysList);
+        }
         current_key = new UserKey();
     }
 
@@ -196,89 +194,11 @@ public class UserKeyExec {
         return 0;
     }
 
-    public final boolean loadFromStorage() {
-        keysList = null;
-        keysList = new Vector();
-        
-//#ifdef USER_KEYS
-//#             DataInputStream is = NvStorage.ReadFileRecord(UserKey.storage, 0);
-//# 
-//#             int size = 0;
-//#             try {
-//#                 size = is.readInt();
-//#                 for (int i = 0; i < size; i++) {
-//#                     UserKey u = UserKey.createFromDataInputStream(is);
-//#                     keysList.addElement(u);
-//#                 }
-//#             } catch (Exception e) { return false; }
-//#endif
-        return true;
-    }
-
-    public final void loadFromInputStream(String file, boolean fs) {
-        keysList = null;
-        keysList = new Vector();
-
-        Vector[] table = null;
-        if (fs) {
-            FileIO f = FileIO.createConnection(file);
-            try {
-                InputStream in = f.openInputStream();
-                table = new StringLoader().stringLoader(in, 3);
-                f.close();
-            } catch (IOException e) { 
-//#ifdef DEBUG
-//#                 e.printStackTrace();
-//#endif
-            }
-        } else table = new StringLoader().stringLoader(file, 3);
-
-        for (int i = 0; i < table[0].size(); i++) {
-            keysList.addElement(UserKey.createFromStrings(
-                    (String) table[0].elementAt(i),
-                    (String) table[1].elementAt(i),
-                    (String) table[2].elementAt(i)));
-        }
-
-        rmsUpdate();
-    }
-
-    private void loadDefault() {
-       // loadFromInputStream(UserKey.def_keys, false);
-    }
-
-    public final void writeToFile(String directory) {
-        FileIO file = FileIO.createConnection(directory + "userkeys.txt");
-
-        StringBuffer keyScheme = new StringBuffer("//UserKeys");
-        for (int i = 0; i < keysList.size(); i++) {
-            keyScheme.append("\n")
-                     .append(((UserKey) keysList.elementAt(i)).toLine());
-            }
-
-        file.fileWrite(keyScheme.toString().getBytes());
-    }
-
-    public final void rmsUpdate() {
-        DataOutputStream outputStream = NvStorage.CreateDataOutputStream();
-
-        int size = keysList.size();
-        try {
-            outputStream.writeInt(size);
-        } catch (Exception e) { return; }
-
-        for (int i = 0; i < size; i++) {
-            ((UserKey) keysList.elementAt(i)).saveMyToDataOutputStream(outputStream);
-        }
-
-        NvStorage.writeFileRecord(outputStream, UserKey.storage, 0, true);
-    }
-
     public boolean keyExecute(int key, boolean key_long) { // return false if key not executed
         update_current_key(key, key_long);
         boolean executed = false;
 
-		final VirtualList current = sd.canvas.getList();
+        final VirtualList current = sd.canvas.getList();
         if (current instanceof UserKeyEdit)
             if (((UserKeyEdit) current).key(key, key_long))
                 return true;
@@ -320,311 +240,65 @@ public class UserKeyExec {
             return false;
         }
 
+        if (current.doUserKeyAction(command_id)) {
+            return true;
+        }
+
+        // Common commands
         switch (command_id) {
-            case 1:
-                if (current instanceof Roster)
-                    new ConfigForm();
-                else if (current instanceof ConfigForm)
-                    current.destroyView();
-                break;
-            case 2: 
-                sd.roster.cmdCleanAllMessages();
-                break;
-            case 3: 
-                sd.roster.connectionTerminated(new Exception(SR.MS_SIMULATED_BREAK));
-                break;
-//#ifdef POPUPS
-//#ifdef STATS
-//#             case 4:
-//#                     if (current instanceof Roster)
-//#                         new StatsWindow();
-//#                     else if (current instanceof StatsWindow)
-//#                         current.destroyView();
-//#                 break;
-//#endif
-//#endif
-            case 5:
-                sd.roster.cmdStatus();
-                break;
             case 6: 
 //#if FILE_TRANSFER
                 new io.file.transfer.TransferManager();
 //#endif
-                break;
-            case 7: 
-//#ifdef ARCHIVE
-                    sd.roster.cmdArchive();
-//#endif
-                break;
-            case 8: 
+                return true;
 //#ifdef SERVICE_DISCOVERY
+            case 8: 
                 if (connected)
                     new ServiceDiscovery(null, null, false);
+                return true;
 //#endif
-                break;
-            case 9: 
 //#ifdef PRIVACY
+            case 9: 
                 if (connected)
                     new PrivacySelect();
+                return true;
 //#endif
-                break;
 //#ifdef USER_KEYS                
 //#             case 10: //key pound
 //#                 new UserKeysList();
-//#                 break;
-//#endif                
-            case 11:
-//#ifdef POPUPS
-                sd.roster.cmdClearPopups();
+//#                 return true;
 //#endif
-                break;
             /*case 12:
                 cf.lightState=!cf.lightState;
                 sd.roster.setLight(cf.lightState);
                 cf.saveToStorage();
-                break;*/
-            case 13:
-                sd.roster.cmdInfo();
-                break;
+                return true;*/
             case 14:
                 if (cf.allowMinimize)
                     BombusMod.getInstance().hideApp(true);
-                break;
+                return true;
             case 15:
                 ColorTheme.invertSkin();
-                break;
+                return true;
             case 16:
 //#ifdef CONSOLE
 //#                     new XMLList();
 //#endif
-                break;
+                return true;
             case 17:
                 Config.fullscreen = !Config.fullscreen;
                 cf.saveToStorage();                
                 sd.canvas.setFullScreenMode(Config.fullscreen);
-                break;
-            case 18:
-//#ifdef JUICK
-//#                 if (current instanceof Roster) {
-//#                     Contact jContact = sd.roster.getMainJuickContact();
-//#                     if (jContact != null)
-//#                         sd.roster.focusToContact(jContact, false);
-//#                 } else {
-//#                     return false;
-//#                 }
-//#endif
-                break;
-            case 19:
-//            if (cf.widthSystemgc) { _vt
-                System.gc();
-                try { Thread.sleep(50); } catch (InterruptedException e) { }
-//            } _vt
-                if (current instanceof Roster) {
-                    sd.roster.showTimeTrafficInfo();
-                } else {
-                    return false;
-                }
-                break;
-            case 20:
-//#ifdef SMILES
-                if (current instanceof MessageList) {
-                    MessageItem mi = (MessageItem)((MessageList)current).getFocusedObject();
-                    if (mi != null) {
-                        mi.toggleSmiles(current);
-                    }
-                } else {
-                    return false;
-                }
-//#endif
-                break;
-            case 21:
-//#ifdef JUICK
-//#                 if (current instanceof ContactMessageList) {
-//#                     ContactMessageList current_cml = (ContactMessageList) current;
-//#                     current_cml.menuAction(current_cml.cmdJuickCommands, current);
-//#                 } else {
-//#                     return false;
-//#                 }
-//#endif
-                break;
-            case 22:
-                current.moveCursorHome();
-                break;
-            case 23:
-                current.moveCursorEnd();
-                break;
-            case 24:
-                current.keyUp();
-                break;
-            case 25:
-                current.keyDwn();
-                break;
-            case 26:
-                current.pageLeft();
-                break;
-            case 27:
-                current.pageRight();
-                break;
-			case 28:
-                if (current.canBack == true)
-                    current.destroyView();
-                break;
-            case 29:
-                current.keyClear();
-                break;
-            case 30:
-                if (current instanceof ContactMessageList)
-                    ((ContactMessageList) current).Quote();
-                break;
-            case 31:
-                if (current instanceof ContactMessageList) {
-                    ContactMessageList cml = (ContactMessageList) current;
-                    cml.savePosition();
-                    new ActiveContacts(cml.contact);
-				} else if (current instanceof ActiveContacts)
-                    current.destroyView();
-                break;
-            case 32:
-//#ifndef WMUC
-                if (current instanceof Roster && sd.roster.isLoggedIn())
-                    new Bookmarks(null);
-//#endif
-                break;
-            case 33:
-                if (current instanceof Roster)
-                    ((Roster) current).collapseAllGroup();
-                break;
-            case 34:
-                current.showInfo();
-                break;
-            case 35:
-                current.eventOk();
-                break;
-            case 36:
-                current.touchLeftPressed();
-				break;
-            case 37:
-                current.touchRightPressed();
-                break;
-            case 38:
-                if (current instanceof Roster) {
-                    cf.showOfflineContacts = !cf.showOfflineContacts;
-                    sd.roster.reEnumRoster();
-                }
-                break;
-            case 39:
-                if (current instanceof Roster)
-                    new RosterToolsMenu();
-                break;
-            case 40:
-                if (current instanceof Roster)
-                    sd.roster.cmdMinimize();
-                 break;
-            case 41:
-                if (current instanceof Roster)
-                    sd.roster.focusToNextUnreaded();
-                else if (current instanceof ActiveContacts)
-                    ((ActiveContacts) current).focusToNextUnreaded();
-                break;
-			case 42:
-                if (current instanceof Roster)
-                    sd.roster.moveFocusToGroup(-1);
-                break;
-			case 43:
-                if (current instanceof Roster)
-                    sd.roster.moveFocusToGroup(1);
-                break;
+                return true;
+
             case 44:
                 sd.roster.blockScreen();
-                break;
-            case 45:
-                if (current instanceof Roster)
-                    sd.roster.toggleVibra();
-                break;
+                return true;
             case 46:
                 sd.roster.changeMotoBacklightState();
-                break;
-            case 47:
-                if (current instanceof Roster)
-                    new ActiveContacts(null);
-				else if (current instanceof ActiveContacts)
-                    current.destroyView();
-                break;
-            case 48:
-                if (current instanceof ContactMessageList && cf.useTabs) {
-                    ((ContactMessageList) current).savePosition();
-                    sd.roster.searchActiveContact(-1); //previous contact with messages
-				} else
-                    current.pageLeft();
-                break;
-            case 49:
-                if (current instanceof ContactMessageList && cf.useTabs) {
-                    ((ContactMessageList) current).savePosition();
-                    sd.roster.searchActiveContact(1); //next contact with messages
-				} else
-                    current.pageRight();
-                break;
-            case 50:
-//#ifdef CONSOLE
-//#                 if (current instanceof ContactMessageList)
-//#                     ((ContactMessageList) current).clearReadedMessageList();
-//#                 else if (current instanceof XMLList)
-//#                     ((XMLList) current).clearReadedMessageList();
-//#                 else if (current instanceof ActiveContacts)
-//#                     ((ActiveContacts) current).keyClear();
-//#endif
-                break;
-            case 51:
-                if (current instanceof ContactMessageList)
-                    ((ContactMessageList) current).Reply();
-                break;
-            case 52:
-                if (current instanceof ContactMessageList)
-                    ((ContactMessageList) current).messageEditResume();
-                else if (current instanceof Roster)
-                    ((Roster) current).messageEditResume();
-                else if (current instanceof ActiveContacts)
-                    ((ActiveContacts) current).keyGreen();
-//#ifdef CONSOLE
-//#                 else if (current instanceof XMLList)
-//#                     ((XMLList) current).stanzaEdit();
-//#endif
-                else if (current instanceof MessageUrl)
-                    ((MessageUrl) current).EditURL();
-                break;
-            case 53:
-                if (current instanceof ArchiveList)
-                    ((ArchiveList) current).pasteData(0);
-                break;
-            case 54:
-                if (current instanceof PrivacyModifyList)
-                    ((PrivacyModifyList) current).addNewElement();
-				else if (current instanceof PrivacySelect)
-                    ((PrivacySelect) current).addNewElement();
-                break;
-            case 55:
-                if(current instanceof HistoryReader)
-                   ((HistoryReader) current).gotoBegin();
-                break;
-            case 56:
-                if(current instanceof HistoryReader)
-                   ((HistoryReader) current).gotoEnd();
-                break;
-//#ifdef SERVICE_DISCOVERY
-            case 57:
-                if(current instanceof Bookmarks)
-                   ((Bookmarks) current).discoCurrent();
-                break;
-//#endif
-//#ifndef WMUC
-            case 58:
-                if (current instanceof Roster)
-                    sd.roster.kickFocused();
-                break;
-//#endif
-            default:
-                return false;
+                return true;
         }
-        return true;
+
+        return false;
     }
 }

@@ -106,4 +106,18 @@ public class HistoryReader extends MessageList {
     public Msg getMessage(int i) {
         return ((MessageItem) messages.elementAt(i)).msg;
     }
+
+    public boolean doUserKeyAction(int command_id) {
+        switch (command_id) {
+            case 55:
+                gotoBegin();
+                return true;
+            case 56:
+                gotoEnd();
+                return true;
+        }
+
+        return super.doUserKeyAction(command_id);
+    }
+
 }

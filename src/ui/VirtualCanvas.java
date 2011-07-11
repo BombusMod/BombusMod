@@ -600,7 +600,7 @@ public class VirtualCanvas extends Canvas implements CommandListener{
                 KeyRepeatTimer.stop();
                 kHold = false;
             } else {
-                list.userKeyPressed(keyCode);
+                list.additionalKey(keyCode);
             }
         }
     }

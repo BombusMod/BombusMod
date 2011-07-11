@@ -111,7 +111,9 @@ public class PepListener implements JabberBlockListener {
 //#                 hasActivity = true;
 //# 
 //#ifdef DEBUG
-//#             System.out.println(from+": "+result.toString());
+//#             if (result != null) {
+//#                 System.out.println(from+": "+result.toString());
+//#             }
 //#endif
 //#                 type = SR.MS_USERACTIVITY;
 //#             }
@@ -151,7 +153,9 @@ public class PepListener implements JabberBlockListener {
 //#                 hasLocation = true;
 //# 
 //#ifdef DEBUG
-//#             System.out.println(from+": "+result.toString());
+//#             if (result != null) {
+//#                 System.out.println(from+": "+result.toString());
+//#             }
 //#endif
 //#                 type = SR.MS_USERLOCATION;
 //#             }
@@ -177,7 +181,9 @@ public class PepListener implements JabberBlockListener {
 //#                 hasTune = true;
 //# 
 //#ifdef DEBUG
-//#             System.out.println(from+": "+result.toString());
+//#             if (result != null) {
+//#                 System.out.println(from+": "+result.toString());
+//#             }
 //#endif
 //#                 type = SR.MS_USERTUNE;
 //#             }
@@ -223,7 +229,9 @@ public class PepListener implements JabberBlockListener {
 //#                 }
 //#                 hasMood = true;
 //#if DEBUG
-//#             System.out.println(from+": "+result.toString());
+//#             if (result != null) {
+//#                 System.out.println(from+": "+result.toString());
+//#             }
 //#endif
 //#                 type = SR.MS_USERMOOD;
 //# 

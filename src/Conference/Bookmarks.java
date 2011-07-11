@@ -253,7 +253,7 @@ public class Bookmarks extends DefForm {
     }
 //#endif
 
-    public void userKeyPressed(int keyCode) {
+    public void additionalKey(int keyCode) {
         switch (keyCode) {
             case 1:
                 moveCursorHome();
@@ -271,6 +271,19 @@ public class Bookmarks extends DefForm {
                 discoCurrent();
                 return;
         }
-        super.userKeyPressed(keyCode);
-    }    
+        super.additionalKey(keyCode);
+    }
+
+    public boolean doUserKeyAction(int command_id) {
+        switch (command_id) {
+//#ifdef SERVICE_DISCOVERY
+            case 57:
+                discoCurrent();
+                return true;
+//#endif
+        }
+
+        return super.doUserKeyAction(command_id);
+    }
+
 }

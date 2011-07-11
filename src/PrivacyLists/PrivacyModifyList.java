@@ -194,6 +194,7 @@ public class PrivacyModifyList extends DefForm
         if (getFocusedObject() != null)
             plist.rules.removeElement(getFocusedObject());
     }
+
     public void keyClear() {
         String name = getFocusedObject().toString();
         new AlertBox(name, SR.MS_DELETE_RULE + " \"" + name + "\"?") {
@@ -203,5 +204,15 @@ public class PrivacyModifyList extends DefForm
             public void no() {
             }
         };
+    }
+
+    public boolean doUserKeyAction(int command_id) {
+        switch (command_id) {
+            case 54:
+                addNewElement();
+                return true;
+        }
+
+        return super.doUserKeyAction(command_id);
     }
 }

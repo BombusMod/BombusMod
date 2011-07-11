@@ -204,4 +204,14 @@ public class ArchiveList
     private int getFreeSpace() {
         return archive.freeSpace();
     }
+
+    public boolean doUserKeyAction(int command_id) {
+        switch (command_id) {
+            case 53:
+                pasteData(0);
+                return true;
+        }
+
+        return super.doUserKeyAction(command_id);
+    }
 }

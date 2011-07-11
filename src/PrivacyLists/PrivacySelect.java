@@ -195,4 +195,14 @@ public class PrivacySelect
             public void no() {}
         };
     }    
+
+    public boolean doUserKeyAction(int command_id) {
+        switch (command_id) {
+            case 54:
+                addNewElement();
+                return true;
+        }
+
+        return super.doUserKeyAction(command_id);
+    }
 }

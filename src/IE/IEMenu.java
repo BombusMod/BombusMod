@@ -55,15 +55,15 @@ public class IEMenu
         itemsList.addElement(new SimpleString(SR.MS_OPTIONS, true));
         itemsList.addElement(new LinkString(SR.MS_LOAD_FROM_FILE) {
             public void doAction() {
-                choice = 0;                
+                choice = 0;
                 SelectFile(false);
             }} );
         itemsList.addElement(new LinkString(SR.MS_SAVE_TO_FILE) {
             public void doAction() {
-                choice = 1;                
+                choice = 1;
                 SelectFile(true);
-            }} );            
-        itemsList.addElement(new SpacerItem(10));    
+            }} );
+        itemsList.addElement(new SpacerItem(10));
         itemsList.addElement(new SimpleString(SR.MS_ACCOUNTS, true));
         itemsList.addElement(new LinkString(SR.MS_LOAD_FROM_FILE) {
             public void doAction() {
@@ -73,8 +73,8 @@ public class IEMenu
         itemsList.addElement(new LinkString(SR.MS_SAVE_TO_FILE) {
             public void doAction() {
                 choice = 7;
-                SelectFile(true);                
-            }} );                        
+                SelectFile(true);
+            }} );
         itemsList.addElement(new SpacerItem(10));
         itemsList.addElement(new SimpleString(SR.MS_ARCHIVE, true));
         itemsList.addElement(new LinkString(SR.MS_LOAD_FROM_FILE) {
@@ -86,20 +86,33 @@ public class IEMenu
             public void doAction() {
                 choice = 3;
                 SelectFile(true);
-            }} );            
+            }} );
         itemsList.addElement(new SpacerItem(10));
         itemsList.addElement(new SimpleString(SR.MS_TEMPLATE, true));
         itemsList.addElement(new LinkString(SR.MS_LOAD_FROM_FILE) {
             public void doAction() {
-                choice = 4;                
-                SelectFile(false);                
+                choice = 4;
+                SelectFile(false);
             }} );
         itemsList.addElement(new LinkString(SR.MS_SAVE_TO_FILE) {
             public void doAction() {
                 choice = 5;
-                SelectFile(true);                
-            }} );                        
+                SelectFile(true);
+            }} );
+        itemsList.addElement(new SpacerItem(10));
+        itemsList.addElement(new SimpleString(SR.MS_CUSTOM_KEYS, true));
+        itemsList.addElement(new LinkString(SR.MS_LOAD_FROM_FILE) {
+            public void doAction() {
+                choice = 8;
+                SelectFile(false);
+            }} );
+        itemsList.addElement(new LinkString(SR.MS_SAVE_TO_FILE) {
+            public void doAction() {
+                choice = 9;
+                SelectFile(true);
+            }} );
     }
+
     public void SelectFile(boolean getDir) {
         new Browser(null, this, getDir);
     }
@@ -129,6 +142,12 @@ public class IEMenu
                 break;
             case 7: //save Accounts
                 new IE.Accounts(pathSelected, 1, false);
+                break;
+            case 8: //load UserKeys
+                new IE.UserKeys(pathSelected, 0, false);
+                break;
+            case 9: //save UserKeys
+                new IE.UserKeys(pathSelected, 1, false);
                 break;
         }
     }

@@ -453,5 +453,15 @@ public class ConfigForm
 
         sd.roster.reEnumRoster();
         destroyView();
-    }    
+    }
+
+    public boolean doUserKeyAction(int command_id) {
+        switch (command_id) {
+            case 1:
+                destroyView();
+                return true;
+        }
+
+        return super.doUserKeyAction(command_id);
+    }
 }

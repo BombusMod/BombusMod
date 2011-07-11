@@ -39,7 +39,7 @@ import ui.VirtualCanvas;
  */
 public class UserKey extends IconTextElement {
     public final static String storage = "keys_db_r941";
-    public final static String def_keys = "/userkeys/bombusmod.txt";
+    public final static String def_keys = "/def_keys.txt";
     
     private final static int COUNT_KEY_NAMES = 33;
     private int current_index;
@@ -78,7 +78,51 @@ public class UserKey extends IconTextElement {
         someCodes = new int[COUNT_KEY_NAMES];
         someNames = new String[COUNT_KEY_NAMES];
 
-        current_index = 0;        
+        current_index = 0;
+
+        // Цифровые клавишы
+        addKeyName(0, "(0)");
+        addKeyName(1, "(1)");
+        addKeyName(2, "(2)");
+        addKeyName(3, "(3)");
+        addKeyName(4, "(4)");
+        addKeyName(5, "(5)");
+        addKeyName(6, "(6)");
+        addKeyName(7, "(7)");
+        addKeyName(8, "(8)");
+        addKeyName(9, "(9)");
+        addKeyName(VirtualCanvas._KEY_STAR, "*");
+        addKeyName(VirtualCanvas._KEY_POUND, "#");
+
+        // QWERTY-клавиатура
+        addKeyName(8, "BackSpace");
+        addKeyName(10, "Enter");
+        addKeyName(32, "Space");
+        
+        // Misc
+        addKeyName(VirtualCanvas.KEY_BACK, "Back");
+        addKeyName(VirtualCanvas.KEY_GREEN, "Green");
+        addKeyName(VirtualCanvas.KEY_CLEAR, "Clear");
+        addKeyName(VirtualCanvas.KEY_VOL_UP, "Volume_Up");
+        addKeyName(VirtualCanvas.KEY_VOL_DOWN, "Volume_Down");
+        addKeyName(VirtualCanvas.KEY_FLIP_OPEN, "Flip_Open");
+        addKeyName(VirtualCanvas.KEY_FLIP_CLOSE, "Flip_Close");
+        addKeyName(VirtualCanvas.KEY_SOFT_LEFT, "Soft_Left");
+        addKeyName(VirtualCanvas.KEY_SOFT_RIGHT, "Soft_Right");
+
+        // Game Action
+        addKeyName(VirtualCanvas.KEY_LEFT, "(<)");
+        addKeyName(VirtualCanvas.KEY_RIGHT, "(>)");
+        addKeyName(VirtualCanvas.KEY_UP, "(^)");
+        addKeyName(VirtualCanvas.KEY_DOWN, "(V)");
+        addKeyName(VirtualCanvas.KEY_FIRE, "(o)");
+
+        VirtualCanvas canvas = VirtualCanvas.getInstance();
+        addKeyName(canvas.getKeyCode(VirtualCanvas.GAME_A), "Game_A");
+        addKeyName(canvas.getKeyCode(VirtualCanvas.GAME_B), "Game_B");
+        addKeyName(canvas.getKeyCode(VirtualCanvas.GAME_C), "Game_C");
+        addKeyName(canvas.getKeyCode(VirtualCanvas.GAME_D), "Game_D");
+        canvas = null;
     }
     
     private void addKeyName(int code, String name) {

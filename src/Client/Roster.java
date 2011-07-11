@@ -2769,8 +2769,8 @@ public class Roster
     public void selectPressed() {
         cmdActions();
     }
-    
-    public void userKeyPressed(int keyCode) {
+
+    public void additionalKey(int keyCode) {
         switch (keyCode) {
             case 1:
                 collapseAllGroup();
@@ -2788,7 +2788,7 @@ public class Roster
                 changeMotoBacklightState();
                 break;
         }
-        super.userKeyPressed(keyCode);
+        super.additionalKey(keyCode);
 //#ifdef LIGHT_CONFIG        
 //#             CustomLight.keyPressed();
 //#endif  
@@ -2839,7 +2839,100 @@ public class Roster
 //#endif 
         return super.longKey(keyCode);
     }
-    
+
+    public boolean doUserKeyAction(int command_id) {
+        switch (command_id) {
+            case 1:
+                new ConfigForm();
+                return true;
+            case 2: 
+                cmdCleanAllMessages();
+                return true;
+            case 3: 
+                connectionTerminated(new Exception(SR.MS_SIMULATED_BREAK));
+                return true;
+//#ifdef POPUPS
+//#ifdef STATS
+//#             case 4:
+//#                 new Statistic.StatsWindow();
+//#                 return true;
+//#endif
+//#endif
+            case 5:
+                cmdStatus();
+                return true;
+//#ifdef ARCHIVE
+            case 7: 
+                cmdArchive();
+                return true;
+//#endif
+//#ifdef POPUPS
+            case 11:
+                cmdClearPopups();
+                return true;
+//#endif
+            case 13:
+                cmdInfo();
+                return true;
+//#ifdef JUICK
+//#             case 18:
+//#                 Contact jContact = sd.roster.getMainJuickContact();
+//#                 if (jContact != null)
+//#                     focusToContact(jContact, false);
+//#                 return true;
+//#endif
+            case 19:
+                System.gc();
+                try { Thread.sleep(50); } catch (InterruptedException e) { }
+                showTimeTrafficInfo();
+                return true;
+            case 33:
+                collapseAllGroup();
+                return true;
+//#ifndef WMUC
+            case 32:
+                if (sd.roster.isLoggedIn())
+                    new Bookmarks(null);
+                return true;
+//#endif
+            case 38:
+                cf.showOfflineContacts = !cf.showOfflineContacts;
+                reEnumRoster();
+                return true;
+            case 39:
+                new RosterToolsMenu();
+                return true;
+            case 40:
+                cmdMinimize();
+                return true;
+            case 41:
+                focusToNextUnreaded();
+                return true;
+            case 42:
+                moveFocusToGroup(-1);
+                return true;
+            case 43:
+                moveFocusToGroup(1);
+                return true;
+            case 45:
+                toggleVibra();
+                return true;
+            case 52:
+                messageEditResume();
+                return true;
+            case 47:
+                new ActiveContacts(null);
+                return true;
+//#ifndef WMUC
+            case 58:
+                kickFocused();
+                return true;
+//#endif
+        }
+
+        return super.doUserKeyAction(command_id);
+    }
+
     public void captionPressed() {new ActiveContacts(null);}
 
     

@@ -31,6 +31,7 @@ package ui.keys;
 //# import Menu.MenuCommand;
 //# import ui.VirtualList;
 //# import ui.controls.form.DefForm;
+//# import java.util.Vector;
 //# 
 //# 
 //# 
@@ -46,7 +47,22 @@ package ui.keys;
 //#     public UserKeysList() {
 //#         super(SR.MS_CUSTOM_KEYS);
 //#         enableListWrapping(true);
-//#         loadItemsFrom(UserKeyExec.getInstance().keysList);
+//#         copyKeysFrom(UserKeyExec.getInstance().keysList); // != loadItemsFrom(...)
+//#     }
+//# 
+//#     private final void copyKeysFrom(Vector items) {
+//#         synchronized (itemsList) {
+//#             if (items == null) {
+//#                 return;
+//#             }
+//#             int count = items.size();
+//#             itemsList.removeAllElements();
+//#             for (int i = 0; i < count; i++) {
+//#                 UserKey u = new UserKey((UserKey) items.elementAt(i));
+//#                 itemsList.addElement(u);
+//#             }
+//#             redraw();
+//#         }
 //#     }
 //# 
 //#     public void commandState() {
@@ -65,7 +81,7 @@ package ui.keys;
 //#     public void cmdOk() {
 //#        UserKeyExec uexec = UserKeyExec.getInstance();
 //#        uexec.keysList = itemsList;
-//#        uexec.rmsUpdate();
+//#        IE.UserKeys.rmsUpdate(itemsList);
 //#        destroyView();
 //#     }
 //# 

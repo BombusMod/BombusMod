@@ -94,132 +94,149 @@ public class Config {
 //#     public final static int AWAY_LOCK = 1;
 //#     public final static int AWAY_MESSAGE = 2;
 //#     public final static int AWAY_IDLE = 3;
-//#     public int autoAwayType = 0;
-//#     public int autoAwayDelay = 5; //5 minutes
-//#     public boolean useMyStatusMessages = true;
 //#endif
+    public boolean allowMinimize = false;
+    public int profile = 0;
+    public int lastProfile = 0;
+    public boolean istreamWaiting;
+    public int phoneManufacturer = NOT_DETECTED;
+    public boolean swapMenu = false;
+    public boolean oldNokiaS60 = false;
+    public boolean NokiaS40 = false;
+
+
+    // Save to storage.
+    // Sorted similar to saveToStorage()/loadFromStorage().
+    public int accountIndex = -1;
+    public boolean showOfflineContacts = false;
+    public static boolean fullscreen = true;
+    public int def_profile = 0;
+//#ifdef SMILES
+    public boolean smiles = true;
+//#endif
+    public boolean showTransports = true;
+    public boolean selfContact = false;
+    public boolean collapsedGroups = true;
+    public boolean ignore = false;
+    public boolean eventComposing = true;
+    public int gmtOffset; // TODO: 0?
+    public boolean autoLogin = true;
+//#ifndef WMUC
+    public boolean autoJoinConferences = true;
+//#endif
+    public boolean popupFromMinimized = true;
+    public boolean notifyBlink = false;
+//#ifdef MEMORY_USAGE
+//#     public boolean memMonitor = false;
+//#endif
+    public int rosterFont = 8;
+    public int msgFont = 8;
+    public boolean autoFocus = false;
+    public int notInListDropLevel = NotInListFilter.ALLOW_ALL; //enable all
+//#ifndef WMUC
+    public boolean storeConfPresence = true;
+//#endif
+    public boolean capsState = false;
+    public int textWrap = 0;
+    public int loginstatus = 0;
 //#ifdef HISTORY
 //#     public String msgPath = "";
 //#     public boolean msgLog = false;
 //#     public boolean msgLogPresence = false;
 //#     public boolean msgLogConf = false;
 //#     public boolean msgLogConfPresence = false;
-//#     public boolean lastMessages = false;
 //#endif
     public boolean cp1251 = true;
+//#ifdef AUTOSTATUS
+//#     public int autoAwayDelay = 5; //5 minutes
+//#endif
 //#ifndef WMUC
     public String defGcRoom = "bombusmod@conference.jabber.ru";
-    public boolean storeConfPresence = true;
-    public boolean autoJoinConferences = true;
+//#endif
+    public boolean firstRun = true;
+    public int panelsState = 2;
+//#ifndef WMUC
     public int confMessageCount = 20;
 //#endif
-    // non-volatile values
-    public int accountIndex = -1;
-    public static boolean fullscreen = true;
-    public int def_profile = 0;
-//#ifdef SMILES
-    public boolean smiles = true;
-//#endif
-    public boolean showOfflineContacts = false;
-    public boolean showTransports = true;
-    public boolean selfContact = false;
-    public boolean ignore = false;
-    public boolean eventComposing = true;
-    public boolean autoLogin = true;
-    public boolean autoFocus = false;
-    public int loginstatus = 0;//loginstatus
-    public int gmtOffset;
-    public boolean popupFromMinimized = true;
-//#ifdef MEMORY_USAGE
-//#     public boolean memMonitor = false;
-//#endif
-    public int rosterFont = 8;
-    public int msgFont = 8;
-    public int barFont = 8;
-    public int baloonFont = 8;
-    public String lang;  //not detected (en)
-    public boolean capsState = false;
-    public int textWrap = 0;
-    public int autoSubscribe = SUBSCR_ASK;
-    // runtime values
-    public boolean allowMinimize = false;
-    public int profile = 0;
-    public int lastProfile = 0;
-    public boolean istreamWaiting;
-    public int phoneManufacturer = NOT_DETECTED;
-    public int panelsState = 2;
+    public boolean fileTransfer = true;
 //#ifdef LIGHT_CONFIG
 //#     public boolean lightState = false;
+//#endif
+    public boolean notifySound = false;
+//#ifdef HISTORY
+//#     public boolean lastMessages = false;
+//#endif
+//#ifdef AUTOSTATUS
+//#     public boolean useMyStatusMessages = true;
+//#     public int autoAwayType = 0;
 //#endif
     public boolean autoScroll = true;
 //#ifdef POPUPS
     public boolean popUps = true;
 //#endif
     public boolean showResources = true;
+    public boolean saveHistory = false;
     public boolean enableVersionOs = true;
-    public boolean collapsedGroups = true;
     public int messageLimit = 512;
-    public int widthScroll2 = 10;
-    public int minItemHeight = rosterFont*3;
-    public boolean advTouch = true;
-    public boolean autoClean = true;
+    public String lang = null;  //not detected (en)
     public boolean eventDelivery = true;
 //#ifdef DETRANSLIT
 //#     public boolean transliterateFilenames=false;
-//#     public boolean autoDeTranslit=false;
 //#endif
     public boolean rosterStatus = true;
-//#ifdef PEP
-//#     public boolean sndrcvmood = false;
-//#ifdef PEP_TUNE
-//#     public boolean rcvtune = false;
-//#endif
-//#ifdef PEP_ACTIVITY
-//#     public boolean rcvactivity = false;
-//#endif
-//#ifdef PEP_LOCATION
-//#     public boolean rcvloc = false;
-//#endif
-//#endif
     public boolean queryExit = false;
-    public int notInListDropLevel = NotInListFilter.ALLOW_ALL; //enable all
+    public boolean notifyPicture = false;
     public boolean hideTimestamps = false;
 //#ifdef LOGROTATE
 //#     public int msglistLimit=500;
 //#endif
     public boolean useTabs = true;
-    public boolean notifyBlink = false;
-    public boolean notifySound = false;
-    public boolean notifyPicture = false;
+    public int autoSubscribe = SUBSCR_ASK;
     public boolean useBoldFont = false;
-    public boolean shadowed = false;
 //#ifdef RUNNING_MESSAGE
 //#     public boolean notifyWhenMessageType = false;
+//#endif
+    public boolean IQNotify = false;
+//#ifdef PEP
+//#     public boolean sndrcvmood = false;
 //#endif
 //#ifdef CLIPBOARD
 //#     public boolean useClipBoard = true;
 //#endif
-    public boolean firstRun = true;
+//#ifdef PEP_TUNE
+//#     public boolean rcvtune = false;
+//#endif
+    public int barFont = 8;
+    public int baloonFont = 8;
     public String verHash = "";
     public String resolvedHost = "";
     public int resolvedPort = 0;
-    public boolean IQNotify = false;
+//#ifdef DETRANSLIT
+//#     public boolean autoDeTranslit=false;
+//#endif
 //#ifdef CLIENTS_ICONS
     public boolean showClientIcon = true;
 //#endif
     public int reconnectCount = 10;
     public int reconnectTime = 15;
-    public boolean executeByNum;
+    public boolean executeByNum = false;
     public boolean showNickNames = true;
-    public boolean fileTransfer = true;
     public boolean adhoc = false;
-    public boolean saveHistory = false;
-    public boolean swapMenu = false;
-    public boolean oldNokiaS60 = false;
-    public boolean NokiaS40 = false;
+//#ifdef PEP_ACTIVITY
+//#     public boolean rcvactivity = false;
+//#endif
+    public boolean shadowed = false;
     public boolean showTimeTraffic = false;
     public boolean swapSendAndSuspend = false;
+    public int widthScroll2 = 10;
+    public boolean advTouch = true;
+    public boolean autoClean = true;
+//#ifdef PEP_LOCATION
+//#     public boolean rcvloc = false;
+//#endif
     public boolean useQuickPrivacy = false;
+    public int minItemHeight = rosterFont*3;
+    // End of "save to storage".
 
     public static Config getInstance() {
         if (instance == null) {

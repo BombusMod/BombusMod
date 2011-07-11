@@ -124,4 +124,18 @@ public class StatsWindow
         }
         super.menuAction(command, displayable);
     }
+
+    public boolean doUserKeyAction(int command_id) {
+        switch (command_id) {
+//#ifdef POPUPS
+//#ifdef STATS
+//#             case 4:
+//#                 destroyView();
+//#                 return true;
+//#endif
+//#endif
+        }
+
+        return super.doUserKeyAction(command_id);
+    }
 }

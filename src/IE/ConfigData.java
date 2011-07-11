@@ -235,7 +235,7 @@ public class ConfigData {
 //#endif
         cf.showTransports=cf.getBooleanProperty(getValue(showTransports),true);
         cf.selfContact=cf.getBooleanProperty(getValue(selfContact),false);
-        cf.collapsedGroups=cf.getBooleanProperty(getValue(collapsedGroups),false);
+        cf.collapsedGroups=cf.getBooleanProperty(getValue(collapsedGroups),true);
         cf.ignore=cf.getBooleanProperty(getValue(ignore),false);
         cf.eventComposing=cf.getBooleanProperty(getValue(eventComposing),true);
         cf.gmtOffset=cf.getIntProperty(getValue(gmtOffset),0);
@@ -246,16 +246,16 @@ public class ConfigData {
         cf.popupFromMinimized=cf.getBooleanProperty(getValue(popupFromMinimized),true);
         cf.notifyBlink=cf.getBooleanProperty(getValue(notifyBlink),false);
 //#ifdef MEMORY_USAGE
-//#         cf.memMonitor=cf.getBooleanProperty(getValue(memMonitor),true);
+//#         cf.memMonitor=cf.getBooleanProperty(getValue(memMonitor),false);
 //#endif
-        cf.rosterFont=cf.getIntProperty(getValue(font1),0);
-        cf.msgFont=cf.getIntProperty(getValue(font2),0);
+        cf.rosterFont=cf.getIntProperty(getValue(font1),8);
+        cf.msgFont=cf.getIntProperty(getValue(font2),8);
         cf.autoFocus=cf.getBooleanProperty(getValue(autoFocus),false);
         cf.notInListDropLevel=cf.getIntProperty(getValue(notInListDropLevel), NotInListFilter.ALLOW_ALL);
 //#ifndef WMUC
         cf.storeConfPresence=cf.getBooleanProperty(getValue(storeConfPresence),true);
 //#endif
-        cf.capsState=cf.getBooleanProperty(getValue(capsState),true);
+        cf.capsState=cf.getBooleanProperty(getValue(capsState),false);
         cf.textWrap=cf.getIntProperty(getValue(textWrap),0);
         cf.loginstatus=cf.getIntProperty(getValue(loginstatus),0);
 //#ifdef HISTORY
@@ -279,14 +279,14 @@ public class ConfigData {
 //#endif
         cf.fileTransfer=cf.getBooleanProperty(getValue(fileTransfer),true);
 //#ifdef LIGHT_CONFIG
-//#         cf.lightState=cf.getBooleanProperty(getValue(lightState),true);
+//#         cf.lightState=cf.getBooleanProperty(getValue(lightState),false);
 //#endif
         cf.notifySound=cf.getBooleanProperty(getValue(notifySound),false);
 //#ifdef LAST_MESSAGES
 //#         cf.lastMessages=cf.getBooleanProperty(getValue(lastMessages),false);
 //#endif
 //#ifdef AUTOSTATUS
-//#         cf.useMyStatusMessages=cf.getBooleanProperty(getValue(useMyStatusMessages),false);
+//#         cf.useMyStatusMessages=cf.getBooleanProperty(getValue(useMyStatusMessages),true);
 //#         cf.autoAwayType=cf.getIntProperty(getValue(autoAwayType),0);
 //#endif
         cf.autoScroll=cf.getBooleanProperty(getValue(autoScroll),true);
@@ -294,10 +294,10 @@ public class ConfigData {
         cf.popUps=cf.getBooleanProperty(getValue(popUps),true);
 //#endif
         cf.showResources=cf.getBooleanProperty(getValue(showResources),true);
-        cf.saveHistory=cf.getBooleanProperty(getValue(saveHistory),true);
+        cf.saveHistory=cf.getBooleanProperty(getValue(saveHistory),false);
         cf.enableVersionOs=cf.getBooleanProperty(getValue(enableVersionOs),true);
-        cf.messageLimit=cf.getIntProperty(getValue(messageLimit),300);
-        cf.lang=cf.getStringProperty(getValue(lang), null);
+        cf.messageLimit=cf.getIntProperty(getValue(messageLimit),512);
+        cf.lang=cf.getStringProperty(getValue(lang),null);
         cf.eventDelivery=cf.getBooleanProperty(getValue(eventDelivery),true);
 //#ifdef DETRANSLIT
 //#         cf.transliterateFilenames=cf.getBooleanProperty(getValue(transliterateFilenames),false);
@@ -317,16 +317,16 @@ public class ConfigData {
 //#endif
         cf.IQNotify=cf.getBooleanProperty(getValue(IQNotify),false);
 //#ifdef PEP
-//#         cf.sndrcvmood=cf.getBooleanProperty(getValue(sndrcvmood),true);
+//#         cf.sndrcvmood=cf.getBooleanProperty(getValue(sndrcvmood),false);
 //#endif
 //#ifdef CLIPBOARD
 //#         cf.useClipBoard=cf.getBooleanProperty(getValue(useClipBoard),true);
 //#endif
 //#ifdef PEP_TUNE
-//#         cf.rcvtune=cf.getBooleanProperty(getValue(sndrcvtune),true);
+//#         cf.rcvtune=cf.getBooleanProperty(getValue(sndrcvtune),false);
 //#endif
-        cf.barFont=cf.getIntProperty(getValue(font3),0);
-        cf.baloonFont=cf.getIntProperty(getValue(font4),0);
+        cf.barFont=cf.getIntProperty(getValue(font3),8);
+        cf.baloonFont=cf.getIntProperty(getValue(font4),8);
 // TODO: read verHash, resolvedHost, resolvedPort?
 //#ifdef DETRANSLIT
 //#         cf.autoDeTranslit=cf.getBooleanProperty(getValue(autoDeTranslit),false);
@@ -337,16 +337,16 @@ public class ConfigData {
         cf.reconnectCount=cf.getIntProperty(getValue(reconnectCount), 10);
         cf.reconnectTime=cf.getIntProperty(getValue(reconnectTime), 15);
         cf.executeByNum=cf.getBooleanProperty(getValue(executeByNum),false);
-        cf.showNickNames=cf.getBooleanProperty(getValue(showNickNames),false);
-        cf.adhoc=cf.getBooleanProperty(getValue(adhoc),true);
+        cf.showNickNames=cf.getBooleanProperty(getValue(showNickNames),true);
+        cf.adhoc=cf.getBooleanProperty(getValue(adhoc),false);
 //#ifdef PEP_ACTIVITY
-//#         cf.rcvactivity=cf.getBooleanProperty(getValue(rcvactivity),true);
+//#         cf.rcvactivity=cf.getBooleanProperty(getValue(rcvactivity),false);
 //#endif
         cf.shadowed=cf.getBooleanProperty(getValue(shadowed),false);
         cf.showTimeTraffic=cf.getBooleanProperty(getValue(showTimeTraffic),false);
         cf.swapSendAndSuspend=cf.getBooleanProperty(getValue(swapSendAndSuspend),false);
 
-        cf.widthScroll2=cf.getIntProperty(getValue(widthScroll2), 10);
+        cf.widthScroll2=cf.getIntProperty(getValue(widthScroll2),10);
         cf.advTouch=cf.getBooleanProperty(getValue(advTouch),true);
         cf.autoClean=cf.getBooleanProperty(getValue(autoClean),true);
 //#ifdef PEP_LOCATION

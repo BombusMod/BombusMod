@@ -151,5 +151,18 @@ public final class XMLList
 
     public void keyGreen() {
         toggle();
-    }    
+    }
+
+    public boolean doUserKeyAction(int command_id) {
+        switch (command_id) {
+            case 50:
+                clearReadedMessageList();
+                return true;
+            case 52:
+                stanzaEdit();
+                return true;
+        }
+
+        return super.doUserKeyAction(command_id);
+    }
 }

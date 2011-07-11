@@ -84,12 +84,12 @@ public class Menu extends VirtualList
     
     public void captionPressed() {}
 
-    public void userKeyPressed(int keyCode) {
+    public void additionalKey(int keyCode) {
         if (executeByNum && getItemCount() > 0 && keyCode >=0 && keyCode <= 9) {
             executeCommand(keyCode);
             return;
         }
-        super.userKeyPressed(keyCode);
+        super.additionalKey(keyCode);
     }
 
     private void executeCommand(int index) {

@@ -147,7 +147,7 @@ public abstract class VirtualList {
 //#endif
     }
 
-    public void userKeyPressed(int keyCode) {
+    public void additionalKey(int keyCode) {
         switch(keyCode) {
             case 1:
             case VirtualCanvas.KEY_VOL_UP:
@@ -184,6 +184,57 @@ public abstract class VirtualList {
     public boolean longKey(int keyCode) {
         return false;
     }
+
+    public boolean doUserKeyAction(int command_id) {
+        switch (command_id) {
+            case 22:
+                moveCursorHome();
+                return true;
+            case 23:
+                moveCursorEnd();
+                return true;
+            case 24:
+                keyUp();
+                return true;
+            case 25:
+                keyDwn();
+                return true;
+            case 26:
+                pageLeft();
+                return true;
+            case 27:
+                pageRight();
+                return true;
+            case 28:
+                if (canBack == true)
+                    destroyView();
+                return true;
+            case 29:
+                keyClear();
+                return true;
+            case 34:
+                showInfo();
+                return true;
+            case 35:
+                eventOk();
+                return true;
+            case 36:
+                touchLeftPressed();
+                return true;
+            case 37:
+                touchRightPressed();
+                return true;
+            case 48:
+                pageLeft();
+                return true;
+	    case 49:
+                pageRight();
+                return true;
+        }
+
+        return false;
+    }
+
 
 //#ifdef MEMORY_USAGE
 //#     public static boolean memMonitor;

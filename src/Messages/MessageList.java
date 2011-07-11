@@ -188,17 +188,35 @@ public abstract class MessageList extends DefForm
         }
         return false;
     }
-//#ifdef SMILES
-    public void userKeyPressed(int key) {
-        switch(key) {
-            case VirtualCanvas._KEY_STAR:
-                Object o = getFocusedObject();
-                if (o != null) {
-                    ((MessageItem) o).toggleSmiles(this);
-                }
-                return;
+
+    private void toogleSmiles() {
+        Object o = getFocusedObject();
+        if (o != null) {
+            ((MessageItem) o).toggleSmiles(this);
         }
-        super.userKeyPressed(key);
     }
-//#endif   
+
+    public void additionalKey(int key) {
+        switch(key) {
+//#ifdef SMILES
+            case VirtualCanvas._KEY_STAR:
+                toogleSmiles();
+                return;
+//#endif
+        }
+
+        super.additionalKey(key);
+    }
+
+    public boolean doUserKeyAction(int command_id) {
+        switch (command_id) {
+//#ifdef SMILES
+            case 20:
+                toogleSmiles();
+                return true;
+//#endif
+        }
+
+        return super.doUserKeyAction(command_id);
+    }
 }

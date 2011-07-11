@@ -51,12 +51,20 @@ public class Accounts {
     private final static String useSSL = "useSSL"; 
     private final static String plainAuth = "plainAuth"; 
     private final static String mucOnly = "mucOnly"; 
+//#if HTTPPOLL || HTTPCONNECT || HTTPBIND
+//#     private final static String enableProxy = "enableProxy";
+//#     private final static String proxyHostAddr = "proxyHostAddr";
+//#     private final static String proxyPort = "proxyPort";
+//#endif
     private final static String compression = "compression"; 
     private final static String keepAliveType = "keepAliveType"; 
     private final static String keepAlivePeriod = "keepAlivePeriod";
+//#ifdef HTTPCONNECT
+//#     private final static String proxyUser = "proxyUser";
+//#     private final static String proxyPass = "proxyPass";
+//#endif
     
     Vector accountList;
-
     private String file;
 
     /** Creates a new instance of Accounts */
@@ -117,19 +125,26 @@ public class Accounts {
                         Account account=new Account();
                         account.setUserName(findBlock(tempstr, userName));
                         account.setServer(findBlock(tempstr, server));
-                        account.setNick(findBlock(tempstr, nick));
-                        
-                        account.setPort(Integer.parseInt(findBlock(tempstr, port)));
-                        account.setHostAddr(findBlock(tempstr, hostAddr));
-                        account.setResource(findBlock(tempstr, resource));
                         account.setPassword(findBlock(tempstr, password));
+                        account.setHostAddr(findBlock(tempstr, hostAddr));
+                        account.setPort(Integer.parseInt(findBlock(tempstr, port)));
+                        account.setNick(findBlock(tempstr, nick));
+                        account.setResource(findBlock(tempstr, resource));
                         account.setUseSSL((findBlock(tempstr, useSSL).equals("1"))?true:false);
                         account.setPlainAuth((findBlock(tempstr, plainAuth).equals("1"))?true:false);
-                        account.setUseCompression((findBlock(tempstr, compression).equals("1"))?true:false);
                         account.setMucOnly((findBlock(tempstr, mucOnly).equals("1"))?true:false);
+//#if HTTPPOLL || HTTPCONNECT || HTTPBIND
+//#                         account.setEnableProxy(findBlock(tempstr, enableProxy).equals("1")?true:false);
+//#                         account.setProxyHostAddr(findBlock(tempstr, proxyHostAddr));
+//#                         account.setProxyPort(Integer.parseInt(findBlock(tempstr, proxyPort)));
+//#endif
+                        account.setUseCompression((findBlock(tempstr, compression).equals("1"))?true:false);
                         account.setKeepAlivePeriod(Integer.parseInt(findBlock(tempstr, keepAlivePeriod)));
                         account.setKeepAliveType(Integer.parseInt(findBlock(tempstr, keepAliveType)));
-                        
+//#ifdef HTTPCONNECT
+//#                         account.setProxyUser(findBlock(tempstr, proxyUser));
+//#                         account.setProxyPass(findBlock(tempstr, proxyPass));
+//#endif
                         accountList.addElement(account);
                     } else parse=false;
                 }
@@ -191,9 +206,18 @@ public class Accounts {
                    .append(createBlock(useSSL, (a.getUseSSL()?"1":"0")))
                    .append(createBlock(plainAuth, (a.getPlainAuth()?"1":"0")))
                    .append(createBlock(mucOnly, (a.isMucOnly()?"1":"0")))
+//#if HTTPPOLL || HTTPCONNECT || HTTPBIND
+//#                    .append(createBlock(enableProxy, a.isEnableProxy()?"1":"0"))
+//#                    .append(createBlock(proxyHostAddr, a.getProxyHostAddr()))
+//#                    .append(createBlock(proxyPort, Integer.toString(a.getProxyPort())))
+//#endif
                    .append(createBlock(compression, (a.useCompression()?"1":"0")))
                    .append(createBlock(keepAliveType, Integer.toString(a.getKeepAliveType())))
                    .append(createBlock(keepAlivePeriod, Integer.toString(a.getKeepAlivePeriod())))
+//#ifdef HTTPCONNECT
+//#                    .append(createBlock(proxyUser, a.getProxyUser()))
+//#                    .append(createBlock(proxyPass, a.getProxyPass()))
+//#endif
                    .append("</a>\r\n");
             body.append(account);
         }

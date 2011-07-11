@@ -110,7 +110,7 @@ public class ContactMessageList extends MessageList {
 //#     MenuCommand cmdJuickPostRecommend=new MenuCommand(SR.MS_JUICK_POST_RECOMMEND, MenuCommand.SCREEN, 7);
 //#     MenuCommand cmdJuickPostShow=new MenuCommand(SR.MS_JUICK_POST_SHOW, MenuCommand.SCREEN, 8);
 //# 
-//#     public MenuCommand cmdJuickCommands=new MenuCommand(SR.MS_COMMANDS+" Juick", MenuCommand.SCREEN, 15, RosterIcons.ICON_JUICK);
+//#     MenuCommand cmdJuickCommands=new MenuCommand(SR.MS_COMMANDS+" Juick", MenuCommand.SCREEN, 15, RosterIcons.ICON_JUICK);
 //#     Vector currentJuickCommands = new Vector();
 //# 
 //#endif    
@@ -896,7 +896,7 @@ public class ContactMessageList extends MessageList {
         super.destroyView();
     }
 
-    public void userKeyPressed(int keyCode) {
+    public void additionalKey(int keyCode) {
         switch (keyCode) {
             case 3:
                 savePosition();
@@ -923,8 +923,50 @@ public class ContactMessageList extends MessageList {
                 Quote();
                 return;
         }
-        super.userKeyPressed(keyCode);
+
+        super.additionalKey(keyCode);
     }
+
+    public boolean doUserKeyAction(int command_id) {
+        switch (command_id) {
+//#ifdef JUICK
+//#             case 21:
+//#                 menuAction(cmdJuickCommands, this);
+//#                 return true;
+//#endif
+            case 30:
+                Quote();
+                return true;
+            case 31:
+                savePosition();
+                new ActiveContacts(contact);
+                return true;
+            case 48:
+                if (cf.useTabs) {
+                    savePosition();
+                    sd.roster.searchActiveContact(-1); //previous contact with messages
+                    return true;
+                }
+            case 49:
+                if (cf.useTabs) {
+                    savePosition();
+                    sd.roster.searchActiveContact(1); //next contact with messages
+                    return true;
+                }
+            case 50:
+                clearReadedMessageList();
+                return true;
+            case 51:
+                Reply();
+                return true;
+            case 52:
+                messageEditResume();
+                return true;
+        }
+
+        return super.doUserKeyAction(command_id);
+    }
+
     public boolean longKey(int key) {
         switch(key) {
             case 0:

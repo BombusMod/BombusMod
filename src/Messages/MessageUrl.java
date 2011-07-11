@@ -116,5 +116,15 @@ public class MessageUrl extends DefForm implements TextBoxNotify {
 //#              addMenuCommand(cmdCopyPlus);
 //#          }
 //#endif
-     }    
+     }
+
+    public boolean doUserKeyAction(int command_id) {
+        switch (command_id) {
+            case 52:
+                EditURL();
+                return true;
+        }
+
+        return super.doUserKeyAction(command_id);
+    }
 }
