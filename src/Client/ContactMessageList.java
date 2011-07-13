@@ -962,6 +962,9 @@ public class ContactMessageList extends MessageList {
             case 52:
                 messageEditResume();
                 return true;
+            case 59:
+                focusToNextHightlitedMessage();
+                return true;
         }
 
         return super.doUserKeyAction(command_id);
@@ -993,6 +996,27 @@ public class ContactMessageList extends MessageList {
         if (!messages.isEmpty()) {
             clearReadedMessageList();
         }
+    }
+
+    private void focusToNextHightlitedMessage() {
+        int count = getItemCount();
+        if (startSelection || count == 0)
+            return;
+
+        int i = cursor + 1;
+        do {
+            if (i == count)
+                i = 0;
+            if (i == 0 || i == (count - 1)) {
+                moveCursorTo(i);
+                return;
+            }
+            Msg msg = ( (MessageItem) contact.msgs.elementAt(i) ).msg;
+            if (msg.highlite) {
+                moveCursorTo(i);
+                return;
+            }
+        } while (++i != cursor);
     }
 
     // TODO: fix this shit

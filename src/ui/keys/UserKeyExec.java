@@ -70,7 +70,7 @@ public class UserKeyExec {
     private static UserKeyExec instance;
     private StaticData sd = StaticData.getInstance();
     private int previousKeyCode;
-    public final static String cmds[] = new String[59];
+    public final static String cmds[] = new String[60];
     public KeyScheme keyScheme;
 
     public static UserKeyExec getInstance() {
@@ -92,11 +92,11 @@ public class UserKeyExec {
 
     private void init_cmds() {
         cmds[0] = SR.MS_NO;
-        cmds[1] = "[Roster]" + SR.MS_OPTIONS;
+        cmds[1] = "[Roster] " + SR.MS_OPTIONS;
         cmds[2] = SR.MS_CLEAN_ALL_MESSAGES;
         cmds[3] = SR.MS_RECONNECT;
 //#ifdef STATS
-//#         cmds[4] = "[Roster]" + SR.MS_STATS;
+//#         cmds[4] = "[Roster] " + SR.MS_STATS;
 //#endif
         cmds[5] = SR.MS_STATUS_MENU;
         cmds[6] = SR.MS_FILE_TRANSFERS;
@@ -157,17 +157,18 @@ public class UserKeyExec {
         cmds[45] = "[Roster] " + "Vibra/Sound";
         cmds[46] = "Moto backlight";
         cmds[47] = "[Roster] " + "Active contacts";
-        cmds[48] = "[Chat]" + "Previous contact with messages";
-        cmds[49] = "[Chat]" + "Next contact with messages";
-        cmds[50] = "[Chat + XMLList + ActiveContacts]" + SR.MS_CLEAR_LIST;
-        cmds[51] = "[Chat]" + SR.MS_REPLY;
-        cmds[52] = "[Chat + Roster + ActiveContacts + XMLList + MessageUrl]" + SR.MS_RESUME;
-        cmds[53] = "["+SR.MS_ARCHIVE+"]" + SR.MS_PASTE_BODY;
-        cmds[54] = "["+SR.MS_PRIVACY_LISTS+"]" + "Add new item";
-        cmds[55] = "["+SR.MS_HISTORY+"]" + "Begin of file";
-        cmds[56] = "["+SR.MS_HISTORY+"]" + "End of file";
-        cmds[57] = "["+SR.MS_BOOKMARKS+"]" + SR.MS_DISCO_ROOM;
-        cmds[58] = "[Roster]" + "Kick from groupchat";
+        cmds[48] = "[Chat] " + "Previous contact with messages";
+        cmds[49] = "[Chat] " + "Next contact with messages";
+        cmds[50] = "[Chat + XMLList + ActiveContacts] " + SR.MS_CLEAR_LIST;
+        cmds[51] = "[Chat] " + SR.MS_REPLY;
+        cmds[52] = "[Chat + Roster + ActiveContacts + XMLList + MessageUrl] " + SR.MS_RESUME;
+        cmds[53] = "["+SR.MS_ARCHIVE+"] " + SR.MS_PASTE_BODY;
+        cmds[54] = "["+SR.MS_PRIVACY_LISTS+"] " + "Add new item";
+        cmds[55] = "["+SR.MS_HISTORY+"] " + "Begin of file";
+        cmds[56] = "["+SR.MS_HISTORY+"] " + "End of file";
+        cmds[57] = "["+SR.MS_BOOKMARKS+"] " + SR.MS_DISCO_ROOM;
+        cmds[58] = "[Roster] " + "Kick from groupchat";
+        cmds[59] = "[Chat] " + "focus to next hightlited message";
     }
 
     public static int getCommandID(String str) {

@@ -194,10 +194,10 @@ public abstract class VirtualList {
                 moveCursorEnd();
                 return true;
             case 24:
-                keyUp();
+                keyDwn();
                 return true;
             case 25:
-                keyDwn();
+                keyUp();
                 return true;
             case 26:
                 pageLeft();
