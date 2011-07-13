@@ -838,65 +838,8 @@ public abstract class VirtualList {
         }
     }
 
-    private byte key_long_executed; // 0 - not try, 1 - not executed, 2 - executed.
-/*
-    protected final void keyRepeated(int keyCode) {
-//#ifdef DEBUG
-//#         System.out.println("keyRepeated: " + keyCode);
-//#endif
-
-        if ((key_long_executed < 1) && UserKeyExec.getInstance().isCurrentKey(keyCode, false)) {
-            key_long_executed = (byte) (sendKeyAction(keyCode, true, false) ? 2 : 1);
-        }
-
-        if (key_long_executed == 1) {
-            sendKeyAction(keyCode, false, true);
-        }
-
-//#ifdef LIGHT_CONFIG      
-//#             CustomLight.keyPressed();
-//#endif
-//#ifdef AUTOSTATUS
-//#     sd.roster.userActivity();
-//#endif
-    }
-
-    protected final void keyReleased(int keyCode) {
-//#ifdef DEBUG
-//#         System.out.println("keyReleased: " + keyCode);
-//#endif
-//#ifdef AUTOSTATUS
-//#     sd.roster.userActivity();
-//#endif
-    }
-*//*
-    protected void keyPressed(int keyCode) {
-//#ifdef DEBUG
-//#         System.out.println("keyPressed: " + keyCode);
-//#endif
-
-        key_long_executed = 0;
-
-        UserKeyExec.getInstance().update_current_key(keyCode, false);
-
-        sendKeyAction(keyCode, false, true);*/
-		
-    protected void keyPressed(int keyCode) {
-
-        // workaround for SE JP6 - enabling vibra in closed state
-    /*    if (phoneManufacturer == Config.SONYE) {
-            midlet.BombusMod.getInstance().setDisplayable((Displayable) null);
-            try {
-                 Thread.sleep(300);
-            } catch (Exception ex) { }
-            sd.canvas.show(this);
-        }
-*/
-    }
-
     public void keyGreen() {}
     public void keyClear() {}
-    
 
     private int yPointerPos;
 

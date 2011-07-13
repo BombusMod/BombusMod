@@ -144,18 +144,23 @@ public class VirtualCanvas extends Canvas implements CommandListener{
         }
     }
 
-    protected final void keyPressed(int keyCode) {
+    protected final void keyPressed(int rawKeyCode) {
+        int keyCode = getKeyCode(rawKeyCode);
 //#ifdef AUTOSTATUS
 //#     sd.roster.userActivity();
 //#endif
-        kHold = false;        
+        kHold = false;
 //#ifdef POPUPS
-        if (PopUp.getInstance().handlePressed(getKey(keyCode))) {
+        if (PopUp.getInstance().handlePressed(keyCode)) {
+//#ifdef USER_KEYS
+            UserKeyExec.getInstance().keyExecute(keyCode, true);
+            UserKeyExec.getInstance().afterActions(keyCode);
+//#endif
             repaint();
             return;
         }
 //#endif
-        checkKey(getKey(keyCode));
+        checkKey(keyCode);
         repaint();
 //#ifdef LIGHT_CONFIG      
 //#             CustomLight.keyPressed();
@@ -163,12 +168,16 @@ public class VirtualCanvas extends Canvas implements CommandListener{
 //#ifdef AUTOSTATUS
 //#     sd.roster.setAutoAwayTimer();
 //#endif
+//#ifdef USER_KEYS
+        UserKeyExec.getInstance().afterActions(keyCode);
+//#endif
      }
 
-    protected final void keyRepeated(int keyCode){
+    protected final void keyRepeated(int rawKeyCode){
+        int keyCode = getKeyCode(rawKeyCode);
         // TODO: uncomment to check motorola
         //kHold = true;
-        //doKeyAction(getKey(keyCode));
+        //doKeyAction(keyCode);
 //#ifdef LIGHT_CONFIG      
 //#             CustomLight.keyPressed();
 //#endif 
@@ -176,8 +185,9 @@ public class VirtualCanvas extends Canvas implements CommandListener{
 //#     sd.roster.userActivity();
 //#endif
     }
-    protected final void keyReleased(int keyCode) {
-        //list.keyReleased(keyCode);
+
+    protected final void keyReleased(int rawKeyCode) {
+        int keyCode = getKeyCode(rawKeyCode);
 //#ifdef LIGHT_CONFIG      
 //#             CustomLight.keyPressed();
 //#endif
@@ -186,26 +196,13 @@ public class VirtualCanvas extends Canvas implements CommandListener{
 //#endif
         KeyRepeatTimer.stop();
 //#ifdef POPUPS
-        if (PopUp.getInstance().handleReleased(getKey(keyCode))) {
+/*
+        if (PopUp.getInstance().handleReleased(keyCode)) {
             repaint();
             return;
-        } else try {
-            switch (getKey(keyCode)) {
-                case VirtualCanvas._KEY_STAR:
-                    list.showTimeTrafficInfo();
-                return;
-                case VirtualCanvas._KEY_POUND:
-                    list.showInfo();
-            }
-        } catch(Exception e) {
-            if (sd.roster != null)
-                sd.roster.errorLog("keyreleased exception: " + e.getMessage());
-//#ifdef DEBUG
-//#             e.printStackTrace();
-//#endif
         }
+*/
 //#endif
-
     }
 
     protected final void pointerPressed(int x, int y) {
@@ -293,7 +290,8 @@ public class VirtualCanvas extends Canvas implements CommandListener{
             }
         }
     }
-        private int getKey(int key_code) {
+
+    public int getKeyCode(int key_code) {
         switch (key_code) {
             case KEY_NUM0:
                 return 0;
@@ -586,6 +584,12 @@ public class VirtualCanvas extends Canvas implements CommandListener{
                 if (list.canBack)
                     list.cmdCancel();
                 return;
+            case VirtualCanvas._KEY_STAR:
+                list.showTimeTrafficInfo();
+                return;
+            case VirtualCanvas._KEY_POUND:
+                list.showInfo();
+                return;
         }
         if (!sendEvent(keyCode)) {
             if (kHold && list.longKey(keyCode)) {
@@ -596,9 +600,9 @@ public class VirtualCanvas extends Canvas implements CommandListener{
                 kHold = false;
             } else {
 //#ifdef USER_KEYS
-            if (UserKeyExec.getInstance().keyExecute(keyCode)) {
-                return;
-            }
+                if (UserKeyExec.getInstance().keyExecute(keyCode, false)) {
+                    return;
+                }
 //#endif
                 list.additionalKey(keyCode);
             }
@@ -606,9 +610,9 @@ public class VirtualCanvas extends Canvas implements CommandListener{
     }
 
     private boolean sendEvent(int key_code) {
-        int key = getKey(key_code);
-        if ((key > -1) && (list.getFocusedObject() != null)) {
-            return ((VirtualElement) list.getFocusedObject()).handleEvent(key);
+        int keyCode = getKeyCode(key_code);
+        if ((keyCode > -1) && (list.getFocusedObject() != null)) {
+            return ((VirtualElement) list.getFocusedObject()).handleEvent(keyCode);
         }
         return false;
     }
@@ -650,7 +654,7 @@ class KeyRepeatTimer extends TimerTask {
                 return;
             }
             VirtualCanvas.getInstance().kHold = true;
-            try { 
+            try {
                 VirtualCanvas.getInstance().doKeyAction(key);
             } catch(Exception e) {
 //#ifdef DEBUG

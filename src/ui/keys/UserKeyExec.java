@@ -73,6 +73,10 @@ public class UserKeyExec {
     public final static String cmds[] = new String[60];
     public KeyScheme keyScheme;
 
+    // true: keyExecute return true;
+    // false: keyExecute return false or not called;
+    private boolean executed;
+
     public static UserKeyExec getInstance() {
         if (instance == null)
             instance = new UserKeyExec();
@@ -88,6 +92,7 @@ public class UserKeyExec {
             keyScheme = IE.UserKeys.loadFromFile(UserKey.def_keys, true);
             IE.UserKeys.rmsUpdate(keyScheme);
         }
+        executed = false;
     }
 
     private void init_cmds() {
@@ -179,14 +184,23 @@ public class UserKeyExec {
         return 0;
     }
 
-    public boolean keyExecute(int key) { // return false if key not executed
-        boolean executed = false;
+    public void afterActions(int keyCode) {
+        if (executed) {
+            previousKeyCode = -1; // Авось, нет клавиши с таким кодом...
+        } else {
+            previousKeyCode = keyCode;
+        }
+        executed = false;
+    }
+
+    public boolean keyExecute(int key, boolean onlyWithModificator) { // return false if key not executed
+        executed = false;
 
         final VirtualList current = sd.canvas.getList();
         if (current instanceof UserKeyEdit) {
             if (((UserKeyEdit) current).key(key)) {
-                previousKeyCode = key;
-                return true;
+                executed = true;
+                return executed;
             }
         }
 
@@ -200,7 +214,7 @@ public class UserKeyExec {
                 if (u.equals(key, true))
                     executed = commandExecute(u.command_id) || executed;
             }
-        } else {
+        } else if (!onlyWithModificator) {
             for (int i = 0; i < size; i++) {
                 UserKey u = ((UserKey) keysList.elementAt(i));
                 if (u.equals(key, false))
@@ -208,7 +222,6 @@ public class UserKeyExec {
             }
         }
 
-        previousKeyCode = key;
         return executed;
     }
 

@@ -48,16 +48,16 @@ public class PopUp {
 
     private final static int COLOR_ALERT_INK = 0xffffff;
     private final static int COLOR_ALERT_BGND = 0xff0000;
-    
+
     private int popUpHeight, popUpWidth, widthBorder, heightBorder;
     private int border=8;
     private int padding=4;
-    
+
     private static Font font;
-    
+
     private int width;
     private int height;
-    
+
     private Vector popUps;
 
     private final static int  SCROLLABLE_NONE=-1;
@@ -68,13 +68,13 @@ public class PopUp {
     private int maxWdth;
 
     private int startLine;
-    
+
     public int scrollable=SCROLLABLE_NONE;
-    
+
     private RosterIcons ri;
 
     public boolean handled = false;
-    
+
     synchronized public void addPopup(int type, String contact, String message){
         if (message!=null) {
             //popUps.addElement(new PopUpElement(type, contact, StringUtils.parseMessage(message, width-border-padding, height-border-padding, false, font)));
@@ -82,7 +82,7 @@ public class PopUp {
             popUps.addElement(new PopUpElement(type, contact, StringUtils.parseMessage(message, width-border-padding, font)));
         }
 //#ifdef DEBUG
-//# 	//System.out.println("added message to array = "+message);
+//#         //System.out.println("added message to array = "+message);
 //#endif
     }
 
@@ -96,7 +96,7 @@ public class PopUp {
             instance = new PopUp();
         return instance;
     }
-    
+
     public void init(Graphics g, int width, int height) {
         this.height=height;
         this.width=width;
@@ -112,12 +112,12 @@ public class PopUp {
         if(size()>0) {
             popUps.removeElementAt(0);
             scrollable=SCROLLABLE_NONE;
-            startLine=0;            
+            startLine=0;
             return true;
         }
         return false;
     }
-    
+
     private void scrollDown() {
         if (scrollable==SCROLLABLE_DOWN || scrollable==SCROLLABLE_BOTH) {
             Vector lines=((PopUpElement)popUps.elementAt(0)).getMessage();
@@ -125,7 +125,7 @@ public class PopUp {
             startLine++;
         }
     }
-    
+
     private void scrollUp() {
         if (scrollable==SCROLLABLE_UP || scrollable==SCROLLABLE_BOTH) {
             Vector lines=((PopUpElement)popUps.elementAt(0)).getMessage();
@@ -133,47 +133,47 @@ public class PopUp {
             startLine--;
         }
     }
-    
-    public boolean handlePressed(int keyCode) {
-	handled = false;
-	if (scrollable > -1) {
-	    switch (keyCode) {
-		case 2:
-		case 4:
-		case VirtualCanvas.KEY_UP:
-		case VirtualCanvas.KEY_LEFT:
-		    scrollUp();
-		    return handled = true;
-		case 6:
-		case 8:
-		case VirtualCanvas.KEY_DOWN:
-		case VirtualCanvas.KEY_RIGHT:
-		    scrollDown();
-		    return handled = true;
-	    }
-	}
-	if (keyCode == VirtualCanvas.KEY_GREEN) {
-	    String c = getContact();
-	    if (c != null) {
-//#ifdef POPUPS
-		VirtualList current = StaticData.getInstance().canvas.getList();
-		if (current instanceof ContactMessageList) {
-		    ((ContactMessageList) current).savePosition();
-		}
-		StaticData.getInstance().roster.showContactMessageList(c);
-//#endif
-		return handled = next();
-	    }
-	}
-	return handled = next();
-    }
 
-    public boolean handleReleased(int keyCode) {
-	if (!handled)
-	    return next();
-	return popUps.isEmpty();
+    public boolean handlePressed(int keyCode) {
+        handled = false;
+        if (scrollable > -1) {
+            switch (keyCode) {
+                case 2:
+                case 4:
+                case VirtualCanvas.KEY_UP:
+                case VirtualCanvas.KEY_LEFT:
+                    scrollUp();
+                    return handled = true;
+                case 6:
+                case 8:
+                case VirtualCanvas.KEY_DOWN:
+                case VirtualCanvas.KEY_RIGHT:
+                    scrollDown();
+                    return handled = true;
+            }
+        }
+        if (keyCode == VirtualCanvas.KEY_GREEN) {
+            String c = getContact();
+            if (c != null) {
+//#ifdef POPUPS
+                VirtualList current = StaticData.getInstance().canvas.getList();
+                if (current instanceof ContactMessageList) {
+                    ((ContactMessageList) current).savePosition();
+                }
+                StaticData.getInstance().roster.showContactMessageList(c);
+//#endif
+                return handled = next();
+            }
+        }
+        return handled = next();
     }
-    
+/*
+    public boolean handleReleased(int keyCode) {
+        if (!handled)
+            return next();
+        return popUps.isEmpty();
+    }
+*/
     public void clear() {
         if(size()>0)
             popUps.removeAllElements();
@@ -182,11 +182,11 @@ public class PopUp {
     private void drawAllStrings(Graphics g, int x, int y) {
         Vector lines=((PopUpElement)popUps.elementAt(0)).getMessage();
         if (lines.size()<1) return;
-        
+
         int fh=getFontHeight();
 
         int pos=0;
-        
+
         for (Enumeration stringLine=lines.elements(); stringLine.hasMoreElements(); ) {
             String str=(String)stringLine.nextElement();
             if (pos>=startLine) {
@@ -195,38 +195,38 @@ public class PopUp {
             }
             pos++;
             str=null;
-	}
+        }
     }
-    
+
     private int getFontHeight() {
         return font.getHeight();
     }
 
     private int getHeight() {
         Vector message=((PopUpElement)popUps.elementAt(0)).getMessage();
-        
+
         return getFontHeight()*(message.size()-startLine);
     }
-    
+
     private int getStrWidth(String string) {
         return font.stringWidth(string);
     }
-    
+
     private int getMaxWidth() {
         Vector lines=((PopUpElement)popUps.elementAt(0)).getMessage();
 
         int length=0;
-        
+
         if (lines.size()<1) return length;
 
-	for (int line=0; line<lines.size(); ) {
+        for (int line=0; line<lines.size(); ) {
             String string=(String) lines.elementAt(line);
             length=(length>getStrWidth(string))?length:getStrWidth(string);
             line++;
-	}
+        }
         return length;
     }
-    
+
     private int getColorInk() {
         int type=((PopUpElement)popUps.elementAt(0)).getType();
         switch (type) {
@@ -237,7 +237,7 @@ public class PopUp {
         }
         return COLOR_ALERT_INK;
     }
-    
+
     private int getColorBgnd() {
         int type=((PopUpElement)popUps.elementAt(0)).getType();
         switch (type) {
@@ -248,36 +248,36 @@ public class PopUp {
         }
         return COLOR_ALERT_BGND;
     }
-    
+
 //paint
     //private static int[] alphaBuffer = null;
-    
+
 /*    private void fillSemiTransRect(Graphics graph, int color, int alpha, int xPos, int yPos, int rectWidth, int rectHeight) {
         int r1 = ((color & 0xFF0000) >> 16);
         int g1 = ((color & 0x00FF00) >> 8);
         int b1 = (color & 0x0000FF);
-        
+
         int col = (r1 << 16) | (g1 << 8) | (b1) | (alpha << 24);
 
         int[] alphaBuffer = new int[rectWidth*rectHeight];
-        
+
         for(int i = 0; i < alphaBuffer.length; i++)
           alphaBuffer[i] = col;
-        
+
         //Image img = Image.createImage(rectWidth, rectHeight);
-        
+
         graph.drawRGB(alphaBuffer, 0, rectWidth, xPos, yPos, rectWidth, rectHeight, true);
 
         alphaBuffer = null;
     }
 */
     public void paintCustom(Graphics graph) {
-	if(size()<1)
-	    return;
+        if(size()<1)
+            return;
         scrollable=(startLine>0)?SCROLLABLE_UP:SCROLLABLE_NONE;
-        
+
         maxWdth=getMaxWidth();
-        
+
         popUpWidth=(maxWdth>(width-border))?width-border:maxWdth+padding;
         widthBorder=(maxWdth>popUpWidth)?border/2:(width-popUpWidth)/2;
 
@@ -285,31 +285,31 @@ public class PopUp {
 
         if (stringsHeight>height) {
             scrollable=(startLine>0)?SCROLLABLE_BOTH:SCROLLABLE_DOWN;
-            
+
             heightBorder=0;
             popUpHeight=height;
         } else {
             popUpHeight=stringsHeight+padding;
             heightBorder=(height-popUpHeight)/2;
         }
-     
+
         //graph.translate(widthBorder, heightBorder);
 
         //graph.setClip(0,0,popUpWidth+1,popUpHeight+1);
 
 /*        int alpha = 200;
-       
+
         if (alpha<255) {
             fillSemiTransRect(graph, getColorBgnd(), alpha, widthBorder+1, heightBorder+1, popUpWidth-1, popUpHeight-1);
         } else {*/
- 
+
             graph.setColor(getColorBgnd());
             graph.fillRect(widthBorder+1,heightBorder+1,popUpWidth-1,popUpHeight-1);             //fill
         //}
-        
+
         graph.setColor(getColorInk());
         graph.drawRect(widthBorder,heightBorder,popUpWidth,popUpHeight);                 //border
-        
+
         graph.setFont(font);
         switch (scrollable) {
             case SCROLLABLE_UP:
@@ -322,9 +322,9 @@ public class PopUp {
                 ri.drawImage(graph, RosterIcons.ICON_SCROLLABLE_DOWN, widthBorder+maxWdth-ri.getWidth(), heightBorder+popUpHeight-ri.getHeight());
                 break;
         }
-        
+
         drawAllStrings(graph, widthBorder+2, heightBorder+3);
-        
+
         //graph.translate(-widthBorder, -heightBorder);
         //graph.setClip(0,0,width,height);
     }
@@ -333,7 +333,7 @@ public class PopUp {
         return popUps.size();
     }
 //paint
-    
+
     static class PopUpElement {
         private int type;
         private String from;
@@ -350,4 +350,4 @@ public class PopUp {
         public String getContact() { return from; }
     }
 }
- 
+
