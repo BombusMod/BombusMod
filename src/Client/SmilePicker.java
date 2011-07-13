@@ -216,7 +216,7 @@ public class SmilePicker
         redraw();
     }
 
-    public void additionalKey(int keyCode) {
+    public void doKeyAction(int keyCode) {
         switch (keyCode) {
             case 3:
                 super.pageLeft();
@@ -227,7 +227,7 @@ public class SmilePicker
                 keyUp();
                 break;            
         }
-        super.additionalKey(keyCode);
+        super.doKeyAction(keyCode);
     }
     
     public boolean isSelectable() { return true; }

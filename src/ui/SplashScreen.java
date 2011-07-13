@@ -220,7 +220,7 @@ public final class SplashScreen extends DefForm implements VirtualElement {
         return true;
     }
 
-    public final void additionalKey(int keyCode) {
+    public final void doKeyAction(int keyCode) {
         keypressed = keyCode;
 
         if (pos >= 20) {

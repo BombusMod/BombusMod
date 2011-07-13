@@ -2770,7 +2770,7 @@ public class Roster
         cmdActions();
     }
 
-    public void additionalKey(int keyCode) {
+    public void doKeyAction(int keyCode) {
         switch (keyCode) {
             case 1:
                 collapseAllGroup();
@@ -2788,7 +2788,7 @@ public class Roster
                 changeMotoBacklightState();
                 break;
         }
-        super.additionalKey(keyCode);
+        super.doKeyAction(keyCode);
 //#ifdef LIGHT_CONFIG        
 //#             CustomLight.keyPressed();
 //#endif  

@@ -143,7 +143,7 @@ public class ActiveContacts extends DefForm {
         }
     }
 
-    public void additionalKey(int key) {
+    public void doKeyAction(int key) {
         switch (key) {
             case 0:
                 focusToNextUnreaded();
@@ -152,7 +152,7 @@ public class ActiveContacts extends DefForm {
                 destroyView();
                 return;
         }
-        super.additionalKey(key);
+        super.doKeyAction(key);
     }
 
     public boolean doUserKeyAction(int command_id) {

@@ -552,45 +552,6 @@ public class VirtualCanvas extends Canvas implements CommandListener{
      * @param keyCode код нажатой кнопки
      */
     protected void doKeyAction(int keyCode) {
-        switch (keyCode) {
-            case KEY_GREEN:
-                list.keyGreen();
-                return;
-            case KEY_SOFT_LEFT:
-                list.doLeftAction();
-                return;
-            case KEY_SOFT_RIGHT:
-                list.doRightAction();
-                return;
-            case KEY_UP:
-                list.keyUp();
-                return;
-            case KEY_DOWN:
-                list.keyDwn();
-                return;
-            case KEY_LEFT:
-                list.pageLeft();
-                return;
-            case KEY_RIGHT:
-                list.pageRight();
-                return;
-            case KEY_FIRE:
-                list.eventOk();
-                return;
-            case KEY_CLEAR:
-                list.keyClear();
-                return;
-            case KEY_BACK:
-                if (list.canBack)
-                    list.cmdCancel();
-                return;
-            case VirtualCanvas._KEY_STAR:
-                list.showTimeTrafficInfo();
-                return;
-            case VirtualCanvas._KEY_POUND:
-                list.showInfo();
-                return;
-        }
         if (!sendEvent(keyCode)) {
             if (kHold && list.longKey(keyCode)) {
 //#ifdef POPUPS
@@ -604,7 +565,7 @@ public class VirtualCanvas extends Canvas implements CommandListener{
                     return;
                 }
 //#endif
-                list.additionalKey(keyCode);
+                list.doKeyAction(keyCode);
             }
         }
     }

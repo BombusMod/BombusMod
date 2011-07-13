@@ -196,7 +196,7 @@ public abstract class MessageList extends DefForm
         }
     }
 
-    public void additionalKey(int key) {
+    public void doKeyAction(int key) {
         switch(key) {
 //#ifdef SMILES
             case VirtualCanvas._KEY_STAR:
@@ -205,7 +205,7 @@ public abstract class MessageList extends DefForm
 //#endif
         }
 
-        super.additionalKey(key);
+        super.doKeyAction(key);
     }
 
     public boolean doUserKeyAction(int command_id) {

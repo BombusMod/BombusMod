@@ -147,37 +147,58 @@ public abstract class VirtualList {
 //#endif
     }
 
-    public void additionalKey(int keyCode) {
+    public void doKeyAction(int keyCode) {
         switch(keyCode) {
-            case 1:
             case VirtualCanvas.KEY_VOL_UP:
+            case 1:
                 moveCursorHome();
-                redraw();
                 return;
+            case VirtualCanvas.KEY_VOL_DOWN:
+            case 7:
+                moveCursorEnd();
+                return;
+            case VirtualCanvas.KEY_UP:
             case 2:
                 keyUp();
-                redraw();
                 return;
+            case VirtualCanvas.KEY_DOWN:
             case 8:
                 keyDwn();
-                redraw();
                 return;
+            case VirtualCanvas.KEY_LEFT:
             case 4:
                 pageLeft();
-                redraw();
                 return;
+            case VirtualCanvas.KEY_RIGHT:
             case 6:
                 pageRight();
-                redraw();
                 return;            
+            case VirtualCanvas.KEY_FIRE:
             case 5:
                 eventOk();
                 return;
-            case 7:
-            case VirtualCanvas.KEY_VOL_DOWN:
-                moveCursorEnd();
-                redraw();
-                return;            
+            case VirtualCanvas.KEY_SOFT_LEFT:
+                doLeftAction();
+                return;
+            case VirtualCanvas.KEY_SOFT_RIGHT:
+                doRightAction();
+                return;
+            case VirtualCanvas.KEY_CLEAR:
+                keyClear();
+                return;
+            case VirtualCanvas.KEY_GREEN:
+                keyGreen();
+                return;
+            case VirtualCanvas.KEY_BACK:
+                if (canBack)
+                    cmdCancel();
+                return;
+            case VirtualCanvas._KEY_STAR:
+                showTimeTrafficInfo();
+                return;
+            case VirtualCanvas._KEY_POUND:
+                showInfo();
+                return;
         }
     }
 

@@ -253,7 +253,7 @@ public class Bookmarks extends DefForm {
     }
 //#endif
 
-    public void additionalKey(int keyCode) {
+    public void doKeyAction(int keyCode) {
         switch (keyCode) {
             case 1:
                 moveCursorHome();
@@ -271,7 +271,7 @@ public class Bookmarks extends DefForm {
                 discoCurrent();
                 return;
         }
-        super.additionalKey(keyCode);
+        super.doKeyAction(keyCode);
     }
 
     public boolean doUserKeyAction(int command_id) {

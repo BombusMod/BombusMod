@@ -896,7 +896,7 @@ public class ContactMessageList extends MessageList {
         super.destroyView();
     }
 
-    public void additionalKey(int keyCode) {
+    public void doKeyAction(int keyCode) {
         switch (keyCode) {
             case 3:
                 savePosition();
@@ -924,7 +924,7 @@ public class ContactMessageList extends MessageList {
                 return;
         }
 
-        super.additionalKey(keyCode);
+        super.doKeyAction(keyCode);
     }
 
     public boolean doUserKeyAction(int command_id) {
