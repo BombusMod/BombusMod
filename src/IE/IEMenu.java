@@ -99,6 +99,7 @@ public class IEMenu
                 choice = 5;
                 SelectFile(true);
             }} );
+//#ifdef USER_KEYS
         itemsList.addElement(new SpacerItem(10));
         itemsList.addElement(new SimpleString(SR.MS_CUSTOM_KEYS, true));
         itemsList.addElement(new LinkString(SR.MS_LOAD_FROM_FILE) {
@@ -111,6 +112,7 @@ public class IEMenu
                 choice = 9;
                 SelectFile(true);
             }} );
+//#endif
     }
 
     public void SelectFile(boolean getDir) {
@@ -143,12 +145,14 @@ public class IEMenu
             case 7: //save Accounts
                 new IE.Accounts(pathSelected, 1, false);
                 break;
+//#ifdef USER_KEYS
             case 8: //load UserKeys
                 new IE.UserKeys(pathSelected, 0, false);
                 break;
             case 9: //save UserKeys
                 new IE.UserKeys(pathSelected, 1, false);
                 break;
+//#endif
         }
     }
 }

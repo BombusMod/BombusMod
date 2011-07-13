@@ -24,7 +24,7 @@ import javax.microedition.midlet.MIDlet;
 import ui.controls.PopUp;
 //#endif
 //#ifdef USER_KEYS
-//# import ui.keys.UserKeyExec;
+import ui.keys.UserKeyExec;
 //#endif
 //#ifdef LIGHT_CONFIG
 //# import LightControl.CustomLight;
@@ -66,7 +66,7 @@ public class VirtualCanvas extends Canvas implements CommandListener{
     static MIDlet midlet;
 
     boolean kHold = false;
-	
+
     protected StaticData sd = StaticData.getInstance();
     
     public static VirtualCanvas getInstance() {
@@ -190,14 +190,14 @@ public class VirtualCanvas extends Canvas implements CommandListener{
             repaint();
             return;
         } else try {
-	    switch (getKey(keyCode)) {
-		case VirtualCanvas._KEY_STAR:
-		    list.showTimeTrafficInfo();
+            switch (getKey(keyCode)) {
+                case VirtualCanvas._KEY_STAR:
+                    list.showTimeTrafficInfo();
                 return;
-		case VirtualCanvas._KEY_POUND:
-		    list.showInfo();
-	    }
-	} catch(Exception e) {
+                case VirtualCanvas._KEY_POUND:
+                    list.showInfo();
+            }
+        } catch(Exception e) {
             if (sd.roster != null)
                 sd.roster.errorLog("keyreleased exception: " + e.getMessage());
 //#ifdef DEBUG
@@ -588,11 +588,6 @@ public class VirtualCanvas extends Canvas implements CommandListener{
                 return;
         }
         if (!sendEvent(keyCode)) {
-//#ifdef USER_KEYS
-//#             if (UserKeyExec.getInstance().keyExecute(keyCode, kHold)) {
-//#                 return;
-//#             }
-//#endif
             if (kHold && list.longKey(keyCode)) {
 //#ifdef POPUPS
                 PopUp.getInstance().handled = true;
@@ -600,6 +595,11 @@ public class VirtualCanvas extends Canvas implements CommandListener{
                 KeyRepeatTimer.stop();
                 kHold = false;
             } else {
+//#ifdef USER_KEYS
+            if (UserKeyExec.getInstance().keyExecute(keyCode)) {
+                return;
+            }
+//#endif
                 list.additionalKey(keyCode);
             }
         }
@@ -751,5 +751,3 @@ class TimerTaskRotate extends TimerTask {
     }*/
 }
 //#endif
-
-

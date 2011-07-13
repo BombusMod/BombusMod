@@ -12,6 +12,7 @@ import java.io.DataOutputStream;
 import java.util.Vector;
 import ui.keys.UserKeyExec;
 import ui.keys.UserKey;
+import ui.keys.KeyScheme;
 
 /**
 *
@@ -23,40 +24,39 @@ public class UserKeys {
         UserKeyExec uexec = UserKeyExec.getInstance();
 
         if (direction == 0) {
-            uexec.keysList = loadFromFile(path, fromResource);
-            rmsUpdate(uexec.keysList);
+            uexec.keyScheme = loadFromFile(path, fromResource);
+            rmsUpdate(uexec.keyScheme);
         } else {
-            exportData(uexec.keysList, path);
+            exportData(uexec.keyScheme, path);
         }
     }
 
-    public static Vector loadFromStorage() {
-        final Vector keysList = new Vector();
+    public static KeyScheme loadFromStorage() {
+        final KeyScheme keyScheme = new KeyScheme();
         DataInputStream is = NvStorage.ReadFileRecord(UserKey.storage, 0);
 
-        int size = 0;
         try {
-            size = is.readInt();
+            int size = is.readInt();
+            keyScheme.setModificatorCode(is.readInt());
             for (int i = 0; i < size; i++) {
-                UserKey u = UserKey.createFromDataInputStream(is);
-                keysList.addElement(u);
+                keyScheme.addKey(UserKey.createFromDataInputStream(is));
             }
         } catch (Exception e) {
             return null;
         }
 
-        return keysList;
+        return keyScheme;
     }
 
-    public static Vector loadFromFile(String path, boolean fromResource) {
-        final Vector keysList = new Vector();
+    public static KeyScheme loadFromFile(String path, boolean fromResource) {
+        final KeyScheme keyScheme = new KeyScheme();
 
         Vector[] table = null;
         if (!fromResource) {
             FileIO f = FileIO.createConnection(path);
             try {
                 InputStream in = f.openInputStream();
-                table = new StringLoader().stringLoader(in, 3);
+                table = new StringLoader().stringLoader(in, 2);
                 f.close();
             } catch (IOException e) { 
 //#ifdef DEBUG
@@ -64,29 +64,40 @@ public class UserKeys {
 //#endif
             }
         } else {
-            table = new StringLoader().stringLoader(path, 3);
+            table = new StringLoader().stringLoader(path, 2);
         }
 
-        for (int i = 0; i < table[0].size(); i++) {
-            keysList.addElement(UserKey.createFromStrings(
+        if (table == null) {
+            return keyScheme;
+        }
+
+        UserKey modificatorKey = UserKey.createFromStrings(
+                    (String) table[0].elementAt(0),
+                    (String) table[1].elementAt(0));
+
+        keyScheme.setModificatorCode(modificatorKey.key);
+
+        for (int i = 1; i < table[0].size(); i++) {
+            keyScheme.addKey(UserKey.createFromStrings(
                     (String) table[0].elementAt(i),
-                    (String) table[1].elementAt(i),
-                    (String) table[2].elementAt(i)));
+                    (String) table[1].elementAt(i)));
         }
 
-        return keysList;
+        return keyScheme;
     }
 
-    public static void rmsUpdate(Vector keysList) {
+    public static void rmsUpdate(KeyScheme keyScheme) {
         DataOutputStream outputStream = NvStorage.CreateDataOutputStream();
 
-        int size = keysList.size();
+        int size = keyScheme.getSize();
         try {
             outputStream.writeInt(size);
+            outputStream.writeInt(keyScheme.getModificator().key);
         } catch (Exception e) {
             return;
         }
 
+        Vector keysList = keyScheme.getKeysList();
         for (int i = 0; i < size; i++) {
             ((UserKey) keysList.elementAt(i)).saveMyToDataOutputStream(outputStream);
         }
@@ -94,16 +105,23 @@ public class UserKeys {
         NvStorage.writeFileRecord(outputStream, UserKey.storage, 0, true);
     }
 
-    private static void exportData(Vector keysList, String path) {
-        StringBuffer keyScheme = new StringBuffer("//UserKeys");
-
-        for (int i = 0; i < keysList.size(); i++) {
-            keyScheme.append("\n")
-                     .append(((UserKey) keysList.elementAt(i)).toLine());
-            }
+    private static void exportData(KeyScheme keyScheme, String path) {
+        StringBuffer str = new StringBuffer("//UserKeys");
+/*
+        str.append("\n")
+           .append(keyScheme.getModificator().toLine())
+           .append((char) 0x09)
+           .append("// Modificator");
+*/
+        Vector keysList = keyScheme.getFullKeysList();
+        int fullSize = keyScheme.getFullSize();
+        for (int i = 0; i < fullSize; i++) {
+            str.append("\n")
+               .append(((UserKey) keysList.elementAt(i)).toLine());
+        }
 
         FileIO file = FileIO.createConnection(path + "userkeys_" + Time.localDate() + ".txt");
-        file.fileWrite(keyScheme.toString().getBytes());
+        file.fileWrite(str.toString().getBytes());
     }
 }
 //#endif

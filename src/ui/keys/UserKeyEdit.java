@@ -25,92 +25,98 @@
  */
 
 package ui.keys;
+
 //#ifdef USER_KEYS
-//# import locale.SR;
-//# import ui.controls.form.CheckBox;
-//# import ui.controls.form.DefForm;
-//# import ui.controls.form.DropChoiceBox;
-//# import ui.controls.form.KeyInput;
-//# import ui.controls.form.SpacerItem;
-//# 
-//# /**
-//#  *
-//#  * @author ad
-//#  */
-//# 
-//# 
-//# class UserKeyEdit extends DefForm {
-//# 
-//#     private final UserKeysList userKeysList;
-//# 
-//#     private CheckBox two_keys_t;
-//#     private KeyInput key_t;
-//#     private DropChoiceBox commands_t = new DropChoiceBox(SR.MS_ACTION);
-//# 
-//#     UserKey origin_key;
-//#     UserKey u;
-//# 
-//#     public UserKeyEdit(UserKeysList originUserKeysList, UserKey origin_key) {
-//#         super((origin_key == null) ?
-//#              SR.MS_ADD :
-//#                 (origin_key.toString()));
-//# 
-//#         userKeysList = originUserKeysList;
-//#         u = new UserKey(origin_key);
-//#         this.origin_key = origin_key;
-//# 
-//# 
-//#         two_keys_t = new CheckBox("Two keys", u.two_keys);
-//#         itemsList.addElement(two_keys_t);
-//# 
-//#         key_t = new KeyInput(u, "Press it");
-//#         itemsList.addElement(key_t);
-//# 
-//#         itemsList.addElement(new SpacerItem(10));
-//# 
-//#         int selected = 0;
-//#         for (int i = 0; i < UserKeyExec.cmds.length; i++) {
-//#             if (UserKeyExec.cmds[i] != null)
-//#                 commands_t.add(UserKeyExec.cmds[i]);
-//#             if (u.command_id == i)
-//#                 selected = commands_t.size() - 1;
-//#         }
-//#         commands_t.setSelectedIndex(selected);
-//#         itemsList.addElement(commands_t);
-//# 
-//# 
-//#         moveCursorTo(getNextSelectableRef(-1));
-//#         parentView = userKeysList;
-//#     }
-//# 
-//#     public void cmdOk() {
-//#         u.command_id = UserKeyExec.getCommandID((String) commands_t.items.elementAt(commands_t.getSelectedIndex()));
-//# 
-//#         if (origin_key == null) {
-//#             userKeysList.itemsList.addElement(u);
-//#         } else {
-//#             origin_key.copyFrom(u);
-//#         }
-//# 
-//#         userKeysList.commandState();
-//# 		sd.canvas.show(userKeysList);
-//#     }
-//# 
-//#     public void eventOk() {
-//#         if (key_t.selected)
-//#             return;
-//# 
-//#         super.eventOk();
-//#         key_t.setTwoKeys(two_keys_t.getValue());
-//#     }
-//# 
-//#     public boolean key(int keyCode, boolean key_long) {
-//#         if (!key_t.selected)
-//#             return false;
-//# 
-//#         key_t.key(keyCode, key_long);
-//#         redraw();
-//#         return true;
-//#     }
-//# }
+import locale.SR;
+import ui.controls.form.CheckBox;
+import ui.controls.form.DefForm;
+import ui.controls.form.DropChoiceBox;
+import ui.controls.form.KeyInput;
+import ui.controls.form.SpacerItem;
+
+/**
+ *
+ * @author ad
+ */
+
+class UserKeyEdit extends DefForm {
+
+    private CheckBox modificator_t;
+    private KeyInput key_t;
+    private DropChoiceBox commands_t = new DropChoiceBox(SR.MS_ACTION);
+
+    private final UserKeysList userKeysList;
+    private boolean editModificatorKey;
+    UserKey origin_key;
+    UserKey u;
+
+    public UserKeyEdit(UserKeysList originUserKeysList, UserKey origin_key, boolean editModificatorKey) {
+        super((origin_key == null) ? SR.MS_ADD : origin_key.toString());
+
+        userKeysList = originUserKeysList;
+        u = new UserKey(origin_key);
+        this.origin_key = origin_key;
+
+        this.editModificatorKey = editModificatorKey;
+        if (!editModificatorKey) {
+            modificator_t = new CheckBox("With modificator", u.modificator);
+            itemsList.addElement(modificator_t);
+        }
+
+        key_t = new KeyInput(u.key, "Press it");
+        itemsList.addElement(key_t);
+
+        itemsList.addElement(new SpacerItem(10));
+
+        if (!editModificatorKey) {
+            int selected = 0;
+            for (int i = 0; i < UserKeyExec.cmds.length; i++) {
+                if (UserKeyExec.cmds[i] != null)
+                    commands_t.add(UserKeyExec.cmds[i]);
+                if (u.command_id == i)
+                    selected = commands_t.size() - 1;
+            }
+            commands_t.setSelectedIndex(selected);
+            itemsList.addElement(commands_t);
+        }
+
+        moveCursorTo(getNextSelectableRef(-1));
+    }
+
+    public void cmdOk() {
+        if (!editModificatorKey) {
+            u.command_id = UserKeyExec.getCommandID((String) commands_t.items.elementAt(commands_t.getSelectedIndex()));
+        }
+
+        if (origin_key == null) {
+            userKeysList.keyScheme.addKey(u);
+        } else {
+            origin_key.copyFrom(u);
+        }
+
+        if (!editModificatorKey) {
+            userKeysList.commandState();
+        }
+        destroyView();
+    }
+
+    public void eventOk() {
+        if (key_t.selected)
+            return;
+
+        super.eventOk();
+        if (!editModificatorKey)
+            u.modificator = modificator_t.getValue();
+    }
+
+    public boolean key(int keyCode) {
+        if (!key_t.selected)
+            return false;
+
+        key_t.key(keyCode);
+        u.key = key_t.keyCode;
+//        redraw(); // Need?
+        return true;
+    }
+}
 //#endif

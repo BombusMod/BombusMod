@@ -25,92 +25,87 @@
  */
 
 package ui.keys;
+
 //#ifdef USER_KEYS
-//# import locale.SR;
-//# 
-//# import Menu.MenuCommand;
-//# import ui.VirtualList;
-//# import ui.controls.form.DefForm;
-//# import java.util.Vector;
-//# 
-//# 
-//# 
-//# public class UserKeysList extends DefForm {
-//# 
-//# 
-//#      MenuCommand cmdApply = new MenuCommand(SR.MS_APPLY, MenuCommand.OK, 1);
-//#      MenuCommand cmdAdd = new MenuCommand(SR.MS_ADD, MenuCommand.SCREEN, 2);
-//#      MenuCommand cmdEdit = new MenuCommand(SR.MS_EDIT, MenuCommand.SCREEN, 3);
-//#      MenuCommand cmdDel = new MenuCommand(SR.MS_DELETE, MenuCommand.SCREEN, 4);
-//# 
-//#     /** Creates a new instance of AccountPicker */
-//#     public UserKeysList() {
-//#         super(SR.MS_CUSTOM_KEYS);
-//#         enableListWrapping(true);
-//#         copyKeysFrom(UserKeyExec.getInstance().keysList); // != loadItemsFrom(...)
-//#     }
-//# 
-//#     private final void copyKeysFrom(Vector items) {
-//#         synchronized (itemsList) {
-//#             if (items == null) {
-//#                 return;
-//#             }
-//#             int count = items.size();
-//#             itemsList.removeAllElements();
-//#             for (int i = 0; i < count; i++) {
-//#                 UserKey u = new UserKey((UserKey) items.elementAt(i));
-//#                 itemsList.addElement(u);
-//#             }
-//#             redraw();
-//#         }
-//#     }
-//# 
-//#     public void commandState() {
-//#       menuCommands.removeAllElements();
-//#         addMenuCommand(cmdAdd);
-//#         if (itemsList.isEmpty()) {
-//#             removeMenuCommand(cmdEdit);
-//#             removeMenuCommand(cmdDel);
-//#         } else {
-//#             addMenuCommand(cmdEdit);
-//#             addMenuCommand(cmdDel);
-//#         }
-//#         addMenuCommand(cmdApply);
-//#         }
-//# 
-//#     public void cmdOk() {
-//#        UserKeyExec uexec = UserKeyExec.getInstance();
-//#        uexec.keysList = itemsList;
-//#        IE.UserKeys.rmsUpdate(itemsList);
-//#        destroyView();
-//#     }
-//# 
-//#     public void menuAction(MenuCommand c, VirtualList d) {
-//#         if (c == cmdEdit) {
-//#             new UserKeyEdit(this, (UserKey) getFocusedObject());
-//#         }
-//#         if (c == cmdAdd) {
-//#             new UserKeyEdit(this, null);
-//#         }
-//#         if (c == cmdDel) {
-//#             itemsList.removeElementAt(cursor);
-//#             moveCursorHome();
-//#             commandState();
-//#             redraw();
-//#         }
-//#         if (c == cmdApply) {
-//#             cmdOk();
-//#         }
-//#         super.menuAction(c, d);
-//#     }
-//# 
-//#     public void eventOk() {
-//#         new UserKeyEdit(this, (UserKey) getFocusedObject());
-//#     }
-//# 
-//#      public String touchLeftCommand() { return SR.MS_MENU; }
-//#      public void touchLeftPressed() { showMenu(); }
-//# 
-//# }
-//# 
+import locale.SR;
+import Menu.MenuCommand;
+import ui.VirtualList;
+import ui.controls.form.DefForm;
+import java.util.Vector;
+import ui.VirtualElement;
+
+public class UserKeysList extends DefForm {
+
+    MenuCommand cmdApply = new MenuCommand(SR.MS_APPLY, MenuCommand.OK, 1);
+    MenuCommand cmdAdd = new MenuCommand(SR.MS_ADD, MenuCommand.SCREEN, 2);
+    MenuCommand cmdEdit = new MenuCommand(SR.MS_EDIT, MenuCommand.SCREEN, 3);
+    MenuCommand cmdDel = new MenuCommand(SR.MS_DELETE, MenuCommand.SCREEN, 4);
+    KeyScheme keyScheme;
+
+    public UserKeysList() {
+        super(SR.MS_CUSTOM_KEYS);
+        enableListWrapping(true);
+        keyScheme = new KeyScheme(UserKeyExec.getInstance().keyScheme);
+//        redraw(); TODO: Need?
+        commandState();
+    }
+
+    public VirtualElement getItemRef(int index) {
+        if (index >= getItemCount()) {
+            return null;
+        }
+        return (VirtualElement) keyScheme.getFullKeysList().elementAt(index);
+    }
+
+    public int getItemCount() {
+       return keyScheme.getFullSize();
+    }
+
+    public void commandState() {
+        menuCommands.removeAllElements();
+        addMenuCommand(cmdAdd);
+        if (keyScheme.getFullSize() > 0) {
+            addMenuCommand(cmdEdit);
+            addMenuCommand(cmdDel);
+        } else {
+            removeMenuCommand(cmdEdit);
+            removeMenuCommand(cmdDel);
+        }
+        addMenuCommand(cmdApply);
+    }
+
+    public void cmdOk() {
+       UserKeyExec uexec = UserKeyExec.getInstance();
+       uexec.keyScheme = keyScheme;
+       IE.UserKeys.rmsUpdate(keyScheme);
+       destroyView();
+    }
+
+    public void menuAction(MenuCommand c, VirtualList d) {
+        if (c == cmdEdit) {
+            new UserKeyEdit(this, (UserKey) getFocusedObject(), cursor == 0);
+        }
+        if (c == cmdAdd) {
+            new UserKeyEdit(this, null, false);
+        }
+        if (c == cmdDel && cursor > 0) {
+            keyScheme.getKeysList().removeElementAt(cursor);
+            moveCursorHome();
+            commandState();
+            redraw();
+        }
+        if (c == cmdApply) {
+            cmdOk();
+        }
+        super.menuAction(c, d);
+    }
+
+    public void eventOk() {
+        new UserKeyEdit(this, (UserKey) getFocusedObject(), cursor == 0);
+    }
+
+     public String touchLeftCommand() { return SR.MS_MENU; }
+     public void touchLeftPressed() { showMenu(); }
+
+}
 //#endif

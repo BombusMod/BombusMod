@@ -26,6 +26,7 @@
 
 package ui.keys;
 
+//#ifdef USER_KEYS
 import Client.Config;
 import Client.ConfigForm;
 import Client.StaticData;
@@ -67,10 +68,10 @@ import History.HistoryReader;
 public class UserKeyExec {
 
     private static UserKeyExec instance;
-    StaticData sd = StaticData.getInstance();
+    private StaticData sd = StaticData.getInstance();
+    private int previousKeyCode;
     public final static String cmds[] = new String[59];
-    public Vector keysList;
-    public UserKey current_key;
+    public KeyScheme keyScheme;
 
     public static UserKeyExec getInstance() {
         if (instance == null)
@@ -80,14 +81,13 @@ public class UserKeyExec {
 
     private UserKeyExec() {
         init_cmds();
-        final Vector keysFromStorage = IE.UserKeys.loadFromStorage();
+        final KeyScheme keysFromStorage = IE.UserKeys.loadFromStorage();
         if (keysFromStorage != null) {
-            keysList = keysFromStorage;
+            keyScheme = keysFromStorage;
         } else {
-            keysList = IE.UserKeys.loadFromFile(UserKey.def_keys, true);
-            IE.UserKeys.rmsUpdate(keysList);
+            keyScheme = IE.UserKeys.loadFromFile(UserKey.def_keys, true);
+            IE.UserKeys.rmsUpdate(keyScheme);
         }
-        current_key = new UserKey();
     }
 
     private void init_cmds() {
@@ -170,22 +170,6 @@ public class UserKeyExec {
         cmds[58] = "[Roster]" + "Kick from groupchat";
     }
 
-    public void update_current_key(int key, boolean key_long) {
-//        if ((current_key.key == key) && (!current_key.key_long) && (key_long)) {
-//            current_key.key_long = true;
-//        } else {
-            current_key.previous_key_long = current_key.key_long;
-            current_key.key_long = key_long;
-
-            current_key.previous_key = current_key.key;
-            current_key.key = key;
-//        }
-    }
-
-    public boolean isCurrentKey(int key, boolean key_long) {
-        return (current_key.key == key) && (current_key.key_long == key_long);
-    }
-
     public static int getCommandID(String str) {
         for (int i = 0; i < cmds.length; i++) {
             if ((cmds[i] != null) && str.equals(cmds[i]))
@@ -194,35 +178,36 @@ public class UserKeyExec {
         return 0;
     }
 
-    public boolean keyExecute(int key, boolean key_long) { // return false if key not executed
-        update_current_key(key, key_long);
+    public boolean keyExecute(int key) { // return false if key not executed
         boolean executed = false;
 
         final VirtualList current = sd.canvas.getList();
-        if (current instanceof UserKeyEdit)
-            if (((UserKeyEdit) current).key(key, key_long))
+        if (current instanceof UserKeyEdit) {
+            if (((UserKeyEdit) current).key(key)) {
+                previousKeyCode = key;
                 return true;
-
-        current_key.two_keys = true;
-        for (int i = 0; i < keysList.size(); i++) {
-            UserKey u = ((UserKey) keysList.elementAt(i));
-            if (current_key.equals(u))
-                executed = commandExecute(u.command_id) || executed;
+            }
         }
 
-        if (executed) {
-            sd.canvas.repaint();
-            return true;
+        Vector keysList = keyScheme.getKeysList();
+        int modificatorCode = keyScheme.getModificator().key;
+        int size = keyScheme.getSize();
+
+        if (previousKeyCode == modificatorCode) {
+            for (int i = 0; i < size; i++) {
+                UserKey u = ((UserKey) keysList.elementAt(i));
+                if (u.equals(key, true))
+                    executed = commandExecute(u.command_id) || executed;
+            }
+        } else {
+            for (int i = 0; i < size; i++) {
+                UserKey u = ((UserKey) keysList.elementAt(i));
+                if (u.equals(key, false))
+                    executed = commandExecute(u.command_id) || executed;
+            }
         }
 
-        current_key.two_keys = false;
-        for (int i = 0; i < keysList.size(); i++) {
-            UserKey u = ((UserKey) keysList.elementAt(i));
-            if (current_key.equals(u))
-                executed = commandExecute(u.command_id) || executed;
-        }
-
-        sd.canvas.repaint();
+        previousKeyCode = key;
         return executed;
     }
 
@@ -302,3 +287,4 @@ public class UserKeyExec {
         return false;
     }
 }
+//#endif

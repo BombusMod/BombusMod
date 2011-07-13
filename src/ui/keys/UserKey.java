@@ -26,6 +26,7 @@
 
 package ui.keys;
 
+//#ifdef USER_KEYS
 import images.RosterIcons;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -38,7 +39,7 @@ import ui.VirtualCanvas;
  * @author ad
  */
 public class UserKey extends IconTextElement {
-    public final static String storage = "keys_db_r941";
+    public final static String storage = "keys_db_r1026";
     public final static String def_keys = "/def_keys.txt";
     
     private final static int COUNT_KEY_NAMES = 33;
@@ -47,11 +48,8 @@ public class UserKey extends IconTextElement {
     private static String[] someNames = null;
 
     public int command_id = 0;
-    public boolean previous_key_long;
-    public boolean key_long;
-    public int previous_key;
+    public boolean modificator = false;
     public int key;
-    public boolean two_keys;
 
     public UserKey() {
         super(RosterIcons.getInstance());
@@ -63,15 +61,12 @@ public class UserKey extends IconTextElement {
         copyFrom(u);
     }
 
-	public final void copyFrom(UserKey u) {
+    public final void copyFrom(UserKey u) {
         if (u == null)
             return;
         command_id = u.command_id;
-        previous_key_long = u.previous_key_long;
-        key_long = u.key_long;
-        previous_key = u.previous_key;
+        modificator = u.modificator;
         key = u.key;
-        two_keys = u.two_keys;
     }
 
     private void initSomeKeyNames() { // TODO: подумать как и когда обнулять
@@ -131,8 +126,8 @@ public class UserKey extends IconTextElement {
         current_index++;
     }
 
-    private static String getKeyName(int code, boolean long_key) {
-        String prefix = long_key ? "L" : "";
+    public static String getKeyName(int code, boolean modificator) {
+        String prefix = modificator ? "M" : "";
 
         for (int i = 0; i < COUNT_KEY_NAMES; i++)
             if (someCodes[i] == code)
@@ -144,47 +139,18 @@ public class UserKey extends IconTextElement {
 
         return prefix + code;
     }
-
-    public String getPreviousKeyName() {
-        return two_keys ? getKeyName(previous_key, previous_key_long) : "OFF";
-    }
-
-    public String getLastKeyName() {
-        return getKeyName(key, key_long);
-    }
 /*
-    private void setPreviousKey(String name) {
-        previous_key_long = isLongKey(name);
-        if (previous_key_long)
-            name.substring(1);
-        previous_key = getKeyCode(name);
-    }
-
-    private void setLastKey(String name) {
-        key_long = isLongKey(name);
-        if (key_long)
-            name.substring(1);
-        key = getKeyCode(name);
+    public String getKeyName() {
+        return getKeyName(code, modificator);
     }
 */
-    public static UserKey createFromStrings(String id, String name1, String name2) {
+    public static UserKey createFromStrings(String id, String name) {
         UserKey u = new UserKey();
-
         u.command_id = Integer.parseInt(id);
-
-        u.two_keys = !name1.equals("OFF");
-        if (u.two_keys) {
-            u.previous_key_long = isLongKey(name1);
-            if (u.previous_key_long)
-                name1 = name1.substring(1);
-            u.previous_key = getKeyCode(name1);
-        }
-
-        u.key_long = isLongKey(name2);
-        if (u.key_long)
-            name2 = name2.substring(1);
-        u.key = getKeyCode(name2);
-
+        u.modificator = withModificator(name);
+        if (u.modificator)
+            name = name.substring(1);
+        u.key = getKeyCode(name);
         return u;
     }
 
@@ -203,78 +169,61 @@ public class UserKey extends IconTextElement {
         return Integer.parseInt(name);
     }
 
-    private static boolean isLongKey(String name) {
-        if ((name.length() > 1) && (name.charAt(0) == 'L'))
+    private static boolean withModificator(String name) {
+        if ((name.length() > 1) && (name.charAt(0) == 'M'))
             return true;
-
         return false;
     }
 
+/*
     public boolean equals(Object ob) {
         if (!(ob instanceof UserKey))
-			return false;
+            return false;
 
         UserKey u = (UserKey) ob;
-        boolean result = (key_long == u.key_long)
-                && (key == u.key)
-                && (two_keys == u.two_keys);
-        if (two_keys)
-            result = result
-                    && (previous_key_long == u.previous_key_long)
-                    && (previous_key == u.previous_key);
-        return result;
+        return (modificator == u.modificator) && (key == u.key);
     }
-    
+*/
+    public boolean equals(int key) {
+        return (this.key == key);
+    }
+
+    public boolean equals(int key, boolean modificator) {
+        return (this.modificator == modificator) && (this.key == key);
+    }
+
     public String toString() {
-        StringBuffer s = new StringBuffer();
-
-        if (two_keys)
-            s.append(getPreviousKeyName())
-             .append(" + ");
-
-        s.append(getLastKeyName());
-
-//        if (command_id > 0)
-        s.append("; ")
-         .append(UserKeyExec.cmds[command_id]);
-        return s.toString();
+        if (command_id == -1)
+            return getKeyName(key, modificator) + "; " + "Modificator";
+        return getKeyName(key, modificator) + "; " + UserKeyExec.cmds[command_id];
     }
 
     public String toLine() {
         return new StringBuffer()
                 .append(command_id)
                 .append((char) 0x09)
-                .append(getPreviousKeyName())
-                .append((char) 0x09)
-                .append(getLastKeyName())
+                .append(getKeyName(key, modificator))
                 .toString();
     }
 
     public static UserKey createFromDataInputStream(DataInputStream inputStream) throws IOException {
         UserKey u = new UserKey();
-
         u.command_id = inputStream.readInt();
-        u.previous_key_long = inputStream.readBoolean();
-        u.key_long = inputStream.readBoolean();
-        u.previous_key = inputStream.readInt();
+        u.modificator = inputStream.readBoolean();
         u.key = inputStream.readInt();
-        u.two_keys = inputStream.readBoolean();
-
         return u;
     }
 
     public void saveMyToDataOutputStream(DataOutputStream outputStream) {
         try {
             outputStream.writeInt(command_id);
-            outputStream.writeBoolean(previous_key_long);
-            outputStream.writeBoolean(key_long);
-            outputStream.writeInt(previous_key);
+            outputStream.writeBoolean(modificator);
             outputStream.writeInt(key);
-            outputStream.writeBoolean(two_keys);
         } catch (IOException e) { }
     }
 
     public int getImageIndex() {
         return 0;
     }
- }
+}
+//#endif
