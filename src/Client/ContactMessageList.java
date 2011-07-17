@@ -922,6 +922,9 @@ public class ContactMessageList extends MessageList {
             case 9:
                 Quote();
                 return;
+            case 0:
+                focusToNextHighlight();
+                return;
         }
 
         super.doKeyAction(keyCode);
@@ -963,7 +966,7 @@ public class ContactMessageList extends MessageList {
                 messageEditResume();
                 return true;
             case 59:
-                focusToNextHightlitedMessage();
+                focusToNextHighlight();
                 return true;
         }
 
@@ -998,7 +1001,7 @@ public class ContactMessageList extends MessageList {
         }
     }
 
-    private void focusToNextHightlitedMessage() {
+    private void focusToNextHighlight() {
         int count = getItemCount();
         if (startSelection || count == 0)
             return;

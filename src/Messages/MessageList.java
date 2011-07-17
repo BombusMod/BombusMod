@@ -192,7 +192,15 @@ public abstract class MessageList extends DefForm
     private void toogleSmiles() {
         Object o = getFocusedObject();
         if (o != null) {
-            ((MessageItem) o).toggleSmiles(this);
+            MessageItem item = (MessageItem) o;
+            item.toggleSmiles(this);
+//#ifdef POPUPS
+//#ifdef SMILES
+            if (!item.smilesEnabled()) {
+                sd.roster.setWobble(2, null, item.getTipString());
+            }
+//#endif
+//#endif
         }
     }
 

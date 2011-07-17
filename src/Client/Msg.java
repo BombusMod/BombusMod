@@ -121,7 +121,7 @@ public class Msg {
     
     public String toString() {
         StringBuffer time=new StringBuffer();
-        if (messageType==MESSAGE_TYPE_PRESENCE || !(Config.getInstance().hideTimestamps || (Config.getInstance().showNickNames && subject!=null))) {
+        if (!(Config.getInstance().hideTimestamps || (Config.getInstance().showNickNames))) {
             time.append("[").append(getTime()).append("] ");
         }
         time.append(body);

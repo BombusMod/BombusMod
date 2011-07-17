@@ -646,7 +646,7 @@ if (paintBottom) {
         if (infobar != null) {
             setAbsOrg(g, 0, height - iHeight);
             drawInfoPanel(g);
-            CommandsPointer.init(width, height, mHeight);
+            CommandsPointer.init(width, height, iHeight);
 
         }
     }
@@ -672,7 +672,7 @@ if (paintBottom) {
     }
 
 
-    private void drawEnvelop(final Graphics g) {
+    protected void drawEnvelop(final Graphics g) {
         g.setColor(getMainBarRGB());
         int wpos= (width/2);
         int hpos= height-13;
