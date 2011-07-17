@@ -82,8 +82,8 @@ public class Msg {
         this.subject=subj;
         this.dateGmt=Time.utcTimeMillis();
         if (messageType>=MESSAGE_TYPE_IN) unread=true;
-        if (messageType==MESSAGE_TYPE_PRESENCE || messageType==MESSAGE_TYPE_HEADLINE)
-            itemCollapsed=true;
+      /*  if (messageType==MESSAGE_TYPE_PRESENCE || messageType==MESSAGE_TYPE_HEADLINE)
+            itemCollapsed=true;*/
         else if (body!=null && messageType!=MESSAGE_TYPE_SUBJ)
             if (body.length()>Config.getInstance().messageLimit)
                 itemCollapsed=true;
@@ -121,7 +121,7 @@ public class Msg {
     
     public String toString() {
         StringBuffer time=new StringBuffer();
-        if (!(Config.getInstance().hideTimestamps || (Config.getInstance().showNickNames))) {
+        if (messageType == Msg.MESSAGE_TYPE_PRESENCE || !(Config.getInstance().hideTimestamps || (Config.getInstance().showNickNames))) {
             time.append("[").append(getTime()).append("] ");
         }
         time.append(body);

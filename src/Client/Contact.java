@@ -347,7 +347,7 @@ public class Contact extends IconTextElement {
                     }
                 }
             } else {
-                if (cf.showNickNames) {
+                if (cf.showNickNames && m.messageType != Msg.MESSAGE_TYPE_PRESENCE) {
                     StringBuffer who = new StringBuffer();
                     who.append((m.messageType == Msg.MESSAGE_TYPE_OUT) ? sd.account.getNickName() : getName()).append(" (").append(m.getTime()).append(") ");
                     if (m.subject != null) {
