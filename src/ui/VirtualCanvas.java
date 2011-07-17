@@ -24,7 +24,7 @@ import javax.microedition.midlet.MIDlet;
 import ui.controls.PopUp;
 //#endif
 //#ifdef USER_KEYS
-import ui.keys.UserKeyExec;
+//# import ui.keys.UserKeyExec;
 //#endif
 //#ifdef LIGHT_CONFIG
 //# import LightControl.CustomLight;
@@ -137,7 +137,7 @@ public class VirtualCanvas extends Canvas implements CommandListener{
             list.paint(graphics);
         } catch(Exception e) {
             if (sd.roster != null)
-                sd.roster.errorLog("list.paint exception: " + e.getMessage());
+                sd.roster.errorLog("list.paint exception: " + e.getClass() + " in " + getClass());
 //#ifdef DEBUG
 //#             e.printStackTrace();
 //#endif
@@ -153,8 +153,8 @@ public class VirtualCanvas extends Canvas implements CommandListener{
 //#ifdef POPUPS
         if (PopUp.getInstance().handlePressed(keyCode)) {
 //#ifdef USER_KEYS
-            UserKeyExec.getInstance().keyExecute(keyCode, true);
-            UserKeyExec.getInstance().afterActions(keyCode);
+//#             UserKeyExec.getInstance().keyExecute(keyCode, true);
+//#             UserKeyExec.getInstance().afterActions(keyCode);
 //#endif
             repaint();
             return;
@@ -169,7 +169,7 @@ public class VirtualCanvas extends Canvas implements CommandListener{
 //#     sd.roster.setAutoAwayTimer();
 //#endif
 //#ifdef USER_KEYS
-        UserKeyExec.getInstance().afterActions(keyCode);
+//#         UserKeyExec.getInstance().afterActions(keyCode);
 //#endif
      }
 
@@ -561,9 +561,9 @@ public class VirtualCanvas extends Canvas implements CommandListener{
                 kHold = false;
             } else {
 //#ifdef USER_KEYS
-                if (UserKeyExec.getInstance().keyExecute(keyCode, false)) {
-                    return;
-                }
+//#                 if (UserKeyExec.getInstance().keyExecute(keyCode, false)) {
+//#                     return;
+//#                 }
 //#endif
                 list.doKeyAction(keyCode);
             }

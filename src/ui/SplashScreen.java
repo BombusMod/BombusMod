@@ -163,14 +163,12 @@ public final class SplashScreen extends DefForm implements VirtualElement {
     }
 
     public void drawItem(Graphics g, int ofs, boolean selected) {
-        int width = g.getClipWidth();
-        int height = g.getClipHeight();
-
+        setAbsOrg(g, 0, 0);
         g.setColor(ColorTheme.getColor(ColorTheme.BLK_BGND));
         g.fillRect(0, 0, width, height);
 
         if (splashimg != null) {
-            g.drawImage(splashimg, width / 2, height / 2, Graphics.VCENTER | Graphics.HCENTER);
+            g.drawImage(splashimg, width >> 1, height >> 1, Graphics.VCENTER | Graphics.HCENTER);
         }
 
         if (pos == -1) {

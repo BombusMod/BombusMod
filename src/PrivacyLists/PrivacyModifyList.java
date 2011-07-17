@@ -77,7 +77,6 @@ public class PrivacyModifyList extends DefForm
 
     public void commandState() {
         menuCommands.removeAllElements();
-        addMenuCommand(cmdCancel);
         addMenuCommand(cmdEdit);
         addMenuCommand(cmdAdd);
         addMenuCommand(cmdDel);

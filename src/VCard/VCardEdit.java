@@ -223,8 +223,6 @@ public class VCardEdit
         if (cameraAvailable!=null) if (cameraAvailable.startsWith("true"))
             addMenuCommand(cmdCamera);
 //#endif  
-        addMenuCommand(cmdDelPhoto);
-
-        addMenuCommand(cmdCancel);
+        addMenuCommand(cmdDelPhoto);        
     }    
  }

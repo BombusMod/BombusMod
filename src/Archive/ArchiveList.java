@@ -91,8 +91,7 @@ public class ArchiveList
             addMenuCommand(cmdEdit);
             
             addMenuCommand(cmdDelete);
-            addMenuCommand(cmdDeleteAll);
-            addMenuCommand(cmdCancel);
+            addMenuCommand(cmdDeleteAll);            
         }        
         super.commandState();
     }

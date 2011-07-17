@@ -224,8 +224,7 @@ public class ConferenceForm
         menuCommands.removeAllElements();
         addMenuCommand(cmdJoin);
         addMenuCommand(cmdAdd);
-        addMenuCommand(cmdEdit);
-        addMenuCommand(cmdCancel);
+        addMenuCommand(cmdEdit);        
     }
     
     private void saveMsgCount(int msgLimit) {
