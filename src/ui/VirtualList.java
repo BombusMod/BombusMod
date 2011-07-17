@@ -473,7 +473,7 @@ public abstract class VirtualList {
      */
     protected void beginPaint() { }
 
-    public void paint(Graphics g) {
+    public synchronized void paint(Graphics g) {
         mHeight = 0;
         iHeight = 0;
 
@@ -556,7 +556,7 @@ public abstract class VirtualList {
         int displayedBottom = list_top;
 
         int baloon = -1;
-        while (itemIndex < count) {
+        while (itemIndex < itemLayoutY.length) {
             int itemYpos = itemLayoutY[itemIndex] - win_top;
             if (itemYpos >= winHeight) {
                 break;
