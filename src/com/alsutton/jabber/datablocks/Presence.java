@@ -140,10 +140,14 @@ public class Presence extends JabberDataBlock {
         setAttribute("to", jid);
     }
 
-    public int getPriority(){
+    public int getPriority() {
+        String priority = getChildBlockText("priority");
+        if (priority.equals("")) {
+            return 0;
+        }
         try {
-            return Integer.parseInt(getChildBlockText("priority"));
-        } catch (Exception e) {
+            return Integer.parseInt(priority);
+        } catch (NumberFormatException e) {
             return 0;
         }
     }

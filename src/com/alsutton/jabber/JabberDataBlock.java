@@ -313,31 +313,39 @@ public class JabberDataBlock
     return null;
   }
 
-  /**
-   * Method to return the text for a given child block
-   */
+    /**
+     * Method to return the text for a given child block
+     */
+    public String getChildBlockText(String blockname) {
+        JabberDataBlock child = getChildBlock(blockname);
+        return (child == null) ? "" : child.getText();
+    }
 
-  public String getChildBlockText( String blockname )
-  {
-      try {
-        JabberDataBlock child=getChildBlock(blockname);
-        return child.getText();
-      } catch (Exception e) {}
-      return "";
-  }
-  
-      private void appendXML(StringBuffer dest, String src){
-        if (src==null) return;
-        int len=src.length();
-        for (int i=0;i<len;i++){
-            char ch=src.charAt(i);
+    private void appendXML(StringBuffer dest, String src) {
+        if (src == null) {
+            return;
+        }
+        int len = src.length();
+        for (int i = 0; i < len; i++) {
+            char ch = src.charAt(i);
             switch (ch) {
-                case '&':   dest.append("&amp;"); break;
-                case '"':   dest.append("&quot;"); break;
-                case '<':   dest.append("&lt;"); break;
-                case '>':   dest.append("&gt;"); break;
-                case '\'':  dest.append("&apos;"); break;
-                default: dest.append(ch);
+                case '&':
+                    dest.append("&amp;");
+                    break;
+                case '"':
+                    dest.append("&quot;");
+                    break;
+                case '<':
+                    dest.append("&lt;");
+                    break;
+                case '>':
+                    dest.append("&gt;");
+                    break;
+                case '\'':
+                    dest.append("&apos;");
+                    break;
+                default:
+                    dest.append(ch);
             }
         }
     }

@@ -89,37 +89,33 @@ public class Message extends JabberDataBlock {
       return oob.toString();
   }
 
-    public long getMessageTime(){
-      try {
-          return Time.dateIso8601(
-                  findNamespace("x", "jabber:x:delay").getAttribute("stamp")
-                  );
-      } catch (Exception e) { }
-      try {
-          return Time.dateIso8601(
-                  findNamespace("delay", "urn:xmpp:delay").getAttribute("stamp")
-                  );
-      } catch (Exception e) { }
-      return 0; //0 means no timestamp
-   }
+    public long getMessageTime() {
+        JabberDataBlock delay = findNamespace("x", "jabber:x:delay");
+        if (delay == null) {
+            delay = findNamespace("delay", "urn:xmpp:delay");
+        }
+        if (delay != null) {
+            return Time.dateIso8601(delay.getAttribute("stamp"));
+        }
+        return 0; //0 means no timestamp
+    }
 
     public String getTagName() {
         return "message";
     }
 
     public String getXFrom() {
-	try {
-	    // jep-0033 extended stanza addressing from psi
-	    JabberDataBlock addresses=getChildBlock("addresses");
-	    for (Enumeration e=addresses.getChildBlocks().elements(); e.hasMoreElements(); ) {
-		JabberDataBlock adr=(JabberDataBlock) e.nextElement();
-		if (adr.getTypeAttribute().equals("ofrom")) {
+        // jep-0033 extended stanza addressing from psi
+        JabberDataBlock addresses = getChildBlock("addresses");
+        if (addresses != null) {
+            for (Enumeration e = addresses.getChildBlocks().elements(); e.hasMoreElements();) {
+                JabberDataBlock adr = (JabberDataBlock) e.nextElement();
+                if (adr.getTypeAttribute().equals("ofrom")) {
                     String xfrom = adr.getAttribute("jid");
                     return xfrom.equals("") ? getFrom() : xfrom; // workaround for Tkabber
                 }
-	    }
-	} catch (Exception e) { /* normal case if not forwarded message */ }
-	
+            }
+        }
         return getAttribute("from");
     }
     

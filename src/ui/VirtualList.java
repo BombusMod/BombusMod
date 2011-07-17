@@ -136,8 +136,8 @@ public abstract class VirtualList {
             ((VirtualElement) o).onSelect();
         }
 
-        updateLayout();
-        fitCursorByTop();
+        if (updateLayout() > 0)
+                fitCursorByTop();
         redraw();
     }
     
@@ -482,7 +482,7 @@ public abstract class VirtualList {
         }
         beginPaint();
 //#ifdef POPUPS
-        PopUp.getInstance().init(g, width, height);
+       PopUp.getInstance().init(g, width, height);
 //#endif
 
         //StaticData.getInstance().screenWidth=width;
@@ -545,7 +545,7 @@ public abstract class VirtualList {
             cursor = count - 1;
             stickyWindow = true;
         }
-        if (count > 0 && stickyWindow) {
+        if (updateLayout() > 0 && stickyWindow) {
             fitCursorByTop();
         }
 
@@ -635,24 +635,21 @@ public abstract class VirtualList {
 //#endif
         
 
-        if (paintBottom) {
+if (paintBottom) {
             if (reverse) {
-                if (mainbar != null) {
-                    setAbsOrg(g, 0, height - mHeight);
-                    drawMainPanel(g);
-                    if (sd.canvas.hasPointerEvents()) {
-                        CommandsPointer.init(width, height, mHeight);
-                    }
-                }
-            } else {
-                if (infobar != null) {
-                    setAbsOrg(g, 0, height - iHeight);
-                    drawInfoPanel(g);
-                    if (sd.canvas.hasPointerEvents()) {
-                        CommandsPointer.init(width, height, iHeight);
-                    }
-                }
-            }
+        if (mainbar != null) {
+            setAbsOrg(g, 0, height - mHeight);
+            drawMainPanel(g);
+            CommandsPointer.init(width, height, mHeight);
+        }
+    } else {
+        if (infobar != null) {
+            setAbsOrg(g, 0, height - iHeight);
+            drawInfoPanel(g);
+            CommandsPointer.init(width, height, mHeight);
+
+        }
+    }
             setAbsClip(g, width, height);
 
             if (sd.roster.messageCount > 0) {
@@ -814,6 +811,7 @@ public abstract class VirtualList {
     }
     
     protected void fitCursorByTop() {
+
         int top = itemLayoutY[cursor];
         if (top < win_top) {
             win_top = top;
@@ -1208,7 +1206,8 @@ public abstract class VirtualList {
             cursor = getElementIndexAt(itemLayoutY[cursor] - winHeight);
             Object o = getFocusedObject();
             if (o != null && ((VirtualElement) o).getVHeight() <= winHeight) {
-                fitCursorByTop();
+                if (updateLayout() > 0)
+                    fitCursorByTop();
             }
         }
 
@@ -1237,7 +1236,8 @@ public abstract class VirtualList {
             cursor = getElementIndexAt(itemLayoutY[cursor] + winHeight);
             Object o = getFocusedObject();
             if (o != null && ((VirtualElement) o).getVHeight() <= winHeight) {
-                fitCursorByTop();
+                if (updateLayout() > 0)
+                    fitCursorByTop();
             }
         }
 

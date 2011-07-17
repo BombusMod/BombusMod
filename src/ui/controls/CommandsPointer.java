@@ -28,7 +28,7 @@ public class CommandsPointer {
     static int cHeight = 0;
     static int cWidth = 0;   
     public static void init(int width, int height, int lineHeight) {
-        CommandsPointer.cWidth=width/2;
+        CommandsPointer.cWidth=width >> 1;
         CommandsPointer.cHeight=height-lineHeight;
     }
     

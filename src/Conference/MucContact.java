@@ -121,12 +121,16 @@ public class MucContact extends Contact {
                 transport=(affiliation.equals("member"))? 0: RosterIcons.getInstance().getTransportIndex("muc#vis");
                 key0=(affiliation.equals("member"))?GROUP_MEMBER:GROUP_PARTICIPANT;
         }
-        
-        JabberDataBlock statusBlock=xmuc.getChildBlock("status");
+
         int statusCode = 0;
-        try { 
-            statusCode=Integer.parseInt( statusBlock.getAttribute("code") ); 
-        } catch (Exception e) { }
+
+        JabberDataBlock statusBlock = xmuc.getChildBlock("status");
+        if (statusBlock != null) {
+            try {
+                statusCode = Integer.parseInt(statusBlock.getAttribute("code"));
+            } catch (NumberFormatException e) {
+            }
+        }
         
         StringBuffer b=new StringBuffer();
         appendL(b,nick);

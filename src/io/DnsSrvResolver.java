@@ -146,7 +146,7 @@ public class DnsSrvResolver {
             byte[] response = new byte[StringUtils.getWordBE(responseHeader, 0)];
             is.readFully(response);
             Vector res = decode(response);
-            if (res.elementAt(0) == null) // Uncorrect response
+            if (res.isEmpty() || res.elementAt(0) == null) // Uncorrect response
                 return false;
             
             resolvedHost = ((RR)res.elementAt(0)).host;
