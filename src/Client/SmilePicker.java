@@ -31,6 +31,7 @@ import images.AniImageList;
 import images.SmilesIcons;
 import locale.SR;
 import Colors.ColorTheme;
+import images.AniIcon;
 import ui.*;
 import java.util.Vector;
 
@@ -121,11 +122,15 @@ public class SmilePicker
 
     public void drawItem(Graphics g, int ofs, boolean selected){
         int max=(lineIndex==lines-1)? xLastCnt:xCnt;   
-        int x;
+        int x, iwidth;
+        AniIcon item;
         for (int i=0;i<max;i++) {
             x = xBorder+(i*imgWidth+CURSOR_HOFFSET);            
-            if (il instanceof AniImageList)                
-                x += (imgWidth - ((AniImageList)il).iconAt(lineIndex*xCnt + i).getWidth())/2;                                                       
+            if (il instanceof AniImageList) {          
+                item = ((AniImageList)il).iconAt(lineIndex*xCnt + i);
+                iwidth = (item == null)? 0 : item.getWidth();
+                x += (imgWidth - iwidth) >> 1;                                                       
+            }
             il.drawImage(g, lineIndex*xCnt + i, x, CURSOR_VOFFSET);            
         }
     }
