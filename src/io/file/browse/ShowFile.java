@@ -81,8 +81,11 @@ public class ShowFile extends DefForm {
     }
 
     private void view(String file) {
-        Image img = Image.createImage(b, 0, len);
-        itemsList.addElement(new ImageItem(img, "minimized, size: " + String.valueOf(len) + "b."));
+		try{
+			Image img = Image.createImage(b, 0, len);
+			itemsList.addElement(new ImageItem(img, "minimized, size: " + String.valueOf(len) + "b."));
+		} catch(OutOfMemoryError eom){
+		} catch (Exception e) {}
     }
 
     private void read(String file) {

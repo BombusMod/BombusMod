@@ -30,6 +30,7 @@ package ui.controls.form;
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
 import ui.IconTextElement;
+import Client.StaticData;
 
 /**
  *
@@ -87,25 +88,22 @@ public class ImageItem
         if (!collapsed) {
             g.drawImage(img, screenWidth/2, 0, Graphics.TOP|Graphics.HCENTER);
         }
+		resizeImage();
+		StaticData.getInstance().canvas.repaint();
         super.drawItem(g, ofs, sel);
     }
 
     public boolean isSelectable() { return selectable; }
-    
-    public boolean handleEvent(int keyCode) {
-         switch (keyCode) {
-            case 0:
-				try {
-					if (img.getWidth()>screenWidth) {
-						int newHeight=(img.getHeight() * (screenWidth * 100 / img.getWidth()))/100;
-						this.img=scale(img, screenWidth, newHeight);
-						return true;
-					}
-				} catch(OutOfMemoryError eom){
-				} catch (Exception e) {}
+	
+	private void resizeImage() {
+		try {
+			if (img.getWidth()>screenWidth) {
+				int newHeight=(img.getHeight() * (screenWidth * 100 / img.getWidth()))/100;
+				this.img=scale(img, screenWidth, newHeight);
 			}
-        return false;
-    }
+		} catch(OutOfMemoryError eom){
+		} catch (Exception e) {}
+	}
     
     public Image scale(Image image, int w, int h) {
         int w0 = image.getWidth();
