@@ -23,57 +23,65 @@
  * along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-
 package Client;
 
-public class AutoStatusTask implements Runnable {    
-    private boolean stop;
-    private long timeAwayEvent=0;
-    private long timeXaEvent=0;
-    
-    public void setTimeEvent(long delay){
-        if (delay!=0) {
-            timeAwayEvent=delay+System.currentTimeMillis();
-            timeXaEvent=(delay*2)+timeAwayEvent;
+import java.util.Timer;
+import java.util.TimerTask;
+
+public class AutoStatusTask extends TimerTask {
+
+    private long timeAwayEvent = 0;
+    private long timeXaEvent = 0;
+    private Timer t;
+
+    private static AutoStatusTask instance;
+
+    public static AutoStatusTask getInstance() {
+        if (instance == null) {
+            instance = new AutoStatusTask();
+        }
+        return instance;
+    }
+
+    private AutoStatusTask() {
+        t = new Timer();
+        t.schedule(this, 0, 500);
+    }
+
+    public void setTimeEvent(long delay) {
+        if (delay != 0) {
+            timeAwayEvent = delay + System.currentTimeMillis();
+            timeXaEvent = (delay * 2) + timeAwayEvent;
         } else {
-            timeAwayEvent=0;
-            timeXaEvent=0;
+            timeAwayEvent = 0;
+            timeXaEvent = 0;
         }
     }
 
-    boolean isAwayTimerSet() { 
-        return (timeAwayEvent!=0 && timeXaEvent!=0);
-    }
-
-    public void destroyTask(){
-        stop = true;
+    boolean isAwayTimerSet() {
+        return (timeAwayEvent != 0 && timeXaEvent != 0);
     }
 
     public void run() {
-        while (!stop) {
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException ex) { stop=true; }
-            if (timeAwayEvent==0 && timeXaEvent==0)
-                continue;
-            
-            long timeAwayRemained=System.currentTimeMillis()-timeAwayEvent;
-            long timeXaRemained=System.currentTimeMillis()-timeXaEvent;
+        if (timeAwayEvent == 0 && timeXaEvent == 0) {
+            return;
+        }
 
-            if (timeAwayRemained>0 && timeAwayEvent!=0) {
-                timeAwayEvent=0;
-//#ifdef AUTOSTATUS
-//#                 StaticData.getInstance().roster.setAutoAway();
-//#endif
-            }
+        long timeAwayRemained = System.currentTimeMillis() - timeAwayEvent;
+        long timeXaRemained = System.currentTimeMillis() - timeXaEvent;
 
-            if (timeXaRemained>0 && timeAwayEvent==0) {
-                timeXaEvent=0;
+        if (timeAwayRemained > 0 && timeAwayEvent != 0) {
+            timeAwayEvent = 0;
 //#ifdef AUTOSTATUS
-//#                 StaticData.getInstance().roster.setAutoXa();
+//#             StaticData.getInstance().roster.setAutoAway();
 //#endif
-            }
+        }
+
+        if (timeXaRemained > 0 && timeAwayEvent == 0) {
+            timeXaEvent = 0;
+//#ifdef AUTOSTATUS
+//#             StaticData.getInstance().roster.setAutoXa();
+//#endif
         }
     }
-
 }

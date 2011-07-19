@@ -666,9 +666,7 @@ if (paintBottom) {
 //#ifdef POPUPS
         setAbsClip(g, width, height);
         drawPopUp(g);
-//#endif
-
-        reconnectWindow.getInstance().draw(g, width, height);
+//#endif        
     }
 
 
@@ -1007,14 +1005,6 @@ if (paintBottom) {
         itemDragged = false;
 }
     
-    public void reconnectYes() {
-        reconnectWindow.getInstance().reconnect();
-    }
-    
-    public void reconnectNo() {
-        reconnectWindow.getInstance().stopReconnect();
-    }
-
     /**
      * событие "Нажатие кнопки UP"
      * в классе VirtualList функция перемещает курсор на одну позицию вверх.
@@ -1362,7 +1352,7 @@ if (paintBottom) {
     }
         
     public void setInfo() {
-        if (reconnectWindow.getInstance().isActive()) {
+        if (VirtualCanvas.getInstance().rw != null && VirtualCanvas.getInstance().rw.isActive()) {
             getInfoBarItem().setElementAt(SR.MS_OK, 1);
             getInfoBarItem().setElementAt(SR.MS_CANCEL, 3);
             return;
@@ -1403,16 +1393,16 @@ if (paintBottom) {
     public void commandState() {};
 
     public void doLeftAction() {
-        if (reconnectWindow.getInstance().isActive()) {
-            reconnectYes();
+        if (VirtualCanvas.getInstance().rw != null && VirtualCanvas.getInstance().rw.isActive()) {
+            VirtualCanvas.getInstance().reconnectYes();
         } else {
             touchLeftPressed();
         }
     }
 
     public void doRightAction() {
-        if (reconnectWindow.getInstance().isActive()) {
-            reconnectNo();
+        if (VirtualCanvas.getInstance().rw != null && VirtualCanvas.getInstance().rw.isActive()) {
+            VirtualCanvas.getInstance().reconnectNo();
         } else {
             touchRightPressed();
         }

@@ -68,6 +68,9 @@ public class VirtualCanvas extends Canvas implements CommandListener{
     boolean kHold = false;
 
     protected StaticData sd = StaticData.getInstance();
+
+    public ReconnectWindow rw;
+
     
     public static VirtualCanvas getInstance() {
         if (instance == null) {
@@ -130,6 +133,15 @@ public class VirtualCanvas extends Canvas implements CommandListener{
         this.list = list;
     }
 
+    public void reconnectYes() {
+       rw.reconnect();
+    }
+
+    public void reconnectNo() {
+        rw.stopReconnect();
+    }
+
+
     protected void paint(Graphics graphics) {
         list.width = getWidth();
         list.height = getHeight();
@@ -142,6 +154,8 @@ public class VirtualCanvas extends Canvas implements CommandListener{
 //#             e.printStackTrace();
 //#endif
         }
+        if (rw != null)
+            rw.draw(graphics, list.width, list.height);
     }
 
     protected final void keyPressed(int rawKeyCode) {

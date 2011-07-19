@@ -172,9 +172,8 @@ public class Roster
     public boolean querysign=false;
     
 //#ifdef AUTOSTATUS
-//#     private AutoStatusTask autostatus;
-//#     public static boolean autoAway=false;
-//#     public static boolean autoXa=false;
+//#     public static boolean autoAway = false;
+//#     public static boolean autoXa = false;
 //#endif
     
 //#if SASL_XGOOGLETOKEN
@@ -228,6 +227,9 @@ public class Roster
         
 //#ifdef CLIENTS_ICONS
         ClientsIconsData.getInstance();
+//#endif
+//#ifdef AUTOSTATUS
+//#         AutoStatusTask.getInstance();
 //#endif
         enableListWrapping(true);
     }       
@@ -356,14 +358,12 @@ public class Roster
         super.show();
         countNewMsgs(); 
 //#ifdef AUTOSTATUS
-//#         if (cf.autoAwayType==Config.AWAY_IDLE) {
-//#             if (autostatus == null) { // Issue 107
-//#                 autostatus = new AutoStatusTask();
-//#                 new Thread(autostatus).start();
+//#         if (cf.autoAwayType == Config.AWAY_IDLE) {
+//#             if (!AutoStatusTask.getInstance().isAwayTimerSet()) {
+//#                 if (!autoAway) {
+//#                     AutoStatusTask.getInstance().setTimeEvent(cf.autoAwayDelay * 60 * 1000);
+//#                 }
 //#             }
-//#             if (!autostatus.isAwayTimerSet())
-//#                 if (!autoAway)
-//#                     autostatus.setTimeEvent(cf.autoAwayDelay* 60*1000);
 //#         }
 //#endif
     }
@@ -950,17 +950,15 @@ public class Roster
             }
             
         // disconnect
-        if (myStatus==Presence.PRESENCE_OFFLINE) {
+        if (myStatus == Presence.PRESENCE_OFFLINE) {
             try {
                 theStream.close(); // sends </stream:stream> and closes socket
             } catch (Exception e) { /*e.printStackTrace();*/ }
             makeRosterOffline();
-            theStream=null;
+            theStream = null;
 //#ifdef AUTOSTATUS
-//#             autoAway=false;
-//#             autoXa=false;
-//#             if (autostatus != null)
-//#                 autostatus.destroyTask();
+//#             autoAway = false;
+//#             autoXa = false;
 //#endif            
         }
 
@@ -1232,15 +1230,9 @@ public class Roster
     
     public void loginSuccess() {
 //#ifdef AUTOSTATUS
-//#         if (autostatus != null)
-//#             autostatus.destroyTask();
-//#         if (cf.autoAwayType==Config.AWAY_IDLE || cf.autoAwayType==Config.AWAY_MESSAGE) {
-//#             autostatus=new AutoStatusTask();
-//#             new Thread(autostatus).start();
-//#         }
-//# 
-//#         if (myStatus<2)
+//#         if (myStatus < 2) {
 //#             messageActivity();
+//#         }
 //#endif
         
         theStream.addBlockListener(new EntityCaps());
@@ -2172,7 +2164,8 @@ public class Roster
         errorLog(topBar+"\n"+error.toString());
 
         setRotator();
-        reconnectWindow.getInstance().startReconnect();
+        VirtualCanvas.getInstance().rw = new ReconnectWindow();
+        VirtualCanvas.getInstance().rw.startReconnect();
      }
     
      public void doReconnect() {
@@ -2345,40 +2338,34 @@ public class Roster
 
 //#ifdef AUTOSTATUS
 //#     public void setAutoAwayTimer() {
-//#         if (autostatus == null) return;
-//#         if (cf.autoAwayType == Config.AWAY_LOCK)
-//#             if (!autoAway)
-//#                 autostatus.setTimeEvent(cf.autoAwayDelay* 60*1000);
+//#         if (cf.autoAwayType == Config.AWAY_LOCK) {
+//#             if (!autoAway) {
+//#                 AutoStatusTask.getInstance().setTimeEvent(cf.autoAwayDelay * 60 * 1000);
+//#             }
+//#         }
 //#     }
 //# 
 //#     public void userActivity() {
-//#         if (autostatus == null) {
-//#             return;
-//#         }
-//# 
 //#         if (cf.autoAwayType == Config.AWAY_IDLE) {
 //#             if (!autoAway) {
-//#                 autostatus.setTimeEvent(cf.autoAwayDelay * 60 * 1000);
+//#                 AutoStatusTask.getInstance().setTimeEvent(cf.autoAwayDelay * 60 * 1000);
 //#                 return;
 //#             }
 //#         } else {
 //#             return;
 //#         }
-//#         autostatus.setTimeEvent(0);
+//#         AutoStatusTask.getInstance().setTimeEvent(0);
 //#         setAutoStatus(Presence.PRESENCE_ONLINE);
 //#     }
 //# 
 //#     public final void messageActivity() {
-//#         if (autostatus == null) {
-//#             return;
-//#         }
 //# 
 //#         if (cf.autoAwayType == Config.AWAY_MESSAGE) {
 //#             //System.out.println("messageActivity "+myStatus.getImageIndex());
 //#             if (myStatus < 2) {
-//#                 autostatus.setTimeEvent(cf.autoAwayDelay * 60 * 1000);
+//#                 AutoStatusTask.getInstance().setTimeEvent(cf.autoAwayDelay * 60 * 1000);
 //#             } else if (!autoAway) {
-//#                 autostatus.setTimeEvent(0);
+//#                 AutoStatusTask.getInstance().setTimeEvent(0);
 //#             }
 //#         }
 //#     }
@@ -2397,13 +2384,6 @@ public class Roster
     }
 
     public void quit() {
-//#ifdef AUTOSTATUS
-//#         if (cf.autoAwayType!=Config.AWAY_OFF) {
-//#             try {
-//#                 autostatus.destroyTask();
-//#             } catch (Exception ex) {}
-//#         }
-//#endif        
         logoff(null);
         try {
             Thread.sleep(250L);
@@ -2706,7 +2686,7 @@ public class Roster
     public void destroyView() {
 //#ifdef AUTOSTATUS
 //#         if (cf.autoAwayType==Config.AWAY_IDLE)
-//#             autostatus.setTimeEvent(0);
+//#             AutoStatusTask.getInstance().setTimeEvent(0);
 //#endif
     }
 
