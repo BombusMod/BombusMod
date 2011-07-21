@@ -101,7 +101,6 @@ public class Config {
     public boolean istreamWaiting;
     public int phoneManufacturer = NOT_DETECTED;
     public boolean swapMenu = false;
-    public boolean oldNokiaS60 = false;
     public boolean NokiaS40 = false;
 
 
@@ -839,10 +838,7 @@ public class Config {
                         NokiaS40 = true;
                         return;
                     }
-                }
-                if (platform.indexOf("java_build_version") == 0) {
-                    oldNokiaS60 = true; // buggy S60 3.1 or older
-                }
+                }                
                 return;
             } else if (platform.startsWith("Intent")) {
                 phoneManufacturer = INTENT;
@@ -884,6 +880,12 @@ public class Config {
             if (sonyJava != null) {
                 platformName = platformName + "/" + sonyJava;
             }
+            
+            if (platformName.indexOf("sw_platform") >= 0) {
+                // new S60 platform
+                platformName = platformName.substring(0, platformName.indexOf("sw_platform") - 1);
+            }
+                 
 
             String device = System.getProperty("device.model");
             String firmware = System.getProperty("device.software.version");
