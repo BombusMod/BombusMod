@@ -151,17 +151,17 @@ public class PepListener implements JabberBlockListener {
 //#                             }
 //#                             if (tag.equals("region")) {
 //#                                 region = child.getText();
-//#                                 if (!country.equals(""))
+//#                                 if (!region.equals(""))
 //#                                     items.addElement(region);
 //#                             }
 //#                             if (tag.equals("street")) {
 //#                                 street = child.getText();
-//#                                 if (!country.equals(""))
+//#                                 if (!street.equals(""))
 //#                                     items.addElement(street);
 //#                             }
 //#                             if (tag.equals("building")) {
 //#                                 building = child.getText();
-//#                                 if (!country.equals(""))
+//#                                 if (!building.equals(""))
 //#                                     items.addElement(building);
 //#                             }
 //#                             if (tag.equals("uri")) {
