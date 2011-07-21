@@ -129,8 +129,8 @@ public class PepListener implements JabberBlockListener {
 //#                     result = null;
 //#                 } else {
 //#                     String tag = null;
-//#                     String lat = "", lon = "", text = "";
-//# 
+//#                     String lat = "", lon = "", text = "", country = "", region = "", street = "", building = "", uri = "";
+//#                     Vector items = new Vector();
 //#                     try {
 //#                         for (Enumeration e = location.getChildBlocks().elements(); e.hasMoreElements();) {
 //#                             JabberDataBlock child = (JabberDataBlock) e.nextElement();
@@ -144,11 +144,41 @@ public class PepListener implements JabberBlockListener {
 //#                             if (tag.equals("lon")) {
 //#                                 lon = child.getText();
 //#                             }
+//#                             if (tag.equals("country")) {
+//#                                 country = child.getText();
+//#                                 if (!country.equals(""))
+//#                                     items.addElement(country);
+//#                             }
+//#                             if (tag.equals("region")) {
+//#                                 region = child.getText();
+//#                                 if (!country.equals(""))
+//#                                     items.addElement(region);
+//#                             }
+//#                             if (tag.equals("street")) {
+//#                                 street = child.getText();
+//#                                 if (!country.equals(""))
+//#                                     items.addElement(street);
+//#                             }
+//#                             if (tag.equals("building")) {
+//#                                 building = child.getText();
+//#                                 if (!country.equals(""))
+//#                                     items.addElement(building);
+//#                             }
+//#                             if (tag.equals("uri")) {
+//#                                 uri = child.getText();
+//#                             }
 //#                         }
 //#                     } catch (Exception ex) {
 //#                     }
-//# 
-//#                     result.append(text).append(" (").append(lat).append(", ").append(lon).append(")");
+//#                     for (Enumeration e = items.elements(); e.hasMoreElements();) {
+//#                         String item = (String)e.nextElement();
+//#                         result.append(item).append(" ");
+//#                     }
+//#                     result.append(text).append(" (").append(lat).append(", ").
+//#                             append(lon).append(") ");
+//#                     if (!uri.equals(""))
+//#                             result.append("\n").append(uri);
+//#                     
 //#                 }
 //#                 hasLocation = true;
 //# 

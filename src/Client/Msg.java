@@ -84,7 +84,7 @@ public class Msg {
         if (messageType>=MESSAGE_TYPE_IN) unread=true;
       /*  if (messageType==MESSAGE_TYPE_PRESENCE || messageType==MESSAGE_TYPE_HEADLINE)
             itemCollapsed=true;*/
-        else if (body!=null && messageType!=MESSAGE_TYPE_SUBJ)
+        if (body!=null && messageType!=MESSAGE_TYPE_SUBJ)
             if (body.length()>Config.getInstance().messageLimit)
                 itemCollapsed=true;
     }
