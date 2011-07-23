@@ -184,24 +184,19 @@ public abstract class VirtualList {
                 doRightAction();
                 return;
             case VirtualCanvas.KEY_CLEAR:
-                KeyRepeatTimer.stop();
                 keyClear();
                 return;
             case VirtualCanvas.KEY_GREEN:
-                KeyRepeatTimer.stop();
                 keyGreen();
                 return;
             case VirtualCanvas.KEY_BACK:
-                KeyRepeatTimer.stop();
                 if (canBack)
                     cmdCancel();
                 return;
             case VirtualCanvas._KEY_STAR:
-                KeyRepeatTimer.stop();
                 showTimeTrafficInfo();
                 return;
             case VirtualCanvas._KEY_POUND:
-                KeyRepeatTimer.stop();
                 showInfo();
                 return;
         }
