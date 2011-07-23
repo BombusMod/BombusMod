@@ -149,7 +149,7 @@ public class VirtualCanvas extends Canvas implements CommandListener{
             list.paint(graphics);
         } catch(Exception e) {
             if (sd.roster != null)
-                sd.roster.errorLog("list.paint exception: " + e.getClass() + " in " + getClass());
+                sd.roster.errorLog("list.paint exception: " + e.getClass() + " in " + list.getClass());
 //#ifdef DEBUG
 //#             e.printStackTrace();
 //#endif
@@ -578,7 +578,7 @@ public class VirtualCanvas extends Canvas implements CommandListener{
 //#                 if (UserKeyExec.getInstance().keyExecute(keyCode, false)) {
 //#                     return;
 //#                 }
-//#endif
+//#endif                
                 list.doKeyAction(keyCode);
             }
         }
