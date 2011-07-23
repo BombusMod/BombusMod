@@ -133,9 +133,8 @@ public class BombusMod extends MIDlet {
 //#                     new IE.Accounts("/def_accounts.txt", 0, true);
 //#                     as.loadAccounts();
 //#endif
-
                 }
-                VirtualList next = as.itemsList.isEmpty() ? (VirtualList) new AccountForm(as, null) : as;                
+                VirtualList next = as.itemsList.isEmpty() ? (VirtualList) new AccountForm(as, null) : as;
                 s.setExit(next);
                 s.destroyView();
             }

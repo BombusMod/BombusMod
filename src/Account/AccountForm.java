@@ -39,13 +39,16 @@ import ui.controls.form.LinkString;
 import ui.controls.form.NumberInput;
 import ui.controls.form.PasswordInput;
 import ui.controls.form.TextInput;
+import io.file.browse.Browser;
+import io.file.browse.BrowserListener;
 
 /**
  *
  * @author ad
  */
 public class AccountForm 
-        extends DefForm {
+        extends DefForm 
+        implements BrowserListener {
 
     private final AccountSelect accountSelect;
 
@@ -63,7 +66,10 @@ public class AccountForm
 //#endif    
 
     private LinkString linkRegister;
-    
+//#ifdef IMPORT_EXPORT
+    private LinkString linkImport;
+//#endif
+
     private NumberInput keepAlive;
     private DropChoiceBox keepAliveType;
     
@@ -92,9 +98,9 @@ public class AccountForm
      */
     public AccountForm(final AccountSelect accountSelect, Account acc) {
         super(null);
-	this.accountSelect = accountSelect;
+        this.accountSelect = accountSelect;
         account=acc;
-	newaccount=(account==null);
+        newaccount=(account==null);
         if (newaccount)
             this.account=new Account();
 	
@@ -110,15 +116,24 @@ public class AccountForm
         itemsList.addElement(nickbox);
         
         linkRegister = new LinkString(SR.MS_REGISTER_ACCOUNT) {
-
             public void doAction() {
                 new AccountRegister(accountSelect);
             }
         };
-        
+
         if (newaccount)
             itemsList.addElement(linkRegister);
-        
+
+//#ifdef IMPORT_EXPORT
+        final BrowserListener listener = this;
+        linkImport = new LinkString(SR.MS_LOAD_FROM_FILE) {
+            public void doAction() {
+                new Browser(null, listener, false);
+            }
+        };
+        itemsList.addElement(linkImport);
+//#endif
+
         linkShowExtended = new LinkString(SR.MS_EXTENDED_SETTINGS) { public void doAction() { showExtended(); } };
         itemsList.addElement(linkShowExtended);
         
@@ -283,4 +298,12 @@ public class AccountForm
         Account.loadAccount(login, Config.getInstance().accountIndex);
         SplashScreen.getInstance().destroyView();
     }
+
+//#ifdef IMPORT_EXPORT
+    public void BrowserFilePathNotify(String pathSelected) {
+        new IE.Accounts(pathSelected, 0, false);
+        accountSelect.loadAccounts();
+        destroyView();
+    }
+//#endif
 }

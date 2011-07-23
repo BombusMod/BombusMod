@@ -89,7 +89,7 @@ public class UserKeysList extends DefForm {
             new UserKeyEdit(this, null, false);
         }
         if (c == cmdDel && cursor > 0) {
-            keyScheme.getKeysList().removeElementAt(cursor);
+            keyScheme.removeFromFullKeysList(cursor);
             moveCursorHome();
             commandState();
             redraw();

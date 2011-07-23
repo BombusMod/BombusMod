@@ -56,6 +56,16 @@ public class KeyScheme {
         return keysList;
     }
 
+/* Currently not used
+    public void removeFromKeysList(int index) {
+        keysList.removeElementAt(index + 1);
+    }
+*/
+
+    public void removeFromFullKeysList(int index) {
+        keysList.removeElementAt(index);
+    }
+
     private void copyFrom(KeyScheme keyScheme) {
         keysList = new Vector();
 
