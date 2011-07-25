@@ -47,8 +47,11 @@ import io.file.browse.BrowserListener;
  * @author ad
  */
 public class AccountForm 
-        extends DefForm 
-        implements BrowserListener {
+        extends DefForm
+//#ifdef IMPORT_EXPORT
+        implements BrowserListener
+//#endif
+{
 
     private final AccountSelect accountSelect;
 
