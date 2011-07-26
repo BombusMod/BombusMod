@@ -46,24 +46,12 @@ import util.StringLoader;
  * @author ad
  */
 public class ColorConfigForm 
-        extends DefForm
-//#if FILE_IO
-        implements BrowserListener
-//#endif
-    {
-    
+        extends DefForm {
 
 //#ifdef COLOR_TUNE
 //#     private LinkString configureColors;
 //#endif
     private LinkString invertColors;
-//#if FILE_IO
-    private LinkString loadFromFile;
-    private LinkString saveToFile;
-
-    String filePath;
-    private int loadType=0;
-//#endif
     
     private Vector[] files;
     private DropChoiceBox skinFiles;
@@ -81,7 +69,9 @@ public class ColorConfigForm
 //#endif
         invertColors=new LinkString(SR.MS_INVERT) { public void doAction() { ColorTheme.invertSkin(); } };
         itemsList.addElement(invertColors);
-        
+        reset=new LinkString(SR.MS_CLEAR) { public void doAction() { ColorTheme.init(); ColorTheme.saveToStorage(); } };
+        itemsList.addElement(reset);
+
         itemsList.addElement(new SpacerItem(10));
         try {
             files=new StringLoader().stringLoader("/skins/res.txt",2);
@@ -95,40 +85,16 @@ public class ColorConfigForm
                 itemsList.addElement(skinFiles);
                 useFromJar=new LinkString(SR.MS_LOAD_SKIN) { public void doAction() { userThemeFromJar(); } };
                 itemsList.addElement(useFromJar);
-                itemsList.addElement(new SpacerItem(10));
             }
         } catch (Exception e) {}
         
-//#if FILE_IO
-        loadFromFile=new LinkString(SR.MS_LOAD_FROM_FILE) { public void doAction() { initBrowser(1); } };
-        itemsList.addElement(loadFromFile);
-        saveToFile=new LinkString(SR.MS_SAVE_TO_FILE) { public void doAction() { initBrowser(0); } };
-        itemsList.addElement(saveToFile);
-        itemsList.addElement(new SpacerItem(10));
-//#endif
-        
-        reset=new LinkString(SR.MS_CLEAR) { public void doAction() { ColorTheme.init(); ColorTheme.saveToStorage(); } };
-        itemsList.addElement(reset);
-        
         moveCursorTo(getNextSelectableRef(-1));
     }
-    
+
     public void cmdOk() {
         destroyView();
     }
-   
-    
-//#if FILE_IO
-    public void initBrowser(int type) {
-        loadType=type; 
-        if (type==0) {
-            new Browser(null, this, true);
-        } else if(type==1) {
-            new Browser(null, this, false);
-        }
-    }
-//#endif
-    
+
     public void userThemeFromJar() {
         try {
             if (skinFiles.getSelectedIndex()>-1) {
@@ -136,16 +102,5 @@ public class ColorConfigForm
             }
         } catch (Exception ex) {}
     }
-
-//#if FILE_IO
-    public void BrowserFilePathNotify(String pathSelected) {
-        if (loadType==0) {
-            FileIO file=FileIO.createConnection(pathSelected+"skin.txt");
-            file.fileWrite(ColorTheme.getSkin().getBytes());
-        } else {
-            ColorTheme.loadSkin(pathSelected, 0);
-        }
-    }
-//#endif
 }
 

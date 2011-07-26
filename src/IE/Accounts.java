@@ -34,6 +34,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Vector;
+import ui.Time;
 
 /**
  *
@@ -224,7 +225,7 @@ public class Accounts {
 
         byte[] bodyMessage=body.toString().getBytes();
 
-        FileIO fileIO=FileIO.createConnection(file+"accounts.txt");
+        FileIO fileIO=FileIO.createConnection(file + "accounts_" + Time.localDate() + ".txt");
         fileIO.fileWrite(bodyMessage);
 
         bodyMessage=null;

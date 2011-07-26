@@ -34,6 +34,11 @@ import ui.controls.form.LinkString;
 import ui.controls.form.SimpleString;
 import ui.controls.form.SpacerItem;
 
+// For colors
+import Colors.ColorTheme;
+import ui.Time;
+import io.file.FileIO;
+
 /**
  *
  * @author ad
@@ -113,6 +118,18 @@ public class IEMenu
                 SelectFile(true);
             }} );
 //#endif
+        itemsList.addElement(new SpacerItem(10));
+        itemsList.addElement(new SimpleString("Colors", true));
+        itemsList.addElement(new LinkString(SR.MS_LOAD_FROM_FILE) {
+            public void doAction() {
+                choice = 10;
+                SelectFile(false);
+            }} );
+        itemsList.addElement(new LinkString(SR.MS_SAVE_TO_FILE) {
+            public void doAction() {
+                choice = 11;
+                SelectFile(true);
+            }} );
     }
 
     public void SelectFile(boolean getDir) {
@@ -153,6 +170,13 @@ public class IEMenu
                 new IE.UserKeys(pathSelected, 1, false);
                 break;
 //#endif
+            case 10: //load Colors
+                ColorTheme.loadSkin(pathSelected, 0);
+                break;
+            case 11: //save Colors
+                FileIO file = FileIO.createConnection(pathSelected + "skin_" + Time.localDate() + ".txt");
+                file.fileWrite(ColorTheme.getSkin().getBytes());
+                break;
         }
     }
 }
