@@ -2054,7 +2054,10 @@ public class Roster
             playNotify(SOUND_FOR_ME);
 //#ifdef POPUPS
             if (showWobbler(c)) {
-                setWobble(2, c.getJid(), message.body);
+                String body = (c.origin == Contact.ORIGIN_GROUPCHAT && cf.showNickNames) ? 
+                message.from + ":\n" + message.body : 
+                message.body; 
+                setWobble(2, c.getJid(), body);
             }
 //#endif
             autorespond = true;
