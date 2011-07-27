@@ -2096,7 +2096,8 @@ public class Roster
                         focusToContact(c, false);
                     }
                 }
-            } //#ifndef WMUC
+            } 
+//#ifndef WMUC
             else {
                 if (c.origin != Contact.ORIGIN_GROUPCHAT && c instanceof MucContact) {
                     playNotify(SOUND_MESSAGE); //private message

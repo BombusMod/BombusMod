@@ -741,12 +741,15 @@ public class ContactMessageList extends MessageList {
 
     public void Quote() {
         if (!sd.roster.isLoggedIn()) return;
-        
+        Msg message = getMessage(cursor);
+        String quotestring = contact.origin == Contact.ORIGIN_GROUPCHAT ? 
+                message.from + "> " + message.body : 
+                message.quoteString(); 
         try {
             String msg=new StringBuffer()
                 .append((char)0xbb) //
                 .append(" ")
-                .append(getMessage(cursor).quoteString())
+                .append(quotestring)
                 .append("\n")
                 .append(" ")
                 .toString();
