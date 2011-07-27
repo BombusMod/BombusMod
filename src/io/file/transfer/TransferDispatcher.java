@@ -59,7 +59,7 @@ public class TransferDispatcher implements JabberBlockListener {
    
     StaticData sd = StaticData.getInstance();
     
-    private Vector taskList;
+    private final Vector taskList;
     public Vector getTaskList() { return taskList;  }
 
     public int getTasksCount() { return taskList.size(); }

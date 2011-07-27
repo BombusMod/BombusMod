@@ -86,9 +86,9 @@ public class Account extends IconTextElement {
     public static void loadAccount(boolean launch, int accountIndex) {
         Account a = sd.account = Account.createFromStorage(accountIndex);
         if (a != null) {
-            sd.roster.logoff(null);
-            sd.roster.resetRoster();
             if (launch) {
+                sd.roster.logoff(null);
+                sd.roster.resetRoster();
                 int loginstatus = Config.getInstance().loginstatus;
                 if (loginstatus >= Presence.PRESENCE_OFFLINE) {
                     sd.roster.sendPresence(Presence.PRESENCE_INVISIBLE, null);

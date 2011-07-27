@@ -196,7 +196,7 @@ public abstract class MessageList extends DefForm
             item.toggleSmiles(this);
 //#ifdef POPUPS
 //#ifdef SMILES
-            if (!item.smilesEnabled()) {
+            if (!item.smilesEnabled() && cf.hideTimestamps) {
                 sd.roster.setWobble(2, null, item.getTipString());
             }
 //#endif

@@ -126,7 +126,6 @@ public class Contact extends IconTextElement {
 //#ifdef LOGROTATE
 //#     public boolean redraw = false;
 //#endif
-    private Config cf;
     public String j2j;
     public String lang;
     public String version;
@@ -338,6 +337,46 @@ public class Contact extends IconTextElement {
 
     public void addMessage(Msg m) {
         boolean last_replace = false;
+        if (origin == ORIGIN_GROUPCHAT) {
+            if (!m.body.startsWith("/me ")) {
+                if (cf.showNickNames && !m.isPresence() && m.messageType != Msg.MESSAGE_TYPE_SUBJ) {
+                    StringBuffer who = new StringBuffer();
+//#if NICK_COLORS
+                    who.append("\01");
+//#endif					
+                    who.append(m.from);
+//#if NICK_COLORS
+                    who.append("\02");
+//#endif					
+                    if (!cf.hideTimestamps) {
+                        who.append(" (").append(m.getTime()).append(")");
+                    }
+                    who.append(":");
+                    if (m.subject != null) {
+                        who.append("\n").append(m.subject);
+                    }
+                    m.subject = who.toString();
+                }
+            }
+            if (m.body.startsWith("/me ")) {
+                StringBuffer b = new StringBuffer();
+//#if NICK_COLORS
+                b.append("\01");
+//#endif
+                b.append(m.from);
+//#if NICK_COLORS
+                b.append("\02");
+//#endif
+                b.insert(0, '*');
+                b.append(m.body.substring(3));
+                m.body = b.toString();
+                b = null;
+            }
+            status = Presence.PRESENCE_ONLINE;
+//#ifdef LOGROTATE
+//#             redraw = deleteOldMessages();
+//#endif			
+        }
         if (origin != ORIGIN_GROUPCHAT) {
             if (msgs.size() > 0 && m.isPresence()) {
                 Object item = msgs.lastElement();
@@ -347,13 +386,25 @@ public class Contact extends IconTextElement {
                     }
                 }
             } else {
-                if (cf.showNickNames && m.messageType != Msg.MESSAGE_TYPE_PRESENCE) {
-                    StringBuffer who = new StringBuffer();
-                    who.append((m.messageType == Msg.MESSAGE_TYPE_OUT) ? sd.account.getNickName() : getName()).append(" (").append(m.getTime()).append(") ");
-                    if (m.subject != null) {
-                        who.append("\n").append(m.subject);
+                if (!m.body.startsWith("/me ")) {
+                    if (cf.showNickNames && !m.isPresence()) {
+                        StringBuffer who = new StringBuffer();
+//#if NICK_COLORS
+                        who.append("\01");
+//#endif					
+                        who.append((m.messageType == Msg.MESSAGE_TYPE_OUT) ? sd.account.getNickName() : getName());
+//#if NICK_COLORS
+                        who.append("\02");
+//#endif					
+                        if (!cf.hideTimestamps) {
+                            who.append(" (").append(m.getTime()).append(")");
+                        }
+                        who.append(":");
+                        if (m.subject != null) {
+                            who.append("\n").append(m.subject);
+                        }
+                        m.subject = who.toString();
                     }
-                    m.subject = who.toString();
                 }
                 if (m.body.startsWith("/me ")) {
                     StringBuffer b = new StringBuffer();
