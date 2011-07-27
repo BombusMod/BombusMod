@@ -1914,7 +1914,6 @@ public class Roster
         return JabberBlockListener.BLOCK_REJECTED;
     }
 //#ifdef CLIENTS_ICONS
-
     private void getClientIcon(Contact c, String data) {
         ClientsIconsData.processData(c, data);
     }
@@ -2068,8 +2067,9 @@ public class Roster
         } else if (message.messageType == Msg.MESSAGE_TYPE_IN || message.messageType == Msg.MESSAGE_TYPE_HEADLINE) {
             if (c.origin < Contact.ORIGIN_GROUPCHAT) {
 //#ifndef WMUC
-                if (!(c instanceof MucContact)) //#endif
-                //#ifdef POPUPS
+                if (!(c instanceof MucContact)) 
+//#endif
+//#ifdef POPUPS
                 {
                     if (showWobbler(c)) {
                         setWobble(2, c.getJid(), c.toString() + ": " + message.body);
