@@ -108,6 +108,21 @@ public class PopUp {
         return null;
     }
 
+    public boolean goToMsgList() {
+        String c = getContact();
+        if (c != null) {
+//#ifdef POPUPS
+            VirtualList current = StaticData.getInstance().canvas.getList();
+            if (current instanceof ContactMessageList) {
+                ((ContactMessageList) current).savePosition();
+            }
+            StaticData.getInstance().roster.showContactMessageList(c);
+//#endif
+        }
+
+        return handled = next();
+    }
+
     public boolean next() {
         if(size()>0) {
             popUps.removeElementAt(0);
@@ -153,17 +168,7 @@ public class PopUp {
             }
         }
         if (keyCode == VirtualCanvas.KEY_GREEN) {
-            String c = getContact();
-            if (c != null) {
-//#ifdef POPUPS
-                VirtualList current = StaticData.getInstance().canvas.getList();
-                if (current instanceof ContactMessageList) {
-                    ((ContactMessageList) current).savePosition();
-                }
-                StaticData.getInstance().roster.showContactMessageList(c);
-//#endif
-                return handled = next();
-            }
+            return goToMsgList();
         }
         return handled = next();
     }
@@ -174,6 +179,7 @@ public class PopUp {
         return popUps.isEmpty();
     }
 */
+
     public void clear() {
         if(size()>0)
             popUps.removeAllElements();

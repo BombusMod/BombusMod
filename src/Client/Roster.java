@@ -814,7 +814,7 @@ public class Roster
 
 //#ifdef POPUPS
     public void showContactMessageList(String jid) {
-        new ContactMessageList(sd.roster.getContact(jid, false));
+        sd.roster.getContact(jid, false).getMsgList();
     }
 //#endif
 
@@ -2368,7 +2368,7 @@ public class Roster
 
     public void eventOk() {
         super.eventOk();
-        if (createMsgList() == null) {
+        if (getFocusedMsgList() == null) {
             cleanupGroup((Group) getFocusedObject());
             reEnumRoster();
         }
@@ -2383,11 +2383,12 @@ public class Roster
 //#endif
     }
 
-    private VirtualList createMsgList() {
+    private ContactMessageList getFocusedMsgList() {
         Object e = getFocusedObject();
         if (e instanceof Contact) {
-            return new ContactMessageList((Contact) e);
+            return ((Contact) e).getMsgList();
         }
+
         return null;
     }
 
@@ -2396,7 +2397,7 @@ public class Roster
             return;
         }
 
-        VirtualList pview = createMsgList();
+        ContactMessageList pview = getFocusedMsgList();
         if (pview != null) {
             Contact c = (Contact) getFocusedObject();
             me = null;
@@ -2828,7 +2829,7 @@ public class Roster
             }
 
             Contact c = (Contact) activeContacts.elementAt(nowContact);
-            new ContactMessageList(c);
+            c.getMsgList();
         } catch (Exception e) {
         }
     }
@@ -2952,17 +2953,7 @@ public class Roster
     }
 
     public void keyGreen() {
-        if (!isLoggedIn()) {
-            return;
-        }
-        VirtualList pview = createMsgList();
-        if (pview != null) {
-            Contact c = (Contact) getFocusedObject();
-            Roster.me = null;
-            Roster.me = new MessageEdit(pview, c, c.msgSuspended);
-            Roster.me.show();
-            c.msgSuspended = null;
-        }
+        messageEditResume();
     }
 
     public void keyClear() {

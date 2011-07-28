@@ -144,6 +144,7 @@ public class Contact extends IconTextElement {
     int ilHeight;
     int maxImgHeight;
     private boolean smiles = false;
+    ContactMessageList cml = null;
 
     protected Contact() {
         super(RosterIcons.getInstance());
@@ -405,8 +406,7 @@ public class Contact extends IconTextElement {
                         }
                         m.subject = who.toString();
                     }
-                }
-                if (m.body.startsWith("/me ")) {
+                } else { // if (m.body.startsWith("/me "))
                     StringBuffer b = new StringBuffer();
 //#if NICK_COLORS
                     b.append("\01");
@@ -918,4 +918,15 @@ public class Contact extends IconTextElement {
 //#     }
 //#endif
 //#endif    
+
+    public ContactMessageList getMsgList() {
+        if (cml == null) {
+            cml = new ContactMessageList(this);
+        } else {
+            cml.show();
+        }
+
+        return cml;
+    }
+
 }

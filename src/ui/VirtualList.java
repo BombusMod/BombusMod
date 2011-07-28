@@ -137,7 +137,7 @@ public abstract class VirtualList {
         }
 
         if (updateLayout() > 0)
-                fitCursorByTop();
+            fitCursorByTop();
         redraw();
     }
     
@@ -348,10 +348,7 @@ public abstract class VirtualList {
     public static int startGPRS=-1;
     public static int offGPRS=0;
 
-    /** обработка doubleclick */
-    private int lastClickX;
-    private int lastClickY;
-    private int lastClickItem;
+    /** processing short/long presses and double clicks  */
     private long lastClickTime;
     private int lastCursor;
 
@@ -809,7 +806,6 @@ if (paintBottom) {
     }
     
     protected synchronized void fitCursorByTop() {
-
         int top = itemLayoutY[cursor];
         if (top < win_top) {
             win_top = top;
@@ -855,19 +851,39 @@ if (paintBottom) {
         }
     }
 
+/* Currently not used
+ * TODO: testing and think about remove it.
+ * See pointerReleased(...) method for more information.
+    protected void makeCursorMaximallyVisible() {
+        if (cursor < itemLayoutY.length - 1) {
+            int il = itemLayoutY[cursor + 1] - winHeight;
+            if (il > win_top) {
+                win_top = il;
+            }
+            il = itemLayoutY[cursor];
+            if (il < win_top) {
+                win_top = il;
+            }
+        }
+    }
+*/
+
     public void keyGreen() {}
     public void keyClear() {}
 
     private int yPointerPos;
 
     protected void pointerPressed(int x, int y) {
+        long clickTime = System.currentTimeMillis();
+        lastClickTime = clickTime;
+        lastCursor = cursor;
+
 //#ifdef POPUPS
-        if (PopUp.getInstance().next()) {
-            redraw();
-            lastClickTime = 5000;
+        if (PopUp.getInstance().size() > 0) {
             return;
         }
 //#endif
+
         int act = CommandsPointer.pointerPressed(x, y);
         if (act == 1) {
             doLeftAction();
@@ -885,7 +901,6 @@ if (paintBottom) {
             return;
         }
         
-
         if (y < list_top) {
             captionPressed();
             return;
@@ -893,44 +908,26 @@ if (paintBottom) {
         if (y > list_top + winHeight) {
             return;
         }
-        lastCursor = cursor;
-        long clickTime = System.currentTimeMillis();
 
         int pos = getElementIndexAt(win_top + y - list_top);
         if (cursor >= 0 && cursor != pos) {
             moveCursorTo(pos);
+            stickyWindow = false;
             setRotator();
         }
-
-        if (cursor != lastCursor) {
-            if (cursor < itemLayoutY.length - 1) {
-                // сделаем элемент максимально видимым
-                int il = itemLayoutY[cursor + 1] - winHeight;
-                if (il > win_top) {
-                    win_top = il;
-                }
-                il = itemLayoutY[cursor];
-                if (il < win_top) {
-                    win_top = il;
-                }
-            }
-        }
-        
-        lastClickTime = clickTime;
-        lastClickX = x;
-        lastClickY = y;
-        lastClickItem = cursor;        
-
-        redraw();
     }
 
     boolean itemDragged = false;
 
     protected void pointerDragged(int x, int y) {
-        if (y < list_top) {
+//#ifdef POPUPS
+        if (PopUp.getInstance().size() > 0) {
             return;
         }
-        if (y > list_top + winHeight) {
+//#endif
+
+        if ((y < list_top)
+        || (y > list_top + winHeight)) {
             return;
         }
         if (scrollbar.pointerDragged(x, y, this)) {
@@ -946,9 +943,7 @@ if (paintBottom) {
         }
 
         itemDragged = true;
-
         yPointerPos = y;
-
         win_top -= dy;
 
         if (win_top + winHeight > listHeight) {
@@ -957,7 +952,7 @@ if (paintBottom) {
         if (win_top < 0) {
             win_top = 0;
         }
-
+/*
         stickyWindow = false;
         if (cursor >= 0) {
             if (getItemCount() != 0) {
@@ -968,42 +963,47 @@ if (paintBottom) {
                 setRotator();
             }
         }
-
-        redraw();
-
+*/
     }
 
     protected void pointerReleased(int x, int y) {
+        long clickTime = System.currentTimeMillis();
+        long dTime = clickTime - lastClickTime;
+        boolean longClick = (dTime > 500 && dTime < 5000);
+        boolean shortClick = (dTime <= 200);
+        lastClickTime = clickTime;
 
-        if (scrollbar.pointerReleased(x, y, this))
-            return;
-
-        if (Config.fullscreen) {
-            if (CommandsPointer.pointerPressed(x, y) > 0) {
-                return;
-            }
-        }
-
-        if (y > list_top + winHeight) {
+//#ifdef POPUPS
+        if ((longClick && PopUp.getInstance().goToMsgList())
+        || (shortClick && PopUp.getInstance().next())) {
             return;
         }
+//#endif
+
+        if (scrollbar.pointerReleased(x, y, this)
+        || (Config.fullscreen && CommandsPointer.pointerPressed(x, y) > 0)
+        || (y > list_top + winHeight)) {
+            return;
+        }
+
+// In my opinion, scrolling without it more comfortable. Totktonada.
+/*
+        if (cursor != lastCursor) { // Without this condition, scrolling large messages is very interesting :-)
+            makeCursorMaximallyVisible();
+        }
+*/
+
         if (!itemDragged) {            
-
-            long clickTime = System.currentTimeMillis();
-
-            long dTime = clickTime - lastClickTime;
-            if (dTime > 500 && dTime < 5000) {
+            if (longClick) {
                 eventLongOk();
-            } else if (dTime <= 200) {
-                if (cursor == lastCursor || cf.advTouch) {                    
-                    eventOk();
-                }
             }
-            lastClickTime = clickTime;
-            y = 0;
+            if (shortClick && (cursor == lastCursor || cf.advTouch)) {
+                eventOk();
+            }
         }
         itemDragged = false;
-}
+        lastCursor = cursor;
+    }
     
     /**
      * событие "Нажатие кнопки UP"

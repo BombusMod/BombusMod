@@ -230,6 +230,7 @@ public class VirtualCanvas extends Canvas implements CommandListener{
 //#             e.printStackTrace();
 //#endif
         }
+        repaint();
     }
 
     protected final void pointerDragged(int x, int y) {
@@ -244,6 +245,7 @@ public class VirtualCanvas extends Canvas implements CommandListener{
 //#             e.printStackTrace();
 //#endif
         }
+        repaint();
     }
 
     protected final void pointerReleased(int x, int y) {
@@ -258,6 +260,7 @@ public class VirtualCanvas extends Canvas implements CommandListener{
 //# 
 //#endif
         }
+        repaint();
     }
 
     protected void showNotify() {
