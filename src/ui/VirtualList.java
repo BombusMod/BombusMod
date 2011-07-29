@@ -1269,7 +1269,10 @@ if (paintBottom) {
     }
     
     protected void drawCursor (Graphics g, int width, int height) {
-        g.fillRect(0, 0, width, height);
+//#ifdef BACK_IMAGE
+//#         if (img == null)
+//#endif            
+            g.fillRect(0, 0, width, height);
         
         int cursorBGnd=ColorTheme.getColor(ColorTheme.CURSOR_BGND);
         int cursorOutline=ColorTheme.getColor(ColorTheme.CURSOR_OUTLINE);
