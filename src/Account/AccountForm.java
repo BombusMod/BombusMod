@@ -39,8 +39,10 @@ import ui.controls.form.LinkString;
 import ui.controls.form.NumberInput;
 import ui.controls.form.PasswordInput;
 import ui.controls.form.TextInput;
+//#ifdef FILE_IO
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
+//#endif
 
 /**
  *
@@ -49,7 +51,7 @@ import io.file.browse.BrowserListener;
 public class AccountForm 
         extends DefForm
 //#ifdef IMPORT_EXPORT
-        implements BrowserListener
+//#         implements BrowserListener
 //#endif
 {
 
@@ -70,7 +72,7 @@ public class AccountForm
 
     private LinkString linkRegister;
 //#ifdef IMPORT_EXPORT
-    private LinkString linkImport;
+//#     private LinkString linkImport;
 //#endif
 
     private NumberInput keepAlive;
@@ -128,13 +130,13 @@ public class AccountForm
             itemsList.addElement(linkRegister);
 
 //#ifdef IMPORT_EXPORT
-        final BrowserListener listener = this;
-        linkImport = new LinkString(SR.MS_LOAD_FROM_FILE) {
-            public void doAction() {
-                new Browser(null, listener, false);
-            }
-        };
-        itemsList.addElement(linkImport);
+//#         final BrowserListener listener = this;
+//#         linkImport = new LinkString(SR.MS_LOAD_FROM_FILE) {
+//#             public void doAction() {
+//#                 new Browser(null, listener, false);
+//#             }
+//#         };
+//#         itemsList.addElement(linkImport);
 //#endif
 
         linkShowExtended = new LinkString(SR.MS_EXTENDED_SETTINGS) { public void doAction() { showExtended(); } };
@@ -303,10 +305,10 @@ public class AccountForm
     }
 
 //#ifdef IMPORT_EXPORT
-    public void BrowserFilePathNotify(String pathSelected) {
-        new IE.Accounts(pathSelected, 0, false);
-        accountSelect.loadAccounts();
-        destroyView();
-    }
+//#     public void BrowserFilePathNotify(String pathSelected) {
+//#         new IE.Accounts(pathSelected, 0, false);
+//#         accountSelect.loadAccounts();
+//#         destroyView();
+//#     }
 //#endif
 }

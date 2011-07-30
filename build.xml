@@ -141,6 +141,11 @@
 	<echo message="Modified bootclasspath=${platform.bootclasspath}" />
     </target>
 
+  <target name="build-android" description="compile android project" depends="init, preprocess" >
+    <ant dir="android" target="debug" inheritAll="true" antfile="build.xml">
+    </ant>
+  </target>
+
 
     <!--
 

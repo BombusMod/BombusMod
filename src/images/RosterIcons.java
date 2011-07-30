@@ -82,9 +82,9 @@ public class RosterIcons extends ImageList{
     }
    
 
-    public void drawImage(Graphics g, int index, int x, int y) {
-        if (transports == null) return;
+    public void drawImage(Graphics g, int index, int x, int y) {        
         if (index>66000) { //draw transport icons
+            if (transports == null) return;
             ((ImageList)transpSkins.elementAt( (index>>24) -1 )).drawImage(g, index & 0xff, x, y);
         } else super.drawImage(g, index, x, y);
     }
