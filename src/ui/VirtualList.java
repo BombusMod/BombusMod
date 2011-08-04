@@ -285,10 +285,7 @@ public abstract class VirtualList {
 
     private int list_top;
     private int list_bottom;
-    
-//#ifdef BACK_IMAGE
-//#     public Image img;
-//#endif
+   
     
     protected synchronized int updateLayout() {
         int size = getItemCount();
@@ -418,12 +415,6 @@ public abstract class VirtualList {
 
         stringHeight=FontCache.getFont(false, FontCache.roster).getHeight();
         
-//#ifdef BACK_IMAGE
-//#         try {
-//#             if (img==null)
-//#                 img=Image.createImage("/images/bg.png");
-//#         } catch (Exception e) { }
-//#endif
 //#if USE_ROTATOR
         TimerTaskRotate.startRotate(0, this);
 //#endif
@@ -489,15 +480,6 @@ public abstract class VirtualList {
         int count = updateLayout();
 
         setAbsOrg(g, 0, 0);
-
-        g.setColor(ColorTheme.getColor(ColorTheme.LIST_BGND));
-        g.fillRect(0, 0, width, height);
-
-//#ifdef BACK_IMAGE
-//#         if (img!=null) {
-//#             g.drawImage(img, width/2, height/2, Graphics.VCENTER|Graphics.HCENTER);
-//#         }
-//#endif
 
         if (mainbar != null) {
             mHeight = mainbar.getVHeight(); // nokia fix
@@ -575,7 +557,7 @@ public abstract class VirtualList {
                     baloon = g.getTranslateY();
                 } else {
 //#ifdef BACK_IMAGE
-//#                 if (img == null)
+//#                 if (VirtualCanvas.getInstance().img == null)
 //#endif
                     {
                         g.fillRect(0, 0, itemMaxWidth, lh); //clear field
@@ -594,7 +576,7 @@ public abstract class VirtualList {
 
         if (clrH > 0
 //#ifdef BACK_IMAGE
-//#                                 && img==null
+//#                                 && VirtualCanvas.getInstance().img==null
 //#endif
                 ) {
             setAbsOrg(g, 0, displayedBottom);
@@ -1270,7 +1252,7 @@ if (paintBottom) {
     
     protected void drawCursor (Graphics g, int width, int height) {
 //#ifdef BACK_IMAGE
-//#         if (img == null)
+//#         if (VirtualCanvas.getInstance().img == null)
 //#endif            
             g.fillRect(0, 0, width, height);
         

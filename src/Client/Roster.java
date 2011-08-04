@@ -2000,16 +2000,15 @@ public class Roster
         if (countNewMsgs()) {
             reEnumRoster();
         }
-        if (message.messageType == Msg.MESSAGE_TYPE_OUT) {
-            if (cf.autoScroll) {
-                VirtualList list = sd.canvas.getList();
+        if (cf.autoScroll) {
+            VirtualList list = sd.canvas.getList();
                 if (list instanceof ContactMessageList) {
                     if (((ContactMessageList) list).contact.compare(c) == 0) {
-                        list.moveCursorEnd();
+                        if (c.cml.on_end || message.messageType == Msg.MESSAGE_TYPE_OUT) 
+                            list.moveCursorEnd();
                     }
                 }
             }
-        }
 
         if (!message.unread) {
             return;

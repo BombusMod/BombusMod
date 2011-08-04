@@ -28,8 +28,7 @@ public class SOCKS5Stream {
     
     public void send(byte[] data, int ofs, int length) throws IOException {        
         synchronized (outStream) {
-            outStream.write(data, ofs, length);            
-            outStream.flush();
+            outStream.write(data, ofs, length);    
         }
     }
     public void send(byte[] data) throws IOException {        

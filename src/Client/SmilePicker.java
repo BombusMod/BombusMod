@@ -146,7 +146,7 @@ public class SmilePicker
 
         g.setColor(getColorBGnd());
 //#ifdef BACK_IMAGE        
-//#         if (img == null)
+//#         if (VirtualCanvas.getInstance().img == null)
 //#endif
             g.fillRect(0,0,width, height);
         

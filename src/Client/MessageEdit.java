@@ -329,6 +329,10 @@ public final class MessageEdit
 //#     }
 //#endif
     private void send() {
+        if (cf.autoScroll) {
+                to.moveToLatest = true;
+        }
+
         String comp = null; // composing event off
 
         String id = String.valueOf((int) System.currentTimeMillis());

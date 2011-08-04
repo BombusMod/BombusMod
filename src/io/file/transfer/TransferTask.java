@@ -530,13 +530,12 @@ public class TransferTask
             byte buf[] = new byte[2048];
             try {
                 int cnt;
-                while ((cnt = readFile(buf)) > 0) {
+                while ((cnt = readFile(buf)) != 0) {
                     proxystream.send(buf, 0, cnt);
                     TransferDispatcher.getInstance().repaintNotify();
                     // Thread.sleep( 500L ); //shaping traffic
                 }
                 proxystream.flush();
-                Thread.sleep(2000);
                 closeFile();
                 proxystream.close();
 

@@ -11,6 +11,7 @@ package ui;
 
 import Client.Config;
 import Client.StaticData;
+import Colors.ColorTheme;
 import java.util.Timer;
 import java.util.TimerTask;
 import javax.microedition.lcdui.Canvas;
@@ -28,6 +29,9 @@ import ui.controls.PopUp;
 //#endif
 //#ifdef LIGHT_CONFIG
 //# import LightControl.CustomLight;
+//#endif
+//#ifdef BACK_IMAGE
+//# import javax.microedition.lcdui.Image;
 //#endif
 
 /**
@@ -70,8 +74,11 @@ public class VirtualCanvas extends Canvas implements CommandListener{
     protected StaticData sd = StaticData.getInstance();
 
     public ReconnectWindow rw;
-
     
+//#ifdef BACK_IMAGE
+//#     public Image img;
+//#endif
+
     public static VirtualCanvas getInstance() {
         if (instance == null) {
             instance = new VirtualCanvas();
@@ -81,13 +88,22 @@ public class VirtualCanvas extends Canvas implements CommandListener{
     
     private VirtualCanvas() {
         setFullScreenMode(Config.fullscreen);
-        if (VirtualList.phoneManufacturer==Config.WINDOWS) {
+        if (VirtualList.phoneManufacturer == Config.WINDOWS) {
             setTitle("BombusMod");
         }
         if (hasPointerEvents() && Config.getInstance().swapMenu) {
             // silly china phones
             Config.getInstance().swapMenu = false;
         }
+//#ifdef BACK_IMAGE
+//#         try {
+//#             if (img == null) {
+//#                 img = Image.createImage("/images/bg.png");
+//#             }
+//#         } catch (Exception e) {
+//#         }
+//#endif
+
     }
     
     public void setMIDlet(MIDlet midlet) {
@@ -145,6 +161,15 @@ public class VirtualCanvas extends Canvas implements CommandListener{
     protected void paint(Graphics graphics) {
         list.width = getWidth();
         list.height = getHeight();
+        graphics.setColor(ColorTheme.getColor(ColorTheme.LIST_BGND));
+        graphics.fillRect(0, 0, list.width, list.height);
+        
+//#ifdef BACK_IMAGE
+//#         if (img != null) {
+//#             graphics.drawImage(img, list.width / 2, list.height / 2, Graphics.VCENTER | Graphics.HCENTER);
+//#         }
+//#endif
+        
         try {
             list.paint(graphics);
         } catch(Exception e) {

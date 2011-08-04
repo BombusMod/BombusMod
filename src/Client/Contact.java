@@ -469,10 +469,6 @@ public class Contact extends IconTextElement {
             return;
         }
 
-        if (cf.autoScroll) {
-            moveToLatest = true;
-        }
-
         if (m.messageType != Msg.MESSAGE_TYPE_HISTORY && m.messageType != Msg.MESSAGE_TYPE_PRESENCE) {
             activeMessage = msgs.size();
         }
@@ -923,6 +919,7 @@ public class Contact extends IconTextElement {
         if (cml == null) {
             cml = new ContactMessageList(this);
         } else {
+            if (newMsgCnt > 0 && cml.on_end) cml.moveToUnread();
             cml.show();
         }
 

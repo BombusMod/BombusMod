@@ -69,7 +69,7 @@ public class ActiveContacts extends DefForm {
     public void eventOk() {
         if (getItemCount() > 0) {
             Contact c = (Contact) getFocusedObject();
-            new ContactMessageList(c);
+            ((Contact) c).getMsgList();
         }
         //c.msgSuspended=null; // clear suspended message for selected contact
     }
@@ -110,7 +110,7 @@ public class ActiveContacts extends DefForm {
 
     public void keyGreen() {
         Contact c = (Contact) getFocusedObject();
-        ui.VirtualList pview = new ContactMessageList(c);
+        ui.VirtualList pview = ((Contact) c).getMsgList();
         Roster.me = null;
         Roster.me = new MessageEdit(pview, c, c.msgSuspended);
         Roster.me.show();

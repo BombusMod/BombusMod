@@ -118,7 +118,7 @@ public class ContactMessageList extends MessageList {
 //#     private ClipBoard clipboard=ClipBoard.getInstance();
 //#endif
     
-    private boolean on_end;
+    protected boolean on_end;
     private boolean composing=true;
 
     private boolean startSelection;
@@ -142,11 +142,14 @@ public class ContactMessageList extends MessageList {
 //#ifdef LAST_MESSAGES
 //#         if (cf.lastMessages && !contact.isHistoryLoaded()) loadRecentList();
 //#endif
-//#endif
+//#endif       
+        moveToUnread();
+        show();
+    }
+
+    protected final void moveToUnread() {
         if (contact.msgs.size()>0)
             moveCursorTo(firstUnread());
-
-        show();
     }
 
     public final int firstUnread(){
@@ -273,20 +276,23 @@ public class ContactMessageList extends MessageList {
 //#endif
 
     public void forceScrolling() { //by voffk
-        if (contact != null)
-        if (contact.moveToLatest) {
-            contact.moveToLatest = false;            
-            if (on_end)
-                moveCursorEnd();
+        if (contact != null) {
+            if (contact.moveToLatest) {
+                contact.moveToLatest = false;
+                if (on_end) {
+                    moveCursorEnd();
+                }
+            }
         }
-    }   
+    }
 
     protected void beginPaint() {
-        if (contact != null)
+        if (contact != null) {
             sd.roster.activeContact = contact;
+        }
+        forceScrolling();
         markRead(cursor);
-        forceScrolling();                 
-        on_end = (cursor==(getItemCount() - 1));
+        on_end = (cursor == (getItemCount() - 1));
     }
     
     public void markRead(int msgIndex) {
@@ -419,7 +425,6 @@ public class ContactMessageList extends MessageList {
                 new RosterItemActions(contact);
         }
 	if (c==cmdActive)  {
-            savePosition();
             new ActiveContacts(contact);
         }
         
@@ -735,7 +740,6 @@ public class ContactMessageList extends MessageList {
     }
     
     public void captionPressed() {
-         savePosition();
          sd.roster.searchActiveContact(1); //next contact with messages
     }
 
@@ -876,10 +880,6 @@ public class ContactMessageList extends MessageList {
         contact.resetNewMsgCnt();
     }
 
-    public void savePosition() {
-        contact.mark = on_end ? -1 : cursor;        
-    }
-
     public void destroyView(){
         /*
         if (startSelection) {
@@ -892,7 +892,6 @@ public class ContactMessageList extends MessageList {
             startSelection = false;
         }
         */
-        savePosition();
         sd.roster.activeContact=null;
         sd.roster.reEnumRoster(); //to reset unread messages icon for this conference in roster
         parentView = sd.roster;
@@ -902,19 +901,16 @@ public class ContactMessageList extends MessageList {
     public void doKeyAction(int keyCode) {
         switch (keyCode) {
             case 3:
-                savePosition();
                 new ActiveContacts(null);
                 return;
             case 4:
                 if (cf.useTabs) {
-                    savePosition();
                     sd.roster.searchActiveContact(-1);
                     return;
                 }
                 break;
             case 6:
                 if (cf.useTabs) {
-                    savePosition();
                     sd.roster.searchActiveContact(1);
                     return;
                 }
@@ -944,18 +940,15 @@ public class ContactMessageList extends MessageList {
                 Quote();
                 return true;
             case 31:
-                savePosition();
                 new ActiveContacts(contact);
                 return true;
             case 48:
                 if (cf.useTabs) {
-                    savePosition();
                     sd.roster.searchActiveContact(-1); //previous contact with messages
                     return true;
                 }
             case 49:
                 if (cf.useTabs) {
-                    savePosition();
                     sd.roster.searchActiveContact(1); //next contact with messages
                     return true;
                 }

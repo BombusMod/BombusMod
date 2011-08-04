@@ -112,10 +112,6 @@ public class PopUp {
         String c = getContact();
         if (c != null) {
 //#ifdef POPUPS
-            VirtualList current = StaticData.getInstance().canvas.getList();
-            if (current instanceof ContactMessageList) {
-                ((ContactMessageList) current).savePosition();
-            }
             StaticData.getInstance().roster.showContactMessageList(c);
 //#endif
         }

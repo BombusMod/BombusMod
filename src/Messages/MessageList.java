@@ -158,9 +158,9 @@ public abstract class MessageList extends DefForm
         if (getItemCount() < 1) {
             return false;
         }
-        String body = ((MessageItem) getFocusedObject()).msg.body;
+        Msg message = ((MessageItem) getFocusedObject()).msg;        
 
-        if (body.indexOf("xmlSkin") > -1) {
+        if (message != null && message.body.indexOf("xmlSkin") > -1) {
             return true;
         }
         return false;
