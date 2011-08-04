@@ -148,6 +148,9 @@ public abstract class MessageList extends DefForm
 //#                 addMenuCommand(cmdCopyPlus);
 //#         }
 //#endif
+        MessageItem mi = (MessageItem) getFocusedObject();
+        if (mi == null) return;        
+        
         if (isHasScheme())
             addMenuCommand(cmdxmlSkin);
         if (isHasUrl())
