@@ -29,6 +29,7 @@ package Colors;
 
 import Menu.MenuCommand;
 import java.util.Enumeration;
+import images.RosterIcons;
 
 import locale.SR;
 import ui.VirtualList;
@@ -41,8 +42,8 @@ import ui.controls.form.DefForm;
 public class ColorsList extends DefForm
     {
 
-    MenuCommand cmdCopyColor = new MenuCommand("Copy color", MenuCommand.SCREEN, 10);
-    MenuCommand cmdPasteColor = new MenuCommand("Color from buffer", MenuCommand.SCREEN, 20);
+    MenuCommand cmdCopyColor = new MenuCommand("Copy color", MenuCommand.SCREEN, 10, RosterIcons.ICON_COLOR_TUNE);
+    MenuCommand cmdPasteColor = new MenuCommand("Color from buffer", MenuCommand.SCREEN, 20, RosterIcons.ICON_USESKIN);
 
     int colorBuffer = -1;
 

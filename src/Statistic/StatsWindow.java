@@ -39,6 +39,7 @@ import ui.controls.form.MultiLine;
 //# import util.ClipBoard;
 //#endif
 import util.StringUtils;
+import images.RosterIcons;
 
 /**
  *
@@ -50,11 +51,11 @@ public class StatsWindow
     
     Stats st=Stats.getInstance();
     
-    public MenuCommand cmdClear = new MenuCommand(SR.MS_CLEAR, MenuCommand.SCREEN, 2);
+    public MenuCommand cmdClear = new MenuCommand(SR.MS_CLEAR, MenuCommand.SCREEN, 2, RosterIcons.ICON_CLEAR);
 //#ifdef CLIPBOARD
 //#     ClipBoard clipboard = null;
-//#     MenuCommand cmdCopy      = new MenuCommand(SR.MS_COPY, MenuCommand.SCREEN, 1);
-//#     MenuCommand cmdCopyPlus  = new MenuCommand("+ "+SR.MS_COPY, MenuCommand.SCREEN, 2);
+//#     MenuCommand cmdCopy      = new MenuCommand(SR.MS_COPY, MenuCommand.SCREEN, 1, RosterIcons.ICON_COPY);
+//#     MenuCommand cmdCopyPlus  = new MenuCommand("+ "+SR.MS_COPY, MenuCommand.SCREEN, 2, RosterIcons.ICON_COPYPLUS);
 //#endif
     
     MultiLine item=null;    

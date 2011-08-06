@@ -37,6 +37,7 @@ import com.alsutton.jabber.*;
 import ui.MainBar;
 import ui.controls.AlertBox;
 import ui.controls.form.DefForm;
+import images.RosterIcons;
 
 /**
  *
@@ -45,23 +46,23 @@ import ui.controls.form.DefForm;
 public class Bookmarks extends DefForm {
 
     private BookmarkItem toAdd;
-    private MenuCommand cmdJoin = new MenuCommand(SR.MS_SELECT, MenuCommand.OK, 1);
-    private MenuCommand cmdAdvJoin = new MenuCommand(SR.MS_EDIT_JOIN, MenuCommand.SCREEN, 2);
-    private MenuCommand cmdNew = new MenuCommand(SR.MS_NEW_BOOKMARK, MenuCommand.SCREEN, 3);
-    private MenuCommand cmdDoAutoJoin = new MenuCommand(SR.MS_DO_AUTOJOIN, MenuCommand.SCREEN, 4);
-    private MenuCommand cmdConfigure = new MenuCommand(SR.MS_CONFIG_ROOM, MenuCommand.SCREEN, 5);
+    private MenuCommand cmdJoin = new MenuCommand(SR.MS_SELECT, MenuCommand.OK, 1, RosterIcons.ICON_APPEARING_INDEX);
+    private MenuCommand cmdAdvJoin = new MenuCommand(SR.MS_EDIT_JOIN, MenuCommand.SCREEN, 2, RosterIcons.ICON_RENAME);
+    private MenuCommand cmdNew = new MenuCommand(SR.MS_NEW_BOOKMARK, MenuCommand.SCREEN, 3, RosterIcons.ICON_NEW);
+    private MenuCommand cmdDoAutoJoin = new MenuCommand(SR.MS_DO_AUTOJOIN, MenuCommand.SCREEN, 4, RosterIcons.ICON_PRESENCE_CHAT);
+    private MenuCommand cmdConfigure = new MenuCommand(SR.MS_CONFIG_ROOM, MenuCommand.SCREEN, 5, RosterIcons.ICON_CONFIGURE);
 //#ifdef SERVICE_DISCOVERY
-    private MenuCommand cmdDisco = new MenuCommand(SR.MS_DISCO_ROOM, MenuCommand.SCREEN, 6);
+    private MenuCommand cmdDisco = new MenuCommand(SR.MS_DISCO_ROOM, MenuCommand.SCREEN, 6, RosterIcons.ICON_DISCO);
 //#endif
-    private MenuCommand cmdUp = new MenuCommand(SR.MS_MOVE_UP, MenuCommand.SCREEN, 7);
-    private MenuCommand cmdDwn = new MenuCommand(SR.MS_MOVE_DOWN, MenuCommand.SCREEN, 8);
-    private MenuCommand cmdSort = new MenuCommand(SR.MS_SORT, MenuCommand.SCREEN, 9);
-    private MenuCommand cmdSave = new MenuCommand(SR.MS_SAVE_LIST, MenuCommand.SCREEN, 10);
-    private MenuCommand cmdRoomOwners = new MenuCommand(SR.MS_OWNERS, MenuCommand.SCREEN, 11);
-    private MenuCommand cmdRoomAdmins = new MenuCommand(SR.MS_ADMINS, MenuCommand.SCREEN, 12);
-    private MenuCommand cmdRoomMembers = new MenuCommand(SR.MS_MEMBERS, MenuCommand.SCREEN, 13);
-    private MenuCommand cmdRoomBanned = new MenuCommand(SR.MS_BANNED, MenuCommand.SCREEN, 14);
-    private MenuCommand cmdDel = new MenuCommand(SR.MS_DELETE, MenuCommand.SCREEN, 15);
+    private MenuCommand cmdUp = new MenuCommand(SR.MS_MOVE_UP, MenuCommand.SCREEN, 7, RosterIcons.ICON_SCROLLABLE_UP);
+    private MenuCommand cmdDwn = new MenuCommand(SR.MS_MOVE_DOWN, MenuCommand.SCREEN, 8, RosterIcons.ICON_SCROLLABLE_DOWN);
+    private MenuCommand cmdSort = new MenuCommand(SR.MS_SORT, MenuCommand.SCREEN, 9, RosterIcons.ICON_IE);
+    private MenuCommand cmdSave = new MenuCommand(SR.MS_SAVE_LIST, MenuCommand.SCREEN, 10, RosterIcons.ICON_ARCHIVE);
+    private MenuCommand cmdRoomOwners = new MenuCommand(SR.MS_OWNERS, MenuCommand.SCREEN, 11, RosterIcons.ICON_OWNERS);
+    private MenuCommand cmdRoomAdmins = new MenuCommand(SR.MS_ADMINS, MenuCommand.SCREEN, 12, RosterIcons.ICON_ADMINS);
+    private MenuCommand cmdRoomMembers = new MenuCommand(SR.MS_MEMBERS, MenuCommand.SCREEN, 13, RosterIcons.ICON_MEMBERS);
+    private MenuCommand cmdRoomBanned = new MenuCommand(SR.MS_BANNED, MenuCommand.SCREEN, 14, RosterIcons.ICON_OUTCASTS);
+    private MenuCommand cmdDel = new MenuCommand(SR.MS_DELETE, MenuCommand.SCREEN, 15, RosterIcons.ICON_DELETE);
     JabberStream stream = sd.roster.theStream;
 
     /** Creates a new instance of Bookmarks

@@ -49,6 +49,7 @@ import ui.controls.form.MultiLine;
 import ui.controls.form.SimpleString;
 import ui.controls.form.LinkString;
 import ui.controls.form.SpacerItem;
+import images.RosterIcons;
 
 /**
  *
@@ -85,8 +86,8 @@ public class VCardView
 //#ifdef CLIPBOARD
 //#     ClipBoard clipboard  = ClipBoard.getInstance();   
 //#     StringBuffer VCardData = new StringBuffer();
-//#     MenuCommand cmdCopy      = new MenuCommand(SR.MS_COPY, MenuCommand.OK, 1);
-//#     MenuCommand cmdCopyPlus  = new MenuCommand("+ "+SR.MS_COPY, MenuCommand.SCREEN, 2);
+//#     MenuCommand cmdCopy      = new MenuCommand(SR.MS_COPY, MenuCommand.OK, 1, RosterIcons.ICON_COPY);
+//#     MenuCommand cmdCopyPlus  = new MenuCommand("+ "+SR.MS_COPY, MenuCommand.SCREEN, 2, RosterIcons.ICON_COPYPLUS);
 //#endif    
 
     /** Creates a new instance of VCardView

@@ -47,12 +47,12 @@ import ui.controls.form.DefForm;
  */
 public class Browser extends DefForm {
  
-    MenuCommand cmdBrowse=new MenuCommand(SR.MS_BROWSE, MenuCommand.OK, 1);
-    MenuCommand cmdSelect=new MenuCommand(SR.MS_SELECT, MenuCommand.SCREEN, 2);
-    MenuCommand cmdView=new MenuCommand(SR.MS_VIEW, MenuCommand.SCREEN, 3);
-    MenuCommand cmdRoot=new MenuCommand(SR.MS_ROOT, MenuCommand.SCREEN, 4);
-    MenuCommand cmdDelete=new MenuCommand(SR.MS_DELETE, MenuCommand.SCREEN, 5);
-    MenuCommand cmdExit=new MenuCommand(SR.MS_CANCEL, MenuCommand.EXIT, 99);
+    MenuCommand cmdBrowse=new MenuCommand(SR.MS_BROWSE, MenuCommand.OK, 1, RosterIcons.ICON_PROGRESS_INDEX);
+    MenuCommand cmdSelect=new MenuCommand(SR.MS_SELECT, MenuCommand.SCREEN, 2, RosterIcons.ICON_SELECT);
+    MenuCommand cmdView=new MenuCommand(SR.MS_VIEW, MenuCommand.SCREEN, 3, RosterIcons.ICON_SEARCH_INDEX);
+    MenuCommand cmdRoot=new MenuCommand(SR.MS_ROOT, MenuCommand.SCREEN, 4, RosterIcons.ICON_FILEMAN);
+    MenuCommand cmdDelete=new MenuCommand(SR.MS_DELETE, MenuCommand.SCREEN, 5, RosterIcons.ICON_DELETE);
+    MenuCommand cmdExit=new MenuCommand(SR.MS_CANCEL, MenuCommand.EXIT, 99, RosterIcons.ICON_BAN);
 
     private String path;
     private BrowserListener browserListener;

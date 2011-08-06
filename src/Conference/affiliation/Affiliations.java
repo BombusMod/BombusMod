@@ -58,10 +58,10 @@ public class Affiliations
 
     private JabberStream stream=StaticData.getInstance().roster.theStream;
     
-    private MenuCommand cmdModify = new MenuCommand (SR.MS_MODIFY, MenuCommand.SCREEN, 1);
-    private MenuCommand cmdNew    = new MenuCommand (SR.MS_NEW_JID, MenuCommand.SCREEN, 2);
+    private MenuCommand cmdModify = new MenuCommand (SR.MS_MODIFY, MenuCommand.SCREEN, 1, RosterIcons.ICON_RENAME);
+    private MenuCommand cmdNew    = new MenuCommand (SR.MS_NEW_JID, MenuCommand.SCREEN, 2, RosterIcons.ICON_REGISTER_INDEX );
 //#ifdef CLIPBOARD
-//#     private MenuCommand cmdCopy   = new MenuCommand(SR.MS_COPY, MenuCommand.SCREEN, 3);
+//#     private MenuCommand cmdCopy   = new MenuCommand(SR.MS_COPY, MenuCommand.SCREEN, 3, RosterIcons.ICON_COPY);
 //#     private ClipBoard clipboard; 
 //#endif
     

@@ -63,12 +63,12 @@ public class ServiceDiscovery
     /*private final static String strCmds="Execute";
     private final int AD_HOC_INDEX=17;*/
     
-    private MenuCommand cmdBrowse=new MenuCommand(SR.MS_BROWSE, MenuCommand.OK, 1);
-    private MenuCommand cmdRfsh=new MenuCommand(SR.MS_REFRESH, MenuCommand.SCREEN, 2);
-    private MenuCommand cmdFeatures=new MenuCommand(SR.MS_FEATURES, MenuCommand.SCREEN, 3);
-    private MenuCommand cmdSrv=new MenuCommand(SR.MS_SERVER, MenuCommand.SCREEN, 10);
-    //private MenuCommand cmdAdd=new MenuCommand(SR.MS_ADD_TO_ROSTER, Command.SCREEN, 11); //FS#464 => this string is commented in SR.java'
-    private MenuCommand cmdBack=new MenuCommand(SR.MS_BACK, MenuCommand.BACK, 98);    
+    private MenuCommand cmdBrowse=new MenuCommand(SR.MS_BROWSE, MenuCommand.OK, 1, RosterIcons.ICON_PROGRESS_INDEX);
+    private MenuCommand cmdRfsh=new MenuCommand(SR.MS_REFRESH, MenuCommand.SCREEN, 2, RosterIcons.ICON_FT);
+    private MenuCommand cmdFeatures=new MenuCommand(SR.MS_FEATURES, MenuCommand.SCREEN, 3, RosterIcons.ICON_VCARD);
+    private MenuCommand cmdSrv=new MenuCommand(SR.MS_SERVER, MenuCommand.SCREEN, 10, RosterIcons.ICON_ON);
+    //private MenuCommand cmdAdd=new MenuCommand(SR.MS_ADD_TO_ROSTER, Command.SCREEN, 11, RosterIcons.ICON_NEW); //FS#464 => this string is commented in SR.java'
+    private MenuCommand cmdBack=new MenuCommand(SR.MS_BACK, MenuCommand.BACK, 98, RosterIcons.ICON_BACK);    
 
     private Stack stackItems=new Stack();
     

@@ -39,6 +39,7 @@ import ui.controls.form.MultiLine;
 import ui.controls.form.SpacerItem;
 import Menu.MenuCommand;
 import ui.VirtualList;
+import images.RosterIcons;
 //#ifdef CLIPBOARD
 //# import util.ClipBoard;
 //#endif
@@ -58,8 +59,8 @@ public class InfoWindow
 
 //#ifdef CLIPBOARD
 //#     ClipBoard clipboard  = ClipBoard.getInstance();
-//#     MenuCommand cmdCopy      = new MenuCommand(SR.MS_COPY, MenuCommand.OK, 1);
-//#     MenuCommand cmdCopyPlus  = new MenuCommand("+ "+SR.MS_COPY, MenuCommand.SCREEN, 2);
+//#     MenuCommand cmdCopy      = new MenuCommand(SR.MS_COPY, MenuCommand.OK, 1, RosterIcons.ICON_COPY);
+//#     MenuCommand cmdCopyPlus  = new MenuCommand("+ "+SR.MS_COPY, MenuCommand.SCREEN, 2, RosterIcons.ICON_COPYPLUS);
 //#endif
 
     /**

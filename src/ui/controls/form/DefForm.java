@@ -46,8 +46,8 @@ public class DefForm
         implements MenuListener {
 
     public final Vector itemsList = new Vector();
-    public static MenuCommand cmdOk = new MenuCommand(SR.MS_OK, MenuCommand.OK, 1);
-    public static MenuCommand cmdCancel = new MenuCommand(SR.MS_BACK, MenuCommand.BACK, 99);
+    public static MenuCommand cmdOk = new MenuCommand(SR.MS_OK, MenuCommand.OK, 1, RosterIcons.ICON_APPEARING_INDEX);
+    public static MenuCommand cmdCancel = new MenuCommand(SR.MS_BACK, MenuCommand.BACK, 99, RosterIcons.ICON_RESUME);
 
     /**
      * Creates a new instance of DefForm

@@ -43,6 +43,7 @@ import PrivacyLists.QuickPrivacy;
 import java.util.Vector;
 //#endif
 import ui.VirtualList;
+import images.RosterIcons;
 
 /**
  *
@@ -51,9 +52,9 @@ import ui.VirtualList;
 public class ConferenceForm
     extends DefForm {
     
-    MenuCommand cmdJoin=new MenuCommand(SR.MS_JOIN, MenuCommand.SCREEN, 1);
-    MenuCommand cmdAdd=new MenuCommand(SR.MS_ADD_BOOKMARK, MenuCommand.SCREEN, 5);
-    MenuCommand cmdEdit=new MenuCommand(SR.MS_SAVE, MenuCommand.SCREEN, 6);
+    MenuCommand cmdJoin=new MenuCommand(SR.MS_JOIN, MenuCommand.SCREEN, 1, RosterIcons.ICON_APPEARING_INDEX);
+    MenuCommand cmdAdd=new MenuCommand(SR.MS_ADD_BOOKMARK, MenuCommand.SCREEN, 5, RosterIcons.ICON_NEW);
+    MenuCommand cmdEdit=new MenuCommand(SR.MS_SAVE, MenuCommand.SCREEN, 6, RosterIcons.ICON_ARCHIVE);
     private TextInput roomField;
     private TextInput hostField;
     private TextInput nickField;

@@ -36,6 +36,7 @@ import java.util.Vector;
 import locale.SR;
 import ui.VirtualList;
 import ui.controls.AlertBox;
+import images.RosterIcons;
 
 /**
  *
@@ -44,13 +45,13 @@ import ui.controls.AlertBox;
 public class ArchiveList 
     extends MessageList {
 
-    MenuCommand cmdNew=new MenuCommand(SR.MS_NEW, MenuCommand.OK, 1);
-    MenuCommand cmdPaste=new MenuCommand(SR.MS_PASTE_BODY, MenuCommand.SCREEN, 2);
-    MenuCommand cmdJid=new MenuCommand(SR.MS_PASTE_JID , MenuCommand.SCREEN, 2);
-    MenuCommand cmdSubj=new MenuCommand(SR.MS_PASTE_SUBJECT, MenuCommand.SCREEN, 3);
-    MenuCommand cmdEdit=new MenuCommand(SR.MS_EDIT, MenuCommand.SCREEN, 4);    
-    MenuCommand cmdDelete=new MenuCommand(SR.MS_DELETE, MenuCommand.SCREEN, 9);
-    MenuCommand cmdDeleteAll=new MenuCommand(SR.MS_DELETE_ALL, MenuCommand.SCREEN, 10);
+    MenuCommand cmdNew=new MenuCommand(SR.MS_NEW, MenuCommand.OK, 1, RosterIcons.ICON_NEW);
+    MenuCommand cmdPaste=new MenuCommand(SR.MS_PASTE_BODY, MenuCommand.SCREEN, 2, RosterIcons.ICON_PASTE);
+    MenuCommand cmdJid=new MenuCommand(SR.MS_PASTE_JID , MenuCommand.SCREEN, 2, RosterIcons.ICON_PASTE);
+    MenuCommand cmdSubj=new MenuCommand(SR.MS_PASTE_SUBJECT, MenuCommand.SCREEN, 3, RosterIcons.ICON_PASTE);
+    MenuCommand cmdEdit=new MenuCommand(SR.MS_EDIT, MenuCommand.SCREEN, 4, RosterIcons.ICON_RENAME);    
+    MenuCommand cmdDelete=new MenuCommand(SR.MS_DELETE, MenuCommand.SCREEN, 9, RosterIcons.ICON_DELETE);
+    MenuCommand cmdDeleteAll=new MenuCommand(SR.MS_DELETE_ALL, MenuCommand.SCREEN, 10, RosterIcons.ICON_CLEAR);
 
     MessageArchive archive;
    

@@ -47,7 +47,7 @@ public class Upgrade
         implements Runnable        
     {
    
-    //private MenuCommand cmdBack=new MenuCommand(SR.MS_BACK, Command.BACK, 99);
+    //private MenuCommand cmdBack=new MenuCommand(SR.MS_BACK, Command.BACK, 99, RosterIcons.ICON_RESUME);
     private final static String VERSION_URL="http://bombusmod.net.ru/checkupdate/check.php";
 
     Vector versions[];

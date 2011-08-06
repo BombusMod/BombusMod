@@ -34,6 +34,7 @@ import locale.SR;
 
 import Menu.MenuCommand;
 import java.util.Enumeration;
+import images.RosterIcons;
 
 /**
  *
@@ -43,7 +44,7 @@ public class TextListBox
         extends DefForm
     {
 
-    private MenuCommand cmdClear=new MenuCommand(SR.MS_CLEAR, MenuCommand.SCREEN, 2);
+    private MenuCommand cmdClear=new MenuCommand(SR.MS_CLEAR, MenuCommand.SCREEN, 2, RosterIcons.ICON_DELETE);
 
     private EditBox ti;    
 

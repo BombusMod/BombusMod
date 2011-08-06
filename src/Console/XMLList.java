@@ -33,6 +33,7 @@ import java.util.Vector;
 import Menu.MenuCommand;
 import locale.SR;
 import ui.VirtualList;
+import images.RosterIcons;
 //#ifdef CONSOLE 
 //# import ui.MainBar;
 //#endif
@@ -46,9 +47,9 @@ public final class XMLList
     
     StanzasList stanzas;
 
-    private MenuCommand cmdNew=new MenuCommand(SR.MS_NEW, MenuCommand.OK, 1);
-    private MenuCommand cmdEnableDisable=new MenuCommand(SR.MS_ENABLE_DISABLE, MenuCommand.SCREEN, 6);
-    private MenuCommand cmdPurge=new MenuCommand(SR.MS_CLEAR_LIST, MenuCommand.SCREEN, 10);
+    private MenuCommand cmdNew=new MenuCommand(SR.MS_NEW, MenuCommand.OK, 1, RosterIcons.ICON_NEW);
+    private MenuCommand cmdEnableDisable=new MenuCommand(SR.MS_ENABLE_DISABLE, MenuCommand.SCREEN, 6, RosterIcons.ICON_PRIVACY);
+    private MenuCommand cmdPurge=new MenuCommand(SR.MS_CLEAR_LIST, MenuCommand.SCREEN, 10, RosterIcons.ICON_CLEAR);
    
    
     /** Creates a new instance of XMLList

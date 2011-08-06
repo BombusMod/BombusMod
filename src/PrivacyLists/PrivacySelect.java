@@ -49,11 +49,11 @@ public class PrivacySelect
         MIDPTextBox.TextBoxNotify
 {
     
-    private MenuCommand cmdActivate=new MenuCommand (SR.MS_ACTIVATE, MenuCommand.OK, 1);
-    private MenuCommand cmdDefault=new MenuCommand (SR.MS_DEFAULT, MenuCommand.SCREEN, 11);
-    private MenuCommand cmdNewList=new MenuCommand (SR.MS_NEW_LIST, MenuCommand.SCREEN, 12);
-    private MenuCommand cmdDelete=new MenuCommand (SR.MS_DELETE_LIST, MenuCommand.SCREEN, 13);
-    //private MenuCommand cmdEdit=new MenuCommand (SR.MS_EDIT_LIST, Command.SCREEN, 14);
+    private MenuCommand cmdActivate=new MenuCommand (SR.MS_ACTIVATE, MenuCommand.OK, 1, RosterIcons.ICON_PRIVACY_ACTIVE);
+    private MenuCommand cmdDefault=new MenuCommand (SR.MS_DEFAULT, MenuCommand.SCREEN, 11, RosterIcons.ICON_KEYBLOCK_INDEX);
+    private MenuCommand cmdNewList=new MenuCommand (SR.MS_NEW_LIST, MenuCommand.SCREEN, 12, RosterIcons.ICON_NEW);
+    private MenuCommand cmdDelete=new MenuCommand (SR.MS_DELETE_LIST, MenuCommand.SCREEN, 13, RosterIcons.ICON_CLEAR);
+    //private MenuCommand cmdEdit=new MenuCommand (SR.MS_EDIT_LIST, Command.SCREEN, 14, RosterIcons.ICON_RENAME);
     JabberStream stream=StaticData.getInstance().roster.theStream;
     
     /** Creates a new instance of PrivacySelect

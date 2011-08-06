@@ -33,13 +33,14 @@ import ui.VirtualList;
 import ui.controls.form.DefForm;
 import java.util.Vector;
 import ui.VirtualElement;
+import images.RosterIcons;
 
 public class UserKeysList extends DefForm {
 
-    MenuCommand cmdApply = new MenuCommand(SR.MS_APPLY, MenuCommand.OK, 1);
-    MenuCommand cmdAdd = new MenuCommand(SR.MS_ADD, MenuCommand.SCREEN, 2);
-    MenuCommand cmdEdit = new MenuCommand(SR.MS_EDIT, MenuCommand.SCREEN, 3);
-    MenuCommand cmdDel = new MenuCommand(SR.MS_DELETE, MenuCommand.SCREEN, 4);
+    MenuCommand cmdApply = new MenuCommand(SR.MS_APPLY, MenuCommand.OK, 1, RosterIcons.ICON_APPEARING_INDEX);
+    MenuCommand cmdAdd = new MenuCommand(SR.MS_ADD, MenuCommand.SCREEN, 2, RosterIcons.ICON_NEW);
+    MenuCommand cmdEdit = new MenuCommand(SR.MS_EDIT, MenuCommand.SCREEN, 3, RosterIcons.ICON_RENAME);
+    MenuCommand cmdDel = new MenuCommand(SR.MS_DELETE, MenuCommand.SCREEN, 4, RosterIcons.ICON_DELETE);
     KeyScheme keyScheme;
 
     public UserKeysList() {

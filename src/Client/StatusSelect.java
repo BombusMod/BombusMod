@@ -38,6 +38,7 @@ import ui.controls.form.SimpleString;
 import ui.controls.form.SpacerItem;
 import ui.controls.form.TextInput;
 import Menu.MenuCommand;
+import images.RosterIcons;
 
 /**
  *
@@ -47,8 +48,8 @@ public class StatusSelect
         extends DefForm
         implements Runnable{
     
-    private MenuCommand cmdEdit = new MenuCommand(SR.MS_EDIT, MenuCommand.SCREEN, 2);
-    private MenuCommand cmdDef = new MenuCommand(SR.MS_DEFAULT, MenuCommand.ITEM, 3);
+    private MenuCommand cmdEdit = new MenuCommand(SR.MS_EDIT, MenuCommand.SCREEN, 2, RosterIcons.ICON_RENAME);
+    private MenuCommand cmdDef = new MenuCommand(SR.MS_DEFAULT, MenuCommand.ITEM, 3, RosterIcons.ICON_KEYBLOCK_INDEX);
 
     private Vector statusList;
     private int defp;

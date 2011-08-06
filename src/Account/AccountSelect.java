@@ -35,6 +35,7 @@ import Menu.MenuCommand;
 import io.NvStorage;
 import ui.controls.AlertBox;
 import ui.controls.form.DefForm;
+import images.RosterIcons;
 
 /**
  *
@@ -44,13 +45,13 @@ public class AccountSelect extends DefForm {
 
     int activeAccount;
     boolean enableQuit;
-    MenuCommand cmdLogin = new MenuCommand(SR.MS_SELLOGIN, MenuCommand.OK, 1);
-    MenuCommand cmdSelect = new MenuCommand(SR.MS_DEFAULT, MenuCommand.SCREEN, 2);
-    MenuCommand cmdAdd = new MenuCommand(SR.MS_NEW_ACCOUNT, MenuCommand.SCREEN, 3);
-    MenuCommand cmdEdit = new MenuCommand(SR.MS_EDIT, MenuCommand.ITEM, 3);
-    MenuCommand cmdDel = new MenuCommand(SR.MS_DELETE, MenuCommand.ITEM, 4);
-    MenuCommand cmdConfig = new MenuCommand(SR.MS_OPTIONS, MenuCommand.ITEM, 5);
-    MenuCommand cmdQuit = new MenuCommand(SR.MS_APP_QUIT, MenuCommand.SCREEN, 10);
+    MenuCommand cmdLogin = new MenuCommand(SR.MS_SELLOGIN, MenuCommand.OK, 1, RosterIcons.ICON_ON);
+    MenuCommand cmdSelect = new MenuCommand(SR.MS_DEFAULT, MenuCommand.SCREEN, 2, RosterIcons.ICON_KEYBLOCK_INDEX);
+    MenuCommand cmdAdd = new MenuCommand(SR.MS_NEW_ACCOUNT, MenuCommand.SCREEN, 3, RosterIcons.ICON_REGISTER_INDEX);
+    MenuCommand cmdEdit = new MenuCommand(SR.MS_EDIT, MenuCommand.ITEM, 3, RosterIcons.ICON_RENAME);
+    MenuCommand cmdDel = new MenuCommand(SR.MS_DELETE, MenuCommand.ITEM, 4, RosterIcons.ICON_DELETE);
+    MenuCommand cmdConfig = new MenuCommand(SR.MS_OPTIONS, MenuCommand.ITEM, 5, RosterIcons.ICON_CONFIGURE);
+    MenuCommand cmdQuit = new MenuCommand(SR.MS_APP_QUIT, MenuCommand.SCREEN, 10, RosterIcons.ICON_CANCEL);
 
     /** Creates a new instance of AccountPicker */
     public AccountSelect(boolean enableQuit) {

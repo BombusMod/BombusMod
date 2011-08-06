@@ -36,6 +36,7 @@ import ui.controls.PopUp;
 //#endif
 import ui.VirtualList;
 import ui.controls.form.DefForm;
+import images.RosterIcons;
 
 /**
  *
@@ -46,10 +47,10 @@ public class TransferManager
     {
     
     
-    MenuCommand cmdDecline=new MenuCommand(SR.MS_DECLINE, MenuCommand.SCREEN, 10);
-    MenuCommand cmdClrF=new MenuCommand(SR.MS_HIDE_FINISHED, MenuCommand.SCREEN, 11);
-    MenuCommand cmdInfo=new MenuCommand(SR.MS_INFO, MenuCommand.SCREEN, 12);
-    MenuCommand cmdSettings=new MenuCommand("Transfer settings", MenuCommand.SCREEN, 12);
+    MenuCommand cmdDecline=new MenuCommand(SR.MS_DECLINE, MenuCommand.SCREEN, 10, RosterIcons.ICON_DECLINEFILE);
+    MenuCommand cmdClrF=new MenuCommand(SR.MS_HIDE_FINISHED, MenuCommand.SCREEN, 11, RosterIcons.ICON_CLEAR);
+    MenuCommand cmdInfo=new MenuCommand(SR.MS_INFO, MenuCommand.SCREEN, 12, RosterIcons.ICON_INFO);
+    MenuCommand cmdSettings=new MenuCommand("Transfer settings", MenuCommand.SCREEN, 12, RosterIcons.ICON_SETTINGS);
     
     /** Creates a new instance of TransferManager
      */

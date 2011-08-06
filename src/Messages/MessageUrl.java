@@ -42,6 +42,7 @@ import Menu.MenuCommand;
 //#endif
 import ui.VirtualList;
 import ui.controls.form.ListItem;
+import images.RosterIcons;
 
 /**
  *
@@ -52,11 +53,11 @@ public class MessageUrl extends DefForm implements TextBoxNotify {
 //#ifdef CLIPBOARD
 //#     private ClipBoard clipboard=ClipBoard.getInstance();
 //# 
-//#     protected MenuCommand cmdCopy = new MenuCommand(SR.MS_COPY, MenuCommand.SCREEN, 20);
-//#     protected MenuCommand cmdCopyPlus = new MenuCommand("+ "+SR.MS_COPY, MenuCommand.SCREEN, 30);
+//#     protected MenuCommand cmdCopy = new MenuCommand(SR.MS_COPY, MenuCommand.SCREEN, 20, RosterIcons.ICON_COPY);
+//#     protected MenuCommand cmdCopyPlus = new MenuCommand("+ "+SR.MS_COPY, MenuCommand.SCREEN, 30, RosterIcons.ICON_COPYPLUS);
 //#endif
-    MenuCommand cmdGoto=new MenuCommand("Goto", MenuCommand.OK, 2);
-    MenuCommand cmdEdit=new MenuCommand("Edit", MenuCommand.SCREEN, 3);
+    MenuCommand cmdGoto=new MenuCommand("Goto", MenuCommand.OK, 2, RosterIcons.ICON_GOTOURL);
+    MenuCommand cmdEdit=new MenuCommand("Edit", MenuCommand.SCREEN, 3, RosterIcons.ICON_RENAME);
 
     /** Creates a new instance of MessageUrl
      * @param urlList

@@ -37,6 +37,7 @@ import ui.controls.form.CheckBox;
 import ui.controls.form.DefForm;
 import ui.controls.form.LinkString;
 import ui.controls.form.TextInput;
+import images.RosterIcons;
 
 /**
  *
@@ -46,7 +47,7 @@ public class HistoryConfig
         extends DefForm
         implements BrowserListener {
 
-    MenuCommand cmdPath=new MenuCommand(SR.MS_SELECT_HISTORY_FOLDER, MenuCommand.SCREEN, 2);
+    MenuCommand cmdPath=new MenuCommand(SR.MS_SELECT_HISTORY_FOLDER, MenuCommand.SCREEN, 2, RosterIcons.ICON_FILEMAN);
 
     private TextInput historyFolder;
     

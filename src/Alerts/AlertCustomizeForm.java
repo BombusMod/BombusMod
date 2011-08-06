@@ -42,6 +42,7 @@ import util.StringLoader;
 import java.util.Enumeration;
 import Menu.MenuCommand;
 import ui.VirtualList;
+import images.RosterIcons;
 
 
 public class AlertCustomizeForm
@@ -73,8 +74,8 @@ public class AlertCustomizeForm
     Vector files[];
     Vector fileNames;
 
-    MenuCommand cmdSave=new MenuCommand(SR.MS_SAVE, MenuCommand.OK, 1);
-    MenuCommand cmdTest=new MenuCommand(SR.MS_TEST_SOUND, MenuCommand.SCREEN, 2);
+    MenuCommand cmdSave=new MenuCommand(SR.MS_SAVE, MenuCommand.OK, 1, RosterIcons.ICON_ARCHIVE);
+    MenuCommand cmdTest=new MenuCommand(SR.MS_TEST_SOUND, MenuCommand.SCREEN, 2, RosterIcons.ICON_ALERTS);
 
     /** Creates a new instance of ConfigForm
      */

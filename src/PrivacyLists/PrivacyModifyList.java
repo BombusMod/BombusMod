@@ -36,6 +36,7 @@ import java.util.*;
 import com.alsutton.jabber.*;
 import ui.controls.AlertBox;
 import ui.controls.form.DefForm;
+import images.RosterIcons;
 
 /**
  *
@@ -48,12 +49,12 @@ public class PrivacyModifyList extends DefForm
     private PrivacyList plist;
     private PrivacySelect pselector;
     
-    private MenuCommand cmdAdd=new MenuCommand (SR.MS_ADD_RULE, MenuCommand.SCREEN, 10);
-    private MenuCommand cmdDel=new MenuCommand (SR.MS_DELETE_RULE, MenuCommand.SCREEN, 11);
-    private MenuCommand cmdEdit=new MenuCommand (SR.MS_EDIT_RULE, MenuCommand.SCREEN, 12);
-    private MenuCommand cmdUp=new MenuCommand (SR.MS_MOVE_UP, MenuCommand.SCREEN, 13);
-    private MenuCommand cmdDwn=new MenuCommand (SR.MS_MOVE_DOWN, MenuCommand.SCREEN, 14);
-    private MenuCommand cmdSave=new MenuCommand (SR.MS_SAVE_LIST, MenuCommand.SCREEN, 16);
+    private MenuCommand cmdAdd=new MenuCommand (SR.MS_ADD_RULE, MenuCommand.SCREEN, 10, RosterIcons.ICON_PRIVACY_ACTIVE);
+    private MenuCommand cmdDel=new MenuCommand (SR.MS_DELETE_RULE, MenuCommand.SCREEN, 11, RosterIcons.ICON_DELETE);
+    private MenuCommand cmdEdit=new MenuCommand (SR.MS_EDIT_RULE, MenuCommand.SCREEN, 12, RosterIcons.ICON_RENAME);
+    private MenuCommand cmdUp=new MenuCommand (SR.MS_MOVE_UP, MenuCommand.SCREEN, 13, RosterIcons.ICON_SCROLLABLE_UP);
+    private MenuCommand cmdDwn=new MenuCommand (SR.MS_MOVE_DOWN, MenuCommand.SCREEN, 14, RosterIcons.ICON_SCROLLABLE_DOWN);
+    private MenuCommand cmdSave=new MenuCommand (SR.MS_SAVE_LIST, MenuCommand.SCREEN, 16, RosterIcons.ICON_ARCHIVE);
     
     JabberStream stream=StaticData.getInstance().roster.theStream;
     

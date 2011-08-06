@@ -53,7 +53,7 @@ public class AlertProfile extends DefForm
     
     /** Creates a new instance of Profile */
     
-    private MenuCommand cmdDef = new MenuCommand(SR.MS_DEFAULT, MenuCommand.OK, 1);
+    private MenuCommand cmdDef = new MenuCommand(SR.MS_DEFAULT, MenuCommand.OK, 1, RosterIcons.ICON_KEYBLOCK_INDEX);
 
     /** Creates a new instance of SelectStatus */
     public AlertProfile() {

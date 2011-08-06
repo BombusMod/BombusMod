@@ -32,6 +32,7 @@ import ui.controls.form.DefForm;
 import ui.controls.form.SimpleString;
 import ui.controls.form.TextInput;
 import ui.controls.form.LinkString;
+import images.RosterIcons;
 
 /**
  *
@@ -48,15 +49,15 @@ public class VCardEdit
 //#endif
 {
     
-    MenuCommand cmdPublish=new MenuCommand(SR.MS_PUBLISH, MenuCommand.OK, 1);
-    MenuCommand cmdRefresh=new MenuCommand(SR.MS_REFRESH, MenuCommand.SCREEN, 2);
+    MenuCommand cmdPublish=new MenuCommand(SR.MS_PUBLISH, MenuCommand.OK, 1, RosterIcons.ICON_ON);
+    MenuCommand cmdRefresh=new MenuCommand(SR.MS_REFRESH, MenuCommand.SCREEN, 2, RosterIcons.ICON_FT);
 //#if FILE_IO
-    MenuCommand cmdLoadPhoto=new MenuCommand(SR.MS_LOAD_PHOTO, MenuCommand.SCREEN,3);
-    MenuCommand cmdSavePhoto=new MenuCommand(SR.MS_SAVE_PHOTO, MenuCommand.SCREEN,4);
+    MenuCommand cmdLoadPhoto=new MenuCommand(SR.MS_LOAD_PHOTO, MenuCommand.SCREEN,3, RosterIcons.ICON_SENDPHOTO);
+    MenuCommand cmdSavePhoto=new MenuCommand(SR.MS_SAVE_PHOTO, MenuCommand.SCREEN,4, RosterIcons.ICON_CHATARCHIVE);
 //#endif
-    MenuCommand cmdDelPhoto=new MenuCommand(SR.MS_CLEAR_PHOTO, MenuCommand.SCREEN,5);
+    MenuCommand cmdDelPhoto=new MenuCommand(SR.MS_CLEAR_PHOTO, MenuCommand.SCREEN,5, RosterIcons.ICON_CLEAN_MESSAGES);
 //#ifndef NOMMEDIA
-    MenuCommand cmdCamera=new MenuCommand(SR.MS_CAMERA, MenuCommand.SCREEN,6);
+    MenuCommand cmdCamera=new MenuCommand(SR.MS_CAMERA, MenuCommand.SCREEN,6, RosterIcons.ICON_COMMAND);
 //#endif
 
     private Vector items=new Vector();
