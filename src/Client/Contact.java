@@ -334,21 +334,15 @@ public class Contact extends IconTextElement {
             return cmp;
         }
         return c.transport - transport;
-    }
+    }       
 
     public void addMessage(Msg m) {
         boolean last_replace = false;
         if (origin == ORIGIN_GROUPCHAT) {
             if (!m.body.startsWith("/me ")) {
-                if (cf.showNickNames && !m.isPresence() && m.messageType != Msg.MESSAGE_TYPE_SUBJ) {
+                if (cf.showNickNames && !m.isPresence() && m.messageType != Msg.MESSAGE_TYPE_SUBJ && m.messageType != Msg.MESSAGE_TYPE_SYSTEM) {
                     StringBuffer who = new StringBuffer();
-//#if NICK_COLORS
-                    who.append("\01");
-//#endif					
-                    who.append(m.from);
-//#if NICK_COLORS
-                    who.append("\02");
-//#endif					
+                    Msg.appendNick(who, m.from);
                     if (!cf.hideTimestamps) {
                         who.append(" (").append(m.getTime()).append(")");
                     }
@@ -361,13 +355,7 @@ public class Contact extends IconTextElement {
             }
             if (m.body.startsWith("/me ")) {
                 StringBuffer b = new StringBuffer();
-//#if NICK_COLORS
-                b.append("\01");
-//#endif
-                b.append(m.from);
-//#if NICK_COLORS
-                b.append("\02");
-//#endif
+                Msg.appendNick(b, m.from);
                 b.insert(0, '*');
                 b.append(m.body.substring(3));
                 m.body = b.toString();
@@ -390,13 +378,7 @@ public class Contact extends IconTextElement {
                 if (!m.body.startsWith("/me ")) {
                     if (cf.showNickNames && !m.isPresence()) {
                         StringBuffer who = new StringBuffer();
-//#if NICK_COLORS
-                        who.append("\01");
-//#endif					
-                        who.append((m.messageType == Msg.MESSAGE_TYPE_OUT) ? sd.account.getNickName() : getName());
-//#if NICK_COLORS
-                        who.append("\02");
-//#endif					
+                        Msg.appendNick(who, m.messageType == Msg.MESSAGE_TYPE_OUT ? sd.account.getNickName() : getName());
                         if (!cf.hideTimestamps) {
                             who.append(" (").append(m.getTime()).append(")");
                         }
@@ -408,13 +390,7 @@ public class Contact extends IconTextElement {
                     }
                 } else { // if (m.body.startsWith("/me "))
                     StringBuffer b = new StringBuffer();
-//#if NICK_COLORS
-                    b.append("\01");
-//#endif
-                    b.append((m.messageType == Msg.MESSAGE_TYPE_OUT) ? sd.account.getNickName() : getName());
-//#if NICK_COLORS
-                    b.append("\02");
-//#endif
+                    Msg.appendNick(b, (m.messageType == Msg.MESSAGE_TYPE_OUT) ? sd.account.getNickName() : getName());
                     b.insert(0, '*');
                     b.append(m.body.substring(3));
                     m.body = b.toString();

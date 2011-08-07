@@ -156,6 +156,16 @@ public class Msg {
     //public boolean isHistory() { return history; }
     //void setHistory(boolean state) { history=state; }
     
+    public static void appendNick(StringBuffer sb, String append){
+//#if NICK_COLORS
+        sb.append((char)1);
+//#endif
+        sb.append(append);
+//#if NICK_COLORS
+        sb.append((char)2);
+//#endif
+    }
+    
     public String quoteString(){
         StringBuffer out=new StringBuffer();
         if (subject!=null)

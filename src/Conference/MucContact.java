@@ -34,6 +34,7 @@ import com.alsutton.jabber.datablocks.Presence;
 import images.RosterIcons;
 import locale.SR;
 import Client.Msg;
+import Messages.MessageItem;
 import util.StringUtils;
 
 /**
@@ -133,7 +134,7 @@ public class MucContact extends Contact {
         }
         
         StringBuffer b=new StringBuffer();
-        appendL(b,nick);
+        Msg.appendNick(b,nick);
         
         String statusText=presence.getChildBlockText("status");
         String tempRealJid=item.getAttribute("jid");
@@ -149,7 +150,7 @@ public class MucContact extends Contact {
                 case 303:
                     b.append(SR.MS_IS_NOW_KNOWN_AS);
                     String chNick=item.getAttribute("nick");
-                    appendL(b,chNick);
+                    Msg.appendNick(b,chNick);
                     String newJid=from.substring(0, from.indexOf('/')+1)+chNick;
                     jid.setJid(newJid);
                     bareJid=newJid;
@@ -248,16 +249,7 @@ public class MucContact extends Contact {
         }
         return null;
     }
-    
-    private void appendL(StringBuffer sb, String append){
-//#if NICK_COLORS
-        sb.append((char)1);
-//#endif
-        sb.append(append);
-//#if NICK_COLORS
-        sb.append((char)2);
-//#endif
-    }
+       
        
 
     public void testMeOffline(){

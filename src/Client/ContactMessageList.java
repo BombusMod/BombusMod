@@ -894,6 +894,7 @@ public class ContactMessageList extends MessageList {
         */
         sd.roster.activeContact=null;
         sd.roster.reEnumRoster(); //to reset unread messages icon for this conference in roster
+        sd.roster.focusToContact(contact, true);        
         parentView = sd.roster;
         super.destroyView();
     }

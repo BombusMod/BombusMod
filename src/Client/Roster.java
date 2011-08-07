@@ -1459,16 +1459,18 @@ public class Roster
                 if (type != null) {
                     if (type.equals("groupchat")) {
                         groupchat = true;
-                    }
+                    }                
                 }
-
+                
+                int mType = Msg.MESSAGE_TYPE_IN;
+                
                 if (groupchat) {
+                    if (from.equals(groups.getConfGroup(new Jid(from)).jid.getBareJid())) {
+                        mType = Msg.MESSAGE_TYPE_SYSTEM;
+                    };
                     start_me = 0;
-
                     int rp = from.indexOf('/');
-
                     name = from.substring(rp + 1);
-
                     if (rp > 0) {
                         from = from.substring(0, rp);
                     }
@@ -1499,7 +1501,6 @@ public class Roster
 
                 long tStamp = message.getMessageTime();
 
-                int mType = Msg.MESSAGE_TYPE_IN;
                 if (groupchat) {
                     if (subj != null) { // subject
                         if (body == null) {
@@ -1573,13 +1574,7 @@ public class Roster
                         }
                         if (start_me >= 0) {
                             StringBuffer b = new StringBuffer();
-//#if NICK_COLORS
-                            b.append("\01");
-//#endif
-                            b.append(name);
-//#if NICK_COLORS
-                            b.append("\02");
-//#endif
+                            Msg.appendNick(b, name);
                             if (start_me == 0) {
                                 if (!cf.hideTimestamps) {
                                     b.insert(0, "<");
@@ -3194,7 +3189,7 @@ public class Roster
     super.paint(g);
     } catch (Exception e) {
     //#ifdef DEBUG
-    //#             e.printStackTrace();
+//#             e.printStackTrace();
     //#endif
     }
     }
