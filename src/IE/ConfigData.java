@@ -222,6 +222,11 @@ public class ConfigData {
         return null;
     }
 
+    private String getStringProperty(final String key, final String defvalue) {
+        return (key != null) ? key : defvalue;
+    }
+
+
     public final void importData() {
         array = iData();
 
@@ -259,7 +264,7 @@ public class ConfigData {
         cf.textWrap=cf.getIntProperty(getValue(textWrap),0);
         cf.loginstatus=cf.getIntProperty(getValue(loginstatus),0);
 //#ifdef HISTORY
-//#         cf.msgPath=cf.getStringProperty(getValue(msgPath),"");
+//#         cf.msgPath=getStringProperty(getValue(msgPath),"");
 //#         cf.msgLog=cf.getBooleanProperty(getValue(msgLog),false);
 //#         cf.msgLogPresence=cf.getBooleanProperty(getValue(msgLogPresence),false);
 //#         cf.msgLogConfPresence=cf.getBooleanProperty(getValue(msgLogConfPresence),false);
@@ -270,7 +275,7 @@ public class ConfigData {
 //#         cf.autoAwayDelay=cf.getIntProperty(getValue(autoAwayDelay),5);
 //#endif
 //#ifndef WMUC
-        cf.defGcRoom=cf.getStringProperty(getValue(defGcRoom),"bombusmod@conference.jabber.ru");
+        cf.defGcRoom=getStringProperty(getValue(defGcRoom),"bombusmod@conference.jabber.ru");
 //#endif
 // TODO: read firstRun?
         cf.panelsState=cf.getIntProperty(getValue(panelsState), 2);
@@ -297,7 +302,7 @@ public class ConfigData {
         cf.saveHistory=cf.getBooleanProperty(getValue(saveHistory),false);
         cf.enableVersionOs=cf.getBooleanProperty(getValue(enableVersionOs),true);
         cf.messageLimit=cf.getIntProperty(getValue(messageLimit),512);
-        cf.lang=cf.getStringProperty(getValue(lang),null);
+        cf.lang=getStringProperty(getValue(lang),null);
         cf.eventDelivery=cf.getBooleanProperty(getValue(eventDelivery),true);
 //#ifdef DETRANSLIT
 //#         cf.transliterateFilenames=cf.getBooleanProperty(getValue(transliterateFilenames),false);
