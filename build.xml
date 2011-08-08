@@ -10,34 +10,33 @@
     <!-- release tasks -->
     <target name="for-release-configs">
         <antcall inheritrefs="false" inheritall="false" target="${target.to.call}">
-            <param name="config.active" value="full_ver_newmenu"/>
+            <param name="config.active" value="full"/>
         </antcall>
         <antcall inheritrefs="false" inheritall="false" target="${target.to.call}">
-            <param name="config.active" value="plugins_new_menu"/>
+            <param name="config.active" value="small"/>
         </antcall>
-        <antcall inheritrefs="false" inheritall="false" target="${target.to.call}">
-            <param name="config.active" value="plugins_old_menu"/>
-        </antcall>
+    </target>
+    <target name="for-android-config" depends="init, clean, preprocess" >
+        <ant dir="android" target="clean" inheritAll="true" antfile="build.xml"></ant>
+        <ant dir="android" target="release" inheritAll="true" antfile="build.xml"></ant>
     </target>
 
-    <target name="rebuild-release">
-	    <antcall inheritrefs="false" inheritall="false" target="for-release-configs">
-		    <param name="target.to.call" value="rebuild"/>
+    <target name="build-release" description="build releases">
+        <antcall inheritrefs="false" inheritall="false" target="for-release-configs">
+		    <param name="target.to.call" value="clean"/>
 	    </antcall>
-    </target>
-	
-    <target name="rebuild-fullver-newmenu">
-	    <antcall inheritrefs="false" inheritall="false" target="rebuild">
-		    <param name="config.active" value="full_ver_newmenu"/>
+        <antcall inheritrefs="false" inheritall="false" target="for-release-configs">
+		    <param name="target.to.call" value="build"/>
 	    </antcall>
     </target>
 
-    <target name="rebuild-adsky">
-	    <antcall inheritrefs="false" inheritall="false" target="rebuild">
-		    <param name="config.active" value="adsky"/>
-	    </antcall>
+    <target name="build-android" description="compile android project" >
+        <antcall inheritrefs="false" inheritall="false" target="for-android-config">
+            <param name="config.active" value="android"/>
+        </antcall>
     </target>
- 
+
+
     <!-- prepare version patch -->
     <target name="post-init">
 	<exec executable="svnversion" output="resources/.svnrev">
@@ -69,7 +68,7 @@
     <target name="post-preprocess">
 	<property file="resources/.version" />
 	<replace 
-	    file="${preprocessed.dir}\Info\Version.java"  
+	    file="${preprocessed.dir}\Info\Version.java"
 	    token="$BOMBUSVERSION$"
 	    value="${bombus.version}"/>
     </target>
@@ -140,11 +139,6 @@
 
 	<echo message="Modified bootclasspath=${platform.bootclasspath}" />
     </target>
-
-  <target name="build-android" description="compile android project" depends="init, preprocess" >
-    <ant dir="android" target="debug" inheritAll="true" antfile="build.xml">
-    </ant>
-  </target>
 
 
     <!--

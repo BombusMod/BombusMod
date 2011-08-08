@@ -34,6 +34,8 @@ import javax.microedition.media.PlayerListener;
 import javax.microedition.media.control.VolumeControl;
 //#endif
 
+import io.file.InternalResource;
+
 /**
  *
  * @author Eugene Stahov
@@ -82,7 +84,7 @@ public class EventNotify
 //#ifndef NOMMEDIA
         if (soundName!=null) {
             try {
-                InputStream is = getClass().getResourceAsStream(soundName);
+                InputStream is = InternalResource.getResourceAsStream(soundName);
                 player = Manager.createPlayer(is, soundType);
 
                 player.addPlayerListener(this);

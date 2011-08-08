@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Vector;
 import ui.Time;
+import io.file.InternalResource;
 
 /**
  *
@@ -94,7 +95,7 @@ public class Accounts {
         } else {
             bodyMessage = new byte[4096];
             try {
-                InputStream in = this.getClass().getResourceAsStream("/def_accounts.txt");
+                InputStream in = InternalResource.getResourceAsStream("/def_accounts.txt");
                 if (in != null )
                     in.read(bodyMessage);
             } catch (IOException ex) {

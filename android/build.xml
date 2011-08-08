@@ -34,8 +34,8 @@
 
 
     <!-- Required pre-setup import -->
+    <!-- Change sdk.dir in local.properties (see sdk_folder in PATH_TO_MICROEMULATOR_DIR/microemu-android/build.xml) -->
     <import file="${sdk.dir}/tools/ant/pre_setup.xml" />
-
 
 <!-- extension targets. Uncomment the ones where you want to do custom work
      in between standard targets -->
@@ -74,11 +74,14 @@
                below to <setup import="false" />.
              - customize to your needs.
     -->
-	    <property name="microemu.sources" value="C:\Users\Vitaly\microemu\microemulator\" />
-	    <property name="asset.dir" value="assets" />
-	    <property name="asset.absolute.dir" location="../resources/zlib" />
-	    <property name="source.dir" value="src" />
-	    <property name="source.absolute.dir" location="${source.dir}:../build/android/preprocessed:${microemu.sources}/microemu-midp/src/main:${microemu.sources}/microemu-javase/src/main/java:${microemu.sources}/microemu-cldc/src/main:${microemu.sources}/microemu-android/src" />
+        <property name="microemu.sources" value="PATH_TO_MICROEMULATOR_DIR" /> <!-- Change it in local.properties -->
+        <property name="asset.dir" value="assets" />
+        <property name="asset.absolute.dir" location="../resources/android" />
+        <property name="source.dir" value="src" />
+<!-- With jsr-135
+        <property name="source.absolute.dir" location="${source.dir}:../build/android/preprocessed:${microemu.sources}/microemu-midp/src/main:${microemu.sources}/microemu-javase/src/main/java:${microemu.sources}/microemu-cldc/src/main:${microemu.sources}/microemu-android/src:${microemu.sources}/microemu-extensions/microemu-jsr-75/src/main/java:${microemu.sources}/microemu-extensions/microemu-jsr-135/src/main/java:${microemu.sources}/microemu-javase-swing/src/main/java" />
+-->
+        <property name="source.absolute.dir" location="${source.dir}:../build/android/preprocessed:${microemu.sources}/microemu-midp/src/main:${microemu.sources}/microemu-javase/src/main/java:${microemu.sources}/microemu-cldc/src/main:${microemu.sources}/microemu-android/src:${microemu.sources}/microemu-extensions/microemu-jsr-75/src/main/java" />
 
 	    <!-- Directory for the third party java libraries -->
     <property name="jar.libs.dir" value="${microemu.sources}/microemu-android" />

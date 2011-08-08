@@ -40,6 +40,8 @@ import ui.*;
 import Client.Config;
 import util.Strconv;
 
+import io.file.InternalResource;
+
 public final class MessageParser {
     
     private final static int URL=-2;
@@ -128,8 +130,8 @@ public final class MessageParser {
             boolean strhaschars=false;
             boolean endline=false;
             
-            InputStream in=this.getClass().getResourceAsStream(anires);
-            if (in == null) in=this.getClass().getResourceAsStream(staticres);
+            InputStream in=InternalResource.getResourceAsStream(anires);
+            if (in == null) in=InternalResource.getResourceAsStream(staticres);
             
             boolean firstSmile=true;
             

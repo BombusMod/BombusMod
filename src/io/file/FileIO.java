@@ -75,8 +75,10 @@ public abstract class FileIO {
         switch (fileSystemType) {
             case JSR75_SIEMENS:
             case JSR75: return new FileJSR75(fileName);
+//#ifndef NOMMEDIA
             case COM_MOTOROLA: return new FileComMotorolaIo(fileName);
             case COM_SIEMENS: return new FileSiemens(fileName);
+//#endif
         }
         return null;
     }

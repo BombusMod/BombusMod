@@ -38,6 +38,8 @@ import javax.microedition.io.file.FileConnection;
 import javax.microedition.io.file.FileSystemRegistry;
 */
 
+import io.file.InternalResource;
+
 /**
  *
  * @author evgs
@@ -49,7 +51,7 @@ public class ArrayLoader {
     }
     public int[] readIntArray(String name) {
         try {
-            InputStream in = this.getClass().getResourceAsStream(name);
+            InputStream in = InternalResource.getResourceAsStream(name);
             DataInputStream is=new DataInputStream(in);
             int len=is.readInt();
             int[] arrayInt=new int[len];
@@ -69,7 +71,7 @@ public class ArrayLoader {
     
     public short[] readShortArray(String name) {
         try {
-            InputStream in = this.getClass().getResourceAsStream(name);
+            InputStream in = InternalResource.getResourceAsStream(name);
             DataInputStream is=new DataInputStream(in);
             int len=is.readInt();
             short[] arrayShort=new short[len];
@@ -88,7 +90,7 @@ public class ArrayLoader {
     }
     public byte[] readByteArray(String name) {
         try {
-            InputStream in = this.getClass().getResourceAsStream(name);
+            InputStream in = InternalResource.getResourceAsStream(name);
             DataInputStream is=new DataInputStream(in);
             int len=is.readInt();
             byte[] arrayByte=new byte[len];

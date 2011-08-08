@@ -1,0 +1,78 @@
+doing_chores	doing chores
+buying_groceries	buying groceries
+cleaning	cleaning
+cooking	cooking
+doing_maintenance	doing maintenance
+doing_the_dishes	doing the dishes
+doing_the_laundry	doing the laundry
+gardening	gardening
+running_an_errand	running an errand
+walking_the_dog	walking the dog
+drinking	drinking
+having_a_beer	having a beer
+having_coffee	having coffee
+having_tea	having tea
+eating	eating
+having_a_snack	having a snack
+having_breakfast	having breakfast
+having_dinner	having dinner
+having_lunch	having lunch
+exercising	exercising
+cycling	cycling
+dancing	dancing
+hiking	hiking
+jogging	jogging
+playing_sports	playing sports
+running	running
+skiing	skiing
+swimming	swimming
+working_out	working out
+grooming	grooming
+at_the_spa	at the spa
+brushing_teeth	brushing teeth
+getting_a_haircut	getting a haircut
+shaving	shaving
+taking_a_bath	taking a bath
+taking_a_shower	taking a shower
+having_appointment	having appointment
+inactive	inactive
+day_off	day off
+hanging_out	hanging out
+hiding	hiding
+on_vacation	on vacation
+praying	praying
+scheduled_holiday	scheduled holiday
+sleeping	sleeping
+thinking	thinking
+relaxing	relaxing
+fishing	fishing
+gaming	gaming
+going_out	going out
+partying	partying
+reading	reading
+rehearsing	rehearsing
+shopping	shopping
+smoking	smoking
+socializing	socializing
+sunbathing	sunbathing
+watching_tv	watching tv
+watching_a_movie	watching a movie
+talking	talking
+in_real_life	in real life
+on_the_phone	on the phone
+on_video_phone	on video phone
+traveling	traveling
+commuting	commuting
+cycling	cycling
+driving	driving
+in_a_car	in a car
+on_a_bus	on a bus
+on_a_plane	on a plane
+on_a_train	on a train
+on_a_trip	on a trip
+walking	walking
+working	working
+coding	coding
+in_a_meeting	in a meeting
+studying	studying
+writing	writing

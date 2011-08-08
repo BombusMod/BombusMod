@@ -95,7 +95,9 @@ public class NvStorage {
             ostream.flush();
             ostream.close();
         } catch (Exception e) { 
-            //e.printStackTrace(); 
+//#ifdef DEBUG
+            e.printStackTrace(); 
+//#endif
             return false;
         }
 

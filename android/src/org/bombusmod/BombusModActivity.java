@@ -72,17 +72,25 @@ import org.microemu.android.MicroEmulatorActivity;
 public class BombusModActivity extends MicroEmulatorActivity {
 	
 	public static final String LOG_TAG = "BombusMod";
-		
+
 	protected Common common;
-	
+
 	private MIDlet midlet;
+
+    private static BombusModActivity instance;
+
+    public static BombusModActivity getInstance() {
+        return instance;
+    }
 
 	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
-        
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        instance = this;
+
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
 		
         Logger.removeAllAppenders();
         Logger.setLocationEnabled(false);

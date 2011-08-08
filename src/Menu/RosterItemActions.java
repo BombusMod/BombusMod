@@ -46,7 +46,9 @@ import ServiceDiscovery.*;
 import images.RosterIcons;
 
 //#if FILE_TRANSFER
+//#ifndef NOMMEDIA
 import io.file.transfer.TransferImage;
+//#endif
 import io.file.transfer.TransferSendFile;
 //#endif
 
@@ -498,9 +500,11 @@ public class RosterItemActions extends Menu {
                     return;
 //#endif
 //#if FILE_TRANSFER
+//#ifndef NOMMEDIA
                 case 51: //send photo
                     new TransferImage(c.getJid());
                     return;
+//#endif
 //#endif
             }
 //#ifndef WMUC

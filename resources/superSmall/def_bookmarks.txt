@@ -1,3 +1,0 @@
-﻿bombusmod@conference.jabber.ru			Конференция техподдержки BombusMod
-bombus@conference.jabber.ru			Конференция техподдержки Bombus
-bombus-talks@conference.jabber.ru			Конференция для общения пользователей Bombus :)

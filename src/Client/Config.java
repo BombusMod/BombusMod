@@ -533,14 +533,14 @@ public class Config {
     }
 
     public String langFileName() {
-        if (lang == null) {
+        if (lang == null || lang.length() == 0) {
             //auto-detecting
             lang = System.getProperty("microedition.locale");
 //#ifdef DEBUG
 //#             System.out.println(lang);
 //#endif
             //We will use only language code from locale
-            if (lang == null) {
+            if (lang == null || lang.length() == 0) {
                 lang = "en";
             } else {
                 lang = lang.substring(0, 2).toLowerCase();
@@ -551,6 +551,11 @@ public class Config {
             return null;  //english
         }
         Vector files[] = new StringLoader().stringLoader("/lang/res.txt", 3);
+
+        if (files == null) {
+            return null; //english
+        }
+
         for (int i = 0; i < files[0].size(); i++) {
             String langCode = (String) files[0].elementAt(i);
             if (lang.equals(langCode)) {
@@ -606,7 +611,7 @@ public class Config {
             outputStream.writeInt(textWrap);
             outputStream.writeInt(loginstatus);
 //#ifdef HISTORY
-//#             outputStream.writeUTF(msgPath);
+//#             writeUTF(outputStream, msgPath);
 //#             outputStream.writeBoolean(msgLog);
 //#             outputStream.writeBoolean(msgLogPresence);
 //#             outputStream.writeBoolean(msgLogConfPresence);
@@ -625,7 +630,7 @@ public class Config {
             outputStream.writeInt(5);
 //#endif
 //#ifndef WMUC            
-            outputStream.writeUTF(defGcRoom);
+            writeUTF(outputStream, defGcRoom);
 //#else 
 //#             outputStream.writeUTF("");
 //#endif                        
@@ -667,7 +672,7 @@ public class Config {
 
             outputStream.writeBoolean(enableVersionOs);
             outputStream.writeInt(messageLimit);
-            outputStream.writeUTF(lang);
+            writeUTF(outputStream, lang);
             outputStream.writeBoolean(eventDelivery);
 //#ifdef DETRANSLIT
 //#             outputStream.writeBoolean(transliterateFilenames);
@@ -716,8 +721,8 @@ public class Config {
             outputStream.writeInt(barFont);
             outputStream.writeInt(baloonFont);
 
-            outputStream.writeUTF(verHash);
-            outputStream.writeUTF(resolvedHost);
+            writeUTF(outputStream, verHash);
+            writeUTF(outputStream, resolvedHost);
             outputStream.writeInt(resolvedPort);
 
 //#ifdef DETRANSLIT
@@ -769,10 +774,22 @@ public class Config {
 //#endif             
         outputStream.writeInt(minItemHeight);
 
-        } catch (Exception e) {
+        } catch (IOException e) {
+//#ifdef DEBUG
+            e.printStackTrace();
+//#endif
         }
 
         NvStorage.writeFileRecord(outputStream, "config", 0, true);
+    }
+
+    private void writeUTF(DataOutputStream outputStream, String value)
+                throws IOException {
+        if (value != null) {
+            outputStream.writeUTF(value);
+        } else {
+            outputStream.writeUTF("");
+        }
     }
 
     public void updateTime() {

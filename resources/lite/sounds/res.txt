@@ -1,3 +1,0 @@
-//type	path	desc
-tone		tone sequence
-none		none
