@@ -2598,20 +2598,24 @@ public class Roster
             cmdStatus();
         } else if (c == cmdAlert) {
             cmdAlert();
-        } //#ifdef ARCHIVE
+        }
+//#ifdef ARCHIVE
         else if (c == cmdArchive) {
             cmdArchive();
-        } //#endif
+        }
+//#endif
         else if (c == cmdInfo) {
             cmdInfo();
         } else if (c == cmdTools) {
             cmdTools();
         } else if (c == cmdCleanAllMessages) {
             cmdCleanAllMessages();
-        } //#ifndef WMUC
+        }
+//#ifndef WMUC
         else if (c == cmdConference) {
             cmdConference();
-        } //#endif
+        }
+//#endif
         else if (c == cmdQuit) {
             cmdQuit();
         } else if (c == cmdAdd) {
@@ -3188,9 +3192,9 @@ public class Roster
     try { // NPE and (possibility) ArrayIndexOutOfBoundsException with uncomplete reenum Roster.
     super.paint(g);
     } catch (Exception e) {
-    //#ifdef DEBUG
+//#ifdef DEBUG
 //#             e.printStackTrace();
-    //#endif
+//#endif
     }
     }
      */
