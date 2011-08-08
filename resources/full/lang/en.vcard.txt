@@ -1,0 +1,28 @@
+	NICKNAME	Nickname
+	FN	Full name
+N	PREFIX	Prefix (mr.,mrs.)
+N	GIVEN	First name
+N	MIDDLE	Middle name
+N	FAMILY	Last name
+N	SUFFIX	Suffix
+	BDAY	Birthday
+ADR	STREET	Street
+ADR	POBOX	P.O. Box
+ADR	EXTADD	Address additional
+ADR	EXTADR	Extended address
+ADR	LOCALITY	City
+GEO	LAT	Latitude
+GEO	LON	Longitude
+ADR	REGION	State/Region
+ADR	PCODE	Post code
+ADR	CTRY	Country
+	TZ	Time zone (GMT)
+TEL	NUMBER	Phone number
+EMAIL	USERID	E-Mail
+	JABBERID	JabberID
+	ROLE	Role
+	TITLE	Title
+ORG	ORGNAME	Organization
+ORG	ORGUNIT	Dept
+	URL	Home page
+	DESC	About

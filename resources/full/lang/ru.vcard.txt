@@ -1,0 +1,28 @@
+	NICKNAME	Ник
+	FN	Полное имя
+N	PREFIX	Префикс (mr., mrs.)
+N	GIVEN	Имя
+N	MIDDLE	Отчество
+N	FAMILY	Фамилия
+N	SUFFIX	Суффикс
+	BDAY	День рождения
+ADR	STREET	Улица, номер дома
+ADR	POBOX	Почтовый ящик
+ADR	EXTADD	Адрес подробнее
+ADR	EXTADR	Адрес расширенный
+ADR	LOCALITY	Город
+GEO	LAT	Широта
+GEO	LON	Долгота
+ADR	REGION	Область, регион
+ADR	PCODE	Почтовый индекс
+ADR	CTRY	Страна
+	TZ	Часовой пояс/GMT
+TEL	NUMBER	Телефон
+EMAIL	USERID	E-Mail
+	JABBERID	JID
+	ROLE	Профессия
+	TITLE	Должность
+ORG	ORGNAME	Организация
+ORG	ORGUNIT	Отдел
+	URL	URL
+	DESC	О себе
