@@ -19,7 +19,7 @@ O:-)	O:)	O+)	O=)	0:-)	0:)	0+)	0=)	(A)	(a)
 >:o	>:O	>+O	>:o	>+o	>=O	>=o	:-@	*ANGRY*		
 :-X	*SECRET*	*secret*	:-#	:#
 *BOTAN*
-*HISTERICS*	*GIRL CRAY*	*GIRL_CRAY* 
+*HISTERICS*	*GIRL CRAY*	*GIRL_CRAY*	*истерика*
 *STOP*	*stop*
 *WALL*	*wall*	*DASH*
 *BYE*	:bye:
@@ -41,7 +41,7 @@ O:-)	O:)	O+)	O=)	0:-)	0:)	0+)	0=)	(A)	(a)
 *SIGH*
 *SEARCH*
 *HACKER*
-*crazy*	*CRAZY*	:crazy:
+*crazy*	*CRAZY*	:crazy:	%)
 *WRITE*	*MAIL*
 3-|{	3-|	3|	*SLEEP*	(z)	(Z)
 *TIRED*	*LAZY*
@@ -55,7 +55,7 @@ O:-)	O:)	O+)	O=)	0:-)	0:)	0+)	0=)	(A)	(a)
 *HELP*	*SOS*	*help*	*HELP_ME*	(help)
 [:-}	[:}	[:-)	[:)	*MUSIC*
 *JOKINGLY*	*jokingly*	:o)
-*IN LOVE*	*KISSED*	:")	:")	:-")
+*facepalm*	*рукалицо*	*FACEPALM*	-_\\	v_v	*ФЕЙСПАЛМ*	*фейспалм*
 (_|_)	(_I_)	
 *SEX*
 
