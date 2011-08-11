@@ -6,7 +6,7 @@
 :-[	:[	(e)	(E)	:')	:'-)	=')	:-$	:$
 :-*	*KISSING*	*KISS*	={|}	(K)	(k)	:{}	:*
 =-O	:-O	:-o	:O	=:-O	=:-o	=O	:-0
-8-)	B-)	B)	(H)	(h)	B-D	BD      B-|
+8-)	B-)	B)	(H)	(h)	B-D	BD	B-|
 :'-(	:'(	;-(	;(	8(	8-[	8-(	8[	:-<	
 *ROFL*	:lol:	:LOL:	LOL	lol
 :-\	:-/	;-|	;|	*HM*	*hm*	:HM:	:hm:
@@ -23,7 +23,7 @@ O:-)	O:)	O+)	O=)	0:-)	0:)	0+)	0=)	(A)	(a)
 *STOP*	*stop*
 *WALL*	*wall*	*DASH*
 *BYE*	:bye:
-*HI*	*hi*	*HELLO*	*hello*	:hello:	:HELLO:	*PREVED*, *PRIVET*
+*HI*	*hi*	*HELLO*	*hello*	:hello:	:HELLO:	*PREVED*	*PRIVET*
 \m/	*COOLBOY*	*ROCK*	*PUNK*	*SYSTEM*	:cool:	*ROCK*
 :-"	*YU*
 *OK*	(ok)	(OK)	*ok*
@@ -41,7 +41,7 @@ O:-)	O:)	O+)	O=)	0:-)	0:)	0+)	0=)	(A)	(a)
 *SIGH*
 *SEARCH*
 *HACKER*
-*crazy*	*CRAZY*	:crazy:	%)
+*crazy*	*CRAZY*	:crazy:	%-)	%)
 *WRITE*	*MAIL*
 3-|{	3-|	3|	*SLEEP*	(z)	(Z)
 *TIRED*	*LAZY*
