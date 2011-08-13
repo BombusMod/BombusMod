@@ -68,14 +68,16 @@ import android.view.SubMenu;
 import android.view.Window;
 
 import org.microemu.android.MicroEmulatorActivity;
+import android.content.Intent;
+import android.util.Log;
 
 public class BombusModActivity extends MicroEmulatorActivity {
-	
-	public static final String LOG_TAG = "BombusMod";
 
-	protected Common common;
+    public static final String LOG_TAG = "BombusModActivity";
 
-	private MIDlet midlet;
+    protected Common common;
+
+    private MIDlet midlet;
 
     private static BombusModActivity instance;
 
@@ -83,7 +85,7 @@ public class BombusModActivity extends MicroEmulatorActivity {
         return instance;
     }
 
-	/** Called when the activity is first created. */
+    /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
@@ -91,58 +93,58 @@ public class BombusModActivity extends MicroEmulatorActivity {
         instance = this;
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-		
+
         Logger.removeAllAppenders();
         Logger.setLocationEnabled(false);
         Logger.addAppender(new AndroidLoggerAppender());
-        
+
         System.setOut(new PrintStream(new OutputStream() {
-        	
-        	StringBuffer line = new StringBuffer();
 
-			@Override
-			public void write(int oneByte) throws IOException {
-				if (((char) oneByte) == '\n') {
-					Logger.debug(line.toString());
-					line.delete(0, line.length() - 1);
-				} else {
-					line.append((char) oneByte);
-				}
-			}
-        	
+            StringBuffer line = new StringBuffer();
+
+            @Override
+            public void write(int oneByte) throws IOException {
+                if (((char) oneByte) == '\n') {
+                    Logger.debug(line.toString());
+                    line.delete(0, line.length() - 1);
+                } else {
+                    line.append((char) oneByte);
+                }
+            }
+
         }));
-        
+
         System.setErr(new PrintStream(new OutputStream() {
-        	
-        	StringBuffer line = new StringBuffer();
 
-			@Override
-			public void write(int oneByte) throws IOException {
-				if (((char) oneByte) == '\n') {
-					Logger.debug(line.toString());
-					line.delete(0, line.length() - 1);
-				} else {
-					line.append((char) oneByte);
-				}
-			}
-        	
+            StringBuffer line = new StringBuffer();
+
+            @Override
+            public void write(int oneByte) throws IOException {
+                if (((char) oneByte) == '\n') {
+                    Logger.debug(line.toString());
+                    line.delete(0, line.length() - 1);
+                } else {
+                    line.append((char) oneByte);
+                }
+            }
+
         }));
-        
+
         java.util.List<String> params = new ArrayList();
         params.add("--usesystemclassloader");
         params.add("--quit");
-        
+
         String midletClassName;
         String jadName = null;
-	
-	midletClassName = "midlet.BombusMod";
-	params.add(midletClassName);
+
+        midletClassName = "midlet.BombusMod";
+        params.add(midletClassName);
 
         common = new Common(emulatorContext);
         common.setRecordStoreManager(new AndroidRecordStoreManager(this));
-        common.setDevice(new AndroidDevice(emulatorContext, this));        
+        common.setDevice(new AndroidDevice(emulatorContext, this));
         common.initParams(params, null, AndroidDevice.class);
-               
+
         System.setProperty("microedition.platform", "microemulator-android");
         System.setProperty("microedition.locale", Locale.getDefault().toString());
         System.setProperty("device.model", android.os.Build.MODEL);
@@ -158,18 +160,22 @@ public class BombusModActivity extends MicroEmulatorActivity {
         MIDletSystemProperties.setPermission("javax.microedition.io.Connector.file.write", 1);
         System.setProperty("fileconn.dir.photos", "file:///sdcard/");
 
+        /* BombusModInitialization and Service */
+        common.registerImplementation("org.bombusmod.BombusModInitialization", null, false);
+        startService(new Intent(this, BombusModService.class));
+
         if (jadName != null) {
             try {
-    	        InputStream is = getAssets().open(jadName);
-    	        common.jad = new JadProperties();
-    	        common.jad.read(is);
+                InputStream is = getAssets().open(jadName);
+                common.jad = new JadProperties();
+                common.jad.read(is);
             } catch (Exception e) {
-            	Logger.error(e);
+                Logger.error(e);
             }
         }
-        
+
         initializeExtensions();
-        
+
         common.getLauncher().setSuiteName(midletClassName);
         midlet = common.initMIDlet(false);
     }
@@ -177,24 +183,36 @@ public class BombusModActivity extends MicroEmulatorActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        
+
         if (contentView != null) {
             if (contentView instanceof AndroidRepaintListener) {
                 ((AndroidRepaintListener) contentView).onPause();
             }
         }
 
+        if (isFinishing()) {
+            Log.i(LOG_TAG, "onPause(); with isFinishing() == true.");
+            Log.i(LOG_TAG, "Stopping service...");
+            stopService(new Intent(this, BombusModService.class));
+            return;
+        }
+
+        Log.i(LOG_TAG, "onPause(); with isFinishing() == false.");
+
         MIDletAccess ma = MIDletBridge.getMIDletAccess(midlet);
         if (ma != null) {
             ma.pauseApp();
-            ma.getDisplayAccess().hideNotify();
+            DisplayAccess da = ma.getDisplayAccess();
+            if (da != null) {
+                da.hideNotify();
+            }
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        
+
         new Thread(new Runnable() {
 
             public void run()
@@ -219,258 +237,271 @@ public class BombusModActivity extends MicroEmulatorActivity {
                     });
                 }
             }
-            
+
         }).start();
     }
-    
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.i(LOG_TAG, "onDestroy();");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.i(LOG_TAG, "onStop();");
+    }
+
     protected void initializeExtensions() {
     }
 
     private boolean ignoreBackKeyUp = false;
-    
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		MIDletAccess ma = MIDletBridge.getMIDletAccess();
-		if (ma == null) {
-			return false;
-		}
-		final DisplayAccess da = ma.getDisplayAccess();
-		if (da == null) {
-			return false;
-		}
-		AndroidDisplayableUI ui = (AndroidDisplayableUI) da.getDisplayableUI(da.getCurrent());
-		if (ui == null) {
-			return false;
-		}		
 
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			List<AndroidCommandUI> commands = ui.getCommandsUI();
-			
-			CommandUI cmd = getFirstCommandOfType(commands, Command.BACK);
-			if (cmd != null) {
-				if (ui.getCommandListener() != null) {
-					ignoreBackKeyUp = true;
-					MIDletBridge.getMIDletAccess().getDisplayAccess().commandAction(cmd.getCommand(), da.getCurrent());
-				}
-				return true;
-			}
+    public void onBackPressed() {
+        MIDletAccess ma = MIDletBridge.getMIDletAccess();
+        if (ma == null) {
+            return;
+        }
+        final DisplayAccess da = ma.getDisplayAccess();
+        if (da == null) {
+            return;
+        }
+        AndroidDisplayableUI ui = (AndroidDisplayableUI) da.getDisplayableUI(da.getCurrent());
+        if (ui == null) {
+            return;
+        }
 
-			cmd = getFirstCommandOfType(commands, Command.EXIT);
-			if (cmd != null) {
-				if (ui.getCommandListener() != null) {
-					ignoreBackKeyUp = true;
-					MIDletBridge.getMIDletAccess().getDisplayAccess().commandAction(cmd.getCommand(), da.getCurrent());
-				}
-				return true;
-			}
-			
-			cmd = getFirstCommandOfType(commands, Command.CANCEL);
-			if (cmd != null) {
-				if (ui.getCommandListener() != null) {
-					ignoreBackKeyUp = true;
-					MIDletBridge.getMIDletAccess().getDisplayAccess().commandAction(cmd.getCommand(), da.getCurrent());
-				}
-				return true;
-			}
-		}
-					
-		if (ui instanceof AndroidCanvasUI) {
+        List<AndroidCommandUI> commands = ui.getCommandsUI();
+
+        CommandUI cmd = getFirstCommandOfType(commands, Command.BACK);
+        if (cmd == null) {
+            cmd = getFirstCommandOfType(commands, Command.EXIT);
+        }
+        if (cmd == null) {
+            cmd = getFirstCommandOfType(commands, Command.CANCEL);
+        }
+        if (cmd == null) {
+            return;
+        }
+
+        if (ui.getCommandListener() != null) {
+            ignoreBackKeyUp = true;
+
+            MIDletBridge.getMIDletAccess().getDisplayAccess().commandAction(cmd.getCommand(), da.getCurrent());
+        }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        MIDletAccess ma = MIDletBridge.getMIDletAccess();
+        if (ma == null) {
+            return false;
+        }
+        final DisplayAccess da = ma.getDisplayAccess();
+        if (da == null) {
+            return false;
+        }
+        AndroidDisplayableUI ui = (AndroidDisplayableUI) da.getDisplayableUI(da.getCurrent());
+        if (ui == null) {
+            return false;
+        }
+        if (ui instanceof AndroidCanvasUI) {
             if (ignoreKey(keyCode)) {
-                return false;    
+                return false;
             }
 
-			Device device = DeviceFactory.getDevice();
-			((AndroidInputMethod) device.getInputMethod()).buttonPressed(event);
+            Device device = DeviceFactory.getDevice();
+            ((AndroidInputMethod) device.getInputMethod()).buttonPressed(event);
 
-			return true;
-		}
+            return true;
+        }
 
-		return super.onKeyDown(keyCode, event);
-	}
-	
-	@Override
-	public boolean onKeyUp(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK && ignoreBackKeyUp) {
-			ignoreBackKeyUp = false;
-			return true;
-		}
-		
-		MIDletAccess ma = MIDletBridge.getMIDletAccess();
-		if (ma == null) {
-			return false;
-		}
-		final DisplayAccess da = ma.getDisplayAccess();
-		if (da == null) {
-			return false;
-		}
-		AndroidDisplayableUI ui = (AndroidDisplayableUI) da.getDisplayableUI(da.getCurrent());
-		if (ui == null) {
-			return false;
-		}		
+        return super.onKeyDown(keyCode, event);
+    }
 
-		if (ui instanceof AndroidCanvasUI) {
-			if (ignoreKey(keyCode)) {
-	            return false;    
-	        }
-	
-			Device device = DeviceFactory.getDevice();
-			((AndroidInputMethod) device.getInputMethod()).buttonReleased(event);
-	
-			return true;
-		}
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && ignoreBackKeyUp) {
+            ignoreBackKeyUp = false;
+            return true;
+        }
+        MIDletAccess ma = MIDletBridge.getMIDletAccess();
+        if (ma == null) {
+            return false;
+        }
+        final DisplayAccess da = ma.getDisplayAccess();
+        if (da == null) {
+            return false;
+        }
+        AndroidDisplayableUI ui = (AndroidDisplayableUI) da.getDisplayableUI(da.getCurrent());
+        if (ui == null) {
+            return false;
+        }
 
-		return super.onKeyUp(keyCode, event);
-	}
-	
-	private CommandUI getFirstCommandOfType(List<AndroidCommandUI> commands, int commandType) {
-		for (int i = 0; i < commands.size(); i++) {
-			CommandUI cmd = commands.get(i);
-			if (cmd.getCommand().getCommandType() == commandType) {
-				return cmd;
-			}
-		}	
-		
-		return null;
-	}
-	
+        if (ui instanceof AndroidCanvasUI) {
+            if (ignoreKey(keyCode)) {
+                return false;
+            }
+
+            Device device = DeviceFactory.getDevice();
+            ((AndroidInputMethod) device.getInputMethod()).buttonReleased(event);
+
+            return true;
+        }
+
+        return super.onKeyUp(keyCode, event);
+    }
+
+    private CommandUI getFirstCommandOfType(List<AndroidCommandUI> commands, int commandType) {
+        for (int i = 0; i < commands.size(); i++) {
+            CommandUI cmd = commands.get(i);
+            if (cmd.getCommand().getCommandType() == commandType) {
+                return cmd;
+            }
+        }
+
+        return null;
+    }
+
     private boolean ignoreKey(int keyCode) {
         switch (keyCode) {
-        case KeyEvent.KEYCODE_MENU:
+//        case KeyEvent.KEYCODE_MENU:
         case KeyEvent.KEYCODE_VOLUME_DOWN:
         case KeyEvent.KEYCODE_VOLUME_UP:
-        case KeyEvent.KEYCODE_HEADSETHOOK: 
+        case KeyEvent.KEYCODE_HEADSETHOOK:
             return true;
         default:
             return false;
-        }    
+        }
     }
-	
+
     private final static KeyEvent KEY_RIGHT_DOWN_EVENT = new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_RIGHT);
-    
+
     private final static KeyEvent KEY_RIGHT_UP_EVENT = new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DPAD_RIGHT);
-	
+
     private final static KeyEvent KEY_LEFT_DOWN_EVENT = new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_LEFT);
-    	
+
     private final static KeyEvent KEY_LEFT_UP_EVENT = new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DPAD_LEFT);
 
     private final static KeyEvent KEY_DOWN_DOWN_EVENT = new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_DOWN);
-    
+
     private final static KeyEvent KEY_DOWN_UP_EVENT = new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DPAD_DOWN);
-    	
+
     private final static KeyEvent KEY_UP_DOWN_EVENT = new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_UP);
-    	
+
     private final static KeyEvent KEY_UP_UP_EVENT = new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DPAD_UP);
 
-    private final static float TRACKBALL_THRESHOLD = 1.0f; 
-	
-	private float accumulatedTrackballX = 0;
-	
-	private float accumulatedTrackballY = 0;
-	
-	@Override
-	public boolean onTrackballEvent(MotionEvent event) {
-		if (event.getAction() == MotionEvent.ACTION_MOVE) {
-			MIDletAccess ma = MIDletBridge.getMIDletAccess();
-			if (ma == null) {
-				return false;
-			}
-			final DisplayAccess da = ma.getDisplayAccess();
-			if (da == null) {
-				return false;
-			}
-			AndroidDisplayableUI ui = (AndroidDisplayableUI) da.getDisplayableUI(da.getCurrent());
-			if (ui instanceof AndroidCanvasUI) {
-				float x = event.getX();
-				float y = event.getY();
-				if ((x > 0 && accumulatedTrackballX < 0) || (x < 0 && accumulatedTrackballX > 0)) {
-					accumulatedTrackballX = 0;
-				}
-				if ((y > 0 && accumulatedTrackballY < 0) || (y < 0 && accumulatedTrackballY > 0)) {
-					accumulatedTrackballY = 0;
-				}
-				if (accumulatedTrackballX + x > TRACKBALL_THRESHOLD) {
-					accumulatedTrackballX -= TRACKBALL_THRESHOLD;
-					KEY_RIGHT_DOWN_EVENT.dispatch(this);
-					KEY_RIGHT_UP_EVENT.dispatch(this);
-				} else if (accumulatedTrackballX + x < -TRACKBALL_THRESHOLD) {
-					accumulatedTrackballX += TRACKBALL_THRESHOLD;
-					KEY_LEFT_DOWN_EVENT.dispatch(this);
-					KEY_LEFT_UP_EVENT.dispatch(this);
-				}
-				if (accumulatedTrackballY + y > TRACKBALL_THRESHOLD) {
-					accumulatedTrackballY -= TRACKBALL_THRESHOLD;
-					KEY_DOWN_DOWN_EVENT.dispatch(this);
-					KEY_DOWN_UP_EVENT.dispatch(this);
-				} else if (accumulatedTrackballY + y < -TRACKBALL_THRESHOLD) {
-					accumulatedTrackballY += TRACKBALL_THRESHOLD;
-					KEY_UP_DOWN_EVENT.dispatch(this);
-					KEY_UP_UP_EVENT.dispatch(this);
-				}
-				accumulatedTrackballX += x;
-				accumulatedTrackballY += y;
-				
-				return true;
-			}
-		}
-		
-		return super.onTrackballEvent(event);
-	}
+    private final static float TRACKBALL_THRESHOLD = 1.0f;
 
-	@Override
-	public boolean onPrepareOptionsMenu(Menu menu) {
-		MIDletAccess ma = MIDletBridge.getMIDletAccess();
-		if (ma == null) {
-			return false;
-		}
-		final DisplayAccess da = ma.getDisplayAccess();
-		if (da == null) {
-			return false;
-		}
-		AndroidDisplayableUI ui = (AndroidDisplayableUI) da.getDisplayableUI(da.getCurrent());
-		if (ui == null) {
-			return false;
-		}		
-		
-		menu.clear();	
-		boolean result = false;
-		List<AndroidCommandUI> commands = ui.getCommandsUI();
-		for (int i = 0; i < commands.size(); i++) {
-			result = true;
-			AndroidCommandUI cmd = commands.get(i);
-			if (cmd.getCommand().getCommandType() != Command.BACK && cmd.getCommand().getCommandType() != Command.EXIT) {
-				SubMenu item = menu.addSubMenu(Menu.NONE, i + Menu.FIRST, Menu.NONE, cmd.getCommand().getLabel());
-				item.setIcon(cmd.getDrawable());
-			}
-		}
+    private float accumulatedTrackballX = 0;
 
-		return result;
-	}
+    private float accumulatedTrackballY = 0;
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		MIDletAccess ma = MIDletBridge.getMIDletAccess();
-		if (ma == null) {
-			return false;
-		}
-		final DisplayAccess da = ma.getDisplayAccess();
-		if (da == null) {
-			return false;
-		}
-		AndroidDisplayableUI ui = (AndroidDisplayableUI) da.getDisplayableUI(da.getCurrent());
-		if (ui == null) {
-			return false;
-		}
+    @Override
+    public boolean onTrackballEvent(MotionEvent event) {
+         if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                 MIDletAccess ma = MIDletBridge.getMIDletAccess();
+                 if (ma == null) {
+                         return false;
+                 }
+                 final DisplayAccess da = ma.getDisplayAccess();
+                 if (da == null) {
+                         return false;
+                 }
+                 AndroidDisplayableUI ui = (AndroidDisplayableUI) da.getDisplayableUI(da.getCurrent());
+            if (ui instanceof AndroidCanvasUI) {
+                float x = event.getX();
+                float y = event.getY();
+                if ((x > 0 && accumulatedTrackballX < 0) || (x < 0 && accumulatedTrackballX > 0)) {
+                    accumulatedTrackballX = 0;
+                }
+                if ((y > 0 && accumulatedTrackballY < 0) || (y < 0 && accumulatedTrackballY > 0)) {
+                    accumulatedTrackballY = 0;
+                }
+                if (accumulatedTrackballX + x > TRACKBALL_THRESHOLD) {
+                    accumulatedTrackballX -= TRACKBALL_THRESHOLD;
+                    KEY_RIGHT_DOWN_EVENT.dispatch(this);
+                    KEY_RIGHT_UP_EVENT.dispatch(this);
+                } else if (accumulatedTrackballX + x < -TRACKBALL_THRESHOLD) {
+                    accumulatedTrackballX += TRACKBALL_THRESHOLD;
+                    KEY_LEFT_DOWN_EVENT.dispatch(this);
+                    KEY_LEFT_UP_EVENT.dispatch(this);
+                }
+                if (accumulatedTrackballY + y > TRACKBALL_THRESHOLD) {
+                    accumulatedTrackballY -= TRACKBALL_THRESHOLD;
+                    KEY_DOWN_DOWN_EVENT.dispatch(this);
+                    KEY_DOWN_UP_EVENT.dispatch(this);
+                } else if (accumulatedTrackballY + y < -TRACKBALL_THRESHOLD) {
+                    accumulatedTrackballY += TRACKBALL_THRESHOLD;
+                    KEY_UP_DOWN_EVENT.dispatch(this);
+                    KEY_UP_UP_EVENT.dispatch(this);
+                }
+                accumulatedTrackballX += x;
+                accumulatedTrackballY += y;
 
-		int commandIndex = item.getItemId() - Menu.FIRST;
-		List<AndroidCommandUI> commands = ui.getCommandsUI();
-		CommandUI c = commands.get(commandIndex);
+                return true;
+            }
+        }
 
-		if (c != null) {
-			MIDletBridge.getMIDletAccess().getDisplayAccess().commandAction(c.getCommand(), da.getCurrent());
-			return true;
-		}
+        return super.onTrackballEvent(event);
+    }
 
-		return false;
-	}
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MIDletAccess ma = MIDletBridge.getMIDletAccess();
+        if (ma == null) {
+            return false;
+        }
+        final DisplayAccess da = ma.getDisplayAccess();
+        if (da == null) {
+            return false;
+        }
+        AndroidDisplayableUI ui = (AndroidDisplayableUI) da.getDisplayableUI(da.getCurrent());
+        if (ui == null) {
+            return false;
+        }
+
+        menu.clear();
+        boolean result = false;
+        List<AndroidCommandUI> commands = ui.getCommandsUI();
+        for (int i = 0; i < commands.size(); i++) {
+            result = true;
+            AndroidCommandUI cmd = commands.get(i);
+            if (cmd.getCommand().getCommandType() != Command.BACK && cmd.getCommand().getCommandType() != Command.EXIT) {
+                SubMenu item = menu.addSubMenu(Menu.NONE, i + Menu.FIRST, Menu.NONE, cmd.getCommand().getLabel());
+                item.setIcon(cmd.getDrawable());
+            }
+        }
+
+        return result;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        MIDletAccess ma = MIDletBridge.getMIDletAccess();
+        if (ma == null) {
+            return false;
+        }
+        final DisplayAccess da = ma.getDisplayAccess();
+        if (da == null) {
+            return false;
+        }
+        AndroidDisplayableUI ui = (AndroidDisplayableUI) da.getDisplayableUI(da.getCurrent());
+        if (ui == null) {
+            return false;
+        }
+
+        int commandIndex = item.getItemId() - Menu.FIRST;
+        List<AndroidCommandUI> commands = ui.getCommandsUI();
+        CommandUI c = commands.get(commandIndex);
+
+        if (c != null) {
+            MIDletBridge.getMIDletAccess().getDisplayAccess().commandAction(c.getCommand(), da.getCurrent());
+            return true;
+        }
+
+        return false;
+    }
 
 }

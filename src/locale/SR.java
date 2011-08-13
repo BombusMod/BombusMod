@@ -755,7 +755,7 @@ public class SR {
     private static String loadString(String key) {
         if (lang==null) loadLang();
         String value=(String)lang.get(key);
-//#ifdef DEBUG
+//#ifdef LANG_DEBUG
 //#         if (value==null) {
 //#             if (!lang.isEmpty()) {
 //#                 System.out.print("-----> Can't find local string for <");
