@@ -93,6 +93,25 @@
         <path refid="project.libraries.jars" />
     </path>
 
+    <target name="fix-android-manifest">
+        <loadproperties srcfile="../resources/.version">
+            <filterchain>
+                <containsregex
+                    pattern="(^bombus.revision=)([0-9]+)(.*)?"
+                    replace="bombus.raw-revision=\2" />
+            </filterchain>
+        </loadproperties>
+
+        <replaceregexp
+            byline="true"
+            file="AndroidManifest.xml"
+            match="(android:versionCode=.)([0-9]+)(.)"
+            replace="\1${bombus.raw-revision}\3" />
+    </target>
+
+    <target name="my-release" depends="fix-android-manifest,release">
+    </target>
+
     <setup />
 
 </project>

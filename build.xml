@@ -18,7 +18,7 @@
     </target>
     <target name="for-android-config" depends="init, clean, preprocess" >
         <ant dir="android" target="clean" inheritAll="true" antfile="build.xml"></ant>
-        <ant dir="android" target="release" inheritAll="true" antfile="build.xml"></ant>
+        <ant dir="android" target="my-release" inheritAll="true" antfile="build.xml"></ant>
     </target>
 
     <target name="build-release" description="build releases">
@@ -40,15 +40,16 @@
     <!-- prepare version patch -->
     <target name="post-init">
 	<exec executable="svnversion" output="resources/.svnrev">
-		<!-- ignore config and resources modification -->
-		<arg value = "src"/>  
+        <arg value = "--no-newline" />
+        <!-- ignore config and resources modification -->
+        <arg value = "src" />  
 	</exec>
-	<loadfile srcFile="resources/.svnrev" property="bombus.svnrev"/>
+	<loadfile srcFile="resources/.svnrev" property="bombus.svnrev" />
 	<copy file="resources/version.properties" tofile="resources/.version" overwrite="true" />
 	<replace 
 	    file="resources/.version" 
 	    token="$WCREV$"
-	    value="${bombus.svnrev}"/>
+	    value="${bombus.svnrev}" />
     </target>
     <!-- old version patcher 
     <target name="post-init-tsvn">
@@ -83,7 +84,6 @@
 	    token="$MIDLETVERSION$"
 	    value="${bombus.midlet}"/>
     </target>
-
 
     <target name="post-jar">
         <!-- version patch in jad -->

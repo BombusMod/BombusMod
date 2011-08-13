@@ -142,9 +142,6 @@ public abstract class VirtualList {
     }
     
     public void eventLongOk() {
-//#ifdef TEST
-//#         drawTest = true;
-//#endif
     }
 
     public void doKeyAction(int keyCode) {
