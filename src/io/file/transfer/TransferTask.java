@@ -24,9 +24,9 @@
  * along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-
 package io.file.transfer;
 
+import Client.Jid;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
 import images.RosterIcons;
@@ -55,11 +55,10 @@ import util.Strconv;
  *
  * @author Evg_S
  */
-public class TransferTask 
+public class TransferTask
         extends IconTextElement
-        implements Runnable
-{
-    
+        implements Runnable {
+
     public final static int COMPLETE = 1;
     public final static int PROGRESS = 3;
     public final static int ERROR = 4;
@@ -73,31 +72,27 @@ public class TransferTask
     boolean showEvent;
     boolean isBytes;
     byte[] bytes;
-    
-    String jid;
+    Jid jid;
     String id;
     String sid;
     String fileName;
     String description;
     String errMsg;
-    
     int fileSize;
     private int filePos;
     String filePath;
     private FileIO file;
     private OutputStream os;
     private InputStream is;
-    
     public String method;
     private Vector methods;
-
     public Vector streamhosts;
-    
     long started;
     long finished;
+    String host, port;
     
     /** Creates TransferTask for incoming file */
-    public TransferTask(String jid, String id, String sid, String name, String description, int size, Vector methods) {
+    public TransferTask(Jid jid, String id, String sid, String name, String description, int size, Vector methods) {
         super(RosterIcons.getInstance());
         state = IN_ASK;
         showEvent = true;
@@ -109,11 +104,11 @@ public class TransferTask
         this.fileSize = size;
         this.methods = methods;
     }
-    
+
     /**
      * Sending constructor
      */
-    public TransferTask(String jid, String sid, String fileName, String description, boolean isBytes, byte[] bytes) {
+    public TransferTask(Jid jid, String sid, String fileName, String description, boolean isBytes, byte[] bytes) {
         super(RosterIcons.getInstance());
         state = HANDSHAKE;
         sending = true;
@@ -149,42 +144,48 @@ public class TransferTask
         }
     }
 
-    public int getImageIndex() { return state; }
+    public int getImageIndex() {
+        return state;
+    }
 
-    public int getColor() { return (sending)? ColorTheme.getColor(ColorTheme.MESSAGE_OUT) : ColorTheme.getColor(ColorTheme.MESSAGE_IN); }
+    public int getColor() {
+        return (sending) ? ColorTheme.getColor(ColorTheme.MESSAGE_OUT) : ColorTheme.getColor(ColorTheme.MESSAGE_IN);
+    }
 
     public void drawItem(Graphics g, int ofs, boolean sel) {
-        int xpgs=(g.getClipWidth()/3)*2;
-        int pgsz=g.getClipWidth()-xpgs-4;
-        int filled=(fileSize==0)? 0 : (pgsz*filePos)/fileSize; 
-        
-        int oldColor=g.getColor();
+        int xpgs = (g.getClipWidth() / 3) * 2;
+        int pgsz = g.getClipWidth() - xpgs - 4;
+        int filled = (fileSize == 0) ? 0 : (pgsz * filePos) / fileSize;
+
+        int oldColor = g.getColor();
         g.setColor(0xffffff);
-        
-        g.fillRect(xpgs, 3, pgsz, getVHeight()-6);
+
+        g.fillRect(xpgs, 3, pgsz, getVHeight() - 6);
         g.setColor(0x668866);
-        g.drawRect(xpgs, 3, pgsz, getVHeight()-6);
-        g.fillRect(xpgs, 3, filled, getVHeight()-6);
+        g.drawRect(xpgs, 3, pgsz, getVHeight() - 6);
+        g.fillRect(xpgs, 3, filled, getVHeight() - 6);
         g.setColor(oldColor);
-        
+
         super.drawItem(g, ofs, sel);
-        showEvent=false;
+        showEvent = false;
     }
-    
-    public String toString() { return fileName; }
+
+    public String toString() {
+        return fileName;
+    }
 
     void decline() {
-        finished=System.currentTimeMillis();
-        JabberDataBlock reject=new Iq(jid, Iq.TYPE_ERROR, id);
+        finished = System.currentTimeMillis();
+        JabberDataBlock reject = new Iq(jid.toString(), Iq.TYPE_ERROR, id);
         reject.addChild(new XmppError(XmppError.NOT_ALLOWED, "declined by user"));
         TransferDispatcher.getInstance().send(reject, true);
-        
-        state=ERROR;
-        errMsg=SR.MS_REJECTED;
-        showEvent=true;
+
+        state = ERROR;
+        errMsg = SR.MS_REJECTED;
+        showEvent = true;
     }
 
-    void accept() {        
+    void accept() {
         String[] methodNames = new String[2];
         methodNames[0] = TransferDispatcher.NS_BYTESTREAMS;
         methodNames[1] = TransferDispatcher.NS_IBB;
@@ -199,7 +200,7 @@ public class TransferTask
             started = System.currentTimeMillis();
             new Thread(this).start();
         } else {
-            JabberDataBlock badreq = new Iq(jid, Iq.TYPE_ERROR, id);
+            JabberDataBlock badreq = new Iq(jid.toString(), Iq.TYPE_ERROR, id);
             JabberDataBlock err = new XmppError(XmppError.BAD_REQUEST, "no known methods").construct();
             JabberDataBlock novalid = new JabberDataBlock("no-valid-streams", null, null);
             novalid.setNameSpace(TransferDispatcher.NS_SI);
@@ -211,130 +212,151 @@ public class TransferTask
             showEvent = true;
         }
     }
-    
-    void writeFile(byte b[]){
+
+    void writeFile(byte b[]) {
         try {
             os.write(b);
-            filePos+=b.length;
-            state=PROGRESS;
+            filePos += b.length;
+            state = PROGRESS;
         } catch (IOException ex) {
 //#ifdef DEBUG
 //#             ex.printStackTrace();
 //#endif
-            state=ERROR;
-            errMsg="Write error";
-            showEvent=true;
+            state = ERROR;
+            errMsg = "Write error";
+            showEvent = true;
             //todo: terminate transfer
         }
     }
 
     int readFile(byte b[]) {
         try {
-            int len=is.read(b);
-            if (len<0) len=0;
-            filePos+=len;
-            state=PROGRESS;
+            int len = is.read(b);
+            if (len < 0) {
+                len = 0;
+            }
+            filePos += len;
+            state = PROGRESS;
             return len;
         } catch (IOException ex) {
 //#ifdef DEBUG
 //#             ex.printStackTrace();
 //#endif
-            state=ERROR;
-            errMsg="Read error";
-            showEvent=true;
+            state = ERROR;
+            errMsg = "Read error";
+            showEvent = true;
             //todo: terminate transfer
             return 0;
         }
     }
 
-    boolean isAcceptWaiting() { return state==IN_ASK; }
+    boolean isAcceptWaiting() {
+        return state == IN_ASK;
+    }
 
     void closeFile() {
-        finished=System.currentTimeMillis();
+        finished = System.currentTimeMillis();
         try {
-            if (os!=null)
+            if (os != null) {
                 os.close();
-            if (is!=null)
+            }
+            if (is != null) {
                 is.close();
-            if (file != null)
+            }
+            if (file != null) {
                 file.close();
-            if (state!=ERROR) state=COMPLETE;
+            }
+            if (state != ERROR) {
+                state = COMPLETE;
+            }
         } catch (Exception ex) {
 //#ifdef DEBUG
 //#             ex.printStackTrace();
 //#endif
-            errMsg="File close error";
-            state=ERROR;
+            errMsg = "File close error";
+            state = ERROR;
         }
-        file=null;
-        is=null;
-        os=null;
-        showEvent=true;
+        file = null;
+        is = null;
+        os = null;
+        showEvent = true;
     }
+
     void sendInit() {
-        started=System.currentTimeMillis();
-        if (state==ERROR) return;
+        started = System.currentTimeMillis();
+        if (state == ERROR) {
+            return;
+        }
 
-        JabberDataBlock iq=new Iq(jid, Iq.TYPE_SET, sid);
+        JabberDataBlock iq = new Iq(jid.toString(), Iq.TYPE_SET, sid);
 
-        JabberDataBlock si=iq.addChildNs("si", TransferDispatcher.NS_SI);
-        si.setAttribute("id",sid);
-        si.setAttribute("mime-type","text/plain");
+        JabberDataBlock si = iq.addChildNs("si", TransferDispatcher.NS_SI);
+        si.setAttribute("id", sid);
+        si.setAttribute("mime-type", "text/plain");
         si.setAttribute("profile", "http://jabber.org/protocol/si/profile/file-transfer");
 
-        JabberDataBlock f=si.addChildNs("file", "http://jabber.org/protocol/si/profile/file-transfer");
+        JabberDataBlock f = si.addChildNs("file", "http://jabber.org/protocol/si/profile/file-transfer");
         f.setAttribute("name", fileName);
         f.setAttribute("size", String.valueOf(fileSize));
 
         f.addChild("desc", description);
 
-        JabberDataBlock feature=si.addChildNs("feature", "http://jabber.org/protocol/feature-neg");
+        JabberDataBlock feature = si.addChildNs("feature", "http://jabber.org/protocol/feature-neg");
 
-        JabberDataBlock x=feature.addChildNs("x", DiscoForm.NS_XDATA);
+        JabberDataBlock x = feature.addChildNs("x", DiscoForm.NS_XDATA);
         x.setTypeAttribute("form");
 
-        JabberDataBlock field=x.addChild("field", null);
+        JabberDataBlock field = x.addChild("field", null);
         field.setTypeAttribute("list-single");
         field.setAttribute("var", "stream-method");
         field.addChild("option", null).addChild("value", TransferDispatcher.NS_BYTESTREAMS);
         field.addChild("option", null).addChild("value", TransferDispatcher.NS_IBB);
         TransferDispatcher.getInstance().send(iq, true);
 
-}
+    }
+
     void initIBB() {
         method = TransferDispatcher.NS_IBB;
-        JabberDataBlock iq=new Iq(jid, Iq.TYPE_SET, sid);
-        JabberDataBlock open=iq.addChildNs("open", TransferDispatcher.NS_IBB);
+        JabberDataBlock iq = new Iq(jid.toString(), Iq.TYPE_SET, sid);
+        JabberDataBlock open = iq.addChildNs("open", TransferDispatcher.NS_IBB);
         open.setAttribute("sid", sid);
-        open.setAttribute("block-size","2048");
+        open.setAttribute("block-size", "2048");
         open.setAttribute("stanza", "message");
         TransferDispatcher.getInstance().send(iq, false);
     }
     protected SOCKS5Stream proxystream;
+    
+    void initProxy() {
+        String proxyjid = TransferConfig.getInstance().ftProxy;        
+        JabberDataBlock iq = new Iq(proxyjid, Iq.TYPE_GET, "discovery" + sid);
+        iq.addChildNs("query", "http://jabber.org/protocol/bytestreams");
+        TransferDispatcher.getInstance().send(iq, false);        
+    }
 
-
-    void initBytestreams() {
+    void initBytestreams(String host, String port) {
         method = TransferDispatcher.NS_BYTESTREAMS;
-        JabberDataBlock iq=new Iq(jid, Iq.TYPE_SET, sid);
-        JabberDataBlock query=iq.addChildNs("query", TransferDispatcher.NS_BYTESTREAMS);
+        this.host = host;
+        this.port = port;
+        JabberDataBlock iq = new Iq(jid.toString(), Iq.TYPE_SET, sid);
+        JabberDataBlock query = iq.addChildNs("query", TransferDispatcher.NS_BYTESTREAMS);
         query.setAttribute("sid", sid);
         query.setAttribute("mode", "tcp");
         JabberDataBlock streamhost = query.addChild("streamhost", null);
         streamhost.setAttribute("jid", TransferConfig.getInstance().ftProxy);
-        streamhost.setAttribute("host", TransferConfig.getInstance().ftProxy);
-        streamhost.setAttribute("port", Integer.toString(TransferConfig.getInstance().ftProxyPort));
+        streamhost.setAttribute("host", host);
+        streamhost.setAttribute("port", port);
         TransferDispatcher.getInstance().send(iq, false);
         state = PROXYACTIVATE;
     }
+
     void ProxyActivate() {
-        JabberDataBlock iq=new Iq(TransferConfig.getInstance().ftProxy, Iq.TYPE_SET, "activate"+sid);
-        JabberDataBlock query=iq.addChildNs("query", TransferDispatcher.NS_BYTESTREAMS);
+        JabberDataBlock iq = new Iq(TransferConfig.getInstance().ftProxy, Iq.TYPE_SET, "activate" + sid);
+        JabberDataBlock query = iq.addChildNs("query", TransferDispatcher.NS_BYTESTREAMS);
         query.setAttribute("sid", sid);
-        query.addChild("activate", jid);
+        query.addChild("activate", jid.toString());
         TransferDispatcher.getInstance().send(iq, false);
         state = PROXYOPEN;
     }
-
 
     public boolean openStreams(final String host, int port) {
         try {
@@ -348,7 +370,7 @@ public class TransferTask
         }
         return false;
     }
-    
+
     public boolean connectStream() throws IOException, InterruptedException {
         new Thread(this).start();
         Thread.sleep(2000); // wait for proxy handshake
@@ -368,7 +390,7 @@ public class TransferTask
                 return;
             }
 
-            JabberDataBlock accept = new Iq(jid, Iq.TYPE_RESULT, id);
+            JabberDataBlock accept = new Iq(jid.toString(), Iq.TYPE_RESULT, id);
 
             JabberDataBlock si = accept.addChildNs("si", TransferDispatcher.NS_SI);
 
@@ -385,7 +407,7 @@ public class TransferTask
 
             state = HANDSHAKE;
             return;
-            
+
         }
         if (method.equals(TransferDispatcher.NS_IBB)) {
             byte buf[] = new byte[2048];
@@ -396,7 +418,7 @@ public class TransferTask
                     if (sz == 0) {
                         break;
                     }
-                    JabberDataBlock msg = new Message(jid);
+                    JabberDataBlock msg = new Message(jid.toString());
 
                     JabberDataBlock data = msg.addChildNs("data", TransferDispatcher.NS_IBB);
                     data.setAttribute("sid", sid);
@@ -427,7 +449,7 @@ public class TransferTask
 
             }
             closeFile();
-            JabberDataBlock iq = new Iq(jid, Iq.TYPE_SET, "close");
+            JabberDataBlock iq = new Iq(jid.toString(), Iq.TYPE_SET, "close");
             JabberDataBlock close = iq.addChildNs("close", TransferDispatcher.NS_IBB);
             close.setAttribute("sid", sid);
             TransferDispatcher.getInstance().send(iq, false);
@@ -443,9 +465,15 @@ public class TransferTask
                             String proxyhost = nexthost.getAttribute("host");
                             String proxyport = nexthost.getAttribute("port");
                             proxyjid = nexthost.getAttribute("jid");
-                            if (proxyhost.startsWith("192.168.")) continue;
-                            if (proxyhost.startsWith("10.")) continue;
-                            if (proxyhost.startsWith("172.16.")) continue;
+                            if (proxyhost.startsWith("192.168.")) {
+                                continue;
+                            }
+                            if (proxyhost.startsWith("10.")) {
+                                continue;
+                            }
+                            if (proxyhost.startsWith("172.16.")) {
+                                continue;
+                            }
                             if (proxyhost != null && proxyport != null) {
                                 try {
                                     openStreams(proxyhost, Integer.parseInt(proxyport));
@@ -465,49 +493,56 @@ public class TransferTask
                     }
                 }
                 try {
-                byte[] socks5Connect = {
-                    0x05, // VER
-                    0x01, // 1 method
-                    0x00, // No authentication
-                };
-                proxystream.send(socks5Connect);
-                proxystream.flush();
-                byte[] readbuf = new byte[256];
-                proxystream.read(readbuf); // Waiting for response;
-                byte[] socks5CommandStart = {
-                    0x05, // VER
-                    0x01, // CMD = CONNECT
-                    0x00, // RSV
-                    0x03, // ATYP = domain
-                };
-                SHA1 Command = new SHA1();
-                Command.init();
-                String verifyString = (sending) ? StaticData.getInstance().roster.myJid.getJid() + jid : jid + StaticData.getInstance().roster.myJid.getJid();
-                Command.updateASCII(sid + verifyString);
-                Command.finish();
-                byte[] socks5CommandHost = Command.getDigestHex().getBytes();
-                byte[] socks5CommandFinish = {0x00, 0x00};
+                    byte[] socks5Connect = {
+                        0x05, // VER
+                        0x01, // 1 method
+                        0x00, // No authentication
+                    };
+                    proxystream.send(socks5Connect);
+                    proxystream.flush();
+                    byte[] readbuf = new byte[256];
+                    proxystream.read(readbuf); // Waiting for response;
+                    byte[] socks5CommandStart = {
+                        0x05, // VER
+                        0x01, // CMD = CONNECT
+                        0x00, // RSV
+                        0x03, // ATYP = domain
+                    };
+                    SHA1 Command = new SHA1();
+                    Command.init();
+                    String verifyString = (sending) ? StaticData.getInstance().roster.myJid.toString() + jid : jid + StaticData.getInstance().roster.myJid.toString();
+                    Command.updateASCII(sid + verifyString);
+                    Command.finish();
+                    byte[] socks5CommandHost = Command.getDigestHex().getBytes();
+                    byte[] socks5CommandFinish = {0x00, 0x00};
 
-                byte[] socks5Command = new byte[socks5CommandStart.length + 1 + socks5CommandHost.length + socks5CommandFinish.length];
-                System.arraycopy(socks5CommandStart, 0, socks5Command, 0, socks5CommandStart.length);
-                socks5Command[socks5CommandStart.length] = (byte) socks5CommandHost.length;
-                System.arraycopy(socks5CommandHost, 0, socks5Command, socks5CommandStart.length + 1, socks5CommandHost.length);
-                System.arraycopy(socks5CommandFinish, 0, socks5Command, socks5CommandStart.length + 1 + socks5CommandHost.length, socks5CommandFinish.length);
-                proxystream.send(socks5Command);
-                proxystream.flush();
-                proxystream.read(readbuf); // Waiting for response;             
+                    byte[] socks5Command = new byte[socks5CommandStart.length + 1 + socks5CommandHost.length + socks5CommandFinish.length];
+                    System.arraycopy(socks5CommandStart, 0, socks5Command, 0, socks5CommandStart.length);
+                    socks5Command[socks5CommandStart.length] = (byte) socks5CommandHost.length;
+                    System.arraycopy(socks5CommandHost, 0, socks5Command, socks5CommandStart.length + 1, socks5CommandHost.length);
+                    System.arraycopy(socks5CommandFinish, 0, socks5Command, socks5CommandStart.length + 1 + socks5CommandHost.length, socks5CommandFinish.length);
+                    proxystream.send(socks5Command);
+                    proxystream.flush();
+                    proxystream.read(readbuf); // Waiting for response;             
                 } catch (IOException e) {
                     cancel();
                     return;
                 }
                 if (!sending) {
-                    Iq notify = new Iq(jid, Iq.TYPE_RESULT, id);
+                    try {
+                        Thread.sleep(2000L);
+                    } catch (InterruptedException ex) {
+//#ifdef DEBUG                        
+//#                         ex.printStackTrace();
+//#endif                        
+                    }
+                    Iq notify = new Iq(jid.toString(), Iq.TYPE_RESULT, id);
                     JabberDataBlock query = notify.addChildNs("query", TransferDispatcher.NS_BYTESTREAMS);
                     JabberDataBlock streamused = query.addChild("streamhost-used", null);
                     streamused.setAttribute("jid", proxyjid);
                     TransferDispatcher.getInstance().send(notify, false);
-                    state = TransferTask.PROXYOPEN;                    
-                    byte buf[] = new byte[512];
+                    state = TransferTask.PROXYOPEN;
+                    byte buf[] = new byte[2048];
                     try {
                         int readed;
                         while ((readed = proxystream.read(buf)) > 0) {
@@ -522,29 +557,37 @@ public class TransferTask
 //#ifdef DEBUG
 //#                         e.printStackTrace();
 //#endif
-                        cancel();                        
+                        cancel();
                     }
                     TransferDispatcher.getInstance().eventNotify();
                 }
             } else {
-            byte buf[] = new byte[2048];
-            try {
-                int cnt;
-                while ((cnt = readFile(buf)) != 0) {
-                    proxystream.send(buf, 0, cnt);
-                    TransferDispatcher.getInstance().repaintNotify();
-                    // Thread.sleep( 500L ); //shaping traffic
+                try {
+                    Thread.sleep(2000L);
+                } catch (InterruptedException ex) {
+//#ifdef DEBUG                        
+//#                     ex.printStackTrace();
+//#endif                        
                 }
-                proxystream.flush();
-                closeFile();
-                proxystream.close();
 
-            } catch (Exception ex) {
+                byte buf[] = new byte[2048];
+                try {
+                    int cnt;
+                    while ((cnt = readFile(buf)) != 0) {
+                        proxystream.send(buf, 0, cnt);
+                        TransferDispatcher.getInstance().repaintNotify();
+                        // Thread.sleep( 500L ); //shaping traffic
+                    }
+                    proxystream.flush();
+                    closeFile();
+                    proxystream.close();
+
+                } catch (Exception ex) {
 //#ifdef DEBUG
 //#                 ex.printStackTrace();
 //#endif
-            }
-            TransferDispatcher.getInstance().eventNotify();
+                }
+                TransferDispatcher.getInstance().eventNotify();
             }
         }
     }
@@ -555,20 +598,23 @@ public class TransferTask
     }
 
     boolean isStopped() {
-        return (state==COMPLETE || state==ERROR);
+        return (state == COMPLETE || state == ERROR);
     }
-    
+
     boolean isStarted() {
-        return (state!=NONE && state!=IN_ASK);
+        return (state != NONE && state != IN_ASK);
     }
-    
+
     public void cancel() {
-        if (isStopped()) return;
-        state=ERROR;
-        errMsg="Canceled";
-        if (!isBytes)
+        if (isStopped()) {
+            return;
+        }
+        state = ERROR;
+        errMsg = "Canceled";
+        if (!isBytes) {
             closeFile();
-        else
-            bytes=null;
+        } else {
+            bytes = null;
+        }
     }
 }

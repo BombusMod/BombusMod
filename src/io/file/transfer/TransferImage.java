@@ -27,6 +27,7 @@
 
 package io.file.transfer;
 
+import Client.Jid;
 import images.camera.CameraImage;
 import images.camera.CameraImageListener;
 import javax.microedition.lcdui.Image;
@@ -46,7 +47,7 @@ public class TransferImage
         extends DefForm 
         implements CameraImageListener {
 
-    private String to;
+    private Jid to;
     private byte[] photo;
     
     private ImageItem photoItem;
@@ -56,11 +57,11 @@ public class TransferImage
     /** Creates a new instance of TransferImage
      * @param recipientJid
      */
-    public TransferImage(String recipientJid) {
+    public TransferImage(Jid recipientJid) {
         super(SR.MS_SEND_PHOTO);
         this.to=recipientJid;
 
-        itemsList.addElement(new SimpleString(recipientJid, false));
+        itemsList.addElement(new SimpleString(recipientJid.toString(), false));
         
         shot=new LinkString(SR.MS_CAMERASHOT) { public void doAction() { initCamera(); } };
         itemsList.addElement(shot);

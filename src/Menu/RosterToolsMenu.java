@@ -32,14 +32,14 @@ package Menu;
 import Alerts.AlertCustomizeForm;
 import Client.*;
 //#ifdef PRIVACY
-import PrivacyLists.QuickPrivacy;
+//# import PrivacyLists.QuickPrivacy;
 //#endif
 //#if AUTOTASK
 //# import AutoTasks.AutoTaskForm;
 //#endif
 import Fonts.ConfigFonts;
 //#ifdef SERVICE_DISCOVERY
-import ServiceDiscovery.*;
+//# import ServiceDiscovery.*;
 //#endif
 //#if HISTORY
 //# import History.HistoryConfig;
@@ -79,13 +79,13 @@ public class RosterToolsMenu extends Menu {
         cf=Config.getInstance();
         boolean connected=sd.roster.isLoggedIn();
 //#ifdef SERVICE_DISCOVERY
-        if (connected)
-            addItem(SR.MS_DISCO, 0, RosterIcons.ICON_DISCO);
+//#         if (connected)
+//#             addItem(SR.MS_DISCO, 0, RosterIcons.ICON_DISCO);
 //#endif
 //#ifdef PRIVACY
-        if (connected)
-            if (!sd.account.isGoogle)
-                addItem(SR.MS_PRIVACY_LISTS, 1, RosterIcons.ICON_PRIVACY);
+//#         if (connected)
+//#             if (!sd.account.isGoogle)
+//#                 addItem(SR.MS_PRIVACY_LISTS, 1, RosterIcons.ICON_PRIVACY);
 //#endif
 //#ifdef PEP
 //#         if (connected)
@@ -101,11 +101,11 @@ public class RosterToolsMenu extends Menu {
 //#endif
        addItem(SR.MS_FONTS_OPTIONS, 7, RosterIcons.ICON_FONTS);
 //#if (FILE_IO)
-        addItem(SR.MS_FILE_MANAGER, 8, RosterIcons.ICON_FILEMAN);
+//#         addItem(SR.MS_FILE_MANAGER, 8, RosterIcons.ICON_FILEMAN);
 //#endif
 //#if (FILE_IO && FILE_TRANSFER)
-        if (connected && cf.fileTransfer)
-            addItem(SR.MS_FILE_TRANSFERS, 9, RosterIcons.ICON_FT);
+//#         if (connected && cf.fileTransfer)
+//#             addItem(SR.MS_FILE_TRANSFERS, 9, RosterIcons.ICON_FT);
 //#endif
         
         addItem(SR.MS_COLOR_TUNE, 10, RosterIcons.ICON_COLOR_TUNE);
@@ -157,14 +157,14 @@ public class RosterToolsMenu extends Menu {
         int index=me.index;
         switch (index) {
 //#ifdef SERVICE_DISCOVERY
-            case 0: // Service Discovery
-                if (connected) new ServiceDiscovery(null, null, false);
-                break;
+//#             case 0: // Service Discovery
+//#                 if (connected) new ServiceDiscovery(null, null, false);
+//#                 break;
 //#endif
 //#ifdef PRIVACY
-            case 1: // Privacy Lists
-                if (connected) new QuickPrivacy().show();
-                break;
+//#             case 1: // Privacy Lists
+//#                 if (connected) new QuickPrivacy().show();
+//#                 break;
 //#endif
 //#ifdef PEP
 //#             case 2:
@@ -179,7 +179,7 @@ public class RosterToolsMenu extends Menu {
                     new VCardEdit(c.vcard);
                     return;
                 }
-                VCard.request(c.bareJid, c.getJid());
+                VCard.request(c.bareJid, c.getJid().toString());
                 return;
             }
             case 4:
@@ -194,14 +194,14 @@ public class RosterToolsMenu extends Menu {
                 new ConfigFonts();
                 return;
 //#if (FILE_IO)
-            case 8:
-                new io.file.browse.Browser(null, null, false);
-                return;
+//#             case 8:
+//#                 new io.file.browse.Browser(null, null, false);
+//#                 return;
 //#endif
 //#if (FILE_TRANSFER)
-            case 9:                
-                new io.file.transfer.TransferManager();
-                return;
+//#             case 9:                
+//#                 new io.file.transfer.TransferManager();
+//#                 return;
 //#endif
             case 10:
                 new ColorConfigForm();

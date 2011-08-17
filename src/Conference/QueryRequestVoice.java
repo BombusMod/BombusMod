@@ -27,7 +27,7 @@ public class QueryRequestVoice {
         this.admin=admin;
         this.action=action;
         
-        JabberDataBlock msg=new Message(admin.getJid());
+        JabberDataBlock msg=new Message(admin.getJid().toString());
         JabberDataBlock x=msg.addChildNs("x", DiscoForm.NS_XDATA);
         x.setTypeAttribute("submit");
         

@@ -110,13 +110,13 @@ public class IQCommands implements JabberBlockListener {
 
                     //http://jabber.org/protocol/rc#set-status //4.1 Change Status
                     JabberDataBlock status=query.addChild("item", "");
-                    status.setAttribute("jid", sd.roster.selfContact().getJid());
+                    status.setAttribute("jid", sd.roster.selfContact().getJid().toString());
                     status.setAttribute("node", "set-status");
                     status.setAttribute("name", "Set Status");
 
                     //http://jabber.org/protocol/rc#leave-groupchats //4.5 Leave Groupchats 
                     JabberDataBlock leaveChats=query.addChild("item", "");
-                    leaveChats.setAttribute("jid", sd.roster.selfContact().getJid());
+                    leaveChats.setAttribute("jid", sd.roster.selfContact().getJid().toString());
                     leaveChats.setAttribute("node", "leave-groupchats");
                     leaveChats.setAttribute("name", "Leave Groupchats");
 
@@ -297,8 +297,8 @@ public class IQCommands implements JabberBlockListener {
                 MucContact mc=(MucContact)c.nextElement();
                 if (mc.origin==Contact.ORIGIN_GROUPCHAT && mc.status==0) {
                     JabberDataBlock labelOnline=fieldGroupchats.addChild("option", "");
-                    labelOnline.setAttribute("label", mc.getJid());
-                    labelOnline.addChild("value", mc.getJid());
+                    labelOnline.setAttribute("label", mc.getJid().toString());
+                    labelOnline.addChild("value", mc.getJid().toString());
                 }
             } catch (Exception e) {}
         }

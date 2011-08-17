@@ -48,7 +48,7 @@ import Menu.MenuCommand;
 //# import util.ClipBoard;
 //#endif
 //#ifdef ARCHIVE
-import Archive.MessageArchive;
+//# import Archive.MessageArchive;
 //#endif
 //#ifdef JUICK
 //# import Menu.JuickThingsMenu;
@@ -58,8 +58,8 @@ import Messages.MessageItem;
 import images.RosterIcons;
 import ui.VirtualList;
 //#ifdef FILE_TRANSFER
-import io.file.transfer.TransferAcceptFile;
-import io.file.transfer.TransferDispatcher;
+//# import io.file.transfer.TransferAcceptFile;
+//# import io.file.transfer.TransferDispatcher;
 //#endif
 import ui.VirtualCanvas;
 import ui.VirtualElement;
@@ -77,7 +77,7 @@ public class ContactMessageList extends MessageList {
     MenuCommand cmdQuote=new MenuCommand(SR.MS_QUOTE,MenuCommand.SCREEN,5, RosterIcons.ICON_QUOTE);
     
 //#ifdef ARCHIVE
-    MenuCommand cmdArch=new MenuCommand(SR.MS_ADD_ARCHIVE,MenuCommand.SCREEN,6, RosterIcons.ICON_CHATARCHIVE);
+//#     MenuCommand cmdArch=new MenuCommand(SR.MS_ADD_ARCHIVE,MenuCommand.SCREEN,6, RosterIcons.ICON_CHATARCHIVE);
 //#endif
     MenuCommand cmdPurge=new MenuCommand(SR.MS_CLEAR_LIST, MenuCommand.SCREEN, 7, RosterIcons.ICON_CLEAR);
     MenuCommand cmdSelect=new MenuCommand(SR.MS_SELECT, MenuCommand.SCREEN, 8, RosterIcons.ICON_SELECT);
@@ -87,7 +87,7 @@ public class ContactMessageList extends MessageList {
 //#     MenuCommand cmdTemplate=new MenuCommand(SR.MS_SAVE_TEMPLATE,MenuCommand.SCREEN,11, RosterIcons.ICON_TEMPLATES);
 //#endif
 //#ifdef FILE_IO
-    MenuCommand cmdSaveChat=new MenuCommand(SR.MS_SAVE_CHAT, MenuCommand.SCREEN, 12, RosterIcons.ICON_SAVECHAT);
+//#     MenuCommand cmdSaveChat=new MenuCommand(SR.MS_SAVE_CHAT, MenuCommand.SCREEN, 12, RosterIcons.ICON_SAVECHAT);
 //#endif
 //#ifdef HISTORY
 //#ifdef HISTORY_READER
@@ -136,7 +136,7 @@ public class ContactMessageList extends MessageList {
         on_end = false;
         contact.setIncoming(0);
 //#ifdef FILE_TRANSFER
-        contact.fileQuery=false;
+//#         contact.fileQuery=false;
 //#endif
 //#ifdef HISTORY
 //#ifdef LAST_MESSAGES
@@ -182,13 +182,13 @@ public class ContactMessageList extends MessageList {
             }
         } catch (Exception e) {}
 //#ifdef FILE_TRANSFER        
-        try {
-            Msg msg = ((MessageItem) contact.msgs.elementAt(cursor)).msg;
-            if (msg.messageType==Msg.MESSAGE_TYPE_FILE_REQ) {
-                addMenuCommand(cmdAcceptFile);
-                addMenuCommand(cmdDeclineFile);
-            }
-        } catch (Exception e) {}
+//#         try {
+//#             Msg msg = ((MessageItem) contact.msgs.elementAt(cursor)).msg;
+//#             if (msg.messageType==Msg.MESSAGE_TYPE_FILE_REQ) {
+//#                 addMenuCommand(cmdAcceptFile);
+//#                 addMenuCommand(cmdDeclineFile);
+//#             }
+//#         } catch (Exception e) {}
 //#endif        
         
         addMenuCommand(cmdMessage);
@@ -213,7 +213,7 @@ public class ContactMessageList extends MessageList {
 	addMenuCommand(cmdActive);
         if (contact.msgs.size()>0) {
 //#ifdef ARCHIVE
-            addMenuCommand(cmdArch);
+//#             addMenuCommand(cmdArch);
 //#endif
 //#if TEMPLATES
 //#             addMenuCommand(cmdTemplate);
@@ -354,11 +354,11 @@ public class ContactMessageList extends MessageList {
 		
         /** login-insensitive commands */
 //#ifdef ARCHIVE
-        if (c==cmdArch) {
-            try {
-                MessageArchive.store(getMessage(cursor),1);
-            } catch (Exception e) {/*no messages*/}
-        }
+//#         if (c==cmdArch) {
+//#             try {
+//#                 MessageArchive.store(getMessage(cursor),1);
+//#             } catch (Exception e) {/*no messages*/}
+//#         }
 //#endif
 //#if TEMPLATES
 //#         if (c==cmdTemplate) {
@@ -405,10 +405,10 @@ public class ContactMessageList extends MessageList {
 //#         if (c==cmdSaveChat) saveMessages();
 //#endif
 //#ifdef FILE_TRANSFER
-        if (c == cmdAcceptFile)
-            new TransferAcceptFile(TransferDispatcher.getInstance().getTransferByJid(contact.jid.getJid()));
-        if (c == cmdDeclineFile)
-            TransferDispatcher.getInstance().getTransferByJid(contact.jid.getJid()).cancel();
+//#         if (c == cmdAcceptFile)
+//#             new TransferAcceptFile(TransferDispatcher.getInstance().getTransferByJid(contact.jid));
+//#         if (c == cmdDeclineFile)
+//#             TransferDispatcher.getInstance().getTransferByJid(contact.jid).cancel();
 //#endif        
         /** login-critical section */
         if (!sd.roster.isLoggedIn()) return;
@@ -801,7 +801,7 @@ public class ContactMessageList extends MessageList {
 //#             if (contact.origin>=Contact.ORIGIN_GROUPCHAT) {
 //#                 histRecord.append(contact.bareJid);
 //#             } else {
-//#                 String nick=contact.getJid();
+//#                 String nick=contact.getJid().toString();
 //#                 int rp=nick.indexOf('/');
 //#                 histRecord.append(nick.substring(rp+1)).append("_").append(nick.substring(0, rp));
 //#                 nick=null;

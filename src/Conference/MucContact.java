@@ -80,7 +80,7 @@ public class MucContact extends Contact {
     }
     
     public String processPresence(JabberDataBlock xmuc, Presence presence) {
-        String from=jid.getJid();
+        String from=jid.toString();
         
         int presenceType=presence.getTypeIndex();
         
@@ -162,9 +162,9 @@ public class MucContact extends Contact {
                 case 307: //kick
                     b.append((statusCode==301)? SR.MS_WAS_BANNED : SR.MS_WAS_KICKED );
 //#ifdef POPUPS
-                    if (((ConferenceGroup)group).selfContact == this ) {
-                        StaticData.getInstance().roster.setWobble(3, this.getJid(), ((statusCode==301)? SR.MS_WAS_BANNED : SR.MS_WAS_KICKED)+((!reason.equals(""))?"\n"+reason:""));
-                    }
+//#                     if (((ConferenceGroup)group).selfContact == this ) {
+//#                         StaticData.getInstance().roster.setWobble(3, this.getJid().toString(), ((statusCode==301)? SR.MS_WAS_BANNED : SR.MS_WAS_KICKED)+((!reason.equals(""))?"\n"+reason:""));
+//#                     }
 //#endif
                     if (!reason.equals(""))
                         b.append("(").append(reason).append(")");

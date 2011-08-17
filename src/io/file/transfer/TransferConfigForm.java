@@ -22,7 +22,6 @@ import ui.controls.form.TextInput;
 public class TransferConfigForm extends DefForm implements BrowserListener {
     
     private TextInput streamhost;
-    private TextInput port;
     private TextInput transferFolder;
     private LinkString selectFolder;
     
@@ -35,9 +34,7 @@ public class TransferConfigForm extends DefForm implements BrowserListener {
         selectFolder=new LinkString(SR.MS_SELECT) { public void doAction() { selectFolder(); } };
         itemsList.addElement(selectFolder);
         streamhost = new TextInput(sd.canvas, "SOCKS5 proxy", ft.ftProxy, "ft_proxyjid", 0);
-        port = new TextInput(sd.canvas, "SOCKS5 port", Integer.toString(ft.ftProxyPort), "ft_proxyport", TextField.NUMERIC);
         itemsList.addElement(streamhost);
-        itemsList.addElement(port);
         
         
     }
@@ -45,7 +42,6 @@ public class TransferConfigForm extends DefForm implements BrowserListener {
     public void cmdOk() {
         ft.ftFolder = transferFolder.getValue();
         ft.ftProxy = streamhost.getValue();
-        ft.ftProxyPort = Integer.parseInt(port.getValue());
         ft.saveToStorage();
         destroyView();
     }

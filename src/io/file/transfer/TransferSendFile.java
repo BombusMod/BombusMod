@@ -27,6 +27,7 @@
 
 package io.file.transfer;
 
+import Client.Jid;
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
 import javax.microedition.lcdui.TextField;
@@ -40,7 +41,7 @@ public class TransferSendFile
         extends DefForm 
         implements BrowserListener {
     
-    private String to;
+    private Jid to;
     
     private LinkString selectFile;
     private TextInput fileName;
@@ -49,12 +50,12 @@ public class TransferSendFile
     /** Creates a new instance of TransferAcceptFile
      * @param recipientJid
      */
-    public TransferSendFile(String recipientJid) {
+    public TransferSendFile(Jid recipientJid) {
         super(SR.MS_SEND_FILE);
         this.to=recipientJid;
 
         itemsList.addElement(new SimpleString(SR.MS_SEND_FILE_TO, true));
-        itemsList.addElement(new SimpleString(recipientJid, false));
+        itemsList.addElement(new SimpleString(recipientJid.toString(), false));
         
         fileName = new TextInput(sd.canvas, SR.MS_FILE, null, "sendfile", TextField.ANY);
         itemsList.addElement(fileName);

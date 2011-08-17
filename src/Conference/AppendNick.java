@@ -66,7 +66,7 @@ public final class AppendNick
         
     public void eventOk(){
          try {
-             String nick=((Contact)getFocusedObject()).getJid();
+             String nick=((Contact)getFocusedObject()).getJid().toString();
              int rp=nick.indexOf('/');
              StringBuffer b=new StringBuffer(nick.substring(rp+1));
              

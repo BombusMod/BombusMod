@@ -27,6 +27,7 @@
 
 package io.file.transfer;
 
+import Client.Jid;
 import Client.StaticData;
 import ServiceDiscovery.FormField;
 import com.alsutton.jabber.JabberBlockListener;
@@ -90,7 +91,7 @@ public class TransferDispatcher implements JabberBlockListener {
                     
                     // sender initiates file sending process
                     TransferTask task=new TransferTask(
-                            data.getAttribute("from"),
+                            new Jid(data.getAttribute("from")),
                             id,   sid,
                             file.getAttribute("name"),
                             file.getChildBlockText("desc"),
@@ -110,7 +111,7 @@ public class TransferDispatcher implements JabberBlockListener {
                     if (field.body.equals(NS_IBB)) {
                      task.initIBB();
                     } else {
-                        task.initBytestreams();
+                        task.initProxy();
                     }
                     eventNotify();                    
                     return BLOCK_PROCESSED;
@@ -122,7 +123,7 @@ public class TransferDispatcher implements JabberBlockListener {
                 String sid=open.getAttribute("sid");
                 TransferTask task=getTransferBySid(sid);
 
-                JabberDataBlock accept=new Iq(task.jid, Iq.TYPE_RESULT, id);
+                JabberDataBlock accept=new Iq(task.jid.toString(), Iq.TYPE_RESULT, id);
                 send(accept, true);
                 eventNotify();
                 return BLOCK_PROCESSED;
@@ -132,7 +133,7 @@ public class TransferDispatcher implements JabberBlockListener {
                 String sid=close.getAttribute("sid");
                 TransferTask task=getTransferBySid(sid);
 
-                JabberDataBlock done=new Iq(task.jid, Iq.TYPE_RESULT, id);
+                JabberDataBlock done=new Iq(task.jid.toString(), Iq.TYPE_RESULT, id);
                 send(done, true);
                 task.closeFile();
                 eventNotify();
@@ -142,6 +143,16 @@ public class TransferDispatcher implements JabberBlockListener {
 
             JabberDataBlock query = data.findNamespace("query", NS_BYTESTREAMS);
             if (query != null) {
+                if (type.equals("result")) {
+                    if (data.getAttribute("from").equals(TransferConfig.getInstance().ftProxy)) {
+                        // proxy response
+                        JabberDataBlock streamhost = query.getChildBlock("streamhost");
+                        String host = streamhost.getAttribute("host");
+                        String port = streamhost.getAttribute("port");  
+                        TransferTask task = getTransferBySid(data.getAttribute("id"));
+                        task.initBytestreams(host, port);
+                    }
+                }
                 if (type.equals("set")) { // incoming file
                     String sid = query.getAttribute("sid");
                     if (sid != null) {
@@ -158,7 +169,8 @@ public class TransferDispatcher implements JabberBlockListener {
                             }
                         }
                     }
-                }                
+                } 
+                
             }
             
             if (data.getTypeAttribute().equals("result")) {
@@ -166,7 +178,7 @@ public class TransferDispatcher implements JabberBlockListener {
                 if (task!=null) {
                      switch (task.state) {
                         case (TransferTask.PROXYACTIVATE):
-                            boolean success = task.openStreams(ft.ftProxy, ft.ftProxyPort);
+                            boolean success = task.openStreams(task.host, Integer.parseInt(task.port));
                             if (!success) {
                                 task.cancel();
                                 break;
@@ -218,7 +230,7 @@ public class TransferDispatcher implements JabberBlockListener {
 //#             System.out.println("data chunk received");
 //#endif
             if (data instanceof Iq) {
-                Iq progress = new Iq(task.jid, Iq.TYPE_RESULT, data.getAttribute("id"));
+                Iq progress = new Iq(task.jid.toString(), Iq.TYPE_RESULT, data.getAttribute("id"));
                 send(progress, true);
             }
             repaintNotify();
@@ -243,11 +255,11 @@ public class TransferDispatcher implements JabberBlockListener {
         return null;
     }
     
-    public TransferTask getTransferByJid(String jid) {
+    public TransferTask getTransferByJid(Jid jid) {
         synchronized (taskList) {
             for (Enumeration e=taskList.elements(); e.hasMoreElements(); ){
                 TransferTask task=(TransferTask)e.nextElement();
-                 if (jid.equals(task.jid)) return task;
+                 if (jid.equals(task.jid, true)) return task;
             }
         }
         return null;

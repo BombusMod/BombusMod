@@ -34,7 +34,7 @@ public class DiscoContact extends Contact {
         super( (nick==null)?null:nick.trim(), sJid, status, null);
     }
     
-    public String toString() { return (nick==null)?getJid():nick; }
+    public String toString() { return (nick==null)?getJid().toString():nick; }
 
     public String getTipString() { return getJid()+((nick==null)?"":"\n"+nick); }
 }

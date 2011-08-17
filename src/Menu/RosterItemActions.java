@@ -40,16 +40,16 @@ import Conference.affiliation.ConferenceQuickPrivelegeModify;
 import Conference.affiliation.Affiliations;
 //#endif
 //#ifdef SERVICE_DISCOVERY
-import ServiceDiscovery.*;
+//# import ServiceDiscovery.*;
 //#endif
 
 import images.RosterIcons;
 
 //#if FILE_TRANSFER
 //#ifndef NOMMEDIA
-import io.file.transfer.TransferImage;
+//# import io.file.transfer.TransferImage;
 //#endif
-import io.file.transfer.TransferSendFile;
+//# import io.file.transfer.TransferSendFile;
 //#endif
 
 import ui.controls.AlertBox;
@@ -110,11 +110,11 @@ public class RosterItemActions extends Menu {
 	    }
 	    addItem(SR.MS_VCARD,1, RosterIcons.ICON_VCARD);
 //#ifdef POPUPS
-            addItem(SR.MS_INFO,86, RosterIcons.ICON_INFO);
+//#             addItem(SR.MS_INFO,86, RosterIcons.ICON_INFO);
 //#endif
             addItem(SR.MS_CLIENT_INFO,0, RosterIcons.ICON_VERSION);
 //#ifdef SERVICE_DISCOVERY
-	    addItem(SR.MS_COMMANDS,30, RosterIcons.ICON_COMMAND);
+//# 	    addItem(SR.MS_COMMANDS,30, RosterIcons.ICON_COMMAND);
 //#endif
 //#ifdef CLIPBOARD
 //#             if (cf.useClipBoard) {
@@ -236,21 +236,21 @@ public class RosterItemActions extends Menu {
             }
 //#endif
 //#if (FILE_IO && FILE_TRANSFER)
-            if (!contact.jid.isTransport() && cf.fileTransfer)
-                if (contact!=sd.roster.selfContact()) {
-                        addItem(SR.MS_SEND_FILE, 50, RosterIcons.ICON_SEND_FILE);
-                }
-
+//#             if (!contact.jid.isTransport() && cf.fileTransfer)
+//#                 if (contact!=sd.roster.selfContact()) {
+//#                         addItem(SR.MS_SEND_FILE, 50, RosterIcons.ICON_SEND_FILE);
+//#                 }
+//# 
 //#endif
 //#if FILE_TRANSFER
-            if (!contact.jid.isTransport() && cf.fileTransfer) {
-                if (contact!=sd.roster.selfContact()) {
-                    String cameraAvailable=System.getProperty("supports.video.capture");
-                    if (cameraAvailable!=null) if (cameraAvailable.startsWith("true")) {
-                            addItem(SR.MS_SEND_PHOTO, 51, RosterIcons.ICON_SENDPHOTO);
-                    }
-                }
-            }
+//#             if (!contact.jid.isTransport() && cf.fileTransfer) {
+//#                 if (contact!=sd.roster.selfContact()) {
+//#                     String cameraAvailable=System.getProperty("supports.video.capture");
+//#                     if (cameraAvailable!=null) if (cameraAvailable.startsWith("true")) {
+//#                             addItem(SR.MS_SEND_PHOTO, 51, RosterIcons.ICON_SENDPHOTO);
+//#                     }
+//#                 }
+//#             }
 //#endif
         } else {
 	    Group group=(Group)item;
@@ -319,7 +319,7 @@ public class RosterItemActions extends Menu {
         if (isContact) c=(Contact)item; else g=(Group) item;
         
         String to=null;
-        if (isContact) to=(index<3)? c.getJid() : c.bareJid;
+        if (isContact) to=(index<3)? c.getJid().toString() : c.bareJid;
             switch (index) {
                 case 0: // version
                     sd.roster.setQuerySign(true);
@@ -327,7 +327,7 @@ public class RosterItemActions extends Menu {
                     break;
                 case 86: // info
 //#ifdef POPUPS
-                    sd.roster.showInfo();
+//#                     sd.roster.showInfo();
 //#endif
                     break;
                 case 1: // vCard
@@ -338,7 +338,7 @@ public class RosterItemActions extends Menu {
                             new VCardView(c);
                         return;
                     }                    
-                    VCard.request(c.bareJid, c.getJid());
+                    VCard.request(c.bareJid, c.getJid().toString());
                     break;
                 case 2:
                     new ContactEdit(c);
@@ -358,14 +358,14 @@ public class RosterItemActions extends Menu {
                     sd.roster.blockNotify(-111,10000); //block sounds to 10 sec
                     Presence presence = new Presence(
                     Presence.PRESENCE_OFFLINE, -1, "", null);
-                    presence.setTo(c.getJid());
+                    presence.setTo(c.getJid().toString());
                     sd.roster.theStream.send( presence );
                     break;
                 case 5: // logon
                     sd.roster.blockNotify(-111,10000); //block sounds to 10 sec
                     //querysign=true; displayStatus();
                     Presence presence2 = new Presence(sd.roster.myStatus, 0, "", null);
-                    presence2.setTo(c.getJid());
+                    presence2.setTo(c.getJid().toString());
                     sd.roster.theStream.send( presence2 );
                     break;
                 case 7: // Nick resolver
@@ -380,9 +380,9 @@ public class RosterItemActions extends Menu {
                     sd.roster.cleanupSearch();
                     break;
 //#ifdef SERVICE_DISCOVERY
-                case 30:
-                    new ServiceDiscovery(c.getJid(), "http://jabber.org/protocol/commands", false);
-                    return;
+//#                 case 30:
+//#                     new ServiceDiscovery(c.getJid().toString(), "http://jabber.org/protocol/commands", false);
+//#                     return;
 //#endif
 /*                case 1003: 
                     new RenameGroup( null, c);
@@ -390,7 +390,7 @@ public class RosterItemActions extends Menu {
  */
                 case 889: //idle
                     sd.roster.setQuerySign(true);
-                    sd.roster.theStream.send(IqLast.query(c.getJid(), "idle"));
+                    sd.roster.theStream.send(IqLast.query(c.getJid().toString(), "idle"));
                     break;
                 case 890: //online
                     sd.roster.setQuerySign(true);
@@ -402,15 +402,15 @@ public class RosterItemActions extends Menu {
                     break;
                 case 891: //time
                     sd.roster.setQuerySign(true);
-                    sd.roster.theStream.send(IqTimeReply.query(c.getJid()));
+                    sd.roster.theStream.send(IqTimeReply.query(c.getJid().toString()));
                     break;
 //#ifdef CLIPBOARD
 //#                 case 892: //Copy JID
 //#                     String jid = null;
 //#                     if (isContact)
-//#                         jid = c.getJid();
+//#                         jid = c.getJid().toString();
 //#                     else
-//#                      jid = ((ConferenceGroup)g).jid.getJid();
+//#                      jid = ((ConferenceGroup)g).jid.toString();
 //# 
 //#                     if (jid != null) {
 //#                         clipboard.setClipBoard(jid);
@@ -427,7 +427,7 @@ public class RosterItemActions extends Menu {
                     try {
                         sd.roster.setQuerySign(true);
                         //c.setPing();
-                        sd.roster.theStream.send(IqPing.query(c.getJid(), null));
+                        sd.roster.theStream.send(IqPing.query(c.getJid().toString(), null));
                     } catch (Exception e) {/*no messages*/}
                     break;
                 case 912: //send color scheme
@@ -495,15 +495,15 @@ public class RosterItemActions extends Menu {
                     new StatusSelect(c);
                     return;
 //#if (FILE_IO && FILE_TRANSFER)
-                case 50: //send file
-                    new TransferSendFile(c.getJid());
-                    return;
+//#                 case 50: //send file
+//#                     new TransferSendFile(c.getJid());
+//#                     return;
 //#endif
 //#if FILE_TRANSFER
 //#ifndef NOMMEDIA
-                case 51: //send photo
-                    new TransferImage(c.getJid());
-                    return;
+//#                 case 51: //send photo
+//#                     new TransferImage(c.getJid());
+//#                     return;
 //#endif
 //#endif
             }
@@ -513,7 +513,7 @@ public class RosterItemActions extends Menu {
                 
                 String roomJid="";
                 if (g instanceof ConferenceGroup) {
-                    roomJid=((ConferenceGroup)g).confContact.getJid();
+                    roomJid=((ConferenceGroup)g).confContact.getJid().toString();
                 }
                 
                 String myNick="";

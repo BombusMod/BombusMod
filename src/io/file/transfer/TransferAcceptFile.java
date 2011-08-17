@@ -90,7 +90,7 @@ public class TransferAcceptFile
         selectFile=new LinkString(SR.MS_PATH) { public void doAction() { initBrowser(); } };
         itemsList.addElement(selectFile);
                 
-        itemsList.addElement(new MultiLine(SR.MS_SENDER, t.jid, sd.roster.getListWidth()));
+        itemsList.addElement(new MultiLine(SR.MS_SENDER, t.jid.toString(), sd.roster.getListWidth()));
 
         itemsList.addElement(new MultiLine(SR.MS_DESCRIPTION, t.description, sd.roster.getListWidth()));
         ftFolder = TransferConfig.getInstance().ftFolder;

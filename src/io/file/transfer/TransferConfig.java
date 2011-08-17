@@ -19,7 +19,6 @@ public class TransferConfig {
     
     public String ftFolder = "";
     public String ftProxy = "socks5.juick.com";
-    public int ftProxyPort = 7777;
     
     
     private TransferConfig() {
@@ -37,7 +36,7 @@ public class TransferConfig {
         try {
             ftFolder = inputStream.readUTF();
             ftProxy = inputStream.readUTF();
-            ftProxyPort = inputStream.readInt();
+            inputStream.readInt(); // was port
             inputStream.close();
         } catch (Exception e) { /*e.printStackTrace();*/ }
         
@@ -48,7 +47,7 @@ public class TransferConfig {
          try{
              outputStream.writeUTF(ftFolder);
              outputStream.writeUTF(ftProxy);
-             outputStream.writeInt(ftProxyPort);             
+             outputStream.writeInt(0);             // was port
          } catch (IOException e) { }
          NvStorage.writeFileRecord(outputStream, "ft_config", 0, true); 
     }

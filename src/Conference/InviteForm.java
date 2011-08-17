@@ -63,8 +63,8 @@ public class InviteForm
             try {
                 MucContact mc=(MucContact)c.nextElement();
                 if (mc.origin==Contact.ORIGIN_GROUPCHAT && mc.status==Presence.PRESENCE_ONLINE) {
-                    conferenceList.add(mc.getJid());
-                    conferences.addElement(mc.getJid());
+                    conferenceList.add(mc.getJid().toString());
+                    conferences.addElement(mc.getJid().toString());
                 }
             } catch (Exception e) {}
         }

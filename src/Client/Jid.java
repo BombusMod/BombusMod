@@ -122,7 +122,7 @@ public class Jid {
 
     public String getBareJid(){ return bareJid; }
 
-    public String getJid(){
+    public String toString(){
         if (resource.length()==0) return bareJid;
         return bareJid+resource;
     }
