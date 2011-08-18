@@ -104,7 +104,7 @@ public class IqVCard implements JabberBlockListener
                             c.vcard=vcard;
                             if (StaticData.getInstance().canvas.getList() instanceof VirtualList) {
 //                                if (c.getGroupType()==Groups.TYPE_SELF) { // Not able to edit VCard if self contact in roster
-                                if (c.getJid().equals(StaticData.getInstance().roster.myJid)) {
+                                if (c.getJid().equals(StaticData.getInstance().roster.myJid, false)) {
                                     new VCardEdit(vcard);
                                 } else {
                                     new VCardView(c);

@@ -1639,7 +1639,7 @@ public class Roster
                 }
                 if (groupchat) {
                     ConferenceGroup mucGrp = (ConferenceGroup) c.group;
-                    if (mucGrp.selfContact.getJid().equals(new Jid(message.getFrom()))) {
+                    if (mucGrp.selfContact.getJid().equals(new Jid(message.getFrom()), true)) {
                         m.messageType = Msg.MESSAGE_TYPE_OUT;
                         m.unread = false;
                     } else {
