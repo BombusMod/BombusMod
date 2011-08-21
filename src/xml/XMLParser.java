@@ -114,7 +114,7 @@ public class XMLParser {
                     sbuf=new StringBuffer();
                     if (tagName.length()>0) {
                         String tn= parsePlainText(tagName);
-                        eventListener.tagStart(tn, attr); 
+                        eventListener.tagStart(localName(tn, TAGNAME), attr); 
                         sbuf.append(tn);
                     }
                     continue; 
@@ -122,7 +122,7 @@ public class XMLParser {
                 if (c==' ') { state=ATRNAME; continue; }
                 if (c=='>') { 
                     state=PLAIN_TEXT; 
-                    if (eventListener.tagStart(parsePlainText(tagName), attr))
+                    if (eventListener.tagStart(localName(parsePlainText(tagName), TAGNAME), attr))
                         state=BASE64_INIT; 
                     continue; 
                 }
@@ -157,7 +157,7 @@ public class XMLParser {
                 if (c==' ') continue;
                 if (c=='>') {
                     state=PLAIN_TEXT;
-                    eventListener.tagEnd(sbuf.toString());
+                    eventListener.tagEnd(localName(sbuf.toString(), TAGNAME));
                     sbuf=new StringBuffer();
                     continue;
                 }
@@ -169,7 +169,7 @@ public class XMLParser {
             {
                 if (c=='\'') { 
                     state=ATRNAME; 
-                    attr.addElement(atrName);
+                    attr.addElement(localName(atrName, ATRNAME));
                     attr.addElement(parsePlainText(sbuf));
                     sbuf=new StringBuffer(); 
                     continue; 
@@ -181,7 +181,7 @@ public class XMLParser {
             {
                 if (c=='\"') { 
                     state=ATRNAME; 
-                    attr.addElement(atrName);
+                    attr.addElement(localName(atrName, ATRNAME));
                     attr.addElement(parsePlainText(sbuf));
                     sbuf=new StringBuffer(); 
                     continue; 
@@ -332,5 +332,21 @@ public class XMLParser {
       }
       
       return null;
+    }
+    
+    public static String localName(String entity, int type) {
+        int delim = entity.indexOf(':');
+        if (delim < 0) 
+            return entity;
+        String localName = entity;
+        switch (type) {
+            case ATRNAME:
+                localName = entity.substring(0, delim); 
+                break;
+            case TAGNAME:                               
+                localName = entity.substring(delim + 1);
+                break;                
+        }
+        return localName;        
     }
 }

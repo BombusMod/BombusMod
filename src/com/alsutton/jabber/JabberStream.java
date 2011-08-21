@@ -136,7 +136,7 @@ public class JabberStream extends XmppParser implements Runnable {
     }
     
      public boolean tagStart(String name, Vector attributes) {
-        if (name.equals( "stream:stream" ) ) {
+        if (name.equals( "stream" ) ) {
             sessionId = XMLParser.extractAttribute("id", attributes);
             String version=XMLParser.extractAttribute("version", attributes);
             xmppV1 = ("1.0".equals(version));
@@ -196,7 +196,7 @@ public class JabberStream extends XmppParser implements Runnable {
 //#endif
 
         if (currentBlock == null) {
-            if (name.equals( "stream:stream" ) ) {
+            if (name.equals( "stream" ) ) {
                 dispatcher.halt();
                 iostream.close();
                 /*if (!Config.getInstance().oldNokiaS60)
@@ -207,7 +207,7 @@ public class JabberStream extends XmppParser implements Runnable {
         }
         
         if (currentBlock.getParent() == null) {
-            if (currentBlock.getTagName().equals("stream:error")) {
+            if (currentBlock.getTagName().equals("error")) {
                 XmppError xe = XmppError.decodeStreamError(currentBlock);
 
                 dispatcher.halt();
@@ -436,17 +436,17 @@ public class JabberStream extends XmppParser implements Runnable {
     }
 
 //#if ZLIB
-    public void setZlibCompression() {
-        iostream.setStreamCompression();
-    }
-
-    public String getStreamStats() {
-        return iostream.getStreamStats();
-    }
-    
-    public String getConnectionData() {
-        return iostream.getConnectionData();
-    }
+//#     public void setZlibCompression() {
+//#         iostream.setStreamCompression();
+//#     }
+//# 
+//#     public String getStreamStats() {
+//#         return iostream.getStreamStats();
+//#     }
+//#     
+//#     public String getConnectionData() {
+//#         return iostream.getConnectionData();
+//#     }
 //#endif
 //#if TLS
 //#     public void setTls() throws IOException {

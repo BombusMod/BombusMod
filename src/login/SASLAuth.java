@@ -60,7 +60,7 @@ public class SASLAuth implements JabberBlockListener{
 
     public int blockArrived(JabberDataBlock data) {
         //System.out.println(data.toString());
-        if (data.getTagName().equals("stream:features")) {
+        if (data.getTagName().equals("features")) {
 //#if TLS
 //#             JabberDataBlock starttls=data.getChildBlock("starttls");
 //#             if (starttls!=null && starttls.isJabberNameSpace("urn:ietf:params:xml:ns:xmpp-tls")) {                
@@ -83,18 +83,18 @@ public class SASLAuth implements JabberBlockListener{
 //#             }
 //#endif            
 //#if ZLIB
-            JabberDataBlock compr=data.getChildBlock("compression");
-            if (compr!=null && account.useCompression()) {
-                if (compr.getChildBlockByText("zlib")!=null) {
-                    // negotiating compression
-                    JabberDataBlock askCompr=new JabberDataBlock("compress", null, null);
-                    askCompr.setNameSpace("http://jabber.org/protocol/compress");
-                    askCompr.addChild("method", "zlib");
-                    stream.send(askCompr);
-                    listener.loginMessage(SR.MS_ZLIB, 43);
-                    return JabberBlockListener.BLOCK_PROCESSED;
-                }
-            }
+//#             JabberDataBlock compr=data.getChildBlock("compression");
+//#             if (compr!=null && account.useCompression()) {
+//#                 if (compr.getChildBlockByText("zlib")!=null) {
+//#                     // negotiating compression
+//#                     JabberDataBlock askCompr=new JabberDataBlock("compress", null, null);
+//#                     askCompr.setNameSpace("http://jabber.org/protocol/compress");
+//#                     askCompr.addChild("method", "zlib");
+//#                     stream.send(askCompr);
+//#                     listener.loginMessage(SR.MS_ZLIB, 43);
+//#                     return JabberBlockListener.BLOCK_PROCESSED;
+//#                 }
+//#             }
 //#endif            
             JabberDataBlock mech=data.getChildBlock("mechanisms");
             if (mech!=null) {
@@ -239,14 +239,14 @@ public class SASLAuth implements JabberBlockListener{
 //#         }
 //#endif                
 //#if ZLIB
-        else if ( data.getTagName().equals("compressed")) {
-            stream.setZlibCompression();
-            try {
-                stream.initiateStream();
-            } catch (IOException ex) { }
-            return JabberBlockListener.NO_MORE_BLOCKS;
-        }
-        
+//#         else if ( data.getTagName().equals("compressed")) {
+//#             stream.setZlibCompression();
+//#             try {
+//#                 stream.initiateStream();
+//#             } catch (IOException ex) { }
+//#             return JabberBlockListener.NO_MORE_BLOCKS;
+//#         }
+//#         
 //#endif
             
         else if ( data.getTagName().equals("failure")) {
