@@ -670,8 +670,10 @@ public abstract class VirtualList {
         int h=infobar.getVHeight()+1;
 
         g.setClip(0,0, width, h);
-        ((MainBar)infobar).startColor = getMainBarBGnd();
-        ((MainBar)infobar).endColor = getMainBarBGndBottom();
+//#ifdef GRADIENT        
+//#         ((MainBar)infobar).startColor = getMainBarBGnd();
+//#         ((MainBar)infobar).endColor = getMainBarBGndBottom();
+//#endif        
         
         ((MainBar)infobar).lShift = (Config.getInstance().phoneManufacturer == Config.NOKIA && reverse && Config.fullscreen);
         ((MainBar)infobar).rShift = (Config.getInstance().phoneManufacturer == Config.SONYE && reverse && Config.fullscreen);
@@ -682,8 +684,10 @@ public abstract class VirtualList {
     private void drawMainPanel (final Graphics g) {    
         int h=mainbar.getVHeight()+1;
         g.setClip(0,0, width, h);
-        ((MainBar)mainbar).startColor = getMainBarBGndBottom();
-        ((MainBar)mainbar).endColor = getMainBarBGnd();
+//#ifdef GRADIENT        
+//#         ((MainBar)mainbar).startColor = getMainBarBGndBottom();
+//#         ((MainBar)mainbar).endColor = getMainBarBGnd();
+//#endif        
         ((MainBar)mainbar).lShift = (Config.getInstance().phoneManufacturer == Config.NOKIA && !reverse && Config.fullscreen);
         ((MainBar)mainbar).rShift = (Config.getInstance().phoneManufacturer == Config.SONYE && !reverse && Config.fullscreen);
         mainbar.drawItem(g, 0, false);

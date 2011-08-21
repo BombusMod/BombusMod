@@ -111,8 +111,7 @@ public class Msg {
             case MESSAGE_TYPE_IN: return ColorTheme.getColor(ColorTheme.MESSAGE_IN);
             case MESSAGE_TYPE_PRESENCE: return ColorTheme.getColor(ColorTheme.MESSAGE_PRESENCE);
             case MESSAGE_TYPE_OUT: return ColorTheme.getColor(ColorTheme.MESSAGE_OUT);
-      //   unused long time
-      //      case MESSAGE_TYPE_SUBJ:return ColorTheme.getColor(ColorTheme.NICK_COLOR);
+            case MESSAGE_TYPE_SUBJ:return ColorTheme.getColor(ColorTheme.NICK_COLOR);
             case MESSAGE_TYPE_HEADLINE: return ColorTheme.getColor(ColorTheme.MESSAGE_IN);
             case MESSAGE_TYPE_AUTH: return ColorTheme.getColor(ColorTheme.MESSAGE_AUTH);
             case MESSAGE_TYPE_HISTORY: return ColorTheme.getColor(ColorTheme.MESSAGE_HISTORY);

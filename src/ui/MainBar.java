@@ -104,20 +104,21 @@ public class MainBar extends ComplexString{
 //#                 g.drawImage(bg, i, ofs, Graphics.TOP | Graphics.LEFT);
 //#             }
 //#         }
-//#endif        
+//#endif    
+        int h = getVHeight() + 1;
 //#ifdef GRADIENT
 //#         Gradient gradient;
-//#         int h = getVHeight() + 1;
+//#         
 //#         if (startColor != endColor) {
 //#             gradient = new Gradient(0, 0, VirtualCanvas.getInstance().getWidth(), h, startColor, endColor, false);
 //#             gradient.paint(g);
 //#         } else {
-//#             g.setColor(getColor());
+//#             g.setColor(getColorBGnd());
 //#             g.fillRect(0, 0, VirtualCanvas.getInstance().getWidth(), h);
 //#         }
 //#else
-            g.setColor(getMainBarBGnd());
-            g.fillRect(0, 0, width, h);
+            g.setColor(getColorBGnd());
+            g.fillRect(0, 0, VirtualCanvas.getInstance().getWidth(), h);
 //#endif
         g.setColor(getColor());
 

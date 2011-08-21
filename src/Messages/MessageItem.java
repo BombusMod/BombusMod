@@ -125,6 +125,7 @@ public class MessageItem implements VirtualElement {//, MessageParser.MessagePar
                     g.translate(8,0);
                     iconOffset = 2 + RosterIcons.getInstance().getWidth() >> 1;
                 } 
+                line.setColor(getColor());
                 line.drawItem(g, iconOffset, selected);
             }
             g.translate(g.getTranslateX(), h);
