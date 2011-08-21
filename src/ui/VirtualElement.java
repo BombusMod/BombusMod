@@ -26,6 +26,7 @@
  */
 
 package ui;
+import Colors.ColorTheme;
 import javax.microedition.lcdui.*;
 
 /**

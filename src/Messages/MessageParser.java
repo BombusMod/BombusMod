@@ -28,7 +28,7 @@
 package Messages;
 
 //#ifdef SMILES
-import images.SmilesIcons;
+//# import images.SmilesIcons;
 //#endif
 import Fonts.FontCache;
 import java.io.*;
@@ -54,10 +54,10 @@ public final class MessageParser {
     
     
 //#ifdef SMILES
-    private ImageList smileImages;
-    private static String anires= "/smiles/smiles.txt";
-    private static String staticres= "/images/smiles.txt";
-
+//#     private ImageList smileImages;
+//#     private static String anires= "/smiles/smiles.txt";
+//#     private static String staticres= "/images/smiles.txt";
+//# 
 //#endif
     
     boolean wordsWrap;
@@ -70,7 +70,7 @@ public final class MessageParser {
     }
     
 //#ifdef SMILES
-    public Vector getSmileTable() { return smileTable; }
+//#     public Vector getSmileTable() { return smileTable; }
 //#endif
     private class Leaf {
         public int smile = NOSMILE;   // нет смайлика в узле
@@ -114,7 +114,7 @@ public final class MessageParser {
         wordsWrap = (1 == Config.getInstance().textWrap);
         message.msgLines.removeAllElements();
 //#ifdef SMILES
-        this.smileImages=SmilesIcons.getInstance();
+//#         this.smileImages=SmilesIcons.getInstance();
 //#endif
         if (null != message.msg.subject) {
             parseMessage(message, windowWidth, message.msg.subject, true);            
@@ -124,51 +124,51 @@ public final class MessageParser {
     
     private MessageParser() {        
 //#ifdef SMILES
-        StringBuffer s = new StringBuffer(10);
-        try { // generic errors
-            int strnumber=0;
-            boolean strhaschars=false;
-            boolean endline=false;
-            
-            InputStream in=InternalResource.getResourceAsStream(anires);
-            if (in == null) in=InternalResource.getResourceAsStream(staticres);
-            
-            boolean firstSmile=true;
-            
-            int c;
-            while (true) {
-                c=in.read();
-                if (c<0) break;
-                switch (c) {
-                    case 0x0d:
-                    case 0x0a:
-                        if (strhaschars) endline=true; else break;
-                    case 0x09:
-                        String smile=Strconv.convCp1251ToUnicode(s.toString());
-                        if (firstSmile) smileTable.addElement(smile);
-                        
-                        addSmile(root, smile, strnumber);
-                        
-                        s = new StringBuffer();
-                        firstSmile = false;
-                        
-                        break;
-                    default:
-                        s.append((char)c);
-                        strhaschars=true;
-                }
-                if (endline) {
-                    endline=strhaschars=false;
-                    strnumber++;
-                    firstSmile=true;
-                }
-            }
-            s=new StringBuffer();
-            in.close();
-            in=null;
-        } catch (Exception e) {
-            s=new StringBuffer();
-        }
+//#         StringBuffer s = new StringBuffer(10);
+//#         try { // generic errors
+//#             int strnumber=0;
+//#             boolean strhaschars=false;
+//#             boolean endline=false;
+//#             
+//#             InputStream in=InternalResource.getResourceAsStream(anires);
+//#             if (in == null) in=InternalResource.getResourceAsStream(staticres);
+//#             
+//#             boolean firstSmile=true;
+//#             
+//#             int c;
+//#             while (true) {
+//#                 c=in.read();
+//#                 if (c<0) break;
+//#                 switch (c) {
+//#                     case 0x0d:
+//#                     case 0x0a:
+//#                         if (strhaschars) endline=true; else break;
+//#                     case 0x09:
+//#                         String smile=Strconv.convCp1251ToUnicode(s.toString());
+//#                         if (firstSmile) smileTable.addElement(smile);
+//#                         
+//#                         addSmile(root, smile, strnumber);
+//#                         
+//#                         s = new StringBuffer();
+//#                         firstSmile = false;
+//#                         
+//#                         break;
+//#                     default:
+//#                         s.append((char)c);
+//#                         strhaschars=true;
+//#                 }
+//#                 if (endline) {
+//#                     endline=strhaschars=false;
+//#                     strnumber++;
+//#                     firstSmile=true;
+//#                 }
+//#             }
+//#             s=new StringBuffer();
+//#             in.close();
+//#             in=null;
+//#         } catch (Exception e) {
+//#             s=new StringBuffer();
+//#         }
 //#endif
         
         addSmile(root, "http://", URL);
@@ -177,8 +177,8 @@ public final class MessageParser {
         addSmile(root, "https://",URL);
         addSmile(root, "native:",URL);
 //#if NICK_COLORS
-        addSmile(root, "\01", ComplexString.NICK_ON);
-        addSmile(root, "\02", ComplexString.NICK_OFF);
+//#         addSmile(root, "\01", ComplexString.NICK_ON);
+//#         addSmile(root, "\02", ComplexString.NICK_OFF);
 //#endif
         
         emptyRoot=new Leaf();
@@ -188,8 +188,8 @@ public final class MessageParser {
         addSmile(emptyRoot, "https://",URL);
         addSmile(emptyRoot, "native:",URL);
 //#if NICK_COLORS
-        addSmile(emptyRoot, "\01", ComplexString.NICK_ON);
-        addSmile(emptyRoot, "\02", ComplexString.NICK_OFF);
+//#         addSmile(emptyRoot, "\01", ComplexString.NICK_ON);
+//#         addSmile(emptyRoot, "\02", ComplexString.NICK_OFF);
 //#endif
     }
     
@@ -203,7 +203,7 @@ public final class MessageParser {
         
         Leaf smileRoot=emptyRoot;
 //#ifdef SMILES
-        if (task.smilesEnabled() && !isSubj) smileRoot = root;
+//#         if (task.smilesEnabled() && !isSubj) smileRoot = root;
 //#endif
 
         int w=0;
@@ -211,16 +211,16 @@ public final class MessageParser {
         int wordWidth=0;
         int wordStartPos=0;
 //#ifdef SMILES
-        ComplexString l=new ComplexString(smileImages);
+//#         ComplexString l=new ComplexString(smileImages);
 //#else
-//#             ComplexString l=new ComplexString();
+            ComplexString l=new ComplexString();
 //#endif
         lines.addElement(l);
         
         Font f=getFont((task.msg.highlite || isSubj));
         l.setFont(f);
         
-        int color=ColorTheme.getColor(isSubj ? ColorTheme.MSG_SUBJ : ColorTheme.LIST_INK);
+        int color=ColorTheme.getColor(isSubj ? ColorTheme.NICK_COLOR : ColorTheme.LIST_INK);
         l.setColor(color);
         
         int pos=0;
@@ -297,19 +297,19 @@ public final class MessageParser {
                         continue;
                     }
 //#ifdef SMILES
-                    int iw = smileImages.getWidth();
-                    if (w+iw>windowWidth) {
-                        if (singleLine) return;
-                        l=new ComplexString(smileImages);
-                        lines.addElement(l);
-                        l.setColor(color);
-                        l.setFont(f);
-                        w=0;
-                    }
-                    l.addImage(smileIndex); w+=iw;
-                    pos = smileEndPos + 1;
-                    wordStartPos = pos;
-                    continue;
+//#                     int iw = smileImages.getWidth();
+//#                     if (w+iw>windowWidth) {
+//#                         if (singleLine) return;
+//#                         l=new ComplexString(smileImages);
+//#                         lines.addElement(l);
+//#                         l.setColor(color);
+//#                         l.setFont(f);
+//#                         w=0;
+//#                     }
+//#                     l.addImage(smileIndex); w+=iw;
+//#                     pos = smileEndPos + 1;
+//#                     wordStartPos = pos;
+//#                     continue;
 //#endif
                 } else if (smileIndex == URL) {
                     if (s.length()>0) {
@@ -343,9 +343,9 @@ public final class MessageParser {
 
 
 //#ifdef SMILES
-                    l=new ComplexString(smileImages);
+//#                     l=new ComplexString(smileImages);
 //#else
-//#                    l=new ComplexString();
+                   l=new ComplexString();
 //#endif
                     lines.addElement(l);
                     

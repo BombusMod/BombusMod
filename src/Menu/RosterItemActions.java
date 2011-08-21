@@ -90,7 +90,7 @@ public class RosterItemActions extends Menu {
      * @param action
      */
     public RosterItemActions(Object item) {
-        super(item, RosterIcons.getInstance());
+        super(item.toString(), RosterIcons.getInstance());
 
         this.item=item;
         if (!sd.roster.isLoggedIn()) return;

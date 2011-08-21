@@ -44,8 +44,8 @@ public class ComplexString extends Vector implements VirtualElement {
     public final static int RALIGN    = 0x02000000;
     public final static int UNDERLINE = 0x03000000;
 //#if NICK_COLORS
-    public final static int NICK_ON   = 0x04000000;
-    public final static int NICK_OFF  = 0x05000000;
+//#     public final static int NICK_ON   = 0x04000000;
+//#     public final static int NICK_OFF  = 0x05000000;
 //#endif
 
     protected Font font=FontCache.getFont(false, FontCache.msg);
@@ -58,7 +58,7 @@ public class ComplexString extends Vector implements VirtualElement {
     
     //private int colors[]={0x800080, 0xff0000, 0xffa500, 0x008000, 0x0000ff};
     /*   purple 0x800080   red 0xff0000   orange 0xffa500   green 0x008000   blue 0x0000ff   */
-    
+        
     /** Creates a new instance of ComplexString */
     public ComplexString() {
         super();
@@ -78,7 +78,7 @@ public class ComplexString extends Vector implements VirtualElement {
     private int imgWidth(){
         return (imageList==null)?0:imageList.getWidth();
     }
-    
+            
     public int getColor() { return color; }
     public int getColorBGnd() { return colorBGnd; }
     
@@ -92,7 +92,7 @@ public class ComplexString extends Vector implements VirtualElement {
         boolean underline=false;
         
 //#if NICK_COLORS
-	boolean nick=false;
+//# 	boolean nick=false;
 //#endif
         
         int w = g.getClipX() + offset;
@@ -112,34 +112,35 @@ public class ComplexString extends Vector implements VirtualElement {
                     // string element
                     String s=(String) ob;
 //#if NICK_COLORS
-                    if (nick) {
-                        int color=g.getColor();
-                        int vColor=ColorTheme.strong(color);
-                        //int randColor=randomColor();
-                        dw=0;
-                        int p1=0; 
-                        while (p1<s.length()) {
-                            int p2=p1;
-                            char c1=s.charAt(p1);
-                            //processing the same cp
-                            while (p2<s.length()) {
-                                char c2=s.charAt(p2);
-                                if ( (c1&0xff00) != (c2 &0xff00) ) break;
-                                p2++;
-                            }
-                            g.setColor( (c1>255) ? vColor : color);
-                            //g.setColor(randColor);
-                            dw=font.substringWidth(s, p1, p2-p1);
-                            if (ralign) w-=dw;
-                            g.drawSubstring( s, p1, p2-p1, 
-                                    w,fontYOfs,Graphics.LEFT|Graphics.TOP);
-                            if (!ralign) w+=dw;
-                            p1=p2;
-                        }
-                        
-                        g.setColor(color);
-                    } else {
+//#                     if (nick) {
+//#                         int nickColor=ColorTheme.getColor(ColorTheme.NICK_COLOR);
+//#                         int vColor=ColorTheme.strong(nickColor);
+//#                         //int randColor=randomColor();
+//#                         dw=0;
+//#                         int p1=0; 
+//#                         while (p1<s.length()) {
+//#                             int p2=p1;
+//#                             char c1=s.charAt(p1);
+//#                             //processing the same cp
+//#                             while (p2<s.length()) {
+//#                                 char c2=s.charAt(p2);
+//#                                 if ( (c1&0xff00) != (c2 &0xff00) ) break;
+//#                                 p2++;
+//#                             }
+//#                             g.setColor( (c1>255) ? vColor : nickColor);
+//#                             //g.setColor(randColor);
+//#                             dw=font.substringWidth(s, p1, p2-p1);
+//#                             if (ralign) w-=dw;
+//#                             g.drawSubstring( s, p1, p2-p1, 
+//#                                     w,fontYOfs,Graphics.LEFT|Graphics.TOP);
+//#                             if (!ralign) w+=dw;
+//#                             p1=p2;
+//#                         }
+//#                         
+//#                         g.setColor(color);
+//#                     } else {
 //#endif
+                        g.setColor(getColor());
                         dw=font.stringWidth(s);                        
                         if (ralign) {
                             w-=dw;
@@ -159,7 +160,7 @@ public class ComplexString extends Vector implements VirtualElement {
                         }
                         if (!ralign) w+=dw;
 //#if NICK_COLORS
-                    }
+//#                     }
 //#endif
 
                 } else if ((ob instanceof Integer)) {
@@ -186,12 +187,12 @@ public class ComplexString extends Vector implements VirtualElement {
 			    underline=true;
 			    break;                        
 //#if NICK_COLORS
-                        case NICK_ON:
-                            nick=true; 
-                            break;
-                        case NICK_OFF:
-                            nick=false;
-                            break;
+//#                         case NICK_ON:
+//#                             nick=true; 
+//#                             break;
+//#                         case NICK_OFF:
+//#                             nick=false;
+//#                             break;
 //#endif
                     }
                 } /* Integer*/ else if (ob instanceof VirtualElement) { 

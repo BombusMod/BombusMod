@@ -62,8 +62,7 @@ public final class XMLList
         moveCursorHome();
 
 //#ifdef CONSOLE        
-//# 	MainBar mb=new MainBar(SR.MS_XML_CONSOLE);
-//#         setMainBarItem(mb);
+//# 	mainbar = new MainBar(SR.MS_XML_CONSOLE);        
 //#endif             
     }
     
@@ -83,7 +82,7 @@ public final class XMLList
         if (!stanzas.enabled)
             str.append(" - Disabled");
         
-        getMainBarItem().setElementAt(str.toString(),1);
+        mainbar.setElementAt(str.toString(),1);
     }
     
 

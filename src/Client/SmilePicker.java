@@ -80,7 +80,7 @@ public class SmilePicker
          
          il = SmilesIcons.getInstance();
 //#ifdef SMILES 
-        smileTable=MessageParser.getInstance().getSmileTable();
+//#         smileTable=MessageParser.getInstance().getSmileTable();
 //#endif
         
         imgCnt=smileTable.size();
@@ -137,7 +137,7 @@ public class SmilePicker
 
     protected synchronized int updateLayout() {
         int res = super.updateLayout();
-        getMainBarItem().setElementAt(getTipString(), 0);
+        mainbar.setElementAt(getTipString(), 0);
         return res;
     }
 

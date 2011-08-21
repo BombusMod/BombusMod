@@ -190,12 +190,11 @@ public class Roster
 
         // setLight(cf.lightState);
 
-        MainBar mb = new MainBar(4, null, null, false);
-        setMainBarItem(mb);
-        mb.addRAlign();
-        mb.addElement(null);
-        mb.addElement(null);
-        mb.addElement(null); //ft
+        mainbar = new MainBar(4, null, null, false);
+        mainbar.addRAlign();
+        mainbar.addElement(null);
+        mainbar.addElement(null);
+        mainbar.addElement(null); //ft
 
         groups = null;
         groups = new Groups();
@@ -257,7 +256,7 @@ public class Roster
     }
 
     private void setRosterMainBar(String s) {
-        getMainBarItem().setElementAt(s, 3);
+        mainbar.setElementAt(s, 3);
     }
     private int rscaler;
     private int rpercent;
@@ -355,7 +354,7 @@ public class Roster
 
     public void setEventIcon(Object icon) {
         transferIcon = icon;
-        getMainBarItem().setElementAt(icon, 7);
+        mainbar.setElementAt(icon, 7);
         redraw();
     }
 
@@ -370,13 +369,12 @@ public class Roster
         int s = querysign ? RosterIcons.ICON_PROGRESS_INDEX : myStatus;
         int profile = cf.profile;
         Object en = (profile > 0) ? new Integer(profile + RosterIcons.ICON_PROFILE_INDEX + 1) : null;
-        MainBar mb = (MainBar) getMainBarItem();
+        
+        mainbar.setElementAt((messageCount == 0) ? null : new Integer(RosterIcons.ICON_MESSAGE_INDEX), 0);
 
-        mb.setElementAt((messageCount == 0) ? null : new Integer(RosterIcons.ICON_MESSAGE_INDEX), 0);
-
-        mb.setElementAt((messageCount == 0) ? null : getHeaderString(), 1);
-        mb.setElementAt(new Integer(s), 2);
-        mb.setElementAt(en, 5);
+        mainbar.setElementAt((messageCount == 0) ? null : getHeaderString(), 1);
+        mainbar.setElementAt(new Integer(s), 2);
+        mainbar.setElementAt(en, 5);
 
         if (phoneManufacturer == Config.WINDOWS) {
             if (messageCount == 0) {
@@ -1467,7 +1465,7 @@ public class Roster
                 if (groupchat) {
                     if (from.equals(groups.getConfGroup(new Jid(from)).jid.getBareJid())) {
                         mType = Msg.MESSAGE_TYPE_SYSTEM;
-                    };
+                    }
                     start_me = 0;
                     int rp = from.indexOf('/');
                     name = from.substring(rp + 1);
@@ -2458,7 +2456,7 @@ public class Roster
 //#         }
 //#     }
 //#endif
-        new SplashScreen(getMainBarItem(), VirtualCanvas.keyLock);
+        new SplashScreen(mainbar, VirtualCanvas.keyLock);
     }
 
     public void toggleVibra() {
@@ -2584,7 +2582,7 @@ public class Roster
         BombusMod.getInstance().notifyDestroyed();
     }
 
-    public void menuAction(MenuCommand c, VirtualList d) {
+    public void menuAction(MenuCommand c, VirtualList d) {        
 //#ifdef AUTOSTATUS
 //#         userActivity();
 //#endif

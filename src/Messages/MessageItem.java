@@ -199,13 +199,13 @@ public class MessageItem implements VirtualElement {//, MessageParser.MessagePar
         return msg.getTime();
     }
 //#ifdef SMILES
-    public void toggleSmiles(VirtualList view) {
-        smiles = !smiles;
-        parse();
-        view.redraw();
-    }
-    
-    final boolean smilesEnabled() { return smiles; }
+//#     public void toggleSmiles(VirtualList view) {
+//#         smiles = !smiles;
+//#         parse();
+//#         view.redraw();
+//#     }
+//#     
+//#     final boolean smilesEnabled() { return smiles; }
 //#endif
 
     public boolean isSelectable() { return true; }

@@ -30,7 +30,7 @@ package Colors;
 import Client.StaticData;
 import io.NvStorage;
 //#ifdef FILE_IO
-import io.file.FileIO;
+//# import io.file.FileIO;
 //#endif
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -163,16 +163,16 @@ blue 0x0000ff
     }
     
 //#if NICK_COLORS
-    public static int strong(int color) {
-        if (color==getColor(MESSAGE_IN)) {
-            return getColor(MESSAGE_IN_S);
-        } else if (color==getColor(MESSAGE_OUT)) {
-            return getColor(MESSAGE_OUT_S);
-        } else if (color==getColor(MESSAGE_PRESENCE)) {
-            return getColor(MESSAGE_PRESENCE_S);
-        }
-        return color;
-    }
+//#     public static int strong(int color) {
+//#         if (color==getColor(MESSAGE_IN)) {
+//#             return getColor(MESSAGE_IN_S);
+//#         } else if (color==getColor(MESSAGE_OUT)) {
+//#             return getColor(MESSAGE_OUT_S);
+//#         } else if (color==getColor(MESSAGE_PRESENCE)) {
+//#             return getColor(MESSAGE_PRESENCE_S);
+//#         }
+//#         return color;
+//#     }
 //#endif
 /*
     static class ColorItem {
@@ -196,7 +196,7 @@ blue 0x0000ff
     public final static int LIST_BGND_EVEN          =3;
     public final static int LIST_INK                =4;
 
-    public final static int MSG_SUBJ                =5;
+    public final static int NICK_COLOR                =5;
     public final static int MSG_HIGHLIGHT           =6;
 
     public final static int DISCO_CMD               =7;
@@ -313,15 +313,15 @@ blue 0x0000ff
         if (skin==null) {
             switch (resourceType) {
 //#if FILE_IO
-                case 0: // from fs
-                    FileIO f=FileIO.createConnection(skinFile);
-                    byte[] b=f.fileRead();
-                    if (b!=null) {
-                        String str=new String(b, 0, b.length).toString().trim();
-                        skin=new StringLoader().hashtableLoaderFromString(str);
-                    } else
-                        return defaultColor;
-                    break;
+//#                 case 0: // from fs
+//#                     FileIO f=FileIO.createConnection(skinFile);
+//#                     byte[] b=f.fileRead();
+//#                     if (b!=null) {
+//#                         String str=new String(b, 0, b.length).toString().trim();
+//#                         skin=new StringLoader().hashtableLoaderFromString(str);
+//#                     } else
+//#                         return defaultColor;
+//#                     break;
 //#endif
                 case 1: // from jar
                     skin=new StringLoader().hashtableLoader(skinFile);

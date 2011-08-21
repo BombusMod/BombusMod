@@ -88,9 +88,9 @@ public class ServiceDiscovery
     public ServiceDiscovery(String service, String node, boolean search) {
         super(null);
 
-        setMainBarItem(new MainBar(3, null, null, false));
-        getMainBarItem().addRAlign();
-        getMainBarItem().addElement(null);
+        mainbar = new MainBar(3, null, null, false);
+        mainbar.addRAlign();
+        mainbar.addElement(null);
         
         stream=sd.roster.theStream;
         stream.cancelBlockListenerByClass(this.getClass());
@@ -115,13 +115,13 @@ public class ServiceDiscovery
         return id+service.hashCode();
     }
     
-    protected void beginPaint(){ getMainBarItem().setElementAt(sd.roster.getEventIcon(), 4); }
+    protected void beginPaint(){ mainbar.setElementAt(sd.roster.getEventIcon(), 4); }
     
     
     private void mainbarUpdate(){
-        getMainBarItem().setElementAt(new Integer(discoIcon), 0);
-        getMainBarItem().setElementAt((service==null)?SR.MS_RECENT:service, 2);
-        getMainBarItem().setElementAt(sd.roster.getEventIcon(), 4);
+        mainbar.setElementAt(new Integer(discoIcon), 0);
+        mainbar.setElementAt((service==null)?SR.MS_RECENT:service, 2);
+        mainbar.setElementAt(sd.roster.getEventIcon(), 4);
 	
 	int size = itemsList.size();
 	String count=null;
@@ -132,7 +132,7 @@ public class ServiceDiscovery
 	    menuCommands.insertElementAt(cmdBrowse, 0); 
 	    count=" ("+size+") ";
 	}
-        getMainBarItem().setElementAt(count,1);
+        mainbar.setElementAt(count,1);
     }
     
     private void requestQuery(String namespace, String id){

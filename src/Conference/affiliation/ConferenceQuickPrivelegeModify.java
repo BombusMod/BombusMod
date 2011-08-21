@@ -163,7 +163,7 @@ class PrivelegeModifyForm extends DefForm {
     public PrivelegeModifyForm(ConferenceQuickPrivelegeModify cq, MucContact victim, String okName) {
         super(okName);
         this.cq = cq;
-        getMainBarItem().setElementAt(okName, 0);
+        mainbar.setElementAt(okName, 0);
 
         StringBuffer user = new StringBuffer(victim.nick);
         if (victim.jid != null) {

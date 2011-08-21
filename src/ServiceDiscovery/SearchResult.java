@@ -51,7 +51,7 @@ public class SearchResult
         
         String service=result.getAttribute("from");
         
-        setMainBarItem(new MainBar(2, null, service, false));
+        mainbar = new MainBar(2, null, service, false);
         
         JabberDataBlock query=result.getChildBlock("query");
         if (query==null) return;

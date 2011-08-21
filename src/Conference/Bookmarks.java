@@ -27,7 +27,7 @@
 package Conference;
 import Conference.affiliation.Affiliations;
 //#ifdef SERVICE_DISCOVERY
-import ServiceDiscovery.*;
+//# import ServiceDiscovery.*;
 //#endif
 import Menu.MenuCommand;
 import locale.SR;
@@ -52,7 +52,7 @@ public class Bookmarks extends DefForm {
     private MenuCommand cmdDoAutoJoin = new MenuCommand(SR.MS_DO_AUTOJOIN, MenuCommand.SCREEN, 4, RosterIcons.ICON_PRESENCE_CHAT);
     private MenuCommand cmdConfigure = new MenuCommand(SR.MS_CONFIG_ROOM, MenuCommand.SCREEN, 5, RosterIcons.ICON_CONFIGURE);
 //#ifdef SERVICE_DISCOVERY
-    private MenuCommand cmdDisco = new MenuCommand(SR.MS_DISCO_ROOM, MenuCommand.SCREEN, 6, RosterIcons.ICON_DISCO);
+//#     private MenuCommand cmdDisco = new MenuCommand(SR.MS_DISCO_ROOM, MenuCommand.SCREEN, 6, RosterIcons.ICON_DISCO);
 //#endif
     private MenuCommand cmdUp = new MenuCommand(SR.MS_MOVE_UP, MenuCommand.SCREEN, 7, RosterIcons.ICON_SCROLLABLE_UP);
     private MenuCommand cmdDwn = new MenuCommand(SR.MS_MOVE_DOWN, MenuCommand.SCREEN, 8, RosterIcons.ICON_SCROLLABLE_DOWN);
@@ -83,7 +83,7 @@ public class Bookmarks extends DefForm {
             addBookmark();
         }
 
-        setMainBarItem(new MainBar(2, null, SR.MS_BOOKMARKS + " (" + getItemCount() + ") ", false));//for title updating after "add bookmark"
+        mainbar = new MainBar(2, null, SR.MS_BOOKMARKS + " (" + getItemCount() + ") ", false);//for title updating after "add bookmark"
 
         enableListWrapping(true);
         show();
@@ -100,7 +100,7 @@ public class Bookmarks extends DefForm {
         addMenuCommand(cmdSave);
         addMenuCommand(cmdSort);
 //#ifdef SERVICE_DISCOVERY
-        addMenuCommand(cmdDisco);
+//#         addMenuCommand(cmdDisco);
 //#endif
         addMenuCommand(cmdDel);
         addMenuCommand(cmdRoomOwners);
@@ -158,13 +158,13 @@ public class Bookmarks extends DefForm {
 			keyGreen();            
         } else if (c == cmdDel) {
             keyClear();
-            setMainBarItem(new MainBar(2, null, SR.MS_BOOKMARKS + " (" + getItemCount() + ") ", false));
+            mainbar = new MainBar(2, null, SR.MS_BOOKMARKS + " (" + getItemCount() + ") ", false);
             return;
         }
 //#ifdef SERVICE_DISCOVERY
-        else if (c == cmdDisco) {
-            discoCurrent();
-        }
+//#         else if (c == cmdDisco) {
+//#             discoCurrent();
+//#         }
 //#endif
         else if (c == cmdConfigure) {
             new QueryConfigForm(roomJid);
@@ -249,9 +249,9 @@ public class Bookmarks extends DefForm {
     }
 
 //#ifdef SERVICE_DISCOVERY
-    public void discoCurrent() {
-        new ServiceDiscovery(((BookmarkItem) getFocusedObject()).getJid(), null, false);
-    }
+//#     public void discoCurrent() {
+//#         new ServiceDiscovery(((BookmarkItem) getFocusedObject()).getJid(), null, false);
+//#     }
 //#endif
 
     public void doKeyAction(int keyCode) {
@@ -278,9 +278,9 @@ public class Bookmarks extends DefForm {
     public boolean doUserKeyAction(int command_id) {
         switch (command_id) {
 //#ifdef SERVICE_DISCOVERY
-            case 57:
-                discoCurrent();
-                return true;
+//#             case 57:
+//#                 discoCurrent();
+//#                 return true;
 //#endif
         }
 

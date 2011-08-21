@@ -61,7 +61,7 @@ public class PrivacyModifyList extends DefForm
     /** Creates a new instance of PrivacySelect */
     public PrivacyModifyList(PrivacyList privacyList, boolean newList, PrivacySelect privacySelect) {
         super(null);
-        setMainBarItem(new MainBar(2, null, privacyList.name, false));
+        mainbar= new MainBar(2, null, privacyList.name, false);
 
         //commandState();
         plist = privacyList;
@@ -87,7 +87,7 @@ public class PrivacyModifyList extends DefForm
     }
     
     private void processIcon(boolean processing){
-        getMainBarItem().setElementAt((processing)?(Object)new Integer(RosterIcons.ICON_PROGRESS_INDEX):(Object)null, 0);
+        mainbar.setElementAt((processing)?(Object)new Integer(RosterIcons.ICON_PROGRESS_INDEX):(Object)null, 0);
         redraw();
     }
 

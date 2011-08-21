@@ -40,8 +40,8 @@ import ui.controls.form.NumberInput;
 import ui.controls.form.PasswordInput;
 import ui.controls.form.TextInput;
 //#ifdef FILE_IO
-import io.file.browse.Browser;
-import io.file.browse.BrowserListener;
+//# import io.file.browse.Browser;
+//# import io.file.browse.BrowserListener;
 //#endif
 
 /**
@@ -109,7 +109,7 @@ public class AccountForm
         if (newaccount)
             this.account=new Account();
 	
-        getMainBarItem().setElementAt((newaccount)?SR.MS_NEW_ACCOUNT:(account.toString()), 0);
+        mainbar.setElementAt((newaccount)?SR.MS_NEW_ACCOUNT:(account.toString()), 0);
 
         userbox = new TextInput(sd.canvas, SR.MS_JID, account.getBareJid(), null, TextField.ANY); //, 64, TextField.ANY
         itemsList.addElement(userbox);

@@ -61,7 +61,7 @@ public class StatusSelect
         statusList=StatusList.getInstance().statusList; 
         this.to=to;
         if (to!=null) {
-             setMainBarItem(new MainBar(to));
+             mainbar = new MainBar(to);
         }       
         
         defp=cf.loginstatus;

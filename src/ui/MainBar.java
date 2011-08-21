@@ -25,6 +25,7 @@
 package ui;
 
 import Client.Config;
+import Colors.ColorTheme;
 import Fonts.FontCache;
 import images.RosterIcons;
 import javax.microedition.lcdui.Graphics;
@@ -37,6 +38,10 @@ public class MainBar extends ComplexString{
 //#ifdef BACK_IMAGE
 //#     public static Image bg;
 //#endif
+    
+//#ifdef GRADIENT
+//#     public int startColor, endColor;
+//#endif    
     
     public boolean lShift = false;
     public boolean rShift = false;
@@ -67,6 +72,9 @@ public class MainBar extends ComplexString{
         this.centered = centered;
     }
     
+    public int getColor() { return ColorTheme.getColor(ColorTheme.BAR_INK); }
+    public int getColorBGnd() { return ColorTheme.getColor(ColorTheme.BAR_BGND); }    
+    
     public MainBar(int size) {
         super (RosterIcons.getInstance());
         setSize(size);
@@ -89,13 +97,31 @@ public class MainBar extends ComplexString{
 //#ifdef BACK_IMAGE
 //#         if (bg != null) {
 //#             int ofs = 0;
-//#             if (getVHeight() > bg.getHeight())
-//#                 ofs =  (getVHeight() - bg.getHeight()) >> 1;
-//#             for (int i=0; i < g.getClipWidth(); i++)
-//#                 g.drawImage(bg, i, ofs , Graphics.TOP|Graphics.LEFT);
+//#             if (getVHeight() > bg.getHeight()) {
+//#                 ofs = (getVHeight() - bg.getHeight()) >> 1;
+//#             }
+//#             for (int i = 0; i < g.getClipWidth(); i++) {
+//#                 g.drawImage(bg, i, ofs, Graphics.TOP | Graphics.LEFT);
+//#             }
 //#         }
 //#endif        
-        g.clipRect((lShift)? 20: 0, 0, g.getClipWidth() - ((rShift)? 20: 0), g.getClipHeight());
+//#ifdef GRADIENT
+//#         Gradient gradient;
+//#         int h = getVHeight() + 1;
+//#         if (startColor != endColor) {
+//#             gradient = new Gradient(0, 0, VirtualCanvas.getInstance().getWidth(), h, startColor, endColor, false);
+//#             gradient.paint(g);
+//#         } else {
+//#             g.setColor(getColor());
+//#             g.fillRect(0, 0, VirtualCanvas.getInstance().getWidth(), h);
+//#         }
+//#else
+            g.setColor(getMainBarBGnd());
+            g.fillRect(0, 0, width, h);
+//#endif
+        g.setColor(getColor());
+
+        g.clipRect((lShift) ? 20 : 0, 0, g.getClipWidth() - ((rShift) ? 20 : 0), g.getClipHeight());
         super.drawItem(g, offset, selected);
         //g.setClip(xo, yo, wo, ho);
     }

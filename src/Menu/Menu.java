@@ -41,9 +41,9 @@ public class Menu extends VirtualList
     private ImageList il;
     private boolean executeByNum;
 
-    public Menu(Object mainbar, ImageList il) {
+    public Menu(String caption, ImageList il) {
         super();
-        setMainBarItem(new MainBar(mainbar));
+        mainbar = new MainBar(caption);
         menuitems=new Vector();
         this.il=il;
         executeByNum=Config.getInstance().executeByNum;

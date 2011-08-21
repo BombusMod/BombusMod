@@ -130,8 +130,7 @@ public class ContactMessageList extends MessageList {
         this.contact = c;
         sd.roster.activeContact=contact;
 
-        MainBar mb=new MainBar(contact);
-        setMainBarItem(mb);
+        mainbar = new MainBar(contact);
         
         on_end = false;
         contact.setIncoming(0);

@@ -266,14 +266,14 @@ public class SR {
     public static String MS_STOP=loadString( "Stop" );
     public static String MS_FILE_TRANSFERS=loadString( "File transfers" );
 //#ifdef FILE_TRANSFER
-    public static String MS_PATH=loadString( "Path" );
-    public static String MS_ACCEPT_FILE=loadString( "Accept file" );
-    public static String MS_FILE=loadString( "File" );
-    public static String MS_SAVE_TO=loadString( "Save To" );
-    public static String MS_SENDER=loadString( "Sender" );
-    public static String MS_REJECTED=loadString( "Rejected" );
-    public static String MS_SEND_FILE=loadString( "Send file" );
-    public static String MS_CANT_OPEN_FILE=loadString( "Can't open file" );
+//#     public static String MS_PATH=loadString( "Path" );
+//#     public static String MS_ACCEPT_FILE=loadString( "Accept file" );
+//#     public static String MS_FILE=loadString( "File" );
+//#     public static String MS_SAVE_TO=loadString( "Save To" );
+//#     public static String MS_SENDER=loadString( "Sender" );
+//#     public static String MS_REJECTED=loadString( "Rejected" );
+//#     public static String MS_SEND_FILE=loadString( "Send file" );
+//#     public static String MS_CANT_OPEN_FILE=loadString( "Can't open file" );
 //#endif
     public static String MS_NEW=loadString( "New" );
     public static String MS_NEW_TEMPLATE=loadString( "New Template" );
@@ -286,7 +286,7 @@ public class SR {
 //#     public static String MS_LIST_BGND=loadString("messagelist & roster background");
 //#     public static String MS_LIST_BGND_EVEN=loadString("messagelist & roster even lines");
 //#     public static String MS_LIST_INK=loadString("messagelist & roster & common font");
-//#     public static String MS_MSG_SUBJ=loadString("message subject");
+//#     public static String MS_MSG_SUBJ=loadString("Nick color");
 //#     public static String MS_MSG_HIGHLIGHT=loadString("message highlight");
 //#     public static String MS_DISCO_CMD=loadString("service discovery commands");
 //#     public static String MS_BAR_BGND=loadString("panels background");
@@ -448,11 +448,11 @@ public class SR {
     public static String MS_DELETE_ALL = loadString( "Delete All" );
 
 //#ifdef FILE_IO
-    public static String MS_HISTORY_OPTIONS = loadString( "History options" );
+//#     public static String MS_HISTORY_OPTIONS = loadString( "History options" );
 //#ifdef DETRANSLIT
 //#     public static String MS_1251_TRANSLITERATE_FILENAMES = loadString( "Filenames transliterate" );
 //#endif
-    public static String MS_SAVE_CHAT = loadString( "Save chat" );
+//#     public static String MS_SAVE_CHAT = loadString( "Save chat" );
 //#endif
     public static String MS_SHOW_STATUSES = loadString( "Show statuses" );
 

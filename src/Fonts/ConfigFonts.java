@@ -89,8 +89,8 @@ public class ConfigFonts
 
         cf.saveToStorage();
         
-        super.getInfoBarItem().setFont(FontCache.getFont(true, cf.barFont));
-        super.getInfoBarItem().clearWHCache();
+        infobar.setFont(FontCache.getFont(true, cf.barFont));
+        infobar.clearWHCache();
         sd.roster.reEnumRoster();
         destroyView();
     }

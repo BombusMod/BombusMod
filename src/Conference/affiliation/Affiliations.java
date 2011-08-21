@@ -82,8 +82,8 @@ public class Affiliations
 	
         this.id=AffiliationItem.getAffiliationName(affiliationIndex);
         
-        setMainBarItem(new MainBar(2, null, " ", false));
-        getMainBarItem().addElement(id);
+        mainbar = new MainBar(2, null, " ", false);
+        mainbar.addElement(id);
         
         getList();
     }
@@ -126,7 +126,7 @@ public class Affiliations
     
     private void processIcon(boolean processing){
         String count=(itemsList==null)? null: String.valueOf(itemsList.size());
-        getMainBarItem().setElementAt((processing)?
+        mainbar.setElementAt((processing)?
             (Object)new Integer(RosterIcons.ICON_PROGRESS_INDEX): 
             (Object)count, 0);
         redraw();

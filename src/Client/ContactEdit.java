@@ -29,7 +29,7 @@ package Client;
 import Conference.MucContact;
 //#endif
 //#ifdef PRIVACY
-import PrivacyLists.QuickPrivacy;
+//# import PrivacyLists.QuickPrivacy;
 //#endif
 import VCard.VCard;
 import javax.microedition.lcdui.*;
@@ -108,7 +108,7 @@ public final class ContactEdit
 //#endif
             if (c.getGroupType() != Groups.TYPE_NOT_IN_LIST && c.getGroupType() != Groups.TYPE_SEARCH_RESULT) {
                 // edit contact
-                getMainBarItem().setElementAt(jid, 0);
+                mainbar.setElementAt(jid, 0);
                 newContact = false;
             } else {
                 c = null; // adding not-in-list
@@ -190,15 +190,15 @@ public final class ContactEdit
 
             boolean ask = tAskSubscrCheckBox.getValue();
 //#ifdef PRIVACY                        
-            if (!sd.account.isGoogle) {
-                                 if (QuickPrivacy.groupsList == null) {
-                                     QuickPrivacy.groupsList = new Vector();
-                                 }
-                                 if (!QuickPrivacy.groupsList.contains(group)) {
-                                     QuickPrivacy.groupsList.addElement(group); 
-                                     new QuickPrivacy().updateQuickPrivacyList();
-                                 }
-            }
+//#             if (!sd.account.isGoogle) {
+//#                                  if (QuickPrivacy.groupsList == null) {
+//#                                      QuickPrivacy.groupsList = new Vector();
+//#                                  }
+//#                                  if (!QuickPrivacy.groupsList.contains(group)) {
+//#                                      QuickPrivacy.groupsList.addElement(group); 
+//#                                      new QuickPrivacy().updateQuickPrivacyList();
+//#                                  }
+//#             }
 //#endif                                                        
             
 

@@ -72,12 +72,11 @@ public class ArchiveList
         this.caretPos = caretPos;
         this.t = t;
         archive = new MessageArchive(where);
-        MainBar mb = new MainBar((where == 1) ? SR.MS_ARCHIVE : SR.MS_TEMPLATE);
-        mb.addElement(null);
-        mb.addRAlign();
-        mb.addElement(null);
-        mb.addElement(SR.MS_FREE /*"free "*/);
-        setMainBarItem(mb);        
+        mainbar = new MainBar((where == 1) ? SR.MS_ARCHIVE : SR.MS_TEMPLATE);
+        mainbar.addElement(null);
+        mainbar.addRAlign();
+        mainbar.addElement(null);
+        mainbar.addElement(SR.MS_FREE /*"free "*/);        
     }
 
     public final void commandState() {
@@ -98,8 +97,8 @@ public class ArchiveList
     }
 
     protected void beginPaint() {
-        getMainBarItem().setElementAt(" ("+getItemCount()+")",1);
-        getMainBarItem().setElementAt(String.valueOf(getFreeSpace()),3);
+        mainbar.setElementAt(" ("+getItemCount()+")",1);
+        mainbar.setElementAt(String.valueOf(getFreeSpace()),3);
     }
     
     public int getItemCount() {

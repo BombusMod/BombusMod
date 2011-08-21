@@ -58,7 +58,7 @@ public class DefForm
     }
 
     public DefForm(String caption, boolean show) {
-        setMainBarItem(new MainBar(caption));
+        mainbar = new MainBar(caption);
 
         enableListWrapping(false);
         if (show) {

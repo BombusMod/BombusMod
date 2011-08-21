@@ -70,11 +70,10 @@ public class Upgrade
             focusedItem(0);
         } catch (Exception e) {}
         
-	MainBar mb=new MainBar(SR.MS_CHECK_UPDATE);
-        setMainBarItem(mb);
-        mb.addElement(null);
-        mb.addRAlign();
-        mb.addElement(null);        
+	mainbar = new MainBar(SR.MS_CHECK_UPDATE);
+        mainbar.addElement(null);
+        mainbar.addRAlign();
+        mainbar.addElement(null);        
     }
 
     public void run() {
@@ -116,8 +115,8 @@ public class Upgrade
             pic = new Integer(RosterIcons.ICON_PRIVACY_ALLOW);
         }
         
-        getMainBarItem().setElementAt(str.toString(),1);
-        getMainBarItem().setElementAt(pic, 3);
+        mainbar.setElementAt(str.toString(),1);
+        mainbar.setElementAt(pic, 3);
     }
     
     public int getItemCount() {

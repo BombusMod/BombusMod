@@ -49,7 +49,7 @@ public class Msg {
     public final static int MESSAGE_TYPE_AUTH=14;
     public final static int MESSAGE_TYPE_SYSTEM=15;
 //#ifdef FILE_TRANSFER    
-    public final static int MESSAGE_TYPE_FILE_REQ=16;
+//#     public final static int MESSAGE_TYPE_FILE_REQ=16;
 //#endif    
 
     public boolean highlite;
@@ -111,7 +111,8 @@ public class Msg {
             case MESSAGE_TYPE_IN: return ColorTheme.getColor(ColorTheme.MESSAGE_IN);
             case MESSAGE_TYPE_PRESENCE: return ColorTheme.getColor(ColorTheme.MESSAGE_PRESENCE);
             case MESSAGE_TYPE_OUT: return ColorTheme.getColor(ColorTheme.MESSAGE_OUT);
-            case MESSAGE_TYPE_SUBJ:return ColorTheme.getColor(ColorTheme.MSG_SUBJ);
+      //   unused long time
+      //      case MESSAGE_TYPE_SUBJ:return ColorTheme.getColor(ColorTheme.NICK_COLOR);
             case MESSAGE_TYPE_HEADLINE: return ColorTheme.getColor(ColorTheme.MESSAGE_IN);
             case MESSAGE_TYPE_AUTH: return ColorTheme.getColor(ColorTheme.MESSAGE_AUTH);
             case MESSAGE_TYPE_HISTORY: return ColorTheme.getColor(ColorTheme.MESSAGE_HISTORY);
@@ -158,11 +159,11 @@ public class Msg {
     
     public static void appendNick(StringBuffer sb, String append){
 //#if NICK_COLORS
-        sb.append((char)1);
+//#         sb.append((char)1);
 //#endif
         sb.append(append);
 //#if NICK_COLORS
-        sb.append((char)2);
+//#         sb.append((char)2);
 //#endif
     }
     

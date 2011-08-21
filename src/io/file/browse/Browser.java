@@ -66,13 +66,13 @@ public class Browser extends DefForm {
         this.browserListener=browserListener;
 	this.getDirectory=getDirectory;
 //#ifdef FILE_IO
-        this.path=(path==null)?StaticData.getInstance().previousPath:path;
+//#         this.path=(path==null)?StaticData.getInstance().previousPath:path;
 //#endif
 
         // test for empty path
         if (path==null) path="";
 
-        setMainBarItem(new MainBar(2, null, null, false));
+        mainbar = new MainBar(2, null, null, false);
         
                
         // trim filename
@@ -127,7 +127,7 @@ public class Browser extends DefForm {
     
     public void destroyView(){
 //#ifdef FILE_IO
-        StaticData.getInstance().previousPath=path;
+//#         StaticData.getInstance().previousPath=path;
 //#endif
         super.destroyView();
     }
@@ -163,7 +163,7 @@ public class Browser extends DefForm {
      }
     
     private void readDirectory(String name) {
-        getMainBarItem().setElementAt((path.endsWith("/"))?path.substring(0, path.length()-1):path, 0);
+        mainbar.setElementAt((path.endsWith("/"))?path.substring(0, path.length()-1):path, 0);
         
         itemsList.removeAllElements();
         try {

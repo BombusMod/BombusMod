@@ -61,7 +61,7 @@ public class PrivacySelect
     public PrivacySelect() {
         super(null);
 
-        setMainBarItem(new MainBar(2, null, SR.MS_PRIVACY_LISTS, false));
+        mainbar = new MainBar(2, null, SR.MS_PRIVACY_LISTS, false);
 
         itemsList.addElement(new PrivacyListItem(new PrivacyList(null)));//none
         
@@ -79,7 +79,7 @@ public class PrivacySelect
     }
 
     private void processIcon(boolean processing){
-        getMainBarItem().setElementAt((processing)?(Object)new Integer(RosterIcons.ICON_PROGRESS_INDEX):(Object)null, 0);
+        mainbar.setElementAt((processing)?(Object)new Integer(RosterIcons.ICON_PROGRESS_INDEX):(Object)null, 0);
         redraw();
     }
    

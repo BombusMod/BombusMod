@@ -59,9 +59,8 @@ public class ActiveContacts extends DefForm {
             return;
         }
 
-        MainBar mb = new MainBar(2, String.valueOf(getItemCount()), " ", false);
-        mb.addElement(SR.MS_ACTIVE_CONTACTS);
-        setMainBarItem(mb);
+        mainbar = new MainBar(2, String.valueOf(getItemCount()), " ", false);
+        mainbar.addElement(SR.MS_ACTIVE_CONTACTS);
         show();
         focusToContact(sd.roster.activeContact);
     }
@@ -121,7 +120,7 @@ public class ActiveContacts extends DefForm {
         Contact c = (Contact) getFocusedObject();
         c.purge();
         itemsList.removeElementAt(cursor);
-        getMainBarItem().setElementAt(String.valueOf(getItemCount()), 0);
+        mainbar.setElementAt(String.valueOf(getItemCount()), 0);
 		redraw();
     }
 

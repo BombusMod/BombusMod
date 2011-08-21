@@ -53,7 +53,7 @@ public class HistoryReader extends MessageList {
         MIPrev = new MessageItem(new Msg(Msg.MESSAGE_TYPE_SYSTEM, null, null, "<---"), smiles);
         MINext = new MessageItem(new Msg(Msg.MESSAGE_TYPE_SYSTEM, null, null, "--->"), smiles);
 
-        setMainBarItem(new MainBar(c.getName() + ": " + SR.MS_HISTORY));
+        mainbar = new MainBar(c.getName() + ": " + SR.MS_HISTORY);
 
         hl = new HistoryLoader(c.bareJid, smiles);
         if (hl.fileSize > 0) {
