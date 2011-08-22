@@ -82,8 +82,8 @@ public class Msg {
         this.subject=subj;
         this.dateGmt=Time.utcTimeMillis();
         if (messageType>=MESSAGE_TYPE_IN) unread=true;
-      /*  if (messageType==MESSAGE_TYPE_PRESENCE || messageType==MESSAGE_TYPE_HEADLINE)
-            itemCollapsed=true;*/
+        if (messageType==MESSAGE_TYPE_PRESENCE || messageType==MESSAGE_TYPE_HEADLINE)
+            itemCollapsed=true;
         if (body!=null && messageType!=MESSAGE_TYPE_SUBJ)
             if (body.length()>Config.getInstance().messageLimit)
                 itemCollapsed=true;

@@ -187,8 +187,9 @@ public class TransferTask
 
     void accept() {
         String[] methodNames = new String[2];
-        methodNames[0] = TransferDispatcher.NS_BYTESTREAMS;
-        methodNames[1] = TransferDispatcher.NS_IBB;
+    /*    methodNames[0] = TransferDispatcher.NS_BYTESTREAMS;
+        methodNames[1] = TransferDispatcher.NS_IBB;*/
+        methodNames[0] = TransferDispatcher.NS_IBB;
         for (int i = 0; i < methodNames.length; i++) {
             String nextMethod = methodNames[i];
             if (methods.indexOf(nextMethod) >= 0) {
@@ -309,7 +310,7 @@ public class TransferTask
         JabberDataBlock field = x.addChild("field", null);
         field.setTypeAttribute("list-single");
         field.setAttribute("var", "stream-method");
-        field.addChild("option", null).addChild("value", TransferDispatcher.NS_BYTESTREAMS);
+      //  field.addChild("option", null).addChild("value", TransferDispatcher.NS_BYTESTREAMS);
         field.addChild("option", null).addChild("value", TransferDispatcher.NS_IBB);
         TransferDispatcher.getInstance().send(iq, true);
 

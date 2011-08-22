@@ -28,6 +28,7 @@
 package io;
 
 import Client.Config;
+import Client.StaticData;
 import Info.Version;
 import com.ssttr.crypto.SHA1;
 import java.io.ByteArrayInputStream;
@@ -151,13 +152,14 @@ public class DnsSrvResolver {
             
             resolvedHost = ((RR)res.elementAt(0)).host;
             resolvedPort = ((RR)res.elementAt(0)).port;
-            ttl = ((RR)res.elementAt(0)).ttl;
             
+            ttl = ((RR)res.elementAt(0)).ttl + Time.utcTimeMillis();
             
             cf.verHash=shaVer.getDigestHex();
             cf.resolvedHost = resolvedHost;
             cf.resolvedPort = resolvedPort;
             cf.saveToStorage();
+            return true;
       
         } catch (IOException ex) {
 //#ifdef DEBUG            
