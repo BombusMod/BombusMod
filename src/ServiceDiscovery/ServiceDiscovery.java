@@ -92,7 +92,7 @@ public class ServiceDiscovery
         mainbar.addRAlign();
         mainbar.addElement(null);
         
-        stream=sd.roster.theStream;
+        stream=sd.theStream;
         stream.cancelBlockListenerByClass(this.getClass());
         stream.addBlockListener(this);
         //sd.roster.discoveryListener=this;        

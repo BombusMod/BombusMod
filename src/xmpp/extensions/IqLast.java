@@ -69,7 +69,7 @@ public class IqLast implements JabberBlockListener {
             reply.addChild(query);
             query.setAttribute("seconds", String.valueOf(last));
 
-            StaticData.getInstance().roster.theStream.send(reply);
+            StaticData.getInstance().theStream.send(reply);
 
             return BLOCK_PROCESSED;
         }

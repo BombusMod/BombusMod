@@ -39,8 +39,8 @@ import ui.controls.form.PasswordInput;
 import ui.controls.form.TextInput;
 import Menu.MenuCommand;
 //#ifdef PRIVACY
-import PrivacyLists.QuickPrivacy;
-import java.util.Vector;
+//# import PrivacyLists.QuickPrivacy;
+//# import java.util.Vector;
 //#endif
 import ui.VirtualList;
 import images.RosterIcons;
@@ -191,18 +191,18 @@ public class ConferenceForm
                 sd.roster.bookmarks.insertElementAt(item, cursor);
             else
                 sd.roster.bookmarks.addElement(item);
-            sd.roster.theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.SAVE));
+            sd.theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.SAVE));
             destroyView();
         } else if (c==cmdAdd) {
             new Bookmarks(new BookmarkItem(name, gchat.toString(), nick, pass, autojoin));
         } else if (c==cmdJoin) {
 //#ifdef PRIVACY            
-            if (!sd.account.isGoogle) {
-                    if (QuickPrivacy.conferenceList == null)
-                        QuickPrivacy.conferenceList = new Vector();
-                    QuickPrivacy.conferenceList.addElement(host);
-                    new QuickPrivacy().updateQuickPrivacyList();
-            }
+//#             if (!sd.account.isGoogle) {
+//#                     if (QuickPrivacy.conferenceList == null)
+//#                         QuickPrivacy.conferenceList = new Vector();
+//#                     QuickPrivacy.conferenceList.addElement(host);
+//#                     new QuickPrivacy().updateQuickPrivacyList();
+//#             }
 //#endif                                    
             
             try {

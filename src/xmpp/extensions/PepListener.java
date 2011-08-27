@@ -52,7 +52,7 @@ public class PepListener implements JabberBlockListener {
     }
 
     public void addBlockListener() {
-        sd.roster.theStream.addBlockListener(instance);
+        sd.theStream.addBlockListener(instance);
     }
 
     public int blockArrived(JabberDataBlock data) {

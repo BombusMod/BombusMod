@@ -95,8 +95,8 @@ package PEP;
 //#             geoloc.addChild("text", descr.getValue());
 //#             }
 //#             //todo: refactor theStream call; send notification to JabberBlockListener if stream was terminated
-//#             StaticData.getInstance().roster.theStream.addBlockListener(new PepPublishResult( sid));
-//#             StaticData.getInstance().roster.theStream.send(setActivity);
+//#             StaticData.getInstance().theStream.addBlockListener(new PepPublishResult( sid));
+//#             StaticData.getInstance().theStream.send(setActivity);
 //#         } catch (Exception e) { }
 //#         destroyView();
 //#     }

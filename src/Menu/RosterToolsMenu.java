@@ -237,7 +237,7 @@ public class RosterToolsMenu extends Menu {
 //#if SASL_XGOOGLETOKEN
 //#             case 17: //mail check
 //#                 destroyView();
-//#                 sd.roster.theStream.send(IqGmail.query());
+//#                 sd.theStream.send(IqGmail.query());
 //# 		return;
 //#endif
 //#if AUTOTASK

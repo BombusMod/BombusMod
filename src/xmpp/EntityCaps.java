@@ -53,7 +53,7 @@ public class EntityCaps implements JabberBlockListener{
             query.addChild("feature", null).setAttribute("var", (String) features.elementAt(i));
         }
         
-        StaticData.getInstance().roster.theStream.send(result);
+        StaticData.getInstance().theStream.send(result);
         
         return BLOCK_PROCESSED;
     }
@@ -114,9 +114,9 @@ public class EntityCaps implements JabberBlockListener{
 //#         }
 //#endif
 //#ifdef FILE_TRANSFER
-        if (cf.fileTransfer) {
-            features.addElement("http://jabber.org/protocol/bytestreams");
-        }
+//#         if (cf.fileTransfer) {
+//#             features.addElement("http://jabber.org/protocol/bytestreams");
+//#         }
  //#endif        
         if (cf.eventComposing)
             features.addElement("http://jabber.org/protocol/chatstates"); //xep-0085
@@ -134,9 +134,9 @@ public class EntityCaps implements JabberBlockListener{
 //#endif
 
 //#ifdef FILE_TRANSFER
-        if (cf.fileTransfer) {
-            features.addElement("http://jabber.org/protocol/ibb");            
-        }
+//#         if (cf.fileTransfer) {
+//#             features.addElement("http://jabber.org/protocol/ibb");            
+//#         }
  //#endif
 //#ifdef PEP
 //#          if (cf.sndrcvmood) {
@@ -146,10 +146,10 @@ public class EntityCaps implements JabberBlockListener{
 //#endif
         features.addElement("http://jabber.org/protocol/rosterx"); // XEP-0144
 //#ifdef FILE_TRANSFER
-        if (cf.fileTransfer) {
-            features.addElement("http://jabber.org/protocol/si");
-            features.addElement("http://jabber.org/protocol/si/profile/file-transfer");
-        }
+//#         if (cf.fileTransfer) {
+//#             features.addElement("http://jabber.org/protocol/si");
+//#             features.addElement("http://jabber.org/protocol/si/profile/file-transfer");
+//#         }
  //#endif
 //#ifdef PEP
 //#ifdef PEP_TUNE

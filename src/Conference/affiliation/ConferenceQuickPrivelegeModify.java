@@ -152,7 +152,7 @@ public class ConferenceQuickPrivelegeModify {
 
         }
         //System.out.println(iq);
-        StaticData.getInstance().roster.theStream.send(iq);
+        StaticData.getInstance().theStream.send(iq);
     }
 }
 

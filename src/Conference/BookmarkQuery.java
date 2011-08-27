@@ -38,7 +38,7 @@ import com.alsutton.jabber.datablocks.Presence;
 import util.StringLoader;
 
 //#ifdef PRIVACY
-import PrivacyLists.QuickPrivacy;
+//# import PrivacyLists.QuickPrivacy;
 //#endif
 /**
  *
@@ -64,7 +64,7 @@ public class BookmarkQuery implements JabberBlockListener {
                 storage.addChild(((BookmarkItem) e.nextElement()).constructBlock());
             }
         }
-        sd.roster.theStream.send(request);
+        sd.theStream.send(request);
     }
 
     public int blockArrived(JabberDataBlock data) {
@@ -79,9 +79,9 @@ public class BookmarkQuery implements JabberBlockListener {
                             Vector bookmarks = new Vector();
                             boolean autojoin = cf.autoJoinConferences && sd.roster.myStatus != Presence.PRESENCE_INVISIBLE;
 //#ifdef PRIVACY 
-                     if (!sd.account.isGoogle)
-                        if (QuickPrivacy.conferenceList == null)
-                            QuickPrivacy.conferenceList = new Vector();
+//#                      if (!sd.account.isGoogle)
+//#                         if (QuickPrivacy.conferenceList == null)
+//#                             QuickPrivacy.conferenceList = new Vector();
 //#endif                     
                             Vector items = storage.getChildBlocks();
                             if (items != null) {
@@ -91,13 +91,13 @@ public class BookmarkQuery implements JabberBlockListener {
                                         bm.nick = sd.account.getNick();
                                     }
 //#ifdef PRIVACY                                                
-                           if (!sd.account.isGoogle) {
-                             int at = bm.jid.indexOf("@") + 1;
-                             String host = bm.jid.substring(at, bm.jid.length());
-                             if (!QuickPrivacy.conferenceList.contains(host)) {
-                                 QuickPrivacy.conferenceList.addElement(host);
-                             }
-                                    }
+//#                            if (!sd.account.isGoogle) {
+//#                              int at = bm.jid.indexOf("@") + 1;
+//#                              String host = bm.jid.substring(at, bm.jid.length());
+//#                              if (!QuickPrivacy.conferenceList.contains(host)) {
+//#                                  QuickPrivacy.conferenceList.addElement(host);
+//#                              }
+//#                                     }
 //#endif                        
                                     if (bm.name == null) {
                                         bm.name = bm.jid;
@@ -110,8 +110,8 @@ public class BookmarkQuery implements JabberBlockListener {
                                     }
                                 }
 //#ifdef PRIVACY                                                
-                                if (!sd.account.isGoogle)
-                                    new QuickPrivacy().updateQuickPrivacyList();
+//#                                 if (!sd.account.isGoogle)
+//#                                     new QuickPrivacy().updateQuickPrivacyList();
 //#endif                        
                             }
 

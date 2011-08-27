@@ -62,7 +62,7 @@ public class IQCommands implements JabberBlockListener {
     private IQCommands() { }
     
     public void addBlockListener() {
-        sd.roster.theStream.addBlockListener(instance);
+        sd.theStream.addBlockListener(instance);
     }
         
     public int blockArrived(JabberDataBlock data) {
@@ -93,7 +93,7 @@ public class IQCommands implements JabberBlockListener {
                         JabberDataBlock feature2=replyChild.addChild("feature", "");
                             feature2.setAttribute("var", DiscoForm.NS_XDATA);
                     }
-                sd.roster.theStream.send(reply);
+                sd.theStream.send(reply);
                 return BLOCK_PROCESSED;
                 
             } else if (query.isJabberNameSpace(ServiceDiscovery.NS_ITEMS)) {
@@ -102,7 +102,7 @@ public class IQCommands implements JabberBlockListener {
                     JabberDataBlock replyChild=reply.addChildNs("query", ServiceDiscovery.NS_ITEMS);
                     if (query.getAttribute("node")!=null)
                         replyChild.setAttribute("node", query.getAttribute("node"));
-                    sd.roster.theStream.send(reply);
+                    sd.theStream.send(reply);
                     return BLOCK_PROCESSED;
                 } else {
                     Iq reply=new Iq(data.getAttribute("from"), Iq.TYPE_RESULT, data.getAttribute("id"));
@@ -120,7 +120,7 @@ public class IQCommands implements JabberBlockListener {
                     leaveChats.setAttribute("node", "leave-groupchats");
                     leaveChats.setAttribute("name", "Leave Groupchats");
 
-                    sd.roster.theStream.send(reply);
+                    sd.theStream.send(reply);
 
                     return BLOCK_PROCESSED;
                 }
@@ -169,7 +169,7 @@ public class IQCommands implements JabberBlockListener {
                     cmd.setAttribute("status", "completed");
                     cmd.setAttribute("node", "set-status");
                     cmd.setAttribute("sessionid", command.getAttribute("sessionid"));
-                    sd.roster.theStream.send(reply);
+                    sd.theStream.send(reply);
                     
                     return BLOCK_PROCESSED;
                 }
@@ -212,7 +212,7 @@ public class IQCommands implements JabberBlockListener {
                     cmd.setAttribute("status", "completed");
                     cmd.setAttribute("node", "leave-groupchats");
                     cmd.setAttribute("sessionid", command.getAttribute("sessionid"));
-                    sd.roster.theStream.send(reply);
+                    sd.theStream.send(reply);
                     
                     return BLOCK_PROCESSED;
                 }
@@ -263,7 +263,7 @@ public class IQCommands implements JabberBlockListener {
         fieldMessage.setAttribute("var", "status-message");
         fieldMessage.setAttribute("label", "Message");
 
-        sd.roster.theStream.send(reply);
+        sd.theStream.send(reply);
         //System.out.println(">>> "+reply.toString());
     }
     
@@ -303,7 +303,7 @@ public class IQCommands implements JabberBlockListener {
             } catch (Exception e) {}
         }
 
-        sd.roster.theStream.send(reply);
+        sd.theStream.send(reply);
         //System.out.println(">>> "+reply.toString());
     }
     

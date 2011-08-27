@@ -56,7 +56,7 @@ public class Affiliations
     private String namespace="http://jabber.org/protocol/muc#admin";
     private String room;
 
-    private JabberStream stream=StaticData.getInstance().roster.theStream;
+    private JabberStream stream=StaticData.getInstance().theStream;
     
     private MenuCommand cmdModify = new MenuCommand (SR.MS_MODIFY, MenuCommand.SCREEN, 1, RosterIcons.ICON_RENAME);
     private MenuCommand cmdNew    = new MenuCommand (SR.MS_NEW_JID, MenuCommand.SCREEN, 2, RosterIcons.ICON_REGISTER_INDEX );

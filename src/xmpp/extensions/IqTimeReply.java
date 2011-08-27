@@ -71,7 +71,7 @@ public class IqTimeReply implements JabberBlockListener{
             Iq reply=new Iq(data.getAttribute("from"), Iq.TYPE_RESULT, data.getAttribute("id"));
             reply.addChild(query);
 
-            StaticData.getInstance().roster.theStream.send(reply);
+            StaticData.getInstance().theStream.send(reply);
 
             return BLOCK_PROCESSED;
         }

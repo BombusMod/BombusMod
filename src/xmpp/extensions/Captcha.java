@@ -40,7 +40,7 @@ public class Captcha implements JabberBlockListener{
             from = data.getAttribute("from");
             id = data.getAttribute("id");
 
-            DiscoForm f = new DiscoForm(null, null, from, challenge, StaticData.getInstance().roster.theStream, id, null);
+            DiscoForm f = new DiscoForm(null, null, from, challenge, StaticData.getInstance().theStream, id, null);
 	    f.fetchMediaElements(data.getChildBlocks());
 
             return BLOCK_PROCESSED;

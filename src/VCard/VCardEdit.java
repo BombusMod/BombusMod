@@ -11,9 +11,9 @@ package VCard;
 
 import Client.StaticData;
 //#if (FILE_IO)
-import io.file.FileIO;
-import io.file.browse.Browser;
-import io.file.browse.BrowserListener;
+//# import io.file.FileIO;
+//# import io.file.browse.Browser;
+//# import io.file.browse.BrowserListener;
 //#endif
 //#ifndef NOMMEDIA
 import images.camera.*;
@@ -42,7 +42,7 @@ public class VCardEdit
         extends DefForm 
         implements Runnable
 //#if (FILE_IO)
-        , BrowserListener
+//#         , BrowserListener
 //#endif
 //#ifndef NOMMEDIA
         , CameraImageListener
@@ -52,8 +52,8 @@ public class VCardEdit
     MenuCommand cmdPublish=new MenuCommand(SR.MS_PUBLISH, MenuCommand.OK, 1, RosterIcons.ICON_ON);
     MenuCommand cmdRefresh=new MenuCommand(SR.MS_REFRESH, MenuCommand.SCREEN, 2, RosterIcons.ICON_FT);
 //#if FILE_IO
-    MenuCommand cmdLoadPhoto=new MenuCommand(SR.MS_LOAD_PHOTO, MenuCommand.SCREEN,3, RosterIcons.ICON_SENDPHOTO);
-    MenuCommand cmdSavePhoto=new MenuCommand(SR.MS_SAVE_PHOTO, MenuCommand.SCREEN,4, RosterIcons.ICON_CHATARCHIVE);
+//#     MenuCommand cmdLoadPhoto=new MenuCommand(SR.MS_LOAD_PHOTO, MenuCommand.SCREEN,3, RosterIcons.ICON_SENDPHOTO);
+//#     MenuCommand cmdSavePhoto=new MenuCommand(SR.MS_SAVE_PHOTO, MenuCommand.SCREEN,4, RosterIcons.ICON_CHATARCHIVE);
 //#endif
     MenuCommand cmdDelPhoto=new MenuCommand(SR.MS_CLEAR_PHOTO, MenuCommand.SCREEN,5, RosterIcons.ICON_CLEAN_MESSAGES);
 //#ifndef NOMMEDIA
@@ -119,14 +119,14 @@ public class VCardEdit
         }
         
 //#if FILE_IO
-        if (c==cmdLoadPhoto) {
-            st=1;
-            new Browser(null, this, false);
-        }
-        if (c==cmdSavePhoto) {
-            st=2;
-            new Browser(null, this, true);
-        }
+//#         if (c==cmdLoadPhoto) {
+//#             st=1;
+//#             new Browser(null, this, false);
+//#         }
+//#         if (c==cmdSavePhoto) {
+//#             st=2;
+//#             new Browser(null, this, true);
+//#         }
 //#endif
 //#ifndef NOMMEDIA
         if (c==cmdCamera)
@@ -144,34 +144,34 @@ public class VCardEdit
 
     
     public void run() {
-        StaticData.getInstance().roster.theStream.send(vcard.constructVCard());
+        StaticData.getInstance().theStream.send(vcard.constructVCard());
         //System.out.println("VCard sent");
     }
 
 //#if (FILE_IO)
-    public void BrowserFilePathNotify(String pathSelected) {
-        if (st>0) {
-            if (st==1) {
-                try {
-                    FileIO f=FileIO.createConnection(pathSelected);
-                    vcard.photo=f.fileRead();
-                    vcard.setPhotoType();
-                    setPhoto();
-                    redraw();
-                } catch (Exception e) {
+//#     public void BrowserFilePathNotify(String pathSelected) {
+//#         if (st>0) {
+//#             if (st==1) {
+//#                 try {
+//#                     FileIO f=FileIO.createConnection(pathSelected);
+//#                     vcard.photo=f.fileRead();
+//#                     vcard.setPhotoType();
+//#                     setPhoto();
+//#                     redraw();
+//#                 } catch (Exception e) {
 //#ifdef DEBUG
 //#                     System.out.println("error on load");
 //#endif
-                }
-            }
-            if (st==2 & vcard.hasPhoto) {
-                //System.out.println(photoType+"->"+getFileType(photoType));
-                String filename = StringUtils.replaceBadChars(vcard.getNickDate());
-                FileIO file=FileIO.createConnection(pathSelected+filename+vcard.getFileType());
-                file.fileWrite(vcard.getPhoto());
-            }
-        }
-    }
+//#                 }
+//#             }
+//#             if (st==2 & vcard.hasPhoto) {
+//#                 //System.out.println(photoType+"->"+getFileType(photoType));
+//#                 String filename = StringUtils.replaceBadChars(vcard.getNickDate());
+//#                 FileIO file=FileIO.createConnection(pathSelected+filename+vcard.getFileType());
+//#                 file.fileWrite(vcard.getPhoto());
+//#             }
+//#         }
+//#     }
 //#endif
     
     public void cameraImageNotify(byte[] capturedPhoto) {
@@ -216,8 +216,8 @@ public class VCardEdit
         addMenuCommand(cmdPublish);
         addMenuCommand(cmdRefresh);
 //#if FILE_IO
-        addMenuCommand(cmdLoadPhoto);
-        addMenuCommand(cmdSavePhoto);
+//#         addMenuCommand(cmdLoadPhoto);
+//#         addMenuCommand(cmdSavePhoto);
 //#endif
 //#ifndef NOMMEDIA
         String cameraAvailable=System.getProperty("supports.video.capture");

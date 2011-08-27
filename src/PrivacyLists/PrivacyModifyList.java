@@ -56,7 +56,7 @@ public class PrivacyModifyList extends DefForm
     private MenuCommand cmdDwn=new MenuCommand (SR.MS_MOVE_DOWN, MenuCommand.SCREEN, 14, RosterIcons.ICON_SCROLLABLE_DOWN);
     private MenuCommand cmdSave=new MenuCommand (SR.MS_SAVE_LIST, MenuCommand.SCREEN, 16, RosterIcons.ICON_ARCHIVE);
     
-    JabberStream stream=StaticData.getInstance().roster.theStream;
+    JabberStream stream=StaticData.getInstance().theStream;
     
     /** Creates a new instance of PrivacySelect */
     public PrivacyModifyList(PrivacyList privacyList, boolean newList, PrivacySelect privacySelect) {

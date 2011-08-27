@@ -87,8 +87,8 @@ public class MoodList extends DefForm implements MIDPTextBox.TextBoxNotify {
         }
         try {
             //todo: refactor theStream call; send notification to JabberBlockListener if stream was terminated
-            StaticData.getInstance().roster.theStream.addBlockListener(new PepPublishResult( sid));
-            StaticData.getInstance().roster.theStream.send(setMood);
+            StaticData.getInstance().theStream.addBlockListener(new PepPublishResult( sid));
+            StaticData.getInstance().theStream.send(setMood);
         } catch (Exception e) {
 //#ifdef DEBUG            
 //#             e.printStackTrace(); 

@@ -31,6 +31,7 @@ import Account.Account;
 //#ifdef AUTOTASK
 //# import AutoTasks.AutoTask;
 //#endif
+import com.alsutton.jabber.JabberStream;
 import ui.VirtualCanvas;
 /**
  *
@@ -42,6 +43,8 @@ public class StaticData {
     
     public Roster roster;
     public VirtualCanvas canvas;
+    public JabberStream theStream;
+    
     
     public Account account;
 
@@ -50,7 +53,7 @@ public class StaticData {
 //#endif
     
 //#ifdef FILE_IO
-    public String previousPath="";
+//#     public String previousPath="";
 //#endif
     
     //public int screenWidth;

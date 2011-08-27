@@ -34,7 +34,7 @@ import java.util.*;
 import util.StringLoader;
 import util.Strconv;
 //#if FILE_IO
-import ui.Time;
+//# import ui.Time;
 //#endif
 
 /**
@@ -151,7 +151,7 @@ public class VCard {
     
     public static void request(String jid, String id) {
         StaticData.getInstance().roster.setQuerySign(true);
-        StaticData.getInstance().roster.theStream.send(IqVCard.query(jid, "getvc"+id));
+        StaticData.getInstance().theStream.send(IqVCard.query(jid, "getvc"+id));
     }
     
     private void fieldsLoader(){
@@ -174,10 +174,10 @@ public class VCard {
     }
     
 //#if FILE_IO
-    public void setPhotoType() {
-        this.photoType=getPhotoMIMEType();
-        this.hasPhoto=true;
-    }
+//#     public void setPhotoType() {
+//#         this.photoType=getPhotoMIMEType();
+//#         this.hasPhoto=true;
+//#     }
 //#endif
     
     public final int getCount(){ return vCardFields.size(); }
@@ -211,69 +211,69 @@ public class VCard {
     }
     
 //#if FILE_IO
-    public String getPhotoMIMEType() {
-        if (photo.length==1) return null;
-        try {
-             if (photo[0]==(byte)0xff &&
-                photo[1]==(byte)0xd8 &&
-                ((photo[6]==(byte)'J' &&
-                  photo[7]==(byte)'F' &&
-                  photo[8]==(byte)'I' &&
-                  photo[9]==(byte)'F') 
-                  ||
-                 (photo[6]==(byte)'E' &&
-                  photo[7]==(byte)'x' &&
-                  photo[8]==(byte)'i' &&
-                  photo[9]==(byte)'f')
-                 )
-                )
-                 return "image/jpeg";
-             
-            if (photo[0]==(byte)0x89 &&
-                photo[1]==(byte)'P' &&
-                photo[2]==(byte)'N' &&
-                photo[3]==(byte)'G')
-                return "image/png";
-            
-            if (photo[0]==(byte)'G' &&
-                photo[1]==(byte)'I' &&
-                photo[2]==(byte)'F')
-                 return "image/gif";
-             
-            if (photo[0]==(byte)'B' &&
-                photo[1]==(byte)'M')
-                 return "image/x-ms-bmp";
-        } catch (Exception e) {}
-        //System.out.println("unknown MIME type");
-        return null;
-    }
-    
-    public String getFileType() {
-        String MIMEtype=getPhotoMIMEType();
-        if (MIMEtype!=null) {
-            if (MIMEtype.equals("image/jpeg")) return ".jpg";
-            if (MIMEtype.equals("image/png")) return ".png";
-            if (MIMEtype.equals("image/gif")) return ".gif";
-            if (MIMEtype.equals("image/x-ms-bmp")) return ".bmp";
-        }
-        return ".jpg";
-    }
+//#     public String getPhotoMIMEType() {
+//#         if (photo.length==1) return null;
+//#         try {
+//#              if (photo[0]==(byte)0xff &&
+//#                 photo[1]==(byte)0xd8 &&
+//#                 ((photo[6]==(byte)'J' &&
+//#                   photo[7]==(byte)'F' &&
+//#                   photo[8]==(byte)'I' &&
+//#                   photo[9]==(byte)'F') 
+//#                   ||
+//#                  (photo[6]==(byte)'E' &&
+//#                   photo[7]==(byte)'x' &&
+//#                   photo[8]==(byte)'i' &&
+//#                   photo[9]==(byte)'f')
+//#                  )
+//#                 )
+//#                  return "image/jpeg";
+//#              
+//#             if (photo[0]==(byte)0x89 &&
+//#                 photo[1]==(byte)'P' &&
+//#                 photo[2]==(byte)'N' &&
+//#                 photo[3]==(byte)'G')
+//#                 return "image/png";
+//#             
+//#             if (photo[0]==(byte)'G' &&
+//#                 photo[1]==(byte)'I' &&
+//#                 photo[2]==(byte)'F')
+//#                  return "image/gif";
+//#              
+//#             if (photo[0]==(byte)'B' &&
+//#                 photo[1]==(byte)'M')
+//#                  return "image/x-ms-bmp";
+//#         } catch (Exception e) {}
+//#         //System.out.println("unknown MIME type");
+//#         return null;
+//#     }
+//#     
+//#     public String getFileType() {
+//#         String MIMEtype=getPhotoMIMEType();
+//#         if (MIMEtype!=null) {
+//#             if (MIMEtype.equals("image/jpeg")) return ".jpg";
+//#             if (MIMEtype.equals("image/png")) return ".png";
+//#             if (MIMEtype.equals("image/gif")) return ".gif";
+//#             if (MIMEtype.equals("image/x-ms-bmp")) return ".bmp";
+//#         }
+//#         return ".jpg";
+//#     }
 //#endif
     
 //#if FILE_IO
-    public String getNickDate() {
-        StringBuffer nickDate=new StringBuffer("photo_");
+//#     public String getNickDate() {
+//#         StringBuffer nickDate=new StringBuffer("photo_");
 //#ifdef DETRANSLIT
 //#             String userName = (getNickName() != null) ? getNickName() : getJid();
 //#             nickDate.append(util.DeTranslit.getInstance().get_actual_filename(userName));
 //#         
 //#else
-         if (getNickName()!=null) {
-             nickDate.append(getNickName());
-         } else nickDate.append(getJid());
+//#          if (getNickName()!=null) {
+//#              nickDate.append(getNickName());
+//#          } else nickDate.append(getJid());
 //#endif
-        nickDate.append("_").append(Time.localDate());
-        return nickDate.toString();
-    }
+//#         nickDate.append("_").append(Time.localDate());
+//#         return nickDate.toString();
+//#     }
 //#endif
 }

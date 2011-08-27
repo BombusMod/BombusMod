@@ -82,8 +82,8 @@ public class ActivityList extends DefForm implements MIDPTextBox.TextBoxNotify {
          
         try {
             //todo: refactor theStream call; send notification to JabberBlockListener if stream was terminated
-            sd.roster.theStream.addBlockListener(new PepPublishResult( sid));
-            sd.roster.theStream.send(setActivity);
+            sd.theStream.addBlockListener(new PepPublishResult( sid));
+            sd.theStream.send(setActivity);
         } catch (Exception e) {
 //#ifdef DEBUG            
 //#             e.printStackTrace(); 

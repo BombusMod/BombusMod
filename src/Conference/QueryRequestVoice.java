@@ -54,6 +54,6 @@ public class QueryRequestVoice {
         
         x.addChild(fieldLabel);
         
-        StaticData.getInstance().roster.theStream.send(msg);
+        StaticData.getInstance().theStream.send(msg);
     }
 }

@@ -35,7 +35,7 @@ public class RosterXListener implements JabberBlockListener {
         if (x == null) return BLOCK_REJECTED;            
         if (data instanceof Iq) {
             Iq reply=new Iq(data.getAttribute("from"), Iq.TYPE_RESULT, data.getAttribute("id"));
-            StaticData.getInstance().roster.theStream.send(reply);
+            StaticData.getInstance().theStream.send(reply);
         }        
         Vector newcontacts = null;
         newcontacts = new Vector();

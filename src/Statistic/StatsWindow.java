@@ -71,13 +71,13 @@ public class StatsWindow
         
         item=new MultiLine(SR.MS_CURRENT, StringUtils.getSizeString(Stats.getCurrentTraffic()), sd.roster.getListWidth()); item.selectable=true; itemsList.addElement(item);
 //#if ZLIB
-        if (StaticData.getInstance().roster.isLoggedIn()) {
-            item=new MultiLine(SR.MS_COMPRESSION, StaticData.getInstance().roster.theStream.getStreamStats(), sd.roster.getListWidth()); item.selectable=true; itemsList.addElement(item);
-        }
-
-        if (StaticData.getInstance().roster.isLoggedIn()) {
-            item=new MultiLine(SR.MS_CONNECTED, StaticData.getInstance().roster.theStream.getConnectionData(), sd.roster.getListWidth()); item.selectable=true; itemsList.addElement(item);
-        }
+//#         if (StaticData.getInstance().roster.isLoggedIn()) {
+//#             item=new MultiLine(SR.MS_COMPRESSION, StaticData.getInstance().theStream.getStreamStats(), sd.roster.getListWidth()); item.selectable=true; itemsList.addElement(item);
+//#         }
+//# 
+//#         if (StaticData.getInstance().roster.isLoggedIn()) {
+//#             item=new MultiLine(SR.MS_CONNECTED, StaticData.getInstance().theStream.getConnectionData(), sd.roster.getListWidth()); item.selectable=true; itemsList.addElement(item);
+//#         }
 //#endif
         item=new MultiLine(SR.MS_CONN, Integer.toString(st.getSessionsCount()), sd.roster.getListWidth()); item.selectable=true; itemsList.addElement(item);
                 
