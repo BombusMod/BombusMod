@@ -15,7 +15,9 @@ import Conference.MucContact;
 import com.alsutton.jabber.JabberBlockListener;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Presence;
-import images.ClientsIconsData;
+//#ifdef CLIENTS_ICONS
+//# import images.ClientsIconsData;
+//#endif
 import locale.SR;
 import ui.VirtualList;
 

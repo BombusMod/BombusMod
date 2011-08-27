@@ -93,7 +93,6 @@ import xmpp.XmppError;
 //# import xmpp.extensions.Captcha;
 //#endif
 
-import xmpp.RosterDispatcher;
 //#if SASL_XGOOGLETOKEN
 //# import xmpp.extensions.IqGmail;
 //#endif
@@ -113,9 +112,9 @@ import xmpp.extensions.IqVCard;
 
 //#ifdef LIGHT_CONFIG
 //# import LightControl.CustomLight;
-//# import xmpp.PresenceDispatcher;
-//# import xmpp.RosterDispatcher;
 //#endif
+import xmpp.PresenceDispatcher;
+import xmpp.RosterDispatcher;
 
 public class Roster
         extends DefForm
