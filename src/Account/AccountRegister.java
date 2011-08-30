@@ -56,7 +56,6 @@ public class AccountRegister
 	Runnable {
 
     private Account raccount;
-    private JabberStream theStream;
     private SplashScreen splash;
     private AccountSelect as;
     private DropChoiceBox serverChoice;
@@ -114,12 +113,15 @@ public class AccountRegister
 	    //give a chance another thread to finish ui
 	    Thread.sleep(500);
 	    sd.theStream = raccount.openJabberStream();
-	    new Thread(theStream).start();
-	    new Thread(theStream.dispatcher).start();
+	    new Thread(sd.theStream).start();
+	    new Thread(sd.theStream.dispatcher).start();
 
-	    theStream.setJabberListener(this);
-	    theStream.initiateStream();
+	    sd.theStream.setJabberListener(this);
+	    sd.theStream.initiateStream();
 	} catch (Exception e) {
+//#ifdef DEBUG            
+//#             e.printStackTrace();
+//#endif            
 	    splash.setFailed();
 	}
 
@@ -130,11 +132,11 @@ public class AccountRegister
 
     public void beginConversation() {
 	splash.setProgress(SR.MS_REGISTERING, 60);
-	theStream.addBlockListener(new IqRegister(this));
+	sd.theStream.addBlockListener(new IqRegister(this));
 	Iq iqreg = new Iq(null, Iq.TYPE_GET, "regac" + System.currentTimeMillis());
 	JabberDataBlock query = iqreg.addChild("query", null);
 	query.setNameSpace(IqRegister.NS_REGS);
-	theStream.send(iqreg);
+	sd.theStream.send(iqreg);
     }
 
     public int blockArrived(JabberDataBlock data) {
@@ -153,13 +155,13 @@ public class AccountRegister
     splash.close(as);
     }*/
     public void registrationFormNotify(JabberDataBlock data) {
-		new DiscoForm(null, this, null, data, theStream, "register" + System.currentTimeMillis(), "query").fetchMediaElements(data.getChildBlock("query").getChildBlocks());
+		new DiscoForm(null, this, null, data, sd.theStream, "register" + System.currentTimeMillis(), "query").fetchMediaElements(data.getChildBlock("query").getChildBlocks());
     }
 
     public void registrationFailed(String errorText) {
 	splash.setProgress(errorText, 100);
 	VirtualCanvas.getInstance().show(splash);
-	theStream.close();
+	sd.theStream.close();
     }
 
     // TODO: fix this shit
@@ -184,7 +186,7 @@ public class AccountRegister
 	String success = SR.MS_DONE;
 	splash.setProgress(success, 100);
 	VirtualCanvas.getInstance().show(splash);
-	theStream.close();
+	sd.theStream.close();
     }
 
     public void dispatcherException(Exception e, JabberDataBlock data) {
