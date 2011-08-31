@@ -26,12 +26,16 @@
  */
 
 package ui;
-//#ifndef NOMMEDIA
+//#if !(android)
 import java.io.InputStream;
 import javax.microedition.media.Manager;
 import javax.microedition.media.Player;
 import javax.microedition.media.PlayerListener;
 import javax.microedition.media.control.VolumeControl;
+//#else
+//# import android.content.res.AssetFileDescriptor;
+//# import android.media.MediaPlayer;
+//# import org.bombusmod.BombusModActivity;
 //#endif
 
 import io.file.InternalResource;
@@ -41,8 +45,10 @@ import io.file.InternalResource;
  * @author Eugene Stahov
  */
 public class EventNotify 
-//#ifndef NOMMEDIA
+//#if !(android)
         implements Runnable, PlayerListener
+//#else
+//#             implements MediaPlayer.OnCompletionListener 
 //#endif
 {
     
@@ -52,8 +58,10 @@ public class EventNotify
     private String soundType;
     
     
-//#ifndef NOMMEDIA
+//#if !(android)
     private static Player player;
+//#else 
+//#         private static MediaPlayer player;
 //#endif
     
     private final static String tone="A6E6J6";
@@ -81,7 +89,7 @@ public class EventNotify
     public void startNotify (){
         release();
         //try { if (flashBackLight) display.flashBacklight(1000); } catch (Exception e2) { /* e.printStackTrace(); */}
-//#ifndef NOMMEDIA
+//#if !(android)
         if (soundName!=null) {
             try {
                 InputStream is = InternalResource.getResourceAsStream(soundName);
@@ -99,18 +107,34 @@ public class EventNotify
                 player.start();
             } catch (Exception e) { }
         }
+//#else
+//#         if (soundName != null) {
+//#             try {
+//#                 System.out.println("Sound: " + soundName);
+//#                 AssetFileDescriptor afd = BombusModActivity.getInstance().getAssets().openFd(soundName.substring(1));
+//#                 player = new MediaPlayer();
+//#                 player.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
+//#                 player.prepare();
+//#                 player.setOnCompletionListener(this);
+//#                 player.start();
+//#             } catch (Exception e) {
+//#ifdef DEBUG
+//#                 e.printStackTrace();
+//#endif                
+//#             }
+//#         }
 //#endif
 
         if (vibraLength>0) {
             midlet.BombusMod.getInstance().getDisplay().vibrate(vibraLength);
         }
-//#ifndef NOMMEDIA
+//#if !(android)
 	if (toneSequence)
             new Thread(this).start();
 //#endif
     }
 
-//#ifndef NOMMEDIA
+//#if !(android)
     public void run(){
         try {
             for (int i=0; i<tone.length(); ) {
@@ -123,17 +147,27 @@ public class EventNotify
     }
 //#endif
     public synchronized void release(){
-//#ifndef NOMMEDIA
+//#if !(android)
         if (player!=null) {
 	    player.removePlayerListener(this);
 	    player.close();
 	}
         player=null;
+//#else
+//#         if (player != null)
+//#             player.release();
 //#endif
     }
-//#ifndef NOMMEDIA
+//#if !(android)
     public void playerUpdate(Player player, String string, Object object) {
 	if (string.equals(PlayerListener.END_OF_MEDIA)) {    release(); }
     }
+//#else
+//#     @Override
+//#     public void onCompletion(MediaPlayer mp) {
+//#         // TODO Auto-generated method stub
+//#         mp.release();
+//#     }
+//# 
 //#endif
 }
