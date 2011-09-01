@@ -29,17 +29,17 @@ package Client;
 import Alerts.AlertProfile;
 import images.RosterIcons;
 //#ifdef SMILES
-import images.SmilesIcons;
+//# import images.SmilesIcons;
 //#endif
 //#ifdef FILE_IO
-import io.file.FileIO;
+//# import io.file.FileIO;
 //#endif
 import java.io.*;
 import java.util.*;
 import midlet.BombusMod;
 import Fonts.FontCache;
 //#ifdef CLIENTS_ICONS
-import images.ClientsIcons;
+//# import images.ClientsIcons;
 //#endif
 import util.StringLoader;
 import ui.Time;
@@ -75,7 +75,7 @@ public class Config {
     public final static int NOKIA_9XXX = 10;
     public final static int SONYE_M600 = 11;
 //#if !ZLIB
-//#     public final static int XENIUM99=12;
+    public final static int XENIUM99=12;
 //#endif
     public final static int SAMSUNG = 14;
     public final static int LG = 15;
@@ -111,7 +111,7 @@ public class Config {
     public static boolean fullscreen = true;
     public int def_profile = 0;
 //#ifdef SMILES
-    public boolean smiles = true;
+//#     public boolean smiles = true;
 //#endif
     public boolean showTransports = true;
     public boolean selfContact = false;
@@ -171,7 +171,7 @@ public class Config {
 //#endif
     public boolean autoScroll = true;
 //#ifdef POPUPS
-    public boolean popUps = true;
+//#     public boolean popUps = true;
 //#endif
     public boolean showResources = true;
     public boolean saveHistory = false;
@@ -214,7 +214,7 @@ public class Config {
 //#     public boolean autoDeTranslit=false;
 //#endif
 //#ifdef CLIENTS_ICONS
-    public boolean showClientIcon = true;
+//#     public boolean showClientIcon = true;
 //#endif
     public int reconnectCount = 10;
     public int reconnectTime = 15;
@@ -256,14 +256,14 @@ public class Config {
         RosterIcons.getInstance();
         
 //#ifdef SMILES
-        if (smiles) {
-            SmilesIcons.getInstance();
-        }
+//#         if (smiles) {
+//#             SmilesIcons.getInstance();
+//#         }
 //#endif
 //#ifdef CLIENTS_ICONS
-            if (showClientIcon) {
-                ClientsIcons.getInstance();
-            }
+//#             if (showClientIcon) {
+//#                 ClientsIcons.getInstance();
+//#             }
 //#endif
 
         System.gc();
@@ -282,11 +282,13 @@ public class Config {
             case MOTO:
                 ghostMotor = true;
                 istreamWaiting = true;
+            case MICROEMU:
+                minItemHeight *=2;
                 break;            
 //#if !ZLIB
-//#             case XENIUM99:
-//#                 istreamWaiting=false; //is it critical for phillips xenium?
-//#                 break;
+            case XENIUM99:
+                istreamWaiting=false; //is it critical for phillips xenium?
+                break;
 //#endif
         }
         loadFromStorage();
@@ -309,9 +311,9 @@ public class Config {
             fullscreen = inputStream.readBoolean();
             def_profile = inputStream.readInt() % 4;
 //#ifdef SMILES
-            smiles = inputStream.readBoolean();
+//#             smiles = inputStream.readBoolean();
 //#else
-//#             inputStream.readBoolean();
+            inputStream.readBoolean();
 //#endif
             showTransports = inputStream.readBoolean();
             selfContact = inputStream.readBoolean();
@@ -397,9 +399,9 @@ public class Config {
 //#endif
             autoScroll = inputStream.readBoolean();
 //#ifdef POPUPS
-            popUps = inputStream.readBoolean();
+//#             popUps = inputStream.readBoolean();
 //#else
-//#             inputStream.readBoolean();
+            inputStream.readBoolean();
 //#endif
             showResources = inputStream.readBoolean();
 
@@ -466,9 +468,9 @@ public class Config {
             inputStream.readBoolean();
 //#endif
 //#ifdef CLIENTS_ICONS
-            showClientIcon = inputStream.readBoolean();
+//#             showClientIcon = inputStream.readBoolean();
 //#else
-//#             inputStream.readBoolean();
+            inputStream.readBoolean();
 //#endif
 
             reconnectCount = inputStream.readInt();
@@ -502,9 +504,9 @@ public class Config {
             inputStream.readBoolean();
 //#endif
 //#ifdef PRIVACY
-            useQuickPrivacy = inputStream.readBoolean();            
+//#             useQuickPrivacy = inputStream.readBoolean();            
 //#else
-//#         inputStream.readBoolean();
+        inputStream.readBoolean();
 //#endif
             minItemHeight = inputStream.readInt();
 
@@ -574,9 +576,9 @@ public class Config {
             outputStream.writeBoolean(fullscreen);
             outputStream.writeInt(def_profile);
 //#ifdef SMILES
-            outputStream.writeBoolean(smiles);
+//#             outputStream.writeBoolean(smiles);
 //#else
-//#             outputStream.writeBoolean(false);
+            outputStream.writeBoolean(false);
 //#endif
             outputStream.writeBoolean(showTransports);
             outputStream.writeBoolean(selfContact);
@@ -662,9 +664,9 @@ public class Config {
 //#endif
             outputStream.writeBoolean(autoScroll);
 //#ifdef POPUPS
-            outputStream.writeBoolean(popUps);
+//#             outputStream.writeBoolean(popUps);
 //#else
-//#             outputStream.writeBoolean(false);
+            outputStream.writeBoolean(false);
 //#endif
             outputStream.writeBoolean(showResources);
 
@@ -731,9 +733,9 @@ public class Config {
             outputStream.writeBoolean(false);
 //#endif
 //#ifdef CLIENTS_ICONS
-            outputStream.writeBoolean(showClientIcon);
+//#             outputStream.writeBoolean(showClientIcon);
 //#else
-//#             outputStream.writeBoolean(false);
+            outputStream.writeBoolean(false);
 //#endif
 
             outputStream.writeInt(reconnectCount);
@@ -768,15 +770,15 @@ public class Config {
             outputStream.writeBoolean(false);
 //#endif
 //#ifdef PRIVACY
-            outputStream.writeBoolean(useQuickPrivacy);            
+//#             outputStream.writeBoolean(useQuickPrivacy);            
 //#else
-//#         outputStream.writeBoolean(false);
+        outputStream.writeBoolean(false);
 //#endif             
         outputStream.writeInt(minItemHeight);
 
         } catch (IOException e) {
 //#ifdef DEBUG
-            e.printStackTrace();
+//#             e.printStackTrace();
 //#endif
         }
 
@@ -826,9 +828,9 @@ public class Config {
 
                 return;
 //#if !ZLIB
-//#             } else if (platform.indexOf("9@9")>-1) {
-//#                 phoneManufacturer=XENIUM99;
-//#                 return;
+            } else if (platform.indexOf("9@9")>-1) {
+                phoneManufacturer=XENIUM99;
+                return;
 //#endif
             } else if (platform.startsWith("Windows")) {
                 phoneManufacturer = WINDOWS;
@@ -875,10 +877,10 @@ public class Config {
             } else if (platform.startsWith("Jbed")) {
                 phoneManufacturer = JBED;
 //#ifdef FILE_IO
-                try {
-                    FileIO f = FileIO.createConnection("");
-                } catch (Exception ex) {
-                }
+//#                 try {
+//#                     FileIO f = FileIO.createConnection("");
+//#                 } catch (Exception ex) {
+//#                 }
 //#endif
                 return;
             } else if (platform.indexOf("Android") > 0) {

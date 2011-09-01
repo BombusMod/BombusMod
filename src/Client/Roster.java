@@ -943,7 +943,7 @@ public class Roster
         }
 
         // reconnect if disconnected
-        if (myStatus != Presence.PRESENCE_OFFLINE && sd.theStream == null) {
+        if (myStatus != Presence.PRESENCE_OFFLINE && !isLoggedIn()) {
             synchronized (hContacts) {
                 doReconnect = (hContacts.size() > 1);
             }
@@ -2254,6 +2254,7 @@ public class Roster
                     mess = sl.getStatus(Presence.PRESENCE_OFFLINE).getMessage();
                 }
                 sendPresence(Presence.PRESENCE_OFFLINE, mess);
+                sd.theStream.loggedIn = false;
             } catch (Exception e) {
             }
         }
