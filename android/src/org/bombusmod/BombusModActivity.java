@@ -66,6 +66,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.SubMenu;
 import android.view.Window;
+import android.media.AudioManager;
 
 import org.microemu.android.MicroEmulatorActivity;
 import android.content.Intent;
@@ -93,6 +94,8 @@ public class BombusModActivity extends MicroEmulatorActivity {
         instance = this;
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+	setVolumeControlStream(AudioManager.STREAM_MUSIC); 
 
         Logger.removeAllAppenders();
         Logger.setLocationEnabled(false);
