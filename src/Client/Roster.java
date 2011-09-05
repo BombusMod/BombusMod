@@ -983,6 +983,7 @@ public class Roster
         if (myStatus == Presence.PRESENCE_OFFLINE) {
             try {
                 sd.theStream.close(); // sends </stream:stream> and closes socket
+                sd.theStream.loggedIn = false;
             } catch (Exception e) { /*e.printStackTrace();*/ }
             makeRosterOffline();            
 //#ifdef AUTOSTATUS
