@@ -89,9 +89,13 @@ public class ClientsIconsData {
     
     public static void processData(Contact c, String data) {
 //#ifdef CLIENTS_ICONS
-        if (data == null) return;
-        c.client=getClientIDByCaps(data);
-        c.clientName=(c.client>-1)?getClientNameByID(c.client):"";
+//#         if (data == null) {
+//#             c.client = -1;
+//#             c.clientName = "";
+//#             return;
+//#         }
+//#         c.client=getClientIDByCaps(data);
+//#         c.clientName=(c.client>-1)?getClientNameByID(c.client):"";
 //#endif
     }
     

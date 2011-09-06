@@ -54,9 +54,8 @@ public class PresenceDispatcher implements JabberBlockListener {
                     try {
                         MucContact c = roster.mucContact(from);
 
-                        if (pr.getAttribute("ver") != null) {
-                            c.version = pr.getAttribute("ver"); // for bombusmod only
-                        }
+                        c.version = pr.getAttribute("ver"); // for bombusmod only
+                        
 //#ifdef CLIENTS_ICONS
 //#                         if (Config.getInstance().showClientIcon) {
 //#                             if (pr.hasEntityCaps()) {
@@ -65,17 +64,15 @@ public class PresenceDispatcher implements JabberBlockListener {
 //#                                 if (presenceVer != null) {
 //#                                     c.version = presenceVer;
 //#                                 }
+//#                             } else {
+//#                                 c.version = null;
 //#                             }
 //#                         }
 //# 
 //#endif
-                        String lang = pr.getAttribute("xml:lang");
+                        c.lang = pr.getAttribute("xml:lang");
 
-                        if (lang != null) {
-                            c.lang = lang;
-                        }
-                        lang = null;
-
+                        
                         c.statusString = pr.getStatus();
 
                         String chatPres = c.processPresence(xmuc, pr);
@@ -142,9 +139,7 @@ public class PresenceDispatcher implements JabberBlockListener {
                         if (c == null) {
                             return JabberBlockListener.BLOCK_REJECTED; //drop not-in-list presence
                         }
-                        if (pr.getAttribute("ver") != null) {
-                            c.version = pr.getAttribute("ver");  // for bombusmod only
-                        }
+                        c.version = pr.getAttribute("ver");  // for bombusmod only
                         if (ti != Presence.PRESENCE_ERROR) {
 //#ifdef CLIENTS_ICONS
 //#                             if (cf.showClientIcon) {
