@@ -7,6 +7,7 @@ package xmpp;
 import Client.Config;
 import Client.Contact;
 import Client.Groups;
+import Client.Jid;
 import Client.Msg;
 import Client.NotInListFilter;
 import Client.Roster;
@@ -39,12 +40,12 @@ public class PresenceDispatcher implements JabberBlockListener {
 
                 Presence pr = (Presence) data;
 
-                String from = pr.getFrom();
+                Jid from = new Jid(pr.getFrom());
                 pr.dispathch();
                 int ti = pr.getTypeIndex();
 
                 //PresenceContact(from, ti);
-                Msg m = new Msg((ti == Presence.PRESENCE_AUTH || ti == Presence.PRESENCE_AUTH_ASK) ? Msg.MESSAGE_TYPE_AUTH : Msg.MESSAGE_TYPE_PRESENCE, from, null, pr.getPresenceTxt());
+                Msg m = new Msg((ti == Presence.PRESENCE_AUTH || ti == Presence.PRESENCE_AUTH_ASK) ? Msg.MESSAGE_TYPE_AUTH : Msg.MESSAGE_TYPE_PRESENCE, from.toString(), null, pr.getPresenceTxt());
 //#ifndef WMUC
                 JabberDataBlock xmuc = pr.findNamespace("x", "http://jabber.org/protocol/muc#user");
                 if (xmuc == null) {
@@ -52,7 +53,7 @@ public class PresenceDispatcher implements JabberBlockListener {
                 }
                 if (xmuc != null) {
                     try {
-                        MucContact c = roster.mucContact(from);
+                        MucContact c = roster.mucContact(from.toString());
 
                         c.version = pr.getAttribute("ver"); // for bombusmod only
                         
@@ -82,14 +83,10 @@ public class PresenceDispatcher implements JabberBlockListener {
                                 || chatPres.indexOf(SR.MS_WAS_BANNED) > -1
                                 || chatPres.indexOf(SR.MS_WAS_KICKED) > -1
                                 || (type != null && type.equals("error"))) {
-                            int rp = from.indexOf('/');
 
-                            String name = from.substring(rp + 1);
-
-                            Msg chatPresence = new Msg(Msg.MESSAGE_TYPE_PRESENCE, name, null, chatPres);
+                            Msg chatPresence = new Msg(Msg.MESSAGE_TYPE_PRESENCE, from.getResource(), null, chatPres); // muc nick
                             chatPresence.color = c.getMainColor();
-                            roster.messageStore(roster.getContact(from.substring(0, rp), false), chatPresence);
-                            name = null;
+                            roster.messageStore(roster.getContact(from.getBareJid(), false), chatPresence); // muc jid
                         }
 
                         chatPres = null;
@@ -119,22 +116,22 @@ public class PresenceDispatcher implements JabberBlockListener {
 //#                             System.out.print(from);
 //#                             System.out.println(": decline subscription");
 //#endif
-                            roster.sendPresence(from, "unsubscribed", null, false);
+                            roster.sendPresence(from.getBareJid(), "unsubscribed", null, false);
                             return JabberBlockListener.BLOCK_PROCESSED;
                         }
 
-                        c = roster.getContact(from, true);
+                        c = roster.getContact(from.toString(), true);
 
                         if (cf.autoSubscribe != Config.SUBSCR_AUTO) {
                             roster.messageStore(c, m);
                         } else {
-                            roster.doSubscribe(c);
+                            roster.storeContact(c, true);
                         }
 
                     } else {
                         // processing presences
                         boolean enNIL = cf.notInListDropLevel > NotInListFilter.DROP_PRESENCES;
-                        c = roster.getContact(from, enNIL);
+                        c = roster.getContact(from.toString(), enNIL);
 
                         if (c == null) {
                             return JabberBlockListener.BLOCK_REJECTED; //drop not-in-list presence
@@ -193,12 +190,12 @@ public class PresenceDispatcher implements JabberBlockListener {
                         JabberDataBlock nick = pr.findNamespace("nick", "http://jabber.org/protocol/nick");
                         if (nick != null) {
                             c.nick = nick.getText();
-                            roster.storeContact(from, c.nick, c.group.name, false);
+                            roster.storeContact(c, false);
                         } else {
                             nick = pr.getChildBlockChild("nickname"); // PyICQ-t workaround
                             if (nick != null) {
                                 c.nick = nick.getText();
-                                roster.storeContact(from, c.nick, c.group.name, false);
+                                roster.storeContact(c, false);
                             }
                         }
                     }

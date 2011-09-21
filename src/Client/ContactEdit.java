@@ -214,8 +214,10 @@ public final class ContactEdit
                 jidBuf.append('@').append((String) tTranspList.items.elementAt(tTranspList.getSelectedIndex()));
                 jid = jidBuf.toString();
             }
-            if (!new Jid(jid).getBareJid().equals(StaticData.getInstance().roster.selfContact().bareJid)) {
-                sd.roster.storeContact(jid, name, group, ask);
+            Jid newJid = new Jid(jid);
+            if (!newJid.getBareJid().equals(StaticData.getInstance().roster.selfContact().bareJid)) {
+                Contact c = sd.roster.getContact(newJid.getBareJid(), true);
+                sd.roster.storeContact(c, ask);
             }
             destroyView();
         }

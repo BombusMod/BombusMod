@@ -52,14 +52,15 @@ public class RosterDispatcher implements JabberBlockListener {
     Config cf = Config.getInstance();
 
     /** add to roster*/
-    public static Iq QueryRoster(String jid, String name, String group, String subscription) {
+    public static Iq QueryRoster(Jid jid, String name, String group, String subscription) {
         Iq result = new Iq(null, Iq.TYPE_SET, "addros");
         JabberDataBlock qB = result.addChildNs("query", NS_ROSTER);
         JabberDataBlock item = qB.addChild("item", null);
-        item.setAttribute("jid", jid);
+        item.setAttribute("jid", jid.getBareJid());
         if (name != null) {
             item.setAttribute("name", name);
         }
+        if (subscription != null)
         item.setAttribute("subscription", subscription);
         if (group != null) {
             item.addChild("group", group);

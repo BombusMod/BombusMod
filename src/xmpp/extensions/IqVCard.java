@@ -69,7 +69,7 @@ public class IqVCard implements JabberBlockListener
 
                         String group=(c.getGroupType()==Groups.TYPE_NO_GROUP)? null: c.group.name;
                         if (nick!=null)  
-                            StaticData.getInstance().roster.storeContact(from,nick,group, false);
+                            StaticData.getInstance().roster.storeContact(c, false);
                         //updateContact( nick, c.rosterJid, group, c.subscr, c.ask_subscribe);
                         StaticData.getInstance().roster.sendVCardReq();
                         return JabberBlockListener.BLOCK_PROCESSED;

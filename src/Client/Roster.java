@@ -1273,8 +1273,8 @@ public class Roster
 //#                     grpType==Groups.TYPE_VISIBLE || grpType==Groups.TYPE_VIP ||
 //#                     grpType==Groups.TYPE_IGNORE)) {
 //#                 String jid=k.getJid().toString();
-//#                 jid=StringUtils.stringReplace(jid, srcTransport, dstTransport);
-//#                 storeContact(jid, k.nick, (!k.group.name.equals(SR.MS_GENERAL))?(k.group.name):"", true); //new contact addition
+//#                 k.jid.setJid(StringUtils.stringReplace(jid, srcTransport, dstTransport));
+//#                 storeContact(k, true); //new contact addition
 //#                 try {
 //#                     Thread.sleep(300);
 //#                 } catch (Exception ex) { }
@@ -2554,7 +2554,7 @@ public class Roster
                 countNewMsgs();
                 reEnumRoster();
             } else {
-                sd.theStream.send(RosterDispatcher.QueryRoster(c.bareJid, null, null, "remove"));
+                sd.theStream.send(RosterDispatcher.QueryRoster(c.jid, null, null, "remove"));
 
                 sendPresence(c.bareJid, "unsubscribe", null, false);
                 sendPresence(c.bareJid, "unsubscribed", null, false);
@@ -2567,10 +2567,10 @@ public class Roster
         updateMainBar();
     }
 
-    public void storeContact(String jid, String name, String group, boolean askSubscribe) {
-        sd.theStream.send(RosterDispatcher.QueryRoster(jid, name, group, null));
+    public void storeContact(Contact c, boolean askSubscribe) {
+        sd.theStream.send(RosterDispatcher.QueryRoster(c.getJid(), c.nick, c.group == null ? null : c.group.name, null));
         if (askSubscribe) {
-            sd.theStream.send(new Presence(jid, "subscribe"));
+            sd.theStream.send(new Presence(c.jid.getBareJid(), "subscribe"));
         }
     }
 

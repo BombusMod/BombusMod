@@ -2,8 +2,8 @@ package io.file;
 
 import java.io.InputStream;
 //#if android
-import org.bombusmod.BombusModActivity;
-import java.io.IOException;
+//# import org.bombusmod.BombusModActivity;
+//# import java.io.IOException;
 //#else
 import midlet.BombusMod;
 //#endif
@@ -17,10 +17,10 @@ public class InternalResource {
         InputStream in = null;
 
 //#if android
-        try {
-            in = BombusModActivity.getInstance().getAssets().open(resource.substring(1));
-        } catch (IOException e) {
-        }
+//#         try {
+//#             in = BombusModActivity.getInstance().getAssets().open(resource.substring(1));
+//#         } catch (IOException e) {
+//#         }
 //#else
     	in = BombusMod.getInstance().getClass().getResourceAsStream(resource);
 //#endif
