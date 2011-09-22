@@ -202,9 +202,9 @@ public final class ContactEdit
 //#endif                                                        
             
 
-/*            if (group.equals(SR.MS_GENERAL)) {
+            if (group.equals(SR.MS_GENERAL)) {
                 group = "";
-            }               */
+            }               
 
             int at = jid.indexOf('@');
             if (at < 0 && tTranspList.getSelectedIndex() != tTranspList.size() - 1) {
@@ -217,6 +217,7 @@ public final class ContactEdit
             Jid newJid = new Jid(jid);
             if (!newJid.getBareJid().equals(StaticData.getInstance().roster.selfContact().bareJid)) {
                 Contact c = sd.roster.getContact(newJid.getBareJid(), true);
+		c.group = group;
                 sd.roster.storeContact(c, ask);
             }
             destroyView();
