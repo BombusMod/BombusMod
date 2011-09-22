@@ -217,7 +217,11 @@ public final class ContactEdit
             Jid newJid = new Jid(jid);
             if (!newJid.getBareJid().equals(StaticData.getInstance().roster.selfContact().bareJid)) {
                 Contact c = sd.roster.getContact(newJid.getBareJid(), true);
-		c.group = group;
+                Group grp = sd.roster.groups.getGroup(group);
+                    if (grp == null) {
+                        grp = sd.roster.groups.addGroup(group, Groups.TYPE_COMMON);
+                    }
+		c.group = grp;
                 sd.roster.storeContact(c, ask);
             }
             destroyView();
