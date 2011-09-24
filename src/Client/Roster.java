@@ -321,7 +321,7 @@ public class Roster
         }
         if (sd.account != null) {
             myJid = new Jid(sd.account.getJid());
-            updateContact(sd.account.getNick(), myJid.getBareJid(), SR.MS_SELF_CONTACT, "self", false);
+            updateContact(sd.account.getNick(), myJid.bareJid, SR.MS_SELF_CONTACT, "self", false);
         }
     }
 
@@ -750,22 +750,19 @@ public class Roster
         return grp;
     }
 
-    public final MucContact mucContact(String from) {
+    public final MucContact mucContact(Jid from) {
         // muc message
-        int ri = from.indexOf('@');
-        int rp = from.indexOf('/');
-        String room = from.substring(0, ri);
-        String roomJid = from.substring(0, rp).toLowerCase();
+        String roomJid = from.bareJid;
 
         ConferenceGroup grp = groups.getConfGroup(new Jid(roomJid));
 
         if (grp == null) {
             return null; // we are not joined this room
         }
-        MucContact c = findMucContact(new Jid(from));
+        MucContact c = findMucContact(from);
 
         if (c == null) {
-            c = new MucContact(from.substring(rp + 1), from);
+            c = new MucContact(from.resource.substring(1), from.toString());
             addContact(c);
             c.origin = Contact.ORIGIN_GC_MEMBER;
         }
@@ -790,7 +787,7 @@ public class Roster
                 return null;
             }
             c = new Contact(null, jid, Presence.PRESENCE_OFFLINE, "none"); /*"not-in-list"*/
-            c.bareJid = J.getBareJid();
+            c.bareJid = J.bareJid;
             c.origin = Contact.ORIGIN_PRESENCE;
             c.group = groups.getGroup(Groups.TYPE_NOT_IN_LIST);
             addContact(c);
@@ -1420,7 +1417,7 @@ public class Roster
                 int mType = Msg.MESSAGE_TYPE_IN;
                 
                 if (groupchat) {
-                    if (from.equals(groups.getConfGroup(new Jid(from)).jid.getBareJid())) {
+                    if (from.equals(groups.getConfGroup(new Jid(from)).jid.bareJid)) {
                         mType = Msg.MESSAGE_TYPE_SYSTEM;
                     }
                     start_me = 0;
@@ -2570,7 +2567,7 @@ public class Roster
     public void storeContact(Contact c, boolean askSubscribe) {
         sd.theStream.send(RosterDispatcher.QueryRoster(c.getJid(), c.nick, c.group == null ? null : c.group.name, null));
         if (askSubscribe) {
-            sd.theStream.send(new Presence(c.jid.getBareJid(), "subscribe"));
+            sd.theStream.send(new Presence(c.jid.bareJid, "subscribe"));
         }
     }
 

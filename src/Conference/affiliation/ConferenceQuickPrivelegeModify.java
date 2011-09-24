@@ -83,7 +83,7 @@ public class ConferenceQuickPrivelegeModify {
     }
 
     public final void setMucMod() {
-        JabberDataBlock iq = new Iq(victim.jid.getBareJid(), Iq.TYPE_SET, "itemmuc");
+        JabberDataBlock iq = new Iq(victim.jid.bareJid, Iq.TYPE_SET, "itemmuc");
         JabberDataBlock query = iq.addChildNs("query", "http://jabber.org/protocol/muc#admin");
         //TODO: separate usecases to muc#owner, muc#admin and muc#moderator
         JabberDataBlock item = new JabberDataBlock("item", null, null);
@@ -113,7 +113,7 @@ public class ConferenceQuickPrivelegeModify {
 
             case OUTCAST:
                 item.setAttribute("affiliation", "outcast");
-                item.setAttribute("jid", victim.realJid);
+                item.setAttribute("jid", victim.realJid.toString());
                 break;
 
             case PARTICIPANT:
@@ -133,22 +133,22 @@ public class ConferenceQuickPrivelegeModify {
 
             case MEMBER:
                 item.setAttribute("affiliation", "member");
-                item.setAttribute("jid", victim.realJid);
+                item.setAttribute("jid", victim.realJid.toString());
                 break;
 
             case NONE:
                 item.setAttribute("affiliation", "none");
-                item.setAttribute("jid", victim.realJid);
+                item.setAttribute("jid", victim.realJid.toString());
                 break;
 
             case ADMIN:
                 item.setAttribute("affiliation", "admin");
-                item.setAttribute("jid", victim.realJid);
+                item.setAttribute("jid", victim.realJid.toString());
                 break;
 
             case OWNER:
                 item.setAttribute("affiliation", "owner");
-                item.setAttribute("jid", victim.realJid);
+                item.setAttribute("jid", victim.realJid.toString());
 
         }
         //System.out.println(iq);

@@ -100,7 +100,7 @@ public class QuickPrivacy extends DefForm implements JabberBlockListener {
         PrivacyItem item3 = new PrivacyItem();
         item3.action = PrivacyItem.ITEM_ALLOW;
         item3.type = PrivacyItem.ITEM_JID;
-        item3.value = StaticData.getInstance().roster.myJid.getBareJid();
+        item3.value = StaticData.getInstance().roster.myJid.bareJid;
         item3.order = 0;
         qList.addChild(item3.constructBlock());
         if (conferenceList != null) {

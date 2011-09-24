@@ -576,7 +576,7 @@ public class RosterItemActions extends Menu {
 //#                     case 892: //Copy JID
 //#                         try {
 //#                             if (mc.realJid!=null)
-//#                                 clipboard.setClipBoard(mc.realJid);
+//#                                 clipboard.setClipBoard(mc.realJid.toString());
 //#                         } catch (Exception e) {}
 //#                         break;
 //#endif

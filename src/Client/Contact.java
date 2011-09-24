@@ -484,7 +484,7 @@ public class Contact extends IconTextElement {
     }
 
     public String getResource() {
-        return jid.getResource();
+        return jid.resource;
     }
 
     public String getNickJid() {
@@ -562,7 +562,7 @@ public class Contact extends IconTextElement {
             }
         } else {
 //#endif
-            mess.append("jid: ").append(bareJid).append(jid.getResource()).append("\n").append(SR.MS_SUBSCRIPTION).append(": ").append(subscr);
+            mess.append("jid: ").append(bareJid).append(jid.resource).append("\n").append(SR.MS_SUBSCRIPTION).append(": ").append(subscr);
 //#ifdef PEP
 //#             if (hasMood()) {
 //#                 mess.append("\n").append(SR.MS_USERMOOD).append(": ").append(getMoodString());
@@ -693,7 +693,7 @@ public class Contact extends IconTextElement {
 
     public String getFirstString() {
         if (!cf.showResources) {
-            return (nick == null) ? jid.getBareJid() : nick;
+            return (nick == null) ? jid.bareJid : nick;
         }
         if (origin > ORIGIN_GROUPCHAT) {
             return nick;
@@ -702,7 +702,7 @@ public class Contact extends IconTextElement {
             return getJid().toString();
         }
 
-        return (nick == null) ? getJid().toString() : nick + jid.getResource();
+        return (nick == null) ? getJid().toString() : nick + jid.resource;
     }
 
     public String getSecondString() {

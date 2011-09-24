@@ -78,7 +78,7 @@ public final class ContactEdit
             Contact ct = (Contact) e.nextElement();
             Jid transpJid = ct.jid;
             if (transpJid.isTransport()) {
-                tTranspList.add(transpJid.getBareJid());
+                tTranspList.add(transpJid.bareJid);
             }
         }
         tTranspList.add(SR.MS_OTHER);
@@ -90,7 +90,7 @@ public final class ContactEdit
             String jid;
 //#ifndef WMUC
             if (c instanceof MucContact) {
-                jid = Jid.toBareJid(((MucContact) c).realJid);
+                jid = ((MucContact) c).realJid.bareJid;
             } else {
 //#endif
                 jid = c.bareJid;
@@ -215,8 +215,8 @@ public final class ContactEdit
                 jid = jidBuf.toString();
             }
             Jid newJid = new Jid(jid);
-            if (!newJid.getBareJid().equals(StaticData.getInstance().roster.selfContact().bareJid)) {
-                Contact c = sd.roster.getContact(newJid.getBareJid(), true);
+            if (!newJid.bareJid.equals(StaticData.getInstance().roster.selfContact().bareJid)) {
+                Contact c = sd.roster.getContact(newJid.bareJid, true);
                 Group grp = sd.roster.groups.getGroup(group);
                     if (grp == null) {
                         grp = sd.roster.groups.addGroup(group, Groups.TYPE_COMMON);

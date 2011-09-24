@@ -78,7 +78,7 @@ public class IqVCard implements JabberBlockListener
                         int index = id.indexOf(data.getAttribute("from"));
                         String matchedjid = id.substring(index, id.length());
                         String vcardFrom = data.getAttribute("from");
-                        if (!(vcardFrom.equals(matchedjid) || vcardFrom.equals(new Jid(matchedjid).getBareJid())))
+                        if (!(vcardFrom.equals(matchedjid) || vcardFrom.equals(new Jid(matchedjid).bareJid)))
                             return JabberBlockListener.BLOCK_REJECTED;
                          if (type.equals("error")) {
                              StaticData.getInstance().roster.setQuerySign(false);

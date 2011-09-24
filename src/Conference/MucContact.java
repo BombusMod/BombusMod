@@ -28,13 +28,13 @@
 package Conference;
 
 import Client.Contact;
+import Client.Jid;
 import Client.StaticData;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Presence;
 import images.RosterIcons;
 import locale.SR;
 import Client.Msg;
-import Messages.MessageItem;
 import util.StringUtils;
 
 /**
@@ -58,7 +58,7 @@ public class MucContact extends Contact {
     public final static short GROUP_PARTICIPANT=2;
     public final static short GROUP_MODERATOR=1;
 
-    public String realJid;
+    public Jid realJid;
     
     public String affiliation;
     public String role;
@@ -137,7 +137,7 @@ public class MucContact extends Contact {
         Msg.appendNick(b,nick);
         
         String statusText=presence.getChildBlockText("status");
-        String tempRealJid=item.getAttribute("jid");
+        Jid tempRealJid=new Jid(item.getAttribute("jid"));
 
         if (statusCode==201) {
             //todo: fix this nasty hack, it will not work if multiple status codes are nested in presence)

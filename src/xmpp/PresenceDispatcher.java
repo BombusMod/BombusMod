@@ -53,7 +53,7 @@ public class PresenceDispatcher implements JabberBlockListener {
                 }
                 if (xmuc != null) {
                     try {
-                        MucContact c = roster.mucContact(from.toString());
+                        MucContact c = roster.mucContact(from);
 
                         c.version = pr.getAttribute("ver"); // for bombusmod only
                         
@@ -84,9 +84,9 @@ public class PresenceDispatcher implements JabberBlockListener {
                                 || chatPres.indexOf(SR.MS_WAS_KICKED) > -1
                                 || (type != null && type.equals("error"))) {
 
-                            Msg chatPresence = new Msg(Msg.MESSAGE_TYPE_PRESENCE, from.getResource(), null, chatPres); // muc nick
+                            Msg chatPresence = new Msg(Msg.MESSAGE_TYPE_PRESENCE, from.resource, null, chatPres); // muc nick
                             chatPresence.color = c.getMainColor();
-                            roster.messageStore(roster.getContact(from.getBareJid(), false), chatPresence); // muc jid
+                            roster.messageStore(roster.getContact(from.bareJid, false), chatPresence); // muc jid
                         }
 
                         chatPres = null;
@@ -116,7 +116,7 @@ public class PresenceDispatcher implements JabberBlockListener {
 //#                             System.out.print(from);
 //#                             System.out.println(": decline subscription");
 //#endif
-                            roster.sendPresence(from.getBareJid(), "unsubscribed", null, false);
+                            roster.sendPresence(from.bareJid, "unsubscribed", null, false);
                             return JabberBlockListener.BLOCK_PROCESSED;
                         }
 

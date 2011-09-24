@@ -35,8 +35,8 @@ import util.Strconv;
  */
 public class Jid {
     
-    private String bareJid;
-    private String resource;
+    public String bareJid;
+    public String resource;
     
     /** Creates a new instance of Jid
      * @param s 
@@ -118,17 +118,11 @@ public class Jid {
         }
     }
 
-    public String getResource(){ return resource; }
-
-    public String getBareJid(){ return bareJid; }
-
     public String toString(){
         if (resource.length()==0) return bareJid;
         return bareJid+resource;
     }
-    
-    public static String toBareJid(String jid) { return new Jid(jid).getBareJid(); }
-    
+        
     /** returns server of the JID
      * @return
      */
