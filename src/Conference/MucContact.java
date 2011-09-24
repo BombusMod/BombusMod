@@ -137,7 +137,8 @@ public class MucContact extends Contact {
         Msg.appendNick(b,nick);
         
         String statusText=presence.getChildBlockText("status");
-        Jid tempRealJid=new Jid(item.getAttribute("jid"));
+        String aJid = item.getAttribute("jid");
+        Jid tempRealJid = aJid == null ? null : new Jid(aJid);
 
         if (statusCode==201) {
             //todo: fix this nasty hack, it will not work if multiple status codes are nested in presence)
