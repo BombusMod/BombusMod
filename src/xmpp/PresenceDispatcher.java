@@ -122,10 +122,10 @@ public class PresenceDispatcher implements JabberBlockListener {
 
                         c = roster.getContact(from.toString(), true);
 
-                        if (cf.autoSubscribe != Config.SUBSCR_AUTO) {
-                            roster.messageStore(c, m);
-                        } else {
+                        if (cf.autoSubscribe == Config.SUBSCR_AUTO || c.jid.belongsToTransport()) {
                             roster.storeContact(c, true);
+                        } else {
+                            roster.messageStore(c, m);                            
                         }
 
                     } else {

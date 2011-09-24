@@ -103,6 +103,16 @@ public class Jid {
         if (bareJid.length() == 0) return false;
         return bareJid.indexOf('@')==-1;
     }
+    
+    public boolean belongsToTransport() {
+        Jid j = new Jid(getServer());
+        Contact tr = StaticData.getInstance().roster.findContact(j, false);
+        if (tr != null) {
+            return j.bareJid.equals(tr.bareJid);
+        }
+        return false;
+    }
+    
 
     public boolean hasResource(){
         return (resource.length()!=0) ;

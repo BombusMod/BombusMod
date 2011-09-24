@@ -2567,7 +2567,7 @@ public class Roster
     public void storeContact(Contact c, boolean askSubscribe) {
         sd.theStream.send(RosterDispatcher.QueryRoster(c.getJid(), c.nick, c.group == null ? null : c.group.name, null));
         if (askSubscribe) {
-            sd.theStream.send(new Presence(c.jid.bareJid, "subscribe"));
+            doSubscribe(c);
         }
     }
 
