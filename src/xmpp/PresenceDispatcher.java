@@ -84,7 +84,7 @@ public class PresenceDispatcher implements JabberBlockListener {
                                 || chatPres.indexOf(SR.MS_WAS_KICKED) > -1
                                 || (type != null && type.equals("error"))) {
 
-                            Msg chatPresence = new Msg(Msg.MESSAGE_TYPE_PRESENCE, from.resource, null, chatPres); // muc nick
+                            Msg chatPresence = new Msg(Msg.MESSAGE_TYPE_PRESENCE, from.resource.substring(1), null, chatPres); // muc nick
                             chatPresence.color = c.getMainColor();
                             roster.messageStore(roster.getContact(from.bareJid, false), chatPresence); // muc jid
                         }
