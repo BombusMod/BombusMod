@@ -1,4 +1,21 @@
 //type	path	desc
 none		none
 tone		tone sequence
-audio/imelody	/sounds/vibra.imy	vibra.imy
+audio/mpeg	/sounds/Cackle.mp3	Cackle.mp3
+audio/mpeg	/sounds/ContactSignsIn.mp3	ContactSignsIn.mp3
+audio/mpeg	/sounds/hello-typewriter.mp3	hello-typewriter.mp3
+audio/mpeg	/sounds/IncomingFile.mp3	IncomingFile.mp3
+audio/mpeg	/sounds/IncomingIM.mp3	IncomingIM.mp3
+audio/mpeg	/sounds/IncomingCall.mp3	IncomingCall.mp3
+audio/mpeg	/sounds/ISignIn.mp3	ISignIn.mp3
+audio/mpeg	/sounds/kid.mp3	kid.mp3
+audio/mpeg	/sounds/System.mp3	System.mp3
+audio/mpeg	/sounds/tik-tak.mp3	tik-tak.mp3
+audio/mpeg	/sounds/zvon.mp3	zvon.mp3
+audio/mpeg	/sounds/composing.mp3	composing.mp3
+audio/mpeg	/sounds/email.mp3	email.mp3
+audio/mpeg	/sounds/locator.mp3	locator.mp3
+audio/mpeg	/sounds/message_01.mp3	message_01.mp3
+audio/mpeg	/sounds/message_02.mp3	message_02.mp3
+audio/mpeg	/sounds/message_03.mp3	message_03.mp3
+audio/mpeg	/sounds/pop.mp3	pop.mp3
