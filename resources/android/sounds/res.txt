@@ -1,6 +1,5 @@
 //type	path	desc
 none		none
-tone		tone sequence
 audio/mpeg	/sounds/Cackle.mp3	Cackle.mp3
 audio/mpeg	/sounds/ContactSignsIn.mp3	ContactSignsIn.mp3
 audio/mpeg	/sounds/hello-typewriter.mp3	hello-typewriter.mp3
