@@ -15,9 +15,15 @@ public abstract class Notification {
     private static Notificator notifier;
     public static Notificator getNotificator() {
         if (notifier == null) {
-            if (Config.getInstance().phoneManufacturer == Config.SONYE) {
-                notifier = new SEMCNotificator();
+//#if android
+//#             notifier = new AndroidNotification();
+//#else            
+            switch (Config.getInstance().phoneManufacturer) {                
+                case Config.SONYE:
+                    notifier = new SEMCNotificator();
+                    break;
             }
+//#endif            
         }
         return notifier;
     }
