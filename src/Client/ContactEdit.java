@@ -222,6 +222,7 @@ public final class ContactEdit
                         grp = sd.roster.groups.addGroup(group, Groups.TYPE_COMMON);
                     }
 		c.group = grp;
+                c.nick = name;
                 sd.roster.storeContact(c, ask);
             }
             destroyView();
