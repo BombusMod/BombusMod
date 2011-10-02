@@ -9,6 +9,7 @@
 
 package util;
 //#ifndef WMUC
+import Client.Msg;
 import Conference.ConferenceGroup;
 import Conference.MucContact;
 //#endif
@@ -122,12 +123,8 @@ public class StringUtils {
 
     public static Vector parseMessage(String value, int availWidth, Font font) {
         StringBuffer out=new StringBuffer(value);
-        int vi = 0;
-        while (vi<out.length()) {
-            if (out.charAt(vi)<0x03) out.deleteCharAt(vi);
-            else vi++;
-        }
-        value=out.toString();
+        
+        value = Msg.clearNick(out);
         
         Vector lines=new Vector();
         char[] valueChars = value.toCharArray();

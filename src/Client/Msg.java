@@ -174,12 +174,16 @@ public class Msg {
         if (Config.getInstance().hideTimestamps)
             out.append(toString());
         else
-            out.append(body);
-        int i=0;
-        while (i<out.length()) {
-            if (out.charAt(i)<0x03) out.deleteCharAt(i);
+            out.append(body);        
+        return clearNick(out);
+    }
+    
+    public static String clearNick(StringBuffer msgBuffer) {
+        int i = 0;
+        while (i<msgBuffer.length()) {
+            if (msgBuffer.charAt(i)<0x03) msgBuffer.deleteCharAt(i);
             else i++;
         }
-        return out.toString();
+        return msgBuffer.toString();
     }
 }

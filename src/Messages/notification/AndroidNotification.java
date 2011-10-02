@@ -19,6 +19,7 @@ package Messages.notification;
 //#                 long when = System.currentTimeMillis();
 //#                 int icon = R.drawable.app_icon;
 //#                 android.app.Notification notification = new android.app.Notification(icon, title, when);
+//#                 notification.flags |= android.app.Notification.FLAG_AUTO_CANCEL;
 //#                 Intent notificationIntent = new Intent(BombusModActivity.getInstance(), AndroidNotification.class);
 //#                 PendingIntent contentIntent = PendingIntent.getActivity(BombusModActivity.getInstance(), 0, notificationIntent, 0);
 //#                 notification.setLatestEventInfo(BombusModActivity.getInstance().getApplicationContext(), title, text, contentIntent);
