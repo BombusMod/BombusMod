@@ -7,7 +7,7 @@ package Messages.notification;
 //# import android.content.Intent;
 //# import org.bombusmod.BombusModActivity;
 //# import org.bombusmod.R;
-//# 
+//# import Client.Msg; 
 //# 
 //# public class AndroidNotification implements Notificator {
 //# 
@@ -22,7 +22,7 @@ package Messages.notification;
 //#                 notification.flags |= android.app.Notification.FLAG_AUTO_CANCEL;
 //#                 Intent notificationIntent = new Intent(BombusModActivity.getInstance(), AndroidNotification.class);
 //#                 PendingIntent contentIntent = PendingIntent.getActivity(BombusModActivity.getInstance(), 0, notificationIntent, 0);
-//#                 notification.setLatestEventInfo(BombusModActivity.getInstance().getApplicationContext(), title, text, contentIntent);
+//#                 notification.setLatestEventInfo(BombusModActivity.getInstance().getApplicationContext(), title, Msg.clearNick(new StringBuffer(text)), contentIntent);
 //#                 mNotificationManager.notify(NOTIFY_ID, notification);        
 //#     }
 //# }
