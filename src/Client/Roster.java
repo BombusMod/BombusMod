@@ -142,7 +142,7 @@ public class Roster
     public Contact activeContact = null;
     public Jid myJid;
     public int messageCount;
-    int highliteMessageCount;
+    public int highliteMessageCount;
     public Object transferIcon;
     public final Vector hContacts = new Vector();
     //private Vector vContacts;
