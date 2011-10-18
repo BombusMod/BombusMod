@@ -490,7 +490,7 @@ public class ContactMessageList extends MessageList {
 //#     private String getBodyFromCurrentMsg() {
 //#         if (cursor > messages.size() - 1)
 //#             return "";
-//#         Msg msg = ((MessageItem)messages.elementAt(cursor)).msg;
+//#         Msg msg = ((MessageItem) messages.elementAt(cursor)).msg;
 //# 
 //#         if (msg != null) {
 //#             return msg.body;

@@ -833,19 +833,22 @@ public class Roster
     }
 
 //#ifdef JUICK
-//# /*        public Vector getJuickContacts(boolean str) {
-//#     Vector juickContacts = new Vector();
-//#     synchronized (hContacts) {
-//#     for (Enumeration e = hContacts.elements(); e.hasMoreElements();) {
-//#     Contact c = (Contact) e.nextElement();
-//#     if (isJuickContact(c))
-//#     if (str)
-//#     juickContacts.addElement(c.bareJid);
-//#     else juickContacts.addElement(c);
+//# /*
+//#     public Vector getJuickContacts(boolean str) {
+//#         Vector juickContacts = new Vector();
+//#         synchronized (hContacts) {
+//#             for (Enumeration e = hContacts.elements(); e.hasMoreElements();) {
+//#             Contact c = (Contact) e.nextElement();
+//#             if (isJuickContact(c))
+//#                 if (str)
+//#                     juickContacts.addElement(c.bareJid);
+//#                 else
+//                      juickContacts.addElement(c);
+//#             }
+//#         }
+//#         return juickContacts;
 //#     }
-//#     }
-//#     return juickContacts;
-//#     }*/
+//# */
 //#     public Contact getMainJuickContact() {
 //#         if (indexMainJuickContact > -1) {
 //#             return (Contact) juickContacts.elementAt(indexMainJuickContact);
@@ -854,27 +857,30 @@ public class Roster
 //#         }
 //#     }
 //# 
-//#     /*    public void updateMainJuickContact() {
-//#     System.out.println("1. juickJID: "+cf.juickJID);
-//#     mainJuickContact = null;
-//#     int index = -1;
-//#     if (!cf.juickJID.equals("")) {
-//#     index = hContacts.indexOf(new Contact("Juick", cf.juickJID, Presence.PRESENCE_OFFLINE, null));
-//#     System.out.println("index: "+index);
-//#     if (index < 0) { // Если не нашли, то считаем, что не указан.
-//#     cf.juickJID = "";
+//# /*
+//#     public void updateMainJuickContact() {
+//#         System.out.println("1. juickJID: "+cf.juickJID);
+//#         mainJuickContact = null;
+//#         int index = -1;
+//#         if (!cf.juickJID.equals("")) {
+//#             index = hContacts.indexOf(new Contact("Juick", cf.juickJID, Presence.PRESENCE_OFFLINE, null));
+//#             System.out.println("index: "+index);
+//#             if (index < 0) { // Если не нашли, то считаем, что не указан.
+//#                 cf.juickJID = "";
+//#             }
+//#         }
+//#         if (index > -1) {
+//#             mainJuickContact = (Contact) hContacts.elementAt(index);
+//#         } else {
+//#             Vector juickContacts = getJuickContacts(false);
+//#             if (juickContacts.size() > 0) {
+//#                 mainJuickContact = (Contact) juickContacts.elementAt(0);
+//#             }
+//#         }
+//#         System.out.println("2. juickJID: "+cf.juickJID);
 //#     }
-//#     }
-//#     if (index > -1) {
-//#     mainJuickContact = (Contact) hContacts.elementAt(index);
-//#     } else {
-//#     Vector juickContacts = getJuickContacts(false);
-//#     if (juickContacts.size() > 0) {
-//#     mainJuickContact = (Contact) juickContacts.elementAt(0);
-//#     }
-//#     }
-//#     System.out.println("2. juickJID: "+cf.juickJID);
-//#     }*/
+//# */
+//# 
 //#     public boolean isJuickContact(Contact c) {
 //#         return c.jid.equalsViaJ2J("juick@juick.com") || c.jid.equalsViaJ2J("psto@psto.net");
 //#     }
