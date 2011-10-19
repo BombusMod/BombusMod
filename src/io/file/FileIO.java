@@ -51,9 +51,13 @@ public abstract class FileIO {
     
     protected String fileName;
     
-    public static FileIO createConnection(String fileName) {
+    public static FileIO createConnection(String fileName) {        
+//#if android
+//#             return new FileJSR75(fileName);
+//#else            
         if (fileSystemType==NOT_DETECTED) {
             fileSystemType=NONE;
+
             try {
                 if (Config.getInstance().phoneManufacturer!=Config.JBED)
                     Class.forName("javax.microedition.io.file.FileConnection");
@@ -81,6 +85,7 @@ public abstract class FileIO {
 //#endif
         }
         return null;
+//#endif            
     }
     
     public Vector fileList(boolean directoriesOnly) throws IOException{

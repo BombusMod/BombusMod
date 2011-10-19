@@ -799,6 +799,9 @@ public class Config {
     }
 
     private void getPhoneManufacturer() {
+//#if android 
+//#         phoneManufacturer = MICROEMU;
+//#else        
         if (phoneManufacturer == NOT_DETECTED) {
             String platform = getPlatformName();
             phoneManufacturer = NONE;
@@ -889,9 +892,18 @@ public class Config {
                 phoneManufacturer = OTHER;
             }
         }
+//#endif        
     }
 
     public static String getPlatformName() {
+        String device = System.getProperty("device.model");
+        String firmware = System.getProperty("device.software.version");
+
+//#if android 
+//#         if (device != null) {
+//#             platformName = device + "/Android " + firmware;
+//#         }
+//#else                
         if (platformName == null) {
             platformName = System.getProperty("microedition.platform");
 
@@ -905,15 +917,7 @@ public class Config {
                 platformName = platformName.substring(0, platformName.indexOf("sw_platform") - 1);
             }
                  
-
-            String device = System.getProperty("device.model");
-            String firmware = System.getProperty("device.software.version");
-
-            if (platformName.startsWith("microemu")) {
-                if (device != null) {
-                    platformName = device + "/Android " + firmware;
-                } 
-            }
+            
 
             //detecting Samsung
             try {
@@ -1012,6 +1016,7 @@ public class Config {
                 }
             }
         }
+//#endif        
         return platformName;
     }
 
