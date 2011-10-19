@@ -38,7 +38,13 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Vector;
 import javax.microedition.io.Connector;
+//#if android
+//# import java.net.Socket;
+//# import java.io.InputStream;
+//# import java.io.OutputStream;
+//#else
 import javax.microedition.io.StreamConnection;
+//#endif
 import ui.Time;
 import util.StringUtils;
 
@@ -133,9 +139,15 @@ public class DnsSrvResolver {
             return true;
         }
         try {
+//#if android
+//# 	    Socket sc = new Socket("8.8.8.8", 53);
+//# 	    DataInputStream is = new DataInputStream(sc.getInputStream());
+//# 	    DataOutputStream os = new DataOutputStream(sc.getOutputStream());
+//#else
             StreamConnection sc = (StreamConnection) Connector.open("socket://8.8.8.8:53");
-            DataInputStream is = sc.openDataInputStream();
-            DataOutputStream os = sc.openDataOutputStream();
+	    DataInputStream is = sc.openDataInputStream();
+            DataOutputStream os = sc.openDataOutputStream();              
+//#endif
             byte [] message = encode(server, XMPP_SRV);
             byte [] data = new byte[2 + message.length];
             System.arraycopy(message, 0, data, 2, message.length);

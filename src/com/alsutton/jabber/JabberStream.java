@@ -32,14 +32,17 @@ import Client.StaticData;
 //# import Console.StanzasList;
 //#endif
 import com.alsutton.jabber.datablocks.Iq;
-import com.alsutton.jabber.datablocks.Presence;
 //#ifdef HTTPBIND
 //# import io.HttpBindConnection;
 //#endif
 import io.Utf8IOStream;
 import java.io.*;
 import java.util.*;
+//#if android
+//# import java.net.Socket;
+//#else
 import javax.microedition.io.*;
+//#endif
 import xml.*;
 import locale.SR;
 import xmpp.XmppError;
@@ -69,20 +72,27 @@ public class JabberStream extends XmppParser implements Runnable {
     private String sessionId;
 
     public Vector outgoingQueries = new Vector();
-
+//#if android
+//#     private Socket connection;
+//#else
     private StreamConnection connection;
+//#endif
     
     /**
      * Constructor. Connects to the server and sends the jabber welcome message.
      *
      */
-    public JabberStream( String server, String hostAddr, String proxy) throws IOException {
+    public JabberStream( String server, String host, int port, String proxy) throws IOException {
         this.server=server;
 
         boolean waiting=Config.getInstance().istreamWaiting;
                 
         if (proxy == null) {
-            connection = (StreamConnection) Connector.open(hostAddr);
+//#if android
+//# 	    connection = new Socket(host, port);
+//#else                    
+            connection = (StreamConnection) Connector.open(host + ":" + port);
+//#endif            
         } else {
 //#if HTTPCONNECT
 //#             connection = io.HttpProxyConnection.open(hostAddr, proxy, StaticData.getInstance().account.getProxyUser(), StaticData.getInstance().account.getProxyPass());

@@ -291,7 +291,7 @@ public class Account extends IconTextElement {
             } 
         }
 
-	StringBuffer url=new StringBuffer(host).append(':').append(tempPort);
+	StringBuffer url=new StringBuffer(host);
 
 //#if HTTPPOLL || HTTPCONNECT || HTTPBIND
 //#         if (!isEnableProxy()) {
@@ -304,9 +304,11 @@ public class Account extends IconTextElement {
 //#endif
 //#     }
 //#else
+//#if !(android)        
             url.insert(0, (useSSL)?"ssl://":"socket://");
+//#endif            
 //#endif
-        return new JabberStream( getServer(), url.toString(), proxy);
+        return new JabberStream( getServer(), url.toString(), tempPort, proxy);
     }
 
 //#if HTTPPOLL || HTTPCONNECT || HTTPBIND
