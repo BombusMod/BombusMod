@@ -62,7 +62,7 @@ public class ClipBoard
     
     public void set(Msg msg) {
         try {
-            StringBuffer clipstr=new StringBuffer(msg.quoteString());
+            StringBuffer clipstr=new StringBuffer(msg.quoteString(true));
             setClipBoard(clipstr.toString());
             clipstr=null;
         } catch (Exception e) {/*no messages*/}
@@ -79,6 +79,6 @@ public class ClipBoard
     }
     
     public void append(Msg msg) {
-        append(msg.quoteString());        
+        append(msg.quoteString(true));        
     }
 }

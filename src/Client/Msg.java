@@ -165,10 +165,9 @@ public class Msg {
 //#         sb.append((char)2);
 //#endif
     }
-    
-    public String quoteString(){
+    public String quoteString(boolean quoteSubject){
         StringBuffer out=new StringBuffer();
-        if (subject!=null)
+        if (subject!=null && quoteSubject)
             if (subject.length()>0)
                 out.append(subject).append("\n");
         if (Config.getInstance().hideTimestamps)
@@ -176,7 +175,7 @@ public class Msg {
         else
             out.append(body);        
         return clearNick(out);
-    }
+    }        
     
     public static String clearNick(StringBuffer msgBuffer) {
         int i = 0;

@@ -747,7 +747,7 @@ public class ContactMessageList extends MessageList {
         Msg message = getMessage(cursor);
         String quotestring = (contact.origin == Contact.ORIGIN_GROUPCHAT && cf.showNickNames && !message.body.startsWith("*") && message.messageType != Msg.MESSAGE_TYPE_PRESENCE) ? 
                 message.from + "> " + Msg.clearNick(new StringBuffer(message.body)) : 
-                message.quoteString(); 
+                message.quoteString(false); 
         
         try {
             String msg=new StringBuffer()
@@ -763,7 +763,7 @@ public class ContactMessageList extends MessageList {
             msg = null;
         } catch (Exception e) {/*no messages*/}
     }
-    
+        
 //#ifdef HISTORY
 //#ifdef LAST_MESSAGES
 //#     public final void loadRecentList() {
@@ -817,7 +817,7 @@ public class ContactMessageList extends MessageList {
 //#             for (Enumeration select=contact.msgs.elements(); select.hasMoreElements(); ) {
 //#                 Msg mess=((MessageItem) select.nextElement()).msg;
 //#                 if (mess.selected) {
-//#                     messageList.append(mess.quoteString()).append("\n").append("\n");
+//#                     messageList.append(mess.quoteString(true)).append("\n").append("\n");
 //#                     mess.selected=false;
 //#                     mess.highlite = mess.oldHighlite;
 //#                 }
@@ -826,7 +826,7 @@ public class ContactMessageList extends MessageList {
 //#         } else {
 //#             for (Enumeration cmessages=contact.msgs.elements(); cmessages.hasMoreElements(); ) {
 //#                 Msg message=((MessageItem) cmessages.nextElement()).msg;
-//#                 messageList.append(message.quoteString()).append("\n").append("\n");
+//#                 messageList.append(message.quoteString(true)).append("\n").append("\n");
 //#             }
 //#         }
 //#         HistoryAppend.getInstance().addMessageList(messageList.toString(), histRecord.toString());

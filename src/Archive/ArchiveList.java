@@ -185,7 +185,7 @@ public class ArchiveList
 	    data=m.from;
 	    break;
 	default:
-	    data=m.quoteString();
+	    data=m.quoteString(true);
 	}
 	t.insert(data, caretPos);
 	destroyView();
