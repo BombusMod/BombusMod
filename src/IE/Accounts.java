@@ -132,7 +132,6 @@ public class Accounts {
                         account.setPort(Integer.parseInt(findBlock(tempstr, port)));
                         account.setNick(findBlock(tempstr, nick));
                         account.setResource(findBlock(tempstr, resource));
-                        account.setUseSSL((findBlock(tempstr, useSSL).equals("1"))?true:false);
                         account.setPlainAuth((findBlock(tempstr, plainAuth).equals("1"))?true:false);
                         account.setMucOnly((findBlock(tempstr, mucOnly).equals("1"))?true:false);
 //#if HTTPPOLL || HTTPCONNECT || HTTPBIND
@@ -204,7 +203,7 @@ public class Accounts {
                    .append(createBlock(port, Integer.toString(a.getPort())))
                    .append(createBlock(nick, a.getNick()))
                    .append(createBlock(resource, a.getResource()))
-                   .append(createBlock(useSSL, (a.getUseSSL()?"1":"0")))
+                   .append(createBlock(useSSL, "0"))
                    .append(createBlock(plainAuth, (a.getPlainAuth()?"1":"0")))
                    .append(createBlock(mucOnly, (a.isMucOnly()?"1":"0")))
 //#if HTTPPOLL || HTTPCONNECT || HTTPBIND

@@ -33,7 +33,6 @@ import locale.SR;
 import ui.SplashScreen;
 import ui.controls.AlertBox;
 import ui.controls.form.CheckBox;
-import ui.controls.form.DropChoiceBox;
 import ui.controls.form.DefForm;
 import ui.controls.form.LinkString;
 import ui.controls.form.NumberInput;
@@ -63,7 +62,6 @@ public class AccountForm
     private NumberInput portbox;
     private TextInput resourcebox;
     private TextInput nickbox;
-    private CheckBox sslbox;
     private CheckBox plainPwdbox;
     private CheckBox compressionBox;
 //#ifndef WMUC    
@@ -157,7 +155,6 @@ public class AccountForm
         portbox = new NumberInput(sd.canvas,  SR.MS_PORT, Integer.toString(account.getPort()), 0, 65535);//, 0, 65535
         
                 
-        sslbox = new CheckBox(SR.MS_SSL, account.getUseSSL());
         plainPwdbox = new CheckBox(SR.MS_PLAIN_PWD, account.getPlainAuth());
         compressionBox = new CheckBox(SR.MS_COMPRESSION, account.useCompression());
 //#ifndef WMUC        
@@ -171,7 +168,6 @@ public class AccountForm
 //#         proxybox = new CheckBox("XMPP BOSH", account.isEnableProxy());
 //#endif
         
-        itemsList.addElement(sslbox);
         itemsList.addElement(plainPwdbox);
         itemsList.addElement(compressionBox);
 //#ifndef WMUC        
@@ -238,7 +234,6 @@ public class AccountForm
             account.setPort(Integer.parseInt(portbox.getValue()));
             account.setHostAddr(hostname);
             account.setResource(resourcebox.getValue());
-            account.setUseSSL(sslbox.getValue());
             account.setPlainAuth(plainPwdbox.getValue());
             account.setUseCompression(compressionBox.getValue());
 //#ifndef WMUC            

@@ -48,7 +48,6 @@ public class Account extends IconTextElement {
     private String hostAddr="";
     private int port=5222;
     private boolean active;
-    private boolean useSSL;
     private boolean compression=
 //#if (superSmall)
 //#             false
@@ -149,7 +148,7 @@ public class Account extends IconTextElement {
             a.nick     = inputStream.readUTF();
             a.resource = inputStream.readUTF();
 	    
-            a.useSSL=inputStream.readBoolean();
+            inputStream.readBoolean(); // was legacy ssl
             a.plainAuth=inputStream.readBoolean();
 //#ifndef WMUC            
 	    a.mucOnly=inputStream.readBoolean();
@@ -203,7 +202,7 @@ public class Account extends IconTextElement {
             outputStream.writeUTF(nick);
             outputStream.writeUTF(resource);
 
-            outputStream.writeBoolean(useSSL);
+            outputStream.writeBoolean(false); // was legacy ssl
             outputStream.writeBoolean(plainAuth);
 	    
 	    outputStream.writeBoolean(mucOnly);
@@ -256,9 +255,6 @@ public class Account extends IconTextElement {
     public int getPort() { return port; }
     public void setPort(int port) { this.port = port; }
     
-    public boolean getUseSSL() { return useSSL; }
-    public void setUseSSL(boolean ssl) { this.useSSL = ssl; }
-
     public boolean getPlainAuth() { return plainAuth; }
     public void setPlainAuth(boolean plain) { this.plainAuth = plain; }
     
@@ -304,7 +300,7 @@ public class Account extends IconTextElement {
 //#     }
 //#else
 //#if !(android)        
-            url.insert(0, (useSSL)?"ssl://":"socket://");
+            url.insert(0, "socket://");
 //#endif            
 //#endif
         return new JabberStream( getServer(), url.toString(), tempPort, proxy);

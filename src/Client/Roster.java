@@ -843,7 +843,7 @@ public class Roster
 //#                 if (str)
 //#                     juickContacts.addElement(c.bareJid);
 //#                 else
-//                      juickContacts.addElement(c);
+//# //                      juickContacts.addElement(c);
 //#             }
 //#         }
 //#         return juickContacts;
@@ -2022,12 +2022,7 @@ public class Roster
         if (e.getMessage() != null) {
             error.append(e.getMessage());
         }
-
-        if (e instanceof SecurityException) {
-            String errSSL = io.SSLExceptionDecoder.decode(e);
-            errorLog(errSSL);
-            return;
-        }
+        
         if (currentReconnect >= cf.reconnectCount) {
             errorLog(error.toString());
             return;
