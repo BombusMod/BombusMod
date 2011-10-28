@@ -101,6 +101,7 @@ public class Config {
     public boolean istreamWaiting;
     public int phoneManufacturer = NOT_DETECTED;
     public boolean swapMenu = false;
+    public float sonyJava;
     public boolean NokiaS40 = false;
 
 
@@ -826,9 +827,16 @@ public class Config {
                 }
                 phoneManufacturer = SONYE;
 
-                String sonyJava = System.getProperty("com.sonyericsson.java.platform");
-                swapMenu = (sonyJava == null) || sonyJava.startsWith("JP-7"); //JP<=7.x
-
+                String sJava = System.getProperty("com.sonyericsson.java.platform");
+                if (sJava != null)
+                    try {
+                    sonyJava = Float.valueOf(sJava.substring(3, 6)).floatValue(); //"JP-8.5"
+                    } catch (NumberFormatException ex) {
+//#ifdef DEBUG                        
+//#                         ex.printStackTrace();                        
+//#endif                        
+                    }
+                swapMenu = (sJava == null) || sonyJava < 8; //JP<=7.x
                 return;
 //#if !ZLIB
             } else if (platform.indexOf("9@9")>-1) {

@@ -20,7 +20,8 @@ public abstract class Notification {
 //#else            
             switch (Config.getInstance().phoneManufacturer) {                
                 case Config.SONYE:
-                    notifier = new SEMCNotificator();
+                   if (Config.getInstance().sonyJava >= 7.5)
+                        notifier = new SEMCNotificator();
                     break;
             }
 //#endif            

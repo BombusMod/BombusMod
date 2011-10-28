@@ -7,6 +7,7 @@ package Messages.notification;
 
 import Client.Msg;
 import com.sonyericsson.ui.UIActivityMenu;
+import com.sonyericsson.ui.UIEventListener;
 import midlet.BombusMod;
 import ui.VirtualCanvas;
 
@@ -14,7 +15,7 @@ import ui.VirtualCanvas;
  *
  * @author Vitaly
  */
-public class SEMCNotificator implements Notificator, com.sonyericsson.ui.UIEventListener {
+public class SEMCNotificator implements Notificator, UIEventListener {
 
     int eventCode;
     public SEMCNotificator() {

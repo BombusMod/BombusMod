@@ -38,7 +38,7 @@ import locale.SR;
 //# import util.ClipBoard;
 //#endif
 //#ifdef ARCHIVE
-import Archive.ArchiveList;
+//# import Archive.ArchiveList;
 //#endif
 import ui.VirtualList;
 
@@ -64,7 +64,7 @@ public class ExTextBox {
 //#endif
     
 //#ifdef ARCHIVE
-    protected Command cmdPaste=new Command(SR.MS_ARCHIVE, Command.SCREEN, 6);
+//#     protected Command cmdPaste=new Command(SR.MS_ARCHIVE, Command.SCREEN, 6);
 //#endif
 //#if TEMPLATES
 //#     protected Command cmdTemplate=new Command(SR.MS_TEMPLATE, Command.SCREEN, 7);
@@ -99,7 +99,7 @@ public class ExTextBox {
         commandState();
         setInitialCaps(cf.capsState);
         if (Config.getInstance().phoneManufacturer == Config.SONYE)
-            if (Config.getPlatformName().indexOf("JP-8.4") > -1)
+            if (Config.getInstance().sonyJava == 8.4)
                 System.gc(); // prevent flickering on Sony Ericsson C510/W995/J105/etc.
         textbox.setCommandListener(listener);                
         midlet.BombusMod.getInstance().setDisplayable(textbox);                
@@ -174,7 +174,7 @@ public class ExTextBox {
     
     public void commandState() {
 //#ifdef ARCHIVE
-            textbox.addCommand(cmdPaste);
+//#             textbox.addCommand(cmdPaste);
 //#endif
 //#ifdef CLIPBOARD
 //#         if (cf.useClipBoard) {
@@ -198,7 +198,7 @@ public class ExTextBox {
             body = null;
         
 //#ifdef ARCHIVE
-	if (c==cmdPaste) { new ArchiveList(caretPos, 1, textbox); return true; }
+//# 	if (c==cmdPaste) { new ArchiveList(caretPos, 1, textbox); return true; }
 //#endif
 //#ifdef CLIPBOARD
 //#         if (c==cmdPasteText) { insert(clipboard.getClipBoard(), getCaretPos()); return true; }

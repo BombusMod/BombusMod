@@ -80,13 +80,13 @@ public class archiveEdit
         textbox.addCommand(cmdCancel);
 
 //#ifdef ARCHIVE
-        textbox.removeCommand(cmdPaste);
+//#         textbox.removeCommand(cmdPaste);
 //#endif
 //#if TEMPLATES
 //#         textbox.removeCommand(cmdTemplate);
 //#endif
         if (Config.getInstance().phoneManufacturer == Config.SONYE) 
-            if (Config.getPlatformName().indexOf("JP-8.4") > -1)
+            if (Config.getInstance().sonyJava == 8.4)
                 System.gc(); // prevent flickering on Sony Ericcsson C510
         textbox.setCommandListener(this);        
         

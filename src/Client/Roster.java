@@ -1717,7 +1717,11 @@ public class Roster
 
         if (cf.popupFromMinimized) {
 //#ifdef SYSTEM_NOTIFY
-//#             Notificator notify = Notification.getNotificator();
+//#             Notificator notify = null;
+//#if !(android)
+//#             if (Config.getInstance().sonyJava > 7.5) // prevent NoClassDefFoundError on some phones
+//#endif            
+//#                 notify = Notification.getNotificator();
 //#endif
             if (AlertCustomize.getInstance().vibrateOnlyHighlited) {
                 if (message.highlite) {
