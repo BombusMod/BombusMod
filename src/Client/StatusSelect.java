@@ -117,6 +117,7 @@ public class StatusSelect
             if (sd.roster.isLoggedIn()) {
                 sd.roster.sendDirectPresence(status, to, null);
             } else {
+                sd.roster.currentReconnect = 0;
                 sd.roster.sendPresence(status, null);
             }
         } catch (Exception e) { }

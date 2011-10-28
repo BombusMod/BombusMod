@@ -141,8 +141,7 @@ public class Accounts {
 //#                         account.setProxyPort(Integer.parseInt(findBlock(tempstr, proxyPort)));
 //#endif
                         account.setUseCompression((findBlock(tempstr, compression).equals("1"))?true:false);
-                        account.setKeepAlivePeriod(Integer.parseInt(findBlock(tempstr, keepAlivePeriod)));
-                        account.setKeepAliveType(Integer.parseInt(findBlock(tempstr, keepAliveType)));
+                        account.keepAlivePeriod = Integer.parseInt(findBlock(tempstr, keepAlivePeriod));                        
 //#ifdef HTTPCONNECT
 //#                         account.setProxyUser(findBlock(tempstr, proxyUser));
 //#                         account.setProxyPass(findBlock(tempstr, proxyPass));
@@ -214,8 +213,8 @@ public class Accounts {
 //#                    .append(createBlock(proxyPort, Integer.toString(a.getProxyPort())))
 //#endif
                    .append(createBlock(compression, (a.useCompression()?"1":"0")))
-                   .append(createBlock(keepAliveType, Integer.toString(a.getKeepAliveType())))
-                   .append(createBlock(keepAlivePeriod, Integer.toString(a.getKeepAlivePeriod())))
+                   .append(createBlock(keepAliveType, ""))
+                   .append(createBlock(keepAlivePeriod, Integer.toString(a.keepAlivePeriod)))
 //#ifdef HTTPCONNECT
 //#                    .append(createBlock(proxyUser, a.getProxyUser()))
 //#                    .append(createBlock(proxyPass, a.getProxyPass()))

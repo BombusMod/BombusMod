@@ -75,8 +75,7 @@ public class AccountForm
 //#     private LinkString linkImport;
 //#endif
 
-    private NumberInput keepAlive;
-    private DropChoiceBox keepAliveType;
+    private NumberInput keepAlive;    
     
 //#if HTTPPOLL || HTTPCONNECT || HTTPBIND
 //#     private TextInput proxyHost;
@@ -183,15 +182,7 @@ public class AccountForm
 //#endif
 
 //#ifndef HTTPBIND
-        // TODO: make available when "XMPP BOSH" is unchecked
-        keepAliveType=new DropChoiceBox(SR.MS_KEEPALIVE);
-        keepAliveType.add("by socket");
-        keepAliveType.add("1 byte");
-        keepAliveType.add("<iq/>");
-        keepAliveType.add("ping");
-        keepAliveType.setSelectedIndex(account.getKeepAliveType());
-        keepAlive = new NumberInput(sd.canvas,  SR.MS_KEEPALIVE_PERIOD, Integer.toString(account.getKeepAlivePeriod()), 10, 2048);//10, 2096
-        itemsList.addElement(keepAliveType);
+        keepAlive = new NumberInput(sd.canvas,  SR.MS_KEEPALIVE_PERIOD, Integer.toString(account.keepAlivePeriod), 10, 2048);//10, 2096        
 //#endif
         resourcebox = new TextInput(sd.canvas, SR.MS_RESOURCE, account.getResource(), null, TextField.ANY);//64, TextField.ANY
         
@@ -267,8 +258,7 @@ public class AccountForm
 //#endif
 //#endif
 //#ifndef HTTPBIND
-            account.setKeepAlivePeriod(Integer.parseInt(keepAlive.getValue()));
-            account.setKeepAliveType(keepAliveType.getValue());
+            account.keepAlivePeriod = Integer.parseInt(keepAlive.getValue());            
 //#endif
         }
 

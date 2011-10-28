@@ -72,8 +72,7 @@ public class Account extends IconTextElement {
 //#     private String proxyPass="";
 //#endif
 	
-    private int keepAlivePeriod=200;
-    private int keepAliveType=1;
+    public int keepAlivePeriod = 120;    
     
     private static StaticData sd=StaticData.getInstance();
     
@@ -170,7 +169,7 @@ public class Account extends IconTextElement {
 
             a.compression=inputStream.readBoolean();
 
-            a.keepAliveType=inputStream.readInt()%4;
+            inputStream.readInt(); // was keep-alive type
             a.keepAlivePeriod=inputStream.readInt();
             
             a.dnsResolver=inputStream.readBoolean(); //firstrun
@@ -221,7 +220,7 @@ public class Account extends IconTextElement {
             
             outputStream.writeBoolean(compression);
 			
-            outputStream.writeInt(keepAliveType);
+            outputStream.writeInt(0); // was keep-alive type
             outputStream.writeInt(keepAlivePeriod);
             
             outputStream.writeBoolean(dnsResolver);  //firstrun
@@ -365,21 +364,5 @@ public class Account extends IconTextElement {
         
     public void setActive(boolean b) {
         active=b;
-    }
-
-    public int getKeepAliveType() {
-        return keepAliveType;
-    }
-
-    public int getKeepAlivePeriod() {
-        return keepAlivePeriod;
-    }
-
-    public void setKeepAlivePeriod(int i) {
-        keepAlivePeriod=i;
-    }
-
-    public void setKeepAliveType(int i) {
-        keepAliveType=i;
     }
 }

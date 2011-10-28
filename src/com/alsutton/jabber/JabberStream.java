@@ -236,25 +236,25 @@ public class JabberStream extends XmppParser implements Runnable {
                     dispatcher.broadcastJabberDataBlock( currentBlock );
                 }
     
-    public void startKeepAliveTask(){
-        Account account=StaticData.getInstance().account;
-        int keepAliveType = account.getKeepAliveType();
-        if (keepAliveType == 0)
-            return;
+    public void startKeepAliveTask() {
+        Account account = StaticData.getInstance().account;
+
         int keepAlivePeriod;
 //#ifdef HTTPBIND
 //#         if (connection instanceof HttpBindConnection) {
-//#             keepAliveType = 4;
 //#             keepAlivePeriod = ((HttpBindConnection)connection).waitPeriod - 3;
 //#         } else {
 //#endif         
-         keepAlivePeriod=account.getKeepAlivePeriod();
+        keepAlivePeriod = account.keepAlivePeriod;
 //#ifdef HTTPBIND
 //#         }
 //#endif
-        if (keepAlive!=null) { keepAlive.destroyTask(); keepAlive=null; }
-        
-        keepAlive=new TimerTaskKeepAlive(keepAlivePeriod, keepAliveType);
+        if (keepAlive != null) {
+            keepAlive.destroyTask();
+            keepAlive = null;
+        }
+
+        keepAlive = new TimerTaskKeepAlive(keepAlivePeriod);
     }
     
     private boolean connected = false;
@@ -354,35 +354,26 @@ public class JabberStream extends XmppParser implements Runnable {
      *
      * @param The data to send to the server.
      */
-    public void sendKeepAlive(int type) throws IOException {
-        switch (type) {
+    public void sendKeepAlive() {
+
 //#ifdef HTTPBIND
 //#             case 4: // BOSH "keep-alive"
 //#                 if (((HttpBindConnection)connection).threadsCount < 2 && loggedIn)
 //#                     send("");
 //#                 break;
-//#endif
-            case 3:
-                if (pingSent) {
-                    dispatcher.broadcastTerminatedConnection(new Exception("Ping Timeout"));
-                } else {
-                    //System.out.println("Ping myself");
-                    ping();
-                }
-                break;
-             case 2:
-                send("<iq/>");
-                 break;
-             case 1:
-                send(" ");
-         }
-     }
+//#endif            
+        if (pingSent) {
+            dispatcher.broadcastTerminatedConnection(new Exception("Ping Timeout"));
+        } else {
+            //System.out.println("Ping myself");
+            ping();
+        }
+    }
     
     private void sendPacket(String data) throws IOException {
         iostream.send(data);
 //#ifdef CONSOLE
-//#             if (data.equals("</iq") || data.equals(" ") || data.length() == 0) addLog("Ping myself", 1);
-//#             else addLog(data, 1);
+//#             addLog(data, 1);
 //#endif
     }
 
@@ -441,7 +432,7 @@ public class JabberStream extends XmppParser implements Runnable {
     }
     
     private void ping() {
-        pingSent=true;
+        pingSent = true;
         send(IqPing.query(StaticData.getInstance().account.getServer(), "ping"));
     }
 
@@ -473,35 +464,30 @@ public class JabberStream extends XmppParser implements Runnable {
     
     private TimerTaskKeepAlive keepAlive;
 
-     private class TimerTaskKeepAlive extends TimerTask{
+    private class TimerTaskKeepAlive extends TimerTask {
+
         private Timer t;
-        //private int verifyCtr;
-        // int period;
-        private int type;
-        public TimerTaskKeepAlive(int periodSeconds, int type){
-            t=new Timer();
-            this.type=type;
+
+        public TimerTaskKeepAlive(int periodSeconds) {
+            t = new Timer();
             //this.period=periodSeconds;
-            long periodRun=periodSeconds*1000; // milliseconds
+            long periodRun = periodSeconds * 1000; // milliseconds
             t.schedule(this, periodRun, periodRun);
         }
-        
+
         public void run() {
-            try {                 
-                 if (loggedIn) sendKeepAlive(type);
-            } catch (Exception e) { 
-                if (Client.StaticData.getInstance().roster != null)
-                Client.StaticData.getInstance().roster.errorLog("Exception in keep-alive task: "+ e.getMessage());
-                dispatcher.broadcastTerminatedConnection(e);
-                
+
+            if (loggedIn) {
+                sendKeepAlive();
             }
+
         }
-	
-        public void destroyTask(){
-            if (t!=null){
+
+        public void destroyTask() {
+            if (t != null) {
                 this.cancel();
                 t.cancel();
-                t=null;
+                t = null;
             }
         }
     }
