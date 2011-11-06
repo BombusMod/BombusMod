@@ -171,13 +171,8 @@ public class PresenceDispatcher implements JabberBlockListener {
 
                             c.statusString = pr.getStatus();
                         }
-                        if (ti == Presence.PRESENCE_AUTH) {
-                            if (cf.autoSubscribe == Config.SUBSCR_AUTO) {
-                                return JabberBlockListener.BLOCK_PROCESSED;
-                            }
-                        }
-
-                        roster.messageStore(c, m);
+                        if (ti == Presence.PRESENCE_AUTH && cf.autoSubscribe != Config.SUBSCR_AUTO) 
+                            roster.messageStore(c, m);
 
                     }
 

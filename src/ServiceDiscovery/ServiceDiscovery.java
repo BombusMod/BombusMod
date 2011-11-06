@@ -201,6 +201,7 @@ public class ServiceDiscovery
         }
 
         JabberDataBlock query=data.getChildBlock((id.equals("discocmd"))?"command":"query");
+        if ((query == null) && data.getTypeAttribute().equals("result")) return BLOCK_PROCESSED;
         Vector childs=query.getChildBlocks();
         //System.out.println(id);
 
@@ -320,7 +321,9 @@ public class ServiceDiscovery
         try {
             sort(items);
         } catch (Exception e) { 
-            //e.printStackTrace(); 
+//#ifdef DEBUG            
+//#             e.printStackTrace(); 
+//#endif            
         }
         
         /*if (data.getAttribute("from").equals(service)) - jid hashed in id attribute*/ //{

@@ -133,7 +133,7 @@ public class BombusModActivity extends MicroEmulatorActivity {
 
         }));
 
-        java.util.List<String> params = new ArrayList();
+        java.util.List<String> params = new ArrayList<String>();
         params.add("--usesystemclassloader");
         params.add("--quit");
 
@@ -155,7 +155,7 @@ public class BombusModActivity extends MicroEmulatorActivity {
 
 
         /* JSR-75 */
-        Map<String, String> properties = new HashMap();
+        Map<String, String> properties = new HashMap<String, String>();
         properties.put("fsRoot", "/");
         properties.put("fsSingle", "sdcard");
         common.registerImplementation("org.microemu.cldc.file.FileSystem", properties, false);

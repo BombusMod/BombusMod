@@ -1134,7 +1134,7 @@ public class Roster
 
     public void doSubscribe(Contact c) {
         if (c.subscr == null) {
-            return;
+            c.subscr = "none";
         }
         boolean subscribe =
                 c.subscr.startsWith("none")
@@ -2570,7 +2570,7 @@ public class Roster
     }
 
     public void storeContact(Contact c, boolean askSubscribe) {
-        sd.theStream.send(RosterDispatcher.QueryRoster(c.getJid(), c.nick, c.group == null ? null : c.group.name, null));
+        sd.theStream.send(RosterDispatcher.QueryRoster(c.getJid(), c.nick, (c.group == null || c.getGroupType() == Groups.TYPE_NOT_IN_LIST) ? SR.MS_GENERAL : c.group.name, null));
         if (askSubscribe) {
             doSubscribe(c);
         }
