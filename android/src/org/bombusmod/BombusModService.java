@@ -56,7 +56,6 @@ void invokeMethod(Method method, Object[] args) {
                 mStartForegroundSignature);
         mStopForeground = getClass().getMethod("stopForeground",
                 mStopForegroundSignature);
-        return;
     } catch (NoSuchMethodException e) {
         // Running on an older platform.
         mStartForeground = mStopForeground = null;

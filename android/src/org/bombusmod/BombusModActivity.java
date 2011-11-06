@@ -67,7 +67,7 @@ import android.view.MotionEvent;
 import android.view.SubMenu;
 import android.view.Window;
 import android.media.AudioManager;
-
+import android.app.NotificationManager;
 import org.microemu.android.MicroEmulatorActivity;
 import android.content.Intent;
 import android.util.Log;
@@ -194,6 +194,8 @@ public class BombusModActivity extends MicroEmulatorActivity {
         }
 
         if (isFinishing()) {
+            NotificationManager mNM = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+	    mNM.cancelAll();
             Log.i(LOG_TAG, "onPause(); with isFinishing() == true.");
             Log.i(LOG_TAG, "Stopping service...");
             stopService(new Intent(this, BombusModService.class));
