@@ -97,7 +97,7 @@ public class EditBox implements CommandListener {
         if (Config.getInstance().capsState)
             t.setConstraints(TextField.INITIAL_CAPS_SENTENCE);
         if (Config.getInstance().phoneManufacturer == Config.SONYE)
-            if (Config.getInstance().sonyJava == 8.4)
+            if (String.valueOf(Config.getInstance().sonyJava).equals("8.4"))
                 System.gc(); // prevent flickering on Sony Ericcsson C510
         midlet.BombusMod.getInstance().setDisplayable(t);
     }
