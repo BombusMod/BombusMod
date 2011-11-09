@@ -188,7 +188,7 @@ public class AccountForm
 //#         proxyUser = new TextInput(sd.canvas,/*SR.MS_PROXY_HOST*/"Proxy user", account.getProxyUser(), null, TextField.URL);//32, TextField.URL
 //#         proxyPass = new TextInput(sd.canvas,/*SR.MS_PROXY_HOST*/"Proxy pass", account.getProxyPass(), null, TextField.URL);//32, TextField.URL
 //#elif HTTPPOLL        
-//# 	proxyHost = new TextInput(sd.canvas, "HTTP Polling URL (http://server.tld:port)", account.getProxyHostAddr(), null, TextField.URL);//32, TextField.URL
+//# 	proxyHost = new TextInput(sd.canvas, "HTTP Polling URL (http://server.tld:port)", account.proxyHostAddr, null, TextField.URL);//32, TextField.URL
 //#elif HTTPBIND
 //#         proxyHost = new TextInput(sd.canvas, "BOSH CM (http://server.tld:port)", account.proxyHostAddr, null, TextField.URL);//32, TextField.URL
 //#endif

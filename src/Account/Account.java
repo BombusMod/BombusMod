@@ -276,16 +276,20 @@ public class Account extends IconTextElement {
                 host=hostAddr;
         } else {
             DnsSrvResolver dns=new DnsSrvResolver();
-            int type = DnsSrvResolver.XMPP_SRV;
+            int type = DnsSrvResolver.XMPP_TCP;
+            if (enableProxy) {
 //#ifdef HTTPBIND
-//#             if (enableProxy) {
-//#                 type = DnsSrvResolver.XMPP_TXT;
-//#             }
+//#                 type = DnsSrvResolver.XMPP_HTTPBIND;
 //#endif            
+//#ifdef HTTPPOLL
+//#                 type = DnsSrvResolver.XMPP_HTTPPOLL;
+//#endif            
+
+            }
             if (dns.getSrv(server, type)) {
                 host=dns.getHost();
                 tempPort=dns.getPort();
-//#ifdef HTTPBIND
+//#if HTTPBIND || HTTPPOLL
 //#                 proxyHostAddr = host;
 //#endif                
             } 

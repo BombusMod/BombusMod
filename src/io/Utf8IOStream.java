@@ -223,39 +223,31 @@ public class Utf8IOStream {
 //#     }
 //#     
 //#     public String getConnectionData() {
-//#         StringBuffer stats=new StringBuffer();
-//#if HTTPBIND || HTTPPOLL || HTTPCONNECT
-//#         String http = StaticData.getInstance().account.proxyHostAddr;
-//#         if (http != null) {
-//#             if (StaticData.getInstance().account.isEnableProxy())
-//#                 stats.append("HTTP: ").append(http);
-//#ifdef HTTPBIND
+//#         StringBuffer stats = new StringBuffer();
+//#         if (StaticData.getInstance().account.isEnableProxy()) {
+//#             String http = StaticData.getInstance().account.proxyHostAddr;
+//#             stats.append("HTTP: ").append(http);
+//#ifdef HTTPBIND            
 //#             if (connection instanceof HttpBindConnection) {
-//#                 stats.append("\nSID: ").append(((HttpBindConnection)connection).sid);
-//#                 stats.append("\nWait: ").append(((HttpBindConnection)connection).waitPeriod);
+//#                 stats.append("\nSID: ").append(((HttpBindConnection) connection).sid);
+//#                 stats.append("\nWait: ").append(((HttpBindConnection) connection).waitPeriod);
 //#             }
-//#endif
+//#endif            
 //#         } else {
-//#endif
-//#         try {
+//#             try {
 //#if android
 //#             stats.append(connection.getLocalAddress()).append(":").append(connection.getLocalPort());
 //#             stats.append("->").append(connection.getInetAddress()).append(":").append(connection.getPort());
 //#else            
-//#             stats.append(((SocketConnection)connection).getLocalAddress())
-//#             .append(":")
-//#             .append(((SocketConnection)connection).getLocalPort())
-//#             .append("->")
-//#             .append(((SocketConnection)connection).getAddress())
-//#             .append(":")
-//#             .append(((SocketConnection)connection).getPort());
-//#endif            
-//#         } catch (Exception ex) {
-//#             stats.append("unknown");
+//#                 stats.append(((SocketConnection) connection).getLocalAddress())
+//#                 .append(":").append(((SocketConnection) connection).getLocalPort()).append("->")
+//#                 .append(((SocketConnection) connection).getAddress()).append(":")
+//#                         .append(((SocketConnection) connection).getPort());
+//#endif                            
+//#             } catch (Exception ex) {
+//#                 stats.append("unknown");
+//#             }            
 //#         }
-//#if HTTPBIND || HTTPPOLL || HTTPCONNECT
-//#         }
-//#endif
 //#         return stats.toString();
 //#     }
 //#     

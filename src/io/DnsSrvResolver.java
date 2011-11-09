@@ -59,16 +59,17 @@ public class DnsSrvResolver {
         String host;
         int port;
         int ttl;
-    }
-    class TxtRData {
-        Hashtable map;
-    }
+    }    
     
-    public final static int XMPP_SRV = 1;
-    public final static int XMPP_TXT = 2;
+    public final static int XMPP_TCP = 1;
+    public final static int XMPP_HTTPPOLL = 2;
+    public final static int XMPP_HTTPBIND = 3;
     
-    private final static String _srv = "_xmpp-client._tcp.";
-    private final static String _txt = "_xmppconnect."; // TODO: TXT records
+    private final static String _srv = "_xmpp-client._tcp.";    
+    private final static String _txt = "_xmppconnect."; 
+    
+    private final static String _bind = "_xmpp-client-xbosh";
+    private final static String _poll = "_xmpp-client-httppoll";
     
     private String server;
     private String resolvedHost;
@@ -165,12 +166,20 @@ public class DnsSrvResolver {
             Vector res = decode(response);
             if (res.isEmpty() || res.elementAt(0) == null) // Uncorrect response
                 return false;
-            
-            resolvedHost = ((SrvRdata)res.elementAt(0)).host;
-            System.out.println("Resloved host: " + resolvedHost);
-            resolvedPort = ((SrvRdata)res.elementAt(0)).port;
-            
-            ttl = ((SrvRdata)res.elementAt(0)).ttl + Time.utcTimeMillis();
+            if (type == XMPP_TCP) {
+                    resolvedHost = ((SrvRdata)res.elementAt(0)).host;
+                    resolvedPort = ((SrvRdata)res.elementAt(0)).port;
+                    ttl = ((SrvRdata)res.elementAt(0)).ttl + Time.utcTimeMillis();                
+            } else {
+                String key = (type == XMPP_HTTPBIND) ? _bind : _poll;
+                for (int i = 0; i < res.size(); i++) {
+                    SrvRdata rdata = (SrvRdata)res.elementAt(i);
+                    if (rdata.host.startsWith(key)) {
+                        int eq = rdata.host.indexOf("=");
+                        resolvedHost = rdata.host.substring(eq +1, rdata.host.length());
+                    }
+                }
+            }
             
             cf.verHash=shaVer.getDigestHex();
             cf.resolvedHost = resolvedHost;
@@ -212,10 +221,11 @@ public class DnsSrvResolver {
             out.writeShort(0x0000); // additions count
             StringBuffer domains = new StringBuffer();
             switch (type) {
-                case XMPP_SRV:
+                case XMPP_TCP:
                     domains.append(_srv);
                     break;
-                case XMPP_TXT:
+                case XMPP_HTTPPOLL:
+                case XMPP_HTTPBIND:
                     domains.append(_txt);
                     break;
             }
@@ -228,10 +238,11 @@ public class DnsSrvResolver {
             }
             out.writeByte(0x00);
             switch(type) {
-                case XMPP_SRV:
+                case XMPP_TCP:
                     out.writeShort(0x0021); // type: SRV
                     break;
-                case XMPP_TXT:
+                case XMPP_HTTPPOLL:
+                case XMPP_HTTPBIND:
                     out.writeShort(0x0010); // type: TXT
                     break;
             }
@@ -274,7 +285,8 @@ public class DnsSrvResolver {
                 in.readUnsignedShort(); // class
                 int ttl = in.readInt(); // ttl
                 int rdlength = in.readUnsignedShort(); // length
-                if (type == XMPP_SRV) {
+                if (type == 0x0021) { 
+                    // SRV
                 in.readUnsignedShort();
                 in.readUnsignedShort();
                 int port = in.readUnsignedShort(); // port
@@ -300,10 +312,9 @@ public class DnsSrvResolver {
                     StringBuffer result = new StringBuffer();
                     for (int ind = 0; ind < rdlength; ind++) {
                         result.append((char)in.readUnsignedByte());
-                    }
-                    String rdata = result.toString();
+                    }                    
                     SrvRdata item = new SrvRdata(); 
-                    item.host = rdata.substring(rdata.indexOf("=") + 1);
+                    item.host = result.toString().substring(1);
                     res.addElement(item);
                 }
             } 

@@ -98,9 +98,9 @@ public class JabberStream extends XmppParser implements Runnable {
 //#if HTTPCONNECT
 //#             connection = io.HttpProxyConnection.open(hostAddr, proxy, StaticData.getInstance().account.getProxyUser(), StaticData.getInstance().account.getProxyPass());
 //#elif HTTPPOLL
-//#             connection = new io.HttpPollConnection(host + ":" + port, proxy);
+//#             connection = new io.HttpPollConnection(server, host);
 //#elif HTTPBIND
-//#             connection = new io.HttpBindConnection(host + ":" + port, proxy);
+//#             connection = new io.HttpBindConnection(server, host);
 //#else            
             throw new IllegalArgumentException ("no proxy supported");
 //#endif            
