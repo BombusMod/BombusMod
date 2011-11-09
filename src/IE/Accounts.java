@@ -208,7 +208,7 @@ public class Accounts {
                    .append(createBlock(mucOnly, (a.isMucOnly()?"1":"0")))
 //#if HTTPPOLL || HTTPCONNECT || HTTPBIND
 //#                    .append(createBlock(enableProxy, a.isEnableProxy()?"1":"0"))
-//#                    .append(createBlock(proxyHostAddr, a.getProxyHostAddr()))
+//#                    .append(createBlock(proxyHostAddr, a.proxyHostAddr))
 //#                    .append(createBlock(proxyPort, Integer.toString(a.getProxyPort())))
 //#endif
                    .append(createBlock(compression, (a.useCompression()?"1":"0")))

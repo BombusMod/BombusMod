@@ -190,7 +190,7 @@ public class AccountForm
 //#elif HTTPPOLL        
 //# 	proxyHost = new TextInput(sd.canvas, "HTTP Polling URL (http://server.tld:port)", account.getProxyHostAddr(), null, TextField.URL);//32, TextField.URL
 //#elif HTTPBIND
-//#         proxyHost = new TextInput(sd.canvas, "BOSH CM (http://server.tld:port)", account.getProxyHostAddr(), null, TextField.URL);//32, TextField.URL
+//#         proxyHost = new TextInput(sd.canvas, "BOSH CM (http://server.tld:port)", account.proxyHostAddr, null, TextField.URL);//32, TextField.URL
 //#endif
         
         itemsList.addElement(ipbox);
@@ -230,7 +230,6 @@ public class AccountForm
         
         if (showExtended) {
             String hostname = ipbox.getValue();
-            account.setDnsResolver(hostname.equals("") ? true : false);
             account.setPort(Integer.parseInt(portbox.getValue()));
             account.setHostAddr(hostname);
             account.setResource(resourcebox.getValue());

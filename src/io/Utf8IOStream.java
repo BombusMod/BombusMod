@@ -225,7 +225,7 @@ public class Utf8IOStream {
 //#     public String getConnectionData() {
 //#         StringBuffer stats=new StringBuffer();
 //#if HTTPBIND || HTTPPOLL || HTTPCONNECT
-//#         String http = StaticData.getInstance().account.getProxyHostAddr();
+//#         String http = StaticData.getInstance().account.proxyHostAddr;
 //#         if (http != null) {
 //#             if (StaticData.getInstance().account.isEnableProxy())
 //#                 stats.append("HTTP: ").append(http);
