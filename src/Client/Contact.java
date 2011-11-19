@@ -342,11 +342,7 @@ public class Contact extends IconTextElement {
             if (!m.body.startsWith("/me ")) {
                 if (cf.showNickNames && !m.isPresence() && m.messageType != Msg.MESSAGE_TYPE_SUBJ && m.messageType != Msg.MESSAGE_TYPE_SYSTEM) {
                     StringBuffer who = new StringBuffer();
-                    Msg.appendNick(who, m.from);
-                    if (!cf.hideTimestamps) {
-                        who.append(" (").append(m.getTime()).append(")");
-                    }
-                    who.append(":");
+                    Msg.appendNick(who, m.from + ((cf.hideTimestamps) ? ":" : " ("+m.getTime() + ")" + ":"));
                     if (m.subject != null) {
                         who.append("\n").append(m.subject);
                     }
@@ -378,11 +374,7 @@ public class Contact extends IconTextElement {
                 if (!m.body.startsWith("/me ")) {
                     if (cf.showNickNames && !m.isPresence()) {
                         StringBuffer who = new StringBuffer();
-                        Msg.appendNick(who, m.messageType == Msg.MESSAGE_TYPE_OUT ? sd.account.getNickName() : getName());
-                        if (!cf.hideTimestamps) {
-                            who.append(" (").append(m.getTime()).append(")");
-                        }
-                        who.append(":");
+                        Msg.appendNick(who, m.messageType == Msg.MESSAGE_TYPE_OUT ? sd.account.getNickName() + ((cf.hideTimestamps) ? ":" : " (" + m.getTime() + ")" + ":") : getName() + ((cf.hideTimestamps) ? ":" : " ("+m.getTime() + ")" + ":"));
                         if (m.subject != null) {
                             who.append("\n").append(m.subject);
                         }
