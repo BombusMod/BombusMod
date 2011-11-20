@@ -224,6 +224,7 @@ public class Utf8IOStream {
 //#     
 //#     public String getConnectionData() {
 //#         StringBuffer stats = new StringBuffer();
+//#if HTTPPOLL || HTTPCONNECT || HTTPBIND        
 //#         if (StaticData.getInstance().account.isEnableProxy()) {
 //#             String http = StaticData.getInstance().account.proxyHostAddr;
 //#             stats.append("HTTP: ").append(http);
@@ -234,20 +235,20 @@ public class Utf8IOStream {
 //#             }
 //#endif            
 //#         } else {
+//#endif            
 //#             try {
 //#if android
 //#             stats.append(connection.getLocalAddress()).append(":").append(connection.getLocalPort());
 //#             stats.append("->").append(connection.getInetAddress()).append(":").append(connection.getPort());
 //#else            
-//#                 stats.append(((SocketConnection) connection).getLocalAddress())
-//#                 .append(":").append(((SocketConnection) connection).getLocalPort()).append("->")
-//#                 .append(((SocketConnection) connection).getAddress()).append(":")
-//#                         .append(((SocketConnection) connection).getPort());
+//#                 stats.append(((SocketConnection) connection).getLocalAddress()).append(":").append(((SocketConnection) connection).getLocalPort()).append("->").append(((SocketConnection) connection).getAddress()).append(":").append(((SocketConnection) connection).getPort());
 //#endif                            
 //#             } catch (Exception ex) {
 //#                 stats.append("unknown");
-//#             }            
+//#             }
+//#if HTTPPOLL || HTTPCONNECT || HTTPBIND                    
 //#         }
+//#endif        
 //#         return stats.toString();
 //#     }
 //#     
