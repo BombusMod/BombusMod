@@ -32,6 +32,7 @@ import Info.Version;
 import com.alsutton.jabber.JabberStream;
 import com.alsutton.jabber.datablocks.Presence;
 import images.RosterIcons;
+import io.DnsSrvResolver;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -63,7 +64,7 @@ public class Account extends IconTextElement {
     
 //#if HTTPPOLL || HTTPCONNECT || HTTPBIND
 //#     private boolean enableProxy;
-//#     private String proxyHostAddr="";
+//#     public String proxyHostAddr="";
 //#     private int proxyPort;
 //#endif
 //#ifdef HTTPCONNECT
@@ -75,8 +76,6 @@ public class Account extends IconTextElement {
     
     private static StaticData sd=StaticData.getInstance();
     
-    private boolean dnsResolver = true;
-
     public Account() {
         super(RosterIcons.getInstance());
     }
@@ -171,7 +170,7 @@ public class Account extends IconTextElement {
             inputStream.readInt(); // was keep-alive type
             a.keepAlivePeriod=inputStream.readInt();
             
-            a.dnsResolver=inputStream.readBoolean(); //firstrun
+            inputStream.readBoolean(); //firstrun // was dnsresolver
 //#ifdef HTTPCONNECT
 //#             a.proxyUser = inputStream.readUTF();
 //#             a.proxyPass = inputStream.readUTF();
@@ -222,7 +221,7 @@ public class Account extends IconTextElement {
             outputStream.writeInt(0); // was keep-alive type
             outputStream.writeInt(keepAlivePeriod);
             
-            outputStream.writeBoolean(dnsResolver);  //firstrun
+            outputStream.writeBoolean(true);  //firstrun // dns-resolver
 //#ifdef HTTPCONNECT
 //#             outputStream.writeUTF(proxyUser);
 //#             outputStream.writeUTF(proxyPass);
@@ -258,9 +257,6 @@ public class Account extends IconTextElement {
     public boolean getPlainAuth() { return plainAuth; }
     public void setPlainAuth(boolean plain) { this.plainAuth = plain; }
     
-    public boolean getDnsResolver() { return dnsResolver; }
-    public void setDnsResolver(boolean dnsResolver) { this.dnsResolver = dnsResolver; }
-    
     public String getResource() { return resource;  }
     public void setResource(String resource) { this.resource = resource;  }
 
@@ -278,11 +274,24 @@ public class Account extends IconTextElement {
         
         if (hostAddr!=null && hostAddr.length()>0) {
                 host=hostAddr;
-        } else if (dnsResolver) {
-            io.DnsSrvResolver dns=new io.DnsSrvResolver();
-            if (dns.getSrv(server)) {
+        } else {
+            DnsSrvResolver dns=new DnsSrvResolver();
+            int type = DnsSrvResolver.XMPP_TCP;
+            if (enableProxy) {
+//#ifdef HTTPBIND
+//#                 type = DnsSrvResolver.XMPP_HTTPBIND;
+//#endif            
+//#ifdef HTTPPOLL
+//#                 type = DnsSrvResolver.XMPP_HTTPPOLL;
+//#endif            
+
+            }
+            if (dns.getSrv(server, type)) {
                 host=dns.getHost();
                 tempPort=dns.getPort();
+//#if HTTPBIND || HTTPPOLL
+//#                 proxyHostAddr = host;
+//#endif                
             } 
         }
 
@@ -290,10 +299,10 @@ public class Account extends IconTextElement {
 
 //#if HTTPPOLL || HTTPCONNECT || HTTPBIND
 //#         if (!isEnableProxy()) {
-//# 	    url.insert(0, (useSSL)?"ssl://":"socket://");
+//# 	    url.insert(0, "socket://");
 //#         } else {
 //#if HTTPPOLL || HTTPBIND
-//#              proxy=getProxyHostAddr();
+//#              proxy = proxyHostAddr;
 //#elif HTTPCONNECT
 //#             proxy="socket://" + getProxyHostAddr() + ':' + getProxyPort();
 //#endif
@@ -313,10 +322,6 @@ public class Account extends IconTextElement {
 //# 
 //#     public void setEnableProxy(boolean enableProxy) {
 //#         this.enableProxy = enableProxy;
-//#     }
-//# 
-//#     public String getProxyHostAddr() {
-//#         return proxyHostAddr;
 //#     }
 //# 
 //#     public void setProxyHostAddr(String proxyHostAddr) {

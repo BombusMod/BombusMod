@@ -33,6 +33,7 @@ import Client.StaticData;
 //#endif
 import com.alsutton.jabber.datablocks.Iq;
 //#ifdef HTTPBIND
+//# import com.alsutton.jabber.datablocks.Presence;
 //# import io.HttpBindConnection;
 //#endif
 import io.Utf8IOStream;
@@ -97,9 +98,9 @@ public class JabberStream extends XmppParser implements Runnable {
 //#if HTTPCONNECT
 //#             connection = io.HttpProxyConnection.open(hostAddr, proxy, StaticData.getInstance().account.getProxyUser(), StaticData.getInstance().account.getProxyPass());
 //#elif HTTPPOLL
-//#             connection = new io.HttpPollConnection(hostAddr, proxy);
+//#             connection = new io.HttpPollConnection(server, host);
 //#elif HTTPBIND
-//#             connection = new io.HttpBindConnection(hostAddr, proxy);
+//#             connection = new io.HttpBindConnection(server, host);
 //#else            
             throw new IllegalArgumentException ("no proxy supported");
 //#endif            
@@ -195,11 +196,7 @@ public class JabberStream extends XmppParser implements Runnable {
 //#                     for (Enumeration e = blocks.elements(); e.hasMoreElements();) {                                                
 //#                         dispatchXmppStanza((JabberDataBlock) e.nextElement());
 //#                     }
-//#                     try {
-//#                         sendKeepAlive(4);
-//#                     } catch (IOException ex) {
-//#                         throw new XMLException("http keep-alive exception: " + ex.getMessage());
-//#                     }
+//#                     sendKeepAlive();                    
 //#                 }
 //#             }
 //#         }
@@ -357,17 +354,26 @@ public class JabberStream extends XmppParser implements Runnable {
     public void sendKeepAlive() {
 
 //#ifdef HTTPBIND
-//#             case 4: // BOSH "keep-alive"
-//#                 if (((HttpBindConnection)connection).threadsCount < 2 && loggedIn)
+//#         if (connection instanceof HttpBindConnection) {
+//#             if (((HttpBindConnection) connection).threadsCount < 2 && loggedIn) {
+//#                 try {
 //#                     send("");
-//#                 break;
-//#endif            
-        if (pingSent) {
-            dispatcher.broadcastTerminatedConnection(new Exception("Ping Timeout"));
-        } else {
-            //System.out.println("Ping myself");
-            ping();
-        }
+//#                 } catch (IOException ex) {
+//#                     dispatcher.broadcastTerminatedConnection(new Exception("HTTP Exception " + ex.getMessage()));
+//#                 }
+//#             }
+//#         } else {
+//#else            
+            if (pingSent) {
+                dispatcher.broadcastTerminatedConnection(new Exception("Ping Timeout"));
+            } else {
+                //System.out.println("Ping myself");
+                ping();
+            }
+//#endif        
+//#ifdef HTTPBIND
+//#         }
+//#endif        
     }
     
     private void sendPacket(String data) throws IOException {

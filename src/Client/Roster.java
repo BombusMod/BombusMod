@@ -1655,10 +1655,7 @@ public class Roster
                     }
                 }
             }
-
-        if (!message.unread) {
-            return;
-        }
+       
         //TODO: clear unread flag if not-in-list IS HIDDEN
 
         if (c.getGroupType() == Groups.TYPE_IGNORE) {
