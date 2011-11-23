@@ -40,6 +40,9 @@ import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
 import ui.controls.Progress;
 import ui.controls.form.DefForm;
+//#ifdef AUTOSTATUS
+import Client.AutoStatus;
+//#endif
 
 /**
  *
@@ -232,6 +235,9 @@ public final class SplashScreen extends DefForm implements VirtualElement {
             status.setElementAt(null, 6);
         }
         splashimg = null;
+//#ifdef AUTOSTATUS
+        AutoStatus.getInstance().appUnlocked();
+//#endif
         System.gc();
         super.destroyView();
     }

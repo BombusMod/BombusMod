@@ -90,10 +90,14 @@ public class Config {
     //public boolean blFlash=!ghostMotor; //true;
     public boolean muc119 = true;	// before muc 1.19 use muc#owner instead of muc#admin
 //#ifdef AUTOSTATUS
-//#     public final static int AWAY_OFF = 0;
-//#     public final static int AWAY_LOCK = 1;
-//#     public final static int AWAY_MESSAGE = 2;
-//#     public final static int AWAY_IDLE = 3;
+    public final static int AWAY_OFF=0;
+    public final static int AWAY_LOCK = 1;
+    public final static int AWAY_MESSAGE = 2;
+    public final static int AWAY_IDLE = 3;
+
+    public static int autoAwayType = 0;
+    public static int autoAwayDelay = 5; //5 minutes
+    public static boolean useMyStatusMessages = true;
 //#endif
     public boolean allowMinimize = false;
     public int profile = 0;
@@ -147,9 +151,6 @@ public class Config {
 //#     public boolean msgLogConfPresence = false;
 //#endif
     public boolean cp1251 = true;
-//#ifdef AUTOSTATUS
-//#     public int autoAwayDelay = 5; //5 minutes
-//#endif
 //#ifndef WMUC
     public String defGcRoom = "bombusmod@conference.jabber.ru";
 //#endif
@@ -165,10 +166,6 @@ public class Config {
     public boolean notifySound = false;
 //#ifdef HISTORY
 //#     public boolean lastMessages = false;
-//#endif
-//#ifdef AUTOSTATUS
-//#     public boolean useMyStatusMessages = true;
-//#     public int autoAwayType = 0;
 //#endif
     public boolean autoScroll = true;
 //#ifdef POPUPS

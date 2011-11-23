@@ -108,11 +108,6 @@ public class StatusSelect
     
     public void run() {
         int status=getSel().getImageIndex();
-//#ifdef AUTOSTATUS
-//#         Roster.autoAway=false;
-//#         Roster.autoXa=false;
-//#         sd.roster.messageActivity();
-//#endif
         try {
             if (sd.roster.isLoggedIn()) {
                 sd.roster.sendDirectPresence(status, to, null);

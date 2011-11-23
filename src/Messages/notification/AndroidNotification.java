@@ -19,6 +19,9 @@ package Messages.notification;
 //#                 NotificationManager mNotificationManager = (NotificationManager) BombusModActivity.getInstance().getSystemService(Context.NOTIFICATION_SERVICE);
 //#                 long when = System.currentTimeMillis();
 //#                 int icon = R.drawable.app_icon;
+//#                 if (StaticData.getInstance().roster.highliteMessageCount<1) {
+//#                     return;
+//#                 }else{
 //#                 android.app.Notification notification = new android.app.Notification(icon, "New messages: "+StaticData.getInstance().roster.highliteMessageCount, when);
 //#                 notification.flags |= android.app.Notification.FLAG_AUTO_CANCEL;
 //#                 Intent notificationIntent = new Intent(BombusModActivity.getInstance(), BombusModActivity.class);
@@ -30,6 +33,7 @@ package Messages.notification;
 //#                 notification.flags |= android.app.Notification.FLAG_SHOW_LIGHTS;
 //#                 notification.number=StaticData.getInstance().roster.highliteMessageCount;
 //#                 mNotificationManager.notify(NOTIFY_ID, notification);
+//#                 }
 //#     }
 //# }
 //#endif

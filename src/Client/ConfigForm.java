@@ -422,6 +422,11 @@ public class ConfigForm
 //#             cf.useMyStatusMessages=awayStatus.getValue();
 //#             cf.autoAwayDelay=Integer.parseInt(fieldAwayDelay.getValue());
 //#             cf.autoAwayType=autoAwayType.getSelectedIndex();
+                if (autoAwayType.getSelectedIndex() != Config.AWAY_LOCK) {
+                if (AutoStatus.getInstance().active()) {
+                    AutoStatus.getInstance().reset();
+                }
+                }
 //#endif
         cf.messageLimit=Integer.parseInt(messageLimit.getValue());
         if (VirtualCanvas.getInstance().hasPointerEvents())
@@ -463,5 +468,18 @@ public class ConfigForm
         }
 
         return super.doUserKeyAction(command_id);
+    }
+
+    public void destroyView() {
+//#ifdef AUTOSTATUS
+        if (sd.roster.isLoggedIn()) {
+            if ((Config.getInstance().autoAwayType==Config.AWAY_OFF) || Config.getInstance().autoAwayType == Config.AWAY_LOCK) {
+                AutoStatus.getInstance().stop();
+            } else {
+                AutoStatus.getInstance().start();       
+            }
+        }
+//#endif
+        super.destroyView();
     }
 }

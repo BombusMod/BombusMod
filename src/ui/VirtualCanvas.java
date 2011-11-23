@@ -33,6 +33,9 @@ import ui.controls.PopUp;
 //#ifdef BACK_IMAGE
 //# import javax.microedition.lcdui.Image;
 //#endif
+//#ifdef AUTOSTATUS
+import Client.AutoStatus;
+//#endif
 
 /**
  *
@@ -186,7 +189,7 @@ public class VirtualCanvas extends Canvas implements CommandListener{
     protected final void keyPressed(int rawKeyCode) {
         int keyCode = getKeyCode(rawKeyCode);
 //#ifdef AUTOSTATUS
-//#     sd.roster.userActivity();
+//#     AutoStatus.getInstance().userActivity(Config.AWAY_IDLE);
 //#endif
         kHold = false;
 //#ifdef POPUPS
@@ -204,9 +207,6 @@ public class VirtualCanvas extends Canvas implements CommandListener{
 //#ifdef LIGHT_CONFIG      
 //#             CustomLight.keyPressed();
 //#endif 
-//#ifdef AUTOSTATUS
-//#     sd.roster.setAutoAwayTimer();
-//#endif
 //#ifdef USER_KEYS
 //#         UserKeyExec.getInstance().afterActions(keyCode);
 //#endif
@@ -221,7 +221,7 @@ public class VirtualCanvas extends Canvas implements CommandListener{
 //#             CustomLight.keyPressed();
 //#endif 
 //#ifdef AUTOSTATUS
-//#     sd.roster.userActivity();
+//#     AutoStatus.getInstance().userActivity(Config.AWAY_IDLE);
 //#endif
     }
 
@@ -231,7 +231,7 @@ public class VirtualCanvas extends Canvas implements CommandListener{
 //#             CustomLight.keyPressed();
 //#endif
 //#ifdef AUTOSTATUS
-//#     sd.roster.userActivity();
+//#     AutoStatus.getInstance().userActivity(Config.AWAY_IDLE);
 //#endif
         KeyRepeatTimer.stop();
 //#ifdef POPUPS
@@ -245,6 +245,9 @@ public class VirtualCanvas extends Canvas implements CommandListener{
     }
 
     protected final void pointerPressed(int x, int y) {
+//#ifdef AUTOSTATUS
+        AutoStatus.getInstance().userActivity(Config.AWAY_IDLE);
+//#endif
         try {
             list.pointerPressed(x, y);
         } catch (Exception e) {
