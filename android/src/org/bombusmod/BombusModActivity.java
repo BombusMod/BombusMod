@@ -76,7 +76,7 @@ public class BombusModActivity extends MicroEmulatorActivity {
 
     public static final String LOG_TAG = "BombusModActivity";
 
-    protected Common common;
+    public Common common;
 
     private MIDlet midlet;
 
@@ -95,7 +95,7 @@ public class BombusModActivity extends MicroEmulatorActivity {
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-	setVolumeControlStream(AudioManager.STREAM_MUSIC); 
+        setVolumeControlStream(AudioManager.STREAM_MUSIC); 
 
         Logger.removeAllAppenders();
         Logger.setLocationEnabled(false);
@@ -109,7 +109,9 @@ public class BombusModActivity extends MicroEmulatorActivity {
             public void write(int oneByte) throws IOException {
                 if (((char) oneByte) == '\n') {
                     Logger.debug(line.toString());
-                    line.delete(0, line.length() - 1);
+                    if (line.length() > 0) {
+                        line.delete(0, line.length() - 1);
+                    }
                 } else {
                     line.append((char) oneByte);
                 }
@@ -125,7 +127,9 @@ public class BombusModActivity extends MicroEmulatorActivity {
             public void write(int oneByte) throws IOException {
                 if (((char) oneByte) == '\n') {
                     Logger.debug(line.toString());
-                    line.delete(0, line.length() - 1);
+                    if (line.length() > 0) {
+                        line.delete(0, line.length() - 1);
+                    }
                 } else {
                     line.append((char) oneByte);
                 }
@@ -148,7 +152,9 @@ public class BombusModActivity extends MicroEmulatorActivity {
         common.setDevice(new AndroidDevice(emulatorContext, this));
         common.initParams(params, null, AndroidDevice.class);
 
-        System.setProperty("microedition.platform", "microemulator-android");
+        System.setProperty("microedition.platform", "microemu-android");
+        System.setProperty("microedition.configuration", "CLDC-1.1");
+        System.setProperty("microedition.profiles", "MIDP-2.0");
         System.setProperty("microedition.locale", Locale.getDefault().toString());
         System.setProperty("device.model", android.os.Build.MODEL);
         System.setProperty("device.software.version", android.os.Build.VERSION.RELEASE);
@@ -179,7 +185,7 @@ public class BombusModActivity extends MicroEmulatorActivity {
 
         initializeExtensions();
 
-        common.getLauncher().setSuiteName(midletClassName);
+        common.setSuiteName(midletClassName);
         midlet = common.initMIDlet(false);
     }
 
@@ -195,7 +201,7 @@ public class BombusModActivity extends MicroEmulatorActivity {
 
         if (isFinishing()) {
             NotificationManager mNM = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-	    mNM.cancelAll();
+            mNM.cancelAll();
             Log.i(LOG_TAG, "onPause(); with isFinishing() == true.");
             Log.i(LOG_TAG, "Stopping service...");
             stopService(new Intent(this, BombusModService.class));
