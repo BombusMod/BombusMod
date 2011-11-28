@@ -1020,7 +1020,7 @@ public class ContactMessageList extends MessageList {
     }
 
     // TODO: fix this shit
-    public String touchLeftCommand(){ return (Config.getInstance().swapMenu)?((contact.msgSuspended!=null)?SR.MS_RESUME:SR.MS_NEW):SR.MS_MENU; }
+    public String touchLeftCommand(){ return (Config.getInstance().swapMenu)?((contact.msgSuspended!=null)?SR.MS_RESUME:SR.MS_NEW_MESSAGE):SR.MS_MENU; }
     public String touchRightCommand(){ return (Config.getInstance().swapMenu)?SR.MS_MENU:SR.MS_BACK; }
     public void touchRightPressed(){ if (cf.swapMenu) showMenu(); else destroyView(); }
     public void touchLeftPressed(){ if (cf.swapMenu) messageEditResume(); else showMenu(); }
