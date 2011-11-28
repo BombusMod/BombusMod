@@ -1,6 +1,6 @@
 Index: microemulator/microemu-android/src/org/microemu/android/device/AndroidInputMethod.java
 ===================================================================
---- microemulator/microemu-android/src/org/microemu/android/device/AndroidInputMethod.java	(revision 2507)
+--- microemulator/microemu-android/src/org/microemu/android/device/AndroidInputMethod.java	(revision 2521)
 +++ microemulator/microemu-android/src/org/microemu/android/device/AndroidInputMethod.java	(working copy)
 @@ -284,6 +284,12 @@
  		
@@ -15,9 +15,22 @@ Index: microemulator/microemu-android/src/org/microemu/android/device/AndroidInp
  		case KeyEvent.KEYCODE_DPAD_CENTER :
  			resultKeyCode = -5;
  			break;
+Index: microemulator/microemu-android/src/org/microemu/android/device/AndroidDisplayGraphics.java
+===================================================================
+--- microemulator/microemu-android/src/org/microemu/android/device/AndroidDisplayGraphics.java	(revision 2521)
++++ microemulator/microemu-android/src/org/microemu/android/device/AndroidDisplayGraphics.java	(working copy)
+@@ -96,7 +96,7 @@
+ 	    this.canvas = canvas;
+ 	    
+ 		Rect tmp = this.canvas.getClipBounds();
+-		this.canvas.setMatrix(identityMatrix);
++		// this.canvas.setMatrix(identityMatrix); // bugs with BombusMod SplashScreen
+ 		// setMatrix changes the clipping too
+ 		this.canvas.clipRect(tmp, Region.Op.REPLACE);
+ 		clip = this.canvas.getClipBounds();
 Index: microemulator/microemu-android/src/org/microemu/android/MicroEmulatorActivity.java
 ===================================================================
---- microemulator/microemu-android/src/org/microemu/android/MicroEmulatorActivity.java	(revision 2507)
+--- microemulator/microemu-android/src/org/microemu/android/MicroEmulatorActivity.java	(revision 2521)
 +++ microemulator/microemu-android/src/org/microemu/android/MicroEmulatorActivity.java	(working copy)
 @@ -168,7 +168,7 @@
                          }
@@ -30,14 +43,12 @@ Index: microemulator/microemu-android/src/org/microemu/android/MicroEmulatorActi
              }
 Index: microemulator/microemu-midp/src/main/java/javax/microedition/lcdui/Display.java
 ===================================================================
---- microemulator/microemu-midp/src/main/java/javax/microedition/lcdui/Display.java	(revision 2507)
+--- microemulator/microemu-midp/src/main/java/javax/microedition/lcdui/Display.java	(revision 2521)
 +++ microemulator/microemu-midp/src/main/java/javax/microedition/lcdui/Display.java	(working copy)
-@@ -343,7 +343,25 @@
- 		}
+@@ -344,6 +344,24 @@
  
  		public DisplayableUI getDisplayableUI(Displayable displayable) {
--			return displayable.ui;
-+            return displayable.ui;
+ 			return displayable.ui;
 +/* TODO: java.lang.NullPointerException
 +at javax.microedition.lcdui.Display$DisplayAccessor.getDisplayableUI(Display.java:346)
 +at org.bombusmod.BombusModActivity.onKeyDown(BombusModActivity.java:241)
