@@ -192,7 +192,7 @@ public final class SplashScreen extends DefForm implements VirtualElement {
             if (pb == null) {
                 pb = new Progress(0, height, width);
             }
-            Progress.draw(g, filled, capt);
+            pb.draw(g, filled, capt);
         }
     }
 

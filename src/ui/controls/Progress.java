@@ -43,35 +43,35 @@ import javax.microedition.lcdui.Image;
  */
 public class Progress {
 
-    private static int width;
-    private static int height;
+    private int width;
+    private int height;
 
-    private static int y;
-    private static int x;
+    private int y;
+    private int x;
 
-    private static Font font;
+    private Font font;
     
 //#ifdef GRADIENT
-//#     private static Gradient gr=null;
-//#     private static int bottomColor;
+//#     private Gradient gr=null;
+//#     private int bottomColor;
 //#endif
-    private static int topColor;
+    private int topColor;
 //#ifdef BACK_IMAGE
-//#     private static Image img;
+//#     private Image img;
 //#endif
 
     /** Creates a new instance of progress */
     public Progress(int x, int y, int width) {
-        Progress.x=x;
-        Progress.width=width;
-        Progress.font=FontCache.getFont(false, FontCache.bar);
-        Progress.height=font.getHeight();
-        Progress.y=y-height;
-        Progress.topColor=ColorTheme.getColor(ColorTheme.PGS_COMPLETE_TOP);
+        this.x=x;
+        this.width=width;
+        this.font=FontCache.getFont(false, FontCache.bar);
+        this.height=font.getHeight();
+        this.y=y-height;
+        this.topColor=ColorTheme.getColor(ColorTheme.PGS_COMPLETE_TOP);
 //#ifdef GRADIENT
-//#         Progress.bottomColor=ColorTheme.getColor(ColorTheme.PGS_COMPLETE_BOTTOM);
+//#         this.bottomColor=ColorTheme.getColor(ColorTheme.PGS_COMPLETE_BOTTOM);
 //#         if (topColor!=bottomColor)
-//#             Progress.gr=new Gradient(x, y-height, x+width, y, topColor, bottomColor, false);
+//#             this.gr=new Gradient(x, y-height, x+width, y, topColor, bottomColor, false);
 //#endif
 //#ifdef BACK_IMAGE
 //#         try {
@@ -79,14 +79,13 @@ public class Progress {
 //#                 img=Image.createImage("/images/progress.png");
 //#         } catch (Exception e) { }
 //#         if (img != null) {
-//#             Progress.height = img.getHeight();
-//#             Progress.y=y - height;
+//#             this.height = img.getHeight();
+//#             this.y=y - height;
 //#         }
 //#endif
-        
     }
     
-    public static void draw(Graphics g, int filled, String text) {
+    public void draw(Graphics g, int filled, String text) {
         g.setColor(ColorTheme.getColor(ColorTheme.PGS_REMAINED));
         g.fillRect(x, y, width, height);
 //#ifdef GRADIENT
@@ -120,7 +119,7 @@ public class Progress {
         g.drawLine(x+filled,y+1,x+filled,y+height-1);
     }
     
-    public static int getHeight() {
+    public int getHeight() {
         return height;
     }
 }

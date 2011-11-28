@@ -72,13 +72,13 @@ public class ReconnectWindow extends TimerTask {
         if (pb == null) {
             pb = new Progress(progressX, height / 2, progressWidth);
         }
-        int popHeight = Progress.getHeight();
+        int popHeight = pb.getHeight();
         g.setColor(ColorTheme.getColor(ColorTheme.POPUP_SYSTEM_BGND));
         g.fillRoundRect(progressX - 2, (height / 2) - (popHeight * 2), progressWidth + 4, (popHeight * 2) + 1, 6, 6);
         g.setColor(ColorTheme.getColor(ColorTheme.POPUP_SYSTEM_INK));
         g.drawRoundRect(progressX - 2, (height / 2) - (popHeight * 2), progressWidth + 4, (popHeight * 2) + 1, 6, 6);
         FontCache.drawString(g, SR.MS_RECONNECT, width / 2, (height / 2) - (popHeight * 2), Graphics.TOP | Graphics.HCENTER);
-        Progress.draw(g, reconnectPos * progressWidth / reconnectTimeout, reconnectString);
+        pb.draw(g, reconnectPos * progressWidth / reconnectTimeout, reconnectString);
     }
 
     private void redraw() {
