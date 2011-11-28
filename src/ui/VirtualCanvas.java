@@ -22,7 +22,7 @@ import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.midlet.MIDlet;
 //#ifdef POPUPS
-import ui.controls.PopUp;
+//# import ui.controls.PopUp;
 //#endif
 //#ifdef USER_KEYS
 //# import ui.keys.UserKeyExec;
@@ -34,7 +34,7 @@ import ui.controls.PopUp;
 //# import javax.microedition.lcdui.Image;
 //#endif
 //#ifdef AUTOSTATUS
-import Client.AutoStatus;
+//# import Client.AutoStatus;
 //#endif
 
 /**
@@ -94,7 +94,7 @@ public class VirtualCanvas extends Canvas implements CommandListener{
         if (VirtualList.phoneManufacturer == Config.WINDOWS) {
             setTitle("BombusMod");
         }
-        if (hasPointerEvents() && Config.getInstance().swapMenu) {
+        if (hasPointerEvents() && VirtualList.phoneManufacturer == Config.WINDOWS && Config.getInstance().swapMenu) {
             // silly china phones
             Config.getInstance().swapMenu = false;
         }
@@ -193,14 +193,14 @@ public class VirtualCanvas extends Canvas implements CommandListener{
 //#endif
         kHold = false;
 //#ifdef POPUPS
-        if (PopUp.getInstance().handlePressed(keyCode)) {
+//#         if (PopUp.getInstance().handlePressed(keyCode)) {
 //#ifdef USER_KEYS
 //#             UserKeyExec.getInstance().keyExecute(keyCode, true);
 //#             UserKeyExec.getInstance().afterActions(keyCode);
 //#endif
-            repaint();
-            return;
-        }
+//#             repaint();
+//#             return;
+//#         }
 //#endif
         checkKey(keyCode);
         repaint();
@@ -235,18 +235,18 @@ public class VirtualCanvas extends Canvas implements CommandListener{
 //#endif
         KeyRepeatTimer.stop();
 //#ifdef POPUPS
-/*
-        if (PopUp.getInstance().handleReleased(keyCode)) {
-            repaint();
-            return;
-        }
-*/
+//# /*
+//#         if (PopUp.getInstance().handleReleased(keyCode)) {
+//#             repaint();
+//#             return;
+//#         }
+//# */
 //#endif
     }
 
     protected final void pointerPressed(int x, int y) {
 //#ifdef AUTOSTATUS
-        AutoStatus.getInstance().userActivity(Config.AWAY_IDLE);
+//#         AutoStatus.getInstance().userActivity(Config.AWAY_IDLE);
 //#endif
         try {
             list.pointerPressed(x, y);
@@ -293,7 +293,7 @@ public class VirtualCanvas extends Canvas implements CommandListener{
 
     protected void showNotify() {
 //#if (USE_ROTATOR)
-        TimerTaskRotate.startRotate(-1, list);
+//#         TimerTaskRotate.startRotate(-1, list);
 //#endif
         setFullScreenMode(Config.fullscreen);
     }
@@ -602,7 +602,7 @@ public class VirtualCanvas extends Canvas implements CommandListener{
         if (!sendEvent(keyCode)) {
             if (kHold && list.longKey(keyCode)) {
 //#ifdef POPUPS
-                PopUp.getInstance().handled = true;
+//#                 PopUp.getInstance().handled = true;
 //#endif
                 KeyRepeatTimer.stop();
                 kHold = false;
@@ -675,91 +675,91 @@ class KeyRepeatTimer extends TimerTask {
 
 
 //#if (USE_ROTATOR)    
-class TimerTaskRotate extends TimerTask {
-    private int scrollLen;
-    private int scroll; //wait before scroll * sleep
-    
-    private boolean scrollline;
-    
-    private VirtualList attachedList;
-    
-    private static TimerTaskRotate instance;
-
-    private static Timer timer;
-
-    public TimerTaskRotate() {
-        timer = new Timer();
-        timer.schedule(this, 250, 250);
-    }
-    
-    public static void startRotate(int max, VirtualList list) {
-        
-        if (instance==null)  {
-            instance=new TimerTaskRotate();            
-        }
-        
-        if (max<0) {
-            //instance.destroyTask();
-            list.offset=0;
-            return;
-        }
-        
-        synchronized (instance) {
-            list.offset=0;
-            instance.scrollLen=max;
-            instance.scrollline=(max>0);
-            instance.attachedList=list;
-            instance.scroll   = 4;
-        }
-    }
-    
-    public void run() {
-
-        synchronized (this) {
-            if (scroll == 0) {
-                if (instance.scroll()) {
-                    try {
-                        attachedList.redraw();
-                    } catch (Exception e) {
-                        instance = null;
-                    }
-                }
-            } else {
-                scroll--;
-            }
-/* TODO: remove
-            if (VirtualList.reconnectRedraw) {
-                VirtualList.reconnectRedraw = false;
-                try {
-                    attachedList.redraw();
-                } catch (Exception e) {
-                    instance = null;
-                }
-            }
-*/
-        }
-
-    }
-
-    public boolean scroll() {
-        synchronized (this) {
-            if (scrollline==false || attachedList==null || scrollLen<0)
-                return false;
-            if (attachedList.offset>=scrollLen) {
-                scrollLen=-1; attachedList.offset=0; scrollline = false;
-            } else 
-                attachedList.offset+=14;
-
-            return true;
-        }
-    }
-        
-    /*
-    public void destroyTask(){
-        synchronized (this) { 
-            if (attachedList!=null) 
-                attachedList.offset=0;
-        }
-    }*/
-}
+//# class TimerTaskRotate extends TimerTask {
+//#     private int scrollLen;
+//#     private int scroll; //wait before scroll * sleep
+//#     
+//#     private boolean scrollline;
+//#     
+//#     private VirtualList attachedList;
+//#     
+//#     private static TimerTaskRotate instance;
+//# 
+//#     private static Timer timer;
+//# 
+//#     public TimerTaskRotate() {
+//#         timer = new Timer();
+//#         timer.schedule(this, 250, 250);
+//#     }
+//#     
+//#     public static void startRotate(int max, VirtualList list) {
+//#         
+//#         if (instance==null)  {
+//#             instance=new TimerTaskRotate();            
+//#         }
+//#         
+//#         if (max<0) {
+//#             //instance.destroyTask();
+//#             list.offset=0;
+//#             return;
+//#         }
+//#         
+//#         synchronized (instance) {
+//#             list.offset=0;
+//#             instance.scrollLen=max;
+//#             instance.scrollline=(max>0);
+//#             instance.attachedList=list;
+//#             instance.scroll   = 4;
+//#         }
+//#     }
+//#     
+//#     public void run() {
+//# 
+//#         synchronized (this) {
+//#             if (scroll == 0) {
+//#                 if (instance.scroll()) {
+//#                     try {
+//#                         attachedList.redraw();
+//#                     } catch (Exception e) {
+//#                         instance = null;
+//#                     }
+//#                 }
+//#             } else {
+//#                 scroll--;
+//#             }
+//# /* TODO: remove
+//#             if (VirtualList.reconnectRedraw) {
+//#                 VirtualList.reconnectRedraw = false;
+//#                 try {
+//#                     attachedList.redraw();
+//#                 } catch (Exception e) {
+//#                     instance = null;
+//#                 }
+//#             }
+//# */
+//#         }
+//# 
+//#     }
+//# 
+//#     public boolean scroll() {
+//#         synchronized (this) {
+//#             if (scrollline==false || attachedList==null || scrollLen<0)
+//#                 return false;
+//#             if (attachedList.offset>=scrollLen) {
+//#                 scrollLen=-1; attachedList.offset=0; scrollline = false;
+//#             } else 
+//#                 attachedList.offset+=14;
+//# 
+//#             return true;
+//#         }
+//#     }
+//#         
+//#     /*
+//#     public void destroyTask(){
+//#         synchronized (this) { 
+//#             if (attachedList!=null) 
+//#                 attachedList.offset=0;
+//#         }
+//#     }*/
+//# }
 //#endif

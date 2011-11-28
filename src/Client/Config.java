@@ -90,14 +90,14 @@ public class Config {
     //public boolean blFlash=!ghostMotor; //true;
     public boolean muc119 = true;	// before muc 1.19 use muc#owner instead of muc#admin
 //#ifdef AUTOSTATUS
-    public final static int AWAY_OFF=0;
-    public final static int AWAY_LOCK = 1;
-    public final static int AWAY_MESSAGE = 2;
-    public final static int AWAY_IDLE = 3;
-
-    public static int autoAwayType = 0;
-    public static int autoAwayDelay = 5; //5 minutes
-    public static boolean useMyStatusMessages = true;
+//#     public final static int AWAY_OFF=0;
+//#     public final static int AWAY_LOCK = 1;
+//#     public final static int AWAY_MESSAGE = 2;
+//#     public final static int AWAY_IDLE = 3;
+//# 
+//#     public static int autoAwayType = 0;
+//#     public static int autoAwayDelay = 5; //5 minutes
+//#     public static boolean useMyStatusMessages = true;
 //#endif
     public boolean allowMinimize = false;
     public int profile = 0;
@@ -799,6 +799,7 @@ public class Config {
     private void getPhoneManufacturer() {
 //#if android 
 //#         phoneManufacturer = MICROEMU;
+//#         swapMenu = true;       
 //#else        
         if (phoneManufacturer == NOT_DETECTED) {
             String platform = getPlatformName();
