@@ -77,7 +77,7 @@ public class AccountSelect extends DefForm {
             a = Account.createFromStorage(index);
             if (a != null) {
                 a.setActive(activeAccount == index);
-                itemsList.addElement(a);
+                itemsList.addElement(new AccountItem(a));
                 index++;
             }
         } while (a != null);

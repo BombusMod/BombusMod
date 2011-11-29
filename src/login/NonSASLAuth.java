@@ -72,32 +72,32 @@ public class NonSASLAuth implements JabberBlockListener{
         
         JabberDataBlock query = new JabberDataBlock("query", null, null);
         query.setNameSpace( "jabber:iq:auth" );
-        query.addChild( "username", account.getUserName() );
+        query.addChild( "username", account.userName );
         
         switch (authType) {
             case AUTH_DIGEST:
                 SHA1 sha=new SHA1();
                 sha.init();
                 sha.updateASCII(stream.getSessionId());
-                sha.updateASCII(Strconv.unicodeToUTF(account.getPassword()) );
+                sha.updateASCII(Strconv.unicodeToUTF(account.password) );
                 sha.finish();
                 query.addChild("digest", sha.getDigestHex() );
 
-                query.addChild( "resource", account.getResource() );
+                query.addChild( "resource", account.resource );
                 type=Iq.TYPE_SET;
                 id="auth-s";
                 break;
                 
             case AUTH_PASSWORD:
-                query.addChild("password", account.getPassword() );
-                query.addChild( "resource", account.getResource() );
+                query.addChild("password", account.password );
+                query.addChild( "resource", account.resource );
                 type=Iq.TYPE_SET;
                 id="auth-s";
                 break;
         }
 
         
-        Iq auth=new Iq(account.getServer(), type, id);
+        Iq auth=new Iq(account.server, type, id);
         auth.addChild(query);
         
         stream.send(auth);
@@ -128,7 +128,7 @@ public class NonSASLAuth implements JabberBlockListener{
                         } 
                         
                         if (query.getChildBlock("password")!=null) {
-                            if (!account.getPlainAuth()) {
+                            if (!account.plainAuth) {
                                 listener.loginFailed("Plain auth required");
                                 return JabberBlockListener.NO_MORE_BLOCKS;
                             }

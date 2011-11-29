@@ -125,15 +125,15 @@ public class Accounts {
                         String tempstr=accounts.substring(start_pos+3, end_pos);
 
                         Account account=new Account();
-                        account.setUserName(findBlock(tempstr, userName));
-                        account.setServer(findBlock(tempstr, server));
-                        account.setPassword(findBlock(tempstr, password));
-                        account.setHostAddr(findBlock(tempstr, hostAddr));
-                        account.setPort(Integer.parseInt(findBlock(tempstr, port)));
+                        account.userName = findBlock(tempstr, userName);
+                        account.server = findBlock(tempstr, server);
+                        account.password = findBlock(tempstr, password);
+                        account.hostAddr = findBlock(tempstr, hostAddr);
+                        account.port = Integer.parseInt(findBlock(tempstr, port));
                         account.setNick(findBlock(tempstr, nick));
-                        account.setResource(findBlock(tempstr, resource));
-                        account.setPlainAuth((findBlock(tempstr, plainAuth).equals("1"))?true:false);
-                        account.setMucOnly((findBlock(tempstr, mucOnly).equals("1"))?true:false);
+                        account.resource = findBlock(tempstr, resource);
+                        account.plainAuth = (findBlock(tempstr, plainAuth).equals("1"))?true:false;
+                        account.mucOnly = (findBlock(tempstr, mucOnly).equals("1"))?true:false;
 //#if HTTPPOLL || HTTPCONNECT || HTTPBIND
 //#                         account.setEnableProxy(findBlock(tempstr, enableProxy).equals("1")?true:false);
 //#                         account.setProxyHostAddr(findBlock(tempstr, proxyHostAddr));
@@ -197,15 +197,15 @@ public class Accounts {
         for(int i=0; i<getItemCount(); i++){
             Account a=getAccount(i);
             StringBuffer account = new StringBuffer("<a>");
-            account.append(createBlock(userName, a.getUserName()))
-                   .append(createBlock(server, a.getServer()))
-                   .append(createBlock(hostAddr, a.getHostAddr()))
-                   .append(createBlock(port, Integer.toString(a.getPort())))
+            account.append(createBlock(userName, a.userName))
+                   .append(createBlock(server, a.server))
+                   .append(createBlock(hostAddr, a.hostAddr))
+                   .append(createBlock(port, Integer.toString(a.port)))
                    .append(createBlock(nick, a.getNick()))
-                   .append(createBlock(resource, a.getResource()))
+                   .append(createBlock(resource, a.resource))
                    .append(createBlock(useSSL, "0"))
-                   .append(createBlock(plainAuth, (a.getPlainAuth()?"1":"0")))
-                   .append(createBlock(mucOnly, (a.isMucOnly()?"1":"0")))
+                   .append(createBlock(plainAuth, (a.plainAuth?"1":"0")))
+                   .append(createBlock(mucOnly, (a.mucOnly?"1":"0")))
 //#if HTTPPOLL || HTTPCONNECT || HTTPBIND
 //#                    .append(createBlock(enableProxy, a.isEnableProxy()?"1":"0"))
 //#                    .append(createBlock(proxyHostAddr, a.proxyHostAddr))

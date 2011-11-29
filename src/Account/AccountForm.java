@@ -111,7 +111,7 @@ public class AccountForm
         userbox = new TextInput(sd.canvas, SR.MS_JID, account.getBareJid(), null, TextField.ANY); //, 64, TextField.ANY
         itemsList.addElement(userbox);
         
-        passbox = new PasswordInput(sd.canvas,  SR.MS_PASSWORD, account.getPassword());//, 64, TextField.PASSWORD
+        passbox = new PasswordInput(sd.canvas,  SR.MS_PASSWORD, account.password);//, 64, TextField.PASSWORD
         itemsList.addElement(passbox);
         
         nickbox = new TextInput(sd.canvas, SR.MS_NICKNAME, account.getNick(), null, TextField.ANY);//64, TextField.ANY
@@ -151,14 +151,14 @@ public class AccountForm
         if (!newaccount)
             itemsList.addElement(linkRegister);
         
-        ipbox = new TextInput(sd.canvas, SR.MS_HOST_IP, account.getHostAddr(), null, TextField.ANY);//, 64, TextField.ANY
-        portbox = new NumberInput(sd.canvas,  SR.MS_PORT, Integer.toString(account.getPort()), 0, 65535);//, 0, 65535
+        ipbox = new TextInput(sd.canvas, SR.MS_HOST_IP, account.hostAddr, null, TextField.ANY);//, 64, TextField.ANY
+        portbox = new NumberInput(sd.canvas,  SR.MS_PORT, Integer.toString(account.port), 0, 65535);//, 0, 65535
         
                 
-        plainPwdbox = new CheckBox(SR.MS_PLAIN_PWD, account.getPlainAuth());
+        plainPwdbox = new CheckBox(SR.MS_PLAIN_PWD, account.plainAuth);
         compressionBox = new CheckBox(SR.MS_COMPRESSION, account.useCompression());
 //#ifndef WMUC        
-        confOnlybox = new CheckBox(SR.MS_CONFERENCES_ONLY, account.isMucOnly());
+        confOnlybox = new CheckBox(SR.MS_CONFERENCES_ONLY, account.mucOnly);
 //#endif        
 //#if HTTPCONNECT
 //#        proxybox = new CheckBox(/*SR.MS_PROXY_ENABLE*/"Proxy connect", account.isEnableProxy());
@@ -180,7 +180,7 @@ public class AccountForm
 //#ifndef HTTPBIND
         keepAlive = new NumberInput(sd.canvas,  SR.MS_KEEPALIVE_PERIOD, Integer.toString(account.keepAlivePeriod), 10, 2048);//10, 2096        
 //#endif
-        resourcebox = new TextInput(sd.canvas, SR.MS_RESOURCE, account.getResource(), null, TextField.ANY);//64, TextField.ANY
+        resourcebox = new TextInput(sd.canvas, SR.MS_RESOURCE, account.resource, null, TextField.ANY);//64, TextField.ANY
         
 //#if HTTPCONNECT
 //# 	proxyHost = new TextInput(sd.canvas,/*SR.MS_PROXY_HOST*/"Proxy name/IP", account.getProxyHostAddr(), null, TextField.URL);//32, TextField.URL
@@ -223,20 +223,20 @@ public class AccountForm
         if (server.length()==0 || user.length()==0 || pass.length()==0)
             return;
         
-        account.setUserName(user);
-        account.setServer(server);
-        account.setPassword(pass);
+        account.userName = user;
+        account.server = server;
+        account.password = pass;
         account.setNick(nickbox.getValue());
         
         if (showExtended) {
             String hostname = ipbox.getValue();
-            account.setPort(Integer.parseInt(portbox.getValue()));
-            account.setHostAddr(hostname);
-            account.setResource(resourcebox.getValue());
-            account.setPlainAuth(plainPwdbox.getValue());
-            account.setUseCompression(compressionBox.getValue());
+            account.port = Integer.parseInt(portbox.getValue());
+            account.hostAddr = hostname;
+            account.resource = resourcebox.getValue();
+            account.plainAuth = plainPwdbox.getValue();
+            account.compression = compressionBox.getValue();
 //#ifndef WMUC            
-            account.setMucOnly(confOnlybox.getValue());
+            account.mucOnly = confOnlybox.getValue();
 //#endif            
 //#if HTTPCONNECT || HTTPPOLL || HTTPBIND
 //#             account.setEnableProxy(proxybox.getValue());

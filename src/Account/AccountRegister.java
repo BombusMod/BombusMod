@@ -87,7 +87,7 @@ public class AccountRegister
 		itemsList.addElement(serverChoice);
 		show();
 	    } else if (serversCount == 1) {
-		raccount.setServer((String) defs[0].elementAt(0));
+		raccount.server = (String) defs[0].elementAt(0);
 		new Thread(this).start();
 	    } else {
 		for (int i = 0; i < serversCount; i++) {
@@ -109,7 +109,7 @@ public class AccountRegister
     public void run() {
 	VirtualCanvas.getInstance().show(splash);
 	try {
-	    splash.setProgress(SR.MS_CONNECT_TO_ + raccount.getServer(), 30);
+	    splash.setProgress(SR.MS_CONNECT_TO_ + raccount.server, 30);
 	    //give a chance another thread to finish ui
 	    Thread.sleep(500);
 	    sd.theStream = raccount.openJabberStream();
@@ -173,7 +173,7 @@ public class AccountRegister
     public void menuAction(MenuCommand c, VirtualList v) {
 	if (c == cmdSend) {
 	    String serverName = (String) serverChoice.items.elementAt(serverChoice.getSelectedIndex());
-	    raccount.setServer(serverName);
+	    raccount.server = serverName;
 	    new Thread(this).start();
 	} else {
 	    super.menuAction(c, v);
@@ -197,10 +197,10 @@ public class AccountRegister
 	    FormField field = (FormField) e.nextElement();
 	    if (field != null && field.name != null) {
 		if (field.name.equals("username")) {
-		    raccount.setUserName(((TextInput) field.formItem).getValue());
+		    raccount.userName = ((TextInput) field.formItem).getValue();
 		}
 		if (field.name.equals("password")) {
-		    raccount.setPassword(((TextInput) field.formItem).getValue());
+		    raccount.password = ((TextInput) field.formItem).getValue();
 		}
 	    }
 	}

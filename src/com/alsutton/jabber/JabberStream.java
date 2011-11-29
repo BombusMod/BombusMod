@@ -439,7 +439,7 @@ public class JabberStream extends XmppParser implements Runnable {
     
     private void ping() {
         pingSent = true;
-        send(IqPing.query(StaticData.getInstance().account.getServer(), "ping"));
+        send(IqPing.query(StaticData.getInstance().account.server, "ping"));
     }
 
 //#if ZLIB

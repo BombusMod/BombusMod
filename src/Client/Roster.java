@@ -280,7 +280,7 @@ public class Roster
         }
         try {
             Account a = sd.account;
-            setProgress(SR.MS_CONNECT_TO_ + a.getServer(), 30);
+            setProgress(SR.MS_CONNECT_TO_ + a.server, 30);
 
             sd.theStream = a.openJabberStream();
             new Thread(sd.theStream).start();
@@ -943,7 +943,7 @@ public class Roster
 
             Presence presence = new Presence(myStatus, myPriority, myMessage, sd.account.getNick());
 
-            if (!sd.account.isMucOnly()) {
+            if (!sd.account.mucOnly) {
                 sd.theStream.send(presence);
             }
 //#ifndef WMUC
@@ -960,7 +960,7 @@ public class Roster
             } catch (Exception e) { /*e.printStackTrace();*/ }
             makeRosterOffline(); 
 //#ifdef AUTOSTATUS
-            AutoStatus.getInstance().stop();
+//#             AutoStatus.getInstance().stop();
 //#endif
         }
         Contact c = selfContact();
@@ -1128,7 +1128,7 @@ public class Roster
 
     public void sendMessage(Contact to, String id, final String body, final String subject, String composingState) {
 //#ifdef AUTOSTATUS
-        AutoStatus.getInstance().userActivity(Config.AWAY_MESSAGE);
+//#         AutoStatus.getInstance().userActivity(Config.AWAY_MESSAGE);
 //#endif
         try {
 //#ifndef WMUC
@@ -1315,7 +1315,7 @@ public class Roster
         //theStream.enableRosterNotify(true); //voffk
         rpercent = 50;
 
-        if (sd.account.isMucOnly()) {
+        if (sd.account.mucOnly) {
             setProgress(SR.MS_CONNECTED, 100);
             show();
             try {
@@ -1336,9 +1336,9 @@ public class Roster
             show();
         }
 //#ifdef AUTOSTATUS
-        if ((cf.autoAwayType!=Config.AWAY_OFF) && cf.autoAwayType != Config.AWAY_LOCK) {
-            AutoStatus.getInstance().start();
-        }
+//#         if ((cf.autoAwayType!=Config.AWAY_OFF) && cf.autoAwayType != Config.AWAY_LOCK) {
+//#             AutoStatus.getInstance().start();
+//#         }
 //#endif
 //#ifndef WMUC
         //query bookmarks
@@ -1941,7 +1941,7 @@ public class Roster
             askReconnect(e);
         } else {
 //#ifdef AUTOSTATUS
-             AutoStatus.getInstance().stop();
+//#              AutoStatus.getInstance().stop();
 //#endif
             setProgress(SR.MS_DISCONNECTED, 0);
             try {
@@ -2098,7 +2098,7 @@ public class Roster
 
     public void blockScreen() {
 //#ifdef AUTOSTATUS
-            AutoStatus.getInstance().appLocked();
+//#             AutoStatus.getInstance().appLocked();
 //#endif
         new SplashScreen(mainbar, VirtualCanvas.keyLock);
     }
@@ -2183,7 +2183,7 @@ public class Roster
 
     public void quit() {
 //#ifdef AUTOSTATUS
-        AutoStatus.getInstance().stop();
+//#         AutoStatus.getInstance().stop();
 //#endif
         logoff(null);
         try {

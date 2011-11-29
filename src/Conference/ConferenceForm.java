@@ -117,7 +117,7 @@ public class ConferenceForm
             room=room.substring(0, roomE);
         }
         // default server
-        if (server==null) server="conference."+sd.account.getServer();
+        if (server==null) server="conference."+sd.account.server;
         createForm(null, room, server, null, null, false); 
         room=null;
         server=null;

@@ -31,37 +31,28 @@ import Client.StaticData;
 import Info.Version;
 import com.alsutton.jabber.JabberStream;
 import com.alsutton.jabber.datablocks.Presence;
-import images.RosterIcons;
 import io.DnsSrvResolver;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import ui.IconTextElement;
 import io.NvStorage;
 
-public class Account extends IconTextElement {
+public class Account {
     
     //public final static String storage="accnt_db";
             
-    private String userName="";
-    private String password="";
-    private String server="";
-    private String hostAddr="";
-    private int port=5222;
-    private boolean active;
-    private boolean compression=
-//#if (superSmall)
-//#             false
-//#else
-            true
-//#endif
-            ;
-    private boolean plainAuth;
-    private boolean mucOnly;
-    
-    private String nick="";
-    private String resource=Version.NAME;
-    
+    public String userName = "";
+    public String password = "";
+    public String server = "";
+    public String hostAddr = "";
+    public int port = 5222;
+    public boolean active;
+    public boolean compression = true;
+    public boolean plainAuth;
+    public boolean mucOnly;
+    private String nick = "";
+    public String resource = Version.NAME;
+
 //#if HTTPPOLL || HTTPCONNECT || HTTPBIND
 //#     private boolean enableProxy;
 //#     public String proxyHostAddr="";
@@ -75,10 +66,6 @@ public class Account extends IconTextElement {
     public int keepAlivePeriod = 120;    
     
     private static StaticData sd=StaticData.getInstance();
-    
-    public Account() {
-        super(RosterIcons.getInstance());
-    }
     
     public static void loadAccount(boolean launch, int accountIndex) {
         Account a = sd.account = Account.createFromStorage(accountIndex);
@@ -95,18 +82,7 @@ public class Account extends IconTextElement {
             }
         }
     }
-
-    public String toString(){
-        StringBuffer s=new StringBuffer();
-        if (nick.length()!=0)
-            s.append(nick);
-        else {
-            s.append(userName).append('@').append(server);
-        }
-        s.append('/').append(resource);
-        return s.toString();
-    }
-    
+       
     public String getJid(){
         return userName+'@'+server+'/'+resource;
     }
@@ -235,38 +211,11 @@ public class Account extends IconTextElement {
         }
         
     }
-    
-    public int getImageIndex(){ return active?0:5; }
-
-    public String getUserName() { return userName;  }
-    public void setUserName(String userName) { this.userName = userName;  }
-
-    public String getPassword() {  return password;  }
-    public void setPassword(String password) { this.password = password;  }
-
-    public String getServer() { return server; }
-    public String getHostAddr() { return hostAddr; }
-    
-    public void setServer(String server) { this.server = server; }
-
-    public void setHostAddr(String hostAddr) { this.hostAddr = hostAddr; }
-
-    public int getPort() { return port; }
-    public void setPort(int port) { this.port = port; }
-    
-    public boolean getPlainAuth() { return plainAuth; }
-    public void setPlainAuth(boolean plain) { this.plainAuth = plain; }
-    
-    public String getResource() { return resource;  }
-    public void setResource(String resource) { this.resource = resource;  }
-
+        
     public String getNickName() { return (nick.length()==0)?userName:nick;  }
     public String getNick() { return (nick.length()==0)? null:nick;  }
     public void setNick(String nick) { this.nick = nick;  }
-
-    public boolean isMucOnly() { return mucOnly; }
-    public void setMucOnly(boolean mucOnly) {  this.mucOnly = mucOnly; }
-
+    
     public JabberStream openJabberStream() throws java.io.IOException {
         String proxy=null;
         String host=this.server;
@@ -313,7 +262,7 @@ public class Account extends IconTextElement {
             url.insert(0, "socket://");
 //#endif            
 //#endif
-        return new JabberStream( getServer(), url.toString(), tempPort, proxy);
+        return new JabberStream( server, url.toString(), tempPort, proxy);
     }
 
 //#if HTTPPOLL || HTTPCONNECT || HTTPBIND
@@ -362,8 +311,6 @@ public class Account extends IconTextElement {
     
     public boolean isGoogle = false;
     
-    public String getTipString() { return getJid(); }
-        
     public void setActive(boolean b) {
         active=b;
     }

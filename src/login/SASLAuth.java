@@ -144,7 +144,7 @@ public class SASLAuth implements JabberBlockListener{
 
                 if (mech.getChildBlockByText("PLAIN")!=null) {
 
-                    if (!account.getPlainAuth()) {
+                    if (!account.plainAuth) {
                         listener.loginFailed("SASL: Plain auth required");
                         return JabberBlockListener.NO_MORE_BLOCKS;
                     }
@@ -153,9 +153,9 @@ public class SASLAuth implements JabberBlockListener{
                     String plain=
                             Strconv.unicodeToUTF(account.getBareJid())
                             +(char)0x00
-                            +Strconv.unicodeToUTF(account.getUserName())
+                            +Strconv.unicodeToUTF(account.userName)
                             +(char)0x00
-                            +Strconv.unicodeToUTF(account.getPassword());
+                            +Strconv.unicodeToUTF(account.password);
                     auth.setText(Strconv.toBase64(plain));
                     
                     stream.send(auth);
@@ -171,7 +171,7 @@ public class SASLAuth implements JabberBlockListener{
             else if (data.getChildBlock("bind")!=null) {
                 JabberDataBlock bindIq=new Iq(null, Iq.TYPE_SET, "bind");
                 JabberDataBlock bind=bindIq.addChildNs("bind", "urn:ietf:params:xml:ns:xmpp-bind");
-                bind.addChild("resource", account.getResource());
+                bind.addChild("resource", account.resource);
                 stream.send(bindIq);
 
                 listener.loginMessage(SR.MS_RESOURCE_BINDING, 44);
@@ -208,10 +208,10 @@ public class SASLAuth implements JabberBlockListener{
                 String cnonce="123456789abcd";
                 
                 resp.setText(responseMd5Digest(
-                        Strconv.unicodeToUTF(account.getUserName()),
-                        Strconv.unicodeToUTF(account.getPassword()),
-                        account.getServer(),
-                        "xmpp/"+account.getServer(),
+                        Strconv.unicodeToUTF(account.userName),
+                        Strconv.unicodeToUTF(account.password),
+                        account.server,
+                        "xmpp/"+account.server,
                         nonce,
                         cnonce ));
                 //System.out.println(resp.toString());

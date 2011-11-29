@@ -79,9 +79,9 @@ public class HistoryAppend {
     public final static int MESSAGE_MARKER_OTHER=0;
     
 //#if FILE_IO
-    //private int filePos;
-    private FileIO file;
-    private OutputStream os;
+//#     //private int filePos;
+//#     private FileIO file;
+//#     private OutputStream os;
 //#endif
     
     public void addMessage(Msg m, String filename) {
@@ -145,7 +145,7 @@ public class HistoryAppend {
     }
     
     private String createBody(Msg m) {
-        String fromName = StaticData.getInstance().account.getUserName();
+        String fromName = StaticData.getInstance().account.userName;
         if (m.messageType != Msg.MESSAGE_TYPE_OUT)
             fromName = m.from;
 

@@ -69,8 +69,8 @@ public class GoogleTokenAuth {
     public String responseXGoogleToken() {
         try {
             String firstUrl = "https://www.google.com:443/accounts/ClientAuth?Email="
-                    + Strconv.unicodeToUTF(account.getUserName()) + "%40"+ account.getServer()
-                    + "&Passwd=" + Strconv.unicodeToUTF(account.getPassword()) 
+                    + Strconv.unicodeToUTF(account.userName) + "%40"+ account.server
+                    + "&Passwd=" + Strconv.unicodeToUTF(account.password) 
                     + "&PersistentCookie=false&source=googletalk";
             
             //log.addMessage("Connecting to www.google.com");
@@ -94,7 +94,7 @@ public class GoogleTokenAuth {
             is = c.openInputStream();
             //str = readLine(dis);
             StringBuffer token = new StringBuffer();
-            token.append((char)0).append(Strconv.unicodeToUTF(account.getUserName())).append((char)0).append(readLine(is));
+            token.append((char)0).append(Strconv.unicodeToUTF(account.userName)).append((char)0).append(readLine(is));
             is.close();
             c.close();            
             return Strconv.toBase64(token.toString());

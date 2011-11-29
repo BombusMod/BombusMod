@@ -107,7 +107,7 @@ public class ServiceDiscovery
         } else if (service != null) {            
             browse(service, node, true);
         } else {            
-            browse(sd.account.getServer(), null, true);
+            browse(sd.account.server, null, true);
         }        
     }
     
