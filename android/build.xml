@@ -61,17 +61,13 @@
     </target>
 -->
 
-        <property name="microemu.sources" value="PATH_TO_MICROEMULATOR_DIR" /> <!-- Change it in local.properties -->
         <property name="asset.dir" value="assets" />
         <property name="asset.absolute.dir" location="../resources/android" />
         <property name="source.dir" value="src" />
-<!-- With jsr-135
-        <property name="source.absolute.dir" location="${source.dir}:../build/android/preprocessed:${microemu.sources}/microemu-midp/src/main:${microemu.sources}/microemu-javase/src/main/java:${microemu.sources}/microemu-cldc/src/main:${microemu.sources}/microemu-android/src:${microemu.sources}/microemu-extensions/microemu-jsr-75/src/main/java:${microemu.sources}/microemu-extensions/microemu-jsr-135/src/main/java:${microemu.sources}/microemu-javase-swing/src/main/java" />
--->
-        <property name="source.absolute.dir" location="${source.dir}:../build/android/preprocessed:${microemu.sources}/microemu-midp/src/main:${microemu.sources}/microemu-javase/src/main/java:${microemu.sources}/microemu-cldc/src/main:${microemu.sources}/microemu-android/src:${microemu.sources}/microemu-extensions/microemu-jsr-75/src/main/java" />
+        <property name="source.absolute.dir" location="${source.dir}:../build/android/preprocessed" />
 
 	    <!-- Directory for the third party java libraries -->
-    <property name="jar.libs.dir" value="${microemu.sources}/microemu-android" />
+    <property name="jar.libs.dir" value="lib" />
     <property name="jar.libs.absolute.dir" location="${jar.libs.dir}" />
     <!-- create a path with all the jar files, from the main project and the
          libraries -->
