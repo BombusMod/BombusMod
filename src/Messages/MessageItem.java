@@ -37,6 +37,7 @@ import javax.microedition.lcdui.Graphics;
 import Colors.ColorTheme;
 import ui.ComplexString;
 import Fonts.FontCache;
+import ui.VirtualCanvas;
 import ui.VirtualElement;
 import ui.VirtualList;
 import ui.controls.form.ListItem;
@@ -149,7 +150,7 @@ public class MessageItem implements VirtualElement {//, MessageParser.MessagePar
             parse();
         }
         updateHeight();
-        StaticData.getInstance().canvas.repaint();
+        VirtualCanvas.getInstance().repaint();
     }
     
     private void updateHeight() {

@@ -40,6 +40,7 @@ import locale.SR;
 //#ifdef ARCHIVE
 //# import Archive.ArchiveList;
 //#endif
+import ui.VirtualCanvas;
 import ui.VirtualList;
 
 
@@ -107,7 +108,7 @@ public class ExTextBox {
         
     public void destroyView() {                
         midlet.BombusMod.getInstance().setDisplayable(parentView);
-        sd.canvas.show(parentList);
+        VirtualCanvas.getInstance().show(parentList);
     }   
     
     public final void insert(String s, int caretPos) {

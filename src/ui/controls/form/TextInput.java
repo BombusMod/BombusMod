@@ -75,12 +75,12 @@ public class TextInput
      * @param id
      * @param text
      */
-    public TextInput(VirtualCanvas canvas, String caption, String text, String id, int boxType) {
+    public TextInput(String caption, String text, String id, int boxType) {
         super(null);
         this.caption=(caption==null)?"":caption;
         this.id=id;
         this.boxType=boxType;
-        this.homeList = canvas.getList();
+        this.homeList = VirtualCanvas.getInstance().getList();
 
         colorItem=ColorTheme.getColor(ColorTheme.CONTROL_ITEM);
         colorBorder=ColorTheme.getColor(ColorTheme.CURSOR_OUTLINE);

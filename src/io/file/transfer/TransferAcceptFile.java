@@ -80,19 +80,19 @@ public class TransferAcceptFile
             }
         }
         
-        fileName=new TextInput(sd.canvas, SR.MS_FILE, name, "", TextField.ANY);
+        fileName=new TextInput(SR.MS_FILE, name, "", TextField.ANY);
         itemsList.addElement(fileName);
         itemsList.addElement(new SimpleString(SR.MS_FILE_SIZE+" "+String.valueOf(t.fileSize)+" bytes", true));
 
-        path=new TextInput(sd.canvas, SR.MS_SAVE_TO, t.filePath, "recvPath", TextField.ANY);
+        path=new TextInput(SR.MS_SAVE_TO, t.filePath, "recvPath", TextField.ANY);
         itemsList.addElement(path);
         
         selectFile=new LinkString(SR.MS_PATH) { public void doAction() { initBrowser(); } };
         itemsList.addElement(selectFile);
                 
-        itemsList.addElement(new MultiLine(SR.MS_SENDER, t.jid.toString(), sd.roster.getListWidth()));
+        itemsList.addElement(new MultiLine(SR.MS_SENDER, t.jid.toString()));
 
-        itemsList.addElement(new MultiLine(SR.MS_DESCRIPTION, t.description, sd.roster.getListWidth()));
+        itemsList.addElement(new MultiLine(SR.MS_DESCRIPTION, t.description));
         ftFolder = TransferConfig.getInstance().ftFolder;
         autoaccept = !(ftFolder == null || ftFolder.length() == 0);
         if (autoaccept) {

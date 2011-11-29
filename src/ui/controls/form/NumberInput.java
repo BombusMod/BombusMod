@@ -47,8 +47,8 @@ public class NumberInput
      * @param min 
      * @param text
      */
-    public NumberInput(VirtualCanvas canvas, String caption, String text, int min, int max) {
-        super(canvas, caption, text, null, (min<0)?TextField.DECIMAL:TextField.NUMERIC);
+    public NumberInput(String caption, String text, int min, int max) {
+        super(caption, text, null, (min<0)?TextField.DECIMAL:TextField.NUMERIC);
         this.min=min;
         this.max=max;
         initValue=text;

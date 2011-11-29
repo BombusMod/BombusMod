@@ -30,7 +30,7 @@ package ui.controls.form;
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
 import ui.IconTextElement;
-import Client.StaticData;
+import ui.VirtualCanvas;
 
 /**
  *
@@ -89,7 +89,7 @@ public class ImageItem
             g.drawImage(img, screenWidth/2, 0, Graphics.TOP|Graphics.HCENTER);
         }
 		resizeImage();
-		StaticData.getInstance().canvas.repaint();
+		VirtualCanvas.getInstance().repaint();
         super.drawItem(g, ofs, sel);
     }
 

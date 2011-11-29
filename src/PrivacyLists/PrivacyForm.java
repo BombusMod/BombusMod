@@ -91,7 +91,7 @@ public class PrivacyForm
         choiceType.setSelectedIndex(item.type);
         itemsList.addElement(choiceType);
         
-        textValue=new TextInput(sd.canvas, SR.MS_VALUE, tValue, "", TextField.ANY);//64, TextField.ANY);
+        textValue=new TextInput(SR.MS_VALUE, tValue, "", TextField.ANY);//64, TextField.ANY);
         
         switchType();
         

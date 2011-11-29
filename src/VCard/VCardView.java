@@ -31,10 +31,10 @@ import Client.Contact;
 import javax.microedition.io.ConnectionNotFoundException;
 import midlet.BombusMod;
 //#if FILE_IO
-import io.file.FileIO;
-import io.file.browse.Browser;
-import io.file.browse.BrowserListener;
-import util.StringUtils;
+//# import io.file.FileIO;
+//# import io.file.browse.Browser;
+//# import io.file.browse.BrowserListener;
+//# import util.StringUtils;
 //#endif
 //#ifdef CLIPBOARD
 //# import util.ClipBoard;
@@ -58,7 +58,7 @@ import images.RosterIcons;
 public class VCardView
     extends DefForm
 //#if FILE_IO
-        implements BrowserListener
+//#         implements BrowserListener
 //#endif
     {
     
@@ -116,7 +116,7 @@ public class VCardView
                 String name=(String)VCard.vCardLabels.elementAt(index);
                 if (data!=null && name!=null) {
                     if (!VCard.vCardFields.elementAt(index).equals("URL")) {
-                        MultiLine nData=new MultiLine(name, data, sd.roster.getListWidth());
+                        MultiLine nData=new MultiLine(name, data);
                         nData.selectable=true;
                         itemsList.addElement(nData);
 //#ifdef CLIPBOARD
@@ -151,15 +151,15 @@ public class VCardView
 //#             }
 //#endif           
 //#ifdef FILE_IO
-            if (vcard.hasPhoto) {
-                save = new LinkString(SR.MS_SAVE_PHOTO) {
-
-                    public void doAction() {
-                        new Browser(null, vv, true);
-                    }
-                };
-                itemsList.addElement(save);
-            }
+//#             if (vcard.hasPhoto) {
+//#                 save = new LinkString(SR.MS_SAVE_PHOTO) {
+//# 
+//#                     public void doAction() {
+//#                         new Browser(null, vv, true);
+//#                     }
+//#                 };
+//#                 itemsList.addElement(save);
+//#             }
 //#endif            
         }
         show();
@@ -197,14 +197,14 @@ public class VCardView
      }
 
 //#if FILE_IO
-    public void BrowserFilePathNotify(String pathSelected) {
-        if (vcard.hasPhoto) {
-            //System.out.println(photoType+"->"+getFileType(photoType));
-            String filename = StringUtils.replaceBadChars(vcard.getNickDate());
-            FileIO file=FileIO.createConnection(pathSelected+filename+vcard.getFileType());
-            file.fileWrite(vcard.getPhoto());
-        }
-    }
+//#     public void BrowserFilePathNotify(String pathSelected) {
+//#         if (vcard.hasPhoto) {
+//#             //System.out.println(photoType+"->"+getFileType(photoType));
+//#             String filename = StringUtils.replaceBadChars(vcard.getNickDate());
+//#             FileIO file=FileIO.createConnection(pathSelected+filename+vcard.getFileType());
+//#             file.fileWrite(vcard.getPhoto());
+//#         }
+//#     }
 //#endif
     
     public void commandState() {

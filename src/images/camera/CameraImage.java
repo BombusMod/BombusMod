@@ -28,7 +28,6 @@
 package images.camera;
 
 import Client.Config;
-import Client.StaticData;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
@@ -40,6 +39,7 @@ import javax.microedition.media.control.GUIControl;
 import javax.microedition.media.control.VideoControl;
 
 import locale.SR;
+import ui.VirtualCanvas;
 import ui.VirtualList;
 
 /**
@@ -102,7 +102,7 @@ public class CameraImage implements CommandListener, Runnable{
         }        
 
         midlet.BombusMod.getInstance().setDisplayable(parentView);
-        StaticData.getInstance().canvas.show(parentList);
+        VirtualCanvas.getInstance().show(parentList);
 
     }
 

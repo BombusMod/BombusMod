@@ -65,11 +65,11 @@ public final class ContactEdit
         super(SR.MS_ADD_CONTACT);
         cf = Config.getInstance();
 
-        tJid = new TextInput(sd.canvas, SR.MS_USER_JID, null, null, TextField.ANY);
+        tJid = new TextInput(SR.MS_USER_JID, null, null, TextField.ANY);
 
-        tNick = new TextInput(sd.canvas, SR.MS_NAME, null, null, TextField.ANY);
+        tNick = new TextInput(SR.MS_NAME, null, null, TextField.ANY);
 
-        tGroup = new TextInput(sd.canvas, SR.MS_NEWGROUP, (c == null) ? "" : c.group.name, null, TextField.ANY);
+        tGroup = new TextInput(SR.MS_NEWGROUP, (c == null) ? "" : c.group.name, null, TextField.ANY);
 
         tTranspList = new DropChoiceBox(SR.MS_TRANSPORT);
         // Transport droplist

@@ -36,6 +36,7 @@ import com.alsutton.jabber.datablocks.*;
 import java.util.Vector;
 import locale.SR;
 import ui.SplashScreen;
+import ui.VirtualCanvas;
 import ui.VirtualList;
 
 public class RosterDispatcher implements JabberBlockListener {
@@ -96,10 +97,10 @@ public class RosterDispatcher implements JabberBlockListener {
                     } else {
                         roster.sendPresence(cf.loginstatus, null);
                     }
-                    if (!StaticData.getInstance().canvas.isShown()) {
+                    if (!VirtualCanvas.getInstance().isShown()) {
                         SplashScreen.getInstance().destroyView();
                     } else {
-                        StaticData.getInstance().canvas.setList(roster);
+                        VirtualCanvas.getInstance().setList(roster);
                     }
 
                     return JabberBlockListener.BLOCK_PROCESSED;

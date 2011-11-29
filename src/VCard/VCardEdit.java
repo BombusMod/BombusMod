@@ -90,7 +90,7 @@ public class VCardEdit
                 if (data.length()>500)
                     data=data.substring(0, 494)+"<...>";
             } 
-            itemsList.addElement(new TextInput(sd.canvas, name, data, null, TextField.ANY));
+            itemsList.addElement(new TextInput(name, data, null, TextField.ANY));
         }
 
         publish=new LinkString(SR.MS_PUBLISH) { public void doAction() { publish(); } };

@@ -56,7 +56,7 @@ public class RenameGroup
         //this.contact=contact;
         this.group=group;
         
-        groupName = new TextInput(sd.canvas, null, /*(contact==null)?*/group.name/*:contact.getGroup().getName()*/, "groups", TextField.ANY); // 32, TextField.ANY
+        groupName = new TextInput(null, /*(contact==null)?*/group.name/*:contact.getGroup().getName()*/, "groups", TextField.ANY); // 32, TextField.ANY
         itemsList.addElement(groupName);
         
         itemsList.addElement(new SpacerItem(0));

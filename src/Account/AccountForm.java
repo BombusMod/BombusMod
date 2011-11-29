@@ -108,13 +108,13 @@ public class AccountForm
 	
         mainbar.setElementAt((newaccount)?SR.MS_NEW_ACCOUNT:(account.toString()), 0);
 
-        userbox = new TextInput(sd.canvas, SR.MS_JID, account.getBareJid(), null, TextField.ANY); //, 64, TextField.ANY
+        userbox = new TextInput(SR.MS_JID, account.getBareJid(), null, TextField.ANY); //, 64, TextField.ANY
         itemsList.addElement(userbox);
         
-        passbox = new PasswordInput(sd.canvas,  SR.MS_PASSWORD, account.password);//, 64, TextField.PASSWORD
+        passbox = new PasswordInput(SR.MS_PASSWORD, account.password);//, 64, TextField.PASSWORD
         itemsList.addElement(passbox);
         
-        nickbox = new TextInput(sd.canvas, SR.MS_NICKNAME, account.getNick(), null, TextField.ANY);//64, TextField.ANY
+        nickbox = new TextInput(SR.MS_NICKNAME, account.getNick(), null, TextField.ANY);//64, TextField.ANY
         itemsList.addElement(nickbox);
         
         linkRegister = new LinkString(SR.MS_REGISTER_ACCOUNT) {
@@ -151,8 +151,8 @@ public class AccountForm
         if (!newaccount)
             itemsList.addElement(linkRegister);
         
-        ipbox = new TextInput(sd.canvas, SR.MS_HOST_IP, account.hostAddr, null, TextField.ANY);//, 64, TextField.ANY
-        portbox = new NumberInput(sd.canvas,  SR.MS_PORT, Integer.toString(account.port), 0, 65535);//, 0, 65535
+        ipbox = new TextInput(SR.MS_HOST_IP, account.hostAddr, null, TextField.ANY);//, 64, TextField.ANY
+        portbox = new NumberInput(SR.MS_PORT, Integer.toString(account.port), 0, 65535);//, 0, 65535
         
                 
         plainPwdbox = new CheckBox(SR.MS_PLAIN_PWD, account.plainAuth);
@@ -178,9 +178,9 @@ public class AccountForm
 //#endif
 
 //#ifndef HTTPBIND
-        keepAlive = new NumberInput(sd.canvas,  SR.MS_KEEPALIVE_PERIOD, Integer.toString(account.keepAlivePeriod), 10, 2048);//10, 2096        
+        keepAlive = new NumberInput(SR.MS_KEEPALIVE_PERIOD, Integer.toString(account.keepAlivePeriod), 10, 2048);//10, 2096        
 //#endif
-        resourcebox = new TextInput(sd.canvas, SR.MS_RESOURCE, account.resource, null, TextField.ANY);//64, TextField.ANY
+        resourcebox = new TextInput(SR.MS_RESOURCE, account.resource, null, TextField.ANY);//64, TextField.ANY
         
 //#if HTTPCONNECT
 //# 	proxyHost = new TextInput(sd.canvas,/*SR.MS_PROXY_HOST*/"Proxy name/IP", account.getProxyHostAddr(), null, TextField.URL);//32, TextField.URL

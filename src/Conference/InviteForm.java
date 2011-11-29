@@ -70,7 +70,7 @@ public class InviteForm
         }
         itemsList.addElement(conferenceList);
         
-        reason=new TextInput(sd.canvas, SR.MS_REASON, null, "", TextField.ANY); //200
+        reason=new TextInput(SR.MS_REASON, null, "", TextField.ANY); //200
         itemsList.addElement(reason);
         
         moveCursorTo(getNextSelectableRef(-1));

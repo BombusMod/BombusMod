@@ -80,10 +80,9 @@ public class BombusMod extends MIDlet {
         instance = this;
         display = Display.getDisplay(this);
 
-        sd.canvas = VirtualCanvas.getInstance();
-        sd.canvas.setMIDlet(this);
+        VirtualCanvas.getInstance().setMIDlet(this);
         sd.roster = new Roster();
-        sd.canvas.homeList = sd.roster;
+        VirtualCanvas.getInstance().homeList = sd.roster;
 
         s = SplashScreen.getInstance();
         s.setProgress("Loading", 3); // this message will not be localized
@@ -186,7 +185,7 @@ public class BombusMod extends MIDlet {
 
     public void setDisplayable(Displayable d) {
         if (d == null) {
-            d = sd.canvas;
+            d = VirtualCanvas.getInstance();
         }
         getDisplay().setCurrent(d);
     }

@@ -57,7 +57,7 @@ public class ServerBox
         super(SR.MS_DISCO);
 
         this.disco = sn;
-        serverName = new TextInput(sd.canvas, SR.MS_ADRESS, service, "disco", TextField.ANY);
+        serverName = new TextInput(SR.MS_ADRESS, service, "disco", TextField.ANY);
         itemsList.addElement(serverName);
         itemsList.addElement(new SpacerItem(5));
         itemsList.addElement(new LinkString(SR.MS_RECENT) {

@@ -54,13 +54,13 @@ public class ConfigForm
     private CheckBox useBoldFont;
     private CheckBox rosterStatus;
 //#ifdef CLIENTS_ICONS
-    private CheckBox showClientIcon;
+//#     private CheckBox showClientIcon;
 //#endif
     
     private DropChoiceBox subscr;
     
 //#ifdef SMILES
-    private CheckBox smiles;
+//#     private CheckBox smiles;
 //#endif
     private CheckBox eventComposing;
     private CheckBox capsState;
@@ -91,7 +91,7 @@ public class ConfigForm
     private NumberInput reconnectCount;
     private NumberInput reconnectTime;
 //#ifdef FILE_TRANSFER
-    private CheckBox fileTransfer;
+//#     private CheckBox fileTransfer;
 //#endif
 //#ifdef HISTORY
 //#     private CheckBox saveHistory;
@@ -124,7 +124,7 @@ public class ConfigForm
 //#      private CheckBox notifyWhenMessageType;
 //#endif
 //#ifdef POPUPS
-    private CheckBox popUps;
+//#     private CheckBox popUps;
 //#endif
     
 
@@ -155,8 +155,8 @@ public class ConfigForm
         useBoldFont = new CheckBox(SR.MS_BOLD_FONT, cf.useBoldFont); itemsList.addElement(useBoldFont);
         rosterStatus = new CheckBox(SR.MS_SHOW_STATUSES, cf.rosterStatus); itemsList.addElement(rosterStatus);
 //#ifdef CLIENTS_ICONS
-        showClientIcon = new CheckBox(SR.MS_SHOW_CLIENTS_ICONS, cf.showClientIcon);
-            itemsList.addElement(showClientIcon);
+//#         showClientIcon = new CheckBox(SR.MS_SHOW_CLIENTS_ICONS, cf.showClientIcon);
+//#             itemsList.addElement(showClientIcon);
 //#endif
         autoClean = new CheckBox(SR.MS_AUTOCLEAN_GROUPS, cf.autoClean);
         itemsList.addElement(autoClean);
@@ -176,7 +176,7 @@ public class ConfigForm
         itemsList.addElement(new SpacerItem(10));
         itemsList.addElement(new SimpleString(SR.MS_MESSAGES, true));
 //#ifdef SMILES
-        smiles = new CheckBox(SR.MS_SMILES, cf.smiles); itemsList.addElement(smiles);
+//#         smiles = new CheckBox(SR.MS_SMILES, cf.smiles); itemsList.addElement(smiles);
 //#endif
         eventComposing = new CheckBox(SR.MS_COMPOSING_EVENTS, cf.eventComposing); itemsList.addElement(eventComposing);
         capsState = new CheckBox(SR.MS_CAPS_STATE, cf.capsState); itemsList.addElement(capsState);
@@ -189,7 +189,7 @@ public class ConfigForm
 //#         notifyWhenMessageType = new CheckBox(SR.MS_RUNNING_MESSAGE, cf.notifyWhenMessageType); itemsList.addElement(notifyWhenMessageType);
 //#endif
 //#ifdef POPUPS
-        popUps = new CheckBox(SR.MS_POPUPS, cf.popUps); itemsList.addElement(popUps);
+//#         popUps = new CheckBox(SR.MS_POPUPS, cf.popUps); itemsList.addElement(popUps);
 //#endif
         showBalloons = new CheckBox(SR.MS_HIDE_TIMESTAMPS, cf.hideTimestamps); itemsList.addElement(showBalloons);
         eventDelivery = new CheckBox(SR.MS_DELIVERY, cf.eventDelivery); itemsList.addElement(eventDelivery);
@@ -203,19 +203,19 @@ public class ConfigForm
        swapSendAndSuspend = new CheckBox("swap \""+SR.MS_SEND+"\" and \""+SR.MS_SUSPEND+"\" commands", cf.swapSendAndSuspend); itemsList.addElement(swapSendAndSuspend);
             
 //#if LOGROTATE
-//#         messageCountLimit=new NumberInput(sd.canvas, SR.MS_MESSAGE_COUNT_LIMIT, Integer.toString(cf.msglistLimit), 3, 1000);
+//#         messageCountLimit=new NumberInput(SR.MS_MESSAGE_COUNT_LIMIT, Integer.toString(cf.msglistLimit), 3, 1000);
 //#         itemsList.addElement(messageCountLimit);
 //#endif
 
         itemsList.addElement(new SpacerItem(10));
-        messageLimit=new NumberInput(sd.canvas,  SR.MS_MESSAGE_COLLAPSE_LIMIT, Integer.toString(cf.messageLimit), 200, 1000);
+        messageLimit=new NumberInput(SR.MS_MESSAGE_COLLAPSE_LIMIT, Integer.toString(cf.messageLimit), 200, 1000);
         itemsList.addElement(messageLimit);
 
-        minItemHeight = new NumberInput(sd.canvas, SR.MS_ITEM_HEIGHT, Integer.toString(cf.minItemHeight), 0, 100);
+        minItemHeight = new NumberInput(SR.MS_ITEM_HEIGHT, Integer.toString(cf.minItemHeight), 0, 100);
         itemsList.addElement(minItemHeight);
 
-        if (sd.canvas.hasPointerEvents()) {
-            widthScroll2=new NumberInput(sd.canvas,  SR.MS_MESSAGE_WIDTH_SCROLL_2, Integer.toString(cf.widthScroll2), 1, 50);
+        if (VirtualCanvas.getInstance().hasPointerEvents()) {
+            widthScroll2=new NumberInput(SR.MS_MESSAGE_WIDTH_SCROLL_2, Integer.toString(cf.widthScroll2), 1, 50);
             itemsList.addElement(widthScroll2);
             advTouch = new CheckBox(SR.MS_SINGLE_CLICK, cf.advTouch);
             itemsList.addElement(advTouch);
@@ -230,8 +230,8 @@ public class ConfigForm
         
         itemsList.addElement(new SpacerItem(10));
         itemsList.addElement(new SimpleString(SR.MS_RECONNECT, true));
-	reconnectCount=new NumberInput(sd.canvas,  SR.MS_RECONNECT_COUNT_RETRY, Integer.toString(cf.reconnectCount), 0, 100); itemsList.addElement(reconnectCount);
-        reconnectTime=new NumberInput(sd.canvas,  SR.MS_RECONNECT_WAIT, Integer.toString(cf.reconnectTime), 1, 60 ); itemsList.addElement(reconnectTime);
+	reconnectCount=new NumberInput(SR.MS_RECONNECT_COUNT_RETRY, Integer.toString(cf.reconnectCount), 0, 100); itemsList.addElement(reconnectCount);
+        reconnectTime=new NumberInput(SR.MS_RECONNECT_WAIT, Integer.toString(cf.reconnectTime), 1, 60 ); itemsList.addElement(reconnectTime);
         
         itemsList.addElement(new SpacerItem(10));
         itemsList.addElement(new SimpleString(SR.MS_APPLICATION, true));
@@ -247,8 +247,8 @@ public class ConfigForm
 //#endif
         
 //#ifdef FILE_TRANSFER
-        fileTransfer = new CheckBox(SR.MS_FILE_TRANSFERS, cf.fileTransfer); 
-            itemsList.addElement(fileTransfer);
+//#         fileTransfer = new CheckBox(SR.MS_FILE_TRANSFERS, cf.fileTransfer); 
+//#             itemsList.addElement(fileTransfer);
 //#endif
 //#ifdef HISTORY
 //#         saveHistory = new CheckBox(SR.MS_HISTORY, cf.saveHistory); 
@@ -266,7 +266,7 @@ public class ConfigForm
         
         itemsList.addElement(new SpacerItem(10));
         itemsList.addElement(new SimpleString(SR.MS_TIME_SETTINGS, true));
-	fieldGmt=new NumberInput(sd.canvas,  SR.MS_GMT_OFFSET, Integer.toString(cf.gmtOffset), -12, 12);
+	fieldGmt=new NumberInput(SR.MS_GMT_OFFSET, Integer.toString(cf.gmtOffset), -12, 12);
         itemsList.addElement(fieldGmt);
 
         itemsList.addElement(new SpacerItem(10));
@@ -342,13 +342,13 @@ public class ConfigForm
         cf.useBoldFont=useBoldFont.getValue();
         cf.rosterStatus=rosterStatus.getValue();
 //#ifdef CLIENTS_ICONS
-        cf.showClientIcon=showClientIcon.getValue();
+//#         cf.showClientIcon=showClientIcon.getValue();
 //#endif
         cf.autoSubscribe=subscr.getSelectedIndex();       
         
 
 //#ifdef SMILES
-        cf.smiles=smiles.getValue();
+//#         cf.smiles=smiles.getValue();
 //#endif
         cf.eventComposing=eventComposing.getValue();
         cf.capsState=capsState.getValue();
@@ -362,7 +362,7 @@ public class ConfigForm
 //#         cf.notifyWhenMessageType=notifyWhenMessageType.getValue();
 //#endif
 //#ifdef POPUPS
-        cf.popUps=popUps.getValue();
+//#         cf.popUps=popUps.getValue();
 //#endif
         cf.hideTimestamps=showBalloons.getValue();
         cf.eventDelivery=eventDelivery.getValue();
@@ -383,7 +383,7 @@ public class ConfigForm
         cf.reconnectCount=Integer.parseInt(reconnectCount.getValue());
         cf.reconnectTime=Integer.parseInt(reconnectTime.getValue());
 //#ifdef FILE_TRANSFER
-        cf.fileTransfer=fileTransfer.getValue();
+//#         cf.fileTransfer=fileTransfer.getValue();
 //#endif
 //#ifdef HISTORY
 //#         cf.saveHistory=saveHistory.getValue();
@@ -422,11 +422,11 @@ public class ConfigForm
 //#             cf.useMyStatusMessages=awayStatus.getValue();
 //#             cf.autoAwayDelay=Integer.parseInt(fieldAwayDelay.getValue());
 //#             cf.autoAwayType=autoAwayType.getSelectedIndex();
-                if (autoAwayType.getSelectedIndex() != Config.AWAY_LOCK) {
-                if (AutoStatus.getInstance().active()) {
-                    AutoStatus.getInstance().reset();
-                }
-                }
+//#                 if (autoAwayType.getSelectedIndex() != Config.AWAY_LOCK) {
+//#                 if (AutoStatus.getInstance().active()) {
+//#                     AutoStatus.getInstance().reset();
+//#                 }
+//#                 }
 //#endif
         cf.messageLimit=Integer.parseInt(messageLimit.getValue());
         if (VirtualCanvas.getInstance().hasPointerEvents())
@@ -443,7 +443,7 @@ public class ConfigForm
 
         //sd.roster.setLight(cf.lightState);   TODO: correct for new light control
 
-        sd.canvas.setFullScreenMode(Config.fullscreen);
+        VirtualCanvas.getInstance().setFullScreenMode(Config.fullscreen);
 
         cf.firstRun=false;
 
@@ -472,13 +472,13 @@ public class ConfigForm
 
     public void destroyView() {
 //#ifdef AUTOSTATUS
-        if (sd.roster.isLoggedIn()) {
-            if ((Config.getInstance().autoAwayType==Config.AWAY_OFF) || Config.getInstance().autoAwayType == Config.AWAY_LOCK) {
-                AutoStatus.getInstance().stop();
-            } else {
-                AutoStatus.getInstance().start();       
-            }
-        }
+//#         if (sd.roster.isLoggedIn()) {
+//#             if ((Config.getInstance().autoAwayType==Config.AWAY_OFF) || Config.getInstance().autoAwayType == Config.AWAY_LOCK) {
+//#                 AutoStatus.getInstance().stop();
+//#             } else {
+//#                 AutoStatus.getInstance().start();       
+//#             }
+//#         }
 //#endif
         super.destroyView();
     }

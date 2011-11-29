@@ -362,9 +362,9 @@ public class Roster
 
         if (phoneManufacturer == Config.WINDOWS) {
             if (messageCount == 0) {
-                sd.canvas.setTitle("BombusMod");
+                VirtualCanvas.getInstance().setTitle("BombusMod");
             } else {
-                sd.canvas.setTitle("BombusMod " + getHeaderString());
+                VirtualCanvas.getInstance().setTitle("BombusMod " + getHeaderString());
             }
         }
     }
@@ -1646,7 +1646,7 @@ public class Roster
             reEnumRoster();
         }
         if (cf.autoScroll) {
-            VirtualList list = sd.canvas.getList();
+            VirtualList list = VirtualCanvas.getInstance().getList();
                 if (list instanceof ContactMessageList) {
                     if (((ContactMessageList) list).contact.compare(c) == 0) {
                         if(c.cml == null) return;
@@ -2602,7 +2602,7 @@ public class Roster
                 return true;
             case 6:
                 Config.fullscreen = !Config.fullscreen;
-                sd.canvas.setFullScreenMode(Config.fullscreen);
+                VirtualCanvas.getInstance().setFullScreenMode(Config.fullscreen);
                 return true;
             case 4:
                 new ConfigForm();

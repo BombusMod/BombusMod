@@ -69,11 +69,11 @@ public class InfoWindow
     public InfoWindow() {
         super(SR.MS_ABOUT);
         
-        name = new MultiLine(Version.getName(), Version.getVersionNumber() + "\n" + Config.getOs() + "\nMobile Jabber client", sd.roster.getListWidth());
+        name = new MultiLine(Version.getName(), Version.getVersionNumber() + "\n" + Config.getOs() + "\nMobile Jabber client");
         name.selectable = true;
         itemsList.addElement(name);
 
-        description = new MultiLine("Copyright (c) 2005-2011", "Eugene Stahov (evgs),\nDaniel Apatin (ad)\n \nDistributed under GNU Public License (GPL) v2.0", sd.roster.getListWidth());
+        description = new MultiLine("Copyright (c) 2005-2011", "Eugene Stahov (evgs),\nDaniel Apatin (ad)\n \nDistributed under GNU Public License (GPL) v2.0");
         description.selectable = true;
         itemsList.addElement(description);
 
@@ -90,7 +90,7 @@ public class InfoWindow
 
         itemsList.addElement(new SpacerItem(20));
 
-        abilities = new MultiLine("Special thanks", "Advice, aspro, BrennendeR_Komet, 6yp4uk, den_po, Disabler, fregl24, G.L.Fire, gimlet, lgs, m, MaSy, Muxa, NoNameZ, radiance, Sash, spine, spirtamne, Tasha, TiLan, Totktonada, van, vitalyster, voffk, westsibe, zet. \n \nWithout you none of this would not have been!", sd.roster.getListWidth());
+        abilities = new MultiLine("Special thanks", "Advice, aspro, BrennendeR_Komet, 6yp4uk, den_po, Disabler, fregl24, G.L.Fire, gimlet, lgs, m, MaSy, Muxa, NoNameZ, radiance, Sash, spine, spirtamne, Tasha, TiLan, Totktonada, van, vitalyster, voffk, westsibe, zet. \n \nWithout you none of this would not have been!");
         abilities.selectable = true;
         itemsList.addElement(abilities);
 
@@ -101,13 +101,13 @@ public class InfoWindow
         System.gc();
 //        } _vt
         memInfo.append(Runtime.getRuntime().freeMemory() >> 10).append("\n").append(SR.MS_TOTAL).append(Runtime.getRuntime().totalMemory() >> 10);
-        memory = new MultiLine(SR.MS_MEMORY, memInfo.toString(), sd.roster.getListWidth());
+        memory = new MultiLine(SR.MS_MEMORY, memInfo.toString());
         memory.selectable = true;
         itemsList.addElement(memory);        
 
         itemsList.addElement(new SpacerItem(10));
 
-        abilities = new MultiLine("Abilities", getAbilities(), sd.roster.getListWidth());
+        abilities = new MultiLine("Abilities", getAbilities());
         abilities.selectable = true;
         itemsList.addElement(abilities);
     }
@@ -156,172 +156,172 @@ public class InfoWindow
     private String getAbilities() {
         Vector abilitiesList=new Vector();
 //#ifdef ADHOC
-        abilitiesList.addElement("ADHOC");
+//#         abilitiesList.addElement("ADHOC");
 //#endif
 //#ifdef ANTISPAM
-        abilitiesList.addElement("ANTISPAM");
+//#         abilitiesList.addElement("ANTISPAM");
 //#endif
 //#ifdef ARCHIVE
-        abilitiesList.addElement("ARCHIVE");
+//#         abilitiesList.addElement("ARCHIVE");
 //#endif
 //#ifdef AUTOSTATUS
-        abilitiesList.addElement("AUTOSTATUS");
+//#         abilitiesList.addElement("AUTOSTATUS");
 //#endif
 //#ifdef AUTOTASK
-        abilitiesList.addElement("AUTOTASK");
+//#         abilitiesList.addElement("AUTOTASK");
 //#endif
 //#ifdef BACK_IMAGE
-        abilitiesList.addElement("BACK_IMAGE");
+//#         abilitiesList.addElement("BACK_IMAGE");
 //#endif
 //#ifdef CAPTCHA
-        abilitiesList.addElement("CAPTCHA");
+//#         abilitiesList.addElement("CAPTCHA");
 //#endif
 //#ifdef CHANGE_TRANSPORT
-        abilitiesList.addElement("CHANGE_TRANSPORT");
+//#         abilitiesList.addElement("CHANGE_TRANSPORT");
 //#endif
 //#ifdef CHECK_VERSION
-        abilitiesList.addElement("CHECK_VERSION");
+//#         abilitiesList.addElement("CHECK_VERSION");
 //#endif
 //#ifdef CLIENTS_ICONS
-        abilitiesList.addElement("CLIENTS_ICONS");
+//#         abilitiesList.addElement("CLIENTS_ICONS");
 //#endif
 //#ifdef CLIPBOARD
-        abilitiesList.addElement("CLIPBOARD");
+//#         abilitiesList.addElement("CLIPBOARD");
 //#endif
 //#ifdef COLOR_TUNE
-        abilitiesList.addElement("COLOR_TUNE");
+//#         abilitiesList.addElement("COLOR_TUNE");
 //#endif
 //#ifdef CONSOLE
-        abilitiesList.addElement("CONSOLE");
+//#         abilitiesList.addElement("CONSOLE");
 //#endif
 //#ifdef DEBUG
-        abilitiesList.addElement("DEBUG");
+//#         abilitiesList.addElement("DEBUG");
 //#endif
 //#ifdef DETRANSLIT
-        abilitiesList.addElement("DETRANSLIT");
+//#         abilitiesList.addElement("DETRANSLIT");
 //#endif
 //#ifdef ELF
-        abilitiesList.addElement("ELF");
+//#         abilitiesList.addElement("ELF");
 //#endif
 //#ifdef FILE_IO
-        abilitiesList.addElement("FILE_IO");
+//#         abilitiesList.addElement("FILE_IO");
 //#endif
 //#ifdef FILE_TRANSFER
-        abilitiesList.addElement("FILE_TRANSFER");
+//#         abilitiesList.addElement("FILE_TRANSFER");
 //#endif
 //#ifdef GRADIENT
-        abilitiesList.addElement("GRADIENT");
+//#         abilitiesList.addElement("GRADIENT");
 //#endif
 //#ifdef HISTORY
-        abilitiesList.addElement("HISTORY");
+//#         abilitiesList.addElement("HISTORY");
 //#endif
 //#ifdef HISTORY_READER
-        abilitiesList.addElement("HISTORY_READER");
+//#         abilitiesList.addElement("HISTORY_READER");
 //#endif
 //#ifdef HTTPBIND
-        abilitiesList.addElement("HTTPBIND");
+//#         abilitiesList.addElement("HTTPBIND");
 //#endif
 //#ifdef HTTPCONNECT
-        abilitiesList.addElement("HTTPCONNECT");
+//#         abilitiesList.addElement("HTTPCONNECT");
 //#endif
 //#ifdef HTTPPOLL
-        abilitiesList.addElement("HTTPPOLL");
+//#         abilitiesList.addElement("HTTPPOLL");
 //#endif
 //#ifdef IMPORT_EXPORT
-        abilitiesList.addElement("IMPORT_EXPORT");
+//#         abilitiesList.addElement("IMPORT_EXPORT");
 //#endif
 //#ifdef JUICK
-        abilitiesList.addElement("JUICK");
+//#         abilitiesList.addElement("JUICK");
 //#endif
 //#ifdef LANG_DEBUG
-        abilitiesList.addElement("LANG_DEBUG");
+//#         abilitiesList.addElement("LANG_DEBUG");
 //#endif
 //#ifdef LAST_MESSAGES
-        abilitiesList.addElement("LAST_MESSAGES");
+//#         abilitiesList.addElement("LAST_MESSAGES");
 //#endif
 //#ifdef LIGHT_CONFIG
-        abilitiesList.addElement("LIGHT_CONFIG");
+//#         abilitiesList.addElement("LIGHT_CONFIG");
 //#endif  
 //#ifdef LOGROTATE
-        abilitiesList.addElement("LOGROTATE");
+//#         abilitiesList.addElement("LOGROTATE");
 //#endif
 //#ifdef MEMORY_USAGE
-        abilitiesList.addElement("MEMORY_USAGE");
+//#         abilitiesList.addElement("MEMORY_USAGE");
 //#endif
 //#ifdef MIDP_TICKER
-        abilitiesList.addElement("MIDP_TICKER");
+//#         abilitiesList.addElement("MIDP_TICKER");
 //#endif
 //#ifdef NICK_COLORS
-        abilitiesList.addElement("NICK_COLORS");
+//#         abilitiesList.addElement("NICK_COLORS");
 //#endif
 //#ifdef NOMMEDIA
-        abilitiesList.addElement("NOMMEDIA");
+//#         abilitiesList.addElement("NOMMEDIA");
 //#endif
 //#ifdef NON_SASL_AUTH
-        abilitiesList.addElement("NON_SASL_AUTH");
+//#         abilitiesList.addElement("NON_SASL_AUTH");
 //#endif
 //#ifdef PEP
-        abilitiesList.addElement("PEP");
+//#         abilitiesList.addElement("PEP");
 //#endif
 //#ifdef PEP_ACTIVITY
-        abilitiesList.addElement("PEP_ACTIVITY");
+//#         abilitiesList.addElement("PEP_ACTIVITY");
 //#endif
 //#ifdef PEP_LOCATION
-        abilitiesList.addElement("PEP_LOCATION");
+//#         abilitiesList.addElement("PEP_LOCATION");
 //#endif
 //#ifdef PEP_TUNE
-        abilitiesList.addElement("PEP_TUNE");
+//#         abilitiesList.addElement("PEP_TUNE");
 //#endif
 //#ifdef POPUPS
-        abilitiesList.addElement("POPUPS");
+//#         abilitiesList.addElement("POPUPS");
 //#endif
 //#ifdef PRIVACY
-        abilitiesList.addElement("PRIVACY");
+//#         abilitiesList.addElement("PRIVACY");
 //#endif
 //#ifdef REQUEST_VOICE
-        abilitiesList.addElement("REQUEST_VOICE");
+//#         abilitiesList.addElement("REQUEST_VOICE");
 //#endif
 //#ifdef RUNNING_MESSAGE
-        abilitiesList.addElement("RUNNING_MESSAGE");
+//#         abilitiesList.addElement("RUNNING_MESSAGE");
 //#endif
 //#ifdef SASL_XGOOGLETOKEN
-        abilitiesList.addElement("SASL_XGOOGLETOKEN");
+//#         abilitiesList.addElement("SASL_XGOOGLETOKEN");
 //#endif
 //#ifdef SERVICE_DISCOVERY
-        abilitiesList.addElement("SERVICE_DISCOVERY");
+//#         abilitiesList.addElement("SERVICE_DISCOVERY");
 //#endif
 //#ifdef SE_LIGHT
-        abilitiesList.addElement("SE_LIGHT");
+//#         abilitiesList.addElement("SE_LIGHT");
 //#endif
 //#ifdef SMILES
-        abilitiesList.addElement("SMILES");
+//#         abilitiesList.addElement("SMILES");
 //#endif
 //#ifdef STATS
-        abilitiesList.addElement("STATS");
+//#         abilitiesList.addElement("STATS");
 //#endif
 //#ifdef SYSTEM_NOTIFY
-        abilitiesList.addElement("SYSTEM_NOTIFY");
+//#         abilitiesList.addElement("SYSTEM_NOTIFY");
 //#endif
 //#ifdef TEMPLATES
-        abilitiesList.addElement("TEMPLATES");
+//#         abilitiesList.addElement("TEMPLATES");
 //#endif
 //#ifdef TLS        
-        abilitiesList.addElement("TLS");
+//#         abilitiesList.addElement("TLS");
 //#endif        
 //#ifdef USER_KEYS
-        abilitiesList.addElement("USER_KEYS");
+//#         abilitiesList.addElement("USER_KEYS");
 //#endif
 //#ifdef USE_ROTATOR
-        abilitiesList.addElement("USE_ROTATOR");
+//#         abilitiesList.addElement("USE_ROTATOR");
 //#endif
 //#ifdef WMUC
-        abilitiesList.addElement("WMUC");
+//#         abilitiesList.addElement("WMUC");
 //#endif
 //#ifdef XML_STREAM_DEBUG
-        abilitiesList.addElement("XML_STREAM_DEBUG");
+//#         abilitiesList.addElement("XML_STREAM_DEBUG");
 //#endif
 //#ifdef ZLIB
-        abilitiesList.addElement("ZLIB");
+//#         abilitiesList.addElement("ZLIB");
 //#endif
 
         StringBuffer ablist=new StringBuffer();

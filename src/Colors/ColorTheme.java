@@ -38,6 +38,7 @@ import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
+import ui.VirtualCanvas;
 import util.StringLoader;
 /**
  *
@@ -159,7 +160,7 @@ blue 0x0000ff
                 c.color=0xFFFFFF-c.color;
         }
         saveToStorage();
-        StaticData.getInstance().canvas.repaint();
+        VirtualCanvas.getInstance().repaint();
     }
     
 //#if NICK_COLORS

@@ -391,9 +391,9 @@ public abstract class VirtualList {
 //        setFullScreenMode(fullscreen);
      
         scrollbar=new ScrollBar();
-        scrollbar.setHasPointerEvents(sd.canvas.hasPointerEvents());
+        scrollbar.setHasPointerEvents(VirtualCanvas.getInstance().hasPointerEvents());
 
-        infobar = new MainBar("", true, sd.canvas.hasPointerEvents() && cf.advTouch && Config.fullscreen);
+        infobar = new MainBar("", true, VirtualCanvas.getInstance().hasPointerEvents() && cf.advTouch && Config.fullscreen);
         infobar.addElement(null); //1
         infobar.addRAlign();
         infobar.addElement(null); //3
@@ -406,13 +406,13 @@ public abstract class VirtualList {
     }
     
     public void show() {
-        parentView = sd.canvas.getList();
-        sd.canvas.show(this);
+        parentView = VirtualCanvas.getInstance().getList();
+        VirtualCanvas.getInstance().show(this);
      }
 
     public void redraw() {
-        if (sd.canvas.isShown()) {
-            sd.canvas.repaint();
+        if (VirtualCanvas.getInstance().isShown()) {
+            VirtualCanvas.getInstance().repaint();
             return;
          }
      }
@@ -1248,7 +1248,7 @@ public abstract class VirtualList {
     public void destroyView() {
         if (canBack) {
             sd.roster.activeContact = null;
-            sd.canvas.show(parentView);
+            VirtualCanvas.getInstance().show(parentView);
         }
     }
 

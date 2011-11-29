@@ -32,7 +32,6 @@ import Account.Account;
 //# import AutoTasks.AutoTask;
 //#endif
 import com.alsutton.jabber.JabberStream;
-import ui.VirtualCanvas;
 /**
  *
  * @author Eugene Stahov
@@ -42,7 +41,6 @@ public class StaticData {
     private static StaticData sd;
     
     public Roster roster;
-    public VirtualCanvas canvas;
     public JabberStream theStream;
     
     

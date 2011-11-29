@@ -91,7 +91,7 @@ public class ShowFile extends DefForm {
     private void read(String file) {
         String text = new String(b, 0, len);
         itemsList.addElement(new MultiLine(file + "(" + len + " bytes)", cf.cp1251
-                ? Strconv.convCp1251ToUnicode(text) : text, sd.roster.getListWidth()));
+                ? Strconv.convCp1251ToUnicode(text) : text));
     }
 
     public void cmdOk() {
@@ -119,7 +119,7 @@ public class ShowFile extends DefForm {
             //ex.printStackTrace();
         }
 
-        itemsList.addElement(new MultiLine("Play", "Playing" + " " + file, sd.roster.getListWidth()));
+        itemsList.addElement(new MultiLine("Play", "Playing" + " " + file));
     }
 
     public String touchLeftCommand() {

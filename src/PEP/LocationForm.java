@@ -39,10 +39,10 @@ package PEP;
 //#      */
 //#     public LocationForm(VirtualList parent) {
 //#         super("Publish location");
-//#         location = new TextInput(sd.canvas, "Location name", null, null, TextField.ANY);
-//#         descr = new TextInput(sd.canvas, "Location description", null, null, TextField.ANY);
-//#         lat = new TextInput(sd.canvas, "Latitude", null, null, TextField.DECIMAL);
-//#         lon = new TextInput(sd.canvas, "Longitude", null, null, TextField.DECIMAL);
+//#         location = new TextInput("Location name", null, null, TextField.ANY);
+//#         descr = new TextInput("Location description", null, null, TextField.ANY);
+//#         lat = new TextInput("Latitude", null, null, TextField.DECIMAL);
+//#         lon = new TextInput("Longitude", null, null, TextField.DECIMAL);
 //# 
 //#         detect = new LinkString("Retrieve location") {
 //#             public void doAction() {

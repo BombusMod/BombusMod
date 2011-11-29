@@ -29,11 +29,11 @@ public class TransferConfigForm extends DefForm implements BrowserListener {
 
     public TransferConfigForm(VirtualList parentView) {
         super ("File transfer");        
-        transferFolder = new TextInput(sd.canvas, "Save files to", ft.ftFolder, null, TextField.ANY);
+        transferFolder = new TextInput("Save files to", ft.ftFolder, null, TextField.ANY);
         itemsList.addElement(transferFolder);
         selectFolder=new LinkString(SR.MS_SELECT) { public void doAction() { selectFolder(); } };
         itemsList.addElement(selectFolder);
-        streamhost = new TextInput(sd.canvas, "SOCKS5 proxy", ft.ftProxy, "ft_proxyjid", 0);
+        streamhost = new TextInput("SOCKS5 proxy", ft.ftProxy, "ft_proxyjid", 0);
         itemsList.addElement(streamhost);
         
         

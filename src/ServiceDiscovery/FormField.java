@@ -78,7 +78,7 @@ public class FormField {
             body = field.getChildBlockText("value");
             if (type == null) {
                 media = extractMedia(field);
-                formItem = new TextInput(StaticData.getInstance().canvas, label, body, null, TextField.ANY);
+                formItem = new TextInput(label, body, null, TextField.ANY);
                 return;
             }
 
@@ -90,7 +90,7 @@ public class FormField {
             hidden = type.equals("hidden");
 
             if (type.equals("fixed")) {
-                formItem = new MultiLine(label, body, StaticData.getInstance().roster.getListWidth());
+                formItem = new MultiLine(label, body);
             } else if (type.equals("boolean")) {
                 boolean set = false;
                 if (body.equals("1")) {
@@ -152,30 +152,30 @@ public class FormField {
 			jids.append(((JabberDataBlock) values.elementAt(i)).getText()).append('\n');
 		    }
 		}
-		formItem = new TextInput(StaticData.getInstance().canvas, label, jids.toString().trim(), "", TextField.ANY);
+		formItem = new TextInput(label, jids.toString().trim(), "", TextField.ANY);
 	    } // text-single, text-private
             else {
                 /* if (body.length()>=200) {
                 body=body.substring(0,198);
                 }*/
                 if (type.equals("text-private")) { // password field
-                    formItem = new PasswordInput(StaticData.getInstance().canvas, label, body);
+                    formItem = new PasswordInput(label, body);
                 } else {
-                    formItem = new TextInput(StaticData.getInstance().canvas, label, body, "", TextField.ANY);
+                    formItem = new TextInput(label, body, "", TextField.ANY);
                 }
             }
         } else {
             // not x-data
             if (instructions = name.equals("instructions")) {
-                formItem = new MultiLine("Instructions", body, StaticData.getInstance().roster.getListWidth());
+                formItem = new MultiLine("Instructions", body);
             } else if (name.equals("title")) {
-                formItem = new MultiLine(null, body, StaticData.getInstance().roster.getListWidth());
+                formItem = new MultiLine(null, body);
             } else if (name.equals("registered")) {
                 CheckBox cg = new CheckBox("Remove registration", false);
                 formItem = cg;
                 registered = true;
             } else {
-                formItem = new TextInput(StaticData.getInstance().canvas, label, body, "", TextField.ANY);
+                formItem = new TextInput(label, body, "", TextField.ANY);
             }
         }
 

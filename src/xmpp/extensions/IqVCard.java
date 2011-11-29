@@ -38,6 +38,7 @@ import com.alsutton.jabber.JabberBlockListener;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.*;
 import locale.SR;
+import ui.VirtualCanvas;
 import ui.VirtualList;
 import ui.controls.AlertBox;
 import xmpp.XmppError;
@@ -102,7 +103,7 @@ public class IqVCard implements JabberBlockListener
                         Contact c=StaticData.getInstance().roster.getContact(jid, true); // test
                         if (c!=null) {
                             c.vcard=vcard;
-                            if (StaticData.getInstance().canvas.getList() instanceof VirtualList) {
+                            if (VirtualCanvas.getInstance().isShown()) {
 //                                if (c.getGroupType()==Groups.TYPE_SELF) { // Not able to edit VCard if self contact in roster
                                 if (c.getJid().equals(StaticData.getInstance().roster.myJid, false)) {
                                     new VCardEdit(vcard);

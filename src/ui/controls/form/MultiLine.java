@@ -32,6 +32,7 @@ import java.util.Vector;
 import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
 import ui.IconTextElement;
+import ui.VirtualCanvas;
 import util.StringUtils;
 
 /**
@@ -62,7 +63,7 @@ public class MultiLine extends IconTextElement {
     /**
      * Creates a new instance of MultiLine
      */
-    public MultiLine(String caption, String text, int width) {
+    public MultiLine(String caption, String text) {
         super(null);
         this.text=text;
         this.caption=caption;
@@ -71,7 +72,7 @@ public class MultiLine extends IconTextElement {
         fontHeight=font.getHeight();
         itemHeight=fontHeight;
         
-        this.width = width;
+        this.width = VirtualCanvas.getInstance().homeList.getListWidth();
         
         if (caption!=null) {
             captionFont=FontCache.getFont(true, FontCache.msg);

@@ -58,7 +58,7 @@ public class AffiliationModify
         
         this.room=room;
 
-        jidItem=new TextInput(sd.canvas, SR.MS_JID, jid, null, TextField.ANY);
+        jidItem=new TextInput(SR.MS_JID, jid, null, TextField.ANY);
         itemsList.addElement(jidItem);
 
         affiliationItem=new DropChoiceBox(SR.MS_SET_AFFILIATION);
@@ -70,7 +70,7 @@ public class AffiliationModify
         affiliationItem.setSelectedIndex(recentAffiliation);
         itemsList.addElement(affiliationItem);
 
-	reasonItem=new TextInput(sd.canvas, SR.MS_REASON, reason, "reason", TextField.ANY);
+	reasonItem=new TextInput(SR.MS_REASON, reason, "reason", TextField.ANY);
 	itemsList.addElement(reasonItem);
     }
     

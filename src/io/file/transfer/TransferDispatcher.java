@@ -35,6 +35,7 @@ import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
 import java.util.Enumeration;
 import java.util.Vector;
+import ui.VirtualCanvas;
 import util.Strconv;
 
 /**
@@ -275,11 +276,11 @@ public class TransferDispatcher implements JabberBlockListener {
         }
         Integer icon=(event<0)? null:new Integer(event);
         sd.roster.setEventIcon(icon);
-        sd.canvas.repaint();
+        VirtualCanvas.getInstance().repaint();
     }
 
     void repaintNotify() {
-        sd.canvas.repaint();
+        VirtualCanvas.getInstance().repaint();
     }
 
     void sendFile(TransferTask task) {

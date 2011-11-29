@@ -140,16 +140,16 @@ public class StatusSelect
             super(SR.MS_STATUS+": "+status.getScreenName());
             this.status=status;
             
-            tfMessage = new TextInput(sd.canvas, SR.MS_MESSAGE, status.getMessage(), "ex_status_list", TextField.ANY); //, 100, TextField.ANY "ex_status_list"
+            tfMessage = new TextInput(SR.MS_MESSAGE, status.getMessage(), "ex_status_list", TextField.ANY); //, 100, TextField.ANY "ex_status_list"
             itemsList.addElement(tfMessage);
 
-            tfPriority = new NumberInput(sd.canvas,  SR.MS_PRIORITY, Integer.toString(status.getPriority()), -128, 128); //, 100, TextField.ANY "ex_status_list"
+            tfPriority = new NumberInput(SR.MS_PRIORITY, Integer.toString(status.getPriority()), -128, 128); //, 100, TextField.ANY "ex_status_list"
             itemsList.addElement(tfPriority);
 
             if (status.getImageIndex()<5) {
                 itemsList.addElement(new SpacerItem(10));
                
-                tfAutoRespondMessage=new TextInput(sd.canvas, SR.MS_AUTORESPOND, status.getAutoRespondMessage(), "autorespond", TextField.ANY);//, 100, 0
+                tfAutoRespondMessage=new TextInput(SR.MS_AUTORESPOND, status.getAutoRespondMessage(), "autorespond", TextField.ANY);//, 100, 0
                 itemsList.addElement(tfAutoRespondMessage);
                 
                 autoRespond = new CheckBox(SR.MS_ENABLE_AUTORESPOND, status.getAutoRespond()); itemsList.addElement(autoRespond);

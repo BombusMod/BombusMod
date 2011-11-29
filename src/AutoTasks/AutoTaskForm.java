@@ -95,9 +95,9 @@ public class AutoTaskForm
 //#         
 //#         autoTaskTimeDesc=new SimpleString(SR.MS_AUTOTASK_TIME, true);
 //# 
-//#         autoTaskHour=new NumberInput(sd.canvas,  SR.MS_AUTOTASK_HOUR, Integer.toString(hour), 0, 23);
-//#         autoTaskMin=new NumberInput(sd.canvas,  SR.MS_AUTOTASK_MIN, Integer.toString(min), 0, 59);
-//#         autoTaskDelay=new NumberInput(sd.canvas,  SR.MS_AUTOTASK_DELAY, Integer.toString(wait), 1, 600);
+//#         autoTaskHour=new NumberInput(SR.MS_AUTOTASK_HOUR, Integer.toString(hour), 0, 23);
+//#         autoTaskMin=new NumberInput(SR.MS_AUTOTASK_MIN, Integer.toString(min), 0, 59);
+//#         autoTaskDelay=new NumberInput(SR.MS_AUTOTASK_DELAY, Integer.toString(wait), 1, 600);
 //#         
 //#         itemsList.addElement(taskType);
 //#         itemsList.addElement(actionType);

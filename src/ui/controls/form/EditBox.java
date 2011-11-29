@@ -28,7 +28,6 @@
 package ui.controls.form;
 
 import Client.Config;
-import Client.StaticData;
 import io.NvStorage;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -42,6 +41,7 @@ import javax.microedition.lcdui.TextBox;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
 //#ifdef CLIPBOARD
+//# import ui.VirtualCanvas;
 //# import util.ClipBoard;
 //#endif
 import ui.VirtualList;
@@ -149,7 +149,7 @@ public class EditBox implements CommandListener {
            }
         }
 
-        StaticData.getInstance().canvas.show(parentList);
+        VirtualCanvas.getInstance().show(parentList);
     }
 //#if (CLIPBOARD||SMILES)
 //#     public int getCaretPos() {     
