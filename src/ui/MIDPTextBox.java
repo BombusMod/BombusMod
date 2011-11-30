@@ -27,7 +27,10 @@
 
 package ui;
 
-import javax.microedition.lcdui.*;
+import javax.microedition.lcdui.Command;
+import javax.microedition.lcdui.CommandListener;
+import javax.microedition.lcdui.TextBox;
+import javax.microedition.lcdui.Displayable;
 import locale.SR;
 
 /**

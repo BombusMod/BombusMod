@@ -30,7 +30,7 @@ package ui;
 import Colors.ColorTheme;
 
 import Fonts.FontCache;
-import javax.microedition.lcdui.*;
+import javax.microedition.lcdui.Graphics;
 import Client.*;
 import locale.SR;
 //#ifdef POPUPS

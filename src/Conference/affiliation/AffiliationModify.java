@@ -31,7 +31,7 @@ import Client.StaticData;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.JabberStream;
 import com.alsutton.jabber.datablocks.Iq;
-import javax.microedition.lcdui.*;
+import javax.microedition.lcdui.TextField;
 import locale.SR;
 import ui.controls.AlertBox;
 import ui.controls.form.DefForm;

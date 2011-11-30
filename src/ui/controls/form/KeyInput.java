@@ -10,7 +10,8 @@ import ui.IconTextElement;
 import images.RosterIcons;
 import ui.keys.UserKey;
 import ui.keys.UserKeyExec;
-import javax.microedition.lcdui.*;
+import javax.microedition.lcdui.Graphics;
+import javax.microedition.lcdui.Font;
 import Fonts.FontCache;
 import Colors.ColorTheme;
 

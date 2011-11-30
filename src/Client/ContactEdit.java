@@ -32,7 +32,7 @@ import Conference.MucContact;
 //# import PrivacyLists.QuickPrivacy;
 //#endif
 import VCard.VCard;
-import javax.microedition.lcdui.*;
+import javax.microedition.lcdui.TextField;
 import java.util.*;
 import locale.SR;
 import ui.controls.form.LinkString;

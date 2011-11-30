@@ -27,7 +27,7 @@
 
 package ui;
 import Colors.ColorTheme;
-import javax.microedition.lcdui.*;
+import javax.microedition.lcdui.Graphics;
 
 /**
  * интерфейс виртуального элемента списка.

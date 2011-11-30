@@ -14,7 +14,8 @@
 package LightControl;
 
 import Client.Config;
-import javax.microedition.lcdui.*;
+import javax.microedition.lcdui.Canvas;
+import javax.microedition.lcdui.Display;
 import midlet.BombusMod;
 //import javax.microedition.midlet.*;
 //import com.motorola.funlight.*;

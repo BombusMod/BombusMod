@@ -29,7 +29,8 @@ package ui;
 import Fonts.FontCache;
 import images.AniImageList;
 import java.util.*;
-import javax.microedition.lcdui.*;
+import javax.microedition.lcdui.Graphics;
+import javax.microedition.lcdui.Font;
 import Colors.ColorTheme;
 
 /**

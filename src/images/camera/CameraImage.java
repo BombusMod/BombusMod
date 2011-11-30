@@ -42,6 +42,10 @@ import locale.SR;
 import ui.VirtualCanvas;
 import ui.VirtualList;
 
+/* TODO: replace lcdui.Form and lcdui.Item with painted form, if possible.
+ * It nessessary for remove proper classes from our microemu copy.
+ * Totktonada. */
+
 /**
  *
  * @author Evg_S

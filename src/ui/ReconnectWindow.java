@@ -31,7 +31,7 @@ import Client.Config;
 import Client.StaticData;
 import ui.controls.Progress;
 import Fonts.FontCache;
-import javax.microedition.lcdui.*;
+import javax.microedition.lcdui.Graphics;
 import locale.SR;
 import Colors.ColorTheme;
 import java.util.Timer;

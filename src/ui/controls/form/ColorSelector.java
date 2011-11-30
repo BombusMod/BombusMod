@@ -29,7 +29,8 @@ import Client.StaticData;
 import Colors.ColorTheme;
 import Colors.ColorsList;
 import Fonts.FontCache;
-import javax.microedition.lcdui.*;
+import javax.microedition.lcdui.Graphics;
+import javax.microedition.lcdui.Font;
 import ui.VirtualElement;
 
 public class ColorSelector implements VirtualElement
