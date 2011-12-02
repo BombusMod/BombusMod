@@ -190,7 +190,7 @@ public class ColorSelector implements VirtualElement
 
     private int getColor(int x, int y) {
         if (y>=py-ph && y<=py)  {
-            return (int) ((py-y)*255 + 0.5)/ph;
+            return (int) (((py-y)*255)/ph + 1/2); // meaning as "return Math.round ((py-y)*255/ph);"
         }
         return -1;
     }

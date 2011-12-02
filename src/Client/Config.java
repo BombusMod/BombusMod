@@ -105,7 +105,7 @@ public class Config {
     public boolean istreamWaiting;
     public int phoneManufacturer = NOT_DETECTED;
     public boolean swapMenu = false;
-    public float sonyJava;
+    public int sonyJava = 0;
     public boolean NokiaS40 = false;
 
 
@@ -826,15 +826,22 @@ public class Config {
                 phoneManufacturer = SONYE;
 
                 String sJava = System.getProperty("com.sonyericsson.java.platform");
-                if (sJava != null)
-                    try {
-                    sonyJava = Float.valueOf(sJava.substring(3, 6)).floatValue(); //"JP-8.5"
-                    } catch (NumberFormatException ex) {
-//#ifdef DEBUG                        
-//#                         ex.printStackTrace();                        
-//#endif                        
+                if (sJava != null
+                    && sJava.length() == 6
+                    && sJava.startsWith("JP-"))
+                {
+                    // sJava has format "JP-x.x", e.g. "JP-8.5".
+                    int int_part = sJava.charAt(3) - '0';
+                    int fractional_part = sJava.charAt(5) - '0';
+                    if (int_part >=0
+                        && int_part <= 9
+                        && fractional_part >= 0
+                        && fractional_part <=9)
+                    {
+                        sonyJava = int_part * 10 + fractional_part;
                     }
-                swapMenu = (sJava == null) || sonyJava < 8; //JP<=7.x
+                }
+                swapMenu = (sJava == null) || sonyJava < 80; //JP<=7.x
                 return;
 //#if !ZLIB
             } else if (platform.indexOf("9@9")>-1) {
@@ -913,9 +920,9 @@ public class Config {
         if (platformName == null) {
             platformName = System.getProperty("microedition.platform");
 
-            String sonyJava = System.getProperty("com.sonyericsson.java.platform");
-            if (sonyJava != null) {
-                platformName = platformName + "/" + sonyJava;
+            String sonyJava_str = System.getProperty("com.sonyericsson.java.platform");
+            if (sonyJava_str != null) {
+                platformName = platformName + "/" + sonyJava_str;
             }
             
             if (platformName.indexOf("sw_platform") >= 0) {

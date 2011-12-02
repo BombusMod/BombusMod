@@ -1673,7 +1673,7 @@ public class Roster
 //#ifdef SYSTEM_NOTIFY
 //#             Notificator notify = null;
 //#if !(android)
-//#             if (Config.getInstance().sonyJava >= 7.5) // prevent NoClassDefFoundError on some phones
+//#             if (Config.getInstance().sonyJava >= 75) // prevent NoClassDefFoundError on some phones
 //#endif            
 //#                 notify = Notification.getNotificator();
 //#endif
