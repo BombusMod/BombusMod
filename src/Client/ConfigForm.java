@@ -300,7 +300,7 @@ public class ConfigForm
 //#         autoAwayType.setSelectedIndex(cf.autoAwayType);
 //#         itemsList.addElement(autoAwayType);
 //# 
-//#         fieldAwayDelay=new NumberInput(sd.canvas, SR.MS_AWAY_PERIOD, Integer.toString(cf.autoAwayDelay), 1, 60);
+//#         fieldAwayDelay=new NumberInput(SR.MS_AWAY_PERIOD, Integer.toString(cf.autoAwayDelay), 1, 60);
 //#         itemsList.addElement(fieldAwayDelay);
 //# 
 //#         awayStatus=new CheckBox(SR.MS_USE_MY_STATUS_MESSAGES, cf.useMyStatusMessages);
