@@ -34,7 +34,6 @@ import com.alsutton.jabber.datablocks.Message;
 import com.alsutton.jabber.datablocks.Presence;
 import java.util.Enumeration;
 import java.util.Vector;
-import javax.microedition.lcdui.TextField;
 import locale.SR;
 import ui.controls.form.SimpleString;
 import ui.controls.form.DefForm;
@@ -70,7 +69,7 @@ public class InviteForm
         }
         itemsList.addElement(conferenceList);
         
-        reason=new TextInput(SR.MS_REASON, null, "", TextField.ANY); //200
+        reason=new TextInput(SR.MS_REASON, null, "");
         itemsList.addElement(reason);
         
         moveCursorTo(getNextSelectableRef(-1));

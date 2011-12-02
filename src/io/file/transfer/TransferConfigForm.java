@@ -7,7 +7,6 @@ package io.file.transfer;
 
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
-import javax.microedition.lcdui.TextField;
 import locale.SR;
 import ui.VirtualList;
 import ui.controls.form.DefForm;
@@ -29,7 +28,7 @@ public class TransferConfigForm extends DefForm implements BrowserListener {
 
     public TransferConfigForm(VirtualList parentView) {
         super ("File transfer");        
-        transferFolder = new TextInput("Save files to", ft.ftFolder, null, TextField.ANY);
+        transferFolder = new TextInput("Save files to", ft.ftFolder, null);
         itemsList.addElement(transferFolder);
         selectFolder=new LinkString(SR.MS_SELECT) { public void doAction() { selectFolder(); } };
         itemsList.addElement(selectFolder);

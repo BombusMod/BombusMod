@@ -29,7 +29,6 @@ package Messages;
 
 import java.util.Vector;
 import javax.microedition.io.ConnectionNotFoundException;
-import javax.microedition.lcdui.TextField;
 import midlet.BombusMod;
 import ui.MIDPTextBox;
 import ui.MIDPTextBox.TextBoxNotify;
@@ -100,7 +99,7 @@ public class MessageUrl extends DefForm implements TextBoxNotify {
     }
 
     public void EditURL() {
-        new MIDPTextBox("Edit URL", itemsList.elementAt(cursor).toString(), this, TextField.ANY);
+        new MIDPTextBox("Edit URL", itemsList.elementAt(cursor).toString(), this);
     }
 
     public void OkNotify(String text_return) {

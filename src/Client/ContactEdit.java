@@ -32,7 +32,6 @@ import Conference.MucContact;
 //# import PrivacyLists.QuickPrivacy;
 //#endif
 import VCard.VCard;
-import javax.microedition.lcdui.TextField;
 import java.util.*;
 import locale.SR;
 import ui.controls.form.LinkString;
@@ -65,11 +64,11 @@ public final class ContactEdit
         super(SR.MS_ADD_CONTACT);
         cf = Config.getInstance();
 
-        tJid = new TextInput(SR.MS_USER_JID, null, null, TextField.ANY);
+        tJid = new TextInput(SR.MS_USER_JID, null, null);
 
-        tNick = new TextInput(SR.MS_NAME, null, null, TextField.ANY);
+        tNick = new TextInput(SR.MS_NAME, null, null);
 
-        tGroup = new TextInput(SR.MS_NEWGROUP, (c == null) ? "" : c.group.name, null, TextField.ANY);
+        tGroup = new TextInput(SR.MS_NEWGROUP, (c == null) ? "" : c.group.name, null);
 
         tTranspList = new DropChoiceBox(SR.MS_TRANSPORT);
         // Transport droplist

@@ -29,7 +29,6 @@ package ServiceDiscovery;
 import Client.StaticData;
 import com.alsutton.jabber.*;
 import java.util.*;
-import javax.microedition.lcdui.TextField;
 import ui.VirtualElement;
 import ui.controls.form.CheckBox;
 import ui.controls.form.DropChoiceBox;
@@ -78,7 +77,7 @@ public class FormField {
             body = field.getChildBlockText("value");
             if (type == null) {
                 media = extractMedia(field);
-                formItem = new TextInput(label, body, null, TextField.ANY);
+                formItem = new TextInput(label, body, null);
                 return;
             }
 
@@ -152,7 +151,7 @@ public class FormField {
 			jids.append(((JabberDataBlock) values.elementAt(i)).getText()).append('\n');
 		    }
 		}
-		formItem = new TextInput(label, jids.toString().trim(), "", TextField.ANY);
+		formItem = new TextInput(label, jids.toString().trim(), "");
 	    } // text-single, text-private
             else {
                 /* if (body.length()>=200) {
@@ -161,7 +160,7 @@ public class FormField {
                 if (type.equals("text-private")) { // password field
                     formItem = new PasswordInput(label, body);
                 } else {
-                    formItem = new TextInput(label, body, "", TextField.ANY);
+                    formItem = new TextInput(label, body, "");
                 }
             }
         } else {
@@ -175,7 +174,7 @@ public class FormField {
                 formItem = cg;
                 registered = true;
             } else {
-                formItem = new TextInput(label, body, "", TextField.ANY);
+                formItem = new TextInput(label, body, "");
             }
         }
 

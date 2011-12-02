@@ -28,7 +28,6 @@
 package PrivacyLists;
 
 import Client.StaticData;
-import javax.microedition.lcdui.TextField;
 import images.RosterIcons;
 import Menu.MenuCommand;
 import locale.SR;
@@ -173,7 +172,7 @@ public class PrivacySelect
     }    
     
     public void addNewElement() {
-        new MIDPTextBox(SR.MS_NEW, "", this, TextField.ANY);
+        new MIDPTextBox(SR.MS_NEW, "", this);
     }
 
     public void cmdDelete() {

@@ -34,6 +34,7 @@ import java.io.DataInputStream;
 import java.io.EOFException;
 import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
+import javax.microedition.lcdui.TextField;
 import ui.IconTextElement;
 import ui.VirtualCanvas;
 import ui.VirtualList;
@@ -109,6 +110,10 @@ public class TextInput
         }
     }
     
+    public TextInput(String caption, String text, String id) {
+        this(caption, text, id, TextField.ANY);
+    }
+
     public int getCaptionLength() {
         if (caption==null) return 0;
         if (caption.equals("")) return 0;

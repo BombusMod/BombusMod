@@ -30,7 +30,6 @@ import Client.StaticData;
 import Conference.*;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
-import javax.microedition.lcdui.TextField;
 import locale.SR;
 import ui.controls.form.DefForm;
 import ui.controls.form.MultiLine;
@@ -170,7 +169,7 @@ class PrivelegeModifyForm extends DefForm {
             user.append(" (").append(victim.realJid).append(")");
         }
         itemsList.addElement(new MultiLine(SR.MS_USER, user.toString()));
-        cq.reason = new TextInput(SR.MS_REASON, "", "reason", TextField.ANY);
+        cq.reason = new TextInput(SR.MS_REASON, "", "reason");
         itemsList.addElement(cq.reason);
 
     }

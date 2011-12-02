@@ -30,7 +30,6 @@ package io.file.transfer;
 import Client.Jid;
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
-import javax.microedition.lcdui.TextField;
 import locale.SR;
 import ui.controls.form.DefForm;
 import ui.controls.form.LinkString;
@@ -57,13 +56,13 @@ public class TransferSendFile
         itemsList.addElement(new SimpleString(SR.MS_SEND_FILE_TO, true));
         itemsList.addElement(new SimpleString(recipientJid.toString(), false));
         
-        fileName = new TextInput(SR.MS_FILE, null, "sendfile", TextField.ANY);
+        fileName = new TextInput(SR.MS_FILE, null, "sendfile");
         itemsList.addElement(fileName);
         
         selectFile=new LinkString(SR.MS_SELECT_FILE) { public void doAction() { initBrowser(); } };
         itemsList.addElement(selectFile);
         
-        description = new TextInput(SR.MS_DESCRIPTION, null, null, TextField.ANY);
+        description = new TextInput(SR.MS_DESCRIPTION, null, null);
         itemsList.addElement(description);
         
         moveCursorTo(2);

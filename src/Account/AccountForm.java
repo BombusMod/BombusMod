@@ -108,13 +108,13 @@ public class AccountForm
 	
         mainbar.setElementAt((newaccount)?SR.MS_NEW_ACCOUNT:(account.toString()), 0);
 
-        userbox = new TextInput(SR.MS_JID, account.getBareJid(), null, TextField.ANY); //, 64, TextField.ANY
+        userbox = new TextInput(SR.MS_JID, account.getBareJid(), null);
         itemsList.addElement(userbox);
         
-        passbox = new PasswordInput(SR.MS_PASSWORD, account.password);//, 64, TextField.PASSWORD
+        passbox = new PasswordInput(SR.MS_PASSWORD, account.password);
         itemsList.addElement(passbox);
         
-        nickbox = new TextInput(SR.MS_NICKNAME, account.getNick(), null, TextField.ANY);//64, TextField.ANY
+        nickbox = new TextInput(SR.MS_NICKNAME, account.getNick(), null);
         itemsList.addElement(nickbox);
         
         linkRegister = new LinkString(SR.MS_REGISTER_ACCOUNT) {
@@ -151,8 +151,8 @@ public class AccountForm
         if (!newaccount)
             itemsList.addElement(linkRegister);
         
-        ipbox = new TextInput(SR.MS_HOST_IP, account.hostAddr, null, TextField.ANY);//, 64, TextField.ANY
-        portbox = new NumberInput(SR.MS_PORT, Integer.toString(account.port), 0, 65535);//, 0, 65535
+        ipbox = new TextInput(SR.MS_HOST_IP, account.hostAddr, null);
+        portbox = new NumberInput(SR.MS_PORT, Integer.toString(account.port), 0, 65535);
         
                 
         plainPwdbox = new CheckBox(SR.MS_PLAIN_PWD, account.plainAuth);
@@ -180,17 +180,17 @@ public class AccountForm
 //#ifndef HTTPBIND
         keepAlive = new NumberInput(SR.MS_KEEPALIVE_PERIOD, Integer.toString(account.keepAlivePeriod), 10, 2048);//10, 2096        
 //#endif
-        resourcebox = new TextInput(SR.MS_RESOURCE, account.resource, null, TextField.ANY);//64, TextField.ANY
+        resourcebox = new TextInput(SR.MS_RESOURCE, account.resource, null);
         
 //#if HTTPCONNECT
-//# 	proxyHost = new TextInput(sd.canvas,/*SR.MS_PROXY_HOST*/"Proxy name/IP", account.getProxyHostAddr(), null, TextField.URL);//32, TextField.URL
-//# 	proxyPort = new NumberInput(sd.canvas, /*SR.MS_PROXY_PORT*/"Proxy port", Integer.toString(account.getProxyPort()), 0, 65535);//, 0, 65535
-//#         proxyUser = new TextInput(sd.canvas,/*SR.MS_PROXY_HOST*/"Proxy user", account.getProxyUser(), null, TextField.URL);//32, TextField.URL
-//#         proxyPass = new TextInput(sd.canvas,/*SR.MS_PROXY_HOST*/"Proxy pass", account.getProxyPass(), null, TextField.URL);//32, TextField.URL
+//# 	proxyHost = new TextInput(sd.canvas,/*SR.MS_PROXY_HOST*/"Proxy name/IP", account.getProxyHostAddr(), null, TextField.URL);
+//# 	proxyPort = new NumberInput(sd.canvas, /*SR.MS_PROXY_PORT*/"Proxy port", Integer.toString(account.getProxyPort()), 0, 65535);
+//#         proxyUser = new TextInput(sd.canvas,/*SR.MS_PROXY_HOST*/"Proxy user", account.getProxyUser(), null, TextField.URL);
+//#         proxyPass = new TextInput(sd.canvas,/*SR.MS_PROXY_HOST*/"Proxy pass", account.getProxyPass(), null, TextField.URL);
 //#elif HTTPPOLL        
-//# 	proxyHost = new TextInput(sd.canvas, "HTTP Polling URL (http://server.tld:port)", account.proxyHostAddr, null, TextField.URL);//32, TextField.URL
+//# 	proxyHost = new TextInput(sd.canvas, "HTTP Polling URL (http://server.tld:port)", account.proxyHostAddr, null, TextField.URL);
 //#elif HTTPBIND
-//#         proxyHost = new TextInput(sd.canvas, "BOSH CM (http://server.tld:port)", account.proxyHostAddr, null, TextField.URL);//32, TextField.URL
+//#         proxyHost = new TextInput(sd.canvas, "BOSH CM (http://server.tld:port)", account.proxyHostAddr, null, TextField.URL);
 //#endif
         
         itemsList.addElement(ipbox);

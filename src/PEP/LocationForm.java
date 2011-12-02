@@ -14,7 +14,6 @@ package PEP;
 //# import PEP.location.LocationListener;
 //# import com.alsutton.jabber.JabberDataBlock;
 //# import com.alsutton.jabber.datablocks.Iq;
-//# import javax.microedition.lcdui.TextField;
 //# import locale.SR;
 //# import ui.VirtualList;
 //# import ui.controls.form.DefForm;
@@ -22,6 +21,7 @@ package PEP;
 //# import ui.controls.form.ListItem;
 //# import ui.controls.form.SpacerItem;
 //# import ui.controls.form.TextInput;
+//# import ui.controls.form.NumberInput;
 //# 
 //# /**
 //#  *
@@ -31,7 +31,7 @@ package PEP;
 //# 
 //#     ListItem loc;
 //#     TextInput location, descr;
-//#     TextInput lat, lon;
+//#     NumberInput lat, lon;
 //#     LinkString detect;
 //# 
 //#     /** Creates a new instance of Location
@@ -39,10 +39,10 @@ package PEP;
 //#      */
 //#     public LocationForm(VirtualList parent) {
 //#         super("Publish location");
-//#         location = new TextInput("Location name", null, null, TextField.ANY);
-//#         descr = new TextInput("Location description", null, null, TextField.ANY);
-//#         lat = new TextInput("Latitude", null, null, TextField.DECIMAL);
-//#         lon = new TextInput("Longitude", null, null, TextField.DECIMAL);
+//#         location = new TextInput("Location name", null, null);
+//#         descr = new TextInput("Location description", null, null);
+//#         lat = new NumberInput("Latitude", null, -90, 90);
+//#         lon = new NumberInput("Longitude", null, -180, 180);
 //# 
 //#         detect = new LinkString("Retrieve location") {
 //#             public void doAction() {

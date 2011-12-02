@@ -32,7 +32,6 @@ import Client.Contact;
 import Client.Group;
 import Client.StaticData;
 import java.util.Vector;
-import javax.microedition.lcdui.TextField;
 import locale.SR;
 import ui.controls.form.SimpleString;
 import ui.controls.form.CheckBox;
@@ -91,7 +90,7 @@ public class PrivacyForm
         choiceType.setSelectedIndex(item.type);
         itemsList.addElement(choiceType);
         
-        textValue=new TextInput(SR.MS_VALUE, tValue, "", TextField.ANY);//64, TextField.ANY);
+        textValue=new TextInput(SR.MS_VALUE, tValue, "");
         
         switchType();
         

@@ -9,7 +9,6 @@
 
 package PEP;
 
-import javax.microedition.lcdui.TextField;
 import ui.MIDPTextBox;
 import Client.StaticData;
 import com.alsutton.jabber.JabberDataBlock;
@@ -58,7 +57,7 @@ public class MoodList extends DefForm implements MIDPTextBox.TextBoxNotify {
 //#         moodName = ((MoodItem)getFocusedObject()).getTipString();
 //#         if (cursor==0) OkNotify(null);
 //#         else 
-//#             new MIDPTextBox(SR.MS_USERMOOD, Moods.getInstance().myMoodText, this, TextField.ANY);
+//#             new MIDPTextBox(SR.MS_USERMOOD, Moods.getInstance().myMoodText, this);
 //#     }
 //#endif
     

@@ -31,7 +31,6 @@ import Client.Jid;
 import images.camera.CameraImage;
 import images.camera.CameraImageListener;
 import javax.microedition.lcdui.Image;
-import javax.microedition.lcdui.TextField;
 import locale.SR;
 import ui.controls.form.DefForm;
 import ui.controls.form.ImageItem;
@@ -66,7 +65,7 @@ public class TransferImage
         shot=new LinkString(SR.MS_CAMERASHOT) { public void doAction() { initCamera(); } };
         itemsList.addElement(shot);
         
-        description = new TextInput(SR.MS_DESCRIPTION, null, null, TextField.ANY);
+        description = new TextInput(SR.MS_DESCRIPTION, null, null);
         itemsList.addElement(description);
         
         moveCursorTo(1);

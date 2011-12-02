@@ -30,7 +30,6 @@ package History;
 import Menu.MenuCommand;
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
-import javax.microedition.lcdui.TextField;
 import locale.SR;
 import ui.VirtualList;
 import ui.controls.form.CheckBox;
@@ -79,7 +78,7 @@ public class HistoryConfig
 //#         translit = new CheckBox(SR.MS_1251_TRANSLITERATE_FILENAMES, cf.transliterateFilenames); itemsList.addElement(translit);
 //#endif
 //# 
-//# 	historyFolder = new TextInput(SR.MS_HISTORY_FOLDER, cf.msgPath, null, TextField.ANY); itemsList.addElement(historyFolder);
+//# 	historyFolder = new TextInput(SR.MS_HISTORY_FOLDER, cf.msgPath, null); itemsList.addElement(historyFolder);
 //#         selectFolder=new LinkString(SR.MS_SELECT_HISTORY_FOLDER) { public void doAction() { selectFolder(); } };
 //#         itemsList.addElement(selectFolder);
 //#endif

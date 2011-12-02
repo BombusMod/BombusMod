@@ -30,7 +30,6 @@ import Client.Contact;
 import io.NvStorage;
 import java.io.DataInputStream;
 import java.io.EOFException;
-import javax.microedition.lcdui.TextField;
 import locale.SR;
 import ui.controls.form.DefForm;
 import ui.controls.form.LinkString;
@@ -57,7 +56,7 @@ public class ServerBox
         super(SR.MS_DISCO);
 
         this.disco = sn;
-        serverName = new TextInput(SR.MS_ADRESS, service, "disco", TextField.ANY);
+        serverName = new TextInput(SR.MS_ADRESS, service, "disco");
         itemsList.addElement(serverName);
         itemsList.addElement(new SpacerItem(5));
         itemsList.addElement(new LinkString(SR.MS_RECENT) {

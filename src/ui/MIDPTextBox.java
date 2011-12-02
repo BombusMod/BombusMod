@@ -29,6 +29,7 @@ package ui;
 
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
+import javax.microedition.lcdui.TextField;
 import javax.microedition.lcdui.TextBox;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
@@ -56,7 +57,7 @@ public class MIDPTextBox implements CommandListener {
         void OkNotify(String text_return);
     }
    
-    public MIDPTextBox(String mainbar, String text, TextBoxNotify tbn , int constraints) {
+    public MIDPTextBox(String mainbar, String text, TextBoxNotify tbn, int constraints) {
         
         t=new TextBox(mainbar, text, 150, constraints);
         
@@ -69,6 +70,10 @@ public class MIDPTextBox implements CommandListener {
         midlet.BombusMod.getInstance().setDisplayable(t);
     }
     
+    public MIDPTextBox(String mainbar, String text, TextBoxNotify tbn) {
+        this(mainbar, text, tbn, TextField.ANY);
+    }
+
     /**
      * Called when action should be handled
      * @param command 

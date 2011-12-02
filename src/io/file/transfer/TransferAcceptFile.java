@@ -31,7 +31,6 @@ import io.file.FileIO;
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
 
-import javax.microedition.lcdui.TextField;
 import locale.SR;
 import ui.controls.form.LinkString;
 import ui.controls.form.SimpleString;
@@ -80,11 +79,11 @@ public class TransferAcceptFile
             }
         }
         
-        fileName=new TextInput(SR.MS_FILE, name, "", TextField.ANY);
+        fileName=new TextInput(SR.MS_FILE, name, "");
         itemsList.addElement(fileName);
         itemsList.addElement(new SimpleString(SR.MS_FILE_SIZE+" "+String.valueOf(t.fileSize)+" bytes", true));
 
-        path=new TextInput(SR.MS_SAVE_TO, t.filePath, "recvPath", TextField.ANY);
+        path=new TextInput(SR.MS_SAVE_TO, t.filePath, "recvPath");
         itemsList.addElement(path);
         
         selectFile=new LinkString(SR.MS_PATH) { public void doAction() { initBrowser(); } };
