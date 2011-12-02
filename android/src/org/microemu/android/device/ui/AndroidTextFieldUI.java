@@ -86,15 +86,6 @@ public class AndroidTextFieldUI extends LinearLayout implements TextFieldUI {
 					public void onTextChanged(CharSequence s, int start, int before, int count) {
 						if (s.toString().length() <= textField.getMaxSize()
 								&& InputMethod.validate(s.toString(), textField.getConstraints())) {
-							if (textField != null) {
-								AndroidFormUI.AndroidListView formList = (AndroidFormUI.AndroidListView) getParent();
-								if (formList != null) {
-									ItemStateListener listener = formList.getUI().getItemStateListener();
-									if (listener != null) {
-										listener.itemStateChanged(textField);
-									}
-								}
-							}
 						} else {
 							editView.setText(previousText);
 							editView.setSelection( start );

@@ -33,11 +33,8 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import javax.microedition.lcdui.DisplayUtils;
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
-import javax.microedition.lcdui.game.GameCanvas;
-import javax.microedition.lcdui.game.Sprite;
 
 import org.microemu.MIDletBridge;
 import org.microemu.android.device.ui.AndroidCanvasUI;
@@ -122,64 +119,6 @@ public class AndroidDeviceDisplay implements DeviceDisplay {
 		return new AndroidImmutableImage(BitmapFactory.decodeByteArray(imageData, imageOffset, imageLength));
 	}
 
-	public Image createImage(Image image, int x, int y, int width, int height, int transform) {
-		// TODO AndroidDisplayGraphics.drawRegion code is similar
-		if (image == null)
-			throw new NullPointerException();
-		if (x + width > image.getWidth() || y + height > image.getHeight() || width <= 0 || height <= 0 || x < 0
-				|| y < 0)
-			throw new IllegalArgumentException("Area out of Image");
-
-        Bitmap img;
-        if (image.isMutable()) {
-            img = ((AndroidMutableImage) image).getBitmap();
-        } else {
-            img = ((AndroidImmutableImage) image).getBitmap();
-        }            
-
-        Matrix matrix = new Matrix();
-        switch (transform) {
-        case Sprite.TRANS_NONE: {
-            break;
-        }
-        case Sprite.TRANS_ROT90: {
-        	matrix.preRotate(90);
-            break;
-        }
-        case Sprite.TRANS_ROT180: {
-            matrix.preRotate(180);
-            break;
-        }
-        case Sprite.TRANS_ROT270: {
-            matrix.preRotate(270);
-            break;
-        }
-        case Sprite.TRANS_MIRROR: {
-        	matrix.preScale(-1, 1);
-            break;
-        }
-        case Sprite.TRANS_MIRROR_ROT90: {
-        	matrix.preScale(-1, 1);
-        	matrix.preRotate(-90);
-            break;
-        }
-        case Sprite.TRANS_MIRROR_ROT180: {
-        	matrix.preScale(-1, 1);
-            matrix.preRotate(-180);
-            break;
-        }
-        case Sprite.TRANS_MIRROR_ROT270: {
-        	matrix.preScale(-1, 1);
-            matrix.preRotate(-270);
-            break;
-        }
-        default:
-            throw new IllegalArgumentException("Bad transform");
-        }
-
-		return new AndroidImmutableImage(Bitmap.createBitmap(img, x, y, width, height, matrix, true));
-	}
-
 	public Image createRGBImage(int[] rgb, int width, int height, boolean processAlpha) {
 		if (rgb == null)
 			throw new NullPointerException();
@@ -197,19 +136,6 @@ public class AndroidDeviceDisplay implements DeviceDisplay {
 		return new AndroidImmutableImage(Bitmap.createBitmap(newrgb, width, height, Bitmap.Config.ARGB_8888));
 	}
 
-    public Graphics getGraphics(GameCanvas gameCanvas)
-    {
-        return ((AndroidCanvasUI) DisplayUtils.getDisplayableUI(gameCanvas)).getGraphics();
-    }
-    
-    public void flushGraphics(GameCanvas gameCanvas, int x, int y, int width, int height) {
-        AndroidCanvasUI ui = ((AndroidCanvasUI) DisplayUtils.getDisplayableUI(gameCanvas));
-        CanvasView canvasView = (CanvasView) ui.getView();
-        if (canvasView != null) {
-            canvasView.flushGraphics(x, y, width, height);
-        }
-    }
-    
     private Timer flashBackLightTimer = null;
     
     public boolean flashBacklight(int duration) {

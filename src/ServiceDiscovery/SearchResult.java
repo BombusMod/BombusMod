@@ -87,7 +87,6 @@ public class SearchResult
                     if (name.equals("jid")) jid=value;
                     if (value.length()>0)
                     {
-                        //vcard.append(new StringItem(name,value+"\n"));
                         vcard.append(name)
                              .append((char)0xa0)
                              .append(value)

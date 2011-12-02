@@ -33,11 +33,9 @@ package javax.microedition.lcdui;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import javax.microedition.lcdui.game.GameCanvas;
 import javax.microedition.midlet.MIDlet;
 
 import org.microemu.DisplayAccess;
-import org.microemu.GameCanvasKeyAccess;
 import org.microemu.MIDletBridge;
 import org.microemu.device.DeviceFactory;
 import org.microemu.device.ui.DisplayableUI;
@@ -69,32 +67,6 @@ public class Display {
 	private DisplayAccessor accessor = null;
 
 	private EventDispatcher eventDispatcher;
-
-	private final class GaugePaintTask implements Runnable {
-
-		public void run() {
-			if (current != null) {
-				if (current instanceof Alert) {
-					Gauge gauge = ((Alert) current).indicator;
-					if (gauge != null && gauge.hasIndefiniteRange() && gauge.getValue() == Gauge.CONTINUOUS_RUNNING) {
-						gauge.updateIndefiniteFrame();
-					}
-				} else if (current instanceof Form) {
-					Item[] items = ((Form) current).items;
-					for (int i = 0; i < items.length; i++) {
-						Item it = items[i];
-						if (it != null && it instanceof Gauge) {
-							Gauge gauge = (Gauge) it;
-
-							if (gauge.hasIndefiniteRange() && gauge.getValue() == Gauge.CONTINUOUS_RUNNING) {
-								gauge.updateIndefiniteFrame();
-							}
-						}
-					}
-				}
-			}
-		}
-	}
 
 	/**
 	 * @author radoshi
@@ -234,44 +206,12 @@ public class Display {
 			return display;
 		}
 
-		// Andres Navarro
-		private void processGameCanvasKeyEvent(GameCanvas c, int k, boolean press) {
-			// TODO Game Canvas keys need more work
-			// and better integration with the microemulator
-			// maybe actualKeyState in GameCanvas should be
-			// global and should update even while no GameCanvas
-			// is current
-			GameCanvasKeyAccess access = MIDletBridge.getGameCanvasKeyAccess(c);
-			int gameCode = c.getGameAction(k);
-			boolean suppress = false;
-			if (gameCode != 0) {
-				// valid game key
-				if (press)
-					access.recordKeyPressed(c, gameCode);
-				else
-					access.recordKeyReleased(c, gameCode);
-				suppress = access.suppressedKeyEvents(c);
-			}
-			if (!suppress) {
-				if (press) {
-					eventDispatcher.put(new KeyEvent(KeyEvent.KEY_PRESSED, k));
-				} else {
-					eventDispatcher.put(new KeyEvent(KeyEvent.KEY_RELEASED, k));
-				}
-			}
-		}
-
 		// TODO according to the specification this should be
 		// only between show and hide notify...
 		// check later
 		// Andres Navarro
 		public void keyPressed(int keyCode) {
-			// Andres Navarro
-			if (current != null && current instanceof GameCanvas) {
-				processGameCanvasKeyEvent((GameCanvas) current, keyCode, true);
-			} else {
-				eventDispatcher.put(new KeyEvent(KeyEvent.KEY_PRESSED, keyCode));
-			}
+			eventDispatcher.put(new KeyEvent(KeyEvent.KEY_PRESSED, keyCode));
 		}
 
 		public void keyRepeated(int keyCode) {
@@ -279,12 +219,7 @@ public class Display {
 		}
 
 		public void keyReleased(int keyCode) {
-			// Andres Navarro
-			if (current != null && current instanceof GameCanvas) {
-				processGameCanvasKeyEvent((GameCanvas) current, keyCode, false);
-			} else {
-				eventDispatcher.put(new KeyEvent(KeyEvent.KEY_RELEASED, keyCode));
-			}
+			eventDispatcher.put(new KeyEvent(KeyEvent.KEY_RELEASED, keyCode));
 		}
 
 		public void pointerPressed(final int x, final int y) {
@@ -391,10 +326,6 @@ at dalvik.system.NativeStart.main(Native Method)
 
 		public void sizeChanged() {
 			if (current != null) {
-	    		if (current instanceof GameCanvas) {
-	    			current.width = -1;
-	    			current.height = -1;
-	    		}
 				current.sizeChanged(Display.this);
 			}
 		}
@@ -421,22 +352,6 @@ at dalvik.system.NativeStart.main(Native Method)
 			eventDispatcher.cancel();
 			timer.cancel();
 		}
-	}
-
-	private class AlertTimeout extends TimerTask {
-
-		private Alert alert;
-
-		AlertTimeout(Alert alert) {
-			this.alert = alert;
-		}
-
-		public void run() {
-            if (alert.isShown()) {
-            	MIDletBridge.getMIDletAccess().getDisplayAccess().commandAction(
-            			(Command) alert.getCommands().get(0), alert);
-            }
-        }
 	}
 
 	private final Timer timer = new Timer();
@@ -468,7 +383,6 @@ at dalvik.system.NativeStart.main(Native Method)
 		eventDispatcher = DeviceFactory.getDevice().getUIFactory().createEventDispatcher(this);
 
 //		timer.scheduleAtFixedRate(new RunnableWrapper(new TickerPaintTask()), 0, Ticker.PAINT_TIMEOUT);
-//		timer.scheduleAtFixedRate(new RunnableWrapper(new GaugePaintTask()), 0, Ticker.PAINT_TIMEOUT);
 	}
 
 	public void callSerially(Runnable runnable) {
@@ -556,29 +470,6 @@ at dalvik.system.NativeStart.main(Native Method)
 						}));
 					}
 
-					if (nextDisplayable instanceof Alert) {
-						nextDisplayable.showNotify(Display.this);
-						nextDisplayable.repaint();
-						if (Alert.nextDisplayable == null) { // setCurrent(Alert);
-							Alert.nextDisplayable = current;
-						}
-						current = nextDisplayable;
-						Alert alert = (Alert) nextDisplayable;
-						if (alert.getTimeout() != Alert.FOREVER) {
-							timer.schedule(new AlertTimeout(alert), alert.getTimeout());
-						}
-						return;
-					}
-
-					// Andres Navarro
-					// TODO uncomment and test with JBenchmark2
-					/*
-					 * if (nextDisplayable instanceof GameCanvas) { // clear the
-					 * keys of the GameCanvas
-					 * MIDletBridge.getMIDletAccess().getGameCanvasKeyAccess().setActualKeyState(
-					 * (GameCanvas) nextDisplayable, 0); }
-					 */
-					// Andres Navarro
 					nextDisplayable.showNotify(Display.this);
 					Display.this.current = nextDisplayable;
 
@@ -589,22 +480,6 @@ at dalvik.system.NativeStart.main(Native Method)
 												
 			}));
 		}
-	}
-
-	public void setCurrent(Alert alert, Displayable nextDisplayable) {
-		if (alert == null) {
-			throw new NullPointerException("alert");
-		}
-		if (nextDisplayable == null) {
-			throw new NullPointerException("nextDisplayable");
-		}
-		if (nextDisplayable instanceof Alert) {
-			throw new IllegalArgumentException("nextDisplayable");
-		}
-
-		Alert.nextDisplayable = nextDisplayable;
-
-		setCurrent(alert);
 	}
 
 	public void setCurrentItem(Item item) {

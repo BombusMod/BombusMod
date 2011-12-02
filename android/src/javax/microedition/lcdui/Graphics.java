@@ -209,11 +209,6 @@ public class Graphics {
 	
 	// MIDP2
 
-	public void drawRegion(Image src, int x_src, int y_src, int width,
-			int height, int transform, int x_dst, int y_dst, int anchor) {
-		implementationError();
-	}
-
 	public void drawRGB(int[] rgbData, int offset, int scanlength, int x,
 			int y, int width, int height, boolean processAlpha) {
 		implementationError();

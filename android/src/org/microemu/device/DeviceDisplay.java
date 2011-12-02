@@ -32,7 +32,6 @@ import java.io.InputStream;
 
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
-import javax.microedition.lcdui.game.GameCanvas;
 
 public interface DeviceDisplay 
 {
@@ -72,11 +71,4 @@ public interface DeviceDisplay
 	Image createImage(InputStream is) throws IOException;
 
 	Image createRGBImage(int[] rgb, int width, int height, boolean processAlpha);
-
-	Image createImage(Image image, int x, int y, int width, int height, int transform);
-	
-	Graphics getGraphics(GameCanvas gameCanvas);
-	
-	void flushGraphics(GameCanvas gameCanvas, int x, int y, int width, int height);
-	
 }

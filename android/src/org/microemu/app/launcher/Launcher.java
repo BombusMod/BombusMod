@@ -30,7 +30,6 @@ import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
-import javax.microedition.lcdui.List;
 import javax.microedition.midlet.MIDlet;
 
 import org.microemu.MIDletEntry;
@@ -43,8 +42,6 @@ public class Launcher extends MIDlet implements CommandListener {
 	protected static final String NOMIDLETS = "[no midlets]";
 
 	protected CommonInterface common;
-
-	protected List menuList;
 
 	protected static Vector midletEntries = new Vector();
 
@@ -61,13 +58,6 @@ public class Launcher extends MIDlet implements CommandListener {
 	}
 
 	public MIDletEntry getSelectedMidletEntry() {
-		if (menuList != null) {
-			int idx = menuList.getSelectedIndex();
-			if (!menuList.getString(idx).equals(NOMIDLETS)) {
-				return (MIDletEntry) midletEntries.elementAt(idx);
-			}
-		}
-
 		return null;
 	}
 
@@ -78,30 +68,9 @@ public class Launcher extends MIDlet implements CommandListener {
 	}
 
 	public void startApp() {
-		menuList = new List("Launcher", List.IMPLICIT);
-		menuList.addCommand(CMD_LAUNCH);
-		menuList.setCommandListener(this);
-
-		if (midletEntries.size() == 0) {
-			menuList.append(NOMIDLETS, null);
-		} else {
-			for (int i = 0; i < midletEntries.size(); i++) {
-				menuList.append(((MIDletEntry) midletEntries.elementAt(i)).getName(), null);
-			}
-		}
-
-		Display.getDisplay(this).setCurrent(menuList);
 	}
 
 	public void commandAction(Command c, Displayable d) {
-		if (d == menuList) {
-			if (c == List.SELECT_COMMAND || c == CMD_LAUNCH) {
-				MIDletEntry entry = getSelectedMidletEntry();
-				if (entry != null) {
-					common.initMIDlet(true, entry);
-				}
-			}
-		}
 	}
 
 }

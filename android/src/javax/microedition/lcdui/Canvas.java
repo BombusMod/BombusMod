@@ -27,8 +27,6 @@
  
 package javax.microedition.lcdui;
 
-import javax.microedition.lcdui.game.GameCanvas;
-
 import org.microemu.device.DeviceFactory;
 
 public abstract class Canvas extends Displayable
@@ -169,11 +167,6 @@ public abstract class Canvas extends Displayable
     public void setFullScreenMode(boolean mode) {
     	if (this.fullScreenMode != mode) {
     		this.fullScreenMode = mode;
-    		
-    		if (this instanceof GameCanvas) {
-    			width = -1;
-    			height = -1;
-    		}
     		
     		if (currentDisplay != null) {
     			sizeChanged(currentDisplay);

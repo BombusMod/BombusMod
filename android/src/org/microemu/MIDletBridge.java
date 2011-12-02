@@ -36,7 +36,6 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 import javax.microedition.io.ConnectionNotFoundException;
-import javax.microedition.lcdui.game.GameCanvas;
 import javax.microedition.midlet.MIDlet;
 
 import org.microemu.app.launcher.Launcher;
@@ -180,17 +179,4 @@ public class MIDletBridge {
 		// No Launcher found
 		midletContexts.clear();
 	}
-	
-	static Map /*<GameCanvas, GameCanvasKeyAccess>*/ gameCanvasAccesses = new WeakHashMap();	
-
-	public static GameCanvasKeyAccess getGameCanvasKeyAccess(GameCanvas gameCanvas) {
-		return (GameCanvasKeyAccess) gameCanvasAccesses.get(gameCanvas);
-	}
-
-	public static void registerGameCanvasKeyAccess(GameCanvas gameCanvas, GameCanvasKeyAccess access) {
-		gameCanvasAccesses.put(gameCanvas, access);
-	}
-
-
-
 }

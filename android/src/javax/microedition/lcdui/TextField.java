@@ -74,10 +74,6 @@ public class TextField extends Item
 			setCaretVisible(false);
 			setString(event.getText(), event.getCaret());
 			repaint();
-            
-            if (owner instanceof Form) {
-                ((Form) owner).fireItemStateListener();
-            }
 		}
 
 		public int getCaretPosition()

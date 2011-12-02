@@ -162,11 +162,6 @@ public abstract class Item
 
 	public void notifyStateChanged() {
 		Screen owner = getOwner();
-		if (owner != null && owner instanceof Form) {
-			Form form = (Form) owner;
-			form.fireItemStateListener(this);
-		}
-		
     }
 
 	public void removeCommand(Command cmd) {

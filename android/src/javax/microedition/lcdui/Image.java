@@ -94,12 +94,6 @@ public class Image
             return DeviceFactory.getDevice().getDeviceDisplay().createImage(stream);
         }
         
-        public static Image createImage(Image image, int x, int y, 
-                int width, int height, int transform) {
-            return DeviceFactory.getDevice().getDeviceDisplay().createImage(
-                    image, x, y, width, height, transform);
-        }
-        
         public static Image createRGBImage(int[] rgb, int width, int height, 
                 boolean processAlpha) {
             return DeviceFactory.getDevice().getDeviceDisplay().createRGBImage(rgb, 
