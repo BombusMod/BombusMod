@@ -25,19 +25,9 @@
  */
 package org.microemu.app;
 
-import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Vector;
 
 import javax.microedition.io.ConnectionNotFoundException;
@@ -54,7 +44,6 @@ import org.microemu.app.launcher.Launcher;
 import org.microemu.app.ui.Message;
 import org.microemu.app.ui.ResponseInterfaceListener;
 import org.microemu.app.ui.StatusBarListener;
-import org.microemu.app.util.IOUtils;
 import org.microemu.app.util.MIDletSystemProperties;
 import org.microemu.app.util.MIDletThread;
 import org.microemu.device.Device;
@@ -64,7 +53,6 @@ import org.microemu.log.Logger;
 import org.microemu.microedition.ImplFactory;
 import org.microemu.microedition.ImplementationInitialization;
 import org.microemu.microedition.io.ConnectorImpl;
-import org.microemu.util.Base64Coder;
 
 public class Common implements MicroEmulator, CommonInterface {
 
@@ -81,16 +69,6 @@ public class Common implements MicroEmulator, CommonInterface {
     private ResponseInterfaceListener responseInterfaceListener = null;
 
     public Vector extensions = new Vector();
-
-    private boolean useSystemClassLoader = false;
-
-    private boolean autoTests = false;
-
-    private String propertiesJad = null;
-
-    private String midletClassOrUrl = null;
-
-    private String jadURL = null;
     
     private String midletSuiteName = null;
 

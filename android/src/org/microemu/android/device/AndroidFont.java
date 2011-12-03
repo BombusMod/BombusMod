@@ -26,13 +26,11 @@
 
 package org.microemu.android.device;
 
-import org.microemu.device.impl.Font;
-
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.Paint.FontMetricsInt;
 
-public class AndroidFont implements Font {
+public class AndroidFont {
 
 	public Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	
