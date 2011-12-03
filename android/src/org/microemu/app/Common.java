@@ -101,8 +101,6 @@ public class Common implements MicroEmulator, CommonInterface {
 
     private Object destroyNotify = new Object();
 
-    private boolean exitOnMIDletDestroy = false;
-
     public Common(EmulatorContext context) {
         instance = this;
         this.emulatorContext = context;
@@ -303,9 +301,7 @@ public class Common implements MicroEmulator, CommonInterface {
                 Logger.error("destroyApp error", e);
             }
 
-            if (exitOnMIDletDestroy) {
-                System.exit(0);
-            }
+            System.exit(0);            
         }
 
         try {

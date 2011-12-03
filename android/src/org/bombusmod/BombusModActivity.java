@@ -137,16 +137,7 @@ public class BombusModActivity extends MicroEmulatorActivity {
             }
 
         }));
-
-        java.util.List<String> params = new ArrayList<String>();
-        params.add("--usesystemclassloader");
-        params.add("--quit");
-
-        String midletClassName;
        
-        midletClassName = "midlet.BombusMod";
-        params.add(midletClassName);
-
         common = new Common(emulatorContext);
         common.setRecordStoreManager(new AndroidRecordStoreManager(this));
         common.setDevice(new AndroidDevice(emulatorContext, this));
@@ -178,7 +169,7 @@ public class BombusModActivity extends MicroEmulatorActivity {
 
         initializeExtensions();
 
-        common.setSuiteName(midletClassName);
+        common.setSuiteName("org.BombusMod");
         midlet = common.initMIDlet(false);
     }
 

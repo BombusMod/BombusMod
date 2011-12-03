@@ -25,123 +25,96 @@
  *   3GLab
  *   Robert Helmer
  */
-
 package javax.microedition.lcdui;
 
+import org.microemu.android.device.ui.AndroidTextFieldUI;
 import org.microemu.device.DeviceFactory;
 import org.microemu.device.InputMethod;
 import org.microemu.device.InputMethodEvent;
 import org.microemu.device.InputMethodListener;
 import org.microemu.device.ui.TextFieldUI;
 
-public class TextField extends Item 
-{
-	public static final int ANY = 0;
-	public static final int EMAILADDR = 1;
-	public static final int NUMERIC = 2;
-	public static final int PHONENUMBER = 3;
-	public static final int URL = 4;	
-	public static final int DECIMAL = 5;
+public class TextField extends Item {
 
-	public static final int PASSWORD = 0x10000;
-	public static final int UNEDITABLE = 0x20000;
-	public static final int SENSITIVE = 0x40000;
-	public static final int NON_PREDICTIVE = 0x80000;
-	public static final int INITIAL_CAPS_WORD = 0x100000;
-	public static final int INITIAL_CAPS_SENTENCE = 0x200000;
-	
-	public static final int CONSTRAINT_MASK = 0xffff;
+    public static final int ANY = 0;
+    public static final int EMAILADDR = 1;
+    public static final int NUMERIC = 2;
+    public static final int PHONENUMBER = 3;
+    public static final int URL = 4;
+    public static final int DECIMAL = 5;
+    public static final int PASSWORD = 0x10000;
+    public static final int UNEDITABLE = 0x20000;
+    public static final int SENSITIVE = 0x40000;
+    public static final int NON_PREDICTIVE = 0x80000;
+    public static final int INITIAL_CAPS_WORD = 0x100000;
+    public static final int INITIAL_CAPS_SENTENCE = 0x200000;
+    public static final int CONSTRAINT_MASK = 0xffff;
+    StringComponent stringComponent;
+    private String field;
+    private int caret;
+    private boolean caretVisible;
+    private int maxSize;
+    private int constraints;
+    private InputMethodListener inputMethodListener = new InputMethodListener() {
 
-	StringComponent stringComponent;
-	
-	private String field;
-	private int caret;
-	private boolean caretVisible;
-	private int maxSize;
-	private int constraints;
+        public void caretPositionChanged(InputMethodEvent event) {
+            setCaretPosition(event.getCaret());
+            setCaretVisible(true);
+            repaint();
+        }
 
-	private InputMethodListener inputMethodListener = new InputMethodListener() 
-	{
-		public void caretPositionChanged(InputMethodEvent event) 
-		{
-			setCaretPosition(event.getCaret());
-			setCaretVisible(true);
-			repaint();
-		}
+        public void inputMethodTextChanged(InputMethodEvent event) {
+            setCaretVisible(false);
+            setString(event.getText(), event.getCaret());
+            repaint();
+        }
 
-		public void inputMethodTextChanged(InputMethodEvent event) 
-		{
-			setCaretVisible(false);
-			setString(event.getText(), event.getCaret());
-			repaint();
-		}
+        public int getCaretPosition() {
+            return TextField.this.getCaretPosition();
+        }
 
-		public int getCaretPosition()
-		{
-			return TextField.this.getCaretPosition();
-		}
+        public String getText() {
+            return TextField.this.getString();
+        }
 
-		public String getText()
-		{
-			return TextField.this.getString();
-		}
-
-		public int getConstraints()
-        {
+        public int getConstraints() {
             return TextField.this.getConstraints();
         }
-	};
+    };
 
-	
-	public TextField(String label, String text, int maxSize, int constraints) 
-	{
-		super(label);
-		super.setUI(DeviceFactory.getDevice().getUIFactory().createTextFieldUI(this));
-		
-		if (maxSize <= 0) {
-			throw new IllegalArgumentException();
-		}
-		setConstraints(constraints);
+    public TextField(String label, String text, int maxSize, int constraints) {
+        super(label);
+        super.setUI(DeviceFactory.getDevice().getUIFactory().createTextFieldUI(this));
+
+        if (maxSize <= 0) {
+            throw new IllegalArgumentException();
+        }
+        setConstraints(constraints);
         if (!InputMethod.validate(text, constraints)) {
             throw new IllegalArgumentException();
         }
-		if (maxSize <= 0) {
-			throw new IllegalArgumentException();
-		}
+        if (maxSize <= 0) {
+            throw new IllegalArgumentException();
+        }
         this.maxSize = maxSize;
-		stringComponent = new StringComponent();
-		if (text != null) {
-			setString(text);
-		} else {
-			setString("");
-		}
-		stringComponent.setWidthDecreaser(8);
-	}
+        stringComponent = new StringComponent();
+        if (text != null) {
+            setString(text);
+        } else {
+            setString("");
+        }
+        stringComponent.setWidthDecreaser(8);
+    }
 
-	
-	public String getString() 
-	{
-		if (ui.getClass().getName().equals("org.microemu.android.device.ui.AndroidTextFieldUI")) {
-			return ((TextFieldUI) ui).getString();
-		}
+    public String getString() {
+        return ((AndroidTextFieldUI) ui).getString();
+    }
 
-		return field;
-	}
+    public final void setString(String text) {
+         ((AndroidTextFieldUI) ui).setString(text);       
+    }
 
-	
-	public void setString(String text) 
-	{
-		if (ui.getClass().getName().equals("org.microemu.android.device.ui.AndroidTextFieldUI")) {
-			((TextFieldUI) ui).setString(text);
-		}
-		
-		int caret = (text == null ? 0 : text.length());
-		setString(text, caret);
-	}
-    
-    
-    void setString(String text, int caret)
-    {
+    void setString(String text, int caret) {
         if (!InputMethod.validate(text, constraints)) {
             throw new IllegalArgumentException("text  is illegal for the current input constraints");
         }
@@ -156,7 +129,7 @@ public class TextField extends Item
             if ((constraints & PASSWORD) == 0) {
                 stringComponent.setText(text);
             } else {
-                StringBuffer sb = new StringBuffer();
+                StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < text.length(); i++) {
                     sb.append('*');
                 }
@@ -168,246 +141,197 @@ public class TextField extends Item
         repaint();
     }
 
-	
-	public int getChars(char[] data) 
-	{
-		if (data.length < field.length()) {
-			throw new ArrayIndexOutOfBoundsException();
-		}
-		getString().getChars(0, field.length(), data, 0);
+    public int getChars(char[] data) {
+        if (data.length < field.length()) {
+            throw new ArrayIndexOutOfBoundsException();
+        }
+        getString().getChars(0, field.length(), data, 0);
 
-		return field.length();
-	}
+        return field.length();
+    }
 
-	
-	public void setChars(char[] data, int offset, int length) 
-	{
-		if (data == null) {
-			setString("");
-		} else {
-			if (length > maxSize) {
-				throw new IllegalArgumentException();
-			}
-			String newtext = new String(data, offset, length);
-			if (!InputMethod.validate(newtext, constraints)) {
+    public void setChars(char[] data, int offset, int length) {
+        if (data == null) {
+            setString("");
+        } else {
+            if (length > maxSize) {
                 throw new IllegalArgumentException();
             }
-			setString(newtext);
-		}
-		repaint();
-	}
+            String newtext = new String(data, offset, length);
+            if (!InputMethod.validate(newtext, constraints)) {
+                throw new IllegalArgumentException();
+            }
+            setString(newtext);
+        }
+        repaint();
+    }
 
-	
-	public void insert(String src, int position) 
-	{
-		if (!InputMethod.validate(src, constraints)) {
+    public void insert(String src, int position) {
+        if (!InputMethod.validate(src, constraints)) {
             throw new IllegalArgumentException();
         }
-		if (field.length() + src.length() > maxSize) {
-			throw new IllegalArgumentException();
-		}
-		String newtext = "";
-		if (position > 0) {
-			if (ui.getClass().getName().equals("org.microemu.android.device.ui.AndroidTextFieldUI")) {
-				newtext = ((TextFieldUI) ui).getString();
-			} else {
-				newtext = getString().substring(0, position);
-			}
-		}
-		newtext += src;
-		if (position < field.length()) {
-			if (ui.getClass().getName().equals("org.microemu.android.device.ui.AndroidTextFieldUI")) {
-				newtext += ((TextFieldUI) ui).getString().substring(position + 1);
-			} else {
-				newtext += getString().substring(position + 1);
-			}
-		}	
-		if (ui.getClass().getName().equals("org.microemu.android.device.ui.AndroidTextFieldUI")) {
-			((TextFieldUI) ui).setString(newtext);
-		} else {
-			setString(newtext);
-			repaint();
-		}
-	}
+        if (field.length() + src.length() > maxSize) {
+            throw new IllegalArgumentException();
+        }
+        String newtext = "";
+        if (position > 0) {
+            newtext = ((AndroidTextFieldUI) ui).getString();
+        }
+        newtext += src;
+        if (position < field.length()) {
+            newtext += ((AndroidTextFieldUI) ui).getString().substring(position + 1);
+        }
+        ((AndroidTextFieldUI) ui).setString(newtext);
+    }
 
-	
-	public void insert(char[] data, int offset, int length, int position) 
-	{
-		if (offset + length > data.length) {
-			throw new ArrayIndexOutOfBoundsException();
-		}
-		insert(new String(data, offset, length), position);
-	}
+    public void insert(char[] data, int offset, int length, int position) {
+        if (offset + length > data.length) {
+            throw new ArrayIndexOutOfBoundsException();
+        }
+        insert(new String(data, offset, length), position);
+    }
 
-	
-	public void delete(int offset, int length) 
-	{
-		if (offset + length > field.length()) {
-			throw new StringIndexOutOfBoundsException();
-		}
-		String newtext = "";
-		if (offset > 0) {
-			newtext = getString().substring(0, offset);
-		}
-		if (offset + length < field.length()) {
-			newtext += getString().substring(offset + length);
-		}
-		setString(newtext);
-		repaint();
-	}
+    public void delete(int offset, int length) {
+        if (offset + length > field.length()) {
+            throw new StringIndexOutOfBoundsException();
+        }
+        String newtext = "";
+        if (offset > 0) {
+            newtext = getString().substring(0, offset);
+        }
+        if (offset + length < field.length()) {
+            newtext += getString().substring(offset + length);
+        }
+        setString(newtext);
+        repaint();
+    }
 
-	
-	public int getMaxSize() 
-	{
-		return maxSize;
-	}
+    public int getMaxSize() {
+        return maxSize;
+    }
 
-	
-	public int setMaxSize(int maxSize) 
-	{
-		if (maxSize <= 0) {
-			throw new IllegalArgumentException();
-		}
-		if (getString().length() > maxSize) {
-			setString(getString().substring(0, maxSize));
-		}
-		this.maxSize = maxSize;
-		return maxSize;
-	}
+    public int setMaxSize(int maxSize) {
+        if (maxSize <= 0) {
+            throw new IllegalArgumentException();
+        }
+        if (getString().length() > maxSize) {
+            setString(getString().substring(0, maxSize));
+        }
+        this.maxSize = maxSize;
+        return maxSize;
+    }
 
-	
-	public int size() 
-	{
-		return getString().length();
-	}
+    public int size() {
+        return getString().length();
+    }
 
-	
-	public int getCaretPosition() 
-	{
-		return caret;
-	}
+    public int getCaretPosition() {
+        return caret;
+    }
 
-	
-	public void setConstraints(int constraints) 
-	{
-		if ((constraints & TextField.CONSTRAINT_MASK) < ANY
-			|| (constraints & TextField.CONSTRAINT_MASK) > DECIMAL) {
-			throw new IllegalArgumentException("constraints " + constraints + " is an illegal value");
-		}
-		this.constraints = constraints;
+    public final void setConstraints(int constraints) {
+        if ((constraints & TextField.CONSTRAINT_MASK) < ANY
+                || (constraints & TextField.CONSTRAINT_MASK) > DECIMAL) {
+            throw new IllegalArgumentException("constraints " + constraints + " is an illegal value");
+        }
+        this.constraints = constraints;
         if (!InputMethod.validate(getString(), constraints)) {
             setString("");
         }
         ((TextFieldUI) ui).setConstraints(constraints);
-	}
+    }
 
-	
-	public int getConstraints() 
-	{
-		return constraints;
-	}
-	
-	
-	public void setInitialInputMode(String characterSubset)
-	{
-		// TODO implement
-	}
+    public int getConstraints() {
+        return constraints;
+    }
 
-	
-	boolean isFocusable() 
-	{
-		return true;
-	}
+    public void setInitialInputMode(String characterSubset) {
+        // TODO implement
+    }
 
-	
-	int getHeight() 
-	{
-		return super.getHeight() + stringComponent.getHeight() + 8;
-	}
+    @Override
+    boolean isFocusable() {
+        return true;
+    }
 
-	
-	int paint(Graphics g) 
-	{
-		super.paintContent(g);
+    @Override
+    int getHeight() {
+        return super.getHeight() + stringComponent.getHeight() + 8;
+    }
 
-		g.translate(0, super.getHeight());
-		int savedColor = g.getColor();
-		if (!hasFocus()) {
-		    g.setGrayScale(127);
-		}
-		g.drawRect(
-		        1, 1, 
-				owner.getWidth() - 3, stringComponent.getHeight() + 4);
-		if (!hasFocus()) {
-		    g.setColor(savedColor);
-		}
-		g.translate(3, 3);
-		paintContent(g);
-		g.translate(-3, -3);
-		g.translate(0, -super.getHeight());
+    int paint(Graphics g) {
+        super.paintContent(g);
 
-		return getHeight();
-	}
+        g.translate(0, super.getHeight());
+        int savedColor = g.getColor();
+        if (!hasFocus()) {
+            g.setGrayScale(127);
+        }
+        g.drawRect(
+                1, 1,
+                owner.getWidth() - 3, stringComponent.getHeight() + 4);
+        if (!hasFocus()) {
+            g.setColor(savedColor);
+        }
+        g.translate(3, 3);
+        paintContent(g);
+        g.translate(-3, -3);
+        g.translate(0, -super.getHeight());
 
-	
-	void paintContent(Graphics g) 
-	{
-		stringComponent.paint(g);
-		if (caretVisible) {
-			int x_pos = stringComponent.getCharPositionX(caret);
-			int y_pos = stringComponent.getCharPositionY(caret);
-			g.drawLine(x_pos, y_pos, x_pos, y_pos + Font.getDefaultFont().getHeight());
-		}
-	}
+        return getHeight();
+    }
 
-	
-	void setCaretPosition(int position) 
-	{
-		caret = position;
-	}
+    @Override
+    void paintContent(Graphics g) {
+        stringComponent.paint(g);
+        if (caretVisible) {
+            int x_pos = stringComponent.getCharPositionX(caret);
+            int y_pos = stringComponent.getCharPositionY(caret);
+            g.drawLine(x_pos, y_pos, x_pos, y_pos + Font.getDefaultFont().getHeight());
+        }
+    }
 
-	
-	void setCaretVisible(boolean state) 
-	{
-		caretVisible = state;
-	}
+    void setCaretPosition(int position) {
+        caret = position;
+    }
 
-	
-	int traverse(int gameKeyCode, int top, int bottom, boolean action) 
-	{
-		if (gameKeyCode == Canvas.UP) {
-			if (top > 0) {
-				return -top;
-			} else {
-				return Item.OUTOFITEM;
-			}
-		}
-		if (gameKeyCode == Canvas.DOWN) {
-			if (getHeight() > bottom) {
-				return getHeight() - bottom;
-			} else {
-				return Item.OUTOFITEM;
-			}
-		}
+    void setCaretVisible(boolean state) {
+        caretVisible = state;
+    }
 
-		return 0;
-	}
+    @Override
+    int traverse(int gameKeyCode, int top, int bottom, boolean action) {
+        if (gameKeyCode == Canvas.UP) {
+            if (top > 0) {
+                return -top;
+            } else {
+                return Item.OUTOFITEM;
+            }
+        }
+        if (gameKeyCode == Canvas.DOWN) {
+            if (getHeight() > bottom) {
+                return getHeight() - bottom;
+            } else {
+                return Item.OUTOFITEM;
+            }
+        }
 
-	
-	void setFocus(boolean hasFocus) 
-	{
-		super.setFocus(hasFocus);
-		if (hasFocus) {
-			// register input listener
-			InputMethod inputMethod = DeviceFactory.getDevice().getInputMethod();
-			inputMethod.setInputMethodListener(inputMethodListener);
-			inputMethod.setMaxSize(getMaxSize());
-			setCaretVisible(true);
-		} else {
-			// unregister input listener
-			DeviceFactory.getDevice().getInputMethod().removeInputMethodListener(inputMethodListener);
-			setCaretVisible(false);
-		}
-	}	
+        return 0;
+    }
 
+    @Override
+    void setFocus(boolean hasFocus) {
+        super.setFocus(hasFocus);
+        if (hasFocus) {
+            // register input listener
+            InputMethod inputMethod = DeviceFactory.getDevice().getInputMethod();
+            inputMethod.setInputMethodListener(inputMethodListener);
+            inputMethod.setMaxSize(getMaxSize());
+            setCaretVisible(true);
+        } else {
+            // unregister input listener
+            DeviceFactory.getDevice().getInputMethod().removeInputMethodListener(inputMethodListener);
+            setCaretVisible(false);
+        }
+    }
 }
