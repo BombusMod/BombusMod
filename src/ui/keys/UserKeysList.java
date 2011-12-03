@@ -24,9 +24,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+//#ifdef USER_KEYS
+
 package ui.keys;
 
-//#ifdef USER_KEYS
 import locale.SR;
 import Menu.MenuCommand;
 import ui.VirtualList;
@@ -109,4 +110,5 @@ public class UserKeysList extends DefForm {
      public void touchLeftPressed() { showMenu(); }
 
 }
+
 //#endif

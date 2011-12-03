@@ -7,6 +7,8 @@
  * and open the template in the editor.
  */
 
+//#ifdef HTTPCONNECT
+
 package io;
 
 import java.io.DataInputStream;
@@ -114,7 +116,6 @@ public class HttpProxyConnection implements StreamConnection {
 
         conn.close();
     }
-
-
-    
 }
+
+//#endif

@@ -3,6 +3,8 @@
  * and open the template in the editor.
  */
 
+//#ifdef HTTPBIND
+
 package io;
 
 /**
@@ -41,3 +43,5 @@ public class HttpBindConnection extends HttpXmppConnection {
     }
 
 }
+
+//#endif

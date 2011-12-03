@@ -3,7 +3,10 @@
  * and open the template in the editor.
  */
 
+//#ifdef PEP_LOCATION
+
 package PEP.location;
+
 import javax.microedition.location.Coordinates;
 import javax.microedition.location.Location;
 import javax.microedition.location.LocationProvider;
@@ -41,3 +44,5 @@ public class JSR179Location extends LocationIO {
     }
 
 }
+
+//#endif

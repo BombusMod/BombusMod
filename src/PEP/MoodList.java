@@ -7,6 +7,8 @@
  * and open the template in the editor.
  */
 
+//#ifdef PEP
+
 package PEP;
 
 import ui.MIDPTextBox;
@@ -30,13 +32,7 @@ public class MoodList extends DefForm implements MIDPTextBox.TextBoxNotify {
     /** Creates a new instance of MoodList */
 
     public MoodList() {
-        super(
-//#ifdef PEP
-//#                 SR.MS_USERMOOD
-//#else
-                ""
-//#endif
-                );
+        super(SR.MS_USERMOOD);
 
         int count=Moods.getInstance().moodValue.size();
         
@@ -52,14 +48,13 @@ public class MoodList extends DefForm implements MIDPTextBox.TextBoxNotify {
         eventOk();
     }
 
-//#ifdef PEP
-//#     public void eventOk() {
-//#         moodName = ((MoodItem)getFocusedObject()).getTipString();
-//#         if (cursor==0) OkNotify(null);
-//#         else 
-//#             new MIDPTextBox(SR.MS_USERMOOD, Moods.getInstance().myMoodText, this);
-//#     }
-//#endif
+    public void eventOk() {
+        moodName = ((MoodItem)getFocusedObject()).getTipString();
+        if (cursor==0)
+            OkNotify(null);
+        else 
+            new MIDPTextBox(SR.MS_USERMOOD, Moods.getInstance().myMoodText, this);
+    }
     
     public void OkNotify(String moodText) {        
         publishTune(moodText, moodName);
@@ -94,5 +89,6 @@ public class MoodList extends DefForm implements MIDPTextBox.TextBoxNotify {
 //#endif            
         }
     }
-        
 }
+
+//#endif

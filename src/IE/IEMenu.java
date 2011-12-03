@@ -24,6 +24,9 @@
  * along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+
+//#ifdef IMPORT_EXPORT
+
 package IE;
 
 import io.file.browse.Browser;
@@ -50,13 +53,7 @@ public class IEMenu
     private int choice = -1;
     
     public IEMenu() {
-        super(
-//#if IMPORT_EXPORT
-//#         SR.MS_IMPORT_EXPORT
-//#else
-               ""
-//#endif
-                 );
+        super(SR.MS_IMPORT_EXPORT);
         itemsList.addElement(new SimpleString(SR.MS_OPTIONS, true));
         itemsList.addElement(new LinkString(SR.MS_LOAD_FROM_FILE) {
             public void doAction() {
@@ -180,3 +177,5 @@ public class IEMenu
         }
     }
 }
+
+//#endif

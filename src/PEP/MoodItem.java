@@ -25,6 +25,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+//#ifdef PEP
+
 package PEP;
 
 import Colors.ColorTheme;
@@ -59,3 +61,5 @@ public class MoodItem extends IconTextElement {
         return label.compareTo( ((MoodItem)right).label );
     }
 }
+
+//#endif

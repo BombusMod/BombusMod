@@ -3,6 +3,8 @@
  * and open the template in the editor.
  */
 
+//#ifdef FILE_TRANSFER
+
 package io.file.transfer;
 
 import io.NvStorage;
@@ -52,3 +54,5 @@ public class TransferConfig {
          NvStorage.writeFileRecord(outputStream, "ft_config", 0, true); 
     }
 }
+
+//#endif

@@ -24,6 +24,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
+
+//#ifdef HISTORY
+
 package History;
 
 import Client.Config;
@@ -64,11 +67,11 @@ public class HistoryLoader {
     public HistoryLoader(String file, boolean smiles) {
         this.smiles = smiles;
         cf = Config.getInstance();
+// TODO: check this fork (for set fileName).
 //#ifdef DETRANSLIT
-//#             file = util.DeTranslit.getInstance().get_actual_filename(file);
-//#endif
-//#ifdef HISTORY
-//#         fileName = cf.msgPath + StringUtils.replaceBadChars(file) + ".txt";
+        fileName = util.DeTranslit.getInstance().get_actual_filename(file);
+//#else
+        fileName = cf.msgPath + StringUtils.replaceBadChars(file) + ".txt";
 //#endif
 
         fileSize = getFileSize();
@@ -324,3 +327,5 @@ public class HistoryLoader {
         return source.substring(start+needle.length()+2, end);
     }
 }
+
+//#endif

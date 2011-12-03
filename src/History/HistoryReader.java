@@ -25,6 +25,8 @@
  *
  */
 
+//#if HISTORY && HISTORY_READER
+
 package History;
 
 import Client.Contact;
@@ -119,5 +121,6 @@ public class HistoryReader extends MessageList {
 
         return super.doUserKeyAction(command_id);
     }
-
 }
+
+//#endif

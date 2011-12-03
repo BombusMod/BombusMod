@@ -23,6 +23,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+//#ifdef STATS
+
 package Statistic;
 
 import Client.StaticData;
@@ -111,3 +113,5 @@ public class Stats {
         return StaticData.getInstance().traffic*2;
     }
 }
+
+//#endif

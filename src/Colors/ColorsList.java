@@ -25,6 +25,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+//#ifdef COLOR_TUNE
+
 package Colors;
 
 import Menu.MenuCommand;
@@ -61,9 +63,7 @@ public class ColorsList extends DefForm
         itemsList.removeAllElements();
         for (Enumeration r = ColorTheme.colorsContainer.elements(); r.hasMoreElements();) {
             ColorItem c = (ColorItem) r.nextElement();
-            //#ifdef COLOR_TUNE
-//#             itemsList.addElement(new ColorVisualItem(c.name, NAMES[cnt], c.color));
-            //#endif
+            itemsList.addElement(new ColorVisualItem(c.name, NAMES[cnt], c.color));
             cnt++;
         }        
     }
@@ -91,77 +91,75 @@ public class ColorsList extends DefForm
     }
         
     public void eventOk() {
-//#ifdef COLOR_TUNE
-//#         new ColorSelectForm( this, this, cursor);
-//#endif
+        new ColorSelectForm( this, this, cursor);
     }
     
     public void cmdOk() {
         eventOk();
     }
 
-//#ifdef COLOR_TUNE
-//#     public static final String[] NAMES = {
-//#             SR.MS_BALLOON_INK,
-//#             SR.MS_BALLOON_BGND,
-//#             SR.MS_LIST_BGND,
-//#             SR.MS_LIST_BGND_EVEN,
-//#             SR.MS_LIST_INK,
-//# 
-//#             SR.MS_MSG_SUBJ,
-//#             SR.MS_MSG_HIGHLIGHT,
-//# 
-//#             SR.MS_DISCO_CMD,
-//# 
-//#             SR.MS_BAR_BGND,
-//#             SR.MS_BAR_BGND+" 2",
-//#             SR.MS_BAR_INK,
-//# 
-//#             SR.MS_CONTACT_DEFAULT,
-//#             SR.MS_CONTACT_CHAT,
-//#             SR.MS_CONTACT_AWAY,
-//#             SR.MS_CONTACT_XA,
-//#             SR.MS_CONTACT_DND,
-//#             SR.MS_CONTACT+" J2J",
-//# 
-//#             SR.MS_GROUP_INK,
-//# 
-//#             SR.MS_BLK_INK,
-//#             SR.MS_BLK_BGND,
-//# 
-//#             SR.MS_MESSAGE_IN,
-//#             SR.MS_MESSAGE_OUT,
-//#             SR.MS_MESSAGE_PRESENCE,
-//#             SR.MS_MESSAGE_AUTH,
-//#             SR.MS_MESSAGE_HISTORY,
-//# 
-//#             SR.MS_MESSAGE_IN_S,
-//#             SR.MS_MESSAGE_OUT_S,
-//#             SR.MS_MESSAGE_PRESENCE_S,
-//# 
-//#             SR.MS_PGS_REMAINED,
-//#             SR.MS_PGS_COMPLETE,
-//#             SR.MS_PGS_COMPLETE+" 2",
-//#             SR.MS_PGS_INK,
-//# 
-//#             SR.MS_HEAP_TOTAL,
-//#             SR.MS_HEAP_FREE,
-//# 
-//#             SR.MS_CURSOR_BGND,
-//#             SR.MS_CURSOR_OUTLINE,
-//# 
-//#             SR.MS_SCROLL_BRD,
-//#             SR.MS_SCROLL_BAR,
-//#             SR.MS_SCROLL_BGND,
-//# 
-//#             SR.MS_POPUP_MESSAGE,
-//#             SR.MS_POPUP_MESSAGE_BGND,
-//#             SR.MS_POPUP_SYSTEM,
-//#             SR.MS_POPUP_SYSTEM_BGND,
-//# 
-//#             SR.MS_CONTACT_STATUS,
-//# 
-//#             SR.MS_CONTROL_ITEM,
-//#         };
-//#endif
+    public static final String[] NAMES = {
+            SR.MS_BALLOON_INK,
+            SR.MS_BALLOON_BGND,
+            SR.MS_LIST_BGND,
+            SR.MS_LIST_BGND_EVEN,
+            SR.MS_LIST_INK,
+
+            SR.MS_MSG_SUBJ,
+            SR.MS_MSG_HIGHLIGHT,
+
+            SR.MS_DISCO_CMD,
+
+            SR.MS_BAR_BGND,
+            SR.MS_BAR_BGND+" 2",
+            SR.MS_BAR_INK,
+
+            SR.MS_CONTACT_DEFAULT,
+            SR.MS_CONTACT_CHAT,
+            SR.MS_CONTACT_AWAY,
+            SR.MS_CONTACT_XA,
+            SR.MS_CONTACT_DND,
+            SR.MS_CONTACT+" J2J",
+
+            SR.MS_GROUP_INK,
+
+            SR.MS_BLK_INK,
+            SR.MS_BLK_BGND,
+
+            SR.MS_MESSAGE_IN,
+            SR.MS_MESSAGE_OUT,
+            SR.MS_MESSAGE_PRESENCE,
+            SR.MS_MESSAGE_AUTH,
+            SR.MS_MESSAGE_HISTORY,
+
+            SR.MS_MESSAGE_IN_S,
+            SR.MS_MESSAGE_OUT_S,
+            SR.MS_MESSAGE_PRESENCE_S,
+
+            SR.MS_PGS_REMAINED,
+            SR.MS_PGS_COMPLETE,
+            SR.MS_PGS_COMPLETE+" 2",
+            SR.MS_PGS_INK,
+
+            SR.MS_HEAP_TOTAL,
+            SR.MS_HEAP_FREE,
+
+            SR.MS_CURSOR_BGND,
+            SR.MS_CURSOR_OUTLINE,
+
+            SR.MS_SCROLL_BRD,
+            SR.MS_SCROLL_BAR,
+            SR.MS_SCROLL_BGND,
+
+            SR.MS_POPUP_MESSAGE,
+            SR.MS_POPUP_MESSAGE_BGND,
+            SR.MS_POPUP_SYSTEM,
+            SR.MS_POPUP_SYSTEM_BGND,
+
+            SR.MS_CONTACT_STATUS,
+
+            SR.MS_CONTROL_ITEM,
+        };
 }
+
+//#endif

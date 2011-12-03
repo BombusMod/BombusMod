@@ -27,7 +27,10 @@
  *
  */
 
+//#ifdef PRIVACY
+
 package PrivacyLists;
+
 import Client.Contact;
 import Client.Group;
 import Client.StaticData;
@@ -176,3 +179,5 @@ public class PrivacyForm
         destroyView();
     }
 }
+
+//#endif

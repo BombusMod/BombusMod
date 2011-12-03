@@ -24,6 +24,8 @@
  * and open the template in the editor.
  */
 
+//#ifdef ANI_SMILES
+
 package images;
 
 import java.io.InputStream;
@@ -127,3 +129,5 @@ public class AniImageList extends ImageList implements Runnable {
         }
     }
 }
+
+//#endif

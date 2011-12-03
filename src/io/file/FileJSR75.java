@@ -25,6 +25,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+//#ifdef FILE_IO
+
 package io.file;
 
 import java.io.IOException;
@@ -121,3 +123,5 @@ class FileJSR75 extends FileIO {
         fileConnection.rename(newName);
     }
 }
+
+//#endif

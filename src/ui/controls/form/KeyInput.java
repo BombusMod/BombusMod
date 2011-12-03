@@ -3,9 +3,10 @@
  * and open the template in the editor.
  */
 
+//#ifdef USER_KEYS
+
 package ui.controls.form;
 
-//#ifdef USER_KEYS
 import ui.IconTextElement;
 import images.RosterIcons;
 import ui.keys.UserKey;
@@ -119,4 +120,5 @@ public class KeyInput extends IconTextElement {
         }
     }
 }
+
 //#endif

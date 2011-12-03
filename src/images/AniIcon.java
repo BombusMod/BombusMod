@@ -29,6 +29,8 @@
  * and open the template in the editor.
  */
 
+//#ifdef ANI_SMILES
+
 package images;
 
 import javax.microedition.lcdui.Graphics;
@@ -104,3 +106,5 @@ public class AniIcon {
     }
 
 }
+
+//#endif

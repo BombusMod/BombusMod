@@ -25,6 +25,8 @@
  *
  */
 
+//#ifdef PRIVACY
+
 package PrivacyLists;
 
 import Client.StaticData;
@@ -205,3 +207,5 @@ public class PrivacySelect
         return super.doUserKeyAction(command_id);
     }
 }
+
+//#endif

@@ -2,6 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
+//#ifdef PRIVACY
+
 package PrivacyLists;
 
 import Client.NotInListFilter;
@@ -132,3 +135,5 @@ public class QuickPrivacy extends DefForm implements JabberBlockListener {
         PrivacyList.privacyListRq(true, qList, "quicklst");
     }
 }
+
+//#endif

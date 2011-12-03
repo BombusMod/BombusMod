@@ -7,6 +7,8 @@
  * and open the template in the editor.
  */
 
+//#ifdef PEP_ACTIVITY
+
 package PEP;
 
 import java.util.Enumeration;
@@ -30,13 +32,7 @@ public class ActivityList extends DefForm implements MIDPTextBox.TextBoxNotify {
     String acttext;
             
     public ActivityList(Display display) {
-        super(
-//#ifdef PEP_ACTIVITY
-//#                 SR.MS_USERACTIVITY
-//#else
-                ""
-//#endif
-                );
+        super(SR.MS_USERACTIVITY);
 
         for (Enumeration e = Activities.getInstance().actValue.elements(); e.hasMoreElements();) {
               SimpleString item = new SimpleString((String)e.nextElement(), false);
@@ -50,12 +46,12 @@ public class ActivityList extends DefForm implements MIDPTextBox.TextBoxNotify {
         eventOk();
     }
 
-//#ifdef PEP
-//#     public void eventOk() {
-//#         if (cursor==0) OkNotify(null);
-//#             else new MIDPTextBox(SR.MS_USERACTIVITY, acttext, this);
-//#     }
-//#endif
+    public void eventOk() {
+        if (cursor==0)
+            OkNotify(null);
+        else
+            new MIDPTextBox(SR.MS_USERACTIVITY, acttext, this);
+    }
     
     public void OkNotify(String actText) {
         //String moodName=((MoodItem)getFocusedObject()).getTipString();
@@ -89,5 +85,6 @@ public class ActivityList extends DefForm implements MIDPTextBox.TextBoxNotify {
 //#endif            
         }
     }
-        
 }
+
+//#endif

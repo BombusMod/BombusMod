@@ -25,6 +25,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+//#ifdef PEP
+
 package PEP;
 
 import java.util.Vector;
@@ -89,3 +91,5 @@ public class Moods {
         return moodKey.size();
     }
 }
+
+//#endif

@@ -25,6 +25,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+//#ifdef FILE_IO
 
 package io.file;
 
@@ -150,3 +151,5 @@ class FileSiemensOutputStream extends OutputStream {
 
     public void write(byte[] b) throws IOException {  f.write(fileDescriptor, b, 0, b.length);  }
 }
+
+//#endif

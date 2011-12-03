@@ -25,6 +25,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+//#ifdef PEP_ACTIVITY
+
 package PEP;
 
 import Client.Config;
@@ -116,3 +118,5 @@ public class Activities {
         return (String)actValue.elementAt(index);
     }
 }
+
+//#endif

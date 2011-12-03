@@ -3,6 +3,8 @@
  * and open the template in the editor.
  */
 
+//#ifdef FILE_TRANSFER
+
 package io;
 
 import java.io.IOException;
@@ -57,3 +59,5 @@ public class SOCKS5Stream {
     }
 
 }
+
+//#endif

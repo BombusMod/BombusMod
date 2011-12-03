@@ -25,7 +25,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+//#ifdef GRADIENT
+
 package ui;
+
 import javax.microedition.lcdui.Graphics;
 
 public class Gradient {
@@ -97,3 +100,5 @@ public class Gradient {
 		return (new int[] { (i1*(l1-i2)+i*(j2-l1))/(j2-i2), (j1*(l1-i2)+k*(j2-l1))/ (j2-i2), (k1*(l1-i2)+l*(j2-l1))/(j2-i2)});
 	}
 }
+
+//#endif

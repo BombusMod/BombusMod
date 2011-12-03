@@ -1,6 +1,7 @@
+//#ifdef USER_KEYS
+
 package ui.keys;
 
-//#ifdef USER_KEYS
 import java.util.Vector;
 
 /**
@@ -76,4 +77,5 @@ public class KeyScheme {
         }
     }
 }
+
 //#endif

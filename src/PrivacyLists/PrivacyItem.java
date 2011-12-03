@@ -25,7 +25,10 @@
  *
  */
 
+//#ifdef PRIVACY
+
 package PrivacyLists;
+
 import images.RosterIcons;
 import locale.SR;
 import ui.*;
@@ -146,3 +149,5 @@ public class PrivacyItem extends IconTextElement {
         return tip.toString();
     }
 }
+
+//#endif

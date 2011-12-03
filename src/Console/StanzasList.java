@@ -25,6 +25,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+//#ifdef CONSOLE
+
 package Console;
 
 import Client.Msg;
@@ -70,3 +72,5 @@ public class StanzasList {
 	return stanzas.size();
     }
 }
+
+//#endif

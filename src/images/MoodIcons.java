@@ -25,6 +25,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+//#ifdef PEP
+
 package images;
 
 import ui.ImageList;
@@ -48,3 +50,5 @@ public class MoodIcons extends ImageList {
 	return instance;
     }
 }
+
+//#endif

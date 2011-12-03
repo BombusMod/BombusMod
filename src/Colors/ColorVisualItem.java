@@ -25,6 +25,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+//#ifdef COLOR_TUNE
+
 package Colors;
 
 import javax.microedition.lcdui.Graphics;
@@ -83,3 +85,5 @@ public class ColorVisualItem
     
     public boolean isSelectable() { return true; }
 }
+
+//#endif

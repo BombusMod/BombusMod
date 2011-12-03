@@ -3,6 +3,8 @@
  * and open the template in the editor.
  */
 
+//#ifdef SYSTEM_NOTIFY
+
 package Messages.notification;
 
 import Client.Msg;
@@ -34,3 +36,5 @@ public class SEMCNotificator implements Notificator, UIEventListener {
     }
 
 }
+
+//#endif

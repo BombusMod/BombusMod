@@ -26,6 +26,8 @@
  *
  */
 
+//#ifdef PEP
+
 package PEP;
 
 import com.alsutton.jabber.JabberBlockListener;
@@ -54,13 +56,12 @@ public class PepPublishResult implements JabberBlockListener {
         if (type.equals("result")) return NO_MORE_BLOCKS;
         
         XmppError e=XmppError.findInStanza(data);
-//#ifdef PEP
-//#         new AlertBox(SR.MS_ERROR_, SR.MS_PEP_NOT_SUPPORTED+"("+e.toString()+")") {
-//#             public void yes() { }
-//#             public void no() { }
-//#         };
-//#endif
+        new AlertBox(SR.MS_ERROR_, SR.MS_PEP_NOT_SUPPORTED+"("+e.toString()+")") {
+            public void yes() { }
+            public void no() { }
+        };
         return NO_MORE_BLOCKS;
     }
-    
 }
+
+//#endif

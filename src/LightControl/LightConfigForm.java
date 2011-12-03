@@ -2,6 +2,8 @@
  * LightConfigForm.java
  */ 
 
+//#ifdef SE_LIGHT
+
 package LightControl;
 
 import locale.SR;
@@ -64,3 +66,5 @@ public class LightConfigForm
         return;
     }  
 }
+
+//#endif

@@ -158,8 +158,8 @@ public class InfoWindow
 //#ifdef ADHOC
 //#         abilitiesList.addElement("ADHOC");
 //#endif
-//#ifdef ANTISPAM
-//#         abilitiesList.addElement("ANTISPAM");
+//#ifdef ANI_SMILES
+//#         abilitiesList.addElement("ANI_SMILES");
 //#endif
 //#ifdef ARCHIVE
 //#         abilitiesList.addElement("ARCHIVE");

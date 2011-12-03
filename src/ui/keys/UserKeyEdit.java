@@ -24,9 +24,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+//#ifdef USER_KEYS
+
 package ui.keys;
 
-//#ifdef USER_KEYS
 import locale.SR;
 import ui.controls.form.CheckBox;
 import ui.controls.form.DefForm;
@@ -119,4 +120,5 @@ class UserKeyEdit extends DefForm {
         return true;
     }
 }
+
 //#endif

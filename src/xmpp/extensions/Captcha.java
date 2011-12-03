@@ -7,6 +7,8 @@
  * and open the template in the editor.
  */
 
+//#ifdef CAPTCHA
+
 package xmpp.extensions;
 
 import Client.StaticData;
@@ -57,3 +59,5 @@ public class Captcha implements JabberBlockListener{
         return BLOCK_REJECTED;
     }    
 }
+
+//#endif

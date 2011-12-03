@@ -3,6 +3,8 @@
  * and open the template in the editor.
  */
 
+//#ifdef PEP_LOCATION
+
 package PEP.location;
 
 import java.io.InputStream;
@@ -140,3 +142,5 @@ public class CellIDLocation extends LocationIO {
     }
 
 }
+
+//#endif

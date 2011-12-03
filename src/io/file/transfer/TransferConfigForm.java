@@ -3,6 +3,8 @@
  * and open the template in the editor.
  */
 
+//#ifdef FILE_TRANSFER
+
 package io.file.transfer;
 
 import io.file.browse.Browser;
@@ -56,3 +58,5 @@ public class TransferConfigForm extends DefForm implements BrowserListener {
     
 
 }
+
+//#endif

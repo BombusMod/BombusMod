@@ -27,11 +27,13 @@
 
 package Client;
 import Messages.MessageParser;
+//#ifdef ANI_SMILES
+import images.AniIcon;
 import images.AniImageList;
+//#endif
 import images.SmilesIcons;
 import locale.SR;
 import Colors.ColorTheme;
-import images.AniIcon;
 import ui.*;
 import java.util.Vector;
 
@@ -123,14 +125,19 @@ public class SmilePicker
     public void drawItem(Graphics g, int ofs, boolean selected){
         int max=(lineIndex==lines-1)? xLastCnt:xCnt;   
         int x, iwidth;
+
+//#ifdef ANI_SMILES
         AniIcon item;
+//#endif
         for (int i=0;i<max;i++) {
-            x = xBorder+(i*imgWidth+CURSOR_HOFFSET);            
-            if (il instanceof AniImageList) {          
+            x = xBorder+(i*imgWidth+CURSOR_HOFFSET);
+//#ifdef ANI_SMILES
+            if (il instanceof AniImageList) {
                 item = ((AniImageList)il).iconAt(lineIndex*xCnt + i);
                 iwidth = (item == null)? 0 : item.getWidth();
                 x += (imgWidth - iwidth) >> 1;                                                       
             }
+//#endif
             il.drawImage(g, lineIndex*xCnt + i, x, CURSOR_VOFFSET);            
         }
     }

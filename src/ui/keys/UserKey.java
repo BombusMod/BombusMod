@@ -24,9 +24,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+//#ifdef USER_KEYS
+
 package ui.keys;
 
-//#ifdef USER_KEYS
 import images.RosterIcons;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -226,4 +227,5 @@ public class UserKey extends IconTextElement {
         return 0;
     }
 }
+
 //#endif

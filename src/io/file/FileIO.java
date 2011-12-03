@@ -25,6 +25,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+//#ifdef FILE_IO
+
 package io.file;
 
 import Client.Config;
@@ -137,3 +139,5 @@ public abstract class FileIO {
 
     public abstract OutputStream openOutputStream(long pos_eof) throws IOException;
 }
+
+//#endif

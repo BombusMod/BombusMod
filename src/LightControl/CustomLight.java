@@ -11,6 +11,8 @@
  * @author Vladimir Krukov
  */
 
+//#ifdef SE_LIGHT
+
 package LightControl;
 
 import Client.Config;
@@ -314,3 +316,5 @@ public final class CustomLight extends TimerTask {
 //#endif
     } */
 }
+
+//#endif

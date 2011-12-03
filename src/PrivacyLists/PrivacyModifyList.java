@@ -25,6 +25,8 @@
  *
  */
 
+//#ifdef PRIVACY
+
 package PrivacyLists;
 
 import Client.StaticData;
@@ -216,3 +218,5 @@ public class PrivacyModifyList extends DefForm
         return super.doUserKeyAction(command_id);
     }
 }
+
+//#endif

@@ -25,7 +25,10 @@
  *
  */
 
+//#ifdef PRIVACY
+
 package PrivacyLists;
+
 import images.RosterIcons;
 import ui.IconTextElement;
 
@@ -57,3 +60,5 @@ public class PrivacyListItem extends IconTextElement {
     
     
 }
+
+//#endif

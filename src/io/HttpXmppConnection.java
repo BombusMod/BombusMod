@@ -7,6 +7,8 @@
  * and open the template in the editor.
  */
 
+//#if HTTPBIND || HTTPPOOL
+
 package io;
 
 import java.io.DataInputStream;
@@ -191,3 +193,5 @@ public class HttpXmppConnection implements StreamConnection {
     }    
 
 }
+
+//#endif

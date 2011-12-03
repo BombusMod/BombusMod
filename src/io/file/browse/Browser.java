@@ -25,6 +25,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+//#ifdef FILE_IO
+
 package io.file.browse;
 
 import Client.StaticData;
@@ -64,10 +66,8 @@ public class Browser extends DefForm {
         super(null);
         
         this.browserListener=browserListener;
-	this.getDirectory=getDirectory;
-//#ifdef FILE_IO
-//#         this.path=(path==null)?StaticData.getInstance().previousPath:path;
-//#endif
+	    this.getDirectory=getDirectory;
+        this.path=(path==null)?StaticData.getInstance().previousPath:path;
 
         // test for empty path
         if (path==null) path="";
@@ -126,9 +126,7 @@ public class Browser extends DefForm {
     }
     
     public void destroyView(){
-//#ifdef FILE_IO
-//#         StaticData.getInstance().previousPath=path;
-//#endif
+        StaticData.getInstance().previousPath=path;
         super.destroyView();
     }
 
@@ -291,3 +289,5 @@ public class Browser extends DefForm {
         addMenuCommand(cmdCancel);
     }
 }
+
+//#endif

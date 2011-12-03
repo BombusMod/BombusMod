@@ -23,6 +23,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+//#ifdef COLOR_TUNE
+
 package ui.controls.form;
 
 import Client.StaticData;
@@ -231,9 +233,7 @@ public class ColorSelector implements VirtualElement
         this.value = vall;
         ColorTheme.setColor(paramName, value);
         list.setColor(paramName, value);
-//#ifdef COLOR_TUNE
-//#         ColorTheme.saveToStorage();
-//#endif
+        ColorTheme.saveToStorage();
     }
 
     public void movePoint() {
@@ -271,11 +271,9 @@ public class ColorSelector implements VirtualElement
     }
 
     public void eventOk() {
-//#if COLOR_TUNE
-//#         String cval = ColorTheme.ColorToString(red, green, blue);
-//#         int finalColor = ColorTheme.getColorInt(cval);
-//#         setValue(finalColor);
-//#endif
+        String cval = ColorTheme.ColorToString(red, green, blue);
+        int finalColor = ColorTheme.getColorInt(cval);
+        setValue(finalColor);
     }    
 
     public int getVHeight() {
@@ -299,3 +297,5 @@ public class ColorSelector implements VirtualElement
     }    
     
 }
+
+//#endif

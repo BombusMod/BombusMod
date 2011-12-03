@@ -56,11 +56,13 @@ public class SmilesIcons {
 //#                  System.out.println("Can't load smiles");
 //#endif
              }
-            instance=new AniImageList();
-            ((AniImageList)instance).load("/smiles");
+//#ifdef ANI_SMILES
+            instance = new AniImageList();
+            ((AniImageList) instance).load("/smiles");
+//#endif
 
-            if (instance.getWidth() == 0) {
-                instance=new ImageList(res, cols, SMILES_IN_ROW);
+            if (instance == null || instance.getWidth() == 0) {
+                instance = new ImageList(res, cols, SMILES_IN_ROW);
             }
         }
 //#endif

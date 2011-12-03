@@ -25,6 +25,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+//#ifdef CONSOLE
+
 package Console;
 
 import Client.Msg;
@@ -34,9 +36,7 @@ import Menu.MenuCommand;
 import locale.SR;
 import ui.VirtualList;
 import images.RosterIcons;
-//#ifdef CONSOLE 
-//# import ui.MainBar;
-//#endif
+import ui.MainBar;
 
 /**
  *
@@ -61,9 +61,7 @@ public final class XMLList
         stanzas = StanzasList.getInstance();
         moveCursorHome();
 
-//#ifdef CONSOLE        
-//# 	mainbar = new MainBar(SR.MS_XML_CONSOLE);        
-//#endif             
+        mainbar = new MainBar(SR.MS_XML_CONSOLE);        
     }
     
     public void commandState() {
@@ -166,3 +164,5 @@ public final class XMLList
         return super.doUserKeyAction(command_id);
     }
 }
+
+//#endif

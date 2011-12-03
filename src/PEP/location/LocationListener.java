@@ -3,6 +3,8 @@
  * and open the template in the editor.
  */
 
+//#ifdef PEP_LOCATION
+
 package PEP.location;
 
 /**
@@ -12,3 +14,5 @@ package PEP.location;
 public interface LocationListener {
     public void locationUpdated(LocationIO location);
 }
+
+//#endif

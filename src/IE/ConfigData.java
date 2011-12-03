@@ -25,6 +25,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+//#ifdef IMPORT_EXPORT
+
 package IE;
 
 import Alerts.AlertProfile;
@@ -561,3 +563,5 @@ public class ConfigData {
         public String getValue() { return value; }
     }
 }
+
+//#endif

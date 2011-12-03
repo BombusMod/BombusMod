@@ -3,6 +3,8 @@
  * and open the template in the editor.
  */
 
+//#ifdef PEP_LOCATION
+
 package PEP.location;
 
 import Client.Config;
@@ -58,3 +60,5 @@ public abstract class LocationIO {
     }
         
 }
+
+//#endif

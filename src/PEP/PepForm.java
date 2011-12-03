@@ -3,6 +3,8 @@
  * and open the template in the editor.
  */
 
+//#ifdef PEP
+
 package PEP;
 
 import Client.Config;
@@ -40,83 +42,70 @@ public class PepForm extends DefForm {
     LinkString updmood, updact;
     
     public PepForm() {
-        super(
-//#ifdef PEP
-//#                 SR.MS_PEP
-//#else
-                ""
-//#endif
-                );
+        super(SR.MS_PEP);
         
-//#ifdef PEP
-//#             itemsList.addElement(new SimpleString("Receive events", true));
-//#             sndrcvmood = new CheckBox(SR.MS_USERMOOD, Config.getInstance().sndrcvmood);
-//#             itemsList.addElement(sndrcvmood);
-//#             updmood = new LinkString(SR.MS_USERMOOD) {
-//#                 public void doAction() {
-//#                      Config.getInstance().sndrcvmood = true;
-//#                      new MoodList();
-//#                 }
-//#             }; 
-//#             
+            itemsList.addElement(new SimpleString("Receive events", true));
+            sndrcvmood = new CheckBox(SR.MS_USERMOOD, Config.getInstance().sndrcvmood);
+            itemsList.addElement(sndrcvmood);
+            updmood = new LinkString(SR.MS_USERMOOD) {
+                public void doAction() {
+                     Config.getInstance().sndrcvmood = true;
+                     new MoodList();
+                }
+            }; 
+            
 //#ifdef PEP_TUNE
-//#             rcvtune = new CheckBox(SR.MS_USERTUNE, Config.getInstance().rcvtune); 
-//#             itemsList.addElement(rcvtune);
+            rcvtune = new CheckBox(SR.MS_USERTUNE, Config.getInstance().rcvtune); 
+            itemsList.addElement(rcvtune);
 //#endif
 //#ifdef PEP_ACTIVITY
-//#             rcvactivity = new CheckBox(SR.MS_USERACTIVITY, Config.getInstance().rcvactivity);
-//#             itemsList.addElement(rcvactivity);
-//#             updact = new LinkString(SR.MS_USERACTIVITY) {
-//#                 public void doAction() {
-//#                      Config.getInstance().rcvactivity = true;
-//#                      new ActivityList(midlet.BombusMod.getInstance().getDisplay());
-//#                 }
-//#             };
+            rcvactivity = new CheckBox(SR.MS_USERACTIVITY, Config.getInstance().rcvactivity);
+            itemsList.addElement(rcvactivity);
+            updact = new LinkString(SR.MS_USERACTIVITY) {
+                public void doAction() {
+                     Config.getInstance().rcvactivity = true;
+                     new ActivityList(midlet.BombusMod.getInstance().getDisplay());
+                }
+            };
 //#endif
-//#ifdef PEP
 //#ifdef PEP_LOCATION
-//#             rcvlocation = new CheckBox("User location", Config.getInstance().rcvloc);
-//#             itemsList.addElement(rcvlocation);
+            rcvlocation = new CheckBox("User location", Config.getInstance().rcvloc);
+            itemsList.addElement(rcvlocation);
 //#endif
-//# 
-//#             itemsList.addElement(new SpacerItem(10));
-//#             itemsList.addElement(new SimpleString("Publish events", true));
-//#             itemsList.addElement(updmood);
+
+            itemsList.addElement(new SpacerItem(10));
+            itemsList.addElement(new SimpleString("Publish events", true));
+            itemsList.addElement(updmood);
 //#ifdef PEP_ACTIVITY
-//#             itemsList.addElement(updact);
+            itemsList.addElement(updact);
 //#endif
 //#ifdef PEP_LOCATION            
-//#             LinkString updloc = new LinkString("Location") {
-//#                 public void doAction() {
-//#                      new LocationForm(StaticData.getInstance().roster);
-//#                 }
-//#             };
-//#             itemsList.addElement(updloc);            
-//#endif
-//#endif
+            LinkString updloc = new LinkString("Location") {
+                public void doAction() {
+                     new LocationForm(StaticData.getInstance().roster);
+                }
+            };
+            itemsList.addElement(updloc);            
 //#endif
         
         
     }
     public void cmdOk() {        
         //publish(activity.getSelectedIndex(), ti.getText());
-//#ifdef PEP
-//#             Config.getInstance().sndrcvmood=sndrcvmood.getValue();
+        Config.getInstance().sndrcvmood=sndrcvmood.getValue();
 //#ifdef PEP_TUNE
-//#             Config.getInstance().rcvtune=rcvtune.getValue();
+        Config.getInstance().rcvtune=rcvtune.getValue();
 //#endif
 //#ifdef PEP_ACTIVITY
-//#             Config.getInstance().rcvactivity=rcvactivity.getValue();
+        Config.getInstance().rcvactivity=rcvactivity.getValue();
 //#endif
 //#ifdef PEP_LOCATION
-//#             Config.getInstance().rcvloc = rcvlocation.getValue();
+        Config.getInstance().rcvloc = rcvlocation.getValue();
 //#endif
-//# 
-//#         Config.getInstance().saveToStorage();
-//#endif       
+        Config.getInstance().saveToStorage();
         parentView = sd.roster;
         destroyView();
     }   
 }
 
-
+//#endif

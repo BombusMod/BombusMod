@@ -25,6 +25,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+//#ifdef STATS
+
 package Statistic;
 
 import Client.Config;
@@ -129,14 +131,14 @@ public class StatsWindow
     public boolean doUserKeyAction(int command_id) {
         switch (command_id) {
 //#ifdef POPUPS
-//#ifdef STATS
 //#             case 4:
 //#                 destroyView();
 //#                 return true;
-//#endif
 //#endif
         }
 
         return super.doUserKeyAction(command_id);
     }
 }
+
+//#endif

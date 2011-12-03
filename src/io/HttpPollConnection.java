@@ -3,6 +3,8 @@
  * and open the template in the editor.
  */
 
+//#ifdef HTTPPOLL
+
 package io;
 
 import com.ssttr.crypto.MessageDigest;
@@ -70,3 +72,5 @@ public class HttpPollConnection extends HttpXmppConnection {
     }
 
 }
+
+//#endif

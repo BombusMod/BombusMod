@@ -24,6 +24,8 @@
  *
  */
 
+//#ifdef HISTORY
+
 package History;
 
 import Client.Config;
@@ -47,11 +49,11 @@ public class HistoryStorage {
     
     public HistoryStorage(String filename) {
         cf=Config.getInstance();
+// TODO: check this fork (for set filename).
 //#ifdef DETRANSLIT
-//#             filename = util.DeTranslit.getInstance().get_actual_filename(filename);
-//#endif
-//#ifdef HISTORY
-//#        filename=cf.msgPath+StringUtils.replaceBadChars(filename)+".txt";
+       filename = util.DeTranslit.getInstance().get_actual_filename(filename);
+//#else
+       filename=cf.msgPath+StringUtils.replaceBadChars(filename)+".txt";
 //#endif
        this.history = loadHistory(filename);
    }
@@ -130,3 +132,5 @@ public class HistoryStorage {
         return null;
     }    
 }
+
+//#endif

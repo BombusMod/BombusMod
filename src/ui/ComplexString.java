@@ -27,7 +27,9 @@
 
 package ui;
 import Fonts.FontCache;
+//#ifdef ANI_SMILES
 import images.AniImageList;
+//#endif
 import java.util.*;
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Font;
@@ -170,9 +172,11 @@ public class ComplexString extends Vector implements VirtualElement {
                     switch (i&0xff000000) {
                         case IMAGE:
                             if (imageList==null) break;
+//#ifdef ANI_SMILES
                             if (imageList instanceof AniImageList) {
                                 imgWidth = ((AniImageList)imageList).iconAt(i).getWidth();                                
                             }
+//#endif
                             if (ralign) w-=imgWidth;
                             imageList.drawImage(g, i, w, imageYOfs);
                             if (!ralign) w+=imgWidth;
@@ -224,9 +228,11 @@ public class ComplexString extends Vector implements VirtualElement {
                     int i=(((Integer)ob).intValue());
                     switch (i&0xff000000) {
                         case IMAGE:
+//#ifdef ANI_SMILES
                             if (imageList instanceof AniImageList) {
                                 imgWidth = ((AniImageList)imageList).iconAt(i).getWidth();                                
                             }
+//#endif
                             w+=imgWidth;
                             break;
                     }

@@ -23,6 +23,8 @@
  *
  */
 
+//#ifdef SE_LIGHT
+
 package LightControl;
 
 import io.NvStorage;
@@ -114,3 +116,5 @@ public class LightConfig {
         }
     }
 }
+
+//#endif

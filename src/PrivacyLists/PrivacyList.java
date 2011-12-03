@@ -2,6 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
+//#ifdef PRIVACY
+
 package PrivacyLists;
 
 import Client.StaticData;
@@ -76,3 +79,5 @@ public class PrivacyList {
         privacyListRq(true, a, "plset");
     }
 }
+
+//#endif

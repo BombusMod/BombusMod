@@ -24,6 +24,8 @@
  *
  */
 
+//#ifdef HISTORY
+
 package History;
 
 import Client.Config;
@@ -88,11 +90,11 @@ public class HistoryAppend {
        convertToWin1251=cf.cp1251;
        byte[] bodyMessage=createBody(m).getBytes();
 
+// TODO: check this fork (for set filename).
 //#ifdef DETRANSLIT
-//#             filename = util.DeTranslit.getInstance().get_actual_filename(filename);
-//#endif
-//#ifdef HISTORY
-//#        filename = cf.msgPath+StringUtils.replaceBadChars(filename)+".txt";
+       filename = util.DeTranslit.getInstance().get_actual_filename(filename);
+//#else
+       filename = cf.msgPath+StringUtils.replaceBadChars(filename)+".txt";
 //#endif
        file=FileIO.createConnection(filename);
         try {
@@ -119,11 +121,11 @@ public class HistoryAppend {
        
        byte[] bodyMessage=messages.getBytes();
 
+// TODO: check this fork (for set filename).
 //#ifdef DETRANSLIT
-//#             filename = util.DeTranslit.getInstance().get_actual_filename(filename);
-//#endif
-//#ifdef HISTORY
-//#        filename = cf.msgPath+StringUtils.replaceBadChars(filename)+".txt";
+       filename = util.DeTranslit.getInstance().get_actual_filename(filename);
+//#else
+       filename = cf.msgPath+StringUtils.replaceBadChars(filename)+".txt";
 //#endif
        file=FileIO.createConnection(filename);
         try {
@@ -187,3 +189,5 @@ public class HistoryAppend {
         return (convertToWin1251)?Strconv.convUnicodeToCp1251(body.toString()):body.toString();
     }
 }
+
+//#endif

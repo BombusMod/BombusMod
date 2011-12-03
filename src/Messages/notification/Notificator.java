@@ -3,6 +3,8 @@
  * and open the template in the editor.
  */
 
+//#ifdef SYSTEM_NOTIFY
+
 package Messages.notification;
 
 /**
@@ -14,3 +16,5 @@ public interface Notificator {
     public void sendNotify(String title, String text);
 
 }
+
+//#endif

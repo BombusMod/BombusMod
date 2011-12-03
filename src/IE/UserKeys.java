@@ -1,6 +1,7 @@
+//#ifdef USER_KEYS
+
 package IE;
 
-//#ifdef USER_KEYS
 import ui.Time;
 import io.NvStorage;
 import java.io.DataInputStream;
@@ -124,4 +125,5 @@ public class UserKeys {
         file.fileWrite(str.toString().getBytes());
     }
 }
+
 //#endif
