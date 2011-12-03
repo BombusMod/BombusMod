@@ -277,27 +277,12 @@ public class Display {
 			return getDisplay().getCurrent();
 		}
 
-		public DisplayableUI getDisplayableUI(Displayable displayable) {
-			return displayable.ui;
-/* TODO: java.lang.NullPointerException
-at javax.microedition.lcdui.Display$DisplayAccessor.getDisplayableUI(Display.java:346)
-at org.bombusmod.BombusModActivity.onKeyDown(BombusModActivity.java:241)
-at android.view.KeyEvent.dispatch(KeyEvent.java:1259)
-at android.app.Activity.dispatchKeyEvent(Activity.java:2075)
-at com.android.internal.policy.impl.PhoneWindow$DecorView.dispatchKeyEvent(PhoneWindow.java:1673)
-at android.view.ViewRoot.deliverKeyEventToViewHierarchy(ViewRoot.java:2493)
-at android.view.ViewRoot.handleFinishedEvent(ViewRoot.java:2463)
-at android.view.ViewRoot.handleMessage(ViewRoot.java:1752)
-at android.os.Handler.dispatchMessage(Handler.java:99)
-at android.os.Looper.loop(Looper.java:143)
-at android.app.ActivityThread.main(ActivityThread.java:4914)
-at java.lang.reflect.Method.invokeNative(Native Method)
-at java.lang.reflect.Method.invoke(Method.java:521)
-at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:858)
-at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:616)
-at dalvik.system.NativeStart.main(Native Method)
-*/
-		}
+            public DisplayableUI getDisplayableUI(Displayable displayable) {
+                if (displayable == null) {
+                    return null;
+                }
+                return displayable.ui;
+            }
 
         public ItemUI getItemUI(Item item) {
         	return item.ui;

@@ -71,6 +71,7 @@ import android.app.NotificationManager;
 import org.microemu.android.MicroEmulatorActivity;
 import android.content.Intent;
 import android.util.Log;
+import org.microemu.cldc.file.FileSystem;
 
 public class BombusModActivity extends MicroEmulatorActivity {
 
@@ -142,16 +143,14 @@ public class BombusModActivity extends MicroEmulatorActivity {
         params.add("--quit");
 
         String midletClassName;
-        String jadName = null;
-
+       
         midletClassName = "midlet.BombusMod";
         params.add(midletClassName);
 
         common = new Common(emulatorContext);
         common.setRecordStoreManager(new AndroidRecordStoreManager(this));
         common.setDevice(new AndroidDevice(emulatorContext, this));
-        common.initParams(params, null, AndroidDevice.class);
-
+     
         System.setProperty("microedition.platform", "microemu-android");
         System.setProperty("microedition.configuration", "CLDC-1.1");
         System.setProperty("microedition.profiles", "MIDP-2.0");
@@ -164,24 +163,18 @@ public class BombusModActivity extends MicroEmulatorActivity {
         Map<String, String> properties = new HashMap<String, String>();
         properties.put("fsRoot", "/");
         properties.put("fsSingle", "sdcard");
-        common.registerImplementation("org.microemu.cldc.file.FileSystem", properties, false);
+        FileSystem fs = new FileSystem();
+        fs.registerImplementation(properties);
+        common.extensions.add(fs);
         MIDletSystemProperties.setPermission("javax.microedition.io.Connector.file.read", 1);
         MIDletSystemProperties.setPermission("javax.microedition.io.Connector.file.write", 1);
         System.setProperty("fileconn.dir.photos", "file:///sdcard/");
 
         /* BombusModInitialization and Service */
-        common.registerImplementation("org.bombusmod.BombusModInitialization", null, false);
-        startService(new Intent(this, BombusModService.class));
-
-        if (jadName != null) {
-            try {
-                InputStream is = getAssets().open(jadName);
-                common.jad = new JadProperties();
-                common.jad.read(is);
-            } catch (Exception e) {
-                Logger.error(e);
-            }
-        }
+        BombusModInitialization init = new BombusModInitialization();
+        init.registerImplementation(null);
+        common.extensions.add(init);
+        startService(new Intent(this, BombusModService.class));        
 
         initializeExtensions();
 
@@ -269,6 +262,7 @@ public class BombusModActivity extends MicroEmulatorActivity {
 
     private boolean ignoreBackKeyUp = false;
 
+    @Override
     public void onBackPressed() {
         MIDletAccess ma = MIDletBridge.getMIDletAccess();
         if (ma == null) {
