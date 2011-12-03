@@ -26,11 +26,8 @@
 package org.bombusmod;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -57,7 +54,6 @@ import org.microemu.device.Device;
 import org.microemu.device.DeviceFactory;
 import org.microemu.device.ui.CommandUI;
 import org.microemu.log.Logger;
-import org.microemu.util.JadProperties;
 
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -312,7 +308,14 @@ public class BombusModActivity extends MicroEmulatorActivity {
 
             return true;
         }
-
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.ECLAIR
+                && keyCode == KeyEvent.KEYCODE_BACK
+                && event.getRepeatCount() == 0) {
+            // Take care of calling this method on earlier versions of 
+            // the platform where it doesn't exist. 
+            onBackPressed();
+            return true;
+        }
         return super.onKeyDown(keyCode, event);
     }
 

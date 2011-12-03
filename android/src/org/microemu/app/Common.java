@@ -65,11 +65,8 @@ import org.microemu.microedition.ImplFactory;
 import org.microemu.microedition.ImplementationInitialization;
 import org.microemu.microedition.io.ConnectorImpl;
 import org.microemu.util.Base64Coder;
-import org.microemu.util.JadProperties;
 
 public class Common implements MicroEmulator, CommonInterface {
-
-    public JadProperties jad = new JadProperties();
 
     protected EmulatorContext emulatorContext;
 
@@ -79,9 +76,7 @@ public class Common implements MicroEmulator, CommonInterface {
 
     private static StatusBarListener statusBarListener = null;
 
-    private JadProperties manifest = new JadProperties();
-
-    private RecordStoreManager recordStoreManager;
+   private RecordStoreManager recordStoreManager;
 
     private ResponseInterfaceListener responseInterfaceListener = null;
 
@@ -137,13 +132,7 @@ public class Common implements MicroEmulator, CommonInterface {
         } else if (key.equals("microedition.encoding")) {
             return System.getProperty("file.encoding");
         }
-
-        String result = jad.getProperty(key);
-        if (result == null) {
-            result = manifest.getProperty(key);
-        }
-
-        return result;
+        return null;
     }
 
     public InputStream getResourceAsStream(Class origClass, String name) {
@@ -201,41 +190,6 @@ public class Common implements MicroEmulator, CommonInterface {
 
         return (nameString.substring(end + 1, nameString.length()).toLowerCase(Locale.ENGLISH).equals("jad") || nameString.substring(end + 1,
                 nameString.length()).toLowerCase(Locale.ENGLISH).equals("jar"));
-    }
-
-  
-
-
-    protected String saveJar2TmpFile(String jarUrl, boolean reportError) {
-        InputStream is = null;
-        try {
-            URL url = new URL(jad.getJarURL());
-            URLConnection conn = url.openConnection();
-            if (url.getUserInfo() != null) {
-                String userInfo = new String(Base64Coder.encode(url.getUserInfo().getBytes("UTF-8")));
-                conn.setRequestProperty("Authorization", "Basic " + userInfo);
-            }
-            is = conn.getInputStream();
-            File tmpDir = null;
-            String systemTmpDir = MIDletSystemProperties.getSystemProperty("java.io.tmpdir");
-            if (systemTmpDir != null) {
-                tmpDir = new File(systemTmpDir, "microemulator-apps-" + MIDletSystemProperties.getSystemProperty("user.name"));
-                if ((!tmpDir.exists()) && (!tmpDir.mkdirs())) {
-                    tmpDir = null;
-                }
-            }
-            File tmp = File.createTempFile("me2-app-", ".jar", tmpDir);
-            tmp.deleteOnExit();
-            IOUtils.copyToFile(is, tmp);
-            return IOUtils.getCanonicalFileClassLoaderURL(tmp);
-        } catch (IOException e) {
-            if (reportError) {
-                Message.error("Unable to open jar " + jarUrl, e);
-            }
-            return null;
-        } finally {
-            IOUtils.closeQuietly(is);
-        }
     }
 
     private MIDlet loadMidlet(Class midletClass, MIDletAccess previousMidletAccess) {
@@ -383,23 +337,6 @@ public class Common implements MicroEmulator, CommonInterface {
         }
     }
 
-
-    private static JadProperties loadJadProperties(String urlString) throws IOException {
-        JadProperties properties = new JadProperties();
-
-        URL url = new URL(urlString);
-        if (url.getUserInfo() == null) {
-            properties.read(url.openStream());
-        } else {
-            URLConnection cn = url.openConnection();
-            String userInfo = new String(Base64Coder.encode(url.getUserInfo().getBytes("UTF-8")));
-            cn.setRequestProperty("Authorization", "Basic " + userInfo);
-            properties.read(cn.getInputStream());
-        }
-
-        return properties;
-    }
-
     public MIDlet initMIDlet(boolean startMidlet) {
         Class midletClass = null;
 
@@ -412,16 +349,7 @@ public class Common implements MicroEmulator, CommonInterface {
         }
 
         MIDlet midlet = null;
-
-
-        if (midletClass != null && propertiesJad != null) {
-            try {
-                jad = loadJadProperties(propertiesJad);
-            } catch (IOException e) {
-                Logger.error("Cannot load " + propertiesJad + " URL", e);
-            }
-        }
-
+       
         if (midletClass == null) {
             if (launcher == null) {
                 try {
@@ -464,14 +392,4 @@ public class Common implements MicroEmulator, CommonInterface {
 
         return midlet;
     }
-
-    public static String usage() {
-        return "[(-d | --device) ({device descriptor} | {device class name}) ] \n" + "[--rms (file | memory)] \n" + "[--id EmulatorID ] \n"
-                + "[--impl {JSR implementation class name}]\n" + "[(--classpath|-cp) <JSR CLASSPATH>]\n" + "[(--appclasspath|--appcp) <MIDlet CLASSPATH>]\n"
-                + "[--appclass <library class name>]\n" + "[--appclassloader strict|relaxed|delegating|system] \n" + "[-Xautotest:<JAD file url>\n"
-                + "[--quit]\n" + "[--logCallLocation true|false]\n" + "[--traceClassLoading\n[--traceSystemClassLoading]\n[--enhanceCatchBlock]\n]"
-                + "[--resizableDevice {width} {height}]\n"
-                + "(({MIDlet class name} [--propertiesjad {jad file location}]) | {jad file location} | {jar file location})";
-    }
-
 }
