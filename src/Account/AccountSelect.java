@@ -119,7 +119,7 @@ public class AccountSelect extends DefForm {
             switchAccount(false);
         }
         if (c == cmdEdit) {
-            new AccountForm(this, ((AccountItem) getFocusedObject()).account).show();
+            new AccountForm(this, ((AccountItem) getFocusedObject())).show();
         }
         if (c == cmdAdd) {
             new AccountForm(this, null).show();

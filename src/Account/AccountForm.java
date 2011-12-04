@@ -28,7 +28,6 @@
 package Account;
 
 import Client.*;
-import javax.microedition.lcdui.TextField;
 import locale.SR;
 import ui.SplashScreen;
 import ui.controls.AlertBox;
@@ -83,7 +82,7 @@ public class AccountForm
 //#     private CheckBox proxybox;
 //#endif
 
-    Account account;
+    AccountItem item;
     
     boolean newaccount;
     
@@ -98,23 +97,23 @@ public class AccountForm
      * @param accountSelect
      * @param account
      */
-    public AccountForm(final AccountSelect accountSelect, Account acc) {
+    public AccountForm(final AccountSelect accountSelect, AccountItem item) {
         super(null);
         this.accountSelect = accountSelect;
-        account=acc;
-        newaccount=(account==null);
-        if (newaccount)
-            this.account=new Account();
+        this.item = item;
+        newaccount=(this.item==null);
+        if (newaccount) 
+            this.item = new AccountItem(new Account());        
 	
-        mainbar.setElementAt((newaccount)?SR.MS_NEW_ACCOUNT:(account.toString()), 0);
+        mainbar.setElementAt((newaccount)?SR.MS_NEW_ACCOUNT:(this.item.toString()), 0);
 
-        userbox = new TextInput(SR.MS_JID, account.getBareJid(), null);
+        userbox = new TextInput(SR.MS_JID, this.item.account.getBareJid(), null);
         itemsList.addElement(userbox);
         
-        passbox = new PasswordInput(SR.MS_PASSWORD, account.password);
+        passbox = new PasswordInput(SR.MS_PASSWORD, this.item.account.password);
         itemsList.addElement(passbox);
         
-        nickbox = new TextInput(SR.MS_NICKNAME, account.getNick(), null);
+        nickbox = new TextInput(SR.MS_NICKNAME, this.item.account.getNick(), null);
         itemsList.addElement(nickbox);
         
         linkRegister = new LinkString(SR.MS_REGISTER_ACCOUNT) {
@@ -151,21 +150,21 @@ public class AccountForm
         if (!newaccount)
             itemsList.addElement(linkRegister);
         
-        ipbox = new TextInput(SR.MS_HOST_IP, account.hostAddr, null);
-        portbox = new NumberInput(SR.MS_PORT, Integer.toString(account.port), 0, 65535);
+        ipbox = new TextInput(SR.MS_HOST_IP, item.account.hostAddr, null);
+        portbox = new NumberInput(SR.MS_PORT, Integer.toString(item.account.port), 0, 65535);
         
                 
-        plainPwdbox = new CheckBox(SR.MS_PLAIN_PWD, account.plainAuth);
-        compressionBox = new CheckBox(SR.MS_COMPRESSION, account.useCompression());
+        plainPwdbox = new CheckBox(SR.MS_PLAIN_PWD, item.account.plainAuth);
+        compressionBox = new CheckBox(SR.MS_COMPRESSION, item.account.useCompression());
 //#ifndef WMUC        
-        confOnlybox = new CheckBox(SR.MS_CONFERENCES_ONLY, account.mucOnly);
+        confOnlybox = new CheckBox(SR.MS_CONFERENCES_ONLY, item.account.mucOnly);
 //#endif        
 //#if HTTPCONNECT
-//#        proxybox = new CheckBox(/*SR.MS_PROXY_ENABLE*/"Proxy connect", account.isEnableProxy());
+//#        proxybox = new CheckBox(/*SR.MS_PROXY_ENABLE*/"Proxy connect", item.account.isEnableProxy());
 //#elif HTTPPOLL        
-//#        proxybox = new CheckBox("HTTP Polling", account.isEnableProxy());
+//#        proxybox = new CheckBox("HTTP Polling", item.account.isEnableProxy());
 //#elif HTTPBIND
-//#         proxybox = new CheckBox("XMPP BOSH", account.isEnableProxy());
+//#         proxybox = new CheckBox("XMPP BOSH", item.account.isEnableProxy());
 //#endif
         
         itemsList.addElement(plainPwdbox);
@@ -178,19 +177,19 @@ public class AccountForm
 //#endif
 
 //#ifndef HTTPBIND
-        keepAlive = new NumberInput(SR.MS_KEEPALIVE_PERIOD, Integer.toString(account.keepAlivePeriod), 10, 2048);//10, 2096        
+        keepAlive = new NumberInput(SR.MS_KEEPALIVE_PERIOD, Integer.toString(item.account.keepAlivePeriod), 10, 2048);//10, 2096        
 //#endif
-        resourcebox = new TextInput(SR.MS_RESOURCE, account.resource, null);
+        resourcebox = new TextInput(SR.MS_RESOURCE, item.account.resource, null);
         
 //#if HTTPCONNECT
-//# 	proxyHost = new TextInput(sd.canvas,/*SR.MS_PROXY_HOST*/"Proxy name/IP", account.getProxyHostAddr(), null, TextField.URL);
-//# 	proxyPort = new NumberInput(sd.canvas, /*SR.MS_PROXY_PORT*/"Proxy port", Integer.toString(account.getProxyPort()), 0, 65535);
-//#         proxyUser = new TextInput(sd.canvas,/*SR.MS_PROXY_HOST*/"Proxy user", account.getProxyUser(), null, TextField.URL);
-//#         proxyPass = new TextInput(sd.canvas,/*SR.MS_PROXY_HOST*/"Proxy pass", account.getProxyPass(), null, TextField.URL);
+//# 	proxyHost = new TextInput(sd.canvas,/*SR.MS_PROXY_HOST*/"Proxy name/IP", item.account.getProxyHostAddr(), null, TextField.URL);
+//# 	proxyPort = new NumberInput(sd.canvas, /*SR.MS_PROXY_PORT*/"Proxy port", Integer.toString(item.account.getProxyPort()), 0, 65535);
+//#         proxyUser = new TextInput(sd.canvas,/*SR.MS_PROXY_HOST*/"Proxy user", item.account.getProxyUser(), null, TextField.URL);
+//#         proxyPass = new TextInput(sd.canvas,/*SR.MS_PROXY_HOST*/"Proxy pass", item.account.getProxyPass(), null, TextField.URL);
 //#elif HTTPPOLL        
-//# 	proxyHost = new TextInput(sd.canvas, "HTTP Polling URL (http://server.tld:port)", account.proxyHostAddr, null, TextField.URL);
+//# 	proxyHost = new TextInput(sd.canvas, "HTTP Polling URL (http://server.tld:port)", item.account.proxyHostAddr, null, TextField.URL);
 //#elif HTTPBIND
-//#         proxyHost = new TextInput(sd.canvas, "BOSH CM (http://server.tld:port)", account.proxyHostAddr, null, TextField.URL);
+//#         proxyHost = new TextInput(sd.canvas, "BOSH CM (http://server.tld:port)", item.account.proxyHostAddr, null, TextField.URL);
 //#endif
         
         itemsList.addElement(ipbox);
@@ -223,52 +222,52 @@ public class AccountForm
         if (server.length()==0 || user.length()==0 || pass.length()==0)
             return;
         
-        account.userName = user;
-        account.server = server;
-        account.password = pass;
-        account.setNick(nickbox.getValue());
+        item.account.userName = user;
+        item.account.server = server;
+        item.account.password = pass;
+        item.account.setNick(nickbox.getValue());
         
         if (showExtended) {
             String hostname = ipbox.getValue();
-            account.port = Integer.parseInt(portbox.getValue());
-            account.hostAddr = hostname;
-            account.resource = resourcebox.getValue();
-            account.plainAuth = plainPwdbox.getValue();
-            account.compression = compressionBox.getValue();
+            item.account.port = Integer.parseInt(portbox.getValue());
+            item.account.hostAddr = hostname;
+            item.account.resource = resourcebox.getValue();
+            item.account.plainAuth = plainPwdbox.getValue();
+            item.account.compression = compressionBox.getValue();
 //#ifndef WMUC            
-            account.mucOnly = confOnlybox.getValue();
+            item.account.mucOnly = confOnlybox.getValue();
 //#endif            
 //#if HTTPCONNECT || HTTPPOLL || HTTPBIND
-//#             account.setEnableProxy(proxybox.getValue());
+//#             item.account.setEnableProxy(proxybox.getValue());
 //#endif
             
 //#if HTTPPOLL || HTTPCONNECT || HTTPBIND
-//#             account.setProxyHostAddr(proxyHost.getValue());
+//#             item.account.setProxyHostAddr(proxyHost.getValue());
 //#if HTTPCONNECT
-//#             account.setProxyPort(Integer.parseInt(proxyPort.getValue()));
+//#             item.account.setProxyPort(Integer.parseInt(proxyPort.getValue()));
 //#
-//#             account.setProxyUser(proxyUser.getValue());
-//#             account.setProxyPass(proxyPass.getValue());
+//#             item.account.setProxyUser(proxyUser.getValue());
+//#             item.account.setProxyPass(proxyPass.getValue());
 //#endif
 //#endif
 //#ifndef HTTPBIND
-            account.keepAlivePeriod = Integer.parseInt(keepAlive.getValue());            
+            item.account.keepAlivePeriod = Integer.parseInt(keepAlive.getValue());            
 //#endif
         }
 
         if (newaccount) 
-            accountSelect.itemsList.addElement(account);
+            accountSelect.itemsList.addElement(item);
         accountSelect.rmsUpdate();
         accountSelect.commandState();
 
         doConnect=true;        
         destroyView();
-        account=null;
+        item=null;
     }
 
     public void destroyView(){
         if (newaccount && doConnect) {
-            new AlertBox(SR.MS_CONNECT_TO, account.getBareJid()+"?") {
+            new AlertBox(SR.MS_CONNECT_TO, item.account.getBareJid()+"?") {
                 public void yes() {
                     SplashScreen.getInstance().setExit(sd.roster);
                     startLogin(true);
