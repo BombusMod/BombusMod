@@ -31,14 +31,10 @@ import java.io.InputStream;
 
 import javax.microedition.io.ConnectionNotFoundException;
 
-import org.microemu.app.launcher.Launcher;
-
 public interface MicroEmulator {
 
 	RecordStoreManager getRecordStoreManager();
 	
-	Launcher getLauncher();
-
 	String getAppProperty(String key);
 	
 	InputStream getResourceAsStream(Class origClass, String name);

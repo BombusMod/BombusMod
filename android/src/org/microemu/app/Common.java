@@ -40,7 +40,6 @@ import org.microemu.MIDletContext;
 import org.microemu.MIDletEntry;
 import org.microemu.MicroEmulator;
 import org.microemu.RecordStoreManager;
-import org.microemu.app.launcher.Launcher;
 import org.microemu.app.ui.Message;
 import org.microemu.app.ui.ResponseInterfaceListener;
 import org.microemu.app.ui.StatusBarListener;
@@ -59,8 +58,6 @@ public class Common implements MicroEmulator, CommonInterface {
     protected EmulatorContext emulatorContext;
 
     private static Common instance;
-
-    private static Launcher launcher;
 
     private static StatusBarListener statusBarListener = null;
 
@@ -124,17 +121,13 @@ public class Common implements MicroEmulator, CommonInterface {
     }
 
     public void destroyMIDletContext(MIDletContext midletContext) {
-        if ((midletContext != null) && (MIDletBridge.getMIDletContext() == midletContext) && !midletContext.isLauncher()) {
+        if ((midletContext != null) && (MIDletBridge.getMIDletContext() == midletContext)) {
             Logger.debug("destroyMIDletContext");
         }
         MIDletThread.contextDestroyed(midletContext);
         synchronized (destroyNotify) {
             destroyNotify.notifyAll();
         }
-    }
-
-    public Launcher getLauncher() {
-        return launcher;
     }
 
     public static void dispose() {
@@ -220,10 +213,7 @@ public class Common implements MicroEmulator, CommonInterface {
     }
 
     protected void startLauncher(MIDletContext midletContext) {
-        if ((midletContext != null) && (midletContext.isLauncher())) {
-            return;
-        }
-        if (midletContext != null) {
+       if (midletContext != null) {
             try {
                 MIDletAccess previousMidletAccess = midletContext.getMIDletAccess();
                 if (previousMidletAccess != null) {
@@ -234,17 +224,7 @@ public class Common implements MicroEmulator, CommonInterface {
             }
 
             System.exit(0);            
-        }
-
-        try {
-            launcher = new Launcher(this);
-            MIDletBridge.getMIDletAccess(launcher).startApp();
-        } catch (Throwable e) {
-            Message.error("Unable to start launcher MIDlet, " + Message.getCauseMessage(e), e);
-            handleStartMidletException(e);
-        } finally {
-            MIDletBridge.setThreadMIDletContext(null);
-        }
+        }        
     }
 
     public void setStatusBarListener(StatusBarListener listener) {
@@ -327,29 +307,17 @@ public class Common implements MicroEmulator, CommonInterface {
         }
 
         MIDlet midlet = null;
-       
-        if (midletClass == null) {
-            if (launcher == null) {
-                try {
-                    launcher = new Launcher(this);
-                } finally {
-                    MIDletBridge.setThreadMIDletContext(null);
-                }
-            }
-            MIDletEntry entry = launcher.getSelectedMidletEntry();
-            if (entry != null) {
-                midlet = initMIDlet(startMidlet, entry);
-            }
-        } else {
-            midlet = loadMidlet(midletClass, MIDletBridge.getMIDletAccess());
-            if (startMidlet) {
-                try {
-                    MIDletBridge.getMIDletAccess(midlet).startApp();
-                } catch (MIDletStateChangeException e) {
-                    Logger.error(e);
-                }
+
+
+        midlet = loadMidlet(midletClass, MIDletBridge.getMIDletAccess());
+        if (startMidlet) {
+            try {
+                MIDletBridge.getMIDletAccess(midlet).startApp();
+            } catch (MIDletStateChangeException e) {
+                Logger.error(e);
             }
         }
+
         if (midlet == null) {
             startLauncher(MIDletBridge.getMIDletContext());
         }

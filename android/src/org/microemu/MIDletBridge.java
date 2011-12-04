@@ -37,8 +37,6 @@ import java.util.WeakHashMap;
 import javax.microedition.io.ConnectionNotFoundException;
 import javax.microedition.midlet.MIDlet;
 
-import org.microemu.app.launcher.Launcher;
-
 /**
  * 
  * Enables access to MIDlet and MIDletAccess by threadLocal
@@ -167,12 +165,7 @@ public class MIDletBridge {
         // Preserve only Launcher Context
         for (Iterator i = midletContexts.entrySet().iterator(); i.hasNext();) {
             Map.Entry entry = (Map.Entry) i.next();
-            MIDlet test = ((MIDletContext) entry.getValue()).getMIDlet();
-            if (test instanceof Launcher) {
-                midletContexts.clear();
-                midletContexts.put(entry.getKey(), entry.getValue());
-                return;
-            }
+            MIDlet test = ((MIDletContext) entry.getValue()).getMIDlet();            
         }
         // No Launcher found
         midletContexts.clear();

@@ -28,8 +28,6 @@ package org.microemu;
 
 import javax.microedition.midlet.MIDlet;
 
-import org.microemu.app.launcher.Launcher;
-
 /**
  * 
  * Represents context for running MIDlet.
@@ -62,9 +60,5 @@ public class MIDletContext {
 			return null;
 		}
 		return midletAccess.midlet;
-	}
-	
-	public boolean isLauncher() {
-		return (getMIDlet() instanceof Launcher);
 	}
 }
