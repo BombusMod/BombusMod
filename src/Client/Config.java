@@ -105,7 +105,7 @@ public class Config {
     public boolean istreamWaiting;
     public int phoneManufacturer = NOT_DETECTED;
     public boolean swapMenu = false;
-    public int sonyJava = 0;
+    public int sonyJava = 0; // 0 is mean that device have not Sony Ericsson Java Platform.
     public boolean NokiaS40 = false;
 
 
@@ -826,21 +826,35 @@ public class Config {
                 phoneManufacturer = SONYE;
 
                 String sJava = System.getProperty("com.sonyericsson.java.platform");
-                if (sJava != null
-                    && sJava.startsWith("JP-"))
-                {
-                    // sJava has format "JP-x.x", e.g. "JP-8.5".
-                    int int_part = sJava.charAt(3) - '0';
-                    int fractional_part = sJava.charAt(5) - '0';
+                // sJava has format "JP-x.x" or "JP-x.x.x", e.g. "JP-8.5" or "JP-8.5.2".
+                // The next code also correct parse string with format "JP-x".
+                // On all uncorrect strings, sonyJava set to 0.
+                if (sJava != null && sJava.startsWith("JP-")) {
+                    int int_part = 0;
+                    int fractional_part = 0;
+                    int fractional_part_2 = 0;
+
+                    if (sJava.length() >= 4)
+                        int_part = sJava.charAt(3) - '0';
+                    if (sJava.length() >= 6)
+                        fractional_part = sJava.charAt(5) - '0';
+                    if (sJava.length() >= 8)
+                        fractional_part_2 = sJava.charAt(7) - '0';
+
                     if (int_part >=0
                         && int_part <= 9
                         && fractional_part >= 0
-                        && fractional_part <=9)
+                        && fractional_part <=9
+                        && fractional_part_2 >=0
+                        && fractional_part_2 <=9)
                     {
-                        sonyJava = int_part * 10 + fractional_part;
+                        sonyJava = int_part * 100 + fractional_part * 10 + fractional_part_2;
+                    } else {
+                        System.out.print("Bad com.sonyericsson.java.platform string,");
+                        System.out.println(" sonyJava set to 0 (see src/Client/Config.java).");
                     }
                 }
-                swapMenu = (sJava == null) || sonyJava < 80; //JP<=7.x
+                swapMenu = (sonyJava == 0) || (sonyJava < 800); //JP<=7.x
                 return;
 //#if !ZLIB
             } else if (platform.indexOf("9@9")>-1) {
