@@ -41,6 +41,9 @@ import ui.controls.form.TextInput;
 //# import io.file.browse.Browser;
 //# import io.file.browse.BrowserListener;
 //#endif
+//#if HTTPCONNECT || HTTPPOLL || HTTPBIND
+//# import javax.microedition.lcdui.TextField;
+//#endif
 
 /**
  *
@@ -182,14 +185,14 @@ public class AccountForm
         resourcebox = new TextInput(SR.MS_RESOURCE, item.account.resource, null);
         
 //#if HTTPCONNECT
-//# 	proxyHost = new TextInput(sd.canvas,/*SR.MS_PROXY_HOST*/"Proxy name/IP", item.account.getProxyHostAddr(), null, TextField.URL);
-//# 	proxyPort = new NumberInput(sd.canvas, /*SR.MS_PROXY_PORT*/"Proxy port", Integer.toString(item.account.getProxyPort()), 0, 65535);
-//#         proxyUser = new TextInput(sd.canvas,/*SR.MS_PROXY_HOST*/"Proxy user", item.account.getProxyUser(), null, TextField.URL);
-//#         proxyPass = new TextInput(sd.canvas,/*SR.MS_PROXY_HOST*/"Proxy pass", item.account.getProxyPass(), null, TextField.URL);
+//# 	proxyHost = new TextInput(/*SR.MS_PROXY_HOST*/"Proxy name/IP", item.account.getProxyHostAddr(), null, TextField.URL);
+//# 	proxyPort = new NumberInput(/*SR.MS_PROXY_PORT*/"Proxy port", Integer.toString(item.account.getProxyPort()), 0, 65535);
+//#         proxyUser = new TextInput(/*SR.MS_PROXY_HOST*/"Proxy user", item.account.getProxyUser(), null, TextField.URL);
+//#         proxyPass = new TextInput(/*SR.MS_PROXY_HOST*/"Proxy pass", item.account.getProxyPass(), null, TextField.URL);
 //#elif HTTPPOLL        
-//# 	proxyHost = new TextInput(sd.canvas, "HTTP Polling URL (http://server.tld:port)", item.account.proxyHostAddr, null, TextField.URL);
+//# 	proxyHost = new TextInput("HTTP Polling URL (http://server.tld:port)", item.account.proxyHostAddr, null, TextField.URL);
 //#elif HTTPBIND
-//#         proxyHost = new TextInput(sd.canvas, "BOSH CM (http://server.tld:port)", item.account.proxyHostAddr, null, TextField.URL);
+//#         proxyHost = new TextInput("BOSH CM (http://server.tld:port)", item.account.proxyHostAddr, null, TextField.URL);
 //#endif
         
         itemsList.addElement(ipbox);

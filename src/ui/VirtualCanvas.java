@@ -162,14 +162,14 @@ public class VirtualCanvas extends Canvas implements CommandListener{
 
 
     protected void paint(Graphics graphics) {
-        list.width = getWidth();
-        list.height = getHeight();
+        VirtualList.width = getWidth();
+        VirtualList.height = getHeight();
         graphics.setColor(ColorTheme.getColor(ColorTheme.LIST_BGND));
-        graphics.fillRect(0, 0, list.width, list.height);
+        graphics.fillRect(0, 0, VirtualList.width, VirtualList.height);
         
 //#ifdef BACK_IMAGE
 //#         if (img != null) {
-//#             graphics.drawImage(img, list.width / 2, list.height / 2, Graphics.VCENTER | Graphics.HCENTER);
+//#             graphics.drawImage(img, VirtualList.width / 2, VirtualList.height / 2, Graphics.VCENTER | Graphics.HCENTER);
 //#         }
 //#endif
         
@@ -183,7 +183,7 @@ public class VirtualCanvas extends Canvas implements CommandListener{
 //#endif
         }
         if (rw != null)
-            rw.draw(graphics, list.width, list.height);
+            rw.draw(graphics, VirtualList.width, VirtualList.height);
     }
 
     protected final void keyPressed(int rawKeyCode) {

@@ -188,7 +188,7 @@ public class AccountSelect extends DefForm {
         DataOutputStream outputStream = NvStorage.CreateDataOutputStream();
         int j = itemsList.size();
         for (int i = 0; i < j; i++) {
-            ((Account) itemsList.elementAt(i)).saveToDataOutputStream(outputStream);
+            ((AccountItem) itemsList.elementAt(i)).account.saveToDataOutputStream(outputStream);
         }
         NvStorage.writeFileRecord(outputStream, "accnt_db", 0, true); //Account.storage
     }

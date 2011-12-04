@@ -260,8 +260,8 @@ public abstract class VirtualList {
     public boolean canBack = true;
 
     /** метрика экрана */
-    protected int width;
-    protected int height;
+    protected static int width;
+    protected static int height;
     
     public int cursor;
 

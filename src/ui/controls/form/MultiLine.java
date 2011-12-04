@@ -72,7 +72,7 @@ public class MultiLine extends IconTextElement {
         fontHeight=font.getHeight();
         itemHeight=fontHeight;
         
-        this.width = VirtualCanvas.getInstance().homeList.getListWidth();
+        this.width = VirtualCanvas.getInstance().getList().getListWidth();
         
         if (caption!=null) {
             captionFont=FontCache.getFont(true, FontCache.msg);
