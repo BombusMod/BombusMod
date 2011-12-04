@@ -827,7 +827,6 @@ public class Config {
 
                 String sJava = System.getProperty("com.sonyericsson.java.platform");
                 if (sJava != null
-                    && sJava.length() == 6
                     && sJava.startsWith("JP-"))
                 {
                     // sJava has format "JP-x.x", e.g. "JP-8.5".
