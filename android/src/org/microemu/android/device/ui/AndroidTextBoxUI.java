@@ -69,6 +69,11 @@ public class AndroidTextBoxUI extends AndroidDisplayableUI implements TextBoxUI 
 						
 						return super.onCreateInputConnection(outAttrs);
 					}
+                                        @Override
+                                        public void clearFocus() {
+                                            super.clearFocus();
+                                            hideNotify();
+                                        }
 					
 				};
 				editView.setText(textBox.getString());
