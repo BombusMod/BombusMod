@@ -69,7 +69,7 @@ public class Common implements MicroEmulator, CommonInterface {
     
     private String midletSuiteName = null;
 
-    private Object destroyNotify = new Object();
+    private final Object destroyNotify = new Object();
 
     public Common(EmulatorContext context) {
         instance = this;

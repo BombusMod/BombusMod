@@ -4,17 +4,17 @@
  */
 
 //#ifdef SYSTEM_NOTIFY
-
-package Messages.notification;
-
-/**
- *
- * @author Vitaly
- */
-public interface Notificator {
-
-    public void sendNotify(String title, String text);
-
-}
-
+//# 
+//# package Messages.notification;
+//# 
+//# /**
+//#  *
+//#  * @author Vitaly
+//#  */
+//# public interface Notificator {
+//# 
+//#     public void sendNotify(String title, String text);
+//#     public void clear();
+//# }
+//# 
 //#endif

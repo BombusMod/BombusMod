@@ -367,6 +367,8 @@ public class Roster
                 VirtualCanvas.getInstance().setTitle("BombusMod " + getHeaderString());
             }
         }
+        if (highliteMessageCount < 1) 
+            Notification.getNotificator().clear();
     }
 
     public String getHeaderString() {

@@ -23,7 +23,6 @@
  *
  *  @version $Id: AndroidTextBoxUI.java 2450 2010-12-07 13:55:14Z barteo@gmail.com $
  */
-
 package org.microemu.android.device.ui;
 
 import javax.microedition.lcdui.TextBox;
@@ -49,171 +48,182 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 public class AndroidTextBoxUI extends AndroidDisplayableUI implements TextBoxUI {
-	
-	private EditText editView;
-	
-	public AndroidTextBoxUI(final MicroEmulatorActivity activity, final TextBox textBox) {		
-		super(activity, textBox, true);		
-		
-		activity.post(new Runnable() {
-			public void run() {
-				editView = new EditText(activity) {
 
-					@Override
-					public InputConnection onCreateInputConnection(EditorInfo outAttrs) {
-						Configuration conf = Resources.getSystem().getConfiguration();
-						if (conf.hardKeyboardHidden != Configuration.HARDKEYBOARDHIDDEN_NO) {
-							InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-                            imm.showSoftInput(this, 0);
-						}
-						
-						return super.onCreateInputConnection(outAttrs);
-					}
-                                        @Override
-                                        public void clearFocus() {
-                                            super.clearFocus();
-                                            hideNotify();
-                                        }
-					
-				};
-				editView.setText(textBox.getString());
-				editView.setGravity(Gravity.TOP);
-				editView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.FILL_PARENT));
-				int constraints = textBox.getConstraints();
-				if ((constraints & TextField.CONSTRAINT_MASK) == TextField.URL) {
-					editView.setSingleLine(true);
-				} else if ((constraints & TextField.CONSTRAINT_MASK) == TextField.NUMERIC) {
-					editView.setSingleLine(true);
-					editView.setInputType(InputType.TYPE_CLASS_NUMBER);
-				} else if ((constraints & TextField.CONSTRAINT_MASK) == TextField.DECIMAL) {
-					editView.setSingleLine(true);
-					editView.setInputType(
-							InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+    private EditText editView;
+
+    public AndroidTextBoxUI(final MicroEmulatorActivity activity, final TextBox textBox) {
+        super(activity, textBox, true);
+
+        activity.post(new Runnable() {
+
+            public void run() {
+                editView = new EditText(activity) {
+
+                    @Override
+                    public InputConnection onCreateInputConnection(EditorInfo outAttrs) {
+                        InputConnection connection = super.onCreateInputConnection(outAttrs);
+                        int imeActions = outAttrs.imeOptions & EditorInfo.IME_MASK_ACTION;
+                        if ((imeActions & EditorInfo.IME_ACTION_DONE) != 0) {
+                            // clear the existing action
+                            outAttrs.imeOptions ^= imeActions;
+                            // set the DONE action
+                            outAttrs.imeOptions |= EditorInfo.IME_ACTION_DONE;
+                        }
+                        if ((outAttrs.imeOptions & EditorInfo.IME_FLAG_NO_ENTER_ACTION) != 0) {
+                            outAttrs.imeOptions &= ~EditorInfo.IME_FLAG_NO_ENTER_ACTION;
+                        }
+                        showNotify();
+                        return connection;
+                    }
+                };
+                editView.setText(textBox.getString());
+                editView.setGravity(Gravity.TOP);
+                editView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.FILL_PARENT));
+                int constraints = textBox.getConstraints();
+                if ((constraints & TextField.CONSTRAINT_MASK) == TextField.URL) {
+                    editView.setSingleLine(true);
+                } else if ((constraints & TextField.CONSTRAINT_MASK) == TextField.NUMERIC) {
+                    editView.setSingleLine(true);
+                    editView.setInputType(InputType.TYPE_CLASS_NUMBER);
+                } else if ((constraints & TextField.CONSTRAINT_MASK) == TextField.DECIMAL) {
+                    editView.setSingleLine(true);
+                    editView.setInputType(
+                            InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED | InputType.TYPE_NUMBER_FLAG_DECIMAL);
                 } else if ((constraints & TextField.CONSTRAINT_MASK) == TextField.PHONENUMBER) {
                     editView.setSingleLine(true);
                     editView.setInputType(InputType.TYPE_CLASS_PHONE);
-				}
-				if ((constraints & TextField.PASSWORD) != 0) {
-					editView.setTransformationMethod(PasswordTransformationMethod.getInstance());
-					editView.setTypeface(Typeface.MONOSPACE);
-				}
-				editView.addTextChangedListener(new TextWatcher() {
+                }
+                if ((constraints & TextField.PASSWORD) != 0) {
+                    editView.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    editView.setTypeface(Typeface.MONOSPACE);
+                }
+                editView.setRawInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+                editView.addTextChangedListener(new TextWatcher() {
 
-					private String previousText;
-					
-					public void afterTextChanged(Editable s) {
-					}
+                    private String previousText;
 
-					public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-						previousText = s.toString();
-					}
+                    public void afterTextChanged(Editable s) {
+                    }
 
-					public void onTextChanged(CharSequence s, int start, int before, int count) {
-						if (s.toString().length() <= textBox.getMaxSize()
-								&& InputMethod.validate(s.toString(), textBox.getConstraints())) {
-						} else {
-							editView.setText(previousText);
-							editView.setSelection(start);
-						}
-					}
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        previousText = s.toString();
+                    }
 
-				});
-				((LinearLayout) view).addView(editView);
-				
-				invalidate();
-			}
-		});		
-	}
-	
-	@Override
-	public void hideNotify() {
-		activity.post(new Runnable() {
-			public void run() {
-				InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(editView.getWindowToken(), 0);
-			}
-		});
-	}
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        if (s.toString().length() <= textBox.getMaxSize()
+                                && InputMethod.validate(s.toString(), textBox.getConstraints())) {
+                        } else {
+                            editView.setText(previousText);
+                            editView.setSelection(start);
+                        }
+                    }
+                });
+                ((LinearLayout) view).addView(editView);
 
-	//
-	// TextBoxUI
-	//
-	
-	public int getCaretPosition() {
-		return editView.getSelectionStart();
-	}
-	
-	private String getStringTransfer;
+                invalidate();
+            }
+        });
+    }
 
-	public String getString() {
-		if (activity.isActivityThread()) {
-			getStringTransfer = editView.getText().toString();
-		} else {
-			getStringTransfer = null;
-			activity.post(new Runnable() {
-				public void run() {
-					synchronized (AndroidTextBoxUI.this) {
-						getStringTransfer = editView.getText().toString();
-						AndroidTextBoxUI.this.notify();
-					}
-				}
-			});
+    @Override
+    public void showNotify() {
+        super.showNotify();
+        Configuration conf = Resources.getSystem().getConfiguration();
+        if (conf.hardKeyboardHidden != Configuration.HARDKEYBOARDHIDDEN_NO) {
+            InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(activity.getContentView(), 0);
+        }
+    }
 
-			synchronized (AndroidTextBoxUI.this) {
-				if (getStringTransfer == null) {
-					try {
-						wait();
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		}
-		
-		return getStringTransfer;
-	}
+    @Override
+    public void hideNotify() {
+        activity.post(new Runnable() {
 
-	public void setString(final String text) {
-		activity.post(new Runnable() {
-			public void run() {
-				editView.setText(text);
-				if (text != null) {
-					editView.setSelection(text.length());
-				}
-			}
-		});
-	}
+            public void run() {
+                InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(activity.getContentView().getWindowToken(), 0);
+            }
+        });
+    }
 
-	public void insert(final String text, final int position) {
-		activity.post(new Runnable() {
-			public void run() {
-				String newtext = getString();
-				if (position > 0) {
-					newtext = newtext.substring(0, position) + text + newtext.substring(position);
-				}
-				else {
-					newtext = text + newtext;
-				}
-				editView.setText(newtext);
-				editView.setSelection(position);
-			}
-		});
-	}
+    //
+    // TextBoxUI
+    //
+    public int getCaretPosition() {
+        return editView.getSelectionStart();
+    }
+    private String getStringTransfer;
 
-	public void delete(final int offset, final int length) {
-		activity.post(new Runnable() {
-			public void run() {
-				String newtext = getString();
-				if (offset > 0) {
-					newtext = newtext.substring(0, offset) + newtext.substring(offset + length);
-				}
-				else {
-					newtext = newtext.substring(length);
-				}
-				editView.setText(newtext);
-				editView.setSelection(offset);
-			}
-		});
-	}
+    public String getString() {
+        if (activity.isActivityThread()) {
+            getStringTransfer = editView.getText().toString();
+        } else {
+            getStringTransfer = null;
+            activity.post(new Runnable() {
 
+                public void run() {
+                    synchronized (AndroidTextBoxUI.this) {
+                        getStringTransfer = editView.getText().toString();
+                        AndroidTextBoxUI.this.notify();
+                    }
+                }
+            });
+
+            synchronized (AndroidTextBoxUI.this) {
+                if (getStringTransfer == null) {
+                    try {
+                        wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+
+        return getStringTransfer;
+    }
+
+    public void setString(final String text) {
+        activity.post(new Runnable() {
+
+            public void run() {
+                editView.setText(text);
+                if (text != null) {
+                    editView.setSelection(text.length());
+                }
+            }
+        });
+    }
+
+    public void insert(final String text, final int position) {
+        activity.post(new Runnable() {
+
+            public void run() {
+                String newtext = getString();
+                if (position > 0) {
+                    newtext = newtext.substring(0, position) + text + newtext.substring(position);
+                } else {
+                    newtext = text + newtext;
+                }
+                editView.setText(newtext);
+                editView.setSelection(position);
+            }
+        });
+    }
+
+    public void delete(final int offset, final int length) {
+        activity.post(new Runnable() {
+
+            public void run() {
+                String newtext = getString();
+                if (offset > 0) {
+                    newtext = newtext.substring(0, offset) + newtext.substring(offset + length);
+                } else {
+                    newtext = newtext.substring(length);
+                }
+                editView.setText(newtext);
+                editView.setSelection(offset);
+            }
+        });
+    }
 }

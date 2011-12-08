@@ -131,6 +131,9 @@ public class AndroidTextFieldUI extends LinearLayout implements TextFieldUI {
                     editView.setTransformationMethod(PasswordTransformationMethod.getInstance());
                     editView.setTypeface(Typeface.MONOSPACE);
                 }
+                if ((constraints & TextField.INITIAL_CAPS_SENTENCE) != 0) {
+                    editView.setRawInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+                }
 			}
 		});
 	}
