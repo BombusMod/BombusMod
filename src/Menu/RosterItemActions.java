@@ -112,6 +112,9 @@ public class RosterItemActions extends Menu {
 //#ifdef POPUPS
 //#             addItem(SR.MS_INFO,86, RosterIcons.ICON_INFO);
 //#endif
+//#ifdef STATUSES_WINDOW            
+//#             addItem("Statuses", 87, RosterIcons.ICON_INFO);
+//#endif            
             addItem(SR.MS_CLIENT_INFO,0, RosterIcons.ICON_VERSION);
 //#ifdef SERVICE_DISCOVERY
 //# 	    addItem(SR.MS_COMMANDS,30, RosterIcons.ICON_COMMAND);
@@ -330,6 +333,11 @@ public class RosterItemActions extends Menu {
 //#                     sd.roster.showInfo();
 //#endif
                     break;
+//#ifdef STATUSES_WINDOW                    
+//#                 case 87:
+//#                     new ContactStatusesList(c);
+//#                     return;
+//#endif                    
                 case 1: // vCard
                     if (c.vcard!=null) {
                         if (c.getGroupType()==Groups.TYPE_SELF)

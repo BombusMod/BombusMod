@@ -110,6 +110,9 @@ public class Contact extends IconTextElement {
     public int offline_type = Presence.PRESENCE_UNKNOWN;
     public boolean ask_subscribe;
     public final Vector msgs;
+//#ifdef STATUSES_WINDOW    
+//#     public final Vector statuses = new Vector();
+//#endif    
     public int activeMessage = -1;
     private int newMsgCnt = 0;
     private int newHighLitedMsgCnt = 0;
@@ -362,6 +365,11 @@ public class Contact extends IconTextElement {
 //#             redraw = deleteOldMessages();
 //#endif			
         }
+//#ifdef STATUSES_WINDOW        
+//#         if (m.isPresence()) {
+//#             statuses.addElement(new MessageItem(m, smiles));
+//#         }
+//#endif        
         if (origin != ORIGIN_GROUPCHAT) {
             if (msgs.size() > 0 && m.isPresence()) {
                 Object item = msgs.lastElement();
@@ -488,6 +496,7 @@ public class Contact extends IconTextElement {
 
     public final void purge() {
         msgs.removeAllElements();
+        statuses.removeAllElements();
         lastSendedMessage = null;
         activeMessage = -1; //drop activeMessage num
 
