@@ -132,15 +132,9 @@ public class VirtualCanvas extends Canvas implements CommandListener{
     public void show(VirtualList virtualList) {
         KeyRepeatTimer.stop();
         if (virtualList == null)
-            virtualList = getList();
-        if (isShown()) {
-            list = virtualList;
-            repaint();
-        } else {
-            list = virtualList;
-            Display.getDisplay(midlet).setCurrent(this);
-            repaint();
-        }
+            virtualList = getList();        
+        list = virtualList;     
+        Display.getDisplay(midlet).setCurrent(this);            
         commandState();
     }
     
