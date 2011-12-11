@@ -168,17 +168,15 @@ public class ExTextBox {
     
     public void commandState() {
 //#ifdef ARCHIVE
-//#             textbox.addCommand(cmdPaste);
+//#         textbox.addCommand(cmdPaste);
 //#endif
 //#ifdef CLIPBOARD
-//#         if (cf.useClipBoard) {
-//#             if (!sd.clipboard.isEmpty()) {
-//#                 textbox.addCommand(cmdPasteText);                
-//#             }
+//#         if (!sd.clipboard.isEmpty()) {
+//#             textbox.addCommand(cmdPasteText);
 //#         }
 //#endif
 //#if TEMPLATES
-//#             textbox.addCommand(cmdTemplate);
+//#         textbox.addCommand(cmdTemplate);
 //#endif        
     }
     

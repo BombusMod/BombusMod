@@ -135,12 +135,11 @@ public abstract class MessageList extends DefForm
 //#endif
     }
    
-    public void commandState() {         
+    public void commandState() {
 //#ifdef CLIPBOARD
-//#         if (cf.useClipBoard) {
-//#             addMenuCommand(cmdCopy);
-//#             if (!sd.clipboard.isEmpty())
-//#                 addMenuCommand(cmdCopyPlus);
+//#         addMenuCommand(cmdCopy);
+//#         if (!sd.clipboard.isEmpty()) {
+//#             addMenuCommand(cmdCopyPlus);
 //#         }
 //#endif
         MessageItem mi = (MessageItem) getFocusedObject();

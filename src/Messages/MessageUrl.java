@@ -106,10 +106,9 @@ public class MessageUrl extends DefForm implements TextBoxNotify {
          addMenuCommand(cmdGoto);
          addMenuCommand(cmdEdit);
 //#ifdef CLIPBOARD
-//#          if (cf.useClipBoard) {
-//#              addMenuCommand(cmdCopy);
-//#              addMenuCommand(cmdCopyPlus);
-//#          }
+//#          addMenuCommand(cmdCopy);
+//#          addMenuCommand(cmdCopyPlus);
+//# 
 //#endif
      }
 

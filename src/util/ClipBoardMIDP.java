@@ -23,33 +23,27 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
+package util;
 
-package org.bombusmod.util;
+public class ClipBoardMIDP extends ClipBoardIO {
 
-import android.text.ClipboardManager;
-import org.bombusmod.BombusModActivity;
-import util.ClipBoardIO;
-
-public class AndroidClipBoard extends ClipBoardIO
- {
-    
-    private static ClipboardManager clipboard;
-    
-    public AndroidClipBoard() {
-        clipboard = (ClipboardManager) BombusModActivity.getInstance()
-                .getApplicationContext().getSystemService(android.content.Context.CLIPBOARD_SERVICE);
-    }
+    private static String clipBoard = "";
 
     public String getClipBoard() {
-      return clipboard.getText().toString();
+        return clipBoard;
     }
 
     public void setClipBoard(String str) {
-      String data = (str.length()>4096) ? str.substring(0,4095) : str;
-      clipboard.setText(data);
+        clipBoard = (str.length() > 4096) ? str.substring(0, 4095) : str;
     }
 
     public boolean isEmpty() {
-        return !clipboard.hasText();
+        boolean empty = true;
+        if (clipBoard != null) {
+            if (clipBoard.length() > 0) {
+                empty = false;
+            }
+        }
+        return empty;
     }
 }

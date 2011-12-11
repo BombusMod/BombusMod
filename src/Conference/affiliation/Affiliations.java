@@ -164,9 +164,7 @@ public class Affiliations
         addMenuCommand(cmdModify);
         addMenuCommand(cmdNew);
 //#ifdef CLIPBOARD
-//#         if (Config.getInstance().useClipBoard) {
-//#             addMenuCommand(cmdCopy);
-//#         }
+//#         addMenuCommand(cmdCopy);
 //#endif
-    }    
+    }
 }

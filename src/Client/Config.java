@@ -197,9 +197,6 @@ public class Config {
 //#ifdef PEP
 //#     public boolean sndrcvmood = false;
 //#endif
-//#ifdef CLIPBOARD
-//#     public boolean useClipBoard = true;
-//#endif
 //#ifdef PEP_TUNE
 //#     public boolean rcvtune = false;
 //#endif
@@ -443,11 +440,7 @@ public class Config {
 //#endif
             inputStream.readUTF(); //scheme
 
-//#ifdef CLIPBOARD
-//#             useClipBoard = inputStream.readBoolean();
-//#else
-            inputStream.readBoolean();
-//#endif
+            inputStream.readBoolean(); // clipboard
 //#ifdef PEP_TUNE
 //#             rcvtune = inputStream.readBoolean();
 //#else
@@ -708,11 +701,7 @@ public class Config {
             outputStream.writeBoolean(false);
 //#endif
             outputStream.writeUTF("");//scheme
-//#ifdef CLIPBOARD
-//#             outputStream.writeBoolean(useClipBoard);
-//#else
-            outputStream.writeBoolean(false);
-//#endif
+            outputStream.writeBoolean(false); // clipboard
 //#ifdef PEP_TUNE
 //#             outputStream.writeBoolean(rcvtune);
 //#else

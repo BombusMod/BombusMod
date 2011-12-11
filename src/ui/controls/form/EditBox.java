@@ -71,14 +71,12 @@ public class EditBox implements CommandListener {
         this.ti=ti;
         this.caption=caption;
         this.parentList = parentList;
-        t=new TextBox(SR.MS_EDIT, text, 500, boxType);
+        t = new TextBox(SR.MS_EDIT, text, 500, boxType);
 //#ifdef CLIPBOARD
-//#         if (Config.getInstance().useClipBoard) {
-//#             t.addCommand(cmdCopy);
-//#             if (!StaticData.getInstance().clipboard.isEmpty()) {
-//#                 t.addCommand(cmdCopyPlus);
-//#                 t.addCommand(cmdPasteText);
-//#             }
+//#         t.addCommand(cmdCopy);
+//#         if (!StaticData.getInstance().clipboard.isEmpty()) {
+//#             t.addCommand(cmdCopyPlus);
+//#             t.addCommand(cmdPasteText);
 //#         }
 //#endif
         t.addCommand(cmdOk);

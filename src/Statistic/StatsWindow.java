@@ -85,11 +85,11 @@
 //#     public void commandState() {
 //#         menuCommands.removeAllElements();
 //#ifdef CLIPBOARD
-//#             if (Config.getInstance().useClipBoard) {
-//#                 addMenuCommand(cmdCopy);
-//#                 if (!sd.clipboard.isEmpty())
-//#                     addMenuCommand(cmdCopyPlus);
-//#             }
+//#         addMenuCommand(cmdCopy);
+//#         if (!sd.clipboard.isEmpty()) {
+//#             addMenuCommand(cmdCopyPlus);
+//#         }
+//# 
 //#endif        
 //#         addMenuCommand(cmdClear);
 //#     }

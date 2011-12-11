@@ -135,16 +135,15 @@ public class VCardView
             itemsList.addElement(new SpacerItem(10));
             itemsList.addElement(refresh);
 //#ifdef CLIPBOARD
-//#             if (cf.useClipBoard) {
-//#                 copy = new LinkString(SR.MS_COPY + " " + SR.MS_VCARD) {
+//#             copy = new LinkString(SR.MS_COPY + " " + SR.MS_VCARD) {
 //# 
-//#                     public void doAction() {
-//#                         sd.clipboard.setClipBoard(VCardData.toString());
-//#                         destroyView();
-//#                     }
-//#                 };
-//#                 itemsList.addElement(copy);
-//#             }
+//#                 public void doAction() {
+//#                     sd.clipboard.setClipBoard(VCardData.toString());
+//#                     destroyView();
+//#                 }
+//#             };
+//#             itemsList.addElement(copy);
+//# 
 //#endif           
 //#ifdef FILE_IO
 //#             if (vcard.hasPhoto) {
@@ -206,14 +205,12 @@ public class VCardView
     public void commandState() {
         menuCommands.removeAllElements();
 //#ifdef CLIPBOARD
-//#         if (Config.getInstance().useClipBoard) {
-//#             addMenuCommand(cmdCopy);
-//#             if (!sd.clipboard.isEmpty()) {
-//#                 addMenuCommand(cmdCopyPlus);
-//#             }
+//#         addMenuCommand(cmdCopy);
+//#         if (!sd.clipboard.isEmpty()) {
+//#             addMenuCommand(cmdCopyPlus);
 //#         }
 //#endif        
-    }  
+    }
 
 
 //#ifdef CLIPBOARD

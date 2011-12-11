@@ -4,7 +4,9 @@
  */
 package util;
 import Client.Msg;
-
+//#if android
+//# import org.bombusmod.util.AndroidClipBoard;
+//#endif
 /**
  *
  * @author Vitaly
@@ -14,7 +16,7 @@ public abstract class ClipBoardIO {
 //#if android        
 //#         return new AndroidClipBoard();
 //#else
-        return new ClipBoard();
+        return new ClipBoardMIDP();
 //#endif        
     }
     

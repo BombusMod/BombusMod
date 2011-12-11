@@ -213,7 +213,7 @@ public class ContactMessageList extends MessageList {
 //#endif
         }
 //#ifdef CLIPBOARD
-//#         if (cf.useClipBoard && !sd.clipboard.isEmpty()) {
+//#         if (!sd.clipboard.isEmpty()) {
 //#             addMenuCommand(cmdSendBuffer);
 //#         }
 //#endif

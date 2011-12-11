@@ -109,13 +109,13 @@ public class InfoWindow
     }
 
     public void commandState() {
-        menuCommands.removeAllElements();        
+        menuCommands.removeAllElements();
 //#ifdef CLIPBOARD
-//#             if (Config.getInstance().useClipBoard) {                
-//#                 addMenuCommand(cmdCopy);
-//#                 if (!sd.clipboard.isEmpty())
-//#                     addMenuCommand(cmdCopyPlus);
-//#             }
+//#         addMenuCommand(cmdCopy);
+//#         if (!sd.clipboard.isEmpty()) {
+//#             addMenuCommand(cmdCopyPlus);
+//#         }
+//# 
 //#endif        
     }
 

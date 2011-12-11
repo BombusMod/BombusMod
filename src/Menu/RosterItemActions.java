@@ -114,11 +114,11 @@ public class RosterItemActions extends Menu {
 //# 	    addItem(SR.MS_COMMANDS,30, RosterIcons.ICON_COMMAND);
 //#endif
 //#ifdef CLIPBOARD
-//#             if (cf.useClipBoard) {
-//#                 if (!sd.clipboard.isEmpty())
-//#                     addItem(SR.MS_SEND_BUFFER,914, RosterIcons.ICON_SEND_BUFFER);
-//#                 addItem(SR.MS_COPY_JID,892, RosterIcons.ICON_COPY_JID);
+//#             if (!sd.clipboard.isEmpty()) {
+//#                 addItem(SR.MS_SEND_BUFFER, 914, RosterIcons.ICON_SEND_BUFFER);
 //#             }
+//#             addItem(SR.MS_COPY_JID, 892, RosterIcons.ICON_COPY_JID);
+//# 
 //#endif
             addItem(SR.MS_SEND_COLOR_SCHEME, 912, RosterIcons.ICON_SEND_COLORS);
             if (contact.status<Presence.PRESENCE_OFFLINE) {
@@ -259,10 +259,9 @@ public class RosterItemActions extends Menu {
 
             addItem(SR.MS_LEAVE_ROOM, 22, RosterIcons.ICON_LEAVE);
 //#ifdef CLIPBOARD
-//#             if (cf.useClipBoard) {
-//#                 addItem(SR.MS_COPY_JID, 892, RosterIcons.ICON_COPY_JID);
-//#                 addItem(SR.MS_COPY_TOPIC, 993, RosterIcons.ICON_COPY_TOPIC);
-//#             }
+//#             addItem(SR.MS_COPY_JID, 892, RosterIcons.ICON_COPY_JID);
+//#             addItem(SR.MS_COPY_TOPIC, 993, RosterIcons.ICON_COPY_TOPIC);
+//# 
 //#endif
 
             if (self.status >= Presence.PRESENCE_OFFLINE) {// offline or error
