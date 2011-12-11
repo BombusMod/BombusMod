@@ -496,7 +496,9 @@ public class Contact extends IconTextElement {
 
     public final void purge() {
         msgs.removeAllElements();
-        statuses.removeAllElements();
+//#ifdef STATUSES_WINDOW
+//#         statuses.removeAllElements();
+//#endif        
         lastSendedMessage = null;
         activeMessage = -1; //drop activeMessage num
 
