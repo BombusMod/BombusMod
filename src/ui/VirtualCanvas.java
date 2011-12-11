@@ -532,7 +532,7 @@ public class VirtualCanvas extends Canvas implements CommandListener{
             case Config.MICROEMU:
                 switch (key_code) {
                     case -82:
-                        return KEY_SOFT_LEFT;
+                        return KEY_SOFT_RIGHT;
                     case -8:
                         return KEY_BACK;
                     case -10:

@@ -96,8 +96,10 @@ public class AndroidTextBoxUI extends AndroidDisplayableUI implements TextBoxUI 
                 if ((constraints & TextField.PASSWORD) != 0) {
                     editView.setTransformationMethod(PasswordTransformationMethod.getInstance());
                     editView.setTypeface(Typeface.MONOSPACE);
-                }
-                editView.setRawInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+                }                
+                int inputType = editView.getInputType();
+                inputType |= InputType.TYPE_TEXT_FLAG_CAP_SENTENCES;
+                editView.setInputType(inputType);
                 editView.addTextChangedListener(new TextWatcher() {
 
                     private String previousText;
