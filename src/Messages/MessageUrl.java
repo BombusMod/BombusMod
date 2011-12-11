@@ -35,10 +35,7 @@ import ui.MIDPTextBox.TextBoxNotify;
 import ui.controls.form.DefForm;
 import locale.SR;
 import Menu.MenuCommand;
-//#ifdef CLIPBOARD
-//# import util.ClipBoard;
-//# import Client.Msg;
-//#endif
+import Client.Msg;
 import ui.VirtualList;
 import ui.controls.form.ListItem;
 import images.RosterIcons;
@@ -50,8 +47,6 @@ import images.RosterIcons;
 public class MessageUrl extends DefForm implements TextBoxNotify {
 
 //#ifdef CLIPBOARD
-//#     private ClipBoard clipboard=ClipBoard.getInstance();
-//# 
 //#     protected MenuCommand cmdCopy = new MenuCommand(SR.MS_COPY, MenuCommand.SCREEN, 20, RosterIcons.ICON_COPY);
 //#     protected MenuCommand cmdCopyPlus = new MenuCommand("+ "+SR.MS_COPY, MenuCommand.SCREEN, 30, RosterIcons.ICON_COPYPLUS);
 //#endif
@@ -77,11 +72,11 @@ public class MessageUrl extends DefForm implements TextBoxNotify {
         }
 //#ifdef CLIPBOARD
 //#         if (c == cmdCopy) {
-//#             clipboard.set(new Msg(Msg.MESSAGE_TYPE_IN, "url", null, itemsList.elementAt(cursor).toString()));
+//#             sd.clipboard.set(new Msg(Msg.MESSAGE_TYPE_IN, "url", null, itemsList.elementAt(cursor).toString()));
 //#         }
 //# 
 //#         if (c == cmdCopyPlus) {
-//#             clipboard.append(new Msg(Msg.MESSAGE_TYPE_IN, "url", null, itemsList.elementAt(cursor).toString()));
+//#             sd.clipboard.append(new Msg(Msg.MESSAGE_TYPE_IN, "url", null, itemsList.elementAt(cursor).toString()));
 //#         }
 //#endif
     }

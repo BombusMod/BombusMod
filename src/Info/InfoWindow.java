@@ -40,9 +40,6 @@ import ui.controls.form.SpacerItem;
 import Menu.MenuCommand;
 import ui.VirtualList;
 import images.RosterIcons;
-//#ifdef CLIPBOARD
-//# import util.ClipBoard;
-//#endif
 
 /**
  *
@@ -58,7 +55,6 @@ public class InfoWindow
     MultiLine abilities;
 
 //#ifdef CLIPBOARD
-//#     ClipBoard clipboard  = ClipBoard.getInstance();
 //#     MenuCommand cmdCopy      = new MenuCommand(SR.MS_COPY, MenuCommand.OK, 1, RosterIcons.ICON_COPY);
 //#     MenuCommand cmdCopyPlus  = new MenuCommand("+ "+SR.MS_COPY, MenuCommand.SCREEN, 2, RosterIcons.ICON_COPYPLUS);
 //#endif
@@ -117,7 +113,7 @@ public class InfoWindow
 //#ifdef CLIPBOARD
 //#             if (Config.getInstance().useClipBoard) {                
 //#                 addMenuCommand(cmdCopy);
-//#                 if (!ClipBoard.getInstance().isEmpty())
+//#                 if (!sd.clipboard.isEmpty())
 //#                     addMenuCommand(cmdCopyPlus);
 //#             }
 //#endif        
@@ -129,9 +125,8 @@ public class InfoWindow
 //#             try {
 //#                 String str = ((MultiLine) getFocusedObject()).toString();
 //#                 if (str == null)
-//# //a
 //#                     str = "";
-//#                 clipboard.setClipBoard(str);
+//#                 sd.clipboard.setClipBoard(str);
 //#             } catch (Exception e) {}
 //#         }
 //# 
@@ -140,9 +135,7 @@ public class InfoWindow
 //#                 String str = ((MultiLine) getFocusedObject()).toString();
 //#                 if (str == null)
 //#                     str = "";
-//#                 str  = clipboard.getClipBoard() + "\n\n" + str;
-//# 
-//#                 clipboard.setClipBoard(str);
+//#                 sd.clipboard.append(str);
 //#             } catch (Exception e) {}
 //#         }
 //#endif

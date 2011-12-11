@@ -34,9 +34,6 @@ import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.TextBox;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
-//#ifdef CLIPBOARD
-//# import util.ClipBoard;
-//#endif
 //#ifdef ARCHIVE
 //# import Archive.ArchiveList;
 //#endif
@@ -58,11 +55,7 @@ public class ExTextBox {
     private String subj;
     protected int caretPos;
 
-    protected Config cf;
-    
-//#ifdef CLIPBOARD
-//#     private ClipBoard clipboard;
-//#endif
+    protected Config cf;    
     
 //#ifdef ARCHIVE
 //#     protected Command cmdPaste=new Command(SR.MS_ARCHIVE, Command.SCREEN, 6);
@@ -179,8 +172,7 @@ public class ExTextBox {
 //#endif
 //#ifdef CLIPBOARD
 //#         if (cf.useClipBoard) {
-//#             clipboard = ClipBoard.getInstance();
-//#             if (!clipboard.isEmpty()) {
+//#             if (!sd.clipboard.isEmpty()) {
 //#                 textbox.addCommand(cmdPasteText);                
 //#             }
 //#         }
@@ -202,7 +194,7 @@ public class ExTextBox {
 //# 	if (c==cmdPaste) { new ArchiveList(caretPos, 1, textbox); return true; }
 //#endif
 //#ifdef CLIPBOARD
-//#         if (c==cmdPasteText) { insert(clipboard.getClipBoard(), getCaretPos()); return true; }
+//#         if (c==cmdPasteText) { insert(sd.clipboard.getClipBoard(), getCaretPos()); return true; }
 //#endif
 //#if TEMPLATES
 //#         if (c==cmdTemplate) { new ArchiveList(caretPos, 2, textbox); return true; }

@@ -23,62 +23,27 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-
 package util;
 
-import Client.Msg;
+public class ClipBoard extends ClipBoardIO {
 
-public class ClipBoard
- {
-    
-    // Singleton
-    private static ClipBoard instance;
-
-    public static ClipBoard getInstance(){
-        if (instance==null) {
-            instance=new ClipBoard();
-        }
-        return instance;
-    }
-    
-    private static String clipBoard="";
-
+    private static String clipBoard = "";
 
     public String getClipBoard() {
-      return clipBoard;
+        return clipBoard;
     }
 
     public void setClipBoard(String str) {
-      clipBoard=(str.length()>4096)?str.substring(0,4095):str;
+        clipBoard = (str.length() > 4096) ? str.substring(0, 4095) : str;
     }
 
     public boolean isEmpty() {
         boolean empty = true;
-        if (clipBoard!=null)
-            if (clipBoard.length()>0)
+        if (clipBoard != null) {
+            if (clipBoard.length() > 0) {
                 empty = false;
+            }
+        }
         return empty;
-    }
-    
-    public void set(Msg msg) {
-        try {
-            StringBuffer clipstr=new StringBuffer(msg.quoteString(true));
-            setClipBoard(clipstr.toString());
-            clipstr=null;
-        } catch (Exception e) {/*no messages*/}
-    }
-    
-    public void append(String str) {
-        try {
-            StringBuffer clipstr = new StringBuffer(clipBoard)
-            .append("\n\n")
-            .append(str);
-            setClipBoard(clipstr.toString());
-            clipstr = null;
-        } catch (Exception e) {/*no messages*/}
-    }
-    
-    public void append(Msg msg) {
-        append(msg.quoteString(true));        
     }
 }

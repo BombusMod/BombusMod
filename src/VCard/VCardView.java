@@ -36,9 +36,6 @@ import midlet.BombusMod;
 //# import io.file.browse.BrowserListener;
 //# import util.StringUtils;
 //#endif
-//#ifdef CLIPBOARD
-//# import util.ClipBoard;
-//#endif
 import Menu.MenuCommand;
 import javax.microedition.lcdui.Image;
 import locale.SR;
@@ -84,7 +81,6 @@ public class VCardView
     private VCardView vv;
     
 //#ifdef CLIPBOARD
-//#     ClipBoard clipboard  = ClipBoard.getInstance();   
 //#     StringBuffer VCardData = new StringBuffer();
 //#     MenuCommand cmdCopy      = new MenuCommand(SR.MS_COPY, MenuCommand.OK, 1, RosterIcons.ICON_COPY);
 //#     MenuCommand cmdCopyPlus  = new MenuCommand("+ "+SR.MS_COPY, MenuCommand.SCREEN, 2, RosterIcons.ICON_COPYPLUS);
@@ -143,7 +139,7 @@ public class VCardView
 //#                 copy = new LinkString(SR.MS_COPY + " " + SR.MS_VCARD) {
 //# 
 //#                     public void doAction() {
-//#                         clipboard.setClipBoard(VCardData.toString());
+//#                         sd.clipboard.setClipBoard(VCardData.toString());
 //#                         destroyView();
 //#                     }
 //#                 };
@@ -212,7 +208,7 @@ public class VCardView
 //#ifdef CLIPBOARD
 //#         if (Config.getInstance().useClipBoard) {
 //#             addMenuCommand(cmdCopy);
-//#             if (!clipboard.isEmpty()) {
+//#             if (!sd.clipboard.isEmpty()) {
 //#                 addMenuCommand(cmdCopyPlus);
 //#             }
 //#         }
@@ -232,10 +228,10 @@ public class VCardView
 //#             if (value.length() != 0) {
 //# 
 //#                 if (c == cmdCopy) {
-//#                     clipboard.setClipBoard(value);
+//#                     sd.clipboard.setClipBoard(value);
 //#                 }
 //#                 if (c == cmdCopyPlus) {
-//#                     clipboard.append(value);
+//#                     sd.clipboard.append(value);
 //#                 }
 //#             }
 //#         }

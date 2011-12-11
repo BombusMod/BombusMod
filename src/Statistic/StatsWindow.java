@@ -26,52 +26,48 @@
  */
 
 //#ifdef STATS
-
-package Statistic;
-
-import Client.Config;
-import Client.Roster;
-import Client.StaticData;
-import Menu.MenuCommand;
-import locale.SR;
-import ui.VirtualList;
-import ui.controls.form.DefForm;
-import ui.controls.form.MultiLine;
+//# 
+//# package Statistic;
+//# 
+//# import Client.Config;
+//# import Client.Roster;
+//# import Client.StaticData;
+//# import Menu.MenuCommand;
+//# import locale.SR;
+//# import ui.VirtualList;
+//# import ui.controls.form.DefForm;
+//# import ui.controls.form.MultiLine;
+//# import util.StringUtils;
+//# import images.RosterIcons;
+//# 
+//# /**
+//#  *
+//#  * @author ad
+//#  */
+//# public class StatsWindow
+//#         extends DefForm {
+//# 
+//#     
+//#     Stats st=Stats.getInstance();
+//#     
+//#     public MenuCommand cmdClear = new MenuCommand(SR.MS_CLEAR, MenuCommand.SCREEN, 2, RosterIcons.ICON_CLEAR);
 //#ifdef CLIPBOARD
-//# import util.ClipBoard;
-//#endif
-import util.StringUtils;
-import images.RosterIcons;
-
-/**
- *
- * @author ad
- */
-public class StatsWindow
-        extends DefForm {
-
-    
-    Stats st=Stats.getInstance();
-    
-    public MenuCommand cmdClear = new MenuCommand(SR.MS_CLEAR, MenuCommand.SCREEN, 2, RosterIcons.ICON_CLEAR);
-//#ifdef CLIPBOARD
-//#     ClipBoard clipboard = null;
 //#     MenuCommand cmdCopy      = new MenuCommand(SR.MS_COPY, MenuCommand.SCREEN, 1, RosterIcons.ICON_COPY);
 //#     MenuCommand cmdCopyPlus  = new MenuCommand("+ "+SR.MS_COPY, MenuCommand.SCREEN, 2, RosterIcons.ICON_COPYPLUS);
 //#endif
-    
-    MultiLine item=null;    
-
-    /**
-     * Creates a new instance of StatsWindow
-     */
-    public StatsWindow() {
-        super(SR.MS_STATS);
-        item=new MultiLine(SR.MS_ALL, StringUtils.getSizeString(st.getAllTraffic())); item.selectable=true; itemsList.addElement(item);
-
-        item=new MultiLine(SR.MS_PREVIOUS_, StringUtils.getSizeString(st.getLatest())); item.selectable=true; itemsList.addElement(item);
-        
-        item=new MultiLine(SR.MS_CURRENT, StringUtils.getSizeString(Stats.getCurrentTraffic())); item.selectable=true; itemsList.addElement(item);
+//#     
+//#     MultiLine item=null;    
+//# 
+//#     /**
+//#      * Creates a new instance of StatsWindow
+//#      */
+//#     public StatsWindow() {
+//#         super(SR.MS_STATS);
+//#         item=new MultiLine(SR.MS_ALL, StringUtils.getSizeString(st.getAllTraffic())); item.selectable=true; itemsList.addElement(item);
+//# 
+//#         item=new MultiLine(SR.MS_PREVIOUS_, StringUtils.getSizeString(st.getLatest())); item.selectable=true; itemsList.addElement(item);
+//#         
+//#         item=new MultiLine(SR.MS_CURRENT, StringUtils.getSizeString(Stats.getCurrentTraffic())); item.selectable=true; itemsList.addElement(item);
 //#if ZLIB
 //#         if (StaticData.getInstance().roster.isLoggedIn()) {
 //#             item=new MultiLine(SR.MS_COMPRESSION, StaticData.getInstance().theStream.getStreamStats()); item.selectable=true; itemsList.addElement(item);
@@ -81,32 +77,31 @@ public class StatsWindow
 //#             item=new MultiLine(SR.MS_CONNECTED, StaticData.getInstance().theStream.getConnectionData()); item.selectable=true; itemsList.addElement(item);
 //#         }
 //#endif
-        item=new MultiLine(SR.MS_CONN, Integer.toString(st.getSessionsCount())); item.selectable=true; itemsList.addElement(item);
-                
-        item=new MultiLine(SR.MS_STARTED, Roster.startTime); item.selectable=true; itemsList.addElement(item);
-    }
-
-    public void commandState() {
-        menuCommands.removeAllElements();
+//#         item=new MultiLine(SR.MS_CONN, Integer.toString(st.getSessionsCount())); item.selectable=true; itemsList.addElement(item);
+//#                 
+//#         item=new MultiLine(SR.MS_STARTED, Roster.startTime); item.selectable=true; itemsList.addElement(item);
+//#     }
+//# 
+//#     public void commandState() {
+//#         menuCommands.removeAllElements();
 //#ifdef CLIPBOARD
 //#             if (Config.getInstance().useClipBoard) {
-//#                 clipboard = ClipBoard.getInstance();
 //#                 addMenuCommand(cmdCopy);
-//#                 if (!clipboard.isEmpty())
+//#                 if (!sd.clipboard.isEmpty())
 //#                     addMenuCommand(cmdCopyPlus);
 //#             }
 //#endif        
-        addMenuCommand(cmdClear);
-    }
-
-    public void menuAction(MenuCommand command, VirtualList displayable) {
+//#         addMenuCommand(cmdClear);
+//#     }
+//# 
+//#     public void menuAction(MenuCommand command, VirtualList displayable) {
 //#ifdef CLIPBOARD
 //#         if (command == cmdCopy) {
 //#             try {
 //#                 String str = ((MultiLine) getFocusedObject()).toString();
 //#                 if (str == null)
 //#                     str = "";
-//#                 clipboard.setClipBoard(str);
+//#                 sd.clipboard.setClipBoard(str);
 //#             } catch (Exception e) {/*no messages*/}
 //#         }
 //# 
@@ -115,30 +110,28 @@ public class StatsWindow
 //#                 String str = ((MultiLine) getFocusedObject()).toString();
 //#                 if (str == null)
 //#                     str = "";
-//#                 str  = clipboard.getClipBoard() + "\n\n" + str;
-//# 
-//#                 clipboard.setClipBoard(str);
+//#                 sd.clipboard.append(str);
 //#             } catch (Exception e) {/*no messages*/}
 //#         }
 //#endif
-        if (command==cmdClear) {
-            st.saveToStorage(true);
-            cmdCancel();
-        }
-        super.menuAction(command, displayable);
-    }
-
-    public boolean doUserKeyAction(int command_id) {
-        switch (command_id) {
+//#         if (command==cmdClear) {
+//#             st.saveToStorage(true);
+//#             cmdCancel();
+//#         }
+//#         super.menuAction(command, displayable);
+//#     }
+//# 
+//#     public boolean doUserKeyAction(int command_id) {
+//#         switch (command_id) {
 //#ifdef POPUPS
 //#             case 4:
 //#                 destroyView();
 //#                 return true;
 //#endif
-        }
-
-        return super.doUserKeyAction(command_id);
-    }
-}
-
+//#         }
+//# 
+//#         return super.doUserKeyAction(command_id);
+//#     }
+//# }
+//# 
 //#endif

@@ -28,6 +28,7 @@
 package ui.controls.form;
 
 import Client.Config;
+import Client.StaticData;
 import io.NvStorage;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -40,10 +41,7 @@ import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.TextBox;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
-//#ifdef CLIPBOARD
-//# import ui.VirtualCanvas;
-//# import util.ClipBoard;
-//#endif
+import ui.VirtualCanvas;
 import ui.VirtualList;
 
 /**
@@ -65,7 +63,6 @@ public class EditBox implements CommandListener {
     private String caption;
     
 //#ifdef CLIPBOARD
-//#     private ClipBoard clipboard;
 //#     private Command cmdCopy = new Command(SR.MS_COPY, Command.SCREEN, 3);
 //#     private Command cmdCopyPlus = new Command("+ "+SR.MS_COPY, Command.SCREEN, 4);
 //#     private Command cmdPasteText=new Command(SR.MS_PASTE, Command.SCREEN, 5);
@@ -77,9 +74,8 @@ public class EditBox implements CommandListener {
         t=new TextBox(SR.MS_EDIT, text, 500, boxType);
 //#ifdef CLIPBOARD
 //#         if (Config.getInstance().useClipBoard) {
-//#             clipboard=ClipBoard.getInstance();
 //#             t.addCommand(cmdCopy);
-//#             if (!clipboard.isEmpty()) {
+//#             if (!StaticData.getInstance().clipboard.isEmpty()) {
 //#                 t.addCommand(cmdCopyPlus);
 //#                 t.addCommand(cmdPasteText);
 //#             }
@@ -112,8 +108,8 @@ public class EditBox implements CommandListener {
 //#ifdef CLIPBOARD
 //#         if (c == cmdCopy) {
 //#             try {
-//#                clipboard.setClipBoard(text);
-//#                 if (!clipboard.isEmpty()) {
+//#                StaticData.getInstance().clipboard.setClipBoard(text);
+//#                 if (!StaticData.getInstance().clipboard.isEmpty()) {
 //#                     t.addCommand(cmdCopyPlus);
 //#                     if (Config.getInstance().phoneManufacturer == Config.SONYE) 
 //#                         if (Config.getPlatformName().indexOf("JP-8.4") > -1)
@@ -124,15 +120,12 @@ public class EditBox implements CommandListener {
 //#         }
 //#         if (c==cmdCopyPlus) {
 //#             try {
-//#                 StringBuffer clipstr=new StringBuffer(clipboard.getClipBoard()).append("\n").append("\n").append(text);
-//#                 
-//#                 clipboard.setClipBoard(clipstr.toString());
-//#                 clipstr=null;
+//#                 StaticData.getInstance().clipboard.append(text);                
 //#             } catch (Exception e) {/*no messages*/}
 //#             return;
 //#         }
 //#         if (c==cmdPasteText) {
-//#             t.insert(clipboard.getClipBoard(), getCaretPos()); 
+//#             t.insert(StaticData.getInstance().clipboard.getClipBoard(), getCaretPos()); 
 //#             return;
 //#         }
 //#endif

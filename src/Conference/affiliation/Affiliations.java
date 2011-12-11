@@ -38,9 +38,6 @@ import locale.SR;
 import ui.MainBar;
 import ui.controls.form.DefForm;
 import Menu.MenuCommand;
-//#ifdef CLIPBOARD
-//# import util.ClipBoard;
-//#endif
 import ui.VirtualList;
 
 /**
@@ -62,7 +59,6 @@ public class Affiliations
     private MenuCommand cmdNew    = new MenuCommand (SR.MS_NEW_JID, MenuCommand.SCREEN, 2, RosterIcons.ICON_REGISTER_INDEX );
 //#ifdef CLIPBOARD
 //#     private MenuCommand cmdCopy   = new MenuCommand(SR.MS_COPY, MenuCommand.SCREEN, 3, RosterIcons.ICON_COPY);
-//#     private ClipBoard clipboard; 
 //#endif
     
     /** Creates a new instance of AffiliationList
@@ -102,7 +98,7 @@ public class Affiliations
 //#             try {
 //#                 AffiliationItem item=(AffiliationItem)getFocusedObject();
 //#                 if (item.jid!=null)
-//#                     clipboard.setClipBoard(item.jid);
+//#                     sd.clipboard.setClipBoard(item.jid);
 //#             } catch (Exception e) {/*no messages*/}
 //#         }
 //#endif     
@@ -169,7 +165,6 @@ public class Affiliations
         addMenuCommand(cmdNew);
 //#ifdef CLIPBOARD
 //#         if (Config.getInstance().useClipBoard) {
-//#             clipboard=ClipBoard.getInstance();
 //#             addMenuCommand(cmdCopy);
 //#         }
 //#endif

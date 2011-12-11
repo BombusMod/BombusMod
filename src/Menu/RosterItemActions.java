@@ -63,9 +63,6 @@ import com.alsutton.jabber.datablocks.Presence;
 
 import java.util.Enumeration;
 import locale.SR;
-//#ifdef CLIPBOARD
-//# import util.ClipBoard;
-//#endif
 
 import VCard.VCard;
 import VCard.VCardEdit;
@@ -79,9 +76,6 @@ import VCard.VCardView;
 public class RosterItemActions extends Menu {
 
     Object item;
-//#ifdef CLIPBOARD
-//#     private ClipBoard clipboard = ClipBoard.getInstance();
-//#endif
     
     RosterIcons menuIcons = RosterIcons.getInstance();
     
@@ -121,7 +115,7 @@ public class RosterItemActions extends Menu {
 //#endif
 //#ifdef CLIPBOARD
 //#             if (cf.useClipBoard) {
-//#                 if (!clipboard.isEmpty())
+//#                 if (!sd.clipboard.isEmpty())
 //#                     addItem(SR.MS_SEND_BUFFER,914, RosterIcons.ICON_SEND_BUFFER);
 //#                 addItem(SR.MS_COPY_JID,892, RosterIcons.ICON_COPY_JID);
 //#             }
@@ -421,13 +415,13 @@ public class RosterItemActions extends Menu {
 //#                      jid = ((ConferenceGroup)g).jid.toString();
 //# 
 //#                     if (jid != null) {
-//#                         clipboard.setClipBoard(jid);
+//#                         sd.clipboard.setClipBoard(jid);
 //#                     }
 //#                     break;
 //#                 case 993:
 //#                     String topic = ((ConferenceGroup)g).confContact.statusString;
 //#                     if (topic != null) {
-//#                         clipboard.setClipBoard(topic);
+//#                         sd.clipboard.setClipBoard(topic);
 //#                     }
 //#                     break;
 //#endif
@@ -455,7 +449,7 @@ public class RosterItemActions extends Menu {
                 break;
 //#ifdef CLIPBOARD
 //#                 case 914: //send message from buffer
-//#                     String body2=clipboard.getClipBoard();
+//#                     String body2 = sd.clipboard.getClipBoard();
 //#                     if (body2.length()==0)
 //#                         return;
 //# 
@@ -584,7 +578,7 @@ public class RosterItemActions extends Menu {
 //#                     case 892: //Copy JID
 //#                         try {
 //#                             if (mc.realJid!=null)
-//#                                 clipboard.setClipBoard(mc.realJid.toString());
+//#                                 sd.clipboard.setClipBoard(mc.realJid.toString());
 //#                         } catch (Exception e) {}
 //#                         break;
 //#endif

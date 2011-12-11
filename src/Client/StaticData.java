@@ -32,6 +32,7 @@ import Account.Account;
 //# import AutoTasks.AutoTask;
 //#endif
 import com.alsutton.jabber.JabberStream;
+import util.ClipBoardIO;
 /**
  *
  * @author Eugene Stahov
@@ -42,7 +43,8 @@ public class StaticData {
     
     public Roster roster;
     public JabberStream theStream;
-    
+   
+    public ClipBoardIO clipboard;
     
     public Account account;
 
@@ -65,9 +67,11 @@ public class StaticData {
     public long getTrafficIn() { return trafficIn; }
     public void updateTrafficOut() { trafficOut=System.currentTimeMillis(); }
     public long getTrafficOut() { return trafficOut; }
-    
+   
     /** Creates a new instance of StaticData */
-    private StaticData() { }
+    private StaticData() {
+        clipboard = ClipBoardIO.getInstance();
+    }
     
     public static StaticData getInstance() {
         if (sd == null) {

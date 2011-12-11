@@ -44,9 +44,6 @@ import locale.SR;
 import ui.MainBar;
 import java.util.*;
 import Menu.MenuCommand;
-//#ifdef CLIPBOARD
-//# import util.ClipBoard;
-//#endif
 //#ifdef ARCHIVE
 //# import Archive.MessageArchive;
 //#endif
@@ -114,9 +111,6 @@ public class ContactMessageList extends MessageList {
 //#     Vector currentJuickCommands = new Vector();
 //# 
 //#endif    
-//#ifdef CLIPBOARD    
-//#     private ClipBoard clipboard=ClipBoard.getInstance();
-//#endif
     
     protected boolean on_end;
     private boolean composing=true;
@@ -219,7 +213,7 @@ public class ContactMessageList extends MessageList {
 //#endif
         }
 //#ifdef CLIPBOARD
-//#         if (cf.useClipBoard && !clipboard.isEmpty()) {
+//#         if (cf.useClipBoard && !sd.clipboard.isEmpty()) {
 //#             addMenuCommand(cmdSendBuffer);
 //#         }
 //#endif
@@ -440,7 +434,7 @@ public class ContactMessageList extends MessageList {
 //#ifdef CLIPBOARD
 //#         if (c==cmdSendBuffer) {
 //#             String from=sd.account.toString();
-//#             String body=clipboard.getClipBoard();
+//#             String body=sd.clipboard.getClipBoard();
 //#             //String subj=null;
 //#             
 //#             String id=String.valueOf((int) System.currentTimeMillis());

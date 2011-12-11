@@ -38,17 +38,12 @@ import ui.VirtualCanvas;
 import ui.VirtualElement;
 import ui.VirtualList;
 import ui.controls.form.DefForm;
-//#ifdef CLIPBOARD
-//# import util.ClipBoard;
-//#endif
 
 public abstract class MessageList extends DefForm
     {
     
     protected final Vector messages;
 //#ifdef CLIPBOARD
-//#     private ClipBoard clipboard=ClipBoard.getInstance();
-//#     
 //#     protected MenuCommand cmdCopy = new MenuCommand(SR.MS_COPY, MenuCommand.SCREEN, 20, RosterIcons.ICON_COPY);
 //#     protected MenuCommand cmdCopyPlus = new MenuCommand("+ "+SR.MS_COPY, MenuCommand.SCREEN, 30, RosterIcons.ICON_COPYPLUS);
 //#endif
@@ -66,9 +61,9 @@ public abstract class MessageList extends DefForm
         cf = Config.getInstance();
         
 //#ifdef SMILES
-        smiles=cf.smiles;
+//#         smiles=cf.smiles;
 //#else
-//#         smiles=false;
+        smiles=false;
 //#endif
         enableListWrapping(false);
 	
@@ -131,11 +126,11 @@ public abstract class MessageList extends DefForm
 
 //#ifdef CLIPBOARD
 //#         if (c == cmdCopy) {
-//#             clipboard.set(mi.msg);
+//#             sd.clipboard.set(mi.msg);
 //#         }
 //# 
 //#         if (c == cmdCopyPlus) {
-//#             clipboard.append(mi.msg);
+//#             sd.clipboard.append(mi.msg);
 //#         }
 //#endif
     }
@@ -144,7 +139,7 @@ public abstract class MessageList extends DefForm
 //#ifdef CLIPBOARD
 //#         if (cf.useClipBoard) {
 //#             addMenuCommand(cmdCopy);
-//#             if (!clipboard.isEmpty())
+//#             if (!sd.clipboard.isEmpty())
 //#                 addMenuCommand(cmdCopyPlus);
 //#         }
 //#endif
@@ -199,9 +194,9 @@ public abstract class MessageList extends DefForm
             item.toggleSmiles(this);
 //#ifdef POPUPS
 //#ifdef SMILES
-            if (!item.smilesEnabled() && cf.hideTimestamps) {
-                sd.roster.setWobble(2, null, item.getTipString());
-            }
+//#             if (!item.smilesEnabled() && cf.hideTimestamps) {
+//#                 sd.roster.setWobble(2, null, item.getTipString());
+//#             }
 //#endif
 //#endif
         }
@@ -210,9 +205,9 @@ public abstract class MessageList extends DefForm
     public void doKeyAction(int key) {
         switch(key) {
 //#ifdef SMILES
-            case VirtualCanvas._KEY_STAR:
-                toogleSmiles();
-                return;
+//#             case VirtualCanvas._KEY_STAR:
+//#                 toogleSmiles();
+//#                 return;
 //#endif
         }
 
@@ -222,9 +217,9 @@ public abstract class MessageList extends DefForm
     public boolean doUserKeyAction(int command_id) {
         switch (command_id) {
 //#ifdef SMILES
-            case 20:
-                toogleSmiles();
-                return true;
+//#             case 20:
+//#                 toogleSmiles();
+//#                 return true;
 //#endif
         }
 
