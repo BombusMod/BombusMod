@@ -1289,7 +1289,7 @@ public abstract class VirtualList {
     public void setInfo() {
         commandState();        
         if (infobar == null) return;
-        if (VirtualCanvas.getInstance().rw != null && VirtualCanvas.getInstance().rw.isActive()) {
+        if (VirtualCanvas.getInstance().rw.isActive()) {
             infobar.setElementAt(SR.MS_OK, 1);
             infobar.setElementAt(SR.MS_CANCEL, 3);
             return;
@@ -1329,7 +1329,7 @@ public abstract class VirtualList {
     public void commandState() {};
 
     public void doLeftAction() {
-        if (VirtualCanvas.getInstance().rw != null && VirtualCanvas.getInstance().rw.isActive()) {
+        if (VirtualCanvas.getInstance().rw.isActive()) {
             VirtualCanvas.getInstance().reconnectYes();
         } else {
             touchLeftPressed();
@@ -1337,7 +1337,7 @@ public abstract class VirtualList {
     }
 
     public void doRightAction() {
-        if (VirtualCanvas.getInstance().rw != null && VirtualCanvas.getInstance().rw.isActive()) {
+        if (VirtualCanvas.getInstance().rw.isActive()) {
             VirtualCanvas.getInstance().reconnectNo();
         } else {
             touchRightPressed();

@@ -69,7 +69,7 @@ public class InfoWindow
         name.selectable = true;
         itemsList.addElement(name);
 
-        description = new MultiLine("Copyright (c) 2005-2011", "Eugene Stahov (evgs),\nDaniel Apatin (ad)\n \nDistributed under GNU Public License (GPL) v2.0");
+        description = new MultiLine("Copyright (c) 2005-2012", "Eugene Stahov (evgs),\nDaniel Apatin (ad)\n \nDistributed under GNU Public License (GPL) v2.0");
         description.selectable = true;
         itemsList.addElement(description);
 

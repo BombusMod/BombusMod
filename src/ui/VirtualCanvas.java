@@ -76,7 +76,7 @@ public class VirtualCanvas extends Canvas implements CommandListener{
 
     protected StaticData sd = StaticData.getInstance();
 
-    public ReconnectWindow rw;
+    public final ReconnectWindow rw;
     
 //#ifdef BACK_IMAGE
 //#     public Image img;
@@ -106,6 +106,7 @@ public class VirtualCanvas extends Canvas implements CommandListener{
 //#         } catch (Exception e) {
 //#         }
 //#endif
+        rw = new ReconnectWindow();
 
     }
     
@@ -176,8 +177,7 @@ public class VirtualCanvas extends Canvas implements CommandListener{
 //#             e.printStackTrace();
 //#endif
         }
-        if (rw != null)
-            rw.draw(graphics, VirtualList.width, VirtualList.height);
+        rw.draw(graphics, VirtualList.width, VirtualList.height);
     }
 
     protected final void keyPressed(int rawKeyCode) {

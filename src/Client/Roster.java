@@ -2002,7 +2002,6 @@ public class Roster
         errorLog(topBar + "\n" + error.toString());
 
         setRotator();
-        VirtualCanvas.getInstance().rw = new ReconnectWindow();
         VirtualCanvas.getInstance().rw.startReconnect();
     }
 
