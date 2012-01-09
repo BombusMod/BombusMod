@@ -670,90 +670,93 @@ class KeyRepeatTimer extends TimerTask {
 
 //#if (USE_ROTATOR)    
 //# class TimerTaskRotate extends TimerTask {
+//# 
 //#     private int scrollLen;
 //#     private int scroll; //wait before scroll * sleep
-//#     
 //#     private boolean scrollline;
-//#     
 //#     private VirtualList attachedList;
-//#     
 //#     private static TimerTaskRotate instance;
-//# 
 //#     private static Timer timer;
 //# 
 //#     public TimerTaskRotate() {
 //#         timer = new Timer();
 //#         timer.schedule(this, 250, 250);
 //#     }
-//#     
+//# 
 //#     public static void startRotate(int max, VirtualList list) {
-//#         
-//#         if (instance==null)  {
-//#             instance=new TimerTaskRotate();            
+//# 
+//#         if (instance == null) {
+//#             System.out.println("new timer");
+//#             instance = new TimerTaskRotate();
 //#         }
-//#         
-//#         if (max<0) {
+//# 
+//#         if (max < 0) {
 //#             //instance.destroyTask();
-//#             list.offset=0;
+//#             list.offset = 0;
 //#             return;
 //#         }
-//#         
+//# 
 //#         synchronized (instance) {
-//#             list.offset=0;
-//#             instance.scrollLen=max;
-//#             instance.scrollline=(max>0);
-//#             instance.attachedList=list;
-//#             instance.scroll   = 4;
+//#             list.offset = 0;
+//#             instance.scrollLen = max;
+//#             instance.scrollline = (max > 0);
+//#             instance.attachedList = list;
+//#             instance.scroll = 1;
 //#         }
 //#     }
-//#     
-//#     public void run() {
 //# 
-//#         synchronized (this) {
-//#             if (scroll == 0) {
-//#                 if (instance.scroll()) {
-//#                     try {
-//#                         attachedList.redraw();
-//#                     } catch (Exception e) {
-//#                         instance = null;
-//#                     }
+//#     public void run() {
+//#         System.out.println("loop");
+//# 
+//# 
+//#         if (scroll == 0) {
+//#             if (instance.scroll()) {
+//#                 if (attachedList != null) {
+//#                     attachedList.redraw();
 //#                 }
 //#             } else {
-//#                 scroll--;
+//#                 timer.cancel();
+//#                 timer = null;
+//#                 instance = null;
 //#             }
-//# /* TODO: remove
-//#             if (VirtualList.reconnectRedraw) {
-//#                 VirtualList.reconnectRedraw = false;
-//#                 try {
-//#                     attachedList.redraw();
-//#                 } catch (Exception e) {
-//#                     instance = null;
-//#                 }
-//#             }
-//# */
+//#         } else {
+//#             scroll--;
 //#         }
+//#         /* TODO: remove
+//#         if (VirtualList.reconnectRedraw) {
+//#         VirtualList.reconnectRedraw = false;
+//#         try {
+//#         attachedList.redraw();
+//#         } catch (Exception e) {
+//#         instance = null;
+//#         }
+//#         }
+//#          */
 //# 
 //#     }
 //# 
 //#     public boolean scroll() {
 //#         synchronized (this) {
-//#             if (scrollline==false || attachedList==null || scrollLen<0)
+//#             if (scrollline == false || attachedList == null || scrollLen < 0) {
 //#                 return false;
-//#             if (attachedList.offset>=scrollLen) {
-//#                 scrollLen=-1; attachedList.offset=0; scrollline = false;
-//#             } else 
-//#                 attachedList.offset+=14;
+//#             }
+//#             if (attachedList.offset >= scrollLen) {
+//#                 scrollLen = -1;
+//#                 attachedList.offset = 0;
+//#                 scrollline = false;
+//#             } else {
+//#                 attachedList.offset += 14;
+//#             }
 //# 
 //#             return true;
 //#         }
 //#     }
-//#         
 //#     /*
 //#     public void destroyTask(){
-//#         synchronized (this) { 
-//#             if (attachedList!=null) 
-//#                 attachedList.offset=0;
-//#         }
+//#     synchronized (this) { 
+//#     if (attachedList!=null) 
+//#     attachedList.offset=0;
+//#     }
 //#     }*/
 //# }
 //#endif

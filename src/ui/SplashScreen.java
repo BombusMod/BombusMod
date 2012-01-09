@@ -41,7 +41,7 @@ import javax.microedition.lcdui.Image;
 import ui.controls.Progress;
 import ui.controls.form.DefForm;
 //#ifdef AUTOSTATUS
-import Client.AutoStatus;
+//# import Client.AutoStatus;
 //#endif
 
 /**
@@ -140,9 +140,9 @@ public final class SplashScreen extends DefForm implements VirtualElement {
     public void setExit(VirtualList nextDisplayable) {
         parentView = nextDisplayable;
     }
-
+    
     public int getVHeight() {
-        return getListHeight();
+        return winHeight;
     }
 
     public int getVWidth() {
@@ -236,7 +236,7 @@ public final class SplashScreen extends DefForm implements VirtualElement {
         }
         splashimg = null;
 //#ifdef AUTOSTATUS
-        AutoStatus.getInstance().appUnlocked();
+//#         AutoStatus.getInstance().appUnlocked();
 //#endif
         System.gc();
         super.destroyView();

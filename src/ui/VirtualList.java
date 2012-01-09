@@ -301,10 +301,7 @@ public abstract class VirtualList {
         itemLayoutY=layout;
         return itemLayoutY.length;
     }
-    public int getListHeight() {
-        return winHeight;
-    }
-        
+            
     protected int getElementIndexAt(int yPos) {
         int end = getItemCount() - 1;
         if (end < 0) {
@@ -326,7 +323,7 @@ public abstract class VirtualList {
     }
     
     public int win_top; // верхняя граница окна относительно списка
-    private int winHeight; // отображаемый размер списка
+    public int winHeight; // отображаемый размер списка
     
     protected int offset; // счётчик автоскроллинга
     
@@ -398,11 +395,7 @@ public abstract class VirtualList {
         infobar.addRAlign();
         infobar.addElement(null); //3
 
-        stringHeight = FontCache.getFont(false, FontCache.roster).getHeight();
-        
-//#if USE_ROTATOR
-//#         TimerTaskRotate.startRotate(0, this);
-//#endif
+        stringHeight = FontCache.getFont(false, FontCache.roster).getHeight();        
     }
     
     public void show() {

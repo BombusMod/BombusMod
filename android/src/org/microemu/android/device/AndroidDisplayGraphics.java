@@ -91,7 +91,7 @@ public class AndroidDisplayGraphics extends javax.microedition.lcdui.Graphics {
         reset(this.canvas);
     }
 	
-	public void reset(Canvas canvas) {
+	public final void reset(Canvas canvas) {
 	    this.canvas = canvas;
 	    
 		Rect tmp = this.canvas.getClipBounds();

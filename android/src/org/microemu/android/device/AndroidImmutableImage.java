@@ -46,12 +46,12 @@ public class AndroidImmutableImage extends javax.microedition.lcdui.Image {
 
 	@Override
 	public int getWidth() {
-		return bitmap.getWidth();
+		return bitmap == null? 0: bitmap.getWidth();
 	}
 	
 	@Override
 	public int getHeight() {
-		return bitmap.getHeight();
+		return bitmap == null? 0: bitmap.getHeight();
 	}
 
 	@Override
