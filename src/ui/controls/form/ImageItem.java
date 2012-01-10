@@ -84,11 +84,12 @@ public class ImageItem
     
     public void drawItem(Graphics g, int ofs, boolean sel) {
         screenWidth=g.getClipWidth();
-
+	if (img != null) {
         if (!collapsed) {
             g.drawImage(img, screenWidth/2, 0, Graphics.TOP|Graphics.HCENTER);
         }
 		resizeImage();
+	}
 		VirtualCanvas.getInstance().repaint();
         super.drawItem(g, ofs, sel);
     }
