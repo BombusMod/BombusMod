@@ -83,8 +83,8 @@ public class ImageItem
     }
     
     public void drawItem(Graphics g, int ofs, boolean sel) {
-        screenWidth=g.getClipWidth();
-	if (img != null) {
+        screenWidth=g.getClipWidth();        
+        if (img != null && img.getWidth() > 0) {            
         if (!collapsed) {
             g.drawImage(img, screenWidth/2, 0, Graphics.TOP|Graphics.HCENTER);
         }
