@@ -26,8 +26,9 @@
  */
 
 package Client;
-
+//#ifndef WMUC
 import Conference.ConferenceGroup;
+//#endif
 import java.util.*;
 import locale.SR;
 

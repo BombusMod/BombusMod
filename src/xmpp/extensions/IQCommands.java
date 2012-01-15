@@ -32,8 +32,10 @@ package xmpp.extensions;
 import Client.Contact;
 import Client.Jid;
 import Client.StaticData;
+//#ifndef WMUC
 import Conference.ConferenceGroup;
 import Conference.MucContact;
+//#endif
 import ServiceDiscovery.DiscoForm;
 import ServiceDiscovery.ServiceDiscovery;
 import com.alsutton.jabber.JabberBlockListener;
@@ -113,13 +115,13 @@ public class IQCommands implements JabberBlockListener {
                     status.setAttribute("jid", sd.roster.selfContact().getJid().toString());
                     status.setAttribute("node", "set-status");
                     status.setAttribute("name", "Set Status");
-
+//#ifndef WMUC
                     //http://jabber.org/protocol/rc#leave-groupchats //4.5 Leave Groupchats 
                     JabberDataBlock leaveChats=query.addChild("item", "");
                     leaveChats.setAttribute("jid", sd.roster.selfContact().getJid().toString());
                     leaveChats.setAttribute("node", "leave-groupchats");
                     leaveChats.setAttribute("name", "Leave Groupchats");
-
+//#endif
                     sd.theStream.send(reply);
 
                     return BLOCK_PROCESSED;
@@ -173,7 +175,9 @@ public class IQCommands implements JabberBlockListener {
                     
                     return BLOCK_PROCESSED;
                 }
-            } else if (command.getAttribute("node").equals("leave-groupchats")) {
+            } 
+//#ifndef WMUC            
+            else if (command.getAttribute("node").equals("leave-groupchats")) {
                 if (command.getAttribute("sessionid")==null) {
                     processGCRequest(data);
                     return BLOCK_PROCESSED;
@@ -217,6 +221,7 @@ public class IQCommands implements JabberBlockListener {
                     return BLOCK_PROCESSED;
                 }
             }
+//#endif            
         }
         return BLOCK_REJECTED;
     }
@@ -266,7 +271,7 @@ public class IQCommands implements JabberBlockListener {
         sd.theStream.send(reply);
         //System.out.println(">>> "+reply.toString());
     }
-    
+//#ifndef WMUC    
     private void processGCRequest(JabberDataBlock data) {
         Iq reply=new Iq(data.getAttribute("from"), Iq.TYPE_RESULT, data.getAttribute("id"));
 
@@ -306,6 +311,7 @@ public class IQCommands implements JabberBlockListener {
         sd.theStream.send(reply);
         //System.out.println(">>> "+reply.toString());
     }
+//#endif    
     
     private static final String[] statuses = {"online", "chat", "away", "xa", "dnd", "invisible", "offline"};
     private static final String[] statusesDesc = {"Online", "Chat", "Away", "Extended Away", "Do Not Disturb", "Invisible", "Offline"};

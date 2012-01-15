@@ -9,10 +9,10 @@
 
 package util;
 //#ifndef WMUC
-import Client.Msg;
 import Conference.ConferenceGroup;
 import Conference.MucContact;
 //#endif
+import Client.Msg;
 import com.alsutton.jabber.datablocks.Presence;
 import java.io.DataInputStream;
 import java.io.IOException;

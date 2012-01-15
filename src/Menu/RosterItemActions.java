@@ -406,6 +406,7 @@ public class RosterItemActions extends Menu {
                     sd.theStream.send(IqTimeReply.query(c.getJid().toString()));
                     break;
 //#ifdef CLIPBOARD
+//#ifndef WMUC                    
 //#                 case 892: //Copy JID
 //#                     String jid = null;
 //#                     if (isContact)
@@ -423,6 +424,7 @@ public class RosterItemActions extends Menu {
 //#                         sd.clipboard.setClipBoard(topic);
 //#                     }
 //#                     break;
+//#endif                    
 //#endif
                 case 893: //ping
                     try {

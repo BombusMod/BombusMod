@@ -12,7 +12,9 @@ import Client.Msg;
 import Client.NotInListFilter;
 import Client.Roster;
 import Client.StaticData;
+//#ifndef WMUC
 import Conference.MucContact;
+//#endif
 import com.alsutton.jabber.JabberBlockListener;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Presence;

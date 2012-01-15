@@ -1385,7 +1385,7 @@ public class Roster
                 }
                 
                 int mType = Msg.MESSAGE_TYPE_IN;
-                
+ //#ifndef WMUC               
                 if (groupchat) {
                     if (from.equals(groups.getConfGroup(new Jid(from)).jid.bareJid)) {
                         mType = Msg.MESSAGE_TYPE_SYSTEM;
@@ -1397,6 +1397,7 @@ public class Roster
                         from = from.substring(0, rp);
                     }
                 }
+//#endif                
 
                 Contact c = getContact(from, (cf.notInListDropLevel != NotInListFilter.DROP_MESSAGES_PRESENCES || groupchat
 //#ifndef WMUC
@@ -2599,10 +2600,12 @@ public class Roster
                 toggleOfflines();
                 return true;
             case 1:
+//#ifndef WMUC                
                 if (isLoggedIn()) {
                     new Bookmarks(null);
                 }
-                return true;
+//#endif                
+                return true;                
             case 3:
                 cmdActiveContacts();
                 return true;
