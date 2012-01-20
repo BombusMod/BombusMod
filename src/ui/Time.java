@@ -58,12 +58,12 @@ public class Time {
     }
     
     public static String timeLocalString(long date){
-        Calendar c=calDate(date);
+        c = calDate(date);
         return lz2(c.get(Calendar.HOUR_OF_DAY))+':'+lz2(c.get(Calendar.MINUTE));
      }
     
     public static String dateTimeLocalString(long date){
-        Calendar c=calDate(date);
+        c = calDate(date);
         return lz2(c.get(Calendar.HOUR_OF_DAY))+':'+lz2(c.get(Calendar.MINUTE))+':'+lz2(c.get(Calendar.SECOND));
      }
     
@@ -88,7 +88,7 @@ public class Time {
      }
     
     public static String dayLocalString(long date){
-        Calendar c=calDate(date);
+        c = calDate(date);
         return lz2(c.get(Calendar.DAY_OF_MONTH))+'.'+
                lz2(c.get(Calendar.MONTH)+1)+'.'+
                lz2(c.get(Calendar.YEAR) % 100)+" ";
@@ -146,12 +146,12 @@ public class Time {
     }
      
     public static int getHour(){
-        Calendar c=calDate(utcTimeMillis());
+        c = calDate(utcTimeMillis());
         return c.get(Calendar.HOUR_OF_DAY);
     }
      
     public static int getMin(){
-        Calendar c=calDate(utcTimeMillis());
+        c = calDate(utcTimeMillis());
         return c.get(Calendar.MINUTE);
     }
     

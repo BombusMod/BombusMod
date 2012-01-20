@@ -1159,14 +1159,16 @@ public abstract class VirtualList {
         setRotator();
     }
     
-    public boolean cursorInWindow(){
+    public boolean cursorInWindow() {
         int y1 = itemLayoutY[cursor] - win_top;
-        int y2 = itemLayoutY[cursor + 1] - win_top;
         if (y1 >= winHeight) {
             return false;
         }
-        if (y2 >= 0) {
-            return true;
+        if (itemLayoutY.length > cursor) {
+            int y2 = itemLayoutY[cursor + 1] - win_top;
+            if (y2 >= 0) {
+                return true;
+            }
         }
         return false;
     }
@@ -1282,10 +1284,12 @@ public abstract class VirtualList {
     public void setInfo() {
         commandState();        
         if (infobar == null) return;
-        if (VirtualCanvas.getInstance().rw.isActive()) {
-            infobar.setElementAt(SR.MS_OK, 1);
-            infobar.setElementAt(SR.MS_CANCEL, 3);
-            return;
+        if (VirtualCanvas.getInstance().rw != null) {
+            if (VirtualCanvas.getInstance().rw.isActive()) {
+                infobar.setElementAt(SR.MS_OK, 1);
+                infobar.setElementAt(SR.MS_CANCEL, 3);
+                return;
+            }
         }
         if (Config.getInstance().phoneManufacturer == Config.NOKIA && !Config.fullscreen)
             showTimeTraffic = true;
@@ -1322,7 +1326,8 @@ public abstract class VirtualList {
     public void commandState() {};
 
     public void doLeftAction() {
-        if (VirtualCanvas.getInstance().rw.isActive()) {
+        ReconnectWindow rw = VirtualCanvas.getInstance().rw;
+        if (rw != null && rw.isActive()) {
             VirtualCanvas.getInstance().reconnectYes();
         } else {
             touchLeftPressed();
@@ -1330,7 +1335,8 @@ public abstract class VirtualList {
     }
 
     public void doRightAction() {
-        if (VirtualCanvas.getInstance().rw.isActive()) {
+        ReconnectWindow rw = VirtualCanvas.getInstance().rw;
+        if (rw != null && rw.isActive()) {
             VirtualCanvas.getInstance().reconnectNo();
         } else {
             touchRightPressed();
