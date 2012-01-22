@@ -98,10 +98,14 @@
 //#             file.close();
 //#         } catch (IOException ex) {
 //#             try {
+//#ifdef DEBUG                
 //#                 ex.printStackTrace();
+//#endif                
 //#                 file.close();
 //#             } catch (IOException ex2) {
+//#ifdef DEBUG                
 //#                 ex2.printStackTrace();
+//#endif                
 //#             }
 //#         }
 //#         filename = null;
@@ -116,12 +120,11 @@
 //# 
 //#         byte[] bodyMessage = messages.getBytes();
 //# 
-//# // TODO: check this fork (for set filename).
 //#ifdef DETRANSLIT
 //#         filename = util.DeTranslit.getInstance().get_actual_filename(filename);
-//#else
-//#        filename = cf.msgPath+StringUtils.replaceBadChars(filename)+".txt";
 //#endif
+//#         filename = cf.msgPath + StringUtils.replaceBadChars(filename) + ".txt";
+//# 
 //#         file = FileIO.createConnection(filename);
 //#         try {
 //#             os = file.openOutputStream(0);

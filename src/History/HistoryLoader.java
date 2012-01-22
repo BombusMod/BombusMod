@@ -67,7 +67,6 @@
 //#     public HistoryLoader(String file, boolean smiles) {
 //#         this.smiles = smiles;
 //#         cf = Config.getInstance();
-//# // TODO: check this fork (for set fileName).
 //#ifdef DETRANSLIT
 //#         fileName = util.DeTranslit.getInstance().get_actual_filename(file);
 //#endif
