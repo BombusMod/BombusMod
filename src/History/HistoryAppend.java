@@ -23,9 +23,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-
 //#ifdef HISTORY
-//# 
 //# package History;
 //# 
 //# import Client.Config;
@@ -38,123 +36,121 @@
 //# import util.Strconv;
 //# 
 //# public class HistoryAppend {
-//#     
+//# 
 //#     /** Singleton */
 //#     private static HistoryAppend instance;
-//#     
+//# 
 //#     public static HistoryAppend getInstance() {
-//#         if (instance==null) instance=new HistoryAppend();
+//#         if (instance == null) {
+//#             instance = new HistoryAppend();
+//#         }
 //#         return instance;
 //#     }
-//#    
 //#     StaticData sd = StaticData.getInstance();
-//#     
-//#     /** Creates a new instance of PepListener */
-//#     private HistoryAppend() { }
-//#     
-//#     private Config cf=Config.getInstance();
-//#     private boolean convertToWin1251;
-//#     
-//#     private final static String MS="<m>";
-//#     private final static String ME="</m>";
-//#     
-//#     private final static String TS="<t>";
-//#     private final static String TE="</t>";
-//#     
-//#     private final static String FS="<f>";
-//#     private final static String FE="</f>";
-//#     
-//#     private final static String DS="<d>";
-//#     private final static String DE="</d>";
-//#     
-//#     private final static String SS="<s>";
-//#     private final static String SE="</s>";
-//#     
-//#     private final static String BS="<b>";
-//#     private final static String BE="</b>";
-//#     
-//#     private final static String RN="\r\n";
 //# 
-//#     public final static int MESSAGE_MARKER_OUT=1;
-//#     public final static int MESSAGE_MARKER_PRESENCE=2;
-//#     public final static int MESSAGE_MARKER_IN=3;
-//#     public final static int MESSAGE_MARKER_OTHER=0;
-//#     
+//#     /** Creates a new instance of PepListener */
+//#     private HistoryAppend() {
+//#     }
+//#     private Config cf = Config.getInstance();
+//#     private boolean convertToWin1251;
+//#     private final static String MS = "<m>";
+//#     private final static String ME = "</m>";
+//#     private final static String TS = "<t>";
+//#     private final static String TE = "</t>";
+//#     private final static String FS = "<f>";
+//#     private final static String FE = "</f>";
+//#     private final static String DS = "<d>";
+//#     private final static String DE = "</d>";
+//#     private final static String SS = "<s>";
+//#     private final static String SE = "</s>";
+//#     private final static String BS = "<b>";
+//#     private final static String BE = "</b>";
+//#     private final static String RN = "\r\n";
+//#     public final static int MESSAGE_MARKER_OUT = 1;
+//#     public final static int MESSAGE_MARKER_PRESENCE = 2;
+//#     public final static int MESSAGE_MARKER_IN = 3;
+//#     public final static int MESSAGE_MARKER_OTHER = 0;
 //#if FILE_IO
 //#     //private int filePos;
 //#     private FileIO file;
 //#     private OutputStream os;
 //#endif
-//#     
+//# 
 //#     public void addMessage(Msg m, String filename) {
-//#        convertToWin1251=cf.cp1251;
-//#        byte[] bodyMessage=createBody(m).getBytes();
+//#         convertToWin1251 = cf.cp1251;
+//#         byte[] bodyMessage = createBody(m).getBytes();
 //# 
-//# // TODO: check this fork (for set filename).
 //#ifdef DETRANSLIT
-//#        filename = util.DeTranslit.getInstance().get_actual_filename(filename);
+//#         filename = util.DeTranslit.getInstance().get_actual_filename(filename);
 //#endif
-//#        
-//#        filename = cf.msgPath+StringUtils.replaceBadChars(filename)+".txt";
+//#         filename = cf.msgPath + StringUtils.replaceBadChars(filename) + ".txt";
 //# 
-//#        file = FileIO.createConnection(filename);
-//#        System.out.println("fileio filename: " + filename);
+//#         file = FileIO.createConnection(filename);
 //#         try {
 //#             os = file.openOutputStream(0);
 //#             try {
 //#                 os.write(bodyMessage);
 //#                 //filePos+=bodyMessage.length;
-//#             } catch (IOException ex) { }
+//#             } catch (IOException ex) {
+//#             }
 //#             os.close();
 //#             os.flush();
 //#             file.close();
 //#         } catch (IOException ex) {
 //#             try {
+//#                 ex.printStackTrace();
 //#                 file.close();
-//#             } catch (IOException ex2) { }
+//#             } catch (IOException ex2) {
+//#                 ex2.printStackTrace();
+//#             }
 //#         }
-//#         filename=null;
-//#         bodyMessage=null;
+//#         filename = null;
+//#         bodyMessage = null;
 //#     }
-//#     
+//# 
 //#     public void addMessageList(String messages, String filename) {
-//#        convertToWin1251=cf.cp1251;
-//#        if (convertToWin1251) messages=Strconv.convUnicodeToCp1251(messages);
-//#        
-//#        byte[] bodyMessage=messages.getBytes();
+//#         convertToWin1251 = cf.cp1251;
+//#         if (convertToWin1251) {
+//#             messages = Strconv.convUnicodeToCp1251(messages);
+//#         }
+//# 
+//#         byte[] bodyMessage = messages.getBytes();
 //# 
 //# // TODO: check this fork (for set filename).
 //#ifdef DETRANSLIT
-//#        filename = util.DeTranslit.getInstance().get_actual_filename(filename);
+//#         filename = util.DeTranslit.getInstance().get_actual_filename(filename);
 //#else
 //#        filename = cf.msgPath+StringUtils.replaceBadChars(filename)+".txt";
 //#endif
-//#        file=FileIO.createConnection(filename);
+//#         file = FileIO.createConnection(filename);
 //#         try {
 //#             os = file.openOutputStream(0);
 //#             try {
 //#                 os.write(bodyMessage);
 //#                 //filePos+=bodyMessage.length;
-//#             } catch (IOException ex) { }
+//#             } catch (IOException ex) {
+//#             }
 //#             os.close();
 //#             os.flush();
 //#             file.close();
 //#         } catch (IOException ex) {
 //#             try {
 //#                 file.close();
-//#             } catch (IOException ex2) { }
+//#             } catch (IOException ex2) {
+//#             }
 //#         }
-//#         filename=null;
-//#         bodyMessage=null;
+//#         filename = null;
+//#         bodyMessage = null;
 //#     }
-//#     
+//# 
 //#     private String createBody(Msg m) {
 //#         String fromName = StaticData.getInstance().account.userName;
-//#         if (m.messageType != Msg.MESSAGE_TYPE_OUT)
+//#         if (m.messageType != Msg.MESSAGE_TYPE_OUT) {
 //#             fromName = m.from;
+//#         }
 //# 
 //#         StringBuffer body = new StringBuffer();
-//#         
+//# 
 //#         int marker = MESSAGE_MARKER_OTHER;
 //#         switch (m.messageType) {
 //#             case Msg.MESSAGE_TYPE_IN:
@@ -167,28 +163,13 @@
 //#                 marker = MESSAGE_MARKER_OUT;
 //#         }
 //# 
-//#         body.append(MS)
-//#             .append(TS)
-//#             .append(marker)
-//#             .append(TE)
-//#             .append(DS)
-//#             .append(m.getDayTime())
-//#             .append(DE)
-//#             .append(FS)
-//#             .append(StringUtils.escapeTags(fromName))
-//#             .append(FE);
+//#         body.append(MS).append(TS).append(marker).append(TE).append(DS).append(m.getDayTime()).append(DE).append(FS).append(StringUtils.escapeTags(fromName)).append(FE);
 //#         if (m.subject != null) {
-//#             body.append(SS)
-//#                 .append(StringUtils.escapeTags(m.subject))
-//#                 .append(SE);
+//#             body.append(SS).append(StringUtils.escapeTags(m.subject)).append(SE);
 //#         }
-//#         body.append(BS)
-//#             .append(StringUtils.escapeTags(m.body))
-//#             .append(BE)
-//#             .append(ME)
-//#             .append(RN);
+//#         body.append(BS).append(StringUtils.escapeTags(m.body)).append(BE).append(ME).append(RN);
 //# 
-//#         return (convertToWin1251)?Strconv.convUnicodeToCp1251(body.toString()):body.toString();
+//#         return (convertToWin1251) ? Strconv.convUnicodeToCp1251(body.toString()) : body.toString();
 //#     }
 //# }
 //# 

@@ -25,112 +25,112 @@
  */
 
 //#ifdef HISTORY
-
-package History;
-
-import Client.Config;
-import io.file.FileIO;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Vector;
-import util.StringUtils;
-import util.Strconv;
-
-public class HistoryStorage {
-    
-    private String history;
-    
-    private Config cf;
-
-    public final static int MESSAGE_MARKER_OUT=1;
-    public final static int MESSAGE_MARKER_PRESENCE=2;
-    public final static int MESSAGE_MARKER_IN=3;
-    public final static int MESSAGE_MARKER_OTHER=0;    
-    
-    public HistoryStorage(String filename) {
-        cf=Config.getInstance();
-// TODO: check this fork (for set filename).
+//# 
+//# package History;
+//# 
+//# import Client.Config;
+//# import io.file.FileIO;
+//# import java.io.IOException;
+//# import java.io.InputStream;
+//# import java.util.Vector;
+//# import util.StringUtils;
+//# import util.Strconv;
+//# 
+//# public class HistoryStorage {
+//#     
+//#     private String history;
+//#     
+//#     private Config cf;
+//# 
+//#     public final static int MESSAGE_MARKER_OUT=1;
+//#     public final static int MESSAGE_MARKER_PRESENCE=2;
+//#     public final static int MESSAGE_MARKER_IN=3;
+//#     public final static int MESSAGE_MARKER_OTHER=0;    
+//#     
+//#     public HistoryStorage(String filename) {
+//#         cf=Config.getInstance();
+//# // TODO: check this fork (for set filename).
 //#ifdef DETRANSLIT
-       filename = util.DeTranslit.getInstance().get_actual_filename(filename);
-//#else
-       filename=cf.msgPath+StringUtils.replaceBadChars(filename)+".txt";
+//#        filename = util.DeTranslit.getInstance().get_actual_filename(filename);
 //#endif
-       this.history = loadHistory(filename);
-   }
-    
-   private String loadHistory(String fileName) {
-        byte[] bodyMessage;
-        String archive="";
-        bodyMessage=readFile(fileName);
-
-        if (bodyMessage!=null) {
-            if (cf.cp1251) {
-                archive=Strconv.convCp1251ToUnicode(new String(bodyMessage, 0, bodyMessage.length));
-            } else {
-                archive=new String(bodyMessage, 0, bodyMessage.length);
-            }
-        }
-        return archive;
-   }
-
-    public Vector importData() {
-        Vector vector=new Vector();
-        if (history!=null) {
-            try {
-                int pos=0; int start_pos=0; int end_pos=0;
-                String type=null; String date=null; String from=null; String subj=null; String body=null; String tempstr=null;
-                
-                while (true) {
-                    type=null; date=null; from=null; subj=null; body=null; tempstr=null;
-                    start_pos=history.indexOf("<m>",pos);  end_pos=history.indexOf("</m>",start_pos);
-
-                    if (start_pos>-1) {
-                        tempstr=history.substring(start_pos+3, end_pos);
-                        type=findBlock(tempstr,"t"); date=findBlock(tempstr,"d");  from=findBlock(tempstr,"f");  subj=findBlock(tempstr,"s");  body=findBlock(tempstr,"b");                   
-                        
-                        if (Integer.parseInt(type)!=MESSAGE_MARKER_PRESENCE) {
-                            //System.out.println(type+" ["+date+"]"+from+": "+subj+" "+body+"\r\n");
-                            vector.insertElementAt(HistoryLoader.processMessage(type, date, from, subj, body), 0);
-                        }
-                    } else
-                        break;
-                    pos=end_pos+4;
-                }                
-                if(vector.size()>5)
-                   vector.setSize(5);
-            } catch (Exception e) { }
-        }
-        
-        history = null;
-        return vector;
-    }
-    
-    private String findBlock(String source, String needle){
-        String block = "";
-        int start =source.indexOf("<"+needle+">");
-        int end = source.indexOf("</"+needle+">");
-        if (start<0 || end<0)
-            return block;
-        return source.substring(start+3, end);
-    }
-        
-    private byte[] readFile(String arhPath){
-        int maxSize=2048; byte[] b = new byte[maxSize]; 
-        FileIO f=FileIO.createConnection(arhPath);
-        try {
-            InputStream is=f.openInputStream();
-            int fileSize = (int)f.fileSize();
-            if (fileSize>maxSize){
-                is.skip(fileSize-maxSize);
-            }
-            is.read(b); is.close(); f.close();
-        } catch (IOException e) { try { f.close(); } catch (IOException ex2) { } }
-
-        if (b!=null)
-            return b;
-        
-        return null;
-    }    
-}
-
+//#        filename=cf.msgPath+StringUtils.replaceBadChars(filename)+".txt";
+//# 
+//#        this.history = loadHistory(filename);
+//#    }
+//#     
+//#    private String loadHistory(String fileName) {
+//#         byte[] bodyMessage;
+//#         String archive="";
+//#         bodyMessage=readFile(fileName);
+//# 
+//#         if (bodyMessage!=null) {
+//#             if (cf.cp1251) {
+//#                 archive=Strconv.convCp1251ToUnicode(new String(bodyMessage, 0, bodyMessage.length));
+//#             } else {
+//#                 archive=new String(bodyMessage, 0, bodyMessage.length);
+//#             }
+//#         }
+//#         return archive;
+//#    }
+//# 
+//#     public Vector importData() {
+//#         Vector vector=new Vector();
+//#         if (history!=null) {
+//#             try {
+//#                 int pos=0; int start_pos=0; int end_pos=0;
+//#                 String type=null; String date=null; String from=null; String subj=null; String body=null; String tempstr=null;
+//#                 
+//#                 while (true) {
+//#                     type=null; date=null; from=null; subj=null; body=null; tempstr=null;
+//#                     start_pos=history.indexOf("<m>",pos);  end_pos=history.indexOf("</m>",start_pos);
+//# 
+//#                     if (start_pos>-1) {
+//#                         tempstr=history.substring(start_pos+3, end_pos);
+//#                         type=findBlock(tempstr,"t"); date=findBlock(tempstr,"d");  from=findBlock(tempstr,"f");  subj=findBlock(tempstr,"s");  body=findBlock(tempstr,"b");                   
+//#                         
+//#                         if (Integer.parseInt(type)!=MESSAGE_MARKER_PRESENCE) {
+//#                             //System.out.println(type+" ["+date+"]"+from+": "+subj+" "+body+"\r\n");
+//#                             vector.insertElementAt(HistoryLoader.processMessage(type, date, from, subj, body), 0);
+//#                         }
+//#                     } else
+//#                         break;
+//#                     pos=end_pos+4;
+//#                 }                
+//#                 if(vector.size()>5)
+//#                    vector.setSize(5);
+//#             } catch (Exception e) { }
+//#         }
+//#         
+//#         history = null;
+//#         return vector;
+//#     }
+//#     
+//#     private String findBlock(String source, String needle){
+//#         String block = "";
+//#         int start =source.indexOf("<"+needle+">");
+//#         int end = source.indexOf("</"+needle+">");
+//#         if (start<0 || end<0)
+//#             return block;
+//#         return source.substring(start+3, end);
+//#     }
+//#         
+//#     private byte[] readFile(String arhPath){
+//#         int maxSize=2048; byte[] b = new byte[maxSize]; 
+//#         FileIO f=FileIO.createConnection(arhPath);
+//#         try {
+//#             InputStream is=f.openInputStream();
+//#             int fileSize = (int)f.fileSize();
+//#             if (fileSize>maxSize){
+//#                 is.skip(fileSize-maxSize);
+//#             }
+//#             is.read(b); is.close(); f.close();
+//#         } catch (IOException e) { try { f.close(); } catch (IOException ex2) { } }
+//# 
+//#         if (b!=null)
+//#             return b;
+//#         
+//#         return null;
+//#     }    
+//# }
+//# 
 //#endif
