@@ -233,7 +233,7 @@ public class RosterItemActions extends Menu {
             }
 //#endif
 //#if (FILE_IO && FILE_TRANSFER)
-//#             if (!contact.jid.isTransport() && cf.fileTransfer)
+//#             if (cf.fileTransfer)
 //#                 if (contact!=sd.roster.selfContact()) {
 //#                         addItem(SR.MS_SEND_FILE, 50, RosterIcons.ICON_SEND_FILE);
 //#                 }

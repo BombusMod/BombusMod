@@ -25,6 +25,7 @@
 //#ifdef COLOR_TUNE
 //# package ui.controls.form;
 //# 
+//# import Client.Config;
 //# import Client.StaticData;
 //# import Colors.ColorTheme;
 //# import Colors.ColorsList;
@@ -75,8 +76,8 @@
 //# 
 //#     public void drawItem(Graphics g, int ofs, boolean sel) {
 //#         yTranslate = g.getTranslateY();
-//#         py = g.getClipHeight() - 20;
-//#         ph = g.getClipHeight() - 50;
+//#         py = g.getClipHeight() - 48;
+//#         ph = g.getClipHeight() - 70;
 //#         g.setColor(0xffffff);
 //#         g.fillRect(0, 0, g.getClipWidth(), g.getClipHeight());
 //#         g.setFont(mfont);
@@ -84,12 +85,12 @@
 //# 
 //#         g.setColor(0);
 //#         g.setStrokeStyle(Graphics.SOLID);
-//#         g.drawRect(2, 2, 15, 15);
+//#         g.drawRect(2, 2, 48, 48);
 //#         g.setColor(red, green, blue);
-//#         g.fillRect(4, 4, 12, 12);
+//#         g.fillRect(4, 4, 45, 45);
 //#         g.setColor(0x800000);
 //#ifdef COLOR_TUNE
-//#         FontCache.drawString(g, s + " " + ColorsList.NAMES[paramName], 20, 5, Graphics.TOP | Graphics.LEFT);
+//#         FontCache.drawString(g, s + " " + ColorsList.NAMES[paramName], 70, 5, Graphics.TOP | Graphics.LEFT);
 //#endif
 //# 
 //#         //draw red
@@ -97,14 +98,14 @@
 //#         int psred = (ph * red) / 255;
 //#         g.setColor(0);
 //#         g.setStrokeStyle(Graphics.SOLID);
-//#         g.fillRect(pxred - 2, py - ph, 5, ph);
+//#         g.fillRect(pxred - 4, py - ph, 20, ph);
 //#         FontCache.drawString(g, "R", pxred, py + 2, Graphics.TOP | Graphics.HCENTER);
 //#         g.setColor(0xff2020);
-//#         g.fillRect(pxred - 2, py - psred, 5, psred);
+//#         g.fillRect(pxred - 4, py - psred, 20, psred);
 //#         if (cpos == 0) {
 //#             g.setColor(0);
 //#             g.setStrokeStyle(Graphics.DOTTED);
-//#             g.drawRect(pxred - 7, py - ph - 5, 15, ph + 20);
+//#             g.drawRect(pxred - 7, py - ph - 5, 30, ph + 20);
 //#         }
 //# 
 //#         //draw green
@@ -112,14 +113,14 @@
 //#         int psgreen = (ph * green) / 255;
 //#         g.setColor(0);
 //#         g.setStrokeStyle(Graphics.SOLID);
-//#         g.fillRect(pxgreen - 2, py - ph, 5, ph);
+//#         g.fillRect(pxgreen - 2, py - ph, 20, ph);
 //#         FontCache.drawString(g, "G", pxgreen, py + 2, Graphics.TOP | Graphics.HCENTER);
 //#         g.setColor(0x00ff00);
-//#         g.fillRect(pxgreen - 2, py - psgreen, 5, psgreen);
+//#         g.fillRect(pxgreen - 2, py - psgreen, 20, psgreen);
 //#         if (cpos == 1) {
 //#             g.setColor(0);
 //#             g.setStrokeStyle(Graphics.DOTTED);
-//#             g.drawRect(pxgreen - 7, py - ph - 5, 15, ph + 20);
+//#             g.drawRect(pxgreen - 7, py - ph - 5, 30, ph + 20);
 //#         }
 //# 
 //#         //draw blue
@@ -127,14 +128,14 @@
 //#         int psblue = (ph * blue) / 255;
 //#         g.setColor(0);
 //#         g.setStrokeStyle(Graphics.SOLID);
-//#         g.fillRect(pxblue - 2, py - ph, 5, ph);
+//#         g.fillRect(pxblue - 2, py - ph, 20, ph);
 //#         FontCache.drawString(g, "B", pxblue, py + 2, Graphics.TOP | Graphics.HCENTER);
 //#         g.setColor(0x4848ff);
-//#         g.fillRect(pxblue - 2, py - psblue, 5, psblue);
+//#         g.fillRect(pxblue - 2, py - psblue, 20, psblue);
 //#         if (cpos == 2) {
 //#             g.setColor(0);
 //#             g.setStrokeStyle(Graphics.DOTTED);
-//#             g.drawRect(pxblue - 7, py - ph - 5, 15, ph + 20);
+//#             g.drawRect(pxblue - 7, py - ph - 5, 30, ph + 20);
 //#         }
 //#         g.setStrokeStyle(Graphics.SOLID);
 //#     }
