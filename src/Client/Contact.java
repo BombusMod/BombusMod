@@ -275,6 +275,10 @@ public class Contact extends IconTextElement {
         }
         return newMsgCnt = nm;
     }
+    
+    public final boolean hasNewMsgs() {
+        return getNewMsgsCount() > 0;
+    }
 
     public int getNewHighliteMsgsCount() {
         if (newHighLitedMsgCnt > 0) {

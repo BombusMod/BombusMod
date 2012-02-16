@@ -56,6 +56,7 @@ import Menu.MenuCommand;
 //#ifdef SYSTEM_NOTIFY
 //# import Messages.notification.Notification;
 //# import Messages.notification.Notificator;
+//# import Messages.notification.AndroidNotification;
 //#endif
 //#ifdef PRIVACY
 //# import PrivacyLists.QuickPrivacy;
@@ -393,7 +394,13 @@ public class Roster
         }
         highliteMessageCount = h;
         messageCount = m;
-
+//#ifdef android    
+//#         if (highliteMessageCount<1) {
+//#             Notification.getNotificator().getNotificationManager().cancel(AndroidNotification.NOTIFY_ID);
+//#         } else {
+//#         Notification.getNotificator().sendNotify("message", "count");
+//#         }
+//#endif
         updateMainBar();
         return (m > 0);
     }
@@ -810,7 +817,30 @@ public class Roster
         }
         return null;
     }
-
+    public Contact getFirstContactWithNewHighlite(Contact contact) {
+        if (hContacts.isEmpty()) {
+            return null;
+        }
+        if (null == contact) {
+            contact = (Contact)hContacts.firstElement();
+        }
+        for (int index = hContacts.indexOf(contact) + 1; index < hContacts.size(); ++index) {
+            Contact c = (Contact) hContacts.elementAt(index);
+            if (c.getNewHighliteMsgsCount()>0 || (c.origin!=Contact.ORIGIN_GROUPCHAT && c.hasNewMsgs())) {
+                return c;
+            }
+        }
+        for (int index = 0; index < hContacts.size(); ++index) {
+            Contact c = (Contact) hContacts.elementAt(index);
+            if (c.getNewHighliteMsgsCount()>0 || (c.origin!=Contact.ORIGIN_GROUPCHAT && c.hasNewMsgs())) {
+                return c;
+            }
+        }
+        if (contact.getNewHighliteMsgsCount()>0 || (contact.origin!=Contact.ORIGIN_GROUPCHAT && contact.hasNewMsgs())) {
+            return contact;
+        }
+        return null;
+    }
 //#ifdef JUICK
 //# /*
 //#     public Vector getJuickContacts(boolean str) {

@@ -13,18 +13,24 @@
 //# 
 //# public class AndroidNotification implements Notificator {
 //# 
-//#     private static final int NOTIFY_ID = 1;
+//#     public static final int NOTIFY_ID = 1;
+//# 
+//#     public NotificationManager getNotificationManager(){
+//#         return (NotificationManager) BombusModActivity.getInstance().getSystemService(Context.NOTIFICATION_SERVICE);
+//#     }
 //# 
 //#     public void sendNotify(final String title, final String text) {
 //#         NotificationManager mNotificationManager = (NotificationManager) BombusModActivity.getInstance().getSystemService(Context.NOTIFICATION_SERVICE);
-//#         long when = System.currentTimeMillis();
+//#         long when = 0;
 //#         int icon = R.drawable.app_icon;
 //#         if (StaticData.getInstance().roster.highliteMessageCount < 1) {
 //#             return;
 //#         } else {
-//#             android.app.Notification notification = new android.app.Notification(icon, "New messages: " + StaticData.getInstance().roster.highliteMessageCount, when);
-//#             notification.flags |= android.app.Notification.FLAG_AUTO_CANCEL;
+//#             //android.app.Notification notification = new android.app.Notification(icon, "New messages: " + StaticData.getInstance().roster.highliteMessageCount, when);
+//#             android.app.Notification notification = new android.app.Notification(icon, null, when);
 //#             Intent notificationIntent = new Intent(BombusModActivity.getInstance(), BombusModActivity.class);
+//#             notificationIntent.setAction("org.bombusmod.bm-notify");
+//#             //System.out.println("notificationIntent.getAction"+notificationIntent.getAction());
 //#             PendingIntent contentIntent = PendingIntent.getActivity(BombusModActivity.getInstance(), 0, notificationIntent, 0);
 //#             notification.setLatestEventInfo(BombusModActivity.getInstance().getApplicationContext(), "You have new messages...", "Unread messages: " + StaticData.getInstance().roster.highliteMessageCount, contentIntent);
 //#             notification.ledARGB = 0xff00ff00;
@@ -35,11 +41,10 @@
 //#             mNotificationManager.notify(NOTIFY_ID, notification);
 //#         }
 //#     }
-//# 
 //#     public void clear() {
 //#         NotificationManager mNotificationManager = (NotificationManager) BombusModActivity.getInstance().getSystemService(Context.NOTIFICATION_SERVICE);
 //#         mNotificationManager.cancel(NOTIFY_ID);
-//#     }
+//#      }
 //# }
 //#endif
 

@@ -7,6 +7,9 @@
 //# 
 //# package Messages.notification;
 //# 
+//#if android
+//# import android.app.NotificationManager;
+//#endif
 //# /**
 //#  *
 //#  * @author Vitaly
@@ -14,6 +17,9 @@
 //# public interface Notificator {
 //# 
 //#     public void sendNotify(String title, String text);
+//#if android
+//#     public NotificationManager getNotificationManager();
+//#endif
 //#     public void clear();
 //# }
 //# 

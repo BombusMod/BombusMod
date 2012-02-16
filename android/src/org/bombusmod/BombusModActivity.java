@@ -69,6 +69,11 @@ import android.content.Intent;
 import android.util.Log;
 import org.microemu.cldc.file.FileSystem;
 
+import Client.Contact;
+import Client.StaticData;
+import midlet.BombusMod;
+import ui.VirtualCanvas;
+
 public class BombusModActivity extends MicroEmulatorActivity {
 
     public static final String LOG_TAG = "BombusModActivity";
@@ -142,6 +147,7 @@ public class BombusModActivity extends MicroEmulatorActivity {
         System.setProperty("microedition.configuration", "CLDC-1.1");
         System.setProperty("microedition.profiles", "MIDP-2.0");
         System.setProperty("microedition.locale", Locale.getDefault().toString());
+        System.setProperty("device.manufacturer", android.os.Build.BRAND);
         System.setProperty("device.model", android.os.Build.MODEL);
         System.setProperty("device.software.version", android.os.Build.VERSION.RELEASE);
 
@@ -169,6 +175,19 @@ public class BombusModActivity extends MicroEmulatorActivity {
         midlet = common.initMIDlet(false);
     }
 
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        System.out.println("onNewIntent("+intent.getAction()+")");
+        if ("org.bombusmod.bm-notify".equals(intent.getAction())) {
+            Contact c=StaticData.getInstance().roster.getFirstContactWithNewHighlite(null);
+            if (c!=null) {
+                c.getMsgList().show();
+                StaticData.getInstance().roster.focusToContact(c, false);
+            }
+        }
+    }
+    
     @Override
     protected void onPause() {
         super.onPause();

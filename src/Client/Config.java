@@ -45,6 +45,7 @@ import util.StringLoader;
 import ui.Time;
 import ui.VirtualList;
 import io.NvStorage;
+import ui.VirtualCanvas;
 
 /**
  *
@@ -278,7 +279,9 @@ public class Config {
                 ghostMotor = true;
                 istreamWaiting = true;
             case MICROEMU:
-                minItemHeight *=2;
+                int h1 = VirtualCanvas.getInstance().getHeight();
+                int h2 = VirtualCanvas.getInstance().getWidth();
+                minItemHeight = ((h1<h2)?h2:h1)*40/480;
                 break;            
 //#if !ZLIB
             case XENIUM99:
@@ -909,14 +912,35 @@ public class Config {
         }
 //#endif        
     }
-
+//#if android
+//# 	public static final String compute(){
+//# 		final String manufact = System.getProperty("device.manufacturer");
+//# 		final String model = System.getProperty("device.model");
+//# 		final String manufact_ = manufact.trim().toLowerCase();
+//# 		final String model_ = model.trim().toLowerCase();
+//# 		String result = "";
+//# 		int total = manufact_.length();
+//# 		if(total>model_.length()) total = model_.length();
+//# 		int matches = 0;
+//# 		for(int i=0; i<total; i++){
+//# 			if(manufact_.charAt(i) == model_.charAt(i)) matches++;
+//# 		}
+//# 		final int percentage = matches*100/total;
+//# 		if(percentage > 20){
+//# 			result = model;
+//# 		}else{
+//# 			result = manufact+" "+model;
+//# 		}
+//# 		return result;
+//# 	}
+//#endif
     public static String getPlatformName() {
         String device = System.getProperty("device.model");
         String firmware = System.getProperty("device.software.version");
 
 //#if android 
 //#         if (device != null) {
-//#             platformName = device + "/Android " + firmware;
+//#             platformName = compute() + "/Android " + firmware;
 //#         }
 //#else                
         if (platformName == null) {

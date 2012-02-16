@@ -69,6 +69,7 @@ public class ActiveContacts extends DefForm {
         if (getItemCount() > 0) {
             Contact c = (Contact) getFocusedObject();
             ((Contact) c).getMsgList();
+            StaticData.getInstance().roster.focusToContact(c, false);
         }
         //c.msgSuspended=null; // clear suspended message for selected contact
     }
