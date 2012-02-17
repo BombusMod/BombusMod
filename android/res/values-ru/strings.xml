@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">BombusMod</string>
+    <string name="notifyTitle">У Вас есть новые сообщения...</string>
+    <string name="notifyInfo">Не прочитано сообщений</string>
+</resources>

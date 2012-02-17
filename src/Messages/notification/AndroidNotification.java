@@ -32,7 +32,7 @@
 //#             notificationIntent.setAction("org.bombusmod.bm-notify");
 //#             //System.out.println("notificationIntent.getAction"+notificationIntent.getAction());
 //#             PendingIntent contentIntent = PendingIntent.getActivity(BombusModActivity.getInstance(), 0, notificationIntent, 0);
-//#             notification.setLatestEventInfo(BombusModActivity.getInstance().getApplicationContext(), "You have new messages...", "Unread messages: " + StaticData.getInstance().roster.highliteMessageCount, contentIntent);
+//#             notification.setLatestEventInfo(BombusModActivity.getInstance().getApplicationContext(), (String) BombusModActivity.getInstance().getApplicationContext().getText(R.string.notifyTitle),(String) BombusModActivity.getInstance().getApplicationContext().getText(R.string.notifyInfo) + ": " + StaticData.getInstance().roster.highliteMessageCount, contentIntent);
 //#             notification.ledARGB = 0xff00ff00;
 //#             notification.ledOnMS = 300;
 //#             notification.ledOffMS = 1000;
