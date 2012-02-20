@@ -22,7 +22,7 @@
 //#     public void sendNotify(final String title, final String text) {
 //#         NotificationManager mNotificationManager = (NotificationManager) BombusModActivity.getInstance().getSystemService(Context.NOTIFICATION_SERVICE);
 //#         long when = 0;
-//#         int icon = R.drawable.app_icon;
+//#         int icon = R.drawable.inc_msg;
 //#         if (StaticData.getInstance().roster.highliteMessageCount < 1) {
 //#             return;
 //#         } else {

@@ -67,13 +67,11 @@ void invokeMethod(Method method, Object[] args) {
         throw new IllegalStateException(
                 "OS doesn't have Service.startForeground OR Service.setForeground!");
     }
-
-
+        
         //Foreground Service
-        Notification notification = new Notification(R.drawable.app_icon, getText(R.string.app_name), System.currentTimeMillis());
+        Notification notification = new Notification(R.drawable.app_icon, getText(R.string.app_name), 0);
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, BombusModActivity.class), 0);
-
-        notification.setLatestEventInfo(this, getText(R.string.app_name), "BombusMod is running.", contentIntent);
+        notification.setLatestEventInfo(this, getText(R.string.app_name), "", contentIntent);
         startForegroundCompat(R.string.app_name, notification);
     }
 

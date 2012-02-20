@@ -56,7 +56,9 @@ import Menu.MenuCommand;
 //#ifdef SYSTEM_NOTIFY
 //# import Messages.notification.Notification;
 //# import Messages.notification.Notificator;
+//#ifdef android
 //# import Messages.notification.AndroidNotification;
+//#endif
 //#endif
 //#ifdef PRIVACY
 //# import PrivacyLists.QuickPrivacy;
@@ -388,8 +390,9 @@ public class Roster
             int j = hContacts.size();
             for (int i = 0; i < j; i++) {
                 Contact c = (Contact) hContacts.elementAt(i);
+                if (c.origin == Contact.ORIGIN_GROUPCHAT) h += c.getNewHighliteMsgsCount();
+                else h += c.getNewMsgsCount();
                 m += c.getNewMsgsCount();
-                h += c.getNewHighliteMsgsCount();
             }
         }
         highliteMessageCount = h;
@@ -401,6 +404,8 @@ public class Roster
 //#         Notification.getNotificator().sendNotify("message", "count");
 //#         }
 //#endif
+        if (h==m)
+            h = 0;
         updateMainBar();
         return (m > 0);
     }
