@@ -9,8 +9,10 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.IBinder;
 import android.util.Log;
+import org.bombusmod.scrobbler.Receiver;
 
 public class BombusModService extends Service {
     public static final String ACTION_FOREGROUND = "FOREGROUND";
@@ -73,6 +75,60 @@ void invokeMethod(Method method, Object[] args) {
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, BombusModActivity.class), 0);
         notification.setLatestEventInfo(this, getText(R.string.app_name), "", contentIntent);
         startForegroundCompat(R.string.app_name, notification);
+        
+      //audio scrobbler
+        IntentFilter filter = new IntentFilter();
+        //Google Android player
+        filter.addAction("com.android.music.playstatechanged");
+        filter.addAction("com.android.music.playbackcomplete");
+        filter.addAction("com.android.music.metachanged");
+        //HTC Music
+        filter.addAction("com.htc.music.playstatechanged");
+        filter.addAction("com.htc.music.playbackcomplete");
+        filter.addAction("com.htc.music.metachanged");
+        //MIUI Player
+        filter.addAction("com.miui.player.playstatechanged");
+        filter.addAction("com.miui.player.playbackcomplete");
+        filter.addAction("com.miui.player.metachanged");
+        //Real
+        filter.addAction("com.real.IMP.playstatechanged");
+        filter.addAction("com.real.IMP.playbackcomplete");
+        filter.addAction("com.real.IMP.metachanged");
+        //SEMC Music Player
+        filter.addAction("com.sonyericsson.music.playbackcontrol.ACTION_TRACK_STARTED");
+        filter.addAction("com.sonyericsson.music.playbackcontrol.ACTION_PAUSED");
+        filter.addAction("com.sonyericsson.music.TRACK_COMPLETED");
+        //rdio
+        filter.addAction("com.rdio.android.metachanged");
+        filter.addAction("com.rdio.android.playstatechanged");
+        //Samsung Music Player
+        filter.addAction("com.samsung.sec.android.MusicPlayer.playstatechanged");
+        filter.addAction("com.samsung.sec.android.MusicPlayer.playbackcomplete");
+        filter.addAction("com.samsung.sec.android.MusicPlayer.metachanged");
+        filter.addAction("com.sec.android.app.music.playstatechanged");
+        filter.addAction("com.sec.android.app.music.playbackcomplete");
+        filter.addAction("com.sec.android.app.music.metachanged");
+        //Winamp
+        filter.addAction("com.nullsoft.winamp.playstatechanged");
+        //Amazon
+        filter.addAction("com.amazon.mp3.playstatechanged");
+        //Rhapsody
+        filter.addAction("com.rhapsody.playstatechanged");
+        //PowerAmp
+        filter.addAction("com.maxmpz.audioplayer.playstatechanged");
+        //will be added any....
+      //scrobblers detect for players (poweramp for example)
+        //Last.fm
+        filter.addAction("fm.last.android.metachanged");
+        filter.addAction("fm.last.android.playbackpaused");
+        filter.addAction("fm.last.android.playbackcomplete");
+        //A simple last.fm scrobbler
+        filter.addAction("com.adam.aslfms.notify.playstatechanged");
+        //Scrobble Droid
+        filter.addAction("net.jjc1138.android.scrobbler.action.MUSIC_STATUS");
+        Receiver receiver = new Receiver(this);
+        this.registerReceiver(receiver, filter);
+      //scrobbling finished
     }
 
     @Override
