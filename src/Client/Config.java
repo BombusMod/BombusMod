@@ -200,6 +200,9 @@ public class Config {
 //#endif
 //#ifdef PEP_TUNE
 //#     public boolean rcvtune = false;
+//#if android
+//#     public boolean updatetune = false;
+//#endif    
 //#endif
     public int barFont = 8;
     public int baloonFont = 8;
@@ -486,7 +489,15 @@ public class Config {
 
             swapSendAndSuspend = inputStream.readBoolean();
             widthScroll2 = inputStream.readInt();
-            inputStream.readBoolean(); // wsystemgc
+//#ifdef PEP_TUNE
+//#if android            
+//#             updatetune = inputStream.readBoolean();
+//#else
+//#             inputStream.readBoolean(); 
+//#endif            
+//#else
+            inputStream.readBoolean();
+//#endif
 
             inputStream.readUTF(); // ранее здесь был juickJID
 
@@ -748,7 +759,15 @@ public class Config {
 
             outputStream.writeBoolean(swapSendAndSuspend);
             outputStream.writeInt(widthScroll2);
-            outputStream.writeBoolean(false); // wsystemgc
+//#ifdef PEP_TUNE
+//#if android
+//#             outputStream.writeBoolean(updatetune);
+//#else            
+//#             outputStream.writeBoolean(false);
+//#endif
+//#else
+            outputStream.writeBoolean(false);
+//#endif            
 
             outputStream.writeUTF(""); // ранее здесь был juickJID
 
