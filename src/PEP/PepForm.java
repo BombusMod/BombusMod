@@ -111,6 +111,11 @@
 //#ifdef PEP_LOCATION
 //#         Config.getInstance().rcvloc = rcvlocation.getValue();
 //#endif
+//#ifdef PEP_TUNE
+//#if android
+//#         Config.getInstance().updatetune = updatetune.getValue();
+//#endif        
+//#endif        
 //#         Config.getInstance().saveToStorage();
 //#         parentView = sd.roster;
 //#         destroyView();
