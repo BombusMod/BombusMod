@@ -92,6 +92,7 @@ public class TextBox extends Screen {
     }
 
     public String getString() {
+            if (ui == null) return ""; 
             return ((TextBoxUI) ui).getString();
        
     }
