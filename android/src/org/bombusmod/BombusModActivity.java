@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import java.util.logging.Level;
 import javax.microedition.lcdui.Command;
 import javax.microedition.midlet.MIDlet;
 import javax.microedition.midlet.MIDletStateChangeException;
@@ -64,6 +65,8 @@ import android.view.SubMenu;
 import android.view.Window;
 import android.media.AudioManager;
 import android.app.NotificationManager;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import org.microemu.android.MicroEmulatorActivity;
 import android.content.Intent;
 import android.util.Log;
@@ -71,16 +74,21 @@ import org.microemu.cldc.file.FileSystem;
 
 import Client.Contact;
 import Client.StaticData;
+import android.location.Location;
+import android.widget.TextView;
+import android.widget.Toast;
 import midlet.BombusMod;
 import ui.VirtualCanvas;
 
-public class BombusModActivity extends MicroEmulatorActivity {
+public class BombusModActivity extends MicroEmulatorActivity implements LocationListener {
 
     public static final String LOG_TAG = "BombusModActivity";
 
     public Common common;
 
     private MIDlet midlet;
+    
+    private LocationManager myManager;
 
     private static BombusModActivity instance;
 
@@ -98,6 +106,9 @@ public class BombusModActivity extends MicroEmulatorActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         setVolumeControlStream(AudioManager.STREAM_MUSIC); 
+        
+        myManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        myManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
 
         Logger.removeAllAppenders();
         Logger.setLocationEnabled(false);
@@ -187,6 +198,16 @@ public class BombusModActivity extends MicroEmulatorActivity {
             }
         }
     }
+
+    public void onLocationChanged(Location location) {
+        Toast.makeText(getApplicationContext(), "Широта: " + location.getLatitude() + "\nДолгота: " + location.getLongitude(), Toast.LENGTH_SHORT).show();
+	}
+    
+    public void onProviderDisabled(String provider) {}
+
+    public void onProviderEnabled(String provider) {}
+
+    public void onStatusChanged(String provider, int status, Bundle extras) {}
     
     @Override
     protected void onPause() {

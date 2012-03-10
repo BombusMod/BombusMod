@@ -98,6 +98,9 @@ void invokeMethod(Method method, Object[] args) {
         filter.addAction("com.sonyericsson.music.playbackcontrol.ACTION_TRACK_STARTED");
         filter.addAction("com.sonyericsson.music.playbackcontrol.ACTION_PAUSED");
         filter.addAction("com.sonyericsson.music.TRACK_COMPLETED");
+        filter.addAction("com.sonyericsson.music.metachanged");
+        filter.addAction("com.sonyericsson.music.playbackcomplete");
+        filter.addAction("com.sonyericsson.music.playstatechanged");
         //rdio
         filter.addAction("com.rdio.android.metachanged");
         filter.addAction("com.rdio.android.playstatechanged");
