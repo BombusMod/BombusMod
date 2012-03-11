@@ -739,15 +739,17 @@ public class ContactMessageList extends MessageList {
     public void Quote() {
         if (!sd.roster.isLoggedIn()) return;
         Msg message = getMessage(cursor);
-        String quotestring = (contact.origin == Contact.ORIGIN_GROUPCHAT && cf.showNickNames && !message.body.startsWith("*") && message.messageType != Msg.MESSAGE_TYPE_PRESENCE) ? 
+        String quotestring = (contact.origin == Contact.ORIGIN_GROUPCHAT && cf.showNickNames && !message.body.startsWith("*") && message.messageType != Msg.MESSAGE_TYPE_PRESENCE && message.subject != null) ? 
                 message.from + "> " + Msg.clearNick(new StringBuffer(message.body)) : 
                 message.quoteString(false); 
-        
+        int quoteMaxLen = 100;
         try {
             String msg=new StringBuffer()
                 .append((char)0xbb) //
                 .append(" ")
-                .append(quotestring)
+                .append((quotestring.length() > quoteMaxLen) ?
+                        quotestring.substring(0, quoteMaxLen) + "..." :
+                        quotestring)
                 .append("\n")
                 .append(" ")
                 .toString();
