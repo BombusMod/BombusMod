@@ -65,8 +65,6 @@ import android.view.SubMenu;
 import android.view.Window;
 import android.media.AudioManager;
 import android.app.NotificationManager;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import org.microemu.android.MicroEmulatorActivity;
 import android.content.Intent;
 import android.util.Log;
@@ -74,21 +72,18 @@ import org.microemu.cldc.file.FileSystem;
 
 import Client.Contact;
 import Client.StaticData;
-import android.location.Location;
 import android.widget.TextView;
 import android.widget.Toast;
 import midlet.BombusMod;
 import ui.VirtualCanvas;
 
-public class BombusModActivity extends MicroEmulatorActivity implements LocationListener {
+public class BombusModActivity extends MicroEmulatorActivity{
 
     public static final String LOG_TAG = "BombusModActivity";
 
     public Common common;
 
     private MIDlet midlet;
-    
-    private LocationManager myManager;
 
     private static BombusModActivity instance;
 
@@ -107,9 +102,7 @@ public class BombusModActivity extends MicroEmulatorActivity implements Location
 
         setVolumeControlStream(AudioManager.STREAM_MUSIC); 
         
-        myManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        myManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-
+        
         Logger.removeAllAppenders();
         Logger.setLocationEnabled(false);
         Logger.addAppender(new AndroidLoggerAppender());
@@ -197,17 +190,7 @@ public class BombusModActivity extends MicroEmulatorActivity implements Location
                 StaticData.getInstance().roster.focusToContact(c, false);
             }
         }
-    }
-
-    public void onLocationChanged(Location location) {
-        Toast.makeText(getApplicationContext(), "Широта: " + location.getLatitude() + "\nДолгота: " + location.getLongitude(), Toast.LENGTH_SHORT).show();
-	}
-    
-    public void onProviderDisabled(String provider) {}
-
-    public void onProviderEnabled(String provider) {}
-
-    public void onStatusChanged(String provider, int status, Bundle extras) {}
+    }   
     
     @Override
     protected void onPause() {
