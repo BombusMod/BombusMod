@@ -99,9 +99,6 @@ public class PresenceDispatcher implements JabberBlockListener {
                         //System.gc();
                         //Thread.sleep(20);
                     } catch (Exception e) {
-//#ifdef DEBUG
-//#                         e.printStackTrace();
-//#endif                        
                     }
                 } else {
 //#endif
@@ -114,10 +111,6 @@ public class PresenceDispatcher implements JabberBlockListener {
                         }
 
                         if (Config.getInstance().autoSubscribe == Config.SUBSCR_REJECT) {
-//#ifdef DEBUG 
-//#                             System.out.print(from);
-//#                             System.out.println(": decline subscription");
-//#endif
                             roster.sendPresence(from.bareJid, "unsubscribed", null, false);
                             return JabberBlockListener.BLOCK_PROCESSED;
                         }

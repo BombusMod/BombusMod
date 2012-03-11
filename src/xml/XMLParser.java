@@ -216,9 +216,6 @@ public class XMLParser {
                         else
                             eventListener.binValueEncountered( new byte[1] );
                     } catch (Exception ex) { 
-//#ifdef DEBUG                        
-//#                         ex.printStackTrace(); 
-//#endif                        
                     }
                     
                     baos=null;

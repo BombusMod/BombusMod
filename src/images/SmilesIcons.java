@@ -46,25 +46,22 @@ public class SmilesIcons {
     private static ImageList instance = null;
     public static ImageList getInstance() {
 //#ifdef SMILES
-        if (null == instance){
-
-             try {
-                 int smilesCount = MessageParser.getInstance().getSmileTable().size();
-                 cols = ceil(SMILES_IN_ROW, smilesCount);
-             } catch (Exception e) {
-//#ifdef DEBUG
-//#                  System.out.println("Can't load smiles");
-//#endif
-             }
+//#         if (null == instance){
+//# 
+//#              try {
+//#                  int smilesCount = MessageParser.getInstance().getSmileTable().size();
+//#                  cols = ceil(SMILES_IN_ROW, smilesCount);
+//#              } catch (Exception e) {
+//#              }
 //#ifdef ANI_SMILES
-            instance = new AniImageList();
-            ((AniImageList) instance).load("/smiles");
+//#             instance = new AniImageList();
+//#             ((AniImageList) instance).load("/smiles");
 //#endif
-
-            if (instance == null || instance.getWidth() == 0) {
-                instance = new ImageList(res, cols, SMILES_IN_ROW);
-            }
-        }
+//# 
+//#             if (instance == null || instance.getWidth() == 0) {
+//#                 instance = new ImageList(res, cols, SMILES_IN_ROW);
+//#             }
+//#         }
 //#endif
         return instance;
     }

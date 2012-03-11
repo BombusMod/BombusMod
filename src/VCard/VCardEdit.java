@@ -158,9 +158,6 @@ public class VCardEdit
 //#                     setPhoto();
 //#                     redraw();
 //#                 } catch (Exception e) {
-//#ifdef DEBUG
-//#                     System.out.println("error on load");
-//#endif
 //#                 }
 //#             }
 //#             if (st==2 & vcard.hasPhoto) {

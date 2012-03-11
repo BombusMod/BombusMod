@@ -140,9 +140,8 @@ public class BombusMod extends MIDlet {
                 s.destroyView();                
             }
         } catch (Exception e) {
-//#ifdef DEBUG
-//#             e.printStackTrace();
-//#endif
+            if (StaticData.Debug)
+                e.printStackTrace();
             new AlertBox(SR.MS_ERROR, e.toString() + ": " + e.getMessage()) {
 
                 public void yes() {

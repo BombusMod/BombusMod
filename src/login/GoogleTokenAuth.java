@@ -104,9 +104,6 @@ public class GoogleTokenAuth {
         } catch (SecurityException e) {
             throw e;
         } catch(Exception e) {
-//#ifdef DEBUG
-//#             e.printStackTrace();
-//#endif
             //listener.loginFailed("Google token error");
         }
         return null;

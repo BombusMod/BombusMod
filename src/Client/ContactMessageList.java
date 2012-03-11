@@ -864,9 +864,7 @@ public class ContactMessageList extends MessageList {
                 contact.activeMessage = msgs.size() - 1; //drop activeMessage count
             }
         } catch (Exception e) { 
-//#ifdef DEBUG            
-//#             e.printStackTrace();
-//#endif            
+            
         }
         
         contact.clearVCard();

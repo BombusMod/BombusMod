@@ -96,19 +96,10 @@ public class DnsSrvResolver {
             inputStream.close();
 
             if (ttl>Time.utcTimeMillis()) {
-//#ifdef DEBUG
-//#                 System.out.println("Srv cache hit");
-//#endif
                 return true;
             }
-//#ifdef DEBUG
-//#             System.out.println("Srv cache expired");
-//#endif
 
         } catch (Exception e) {
-//#ifdef DEBUG
-//#             System.out.println("Srv cache missed");
-//#endif         
         }
         return false;
     }
@@ -121,9 +112,6 @@ public class DnsSrvResolver {
             outputStream.writeInt(resolvedPort);
             outputStream.writeLong(ttl);
         } catch (Exception e) {
-//#ifdef DEBUG
-//#             e.printStackTrace();
-//#endif
         }
         NvStorage.writeFileRecord(outputStream, getSrvRecordName(), 0, true);
 
@@ -188,9 +176,6 @@ public class DnsSrvResolver {
             return true;
       
         } catch (IOException ex) {
-//#ifdef DEBUG            
-//#             ex.printStackTrace();
-//#endif            
         }
         
         return false;
@@ -250,9 +235,6 @@ public class DnsSrvResolver {
             out.writeShort(0x0001); // class: Internet
             return os.toByteArray();
         } catch (IOException ex) {
-//#ifdef DEBUG            
-//#             ex.printStackTrace();
-//#endif            
             return null;
         }
     }
@@ -320,9 +302,6 @@ public class DnsSrvResolver {
             } 
             return res;
         } catch (IOException ex) {
-//#ifdef DEBUG            
-//#             ex.printStackTrace();
-//#endif            
             return null;
         }
     }

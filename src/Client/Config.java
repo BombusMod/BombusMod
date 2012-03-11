@@ -302,9 +302,6 @@ public class Config {
     }
 
     protected final void loadFromStorage() {
-//#ifdef DEBUG
-//#         System.out.println("LoadFromStorage config");
-//#endif
         DataInputStream inputStream = NvStorage.ReadFileRecord("config", 0);
         try {
             accountIndex = inputStream.readInt();
@@ -543,9 +540,6 @@ public class Config {
         if (lang == null || lang.length() == 0) {
             //auto-detecting
             lang = System.getProperty("microedition.locale");
-//#ifdef DEBUG
-//#             System.out.println(lang);
-//#endif
             //We will use only language code from locale
             if (lang == null || lang.length() == 0) {
                 lang = "en";
@@ -786,9 +780,6 @@ public class Config {
         outputStream.writeInt(minItemHeight);
 
         } catch (IOException e) {
-//#ifdef DEBUG
-//#             e.printStackTrace();
-//#endif
         }
 
         NvStorage.writeFileRecord(outputStream, "config", 0, true);

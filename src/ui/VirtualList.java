@@ -938,9 +938,6 @@ public abstract class VirtualList {
     public void keyUp() {
         if (getItemCount()==0)
             return;
-//#ifdef DEBUG
-//# 	//System.out.println("keyUp");
-//#endif
         if (cursor==0 || (!getItemRef(0).isSelectable() && cursor == 1)) {
             if (wrapping) {
                 if (getItemRef(getItemCount()-1).isSelectable())
@@ -967,9 +964,6 @@ public abstract class VirtualList {
     public void keyDwn() { 
         if (getItemCount()==0)
             return;
-//#ifdef DEBUG
-//#         //System.out.println("keyDwn");
-//#endif
 	if (cursor==(getItemCount()-1)) {
             if (wrapping) {
                 moveCursorHome();
@@ -1100,9 +1094,6 @@ public abstract class VirtualList {
     public void pageLeft() {
         if (getItemCount()==0)
             return;
-//#ifdef DEBUG
-//#         //System.out.println("keyLeft");
-//#endif
 
         stickyWindow = false;
         win_top -= winHeight;
@@ -1132,9 +1123,6 @@ public abstract class VirtualList {
     public void pageRight() {
         if (getItemCount()==0)
             return;
-//#ifdef DEBUG
-//#         //System.out.println("keyRight");
-//#endif
 
         stickyWindow = false;
         win_top += winHeight;
@@ -1275,9 +1263,6 @@ public abstract class VirtualList {
                 }
             }
         } catch (Exception e) {
-//#ifdef DEBUG            
-//#             e.printStackTrace(); /* ClassCastException */
-//#endif            
         }
     }
         

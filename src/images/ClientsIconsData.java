@@ -49,10 +49,6 @@ public class ClientsIconsData {
 
                 clients=new StringLoader().stringLoader(restxt, 2);
             } catch (Exception e) {
-//#ifdef DEBUG
-//#                 System.out.print("ClientsIcons: Can't load ");
-//#                 System.out.println(restxt);
-//#endif
             }
             instance=new ClientsIconsData();
         }

@@ -41,9 +41,6 @@
 //#             Class.forName("javax.microedition.location.Location");
 //#             Class c = Class.forName("PEP.location.JSR179Location");
 //#             providerType = LocationIO.JSR179;
-//#ifdef DEBUG
-//#         System.out.println("JSR-179 presents");
-//#endif
 //#             // Sony-Ericsson JP8 should throw exception if GPS is absent
 //#             if (Config.getInstance().phoneManufacturer == Config.SONYE) {
 //#                 new JSR179Location().getCoordinates();

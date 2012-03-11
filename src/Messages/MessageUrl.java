@@ -85,9 +85,6 @@ public class MessageUrl extends DefForm implements TextBoxNotify {
         try {
             BombusMod.getInstance().platformRequest(itemsList.elementAt(cursor).toString());
         } catch (ConnectionNotFoundException ex) {
-//#ifdef DEBUG            
-//#             ex.printStackTrace();
-//#endif            
         }
 
         destroyView();

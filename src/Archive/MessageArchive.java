@@ -131,9 +131,6 @@ public class MessageArchive {
 	    rs.addRecord(b, 0, b.length);
             rs.closeRecordStore();
 	} catch (Exception e) { 
-//#ifdef DEBUG            
-//#             e.printStackTrace(); 
-//#endif            
         }
     }
 }

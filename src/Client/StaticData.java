@@ -37,7 +37,7 @@ import util.ClipBoardIO;
  *
  * @author Eugene Stahov
  */
-public class StaticData {
+public final class StaticData {
     
     private static StaticData sd;
     
@@ -79,5 +79,6 @@ public class StaticData {
         }
         return sd;
     }
+    public static final boolean Debug = true;
 
 }

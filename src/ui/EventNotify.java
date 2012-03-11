@@ -118,9 +118,6 @@ public class EventNotify
 //#                 player.setOnCompletionListener(this);
 //#                 player.start();
 //#             } catch (Exception e) {
-//#ifdef DEBUG
-//#                 e.printStackTrace();
-//#endif                
 //#             }
 //#         }
 //#endif

@@ -110,9 +110,6 @@
 //#                     file.close();
 //#                 } catch (IOException e2) { }
 //#             }
-//#ifdef DEBUG
-//#             System.out.println("Size of \""+fileName+"\" is "+size);
-//#endif
 //#         return size;
 //#     }
 //# 
@@ -125,9 +122,6 @@
 //#             InputStream is=f.openInputStream();
 //#             is.skip(pos);
 //#             is.read(current_block);
-//#ifdef DEBUG
-//#         System.out.println("!!! Readed byte block, begin: "+pos);
-//#endif
 //#             is.close();
 //# 
 //#         } catch (IOException e) {
@@ -196,9 +190,6 @@
 //#                     StringBuffer bigMessage = new StringBuffer();
 //# 
 //#                     do {
-//#ifdef DEBUG
-//#                         System.out.println("do");
-//#endif
 //#                         if (forward) {
 //#                             bigMessage.append(getStrFromBytes(start, current_block.length-start));
 //#                             readBlock(forward);

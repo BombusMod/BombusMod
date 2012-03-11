@@ -173,9 +173,8 @@ public class VirtualCanvas extends Canvas implements CommandListener{
         } catch(Exception e) {
             if (sd.roster != null)
                 sd.roster.errorLog("list.paint exception: " + e.getClass() + " in " + list.getClass());
-//#ifdef DEBUG
-//#             e.printStackTrace();
-//#endif
+            if (StaticData.Debug)
+                e.printStackTrace();
         }
         if (rw != null)
             rw.draw(graphics, VirtualList.width, VirtualList.height);
@@ -249,9 +248,8 @@ public class VirtualCanvas extends Canvas implements CommandListener{
             if (sd.roster != null) {
                 sd.roster.errorLog("pointerpressed exception: " + e.getMessage());
             }
-//#ifdef DEBUG
-//#             e.printStackTrace();
-//#endif
+            if (StaticData.Debug)
+                e.printStackTrace();
         }
         repaint();
     }
@@ -263,10 +261,6 @@ public class VirtualCanvas extends Canvas implements CommandListener{
             if (sd.roster != null) {
                 sd.roster.errorLog("pointerdragged exception: " + e.getMessage());
             }
-
-//#ifdef DEBUG
-//#             e.printStackTrace();
-//#endif
         }
         repaint();
     }
@@ -278,10 +272,6 @@ public class VirtualCanvas extends Canvas implements CommandListener{
             if (sd.roster != null) {
                 sd.roster.errorLog("pointerreleased exception: " + e.getMessage());
             }
-//#ifdef DEBUG
-//#             e.printStackTrace();
-//# 
-//#endif
         }
         repaint();
     }
@@ -583,9 +573,6 @@ public class VirtualCanvas extends Canvas implements CommandListener{
         try {
             doKeyAction(keyCode);
         } catch(Exception e) {
-//#ifdef DEBUG
-//#             e.printStackTrace();
-//#endif
         }
         repaint();
     }
@@ -660,9 +647,6 @@ class KeyRepeatTimer extends TimerTask {
             try {
                 VirtualCanvas.getInstance().doKeyAction(key);
             } catch(Exception e) {
-//#ifdef DEBUG
-//#                 e.printStackTrace();
-//#endif
             }
             VirtualCanvas.getInstance().repaint();
         }

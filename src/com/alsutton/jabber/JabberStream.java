@@ -340,9 +340,6 @@ public class JabberStream extends XmppParser implements Runnable {
         try {
             Thread.sleep(100L);
         } catch (InterruptedException ex) {
-//#ifdef DEBUG
-//#             ex.printStackTrace();
-//#endif
         }
     }
     
@@ -457,9 +454,6 @@ public class JabberStream extends XmppParser implements Runnable {
 //#endif
 //#if TLS
 //#     public void setTls() throws IOException {
-//#ifdef DEBUG        
-//#         System.out.println("iostream setTls");
-//#endif        
 //#         iostream.setTls();
 //#     }
 //#endif        

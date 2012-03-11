@@ -88,9 +88,6 @@ public class JabberDataBlockDispatcher implements Runnable {
             try {
                 blockListeners.removeElement(listener);
             } catch (Exception e) {
-//#ifdef DEBUG              
-//#               e.printStackTrace(); 
-//#endif              
             }
         }
     }

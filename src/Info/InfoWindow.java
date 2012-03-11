@@ -28,6 +28,7 @@
 package Info;
 
 import Client.Config;
+import Client.StaticData;
 import java.util.Enumeration;
 import java.util.Vector;
 import javax.microedition.io.ConnectionNotFoundException;
@@ -187,9 +188,8 @@ public class InfoWindow
 //#ifdef CONSOLE
 //#         abilitiesList.addElement("CONSOLE");
 //#endif
-//#ifdef DEBUG
-//#         abilitiesList.addElement("DEBUG");
-//#endif
+        if (StaticData.Debug)
+            abilitiesList.addElement("DEBUG");
 //#ifdef DETRANSLIT
 //#         abilitiesList.addElement("DETRANSLIT");
 //#endif

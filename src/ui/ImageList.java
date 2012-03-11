@@ -53,10 +53,6 @@ public class ImageList {
             isLoaded = true;
         }  catch(OutOfMemoryError eom) {
             } catch (Exception e) {
-//#ifdef DEBUG
-//#             System.out.print("Can't load ");
-//#             System.out.println(resource);
-//#endif
         }
     }
 

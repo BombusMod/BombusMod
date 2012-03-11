@@ -123,9 +123,6 @@ public class VCardView
                         LinkString nData=new LinkString(url) { public void doAction() {
                                 try {BombusMod.getInstance().platformRequest(url);
                                 } catch (ConnectionNotFoundException ex) {
-//#ifdef DEBUG                                    
-//#                                     ex.printStackTrace();
-//#endif                                    
                                 } } };
                         itemsList.addElement(nData);
                     }

@@ -292,9 +292,6 @@ public class Roster
             sd.theStream.setJabberListener(this);
             sd.theStream.initiateStream();
         } catch (Exception e) {
-//#ifdef DEBUG
-//#             e.printStackTrace();
-//#endif
             askReconnect(e);
         }
     }
@@ -1206,9 +1203,6 @@ public class Roster
             lastMessageTime = Time.utcTimeMillis();
             playNotify(SOUND_OUTGOING);
         } catch (Exception e) {
-//#ifdef DEBUG            
-//#             e.printStackTrace(); 
-//#endif            
         }
     }
 
@@ -1515,9 +1509,6 @@ public class Roster
                         }
                     }
                 } catch (Exception e) {
-//#ifdef DEBUG                    
-//#                     e.printStackTrace();
-//#endif                    
                 }
 //#endif
                 if (name == null) {
@@ -2000,10 +1991,10 @@ public class Roster
 
     public void dispatcherException(Exception e, JabberDataBlock dataBlock) {
         errorLog("JabberDataBlockDispatcher exception\ndataBlock: " + dataBlock.toString());
-//#ifdef DEBUG
-//# 	System.out.println("JabberDataBlockDispatcher exception\ndataBlock: " + dataBlock.toString());
-//# 	e.printStackTrace();
-//#endif
+        if (StaticData.Debug) {
+            System.out.println("JabberDataBlockDispatcher exception\ndataBlock: " + dataBlock.toString());
+            e.printStackTrace();
+        }
     }
 
     private void askReconnect(final Exception e) {
@@ -2232,9 +2223,6 @@ public class Roster
         try {
             Thread.sleep(250L);
         } catch (InterruptedException ex) {
-//#ifdef DEBUG            
-//#             ex.printStackTrace();
-//#endif            
         }
         BombusMod.getInstance().notifyDestroyed();
     }
@@ -2796,9 +2784,6 @@ public class Roster
     try { // NPE and (possibility) ArrayIndexOutOfBoundsException with uncomplete reenum Roster.
     super.paint(g);
     } catch (Exception e) {
-//#ifdef DEBUG
-//#             e.printStackTrace();
-//#endif
     }
     }
      */
@@ -2909,9 +2894,6 @@ public class Roster
                     redraw();
                 }
             } catch (Exception e) {
-//#ifdef DEBUG
-//#                 //e.printStackTrace();
-//#endif
             }
             //thread=null;            
         }

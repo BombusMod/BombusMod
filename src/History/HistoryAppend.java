@@ -98,14 +98,8 @@
 //#             file.close();
 //#         } catch (IOException ex) {
 //#             try {
-//#ifdef DEBUG                
-//#                 ex.printStackTrace();
-//#endif                
 //#                 file.close();
 //#             } catch (IOException ex2) {
-//#ifdef DEBUG                
-//#                 ex2.printStackTrace();
-//#endif                
 //#             }
 //#         }
 //#         filename = null;

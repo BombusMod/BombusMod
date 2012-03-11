@@ -81,9 +81,6 @@ public class PopUp {
             font=FontCache.getFont(false, FontCache.baloon); //Issue 88
             popUps.addElement(new PopUpElement(type, contact, StringUtils.parseMessage(message, width-border-padding, font)));
         }
-//#ifdef DEBUG
-//#         //System.out.println("added message to array = "+message);
-//#endif
     }
 
     private PopUp() {
@@ -112,7 +109,7 @@ public class PopUp {
         String c = getContact();
         if (c != null) {
 //#ifdef POPUPS
-            StaticData.getInstance().roster.showContactMessageList(c);
+//#             StaticData.getInstance().roster.showContactMessageList(c);
 //#endif
         }
 

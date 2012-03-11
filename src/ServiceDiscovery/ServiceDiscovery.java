@@ -321,9 +321,6 @@ public class ServiceDiscovery
         try {
             sort(items);
         } catch (Exception e) { 
-//#ifdef DEBUG            
-//#             e.printStackTrace(); 
-//#endif            
         }
         
         /*if (data.getAttribute("from").equals(service)) - jid hashed in id attribute*/ //{

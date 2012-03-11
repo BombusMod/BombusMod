@@ -131,9 +131,6 @@ public class JuickConfig extends DefForm {
                     outputStream.writeUTF((String) JuickJIDs.elementAt(i));
                 }
             } catch (IOException e) {
-//#ifdef DEBUG                
-//#                 e.printStackTrace(); 
-//#endif                
             }
             NvStorage.writeFileRecord(outputStream, "juick_db", 0, true);
         }

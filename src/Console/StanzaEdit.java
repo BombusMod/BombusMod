@@ -26,100 +26,97 @@
  */
 
 //#ifdef CONSOLE
-
-package Console;
-
-import Client.StaticData;
-import java.io.IOException;
-import javax.microedition.lcdui.Command;
-import javax.microedition.lcdui.CommandListener;
-import javax.microedition.lcdui.Displayable;
-import locale.SR;
-import ui.VirtualList;
-import ui.controls.ExTextBox;
-
-/**
- *
- * @author ad
- */
-public class StanzaEdit
-        extends ExTextBox
-        implements CommandListener {
-    private Command cmdCancel;
-    private Command cmdSend;
-    private Command cmdPasteIQDisco;
-    private Command cmdPasteIQVersion;
-    private Command cmdPastePresence;
-    private Command cmdPasteMessage;
-    private static final String TEMPLATE_IQ_DISCO = "<iq to='???' id='" + System.currentTimeMillis() + "' type='get'>\n<query xmlns='http://jabber.org/protocol/disco#info'/>\n</iq>";
-    private static final String TEMPLATE_IQ_VERSION = "<iq to='???' id='" + System.currentTimeMillis() + "' type='get'>\n<query xmlns='jabber:iq:version'/>\n</iq>";
-    private static final String TEMPLATE_PRESENCE = "<presence to='???'>\n<show>???</show>\n<status>???</status>\n</presence>";
-    private static final String TEMPLATE_MESSAGE = "<message to='???' type='???'>\n<body>???</body>\n</message>";
-    
-    public StanzaEdit(VirtualList pView, String body) {
-        super(pView, body, SR.MS_XML_CONSOLE);
-        show(this);
-    }
-
-    public void commandState() {
-        super.commandState();
-        cmdCancel = new Command(SR.MS_CANCEL, Command.BACK, 99);
-        cmdSend = new Command(SR.MS_SEND, Command.OK, 1);
-
-        cmdPasteIQDisco = new Command("disco#info", Command.SCREEN, 11);
-        cmdPasteIQVersion = new Command("jabber:iq:version", Command.SCREEN, 12);
-        cmdPastePresence = new Command("presence", Command.SCREEN, 13);
-        cmdPasteMessage = new Command("message", Command.SCREEN, 14);
-
-        textbox.addCommand(cmdSend);
-
-        textbox.addCommand(cmdPasteIQDisco);
-        textbox.addCommand(cmdPasteIQVersion);
-        textbox.addCommand(cmdPastePresence);
-        textbox.addCommand(cmdPasteMessage);
-
-        textbox.addCommand(cmdCancel);       
-        
-
-    }
-
-    public void commandAction(Command c, Displayable d) {
-
-        if (!executeCommand(c, d)) {
-
-            if (c == cmdPasteIQDisco) {
-                insert(TEMPLATE_IQ_DISCO, caretPos);
-                return;
-            }
-            if (c == cmdPasteIQVersion) {
-                insert(TEMPLATE_IQ_VERSION, caretPos);
-                return;
-            }
-            if (c == cmdPastePresence) {
-                insert(TEMPLATE_PRESENCE, caretPos);
-                return;
-            }
-            if (c == cmdPasteMessage) {
-                insert(TEMPLATE_MESSAGE, caretPos);
-                return;
-            }
-
-            if (c == cmdCancel) {
-                body = null;
-            }
-
-            if (c == cmdSend && body != null && body.length() > 0) {
-                try {
-                    StaticData.getInstance().theStream.send(body.trim());
-                } catch (IOException ex) {
-//#ifdef DEBUG                    
-//#                     ex.printStackTrace();
-//#endif                    
-                }
-            }
-            destroyView();
-        }
-    }
-}
-
+//# 
+//# package Console;
+//# 
+//# import Client.StaticData;
+//# import java.io.IOException;
+//# import javax.microedition.lcdui.Command;
+//# import javax.microedition.lcdui.CommandListener;
+//# import javax.microedition.lcdui.Displayable;
+//# import locale.SR;
+//# import ui.VirtualList;
+//# import ui.controls.ExTextBox;
+//# 
+//# /**
+//#  *
+//#  * @author ad
+//#  */
+//# public class StanzaEdit
+//#         extends ExTextBox
+//#         implements CommandListener {
+//#     private Command cmdCancel;
+//#     private Command cmdSend;
+//#     private Command cmdPasteIQDisco;
+//#     private Command cmdPasteIQVersion;
+//#     private Command cmdPastePresence;
+//#     private Command cmdPasteMessage;
+//#     private static final String TEMPLATE_IQ_DISCO = "<iq to='???' id='" + System.currentTimeMillis() + "' type='get'>\n<query xmlns='http://jabber.org/protocol/disco#info'/>\n</iq>";
+//#     private static final String TEMPLATE_IQ_VERSION = "<iq to='???' id='" + System.currentTimeMillis() + "' type='get'>\n<query xmlns='jabber:iq:version'/>\n</iq>";
+//#     private static final String TEMPLATE_PRESENCE = "<presence to='???'>\n<show>???</show>\n<status>???</status>\n</presence>";
+//#     private static final String TEMPLATE_MESSAGE = "<message to='???' type='???'>\n<body>???</body>\n</message>";
+//#     
+//#     public StanzaEdit(VirtualList pView, String body) {
+//#         super(pView, body, SR.MS_XML_CONSOLE);
+//#         show(this);
+//#     }
+//# 
+//#     public void commandState() {
+//#         super.commandState();
+//#         cmdCancel = new Command(SR.MS_CANCEL, Command.BACK, 99);
+//#         cmdSend = new Command(SR.MS_SEND, Command.OK, 1);
+//# 
+//#         cmdPasteIQDisco = new Command("disco#info", Command.SCREEN, 11);
+//#         cmdPasteIQVersion = new Command("jabber:iq:version", Command.SCREEN, 12);
+//#         cmdPastePresence = new Command("presence", Command.SCREEN, 13);
+//#         cmdPasteMessage = new Command("message", Command.SCREEN, 14);
+//# 
+//#         textbox.addCommand(cmdSend);
+//# 
+//#         textbox.addCommand(cmdPasteIQDisco);
+//#         textbox.addCommand(cmdPasteIQVersion);
+//#         textbox.addCommand(cmdPastePresence);
+//#         textbox.addCommand(cmdPasteMessage);
+//# 
+//#         textbox.addCommand(cmdCancel);       
+//#         
+//# 
+//#     }
+//# 
+//#     public void commandAction(Command c, Displayable d) {
+//# 
+//#         if (!executeCommand(c, d)) {
+//# 
+//#             if (c == cmdPasteIQDisco) {
+//#                 insert(TEMPLATE_IQ_DISCO, caretPos);
+//#                 return;
+//#             }
+//#             if (c == cmdPasteIQVersion) {
+//#                 insert(TEMPLATE_IQ_VERSION, caretPos);
+//#                 return;
+//#             }
+//#             if (c == cmdPastePresence) {
+//#                 insert(TEMPLATE_PRESENCE, caretPos);
+//#                 return;
+//#             }
+//#             if (c == cmdPasteMessage) {
+//#                 insert(TEMPLATE_MESSAGE, caretPos);
+//#                 return;
+//#             }
+//# 
+//#             if (c == cmdCancel) {
+//#                 body = null;
+//#             }
+//# 
+//#             if (c == cmdSend && body != null && body.length() > 0) {
+//#                 try {
+//#                     StaticData.getInstance().theStream.send(body.trim());
+//#                 } catch (IOException ex) {
+//#                 }
+//#             }
+//#             destroyView();
+//#         }
+//#     }
+//# }
+//# 
 //#endif

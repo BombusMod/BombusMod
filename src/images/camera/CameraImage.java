@@ -92,11 +92,7 @@ public class CameraImage implements CommandListener, Runnable{
             midlet.BombusMod.getInstance().setDisplayable(form);
             
             player.start();
-        } catch (Exception e) { 
-            //TODO: alert error
-//#ifdef DEBUG
-//#             e.printStackTrace();
-//#endif
+        } catch (Exception e) {
         }
     }
     
@@ -115,9 +111,6 @@ public class CameraImage implements CommandListener, Runnable{
             byte photo[] = videoControl.getSnapshot(mode);
             imgListener.cameraImageNotify(photo);            
         } catch (Exception e) {
-//#ifdef DEBUG
-//#             e.printStackTrace();
-//#endif
         }
         // Shut down the player.
         player.close();

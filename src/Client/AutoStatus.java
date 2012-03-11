@@ -54,9 +54,6 @@
 //# 
 //#     public void start() {
 //#         if (timer == null) {
-//#ifdef DEBUG
-//#             System.out.println("[AutoStatus] start called => started");
-//#endif
 //#             reset();
 //#             TimerTask task = new TimerTask() {
 //#                 public void run() {
@@ -77,10 +74,6 @@
 //#             };
 //#             timer = new Timer();
 //#             timer.schedule(task, 0, TIMER_INTERVAL);
-//#ifdef DEBUG
-//#         } else {
-//#             System.out.println("[AutoStatus] start called => already started");
-//#endif
 //#         }
 //#     }
 //#     
@@ -97,18 +90,11 @@
 //# 
 //#     public void stop() {
 //#         if (timer != null) {
-//#ifdef DEBUG
-//#             System.out.println("[AutoStatus] stop called => stopped");
-//#endif
 //#             timer.cancel();
 //#             timer = null;            
 //#             if (isAwaySet) {
 //#                 restoreStatus();
 //#             }
-//#ifdef DEBUG
-//#         } else {
-//#             System.out.println("[AutoStatus] stop called => already stopped");
-//#endif
 //#         }
 //#     }
 //#     
@@ -140,9 +126,6 @@
 //#     
 //#     private void setAutoAway(String msg) { 
 //#         synchronized(this) {
-//#ifdef DEBUG
-//#             System.out.println("[AutoStatus] setAutoAway called");
-//#endif
 //#             int status = sd.roster.myStatus;
 //#             if (status == Presence.PRESENCE_ONLINE || status == Presence.PRESENCE_CHAT) {
 //#                 prevStatus = status;
@@ -159,9 +142,6 @@
 //# 
 //#     private void setAutoXa(String msg) {
 //#         synchronized(this) {
-//#ifdef DEBUG
-//#             System.out.println("[AutoStatus] setAutoXa called");
-//#endif
 //#             isXaSet = true;
 //#             if (Config.autoAwayType != Config.AWAY_MESSAGE) {
 //#                 sd.roster.sendPresence(Presence.PRESENCE_XA, msg);
@@ -174,9 +154,6 @@
 //# 
 //#     private void restoreStatus() {
 //#         synchronized(this) {
-//#ifdef DEBUG
-//#             System.out.println("[AutoStatus] restoreStatus called");
-//#endif
 //#             ExtendedStatus status = StatusList.getInstance().getStatus(prevStatus);
 //#             sd.roster.sendPresence(prevStatus, status.getMessage());
 //# 

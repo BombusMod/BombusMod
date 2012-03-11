@@ -26,6 +26,7 @@
  */
 package Account;
 
+import Client.StaticData;
 import Menu.MenuCommand;
 import ServiceDiscovery.DiscoForm;
 import ServiceDiscovery.DiscoForm.FormSubmitListener;
@@ -107,24 +108,23 @@ public class AccountRegister
     }
 
     public void run() {
-	VirtualCanvas.getInstance().show(splash);
-	try {
-	    splash.setProgress(SR.MS_CONNECT_TO_ + raccount.server, 30);
-	    //give a chance another thread to finish ui
-	    Thread.sleep(500);
-	    sd.theStream = raccount.openJabberStream();
-	    new Thread(sd.theStream).start();
-	    new Thread(sd.theStream.dispatcher).start();
+        VirtualCanvas.getInstance().show(splash);
+        try {
+            splash.setProgress(SR.MS_CONNECT_TO_ + raccount.server, 30);
+            //give a chance another thread to finish ui
+            Thread.sleep(500);
+            sd.theStream = raccount.openJabberStream();
+            new Thread(sd.theStream).start();
+            new Thread(sd.theStream.dispatcher).start();
 
-	    sd.theStream.setJabberListener(this);
-	    sd.theStream.initiateStream();
-	} catch (Exception e) {
-//#ifdef DEBUG            
-//#             e.printStackTrace();
-//#endif            
-	    splash.setFailed();
-	}
-
+            sd.theStream.setJabberListener(this);
+            sd.theStream.initiateStream();
+        } catch (Exception e) {
+            if (StaticData.Debug) {
+                e.printStackTrace();
+            }
+            splash.setFailed();
+        }
     }
 
     public void connectionTerminated(Exception e) {
