@@ -671,7 +671,6 @@ class KeyRepeatTimer extends TimerTask {
 //#     public static void startRotate(int max, VirtualList list) {
 //# 
 //#         if (instance == null) {
-//#             System.out.println("new timer");
 //#             instance = new TimerTaskRotate();
 //#         }
 //# 
@@ -691,7 +690,6 @@ class KeyRepeatTimer extends TimerTask {
 //#     }
 //# 
 //#     public void run() {
-//#         System.out.println("loop");
 //# 
 //# 
 //#         if (scroll == 0) {

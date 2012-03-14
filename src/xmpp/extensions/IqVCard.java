@@ -76,14 +76,14 @@ public class IqVCard implements JabberBlockListener
                         return JabberBlockListener.BLOCK_PROCESSED;
                     }
                 if (id.startsWith("getvc")) {
-                        // prosody sends our vcard without "from"
+                /*        // prosody sends our vcard without "from"
                         if (from == null)
                             from = new Jid(data.getAttribute("to")).bareJid;
                         int index = id.indexOf(from);
                         String matchedjid = id.substring(index, id.length());
                         String vcardFrom = from;
                         if (!(vcardFrom.equals(matchedjid) || vcardFrom.equals(new Jid(matchedjid).bareJid)))
-                            return JabberBlockListener.BLOCK_REJECTED;
+                            return JabberBlockListener.BLOCK_REJECTED;*/
                          if (type.equals("error")) {
                              StaticData.getInstance().roster.setQuerySign(false);
                             AlertBox alertBox = new AlertBox(SR.MS_ERROR, XmppError.findInStanza(data).toString()) {
