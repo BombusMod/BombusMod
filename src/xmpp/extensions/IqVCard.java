@@ -76,9 +76,12 @@ public class IqVCard implements JabberBlockListener
                         return JabberBlockListener.BLOCK_PROCESSED;
                     }
                 if (id.startsWith("getvc")) {
-                        int index = id.indexOf(data.getAttribute("from"));
+                        // prosody sends our vcard without "from"
+                        if (from == null)
+                            from = new Jid(data.getAttribute("to")).bareJid;
+                        int index = id.indexOf(from);
                         String matchedjid = id.substring(index, id.length());
-                        String vcardFrom = data.getAttribute("from");
+                        String vcardFrom = from;
                         if (!(vcardFrom.equals(matchedjid) || vcardFrom.equals(new Jid(matchedjid).bareJid)))
                             return JabberBlockListener.BLOCK_REJECTED;
                          if (type.equals("error")) {
