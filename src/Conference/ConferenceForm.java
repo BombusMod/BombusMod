@@ -153,7 +153,10 @@ public class ConferenceForm
         
         linkJoin=new LinkString(SR.MS_JOIN) {
             public void doAction() {
-                join(nameField.getValue(), roomField.getValue().trim()+"@"+hostField.getValue().trim()+"/"+nickField.getValue(), passField.getValue(), Integer.parseInt(msgLimitField.getValue()));
+                join(nameField.getValue(), 
+                        roomField.getValue().trim()+"@"+hostField.getValue().trim()
+                        +"/"+nickField.getValue(), passField.getValue(), 
+                        nickField.getValue(), Integer.parseInt(msgLimitField.getValue()));
                 sd.roster.show();
             }
         };
@@ -208,16 +211,10 @@ public class ConferenceForm
                 cf.defGcRoom=room+"@"+host;
                 cf.saveToStorage();
                 gchat.append('/').append(nick);
-                join(name, gchat.toString(), pass, msgLimit);
+                join(name, gchat.toString(), pass, nick, msgLimit);
                 sd.roster.show();
             } catch (Exception e) { }
         }
-        gchat=null;
-        nick=null;
-        name=null;
-        host=null;
-        room=null;
-        pass=null;
     }
     
     public void commandState(){
@@ -234,7 +231,7 @@ public class ConferenceForm
         }
     }
 
-    public static void join(String name, String jid, String pass, int maxStanzas) {
+    public static void join(String name, String jid, String pass, String nick, int maxStanzas) {
         ConferenceGroup grp = StaticData.getInstance().roster.initMuc(jid, pass);
         grp.name = name;
 
@@ -257,7 +254,7 @@ public class ConferenceForm
         int status = StaticData.getInstance().roster.myStatus;
         if (status==Presence.PRESENCE_INVISIBLE) 
             status=Presence.PRESENCE_ONLINE;
-        StaticData.getInstance().roster.sendDirectPresence(status, jid, x);
+        StaticData.getInstance().roster.sendDirectPresence(status, jid, nick, x);
 
         grp.inRoom=true;
 

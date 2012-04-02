@@ -135,7 +135,7 @@ public class Bookmarks extends DefForm {
             return;
         }
 
-        ConferenceForm.join(join.name, join.getJidNick(), join.password, cf.confMessageCount);
+        ConferenceForm.join(join.name, join.getJidNick(), join.password, join.nick, cf.confMessageCount);
         parentView = sd.roster;
         destroyView();
     }
@@ -182,7 +182,7 @@ public class Bookmarks extends DefForm {
             for (Enumeration e = itemsList.elements(); e.hasMoreElements();) {
                 BookmarkItem bm = (BookmarkItem) e.nextElement();
                 if (bm.autojoin) {
-                    ConferenceForm.join(bm.name, bm.jid + '/' + bm.nick, bm.password, cf.confMessageCount);
+                    ConferenceForm.join(bm.name, bm.jid + '/' + bm.nick, bm.password, bm.nick, cf.confMessageCount);
                 }
             }
             parentView = sd.roster;

@@ -1018,7 +1018,7 @@ public class Roster
         redraw();
     }
 
-    public void sendDirectPresence(int status, String to, JabberDataBlock x) {
+    public void sendDirectPresence(int status, String to, String nick, JabberDataBlock x) {
         if (to == null) {
             sendPresence(status, null);
             return;
@@ -1029,7 +1029,8 @@ public class Roster
 
         myMessage = StringUtils.toExtendedString(myMessage);
 
-        Presence presence = new Presence(status, es.getPriority(), myMessage, sd.account.getNick());
+        Presence presence = new Presence(status, es.getPriority(), myMessage, 
+                nick == null ? sd.account.getNick() : nick);
 
         presence.setTo(to);
 
@@ -1043,7 +1044,7 @@ public class Roster
     }
 
     public void sendDirectPresence(int status, Contact to, JabberDataBlock x) {
-        sendDirectPresence(status, (to == null) ? null : to.getJid().toString(), x);
+        sendDirectPresence(status, (to == null) ? null : to.getJid().toString(), null, x);
         if (to != null) {
             if (to.jid.isTransport()) {
                 blockNotify(-111, 10000);
@@ -1091,7 +1092,7 @@ public class Roster
                 Contact myself = confGroup.selfContact;
 
                 if (c.status == Presence.PRESENCE_OFFLINE) {
-                    ConferenceForm.join(confGroup.name, myself.getJid().toString(), confGroup.password, 20);
+                    ConferenceForm.join(confGroup.name, myself.getJid().toString(), confGroup.password, myself.nick, 20);
                     continue;
                 }
                 Presence presence = new Presence(myStatus, myPriority, myMessage, null);
