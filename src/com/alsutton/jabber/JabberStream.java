@@ -179,13 +179,9 @@ public class JabberStream implements XMLEventListener, Runnable {
             broadcastBeginConversation();
             return false;
         }
-
-        if (name.equals("BINVAL")) {
-            return true;
-        }
         tagStack.push(in);
-        return false;
-
+        
+        return (name.equals("BINVAL"));
     }
 
     public boolean isXmppV1() {
