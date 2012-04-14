@@ -190,7 +190,9 @@ public abstract class MessageList extends DefForm
         Object o = getFocusedObject();
         if (o != null) {
             MessageItem item = (MessageItem) o;
-            item.toggleSmiles(this);
+//#ifdef SMILES            
+//#             item.toggleSmiles(this);
+//#endif            
 //#ifdef POPUPS
 //#ifdef SMILES
 //#             if (!item.smilesEnabled() && cf.hideTimestamps) {

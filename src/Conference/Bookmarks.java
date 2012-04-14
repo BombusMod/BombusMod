@@ -269,7 +269,9 @@ public class Bookmarks extends DefForm {
                 moveCursorEnd();
                 return;
             case VirtualCanvas._KEY_POUND:
-                discoCurrent();
+//#ifdef SERVICE_DISCOVERY                
+//#                 discoCurrent();
+//#endif                
                 return;
         }
         super.doKeyAction(keyCode);

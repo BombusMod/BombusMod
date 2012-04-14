@@ -115,7 +115,6 @@ public class AccountRegister
             Thread.sleep(500);
             sd.theStream = raccount.openJabberStream();
             new Thread(sd.theStream).start();
-            new Thread(sd.theStream.dispatcher).start();
 
             sd.theStream.setJabberListener(this);
             sd.theStream.initiateStream();

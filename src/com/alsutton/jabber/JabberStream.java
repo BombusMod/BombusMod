@@ -29,6 +29,7 @@ import Account.Account;
 import Client.Config;
 import Client.StaticData;
 //#ifdef CONSOLE
+//# import Client.Msg;
 //# import Console.StanzasList;
 //#endif
 import com.alsutton.jabber.datablocks.Iq;
@@ -53,14 +54,12 @@ import xmpp.extensions.IqPing;
 public class JabberStream extends XmppParser implements Runnable {
     
     private final Utf8IOStream iostream;
-
-    /**
-     * The dispatcher thread.
-     */
     
-    public JabberDataBlockDispatcher dispatcher;
-    
-    private Vector outgoingPackets = new Vector();
+    private JabberListener listener;
+        
+    private final Vector blockListeners = new Vector();
+       
+    private final Vector outgoingPackets = new Vector();
 
     private String server; // for ping
     
@@ -106,8 +105,7 @@ public class JabberStream extends XmppParser implements Runnable {
 //#endif            
         }
         
-        iostream = new Utf8IOStream(connection);
-        dispatcher = new JabberDataBlockDispatcher(this);        
+        iostream = new Utf8IOStream(connection);        
     }
 
     public void initiateStream() throws IOException {
@@ -152,7 +150,7 @@ public class JabberStream extends XmppParser implements Runnable {
             String version=XMLParser.extractAttribute("version", attributes);
             xmppV1 = ("1.0".equals(version));
             
-            dispatcher.broadcastBeginConversation();
+            broadcastBeginConversation();
             return false;
         }
 //#ifdef HTTPBIND
@@ -203,8 +201,7 @@ public class JabberStream extends XmppParser implements Runnable {
 //#endif
 
         if (currentBlock == null) {
-            if (name.equals( "stream" ) ) {
-                dispatcher.halt();
+            if (name.equals( "stream" ) ) {                
                 iostream.close();
                 /*if (!Config.getInstance().oldNokiaS60)
                     iostream=null;*/
@@ -215,9 +212,7 @@ public class JabberStream extends XmppParser implements Runnable {
         
         if (currentBlock.getParent() == null) {
             if (currentBlock.getTagName().equals("error")) {
-                XmppError xe = XmppError.decodeStreamError(currentBlock);
-
-                dispatcher.halt();
+                XmppError xe = XmppError.decodeStreamError(currentBlock);                
                 iostream.close();
                 /*if (!Config.getInstance().oldNokiaS60)
                     iostream=null;*/
@@ -229,10 +224,73 @@ public class JabberStream extends XmppParser implements Runnable {
         super.tagEnd(name);
     }
 
-    protected void dispatchXmppStanza(JabberDataBlock currentBlock) {
-                    dispatcher.broadcastJabberDataBlock( currentBlock );
+    protected void dispatchXmppStanza(JabberDataBlock dataBlock) {
+
+        if (dataBlock != null) {
+            try {
+                if (dataBlock instanceof Iq) {
+                    // verify id attribute
+                    if (dataBlock.getAttribute("id") == null) {
+                        dataBlock.setAttribute("id", "666");
+                    }
+                    // verify is it our query
+                    String type = dataBlock.getTypeAttribute();
+                    if (type.equals("result") || type.equals("error")) {
+                        String id = dataBlock.getAttribute("id");
+                        if (outgoingQueries.indexOf(id) >= 0) {
+                            outgoingQueries.removeElement(id);
+                        } else {
+                            return; // ignore bad iq result/error
+                        }
+                    }
                 }
-    
+
+                int processResult = JabberBlockListener.BLOCK_REJECTED;
+                int i = 0;
+                int j = blockListeners.size();
+                while (i < j) {
+                    processResult = ((JabberBlockListener) blockListeners.elementAt(i)).blockArrived(dataBlock);
+                    if (processResult == JabberBlockListener.BLOCK_PROCESSED) {
+                        break;
+                    }
+                    if (processResult == JabberBlockListener.NO_MORE_BLOCKS) {
+                        j--;
+                        blockListeners.removeElementAt(i);
+                        break;
+                    }
+                    i++;
+                }
+                if (processResult == JabberBlockListener.BLOCK_REJECTED) {
+                    if (listener != null) {
+                        processResult = listener.blockArrived(dataBlock);
+                    }
+                }
+
+                if (processResult == JabberBlockListener.BLOCK_REJECTED) {
+                    if (!(dataBlock instanceof Iq)) {
+                        return;
+                    }
+
+                    String type = dataBlock.getTypeAttribute();
+                    if (type.equals("get") || type.equals("set")) {
+                        dataBlock.setAttribute("to", dataBlock.getAttribute("from"));
+                        dataBlock.setAttribute("from", null);
+                        dataBlock.setTypeAttribute("error");
+                        dataBlock.addChild(new XmppError(XmppError.FEATURE_NOT_IMPLEMENTED, null).construct());
+                        send(dataBlock);
+                    }
+                    //TODO: reject iq stansas where type =="get" | "set"
+                }
+//#ifdef CONSOLE
+//#                 addLog(dataBlock.toString(), Msg.MESSAGE_TYPE_IN);
+//#endif
+            } catch (Exception e) {
+                listener.dispatcherException(e, dataBlock);
+            }
+        }
+    }
+
+
     public void startKeepAliveTask() {
         Account account = StaticData.getInstance().account;
 
@@ -284,7 +342,7 @@ public class JabberStream extends XmppParser implements Runnable {
             //dispatcher.broadcastTerminatedConnection( null );
         } catch( Exception e ) {            
             //e.printStackTrace();
-            dispatcher.broadcastTerminatedConnection(e);
+            listener.connectionTerminated(e);
         }
         closeConnection();
     }
@@ -310,20 +368,15 @@ public class JabberStream extends XmppParser implements Runnable {
 //#             }
 //#endif
 
-            dispatcher.setJabberListener( null );
+            setJabberListener( null );
             //TODO: see FS#528
             try {  Thread.sleep(500); } catch (Exception e) {}
-            send("</stream:stream>");
+            send("</stream:stream>");            
             
-            for  (int time=10; 0 < time; --time) {
-                if (!dispatcher.isActive()) break;
-                try {  Thread.sleep(500); } catch (Exception e) {}
-            }
             //connection.close();
         } catch( IOException e ) { }
-        dispatcher.halt();
         if (iostream != null) {
-        iostream.close();
+            iostream.close();
        /* if (!Config.getInstance().oldNokiaS60)
             iostream = null; // may hang device*/
         }
@@ -362,7 +415,7 @@ public class JabberStream extends XmppParser implements Runnable {
 //#         } else {
 //#else            
             if (pingSent) {
-                dispatcher.broadcastTerminatedConnection(new Exception("Ping Timeout"));
+                listener.connectionTerminated(new Exception("Ping Timeout"));
             } else {
                 //System.out.println("Ping myself");
                 ping();
@@ -418,20 +471,49 @@ public class JabberStream extends XmppParser implements Runnable {
     /**
      * Set the listener to this stream.
      */
-    public void addBlockListener(JabberBlockListener listener) { 
-        dispatcher.addBlockListener(listener);
+    public void addBlockListener(JabberBlockListener listener) {
+        if (listener == null) {
+            return;
+        }
+        if (blockListeners.indexOf(listener) > 0) {
+            return;
+        }
+        blockListeners.addElement(listener);
+
     }
 
-    public void cancelBlockListener(JabberBlockListener listener) { 
-        dispatcher.cancelBlockListener(listener);
+    public void cancelBlockListener(JabberBlockListener listener) {
+        try {
+            blockListeners.removeElement(listener);
+        } catch (Exception e) {
+        }
     }
-    
+
     public void cancelBlockListenerByClass(Class removeClass) {
-        dispatcher.cancelBlockListenerByClass(removeClass);
+        int index = 0;
+        int j = blockListeners.size();
+        while (index < j) {
+            Object list = blockListeners.elementAt(index);
+            if (list.getClass().equals(removeClass)) {
+                blockListeners.removeElementAt(index);
+                j--;
+            } else {
+                index++;
+            }
+        }
+
     }
     
     public void setJabberListener( JabberListener listener ) {
-        dispatcher.setJabberListener( listener );
+        this.listener = listener;    
+    }
+    /**
+     * Method to tell the listener the stream is ready for talking to.
+     */
+    public void broadcastBeginConversation() {
+        if (listener != null) {
+            listener.beginConversation();
+        }
     }
     
     private void ping() {

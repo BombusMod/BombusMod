@@ -287,7 +287,6 @@ public class Roster
 
             sd.theStream = a.openJabberStream();
             new Thread(sd.theStream).start();
-            new Thread(sd.theStream.dispatcher).start();
             setProgress(SR.MS_OPENING_STREAM, 40);
             sd.theStream.setJabberListener(this);
             sd.theStream.initiateStream();
