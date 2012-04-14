@@ -31,10 +31,10 @@ public class QueryRequestVoice {
         JabberDataBlock x=msg.addChildNs("x", DiscoForm.NS_XDATA);
         x.setTypeAttribute("submit");
         
-        JabberDataBlock fieldType=new JabberDataBlock("field", null, null);
+        JabberDataBlock fieldType=new JabberDataBlock("field");
         fieldType.setAttribute("var","FORM_TYPE");
         
-        JabberDataBlock fieldTypeValue=new JabberDataBlock("value", null, null);
+        JabberDataBlock fieldTypeValue=new JabberDataBlock("value");
         fieldTypeValue.setText("http://jabber.org/protocol/muc#request");
         
         fieldType.addChild(fieldTypeValue);
@@ -42,12 +42,12 @@ public class QueryRequestVoice {
         x.addChild(fieldType);
         
         
-        JabberDataBlock fieldLabel=new JabberDataBlock("field", null, null);
+        JabberDataBlock fieldLabel=new JabberDataBlock("field");
         fieldLabel.setAttribute("var","muc#role");
         fieldLabel.setAttribute("type","text-single");
         fieldLabel.setAttribute("label","Requested role");
         
-        JabberDataBlock fieldLabelValue=new JabberDataBlock("value", null, null);
+        JabberDataBlock fieldLabelValue=new JabberDataBlock("value");
         fieldLabelValue.setText("participant");
         
         fieldLabel.addChild(fieldLabelValue);

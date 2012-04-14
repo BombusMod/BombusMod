@@ -87,7 +87,7 @@ public class SASLAuth implements JabberBlockListener{
 //#             if (compr!=null && account.useCompression()) {
 //#                 if (compr.getChildBlockByText("zlib")!=null) {
 //#                     // negotiating compression
-//#                     JabberDataBlock askCompr=new JabberDataBlock("compress", null, null);
+//#                     JabberDataBlock askCompr=new JabberDataBlock("compress");
 //#                     askCompr.setNameSpace("http://jabber.org/protocol/compress");
 //#                     askCompr.addChild("method", "zlib");
 //#                     stream.send(askCompr);
@@ -100,7 +100,7 @@ public class SASLAuth implements JabberBlockListener{
             if (mech!=null) {
                 // first stream - step 1. selecting authentication mechanism
                 //common body
-                JabberDataBlock auth=new JabberDataBlock("auth", null,null);
+                JabberDataBlock auth=new JabberDataBlock("auth");
                 auth.setNameSpace("urn:ietf:params:xml:ns:xmpp-sasl");
                 
                 // DIGEST-MD5 mechanism
@@ -197,7 +197,7 @@ public class SASLAuth implements JabberBlockListener{
             String challenge=decodeBase64(data.getText());
             //System.out.println(challenge);
             
-            JabberDataBlock resp=new JabberDataBlock("response", null, null);
+            JabberDataBlock resp=new JabberDataBlock("response");
             resp.setNameSpace("urn:ietf:params:xml:ns:xmpp-sasl");
             
             int nonceIndex=challenge.indexOf("nonce=");

@@ -1,30 +1,30 @@
 /*
-  Copyright (c) 2000,2001 Al Sutton (al@alsutton.com)
-  All rights reserved.
-  Redistribution and use in source and binary forms, with or without modification, are permitted
-  provided that the following conditions are met:
- 
-  1. Redistributions of source code must retain the above copyright notice, this list of conditions
-  and the following disclaimer.
- 
-  2. Redistributions in binary form must reproduce the above copyright notice, this list of
-  conditions and the following disclaimer in the documentation and/or other materials provided with
-  the distribution.
- 
-  Neither the name of Al Sutton nor the names of its contributors may be used to endorse or promote
-  products derived from this software without specific prior written permission.
- 
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS ``AS IS'' AND ANY EXPRESS OR
-  IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
-  FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE
-  LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
-  OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-  CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF
-  THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
+Copyright (c) 2000,2001 Al Sutton (al@alsutton.com)
+All rights reserved.
+Redistribution and use in source and binary forms, with or without modification, are permitted
+provided that the following conditions are met:
 
+1. Redistributions of source code must retain the above copyright notice, this list of conditions
+and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright notice, this list of
+conditions and the following disclaimer in the documentation and/or other materials provided with
+the distribution.
+
+Neither the name of Al Sutton nor the names of its contributors may be used to endorse or promote
+products derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS ``AS IS'' AND ANY EXPRESS OR
+IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE
+LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
+OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF
+THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 package com.alsutton.jabber;
+
 import Account.Account;
 import Client.Config;
 import Client.StaticData;
@@ -37,6 +37,8 @@ import com.alsutton.jabber.datablocks.Iq;
 //# import com.alsutton.jabber.datablocks.Presence;
 //# import io.HttpBindConnection;
 //#endif
+import com.alsutton.jabber.datablocks.Message;
+import com.alsutton.jabber.datablocks.Presence;
 import io.Utf8IOStream;
 import java.io.*;
 import java.util.*;
@@ -48,45 +50,36 @@ import javax.microedition.io.*;
 import xml.*;
 import locale.SR;
 import xmpp.XmppError;
-import xmpp.XmppParser;
 import xmpp.extensions.IqPing;
 
-public class JabberStream extends XmppParser implements Runnable {
-    
+public class JabberStream implements XMLEventListener, Runnable {
+
     private final Utf8IOStream iostream;
-    
+    private final Stack tagStack = new Stack();
     private JabberListener listener;
-        
     private final Vector blockListeners = new Vector();
-       
     private final Vector outgoingPackets = new Vector();
-
     private String server; // for ping
-    
     public boolean pingSent;
-	
     public boolean loggedIn;
-    
     private boolean xmppV1;
-    
     private String sessionId;
-
     public Vector outgoingQueries = new Vector();
 //#if android
 //#     private Socket connection;
 //#else
     private StreamConnection connection;
 //#endif
-    
+
     /**
      * Constructor. Connects to the server and sends the jabber welcome message.
      *
      */
-    public JabberStream( String server, String host, int port, String proxy) throws IOException {
-        this.server=server;
+    public JabberStream(String server, String host, int port, String proxy) throws IOException {
+        this.server = server;
 
-        boolean waiting=Config.getInstance().istreamWaiting;
-                
+        boolean waiting = Config.getInstance().istreamWaiting;
+
         if (proxy == null) {
 //#if android
 //# 	    connection = new Socket(host, port);
@@ -101,11 +94,11 @@ public class JabberStream extends XmppParser implements Runnable {
 //#elif HTTPBIND
 //#             connection = new io.HttpBindConnection(server, host);
 //#else            
-            throw new IllegalArgumentException ("no proxy supported");
+            throw new IllegalArgumentException("no proxy supported");
 //#endif            
         }
-        
-        iostream = new Utf8IOStream(connection);        
+
+        iostream = new Utf8IOStream(connection);
     }
 
     public void initiateStream() throws IOException {
@@ -132,27 +125,19 @@ public class JabberStream extends XmppParser implements Runnable {
 //#             send(body);            
 //#         } else {
 //#endif
-        StringBuffer header=new StringBuffer("<stream:stream to='" ).append( server ).append( "' xmlns='jabber:client' xmlns:stream='http://etherx.jabber.org/streams'" );
+        StringBuffer header = new StringBuffer("<stream:stream to='").append(server).append("' xmlns='jabber:client' xmlns:stream='http://etherx.jabber.org/streams'");
         header.append(" version='1.0'");
-        if (SR.MS_XMLLANG!=null) {
+        if (SR.MS_XMLLANG != null) {
             header.append(" xml:lang='").append(SR.MS_XMLLANG).append("'");
         }
-        header.append( '>' );
-        send(header.toString());        
+        header.append('>');
+        send(header.toString());
 //#ifdef HTTPBIND
 //#         }
 //#endif
     }
-    
-     public boolean tagStart(String name, Vector attributes) {
-        if (name.equals( "stream" ) ) {
-            sessionId = XMLParser.extractAttribute("id", attributes);
-            String version=XMLParser.extractAttribute("version", attributes);
-            xmppV1 = ("1.0".equals(version));
-            
-            broadcastBeginConversation();
-            return false;
-        }
+
+    public boolean tagStart(String name, Vector attributes) {
 //#ifdef HTTPBIND
 //#         if (connection instanceof HttpBindConnection) {
 //#              if (name.equals("body")) {
@@ -171,14 +156,46 @@ public class JabberStream extends XmppParser implements Runnable {
 //#              }
 //#          }
 //#endif
-        
-        return super.tagStart(name, attributes);
+        JabberDataBlock in;
+        StaticData.getInstance().updateTrafficIn();
+
+        if (name.equals("message")) {
+            in = new Message(attributes);
+        } else if (name.equals("iq")) {
+            in = new Iq(attributes);
+        } else if (name.equals("presence")) {
+            in = new Presence(attributes);
+        } else if (name.equals("xml")) {
+            return false;
+        } else {
+            in = new JabberDataBlock(name, attributes);
+        }        
+
+        if (name.equals("stream")) {
+            sessionId = XMLParser.extractAttribute("id", attributes);
+            String version = XMLParser.extractAttribute("version", attributes);
+            xmppV1 = ("1.0".equals(version));
+
+            broadcastBeginConversation();
+            return false;
+        }
+
+        if (name.equals("BINVAL")) {
+            return true;
+        }
+        tagStack.push(in);
+        return false;
+
     }
 
-    public boolean isXmppV1() { return xmppV1; }
- 
-    public String getSessionId() { return sessionId; }
-     
+    public boolean isXmppV1() {
+        return xmppV1;
+    }
+
+    public String getSessionId() {
+        return sessionId;
+    }
+
     public void tagEnd(String name) throws XMLException {
 //#ifdef HTTPBIND
 //#        if (connection instanceof HttpBindConnection) {
@@ -199,29 +216,22 @@ public class JabberStream extends XmppParser implements Runnable {
 //#             }
 //#         }
 //#endif
-
-        if (currentBlock == null) {
-            if (name.equals( "stream" ) ) {                
+        JabberDataBlock in = (JabberDataBlock) tagStack.pop();
+        if (tagStack.empty()) {
+            dispatchXmppStanza(in);
+            if (in.getTagName().equals("stream")) {
                 iostream.close();
-                /*if (!Config.getInstance().oldNokiaS60)
-                    iostream=null;*/
                 throw new XMLException("Normal stream shutdown");
             }
-            return;
-        }
-        
-        if (currentBlock.getParent() == null) {
-            if (currentBlock.getTagName().equals("error")) {
-                XmppError xe = XmppError.decodeStreamError(currentBlock);                
+            if (in.getTagName().equals("error")) {
+                XmppError xe = XmppError.decodeStreamError(in);
                 iostream.close();
-                /*if (!Config.getInstance().oldNokiaS60)
-                    iostream=null;*/
-                throw new XMLException("Stream error: "+xe.toString());                
-            }
 
+                throw new XMLException("Stream error: " + xe.toString());
+            }
+        } else {
+            ((JabberDataBlock) tagStack.peek()).addChild(in);
         }
-        
-        super.tagEnd(name);
     }
 
     protected void dispatchXmppStanza(JabberDataBlock dataBlock) {
@@ -290,7 +300,6 @@ public class JabberStream extends XmppParser implements Runnable {
         }
     }
 
-
     public void startKeepAliveTask() {
         Account account = StaticData.getInstance().account;
 
@@ -311,44 +320,50 @@ public class JabberStream extends XmppParser implements Runnable {
 
         keepAlive = new TimerTaskKeepAlive(keepAlivePeriod);
     }
-    
     private boolean connected = false;
+
     /**
      * The threads run method. Handles the parsing of incomming data in its
      * own thread.
      */
     public void run() {
         try {
-            XMLParser parser = new XMLParser( this );
+            XMLParser parser = new XMLParser(this);
             connected = true;
-            
+
             byte cbuf[] = new byte[512];
 
             while (connected) {
 
                 while (!outgoingPackets.isEmpty()) {
-                    sendPacket((String)outgoingPackets.elementAt(0));
+                    sendPacket((String) outgoingPackets.elementAt(0));
                     outgoingPackets.removeElementAt(0);
                 }
-                
+
                 int length = iostream.read(cbuf);
-                if (length==0) {
-                    try { Thread.sleep(100); } catch (Exception e) {} 
-                        continue; 
+                if (length == 0) {
+                    try {
+                        Thread.sleep(100);
+                    } catch (Exception e) {
+                    }
+                    continue;
                 }
                 parser.parse(cbuf, length);
             }
-            
+
             //dispatcher.broadcastTerminatedConnection( null );
-        } catch( Exception e ) {            
+        } catch (Exception e) {
             //e.printStackTrace();
             listener.connectionTerminated(e);
         }
         closeConnection();
     }
+
     private void closeConnection() {
-        if (null != keepAlive) keepAlive.destroyTask();
-        
+        if (null != keepAlive) {
+            keepAlive.destroyTask();
+        }
+
         try {
 //#ifdef HTTPBIND
 //#             if (connection instanceof HttpBindConnection) {
@@ -368,25 +383,28 @@ public class JabberStream extends XmppParser implements Runnable {
 //#             }
 //#endif
 
-            setJabberListener( null );
+            setJabberListener(null);
             //TODO: see FS#528
-            try {  Thread.sleep(500); } catch (Exception e) {}
-            send("</stream:stream>");            
-            
+            try {
+                Thread.sleep(500);
+            } catch (Exception e) {
+            }
+            send("</stream:stream>");
+
             //connection.close();
-        } catch( IOException e ) { }
+        } catch (IOException e) {
+        }
         if (iostream != null) {
             iostream.close();
-       /* if (!Config.getInstance().oldNokiaS60)
+            /* if (!Config.getInstance().oldNokiaS60)
             iostream = null; // may hang device*/
         }
     }
-    
+
     /**
      * Method to close the connection to the server and tell the listener
      * that the connection has been terminated.
      */
-    
     public void close() {
         connected = false;
         // wait to finish parser
@@ -395,7 +413,7 @@ public class JabberStream extends XmppParser implements Runnable {
         } catch (InterruptedException ex) {
         }
     }
-    
+
     /**
      * Method of sending data to the server.
      *
@@ -414,45 +432,44 @@ public class JabberStream extends XmppParser implements Runnable {
 //#             }
 //#         } else {
 //#else            
-            if (pingSent) {
-                listener.connectionTerminated(new Exception("Ping Timeout"));
-            } else {
-                //System.out.println("Ping myself");
-                ping();
-            }
+        if (pingSent) {
+            listener.connectionTerminated(new Exception("Ping Timeout"));
+        } else {
+            //System.out.println("Ping myself");
+            ping();
+        }
 //#endif        
 //#ifdef HTTPBIND
 //#         }
 //#endif        
     }
-    
+
     private void sendPacket(String data) throws IOException {
         iostream.send(data);
 //#ifdef CONSOLE
-//#             addLog(data, 1);
+//#         addLog(data, 1);
 //#endif
     }
 
-    public void send( String data ) throws IOException {
+    public void send(String data) throws IOException {
         outgoingPackets.addElement(data);
     }
-    
-    
-    private void sendBuf( StringBuffer data ) throws IOException {
+
+    private void sendBuf(StringBuffer data) throws IOException {
         outgoingPackets.addElement(data.toString());
     }
-    
+
     /**
      * Method of sending a Jabber datablock to the server.
      *
      * @param block The data block to send to the server.
      */
-    
-    public void send( JabberDataBlock block )  {
+    public void send(JabberDataBlock block) {
         if (block instanceof Iq) {
             String type = block.getTypeAttribute();
-            if (type.equals("set") || type.equals("get"))
+            if (type.equals("set") || type.equals("get")) {
                 outgoingQueries.addElement(block.getAttribute("id"));
+            }
         }
         try {
             StringBuffer buf = new StringBuffer();
@@ -461,9 +478,9 @@ public class JabberStream extends XmppParser implements Runnable {
         } catch (Exception e) {
         }
     }
-    
+
 //#ifdef CONSOLE
-//#     public void addLog (String data, int type) {
+//#     public void addLog(String data, int type) {
 //#         StanzasList.getInstance().add(data, type);
 //#     }
 //#endif
@@ -503,10 +520,11 @@ public class JabberStream extends XmppParser implements Runnable {
         }
 
     }
-    
-    public void setJabberListener( JabberListener listener ) {
-        this.listener = listener;    
+
+    public void setJabberListener(JabberListener listener) {
+        this.listener = listener;
     }
+
     /**
      * Method to tell the listener the stream is ready for talking to.
      */
@@ -515,7 +533,7 @@ public class JabberStream extends XmppParser implements Runnable {
             listener.beginConversation();
         }
     }
-    
+
     private void ping() {
         pingSent = true;
         send(IqPing.query(StaticData.getInstance().account.server, "ping"));
@@ -529,7 +547,7 @@ public class JabberStream extends XmppParser implements Runnable {
 //#     public String getStreamStats() {
 //#         return iostream.getStreamStats();
 //#     }
-//#     
+//# 
 //#     public String getConnectionData() {
 //#         return iostream.getConnectionData();
 //#     }
@@ -543,8 +561,20 @@ public class JabberStream extends XmppParser implements Runnable {
     public long getBytes() {
         return iostream.getBytes();
     }
-    
     private TimerTaskKeepAlive keepAlive;
+
+    public void plainTextEncountered(String text) {
+        if (tagStack.peek() != null) {
+            ((JabberDataBlock) tagStack.peek()).setText(text);
+        }
+    }
+
+    public void binValueEncountered(byte[] binvalue) {
+        if (tagStack.peek() != null) {
+            //currentBlock.addText( text );
+            ((JabberDataBlock) tagStack.peek()).addChild(binvalue);
+        }
+    }
 
     private class TimerTaskKeepAlive extends TimerTask {
 
@@ -574,6 +604,3 @@ public class JabberStream extends XmppParser implements Runnable {
         }
     }
 }
-
-
-

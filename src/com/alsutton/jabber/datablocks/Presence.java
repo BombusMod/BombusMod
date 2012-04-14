@@ -39,18 +39,18 @@ import locale.SR;
 
 public class Presence extends JabberDataBlock {
 
-    public Presence( JabberDataBlock _parent, Vector _attributes ) {
-        super( _parent, _attributes );
+    public Presence(Vector _attributes ) {
+        super( "presence", _attributes );
     }
 
     public Presence(String to, String type){
-        super(null,null);
+        super("presence");
         setAttribute("to",to);
         setAttribute("type",type);
     }
 
     public Presence(int status, int priority, String message, String nick) {
-        super( null, null );
+        super( "presence");
         switch (status){
             case PRESENCE_OFFLINE: setType(PRS_OFFLINE); break;
             case PRESENCE_INVISIBLE: setType(PRS_INVISIBLE); break;
@@ -156,10 +156,6 @@ public class Presence extends JabberDataBlock {
         addChild("show", text);
     }
 
-    public String getTagName() {
-        return "presence";
-    }
-
     public int getTypeIndex() {
         return presenceCode;
     }
@@ -183,34 +179,34 @@ public class Presence extends JabberDataBlock {
     }
     
 //#ifdef CLIENTS_ICONS
-    public boolean hasEntityCaps() {
-        JabberDataBlock cc=getChildBlock("c");
-        if (cc==null) return false;
-        return cc.isJabberNameSpace("http://jabber.org/protocol/caps");
-    }
-    
-    public String getEntityNode() {
-        JabberDataBlock cc=getChildBlock("c");
-        if (cc!=null){
-            if (cc.isJabberNameSpace("http://jabber.org/protocol/caps")) {
-                return cc.getAttribute("node");
-            }
-        }
-        return null;
-    }
-    
-    public String getEntityVer() {
-        JabberDataBlock cc=getChildBlock("c");
-        if (cc!=null){
-            if (cc.isJabberNameSpace("http://jabber.org/protocol/caps")) {
-                String ver = cc.getAttribute("ver");
-                if (ver == null) // buggy clients
-                    return null;
-                return (ver.endsWith("=")?null:ver);
-            }
-        }
-        return null;
-    }
+//#     public boolean hasEntityCaps() {
+//#         JabberDataBlock cc=getChildBlock("c");
+//#         if (cc==null) return false;
+//#         return cc.isJabberNameSpace("http://jabber.org/protocol/caps");
+//#     }
+//#     
+//#     public String getEntityNode() {
+//#         JabberDataBlock cc=getChildBlock("c");
+//#         if (cc!=null){
+//#             if (cc.isJabberNameSpace("http://jabber.org/protocol/caps")) {
+//#                 return cc.getAttribute("node");
+//#             }
+//#         }
+//#         return null;
+//#     }
+//#     
+//#     public String getEntityVer() {
+//#         JabberDataBlock cc=getChildBlock("c");
+//#         if (cc!=null){
+//#             if (cc.isJabberNameSpace("http://jabber.org/protocol/caps")) {
+//#                 String ver = cc.getAttribute("ver");
+//#                 if (ver == null) // buggy clients
+//#                     return null;
+//#                 return (ver.endsWith("=")?null:ver);
+//#             }
+//#         }
+//#         return null;
+//#     }
 //#endif
     
     public final static int PRESENCE_ONLINE = RosterIcons.ICON_PRESENCE_ONLINE;

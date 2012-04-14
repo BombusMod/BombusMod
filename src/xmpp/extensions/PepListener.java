@@ -79,6 +79,7 @@
 //#ifdef PEP_ACTIVITY
 //#         boolean hasActivity = false;
 //#         if (cf.rcvactivity) {
+//#             String eventId = event.getAttribute("id");
 //#             JabberDataBlock activity = extractEvent(event, "activity", "http://jabber.org/protocol/activity");
 //#             if (activity != null) {
 //#                 if (activity.getChildBlocks() == null) // user cancel activity publishing
@@ -99,7 +100,7 @@
 //#                             if (child.getChildBlocks() != null) {
 //#                                 result.append(": ").append(Activities.getInstance().getLabel(((JabberDataBlock) child.getChildBlocks().elementAt(0)).getTagName()));
 //#                             }
-//#                             id = activity.getParent().getAttribute("id");
+//#                             id = eventId;
 //#                         }
 //#                     } catch (Exception ex) {
 //#                     }
@@ -214,6 +215,7 @@
 //#         boolean hasMood = false;
 //#ifdef PEP
 //#         if (cf.sndrcvmood) {
+//#             String eventId = event.getAttribute("id");
 //#             mood = extractEvent(event, "mood", "http://jabber.org/protocol/mood");
 //# 
 //#             if (mood != null) {
@@ -231,7 +233,7 @@
 //#                             }
 //#                             moodIndex = Moods.getInstance().getMoodIngex(tag);
 //# 
-//#                             id = mood.getParent().getAttribute("id");
+//#                             id = eventId;
 //#                         }
 //#                     } catch (Exception ex) {
 //#                         moodIndex = Moods.getInstance().getMoodIngex("-");
@@ -323,7 +325,7 @@
 //#         }
 //#         JabberDataBlock item = items.getChildBlock("item");
 //#         if (item == null) {
-//#             return new JabberDataBlock();
+//#             return null;
 //#         }
 //#         return item.findNamespace(tagName, xmlns);
 //#     }

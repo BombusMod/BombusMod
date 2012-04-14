@@ -192,12 +192,12 @@ public class FormField {
             if (media == null) {
                 String value = ((TextInput) formItem).getValue();
                 if (type == null) {
-                    j = new JabberDataBlock(null, name, value);
+                    j = new JabberDataBlock(name, value);
                     return j;
                 }
             }
         }
-        j = new JabberDataBlock("field", null, null);
+        j = new JabberDataBlock("field");
         j.setAttribute("var", name);
         if (type != null) {
             j.setAttribute("type", type);
@@ -225,7 +225,7 @@ public class FormField {
             if (registered) {
                 boolean unregister = ((CheckBox) formItem).getValue();
                 if (unregister) {
-                    return new JabberDataBlock("remove", null, null);
+                    return new JabberDataBlock("remove");
                 }
                 return null;
             }

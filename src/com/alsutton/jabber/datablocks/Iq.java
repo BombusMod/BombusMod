@@ -46,13 +46,13 @@ public class Iq extends JabberDataBlock
    * @param _attributes The list of element attributes
    */
 
-  public Iq( JabberDataBlock _parent, Vector _attributes )
+  public Iq(Vector _attributes )
   {
-    super( _parent, _attributes );
+    super( "iq", _attributes );
   }
   
     public Iq(String to, int typeSet, String id) {
-        super();
+        super("iq");
         setAttribute("to", to);
         String type;
         switch (typeSet) {
@@ -70,16 +70,5 @@ public class Iq extends JabberDataBlock
         }
         setAttribute("type", type);
         setAttribute("id", id);
-    }
-
-
-  /**
-   * Method to return the tag name
-   *
-   * @return Always the string "iq".
-   */
-  public String getTagName()
-  {
-    return "iq";
-  }
+    }  
 }

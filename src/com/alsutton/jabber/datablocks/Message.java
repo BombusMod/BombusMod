@@ -32,7 +32,7 @@ import xmpp.XmppError;
 
 public class Message extends JabberDataBlock {
   public Message( String to, String message , String subject, boolean groupchat) {
-    super();
+    super("message");
 
     setAttribute( "to", to );
     if( message != null )
@@ -43,16 +43,16 @@ public class Message extends JabberDataBlock {
   }
 
   public Message( String to ) {
-    super();
+    super("message");
     setAttribute( "to", to );
   }
 
   public Message() {
-    this(null);
+    super("message");
   }
 
-  public Message( JabberDataBlock _parent, Vector _attributes ) {
-    super( _parent, _attributes );
+  public Message( Vector _attributes ) {
+    super( "message", _attributes );
   }
 
   public final void setBodyText( String text ) {
@@ -98,10 +98,6 @@ public class Message extends JabberDataBlock {
             return Time.dateIso8601(delay.getAttribute("stamp"));
         }
         return 0; //0 means no timestamp
-    }
-
-    public String getTagName() {
-        return "message";
     }
 
     public String getXFrom() {

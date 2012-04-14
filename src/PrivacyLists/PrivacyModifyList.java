@@ -26,197 +26,197 @@
  */
 
 //#ifdef PRIVACY
-
-package PrivacyLists;
-
-import Client.StaticData;
-import images.RosterIcons;
-import Menu.MenuCommand;
-import locale.SR;
-import ui.*;
-import java.util.*;
-import com.alsutton.jabber.*;
-import ui.controls.AlertBox;
-import ui.controls.form.DefForm;
-import images.RosterIcons;
-
-/**
- *
- * @author EvgS
- */
-public class PrivacyModifyList extends DefForm
-        implements JabberBlockListener
-{
-    
-    private PrivacyList plist;
-    private PrivacySelect pselector;
-    
-    private MenuCommand cmdAdd=new MenuCommand (SR.MS_ADD_RULE, MenuCommand.SCREEN, 10, RosterIcons.ICON_PRIVACY_ACTIVE);
-    private MenuCommand cmdDel=new MenuCommand (SR.MS_DELETE_RULE, MenuCommand.SCREEN, 11, RosterIcons.ICON_DELETE);
-    private MenuCommand cmdEdit=new MenuCommand (SR.MS_EDIT_RULE, MenuCommand.SCREEN, 12, RosterIcons.ICON_RENAME);
-    private MenuCommand cmdUp=new MenuCommand (SR.MS_MOVE_UP, MenuCommand.SCREEN, 13, RosterIcons.ICON_SCROLLABLE_UP);
-    private MenuCommand cmdDwn=new MenuCommand (SR.MS_MOVE_DOWN, MenuCommand.SCREEN, 14, RosterIcons.ICON_SCROLLABLE_DOWN);
-    private MenuCommand cmdSave=new MenuCommand (SR.MS_SAVE_LIST, MenuCommand.SCREEN, 16, RosterIcons.ICON_ARCHIVE);
-    
-    JabberStream stream=StaticData.getInstance().theStream;
-    
-    /** Creates a new instance of PrivacySelect */
-    public PrivacyModifyList(PrivacyList privacyList, boolean newList, PrivacySelect privacySelect) {
-        super(null);
-        mainbar= new MainBar(2, null, privacyList.name, false);
-
-        //commandState();
-        plist = privacyList;
-        pselector = privacySelect;
-        
-        if (!newList) {
-            processIcon(true);
-            stream.addBlockListener(this);
-            JabberDataBlock list=new JabberDataBlock("list", null, null);
-            list.setAttribute("name", plist.name);
-            PrivacyList.privacyListRq(false, list, "getlistitems");
-        }
-    }
-
-    public void commandState() {
-        menuCommands.removeAllElements();
-        addMenuCommand(cmdEdit);
-        addMenuCommand(cmdAdd);
-        addMenuCommand(cmdDel);
-        addMenuCommand(cmdUp);
-        addMenuCommand(cmdDwn);
-        addMenuCommand(cmdSave);
-    }
-    
-    private void processIcon(boolean processing){
-        mainbar.setElementAt((processing)?(Object)new Integer(RosterIcons.ICON_PROGRESS_INDEX):(Object)null, 0);
-        redraw();
-    }
-
-    /*private void getList(){
-        processIcon(true);
-        stream.addBlockListener(this);
-        JabberDataBlock list=new JabberDataBlock("list", null, null);
-        list.setAttribute("name", plist.name);
-        PrivacyList.privacyListRq(false, list, "getlistitems");
-    }*/
-    
-    protected int getItemCount() { return plist.rules.size(); }
-    public VirtualElement getItemRef(int index) {
-        if (index >= plist.rules.size()) return null;
-        return (VirtualElement) plist.rules.elementAt(index);
-    }
-    
-    public void menuAction(MenuCommand c, VirtualList d) {
-        if (c==cmdCancel) {
-            stream.cancelBlockListener(this);
-            super.cmdCancel();
-        }
-        if (c==cmdAdd) {
-            addNewElement();
-        }
-        if (c==cmdEdit) {
-            eventOk();
-        }
-        if (c==cmdDel) {
-            keyClear();
-        }
-        if (c==cmdSave) {
-            plist.generateList();
-            stream.cancelBlockListener(this);
-            pselector.getLists();
-            //PrivacyList.privacyListRq(false, null, "setplists");
-            parentView = pselector;
-            destroyView();
-        }
-        
-        if (c==cmdUp) { move(-1); keyUp(); }
-        if (c==cmdDwn) { move(+1); keyDwn(); }
-        super.menuAction(c, d);
-        redraw();
-    }
-    
-    public void move(int offset){
-        try {
-            int index=cursor;
-            PrivacyItem p1=(PrivacyItem)plist.rules.elementAt(index);
-            PrivacyItem p2=(PrivacyItem)plist.rules.elementAt(index+offset);
-            
-            plist.rules.setElementAt(p1, index+offset);
-            plist.rules.setElementAt(p2, index);
-            
-            int tmpOrder=p1.order;
-            p1.order=p2.order;
-            p2.order=tmpOrder;
-            updateView();
-        } catch (Exception e) {/* IndexOutOfBounds */}
-    }
-
-    public void eventOk(){
-        PrivacyItem pitem=(PrivacyItem) getFocusedObject();
-        if (pitem!=null) {
-            new PrivacyForm(pitem, null);
-        }
-    }
-    
-    public int blockArrived(JabberDataBlock data){
-        if (data.getTypeAttribute().equals("result"))
-            if (data.getAttribute("id").equals("getlistitems")) {
-                data=data.findNamespace("query", "jabber:iq:privacy");
-                try {
-                    data=data.getChildBlock("list");
-                    plist.rules=null;
-                    plist.rules=new Vector();
-                    for (Enumeration e=data.getChildBlocks().elements(); e.hasMoreElements();) {
-                        JabberDataBlock item=(JabberDataBlock) e.nextElement();
-                        plist.addRule(new PrivacyItem(item));
-                    }
-                } catch (Exception e) {}
-                
-                processIcon(false);
-                redraw();
-                return JabberBlockListener.NO_MORE_BLOCKS;
-            } //id, result
-        return JabberBlockListener.BLOCK_REJECTED;
-    }
-    
-    private void updateView() {
-        itemsList.removeAllElements();
-        for (Enumeration e = plist.rules.elements(); e.hasMoreElements();) {
-            itemsList.addElement((PrivacyItem)e.nextElement());
-        }
-        redraw();
-    }
-    
-    public void addNewElement() {
-        new PrivacyForm(new PrivacyItem(), plist);
-    }
-
-    public void delRule() {
-        if (getFocusedObject() != null)
-            plist.rules.removeElement(getFocusedObject());
-    }
-
-    public void keyClear() {
-        String name = getFocusedObject().toString();
-        new AlertBox(name, SR.MS_DELETE_RULE + " \"" + name + "\"?") {
-            public void yes() {
-                delRule();
-            }
-            public void no() {
-            }
-        };
-    }
-
-    public boolean doUserKeyAction(int command_id) {
-        switch (command_id) {
-            case 54:
-                addNewElement();
-                return true;
-        }
-
-        return super.doUserKeyAction(command_id);
-    }
-}
-
+//# 
+//# package PrivacyLists;
+//# 
+//# import Client.StaticData;
+//# import images.RosterIcons;
+//# import Menu.MenuCommand;
+//# import locale.SR;
+//# import ui.*;
+//# import java.util.*;
+//# import com.alsutton.jabber.*;
+//# import ui.controls.AlertBox;
+//# import ui.controls.form.DefForm;
+//# import images.RosterIcons;
+//# 
+//# /**
+//#  *
+//#  * @author EvgS
+//#  */
+//# public class PrivacyModifyList extends DefForm
+//#         implements JabberBlockListener
+//# {
+//#     
+//#     private PrivacyList plist;
+//#     private PrivacySelect pselector;
+//#     
+//#     private MenuCommand cmdAdd=new MenuCommand (SR.MS_ADD_RULE, MenuCommand.SCREEN, 10, RosterIcons.ICON_PRIVACY_ACTIVE);
+//#     private MenuCommand cmdDel=new MenuCommand (SR.MS_DELETE_RULE, MenuCommand.SCREEN, 11, RosterIcons.ICON_DELETE);
+//#     private MenuCommand cmdEdit=new MenuCommand (SR.MS_EDIT_RULE, MenuCommand.SCREEN, 12, RosterIcons.ICON_RENAME);
+//#     private MenuCommand cmdUp=new MenuCommand (SR.MS_MOVE_UP, MenuCommand.SCREEN, 13, RosterIcons.ICON_SCROLLABLE_UP);
+//#     private MenuCommand cmdDwn=new MenuCommand (SR.MS_MOVE_DOWN, MenuCommand.SCREEN, 14, RosterIcons.ICON_SCROLLABLE_DOWN);
+//#     private MenuCommand cmdSave=new MenuCommand (SR.MS_SAVE_LIST, MenuCommand.SCREEN, 16, RosterIcons.ICON_ARCHIVE);
+//#     
+//#     JabberStream stream=StaticData.getInstance().theStream;
+//#     
+//#     /** Creates a new instance of PrivacySelect */
+//#     public PrivacyModifyList(PrivacyList privacyList, boolean newList, PrivacySelect privacySelect) {
+//#         super(null);
+//#         mainbar= new MainBar(2, null, privacyList.name, false);
+//# 
+//#         //commandState();
+//#         plist = privacyList;
+//#         pselector = privacySelect;
+//#         
+//#         if (!newList) {
+//#             processIcon(true);
+//#             stream.addBlockListener(this);
+//#             JabberDataBlock list=new JabberDataBlock("list");
+//#             list.setAttribute("name", plist.name);
+//#             PrivacyList.privacyListRq(false, list, "getlistitems");
+//#         }
+//#     }
+//# 
+//#     public void commandState() {
+//#         menuCommands.removeAllElements();
+//#         addMenuCommand(cmdEdit);
+//#         addMenuCommand(cmdAdd);
+//#         addMenuCommand(cmdDel);
+//#         addMenuCommand(cmdUp);
+//#         addMenuCommand(cmdDwn);
+//#         addMenuCommand(cmdSave);
+//#     }
+//#     
+//#     private void processIcon(boolean processing){
+//#         mainbar.setElementAt((processing)?(Object)new Integer(RosterIcons.ICON_PROGRESS_INDEX):(Object)null, 0);
+//#         redraw();
+//#     }
+//# 
+//#     /*private void getList(){
+//#         processIcon(true);
+//#         stream.addBlockListener(this);
+//#         JabberDataBlock list=new JabberDataBlock("list", null, null);
+//#         list.setAttribute("name", plist.name);
+//#         PrivacyList.privacyListRq(false, list, "getlistitems");
+//#     }*/
+//#     
+//#     protected int getItemCount() { return plist.rules.size(); }
+//#     public VirtualElement getItemRef(int index) {
+//#         if (index >= plist.rules.size()) return null;
+//#         return (VirtualElement) plist.rules.elementAt(index);
+//#     }
+//#     
+//#     public void menuAction(MenuCommand c, VirtualList d) {
+//#         if (c==cmdCancel) {
+//#             stream.cancelBlockListener(this);
+//#             super.cmdCancel();
+//#         }
+//#         if (c==cmdAdd) {
+//#             addNewElement();
+//#         }
+//#         if (c==cmdEdit) {
+//#             eventOk();
+//#         }
+//#         if (c==cmdDel) {
+//#             keyClear();
+//#         }
+//#         if (c==cmdSave) {
+//#             plist.generateList();
+//#             stream.cancelBlockListener(this);
+//#             pselector.getLists();
+//#             //PrivacyList.privacyListRq(false, null, "setplists");
+//#             parentView = pselector;
+//#             destroyView();
+//#         }
+//#         
+//#         if (c==cmdUp) { move(-1); keyUp(); }
+//#         if (c==cmdDwn) { move(+1); keyDwn(); }
+//#         super.menuAction(c, d);
+//#         redraw();
+//#     }
+//#     
+//#     public void move(int offset){
+//#         try {
+//#             int index=cursor;
+//#             PrivacyItem p1=(PrivacyItem)plist.rules.elementAt(index);
+//#             PrivacyItem p2=(PrivacyItem)plist.rules.elementAt(index+offset);
+//#             
+//#             plist.rules.setElementAt(p1, index+offset);
+//#             plist.rules.setElementAt(p2, index);
+//#             
+//#             int tmpOrder=p1.order;
+//#             p1.order=p2.order;
+//#             p2.order=tmpOrder;
+//#             updateView();
+//#         } catch (Exception e) {/* IndexOutOfBounds */}
+//#     }
+//# 
+//#     public void eventOk(){
+//#         PrivacyItem pitem=(PrivacyItem) getFocusedObject();
+//#         if (pitem!=null) {
+//#             new PrivacyForm(pitem, null);
+//#         }
+//#     }
+//#     
+//#     public int blockArrived(JabberDataBlock data){
+//#         if (data.getTypeAttribute().equals("result"))
+//#             if (data.getAttribute("id").equals("getlistitems")) {
+//#                 data=data.findNamespace("query", "jabber:iq:privacy");
+//#                 try {
+//#                     data=data.getChildBlock("list");
+//#                     plist.rules=null;
+//#                     plist.rules=new Vector();
+//#                     for (Enumeration e=data.getChildBlocks().elements(); e.hasMoreElements();) {
+//#                         JabberDataBlock item=(JabberDataBlock) e.nextElement();
+//#                         plist.addRule(new PrivacyItem(item));
+//#                     }
+//#                 } catch (Exception e) {}
+//#                 
+//#                 processIcon(false);
+//#                 redraw();
+//#                 return JabberBlockListener.NO_MORE_BLOCKS;
+//#             } //id, result
+//#         return JabberBlockListener.BLOCK_REJECTED;
+//#     }
+//#     
+//#     private void updateView() {
+//#         itemsList.removeAllElements();
+//#         for (Enumeration e = plist.rules.elements(); e.hasMoreElements();) {
+//#             itemsList.addElement((PrivacyItem)e.nextElement());
+//#         }
+//#         redraw();
+//#     }
+//#     
+//#     public void addNewElement() {
+//#         new PrivacyForm(new PrivacyItem(), plist);
+//#     }
+//# 
+//#     public void delRule() {
+//#         if (getFocusedObject() != null)
+//#             plist.rules.removeElement(getFocusedObject());
+//#     }
+//# 
+//#     public void keyClear() {
+//#         String name = getFocusedObject().toString();
+//#         new AlertBox(name, SR.MS_DELETE_RULE + " \"" + name + "\"?") {
+//#             public void yes() {
+//#                 delRule();
+//#             }
+//#             public void no() {
+//#             }
+//#         };
+//#     }
+//# 
+//#     public boolean doUserKeyAction(int command_id) {
+//#         switch (command_id) {
+//#             case 54:
+//#                 addNewElement();
+//#                 return true;
+//#         }
+//# 
+//#         return super.doUserKeyAction(command_id);
+//#     }
+//# }
+//# 
 //#endif

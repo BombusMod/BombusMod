@@ -203,7 +203,7 @@
 //#         } else {
 //#             JabberDataBlock badreq = new Iq(jid.toString(), Iq.TYPE_ERROR, id);
 //#             JabberDataBlock err = new XmppError(XmppError.BAD_REQUEST, "no known methods").construct();
-//#             JabberDataBlock novalid = new JabberDataBlock("no-valid-streams", null, null);
+//#             JabberDataBlock novalid = new JabberDataBlock("no-valid-streams");
 //#             novalid.setNameSpace(TransferDispatcher.NS_SI);
 //#             err.addChild(novalid);
 //#             badreq.addChild(err);

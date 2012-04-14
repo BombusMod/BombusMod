@@ -85,7 +85,7 @@ public class ConferenceQuickPrivelegeModify {
         JabberDataBlock iq = new Iq(victim.jid.bareJid, Iq.TYPE_SET, "itemmuc");
         JabberDataBlock query = iq.addChildNs("query", "http://jabber.org/protocol/muc#admin");
         //TODO: separate usecases to muc#owner, muc#admin and muc#moderator
-        JabberDataBlock item = new JabberDataBlock("item", null, null);
+        JabberDataBlock item = new JabberDataBlock("item");
         query.addChild(item);
 
         try {

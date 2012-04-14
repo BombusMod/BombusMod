@@ -731,6 +731,8 @@ public abstract class VirtualList {
     }
     
     protected synchronized void fitCursorByTop() {
+        if (cursor >= itemLayoutY.length)
+            cursor = itemLayoutY.length - 1;
         int top = itemLayoutY[cursor];
         if (top < win_top) {
             win_top = top;

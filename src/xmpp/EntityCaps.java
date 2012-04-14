@@ -86,7 +86,7 @@ public class EntityCaps implements JabberBlockListener{
     }
 
     public static JabberDataBlock presenceEntityCaps() {
-        JabberDataBlock c=new JabberDataBlock("c", null, null);
+        JabberDataBlock c=new JabberDataBlock("c");
         c.setAttribute("xmlns", "http://jabber.org/protocol/caps");
         c.setAttribute("node", BOMBUS_NAMESPACE);//+'#'+Version.getVersionNumber());
         c.setAttribute("ver", calcVerHash());

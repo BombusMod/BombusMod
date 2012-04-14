@@ -70,7 +70,7 @@ public class NonSASLAuth implements JabberBlockListener{
         int type=Iq.TYPE_GET;
         String id="auth-1";
         
-        JabberDataBlock query = new JabberDataBlock("query", null, null);
+        JabberDataBlock query = new JabberDataBlock("query");
         query.setNameSpace( "jabber:iq:auth" );
         query.addChild( "username", account.userName );
         

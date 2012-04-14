@@ -178,7 +178,7 @@ public class XmppError {
     
     public JabberDataBlock construct() {
         if (errCondition==NONE) return null;
-        JabberDataBlock error=new JabberDataBlock("error", null, null);
+        JabberDataBlock error=new JabberDataBlock("error");
         String type=null;
         switch (errorType) {
             case TYPE_MODIFY:    type="modify"; break;

@@ -235,7 +235,7 @@ public class ConferenceForm
         ConferenceGroup grp = StaticData.getInstance().roster.initMuc(jid, pass);
         grp.name = name;
 
-        JabberDataBlock x=new JabberDataBlock("x", null, null);
+        JabberDataBlock x=new JabberDataBlock("x");
         x.setNameSpace("http://jabber.org/protocol/muc");
         if (pass.length()!=0) {
             x.addChild("password", pass); // adding password to presence

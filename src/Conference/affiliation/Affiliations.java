@@ -85,7 +85,7 @@ public class Affiliations
     }
     
     public final void getList() {
-        JabberDataBlock item=new JabberDataBlock("item", null, null);
+        JabberDataBlock item=new JabberDataBlock("item");
         item.setAttribute("affiliation", id);
         listRq(false, item, id);
     }
