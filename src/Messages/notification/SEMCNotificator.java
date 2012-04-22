@@ -15,7 +15,7 @@
 //#  *
 //#  * @author Vitaly
 //#  */
-//# public class SEMCNotificator implements Notificator, com.sonyericsson.ui.UIEventListener {
+//# public final class SEMCNotificator implements Notificator, com.sonyericsson.ui.UIEventListener {
 //# 
 //#     int eventCode;
 //#     public SEMCNotificator() {
