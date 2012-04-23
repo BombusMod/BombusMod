@@ -66,6 +66,7 @@ public class RosterIcons extends ImageList{
         if (transports == null) return 0;
         Object o=transports.get(name);
         if (o instanceof String) {
+            if (o == "none") return 0;
             int index=(transpSkins.size()+1)<<24;
             // loading additional skin
             ImageList customTransp=new ImageList((String) o, 1, ICONS_IN_ROW);
