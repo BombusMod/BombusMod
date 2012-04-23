@@ -560,13 +560,13 @@ public class JabberStream implements XMLEventListener, Runnable {
     private TimerTaskKeepAlive keepAlive;
 
     public void plainTextEncountered(String text) {
-        if (tagStack.peek() != null) {
+        if (!tagStack.isEmpty()) {
             ((JabberDataBlock) tagStack.peek()).setText(text);
         }
     }
 
     public void binValueEncountered(byte[] binvalue) {
-        if (tagStack.peek() != null) {
+        if (!tagStack.isEmpty()) {
             //currentBlock.addText( text );
             ((JabberDataBlock) tagStack.peek()).addChild(binvalue);
         }
