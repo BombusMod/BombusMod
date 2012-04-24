@@ -2540,7 +2540,9 @@ public class Roster
         }
     }
 
-    public void destroyView() {}
+    public void destroyView() {
+	cmdMinimize();
+    }
 
     public void keyGreen() {
         messageEditResume();
