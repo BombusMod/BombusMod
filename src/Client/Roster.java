@@ -119,6 +119,10 @@ import xmpp.extensions.IqVCard;
 import xmpp.PresenceDispatcher;
 import xmpp.RosterDispatcher;
 
+//#if android
+//# import org.bombusmod.BombusModActivity;
+//#endif
+
 public class Roster
         extends DefForm
         implements
@@ -2284,6 +2288,9 @@ public class Roster
     }
 
     public void cmdMinimize() {
+//#if android
+//#         BombusModActivity.getInstance().minimizeApp();
+//#endif        
         if (cf.allowMinimize) {
             BombusMod.getInstance().hideApp(true);
         } else if (phoneManufacturer == Config.SIEMENS2) {

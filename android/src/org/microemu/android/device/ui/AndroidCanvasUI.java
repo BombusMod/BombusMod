@@ -66,6 +66,7 @@ public class AndroidCanvasUI extends AndroidDisplayableUI implements CanvasUI {
         activity.post(new Runnable() {
             public void run() {
                 view = new CanvasView(activity, AndroidCanvasUI.this);
+                view.setId(666);
             }
         });
     }
