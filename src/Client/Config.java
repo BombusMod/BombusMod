@@ -285,6 +285,7 @@ public class Config {
                 int h1 = VirtualCanvas.getInstance().getHeight();
                 int h2 = VirtualCanvas.getInstance().getWidth();
                 minItemHeight = ((h1<h2)?h2:h1)*40/480;
+                allowMinimize = true;
                 break;            
 //#if !ZLIB
             case XENIUM99:
