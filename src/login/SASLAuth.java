@@ -69,7 +69,7 @@ public class SASLAuth implements JabberBlockListener{
 //#                     listener.loginFailed("TLS required");                    
 //#                 }*/ 
 //#                 
-//#                 JabberDataBlock askTls=new JabberDataBlock("starttls", null, null);
+//#                 JabberDataBlock askTls=new JabberDataBlock("starttls");
 //#                 askTls.setNameSpace("urn:ietf:params:xml:ns:xmpp-tls");
 //#                 stream.send(askTls);
 //#                 StaticData.getInstance().roster.setProgress("TLS negotiation", 39);
@@ -228,7 +228,7 @@ public class SASLAuth implements JabberBlockListener{
 //#             try {
 //#                 stream.setTls();
 //#                 stream.initiateStream();
-//#             } catch (IOException ex) { 
+//#             } catch (Exception ex) { 
 //#                 ex.printStackTrace();
 //#                 listener.loginFailed("TLS negotiation failed: " + ex.getMessage()); 
 //#             } 

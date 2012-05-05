@@ -549,7 +549,7 @@ public class JabberStream implements XMLEventListener, Runnable {
 //#     }
 //#endif
 //#if TLS
-//#     public void setTls() throws IOException {
+//#     public void setTls() throws Exception {
 //#         iostream.setTls();
 //#     }
 //#endif        

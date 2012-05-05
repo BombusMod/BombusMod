@@ -35,8 +35,7 @@ package io;
 import Client.Config;
 //#endif
 //#if TLS
-//# import bwmorg.bouncycastle.crypto.tls.TlsProtocolHandler;
-//# import bwmorg.bouncycastle.crypto.tls.AlwaysValidVerifyer;
+//# import io.tls.TlsIO;
 //#endif
 import Client.StaticData;
 import java.io.IOException;
@@ -68,8 +67,8 @@ public class Utf8IOStream {
     private long bytesSent;
     
 //#if TLS
-//#     private TlsProtocolHandler tls;
 //#     public boolean tlsExclusive = false;
+//#     TlsIO tlsHandler;
  //#endif    
     
 //#if (ZLIB)
@@ -80,14 +79,14 @@ public class Utf8IOStream {
 //#     }
 //#endif
 //#if TLS
-//#     public void setTls() throws IOException {
-//#         tlsExclusive=true;
-//#         tls=new TlsProtocolHandler(inpStream, outStream);
-//#         tls.connect(new AlwaysValidVerifyer());
-//#         inpStream=tls.getTlsInputStream();
-//#         outStream=tls.getTlsOuputStream();
-//#         tlsExclusive=false;
-//#         length=pbyte=0;
+//#     public void setTls() throws Exception {
+//#         tlsExclusive = true;
+//#         tlsHandler = TlsIO.create(connection, inpStream, outStream, 
+//#                 StaticData.getInstance().account.server);
+//#         inpStream = tlsHandler.getTlsInputStream();
+//#         outStream = tlsHandler.getTlsOutputStream();
+//#         tlsExclusive = false;
+//#         length = pbyte = 0;
 //#     }
 //#endif    
 //#if android
@@ -133,7 +132,6 @@ public class Utf8IOStream {
             setSent(bytesSent + bytes.length);
             
             outStream.flush();
-            bytes = null;
             updateTraffic();
         }
 //#if (XML_STREAM_DEBUG)
@@ -216,7 +214,6 @@ public class Utf8IOStream {
 //#             .append("\nout: ")
 //#             .append(sent);
 //#         } catch (Exception e) {
-//#             stats=null;
 //#             return "";
 //#         }
 //#         return stats.toString();
