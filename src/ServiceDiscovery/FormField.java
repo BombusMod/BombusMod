@@ -26,9 +26,9 @@
  */
 package ServiceDiscovery;
 
-import Client.StaticData;
-import com.alsutton.jabber.*;
-import java.util.*;
+import com.alsutton.jabber.JabberDataBlock;
+import java.util.Enumeration;
+import java.util.Vector;
 import ui.VirtualElement;
 import ui.controls.form.CheckBox;
 import ui.controls.form.DropChoiceBox;
@@ -142,7 +142,7 @@ public class FormField {
                     }
                 }
                 formItem = ch;
-            } else if (type.equals("jid-multi")) {
+            } else if (type.equals("jid-multi") || type.equals("text-multi")) {
 		StringBuffer jids = new StringBuffer();
 		Vector values = field.getChildBlocks();
 		if (values != null) {
