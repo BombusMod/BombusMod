@@ -147,8 +147,12 @@ public class Utf8IOStream {
 //#ifdef TLS        
 //#         if (tlsExclusive)
 //#             return 0;
-//#endif        
-        int avail = inpStream.available();
+//#endif
+        int avail;
+//#if (android && TLS)         
+//#         avail = inpStream.read(buf, 0, buf.length);
+//#else        
+        avail = inpStream.available();
         
         if (avail==0) {
 //#if !ZLIB
@@ -161,6 +165,7 @@ public class Utf8IOStream {
         if (avail>buf.length) avail=buf.length;
         
         avail=inpStream.read(buf, 0, avail);
+//#endif        
 //#if (XML_STREAM_DEBUG)
 //#         if (avail > 0)
 //#             System.out.println("<< "+new String(buf, 0, avail));
