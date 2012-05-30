@@ -175,7 +175,7 @@ public class Config {
     public boolean showResources = true;
     public boolean saveHistory = false;
     public boolean enableVersionOs = true;
-    public int messageLimit = 512;
+    public int messageLimit = 4096;
     public String lang = null;  //not detected (en)
     public boolean eventDelivery = true;
 //#ifdef DETRANSLIT

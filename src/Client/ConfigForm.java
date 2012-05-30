@@ -203,7 +203,7 @@ public class ConfigForm
 //#endif
 
         itemsList.addElement(new SpacerItem(10));
-        messageLimit=new NumberInput(SR.MS_MESSAGE_COLLAPSE_LIMIT, Integer.toString(cf.messageLimit), 200, 1000);
+        messageLimit=new NumberInput(SR.MS_MESSAGE_COLLAPSE_LIMIT, Integer.toString(cf.messageLimit), 200, 20480);
         itemsList.addElement(messageLimit);
 
         minItemHeight = new NumberInput(SR.MS_ITEM_HEIGHT, Integer.toString(cf.minItemHeight), 0, 100);
