@@ -742,7 +742,8 @@ public class ContactMessageList extends MessageList {
         String quotestring = (contact.origin == Contact.ORIGIN_GROUPCHAT && cf.showNickNames && !message.body.startsWith("*") && message.messageType != Msg.MESSAGE_TYPE_PRESENCE && message.subject != null) ? 
                 message.from + "> " + Msg.clearNick(new StringBuffer(message.body)) : 
                 message.quoteString(false); 
-        int quoteMaxLen = 100;
+        int quoteMaxLen = contact.origin == Contact.ORIGIN_GROUPCHAT ? 
+                100 : quotestring.length();
         try {
             String msg=new StringBuffer()
                 .append((char)0xbb) //
@@ -756,7 +757,6 @@ public class ContactMessageList extends MessageList {
             Roster.me = null;
             Roster.me = new MessageEdit(this, contact, msg);
             Roster.me.show();
-            msg = null;
         } catch (Exception e) {/*no messages*/}
     }
         
@@ -772,9 +772,7 @@ public class ContactMessageList extends MessageList {
 //#                 message.history=true;
 //#                 contact.msgs.insertElementAt(new MessageItem(message, cf.smiles), 0);
 //#             }
-//#             message=null;
 //#         }
-//#         history=null;
 //#     }
 //# 
 //#     private boolean isMsgExists(Msg msg) {
@@ -784,7 +782,6 @@ public class ContactMessageList extends MessageList {
 //#             if (message.body.equals(msg.body)) {
 //#                 return true;
 //#             }
-//#             message=null;
 //#          }
 //#         return false;
 //#     }
@@ -800,7 +797,6 @@ public class ContactMessageList extends MessageList {
 //#                 String nick=contact.getJid().toString();
 //#                 int rp=nick.indexOf('/');
 //#                 histRecord.append(nick.substring(rp+1)).append("_").append(nick.substring(0, rp));
-//#                 nick=null;
 //#             }
 //#         } else {
 //#endif
@@ -826,8 +822,6 @@ public class ContactMessageList extends MessageList {
 //#             }
 //#         }
 //#         HistoryAppend.getInstance().addMessageList(messageList.toString(), histRecord.toString());
-//#         messageList=null;
-//#         histRecord=null;
 //#     }
 //#endif
     

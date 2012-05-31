@@ -169,11 +169,8 @@ public class Msg {
         StringBuffer out=new StringBuffer();
         if (subject!=null && quoteSubject)
             if (subject.length()>0)
-                out.append(subject).append("\n");
-        if (Config.getInstance().hideTimestamps)
-            out.append(toString());
-        else
-            out.append(body);        
+                out.append(subject).append("\n");        
+        out.append(toString());
         return clearNick(out);
     }        
     
