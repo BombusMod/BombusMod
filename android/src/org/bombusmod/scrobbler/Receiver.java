@@ -20,12 +20,6 @@ import PEP.PepPublishResult;
  */
 public class Receiver extends BroadcastReceiver {
 
-    private BombusModService bmService;
-
-    public Receiver(BombusModService svc) {
-        bmService = svc;
-    }
-
     @Override
     public void onReceive(Context arg0, Intent arg1) {
         String artist = arg1.getStringExtra("artist");
