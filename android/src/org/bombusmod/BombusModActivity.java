@@ -170,13 +170,13 @@ public class BombusModActivity extends MicroEmulatorActivity{
         /* BombusModInitialization and Service */
         BombusModInitialization init = new BombusModInitialization();
         init.registerImplementation(null);
-        common.extensions.add(init);
-        startService(new Intent(this, BombusModService.class));        
+        common.extensions.add(init);        
 
         initializeExtensions();
 
         common.setSuiteName("org.BombusMod");
         midlet = common.initMIDlet(false);
+        startService(new Intent(this, BombusModService.class));    
     }
 
 
