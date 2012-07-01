@@ -173,14 +173,17 @@ public class AndroidDevice implements Device {
 		
 	}
 
-	public boolean vibrate(int duration) {
-		Vibrator vibrator = (Vibrator) activity.getSystemService(Context.VIBRATOR_SERVICE);
-		if (vibrator != null) {
-			vibrator.vibrate(duration);
-			return true;
-		} else {
-			return false;
-		}
+	public boolean vibrate(final int duration) {
+		final Vibrator vibrator = (Vibrator) activity.getSystemService(Context.VIBRATOR_SERVICE);
+        if (vibrator == null)
+            return false;
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                    vibrator.vibrate(duration);
+            }
+        });
+        return true;
 	}
 
 }
