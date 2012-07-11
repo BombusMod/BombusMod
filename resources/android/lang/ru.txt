@@ -97,7 +97,7 @@ Group	Группа
 Join conference	Присоединиться к конференции
 No	Нет
 Re-Enter Room	Перезайти в комнату
-New Message	Новое сообщение
+New Message	Написать
 Add	Добавить
 Logon	Подключить
 Stanzas	Станзы
@@ -557,3 +557,4 @@ Focus to Juick contact	Фокус на Juick контакте
 [J] Recommend post	[J] Порекомендовать пост
 [J] Show post and comments	[J] Показать пост и комментарии к нему
 For work this command you need contact juick@juick.com in you roster. For more information see http://juick.com/help/	Для работы этой команды Вам нужен контакт juick@juick.com в ростере. Больше информации об этом сервисе можно найти по адресу http://juick.com/help/
+Collapse all	Свернуть все
