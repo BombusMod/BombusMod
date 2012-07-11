@@ -40,8 +40,10 @@ import VCard.VCardEdit;
 import VCard.VCardView;
 import com.alsutton.jabber.datablocks.Presence;
 import images.RosterIcons;
-import io.file.transfer.TransferImage;
-import io.file.transfer.TransferSendFile;
+//#ifdef FILE_TRANSFER
+//# import io.file.transfer.TransferImage;
+//# import io.file.transfer.TransferSendFile;
+//#endif
 import java.util.Enumeration;
 import locale.SR;
 import ui.controls.AlertBox;

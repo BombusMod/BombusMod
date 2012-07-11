@@ -1701,7 +1701,7 @@ public class Roster
 //#             Notificator notify = null;
 //#if !(android)
 //#             if (Config.getInstance().sonyJava >= 750) // prevent NoClassDefFoundError on some phones
-            //#endif            
+//#endif            
 //#             {
 //#                 notify = Notification.getNotificator();
 //#             }
@@ -1711,24 +1711,26 @@ public class Roster
 //#ifdef SYSTEM_NOTIFY
 //#                     if (notify != null) {
 //#                         notify.sendNotify(message.from, message.body);
-//#                     } else //#endif
-//#                     {
-//#                         BombusMod.getInstance().hideApp(false);
-//#                     }
-//#                 }
-//#             } else {
+//#                     } else 
+//#endif
+                    {
+                        BombusMod.getInstance().hideApp(false);
+                    }
+                }
+            } else {
 //#ifdef SYSTEM_NOTIFY
 //#                 if (notify != null) {
 //#                     notify.sendNotify(message.from, message.body);
-//#                 } else //#endif
-//#                 {
-//#                     BombusMod.getInstance().hideApp(false);
-//#                 }
-//#             }
-//#         }
-//# 
-//#         if (message.highlite) {
-//#             playNotify(SOUND_FOR_ME);
+//#                 } else 
+//#endif
+                {
+                    BombusMod.getInstance().hideApp(false);
+                }
+            }
+        }
+
+        if (message.highlite) {
+            playNotify(SOUND_FOR_ME);
 //#ifdef POPUPS
 //#             if (showWobbler(c)) {
 //#                 String body = (c.origin == Contact.ORIGIN_GROUPCHAT && cf.showNickNames)
@@ -1737,18 +1739,19 @@ public class Roster
 //#                 setWobble(2, c.getJid().toString(), body);
 //#             }
 //#endif
-//#             autorespond = true;
+            autorespond = true;
 //#ifdef LIGHT_CONFIG        
 //#             CustomLight.message();
 //#endif 
-//#             if (cf.autoFocus) {
-//#                 focusToContact(c, false);
-//#             }
-//#         } else if (message.messageType == Msg.MESSAGE_TYPE_IN || message.messageType == Msg.MESSAGE_TYPE_HEADLINE) {
-//#             if (c.origin < Contact.ORIGIN_GROUPCHAT) {
+            if (cf.autoFocus) {
+                focusToContact(c, false);
+            }
+        } else if (message.messageType == Msg.MESSAGE_TYPE_IN || message.messageType == Msg.MESSAGE_TYPE_HEADLINE) {
+            if (c.origin < Contact.ORIGIN_GROUPCHAT) {
 //#ifndef WMUC
-//#                 if (!(c instanceof MucContact)) //#endif
-                //#ifdef POPUPS
+                if (!(c instanceof MucContact)) 
+//#endif
+//#ifdef POPUPS
 //#                 {
 //#                     if (showWobbler(c)) {
 //#                         setWobble(2, c.getJid().toString(), c.toString() + ": " + message.body);
@@ -1756,572 +1759,574 @@ public class Roster
 //#                     }
 //#                 }
 //#endif
-//#                 if (c.group.type == Groups.TYPE_VIP) {
-//#                     playNotify(SOUND_FOR_VIP);
-//#                     autorespond = true;
+                if (c.group.type == Groups.TYPE_VIP) {
+                    playNotify(SOUND_FOR_VIP);
+                    autorespond = true;
 //#ifdef LIGHT_CONFIG        
 //#                     CustomLight.message();
 //#endif 
-//#                     if (cf.autoFocus) {
-//#                         focusToContact(c, false);
-//#                     }
-//#                 } else {
-//#                     playNotify(SOUND_MESSAGE);
-//#                     autorespond = true;
+                    if (cf.autoFocus) {
+                        focusToContact(c, false);
+                    }
+                } else {
+                    playNotify(SOUND_MESSAGE);
+                    autorespond = true;
 //#ifdef LIGHT_CONFIG        
 //#                     CustomLight.message();
 //#endif 
-//#                     if (cf.autoFocus) {
-//#                         focusToContact(c, false);
-//#                     }
-//#                 }
-//#             } //#ifndef WMUC
-//#             else {
-//#                 if (c.origin != Contact.ORIGIN_GROUPCHAT && c instanceof MucContact) {
-//#                     playNotify(SOUND_MESSAGE); //private message
-//#                     autorespond = true;
+                    if (cf.autoFocus) {
+                        focusToContact(c, false);
+                    }
+                }
+            } 
+//#ifndef WMUC
+            else {
+                if (c.origin != Contact.ORIGIN_GROUPCHAT && c instanceof MucContact) {
+                    playNotify(SOUND_MESSAGE); //private message
+                    autorespond = true;
 //#ifdef LIGHT_CONFIG        
 //#                     CustomLight.message();
 //#endif 
-//#                     if (cf.autoFocus) {
-//#                         focusToContact(c, false);
-//#                     }
-//#                 } else {
-//#                     playNotify(SOUND_FOR_CONFERENCE);
-//#                 }
-//#             }
+                    if (cf.autoFocus) {
+                        focusToContact(c, false);
+                    }
+                } else {
+                    playNotify(SOUND_FOR_CONFERENCE);
+                }
+            }
 //#endif
-//#         }
-//# 
-//#         if (c.origin == Contact.ORIGIN_GROUPCHAT || c.jid.isTransport() || c.getGroupType() == Groups.TYPE_TRANSP || c.getGroupType() == Groups.TYPE_SEARCH_RESULT || c.getGroupType() == Groups.TYPE_SELF) {
-//#             autorespond = false;
-//#         }
-//# 
-//#         if (message.messageType != Msg.MESSAGE_TYPE_IN) {
-//#             autorespond = false;
-//#         }
-//# 
-//#         if (!c.autoresponded && autorespond) {
-//#             ExtendedStatus es = sl.getStatus(myStatus);
-//#             if (es.getAutoRespond()) {
+        }
+
+        if (c.origin == Contact.ORIGIN_GROUPCHAT || c.jid.isTransport() || c.getGroupType() == Groups.TYPE_TRANSP || c.getGroupType() == Groups.TYPE_SEARCH_RESULT || c.getGroupType() == Groups.TYPE_SELF) {
+            autorespond = false;
+        }
+
+        if (message.messageType != Msg.MESSAGE_TYPE_IN) {
+            autorespond = false;
+        }
+
+        if (!c.autoresponded && autorespond) {
+            ExtendedStatus es = sl.getStatus(myStatus);
+            if (es.getAutoRespond()) {
 //#if DEBUG
 //#                 System.out.println(SR.MS_AUTORESPOND+" "+c.getJid());
 //#endif
-//# 
-//#                 Message autoMessage = new Message(
-//#                         c.getJid().toString(),
-//#                         es.getAutoRespondMessage(),
-//#                         SR.MS_AUTORESPOND,
-//#                         false);
-//#                 sd.theStream.send(autoMessage);
-//#                 c.autoresponded = true;
-//# 
-//#                 c.addMessage(new Msg(Msg.MESSAGE_TYPE_SYSTEM, "local", SR.MS_AUTORESPOND, ""));
-//#             }
-//#         }
-//#     }
-//# 
-//#     public void blockNotify(int event, long ms) {
-//#         if (!notifyReady(-111)) {
-//#             return;
-//#         }
-//#         blockNotifyEvent = event;
-//#         notifyReadyTime = System.currentTimeMillis() + ms;
-//#     }
-//# 
-//#     public boolean notifyReady(int event) {
-//#         if ((blockNotifyEvent == event
-//#                 || (blockNotifyEvent == -111 && event <= 7))
-//#                 && System.currentTimeMillis() < notifyReadyTime) {
-//#             return false;
-//#         } else {
-//#             return true;
-//#         }
-//#     }
-//# 
-//#     public void playNotify(int event) {
-//#         if (!notifyReady(event)) {
-//#             return;
-//#         }
+
+                Message autoMessage = new Message(
+                        c.getJid().toString(),
+                        es.getAutoRespondMessage(),
+                        SR.MS_AUTORESPOND,
+                        false);
+                sd.theStream.send(autoMessage);
+                c.autoresponded = true;
+
+                c.addMessage(new Msg(Msg.MESSAGE_TYPE_SYSTEM, "local", SR.MS_AUTORESPOND, ""));
+            }
+        }
+    }
+
+    public void blockNotify(int event, long ms) {
+        if (!notifyReady(-111)) {
+            return;
+        }
+        blockNotifyEvent = event;
+        notifyReadyTime = System.currentTimeMillis() + ms;
+    }
+
+    public boolean notifyReady(int event) {
+        if ((blockNotifyEvent == event
+                || (blockNotifyEvent == -111 && event <= 7))
+                && System.currentTimeMillis() < notifyReadyTime) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public void playNotify(int event) {
+        if (!notifyReady(event)) {
+            return;
+        }
 //#if DEBUG        
 //#         System.out.println("event: "+event);
 //#endif
-//#         AlertCustomize ac = AlertCustomize.getInstance();
-//# 
-//#         int volume = ac.soundVol;
-//#         int vibraLen = cf.vibraLen;
-//#         String type, message;
-//#         //boolean flashBackLight=ac.flashBackLight;
-//# 
-//#         switch (event) {
-//#             case 0: //online
-//#             case 1: //chat
-//#                 if (cf.notifySound) {
-//#                     message = ac.soundOnline;
-//#                     type = ac.soundOnlineType;
-//#                 } else {
-//#                     message = null;
-//#                     type = null;
-//#                 }
-//#                 vibraLen = 0;
-//#                 //flashBackLight=false;
-//#                 break;
-//#             case 5: //offline
-//#                 message = ac.soundOffline;
-//#                 type = ac.soundOfflineType;
-//#                 vibraLen = 0;
-//#                 //flashBackLight=false;
-//#                 break;
-//#             case SOUND_FOR_VIP: //VIP
-//#                 message = ac.soundVIP;
-//#                 type = ac.soundVIPType;
-//#                 break;
-//#             case SOUND_MESSAGE: //message
-//#                 message = ac.messagesnd;
-//#                 type = ac.messageSndType;
-//#                 break;
-//#             case SOUND_FOR_CONFERENCE: //conference
-//#                 message = ac.soundConference;
-//#                 type = ac.soundConferenceType;
-//#                 if (ac.vibrateOnlyHighlited) {
-//#                     vibraLen = 0;
-//#                 }
-//#                 break;
-//#             case SOUND_FOR_ME: //message for you
-//#                 message = ac.soundForYou;
-//#                 type = ac.soundForYouType;
-//#                 break;
-//#             case SOUND_CONNECTED: //startup
-//#                 message = ac.soundStartUp;
-//#                 type = ac.soundStartUpType;
-//#                 vibraLen = 0;
-//#                 //flashBackLight=false;
-//#                 break;
-//#             case SOUND_COMPOSING: //composing
-//#                 message = ac.soundComposing;
-//#                 type = ac.soundComposingType;
-//#                 vibraLen = 0;
-//#                 //flashBackLight=false;
-//#                 break;
-//#             case SOUND_OUTGOING: //Outgoing
-//#                 message = ac.soundOutgoing;
-//#                 type = ac.soundOutgoingType;
-//#                 vibraLen = 0;
-//#                 //flashBackLight=false;
-//#                 break;
-//#             default:
-//#                 message = "";
-//#                 type = "none";
-//#                 vibraLen = 0;
-//#                 //flashBackLight=false;
-//#                 break;
-//#         }
-//# 
-//#         int profile = cf.profile;
-//# 
-//#         EventNotify notify = null;
-//# 
-//#         switch (profile) {
-//#             //display   fileType   soundName   volume      vibrate
-//#             case AlertProfile.ALL:
-//#                 notify = new EventNotify(type, message, volume, vibraLen);
-//#                 break;
-//#             case AlertProfile.NONE:
-//#                 notify = new EventNotify(null, null, volume, 0);
-//#                 break;
-//#             case AlertProfile.VIBRA:
-//#                 notify = new EventNotify(null, null, volume, vibraLen);
-//#                 break;
-//#             case AlertProfile.SOUND:
-//#                 notify = new EventNotify(type, message, volume, 0);
-//#                 break;
-//#         }
-//#         if (notify != null) {
-//#             notify.startNotify();
-//#         }
-//#         blockNotify(event, 2000);
-//#     }
-//# 
-//#     public void focusToContact(final Contact c, boolean force) {
-//#         Group g = c.group;
-//#         if (g.collapsed) {
-//#             g.collapsed = false;
-//#             reEnumerator.queueEnum(c, force);
-//#         }
-//#         int index = itemsList.indexOf(c);
-//#         if (index >= 0) {
-//#             moveCursorTo(index);
-//#         }
-//#     }
-//# 
-//#     public void beginConversation() { //todo: verify xmpp version
-//#         SplashScreen.getInstance().setExit(this);
-//#         if (sd.theStream.isXmppV1()) {
-//#             sd.theStream.addBlockListener(new SASLAuth(sd.account, this, sd.theStream));
-//#         } //#if NON_SASL_AUTH
+        AlertCustomize ac = AlertCustomize.getInstance();
+
+        int volume = ac.soundVol;
+        int vibraLen = cf.vibraLen;
+        String type, message;
+        //boolean flashBackLight=ac.flashBackLight;
+
+        switch (event) {
+            case 0: //online
+            case 1: //chat
+                if (cf.notifySound) {
+                    message = ac.soundOnline;
+                    type = ac.soundOnlineType;
+                } else {
+                    message = null;
+                    type = null;
+                }
+                vibraLen = 0;
+                //flashBackLight=false;
+                break;
+            case 5: //offline
+                message = ac.soundOffline;
+                type = ac.soundOfflineType;
+                vibraLen = 0;
+                //flashBackLight=false;
+                break;
+            case SOUND_FOR_VIP: //VIP
+                message = ac.soundVIP;
+                type = ac.soundVIPType;
+                break;
+            case SOUND_MESSAGE: //message
+                message = ac.messagesnd;
+                type = ac.messageSndType;
+                break;
+            case SOUND_FOR_CONFERENCE: //conference
+                message = ac.soundConference;
+                type = ac.soundConferenceType;
+                if (ac.vibrateOnlyHighlited) {
+                    vibraLen = 0;
+                }
+                break;
+            case SOUND_FOR_ME: //message for you
+                message = ac.soundForYou;
+                type = ac.soundForYouType;
+                break;
+            case SOUND_CONNECTED: //startup
+                message = ac.soundStartUp;
+                type = ac.soundStartUpType;
+                vibraLen = 0;
+                //flashBackLight=false;
+                break;
+            case SOUND_COMPOSING: //composing
+                message = ac.soundComposing;
+                type = ac.soundComposingType;
+                vibraLen = 0;
+                //flashBackLight=false;
+                break;
+            case SOUND_OUTGOING: //Outgoing
+                message = ac.soundOutgoing;
+                type = ac.soundOutgoingType;
+                vibraLen = 0;
+                //flashBackLight=false;
+                break;
+            default:
+                message = "";
+                type = "none";
+                vibraLen = 0;
+                //flashBackLight=false;
+                break;
+        }
+
+        int profile = cf.profile;
+
+        EventNotify notify = null;
+
+        switch (profile) {
+            //display   fileType   soundName   volume      vibrate
+            case AlertProfile.ALL:
+                notify = new EventNotify(type, message, volume, vibraLen);
+                break;
+            case AlertProfile.NONE:
+                notify = new EventNotify(null, null, volume, 0);
+                break;
+            case AlertProfile.VIBRA:
+                notify = new EventNotify(null, null, volume, vibraLen);
+                break;
+            case AlertProfile.SOUND:
+                notify = new EventNotify(type, message, volume, 0);
+                break;
+        }
+        if (notify != null) {
+            notify.startNotify();
+        }
+        blockNotify(event, 2000);
+    }
+
+    public void focusToContact(final Contact c, boolean force) {
+        Group g = c.group;
+        if (g.collapsed) {
+            g.collapsed = false;
+            reEnumerator.queueEnum(c, force);
+        }
+        int index = itemsList.indexOf(c);
+        if (index >= 0) {
+            moveCursorTo(index);
+        }
+    }
+
+    public void beginConversation() { //todo: verify xmpp version
+        SplashScreen.getInstance().setExit(this);
+        if (sd.theStream.isXmppV1()) {
+            sd.theStream.addBlockListener(new SASLAuth(sd.account, this, sd.theStream));
+        } 
+//#if NON_SASL_AUTH
 //#         else {
 //#             new NonSASLAuth(sd.account, this, sd.theStream);
 //#         }
 //#endif
-//#     }
-//# 
-//#     public void connectionTerminated(Exception e) {
-//#         if (e != null) {
-//#             errorLog("Exception in parser: " + e.getMessage());
-//#             askReconnect(e);
-//#         } else {
+    }
+
+    public void connectionTerminated(Exception e) {
+        if (e != null) {
+            errorLog("Exception in parser: " + e.getMessage());
+            askReconnect(e);
+        } else {
 //#ifdef AUTOSTATUS
 //#             AutoStatus.getInstance().stop();
 //#endif
-//#             setProgress(SR.MS_DISCONNECTED, 0);
-//#             try {
-//#                 sendPresence(Presence.PRESENCE_OFFLINE, null);
-//#             } catch (Exception e2) {
+            setProgress(SR.MS_DISCONNECTED, 0);
+            try {
+                sendPresence(Presence.PRESENCE_OFFLINE, null);
+            } catch (Exception e2) {
 //#if DEBUG
 //#                 e2.printStackTrace();
 //#endif
-//#             }
-//#         }
-//#         makeRosterOffline();
-//#     }
-//# 
-//#     public void dispatcherException(Exception e, JabberDataBlock dataBlock) {
-//#         errorLog("JabberDataBlockDispatcher exception\ndataBlock: " + dataBlock.toString());
-//#         if (StaticData.Debug) {
-//#             System.out.println("JabberDataBlockDispatcher exception\ndataBlock: " + dataBlock.toString());
-//#             e.printStackTrace();
-//#         }
-//#     }
-//# 
-//#     private void askReconnect(final Exception e) {
-//#         //SplashScreen.getInstance().close();
-//#         try {
-//#             sd.theStream.close(); // sends </stream:stream> and closes socket
-//#         } catch (Exception e1) { /*
-//#              * e1.printStackTrace();
-//#              */ }
-//#         sd.theStream = null;
-//#         setProgress(SR.MS_FAILED, 100);
-//#         doReconnect = false;
-//#         myStatus = Presence.PRESENCE_OFFLINE;
-//#         setQuerySign(false);
-//#         redraw();
-//# 
-//#         StringBuffer error = new StringBuffer();
-//#         if (e.getClass().getName().indexOf("java.lang.Exception") < 0) {
-//#             error.append(e.getClass().getName());
-//#             error.append('\n');
-//#         }
-//#         if (e.getMessage() != null) {
-//#             error.append(e.getMessage());
-//#         }
-//# 
-//#         if (currentReconnect >= cf.reconnectCount) {
-//#             errorLog(error.toString());
-//#             return;
-//#         }
-//# 
-//#         currentReconnect++;
-//# 
-//#         String topBar = "(" + currentReconnect + "/" + cf.reconnectCount + ") Reconnecting";
-//#         errorLog(topBar + "\n" + error.toString());
-//# 
-//#         setRotator();
-//#         VirtualCanvas.getInstance().rw = new ReconnectWindow();
-//#         VirtualCanvas.getInstance().rw.startReconnect();
-//#     }
-//# 
-//#     public void doReconnect() {
-//#         setProgress(SR.MS_DISCONNECTED, 0);
-//# 
-//#         logoff(null);
-//# 
-//#         try {
-//#             sendPresence(lastOnlineStatus, null);
-//#         } catch (Exception e2) {
-//#         }
-//#     }
-//# 
-//#     public void eventOk() {
-//#         super.eventOk();
-//#         if (getFocusedMsgList() == null) {
-//#             cleanupGroup((Group) getFocusedObject());
-//#             reEnumRoster();
-//#         }
-//#     }
-//# 
-//#     public void eventLongOk() {
-//#         super.eventLongOk();
+            }
+        }
+        makeRosterOffline();
+    }
+
+    public void dispatcherException(Exception e, JabberDataBlock dataBlock) {
+        errorLog("JabberDataBlockDispatcher exception\ndataBlock: " + dataBlock.toString());
+        if (StaticData.Debug) {
+            System.out.println("JabberDataBlockDispatcher exception\ndataBlock: " + dataBlock.toString());
+            e.printStackTrace();
+        }
+    }
+
+    private void askReconnect(final Exception e) {
+        //SplashScreen.getInstance().close();
+        try {
+            sd.theStream.close(); // sends </stream:stream> and closes socket
+        } catch (Exception e1) { /*
+             * e1.printStackTrace();
+             */ }
+        sd.theStream = null;
+        setProgress(SR.MS_FAILED, 100);
+        doReconnect = false;
+        myStatus = Presence.PRESENCE_OFFLINE;
+        setQuerySign(false);
+        redraw();
+
+        StringBuffer error = new StringBuffer();
+        if (e.getClass().getName().indexOf("java.lang.Exception") < 0) {
+            error.append(e.getClass().getName());
+            error.append('\n');
+        }
+        if (e.getMessage() != null) {
+            error.append(e.getMessage());
+        }
+
+        if (currentReconnect >= cf.reconnectCount) {
+            errorLog(error.toString());
+            return;
+        }
+
+        currentReconnect++;
+
+        String topBar = "(" + currentReconnect + "/" + cf.reconnectCount + ") Reconnecting";
+        errorLog(topBar + "\n" + error.toString());
+
+        setRotator();
+        VirtualCanvas.getInstance().rw = new ReconnectWindow();
+        VirtualCanvas.getInstance().rw.startReconnect();
+    }
+
+    public void doReconnect() {
+        setProgress(SR.MS_DISCONNECTED, 0);
+
+        logoff(null);
+
+        try {
+            sendPresence(lastOnlineStatus, null);
+        } catch (Exception e2) {
+        }
+    }
+
+    public void eventOk() {
+        super.eventOk();
+        if (getFocusedMsgList() == null) {
+            cleanupGroup((Group) getFocusedObject());
+            reEnumRoster();
+        }
+    }
+
+    public void eventLongOk() {
+        super.eventLongOk();
 //#ifndef WMUC
 //#ifdef POPUPS
 //#         showInfo();
 //#endif
 //#endif
-//#     }
-//# 
-//#     private ContactMessageList getFocusedMsgList() {
-//#         Object e = getFocusedObject();
-//#         if (e instanceof Contact) {
-//#             return ((Contact) e).getMsgList();
-//#         }
-//# 
-//#         return null;
-//#     }
-//# 
-//#     public void messageEditResume() {
-//#         if (!isLoggedIn()) {
-//#             return;
-//#         }
-//# 
-//#         ContactMessageList pview = getFocusedMsgList();
-//#         if (pview != null) {
-//#             Contact c = (Contact) getFocusedObject();
-//#             me = null;
-//#             me = new MessageEdit(pview, c, c.msgSuspended);
-//#             me.show();
-//#             c.msgSuspended = null;
-//#         }
-//#     }
-//# 
+    }
+
+    private ContactMessageList getFocusedMsgList() {
+        Object e = getFocusedObject();
+        if (e instanceof Contact) {
+            return ((Contact) e).getMsgList();
+        }
+
+        return null;
+    }
+
+    public void messageEditResume() {
+        if (!isLoggedIn()) {
+            return;
+        }
+
+        ContactMessageList pview = getFocusedMsgList();
+        if (pview != null) {
+            Contact c = (Contact) getFocusedObject();
+            me = null;
+            me = new MessageEdit(pview, c, c.msgSuspended);
+            me.show();
+            c.msgSuspended = null;
+        }
+    }
+
 //#ifndef WMUC
-//#     public void kickFocused() {
-//#         Object focusedObject = getFocusedObject();
-//# 
-//#         if (!(focusedObject instanceof MucContact)) {
-//#             return;
-//#         }
-//# 
-//#         MucContact c = (MucContact) focusedObject;
-//# 
-//#         if (c.origin == Contact.ORIGIN_GROUPCHAT || c.roleCode == MucContact.ROLE_MODERATOR) {
-//#             return;
-//#         }
-//# 
-//#         ConferenceGroup mucGrp = (ConferenceGroup) c.group;
-//#         if (mucGrp.selfContact.roleCode == MucContact.ROLE_MODERATOR) {
-//#             String myNick = mucGrp.selfContact.getName();
-//#             new ConferenceQuickPrivelegeModify(c, ConferenceQuickPrivelegeModify.KICK, myNick);
-//#         }
-//#     }
+    public void kickFocused() {
+        Object focusedObject = getFocusedObject();
+
+        if (!(focusedObject instanceof MucContact)) {
+            return;
+        }
+
+        MucContact c = (MucContact) focusedObject;
+
+        if (c.origin == Contact.ORIGIN_GROUPCHAT || c.roleCode == MucContact.ROLE_MODERATOR) {
+            return;
+        }
+
+        ConferenceGroup mucGrp = (ConferenceGroup) c.group;
+        if (mucGrp.selfContact.roleCode == MucContact.ROLE_MODERATOR) {
+            String myNick = mucGrp.selfContact.getName();
+            new ConferenceQuickPrivelegeModify(c, ConferenceQuickPrivelegeModify.KICK, myNick);
+        }
+    }
 //#endif 
-//# 
-//#     public void collapseAllGroup() {
-//#         for (Enumeration e = groups.elements(); e.hasMoreElements();) {
-//#             Group grp = (Group) e.nextElement();
-//#             grp.collapsed = true;
-//#         }
-//#         reEnumRoster();
-//#     }
-//# 
-//#     public void moveFocusToGroup(int direction) {
-//#         if (getItemCount() > 0) {
-//#             int newpos = searchGroup(direction);
-//#             if (newpos > -1) {
-//#                 moveCursorTo(newpos);
-//#                 setRotator();
-//#             }
-//#         }
-//#     }
-//# 
-//#     public void blockScreen() {
+
+    public void collapseAllGroup() {
+        for (Enumeration e = groups.elements(); e.hasMoreElements();) {
+            Group grp = (Group) e.nextElement();
+            grp.collapsed = true;
+        }
+        reEnumRoster();
+    }
+
+    public void moveFocusToGroup(int direction) {
+        if (getItemCount() > 0) {
+            int newpos = searchGroup(direction);
+            if (newpos > -1) {
+                moveCursorTo(newpos);
+                setRotator();
+            }
+        }
+    }
+
+    public void blockScreen() {
 //#ifdef AUTOSTATUS
 //#         AutoStatus.getInstance().appLocked();
 //#endif
-//#         new SplashScreen(mainbar, VirtualCanvas.keyLock);
-//#     }
-//# 
-//#     public void toggleVibra() {
-//#         // swap profiles
-//#         int profile = cf.profile;
-//#         cf.profile = (profile == AlertProfile.VIBRA) ? cf.lastProfile : AlertProfile.VIBRA;
-//#         cf.lastProfile = profile;
-//# 
-//#         updateMainBar();
-//#         redraw(); // Need?
-//#     }
-//# 
-//#     public void changeMotoBacklightState() {
-//#         if (!cf.ghostMotor) {
-//#             return;
-//#         }
-//# 
-//#         // backlight management
-//#         blState = (blState == 1) ? Integer.MAX_VALUE : 1;
-//#         midlet.BombusMod.getInstance().getDisplay().flashBacklight(blState);
-//#     }
-//# 
-//#     public void focusToNextUnreaded() {
-//#         if (getItemCount() == 0) {
-//#             return;
-//#         }
-//#         synchronized (hContacts) {
-//#             int j = hContacts.size();
-//#             for (int i = 0; i < j; i++) {
-//#                 Contact c = (Contact) hContacts.elementAt(i);
-//#                 c.setIncoming(Contact.INC_NONE);
-//#             }
-//#         }
-//# 
-//#         redraw();
-//# 
-//#         if (messageCount == 0) {
-//#             return;
-//#         }
-//# 
-//#         Object atcursor = getFocusedObject();
-//#         Contact c = (Contact) ((atcursor instanceof Contact) ? atcursor : hContacts.firstElement());
-//#         Enumeration i = hContacts.elements();
-//# 
-//#         int pass = 0; //
-//#         while (pass < 2) {
-//#             if (!i.hasMoreElements()) {
-//#                 i = hContacts.elements();
-//#             }
-//#             Contact p = (Contact) i.nextElement();
-//#             if (pass == 1) {
-//#                 if (p.getNewMsgsCount() > 0) {
-//#                     focusToContact(p, true);
-//#                     setRotator();
-//#                     break;
-//#                 }
-//#             }
-//#             if (p == c) {
-//#                 pass++;
-//#             }
-//#         }
-//#     }
-//# 
-//#     public void logoff(String mess) {
-//#         if (isLoggedIn()) {
-//#             try {
-//#                 if (mess == null) {
-//#                     mess = sl.getStatus(Presence.PRESENCE_OFFLINE).getMessage();
-//#                 }
-//#                 sendPresence(Presence.PRESENCE_OFFLINE, mess);
-//#                 sd.theStream.loggedIn = false;
-//#             } catch (Exception e) {
-//#             }
-//#         }
+        new SplashScreen(mainbar, VirtualCanvas.keyLock);
+    }
+
+    public void toggleVibra() {
+        // swap profiles
+        int profile = cf.profile;
+        cf.profile = (profile == AlertProfile.VIBRA) ? cf.lastProfile : AlertProfile.VIBRA;
+        cf.lastProfile = profile;
+
+        updateMainBar();
+        redraw(); // Need?
+    }
+
+    public void changeMotoBacklightState() {
+        if (!cf.ghostMotor) {
+            return;
+        }
+
+        // backlight management
+        blState = (blState == 1) ? Integer.MAX_VALUE : 1;
+        midlet.BombusMod.getInstance().getDisplay().flashBacklight(blState);
+    }
+
+    public void focusToNextUnreaded() {
+        if (getItemCount() == 0) {
+            return;
+        }
+        synchronized (hContacts) {
+            int j = hContacts.size();
+            for (int i = 0; i < j; i++) {
+                Contact c = (Contact) hContacts.elementAt(i);
+                c.setIncoming(Contact.INC_NONE);
+            }
+        }
+
+        redraw();
+
+        if (messageCount == 0) {
+            return;
+        }
+
+        Object atcursor = getFocusedObject();
+        Contact c = (Contact) ((atcursor instanceof Contact) ? atcursor : hContacts.firstElement());
+        Enumeration i = hContacts.elements();
+
+        int pass = 0; //
+        while (pass < 2) {
+            if (!i.hasMoreElements()) {
+                i = hContacts.elements();
+            }
+            Contact p = (Contact) i.nextElement();
+            if (pass == 1) {
+                if (p.getNewMsgsCount() > 0) {
+                    focusToContact(p, true);
+                    setRotator();
+                    break;
+                }
+            }
+            if (p == c) {
+                pass++;
+            }
+        }
+    }
+
+    public void logoff(String mess) {
+        if (isLoggedIn()) {
+            try {
+                if (mess == null) {
+                    mess = sl.getStatus(Presence.PRESENCE_OFFLINE).getMessage();
+                }
+                sendPresence(Presence.PRESENCE_OFFLINE, mess);
+                sd.theStream.loggedIn = false;
+            } catch (Exception e) {
+            }
+        }
 //#ifdef STATS
 //#         Stats.getInstance().saveToStorage(false);
 //#endif
-//#     }
-//# 
-//#     public void quit() {
+    }
+
+    public void quit() {
 //#ifdef AUTOSTATUS
 //#         AutoStatus.getInstance().stop();
 //#endif
-//#         logoff(null);
-//#         try {
-//#             Thread.sleep(250L);
-//#         } catch (InterruptedException ex) {
-//#         }
-//#         BombusMod.getInstance().notifyDestroyed();
-//#     }
-//# 
-//#     public void menuAction(MenuCommand c, VirtualList d) {
-//#         if (c == cmdMinimize) {
-//#             cmdMinimize();
-//#         } else if (c == cmdActiveContacts) {
-//#             cmdActiveContacts();
-//#         } else if (c == cmdAccount) {
-//#             cmdAccount();
-//#         } else if (c == cmdStatus) {
-//#             cmdStatus();
-//#         } else if (c == cmdAlert) {
-//#             cmdAlert();
-//#         } //#ifdef ARCHIVE
-//#         else if (c == cmdArchive) {
-//#             cmdArchive();
-//#         } //#endif
-//#         else if (c == cmdInfo) {
-//#             cmdInfo();
-//#         } else if (c == cmdTools) {
-//#             cmdTools();
-//#         } else if (c == cmdCleanAllMessages) {
-//#             cmdCleanAllMessages();
-//#         } //#ifndef WMUC
-//#         else if (c == cmdConference) {
-//#             cmdConference();
-//#         } //#endif
-//#         else if (c == cmdQuit) {
-//#             cmdQuit();
-//#         } else if (c == cmdAdd) {
-//#             cmdAdd();
-//#         }
-//#         super.menuAction(c, d);
-//#     }
-//# //menu actions
-//# 
-//#     public void cmdQuit() {
-//#         if (cf.queryExit) {
-//#             new AlertBox(SR.MS_QUIT_ASK, SR.MS_SURE_QUIT) {
-//# 
-//#                 public void yes() {
-//#                     quit();
-//#                 }
-//# 
-//#                 public void no() {
-//#                 }
-//#             };
-//#         } else {
-//#             quit();
-//#         }
-//#     }
-//# 
-//#     public void cmdMinimize() {
+        logoff(null);
+        try {
+            Thread.sleep(250L);
+        } catch (InterruptedException ex) {
+        }
+        BombusMod.getInstance().notifyDestroyed();
+    }
+
+    public void menuAction(MenuCommand c, VirtualList d) {
+        if (c == cmdMinimize) {
+            cmdMinimize();
+        } else if (c == cmdActiveContacts) {
+            cmdActiveContacts();
+        } else if (c == cmdAccount) {
+            cmdAccount();
+        } else if (c == cmdStatus) {
+            cmdStatus();
+        } else if (c == cmdAlert) {
+            cmdAlert();
+        } //#ifdef ARCHIVE
+        else if (c == cmdArchive) {
+            cmdArchive();
+        } //#endif
+        else if (c == cmdInfo) {
+            cmdInfo();
+        } else if (c == cmdTools) {
+            cmdTools();
+        } else if (c == cmdCleanAllMessages) {
+            cmdCleanAllMessages();
+        } //#ifndef WMUC
+        else if (c == cmdConference) {
+            cmdConference();
+        } //#endif
+        else if (c == cmdQuit) {
+            cmdQuit();
+        } else if (c == cmdAdd) {
+            cmdAdd();
+        }
+        super.menuAction(c, d);
+    }
+//menu actions
+
+    public void cmdQuit() {
+        if (cf.queryExit) {
+            new AlertBox(SR.MS_QUIT_ASK, SR.MS_SURE_QUIT) {
+
+                public void yes() {
+                    quit();
+                }
+
+                public void no() {
+                }
+            };
+        } else {
+            quit();
+        }
+    }
+
+    public void cmdMinimize() {
 //#if android
 //#         BombusModActivity.getInstance().minimizeApp();
 //#endif        
-//#         if (cf.allowMinimize) {
-//#             BombusMod.getInstance().hideApp(true);
-//#         } else if (phoneManufacturer == Config.SIEMENS2) {
-//#             new SieNatMenu(this);
-//#             /*
-//#              * try { // SIEMENS: MYMENU call. Possible Main Menu for capable
-//#              * phones
-//#              * BombusMod.getInstance().platformRequest("native:ELSE_STR_MYMENU");
-//#              * } catch (Exception e) { }
-//#              */
-//#         } else if (phoneManufacturer == Config.SIEMENS) {
-//#             try {
-//#                 // SIEMENS-NSG: MYMENU call. Possible Native Menu for capable phones
-//#                 BombusMod.getInstance().platformRequest("native:NAT_MAIN_MENU");
-//#             } catch (Exception e) {
-//#             }
-//#         }
-//#     }
-//# 
-//#     public void cmdActiveContacts() {
-//#         new ActiveContacts(null);
-//#     }
-//# 
-//#     public void cmdAccount() {
-//#         new AccountSelect(false).show();
-//#     }
-//# 
-//#     public void cmdStatus() {
-//#         currentReconnect = 0;
-//#         new StatusSelect(null);
-//#     }
-//# 
-//#     public void cmdAlert() {
-//#         new AlertProfile();
-//#     }
+        if (cf.allowMinimize) {
+            BombusMod.getInstance().hideApp(true);
+        } else if (phoneManufacturer == Config.SIEMENS2) {
+            new SieNatMenu(this);
+            /*
+             * try { // SIEMENS: MYMENU call. Possible Main Menu for capable
+             * phones
+             * BombusMod.getInstance().platformRequest("native:ELSE_STR_MYMENU");
+             * } catch (Exception e) { }
+             */
+        } else if (phoneManufacturer == Config.SIEMENS) {
+            try {
+                // SIEMENS-NSG: MYMENU call. Possible Native Menu for capable phones
+                BombusMod.getInstance().platformRequest("native:NAT_MAIN_MENU");
+            } catch (Exception e) {
+            }
+        }
+    }
+
+    public void cmdActiveContacts() {
+        new ActiveContacts(null);
+    }
+
+    public void cmdAccount() {
+        new AccountSelect(false).show();
+    }
+
+    public void cmdStatus() {
+        currentReconnect = 0;
+        new StatusSelect(null);
+    }
+
+    public void cmdAlert() {
+        new AlertProfile();
+    }
 //#ifdef ARCHIVE
 //# 
 //#     public void cmdArchive() {
 //#         new ArchiveList(-1, 1, null);
 //#     }
 //#endif
-//# 
-//#     public void cmdInfo() {
-//#         new Info.InfoWindow();
-//#     }
-//# 
-//#     public void cmdTools() {
-//#         new RosterToolsMenu();
-//#     }
+
+    public void cmdInfo() {
+        new Info.InfoWindow();
+    }
+
+    public void cmdTools() {
+        new RosterToolsMenu();
+    }
 //#ifdef POPUPS
 //# 
 //#     public void cmdClearPopups() {
@@ -2329,245 +2334,246 @@ public class Roster
 //#     }
 //#endif
 //#ifndef WMUC
-//# 
-//#     public void cmdConference() {
-//#         if (isLoggedIn()) {
-//#             new Bookmarks(null);
-//#         }
-//#     }
+
+    public void cmdConference() {
+        if (isLoggedIn()) {
+            new Bookmarks(null);
+        }
+    }
 //#endif
-//# 
-//#     public void cmdActions() {
-//#         if (isLoggedIn()) {
-//#             try {
-//#                 new RosterItemActions(getFocusedObject());
-//#             } catch (Exception ex) {
-//#             }
-//#         }
-//#     }
-//# 
-//#     public void cmdAdd() {
-//#         if (isLoggedIn()) {
-//#             Object o = getFocusedObject();
-//#             Contact cn = null;
-//#             if (o instanceof Contact) {
-//#                 cn = (Contact) o;
-//#                 if (cn.getGroupType() != Groups.TYPE_NOT_IN_LIST && cn.getGroupType() != Groups.TYPE_SEARCH_RESULT) {
-//#                     cn = null;
-//#                 }
-//#             }
+
+    public void cmdActions() {
+        if (isLoggedIn()) {
+            try {
+                new RosterItemActions(getFocusedObject());
+            } catch (Exception ex) {
+            }
+        }
+    }
+
+    public void cmdAdd() {
+        if (isLoggedIn()) {
+            Object o = getFocusedObject();
+            Contact cn = null;
+            if (o instanceof Contact) {
+                cn = (Contact) o;
+                if (cn.getGroupType() != Groups.TYPE_NOT_IN_LIST && cn.getGroupType() != Groups.TYPE_SEARCH_RESULT) {
+                    cn = null;
+                }
+            }
 //#ifndef WMUC
-//#             if (o instanceof MucContact) {
-//#                 cn = (Contact) o;
-//#             }
+            if (o instanceof MucContact) {
+                cn = (Contact) o;
+            }
 //#endif
-//#             new ContactEdit(cn);
-//#         }
-//#     }
-//# 
+            new ContactEdit(cn);
+        }
+    }
+
 //#ifndef WMUC
-//#     public void reEnterRoom(Group group) {
-//#         ConferenceGroup confGroup = (ConferenceGroup) group;
-//#         String confJid = confGroup.selfContact.getJid().toString();
-//#         String name = confGroup.name;
-//#         new ConferenceForm(name, confJid, confGroup.password, false);
-//#     }
-//# 
-//#     public void leaveRoom(Group group) {
-//#         ConferenceGroup confGroup = (ConferenceGroup) group;
-//#         Contact myself = confGroup.selfContact;
-//#         confGroup.confContact.commonPresence = false; //disable reenter after reconnect
-//#         sendPresence(myself.getJid().toString(), "unavailable", null, true);
-//# 
-//#         confGroup.inRoom = false;
-//#         roomOffline(group);
-//#     }
-//# 
-//#     public void roomOffline(final Group group) {
-//#         int j = hContacts.size();
-//#         for (int i = 0; i < j; i++) {
-//#             Contact contact = (Contact) hContacts.elementAt(i);
-//#             if (contact.group == group) {
-//#                 contact.setStatus(Presence.PRESENCE_OFFLINE);
-//#             }
-//#         }
-//#     }
+    public void reEnterRoom(Group group) {
+        ConferenceGroup confGroup = (ConferenceGroup) group;
+        String confJid = confGroup.selfContact.getJid().toString();
+        String name = confGroup.name;
+        new ConferenceForm(name, confJid, confGroup.password, false);
+    }
+
+    public void leaveRoom(Group group) {
+        ConferenceGroup confGroup = (ConferenceGroup) group;
+        Contact myself = confGroup.selfContact;
+        confGroup.confContact.commonPresence = false; //disable reenter after reconnect
+        sendPresence(myself.getJid().toString(), "unavailable", null, true);
+
+        confGroup.inRoom = false;
+        roomOffline(group);
+    }
+
+    public void roomOffline(final Group group) {
+        int j = hContacts.size();
+        for (int i = 0; i < j; i++) {
+            Contact contact = (Contact) hContacts.elementAt(i);
+            if (contact.group == group) {
+                contact.setStatus(Presence.PRESENCE_OFFLINE);
+            }
+        }
+    }
 //#endif    
-//# 
-//#     private int searchGroup(int direction) {
-//#         int newpos = -1;
-//#         synchronized (itemsList) {
-//#             int size = itemsList.size();
-//#             int pos = cursor;
-//#             int count = size;
-//#             try {
-//#                 while (count > 0) {
-//#                     pos += direction;
-//#                     if (pos < 0) {
-//#                         pos = size - 1;
-//#                     }
-//#                     if (pos >= size) {
-//#                         pos = 0;
-//#                     }
-//#                     if (itemsList.elementAt(pos) instanceof Group) {
-//#                         break;
-//#                     }
-//#                 }
-//#             } catch (Exception e) {
-//#             }
-//#             newpos = pos;
-//#         }
-//#         return newpos;
-//#     }
-//# 
-//#     public void searchActiveContact(int direction) {
-//#         Vector activeContacts = new Vector();
-//#         int nowContact = -1, contacts = -1, currentContact = -1;
-//#         synchronized (hContacts) {
-//#             int j = hContacts.size();
-//#             for (int i = 0; i < j; i++) {
-//#                 Contact c = (Contact) hContacts.elementAt(i);
-//#                 if (c.active()) {
-//#                     activeContacts.addElement(c);
-//#                     contacts = contacts + 1;
-//#                     if (c == activeContact) {
-//#                         nowContact = contacts;
-//#                         currentContact = contacts;
-//#                     }
-//#                 }
-//#             }
-//#         }
-//# 
-//#         int size = activeContacts.size();
-//# 
-//#         if (size == 0) {
-//#             return;
-//#         }
-//# 
-//#         try {
-//#             nowContact += direction;
-//#             if (nowContact < 0) {
-//#                 nowContact = size - 1;
-//#             }
-//#             if (nowContact >= size) {
-//#                 nowContact = 0;
-//#             }
-//# 
-//#             if (currentContact == nowContact) {
-//#                 return;
-//#             }
-//# 
-//#             Contact c = (Contact) activeContacts.elementAt(nowContact);
-//#             c.getMsgList();
-//#         } catch (Exception e) {
-//#         }
-//#     }
-//# 
-//#     public void deleteContact(Contact c) {
-//#         synchronized (hContacts) {
-//#             int j = hContacts.size();
-//#             for (int i = 0; i < j; i++) {
-//#                 Contact c2 = (Contact) hContacts.elementAt(i);
-//#                 if (c.jid.equals(c2.jid, false)) {
-//#                     c2.setStatus(Presence.PRESENCE_TRASH);
-//#                     c2.offline_type = Presence.PRESENCE_TRASH;
-//#                 }
-//#             }
-//#             if (c.jid.isTransport()) {
-//#                 // double-check for empty jid or our server jid
-//#                 if (c.bareJid.length() == 0) {
-//#                     return;
-//#                 }
-//#                 if (c.bareJid.equals(myJid.getServer())) {
-//#                     return;
-//#                 }
-//#                 // automatically remove registration
-//#                 JabberDataBlock unreg = new Iq(c.bareJid, Iq.TYPE_SET, "unreg" + System.currentTimeMillis());
-//#                 JabberDataBlock query = unreg.addChildNs("query", "jabber:iq:register");
-//#                 query.addChild("remove", null);
-//#                 sd.theStream.send(unreg);
-//#             }
-//# 
-//#             if (c.getGroupType() == Groups.TYPE_NOT_IN_LIST) {
-//#                 hContacts.removeElement(c);
-//#                 countNewMsgs();
-//#                 reEnumRoster();
-//#             } else {
-//#                 sd.theStream.send(RosterDispatcher.QueryRoster(c.jid, null, null, "remove"));
-//# 
-//#                 sendPresence(c.bareJid, "unsubscribe", null, false);
-//#                 sendPresence(c.bareJid, "unsubscribed", null, false);
-//#             }
-//#         }
-//#     }
-//# 
-//#     public void setQuerySign(boolean requestState) {
-//#         querysign = requestState;
-//#         updateMainBar();
-//#     }
-//# 
-//#     public void storeContact(Contact c, boolean askSubscribe) {
-//#         sd.theStream.send(RosterDispatcher.QueryRoster(c.getJid(), c.nick, (c.group == null || c.getGroupType() == Groups.TYPE_NOT_IN_LIST) ? SR.MS_GENERAL : c.group.name, null));
-//#         if (askSubscribe) {
-//#             doSubscribe(c);
-//#         }
-//#     }
-//# 
-//#     public void loginMessage(String msg, int pos) {
-//#         setProgress(msg, pos);
-//#     }
-//# 
-//#     public void deleteGroup(Group deleteGroup) {
-//#         synchronized (hContacts) {
-//#             int j = hContacts.size();
-//#             for (int i = 0; i < j; i++) {
-//#                 Contact cr = (Contact) hContacts.elementAt(i);
-//#                 if (cr.group == deleteGroup) {
-//#                     deleteContact(cr);
-//#                 }
-//#             }
-//#         }
-//#     }
-//# 
-//#     public void destroyView() {
-//#         cmdMinimize();
-//#     }
-//# 
-//#     public void keyGreen() {
-//#         messageEditResume();
-//#     }
-//# 
-//#     public void keyClear() {
-//#         if (isLoggedIn()) {
-//#             final Contact c = (Contact) getFocusedObject();
-//#             try {
-//#                 boolean isContact = (getFocusedObject() instanceof Contact);
+
+    private int searchGroup(int direction) {
+        int newpos = -1;
+        synchronized (itemsList) {
+            int size = itemsList.size();
+            int pos = cursor;
+            int count = size;
+            try {
+                while (count > 0) {
+                    pos += direction;
+                    if (pos < 0) {
+                        pos = size - 1;
+                    }
+                    if (pos >= size) {
+                        pos = 0;
+                    }
+                    if (itemsList.elementAt(pos) instanceof Group) {
+                        break;
+                    }
+                }
+            } catch (Exception e) {
+            }
+            newpos = pos;
+        }
+        return newpos;
+    }
+
+    public void searchActiveContact(int direction) {
+        Vector activeContacts = new Vector();
+        int nowContact = -1, contacts = -1, currentContact = -1;
+        synchronized (hContacts) {
+            int j = hContacts.size();
+            for (int i = 0; i < j; i++) {
+                Contact c = (Contact) hContacts.elementAt(i);
+                if (c.active()) {
+                    activeContacts.addElement(c);
+                    contacts = contacts + 1;
+                    if (c == activeContact) {
+                        nowContact = contacts;
+                        currentContact = contacts;
+                    }
+                }
+            }
+        }
+
+        int size = activeContacts.size();
+
+        if (size == 0) {
+            return;
+        }
+
+        try {
+            nowContact += direction;
+            if (nowContact < 0) {
+                nowContact = size - 1;
+            }
+            if (nowContact >= size) {
+                nowContact = 0;
+            }
+
+            if (currentContact == nowContact) {
+                return;
+            }
+
+            Contact c = (Contact) activeContacts.elementAt(nowContact);
+            c.getMsgList();
+        } catch (Exception e) {
+        }
+    }
+
+    public void deleteContact(Contact c) {
+        synchronized (hContacts) {
+            int j = hContacts.size();
+            for (int i = 0; i < j; i++) {
+                Contact c2 = (Contact) hContacts.elementAt(i);
+                if (c.jid.equals(c2.jid, false)) {
+                    c2.setStatus(Presence.PRESENCE_TRASH);
+                    c2.offline_type = Presence.PRESENCE_TRASH;
+                }
+            }
+            if (c.jid.isTransport()) {
+                // double-check for empty jid or our server jid
+                if (c.bareJid.length() == 0) {
+                    return;
+                }
+                if (c.bareJid.equals(myJid.getServer())) {
+                    return;
+                }
+                // automatically remove registration
+                JabberDataBlock unreg = new Iq(c.bareJid, Iq.TYPE_SET, "unreg" + System.currentTimeMillis());
+                JabberDataBlock query = unreg.addChildNs("query", "jabber:iq:register");
+                query.addChild("remove", null);
+                sd.theStream.send(unreg);
+            }
+
+            if (c.getGroupType() == Groups.TYPE_NOT_IN_LIST) {
+                hContacts.removeElement(c);
+                countNewMsgs();
+                reEnumRoster();
+            } else {
+                sd.theStream.send(RosterDispatcher.QueryRoster(c.jid, null, null, "remove"));
+
+                sendPresence(c.bareJid, "unsubscribe", null, false);
+                sendPresence(c.bareJid, "unsubscribed", null, false);
+            }
+        }
+    }
+
+    public void setQuerySign(boolean requestState) {
+        querysign = requestState;
+        updateMainBar();
+    }
+
+    public void storeContact(Contact c, boolean askSubscribe) {
+        sd.theStream.send(RosterDispatcher.QueryRoster(c.getJid(), c.nick, (c.group == null || c.getGroupType() == Groups.TYPE_NOT_IN_LIST) ? SR.MS_GENERAL : c.group.name, null));
+        if (askSubscribe) {
+            doSubscribe(c);
+        }
+    }
+
+    public void loginMessage(String msg, int pos) {
+        setProgress(msg, pos);
+    }
+
+    public void deleteGroup(Group deleteGroup) {
+        synchronized (hContacts) {
+            int j = hContacts.size();
+            for (int i = 0; i < j; i++) {
+                Contact cr = (Contact) hContacts.elementAt(i);
+                if (cr.group == deleteGroup) {
+                    deleteContact(cr);
+                }
+            }
+        }
+    }
+
+    public void destroyView() {
+        cmdMinimize();
+    }
+
+    public void keyGreen() {
+        messageEditResume();
+    }
+
+    public void keyClear() {
+        if (isLoggedIn()) {
+            final Contact c = (Contact) getFocusedObject();
+            try {
+                boolean isContact = (getFocusedObject() instanceof Contact);
 //#ifndef WMUC
-//#                 boolean isMucContact = (getFocusedObject() instanceof MucContact);
+                boolean isMucContact = (getFocusedObject() instanceof MucContact);
 //#else
 //#                 boolean isMucContact=false;
 //#endif
-//#                 if (isContact && !isMucContact) {
-//#                     new AlertBox(SR.MS_DELETE_ASK, c.getNickJid()) {
-//# 
-//#                         public void yes() {
-//#                             deleteContact(c);
-//#                         }
-//# 
-//#                         public void no() {
-//#                         }
-//#                     };
-//#                 } //#ifndef WMUC
-//#                 else if (isContact && isMucContact && c.origin != Contact.ORIGIN_GROUPCHAT) {
-//#                     ConferenceGroup mucGrp = (ConferenceGroup) c.group;
-//#                     if (mucGrp.selfContact.roleCode == MucContact.ROLE_MODERATOR) {
-//#                         if (((MucContact) c).roleCode < MucContact.ROLE_MODERATOR) {
-//#                             String myNick = mucGrp.selfContact.getName();
-//#                             MucContact mc = (MucContact) c;
-//#                             new ConferenceQuickPrivelegeModify(mc, ConferenceQuickPrivelegeModify.KICK, myNick);
-//#                         }
-//#                     }
-//#                 }
+                if (isContact && !isMucContact) {
+                    new AlertBox(SR.MS_DELETE_ASK, c.getNickJid()) {
+
+                        public void yes() {
+                            deleteContact(c);
+                        }
+
+                        public void no() {
+                        }
+                    };
+                } 
+//#ifndef WMUC
+                else if (isContact && isMucContact && c.origin != Contact.ORIGIN_GROUPCHAT) {
+                    ConferenceGroup mucGrp = (ConferenceGroup) c.group;
+                    if (mucGrp.selfContact.roleCode == MucContact.ROLE_MODERATOR) {
+                        if (((MucContact) c).roleCode < MucContact.ROLE_MODERATOR) {
+                            String myNick = mucGrp.selfContact.getName();
+                            MucContact mc = (MucContact) c;
+                            new ConferenceQuickPrivelegeModify(mc, ConferenceQuickPrivelegeModify.KICK, myNick);
+                        }
+                    }
+                }
 //#endif
             } catch (Exception e) { /*
                  * NullPointerException
