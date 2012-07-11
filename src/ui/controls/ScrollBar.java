@@ -24,14 +24,13 @@
  * along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-
 package ui.controls;
 
 import Client.Config;
 import javax.microedition.lcdui.Graphics;
 import Colors.ColorTheme;
 //#ifdef GRADIENT
-//# //import ui.Gradient;
+//# import ui.Gradient;
 //#endif
 //#ifdef BACK_IMAGE
 //# import javax.microedition.lcdui.Image;
@@ -44,33 +43,26 @@ import ui.VirtualList;
  * @author EvgS
  */
 public class ScrollBar {
-    private static final int WIDTH_SCROLL_1      =4;
+
+    private static final int WIDTH_SCROLL_1 = 4;
     // private static final int WIDTH_SCROLL_2      =18;
     private Config cf = Config.getInstance();
-    private final int WIDTH_SCROLL_2 = cf.widthScroll2+2;
-    
+    private final int WIDTH_SCROLL_2 = cf.widthScroll2 + 2;
     private int yTranslate;
-    
     private int size;
     private int windowSize;
     private int position;
-    
     private int scrollerX;
-    
     private int drawHeight;
 //#ifdef GRADIENT
-//#     //private Gradient gr;
-//#     //private int prevDrawHeight;
+//#     private Gradient background = new Gradient();
+//#     private Gradient scroller = new Gradient();
 //#endif
-    
     private int point_y;    // точка, за которую "держится" указатель
-    
     private int scrollerSize;
     private int scrollerPos;
-    
     private int minimumHeight = 3;
-    private int scrollWidth=WIDTH_SCROLL_1;
-    
+    private int scrollWidth = WIDTH_SCROLL_1;
     private int colorTop;
     //private int colorBottom;
     private int colorBar;
@@ -80,15 +72,16 @@ public class ScrollBar {
 //#     public static Image imgH2;
 //#     public static Image imgB;
 //#endif
-    
-    
-    /** Creates a new instance of ScrollBar */
+
+    /**
+     * Creates a new instance of ScrollBar
+     */
     public ScrollBar() {
-        point_y=-1;
-        colorTop=ColorTheme.getColor(ColorTheme.SCROLL_BGND);
+        point_y = -1;
+        colorTop = ColorTheme.getColor(ColorTheme.SCROLL_BGND);
         //colorBottom=0xFFFFFF-colorTop;
-        colorBar=ColorTheme.getColor(ColorTheme.SCROLL_BAR);
-        colorBorder=ColorTheme.getColor(ColorTheme.SCROLL_BRD);
+        colorBar = ColorTheme.getColor(ColorTheme.SCROLL_BAR);
+        colorBorder = ColorTheme.getColor(ColorTheme.SCROLL_BRD);
         //#ifdef BACK_IMAGE
 //#         try {
 //#             if (imgH==null) {
@@ -119,7 +112,7 @@ public class ScrollBar {
     }
 
     public void setHasPointerEvents(boolean hasPointerEvents) {
-        scrollWidth = (hasPointerEvents)? WIDTH_SCROLL_2: WIDTH_SCROLL_1;
+        scrollWidth = (hasPointerEvents) ? WIDTH_SCROLL_2 : WIDTH_SCROLL_1;
 //#ifdef BACK_IMAGE
 //#         if (imgH != null)
 //#             scrollWidth = Math.max(scrollWidth, imgH.getWidth());
@@ -131,78 +124,103 @@ public class ScrollBar {
     }
 
     public boolean pointerPressed(int x, int y, VirtualList v) {
-	if (size==0) return false;
-	if (x<scrollerX) return false; // not in area
-	y-=yTranslate;
-	if (y<scrollerPos) { 
+        if (size == 0) {
+            return false;
+        }
+        if (x < scrollerX) {
+            return false; // not in area
+        }
+        y -= yTranslate;
+        if (y < scrollerPos) {
             // page up
-            int pos=position-windowSize;
-            if (pos<0) pos=0;
-            v.win_top=pos;
-            v.redraw(); 
-            return true; 
-        } 
-	if (y>scrollerPos+scrollerSize) { 
-            int pos=position+windowSize;
-            int listEnd=size-windowSize;
-            v.win_top=(pos<listEnd)?pos:listEnd;
-            v.redraw(); 
-            return true; 
+            int pos = position - windowSize;
+            if (pos < 0) {
+                pos = 0;
+            }
+            v.win_top = pos;
+            v.redraw();
+            return true;
+        }
+        if (y > scrollerPos + scrollerSize) {
+            int pos = position + windowSize;
+            int listEnd = size - windowSize;
+            v.win_top = (pos < listEnd) ? pos : listEnd;
+            v.redraw();
+            return true;
         } // page down
-	point_y=y-scrollerPos;
-	return true;
+        point_y = y - scrollerPos;
+        return true;
     }
+
     public boolean pointerDragged(int x, int y, VirtualList v) {
-	y-=yTranslate;
-	if (point_y<0) return false;
-	int new_top=y-point_y;
-	int new_pos=(new_top*size)/drawHeight;
-	if ((position-new_pos)==0) return true;
-	if (new_pos<0) new_pos=0;
-	if (new_pos+windowSize>size) new_pos=size-windowSize;
-	v.win_top=new_pos; v.redraw();
-	return true;
+        y -= yTranslate;
+        if (point_y < 0) {
+            return false;
+        }
+        int new_top = y - point_y;
+        int new_pos = (new_top * size) / drawHeight;
+        if ((position - new_pos) == 0) {
+            return true;
+        }
+        if (new_pos < 0) {
+            new_pos = 0;
+        }
+        if (new_pos + windowSize > size) {
+            new_pos = size - windowSize;
+        }
+        v.win_top = new_pos;
+        v.redraw();
+        return true;
     }
+
     public boolean pointerReleased(int x, int y, VirtualList v) {
         if (point_y >= 0) {
             point_y = -1;
             return true;
         }
-        if (size == 0)
+        if (size == 0) {
             return false;
+        }
         if (x < scrollerX) {
             return false;
         }
         return true;
     }
-    
+
     public void draw(Graphics g) {
 
-        if (size == 0) return;
-	
-	yTranslate=g.getTranslateY();
-	
-	drawHeight=g.getClipHeight();
-	int drawWidth=g.getClipWidth();
-	
-	scrollerX=drawWidth-scrollWidth;
+        if (size == 0) {
+            return;
+        }
 
-	g.translate(scrollerX, 0);
+        yTranslate = g.getTranslateY();
+
+        drawHeight = g.getClipHeight();
+        int drawWidth = g.getClipWidth();
+
+        scrollerX = drawWidth - scrollWidth;
+
+        g.translate(scrollerX, 0);
 
         g.setColor(colorTop);
-	g.fillRect(1, 0, scrollWidth-2, drawHeight-1);
-	
-        g.setColor(colorBorder);
-        g.drawLine(0, 0, 0, drawHeight-1);
-        g.drawLine(scrollWidth-1, 0, scrollWidth-1, drawHeight-1);
+        g.fillRect(1, 0, scrollWidth - 2, drawHeight - 1);
 
-	drawHeight-=minimumHeight;
-        
-               
-	scrollerSize = (drawHeight*windowSize)/size+minimumHeight;
-	
-	scrollerPos = (drawHeight*position)/size;
-        scrollerX-=scrollWidth;
+        g.setColor(colorBorder);
+//#ifdef GRADIENT
+//#         background.update(1, 0, scrollWidth - 1, drawHeight, colorBar, colorTop, Gradient.CACHED_VERTICAL, 0);
+//#         background.paint(g);
+//#else
+       g.setColor(colorTop);
+   g.fillRect(1, 0, scrollWidth-1, drawHeight-1);
+//#endif
+
+        drawHeight -= minimumHeight;
+
+
+        scrollerSize = (drawHeight * windowSize) / size + minimumHeight;
+
+        scrollerPos = (drawHeight * position) / size;
+        scrollerX -= scrollWidth;
 //#ifdef BACK_IMAGE
 //#         if (ScrollBar.imgB != null && ScrollBar.imgB != null) {
 //#             g.drawImage(imgH, 1, scrollerPos - imgH.getHeight(), Graphics.LEFT|Graphics.TOP);
@@ -212,15 +230,20 @@ public class ScrollBar {
 //#             g.drawImage(imgH2, 1, scrollerPos + scrollerSize, Graphics.LEFT|Graphics.TOP);
 //#         } else {
 //#endif
-        g.setColor(colorBar);
-        g.fillRect(1, scrollerPos, scrollWidth-2, scrollerSize);
+//#ifdef GRADIENT
+//#         scroller.update(1, scrollerPos, scrollWidth, scrollerSize + scrollerPos, colorBar, colorBorder, Gradient.CACHED_HORIZONTAL, 0);
+//#         scroller.paint(g);
+//#else
+       g.setColor(colorBar);
+       g.fillRect(1, scrollerPos, scrollWidth-2, scrollerSize);
+//#endif
         g.setColor(colorBorder);
-        g.drawLine(0, scrollerPos, scrollWidth-1, scrollerPos);
-        g.drawLine(0, scrollerPos+scrollerSize, scrollWidth-1, scrollerPos+scrollerSize);
+        g.drawLine(0, scrollerPos, scrollWidth - 1, scrollerPos);
+        g.drawLine(0, scrollerPos + scrollerSize, scrollWidth - 1, scrollerPos + scrollerSize);
 //#ifdef BACK_IMAGE                
 //#         }
 //#endif
-        
-        
+
+
     }
 }
