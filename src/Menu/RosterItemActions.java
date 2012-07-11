@@ -41,7 +41,9 @@ import VCard.VCardView;
 import com.alsutton.jabber.datablocks.Presence;
 import images.RosterIcons;
 //#ifdef FILE_TRANSFER
+//#ifndef NOMMEDIA
 //# import io.file.transfer.TransferImage;
+//#endif
 //# import io.file.transfer.TransferSendFile;
 //#endif
 import java.util.Enumeration;
