@@ -2,7 +2,7 @@
  * VirtualList.java
  *
  * Created on 30.01.2005, 14:46
-*
+ *
  * Copyright (c) 2005-2008, Eugene Stahov (evgs), http://bombus-im.org
  *
  * This program is free software; you can redistribute it and/or
@@ -25,8 +25,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-
 package ui;
+
 import Colors.ColorTheme;
 
 import Fonts.FontCache;
@@ -43,90 +43,125 @@ import java.util.Vector;
 import ui.controls.CommandsPointer;
 
 /**
- * Вертикальный список виртуальных элементов.
- * класс реализует управление списком, скроллбар,
- * вызов отрисовки отображаемых на экране элементов.
+ * Вертикальный список виртуальных элементов. класс реализует управление
+ * списком, скроллбар, вызов отрисовки отображаемых на экране элементов.
+ *
  * @author Eugene Stahov
  */
 public abstract class VirtualList {
 
-    
     /**
-     * событие "Курсор выделил элемент"
-     * в классе VirtualList вызываемая функция не выполняет действий, необходимо
-     * переопределить (override) функцию для реализации необходимых действий
+     * событие "Курсор выделил элемент" в классе VirtualList вызываемая функция
+     * не выполняет действий, необходимо переопределить (override) функцию для
+     * реализации необходимых действий
+     *
      * @param index индекс выделенного элемента
      */
-    public void focusedItem(int index) { }
+    public void focusedItem(int index) {
+    }
 
     /**
-     * число элементов виртуального списка
-     * эта функция абстрактная, должна быть переопределена при наследовании
+     * число элементов виртуального списка эта функция абстрактная, должна быть
+     * переопределена при наследовании
+     *
      * @return число элементов списка, исключая заголовок
      */
     abstract protected int getItemCount();
 
     /**
-     * элемент виртуального списка
-     * эта функция абстрактная, должна быть переопределена при наследовании
-     * @param index номер элемента списка. не превосходит значение, возвращённое getItemCount()
+     * элемент виртуального списка эта функция абстрактная, должна быть
+     * переопределена при наследовании
+     *
+     * @param index номер элемента списка. не превосходит значение, возвращённое
+     * getItemCount()
      * @return ссылка на элемент с номером index.
      */
     abstract public VirtualElement getItemRef(int index);
 
-    protected int getMainBarBGnd() { return ColorTheme.getColor(ColorTheme.BAR_BGND);} 
-    protected int getMainBarBGndBottom() { return ColorTheme.getColor(ColorTheme.BAR_BGND_BOTTOM);}
-    
-    protected StaticData sd=StaticData.getInstance();
+    protected int getMainBarBGnd() {
+        return ColorTheme.getColor(ColorTheme.BAR_BGND);
+    }
 
+    protected int getMainBarBGndBottom() {
+        return ColorTheme.getColor(ColorTheme.BAR_BGND_BOTTOM);
+    }
+    protected StaticData sd = StaticData.getInstance();
     private int stringHeight;
-       
-    
 //#ifdef GRADIENT
-//#     Gradient grIB;
-//#     Gradient grMB;
+//#     private static Gradient InfoBarBG = new Gradient();
+//#     private static Gradient MainBarBG = new Gradient();
+//#     private int start = getMainBarBGnd();
+//#     private int end = getMainBarBGndBottom();
 //#endif
-
     public static int panelsState = 2;
-
-    private static boolean reverse=false;
-    private static boolean paintTop=true;
-    private static boolean paintBottom=true;
-
+    private static boolean reverse = false;
+    private static boolean paintTop = true;
+    private static boolean paintBottom = true;
     public static int phoneManufacturer;
-    
+
     public static void changeOrient(int newOrient) {
-        panelsState=newOrient;
+        panelsState = newOrient;
         switch (panelsState) {
-            case 0: paintTop=false; paintBottom=false; reverse=false; break;
-            case 1: paintTop=true;  paintBottom=false; reverse=false; break;
-            case 2: paintTop=true;  paintBottom=true;  reverse=false; break;
-            case 3: paintTop=false; paintBottom=true;  reverse=false; break;
-            case 4: paintTop=true;  paintBottom=false; reverse=true;  break;
-            case 5: paintTop=true;  paintBottom=true;  reverse=true;  break;
-            case 6: paintTop=false; paintBottom=true;  reverse=true;  break;
+            case 0:
+                paintTop = false;
+                paintBottom = false;
+                reverse = false;
+                break;
+            case 1:
+                paintTop = true;
+                paintBottom = false;
+                reverse = false;
+                break;
+            case 2:
+                paintTop = true;
+                paintBottom = true;
+                reverse = false;
+                break;
+            case 3:
+                paintTop = false;
+                paintBottom = true;
+                reverse = false;
+                break;
+            case 4:
+                paintTop = true;
+                paintBottom = false;
+                reverse = true;
+                break;
+            case 5:
+                paintTop = true;
+                paintBottom = true;
+                reverse = true;
+                break;
+            case 6:
+                paintTop = false;
+                paintBottom = true;
+                reverse = true;
+                break;
         }
         // TODO: prevent hide command bar on touch screen device
-      /*  if (Config.fullscreen && hasPointerEvents()) {
-            paintBottom = !reverse;
-            paintTop = reverse;
-        }*/
+      /*
+         * if (Config.fullscreen && hasPointerEvents()) { paintBottom =
+         * !reverse; paintTop = reverse;
+        }
+         */
     }
-    
+
 //#ifdef POPUPS
 //#     public void setWobble(int type, String contact, String txt) {
 //#         PopUp.getInstance().addPopup(type, contact, txt);
 //#         redraw();
 //#     }
 //#endif
-    protected int getMainBarRGB() {return ColorTheme.getColor(ColorTheme.BAR_INK);}
-    
-    protected Config cf=Config.getInstance();
+
+    protected int getMainBarRGB() {
+        return ColorTheme.getColor(ColorTheme.BAR_INK);
+    }
+    protected Config cf = Config.getInstance();
 
     /**
-     * событие "Нажатие кнопки ОК"
-     * базовая реализация VirtualList вызывает функцию onSelect для выбранного элемента;
-     * необходимо переопределить (override) функцию для реализации желаемых действий
+     * событие "Нажатие кнопки ОК" базовая реализация VirtualList вызывает
+     * функцию onSelect для выбранного элемента; необходимо переопределить
+     * (override) функцию для реализации желаемых действий
      */
     public void eventOk() {
         Object o = getFocusedObject();
@@ -134,16 +169,17 @@ public abstract class VirtualList {
             ((VirtualElement) o).onSelect();
         }
 
-        if (updateLayout() > 0)
+        if (updateLayout() > 0) {
             fitCursorByTop();
+        }
         redraw();
     }
-    
+
     public void eventLongOk() {
     }
 
     public void doKeyAction(int keyCode) {
-        switch(keyCode) {
+        switch (keyCode) {
             case VirtualCanvas.KEY_VOL_UP:
             case 1:
                 moveCursorHome();
@@ -167,7 +203,7 @@ public abstract class VirtualList {
             case VirtualCanvas.KEY_RIGHT:
             case 6:
                 pageRight();
-                return;            
+                return;
             case VirtualCanvas.KEY_FIRE:
             case 5:
                 eventOk();
@@ -185,8 +221,9 @@ public abstract class VirtualList {
                 keyGreen();
                 return;
             case VirtualCanvas.KEY_BACK:
-                if (canBack)
+                if (canBack) {
                     cmdCancel();
+                }
                 return;
             case VirtualCanvas._KEY_STAR:
                 showTimeTrafficInfo();
@@ -222,8 +259,9 @@ public abstract class VirtualList {
                 pageRight();
                 return true;
             case 28:
-                if (canBack == true)
+                if (canBack == true) {
                     destroyView();
+                }
                 return true;
             case 29:
                 keyClear();
@@ -243,53 +281,43 @@ public abstract class VirtualList {
             case 48:
                 pageLeft();
                 return true;
-	    case 49:
+            case 49:
                 pageRight();
                 return true;
         }
 
         return false;
     }
-
-
 //#ifdef MEMORY_USAGE
 //#     public static boolean memMonitor;
 //#endif
     public static boolean showTimeTraffic = true;
-    
     public boolean canBack = true;
-
-    /** метрика экрана */
+    /**
+     * метрика экрана
+     */
     protected static int width;
     protected static int height;
-    
     public int cursor;
-
     /**
-     * окно приклеено к позиции курсора
-     * ПРИКЛЕИВАЕТСЯ:
-     *   при нажатии кнопок перемещения курсора
-     *   при выборе стилусом элемента списка
-     * ОТКЛЕИВАЕТСЯ:
-     *   при использовании скролбара
+     * окно приклеено к позиции курсора ПРИКЛЕИВАЕТСЯ: при нажатии кнопок
+     * перемещения курсора при выборе стилусом элемента списка ОТКЛЕИВАЕТСЯ: при
+     * использовании скролбара
      */
-    protected boolean stickyWindow=true;
-    
-    private int itemLayoutY[]=new int[1];
+    protected boolean stickyWindow = true;
+    private int itemLayoutY[] = new int[1];
     private int listHeight;
-
     private int list_top;
     private int list_bottom;
-   
-    
+
     protected synchronized int updateLayout() {
         int size = getItemCount();
         if (size == 0) {
             listHeight = 0;
             return 0;
         }
-        int layout[]=new int[size+1];
-        int y=0;
+        int layout[] = new int[size + 1];
+        int y = 0;
         for (int index = 0; index < size; index++) {
             VirtualElement item = getItemRef(index);
             if (item != null) {
@@ -297,11 +325,11 @@ public abstract class VirtualList {
                 layout[index + 1] = y;
             }
         }
-        listHeight=y;
-        itemLayoutY=layout;
+        listHeight = y;
+        itemLayoutY = layout;
         return itemLayoutY.length;
     }
-            
+
     protected int getElementIndexAt(int yPos) {
         int end = getItemCount() - 1;
         if (end < 0) {
@@ -321,73 +349,72 @@ public abstract class VirtualList {
         }
         return (yPos < itemLayoutY[end]) ? begin : end;
     }
-    
     public int win_top; // верхняя граница окна относительно списка
     public int winHeight; // отображаемый размер списка
-    
     protected int offset; // счётчик автоскроллинга
-    
     protected boolean showBalloon;
-    
     protected ComplexString mainbar;
     protected ComplexString infobar;
-    
     private boolean wrapping = true;
-
-    public static int startGPRS=-1;
-    public static int offGPRS=0;
-
-    /** processing short/long presses and double clicks  */
+    public static int startGPRS = -1;
+    public static int offGPRS = 0;
+    /**
+     * processing short/long presses and double clicks
+     */
     private long lastClickTime;
     private int lastCursor;
 
     /**
-     * Разрешает заворачивание списка в кольцо (перенос курсора через конец списка)
-     * по умолчанию установлен true
-     * @param wrap будучи переданным true, разрешает перенос курсора через конец списка
+     * Разрешает заворачивание списка в кольцо (перенос курсора через конец
+     * списка) по умолчанию установлен true
+     *
+     * @param wrap будучи переданным true, разрешает перенос курсора через конец
+     * списка
      */
-    public void enableListWrapping(boolean wrap) { this.wrapping=wrap; }
-    
-        
+    public void enableListWrapping(boolean wrap) {
+        this.wrapping = wrap;
+    }
+
 //#ifdef ELF    
 //#     private static boolean sie_accu=true;
 //#     private static boolean sie_net=true;
 //#endif
-
     /**
-     * возвращает ссылку на объект в фокусе.
-     * в классе VirtualList возвращает VirtualElement, на который указывает курсор,
-     * однако, возможно переопределить функцию при наследовании
+     * возвращает ссылку на объект в фокусе. в классе VirtualList возвращает
+     * VirtualElement, на который указывает курсор, однако, возможно
+     * переопределить функцию при наследовании
+     *
      * @return ссылка на объект в фокусе.
      */
-    public Object getFocusedObject() { 
+    public Object getFocusedObject() {
         if (cursor < getItemCount()) {
             return getItemRef(cursor);
         }
         return null;
-    }    
-
+    }
     protected VirtualList parentView;
-
     protected ScrollBar scrollbar;
-    
-    /** Creates a new instance of VirtualList */
-    public VirtualList() {       
-       //setFullScreenMode(Config.fullscreen);
-      /* if (phoneManufacturer != Config.MICROEMU) {
-           width = sd.canvas.getWidth();
-           height = sd.canvas.getHeight();
-       }*/
-       
+
+    /**
+     * Creates a new instance of VirtualList
+     */
+    public VirtualList() {
+        //setFullScreenMode(Config.fullscreen);
+      /*
+         * if (phoneManufacturer != Config.MICROEMU) { width =
+         * sd.canvas.getWidth(); height = sd.canvas.getHeight();
+       }
+         */
+
 //#ifdef POPUPS
 //#         PopUp.getInstance();
 //#endif
-        
+
         changeOrient(cf.panelsState);
 
 //        setFullScreenMode(fullscreen);
-     
-        scrollbar=new ScrollBar();
+
+        scrollbar = new ScrollBar();
         scrollbar.setHasPointerEvents(VirtualCanvas.getInstance().hasPointerEvents());
 
         infobar = new MainBar("", true, VirtualCanvas.getInstance().hasPointerEvents() && cf.advTouch && Config.fullscreen);
@@ -395,45 +422,46 @@ public abstract class VirtualList {
         infobar.addRAlign();
         infobar.addElement(null); //3
 
-        stringHeight = FontCache.getFont(false, FontCache.roster).getHeight();        
+        stringHeight = FontCache.getFont(false, FontCache.roster).getHeight();
     }
-    
+
     public void show() {
         parentView = VirtualCanvas.getInstance().getList();
         VirtualCanvas.getInstance().show(this);
-     }
+    }
 
     public void redraw() {
         if (VirtualCanvas.getInstance().isShown()) {
             VirtualCanvas.getInstance().repaint();
             return;
-         }
-     }
-      
+        }
+    }
 
-
-    /** Вызывается при изменении размера отображаемой области. переопределяет наследуемый метод
-     * Canvas.sizeChanged(int width, int heigth). сохраняет новые размеры области рисования.
-     * также создаёт новый экранный буфер offscreen, используемый при работе без автоматической
-     * двойной буферизации
+    /**
+     * Вызывается при изменении размера отображаемой области. переопределяет
+     * наследуемый метод Canvas.sizeChanged(int width, int heigth). сохраняет
+     * новые размеры области рисования. также создаёт новый экранный буфер
+     * offscreen, используемый при работе без автоматической двойной буферизации
+     *
      * @param w
      * @param h
      */
     protected void sizeChanged(int w, int h) {
         width = w;
         height = h;
-        if (messagesWidth == 0)
+        if (messagesWidth == 0) {
             messagesWidth = getListWidth();
+        }
         redraw();
     }
 
     /**
-     * начало отрисовки списка.
-     * функция вызывается перед отрисовкой списка,
+     * начало отрисовки списка. функция вызывается перед отрисовкой списка,
      * перед любыми обращениями к элементам списка.
-     *     
+     *
      */
-    protected void beginPaint() { }
+    protected void beginPaint() {
+    }
 
     public synchronized void paint(Graphics g) {
         if (messagesWidth == 0) {
@@ -441,7 +469,7 @@ public abstract class VirtualList {
         }
         beginPaint();
 //#ifdef POPUPS
-//#        PopUp.getInstance().init(g, width, height);
+//#         PopUp.getInstance().init(g, width, height);
 //#endif
 
         //StaticData.getInstance().screenWidth=width;
@@ -453,7 +481,7 @@ public abstract class VirtualList {
         setAbsOrg(g, 0, 0);
 
         setInfo();
-        
+
         if (paintTop) {
             if (reverse) {
                 if (infobar != null) {
@@ -540,9 +568,9 @@ public abstract class VirtualList {
         } // while
         int clrH = height - displayedBottom;
 
-        if (clrH > 0
+        if (clrH > 0 
 //#ifdef BACK_IMAGE
-//#                                 && VirtualCanvas.getInstance().img==null
+//#     && VirtualCanvas.getInstance().img==null
 //#endif
                 ) {
             setAbsOrg(g, 0, displayedBottom);
@@ -578,7 +606,7 @@ public abstract class VirtualList {
 //#ifdef MEMORY_USAGE
 //#         drawHeapMonitor(g, list_top); //heap monitor
 //#endif
-        
+
 
         if (paintBottom) {
             if (reverse) {
@@ -614,42 +642,41 @@ public abstract class VirtualList {
 //#endif        
     }
 
-
     protected void drawEnvelop(final Graphics g) {
         g.setColor(getMainBarRGB());
-        int wpos= (width/2);
-        int hpos= height-13;
-        
-        g.drawRect(wpos-4,	hpos, 	8, 	6);
-        g.drawLine(wpos-3,	hpos+1,	wpos,	hpos+4);
-        g.drawLine(wpos,	hpos+4,	wpos+3,	hpos+1);
-        g.drawLine(wpos-3,	hpos+5,	wpos-2,	hpos+4);
-        g.drawLine(wpos+2,	hpos+4,	wpos+3,	hpos+5);
+        int wpos = (width / 2);
+        int hpos = height - 13;
+
+        g.drawRect(wpos - 4, hpos, 8, 6);
+        g.drawLine(wpos - 3, hpos + 1, wpos, hpos + 4);
+        g.drawLine(wpos, hpos + 4, wpos + 3, hpos + 1);
+        g.drawLine(wpos - 3, hpos + 5, wpos - 2, hpos + 4);
+        g.drawLine(wpos + 2, hpos + 4, wpos + 3, hpos + 5);
     }
-    
+
     protected void drawTraffic(final Graphics g, boolean up) {
-        int pos=(up)?(width/2)+3:(width/2)-3;
-        int pos2=(up)?height-4:height-2;
-        
+        int pos = (up) ? (width / 2) + 3 : (width / 2) - 3;
+        int pos2 = (up) ? height - 4 : height - 2;
+
         //g.setColor((up)?0xff0000:0x00ff00);
         g.setColor(getMainBarRGB());
-        g.drawLine(pos, height-5, pos, height-1);
-        g.drawLine(pos-1, pos2, pos+1, pos2);       
-        g.fillRect(pos-2, height-3, 1, 1);
-        g.fillRect(pos+2, height-3, 1, 1);
+        g.drawLine(pos, height - 5, pos, height - 1);
+        g.drawLine(pos - 1, pos2, pos + 1, pos2);
+        g.fillRect(pos - 2, height - 3, 1, 1);
+        g.fillRect(pos + 2, height - 3, 1, 1);
     }
-    
+
 //#ifdef POPUPS
 //#     protected void drawPopUp(final Graphics g) {
 //#         PopUp.getInstance().paintCustom(g);
 //#     }
 //#endif
-    
+
     private void setAbsClip(final Graphics g, int w, int h) {
         setAbsOrg(g, 0, 0);
-        g.setClip(0,0, w, h);
+        g.setClip(0, 0, w, h);
     }
-        
+
 //#ifdef MEMORY_USAGE
 //#     protected void drawHeapMonitor(final Graphics g, int y) {
 //#         if (memMonitor) {
@@ -659,80 +686,90 @@ public abstract class VirtualList {
 //#         }
 //#     }
 //#endif
-    private void drawInfoPanel (final Graphics g) {
-        int h=infobar.getVHeight()+1;
+    private void drawInfoPanel(final Graphics g) {
+        int h = infobar.getVHeight() + 1;
 
-        g.setClip(0,0, width, h);
+        g.setClip(0, 0, width, h);
 //#ifdef GRADIENT        
-//#         ((MainBar)infobar).startColor = getMainBarBGnd();
-//#         ((MainBar)infobar).endColor = getMainBarBGndBottom();
+//#         InfoBarBG.update(0, 0, width, h, start, end, Gradient.CACHED_HORIZONTAL, 0);
+//#         InfoBarBG.paint(g);
 //#endif        
-        
-        ((MainBar)infobar).lShift = (Config.getInstance().phoneManufacturer == Config.NOKIA && reverse && Config.fullscreen);
-        ((MainBar)infobar).rShift = (Config.getInstance().phoneManufacturer == Config.SONYE && reverse && Config.fullscreen);
+
+        ((MainBar) infobar).lShift = (Config.getInstance().phoneManufacturer == Config.NOKIA && reverse && Config.fullscreen);
+        ((MainBar) infobar).rShift = (Config.getInstance().phoneManufacturer == Config.SONYE && reverse && Config.fullscreen);
         infobar.drawItem(g, 0, false);
 
     }
-    
-    private void drawMainPanel (final Graphics g) {    
-        int h=mainbar.getVHeight()+1;
-        g.setClip(0,0, width, h);
+
+    private void drawMainPanel(final Graphics g) {
+        int h = mainbar.getVHeight() + 1;
+        g.setClip(0, 0, width, h);
 //#ifdef GRADIENT        
-//#         ((MainBar)mainbar).startColor = getMainBarBGndBottom();
-//#         ((MainBar)mainbar).endColor = getMainBarBGnd();
+//#         MainBarBG.update(0, 0, width, h, end, start, Gradient.CACHED_HORIZONTAL, 0);
+//#         MainBarBG.paint(g);
 //#endif        
-        ((MainBar)mainbar).lShift = (Config.getInstance().phoneManufacturer == Config.NOKIA && !reverse && Config.fullscreen);
-        ((MainBar)mainbar).rShift = (Config.getInstance().phoneManufacturer == Config.SONYE && !reverse && Config.fullscreen);
+        ((MainBar) mainbar).lShift = (Config.getInstance().phoneManufacturer == Config.NOKIA && !reverse && Config.fullscreen);
+        ((MainBar) mainbar).rShift = (Config.getInstance().phoneManufacturer == Config.SONYE && !reverse && Config.fullscreen);
         mainbar.drawItem(g, 0, false);
     }
-    
 
     /**
      * перенос координат (0.0) в абсолютные координаты (x,y)
+     *
      * @param g графический контекст отрисовки
      * @param x абсолютная x-координата нового начала координат
      * @param y абсолютная y-координата нового начала координат
      */
-    public static void setAbsOrg(Graphics g, int x, int y){
-        g.translate(x-g.getTranslateX(), y-g.getTranslateY());
+    public static void setAbsOrg(Graphics g, int x, int y) {
+        g.translate(x - g.getTranslateX(), y - g.getTranslateY());
     }
 
-    /** перемещение курсора в начало списка */
-    public void moveCursorHome(){
-        stickyWindow=true;
-        if (cursor>0) cursor=getNextSelectableRef(-1);
+    /**
+     * перемещение курсора в начало списка
+     */
+    public void moveCursorHome() {
+        stickyWindow = true;
+        if (cursor > 0) {
+            cursor = getNextSelectableRef(-1);
+        }
         setRotator();
     }
 
-    public void moveCursorEnd(){
-        stickyWindow=true;
-        int count=getItemCount();
-        if (cursor>=0) cursor=(count==0)?0:count-1;
+    public void moveCursorEnd() {
+        stickyWindow = true;
+        int count = getItemCount();
+        if (cursor >= 0) {
+            cursor = (count == 0) ? 0 : count - 1;
+        }
         redraw();
         setRotator();
-        
+
     }
 
-    public void moveCursorTo(int index){
+    public void moveCursorTo(int index) {
         int count = getItemCount();
-        if (count == 0)
+        if (count == 0) {
             return;
-        if (index <= 0)
+        }
+        if (index <= 0) {
             index = 0;
-        else if (index >= count)
+        } else if (index >= count) {
             index = count - 1;
+        }
         VirtualElement item = getItemRef(index);
-        if (item != null && item.isSelectable())
+        if (item != null && item.isSelectable()) {
             cursor = index;
-        
-        stickyWindow=true;
+        }
+
+        stickyWindow = true;
         redraw();
         //setRotator();
     }
-    
+
     protected synchronized void fitCursorByTop() {
-        if (cursor >= itemLayoutY.length)
+        if (cursor >= itemLayoutY.length) {
             cursor = itemLayoutY.length - 1;
+        }
         int top = itemLayoutY[cursor];
         if (top < win_top) {
             win_top = top;
@@ -754,7 +791,7 @@ public abstract class VirtualList {
             win_top = top;
         }
     }
-    
+
     protected void fitCursorByBottom() {
         int bottom = itemLayoutY[cursor + 1] - winHeight;
         if (bottom > win_top) {
@@ -778,26 +815,18 @@ public abstract class VirtualList {
         }
     }
 
-/* Currently not used
- * TODO: testing and think about remove it.
- * See pointerReleased(...) method for more information.
-    protected void makeCursorMaximallyVisible() {
-        if (cursor < itemLayoutY.length - 1) {
-            int il = itemLayoutY[cursor + 1] - winHeight;
-            if (il > win_top) {
-                win_top = il;
-            }
-            il = itemLayoutY[cursor];
-            if (il < win_top) {
-                win_top = il;
-            }
-        }
+    /*
+     * Currently not used TODO: testing and think about remove it. See
+     * pointerReleased(...) method for more information. protected void
+     * makeCursorMaximallyVisible() { if (cursor < itemLayoutY.length - 1) { int
+     * il = itemLayoutY[cursor + 1] - winHeight; if (il > win_top) { win_top =
+     * il; } il = itemLayoutY[cursor]; if (il < win_top) { win_top = il; } } }
+     */
+    public void keyGreen() {
     }
-*/
 
-    public void keyGreen() {}
-    public void keyClear() {}
-
+    public void keyClear() {
+    }
     private int yPointerPos;
 
     protected void pointerPressed(int x, int y) {
@@ -827,7 +856,7 @@ public abstract class VirtualList {
             stickyWindow = false;
             return;
         }
-        
+
         if (y < list_top) {
             captionPressed();
             return;
@@ -843,7 +872,6 @@ public abstract class VirtualList {
             setRotator();
         }
     }
-
     boolean itemDragged = false;
 
     protected void pointerDragged(int x, int y) {
@@ -854,7 +882,7 @@ public abstract class VirtualList {
 //#endif
 
         if ((y < list_top)
-        || (y > list_top + winHeight)) {
+                || (y > list_top + winHeight)) {
             return;
         }
         if (scrollbar.pointerDragged(x, y, this)) {
@@ -879,18 +907,12 @@ public abstract class VirtualList {
         if (win_top < 0) {
             win_top = 0;
         }
-/*
-        stickyWindow = false;
-        if (cursor >= 0) {
-            if (getItemCount() != 0) {
-                int pos = getElementIndexAt(win_top + y - list_top);
-                if ((pos >= 0) && getItemRef(pos).isSelectable()) {
-                    cursor = pos;
-                }
-                setRotator();
-            }
-        }
-*/
+        /*
+         * stickyWindow = false; if (cursor >= 0) { if (getItemCount() != 0) {
+         * int pos = getElementIndexAt(win_top + y - list_top); if ((pos >= 0)
+         * && getItemRef(pos).isSelectable()) { cursor = pos; } setRotator(); }
+         * }
+         */
     }
 
     protected void pointerReleased(int x, int y) {
@@ -902,25 +924,25 @@ public abstract class VirtualList {
 
 //#ifdef POPUPS
 //#         if ((longClick && PopUp.getInstance().goToMsgList())
-//#         || (shortClick && PopUp.getInstance().next())) {
+//#                 || (shortClick && PopUp.getInstance().next())) {
 //#             return;
 //#         }
 //#endif
 
         if (scrollbar.pointerReleased(x, y, this)
-        || (Config.fullscreen && CommandsPointer.pointerPressed(x, y) > 0)
-        || (y > list_top + winHeight)) {
+                || (Config.fullscreen && CommandsPointer.pointerPressed(x, y) > 0)
+                || (y > list_top + winHeight)) {
             return;
         }
 
 // In my opinion, scrolling without it more comfortable. Totktonada.
 /*
-        if (cursor != lastCursor) { // Without this condition, scrolling large messages is very interesting :-)
-            makeCursorMaximallyVisible();
-        }
-*/
+         * if (cursor != lastCursor) { // Without this condition, scrolling
+         * large messages is very interesting :-) makeCursorMaximallyVisible();
+         * }
+         */
 
-        if (!itemDragged) {            
+        if (!itemDragged) {
             if (longClick) {
                 eventLongOk();
             }
@@ -931,21 +953,23 @@ public abstract class VirtualList {
         itemDragged = false;
         lastCursor = cursor;
     }
-    
+
     /**
-     * событие "Нажатие кнопки UP"
-     * в классе VirtualList функция перемещает курсор на одну позицию вверх.
-     * возможно переопределить (override) функцию для реализации необходимых действий
+     * событие "Нажатие кнопки UP" в классе VirtualList функция перемещает
+     * курсор на одну позицию вверх. возможно переопределить (override) функцию
+     * для реализации необходимых действий
      */
     public void keyUp() {
-        if (getItemCount()==0)
+        if (getItemCount() == 0) {
             return;
-        if (cursor==0 || (!getItemRef(0).isSelectable() && cursor == 1)) {
+        }
+        if (cursor == 0 || (!getItemRef(0).isSelectable() && cursor == 1)) {
             if (wrapping) {
-                if (getItemRef(getItemCount()-1).isSelectable())
+                if (getItemRef(getItemCount() - 1).isSelectable()) {
                     moveCursorEnd();
-                else
-                    moveCursorTo(getItemCount()-2);
+                } else {
+                    moveCursorTo(getItemCount() - 2);
+                }
             } else {
                 itemPageUp();
             }
@@ -953,40 +977,44 @@ public abstract class VirtualList {
             return;
         }
 
-        if (itemPageUp()) return;
+        if (itemPageUp()) {
+            return;
+        }
         //stickyWindow=true;
-        if (getItemRef(cursor-1).isSelectable())
+        if (getItemRef(cursor - 1).isSelectable()) {
             cursor--;
-        else
-            cursor=getPrevSelectableRef(cursor);
+        } else {
+            cursor = getPrevSelectableRef(cursor);
+        }
         fitCursorByBottom();
         setRotator();
     }
 
-    public void keyDwn() { 
-        if (getItemCount()==0)
+    public void keyDwn() {
+        if (getItemCount() == 0) {
             return;
-	if (cursor==(getItemCount()-1)) {
+        }
+        if (cursor == (getItemCount() - 1)) {
             if (wrapping) {
                 moveCursorHome();
             } else {
                 itemPageDown();
             }
             setRotator();
-            return; 
+            return;
         }
         if (itemPageDown()) {
             return;
         }
-        stickyWindow=true;
-        if (getItemRef(cursor+1).isSelectable()) {
+        stickyWindow = true;
+        if (getItemRef(cursor + 1).isSelectable()) {
             cursor++;
         } else {
-            cursor=getNextSelectableRef(cursor);
+            cursor = getNextSelectableRef(cursor);
         }
         setRotator();
     }
-    
+
     public int getPrevSelectableRef(int curRef) {
         if (getItemCount() == 0) {
             return 0;
@@ -1005,7 +1033,7 @@ public abstract class VirtualList {
             }
             if (getItemRef(prevRef).isSelectable()) {
                 break;
-            }            
+            }
         }
 
         return prevRef;
@@ -1038,7 +1066,7 @@ public abstract class VirtualList {
     private boolean itemPageDown() {
         stickyWindow = false;
         Object o = getFocusedObject();
-	if (o == null) {
+        if (o == null) {
             return false;
         }
 
@@ -1050,7 +1078,7 @@ public abstract class VirtualList {
         if (!cursorInWindow()) {
             return false;
         }
-            
+
         int remainder = itemLayoutY[cursor + 1] - win_top;
         if (remainder <= winHeight) {
             return false;
@@ -1063,11 +1091,11 @@ public abstract class VirtualList {
         win_top += winHeight - stringHeight;//-stringHeight;
         return true;
     }
-    
+
     private boolean itemPageUp() {
-        stickyWindow=false;
+        stickyWindow = false;
         Object o = getFocusedObject();
-	if (o == null) {
+        if (o == null) {
             return false;
         }
 
@@ -1079,7 +1107,7 @@ public abstract class VirtualList {
         if (!cursorInWindow()) {
             return false;
         }
-        
+
         int remainder = win_top - itemLayoutY[cursor];
         if (remainder <= 0) {
             return false;
@@ -1094,28 +1122,27 @@ public abstract class VirtualList {
     }
 
     public void pageLeft() {
-        if (getItemCount()==0)
+        if (getItemCount() == 0) {
             return;
+        }
 
         stickyWindow = false;
         win_top -= winHeight;
         if (win_top < 0) {
             win_top = 0;
             /*
-            if (!getItemRef(0).isSelectable()) {
-	        cursor = getNextSelectableRef(-1);
-            } else {
-                cursor = 0;
-            }
-            */
+             * if (!getItemRef(0).isSelectable()) { cursor =
+             * getNextSelectableRef(-1); } else { cursor = 0; }
+             */
             cursor = getNextSelectableRef(-1);
         }
         if (!cursorInWindow()) {
             cursor = getElementIndexAt(itemLayoutY[cursor] - winHeight);
             Object o = getFocusedObject();
             if (o != null && ((VirtualElement) o).getVHeight() <= winHeight) {
-                if (updateLayout() > 0)
+                if (updateLayout() > 0) {
                     fitCursorByTop();
+                }
             }
         }
 
@@ -1123,8 +1150,9 @@ public abstract class VirtualList {
     }
 
     public void pageRight() {
-        if (getItemCount()==0)
+        if (getItemCount() == 0) {
             return;
+        }
 
         stickyWindow = false;
         win_top += winHeight;
@@ -1141,14 +1169,15 @@ public abstract class VirtualList {
             cursor = getElementIndexAt(itemLayoutY[cursor] + winHeight);
             Object o = getFocusedObject();
             if (o != null && ((VirtualElement) o).getVHeight() <= winHeight) {
-                if (updateLayout() > 0)
+                if (updateLayout() > 0) {
                     fitCursorByTop();
+                }
             }
         }
 
         setRotator();
     }
-    
+
     public boolean cursorInWindow() {
         int y1 = itemLayoutY[cursor] - win_top;
         if (y1 >= winHeight) {
@@ -1162,11 +1191,12 @@ public abstract class VirtualList {
         }
         return false;
     }
-    
+
     protected void setRotator() {
 //#if (USE_ROTATOR)
-//#         if (cursor < getItemCount())
+//#         if (cursor < getItemCount()) {
 //#             focusedItem(cursor);
+//#         }
 //# 
 //#         int itemWidth = 0;
 //#         if (cursor < getItemCount()) {
@@ -1182,49 +1212,47 @@ public abstract class VirtualList {
 //#         }
 //# 
 //#         TimerTaskRotate.startRotate(itemWidth, this);
- //#endif
+        //#endif
     }
-    
-    protected void drawCursor (Graphics g, int width, int height) {
+
+    protected void drawCursor(Graphics g, int width, int height) {
 //#ifdef BACK_IMAGE
 //#         if (VirtualCanvas.getInstance().img == null)
 //#endif            
-            g.fillRect(0, 0, width, height);
-        
-        int cursorBGnd=ColorTheme.getColor(ColorTheme.CURSOR_BGND);
-        int cursorOutline=ColorTheme.getColor(ColorTheme.CURSOR_OUTLINE);
-        
-        if (cursorBGnd!=0x010101) {
+        g.fillRect(0, 0, width, height);
+
+        int cursorBGnd = ColorTheme.getColor(ColorTheme.CURSOR_BGND);
+        int cursorOutline = ColorTheme.getColor(ColorTheme.CURSOR_OUTLINE);
+
+        if (cursorBGnd != 0x010101) {
             g.setColor(ColorTheme.getColor(ColorTheme.CURSOR_BGND));
             g.fillRoundRect(0, 0, width, height, 6, 6);
             //fillSemiTransRect(g, ColorTheme.getColor(ColorTheme.CURSOR_BGND), 200, 1, 1, width-2, height-2);
         }
 
-        if (cursorOutline!=0x010101) {
+        if (cursorOutline != 0x010101) {
             g.setColor(cursorOutline);
-            g.drawRoundRect(0, 0, width-1, height-1, 6, 6);
+            g.drawRoundRect(0, 0, width - 1, height - 1, 6, 6);
         }
     }
-/*
-    private void fillSemiTransRect(Graphics graph, int color, int alpha, int xPos, int yPos, int rectWidth, int rectHeight) {
-        int r1 = ((color & 0xFF0000) >> 16);
-        int g1 = ((color & 0x00FF00) >> 8);
-        int b1 = (color & 0x0000FF);
-        
-        int col = (r1 << 16) | (g1 << 8) | (b1) | (alpha << 24);
-        
-        
-        int[] alphaBuffer = new int[rectWidth*rectHeight];
-        
-        for(int i = 0; i < alphaBuffer.length; i++)
-          alphaBuffer[i] = col;
-        
-        graph.drawRGB(alphaBuffer, 0, rectWidth, xPos, yPos, rectWidth, rectHeight, true);
-
-        alphaBuffer = null;
-    }
-*/
-    
+    /*
+     * private void fillSemiTransRect(Graphics graph, int color, int alpha, int
+     * xPos, int yPos, int rectWidth, int rectHeight) { int r1 = ((color &
+     * 0xFF0000) >> 16); int g1 = ((color & 0x00FF00) >> 8); int b1 = (color &
+     * 0x0000FF);
+     *
+     * int col = (r1 << 16) | (g1 << 8) | (b1) | (alpha << 24);
+     *
+     *
+     * int[] alphaBuffer = new int[rectWidth*rectHeight];
+     *
+     * for(int i = 0; i < alphaBuffer.length; i++) alphaBuffer[i] = col;
+     *
+     * graph.drawRGB(alphaBuffer, 0, rectWidth, xPos, yPos, rectWidth,
+     * rectHeight, true);
+     *
+     * alphaBuffer = null; }
+     */
 
     /**
      * отсоединение от менеджера дисплея текущего виртуального списка,
@@ -1238,39 +1266,44 @@ public abstract class VirtualList {
     }
 
     public int getListWidth() {
-        return width-scrollbar.getScrollWidth()-2;
+        return width - scrollbar.getScrollWidth() - 2;
     }
     public static int messagesWidth = 0;
 
-
-    public static void sort(Vector sortVector){
+    public static void sort(Vector sortVector) {
         try {
             synchronized (sortVector) {
                 int f, i;
                 IconTextElement left, right;
-                
-                int j=sortVector.size();
+
+                int j = sortVector.size();
                 for (f = 1; f < j; f++) {
-                    left=(IconTextElement)sortVector.elementAt(f);
-                    right=(IconTextElement)sortVector.elementAt(f-1);
-                    if ( left.compare(right) >=0 ) continue;
-                    i = f-1;
-                    while (i>=0){
-                        right=(IconTextElement)sortVector.elementAt(i);
-                        if (right.compare(left) <0) break;
-                        sortVector.setElementAt(right,i+1);
+                    left = (IconTextElement) sortVector.elementAt(f);
+                    right = (IconTextElement) sortVector.elementAt(f - 1);
+                    if (left.compare(right) >= 0) {
+                        continue;
+                    }
+                    i = f - 1;
+                    while (i >= 0) {
+                        right = (IconTextElement) sortVector.elementAt(i);
+                        if (right.compare(left) < 0) {
+                            break;
+                        }
+                        sortVector.setElementAt(right, i + 1);
                         i--;
                     }
-                    sortVector.setElementAt(left,i+1);
+                    sortVector.setElementAt(left, i + 1);
                 }
             }
         } catch (Exception e) {
         }
     }
-        
+
     public void setInfo() {
-        commandState();        
-        if (infobar == null) return;
+        commandState();
+        if (infobar == null) {
+            return;
+        }
         if (VirtualCanvas.getInstance().rw != null) {
             if (VirtualCanvas.getInstance().rw.isActive()) {
                 infobar.setElementAt(SR.MS_OK, 1);
@@ -1278,8 +1311,9 @@ public abstract class VirtualList {
                 return;
             }
         }
-        if (Config.getInstance().phoneManufacturer == Config.NOKIA && !Config.fullscreen)
+        if (Config.getInstance().phoneManufacturer == Config.NOKIA && !Config.fullscreen) {
             showTimeTraffic = true;
+        }
         infobar.setElementAt((!showTimeTraffic) ? touchLeftCommand() : Time.getTimeWeekDay(), 1);
         infobar.setElementAt((!showTimeTraffic) ? touchRightCommand() : getTraffic(), 3);
     }
@@ -1287,9 +1321,7 @@ public abstract class VirtualList {
     public void showTimeTrafficInfo() {
 //#ifdef POPUPS
 //#         StringBuffer mem = new StringBuffer();
-//#         mem.append(Time.localDate()).append(" ").append(Time.getTimeWeekDay())
-//#            .append("\nTraffic: ")
-//#            .append(getTraffic())
+//#         mem.append(Time.localDate()).append(" ").append(Time.getTimeWeekDay()).append("\nTraffic: ").append(getTraffic()) 
 //#ifdef MEMORY_USAGE
 //#            .append("\nFree: ")
 //#            .append(Runtime.getRuntime().freeMemory()>>10)
@@ -1299,18 +1331,24 @@ public abstract class VirtualList {
 //#                .append(Runtime.getRuntime().totalMemory()>>10)
 //#                .append(" kb")
 //#endif
-//#            ;
+//#         ;
 //#         setWobble(1, null, mem.toString());
 //#endif
     }
 
     public static String getTraffic() {
         long traffic = StaticData.getInstance().traffic;
-        return StringUtils.getSizeString((traffic>0)?traffic*2:0);
+        return StringUtils.getSizeString((traffic > 0) ? traffic * 2 : 0);
     }
-        
-    public void captionPressed() {};
-    public void commandState() {};
+
+    public void captionPressed() {
+    }
+
+    ;
+    public void commandState() {
+    }
+
+    ;
 
     public void doLeftAction() {
         ReconnectWindow rw = VirtualCanvas.getInstance().rw;
@@ -1329,28 +1367,30 @@ public abstract class VirtualList {
             touchRightPressed();
         }
     }
-   
-    public abstract void touchLeftPressed();   
+
+    public abstract void touchLeftPressed();
+
     public abstract void touchRightPressed();
-        
 
     public abstract String touchLeftCommand();
+
     public abstract String touchRightCommand();
 
     public void cmdCancel() {
-        if (canBack)
+        if (canBack) {
             destroyView();
+        }
     }
 
     public void showInfo() {
 //#ifdef POPUPS
-//# 	VirtualElement item = (VirtualElement) getFocusedObject();
-//# 	if (item != null) {
-//# 	    String text = item.getTipString();
-//# 	    if (text != null) {
-//# 		setWobble(1, null, text);
-//# 	    }
-//# 	}
+//#         VirtualElement item = (VirtualElement) getFocusedObject();
+//#         if (item != null) {
+//#             String text = item.getTipString();
+//#             if (text != null) {
+//#                 setWobble(1, null, text);
+//#             }
+//#         }
 //#endif
     }
 }

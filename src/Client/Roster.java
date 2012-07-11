@@ -1426,8 +1426,9 @@ public class Roster
 //#endif                
 
             Contact c = getContact(from, (cf.notInListDropLevel != NotInListFilter.DROP_MESSAGES_PRESENCES || groupchat
-                    //#ifndef WMUC
-                    || message.getMucInvitation() != null //#endif
+//#ifndef WMUC
+|| message.getMucInvitation() != null 
+//#endif
                     ));
             if (c == null) {
                 return JabberBlockListener.BLOCK_REJECTED; //not-in-list message dropped
