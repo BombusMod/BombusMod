@@ -265,6 +265,7 @@ blue 0x0000ff
                 c.color=inputStream.readInt();
             }
 	    inputStream.close();
+            inputStream=null;
 	} catch (Exception e) { }
     }
 
@@ -374,12 +375,6 @@ blue 0x0000ff
     }
     public static int getBlue(int color) {
         return (color& 0xFF);
-    }
-    public static int getAlpha(int color) {
-        return ((color>>24) & 0xFF);
-    }
-    public static int getColor(int a, int r, int g, int b){
-        return (a<<24) | (r<<16) | (g<<8) | b;
     }
     
     public static String ColorToString(int cRed, int cGreen, int cBlue) {

@@ -1427,7 +1427,7 @@ public class Roster
 
             Contact c = getContact(from, (cf.notInListDropLevel != NotInListFilter.DROP_MESSAGES_PRESENCES || groupchat
 //#ifndef WMUC
-|| message.getMucInvitation() != null 
+                    || message.getMucInvitation() != null
 //#endif
                     ));
             if (c == null) {

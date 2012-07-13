@@ -74,7 +74,9 @@ public class AndroidDisplayGraphics extends javax.microedition.lcdui.Graphics {
         
 		strokePaint.setAntiAlias(true);
 		strokePaint.setStyle(Paint.Style.STROKE);
+		strokePaint.setDither(true);
 		fillPaint.setAntiAlias(true);
+		fillPaint.setDither(true);
 		fillPaint.setStyle(Paint.Style.FILL);
 	}
 	
@@ -84,8 +86,10 @@ public class AndroidDisplayGraphics extends javax.microedition.lcdui.Graphics {
         this.delegate = null;
         
 		strokePaint.setAntiAlias(true);
+		strokePaint.setDither(true);
 		strokePaint.setStyle(Paint.Style.STROKE);
 		fillPaint.setAntiAlias(true);
+		fillPaint.setDither(true);
 		fillPaint.setStyle(Paint.Style.FILL);
         
         reset(this.canvas);

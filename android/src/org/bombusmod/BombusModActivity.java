@@ -1,28 +1,24 @@
 /**
- *  MicroEmulator
- *  Copyright (C) 2008 Bartek Teodorczyk <barteo@barteo.net>
+ * MicroEmulator Copyright (C) 2008 Bartek Teodorczyk <barteo@barteo.net>
  *
- *  It is licensed under the following two licenses as alternatives:
- *    1. GNU Lesser General Public License (the "LGPL") version 2.1 or any newer version
- *    2. Apache License (the "AL") Version 2.0
+ * It is licensed under the following two licenses as alternatives: 1. GNU
+ * Lesser General Public License (the "LGPL") version 2.1 or any newer version
+ * 2. Apache License (the "AL") Version 2.0
  *
- *  You may not use this file except in compliance with at least one of
- *  the above two licenses.
+ * You may not use this file except in compliance with at least one of the above
+ * two licenses.
  *
- *  You may obtain a copy of the LGPL at
- *      http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt
+ * You may obtain a copy of the LGPL at
+ * http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt
  *
- *  You may obtain a copy of the AL at
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * You may obtain a copy of the AL at http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the LGPL or the AL for the specific language governing permissions and
- *  limitations.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the LGPL
+ * or the AL for the specific language governing permissions and limitations.
  *
  */
-
 package org.bombusmod;
 
 import java.io.IOException;
@@ -72,26 +68,26 @@ import org.microemu.cldc.file.FileSystem;
 
 import Client.Contact;
 import Client.StaticData;
+import android.graphics.PixelFormat;
 import android.widget.TextView;
 import android.widget.Toast;
 import midlet.BombusMod;
 import ui.VirtualCanvas;
 
-public class BombusModActivity extends MicroEmulatorActivity{
+public class BombusModActivity extends MicroEmulatorActivity {
 
     public static final String LOG_TAG = "BombusModActivity";
-
     public Common common;
-
     private MIDlet midlet;
-
     private static BombusModActivity instance;
 
     public static BombusModActivity getInstance() {
         return instance;
     }
 
-    /** Called when the activity is first created. */
+    /**
+     * Called when the activity is first created.
+     */
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
@@ -100,9 +96,9 @@ public class BombusModActivity extends MicroEmulatorActivity{
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        setVolumeControlStream(AudioManager.STREAM_MUSIC); 
-        
-        
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);
+
+
         Logger.removeAllAppenders();
         Logger.setLocationEnabled(false);
         Logger.addAppender(new AndroidLoggerAppender());
@@ -122,7 +118,6 @@ public class BombusModActivity extends MicroEmulatorActivity{
                     line.append((char) oneByte);
                 }
             }
-
         }));
 
         System.setErr(new PrintStream(new OutputStream() {
@@ -140,13 +135,12 @@ public class BombusModActivity extends MicroEmulatorActivity{
                     line.append((char) oneByte);
                 }
             }
-
         }));
-       
+
         common = new Common(emulatorContext);
         common.setRecordStoreManager(new AndroidRecordStoreManager(this));
         common.setDevice(new AndroidDevice(emulatorContext, this));
-     
+
         System.setProperty("microedition.platform", "microemu-android");
         System.setProperty("microedition.configuration", "CLDC-1.1");
         System.setProperty("microedition.profiles", "MIDP-2.0");
@@ -156,7 +150,9 @@ public class BombusModActivity extends MicroEmulatorActivity{
         System.setProperty("device.software.version", android.os.Build.VERSION.RELEASE);
 
 
-        /* JSR-75 */
+        /*
+         * JSR-75
+         */
         Map<String, String> properties = new HashMap<String, String>();
         properties.put("fsRoot", "/");
         properties.put("fsSingle", "sdcard");
@@ -167,31 +163,39 @@ public class BombusModActivity extends MicroEmulatorActivity{
         MIDletSystemProperties.setPermission("javax.microedition.io.Connector.file.write", 1);
         System.setProperty("fileconn.dir.photos", "file:///sdcard/");
 
-        /* BombusModInitialization and Service */
+        /*
+         * BombusModInitialization and Service
+         */
         BombusModInitialization init = new BombusModInitialization();
         init.registerImplementation(null);
-        common.extensions.add(init);        
+        common.extensions.add(init);
 
         initializeExtensions();
 
         common.setSuiteName("org.BombusMod");
         midlet = common.initMIDlet(false);
-        startService(new Intent(this, BombusModService.class));    
+        startService(new Intent(this, BombusModService.class));
     }
-
 
     @Override
     protected void onNewIntent(Intent intent) {
-        System.out.println("onNewIntent("+intent.getAction()+")");
+        System.out.println("onNewIntent(" + intent.getAction() + ")");
         if ("org.bombusmod.bm-notify".equals(intent.getAction())) {
-            Contact c=StaticData.getInstance().roster.getFirstContactWithNewHighlite(null);
-            if (c!=null) {
+            Contact c = StaticData.getInstance().roster.getFirstContactWithNewHighlite(null);
+            if (c != null) {
                 c.getMsgList().show();
                 StaticData.getInstance().roster.focusToContact(c, false);
             }
         }
-    }   
-    
+    }
+
+    @Override
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        Window window = getWindow();
+        window.setFormat(PixelFormat.RGBA_8888);
+    }
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -229,8 +233,7 @@ public class BombusModActivity extends MicroEmulatorActivity{
 
         new Thread(new Runnable() {
 
-            public void run()
-            {
+            public void run() {
                 MIDletAccess ma = MIDletBridge.getMIDletAccess(midlet);
                 if (ma != null) {
                     try {
@@ -245,13 +248,13 @@ public class BombusModActivity extends MicroEmulatorActivity{
                         ((AndroidRepaintListener) contentView).onResume();
                     }
                     post(new Runnable() {
+
                         public void run() {
                             contentView.invalidate();
                         }
                     });
                 }
             }
-
         }).start();
     }
 
@@ -269,7 +272,6 @@ public class BombusModActivity extends MicroEmulatorActivity{
 
     protected void initializeExtensions() {
     }
-
     private boolean ignoreBackKeyUp = false;
 
     @Override
@@ -389,49 +391,38 @@ public class BombusModActivity extends MicroEmulatorActivity{
     private boolean ignoreKey(int keyCode) {
         switch (keyCode) {
 //        case KeyEvent.KEYCODE_MENU:
-        case KeyEvent.KEYCODE_VOLUME_DOWN:
-        case KeyEvent.KEYCODE_VOLUME_UP:
-        case KeyEvent.KEYCODE_HEADSETHOOK:
-            return true;
-        default:
-            return false;
+            case KeyEvent.KEYCODE_VOLUME_DOWN:
+            case KeyEvent.KEYCODE_VOLUME_UP:
+            case KeyEvent.KEYCODE_HEADSETHOOK:
+                return true;
+            default:
+                return false;
         }
     }
-
     private final static KeyEvent KEY_RIGHT_DOWN_EVENT = new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_RIGHT);
-
     private final static KeyEvent KEY_RIGHT_UP_EVENT = new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DPAD_RIGHT);
-
     private final static KeyEvent KEY_LEFT_DOWN_EVENT = new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_LEFT);
-
     private final static KeyEvent KEY_LEFT_UP_EVENT = new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DPAD_LEFT);
-
     private final static KeyEvent KEY_DOWN_DOWN_EVENT = new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_DOWN);
-
     private final static KeyEvent KEY_DOWN_UP_EVENT = new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DPAD_DOWN);
-
     private final static KeyEvent KEY_UP_DOWN_EVENT = new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_UP);
-
     private final static KeyEvent KEY_UP_UP_EVENT = new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DPAD_UP);
-
     private final static float TRACKBALL_THRESHOLD = 1.0f;
-
     private float accumulatedTrackballX = 0;
-
     private float accumulatedTrackballY = 0;
 
     @Override
     public boolean onTrackballEvent(MotionEvent event) {
-         if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                 MIDletAccess ma = MIDletBridge.getMIDletAccess();
-                 if (ma == null) {
-                         return false;
-                 }
-                 final DisplayAccess da = ma.getDisplayAccess();
-                 if (da == null) {
-                         return false;
-                 }
-                 AndroidDisplayableUI ui = (AndroidDisplayableUI) da.getDisplayableUI(da.getCurrent());
+        if (event.getAction() == MotionEvent.ACTION_MOVE) {
+            MIDletAccess ma = MIDletBridge.getMIDletAccess();
+            if (ma == null) {
+                return false;
+            }
+            final DisplayAccess da = ma.getDisplayAccess();
+            if (da == null) {
+                return false;
+            }
+            AndroidDisplayableUI ui = (AndroidDisplayableUI) da.getDisplayableUI(da.getCurrent());
             if (ui instanceof AndroidCanvasUI) {
                 float x = event.getX();
                 float y = event.getY();
@@ -525,12 +516,11 @@ public class BombusModActivity extends MicroEmulatorActivity{
 
         return false;
     }
-    
+
     public void minimizeApp() {
         Intent startMain = new Intent(Intent.ACTION_MAIN);
         startMain.addCategory(Intent.CATEGORY_HOME);
         startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(startMain);
     }
-
 }

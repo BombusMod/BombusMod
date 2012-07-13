@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
+
 package ui;
 
 import Client.Config;
@@ -32,27 +33,24 @@ import javax.microedition.lcdui.Graphics;
 //# import javax.microedition.lcdui.Image;
 //#endif
 
-public class MainBar extends ComplexString {
+public class MainBar extends ComplexString{
 
 //#ifdef BACK_IMAGE
 //#     public static Image bg;
 //#endif
+    
 //#ifdef GRADIENT
-//#     private int startColor = getColor();
-//#     private int endColor = getColorBGnd();
-//#endif   
+//#     public int startColor, endColor;
+//#endif    
+    
     public boolean lShift = false;
     public boolean rShift = false;
-
+    
     public MainBar(int size, Object first, Object second, boolean bold) {
-        this(size);
-        if (first != null) {
-            setElementAt(first, 0);
-        }
-        if (second != null) {
-            setElementAt(second, 1);
-        }
-
+        this (size);
+        if (first!=null) setElementAt(first,0);
+        if (second!=null) setElementAt(second,1);
+        
         font = FontCache.getFont(bold, FontCache.bar);
 //#ifdef BACK_IMAGE
 //#         try {
@@ -61,46 +59,36 @@ public class MainBar extends ComplexString {
 //#         } catch (Exception e) { }
 //#endif        
     }
-
+    
     public MainBar(Object obj) {
         this(1, obj, null, false);
     }
-
+    
     public MainBar(Object obj, boolean bold) {
         this(1, obj, null, bold);
     }
-
     public MainBar(Object obj, boolean bold, boolean centered) {
         this(1, obj, null, bold);
         this.centered = centered;
     }
-
-    public int getColor() {
-        return ColorTheme.getColor(ColorTheme.BAR_INK);
-    }
-
-    public int getColorBGnd() {
-        return ColorTheme.getColor(ColorTheme.BAR_BGND);
-    }
-
+    
+    public int getColor() { return ColorTheme.getColor(ColorTheme.BAR_INK); }
+    public int getColorBGnd() { return ColorTheme.getColor(ColorTheme.BAR_BGND); }    
+    
     public MainBar(int size) {
-        super(RosterIcons.getInstance());
+        super (RosterIcons.getInstance());
         setSize(size);
     }
-
     public int getVHeight() {
 //#ifdef BACK_IMAGE
 //#         if (bg != null)
 //#             return Math.max(super.getVHeight(), bg.getHeight());
 //#         else
 //#endif    
-       /*
-         * if (centered && Config.getInstance().advTouch) return
-         * super.getVHeight() << 1;
-         */
+       /*     if (centered && Config.getInstance().advTouch)
+                return super.getVHeight() << 1;*/
         return Math.max(Config.getInstance().minItemHeight, super.getVHeight());
     }
-
     public void drawItem(Graphics g, int offset, boolean selected) {
         int xo = g.getClipX();
         int yo = g.getClipY();
@@ -119,10 +107,10 @@ public class MainBar extends ComplexString {
 //#endif    
         int h = getVHeight() + 1;
 //#ifdef GRADIENT
-//#         Gradient gradient = new Gradient();
-//# 
+//#         Gradient gradient;
+//#         
 //#         if (startColor != endColor) {
-//#             gradient.update(0, 0, VirtualCanvas.getInstance().getWidth(), h, startColor, endColor, Gradient.CACHED_HORIZONTAL, 0);
+//#             gradient = new Gradient(0, 0, VirtualCanvas.getInstance().getWidth(), h, startColor, endColor, false);
 //#             gradient.paint(g);
 //#         } else {
 //#             g.setColor(getColorBGnd());
