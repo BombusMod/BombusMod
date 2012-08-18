@@ -81,13 +81,22 @@ public class NonSASLAuth implements JabberBlockListener{
         
         switch (authType) {
             case AUTH_DIGEST:
-                MessageDigest sha = MessageDigest.getInstance("SHA-1");
+                MessageDigest sha = null;
+                try {
+                    sha = MessageDigest.getInstance("SHA-1");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 byte[] session = stream.getSessionId().getBytes();
                 sha.update(session, 0, session.length);
                 byte[] pass = Strconv.unicodeToUTF(account.password).getBytes();
                 sha.update(pass, 0, pass.length );
                 byte[] sha1 = new byte[20];
-                sha.digest(sha1, 0, sha1.length);
+                try {
+                    sha.digest(sha1, 0, sha1.length);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 query.addChild("digest", StringUtils.getDigestHex(sha1) );
 
                 query.addChild( "resource", account.resource );

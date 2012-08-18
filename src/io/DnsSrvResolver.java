@@ -124,11 +124,20 @@ public class DnsSrvResolver {
     private boolean askInetSrv(int type) {
        cf=Config.getInstance();
         
-        MessageDigest shaVer = MessageDigest.getInstance("SHA-1");
+        MessageDigest shaVer = null;
+        try {
+            shaVer = MessageDigest.getInstance("SHA-1");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         String version = Version.getVersionNumber() + server;
         shaVer.update(version.getBytes(), 0, version.length());
         byte[] shaVerBits = new byte[20];
-        shaVer.digest(shaVerBits, 0, shaVerBits.length);
+        try {
+            shaVer.digest(shaVerBits, 0, shaVerBits.length);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
       /*  if (cf.verHash.equals(shaVer.getDigestHex())) {
             resolvedHost=cf.resolvedHost;

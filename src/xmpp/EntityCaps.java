@@ -49,7 +49,12 @@ public class EntityCaps implements JabberBlockListener {
         String node = query.getAttribute("node");
 
         if (node != null) {
-            if (!node.equals(BOMBUS_NAMESPACE + "#" + calcVerHash())) {
+            try {
+                if (!node.equals(BOMBUS_NAMESPACE + "#" + calcVerHash())) {
+                    return BLOCK_REJECTED;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
                 return BLOCK_REJECTED;
             }
         }
@@ -73,7 +78,7 @@ public class EntityCaps implements JabberBlockListener {
     }
     public static String ver = null;
 
-    public static String calcVerHash() {
+    public static String calcVerHash() throws Exception {
         if (ver != null) {
             return ver;
         }
@@ -101,13 +106,17 @@ public class EntityCaps implements JabberBlockListener {
     }
 
     public static JabberDataBlock presenceEntityCaps() {
-        JabberDataBlock c = new JabberDataBlock("c");
-        c.setAttribute("xmlns", "http://jabber.org/protocol/caps");
-        c.setAttribute("node", BOMBUS_NAMESPACE);//+'#'+Version.getVersionNumber());
-        c.setAttribute("ver", calcVerHash());
-        c.setAttribute("hash", "sha-1");
-
-        return c;
+        try {
+            JabberDataBlock c = new JabberDataBlock("c");
+            c.setAttribute("xmlns", "http://jabber.org/protocol/caps");
+            c.setAttribute("node", BOMBUS_NAMESPACE);//+'#'+Version.getVersionNumber());
+            c.setAttribute("ver", calcVerHash());
+            c.setAttribute("hash", "sha-1");
+            return c;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
     private final static String BOMBUS_NAMESPACE = Version.getUrl() + "/caps";
     private final static String BOMBUS_ID_CATEGORY = "client";

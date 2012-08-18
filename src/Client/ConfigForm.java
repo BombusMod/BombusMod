@@ -472,13 +472,16 @@ public class ConfigForm
 
         cf.updateTime();
         cf.saveToStorage();
-
-        String oldVerHash = EntityCaps.calcVerHash();
-        EntityCaps.initCaps();
-        if (!oldVerHash.equals(EntityCaps.calcVerHash())) {
-            if (sd.roster.isLoggedIn()) {
-                sd.roster.sendPresence(Presence.PRESENCE_SAME, null);
+        try {
+            String oldVerHash = EntityCaps.calcVerHash();
+            EntityCaps.initCaps();
+            if (!oldVerHash.equals(EntityCaps.calcVerHash())) {
+                if (sd.roster.isLoggedIn()) {
+                    sd.roster.sendPresence(Presence.PRESENCE_SAME, null);
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         sd.roster.reEnumRoster();

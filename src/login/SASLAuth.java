@@ -31,7 +31,6 @@ import com.alsutton.jabber.JabberBlockListener;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.JabberStream;
 import com.alsutton.jabber.datablocks.Iq;
-import com.ssttr.crypto.MD5;
 //#if (android)
 //# import java.security.MessageDigest;
 //#else
@@ -221,13 +220,17 @@ public class SASLAuth implements JabberBlockListener {
                     nonceIndex += 7;
                     String nonce = challenge.substring(nonceIndex, challenge.indexOf('\"', nonceIndex));
                     String cnonce = "123456789abcd";
-                    resp.setText(responseMd5Digest(
-                            Strconv.unicodeToUTF(account.userName),
-                            Strconv.unicodeToUTF(account.password),
-                            account.server,
-                            "xmpp/" + account.server,
-                            nonce,
-                            cnonce));
+                    try {
+                        resp.setText(responseMd5Digest(
+                                Strconv.unicodeToUTF(account.userName),
+                                Strconv.unicodeToUTF(account.password),
+                                account.server,
+                                "xmpp/" + account.server,
+                                nonce,
+                                cnonce));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
                 //System.out.println(resp.toString());
             }
@@ -314,7 +317,7 @@ public class SASLAuth implements JabberBlockListener {
      * @param cnonce
      * @return
      */
-    private String responseMd5Digest(String user, String pass, String realm, String digestUri, String nonce, String cnonce) {
+    private String responseMd5Digest(String user, String pass, String realm, String digestUri, String nonce, String cnonce) throws Exception {
 
         MessageDigest hUserRealmPass = MessageDigest.getInstance("MD5");
         StringBuffer userRealm = new StringBuffer();
