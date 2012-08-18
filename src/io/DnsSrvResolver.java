@@ -30,7 +30,11 @@ package io;
 import Client.Config;
 import Client.StaticData;
 import Info.Version;
-import com.ssttr.crypto.SHA1;
+//#if (android)
+//# import java.security.MessageDigest;
+//#else
+import com.ssttr.crypto.MessageDigest;
+//#endif
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -120,10 +124,11 @@ public class DnsSrvResolver {
     private boolean askInetSrv(int type) {
        cf=Config.getInstance();
         
-        SHA1 shaVer=new SHA1();
-        shaVer.init();
-        shaVer.updateASCII(Version.getVersionNumber()+server);
-        shaVer.finish();
+        MessageDigest shaVer = MessageDigest.getInstance("SHA-1");
+        String version = Version.getVersionNumber() + server;
+        shaVer.update(version.getBytes(), 0, version.length());
+        byte[] shaVerBits = new byte[20];
+        shaVer.digest(shaVerBits, 0, shaVerBits.length);
 
       /*  if (cf.verHash.equals(shaVer.getDigestHex())) {
             resolvedHost=cf.resolvedHost;
@@ -169,7 +174,7 @@ public class DnsSrvResolver {
                 }
             }
             
-            cf.verHash=shaVer.getDigestHex();
+            cf.verHash=StringUtils.getDigestHex(shaVerBits);
             cf.resolvedHost = resolvedHost;
             cf.resolvedPort = resolvedPort;
             cf.saveToStorage();

@@ -32,9 +32,15 @@ import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.JabberStream;
 import com.alsutton.jabber.datablocks.Iq;
 import com.ssttr.crypto.MD5;
+//#if (android)
+//# import java.security.MessageDigest;
+//#else
+import com.ssttr.crypto.MessageDigest;
+//#endif
 import java.io.IOException;
 import locale.SR;
 import util.Strconv;
+import util.StringUtils;
 import xmpp.XmppError;
 
 /**
@@ -310,45 +316,48 @@ public class SASLAuth implements JabberBlockListener {
      */
     private String responseMd5Digest(String user, String pass, String realm, String digestUri, String nonce, String cnonce) {
 
-        MD5 hUserRealmPass = new MD5();
-        hUserRealmPass.init();
-        hUserRealmPass.updateASCII(user);
-        hUserRealmPass.update((byte) ':');
-        hUserRealmPass.updateASCII(realm);
-        hUserRealmPass.update((byte) ':');
-        hUserRealmPass.updateASCII(pass);
-        hUserRealmPass.finish();
+        MessageDigest hUserRealmPass = MessageDigest.getInstance("MD5");
+        StringBuffer userRealm = new StringBuffer();
+        userRealm.append(user).append(":").append(realm).append(":")
+                .append(pass);
+        hUserRealmPass.update(userRealm.toString().getBytes(), 0, userRealm.length());
+        byte[] userRealmDigest = new byte[16];
+        hUserRealmPass.digest(userRealmDigest, 0, userRealmDigest.length);
 
-        MD5 hA1 = new MD5();
-        hA1.init();
-        hA1.update(hUserRealmPass.getDigestBits());
-        hA1.update((byte) ':');
-        hA1.updateASCII(nonce);
-        hA1.update((byte) ':');
-        hA1.updateASCII(cnonce);
-        hA1.finish();
+        MessageDigest hA1 = MessageDigest.getInstance("MD5");
+        hA1.update(userRealmDigest, 0, userRealmDigest.length);
+        hA1.update(":".getBytes(), 0, 1);
+        hA1.update(nonce.getBytes(), 0, nonce.length());
+        hA1.update(":".getBytes(), 0, 1);
+        hA1.update(cnonce.getBytes(), 0, cnonce.length());
+        byte[] hA1bits = new byte[16];
+        hA1.digest(hA1bits, 0, hA1bits.length);
 
-        MD5 hA2 = new MD5();
-        hA2.init();
-        hA2.updateASCII("AUTHENTICATE:");
-        hA2.updateASCII(digestUri);
-        hA2.finish();
+        MessageDigest hA2 = MessageDigest.getInstance("MD5");
+        StringBuffer authenticate = new StringBuffer();
+        authenticate.append("AUTHENTICATE:").append(digestUri);
+        hA2.update(authenticate.toString().getBytes(), 0, authenticate.length());
+        byte[] hA2bits = new byte[16];
+        hA2.digest(hA2bits, 0, hA2bits.length);
 
-        MD5 hResp = new MD5();
-        hResp.init();
-        hResp.updateASCII(hA1.getDigestHex());
-        hResp.update((byte) ':');
-        hResp.updateASCII(nonce);
-        hResp.updateASCII(":00000001:");
-        hResp.updateASCII(cnonce);
-        hResp.updateASCII(":auth:");
-        hResp.updateASCII(hA2.getDigestHex());
-        hResp.finish();
+        MessageDigest hResp = MessageDigest.getInstance("MD5");
+        String hA1hex = StringUtils.getDigestHex(hA1bits);
+        String hA2hex = StringUtils.getDigestHex(hA2bits);
+        
+        hResp.update(hA1hex.getBytes(), 0, hA1hex.length());
+        hResp.update(":".getBytes(), 0, 1);
+        hResp.update(nonce.getBytes(), 0, nonce.length());
+        hResp.update(":00000001:".getBytes(), 0, 10);
+        hResp.update(cnonce.getBytes(), 0, cnonce.length());
+        hResp.update(":auth:".getBytes(), 0, 6);
+        hResp.update(hA2hex.getBytes(), 0, hA2hex.length());
+        byte[] hRespBits = new byte[16];
+        hResp.digest(hRespBits, 0, hRespBits.length);
 
         String out = "username=\"" + user + "\",realm=\"" + realm + "\","
                 + "nonce=\"" + nonce + "\",nc=00000001,cnonce=\"" + cnonce + "\","
                 + "qop=auth,digest-uri=\"" + digestUri + "\","
-                + "response=\"" + hResp.getDigestHex() + "\",charset=utf-8";
+                + "response=\"" + StringUtils.getDigestHex(hRespBits) + "\",charset=utf-8";
         String resp = Strconv.toBase64(out);
         //System.out.println(decodeBase64(resp));
         return resp;

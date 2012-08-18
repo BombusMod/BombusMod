@@ -185,6 +185,13 @@ public class StringUtils {
         
         return out.toString();
     }
+    public static String getDigestHex(byte[] digestBits) {
+        StringBuffer out = new StringBuffer();
+        for (int i = 0; i < digestBits.length; i++) {
+            out.append(StringUtils.hexByteToString(digestBits[i]));
+        }
+        return out.toString();
+    }
     // Puts the specified word (val) into the buffer (buf) at position off using big endian byte ordering
     public static void putWordBE(byte[] buf, int off, int val) {
         buf[off]   = (byte) ((val >> 8) & 0x000000FF);

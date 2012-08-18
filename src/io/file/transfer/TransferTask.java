@@ -45,14 +45,19 @@
 //# import ui.IconTextElement;
 //# import xmpp.XmppError;
 //# 
-//# import com.ssttr.crypto.SHA1;
 //# import javax.microedition.io.Connector;
 //# import javax.microedition.io.StreamConnection;
 //# import Client.StaticData;
 //# import ServiceDiscovery.DiscoForm;
 //# import com.alsutton.jabber.datablocks.Message;
 //# import io.SOCKS5Stream;
+//#if (android)
+//# import java.security.MessageDigest;
+//#else
+//# import com.ssttr.crypto.MessageDigest;
+//#endif
 //# import util.Strconv;
+//# import util.StringUtils;
 //# 
 //# /**
 //#  *
@@ -491,12 +496,23 @@
 //#                         0x00, // RSV
 //#                         0x03, // ATYP = domain
 //#                     };
-//#                     SHA1 Command = new SHA1();
-//#                     Command.init();
-//#                     String verifyString = (sending) ? StaticData.getInstance().roster.myJid.toString() + jid : jid + StaticData.getInstance().roster.myJid.toString();
-//#                     Command.updateASCII(sid + verifyString);
-//#                     Command.finish();
-//#                     byte[] socks5CommandHost = Command.getDigestHex().getBytes();
+//#                     MessageDigest Command = null;
+//#                     try {
+//#                         Command = MessageDigest.getInstance("SHA-1");
+//#                     } catch (Exception ex) {
+//#                         ex.printStackTrace();
+//#                     }
+//#                     String verifyString = (sending) ? 
+//#                             sid + StaticData.getInstance().roster.myJid.toString() + jid 
+//#                             : sid + jid + StaticData.getInstance().roster.myJid.toString();
+//#                     Command.update(verifyString.getBytes(), 0, verifyString.length());
+//#                     byte[] CommandBits = new byte[20];
+//#                     try {
+//#                         Command.digest(CommandBits, 0, CommandBits.length);
+//#                     } catch (Exception ex) {
+//#                         ex.printStackTrace();
+//#                     }
+//#                     byte[] socks5CommandHost = StringUtils.getDigestHex(CommandBits).getBytes();
 //#                     byte[] socks5CommandFinish = {0x00, 0x00};
 //# 
 //#                     byte[] socks5Command = new byte[socks5CommandStart.length + 1 + socks5CommandHost.length + socks5CommandFinish.length];

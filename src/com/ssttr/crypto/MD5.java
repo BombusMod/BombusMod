@@ -27,7 +27,7 @@ package com.ssttr.crypto;
 /**
  * The MD5 class is used to compute an MD5 message digest over a given
  * buffer of bytes. It is an implementation of the RSA Data Security Inc
- * MD5 algorithim as described in internet RFC 1321.
+ * MD5 algorithm as described in internet RFC 1321.
  * @version 	06 Oct 1996, 1.9.1
  * @author 	Chuck McManis
  */
@@ -62,7 +62,7 @@ extends MessageDigest
      * Standard constructor, creates a new MD5 instance, allocates its
      * buffers from the heap.
      */
-    public MD5() {
+    protected MD5() {
         state = new int[4];
         count = 0;
         if (transformBuffer == null)
@@ -70,6 +70,7 @@ extends MessageDigest
         buffer = new byte[64];
         digestBits = new byte[16];
         digestValid = false;
+        reset();
     }
 
     /**
@@ -246,7 +247,7 @@ extends MessageDigest
      * to 0. Given this implementation you are constrained to counting
      * 2^64 bits.
      */
-    public void init() {
+    public void reset() {
         count = 0;
         // Load magic initialization constants.
         state[0] = 0x67452301;
@@ -278,7 +279,7 @@ extends MessageDigest
      * digest is stored. After calling final you will need to call
      * init() again to do another digest.
      */
-    public synchronized void finish() {
+    public int digest(byte output[], int offset, int len) {
         byte	bits[] = new byte[8];
         byte	padding[];
         int	i, index, padLen;
@@ -291,8 +292,8 @@ extends MessageDigest
         padLen = (index < 56) ? (56 - index) : (120 - index);
         padding = new byte[padLen];
         padding[0] = (byte) 0x80;
-        update(padding);
-        update(bits);
+        update(padding, 0, padding.length);
+        update(bits, 0, bits.length);
 
         for (i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
@@ -300,9 +301,7 @@ extends MessageDigest
             }
         }
         digestValid = true;
-    }
-
-    public String getAlg() {
-	return ("MD5");
+        System.arraycopy(digestBits, 0, output, 0, digestBits.length);
+        return digestBits.length;
     }
 }

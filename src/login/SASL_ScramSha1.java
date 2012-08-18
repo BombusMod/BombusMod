@@ -1,12 +1,16 @@
 package login;
 
 import util.StringUtils;
-import com.ssttr.crypto.HMACSHA1;
-import com.ssttr.crypto.SHA1;
+//#if (android)
+//# import java.security.MessageDigest;
+//# import javax.crypto.Mac;
+//# import javax.crypto.spec.SecretKeySpec;
+//#else
 import com.ssttr.crypto.MessageDigest;
+import com.ssttr.crypto.HMACSHA1;
+//#endif
 import java.io.UnsupportedEncodingException;
 import java.util.Random;
-import java.util.Vector;
 import util.Strconv;
 
 public class SASL_ScramSha1 {
@@ -16,7 +20,11 @@ public class SASL_ScramSha1 {
     String cnonce;
     String clientFirstMessageBare;
     String lServerSignature;
+//#if (android)
+//#     Mac hmac;
+//#else    
     HMACSHA1 hmac;
+//#endif    
 
     public String init(String jid, String password) {
         this.jid = jid;
@@ -27,7 +35,12 @@ public class SASL_ScramSha1 {
 
     public String response(String challenge) {
         String serverFirstMessage = challenge;
-        String clientFinalMessage = processServerMessage(serverFirstMessage);
+        String clientFinalMessage = "";
+        try {
+            clientFinalMessage = processServerMessage(serverFirstMessage);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
         return clientFinalMessage;
     }
 
@@ -36,7 +49,18 @@ public class SASL_ScramSha1 {
     }
 
     public SASL_ScramSha1() {
+//#if (android)
+//#         try {
+//#             hmac = Mac.getInstance("HmacSHA1");
+//#         } catch (Exception e) {
+//#             // TODO Auto-generated catch block
+//#             e.printStackTrace();
+//#         }
+//# 
+//#else    
         hmac = new HMACSHA1();
+//#endif           
+
     }
 
     private void xorB(byte[] dest, byte[] source) {
@@ -56,7 +80,105 @@ public class SASL_ScramSha1 {
         return null;
     }
 
-    private String processServerMessage(String serverFirstMessage) {
+    protected void calculateClientFirstMessage() {
+        Random rnd = new Random(System.currentTimeMillis());
+        cnonce = "666" + rnd.nextLong();
+        String username = jid.substring(0, jid.indexOf('@'));
+        clientFirstMessageBare = "n=" + username + ",r=" + cnonce;
+    }
+
+//#if (android)
+//# private String processServerMessage(String serverFirstMessage) {
+//# 		String[] attrs = serverFirstMessage.split(",");
+//# 
+//# 		int i=Integer.parseInt( getAttribute(attrs, 'i') );
+//# 		String salt=getAttribute(attrs, 's');
+//# 		String r=getAttribute(attrs, 'r');
+//# 		byte[] pwd;
+//# 		try {
+//# 			pwd = pass.getBytes("UTF-8");
+//# 		} catch (UnsupportedEncodingException e) {
+//# 			e.printStackTrace();
+//# 			return null;
+//# 		}
+//# 		byte[] saltedPassword = Hi(pwd, Strconv.fromBase64(salt), i);
+//# 		byte[] clientKey = getHMAC(saltedPassword).doFinal( "Client Key".getBytes() );
+//# 		MessageDigest sha;
+//# 		try {
+//# 			sha = MessageDigest.getInstance("SHA-1");
+//# 		} catch (Exception e) { return null; }
+//# 
+//# 		byte[] storedKey = sha.digest(clientKey);
+//# 		String clientFinalMessageWithoutProof = "c=biws,r="+r;
+//# 		String authMessage = clientFirstMessageBare + "," 
+//# 		                   + serverFirstMessage + "," 
+//# 				           + clientFinalMessageWithoutProof;
+//# 		byte[] clientSignature = getHMAC(storedKey).doFinal( authMessage.getBytes() );
+//# 		byte[] clientProof = clientKey.clone();
+//# 		xorB(clientProof, clientSignature);
+//# 
+//# 
+//# 		byte[] serverKey = getHMAC(saltedPassword).doFinal("Server Key".getBytes());
+//# 
+//# 
+//# 		byte[] serverSignature = getHMAC(serverKey).doFinal(authMessage.getBytes());
+//# 
+//# 
+//# 		lServerSignature = "v=" + Strconv.toBase64(serverSignature, serverSignature.length);
+//# 
+//# 
+//# 		return clientFinalMessageWithoutProof + ",p=" + Strconv.toBase64(clientProof, clientProof.length);
+//# 
+//# 
+//# 	}
+//#     
+//#     private Mac getHMAC(byte[] str) {
+//#         try {
+//#             SecretKeySpec secret = new SecretKeySpec(str, "HmacSHA1");
+//#             hmac.init(secret);
+//#         } catch (Exception e) {
+//#             e.printStackTrace();
+//#         }
+//#         return hmac;
+//#     }
+//#     private byte[] Hi(byte[] str, byte[] salt, int i) {
+//#         byte[] dest;
+//# 
+//# 
+//#         Mac hmac = getHMAC(str);
+//# 
+//# 
+//#         hmac.update(salt);
+//# 
+//# 
+//#         //INT(1), MSB first
+//#         hmac.update((byte) 0);
+//#         hmac.update((byte) 0);
+//#         hmac.update((byte) 0);
+//#         hmac.update((byte) 1);
+//# 
+//# 
+//#         byte[] U = hmac.doFinal();
+//# 
+//# 
+//#         dest = U.clone();
+//# 
+//# 
+//#         i--;
+//# 
+//# 
+//#         while (i > 0) {
+//#             U = hmac.doFinal(U);
+//#             xorB(dest, U);
+//#             i--;
+//#         }
+//# 
+//# 
+//#         return dest;
+//#     }
+//# 
+//#else
+    private String processServerMessage(String serverFirstMessage) throws Exception {
         String[] attrs = StringUtils.explode(serverFirstMessage, ',');
 
         int i = Integer.parseInt(getAttribute(attrs, 'i'));
@@ -81,17 +203,13 @@ public class SASL_ScramSha1 {
 
             clientKey = mac.hmac(ck);
         } catch (Exception e) {
-            System.out.println("new byte[1]!!!!");
+            e.printStackTrace();
             return null;
         }
-
-        MessageDigest sha;
-        sha = new SHA1();
-        sha.init();
-        sha.update(clientKey);
-        sha.finish();
-        byte[] storedKey = sha.getDigestBits();
-
+        MessageDigest sha = MessageDigest.getInstance("SHA-1");
+        sha.update(clientKey, 0, clientKey.length);
+        byte[] storedKey = new byte[20];
+        sha.digest(storedKey, 0, storedKey.length);
         String clientFinalMessageWithoutProof = "c=biws,r=" + r;
 
         String authMessage = clientFirstMessageBare + ","
@@ -110,14 +228,7 @@ public class SASL_ScramSha1 {
         return clientFinalMessageWithoutProof + ",p=" + util.Strconv.toBase64(clientProof, clientProof.length);
 
     }
-
-    protected void calculateClientFirstMessage() {
-        Random rnd = new Random(System.currentTimeMillis());
-        cnonce = "QD" + rnd.nextLong();
-        String username = jid.substring(0, jid.indexOf('@'));
-        clientFirstMessageBare = "n=" + username + ",r=" + cnonce;
-    }
-
+    
     private byte[] Hi(byte[] str, byte[] salt, int i) {
         HMACSHA1 mac = getHMAC(str);
         byte[] ooo1 = {0, 0, 0, 1};
@@ -140,13 +251,5 @@ public class SASL_ScramSha1 {
         hmac.init(str);
         return hmac;
     }
-
-    public void test() {
-        pass = "pencil";
-        cnonce = "fyko+d2lbbFgONRv9qkxdawL";
-        clientFirstMessageBare = "n=user,r=fyko+d2lbbFgONRv9qkxdawL";
-        String clientFinalMessage = processServerMessage("r=fyko+d2lbbFgONRv9qkxdawL3rfcNHYJY1ZVvWVs7j,s=QSXCR+Q6sek8bf92,i=4096");
-        System.out.println("SCRAM-SHA1 " + clientFinalMessage);
-        System.out.println("SCRAM-SHA1 " + lServerSignature);
-    }
+//#endif    
 }

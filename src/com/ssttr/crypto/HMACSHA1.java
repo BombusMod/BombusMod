@@ -30,21 +30,29 @@ public class HMACSHA1 {
     private final static int BLOCK_LENGTH = 64;
     private final static byte IPAD = (byte) 0x36;
     private final static byte OPAD = (byte) 0x5C;
-    SHA1 digest = new SHA1();
+    MessageDigest digest;
     private byte[] inputPad = new byte[BLOCK_LENGTH];
     private byte[] outputPad = new byte[BLOCK_LENGTH];
+    
+    public HMACSHA1() {
+        try {    
+            digest = MessageDigest.getInstance("SHA-1");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
 
     public void init(byte[] key) {
-        if (digest == null) {
-            digest = new SHA1();
-        }
         byte[] key2 = new byte[BLOCK_LENGTH];
+        byte[] output = new byte[20];
         if (key.length > BLOCK_LENGTH) {
-            digest.init();
-            digest.update(key);
-            digest.finish();
-            byte[] key3 = digest.getDigestBits();
-            System.arraycopy(key3, 0, key2, 0, key3.length);
+            digest.update(key, 0, key.length);
+            try {
+                digest.digest(output, 0, output.length);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            System.arraycopy(output, 0, key2, 0, output.length);
         } else {
             System.arraycopy(key, 0, key2, 0, key.length);
         }
@@ -60,15 +68,25 @@ public class HMACSHA1 {
     }
 
     public byte[] hmac(byte[] message) {
-        digest.init();
-        digest.update(inputPad);
-        digest.update(message);
-        digest.finish();
-        byte[] part2 = digest.getDigestBits();
-        digest.init();
-        digest.update(outputPad);
-        digest.update(part2);
-        digest.finish();
-        return digest.getDigestBits();
+        byte[] part2 = new byte[20];
+        digest.reset();
+        digest.update(inputPad, 0, inputPad.length);
+        digest.update(message, 0, message.length);
+        try {
+            digest.digest(part2, 0, part2.length);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        
+        digest.reset();
+        digest.update(outputPad, 0, outputPad.length);
+        digest.update(part2, 0, part2.length);
+        byte[] result = new byte[20];
+        try {
+            digest.digest(result, 0, result.length);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return result;
     }
 }

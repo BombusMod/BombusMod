@@ -34,13 +34,14 @@ public final class SHA1 extends MessageDigest {
     private long count;
 
 
-    public SHA1() {
+    protected SHA1() {
         state = new int[5];
         count = 0;
         if (block == null)
             block = new int[16];
         digestBits = new byte[20];
         digestValid = false;
+        reset();
     }
 
     /*
@@ -176,7 +177,7 @@ public final class SHA1 extends MessageDigest {
      *
      * SHA1Init - Initialize new context
      */
-    public void init() {
+    public void reset() {
         /* SHA1 initialization constants */
         state[0] = 0x67452301;
         state[1] = 0xEFCDAB89;
@@ -223,7 +224,7 @@ public final class SHA1 extends MessageDigest {
     /**
      * Complete processing on the message digest.
      */
-    public synchronized void finish() {
+    public int digest(byte output[], int offset, int len) {
         byte bits[] = new byte[8];
         int i;
 
@@ -241,10 +242,9 @@ public final class SHA1 extends MessageDigest {
                 ((state[i>>2] >> ((3-(i & 3)) * 8) ) & 0xff);
         }
         digestValid = true;
+        System.arraycopy(digestBits, 0, output, 0, digestBits.length);
+        return digestBits.length;
     }
-
-    /** Return a string that identifies this algorithm */
-    public String getAlg() { return "sha-1"; }
 
     
 }

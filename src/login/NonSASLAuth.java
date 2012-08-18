@@ -31,11 +31,16 @@ import Account.Account;
 import com.alsutton.jabber.JabberBlockListener;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.JabberStream;
-import xmpp.XmppError;
 import com.alsutton.jabber.datablocks.Iq;
-import com.ssttr.crypto.SHA1;
+//#if (android)
+//# import java.security.MessageDigest;
+//#else
+import com.ssttr.crypto.MessageDigest;
+//#endif
 import locale.SR;
 import util.Strconv;
+import util.StringUtils;
+import xmpp.XmppError;
 
 /**
  *
@@ -76,12 +81,14 @@ public class NonSASLAuth implements JabberBlockListener{
         
         switch (authType) {
             case AUTH_DIGEST:
-                SHA1 sha=new SHA1();
-                sha.init();
-                sha.updateASCII(stream.getSessionId());
-                sha.updateASCII(Strconv.unicodeToUTF(account.password) );
-                sha.finish();
-                query.addChild("digest", sha.getDigestHex() );
+                MessageDigest sha = MessageDigest.getInstance("SHA-1");
+                byte[] session = stream.getSessionId().getBytes();
+                sha.update(session, 0, session.length);
+                byte[] pass = Strconv.unicodeToUTF(account.password).getBytes();
+                sha.update(pass, 0, pass.length );
+                byte[] sha1 = new byte[20];
+                sha.digest(sha1, 0, sha1.length);
+                query.addChild("digest", StringUtils.getDigestHex(sha1) );
 
                 query.addChild( "resource", account.resource );
                 type=Iq.TYPE_SET;
