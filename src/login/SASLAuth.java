@@ -48,6 +48,7 @@ public class SASLAuth implements JabberBlockListener{
     
     private LoginListener listener;
     private Account account;
+    private SASL_ScramSha1 scramSHA1;
     private JabberStream stream;
 
     /** Creates a new instance of SASLAuth */
@@ -103,6 +104,14 @@ public class SASLAuth implements JabberBlockListener{
                 JabberDataBlock auth=new JabberDataBlock("auth");
                 auth.setNameSpace("urn:ietf:params:xml:ns:xmpp-sasl");
                 
+                if (mech.getChildBlockByText("SCRAM-SHA-1")!=null && !account.plainAuth) {
+                    auth.setAttribute("mechanism", "SCRAM-SHA-1");
+                    scramSHA1 = new SASL_ScramSha1();
+                    auth.setText(util.Strconv.toBase64(scramSHA1.init(account.getBareJid(), Strconv.unicodeToUTF(account.password))));
+                    stream.send(auth);
+                    listener.loginMessage(SR.MS_AUTH, 42);
+                    return JabberBlockListener.BLOCK_PROCESSED;
+                }
                 // DIGEST-MD5 mechanism
                 if (mech.getChildBlockByText("DIGEST-MD5")!=null) {
                     auth.setAttribute("mechanism", "DIGEST-MD5");
@@ -200,20 +209,23 @@ public class SASLAuth implements JabberBlockListener{
             JabberDataBlock resp=new JabberDataBlock("response");
             resp.setNameSpace("urn:ietf:params:xml:ns:xmpp-sasl");
             
-            int nonceIndex=challenge.indexOf("nonce=");
-                // first stream - step 2. generating DIGEST-MD5 response due to challenge
-            if (nonceIndex>=0) {
-                nonceIndex+=7;
-                String nonce=challenge.substring(nonceIndex, challenge.indexOf('\"', nonceIndex));
-                String cnonce="123456789abcd";
-                
-                resp.setText(responseMd5Digest(
-                        Strconv.unicodeToUTF(account.userName),
-                        Strconv.unicodeToUTF(account.password),
-                        account.server,
-                        "xmpp/"+account.server,
-                        nonce,
-                        cnonce ));
+            if (scramSHA1!=null) {
+                resp.setText(Strconv.toBase64(scramSHA1.response(challenge)));
+            } else {
+                int nonceIndex=challenge.indexOf("nonce=");
+                    // first stream - step 2. generating DIGEST-MD5 response due to challenge
+                if (nonceIndex>=0) {
+                    nonceIndex+=7;
+                    String nonce=challenge.substring(nonceIndex, challenge.indexOf('\"', nonceIndex));
+                    String cnonce="123456789abcd";
+                    resp.setText(responseMd5Digest(
+                            Strconv.unicodeToUTF(account.userName),
+                            Strconv.unicodeToUTF(account.password),
+                            account.server,
+                            "xmpp/"+account.server,
+                            nonce,
+                            cnonce ));
+                }
                 //System.out.println(resp.toString());
             }
                 // first stream - step 3. sending second empty response due to second challenge
@@ -253,6 +265,11 @@ public class SASLAuth implements JabberBlockListener{
             // first stream - step 4a. not authorized
             listener.loginFailed( XmppError.decodeSaslError(data).toString() );
         } else if ( data.getTagName().equals("success")) {
+            if (scramSHA1!=null) {
+                if (!scramSHA1.success(new String(Strconv.fromBase64(data.getText())))) {
+                    listener.loginFailed("Server answer not valid");
+                }
+            }
             // first stream - step 4b. success.
             try {
                 stream.initiateStream();
@@ -283,7 +300,7 @@ public class SASLAuth implements JabberBlockListener{
         return JabberBlockListener.BLOCK_REJECTED;
     }
     
-    private String decodeBase64(String src)  {
+    public static String decodeBase64(String src)  {
         int len=0;
         int ibuf=1;
         StringBuffer out=new StringBuffer();

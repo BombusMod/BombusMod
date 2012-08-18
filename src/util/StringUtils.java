@@ -243,4 +243,19 @@ public class StringUtils {
         }
     }
 //#endif    
+
+    //split string into array
+    public static Vector split(String original, char separator) {
+        Vector nodes = new Vector();
+        // Parse nodes into vector
+        int index = original.indexOf(separator);
+        while (index >= 0) {
+            nodes.addElement(original.substring(0, index));
+            original = original.substring(index + 1);
+            index = original.indexOf(separator);
+        }
+        // Get the last node
+        nodes.addElement(original);
+        return nodes;
+    }
 }
