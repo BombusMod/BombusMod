@@ -8,8 +8,10 @@ import android.net.SSLCertificateSocketFactory;
 import io.tls.TlsIO;
 import java.io.*;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
+import javax.net.SocketFactory;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 
@@ -20,16 +22,16 @@ import javax.net.ssl.SSLSocketFactory;
 public final class AndroidTls extends TlsIO {
 
     SSLSocket tls;
-    
-    public AndroidTls(Socket socket, InputStream in, OutputStream out, 
-            String authHost) 
+    SSLSocketFactory sslFactory;
+
+    public AndroidTls(Socket socket, InputStream in, OutputStream out,
+            String authHost)
             throws NoSuchAlgorithmException, KeyManagementException, IOException {
-        SSLSocketFactory sslFactory = 
-                (SSLSocketFactory) (SSLCertificateSocketFactory)
-                        SSLCertificateSocketFactory.getInsecure(0, null);
-        tls = (SSLSocket)(sslFactory.createSocket(socket, authHost, socket.getPort(), true));
+        sslFactory = SSLCertificateSocketFactory.getInsecure(0, null);
+        tls = (SSLSocket) (sslFactory.createSocket(socket, authHost, socket.getPort(), true));
+        tls.setUseClientMode(true);
     }
-    
+
     public InputStream getTlsInputStream() throws IOException {
         return tls.getInputStream();
     }

@@ -114,8 +114,6 @@ public class AccountRegister
             //give a chance another thread to finish ui
             Thread.sleep(500);
             sd.theStream = raccount.openJabberStream();
-            new Thread(sd.theStream).start();
-
             sd.theStream.setJabberListener(this);
             sd.theStream.initiateStream();
         } catch (Exception e) {
