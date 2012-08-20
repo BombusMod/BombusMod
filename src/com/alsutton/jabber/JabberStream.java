@@ -378,7 +378,6 @@ public class JabberStream implements XMLEventListener {
             //e.printStackTrace();
             listener.connectionTerminated(e);
         }
-        closeConnection();
     }
 
     private void closeConnection() {
