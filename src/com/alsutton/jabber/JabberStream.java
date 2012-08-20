@@ -42,7 +42,9 @@ import com.alsutton.jabber.datablocks.Presence;
 import com.jcraft.jzlib.JZlib;
 import com.jcraft.jzlib.ZInputStream;
 import com.jcraft.jzlib.ZOutputStream;
-import io.tls.TlsIO;
+//#ifdef TLS
+//# import io.tls.TlsIO;
+//#endif
 import java.io.*;
 import java.util.*;
 //#if android
