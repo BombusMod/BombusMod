@@ -98,6 +98,7 @@ public class EntityCaps implements JabberBlockListener {
             identity.append((String) features.elementAt(i));
             identity.append("<");
         }
+        sha1.update(identity.toString().getBytes(), 0, identity.length());
         byte[] sha1bits = new byte[20];
         sha1.digest(sha1bits, 0, sha1bits.length);
         ver = Strconv.toBase64(sha1bits, sha1bits.length);
