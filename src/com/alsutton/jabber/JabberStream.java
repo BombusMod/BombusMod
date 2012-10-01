@@ -132,6 +132,7 @@ public class JabberStream implements XMLEventListener {
     private long bytesSent;
 
     public void initiateStream() throws IOException {
+	blockListeners.clear();
 //#ifdef HTTPBIND
 //#         if (connection instanceof HttpBindConnection) {
 //#             JabberDataBlock body = new JabberDataBlock("body", null, null);
