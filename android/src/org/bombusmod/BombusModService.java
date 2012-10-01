@@ -73,7 +73,7 @@ public class BombusModService extends Service {
         }
 
         //Foreground Service
-        Notification notification = new Notification(R.drawable.app_icon, getText(R.string.app_name), 0);
+        Notification notification = new Notification(R.drawable.app_service, getText(R.string.app_name), 0);
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, BombusModActivity.class), 0);
         notification.setLatestEventInfo(this, getText(R.string.app_name), "", contentIntent);
         startForegroundCompat(R.string.app_name, notification);
