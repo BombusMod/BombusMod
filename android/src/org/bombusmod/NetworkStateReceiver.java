@@ -32,7 +32,6 @@ public class NetworkStateReceiver extends BroadcastReceiver {
         } else {
             if (activeNetwork.isConnectedOrConnecting() && StaticData.getInstance().roster.isLoggedIn()) {
                 StaticData.getInstance().roster.errorLog(activeNetwork.getTypeName() + " connected");
-                StaticData.getInstance().roster.doReconnect();
             }
         }
     }
