@@ -28,6 +28,7 @@
 package login;
 
 import Account.Account;
+import Client.StaticData;
 import com.alsutton.jabber.JabberBlockListener;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.JabberStream;
@@ -47,6 +48,8 @@ import xmpp.XmppError;
  * @author evgs
  */
 public class NonSASLAuth implements JabberBlockListener{
+    
+    public static final String NS_IQ_AUTH = "jabber:iq:auth";
     
     private LoginListener listener;
     
@@ -76,7 +79,7 @@ public class NonSASLAuth implements JabberBlockListener{
         String id="auth-1";
         
         JabberDataBlock query = new JabberDataBlock("query");
-        query.setNameSpace( "jabber:iq:auth" );
+        query.setNameSpace( NS_IQ_AUTH );
         query.addChild( "username", account.userName );
         
         switch (authType) {
@@ -136,25 +139,30 @@ public class NonSASLAuth implements JabberBlockListener{
                 }
                 if (id.equals("auth-1")) {
                     try {
-                        JabberDataBlock query=data.getChildBlock("query");
-                        
-                        if (query.getChildBlock("digest")!=null) {
-                            jabberIqAuth(AUTH_DIGEST);
-                            return JabberBlockListener.BLOCK_PROCESSED;
-                        } 
-                        
-                        if (query.getChildBlock("password")!=null) {
-                            if (!account.plainAuth) {
-                                listener.loginFailed("Plain auth required");
-                                return JabberBlockListener.NO_MORE_BLOCKS;
+                        JabberDataBlock query = data.findNamespace("query", NS_IQ_AUTH);
+                        if (query != null) {
+                            if (query.getChildBlock("digest") != null) {
+                                jabberIqAuth(AUTH_DIGEST);
+                                return JabberBlockListener.BLOCK_PROCESSED;
                             }
-                            jabberIqAuth(AUTH_PASSWORD);
-                            return JabberBlockListener.BLOCK_PROCESSED;
-                        } 
-                        
-                        listener.loginFailed("Unknown mechanism");
-                        
-                    } catch (Exception e) { listener.loginFailed(e.toString()); }
+
+                            if (query.getChildBlock("password") != null) {
+                                if (!account.plainAuth) {
+                                    listener.loginFailed("Plain auth required");
+                                    return JabberBlockListener.NO_MORE_BLOCKS;
+                                }
+                                jabberIqAuth(AUTH_PASSWORD);
+                                return JabberBlockListener.BLOCK_PROCESSED;
+                            }
+                        }
+
+                        return JabberBlockListener.NO_MORE_BLOCKS;
+
+                    } catch (Exception e) {
+                        if (StaticData.Debug)
+                            e.printStackTrace();
+                        listener.loginFailed(e.toString());
+                    }
                     return JabberBlockListener.NO_MORE_BLOCKS;
                 }
             }
