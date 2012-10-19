@@ -94,7 +94,7 @@ public class JabberStream implements XMLEventListener {
 //#endif            
         } else {
 //#if HTTPCONNECT
-//#             connection = io.HttpProxyConnection.open(hostAddr, proxy, StaticData.getInstance().account.getProxyUser(), StaticData.getInstance().account.getProxyPass());
+//#             connection = io.HttpProxyConnection.open(server, port, proxy, StaticData.getInstance().account.getProxyUser(), StaticData.getInstance().account.getProxyPass());
 //#elif HTTPPOLL
 //#             connection = new io.HttpPollConnection(server, host);
 //#elif HTTPBIND

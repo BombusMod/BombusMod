@@ -2234,10 +2234,12 @@ public class Roster
             cmdStatus();
         } else if (c == cmdAlert) {
             cmdAlert();
-        } //#ifdef ARCHIVE
-        else if (c == cmdArchive) {
-            cmdArchive();
-        } //#endif
+        }
+//#ifdef ARCHIVE
+//#         else if (c == cmdArchive) {
+//#             cmdArchive();
+//#         }
+//#endif
         else if (c == cmdInfo) {
             cmdInfo();
         } else if (c == cmdTools) {
