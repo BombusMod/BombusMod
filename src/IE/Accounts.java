@@ -199,10 +199,14 @@
 //#         for (int i = 0; i < getItemCount(); i++) {
 //#             Account a = getAccount(i);
 //#             StringBuffer account = new StringBuffer("<a>");
-//#             account.append(createBlock(userName, a.userName)).append(createBlock(server, a.server)).append(createBlock(hostAddr, a.hostAddr)).append(createBlock(port, Integer.toString(a.port))).append(createBlock(nick, a.getNick())).append(createBlock(resource, a.resource)).append(createBlock(useSSL, "0")).append(createBlock(plainAuth, (a.plainAuth ? "1" : "0"))).append(createBlock(mucOnly, (a.mucOnly ? "1" : "0"))) //#if HTTPPOLL || HTTPCONNECT || HTTPBIND
-//#                     .append(createBlock(enableProxy, a.isEnableProxy() ? "1" : "0")).append(createBlock(proxyHostAddr, a.proxyHostAddr)).append(createBlock(proxyPort, Integer.toString(a.getProxyPort()))) //#endif
-//#                     .append(createBlock(compression, (a.useCompression() ? "1" : "0"))).append(createBlock(keepAliveType, "")).append(createBlock(keepAlivePeriod, Integer.toString(a.keepAlivePeriod))) //#ifdef HTTPCONNECT
-//#                     .append(createBlock(proxyUser, a.getProxyUser())).append(createBlock(proxyPass, a.getProxyPass())) //#endif
+//#             account.append(createBlock(userName, a.userName)).append(createBlock(server, a.server)).append(createBlock(hostAddr, a.hostAddr)).append(createBlock(port, Integer.toString(a.port))).append(createBlock(nick, a.getNick())).append(createBlock(resource, a.resource)).append(createBlock(useSSL, "0")).append(createBlock(plainAuth, (a.plainAuth ? "1" : "0"))).append(createBlock(mucOnly, (a.mucOnly ? "1" : "0")))
+//#if HTTPPOLL || HTTPCONNECT || HTTPBIND
+//#                     .append(createBlock(enableProxy, a.isEnableProxy() ? "1" : "0")).append(createBlock(proxyHostAddr, a.proxyHostAddr)).append(createBlock(proxyPort, Integer.toString(a.getProxyPort())))
+//#endif
+//#                     .append(createBlock(compression, (a.useCompression() ? "1" : "0"))).append(createBlock(keepAliveType, "")).append(createBlock(keepAlivePeriod, Integer.toString(a.keepAlivePeriod)))
+//#ifdef HTTPCONNECT
+//#                     .append(createBlock(proxyUser, a.getProxyUser())).append(createBlock(proxyPass, a.getProxyPass()))
+//#endif
 //#                     .append("</a>\r\n");
 //#             body.append(account);
 //#         }
