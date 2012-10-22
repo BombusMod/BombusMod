@@ -209,7 +209,7 @@ public class XmppError {
     }
     
     public static XmppError decodeStreamError(JabberDataBlock error) {
-        if (!error.getTagName().equals("stream:error")) throw new IllegalArgumentException();
+        if (!error.getTagName().equals("error")) throw new IllegalArgumentException();
         return decodeError(error, "urn:ietf:params:xml:ns:xmpp-streams");
     }
     
