@@ -1959,6 +1959,7 @@ public class Roster
 
     public void beginConversation() { //todo: verify xmpp version
         SplashScreen.getInstance().setExit(this);
+        sd.theStream.blockListeners.removeAllElements();
         if (sd.theStream.isXmppV1()) {
             sd.theStream.addBlockListener(new SASLAuth(sd.account, this, sd.theStream));
         } 

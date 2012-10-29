@@ -58,7 +58,7 @@ import util.Strconv;
 import xmpp.XmppError;
 import xmpp.extensions.IqPing;
 
-public class JabberStream implements XMLEventListener {
+public class JabberStream implements XMLEventListener, Runnable {
 //#if android
 //#     private Socket connection;
 //#else    
@@ -69,7 +69,7 @@ public class JabberStream implements XMLEventListener {
     private OutputStream outStream;
     private final Stack tagStack = new Stack();
     private JabberListener listener;
-    private final Vector blockListeners = new Vector();
+    public final Vector blockListeners = new Vector();
     private String server; // for ping
     public boolean pingSent;
     public boolean loggedIn;
@@ -130,9 +130,8 @@ public class JabberStream implements XMLEventListener {
     int pbyte;
     private long bytesRecv;
     private long bytesSent;
-
-    public void initiateStream() throws IOException {
-	blockListeners.removeAllElements();
+    
+    public void initiateStream() throws IOException {	
 //#ifdef HTTPBIND
 //#         if (connection instanceof HttpBindConnection) {
 //#             JabberDataBlock body = new JabberDataBlock("body", null, null);
@@ -163,7 +162,13 @@ public class JabberStream implements XMLEventListener {
         }
         header.append('>');
         send(header.toString());
-        loop();
+        connected = false;
+        // wait to finish parser
+        try {
+            Thread.sleep(100L);
+        } catch (InterruptedException ex) {
+        }
+        new Thread(this).start();
 //#ifdef HTTPBIND
 //#         }
 //#endif
@@ -354,7 +359,7 @@ public class JabberStream implements XMLEventListener {
      * The threads run method. Handles the parsing of incomming data in its
      * own thread.
      */
-    public void loop() {
+    public void run() {
         try {
             XMLParser parser = new XMLParser(this);
             DataInputStream reader = new DataInputStream(inpStream);
