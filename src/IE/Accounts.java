@@ -24,9 +24,7 @@
  * along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-
 //#ifdef IMPORT_EXPORT
-//# 
 //# package IE;
 //# 
 //# import Account.Account;
@@ -45,88 +43,90 @@
 //#  * @author ad
 //#  */
 //# public class Accounts {
-//#     
-//#     private final static String userName = "userName"; 
-//#     private final static String server = "server"; 
+//# 
+//#     private final static String userName = "userName";
+//#     private final static String server = "server";
 //#     private final static String password = "password";  // only in import
-//#     private final static String hostAddr = "hostAddr"; 
-//#     private final static String port = "port"; 
-//#     private final static String nick = "nick"; 
-//#     private final static String resource = "resource"; 
-//#     private final static String useSSL = "useSSL"; 
-//#     private final static String plainAuth = "plainAuth"; 
-//#     private final static String mucOnly = "mucOnly"; 
+//#     private final static String hostAddr = "hostAddr";
+//#     private final static String port = "port";
+//#     private final static String nick = "nick";
+//#     private final static String resource = "resource";
+//#     private final static String useSSL = "useSSL";
+//#     private final static String plainAuth = "plainAuth";
+//#     private final static String mucOnly = "mucOnly";
 //#if HTTPPOLL || HTTPCONNECT || HTTPBIND
 //#     private final static String enableProxy = "enableProxy";
 //#     private final static String proxyHostAddr = "proxyHostAddr";
 //#     private final static String proxyPort = "proxyPort";
 //#endif
-//#     private final static String compression = "compression"; 
-//#     private final static String keepAliveType = "keepAliveType"; 
+//#     private final static String compression = "compression";
+//#     private final static String keepAliveType = "keepAliveType";
 //#     private final static String keepAlivePeriod = "keepAlivePeriod";
 //#ifdef HTTPCONNECT
 //#     private final static String proxyUser = "proxyUser";
 //#     private final static String proxyPass = "proxyPass";
 //#endif
-//#     
 //#     Vector accountList;
 //#     private String file;
 //# 
-//#     /** Creates a new instance of Accounts */
+//#     /**
+//#      * Creates a new instance of Accounts
+//#      */
 //#     public Accounts(String path, int direction, boolean fromResource) {
-//#         accountList=null;
-//#         accountList=new Vector();
-//#         this.file=path;
-//#         
-//#         if (direction==0) {
+//#         accountList = null;
+//#         accountList = new Vector();
+//#         this.file = path;
+//# 
+//#         if (direction == 0) {
 //#             importData(fromResource);
 //#         } else {
 //#             exportData();
 //#         }
-//#         accountList=null;
+//#         accountList = null;
 //#     }
-//#     
-//#     
+//# 
 //#     public final void importData(boolean fromResource) {
-//#         String accounts="";
+//#         String accounts = "";
 //# 
 //#         byte[] bodyMessage = null;
 //# 
 //#         if (!fromResource) {
-//#         FileIO fileIO=FileIO.createConnection(file);
-//#         bodyMessage = fileIO.fileRead();
+//#             FileIO fileIO = FileIO.createConnection(file);
+//#             bodyMessage = fileIO.fileRead();
 //#         } else {
 //#             bodyMessage = new byte[4096];
 //#             try {
 //#                 InputStream in = InternalResource.getResourceAsStream("/def_accounts.txt");
-//#                 if (in != null )
+//#                 if (in != null) {
 //#                     in.read(bodyMessage);
+//#                 }
 //#             } catch (IOException ex) {
-//#                  if (StaticData.Debug)
+//#                 if (StaticData.Debug) {
 //#                     ex.printStackTrace();
+//#                 }
 //#             }
 //#         }
 //# 
-//#         if (bodyMessage!=null) {
-//#             accounts=new String(bodyMessage, 0, bodyMessage.length);
+//#         if (bodyMessage != null) {
+//#             accounts = new String(bodyMessage, 0, bodyMessage.length);
 //#         }
-//#         if (accounts!=null) {
+//#         if (accounts != null) {
 //#             try {
-//#                 int pos=0;
-//#                 int start_pos=0;
-//#                 int end_pos=0;
-//#                 
-//#                 boolean parse=true;
+//#                 int pos = 0;
+//#                 int start_pos = 0;
+//#                 int end_pos = 0;
+//# 
+//#                 boolean parse = true;
 //# 
 //#                 while (parse) {
-//#                     start_pos=accounts.indexOf("<a>", pos); 
-//#                     end_pos=accounts.indexOf("</a>", pos);
-//#                     
-//#                     if (start_pos>-1 && end_pos>-1) {
-//#                         pos=end_pos+4;
-//#                         String tempstr=accounts.substring(start_pos+3, end_pos);
+//#                     start_pos = accounts.indexOf("<a>", pos);
+//#                     end_pos = accounts.indexOf("</a>", pos);
 //# 
-//#                         Account account=new Account();
+//#                     if (start_pos > -1 && end_pos > -1) {
+//#                         pos = end_pos + 4;
+//#                         String tempstr = accounts.substring(start_pos + 3, end_pos);
+//# 
+//#                         Account account = new Account();
 //#                         account.userName = findBlock(tempstr, userName);
 //#                         account.server = findBlock(tempstr, server);
 //#                         account.password = findBlock(tempstr, password);
@@ -134,122 +134,108 @@
 //#                         account.port = Integer.parseInt(findBlock(tempstr, port));
 //#                         account.setNick(findBlock(tempstr, nick));
 //#                         account.resource = findBlock(tempstr, resource);
-//#                         account.plainAuth = (findBlock(tempstr, plainAuth).equals("1"))?true:false;
-//#                         account.mucOnly = (findBlock(tempstr, mucOnly).equals("1"))?true:false;
+//#                         account.plainAuth = (findBlock(tempstr, plainAuth).equals("1")) ? true : false;
+//#                         account.mucOnly = (findBlock(tempstr, mucOnly).equals("1")) ? true : false;
 //#if HTTPPOLL || HTTPCONNECT || HTTPBIND
-//#                         account.setEnableProxy(findBlock(tempstr, enableProxy).equals("1")?true:false);
-//#                         account.setProxyHostAddr(findBlock(tempstr, proxyHostAddr));
+//#                         account.setEnableProxy(findBlock(tempstr, enableProxy).equals("1") ? true : false);
+//#                         account.proxyHostAddr = findBlock(tempstr, proxyHostAddr);
 //#                         account.setProxyPort(Integer.parseInt(findBlock(tempstr, proxyPort)));
 //#endif
-//#                         account.setUseCompression((findBlock(tempstr, compression).equals("1"))?true:false);
-//#                         account.keepAlivePeriod = Integer.parseInt(findBlock(tempstr, keepAlivePeriod));                        
+//#                         account.setUseCompression((findBlock(tempstr, compression).equals("1")) ? true : false);
+//#                         account.keepAlivePeriod = Integer.parseInt(findBlock(tempstr, keepAlivePeriod));
 //#ifdef HTTPCONNECT
 //#                         account.setProxyUser(findBlock(tempstr, proxyUser));
 //#                         account.setProxyPass(findBlock(tempstr, proxyPass));
 //#endif
 //#                         accountList.addElement(account);
-//#                     } else parse=false;
+//#                     } else {
+//#                         parse = false;
+//#                     }
 //#                 }
 //#                 rmsUpdate();
-//#             } catch (Exception e) { }
+//#             } catch (Exception e) {
+//#             }
 //#         }
 //# 
-//#         accounts=null;
-//#         bodyMessage=null;
+//#         accounts = null;
+//#         bodyMessage = null;
 //#     }
-//#     
-//#     public void rmsUpdate(){
-//#         DataOutputStream outputStream=NvStorage.CreateDataOutputStream();
-//#         for (int i=0; i<getItemCount(); i++)
+//# 
+//#     public void rmsUpdate() {
+//#         DataOutputStream outputStream = NvStorage.CreateDataOutputStream();
+//#         for (int i = 0; i < getItemCount(); i++) {
 //#             getAccount(i).saveToDataOutputStream(outputStream);
+//#         }
 //#         NvStorage.writeFileRecord(outputStream, "accnt_db", 0, true); //Account.storage
 //#     }
-//#     
-//#     
-//#     private String findBlock(String source, String needle){
-//#         String startItem="<"+needle+">";
-//#         int start =source.indexOf(startItem);
-//#         int end = source.indexOf("</"+needle+">");
 //# 
-//#         if (start>-1 && end>-1 && start!=end) {
-//#             return source.substring(start+startItem.length(), end);
+//#     private String findBlock(String source, String needle) {
+//#         String startItem = "<" + needle + ">";
+//#         int start = source.indexOf(startItem);
+//#         int end = source.indexOf("</" + needle + ">");
+//# 
+//#         if (start > -1 && end > -1 && start != end) {
+//#             return source.substring(start + startItem.length(), end);
 //#         }
 //# 
 //#         return "";
 //#     }
-//#     
-//#     private String createBlock(String needle, String value){
-//#         StringBuffer block = new StringBuffer("<")
-//#             .append(needle)
-//#             .append('>');
-//#             if (value!=null)
-//#                 block.append(value);
-//#             block.append("</")
-//#             .append(needle)
-//#             .append('>');
-//#         
+//# 
+//#     private String createBlock(String needle, String value) {
+//#         StringBuffer block = new StringBuffer("<").append(needle).append('>');
+//#         if (value != null) {
+//#             block.append(value);
+//#         }
+//#         block.append("</").append(needle).append('>');
+//# 
 //#         return block.toString();
 //#     }
-//#     
+//# 
 //#     public final void exportData() {
-//#         StringBuffer body=new StringBuffer();
-//#         
+//#         StringBuffer body = new StringBuffer();
+//# 
 //#         getAccounts();
-//#         
-//#         for(int i=0; i<getItemCount(); i++){
-//#             Account a=getAccount(i);
+//# 
+//#         for (int i = 0; i < getItemCount(); i++) {
+//#             Account a = getAccount(i);
 //#             StringBuffer account = new StringBuffer("<a>");
-//#             account.append(createBlock(userName, a.userName))
-//#                    .append(createBlock(server, a.server))
-//#                    .append(createBlock(hostAddr, a.hostAddr))
-//#                    .append(createBlock(port, Integer.toString(a.port)))
-//#                    .append(createBlock(nick, a.getNick()))
-//#                    .append(createBlock(resource, a.resource))
-//#                    .append(createBlock(useSSL, "0"))
-//#                    .append(createBlock(plainAuth, (a.plainAuth?"1":"0")))
-//#                    .append(createBlock(mucOnly, (a.mucOnly?"1":"0")))
+//#             account.append(createBlock(userName, a.userName)).append(createBlock(server, a.server)).append(createBlock(hostAddr, a.hostAddr)).append(createBlock(port, Integer.toString(a.port))).append(createBlock(nick, a.getNick())).append(createBlock(resource, a.resource)).append(createBlock(useSSL, "0")).append(createBlock(plainAuth, (a.plainAuth ? "1" : "0"))).append(createBlock(mucOnly, (a.mucOnly ? "1" : "0")))
 //#if HTTPPOLL || HTTPCONNECT || HTTPBIND
-//#                    .append(createBlock(enableProxy, a.isEnableProxy()?"1":"0"))
-//#                    .append(createBlock(proxyHostAddr, a.proxyHostAddr))
-//#                    .append(createBlock(proxyPort, Integer.toString(a.getProxyPort())))
+//#                     .append(createBlock(enableProxy, a.isEnableProxy() ? "1" : "0")).append(createBlock(proxyHostAddr, a.proxyHostAddr)).append(createBlock(proxyPort, Integer.toString(a.getProxyPort())))
 //#endif
-//#                    .append(createBlock(compression, (a.useCompression()?"1":"0")))
-//#                    .append(createBlock(keepAliveType, ""))
-//#                    .append(createBlock(keepAlivePeriod, Integer.toString(a.keepAlivePeriod)))
+//#                     .append(createBlock(compression, (a.useCompression() ? "1" : "0"))).append(createBlock(keepAliveType, "")).append(createBlock(keepAlivePeriod, Integer.toString(a.keepAlivePeriod)))
 //#ifdef HTTPCONNECT
-//#                    .append(createBlock(proxyUser, a.getProxyUser()))
-//#                    .append(createBlock(proxyPass, a.getProxyPass()))
+//#                     .append(createBlock(proxyUser, a.getProxyUser())).append(createBlock(proxyPass, a.getProxyPass()))
 //#endif
-//#                    .append("</a>\r\n");
+//#                     .append("</a>\r\n");
 //#             body.append(account);
 //#         }
 //# 
-//#         byte[] bodyMessage=body.toString().getBytes();
+//#         byte[] bodyMessage = body.toString().getBytes();
 //# 
-//#         FileIO fileIO=FileIO.createConnection(file + "accounts_" + Time.localDate() + ".txt");
+//#         FileIO fileIO = FileIO.createConnection(file + "accounts_" + Time.localDate() + ".txt");
 //#         fileIO.fileWrite(bodyMessage);
 //# 
-//#         bodyMessage=null;
-//#         body=null;
+//#         bodyMessage = null;
+//#         body = null;
 //#     }
-//#     
+//# 
 //#     private void getAccounts() {
 //#         Account a;
-//#         int index=0;
+//#         int index = 0;
 //#         do {
-//#             a=Account.createFromStorage(index);
-//#             if (a!=null) {
+//#             a = Account.createFromStorage(index);
+//#             if (a != null) {
 //#                 accountList.addElement(a);
 //#                 index++;
 //#             }
-//#         } while (a!=null);
+//#         } while (a != null);
 //#     }
-//#     
-//#     
+//# 
 //#     public int getItemCount() {
 //#         return accountList.size();
 //#     }
-//#     
+//# 
 //#     public Account getAccount(int index) {
 //#         return (Account) accountList.elementAt(index);
 //#     }
