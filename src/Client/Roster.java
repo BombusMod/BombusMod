@@ -286,6 +286,7 @@ public class Roster
             setProgress(SR.MS_CONNECT_TO_ + a.server, 30);
 
             sd.theStream = a.openJabberStream();
+            new Thread(sd.theStream).start();
             setProgress(SR.MS_OPENING_STREAM, 40);
             sd.theStream.setJabberListener(this);
             sd.theStream.initiateStream();
@@ -1959,7 +1960,6 @@ public class Roster
 
     public void beginConversation() { //todo: verify xmpp version
         SplashScreen.getInstance().setExit(this);
-        sd.theStream.blockListeners.removeAllElements();
         if (sd.theStream.isXmppV1()) {
             sd.theStream.addBlockListener(new SASLAuth(sd.account, this, sd.theStream));
         } 
@@ -2235,12 +2235,10 @@ public class Roster
             cmdStatus();
         } else if (c == cmdAlert) {
             cmdAlert();
-        }
-//#ifdef ARCHIVE
-//#         else if (c == cmdArchive) {
-//#             cmdArchive();
-//#         }
-//#endif
+        } //#ifdef ARCHIVE
+        else if (c == cmdArchive) {
+            cmdArchive();
+        } //#endif
         else if (c == cmdInfo) {
             cmdInfo();
         } else if (c == cmdTools) {

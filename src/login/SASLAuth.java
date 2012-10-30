@@ -36,9 +36,6 @@ import com.alsutton.jabber.datablocks.Iq;
 //#else
 import com.ssttr.crypto.MessageDigest;
 //#endif
-//#ifdef TLS
-//# import Client.StaticData;
-//#endif
 import java.io.IOException;
 import locale.SR;
 import util.Strconv;
