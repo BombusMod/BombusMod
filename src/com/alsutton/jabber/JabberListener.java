@@ -33,19 +33,12 @@ public interface JabberListener {
     /**
      * Method called once the stream has been set up
      */
-    public void beginConversation();
-
-    /**
-     * Method to handle an incomming block.
-     *
-     * @parameter data The incomming block
-     */
-    public int blockArrived(JabberDataBlock data);
+    public void beginConversation();   
 
     /**
      * Method called when the stream is terminated for some reason
      *
-     * @param exception The exception that caused the termination. May be
+     * @param e The exception that caused the termination. May be
      *  null if the connection was terminated normally.
      */
     public void connectionTerminated(Exception e);

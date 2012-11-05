@@ -641,7 +641,7 @@ public class Contact extends IconTextElement {
         }
     }
 
-    void markDelivered(String id) {
+    public void markDelivered(String id) {
         if (id == null) {
             return;
         }

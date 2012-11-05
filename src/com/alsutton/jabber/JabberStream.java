@@ -265,12 +265,7 @@ public class JabberStream implements XMLEventListener, Runnable {
                         break;
                     }
                     i++;
-                }
-                if (processResult == JabberBlockListener.BLOCK_REJECTED) {
-                    if (listener != null) {
-                        processResult = listener.blockArrived(dataBlock);
-                    }
-                }
+                }                
 
                 if (processResult == JabberBlockListener.BLOCK_REJECTED) {
                     if (!(dataBlock instanceof Iq)) {
