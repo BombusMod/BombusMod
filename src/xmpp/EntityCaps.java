@@ -188,7 +188,7 @@ public class EntityCaps implements JabberBlockListener {
 //#endif
         features.addElement("jabber:iq:last");
         features.addElement("jabber:iq:privacy");
-        features.addElement("jabber:iq:roster");
+        features.addElement(RosterDispatcher.NS_ROSTER);
         features.addElement("jabber:iq:time"); //DEPRECATED
         features.addElement("jabber:iq:version");
         // features.addElement("jabber:x:data"); we didn't support direct data forms

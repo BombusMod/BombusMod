@@ -34,6 +34,7 @@ import locale.SR;
 import ui.controls.form.DefForm;
 import ui.controls.form.SpacerItem;
 import ui.controls.form.TextInput;
+import xmpp.RosterDispatcher;
 
 /**
  *
@@ -77,7 +78,7 @@ public class RenameGroup
         public IqQueryRenameGroup(String sourceGroup, String destGroup){
             super(null, Iq.TYPE_SET, "addros");
 
-            JabberDataBlock qB = addChildNs("query", "jabber:iq:roster" );
+            JabberDataBlock qB = addChildNs("query", RosterDispatcher.NS_ROSTER );
 
             for (Enumeration e=sd.roster.hContacts.elements(); e.hasMoreElements();){
                 Contact cr=(Contact)e.nextElement();
