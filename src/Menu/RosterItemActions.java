@@ -26,6 +26,7 @@
  */
 package Menu;
 
+import Client.Groups;
 import Client.*;
 import Colors.ColorTheme;
 import Conference.ConferenceGroup;

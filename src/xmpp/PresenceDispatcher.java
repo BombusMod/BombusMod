@@ -4,9 +4,9 @@
  */
 package xmpp;
 
+import Client.Groups;
 import Client.Config;
 import Client.Contact;
-import Client.Groups;
 import Client.Msg;
 import Client.NotInListFilter;
 import Client.Roster;
@@ -22,6 +22,7 @@ import com.alsutton.jabber.datablocks.Presence;
 //#endif
 import locale.SR;
 import ui.VirtualList;
+import xmpp.extensions.muc.Conference;
 
 /**
  *
@@ -48,7 +49,7 @@ public class PresenceDispatcher implements JabberBlockListener {
                 //PresenceContact(from, ti);
                 Msg m = new Msg((ti == Presence.PRESENCE_AUTH || ti == Presence.PRESENCE_AUTH_ASK) ? Msg.MESSAGE_TYPE_AUTH : Msg.MESSAGE_TYPE_PRESENCE, from.toString(), null, pr.getPresenceTxt());
 //#ifndef WMUC
-                JabberDataBlock xmuc = pr.findNamespace("x", "http://jabber.org/protocol/muc#user");
+                JabberDataBlock xmuc = pr.findNamespace("x", Conference.NS_MUC + "#user");
                 if (xmuc == null) {
                     xmuc = pr.findNamespace("x", "http://jabber.org/protocol/muc"); //join errors
                 }

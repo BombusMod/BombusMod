@@ -16,6 +16,7 @@ import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Message;
 import com.alsutton.jabber.datablocks.Presence;
 import locale.SR;
+import xmpp.extensions.muc.Conference;
 
 /**
  *
@@ -118,7 +119,7 @@ public class MessageDispatcher implements JabberBlockListener {
             }
 //#ifndef WMUC
             try {
-                JabberDataBlock xmlns = message.findNamespace("x", "http://jabber.org/protocol/muc#user");
+                JabberDataBlock xmlns = message.findNamespace("x", Conference.NS_MUC + "#user");
                 JabberDataBlock invite = message.getMucInvitation();
                 if (invite != null) {
                     if (message.getTypeAttribute().equals("error")) {

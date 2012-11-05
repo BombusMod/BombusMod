@@ -29,6 +29,7 @@ import com.alsutton.jabber.*;
 import java.util.*;
 import ui.Time;
 import xmpp.XmppError;
+import xmpp.extensions.muc.Conference;
 
 public class Message extends JabberDataBlock {
     
@@ -134,7 +135,7 @@ public class Message extends JabberDataBlock {
 //#ifndef WMUC
 
     public JabberDataBlock getMucInvitation() {
-        JabberDataBlock xmlns = findNamespace("x", "http://jabber.org/protocol/muc#user");
+        JabberDataBlock xmlns = findNamespace("x", Conference.NS_MUC + "#user");
         if (xmlns != null) {
             return xmlns.getChildBlock("invite");
         }

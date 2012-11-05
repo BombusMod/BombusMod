@@ -32,6 +32,7 @@ import Info.Version;
 import com.alsutton.jabber.JabberStream;
 import com.alsutton.jabber.datablocks.Presence;
 import io.DnsSrvResolver;
+import java.util.Vector;
 
 public class Account {
 
@@ -58,6 +59,8 @@ public class Account {
 //#endif
     public int keepAlivePeriod = 120;
     private static StaticData sd = StaticData.getInstance();    
+    
+    public final Vector bookmarks = new Vector();    
 
     public String getJid() {
         return userName + '@' + server + '/' + resource;

@@ -24,7 +24,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-package Conference;
+package xmpp.extensions.muc;
 
 import Client.StaticData;
 import com.alsutton.jabber.JabberBlockListener;
@@ -60,8 +60,8 @@ public class BookmarkQuery implements JabberBlockListener {
 
         JabberDataBlock storage = query.addChildNs("storage", "storage:bookmarks");
         if (saveBookmarks) {
-            for (Enumeration e = sd.roster.bookmarks.elements(); e.hasMoreElements();) {
-                storage.addChild(((BookmarkItem) e.nextElement()).constructBlock());
+            for (Enumeration e = sd.account.bookmarks.elements(); e.hasMoreElements();) {
+                storage.addChild(((Bookmark) e.nextElement()).constructBlock());
             }
         }
         sd.theStream.send(request);
@@ -86,7 +86,7 @@ public class BookmarkQuery implements JabberBlockListener {
                             Vector items = storage.getChildBlocks();
                             if (items != null) {
                                 for (Enumeration e = items.elements(); e.hasMoreElements();) {
-                                    BookmarkItem bm = new BookmarkItem((JabberDataBlock) e.nextElement());
+                                    Bookmark bm = new Bookmark((JabberDataBlock) e.nextElement());
                                     if (bm.nick == null) {
                                         bm.nick = sd.account.nick;
                                     }
@@ -105,7 +105,7 @@ public class BookmarkQuery implements JabberBlockListener {
                                     bookmarks.addElement(bm);
                                     if (queryType == LOAD) {
                                         if (bm.autojoin && autojoin) {
-                                            ConferenceForm.join(bm.name, bm.jid + '/' + bm.nick, bm.password, bm.nick, cf.confMessageCount);
+                                            Conference.join(bm.name, bm.jid + '/' + bm.nick, bm.password, bm.nick, cf.confMessageCount);
                                         }
                                     }
                                 }
@@ -119,7 +119,7 @@ public class BookmarkQuery implements JabberBlockListener {
                                 loadDefaults(bookmarks);
                             }
                             for (Enumeration e = bookmarks.elements(); e.hasMoreElements();) {
-                                sd.roster.bookmarks.addElement((BookmarkItem) e.nextElement());
+                                sd.account.bookmarks.addElement((Bookmark) e.nextElement());
                             }
                             return JabberBlockListener.NO_MORE_BLOCKS;
                         }
@@ -147,7 +147,7 @@ public class BookmarkQuery implements JabberBlockListener {
             if (nick == null) {
                 nick = sd.account.getNickName();
             }
-            BookmarkItem bm = new BookmarkItem(desc, jid, nick, pass, false);
+            Bookmark bm = new Bookmark(desc, jid, nick, pass, false);
             bookmarks.addElement(bm);
         }
     }    

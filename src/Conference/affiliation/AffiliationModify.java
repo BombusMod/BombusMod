@@ -36,6 +36,7 @@ import ui.controls.AlertBox;
 import ui.controls.form.DefForm;
 import ui.controls.form.DropChoiceBox;
 import ui.controls.form.TextInput;
+import xmpp.extensions.muc.Conference;
 
 /**
  *
@@ -78,7 +79,7 @@ public class AffiliationModify
         JabberStream stream=StaticData.getInstance().theStream;
         
         JabberDataBlock request=new Iq(room, Iq.TYPE_SET, "admin_modify");
-        JabberDataBlock query=request.addChildNs("query", "http://jabber.org/protocol/muc#admin");
+        JabberDataBlock query=request.addChildNs("query", Conference.NS_MUC + "#admin");
         JabberDataBlock child=query.addChild("item", null);
         child.setAttribute("jid", jidItem.getValue());
         child.setAttribute("affiliation", AffiliationItem.getAffiliationName((short)affiliationItem.getSelectedIndex()));

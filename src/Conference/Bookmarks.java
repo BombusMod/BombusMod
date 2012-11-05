@@ -25,6 +25,7 @@
  *
  */
 package Conference;
+import xmpp.extensions.muc.BookmarkQuery;
 import Conference.affiliation.Affiliations;
 //#ifdef SERVICE_DISCOVERY
 //# import ServiceDiscovery.*;
@@ -38,6 +39,8 @@ import ui.MainBar;
 import ui.controls.AlertBox;
 import ui.controls.form.DefForm;
 import images.RosterIcons;
+import xmpp.extensions.muc.Bookmark;
+import xmpp.extensions.muc.Conference;
 
 /**
  *
@@ -111,7 +114,11 @@ public class Bookmarks extends DefForm {
     }
 
     public final void loadBookmarks() {
-        loadItemsFrom(sd.roster.bookmarks);
+        itemsList.removeAllElements();
+        for (Enumeration e = sd.account.bookmarks.elements(); e.hasMoreElements();) {
+            BookmarkItem newItem = new BookmarkItem((Bookmark)e.nextElement());
+            itemsList.addElement(newItem);
+        }
     }
 
     private void addBookmark() {
@@ -131,11 +138,11 @@ public class Bookmarks extends DefForm {
         if (join == null) {
             return;
         }
-        if (join.isUrl) {
+        if (join.bookmark.isUrl) {
             return;
         }
 
-        ConferenceForm.join(join.name, join.getJidNick(), join.password, join.nick, cf.confMessageCount);
+        Conference.join(join.bookmark.name, join.getJidNick(), join.bookmark.password, join.bookmark.nick, cf.confMessageCount);
         parentView = sd.roster;
         destroyView();
     }
@@ -159,7 +166,6 @@ public class Bookmarks extends DefForm {
         } else if (c == cmdDel) {
             keyClear();
             mainbar = new MainBar(2, null, SR.MS_BOOKMARKS + " (" + getItemCount() + ") ", false);
-            return;
         }
 //#ifdef SERVICE_DISCOVERY
 //#         else if (c == cmdDisco) {
@@ -181,8 +187,8 @@ public class Bookmarks extends DefForm {
         } else if (c == cmdDoAutoJoin) {
             for (Enumeration e = itemsList.elements(); e.hasMoreElements();) {
                 BookmarkItem bm = (BookmarkItem) e.nextElement();
-                if (bm.autojoin) {
-                    ConferenceForm.join(bm.name, bm.jid + '/' + bm.nick, bm.password, bm.nick, cf.confMessageCount);
+                if (bm.bookmark.autojoin) {
+                    Conference.join(bm.bookmark.name, bm.bookmark.jid + '/' + bm.bookmark.nick, bm.bookmark.password, bm.bookmark.nick, cf.confMessageCount);
                 }
             }
             parentView = sd.roster;
@@ -200,7 +206,7 @@ public class Bookmarks extends DefForm {
     
     public void deleteBookmark() {
         BookmarkItem del = (BookmarkItem) getFocusedObject();
-        if (del == null || del.isUrl) return;
+        if (del == null || del.bookmark.isUrl) return;
         
         itemsList.removeElement(getFocusedObject());
 
@@ -214,7 +220,7 @@ public class Bookmarks extends DefForm {
 	
 	public void keyGreen() {
 		BookmarkItem join = (BookmarkItem) getFocusedObject();
-        new ConferenceForm(join, cursor);
+        new ConferenceForm(join.bookmark, cursor);
 	}
 	
     public void keyClear() {
@@ -230,7 +236,10 @@ public class Bookmarks extends DefForm {
     }
 
     private void saveBookmarks() {
-        sd.roster.bookmarks = itemsList;
+        sd.account.bookmarks.removeAllElements();
+        for (Enumeration e = itemsList.elements(); e.hasMoreElements();) {
+            sd.account.bookmarks.addElement(((BookmarkItem)e.nextElement()).bookmark);
+        }
         sd.theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.SAVE));
     }
 

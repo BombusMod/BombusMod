@@ -33,7 +33,7 @@ import Account.AccountStorage;
 import Alerts.AlertCustomize;
 import Alerts.AlertProfile;
 //#ifndef WMUC
-import Conference.BookmarkQuery;
+import xmpp.extensions.muc.BookmarkQuery;
 import Conference.Bookmarks;
 import Conference.ConferenceGroup;
 import Conference.MucContact;
@@ -122,6 +122,7 @@ import xmpp.JabberDispatcher;
 import xmpp.MessageDispatcher;
 import xmpp.PresenceDispatcher;
 import xmpp.RosterDispatcher;
+import xmpp.extensions.muc.Conference;
 
 //#if android
 //# import org.bombusmod.BombusModActivity;
@@ -156,7 +157,6 @@ public class Roster
     public final Vector hContacts = new Vector();
     //private Vector vContacts;
     public Groups groups;
-    public Vector bookmarks;
     public static MessageEdit me = null;
     private StatusList sl;
     public int myStatus = cf.loginstatus;
@@ -310,9 +310,7 @@ public class Roster
 
             groups = null;
             groups = new Groups();
-
-            bookmarks = null;
-            bookmarks = new Vector();
+            sd.account.bookmarks.removeAllElements();            
         }
         if (sd.account != null) {
             myJid = new Jid(sd.account.getJid());
@@ -1086,7 +1084,7 @@ public class Roster
                 Contact myself = confGroup.selfContact;
 
                 if (c.status == Presence.PRESENCE_OFFLINE) {
-                    ConferenceForm.join(confGroup.name, myself.getJid().toString(), confGroup.password, myself.nick, 20);
+                    Conference.join(confGroup.name, myself.getJid().toString(), confGroup.password, myself.nick, 20);
                     continue;
                 }
                 Presence presence = new Presence(myStatus, myPriority, myMessage, null);

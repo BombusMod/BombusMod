@@ -34,6 +34,7 @@ import locale.SR;
 import ui.controls.form.DefForm;
 import ui.controls.form.MultiLine;
 import ui.controls.form.TextInput;
+import xmpp.extensions.muc.Conference;
 
 /**
  *
@@ -83,7 +84,7 @@ public class ConferenceQuickPrivelegeModify {
 
     public final void setMucMod() {
         JabberDataBlock iq = new Iq(victim.jid.bareJid, Iq.TYPE_SET, "itemmuc");
-        JabberDataBlock query = iq.addChildNs("query", "http://jabber.org/protocol/muc#admin");
+        JabberDataBlock query = iq.addChildNs("query", Conference.NS_MUC + "#admin");
         //TODO: separate usecases to muc#owner, muc#admin and muc#moderator
         JabberDataBlock item = new JabberDataBlock("item");
         query.addChild(item);

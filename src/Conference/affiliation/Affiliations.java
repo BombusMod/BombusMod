@@ -39,6 +39,7 @@ import ui.MainBar;
 import ui.controls.form.DefForm;
 import Menu.MenuCommand;
 import ui.VirtualList;
+import xmpp.extensions.muc.Conference;
 
 /**
  *
@@ -50,7 +51,7 @@ public class Affiliations
 {
 
     private String id="admin";
-    private String namespace="http://jabber.org/protocol/muc#admin";
+    private String namespace = Conference.NS_MUC + "#admin";
     private String room;
 
     private JabberStream stream=StaticData.getInstance().theStream;
@@ -73,7 +74,7 @@ public class Affiliations
 	switch (affiliationIndex) {
 	    case AffiliationItem.AFFILIATION_OWNER:
 	    case AffiliationItem.AFFILIATION_ADMIN:
-		if (!Config.getInstance().muc119) namespace="http://jabber.org/protocol/muc#owner";
+		if (!Config.getInstance().muc119) namespace=Conference.NS_MUC + "#owner";
 	}
 	
         this.id=AffiliationItem.getAffiliationName(affiliationIndex);

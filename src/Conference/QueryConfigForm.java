@@ -32,6 +32,7 @@ import com.alsutton.jabber.JabberBlockListener;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
 import com.alsutton.jabber.JabberStream;
+import xmpp.extensions.muc.Conference;
 
 /**
  *
@@ -39,7 +40,7 @@ import com.alsutton.jabber.JabberStream;
  */
 public class QueryConfigForm implements JabberBlockListener {
 
-    private final static String OWNER_XMLNS = "http://jabber.org/protocol/muc#owner";
+    private final static String OWNER_XMLNS = Conference.NS_MUC + "#owner";
 
     public String roomJid;
 

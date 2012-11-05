@@ -39,6 +39,7 @@ import ui.controls.form.SimpleString;
 import ui.controls.form.DefForm;
 import ui.controls.form.DropChoiceBox;
 import ui.controls.form.TextInput;
+import xmpp.extensions.muc.Conference;
 
 public class InviteForm
         extends DefForm {
@@ -76,17 +77,17 @@ public class InviteForm
     }
 
     public void cmdOk() {
-        String room=(String) conferences.elementAt(conferenceList.getSelectedIndex());
-        String rs=reason.getValue();
+        String room = (String) conferences.elementAt(conferenceList.getSelectedIndex());
+        String rs = reason.getValue();
 
-        Message inviteMsg=new Message(room);
-        JabberDataBlock x=inviteMsg.addChildNs("x", "http://jabber.org/protocol/muc#user");
-        JabberDataBlock invite=x.addChild("invite",null);
-        String invited=(contact instanceof MucContact)? ((MucContact)contact).realJid.toString() : contact.bareJid;
+        Message inviteMsg = new Message(room);
+        JabberDataBlock x = inviteMsg.addChildNs("x", Conference.NS_MUC + "#user");
+        JabberDataBlock invite = x.addChild("invite", null);
+        String invited = (contact instanceof MucContact) ? ((MucContact) contact).realJid.toString() : contact.bareJid;
 
         invite.setAttribute("to", invited);
 
-        invite.addChild("reason",rs);
+        invite.addChild("reason", rs);
         StaticData.getInstance().theStream.send(inviteMsg);
         parentView = sd.roster;
         destroyView();
