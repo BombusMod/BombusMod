@@ -139,7 +139,7 @@ public class Config {
     public boolean autoFocus = false;
     public int notInListDropLevel = NotInListFilter.ALLOW_ALL; //enable all
 //#ifndef WMUC
-    public boolean storeConfPresence = true;
+    public boolean storeConfPresence = false;
 //#endif
     public boolean capsState = false;
     public int textWrap = 0;
@@ -172,7 +172,7 @@ public class Config {
 //#ifdef POPUPS
 //#     public boolean popUps = true;
 //#endif
-    public boolean showResources = true;
+    public boolean showResources = false;
     public boolean saveHistory = false;
     public boolean enableVersionOs = true;
     public int messageLimit = 4096;
@@ -181,7 +181,7 @@ public class Config {
 //#ifdef DETRANSLIT
 //#     public boolean transliterateFilenames=false;
 //#endif
-    public boolean rosterStatus = true;
+    public boolean rosterStatus = false;
     public boolean queryExit = false;
     public boolean notifyPicture = false;
     public boolean hideTimestamps = false;

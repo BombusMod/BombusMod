@@ -116,7 +116,7 @@ blue 0x0000ff
         colorsContainer.addElement(new ColorItem("HEAP_TOTAL", 0xffffff));
         colorsContainer.addElement(new ColorItem("HEAP_FREE", 0x00007f));
     
-        colorsContainer.addElement(new ColorItem("CURSOR_BGND", 0xbbddee));
+        colorsContainer.addElement(new ColorItem("CURSOR_BGND", 0x010101));
         colorsContainer.addElement(new ColorItem("CURSOR_OUTLINE", 0x1ea5c5));
     
         colorsContainer.addElement(new ColorItem("SCROLL_BRD", 0x565656));
