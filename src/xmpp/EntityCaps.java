@@ -28,6 +28,8 @@ import util.StringUtils;
  * @author Evg_S
  */
 public class EntityCaps implements JabberBlockListener {
+    
+    public final static String NS_CAPS = "http://jabber.org/protocol/caps";
 
     /**
      * Creates a new instance of EntityCaps
@@ -111,7 +113,7 @@ public class EntityCaps implements JabberBlockListener {
     public static JabberDataBlock presenceEntityCaps() {
         try {
             JabberDataBlock c = new JabberDataBlock("c");
-            c.setAttribute("xmlns", "http://jabber.org/protocol/caps");
+            c.setAttribute("xmlns", NS_CAPS);
             c.setAttribute("node", BOMBUS_NAMESPACE);//+'#'+Version.getVersionNumber());
             c.setAttribute("ver", calcVerHash());
             c.setAttribute("hash", "sha-1");
@@ -130,8 +132,8 @@ public class EntityCaps implements JabberBlockListener {
         ver = null;
         features = null;
         features = new Vector();
-
-        //features MUST be sorted
+        features.addElement(NS_CAPS);
+        
 //#ifdef PEP_ACTIVITY
 //#         if (cf.rcvactivity) {
 //#             features.addElement("http://jabber.org/protocol/activity");
@@ -197,7 +199,7 @@ public class EntityCaps implements JabberBlockListener {
             features.addElement(Message.NS_RECEIPTS); //xep-0184
         }
         features.addElement("urn:xmpp:time");
-
+        //features MUST be sorted
         features = StringUtils.sortVectorOfString(features);
     }
     private static Vector features = new Vector();
