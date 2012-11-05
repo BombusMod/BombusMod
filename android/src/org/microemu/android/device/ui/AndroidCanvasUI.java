@@ -136,6 +136,7 @@ public class AndroidCanvasUI extends AndroidDisplayableUI implements CanvasUI {
             this.ui = ui;            
             setFocusable(true);
             setFocusableInTouchMode(true);
+            setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         }
         
         public AndroidCanvasUI getUI() {
