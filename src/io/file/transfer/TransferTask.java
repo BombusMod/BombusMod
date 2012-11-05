@@ -29,7 +29,6 @@
 //# 
 //# package io.file.transfer;
 //# 
-//# import Client.Jid;
 //# import com.alsutton.jabber.JabberDataBlock;
 //# import com.alsutton.jabber.datablocks.Iq;
 //# import images.RosterIcons;
@@ -58,6 +57,7 @@
 //#endif
 //# import util.Strconv;
 //# import util.StringUtils;
+//# import xmpp.Jid;
 //# 
 //# /**
 //#  *

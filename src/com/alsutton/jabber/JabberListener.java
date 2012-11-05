@@ -25,6 +25,8 @@ THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package com.alsutton.jabber;
 
+import xmpp.login.LoginListener;
+
 /**
  * The interface classes that listen for jabber messages should implement
  */
@@ -33,7 +35,7 @@ public interface JabberListener {
     /**
      * Method called once the stream has been set up
      */
-    public void beginConversation();   
+    public void beginConversation(LoginListener loginListener);   
 
     /**
      * Method called when the stream is terminated for some reason

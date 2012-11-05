@@ -27,6 +27,7 @@
 
 package Client;
 //#ifndef WMUC
+import xmpp.Jid;
 import Conference.ConferenceGroup;
 //#endif
 import java.util.*;

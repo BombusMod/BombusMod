@@ -30,7 +30,7 @@
 package xmpp.extensions;
 
 import Client.Contact;
-import Client.Jid;
+import xmpp.Jid;
 import Client.StaticData;
 //#ifndef WMUC
 import Conference.ConferenceGroup;

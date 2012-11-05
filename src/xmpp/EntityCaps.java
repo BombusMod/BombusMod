@@ -8,7 +8,8 @@
  */
 package xmpp;
 
-import Client.*;
+import Client.Config;
+import Client.StaticData;
 import Info.Version;
 import com.alsutton.jabber.JabberBlockListener;
 import com.alsutton.jabber.JabberDataBlock;

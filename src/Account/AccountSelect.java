@@ -26,6 +26,7 @@
  */
 package Account;
 
+import xmpp.Account;
 import Client.*;
 import locale.SR;
 import midlet.BombusMod;
@@ -74,7 +75,7 @@ public class AccountSelect extends DefForm {
         itemsList.removeAllElements();
         activeAccount = cf.accountIndex;
         do {
-            a = Account.createFromStorage(index);
+            a = AccountStorage.createFromStorage(index);
             if (a != null) {
                 a.setActive(activeAccount == index);
                 itemsList.addElement(new AccountItem(a));
@@ -146,7 +147,7 @@ public class AccountSelect extends DefForm {
     public void destroyView() {
         if (itemsList.size() > 0) {
             if (StaticData.getInstance().account == null) {
-                Account.loadAccount(false, cf.accountIndex);
+                sd.roster.loadAccount(false, cf.accountIndex);
             }
             parentView = sd.roster;
             super.destroyView();
@@ -174,7 +175,7 @@ public class AccountSelect extends DefForm {
         cf.saveToStorage();
         loadAccounts();
         destroyView();
-        Account.loadAccount(login, cursor);
+        sd.roster.loadAccount(login, cursor);
     }
 
     public void eventOk() {
@@ -188,7 +189,7 @@ public class AccountSelect extends DefForm {
         DataOutputStream outputStream = NvStorage.CreateDataOutputStream();
         int j = itemsList.size();
         for (int i = 0; i < j; i++) {
-            ((AccountItem) itemsList.elementAt(i)).account.saveToDataOutputStream(outputStream);
+            AccountStorage.saveToDataOutputStream(((AccountItem) itemsList.elementAt(i)).account, outputStream);
         }
         NvStorage.writeFileRecord(outputStream, "accnt_db", 0, true); //Account.storage
     }

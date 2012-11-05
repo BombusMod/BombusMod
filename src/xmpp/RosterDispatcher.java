@@ -28,7 +28,6 @@ package xmpp;
 
 import Client.Config;
 import Client.Groups;
-import Client.Jid;
 import Client.Roster;
 import Client.StaticData;
 import com.alsutton.jabber.*;

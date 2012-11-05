@@ -27,7 +27,7 @@
 
 package Client;
 
-import Account.Account;
+import xmpp.Account;
 //#ifdef AUTOTASK
 //# import AutoTasks.AutoTask;
 //#endif

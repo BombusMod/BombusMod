@@ -26,6 +26,7 @@
  */
 package Client;
 //#ifndef WMUC
+import xmpp.Jid;
 import Conference.MucContact;
 //#endif
 //#ifdef PRIVACY

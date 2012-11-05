@@ -4,6 +4,7 @@
  */
 package Account;
 
+import xmpp.Account;
 import images.RosterIcons;
 import ui.IconTextElement;
 

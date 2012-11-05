@@ -27,7 +27,7 @@
 //#ifdef IMPORT_EXPORT
 //# package IE;
 //# 
-//# import Account.Account;
+//# import Account.AccountStorage;
 //# import Client.StaticData;
 //# import io.NvStorage;
 //# import io.file.FileIO;
@@ -37,6 +37,7 @@
 //# import java.util.Vector;
 //# import ui.Time;
 //# import io.file.InternalResource;
+//# import xmpp.Account;
 //# 
 //# /**
 //#  *
@@ -132,7 +133,7 @@
 //#                         account.password = findBlock(tempstr, password);
 //#                         account.hostAddr = findBlock(tempstr, hostAddr);
 //#                         account.port = Integer.parseInt(findBlock(tempstr, port));
-//#                         account.setNick(findBlock(tempstr, nick));
+//#                         account.nick = findBlock(tempstr, nick);
 //#                         account.resource = findBlock(tempstr, resource);
 //#                         account.plainAuth = (findBlock(tempstr, plainAuth).equals("1")) ? true : false;
 //#                         account.mucOnly = (findBlock(tempstr, mucOnly).equals("1")) ? true : false;
@@ -164,7 +165,7 @@
 //#     public void rmsUpdate() {
 //#         DataOutputStream outputStream = NvStorage.CreateDataOutputStream();
 //#         for (int i = 0; i < getItemCount(); i++) {
-//#             getAccount(i).saveToDataOutputStream(outputStream);
+//#             AccountStorage.saveToDataOutputStream(getAccount(i), outputStream);
 //#         }
 //#         NvStorage.writeFileRecord(outputStream, "accnt_db", 0, true); //Account.storage
 //#     }
@@ -199,7 +200,7 @@
 //#         for (int i = 0; i < getItemCount(); i++) {
 //#             Account a = getAccount(i);
 //#             StringBuffer account = new StringBuffer("<a>");
-//#             account.append(createBlock(userName, a.userName)).append(createBlock(server, a.server)).append(createBlock(hostAddr, a.hostAddr)).append(createBlock(port, Integer.toString(a.port))).append(createBlock(nick, a.getNick())).append(createBlock(resource, a.resource)).append(createBlock(useSSL, "0")).append(createBlock(plainAuth, (a.plainAuth ? "1" : "0"))).append(createBlock(mucOnly, (a.mucOnly ? "1" : "0")))
+//#             account.append(createBlock(userName, a.userName)).append(createBlock(server, a.server)).append(createBlock(hostAddr, a.hostAddr)).append(createBlock(port, Integer.toString(a.port))).append(createBlock(nick, a.nick)).append(createBlock(resource, a.resource)).append(createBlock(useSSL, "0")).append(createBlock(plainAuth, (a.plainAuth ? "1" : "0"))).append(createBlock(mucOnly, (a.mucOnly ? "1" : "0")))
 //#if HTTPPOLL || HTTPCONNECT || HTTPBIND
 //#                     .append(createBlock(enableProxy, a.isEnableProxy() ? "1" : "0")).append(createBlock(proxyHostAddr, a.proxyHostAddr)).append(createBlock(proxyPort, Integer.toString(a.getProxyPort())))
 //#endif
@@ -215,16 +216,13 @@
 //# 
 //#         FileIO fileIO = FileIO.createConnection(file + "accounts_" + Time.localDate() + ".txt");
 //#         fileIO.fileWrite(bodyMessage);
-//# 
-//#         bodyMessage = null;
-//#         body = null;
 //#     }
 //# 
 //#     private void getAccounts() {
 //#         Account a;
 //#         int index = 0;
 //#         do {
-//#             a = Account.createFromStorage(index);
+//#             a = AccountStorage.createFromStorage(index);
 //#             if (a != null) {
 //#                 accountList.addElement(a);
 //#                 index++;

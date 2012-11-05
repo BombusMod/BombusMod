@@ -25,8 +25,10 @@
  *
  */
 
-package Client;
+package xmpp;
 
+import Client.Contact;
+import Client.StaticData;
 import util.Strconv;
 
 /**

@@ -26,6 +26,7 @@
  */
 package Account;
 
+import xmpp.Account;
 import Client.StaticData;
 import Menu.MenuCommand;
 import ServiceDiscovery.DiscoForm;
@@ -43,6 +44,7 @@ import ui.controls.form.TextInput;
 import util.StringLoader;
 import xmpp.extensions.IqRegister;
 import xmpp.extensions.IqRegister.RegistrationListener;
+import xmpp.login.LoginListener;
 
 /**
  *
@@ -116,7 +118,7 @@ public class AccountRegister
             sd.theStream = raccount.openJabberStream();
             new Thread(sd.theStream).start();
 
-            sd.theStream.setJabberListener(this);
+            sd.theStream.listener = this;
             sd.theStream.initiateStream();
         } catch (Exception e) {
             if (StaticData.Debug) {
@@ -129,7 +131,7 @@ public class AccountRegister
     public void connectionTerminated(Exception e) {
     }
 
-    public void beginConversation() {
+    public void beginConversation(LoginListener listener) {
 	splash.setProgress(SR.MS_REGISTERING, 60);
 	sd.theStream.addBlockListener(new IqRegister(this));
 	Iq iqreg = new Iq(null, Iq.TYPE_GET, "regac" + System.currentTimeMillis());

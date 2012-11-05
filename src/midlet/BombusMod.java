@@ -32,7 +32,7 @@ package midlet;
 //#ifdef AUTOTASK
 //# import AutoTasks.AutoTask;
 //#endif
-import Account.Account;
+import xmpp.Account;
 import Account.AccountForm;
 import Account.AccountSelect;
 import Colors.ColorTheme;
@@ -126,7 +126,7 @@ public class BombusMod extends MIDlet {
         try {
             s.setProgress(24);
             if (!selAccount && cf.autoLogin) {
-                Account.loadAccount(cf.autoLogin, cf.accountIndex); // connect whithout account select
+                sd.roster.loadAccount(cf.autoLogin, cf.accountIndex); // connect whithout account select
             } else {
                 AccountSelect as = new AccountSelect(true);
                 if (as.itemsList.isEmpty()) {

@@ -26,67 +26,67 @@
  */
 
 //#ifdef FILE_TRANSFER
-
-package io.file.transfer;
-
-import Client.Jid;
-import io.file.browse.Browser;
-import io.file.browse.BrowserListener;
-import locale.SR;
-import ui.controls.form.DefForm;
-import ui.controls.form.LinkString;
-import ui.controls.form.SimpleString;
-import ui.controls.form.TextInput;
-
-public class TransferSendFile
-        extends DefForm 
-        implements BrowserListener {
-    
-    private Jid to;
-    
-    private LinkString selectFile;
-    private TextInput fileName;
-    private TextInput description;
-
-    /** Creates a new instance of TransferAcceptFile
-     * @param recipientJid
-     */
-    public TransferSendFile(Jid recipientJid) {
-        super(SR.MS_SEND_FILE);
-        this.to=recipientJid;
-
-        itemsList.addElement(new SimpleString(SR.MS_SEND_FILE_TO, true));
-        itemsList.addElement(new SimpleString(recipientJid.toString(), false));
-        
-        fileName = new TextInput(SR.MS_FILE, null, "sendfile");
-        itemsList.addElement(fileName);
-        
-        selectFile=new LinkString(SR.MS_SELECT_FILE) { public void doAction() { initBrowser(); } };
-        itemsList.addElement(selectFile);
-        
-        description = new TextInput(SR.MS_DESCRIPTION, null, null);
-        itemsList.addElement(description);
-        
-        moveCursorTo(2);
-    }
-    
-    public void initBrowser() {
-        new Browser(null, this, false);
-    }
-
-    public void BrowserFilePathNotify(String pathSelected) { fileName.setValue(pathSelected); redraw(); }
-
-    public void cmdOk() {
-        if (fileName.getValue()==null || fileName.getValue().length()==0) return;
-        
-        try {
-            TransferTask task=new TransferTask(to, String.valueOf(System.currentTimeMillis()), fileName.getValue(), description.getValue(), false, null);
-            TransferDispatcher.getInstance().sendFile(task);
-            //switch to file transfer manager
-            new io.file.transfer.TransferManager();
-            return;
-        } catch (Exception e) {}
-    }
-}
-
+//# 
+//# package io.file.transfer;
+//# 
+//# import xmpp.Jid;
+//# import io.file.browse.Browser;
+//# import io.file.browse.BrowserListener;
+//# import locale.SR;
+//# import ui.controls.form.DefForm;
+//# import ui.controls.form.LinkString;
+//# import ui.controls.form.SimpleString;
+//# import ui.controls.form.TextInput;
+//# 
+//# public class TransferSendFile
+//#         extends DefForm 
+//#         implements BrowserListener {
+//#     
+//#     private Jid to;
+//#     
+//#     private LinkString selectFile;
+//#     private TextInput fileName;
+//#     private TextInput description;
+//# 
+//#     /** Creates a new instance of TransferAcceptFile
+//#      * @param recipientJid
+//#      */
+//#     public TransferSendFile(Jid recipientJid) {
+//#         super(SR.MS_SEND_FILE);
+//#         this.to=recipientJid;
+//# 
+//#         itemsList.addElement(new SimpleString(SR.MS_SEND_FILE_TO, true));
+//#         itemsList.addElement(new SimpleString(recipientJid.toString(), false));
+//#         
+//#         fileName = new TextInput(SR.MS_FILE, null, "sendfile");
+//#         itemsList.addElement(fileName);
+//#         
+//#         selectFile=new LinkString(SR.MS_SELECT_FILE) { public void doAction() { initBrowser(); } };
+//#         itemsList.addElement(selectFile);
+//#         
+//#         description = new TextInput(SR.MS_DESCRIPTION, null, null);
+//#         itemsList.addElement(description);
+//#         
+//#         moveCursorTo(2);
+//#     }
+//#     
+//#     public void initBrowser() {
+//#         new Browser(null, this, false);
+//#     }
+//# 
+//#     public void BrowserFilePathNotify(String pathSelected) { fileName.setValue(pathSelected); redraw(); }
+//# 
+//#     public void cmdOk() {
+//#         if (fileName.getValue()==null || fileName.getValue().length()==0) return;
+//#         
+//#         try {
+//#             TransferTask task=new TransferTask(to, String.valueOf(System.currentTimeMillis()), fileName.getValue(), description.getValue(), false, null);
+//#             TransferDispatcher.getInstance().sendFile(task);
+//#             //switch to file transfer manager
+//#             new io.file.transfer.TransferManager();
+//#             return;
+//#         } catch (Exception e) {}
+//#     }
+//# }
+//# 
 //#endif

@@ -88,7 +88,7 @@ public class BookmarkQuery implements JabberBlockListener {
                                 for (Enumeration e = items.elements(); e.hasMoreElements();) {
                                     BookmarkItem bm = new BookmarkItem((JabberDataBlock) e.nextElement());
                                     if (bm.nick == null) {
-                                        bm.nick = sd.account.getNick();
+                                        bm.nick = sd.account.nick;
                                     }
 //#ifdef PRIVACY                                                
 //#                            if (!sd.account.isGoogle) {

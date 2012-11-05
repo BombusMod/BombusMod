@@ -29,7 +29,6 @@
 //# 
 //# package io.file.transfer;
 //# 
-//# import Client.Jid;
 //# import Client.StaticData;
 //# import ServiceDiscovery.FormField;
 //# import com.alsutton.jabber.JabberBlockListener;
@@ -39,6 +38,7 @@
 //# import java.util.Vector;
 //# import ui.VirtualCanvas;
 //# import util.Strconv;
+//# import xmpp.Jid;
 //# 
 //# /**
 //#  *

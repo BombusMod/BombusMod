@@ -28,7 +28,7 @@
 package Conference;
 
 import Client.Contact;
-import Client.Jid;
+import xmpp.Jid;
 import Client.StaticData;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Presence;

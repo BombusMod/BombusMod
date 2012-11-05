@@ -6,7 +6,6 @@ package xmpp;
 
 import Client.Config;
 import Client.Contact;
-import Client.Jid;
 import Client.Msg;
 import Client.NotInListFilter;
 import Client.Roster;
@@ -24,18 +23,18 @@ import locale.SR;
  */
 public class MessageDispatcher implements JabberBlockListener {
     
-    private Roster roster = StaticData.getInstance().roster;
+    private StaticData sd = StaticData.getInstance();
     private Config cf = Config.getInstance();
 
     public int blockArrived(JabberDataBlock data) {
         if (data instanceof Message) { // If we've received a message
             //System.out.println(data.toString());
-            roster.querysign = false;
+            sd.roster.querysign = false;
             Message message = (Message) data;
 
             String from = message.getFrom();
 
-            if (roster.myJid.equals(new Jid(from), false)) //Enable forwarding only from self-jids
+            if (sd.roster.myJid.equals(new Jid(from), false)) //Enable forwarding only from self-jids
             {
                 from = message.getXFrom();
             }
@@ -56,7 +55,7 @@ public class MessageDispatcher implements JabberBlockListener {
             int mType = Msg.MESSAGE_TYPE_IN;
             //#ifndef WMUC               
             if (groupchat) {
-                if (from.equals(roster.groups.getConfGroup(new Jid(from)).jid.bareJid)) {
+                if (from.equals(sd.roster.groups.getConfGroup(new Jid(from)).jid.bareJid)) {
                     mType = Msg.MESSAGE_TYPE_SYSTEM;
                 }
                 start_me = 0;
@@ -68,7 +67,7 @@ public class MessageDispatcher implements JabberBlockListener {
             }
 //#endif                
 
-            Contact c = roster.getContact(from, (cf.notInListDropLevel != NotInListFilter.DROP_MESSAGES_PRESENCES || groupchat
+            Contact c = sd.roster.getContact(from, (cf.notInListDropLevel != NotInListFilter.DROP_MESSAGES_PRESENCES || groupchat
 //#ifndef WMUC
                     || message.getMucInvitation() != null
 //#endif
@@ -123,7 +122,7 @@ public class MessageDispatcher implements JabberBlockListener {
                 JabberDataBlock invite = message.getMucInvitation();
                 if (invite != null) {
                     if (message.getTypeAttribute().equals("error")) {
-                        ConferenceGroup invConf = (ConferenceGroup) roster.groups.getGroup(from);
+                        ConferenceGroup invConf = (ConferenceGroup) sd.roster.groups.getGroup(from);
                         body = XmppError.decodeStanzaError(message).toString(); /*
                          * "error: invites are forbidden"
                          */
@@ -131,7 +130,7 @@ public class MessageDispatcher implements JabberBlockListener {
                         String inviteReason = invite.getChildBlockText("reason");
                         String room = from + '/' + StaticData.getInstance().account.getNickName();
 
-                        ConferenceGroup invConf = roster.initMuc(room, xmlns.getChildBlockText("password"));
+                        ConferenceGroup invConf = sd.roster.initMuc(room, xmlns.getChildBlockText("password"));
 
                         invConf.confContact.commonPresence = false; //FS#761
 
@@ -147,7 +146,7 @@ public class MessageDispatcher implements JabberBlockListener {
 
                         body = invite.getAttribute("from") + SR.MS_IS_INVITING_YOU + from + inviteReason;
 
-                        roster.reEnumRoster();
+                        sd.roster.reEnumRoster();
                     }
                 }
             } catch (Exception e) {
@@ -181,9 +180,9 @@ public class MessageDispatcher implements JabberBlockListener {
                 }
             }
             //boolean compose=false;
-            if (type.equals("chat") && roster.myStatus != Presence.PRESENCE_INVISIBLE) {
+            if (type.equals("chat") && sd.roster.myStatus != Presence.PRESENCE_INVISIBLE) {
                 if (message.findNamespace("request", Message.NS_RECEIPTS) != null) {
-                    roster.sendDeliveryMessage(c, data.getAttribute("id"));
+                    sd.roster.sendDeliveryMessage(c, data.getAttribute("id"));
                 }
                 JabberDataBlock received = message.findNamespace("received", Message.NS_RECEIPTS);
                 if (received != null) {
@@ -205,7 +204,7 @@ public class MessageDispatcher implements JabberBlockListener {
 //#endif
                 }
                 if (message.findNamespace("composing", Message.NS_CHATSTATES) != null) {
-                    roster.playNotify(Roster.SOUND_COMPOSING);
+                    sd.roster.playNotify(Roster.SOUND_COMPOSING);
                     c.acceptComposing = true;
                     c.showComposing = true;
 //#ifdef RUNNING_MESSAGE
@@ -213,7 +212,7 @@ public class MessageDispatcher implements JabberBlockListener {
 //#endif
                 }
             }
-            roster.redraw();
+            sd.roster.redraw();
 
             if (body == null) {
                 return JabberBlockListener.BLOCK_REJECTED;
@@ -264,7 +263,7 @@ public class MessageDispatcher implements JabberBlockListener {
             }
 //#endif
             m.highlite = highlite;
-            roster.messageStore(c, m);
+            sd.roster.messageStore(c, m);
             return JabberBlockListener.BLOCK_PROCESSED;
         }
         return JabberBlockListener.BLOCK_REJECTED;

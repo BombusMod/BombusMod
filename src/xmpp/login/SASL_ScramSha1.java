@@ -1,4 +1,4 @@
-package login;
+package xmpp.login;
 
 import util.StringUtils;
 //#if (android)

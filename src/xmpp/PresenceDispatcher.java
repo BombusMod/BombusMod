@@ -7,7 +7,6 @@ package xmpp;
 import Client.Config;
 import Client.Contact;
 import Client.Groups;
-import Client.Jid;
 import Client.Msg;
 import Client.NotInListFilter;
 import Client.Roster;

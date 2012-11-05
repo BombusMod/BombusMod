@@ -25,131 +25,131 @@
  */
 
 //#ifdef AUTOTASK
-
-package AutoTasks;
-
-import Client.StaticData;
-import javax.microedition.lcdui.Canvas;
-import javax.microedition.lcdui.Command;
-import javax.microedition.lcdui.CommandListener;
-import javax.microedition.lcdui.Display;
-import javax.microedition.lcdui.Displayable;
-import javax.microedition.lcdui.Font;
-import javax.microedition.lcdui.Graphics;
-import locale.SR;
-import Fonts.FontCache;
-import com.alsutton.jabber.datablocks.Presence;
-import midlet.BombusMod;
-import ui.Time;
-import ui.VirtualCanvas;
-import ui.VirtualList;
-
-/**
- *
- * @author ad
- */
-public class AutoTask 
-        extends Canvas
-        implements Runnable, CommandListener
-{
-    
-    public final int TASK_TYPE_DISABLED=0;
-    public final int TASK_TYPE_TIME=1;
-    public final int TASK_TYPE_TIMER=2;
-
-    public final int TASK_ACTION_QUIT=0;
-    public final int TASK_ACTION_CONFERENCE_QUIT=1;
-    public final int TASK_ACTION_LOGOFF=2;
-    public final int TASK_ACTION_RECONNECT=3;
-    
-    public int taskType=TASK_TYPE_DISABLED;
-    public int taskAction=TASK_ACTION_QUIT;
-    
-    public long initTime=System.currentTimeMillis();
-    public int waitTime=3600000;
-    public int startHour=0;
-    public int startMin=0;
-    
-    public int SLEEPTIME=5000;
-
-    boolean isRunning;
-    
-    boolean vibrate;
-    
-    StaticData sd = StaticData.getInstance();
-    
-    private VirtualList parentView = sd.roster;
-    
-    private int WAITTIME=60;
-
-    private boolean isShowing;
-    
-    protected Command cmdOk=new Command(SR.MS_OK, Command.OK, 1);
-    private Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 2);
-
-    private int value;
-    
-    Font f=FontCache.getFont(false, FontCache.msg);
-
-    private VirtualList next;
-    
-    private Display display = midlet.BombusMod.getInstance().getDisplay();
-
-    public void startTask() {
-        isRunning=true;
-        if (parentView==null)
-            parentView=sd.roster;
-        new Thread(this).start();
-    }
-    
-    public void run() {
-        isRunning=true;
-        while (isRunning) {
-            if (taskType==TASK_TYPE_DISABLED){
-                 isRunning=false;
-            }
-            try {
-                Thread.sleep(SLEEPTIME);
-            } catch (Exception e) { break; }
-            
-            if (taskType==TASK_TYPE_TIMER) {
-                if ((System.currentTimeMillis()-initTime)>waitTime) {
-                     //System.out.println("autotask by Timer Executed");
-                     showAlert(taskType);
-                     isRunning=false;
-                     taskType=TASK_TYPE_DISABLED;
-                }
-            } else if (taskType==TASK_TYPE_TIME) {
-                if (Time.getHour()==startHour && Time.getMin()==startMin ) {
-                     //System.out.println("autotask by Time Executed");
-                     showAlert(taskType);
-                     isRunning=false;
-                     taskType=TASK_TYPE_DISABLED;
-                }
-            } else {
-                 isRunning=false;
-                 taskType=TASK_TYPE_DISABLED;
-            }  
-        }
-        while (isShowing) {
-            try {
-                Thread.sleep(1000);
-            } catch (Exception e) { break; }
-            value+=1;
-            if (value>=WAITTIME) {
-                if (vibrate) display.vibrate(1000);
-                isShowing=false;
-                //System.out.println("execute");
-                doAction();
-                destroyView();
-                break;
-            }
-            repaint();
-            if (vibrate) display.vibrate(200);
-        }
-    }
-    
-    public void doAction() {
+//# 
+//# package AutoTasks;
+//# 
+//# import Client.StaticData;
+//# import javax.microedition.lcdui.Canvas;
+//# import javax.microedition.lcdui.Command;
+//# import javax.microedition.lcdui.CommandListener;
+//# import javax.microedition.lcdui.Display;
+//# import javax.microedition.lcdui.Displayable;
+//# import javax.microedition.lcdui.Font;
+//# import javax.microedition.lcdui.Graphics;
+//# import locale.SR;
+//# import Fonts.FontCache;
+//# import com.alsutton.jabber.datablocks.Presence;
+//# import midlet.BombusMod;
+//# import ui.Time;
+//# import ui.VirtualCanvas;
+//# import ui.VirtualList;
+//# 
+//# /**
+//#  *
+//#  * @author ad
+//#  */
+//# public class AutoTask 
+//#         extends Canvas
+//#         implements Runnable, CommandListener
+//# {
+//#     
+//#     public final int TASK_TYPE_DISABLED=0;
+//#     public final int TASK_TYPE_TIME=1;
+//#     public final int TASK_TYPE_TIMER=2;
+//# 
+//#     public final int TASK_ACTION_QUIT=0;
+//#     public final int TASK_ACTION_CONFERENCE_QUIT=1;
+//#     public final int TASK_ACTION_LOGOFF=2;
+//#     public final int TASK_ACTION_RECONNECT=3;
+//#     
+//#     public int taskType=TASK_TYPE_DISABLED;
+//#     public int taskAction=TASK_ACTION_QUIT;
+//#     
+//#     public long initTime=System.currentTimeMillis();
+//#     public int waitTime=3600000;
+//#     public int startHour=0;
+//#     public int startMin=0;
+//#     
+//#     public int SLEEPTIME=5000;
+//# 
+//#     boolean isRunning;
+//#     
+//#     boolean vibrate;
+//#     
+//#     StaticData sd = StaticData.getInstance();
+//#     
+//#     private VirtualList parentView = sd.roster;
+//#     
+//#     private int WAITTIME=60;
+//# 
+//#     private boolean isShowing;
+//#     
+//#     protected Command cmdOk=new Command(SR.MS_OK, Command.OK, 1);
+//#     private Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 2);
+//# 
+//#     private int value;
+//#     
+//#     Font f=FontCache.getFont(false, FontCache.msg);
+//# 
+//#     private VirtualList next;
+//#     
+//#     private Display display = midlet.BombusMod.getInstance().getDisplay();
+//# 
+//#     public void startTask() {
+//#         isRunning=true;
+//#         if (parentView==null)
+//#             parentView=sd.roster;
+//#         new Thread(this).start();
+//#     }
+//#     
+//#     public void run() {
+//#         isRunning=true;
+//#         while (isRunning) {
+//#             if (taskType==TASK_TYPE_DISABLED){
+//#                  isRunning=false;
+//#             }
+//#             try {
+//#                 Thread.sleep(SLEEPTIME);
+//#             } catch (Exception e) { break; }
+//#             
+//#             if (taskType==TASK_TYPE_TIMER) {
+//#                 if ((System.currentTimeMillis()-initTime)>waitTime) {
+//#                      //System.out.println("autotask by Timer Executed");
+//#                      showAlert(taskType);
+//#                      isRunning=false;
+//#                      taskType=TASK_TYPE_DISABLED;
+//#                 }
+//#             } else if (taskType==TASK_TYPE_TIME) {
+//#                 if (Time.getHour()==startHour && Time.getMin()==startMin ) {
+//#                      //System.out.println("autotask by Time Executed");
+//#                      showAlert(taskType);
+//#                      isRunning=false;
+//#                      taskType=TASK_TYPE_DISABLED;
+//#                 }
+//#             } else {
+//#                  isRunning=false;
+//#                  taskType=TASK_TYPE_DISABLED;
+//#             }  
+//#         }
+//#         while (isShowing) {
+//#             try {
+//#                 Thread.sleep(1000);
+//#             } catch (Exception e) { break; }
+//#             value+=1;
+//#             if (value>=WAITTIME) {
+//#                 if (vibrate) display.vibrate(1000);
+//#                 isShowing=false;
+//#                 //System.out.println("execute");
+//#                 doAction();
+//#                 destroyView();
+//#                 break;
+//#             }
+//#             repaint();
+//#             if (vibrate) display.vibrate(200);
+//#         }
+//#     }
+//#     
+//#     public void doAction() {
 //#ifdef AUTOTASK
 //#         String caption=SR.MS_AUTOTASKS+": ";
 //#         switch (taskAction) {
@@ -171,38 +171,38 @@ public class AutoTask
 //#                 taskType=TASK_TYPE_TIMER;
 //#                 initTime=System.currentTimeMillis();
 //#                 startTask();
-//#                 sd.roster.connectionTerminated(new Exception(caption));
+//#                 sd.theStream.listener.connectionTerminated(new Exception(caption));
 //#                 break;
 //#         }
 //#endif
-    }
-    
-    public void showAlert(int type) {
-        //System.out.println("start alert");
-        next = VirtualCanvas.getInstance().getList();
-        
-        this.addCommand(cmdOk);
-        this.addCommand(cmdCancel);
-
-        this.setCommandListener(this);
-
-        midlet.BombusMod.getInstance().setDisplayable(this);
-        isShowing=true;
-    }
-    
-    public void commandAction(Command command, Displayable displayable) {
-        destroyView();
-        if (command==cmdOk) {
-            if (isShowing) {
-                isShowing=false;
-                doAction();
-            }
-        }
-        isShowing=false;
-    }
-
-    protected void paint(Graphics g) {
-        if (isShowing) {
+//#     }
+//#     
+//#     public void showAlert(int type) {
+//#         //System.out.println("start alert");
+//#         next = VirtualCanvas.getInstance().getList();
+//#         
+//#         this.addCommand(cmdOk);
+//#         this.addCommand(cmdCancel);
+//# 
+//#         this.setCommandListener(this);
+//# 
+//#         midlet.BombusMod.getInstance().setDisplayable(this);
+//#         isShowing=true;
+//#     }
+//#     
+//#     public void commandAction(Command command, Displayable displayable) {
+//#         destroyView();
+//#         if (command==cmdOk) {
+//#             if (isShowing) {
+//#                 isShowing=false;
+//#                 doAction();
+//#             }
+//#         }
+//#         isShowing=false;
+//#     }
+//# 
+//#     protected void paint(Graphics g) {
+//#         if (isShowing) {
 //#if AUTOTASK
 //#             String caption=SR.MS_AUTOTASKS+": ";
 //#             
@@ -251,16 +251,16 @@ public class AutoTask
 //#             
 //#             g.setColor(oldColor);
 //#endif
-        }
-    }
-    
-    public void destroyView()	{
-        value=0;
-        this.removeCommand(cmdOk);
-        this.removeCommand(cmdCancel);
-        
-        VirtualCanvas.getInstance().show(parentView);
-    }
-}
-
+//#         }
+//#     }
+//#     
+//#     public void destroyView()	{
+//#         value=0;
+//#         this.removeCommand(cmdOk);
+//#         this.removeCommand(cmdCancel);
+//#         
+//#         VirtualCanvas.getInstance().show(parentView);
+//#     }
+//# }
+//# 
 //#endif

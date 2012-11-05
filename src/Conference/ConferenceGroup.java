@@ -29,7 +29,7 @@ package Conference;
 
 import Client.Group;
 import Client.Groups;
-import Client.Jid;
+import xmpp.Jid;
 import images.RosterIcons;
 
 /**

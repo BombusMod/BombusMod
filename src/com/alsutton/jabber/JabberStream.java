@@ -25,7 +25,7 @@ THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package com.alsutton.jabber;
 
-import Account.Account;
+import xmpp.Account;
 import Client.Config;
 import Client.StaticData;
 //#ifdef CONSOLE
@@ -56,7 +56,7 @@ public class JabberStream implements XMLEventListener, Runnable {
 
     private final Utf8IOStream iostream;
     private final Stack tagStack = new Stack();
-    private JabberListener listener;
+    public JabberListener listener;
     private final Vector blockListeners = new Vector();
     private final Vector outgoingPackets = new Vector();
     private String server; // for ping
@@ -374,7 +374,7 @@ public class JabberStream implements XMLEventListener, Runnable {
 //#             }
 //#endif
 
-            setJabberListener(null);
+            listener = null;
             //TODO: see FS#528
             try {
                 Thread.sleep(500);
@@ -510,18 +510,14 @@ public class JabberStream implements XMLEventListener, Runnable {
             }
         }
 
-    }
-
-    public void setJabberListener(JabberListener listener) {
-        this.listener = listener;
-    }
+    }    
 
     /**
      * Method to tell the listener the stream is ready for talking to.
      */
     public void broadcastBeginConversation() {
         if (listener != null) {
-            listener.beginConversation();
+            listener.beginConversation(StaticData.getInstance().roster);
         }
     }
 

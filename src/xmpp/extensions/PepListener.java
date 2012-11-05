@@ -29,13 +29,18 @@
 //# 
 //# package xmpp.extensions;
 //# 
+//# import Client.Config;
+//# import Client.Contact;
+//# import Client.Groups;
+//# import Client.Msg;
+//# import Client.StaticData;
 //# import PEP.Activities;
-//# import Client.*;
 //# import PEP.Moods;
 //# import com.alsutton.jabber.*;
 //# import com.alsutton.jabber.datablocks.*;
 //# import java.util.*;
 //# import locale.SR;
+//# import xmpp.Jid;
 //# 
 //# public class PepListener implements JabberBlockListener {
 //#     /** Singleton */

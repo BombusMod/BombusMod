@@ -26,8 +26,10 @@
  */
 package Client;
 
-import Account.Account;
+import xmpp.Jid;
+import xmpp.Account;
 import Account.AccountSelect;
+import Account.AccountStorage;
 import Alerts.AlertCustomize;
 import Alerts.AlertProfile;
 //#ifndef WMUC
@@ -70,12 +72,12 @@ import Menu.MenuCommand;
 
 import locale.SR;
 
-import login.LoginListener;
+import xmpp.login.LoginListener;
 
 //#ifdef NON_SASL_AUTH
-//# import login.NonSASLAuth;
+//# import xmpp.login.NonSASLAuth;
 //#endif
-import login.SASLAuth;
+import xmpp.login.SASLAuth;
 
 import midlet.BombusMod;
 import ui.controls.AlertBox;
@@ -115,8 +117,9 @@ import xmpp.extensions.IqVCard;
 
 //#ifdef LIGHT_CONFIG
 //# import LightControl.CustomLight;
-//# import xmpp.MessageDispatcher;
 //#endif
+import xmpp.JabberDispatcher;
+import xmpp.MessageDispatcher;
 import xmpp.PresenceDispatcher;
 import xmpp.RosterDispatcher;
 
@@ -126,7 +129,6 @@ import xmpp.RosterDispatcher;
 public class Roster
         extends DefForm
         implements
-        JabberListener,
         Runnable,
         LoginListener {
 
@@ -289,7 +291,7 @@ public class Roster
             sd.theStream = a.openJabberStream();
             new Thread(sd.theStream).start();
             setProgress(SR.MS_OPENING_STREAM, 40);
-            sd.theStream.setJabberListener(this);
+            sd.theStream.listener = new JabberDispatcher();
             sd.theStream.initiateStream();
         } catch (Exception e) {
             askReconnect(e);
@@ -314,7 +316,7 @@ public class Roster
         }
         if (sd.account != null) {
             myJid = new Jid(sd.account.getJid());
-            updateContact(sd.account.getNick(), myJid.bareJid, SR.MS_SELF_CONTACT, "self", false);
+            updateContact(sd.account.nick, myJid.bareJid, SR.MS_SELF_CONTACT, "self", false);
         }
     }
 
@@ -602,7 +604,6 @@ public class Roster
                         continue;
                     }
 
-                    c.nick = nick;
                     c.group = group;
                     c.subscr = subscr;
                     c.offline_type = status;
@@ -971,7 +972,7 @@ public class Roster
             myMessage = StringUtils.toExtendedString(myMessage);
             int myPriority = es.getPriority();
 
-            Presence presence = new Presence(myStatus, myPriority, myMessage, sd.account.getNick());
+            Presence presence = new Presence(myStatus, myPriority, myMessage, sd.account.nick);
 
             if (!sd.account.mucOnly) {
                 sd.theStream.send(presence);
@@ -991,15 +992,15 @@ public class Roster
                  * e.printStackTrace();
                  */ }
             makeRosterOffline();
-//#ifdef AUTOSTATUS
-//#             AutoStatus.getInstance().stop();
-//#endif
         }
         Contact c = selfContact();
         c.setStatus(myStatus);
     }
 
-    private void makeRosterOffline() {
+    public void makeRosterOffline() {
+//#ifdef AUTOSTATUS
+//#             AutoStatus.getInstance().stop();
+//#endif        
         synchronized (hContacts) {
             int j = hContacts.size();
             for (int i = 0; i < j; i++) {
@@ -1023,7 +1024,7 @@ public class Roster
         myMessage = StringUtils.toExtendedString(myMessage);
 
         Presence presence = new Presence(status, es.getPriority(), myMessage,
-                nick == null ? sd.account.getNick() : nick);
+                nick == null ? sd.account.nick : nick);
 
         presence.setTo(to);
 
@@ -1380,6 +1381,22 @@ public class Roster
         sd.theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
 //#endif
     }
+    
+    public void loadAccount(boolean launch, int accountIndex) {
+        Account a = sd.account = AccountStorage.createFromStorage(accountIndex);
+        if (a != null) {
+            if (launch) {
+                logoff(null);
+                resetRoster();
+                int loginstatus = Config.getInstance().loginstatus;
+                if (loginstatus >= Presence.PRESENCE_OFFLINE) {
+                    sendPresence(Presence.PRESENCE_INVISIBLE, null);
+                } else {
+                    sendPresence(loginstatus, null);
+                }
+            }
+        }
+    }
 
     public void bindResource(String myJid) {
         Contact self = selfContact();
@@ -1716,49 +1733,9 @@ public class Roster
         if (index >= 0) {
             moveCursorTo(index);
         }
-    }
+    }           
 
-    public void beginConversation() { //todo: verify xmpp version
-        SplashScreen.getInstance().setExit(this);
-        if (sd.theStream.isXmppV1()) {
-            sd.theStream.addBlockListener(new SASLAuth(sd.account, this, sd.theStream));
-        } 
-//#if NON_SASL_AUTH
-//#         else {
-//#             new NonSASLAuth(sd.account, this, sd.theStream);
-//#         }
-//#endif
-    }
-
-    public void connectionTerminated(Exception e) {
-        if (e != null) {
-            errorLog("Exception in parser: " + e.getMessage());
-            askReconnect(e);
-        } else {
-//#ifdef AUTOSTATUS
-//#             AutoStatus.getInstance().stop();
-//#endif
-            setProgress(SR.MS_DISCONNECTED, 0);
-            try {
-                sendPresence(Presence.PRESENCE_OFFLINE, null);
-            } catch (Exception e2) {
-//#if DEBUG
-//#                 e2.printStackTrace();
-//#endif
-            }
-        }
-        makeRosterOffline();
-    }
-
-    public void dispatcherException(Exception e, JabberDataBlock dataBlock) {
-        errorLog("JabberDataBlockDispatcher exception\ndataBlock: " + dataBlock.toString());
-        if (StaticData.Debug) {
-            System.out.println("JabberDataBlockDispatcher exception\ndataBlock: " + dataBlock.toString());
-            e.printStackTrace();
-        }
-    }
-
-    private void askReconnect(final Exception e) {
+    public void askReconnect(final Exception e) {
         //SplashScreen.getInstance().close();
         try {
             sd.theStream.close(); // sends </stream:stream> and closes socket
@@ -2440,7 +2417,7 @@ public class Roster
                 cmdCleanAllMessages();
                 return true;
             case 3:
-                connectionTerminated(new Exception(SR.MS_SIMULATED_BREAK));
+                sd.theStream.listener.connectionTerminated(new Exception(SR.MS_SIMULATED_BREAK));
                 return true;
 //#ifdef POPUPS
 //#ifdef STATS

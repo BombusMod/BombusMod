@@ -27,6 +27,7 @@
 package Client;
 
 //#ifndef WMUC
+import xmpp.Jid;
 import Conference.MucContact;
 //#endif
 import Fonts.FontCache;
@@ -170,8 +171,12 @@ public class Contact extends IconTextElement {
 
     public Contact(final String Nick, final String sJid, final int Status, String subscr) {
         this();
-        nick = Nick;
+        nick = Nick;        
         jid = new Jid(sJid);
+        
+        if (nick == null || nick.length() == 0) {
+            nick = jid.getNode();
+        }
         status = Status;
 
         bareJid = sJid;

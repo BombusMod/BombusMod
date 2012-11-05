@@ -26,6 +26,7 @@
  */
 package Account;
 
+import xmpp.Account;
 import Client.*;
 import locale.SR;
 import ui.SplashScreen;
@@ -108,7 +109,7 @@ public class AccountForm
         passbox = new PasswordInput(SR.MS_PASSWORD, this.item.account.password);
         itemsList.addElement(passbox);
 
-        nickbox = new TextInput(SR.MS_NICKNAME, this.item.account.getNick(), null);
+        nickbox = new TextInput(SR.MS_NICKNAME, this.item.account.nick, null);
         itemsList.addElement(nickbox);
 
         linkRegister = new LinkString(SR.MS_REGISTER_ACCOUNT) {
@@ -245,7 +246,7 @@ public class AccountForm
         item.account.userName = user;
         item.account.server = server;
         item.account.password = pass;
-        item.account.setNick(nickbox.getValue());
+        item.account.nick = nickbox.getValue();
 
         if (showExtended) {
             String hostname = ipbox.getValue();
@@ -307,7 +308,7 @@ public class AccountForm
 
     private void startLogin(boolean login) {
         Config.getInstance().accountIndex = accountSelect.itemsList.size() - 1;
-        Account.loadAccount(login, Config.getInstance().accountIndex);
+        sd.roster.loadAccount(login, Config.getInstance().accountIndex);
         SplashScreen.getInstance().destroyView();
     }
 

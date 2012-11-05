@@ -29,7 +29,7 @@ package xmpp.extensions;
 
 import Client.Contact;
 import Client.Groups;
-import Client.Jid;
+import xmpp.Jid;
 import Client.StaticData;
 import VCard.VCard;
 import VCard.VCardEdit;
