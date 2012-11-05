@@ -151,7 +151,6 @@ public class AndroidCanvasUI extends AndroidDisplayableUI implements CanvasUI {
             } catch (InvocationTargetException e) {
                 e.printStackTrace();
             }
-            setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         }
         
         public AndroidCanvasUI getUI() {
