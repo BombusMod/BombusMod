@@ -1180,14 +1180,14 @@ public class Roster
             }
 
             if (composingState != null) {
-                message.addChildNs(composingState, "http://jabber.org/protocol/chatstates");
+                message.addChildNs(composingState, Message.NS_CHATSTATES);
             }
 
 
             if (!groupchat) {
                 if (body != null) {
                     if (cf.eventDelivery) {
-                        message.addChildNs("request", "urn:xmpp:receipts");
+                        message.addChildNs("request", Message.NS_RECEIPTS);
                     }
                 }
             }
@@ -1210,7 +1210,7 @@ public class Roster
         // FIXME: no need to send <received /> to forwarded messages
         //xep-0184
         message.setAttribute("id", id); // FIXME: should be new id by XEP-0184 version 1.1
-        message.addChildNs("received", "urn:xmpp:receipts").setAttribute("id", id);
+        message.addChildNs("received", Message.NS_RECEIPTS).setAttribute("id", id);
         sd.theStream.send(message);
     }
     private Vector vCardQueue;
@@ -1539,29 +1539,29 @@ public class Roster
             }
             //boolean compose=false;
             if (type.equals("chat") && myStatus != Presence.PRESENCE_INVISIBLE) {
-                if (message.findNamespace("request", "urn:xmpp:receipts") != null) {
+                if (message.findNamespace("request", Message.NS_RECEIPTS) != null) {
                     sendDeliveryMessage(c, data.getAttribute("id"));
                 }
-                JabberDataBlock received = message.findNamespace("received", "urn:xmpp:receipts");
+                JabberDataBlock received = message.findNamespace("received", Message.NS_RECEIPTS);
                 if (received != null) {
                     c.markDelivered(data.getAttribute("id")); //FIXME: compatibilty with XEP-0184 version 1.0
                     c.markDelivered(received.getAttribute("id")); // XEP-0184 Version 1.1
                 }
-                if (message.findNamespace("active", "http://jabber.org/protocol/chatstates") != null) {
+                if (message.findNamespace("active", Message.NS_CHATSTATES) != null) {
                     c.acceptComposing = true;
                     c.showComposing = false;
 //#ifdef RUNNING_MESSAGE
 //#                         setTicker(c, "");
 //#endif
                 }
-                if (message.findNamespace("paused", "http://jabber.org/protocol/chatstates") != null) {
+                if (message.findNamespace("paused", Message.NS_CHATSTATES) != null) {
                     c.acceptComposing = true;
                     c.showComposing = false;
 //#ifdef RUNNING_MESSAGE
 //#                         setTicker(c, "");
 //#endif
                 }
-                if (message.findNamespace("composing", "http://jabber.org/protocol/chatstates") != null) {
+                if (message.findNamespace("composing", Message.NS_CHATSTATES) != null) {
                     playNotify(SOUND_COMPOSING);
                     c.acceptComposing = true;
                     c.showComposing = true;

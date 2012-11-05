@@ -13,6 +13,7 @@ import Info.Version;
 import com.alsutton.jabber.JabberBlockListener;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
+import com.alsutton.jabber.datablocks.Message;
 //#if (android)
 //# import java.security.MessageDigest;
 //#else
@@ -20,6 +21,7 @@ import com.ssttr.crypto.MessageDigest;
 //#endif
 import java.util.Vector;
 import util.Strconv;
+import util.StringUtils;
 
 /**
  *
@@ -142,7 +144,7 @@ public class EntityCaps implements JabberBlockListener {
 //#         }
         //#endif        
         if (cf.eventComposing) {
-            features.addElement("http://jabber.org/protocol/chatstates"); //xep-0085
+            features.addElement(Message.NS_CHATSTATES); //xep-0085
         }//#ifdef ADHOC
         if (cf.adhoc) {
             features.addElement("http://jabber.org/protocol/commands"); //xep-0050
@@ -192,11 +194,11 @@ public class EntityCaps implements JabberBlockListener {
         features.addElement("jabber:x:oob");
         features.addElement("urn:xmpp:ping");
         if (cf.eventDelivery) {
-            features.addElement("urn:xmpp:receipts"); //xep-0184
+            features.addElement(Message.NS_RECEIPTS); //xep-0184
         }
         features.addElement("urn:xmpp:time");
 
-        //sort(features);
+        features = StringUtils.sortVectorOfString(features);
     }
     private static Vector features = new Vector();
 }

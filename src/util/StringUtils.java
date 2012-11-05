@@ -222,6 +222,27 @@ public class StringUtils {
         return result; 
     }
     
+    public static Vector sortVectorOfString(Vector e) {
+        Vector v = new Vector();
+        for(int count = 0; count < e.size(); count++) {
+            String s = (String) e.elementAt(count);
+            int i = 0;
+            for (i = 0; i < v.size(); i++) {
+                int c = s.compareTo((String) v.elementAt(i));
+                if (c < 0) {
+                    v.insertElementAt(s, i);
+                    break;
+                } else if (c == 0) {
+                    break;
+                }
+            }
+            if (i >= v.size()) {
+                v.addElement(s);
+            }
+        }
+        return v;
+    }
+    
 //#ifndef WMUC
     public static String processError(Presence presence, int presenceType, ConferenceGroup group, MucContact muc) {
         XmppError xe=XmppError.findInStanza(presence);
