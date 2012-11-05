@@ -43,6 +43,7 @@ import org.microemu.device.ui.CanvasUI;
 
 import android.content.Context;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.text.InputType;
 import android.view.KeyEvent;
@@ -52,6 +53,8 @@ import android.view.inputmethod.BaseInputConnection;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputMethodManager;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import org.microemu.android.util.AndroidRepaintListener;
 
@@ -133,9 +136,21 @@ public class AndroidCanvasUI extends AndroidDisplayableUI implements CanvasUI {
 
         public CanvasView(Context context, AndroidCanvasUI ui) {
             super(context);
-            this.ui = ui;            
+            this.ui = ui;
             setFocusable(true);
             setFocusableInTouchMode(true);
+            try {
+                Method setLayerTypeMethod = getClass().getMethod("setLayerType", new Class[]{int.class, Paint.class});
+                setLayerTypeMethod.invoke(this, new Object[]{LAYER_TYPE_SOFTWARE, null});
+            } catch (NoSuchMethodException e) {
+                // Older OS, no HW acceleration anyway
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            }
             setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         }
         
