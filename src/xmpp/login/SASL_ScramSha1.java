@@ -185,14 +185,7 @@ public class SASL_ScramSha1 {
         String salt = getAttribute(attrs, 's');
         String r = getAttribute(attrs, 'r');
 
-        byte[] pwd;
-
-        try {
-            pwd = pass.getBytes("UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            return null;
-        }
+        byte[] pwd = Strconv.toUTFArray(pass);
         byte[] clientKey;
         byte[] saltedPassword;
         try {
@@ -216,13 +209,13 @@ public class SASL_ScramSha1 {
                 + serverFirstMessage + ","
                 + clientFinalMessageWithoutProof;
 
-        byte[] clientSignature = getHMAC(storedKey).hmac(authMessage.getBytes());
+        byte[] clientSignature = getHMAC(storedKey).hmac(Strconv.toUTFArray(authMessage));
         byte[] clientProof = new byte[clientKey.length];
         System.arraycopy(clientKey, 0, clientProof, 0, clientKey.length);
         xorB(clientProof, clientSignature);
 
         byte[] serverKey = getHMAC(saltedPassword).hmac("Server Key".getBytes());
-        byte[] serverSignature = getHMAC(serverKey).hmac(authMessage.getBytes());
+        byte[] serverSignature = getHMAC(serverKey).hmac(Strconv.toUTFArray(authMessage));
         lServerSignature = "v=" + util.Strconv.toBase64(serverSignature, serverSignature.length);
 
         return clientFinalMessageWithoutProof + ",p=" + util.Strconv.toBase64(clientProof, clientProof.length);

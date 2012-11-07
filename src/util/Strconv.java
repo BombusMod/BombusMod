@@ -70,33 +70,8 @@ public class Strconv {
     }
     
     public static String toBase64( String source) {
-        String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
-        
-        int len=source.length();
-        char[] out = new char[((len+2)/3)*4];
-        for (int i=0, index=0; i<len; i+=3, index +=4) {
-            boolean trip=false;
-            boolean quad=false;
-            
-            int val = (0xFF & source.charAt(i))<<8;
-            if ((i+1) < len) {
-                val |= (0xFF & source.charAt(i+1));
-                trip = true;
-            }
-            val <<= 8;
-            if ((i+2) < len) {
-                val |= (0xFF & source.charAt(i+2));
-                quad = true;
-            }
-            out[index+3] = alphabet.charAt((quad? (val & 0x3F): 64));
-            val >>= 6;
-            out[index+2] = alphabet.charAt((trip? (val & 0x3F): 64));
-            val >>= 6;
-            out[index+1] = alphabet.charAt(val & 0x3F);
-            val >>= 6;
-            out[index+0] = alphabet.charAt(val & 0x3F);
-        }
-        return new String(out);
+        byte[] inputBytes = toUTFArray(source);        
+        return toBase64(inputBytes, inputBytes.length);
     }
 
     public static String toBase64( byte source[], int len) {
