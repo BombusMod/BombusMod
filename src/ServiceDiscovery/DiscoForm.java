@@ -110,7 +110,7 @@ public class DiscoForm extends ComplexForm{
             
             for (e=fields.elements(); e.hasMoreElements(); ){
                 FormField field=(FormField) e.nextElement();
-                if (!field.hidden) 
+                if (!field.hidden || field.registered) 
                     itemsList.addElement(field.formItem);
             }
         }

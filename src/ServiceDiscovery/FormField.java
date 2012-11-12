@@ -55,7 +55,7 @@ public class FormField {
     public Vector optionsList;
     public String body;
     private boolean numericBoolean;
-    private boolean registered;
+    public boolean registered;
     int formIndex = -1;
     int mediaIndex = -1;
     String mediaUri;
@@ -163,20 +163,20 @@ public class FormField {
                     formItem = new TextInput(label, body, "");
                 }
             }
+        } 
+        // not x-data
+        if (instructions = name.equals("instructions")) {
+            formItem = new MultiLine("Instructions", body);
+        } else if (name.equals("title")) {
+            formItem = new MultiLine(null, body);
+        } else if (name.equals("registered")) {
+            CheckBox cg = new CheckBox("Remove registration", false);
+            formItem = cg;
+            registered = true;
         } else {
-            // not x-data
-            if (instructions = name.equals("instructions")) {
-                formItem = new MultiLine("Instructions", body);
-            } else if (name.equals("title")) {
-                formItem = new MultiLine(null, body);
-            } else if (name.equals("registered")) {
-                CheckBox cg = new CheckBox("Remove registration", false);
-                formItem = cg;
-                registered = true;
-            } else {
-                formItem = new TextInput(label, body, "");
-            }
+            formItem = new TextInput(label, body, "");
         }
+
 
         if (name != null) {
             if (name.equals("key")) {

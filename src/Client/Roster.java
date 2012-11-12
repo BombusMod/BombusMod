@@ -2228,6 +2228,11 @@ public class Roster
                 JabberDataBlock query = unreg.addChildNs("query", "jabber:iq:register");
                 query.addChild("remove", null);
                 sd.theStream.send(unreg);
+                // and for buggy transports
+                JabberDataBlock unreg2 = new Iq(c.jid.toString(), Iq.TYPE_SET, "unreg" + System.currentTimeMillis());
+                JabberDataBlock query2 = unreg2.addChildNs("query", "jabber:iq:register");
+                query2.addChild("remove", null);
+                sd.theStream.send(unreg);
             }
 
             if (c.getGroupType() == Groups.TYPE_NOT_IN_LIST) {
