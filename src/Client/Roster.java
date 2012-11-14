@@ -2214,6 +2214,22 @@ public class Roster
                     c2.setStatus(Presence.PRESENCE_TRASH);
                     c2.offline_type = Presence.PRESENCE_TRASH;
                 }
+            }            
+
+            if (c.getGroupType() == Groups.TYPE_NOT_IN_LIST) {
+                hContacts.removeElement(c);
+                countNewMsgs();
+                reEnumRoster();
+            } else {
+                sd.theStream.send(RosterDispatcher.QueryRoster(c.jid, null, null, "remove"));
+                if (c.jid.isTransport()) {
+                    // for buggy transports
+                    sendPresence(c.jid.toString(), "unsubscribe", null, false);
+                    sendPresence(c.jid.toString(), "unsubscribed", null, false);
+                }
+                sendPresence(c.bareJid, "unsubscribe", null, false);
+                sendPresence(c.bareJid, "unsubscribed", null, false);
+                }
             }
             if (c.jid.isTransport()) {
                 // double-check for empty jid or our server jid
@@ -2232,21 +2248,9 @@ public class Roster
                 JabberDataBlock unreg2 = new Iq(c.jid.toString(), Iq.TYPE_SET, "unreg" + System.currentTimeMillis());
                 JabberDataBlock query2 = unreg2.addChildNs("query", "jabber:iq:register");
                 query2.addChild("remove", null);
-                sd.theStream.send(unreg);
-            }
-
-            if (c.getGroupType() == Groups.TYPE_NOT_IN_LIST) {
-                hContacts.removeElement(c);
-                countNewMsgs();
-                reEnumRoster();
-            } else {
-                sd.theStream.send(RosterDispatcher.QueryRoster(c.jid, null, null, "remove"));
-
-                sendPresence(c.bareJid, "unsubscribe", null, false);
-                sendPresence(c.bareJid, "unsubscribed", null, false);
+                sd.theStream.send(unreg2);
             }
         }
-    }
 
     public void setQuerySign(boolean requestState) {
         querysign = requestState;
