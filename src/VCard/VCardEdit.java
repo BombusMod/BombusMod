@@ -149,22 +149,22 @@ public class VCardEdit
 
 //#if (FILE_IO)
 //#     public void BrowserFilePathNotify(String pathSelected) {
-//#         if (st>0) {
-//#             if (st==1) {
+//#         if (st > 0) {
+//#             if (st == 1) {
 //#                 try {
-//#                     FileIO f=FileIO.createConnection(pathSelected);
-//#                     vcard.photo=f.fileRead();
+//#                     FileIO f = FileIO.createConnection(pathSelected);
+//#                     vcard.photo = f.readFile();
 //#                     vcard.setPhotoType();
 //#                     setPhoto();
 //#                     redraw();
 //#                 } catch (Exception e) {
 //#                 }
 //#             }
-//#             if (st==2 & vcard.hasPhoto) {
+//#             if (st == 2 & vcard.hasPhoto) {
 //#                 //System.out.println(photoType+"->"+getFileType(photoType));
 //#                 String filename = StringUtils.replaceBadChars(vcard.getNickDate());
-//#                 FileIO file=FileIO.createConnection(pathSelected+filename+vcard.getFileType());
-//#                 file.fileWrite(vcard.getPhoto());
+//#                 FileIO file = FileIO.createConnection(pathSelected + filename + vcard.getFileType());
+//#                 file.writeFile(vcard.getPhoto());
 //#             }
 //#         }
 //#     }

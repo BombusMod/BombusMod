@@ -26,188 +26,161 @@
  */
 
 //#ifdef IMPORT_EXPORT
-
-package IE;
-
-import Client.Config;
-import Client.Msg;
-import Archive.MessageArchive;
-import io.file.FileIO;
-import java.util.Enumeration;
-import java.util.Vector;
-import ui.Time;
-import util.Strconv;
-
-/**
- *
- * @author ad
- */
-public class ArchiveTemplates {
- 
-    String filePath;
-
-    //private int returnVal=0;
-
-    private final static String start_item="<START_ITEM>";
-    private final static String end_item="<END_ITEM>";
-
-    private final static String start_date="<START_DATE>";
-    private final static String end_date="<END_DATE>";
-
-    private final static String start_from="<START_FROM>";
-    private final static String end_from="<END_FROM>";
-
-    private final static String start_subj="<START_SUBJ>";
-    private final static String end_subj="<END_SUBJ>";
-
-    private final static String start_body="<START_BODY>";
-    private final static String end_body="<END_BODY>";
-    
-    private int where;
-    
-    private Config cf;
-    
-    MessageArchive archive;
-    
-    /**
-     * Creates a new instance of ArchiveTemplates
-     */
-    public ArchiveTemplates(int direction, int where, String pathSelected) {
-        this.where=where;
-        
-        cf=Config.getInstance();
-        
-        archive=new MessageArchive(where);
-        
-        if (direction==1) {
-                exportData(pathSelected);
-        } else {
-                importArchive(pathSelected);
-        }
-    }
-
-    public Vector importData(String arhPath) {
-        Vector vector=new Vector();
-        byte[] bodyMessage;
-        String archive="";
-        
-        FileIO f=FileIO.createConnection(arhPath);
-        bodyMessage = f.fileRead();
-
-        if (bodyMessage!=null) {
-            if (cf.cp1251) {
-                archive=Strconv.convCp1251ToUnicode(new String(bodyMessage, 0, bodyMessage.length));
-            } else {
-                archive=new String(bodyMessage, 0, bodyMessage.length);
-            }
-        }
-        if (archive!=null) {
-            try {
-                int pos=0;
-                int start_pos=0;
-                int end_pos=0;
-
-                while (true) {
-                    String date=null; String from=null; String subj=null; String body=null; String tempstr=null;
-                    start_pos=archive.indexOf(start_item,pos); end_pos=archive.indexOf(end_item,pos);
-
-                    if (start_pos>-1 && end_pos>-1) {
-                        tempstr=archive.substring(start_pos+start_item.length(), end_pos);
-                        date=findBlock(tempstr, start_date, end_date); 
-                        from=findBlock(tempstr, start_from, end_from); 
-                        subj=findBlock(tempstr, start_subj, end_subj);
-                        body=findBlock(tempstr, start_body, end_body);
-                        //System.out.println("["+date+"]"+from+": "+subj+" "+body+"\r\n");
-                        Msg msg = new Msg(Msg.MESSAGE_TYPE_IN,from,subj,body);
-                        msg.setDayTime(date);
-                        vector.insertElementAt(msg, 0);
-                    } else
-                        break;
-
-                    pos=end_pos+end_item.length();
-                }
-            } catch (Exception e)	{ 
-               //System.out.println(e.toString());
-            }
-        }
-
-        bodyMessage=null;
-        arhPath=null;
-            
-        return vector;
-    }
-    
-    private String findBlock(String source, String _start, String _end){
-        String block = "";
-        int start =source.indexOf(_start); int end = source.indexOf(_end);
-        if (start<0 || end<0)
-            return block;
-        
-        return source.substring(start+_start.length(), end);
-    }
-
-    public final void exportData(String arhPath) {
-        byte[] bodyMessage;
-        int items=getItemCount();
-        StringBuffer body=new StringBuffer();
-
-        for(int i=0; i<items; i++){
-            Msg m=getMessage(i);
-            body.append(start_item)
-            .append("\r\n")
-            .append(start_date)
-            .append(m.getDayTime())
-            .append(end_date)
-            .append("\r\n")
-            .append(start_from)
-            .append(m.from)
-            .append(end_from)
-            .append("\r\n")
-            .append(start_subj);
-            if (m.subject!=null) {
-                body.append(m.subject);
-            }
-            body.append(end_subj)
-            .append("\r\n")
-            .append(start_body)
-            .append(m.body)
-            .append(end_body)
-            .append("\r\n")
-            .append(end_item)
-            .append("\r\n\r\n");
-        }
-
-        if (cf.cp1251) {
-            bodyMessage=Strconv.convUnicodeToCp1251(body.toString()).getBytes();
-        } else {
-            bodyMessage=body.toString().getBytes();
-        }
-
-        FileIO file=FileIO.createConnection(arhPath+((where==1)?"archive_":"template_")+Time.localDate()+".txt");
-        file.fileWrite(bodyMessage);
-
-        body=null;
-        arhPath=null;
-        
-        archive.close();
-    }
-    
-    public int getItemCount() {
-	return archive.size();
-    }
-    
-    public Msg getMessage(int index) {
-	return archive.msg(index);
-    }
-    
-    private void importArchive(String arhPath) {
-        Vector history=importData(arhPath);
-        
-        for (Enumeration messages=history.elements(); messages.hasMoreElements(); )  {
-            MessageArchive.store((Msg) messages.nextElement(), where);
-        }
-        archive.close();
-    }
-}
-
+//# 
+//# package IE;
+//# 
+//# import Client.Config;
+//# import Client.Msg;
+//# import Archive.MessageArchive;
+//# import io.file.FileIO;
+//# import java.util.Enumeration;
+//# import java.util.Vector;
+//# import ui.Time;
+//# import util.Strconv;
+//# 
+//# /**
+//#  *
+//#  * @author ad
+//#  */
+//# public class ArchiveTemplates {
+//#  
+//#     String filePath;
+//# 
+//#     //private int returnVal=0;
+//# 
+//#     private final static String start_item="<START_ITEM>";
+//#     private final static String end_item="<END_ITEM>";
+//# 
+//#     private final static String start_date="<START_DATE>";
+//#     private final static String end_date="<END_DATE>";
+//# 
+//#     private final static String start_from="<START_FROM>";
+//#     private final static String end_from="<END_FROM>";
+//# 
+//#     private final static String start_subj="<START_SUBJ>";
+//#     private final static String end_subj="<END_SUBJ>";
+//# 
+//#     private final static String start_body="<START_BODY>";
+//#     private final static String end_body="<END_BODY>";
+//#     
+//#     private int where;
+//#     
+//#     private Config cf;
+//#     
+//#     MessageArchive archive;
+//#     
+//#     /**
+//#      * Creates a new instance of ArchiveTemplates
+//#      */
+//#     public ArchiveTemplates(int direction, int where, String pathSelected) {
+//#         this.where=where;
+//#         
+//#         cf=Config.getInstance();
+//#         
+//#         archive=new MessageArchive(where);
+//#         
+//#         if (direction==1) {
+//#                 exportData(pathSelected);
+//#         } else {
+//#                 importArchive(pathSelected);
+//#         }
+//#     }
+//# 
+//#     public Vector importData(String arhPath) {
+//#         Vector vector = new Vector();
+//#         FileIO f = FileIO.createConnection(arhPath);
+//#         String archiveData = f.fileReadUtf();
+//# 
+//#         if (!archiveData.equals("")) {
+//#             try {
+//#                 int pos = 0, start_pos, end_pos;
+//#                 while (true) {
+//#                     String date, from, subj, body, tempstr;
+//#                     start_pos = archiveData.indexOf(start_item, pos);
+//#                     end_pos = archiveData.indexOf(end_item, pos);
+//# 
+//#                     if (start_pos > -1 && end_pos > -1) {
+//#                         tempstr = archiveData.substring(start_pos + start_item.length(), end_pos);
+//#                         date = findBlock(tempstr, start_date, end_date);
+//#                         from = findBlock(tempstr, start_from, end_from);
+//#                         subj = findBlock(tempstr, start_subj, end_subj);
+//#                         body = findBlock(tempstr, start_body, end_body);
+//#                         //System.out.println("["+date+"]"+from+": "+subj+" "+body+"\r\n");
+//#                         Msg msg = new Msg(Msg.MESSAGE_TYPE_IN, from, subj, body);
+//#                         msg.setDayTime(date);
+//#                         vector.insertElementAt(msg, 0);
+//#                     } else {
+//#                         break;
+//#                     }
+//#                     pos = end_pos + end_item.length();
+//#                 }
+//#             } catch (Exception e) {
+//#                 //System.out.println(e.toString());
+//#             }
+//#         }
+//#         return vector;
+//#     }
+//#     
+//#     private String findBlock(String source, String _start, String _end){
+//#         String block = "";
+//#         int start =source.indexOf(_start); int end = source.indexOf(_end);
+//#         if (start<0 || end<0)
+//#             return block;
+//#         
+//#         return source.substring(start+_start.length(), end);
+//#     }
+//# 
+//#     public final void exportData(String arhPath) {
+//#         int items=getItemCount();
+//#         StringBuffer body=new StringBuffer();
+//# 
+//#         for(int i=0; i<items; i++){
+//#             Msg m=getMessage(i);
+//#             body.append(start_item)
+//#             .append("\r\n")
+//#             .append(start_date)
+//#             .append(m.getDayTime())
+//#             .append(end_date)
+//#             .append("\r\n")
+//#             .append(start_from)
+//#             .append(m.from)
+//#             .append(end_from)
+//#             .append("\r\n")
+//#             .append(start_subj);
+//#             if (m.subject!=null) {
+//#                 body.append(m.subject);
+//#             }
+//#             body.append(end_subj)
+//#             .append("\r\n")
+//#             .append(start_body)
+//#             .append(m.body)
+//#             .append(end_body)
+//#             .append("\r\n")
+//#             .append(end_item)
+//#             .append("\r\n\r\n");
+//#         }
+//# 
+//#         FileIO file = FileIO.createConnection(arhPath+((where==1)?"archive_":"template_")+Time.localDate()+".txt");
+//#         file.fileWriteUtf(body.toString());        
+//#         archive.close();
+//#     }
+//#     
+//#     public int getItemCount() {
+//# 	return archive.size();
+//#     }
+//#     
+//#     public Msg getMessage(int index) {
+//# 	return archive.msg(index);
+//#     }
+//#     
+//#     private void importArchive(String arhPath) {
+//#         Vector history=importData(arhPath);
+//#         
+//#         for (Enumeration messages=history.elements(); messages.hasMoreElements(); )  {
+//#             MessageArchive.store((Msg) messages.nextElement(), where);
+//#         }
+//#         archive.close();
+//#     }
+//# }
+//# 
 //#endif

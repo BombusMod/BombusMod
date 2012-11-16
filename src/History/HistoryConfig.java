@@ -26,102 +26,99 @@
  */
 
 //#ifdef HISTORY
-
-package History;
-
-import Menu.MenuCommand;
-import io.file.browse.Browser;
-import io.file.browse.BrowserListener;
-import locale.SR;
-import ui.VirtualList;
-import ui.controls.form.CheckBox;
-import ui.controls.form.DefForm;
-import ui.controls.form.LinkString;
-import ui.controls.form.TextInput;
-import images.RosterIcons;
-
-/**
- *
- * @author ad
- */
-public class HistoryConfig 
-        extends DefForm
-        implements BrowserListener {
-
-    MenuCommand cmdPath=new MenuCommand(SR.MS_SELECT_HISTORY_FOLDER, MenuCommand.SCREEN, 2, RosterIcons.ICON_FILEMAN);
-
-    private TextInput historyFolder;
-    
-    private CheckBox loadHistory;
-    private CheckBox saveHistory;
-    private CheckBox savePres;
-    private CheckBox saveConfHistory;
-    private CheckBox saveConfPres;
-    private CheckBox win1251;
-    private LinkString selectFolder;
+//# 
+//# package History;
+//# 
+//# import Menu.MenuCommand;
+//# import io.file.browse.Browser;
+//# import io.file.browse.BrowserListener;
+//# import locale.SR;
+//# import ui.VirtualList;
+//# import ui.controls.form.CheckBox;
+//# import ui.controls.form.DefForm;
+//# import ui.controls.form.LinkString;
+//# import ui.controls.form.TextInput;
+//# import images.RosterIcons;
+//# 
+//# /**
+//#  *
+//#  * @author ad
+//#  */
+//# public class HistoryConfig 
+//#         extends DefForm
+//#         implements BrowserListener {
+//# 
+//#     MenuCommand cmdPath=new MenuCommand(SR.MS_SELECT_HISTORY_FOLDER, MenuCommand.SCREEN, 2, RosterIcons.ICON_FILEMAN);
+//# 
+//#     private TextInput historyFolder;
+//#     
+//#     private CheckBox loadHistory;
+//#     private CheckBox saveHistory;
+//#     private CheckBox savePres;
+//#     private CheckBox saveConfHistory;
+//#     private CheckBox saveConfPres;
+//#     private LinkString selectFolder;
 //#ifdef DETRANSLIT
 //#     private CheckBox translit;
 //#endif
-    
-    /** Creates a new instance of HistoryConfig */
-    public HistoryConfig() {
-        super(SR.MS_HISTORY_OPTIONS);
-        
+//#     
+//#     /** Creates a new instance of HistoryConfig */
+//#     public HistoryConfig() {
+//#         super(SR.MS_HISTORY_OPTIONS);
+//#         
 //#ifdef LAST_MESSAGES
-        loadHistory = new CheckBox(SR.MS_LAST_MESSAGES, cf.lastMessages); itemsList.addElement(loadHistory);
+//#         loadHistory = new CheckBox(SR.MS_LAST_MESSAGES, cf.lastMessages); itemsList.addElement(loadHistory);
 //#endif
-        saveHistory = new CheckBox(SR.MS_SAVE_HISTORY, cf.msgLog); itemsList.addElement(saveHistory);
-        savePres = new CheckBox(SR.MS_SAVE_PRESENCES, cf.msgLogPresence); itemsList.addElement(savePres);
-        saveConfHistory = new CheckBox(SR.MS_SAVE_HISTORY_CONF, cf.msgLogConf); itemsList.addElement(saveConfHistory);
-        saveConfPres = new CheckBox(SR.MS_SAVE_PRESENCES_CONF, cf.msgLogConfPresence); itemsList.addElement(saveConfPres);
-        win1251 = new CheckBox(SR.MS_1251_CORRECTION, cf.cp1251); itemsList.addElement(win1251);
+//#         saveHistory = new CheckBox(SR.MS_SAVE_HISTORY, cf.msgLog); itemsList.addElement(saveHistory);
+//#         savePres = new CheckBox(SR.MS_SAVE_PRESENCES, cf.msgLogPresence); itemsList.addElement(savePres);
+//#         saveConfHistory = new CheckBox(SR.MS_SAVE_HISTORY_CONF, cf.msgLogConf); itemsList.addElement(saveConfHistory);
+//#         saveConfPres = new CheckBox(SR.MS_SAVE_PRESENCES_CONF, cf.msgLogConfPresence); itemsList.addElement(saveConfPres);        
 //#ifdef DETRANSLIT
-        translit = new CheckBox(SR.MS_1251_TRANSLITERATE_FILENAMES, cf.transliterateFilenames); itemsList.addElement(translit);
+//#         translit = new CheckBox(SR.MS_1251_TRANSLITERATE_FILENAMES, cf.transliterateFilenames); itemsList.addElement(translit);
 //#endif
-
-        historyFolder = new TextInput(SR.MS_HISTORY_FOLDER, cf.msgPath, null); itemsList.addElement(historyFolder);
-        selectFolder=new LinkString(SR.MS_SELECT_HISTORY_FOLDER) { public void doAction() { selectFolder(); } };
-        itemsList.addElement(selectFolder);
-        moveCursorTo(0);        
-        
-    }
-
-    public void BrowserFilePathNotify(String pathSelected) {
-        historyFolder.setValue(pathSelected);
-    }
-
-    public void menuAction(MenuCommand command, VirtualList displayable) {
-        if (command==cmdPath) {
-            selectFolder();
-            return;
-        }
-        super.menuAction(command, displayable);
-        destroyView();
-    }
-    
-    public void selectFolder() {
-        new Browser(null, this, true);
-    }
-
-    public void cmdOk() {
+//# 
+//#         historyFolder = new TextInput(SR.MS_HISTORY_FOLDER, cf.msgPath, null); itemsList.addElement(historyFolder);
+//#         selectFolder=new LinkString(SR.MS_SELECT_HISTORY_FOLDER) { public void doAction() { selectFolder(); } };
+//#         itemsList.addElement(selectFolder);
+//#         moveCursorTo(0);        
+//#         
+//#     }
+//# 
+//#     public void BrowserFilePathNotify(String pathSelected) {
+//#         historyFolder.setValue(pathSelected);
+//#     }
+//# 
+//#     public void menuAction(MenuCommand command, VirtualList displayable) {
+//#         if (command==cmdPath) {
+//#             selectFolder();
+//#             return;
+//#         }
+//#         super.menuAction(command, displayable);
+//#         destroyView();
+//#     }
+//#     
+//#     public void selectFolder() {
+//#         new Browser(null, this, true);
+//#     }
+//# 
+//#     public void cmdOk() {
 //#ifdef LAST_MESSAGES
-        cf.lastMessages=loadHistory.getValue();
+//#         cf.lastMessages=loadHistory.getValue();
 //#endif
-        cf.msgLog=saveHistory.getValue();
-        cf.msgLogPresence=savePres.getValue();
-        cf.msgLogConf=saveConfHistory.getValue();
-        cf.msgLogConfPresence=saveConfPres.getValue();
-        cf.cp1251=win1251.getValue();
+//#         cf.msgLog=saveHistory.getValue();
+//#         cf.msgLogPresence=savePres.getValue();
+//#         cf.msgLogConf=saveConfHistory.getValue();
+//#         cf.msgLogConfPresence=saveConfPres.getValue();        
 //#ifdef DETRANSLIT
-        cf.transliterateFilenames=translit.getValue();
+//#         cf.transliterateFilenames=translit.getValue();
 //#endif
-        cf.msgPath=historyFolder.getValue();
-        cf.saveToStorage();
-    }
-    public void commandState() {
-        super.commandState();
-        addMenuCommand(cmdPath);        
-    }
-}
-
+//#         cf.msgPath=historyFolder.getValue();
+//#         cf.saveToStorage();
+//#     }
+//#     public void commandState() {
+//#         super.commandState();
+//#         addMenuCommand(cmdPath);        
+//#     }
+//# }
+//# 
 //#endif

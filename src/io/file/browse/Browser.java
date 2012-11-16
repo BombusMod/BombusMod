@@ -235,17 +235,17 @@
 //#             
 //#             if (txts.indexOf(ext)>=0) {
 //#                 iconIndex=RosterIcons.ICON_PRIVACY_ACTIVE;
-//#                 type=3;
+//#                 type = ShowFile.TYPE_TEXT;
 //#                 return;
 //#             }
 //#             if (imgs.indexOf(ext)>=0) {
 //#                 iconIndex=RosterIcons.ICON_IMAGES_INDEX;
-//#                 type=2;
+//#                 type = ShowFile.TYPE_IMAGE;
 //#                 return;
 //#             }
 //#             if (snds.indexOf(ext)>=0) {
 //#                 iconIndex=RosterIcons.ICON_SOUNDS_INDEX;
-//#                 type=1;
+//#                 type = ShowFile.TYPE_TEXT;
 //#                 return;
 //#             }
 //#         }

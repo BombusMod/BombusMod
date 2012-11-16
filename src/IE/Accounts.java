@@ -89,13 +89,11 @@
 //#     public final void importData(boolean fromResource) {
 //#         String accounts = "";
 //# 
-//#         byte[] bodyMessage = null;
-//# 
 //#         if (!fromResource) {
 //#             FileIO fileIO = FileIO.createConnection(file);
-//#             bodyMessage = fileIO.fileRead();
+//#             accounts = fileIO.fileReadUtf();
 //#         } else {
-//#             bodyMessage = new byte[4096];
+//#             byte[] bodyMessage = new byte[4096];
 //#             try {
 //#                 InputStream in = InternalResource.getResourceAsStream("/def_accounts.txt");
 //#                 if (in != null) {
@@ -106,11 +104,11 @@
 //#                     ex.printStackTrace();
 //#                 }
 //#             }
+//#             if (bodyMessage != null) {
+//#                 accounts = new String(bodyMessage, 0, bodyMessage.length);
+//#             }
 //#         }
 //# 
-//#         if (bodyMessage != null) {
-//#             accounts = new String(bodyMessage, 0, bodyMessage.length);
-//#         }
 //#         if (accounts != null) {
 //#             try {
 //#                 int pos = 0;
@@ -157,9 +155,6 @@
 //#             } catch (Exception e) {
 //#             }
 //#         }
-//# 
-//#         accounts = null;
-//#         bodyMessage = null;
 //#     }
 //# 
 //#     public void rmsUpdate() {
@@ -212,10 +207,8 @@
 //#             body.append(account);
 //#         }
 //# 
-//#         byte[] bodyMessage = body.toString().getBytes();
-//# 
 //#         FileIO fileIO = FileIO.createConnection(file + "accounts_" + Time.localDate() + ".txt");
-//#         fileIO.fileWrite(bodyMessage);
+//#         fileIO.fileWriteUtf(body.toString());
 //#     }
 //# 
 //#     private void getAccounts() {

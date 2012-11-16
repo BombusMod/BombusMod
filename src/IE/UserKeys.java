@@ -119,7 +119,7 @@
 //#         }
 //# 
 //#         FileIO file = FileIO.createConnection(path + "userkeys_" + Time.localDate() + ".txt");
-//#         file.fileWrite(str.toString().getBytes());
+//#         file.writeFile(str.toString().getBytes());
 //#     }
 //# }
 //# 

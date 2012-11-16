@@ -150,8 +150,7 @@ public class Config {
 //#     public boolean msgLogPresence = false;
 //#     public boolean msgLogConf = false;
 //#     public boolean msgLogConfPresence = false;
-//#endif
-    public boolean cp1251 = true;
+//#endif    
 //#ifndef WMUC
     public String defGcRoom = "bombusmod@conference.jabber.ru";
 //#endif
@@ -359,7 +358,7 @@ public class Config {
             inputStream.readBoolean();
             inputStream.readBoolean();
 //#endif
-            cp1251 = inputStream.readBoolean();
+            inputStream.readBoolean(); // was cp1251
 //#ifdef AUTOSTATUS
 //#             autoAwayDelay = inputStream.readInt();
 //#else
@@ -625,7 +624,7 @@ public class Config {
             outputStream.writeBoolean(false);
             outputStream.writeBoolean(false);
 //#endif
-            outputStream.writeBoolean(cp1251);
+            outputStream.writeBoolean(false); // was cp1251
 //#ifdef AUTOSTATUS
 //#             outputStream.writeInt(autoAwayDelay);
 //#else

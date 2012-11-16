@@ -26,118 +26,179 @@
  */
 
 //#ifdef FILE_IO
-
-package io.file;
-
-import Client.Config;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Vector;
-
-/**
- *
- * @author evgs
- */
-public abstract class FileIO {
-    protected final static int NOT_DETECTED=0;
-    protected final static int NONE=-1;
-    protected final static int JSR75=1;
-    protected final static int COM_MOTOROLA=2;
-    protected final static int COM_SIEMENS=3;
-    protected final static int JSR75_SIEMENS=4;
-    
-    public final static int MAX_NAME_LEN=48;
-    
-    protected static int fileSystemType;
-    
-    protected String fileName;
-    
-    public static FileIO createConnection(String fileName) {        
+//# 
+//# package io.file;
+//# 
+//# import Client.Config;
+//# import Client.StaticData;
+//# import java.io.IOException;
+//# import java.io.InputStream;
+//# import java.io.InputStreamReader;
+//# import java.io.OutputStream;
+//# import java.util.Vector;
+//# 
+//# /**
+//#  *
+//#  * @author evgs
+//#  */
+//# public abstract class FileIO {
+//#     protected final static int NOT_DETECTED=0;
+//#     protected final static int NONE=-1;
+//#     protected final static int JSR75=1;
+//#     protected final static int COM_MOTOROLA=2;
+//#     protected final static int COM_SIEMENS=3;
+//#     protected final static int JSR75_SIEMENS=4;
+//#     
+//#     public final static int MAX_NAME_LEN=48;
+//#     
+//#     protected static int fileSystemType;
+//#     
+//#     protected String fileName;
+//#     
+//#     public static FileIO createConnection(String fileName) {        
 //#if android
 //#             return new FileJSR75(fileName);
 //#else            
-        if (fileSystemType==NOT_DETECTED) {
-            fileSystemType=NONE;
-
-            try {
-                if (Config.getInstance().phoneManufacturer!=Config.JBED)
-                    Class.forName("javax.microedition.io.file.FileConnection");
-                fileSystemType=JSR75;
-                if (Config.getInstance().phoneManufacturer==Config.SIEMENS) fileSystemType=JSR75_SIEMENS;
-            } catch (Exception e) {
-                try {
-                    Class.forName("com.motorola.io.FileConnection");
-                    fileSystemType=COM_MOTOROLA;
-                } catch (Exception e2) {
-                    try {
-                        Class.forName("com.siemens.mp.io.File");
-                        fileSystemType=COM_SIEMENS;
-                    } catch (Exception e3) {}
-                }
-            }
-            //System.out.println("Detected fs:"+fileSystemType );
-        }
-        switch (fileSystemType) {
-            case JSR75_SIEMENS:
-            case JSR75: return new FileJSR75(fileName);
+//#         if (fileSystemType==NOT_DETECTED) {
+//#             fileSystemType=NONE;
+//# 
+//#             try {
+//#                 if (Config.getInstance().phoneManufacturer!=Config.JBED)
+//#                     Class.forName("javax.microedition.io.file.FileConnection");
+//#                 fileSystemType=JSR75;
+//#                 if (Config.getInstance().phoneManufacturer==Config.SIEMENS) fileSystemType=JSR75_SIEMENS;
+//#             } catch (Exception e) {
+//#                 try {
+//#                     Class.forName("com.motorola.io.FileConnection");
+//#                     fileSystemType=COM_MOTOROLA;
+//#                 } catch (Exception e2) {
+//#                     try {
+//#                         Class.forName("com.siemens.mp.io.File");
+//#                         fileSystemType=COM_SIEMENS;
+//#                     } catch (Exception e3) {}
+//#                 }
+//#             }
+//#             //System.out.println("Detected fs:"+fileSystemType );
+//#         }
+//#         switch (fileSystemType) {
+//#             case JSR75_SIEMENS:
+//#             case JSR75: return new FileJSR75(fileName);
 //#ifndef NOMMEDIA
-            case COM_MOTOROLA: return new FileComMotorolaIo(fileName);
-            case COM_SIEMENS: return new FileSiemens(fileName);
+//#             case COM_MOTOROLA: return new FileComMotorolaIo(fileName);
+//#             case COM_SIEMENS: return new FileSiemens(fileName);
 //#endif
-        }
-        return null;
+//#         }
+//#         return null;
 //#endif            
-    }
-    
-    public Vector fileList(boolean directoriesOnly) throws IOException{
-        if (fileName.length()==0) return rootDirs();
-        Vector dir=dirs(directoriesOnly);
-        dir.addElement("../");
-        return dir;
-    }
-    
-    public byte[] fileRead() {
-        InputStream is=null;
-        try { is=openInputStream(); } catch (IOException e) {}
-        int fileSize = 0;
-        try { fileSize =(int)fileSize(); } catch (IOException e) {}
-        byte[] b=new byte[fileSize];
-        try { is.read(b); is.close(); } catch (IOException e) {}
-        try { close(); } catch (IOException e) {}
-        return b;
-    }
-    
-    public void fileWrite(byte[] bytes) {
-        try { delete(); } catch (IOException ex) { }
-        OutputStream os = null;
-        try { os = openOutputStream(0); }
-            catch (IOException ex) { }
-        try { if (os != null) os.write(bytes); }
-            catch (IOException ex) { }
-        try { if (os != null) { os.close(); os.flush(); } }
-            catch (IOException ex) { }
-        try { close(); }
-            catch (IOException ex) { }
-    }
-    
-    public abstract OutputStream openOutputStream() throws IOException;
-   
-    public abstract InputStream openInputStream() throws IOException;
-    
-    public abstract void close() throws IOException;
-    
-    public abstract void delete() throws IOException;
-    
-    public abstract void rename(String newName) throws IOException;
-    
-    public abstract long fileSize() throws IOException;
-
-    protected abstract Vector rootDirs();
-    
-    protected abstract Vector dirs(boolean directoriesOnly) throws IOException;
-
-    public abstract OutputStream openOutputStream(long pos_eof) throws IOException;
-}
-
+//#     }
+//#     
+//#     public Vector fileList(boolean directoriesOnly) throws IOException{
+//#         if (fileName.length()==0) return rootDirs();
+//#         Vector dir=dirs(directoriesOnly);
+//#         dir.addElement("../");
+//#         return dir;
+//#     }
+//#     
+//#     public byte[] readFile() {
+//#         InputStream is = null;
+//#         try {
+//#             is = openInputStream();
+//#             int fileSize = 0;
+//#             fileSize = (int) fileSize();
+//#             byte[] b = new byte[fileSize];
+//#             is.read(b);
+//#             is.close();
+//#             close();
+//#             return b;
+//#         } catch (IOException ex) {
+//#             if (StaticData.Debug)
+//#                 ex.printStackTrace();
+//#         } finally {
+//#             try {
+//#                 is.close();
+//#             } catch (IOException ex) {
+//#                 if (StaticData.Debug)
+//#                     ex.printStackTrace();
+//#             }
+//#         }
+//#         return null;
+//#     }
+//#     
+//#     public void writeFile(byte[] rawBytes) {
+//#         try {
+//#             OutputStream os = appendOutputStream();
+//#             if (os != null) {
+//#                 os.write(rawBytes);
+//#             }
+//#             if (os != null) {
+//#                 os.close();
+//#                 os.flush();
+//#             }
+//#             close();
+//#         } catch (IOException ex) {
+//#             if (StaticData.Debug)
+//#                 ex.printStackTrace();
+//#         }
+//#     }
+//#     
+//#     public String fileReadUtf() {
+//#         InputStreamReader is = null;
+//#         try {
+//#             is = new InputStreamReader(openInputStream(), "UTF-8");
+//#             int fileSize = (int) fileSize();
+//#             char[] cbuff = new char[fileSize];
+//#             is.read(cbuff);
+//#             is.close();
+//#             close();
+//#             return new String(cbuff);
+//#         } catch (IOException ex) {
+//#             if (StaticData.Debug)
+//#                 ex.printStackTrace();
+//#         } finally {
+//#             try {
+//#                 is.close();
+//#             } catch (IOException ex) {
+//#                 if (StaticData.Debug)
+//#                     ex.printStackTrace();
+//#             }
+//#         }
+//#         return null;
+//#     }
+//#     
+//#     public void fileWriteUtf(String src) {
+//#         try {
+//#             OutputStream os = appendOutputStream();
+//#             if (os != null) {
+//#                 os.write(src.getBytes("UTF-8"));
+//#             }
+//#             if (os != null) {
+//#                 os.close();
+//#                 os.flush();
+//#             }
+//#             close();
+//#         } catch (IOException ex) {
+//#             if (StaticData.Debug)
+//#                 ex.printStackTrace();
+//#         }
+//#     }
+//#     
+//#     public abstract OutputStream openOutputStream() throws IOException;
+//#    
+//#     public abstract InputStream openInputStream() throws IOException;
+//#     
+//#     public abstract void close() throws IOException;
+//#     
+//#     public abstract void delete() throws IOException;
+//#     
+//#     public abstract void rename(String newName) throws IOException;
+//#     
+//#     public abstract long fileSize() throws IOException;
+//# 
+//#     protected abstract Vector rootDirs();
+//#     
+//#     protected abstract Vector dirs(boolean directoriesOnly) throws IOException;
+//# 
+//#     public abstract OutputStream appendOutputStream() throws IOException;
+//# }
+//# 
 //#endif

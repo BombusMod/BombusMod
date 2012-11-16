@@ -194,7 +194,7 @@ public class VCardView
 //#             //System.out.println(photoType+"->"+getFileType(photoType));
 //#             String filename = StringUtils.replaceBadChars(vcard.getNickDate());
 //#             FileIO file=FileIO.createConnection(pathSelected+filename+vcard.getFileType());
-//#             file.fileWrite(vcard.getPhoto());
+//#             file.writeFile(vcard.getPhoto());
 //#         }
 //#     }
 //#endif

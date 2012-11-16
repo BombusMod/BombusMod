@@ -35,10 +35,9 @@
 //# import io.file.FileIO;
 //# import java.io.IOException;
 //# import java.io.InputStream;
+//# import java.io.InputStreamReader;
 //# import java.util.Vector;
-//# import util.Strconv;
 //# import util.StringUtils;
-//# import ui.VirtualList;
 //# 
 //# /**
 //#  *
@@ -52,7 +51,7 @@
 //#     private String fileName="";
 //#     public final long fileSize;
 //# 
-//#     private byte[] current_block = null;
+//#     private char[] current_block = null;
 //#     private long current_index = -1;
 //#     private int first_m = -1; // index of '<' in first "<m>" in current_block
 //#     private int last_m = -1; //  index of '<' in last "</m>" in current_block
@@ -116,10 +115,10 @@
 //#     private void readByteBlock(long pos) {
 //#         FileIO f = FileIO.createConnection(fileName);
 //#         if (current_block == null) {
-//#             current_block = new byte[BLOCK_SIZE];
+//#             current_block = new char[BLOCK_SIZE];
 //#         }
 //#         try {
-//#             InputStream is=f.openInputStream();
+//#             InputStreamReader is = new InputStreamReader(f.openInputStream(), "UTF-8");
 //#             is.skip(pos);
 //#             is.read(current_block);
 //#             is.close();
@@ -137,12 +136,8 @@
 //#         current_index = pos;
 //#     }
 //# 
-//#     private String getStrFromBytes(int off, int length) {
-//#         String str = new String(current_block, off, length);
-//#         if (cf.cp1251) {
-//#             return Strconv.convCp1251ToUnicode(str);
-//#         }
-//#         return str;
+//#     private String getSubstr(int off, int length) {
+//#         return new String(current_block).substring(off, off + length);        
 //#     }
 //# 
 //#     private long getCorrectIndex(long pos) {
@@ -191,11 +186,11 @@
 //# 
 //#                     do {
 //#                         if (forward) {
-//#                             bigMessage.append(getStrFromBytes(start, current_block.length-start));
+//#                             bigMessage.append(getSubstr(start, current_block.length-start));
 //#                             readBlock(forward);
 //#                             end = findCloseStr(current_block, 0, true, 'm');
 //#                         } else {
-//#                             bigMessage.insert(0, getStrFromBytes(0, end));
+//#                             bigMessage.insert(0, getSubstr(0, end));
 //#                             readBlock(forward);
 //#                             start = findOpenStr(current_block, current_block.length-3, false, 'm');
 //#                         }
@@ -204,10 +199,10 @@
 //#                     } while (start < 0 || end < 0);
 //# 
 //#                     if (forward) {
-//#                         bigMessage.append(getStrFromBytes(start + 3, end - start - 3));
+//#                         bigMessage.append(getSubstr(start + 3, end - start - 3));
 //#                         can_step_next = !inEnd();
 //#                     } else {
-//#                         bigMessage.insert(0, getStrFromBytes(start + 3, end - start - 3));
+//#                         bigMessage.insert(0, getSubstr(start + 3, end - start - 3));
 //#                         can_step_back = !inBegin();
 //#                     }
 //# 
@@ -244,7 +239,7 @@
 //#                 first_m = start;
 //#             last_m = end;
 //# 
-//#             String current = getStrFromBytes(start + 3, end - start - 3);
+//#             String current = getSubstr(start + 3, end - start - 3);
 //#             listMessages.addElement(getMessageItem(processMessage(
 //#                     findBlock(current, "t"),
 //#                     findBlock(current, "d"),
@@ -256,7 +251,7 @@
 //#     }
 //# 
 //#     // Ищет строку <m> в b и возвращает индекс '<' в b
-//#     private int findOpenStr(byte[] b, int i, boolean forward, char ch) {
+//#     private int findOpenStr(char[] b, int i, boolean forward, char ch) {
 //#         while ((i >= 0) && (i < (b.length-2))) {
 //#             if ((b[i] == '<') && (b[i + 1] == ch) && (b[i + 2] == '>'))
 //#                 return i;
@@ -266,7 +261,7 @@
 //#     }
 //# 
 //#     // Ищет строку </m> в b и возвращает индекс '<' в b
-//#     private int findCloseStr(byte[] b, int i, boolean forward, char ch) {
+//#     private int findCloseStr(char[] b, int i, boolean forward, char ch) {
 //#         while ((i >= 0) && (i < (b.length-3))) {
 //#             if ((b[i] == '<') && (b[i + 1] == '/') && (b[i + 2] == ch) && (b[i + 3] == '>'))
 //#                 return i;

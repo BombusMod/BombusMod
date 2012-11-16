@@ -26,109 +26,118 @@
  */
 
 //#ifdef FILE_IO
-
-package io.file.browse;
-
-import io.file.FileIO;
+//# 
+//# package io.file.browse;
+//# 
+//# import Client.StaticData;
+//# import io.file.FileIO;
+//# import java.io.IOException;
 //#ifndef NOMMEDIA
-import java.io.IOException;
-import javax.microedition.media.Manager;
-import javax.microedition.media.MediaException;
-import javax.microedition.media.Player;
+//# import javax.microedition.media.Manager;
+//# import javax.microedition.media.MediaException;
+//# import javax.microedition.media.Player;
 //#endif
-import javax.microedition.lcdui.Image;
-import locale.SR;
-import ui.controls.form.DefForm;
-import ui.controls.form.ImageItem;
-import ui.controls.form.MultiLine;
-import util.Strconv;
-
-/**
- *
- * @author User
- */
-public class ShowFile extends DefForm {
-
-    private int len;
-    private byte[] b;
+//# import javax.microedition.lcdui.Image;
+//# import locale.SR;
+//# import ui.controls.form.DefForm;
+//# import ui.controls.form.ImageItem;
+//# import ui.controls.form.MultiLine;
+//# 
+//# /**
+//#  *
+//#  * @author User
+//#  */
+//# public class ShowFile extends DefForm {
+//#     
+//#     public static final int TYPE_TEXT = 3;
+//#     public static final int TYPE_IMAGE = 2;
+//#     public static final int TYPE_MEDIA = 1;
+//# 
+//#     private int len;
+//#     private byte[] rawBytes;
+//#     private String txtData;
 //#ifndef NOMMEDIA
-    private Player pl;
+//#     private Player pl;
 //#endif
-    int type;
-
-    public ShowFile(String fileName, int type) {
-        super(fileName);
-        this.type = type;
-        load(fileName);
+//#     int type;
+//# 
+//#     public ShowFile(String fileName, int type) {
+//#         super(fileName);
+//#         this.type = type;
+//#         load(fileName);
 //#ifndef NOMMEDIA        
-        if (type == 1) {
-            play(fileName);
-        }
+//#         if (type == TYPE_MEDIA) {
+//#             play(fileName);
+//#         }
 //#endif        
-        if (type == 2) {
-            view(fileName);
-        }
-        if (type == 3) {
-            read(fileName);
-        }
-    }
-
-    private void load(String file) {
-        try {
-            FileIO f = FileIO.createConnection(file);
-            b = f.fileRead();
-            len = b.length;
-            f.close();
-        } catch (Exception e) {
-        }
-    }
-
-    private void view(String file) {
-		try{
-			Image img = Image.createImage(b, 0, len);
-			itemsList.addElement(new ImageItem(img, "minimized, size: " + String.valueOf(len) + "b."));
-		} catch(OutOfMemoryError eom){
-		} catch (Exception e) {}
-    }
-
-    private void read(String file) {
-        String text = new String(b, 0, len);
-        itemsList.addElement(new MultiLine(file + "(" + len + " bytes)", cf.cp1251
-                ? Strconv.convCp1251ToUnicode(text) : text));
-    }
-
-    public void cmdOk() {
+//#         if (type == TYPE_IMAGE) {
+//#             view(fileName);
+//#         }
+//#         if (type == TYPE_TEXT) {
+//#             read(fileName);
+//#         }
+//#     }
+//# 
+//#     private void load(String file) {
+//#         FileIO f = FileIO.createConnection(file);
+//#         if (type == TYPE_TEXT) {
+//#             txtData = f.fileReadUtf();
+//#         } else {
+//#             rawBytes = f.readFile();
+//#             len = rawBytes.length;
+//#         }
+//#         try {
+//#             f.close();
+//#         } catch (IOException ex) {
+//#             if (StaticData.Debug)
+//#                 ex.printStackTrace();
+//#         }
+//#     }
+//# 
+//#     private void view(String file) {
+//# 		try{
+//# 			Image img = Image.createImage(rawBytes, 0, len);
+//# 			itemsList.addElement(new ImageItem(img, "minimized, size: " + String.valueOf(len) + "b."));
+//# 		} catch(OutOfMemoryError eom){
+//# 		} catch (Exception e) {}
+//#     }
+//# 
+//#     private void read(String file) {
+//#         itemsList.addElement(new MultiLine(file + "(" + txtData.length() + " bytes)", txtData));
+//#     }
+//# 
+//#     public void cmdOk() {
 //#ifndef NOMMEDIA
-        if (type == 1) {
-            try {
-                pl.stop();
-                pl.close();
-            } catch (Exception e) {
-            }
-        }
+//#         if (type == TYPE_MEDIA) {
+//#             try {
+//#                 pl.stop();
+//#                 pl.close();
+//#             } catch (Exception e) {
+//#             }
+//#         }
 //#endif
-        destroyView();
-    }
-
+//#         destroyView();
+//#     }
+//# 
 //#ifndef NOMMEDIA    
-    private void play(String file) {
-        try {
-            pl = Manager.createPlayer("file://" + file);
-            pl.realize();
-            pl.start();
-        } catch (IOException ex) {
-            //ex.printStackTrace();
-        } catch (MediaException ex) {
-            //ex.printStackTrace();
-        }
-
-        itemsList.addElement(new MultiLine("Play", "Playing" + " " + file));
-    }
-
-    public String touchLeftCommand() {
-        return (type == 1) ? SR.MS_STOP : SR.MS_OK;
-    }
+//#     private void play(String file) {
+//#         try {
+//#             pl = Manager.createPlayer("file://" + file);
+//#             pl.realize();
+//#             pl.start();
+//#         } catch (IOException ex) {
+//#             //ex.printStackTrace();
+//#         } catch (MediaException ex) {
+//#             //ex.printStackTrace();
+//#         }
+//# 
+//#         itemsList.addElement(new MultiLine("Play", "Playing" + " " + file));
+//#     }
+//# 
+//#     public String touchLeftCommand() {
+//#         return (type == 1) ? SR.MS_STOP : SR.MS_OK;
+//#     }
 //#endif        
-}
-
+//# }
+//# 
 //#endif

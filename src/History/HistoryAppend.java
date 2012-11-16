@@ -32,8 +32,8 @@
 //# import io.file.FileIO;
 //# import java.io.IOException;
 //# import java.io.OutputStream;
-//# import util.StringUtils;
 //# import util.Strconv;
+//# import util.StringUtils;
 //# 
 //# public class HistoryAppend {
 //# 
@@ -52,7 +52,6 @@
 //#     private HistoryAppend() {
 //#     }
 //#     private Config cf = Config.getInstance();
-//#     private boolean convertToWin1251;
 //#     private final static String MS = "<m>";
 //#     private final static String ME = "</m>";
 //#     private final static String TS = "<t>";
@@ -77,70 +76,37 @@
 //#endif
 //# 
 //#     public void addMessage(Msg m, String filename) {
-//#         convertToWin1251 = cf.cp1251;
-//#         byte[] bodyMessage = createBody(m).getBytes();
-//# 
+//#         byte[] bodyMessage = getBodyBytes(m);
 //#ifdef DETRANSLIT
 //#         filename = util.DeTranslit.getInstance().get_actual_filename(filename);
 //#endif
 //#         filename = cf.msgPath + StringUtils.replaceBadChars(filename) + ".txt";
 //# 
-//#         file = FileIO.createConnection(filename);
+//#         file = FileIO.createConnection(filename);        
+//#         file.writeFile(bodyMessage);
 //#         try {
-//#             os = file.openOutputStream(0);
-//#             try {
-//#                 os.write(bodyMessage);
-//#                 //filePos+=bodyMessage.length;
-//#             } catch (IOException ex) {
-//#             }
-//#             os.close();
-//#             os.flush();
 //#             file.close();
 //#         } catch (IOException ex) {
-//#             try {
-//#                 file.close();
-//#             } catch (IOException ex2) {
-//#             }
+//#             ex.printStackTrace();
 //#         }
-//#         filename = null;
-//#         bodyMessage = null;
 //#     }
 //# 
 //#     public void addMessageList(String messages, String filename) {
-//#         convertToWin1251 = cf.cp1251;
-//#         if (convertToWin1251) {
-//#             messages = Strconv.convUnicodeToCp1251(messages);
-//#         }
-//# 
-//#         byte[] bodyMessage = messages.getBytes();
-//# 
 //#ifdef DETRANSLIT
 //#         filename = util.DeTranslit.getInstance().get_actual_filename(filename);
 //#endif
 //#         filename = cf.msgPath + StringUtils.replaceBadChars(filename) + ".txt";
 //# 
 //#         file = FileIO.createConnection(filename);
+//#         file.fileWriteUtf(messages);
 //#         try {
-//#             os = file.openOutputStream(0);
-//#             try {
-//#                 os.write(bodyMessage);
-//#                 //filePos+=bodyMessage.length;
-//#             } catch (IOException ex) {
-//#             }
-//#             os.close();
-//#             os.flush();
 //#             file.close();
 //#         } catch (IOException ex) {
-//#             try {
-//#                 file.close();
-//#             } catch (IOException ex2) {
-//#             }
+//#             ex.printStackTrace();
 //#         }
-//#         filename = null;
-//#         bodyMessage = null;
 //#     }
 //# 
-//#     private String createBody(Msg m) {
+//#     private byte[] getBodyBytes(Msg m) {
 //#         String fromName = StaticData.getInstance().account.userName;
 //#         if (m.messageType != Msg.MESSAGE_TYPE_OUT) {
 //#             fromName = m.from;
@@ -160,13 +126,15 @@
 //#                 marker = MESSAGE_MARKER_OUT;
 //#         }
 //# 
-//#         body.append(MS).append(TS).append(marker).append(TE).append(DS).append(m.getDayTime()).append(DE).append(FS).append(StringUtils.escapeTags(fromName)).append(FE);
+//#         body.append(MS).append(TS).append(marker).append(TE).append(DS)
+//#                 .append(m.getDayTime()).append(DE).append(FS)
+//#                 .append(StringUtils.escapeTags(fromName)).append(FE);
 //#         if (m.subject != null) {
 //#             body.append(SS).append(StringUtils.escapeTags(m.subject)).append(SE);
 //#         }
 //#         body.append(BS).append(StringUtils.escapeTags(m.body)).append(BE).append(ME).append(RN);
 //# 
-//#         return (convertToWin1251) ? Strconv.convUnicodeToCp1251(body.toString()) : body.toString();
+//#         return Strconv.toUTFArray(body.toString());
 //#     }
 //# }
 //# 

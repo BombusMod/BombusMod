@@ -94,9 +94,9 @@
 //#         return new FileSiemensInputStream(f, fd);
 //#     }
 //#     
-//#     public OutputStream openOutputStream(long pos_eof) throws IOException {
+//#     public OutputStream appendOutputStream() throws IOException {
 //#         openFile();
-//#         return new FileSiemensOutputStream(f, fd, pos_eof);
+//#         return new FileSiemensOutputStream(f, fd, fileSize());
 //#     }
 //#     
 //#     public void delete() throws IOException{

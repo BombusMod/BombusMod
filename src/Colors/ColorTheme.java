@@ -315,11 +315,10 @@ blue 0x0000ff
             switch (resourceType) {
 //#if FILE_IO
 //#                 case 0: // from fs
-//#                     FileIO f=FileIO.createConnection(skinFile);
-//#                     byte[] b=f.fileRead();
-//#                     if (b!=null) {
-//#                         String str=new String(b, 0, b.length).toString().trim();
-//#                         skin=new StringLoader().hashtableLoaderFromString(str);
+//#                     FileIO f = FileIO.createConnection(skinFile);
+//#                     String skinData = f.fileReadUtf();
+//#                     if (!skinData.equals("")) {
+//#                         skin = new StringLoader().hashtableLoaderFromString(skinData);
 //#                     } else
 //#                         return defaultColor;
 //#                     break;

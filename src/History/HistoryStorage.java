@@ -30,11 +30,8 @@
 //# 
 //# import Client.Config;
 //# import io.file.FileIO;
-//# import java.io.IOException;
-//# import java.io.InputStream;
 //# import java.util.Vector;
 //# import util.StringUtils;
-//# import util.Strconv;
 //# 
 //# public class HistoryStorage {
 //#     
@@ -58,19 +55,8 @@
 //#        this.history = loadHistory(filename);
 //#    }
 //#     
-//#    private String loadHistory(String fileName) {
-//#         byte[] bodyMessage;
-//#         String archive="";
-//#         bodyMessage=readFile(fileName);
-//# 
-//#         if (bodyMessage!=null) {
-//#             if (cf.cp1251) {
-//#                 archive=Strconv.convCp1251ToUnicode(new String(bodyMessage, 0, bodyMessage.length));
-//#             } else {
-//#                 archive=new String(bodyMessage, 0, bodyMessage.length);
-//#             }
-//#         }
-//#         return archive;
+//#    private String loadHistory(String fileName) {        
+//#         return readFile(fileName);
 //#    }
 //# 
 //#     public Vector importData() {
@@ -114,22 +100,9 @@
 //#         return source.substring(start+3, end);
 //#     }
 //#         
-//#     private byte[] readFile(String arhPath){
-//#         int maxSize=2048; byte[] b = new byte[maxSize]; 
-//#         FileIO f=FileIO.createConnection(arhPath);
-//#         try {
-//#             InputStream is=f.openInputStream();
-//#             int fileSize = (int)f.fileSize();
-//#             if (fileSize>maxSize){
-//#                 is.skip(fileSize-maxSize);
-//#             }
-//#             is.read(b); is.close(); f.close();
-//#         } catch (IOException e) { try { f.close(); } catch (IOException ex2) { } }
-//# 
-//#         if (b!=null)
-//#             return b;
-//#         
-//#         return null;
+//#     private String readFile(String arhPath){
+//#         FileIO f = FileIO.createConnection(arhPath);
+//#         return f.fileReadUtf();
 //#     }    
 //# }
 //# 

@@ -101,10 +101,9 @@
 //#         array.addElement(new keyValue(msgLogPresence, (cf.msgLogPresence)?"1":"0"));
 //#         array.addElement(new keyValue(msgLogConfPresence, (cf.msgLogConfPresence)?"1":"0"));
 //#         array.addElement(new keyValue(msgLogConf, (cf.msgLogConf)?"1":"0"));
-//#endif
-//#         array.addElement(new keyValue(cp1251, (cf.cp1251)?"1":"0"));
+//#endif        
 //#ifdef AUTOSTATUS
-//#         array.addElement(new keyValue(autoAwayDelay, Integer.toString(cf.autoAwayDelay)));
+//#         array.addElement(new keyValue(autoAwayDelay, Integer.toString(Config.autoAwayDelay)));
 //#endif
 //#ifndef WMUC
 //#         array.addElement(new keyValue(defGcRoom, cf.defGcRoom));
@@ -123,8 +122,8 @@
 //#         array.addElement(new keyValue(lastMessages, (cf.lastMessages)?"1":"0"));
 //#endif
 //#ifdef AUTOSTATUS
-//#         array.addElement(new keyValue(useMyStatusMessages, (cf.useMyStatusMessages)?"1":"0"));
-//#         array.addElement(new keyValue(autoAwayType, Integer.toString(cf.autoAwayType)));
+//#         array.addElement(new keyValue(useMyStatusMessages, (Config.useMyStatusMessages)?"1":"0"));
+//#         array.addElement(new keyValue(autoAwayType, Integer.toString(Config.autoAwayType)));
 //#endif
 //#         array.addElement(new keyValue(autoScroll, (cf.autoScroll)?"1":"0"));
 //#ifdef POPUPS
@@ -195,7 +194,7 @@
 //#         body = createArrayString(array);
 //# 
 //#         FileIO fileOut=FileIO.createConnection(file+"config_"+Time.localDate()+".txt");
-//#         fileOut.fileWrite(body.toString().getBytes());
+//#         fileOut.writeFile(body.toString().getBytes());
 //#     }
 //#     
 //#     public StringBuffer createArrayString(Vector array) {
@@ -269,9 +268,8 @@
 //#         cf.msgLogConfPresence=cf.getBooleanProperty(getValue(msgLogConfPresence),false);
 //#         cf.msgLogConf=cf.getBooleanProperty(getValue(msgLogConf),false);
 //#endif
-//#         cf.cp1251=cf.getBooleanProperty(getValue(cp1251),true);
 //#ifdef AUTOSTATUS
-//#         cf.autoAwayDelay=cf.getIntProperty(getValue(autoAwayDelay),5);
+//#         Config.autoAwayDelay=cf.getIntProperty(getValue(autoAwayDelay),5);
 //#endif
 //#ifndef WMUC
 //#         cf.defGcRoom=getStringProperty(getValue(defGcRoom),"bombusmod@conference.jabber.ru");
@@ -290,8 +288,8 @@
 //#         cf.lastMessages=cf.getBooleanProperty(getValue(lastMessages),false);
 //#endif
 //#ifdef AUTOSTATUS
-//#         cf.useMyStatusMessages=cf.getBooleanProperty(getValue(useMyStatusMessages),true);
-//#         cf.autoAwayType=cf.getIntProperty(getValue(autoAwayType),0);
+//#         Config.useMyStatusMessages=cf.getBooleanProperty(getValue(useMyStatusMessages),true);
+//#         Config.autoAwayType=cf.getIntProperty(getValue(autoAwayType),0);
 //#endif
 //#         cf.autoScroll=cf.getBooleanProperty(getValue(autoScroll),true);
 //#ifdef POPUPS
@@ -413,7 +411,7 @@
 //# 
 //#    private String loadFile() {
 //#         FileIO f=FileIO.createConnection(file);
-//#         byte[] b = f.fileRead();
+//#         byte[] b = f.readFile();
 //#         return new String(b, 0, b.length);
 //#    }
 //#     
