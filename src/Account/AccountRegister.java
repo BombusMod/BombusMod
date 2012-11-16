@@ -182,7 +182,7 @@ public class AccountRegister
     }
 
     public void registrationSuccess() {
-	as.itemsList.addElement(raccount);
+	as.itemsList.addElement(new AccountItem(raccount));
 	as.rmsUpdate();
 	String success = SR.MS_DONE;
 	splash.setProgress(success, 100);

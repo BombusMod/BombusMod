@@ -28,6 +28,10 @@ public class IqRegister implements JabberBlockListener {
     public int blockArrived(JabberDataBlock data) {
         if (data instanceof Iq) {
             JabberDataBlock query = data.getChildBlock("query");
+            if (query == null) {
+                notifier.registrationSuccess();
+                return BLOCK_PROCESSED;
+            }
             if (query.isJabberNameSpace(NS_REGS)) {
                 String type = data.getTypeAttribute();
                 if (type.equals("result")) {

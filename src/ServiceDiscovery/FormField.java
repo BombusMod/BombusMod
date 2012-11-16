@@ -163,7 +163,7 @@ public class FormField {
                     formItem = new TextInput(label, body, "");
                 }
             }
-        } 
+        } else 
         // not x-data
         if (instructions = name.equals("instructions")) {
             formItem = new MultiLine("Instructions", body);
@@ -173,7 +173,9 @@ public class FormField {
             CheckBox cg = new CheckBox("Remove registration", false);
             formItem = cg;
             registered = true;
-        } 
+        } else {
+            formItem = new TextInput(label, body, "");
+        }  
 
 
         if (name != null) {
