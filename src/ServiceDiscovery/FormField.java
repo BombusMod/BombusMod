@@ -173,9 +173,7 @@ public class FormField {
             CheckBox cg = new CheckBox("Remove registration", false);
             formItem = cg;
             registered = true;
-        } else {
-            formItem = new TextInput(label, body, "");
-        }
+        } 
 
 
         if (name != null) {
