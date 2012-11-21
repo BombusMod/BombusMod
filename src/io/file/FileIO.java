@@ -151,13 +151,13 @@
 //#             is.close();
 //#             close();
 //#             return new String(cbuff);
-//#         } catch (IOException ex) {
+//#         } catch (Exception ex) {
 //#             if (StaticData.Debug)
 //#                 ex.printStackTrace();
 //#         } finally {
 //#             try {
 //#                 is.close();
-//#             } catch (IOException ex) {
+//#             } catch (Exception ex) {
 //#                 if (StaticData.Debug)
 //#                     ex.printStackTrace();
 //#             }

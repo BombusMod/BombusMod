@@ -77,9 +77,7 @@ public class VCardView
     private LinkString save;
     
     private String url="";
-    
-    private VCardView vv;
-    
+        
 //#ifdef CLIPBOARD
 //#     StringBuffer VCardData = new StringBuffer();
 //#     MenuCommand cmdCopy      = new MenuCommand(SR.MS_COPY, MenuCommand.OK, 1, RosterIcons.ICON_COPY);
@@ -93,7 +91,6 @@ public class VCardView
         super(contact.getNickJid(), false);
         this.vcard = contact.vcard;
         this.c = contact;
-        vv = this;
         
         refresh=new LinkString(SR.MS_REFRESH) { 
             public void doAction() { 
@@ -147,7 +144,7 @@ public class VCardView
 //#                 save = new LinkString(SR.MS_SAVE_PHOTO) {
 //# 
 //#                     public void doAction() {
-//#                         new Browser(null, vv, true);
+//#                         new Browser(null, VCardView.this, true);
 //#                     }
 //#                 };
 //#                 itemsList.addElement(save);
@@ -193,7 +190,7 @@ public class VCardView
 //#         if (vcard.hasPhoto) {
 //#             //System.out.println(photoType+"->"+getFileType(photoType));
 //#             String filename = StringUtils.replaceBadChars(vcard.getNickDate());
-//#             FileIO file=FileIO.createConnection(pathSelected+filename+vcard.getFileType());
+//#             FileIO file = FileIO.createConnection(pathSelected + filename + vcard.getFileType());
 //#             file.writeFile(vcard.getPhoto());
 //#         }
 //#     }
