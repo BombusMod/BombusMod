@@ -40,7 +40,7 @@ public class Strconv {
      */
     private Strconv() {
     }
-
+        
     public static String convCp1251ToUnicode(final String s){
         if (s==null) return null;
         StringBuffer b=new StringBuffer(s.length());
@@ -105,27 +105,7 @@ public class Strconv {
     }
     
     public static StringBuffer toUTFSb(StringBuffer str) {
-        int srcLen = str.length();
-        StringBuffer outbuf=new StringBuffer( srcLen );
-         for(int i=0; i < srcLen; i++) {
-             int c = (int)str.charAt(i);
-
-            //TODO: ескэйпить коды <0x20
-            if ((c >= 1) && (c <= 0x7f)) {
-                 outbuf.append( (char) c);
-                
-            }
-             if (((c >= 0x80) && (c <= 0x7ff)) || (c==0)) {
-                outbuf.append((char)(0xc0 | (0x1f & (c >> 6))));
-                outbuf.append((char)(0x80 | (0x3f & c)));
-            }
-             if ((c >= 0x800) && (c <= 0xffff)) {
-                outbuf.append(((char)(0xe0 | (0x0f & (c >> 12)))));
-                outbuf.append((char)(0x80 | (0x3f & (c >>  6))));
-                outbuf.append(((char)(0x80 | (0x3f & c))));
-             }
-         }
-         return outbuf;
+        return new StringBuffer(new String(toUTFArray(str.toString())));
      }
      public static byte[] toUTFArray(String str) {
         int srcLen = str.length();
@@ -135,10 +115,10 @@ public class Strconv {
             int c = (int)str.charAt(i);
 
             //TODO: эскейпить коды <0x20
-            if ((c >= 1) && (c <= 0x7f)) {
+            if ((c >= 0) && (c <= 0x7f)) {
                 out.write(c);
 
-            } else if (((c >= 0x80) && (c <= 0x7ff)) || (c==0)) {
+            } else if (((c >= 0x80) && (c <= 0x7ff))) {
                 out.write((char)(0xc0 | (0x1f & (c >> 6))));
                 out.write((char)(0x80 | (0x3f & c)));
 

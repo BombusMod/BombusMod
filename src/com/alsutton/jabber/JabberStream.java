@@ -212,18 +212,16 @@ public class JabberStream implements XMLEventListener, Runnable {
 //#             }
 //#         }
 //#endif
+        if (name.equals("stream")) {
+            listener.connectionTerminated(new XMLException("Normal stream shutdown"));
+            return;
+        }
         JabberDataBlock in = (JabberDataBlock) tagStack.pop();
         if (tagStack.empty()) {
             dispatchXmppStanza(in);
-            if (in.getTagName().equals("stream")) {
-                iostream.close();
-                throw new XMLException("Normal stream shutdown");
-            }
-            if (in.getTagName().equals("error")) {
+            if (name.equals("error")) {
                 XmppError xe = XmppError.decodeStreamError(in);
-                iostream.close();
-
-                throw new XMLException("Stream error: " + xe.toString());
+                listener.connectionTerminated(new XMLException("Stream error: " + xe.toString()));
             }
         } else {
             ((JabberDataBlock) tagStack.peek()).addChild(in);
