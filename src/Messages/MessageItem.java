@@ -183,7 +183,7 @@ public class MessageItem implements VirtualElement {//, MessageParser.MessagePar
                 
                 while (pos<len) {
                     char c=text.charAt(pos);
-                    if (c==' ' || c==0x09 || c==0x0d || c==0x0a || c==0xa0 || c==')' )  
+                    if (c==' ' || c==0x09 || c==0x0d || c==0x0a || c==0xa0 || c==')' || c == '\"' )  
                         break;
                     pos++;
                 }
