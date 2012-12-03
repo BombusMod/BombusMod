@@ -49,6 +49,7 @@ import javax.microedition.io.*;
 //#endif
 import xml.*;
 import locale.SR;
+import xmpp.MessageDispatcher;
 import xmpp.XmppError;
 import xmpp.extensions.IqPing;
 
@@ -57,6 +58,7 @@ public class JabberStream implements XMLEventListener, Runnable {
     private final Utf8IOStream iostream;
     private final Stack tagStack = new Stack();
     public JabberListener listener;
+    final MessageDispatcher messageDispatcher = new MessageDispatcher();
     private final Vector blockListeners = new Vector();
     private final Vector outgoingPackets = new Vector();
     private String server; // for ping
@@ -263,7 +265,13 @@ public class JabberStream implements XMLEventListener, Runnable {
                         break;
                     }
                     i++;
-                }                
+                } 
+                
+                if (processResult == JabberBlockListener.BLOCK_REJECTED) {
+                    if (listener != null) {
+                        processResult = messageDispatcher.blockArrived(dataBlock);
+                    }
+                }
 
                 if (processResult == JabberBlockListener.BLOCK_REJECTED) {
                     if (!(dataBlock instanceof Iq)) {

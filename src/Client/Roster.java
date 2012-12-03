@@ -119,7 +119,6 @@ import xmpp.extensions.IqVCard;
 //# import LightControl.CustomLight;
 //#endif
 import xmpp.JabberDispatcher;
-import xmpp.MessageDispatcher;
 import xmpp.PresenceDispatcher;
 import xmpp.RosterDispatcher;
 import xmpp.extensions.muc.Conference;
@@ -1297,7 +1296,6 @@ public class Roster
 
     public void loginSuccess() {
         sd.theStream.addBlockListener(new PresenceDispatcher());
-        sd.theStream.addBlockListener(new MessageDispatcher());
         sd.theStream.addBlockListener(new RosterDispatcher());
         sd.theStream.addBlockListener(new EntityCaps());
         sd.theStream.addBlockListener(new IqVCard());
