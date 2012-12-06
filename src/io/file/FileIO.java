@@ -129,10 +129,8 @@
 //#             OutputStream os = appendOutputStream();
 //#             if (os != null) {
 //#                 os.write(rawBytes);
-//#             }
-//#             if (os != null) {
-//#                 os.close();
 //#                 os.flush();
+//#                 os.close();                
 //#             }
 //#             close();
 //#         } catch (IOException ex) {
@@ -170,8 +168,6 @@
 //#             OutputStream os = appendOutputStream();
 //#             if (os != null) {
 //#                 os.write(src.getBytes("UTF-8"));
-//#             }
-//#             if (os != null) {
 //#                 os.close();
 //#                 os.flush();
 //#             }

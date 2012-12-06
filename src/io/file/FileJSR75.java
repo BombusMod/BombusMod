@@ -49,7 +49,7 @@
 //#     }
 //#     
 //#     protected void openFile() throws IOException{
-//#         fileConnection = (javax.microedition.io.file.FileConnection) Connector.open("file:///" + fileName);
+//#         fileConnection = (javax.microedition.io.file.FileConnection) Connector.open("file:///" + fileName, Connector.READ_WRITE);
 //#     }
 //# 
 //#     public OutputStream openOutputStream() throws IOException{
@@ -72,8 +72,11 @@
 //#     public OutputStream appendOutputStream() throws IOException {
 //#         if (fileConnection==null) 
 //#             openFile();
-//#         int size = (int)fileSize();
-//#         return fileConnection.openOutputStream(size);
+//#         if (!fileConnection.exists()) 
+//#             fileConnection.create();
+//#         int size = (int)fileSize();        
+//#         return (size > 0) ? fileConnection.openOutputStream(size)
+//#                 : fileConnection.openOutputStream();
 //#     }
 //# 
 //#     public InputStream openInputStream() throws IOException{
