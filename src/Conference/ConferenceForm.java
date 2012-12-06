@@ -88,9 +88,6 @@ public class ConferenceForm
             server = confJid.substring(roomEnd + 1);
         }
         createForm(name, room, server, nick, password, autojoin);
-        room = null;
-        server = null;
-        nick = null;
     }
 
     /**
@@ -214,11 +211,12 @@ public class ConferenceForm
 
         if (c == cmdEdit) {
             sd.account.bookmarks.removeElement(editConf);
-            BookmarkItem item = new BookmarkItem(new Bookmark(name, gchat.toString(), nick, pass, autojoin));
+            Bookmark newItem = new Bookmark(name, gchat.toString(), nick, pass, autojoin);
+            BookmarkItem item = new BookmarkItem(newItem);
             if (cursor < sd.account.bookmarks.size()) {
-                sd.account.bookmarks.insertElementAt(item, cursor);
+                sd.account.bookmarks.insertElementAt(newItem, cursor);
             } else {
-                sd.account.bookmarks.addElement(item);
+                sd.account.bookmarks.addElement(newItem);
             }
             sd.theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.SAVE));
             destroyView();
