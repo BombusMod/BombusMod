@@ -256,7 +256,7 @@
 //#         cf.autoFocus=cf.getBooleanProperty(getValue(autoFocus),false);
 //#         cf.notInListDropLevel=cf.getIntProperty(getValue(notInListDropLevel), NotInListFilter.ALLOW_ALL);
 //#ifndef WMUC
-//#         cf.storeConfPresence=cf.getBooleanProperty(getValue(storeConfPresence),true);
+//#         cf.storeConfPresence=cf.getBooleanProperty(getValue(storeConfPresence), false);
 //#endif
 //#         cf.capsState=cf.getBooleanProperty(getValue(capsState),false);
 //#         cf.textWrap=cf.getIntProperty(getValue(textWrap),0);
@@ -295,7 +295,7 @@
 //#ifdef POPUPS
 //#         cf.popUps=cf.getBooleanProperty(getValue(popUps),true);
 //#endif
-//#         cf.showResources=cf.getBooleanProperty(getValue(showResources),true);
+//#         cf.showResources=cf.getBooleanProperty(getValue(showResources), false);
 //#         cf.saveHistory=cf.getBooleanProperty(getValue(saveHistory),false);
 //#         cf.enableVersionOs=cf.getBooleanProperty(getValue(enableVersionOs),true);
 //#         cf.messageLimit=cf.getIntProperty(getValue(messageLimit),512);
@@ -304,7 +304,7 @@
 //#ifdef DETRANSLIT
 //#         cf.transliterateFilenames=cf.getBooleanProperty(getValue(transliterateFilenames),false);
 //#endif
-//#         cf.rosterStatus=cf.getBooleanProperty(getValue(rosterStatus),true);
+//#         cf.rosterStatus=cf.getBooleanProperty(getValue(rosterStatus), false);
 //#         cf.queryExit=cf.getBooleanProperty(getValue(queryExit),false);
 //#         cf.notifyPicture=cf.getBooleanProperty(getValue(notifyPicture),false);
 //#         cf.hideTimestamps = cf.getBooleanProperty(getValue(showBalloons),false);
