@@ -308,10 +308,10 @@ public class Roster
 //#endif
 
             groups = null;
-            groups = new Groups();
-            sd.account.bookmarks.removeAllElements();            
+            groups = new Groups();                            
         }
         if (sd.account != null) {
+            sd.account.bookmarks.removeAllElements();            
             myJid = new Jid(sd.account.getJid());
             updateContact(sd.account.nick, myJid.bareJid, SR.MS_SELF_CONTACT, "self", false);
         }
