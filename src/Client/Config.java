@@ -223,6 +223,7 @@ public class Config {
 //#     public boolean rcvactivity = false;
 //#endif
     public boolean shadowed = false;
+    public boolean forceBoldFont = false;
     public boolean showTimeTraffic = false;
     public boolean swapSendAndSuspend = false;
     public int widthScroll2 = 10;
@@ -421,7 +422,7 @@ public class Config {
             notifyPicture = inputStream.readBoolean();
             hideTimestamps = inputStream.readBoolean();
 
-            inputStream.readBoolean(); // Здесь был UserKeys
+            forceBoldFont = inputStream.readBoolean(); // Здесь был UserKeys
 //#ifdef LOGROTATE
 //#             msglistLimit=inputStream.readInt();
 //#else
@@ -687,7 +688,7 @@ public class Config {
             outputStream.writeBoolean(notifyPicture);
             outputStream.writeBoolean(hideTimestamps);
 
-            outputStream.writeBoolean(false); // Здесь был UserKeys
+            outputStream.writeBoolean(forceBoldFont);
 
 //#ifdef LOGROTATE
 //#             outputStream.writeInt(msglistLimit);

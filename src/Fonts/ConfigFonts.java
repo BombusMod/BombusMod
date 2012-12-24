@@ -40,7 +40,7 @@ public class ConfigFonts
     private DropChoiceBox font3;
     private DropChoiceBox font4;
 
-    CheckBox shadowbox;
+    CheckBox shadowbox, boldbox;
     
     /** Creates a new instance of ConfigFonts
      */
@@ -78,6 +78,8 @@ public class ConfigFonts
         itemsList.addElement(new SpacerItem(10));
         shadowbox = new CheckBox("Shadowed font", cf.shadowed);
         itemsList.addElement(shadowbox);
+        boldbox = new CheckBox("Force bold font", cf.forceBoldFont);
+        itemsList.addElement(boldbox);
     }
     
     public void cmdOk() {
@@ -86,7 +88,7 @@ public class ConfigFonts
         FontCache.bar=cf.barFont=font3.getValue()*8; //bar
         FontCache.baloon=cf.baloonFont=font4.getValue()*8; //balloon
         cf.shadowed = shadowbox.getValue();
-
+        cf.forceBoldFont = boldbox.getValue();
         cf.saveToStorage();
         
         infobar.setFont(FontCache.getFont(true, cf.barFont));

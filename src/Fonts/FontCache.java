@@ -90,11 +90,17 @@ public class FontCache {
     public static Font getFont(boolean isBold, int size) {
         switch (size) {
             case smallSize:
-                return (isBold)?getSmallBoldFont():getSmallFont();
+                return (isBold || Config.getInstance().forceBoldFont)
+                        ? getSmallBoldFont()
+                        : getSmallFont();
             case middleSize:
-                return (isBold)?getMiddleBoldFont():getMiddleFont();
+                return (isBold || Config.getInstance().forceBoldFont) 
+                        ? getMiddleBoldFont() 
+                        : getMiddleFont();
             case bigSize:
-                return (isBold)?getBigBoldFont():getBigFont();
+                return (isBold || Config.getInstance().forceBoldFont) 
+                        ? getBigBoldFont() 
+                        : getBigFont();
         }
         return getSmallFont();
     }
