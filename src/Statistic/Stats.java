@@ -24,94 +24,94 @@
  */
 
 //#ifdef STATS
-
-package Statistic;
-
-import Client.StaticData;
-import io.NvStorage;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-
-public class Stats {
-
-    private long latestTraffic=0;
-    private long traffic=0;
-    private int sessions=0;
-    
-    // Singleton
-    private static Stats instance;
-    
-    public static Stats getInstance(){
-	if (instance==null) {
-	    instance=new Stats();
-            instance.loadFromStorage();
-	}
-	return instance;
-    }
-
-    public long getLatest(){
-        return latestTraffic;
-    }
-    
-    public long getAllTraffic(){
-        return traffic+getCurrentTraffic();
-    }
-    
-    public int getSessionsCount(){
-        return sessions;
-    }
-    
-    private void loadFromStorage(){
-        DataInputStream inputStream=NvStorage.ReadFileRecord("stats", 0);
-        try {
-            traffic=inputStream.readLong();
-            latestTraffic=inputStream.readLong();
-            sessions=inputStream.readInt();
-            inputStream.close();
-            inputStream=null;
-	} catch (Exception e) {
-            try {
-                if (inputStream!=null) {
-                    inputStream.close();
-                    inputStream=null;
-                }
-            } catch (IOException ex) {}
-	}
-        sessions++;
-    }
-    
-    public void saveToStorage(boolean reset){
-        loadFromStorage();
-
-        long sessionTraffic;
-        long allTraffic;
-        
-        if (reset) {
-            sessionTraffic  =   0;
-            allTraffic      =   0;
-            latestTraffic   =   0;
-            traffic         =   0;
-            sessions        =   0;
-        } else {
-            sessionTraffic=getCurrentTraffic();
-            allTraffic=traffic+sessionTraffic;
-        }
-        
-	try {
-            DataOutputStream outputStream=NvStorage.CreateDataOutputStream();
-         
-            outputStream.writeLong(allTraffic);
-            outputStream.writeLong(sessionTraffic);
-            outputStream.writeInt(sessions);
-            
-            NvStorage.writeFileRecord(outputStream, "stats", 0, true);
-	} catch (IOException e) { }
-    }
-    
-    public static long getCurrentTraffic() {
-        return StaticData.getInstance().traffic*2;
-    }
-}
-
+//# 
+//# package Statistic;
+//# 
+//# import Client.StaticData;
+//# import io.NvStorage;
+//# import java.io.DataInputStream;
+//# import java.io.DataOutputStream;
+//# import java.io.IOException;
+//# 
+//# public class Stats {
+//# 
+//#     private long latestTraffic=0;
+//#     private long traffic=0;
+//#     private int sessions=0;
+//#     
+//#     // Singleton
+//#     private static Stats instance;
+//#     
+//#     public static Stats getInstance(){
+//# 	if (instance==null) {
+//# 	    instance=new Stats();
+//#             instance.loadFromStorage();
+//# 	}
+//# 	return instance;
+//#     }
+//# 
+//#     public long getLatest(){
+//#         return latestTraffic;
+//#     }
+//#     
+//#     public long getAllTraffic(){
+//#         return traffic+getCurrentTraffic();
+//#     }
+//#     
+//#     public int getSessionsCount(){
+//#         return sessions;
+//#     }
+//#     
+//#     private void loadFromStorage(){
+//#         DataInputStream inputStream=NvStorage.ReadFileRecord("stats", 0);
+//#         try {
+//#             traffic=inputStream.readLong();
+//#             latestTraffic=inputStream.readLong();
+//#             sessions=inputStream.readInt();
+//#             inputStream.close();
+//#             inputStream=null;
+//# 	} catch (Exception e) {
+//#             try {
+//#                 if (inputStream!=null) {
+//#                     inputStream.close();
+//#                     inputStream=null;
+//#                 }
+//#             } catch (IOException ex) {}
+//# 	}
+//#         sessions++;
+//#     }
+//#     
+//#     public void saveToStorage(boolean reset){
+//#         loadFromStorage();
+//# 
+//#         long sessionTraffic;
+//#         long allTraffic;
+//#         
+//#         if (reset) {
+//#             sessionTraffic  =   0;
+//#             allTraffic      =   0;
+//#             latestTraffic   =   0;
+//#             traffic         =   0;
+//#             sessions        =   0;
+//#         } else {
+//#             sessionTraffic=getCurrentTraffic();
+//#             allTraffic=traffic+sessionTraffic;
+//#         }
+//#         
+//# 	try {
+//#             DataOutputStream outputStream=NvStorage.CreateDataOutputStream();
+//#          
+//#             outputStream.writeLong(allTraffic);
+//#             outputStream.writeLong(sessionTraffic);
+//#             outputStream.writeInt(sessions);
+//#             
+//#             NvStorage.writeFileRecord(outputStream, "stats", 0, true);
+//# 	} catch (Exception e) { }
+//#     }
+//#     
+//#     public static long getCurrentTraffic() {
+//#         return StaticData.getInstance().traffic*2;
+//#     }
+//# }
+//# 
 //#endif
