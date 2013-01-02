@@ -82,7 +82,7 @@ public class archiveEdit
         textbox.addCommand(cmdCancel);
 
 //#ifdef ARCHIVE
-//#         textbox.removeCommand(cmdPaste);
+//#         textbox.removeCommand(cmdArchive);
 //#endif
 //#if TEMPLATES
 //#         textbox.removeCommand(cmdTemplate);

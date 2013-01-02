@@ -58,25 +58,29 @@ public class ExTextBox {
     protected Config cf;    
     
 //#ifdef ARCHIVE
-//#     protected Command cmdPaste=new Command(SR.MS_ARCHIVE, Command.ITEM, 6);
+//#     protected Command cmdArchive = new Command(SR.MS_ARCHIVE, Command.ITEM, 6);
 //#endif
 //#if TEMPLATES
-//#     protected Command cmdTemplate=new Command(SR.MS_TEMPLATE, Command.ITEM, 7);
+//#     protected Command cmdTemplate = new Command(SR.MS_TEMPLATE, Command.ITEM, 7);
 //#endif  
 //#ifdef CLIPBOARD
-//#     protected Command cmdPasteText=new Command(SR.MS_PASTE, Command.ITEM, 8);
+//#     private Command cmdCopy = new Command(SR.MS_COPY, Command.ITEM, 3);
+//#     private Command cmdCopyPlus = new Command("+ "+SR.MS_COPY, Command.ITEM, 4);    
+//#     protected Command cmdPasteText = new Command(SR.MS_PASTE, Command.ITEM, 8);
 //#endif
 
     private VirtualList parentList;
     
-    int maxSize=500;
+    int maxSize = 500;
+    
+    final boolean writespaces;
             
     /** Creates a new instance of UniTextEdit */
     public ExTextBox(VirtualList parent, String body, String subj, boolean writespaces) {
         cf = Config.getInstance();
         textbox.setTitle(subj);
         parentList = parent;
-		
+	this.writespaces = writespaces;	
         try {
             //expanding buffer as much as possible
             maxSize = textbox.setMaxSize(4096); //must not trow
@@ -167,13 +171,15 @@ public class ExTextBox {
     }
     
     public void commandState() {
-//#ifdef ARCHIVE
-//#         textbox.addCommand(cmdPaste);
-//#endif
 //#ifdef CLIPBOARD
+//#         textbox.addCommand(cmdCopy);
 //#         if (!sd.clipboard.isEmpty()) {
+//#             textbox.addCommand(cmdCopyPlus);
 //#             textbox.addCommand(cmdPasteText);
 //#         }
+//#endif
+//#ifdef ARCHIVE
+//#         textbox.addCommand(cmdArchive);
 //#endif
 //#if TEMPLATES
 //#         textbox.addCommand(cmdTemplate);
@@ -189,10 +195,28 @@ public class ExTextBox {
             body = null;
         
 //#ifdef ARCHIVE
-//# 	if (c==cmdPaste) { new ArchiveList(caretPos, 1, textbox); return true; }
+//# 	if (c==cmdArchive) { new ArchiveList(caretPos, 1, textbox); return true; }
 //#endif
 //#ifdef CLIPBOARD
-//#         if (c==cmdPasteText) { insert(sd.clipboard.getClipBoard(), getCaretPos()); return true; }
+//#         if (c == cmdCopy) {
+//#             try {
+//#                StaticData.getInstance().clipboard.setClipBoard(body);
+//#                 if (!StaticData.getInstance().clipboard.isEmpty()) {
+//#                     textbox.addCommand(cmdCopyPlus);
+//#                     if (Config.getInstance().phoneManufacturer == Config.SONYE) 
+//#                         if (Config.getPlatformName().indexOf("JP-8.4") > -1)
+//#                             System.gc(); // prevent flickering on Sony Ericcsson C510
+//#                 }
+//#             } catch (Exception e) {/*no messages*/}
+//#             return true;
+//#         }
+//#         if (c==cmdCopyPlus) {
+//#             try {
+//#                 StaticData.getInstance().clipboard.append(body);                
+//#             } catch (Exception e) {/*no messages*/}
+//#             return true;
+//#         }
+//#         if (c==cmdPasteText) { insert(sd.clipboard.getClipBoard(), getCaretPos(), writespaces); return true; }
 //#endif
 //#if TEMPLATES
 //#         if (c==cmdTemplate) { new ArchiveList(caretPos, 2, textbox); return true; }

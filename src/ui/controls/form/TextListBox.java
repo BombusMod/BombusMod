@@ -68,11 +68,11 @@ public class TextListBox
     
     public void eventOk() {
         if (itemsList.size()>0)
-            ti.setValue(itemsList.elementAt(cursor).toString());
+            ti.t.setText(itemsList.elementAt(cursor).toString());
         destroyView();
     }
     public void destroyView() {
-        midlet.BombusMod.getInstance().setDisplayable(ti.t);
+        ti.t.show(ti);
     }
 
     public void menuAction(MenuCommand c, VirtualList d){

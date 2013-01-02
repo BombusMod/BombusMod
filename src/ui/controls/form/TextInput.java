@@ -128,7 +128,9 @@ public class TextInput
     
     public String toString() { return (getCaptionLength()>getTextLength())?caption:getValue(); }
     
-    public void onSelect(){ new EditBox(homeList, caption, text, this, boxType); }
+    public void onSelect(){ 
+        new EditBox(homeList, caption, text, this, boxType); 
+    }
     
     public String getValue() { return (text==null)?"":text; }
 
