@@ -67,7 +67,7 @@ public final class MessageEdit
     // private Command cmdSendAndStepBack = new Command(SR.MS_SEND+" & "+SR.MS_STEP_BACK, Command.SCREEN, 80);
 
 //#ifdef SMILES
-    private Command cmdSmile;
+//#     private Command cmdSmile;
 //#endif
 //#ifndef WMUC    
     private Command cmdInsNick;
@@ -122,19 +122,19 @@ public final class MessageEdit
         super.commandState();
 
 //#ifdef SMILES
-        cmdSmile = new Command(SR.MS_ADD_SMILE, Command.SCREEN, 2);
+//#         cmdSmile = new Command(SR.MS_ADD_SMILE, Command.SCREEN, 2);
 //#endif
 //#ifndef WMUC        
-        cmdInsNick = new Command(SR.MS_NICKNAMES, Command.SCREEN, 3);
+        cmdInsNick = new Command(SR.MS_NICKNAMES, Command.ITEM, 3);
 //#endif        
-        cmdInsMe = new Command(SR.MS_SLASHME, Command.SCREEN, 4);  // /me
+        cmdInsMe = new Command(SR.MS_SLASHME, Command.ITEM, 4);  // /me
 //#ifdef DETRANSLIT
-//#         cmdSendInTranslit = new Command(SR.MS_TRANSLIT, Command.SCREEN, 5);
-//#         cmdSendInDeTranslit = new Command(SR.MS_DETRANSLIT, Command.SCREEN, 5);
+//#         cmdSendInTranslit = new Command(SR.MS_TRANSLIT, Command.ITEM, 5);
+//#         cmdSendInDeTranslit = new Command(SR.MS_DETRANSLIT, Command.ITEM, 5);
 //#endif
-        cmdLastMessage = new Command(SR.MS_PREVIOUS, Command.SCREEN, 9);
-        cmdSubj = new Command(SR.MS_SET_SUBJECT, Command.SCREEN, 10);
-        cmdCancel = new Command(SR.MS_CANCEL, Command.SCREEN, 99);
+        cmdLastMessage = new Command(SR.MS_PREVIOUS, Command.ITEM, 9);
+        cmdSubj = new Command(SR.MS_SET_SUBJECT, Command.ITEM, 10);
+        cmdCancel = new Command(SR.MS_CANCEL, Command.ITEM, 99);
 
 
         if (!Config.getInstance().swapSendAndSuspend) {
@@ -168,7 +168,7 @@ public final class MessageEdit
         }
         textbox.addCommand(cmdInsMe);
 //#ifdef SMILES
-        textbox.addCommand(cmdSmile);
+//#         textbox.addCommand(cmdSmile);
 //#endif
 //#ifdef DETRANSLIT
 //#         if (util.DeTranslit.filled) {
@@ -195,10 +195,10 @@ public final class MessageEdit
                 return;
             }
 //#ifdef SMILES
-            if (c == cmdSmile) {
-                new SmilePicker(caretPos, this);
-                return;
-            }
+//#             if (c == cmdSmile) {
+//#                 new SmilePicker(caretPos, this);
+//#                 return;
+//#             }
 //#endif
 //#ifndef WMUC
             if (c == cmdInsNick) {

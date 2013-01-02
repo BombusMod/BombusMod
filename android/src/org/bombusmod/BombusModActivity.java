@@ -481,7 +481,7 @@ public class BombusModActivity extends MicroEmulatorActivity {
         for (int i = 0; i < commands.size(); i++) {
             result = true;
             AndroidCommandUI cmd = commands.get(i);
-            if (cmd.getCommand().getCommandType() != Command.BACK && cmd.getCommand().getCommandType() != Command.EXIT) {
+            if (cmd.getCommand().getCommandType() == Command.ITEM) {
                 SubMenu item = menu.addSubMenu(Menu.NONE, i + Menu.FIRST, Menu.NONE, cmd.getCommand().getLabel());
                 item.setIcon(cmd.getDrawable());
             }
