@@ -674,8 +674,15 @@ public class ContactMessageList extends MessageList {
     }
     
     public void eventLongOk() {
-        super.eventLongOk();
-        Reply();
+        super.eventOk();
+    }
+    
+    public void eventOk() {
+        if (VirtualCanvas.getInstance().hasPointerEvents()) {
+            Reply();
+        } else {
+            super.eventOk();
+        }
     }
     
     public void messageEditResume() {

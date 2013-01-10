@@ -146,7 +146,14 @@ public class Bookmarks extends DefForm {
         parentView = sd.roster;
         destroyView();
     }
-
+    
+    public void eventLongOk() {
+        if (getItemCount() == 0) {
+            return;
+        }
+        showMenu();
+    }
+    
     public void menuAction(MenuCommand c, VirtualList d) {
         if (c == cmdNew) {
             new ConferenceForm();

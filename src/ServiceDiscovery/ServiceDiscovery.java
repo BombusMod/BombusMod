@@ -316,6 +316,10 @@ public class ServiceDiscovery
             }
         }
     }
+    
+    public void eventLongOk() {
+        showMenu();
+    }
 
     private void showResults(final Vector items) {
         try {

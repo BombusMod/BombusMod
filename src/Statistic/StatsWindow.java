@@ -132,6 +132,10 @@
 //# 
 //#         return super.doUserKeyAction(command_id);
 //#     }
+//#     
+//#     public void eventLongOk() {
+//#         showMenu();
+//#     }
 //# }
 //# 
 //#endif

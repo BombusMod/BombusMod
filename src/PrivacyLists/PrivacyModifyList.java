@@ -159,6 +159,14 @@
 //#         }
 //#     }
 //#     
+//#     
+//#     public void eventLongOk() {
+//#         PrivacyItem pitem = (PrivacyItem) getFocusedObject();
+//#         if (pitem != null) {
+//#             showMenu();
+//#         }
+//#     }
+//#         
 //#     public int blockArrived(JabberDataBlock data){
 //#         if (data.getTypeAttribute().equals("result"))
 //#             if (data.getAttribute("id").equals("getlistitems")) {

@@ -73,7 +73,12 @@ public class ActiveContacts extends DefForm {
         }
         //c.msgSuspended=null; // clear suspended message for selected contact
     }
-
+    
+    public void eventLongOk(){
+        super.eventLongOk();
+        keyClear();
+    }
+    
     public void focusToNextUnreaded() {
         if (getItemCount() < 1) {
             return;

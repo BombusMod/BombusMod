@@ -184,6 +184,13 @@ public class AccountSelect extends DefForm {
             switchAccount(true);
         }
     }
+    
+    public void eventLongOk() {
+        if (getItemCount() == 0) {
+            return;
+        }
+        showMenu();
+    }
 
     public void rmsUpdate() {
         DataOutputStream outputStream = NvStorage.CreateDataOutputStream();

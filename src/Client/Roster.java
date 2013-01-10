@@ -1790,11 +1790,16 @@ public class Roster
 
     public void eventLongOk() {
         super.eventLongOk();
+        Object o = getFocusedObject();
+        if ((!(o instanceof Contact)) && (!(o instanceof MucContact))) {
+            cmdActions();
+        } else {
 //#ifndef WMUC
 //#ifdef POPUPS
-//#         showInfo();
+//#             showInfo();
 //#endif
 //#endif
+        }
     }
 
     private ContactMessageList getFocusedMsgList() {

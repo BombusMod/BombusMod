@@ -215,6 +215,10 @@
 //#         
 //#         redraw();
 //#     }
+//#     
+//#     public void eventLongOk() {
+//#         showMenu();
+//#     }
 //# 
 //#     private class FileItem extends IconTextElement {
 //#         
