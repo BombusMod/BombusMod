@@ -57,7 +57,7 @@ public class MessageDispatcher implements JabberBlockListener {
             //#ifndef WMUC               
             if (groupchat) {
                 if (from.equals(sd.roster.groups.getConfGroup(new Jid(from)).jid.bareJid)) {
-                    mType = Msg.MESSAGE_TYPE_SYSTEM;
+                    mType = Msg.MESSAGE_TYPE_PRESENCE;
                 }
                 start_me = 0;
                 int rp = from.indexOf('/');
@@ -105,7 +105,7 @@ public class MessageDispatcher implements JabberBlockListener {
                     }
                     subj = null;
                     start_me = -1;
-                    highlite = true;
+                    //highlite = true;
                     mType = Msg.MESSAGE_TYPE_SUBJ;
                 }
             } else if (type != null) {
