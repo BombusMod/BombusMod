@@ -1,4 +1,4 @@
-package xmpp.login;
+package xmpp.login.sasl.mechanisms;
 
 import util.StringUtils;
 //#if (android)
@@ -12,11 +12,11 @@ import com.ssttr.crypto.HMACSHA1;
 import java.io.UnsupportedEncodingException;
 import java.util.Random;
 import util.Strconv;
+import xmpp.Jid;
+import xmpp.login.sasl.SaslMechanism;
 
-public class SASL_ScramSha1 {
+public class SaslScramSha1 extends SaslMechanism {
 
-    private String jid;
-    String pass;
     String cnonce;
     String clientFirstMessageBare;
     String lServerSignature;
@@ -26,7 +26,7 @@ public class SASL_ScramSha1 {
     HMACSHA1 hmac;
 //#endif    
 
-    public String init(String jid, String password) {
+    public String init(Jid jid, String password) {
         this.jid = jid;
         this.pass = password;
         calculateClientFirstMessage();
@@ -48,7 +48,7 @@ public class SASL_ScramSha1 {
         return lServerSignature.equals(success);
     }
 
-    public SASL_ScramSha1() {
+    public SaslScramSha1() {
 //#if (android)
 //#         try {
 //#             hmac = Mac.getInstance("HmacSHA1");
@@ -83,7 +83,7 @@ public class SASL_ScramSha1 {
     protected void calculateClientFirstMessage() {
         Random rnd = new Random(System.currentTimeMillis());
         cnonce = "666" + rnd.nextLong();
-        String username = jid.substring(0, jid.indexOf('@'));
+        String username = jid.getNode();
         clientFirstMessageBare = "n=" + username + ",r=" + cnonce;
     }
 
@@ -245,4 +245,8 @@ public class SASL_ScramSha1 {
         return hmac;
     }
 //#endif    
+
+    public String getName() {
+        return "SCRAM-SHA-1";
+    }
 }

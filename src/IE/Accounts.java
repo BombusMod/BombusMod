@@ -38,6 +38,7 @@
 //# import ui.Time;
 //# import io.file.InternalResource;
 //# import xmpp.Account;
+//# import xmpp.Jid;
 //# 
 //# /**
 //#  *
@@ -126,13 +127,13 @@
 //#                         String tempstr = accounts.substring(start_pos + 3, end_pos);
 //# 
 //#                         Account account = new Account();
-//#                         account.userName = findBlock(tempstr, userName);
-//#                         account.server = findBlock(tempstr, server);
+//#                         account.JID = new Jid(findBlock(tempstr, userName),
+//#                                 findBlock(tempstr, server),
+//#                                 findBlock(tempstr, resource));
 //#                         account.password = findBlock(tempstr, password);
 //#                         account.hostAddr = findBlock(tempstr, hostAddr);
 //#                         account.port = Integer.parseInt(findBlock(tempstr, port));
 //#                         account.nick = findBlock(tempstr, nick);
-//#                         account.resource = findBlock(tempstr, resource);
 //#                         account.plainAuth = (findBlock(tempstr, plainAuth).equals("1")) ? true : false;
 //#                         account.mucOnly = (findBlock(tempstr, mucOnly).equals("1")) ? true : false;
 //#if HTTPPOLL || HTTPCONNECT || HTTPBIND
@@ -195,7 +196,7 @@
 //#         for (int i = 0; i < getItemCount(); i++) {
 //#             Account a = getAccount(i);
 //#             StringBuffer account = new StringBuffer("<a>");
-//#             account.append(createBlock(userName, a.userName)).append(createBlock(server, a.server)).append(createBlock(hostAddr, a.hostAddr)).append(createBlock(port, Integer.toString(a.port))).append(createBlock(nick, a.nick)).append(createBlock(resource, a.resource)).append(createBlock(useSSL, "0")).append(createBlock(plainAuth, (a.plainAuth ? "1" : "0"))).append(createBlock(mucOnly, (a.mucOnly ? "1" : "0")))
+//#             account.append(createBlock(userName, a.JID.getNode())).append(createBlock(server, a.JID.getServer())).append(createBlock(hostAddr, a.hostAddr)).append(createBlock(port, Integer.toString(a.port))).append(createBlock(nick, a.nick)).append(createBlock(resource, a.JID.resource)).append(createBlock(useSSL, "0")).append(createBlock(plainAuth, (a.plainAuth ? "1" : "0"))).append(createBlock(mucOnly, (a.mucOnly ? "1" : "0")))
 //#if HTTPPOLL || HTTPCONNECT || HTTPBIND
 //#                     .append(createBlock(enableProxy, a.isEnableProxy() ? "1" : "0")).append(createBlock(proxyHostAddr, a.proxyHostAddr)).append(createBlock(proxyPort, Integer.toString(a.getProxyPort())))
 //#endif

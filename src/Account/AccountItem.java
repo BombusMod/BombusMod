@@ -21,19 +21,12 @@ public class AccountItem extends IconTextElement {
         account = a;
     }
     
-    public String toString() {
-        StringBuffer s = new StringBuffer();
-        if (account.getNickName().length() != 0) {
-            s.append(account.getNickName());
-        } else {
-            s.append(account.userName).append('@').append(account.server);
-        }
-        s.append('/').append(account.resource);
-        return s.toString();
+    public String toString() {        
+        return account.JID.toString();
     }
     
     public int getImageIndex(){ return account.active ? RosterIcons.ICON_PRESENCE_ONLINE : RosterIcons.ICON_PRESENCE_OFFLINE; }
     
-    public String getTipString() { return account.getJid(); }
+    public String getTipString() { return account.JID.toString(); }
     
 }

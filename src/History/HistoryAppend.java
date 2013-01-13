@@ -107,7 +107,7 @@
 //#     }
 //# 
 //#     private byte[] getBodyBytes(Msg m) {
-//#         String fromName = StaticData.getInstance().account.userName;
+//#         String fromName = StaticData.getInstance().account.JID.getNode();
 //#         if (m.messageType != Msg.MESSAGE_TYPE_OUT) {
 //#             fromName = m.from;
 //#         }

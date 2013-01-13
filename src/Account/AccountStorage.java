@@ -9,6 +9,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import xmpp.Account;
+import xmpp.Jid;
 
 /**
  *
@@ -21,15 +22,15 @@ public class AccountStorage {
         Account a = new Account();
         try {
             version = inputStream.readByte();
-            a.userName = inputStream.readUTF();
+            String userName = inputStream.readUTF();
             a.password = inputStream.readUTF();
-            a.server = inputStream.readUTF();
+            String server = inputStream.readUTF();
             a.hostAddr = inputStream.readUTF();
             a.port = inputStream.readInt();
 
             a.nick = inputStream.readUTF();
-            a.resource = inputStream.readUTF();
-
+            String resource = inputStream.readUTF();
+            a.JID = new Jid(userName, server, resource);
             inputStream.readBoolean(); // was legacy ssl
             a.plainAuth = inputStream.readBoolean();
 //#ifndef WMUC            
@@ -65,7 +66,7 @@ public class AccountStorage {
              * e.printStackTrace();
              */ }
 
-        return (a.userName == null) ? null : a;
+        return (a.JID.getNode() == null) ? null : a;
     }
 
     public static void saveToDataOutputStream(Account account, DataOutputStream outputStream) {
@@ -81,14 +82,14 @@ public class AccountStorage {
 
         try {
             outputStream.writeByte(7);
-            outputStream.writeUTF(account.userName);
+            outputStream.writeUTF(account.JID.getNode());
             outputStream.writeUTF(account.password);
-            outputStream.writeUTF(account.server);
+            outputStream.writeUTF(account.JID.getServer());
             outputStream.writeUTF(account.hostAddr);
             outputStream.writeInt(account.port);
 
             outputStream.writeUTF(account.nick);
-            outputStream.writeUTF(account.resource);
+            outputStream.writeUTF(account.JID.resource);
 
             outputStream.writeBoolean(false); // was legacy ssl
             outputStream.writeBoolean(account.plainAuth);

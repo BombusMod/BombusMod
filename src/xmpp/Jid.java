@@ -47,6 +47,10 @@ public class Jid {
         setJid(s);
     }
     
+    public Jid(String user, String server, String resource) {
+        setJid(user + "@" + server + "/" + resource);
+    }
+    
     public final void setJid(String s){
         int resourcePos=s.indexOf('/');
         if (resourcePos<0) resourcePos=s.length();

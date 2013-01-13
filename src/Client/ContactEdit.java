@@ -73,7 +73,7 @@ public final class ContactEdit
 
         tTranspList = new DropChoiceBox(SR.MS_TRANSPORT);
         // Transport droplist
-        tTranspList.add(sd.account.server);
+        tTranspList.add(sd.account.JID.getServer());
         for (Enumeration e = sd.roster.hContacts.elements(); e.hasMoreElements();) {
             Contact ct = (Contact) e.nextElement();
             Jid transpJid = ct.jid;

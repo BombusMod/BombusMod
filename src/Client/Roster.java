@@ -74,11 +74,6 @@ import locale.SR;
 
 import xmpp.login.LoginListener;
 
-//#ifdef NON_SASL_AUTH
-//# import xmpp.login.NonSASLAuth;
-//#endif
-import xmpp.login.SASLAuth;
-
 import midlet.BombusMod;
 import ui.controls.AlertBox;
 import util.StringUtils;
@@ -285,7 +280,7 @@ public class Roster
         }
         try {
             Account a = sd.account;
-            setProgress(SR.MS_CONNECT_TO_ + a.server, 30);
+            setProgress(SR.MS_CONNECT_TO_ + a.JID.getServer(), 30);
 
             sd.theStream = a.openJabberStream();
             new Thread(sd.theStream).start();
@@ -312,7 +307,7 @@ public class Roster
         }
         if (sd.account != null) {
             sd.account.bookmarks.removeAllElements();            
-            myJid = new Jid(sd.account.getJid());
+            myJid = sd.account.JID;
             updateContact(sd.account.nick, myJid.bareJid, SR.MS_SELF_CONTACT, "self", false);
         }
     }

@@ -28,6 +28,7 @@ package Account;
 
 import xmpp.Account;
 import Client.*;
+import Info.Version;
 import locale.SR;
 import ui.SplashScreen;
 import ui.controls.AlertBox;
@@ -44,6 +45,7 @@ import ui.controls.form.TextInput;
 //#if HTTPCONNECT || HTTPPOLL || HTTPBIND
 //# import javax.microedition.lcdui.TextField;
 //#endif
+import xmpp.Jid;
 
 /**
  *
@@ -103,7 +105,7 @@ public class AccountForm
 
         mainbar.setElementAt((newaccount) ? SR.MS_NEW_ACCOUNT : (this.item.toString()), 0);
 
-        userbox = new TextInput(SR.MS_JID, this.item.account.getBareJid(), null);
+        userbox = new TextInput(SR.MS_JID, this.item.account.JID.bareJid, null);
         itemsList.addElement(userbox);
 
         passbox = new PasswordInput(SR.MS_PASSWORD, this.item.account.password);
@@ -191,7 +193,7 @@ public class AccountForm
 //#ifndef HTTPBIND
         keepAlive = new NumberInput(SR.MS_KEEPALIVE_PERIOD, Integer.toString(item.account.keepAlivePeriod), 10, 2048);//10, 2096        
 //#endif
-        resourcebox = new TextInput(SR.MS_RESOURCE, item.account.resource, null);
+        resourcebox = new TextInput(SR.MS_RESOURCE, item.account.JID.resource, null);
 
 //#if HTTPCONNECT
 //#         proxyHost = new TextInput(/*
@@ -233,6 +235,7 @@ public class AccountForm
     public void cmdOk() {
         String user = userbox.getValue().trim().toLowerCase();
         String pass = passbox.getValue();
+        String resource = resourcebox.getValue();
         String server = "";
         int at = user.indexOf('@');
         if (at > -1) {
@@ -243,8 +246,7 @@ public class AccountForm
             return;
         }
 
-        item.account.userName = user;
-        item.account.server = server;
+        item.account.JID = new Jid(user, pass, resource == null ? Version.NAME : resource);
         item.account.password = pass;
         item.account.nick = nickbox.getValue();
 
@@ -252,7 +254,6 @@ public class AccountForm
             String hostname = ipbox.getValue();
             item.account.port = Integer.parseInt(portbox.getValue());
             item.account.hostAddr = hostname;
-            item.account.resource = resourcebox.getValue();
             item.account.plainAuth = plainPwdbox.getValue();
             item.account.compression = compressionBox.getValue();
 //#ifndef WMUC            
@@ -289,7 +290,7 @@ public class AccountForm
 
     public void destroyView() {
         if (newaccount && doConnect) {
-            new AlertBox(SR.MS_CONNECT_TO, item.account.getBareJid() + "?") {
+            new AlertBox(SR.MS_CONNECT_TO, item.account.JID.bareJid + "?") {
 
                 public void yes() {
                     SplashScreen.getInstance().setExit(sd.roster);

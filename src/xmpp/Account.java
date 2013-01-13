@@ -37,17 +37,15 @@ import java.util.Vector;
 public class Account {
 
     //public final static String storage="accnt_db";
-    public String userName = "";
+    public Jid JID;
     public String password = "";
-    public String server = "";
     public String hostAddr = "";
     public int port = 5222;
     public boolean active;
     public boolean compression = true;
     public boolean plainAuth;
     public boolean mucOnly;
-    public String nick = "";
-    public String resource = Version.NAME;
+    public String nick = "";    
 //#if HTTPPOLL || HTTPCONNECT || HTTPBIND
 //#     private boolean enableProxy;
 //#     public String proxyHostAddr = "";
@@ -60,26 +58,16 @@ public class Account {
     public int keepAlivePeriod = 120;
     private static StaticData sd = StaticData.getInstance();    
     
-    public final Vector bookmarks = new Vector();    
-
-    public String getJid() {
-        return userName + '@' + server + '/' + resource;
-    }
-
-    public String getBareJid() {
-        if (userName.equals("")) {
-            return "";
-        }
-        return userName + '@' + server;
-    }        
+    public final Vector bookmarks = new Vector();        
+           
 
     public String getNickName() {
-        return (nick.length() == 0) ? userName : nick;
+        return (nick.length() == 0) ? JID.getNode() : nick;
     }    
 
     public JabberStream openJabberStream() throws java.io.IOException {
         String proxy = null;
-        String host = server;
+        String host = JID.getServer();
         int tempPort = port;
 
         if (hostAddr != null && hostAddr.length() > 0) {
@@ -97,7 +85,7 @@ public class Account {
 //#endif            
 //#             }
 //#endif            
-            if (dns.getSrv(server, type)) {
+            if (dns.getSrv(JID.getServer(), type)) {
                 host = dns.getHost();
                 tempPort = dns.getPort();
 //#if HTTPBIND || HTTPPOLL
@@ -123,7 +111,7 @@ public class Account {
             url.insert(0, "socket://");
 //#endif            
 //#endif
-        return new JabberStream(server, url.toString(), tempPort, proxy);
+        return new JabberStream(JID.getServer(), url.toString(), tempPort, proxy);
     }
 
 //#if HTTPPOLL || HTTPCONNECT || HTTPBIND

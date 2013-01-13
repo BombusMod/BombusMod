@@ -68,14 +68,14 @@ public class JuickConfig extends DefForm {
         if (records.isEmpty()) {
             records.readFromStorage();
         }
-     return records.getJuickJID(sdata.account.getBareJid());
+     return records.getJuickJID(sdata.account.JID.bareJid);
     }
 
     public static void setJuickJID(String JJID, boolean toStorage) {
         if (records.isEmpty()) {
             records.readFromStorage();
         }
-        records.setJuickJID(sdata.account.getBareJid(), JJID);
+        records.setJuickJID(sdata.account.JID.bareJid, JJID);
         if (toStorage) {
             records.writeToStorage();
         }

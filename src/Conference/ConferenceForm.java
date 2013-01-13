@@ -128,7 +128,7 @@ public class ConferenceForm
         }
         // default server
         if (server == null) {
-            server = "conference." + sd.account.server;
+            server = "conference." + sd.account.JID.getServer();
         }
         createForm(null, room, server, null, null, false);
     }

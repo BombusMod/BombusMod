@@ -80,7 +80,7 @@ public class NonSASLAuth implements JabberBlockListener{
         
         JabberDataBlock query = new JabberDataBlock("query");
         query.setNameSpace( NS_IQ_AUTH );
-        query.addChild( "username", account.userName );
+        query.addChild( "username", account.JID.getNode() );
         
         switch (authType) {
             case AUTH_DIGEST:
@@ -102,21 +102,21 @@ public class NonSASLAuth implements JabberBlockListener{
                 }
                 query.addChild("digest", StringUtils.getDigestHex(sha1) );
 
-                query.addChild( "resource", account.resource );
+                query.addChild( "resource", account.JID.resource );
                 type=Iq.TYPE_SET;
                 id="auth-s";
                 break;
                 
             case AUTH_PASSWORD:
                 query.addChild("password", account.password );
-                query.addChild( "resource", account.resource );
+                query.addChild( "resource", account.JID.resource );
                 type=Iq.TYPE_SET;
                 id="auth-s";
                 break;
         }
 
         
-        Iq auth=new Iq(account.server, type, id);
+        Iq auth=new Iq(account.JID.getServer(), type, id);
         auth.addChild(query);
         
         stream.send(auth);

@@ -26,24 +26,17 @@
  */
 package xmpp.login;
 
-import xmpp.Account;
 import com.alsutton.jabber.JabberBlockListener;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.JabberStream;
 import com.alsutton.jabber.datablocks.Iq;
-//#if (android)
-//# import java.security.MessageDigest;
-//#else
-import com.ssttr.crypto.MessageDigest;
-//#endif
-//#ifdef TLS
-//# import Client.StaticData;
-//#endif
 import java.io.IOException;
 import locale.SR;
 import util.Strconv;
-import util.StringUtils;
+import xmpp.Account;
 import xmpp.XmppError;
+import xmpp.login.sasl.SaslFactory;
+import xmpp.login.sasl.SaslMechanism;
 
 /**
  *
@@ -53,8 +46,8 @@ public class SASLAuth implements JabberBlockListener {
 
     private LoginListener listener;
     private Account account;
-    private SASL_ScramSha1 scramSHA1;
     private JabberStream stream;
+    SaslMechanism selectedMechanism;
 
     /**
      * Creates a new instance of SASLAuth
@@ -67,7 +60,7 @@ public class SASLAuth implements JabberBlockListener {
     }
 
     public int blockArrived(JabberDataBlock data) {
-        //System.out.println(data.toString());
+        //System.out.println(data.toString());        
         if (data.getTagName().equals("features")) {
 //#if TLS
 //#             JabberDataBlock starttls=data.getChildBlock("starttls");
@@ -104,89 +97,39 @@ public class SASLAuth implements JabberBlockListener {
 //#                 }
 //#             }
 //#endif            
-            JabberDataBlock mech = data.getChildBlock("mechanisms");
+            JabberDataBlock mech = data.getChildBlock("mechanisms");            
             if (mech != null) {
+                selectedMechanism = SaslFactory
+                        .getPreferredMechanism(account, SaslMechanism.parseMechanisms(mech));
+                if (selectedMechanism == null) {
+                    // no more method found
+                    listener.loginFailed("SASL: Unknown mechanisms");
+                    return JabberBlockListener.NO_MORE_BLOCKS;
+                }
                 // first stream - step 1. selecting authentication mechanism
                 //common body
                 JabberDataBlock auth = new JabberDataBlock("auth");
-                auth.setNameSpace("urn:ietf:params:xml:ns:xmpp-sasl");
-
-                if (mech.getChildBlockByText("SCRAM-SHA-1") != null && !account.plainAuth) {
-                    auth.setAttribute("mechanism", "SCRAM-SHA-1");
-                    scramSHA1 = new SASL_ScramSha1();
-                    auth.setText(Strconv.toBase64(scramSHA1.init(account.getBareJid(), Strconv.unicodeToUTF(account.password))));
+                auth.setNameSpace(SaslFactory.NS_SASL);
+                String initialMessage =
+                        selectedMechanism.init(account.JID,
+                        Strconv.unicodeToUTF(account.password));
+                auth.setAttribute("mechanism",
+                        selectedMechanism.getName());
+                if (initialMessage != null) {
+                    auth.setText(Strconv.toBase64(initialMessage));
                     stream.send(auth);
                     listener.loginMessage(SR.MS_AUTH, 42);
                     return JabberBlockListener.BLOCK_PROCESSED;
+                } else {
+                    // no more method found
+                    listener.loginFailed("SASL: Unknown mechanisms");
+                    return JabberBlockListener.NO_MORE_BLOCKS;
                 }
-                // DIGEST-MD5 mechanism
-                if (mech.getChildBlockByText("DIGEST-MD5") != null) {
-                    auth.setAttribute("mechanism", "DIGEST-MD5");
-
-                    //System.out.println(auth.toString());
-
-                    stream.send(auth);
-                    listener.loginMessage(SR.MS_AUTH, 42);
-                    return JabberBlockListener.BLOCK_PROCESSED;
-                }
-//#ifdef SASL_XGOOGLETOKEN
-//#                 // X-GOOGLE-TOKEN mechanism
-//#                 if (mech.getChildBlockByText("X-GOOGLE-TOKEN") != null) {
-//# 
-//#                     listener.loginMessage(SR.MS_TOKEN, 40);
-//#                     String token;
-//#                     try {
-//#                         token = new GoogleTokenAuth(account).responseXGoogleToken();
-//#                     } catch (Exception e) {
-//#                         listener.loginFailed("Can't get Google token: " + e.getMessage());
-//#                         return JabberBlockListener.NO_MORE_BLOCKS;
-//#                     }
-//#                     if (token == null) {
-//#                         listener.loginFailed("Can't get Google token");
-//#                         return JabberBlockListener.NO_MORE_BLOCKS;
-//#                     }
-//#                     account.isGoogle = true;
-//#                     auth.setAttribute("mechanism", "X-GOOGLE-TOKEN");
-//#                     auth.setText(token);
-//# 
-//#                     //System.out.println(auth.toString());
-//# 
-//#                     stream.send(auth);
-//#                     listener.loginMessage(SR.MS_AUTH, 42);
-//#                     return JabberBlockListener.BLOCK_PROCESSED;
-//# 
-//#                 }
-//#endif
-
-                if (mech.getChildBlockByText("PLAIN") != null) {
-
-                    if (!account.plainAuth) {
-                        listener.loginFailed("SASL: Plain auth required");
-                        return JabberBlockListener.NO_MORE_BLOCKS;
-                    }
-
-                    auth.setAttribute("mechanism", "PLAIN");
-                    String plain =
-                            Strconv.unicodeToUTF(account.getBareJid())
-                            + (char) 0x00
-                            + Strconv.unicodeToUTF(account.userName)
-                            + (char) 0x00
-                            + Strconv.unicodeToUTF(account.password);
-                    auth.setText(Strconv.toBase64(plain));
-
-                    stream.send(auth);
-                    listener.loginMessage(SR.MS_AUTH, 42);
-                    return JabberBlockListener.BLOCK_PROCESSED;
-                }
-                // no more method found
-                listener.loginFailed("SASL: Unknown mechanisms");
-                return JabberBlockListener.NO_MORE_BLOCKS;
-
             } // second stream - step 1. binding resource
             else if (data.getChildBlock("bind") != null) {
                 JabberDataBlock bindIq = new Iq(null, Iq.TYPE_SET, "bind");
                 JabberDataBlock bind = bindIq.addChildNs("bind", "urn:ietf:params:xml:ns:xmpp-bind");
-                bind.addChild("resource", account.resource);
+                bind.addChild("resource", account.JID.resource);
                 stream.send(bindIq);
 
                 listener.loginMessage(SR.MS_RESOURCE_BINDING, 44);
@@ -208,38 +151,15 @@ public class SASLAuth implements JabberBlockListener {
         } else if (data.getTagName().equals("challenge")) {
             // first stream - step 2,3. reaction to challenges
 
-            String challenge = Strconv.sFromBase64(data.getText());
-            //System.out.println(challenge);
+            String challenge = Strconv.sFromBase64(data.getText());            
 
             JabberDataBlock resp = new JabberDataBlock("response");
-            resp.setNameSpace("urn:ietf:params:xml:ns:xmpp-sasl");
-
-            if (scramSHA1 != null) {
-                resp.setText(Strconv.toBase64(scramSHA1.response(challenge)));
-            } else {
-                int nonceIndex = challenge.indexOf("nonce=");
-                // first stream - step 2. generating DIGEST-MD5 response due to challenge
-                if (nonceIndex >= 0) {
-                    nonceIndex += 7;
-                    String nonce = challenge.substring(nonceIndex, challenge.indexOf('\"', nonceIndex));
-                    String cnonce = "123456789abcd";
-                    try {
-                        resp.setText(responseMd5Digest(
-                                Strconv.unicodeToUTF(account.userName),
-                                Strconv.unicodeToUTF(account.password),
-                                account.server,
-                                "xmpp/" + account.server,
-                                nonce,
-                                cnonce));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                //System.out.println(resp.toString());
+            resp.setNameSpace(SaslFactory.NS_SASL);
+            try {
+                resp.setText(Strconv.toBase64(selectedMechanism.response(challenge)));
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
-            // first stream - step 3. sending second empty response due to second challenge
-            //if (challenge.startsWith("rspauth")) {}
-
             stream.send(resp);
             return JabberBlockListener.BLOCK_PROCESSED;
         } 
@@ -273,10 +193,8 @@ public class SASLAuth implements JabberBlockListener {
             // first stream - step 4a. not authorized
             listener.loginFailed(XmppError.decodeSaslError(data).toString());
         } else if (data.getTagName().equals("success")) {
-            if (scramSHA1 != null) {
-                if (!scramSHA1.success(new String(Strconv.fromBase64(data.getText())))) {
-                    listener.loginFailed("Server answer not valid");
-                }
+            if (!selectedMechanism.success(new String(Strconv.fromBase64(data.getText())))) {
+                listener.loginFailed("Server answer not valid");
             }
             // first stream - step 4b. success.
             try {
@@ -307,65 +225,5 @@ public class SASLAuth implements JabberBlockListener {
             }
         }
         return JabberBlockListener.BLOCK_REJECTED;
-    }
-
-    /**
-     * This routine generates MD5-DIGEST response via SASL specification
-     *
-     * @param user
-     * @param pass
-     * @param realm
-     * @param digest_uri
-     * @param nonce
-     * @param cnonce
-     * @return
-     */
-    private String responseMd5Digest(String user, String pass, String realm, String digestUri, String nonce, String cnonce) throws Exception {
-
-        MessageDigest hUserRealmPass = MessageDigest.getInstance("MD5");
-        StringBuffer userRealm = new StringBuffer();
-        userRealm.append(user).append(":").append(realm).append(":")
-                .append(pass);
-        hUserRealmPass.update(userRealm.toString().getBytes(), 0, userRealm.length());
-        byte[] userRealmDigest = new byte[16];
-        hUserRealmPass.digest(userRealmDigest, 0, userRealmDigest.length);
-
-        MessageDigest hA1 = MessageDigest.getInstance("MD5");
-        hA1.update(userRealmDigest, 0, userRealmDigest.length);
-        hA1.update(":".getBytes(), 0, 1);
-        hA1.update(nonce.getBytes(), 0, nonce.length());
-        hA1.update(":".getBytes(), 0, 1);
-        hA1.update(cnonce.getBytes(), 0, cnonce.length());
-        byte[] hA1bits = new byte[16];
-        hA1.digest(hA1bits, 0, hA1bits.length);
-
-        MessageDigest hA2 = MessageDigest.getInstance("MD5");
-        StringBuffer authenticate = new StringBuffer();
-        authenticate.append("AUTHENTICATE:").append(digestUri);
-        hA2.update(authenticate.toString().getBytes(), 0, authenticate.length());
-        byte[] hA2bits = new byte[16];
-        hA2.digest(hA2bits, 0, hA2bits.length);
-
-        MessageDigest hResp = MessageDigest.getInstance("MD5");
-        String hA1hex = StringUtils.getDigestHex(hA1bits);
-        String hA2hex = StringUtils.getDigestHex(hA2bits);
-        
-        hResp.update(hA1hex.getBytes(), 0, hA1hex.length());
-        hResp.update(":".getBytes(), 0, 1);
-        hResp.update(nonce.getBytes(), 0, nonce.length());
-        hResp.update(":00000001:".getBytes(), 0, 10);
-        hResp.update(cnonce.getBytes(), 0, cnonce.length());
-        hResp.update(":auth:".getBytes(), 0, 6);
-        hResp.update(hA2hex.getBytes(), 0, hA2hex.length());
-        byte[] hRespBits = new byte[16];
-        hResp.digest(hRespBits, 0, hRespBits.length);
-
-        String out = "username=\"" + user + "\",realm=\"" + realm + "\","
-                + "nonce=\"" + nonce + "\",nc=00000001,cnonce=\"" + cnonce + "\","
-                + "qop=auth,digest-uri=\"" + digestUri + "\","
-                + "response=\"" + StringUtils.getDigestHex(hRespBits) + "\",charset=utf-8";
-        String resp = Strconv.toBase64(out);
-        //System.out.println(decodeBase64(resp));
-        return resp;
-    }
+    }    
 }

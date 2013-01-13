@@ -12,6 +12,7 @@ package xmpp;
 import com.alsutton.jabber.*;
 import java.util.Enumeration;
 import java.util.Vector;
+import xmpp.login.sasl.SaslFactory;
 
 /**
  *
@@ -215,7 +216,7 @@ public class XmppError {
     
     public static XmppError decodeSaslError(JabberDataBlock error) {
         if (!error.getTagName().equals("failure")) throw new IllegalArgumentException();
-        return decodeError(error, "urn:ietf:params:xml:ns:xmpp-sasl");
+        return decodeError(error, SaslFactory.NS_SASL);
     }
         
     private static XmppError decodeError(JabberDataBlock error, String ns) {

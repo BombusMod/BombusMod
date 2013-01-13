@@ -28,6 +28,7 @@ package Account;
 
 import xmpp.Account;
 import Client.StaticData;
+import Info.Version;
 import Menu.MenuCommand;
 import ServiceDiscovery.DiscoForm;
 import ServiceDiscovery.DiscoForm.FormSubmitListener;
@@ -42,6 +43,7 @@ import ui.controls.form.DefForm;
 import ui.controls.form.DropChoiceBox;
 import ui.controls.form.TextInput;
 import util.StringLoader;
+import xmpp.Jid;
 import xmpp.extensions.IqRegister;
 import xmpp.extensions.IqRegister.RegistrationListener;
 import xmpp.login.LoginListener;
@@ -90,7 +92,7 @@ public class AccountRegister
 		itemsList.addElement(serverChoice);
 		show();
 	    } else if (serversCount == 1) {
-		raccount.server = (String) defs[0].elementAt(0);
+		raccount.JID = new Jid((String) defs[0].elementAt(0));
 		new Thread(this).start();
 	    } else {
 		for (int i = 0; i < serversCount; i++) {
@@ -112,7 +114,7 @@ public class AccountRegister
     public void run() {
         VirtualCanvas.getInstance().show(splash);
         try {
-            splash.setProgress(SR.MS_CONNECT_TO_ + raccount.server, 30);
+            splash.setProgress(SR.MS_CONNECT_TO_ + raccount.JID.getServer(), 30);
             //give a chance another thread to finish ui
             Thread.sleep(500);
             sd.theStream = raccount.openJabberStream();
@@ -156,7 +158,10 @@ public class AccountRegister
     splash.close(as);
     }*/
     public void registrationFormNotify(JabberDataBlock data) {
-		new DiscoForm(null, this, null, data, sd.theStream, "register" + System.currentTimeMillis(), "query").fetchMediaElements(data.getChildBlock("query").getChildBlocks());
+        new DiscoForm(null, this, null, data, sd.theStream,
+                "register" + System.currentTimeMillis(), "query")
+                .fetchMediaElements(data.getChildBlock("query")
+                .getChildBlocks());
     }
 
     public void registrationFailed(String errorText) {
@@ -174,7 +179,7 @@ public class AccountRegister
     public void menuAction(MenuCommand c, VirtualList v) {
 	if (c == cmdSend) {
 	    String serverName = (String) serverChoice.items.elementAt(serverChoice.getSelectedIndex());
-	    raccount.server = serverName;
+	    raccount.JID = new Jid( serverName );
 	    new Thread(this).start();
 	} else {
 	    super.menuAction(c, v);
@@ -198,7 +203,8 @@ public class AccountRegister
 	    FormField field = (FormField) e.nextElement();
 	    if (field != null && field.name != null) {
 		if (field.name.equals("username")) {
-		    raccount.userName = ((TextInput) field.formItem).getValue();
+		    raccount.JID = new Jid(((TextInput) field.formItem).getValue(), 
+                            raccount.JID.getServer(), Version.NAME);
 		}
 		if (field.name.equals("password")) {
 		    raccount.password = ((TextInput) field.formItem).getValue();
