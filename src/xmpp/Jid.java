@@ -24,38 +24,47 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-
 package xmpp;
 
-import Client.Contact;
-import Client.StaticData;
-import util.Strconv;
-
-/**
- *
- * @author Eugene Stahov
- */
 public class Jid {
-    
-    public String bareJid;
-    public String resource;
-    
-    /** Creates a new instance of Jid
-     * @param s 
-     */
-    public Jid(String s) {
-        setJid(s);
-    }
+
+    private String user;
+    private String server;
+    public String resource = "";
     
     public Jid(String user, String server, String resource) {
-        setJid(user + "@" + server + "/" + resource);
+        this.user = user;
+        this.server = server;
+        this.resource = resource;
+    }
+
+    public Jid(String fromString) {
+        int at = fromString.indexOf('@');
+        if (at == -1) {
+            user = "";
+            server = fromString.toLowerCase();
+        } else {
+            user = fromString.substring(0, at).toLowerCase();
+            int slash = fromString.indexOf('/');
+            if (slash == -1) {
+                server = fromString.substring(at + 1).toLowerCase();
+            } else {
+                resource = fromString.substring(slash + 1);
+                server = fromString.substring(at + 1, fromString.length() - resource.length() - 1).toLowerCase();
+            }
+        }
+    }       
+    
+    public String getNode() {
+        return user;
     }
     
-    public final void setJid(String s){
-        int resourcePos=s.indexOf('/');
-        if (resourcePos<0) resourcePos=s.length();
-        resource=s.substring(resourcePos);
-        bareJid=Strconv.toLowerCase(s.substring(0,resourcePos));
+    public String getServer() {
+        return server;
+    }
+
+    public String getBare() {
+        return user == null || user.length() == 0 ? server : user + "@" + server;
     }
     
     /** Compares two Jids
@@ -68,86 +77,22 @@ public class Jid {
             return false;
         }
 
-        if (!bareJid.equals(j.bareJid)) {
+        if (!getBare().equals(j.getBare())) {
             return false;
         }
 
         if (!compareResource) {
             return true;
         }
-        
+       
         return (resource.equals(j.resource));
     }
 
-    public String getNode() {
-        int beginIndex = bareJid.indexOf('@');
-        if (beginIndex > 0)
-            return bareJid.substring(0, beginIndex);
-        return bareJid;
-    }
 
-    public boolean equalsViaJ2J(String jid_str) {
-        Jid j = new Jid(jid_str);
-        String node = getNode();
-        String jnode = j.getNode();
-        String jserver = j.getServer();
-
-        return equals(j, false)
-         || (node.equals(jnode+"%"+jserver))
-         || (node.equals(jnode+"\\40"+jserver));
-    }
-
-    public boolean equalsServerViaJ2J(String jserver) {
-        String node = getNode();
-
-        return getServer().equals(jserver)
-         || (node.endsWith("%"+jserver))
-         || (node.endsWith("\\40"+jserver));
-    }
-
-    public boolean isTransport(){
-        if (bareJid.length() == 0) return false;
-        return bareJid.indexOf('@')==-1;
-    }
-    
-    public boolean belongsToTransport() {
-        Jid j = new Jid(getServer());
-        Contact tr = StaticData.getInstance().roster.findContact(j, false);
-        if (tr != null) {
-            return j.bareJid.equals(tr.bareJid);
+    public String toString() {
+        if (user.length() == 0) {
+            return getBare();
         }
-        return false;
+        return resource == null ? getBare() : getBare() + "/" + resource;
     }
-    
-
-    public boolean hasResource(){
-        return (resource.length()!=0) ;
-    }
-    
-    public String getTransport(){
-        try {
-            int beginIndex=bareJid.indexOf('@')+1;
-            int endIndex=bareJid.indexOf('.',beginIndex);
-            return bareJid.substring(beginIndex, endIndex);
-        } catch (Exception e) {
-            return "-";
-        }
-    }
-
-    public String toString(){
-        if (resource.length()==0) return bareJid;
-        return bareJid+resource;
-    }
-        
-    /** returns server of the JID
-     * @return
-     */
-     public String getServer(){
-         try {
-             int beginIndex=bareJid.indexOf('@')+1;
-             return bareJid.substring(beginIndex);
-         } catch (Exception e) {
-             return "-";
-         }
-     }
 }

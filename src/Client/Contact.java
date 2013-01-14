@@ -52,6 +52,7 @@ import com.alsutton.jabber.datablocks.Presence;
 import java.util.Enumeration;
 import java.util.Vector;
 import locale.SR;
+import xmpp.JidUtils;
 
 public class Contact extends IconTextElement {
 
@@ -88,7 +89,6 @@ public class Contact extends IconTextElement {
 //#endif
     public String nick;
     public Jid jid;
-    public String bareJid; // for roster/subscription manipulating
     public int status;
     public int priority;
     public Group group;
@@ -179,13 +179,12 @@ public class Contact extends IconTextElement {
         }
         status = Status;
 
-        bareJid = sJid;
         this.subscr = subscr;
 
         setSortKey((Nick == null) ? sJid : Nick);
 
         //calculating transport
-        transport = RosterIcons.getInstance().getTransportIndex(jid.getTransport());
+        transport = RosterIcons.getInstance().getTransportIndex(JidUtils.getTransport(jid));
     }
 
     public Contact clone(Jid newjid, final int status) {
@@ -198,7 +197,7 @@ public class Contact extends IconTextElement {
         clone.offline_type = offline_type;
         clone.origin = ORIGIN_CLONE;
         clone.status = status;
-        clone.transport = RosterIcons.getInstance().getTransportIndex(newjid.getTransport()); //<<<<
+        clone.transport = RosterIcons.getInstance().getTransportIndex(JidUtils.getTransport(newjid)); //<<<<
 //#ifdef PEP
 //#         clone.pepMood = pepMood;
 //#         clone.pepMoodName = pepMoodName;
@@ -215,7 +214,6 @@ public class Contact extends IconTextElement {
 //#endif
 //# 
 //#endif
-        clone.bareJid = bareJid;
         return clone;
     }
 
@@ -403,7 +401,6 @@ public class Contact extends IconTextElement {
                     b.insert(0, '*');
                     b.append(m.body.substring(3));
                     m.body = b.toString();
-                    b = null;
                 }
             }
         } else {
@@ -414,7 +411,7 @@ public class Contact extends IconTextElement {
         }
 //#if HISTORY
 //#         if (!m.history) {
-//#             if (!cf.msgPath.equals("") && !jid.isTransport() && group.type != Groups.TYPE_SEARCH_RESULT) {
+//#             if (!cf.msgPath.equals("") && !JidUtils.isTransport(jid) && group.type != Groups.TYPE_SEARCH_RESULT) {
 //#                 boolean allowLog = false;
 //#                 switch (m.messageType) {
 //#                     case Msg.MESSAGE_TYPE_PRESENCE:
@@ -444,7 +441,7 @@ public class Contact extends IconTextElement {
 //#endif
 //# 
 //#                 if (allowLog) {
-//#                     HistoryAppend.getInstance().addMessage(m, bareJid);
+//#                     HistoryAppend.getInstance().addMessage(m, jid.getBare());
 //#                 }
 //#             }
 //#         }
@@ -485,7 +482,7 @@ public class Contact extends IconTextElement {
     }
 
     public final String getName() {
-        return (nick == null) ? bareJid : nick;
+        return (nick == null) ? jid.getBare() : nick;
     }
 
     public final Jid getJid() {
@@ -498,9 +495,9 @@ public class Contact extends IconTextElement {
 
     public String getNickJid() {
         if (nick == null) {
-            return bareJid;
+            return jid.getBare();
         }
-        return nick + " <" + bareJid + ">";
+        return nick + " <" + jid.getBare() + ">";
     }
 
     public final void purge() {
@@ -574,7 +571,7 @@ public class Contact extends IconTextElement {
             }
         } else {
 //#endif
-            mess.append("jid: ").append(bareJid).append(jid.resource).append("\n").append(SR.MS_SUBSCRIPTION).append(": ").append(subscr);
+            mess.append("jid: ").append(jid.toString()).append("\n").append(SR.MS_SUBSCRIPTION).append(": ").append(subscr);
 //#ifdef PEP
 //#             if (hasMood()) {
 //#                 mess.append("\n").append(SR.MS_USERMOOD).append(": ").append(getMoodString());
@@ -705,7 +702,7 @@ public class Contact extends IconTextElement {
 
     public String getFirstString() {
         if (!cf.showResources) {
-            return (nick == null) ? jid.bareJid : nick;
+            return (nick == null) ? jid.getBare() : nick;
         }
         if (origin > ORIGIN_GROUPCHAT) {
             return nick;

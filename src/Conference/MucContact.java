@@ -150,13 +150,12 @@ public class MucContact extends Contact {
             switch (statusCode) {
                 case 303:
                     b.append(SR.MS_IS_NOW_KNOWN_AS);
-                    String chNick=item.getAttribute("nick");
-                    Msg.appendNick(b,chNick);
-                    String newJid=from.substring(0, from.indexOf('/')+1)+chNick;
-                    jid.setJid(newJid);
-                    bareJid=newJid;
-                    from=newJid;
-                    nick=chNick;
+                    String chNick = item.getAttribute("nick");
+                    Msg.appendNick(b, chNick);
+                    String newJid = from.substring(0, from.indexOf('/') + 1) + chNick;
+                    jid = new Jid(newJid);
+                    from = newJid;
+                    nick = chNick;
                     break;
                 case 301: //ban
                     presenceType=Presence.PRESENCE_ERROR;

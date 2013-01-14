@@ -49,7 +49,7 @@ public class SubscriptionEdit
         super(SR.MS_SUBSCRIPTION);      
         
         
-        to=c.bareJid;
+        to=c.jid.getBare();
 
         itemsList.addElement(new SimpleString(to, false));
         itemsList.addElement(new SimpleString(c.subscr+((c.ask_subscribe)?",ask":""), false));

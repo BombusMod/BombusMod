@@ -84,7 +84,7 @@ public class RenameGroup
                 Contact cr=(Contact)e.nextElement();
                 if (cr.group.name.equals(sourceGroup)) {
                     JabberDataBlock item= qB.addChild("item",null);
-                    item.setAttribute("jid", cr.bareJid);
+                    item.setAttribute("jid", cr.jid.getBare());
                     item.setAttribute("name", cr.nick);
                     item.setAttribute("subscription", null);
                     if (destGroup!=null) {

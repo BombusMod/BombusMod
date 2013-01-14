@@ -50,6 +50,7 @@ import images.RosterIcons;
 import java.util.Enumeration;
 import locale.SR;
 import ui.controls.AlertBox;
+import xmpp.JidUtils;
 import xmpp.extensions.IqLast;
 import xmpp.extensions.IqPing;
 import xmpp.extensions.IqTimeReply;
@@ -85,7 +86,7 @@ public class RosterItemActions extends Menu {
 
         if (isContact) {
             Contact contact = (Contact) item;
-            if (contact.jid.isTransport()) {
+            if (JidUtils.isTransport(contact.jid)) {
                 addItem(SR.MS_LOGON, 5, RosterIcons.ICON_ON);
                 addItem(SR.MS_LOGOFF, 6, RosterIcons.ICON_OFF);
                 addItem(SR.MS_RESOLVE_NICKNAMES, 7, RosterIcons.ICON_NICK_RESOLVE);
@@ -124,7 +125,7 @@ public class RosterItemActions extends Menu {
                 } else {
                     addItem(SR.MS_SEEN, 894, RosterIcons.ICON_ONLINE);
                 }
-                if (!contact.jid.isTransport()) {
+                if (!JidUtils.isTransport(contact.jid)) {
                     addItem(SR.MS_EDIT, 2, RosterIcons.ICON_RENAME);
                 }
                 addItem(SR.MS_SUBSCRIPTION, 3, RosterIcons.ICON_SUBSCR);
@@ -254,7 +255,7 @@ public class RosterItemActions extends Menu {
 //# 
 //#endif
 //#if FILE_TRANSFER
-//#             if (!contact.jid.isTransport() && cf.fileTransfer) {
+//#             if (!JidUtils.isTransport(contact.jid) && cf.fileTransfer) {
 //#                 if (contact != sd.roster.selfContact()) {
 //#                     String cameraAvailable = System.getProperty("supports.video.capture");
 //#                     if (cameraAvailable != null) {
@@ -341,7 +342,7 @@ public class RosterItemActions extends Menu {
 
         String to = null;
         if (isContact) {
-            to = (index < 3) ? c.getJid().toString() : c.bareJid;
+            to = (index < 3) ? c.getJid().toString() : c.jid.getBare();
         }
         switch (index) {
             case 0: // version
@@ -367,7 +368,7 @@ public class RosterItemActions extends Menu {
                     }
                     return;
                 }
-                VCard.request(c.bareJid, c.getJid().toString());
+                VCard.request(c.jid.getBare(), c.getJid().toString());
                 break;
             case 2:
                 new ContactEdit(c);
@@ -401,11 +402,11 @@ public class RosterItemActions extends Menu {
                 sd.theStream.send(presence2);
                 break;
             case 7: // Nick resolver
-                sd.roster.resolveNicknames(c.bareJid);
+                sd.roster.resolveNicknames(c.jid.getBare());
                 break;
 //#if CHANGE_TRANSPORT
 //#             case 915: // change transport
-//#                 new ChangeTransport(c.bareJid);
+//#                 new ChangeTransport(c.jid.getBare());
 //#                 return;
 //#endif
             case 21:
@@ -425,11 +426,11 @@ public class RosterItemActions extends Menu {
                 break;
             case 890: //online
                 sd.roster.setQuerySign(true);
-                sd.theStream.send(IqLast.query(c.bareJid, "online_" + c.getResource()));
+                sd.theStream.send(IqLast.query(c.jid.getBare(), "online_" + c.getResource()));
                 break;
             case 894: //seen
                 sd.roster.setQuerySign(true);
-                sd.theStream.send(IqLast.query(c.bareJid, "seen"));
+                sd.theStream.send(IqLast.query(c.jid.getBare(), "seen"));
                 break;
             case 891: //time
                 sd.roster.setQuerySign(true);

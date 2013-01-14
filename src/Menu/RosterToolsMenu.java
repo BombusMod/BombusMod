@@ -179,7 +179,7 @@ public class RosterToolsMenu extends Menu {
                     new VCardEdit(c.vcard);
                     return;
                 }
-                VCard.request(c.bareJid, c.getJid().toString());
+                VCard.request(c.jid.getBare(), c.getJid().toString());
                 return;
             }
             case 4:

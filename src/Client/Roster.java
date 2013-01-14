@@ -114,6 +114,7 @@ import xmpp.extensions.IqVCard;
 //# import LightControl.CustomLight;
 //#endif
 import xmpp.JabberDispatcher;
+import xmpp.JidUtils;
 import xmpp.PresenceDispatcher;
 import xmpp.RosterDispatcher;
 import xmpp.extensions.muc.Conference;
@@ -308,7 +309,7 @@ public class Roster
         if (sd.account != null) {
             sd.account.bookmarks.removeAllElements();            
             myJid = sd.account.JID;
-            updateContact(sd.account.nick, myJid.bareJid, SR.MS_SELF_CONTACT, "self", false);
+            updateContact(sd.account.nick, myJid.getBare(), SR.MS_SELF_CONTACT, "self", false);
         }
     }
 
@@ -479,7 +480,7 @@ public class Roster
 //#ifndef WMUC
         if (g instanceof ConferenceGroup) {
             ConferenceGroup cg = (ConferenceGroup) g;
-            groupSelfContact = cg.selfContact.bareJid;
+            groupSelfContact = cg.selfContact.jid.getBare();
             if (!cg.inRoom) {
                 int index = 0;
                 boolean removeGroup = true;
@@ -519,7 +520,7 @@ public class Roster
                     if (contact.origin > Contact.ORIGIN_ROSTERRES
                             && contact.status >= Presence.PRESENCE_OFFLINE
                             && !contact.haveChatMessages()
-                            && !contact.bareJid.equals(groupSelfContact)
+                            && !contact.jid.getBare().equals(groupSelfContact)
                             && contact.origin != Contact.ORIGIN_GROUPCHAT) {
 
                         contact.msgs.removeAllElements();
@@ -580,7 +581,7 @@ public class Roster
             for (int i = 0; i < j; i++) {
                 c = (Contact) hContacts.elementAt(i);
                 if (c.jid.equals(J, false)) {
-                    Group group = (c.jid.isTransport())
+                    Group group = (JidUtils.isTransport(c.jid))
                             ? groups.getGroup(Groups.TYPE_TRANSP)
                             : groups.getGroup(grpName);
                     if (group == null) {
@@ -690,7 +691,6 @@ public class Roster
         c.setStatus(Presence.PRESENCE_ONLINE);
 
         c.transport = RosterIcons.ICON_GROUPCHAT_INDEX; //FIXME: убрать хардкод
-        c.bareJid = from;
         c.origin = Contact.ORIGIN_GROUPCHAT;
         c.commonPresence = true;
 
@@ -715,8 +715,7 @@ public class Roster
         if (c != null) {
             if (c.status >= Presence.PRESENCE_OFFLINE) {
                 c.nick = nick;
-                c.jid.setJid(from);
-                c.bareJid = from;
+                c.jid = new Jid(from);                
             }
         }
 
@@ -738,7 +737,7 @@ public class Roster
 
     public final MucContact mucContact(Jid from) {
         // muc message
-        String roomJid = from.bareJid;
+        String roomJid = from.getBare();
 
         ConferenceGroup grp = groups.getConfGroup(new Jid(roomJid));
 
@@ -748,7 +747,7 @@ public class Roster
         MucContact c = findMucContact(from);
 
         if (c == null) {
-            c = new MucContact(from.resource.substring(1), from.toString());
+            c = new MucContact(from.resource, from.toString());
             addContact(c);
             c.origin = Contact.ORIGIN_GC_MEMBER;
         }
@@ -775,7 +774,6 @@ public class Roster
             c = new Contact(null, jid, Presence.PRESENCE_OFFLINE, "none"); /*
              * "not-in-list"
              */
-            c.bareJid = J.bareJid;
             c.origin = Contact.ORIGIN_PRESENCE;
             c.group = groups.getGroup(Groups.TYPE_NOT_IN_LIST);
             addContact(c);
@@ -875,9 +873,9 @@ public class Roster
 //#      * System.out.println("2. juickJID: "+cf.juickJID); }
 //#      */
 //#     public boolean isJuickContact(Contact c) {
-//#         return c.jid.equalsViaJ2J("juick@juick.com")
-//#                 || c.jid.equalsViaJ2J("psto@psto.net")
-//#                 || c.jid.equalsViaJ2J("lij.habahaba.im");
+//#         return JidUtils.equalsViaJ2J(c.jid, "juick@juick.com")
+//#                 || JidUtils.equalsViaJ2J(c.jid, "psto@psto.net")
+//#                 || JidUtils.equalsViaJ2J(c.jid, "lij.habahaba.im");
 //#     }
 //# 
 //#     public void addJuickContact(Contact c) {
@@ -899,7 +897,7 @@ public class Roster
 //#     }
 //# 
 //#     public boolean isMainJuickContact(Contact c) {
-//#         return c.bareJid.equals(JuickConfig.getJuickJID());
+//#         return c.jid.getBare().equals(JuickConfig.getJuickJID());
 //#     }
 //# 
 //#     public void updateMainJuickContact() {
@@ -911,7 +909,7 @@ public class Roster
 //#         } else {
 //#             //indexMainJuickContact = juickContacts.indexOf(new Contact("Juick", juickConfig.getJuickJID(), Presence.PRESENCE_OFFLINE, null));
 //#             for (int i = 0; i < juickContacts.size(); i++) {
-//#                 if (((Contact) juickContacts.elementAt(i)).bareJid.equals(JuickConfig.getJuickJID())) {
+//#                 if (((Contact) juickContacts.elementAt(i)).jid.getBare().equals(JuickConfig.getJuickJID())) {
 //#                     indexMainJuickContact = i;
 //#                 }
 //#             }
@@ -1032,7 +1030,7 @@ public class Roster
     public void sendDirectPresence(int status, Contact to, JabberDataBlock x) {
         sendDirectPresence(status, (to == null) ? null : to.getJid().toString(), null, x);
         if (to != null) {
-            if (to.jid.isTransport()) {
+            if (JidUtils.isTransport(to.jid)) {
                 blockNotify(-111, 10000);
             }
 //#ifndef WMUC
@@ -1082,7 +1080,7 @@ public class Roster
                     continue;
                 }
                 Presence presence = new Presence(myStatus, myPriority, myMessage, null);
-                presence.setTo(myself.bareJid);
+                presence.setTo(myself.jid.getBare());
                 sd.theStream.send(presence);
             }
         }
@@ -1142,7 +1140,7 @@ public class Roster
                 || c.subscr.startsWith("to");
         //getMessage(cursor).messageType==Msg.MESSAGE_TYPE_AUTH;
 
-        String to = (c.jid.isTransport()) ? c.getJid().toString() : c.bareJid;
+        String to = (JidUtils.isTransport(c.jid)) ? c.getJid().toString() : c.jid.getBare();
 
         if (subscribed) {
             sendPresence(to, "subscribed", null, false);
@@ -1216,12 +1214,12 @@ public class Roster
             int j = hContacts.size();
             for (int i = 0; i < j; i++) {
                 Contact k = (Contact) hContacts.elementAt(i);
-                if (k.jid.isTransport()) {
+                if (JidUtils.isTransport(k.jid)) {
                     continue;
                 }
                 int grpType = k.getGroupType();
                 if (k.jid.getServer().equals(transport) && k.nick == null && (grpType == Groups.TYPE_COMMON || grpType == Groups.TYPE_NO_GROUP)) {
-                    vCardQueue.addElement(IqVCard.query(k.getJid().toString(), "nickvc" + k.bareJid));
+                    vCardQueue.addElement(IqVCard.query(k.getJid().toString(), "nickvc" + k.jid.getBare()));
                 }
             }
         }
@@ -1250,7 +1248,7 @@ public class Roster
 //#         int j = hContacts.size();
 //#         for (int i = 0; i < j; i++) {
 //#             Contact k = (Contact) hContacts.elementAt(i);
-//#             if (k.jid.isTransport()) {
+//#             if (JidUtils.isTransport(k.jid)) {
 //#                 continue;
 //#             }
 //#             int grpType = k.getGroupType();
@@ -1259,7 +1257,7 @@ public class Roster
 //#                     || grpType == Groups.TYPE_VISIBLE || grpType == Groups.TYPE_VIP
 //#                     || grpType == Groups.TYPE_IGNORE)) {
 //#                 String jid = k.getJid().toString();
-//#                 k.jid.setJid(StringUtils.stringReplace(jid, srcTransport, dstTransport));
+//#                 k.jid = new Jid(StringUtils.stringReplace(jid, srcTransport, dstTransport));
 //#                 storeContact(k, true); //new contact addition
 //#                 try {
 //#                     Thread.sleep(300);
@@ -1565,7 +1563,10 @@ public class Roster
 //#endif
         }
 
-        if (c.origin == Contact.ORIGIN_GROUPCHAT || c.jid.isTransport() || c.getGroupType() == Groups.TYPE_TRANSP || c.getGroupType() == Groups.TYPE_SEARCH_RESULT || c.getGroupType() == Groups.TYPE_SELF) {
+        if (c.origin == Contact.ORIGIN_GROUPCHAT || JidUtils.isTransport(c.jid) 
+                || c.getGroupType() == Groups.TYPE_TRANSP 
+                || c.getGroupType() == Groups.TYPE_SEARCH_RESULT 
+                || c.getGroupType() == Groups.TYPE_SELF) {
             autorespond = false;
         }
 
@@ -2220,25 +2221,25 @@ public class Roster
                 reEnumRoster();
             } else {
                 sd.theStream.send(RosterDispatcher.QueryRoster(c.jid, null, null, "remove"));
-                if (c.jid.isTransport()) {
+                if (JidUtils.isTransport(c.jid)) {
                     // for buggy transports
                     sendPresence(c.jid.toString(), "unsubscribe", null, false);
                     sendPresence(c.jid.toString(), "unsubscribed", null, false);
                 }
-                sendPresence(c.bareJid, "unsubscribe", null, false);
-                sendPresence(c.bareJid, "unsubscribed", null, false);
+                sendPresence(c.jid.getBare(), "unsubscribe", null, false);
+                sendPresence(c.jid.getBare(), "unsubscribed", null, false);
                 }
             }
-            if (c.jid.isTransport()) {
+            if (JidUtils.isTransport(c.jid)) {
                 // double-check for empty jid or our server jid
-                if (c.bareJid.length() == 0) {
+                if (c.jid.getBare().length() == 0) {
                     return;
                 }
-                if (c.bareJid.equals(myJid.getServer())) {
+                if (c.jid.getBare().equals(myJid.getServer())) {
                     return;
                 }
                 // automatically remove registration
-                JabberDataBlock unreg = new Iq(c.bareJid, Iq.TYPE_SET, "unreg" + System.currentTimeMillis());
+                JabberDataBlock unreg = new Iq(c.jid.getBare(), Iq.TYPE_SET, "unreg" + System.currentTimeMillis());
                 JabberDataBlock query = unreg.addChildNs("query", "jabber:iq:register");
                 query.addChild("remove", null);
                 sd.theStream.send(unreg);

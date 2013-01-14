@@ -60,6 +60,7 @@ import ui.VirtualList;
 //#endif
 import ui.VirtualCanvas;
 import ui.VirtualElement;
+import xmpp.JidUtils;
 
 public class ContactMessageList extends MessageList {
     public Contact contact;
@@ -423,12 +424,12 @@ public class ContactMessageList extends MessageList {
         
         if (c == cmdSubscribe) {
             sd.roster.doSubscribe(contact);
-            contact.addMessage(new Msg(Msg.MESSAGE_TYPE_SYSTEM, contact.bareJid, null, "Subscribed"));
+            contact.addMessage(new Msg(Msg.MESSAGE_TYPE_SYSTEM, contact.jid.getBare(), null, "Subscribed"));
         }
 		
         if (c==cmdDecline) {
-            sd.roster.sendPresence(contact.bareJid, "unsubscribed", null, false);
-            contact.addMessage(new Msg(Msg.MESSAGE_TYPE_SYSTEM, contact.bareJid, null, "Unsubscribed"));
+            sd.roster.sendPresence(contact.jid.getBare(), "unsubscribed", null, false);
+            contact.addMessage(new Msg(Msg.MESSAGE_TYPE_SYSTEM, contact.jid.getBare(), null, "Unsubscribed"));
         }
 
 //#ifdef CLIPBOARD
@@ -648,15 +649,15 @@ public class ContactMessageList extends MessageList {
 //#     }
 //# 
 //#     public boolean isJuBoContact(Contact c) {
-//#         return c.jid.equalsViaJ2J("jubo@nologin.ru");
+//#         return JidUtils.equalsViaJ2J(c.jid, "jubo@nologin.ru");
 //#     }
 //# 
 //#     public boolean noRedirrectToJuickContact(Contact c) {
 //#         return (isJuickContact(c)
-//#          || c.jid.equalsViaJ2J("implusplus@gmail.com")
-//#          || c.jid.equalsViaJ2J("tweet@excla.im")
-//#          || c.jid.equalsViaJ2J("twitter@t2p.me")
-//#          || c.jid.equalsServerViaJ2J("twitter.tweet.im"));
+//#          || JidUtils.equalsViaJ2J(c.jid, "implusplus@gmail.com")
+//#          || JidUtils.equalsViaJ2J(c.jid, "tweet@excla.im")
+//#          || JidUtils.equalsViaJ2J(c.jid, "twitter@t2p.me")
+//#          || JidUtils.equalsServerViaJ2J(c.jid, "twitter.tweet.im"));
 //#     }
 //# 
 //#     private Contact getActualJuickContact() {
@@ -771,7 +772,7 @@ public class ContactMessageList extends MessageList {
 //#ifdef LAST_MESSAGES
 //#     public final void loadRecentList() {
 //#         contact.setHistoryLoaded(true);
-//#         HistoryStorage hs = new HistoryStorage(contact.bareJid);
+//#         HistoryStorage hs = new HistoryStorage(contact.jid.getBare());
 //#         Vector history=hs.importData();
 //#         for (Enumeration messages2=history.elements(); messages2.hasMoreElements(); )  {
 //#             Msg message=(Msg) messages2.nextElement();
@@ -799,7 +800,7 @@ public class ContactMessageList extends MessageList {
 //#ifndef WMUC
 //#         if (contact instanceof MucContact) {
 //#             if (contact.origin>=Contact.ORIGIN_GROUPCHAT) {
-//#                 histRecord.append(contact.bareJid);
+//#                 histRecord.append(contact.jid.getBare());
 //#             } else {
 //#                 String nick=contact.getJid().toString();
 //#                 int rp=nick.indexOf('/');
@@ -807,7 +808,7 @@ public class ContactMessageList extends MessageList {
 //#             }
 //#         } else {
 //#endif
-//#             histRecord.append(contact.bareJid);
+//#             histRecord.append(contact.jid.getBare());
 //#ifndef WMUC
 //#         }
 //#endif

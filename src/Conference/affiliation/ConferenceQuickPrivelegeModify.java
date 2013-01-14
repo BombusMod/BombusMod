@@ -83,7 +83,7 @@ public class ConferenceQuickPrivelegeModify {
     }
 
     public final void setMucMod() {
-        JabberDataBlock iq = new Iq(victim.jid.bareJid, Iq.TYPE_SET, "itemmuc");
+        JabberDataBlock iq = new Iq(victim.jid.getBare(), Iq.TYPE_SET, "itemmuc");
         JabberDataBlock query = iq.addChildNs("query", Conference.NS_MUC + "#admin");
         //TODO: separate usecases to muc#owner, muc#admin and muc#moderator
         JabberDataBlock item = new JabberDataBlock("item");

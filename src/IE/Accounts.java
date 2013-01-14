@@ -196,7 +196,15 @@
 //#         for (int i = 0; i < getItemCount(); i++) {
 //#             Account a = getAccount(i);
 //#             StringBuffer account = new StringBuffer("<a>");
-//#             account.append(createBlock(userName, a.JID.getNode())).append(createBlock(server, a.JID.getServer())).append(createBlock(hostAddr, a.hostAddr)).append(createBlock(port, Integer.toString(a.port))).append(createBlock(nick, a.nick)).append(createBlock(resource, a.JID.resource)).append(createBlock(useSSL, "0")).append(createBlock(plainAuth, (a.plainAuth ? "1" : "0"))).append(createBlock(mucOnly, (a.mucOnly ? "1" : "0")))
+//#             account.append(createBlock(userName, a.JID.getNode()))
+//#                     .append(createBlock(server, a.JID.getServer()))
+//#                     .append(createBlock(hostAddr, a.hostAddr))
+//#                     .append(createBlock(port, Integer.toString(a.port)))
+//#                     .append(createBlock(nick, a.nick))
+//#                     .append(createBlock(resource, a.JID.resource))
+//#                     .append(createBlock(useSSL, "0"))
+//#                     .append(createBlock(plainAuth, (a.plainAuth ? "1" : "0")))
+//#                     .append(createBlock(mucOnly, (a.mucOnly ? "1" : "0")))
 //#if HTTPPOLL || HTTPCONNECT || HTTPBIND
 //#                     .append(createBlock(enableProxy, a.isEnableProxy() ? "1" : "0")).append(createBlock(proxyHostAddr, a.proxyHostAddr)).append(createBlock(proxyPort, Integer.toString(a.getProxyPort())))
 //#endif

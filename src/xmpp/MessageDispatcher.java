@@ -56,7 +56,7 @@ public class MessageDispatcher implements JabberBlockListener {
             int mType = Msg.MESSAGE_TYPE_IN;
             //#ifndef WMUC               
             if (groupchat) {
-                if (from.equals(sd.roster.groups.getConfGroup(new Jid(from)).jid.bareJid)) {
+                if (from.equals(sd.roster.groups.getConfGroup(new Jid(from)).jid.getBare())) {
                     mType = Msg.MESSAGE_TYPE_PRESENCE;
                 }
                 start_me = 0;

@@ -39,7 +39,7 @@ public class JuickConfig extends DefForm {
 //#             Vector juickContactsNames = new Vector(sdata.roster.juickContacts.size());
 //#             for (Enumeration e = sdata.roster.juickContacts.elements(); e.hasMoreElements();) {
 //#                 Contact c = (Contact) e.nextElement();
-//#                 juickContactsNames.addElement(c.bareJid);
+//#                 juickContactsNames.addElement(c.jid.getBare());
 //#             }
 //#             juickContactsBox = new DropChoiceBox("Main Juick-contact");
 //#             juickContactsBox.items = juickContactsNames;
@@ -55,7 +55,7 @@ public class JuickConfig extends DefForm {
     public void cmdOk() {
 //#ifdef JUICK
 //#             if (juickContactsBox != null) {
-//#                 setJuickJID(((Contact) sdata.roster.juickContacts.elementAt(juickContactsBox.getSelectedIndex())).bareJid, true);
+//#                 setJuickJID(((Contact) sdata.roster.juickContacts.elementAt(juickContactsBox.getSelectedIndex())).jid.getBare(), true);
 //#             } else {
 //#                 setJuickJID("", true);
 //#             }
@@ -68,14 +68,14 @@ public class JuickConfig extends DefForm {
         if (records.isEmpty()) {
             records.readFromStorage();
         }
-     return records.getJuickJID(sdata.account.JID.bareJid);
+     return records.getJuickJID(sdata.account.JID.getBare());
     }
 
     public static void setJuickJID(String JJID, boolean toStorage) {
         if (records.isEmpty()) {
             records.readFromStorage();
         }
-        records.setJuickJID(sdata.account.JID.bareJid, JJID);
+        records.setJuickJID(sdata.account.JID.getBare(), JJID);
         if (toStorage) {
             records.writeToStorage();
         }

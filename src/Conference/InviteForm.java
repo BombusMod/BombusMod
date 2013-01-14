@@ -83,7 +83,7 @@ public class InviteForm
         Message inviteMsg = new Message(room);
         JabberDataBlock x = inviteMsg.addChildNs("x", Conference.NS_MUC + "#user");
         JabberDataBlock invite = x.addChild("invite", null);
-        String invited = (contact instanceof MucContact) ? ((MucContact) contact).realJid.toString() : contact.bareJid;
+        String invited = (contact instanceof MucContact) ? ((MucContact) contact).realJid.toString() : contact.jid.getBare();
 
         invite.setAttribute("to", invited);
 

@@ -26,101 +26,101 @@
  */
 
 //#if HISTORY && HISTORY_READER
-
-package History;
-
-import Client.Contact;
-import Client.Msg;
-import Messages.MessageItem;
-import Messages.MessageList;
-import java.util.Enumeration;
-import java.util.Vector;
-import locale.SR;
-import ui.MainBar;
-
-/**
- *
- * @author ad
- */
-public class HistoryReader extends MessageList {
-    
-    private HistoryLoader hl;
-    static MessageItem MIPrev, MINext;
-
-    /** Creates a new instance of HistoryReader
-     * @param c 
-     */
-    public HistoryReader(Contact c) {
-        super(new Vector());
-        MIPrev = new MessageItem(new Msg(Msg.MESSAGE_TYPE_SYSTEM, null, null, "<---"), smiles);
-        MINext = new MessageItem(new Msg(Msg.MESSAGE_TYPE_SYSTEM, null, null, "--->"), smiles);
-
-        mainbar = new MainBar(c.getName() + ": " + SR.MS_HISTORY);
-
-        hl = new HistoryLoader(c.bareJid, smiles);
-        if (hl.fileSize > 0) {
-            gotoEnd();        
-        } else {
-            destroyView();
-        }
-    }
-
-/* TODO: menu command for gotoBegin()/gotoEnd()
-    public void commandState() {
-        addMenuCommand();
-    }
-*/
-
-    public void eventOk() {
-        if (getItemRef(cursor) == MIPrev) {
-            loadFrom(hl.stepBack());
-            moveCursorEnd();
-            return;
-        } else if (getItemRef(cursor) == MINext) {
-            loadFrom(hl.stepNext());
-            moveCursorHome();
-            return;
-        }
-        super.eventOk();
-    }
-
-    public final void loadFrom(final Vector items) {
-        messages.removeAllElements();
-        for (Enumeration e = items.elements(); e.hasMoreElements(); ) {
-            messages.addElement((MessageItem)e.nextElement());
-        }
-    }
-
-    public void gotoBegin() {
-        loadFrom(hl.stepBegin());
-        moveCursorHome();
-    }
-
-    public final void gotoEnd() {
-        loadFrom(hl.stepEnd());
-        moveCursorEnd();
-    }
-
-    public int getItemCount() {
-        return messages == null ? 0 : messages.size();
-    }
-
-    public Msg getMessage(int i) {
-        return ((MessageItem) messages.elementAt(i)).msg;
-    }
-
-    public boolean doUserKeyAction(int command_id) {
-        switch (command_id) {
-            case 55:
-                gotoBegin();
-                return true;
-            case 56:
-                gotoEnd();
-                return true;
-        }
-
-        return super.doUserKeyAction(command_id);
-    }
-}
-
+//# 
+//# package History;
+//# 
+//# import Client.Contact;
+//# import Client.Msg;
+//# import Messages.MessageItem;
+//# import Messages.MessageList;
+//# import java.util.Enumeration;
+//# import java.util.Vector;
+//# import locale.SR;
+//# import ui.MainBar;
+//# 
+//# /**
+//#  *
+//#  * @author ad
+//#  */
+//# public class HistoryReader extends MessageList {
+//#     
+//#     private HistoryLoader hl;
+//#     static MessageItem MIPrev, MINext;
+//# 
+//#     /** Creates a new instance of HistoryReader
+//#      * @param c 
+//#      */
+//#     public HistoryReader(Contact c) {
+//#         super(new Vector());
+//#         MIPrev = new MessageItem(new Msg(Msg.MESSAGE_TYPE_SYSTEM, null, null, "<---"), smiles);
+//#         MINext = new MessageItem(new Msg(Msg.MESSAGE_TYPE_SYSTEM, null, null, "--->"), smiles);
+//# 
+//#         mainbar = new MainBar(c.getName() + ": " + SR.MS_HISTORY);
+//# 
+//#         hl = new HistoryLoader(c.jid.getBare(), smiles);
+//#         if (hl.fileSize > 0) {
+//#             gotoEnd();        
+//#         } else {
+//#             destroyView();
+//#         }
+//#     }
+//# 
+//# /* TODO: menu command for gotoBegin()/gotoEnd()
+//#     public void commandState() {
+//#         addMenuCommand();
+//#     }
+//# */
+//# 
+//#     public void eventOk() {
+//#         if (getItemRef(cursor) == MIPrev) {
+//#             loadFrom(hl.stepBack());
+//#             moveCursorEnd();
+//#             return;
+//#         } else if (getItemRef(cursor) == MINext) {
+//#             loadFrom(hl.stepNext());
+//#             moveCursorHome();
+//#             return;
+//#         }
+//#         super.eventOk();
+//#     }
+//# 
+//#     public final void loadFrom(final Vector items) {
+//#         messages.removeAllElements();
+//#         for (Enumeration e = items.elements(); e.hasMoreElements(); ) {
+//#             messages.addElement((MessageItem)e.nextElement());
+//#         }
+//#     }
+//# 
+//#     public void gotoBegin() {
+//#         loadFrom(hl.stepBegin());
+//#         moveCursorHome();
+//#     }
+//# 
+//#     public final void gotoEnd() {
+//#         loadFrom(hl.stepEnd());
+//#         moveCursorEnd();
+//#     }
+//# 
+//#     public int getItemCount() {
+//#         return messages == null ? 0 : messages.size();
+//#     }
+//# 
+//#     public Msg getMessage(int i) {
+//#         return ((MessageItem) messages.elementAt(i)).msg;
+//#     }
+//# 
+//#     public boolean doUserKeyAction(int command_id) {
+//#         switch (command_id) {
+//#             case 55:
+//#                 gotoBegin();
+//#                 return true;
+//#             case 56:
+//#                 gotoEnd();
+//#                 return true;
+//#         }
+//# 
+//#         return super.doUserKeyAction(command_id);
+//#     }
+//# }
+//# 
 //#endif

@@ -86,12 +86,10 @@ public class PresenceDispatcher implements JabberBlockListener {
                                 || chatPres.indexOf(SR.MS_WAS_KICKED) > -1
                                 || (type != null && type.equals("error"))) {
 
-                            Msg chatPresence = new Msg(Msg.MESSAGE_TYPE_PRESENCE, from.resource.substring(1), null, chatPres); // muc nick
+                            Msg chatPresence = new Msg(Msg.MESSAGE_TYPE_PRESENCE, from.resource, null, chatPres); // muc nick
                             chatPresence.color = c.getMainColor();
-                            roster.messageStore(roster.getContact(from.bareJid, false), chatPresence); // muc jid
+                            roster.messageStore(roster.getContact(from.getBare(), false), chatPresence); // muc jid
                         }
-
-                        chatPres = null;
 
                         roster.messageStore(c, m);
 
@@ -102,8 +100,7 @@ public class PresenceDispatcher implements JabberBlockListener {
                     }
                 } else {
 //#endif
-                    Contact c = null;
-
+                    Contact c;
                     if (ti == Presence.PRESENCE_AUTH_ASK) {
                         //processing subscriptions
                         if (Config.getInstance().autoSubscribe == Config.SUBSCR_DROP) {
@@ -111,13 +108,13 @@ public class PresenceDispatcher implements JabberBlockListener {
                         }
 
                         if (Config.getInstance().autoSubscribe == Config.SUBSCR_REJECT) {
-                            roster.sendPresence(from.bareJid, "unsubscribed", null, false);
+                            roster.sendPresence(from.getBare(), "unsubscribed", null, false);
                             return JabberBlockListener.BLOCK_PROCESSED;
                         }
 
                         c = roster.getContact(from.toString(), true);
 
-                        if (cf.autoSubscribe == Config.SUBSCR_AUTO || c.jid.belongsToTransport()) {
+                        if (cf.autoSubscribe == Config.SUBSCR_AUTO || JidUtils.belongsToTransport(c.jid)) {
                             roster.storeContact(c, true);
                         } else {
                             roster.messageStore(c, m);                            
@@ -143,7 +140,7 @@ public class PresenceDispatcher implements JabberBlockListener {
 //#                                                 c.version = pr.getEntityVer();
 //#                                             }
 //#                                         }
-//#                                     } else if (c.jid.hasResource()) {
+//#                                     } else if (c.jid.resource.length() > 0) {
 //#                                         ClientsIconsData.processData(c, c.getResource().substring(1));
 //#                                     }
 //#                                 }
@@ -155,15 +152,13 @@ public class PresenceDispatcher implements JabberBlockListener {
                                     c.j2j = j2j.getChildBlock("jid").getAttribute("gateway");
                                 }
                             }
-                            j2j = null;
 
                             String lang = pr.getAttribute("xml:lang");
 //#if DEBUG
 //#                             //System.out.println("xml:lang="+lang); // Very much output!
 //#endif
                             c.lang = lang;
-                            lang = null;
-
+                            
                             c.statusString = pr.getStatus();
                         }
                         if (ti == Presence.PRESENCE_AUTH && cf.autoSubscribe == Config.SUBSCR_AUTO) {
@@ -216,7 +211,7 @@ public class PresenceDispatcher implements JabberBlockListener {
 //#                         else if (ti==Presence.PRESENCE_ONLINE)
 //#                             setTicker(c, SR.MS_ONLINE);
 //#endif
-                        if ((ti == Presence.PRESENCE_ONLINE || ti == Presence.PRESENCE_CHAT || ti == Presence.PRESENCE_OFFLINE) && (!c.jid.isTransport()) && (c.getGroupType() != Groups.TYPE_IGNORE)) {
+                        if ((ti == Presence.PRESENCE_ONLINE || ti == Presence.PRESENCE_CHAT || ti == Presence.PRESENCE_OFFLINE) && (!JidUtils.isTransport(c.jid)) && (c.getGroupType() != Groups.TYPE_IGNORE)) {
                             roster.playNotify(ti);
                         }
                     }

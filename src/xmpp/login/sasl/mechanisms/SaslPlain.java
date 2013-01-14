@@ -22,7 +22,7 @@ public class SaslPlain extends SaslMechanism {
     public String init(Jid Jid, String password) {
         this.jid = Jid;
         pass = password;
-        return Strconv.unicodeToUTF(jid.bareJid)
+        return Strconv.unicodeToUTF(jid.getBare())
                 + (char) 0x00
                 + Strconv.unicodeToUTF(jid.getNode())
                 + (char) 0x00

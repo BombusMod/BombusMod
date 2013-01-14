@@ -56,7 +56,7 @@ public class RosterDispatcher implements JabberBlockListener {
         Iq result = new Iq(null, Iq.TYPE_SET, "addros");
         JabberDataBlock qB = result.addChildNs("query", NS_ROSTER);
         JabberDataBlock item = qB.addChild("item", null);
-        item.setAttribute("jid", jid.bareJid);
+        item.setAttribute("jid", jid.getBare());
         if (name != null) {
             item.setAttribute("name", name);
         }
@@ -126,7 +126,7 @@ public class RosterDispatcher implements JabberBlockListener {
         String from = data.getAttribute("from");
         if (from != null) {
             Jid fromJid = new Jid(from);
-            if (fromJid.hasResource()) {
+            if (fromJid.resource.length() > 0) {
                 if (!roster.myJid.equals(fromJid, true)) {
                     return false;
                 }

@@ -105,10 +105,12 @@ public class AccountForm
 
         mainbar.setElementAt((newaccount) ? SR.MS_NEW_ACCOUNT : (this.item.toString()), 0);
 
-        userbox = new TextInput(SR.MS_JID, this.item.account.JID.bareJid, null);
+        userbox = new TextInput(SR.MS_JID, newaccount ? 
+                "" 
+                : this.item.account.JID.getBare(), null);
         itemsList.addElement(userbox);
 
-        passbox = new PasswordInput(SR.MS_PASSWORD, this.item.account.password);
+        passbox = new PasswordInput(SR.MS_PASSWORD, newaccount? "" : this.item.account.password);
         itemsList.addElement(passbox);
 
         nickbox = new TextInput(SR.MS_NICKNAME, this.item.account.nick, null);
@@ -235,7 +237,9 @@ public class AccountForm
     public void cmdOk() {
         String user = userbox.getValue().trim().toLowerCase();
         String pass = passbox.getValue();
-        String resource = resourcebox.getValue();
+        String resource = Version.NAME;
+        if (resourcebox != null)
+            resource = resourcebox.getValue();
         String server = "";
         int at = user.indexOf('@');
         if (at > -1) {
@@ -246,7 +250,7 @@ public class AccountForm
             return;
         }
 
-        item.account.JID = new Jid(user, pass, resource == null ? Version.NAME : resource);
+        item.account.JID = new Jid(user, server, resource);
         item.account.password = pass;
         item.account.nick = nickbox.getValue();
 
@@ -290,7 +294,7 @@ public class AccountForm
 
     public void destroyView() {
         if (newaccount && doConnect) {
-            new AlertBox(SR.MS_CONNECT_TO, item.account.JID.bareJid + "?") {
+            new AlertBox(SR.MS_CONNECT_TO, item.account.JID.getBare() + "?") {
 
                 public void yes() {
                     SplashScreen.getInstance().setExit(sd.roster);

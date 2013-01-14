@@ -97,9 +97,9 @@ public class AccountStorage {
             outputStream.writeBoolean(account.mucOnly);
 
 //#if HTTPPOLL || HTTPCONNECT || HTTPBIND
-//#             outputStream.writeBoolean(account.enableProxy);
+//#             outputStream.writeBoolean(account.isEnableProxy());
 //#             outputStream.writeUTF(account.proxyHostAddr);
-//#             outputStream.writeInt(account.proxyPort);
+//#             outputStream.writeInt(account.getProxyPort());
 //#else
             outputStream.writeBoolean(false);
             outputStream.writeUTF("");

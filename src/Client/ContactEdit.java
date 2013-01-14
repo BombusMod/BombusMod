@@ -41,6 +41,7 @@ import ui.controls.form.CheckBox;
 import ui.controls.form.DefForm;
 import ui.controls.form.DropChoiceBox;
 import ui.controls.form.TextInput;
+import xmpp.JidUtils;
 
 /**
  *
@@ -77,8 +78,8 @@ public final class ContactEdit
         for (Enumeration e = sd.roster.hContacts.elements(); e.hasMoreElements();) {
             Contact ct = (Contact) e.nextElement();
             Jid transpJid = ct.jid;
-            if (transpJid.isTransport()) {
-                tTranspList.add(transpJid.bareJid);
+            if (JidUtils.isTransport(transpJid)) {
+                tTranspList.add(transpJid.getBare());
             }
         }
         tTranspList.add(SR.MS_OTHER);
@@ -90,10 +91,10 @@ public final class ContactEdit
             String jid;
 //#ifndef WMUC
             if (c instanceof MucContact) {
-                jid = ((MucContact) c).realJid.bareJid;
+                jid = ((MucContact) c).realJid.getBare();
             } else {
 //#endif
-                jid = c.bareJid;
+                jid = c.jid.getBare();
 //#ifndef WMUC
             }
 //#endif
@@ -215,8 +216,8 @@ public final class ContactEdit
                 jid = jidBuf.toString();
             }
             Jid newJid = new Jid(jid);
-            if (!newJid.bareJid.equals(StaticData.getInstance().roster.selfContact().bareJid)) {
-                Contact c = sd.roster.getContact(newJid.bareJid, true);
+            if (!newJid.equals(StaticData.getInstance().roster.selfContact().jid, false)) {
+                Contact c = sd.roster.getContact(newJid.getBare(), true);
                 Group grp = sd.roster.groups.getGroup(group);
                     if (grp == null) {
                         grp = sd.roster.groups.addGroup(group, Groups.TYPE_COMMON);

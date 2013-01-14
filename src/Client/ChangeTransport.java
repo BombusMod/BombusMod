@@ -31,6 +31,7 @@ import locale.SR;
 import ui.controls.form.DefForm;
 import ui.controls.form.DropChoiceBox;
 import ui.controls.form.MultiLine;
+import xmpp.JidUtils;
 
 public class ChangeTransport extends DefForm {
 
@@ -50,8 +51,8 @@ public class ChangeTransport extends DefForm {
         tTranspList=new DropChoiceBox(SR.MS_TRANSPORT);
         for (Enumeration e=sd.roster.hContacts.elements(); e.hasMoreElements(); ){
             Contact ct=(Contact)e.nextElement();
-            if (ct.jid.isTransport() && ct.status<Presence.PRESENCE_OFFLINE) //New transport must be online! If old transport is online and new transport is offline, contact list of guest IM account may be damaged
-                tTranspList.add(ct.bareJid);
+            if (JidUtils.isTransport(ct.jid) && ct.status<Presence.PRESENCE_OFFLINE) //New transport must be online! If old transport is online and new transport is offline, contact list of guest IM account may be damaged
+                tTranspList.add(ct.jid.getBare());
         }
         if (tTranspList.size()==0) {
             tTranspList.add(srcTransport); //for avoiding exceptions and for resubscribing to all users of the transport ;)

@@ -73,7 +73,7 @@ public class IQCommands implements JabberBlockListener {
         String from=data.getAttribute("from");
         
         if (from!=null) {
-            if (!new Jid(from).bareJid.equals(sd.roster.selfContact().bareJid))
+            if (!new Jid(from).equals(sd.roster.selfContact().jid, false))
                 return BLOCK_REJECTED;
         } else return BLOCK_REJECTED;
         

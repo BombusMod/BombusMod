@@ -7,7 +7,7 @@
  * and open the template in the editor.
  */
 
-//#if HTTPBIND || HTTPPOOL
+//#if HTTPBIND || HTTPPOLL
 //# 
 //# package io;
 //# 
