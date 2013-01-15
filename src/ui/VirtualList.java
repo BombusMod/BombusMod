@@ -744,9 +744,11 @@ public abstract class VirtualList {
         }
 
         if (((VirtualElement) o).getVHeight() <= winHeight) {
-            int bottom = itemLayoutY[cursor + 1] - winHeight;
-            if (bottom > win_top) {
-                win_top = bottom;
+            if ((cursor + 1) < itemLayoutY.length) {
+                int bottom = itemLayoutY[cursor + 1] - winHeight;
+                if (bottom > win_top) {
+                    win_top = bottom;
+                }
             }
         }
 
@@ -756,9 +758,11 @@ public abstract class VirtualList {
     }
     
     protected void fitCursorByBottom() {
-        int bottom = itemLayoutY[cursor + 1] - winHeight;
-        if (bottom > win_top) {
-            win_top = bottom;
+        if ((cursor + 1) < itemLayoutY.length) {
+            int bottom = itemLayoutY[cursor + 1] - winHeight;
+            if (bottom > win_top) {
+                win_top = bottom;
+            }
         }
 
         Object o = getFocusedObject();
@@ -772,9 +776,11 @@ public abstract class VirtualList {
                 win_top = top;
             }
         }
-
-        if (itemLayoutY[cursor + 1] <= win_top) {
-            win_top = bottom;
+        if ((cursor + 1) < itemLayoutY.length) {
+            if (itemLayoutY[cursor + 1] <= win_top) {
+                int bottom = itemLayoutY[cursor + 1] - winHeight;
+                win_top = bottom;
+            }
         }
     }
 
