@@ -195,7 +195,8 @@ public class AccountForm
 //#ifndef HTTPBIND
         keepAlive = new NumberInput(SR.MS_KEEPALIVE_PERIOD, Integer.toString(item.account.keepAlivePeriod), 10, 2048);//10, 2096        
 //#endif
-        resourcebox = new TextInput(SR.MS_RESOURCE, item.account.JID.resource, null);
+        resourcebox = new TextInput(SR.MS_RESOURCE, newaccount ? Version.NAME : 
+                item.account.JID.resource, null);
 
 //#if HTTPCONNECT
 //#         proxyHost = new TextInput(/*
