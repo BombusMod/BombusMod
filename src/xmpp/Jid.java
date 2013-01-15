@@ -56,7 +56,7 @@ public class Jid {
     }       
     
     public String getNode() {
-        return user;
+        return user == null || user.length() == 0 ? server : user;
     }
     
     public String getServer() {

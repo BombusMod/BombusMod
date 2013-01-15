@@ -208,29 +208,31 @@ public class ServiceDiscovery
         if (id.equals(discoId("disco2"))) {
             Vector items1=new Vector();
             if (childs!=null)
-            for (Enumeration e=childs.elements(); e.hasMoreElements(); ){
-                JabberDataBlock i=(JabberDataBlock)e.nextElement();
-                if (i.getTagName().equals("item")){
-                    String name=i.getAttribute("name");
-                    String jid=i.getAttribute("jid");
-                    String node1=i.getAttribute("node");
-                    if (name == null) { // workaround for M-Link (jabber.org) and maybe others
-                        int resourcePos=jid.indexOf('/');
-                        if (resourcePos>-1)
-                            name = jid.substring(resourcePos + 1, jid.length());
+                for (Enumeration e = childs.elements(); e.hasMoreElements();) {
+                    JabberDataBlock i = (JabberDataBlock) e.nextElement();
+                    if (i.getTagName().equals("item")) {
+                        String name = i.getAttribute("name");
+                        String jid = i.getAttribute("jid");
+                        String node1 = i.getAttribute("node");
+                        if (name == null) { // workaround for M-Link (jabber.org) and maybe others
+                            int resourcePos = jid.indexOf('/');
+                            if (resourcePos > -1) {
+                                name = jid.substring(resourcePos + 1, jid.length());
+                            }
+                        }
+                        Object serv;
+                        if (node1 == null) {
+                            int resourcePos = jid.indexOf('/');
+                            if (resourcePos > -1) {
+                                jid = jid.substring(0, resourcePos);
+                            }
+                            serv = new DiscoContact(name, jid, 0);
+                        } else {
+                            serv = new Node(name, node1);
+                        }
+                        items1.addElement(serv);
                     }
-                    Object serv=null;
-                    if (node1==null) {
-                        int resourcePos=jid.indexOf('/');
-                        if (resourcePos>-1)
-                            jid=jid.substring(0, resourcePos);
-                        serv=new DiscoContact(name, jid, 0);
-                    } else {
-                        serv=new Node(name, node1);
-                    }
-                    items1.addElement(serv);
                 }
-            }
             
             showResults(items1);
         } else if (id.equals(discoId("disco"))) {
