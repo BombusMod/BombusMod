@@ -711,7 +711,9 @@ public class Contact extends IconTextElement {
             return getJid().toString();
         }
 
-        return (nick == null) ? getJid().toString() : nick + jid.resource;
+        return (nick == null) ? getJid().toString() : jid.resource.length() > 0 ?
+                nick + "/" + jid.resource
+                : nick;
     }
 
     public String getSecondString() {

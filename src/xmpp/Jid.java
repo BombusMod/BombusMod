@@ -93,6 +93,6 @@ public class Jid {
         if (user.length() == 0) {
             return getBare();
         }
-        return resource == null ? getBare() : getBare() + "/" + resource;
+        return resource.length() == 0 ? getBare() : getBare() + "/" + resource;
     }
 }
