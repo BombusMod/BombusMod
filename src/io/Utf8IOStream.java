@@ -125,9 +125,10 @@ public class Utf8IOStream {
 //#endif    
     
     public void send(String data) throws IOException {
+        byte bytes[] = null;
         synchronized (outStream) {
             StaticData.getInstance().updateTrafficOut();
-            byte bytes[] = Strconv.toUTFArray(data);            
+            bytes = Strconv.toUTFArray(data);            
             outStream.write(bytes);
             setSent(bytesSent + bytes.length);
             
@@ -135,7 +136,7 @@ public class Utf8IOStream {
             updateTraffic();
         }
 //#if (XML_STREAM_DEBUG)
-//#         System.out.println(">> "+data);
+//#         System.out.println(">> " + new String(bytes, "UTF-8"));
 //#endif
     }
     
@@ -168,7 +169,7 @@ public class Utf8IOStream {
 //#endif        
 //#if (XML_STREAM_DEBUG)
 //#         if (avail > 0)
-//#             System.out.println("<< "+new String(buf, 0, avail));
+//#             System.out.println("<< "+new String(buf, "UTF-8"));
 //#endif
         setRecv(bytesRecv+avail);
         updateTraffic();
