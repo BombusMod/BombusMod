@@ -368,7 +368,7 @@ public class RosterItemActions extends Menu {
                     }
                     return;
                 }
-                VCard.request(c.jid.getBare(), c.getJid().toString());
+                VCard.request((c instanceof MucContact)? c.getJid().toString(): c.jid.getBare(), c.getJid().toString());
                 break;
             case 2:
                 new ContactEdit(c);
