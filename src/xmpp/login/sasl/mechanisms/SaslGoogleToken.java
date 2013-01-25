@@ -61,7 +61,7 @@ public class SaslGoogleToken extends SaslMechanism {
         pass = password;
         try {
             String firstUrl = "https://www.google.com:443/accounts/ClientAuth?Email="
-                    + StringUtils.urlPrep(jid.getBare())
+                    + StringUtils.urlPrep(Strconv.unicodeToUTF(jid.getBare()))
                     + "&Passwd=" + StringUtils.urlPrep(Strconv.unicodeToUTF(password))
                     + "&PersistentCookie=false&source=googletalk";
             //log.addMessage("Connecting to www.google.com");
