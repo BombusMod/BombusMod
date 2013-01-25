@@ -31,6 +31,7 @@ import javax.microedition.io.Connector;
 import javax.microedition.io.HttpConnection;
 import locale.SR;
 import util.Strconv;
+import util.StringUtils;
 import xmpp.Jid;
 import xmpp.login.sasl.SaslMechanism;
 
@@ -60,10 +61,9 @@ public class SaslGoogleToken extends SaslMechanism {
         pass = password;
         try {
             String firstUrl = "https://www.google.com:443/accounts/ClientAuth?Email="
-                    + Strconv.unicodeToUTF(jid.getNode()) + "%40" + jid.getServer()
-                    + "&Passwd=" + Strconv.unicodeToUTF(password)
+                    + StringUtils.urlPrep(jid.getBare())
+                    + "&Passwd=" + StringUtils.urlPrep(Strconv.unicodeToUTF(password))
                     + "&PersistentCookie=false&source=googletalk";
-
             //log.addMessage("Connecting to www.google.com");
             HttpConnection c = (HttpConnection) Connector.open(firstUrl.toString());
             InputStream is = c.openInputStream();
