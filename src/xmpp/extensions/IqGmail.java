@@ -22,7 +22,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-
 package xmpp.extensions;
 
 import Client.Msg;
@@ -35,33 +34,44 @@ import java.util.Enumeration;
 
 public class IqGmail implements JabberBlockListener {
 
-    public IqGmail(){};
-    
+    public static final String NS_MAIL_NOTIFY = "google:mail:notify";
+    static long lastQueryTime;
+
     public static JabberDataBlock query() {
-        JabberDataBlock result=new Iq(null, Iq.TYPE_GET, "mail-request");
-        result.addChildNs("query", "google:mail:notify");
+        JabberDataBlock result = new Iq(null, Iq.TYPE_GET, "mail-request");
+        JabberDataBlock mailQuery = new JabberDataBlock("query");
+        mailQuery.setNameSpace(NS_MAIL_NOTIFY);
+        if (lastQueryTime > 0) {
+            mailQuery.setAttribute("newer-than-time", String.valueOf(lastQueryTime));
+        }
+        result.addChild(mailQuery);
         return result;
     }
 
     public int blockArrived(JabberDataBlock data) {
-        if (!(data instanceof Iq)) return BLOCK_REJECTED;
-        String type=data.getTypeAttribute();
+        if (!(data instanceof Iq)) {
+            return BLOCK_REJECTED;
+        }
+        String type = data.getTypeAttribute();
 
         if (type.equals("result")) {
             if (data.getAttribute("id").equals("mail-request")) {
-                Roster roster=StaticData.getInstance().roster;
-                roster.querysign=false;
-                
-                JabberDataBlock mailbox=data.findNamespace("mailbox", "google:mail:notify");
-                for (Enumeration e=mailbox.getChildBlocks().elements(); e.hasMoreElements();) {
-                    JabberDataBlock mail=(JabberDataBlock)e.nextElement();
+                Roster roster = StaticData.getInstance().roster;
+                roster.querysign = false;
+                lastQueryTime = System.currentTimeMillis();
+                JabberDataBlock mailbox = data.findNamespace("mailbox", NS_MAIL_NOTIFY);
+                if (mailbox == null || mailbox.getChildBlocks() == null) {
+                    return BLOCK_PROCESSED;
+                }
+                for (Enumeration e = mailbox.getChildBlocks().elements(); e.hasMoreElements();) {
+                    JabberDataBlock mail = (JabberDataBlock) e.nextElement();
 
-                    String subject=mail.getChildBlock("subject").getText();
-                    String body=mail.getChildBlock("snippet").getText();
-                    String name=mail.getChildBlock("senders").getChildBlock("sender").getAttribute("name");
-                    String address=mail.getChildBlock("senders").getChildBlock("sender").getAttribute("address");
+                    String subject = mail.getChildBlock("subject").getText();
+                    String body = mail.getChildBlock("snippet").getText();
+                    String name = mail.getChildBlock("senders").getChildBlock("sender").getAttribute("name");
+                    String address = mail.getChildBlock("senders").getChildBlock("sender").getAttribute("address");
 
-                    Msg m=new Msg(Msg.MESSAGE_TYPE_IN, "local", name+"("+address+")\n"+subject, body);
+                    Msg m = new Msg(Msg.MESSAGE_TYPE_IN, "local", name + "(" + address + ")\n" + subject, body);
                     roster.messageStore(roster.selfContact(), m);
                 }
                 return BLOCK_PROCESSED;

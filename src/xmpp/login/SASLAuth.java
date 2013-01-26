@@ -115,6 +115,11 @@ public class SASLAuth implements JabberBlockListener {
                         Strconv.unicodeToUTF(account.password));
                 auth.setAttribute("mechanism",
                         selectedMechanism.getName());
+                if (account.isGoogle) {
+                    // https://developers.google.com/talk/jep_extensions/jid_domain_change
+                    auth.setAttribute("xmlns:ga", "http://www.google.com/talk/protocol/auth");
+                    auth.setAttribute("ga:client-uses-full-bind-result", "true");
+                }
                 if (initialMessage != null) {
                     auth.setText(Strconv.toBase64(initialMessage));
                     stream.send(auth);
