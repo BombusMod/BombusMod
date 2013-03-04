@@ -134,7 +134,7 @@ public final class MessageEdit
 //#endif
         cmdLastMessage = new Command(SR.MS_PREVIOUS, Command.SCREEN, 9);
         cmdSubj = new Command(SR.MS_SET_SUBJECT, Command.SCREEN, 10);
-        cmdCancel = new Command(SR.MS_CANCEL, Command.CANCEL, 99);
+        cmdCancel = new Command(SR.MS_CANCEL, Command.SCREEN, 99);
 
 
         if (!Config.getInstance().swapSendAndSuspend) {
