@@ -58,15 +58,15 @@ public class ExTextBox {
     protected Config cf;    
     
 //#ifdef ARCHIVE
-//#     protected Command cmdArchive = new Command(SR.MS_ARCHIVE, Command.ITEM, 6);
+//#     protected Command cmdArchive = new Command(SR.MS_ARCHIVE, Command.SCREEN, 6);
 //#endif
 //#if TEMPLATES
-//#     protected Command cmdTemplate = new Command(SR.MS_TEMPLATE, Command.ITEM, 7);
+//#     protected Command cmdTemplate = new Command(SR.MS_TEMPLATE, Command.SCREEN, 7);
 //#endif  
 //#ifdef CLIPBOARD
-//#     private Command cmdCopy = new Command(SR.MS_COPY, Command.ITEM, 3);
-//#     private Command cmdCopyPlus = new Command("+ "+SR.MS_COPY, Command.ITEM, 4);    
-//#     protected Command cmdPasteText = new Command(SR.MS_PASTE, Command.ITEM, 8);
+//#     private Command cmdCopy = new Command(SR.MS_COPY, Command.SCREEN, 3);
+//#     private Command cmdCopyPlus = new Command("+ "+SR.MS_COPY, Command.SCREEN, 4);    
+//#     protected Command cmdPasteText = new Command(SR.MS_PASTE, Command.SCREEN, 8);
 //#endif
 
     private VirtualList parentList;

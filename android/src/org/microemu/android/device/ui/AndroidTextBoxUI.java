@@ -345,7 +345,7 @@ public class AndroidTextBoxUI extends AndroidDisplayableUI implements TextBoxUI 
 
         Vector<AndroidCommandUI> commands = getCommandsUI();
         for (AndroidCommandUI c : commands) {
-            if (c.getCommand().getCommandType() == Command.SCREEN) {
+            if (c.getCommand().getCommandType() == Command.ITEM) {
                 if (3 == row.getChildCount()) {
                     row = createRow(table);
                 }

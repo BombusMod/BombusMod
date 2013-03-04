@@ -122,19 +122,19 @@ public final class MessageEdit
         super.commandState();
 
 //#ifdef SMILES
-//#         cmdSmile = new Command(SR.MS_ADD_SMILE, Command.SCREEN, 2);
+//#         cmdSmile = new Command(SR.MS_ADD_SMILE, Command.ITEM, 2);
 //#endif
 //#ifndef WMUC        
-        cmdInsNick = new Command(SR.MS_NICKNAMES, Command.ITEM, 3);
+        cmdInsNick = new Command(SR.MS_NICKNAMES, Command.SCREEN, 3);
 //#endif        
-        cmdInsMe = new Command(SR.MS_SLASHME, Command.ITEM, 4);  // /me
+        cmdInsMe = new Command(SR.MS_SLASHME, Command.SCREEN, 4);  // /me
 //#ifdef DETRANSLIT
-//#         cmdSendInTranslit = new Command(SR.MS_TRANSLIT, Command.ITEM, 5);
-//#         cmdSendInDeTranslit = new Command(SR.MS_DETRANSLIT, Command.ITEM, 5);
+//#         cmdSendInTranslit = new Command(SR.MS_TRANSLIT, Command.SCREEN, 5);
+//#         cmdSendInDeTranslit = new Command(SR.MS_DETRANSLIT, Command.SCREEN, 5);
 //#endif
-        cmdLastMessage = new Command(SR.MS_PREVIOUS, Command.ITEM, 9);
-        cmdSubj = new Command(SR.MS_SET_SUBJECT, Command.ITEM, 10);
-        cmdCancel = new Command(SR.MS_CANCEL, Command.ITEM, 99);
+        cmdLastMessage = new Command(SR.MS_PREVIOUS, Command.SCREEN, 9);
+        cmdSubj = new Command(SR.MS_SET_SUBJECT, Command.SCREEN, 10);
+        cmdCancel = new Command(SR.MS_CANCEL, Command.CANCEL, 99);
 
 
         if (!Config.getInstance().swapSendAndSuspend) {
