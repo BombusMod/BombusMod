@@ -480,7 +480,7 @@ public class Roster
 //#ifndef WMUC
         if (g instanceof ConferenceGroup) {
             ConferenceGroup cg = (ConferenceGroup) g;
-            groupSelfContact = cg.selfContact.jid.getBare();
+            groupSelfContact = cg.selfContact.jid.toString();
             if (!cg.inRoom) {
                 int index = 0;
                 boolean removeGroup = true;
