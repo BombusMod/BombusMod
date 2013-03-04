@@ -89,8 +89,8 @@ public class AndroidTextBoxUI extends AndroidDisplayableUI implements TextBoxUI 
         commandGrid = new TableLayout(activity);
         editView = createEditor(activity, textBox);
         editView.setGravity(Gravity.TOP);
-        editView.setScroller(new Scroller(activity));
-        editView.setMovementMethod(new ScrollingMovementMethod());
+        //editView.setScroller(new Scroller(activity));
+        //editView.setMovementMethod(new ScrollingMovementMethod());
 
         titleView.setId(2);
         editView.setId(3);

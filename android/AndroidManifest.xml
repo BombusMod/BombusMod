@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="org.bombusmod"
-      android:versionCode="1290"
-      android:versionName="0.8.1290"
+      android:versionCode="1293"
+      android:versionName="0.8.1293"
       android:installLocation="auto">
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
