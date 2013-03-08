@@ -13,6 +13,7 @@ import Client.Roster;
 import Client.StaticData;
 //#ifndef WMUC
 import Conference.MucContact;
+import xmpp.extensions.muc.Conference;
 //#endif
 import com.alsutton.jabber.JabberBlockListener;
 import com.alsutton.jabber.JabberDataBlock;
@@ -22,7 +23,7 @@ import com.alsutton.jabber.datablocks.Presence;
 //#endif
 import locale.SR;
 import ui.VirtualList;
-import xmpp.extensions.muc.Conference;
+
 
 /**
  *

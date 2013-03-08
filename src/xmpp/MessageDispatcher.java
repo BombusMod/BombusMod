@@ -10,13 +10,15 @@ import Client.Msg;
 import Client.NotInListFilter;
 import Client.Roster;
 import Client.StaticData;
-import Conference.ConferenceGroup;
 import com.alsutton.jabber.JabberBlockListener;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Message;
 import com.alsutton.jabber.datablocks.Presence;
 import locale.SR;
+//#ifndef WMUC
 import xmpp.extensions.muc.Conference;
+import Conference.ConferenceGroup;
+//#endif
 
 /**
  *

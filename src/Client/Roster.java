@@ -39,6 +39,7 @@ import Conference.ConferenceGroup;
 import Conference.MucContact;
 import Conference.affiliation.ConferenceQuickPrivelegeModify;
 import Conference.ConferenceForm;
+import xmpp.extensions.muc.Conference;
 //#endif
 //#ifdef STATS
 //# import Statistic.Stats;
@@ -117,7 +118,6 @@ import xmpp.JabberDispatcher;
 import xmpp.JidUtils;
 import xmpp.PresenceDispatcher;
 import xmpp.RosterDispatcher;
-import xmpp.extensions.muc.Conference;
 
 //#if android
 //# import org.bombusmod.BombusModActivity;
@@ -1787,7 +1787,11 @@ public class Roster
     public void eventLongOk() {
         super.eventLongOk();
         Object o = getFocusedObject();
-        if ((!(o instanceof Contact)) && (!(o instanceof MucContact))) {
+        if ((!(o instanceof Contact)) 
+//#ifndef WMUC                
+                && (!(o instanceof MucContact))
+//#endif
+                ) {
             cmdActions();
         } else {
 //#ifndef WMUC
@@ -1981,10 +1985,12 @@ public class Roster
             cmdTools();
         } else if (c == cmdCleanAllMessages) {
             cmdCleanAllMessages();
-        } //#ifndef WMUC
+        } 
+//#ifndef WMUC
         else if (c == cmdConference) {
             cmdConference();
-        } //#endif
+        } 
+//#endif
         else if (c == cmdQuit) {
             cmdQuit();
         } else if (c == cmdAdd) {

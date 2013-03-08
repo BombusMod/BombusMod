@@ -29,12 +29,14 @@ package Menu;
 import Client.Groups;
 import Client.*;
 import Colors.ColorTheme;
+//#ifndef WMUC
 import Conference.ConferenceGroup;
 import Conference.InviteForm;
 import Conference.MucContact;
 import Conference.QueryConfigForm;
 import Conference.affiliation.Affiliations;
 import Conference.affiliation.ConferenceQuickPrivelegeModify;
+//#endif
 import ServiceDiscovery.ServiceDiscovery;
 import VCard.VCard;
 import VCard.VCardEdit;
@@ -368,7 +370,11 @@ public class RosterItemActions extends Menu {
                     }
                     return;
                 }
-                VCard.request((c instanceof MucContact)? c.getJid().toString(): c.jid.getBare(), c.getJid().toString());
+                VCard.request(
+//#ifndef WMUC                        
+                        (c instanceof MucContact)? c.getJid().toString(): 
+//#endif                        
+                        c.jid.getBare(), c.getJid().toString());
                 break;
             case 2:
                 new ContactEdit(c);

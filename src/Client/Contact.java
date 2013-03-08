@@ -27,9 +27,9 @@
 package Client;
 
 //#ifndef WMUC
-import xmpp.Jid;
 import Conference.MucContact;
 //#endif
+import xmpp.Jid;
 import Fonts.FontCache;
 //#ifdef CLIENTS_ICONS
 //# import images.ClientsIcons;

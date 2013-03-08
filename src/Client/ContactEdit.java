@@ -25,8 +25,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 package Client;
-//#ifndef WMUC
+
 import xmpp.Jid;
+
+//#ifndef WMUC
 import Conference.MucContact;
 //#endif
 //#ifdef PRIVACY

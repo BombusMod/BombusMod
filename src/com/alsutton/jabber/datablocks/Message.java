@@ -29,8 +29,9 @@ import com.alsutton.jabber.*;
 import java.util.*;
 import ui.Time;
 import xmpp.XmppError;
+//#ifndef WMUC
 import xmpp.extensions.muc.Conference;
-
+//#endif
 public class Message extends JabberDataBlock {
     
     public static final String NS_CHATSTATES = "http://jabber.org/protocol/chatstates";
