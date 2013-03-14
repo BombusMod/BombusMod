@@ -284,6 +284,9 @@ public class Config {
             case MICROEMU:
                 int h1 = VirtualCanvas.getInstance().getHeight();
                 int h2 = VirtualCanvas.getInstance().getWidth();
+                rosterFont = 16;
+                barFont = 16;
+                msgFont = 16;
                 minItemHeight = ((h1<h2)?h2:h1)*40/480;
                 allowMinimize = true;
                 break;            

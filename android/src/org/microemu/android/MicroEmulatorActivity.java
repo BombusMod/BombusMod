@@ -61,6 +61,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
+import org.bombusmod.R;
 
 public abstract class MicroEmulatorActivity extends Activity {
 		
@@ -113,6 +114,10 @@ public abstract class MicroEmulatorActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
+                
+                config.FONT_SIZE_SMALL = getResources().getDimensionPixelSize(R.dimen.small_font_size);
+                config.FONT_SIZE_MEDIUM = getResources().getDimensionPixelSize(R.dimen.medium_font_size);
+                config.FONT_SIZE_LARGE = getResources().getDimensionPixelSize(R.dimen.large_font_size);
 		
 		// Query the activity property android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
 		TypedArray ta = getTheme().obtainStyledAttributes(new int[] { android.R.attr.windowFullscreen });

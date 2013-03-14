@@ -87,12 +87,9 @@ public class AndroidFontManager implements FontManager
 	    	//	compute size relative to scaleDensity
 	    	//	to enable consistent font size ratio 
 			//	accross any device resolution/density
-	    	size *= metrics.scaledDensity;
+	    	//size *= metrics.scaledDensity;
 
-	    	result = new AndroidFont(Typeface.create(family, style), TypedValue.applyDimension(
-                            TypedValue.COMPLEX_UNIT_SP,
-                            size,
-                            metrics), underlined);
+	    	result = new AndroidFont(Typeface.create(family, style), size, underlined);
 	    	fonts.put(meFont, result);
 	    }
 	    
