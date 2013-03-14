@@ -32,10 +32,10 @@ public class AndroidConfig {
 	 * Font size definitions
 	 */
 
-	public int FONT_SIZE_SMALL = 12;
+	public int FONT_SIZE_SMALL = 14;
 	
-	public int FONT_SIZE_MEDIUM = 16;
+	public int FONT_SIZE_MEDIUM = 18;
 	
-	public int FONT_SIZE_LARGE = 20;
+	public int FONT_SIZE_LARGE = 22;
 	
 }
