@@ -476,11 +476,11 @@ public class Roster
         if (!g.collapsed && !Config.getInstance().autoClean) {
             return;
         }
-        String groupSelfContact = "";
+        Jid groupSelfContact = null;
 //#ifndef WMUC
         if (g instanceof ConferenceGroup) {
             ConferenceGroup cg = (ConferenceGroup) g;
-            groupSelfContact = cg.selfContact.jid.toString();
+            groupSelfContact = cg.selfContact.jid;
             if (!cg.inRoom) {
                 int index = 0;
                 boolean removeGroup = true;
@@ -520,7 +520,7 @@ public class Roster
                     if (contact.origin > Contact.ORIGIN_ROSTERRES
                             && contact.status >= Presence.PRESENCE_OFFLINE
                             && !contact.haveChatMessages()
-                            && !contact.jid.getBare().equals(groupSelfContact)
+                            && !contact.jid.equals(groupSelfContact, true)
                             && contact.origin != Contact.ORIGIN_GROUPCHAT) {
 
                         contact.msgs.removeAllElements();
