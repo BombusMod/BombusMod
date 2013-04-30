@@ -81,6 +81,7 @@ public final class MessageEdit
     private Command cmdSubj;
     private Command cmdSuspend;//=new Command(SR.MS_SUSPEND, Command.BACK,90);
     private Command cmdCancel;
+    private int cmdSmileType = Command.ITEM;
 //#ifdef MIDP_TICKER
 //#     Ticker ticker = new Ticker("");
 //#endif    
@@ -94,6 +95,12 @@ public final class MessageEdit
 //#ifdef DETRANSLIT
 //#             util.DeTranslit.getInstance();
 //#endif        
+        if (Config.getInstance().phoneManufacturer == Config.NOKIA) {
+            if (!Config.getInstance().NokiaS40) {
+                // workaround for Symbian devices
+                cmdSmileType = Command.SCREEN;
+            }            
+        }
     }
 
     public MessageEdit(VirtualList pView, Contact to, String body) {
@@ -122,7 +129,7 @@ public final class MessageEdit
         super.commandState();
 
 //#ifdef SMILES
-//#         cmdSmile = new Command(SR.MS_ADD_SMILE, Command.ITEM, 2);
+//#         cmdSmile = new Command(SR.MS_ADD_SMILE, cmdSmileType, 2);
 //#endif
 //#ifndef WMUC        
         cmdInsNick = new Command(SR.MS_NICKNAMES, Command.SCREEN, 3);
