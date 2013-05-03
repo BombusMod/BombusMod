@@ -1,2 +1,3 @@
 en	null	English
 ru	/lang/ru.txt	Russian
+ar    /lang/ar.txt    العربية

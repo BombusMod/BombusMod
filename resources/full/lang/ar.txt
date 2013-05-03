@@ -1,0 +1,563 @@
+// Arabic langfile for BombusMod  2013- mobile jabber client
+// Copyright (c) 2005-2010, Eugene Stahov (evgs), http://bombus-im.org
+// All rights reserved.
+// Arabic By : Sam Amir (AnGeL EyEz , admin@syriatalk.sy )
+
+
+xmlLang	ar
+Jid	الحساب
+Privacy Lists	قوائم الخصوصية
+Message font	خط الرسائل
+Roster font	خط قائمة الاسماء
+Paste Body	لصق
+Configure Room	برمجة الغرفة
+Paste Subject	لصق الموضوع
+Service Discovery	استكشاف الخدمات
+User JID	حساب المستخدم
+New list	قائمة جديدة
+Default	افتراضي
+Privacy rule	قاعدة الخصوصية
+Use SSL	اسختدام شهادة SSL
+Modify	تعديل
+Update	تحديث
+Account name	اسم الحساب
+GMT offset	ازاحة (GMT+)
+Time settings (hours)	إعدادات الوقت (ساعة)
+Connected	متصل
+Connect to 	الاتصال بـ
+Alert Profile	ملف التنبيه
+Move Up	تحريك للأعلى
+Owners	المالكين
+Ok	موافق
+Minimize	تصغير
+Room	غرفة
+Messages	رسائل
+Refresh	تحديث
+Resolve Nicknames	تحديث الأسماء
+Action	أمر
+Ban	فصل نهائي
+Leave Room	مغادرة الغرفة
+Password	كلمة المرور
+Actions >	الأوامر >
+Activate	تفعيل
+Affiliation	الانتساب
+Accounts	الحسابات
+Delete list	حذف القائمة
+Account >	الحساب >
+Select	اختيار
+Subject	الموضوع
+Quit	خروج
+Edit list	تعديل القائمة
+Registering	تسجيل
+Done	تم
+Error: 	خطأ: 
+Browse	استكشاف
+Save list	حفظ قائمة
+Keep-Alive period	فترة تأكيد الاتصال
+<New Group>	<مجموعة جديدة>
+Send	إرسال
+Priority	الأولوية
+Failed	فشل
+Set Priority	ضبط الأولوية
+Delete rule	حذف قاعدة
+Ignore-List	قائمة التجاهل
+Roster request	تحميل الأسماء
+Type	النوع
+Name	الاسم
+Username	اسم المستخدم
+Fullscreen	شاشة كاملة
+Add bookmark	إضافة للمفضلة
+Conferences only	غرف فقط
+Client Version	اصدار البرنامج
+Discard Search	تجاهل البحث
+Search Results	نتائج البحث
+General	عام
+Members	الأعضاء
+Add Contact	إضافة شخص
+Subscription	الاشتراك
+Status >	الحالة >
+Join	إنضمام
+Startup actions	إوامر بدء التشغيل
+Server	الخادم
+Admins	المدراء
+Make Ignore-List	تحديد قائمة التجاهل
+Options	الاعدادات
+Delete	حذف
+Delete contact?	حذف الاضافة?
+Authorize	قبول
+Nicknames	الاسماء المستعارة
+To archive	حفظ بالارشيف
+Back	رجوع
+Heap monitor	مراقبة الذاكرة المؤقتة
+Message	رسالة
+<Other>	<المزيد>
+History	المحفوظات
+Append	إضافة
+Active Contacts	المحادثات الجارية
+Select nickname	اختر الأسم المستعار
+Group	مجموعة
+Join conference	دخول غرف الدردشة
+No	لا
+Re-Enter Room	إعادة دخول الغرفة
+New Message	رسالة جديدة
+Add	إضافة
+Logon	تسجيل دخول
+Stanzas	اعلامات
+at Host	على السيرفر
+Join conferences	الدخول الى غرف الدردشة
+Status	الحالة
+Smiles	الابتسامات
+Contact >	اوامر الاضافة >
+Offline contacts	الغير متصلين
+Transport	ناقل الخدمات
+Composing events	اشعارات الارسال
+Add Smile	اضافة ابتسامة
+Nickname	الاسم المستعار
+Revoke Voice	سحب حق التحدث
+Not-in-list غير مضاف
+Commands	الأوامر
+- (Sign)	- (علامة)
+Outcasts (Ban)	مفصول
+Set affiliation to	تحديد الانتساب الى
+Register Account	تسجيل حساب
+Autologin	دخول تلقائي
+Logoff	تسجيل خروج
+Publish	نشر
+Remove subscription	حذف الاشتراك
+Set	ضبط
+Application	تطبيق
+Bookmarks	المفضلة
+Test sound	إختبار الصوت
+Startup	بدء التشغيل
+Edit rule	تحرير قاعدة
+Cancel	إلغاء
+Close	اغلاق
+Archive	الأرشيف
+Conference	غرفة محادثة
+Sound	صوت
+Login failed	فشل تسجيل الدخول
+Browse	استعراض
+New Jid	حساب جديد
+Plain-text password	كلمة المرور بتنسيق عادي
+Paste Nickname	لصق الاسم المستعار
+Kick	طرد
+Remove readed	مسح المقروء
+Grant Voice	منح حق التحدث
+Move Down	نقل للأسفل
+Quote	إقتباس
+Roster elements	عناصر قائمة الاسماء
+Popup from background	تكبير عند التصغير
+Smiles	الإبتسامات
+About	عن البرنامج
+Resource	المصدر
+Disconnected	تم قطع الاتصال
+Edit	تحرير
+Host name/IP (optional)	اسم او عنوان السيرفر (اختياري)
+Add rule	اضافة قاعدة
+Paste Jid	لصق الايميل
+Goto URL	الذهاب الى الرابط
+Clock offset	ازاحة الساعة
+Yes	نعم
+Suspend	تراجع
+Alert Profile >	اعدادات التنبيهات >
+My vCard	بطاقة تعريفي
+Transports	نواقل الخدمات
+New Account	حساب جديد
+Self-contact	اضافتي
+vCard	بطاقة التعريف
+Set Subject	حدد الموضوع
+Tools	أدوات
+Port	المنفذ
+Resume	استمرار
+Are You sure want to discard 	هل حقا تريد التجاهل
+ from OWNER to 	 من مالك الى 
+Modify affiliation	تعديل الانتساب
+Clear	مسح
+Connect	اتصال
+Unaffiliate	غير منتسب
+Grant Moderator	تعين كـ مسؤول
+Revoke Moderator	حذف المسؤولية
+Grant Admin	تعين كـ مدير
+Grant Ownership	تعين كـ مالك
+Visitors are not allowed to send messages to all occupants	غير مسموح للزوار مراسلة المشتركين
+ is inviting You to	 يدعوك لـ 
+Ask subscription	يطلب إضافتك
+Grant subscription	قبول الإضافة
+Invite to conference	دعوة لغرفة الدردشة
+Reason	السبب
+You have been invited to 	لقد تمت دعوتك لـ 
+Participants	المتواجدون
+Abc	Abc
+Room presences	الانضمام و الخروج
+ is now known as 	 غير اسمه إلى 
+ was banned 	 تم فصله نهائيا 
+ was kicked 	 تم طرده 
+ has been kicked because room became members-only	 تم طرده لأن الغرفة أصبحت للمشتركين فقط
+ has left the channel	 غادر الغرفة
+ has joined the channel as 	 إنضم للغرفة بصفة  
+ and 	 و 
+ is now 	 أصبح الآن 
+Error	خطأ
+Choose folder	إختيار المجلد
+Sound volume	مستوى الصوت
+Language	اللغة
+Save history	تخزين المحفوظات
+Save presences	تسجيل اشعارات الانضمام والخروج
+Save conference history	تخزين محفوظات الغرفة
+Save conference presences	تسجيل انضمام وخروج الغرفة
+Convert to cp1251	تحويل إلى Windows-1251
+History folder	مجلد المحفوظات
+Copy	نسخ
+Paste	لصق
+Save template	حفظ القالب
+Template	قالب
+has set topic to	حدد الموضوع
+Seen	آخر ظهور
+Idle	الخمول
+Main menu	القائمة الرئيسية
+Choose status	إختيار الحالة
+Add status	إضافة حالة
+Remove status	حذف حالة
+Address	العنوان
+Make BackUp	نسخ احتياطي
+Import from BackUp	استرجاع نسخة احتياطية
+View	عرض
+Stop	توقف
+File transfers	عمليات نقل الملفات
+Path	المسار
+Accept file	استلام الملف
+File	ملف
+Save To	حفظ إلى
+Sender	المرسل
+Rejected	مرفوض
+Send file	إرسال ملف
+Can't open file	لا يمكن فتح الملف
+New	جديد
+New Template	قالب جديد
+Save photo	حفظ الصورة
+balloon ink	لون البالون
+balloon background	خلفية البالون
+messagelist & roster background	خلفية الرسائل والاسماء
+messagelist & roster even lines	خطوط قائمة الرسائل والاسماء
+messagelist & roster & common font	خط قائمة الاسماء و الرسائل
+message subject	رسالة الموضوع
+message highlight	رسالة العناوين الرئيسية
+service discovery commands	اوامر استكشاف الخدمات
+panels background	خلفية الرئيسية
+header font	الخط الرئيسي
+contact default	افتراضي جهة الاتصال
+contact chat	جهة الاتصال متوفر للدردشة
+contact away	جهة الاتصال بعيد
+contact extended away	جهة الاتصال غير متوفر
+contact do not disturb	جهة الاتصال عدم الازعاج
+group color	لون المجموعة
+keylock font	لون تأمين المفتاح
+keylock background	خلفية تأمين المفتاح
+message incoming	وصول رسالة
+message outgoing	ارسال رسالة
+message presence	رسالة اعلام
+message auth	رسالة تحقق
+message history	رسالة محفوظة
+progress bar remained	شريط التقدم متبقي
+progress bar complete	شريط التقدم مكتمل
+progress bar font	خط شريط التقدم
+Heap mon total	Heap مراقبة الاجمال
+Heap mon free	Heap مراقبة الحر
+Cursor background	خلفية المؤشر
+Cursor ink & outline	داخل وحدود المؤشر
+Scroll border	حدود الزالق
+Scroll bar	شريط الزالق
+Scroll back	خلفية الزالق
+Scroll width	عرض شريط الانزلاق
+other message incoming	الرسائل الواردة
+other message outgoing	الرسائل الصادرة
+other message presence	رسائل الاعلام
+Popup font	خط الرسائل المنبثقة
+Popup background	خلفية الرسائل المنبثقة
+Popup system font	خط النوافذ المنبثقة
+Popup system background	خلفية النوافذ المنبثقة
+Contact status font	خط رسالة الحالة
+Control color	التحكم باللون
+Color tune	ضبط الالوان
+Load Scheme	اختيار الثيم
+Sounds options	إعدادات الأصوات
+Time	الوقت
+participant	زائر
+moderator	مسؤول
+visitor	صامت
+none	بدون
+member	عضو
+admin	مدير
+owner	مالك
+second's	ثانية
+seconds	ثواني
+second	ثانية
+minute's	دقيقة
+minutes	دقائق
+minute	دقيقة
+hour's	ساعة
+hours	ساعات
+hour	ساعة
+day's	يوم
+days	أيام
+day	يوم
+Minutes before away	دقائق قبل ان تصبح الحالة بعيد
+Automatic Away	بعيد تلقائي
+disabled	معطل
+keyblock	فقل المفاتيح
+by message	بالرسالة
+AutoStatus	حالة تلقائية
+AutoStatus time (min)	زمن التحويل للحالة تلقائيا (دقيقة)
+Auto xa since %t	اصبح غير متوفر بشكل تلقائي منذ %t
+Auto away since %t	أصبح بعيد بشكل تلقائي منذ %t
+Autofocus	تركيز تلقائي
+Grant Membership	منح عضوية
+Are You sure want to clear messagelist?	هل أنت متأكد انك تريد مسح قائمة المحادثات؟
+Google token request	طلب رمز جوجل
+Google token request	طلب رمز جوجل
+Features	الميزات
+Show password	إظهار كلمة المرور
+No client version available	إصدار العميل غير متاح
+Message limit	الحد الأقصى لطول الرسالة
+Opening stream	اجراء الاتصال
+Using compression	استخدام ضغط البيانات
+Authenticating	التحقق من كلمة المرور
+Resource binding	الربط مع السيرفر
+Initiating session	ضبط الاتصال
+Text wrapping	التفاف النص تلقائيا
+by chars	بالحروف
+by words	بالكلمات
+Info	معلومات
+Reply	رد
+Send status	إرسال حالة
+Are you sure want to BAN this person?	هل تريد حظر هذا الشخص؟
+No reason	بدون سبب
+Recent	الاخيرة
+Shot	التقاط
+Select file	اختيار ملف
+Load Photo	تحميل صورة
+Clear Photo	مسح صورة
+Camera	الكاميرا
+Hide finished	اخفاء المنتهية
+Transfer tasks	مهام نقل الملفات
+Are you sure want to delete this message?	هل تريد حذف هذه الرسالة ؟
+New conference	غرفة جديدة
+Root	الرئيسي
+Decline	رفض
+Authorize new contacts	قبول الاضافات الجديدة
+[auto-subscribe]	[قبول التلقائي]
+Keep-Alive	محافظة على الاتصال
+ has been unaffiliated and kicked from members-only room	 اصبح بدون انتساب وطرد لأن الغرفة للاعضاء فقط
+Rename	اعادة تسمية
+Move	نقل
+Save	حفظ
+Translit	ترجمة سيريانية
+ReTranslit	ترجمة سريانية وارسال
+Auto translit2Cyr	ترجمة تلقائية للحروف السريانية
+Check Updates	البحث عن تحديثات
+Show Resources	إظهار المصدر
+Collapsed groups	طوي المجموعات
+Send Buffer	ارسال مكرر
+Change nickname	تغير الاسم
+Message collapse limit	حدود طوي المحادثة
+Width scroll	عرض شريط الانزلاق
+Memory usage	استخدام الذاكرة
+Memory cleaning	تنظيف الذاكرة
+Auto clean groups	تنظيف تلقائي للمجموعات
+No client info	لايوجد معلومات للعميل
+Delete all messages	حذف كل المحادثات
+Join marked (auto)	تحديد للدخول التلقائي
+Statistics	الاحصائيات
+Started: 	بدأ: 
+Traffic stats: 	احصائيات نقل البيانات:
+All: 	الجميع: 
+Current: 	الحالي: 
+Last Messages	اخر الرسائل
+Edit/join	تعديل/دخول
+Use this Color scheme	استخدام هذا الثيم
+Delete All	حذف الكل
+History options	اعدادات المحفوظات
+Filenames transliterate	اسماء ملفات مترجمة
+Save chat	حفظ المحادثة
+Show statuses	اضهار الحالات
+Shared platform info	مشاركة اصدارك
+Delivery events	اشعارات التسليم
+Drop all	حذف الكل
+Receive messages	الرسائل المستلمة
+Messages & presences	الرسائل والاشعارات
+Normal	عادي
+Small	صغير
+Large	كبير
+All signals	جميع التنبيهات
+Vibra	تنبيه بالاهتزاز
+No signals	بدون تنبيهات
+ (default)	 (الافتراضي)
+Quit?	خروج؟
+Are you sure want to Quit?	هل حقا تريد الخروج؟
+Exit confirmation	تأكيد الخروج
+Show last appeared contacts	عرض اخر جهات الاتصال ظهوراً:
+Custom keys	مفاتيح مخصصة
+Add custom key	اضافة مفتاح مخصص
+Keys action	اوامر المفاتيح
+Enabled	مفعل
+Key	مفتاح
+Apply	تطبيق
+Reconnect	اعادة اتصال
+Sort list	ترتيب القائمة
+Turn on light	تشغيل الأضواء
+Clear popups	مسح الرسائل المنبثقة
+Chat history length	طول سجل المحادثات
+This user wants to subscribe to your presence	لقد طلب هذا المشترك اضافتك
+You are now authorized	لقد قبل اضافتك
+Your authorization has been removed!	لقد قام بمسح إضافتك!
+To: 	الى: 
+Size:	الحجم:
+Sun	الأحد
+Mon	الإثنين
+Tue	الثلاثاء
+Wed	الاربعاء
+Thu	الخميس
+Fri	الجمعة
+Sat	السبت
+Automatic subscription	الاشتراك التلقائي
+Ask me	إسألني
+Drop subscription	حذف الاشتراك
+Deny subscription	رفض الاشتراك
+Visible	مرئي
+Search	بحث
+Register	تسجيل
+Check Google mail	تفقد بريد GMail
+Blink	وميض
+Notices options	خيارات الاشعارات
+Message sound	صوت الرسالة
+Online sound	صوت الدخول
+Offline sound	صوت الخروج
+"Message for me" sound	صوت مراسلتي
+Composing sound	صوت الارسال
+Conference sound	صوت الغرفة
+StartUP sound	صوت بدء التشغيل
+Outgoing sound	صوت الخروج
+Ping request	طلب اختبار الاتصال
+Online time	زمن الاتصال
+Break connection	القطع المفاجئ للإتصال
+AutoScroll	انتقال تلقائي
+Emulate tabs	التبديل السريع بين النوافذ و الرسائل
+Hide timestamps in messages	اخفاء توقيت المحادثات
+PopUps	نوافذ منبثقة
+Use my status messages	استخدام حالتي
+Memory:	الذاكرة:
+Free: 	الحرة: 
+Total: 	المجموع: 
+Session(s): 	جلسة: 
+Description	وصف
+User	مستخدم
+Import/Export	استيراد/حفظ
+Bold font for contacts	خط غامق للأسماء
+Running message	رسالة التشغيل
+Composing message to you	ارسال رسالة لـ
+Compression	ضغط البيانات
+New room created	تم انشاء الغرفة
+IRC-like conference nick-status	عرض للأسم والحالة بطريقة مشابهة للـIRC
+Simulated break	محاكاة للإنقطاع
+Build new version on constructor	بناء نسخة جديدة
+Auto tasks	مهام تلقائية
+Auto task type	نوع المهمة
+by timer 	بواسطة مؤقت
+by time 	في الوقت
+Auto task action type	نوع المهمة التلقائية
+Quit BombusMod	الخروج من البرنامج
+Quit conferences	الخروج من الغرف
+Disconnection	قطع الاتصال
+Disabled	معطل
+Delay (min.)	تأخير (دقيقة.)
+Start time	وقت البداية
+Hour	ساعة
+Min	دقيقة
+Browse rooms	استعراض الرومات
+Autorespond	الرد التلقائي
+Invert colors	عكس الالوان
+XML console	XML كودات
+Clipboard	الحافظة
+Bar font	خط الشريط
+Popup & balloon font	خط البالون والمنبثقة
+Fonts options	اعدادات الخطوط
+Load history	تحميل المحفوظات
+Connect to	الاتصال بـ
+Send my color scheme	ارسال الثيم المستخدم
+Unread messages	الرسائل غير المقروءة
+Vibrate only highlited	الهزاز فقط عند مراسلتي
+Extended settings	اعدادات متقدمة
+Save to file	حفظ لملف
+Load from file	تحميل من ملف
+Show iq requests	اظهار طلبات iq
+Show clients icons	اظهار رموز العميل
+Action	أمر
+Value	قيمة
+Quantity of attempts	عدد المحاولات
+Delay before reconnect (sec.)	الانتظار قبل اعادة الاتصال (ثانية.)
+Menu	القائمة
+Next	التالي
+Previous	السابق
+Previous: 	السابق: 
+[End of vCard]	نهاية ملف تعريفي
+[No vCard available]	[لا يوجد ملف شخصي]
+[No photo available]	[لا يوجد صورة]
+[Unsupported format]	[صيغة غير مدعومة]
+[Large photo was dropped]	[تم حذف صورة كبيرة]
+Delete group?	حذف المجموعة?
+Panels	الشريط الرئيسي
+[ ]	[لا]
+[Main bar]	[الشريط الرئيسي]
+[Info bar]	[شريط المعلومات]
+Flash backlight	اضاءة الخلفية
+Execute menu by numkey	اختصارات رقمية
+Show nicknames	اظهار الاسماء المستعارة
+Send photo	ارسال صورة
+Enable autorespond	تفعيل الرد التلقائي
+File manager	مدير الملفات
+Remote control	تحكم بعيد
+Resolve hostname	تحليل اسم السيرفر
+Show time and traffic	اظهار الوقت و الاستهلاك
+Users search	البحث عن مشتركين
+Personal events	الأحداث الشخصية
+Receive events	استلام الأحداث
+Publish events	نشر الأحداث
+User moods	أمزجة المستخدم
+User tune	تناغم المستخدم
+User activity	انشطة المستخدم
+User location	موقع المستخدم
+Latitude	خط العرض
+Longitude	خط الطول
+Location name	اسم الموقع
+Location description	وصف الموقع
+Retrieve location	الحصول على الموقع
+user moods send/receive	أمزجة المستخدم إرسال / استقبال
+Personal events not supported	الأحداث الشخصية غير مدعومة
+VIP	VIP
+Enable/Disable	تفعيل/تعطيل
+Online	متصل
+Chat	متوفر للدردشة
+Away	بعيد
+xa	غير متوفر
+Invisible	مخفي
+DND	عدم ازعاج
+Offline	غير متصل
+Use	استخدام
+Version	الاصدار
+Step back	خطوة للوراء
+Single-click interface	واجهة تعمل بلمسة واحدة
+Minimal item height	الحد الادنى لأرتفاع العنصر
+Vip sound	صوت VIP
+Copy JID	نسخ الايميل
+Copy topic	نسخ الموضوع
+Focus to Juick contact	التركيز على Juick
+[J] Reply to message	[J] الرد على رسالة
+[J] Reply to	[J] الرد لـ
+[J] Things	[J] الأشياء
+[J] Delete message	[J] حذف رسالة
+[J] Subscribe to comments	[J] الاشتراك في تعليقات
+[J] Unsubscribe from comments	[J] إلغاء الاشتراك من تعليقات
+[J] Recommend post	[J] توصية بمقالة
+[J] Show post and comments	[J] عرض مشاركة وتعليقات
+For work this command you need contact juick@juick.com in you roster. For more information see http://juick.com/help/	ليعمل هذا الأمر يجد اضافة juick@juick.com لديك ،لمزيد من المعلومات قم بزيارة الموقع http://juick.com/help/
+Collapse all	طوي الكل

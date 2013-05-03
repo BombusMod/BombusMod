@@ -1,0 +1,28 @@
+﻿	NICKNAME	الاسم المستعار
+	FN	الاسم الكامل
+N	PREFIX	البادءة (سيد,سيدة)
+N	GIVEN	الاسم الاول
+N	MIDDLE	اسم الاب
+N	FAMILY	الكنية
+N	SUFFIX	اللاحقة
+	BDAY	تاريخ الميلاد
+ADR	STREET	الشارع
+ADR	POBOX	صندوق بريدي
+ADR	EXTADD	عنوان اضافي
+ADR	EXTADR	عنوان تفصيلي
+ADR	LOCALITY	المدينة
+GEO	LAT	خط العرض
+GEO	LON	خط الطول
+ADR	REGION	المحافظة/المنطقة
+ADR	PCODE	المفتاح الهاتفي
+ADR	CTRY	الدولة
+	TZ	المنطقة الزمنية (GMT)
+TEL	NUMBER	رقم الهاتف
+EMAIL	USERID	الايميل
+	JABBERID	حساب جابر
+	ROLE	الوظيفة
+	TITLE	اللقب
+ORG	ORGNAME	المؤسسة او الشركة
+ORG	ORGUNIT	القسم
+	URL	موقع الكتروني
+	DESC	المزيد حولي
