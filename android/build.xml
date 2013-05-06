@@ -99,6 +99,23 @@
 
     <target name="my-release" depends="fix-android-manifest,release">
     </target>
+    <target name="release-nonb" depends="antenna-preprocess,fix-android-manifest,release">
+    </target>
+    <target name="antenna-preprocess">
+      <taskdef resource="antenna.properties" classpath="${antenna.jar}" />
+      <wtkpreprocess 
+            verbose="false" 
+            version="2" 
+            srcdir="../src" 
+            destdir="../build/android/preprocessed" 
+            symbols="${src.abilities}" >
+	<exclude name="io/file/transfer/TransferImage**"/>
+	<exclude name="io/file/FileSiemens**"/>
+	<exclude name="io/file/FileComMotorola**"/>
+	<exclude name="Messages/notification/SEMC**"/>
+	<exclude name="images/camera/**"/>
+      </wtkpreprocess>
+    </target>
 
 
     <!-- Import the actual build file.
