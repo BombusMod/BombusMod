@@ -210,7 +210,9 @@ public class Roster
             addMenuCommand(cmdConference);
         }
 //#endif
+//#if !android        
         addMenuCommand(cmdAlert);
+//#endif        
 //#ifdef ARCHIVE
 //#         addMenuCommand(cmdArchive);
 //#endif
@@ -1819,6 +1821,9 @@ public class Roster
     }
 
     public void toggleVibra() {
+        if (cf.phoneManufacturer == Config.MICROEMU) {
+            return;
+        }
         // swap profiles
         int profile = cf.profile;
         cf.profile = (profile == AlertProfile.VIBRA) ? cf.lastProfile : AlertProfile.VIBRA;

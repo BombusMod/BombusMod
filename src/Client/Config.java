@@ -102,8 +102,8 @@ public class Config {
 //#     public static boolean useMyStatusMessages = true;
 //#endif
     public boolean allowMinimize = false;
-    public int profile = 0;
-    public int lastProfile = 0;
+    public int profile = AlertProfile.ALL;
+    public int lastProfile = AlertProfile.ALL;
     public boolean istreamWaiting;
     public int phoneManufacturer = NOT_DETECTED;
     public boolean swapMenu = false;
@@ -116,7 +116,7 @@ public class Config {
     public int accountIndex = -1;
     public boolean showOfflineContacts = false;
     public static boolean fullscreen = true;
-    public int def_profile = 0;
+    public int def_profile = AlertProfile.ALL;
 //#ifdef SMILES
 //#     public boolean smiles = true;
 //#endif
