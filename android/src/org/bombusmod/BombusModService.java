@@ -1,18 +1,16 @@
 package org.bombusmod;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
 import android.app.Notification;
+import android.support.v4.app.NotificationCompat;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
 import android.os.IBinder;
 import android.util.Log;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import org.bombusmod.scrobbler.Receiver;
 
 public class BombusModService extends Service {
@@ -73,10 +71,12 @@ public class BombusModService extends Service {
         }
 
         //Foreground Service
-        Notification notification = new Notification(R.drawable.app_service, getText(R.string.app_name), 0);
+        NotificationCompat.Builder notification = new NotificationCompat.Builder(this);
+        notification.setSmallIcon(R.drawable.app_service);
+        notification.setContentTitle(getString(R.string.app_name));
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, BombusModActivity.class), 0);
-        notification.setLatestEventInfo(this, getText(R.string.app_name), "", contentIntent);
-        startForegroundCompat(R.string.app_name, notification);
+        notification.setContentIntent(contentIntent);
+        startForegroundCompat(R.string.app_name, notification.getNotification());
 
         //audio scrobbler
         IntentFilter filter = new IntentFilter();
