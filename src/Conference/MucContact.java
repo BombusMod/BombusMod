@@ -161,11 +161,9 @@ public class MucContact extends Contact {
                     presenceType=Presence.PRESENCE_ERROR;
                 case 307: //kick
                     b.append((statusCode==301)? SR.MS_WAS_BANNED : SR.MS_WAS_KICKED );
-//#ifdef POPUPS
-//#                     if (((ConferenceGroup)group).selfContact == this ) {
-//#                         StaticData.getInstance().roster.setWobble(3, this.getJid().toString(), ((statusCode==301)? SR.MS_WAS_BANNED : SR.MS_WAS_KICKED)+((!reason.equals(""))?"\n"+reason:""));
-//#                     }
-//#endif
+                    if (((ConferenceGroup)group).selfContact == this ) {
+                        StaticData.getInstance().roster.showAlert(this.getJid().toString(), ((statusCode==301)? SR.MS_WAS_BANNED : SR.MS_WAS_KICKED)+((!reason.equals(""))?"\n"+reason:""));
+                    }
                     if (!reason.equals(""))
                         b.append("(").append(reason).append(")");
 

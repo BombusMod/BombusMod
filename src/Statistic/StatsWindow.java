@@ -123,11 +123,9 @@
 //# 
 //#     public boolean doUserKeyAction(int command_id) {
 //#         switch (command_id) {
-//#ifdef POPUPS
 //#             case 4:
 //#                 destroyView();
 //#                 return true;
-//#endif
 //#         }
 //# 
 //#         return super.doUserKeyAction(command_id);

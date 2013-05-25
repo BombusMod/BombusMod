@@ -193,12 +193,10 @@ public abstract class MessageList extends DefForm
 //#ifdef SMILES            
 //#             item.toggleSmiles(this);
 //#endif            
-//#ifdef POPUPS
 //#ifdef SMILES
 //#             if (!item.smilesEnabled() && cf.hideTimestamps) {
-//#                 sd.roster.setWobble(2, null, item.getTipString());
+//#                 sd.roster.showInfo(null, item.getTipString());
 //#             }
-//#endif
 //#endif
         }
     }

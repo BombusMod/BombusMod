@@ -38,6 +38,7 @@ import java.io.*;
 import java.util.*;
 import midlet.BombusMod;
 import Fonts.FontCache;
+import Messages.notification.Notification;
 //#ifdef CLIENTS_ICONS
 //# import images.ClientsIcons;
 //#endif
@@ -168,9 +169,7 @@ public class Config {
 //#     public boolean lastMessages = false;
 //#endif
     public boolean autoScroll = true;
-//#ifdef POPUPS
-//#     public boolean popUps = true;
-//#endif
+    public int popUps = Notification.NOTIFICATOR_TYPE_PLATFORM;
     public boolean showResources = false;
     public boolean saveHistory = false;
     public boolean enableVersionOs = true;
@@ -400,11 +399,7 @@ public class Config {
             inputStream.readInt();
 //#endif
             autoScroll = inputStream.readBoolean();
-//#ifdef POPUPS
-//#             popUps = inputStream.readBoolean();
-//#else
-            inputStream.readBoolean();
-//#endif
+            inputStream.readBoolean(); // was popups
             showResources = inputStream.readBoolean();
 
             saveHistory = inputStream.readBoolean(); //antispam
@@ -515,7 +510,7 @@ public class Config {
         inputStream.readBoolean();
 //#endif
             minItemHeight = inputStream.readInt();
-
+            popUps = inputStream.readInt();
             inputStream.close();
             inputStream = null;
         } catch (IOException e) { // Левые Exception'ы должны обрабатываться не здесь (поэтому ловим только IOException).
@@ -666,11 +661,7 @@ public class Config {
             outputStream.writeInt(0);
 //#endif
             outputStream.writeBoolean(autoScroll);
-//#ifdef POPUPS
-//#             outputStream.writeBoolean(popUps);
-//#else
-            outputStream.writeBoolean(false);
-//#endif
+            outputStream.writeBoolean(false); // was popUps
             outputStream.writeBoolean(showResources);
 
             outputStream.writeBoolean(saveHistory); //antispam
@@ -782,7 +773,8 @@ public class Config {
         outputStream.writeBoolean(false);
 //#endif             
         outputStream.writeInt(minItemHeight);
-
+        outputStream.writeInt(popUps);
+        
         } catch (IOException e) {
         }
 

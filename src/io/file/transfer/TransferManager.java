@@ -31,14 +31,12 @@
 //# 
 //# import Client.StaticData;
 //# import Menu.MenuCommand;
+//# import Messages.notification.Notification;
+//# import images.RosterIcons;
 //# import locale.SR;
 //# import ui.Time;
-//#ifdef POPUPS
-//# import ui.controls.PopUp;
-//#endif
 //# import ui.VirtualList;
 //# import ui.controls.form.DefForm;
-//# import images.RosterIcons;
 //# 
 //# /**
 //#  *
@@ -142,9 +140,7 @@
 //#                 info.append("\nFinished: ").append(Time.dateTimeLocalString(t.finished));
 //#             if (t.errMsg!=null)
 //#                 info.append("\nError: ").append(t.errMsg);
-//#ifdef POPUPS
-//#             setWobble(1, null, info.toString());
-//#endif
+//#             Notification.getNotificator().sendNotify(null, info.toString());
 //#         }
 //#     }
 //# }

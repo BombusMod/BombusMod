@@ -56,13 +56,7 @@ import Menu.SieNatMenu;
 import images.RosterIcons;
 
 import Menu.MenuCommand;
-//#ifdef SYSTEM_NOTIFY
-//# import Messages.notification.Notification;
-//# import Messages.notification.Notificator;
-//#ifdef android
-//# import Messages.notification.AndroidNotification;
-//#endif
-//#endif
+import Messages.notification.Notification;
 //#ifdef PRIVACY
 //# import PrivacyLists.QuickPrivacy;
 //#endif
@@ -83,9 +77,7 @@ import com.alsutton.jabber.datablocks.*;
 import java.util.*;
 
 import ui.*;
-//#ifdef POPUPS
-//# import ui.controls.PopUp;
-//#endif
+import ui.controls.PopUp;
 import ui.controls.form.DefForm;
 import xmpp.EntityCaps;
 
@@ -269,9 +261,6 @@ public class Roster
 
     // establishing connection process
     public void run() {
-//#ifdef POPUPS
-//#         //if (cf.firstRun) setWobbler(1, (Contact) null, SR.MS_ENTER_SETTINGS);
-//#endif
         setQuerySign(true);
         if (!doReconnect) {
             setProgress(25);
@@ -362,14 +351,9 @@ public class Roster
                 VirtualCanvas.getInstance().setTitle("BombusMod " + getHeaderString());
             }
         }
-//#ifdef SYSTEM_NOTIFY        
-//#         if (highliteMessageCount < 1) {
-//#             Notificator n = Notification.getNotificator();
-//#             if (n != null) {
-//#                 n.clear();
-//#             }
-//#         }
-//#endif        
+        if (highliteMessageCount < 1) {
+            Notification.getNotificator().clear();            
+        }
     }
 
     public String getHeaderString() {
@@ -394,8 +378,8 @@ public class Roster
         highliteMessageCount = h;
         messageCount = m;
 //#ifdef android    
-//#         if (highliteMessageCount<1) {
-//#             Notification.getNotificator().getNotificationManager().cancel(AndroidNotification.NOTIFY_ID);
+//#         if (highliteMessageCount < 1) {
+//#             Notification.getNotificator().clear();
 //#         } else {
 //#             Notification.getNotificator().sendNotify("New messages", String.valueOf(messageCount));
 //#         }
@@ -793,11 +777,9 @@ public class Roster
         return c;
     }
 
-//#ifdef POPUPS
-//#     public void showContactMessageList(String jid) {
-//#         sd.roster.getContact(jid, false).getMsgList();
-//#     }
-//#endif
+    public void showContactMessageList(String jid) {
+        sd.roster.getContact(jid, false).getMsgList();
+    }
 
     public void addContact(Contact c) {
         synchronized (hContacts) {
@@ -1399,17 +1381,15 @@ public class Roster
 //#     }
 //#endif
 
-//#ifdef POPUPS
-//#     boolean showWobbler(Contact c) {
-//#         if (!cf.popUps) {
-//#             return false;
-//#         }
-//#         if (activeContact == null) {
-//#             return true;
-//#         }
-//#         return (!c.equals(activeContact));
-//#     }
-//#endif
+    boolean shouldNotify(Contact c) {
+        if (cf.popUps == Notification.NOTIFICATOR_TYPE_NONE) {
+            return false;
+        }
+        if (activeContact == null) {
+            return true;
+        }
+        return (!c.equals(activeContact));
+    }
 
 //#ifdef FILE_TRANSFER
 //#     public void addFileQuery(String from, String message) {
@@ -1454,57 +1434,26 @@ public class Roster
         if (c.getGroupType() == Groups.TYPE_IGNORE) {
             return;    // no signalling/focus on ignore
         }
-//#ifdef POPUPS
-//#         if (cf.popUps) {
-//#             if (message.messageType == Msg.MESSAGE_TYPE_AUTH && showWobbler(c)) {
-//#                 setWobble(2, c.getJid().toString(), message.from + "\n" + message.body);
-//#             }
-//#         }
-//#endif
+        if (message.messageType == Msg.MESSAGE_TYPE_AUTH && shouldNotify(c)) {
+            Notification.getNotificator().sendNotify(c.getJid().toString(), message.from + "\n" + message.body);            
+        }
 
-        if (cf.popupFromMinimized) {
-//#ifdef SYSTEM_NOTIFY
-//#             Notificator notify = null;
-//#if !(android)
-//#             if (Config.getInstance().sonyJava >= 750) // prevent NoClassDefFoundError on some phones
-//#endif            
-//#             {
-//#                 notify = Notification.getNotificator();
-//#             }
-//#endif
+        if (cf.popupFromMinimized) {            
             if (AlertCustomize.getInstance().vibrateOnlyHighlited) {
                 if (message.highlite) {
-//#ifdef SYSTEM_NOTIFY
-//#                     if (notify != null) {
-//#                         notify.sendNotify(message.from, message.body);
-//#                     } else 
-//#endif
-                    {
-                        BombusMod.getInstance().hideApp(false);
-                    }
+                    Notification.getNotificator().sendNotify(message.from, message.body);                    
                 }
-            } else {
-//#ifdef SYSTEM_NOTIFY
-//#                 if (notify != null) {
-//#                     notify.sendNotify(message.from, message.body);
-//#                 } else 
-//#endif
-                {
-                    BombusMod.getInstance().hideApp(false);
-                }
-            }
+            } 
         }
 
         if (message.highlite) {
             playNotify(SOUND_FOR_ME);
-//#ifdef POPUPS
-//#             if (showWobbler(c)) {
-//#                 String body = (c.origin == Contact.ORIGIN_GROUPCHAT && cf.showNickNames)
-//#                         ? message.from + ":\n" + message.body
-//#                         : message.body;
-//#                 setWobble(2, c.getJid().toString(), body);
-//#             }
-//#endif
+            if (shouldNotify(c)) {
+                String body = (c.origin == Contact.ORIGIN_GROUPCHAT && cf.showNickNames)
+                        ? message.from + ":\n" + message.body
+                        : message.body;
+                Notification.getNotificator().sendNotify(c.getJid().toString(), body);
+            }
             autorespond = true;
 //#ifdef LIGHT_CONFIG        
 //#             CustomLight.message();
@@ -1517,14 +1466,12 @@ public class Roster
 //#ifndef WMUC
                 if (!(c instanceof MucContact)) 
 //#endif
-//#ifdef POPUPS
-//#                 {
-//#                     if (showWobbler(c)) {
-//#                         setWobble(2, c.getJid().toString(), c.toString() + ": " + message.body);
-//#                         autorespond = true;
-//#                     }
-//#                 }
-//#endif
+                {
+                    if (shouldNotify(c)) {
+                        Notification.getNotificator().sendNotify(c.getJid().toString(), c.toString() + ": " + message.body);
+                        autorespond = true;
+                    }
+                }
                 if (c.group.type == Groups.TYPE_VIP) {
                     playNotify(SOUND_FOR_VIP);
                     autorespond = true;
@@ -1795,9 +1742,7 @@ public class Roster
             cmdActions();
         } else {
 //#ifndef WMUC
-//#ifdef POPUPS
-//#             showInfo();
-//#endif
+            showInfo();
 //#endif
         }
     }
@@ -2069,12 +2014,9 @@ public class Roster
     public void cmdTools() {
         new RosterToolsMenu();
     }
-//#ifdef POPUPS
-//# 
-//#     public void cmdClearPopups() {
-//#         PopUp.getInstance().clear();
-//#     }
-//#endif
+    public void cmdClearPopups() {
+        PopUp.getInstance().clear();
+    }
 //#ifndef WMUC
 
     public void cmdConference() {
@@ -2431,12 +2373,10 @@ public class Roster
             case 3:
                 sd.theStream.listener.connectionTerminated(new Exception(SR.MS_SIMULATED_BREAK));
                 return true;
-//#ifdef POPUPS
 //#ifdef STATS
 //#             case 4:
 //#                 new Statistic.StatsWindow();
 //#                 return true;
-//#endif
 //#endif
             case 5:
                 cmdStatus();
@@ -2446,11 +2386,9 @@ public class Roster
 //#                 cmdArchive();
 //#                 return true;
 //#endif
-//#ifdef POPUPS
-//#             case 11:
-//#                 cmdClearPopups();
-//#                 return true;
-//#endif
+            case 11:
+                cmdClearPopups();
+                return true;
             case 13:
                 cmdInfo();
                 return true;

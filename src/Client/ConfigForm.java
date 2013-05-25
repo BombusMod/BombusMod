@@ -26,6 +26,7 @@
  */
 package Client;
 
+import Messages.notification.Notification;
 import java.util.Vector;
 import locale.SR;
 import ui.VirtualList;
@@ -111,9 +112,7 @@ public class ConfigForm
 //#ifdef RUNNING_MESSAGE
 //#      private CheckBox notifyWhenMessageType;
 //#endif
-//#ifdef POPUPS
-//#     private CheckBox popUps;
-//#endif
+    private DropChoiceBox popUps;
     private DropChoiceBox panels;
     private CheckBox drawMenuCommand;
     private CheckBox showNickNames;
@@ -189,10 +188,13 @@ public class ConfigForm
 //#ifdef RUNNING_MESSAGE
 //#         notifyWhenMessageType = new CheckBox(SR.MS_RUNNING_MESSAGE, cf.notifyWhenMessageType); itemsList.addElement(notifyWhenMessageType);
 //#endif
-//#ifdef POPUPS
-//#         popUps = new CheckBox(SR.MS_POPUPS, cf.popUps);
-//#         itemsList.addElement(popUps);
-//#endif
+        popUps = new DropChoiceBox("Notification type");
+        popUps.add(SR.MS_DISABLED);
+        popUps.add(SR.MS_POPUPS);
+        if (Notification.isPlatformSupported())
+            popUps.add("System");
+        popUps.setSelectedIndex(cf.popUps);
+        itemsList.addElement(popUps);
         showBalloons = new CheckBox(SR.MS_HIDE_TIMESTAMPS, cf.hideTimestamps);
         itemsList.addElement(showBalloons);
         eventDelivery = new CheckBox(SR.MS_DELIVERY, cf.eventDelivery);
@@ -381,9 +383,7 @@ public class ConfigForm
 //#ifdef RUNNING_MESSAGE
 //#         cf.notifyWhenMessageType=notifyWhenMessageType.getValue();
 //#endif
-//#ifdef POPUPS
-//#         cf.popUps = popUps.getValue();
-//#endif
+        cf.popUps = popUps.getValue();
         cf.hideTimestamps = showBalloons.getValue();
         cf.eventDelivery = eventDelivery.getValue();
 

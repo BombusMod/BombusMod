@@ -52,6 +52,7 @@ import Menu.MenuCommand;
 //# import Menu.MyMenu;
 //#endif
 import Messages.MessageItem;
+import Messages.notification.Notification;
 import images.RosterIcons;
 import ui.VirtualList;
 //#ifdef FILE_TRANSFER
@@ -495,9 +496,7 @@ public class ContactMessageList extends MessageList {
 //#     }
 //#     
 //#     private void juickContactNotFound() {
-//#ifdef POPUPS
-//#             setWobble(ui.controls.PopUp.TYPE_SYSTEM, null, SR.MS_JUICK_CONTACT_NOT_FOUND);
-//#endif
+//#         showInfo(null, SR.MS_JUICK_CONTACT_NOT_FOUND);
 //#     }
 //# 
 //#     public void viewJuickThings(String str) {

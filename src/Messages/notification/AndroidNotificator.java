@@ -1,4 +1,4 @@
-//#if SYSTEM_NOTIFY && android
+//#if android
 //# package Messages.notification;
 //# 
 //# import android.app.Activity;
@@ -15,7 +15,7 @@
 //# import Client.StaticData;
 //# import locale.SR;
 //# 
-//# public class AndroidNotification implements Notificator {
+//# public class AndroidNotificator implements Notificator {
 //# 
 //#     public static final int NOTIFY_ID = 1;
 //# 
@@ -66,4 +66,3 @@
 //#      }
 //# }
 //#endif
-

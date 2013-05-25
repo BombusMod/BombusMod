@@ -32,6 +32,7 @@
 //# import Alerts.AlertProfile;
 //# import Client.Config;
 //# import Client.NotInListFilter;
+//# import Messages.notification.Notification;
 //# import io.file.FileIO;
 //# import java.util.Enumeration;
 //# import java.util.Vector;
@@ -126,9 +127,7 @@
 //#         array.addElement(new keyValue(autoAwayType, Integer.toString(Config.autoAwayType)));
 //#endif
 //#         array.addElement(new keyValue(autoScroll, (cf.autoScroll)?"1":"0"));
-//#ifdef POPUPS
-//#         array.addElement(new keyValue(popUps, (cf.popUps)?"1":"0"));
-//#endif
+//#         array.addElement(new keyValue(popUps, Integer.toString(cf.popUps)));
 //#         array.addElement(new keyValue(showResources, (cf.showResources)?"1":"0"));
 //#         array.addElement(new keyValue(saveHistory, (cf.saveHistory)?"1":"0"));
 //#         array.addElement(new keyValue(enableVersionOs, (cf.enableVersionOs)?"1":"0"));
@@ -292,9 +291,7 @@
 //#         Config.autoAwayType=cf.getIntProperty(getValue(autoAwayType),0);
 //#endif
 //#         cf.autoScroll=cf.getBooleanProperty(getValue(autoScroll),true);
-//#ifdef POPUPS
-//#         cf.popUps=cf.getBooleanProperty(getValue(popUps),true);
-//#endif
+//#         cf.popUps = cf.getIntProperty(getValue(popUps) , Notification.NOTIFICATOR_TYPE_PLATFORM);
 //#         cf.showResources=cf.getBooleanProperty(getValue(showResources), false);
 //#         cf.saveHistory=cf.getBooleanProperty(getValue(saveHistory),false);
 //#         cf.enableVersionOs=cf.getBooleanProperty(getValue(enableVersionOs),true);
@@ -479,9 +476,7 @@
 //#     private final static String autoAwayType="autoAwayType";
 //#endif
 //#     private final static String autoScroll="autoScroll";
-//#ifdef POPUPS
 //#     private final static String popUps="popUps";
-//#endif
 //#     private final static String showResources="showResources";
 //#     private final static String saveHistory="saveHistory";
 //#     private final static String enableVersionOs="enableVersionOs";

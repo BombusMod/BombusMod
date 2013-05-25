@@ -119,9 +119,7 @@
 //#ifdef USER_KEYS
 //#         cmds[10] = SR.MS_CUSTOM_KEYS;
 //#endif
-//#ifdef POPUPS
 //#         cmds[11] = SR.MS_CLEAR_POPUPS;
-//#endif
 //#       //  cmds[12] = SR.MS_FLASHLIGHT;
 //#         cmds[13] = SR.MS_ABOUT;
 //#         cmds[14] = SR.MS_APP_MINIMIZE;

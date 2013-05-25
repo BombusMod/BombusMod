@@ -33,9 +33,7 @@ import Fonts.FontCache;
 import javax.microedition.lcdui.Graphics;
 import Client.*;
 import locale.SR;
-//#ifdef POPUPS
-//# import ui.controls.PopUp;
-//#endif
+import ui.controls.PopUp;
 import ui.controls.ScrollBar;
 import util.StringUtils;
 import java.util.Vector;
@@ -112,13 +110,16 @@ public abstract class VirtualList {
             paintTop = reverse;
         }*/
     }
-    
-//#ifdef POPUPS
-//#     public void setWobble(int type, String contact, String txt) {
-//#         PopUp.getInstance().addPopup(type, contact, txt);
-//#         redraw();
-//#     }
-//#endif
+
+    public void showInfo(String contact, String txt) {
+        PopUp.getInstance().addPopup(PopUp.TYPE_SYSTEM, contact, txt);
+        redraw();
+    }
+    public void showAlert(String contact, String txt) {
+        PopUp.getInstance().addPopup(PopUp.TYPE_ALERT, contact, txt);
+        redraw();
+    }
+
     protected int getMainBarRGB() {return ColorTheme.getColor(ColorTheme.BAR_INK);}
     
     protected Config cf=Config.getInstance();
@@ -379,9 +380,7 @@ public abstract class VirtualList {
            height = sd.canvas.getHeight();
        }*/
        
-//#ifdef POPUPS
-//#         PopUp.getInstance();
-//#endif
+        PopUp.getInstance();
         
         changeOrient(cf.panelsState);
 
@@ -440,9 +439,7 @@ public abstract class VirtualList {
             messagesWidth = getListWidth();
         }
         beginPaint();
-//#ifdef POPUPS
-//#        PopUp.getInstance().init(g, width, height);
-//#endif
+       PopUp.getInstance().init(g, width, height);
 
         //StaticData.getInstance().screenWidth=width;
 
@@ -608,10 +605,8 @@ public abstract class VirtualList {
             }
         }
 
-//#ifdef POPUPS
-//#         setAbsClip(g, width, height);
-//#         drawPopUp(g);
-//#endif        
+        setAbsClip(g, width, height);
+        drawPopUp(g);
     }
 
 
@@ -639,11 +634,9 @@ public abstract class VirtualList {
         g.fillRect(pos+2, height-3, 1, 1);
     }
     
-//#ifdef POPUPS
-//#     protected void drawPopUp(final Graphics g) {
-//#         PopUp.getInstance().paintCustom(g);
-//#     }
-//#endif
+    protected void drawPopUp(final Graphics g) {
+        PopUp.getInstance().paintCustom(g);
+    }
     
     private void setAbsClip(final Graphics g, int w, int h) {
         setAbsOrg(g, 0, 0);
@@ -811,11 +804,9 @@ public abstract class VirtualList {
         lastClickTime = clickTime;
         lastCursor = cursor;
 
-//#ifdef POPUPS
-//#         if (PopUp.getInstance().size() > 0) {
-//#             return;
-//#         }
-//#endif
+        if (PopUp.getInstance().size() > 0) {
+            return;
+        }
 
         int act = CommandsPointer.pointerPressed(x, y);
         if (act == 1) {
@@ -853,11 +844,9 @@ public abstract class VirtualList {
     boolean itemDragged = false;
 
     protected void pointerDragged(int x, int y) {
-//#ifdef POPUPS
-//#         if (PopUp.getInstance().size() > 0) {
-//#             return;
-//#         }
-//#endif
+        if (PopUp.getInstance().size() > 0) {
+            return;
+        }
 
         if ((y < list_top)
         || (y > list_top + winHeight)) {
@@ -906,12 +895,10 @@ public abstract class VirtualList {
         boolean shortClick = (dTime <= 200);
         lastClickTime = clickTime;
 
-//#ifdef POPUPS
-//#         if ((longClick && PopUp.getInstance().goToMsgList())
-//#         || (shortClick && PopUp.getInstance().next())) {
-//#             return;
-//#         }
-//#endif
+        if ((longClick && PopUp.getInstance().goToMsgList())
+        || (shortClick && PopUp.getInstance().next())) {
+            return;
+        }
 
         if (scrollbar.pointerReleased(x, y, this)
         || (Config.fullscreen && CommandsPointer.pointerPressed(x, y) > 0)
@@ -1291,11 +1278,10 @@ public abstract class VirtualList {
     }
 
     public void showTimeTrafficInfo() {
-//#ifdef POPUPS
-//#         StringBuffer mem = new StringBuffer();
-//#         mem.append(Time.localDate()).append(" ").append(Time.getTimeWeekDay())
-//#            .append("\nTraffic: ")
-//#            .append(getTraffic())
+        StringBuffer mem = new StringBuffer();
+        mem.append(Time.localDate()).append(" ").append(Time.getTimeWeekDay())
+           .append("\nTraffic: ")
+           .append(getTraffic())
 //#ifdef MEMORY_USAGE
 //#            .append("\nFree: ")
 //#            .append(Runtime.getRuntime().freeMemory()>>10)
@@ -1305,9 +1291,8 @@ public abstract class VirtualList {
 //#                .append(Runtime.getRuntime().totalMemory()>>10)
 //#                .append(" kb")
 //#endif
-//#            ;
-//#         setWobble(1, null, mem.toString());
-//#endif
+           ;
+        showInfo(null, mem.toString());
     }
 
     public static String getTraffic() {
@@ -1349,14 +1334,12 @@ public abstract class VirtualList {
     }
 
     public void showInfo() {
-//#ifdef POPUPS
-//# 	VirtualElement item = (VirtualElement) getFocusedObject();
-//# 	if (item != null) {
-//# 	    String text = item.getTipString();
-//# 	    if (text != null) {
-//# 		setWobble(1, null, text);
-//# 	    }
-//# 	}
-//#endif
+	VirtualElement item = (VirtualElement) getFocusedObject();
+	if (item != null) {
+	    String text = item.getTipString();
+	    if (text != null) {
+		showInfo(null, text);
+	    }
+	}
     }
 }

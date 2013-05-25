@@ -96,10 +96,8 @@ public class RosterItemActions extends Menu {
 //#                 addItem("Change transport", 915, RosterIcons.ICON_COMMAND);
 //#endif
             }
-            addItem(SR.MS_VCARD, 1, RosterIcons.ICON_VCARD);
-//#ifdef POPUPS
-//#             addItem(SR.MS_INFO, 86, RosterIcons.ICON_INFO);
-//#endif
+            addItem(SR.MS_VCARD, 1, RosterIcons.ICON_VCARD);            
+            addItem(SR.MS_INFO, 86, RosterIcons.ICON_INFO);
 //#ifdef STATUSES_WINDOW            
 //#             addItem("Statuses", 87, RosterIcons.ICON_INFO);
 //#endif            
@@ -352,9 +350,7 @@ public class RosterItemActions extends Menu {
                 sd.theStream.send(IqVersionReply.query(to));
                 break;
             case 86: // info
-//#ifdef POPUPS
-//#                 sd.roster.showInfo();
-//#endif
+                sd.roster.showInfo();
                 break;
 //#ifdef STATUSES_WINDOW                    
 //#                 case 87:

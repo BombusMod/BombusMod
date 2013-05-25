@@ -21,9 +21,7 @@ import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.midlet.MIDlet;
-//#ifdef POPUPS
-//# import ui.controls.PopUp;
-//#endif
+import ui.controls.PopUp;
 //#ifdef USER_KEYS
 //# import ui.keys.UserKeyExec;
 //#endif
@@ -186,16 +184,14 @@ public class VirtualCanvas extends Canvas implements CommandListener{
 //#     AutoStatus.getInstance().userActivity(Config.AWAY_IDLE);
 //#endif
         kHold = false;
-//#ifdef POPUPS
-//#         if (PopUp.getInstance().handlePressed(keyCode)) {
+        if (PopUp.getInstance().handlePressed(keyCode)) {
 //#ifdef USER_KEYS
 //#             UserKeyExec.getInstance().keyExecute(keyCode, true);
 //#             UserKeyExec.getInstance().afterActions(keyCode);
 //#endif
-//#             repaint();
-//#             return;
-//#         }
-//#endif
+            repaint();
+            return;
+        }
         checkKey(keyCode);
         repaint();
 //#ifdef LIGHT_CONFIG      
@@ -228,14 +224,6 @@ public class VirtualCanvas extends Canvas implements CommandListener{
 //#     AutoStatus.getInstance().userActivity(Config.AWAY_IDLE);
 //#endif
         KeyRepeatTimer.stop();
-//#ifdef POPUPS
-//# /*
-//#         if (PopUp.getInstance().handleReleased(keyCode)) {
-//#             repaint();
-//#             return;
-//#         }
-//# */
-//#endif
     }
 
     protected final void pointerPressed(int x, int y) {
@@ -583,9 +571,7 @@ public class VirtualCanvas extends Canvas implements CommandListener{
     protected void doKeyAction(int keyCode) {
         if (!sendEvent(keyCode)) {
             if (kHold && list.longKey(keyCode)) {
-//#ifdef POPUPS
-//#                 PopUp.getInstance().handled = true;
-//#endif
+                PopUp.getInstance().handled = true;
                 KeyRepeatTimer.stop();
                 kHold = false;
             } else {

@@ -108,9 +108,7 @@ public class PopUp {
     public boolean goToMsgList() {
         String c = getContact();
         if (c != null) {
-//#ifdef POPUPS
-//#             StaticData.getInstance().roster.showContactMessageList(c);
-//#endif
+            StaticData.getInstance().roster.showContactMessageList(c);
         }
 
         return handled = next();
@@ -193,7 +191,6 @@ public class PopUp {
                 y += fh;
             }
             pos++;
-            str=null;
         }
     }
 

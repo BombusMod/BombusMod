@@ -265,9 +265,6 @@ public class InfoWindow
 //#ifdef PEP_TUNE
 //#         abilitiesList.addElement("PEP_TUNE");
 //#endif
-//#ifdef POPUPS
-//#         abilitiesList.addElement("POPUPS");
-//#endif
 //#ifdef PRIVACY
 //#         abilitiesList.addElement("PRIVACY");
 //#endif
@@ -291,9 +288,6 @@ public class InfoWindow
 //#endif
 //#ifdef STATS
 //#         abilitiesList.addElement("STATS");
-//#endif
-//#ifdef SYSTEM_NOTIFY
-//#         abilitiesList.addElement("SYSTEM_NOTIFY");
 //#endif
 //#ifdef TEMPLATES
 //#         abilitiesList.addElement("TEMPLATES");
