@@ -8,10 +8,12 @@
 //# import android.content.Context;
 //# import android.content.Intent;
 //# import android.support.v4.app.NotificationCompat;
+//# import android.support.v4.app.NotificationCompat.InboxStyle;
 //# import org.bombusmod.BombusModActivity;
 //# import org.bombusmod.R;
 //# import Client.Msg;
 //# import Client.StaticData;
+//# import locale.SR;
 //# 
 //# public class AndroidNotification implements Notificator {
 //# 
@@ -37,14 +39,25 @@
 //#             Intent notificationIntent = new Intent(context, BombusModActivity.class);
 //#             notificationIntent.setAction("org.bombusmod.bm-notify");
 //#             PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_ONE_SHOT);
-//#             notification.setLights(0xff00ff00, 300, 1000);
-//#             notification.setVibrate(vibraPattern);
-//#             notification.setDefaults(Notification.DEFAULT_SOUND);
+//#             Intent replyIntent = new Intent(context, BombusModActivity.class);
+//#             replyIntent.setAction("org.bombusmod.bm-notify.reply");
+//#             PendingIntent piReply = PendingIntent.getActivity(context, 0, replyIntent, PendingIntent.FLAG_ONE_SHOT);
+//#             //notification.setLights(0xff00ff00, 300, 1000);
+//#             //notification.setVibrate(vibraPattern);
+//#             notification.setDefaults(Notification.DEFAULT_ALL);
 //#             notification.setContentIntent(contentIntent);
 //#             notification.setContentTitle(contentTitle);
 //#             notification.setContentText(contentText);
 //#             notification.setSmallIcon(icon);
-//#             mNotificationManager.notify(NOTIFY_ID, notification.getNotification());
+//#             NotificationCompat.InboxStyle style = new NotificationCompat.InboxStyle();
+//#             style.addLine(text)
+//#                     .setBigContentTitle(title)
+//#                     .setSummaryText(contentText);
+//#             notification.addAction(android.R.drawable.sym_action_chat, SR.MS_REPLY, piReply);
+//#             
+//#             notification.setStyle(style);
+//#                     
+//#             mNotificationManager.notify(NOTIFY_ID, notification.build());
 //#         }
 //#     }
 //#     public void clear() {

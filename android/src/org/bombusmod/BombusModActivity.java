@@ -187,6 +187,12 @@ public class BombusModActivity extends MicroEmulatorActivity {
                 StaticData.getInstance().roster.focusToContact(c, false);
             }
         }
+        if ("org.bombusmod.bm-notify.reply".equals(intent.getAction())) {
+            Contact c = StaticData.getInstance().roster.getFirstContactWithNewHighlite(null);
+            if (c != null) {
+                c.getMsgList().Reply();                
+            }
+        }
     }
 
     @Override

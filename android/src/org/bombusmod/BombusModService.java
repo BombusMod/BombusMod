@@ -76,7 +76,7 @@ public class BombusModService extends Service {
         notification.setContentTitle(getString(R.string.app_name));
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, BombusModActivity.class), 0);
         notification.setContentIntent(contentIntent);
-        startForegroundCompat(R.string.app_name, notification.getNotification());
+        startForegroundCompat(R.string.app_name, notification.build());
 
         //audio scrobbler
         IntentFilter filter = new IntentFilter();
