@@ -274,7 +274,7 @@
 //#         cf.defGcRoom=getStringProperty(getValue(defGcRoom),"bombusmod@conference.jabber.ru");
 //#endif
 //# // TODO: read firstRun?
-//#         cf.panelsState=cf.getIntProperty(getValue(panelsState), 2);
+//#         cf.panelsState=cf.getIntProperty(getValue(panelsState), VirtualList.PANELS_STATE_BOTH);
 //#ifndef WMUC
 //#         cf.confMessageCount=cf.getIntProperty(getValue(confMessageCount),20);
 //#endif

@@ -531,7 +531,6 @@ public class Config {
 //#ifdef MEMORY_USAGE
 //#         VirtualList.memMonitor = memMonitor;
 //#endif
-        VirtualList.panelsState = panelsState;
         VirtualList.showTimeTraffic = showTimeTraffic;
     }
 

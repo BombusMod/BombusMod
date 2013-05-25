@@ -85,24 +85,57 @@ public abstract class VirtualList {
 //#     Gradient grMB;
 //#endif
 
-    public static int panelsState = 2;
-
-    private static boolean reverse=false;
-    private static boolean paintTop=true;
-    private static boolean paintBottom=true;
+    private static boolean reverse = false;
+    private static boolean paintTop = true;
+    private static boolean paintBottom = true;
+    
+    public static final int PANELS_STATE_DISABLED = 0;
+    public static final int PANELS_STATE_TOP = 1;
+    public static final int PANELS_STATE_BOTH = 2;
+    public static final int PANELS_STATE_BOTTOM = 3;
+    public static final int PANELS_STATE_TOP_INVERTED = 4;
+    public static final int PANELS_STATE_BOTH_INVERTED = 5;
+    public static final int PANELS_STATE_BOTTOM_INVERTED = 6;
 
     public static int phoneManufacturer;
     
     public static void changeOrient(int newOrient) {
-        panelsState=newOrient;
-        switch (panelsState) {
-            case 0: paintTop=false; paintBottom=false; reverse=false; break;
-            case 1: paintTop=true;  paintBottom=false; reverse=false; break;
-            case 2: paintTop=true;  paintBottom=true;  reverse=false; break;
-            case 3: paintTop=false; paintBottom=true;  reverse=false; break;
-            case 4: paintTop=true;  paintBottom=false; reverse=true;  break;
-            case 5: paintTop=true;  paintBottom=true;  reverse=true;  break;
-            case 6: paintTop=false; paintBottom=true;  reverse=true;  break;
+        switch (newOrient) {
+            case PANELS_STATE_DISABLED:
+                paintTop = false;
+                paintBottom = false;
+                reverse = false;
+                break;
+            case PANELS_STATE_TOP:
+                paintTop = true;
+                paintBottom = false;
+                reverse = false;
+                break;
+            case PANELS_STATE_BOTH:
+                paintTop = true;
+                paintBottom = true;
+                reverse = false;
+                break;
+            case PANELS_STATE_BOTTOM:
+                paintTop = false;
+                paintBottom = true;
+                reverse = false;
+                break;
+            case PANELS_STATE_TOP_INVERTED:
+                paintTop = true;
+                paintBottom = false;
+                reverse = true;
+                break;
+            case PANELS_STATE_BOTH_INVERTED:
+                paintTop = true;
+                paintBottom = true;
+                reverse = true;
+                break;
+            case PANELS_STATE_BOTTOM_INVERTED:
+                paintTop = false;
+                paintBottom = true;
+                reverse = true;
+                break;
         }
         // TODO: prevent hide command bar on touch screen device
       /*  if (Config.fullscreen && hasPointerEvents()) {
