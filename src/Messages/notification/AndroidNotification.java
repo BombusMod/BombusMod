@@ -2,10 +2,12 @@
 //# package Messages.notification;
 //# 
 //# import android.app.Activity;
+//# import android.app.Notification;
 //# import android.app.NotificationManager;
 //# import android.app.PendingIntent;
 //# import android.content.Context;
 //# import android.content.Intent;
+//# import android.support.v4.app.NotificationCompat;
 //# import org.bombusmod.BombusModActivity;
 //# import org.bombusmod.R;
 //# import Client.Msg;
@@ -23,22 +25,26 @@
 //#         NotificationManager mNotificationManager = (NotificationManager) BombusModActivity.getInstance().getSystemService(Context.NOTIFICATION_SERVICE);
 //#         long when = 0;
 //#         int icon = R.drawable.inc_msg;
+//#         long[] vibraPattern = {0, 500, 250, 500};
 //#         if (StaticData.getInstance().roster.highliteMessageCount < 1) {
 //#             return;
 //#         } else {
-//#             //android.app.Notification notification = new android.app.Notification(icon, "New messages: " + StaticData.getInstance().roster.highliteMessageCount, when);
-//#             android.app.Notification notification = new android.app.Notification(icon, null, when);
-//#             Intent notificationIntent = new Intent(BombusModActivity.getInstance(), BombusModActivity.class);
+//#             Context context = BombusModActivity.getInstance();
+//#             
+//#             NotificationCompat.Builder notification = new NotificationCompat.Builder(context);
+//#             CharSequence contentTitle = (String) context.getApplicationContext().getText(R.string.notifyTitle);
+//#             CharSequence contentText = (String) context.getApplicationContext().getText(R.string.notifyInfo) + ": " + StaticData.getInstance().roster.highliteMessageCount;
+//#             Intent notificationIntent = new Intent(context, BombusModActivity.class);
 //#             notificationIntent.setAction("org.bombusmod.bm-notify");
-//#             //System.out.println("notificationIntent.getAction"+notificationIntent.getAction());
-//#             PendingIntent contentIntent = PendingIntent.getActivity(BombusModActivity.getInstance(), 0, notificationIntent, 0);
-//#             notification.setLatestEventInfo(BombusModActivity.getInstance().getApplicationContext(), (String) BombusModActivity.getInstance().getApplicationContext().getText(R.string.notifyTitle),(String) BombusModActivity.getInstance().getApplicationContext().getText(R.string.notifyInfo) + ": " + StaticData.getInstance().roster.highliteMessageCount, contentIntent);
-//#             notification.ledARGB = 0xff00ff00;
-//#             notification.ledOnMS = 300;
-//#             notification.ledOffMS = 1000;
-//#             notification.flags |= android.app.Notification.FLAG_SHOW_LIGHTS;
-//#             notification.number = StaticData.getInstance().roster.highliteMessageCount;
-//#             mNotificationManager.notify(NOTIFY_ID, notification);
+//#             PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_ONE_SHOT);
+//#             notification.setLights(0xff00ff00, 300, 1000);
+//#             notification.setVibrate(vibraPattern);
+//#             notification.setDefaults(Notification.DEFAULT_SOUND);
+//#             notification.setContentIntent(contentIntent);
+//#             notification.setContentTitle(contentTitle);
+//#             notification.setContentText(contentText);
+//#             notification.setSmallIcon(icon);
+//#             mNotificationManager.notify(NOTIFY_ID, notification.getNotification());
 //#         }
 //#     }
 //#     public void clear() {
