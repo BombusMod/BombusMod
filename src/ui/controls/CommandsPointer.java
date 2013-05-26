@@ -33,6 +33,8 @@ public class CommandsPointer {
     }
     
     public static int pointerPressed(int x, int y) {
+        if (cHeight == 0)
+            return 0;
         if (x<cWidth && y>cHeight) {
             return 1; 
         }
