@@ -77,14 +77,15 @@
     </path>
 
     <target name="fix-android-manifest">
-        <loadproperties srcfile="../resources/.version">
-            <filterchain>
-                <containsregex
-                    pattern="(^bombus.revision=)([0-9]+)(.*)?"
-                    replace="bombus.raw-revision=\2" />
-            </filterchain>
-        </loadproperties>
-
+		<exec executable="svnversion" outputproperty="bombus.raw-revision">
+			<arg value = "--no-newline" />
+			<arg value = "src" />  
+		</exec>
+		<copy file="../resources/version.properties" tofile="../resources/.version" overwrite="true" />
+		<replace 
+			file="../resources/.version" 
+			token="$WCREV$"
+			value="${bombus.raw-revision}" />
         <replaceregexp
             byline="true"
             file="AndroidManifest.xml"
@@ -102,19 +103,24 @@
     <target name="release-nonb" depends="antenna-preprocess,fix-android-manifest,release">
     </target>
     <target name="antenna-preprocess">
-      <taskdef resource="antenna.properties" classpath="${antenna.jar}" />
-      <wtkpreprocess 
-            verbose="false" 
-            version="2" 
-            srcdir="../src" 
-            destdir="../build/android/preprocessed" 
-            symbols="${src.abilities}" >
-	<exclude name="io/file/transfer/TransferImage**"/>
-	<exclude name="io/file/FileSiemens**"/>
-	<exclude name="io/file/FileComMotorola**"/>
-	<exclude name="Messages/notification/SEMC**"/>
-	<exclude name="images/camera/**"/>
-      </wtkpreprocess>
+		<taskdef resource="antenna.properties" classpath="${antenna.jar}" />
+		<wtkpreprocess 
+				verbose="false" 
+				version="2" 
+				srcdir="../src" 
+				destdir="../build/android/preprocessed" 
+				symbols="${src.abilities}" >
+			<exclude name="io/file/transfer/TransferImage**"/>
+			<exclude name="io/file/FileSiemens**"/>
+			<exclude name="io/file/FileComMotorola**"/>
+			<exclude name="Messages/notification/SEMC**"/>
+			<exclude name="images/camera/**"/>
+		</wtkpreprocess>
+		<property file="../resources/.version" />
+		<replace 
+			file="../build/android/preprocessed/Info/Version.java"
+			token="$BOMBUSVERSION$"
+			value="${bombus.version}"/>
     </target>
 
 
