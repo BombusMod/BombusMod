@@ -526,12 +526,12 @@ public class SR {
 //#     public static String MS_AUTOTASK_QUIT_BOMBUSMOD = loadString("Quit BombusMod");
 //#     public static String MS_AUTOTASK_QUIT_CONFERENCES = loadString("Quit conferences");
 //#     public static String MS_AUTOTASK_LOGOFF = loadString("Disconnection");
-//#     public static String MS_DISABLED = loadString("disabled");
 //#     public static String MS_AUTOTASK_DELAY = loadString("Delay (min.)");
 //#     public static String MS_AUTOTASK_TIME = loadString("Start time");
 //#     public static String MS_AUTOTASK_HOUR = loadString("Hour");
 //#     public static String MS_AUTOTASK_MIN = loadString("Min");
 //#endif
+    public static String MS_DISABLED = loadString("disabled");
     public static String MS_LOAD_ROOMLIST = loadString("Browse rooms");
     public static String MS_AUTORESPOND = loadString("Autorespond");
     public static String MS_INVERT = loadString("Invert colors");
