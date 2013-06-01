@@ -39,17 +39,27 @@
 
     <!-- prepare version patch -->
     <target name="post-init">
-	<exec executable="svnversion" output="resources/.svnrev">
-        <arg value = "--no-newline" />
-        <!-- ignore config and resources modification -->
-        <arg value = "src" />  
-	</exec>
-	<loadfile srcFile="resources/.svnrev" property="bombus.svnrev" />
-	<copy file="resources/version.properties" tofile="resources/.version" overwrite="true" />
+	<exec executable="git" outputproperty="bombus.revlist">
+            <arg value="rev-list" />
+            <arg value="--all" />
+        </exec>
+        <resourcecount property="bombus.gitnumber">
+            <tokens>
+                <concat>
+                    <filterchain>
+                        <tokenfilter>
+                            <stringtokenizer delims="${line.separator}" />
+                        </tokenfilter>
+                    </filterchain>
+                    <propertyresource name="bombus.revlist" />
+                </concat>
+            </tokens>
+        </resourcecount>
+        <copy file="resources/version.properties" tofile="resources/.version" overwrite="true" />
 	<replace 
 	    file="resources/.version" 
 	    token="$WCREV$"
-	    value="${bombus.svnrev}" />
+	    value="${bombus.gitnumber}" />
     </target>
     <!-- old version patcher 
     <target name="post-init-tsvn">
