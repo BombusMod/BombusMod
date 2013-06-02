@@ -175,11 +175,11 @@ public final class SplashScreen extends DefForm implements VirtualElement {
         }
 
         if (pos == -1) {
-            g.setColor(ColorTheme.getColor(ColorTheme.BLK_INK));
             if (status != null) {
                 status.drawItem(g, 0, false);
             }
 
+			g.setColor(ColorTheme.getColor(ColorTheme.BLK_INK));
             g.setFont(clockFont);
             int h = clockFont.getHeight() + 1;
 
