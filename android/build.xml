@@ -77,25 +77,37 @@
     </path>
 
     <target name="fix-android-manifest">
-		<exec executable="svnversion" outputproperty="bombus.raw-revision">
-			<arg value = "--no-newline" />
-			<arg value = "src" />  
-		</exec>
-		<copy file="../resources/version.properties" tofile="../resources/.version" overwrite="true" />
+		<exec executable="git" outputproperty="bombus.revlist">
+				<arg value="rev-list" />
+				<arg value="--all" />
+			</exec>
+			<resourcecount property="bombus.gitnumber">
+				<tokens>
+					<concat>
+						<filterchain>
+							<tokenfilter>
+								<stringtokenizer delims="${line.separator}" />
+							</tokenfilter>
+						</filterchain>
+						<propertyresource name="bombus.revlist" />
+					</concat>
+				</tokens>
+			</resourcecount>
+			<copy file="../resources/version.properties" tofile="../resources/.version" overwrite="true" />
 		<replace 
 			file="../resources/.version" 
 			token="$WCREV$"
-			value="${bombus.raw-revision}" />
+			value="${bombus.gitnumber}" />
         <replaceregexp
             byline="true"
             file="AndroidManifest.xml"
             match="(android:versionCode=.)([0-9]+)(.)"
-            replace="\1${bombus.raw-revision}\3" />
+            replace="\1${bombus.gitnumber}\3" />
         <replaceregexp
             byline="true"
             file="AndroidManifest.xml"
             match="(android:versionName=.0.8.)([0-9]+)(.)"
-            replace="\1${bombus.raw-revision}\3" />
+            replace="\1${bombus.gitnumber}\3" />
     </target>
 
     <target name="my-release" depends="fix-android-manifest,release">
