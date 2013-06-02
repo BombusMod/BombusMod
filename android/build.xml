@@ -66,7 +66,7 @@
         <property name="source.dir" value="src" />
         <property name="source.absolute.dir" location="${source.dir}:../build/android/preprocessed" />
 
-	    <!-- Directory for the third party java libraries -->
+        <!-- Directory for the third party java libraries -->
     <property name="jar.libs.dir" value="lib" />
     <property name="jar.libs.absolute.dir" location="${jar.libs.dir}" />
     <!-- create a path with all the jar files, from the main project and the
@@ -77,27 +77,27 @@
     </path>
 
     <target name="fix-android-manifest">
-		<exec executable="git" outputproperty="bombus.revlist">
-				<arg value="rev-list" />
-				<arg value="--all" />
-			</exec>
-			<resourcecount property="bombus.gitnumber">
-				<tokens>
-					<concat>
-						<filterchain>
-							<tokenfilter>
-								<stringtokenizer delims="${line.separator}" />
-							</tokenfilter>
-						</filterchain>
-						<propertyresource name="bombus.revlist" />
-					</concat>
-				</tokens>
-			</resourcecount>
-			<copy file="../resources/version.properties" tofile="../resources/.version" overwrite="true" />
-		<replace 
-			file="../resources/.version" 
-			token="$WCREV$"
-			value="${bombus.gitnumber}" />
+        <exec executable="git" outputproperty="bombus.revlist">
+                <arg value="rev-list" />
+                <arg value="--all" />
+            </exec>
+            <resourcecount property="bombus.gitnumber">
+                <tokens>
+                    <concat>
+                        <filterchain>
+                            <tokenfilter>
+                                <stringtokenizer delims="${line.separator}" />
+                            </tokenfilter>
+                        </filterchain>
+                        <propertyresource name="bombus.revlist" />
+                    </concat>
+                </tokens>
+            </resourcecount>
+            <copy file="../resources/version.properties" tofile="../resources/.version" overwrite="true" />
+        <replace 
+            file="../resources/.version" 
+            token="$WCREV$"
+            value="${bombus.gitnumber}" />
         <replaceregexp
             byline="true"
             file="AndroidManifest.xml"
@@ -115,24 +115,25 @@
     <target name="release-nonb" depends="antenna-preprocess,fix-android-manifest,release">
     </target>
     <target name="antenna-preprocess">
-		<taskdef resource="antenna.properties" classpath="${antenna.jar}" />
-		<wtkpreprocess 
-				verbose="false" 
-				version="2" 
-				srcdir="../src" 
-				destdir="../build/android/preprocessed" 
-				symbols="${src.abilities}" >
-			<exclude name="io/file/transfer/TransferImage**"/>
-			<exclude name="io/file/FileSiemens**"/>
-			<exclude name="io/file/FileComMotorola**"/>
-			<exclude name="Messages/notification/SEMC**"/>
-			<exclude name="images/camera/**"/>
-		</wtkpreprocess>
-		<property file="../resources/.version" />
-		<replace 
-			file="../build/android/preprocessed/Info/Version.java"
-			token="$BOMBUSVERSION$"
-			value="${bombus.version}"/>
+        <taskdef resource="antenna.properties" classpath="${antenna.jar}" />
+        <wtkpreprocess 
+                encoding="utf-8"
+                verbose="false" 
+                version="2" 
+                srcdir="../src" 
+                destdir="../build/android/preprocessed" 
+                symbols="${src.abilities}" >
+            <exclude name="io/file/transfer/TransferImage**"/>
+            <exclude name="io/file/FileSiemens**"/>
+            <exclude name="io/file/FileComMotorola**"/>
+            <exclude name="Messages/notification/SEMC**"/>
+            <exclude name="images/camera/**"/>
+        </wtkpreprocess>
+        <property file="../resources/.version" />
+        <replace 
+            file="../build/android/preprocessed/Info/Version.java"
+            token="$BOMBUSVERSION$"
+            value="${bombus.version}"/>
     </target>
 
 
