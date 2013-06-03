@@ -2,3 +2,13 @@
 /build/
 /dist/
 /resources/.version
+*.apk
+*.ap_
+*.dex
+*.class
+bin/
+gen/
+local.properties
+.classpath
+.project
+proguard/
