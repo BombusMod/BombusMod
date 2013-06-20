@@ -29,20 +29,22 @@
 
 package Colors;
 
+import Client.Config;
 import Menu.MenuCommand;
+
 import java.util.Enumeration;
+
 import images.RosterIcons;
 
 import locale.SR;
+import ui.VirtualCanvas;
 import ui.VirtualList;
 import ui.controls.form.DefForm;
 
 /**
- *
  * @author ad
  */
-public class ColorsList extends DefForm
-    {
+public class ColorsList extends DefForm {
 
     MenuCommand cmdCopyColor = new MenuCommand("Copy color", MenuCommand.SCREEN, 10, RosterIcons.ICON_COLOR_TUNE);
     MenuCommand cmdPasteColor = new MenuCommand("Color from buffer", MenuCommand.SCREEN, 20, RosterIcons.ICON_USESKIN);
@@ -50,22 +52,22 @@ public class ColorsList extends DefForm
     int colorBuffer = -1;
 
     public void setColor(int paramName, int value) {
-        ((ColorVisualItem)itemsList.elementAt(paramName)).setColor(value);
-    }    
-    
+        ((ColorVisualItem) itemsList.elementAt(paramName)).setColor(value);
+    }
+
     /**
      * Creates a new instance of ColorsList
      */
     public ColorsList() {
-        super(SR.MS_COLOR_TUNE);       
-        
-        int cnt=0;
+        super(SR.MS_COLOR_TUNE);
+
+        int cnt = 0;
         itemsList.removeAllElements();
-        for (Enumeration r = ColorTheme.colorsContainer.elements(); r.hasMoreElements();) {
+        for (Enumeration r = ColorTheme.colorsContainer.elements(); r.hasMoreElements(); ) {
             ColorItem c = (ColorItem) r.nextElement();
             itemsList.addElement(new ColorVisualItem(c.name, NAMES[cnt], c.color));
             cnt++;
-        }        
+        }
     }
 
     public void commandState() {
@@ -74,6 +76,8 @@ public class ColorsList extends DefForm
         addMenuCommand(cmdCopyColor);
         if (colorBuffer >= 0)
             addMenuCommand(cmdPasteColor);
+        // magic to invalidate menu
+        VirtualCanvas.getInstance().setCommandListener(null);
     }
 
     public void menuAction(MenuCommand c, VirtualList d) {
@@ -89,11 +93,11 @@ public class ColorsList extends DefForm
             redraw();
         }
     }
-        
+
     public void eventOk() {
-        new ColorSelectForm( this, this, cursor);
+        new ColorSelectForm(this, this, cursor);
     }
-    
+
     public void cmdOk() {
         eventOk();
     }
@@ -111,7 +115,7 @@ public class ColorsList extends DefForm
             SR.MS_DISCO_CMD,
 
             SR.MS_BAR_BGND,
-            SR.MS_BAR_BGND+" 2",
+            SR.MS_BAR_BGND + " 2",
             SR.MS_BAR_INK,
 
             SR.MS_CONTACT_DEFAULT,
@@ -119,7 +123,7 @@ public class ColorsList extends DefForm
             SR.MS_CONTACT_AWAY,
             SR.MS_CONTACT_XA,
             SR.MS_CONTACT_DND,
-            SR.MS_CONTACT+" J2J",
+            SR.MS_CONTACT + " J2J",
 
             SR.MS_GROUP_INK,
 
@@ -138,7 +142,7 @@ public class ColorsList extends DefForm
 
             SR.MS_PGS_REMAINED,
             SR.MS_PGS_COMPLETE,
-            SR.MS_PGS_COMPLETE+" 2",
+            SR.MS_PGS_COMPLETE + " 2",
             SR.MS_PGS_INK,
 
             SR.MS_HEAP_TOTAL,
@@ -159,7 +163,7 @@ public class ColorsList extends DefForm
             SR.MS_CONTACT_STATUS,
 
             SR.MS_CONTROL_ITEM,
-        };
+    };
 }
 
 //#endif

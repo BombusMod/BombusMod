@@ -28,6 +28,7 @@ import javax.microedition.lcdui.TextField;
 import javax.microedition.lcdui.Command;
 
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.*;
 
@@ -55,7 +56,7 @@ import java.util.Vector;
 
 public class AndroidTextBoxUI extends AndroidDisplayableUI implements TextBoxUI {
 
-    private EditText editView;
+    private EditText editor;
     private TableLayout commandGrid;
 
     public AndroidTextBoxUI(final BombusModActivity activity, final TextBox textBox) {
@@ -75,60 +76,12 @@ public class AndroidTextBoxUI extends AndroidDisplayableUI implements TextBoxUI 
     public void invalidate() {
         activity.post(new Runnable() {
             public void run() {
-                titleView.setText(displayable.getTitle());
+                activity.setTitle(displayable.getTitle());
+                activity.supportInvalidateOptionsMenu();
             }
         });
     }
 
-    private LinearLayout createMainView() {
-        final TextBox textBox = getTextBox();
-        titleView = new TextView(activity);
-        titleView.setText(textBox.getTitle());
-
-        commandGrid = new TableLayout(activity);
-        editView = createEditor(activity, textBox);
-        editView.setGravity(Gravity.TOP);
-        //editView.setScroller(new Scroller(activity));
-        //editView.setMovementMethod(new ScrollingMovementMethod());
-
-        titleView.setId(2);
-        editView.setId(3);
-        commandGrid.setId(4);
-
-        initCommands();
-
-        RelativeLayout layout = new RelativeLayout(activity);
-        layout.addView(editView, set(create(RelativeLayout.LayoutParams.FILL_PARENT),
-                RelativeLayout.ABOVE, commandGrid.getId()));
-        layout.addView(commandGrid, set(create(RelativeLayout.LayoutParams.WRAP_CONTENT),
-                RelativeLayout.ALIGN_PARENT_BOTTOM));
-
-        LinearLayout all = new LinearLayout(activity);
-        all.setOrientation(LinearLayout.VERTICAL);
-        all.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.FILL_PARENT));
-
-        all.addView(titleView, createLinear(LinearLayout.LayoutParams.WRAP_CONTENT));
-        all.addView(layout, createLinear(LinearLayout.LayoutParams.FILL_PARENT));
-        return all;
-    }
-
-    private LinearLayout.LayoutParams createLinear(int h) {
-        return new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, h);
-    }
-
-    private RelativeLayout.LayoutParams create(int h) {
-        return new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, h);
-    }
-
-    private RelativeLayout.LayoutParams set(RelativeLayout.LayoutParams params, int verb, int anchor) {
-        params.addRule(verb, anchor);
-        return params;
-    }
-
-    private RelativeLayout.LayoutParams set(RelativeLayout.LayoutParams params, int verb) {
-        params.addRule(verb);
-        return params;
-    }
 
     private void turnKeyboard(final EditText textEditor, final boolean on) {
         activity.post(new Runnable() {
@@ -174,6 +127,28 @@ public class AndroidTextBoxUI extends AndroidDisplayableUI implements TextBoxUI 
             }
         });
 
+        int constraints = getTextBox().getConstraints();
+        if ((constraints & TextField.CONSTRAINT_MASK) == TextField.URL) {
+            editor.setSingleLine(true);
+        } else if ((constraints & TextField.CONSTRAINT_MASK) == TextField.NUMERIC) {
+            editor.setSingleLine(true);
+            editor.setInputType(InputType.TYPE_CLASS_NUMBER);
+        } else if ((constraints & TextField.CONSTRAINT_MASK) == TextField.DECIMAL) {
+            editor.setSingleLine(true);
+            editor.setInputType(
+                    InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        } else if ((constraints & TextField.CONSTRAINT_MASK) == TextField.PHONENUMBER) {
+            editor.setSingleLine(true);
+            editor.setInputType(InputType.TYPE_CLASS_PHONE);
+        } else {
+            editor.setSingleLine(false);
+            editor.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+            editor.setInputType(editor.getInputType() | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+        }
+        if ((constraints & TextField.PASSWORD) != 0) {
+            editor.setTransformationMethod(PasswordTransformationMethod.getInstance());
+            editor.setTypeface(Typeface.MONOSPACE);
+        }
         editor.addTextChangedListener(new TextWatcher() {
             private String previousText;
 
@@ -185,15 +160,14 @@ public class AndroidTextBoxUI extends AndroidDisplayableUI implements TextBoxUI 
             }
 
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().length() <= textBox.getMaxSize()
-                        && InputMethod.validate(s.toString(), textBox.getConstraints())) {
+                if (s.toString().length() <= getTextBox().getMaxSize()
+                        && InputMethod.validate(s.toString(), getTextBox().getConstraints())) {
                 } else {
                     editor.setText(previousText);
                     editor.setSelection(start);
                 }
             }
         });
-        return editor;
     }
 
     @Override
@@ -201,13 +175,17 @@ public class AndroidTextBoxUI extends AndroidDisplayableUI implements TextBoxUI 
         activity.post(new Runnable() {
             public void run() {
                 if (view == null) {
-                    EditText old = editView;
-                    view = createMainView();
-                    editView.setText(old.getText().toString());
-                    editView.setSelection(old.getSelectionEnd());
+                    EditText old = editor;
+                    LayoutInflater inf = activity.getLayoutInflater();
+                    view = inf.inflate(R.layout.editor, null, false);
+                    editor = (EditText) view.findViewById(R.id.text);
+                    editor.setText(old.getText().toString());
+                    editor.setSelection(old.getSelectionEnd());
+                    commandGrid = (TableLayout) view.findViewById(R.id.commandBar);
+                    updateTextConstraints();
+                    initCommands();
                 }
                 final TextBox textBox = getTextBox();
-                final EditText editor = editView;
                 int constraints = textBox.getConstraints();
                 if ((constraints & TextField.CONSTRAINT_MASK) == TextField.URL) {
                     editor.setSingleLine(true);
@@ -232,6 +210,7 @@ public class AndroidTextBoxUI extends AndroidDisplayableUI implements TextBoxUI 
                     editor.setTypeface(Typeface.MONOSPACE);
                 }
                 activity.setContentView(view);
+                activity.supportInvalidateOptionsMenu();
                 view.requestLayout();
                 view.requestFocus();
             }
@@ -257,19 +236,19 @@ public class AndroidTextBoxUI extends AndroidDisplayableUI implements TextBoxUI 
     // TextBoxUI
     //
     public int getCaretPosition() {
-        return editView.getSelectionStart();
+        return editor.getSelectionStart();
     }
 
     public String getString() {
         final String[] getStringTransfer = new String[1];
         if (activity.isActivityThread()) {
-            getStringTransfer[0] = editView.getText().toString();
+            getStringTransfer[0] = editor.getText().toString();
         } else {
             getStringTransfer[0] = null;
             activity.post(new Runnable() {
                 public void run() {
                     synchronized (AndroidTextBoxUI.this) {
-                        getStringTransfer[0] = editView.getText().toString();
+                        getStringTransfer[0] = editor.getText().toString();
                         AndroidTextBoxUI.this.notify();
                     }
                 }
@@ -292,9 +271,9 @@ public class AndroidTextBoxUI extends AndroidDisplayableUI implements TextBoxUI 
     public void setString(final String text) {
         activity.post(new Runnable() {
             public void run() {
-                editView.setText(text);
+                editor.setText(text);
                 if (text != null) {
-                    editView.setSelection(text.length());
+                    editor.setSelection(text.length());
                 }
             }
         });
@@ -309,8 +288,8 @@ public class AndroidTextBoxUI extends AndroidDisplayableUI implements TextBoxUI 
                 } else {
                     newtext = text + newtext;
                 }
-                editView.setText(newtext);
-                editView.setSelection(position + text.length());
+                editor.setText(newtext);
+                editor.setSelection(position + text.length());
             }
         });
     }
@@ -324,8 +303,8 @@ public class AndroidTextBoxUI extends AndroidDisplayableUI implements TextBoxUI 
                 } else {
                     newtext = newtext.substring(length);
                 }
-                editView.setText(newtext);
-                editView.setSelection(offset);
+                editor.setText(newtext);
+                editor.setSelection(offset);
             }
         });
     }
@@ -366,6 +345,7 @@ public class AndroidTextBoxUI extends AndroidDisplayableUI implements TextBoxUI 
                 addToRow(row, createButton(row.getContext(), c));
             }
         }
+        invalidate();
     }
 
     private LinearLayout createRow(TableLayout table) {
