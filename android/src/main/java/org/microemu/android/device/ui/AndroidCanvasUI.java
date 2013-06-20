@@ -1,29 +1,26 @@
 /**
- *  MicroEmulator
- *  Copyright (C) 2008 Bartek Teodorczyk <barteo@barteo.net>
+ * MicroEmulator Copyright (C) 2008 Bartek Teodorczyk <barteo@barteo.net>
  *
- *  It is licensed under the following two licenses as alternatives:
- *    1. GNU Lesser General Public License (the "LGPL") version 2.1 or any newer version
- *    2. Apache License (the "AL") Version 2.0
+ * It is licensed under the following two licenses as alternatives: 1. GNU
+ * Lesser General Public License (the "LGPL") version 2.1 or any newer version
+ * 2. Apache License (the "AL") Version 2.0
  *
- *  You may not use this file except in compliance with at least one of
- *  the above two licenses.
+ * You may not use this file except in compliance with at least one of the above
+ * two licenses.
  *
- *  You may obtain a copy of the LGPL at
- *      http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt
+ * You may obtain a copy of the LGPL at
+ * http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt
  *
- *  You may obtain a copy of the AL at
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * You may obtain a copy of the AL at http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the LGPL or the AL for the specific language governing permissions and
- *  limitations.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the LGPL
+ * or the AL for the specific language governing permissions and limitations.
  *
- *  @version $Id: AndroidCanvasUI.java 2507 2011-07-12 07:52:03Z barteo@gmail.com $
+ * @version $Id: AndroidCanvasUI.java 2507 2011-07-12 07:52:03Z barteo@gmail.com
+ * $
  */
-
 package org.microemu.android.device.ui;
 
 import javax.microedition.lcdui.Canvas;
@@ -60,40 +57,37 @@ public class AndroidCanvasUI extends AndroidDisplayableUI implements CanvasUI {
         super(activity, canvas, false);
         activity.post(() -> view = new CanvasView(activity, AndroidCanvasUI.this));
     }
-    
+
     public View getView() {
         return view;
     }
-    
+
     @Override
-    public void hideNotify()
-    {
+    public void hideNotify() {
         ((AndroidDeviceDisplay) activity.getEmulatorContext().getDeviceDisplay()).removeDisplayRepaintListener((DisplayRepaintListener) view);
-        
+
         super.hideNotify();
     }
 
     @Override
-    public void showNotify()
-    {
+    public void showNotify() {
         super.showNotify();
-        
+
         activity.post(new Runnable() {
             public void run() {
-		        ((AndroidDeviceDisplay) activity.getEmulatorContext().getDeviceDisplay()).addDisplayRepaintListener((DisplayRepaintListener) view);
-		        ((Canvas) displayable).repaint();
+                ((AndroidDeviceDisplay) activity.getEmulatorContext().getDeviceDisplay()).addDisplayRepaintListener((DisplayRepaintListener) view);
+                ((Canvas) displayable).repaint();
             }
         });
     }
-    
-	public AndroidDisplayGraphics getGraphics() {
-		return graphics;
-	}
+
+    public AndroidDisplayGraphics getGraphics() {
+        return graphics;
+    }
 
     //
     // CanvasUI
     //
-    
     public class CanvasView extends View implements DisplayRepaintListener {
         
         private final static int FIRST_DRAG_SENSITIVITY_X = 5;
@@ -108,8 +102,14 @@ public class AndroidCanvasUI extends AndroidDisplayableUI implements CanvasUI {
         
         private Matrix scale = new Matrix();
 
+        private final static int FIRST_DRAG_SENSITIVITY_X = 5;
+        private final static int FIRST_DRAG_SENSITIVITY_Y = 5;
+        private AndroidCanvasUI ui;
+        private int pressedX = -FIRST_DRAG_SENSITIVITY_X;
+        private int pressedY = -FIRST_DRAG_SENSITIVITY_Y;
+        private Overlay overlay = null;
+        private Matrix scale = new Matrix();
         private AndroidKeyListener keyListener = null;
-        
         private int inputType = InputType.TYPE_CLASS_TEXT;
 
         public CanvasView(Context context, AndroidCanvasUI ui) {
@@ -119,76 +119,73 @@ public class AndroidCanvasUI extends AndroidDisplayableUI implements CanvasUI {
             setFocusableInTouchMode(true);
             setLayerType(LAYER_TYPE_SOFTWARE, null);
         }
-        
+
         public AndroidCanvasUI getUI() {
             return ui;
-        }             
+        }
 
         public void flushGraphics(int x, int y, int width, int height) {
             // TODO handle x, y, width and height
             postInvalidate();
         }
-        
+
         public void setScale(float sx, float sy) {
             scale.reset();
             scale.postScale(sx, sy);
         }
 
         public void setKeyListener(AndroidKeyListener keyListener, int inputType) {
-        	this.keyListener = keyListener;
-        	this.inputType = inputType;
+            this.keyListener = keyListener;
+            this.inputType = inputType;
         }
 
         @Override
-		public InputConnection onCreateInputConnection(EditorInfo outAttrs) {
-        	outAttrs.imeOptions |= EditorInfo.IME_ACTION_DONE;
-        	outAttrs.imeOptions |= EditorInfo.IME_FLAG_NO_EXTRACT_UI;
-        	outAttrs.inputType = inputType;
-        	
-        	return new BaseInputConnection(this, false) {
+        public InputConnection onCreateInputConnection(EditorInfo outAttrs) {
+            outAttrs.imeOptions |= EditorInfo.IME_ACTION_DONE;
+            outAttrs.imeOptions |= EditorInfo.IME_FLAG_NO_EXTRACT_UI;
+            outAttrs.inputType = inputType;
 
-				@Override
-				public boolean performEditorAction(int actionCode) {
-					if (actionCode == EditorInfo.IME_ACTION_DONE) {
-						InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-		                imm.hideSoftInputFromWindow(CanvasView.this.getWindowToken(), 0);		                
-		                return true;
-					} else {
-						return super.performEditorAction(actionCode);
-					}
-				}
+            return new BaseInputConnection(this, false) {
+                @Override
+                public boolean performEditorAction(int actionCode) {
+                    if (actionCode == EditorInfo.IME_ACTION_DONE) {
+                        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(CanvasView.this.getWindowToken(), 0);
+                        return true;
+                    } else {
+                        return super.performEditorAction(actionCode);
+                    }
+                }
 
-				@Override
-				public boolean commitText(CharSequence text, int newCursorPosition) {
-					if (keyListener != null) {
-						keyListener.insert(keyListener.getCaretPosition(), text);
-					}
-					
-					return true;
-				}
+                @Override
+                public boolean commitText(CharSequence text, int newCursorPosition) {
+                    if (keyListener != null) {
+                        keyListener.insert(keyListener.getCaretPosition(), text);
+                    }
 
-				@Override
-				public boolean deleteSurroundingText(int leftLength, int rightLength) {
-					if (keyListener != null) {
-						int caret = keyListener.getCaretPosition();
-						keyListener.delete(caret - leftLength, caret + rightLength);
-					}
-					
-					return true;
-				}
+                    return true;
+                }
 
-				@Override
-				public boolean sendKeyEvent(KeyEvent event) {
-					return super.sendKeyEvent(event);
-				}
-        		
-        	};
-		}        
-        
+                @Override
+                public boolean deleteSurroundingText(int leftLength, int rightLength) {
+                    if (keyListener != null) {
+                        int caret = keyListener.getCaretPosition();
+                        keyListener.delete(caret - leftLength, caret + rightLength);
+                    }
+
+                    return true;
+                }
+
+                @Override
+                public boolean sendKeyEvent(KeyEvent event) {
+                    return super.sendKeyEvent(event);
+                }
+            };
+        }
+
         //
         // View
         //
-        
         @Override
         public void onDraw(android.graphics.Canvas androidCanvas) {
             super.onDraw(androidCanvas);
@@ -238,40 +235,36 @@ public class AndroidCanvasUI extends AndroidDisplayableUI implements CanvasUI {
             int x = (int) event.getX();
             int y = (int) event.getY();
             switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN :
-                inputMethod.pointerPressed(x, y);
-                pressedX = x;
-                pressedY = y;
-                break;
-            case MotionEvent.ACTION_UP :
-                inputMethod.pointerReleased(x, y);
-                break;
-            case MotionEvent.ACTION_MOVE :
-                if (x > (pressedX - FIRST_DRAG_SENSITIVITY_X) &&  x < (pressedX + FIRST_DRAG_SENSITIVITY_X)
-                        && y > (pressedY - FIRST_DRAG_SENSITIVITY_Y) &&  y < (pressedY + FIRST_DRAG_SENSITIVITY_Y)) {
-                } else {
-                    pressedX = -FIRST_DRAG_SENSITIVITY_X;
-                    pressedY = -FIRST_DRAG_SENSITIVITY_Y;
-                    inputMethod.pointerDragged(x, y);
-                }
-                break;
-            default:
-                return false;
+                case MotionEvent.ACTION_DOWN:
+                    inputMethod.pointerPressed(x, y);
+                    pressedX = x;
+                    pressedY = y;
+                    break;
+                case MotionEvent.ACTION_UP:
+                    inputMethod.pointerReleased(x, y);
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    if (x > (pressedX - FIRST_DRAG_SENSITIVITY_X) && x < (pressedX + FIRST_DRAG_SENSITIVITY_X)
+                            && y > (pressedY - FIRST_DRAG_SENSITIVITY_Y) && y < (pressedY + FIRST_DRAG_SENSITIVITY_Y)) {
+                    } else {
+                        pressedX = -FIRST_DRAG_SENSITIVITY_X;
+                        pressedY = -FIRST_DRAG_SENSITIVITY_Y;
+                        inputMethod.pointerDragged(x, y);
+                    }
+                    break;
+                default:
+                    return false;
             }
-            
+
             return true;
         }
 
         //
         // DisplayRepaintListener
         //
-      
-        public void repaintInvoked(Object repaintObject)
-        {
+        public void repaintInvoked(Object repaintObject) {
             Rect r = (Rect) repaintObject;
             flushGraphics(r.left, r.top, r.width(), r.height());
         }
-
     }
-
 }

@@ -150,6 +150,8 @@ public abstract class MessageList extends DefForm
             addMenuCommand(cmdxmlSkin);
         if (isHasUrl())
             addMenuCommand(cmdUrl);
+        // magic to invalidate menu
+        VirtualCanvas.getInstance().setCommandListener(null);
     }
 
     public boolean isHasScheme() {

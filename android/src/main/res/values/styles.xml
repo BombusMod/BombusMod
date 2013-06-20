@@ -1,0 +1,10 @@
+<resources>
+<style name="Theme.BombusMod" parent="@style/Theme.AppCompat">
+    <item name="actionBarStyle">@style/Widget.MyTheme.ActionBar</item>
+    <item name="android:actionBarStyle">@style/Widget.MyTheme.ActionBar</item>    
+</style>
+<style name="Widget.MyTheme.ActionBar" parent="Widget.AppCompat.ActionBar">
+    <item name="android:background">#ffad1010</item>
+    <!-- item name="background">#ffad1010</item -->
+</style>
+</resources>
