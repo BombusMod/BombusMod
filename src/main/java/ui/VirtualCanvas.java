@@ -88,8 +88,10 @@ public class VirtualCanvas extends Canvas implements CommandListener{
     public void setMIDlet(MIDlet midlet) {
         VirtualCanvas.midlet = midlet;
     }
-    
+
     void commandState() {
+        // magic to invalidate menu
+        setCommandListener(null);
     }
     
     public void show(VirtualList virtualList) {

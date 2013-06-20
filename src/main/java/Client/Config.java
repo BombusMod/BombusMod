@@ -124,7 +124,7 @@ public class Config {
     public String defGcRoom = "bombusmod@conference.jabber.ru";
 //#endif
     public boolean firstRun = true;
-    public int panelsState = 2;
+    public int panelsState = VirtualList.PANELS_STATE_BOTH;
 //#ifndef WMUC
     public int confMessageCount = 20;
 //#endif
@@ -229,12 +229,6 @@ public class Config {
             }
 //#endif
 
-        System.gc();
-        try {
-            Thread.sleep(50);
-        } catch (InterruptedException e) {
-        }
-
         int h1 = VirtualCanvas.getInstance().getHeight();
         int h2 = VirtualCanvas.getInstance().getWidth();
         rosterFont = 16;
@@ -242,6 +236,7 @@ public class Config {
         msgFont = 16;
         minItemHeight = ((h1 < h2) ? h2 : h1) * 40 / 480;
         allowMinimize = true;
+        panelsState = VirtualList.PANELS_STATE_DISABLED;
         loadFromStorage();
 
         FontCache.roster = rosterFont;
@@ -312,7 +307,8 @@ public class Config {
 //#             inputStream.readUTF();
 //#endif                                    
             firstRun = inputStream.readBoolean();
-            panelsState = inputStream.readInt();
+            int savedPanelState = inputStream.readInt();
+            panelsState = VirtualList.PANELS_STATE_DISABLED;
 //#ifndef WMUC                             
             confMessageCount = inputStream.readInt();
 //#else

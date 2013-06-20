@@ -27,6 +27,7 @@
 package ui.controls.form;
 
 //import Client.Config;
+import Client.Config;
 import java.util.Vector;
 import Menu.MenuListener;
 import Menu.MenuCommand;
@@ -34,6 +35,7 @@ import Menu.MyMenu;
 import images.RosterIcons;
 import locale.SR;
 import ui.MainBar;
+import ui.VirtualCanvas;
 import ui.VirtualElement;
 import ui.VirtualList;
 
@@ -119,6 +121,8 @@ public class DefForm
     public void commandState() {
         menuCommands.removeAllElements();
         addMenuCommand(cmdOk);
+        // magic to invalidate menu
+        VirtualCanvas.getInstance().setCommandListener(null);
         /*if (!cf.swapMenu)
             addMenuCommand(cmdCancel);*/
     }

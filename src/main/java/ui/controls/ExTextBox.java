@@ -173,7 +173,11 @@ public class ExTextBox {
 //#endif
 //#if TEMPLATES
         textbox.addCommand(cmdTemplate);
-//#endif        
+//#endif
+//#         textbox.addCommand(cmdTemplate);
+//#endif
+        // magic to invalidate menu
+        VirtualCanvas.getInstance().setCommandListener(null);
     }
     
     public boolean executeCommand(Command c, Displayable displayable) { 

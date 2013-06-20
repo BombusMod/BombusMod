@@ -110,7 +110,9 @@ public class ConfigForm
 //#      private CheckBox notifyWhenMessageType;
 //#endif
     private DropChoiceBox popUps;
+//#if !android    
     private DropChoiceBox panels;
+//#endif    
     private CheckBox drawMenuCommand;
     private CheckBox showNickNames;
     private CheckBox swapSendAndSuspend;
@@ -280,6 +282,7 @@ public class ConfigForm
         itemsList.addElement(textWrap);
 
         itemsList.addElement(new SpacerItem(10));
+//#if !android        
         panels = new DropChoiceBox(SR.MS_PANELS);
         panels.add(SR.MS_NO_BAR + " : " + SR.MS_NO_BAR);
         panels.add(SR.MS_MAIN_BAR + " : " + SR.MS_NO_BAR);
@@ -290,6 +293,7 @@ public class ConfigForm
         panels.add(SR.MS_NO_BAR + " : " + SR.MS_MAIN_BAR);
         panels.setSelectedIndex(cf.panelsState);
         itemsList.addElement(panels);
+//#endif        
         drawMenuCommand = new CheckBox(SR.MS_SHOW_TIME_TRAFFIC, cf.showTimeTraffic);
         itemsList.addElement(drawMenuCommand);
         itemsList.addElement(new SpacerItem(10));
@@ -427,10 +431,12 @@ public class ConfigForm
 //#if LOGROTATE
         cf.msglistLimit = Integer.parseInt(messageCountLimit.getValue());
 //#endif
+//#if !android        
         if (cf.panelsState != panels.getSelectedIndex()) {
             cf.panelsState = panels.getSelectedIndex();
             VirtualList.changeOrient(cf.panelsState);
         }
+//#endif        
 
         //sd.roster.setLight(cf.lightState);   TODO: correct for new light control
 

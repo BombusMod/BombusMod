@@ -21,6 +21,9 @@
  */
 package org.bombusmod;
 
+import Client.Contact;
+import Client.StaticData;
+import Colors.ColorTheme;
 import android.app.NotificationManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -31,6 +34,7 @@ import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -43,14 +47,16 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
-import android.view.SubMenu;
 import android.view.View;
 import android.view.Window;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.MenuItemCompat;
 
 import org.bombusmod.android.service.XmppService;
 import org.bombusmod.android.scrobbler.Receiver;
+import org.bombusmod.util.ClipBoardIO;
 import org.microemu.DisplayAccess;
 import org.microemu.MIDletAccess;
 import org.microemu.MIDletBridge;
@@ -71,7 +77,17 @@ import org.microemu.device.EmulatorContext;
 import org.microemu.device.FontManager;
 import org.microemu.device.InputMethod;
 import org.microemu.device.ui.CommandUI;
-import org.bombusmod.util.ClipBoardIO;
+import Menu.MenuCommand;
+import Menu.MenuListener;
+import ui.VirtualCanvas;
+import ui.VirtualList;
+import ui.controls.form.DefForm;
+
+import javax.microedition.lcdui.Command;
+import javax.microedition.midlet.MIDlet;
+import javax.microedition.midlet.MIDletStateChangeException;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.X509TrustManager;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -81,14 +97,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Locale;
 
-import javax.microedition.lcdui.Command;
-import javax.microedition.midlet.MIDlet;
-import javax.microedition.midlet.MIDletStateChangeException;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.X509TrustManager;
-
-import Client.Contact;
-import Client.StaticData;
 import de.duenndns.ssl.MemorizingTrustManager;
 
 public class BombusModActivity extends AppCompatActivity {
@@ -194,12 +202,12 @@ public class BombusModActivity extends AppCompatActivity {
 
         instance = this;
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        ColorTheme.getInstance();
+        applyBombusTheme();
 
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
         System.setOut(new PrintStream(new OutputStream() {
-
             StringBuffer line = new StringBuffer();
 
             @Override
@@ -216,7 +224,6 @@ public class BombusModActivity extends AppCompatActivity {
         }));
 
         System.setErr(new PrintStream(new OutputStream() {
-
             StringBuffer line = new StringBuffer();
 
             @Override
@@ -484,7 +491,7 @@ public class BombusModActivity extends AppCompatActivity {
 
     private boolean ignoreKey(int keyCode) {
         switch (keyCode) {
-//        case KeyEvent.KEYCODE_MENU:
+            case KeyEvent.KEYCODE_MENU:
             case KeyEvent.KEYCODE_VOLUME_DOWN:
             case KeyEvent.KEYCODE_VOLUME_UP:
             case KeyEvent.KEYCODE_HEADSETHOOK:
@@ -571,17 +578,31 @@ public class BombusModActivity extends AppCompatActivity {
         }
 
         menu.clear();
-        boolean result = false;
-        List<AndroidCommandUI> commands = ui.getCommandsUI();
-        for (int i = 0; i < commands.size(); i++) {
-            result = true;
-            AndroidCommandUI cmd = commands.get(i);
-            if (cmd.getCommand().getCommandType() == Command.SCREEN) {
-                SubMenu item = menu.addSubMenu(Menu.NONE, i + Menu.FIRST, Menu.NONE, cmd.getCommand().getLabel());
-                item.setIcon(cmd.getDrawable());
+        boolean result = false;        
+        if (ui instanceof AndroidCanvasUI) {
+            VirtualList currentList = VirtualCanvas.getInstance().getList();
+            if (currentList instanceof DefForm) {
+                for (int i = 0; i < ((DefForm) currentList).menuCommands.size(); i++) {
+                    result = true;
+                    MenuCommand cmd = (MenuCommand) ((DefForm) currentList).menuCommands.get(i);
+                    MenuItem item = menu.add(Menu.NONE, i + Menu.FIRST, Menu.NONE, cmd.name);
+                    MenuItemCompat.setShowAsAction(item, i == 0 ? MenuItem.SHOW_AS_ACTION_IF_ROOM : MenuItem.SHOW_AS_ACTION_NEVER);
+                    //item.setIcon(cmd.getDrawable());                
+                }
+            }
+        } else {
+            List<AndroidCommandUI> commands = ui.getCommandsUI();
+            for (int i = 0; i < commands.size(); i++) {
+                result = true;
+                AndroidCommandUI cmd = commands.get(i);
+                if (cmd.getCommand().getCommandType() == Command.SCREEN) {
+                    MenuItem item = menu.add(Menu.NONE, i + Menu.FIRST, Menu.NONE, cmd.getCommand().getLabel());
+                    MenuItemCompat.setShowAsAction(item, MenuItem.SHOW_AS_ACTION_NEVER);
+                    item.setIcon(cmd.getDrawable());
+                }
             }
         }
-
+        
         return result;
     }
 
@@ -600,17 +621,38 @@ public class BombusModActivity extends AppCompatActivity {
             return false;
         }
 
-        int commandIndex = item.getItemId() - Menu.FIRST;
-        List<AndroidCommandUI> commands = ui.getCommandsUI();
-        CommandUI c = commands.get(commandIndex);
-
-        if (c != null) {
-            MIDletBridge.getMIDletAccess().getDisplayAccess().commandAction(c.getCommand(), da.getCurrent());
+        int commandIndex = item.getItemId() - Menu.FIRST;        
+        if (ui instanceof AndroidCanvasUI) {
+            VirtualList currentList = VirtualCanvas.getInstance().getList();
+            ((MenuListener)currentList).menuAction(
+                    (MenuCommand) ((DefForm) currentList).menuCommands.get(commandIndex), 
+                    currentList);
             return true;
+        } else {
+            List<AndroidCommandUI> commands = ui.getCommandsUI();
+            CommandUI c = commands.get(commandIndex);
+            if (c != null) {
+                MIDletBridge.getMIDletAccess().getDisplayAccess().commandAction(c.getCommand(), da.getCurrent());
+                return true;
+            }
+            return false;
         }
-
-        return false;
     }
+    
+    public void applyBombusTheme() {
+        ActionBar actionBar = getSupportActionBar();
+        int gradientColors[] = {0xff000000 | ColorTheme.getColor(ColorTheme.BAR_BGND), 0xff000000 | ColorTheme.getColor(ColorTheme.BAR_BGND_BOTTOM)};
+        GradientDrawable drawable = new GradientDrawable(GradientDrawable.Orientation.BOTTOM_TOP, gradientColors);
+        actionBar.setBackgroundDrawable(drawable);
+        /*
+        int titleId = Resources.getSystem().getIdentifier("action_bar_title", "id", "android");
+        if (titleId > 0) {
+            TextView barTextView = (TextView) findViewById(titleId);
+            barTextView.setTextColor(0xff000000 | ColorTheme.getColor(ColorTheme.BAR_INK));
+        }
+        */
+    }
+
 
     public void minimizeApp() {
         Intent startMain = new Intent(Intent.ACTION_MAIN);
