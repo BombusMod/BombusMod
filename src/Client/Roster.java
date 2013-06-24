@@ -382,8 +382,6 @@ public class Roster
 //#ifdef android    
 //#         if (highliteMessageCount < 1) {
 //#             Notification.getNotificator().clear();
-//#         } else {
-//#             Notification.getNotificator().sendNotify("New messages", String.valueOf(messageCount));
 //#         }
 //#endif
         if (h == m) {
