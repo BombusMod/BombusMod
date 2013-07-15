@@ -66,6 +66,7 @@ public class JabberStream implements XMLEventListener, Runnable {
     public boolean loggedIn;
     private boolean xmppV1;
     private String sessionId;
+    private boolean secured;
     public Vector outgoingQueries = new Vector();
 //#if android
 //#     private Socket connection;
@@ -192,6 +193,10 @@ public class JabberStream implements XMLEventListener, Runnable {
 
     public String getSessionId() {
         return sessionId;
+    }
+    
+    public boolean isSecured() {
+        return secured;
     }
 
     public void tagEnd(String name) throws XMLException {
@@ -548,6 +553,7 @@ public class JabberStream implements XMLEventListener, Runnable {
 //#if TLS
 //#     public void setTls() throws Exception {
 //#         iostream.setTls();
+//#         secured = true;
 //#     }
 //#endif        
 

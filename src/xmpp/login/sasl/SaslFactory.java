@@ -9,6 +9,7 @@ import xmpp.login.sasl.mechanisms.SaslGoogleToken;
 import xmpp.login.sasl.mechanisms.SaslDigestMd5;
 import xmpp.login.sasl.mechanisms.SaslScramSha1;
 import Client.Config;
+import com.alsutton.jabber.JabberStream;
 import java.util.Vector;
 import xmpp.Account;
 
@@ -18,7 +19,7 @@ import xmpp.Account;
  */
 public class SaslFactory {
     public final static String NS_SASL = "urn:ietf:params:xml:ns:xmpp-sasl";
-    public static SaslMechanism getPreferredMechanism(Account account, Vector availableMechanisms) {
+    public static SaslMechanism getPreferredMechanism(Account account, JabberStream stream, Vector availableMechanisms) {
         if (availableMechanisms.contains("X-GOOGLE-TOKEN")) {
             account.isGoogle = true;
             return new SaslGoogleToken();
@@ -31,7 +32,7 @@ public class SaslFactory {
         if (availableMechanisms.contains("DIGEST-MD5")) {
             return new SaslDigestMd5();
         }
-        if (availableMechanisms.contains("PLAIN") && account.plainAuth) {
+        if (availableMechanisms.contains("PLAIN") && (account.plainAuth || stream.isSecured())) {
             return new SaslPlain();
         }
         if (availableMechanisms.contains("SCRAM-SHA-1")) {            

@@ -102,7 +102,7 @@ public class SASLAuth implements JabberBlockListener {
             JabberDataBlock mech = data.getChildBlock("mechanisms");            
             if (mech != null) {
                 selectedMechanism = SaslFactory
-                        .getPreferredMechanism(account, SaslMechanism.parseMechanisms(mech));
+                        .getPreferredMechanism(account, stream, SaslMechanism.parseMechanisms(mech));
                 if (selectedMechanism == null) {
                     // no more method found
                     listener.loginFailed("SASL: Unknown mechanisms");
