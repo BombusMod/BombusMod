@@ -82,7 +82,7 @@ public class Utf8IOStream {
 //#     public void setTls() throws Exception {
 //#         tlsExclusive = true;
 //#         tlsHandler = TlsIO.create(connection, inpStream, outStream, 
-//#                 StaticData.getInstance().account.server);
+//#                 StaticData.getInstance().account.JID.getServer());
 //#         inpStream = tlsHandler.getTlsInputStream();
 //#         outStream = tlsHandler.getTlsOutputStream();
 //#         tlsExclusive = false;
