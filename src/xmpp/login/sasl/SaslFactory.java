@@ -4,14 +4,15 @@
  */
 package xmpp.login.sasl;
 
-import xmpp.login.sasl.mechanisms.SaslPlain;
-import xmpp.login.sasl.mechanisms.SaslGoogleToken;
-import xmpp.login.sasl.mechanisms.SaslDigestMd5;
-import xmpp.login.sasl.mechanisms.SaslScramSha1;
 import Client.Config;
 import com.alsutton.jabber.JabberStream;
 import java.util.Vector;
 import xmpp.Account;
+import xmpp.login.sasl.mechanisms.SaslAnonymous;
+import xmpp.login.sasl.mechanisms.SaslDigestMd5;
+import xmpp.login.sasl.mechanisms.SaslGoogleToken;
+import xmpp.login.sasl.mechanisms.SaslPlain;
+import xmpp.login.sasl.mechanisms.SaslScramSha1;
 
 /**
  *
@@ -37,6 +38,9 @@ public class SaslFactory {
         }
         if (availableMechanisms.contains("SCRAM-SHA-1")) {            
             return new SaslScramSha1();
+        }
+        if (availableMechanisms.contains("ANONYMOUS")) {
+            return new SaslAnonymous();
         }
         return null;
     }
