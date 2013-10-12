@@ -103,6 +103,8 @@ public class StringUtils {
         src = stringReplace(src, "&gt;", ">");
         src = stringReplace(src, "&lt;", "<");
         src = stringReplace(src, "&amp;", "&");
+        src = stringReplace(src, "&apos;", "'");
+        src = stringReplace(src, "&quot;", "\"");
         return src;
     }
 

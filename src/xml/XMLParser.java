@@ -28,7 +28,9 @@
 package xml;
 
 import java.io.ByteArrayOutputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.*;
+import util.StringUtils;
 
 public class XMLParser {
     private final static int MAX_BIN_DATASIZE=64*1024; //64 KB - experimental
@@ -65,7 +67,7 @@ public class XMLParser {
         tagName=new StringBuffer();
     }
  
-    public void parse(byte indata[], int size) throws XMLException{
+    public void parse(byte indata[], int size) throws XMLException, UnsupportedEncodingException{
         int dptr=0;
         while (size>0) {
             size--;
@@ -244,71 +246,11 @@ public class XMLParser {
         
     };
     
-    private String parsePlainText(StringBuffer sb) throws XMLException {
-        //1. output text length will be not greather than source
-        //2. sb may be destroyed - all calls to parsePlainText succeeds flushing of sb
-        int ipos=0;
-        int opos=0;
-        while (ipos<sb.length()) {
-            char c=sb.charAt(ipos++);
-            if (c=='&') { 
-                StringBuffer xmlChar=new StringBuffer(6);
-                while (true) {
-                    c=sb.charAt(ipos++);
-                    if (c==';') break;
-                    xmlChar.append(c);
-                }
-                String s=xmlChar.toString();
-
-                if (s.equals("amp")) c='&'; else
-                if (s.equals("apos")) c='\''; else
-                if (s.equals("quot")) c='\"'; else
-                if (s.equals("gt")) c='>'; else
-                if (s.equals("lt")) c='<'; else
-                if (xmlChar.charAt(0)=='#') {
-                    xmlChar.deleteCharAt(0);
-                    c=(char)Integer.parseInt(xmlChar.toString());
-                }
-                sb.setCharAt(opos++, c); 
-                continue;
-            }
-            if (c<0x80) { 
-                sb.setCharAt(opos++, c); 
-                continue; 
-            }
-
-            if (c<0xc0) throw new XMLException("Bad UTF-8 Encoding encountered");
-
-            char c2=sb.charAt(ipos++);
-            if (c2<0x80) throw new XMLException("Bad UTF-8 Encoding encountered");
-
-            if (c<0xe0) {
-                sb.setCharAt(opos++, (char)(((c & 0x1f)<<6) | (c2 &0x3f)) );
-                continue;
-            }
-
-            char c3=sb.charAt(ipos++);
-            if (c3<0x80) throw new XMLException("Bad UTF-8 Encoding encountered");
-
-            if (c<0xf0) {
-                sb.setCharAt(opos++, (char)(((c & 0x0f)<<12) | ((c2 &0x3f) <<6) | (c3 &0x3f)) );
-                continue;
-            }
-            
-            char c4=sb.charAt(ipos++);
-            if (c4<0x80) throw new XMLException("Bad UTF-8 Encoding encountered");
-        
-            //return ((chr & 0x07)<<18) | ((chr2 &0x3f) <<12) |((chr3 &0x3f) <<6) | (chr4 &0x3f);
-            sb.setCharAt(opos++, '?'); // java char type contains only 16-bit symbols
-            continue;
-            
-        }        
-
-        sb.setLength(opos);
-        return sb.toString();
+    private String parsePlainText(StringBuffer sb) throws XMLException, UnsupportedEncodingException {
+        return StringUtils.unescapeTags(new String(sb.toString().getBytes("ISO8859-1"), "UTF-8"));
     }
 
-    public void pushOutPlainText() throws XMLException {
+    public void pushOutPlainText() throws XMLException, UnsupportedEncodingException {
         if (state==PLAIN_TEXT) {
             if (sbuf.length()>0)
                 eventListener.plainTextEncountered( parsePlainText(sbuf) );
