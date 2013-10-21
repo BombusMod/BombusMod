@@ -26,5 +26,5 @@ before_install:
 
 before_script: 
   - cd android/
-  - android update project -p .
+  - android update project -p . --target $ANDROID_TARGET
 script: "ant release-nonb"
