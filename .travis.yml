@@ -1,3 +1,32 @@
 language: java
-jdk:
-  - oraclejdk7
+jdk: oraclejdk7
+env:
+  matrix:
+    # android-16 is always included
+    - ANDROID_SDKS=android-17,sysimg-17 ANDROID_TARGET=android-17  ANDROID_ABI=armeabi-v7a
+before_install:
+  # Install base Android SDK
+  - sudo apt-get update -qq
+  - if [ `uname -m` = x86_64 ]; then sudo apt-get install -qq libstdc++6:i386 lib32z1; fi
+  - wget -O android-sdk.tgz http://dl.google.com/android/android-sdk_r22.2.1-linux.tgz
+  - tar xzf android-sdk.tgz
+  - export ANDROID_HOME=$PWD/android-sdk-linux
+  - export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
+  # Install Android build tools
+  - wget https://dl-ssl.google.com/android/repository/build-tools_r18.1-linux.zip
+  - unzip build-tools_r18.1-linux.zip -d $ANDROID_HOME
+  - mkdir -p $ANDROID_HOME/build-tools/
+  - mv $ANDROID_HOME/android-4.3 $ANDROID_HOME/build-tools/18.1
+
+  # Install required components.
+  # For a full list, run `android list sdk -a --extended`
+  # Note that sysimg-16 downloads the ARM, x86 and MIPS images (we should optimize this).
+  # Note that `echo y` only accepts the first license. This is actually convenient, since
+  # it prevents the installation of the ATOM and MIPS emulator images. It might cause
+  # issues in the future though.
+  - echo y | android update sdk --filter platform-tools,build-tools-18.1,android-16,extra-android-support,$ANDROID_TARGET --no-ui --force > /dev/null
+before_script: 
+  - cd android/
+  - android update project -p . --target $ANDROID_TARGET
+  - wget -O antenna-bin-1.2.1-beta.jar http://downloads.sourceforge.net/project/antenna/antenna/Antenna%201.2.1-beta/antenna-bin-1.2.1-beta.jar?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fantenna%2Ffiles%2F&ts=1382361452&use_mirror=citylan
+script: "ant release-nonb"
