@@ -24,5 +24,7 @@ before_install:
   # issues in the future though.
   - echo y | android update sdk --filter platform-tools,build-tools-18.0.1,android-16,extra-android-support,$ANDROID_SDKS --no-ui --force > /dev/null
 
-before_script: "cd android/"
+before_script: 
+  - cd android/
+  - android update-project -p .
 script: "ant release-nonb"
