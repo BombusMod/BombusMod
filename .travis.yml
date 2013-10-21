@@ -23,8 +23,8 @@ before_install:
   # it prevents the installation of the ATOM and MIPS emulator images. It might cause
   # issues in the future though.
   - echo y | android update sdk --filter platform-tools,build-tools-18.0.1,android-16,extra-android-support,$ANDROID_SDKS --no-ui --force > /dev/null
-
 before_script: 
   - cd android/
   - android update project -p . --target $ANDROID_TARGET
+  - wget -O antenna-bin-1.2.1-beta.jar http://downloads.sourceforge.net/project/antenna/antenna/Antenna%201.2.1-beta/antenna-bin-1.2.1-beta.jar?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fantenna%2Ffiles%2F&ts=1382361452&use_mirror=citylan
 script: "ant release-nonb"
