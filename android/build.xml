@@ -61,8 +61,6 @@
     </target>
 -->
 
-        <property name="asset.dir" value="assets" />
-        <property name="asset.absolute.dir" location="../resources/android" />
         <property name="source.dir" value="src" />
         <property name="source.absolute.dir" location="${source.dir}:../build/android/preprocessed" />
 
