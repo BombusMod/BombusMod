@@ -69,10 +69,17 @@ public class Account {
         String proxy = null;
         String host = JID.getServer();
         int tempPort = port;
-
+        boolean resolveHostname = true;
         if (hostAddr != null && hostAddr.length() > 0) {
             host = hostAddr;
-        } else {
+            resolveHostname = false;
+        } 
+//#if HTTPCONNECT || HTTPBIND || HTTPPOLL                    
+//#         if (proxyHostAddr != null && proxyHostAddr.length() > 0) {
+//#             resolveHostname = false;
+//#         }
+//#endif        
+        if (resolveHostname) {
             DnsSrvResolver dns = new DnsSrvResolver();
             int type = DnsSrvResolver.XMPP_TCP;
 //#if HTTPCONNECT || HTTPBIND || HTTPPOLL                    

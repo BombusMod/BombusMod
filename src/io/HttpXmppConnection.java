@@ -11,6 +11,7 @@
 //# 
 //# package io;
 //# 
+//# import Client.StaticData;
 //# import java.io.DataInputStream;
 //# import java.io.DataOutputStream;
 //# import java.io.IOException;
@@ -109,6 +110,7 @@
 //#             is.close();
 //#             hc.close();
 //#         } catch (Exception e) {
+//#             e.printStackTrace();
 //#             opened=false;
 //#             error=e.toString();            
 //#         }
@@ -163,6 +165,9 @@
 //#             try {
 //#                 httpPostRequest(outData.toString());
 //#             } catch (IOException ex) {
+//#                 if (StaticData.Debug) {
+//#                     ex.printStackTrace();
+//#                 }
 //#             }
 //#             outData = new StringBuffer();
 //#             threadsCount--;
