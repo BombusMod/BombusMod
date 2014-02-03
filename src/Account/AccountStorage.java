@@ -56,8 +56,8 @@ public class AccountStorage {
 
             inputStream.readBoolean(); //firstrun // was dnsresolver
 //#ifdef HTTPCONNECT
-//#             a.proxyUser = inputStream.readUTF();
-//#             a.proxyPass = inputStream.readUTF();
+//#             a.setProxyUser(inputStream.readUTF());
+//#             a.setProxyPass(inputStream.readUTF());
 //#else
             inputStream.readUTF();
             inputStream.readUTF();
@@ -113,8 +113,8 @@ public class AccountStorage {
 
             outputStream.writeBoolean(true);  //firstrun // dns-resolver
 //#ifdef HTTPCONNECT
-//#             outputStream.writeUTF(account.proxyUser);
-//#             outputStream.writeUTF(account.proxyPass);
+//#             outputStream.writeUTF(account.getProxyUser());
+//#             outputStream.writeUTF(account.getProxyPass());
 //#else
             outputStream.writeUTF("");
             outputStream.writeUTF("");
