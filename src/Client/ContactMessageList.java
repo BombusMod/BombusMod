@@ -612,6 +612,9 @@ public class ContactMessageList extends MessageList {
 //#         if (numberEndsIndex < 0) {
 //#             numberEndsIndex = str.indexOf(" http://psto.net/", lastStrStartIndex);
 //#         }
+//#         if (numberEndsIndex < 0) {
+//#             numberEndsIndex = str.indexOf(" http://point.im/", lastStrStartIndex);
+//#         }
 //#         if (numberEndsIndex > 0) {
 //#             numberEndsIndex = str.indexOf(' ', lastStrStartIndex);
 //#             return str.substring(lastStrStartIndex, numberEndsIndex);

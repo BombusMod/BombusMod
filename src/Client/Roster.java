@@ -857,7 +857,8 @@ public class Roster
 //#     public boolean isJuickContact(Contact c) {
 //#         return JidUtils.equalsViaJ2J(c.jid, "juick@juick.com")
 //#                 || JidUtils.equalsViaJ2J(c.jid, "psto@psto.net")
-//#                 || JidUtils.equalsViaJ2J(c.jid, "lij.habahaba.im");
+//#                 || JidUtils.equalsViaJ2J(c.jid, "lij.habahaba.im")
+//#                 || JidUtils.equalsViaJ2J(c.jid, "p@point.im");
 //#     }
 //# 
 //#     public void addJuickContact(Contact c) {
