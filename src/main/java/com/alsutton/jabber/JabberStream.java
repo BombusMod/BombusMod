@@ -25,38 +25,39 @@ THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package com.alsutton.jabber;
 
-import xmpp.Account;
 import Client.Config;
-import Client.StaticData;
-//#ifdef CONSOLE
 import Client.Msg;
+import Client.StaticData;
 import Console.StanzasList;
-//#endif
 import com.alsutton.jabber.datablocks.Iq;
-//#ifdef HTTPBIND
-//# import com.alsutton.jabber.datablocks.Presence;
-//# import io.HttpBindConnection;
-//#endif
 import com.alsutton.jabber.datablocks.Message;
 import com.alsutton.jabber.datablocks.Presence;
-import io.Utf8IOStream;
-import java.io.*;
-import java.util.*;
-import java.net.Socket;
-
-import xml.*;
+import io.tls.TlsIO;
 import locale.SR;
-import xmpp.MessageDispatcher;
+import xml.XMLEventListener;
+import xml.XMLException;
+import xml.XMLParser;
+import xmpp.Account;
 import xmpp.XmppError;
 import xmpp.extensions.IqPing;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.Socket;
+import java.util.List;
+import java.util.Stack;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.Vector;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 public class JabberStream implements XMLEventListener, Runnable {
 
-    private final Utf8IOStream iostream;
     private final Stack tagStack = new Stack();
     public JabberListener listener;
-    final MessageDispatcher messageDispatcher = new MessageDispatcher();
-    private final Vector blockListeners = new Vector();
+    private final List<JabberBlockListener> blockListeners = new CopyOnWriteArrayList<>();
+    private final Vector outgoingPackets = new Vector();
     private String server; // for ping
     public boolean pingSent;
     public boolean loggedIn;
@@ -65,51 +66,49 @@ public class JabberStream implements XMLEventListener, Runnable {
     private boolean secured;
     public Vector outgoingQueries = new Vector();
     private Socket connection;
+    private long stanzasRecv = 0;
+    private long stanzasSent = 0;
+    private boolean managementSupported;
+    private boolean reliable;
+    private boolean resumptionAllowed;
+    private String reliableSessionId;
+
+    public JabberStream() {
+    }
 
     /**
-     * Constructor. Connects to the server and sends the jabber welcome message.
+     * Connects to the server and sends the jabber welcome message.
      *
      */
-    public JabberStream(String server, String host, int port, String proxy, int proxyPort) throws IOException {
+    public void connect(String server, String host, int port, String proxy, int proxyPort) throws IOException {
         this.server = server;
 
         boolean waiting = Config.getInstance().istreamWaiting;
 
         if (proxy == null) {
             connection = new Socket(host, port);
-            iostream = new Utf8IOStream(connection);
+            inpStream = connection.getInputStream();
+            outStream = connection.getOutputStream();
         } else {
             io.HttpProxyConnection proxyConnection = io.HttpProxyConnection.open(host, port, proxy, proxyPort,
                     StaticData.getInstance().account.getProxyUser(),
                     StaticData.getInstance().account.getProxyPass());
-            iostream = new Utf8IOStream(proxyConnection);
+            connection = proxyConnection.getSocket();
+            inpStream = proxyConnection.openInputStream();
+            outStream = proxyConnection.openOutputStream();
         }
+        try {
+            connection.setKeepAlive(true);
+            connection.setSoLinger(true, 300);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        length = 0;
+        pbyte = 0;
     }
 
     public void initiateStream() throws IOException {
-//#ifdef HTTPBIND
-//#         if (connection instanceof HttpBindConnection) {
-//#             JabberDataBlock body = new JabberDataBlock("body", null, null);
-//#             body.setAttribute("to", server);
-//#             body.setNameSpace("http://jabber.org/protocol/httpbind");
-//#             body.setAttribute("xmpp:version", "1.0");
-//#             body.setAttribute("ver", "1.6");
-//#             body.setAttribute("xmlns:xmpp", "urn:xmpp:xbosh");
-//#             body.setAttribute("rid", ((HttpBindConnection)connection).nextRid());
-//#             if (((HttpBindConnection)connection).sid == null) // first stream
-//#             {
-//#                 //body.setAttribute("from", Account.);
-//#                 body.setAttribute("wait", "60");
-//#                 body.setAttribute("hold", "1");                
-//#             }
-//#             else // stream restarts
-//#             {
-//#                 body.setAttribute("sid", ((HttpBindConnection)connection).sid);
-//#                 body.setAttribute("xmpp:restart", "true");
-//#             }
-//#             send(body);            
-//#         } else {
-//#endif
         StringBuffer header = new StringBuffer("<stream:stream to='").append(server).append("' xmlns='jabber:client' xmlns:stream='http://etherx.jabber.org/streams'");
         header.append(" version='1.0'");
         if (SR.MS_XMLLANG != null) {
@@ -117,30 +116,9 @@ public class JabberStream implements XMLEventListener, Runnable {
         }
         header.append('>');
         send(header.toString());
-//#ifdef HTTPBIND
-//#         }
-//#endif
     }
 
     public boolean tagStart(String name, Vector attributes) {
-//#ifdef HTTPBIND
-//#         if (connection instanceof HttpBindConnection) {
-//#              if (name.equals("body")) {
-//#                  if (((HttpBindConnection) connection).sid == null) {
-//#                      xmppV1 = true;
-//#                      ((HttpBindConnection) connection).sid = XMLParser.extractAttribute("sid", attributes);
-//#                      try {
-//#                      ((HttpBindConnection) connection).waitPeriod = Integer.parseInt(XMLParser.extractAttribute("wait", attributes));
-//#                      } catch (NumberFormatException e){ // Prosody bug: http://code.google.com/p/lxmppd/issues/detail?id=219
-//#                          ((HttpBindConnection) connection).waitPeriod = 30;
-//#                      }
-//#                  } else {
-//#                      // on restart stream
-//#                      }
-//#                  dispatcher.broadcastBeginConversation();
-//#              }
-//#          }
-//#endif
         JabberDataBlock in;
         StaticData.getInstance().updateTrafficIn();
 
@@ -154,7 +132,7 @@ public class JabberStream implements XMLEventListener, Runnable {
             return false;
         } else {
             in = new JabberDataBlock(name, attributes);
-        }        
+        }
 
         if (name.equals("stream")) {
             sessionId = XMLParser.extractAttribute("id", attributes);
@@ -165,7 +143,7 @@ public class JabberStream implements XMLEventListener, Runnable {
             return false;
         }
         tagStack.push(in);
-        
+
         return (name.equals("BINVAL"));
     }
 
@@ -176,31 +154,12 @@ public class JabberStream implements XMLEventListener, Runnable {
     public String getSessionId() {
         return sessionId;
     }
-    
+
     public boolean isSecured() {
         return secured;
     }
 
-    public void tagEnd(String name) throws XMLException {
-//#ifdef HTTPBIND
-//#        if (connection instanceof HttpBindConnection) {
-//#             if (currentBlock != null) {
-//#                 if (currentBlock.isJabberNameSpace("http://jabber.org/protocol/httpbind")) {
-//#                     if (loggedIn && ((HttpBindConnection)connection).threadsCount == 0 ) {
-//#                         new Thread(keepAlive).start();
-//#                     }
-//#                     Vector blocks = currentBlock.getChildBlocks();
-//#                     if (blocks == null) {
-//#                         return;
-//#                     }
-//#                     for (Enumeration e = blocks.elements(); e.hasMoreElements();) {                                                
-//#                         dispatchXmppStanza((JabberDataBlock) e.nextElement());
-//#                     }
-//#                     sendKeepAlive();                    
-//#                 }
-//#             }
-//#         }
-//#endif
+    public void tagEnd(String name) {
         if (name.equals("stream")) {
             if (listener != null) {
                 listener.connectionTerminated(new XMLException("Normal stream shutdown"));
@@ -224,6 +183,10 @@ public class JabberStream implements XMLEventListener, Runnable {
     protected void dispatchXmppStanza(JabberDataBlock dataBlock) {
 
         if (dataBlock != null) {
+            if (isReliable() && dataBlock.getAttribute("xmlns") == null // jabber:client
+                    && !dataBlock.getTagName().equals("features")) {
+                incStanzasRecv();
+            }
             try {
                 if (dataBlock instanceof Iq) {
                     // verify id attribute
@@ -243,24 +206,14 @@ public class JabberStream implements XMLEventListener, Runnable {
                 }
 
                 int processResult = JabberBlockListener.BLOCK_REJECTED;
-                int i = 0;
-                int j = blockListeners.size();
-                while (i < j) {
-                    processResult = ((JabberBlockListener) blockListeners.elementAt(i)).blockArrived(dataBlock);
+                for (JabberBlockListener blockListener : blockListeners) {
+                    processResult = blockListener.blockArrived(dataBlock);
                     if (processResult == JabberBlockListener.BLOCK_PROCESSED) {
                         break;
                     }
                     if (processResult == JabberBlockListener.NO_MORE_BLOCKS) {
-                        j--;
-                        blockListeners.removeElementAt(i);
+                        blockListeners.remove(blockListener);
                         break;
-                    }
-                    i++;
-                } 
-                
-                if (processResult == JabberBlockListener.BLOCK_REJECTED) {
-                    if (listener != null) {
-                        processResult = messageDispatcher.blockArrived(dataBlock);
                     }
                 }
 
@@ -289,6 +242,13 @@ public class JabberStream implements XMLEventListener, Runnable {
     }
     private boolean connected = false;
 
+    public void flush() throws IOException {
+        while (!outgoingPackets.isEmpty()) {
+            sendPacket((String) outgoingPackets.elementAt(0));
+            outgoingPackets.removeElementAt(0);
+        }
+    }
+
     /**
      * The threads run method. Handles the parsing of incomming data in its
      * own thread.
@@ -301,7 +261,10 @@ public class JabberStream implements XMLEventListener, Runnable {
             byte cbuf[] = new byte[32768];
 
             while (connected) {
-                int length = iostream.read(cbuf);
+
+                flush();
+
+                int length = read(cbuf);
                 if (length == 0) {
                     try {
                         Thread.sleep(100);
@@ -326,24 +289,7 @@ public class JabberStream implements XMLEventListener, Runnable {
 
     private void closeConnection() {
         try {
-//#ifdef HTTPBIND
-//#             if (connection instanceof HttpBindConnection) {
-//#                 JabberDataBlock body = new JabberDataBlock("body", null, null);
-//#                 body.setNameSpace("http://jabber.org/protocol/httpbind");
-//#                 body.setAttribute("rid", ((HttpBindConnection) connection).nextRid());
-//#                 body.setAttribute("sid", ((HttpBindConnection) connection).sid);
-//#                 body.setAttribute("type", "terminate");
-//#                 Presence p = new Presence(null, Presence.PRS_OFFLINE);
-//#                 p.setNameSpace("jabber:client");
-//#                 body.addChild(p);
-//#                 send(body);
-//#             } else {
-//#endif
             send("</stream:stream>");
-//#ifdef HTTPBIND
-//#             }
-//#endif
-
             //TODO: see FS#528
             try {
                 Thread.sleep(500);
@@ -353,11 +299,6 @@ public class JabberStream implements XMLEventListener, Runnable {
 
             //connection.close();
         } catch (IOException e) {
-        }
-        if (iostream != null) {
-            iostream.close();
-            /* if (!Config.getInstance().oldNokiaS60)
-            iostream = null; // may hang device*/
         }
     }
 
@@ -369,8 +310,21 @@ public class JabberStream implements XMLEventListener, Runnable {
         connected = false;
         // wait to finish parser
         try {
+            flush();
             Thread.sleep(100L);
+        } catch (IOException ex) {
+            ex.printStackTrace();
         } catch (InterruptedException ex) {
+        }
+        try {
+            outStream.close();
+            outStream = null;
+        } catch (Exception e) {
+        }
+        try {
+            inpStream.close();
+            inpStream = null;
+        } catch (Exception e) {
         }
     }
 
@@ -380,18 +334,6 @@ public class JabberStream implements XMLEventListener, Runnable {
      * @param The data to send to the server.
      */
     public void sendKeepAlive() {
-
-//#ifdef HTTPBIND
-//#         if (connection instanceof HttpBindConnection) {
-//#             if (((HttpBindConnection) connection).threadsCount < 2 && loggedIn) {
-//#                 try {
-//#                     send("");
-//#                 } catch (IOException ex) {
-//#                     dispatcher.broadcastTerminatedConnection(new Exception("HTTP Exception " + ex.getMessage()));
-//#                 }
-//#             }
-//#         } else {
-//#else            
         if (pingSent) {
             if (listener != null) {
                 listener.connectionTerminated(new Exception("Ping Timeout"));
@@ -400,27 +342,11 @@ public class JabberStream implements XMLEventListener, Runnable {
             //System.out.println("Ping myself");
             ping();
         }
-//#endif        
-//#ifdef HTTPBIND
-//#         }
-//#endif        
-    }
-
-    private void sendPacket(String data) throws IOException {
-        iostream.send(data);
-//#ifdef CONSOLE
-        addLog(data, 1);
-//#endif
     }
 
     public void send(String data) throws IOException {
         sendPacket(data);
     }
-
-    private void sendBuf(StringBuffer data) throws IOException {
-        sendPacket(data.toString());
-    }
-
     /**
      * Method of sending a Jabber datablock to the server.
      *
@@ -436,12 +362,12 @@ public class JabberStream implements XMLEventListener, Runnable {
         try {
             StringBuffer buf = new StringBuffer();
             block.constructXML(buf);
-            sendBuf(buf);
+            send(buf.toString());
         } catch (Exception e) {
         }
     }
 
-//#ifdef CONSOLE
+    //#ifdef CONSOLE
     public void addLog(String data, int type) {
         StanzasList.getInstance().add(data, type);
     }
@@ -457,13 +383,13 @@ public class JabberStream implements XMLEventListener, Runnable {
         if (blockListeners.indexOf(listener) > 0) {
             return;
         }
-        blockListeners.addElement(listener);
+        blockListeners.add(listener);
 
     }
 
     public void cancelBlockListener(JabberBlockListener listener) {
         try {
-            blockListeners.removeElement(listener);
+            blockListeners.remove(listener);
         } catch (Exception e) {
         }
     }
@@ -472,16 +398,16 @@ public class JabberStream implements XMLEventListener, Runnable {
         int index = 0;
         int j = blockListeners.size();
         while (index < j) {
-            Object list = blockListeners.elementAt(index);
+            Object list = blockListeners.get(index);
             if (list.getClass().equals(removeClass)) {
-                blockListeners.removeElementAt(index);
+                blockListeners.remove(index);
                 j--;
             } else {
                 index++;
             }
         }
 
-    }    
+    }
 
     /**
      * Method to tell the listener the stream is ready for talking to.
@@ -497,30 +423,6 @@ public class JabberStream implements XMLEventListener, Runnable {
         send(IqPing.query(StaticData.getInstance().account.JID.getServer(), "ping"));
     }
 
-//#if ZLIB
-//#     public void setZlibCompression() {
-//#         iostream.setStreamCompression();
-//#     }
-//# 
-//#     public String getStreamStats() {
-//#         return iostream.getStreamStats();
-//#     }
-//# 
-//#     public String getConnectionData() {
-//#         return iostream.getConnectionData();
-//#     }
-//#endif
-//#if TLS
-    public void setTls() throws Exception {
-        iostream.setTls();
-        secured = true;
-    }
-//#endif        
-
-    public long getBytes() {
-        return iostream.getBytes();
-    }
-
     public void plainTextEncountered(String text) {
         if (!tagStack.isEmpty()) {
             ((JabberDataBlock) tagStack.peek()).setText(text);
@@ -533,4 +435,209 @@ public class JabberStream implements XMLEventListener, Runnable {
             ((JabberDataBlock) tagStack.peek()).addChild(binvalue);
         }
     }
+
+    /**
+     * @return the reliable
+     */
+    public boolean isReliable() {
+        return reliable;
+    }
+
+    /**
+     * @param reliable the reliable to set
+     */
+    public void setReliable(boolean reliable) {
+        this.reliable = reliable;
+    }
+
+    /**
+     * @return the stanzasRecv
+     */
+    public long getStanzasRecv() {
+        return stanzasRecv;
+    }
+
+    /**
+     * @param stanzasRecv the stanzasRecv to set
+     */
+    public void incStanzasRecv() {
+        setStanzasRecv(getStanzasRecv() + 1);
+    }
+
+    /**
+     * @return the stanzasSent
+     */
+    public long getStanzasSent() {
+        return stanzasSent;
+    }
+
+    /**
+     * @return the managementSupported
+     */
+    public boolean isManagementSupported() {
+        return managementSupported;
+    }
+
+    /**
+     * @param managementSupported the managementSupported to set
+     */
+    public void setManagementSupported(boolean managementSupported) {
+        this.managementSupported = managementSupported;
+    }
+
+    /**
+     * @return the resumptionAllowed
+     */
+    public boolean isResumptionAllowed() {
+        return resumptionAllowed;
+    }
+
+    /**
+     * @param resumptionAllowed the resumptionAllowed to set
+     */
+    public void setResumptionAllowed(boolean resumptionAllowed) {
+        this.resumptionAllowed = resumptionAllowed;
+    }
+
+    /**
+     * @return the reliableSessionId
+     */
+    public String getReliableSessionId() {
+        return reliableSessionId;
+    }
+
+    /**
+     * @param reliableSessionId the reliableSessionId to set
+     */
+    public void setReliableSessionId(String reliableSessionId) {
+        this.reliableSessionId = reliableSessionId;
+    }
+
+    /**
+     * @param stanzasRecv the stanzasRecv to set
+     */
+    public void setStanzasRecv(long stanzasRecv) {
+        this.stanzasRecv = stanzasRecv;
+    }
+
+    /**
+     * @param stanzasSent the stanzasSent to set
+     */
+    public void setStanzasSent(long stanzasSent) {
+        this.stanzasSent = stanzasSent;
+    }
+
+    private class TimerTaskKeepAlive extends TimerTask {
+
+        private Timer t;
+
+        public TimerTaskKeepAlive(int periodSeconds) {
+            t = new Timer();
+            //this.period=periodSeconds;
+            long periodRun = periodSeconds * 1000; // milliseconds
+            t.schedule(this, periodRun, periodRun);
+        }
+
+        public void run() {
+
+            if (loggedIn) {
+                sendKeepAlive();
+            }
+
+        }
+
+        public void destroyTask() {
+            if (t != null) {
+                this.cancel();
+                t.cancel();
+                t = null;
+            }
+        }
+    }
+
+    private InputStream inpStream;
+    private OutputStream outStream;
+
+    private boolean iStreamWaiting;
+
+    private long bytesRecv;
+    private long bytesSent;
+
+    public boolean tlsExclusive = false;
+    TlsIO tlsHandler;
+
+    public void setTls() throws Exception {
+        tlsExclusive = true;
+        tlsHandler = TlsIO.create(connection, inpStream, outStream,
+                StaticData.getInstance().account.JID.getServer());
+        inpStream = tlsHandler.getTlsInputStream();
+        outStream = tlsHandler.getTlsOutputStream();
+        tlsExclusive = false;
+        secured = true;
+        length = pbyte = 0;
+    }
+
+    public void sendPacket(String data) throws IOException {
+        synchronized (outStream) {
+
+            StaticData.getInstance().updateTrafficOut();
+            outStream.write(data.getBytes("UTF-8"));
+            setSent(bytesSent + data.length());
+
+            outStream.flush();
+            updateTraffic();
+        }
+        System.out.println(">> " + data);
+        addLog(data, 1);
+    }
+
+    byte cbuf[] = new byte[512];
+    int length;
+    int pbyte;
+
+    public int read(byte buf[]) throws IOException {
+        if (tlsExclusive)
+            return 0;
+        int avail = inpStream.read(buf, 0, buf.length);
+        if (avail > 0)
+            System.out.println("<< " + new String(buf, 0, avail, "UTF-8"));
+        setRecv(bytesRecv + avail);
+        updateTraffic();
+        return avail;
+    }
+
+    private void updateTraffic() {
+        StaticData.getInstance().traffic = getBytes();
+    }
+
+    private void setRecv(long bytes) {
+        bytesRecv = bytes;
+    }
+
+    private void setSent(long bytes) {
+        bytesSent = bytes;
+    }
+
+
+    public String getStreamStats() {
+        StringBuffer stats = new StringBuffer();
+        try {
+            long sent = bytesSent;
+            long recv = bytesRecv;
+            stats.append("\nStream: in=").append(recv).append(" out=").append(sent);
+        } catch (Exception e) {
+            stats = null;
+            return "";
+        }
+        return stats.toString();
+    }
+
+    public long getBytes() {
+        try {
+            return bytesSent + bytesRecv;
+        } catch (Exception e) {
+        }
+        return 0;
+    }
+
 }

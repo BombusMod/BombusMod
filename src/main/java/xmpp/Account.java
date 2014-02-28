@@ -30,6 +30,8 @@ import Client.StaticData;
 import com.alsutton.jabber.JabberStream;
 
 import io.DnsSrvResolver;
+
+import java.io.IOException;
 import java.util.Vector;
 
 public class Account {
@@ -59,7 +61,7 @@ public class Account {
         return (nick.length() == 0) ? JID.getNode() : nick;
     }    
 
-    public JabberStream openJabberStream() throws java.io.IOException {
+    public JabberStream openJabberStream() throws IOException {
         String proxy = null;
         String host = JID.getServer();
         int tempPort = port;
@@ -83,7 +85,9 @@ public class Account {
         if (isEnableProxy()) {
             proxy = proxyHostAddr;
         }
-        return new JabberStream(JID.getServer(), host, tempPort, proxy, proxyPort);
+        JabberStream stream = new JabberStream();
+        stream.connect(JID.getServer(), host, tempPort, proxy, proxyPort);
+        return stream;
     }
      public boolean isEnableProxy() {
          return enableProxy;

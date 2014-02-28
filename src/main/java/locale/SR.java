@@ -616,6 +616,9 @@ public class SR {
     public static String L_MESSAGE_TIMEOUT = loadString("Message timeout");
     public static String MS_COPY_TOPIC = loadString("Copy topic");
     public static String MS_COLLAPSE_ALL = loadString("Collapse all");
+    public static String MS_SESSION_MANAGEMENT = loadString("Session management");
+    public static String MS_SESSION_RESUMING = loadString("Session resuming");
+    public static String MS_SUPPORTED = loadString("Supported");
 
     private SR() {
     }

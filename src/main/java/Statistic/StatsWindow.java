@@ -30,6 +30,7 @@
 package Statistic;
 
 import Client.Roster;
+import Client.StaticData;
 import Menu.MenuCommand;
 import locale.SR;
 import ui.VirtualList;
@@ -46,55 +47,78 @@ import images.RosterIcons;
 public class StatsWindow
         extends DefForm {
 
-    
-    Stats st=Stats.getInstance();
-    
+
+    Stats st = Stats.getInstance();
+
     public MenuCommand cmdClear = new MenuCommand(SR.MS_CLEAR, MenuCommand.SCREEN, 2, RosterIcons.ICON_CLEAR);
-//#ifdef CLIPBOARD
-    MenuCommand cmdCopy      = new MenuCommand(SR.MS_COPY, MenuCommand.SCREEN, 1, RosterIcons.ICON_COPY);
-    MenuCommand cmdCopyPlus  = new MenuCommand("+ "+SR.MS_COPY, MenuCommand.SCREEN, 2, RosterIcons.ICON_COPYPLUS);
-//#endif
-    
-    MultiLine item=null;    
+    MenuCommand cmdCopy = new MenuCommand(SR.MS_COPY, MenuCommand.SCREEN, 1, RosterIcons.ICON_COPY);
+    MenuCommand cmdCopyPlus = new MenuCommand("+ " + SR.MS_COPY, MenuCommand.SCREEN, 2, RosterIcons.ICON_COPYPLUS);
+
+    MultiLine item = null;
 
     /**
      * Creates a new instance of StatsWindow
      */
     public StatsWindow() {
         super(SR.MS_STATS);
-        item=new MultiLine(SR.MS_ALL, StringUtils.getSizeString(st.getAllTraffic())); item.selectable=true; itemsList.addElement(item);
+        item = new MultiLine(SR.MS_ALL, StringUtils.getSizeString(st.getAllTraffic()));
+        item.selectable = true;
+        itemsList.addElement(item);
 
-        item=new MultiLine(SR.MS_PREVIOUS_, StringUtils.getSizeString(st.getLatest())); item.selectable=true; itemsList.addElement(item);
-        
-        item=new MultiLine(SR.MS_CURRENT, StringUtils.getSizeString(Stats.getCurrentTraffic())); item.selectable=true; itemsList.addElement(item);
-//#if ZLIB
-//#         if (StaticData.getInstance().roster.isLoggedIn()) {
-//#             item=new MultiLine(SR.MS_COMPRESSION, StaticData.getInstance().getTheStream().getStreamStats()); item.selectable=true; itemsList.addElement(item);
-//#         }
-//# 
-//#         if (StaticData.getInstance().roster.isLoggedIn()) {
-//#             item=new MultiLine(SR.MS_CONNECTED, StaticData.getInstance().getTheStream().getConnectionData()); item.selectable=true; itemsList.addElement(item);
-//#         }
-//#endif
-        item=new MultiLine(SR.MS_CONN, Integer.toString(st.getSessionsCount())); item.selectable=true; itemsList.addElement(item);
-                
-        item=new MultiLine(SR.MS_STARTED, Roster.startTime); item.selectable=true; itemsList.addElement(item);
+        item = new MultiLine(SR.MS_PREVIOUS_, StringUtils.getSizeString(st.getLatest()));
+        item.selectable = true;
+        itemsList.addElement(item);
+
+        item = new MultiLine(SR.MS_CURRENT, StringUtils.getSizeString(Stats.getCurrentTraffic()));
+        item.selectable = true;
+        itemsList.addElement(item);
+/* if ZLIB
+         if (StaticData.getInstance().roster.isLoggedIn()) {
+             item = new MultiLine(SR.MS_COMPRESSION, StaticData.getInstance().theStream.getStreamStats());
+             item.selectable = true;
+             itemsList.addElement(item);
+         }
+
+         if (StaticData.getInstance().roster.isLoggedIn()) {
+             item = new MultiLine(SR.MS_CONNECTED, StaticData.getInstance().theStream.getConnectionData());
+             item.selectable = true;
+             itemsList.addElement(item);
+         }
+endif */
+        item = new MultiLine(SR.MS_CONN, Integer.toString(st.getSessionsCount()));
+        item.selectable = true;
+        itemsList.addElement(item);
+
+        item = new MultiLine(SR.MS_STARTED, Roster.startTime);
+        item.selectable = true;
+        itemsList.addElement(item);
+
+        String managementSupported = StaticData.getInstance().getTheStream()
+                .isManagementSupported() ? SR.MS_YES : SR.MS_NO;
+        String managementEnabled = StaticData.getInstance().getTheStream()
+                .isReliable() ? SR.MS_YES : SR.MS_NO;
+        String smInfo = SR.MS_SUPPORTED + ": "
+                + managementSupported
+                + "\n" + SR.MS_ENABLED + ": " + managementEnabled;
+        if (StaticData.getInstance().getTheStream().getReliableSessionId() != null) {
+            smInfo += "\n" + "Session ID: "
+                    + "\n" + StaticData.getInstance().getTheStream().getReliableSessionId();
+        }
+        item = new MultiLine(SR.MS_SESSION_MANAGEMENT, smInfo);
+        item.selectable = true;
+        itemsList.addElement(item);
     }
 
     public void commandState() {
         menuCommands.removeAllElements();
-//#ifdef CLIPBOARD
         addMenuCommand(cmdCopy);
         if (!ClipBoardIO.getInstance().isEmpty()) {
             addMenuCommand(cmdCopyPlus);
         }
-
-//#endif        
         addMenuCommand(cmdClear);
     }
 
     public void menuAction(MenuCommand command, VirtualList displayable) {
-//#ifdef CLIPBOARD
         if (command == cmdCopy) {
             try {
                 String str = ((MultiLine) getFocusedObject()).toString();
@@ -112,8 +136,7 @@ public class StatsWindow
                 ClipBoardIO.getInstance().append(str);
             } catch (Exception e) {/*no messages*/}
         }
-//#endif
-        if (command==cmdClear) {
+        if (command == cmdClear) {
             st.saveToStorage(true);
             cmdCancel();
         }
@@ -129,7 +152,7 @@ public class StatsWindow
 
         return super.doUserKeyAction(command_id);
     }
-    
+
     public void eventLongOk() {
         showMenu();
     }
