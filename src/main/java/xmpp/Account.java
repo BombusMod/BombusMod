@@ -30,6 +30,8 @@ import Client.StaticData;
 import com.alsutton.jabber.JabberStream;
 
 import io.DnsSrvResolver;
+
+import java.io.IOException;
 import java.util.Vector;
 
 public class Account {
@@ -63,96 +65,27 @@ public class Account {
         return (nick.length() == 0) ? JID.getNode() : nick;
     }    
 
-    public JabberStream openJabberStream() throws java.io.IOException {
-        String proxy = null;
+    public JabberStream openJabberStream() throws IOException {
         String host = JID.getServer();
         int tempPort = port;
         boolean resolveHostname = true;
         if (hostAddr != null && hostAddr.length() > 0) {
             host = hostAddr;
             resolveHostname = false;
-        } 
-//#if HTTPCONNECT || HTTPBIND || HTTPPOLL                    
-//#         if (proxyHostAddr != null && proxyHostAddr.length() > 0) {
-//#             resolveHostname = false;
-//#         }
-//#endif        
+        }
         if (resolveHostname) {
             DnsSrvResolver dns = new DnsSrvResolver();
-//#if HTTPCONNECT || HTTPBIND || HTTPPOLL                    
-//#             if (enableProxy) {
-//#ifdef HTTPBIND
-//#                 type = DnsSrvResolver.XMPP_HTTPBIND;
-//#endif            
-//#ifdef HTTPPOLL
-//#                 type = DnsSrvResolver.XMPP_HTTPPOLL;
-//#endif            
-//#             }
-//#endif            
-            if (dns.getSrv(JID.getServer())) {
+            int type = DnsSrvResolver.XMPP_TCP;
+            if (dns.getSrv(JID.getServer(), type)) {
                 host = dns.getHost();
                 tempPort = dns.getPort();
-//#if HTTPBIND || HTTPPOLL
-//#                 proxyHostAddr = host;
-//#endif                
             }
         }
 
-        StringBuffer url = new StringBuffer(host);
-
-//#if HTTPPOLL || HTTPCONNECT || HTTPBIND
-//#         if (!isEnableProxy()) {
-//#             url.insert(0, "socket://");
-//#         } else {
-//#if HTTPPOLL || HTTPBIND
-//#              proxy = proxyHostAddr;
-//#elif HTTPCONNECT
-//#             proxy = "socket://" + proxyHostAddr + ':' + getProxyPort();
-//#endif
-//#         }
-//#else
-//#if !(android)        
-//#             url.insert(0, "socket://");
-//#endif            
-//#endif
-        return new JabberStream(JID.getServer(), url.toString(), tempPort, proxy);
+        JabberStream stream = new JabberStream();
+        stream.connect(JID.getServer(), host, tempPort, null);
+        return stream;
     }
-
-//#if HTTPPOLL || HTTPCONNECT || HTTPBIND
-//#     public boolean isEnableProxy() {
-//#         return enableProxy;
-//#     }
-//# 
-//#     public void setEnableProxy(boolean enableProxy) {
-//#         this.enableProxy = enableProxy;
-//#     }
-//# 
-//#     public int getProxyPort() {
-//#         return proxyPort;
-//#     }
-//# 
-//#     public void setProxyPort(int proxyPort) {
-//#         this.proxyPort = proxyPort;
-//#     }
-//#ifdef HTTPCONNECT
-//# 
-//#     public String getProxyUser() {
-//#         return proxyUser;
-//#     }
-//# 
-//#     public void setProxyUser(String UserName) {
-//#         this.proxyUser = UserName;
-//#     }
-//# 
-//#     public String getProxyPass() {
-//#         return proxyPass;
-//#     }
-//# 
-//#     public void setProxyPass(String Password) {
-//#         this.proxyPass = Password;
-//#     }
-//#endif
-//#endif 
 
     public boolean useCompression() {
         return compression;
