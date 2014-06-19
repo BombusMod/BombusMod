@@ -91,16 +91,14 @@ public class Config {
     public boolean ghostMotor = false;
     //public boolean blFlash=!ghostMotor; //true;
     public boolean muc119 = true;	// before muc 1.19 use muc#owner instead of muc#admin
-//#ifdef AUTOSTATUS
-//#     public final static int AWAY_OFF=0;
-//#     public final static int AWAY_LOCK = 1;
-//#     public final static int AWAY_MESSAGE = 2;
-//#     public final static int AWAY_IDLE = 3;
-//# 
-//#     public static int autoAwayType = 0;
-//#     public static int autoAwayDelay = 5; //5 minutes
-//#     public static boolean useMyStatusMessages = true;
-//#endif
+    public final static int AWAY_OFF=0;
+    public final static int AWAY_LOCK = 1;
+    public final static int AWAY_MESSAGE = 2;
+    public final static int AWAY_IDLE = 3;
+
+    public static int autoAwayType = 0;
+    public static int autoAwayDelay = 5; //5 minutes
+    public static boolean useMyStatusMessages = true;
     public boolean allowMinimize = false;
     public int profile = AlertProfile.ALL;
     public int lastProfile = AlertProfile.ALL;
@@ -362,11 +360,7 @@ public class Config {
             inputStream.readBoolean();
 //#endif
             inputStream.readBoolean(); // was cp1251
-//#ifdef AUTOSTATUS
-//#             autoAwayDelay = inputStream.readInt();
-//#else
-            inputStream.readInt();
-//#endif
+            autoAwayDelay = inputStream.readInt();
 //#ifndef WMUC                  
             defGcRoom = inputStream.readUTF();
 //#else
@@ -391,13 +385,8 @@ public class Config {
 //#else
             inputStream.readBoolean();
 //#endif
-//#ifdef AUTOSTATUS
-//#             useMyStatusMessages = inputStream.readBoolean();
-//#             autoAwayType = inputStream.readInt();
-//#else
-            inputStream.readBoolean();
-            inputStream.readInt();
-//#endif
+            useMyStatusMessages = inputStream.readBoolean();
+            autoAwayType = inputStream.readInt();
             autoScroll = inputStream.readBoolean();
             inputStream.readBoolean(); // was popups
             showResources = inputStream.readBoolean();
@@ -623,11 +612,7 @@ public class Config {
             outputStream.writeBoolean(false);
 //#endif
             outputStream.writeBoolean(false); // was cp1251
-//#ifdef AUTOSTATUS
-//#             outputStream.writeInt(autoAwayDelay);
-//#else
-            outputStream.writeInt(5);
-//#endif
+            outputStream.writeInt(autoAwayDelay);
 //#ifndef WMUC            
             writeUTF(outputStream, defGcRoom);
 //#else 
@@ -652,13 +637,8 @@ public class Config {
 //#else
             outputStream.writeBoolean(false);
 //#endif
-//#ifdef AUTOSTATUS
-//#             outputStream.writeBoolean(useMyStatusMessages);
-//#             outputStream.writeInt(autoAwayType);
-//#else
-            outputStream.writeBoolean(false);
-            outputStream.writeInt(0);
-//#endif
+            outputStream.writeBoolean(useMyStatusMessages);
+            outputStream.writeInt(autoAwayType);
             outputStream.writeBoolean(autoScroll);
             outputStream.writeBoolean(false); // was popUps
             outputStream.writeBoolean(showResources);

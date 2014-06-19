@@ -158,9 +158,6 @@ public class InfoWindow
 //#ifdef ARCHIVE
 //#         abilitiesList.addElement("ARCHIVE");
 //#endif
-//#ifdef AUTOSTATUS
-//#         abilitiesList.addElement("AUTOSTATUS");
-//#endif
 //#ifdef AUTOTASK
 //#         abilitiesList.addElement("AUTOTASK");
 //#endif

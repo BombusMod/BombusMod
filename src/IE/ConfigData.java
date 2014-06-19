@@ -103,9 +103,7 @@
 //#         array.addElement(new keyValue(msgLogConfPresence, (cf.msgLogConfPresence)?"1":"0"));
 //#         array.addElement(new keyValue(msgLogConf, (cf.msgLogConf)?"1":"0"));
 //#endif        
-//#ifdef AUTOSTATUS
 //#         array.addElement(new keyValue(autoAwayDelay, Integer.toString(Config.autoAwayDelay)));
-//#endif
 //#ifndef WMUC
 //#         array.addElement(new keyValue(defGcRoom, cf.defGcRoom));
 //#endif
@@ -122,10 +120,8 @@
 //#ifdef HISTORY
 //#         array.addElement(new keyValue(lastMessages, (cf.lastMessages)?"1":"0"));
 //#endif
-//#ifdef AUTOSTATUS
 //#         array.addElement(new keyValue(useMyStatusMessages, (Config.useMyStatusMessages)?"1":"0"));
 //#         array.addElement(new keyValue(autoAwayType, Integer.toString(Config.autoAwayType)));
-//#endif
 //#         array.addElement(new keyValue(autoScroll, (cf.autoScroll)?"1":"0"));
 //#         array.addElement(new keyValue(popUps, Integer.toString(cf.popUps)));
 //#         array.addElement(new keyValue(showResources, (cf.showResources)?"1":"0"));
@@ -267,9 +263,7 @@
 //#         cf.msgLogConfPresence=cf.getBooleanProperty(getValue(msgLogConfPresence),false);
 //#         cf.msgLogConf=cf.getBooleanProperty(getValue(msgLogConf),false);
 //#endif
-//#ifdef AUTOSTATUS
 //#         Config.autoAwayDelay=cf.getIntProperty(getValue(autoAwayDelay),5);
-//#endif
 //#ifndef WMUC
 //#         cf.defGcRoom=getStringProperty(getValue(defGcRoom),"bombusmod@conference.jabber.ru");
 //#endif
@@ -286,10 +280,8 @@
 //#ifdef LAST_MESSAGES
 //#         cf.lastMessages=cf.getBooleanProperty(getValue(lastMessages),false);
 //#endif
-//#ifdef AUTOSTATUS
 //#         Config.useMyStatusMessages=cf.getBooleanProperty(getValue(useMyStatusMessages),true);
 //#         Config.autoAwayType=cf.getIntProperty(getValue(autoAwayType),0);
-//#endif
 //#         cf.autoScroll=cf.getBooleanProperty(getValue(autoScroll),true);
 //#         cf.popUps = cf.getIntProperty(getValue(popUps) , Notification.NOTIFICATOR_TYPE_PLATFORM);
 //#         cf.showResources=cf.getBooleanProperty(getValue(showResources), false);
@@ -454,9 +446,7 @@
 //#     private final static String msgLogConf="msgLogConf";
 //#endif
 //#     private final static String cp1251="cp1251";
-//#ifdef AUTOSTATUS
 //#     private final static String autoAwayDelay="autoAwayDelay";
-//#endif
 //#ifndef WMUC
 //#     private final static String defGcRoom="defGcRoom";
 //#endif
@@ -471,10 +461,8 @@
 //#ifdef HISTORY
 //#     private final static String lastMessages="lastMessages";
 //#endif
-//#ifdef AUTOSTATUS
 //#     private final static String useMyStatusMessages="setAutoStatusMessage";
 //#     private final static String autoAwayType="autoAwayType";
-//#endif
 //#     private final static String autoScroll="autoScroll";
 //#     private final static String popUps="popUps";
 //#     private final static String showResources="showResources";

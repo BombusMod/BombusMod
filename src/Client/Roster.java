@@ -971,9 +971,7 @@ public class Roster
     }
 
     public void makeRosterOffline() {
-//#ifdef AUTOSTATUS
-//#             AutoStatus.getInstance().stop();
-//#endif        
+        AutoStatus.getInstance().stop();
         synchronized (hContacts) {
             int j = hContacts.size();
             for (int i = 0; i < j; i++) {
@@ -1134,9 +1132,7 @@ public class Roster
     }
 
     public void sendMessage(Contact to, String id, final String body, final String subject, String composingState) {
-//#ifdef AUTOSTATUS
-//#         AutoStatus.getInstance().userActivity(Config.AWAY_MESSAGE);
-//#endif
+        AutoStatus.getInstance().userActivity(Config.AWAY_MESSAGE);
         try {
 //#ifndef WMUC
             boolean groupchat = to.origin == Contact.ORIGIN_GROUPCHAT;
@@ -1343,11 +1339,9 @@ public class Roster
             sd.theStream.send(qr);
             show();
         }
-//#ifdef AUTOSTATUS
-//#         if ((Config.autoAwayType != Config.AWAY_OFF) && Config.autoAwayType != Config.AWAY_LOCK) {
-//#             AutoStatus.getInstance().start();
-//#         }
-//#endif
+        if ((Config.autoAwayType != Config.AWAY_OFF) && Config.autoAwayType != Config.AWAY_LOCK) {
+            AutoStatus.getInstance().start();
+        }
 //#ifndef WMUC
         //query bookmarks
         sd.theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
@@ -1813,9 +1807,7 @@ public class Roster
     }
 
     public void blockScreen() {
-//#ifdef AUTOSTATUS
-//#         AutoStatus.getInstance().appLocked();
-//#endif
+        AutoStatus.getInstance().appLocked();
         new SplashScreen(mainbar, VirtualCanvas.keyLock);
     }
 
@@ -1900,9 +1892,7 @@ public class Roster
     }
 
     public void quit() {
-//#ifdef AUTOSTATUS
-//#         AutoStatus.getInstance().stop();
-//#endif
+        AutoStatus.getInstance().stop();
         logoff(null);
         try {
             Thread.sleep(250L);

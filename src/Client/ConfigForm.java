@@ -104,11 +104,9 @@ public class ConfigForm
     private NumberInput fieldGmt;
     private DropChoiceBox textWrap;
     private DropChoiceBox langFiles;
-//#ifdef AUTOSTATUS
-//#     private DropChoiceBox autoAwayType;
-//#     private NumberInput fieldAwayDelay;
-//#     private CheckBox awayStatus;
-//#endif
+    private DropChoiceBox autoAwayType;
+    private NumberInput fieldAwayDelay;
+    private CheckBox awayStatus;
 //#ifdef RUNNING_MESSAGE
 //#      private CheckBox notifyWhenMessageType;
 //#endif
@@ -308,23 +306,20 @@ public class ConfigForm
         itemsList.addElement(panels);
         drawMenuCommand = new CheckBox(SR.MS_SHOW_TIME_TRAFFIC, cf.showTimeTraffic);
         itemsList.addElement(drawMenuCommand);
+        itemsList.addElement(new SpacerItem(10));
+        autoAwayType = new DropChoiceBox(SR.MS_AWAY_TYPE);
+        autoAwayType.add(SR.MS_AWAY_OFF);
+        autoAwayType.add(SR.MS_AWAY_LOCK);
+        autoAwayType.add(SR.MS_MESSAGE_LOCK);
+        autoAwayType.add(SR.MS_IDLE);
+        autoAwayType.setSelectedIndex(Config.autoAwayType);
+        itemsList.addElement(autoAwayType);
 
-//#ifdef AUTOSTATUS
-//#         itemsList.addElement(new SpacerItem(10));
-//#         autoAwayType = new DropChoiceBox(SR.MS_AWAY_TYPE);
-//#         autoAwayType.add(SR.MS_AWAY_OFF);
-//#         autoAwayType.add(SR.MS_AWAY_LOCK);
-//#         autoAwayType.add(SR.MS_MESSAGE_LOCK);
-//#         autoAwayType.add(SR.MS_IDLE);
-//#         autoAwayType.setSelectedIndex(Config.autoAwayType);
-//#         itemsList.addElement(autoAwayType);
-//# 
-//#         fieldAwayDelay = new NumberInput(SR.MS_AWAY_PERIOD, Integer.toString(Config.autoAwayDelay), 1, 60);
-//#         itemsList.addElement(fieldAwayDelay);
-//# 
-//#         awayStatus = new CheckBox(SR.MS_USE_MY_STATUS_MESSAGES, Config.useMyStatusMessages);
-//#         itemsList.addElement(awayStatus);
-//#endif
+        fieldAwayDelay = new NumberInput(SR.MS_AWAY_PERIOD, Integer.toString(Config.autoAwayDelay), 1, 60);
+        itemsList.addElement(fieldAwayDelay);
+
+        awayStatus = new CheckBox(SR.MS_USE_MY_STATUS_MESSAGES, Config.useMyStatusMessages);
+        itemsList.addElement(awayStatus);
 
         langs = new StringLoader().stringLoader("/lang/res.txt", 3);
         if (langs[0].size() > 1) {
@@ -440,16 +435,14 @@ public class ConfigForm
             cf.lang = (String) langs[0].elementAt(langFiles.getSelectedIndex());
         }
 
-//#ifdef AUTOSTATUS
-//#         Config.useMyStatusMessages = awayStatus.getValue();
-//#         Config.autoAwayDelay = Integer.parseInt(fieldAwayDelay.getValue());
-//#         Config.autoAwayType = autoAwayType.getSelectedIndex();
-//#         if (autoAwayType.getSelectedIndex() != Config.AWAY_LOCK) {
-//#             if (AutoStatus.getInstance().active()) {
-//#                 AutoStatus.getInstance().reset();
-//#             }
-//#         }
-//#endif
+        Config.useMyStatusMessages = awayStatus.getValue();
+        Config.autoAwayDelay = Integer.parseInt(fieldAwayDelay.getValue());
+        Config.autoAwayType = autoAwayType.getSelectedIndex();
+        if (autoAwayType.getSelectedIndex() != Config.AWAY_LOCK) {
+            if (AutoStatus.getInstance().active()) {
+                AutoStatus.getInstance().reset();
+            }
+        }
         cf.messageLimit = Integer.parseInt(messageLimit.getValue());
         if (VirtualCanvas.getInstance().hasPointerEvents()) {
             cf.widthScroll2 = Integer.parseInt(widthScroll2.getValue());
@@ -499,15 +492,13 @@ public class ConfigForm
     }
 
     public void destroyView() {
-//#ifdef AUTOSTATUS
-//#         if (sd.roster.isLoggedIn()) {
-//#             if ((Config.autoAwayType == Config.AWAY_OFF) || Config.autoAwayType == Config.AWAY_LOCK) {
-//#                 AutoStatus.getInstance().stop();
-//#             } else {
-//#                 AutoStatus.getInstance().start();
-//#             }
-//#         }
-//#endif
+        if (sd.roster.isLoggedIn()) {
+            if ((Config.autoAwayType == Config.AWAY_OFF) || Config.autoAwayType == Config.AWAY_LOCK) {
+                AutoStatus.getInstance().stop();
+            } else {
+                AutoStatus.getInstance().start();
+            }
+        }
         super.destroyView();
     }
 }

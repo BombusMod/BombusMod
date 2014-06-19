@@ -335,17 +335,15 @@ public class SR {
     public static String MS_DAY3 = loadString("day's");
     public static String MS_DAY2 = loadString("days");
     public static String MS_DAY1 = loadString("day");
-//#ifdef AUTOSTATUS
-//#     public static String MS_AWAY_PERIOD = loadString("Minutes before away");
-//#     public static String MS_AWAY_TYPE = loadString("Automatic Away");
-//#     public static String MS_AWAY_OFF = loadString("disabled");
-//#     public static String MS_AWAY_LOCK = loadString("keyblock");
-//#     public static String MS_MESSAGE_LOCK = loadString("by message");
-//#     public static String MS_AUTOSTATUS = loadString("AutoStatus");
-//#     public static String MS_AUTOSTATUS_TIME = loadString("AutoStatus time (min)");
-//#     public static String MS_AUTO_XA = loadString("Auto xa since %t");
-//#     public static String MS_AUTO_AWAY = loadString("Auto away since %t");
-//#endif
+    public static String MS_AWAY_PERIOD = loadString("Minutes before away");
+    public static String MS_AWAY_TYPE = loadString("Automatic Away");
+    public static String MS_AWAY_OFF = loadString("disabled");
+    public static String MS_AWAY_LOCK = loadString("keyblock");
+    public static String MS_MESSAGE_LOCK = loadString("by message");
+    public static String MS_AUTOSTATUS = loadString("AutoStatus");
+    public static String MS_AUTOSTATUS_TIME = loadString("AutoStatus time (min)");
+    public static String MS_AUTO_XA = loadString("Auto xa since %t");
+    public static String MS_AUTO_AWAY = loadString("Auto away since %t");
     public static String MS_AUTOFOCUS = loadString("Autofocus");
     public static String MS_GRANT_MEMBERSHIP = loadString("Grant Membership");
     public static String MS_SURE_CLEAR = loadString("Are You sure want to clear messagelist?");
