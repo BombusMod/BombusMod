@@ -114,11 +114,6 @@ public class RosterToolsMenu extends Menu {
 //#ifdef STATS
 //#             addItem(SR.MS_STATS, 13, RosterIcons.ICON_STAT);
 //#endif
-//#ifdef CHECK_VERSION
-//#             addItem(SR.MS_CHECK_UPDATE, 14, RosterIcons.ICON_CHECK_UPD);
-//#             if (!cf.getStringProperty("Bombus-Upgrade", "123").equals("123"))
-//#                 addItem(SR.MS_BUILD_NEW, 15, RosterIcons.ICON_BUILD_NEW);
-//#endif
 //#ifdef USER_KEYS
 //#             addItem(SR.MS_CUSTOM_KEYS, 16, RosterIcons.ICON_KEYS);
 //#endif

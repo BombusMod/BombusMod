@@ -158,9 +158,6 @@ public class InfoWindow
 //#ifdef CAPTCHA
 //#         abilitiesList.addElement("CAPTCHA");
 //#endif
-//#ifdef CHECK_VERSION
-//#         abilitiesList.addElement("CHECK_VERSION");
-//#endif
 //#ifdef CLIENTS_ICONS
 //#         abilitiesList.addElement("CLIENTS_ICONS");
 //#endif
