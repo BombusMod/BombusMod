@@ -83,9 +83,6 @@
 //#endif
 //#         array.addElement(new keyValue(popupFromMinimized, (cf.popupFromMinimized)?"1":"0"));
 //#         array.addElement(new keyValue(notifyBlink, (cf.notifyBlink)?"1":"0"));
-//#ifdef MEMORY_USAGE
-//#         array.addElement(new keyValue(memMonitor, (cf.memMonitor)?"1":"0"));
-//#endif
 //#         array.addElement(new keyValue(font1, Integer.toString(cf.rosterFont)));
 //#         array.addElement(new keyValue(font2, Integer.toString(cf.msgFont)));
 //#         array.addElement(new keyValue(autoFocus, (cf.autoFocus)?"1":"0"));
@@ -243,9 +240,6 @@
 //#endif
 //#         cf.popupFromMinimized=cf.getBooleanProperty(getValue(popupFromMinimized),true);
 //#         cf.notifyBlink=cf.getBooleanProperty(getValue(notifyBlink),false);
-//#ifdef MEMORY_USAGE
-//#         cf.memMonitor=cf.getBooleanProperty(getValue(memMonitor),false);
-//#endif
 //#         cf.rosterFont=cf.getIntProperty(getValue(font1),8);
 //#         cf.msgFont=cf.getIntProperty(getValue(font2),8);
 //#         cf.autoFocus=cf.getBooleanProperty(getValue(autoFocus),false);
@@ -352,9 +346,6 @@
 //#         cf.updateTime();
 //# 
 //#         cf.saveToStorage();
-//#ifdef MEMORY_USAGE
-//#         VirtualList.memMonitor=cf.memMonitor;
-//#endif
 //#     }
 //#     
 //#     final static int SEARCH_KEY     = 1;
@@ -425,9 +416,6 @@
 //#endif
 //#     private final static String popupFromMinimized="popupFromMinimized";
 //#     private final static String notifyBlink="notifyBlink";
-//#ifdef MEMORY_USAGE
-//#     private final static String memMonitor="memMonitor";
-//#endif
 //#     private final static String font1="font1"; // rosterFont
 //#     private final static String font2="font2"; // msgFont
 //#     private final static String autoFocus="autoFocus";

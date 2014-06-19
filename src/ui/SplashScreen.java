@@ -102,9 +102,6 @@ public final class SplashScreen extends DefForm implements VirtualElement {
 
     protected void drawTraffic(final Graphics g, boolean up) { }
     protected void drawEnvelop(final Graphics g) { }
-//#ifdef MEMORY_USAGE	
-//# protected void drawHeapMonitor(final Graphics g, int y) {}
-//#endif
 
     public void commandState() {
         menuCommands.removeAllElements();

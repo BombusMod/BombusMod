@@ -130,9 +130,6 @@ public class Config {
 //#endif
     public boolean popupFromMinimized = true;
     public boolean notifyBlink = false;
-//#ifdef MEMORY_USAGE
-//#     public boolean memMonitor = false;
-//#endif
     public int rosterFont = 8;
     public int msgFont = 8;
     public boolean autoFocus = false;
@@ -329,11 +326,7 @@ public class Config {
 //#endif            
             popupFromMinimized = inputStream.readBoolean();
             notifyBlink = inputStream.readBoolean();
-//#ifdef MEMORY_USAGE
-//#             memMonitor = inputStream.readBoolean();
-//#else
-            inputStream.readBoolean();
-//#endif
+            inputStream.readBoolean(); // was mem_usage
             rosterFont = inputStream.readInt();
             msgFont = inputStream.readInt();
             autoFocus = inputStream.readBoolean();
@@ -517,9 +510,6 @@ public class Config {
             lastProfile = 0;
         }
         updateTime();
-//#ifdef MEMORY_USAGE
-//#         VirtualList.memMonitor = memMonitor;
-//#endif
         VirtualList.showTimeTraffic = showTimeTraffic;
     }
 
@@ -581,11 +571,7 @@ public class Config {
 //#endif            
             outputStream.writeBoolean(popupFromMinimized);
             outputStream.writeBoolean(notifyBlink);
-//#ifdef MEMORY_USAGE
-//#             outputStream.writeBoolean(memMonitor);
-//#else
-            outputStream.writeBoolean(false);
-//#endif
+            outputStream.writeBoolean(false); // was mem_usage
             outputStream.writeInt(rosterFont);
             outputStream.writeInt(msgFont);
             outputStream.writeBoolean(autoFocus);

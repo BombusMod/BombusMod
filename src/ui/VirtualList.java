@@ -286,9 +286,6 @@ public abstract class VirtualList {
     }
 
 
-//#ifdef MEMORY_USAGE
-//#     public static boolean memMonitor;
-//#endif
     public static boolean showTimeTraffic = true;
     
     public boolean canBack = true;
@@ -567,22 +564,12 @@ public abstract class VirtualList {
         }
 
         if (scroll) {
-//#ifdef MEMORY_USAGE
-//#         int correct=(memMonitor)?1:0;
-//#         setAbsOrg(g, 0, list_top+correct);
-//#         g.setClip(0, 0, width, winHeight);
-//#
-//# 	    scrollbar.setPostion(win_top-correct);
-//# 	    scrollbar.setSize(listHeight-correct);
-//# 	    scrollbar.setWindowSize(winHeight-correct);
-//#else
             setAbsOrg(g, 0, list_top);
             g.setClip(0, 0, width, winHeight);
 
             scrollbar.setPostion(win_top);
             scrollbar.setSize(listHeight);
             scrollbar.setWindowSize(winHeight);
-//#endif
 
             scrollbar.draw(g);
         } else {
@@ -590,9 +577,6 @@ public abstract class VirtualList {
         }
 
         setAbsClip(g, width, height);
-//#ifdef MEMORY_USAGE
-//#         drawHeapMonitor(g, list_top); //heap monitor
-//#endif
         
 
         if (paintBottom) {
@@ -661,15 +645,6 @@ public abstract class VirtualList {
         g.setClip(0,0, w, h);
     }
         
-//#ifdef MEMORY_USAGE
-//#     protected void drawHeapMonitor(final Graphics g, int y) {
-//#         if (memMonitor) {
-//#             int ram=(int)((Runtime.getRuntime().freeMemory()*width)/Runtime.getRuntime().totalMemory());
-//#             g.setColor(ColorTheme.getColor(ColorTheme.HEAP_TOTAL));  g.fillRect(0,y,width,1);
-//#             g.setColor(ColorTheme.getColor(ColorTheme.HEAP_FREE));  g.fillRect(0,y,ram,1);
-//#         }
-//#     }
-//#endif
     private void drawInfoPanel (final Graphics g) {
         int h=infobar.getVHeight()+1;
 
@@ -1298,15 +1273,6 @@ public abstract class VirtualList {
         mem.append(Time.localDate()).append(" ").append(Time.getTimeWeekDay())
            .append("\nTraffic: ")
            .append(getTraffic())
-//#ifdef MEMORY_USAGE
-//#            .append("\nFree: ")
-//#            .append(Runtime.getRuntime().freeMemory()>>10)
-//#            .append(" kb");
-//#         if (phoneManufacturer == Config.SONYE)
-//#             mem.append("\nTotal: ")
-//#                .append(Runtime.getRuntime().totalMemory()>>10)
-//#                .append(" kb")
-//#endif
            ;
         showInfo(null, mem.toString());
     }

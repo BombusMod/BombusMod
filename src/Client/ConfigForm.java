@@ -89,9 +89,6 @@ public class ConfigForm
 //#endif
     private CheckBox adhoc;
     private CheckBox fullscreen;
-//#ifdef MEMORY_USAGE
-//#     private CheckBox memMonitor;
-//#endif
     private CheckBox enableVersionOs;
     private CheckBox queryExit;
     private CheckBox lightState;
@@ -246,9 +243,6 @@ public class ConfigForm
             fullscreen = new CheckBox(SR.MS_FULLSCREEN, Config.fullscreen);
             itemsList.addElement(fullscreen);
         }
-//#ifdef MEMORY_USAGE
-//#         memMonitor = new CheckBox(SR.MS_HEAP_MONITOR, cf.memMonitor); itemsList.addElement(memMonitor);
-//#endif
         enableVersionOs = new CheckBox(SR.MS_SHOW_HARDWARE, cf.enableVersionOs);
         itemsList.addElement(enableVersionOs);
         queryExit = new CheckBox(SR.MS_CONFIRM_EXIT, cf.queryExit);
@@ -403,9 +397,6 @@ public class ConfigForm
         if (!(Config.getInstance().phoneManufacturer == Config.MICROEMU)) {
             Config.fullscreen = fullscreen.getValue();
         }
-//#ifdef MEMORY_USAGE
-//#         VirtualList.memMonitor=cf.memMonitor=memMonitor.getValue();
-//#endif
         cf.enableVersionOs = enableVersionOs.getValue();
         cf.queryExit = queryExit.getValue();
 //#ifdef LIGHT_CONFIG

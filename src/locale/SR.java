@@ -397,7 +397,6 @@ public class SR {
     public static String MS_CHANGE_NICKNAME = loadString("Change nickname");
     public static String MS_MESSAGE_COLLAPSE_LIMIT = loadString("Message collapse limit");
     public static String MS_MESSAGE_WIDTH_SCROLL_2 = loadString("Scroll width");
-    public static String MS_MEMORY_USAGE = loadString("Memory usage");
     public static String MS_WITH_SYSTEM_GC = loadString("Memory cleaning");
     public static String MS_AUTOCLEAN_GROUPS = loadString("Auto clean groups");
     public static String MS_NO_CLIENT_INFO = loadString("No client info");

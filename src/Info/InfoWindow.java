@@ -217,9 +217,6 @@ public class InfoWindow
 //#ifdef LOGROTATE
 //#         abilitiesList.addElement("LOGROTATE");
 //#endif
-//#ifdef MEMORY_USAGE
-//#         abilitiesList.addElement("MEMORY_USAGE");
-//#endif
 //#ifdef MIDP_TICKER
 //#         abilitiesList.addElement("MIDP_TICKER");
 //#endif
