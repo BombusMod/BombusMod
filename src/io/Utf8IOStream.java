@@ -133,9 +133,9 @@ public class Utf8IOStream {
             outStream.flush();
             updateTraffic();
         }
-//#if (XML_STREAM_DEBUG)
-//#         System.out.println(">> " + data);
-//#endif
+        if (StaticData.XmlDebug) {
+            System.out.println(">> " + data);
+        }
     }
     
     byte cbuf[]=new byte[512];
@@ -165,11 +165,12 @@ public class Utf8IOStream {
         
         avail=inpStream.read(buf, 0, avail);
 //#endif        
-//#if (XML_STREAM_DEBUG)
-//#         if (avail > 0)
-//#             System.out.println("<< "+new String(buf, "UTF-8"));
-//#endif
-        setRecv(bytesRecv+avail);
+        if (StaticData.XmlDebug) {
+            if (avail > 0) {
+                System.out.println("<< " + new String(buf, "UTF-8"));
+            }
+        }
+        setRecv(bytesRecv + avail);
         updateTraffic();
         return avail;
     }

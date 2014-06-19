@@ -283,9 +283,9 @@ public class InfoWindow
 //#ifdef WMUC
 //#         abilitiesList.addElement("WMUC");
 //#endif
-//#ifdef XML_STREAM_DEBUG
-//#         abilitiesList.addElement("XML_STREAM_DEBUG");
-//#endif
+        if (StaticData.XmlDebug) {
+            abilitiesList.addElement("XML_STREAM_DEBUG");
+        }
 //#ifdef ZLIB
 //#         abilitiesList.addElement("ZLIB");
 //#endif

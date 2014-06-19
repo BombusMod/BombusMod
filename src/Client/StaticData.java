@@ -73,5 +73,6 @@ public final class StaticData {
         return sd;
     }
     public static final boolean Debug = true;
+    public static final boolean XmlDebug = false;
 
 }
