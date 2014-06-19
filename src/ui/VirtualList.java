@@ -381,12 +381,6 @@ public abstract class VirtualList {
      * @param wrap будучи переданным true, разрешает перенос курсора через конец списка
      */
     public void enableListWrapping(boolean wrap) { this.wrapping=wrap; }
-    
-        
-//#ifdef ELF    
-//#     private static boolean sie_accu=true;
-//#     private static boolean sie_net=true;
-//#endif
 
     /**
      * возвращает ссылку на объект в фокусе.

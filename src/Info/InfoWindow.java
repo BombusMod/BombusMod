@@ -175,9 +175,6 @@ public class InfoWindow
 //#ifdef DETRANSLIT
 //#         abilitiesList.addElement("DETRANSLIT");
 //#endif
-//#ifdef ELF
-//#         abilitiesList.addElement("ELF");
-//#endif
 //#ifdef FILE_IO
 //#         abilitiesList.addElement("FILE_IO");
 //#endif
