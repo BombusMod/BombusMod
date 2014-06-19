@@ -32,8 +32,6 @@ public class BombusModService extends Service {
     private Object[] mStopForegroundArgs = new Object[1];
     
     protected Receiver musicReceiver;
-    
-    protected NetworkStateReceiver networkStateReceiver;
 
     void invokeMethod(Method method, Object[] args) {
         try {
@@ -132,22 +130,13 @@ public class BombusModService extends Service {
         //Scrobble Droid
         filter.addAction("net.jjc1138.android.scrobbler.action.MUSIC_STATUS");
         musicReceiver = new Receiver();
-        registerReceiver(musicReceiver, filter);        
-
-        // enable network state receiver
-        IntentFilter networkStateFilter = new IntentFilter();
-        networkStateFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
-        
-        networkStateReceiver = new NetworkStateReceiver();
-        registerReceiver(networkStateReceiver, networkStateFilter);        
+        registerReceiver(musicReceiver, filter);   
     }
 
     @Override
     public void onDestroy() {
         Log.i(LOG_TAG, "onDestroy();");
         stopForegroundCompat(R.string.app_name);
-        // disable network state receiver
-        unregisterReceiver(networkStateReceiver);
         // unregister music receiver
         unregisterReceiver(musicReceiver);
     }
