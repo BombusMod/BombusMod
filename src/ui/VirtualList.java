@@ -552,12 +552,7 @@ public abstract class VirtualList {
                     drawCursor(g, itemMaxWidth, lh);
                     baloon = g.getTranslateY();
                 } else {
-//#ifdef BACK_IMAGE
-//#                 if (VirtualCanvas.getInstance().img == null)
-//#endif
-                    {
-                        g.fillRect(0, 0, itemMaxWidth, lh); //clear field
-                    }
+                    g.fillRect(0, 0, itemMaxWidth, lh); //clear field
                 }
                 g.setColor(el.getColor());
 
@@ -570,11 +565,7 @@ public abstract class VirtualList {
         } // while
         int clrH = height - displayedBottom;
 
-        if (clrH > 0
-//#ifdef BACK_IMAGE
-//#                                 && VirtualCanvas.getInstance().img==null
-//#endif
-                ) {
+        if (clrH > 0) {
             setAbsOrg(g, 0, displayedBottom);
             g.setClip(0, 0, itemMaxWidth, clrH);
             g.setColor(ColorTheme.getColor(ColorTheme.LIST_BGND));
@@ -1212,10 +1203,8 @@ public abstract class VirtualList {
     }
     
     protected void drawCursor (Graphics g, int width, int height) {
-//#ifdef BACK_IMAGE
-//#         if (VirtualCanvas.getInstance().img == null)
-//#endif            
-            g.fillRect(0, 0, width, height);
+
+        g.fillRect(0, 0, width, height);
         
         int cursorBGnd=ColorTheme.getColor(ColorTheme.CURSOR_BGND);
         int cursorOutline=ColorTheme.getColor(ColorTheme.CURSOR_OUTLINE);

@@ -29,16 +29,9 @@ import Colors.ColorTheme;
 import Fonts.FontCache;
 import images.RosterIcons;
 import javax.microedition.lcdui.Graphics;
-//#ifdef BACK_IMAGE
-//# import javax.microedition.lcdui.Image;
-//#endif
 
 public class MainBar extends ComplexString{
-
-//#ifdef BACK_IMAGE
-//#     public static Image bg;
-//#endif
-    
+   
 //#ifdef GRADIENT
 //#     public int startColor, endColor;
 //#endif    
@@ -52,12 +45,6 @@ public class MainBar extends ComplexString{
         if (second!=null) setElementAt(second,1);
         
         font = FontCache.getFont(bold, FontCache.bar);
-//#ifdef BACK_IMAGE
-//#         try {
-//#             if (bg==null)
-//#                 bg=Image.createImage("/images/panelbg.png");
-//#         } catch (Exception e) { }
-//#endif        
     }
     
     public MainBar(Object obj) {
@@ -80,11 +67,6 @@ public class MainBar extends ComplexString{
         setSize(size);
     }
     public int getVHeight() {
-//#ifdef BACK_IMAGE
-//#         if (bg != null)
-//#             return Math.max(super.getVHeight(), bg.getHeight());
-//#         else
-//#endif    
        /*     if (centered && Config.getInstance().advTouch)
                 return super.getVHeight() << 1;*/
         return Math.max(Config.getInstance().minItemHeight, super.getVHeight());
@@ -94,17 +76,6 @@ public class MainBar extends ComplexString{
         int yo = g.getClipY();
         int wo = g.getClipWidth();
         int ho = g.getClipHeight();
-//#ifdef BACK_IMAGE
-//#         if (bg != null) {
-//#             int ofs = 0;
-//#             if (getVHeight() > bg.getHeight()) {
-//#                 ofs = (getVHeight() - bg.getHeight()) >> 1;
-//#             }
-//#             for (int i = 0; i < g.getClipWidth(); i++) {
-//#                 g.drawImage(bg, i, ofs, Graphics.TOP | Graphics.LEFT);
-//#             }
-//#         }
-//#endif    
         int h = getVHeight() + 1;
 //#ifdef GRADIENT
 //#         Gradient gradient;

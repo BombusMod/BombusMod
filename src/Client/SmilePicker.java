@@ -28,8 +28,8 @@
 package Client;
 import Messages.MessageParser;
 //#ifdef ANI_SMILES
-import images.AniIcon;
-import images.AniImageList;
+//# import images.AniIcon;
+//# import images.AniImageList;
 //#endif
 import images.SmilesIcons;
 import locale.SR;
@@ -127,16 +127,16 @@ public class SmilePicker
         int x, iwidth;
 
 //#ifdef ANI_SMILES
-        AniIcon item;
+//#         AniIcon item;
 //#endif
         for (int i=0;i<max;i++) {
             x = xBorder+(i*imgWidth+CURSOR_HOFFSET);
 //#ifdef ANI_SMILES
-            if (il instanceof AniImageList) {
-                item = ((AniImageList)il).iconAt(lineIndex*xCnt + i);
-                iwidth = (item == null)? 0 : item.getWidth();
-                x += (imgWidth - iwidth) >> 1;                                                       
-            }
+//#             if (il instanceof AniImageList) {
+//#                 item = ((AniImageList)il).iconAt(lineIndex*xCnt + i);
+//#                 iwidth = (item == null)? 0 : item.getWidth();
+//#                 x += (imgWidth - iwidth) >> 1;                                                       
+//#             }
 //#endif
             il.drawImage(g, lineIndex*xCnt + i, x, CURSOR_VOFFSET);            
         }
@@ -152,10 +152,7 @@ public class SmilePicker
         int x=xBorder+(xCursor*imgWidth);
 
         g.setColor(getColorBGnd());
-//#ifdef BACK_IMAGE        
-//#         if (VirtualCanvas.getInstance().img == null)
-//#endif
-            g.fillRect(0,0,width, height);
+        g.fillRect(0,0,width, height);
         
         g.translate(x,0);
         super.drawCursor(g, imgWidth, lineHeight);

@@ -155,9 +155,6 @@ public class InfoWindow
 //#ifdef ARCHIVE
 //#         abilitiesList.addElement("ARCHIVE");
 //#endif
-//#ifdef BACK_IMAGE
-//#         abilitiesList.addElement("BACK_IMAGE");
-//#endif
 //#ifdef CAPTCHA
 //#         abilitiesList.addElement("CAPTCHA");
 //#endif

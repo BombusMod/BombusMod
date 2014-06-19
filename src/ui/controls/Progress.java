@@ -56,9 +56,6 @@ public class Progress {
 //#     private int bottomColor;
 //#endif
     private int topColor;
-//#ifdef BACK_IMAGE
-//#     private Image img;
-//#endif
 
     /** Creates a new instance of progress */
     public Progress(int x, int y, int width) {
@@ -73,16 +70,6 @@ public class Progress {
 //#         if (topColor!=bottomColor)
 //#             this.gr=new Gradient(x, y-height, x+width, y, topColor, bottomColor, false);
 //#endif
-//#ifdef BACK_IMAGE
-//#         try {
-//#             if (img==null)
-//#                 img=Image.createImage("/images/progress.png");
-//#         } catch (Exception e) { }
-//#         if (img != null) {
-//#             this.height = img.getHeight();
-//#             this.y=y - height;
-//#         }
-//#endif
     }
     
     public void draw(Graphics g, int filled, String text) {
@@ -93,19 +80,9 @@ public class Progress {
 //#             gr.paintWidth(g, x+filled);
 //#         } else {
 //#endif
-//#ifdef BACK_IMAGE
-//#         if (img != null) {
-//#             int size = img.getWidth();
-//#             int count = filled / size;
-//#             for (int i = x; i <= (x + count); i++ )
-//#                 g.drawImage(img, i * size, y + 1, Graphics.LEFT| Graphics.TOP);
-//#         } else {
-//#endif
+
             g.setColor(topColor);
             g.fillRect(x, y+1, filled, height - 1);
-//#ifdef BACK_IMAGE
-//#         }
-//#endif
 
 //#ifdef GRADIENT
 //#         }

@@ -28,9 +28,6 @@ import ui.controls.PopUp;
 //#ifdef LIGHT_CONFIG
 //# import LightControl.CustomLight;
 //#endif
-//#ifdef BACK_IMAGE
-//# import javax.microedition.lcdui.Image;
-//#endif
 //#ifdef AUTOSTATUS
 //# import Client.AutoStatus;
 //#endif
@@ -75,10 +72,7 @@ public class VirtualCanvas extends Canvas implements CommandListener{
     protected StaticData sd = StaticData.getInstance();
 
     public ReconnectWindow rw;
-    
-//#ifdef BACK_IMAGE
-//#     public Image img;
-//#endif
+   
 
     public static VirtualCanvas getInstance() {
         if (instance == null) {
@@ -96,15 +90,6 @@ public class VirtualCanvas extends Canvas implements CommandListener{
             // silly china phones
             Config.getInstance().swapMenu = false;
         }
-//#ifdef BACK_IMAGE
-//#         try {
-//#             if (img == null) {
-//#                 img = Image.createImage("/images/bg.png");
-//#             }
-//#         } catch (Exception e) {
-//#         }
-//#endif      
-
     }
     
     public void setMIDlet(MIDlet midlet) {
@@ -158,13 +143,7 @@ public class VirtualCanvas extends Canvas implements CommandListener{
         VirtualList.width = getWidth();
         VirtualList.height = getHeight();
         graphics.setColor(ColorTheme.getColor(ColorTheme.LIST_BGND));
-        graphics.fillRect(0, 0, VirtualList.width, VirtualList.height);
-        
-//#ifdef BACK_IMAGE
-//#         if (img != null) {
-//#             graphics.drawImage(img, VirtualList.width / 2, VirtualList.height / 2, Graphics.VCENTER | Graphics.HCENTER);
-//#         }
-//#endif
+        graphics.fillRect(0, 0, VirtualList.width, VirtualList.height);     
         
         try {
             list.paint(graphics);

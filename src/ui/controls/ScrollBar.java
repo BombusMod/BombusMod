@@ -33,10 +33,6 @@ import Colors.ColorTheme;
 //#ifdef GRADIENT
 //# //import ui.Gradient;
 //#endif
-//#ifdef BACK_IMAGE
-//# import javax.microedition.lcdui.Image;
-//# import ui.ImageList;
-//#endif
 import ui.VirtualList;
 
 /**
@@ -74,13 +70,7 @@ public class ScrollBar {
     private int colorTop;
     //private int colorBottom;
     private int colorBar;
-    private int colorBorder;
-//#ifdef BACK_IMAGE
-//#     public static Image imgH;
-//#     public static Image imgH2;
-//#     public static Image imgB;
-//#endif
-    
+    private int colorBorder;    
     
     /** Creates a new instance of ScrollBar */
     public ScrollBar() {
@@ -88,18 +78,7 @@ public class ScrollBar {
         colorTop=ColorTheme.getColor(ColorTheme.SCROLL_BGND);
         //colorBottom=0xFFFFFF-colorTop;
         colorBar=ColorTheme.getColor(ColorTheme.SCROLL_BAR);
-        colorBorder=ColorTheme.getColor(ColorTheme.SCROLL_BRD);
-        //#ifdef BACK_IMAGE
-//#         try {
-//#             if (imgH==null) {
-//#                 imgH=Image.createImage("/images/scrollh.png");
-//#                 imgH2 = ImageList.rotateImage(imgH, 180);
-//#             }
-//#             if (imgB==null) {
-//#                 imgB=Image.createImage("/images/scrollb.png");
-//#             }
-//#         } catch (Exception e) { }
-//#endif
+        colorBorder=ColorTheme.getColor(ColorTheme.SCROLL_BRD);        
     }
 
     public void setWindowSize(int windowSize) {
@@ -120,10 +99,6 @@ public class ScrollBar {
 
     public void setHasPointerEvents(boolean hasPointerEvents) {
         scrollWidth = (hasPointerEvents)? WIDTH_SCROLL_2: WIDTH_SCROLL_1;
-//#ifdef BACK_IMAGE
-//#         if (imgH != null)
-//#             scrollWidth = Math.max(scrollWidth, imgH.getWidth());
-//#endif
     }
 
     public int getScrollWidth() {
@@ -203,24 +178,10 @@ public class ScrollBar {
 	
 	scrollerPos = (drawHeight*position)/size;
         scrollerX-=scrollWidth;
-//#ifdef BACK_IMAGE
-//#         if (ScrollBar.imgB != null && ScrollBar.imgB != null) {
-//#             g.drawImage(imgH, 1, scrollerPos - imgH.getHeight(), Graphics.LEFT|Graphics.TOP);
-//#             for (int i = scrollerPos; i < scrollerPos + scrollerSize; i++) {
-//#                 g.drawImage(imgB, 1, i, Graphics.LEFT|Graphics.TOP);
-//#             }
-//#             g.drawImage(imgH2, 1, scrollerPos + scrollerSize, Graphics.LEFT|Graphics.TOP);
-//#         } else {
-//#endif
         g.setColor(colorBar);
         g.fillRect(1, scrollerPos, scrollWidth-2, scrollerSize);
         g.setColor(colorBorder);
         g.drawLine(0, scrollerPos, scrollWidth-1, scrollerPos);
         g.drawLine(0, scrollerPos+scrollerSize, scrollWidth-1, scrollerPos+scrollerSize);
-//#ifdef BACK_IMAGE                
-//#         }
-//#endif
-        
-        
     }
 }
