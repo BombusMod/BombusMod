@@ -1219,34 +1219,6 @@ public class Roster
         updateMainBar();
     }
 
-//#if CHANGE_TRANSPORT
-//#     public void contactChangeTransport(String srcTransport, String dstTransport) { //voffk
-//#         setQuerySign(true);
-//#         int j = hContacts.size();
-//#         for (int i = 0; i < j; i++) {
-//#             Contact k = (Contact) hContacts.elementAt(i);
-//#             if (JidUtils.isTransport(k.jid)) {
-//#                 continue;
-//#             }
-//#             int grpType = k.getGroupType();
-//#             if (k.jid.getServer().equals(srcTransport)
-//#                     && (grpType == Groups.TYPE_COMMON || grpType == Groups.TYPE_NO_GROUP
-//#                     || grpType == Groups.TYPE_VISIBLE || grpType == Groups.TYPE_VIP
-//#                     || grpType == Groups.TYPE_IGNORE)) {
-//#                 String jid = k.getJid().toString();
-//#                 k.jid = new Jid(StringUtils.stringReplace(jid, srcTransport, dstTransport));
-//#                 storeContact(k, true); //new contact addition
-//#                 try {
-//#                     Thread.sleep(300);
-//#                 } catch (Exception ex) {
-//#                 }
-//#                 deleteContact(k); //old contact deletion
-//#             }
-//#         }
-//#         setQuerySign(false);
-//#     }
-//#endif
-
     public void loginFailed(String error) {
         myStatus = Presence.PRESENCE_OFFLINE;
         setProgress(SR.MS_LOGIN_FAILED, 100);

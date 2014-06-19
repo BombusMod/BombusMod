@@ -92,9 +92,6 @@ public class RosterItemActions extends Menu {
                 addItem(SR.MS_LOGON, 5, RosterIcons.ICON_ON);
                 addItem(SR.MS_LOGOFF, 6, RosterIcons.ICON_OFF);
                 addItem(SR.MS_RESOLVE_NICKNAMES, 7, RosterIcons.ICON_NICK_RESOLVE);
-//#if CHANGE_TRANSPORT
-//#                 addItem("Change transport", 915, RosterIcons.ICON_COMMAND);
-//#endif
             }
             addItem(SR.MS_VCARD, 1, RosterIcons.ICON_VCARD);            
             addItem(SR.MS_INFO, 86, RosterIcons.ICON_INFO);
@@ -406,11 +403,6 @@ public class RosterItemActions extends Menu {
             case 7: // Nick resolver
                 sd.roster.resolveNicknames(c.jid.getBare());
                 break;
-//#if CHANGE_TRANSPORT
-//#             case 915: // change transport
-//#                 new ChangeTransport(c.jid.getBare());
-//#                 return;
-//#endif
             case 21:
                 sd.roster.cleanupSearch();
                 break;
