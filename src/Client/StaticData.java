@@ -74,5 +74,5 @@ public final class StaticData {
     }
     public static final boolean Debug = true;
     public static final boolean XmlDebug = false;
-
+    public static final boolean NonSaslAuth = false;
 }

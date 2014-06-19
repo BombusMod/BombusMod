@@ -226,9 +226,9 @@ public class InfoWindow
 //#ifdef NOMMEDIA
 //#         abilitiesList.addElement("NOMMEDIA");
 //#endif
-//#ifdef NON_SASL_AUTH
-//#         abilitiesList.addElement("NON_SASL_AUTH");
-//#endif
+        if (StaticData.NonSaslAuth) {
+            abilitiesList.addElement("NON_SASL_AUTH");
+        }
 //#ifdef PEP
 //#         abilitiesList.addElement("PEP");
 //#endif

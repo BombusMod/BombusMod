@@ -27,11 +27,12 @@ public class JabberDispatcher implements JabberListener {
         if (sd.theStream.isXmppV1()) {
             sd.theStream.addBlockListener(new SASLAuth(sd.account, loginListener, sd.theStream));
         } 
-//#if NON_SASL_AUTH
         else {
-            new NonSASLAuth(sd.account, loginListener, sd.theStream);
+            if (StaticData.NonSaslAuth) {
+                new NonSASLAuth(sd.account, loginListener, sd.theStream);
+            } 
+            //TODO: throw error
         }
-//#endif
     }
 
     public void connectionTerminated(Exception e) {

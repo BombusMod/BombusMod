@@ -25,9 +25,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 package xmpp.login;
-//#ifdef TLS
-//# import Client.StaticData;
-//#endif
+import Client.StaticData;
 import com.alsutton.jabber.JabberBlockListener;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.JabberStream;
@@ -144,12 +142,12 @@ public class SASLAuth implements JabberBlockListener {
                 return JabberBlockListener.BLOCK_PROCESSED;
             }
 
-//#ifdef NON_SASL_AUTH
-//#             if (data.findNamespace("auth", "http://jabber.org/features/iq-auth") != null) {
-//#                 new NonSASLAuth(account, listener, stream);
-//#                 return JabberBlockListener.NO_MORE_BLOCKS;
-//#             }
-//#endif            
+            if (StaticData.NonSaslAuth) {
+                if (data.findNamespace("auth", "http://jabber.org/features/iq-auth") != null) {
+                    new NonSASLAuth(account, listener, stream);
+                    return JabberBlockListener.NO_MORE_BLOCKS;
+                }
+            }
 
             //fallback if no known authentication methods were found
             listener.loginFailed("No known authentication methods");
