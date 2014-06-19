@@ -149,9 +149,6 @@ public class InfoWindow
     
     private String getAbilities() {
         Vector abilitiesList=new Vector();
-//#ifdef ADHOC
-//#         abilitiesList.addElement("ADHOC");
-//#endif
 //#ifdef ANI_SMILES
 //#         abilitiesList.addElement("ANI_SMILES");
 //#endif

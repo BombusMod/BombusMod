@@ -93,9 +93,7 @@ import xmpp.extensions.IqLast;
 import xmpp.extensions.IqPing;
 import xmpp.extensions.IqVersionReply;
 import xmpp.extensions.IqTimeReply;
-//#ifdef ADHOC
-//# import xmpp.extensions.IQCommands;
-//#endif
+import xmpp.extensions.IQCommands;
 
 //#ifdef PEP
 //# import xmpp.extensions.PepListener;
@@ -1282,11 +1280,9 @@ public class Roster
         sd.theStream.addBlockListener(new IqLast());
         sd.theStream.addBlockListener(new IqTimeReply());
         sd.theStream.addBlockListener(new RosterXListener());
-//#ifdef ADHOC
-//#         if (cf.adhoc) {
-//#             IQCommands.getInstance().addBlockListener();
-//#         }
-//#endif
+        if (cf.adhoc) {
+            IQCommands.getInstance().addBlockListener();
+        }
 
 //#ifdef PEP
 //#         if (cf.sndrcvmood) {

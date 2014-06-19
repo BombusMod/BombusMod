@@ -87,9 +87,7 @@ public class ConfigForm
 //#ifdef HISTORY
 //#     private CheckBox saveHistory;
 //#endif
-//#ifdef ADHOC
-//#     private CheckBox adhoc;
-//#endif
+    private CheckBox adhoc;
     private CheckBox fullscreen;
 //#ifdef MEMORY_USAGE
 //#     private CheckBox memMonitor;
@@ -270,10 +268,8 @@ public class ConfigForm
 //#         saveHistory = new CheckBox(SR.MS_HISTORY, cf.saveHistory);
 //#         itemsList.addElement(saveHistory);
 //#endif
-//#ifdef ADHOC
-//#         adhoc = new CheckBox(SR.MS_ADHOC, cf.adhoc);
-//#         itemsList.addElement(adhoc);
-//#endif
+        adhoc = new CheckBox(SR.MS_ADHOC, cf.adhoc);
+        itemsList.addElement(adhoc);
         if (cf.allowMinimize) {
             popupFromMinimized = new CheckBox(SR.MS_ENABLE_POPUP, cf.popupFromMinimized);
             itemsList.addElement(popupFromMinimized);
@@ -401,9 +397,7 @@ public class ConfigForm
 //#ifdef HISTORY
 //#         cf.saveHistory = saveHistory.getValue();
 //#endif
-//#ifdef ADHOC
-//#         cf.adhoc = adhoc.getValue();
-//#endif
+        cf.adhoc = adhoc.getValue();
 
         VirtualList.showTimeTraffic = cf.showTimeTraffic = drawMenuCommand.getValue();
         if (!(Config.getInstance().phoneManufacturer == Config.MICROEMU)) {
