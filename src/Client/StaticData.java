@@ -28,9 +28,6 @@
 package Client;
 
 import xmpp.Account;
-//#ifdef AUTOTASK
-//# import AutoTasks.AutoTask;
-//#endif
 import com.alsutton.jabber.JabberStream;
 import util.ClipBoardIO;
 /**
@@ -47,10 +44,6 @@ public final class StaticData {
     public ClipBoardIO clipboard;
     
     public Account account;
-
-//#ifdef AUTOTASK
-//#     public AutoTask autoTask;
-//#endif
     
 //#ifdef FILE_IO
 //#     public String previousPath="";

@@ -34,9 +34,6 @@ import Client.*;
 //#ifdef PRIVACY
 //# import PrivacyLists.QuickPrivacy;
 //#endif
-//#if AUTOTASK
-//# import AutoTasks.AutoTaskForm;
-//#endif
 import Fonts.ConfigFonts;
 //#ifdef SERVICE_DISCOVERY
 //# import ServiceDiscovery.*;
@@ -129,9 +126,6 @@ public class RosterToolsMenu extends Menu {
 //#         if (sd.account != null && sd.account.isGoogle && connected)
 //#             addItem(SR.MS_CHECK_GOOGLE_MAIL, 17, RosterIcons.ICON_GMAIL);
 //#endif 
-//#if AUTOTASK
-//#         addItem(SR.MS_AUTOTASKS, 18, RosterIcons.ICON_TASKS);
-//#endif
 //#ifdef CONSOLE
 //#             addItem(SR.MS_XML_CONSOLE, 19, RosterIcons.ICON_CONSOLE);
 //#endif
@@ -239,11 +233,6 @@ public class RosterToolsMenu extends Menu {
 //#                 destroyView();
 //#                 sd.theStream.send(IqGmail.query());
 //# 		return;
-//#endif
-//#if AUTOTASK
-//#             case 18:
-//#                 new AutoTaskForm();
-//#                 return;
 //#endif
 //#ifdef CONSOLE
 //#             case 19:

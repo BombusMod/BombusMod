@@ -29,9 +29,6 @@
  * @author Eugene Stahov
  */
 package midlet;
-//#ifdef AUTOTASK
-//# import AutoTasks.AutoTask;
-//#endif
 import xmpp.Account;
 import Account.AccountForm;
 import Account.AccountSelect;
@@ -109,12 +106,6 @@ public class BombusMod extends MIDlet {
         s.setProgress(12);
 
         Config cf = Config.getInstance();
-        s.setProgress(15);
-
-//#ifdef AUTOTASK
-//#         sd.autoTask = new AutoTask();
-//#         s.setProgress(17);
-//#endif
 
         s.setProgress(20);
 
