@@ -1,4 +1,0 @@
-en	null	English
-ar	/lang/ar.txt	العربية
-id	/lang/id.txt	Indonesian
-ru	/lang/ru.txt	Russian

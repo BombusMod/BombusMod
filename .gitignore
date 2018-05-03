@@ -12,3 +12,6 @@ local.properties
 .classpath
 .project
 proguard/
+.idea/**
+.gradle/**
+**/*.iml

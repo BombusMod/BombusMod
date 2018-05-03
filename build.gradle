@@ -1,0 +1,96 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+        google()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.1.2'
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.17.0'
+    }
+}
+
+apply plugin: 'com.android.application'
+apply plugin: 'com.github.ben-manes.versions'
+
+repositories {
+    mavenCentral()
+    jcenter()
+    google()
+}
+
+dependencies {
+    compile 'com.android.support:appcompat-v7:27.1.1'
+}
+
+android {
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 27
+        versionCode 1402
+        versionName '0.9.1402'
+        applicationId "org.bombusmod"
+    }
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+    packagingOptions {
+        exclude 'META-INF/ASL2.0'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/notice.txt'
+    }
+    // signing config
+    if (file("keystore.properties").exists()) {
+        Properties props = new Properties()
+        props.load(new FileInputStream(file("keystore.properties")))
+
+        signingConfigs {
+            release {
+                storeFile file(props["key.store"])
+                storePassword props["key.store.password"]
+                keyAlias props["key.alias"]
+                keyPassword props["key.alias.password"]
+            }
+        }
+
+        buildTypes {
+            release {
+                minifyEnabled false
+                signingConfig signingConfigs.release
+            }
+        }
+    }
+    buildTypes {
+        dev {
+
+        }
+    }
+    def build_param = "${build}";
+
+    if (build_param != "dev") {
+        //exclude production build
+        android.variantFilter { variant ->
+            if (variant.buildType.name.equals('dev')) {
+                variant.setIgnore(true);
+            }
+        }
+    } else {
+        //exclude all except production build
+        android.variantFilter { variant ->
+            if (!variant.buildType.name.equals('dev')) {
+                variant.setIgnore(true);
+            }
+        }
+    }
+}
