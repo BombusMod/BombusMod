@@ -1,17 +1,15 @@
 //#if android
 package Messages.notification;
 
-import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationCompat.InboxStyle;
+
 import org.bombusmod.BombusModActivity;
 import org.bombusmod.R;
-import Client.Msg;
+
 import Client.StaticData;
 import locale.SR;
 
@@ -33,7 +31,7 @@ public class AndroidNotificator implements Notificator {
         } else {
             Context context = BombusModActivity.getInstance();
             
-            NotificationCompat.Builder notification = new NotificationCompat.Builder(context);
+            Notification.Builder notification = new Notification.Builder(context);
             CharSequence contentTitle = (String) context.getApplicationContext().getText(R.string.notifyTitle);
             CharSequence contentText = (String) context.getApplicationContext().getText(R.string.notifyInfo) + ": " + StaticData.getInstance().roster.highliteMessageCount;
             Intent notificationIntent = new Intent(context, BombusModActivity.class);
@@ -49,7 +47,7 @@ public class AndroidNotificator implements Notificator {
             notification.setContentTitle(contentTitle);
             notification.setContentText(contentText);
             notification.setSmallIcon(icon);
-            NotificationCompat.InboxStyle style = new NotificationCompat.InboxStyle();
+            Notification.InboxStyle style = new Notification.InboxStyle();
             style.addLine(text)
                     .setBigContentTitle(title)
                     .setSummaryText(contentText);

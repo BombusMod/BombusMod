@@ -7,7 +7,6 @@ package org.bombusmod.scrobbler;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import org.bombusmod.BombusModService;
 
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;

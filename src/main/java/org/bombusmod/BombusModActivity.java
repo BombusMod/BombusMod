@@ -21,22 +21,25 @@
  */
 package org.bombusmod;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import android.app.NotificationManager;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.PixelFormat;
+import android.media.AudioManager;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.SubMenu;
+import android.view.Window;
 
-import java.util.logging.Level;
-import javax.microedition.lcdui.Command;
-import javax.microedition.midlet.MIDlet;
-import javax.microedition.midlet.MIDletStateChangeException;
-
+import org.bombusmod.scrobbler.Receiver;
 import org.microemu.DisplayAccess;
 import org.microemu.MIDletAccess;
 import org.microemu.MIDletBridge;
+import org.microemu.android.MicroEmulatorActivity;
 import org.microemu.android.device.AndroidDevice;
 import org.microemu.android.device.AndroidInputMethod;
 import org.microemu.android.device.ui.AndroidCanvasUI;
@@ -47,32 +50,26 @@ import org.microemu.android.util.AndroidRecordStoreManager;
 import org.microemu.android.util.AndroidRepaintListener;
 import org.microemu.app.Common;
 import org.microemu.app.util.MIDletSystemProperties;
+import org.microemu.cldc.file.FileSystem;
 import org.microemu.device.Device;
 import org.microemu.device.DeviceFactory;
 import org.microemu.device.ui.CommandUI;
 import org.microemu.log.Logger;
 
-import android.os.Bundle;
-import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.SubMenu;
-import android.view.Window;
-import android.media.AudioManager;
-import android.app.NotificationManager;
-import org.microemu.android.MicroEmulatorActivity;
-import android.content.Intent;
-import android.util.Log;
-import org.microemu.cldc.file.FileSystem;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
+import javax.microedition.lcdui.Command;
+import javax.microedition.midlet.MIDlet;
+import javax.microedition.midlet.MIDletStateChangeException;
 
 import Client.Contact;
 import Client.StaticData;
-import android.graphics.PixelFormat;
-import android.widget.TextView;
-import android.widget.Toast;
-import midlet.BombusMod;
-import ui.VirtualCanvas;
 
 public class BombusModActivity extends MicroEmulatorActivity {
 
@@ -80,6 +77,7 @@ public class BombusModActivity extends MicroEmulatorActivity {
     public Common common;
     private MIDlet midlet;
     private static BombusModActivity instance;
+    protected Receiver musicReceiver;
 
     public static BombusModActivity getInstance() {
         return instance;
@@ -174,7 +172,61 @@ public class BombusModActivity extends MicroEmulatorActivity {
 
         common.setSuiteName("org.BombusMod");
         midlet = common.initMIDlet(false);
-        startService(new Intent(this, BombusModService.class));
+        //audio scrobbler
+        IntentFilter filter = new IntentFilter();
+        //Google Android player
+        filter.addAction("com.android.music.playstatechanged");
+        filter.addAction("com.android.music.playbackcomplete");
+        filter.addAction("com.android.music.metachanged");
+        //HTC Music
+        filter.addAction("com.htc.music.playstatechanged");
+        filter.addAction("com.htc.music.playbackcomplete");
+        filter.addAction("com.htc.music.metachanged");
+        //MIUI Player
+        filter.addAction("com.miui.player.playstatechanged");
+        filter.addAction("com.miui.player.playbackcomplete");
+        filter.addAction("com.miui.player.metachanged");
+        //Real
+        filter.addAction("com.real.IMP.playstatechanged");
+        filter.addAction("com.real.IMP.playbackcomplete");
+        filter.addAction("com.real.IMP.metachanged");
+        //SEMC Music Player
+        filter.addAction("com.sonyericsson.music.playbackcontrol.ACTION_TRACK_STARTED");
+        filter.addAction("com.sonyericsson.music.playbackcontrol.ACTION_PAUSED");
+        filter.addAction("com.sonyericsson.music.TRACK_COMPLETED");
+        filter.addAction("com.sonyericsson.music.metachanged");
+        filter.addAction("com.sonyericsson.music.playbackcomplete");
+        filter.addAction("com.sonyericsson.music.playstatechanged");
+        //rdio
+        filter.addAction("com.rdio.android.metachanged");
+        filter.addAction("com.rdio.android.playstatechanged");
+        //Samsung Music Player
+        filter.addAction("com.samsung.sec.android.MusicPlayer.playstatechanged");
+        filter.addAction("com.samsung.sec.android.MusicPlayer.playbackcomplete");
+        filter.addAction("com.samsung.sec.android.MusicPlayer.metachanged");
+        filter.addAction("com.sec.android.app.music.playstatechanged");
+        filter.addAction("com.sec.android.app.music.playbackcomplete");
+        filter.addAction("com.sec.android.app.music.metachanged");
+        //Winamp
+        filter.addAction("com.nullsoft.winamp.playstatechanged");
+        //Amazon
+        filter.addAction("com.amazon.mp3.playstatechanged");
+        //Rhapsody
+        filter.addAction("com.rhapsody.playstatechanged");
+        //PowerAmp
+        filter.addAction("com.maxmpz.audioplayer.playstatechanged");
+        //will be added any....
+        //scrobblers detect for players (poweramp for example)
+        //Last.fm
+        filter.addAction("fm.last.android.metachanged");
+        filter.addAction("fm.last.android.playbackpaused");
+        filter.addAction("fm.last.android.playbackcomplete");
+        //A simple last.fm scrobbler
+        filter.addAction("com.adam.aslfms.notify.playstatechanged");
+        //Scrobble Droid
+        filter.addAction("net.jjc1138.android.scrobbler.action.MUSIC_STATUS");
+        musicReceiver = new Receiver();
+        registerReceiver(musicReceiver, filter);
     }
 
     @Override
@@ -216,8 +268,6 @@ public class BombusModActivity extends MicroEmulatorActivity {
             NotificationManager mNM = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
             mNM.cancelAll();
             Log.i(LOG_TAG, "onPause(); with isFinishing() == true.");
-            Log.i(LOG_TAG, "Stopping service...");
-            stopService(new Intent(this, BombusModService.class));
             return;
         }
 
@@ -268,6 +318,7 @@ public class BombusModActivity extends MicroEmulatorActivity {
     protected void onDestroy() {
         super.onDestroy();
         Log.i(LOG_TAG, "onDestroy();");
+        unregisterReceiver(musicReceiver);
     }
 
     @Override

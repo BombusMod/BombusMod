@@ -333,7 +333,7 @@ public class JabberStream implements XMLEventListener, Runnable {
             XMLParser parser = new XMLParser(this);
             connected = true;
 
-            byte cbuf[] = new byte[512];
+            byte cbuf[] = new byte[32768];
 
             while (connected) {
 

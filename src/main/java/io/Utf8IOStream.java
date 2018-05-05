@@ -138,7 +138,6 @@ public class Utf8IOStream {
         }
     }
     
-    byte cbuf[]=new byte[512];
     int length;
     int pbyte;
     
@@ -167,7 +166,7 @@ public class Utf8IOStream {
 //#endif        
         if (StaticData.XmlDebug) {
             if (avail > 0) {
-                System.out.println("<< " + new String(buf, "UTF-8"));
+                System.out.println("<< " + new String(buf, 0, avail, "UTF-8"));
             }
         }
         setRecv(bytesRecv + avail);
