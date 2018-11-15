@@ -33,6 +33,7 @@ import java.util.Iterator;
 
 import javax.microedition.io.ConnectionNotFoundException;
 
+import android.os.Looper;
 import org.microemu.DisplayAccess;
 import org.microemu.DisplayComponent;
 import org.microemu.MIDletAccess;
@@ -69,7 +70,7 @@ public abstract class MicroEmulatorActivity extends Activity {
 	
 	public boolean windowFullscreen;
 
-	private Handler handler = new Handler();
+	private Handler handler = new Handler(Looper.getMainLooper());
 	
 	private Thread activityThread;
 	
@@ -90,21 +91,7 @@ public abstract class MicroEmulatorActivity extends Activity {
     }
 
 	public boolean post(Runnable r) {
-		if (activityThread == Thread.currentThread()) {
-			r.run();
-			return true;
-		} else {
-			return handler.post(r);
-		}
-	}
-	
-	public boolean postDelayed(Runnable r, long delayMillis) {
-		if (activityThread == Thread.currentThread()) {
-			r.run();
-			return true;
-		} else {
-			return handler.postDelayed(r, delayMillis);
-		}
+		return handler.post(r);
 	}
 	
 	public boolean isActivityThread() {
