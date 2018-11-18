@@ -15,3 +15,5 @@ proguard/
 .idea/**
 .gradle/**
 **/*.iml
+release/**
+.DS_Store
