@@ -95,7 +95,6 @@ public class ExTextBox {
 
     public void show(CommandListener listener) {
         commandState();
-        setInitialCaps(cf.capsState);
         if (Config.getInstance().phoneManufacturer == Config.SONYE)
             if (Config.getPlatformName().indexOf("JP-8.4") > -1)
                 System.gc(); // prevent flickering on Sony Ericsson C510/W995/J105/etc.

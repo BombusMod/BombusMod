@@ -78,7 +78,7 @@ public class EditBox implements CommandListener {
         }
         t.textbox.addCommand(cmdCancel);
         if (Config.getInstance().capsState) {
-            t.textbox.setConstraints(TextField.INITIAL_CAPS_SENTENCE);
+            t.textbox.setConstraints(TextField.INITIAL_CAPS_SENTENCE | boxType);
         }
         t.show(this);
     }

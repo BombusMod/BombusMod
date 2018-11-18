@@ -29,6 +29,7 @@ import javax.microedition.lcdui.Command;
 
 import android.text.InputFilter;
 import android.text.method.ScrollingMovementMethod;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.*;
@@ -144,7 +145,7 @@ public class AndroidTextBoxUI extends AndroidDisplayableUI implements TextBoxUI 
                 } else {
                     //getInputMethodManager().hideSoftInputFromWindow(textEditor.getWindowToken(),
                     //        InputMethodManager.HIDE_IMPLICIT_ONLY | InputMethodManager.HIDE_NOT_ALWAYS);
-                    getInputMethodManager().hideSoftInputFromWindow(textEditor.getWindowToken(), 0);
+                    getInputMethodManager().hideSoftInputFromWindow(activity.getContentView().getWindowToken(), 0);
                 }
             }
         });
@@ -153,46 +154,27 @@ public class AndroidTextBoxUI extends AndroidDisplayableUI implements TextBoxUI 
     private EditText createEditor(final MicroEmulatorActivity activity, final TextBox textBox) {
         final EditText editor = new EditText(activity) {
             @Override
-            public InputConnection onCreateInputConnection(EditorInfo outAttrs) {
-                InputConnection connection = super.onCreateInputConnection(outAttrs);
-                showNotify();
-                return connection;
-            }
-
-            @Override
             protected void onWindowVisibilityChanged(int visibility) {
                 if (View.VISIBLE != visibility) {
-                    turnKeyboard(this, View.VISIBLE == visibility);
+                    turnKeyboard(this, false);
                 }
                 super.onWindowVisibilityChanged(visibility);
                 if (View.VISIBLE == visibility) {
-                    turnKeyboard(this, View.VISIBLE == visibility);
+                    turnKeyboard(this, true);
                 }
             }
         };
-
-        int constraints = textBox.getConstraints();
-        if ((constraints & TextField.CONSTRAINT_MASK) == TextField.URL) {
-            editor.setSingleLine(true);
-        } else if ((constraints & TextField.CONSTRAINT_MASK) == TextField.NUMERIC) {
-            editor.setSingleLine(true);
-            editor.setInputType(InputType.TYPE_CLASS_NUMBER);
-        } else if ((constraints & TextField.CONSTRAINT_MASK) == TextField.DECIMAL) {
-            editor.setSingleLine(true);
-            editor.setInputType(
-                    InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        } else if ((constraints & TextField.CONSTRAINT_MASK) == TextField.PHONENUMBER) {
-            editor.setSingleLine(true);
-            editor.setInputType(InputType.TYPE_CLASS_PHONE);
-        } else {
-            editor.setSingleLine(false);
-            editor.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
-            editor.setInputType(editor.getInputType() | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
-        }
-        if ((constraints & TextField.PASSWORD) != 0) {
-            editor.setTransformationMethod(PasswordTransformationMethod.getInstance());
-            editor.setTypeface(Typeface.MONOSPACE);
-        }
+        editor.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        editor.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    turnKeyboard(editor, false);
+                    return true;
+                }
+                return false;
+            }
+        });
 
         editor.addTextChangedListener(new TextWatcher() {
             private String previousText;
@@ -225,6 +207,32 @@ public class AndroidTextBoxUI extends AndroidDisplayableUI implements TextBoxUI 
                     view = createMainView();
                     editView.setText(old.getText().toString());
                     editView.setSelection(old.getSelectionEnd());
+                }
+                final TextBox textBox = getTextBox();
+                final EditText editor = editView;
+                int constraints = textBox.getConstraints();
+                if ((constraints & TextField.CONSTRAINT_MASK) == TextField.URL) {
+                    editor.setSingleLine(true);
+                } else if ((constraints & TextField.CONSTRAINT_MASK) == TextField.NUMERIC) {
+                    editor.setSingleLine(true);
+                    editor.setInputType(InputType.TYPE_CLASS_NUMBER);
+                } else if ((constraints & TextField.CONSTRAINT_MASK) == TextField.DECIMAL) {
+                    editor.setSingleLine(true);
+                    editor.setInputType(
+                            InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                } else if ((constraints & TextField.CONSTRAINT_MASK) == TextField.PHONENUMBER) {
+                    editor.setSingleLine(true);
+                    editor.setInputType(InputType.TYPE_CLASS_PHONE);
+                } else {
+                    editor.setSingleLine(false);
+                    editor.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+                    editor.setInputType(editor.getInputType() | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+                }
+                if ((constraints & TextField.PASSWORD) != 0) {
+                    editor.setSingleLine(true);
+                    editor.setInputType(InputType.TYPE_CLASS_TEXT);
+                    editor.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    editor.setTypeface(Typeface.MONOSPACE);
                 }
                 activity.setContentView(view);
                 view.requestLayout();
