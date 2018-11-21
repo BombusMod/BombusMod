@@ -6,21 +6,15 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.1'
-        classpath 'com.github.ben-manes:gradle-versions-plugin:0.20.0'
     }
 }
 
 apply plugin: 'com.android.application'
-apply plugin: 'com.github.ben-manes.versions'
 
 repositories {
     mavenCentral()
     jcenter()
     google()
-}
-
-dependencies {
-    implementation 'com.squareup.okhttp3:okhttp:3.11.0'
 }
 
 android {
@@ -29,8 +23,8 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 27
-        versionCode 1404
-        versionName '0.9.1404'
+        versionCode 1405
+        versionName '0.9.1405'
         applicationId "org.bombusmod"
     }
     lintOptions {
@@ -68,28 +62,6 @@ android {
             release {
                 minifyEnabled false
                 signingConfig signingConfigs.release
-            }
-        }
-    }
-    buildTypes {
-        dev {
-
-        }
-    }
-    def build_param = "${build}";
-
-    if (build_param != "dev") {
-        //exclude production build
-        android.variantFilter { variant ->
-            if (variant.buildType.name.equals('dev')) {
-                variant.setIgnore(true);
-            }
-        }
-    } else {
-        //exclude all except production build
-        android.variantFilter { variant ->
-            if (!variant.buildType.name.equals('dev')) {
-                variant.setIgnore(true);
             }
         }
     }
