@@ -220,7 +220,9 @@ public class JabberStream implements XMLEventListener, Runnable {
 //#         }
 //#endif
         if (name.equals("stream")) {
-            listener.connectionTerminated(new XMLException("Normal stream shutdown"));
+            if (listener != null) {
+                listener.connectionTerminated(new XMLException("Normal stream shutdown"));
+            }
             return;
         }
         JabberDataBlock in = (JabberDataBlock) tagStack.pop();
@@ -228,7 +230,9 @@ public class JabberStream implements XMLEventListener, Runnable {
             dispatchXmppStanza(in);
             if (name.equals("error")) {
                 XmppError xe = XmppError.decodeStreamError(in);
-                listener.connectionTerminated(new XMLException("Stream error: " + xe.toString()));
+                if (listener != null) {
+                    listener.connectionTerminated(new XMLException("Stream error: " + xe.toString()));
+                }
             }
         } else {
             ((JabberDataBlock) tagStack.peek()).addChild(in);
@@ -358,7 +362,9 @@ public class JabberStream implements XMLEventListener, Runnable {
             if (StaticData.Debug) {
                 e.printStackTrace();
             }
-            listener.connectionTerminated(e);
+            if (listener != null) {
+                listener.connectionTerminated(e);
+            }
         }
         closeConnection();
     }
@@ -387,7 +393,6 @@ public class JabberStream implements XMLEventListener, Runnable {
 //#             }
 //#endif
 
-            listener = null;
             //TODO: see FS#528
             try {
                 Thread.sleep(500);
@@ -437,7 +442,9 @@ public class JabberStream implements XMLEventListener, Runnable {
 //#         } else {
 //#else            
         if (pingSent) {
-            listener.connectionTerminated(new Exception("Ping Timeout"));
+            if (listener != null) {
+                listener.connectionTerminated(new Exception("Ping Timeout"));
+            }
         } else {
             //System.out.println("Ping myself");
             ping();
