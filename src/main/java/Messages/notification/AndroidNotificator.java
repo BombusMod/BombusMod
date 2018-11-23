@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
+import android.support.v4.app.NotificationCompat;
 import org.bombusmod.BombusModActivity;
 import org.bombusmod.R;
 
@@ -31,7 +32,7 @@ public class AndroidNotificator implements Notificator {
         } else {
             Context context = BombusModActivity.getInstance();
             
-            Notification.Builder notification = new Notification.Builder(context);
+            NotificationCompat.Builder notification = new NotificationCompat.Builder(context);
             CharSequence contentTitle = (String) context.getApplicationContext().getText(R.string.notifyTitle);
             CharSequence contentText = (String) context.getApplicationContext().getText(R.string.notifyInfo) + ": " + StaticData.getInstance().roster.highliteMessageCount;
             Intent notificationIntent = new Intent(context, BombusModActivity.class);
@@ -47,7 +48,7 @@ public class AndroidNotificator implements Notificator {
             notification.setContentTitle(contentTitle);
             notification.setContentText(contentText);
             notification.setSmallIcon(icon);
-            Notification.InboxStyle style = new Notification.InboxStyle();
+            NotificationCompat.InboxStyle style = new NotificationCompat.InboxStyle();
             style.addLine(text)
                     .setBigContentTitle(title)
                     .setSummaryText(contentText);

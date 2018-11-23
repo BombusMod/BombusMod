@@ -17,14 +17,18 @@ repositories {
     google()
 }
 
+dependencies {
+    implementation 'com.android.support:support-compat:28.0.0'
+}
+
 android {
     compileSdkVersion 28
     buildToolsVersion '28.0.3'
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 27
-        versionCode 1405
-        versionName '0.9.1405'
+        versionCode 1406
+        versionName '0.9.1406'
         applicationId "org.bombusmod"
     }
     lintOptions {

@@ -95,7 +95,7 @@ public class Utf8IOStream {
         this.connection = connection;
         try {
             connection.setKeepAlive(true);
-            connection.setSoLinger(true, 300);            
+            //connection.setSoLinger(true, 300);
         } catch (Exception e) {
             e.printStackTrace();
         }
