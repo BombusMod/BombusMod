@@ -94,7 +94,7 @@ public class Utf8IOStream {
     public Utf8IOStream(Socket connection) throws IOException {
         this.connection = connection;
         try {
-            connection.setKeepAlive(true);
+            connection.setTcpNoDelay(true);
             //connection.setSoLinger(true, 300);
         } catch (Exception e) {
             e.printStackTrace();

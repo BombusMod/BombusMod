@@ -6,6 +6,8 @@ package org.bombusmod.tls;
 
 import android.net.SSLCertificateSocketFactory;
 import io.tls.TlsIO;
+import org.bombusmod.BombusModActivity;
+
 import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -27,8 +29,10 @@ public final class AndroidTls extends TlsIO {
     public AndroidTls(Socket socket, InputStream in, OutputStream out,
             String authHost)
             throws IOException {
-        sslFactory = SSLCertificateSocketFactory.getDefault(0, null);
+        sslFactory = BombusModActivity.getInstance().getSslContext().getSocketFactory();
         tls = (SSLSocket) (sslFactory.createSocket(socket, authHost, socket.getPort(), true));
+        tls.setUseClientMode(true);
+        tls.startHandshake();
     }
 
     public InputStream getTlsInputStream() throws IOException {

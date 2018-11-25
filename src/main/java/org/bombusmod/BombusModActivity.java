@@ -21,6 +21,8 @@
  */
 package org.bombusmod;
 
+import Client.Contact;
+import Client.StaticData;
 import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -34,7 +36,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.SubMenu;
 import android.view.Window;
-
+import de.duenndns.ssl.MemorizingTrustManager;
 import org.bombusmod.scrobbler.Receiver;
 import org.microemu.DisplayAccess;
 import org.microemu.MIDletAccess;
@@ -56,20 +58,20 @@ import org.microemu.device.DeviceFactory;
 import org.microemu.device.ui.CommandUI;
 import org.microemu.log.Logger;
 
+import javax.microedition.lcdui.Command;
+import javax.microedition.midlet.MIDlet;
+import javax.microedition.midlet.MIDletStateChangeException;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.X509TrustManager;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
-import javax.microedition.lcdui.Command;
-import javax.microedition.midlet.MIDlet;
-import javax.microedition.midlet.MIDletStateChangeException;
-
-import Client.Contact;
-import Client.StaticData;
 
 public class BombusModActivity extends MicroEmulatorActivity {
 
@@ -78,6 +80,10 @@ public class BombusModActivity extends MicroEmulatorActivity {
     private MIDlet midlet;
     private static BombusModActivity instance;
     protected Receiver musicReceiver;
+
+    private SSLContext sslContext;
+
+    private MemorizingTrustManager memorizingTrustManager;
 
     public static BombusModActivity getInstance() {
         return instance;
@@ -227,6 +233,15 @@ public class BombusModActivity extends MicroEmulatorActivity {
         filter.addAction("net.jjc1138.android.scrobbler.action.MUSIC_STATUS");
         musicReceiver = new Receiver();
         registerReceiver(musicReceiver, filter);
+
+        try {
+            sslContext = SSLContext.getInstance("TLS");
+            memorizingTrustManager = new MemorizingTrustManager(instance);
+            sslContext.init(null, new X509TrustManager[]{memorizingTrustManager}, new java.security.SecureRandom());
+        } catch (NoSuchAlgorithmException | KeyManagementException e) {
+            Log.w("TLS", e.getMessage());
+        }
+
     }
 
     @Override
@@ -281,11 +296,18 @@ public class BombusModActivity extends MicroEmulatorActivity {
                 da.hideNotify();
             }
         }
+        if (memorizingTrustManager != null) {
+            memorizingTrustManager.unbindDisplayActivity(this);
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
+        if (memorizingTrustManager != null) {
+            memorizingTrustManager.bindDisplayActivity(this);
+        }
 
         new Thread(new Runnable() {
 
@@ -579,5 +601,9 @@ public class BombusModActivity extends MicroEmulatorActivity {
         startMain.addCategory(Intent.CATEGORY_HOME);
         startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(startMain);
+    }
+
+    public SSLContext getSslContext() {
+        return sslContext;
     }
 }
