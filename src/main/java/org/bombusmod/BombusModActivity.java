@@ -314,32 +314,6 @@ public class BombusModActivity extends MicroEmulatorActivity {
         if (memorizingTrustManager != null) {
             memorizingTrustManager.bindDisplayActivity(this);
         }
-
-        new Thread(new Runnable() {
-
-            public void run() {
-                MIDletAccess ma = MIDletBridge.getMIDletAccess(midlet);
-                if (ma != null) {
-                    try {
-                        ma.startApp();
-                    } catch (MIDletStateChangeException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                if (contentView != null) {
-                    if (contentView instanceof AndroidRepaintListener) {
-                        ((AndroidRepaintListener) contentView).onResume();
-                    }
-                    post(new Runnable() {
-
-                        public void run() {
-                            contentView.invalidate();
-                        }
-                    });
-                }
-            }
-        }).start();
     }
 
     @Override
@@ -622,6 +596,31 @@ public class BombusModActivity extends MicroEmulatorActivity {
             xmppService = binder.getService();
             Log.d("BombusMod", "Service connected");
             serviceBound = true;
+            new Thread(new Runnable() {
+
+                public void run() {
+                    MIDletAccess ma = MIDletBridge.getMIDletAccess(midlet);
+                    if (ma != null) {
+                        try {
+                            ma.startApp();
+                        } catch (MIDletStateChangeException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    if (contentView != null) {
+                        if (contentView instanceof AndroidRepaintListener) {
+                            ((AndroidRepaintListener) contentView).onResume();
+                        }
+                        post(new Runnable() {
+
+                            public void run() {
+                                contentView.invalidate();
+                            }
+                        });
+                    }
+                }
+            }).start();
         }
 
         @Override
