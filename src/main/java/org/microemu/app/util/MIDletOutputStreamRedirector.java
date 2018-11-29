@@ -26,10 +26,11 @@
  */
 package org.microemu.app.util;
 
+import android.util.Log;
+import org.bombusmod.BombusModActivity;
+
 import java.io.OutputStream;
 import java.io.PrintStream;
-
-import org.microemu.log.Logger;
 
 /**
  * @author vlads
@@ -47,11 +48,6 @@ public class MIDletOutputStreamRedirector extends PrintStream {
 	public final static PrintStream err = errPrintStream();
 
 	private boolean isErrorStream;
-
-	static {
-		Logger.addLogOrigin(MIDletOutputStreamRedirector.class);
-		Logger.addLogOrigin(OutputStream2Log.class);
-	}
 
 	private static class OutputStream2Log extends OutputStream {
 
@@ -73,9 +69,9 @@ public class MIDletOutputStreamRedirector extends PrintStream {
 			if ((b == '\n') || (b == '\r')) {
 				if (buffer.length() > 0) {
 					if (isErrorStream) {
-						Logger.error(buffer.toString());
+						Log.e(BombusModActivity.LOG_TAG, buffer.toString());
 					} else {
-						Logger.info(buffer.toString());
+						Log.i(BombusModActivity.LOG_TAG, buffer.toString());
 					}
 					buffer = new StringBuffer();
 				}
@@ -174,9 +170,9 @@ public class MIDletOutputStreamRedirector extends PrintStream {
 		if (keepMultiLinePrint) {
 			super.flush();
 			if (isErrorStream) {
-				Logger.error(x);
+				Log.e(BombusModActivity.LOG_TAG, (String) x);
 			} else {
-				Logger.info(x);
+				Log.i(BombusModActivity.LOG_TAG, (String) x);
 			}
 		} else {
 			super.println(x);
@@ -187,9 +183,9 @@ public class MIDletOutputStreamRedirector extends PrintStream {
 		if (keepMultiLinePrint) {
 			super.flush();
 			if (isErrorStream) {
-				Logger.error(x);
+				Log.e(BombusModActivity.LOG_TAG, x);
 			} else {
-				Logger.info(x);
+				Log.i(BombusModActivity.LOG_TAG,x);
 			}
 		} else {
 			super.println(x);

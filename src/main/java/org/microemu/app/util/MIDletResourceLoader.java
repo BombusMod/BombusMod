@@ -28,8 +28,9 @@ package org.microemu.app.util;
 
 import java.io.InputStream;
 
-import org.microemu.Injected;
-import org.microemu.log.Logger;
+import android.util.Log;
+import org.bombusmod.BombusModActivity;
+import org.microemu.Injected;;
 import org.microemu.util.ThreadUtils;
 
 /**
@@ -59,13 +60,13 @@ public class MIDletResourceLoader {
 
 	public static InputStream getResourceAsStream(Class origClass, String resourceName) {
 		if (traceResourceLoading) {
-			Logger.debug("Loading MIDlet resource", resourceName);
+			Log.d(BombusModActivity.LOG_TAG,"Loading MIDlet resource " + resourceName);
 		}
 		if (classLoader != origClass.getClassLoader()) {
 			// showWarning
 			String callLocation = ThreadUtils.getCallLocation(FQCN);
 			if (traceResourceLoading && callLocation != null) {
-				Logger.warn("attempt to load resource [" + resourceName + "] using System ClasslLoader from "
+				Log.w(BombusModActivity.LOG_TAG,"attempt to load resource [" + resourceName + "] using System ClasslLoader from "
 						+ callLocation);
 			}
 		}
@@ -73,7 +74,7 @@ public class MIDletResourceLoader {
 
 		InputStream is = classLoader.getResourceAsStream(resourceName);
 		if (is == null) {
-			Logger.debug("Resource not found ", resourceName);
+			Log.d(BombusModActivity.LOG_TAG, "Resource not found " + resourceName);
 			return null;
 		} else {
 			return new MIDletResourceInputStream(is);

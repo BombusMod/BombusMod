@@ -36,9 +36,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.WeakHashMap;
 
+import android.util.Log;
+import org.bombusmod.BombusModActivity;
 import org.microemu.MIDletBridge;
 import org.microemu.MIDletContext;
-import org.microemu.log.Logger;
 
 /**
  * Terminate all timers on MIDlet exit. TODO Name all the timer Threads created
@@ -162,7 +163,7 @@ public class MIDletTimer extends Timer implements Runnable {
 					}
 				} catch (Throwable t) {
 				    if (MIDletThread.debug) {
-				        Logger.debug("MIDletTimerTask throws", t);
+						Log.d(BombusModActivity.LOG_TAG, "MIDletTimerTask throws", t);
 				    }
 				}
 			}
@@ -202,7 +203,7 @@ public class MIDletTimer extends Timer implements Runnable {
 			timer.midletContext = MIDletBridge.getMIDletContext();
 		}
 		if (timer.midletContext == null) {
-			Logger.error("Creating Timer with no MIDlet context", new Throwable());
+			Log.e(BombusModActivity.LOG_TAG, "Creating Timer with no MIDlet context", new Throwable());
 			return;
 		}
 		Map timers = (Map) midlets.get(timer.midletContext);
@@ -250,10 +251,10 @@ public class MIDletTimer extends Timer implements Runnable {
 			}
 			if (o instanceof MIDletTimer) {
 				MIDletTimer tm = (MIDletTimer) o;
-				Logger.warn("MIDlet timer created from [" + tm.name + "] still running");
+				Log.w(BombusModActivity.LOG_TAG, "MIDlet timer created from [" + tm.name + "] still running");
 				tm.terminate();
 			} else {
-				Logger.debug("unrecognized Object [" + o.getClass().getName() + "]");
+				Log.w(BombusModActivity.LOG_TAG, "unrecognized Object [" + o.getClass().getName() + "]");
 			}
 		}
 	}

@@ -37,8 +37,9 @@ import java.util.Vector;
 import javax.microedition.io.Connection;
 import javax.microedition.io.ConnectionNotFoundException;
 
+import android.util.Log;
+import org.bombusmod.BombusModActivity;
 import org.microemu.cldc.ClosedConnection;
-import org.microemu.log.Logger;
 
 import com.sun.cdc.io.ConnectionBaseInterface;
 
@@ -114,9 +115,7 @@ public class ConnectorImpl extends ConnectorAdapter {
 				connectionClass = interfaces[i];
 				break;
 			} else if (interfaces[i].getClass().getName().equals(Connection.class.getName())) {
-				Logger.debugClassLoader("ME2 Connection.class", Connection.class);
-				Logger.debugClassLoader(name + " Connection.class", interfaces[i]);
-				Logger.error("Connection interface loaded by different ClassLoader");
+				Log.e(BombusModActivity.LOG_TAG, "Connection interface loaded by different ClassLoader");
 			}
 		}
 		if (connectionClass == null) {
@@ -147,16 +146,16 @@ public class ConnectorImpl extends ConnectorAdapter {
 					ConnectionBaseInterface base = (ConnectionBaseInterface) cl.newInstance();
 					return base.openPrim(name.substring(name.indexOf(':') + 1), mode, timeouts);
 				} catch (ClassNotFoundException ex) {
-					Logger.debug("connection [" + protocol + "] class not found", e);
-					Logger.debug("connection [" + protocol + "] class not found", ex);
+					Log.d(BombusModActivity.LOG_TAG, "connection [" + protocol + "] class not found", e);
+					Log.d(BombusModActivity.LOG_TAG,"connection [" + protocol + "] class not found", ex);
 					throw new ConnectionNotFoundException("connection [" + protocol + "] class not found");
 				}
 			}
 		} catch (InstantiationException e) {
-			Logger.error("Unable to create", className, e);
+			Log.e(BombusModActivity.LOG_TAG, "Unable to create " + className, e);
 			throw new ConnectionNotFoundException();
 		} catch (IllegalAccessException e) {
-			Logger.error("Unable to create", className, e);
+			Log.e(BombusModActivity.LOG_TAG, "Unable to create " + className, e);
 			throw new ConnectionNotFoundException();
 		}
 	}

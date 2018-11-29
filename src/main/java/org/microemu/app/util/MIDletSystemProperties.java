@@ -37,8 +37,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 
+import android.util.Log;
+import org.bombusmod.BombusModActivity;
 import org.microemu.device.Device;
-import org.microemu.log.Logger;
 
 /**
  * @author vlads
@@ -164,8 +165,8 @@ public class MIDletSystemProperties {
 			} catch (SecurityException e) {
 				if (wanrOnce) {
 					wanrOnce = false;
-					Logger.error("Cannot update Java System.Properties", e);
-					Logger.debug("Continue ME2 operations with no updates to system Properties");
+					Log.e(BombusModActivity.LOG_TAG, "Cannot update Java System.Properties", e);
+					Log.d(BombusModActivity.LOG_TAG, "Continue ME2 operations with no updates to system Properties");
 				}
 			}
 		}
@@ -179,7 +180,7 @@ public class MIDletSystemProperties {
 			} catch (SecurityException e) {
 				if (wanrOnce) {
 					wanrOnce = false;
-					Logger.error("Cannot update Java System.Properties", e);
+					Log.e(BombusModActivity.LOG_TAG,"Cannot update Java System.Properties", e);
 				}
 			}
 		}

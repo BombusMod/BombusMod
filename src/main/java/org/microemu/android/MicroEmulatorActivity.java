@@ -47,7 +47,6 @@ import org.microemu.device.DeviceFactory;
 import org.microemu.device.EmulatorContext;
 import org.microemu.device.FontManager;
 import org.microemu.device.InputMethod;
-import org.microemu.log.Logger;
 
 import android.app.Activity;
 import android.app.Dialog;

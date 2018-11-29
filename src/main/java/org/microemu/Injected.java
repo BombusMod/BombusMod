@@ -30,10 +30,11 @@ import java.io.InputStream;
 import java.io.PrintStream;
 import java.io.Serializable;
 
+import android.util.Log;
+import org.bombusmod.BombusModActivity;
 import org.microemu.app.util.MIDletOutputStreamRedirector;
 import org.microemu.app.util.MIDletResourceLoader;
 import org.microemu.app.util.MIDletSystemProperties;
-import org.microemu.log.Logger;
 
 /**
  * @author vlads
@@ -56,10 +57,6 @@ public final class Injected implements Serializable {
 	public final static PrintStream out = outPrintStream();
 
 	public final static PrintStream err = errPrintStream();
-
-	static {
-		Logger.addLogOrigin(Injected.class);
-	}
 	
 	/**
 	 * We don't need to instantiate the class, all access is static
@@ -82,7 +79,7 @@ public final class Injected implements Serializable {
 	 * Redirect throwable.printStackTrace() to MicroEmulator console
 	 */
 	public static void printStackTrace(Throwable t) {
-		Logger.error("MIDlet caught", t);
+		Log.e(BombusModActivity.LOG_TAG, "MIDlet caught", t);
 	}
 	
 	/**
@@ -117,7 +114,7 @@ public final class Injected implements Serializable {
 	 * TODO fix ChangeCallsMethodVisitor
 	 */
 	public static Throwable handleCatchThrowable(Throwable t) {
-		Logger.error("MIDlet caught", t);
+		Log.e(BombusModActivity.LOG_TAG,"MIDlet caught", t);
 		return t;
 	}
 }

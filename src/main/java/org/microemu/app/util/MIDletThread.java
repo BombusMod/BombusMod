@@ -30,9 +30,10 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.WeakHashMap;
 
+import android.util.Log;
+import org.bombusmod.BombusModActivity;
 import org.microemu.MIDletBridge;
 import org.microemu.MIDletContext;
-import org.microemu.log.Logger;
 import org.microemu.util.ThreadUtils;
 
 /**
@@ -83,7 +84,7 @@ public class MIDletThread extends Thread {
 	private static void register(MIDletThread thread) {
 		MIDletContext midletContext = MIDletBridge.getMIDletContext();
 		if (midletContext == null && debug) {
-			Logger.error("Creating thread with no MIDlet context", new Throwable());
+			Log.e(BombusModActivity.LOG_TAG, "Creating thread with no MIDlet context");
 			return;
 		}
 		thread.callLocation  = ThreadUtils.getCallLocation(MIDletThread.class.getName());
@@ -101,7 +102,7 @@ public class MIDletThread extends Thread {
 			super.run();
 		} catch (Throwable e) {
 		    if (debug) {
-		        Logger.debug("MIDletThread throws", e);
+				Log.d(BombusModActivity.LOG_TAG,"MIDletThread throws", e);
 		    }
 		}
 		//Logger.debug("thread ends, created from " + callLocation);	
@@ -143,7 +144,7 @@ public class MIDletThread extends Thread {
 			if (o instanceof MIDletThread) {
 				MIDletThread t = (MIDletThread) o;
 				if (t.isAlive()) {
-					Logger.info("wait thread [" + t.getName() + "] end");
+					Log.i(BombusModActivity.LOG_TAG, "wait thread [" + t.getName() + "] end");
 					while ((endTime > System.currentTimeMillis()) && (t.isAlive())) {
 						try {
 							t.join(700);
@@ -152,18 +153,18 @@ public class MIDletThread extends Thread {
 						}
 					}
 					if (t.isAlive()) {
-						Logger.warn("MIDlet thread [" + t.getName() + "] still running" + ThreadUtils.getTreadStackTrace(t));
+						Log.w(BombusModActivity.LOG_TAG,"MIDlet thread [" + t.getName() + "] still running" + ThreadUtils.getTreadStackTrace(t));
 						if (t.callLocation != null) {
-							Logger.info("this thread [" + t.getName() + "] was created from " + t.callLocation);
+							Log.i(BombusModActivity.LOG_TAG,"this thread [" + t.getName() + "] was created from " + t.callLocation);
 						}
 						t.interrupt();
 					}
 				}
 			} else {
-				Logger.debug("unrecognized Object [" + o.getClass().getName() + "]");
+				Log.d(BombusModActivity.LOG_TAG,"unrecognized Object [" + o.getClass().getName() + "]");
 			}
-		};
-		Logger.debug("all "+ threads.size() + " thread(s) finished");
+		}
+		Log.d(BombusModActivity.LOG_TAG, "all "+ threads.size() + " thread(s) finished");
 		terminator = false;
 	}
 

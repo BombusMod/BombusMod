@@ -36,7 +36,8 @@ import java.util.Vector;
 
 import javax.microedition.io.Connection;
 
-import org.microemu.log.Logger;
+import android.util.Log;
+import org.bombusmod.BombusModActivity;
 import org.microemu.microedition.ImplementationUnloadable;
 import org.microemu.microedition.io.ConnectorAdapter;
 
@@ -89,7 +90,7 @@ public class FileSystemConnectorImpl extends ConnectorAdapter implements Impleme
 
 	void notifyMIDletDestroyed() {
 		if (openConnection.size() > 0) {
-			Logger.warn("Still has " + openConnection.size() + " open file connections");
+			Log.w(BombusModActivity.LOG_TAG,"Still has " + openConnection.size() + " open file connections");
 		}
 	}
 

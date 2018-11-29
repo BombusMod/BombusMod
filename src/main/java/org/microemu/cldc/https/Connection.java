@@ -24,12 +24,13 @@
 
 package org.microemu.cldc.https;
 
+import android.util.Log;
+import org.bombusmod.BombusModActivity;
+
 import java.security.NoSuchAlgorithmException;
 
 import javax.microedition.io.HttpsConnection;
 import javax.net.ssl.SSLContext;
-
-import org.microemu.log.Logger;
 
 public class Connection extends org.microemu.cldc.http.Connection implements HttpsConnection {
 
@@ -39,7 +40,7 @@ public class Connection extends org.microemu.cldc.http.Connection implements Htt
 	    try {
 			sslContext = SSLContext.getInstance("TLS");
 		} catch (NoSuchAlgorithmException ex) {
-			Logger.error(ex);
+			Log.e(BombusModActivity.LOG_TAG, "SSL error", ex);
 		}	
 	}
 

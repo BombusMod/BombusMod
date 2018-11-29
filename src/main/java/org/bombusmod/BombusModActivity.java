@@ -48,7 +48,6 @@ import org.microemu.android.device.AndroidInputMethod;
 import org.microemu.android.device.ui.AndroidCanvasUI;
 import org.microemu.android.device.ui.AndroidCommandUI;
 import org.microemu.android.device.ui.AndroidDisplayableUI;
-import org.microemu.android.util.AndroidLoggerAppender;
 import org.microemu.android.util.AndroidRecordStoreManager;
 import org.microemu.android.util.AndroidRepaintListener;
 import org.microemu.app.Common;
@@ -57,7 +56,6 @@ import org.microemu.cldc.file.FileSystem;
 import org.microemu.device.Device;
 import org.microemu.device.DeviceFactory;
 import org.microemu.device.ui.CommandUI;
-import org.microemu.log.Logger;
 
 import javax.microedition.lcdui.Command;
 import javax.microedition.midlet.MIDlet;
@@ -107,11 +105,6 @@ public class BombusModActivity extends MicroEmulatorActivity {
 
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
-
-        Logger.removeAllAppenders();
-        Logger.setLocationEnabled(false);
-        Logger.addAppender(new AndroidLoggerAppender());
-
         System.setOut(new PrintStream(new OutputStream() {
 
             StringBuffer line = new StringBuffer();
@@ -119,7 +112,7 @@ public class BombusModActivity extends MicroEmulatorActivity {
             @Override
             public void write(int oneByte) throws IOException {
                 if (((char) oneByte) == '\n') {
-                    Logger.debug(line.toString());
+                    Log.d(BombusModActivity.LOG_TAG, line.toString());
                     if (line.length() > 0) {
                         line.delete(0, line.length() - 1);
                     }
@@ -136,7 +129,7 @@ public class BombusModActivity extends MicroEmulatorActivity {
             @Override
             public void write(int oneByte) throws IOException {
                 if (((char) oneByte) == '\n') {
-                    Logger.debug(line.toString());
+                    Log.d(BombusModActivity.LOG_TAG, line.toString());
                     if (line.length() > 0) {
                         line.delete(0, line.length() - 1);
                     }

@@ -39,9 +39,10 @@ import javax.microedition.rms.RecordStoreException;
 import javax.microedition.rms.RecordStoreNotFoundException;
 import javax.microedition.rms.RecordStoreNotOpenException;
 
+import android.util.Log;
+import org.bombusmod.BombusModActivity;
 import org.microemu.MicroEmulator;
 import org.microemu.RecordStoreManager;
-import org.microemu.log.Logger;
 import org.microemu.util.ExtendedRecordListener;
 import org.microemu.util.RecordStoreImpl;
 
@@ -110,7 +111,7 @@ public class AndroidRecordStoreManager implements RecordStoreManager {
 			recordStoreImpl.readHeader(dis);
 			dis.close();
 		} catch (IOException e) {
-			Logger.error("RecordStore.deleteRecordStore: ERROR reading " + getHeaderFileName(recordStoreName), e);
+			Log.e(BombusModActivity.LOG_TAG, "RecordStore.deleteRecordStore: ERROR reading " + getHeaderFileName(recordStoreName), e);
 			throw new RecordStoreException();
 		}
 
@@ -190,7 +191,7 @@ public class AndroidRecordStoreManager implements RecordStoreManager {
 		} catch (FileNotFoundException e) {
 			throw new InvalidRecordIDException();
 		} catch (IOException e) {
-			Logger.error("RecordStore.loadFromDisk: ERROR reading " + getRecordFileName(recordStoreImpl.getName(), recordId), e);
+			Log.e(BombusModActivity.LOG_TAG, "RecordStore.loadFromDisk: ERROR reading " + getRecordFileName(recordStoreImpl.getName(), recordId), e);
 		}
 	}
 
@@ -211,7 +212,7 @@ public class AndroidRecordStoreManager implements RecordStoreManager {
 			try {
 				deleteRecordStore(store);
 			} catch (RecordStoreException e) {
-				Logger.debug("deleteRecordStore", e);
+				Log.d(BombusModActivity.LOG_TAG, "deleteRecordStore", e);
 			}
 		}
 	}
@@ -225,7 +226,7 @@ public class AndroidRecordStoreManager implements RecordStoreManager {
 			recordStore.writeHeader(dos);
 			dos.close();
 		} catch (IOException e) {
-			Logger.error("RecordStore.saveToDisk: ERROR writting object to " + getHeaderFileName(recordStore.getName()), e);
+			Log.e(BombusModActivity.LOG_TAG, "RecordStore.saveToDisk: ERROR writting object to " + getHeaderFileName(recordStore.getName()), e);
 			throw new RecordStoreException(e.getMessage());
 		}
 		
@@ -244,7 +245,7 @@ public class AndroidRecordStoreManager implements RecordStoreManager {
 			recordStore.writeHeader(dos);
 			dos.close();
 		} catch (IOException e) {
-			Logger.error("RecordStore.saveToDisk: ERROR writting object to " + getHeaderFileName(recordStore.getName()), e);
+			Log.e(BombusModActivity.LOG_TAG, "RecordStore.saveToDisk: ERROR writting object to " + getHeaderFileName(recordStore.getName()), e);
 			throw new RecordStoreException(e.getMessage());
 		}
 		
@@ -255,7 +256,7 @@ public class AndroidRecordStoreManager implements RecordStoreManager {
 				recordStore.writeRecord(dos, recordId);
 				dos.close();
 			} catch (IOException e) {
-				Logger.error("RecordStore.saveToDisk: ERROR writting object to " + getRecordFileName(recordStore.getName(), recordId), e);
+				Log.e(BombusModActivity.LOG_TAG, "RecordStore.saveToDisk: ERROR writting object to " + getRecordFileName(recordStore.getName(), recordId), e);
 				throw new RecordStoreException(e.getMessage());
 			}
 		}

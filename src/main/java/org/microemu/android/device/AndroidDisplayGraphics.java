@@ -29,8 +29,6 @@ package org.microemu.android.device;
 import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Image;
 
-import org.microemu.log.Logger;
-
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.DashPathEffect;
@@ -40,6 +38,8 @@ import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Region;
+import android.util.Log;
+import org.bombusmod.BombusModActivity;
 
 public class AndroidDisplayGraphics extends javax.microedition.lcdui.Graphics {
 	
@@ -362,11 +362,11 @@ public class AndroidDisplayGraphics extends javax.microedition.lcdui.Graphics {
 
 	public void copyArea(int x_src, int y_src, int width, int height,
 			int x_dest, int y_dest, int anchor) {
-		Logger.debug("copyArea");
+		Log.d(BombusModActivity.LOG_TAG, "copyArea");
 	}
 
 	public int getDisplayColor(int color) {
-		Logger.debug("getDisplayColor");
+		Log.d(BombusModActivity.LOG_TAG, "getDisplayColor");
 
 		return -1;
 	}
