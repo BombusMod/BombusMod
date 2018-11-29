@@ -66,9 +66,9 @@ public class RenameGroup
 
     public void  cmdOk() {
         //if (contact==null)
-            sd.theStream.send(new IqQueryRenameGroup (group.name, groupName.getValue()));
+            sd.getTheStream().send(new IqQueryRenameGroup (group.name, groupName.getValue()));
         /*else
-            sd.roster.theStream.send(new IqQueryRoster(contact.getBareJid(), contact.nick, groupName.getValue(), null)); */
+            sd.roster.getTheStream().send(new IqQueryRoster(contact.getBareJid(), contact.nick, groupName.getValue(), null)); */
 
         destroyView();
     }    

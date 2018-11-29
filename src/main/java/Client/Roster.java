@@ -272,11 +272,10 @@ public class Roster
             Account a = sd.account;
             setProgress(SR.MS_CONNECT_TO_ + a.JID.getServer(), 30);
 
-            sd.theStream = a.openJabberStream();
-            new Thread(sd.theStream).start();
+            sd.startConnection();
             setProgress(SR.MS_OPENING_STREAM, 40);
-            sd.theStream.listener = new JabberDispatcher();
-            sd.theStream.initiateStream();
+            sd.getTheStream().listener = new JabberDispatcher();
+            sd.getTheStream().initiateStream();
         } catch (Exception e) {
             askReconnect(e);
         }
@@ -946,7 +945,7 @@ public class Roster
             Presence presence = new Presence(myStatus, myPriority, myMessage, sd.account.nick);
 
             if (!sd.account.mucOnly) {
-                sd.theStream.send(presence);
+                sd.getTheStream().send(presence);
             }
 //#ifndef WMUC
             reEnumerator = null;
@@ -957,8 +956,8 @@ public class Roster
         // disconnect
         if (myStatus == Presence.PRESENCE_OFFLINE) {
             try {
-                sd.theStream.close(); // sends </stream:stream> and closes socket
-                sd.theStream.loggedIn = false;
+                sd.getTheStream().close(); // sends </stream:stream> and closes socket
+                sd.getTheStream().loggedIn = false;
             } catch (Exception e) { /*
                  * e.printStackTrace();
                  */ }
@@ -1001,8 +1000,8 @@ public class Roster
             presence.addChild(x);
         }
 
-        if (sd.theStream != null) {
-            sd.theStream.send(presence);
+        if (sd.getTheStream() != null) {
+            sd.getTheStream().send(presence);
         }
     }
 
@@ -1021,10 +1020,10 @@ public class Roster
     }
 
     public boolean isLoggedIn() {
-        if (sd.theStream == null) {
+        if (sd.getTheStream() == null) {
             return false;
         }
-        return sd.theStream.loggedIn;
+        return sd.getTheStream().loggedIn;
     }
 
     public Contact selfContact() {
@@ -1060,7 +1059,7 @@ public class Roster
                 }
                 Presence presence = new Presence(myStatus, myPriority, myMessage, null);
                 presence.setTo(myself.jid.getBare());
-                sd.theStream.send(presence);
+                sd.getTheStream().send(presence);
             }
         }
     }
@@ -1100,7 +1099,7 @@ public class Roster
             }
         }
 
-        sd.theStream.send(presence);
+        sd.getTheStream().send(presence);
     }
 
     public void doSubscribe(Contact c) {
@@ -1161,7 +1160,7 @@ public class Roster
                 }
             }
 
-            sd.theStream.send(message);
+            sd.getTheStream().send(message);
             lastMessageTime = Time.utcTimeMillis();
             playNotify(SOUND_OUTGOING);
         } catch (Exception e) {
@@ -1180,7 +1179,7 @@ public class Roster
         //xep-0184
         message.setAttribute("id", id); // FIXME: should be new id by XEP-0184 version 1.1
         message.addChildNs("received", Message.NS_RECEIPTS).setAttribute("id", id);
-        sd.theStream.send(message);
+        sd.getTheStream().send(message);
     }
     private Vector vCardQueue;
 
@@ -1212,7 +1211,7 @@ public class Roster
                 JabberDataBlock req = (JabberDataBlock) vCardQueue.lastElement();
                 vCardQueue.removeElement(req);
                 //System.out.println(k.nick);
-                sd.theStream.send(req);
+                sd.getTheStream().send(req);
                 querysign = true;
             }
         }
@@ -1226,7 +1225,7 @@ public class Roster
         errorLog(error);
 
         try {
-            sd.theStream.close();
+            sd.getTheStream().close();
         } catch (Exception e) {
             //e.printStackTrace();
         }
@@ -1237,21 +1236,21 @@ public class Roster
     }
 
     public void loginSuccess() {
-        sd.theStream.addBlockListener(new PresenceDispatcher());
-        sd.theStream.addBlockListener(new RosterDispatcher());
-        sd.theStream.addBlockListener(new EntityCaps());
-        sd.theStream.addBlockListener(new IqVCard());
+        sd.getTheStream().addBlockListener(new PresenceDispatcher());
+        sd.getTheStream().addBlockListener(new RosterDispatcher());
+        sd.getTheStream().addBlockListener(new EntityCaps());
+        sd.getTheStream().addBlockListener(new IqVCard());
 
-        sd.theStream.addBlockListener(new IqPing());
-        sd.theStream.addBlockListener(new IqVersionReply());
-        sd.theStream.startKeepAliveTask(); //enable keep-alive packets
+        sd.getTheStream().addBlockListener(new IqPing());
+        sd.getTheStream().addBlockListener(new IqVersionReply());
+        sd.getTheStream().startKeepAliveTask(); //enable keep-alive packets
 
-        sd.theStream.loggedIn = true;
+        sd.getTheStream().loggedIn = true;
         currentReconnect = 0;
 
-        sd.theStream.addBlockListener(new IqLast());
-        sd.theStream.addBlockListener(new IqTimeReply());
-        sd.theStream.addBlockListener(new RosterXListener());
+        sd.getTheStream().addBlockListener(new IqLast());
+        sd.getTheStream().addBlockListener(new IqTimeReply());
+        sd.getTheStream().addBlockListener(new RosterXListener());
         if (cf.adhoc) {
             IQCommands.getInstance().addBlockListener();
         }
@@ -1263,7 +1262,7 @@ public class Roster
 //#endif
 //#if SASL_XGOOGLETOKEN
         if (StaticData.getInstance().account.isGoogle) {
-            sd.theStream.addBlockListener(new IqGmail());
+            sd.getTheStream().addBlockListener(new IqGmail());
         }
 //#endif
 //#if FILE_TRANSFER
@@ -1274,7 +1273,7 @@ public class Roster
 //#endif
 
 //#ifdef CAPTCHA
-        sd.theStream.addBlockListener(new Captcha());
+        sd.getTheStream().addBlockListener(new Captcha());
 //#endif
 
         playNotify(SOUND_CONNECTED);
@@ -1299,12 +1298,12 @@ public class Roster
             doReconnect = false;
 //#ifndef WMUC            
             //query bookmarks
-            sd.theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
+            sd.getTheStream().addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
 //#endif            
         } else {
             JabberDataBlock qr = RosterDispatcher.QueryRoster();
             setProgress(SR.MS_ROSTER_REQUEST, 49);
-            sd.theStream.send(qr);
+            sd.getTheStream().send(qr);
             show();
         }
         if ((Config.autoAwayType != Config.AWAY_OFF) && Config.autoAwayType != Config.AWAY_LOCK) {
@@ -1312,7 +1311,7 @@ public class Roster
         }
 //#ifndef WMUC
         //query bookmarks
-        sd.theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
+        sd.getTheStream().addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
 //#endif
     }
     
@@ -1496,7 +1495,7 @@ public class Roster
                         es.getAutoRespondMessage(),
                         SR.MS_AUTORESPOND,
                         false);
-                sd.theStream.send(autoMessage);
+                sd.getTheStream().send(autoMessage);
                 c.autoresponded = true;
 
                 c.addMessage(new Msg(Msg.MESSAGE_TYPE_SYSTEM, "local", SR.MS_AUTORESPOND, ""));
@@ -1640,11 +1639,10 @@ public class Roster
     public void askReconnect(final Exception e) {
         //SplashScreen.getInstance().close();
         try {
-            sd.theStream.close(); // sends </stream:stream> and closes socket
+            sd.getTheStream().close(); // sends </stream:stream> and closes socket
         } catch (Exception e1) { /*
              * e1.printStackTrace();
              */ }
-        sd.theStream = null;
         setProgress(SR.MS_FAILED, 100);
         doReconnect = false;
         myStatus = Presence.PRESENCE_OFFLINE;
@@ -1850,7 +1848,7 @@ public class Roster
                     mess = sl.getStatus(Presence.PRESENCE_OFFLINE).getMessage();
                 }
                 sendPresence(Presence.PRESENCE_OFFLINE, mess);
-                sd.theStream.loggedIn = false;
+                sd.getTheStream().loggedIn = false;
             } catch (Exception e) {
             }
         }
@@ -2130,7 +2128,7 @@ public class Roster
                 countNewMsgs();
                 reEnumRoster();
             } else {
-                sd.theStream.send(RosterDispatcher.QueryRoster(c.jid, null, null, "remove"));
+                sd.getTheStream().send(RosterDispatcher.QueryRoster(c.jid, null, null, "remove"));
                 if (JidUtils.isTransport(c.jid)) {
                     // for buggy transports
                     sendPresence(c.jid.toString(), "unsubscribe", null, false);
@@ -2152,12 +2150,12 @@ public class Roster
                 JabberDataBlock unreg = new Iq(c.jid.getBare(), Iq.TYPE_SET, "unreg" + System.currentTimeMillis());
                 JabberDataBlock query = unreg.addChildNs("query", "jabber:iq:register");
                 query.addChild("remove", null);
-                sd.theStream.send(unreg);
+                sd.getTheStream().send(unreg);
                 // and for buggy transports
                 JabberDataBlock unreg2 = new Iq(c.jid.toString(), Iq.TYPE_SET, "unreg" + System.currentTimeMillis());
                 JabberDataBlock query2 = unreg2.addChildNs("query", "jabber:iq:register");
                 query2.addChild("remove", null);
-                sd.theStream.send(unreg2);
+                sd.getTheStream().send(unreg2);
             }
         }
 
@@ -2167,7 +2165,7 @@ public class Roster
     }
 
     public void storeContact(Contact c, boolean askSubscribe) {
-        sd.theStream.send(RosterDispatcher.QueryRoster(c.getJid(), c.nick, (c.group == null || c.getGroupType() == Groups.TYPE_NOT_IN_LIST) ? SR.MS_GENERAL : c.group.name, null));
+        sd.getTheStream().send(RosterDispatcher.QueryRoster(c.getJid(), c.nick, (c.group == null || c.getGroupType() == Groups.TYPE_NOT_IN_LIST) ? SR.MS_GENERAL : c.group.name, null));
         if (askSubscribe) {
             doSubscribe(c);
         }
@@ -2333,7 +2331,7 @@ public class Roster
                 cmdCleanAllMessages();
                 return true;
             case 3:
-                sd.theStream.listener.connectionTerminated(new Exception(SR.MS_SIMULATED_BREAK));
+                sd.getTheStream().listener.connectionTerminated(new Exception(SR.MS_SIMULATED_BREAK));
                 return true;
 //#ifdef STATS
             case 4:

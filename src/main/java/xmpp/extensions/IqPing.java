@@ -59,7 +59,7 @@ public class IqPing implements JabberBlockListener {
         
         if (type.equals("result") || type.equals("error")) {
             if (id.equals(PING)) {
-                StaticData.getInstance().theStream.pingSent=false;
+                StaticData.getInstance().getTheStream().pingSent=false;
                 return BLOCK_PROCESSED;
             }
         }
@@ -68,7 +68,7 @@ public class IqPing implements JabberBlockListener {
             if (ping!=null) {
                 if (ping.getAttribute("xmlns").equals("urn:xmpp:ping")) {
                     Iq reply=new Iq(from, Iq.TYPE_RESULT, id);
-                    StaticData.getInstance().theStream.send(reply);
+                    StaticData.getInstance().getTheStream().send(reply);
                     return BLOCK_PROCESSED;
                 }
             }

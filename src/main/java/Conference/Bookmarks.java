@@ -66,7 +66,7 @@ public class Bookmarks extends DefForm {
     private MenuCommand cmdRoomMembers = new MenuCommand(SR.MS_MEMBERS, MenuCommand.SCREEN, 13, RosterIcons.ICON_MEMBERS);
     private MenuCommand cmdRoomBanned = new MenuCommand(SR.MS_BANNED, MenuCommand.SCREEN, 14, RosterIcons.ICON_OUTCASTS);
     private MenuCommand cmdDel = new MenuCommand(SR.MS_DELETE, MenuCommand.SCREEN, 15, RosterIcons.ICON_DELETE);
-    JabberStream stream = sd.theStream;
+    JabberStream stream = sd.getTheStream();
 
     /** Creates a new instance of Bookmarks
      * @param toAdd
@@ -247,7 +247,7 @@ public class Bookmarks extends DefForm {
         for (Enumeration e = itemsList.elements(); e.hasMoreElements();) {
             sd.account.bookmarks.addElement(((BookmarkItem)e.nextElement()).bookmark);
         }
-        sd.theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.SAVE));
+        sd.getTheStream().addBlockListener(new BookmarkQuery(BookmarkQuery.SAVE));
     }
 
     public void move(int offset) {

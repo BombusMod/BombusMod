@@ -97,8 +97,8 @@ public class LocationForm extends DefForm implements LocationListener {
             geoloc.addChild("text", descr.getValue());
             }
             //todo: refactor theStream call; send notification to JabberBlockListener if stream was terminated
-            StaticData.getInstance().theStream.addBlockListener(new PepPublishResult( sid));
-            StaticData.getInstance().theStream.send(setActivity);
+            StaticData.getInstance().getTheStream().addBlockListener(new PepPublishResult( sid));
+            StaticData.getInstance().getTheStream().send(setActivity);
         } catch (Exception e) { }
         destroyView();
     }

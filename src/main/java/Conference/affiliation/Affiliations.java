@@ -54,7 +54,7 @@ public class Affiliations
     private String namespace = Conference.NS_MUC + "#admin";
     private String room;
 
-    private JabberStream stream=StaticData.getInstance().theStream;
+    private JabberStream stream=StaticData.getInstance().getTheStream();
     
     private MenuCommand cmdModify = new MenuCommand (SR.MS_MODIFY, MenuCommand.SCREEN, 1, RosterIcons.ICON_RENAME);
     private MenuCommand cmdNew    = new MenuCommand (SR.MS_NEW_JID, MenuCommand.SCREEN, 2, RosterIcons.ICON_REGISTER_INDEX );

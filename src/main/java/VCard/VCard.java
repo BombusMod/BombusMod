@@ -151,7 +151,7 @@ public class VCard {
     
     public static void request(String jid, String id) {
         StaticData.getInstance().roster.setQuerySign(true);
-        StaticData.getInstance().theStream.send(IqVCard.query(jid, "getvc"+id));
+        StaticData.getInstance().getTheStream().send(IqVCard.query(jid, "getvc"+id));
     }
     
     private void fieldsLoader(){

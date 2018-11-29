@@ -76,7 +76,7 @@ public class AffiliationModify
     
     
     private void modify(){
-        JabberStream stream=StaticData.getInstance().theStream;
+        JabberStream stream=StaticData.getInstance().getTheStream();
         
         JabberDataBlock request=new Iq(room, Iq.TYPE_SET, "admin_modify");
         JabberDataBlock query=request.addChildNs("query", Conference.NS_MUC + "#admin");

@@ -106,7 +106,7 @@ public class RosterDispatcher implements JabberBlockListener {
                 }
             } else if (type.equals("set")) {
                 if (processRoster(data)) {
-                    StaticData.getInstance().theStream.send(new Iq(from, Iq.TYPE_RESULT, id));
+                    StaticData.getInstance().getTheStream().send(new Iq(from, Iq.TYPE_RESULT, id));
                     roster.reEnumRoster();
                     return JabberBlockListener.BLOCK_PROCESSED;
                 }

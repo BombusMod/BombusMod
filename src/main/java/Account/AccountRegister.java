@@ -117,11 +117,11 @@ public class AccountRegister
             splash.setProgress(SR.MS_CONNECT_TO_ + raccount.JID.getServer(), 30);
             //give a chance another thread to finish ui
             Thread.sleep(500);
-            sd.theStream = raccount.openJabberStream();
-            new Thread(sd.theStream).start();
+            sd.account = raccount;
+            sd.startConnection();
 
-            sd.theStream.listener = this;
-            sd.theStream.initiateStream();
+            sd.getTheStream().listener = this;
+            sd.getTheStream().initiateStream();
         } catch (Exception e) {
             if (StaticData.Debug) {
                 e.printStackTrace();
@@ -135,11 +135,11 @@ public class AccountRegister
 
     public void beginConversation(LoginListener listener) {
 	splash.setProgress(SR.MS_REGISTERING, 60);
-	sd.theStream.addBlockListener(new IqRegister(this));
+	sd.getTheStream().addBlockListener(new IqRegister(this));
 	Iq iqreg = new Iq(null, Iq.TYPE_GET, "regac" + System.currentTimeMillis());
 	JabberDataBlock query = iqreg.addChild("query", null);
 	query.setNameSpace(IqRegister.NS_REGS);
-	sd.theStream.send(iqreg);
+	sd.getTheStream().send(iqreg);
     }
 
     public int blockArrived(JabberDataBlock data) {
@@ -158,7 +158,7 @@ public class AccountRegister
     splash.close(as);
     }*/
     public void registrationFormNotify(JabberDataBlock data) {
-        new DiscoForm(null, this, null, data, sd.theStream,
+        new DiscoForm(null, this, null, data, sd.getTheStream(),
                 "register" + System.currentTimeMillis(), "query")
                 .fetchMediaElements(data.getChildBlock("query")
                 .getChildBlocks());
@@ -167,7 +167,7 @@ public class AccountRegister
     public void registrationFailed(String errorText) {
 	splash.setProgress(errorText, 100);
 	VirtualCanvas.getInstance().show(splash);
-	sd.theStream.close();
+	sd.getTheStream().close();
     }
 
     // TODO: fix this shit
@@ -192,7 +192,7 @@ public class AccountRegister
 	String success = SR.MS_DONE;
 	splash.setProgress(success, 100);
 	VirtualCanvas.getInstance().show(splash);
-	sd.theStream.close();
+	sd.getTheStream().close();
     }
 
     public void dispatcherException(Exception e, JabberDataBlock data) {

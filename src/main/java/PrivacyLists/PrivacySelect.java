@@ -55,7 +55,7 @@ public class PrivacySelect
     private MenuCommand cmdNewList=new MenuCommand (SR.MS_NEW_LIST, MenuCommand.SCREEN, 12, RosterIcons.ICON_NEW);
     private MenuCommand cmdDelete=new MenuCommand (SR.MS_DELETE_LIST, MenuCommand.SCREEN, 13, RosterIcons.ICON_CLEAR);
     //private MenuCommand cmdEdit=new MenuCommand (SR.MS_EDIT_LIST, Command.SCREEN, 14, RosterIcons.ICON_RENAME);
-    JabberStream stream=StaticData.getInstance().theStream;
+    JabberStream stream=StaticData.getInstance().getTheStream();
     
     /** Creates a new instance of PrivacySelect
      */

@@ -47,8 +47,8 @@ public class Receiver extends BroadcastReceiver {
         act.addChild("title", track);        
         
         try {
-            StaticData.getInstance().theStream.addBlockListener(new PepPublishResult(sid));
-            StaticData.getInstance().theStream.send(setActivity);
+            StaticData.getInstance().getTheStream().addBlockListener(new PepPublishResult(sid));
+            StaticData.getInstance().getTheStream().send(setActivity);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -60,7 +60,6 @@ public class JabberStream implements XMLEventListener, Runnable {
     public JabberListener listener;
     final MessageDispatcher messageDispatcher = new MessageDispatcher();
     private final Vector blockListeners = new Vector();
-    private final Vector outgoingPackets = new Vector();
     private String server; // for ping
     public boolean pingSent;
     public boolean loggedIn;
@@ -340,12 +339,6 @@ public class JabberStream implements XMLEventListener, Runnable {
             byte cbuf[] = new byte[32768];
 
             while (connected) {
-
-                while (!outgoingPackets.isEmpty()) {
-                    sendPacket((String) outgoingPackets.elementAt(0));
-                    outgoingPackets.removeElementAt(0);
-                }
-
                 int length = iostream.read(cbuf);
                 if (length == 0) {
                     try {
@@ -463,11 +456,11 @@ public class JabberStream implements XMLEventListener, Runnable {
     }
 
     public void send(String data) throws IOException {
-        outgoingPackets.addElement(data);
+        sendPacket(data);
     }
 
     private void sendBuf(StringBuffer data) throws IOException {
-        outgoingPackets.addElement(data.toString());
+        sendPacket(data.toString());
     }
 
     /**

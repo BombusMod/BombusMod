@@ -70,11 +70,11 @@ public class StatsWindow
         item=new MultiLine(SR.MS_CURRENT, StringUtils.getSizeString(Stats.getCurrentTraffic())); item.selectable=true; itemsList.addElement(item);
 //#if ZLIB
 //#         if (StaticData.getInstance().roster.isLoggedIn()) {
-//#             item=new MultiLine(SR.MS_COMPRESSION, StaticData.getInstance().theStream.getStreamStats()); item.selectable=true; itemsList.addElement(item);
+//#             item=new MultiLine(SR.MS_COMPRESSION, StaticData.getInstance().getTheStream().getStreamStats()); item.selectable=true; itemsList.addElement(item);
 //#         }
 //# 
 //#         if (StaticData.getInstance().roster.isLoggedIn()) {
-//#             item=new MultiLine(SR.MS_CONNECTED, StaticData.getInstance().theStream.getConnectionData()); item.selectable=true; itemsList.addElement(item);
+//#             item=new MultiLine(SR.MS_CONNECTED, StaticData.getInstance().getTheStream().getConnectionData()); item.selectable=true; itemsList.addElement(item);
 //#         }
 //#endif
         item=new MultiLine(SR.MS_CONN, Integer.toString(st.getSessionsCount())); item.selectable=true; itemsList.addElement(item);

@@ -88,7 +88,7 @@ public class InviteForm
         invite.setAttribute("to", invited);
 
         invite.addChild("reason", rs);
-        StaticData.getInstance().theStream.send(inviteMsg);
+        StaticData.getInstance().getTheStream().send(inviteMsg);
         parentView = sd.roster;
         destroyView();
     }

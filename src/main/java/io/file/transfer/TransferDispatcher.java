@@ -74,7 +74,7 @@ public class TransferDispatcher implements JabberBlockListener {
     }
     
     public void addBlockListener() {
-        sd.theStream.addBlockListener(instance);
+        sd.getTheStream().addBlockListener(instance);
     }    
     
     public int blockArrived(JabberDataBlock data) {
@@ -239,7 +239,7 @@ public class TransferDispatcher implements JabberBlockListener {
 	
     // send shortcut
     void send(JabberDataBlock data, boolean async) {
-        sd.theStream.send(data);
+        sd.getTheStream().send(data);
     }
 
     private TransferTask getTransferBySid(String id) {

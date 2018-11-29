@@ -24,11 +24,11 @@ package org.bombusmod;
 import Client.Contact;
 import Client.StaticData;
 import android.app.NotificationManager;
-import android.content.Intent;
-import android.content.IntentFilter;
+import android.content.*;
 import android.graphics.PixelFormat;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -37,6 +37,7 @@ import android.view.MotionEvent;
 import android.view.SubMenu;
 import android.view.Window;
 import de.duenndns.ssl.MemorizingTrustManager;
+import org.bombusmod.android.service.XmppService;
 import org.bombusmod.scrobbler.Receiver;
 import org.microemu.DisplayAccess;
 import org.microemu.MIDletAccess;
@@ -84,6 +85,10 @@ public class BombusModActivity extends MicroEmulatorActivity {
     private SSLContext sslContext;
 
     private MemorizingTrustManager memorizingTrustManager;
+
+    private XmppService xmppService;
+
+    private boolean serviceBound;
 
     public static BombusModActivity getInstance() {
         return instance;
@@ -241,7 +246,8 @@ public class BombusModActivity extends MicroEmulatorActivity {
         } catch (NoSuchAlgorithmException | KeyManagementException e) {
             Log.w("TLS", e.getMessage());
         }
-
+        Intent intent = new Intent(this, XmppService.class);
+        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
 
     @Override
@@ -605,5 +611,27 @@ public class BombusModActivity extends MicroEmulatorActivity {
 
     public SSLContext getSslContext() {
         return sslContext;
+    }
+    /** Defines callbacks for service binding, passed to bindService() */
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName className,
+                                       IBinder service) {
+            XmppService.LocalBinder binder = (XmppService.LocalBinder) service;
+            xmppService = binder.getService();
+            Log.d("BombusMod", "Service connected");
+            serviceBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            Log.d("BombusMod", "Service disconnected");
+            serviceBound = false;
+        }
+    };
+
+    public XmppService getXmppService() {
+        return xmppService;
     }
 }

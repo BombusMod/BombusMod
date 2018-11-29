@@ -64,7 +64,7 @@ public class BookmarkQuery implements JabberBlockListener {
                 storage.addChild(((Bookmark) e.nextElement()).constructBlock());
             }
         }
-        sd.theStream.send(request);
+        sd.getTheStream().send(request);
     }
 
     public int blockArrived(JabberDataBlock data) {

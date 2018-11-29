@@ -24,5 +24,6 @@
         <activity android:name="de.duenndns.ssl.MemorizingActivity"
                   android:theme="@android:style/Theme.Translucent.NoTitleBar"
         />
+        <service android:name=".android.service.XmppService" />
     </application>
 </manifest> 

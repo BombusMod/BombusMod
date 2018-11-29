@@ -344,7 +344,7 @@ public class RosterItemActions extends Menu {
         switch (index) {
             case 0: // version
                 sd.roster.setQuerySign(true);
-                sd.theStream.send(IqVersionReply.query(to));
+                sd.getTheStream().send(IqVersionReply.query(to));
                 break;
             case 86: // info
                 sd.roster.showInfo();
@@ -391,14 +391,14 @@ public class RosterItemActions extends Menu {
                 Presence presence = new Presence(
                         Presence.PRESENCE_OFFLINE, -1, "", null);
                 presence.setTo(c.getJid().toString());
-                sd.theStream.send(presence);
+                sd.getTheStream().send(presence);
                 break;
             case 5: // logon
                 sd.roster.blockNotify(-111, 10000); //block sounds to 10 sec
                 //querysign=true; displayStatus();
                 Presence presence2 = new Presence(sd.roster.myStatus, 0, "", null);
                 presence2.setTo(c.getJid().toString());
-                sd.theStream.send(presence2);
+                sd.getTheStream().send(presence2);
                 break;
             case 7: // Nick resolver
                 sd.roster.resolveNicknames(c.jid.getBare());
@@ -416,19 +416,19 @@ public class RosterItemActions extends Menu {
              */
             case 889: //idle
                 sd.roster.setQuerySign(true);
-                sd.theStream.send(IqLast.query(c.getJid().toString(), "idle"));
+                sd.getTheStream().send(IqLast.query(c.getJid().toString(), "idle"));
                 break;
             case 890: //online
                 sd.roster.setQuerySign(true);
-                sd.theStream.send(IqLast.query(c.jid.getBare(), "online_" + c.getResource()));
+                sd.getTheStream().send(IqLast.query(c.jid.getBare(), "online_" + c.getResource()));
                 break;
             case 894: //seen
                 sd.roster.setQuerySign(true);
-                sd.theStream.send(IqLast.query(c.jid.getBare(), "seen"));
+                sd.getTheStream().send(IqLast.query(c.jid.getBare(), "seen"));
                 break;
             case 891: //time
                 sd.roster.setQuerySign(true);
-                sd.theStream.send(IqTimeReply.query(c.getJid().toString()));
+                sd.getTheStream().send(IqTimeReply.query(c.getJid().toString()));
                 break;
 //#ifdef CLIPBOARD
 //#ifndef WMUC                    
@@ -456,7 +456,7 @@ public class RosterItemActions extends Menu {
                 try {
                     sd.roster.setQuerySign(true);
                     //c.setPing();
-                    sd.theStream.send(IqPing.query(c.getJid().toString(), null));
+                    sd.getTheStream().send(IqPing.query(c.getJid().toString(), null));
                 } catch (Exception e) {/*
                      * no messages
                      */

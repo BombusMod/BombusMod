@@ -77,7 +77,7 @@ public class EntityCaps implements JabberBlockListener {
             query.addChild("feature", null).setAttribute("var", (String) features.elementAt(i));
         }
 
-        StaticData.getInstance().theStream.send(result);
+        StaticData.getInstance().getTheStream().send(result);
 
         return BLOCK_PROCESSED;
     }

@@ -218,7 +218,7 @@ public class ConferenceForm
             } else {
                 sd.account.bookmarks.addElement(newItem);
             }
-            sd.theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.SAVE));
+            sd.getTheStream().addBlockListener(new BookmarkQuery(BookmarkQuery.SAVE));
             destroyView();
         } else if (c == cmdAdd) {
             new Bookmarks(new BookmarkItem(new Bookmark(name, gchat.toString(), nick, pass, autojoin)));

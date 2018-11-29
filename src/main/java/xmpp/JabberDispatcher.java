@@ -24,12 +24,12 @@ public class JabberDispatcher implements JabberListener {
     public void beginConversation(LoginListener loginListener) { //todo: verify xmpp version
         // TODO: fixme
         // SplashScreen.getInstance().setExit(this);
-        if (sd.theStream.isXmppV1()) {
-            sd.theStream.addBlockListener(new SASLAuth(sd.account, loginListener, sd.theStream));
+        if (sd.getTheStream().isXmppV1()) {
+            sd.getTheStream().addBlockListener(new SASLAuth(sd.account, loginListener, sd.getTheStream()));
         } 
         else {
             if (StaticData.NonSaslAuth) {
-                new NonSASLAuth(sd.account, loginListener, sd.theStream);
+                new NonSASLAuth(sd.account, loginListener, sd.getTheStream());
             } 
             //TODO: throw error
         }

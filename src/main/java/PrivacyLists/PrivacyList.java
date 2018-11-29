@@ -45,7 +45,7 @@ public class PrivacyList {
         if (child != null) {
             qry.addChild(child);
         }
-        StaticData.getInstance().theStream.send(pl);
+        StaticData.getInstance().getTheStream().send(pl);
     }
     
     public void generateList() {

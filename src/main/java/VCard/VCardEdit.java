@@ -143,7 +143,7 @@ public class VCardEdit
 
     
     public void run() {
-        StaticData.getInstance().theStream.send(vcard.constructVCard());
+        StaticData.getInstance().getTheStream().send(vcard.constructVCard());
         //System.out.println("VCard sent");
     }
 

@@ -27,9 +27,14 @@
 
 package Client;
 
+import org.bombusmod.BombusModActivity;
+import org.bombusmod.android.service.XmppService;
 import xmpp.Account;
 import com.alsutton.jabber.JabberStream;
 import util.ClipBoardIO;
+
+import java.io.IOException;
+
 /**
  *
  * @author Eugene Stahov
@@ -39,8 +44,7 @@ public final class StaticData {
     private static StaticData sd;
     
     public Roster roster;
-    public JabberStream theStream;
-   
+
     public ClipBoardIO clipboard;
     
     public Account account;
@@ -71,6 +75,12 @@ public final class StaticData {
             sd = new StaticData();
         }
         return sd;
+    }
+    public JabberStream getTheStream() {
+        return BombusModActivity.getInstance().getXmppService().getTheStream();
+    }
+    public void startConnection() throws IOException {
+        BombusModActivity.getInstance().getXmppService().startConnection();
     }
     public static final boolean Debug = true;
     public static final boolean XmlDebug = true;

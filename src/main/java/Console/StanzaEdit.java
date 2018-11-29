@@ -110,7 +110,7 @@ public class StanzaEdit
 
             if (c == cmdSend && body != null && body.length() > 0) {
                 try {
-                    StaticData.getInstance().theStream.send(body.trim());
+                    StaticData.getInstance().getTheStream().send(body.trim());
                 } catch (IOException ex) {
                 }
             }

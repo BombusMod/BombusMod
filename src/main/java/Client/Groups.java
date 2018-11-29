@@ -237,7 +237,7 @@ public class Groups implements JabberBlockListener {
         JabberDataBlock gs = query.addChildNs("gs", GROUPSTATE_NS);
 
         if (get) {
-            sd.theStream.addBlockListener(this);
+            sd.getTheStream().addBlockListener(this);
         } else {
             for (Enumeration e = groups.elements(); e.hasMoreElements();) {
                 Group grp = (Group) e.nextElement();
@@ -246,6 +246,6 @@ public class Groups implements JabberBlockListener {
                 }
             }
         }
-        sd.theStream.send(iq);
+        sd.getTheStream().send(iq);
     }
 }

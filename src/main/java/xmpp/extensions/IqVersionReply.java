@@ -60,7 +60,7 @@ public class IqVersionReply implements JabberBlockListener {
                 query.addChild("os", Config.getOs());
             }
             
-            StaticData.getInstance().theStream.send(reply);
+            StaticData.getInstance().getTheStream().send(reply);
             
             return BLOCK_PROCESSED;
         }

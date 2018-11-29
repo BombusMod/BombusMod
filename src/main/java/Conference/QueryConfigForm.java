@@ -50,7 +50,7 @@ public class QueryConfigForm implements JabberBlockListener {
         JabberDataBlock getform = new Iq(roomJid, Iq.TYPE_GET, "confform");
         getform.addChildNs("query", OWNER_XMLNS);
 
-        JabberStream stream = StaticData.getInstance().theStream;
+        JabberStream stream = StaticData.getInstance().getTheStream();
         stream.addBlockListener(this);
         stream.send(getform);
         StaticData.getInstance().roster.setQuerySign(true);
@@ -62,7 +62,7 @@ public class QueryConfigForm implements JabberBlockListener {
         if (query != null) {
             StaticData.getInstance().roster.setQuerySign(false);
             if (data.getTypeAttribute().equals("result")) {
-                new DiscoForm(null, null, null, data, StaticData.getInstance().theStream, "setform", "query");
+                new DiscoForm(null, null, null, data, StaticData.getInstance().getTheStream(), "setform", "query");
             }
             return JabberBlockListener.NO_MORE_BLOCKS;
         }
@@ -74,6 +74,6 @@ public class QueryConfigForm implements JabberBlockListener {
         JabberDataBlock query = setform.addChildNs("query", OWNER_XMLNS);
         query.addChild(form);
         //System.out.println("Destination form: " + form.toString());
-        StaticData.getInstance().theStream.send(setform);
+        StaticData.getInstance().getTheStream().send(setform);
     }
 }

@@ -131,7 +131,7 @@ public class QuickPrivacy extends DefForm implements JabberBlockListener {
         }
         JabberDataBlock item2 = PrivacyItem.itemIgnoreList().constructBlock();
         qList.addChild(item2);
-        StaticData.getInstance().theStream.addBlockListener(this);
+        StaticData.getInstance().getTheStream().addBlockListener(this);
         PrivacyList.privacyListRq(true, qList, "quicklst");
     }
 }
