@@ -77,7 +77,11 @@ public final class StaticData {
         return sd;
     }
     public JabberStream getTheStream() {
-        return BombusModActivity.getInstance().getXmppService().getTheStream();
+        XmppService xmpp = BombusModActivity.getInstance().getXmppService();
+        if (xmpp != null) {
+            return xmpp.getTheStream();
+        }
+        return null;
     }
     public void startConnection() throws IOException {
         BombusModActivity.getInstance().getXmppService().startConnection();
