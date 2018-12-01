@@ -1243,7 +1243,6 @@ public class Roster
 
         sd.getTheStream().addBlockListener(new IqPing());
         sd.getTheStream().addBlockListener(new IqVersionReply());
-        sd.getTheStream().startKeepAliveTask(); //enable keep-alive packets
 
         sd.getTheStream().loggedIn = true;
         currentReconnect = 0;

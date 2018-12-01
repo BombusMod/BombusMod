@@ -20,6 +20,11 @@ repositories {
 dependencies {
     implementation project(':mtm')
     implementation 'com.android.support:support-compat:28.0.0'
+    implementation 'com.android.support:support-fragment:28.0.0'
+    implementation 'com.android.support:support-core-ui:28.0.0'
+    implementation 'com.android.support:asynclayoutinflater:28.0.0'
+    implementation 'com.android.support:collections:28.0.0'
+    implementation 'android.arch.work:work-runtime:1.0.0-alpha11'
 }
 
 android {

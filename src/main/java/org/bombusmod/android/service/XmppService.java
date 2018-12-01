@@ -5,9 +5,15 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
+import android.support.annotation.NonNull;
+import android.support.v4.app.JobIntentService;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 import com.alsutton.jabber.JabberStream;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,6 +27,8 @@ public class XmppService extends Service {
     protected final LocalBinder localBinder = new LocalBinder();
 
     private JabberStream theStream;
+
+    private WorkManager workManager;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -37,6 +45,11 @@ public class XmppService extends Service {
     }
 
     public void startConnection() throws IOException {
+        workManager = WorkManager.getInstance();
+        PeriodicWorkRequest periodicWorkRequest =
+                new PeriodicWorkRequest.Builder(KeepAliveWorker.class, 5, TimeUnit.SECONDS)
+                        .build();
+        workManager.enqueueUniquePeriodicWork("KeepAlive", ExistingPeriodicWorkPolicy.REPLACE, periodicWorkRequest);
         theStream = StaticData.getInstance().account.openJabberStream();
         new Thread(theStream).start();
     }

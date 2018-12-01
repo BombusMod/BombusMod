@@ -304,27 +304,6 @@ public class JabberStream implements XMLEventListener, Runnable {
             }
         }
     }
-
-    public void startKeepAliveTask() {
-        Account account = StaticData.getInstance().account;
-
-        int keepAlivePeriod;
-//#ifdef HTTPBIND
-//#         if (connection instanceof HttpBindConnection) {
-//#             keepAlivePeriod = ((HttpBindConnection)connection).waitPeriod - 3;
-//#         } else {
-//#endif         
-        keepAlivePeriod = account.keepAlivePeriod;
-//#ifdef HTTPBIND
-//#         }
-//#endif
-        if (keepAlive != null) {
-            keepAlive.destroyTask();
-            keepAlive = null;
-        }
-
-        keepAlive = new TimerTaskKeepAlive(keepAlivePeriod);
-    }
     private boolean connected = false;
 
     /**
@@ -363,10 +342,6 @@ public class JabberStream implements XMLEventListener, Runnable {
     }
 
     private void closeConnection() {
-        if (null != keepAlive) {
-            keepAlive.destroyTask();
-        }
-
         try {
 //#ifdef HTTPBIND
 //#             if (connection instanceof HttpBindConnection) {
@@ -562,7 +537,6 @@ public class JabberStream implements XMLEventListener, Runnable {
     public long getBytes() {
         return iostream.getBytes();
     }
-    private TimerTaskKeepAlive keepAlive;
 
     public void plainTextEncountered(String text) {
         if (!tagStack.isEmpty()) {
@@ -574,34 +548,6 @@ public class JabberStream implements XMLEventListener, Runnable {
         if (!tagStack.isEmpty()) {
             //currentBlock.addText( text );
             ((JabberDataBlock) tagStack.peek()).addChild(binvalue);
-        }
-    }
-
-    private class TimerTaskKeepAlive extends TimerTask {
-
-        private Timer t;
-
-        public TimerTaskKeepAlive(int periodSeconds) {
-            t = new Timer();
-            //this.period=periodSeconds;
-            long periodRun = periodSeconds * 1000; // milliseconds
-            t.schedule(this, periodRun, periodRun);
-        }
-
-        public void run() {
-
-            if (loggedIn) {
-                sendKeepAlive();
-            }
-
-        }
-
-        public void destroyTask() {
-            if (t != null) {
-                this.cancel();
-                t.cancel();
-                t = null;
-            }
         }
     }
 }
