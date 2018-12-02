@@ -21,9 +21,7 @@ public abstract class Notification {
     private static int lastUsedNotifier = -1;
     
     public static boolean isPlatformSupported() {
-        return Config.getInstance().phoneManufacturer == Config.MICROEMU
-                || (Config.getInstance().phoneManufacturer == Config.SONYE
-                    && Config.getInstance().sonyJava >= 750);
+        return true;
     }
 
     public static Notificator getNotificator() {
@@ -37,28 +35,7 @@ public abstract class Notification {
                     notifier = new PopupNotificator();
                     break;
                 case NOTIFICATOR_TYPE_PLATFORM:
-                    switch (Config.getInstance().phoneManufacturer) {                        
-                        case Config.MICROEMU:
-//#if android                    
-                            notifier = new AndroidNotificator();
-//#endif                    
-                            break;
-                        case Config.SONYE:
-                            if (isPlatformSupported()) {
-                                try {
-                                    notifier = (Notificator) Class
-                                            .forName("Messages.notification.SEMCNotificator")
-                                            .newInstance();
-                                } catch (Exception ex) {
-                                }
-                            } else {
-                                fallbackToPopups();
-                            }
-                            break;
-                        default:
-                            fallbackToPopups();
-                            break;
-                    }
+                    notifier = new AndroidNotificator();
                     break;
                 default:
                     break;
@@ -66,10 +43,5 @@ public abstract class Notification {
             lastUsedNotifier = newNotifierType;
         }
         return notifier;
-    }
-    
-    private static void fallbackToPopups() {
-        notifier = new PopupNotificator();
-        Config.getInstance().popUps = Notification.NOTIFICATOR_TYPE_POPUP;                                                        
     }
 }

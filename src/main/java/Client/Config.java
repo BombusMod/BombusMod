@@ -63,31 +63,7 @@ public class Config {
     public final static int SUBSCR_DROP = 2;
     public final static int SUBSCR_REJECT = 3;
 
-    public final static int NOT_DETECTED = 0;
-    public final static int NONE = -1;
-    public final static int SONYE = 1;
-    public final static int NOKIA = 2;
-    public final static int SIEMENS = 3;
-    public final static int SIEMENS2 = 4;
-    public final static int MOTO = 5;
-    public final static int MOTOEZX = 6;
-    public final static int WINDOWS = 7;
-    public final static int INTENT = 8;
-    public final static int J2ME = 9;
-    public final static int NOKIA_9XXX = 10;
-    public final static int SONYE_M600 = 11;
-//#if !ZLIB
-    public final static int XENIUM99=12;
-//#endif
-    public final static int SAMSUNG = 14;
-    public final static int LG = 15;
-    public final static int JBED = 16;
-    public final static int MICROEMU = 17;
-    public final static int WTK = 50;
-    public final static int OTHER = 99;
-
     StaticData sd = StaticData.getInstance();
-    private static String platformName;
     public boolean ghostMotor = false;
     //public boolean blFlash=!ghostMotor; //true;
     public boolean muc119 = true;	// before muc 1.19 use muc#owner instead of muc#admin
@@ -103,10 +79,7 @@ public class Config {
     public int profile = AlertProfile.ALL;
     public int lastProfile = AlertProfile.ALL;
     public boolean istreamWaiting;
-    public int phoneManufacturer = NOT_DETECTED;
-    public boolean swapMenu = false;
-    public int sonyJava = 0; // 0 is mean that device have not Sony Ericsson Java Platform.
-    public boolean NokiaS40 = false;
+    public boolean swapMenu = true;
 
 
     // Save to storage.
@@ -239,9 +212,6 @@ public class Config {
 
     /** Creates a new instance of Config */
     private Config() {
-        getPhoneManufacturer();
-        VirtualList.phoneManufacturer = phoneManufacturer;
-
         int gmtloc = TimeZone.getDefault().getRawOffset() / 3600000;
         gmtOffset = gmtloc;
 
@@ -265,31 +235,13 @@ public class Config {
         } catch (InterruptedException e) {
         }
 
-        switch (phoneManufacturer) {
-            case SONYE:
-                allowMinimize = true;                
-                break;
-            case NOKIA:
-                allowMinimize = !NokiaS40;
-                break;
-            case MOTO:
-                ghostMotor = true;
-                istreamWaiting = true;
-            case MICROEMU:
-                int h1 = VirtualCanvas.getInstance().getHeight();
-                int h2 = VirtualCanvas.getInstance().getWidth();
-                rosterFont = 16;
-                barFont = 16;
-                msgFont = 16;
-                minItemHeight = ((h1<h2)?h2:h1)*40/480;
-                allowMinimize = true;
-                break;            
-//#if !ZLIB
-            case XENIUM99:
-                istreamWaiting=false; //is it critical for phillips xenium?
-                break;
-//#endif
-        }
+        int h1 = VirtualCanvas.getInstance().getHeight();
+        int h2 = VirtualCanvas.getInstance().getWidth();
+        rosterFont = 16;
+        barFont = 16;
+        msgFont = 16;
+        minItemHeight = ((h1 < h2) ? h2 : h1) * 40 / 480;
+        allowMinimize = true;
         loadFromStorage();
 
         FontCache.roster = rosterFont;
@@ -759,130 +711,6 @@ public class Config {
         Time.setOffset(gmtOffset);
     }
 
-    private void getPhoneManufacturer() {
-//#if android 
-        phoneManufacturer = MICROEMU;
-        swapMenu = true;       
-//#else        
-//#         if (phoneManufacturer == NOT_DETECTED) {
-//#             String platform = getPlatformName();
-//#             phoneManufacturer = NONE;
-//# 
-//#             if (platform.endsWith("(NSG)")) {
-//#                 phoneManufacturer = SIEMENS;
-//#                 return;
-//#             } else if (platform.startsWith("SIE")) {
-//#                 phoneManufacturer = SIEMENS2;
-//#                 swapMenu = true;
-//#                 return;
-//#             } else if (platform.startsWith("Motorola-EZX")) {
-//#                 phoneManufacturer = MOTOEZX;
-//#                 return;
-//#             } else if (platform.startsWith("Moto")) {
-//#                 phoneManufacturer = MOTO;
-//#                 return;
-//#             } else if (platform.startsWith("SonyE")) {
-//#                 if (platform.startsWith("SonyEricssonM600")) {
-//#                     phoneManufacturer = SONYE_M600;
-//#                     return;
-//#                 }
-//#                 phoneManufacturer = SONYE;
-//# 
-//#                 String sJava = System.getProperty("com.sonyericsson.java.platform");
-//#                 // sJava has format "JP-x.x" or "JP-x.x.x", e.g. "JP-8.5" or "JP-8.5.2".
-//#                 // The next code also correct parse string with format "JP-x".
-//#                 // On all uncorrect strings, sonyJava set to 0.
-//#                 if (sJava != null && sJava.startsWith("JP-")) {
-//#                     int int_part = 0;
-//#                     int fractional_part = 0;
-//#                     int fractional_part_2 = 0;
-//# 
-//#                     if (sJava.length() >= 4)
-//#                         int_part = sJava.charAt(3) - '0';
-//#                     if (sJava.length() >= 6)
-//#                         fractional_part = sJava.charAt(5) - '0';
-//#                     if (sJava.length() >= 8)
-//#                         fractional_part_2 = sJava.charAt(7) - '0';
-//# 
-//#                     if (int_part >=0
-//#                         && int_part <= 9
-//#                         && fractional_part >= 0
-//#                         && fractional_part <=9
-//#                         && fractional_part_2 >=0
-//#                         && fractional_part_2 <=9)
-//#                     {
-//#                         sonyJava = int_part * 100 + fractional_part * 10 + fractional_part_2;
-//#                     } else {
-//#                         System.out.print("Bad com.sonyericsson.java.platform string,");
-//#                         System.out.println(" sonyJava set to 0 (see src/Client/Config.java).");
-//#                     }
-//#                 }
-//#                 swapMenu = (sonyJava == 0) || (sonyJava < 800); //JP<=7.x
-//#                 return;
-//#if !ZLIB
-//#             } else if (platform.indexOf("9@9")>-1) {
-//#                 phoneManufacturer=XENIUM99;
-//#                 return;
-//#endif
-//#             } else if (platform.startsWith("Windows")) {
-//#                 phoneManufacturer = WINDOWS;
-//#                 return;
-//#             } else if (platform.startsWith("Nokia9500")
-//#                     || platform.startsWith("Nokia9300")
-//#                     || platform.startsWith("Nokia9300i")) {
-//#                 phoneManufacturer = NOKIA_9XXX;
-//#                 return;
-//#             } else if (platform.startsWith("Nokia")) {
-//#                 phoneManufacturer = NOKIA;
-//#                 int firstDotIndex = platform.indexOf('.');
-//#                 if (firstDotIndex != -1) {
-//#                     try {
-//#                         String dir = System.getProperty("fileconn.dir.private");
-//#                         // s40 (6233) does not have this property
-//#                         if (-1 != dir.indexOf("/private/")) {
-//#                             // it is s60 v3 fp1
-//#                             return;
-//#                         }
-//#                     } catch (Exception e) {
-//#                     }
-//#                     if (-1 == platform.indexOf('.', firstDotIndex + 1)) {
-//#                         NokiaS40 = true;
-//#                         return;
-//#                     }
-//#                 }                
-//#                 return;
-//#             } else if (platform.startsWith("Intent")) {
-//#                 phoneManufacturer = INTENT;
-//#                 return;
-//#             } else if (platform.startsWith("wtk") || platform.endsWith("wtk")) {
-//#                 phoneManufacturer = WTK;
-//#                 return;
-//#             } else if (platform.startsWith("Samsung")) {
-//#                 phoneManufacturer = SAMSUNG;
-//#                 return;
-//#             } else if (platform.startsWith("LG")) {
-//#                 phoneManufacturer = LG;
-//#                 return;
-//#             } else if (platform.startsWith("j2me")) {
-//#                 phoneManufacturer = J2ME;
-//#                 return;
-//#             } else if (platform.startsWith("Jbed")) {
-//#                 phoneManufacturer = JBED;
-//#ifdef FILE_IO
-//#                 try {
-//#                     FileIO f = FileIO.createConnection("");
-//#                 } catch (Exception ex) {
-//#                 }
-//#endif
-//#                 return;
-//#             } else if (platform.indexOf("Android") > 0) {
-//#                 phoneManufacturer = MICROEMU;
-//#             } else {
-//#                 phoneManufacturer = OTHER;
-//#             }
-//#         }
-//#endif        
-    }
 //#if android
 	public static final String compute(){
 		final String manufact = System.getProperty("device.manufacturer");
@@ -911,123 +739,10 @@ public class Config {
 
 //#if android 
         if (device != null) {
-            platformName = compute() + "/Android " + firmware;
+            String platformName = compute() + "/Android " + firmware;
+            return platformName;
         }
-//#else                
-//#         if (platformName == null) {
-//#             platformName = System.getProperty("microedition.platform");
-//# 
-//#             String sonyJava_str = System.getProperty("com.sonyericsson.java.platform");
-//#             if (sonyJava_str != null) {
-//#                 platformName = platformName + "/" + sonyJava_str;
-//#             }
-//#             
-//#             if (platformName.indexOf("sw_platform") >= 0) {
-//#                 // new S60 platform
-//#                 platformName = platformName.substring(0, platformName.indexOf("sw_platform") - 1);
-//#             }
-//#                  
-//#             
-//# 
-//#             //detecting Samsung
-//#             try {
-//#                 Class.forName("com.samsung.util.AudioClip");
-//#                 platformName = "Samsung-generic";
-//#             } catch (Throwable t0) {
-//#                 try {
-//#                     Class.forName("com.samsung.util.Vibration");
-//#                     platformName = "Samsung-generic";
-//#                 } catch (Throwable t1) {
-//#                 }
-//#             }
-//#             // detecting Sun Java Wireless Client (JavaFX for WM)
-//#             try {
-//#                 Class.forName("com.sun.midp.chameleon.MIDPWindow");
-//#                 platformName = "JavaFX";
-//#             } catch (Throwable t2) {
-//#                 
-//#             }
-//# 
-//# 
-//# 
-//#             if (platformName == null) {
-//#                 platformName = "Motorola";
-//#             }
-//# 
-//#             if (platformName.startsWith("j2me")) {
-//#                 if (device != null) {
-//#                     if (device.startsWith("wtk-emulator")) {
-//#                         platformName = device;
-//#                     }
-//#                 }
-//#                 if (device != null && firmware != null) {
-//#                     platformName = "Motorola"; // buggy v360
-//#                 } else {
-//#                     // Motorola EZX phones
-//#                     String hostname = System.getProperty("microedition.hostname");
-//#                     if (hostname != null) {
-//#                         platformName = "Motorola-EZX";
-//#                         if (device != null) {
-//#                             // Motorola EZX ROKR
-//#                             hostname = device;
-//#                         }
-//# 
-//#                         if (hostname.indexOf("(none)") < 0) {
-//#                             platformName += "/" + hostname;
-//#                         }
-//#                     }
-//#                 }
-//#             }
-//#             //else 
-//#             if (platformName.startsWith("Moto")) {
-//#                 if (device == null) {
-//#                     device = System.getProperty("funlights.product");
-//#                 }
-//#                 if (device != null) {
-//#                     platformName = "Motorola-" + device;
-//#                 }
-//#                 try { // thanks vitalyster
-//#                     Class.forName("com.nokia.mid.ui.DeviceControl");
-//#                     platformName = "Nokia"; // FS #896
-//#                 } catch (Throwable ex) {
-//#                 }
-//#             }
-//# 
-//#             if (platformName.indexOf("SIE") > -1) {
-//#                 platformName = System.getProperty("microedition.platform") + " (NSG)";
-//#             } else if (System.getProperty("com.siemens.OSVersion") != null) {
-//#                 platformName = "SIE-" + System.getProperty("microedition.platform") + "/" + System.getProperty("com.siemens.OSVersion");
-//#             }
-//# 
-//#             try {
-//#                 Class.forName("com.samsung.util.Vibration");
-//#                 platformName = "Samsung";
-//#             } catch (Throwable ex) {
-//#             }
-//# 
-//#             try {
-//#                 Class.forName("mmpp.media.MediaPlayer");
-//#                 platformName = "LG";
-//#             } catch (Throwable ex) {
-//#                 try {
-//#                     Class.forName("mmpp.phone.Phone");
-//#                     platformName = "LG";
-//#                 } catch (Throwable ex1) {
-//#                     try {
-//#                         Class.forName("mmpp.lang.MathFP");
-//#                         platformName = "LG";
-//#                     } catch (Throwable ex2) {
-//#                         try {
-//#                             Class.forName("mmpp.media.BackLight");
-//#                             platformName = "LG";
-//#                         } catch (Throwable ex3) {
-//#                         }
-//#                     }
-//#                 }
-//#             }
-//#         }
-//#endif        
-        return platformName;
+        return "";
     }
 
     public static String getOs() {

@@ -174,10 +174,6 @@ public class ConfigForm
 //#endif        
         autoScroll = new CheckBox(SR.MS_AUTOSCROLL, cf.autoScroll);
         itemsList.addElement(autoScroll);
-        if (!(Config.getInstance().phoneManufacturer == Config.MICROEMU)) {
-            useTabs = new CheckBox(SR.MS_EMULATE_TABS, cf.useTabs);
-            itemsList.addElement(useTabs);
-        }
 //#ifdef RUNNING_MESSAGE
 //#         notifyWhenMessageType = new CheckBox(SR.MS_RUNNING_MESSAGE, cf.notifyWhenMessageType); itemsList.addElement(notifyWhenMessageType);
 //#endif
@@ -239,10 +235,6 @@ public class ConfigForm
 
         itemsList.addElement(new SpacerItem(10));
         itemsList.addElement(new SimpleString(SR.MS_APPLICATION, true));
-        if (!(Config.getInstance().phoneManufacturer == Config.MICROEMU)) {
-            fullscreen = new CheckBox(SR.MS_FULLSCREEN, Config.fullscreen);
-            itemsList.addElement(fullscreen);
-        }
         enableVersionOs = new CheckBox(SR.MS_SHOW_HARDWARE, cf.enableVersionOs);
         itemsList.addElement(enableVersionOs);
         queryExit = new CheckBox(SR.MS_CONFIRM_EXIT, cf.queryExit);
@@ -361,9 +353,6 @@ public class ConfigForm
         cf.storeConfPresence = storeConfPresence.getValue();
 //#endif        
         cf.autoScroll = autoScroll.getValue();
-        if (!(Config.getInstance().phoneManufacturer == Config.MICROEMU)) {
-            cf.useTabs = useTabs.getValue();
-        }
 
 //#ifdef RUNNING_MESSAGE
 //#         cf.notifyWhenMessageType=notifyWhenMessageType.getValue();
@@ -394,9 +383,6 @@ public class ConfigForm
         cf.adhoc = adhoc.getValue();
 
         VirtualList.showTimeTraffic = cf.showTimeTraffic = drawMenuCommand.getValue();
-        if (!(Config.getInstance().phoneManufacturer == Config.MICROEMU)) {
-            Config.fullscreen = fullscreen.getValue();
-        }
         cf.enableVersionOs = enableVersionOs.getValue();
         cf.queryExit = queryExit.getValue();
 //#ifdef LIGHT_CONFIG

@@ -83,13 +83,6 @@ public class VirtualCanvas extends Canvas implements CommandListener{
     
     private VirtualCanvas() {
         setFullScreenMode(Config.fullscreen);
-        if (VirtualList.phoneManufacturer == Config.WINDOWS) {
-            setTitle("BombusMod");
-        }
-        if (hasPointerEvents() && VirtualList.phoneManufacturer == Config.SONYE && Config.getInstance().swapMenu) {
-            // silly china phones
-            Config.getInstance().swapMenu = false;
-        }
     }
     
     public void setMIDlet(MIDlet midlet) {
@@ -97,19 +90,6 @@ public class VirtualCanvas extends Canvas implements CommandListener{
     }
     
     void commandState() {
-        // TODO: play with enabled CommandListener for all + filter soft keys
-        if (Config.getInstance().phoneManufacturer == Config.NOKIA) {
-            if (hasPointerEvents()) {
-                return;
-            }
-            if (Config.fullscreen) {
-                setCommandListener(null);
-            } else if (list != null) {
-                setOk(list.touchLeftCommand());
-                setCancel(list.touchRightCommand());
-                setCommandListener(instance);
-            }
-        }
     }
     
     public void show(VirtualList virtualList) {
@@ -363,134 +343,13 @@ public class VirtualCanvas extends Canvas implements CommandListener{
                 }
 
         }
-        // platform-specific keys (TODO: check is it really needed?)
-        switch (Config.getInstance().phoneManufacturer) {
-            case Config.SONYE:
-                switch (key_code) {
-                    case -8:
-                        return KEY_CLEAR;
-                    case -10:
-                        return KEY_GREEN;
-                    case -11:
-                        return KEY_BACK;
-                    case -36:
-                        return KEY_VOL_UP;
-                    case -37:
-                        return KEY_VOL_DOWN;
-                    case -30:
-                        return KEY_FLIP_OPEN;
-                    case -31:
-                        return KEY_FLIP_CLOSE;
-                }
-                break;
-            case Config.SONYE_M600:
-                switch (key_code) {
-                    case 13:
-                        return KEY_GREEN;
-                    case -11:
-                        return KEY_BACK;
-                    case 165:
-                        return KEY_VOL_UP;
-                    case 166:
-                        return KEY_VOL_DOWN;
-                }
-                break;
-            case Config.WTK:
-                if (key_code == -10) {
-                    return KEY_GREEN;
-                }
-                break;
-            case Config.NOKIA:
-                switch (key_code) {
-                    case -10:
-                        return KEY_GREEN;
-                    case -8:
-                        return KEY_CLEAR;
-                    case -63582:
-                        return KEY_VOL_UP;
-                    case -63583:
-                        return KEY_VOL_DOWN;
-                }
-                break;
-            case Config.SIEMENS:
-            case Config.SIEMENS2:
-                keyLock = VirtualCanvas._KEY_POUND;
-                keyVibra = VirtualCanvas._KEY_STAR;
-                switch (key_code) {
-                    case -1:
-                        return KEY_SOFT_LEFT;
-                    case -4:
-                        return KEY_SOFT_RIGHT;
-                    case -24:
-                        return KEY_FLIP_OPEN;
-                    case -22:
-                        return KEY_FLIP_CLOSE;
-                    case -12:
-                        return KEY_BACK;
-                    case -11:
-                        return KEY_GREEN;
-                    case -13:
-                        return KEY_VOL_UP;
-                    case -14:
-                        return KEY_VOL_DOWN;
-                }
-                break;
-            case Config.WINDOWS:
-                switch (key_code) {
-                    case 40:
-                        return KEY_SOFT_LEFT;
-                    case 41:
-                        return KEY_SOFT_RIGHT;
-                    case 8:
-                        return KEY_CLEAR;
-                    case -5:
-                        return KEY_GREEN;
-                }
-                break;
-            case Config.MOTO:
-                switch (key_code) {
-                    case -200:
-                        return KEY_FLIP_OPEN; // and close
-                    case -10:
-                        return KEY_GREEN;
-                }
-                break;
-            case Config.MOTOEZX:
-                switch (key_code) {
-                    case -21:
-                        return KEY_SOFT_LEFT;
-                    case -22:
-                        return KEY_SOFT_RIGHT;
-                    case -6:
-                        return KEY_BACK;
-                    case -30:
-                        return KEY_VOL_UP;
-                    case -31:
-                        return KEY_VOL_DOWN;
-                }
-                break;
-            case Config.LG:
-                switch (key_code) {
-                    case -13:
-                        return KEY_VOL_UP;
-                    case -14:
-                        return KEY_VOL_DOWN;
-                    case -16:
-                        return KEY_CLEAR;
-                    case -10:
-                        return KEY_GREEN;
-                }
-                break;
-            case Config.MICROEMU:
-                switch (key_code) {
-                    case -82:
-                        return KEY_SOFT_RIGHT;
-                    case -8:
-                        return KEY_BACK;
-                    case -10:
-                        return KEY_GREEN;
-                }
-                break;
+        switch (key_code) {
+            case -82:
+                return KEY_SOFT_RIGHT;
+            case -8:
+                return KEY_BACK;
+            case -10:
+                return KEY_GREEN;
         }
         // fallback from jimm
                 try {

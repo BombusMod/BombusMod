@@ -26,20 +26,20 @@
  */
 package Archive;
 
-import Client.Config;
 import Client.Msg;
-import javax.microedition.lcdui.Command;
-import javax.microedition.lcdui.CommandListener;
-import javax.microedition.lcdui.Displayable;
 import locale.SR;
 import ui.VirtualList;
 import ui.controls.ExTextBox;
+
+import javax.microedition.lcdui.Command;
+import javax.microedition.lcdui.CommandListener;
+import javax.microedition.lcdui.Displayable;
 
 /**
  *
  * @author ad
  */
-public class archiveEdit
+public class ArchiveEdit
         extends ExTextBox
         implements CommandListener {
     private Command cmdCancel;
@@ -50,7 +50,7 @@ public class archiveEdit
     private int pos;
     private ArchiveList al;
     
-    public archiveEdit(VirtualList pView, int pos, int where, ArchiveList al) {
+    public ArchiveEdit(VirtualList pView, int pos, int where, ArchiveList al) {
 
         super(pView, null, (pos > -1) ? SR.MS_EDIT : SR.MS_NEW);
 
@@ -87,10 +87,7 @@ public class archiveEdit
 //#if TEMPLATES
         textbox.removeCommand(cmdTemplate);
 //#endif
-        if (Config.getInstance().phoneManufacturer == Config.SONYE) 
-            if (Config.getPlatformName().indexOf("JP-8.4") > -1)
-                System.gc(); // prevent flickering on Sony Ericcsson C510
-        textbox.setCommandListener(this);        
+        textbox.setCommandListener(this);
         
     }
     

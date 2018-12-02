@@ -49,7 +49,6 @@ import Archive.ArchiveList;
 //#endif
 import Menu.RosterItemActions;
 import Menu.RosterToolsMenu;
-import Menu.SieNatMenu;
 //#ifdef CLIENTS_ICONS
 import images.ClientsIconsData;
 //#endif
@@ -226,9 +225,6 @@ public class Roster
         }
 
         addMenuCommand(cmdCleanAllMessages);
-        if (phoneManufacturer != Config.NOKIA_9XXX) {
-            addMenuCommand(cmdQuit);
-        }
     }
 
     public void setProgress(String pgs, int percent) {
@@ -342,14 +338,6 @@ public class Roster
         mainbar.setElementAt((messageCount == 0) ? null : getHeaderString(), 1);
         mainbar.setElementAt(new Integer(s), 2);
         mainbar.setElementAt(en, 5);
-
-        if (phoneManufacturer == Config.WINDOWS) {
-            if (messageCount == 0) {
-                VirtualCanvas.getInstance().setTitle("BombusMod");
-            } else {
-                VirtualCanvas.getInstance().setTitle("BombusMod " + getHeaderString());
-            }
-        }
         if (highliteMessageCount < 1) {
             Notification.getNotificator().clear();            
         }
@@ -1777,9 +1765,6 @@ public class Roster
     }
 
     public void toggleVibra() {
-        if (cf.phoneManufacturer == Config.MICROEMU) {
-            return;
-        }
         // swap profiles
         int profile = cf.profile;
         cf.profile = (profile == AlertProfile.VIBRA) ? cf.lastProfile : AlertProfile.VIBRA;
@@ -1926,20 +1911,6 @@ public class Roster
 //#endif        
         if (cf.allowMinimize) {
             BombusMod.getInstance().hideApp(true);
-        } else if (phoneManufacturer == Config.SIEMENS2) {
-            new SieNatMenu(this);
-            /*
-             * try { // SIEMENS: MYMENU call. Possible Main Menu for capable
-             * phones
-             * BombusMod.getInstance().platformRequest("native:ELSE_STR_MYMENU");
-             * } catch (Exception e) { }
-             */
-        } else if (phoneManufacturer == Config.SIEMENS) {
-            try {
-                // SIEMENS-NSG: MYMENU call. Possible Native Menu for capable phones
-                BombusMod.getInstance().platformRequest("native:NAT_MAIN_MENU");
-            } catch (Exception e) {
-            }
         }
     }
 
@@ -2301,18 +2272,10 @@ public class Roster
                 cmdMinimize();
                 return true;
             case VirtualCanvas._KEY_STAR:
-                if (cf.phoneManufacturer == Config.SIEMENS || cf.phoneManufacturer == Config.SIEMENS2) {
-                    toggleVibra();
-                } else {
                     blockScreen();
-                }
                 return true;
             case VirtualCanvas._KEY_POUND:
-                if (cf.phoneManufacturer == Config.SIEMENS || cf.phoneManufacturer == Config.SIEMENS2) {
-                    blockScreen();
-                } else {
                     toggleVibra();
-                }
                 return true;
         }
 //#ifdef LIGHT_CONFIG        

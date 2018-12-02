@@ -96,9 +96,6 @@ public class ExTextBox {
 
     public void show(CommandListener listener) {
         commandState();
-        if (Config.getInstance().phoneManufacturer == Config.SONYE)
-            if (Config.getPlatformName().indexOf("JP-8.4") > -1)
-                System.gc(); // prevent flickering on Sony Ericsson C510/W995/J105/etc.
         textbox.setCommandListener(listener);                
         midlet.BombusMod.getInstance().setDisplayable(textbox);                
     }
@@ -144,17 +141,10 @@ public class ExTextBox {
             }
         } catch (Exception e) {
         }
-        if (cf.phoneManufacturer != Config.MICROEMU)
-            textbox.insert(sb.toString(), caretPos);
-        else
-           setText(src + sb.toString());
-        sb = null;        
+        setText(src + sb.toString());
     }
     public int getCaretPos() {
         int pos = textbox.getCaretPosition();
-        // +MOTOROLA STUB
-        if (cf.phoneManufacturer == Config.MOTO || cf.phoneManufacturer == Config.MICROEMU)
-            pos = -1;
         if (pos < 0)
             pos = textbox.getString().length();
         return pos;
@@ -203,9 +193,6 @@ public class ExTextBox {
                 ClipBoardIO.getInstance().setClipBoard(body);
                 if (!ClipBoardIO.getInstance().isEmpty()) {
                     textbox.addCommand(cmdCopyPlus);
-                    if (Config.getInstance().phoneManufacturer == Config.SONYE) 
-                        if (Config.getPlatformName().indexOf("JP-8.4") > -1)
-                            System.gc(); // prevent flickering on Sony Ericcsson C510
                 }
             } catch (Exception e) {/*no messages*/}
             return true;

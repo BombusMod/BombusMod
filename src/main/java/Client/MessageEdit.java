@@ -94,13 +94,7 @@ public final class MessageEdit
 
 //#ifdef DETRANSLIT
             util.DeTranslit.getInstance();
-//#endif        
-        if (Config.getInstance().phoneManufacturer == Config.NOKIA) {
-            if (!Config.getInstance().NokiaS40) {
-                // workaround for Symbian devices
-                cmdSmileType = Command.SCREEN;
-            }            
-        }
+//#endif
     }
 
     public MessageEdit(VirtualList pView, Contact to, String body) {

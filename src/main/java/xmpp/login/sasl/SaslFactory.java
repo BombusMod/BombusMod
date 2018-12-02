@@ -21,18 +21,13 @@ public class SaslFactory {
     public final static String NS_SASL = "urn:ietf:params:xml:ns:xmpp-sasl";
     public static SaslMechanism getPreferredMechanism(Account account, JabberStream stream, Vector availableMechanisms) {
         if (availableMechanisms.contains("SCRAM-SHA-1")) {
-            // prefer another mechanism on legacy devices
-            if (Config.getInstance().phoneManufacturer == Config.MICROEMU)
-                return new SaslScramSha1();
+            return new SaslScramSha1();
         }
         if (availableMechanisms.contains("DIGEST-MD5")) {
             return new SaslDigestMd5();
         }
         if (availableMechanisms.contains("PLAIN") && (account.plainAuth || stream.isSecured())) {
             return new SaslPlain();
-        }
-        if (availableMechanisms.contains("SCRAM-SHA-1")) {            
-            return new SaslScramSha1();
         }
         if (availableMechanisms.contains("ANONYMOUS")) {
             return new SaslAnonymous();

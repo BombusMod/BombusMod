@@ -96,8 +96,6 @@ public abstract class VirtualList {
     public static final int PANELS_STATE_TOP_INVERTED = 4;
     public static final int PANELS_STATE_BOTH_INVERTED = 5;
     public static final int PANELS_STATE_BOTTOM_INVERTED = 6;
-
-    public static int phoneManufacturer;
     
     public static void changeOrient(int newOrient) {
         switch (newOrient) {
@@ -654,10 +652,7 @@ public abstract class VirtualList {
         ((MainBar)infobar).endColor = getMainBarBGndBottom();
 //#endif        
         
-        ((MainBar)infobar).lShift = (Config.getInstance().phoneManufacturer == Config.NOKIA && reverse && Config.fullscreen);
-        ((MainBar)infobar).rShift = (Config.getInstance().phoneManufacturer == Config.SONYE && reverse && Config.fullscreen);
         infobar.drawItem(g, 0, false);
-
     }
     
     private void drawMainPanel (final Graphics g) {    
@@ -667,8 +662,6 @@ public abstract class VirtualList {
         ((MainBar)mainbar).startColor = getMainBarBGndBottom();
         ((MainBar)mainbar).endColor = getMainBarBGnd();
 //#endif        
-        ((MainBar)mainbar).lShift = (Config.getInstance().phoneManufacturer == Config.NOKIA && !reverse && Config.fullscreen);
-        ((MainBar)mainbar).rShift = (Config.getInstance().phoneManufacturer == Config.SONYE && !reverse && Config.fullscreen);
         mainbar.drawItem(g, 0, false);
     }
     
@@ -1262,8 +1255,6 @@ public abstract class VirtualList {
                 return;
             }
         }
-        if (Config.getInstance().phoneManufacturer == Config.NOKIA && !Config.fullscreen)
-            showTimeTraffic = true;
         infobar.setElementAt((!showTimeTraffic) ? touchLeftCommand() : Time.getTimeWeekDay(), 1);
         infobar.setElementAt((!showTimeTraffic) ? touchRightCommand() : getTraffic(), 3);
     }
