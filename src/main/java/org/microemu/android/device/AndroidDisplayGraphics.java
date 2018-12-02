@@ -54,8 +54,6 @@ public class AndroidDisplayGraphics extends javax.microedition.lcdui.Graphics {
 	private static final Matrix identityMatrix = new Matrix();
 	
 	private Canvas canvas;
-	
-    private GraphicsDelegate delegate;
 
 	private Rect clip;
 	
@@ -70,8 +68,6 @@ public class AndroidDisplayGraphics extends javax.microedition.lcdui.Graphics {
     private Matrix tmpMatrix = new Matrix();
     
 	public AndroidDisplayGraphics() {
-        this.delegate = null;
-        
 		strokePaint.setAntiAlias(true);
 		strokePaint.setStyle(Paint.Style.STROKE);
 		strokePaint.setDither(true);
@@ -83,7 +79,6 @@ public class AndroidDisplayGraphics extends javax.microedition.lcdui.Graphics {
     public AndroidDisplayGraphics(Bitmap bitmap) {
         this.canvas = new Canvas(bitmap);
         this.canvas.clipRect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-        this.delegate = null;
         
 		strokePaint.setAntiAlias(true);
 		strokePaint.setDither(true);
@@ -109,18 +104,10 @@ public class AndroidDisplayGraphics extends javax.microedition.lcdui.Graphics {
 	public Canvas getCanvas() {
 		return canvas;
 	}
-	
-    public void setDelegate(GraphicsDelegate delegate) {
-        this.delegate = delegate;
-    }
 
 	public void clipRect(int x, int y, int width, int height) {
 		canvas.clipRect(x, y, x + width, y + height);
 		clip = canvas.getClipBounds();
-		
-        if (delegate != null) {
-            delegate.setClip(clip.left, clip.top, clip.right - clip.left, clip.bottom - clip.top);
-        }
 	}
 
 	public void drawArc(int x, int y, int width, int height, int startAngle, int arcAngle) {
@@ -129,55 +116,43 @@ public class AndroidDisplayGraphics extends javax.microedition.lcdui.Graphics {
     }
 
 	public void drawImage(Image img, int x, int y, int anchor) {
-        if (delegate != null) {
-            delegate.drawImage(img, x, y, anchor);
-        } else {
-            int newx = x;
-            int newy = y;
-    
-            if (anchor == 0) {
-                anchor = javax.microedition.lcdui.Graphics.TOP | javax.microedition.lcdui.Graphics.LEFT;
-            }
-    
-            if ((anchor & javax.microedition.lcdui.Graphics.RIGHT) != 0) {
-                newx -= img.getWidth();
-            } else if ((anchor & javax.microedition.lcdui.Graphics.HCENTER) != 0) {
-                newx -= img.getWidth() / 2;
-            }
-            if ((anchor & javax.microedition.lcdui.Graphics.BOTTOM) != 0) {
-                newy -= img.getHeight();
-            } else if ((anchor & javax.microedition.lcdui.Graphics.VCENTER) != 0) {
-                newy -= img.getHeight() / 2;
-            }
-    
-            if (img.isMutable()) {
-                canvas.drawBitmap(((AndroidMutableImage) img).getBitmap(), newx, newy, strokePaint);
-            } else {
-                canvas.drawBitmap(((AndroidImmutableImage) img).getBitmap(), newx, newy, strokePaint);
-            }
-        }
+		int newx = x;
+		int newy = y;
+
+		if (anchor == 0) {
+			anchor = javax.microedition.lcdui.Graphics.TOP | javax.microedition.lcdui.Graphics.LEFT;
+		}
+
+		if ((anchor & javax.microedition.lcdui.Graphics.RIGHT) != 0) {
+			newx -= img.getWidth();
+		} else if ((anchor & javax.microedition.lcdui.Graphics.HCENTER) != 0) {
+			newx -= img.getWidth() / 2;
+		}
+		if ((anchor & javax.microedition.lcdui.Graphics.BOTTOM) != 0) {
+			newy -= img.getHeight();
+		} else if ((anchor & javax.microedition.lcdui.Graphics.VCENTER) != 0) {
+			newy -= img.getHeight() / 2;
+		}
+
+		if (img.isMutable()) {
+			canvas.drawBitmap(((AndroidMutableImage) img).getBitmap(), newx, newy, strokePaint);
+		} else {
+			canvas.drawBitmap(((AndroidImmutableImage) img).getBitmap(), newx, newy, strokePaint);
+		}
 	}
 
 	public void drawLine(int x1, int y1, int x2, int y2) {
-        if (delegate != null) {
-            delegate.drawLine(x1, y1, x2, y2);
-        } else {
-    		if (x1 == x2) {
-    			canvas.drawLine(x1, y1, x2, y2 + 1, strokePaint);
-    		} else if (y1 == y2) {
-    			canvas.drawLine(x1, y1, x2 + 1, y2, strokePaint);
-    		} else { 
-    			canvas.drawLine(x1, y1, x2 + 1, y2 + 1, strokePaint);
-    		}
-        }
+		if (x1 == x2) {
+			canvas.drawLine(x1, y1, x2, y2 + 1, strokePaint);
+		} else if (y1 == y2) {
+			canvas.drawLine(x1, y1, x2 + 1, y2, strokePaint);
+		} else {
+			canvas.drawLine(x1, y1, x2 + 1, y2 + 1, strokePaint);
+		}
 	}
 
 	public void drawRect(int x, int y, int width, int height) {
-	    if (delegate != null) {
-	        delegate.drawRect(x, y, width, height);
-	    } else {
-	        canvas.drawRect(x, y, x + width, y + height, strokePaint);
-	    }
+		canvas.drawRect(x, y, x + width, y + height, strokePaint);
 	}
 
 	public void drawRoundRect(int x, int y, int width, int height, int arcWidth, int arcHeight) {
@@ -209,11 +184,7 @@ public class AndroidDisplayGraphics extends javax.microedition.lcdui.Graphics {
 
         androidFont.paint.setColor(strokePaint.getColor());
 
-        if (delegate != null) {
-	        delegate.drawSubstringDelegate(str, offset, len, newx, newy, anchor);
-	    } else {    
-            canvas.drawText(str, offset, len + offset, newx, newy, androidFont.paint);
-	    }
+        canvas.drawText(str, offset, len + offset, newx, newy, androidFont.paint);
 	}
 
     public void fillArc(int x, int y, int width, int height, int startAngle, int arcAngle) {
@@ -222,11 +193,7 @@ public class AndroidDisplayGraphics extends javax.microedition.lcdui.Graphics {
     }
 
 	public void fillRect(int x, int y, int width, int height) {
-        if (delegate != null) {
-            delegate.fillRect(x, y, width, height);
-        } else {
-            canvas.drawRect(x, y, x + width, y + height, fillPaint);
-        }
+        canvas.drawRect(x, y, x + width, y + height, fillPaint);
 	}
 
 	public void fillRoundRect(int x, int y, int width, int height, int arcWidth, int arcHeight) {
@@ -266,10 +233,6 @@ public class AndroidDisplayGraphics extends javax.microedition.lcdui.Graphics {
 			return;
 		}
 
-        if (delegate != null) {
-            delegate.setClip(x, y, width, height);
-        }
-
         clip.left = x;
         clip.top = y;
         clip.right = x + width;
@@ -306,11 +269,7 @@ public class AndroidDisplayGraphics extends javax.microedition.lcdui.Graphics {
 	}
 
     public void translate(int x, int y) {
-        if (delegate != null) {
-            delegate.translate(x, y);
-        } else {
-            canvas.translate(x, y);
-        }
+        canvas.translate(x, y);
             
         super.translate(x, y);
             
@@ -348,16 +307,12 @@ public class AndroidDisplayGraphics extends javax.microedition.lcdui.Graphics {
 	}
 
 	public void fillTriangle(int x1, int y1, int x2, int y2, int x3, int y3) {
-	    if (delegate != null) {
-	        delegate.fillTriangle(x1, y1, x2, y2, x3, y3);
-	    } else {
-    		Path path = new Path();
-    		path.moveTo(x1, y1);
-    		path.lineTo(x2, y2);
-    		path.lineTo(x3, y3);
-    		path.lineTo(x1, y1);
-    		canvas.drawPath(path, fillPaint);
-	    }
+		Path path = new Path();
+		path.moveTo(x1, y1);
+		path.lineTo(x2, y2);
+		path.lineTo(x3, y3);
+		path.lineTo(x1, y1);
+		canvas.drawPath(path, fillPaint);
 	}
 
 	public void copyArea(int x_src, int y_src, int width, int height,

@@ -27,17 +27,24 @@
 package org.microemu.android.device;
 
 import android.graphics.Bitmap;
+import org.bombusmod.App;
 
 public class AndroidImmutableImage extends javax.microedition.lcdui.Image {
 
 	private Bitmap bitmap;
 	
 	public AndroidImmutableImage(Bitmap bitmap) {
-		this.bitmap = bitmap;
+        final float scale = App.getInstance().getResources().getDisplayMetrics().density;
+        int px = (int) (bitmap.getWidth() * scale + 0.5f);
+        int py = (int) (bitmap.getHeight() * scale + 0.5f);
+		this.bitmap = Bitmap.createScaledBitmap(bitmap, px, py, true);
 	}
 
     public AndroidImmutableImage(AndroidMutableImage image) {
-    	this.bitmap = Bitmap.createBitmap(image.getBitmap());
+        final float scale = App.getInstance().getResources().getDisplayMetrics().density;
+        int px = (int) (image.getBitmap().getWidth() * scale + 0.5f);
+        int py = (int) (image.getBitmap().getHeight() * scale + 0.5f);
+        this.bitmap = Bitmap.createScaledBitmap(image.getBitmap(), px, py, true);
     }
 
     public Bitmap getBitmap() {
