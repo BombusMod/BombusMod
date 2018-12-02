@@ -46,8 +46,9 @@ public class XmppService extends Service {
 
     public void startConnection() throws IOException {
         workManager = WorkManager.getInstance();
+        StaticData sd = StaticData.getInstance();
         PeriodicWorkRequest periodicWorkRequest =
-                new PeriodicWorkRequest.Builder(KeepAliveWorker.class, 5, TimeUnit.SECONDS)
+                new PeriodicWorkRequest.Builder(KeepAliveWorker.class, sd.account.keepAlivePeriod, TimeUnit.SECONDS)
                         .build();
         workManager.enqueueUniquePeriodicWork("KeepAlive", ExistingPeriodicWorkPolicy.REPLACE, periodicWorkRequest);
         theStream = StaticData.getInstance().account.openJabberStream();
