@@ -44,7 +44,7 @@ public abstract class ClipBoardIO {
     
     public abstract String getClipBoard();
     
-    public abstract void setClipBoard(String str);
+    public abstract void setClipBoard(CharSequence str);
     
     public abstract boolean isEmpty();
 }

@@ -26,27 +26,37 @@
 
 package org.bombusmod.util;
 
-import android.text.ClipboardManager;
+import android.content.ClipData;
+import android.content.ClipDescription;
+import android.content.ClipboardManager;
+import android.content.Context;
 import org.bombusmod.BombusModActivity;
 import util.ClipBoardIO;
 
-public class AndroidClipBoard extends ClipBoardIO
- {
-    
+public class AndroidClipBoard extends ClipBoardIO {
+
     private static ClipboardManager clipboard;
-    
+
     public AndroidClipBoard() {
-        clipboard = (ClipboardManager) BombusModActivity.getInstance()
-                .getApplicationContext().getSystemService(android.content.Context.CLIPBOARD_SERVICE);
+        clipboard = (ClipboardManager) BombusModActivity.getInstance().getSystemService(Context.CLIPBOARD_SERVICE);
     }
 
     public String getClipBoard() {
-      return clipboard.getText().toString();
+        if (clipboard.hasPrimaryClip()) {
+            ClipDescription description = clipboard.getPrimaryClipDescription();
+            if (description != null && description.hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
+                ClipData.Item item = clipboard.getPrimaryClip().getItemAt(0);
+                if (item != null) {
+                    return item.getText().toString();
+                }
+            }
+        }
+        return "";
     }
 
-    public void setClipBoard(String str) {
-      String data = (str.length()>4096) ? str.substring(0,4095) : str;
-      clipboard.setText(data);
+    public void setClipBoard(CharSequence str) {
+        ClipData clipData = ClipData.newPlainText("Text label", str);
+        clipboard.setPrimaryClip(clipData);
     }
 
     public boolean isEmpty() {
