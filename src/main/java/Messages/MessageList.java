@@ -38,6 +38,7 @@ import ui.VirtualCanvas;
 import ui.VirtualElement;
 import ui.VirtualList;
 import ui.controls.form.DefForm;
+import util.ClipBoardIO;
 
 public abstract class MessageList extends DefForm
     {
@@ -126,11 +127,11 @@ public abstract class MessageList extends DefForm
 
 //#ifdef CLIPBOARD
         if (c == cmdCopy) {
-            sd.clipboard.set(mi.msg);
+            ClipBoardIO.getInstance().set(mi.msg);
         }
 
         if (c == cmdCopyPlus) {
-            sd.clipboard.append(mi.msg);
+            ClipBoardIO.getInstance().append(mi.msg);
         }
 //#endif
     }
@@ -138,7 +139,7 @@ public abstract class MessageList extends DefForm
     public void commandState() {
 //#ifdef CLIPBOARD
         addMenuCommand(cmdCopy);
-        if (!sd.clipboard.isEmpty()) {
+        if (!ClipBoardIO.getInstance().isEmpty()) {
             addMenuCommand(cmdCopyPlus);
         }
 //#endif

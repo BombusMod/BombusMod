@@ -39,6 +39,7 @@ import Archive.ArchiveList;
 //#endif
 import ui.VirtualCanvas;
 import ui.VirtualList;
+import util.ClipBoardIO;
 
 
 /**
@@ -172,7 +173,7 @@ public class ExTextBox {
     public void commandState() {
 //#ifdef CLIPBOARD
         textbox.addCommand(cmdCopy);
-        if (!sd.clipboard.isEmpty()) {
+        if (!ClipBoardIO.getInstance().isEmpty()) {
             textbox.addCommand(cmdCopyPlus);
             textbox.addCommand(cmdPasteText);
         }
@@ -199,8 +200,8 @@ public class ExTextBox {
 //#ifdef CLIPBOARD
         if (c == cmdCopy) {
             try {
-               StaticData.getInstance().clipboard.setClipBoard(body);
-                if (!StaticData.getInstance().clipboard.isEmpty()) {
+                ClipBoardIO.getInstance().setClipBoard(body);
+                if (!ClipBoardIO.getInstance().isEmpty()) {
                     textbox.addCommand(cmdCopyPlus);
                     if (Config.getInstance().phoneManufacturer == Config.SONYE) 
                         if (Config.getPlatformName().indexOf("JP-8.4") > -1)
@@ -211,11 +212,11 @@ public class ExTextBox {
         }
         if (c==cmdCopyPlus) {
             try {
-                StaticData.getInstance().clipboard.append(body);                
+                ClipBoardIO.getInstance().append(body);
             } catch (Exception e) {/*no messages*/}
             return true;
         }
-        if (c==cmdPasteText) { insert(sd.clipboard.getClipBoard(), getCaretPos(), writespaces); return true; }
+        if (c==cmdPasteText) { insert(ClipBoardIO.getInstance().getClipBoard(), getCaretPos(), writespaces); return true; }
 //#endif
 //#if TEMPLATES
         if (c==cmdTemplate) { new ArchiveList(caretPos, 2, textbox); return true; }

@@ -52,6 +52,7 @@ import io.file.transfer.TransferSendFile;
 import java.util.Enumeration;
 import locale.SR;
 import ui.controls.AlertBox;
+import util.ClipBoardIO;
 import xmpp.JidUtils;
 import xmpp.extensions.IqLast;
 import xmpp.extensions.IqPing;
@@ -103,7 +104,7 @@ public class RosterItemActions extends Menu {
             addItem(SR.MS_COMMANDS, 30, RosterIcons.ICON_COMMAND);
 //#endif
 //#ifdef CLIPBOARD
-            if (!sd.clipboard.isEmpty()) {
+            if (!ClipBoardIO.getInstance().isEmpty()) {
                 addItem(SR.MS_SEND_BUFFER, 914, RosterIcons.ICON_SEND_BUFFER);
             }
             addItem(SR.MS_COPY_JID, 892, RosterIcons.ICON_COPY_JID);
@@ -441,13 +442,13 @@ public class RosterItemActions extends Menu {
                 }
 
                 if (jid != null) {
-                    sd.clipboard.setClipBoard(jid);
+                    ClipBoardIO.getInstance().setClipBoard(jid);
                 }
                 break;
             case 993:
                 String topic = ((ConferenceGroup) g).confContact.statusString;
                 if (topic != null) {
-                    sd.clipboard.setClipBoard(topic);
+                    ClipBoardIO.getInstance().setClipBoard(topic);
                 }
                 break;
 //#endif                    
@@ -480,7 +481,7 @@ public class RosterItemActions extends Menu {
                 break;
 //#ifdef CLIPBOARD
             case 914: //send message from buffer
-                String body2 = sd.clipboard.getClipBoard();
+                String body2 = ClipBoardIO.getInstance().getClipBoard();
                 if (body2.length() == 0) {
                     return;
                 }
@@ -616,7 +617,7 @@ public class RosterItemActions extends Menu {
                 case 892: //Copy JID
                     try {
                         if (mc.realJid != null) {
-                            sd.clipboard.setClipBoard(mc.realJid.toString());
+                            ClipBoardIO.getInstance().setClipBoard(mc.realJid.toString());
                         }
                     } catch (Exception e) {
                     }

@@ -39,6 +39,7 @@ import Client.Msg;
 import ui.VirtualList;
 import ui.controls.form.ListItem;
 import images.RosterIcons;
+import util.ClipBoardIO;
 
 /**
  *
@@ -72,11 +73,11 @@ public class MessageUrl extends DefForm implements TextBoxNotify {
         }
 //#ifdef CLIPBOARD
         if (c == cmdCopy) {
-            sd.clipboard.set(new Msg(Msg.MESSAGE_TYPE_IN, "url", null, itemsList.elementAt(cursor).toString()));
+            ClipBoardIO.getInstance().set(new Msg(Msg.MESSAGE_TYPE_IN, "url", null, itemsList.elementAt(cursor).toString()));
         }
 
         if (c == cmdCopyPlus) {
-            sd.clipboard.append(new Msg(Msg.MESSAGE_TYPE_IN, "url", null, itemsList.elementAt(cursor).toString()));
+            ClipBoardIO.getInstance().append(new Msg(Msg.MESSAGE_TYPE_IN, "url", null, itemsList.elementAt(cursor).toString()));
         }
 //#endif
     }

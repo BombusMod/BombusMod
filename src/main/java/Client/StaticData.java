@@ -44,8 +44,6 @@ public final class StaticData {
     private static StaticData sd;
     
     public Roster roster;
-
-    public ClipBoardIO clipboard;
     
     public Account account;
     
@@ -64,12 +62,7 @@ public final class StaticData {
     public long getTrafficIn() { return trafficIn; }
     public void updateTrafficOut() { trafficOut=System.currentTimeMillis(); }
     public long getTrafficOut() { return trafficOut; }
-   
-    /** Creates a new instance of StaticData */
-    private StaticData() {
-        clipboard = ClipBoardIO.getInstance();
-    }
-    
+
     public static StaticData getInstance() {
         if (sd == null) {
             sd = new StaticData();

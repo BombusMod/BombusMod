@@ -61,6 +61,7 @@ import io.file.transfer.TransferDispatcher;
 //#endif
 import ui.VirtualCanvas;
 import ui.VirtualElement;
+import util.ClipBoardIO;
 import xmpp.JidUtils;
 
 public class ContactMessageList extends MessageList {
@@ -215,7 +216,7 @@ public class ContactMessageList extends MessageList {
 //#endif
         }
 //#ifdef CLIPBOARD
-        if (!sd.clipboard.isEmpty()) {
+        if (!ClipBoardIO.getInstance().isEmpty()) {
             addMenuCommand(cmdSendBuffer);
         }
 //#endif
@@ -436,7 +437,7 @@ public class ContactMessageList extends MessageList {
 //#ifdef CLIPBOARD
         if (c==cmdSendBuffer) {
             String from=sd.account.toString();
-            String body=sd.clipboard.getClipBoard();
+            String body = ClipBoardIO.getInstance().getClipBoard();
             //String subj=null;
             
             String id=String.valueOf((int) System.currentTimeMillis());

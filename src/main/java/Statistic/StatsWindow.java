@@ -37,6 +37,7 @@ import locale.SR;
 import ui.VirtualList;
 import ui.controls.form.DefForm;
 import ui.controls.form.MultiLine;
+import util.ClipBoardIO;
 import util.StringUtils;
 import images.RosterIcons;
 
@@ -86,7 +87,7 @@ public class StatsWindow
         menuCommands.removeAllElements();
 //#ifdef CLIPBOARD
         addMenuCommand(cmdCopy);
-        if (!sd.clipboard.isEmpty()) {
+        if (!ClipBoardIO.getInstance().isEmpty()) {
             addMenuCommand(cmdCopyPlus);
         }
 
@@ -101,7 +102,7 @@ public class StatsWindow
                 String str = ((MultiLine) getFocusedObject()).toString();
                 if (str == null)
                     str = "";
-                sd.clipboard.setClipBoard(str);
+                ClipBoardIO.getInstance().setClipBoard(str);
             } catch (Exception e) {/*no messages*/}
         }
 
@@ -110,7 +111,7 @@ public class StatsWindow
                 String str = ((MultiLine) getFocusedObject()).toString();
                 if (str == null)
                     str = "";
-                sd.clipboard.append(str);
+                ClipBoardIO.getInstance().append(str);
             } catch (Exception e) {/*no messages*/}
         }
 //#endif

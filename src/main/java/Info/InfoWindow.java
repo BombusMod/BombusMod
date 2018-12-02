@@ -41,6 +41,7 @@ import ui.controls.form.SpacerItem;
 import Menu.MenuCommand;
 import ui.VirtualList;
 import images.RosterIcons;
+import util.ClipBoardIO;
 
 /**
  *
@@ -113,7 +114,7 @@ public class InfoWindow
         menuCommands.removeAllElements();
 //#ifdef CLIPBOARD
         addMenuCommand(cmdCopy);
-        if (!sd.clipboard.isEmpty()) {
+        if (!ClipBoardIO.getInstance().isEmpty()) {
             addMenuCommand(cmdCopyPlus);
         }
 
@@ -127,7 +128,7 @@ public class InfoWindow
                 String str = ((MultiLine) getFocusedObject()).toString();
                 if (str == null)
                     str = "";
-                sd.clipboard.setClipBoard(str);
+                ClipBoardIO.getInstance().setClipBoard(str);
             } catch (Exception e) {}
         }
 
@@ -136,7 +137,7 @@ public class InfoWindow
                 String str = ((MultiLine) getFocusedObject()).toString();
                 if (str == null)
                     str = "";
-                sd.clipboard.append(str);
+                ClipBoardIO.getInstance().append(str);
             } catch (Exception e) {}
         }
 //#endif

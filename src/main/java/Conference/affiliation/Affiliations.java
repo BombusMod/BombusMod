@@ -39,6 +39,7 @@ import ui.MainBar;
 import ui.controls.form.DefForm;
 import Menu.MenuCommand;
 import ui.VirtualList;
+import util.ClipBoardIO;
 import xmpp.extensions.muc.Conference;
 
 /**
@@ -99,7 +100,7 @@ public class Affiliations
             try {
                 AffiliationItem item=(AffiliationItem)getFocusedObject();
                 if (item.jid!=null)
-                    sd.clipboard.setClipBoard(item.jid);
+                    ClipBoardIO.getInstance().setClipBoard(item.jid);
             } catch (Exception e) {/*no messages*/}
         }
 //#endif     

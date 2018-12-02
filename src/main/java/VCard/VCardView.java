@@ -34,6 +34,7 @@ import midlet.BombusMod;
 import io.file.FileIO;
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
+import util.ClipBoardIO;
 import util.StringUtils;
 //#endif
 import Menu.MenuCommand;
@@ -132,7 +133,7 @@ public class VCardView
             copy = new LinkString(SR.MS_COPY + " " + SR.MS_VCARD) {
 
                 public void doAction() {
-                    sd.clipboard.setClipBoard(VCardData.toString());
+                    ClipBoardIO.getInstance().setClipBoard(VCardData.toString());
                     destroyView();
                 }
             };
@@ -200,7 +201,7 @@ public class VCardView
         menuCommands.removeAllElements();
 //#ifdef CLIPBOARD
         addMenuCommand(cmdCopy);
-        if (!sd.clipboard.isEmpty()) {
+        if (!ClipBoardIO.getInstance().isEmpty()) {
             addMenuCommand(cmdCopyPlus);
         }
 //#endif        
@@ -219,10 +220,10 @@ public class VCardView
             if (value.length() != 0) {
 
                 if (c == cmdCopy) {
-                    sd.clipboard.setClipBoard(value);
+                    ClipBoardIO.getInstance().setClipBoard(value);
                 }
                 if (c == cmdCopyPlus) {
-                    sd.clipboard.append(value);
+                    ClipBoardIO.getInstance().append(value);
                 }
             }
         }
