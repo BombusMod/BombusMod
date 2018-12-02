@@ -20,7 +20,7 @@ public class AndroidNotificator implements Notificator {
 
     public static final int NOTIFY_ID = 1;
 
-    private static final String CHANNEL_ID = "default";
+    private static final String CHANNEL_ID = "messages";
 
     private NotificationManager notificationManager;
 
@@ -34,9 +34,9 @@ public class AndroidNotificator implements Notificator {
         NotificationChannel channel =  notificationManager.getNotificationChannel(CHANNEL_ID);
         if (channel == null) {
             channel = new NotificationChannel(CHANNEL_ID,
-                    "BombusMod",
+                    "Messages",
                     NotificationManager.IMPORTANCE_DEFAULT);
-            channel.setDescription("New messages");
+            channel.setDescription("Notifications about new messages");
             channel.enableLights(true);
             channel.enableVibration(true);
             channel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
