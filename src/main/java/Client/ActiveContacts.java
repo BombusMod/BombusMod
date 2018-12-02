@@ -27,11 +27,12 @@
 package Client;
 
 import Menu.MenuCommand;
-import java.util.Enumeration;
 import locale.SR;
 import ui.MainBar;
 import ui.VirtualList;
 import ui.controls.form.DefForm;
+
+import java.util.Enumeration;
 
 /**
  *
@@ -50,7 +51,7 @@ public class ActiveContacts extends DefForm {
         enableListWrapping(true);
         for (Enumeration r = sd.roster.hContacts.elements(); r.hasMoreElements();) {
             Contact c = (Contact) r.nextElement();
-            if (c.active()) {
+            if (c.active() || c.origin == Contact.ORIGIN_GROUPCHAT) {
                 itemsList.addElement(c);
             }
         }
