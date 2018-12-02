@@ -84,8 +84,6 @@ public class BombusModActivity extends MicroEmulatorActivity {
 
     private MemorizingTrustManager memorizingTrustManager;
 
-    private XmppService xmppService;
-
     private boolean serviceBound;
 
     public static BombusModActivity getInstance() {
@@ -586,7 +584,7 @@ public class BombusModActivity extends MicroEmulatorActivity {
         public void onServiceConnected(ComponentName className,
                                        IBinder service) {
             XmppService.LocalBinder binder = (XmppService.LocalBinder) service;
-            xmppService = binder.getService();
+            App.getInstance().setXmppService(binder.getService());
             Log.d("BombusMod", "Service connected");
             serviceBound = true;
             new Thread(new Runnable() {
@@ -622,8 +620,4 @@ public class BombusModActivity extends MicroEmulatorActivity {
             serviceBound = false;
         }
     };
-
-    public XmppService getXmppService() {
-        return xmppService;
-    }
 }

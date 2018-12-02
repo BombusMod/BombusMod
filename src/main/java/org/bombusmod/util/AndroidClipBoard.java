@@ -30,7 +30,7 @@ import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.ClipboardManager;
 import android.content.Context;
-import org.bombusmod.BombusModActivity;
+import org.bombusmod.App;
 import util.ClipBoardIO;
 
 public class AndroidClipBoard extends ClipBoardIO {
@@ -38,7 +38,7 @@ public class AndroidClipBoard extends ClipBoardIO {
     private static ClipboardManager clipboard;
 
     public AndroidClipBoard() {
-        clipboard = (ClipboardManager) BombusModActivity.getInstance().getSystemService(Context.CLIPBOARD_SERVICE);
+        clipboard = (ClipboardManager) App.getInstance().getSystemService(Context.CLIPBOARD_SERVICE);
     }
 
     public String getClipBoard() {

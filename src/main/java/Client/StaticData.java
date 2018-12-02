@@ -27,7 +27,7 @@
 
 package Client;
 
-import org.bombusmod.BombusModActivity;
+import org.bombusmod.App;
 import org.bombusmod.android.service.XmppService;
 import xmpp.Account;
 import com.alsutton.jabber.JabberStream;
@@ -77,14 +77,14 @@ public final class StaticData {
         return sd;
     }
     public JabberStream getTheStream() {
-        XmppService xmpp = BombusModActivity.getInstance().getXmppService();
+        XmppService xmpp = App.getInstance().getXmppService();
         if (xmpp != null) {
             return xmpp.getTheStream();
         }
         return null;
     }
     public void startConnection() throws IOException {
-        BombusModActivity.getInstance().getXmppService().startConnection();
+        App.getInstance().getXmppService().startConnection();
     }
     public static final boolean Debug = true;
     public static final boolean XmlDebug = true;
