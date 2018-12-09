@@ -56,6 +56,7 @@ import org.microemu.cldc.file.FileSystem;
 import org.microemu.device.Device;
 import org.microemu.device.DeviceFactory;
 import org.microemu.device.ui.CommandUI;
+import util.ClipBoardIO;
 
 import javax.microedition.lcdui.Command;
 import javax.microedition.midlet.MIDlet;
@@ -229,7 +230,7 @@ public class BombusModActivity extends MicroEmulatorActivity {
         filter.addAction("net.jjc1138.android.scrobbler.action.MUSIC_STATUS");
         musicReceiver = new Receiver();
         registerReceiver(musicReceiver, filter);
-
+        ClipBoardIO.getInstance();
         try {
             sslContext = SSLContext.getInstance("TLS");
             memorizingTrustManager = new MemorizingTrustManager(instance);
