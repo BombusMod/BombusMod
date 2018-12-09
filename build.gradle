@@ -24,7 +24,7 @@ dependencies {
     implementation 'com.android.support:support-core-ui:28.0.0'
     implementation 'com.android.support:asynclayoutinflater:28.0.0'
     implementation 'com.android.support:collections:28.0.0'
-    implementation 'android.arch.work:work-runtime:1.0.0-alpha11'
+    implementation 'android.arch.work:work-runtime:1.0.0-alpha12'
 }
 
 android {
@@ -33,8 +33,8 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 27
-        versionCode 1414
-        versionName '0.9.1414'
+        versionCode 1415
+        versionName '0.9.1415'
         applicationId "org.bombusmod"
     }
     lintOptions {

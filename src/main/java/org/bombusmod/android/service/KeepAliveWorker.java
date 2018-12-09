@@ -4,6 +4,7 @@ import Client.StaticData;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import androidx.work.Result;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 import com.alsutton.jabber.JabberStream;
@@ -24,6 +25,6 @@ public class KeepAliveWorker extends Worker {
             stream.sendKeepAlive();
         }
         Log.d(LOGTAG, "Working...");
-        return Result.RETRY;
+        return Result.retry();
     }
 }
