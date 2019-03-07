@@ -36,7 +36,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Vector;
 import ui.Time;
-import io.file.InternalResource;
 import xmpp.Account;
 import xmpp.Jid;
 
@@ -96,7 +95,7 @@ public class Accounts {
         } else {
             byte[] bodyMessage = new byte[4096];
             try {
-                InputStream in = InternalResource.getResourceAsStream("/def_accounts.txt");
+                InputStream in = StaticData.getInstance().getAssetsLoader().getResourceAsStream("/def_accounts.txt");
                 if (in != null) {
                     in.read(bodyMessage);
                 }

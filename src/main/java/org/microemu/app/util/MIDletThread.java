@@ -30,11 +30,11 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.WeakHashMap;
 
-import android.util.Log;
-import org.bombusmod.BombusModActivity;
 import org.microemu.MIDletBridge;
 import org.microemu.MIDletContext;
 import org.microemu.util.ThreadUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * MIDletContext is used to hold keys to running Threads created by  MIDlet  
@@ -42,6 +42,8 @@ import org.microemu.util.ThreadUtils;
  * @author vlads
  */
 public class MIDletThread extends Thread {
+
+	private static final Logger logger = LoggerFactory.getLogger(MIDletThread.class);
 
 	public static int graceTerminationPeriod = 5000;
 	
@@ -69,7 +71,7 @@ public class MIDletThread extends Thread {
 	private static void register(MIDletThread thread) {
 		MIDletContext midletContext = MIDletBridge.getMIDletContext();
 		if (midletContext == null && debug) {
-			Log.e(BombusModActivity.LOG_TAG, "Creating thread with no MIDlet context");
+			logger.error("Creating thread with no MIDlet context");
 			return;
 		}
 		thread.callLocation  = ThreadUtils.getCallLocation(MIDletThread.class.getName());
@@ -87,7 +89,7 @@ public class MIDletThread extends Thread {
 			super.run();
 		} catch (Throwable e) {
 		    if (debug) {
-				Log.d(BombusModActivity.LOG_TAG,"MIDletThread throws", e);
+				logger.debug("MIDletThread throws", e);
 		    }
 		}
 		//Logger.debug("thread ends, created from " + callLocation);	
@@ -95,7 +97,7 @@ public class MIDletThread extends Thread {
 	
 	/**
 	 * Terminate all Threads created by MIDlet
-	 * @param previousMidletAccess
+	 * @param midletContext
 	 */
 	public static void contextDestroyed(final MIDletContext midletContext) {
 		if (midletContext == null) {
@@ -124,7 +126,7 @@ public class MIDletThread extends Thread {
 			if (o instanceof MIDletThread) {
 				MIDletThread t = (MIDletThread) o;
 				if (t.isAlive()) {
-					Log.i(BombusModActivity.LOG_TAG, "wait thread [" + t.getName() + "] end");
+					logger.info("wait thread [" + t.getName() + "] end");
 					while ((endTime > System.currentTimeMillis()) && (t.isAlive())) {
 						try {
 							t.join(700);
@@ -133,18 +135,18 @@ public class MIDletThread extends Thread {
 						}
 					}
 					if (t.isAlive()) {
-						Log.w(BombusModActivity.LOG_TAG,"MIDlet thread [" + t.getName() + "] still running" + ThreadUtils.getTreadStackTrace(t));
+						logger.warn("MIDlet thread [" + t.getName() + "] still running" + ThreadUtils.getTreadStackTrace(t));
 						if (t.callLocation != null) {
-							Log.i(BombusModActivity.LOG_TAG,"this thread [" + t.getName() + "] was created from " + t.callLocation);
+							logger.info("this thread [" + t.getName() + "] was created from " + t.callLocation);
 						}
 						t.interrupt();
 					}
 				}
 			} else {
-				Log.d(BombusModActivity.LOG_TAG,"unrecognized Object [" + o.getClass().getName() + "]");
+				logger.debug("unrecognized Object [" + o.getClass().getName() + "]");
 			}
 		}
-		Log.d(BombusModActivity.LOG_TAG, "all "+ threads.size() + " thread(s) finished");
+		logger.debug("all "+ threads.size() + " thread(s) finished");
 		terminator = false;
 	}
 

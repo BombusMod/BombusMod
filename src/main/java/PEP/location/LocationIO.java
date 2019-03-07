@@ -7,12 +7,6 @@
 
 package PEP.location;
 
-import Client.Config;
-//#if android
-import org.bombusmod.location.LocationAndroid;
-import org.bombusmod.BombusModActivity;
-//#endif        
-
 /**
  *
  * @author Vitaly
@@ -27,9 +21,9 @@ public abstract class LocationIO {
     public abstract String getLongitude();
     static int providerType;
 
-    public static LocationIO getInstance() throws ClassNotFoundException {
+    public static LocationIO getInstance() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
 //#if android
-        return new LocationAndroid(BombusModActivity.getInstance());
+        return (LocationIO)Class.forName("org.bombusmod.android.location.LocationAndroid").newInstance();
 //#else        
 //#         if (providerType == LocationIO.NONE) {
 //#         try {

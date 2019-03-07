@@ -52,7 +52,7 @@ import io.file.transfer.TransferSendFile;
 import java.util.Enumeration;
 import locale.SR;
 import ui.controls.AlertBox;
-import util.ClipBoardIO;
+import org.bombusmod.util.ClipBoardIO;
 import xmpp.JidUtils;
 import xmpp.extensions.IqLast;
 import xmpp.extensions.IqPing;
@@ -564,7 +564,7 @@ public class RosterItemActions extends Menu {
 
             switch (index) { // muc contact actions
                 case 10: // room config
-                    new QueryConfigForm(roomJid);
+                    new QueryConfigForm(sd.getTheStream(), roomJid);
                     break;
                 case 11: // owners
                 case 12: // admins

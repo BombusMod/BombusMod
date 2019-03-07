@@ -29,15 +29,13 @@
 
 package Statistic;
 
-import Client.Config;
 import Client.Roster;
-import Client.StaticData;
 import Menu.MenuCommand;
 import locale.SR;
 import ui.VirtualList;
 import ui.controls.form.DefForm;
 import ui.controls.form.MultiLine;
-import util.ClipBoardIO;
+import org.bombusmod.util.ClipBoardIO;
 import util.StringUtils;
 import images.RosterIcons;
 

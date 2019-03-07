@@ -37,7 +37,7 @@ import java.security.MessageDigest;
 import java.util.Vector;
 
 import Client.Config;
-import Info.Version;
+import Client.StaticData;
 import ui.Time;
 import util.StringUtils;
 
@@ -118,7 +118,7 @@ public class DnsSrvResolver {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        String version = Version.getVersionNumber() + server;
+        String version = StaticData.getInstance().getVersionInfo().getVersionNumber() + server;
         shaVer.update(version.getBytes(), 0, version.length());
         byte[] shaVerBits = new byte[20];
         try {

@@ -3,77 +3,29 @@ buildscript {
         mavenCentral()
         jcenter()
         google()
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.6.1'
+        classpath 'com.mobidevelop.robovm:robovm-gradle-plugin:2.3.9-SNAPSHOT'
     }
 }
 
-apply plugin: 'com.android.application'
-
-repositories {
-    mavenCentral()
-    jcenter()
-    google()
+allprojects {
+    repositories {
+        mavenCentral()
+        jcenter()
+        google()
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+    }
 }
+
+apply plugin: 'java'
+apply plugin: 'java-library'
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
 
 dependencies {
-    implementation project(':mtm')
-    implementation 'androidx.core:core:1.2.0'
-    implementation 'androidx.fragment:fragment:1.2.2'
-    implementation 'androidx.legacy:legacy-support-core-ui:1.0.0'
-    implementation 'androidx.asynclayoutinflater:asynclayoutinflater:1.0.0'
-    implementation 'androidx.collection:collection:1.1.0'
-    implementation 'androidx.work:work-runtime:2.3.2'
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-}
-
-android {
-    compileSdkVersion 28
-    buildToolsVersion '28.0.3'
-    defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 27
-        versionCode 1416
-        versionName '0.9.1415'
-        applicationId "org.bombusmod"
-    }
-    lintOptions {
-        checkReleaseBuilds false
-        // Or, if you prefer, you can continue to check for errors in release builds,
-        // but continue the build even when errors are found:
-        abortOnError false
-    }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
-    }
-    packagingOptions {
-        exclude 'META-INF/ASL2.0'
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/license.txt'
-        exclude 'META-INF/NOTICE'
-        exclude 'META-INF/notice.txt'
-    }
-    // signing config
-    if (file("keystore.properties").exists()) {
-        Properties props = new Properties()
-        props.load(new FileInputStream(file("keystore.properties")))
-
-        signingConfigs {
-            release {
-                storeFile file(props["key.store"])
-                storePassword props["key.store.password"]
-                keyAlias props["key.alias"]
-                keyPassword props["key.alias.password"]
-            }
-        }
-
-        buildTypes {
-            release {
-                minifyEnabled false
-                signingConfig signingConfigs.release
-            }
-        }
-    }
+    api 'org.slf4j:slf4j-api:1.7.30'
 }

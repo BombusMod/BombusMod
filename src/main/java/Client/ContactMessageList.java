@@ -52,7 +52,6 @@ import Menu.JuickThingsMenu;
 import Menu.MyMenu;
 //#endif
 import Messages.MessageItem;
-import Messages.notification.Notification;
 import images.RosterIcons;
 import ui.VirtualList;
 //#ifdef FILE_TRANSFER
@@ -61,7 +60,7 @@ import io.file.transfer.TransferDispatcher;
 //#endif
 import ui.VirtualCanvas;
 import ui.VirtualElement;
-import util.ClipBoardIO;
+import org.bombusmod.util.ClipBoardIO;
 import xmpp.JidUtils;
 
 public class ContactMessageList extends MessageList {

@@ -25,18 +25,22 @@
  */
 package com.alsutton.jabber.datablocks;
 
-import Info.Version;
+import Client.StaticData;
 import xmpp.EntityCaps;
 import com.alsutton.jabber.*;
+
 import images.RosterIcons;
 import xmpp.XmppError;
 import java.util.*;
+
 import locale.SR;
 
 /**
  * Class representing the presence message block.
  */
 public class Presence extends JabberDataBlock {
+
+    private EntityCaps entityCaps;
 
     public Presence(Vector _attributes) {
         super("presence", _attributes);
@@ -86,7 +90,7 @@ public class Presence extends JabberDataBlock {
                 addChildNs("nick", "http://jabber.org/protocol/nick").setText(nick);
             }
 
-            setAttribute("ver", Version.getVersionNumber());
+            setAttribute("ver", StaticData.getInstance().getVersionInfo().getVersionNumber());
         }
     }
     private StringBuffer text;

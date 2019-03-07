@@ -29,7 +29,6 @@
  * @author Eugene Stahov
  */
 package midlet;
-import xmpp.Account;
 import Account.AccountForm;
 import Account.AccountSelect;
 import Colors.ColorTheme;
@@ -40,7 +39,6 @@ import javax.microedition.lcdui.Displayable;
 import locale.SR;
 import ui.*;
 import Client.*;
-import Info.Version;
 import ui.controls.AlertBox;
 //#ifdef LIGHT_CONFIG
 //# import LightControl.*;
@@ -100,7 +98,7 @@ public class BombusMod extends MIDlet {
         s.setProgress(3);        
 
         s.setProgress(7);
-        s.setProgress(Version.getVersionNumber(), 10);
+        s.setProgress(StaticData.getInstance().getVersionInfo().getVersionNumber(), 10);
 
         SR.loaded();
         s.setProgress(12);

@@ -28,6 +28,7 @@
 package Messages;
 
 //#ifdef SMILES
+import Client.StaticData;
 import images.SmilesIcons;
 //#endif
 import Fonts.FontCache;
@@ -39,8 +40,6 @@ import Colors.ColorTheme;
 import ui.*;
 import Client.Config;
 import util.Strconv;
-
-import io.file.InternalResource;
 
 public final class MessageParser {
     
@@ -130,8 +129,8 @@ public final class MessageParser {
             boolean strhaschars=false;
             boolean endline=false;
             
-            InputStream in=InternalResource.getResourceAsStream(anires);
-            if (in == null) in=InternalResource.getResourceAsStream(staticres);
+            InputStream in=StaticData.getInstance().getAssetsLoader().getResourceAsStream(anires);
+            if (in == null) in= StaticData.getInstance().getAssetsLoader().getResourceAsStream(staticres);
             
             boolean firstSmile=true;
             

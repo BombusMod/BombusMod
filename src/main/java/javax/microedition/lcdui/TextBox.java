@@ -23,7 +23,6 @@
  */
 package javax.microedition.lcdui;
 
-import org.microemu.android.device.ui.AndroidTextBoxUI;
 import org.microemu.device.DeviceFactory;
 import org.microemu.device.InputMethod;
 import org.microemu.device.InputMethodEvent;
@@ -72,11 +71,11 @@ public class TextBox extends Screen {
     }
 
     public void delete(int offset, int length) {
-        ((AndroidTextBoxUI) ui).delete(offset, length);
+        ((TextBoxUI) ui).delete(offset, length);
     }
 
     public int getCaretPosition() {
-        return ((AndroidTextBoxUI) ui).getCaretPosition();
+        return ((TextBoxUI) ui).getCaretPosition();
     }
 
     public int getChars(char[] data) {
@@ -102,7 +101,7 @@ public class TextBox extends Screen {
     }
 
     public void insert(String src, int position) {
-            ((AndroidTextBoxUI) ui).insert(src, position);        
+        ((TextBoxUI)ui).insert(src, position);
     }
 
     public void setChars(char[] data, int offset, int length) {
@@ -122,7 +121,7 @@ public class TextBox extends Screen {
     }
 
     public void setString(String text) {
-        ((AndroidTextBoxUI) ui).setString(text);        
+        ((TextBoxUI) ui).setString(text);
     }
 
     @Override
@@ -131,7 +130,7 @@ public class TextBox extends Screen {
     }
 
     public int size() {
-        return ((AndroidTextBoxUI) ui).getString().length();        
+        return ((TextBoxUI) ui).getString().length();
     }
 
     @Override

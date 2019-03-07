@@ -31,8 +31,6 @@ import java.util.Locale;
 import javax.microedition.midlet.MIDlet;
 import javax.microedition.midlet.MIDletStateChangeException;
 
-import android.util.Log;
-import org.bombusmod.BombusModActivity;
 import org.microemu.MIDletAccess;
 import org.microemu.MIDletBridge;
 import org.microemu.MIDletContext;
@@ -42,8 +40,12 @@ import org.microemu.app.util.MIDletThread;
 import org.microemu.device.Device;
 import org.microemu.device.DeviceFactory;
 import org.microemu.device.EmulatorContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Common implements MicroEmulator {
+
+    private static final Logger logger = LoggerFactory.getLogger(Common.class);
 
     protected EmulatorContext emulatorContext;
 
@@ -73,10 +75,9 @@ public class Common implements MicroEmulator {
     public InputStream getResourceAsStream(Class origClass, String name) {
         return emulatorContext.getResourceAsStream(origClass, name);
     }
-
     public void destroyMIDletContext(MIDletContext midletContext) {
         if ((midletContext != null) && (MIDletBridge.getMIDletContext() == midletContext)) {
-            Log.d(BombusModActivity.LOG_TAG, "destroyMIDletContext");
+            logger.debug("destroyMIDletContext");
         }
         MIDletThread.contextDestroyed(midletContext);
         synchronized (destroyNotify) {
@@ -90,7 +91,7 @@ public class Common implements MicroEmulator {
                 previousMidletAccess.destroyApp(true);
             }
         } catch (Throwable e) {
-            Log.e(BombusModActivity.LOG_TAG,"Unable to destroy MIDlet", e);
+            logger.error("Unable to destroy MIDlet", e);
         }
 
         MIDletContext context = new MIDletContext();
@@ -105,7 +106,7 @@ public class Common implements MicroEmulator {
                 Object object = midletClass.newInstance();
                 m = (MIDlet) object;
             } catch (Throwable e) {
-                Log.e(BombusModActivity.LOG_TAG,"Unable to create MIDlet", e);
+                logger.error("Unable to create MIDlet", e);
                 MIDletBridge.destroyMIDletContext(context);
                 return null;
             }
@@ -117,7 +118,7 @@ public class Common implements MicroEmulator {
 
                 return m;
             } catch (Throwable e) {
-                Log.d(BombusModActivity.LOG_TAG, "Unable to start MIDlet", e);
+                logger.debug("Unable to start MIDlet", e);
                 MIDletBridge.destroyMIDletContext(context);
                 return null;
             }
@@ -147,7 +148,7 @@ public class Common implements MicroEmulator {
         try {
             midletClass = instance.getClass().getClassLoader().loadClass("midlet.BombusMod");
         } catch (Exception e) {
-            Log.d(BombusModActivity.LOG_TAG, "Unable to find MIDlet class", e);
+            logger.debug("Unable to find MIDlet class", e);
             return null;
         }
 
@@ -156,7 +157,7 @@ public class Common implements MicroEmulator {
             try {
                 MIDletBridge.getMIDletAccess(midlet).startApp();
             } catch (MIDletStateChangeException e) {
-                Log.e(BombusModActivity.LOG_TAG, "Illegal state", e);
+                logger.error("Illegal state", e);
             }
         }
         return midlet;

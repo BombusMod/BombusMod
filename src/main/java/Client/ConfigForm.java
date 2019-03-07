@@ -38,11 +38,15 @@ import ui.controls.form.SimpleString;
 import ui.controls.form.SpacerItem;
 import util.StringLoader;
 import com.alsutton.jabber.datablocks.Presence;
+
 import ui.VirtualCanvas;
 import xmpp.EntityCaps;
 
 public class ConfigForm
         extends DefForm {
+
+
+    private EntityCaps entityCaps;
 
     private CheckBox showOfflineContacts;
     private CheckBox selfContact;
@@ -437,9 +441,8 @@ public class ConfigForm
         cf.updateTime();
         cf.saveToStorage();
         try {
-            String oldVerHash = EntityCaps.calcVerHash();
-            EntityCaps.initCaps();
-            if (!oldVerHash.equals(EntityCaps.calcVerHash())) {
+            String oldVerHash = entityCaps.calcVerHash();
+            if (!oldVerHash.equals(entityCaps.calcVerHash())) {
                 if (sd.roster.isLoggedIn()) {
                     sd.roster.sendPresence(Presence.PRESENCE_SAME, null);
                 }

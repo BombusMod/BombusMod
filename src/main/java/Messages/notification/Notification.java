@@ -35,7 +35,11 @@ public abstract class Notification {
                     notifier = new PopupNotificator();
                     break;
                 case NOTIFICATOR_TYPE_PLATFORM:
-                    notifier = new AndroidNotificator();
+                    try {
+                        notifier = (Notificator) Class.forName("org.bombusmod.android.notification.AndroidNotificator").newInstance();
+                    } catch (Exception e) {
+                        notifier = new EmptyNotificator();
+                    }
                     break;
                 default:
                     break;

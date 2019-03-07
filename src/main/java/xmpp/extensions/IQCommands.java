@@ -49,20 +49,20 @@ import ui.Time;
  * @author ad
  */
 public class IQCommands implements JabberBlockListener {
-    
+
     /** Singleton */
     private static IQCommands instance;
-    
+
     public static IQCommands getInstance() {
         if (instance==null) instance=new IQCommands();
         return instance;
     }
-   
+
     StaticData sd = StaticData.getInstance();
-    
+
     /** Creates a new instance of PepListener */
     private IQCommands() { }
-    
+
     public void addBlockListener() {
         sd.getTheStream().addBlockListener(instance);
     }

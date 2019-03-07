@@ -32,7 +32,7 @@ import midlet.BombusMod;
 import io.file.FileIO;
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
-import util.ClipBoardIO;
+import org.bombusmod.util.ClipBoardIO;
 import util.StringUtils;
 //#endif
 import Menu.MenuCommand;
@@ -203,7 +203,7 @@ public class VCardView
         if (!ClipBoardIO.getInstance().isEmpty()) {
             addMenuCommand(cmdCopyPlus);
         }
-//#endif        
+        //#endif
     }
 
 

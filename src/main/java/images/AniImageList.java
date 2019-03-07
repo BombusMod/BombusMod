@@ -32,9 +32,10 @@ import java.io.InputStream;
 import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Graphics;
+
+import Client.StaticData;
 import midlet.BombusMod;
 import ui.ImageList;
-import io.file.InternalResource;
 
 /**
  *
@@ -70,7 +71,7 @@ public class AniImageList extends ImageList implements Runnable {
 
     public void load(String resName) {
         try {
-            InputStream is = InternalResource.getResourceAsStream(resName + "/animate.bin");
+            InputStream is = StaticData.getInstance().getAssetsLoader().getResourceAsStream(resName + "/animate.bin");
             int smileCount = is.read();
 
             icons = new AniIcon[smileCount];
