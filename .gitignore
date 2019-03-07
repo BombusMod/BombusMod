@@ -1,13 +1,13 @@
 /nbproject/private/
-/build/
-/dist/
+**/build/
+**/dist/
 /resources/.version
 *.apk
 *.ap_
 *.dex
 *.class
 bin/
-gen/
+/android/gen/
 local.properties
 .classpath
 .project
@@ -16,4 +16,6 @@ proguard/
 .gradle/**
 **/*.iml
 release/**
+out/**
+/ios/robovm-build/**
 .DS_Store

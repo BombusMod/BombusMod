@@ -39,7 +39,7 @@ import ui.MainBar;
 import ui.controls.form.DefForm;
 import Menu.MenuCommand;
 import ui.VirtualList;
-import util.ClipBoardIO;
+import org.bombusmod.util.ClipBoardIO;
 import xmpp.extensions.muc.Conference;
 
 /**

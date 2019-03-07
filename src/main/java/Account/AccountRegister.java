@@ -28,15 +28,16 @@ package Account;
 
 import xmpp.Account;
 import Client.StaticData;
-import Info.Version;
 import Menu.MenuCommand;
 import ServiceDiscovery.DiscoForm;
 import ServiceDiscovery.DiscoForm.FormSubmitListener;
 import ServiceDiscovery.FormField;
 import com.alsutton.jabber.*;
 import com.alsutton.jabber.datablocks.*;
+
 import java.util.Enumeration;
 import java.util.Vector;
+
 import locale.SR;
 import ui.*;
 import ui.controls.form.DefForm;
@@ -70,9 +71,9 @@ public class AccountRegister
     /** Creates a new instance of AccountRegister
      * @param account
      */
-    public AccountRegister(AccountSelect parent) {
+    public AccountRegister(AccountSelect account) {
 	super(SR.MS_REGISTER, false);
-	as = parent;
+	as = account;
 	splash = SplashScreen.getInstance();
 	splash.setExit(as);
 	splash.setProgress(SR.MS_STARTUP, 5);
@@ -118,7 +119,7 @@ public class AccountRegister
             //give a chance another thread to finish ui
             Thread.sleep(500);
             sd.account = raccount;
-            sd.startConnection();
+            sd.getService().startConnection();
 
             sd.getTheStream().listener = this;
             sd.getTheStream().initiateStream();
@@ -204,7 +205,7 @@ public class AccountRegister
 	    if (field != null && field.name != null) {
 		if (field.name.equals("username")) {
 		    raccount.JID = new Jid(((TextInput) field.formItem).getValue(), 
-                            raccount.JID.getServer(), Version.NAME);
+                            raccount.JID.getServer(), StaticData.getInstance().getVersionInfo().NAME);
 		}
 		if (field.name.equals("password")) {
 		    raccount.password = ((TextInput) field.formItem).getValue();

@@ -28,9 +28,11 @@
 
 package xmpp.extensions;
 
-import Info.Version;
 import com.alsutton.jabber.*;
 import com.alsutton.jabber.datablocks.*;
+
+import org.bombusmod.util.VersionInfo;
+
 import Client.*;
 
 /**
@@ -38,7 +40,7 @@ import Client.*;
  * @author Eugene Stahov
  */
 public class IqVersionReply implements JabberBlockListener {
-    public IqVersionReply(){};
+    public IqVersionReply() {};
 
     public int blockArrived(JabberDataBlock data) {
         if (!(data instanceof Iq)) return BLOCK_REJECTED;
@@ -54,8 +56,9 @@ public class IqVersionReply implements JabberBlockListener {
             
             Iq reply=new Iq(data.getAttribute("from"), Iq.TYPE_RESULT, data.getAttribute("id"));
             reply.addChild(query);
-            query.addChild("name", Version.NAME);
-            query.addChild("version",Version.getVersionNumber());
+            VersionInfo version = StaticData.getInstance().getVersionInfo();
+            query.addChild("name", version.getName());
+            query.addChild("version", version.getVersionNumber());
             if (Config.getInstance().enableVersionOs) {
                 query.addChild("os", Config.getOs());
             }

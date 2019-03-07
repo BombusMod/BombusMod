@@ -27,6 +27,8 @@
 
 package util;
 
+import Client.StaticData;
+
 import java.io.DataInputStream;
 //import java.io.DataOutputStream;
 import java.io.InputStream;
@@ -37,8 +39,6 @@ import javax.microedition.io.Connector;
 import javax.microedition.io.file.FileConnection;
 import javax.microedition.io.file.FileSystemRegistry;
 */
-
-import io.file.InternalResource;
 
 /**
  *
@@ -51,7 +51,7 @@ public class ArrayLoader {
     }
     public int[] readIntArray(String name) {
         try {
-            InputStream in = InternalResource.getResourceAsStream(name);
+            InputStream in = StaticData.getInstance().getAssetsLoader().getResourceAsStream(name);
             DataInputStream is=new DataInputStream(in);
             int len=is.readInt();
             int[] arrayInt=new int[len];
@@ -68,7 +68,7 @@ public class ArrayLoader {
     
     public short[] readShortArray(String name) {
         try {
-            InputStream in = InternalResource.getResourceAsStream(name);
+            InputStream in = StaticData.getInstance().getAssetsLoader().getResourceAsStream(name);
             DataInputStream is=new DataInputStream(in);
             int len=is.readInt();
             short[] arrayShort=new short[len];
@@ -83,7 +83,7 @@ public class ArrayLoader {
     }
     public byte[] readByteArray(String name) {
         try {
-            InputStream in = InternalResource.getResourceAsStream(name);
+            InputStream in = StaticData.getInstance().getAssetsLoader().getResourceAsStream(name);
             DataInputStream is=new DataInputStream(in);
             int len=is.readInt();
             byte[] arrayByte=new byte[len];

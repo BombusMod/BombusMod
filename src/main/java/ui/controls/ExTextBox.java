@@ -39,7 +39,7 @@ import Archive.ArchiveList;
 //#endif
 import ui.VirtualCanvas;
 import ui.VirtualList;
-import util.ClipBoardIO;
+import org.bombusmod.util.ClipBoardIO;
 
 
 /**
@@ -167,7 +167,7 @@ public class ExTextBox {
             textbox.addCommand(cmdCopyPlus);
             textbox.addCommand(cmdPasteText);
         }
-//#endif
+        //#endif
 //#ifdef ARCHIVE
         textbox.addCommand(cmdArchive);
 //#endif
@@ -203,7 +203,9 @@ public class ExTextBox {
             } catch (Exception e) {/*no messages*/}
             return true;
         }
-        if (c==cmdPasteText) { insert(ClipBoardIO.getInstance().getClipBoard(), getCaretPos(), writespaces); return true; }
+        if (c==cmdPasteText) {
+            insert(ClipBoardIO.getInstance().getClipBoard(), getCaretPos(), writespaces);
+            return true; }
 //#endif
 //#if TEMPLATES
         if (c==cmdTemplate) { new ArchiveList(caretPos, 2, textbox); return true; }

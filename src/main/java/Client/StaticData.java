@@ -27,13 +27,12 @@
 
 package Client;
 
-import org.bombusmod.App;
-import org.bombusmod.android.service.XmppService;
-import xmpp.Account;
 import com.alsutton.jabber.JabberStream;
-import util.ClipBoardIO;
-
-import java.io.IOException;
+import org.bombusmod.util.AssetsLoader;
+import org.bombusmod.util.ConnectionService;
+import org.bombusmod.util.EventNotifier;
+import org.bombusmod.util.VersionInfo;
+import xmpp.Account;
 
 /**
  *
@@ -69,17 +68,49 @@ public final class StaticData {
         }
         return sd;
     }
+    private JabberStream theStream;
+    private ConnectionService service;
     public JabberStream getTheStream() {
-        XmppService xmpp = App.getInstance().getXmppService();
-        if (xmpp != null) {
-            return xmpp.getTheStream();
-        }
-        return null;
+        return theStream;
     }
-    public void startConnection() throws IOException {
-        App.getInstance().getXmppService().startConnection();
+    private AssetsLoader assetsLoader;
+    public AssetsLoader getAssetsLoader() {
+        return assetsLoader;
     }
+    public void setAssetsLoader(AssetsLoader assetsLoader) {
+        this.assetsLoader = assetsLoader;
+    }
+    private VersionInfo versionInfo;
+    private EventNotifier eventNotifier;
     public static final boolean Debug = true;
     public static final boolean XmlDebug = true;
     public static final boolean NonSaslAuth = false;
+
+    public VersionInfo getVersionInfo() {
+        return versionInfo;
+    }
+
+    public void setVersionInfo(VersionInfo versionInfo) {
+        this.versionInfo = versionInfo;
+    }
+
+    public EventNotifier getEventNotifier() {
+        return eventNotifier;
+    }
+
+    public void setEventNotifier(EventNotifier eventNotifier) {
+        this.eventNotifier = eventNotifier;
+    }
+
+    public ConnectionService getService() {
+        return service;
+    }
+
+    public void setService(ConnectionService service) {
+        this.service = service;
+    }
+
+    public void setTheStream(JabberStream theStream) {
+        this.theStream = theStream;
+    }
 }

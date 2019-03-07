@@ -10,17 +10,18 @@ package xmpp;
 
 import Client.Config;
 import Client.StaticData;
-import Info.Version;
 import com.alsutton.jabber.JabberBlockListener;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
 import com.alsutton.jabber.datablocks.Message;
 //#if (android)
+
 import java.security.MessageDigest;
 //#else
 //# import com.ssttr.crypto.MessageDigest;
 //#endif
 import java.util.Vector;
+
 import util.Strconv;
 import util.StringUtils;
 
@@ -70,7 +71,7 @@ public class EntityCaps implements JabberBlockListener {
         JabberDataBlock identity = query.addChild("identity", null);
         identity.setAttribute("category", BOMBUS_ID_CATEGORY);
         identity.setAttribute("type", BOMBUS_ID_TYPE);
-        identity.setAttribute("name", Version.getName());
+        identity.setAttribute("name", StaticData.getInstance().getVersionInfo().getName());
 
         int j = features.size();
         for (int i = 0; i < j; i++) {
@@ -97,7 +98,7 @@ public class EntityCaps implements JabberBlockListener {
         //indentity
         StringBuffer identity = new StringBuffer();
         identity.append(BOMBUS_ID_CATEGORY).append("/").append(BOMBUS_ID_TYPE)
-                .append("//").append(Version.getName()).append("<");
+                .append("//").append(StaticData.getInstance().getVersionInfo().getName()).append("<");
 
         for (int i = 0; i < j; i++) {
             identity.append((String) features.elementAt(i));
@@ -124,7 +125,7 @@ public class EntityCaps implements JabberBlockListener {
             return null;
         }
     }
-    private final static String BOMBUS_NAMESPACE = Version.getUrl() + "/caps";
+    private final static String BOMBUS_NAMESPACE = StaticData.getInstance().getVersionInfo().getUrl() + "/caps";
     private final static String BOMBUS_ID_CATEGORY = "client";
     private final static String BOMBUS_ID_TYPE = "mobile";
     private static Config cf = Config.getInstance();

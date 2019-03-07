@@ -38,7 +38,7 @@ import Client.Msg;
 import ui.VirtualList;
 import ui.controls.form.ListItem;
 import images.RosterIcons;
-import util.ClipBoardIO;
+import org.bombusmod.util.ClipBoardIO;
 
 /**
  *

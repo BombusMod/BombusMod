@@ -31,7 +31,8 @@ package Alerts;
 import Client.*;
 import locale.SR;
 import java.util.Vector;
-import ui.EventNotify;
+
+import org.bombusmod.util.EventNotifier;
 import ui.controls.form.SimpleString;
 import ui.controls.form.CheckBox;
 import ui.controls.form.DefForm;
@@ -201,7 +202,8 @@ public class AlertCustomizeForm
         int soundVol=sndVol.getValue()*10;
         if (StaticData.Debug)
             System.out.println(cursor+": "+sound+" "+soundFile+" "+soundType+" "+soundVol);
-        new EventNotify( soundType, soundFile, soundVol, 0).startNotify();
+        EventNotifier notifier = StaticData.getInstance().getEventNotifier();
+        notifier.startNotify( soundType, soundFile, soundVol, 0);
     }
 
     public void commandState(){

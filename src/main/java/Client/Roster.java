@@ -26,6 +26,7 @@
  */
 package Client;
 
+import org.bombusmod.util.EventNotifier;
 import xmpp.Jid;
 import xmpp.Account;
 import Account.AccountSelect;
@@ -80,7 +81,6 @@ import ui.controls.PopUp;
 import ui.controls.form.DefForm;
 import xmpp.EntityCaps;
 
-import xmpp.XmppError;
 //#ifdef CAPTCHA
 import xmpp.extensions.Captcha;
 //#endif
@@ -108,9 +108,6 @@ import xmpp.JidUtils;
 import xmpp.PresenceDispatcher;
 import xmpp.RosterDispatcher;
 
-//#if android
-import org.bombusmod.BombusModActivity;
-//#endif
 public class Roster
         extends DefForm
         implements
@@ -268,7 +265,7 @@ public class Roster
             Account a = sd.account;
             setProgress(SR.MS_CONNECT_TO_ + a.JID.getServer(), 30);
 
-            sd.startConnection();
+            sd.getService().startConnection();
             setProgress(SR.MS_OPENING_STREAM, 40);
             sd.getTheStream().listener = new JabberDispatcher();
             sd.getTheStream().initiateStream();
@@ -1588,25 +1585,22 @@ public class Roster
 
         int profile = cf.profile;
 
-        EventNotify notify = null;
+        EventNotifier notify = StaticData.getInstance().getEventNotifier();
 
         switch (profile) {
             //display   fileType   soundName   volume      vibrate
             case AlertProfile.ALL:
-                notify = new EventNotify(type, message, volume, vibraLen);
+                notify.startNotify(type, message, volume, vibraLen);
                 break;
             case AlertProfile.NONE:
-                notify = new EventNotify(null, null, volume, 0);
+                notify.startNotify(null, null, volume, 0);
                 break;
             case AlertProfile.VIBRA:
-                notify = new EventNotify(null, null, volume, vibraLen);
+                notify.startNotify(null, null, volume, vibraLen);
                 break;
             case AlertProfile.SOUND:
-                notify = new EventNotify(type, message, volume, 0);
+                notify.startNotify(type, message, volume, 0);
                 break;
-        }
-        if (notify != null) {
-            notify.startNotify();
         }
         blockNotify(event, 2000);
     }
@@ -1907,7 +1901,7 @@ public class Roster
 
     public void cmdMinimize() {
 //#if android
-        BombusModActivity.getInstance().minimizeApp();
+        //BombusModActivity.getInstance().minimizeApp();
 //#endif        
         if (cf.allowMinimize) {
             BombusMod.getInstance().hideApp(true);

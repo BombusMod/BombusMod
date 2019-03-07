@@ -27,7 +27,6 @@
  */
 package javax.microedition.lcdui;
 
-import org.microemu.android.device.ui.AndroidTextFieldUI;
 import org.microemu.device.DeviceFactory;
 import org.microemu.device.InputMethod;
 import org.microemu.device.InputMethodEvent;
@@ -107,11 +106,11 @@ public class TextField extends Item {
     }
 
     public String getString() {
-        return ((AndroidTextFieldUI) ui).getString();
+        return ((TextFieldUI) ui).getString();
     }
 
-    public final void setString(String text) {
-         ((AndroidTextFieldUI) ui).setString(text);       
+    public void setString(String text) {
+         ((TextFieldUI) ui).setString(text);
     }
 
     void setString(String text, int caret) {
@@ -175,13 +174,13 @@ public class TextField extends Item {
         }
         String newtext = "";
         if (position > 0) {
-            newtext = ((AndroidTextFieldUI) ui).getString();
+            newtext = ((TextFieldUI) ui).getString();
         }
         newtext += src;
         if (position < field.length()) {
-            newtext += ((AndroidTextFieldUI) ui).getString().substring(position + 1);
+            newtext += ((TextFieldUI) ui).getString().substring(position + 1);
         }
-        ((AndroidTextFieldUI) ui).setString(newtext);
+        ((TextFieldUI) ui).setString(newtext);
     }
 
     public void insert(char[] data, int offset, int length, int position) {

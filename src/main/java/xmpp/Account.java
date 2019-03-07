@@ -26,11 +26,9 @@
  */
 package xmpp;
 
-import Client.Config;
 import Client.StaticData;
-import Info.Version;
 import com.alsutton.jabber.JabberStream;
-import com.alsutton.jabber.datablocks.Presence;
+
 import io.DnsSrvResolver;
 import java.util.Vector;
 

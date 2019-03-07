@@ -38,7 +38,7 @@ import ui.VirtualCanvas;
 import ui.VirtualElement;
 import ui.VirtualList;
 import ui.controls.form.DefForm;
-import util.ClipBoardIO;
+import org.bombusmod.util.ClipBoardIO;
 
 public abstract class MessageList extends DefForm
     {

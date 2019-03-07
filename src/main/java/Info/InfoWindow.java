@@ -40,7 +40,8 @@ import ui.controls.form.SpacerItem;
 import Menu.MenuCommand;
 import ui.VirtualList;
 import images.RosterIcons;
-import util.ClipBoardIO;
+
+import org.bombusmod.util.ClipBoardIO;
 
 /**
  *
@@ -66,7 +67,7 @@ public class InfoWindow
     public InfoWindow() {
         super(SR.MS_ABOUT);
         
-        name = new MultiLine(Version.getName(), Version.getVersionNumber() + "\n" + Config.getOs() + "\nMobile Jabber client");
+        name = new MultiLine(StaticData.getInstance().getVersionInfo().getName(), StaticData.getInstance().getVersionInfo().getVersionNumber() + "\n" + Config.getOs() + "\nMobile Jabber client");
         name.selectable = true;
         itemsList.addElement(name);
 
@@ -74,10 +75,10 @@ public class InfoWindow
         description.selectable = true;
         itemsList.addElement(description);
 
-        siteUrl = new LinkString(Version.getUrl()) {
+        siteUrl = new LinkString(StaticData.getInstance().getVersionInfo().getUrl()) {
 
             public void doAction() {
-                BombusMod.getInstance().platformRequest(Version.getUrl());
+                BombusMod.getInstance().platformRequest(StaticData.getInstance().getVersionInfo().getUrl());
             }
         };
         itemsList.addElement(siteUrl);

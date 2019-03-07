@@ -1,0 +1,18 @@
+apply plugin: 'java'
+apply plugin: 'robovm'
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+robovm {
+}
+
+dependencies {
+    compile rootProject
+    compile "com.mobidevelop.robovm:robovm-rt:2.3.9-SNAPSHOT"
+    compile "com.mobidevelop.robovm:robovm-cocoatouch:2.3.9-SNAPSHOT"
+
+    compile "ch.qos.logback:logback-classic:1.2.3"
+    compile "org.slf4j:log4j-over-slf4j:1.7.30"
+    
+    testCompile "junit:junit:4.12"
+}

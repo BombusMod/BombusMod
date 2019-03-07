@@ -180,7 +180,7 @@ public class Bookmarks extends DefForm {
         }
 //#endif
         else if (c == cmdConfigure) {
-            new QueryConfigForm(roomJid);
+            new QueryConfigForm(sd.getTheStream(), roomJid);
         } else if (c == cmdRoomOwners) {
             new Affiliations(roomJid, (short) 1);
         } else if (c == cmdRoomAdmins) {

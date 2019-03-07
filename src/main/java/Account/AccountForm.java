@@ -28,7 +28,6 @@ package Account;
 
 import xmpp.Account;
 import Client.*;
-import Info.Version;
 import locale.SR;
 import ui.SplashScreen;
 import ui.controls.AlertBox;
@@ -92,7 +91,7 @@ public class AccountForm
      * Creates a new instance of AccountForm
      *
      * @param accountSelect
-     * @param account
+     * @param item
      */
     public AccountForm(final AccountSelect accountSelect, AccountItem item) {
         super(null);
@@ -195,7 +194,7 @@ public class AccountForm
 //#ifndef HTTPBIND
         keepAlive = new NumberInput(SR.MS_KEEPALIVE_PERIOD, Integer.toString(item.account.keepAlivePeriod), 10, 2048);//10, 2096        
 //#endif
-        resourcebox = new TextInput(SR.MS_RESOURCE, newaccount ? Version.NAME : 
+        resourcebox = new TextInput(SR.MS_RESOURCE, newaccount ? StaticData.getInstance().getVersionInfo().getName() :
                 item.account.JID.resource, null);
 
 //#if HTTPCONNECT
@@ -238,7 +237,7 @@ public class AccountForm
     public void cmdOk() {
         String user = userbox.getValue().trim().toLowerCase();
         String pass = passbox.getValue();
-        String resource = Version.NAME;
+        String resource = StaticData.getInstance().getVersionInfo().NAME;
         if (resourcebox != null)
             resource = resourcebox.getValue();
         String server = "";
