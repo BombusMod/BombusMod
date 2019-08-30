@@ -230,8 +230,7 @@ public class AndroidTextBoxUI extends AndroidDisplayableUI implements TextBoxUI 
                 }
                 if ((constraints & TextField.PASSWORD) != 0) {
                     editor.setSingleLine(true);
-                    editor.setInputType(InputType.TYPE_CLASS_TEXT);
-                    editor.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    editor.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                     editor.setTypeface(Typeface.MONOSPACE);
                 }
                 activity.setContentView(view);
